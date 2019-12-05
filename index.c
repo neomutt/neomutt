@@ -231,6 +231,7 @@ static bool check_acl(struct Context *ctx, AclFlags acl, const char *msg)
 
 /**
  * collapse_all - Collapse/uncollapse all threads
+ * @param ctx    Context
  * @param menu   current menu
  * @param toggle toggle collapsed state
  *
@@ -240,53 +241,53 @@ static bool check_acl(struct Context *ctx, AclFlags acl, const char *msg)
  * threads. In the second case, the @a toggle parameter is 0, actually turning
  * this function into a one-way collapse.
  */
-static void collapse_all(struct Menu *menu, int toggle)
+static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
 {
+  if (!ctx || !ctx->mailbox || (ctx->mailbox->msg_count == 0) || !menu)
+    return;
+
   struct Email *e = NULL, *base = NULL;
   struct MuttThread *thread = NULL, *top = NULL;
   int final;
 
-  if (!Context || !Context->mailbox || (Context->mailbox->msg_count == 0))
-    return;
-
   /* Figure out what the current message would be after folding / unfolding,
    * so that we can restore the cursor in a sane way afterwards. */
   if (CUR_EMAIL->collapsed && toggle)
-    final = mutt_uncollapse_thread(Context, CUR_EMAIL);
+    final = mutt_uncollapse_thread(ctx, CUR_EMAIL);
   else if (CAN_COLLAPSE(CUR_EMAIL))
-    final = mutt_collapse_thread(Context, CUR_EMAIL);
+    final = mutt_collapse_thread(ctx, CUR_EMAIL);
   else
     final = CUR_EMAIL->vnum;
 
   if (final == -1)
     return;
 
-  base = Context->mailbox->emails[Context->mailbox->v2r[final]];
+  base = ctx->mailbox->emails[ctx->mailbox->v2r[final]];
 
   /* Iterate all threads, perform collapse/uncollapse as needed */
-  top = Context->tree;
-  Context->collapsed = toggle ? !Context->collapsed : true;
+  top = ctx->tree;
+  ctx->collapsed = toggle ? !ctx->collapsed : true;
   while ((thread = top))
   {
     while (!thread->message)
       thread = thread->child;
     e = thread->message;
 
-    if (e->collapsed != Context->collapsed)
+    if (e->collapsed != ctx->collapsed)
     {
       if (e->collapsed)
-        mutt_uncollapse_thread(Context, e);
+        mutt_uncollapse_thread(ctx, e);
       else if (CAN_COLLAPSE(e))
-        mutt_collapse_thread(Context, e);
+        mutt_collapse_thread(ctx, e);
     }
     top = top->next;
   }
 
   /* Restore the cursor */
-  mutt_set_vnum(Context);
-  for (int j = 0; j < Context->mailbox->vcount; j++)
+  mutt_set_vnum(ctx);
+  for (int j = 0; j < ctx->mailbox->vcount; j++)
   {
-    if (Context->mailbox->emails[Context->mailbox->v2r[j]]->index == base->index)
+    if (ctx->mailbox->emails[ctx->mailbox->v2r[j]]->index == base->index)
     {
       menu->current = j;
       break;
@@ -298,57 +299,60 @@ static void collapse_all(struct Menu *menu, int toggle)
 
 /**
  * ci_next_undeleted - Find the next undeleted email
+ * @param ctx   Context
  * @param msgno Message number to start at
  * @retval >=0 Message number of next undeleted email
  * @retval  -1 No more undeleted messages
  */
-static int ci_next_undeleted(int msgno)
+static int ci_next_undeleted(struct Context *ctx, int msgno)
 {
-  if (!Context || !Context->mailbox)
+  if (!ctx || !ctx->mailbox)
     return -1;
 
-  for (int i = msgno + 1; i < Context->mailbox->vcount; i++)
-    if (!Context->mailbox->emails[Context->mailbox->v2r[i]]->deleted)
+  for (int i = msgno + 1; i < ctx->mailbox->vcount; i++)
+    if (!ctx->mailbox->emails[ctx->mailbox->v2r[i]]->deleted)
       return i;
   return -1;
 }
 
 /**
  * ci_previous_undeleted - Find the previous undeleted email
+ * @param ctx   Context
  * @param msgno Message number to start at
  * @retval >=0 Message number of next undeleted email
  * @retval  -1 No more undeleted messages
  */
-static int ci_previous_undeleted(int msgno)
+static int ci_previous_undeleted(struct Context *ctx, int msgno)
 {
-  if (!Context || !Context->mailbox)
+  if (!ctx || !ctx->mailbox)
     return -1;
 
   for (int i = msgno - 1; i >= 0; i--)
-    if (!Context->mailbox->emails[Context->mailbox->v2r[i]]->deleted)
+    if (!ctx->mailbox->emails[ctx->mailbox->v2r[i]]->deleted)
       return i;
   return -1;
 }
 
 /**
  * ci_first_message - Get index of first new message
+ * @param ctx Context
  * @retval num Index of first new message
  *
  * Return the index of the first new message, or failing that, the first
  * unread message.
  */
-static int ci_first_message(void)
+static int ci_first_message(struct Context *ctx)
 {
-  if (!Context || !Context->mailbox || (Context->mailbox->msg_count == 0))
+  if (!ctx || !ctx->mailbox || (ctx->mailbox->msg_count == 0))
     return 0;
 
   int old = -1;
-  for (int i = 0; i < Context->mailbox->vcount; i++)
+  for (int i = 0; i < ctx->mailbox->vcount; i++)
   {
-    if (!Context->mailbox->emails[Context->mailbox->v2r[i]]->read &&
-        !Context->mailbox->emails[Context->mailbox->v2r[i]]->deleted)
+    if (!ctx->mailbox->emails[ctx->mailbox->v2r[i]]->read &&
+        !ctx->mailbox->emails[ctx->mailbox->v2r[i]]->deleted)
     {
-      if (!Context->mailbox->emails[Context->mailbox->v2r[i]]->old)
+      if (!ctx->mailbox->emails[ctx->mailbox->v2r[i]]->old)
         return i;
       if (old == -1)
         old = i;
@@ -367,7 +371,7 @@ static int ci_first_message(void)
   }
   else
   {
-    return Context->mailbox->vcount ? Context->mailbox->vcount - 1 : 0;
+    return ctx->mailbox->vcount ? ctx->mailbox->vcount - 1 : 0;
   }
 
   return 0;
@@ -408,22 +412,23 @@ static int mx_toggle_write(struct Mailbox *m)
 
 /**
  * resort_index - Resort the index
+ * @param ctx  Context
  * @param menu Current Menu
  */
-static void resort_index(struct Menu *menu)
+static void resort_index(struct Context *ctx, struct Menu *menu)
 {
-  if (!Context || !Context->mailbox)
+  if (!ctx || !ctx->mailbox)
     return;
 
   struct Email *e = CUR_EMAIL;
 
   menu->current = -1;
-  mutt_sort_headers(Context, false);
+  mutt_sort_headers(ctx, false);
   /* Restore the current message */
 
-  for (int i = 0; i < Context->mailbox->vcount; i++)
+  for (int i = 0; i < ctx->mailbox->vcount; i++)
   {
-    if (Context->mailbox->emails[Context->mailbox->v2r[i]] == e)
+    if (ctx->mailbox->emails[ctx->mailbox->v2r[i]] == e)
     {
       menu->current = i;
       break;
@@ -431,10 +436,10 @@ static void resort_index(struct Menu *menu)
   }
 
   if (((C_Sort & SORT_MASK) == SORT_THREADS) && (menu->current < 0))
-    menu->current = mutt_parent_message(Context, e, false);
+    menu->current = mutt_parent_message(ctx, e, false);
 
   if (menu->current < 0)
-    menu->current = ci_first_message();
+    menu->current = ci_first_message(ctx);
 
   menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 }
@@ -604,7 +609,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
   }
 
   if (menu->current < 0)
-    menu->current = ci_first_message();
+    menu->current = ci_first_message(Context);
 }
 
 /**
@@ -751,7 +756,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   Context = mx_mbox_open(m, flags);
   if (Context)
   {
-    menu->current = ci_first_message();
+    menu->current = ci_first_message(Context);
 #ifdef USE_INOTIFY
     mutt_monitor_add(NULL);
 #endif
@@ -764,7 +769,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   }
 
   if (((C_Sort & SORT_MASK) == SORT_THREADS) && C_CollapseAll)
-    collapse_all(menu, 0);
+    collapse_all(Context, menu, 0);
 
 #ifdef USE_SIDEBAR
   mutt_sb_set_open_mailbox(Context ? Context->mailbox : NULL);
@@ -1088,7 +1093,7 @@ int mutt_index_menu(void)
   struct Menu *menu = mutt_menu_new(MENU_MAIN);
   menu->menu_make_entry = index_make_entry;
   menu->menu_color = index_color;
-  menu->current = ci_first_message();
+  menu->current = ci_first_message(Context);
   menu->help = mutt_compile_help(
       helpstr, sizeof(helpstr), MENU_MAIN,
 #ifdef USE_NNTP
@@ -1111,7 +1116,7 @@ int mutt_index_menu(void)
 
   if (((C_Sort & SORT_MASK) == SORT_THREADS) && C_CollapseAll)
   {
-    collapse_all(menu, 0);
+    collapse_all(Context, menu, 0);
     menu->redraw = REDRAW_FULL;
   }
 
@@ -1127,7 +1132,7 @@ int mutt_index_menu(void)
      * from any new menu launched, and change $sort/$sort_aux */
     if (OptNeedResort && Context && Context->mailbox &&
         (Context->mailbox->msg_count != 0) && (menu->current >= 0))
-      resort_index(menu);
+      resort_index(Context, menu);
 
     menu->max = (Context && Context->mailbox) ? Context->mailbox->vcount : 0;
     oldcount = (Context && Context->mailbox) ? Context->mailbox->msg_count : 0;
@@ -1754,7 +1759,7 @@ int mutt_index_menu(void)
           if ((Context->mailbox->msg_count != 0) && ((C_Sort & SORT_MASK) == SORT_THREADS))
           {
             if (C_CollapseAll)
-              collapse_all(menu, 0);
+              collapse_all(Context, menu, 0);
             mutt_draw_tree(Context);
           }
           menu->redraw = REDRAW_FULL;
@@ -1817,7 +1822,7 @@ int mutt_index_menu(void)
         {
           if (Context && Context->mailbox && (Context->mailbox->msg_count != 0))
           {
-            resort_index(menu);
+            resort_index(Context, menu);
             OptSearchInvalid = true;
           }
           if (in_pager)
@@ -1958,9 +1963,9 @@ int mutt_index_menu(void)
              * should be on. */
             int newidx = menu->current;
             if (CUR_EMAIL->deleted)
-              newidx = ci_next_undeleted(menu->current);
+              newidx = ci_next_undeleted(Context, menu->current);
             if (newidx < 0)
-              newidx = ci_previous_undeleted(menu->current);
+              newidx = ci_previous_undeleted(Context, menu->current);
             if (newidx >= 0)
               e = Context->mailbox->emails[Context->mailbox->v2r[newidx]];
           }
@@ -1989,7 +1994,7 @@ int mutt_index_menu(void)
           if ((menu->current < 0) || (Context && Context->mailbox &&
                                       (menu->current >= Context->mailbox->vcount)))
           {
-            menu->current = ci_first_message();
+            menu->current = ci_first_message(Context);
           }
         }
 
@@ -2192,7 +2197,7 @@ int mutt_index_menu(void)
           }
           if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(menu->current);
+            menu->current = ci_next_undeleted(Context, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -2581,7 +2586,7 @@ int mutt_index_menu(void)
             mutt_message(_("You are on the last message"));
           break;
         }
-        menu->current = ci_next_undeleted(menu->current);
+        menu->current = ci_next_undeleted(Context, menu->current);
         if (menu->current == -1)
         {
           menu->current = menu->oldcurrent;
@@ -2624,7 +2629,7 @@ int mutt_index_menu(void)
           mutt_message(_("You are on the first message"));
           break;
         }
-        menu->current = ci_previous_undeleted(menu->current);
+        menu->current = ci_previous_undeleted(Context, menu->current);
         if (menu->current == -1)
         {
           menu->current = menu->oldcurrent;
@@ -2687,7 +2692,7 @@ int mutt_index_menu(void)
             menu->redraw |= REDRAW_INDEX;
           else if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(menu->current);
+            menu->current = ci_next_undeleted(Context, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -2847,7 +2852,7 @@ int mutt_index_menu(void)
           mutt_set_flag(m, CUR_EMAIL, MUTT_FLAG, !CUR_EMAIL->flagged);
           if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(menu->current);
+            menu->current = ci_next_undeleted(Context, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -2898,7 +2903,7 @@ int mutt_index_menu(void)
 
           if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(menu->current);
+            menu->current = ci_next_undeleted(Context, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3008,7 +3013,7 @@ int mutt_index_menu(void)
             menu->redraw |= REDRAW_INDEX;
           else if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(menu->current);
+            menu->current = ci_next_undeleted(Context, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3065,7 +3070,7 @@ int mutt_index_menu(void)
           mutt_error(_("Threading is not enabled"));
           break;
         }
-        collapse_all(menu, 1);
+        collapse_all(Context, menu, 1);
         break;
 
         /* --------------------------------------------------------------------
@@ -3124,7 +3129,7 @@ int mutt_index_menu(void)
         {
           if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(menu->current);
+            menu->current = ci_next_undeleted(Context, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3173,7 +3178,7 @@ int mutt_index_menu(void)
           mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, false, subthread);
         if (C_Resolve)
         {
-          menu->current = ci_next_undeleted(menu->current);
+          menu->current = ci_next_undeleted(Context, menu->current);
           if (menu->current == -1)
             menu->current = menu->oldcurrent;
         }
