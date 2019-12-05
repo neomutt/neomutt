@@ -1918,7 +1918,10 @@ int imap_login(struct ImapAccountData *adata)
     return -1;
 
   if (adata->state == IMAP_DISCONNECTED)
+  {
+    mutt_buffer_reset(&adata->cmdbuf);  // purge outstanding queued commands
     imap_open_connection(adata);
+  }
   if (adata->state == IMAP_CONNECTED)
   {
     if (imap_authenticate(adata) == IMAP_AUTH_SUCCESS)
