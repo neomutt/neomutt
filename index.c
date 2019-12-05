@@ -1528,111 +1528,112 @@ int mutt_index_menu(void)
 
       case OP_GET_CHILDREN:
       case OP_RECONSTRUCT_THREAD:
+      {
         if (!prereq(Context, menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY | CHECK_ATTACH))
         {
           break;
         }
-        if (Context->mailbox->magic == MUTT_NNTP)
+        if (Context->mailbox->magic != MUTT_NNTP)
+          break;
+
+        int oldmsgcount = Context->mailbox->msg_count;
+        int oldindex = CUR_EMAIL->index;
+        int rc = 0;
+
+        if (!CUR_EMAIL->env->message_id)
         {
-          int oldmsgcount = Context->mailbox->msg_count;
-          int oldindex = CUR_EMAIL->index;
-          int rc = 0;
+          mutt_error(_("No Message-Id. Unable to perform operation."));
+          break;
+        }
 
-          if (!CUR_EMAIL->env->message_id)
+        mutt_message(_("Fetching message headers..."));
+        if (!Context->mailbox->id_hash)
+          Context->mailbox->id_hash = mutt_make_id_hash(Context->mailbox);
+        mutt_str_strfcpy(buf, CUR_EMAIL->env->message_id, sizeof(buf));
+
+        /* trying to find msgid of the root message */
+        if (op == OP_RECONSTRUCT_THREAD)
+        {
+          struct ListNode *ref = NULL;
+          STAILQ_FOREACH(ref, &CUR_EMAIL->env->references, entries)
           {
-            mutt_error(_("No Message-Id. Unable to perform operation."));
-            break;
-          }
-
-          mutt_message(_("Fetching message headers..."));
-          if (!Context->mailbox->id_hash)
-            Context->mailbox->id_hash = mutt_make_id_hash(Context->mailbox);
-          mutt_str_strfcpy(buf, CUR_EMAIL->env->message_id, sizeof(buf));
-
-          /* trying to find msgid of the root message */
-          if (op == OP_RECONSTRUCT_THREAD)
-          {
-            struct ListNode *ref = NULL;
-            STAILQ_FOREACH(ref, &CUR_EMAIL->env->references, entries)
+            if (!mutt_hash_find(Context->mailbox->id_hash, ref->data))
             {
-              if (!mutt_hash_find(Context->mailbox->id_hash, ref->data))
-              {
-                rc = nntp_check_msgid(Context->mailbox, ref->data);
-                if (rc < 0)
-                  break;
-              }
-
-              /* the last msgid in References is the root message */
-              if (!STAILQ_NEXT(ref, entries))
-                mutt_str_strfcpy(buf, ref->data, sizeof(buf));
-            }
-          }
-
-          /* fetching all child messages */
-          if (rc >= 0)
-            rc = nntp_check_children(Context->mailbox, buf);
-
-          /* at least one message has been loaded */
-          if (Context->mailbox->msg_count > oldmsgcount)
-          {
-            struct Email *e_oldcur = CUR_EMAIL;
-            struct Email *e = NULL;
-            bool quiet = Context->mailbox->quiet;
-
-            if (rc < 0)
-              Context->mailbox->quiet = true;
-            mutt_sort_headers(Context, (op == OP_RECONSTRUCT_THREAD));
-            Context->mailbox->quiet = quiet;
-
-            /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
-             * update the index */
-            if (in_pager)
-            {
-              menu->current = e_oldcur->vnum;
-              menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
-              op = OP_DISPLAY_MESSAGE;
-              continue;
+              rc = nntp_check_msgid(Context->mailbox, ref->data);
+              if (rc < 0)
+                break;
             }
 
-            /* if the root message was retrieved, move to it */
-            e = mutt_hash_find(Context->mailbox->id_hash, buf);
-            if (e)
-              menu->current = e->vnum;
+            /* the last msgid in References is the root message */
+            if (!STAILQ_NEXT(ref, entries))
+              mutt_str_strfcpy(buf, ref->data, sizeof(buf));
+          }
+        }
 
+        /* fetching all child messages */
+        if (rc >= 0)
+          rc = nntp_check_children(Context->mailbox, buf);
+
+        /* at least one message has been loaded */
+        if (Context->mailbox->msg_count > oldmsgcount)
+        {
+          struct Email *e_oldcur = CUR_EMAIL;
+          struct Email *e = NULL;
+          bool quiet = Context->mailbox->quiet;
+
+          if (rc < 0)
+            Context->mailbox->quiet = true;
+          mutt_sort_headers(Context, (op == OP_RECONSTRUCT_THREAD));
+          Context->mailbox->quiet = quiet;
+
+          /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
+            * update the index */
+          if (in_pager)
+          {
+            menu->current = e_oldcur->vnum;
+            menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+            op = OP_DISPLAY_MESSAGE;
+            continue;
+          }
+
+          /* if the root message was retrieved, move to it */
+          e = mutt_hash_find(Context->mailbox->id_hash, buf);
+          if (e)
+            menu->current = e->vnum;
+          else
+          {
             /* try to restore old position */
-            else
+            for (int i = 0; i < Context->mailbox->msg_count; i++)
             {
-              for (int i = 0; i < Context->mailbox->msg_count; i++)
+              e = Context->mailbox->emails[i];
+              if (!e)
+                break;
+              if (e->index == oldindex)
               {
-                e = Context->mailbox->emails[i];
-                if (!e)
-                  break;
-                if (e->index == oldindex)
-                {
-                  menu->current = e->vnum;
-                  /* as an added courtesy, recenter the menu
-                   * with the current entry at the middle of the screen */
-                  menu_check_recenter(menu);
-                  menu_current_middle(menu);
-                }
+                menu->current = e->vnum;
+                /* as an added courtesy, recenter the menu
+                  * with the current entry at the middle of the screen */
+                menu_check_recenter(menu);
+                menu_current_middle(menu);
               }
             }
-            menu->redraw = REDRAW_FULL;
           }
-          else if (rc >= 0)
+          menu->redraw = REDRAW_FULL;
+        }
+        else if (rc >= 0)
+        {
+          mutt_error(_("No deleted messages found in the thread"));
+          /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
+            * update the index */
+          if (in_pager)
           {
-            mutt_error(_("No deleted messages found in the thread"));
-            /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
-             * update the index */
-            if (in_pager)
-            {
-              op = OP_DISPLAY_MESSAGE;
-              continue;
-            }
+            op = OP_DISPLAY_MESSAGE;
+            continue;
           }
         }
         break;
+      }
 #endif
 
       case OP_JUMP:
