@@ -1905,6 +1905,31 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
 }
 
 /**
+ * imap_mbox_select - Select a Mailbox
+ * @param m Mailbox
+ */
+static void imap_mbox_select(struct Mailbox *m)
+{
+  struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  const char *condstore = NULL;
+#ifdef USE_HCACHE
+  if ((adata->capabilities & IMAP_CAP_CONDSTORE) && C_ImapCondstore)
+    condstore = " (CONDSTORE)";
+  else
+#endif
+    condstore = "";
+
+  char buf[PATH_MAX];
+  snprintf(buf, sizeof(buf), "%s %s%s", m->readonly ? "EXAMINE" : "SELECT",
+           mdata->munge_name, condstore);
+
+  adata->state = IMAP_SELECTED;
+
+  imap_cmd_start(adata, buf);
+}
+
+/**
  * imap_login -  Open an IMAP connection
  * @param adata Imap Account data
  * @retval  0 Success
@@ -1919,7 +1944,7 @@ int imap_login(struct ImapAccountData *adata)
 
   if (adata->state == IMAP_DISCONNECTED)
   {
-    mutt_buffer_reset(&adata->cmdbuf);  // purge outstanding queued commands
+    mutt_buffer_reset(&adata->cmdbuf); // purge outstanding queued commands
     imap_open_connection(adata);
   }
   if (adata->state == IMAP_CONNECTED)
@@ -1959,6 +1984,12 @@ int imap_login(struct ImapAccountData *adata)
 
     /* we may need the root delimiter before we open a mailbox */
     imap_exec(adata, NULL, IMAP_CMD_NO_FLAGS);
+
+    /* select the mailbox that used to be open before disconnect */
+    if (adata->mailbox)
+    {
+      imap_mbox_select(adata->mailbox);
+    }
   }
 
   if (adata->state < IMAP_AUTHENTICATED)
@@ -1978,7 +2009,6 @@ static int imap_mbox_open(struct Mailbox *m)
   char buf[PATH_MAX];
   int count = 0;
   int rc;
-  const char *condstore = NULL;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -2015,19 +2045,7 @@ static int imap_mbox_open(struct Mailbox *m)
   if (C_ImapCheckSubscribed)
     imap_exec(adata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
 
-#ifdef USE_HCACHE
-  if ((adata->capabilities & IMAP_CAP_CONDSTORE) && C_ImapCondstore)
-    condstore = " (CONDSTORE)";
-  else
-#endif
-    condstore = "";
-
-  snprintf(buf, sizeof(buf), "%s %s%s", m->readonly ? "EXAMINE" : "SELECT",
-           mdata->munge_name, condstore);
-
-  adata->state = IMAP_SELECTED;
-
-  imap_cmd_start(adata, buf);
+  imap_mbox_select(m);
 
   do
   {
