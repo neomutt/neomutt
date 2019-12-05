@@ -401,22 +401,3 @@ int el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bo
 
   return count;
 }
-
-/**
- * el_add_email - Get a list of the selected Emails
- * @param e  Current Email
- * @param el EmailList to add to
- * @retval  0 Success
- * @retval -1 Error
- */
-int el_add_email(struct EmailList *el, struct Email *e)
-{
-  if (!el || !e)
-    return -1;
-
-  struct EmailNode *en = mutt_mem_calloc(1, sizeof(*en));
-  en->email = e;
-  STAILQ_INSERT_TAIL(el, en, entries);
-
-  return 0;
-}

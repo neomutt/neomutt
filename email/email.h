@@ -142,6 +142,7 @@ void          email_free      (struct Email **ptr);
 struct Email *email_new       (void);
 size_t        email_size      (const struct Email *e);
 
-void emaillist_clear(struct EmailList *el);
+int  emaillist_add_email(struct EmailList *el, struct Email *e);
+void emaillist_clear    (struct EmailList *el);
 
 #endif /* MUTT_EMAIL_EMAIL_H */
