@@ -1147,6 +1147,9 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
  */
 int mutt_parent_message(struct Context *ctx, struct Email *e, bool find_root)
 {
+  if (!ctx || !e)
+    return -1;
+
   struct MuttThread *thread = NULL;
   struct Email *e_parent = NULL;
 

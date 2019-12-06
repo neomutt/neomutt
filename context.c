@@ -403,20 +403,26 @@ int el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bo
 }
 
 /**
- * el_add_email - Get a list of the selected Emails
- * @param e  Current Email
- * @param el EmailList to add to
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_get_virt_email - Get a virtual Email
+ * @param m    Mailbox
+ * @param vnum Virtual index number
+ * @retval ptr  Email
+ * @retval NULL No Email selected, or bad index values
+ *
+ * This safely gets the result of the following:
+ * - `mailbox->emails[mailbox->v2r[vnum]]`
  */
-int el_add_email(struct EmailList *el, struct Email *e)
+struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
 {
-  if (!el || !e)
-    return -1;
+  if (!m || !m->emails || !m->v2r)
+    return NULL;
 
-  struct EmailNode *en = mutt_mem_calloc(1, sizeof(*en));
-  en->email = e;
-  STAILQ_INSERT_TAIL(el, en, entries);
+  if ((vnum < 0) || (vnum >= m->vcount))
+    return NULL;
 
-  return 0;
+  int inum = m->v2r[vnum];
+  if ((inum < 0) || (inum >= m->msg_count))
+    return NULL;
+
+  return m->emails[inum];
 }

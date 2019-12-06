@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "core/lib.h"
 
 struct Address;
 struct Body;
@@ -148,4 +149,19 @@ int mx_msg_padding_size(struct Mailbox *m)
 const char *myvar_get(const char *var)
 {
   return g_myvar;
+}
+
+struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
+{
+  if (!m || !m->emails || !m->v2r)
+    return NULL;
+
+  if ((vnum < 0) || (vnum >= m->vcount))
+    return NULL;
+
+  int inum = m->v2r[vnum];
+  if ((inum < 0) || (inum >= m->msg_count))
+    return NULL;
+
+  return m->emails[inum];
 }

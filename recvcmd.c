@@ -598,7 +598,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
   /* now that we have the template, send it. */
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_email(&el, e_parent);
+  emaillist_add_email(&el, e_parent);
   ci_send_message(SEND_NO_FLAGS, e_tmp, mutt_b2s(tmpbody), NULL, &el);
   emaillist_clear(&el);
   mutt_buffer_pool_release(&tmpbody);
@@ -733,7 +733,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
     email_free(&e_tmp);
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_email(&el, e_cur);
+  emaillist_add_email(&el, e_cur);
   ci_send_message(flags, e_tmp,
                   mutt_buffer_is_empty(tmpbody) ? NULL : mutt_b2s(tmpbody), NULL, &el);
   emaillist_clear(&el);
@@ -1045,7 +1045,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   mutt_file_fclose(&fp_tmp);
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_email(&el, e_parent ? e_parent : (e_cur ? e_cur->email : NULL));
+  emaillist_add_email(&el, e_parent ? e_parent : (e_cur ? e_cur->email : NULL));
   if (ci_send_message(flags, e_tmp, mutt_b2s(tmpbody), NULL, &el) == 0)
   {
     mutt_set_flag(Context->mailbox, e, MUTT_REPLIED, true);
