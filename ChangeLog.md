@@ -1,3 +1,24 @@
+2019-12-07  Richard Russon  <rich@flatcap.org>
+* Features
+  - compose: draw status bar with highlights
+* Bug Fixes
+  - crash opening notmuch mailbox
+  - crash in mutt_autocrypt_ui_recommendation
+  - Avoid negative allocation
+  - Mbox new mail
+  - Setting of DT_MAILBOX type variables from Lua
+  - imap: empty cmdbuf before connecting
+  - imap: select the mailbox on reconnect
+  - compose: fix attach message
+* Build
+  - make files conditional
+  - add gpgme check for RHEL6
+* Code
+  - enum-ify log levels
+  - fix function prototypes
+  - refactor virtual email lookups
+  - factor out global Context
+
 2019-11-29  Richard Russon  <rich@flatcap.org>
 * Features
   - Add raw mailsize expando (%cr)
