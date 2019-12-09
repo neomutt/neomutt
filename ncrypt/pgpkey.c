@@ -347,7 +347,7 @@ static void pgp_make_entry(char *buf, size_t buflen, struct Menu *menu, int line
   entry.uid = key_table[line];
   entry.num = line + 1;
 
-  mutt_expando_format(buf, buflen, 0, menu->indexwin->cols, NONULL(C_PgpEntryFormat),
+  mutt_expando_format(buf, buflen, 0, menu->win_index->cols, NONULL(C_PgpEntryFormat),
                       pgp_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 

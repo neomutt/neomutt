@@ -110,7 +110,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
  */
 static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  mutt_expando_format(buf, buflen, 0, menu->indexwin->cols,
+  mutt_expando_format(buf, buflen, 0, menu->win_index->cols,
                       NONULL(C_AliasFormat), alias_format_str,
                       (unsigned long) ((struct Alias **) menu->data)[line],
                       MUTT_FORMAT_ARROWCURSOR);

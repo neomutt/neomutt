@@ -326,7 +326,7 @@ static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
   struct QueryEntry *entry = &((struct QueryEntry *) menu->data)[line];
 
   entry->data->num = line;
-  mutt_expando_format(buf, buflen, 0, menu->indexwin->cols, NONULL(C_QueryFormat),
+  mutt_expando_format(buf, buflen, 0, menu->win_index->cols, NONULL(C_QueryFormat),
                       query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 

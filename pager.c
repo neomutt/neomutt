@@ -2041,8 +2041,8 @@ static void pager_custom_redraw(struct Menu *pager_menu)
         rd->menu->menu_color = index_color;
         rd->menu->max = Context ? Context->mailbox->vcount : 0;
         rd->menu->current = rd->extra->email->vnum;
-        rd->menu->indexwin = rd->index_window;
-        rd->menu->statuswin = rd->index_status_window;
+        rd->menu->win_index = rd->index_window;
+        rd->menu->win_ibar = rd->index_status_window;
       }
 
       mutt_curses_set_color(MT_COLOR_NORMAL);

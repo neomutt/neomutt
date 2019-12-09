@@ -515,7 +515,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
 static void mix_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Remailer **type2_list = menu->data;
-  mutt_expando_format(buf, buflen, 0, menu->indexwin->cols,
+  mutt_expando_format(buf, buflen, 0, menu->win_index->cols,
                       NONULL(C_MixEntryFormat), mix_format_str,
                       (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
@@ -625,14 +625,14 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
 
     if (c_redraw)
     {
-      mix_redraw_head(menu->indexwin, chain);
-      mix_redraw_chain(menu->indexwin, type2_list, coords, chain, c_cur);
+      mix_redraw_head(menu->win_index, chain);
+      mix_redraw_chain(menu->win_index, type2_list, coords, chain, c_cur);
       c_redraw = false;
     }
     else if (c_cur != c_old)
     {
-      mix_redraw_ce(menu->indexwin, type2_list, coords, chain, c_old, false);
-      mix_redraw_ce(menu->indexwin, type2_list, coords, chain, c_cur, true);
+      mix_redraw_ce(menu->win_index, type2_list, coords, chain, c_old, false);
+      mix_redraw_ce(menu->win_index, type2_list, coords, chain, c_cur, true);
     }
 
     c_old = c_cur;
@@ -643,9 +643,9 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
       case OP_REDRAW:
       {
         menu_redraw_status(menu);
-        mix_redraw_head(menu->indexwin, chain);
-        mix_screen_coordinates(menu->indexwin, type2_list, &coords, chain, 0);
-        mix_redraw_chain(menu->indexwin, type2_list, coords, chain, c_cur);
+        mix_redraw_head(menu->win_index, chain);
+        mix_screen_coordinates(menu->win_index, type2_list, &coords, chain, 0);
+        mix_redraw_chain(menu->win_index, type2_list, coords, chain, c_cur);
         menu->pagelen = MIX_VOFFSET - 1;
         break;
       }
@@ -663,7 +663,7 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
         {
           chain->cl++;
           chain->ch[0] = menu->current;
-          mix_screen_coordinates(menu->indexwin, type2_list, &coords, chain, c_cur);
+          mix_screen_coordinates(menu->win_index, type2_list, &coords, chain, c_cur);
           c_redraw = true;
         }
 
@@ -697,7 +697,7 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
             chain->ch[i] = chain->ch[i - 1];
 
           chain->ch[c_cur] = menu->current;
-          mix_screen_coordinates(menu->indexwin, type2_list, &coords, chain, c_cur);
+          mix_screen_coordinates(menu->win_index, type2_list, &coords, chain, c_cur);
           c_redraw = true;
         }
         else
@@ -721,7 +721,7 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
           if ((c_cur == chain->cl) && c_cur)
             c_cur--;
 
-          mix_screen_coordinates(menu->indexwin, type2_list, &coords, chain, c_cur);
+          mix_screen_coordinates(menu->win_index, type2_list, &coords, chain, c_cur);
           c_redraw = true;
         }
         else

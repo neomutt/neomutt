@@ -894,7 +894,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
     }
   }
 
-  mutt_make_string_flags(buf, buflen, menu->indexwin->cols, NONULL(C_IndexFormat),
+  mutt_make_string_flags(buf, buflen, menu->win_index->cols, NONULL(C_IndexFormat),
                          Context, Context->mailbox, e, flags);
 }
 
@@ -1091,9 +1091,9 @@ static void index_custom_redraw(struct Menu *menu)
   {
     char buf[1024];
     menu_status_line(buf, sizeof(buf), menu, NONULL(C_StatusFormat));
-    mutt_window_move(menu->statuswin, 0, 0);
+    mutt_window_move(menu->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
-    mutt_draw_statusline(menu->statuswin->cols, buf, sizeof(buf));
+    mutt_draw_statusline(menu->win_ibar->cols, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_NORMAL);
     menu->redraw &= ~REDRAW_STATUS;
     if (C_TsEnabled && TsSupported)
@@ -1310,13 +1310,13 @@ int mutt_index_menu(void)
         menu->oldcurrent = -1;
 
       if (C_ArrowCursor)
-        mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset, 2);
+        mutt_window_move(menu->win_index, menu->current - menu->top + menu->offset, 2);
       else if (C_BrailleFriendly)
-        mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset, 0);
+        mutt_window_move(menu->win_index, menu->current - menu->top + menu->offset, 0);
       else
       {
-        mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset,
-                         menu->indexwin->cols - 1);
+        mutt_window_move(menu->win_index, menu->current - menu->top + menu->offset,
+                         menu->win_index->cols - 1);
       }
       mutt_refresh();
 

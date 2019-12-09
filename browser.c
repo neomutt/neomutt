@@ -957,14 +957,14 @@ static void folder_make_entry(char *buf, size_t buflen, struct Menu *menu, int l
 #ifdef USE_NNTP
   if (OptNews)
   {
-    mutt_expando_format(buf, buflen, 0, menu->indexwin->cols,
+    mutt_expando_format(buf, buflen, 0, menu->win_index->cols,
                         NONULL(C_GroupIndexFormat), group_index_format_str,
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
   else
 #endif
   {
-    mutt_expando_format(buf, buflen, 0, menu->indexwin->cols,
+    mutt_expando_format(buf, buflen, 0, menu->win_index->cols,
                         NONULL(C_FolderFormat), folder_format_str,
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
@@ -1985,7 +1985,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           struct Body *b = mutt_make_file_attach(buf2);
           if (b)
           {
-            mutt_view_attachment(NULL, b, MUTT_VA_REGULAR, NULL, NULL, menu->indexwin);
+            mutt_view_attachment(NULL, b, MUTT_VA_REGULAR, NULL, NULL, menu->win_index);
             mutt_body_free(&b);
             menu->redraw = REDRAW_FULL;
           }

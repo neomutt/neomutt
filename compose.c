@@ -317,7 +317,7 @@ static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line
 {
   struct AttachCtx *actx = menu->data;
 
-  mutt_expando_format(buf, buflen, 0, menu->indexwin->cols, NONULL(C_AttachFormat),
+  mutt_expando_format(buf, buflen, 0, menu->win_index->cols, NONULL(C_AttachFormat),
                       attach_format_str, (unsigned long) (actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
@@ -902,7 +902,7 @@ static void compose_custom_redraw(struct Menu *menu)
 
     draw_envelope(rd);
     menu->offset = HDR_ATTACH;
-    menu->pagelen = menu->indexwin->rows - HDR_ATTACH;
+    menu->pagelen = menu->win_index->rows - HDR_ATTACH;
   }
 
   menu_check_recenter(menu);
@@ -910,11 +910,11 @@ static void compose_custom_redraw(struct Menu *menu)
   if (menu->redraw & REDRAW_STATUS)
   {
     char buf[1024];
-    compose_status_line(buf, sizeof(buf), 0, menu->statuswin->cols, menu,
+    compose_status_line(buf, sizeof(buf), 0, menu->win_ibar->cols, menu,
                         NONULL(C_ComposeFormat));
-    mutt_window_move(menu->statuswin, 0, 0);
+    mutt_window_move(menu->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
-    mutt_draw_statusline(menu->statuswin->cols, buf, sizeof(buf));
+    mutt_draw_statusline(menu->win_ibar->cols, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_NORMAL);
     menu->redraw &= ~REDRAW_STATUS;
   }
@@ -1189,11 +1189,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), 0) == 0)
         {
           mutt_str_replace(&e->env->newsgroups, buf);
-          mutt_window_move(menu->indexwin, HDR_TO, HDR_XOFFSET);
+          mutt_window_move(menu->win_index, HDR_TO, HDR_XOFFSET);
           if (e->env->newsgroups)
             mutt_paddstr(W, e->env->newsgroups);
           else
-            mutt_window_clrtoeol(menu->indexwin);
+            mutt_window_clrtoeol(menu->win_index);
         }
         break;
 
@@ -1207,11 +1207,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) == 0)
         {
           mutt_str_replace(&e->env->followup_to, buf);
-          mutt_window_move(menu->indexwin, HDR_CC, HDR_XOFFSET);
+          mutt_window_move(menu->win_index, HDR_CC, HDR_XOFFSET);
           if (e->env->followup_to)
             mutt_paddstr(W, e->env->followup_to);
           else
-            mutt_window_clrtoeol(menu->indexwin);
+            mutt_window_clrtoeol(menu->win_index);
         }
         break;
 
@@ -1225,11 +1225,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) == 0)
         {
           mutt_str_replace(&e->env->x_comment_to, buf);
-          mutt_window_move(menu->indexwin, HDR_BCC, HDR_XOFFSET);
+          mutt_window_move(menu->win_index, HDR_BCC, HDR_XOFFSET);
           if (e->env->x_comment_to)
             mutt_paddstr(W, e->env->x_comment_to);
           else
-            mutt_window_clrtoeol(menu->indexwin);
+            mutt_window_clrtoeol(menu->win_index);
         }
         break;
 #endif
@@ -1242,11 +1242,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) == 0)
         {
           mutt_str_replace(&e->env->subject, buf);
-          mutt_window_move(menu->indexwin, HDR_SUBJECT, HDR_XOFFSET);
+          mutt_window_move(menu->win_index, HDR_SUBJECT, HDR_XOFFSET);
           if (e->env->subject)
             mutt_paddstr(W, e->env->subject);
           else
-            mutt_window_clrtoeol(menu->indexwin);
+            mutt_window_clrtoeol(menu->win_index);
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -1262,7 +1262,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         {
           mutt_buffer_copy(fcc, &fname);
           mutt_buffer_pretty_mailbox(fcc);
-          mutt_window_move(menu->indexwin, HDR_FCC, HDR_XOFFSET);
+          mutt_window_move(menu->win_index, HDR_FCC, HDR_XOFFSET);
           mutt_paddstr(W, mutt_b2s(fcc));
           fcc_set = true;
         }
@@ -2209,7 +2209,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:
-        mix_make_chain(menu->indexwin, &e->chain, menu->indexwin->cols);
+        mix_make_chain(menu->win_index, &e->chain, menu->win_index->cols);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 #endif
