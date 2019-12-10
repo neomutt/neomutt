@@ -102,10 +102,11 @@ struct CryptModuleSpecs
   /**
    * sign_message - Cryptographically sign the Body of a message
    * @param a Body of the message
+   * @param from From line
    * @retval ptr  New encrypted Body
    * @retval NULL Error
    */
-  struct Body *(*sign_message)(struct Body *a);
+  struct Body *(*sign_message)(struct Body *a, const struct AddressList *from);
   /**
    * verify_one - Check a signed MIME part against a signature
    * @param sigbdy Body of the signed mail

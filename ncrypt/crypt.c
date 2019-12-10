@@ -315,7 +315,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   {
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (security & APPLICATION_SMIME))
     {
-      tmp_pbody = crypt_smime_sign_message(e->content);
+      tmp_pbody = crypt_smime_sign_message(e->content, &e->env->from);
       if (!tmp_pbody)
         goto bail;
       pbody = tmp_pbody;
@@ -325,7 +325,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
     if (((WithCrypto & APPLICATION_PGP) != 0) && (security & APPLICATION_PGP) &&
         (!(security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) || C_PgpRetainableSigs))
     {
-      tmp_pbody = crypt_pgp_sign_message(e->content);
+      tmp_pbody = crypt_pgp_sign_message(e->content, &e->env->from);
       if (!tmp_pbody)
         goto bail;
 

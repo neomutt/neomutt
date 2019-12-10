@@ -1709,7 +1709,7 @@ static char *openssl_md_to_smime_micalg(char *md)
 /**
  * smime_class_sign_message - Implements CryptModuleSpecs::sign_message()
  */
-struct Body *smime_class_sign_message(struct Body *a)
+struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *from)
 {
   struct Body *t = NULL;
   struct Body *retval = NULL;

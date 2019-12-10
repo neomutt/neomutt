@@ -318,10 +318,10 @@ char *crypt_pgp_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 /**
  * crypt_pgp_sign_message - Wrapper for CryptModuleSpecs::sign_message()
  */
-struct Body *crypt_pgp_sign_message(struct Body *a)
+struct Body *crypt_pgp_sign_message(struct Body *a, const struct AddressList *from)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, sign_message))
-    return CRYPT_MOD_CALL(PGP, sign_message)(a);
+    return CRYPT_MOD_CALL(PGP, sign_message)(a, from);
 
   return NULL;
 }
@@ -478,10 +478,10 @@ char *crypt_smime_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 /**
  * crypt_smime_sign_message - Wrapper for CryptModuleSpecs::sign_message()
  */
-struct Body *crypt_smime_sign_message(struct Body *a)
+struct Body *crypt_smime_sign_message(struct Body *a, const struct AddressList *from)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, sign_message))
-    return CRYPT_MOD_CALL(SMIME, sign_message)(a);
+    return CRYPT_MOD_CALL(SMIME, sign_message)(a, from);
 
   return NULL;
 }

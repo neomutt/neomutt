@@ -1291,7 +1291,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
 /**
  * pgp_class_sign_message - Implements CryptModuleSpecs::sign_message()
  */
-struct Body *pgp_class_sign_message(struct Body *a)
+struct Body *pgp_class_sign_message(struct Body *a, const struct AddressList *from)
 {
   struct Body *t = NULL, *rv = NULL;
   char buf[1024];
