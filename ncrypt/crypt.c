@@ -365,7 +365,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (security & APPLICATION_PGP))
     {
-      pbody = crypt_pgp_encrypt_message(e, tmp_pgp_pbody, keylist, sign);
+      pbody = crypt_pgp_encrypt_message(e, tmp_pgp_pbody, keylist, sign, &e->env->from);
       if (!pbody)
       {
         /* did we perform a retainable signature? */

@@ -1543,7 +1543,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
  * @warning "a" is no longer freed in this routine, you need to free it later.
  * This is necessary for $fcc_attach.
  */
-struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
+struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign, const struct AddressList *from)
 {
   char buf[1024];
   FILE *fp_pgp_in = NULL, *fp_tmp = NULL;

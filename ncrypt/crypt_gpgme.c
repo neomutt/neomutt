@@ -1288,10 +1288,12 @@ static gpgme_error_t set_pka_sig_notation(gpgme_ctx_t ctx)
  * @param keylist         List of keys to encrypt to
  * @param use_smime       If true, use SMIME
  * @param combined_signed If true, sign and encrypt the message (PGP only)
+ * @param from            The From header line
  * @retval ptr Name of temporary file containing encrypted text
  */
 static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist,
-                                  bool use_smime, bool combined_signed)
+                                  bool use_smime, bool combined_signed,
+                                  const struct AddressList *from)
 {
   gpgme_error_t err;
   gpgme_ctx_t ctx = NULL;
@@ -1320,7 +1322,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist,
 
   if (combined_signed)
   {
-    if (set_signer(ctx, NULL, use_smime))
+    if (set_signer(ctx, from, use_smime))
       goto cleanup;
 
     if (C_CryptUsePka)
@@ -1569,7 +1571,8 @@ struct Body *smime_gpgme_sign_message(struct Body *a, const struct AddressList *
 /**
  * pgp_gpgme_encrypt_message - Implements CryptModuleSpecs::pgp_encrypt_message()
  */
-struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign)
+struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign,
+                                       const struct AddressList *from)
 {
   if (sign)
     crypt_convert_to_7bit(a);
@@ -1577,7 +1580,7 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign)
   if (!plaintext)
     return NULL;
 
-  char *outfile = encrypt_gpgme_object(plaintext, keylist, false, sign);
+  char *outfile = encrypt_gpgme_object(plaintext, keylist, false, sign, from);
   gpgme_data_release(plaintext);
   if (!outfile)
     return NULL;
@@ -1623,7 +1626,7 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
   if (!plaintext)
     return NULL;
 
-  char *outfile = encrypt_gpgme_object(plaintext, keylist, true, false);
+  char *outfile = encrypt_gpgme_object(plaintext, keylist, true, false, NULL);
   gpgme_data_release(plaintext);
   if (!outfile)
     return NULL;

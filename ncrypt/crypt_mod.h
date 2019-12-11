@@ -133,12 +133,14 @@ struct CryptModuleSpecs
    * @param a       Body of email to encrypt
    * @param keylist List of keys, or fingerprints (space separated)
    * @param sign    If true, sign the message too
+   * @param from    From line, to choose the key to sign
    * @retval ptr  Encrypted Body
    * @retval NULL Error
    *
    * Encrypt the mail body to all the given keys.
    */
-  struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, bool sign);
+  struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, bool sign,
+                                     const struct AddressList *from);
   /**
    * pgp_make_key_attachment - Generate a public key attachment
    * @retval ptr  New Body containing the attachment

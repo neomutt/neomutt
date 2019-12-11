@@ -40,7 +40,7 @@ int          pgp_gpgme_application_handler(struct Body *m, struct State *s);
 int          pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one);
 int          pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
 int          pgp_gpgme_encrypted_handler(struct Body *a, struct State *s);
-struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign);
+struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign, const struct AddressList *from);
 char *       pgp_gpgme_find_keys(struct AddressList *addrlist, bool oppenc_mode);
 void         pgp_gpgme_init(void);
 void         pgp_gpgme_invoke_import(const char *fname);
