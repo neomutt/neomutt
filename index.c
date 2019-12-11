@@ -2504,10 +2504,10 @@ int mutt_index_menu(void)
           mutt_check_traditional_pgp(&el, &menu->redraw);
           emaillist_clear(&el);
         }
-        struct Email *e = get_cur_email(Context, menu);
-        if (!e)
+        e_cur = get_cur_email(Context, menu);
+        if (!e_cur)
           break;
-        int hint = e->index;
+        int hint = e_cur->index;
 
         op = mutt_display_message(MuttIndexWindow, Context->mailbox, e_cur);
         if (op < 0)
