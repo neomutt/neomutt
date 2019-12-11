@@ -2100,7 +2100,8 @@ int mutt_index_menu(void)
         struct Email *e_cur = get_cur_email(Context, menu);
         if (Context->mailbox->magic != MUTT_NOTMUCH)
         {
-          if (!e_cur || !e_cur->env || !e_cur->env->message_id)
+          if ((Context->mailbox->magic != MUTT_MH && Context->mailbox->magic != MUTT_MAILDIR) ||
+              (!e_cur || !e_cur->env || !e_cur->env->message_id))
           {
             mutt_message(_("No virtual folder and no Message-Id, aborting"));
             break;
