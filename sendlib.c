@@ -1929,9 +1929,8 @@ static int print_val(FILE *fp, const char *pfx, const char *value,
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int fold_one_header(FILE *fp, const char *tag, const char *value,
-                           size_t vlen, const char *pfx, int wraplen,
-                           CopyHeaderFlags chflags)
+static int fold_one_header(FILE *fp, const char *tag, const char *value, size_t vlen,
+                           const char *pfx, int wraplen, CopyHeaderFlags chflags)
 {
   if (!value || !*value || !vlen)
     return 0;
@@ -1942,8 +1941,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
   const bool display = (chflags & CH_DISPLAY);
 
   mutt_debug(LL_DEBUG5, "pfx=[%s], tag=[%s], flags=%d value=[%.*s]\n", pfx, tag,
-             chflags, ((value[vlen - 1] == '\n') ? vlen - 1 : vlen),
-             value);
+             chflags, ((value[vlen - 1] == '\n') ? vlen - 1 : vlen), value);
 
   if (tag && *tag && (fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0))
     return -1;
@@ -1966,7 +1964,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
     const int enc = mutt_str_startswith(buf, "=?", CASE_MATCH);
 
     mutt_debug(LL_DEBUG5, "word=[%s], col=%d, w=%d, next=[0x0%x]\n",
-        (buf[0] == '\n' ? "\\n" : buf), col, w, *next);
+               (buf[0] == '\n' ? "\\n" : buf), col, w, *next);
 
     /* insert a folding \n before the current word's lwsp except for
      * header name, first word on a line (word longer than wrap width)
@@ -2091,8 +2089,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
   const size_t vallen = end - start;
   const bool short_enough = (pfxw + max <= wraplen);
 
-  mutt_debug((short_enough ? LL_DEBUG2 : LL_DEBUG5),
-             "buf[%s%.*s] %s, max width = %d %s %d\n",
+  mutt_debug((short_enough ? LL_DEBUG2 : LL_DEBUG5), "buf[%s%.*s] %s, max width = %d %s %d\n",
              NONULL(pfx), vallen - 1 /* skip newline */, start,
              (short_enough ? "short enough" : "too long"), max,
              (short_enough ? "<=" : ">"), wraplen);
@@ -2131,8 +2128,8 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
         t++;
     }
     valbuf = mutt_str_substr_dup(is_from ? start : t, end);
-    rc = fold_one_header(fp, tagbuf, valbuf, end - (is_from ? start : t),
-                         pfx, wraplen, chflags);
+    rc = fold_one_header(fp, tagbuf, valbuf, end - (is_from ? start : t), pfx,
+                         wraplen, chflags);
   }
 
   FREE(&tagbuf);

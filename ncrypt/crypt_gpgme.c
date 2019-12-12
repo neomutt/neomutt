@@ -1172,7 +1172,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, bool use_smime)
  * @retval true     Address was set as a signer
  * @retval false    Address could not be set as a signer
  */
-static bool set_signer_from_address(gpgme_ctx_t ctx, const char * address, bool for_smime)
+static bool set_signer_from_address(gpgme_ctx_t ctx, const char *address, bool for_smime)
 {
   gpgme_error_t err;
   gpgme_key_t key = NULL, key2 = NULL;
@@ -1230,7 +1230,7 @@ static bool set_signer_from_address(gpgme_ctx_t ctx, const char * address, bool 
  * @retval  0 Success
  * @retval -1 Error
  */
-static int set_signer(gpgme_ctx_t ctx, const struct AddressList * al, bool for_smime)
+static int set_signer(gpgme_ctx_t ctx, const struct AddressList *al, bool for_smime)
 {
   char *signid = NULL;
 
@@ -1290,9 +1290,8 @@ static gpgme_error_t set_pka_sig_notation(gpgme_ctx_t ctx)
  * @param from            The From header line
  * @retval ptr Name of temporary file containing encrypted text
  */
-static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist,
-                                  bool use_smime, bool combined_signed,
-                                  const struct AddressList *from)
+static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool use_smime,
+                                  bool combined_signed, const struct AddressList *from)
 {
   gpgme_error_t err;
   gpgme_ctx_t ctx = NULL;
