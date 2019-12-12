@@ -2422,6 +2422,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             rd.menu->current =
                 MIN(rd.menu->current, MAX(Context->mailbox->msg_count - 1, 0));
             struct Email *e = mutt_get_virt_email(Context->mailbox, rd.menu->current);
+            if (!e)
+              continue;
+
             index_hint = e->index;
 
             bool q = Context->mailbox->quiet;
