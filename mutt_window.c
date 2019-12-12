@@ -52,6 +52,7 @@ struct MuttWindow *mutt_window_new(void)
 {
   struct MuttWindow *win = mutt_mem_calloc(1, sizeof(struct MuttWindow));
 
+  TAILQ_INIT(&win->children);
   return win;
 }
 
@@ -64,7 +65,12 @@ void mutt_window_free(struct MuttWindow **ptr)
   if (!ptr || !*ptr)
     return;
 
-  // struct MuttWindow *win = *ptr;
+  struct MuttWindow *win = *ptr;
+
+  if (win->wdata && win->free_wdata)
+    win->free_wdata(win, &win->wdata); // Custom function to free private data
+
+  mutt_winlist_free(&win->children);
 
   FREE(ptr);
 }
@@ -433,4 +439,23 @@ int mutt_window_printf(const char *fmt, ...)
   va_end(ap);
 
   return rc;
+}
+
+/**
+ * mutt_winlist_free - Free a tree of Windows
+ * @param head WindowList to free
+ */
+void mutt_winlist_free(struct MuttWindowList *head)
+{
+  if (!head)
+    return;
+
+  struct MuttWindow *np = NULL;
+  struct MuttWindow *tmp = NULL;
+  TAILQ_FOREACH_SAFE(np, head, entries, tmp)
+  {
+    TAILQ_REMOVE(head, np, entries);
+    mutt_winlist_free(&np->children);
+    FREE(&np);
+  }
 }

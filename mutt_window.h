@@ -26,6 +26,27 @@
 #include "config.h"
 
 /**
+ * enum MuttWindowOrientation - Which way does the Window expand?
+ */
+enum MuttWindowOrientation
+{
+  MUTT_WIN_ORIENT_VERTICAL = 1, ///< Window uses all available vertical space
+  MUTT_WIN_ORIENT_HORIZONTAL,   ///< Window uses all available horizontal space
+};
+
+/**
+ * enum MuttWindowSize - Control the allocation of Window space
+ */
+enum MuttWindowSize
+{
+  MUTT_WIN_SIZE_FIXED = 1, ///< Window has a fixed size
+  MUTT_WIN_SIZE_MAXIMISE,  ///< Window wants as much space as possible
+  MUTT_WIN_SIZE_MINIMISE,  ///< Window size depends on its children
+};
+
+#define MUTT_WIN_SIZE_UNLIMITED -1 ///< Use as much space as possible
+
+/**
  * struct WindowState - The current, or old, state of a Window
  */
 struct WindowState
@@ -36,6 +57,26 @@ struct WindowState
   short row_offset; ///< Absolute on screen row
   short col_offset; ///< Absolute on screen column
 };
+
+/**
+ * enum WindowType - Type of Window
+ */
+enum WindowType
+{
+  WT_ROOT,        ///< Parent of All Windows
+  WT_ALL_DIALOGS, ///< Container for All Dialogs (nested Windows)
+  WT_DIALOG,      ///< Dialog (nested Windows) displayed to the user
+  WT_CONTAINER,   ///< Invisible shaping container Window
+  WT_HELP_BAR,    ///< Help Bar containing list of useful key bindings
+  WT_MESSAGE,     ///< Window for messages/errors and command entry
+  WT_INDEX,       ///< An Index Window containing a selection list
+  WT_INDEX_BAR,   ///< Index Bar containing status info about the Index
+  WT_PAGER,       ///< Window containing paged free-form text
+  WT_PAGER_BAR,   ///< Pager Bar containing status info about the Pager
+  WT_SIDEBAR,     ///< Side panel containing Accounts or groups of data
+};
+
+TAILQ_HEAD(MuttWindowList, MuttWindow);
 
 /**
  * struct MuttWindow - A division of the screen
@@ -49,6 +90,17 @@ struct MuttWindow
 
   struct WindowState state;          ///< Current state of the Window
   struct WindowState old;            ///< Previous state of the Window
+
+  enum MuttWindowOrientation orient; ///< Which direction the Window will expand
+  enum MuttWindowSize size;          ///< Type of Window, e.g. #MUTT_WIN_SIZE_FIXED
+
+  TAILQ_ENTRY(MuttWindow) entries;   ///< Linked list
+  struct MuttWindow *parent;         ///< Parent Window
+  struct MuttWindowList children;    ///< Children Windows
+
+  enum WindowType type;              ///< Window type, e.g. #WT_SIDEBAR
+  void *wdata;                       ///< Private data
+  void (*free_wdata)(struct MuttWindow *win, void **); ///< Callback function to free private data
 };
 
 extern struct MuttWindow *MuttHelpWindow;
@@ -82,5 +134,7 @@ void mutt_window_move_abs (int row, int col);
 int  mutt_window_mvaddstr (struct MuttWindow *win, int row, int col, const char *str);
 int  mutt_window_mvprintw (struct MuttWindow *win, int row, int col, const char *fmt, ...);
 int  mutt_window_printf   (const char *format, ...);
+
+void mutt_winlist_free       (struct MuttWindowList *head);
 
 #endif /* MUTT_MUTT_WINDOW_H */
