@@ -332,6 +332,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
 
   struct Email *e = NULL;
   int rc = SEND_POSTPONED;
+  int rc_close;
   const char *p = NULL;
   struct Context *ctx_post = NULL;
 
@@ -367,7 +368,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     if (ctx_post == ctx)
       ctx_post = NULL;
     else
-      mx_mbox_close(&ctx_post);
+      mx_fastclose_mailbox(ctx_post->mailbox);
     mutt_error(_("No postponed messages"));
     return -1;
   }
@@ -382,7 +383,15 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     if (ctx_post == ctx)
       ctx_post = NULL;
     else
-      mx_mbox_close(&ctx_post);
+    {
+      /* messages might have been marked for deletion.
+       * try once more on reopen before giving up. */
+      rc_close = mx_mbox_close(&ctx_post);
+      if (rc_close > 0)
+        rc_close = mx_mbox_close(&ctx_post);
+      if (rc_close != 0)
+        mx_fastclose_mailbox(ctx_post->mailbox);
+    }
     return -1;
   }
 
@@ -409,7 +418,13 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   if (ctx_post == ctx)
     ctx_post = NULL;
   else
-    mx_mbox_close(&ctx_post);
+  {
+    rc_close = mx_mbox_close(&ctx_post);
+    if (rc_close > 0)
+      rc_close = mx_mbox_close(&ctx_post);
+    if (rc_close != 0)
+      mx_fastclose_mailbox(ctx_post->mailbox);
+  }
   C_Delete = opt_delete;
 
   struct ListNode *np = NULL, *tmp = NULL;
