@@ -57,7 +57,7 @@ struct MuttWindow *mutt_window_new(void)
 }
 
 /**
- * mutt_window_free - Free a Window
+ * mutt_window_free - Free a Window and its children
  * @param ptr Window to free
  */
 void mutt_window_free(struct MuttWindow **ptr)
@@ -458,4 +458,69 @@ void mutt_winlist_free(struct MuttWindowList *head)
     mutt_winlist_free(&np->children);
     FREE(&np);
   }
+}
+
+/**
+ * mutt_window_is_visible - Is the Window visible?
+ * @param win Window
+ * @retval true If the Window is visible
+ *
+ * For a Window to be visible, *it* must be visible and it's parent and
+ * grandparent, etc.
+ */
+bool mutt_window_is_visible(struct MuttWindow *win)
+{
+  if (!win)
+    return false;
+
+  for (; win; win = win->parent)
+  {
+    if (!win->state.visible)
+      return false;
+  }
+
+  return true;
+}
+
+/**
+ * mutt_window_dialog - Find the parent Dialog of a Window
+ * @param win Window
+ * @retval ptr Dialog
+ *
+ * Windows may be nested under a MuttWindow of type #WT_DIALOG.
+ */
+struct MuttWindow *mutt_window_dialog(struct MuttWindow *win)
+{
+  if (!win)
+    return NULL;
+  if (win->type == WT_DIALOG)
+    return win;
+
+  return mutt_window_dialog(win->parent);
+}
+
+/**
+ * mutt_window_find - Find a Window of a given type
+ * @param root Window to start searching
+ * @param type Window type to find, e.g. #WT_INDEX_BAR
+ * @retval ptr  Matching Window
+ * @retval NULL No match
+ */
+struct MuttWindow *mutt_window_find(struct MuttWindow *root, enum WindowType type)
+{
+  if (!root)
+    return NULL;
+  if (root->type == type)
+    return root;
+
+  struct MuttWindow *np = NULL;
+  struct MuttWindow *match = NULL;
+  TAILQ_FOREACH(np, &root->children, entries)
+  {
+    match = mutt_window_find(np, type);
+    if (match)
+      return match;
+  }
+
+  return NULL;
 }

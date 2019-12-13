@@ -112,6 +112,7 @@ extern struct MuttWindow *MuttSidebarWindow;
 extern struct MuttWindow *MuttStatusWindow;
 
 // Functions that deal with the Window
+void               mutt_window_add_child          (struct MuttWindow *parent, struct MuttWindow *child);
 void               mutt_window_copy_size          (const struct MuttWindow *win_src, struct MuttWindow *win_dst);
 void               mutt_window_free               (struct MuttWindow **ptr);
 void               mutt_window_free_all           (void);
@@ -134,6 +135,11 @@ void mutt_window_move_abs (int row, int col);
 int  mutt_window_mvaddstr (struct MuttWindow *win, int row, int col, const char *str);
 int  mutt_window_mvprintw (struct MuttWindow *win, int row, int col, const char *fmt, ...);
 int  mutt_window_printf   (const char *format, ...);
+bool mutt_window_is_visible(struct MuttWindow *win);
+
+void mutt_winlist_free       (struct MuttWindowList *head);
+struct MuttWindow *mutt_window_find(struct MuttWindow *root, enum WindowType type);
+struct MuttWindow *mutt_window_dialog(struct MuttWindow *win);
 
 void mutt_winlist_free       (struct MuttWindowList *head);
 
