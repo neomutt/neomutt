@@ -3060,7 +3060,11 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
           state_puts(s, errbuf);
         }
         else
-        { /* Decryption/Verification succeeded */
+        {
+          /* Decryption/Verification succeeded */
+
+          mutt_message(_("PGP message successfully decrypted"));
+
           bool sig_stat = false;
           char *tmpfname = NULL;
 
