@@ -1922,6 +1922,7 @@ static int print_val(FILE *fp, const char *pfx, const char *value,
  * @param fp      File to write to
  * @param tag     Header key, e.g. "From"
  * @param value   Header value
+ * @param vlen    Length of the header value string
  * @param pfx     Prefix for header
  * @param wraplen Column to wrap at
  * @param chflags Flags, see #CopyHeaderFlags
@@ -1929,15 +1930,20 @@ static int print_val(FILE *fp, const char *pfx, const char *value,
  * @retval -1 Failure
  */
 static int fold_one_header(FILE *fp, const char *tag, const char *value,
-                           const char *pfx, int wraplen, CopyHeaderFlags chflags)
+                           size_t vlen, const char *pfx, int wraplen,
+                           CopyHeaderFlags chflags)
 {
+  if (!value || !*value || !vlen)
+    return 0;
+
   const char *p = value;
   char buf[8192] = { 0 };
   int first = 1, col = 0, l = 0;
   const bool display = (chflags & CH_DISPLAY);
 
-  mutt_debug(LL_DEBUG5, "pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag,
-             chflags, NONULL(value));
+  mutt_debug(LL_DEBUG5, "pfx=[%s], tag=[%s], flags=%d value=[%.*s]\n", pfx, tag,
+             chflags, ((value[vlen - 1] == '\n') ? vlen - 1 : vlen),
+             value);
 
   if (tag && *tag && (fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0))
     return -1;
@@ -1959,7 +1965,8 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
     const int w = mutt_mb_width(buf, col, display);
     const int enc = mutt_str_startswith(buf, "=?", CASE_MATCH);
 
-    mutt_debug(LL_DEBUG5, "word=[%s], col=%d, w=%d, next=[0x0%x]\n", buf, col, w, *next);
+    mutt_debug(LL_DEBUG5, "word=[%s], col=%d, w=%d, next=[0x0%x]\n",
+        (buf[0] == '\n' ? "\\n" : buf), col, w, *next);
 
     /* insert a folding \n before the current word's lwsp except for
      * header name, first word on a line (word longer than wrap width)
@@ -2003,6 +2010,8 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
       sp++;
     if (sp[0] == '\n')
     {
+      if (sp[1] == '\0')
+        break;
       next = sp;
       col = 0;
     }
@@ -2072,53 +2081,44 @@ static char *unfold_header(char *s)
 static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char *pfx,
                             const char *start, const char *end, CopyHeaderFlags chflags)
 {
-  char *tagbuf = NULL, *valbuf = NULL, *t = NULL;
-  bool is_from = ((end - start) > 5) && mutt_str_startswith(start, "from ", CASE_IGNORE);
+  const char *t = strchr(start, ':');
+  if (!t || (t > end))
+  {
+    mutt_debug(LL_DEBUG1, "#2 warning: header not in 'key: value' format!\n");
+    return 0;
+  }
+
+  const size_t vallen = end - start;
+  const bool short_enough = (pfxw + max <= wraplen);
+
+  mutt_debug((short_enough ? LL_DEBUG2 : LL_DEBUG5),
+             "buf[%s%.*s] %s, max width = %d %s %d\n",
+             NONULL(pfx), vallen - 1 /* skip newline */, start,
+             (short_enough ? "short enough" : "too long"), max,
+             (short_enough ? "<=" : ">"), wraplen);
+
+  int rc = 0;
+  const char *valbuf = NULL, *tagbuf = NULL;
+  const bool is_from = (vallen > 5) && mutt_str_startswith(start, "from ", CASE_IGNORE);
 
   /* only pass through folding machinery if necessary for sending,
    * never wrap From_ headers on sending */
-  if (!(chflags & CH_DISPLAY) && ((pfxw + max <= wraplen) || is_from))
+  if (!(chflags & CH_DISPLAY) && (short_enough || is_from))
   {
-    valbuf = mutt_str_substr_dup(start, end);
-    mutt_debug(LL_DEBUG5, "buf[%s%s] short enough, max width = %d <= %d\n",
-               NONULL(pfx), valbuf, max, wraplen);
     if (pfx && *pfx)
     {
       if (fputs(pfx, fp) == EOF)
       {
-        FREE(&valbuf);
         return -1;
       }
     }
 
-    t = strchr(valbuf, ':');
-    if (!t)
-    {
-      mutt_debug(LL_DEBUG1, "#1 warning: header not in 'key: value' format!\n");
-      FREE(&valbuf);
-      return 0;
-    }
-    if (print_val(fp, pfx, valbuf, chflags, mutt_str_strlen(pfx)) < 0)
-    {
-      FREE(&valbuf);
-      return -1;
-    }
-    FREE(&valbuf);
+    valbuf = mutt_str_substr_dup(start, end);
+    rc = print_val(fp, pfx, valbuf, chflags, mutt_str_strlen(pfx));
   }
   else
   {
-    t = strchr(start, ':');
-    if (!t || (t > end))
-    {
-      mutt_debug(LL_DEBUG1, "#2 warning: header not in 'key: value' format!\n");
-      return 0;
-    }
-    if (is_from)
-    {
-      tagbuf = NULL;
-      valbuf = mutt_str_substr_dup(start, end);
-    }
-    else
+    if (!is_from)
     {
       tagbuf = mutt_str_substr_dup(start, t);
       /* skip over the colon separating the header field name and value */
@@ -2129,21 +2129,15 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
        *       See tickets 3609 and 3716. */
       while ((*t == ' ') || (*t == '\t'))
         t++;
-
-      valbuf = mutt_str_substr_dup(t, end);
     }
-    mutt_debug(LL_DEBUG2, "buf[%s%s] too long, max width = %d > %d\n",
-               NONULL(pfx), NONULL(valbuf), max, wraplen);
-    if (fold_one_header(fp, tagbuf, valbuf, pfx, wraplen, chflags) < 0)
-    {
-      FREE(&valbuf);
-      FREE(&tagbuf);
-      return -1;
-    }
-    FREE(&tagbuf);
-    FREE(&valbuf);
+    valbuf = mutt_str_substr_dup(is_from ? start : t, end);
+    rc = fold_one_header(fp, tagbuf, valbuf, end - (is_from ? start : t),
+                         pfx, wraplen, chflags);
   }
-  return 0;
+
+  FREE(&tagbuf);
+  FREE(&valbuf);
+  return rc;
 }
 
 /**
@@ -2183,10 +2177,11 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   else if (wraplen <= 0)
     wraplen = 78;
 
+  const size_t vlen = mutt_str_strlen(v);
   if (tag)
   {
     /* if header is short enough, simply print it */
-    if (!display && (mutt_strwidth(tag) + 2 + pfxw + mutt_strwidth(v) <= wraplen))
+    if (!display && (mutt_strwidth(tag) + 2 + pfxw + mutt_strnwidth(v, vlen) <= wraplen))
     {
       mutt_debug(LL_DEBUG5, "buf[%s%s: %s] is short enough\n", NONULL(pfx), tag, v);
       if (fprintf(fp, "%s%s: %s\n", NONULL(pfx), tag, v) <= 0)
@@ -2196,7 +2191,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
     }
     else
     {
-      rc = fold_one_header(fp, tag, v, pfx, wraplen, chflags);
+      rc = fold_one_header(fp, tag, v, vlen, pfx, wraplen, chflags);
       goto out;
     }
   }
