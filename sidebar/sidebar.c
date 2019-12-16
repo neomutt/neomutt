@@ -1090,6 +1090,59 @@ void sb_draw(struct MuttWindow *win)
 }
 
 /**
+ * sb_win_init - Initialise and insert the Sidebar Window
+ * @param dlg Index Dialog
+ */
+void sb_win_init(struct MuttWindow *dlg)
+{
+  dlg->orient = MUTT_WIN_ORIENT_HORIZONTAL;
+
+  struct MuttWindow *index_panel = TAILQ_FIRST(&dlg->children);
+  mutt_window_remove_child(dlg, index_panel);
+
+  struct MuttWindow *pager_panel = TAILQ_FIRST(&dlg->children);
+  mutt_window_remove_child(dlg, pager_panel);
+
+  struct MuttWindow *cont_right =
+      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+
+  mutt_window_add_child(cont_right, index_panel);
+  mutt_window_add_child(cont_right, pager_panel);
+
+  struct MuttWindow *win_sidebar =
+      mutt_window_new(WT_SIDEBAR, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
+                      C_SidebarWidth, MUTT_WIN_SIZE_UNLIMITED);
+  win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
+
+  if (C_SidebarOnRight)
+  {
+    mutt_window_add_child(dlg, cont_right);
+    mutt_window_add_child(dlg, win_sidebar);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, win_sidebar);
+    mutt_window_add_child(dlg, cont_right);
+  }
+
+  notify_observer_add(NeoMutt->notify, sb_observer, win_sidebar);
+}
+
+/**
+ * sb_win_shutdown - Clean up the Sidebar's observers
+ * @param dlg Dialog Window
+ */
+void sb_win_shutdown(struct MuttWindow *dlg)
+{
+  struct MuttWindow *win = mutt_window_find(dlg, WT_SIDEBAR);
+  if (!win)
+    return;
+
+  notify_observer_remove(NeoMutt->notify, sb_observer, win);
+}
+
+/**
  * sb_init - Set up the Sidebar
  */
 void sb_init(void)
@@ -1099,6 +1152,9 @@ void sb_init(void)
   // - Commands
   // - Config
   // - Functions
+
+  // Listen for dialog creation events
+  notify_observer_add(NeoMutt->notify, sb_insertion_observer, NULL);
 }
 
 /**
@@ -1106,5 +1162,7 @@ void sb_init(void)
  */
 void sb_shutdown(void)
 {
+  if (NeoMutt)
+    notify_observer_remove(NeoMutt->notify, sb_insertion_observer, NULL);
   mutt_list_free(&SidebarWhitelist);
 }

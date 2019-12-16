@@ -60,6 +60,7 @@ enum DivType
 };
 
 // observer.c
+int sb_insertion_observer(struct NotifyCallback *nc);
 int sb_observer(struct NotifyCallback *nc);
 
 #endif /* MUTT_SIDEBAR_SIDEBAR_PRIVATE_H */

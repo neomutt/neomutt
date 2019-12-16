@@ -4106,21 +4106,6 @@ static struct MuttWindow *create_panel_pager(struct MuttWindow *parent, bool sta
 }
 
 /**
- * create_panel_sidebar - Create the Sidebar Window
- * @param parent Parent Window
- * @retval ptr Window
- */
-static struct MuttWindow *create_panel_sidebar(struct MuttWindow *parent)
-{
-  struct MuttWindow *win_sidebar =
-      mutt_window_new(WT_SIDEBAR, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                      C_SidebarWidth, MUTT_WIN_SIZE_UNLIMITED);
-  win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
-
-  return win_sidebar;
-}
-
-/**
  * index_pager_init - Allocate the Windows for the Index/Pager
  * @retval ptr Dialog containing nested Windows
  */
@@ -4131,27 +4116,8 @@ struct MuttWindow *index_pager_init(void)
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   notify_observer_add(NeoMutt->notify, mutt_dlgindex_observer, dlg);
 
-  struct MuttWindow *win_sidebar = create_panel_sidebar(dlg);
-
-  struct MuttWindow *cont_right =
-      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  if (C_SidebarOnRight)
-  {
-    mutt_window_add_child(dlg, cont_right);
-    mutt_window_add_child(dlg, win_sidebar);
-  }
-  else
-  {
-    mutt_window_add_child(dlg, win_sidebar);
-    mutt_window_add_child(dlg, cont_right);
-  }
-
-  mutt_window_add_child(cont_right, create_panel_index(cont_right, C_StatusOnTop));
-  mutt_window_add_child(cont_right, create_panel_pager(cont_right, C_StatusOnTop));
-
-  notify_observer_add(NeoMutt->notify, sb_observer, win_sidebar);
+  mutt_window_add_child(dlg, create_panel_index(dlg, C_StatusOnTop));
+  mutt_window_add_child(dlg, create_panel_pager(dlg, C_StatusOnTop));
 
   return dlg;
 }
@@ -4162,15 +4128,6 @@ struct MuttWindow *index_pager_init(void)
  */
 void index_pager_shutdown(struct MuttWindow *dlg)
 {
-  if (!dlg)
-    return;
-
-  struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
-  if (!win_sidebar)
-    return;
-
-  notify_observer_remove(NeoMutt->notify, sb_observer, win_sidebar);
-
   notify_observer_remove(NeoMutt->notify, mutt_dlgindex_observer, dlg);
 }
 
