@@ -29,17 +29,23 @@
  * | :------------------ | :------------------------- |
  * | debug/backtrace.c   | @subpage debug_backtrace   |
  * | debug/graphviz.c    | @subpage debug_graphviz    |
+ * | debug/notify.c      | @subpage debug_notify      |
  * | debug/parse_test.c  | @subpage debug_parse       |
  */
 
 #ifndef MUTT_DEBUG_LIB_H
 #define MUTT_DEBUG_LIB_H
 
+struct NotifyCallback;
+
 // Backtrace
 void show_backtrace(void);
 
 // Graphviz
 void dump_graphviz(const char *title);
+
+// Notify
+int debug_notify_observer(struct NotifyCallback *nc);
 
 // Parse Set
 void test_parse_set(void);

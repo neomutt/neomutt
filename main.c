@@ -517,6 +517,10 @@ int main(int argc, char *argv[], char *envp[])
     goto main_curses;
   NeoMutt = neomutt_new(cs);
 
+#ifdef USE_DEBUG_NOTIFY
+  notify_observer_add(NeoMutt->notify, debug_notify_observer, NULL);
+#endif
+
   if (!get_user_info(cs))
     goto main_exit;
 
