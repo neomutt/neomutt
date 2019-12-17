@@ -289,6 +289,12 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
 
     mutt_env_free(&e->content->mime_headers);
     e->content->mime_headers = protected_headers;
+    /* Optional part of the draft RFC, but required by Enigmail */
+    mutt_param_set(&e->content->parameter, "protected-headers", "v1");
+  }
+  else
+  {
+    mutt_param_delete(&e->content->parameter, "protected-headers");
   }
 
   /* A note about e->content->mime_headers.  If postpone or send
