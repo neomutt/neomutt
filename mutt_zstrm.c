@@ -75,6 +75,13 @@ static int mutt_zstrm_close(struct Connection *conn)
              zctx->write.z.total_in, zctx->write.z.total_out,
              (float) zctx->write.z.total_in / (float) zctx->write.z.total_out);
 
+  conn->sockdata   = zctx->next_conn.sockdata;
+  conn->conn_open  = zctx->next_conn.conn_open;
+  conn->conn_close = zctx->next_conn.conn_close;
+  conn->conn_read  = zctx->next_conn.conn_read;
+  conn->conn_write = zctx->next_conn.conn_write;
+  conn->conn_poll  = zctx->next_conn.conn_poll;
+
   inflateEnd(&zctx->read.z);
   deflateEnd(&zctx->write.z);
   FREE(&zctx->read.buf);
