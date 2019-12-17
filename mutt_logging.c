@@ -321,10 +321,12 @@ int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
  */
 int mutt_log_observer(struct NotifyCallback *nc)
 {
-  if (!nc)
+  if (!nc->event_data)
     return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
 
-  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  struct EventConfig *ec = nc->event_data;
 
   if (mutt_str_strcmp(ec->name, "debug_file") == 0)
     mutt_log_set_file(C_DebugFile, true);

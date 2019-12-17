@@ -840,8 +840,8 @@ void imap_expunge_mailbox(struct Mailbox *m)
   imap_hcache_close(mdata);
 #endif
 
-  mailbox_changed(m, MBN_UPDATE);
-  mailbox_changed(m, MBN_RESORT);
+  mailbox_changed(m, NT_MAILBOX_UPDATE);
+  mailbox_changed(m, NT_MAILBOX_RESORT);
 }
 
 /**

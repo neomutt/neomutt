@@ -87,7 +87,7 @@ int log_observer(struct NotifyCallback *nc)
   if (!nc)
     return -1;
 
-  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  struct EventConfig *ec = nc->event_data;
 
   struct Buffer result;
   mutt_buffer_init(&result);

@@ -259,10 +259,10 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   ctx->mailbox = m;
 
   struct EventContext ev_ctx = { ctx };
-  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_OPEN, IP & ev_ctx);
+  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_OPEN, &ev_ctx);
 
   // If the Mailbox is closed, Context->mailbox must be set to NULL
-  notify_observer_add(m->notify, NT_MAILBOX, 0, ctx_mailbox_observer, IP ctx);
+  notify_observer_add(m->notify, ctx_mailbox_observer, ctx);
 
   if ((m->magic == MUTT_UNKNOWN) && (flags & (MUTT_NEWFOLDER | MUTT_APPEND)))
   {
@@ -935,7 +935,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
         m->msg_deleted = 0;
       }
     }
-    mailbox_changed(m, MBN_UNTAG);
+    mailbox_changed(m, NT_MAILBOX_UNTAG);
   }
 
   /* really only for IMAP - imap_sync_mailbox results in a call to
@@ -992,8 +992,8 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
       /* IMAP does this automatically after handling EXPUNGE */
       if (m->magic != MUTT_IMAP)
       {
-        mailbox_changed(m, MBN_UPDATE);
-        mailbox_changed(m, MBN_RESORT);
+        mailbox_changed(m, NT_MAILBOX_UPDATE);
+        mailbox_changed(m, NT_MAILBOX_RESORT);
       }
     }
   }
@@ -1079,7 +1079,7 @@ int mx_mbox_check(struct Mailbox *m, int *index_hint)
 
   int rc = m->mx_ops->mbox_check(m, index_hint);
   if ((rc == MUTT_NEW_MAIL) || (rc == MUTT_REOPENED))
-    mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, NT_MAILBOX_INVALID);
 
   return rc;
 }

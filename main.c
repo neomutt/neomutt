@@ -833,12 +833,12 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST22: neomutt -B
   }
 
-  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_hist_observer, 0);
-  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_log_observer, 0);
-  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_menu_config_observer, 0);
-  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_reply_observer, 0);
+  notify_observer_add(Config->notify, mutt_hist_observer, NULL);
+  notify_observer_add(Config->notify, mutt_log_observer, NULL);
+  notify_observer_add(Config->notify, mutt_menu_config_observer, NULL);
+  notify_observer_add(Config->notify, mutt_reply_observer, NULL);
   if (Colors)
-    notify_observer_add(Colors->notify, NT_COLOR, 0, mutt_menu_color_observer, 0);
+    notify_observer_add(Colors->notify, mutt_menu_color_observer, NULL);
 
   if (sendflags & SEND_POSTPONED)
   {
@@ -1229,7 +1229,7 @@ int main(int argc, char *argv[], char *envp[])
 
     mutt_folder_hook(mutt_b2s(&folder), NULL);
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
-    notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, 0);
+    notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, NULL);
 
     repeat_error = true;
     struct Mailbox *m = mx_path_resolve(mutt_b2s(&folder));
@@ -1247,12 +1247,11 @@ int main(int argc, char *argv[], char *envp[])
       mutt_sb_set_open_mailbox(Context ? Context->mailbox : NULL);
 #endif
       struct MuttWindow *dlg = index_pager_init();
-      notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_dlg_index_observer,
-                          (intptr_t) dlg);
+      notify_observer_add(Config->notify, mutt_dlg_index_observer, dlg);
       dialog_push(dlg);
       mutt_index_menu(dlg);
       dialog_pop();
-      notify_observer_remove(Config->notify, mutt_dlg_index_observer, (intptr_t) dlg);
+      notify_observer_remove(Config->notify, mutt_dlg_index_observer, dlg);
       index_pager_shutdown(dlg);
       mutt_window_free(&dlg);
       ctx_free(&Context);

@@ -913,7 +913,7 @@ static int pop_mbox_check(struct Mailbox *m, int *index_hint)
   int rc = pop_fetch_headers(m);
   pop_clear_cache(adata);
   if (m->msg_count > old_msg_count)
-    mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, NT_MAILBOX_INVALID);
 
   if (rc < 0)
     return -1;

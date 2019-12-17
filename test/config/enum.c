@@ -669,7 +669,7 @@ void config_enum(void)
   if (!cs_register_variables(cs, Vars, 0))
     return;
 
-  notify_observer_add(cs->notify, NT_CONFIG, 0, log_observer, 0);
+  notify_observer_add(cs->notify, log_observer, 0);
 
   set_list(cs);
 

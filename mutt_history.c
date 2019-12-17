@@ -183,10 +183,12 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
  */
 int mutt_hist_observer(struct NotifyCallback *nc)
 {
-  if (!nc || !nc->event)
+  if (!nc->event_data)
     return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
 
-  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  struct EventConfig *ec = nc->event_data;
 
   if (mutt_str_strcmp(ec->name, "history") != 0)
     return 0;

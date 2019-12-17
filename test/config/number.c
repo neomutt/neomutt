@@ -630,7 +630,7 @@ void config_number(void)
     return;
   dont_fail = false;
 
-  notify_observer_add(cs->notify, NT_CONFIG, 0, log_observer, 0);
+  notify_observer_add(cs->notify, log_observer, 0);
 
   set_list(cs);
 

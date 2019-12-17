@@ -56,18 +56,6 @@ enum MailboxType
 };
 
 /**
- * enum MailboxNotification - Notifications about changes to a Mailbox
- */
-enum MailboxNotification
-{
-  MBN_CLOSED = 1, ///< Mailbox was closed
-  MBN_INVALID,    ///< Email list was changed
-  MBN_RESORT,     ///< Email list needs resorting
-  MBN_UPDATE,     ///< Update internal tables
-  MBN_UNTAG,      ///< Clear the 'last-tagged' pointer
-};
-
-/**
  * ACL Rights - These show permission to...
  */
 typedef uint16_t AclFlags;          ///< Flags, e.g. #MUTT_ACL_ADMIN
@@ -175,9 +163,17 @@ enum NotifyMailbox
 {
   NT_MAILBOX_ADD = 1, ///< A new Mailbox has been created
   NT_MAILBOX_REMOVE,  ///< A Mailbox is about to be destroyed
+
+  /* These don't really belong here as they are tied to GUI operations.
+   * Eventually, they'll be eliminated. */
+  NT_MAILBOX_CLOSED,  ///< Mailbox was closed
+  NT_MAILBOX_INVALID, ///< Email list was changed
+  NT_MAILBOX_RESORT,  ///< Email list needs resorting
+  NT_MAILBOX_UPDATE,  ///< Update internal tables
+  NT_MAILBOX_UNTAG,   ///< Clear the 'last-tagged' pointer
 };
 
-void            mailbox_changed   (struct Mailbox *m, enum MailboxNotification action);
+void            mailbox_changed   (struct Mailbox *m, enum NotifyMailbox action);
 struct Mailbox *mailbox_find      (const char *path);
 struct Mailbox *mailbox_find_name (const char *name);
 void            mailbox_free      (struct Mailbox **ptr);

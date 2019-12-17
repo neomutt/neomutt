@@ -159,16 +159,13 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
  */
 int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
 {
-  if (!nc)
+  if (!nc->event_data || !nc->global_data)
     return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
 
-  struct EventConfig *ec = (struct EventConfig *) nc->event;
-  if (!ec)
-    return -1;
-
-  struct MuttWindow *root_win = (struct MuttWindow *) nc->data;
-  if (!root_win)
-    return -1;
+  struct EventConfig *ec = nc->event_data;
+  struct MuttWindow *root_win = nc->global_data;
 
   if (mutt_str_strcmp(ec->name, "help") == 0)
   {
@@ -205,7 +202,7 @@ reflow:
 void mutt_window_free_all(void)
 {
   if (Config)
-    notify_observer_remove(Config->notify, mutt_dlg_rootwin_observer, (intptr_t) RootWindow);
+    notify_observer_remove(Config->notify, mutt_dlg_rootwin_observer, RootWindow);
   MuttDialogWindow = NULL;
   MuttHelpWindow = NULL;
   MuttMessageWindow = NULL;
@@ -268,8 +265,7 @@ void mutt_window_init(void)
   }
 
   mutt_window_add_child(RootWindow, MuttMessageWindow);
-  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_dlg_rootwin_observer,
-                      (intptr_t) RootWindow);
+  notify_observer_add(Config->notify, mutt_dlg_rootwin_observer, RootWindow);
 }
 
 /**

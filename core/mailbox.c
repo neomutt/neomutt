@@ -43,7 +43,7 @@ struct Mailbox *mailbox_new(void)
   struct Mailbox *m = mutt_mem_calloc(1, sizeof(struct Mailbox));
 
   mutt_buffer_init(&m->pathbuf);
-  m->notify = notify_new(m, NT_MAILBOX);
+  m->notify = notify_new();
 
   m->email_max = 25;
   m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
@@ -62,7 +62,7 @@ void mailbox_free(struct Mailbox **ptr)
     return;
 
   struct Mailbox *m = *ptr;
-  mailbox_changed(m, MBN_CLOSED);
+  mailbox_changed(m, NT_MAILBOX_CLOSED);
 
   if (m->mdata && m->free_mdata)
     m->free_mdata(&m->mdata);
@@ -163,12 +163,13 @@ void mailbox_update(struct Mailbox *m)
  * @param m      Mailbox
  * @param action Change to Mailbox
  */
-void mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
+void mailbox_changed(struct Mailbox *m, enum NotifyMailbox action)
 {
   if (!m)
     return;
 
-  notify_send(m->notify, NT_MAILBOX, action, 0);
+  struct EventMailbox ev_m = { m };
+  notify_send(m->notify, NT_MAILBOX, action, &ev_m);
 }
 
 /**

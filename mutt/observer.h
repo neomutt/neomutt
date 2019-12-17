@@ -39,36 +39,27 @@
  */
 struct NotifyCallback
 {
-  void *obj;         ///< Notify: Event happened here
-  int obj_type;      ///< Notify: type of object event happened on
-  int event_type;    ///< Send: event type
-  int event_subtype; ///< Send: event subtype
-  intptr_t event;    ///< Send: event data
-  int flags;         ///< Observer: determine event data
-  intptr_t data;     ///< Observer: private to observer
+  enum NotifyType event_type;    ///< Send: Event type, e.g. #NT_ACCOUNT
+  int             event_subtype; ///< Send: Event subtype, e.g. #NT_ACCOUNT_ADD
+  void           *event_data;    ///< Data from notify_send()
+  void           *global_data;   ///< Data from notify_observer_add()
 };
 
 /**
  * typedef observer_t - Prototype for a notification callback function
- * @param[in]  flags    Flags, see #MuttFormatFlags
+ * @param[in] nc Callback data
  * @retval  0 Success
  * @retval -1 Error
  */
 typedef int (*observer_t)(struct NotifyCallback *nc);
-
-typedef uint8_t ObserverFlags;     ///< Flags, e.g. #OBSERVE_RECURSIVE
-#define OBSERVE_NO_FLAGS        0  ///< No flags are set
-#define OBSERVE_RECURSIVE (1 << 0) ///< Listen for events of children
 
 /**
  * struct Observer - An observer of notifications
  */
 struct Observer
 {
-  enum NotifyType type;  ///< Object to observe to, e.g. #NT_NEOMUTT
-  ObserverFlags flags;   ///< Flags, e.g. #OBSERVE_RECURSIVE
   observer_t callback;   ///< Callback function for events
-  intptr_t data;         ///< Private data to pass to callback
+  void *global_data;     ///< Private data to pass to callback
 };
 
 /**

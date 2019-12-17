@@ -1699,7 +1699,7 @@ static int check_mailbox(struct Mailbox *m)
 
   /* some headers were removed, context must be updated */
   if (rc == MUTT_REOPENED)
-    mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, NT_MAILBOX_INVALID);
 
   /* fetch headers of new articles */
   if (mdata->last_message > mdata->last_loaded)
@@ -1720,7 +1720,7 @@ static int check_mailbox(struct Mailbox *m)
     if (rc2 == 0)
     {
       if (m->msg_count > old_msg_count)
-        mailbox_changed(m, MBN_INVALID);
+        mailbox_changed(m, NT_MAILBOX_INVALID);
       mdata->last_loaded = mdata->last_message;
     }
     if ((rc == 0) && (m->msg_count > oldmsgcount))
@@ -2282,7 +2282,7 @@ int nntp_check_msgid(struct Mailbox *m, const char *msgid)
   e->changed = true;
   e->received = e->date_sent;
   e->index = m->msg_count++;
-  mailbox_changed(m, MBN_INVALID);
+  mailbox_changed(m, NT_MAILBOX_INVALID);
   return 0;
 }
 
@@ -2350,7 +2350,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
       break;
   }
   if (m->msg_count > old_msg_count)
-    mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, NT_MAILBOX_INVALID);
 
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);

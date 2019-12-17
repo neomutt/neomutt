@@ -656,13 +656,12 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
  */
 static int mailbox_index_observer(struct NotifyCallback *nc)
 {
-  if (!nc)
+  if (!nc->global_data)
     return -1;
-
-  if ((nc->event_type != NT_MAILBOX) || (nc->event_subtype != MBN_CLOSED))
+  if ((nc->event_type != NT_MAILBOX) || (nc->event_subtype != NT_MAILBOX_CLOSED))
     return 0;
 
-  struct Mailbox **ptr = (struct Mailbox **) nc->data;
+  struct Mailbox **ptr = nc->global_data;
   if (!ptr || !*ptr)
     return 0;
 
@@ -766,14 +765,14 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     /* If the `folder-hook` were to call `unmailboxes`, then the Mailbox (`m`)
      * could be deleted, leaving `m` dangling. */
     // TODO: Refactor this function to avoid the need for an observer
-    notify_observer_add(m->notify, NT_MAILBOX, 0, mailbox_index_observer, IP & m);
+    notify_observer_add(m->notify, mailbox_index_observer, &m);
   }
   mutt_folder_hook(buf, m ? m->name : NULL);
   if (m)
   {
     /* `m` is still valid, but we won't need the observer again before the end
      * of the function. */
-    notify_observer_remove(m->notify, mailbox_index_observer, IP & m);
+    notify_observer_remove(m->notify, mailbox_index_observer, &m);
   }
 
   int flags = MUTT_OPEN_NO_FLAGS;
@@ -1831,7 +1830,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           oldcount = (Context && Context->mailbox) ? Context->mailbox->msg_count : 0;
 
           mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
-          notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_SHUTDOWN, 0);
+          notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_SHUTDOWN, NULL);
 
           if (!Context || ((check = mx_mbox_close(&Context)) == 0))
             done = true;
@@ -3944,10 +3943,12 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
  */
 int mutt_reply_observer(struct NotifyCallback *nc)
 {
-  if (!nc)
+  if (!nc->event_data)
     return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
 
-  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  struct EventConfig *ec = nc->event_data;
 
   if (mutt_str_strcmp(ec->name, "reply_regex") != 0)
     return 0;
@@ -4043,7 +4044,7 @@ struct MuttWindow *index_pager_init(void)
   mutt_window_add_child(panel_pager, win_pager);
   mutt_window_add_child(panel_pager, win_pbar);
 
-  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_sb_observer, (intptr_t) win_sidebar);
+  notify_observer_add(Config->notify, mutt_sb_observer, win_sidebar);
 
   return dlg;
 }
@@ -4061,7 +4062,7 @@ void index_pager_shutdown(struct MuttWindow *dlg)
   if (!win_sidebar)
     return;
 
-  notify_observer_remove(Config->notify, mutt_sb_observer, (intptr_t) win_sidebar);
+  notify_observer_remove(Config->notify, mutt_sb_observer, win_sidebar);
 }
 
 /**
@@ -4069,11 +4070,13 @@ void index_pager_shutdown(struct MuttWindow *dlg)
  */
 int mutt_dlg_index_observer(struct NotifyCallback *nc)
 {
-  if (!nc || !nc->event || !nc->data)
+  if (!nc->event_data || !nc->global_data)
     return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
 
-  struct EventConfig *ec = (struct EventConfig *) nc->event;
-  struct MuttWindow *dlg = (struct MuttWindow *) nc->data;
+  struct EventConfig *ec = nc->event_data;
+  struct MuttWindow *dlg = nc->global_data;
 
   struct MuttWindow *win_index = mutt_window_find(dlg, WT_INDEX);
   struct MuttWindow *win_pager = mutt_window_find(dlg, WT_PAGER);

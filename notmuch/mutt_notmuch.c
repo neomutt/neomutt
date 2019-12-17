@@ -1694,7 +1694,7 @@ int nm_read_entire_thread(struct Mailbox *m, struct Email *e)
   rc = 0;
 
   if (m->msg_count > mdata->oldmsgcount)
-    mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, NT_MAILBOX_INVALID);
 done:
   if (q)
     notmuch_query_destroy(q);
@@ -2320,7 +2320,7 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
   }
 
   if (m->msg_count > mdata->oldmsgcount)
-    mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, NT_MAILBOX_INVALID);
 done:
   if (q)
     notmuch_query_destroy(q);

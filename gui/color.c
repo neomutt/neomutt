@@ -373,7 +373,7 @@ void mutt_colors_free(struct Colors **ptr)
 struct Colors *mutt_colors_new(void)
 {
   struct Colors *c = mutt_mem_calloc(1, sizeof(*c));
-  c->notify = notify_new(c, NT_COLOR);
+  c->notify = notify_new();
 
   quotes_init(c);
   defs_init(c);
@@ -827,7 +827,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   {
     colors_clear(c);
     struct EventColor ec = { false }; // Color reset/removed
-    notify_send(c->notify, NT_COLOR, MT_COLOR_MAX, (intptr_t) &ec);
+    notify_send(c->notify, NT_COLOR, MT_COLOR_MAX, &ec);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -859,7 +859,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     c->defs[object] = A_NORMAL;
 
     struct EventColor ec = { false }; // Color reset/removed
-    notify_send(c->notify, NT_COLOR, object, (intptr_t) &ec);
+    notify_send(c->notify, NT_COLOR, object, &ec);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -909,7 +909,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   if (changed)
   {
     struct EventColor ec = { false }; // Color reset/removed
-    notify_send(c->notify, NT_COLOR, object, (intptr_t) &ec);
+    notify_send(c->notify, NT_COLOR, object, &ec);
   }
 
   return MUTT_CMD_SUCCESS;
@@ -1341,7 +1341,7 @@ static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, stru
   if (rc == MUTT_CMD_SUCCESS)
   {
     struct EventColor ec = { true }; // Color set/added
-    notify_send(c->notify, NT_COLOR, object, (intptr_t) &ec);
+    notify_send(c->notify, NT_COLOR, object, &ec);
   }
 
   return rc;

@@ -1175,12 +1175,13 @@ void mutt_sb_notify_mailbox(struct Mailbox *m, bool created)
  */
 int mutt_sb_observer(struct NotifyCallback *nc)
 {
-  if (!nc || !nc->event || !nc->data)
+  if (!nc->event_data || !nc->global_data)
     return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
 
-  struct MuttWindow *win = (struct MuttWindow *) nc->data;
-
-  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  struct MuttWindow *win = nc->global_data;
+  struct EventConfig *ec = nc->event_data;
 
   if (mutt_str_strncmp(ec->name, "sidebar_", 8) != 0)
     return 0;

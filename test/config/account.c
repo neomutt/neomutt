@@ -62,7 +62,7 @@ void config_account(void)
 
   set_list(cs);
 
-  notify_observer_add(cs->notify, NT_CONFIG, 0, log_observer, 0);
+  notify_observer_add(cs->notify, log_observer, 0);
 
   const char *account = "damaged";
   const char *parent = "Pineapple";

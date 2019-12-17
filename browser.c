@@ -1146,11 +1146,13 @@ void mutt_browser_select_dir(const char *f)
  */
 int mutt_dlg_browser_observer(struct NotifyCallback *nc)
 {
-  if (!nc || !nc->event || !nc->data)
+  if (!nc->event_data || !nc->global_data)
     return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
 
-  struct EventConfig *ec = (struct EventConfig *) nc->event;
-  struct MuttWindow *dlg = (struct MuttWindow *) nc->data;
+  struct EventConfig *ec = nc->event_data;
+  struct MuttWindow *dlg = nc->global_data;
 
   if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
     return 0;
@@ -1401,8 +1403,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
     mutt_window_add_child(dlg, ibar);
   }
 
-  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_dlg_browser_observer,
-                      (intptr_t) dlg);
+  notify_observer_add(Config->notify, mutt_dlg_browser_observer, dlg);
   dialog_push(dlg);
 
   menu = mutt_menu_new(MENU_FOLDER);
@@ -2236,7 +2237,7 @@ bail:
     mutt_menu_pop_current(menu);
     mutt_menu_free(&menu);
     dialog_pop();
-    notify_observer_remove(Config->notify, mutt_dlg_browser_observer, (intptr_t) dlg);
+    notify_observer_remove(Config->notify, mutt_dlg_browser_observer, dlg);
     mutt_window_free(&dlg);
   }
 

@@ -39,24 +39,18 @@
  */
 struct Notify
 {
-  void *obj;
-  enum NotifyType obj_type;
   struct Notify *parent;
   struct ObserverList observers;
 };
 
 /**
  * notify_new - Create a new notifications handler
- * @param object Owner of the object
- * @param type   Object type, e.g. #NT_ACCOUNT
  * @retval ptr New notification handler
  */
-struct Notify *notify_new(void *object, enum NotifyType type)
+struct Notify *notify_new(void)
 {
   struct Notify *notify = mutt_mem_calloc(1, sizeof(*notify));
 
-  notify->obj = object;
-  notify->obj_type = type;
   STAILQ_INIT(&notify->observers);
 
   return notify;
@@ -74,7 +68,7 @@ void notify_free(struct Notify **ptr)
   struct Notify *notify = *ptr;
   // NOTIFY observers
 
-  notify_observer_remove(notify, NULL, 0);
+  notify_observer_remove(notify, NULL, NULL);
 
   FREE(ptr);
 }
@@ -96,25 +90,25 @@ void notify_set_parent(struct Notify *notify, struct Notify *parent)
 
 /**
  * send - Send out a notification message
- * @param source  Source of the event, e.g. #Account
- * @param current Current handler, e.g. #NeoMutt
- * @param type    Type of event, e.g. #NT_ACCOUNT
- * @param subtype Subtype, e.g. NT_ACCOUNT_NEW
- * @param data    Private data associated with the event type
+ * @param source        Source of the event, e.g. #Account
+ * @param current       Current handler, e.g. #NeoMutt
+ * @param event_type    Type of event, e.g. #NT_ACCOUNT
+ * @param event_subtype Subtype, e.g. #NT_ACCOUNT_ADD
+ * @param event_data    Private data associated with the event type
  * @retval true If successfully sent
  *
- * Notifications are sent to all matching observers, then propagated up the
- * handler tree.  For example a "new email" notification would be sent to the
- * Mailbox that owned it, the Account (owning the Mailbox) and finally the
+ * Notifications are sent to all observers of the object, then propagated up
+ * the handler tree.  For example a "new email" notification would be sent to
+ * the Mailbox that owns it, the Account (owning the Mailbox) and finally the
  * NeoMutt object.
  */
-static bool send(struct Notify *source, struct Notify *current, int type,
-                 int subtype, intptr_t data)
+static bool send(struct Notify *source, struct Notify *current,
+                 enum NotifyType event_type, int event_subtype, void *event_data)
 {
   if (!source || !current)
     return false;
 
-  // mutt_debug(LL_NOTIFY, "send: %d, %ld\n", type, data);
+  // mutt_debug(LL_NOTIFY, "send: %d, %ld\n", event_type, event_data);
   struct ObserverNode *np = NULL;
   struct ObserverNode *tmp = NULL;
   // We use the `_SAFE` version in case an event causes an observer to be deleted
@@ -122,45 +116,42 @@ static bool send(struct Notify *source, struct Notify *current, int type,
   {
     struct Observer *o = np->observer;
 
-    struct NotifyCallback nc = { source->obj, source->obj_type, type,   subtype,
-                                 data,        o->flags,         o->data };
+    struct NotifyCallback nc = { event_type, event_subtype, event_data, o->global_data };
     o->callback(&nc);
   }
 
   if (current->parent)
-    return send(source, current->parent, type, subtype, data);
+    return send(source, current->parent, event_type, event_subtype, event_data);
   return true;
 }
 
 /**
  * notify_send - Send out a notification message
- * @param notify  Notification handler
- * @param type    Type of event, e.g. #NT_ACCOUNT
- * @param subtype Subtype, e.g. NT_ACCOUNT_NEW
- * @param data    Private data associated with the event type
+ * @param notify        Notification handler
+ * @param event_type    Type of event, e.g. #NT_ACCOUNT
+ * @param event_subtype Subtype, e.g. #NT_ACCOUNT_ADD
+ * @param event_data    Private data associated with the event
  * @retval true If successfully sent
  *
  * See send() for more details.
  */
-bool notify_send(struct Notify *notify, int type, int subtype, intptr_t data)
+bool notify_send(struct Notify *notify, enum NotifyType event_type,
+                 int event_subtype, void *event_data)
 {
-  return send(notify, notify, type, subtype, data);
+  return send(notify, notify, event_type, event_subtype, event_data);
 }
 
 /**
  * notify_observer_add - Add an observer to an object
- * @param notify   Notification handler
- * @param type     Type of event to listen for, e.g. #NT_ACCOUNT
- * @param subtype  Subtype, e.g. NT_ACCOUNT_NEW
- * @param callback Function to call on a matching event, see ::observer_t
- * @param data     Private data associated with the event type
+ * @param notify      Notification handler
+ * @param callback    Function to call on a matching event, see ::observer_t
+ * @param global_data Private data associated with the observer
  * @retval true If successful
  *
  * New observers are added to the front of the list, giving them higher
  * priority than existing observers.
  */
-bool notify_observer_add(struct Notify *notify, enum NotifyType type,
-                         int subtype, observer_t callback, intptr_t data)
+bool notify_observer_add(struct Notify *notify, observer_t callback, void *global_data)
 {
   if (!notify || !callback)
     return false;
@@ -173,10 +164,8 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type,
   }
 
   struct Observer *o = mutt_mem_calloc(1, sizeof(*o));
-  o->type = type;
-  o->flags = subtype;
   o->callback = callback;
-  o->data = data;
+  o->global_data = global_data;
 
   np = mutt_mem_calloc(1, sizeof(*np));
   np->observer = o;
@@ -187,14 +176,14 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type,
 
 /**
  * notify_observer_remove - Remove an observer from an object
- * @param notify   Notification handler
- * @param callback Function to call on a matching event, see ::observer_t
- * @param data     Private data to match specific callback
+ * @param notify      Notification handler
+ * @param callback    Function to call on a matching event, see ::observer_t
+ * @param global_data Private data to match specific callback
  * @retval true If successful
  *
  * If callback is NULL, all the observers will be removed.
  */
-bool notify_observer_remove(struct Notify *notify, observer_t callback, intptr_t data)
+bool notify_observer_remove(struct Notify *notify, observer_t callback, void *global_data)
 {
   if (!notify)
     return false;
@@ -204,7 +193,8 @@ bool notify_observer_remove(struct Notify *notify, observer_t callback, intptr_t
   struct ObserverNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &notify->observers, entries, tmp)
   {
-    if (!callback || ((np->observer->callback == callback) && (np->observer->data == data)))
+    if (!callback || ((np->observer->callback == callback) &&
+                      (np->observer->global_data == global_data)))
     {
       STAILQ_REMOVE(&notify->observers, np, ObserverNode, entries);
       FREE(&np->observer);

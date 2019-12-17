@@ -515,7 +515,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
 
   /* If we didn't just get new mail, update the tables. */
   if (occult)
-    mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, NT_MAILBOX_RESORT);
 
   /* do any delayed parsing we need to do. */
   maildir_delayed_parsing(m, &md, NULL);
@@ -524,7 +524,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
   num_new = maildir_move_to_mailbox(m, &md);
   if (num_new > 0)
   {
-    mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, NT_MAILBOX_INVALID);
     m->changed = true;
   }
 

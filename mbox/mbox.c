@@ -560,7 +560,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   {
     short old_sort = C_Sort;
     C_Sort = SORT_ORDER;
-    mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, NT_MAILBOX_RESORT);
     C_Sort = old_sort;
   }
 
@@ -706,7 +706,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
     FREE(&e_old);
   }
 
-  mailbox_changed(m, MBN_UPDATE);
+  mailbox_changed(m, NT_MAILBOX_UPDATE);
   m->quiet = false;
 
   return (m->changed || msg_mod) ? MUTT_REOPENED : MUTT_NEW_MAIL;
@@ -1043,7 +1043,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
   {
     if (mbox_mbox_open(m) < 0)
       return -1;
-    mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, NT_MAILBOX_INVALID);
   }
 
   struct stat st;
@@ -1104,7 +1104,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
             mmdf_parse_mailbox(m);
 
           if (m->msg_count > old_msg_count)
-            mailbox_changed(m, MBN_INVALID);
+            mailbox_changed(m, NT_MAILBOX_INVALID);
 
           /* Only unlock the folder if it was locked inside of this routine.
            * It may have been locked elsewhere, like in
@@ -1134,7 +1134,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
   {
     if (reopen_mailbox(m, index_hint) != -1)
     {
-      mailbox_changed(m, MBN_INVALID);
+      mailbox_changed(m, NT_MAILBOX_INVALID);
       if (unlock)
       {
         mbox_unlock_mailbox(m);
@@ -1185,7 +1185,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   {
     save_sort = C_Sort;
     C_Sort = SORT_ORDER;
-    mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, NT_MAILBOX_RESORT);
     C_Sort = save_sort;
     need_sort = 1;
   }
@@ -1513,12 +1513,12 @@ bail: /* Come here in case of disaster */
     goto fatal;
   }
 
-  mailbox_changed(m, MBN_UPDATE);
+  mailbox_changed(m, NT_MAILBOX_UPDATE);
   if (need_sort)
   {
     /* if the mailbox was reopened, the thread tree will be invalid so make
      * sure to start threading from scratch.  */
-    mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, NT_MAILBOX_RESORT);
   }
 
 fatal:

@@ -49,7 +49,7 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   struct NeoMutt *n = mutt_mem_calloc(1, sizeof(*NeoMutt));
 
   TAILQ_INIT(&n->accounts);
-  n->notify = notify_new(n, NT_NEOMUTT);
+  n->notify = notify_new();
   n->sub = cs_subset_new(NULL, NULL);
   n->sub->cs = cs;
 
@@ -89,7 +89,7 @@ bool neomutt_account_add(struct NeoMutt *n, struct Account *a)
   notify_set_parent(a->notify, n->notify);
 
   struct EventAccount ev_a = { a };
-  notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_ADD, IP & ev_a);
+  notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_ADD, &ev_a);
   return true;
 }
 
@@ -114,7 +114,7 @@ bool neomutt_account_remove(struct NeoMutt *n, struct Account *a)
     if (!a || (np == a))
     {
       struct EventAccount ev_a = { np };
-      notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_REMOVE, IP & ev_a);
+      notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_REMOVE, &ev_a);
       TAILQ_REMOVE(&n->accounts, np, entries);
       account_free(&np);
       result = true;

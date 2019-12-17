@@ -28,16 +28,14 @@
  */
 enum NotifyType
 {
-  NT_NEOMUTT, ///< Container for all notifications
-  NT_GLOBAL,  ///< Not object-related
-  NT_CONFIG,  ///< Config has changed
   NT_ACCOUNT, ///< Account has changed
-  NT_MAILBOX, ///< Mailbox has changed
-  NT_EMAIL,   ///< Email has changed
-  NT_WINDOW,  ///< Window has changed
-  NT_CONTEXT, ///< Context has changed
   NT_COLOR,   ///< Colour has changed
   NT_COMMAND, ///< A Command has been executed
+  NT_CONFIG,  ///< Config has changed
+  NT_CONTEXT, ///< Context has changed
+  NT_EMAIL,   ///< Email has changed
+  NT_GLOBAL,  ///< Not object-related
+  NT_MAILBOX, ///< Mailbox has changed
 };
 
 #endif /* MUTT_LIB_NOTIFY_TYPE_H */

@@ -1592,8 +1592,10 @@ int mutt_menu_loop(struct Menu *menu)
  */
 int mutt_menu_color_observer(struct NotifyCallback *nc)
 {
-  if ((!nc) || (nc->event_type != NT_COLOR))
+  if (!nc->event_data)
     return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
 
   int s = nc->event_subtype;
 
@@ -1609,7 +1611,7 @@ int mutt_menu_color_observer(struct NotifyCallback *nc)
   if (!simple && !lists)
     return 0;
 
-  struct EventColor *ec = (struct EventColor *) nc->event;
+  struct EventColor *ec = nc->event_data;
 
   // Colour deleted from a list
   if (!ec->set && lists && Context && Context->mailbox)
@@ -1634,10 +1636,12 @@ int mutt_menu_color_observer(struct NotifyCallback *nc)
  */
 int mutt_menu_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc)
+  if (!nc->event_data)
     return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
 
-  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  struct EventConfig *ec = nc->event_data;
 
   const struct ConfigDef *cdef = ec->he->data;
   ConfigRedrawFlags flags = cdef->type & R_REDRAW_MASK;

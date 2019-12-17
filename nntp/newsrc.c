@@ -311,7 +311,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   {
     save_sort = C_Sort;
     C_Sort = SORT_ORDER;
-    mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, NT_MAILBOX_RESORT);
   }
 
   entries = mdata->newsrc_len;
@@ -379,7 +379,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   if (save_sort != C_Sort)
   {
     C_Sort = save_sort;
-    mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, NT_MAILBOX_RESORT);
   }
 }
 

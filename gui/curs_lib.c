@@ -624,16 +624,16 @@ int mutt_any_key_to_continue(const char *s)
  */
 int mutt_dlg_dopager_observer(struct NotifyCallback *nc)
 {
-  if (!nc)
+  if (!nc->event_data || !nc->global_data)
     return -1;
-
-  struct EventConfig *ec = (struct EventConfig *) nc->event;
-  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+  if (nc->event_type != NT_CONFIG)
     return 0;
 
-  struct MuttWindow *dlg = (struct MuttWindow *) nc->data;
-  if (!dlg)
-    return -1;
+  struct EventConfig *ec = nc->event_data;
+  struct MuttWindow *dlg = nc->global_data;
+
+  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+    return 0;
 
   struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
   if (!win_first)
@@ -690,8 +690,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
     mutt_window_add_child(dlg, pbar);
   }
 
-  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_dlg_dopager_observer,
-                      (intptr_t) dlg);
+  notify_observer_add(Config->notify, mutt_dlg_dopager_observer, dlg);
   dialog_push(dlg);
 
   info->win_ibar = NULL;
@@ -721,7 +720,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
   }
 
   dialog_pop();
-  notify_observer_remove(Config->notify, mutt_dlg_dopager_observer, (intptr_t) dlg);
+  notify_observer_remove(Config->notify, mutt_dlg_dopager_observer, dlg);
   mutt_window_free(&dlg);
   return rc;
 }

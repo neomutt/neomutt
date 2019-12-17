@@ -54,10 +54,10 @@ void ctx_free(struct Context **ptr)
   struct Context *ctx = *ptr;
 
   struct EventContext ev_ctx = { ctx };
-  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_CLOSE, IP & ev_ctx);
+  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_CLOSE, &ev_ctx);
 
   if (ctx->mailbox)
-    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, IP ctx);
+    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, ctx);
 
   mutt_hash_free(&ctx->thread_hash);
   notify_free(&ctx->notify);
@@ -73,7 +73,7 @@ struct Context *ctx_new(void)
 {
   struct Context *ctx = mutt_mem_calloc(1, sizeof(struct Context));
 
-  ctx->notify = notify_new(ctx, NT_CONTEXT);
+  ctx->notify = notify_new();
   notify_set_parent(ctx->notify, NeoMutt->notify);
 
   return ctx;
@@ -88,7 +88,7 @@ static void ctx_cleanup(struct Context *ctx)
   FREE(&ctx->pattern);
   mutt_pattern_free(&ctx->limit_pattern);
   if (ctx->mailbox)
-    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, IP ctx);
+    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, ctx);
 
   struct Notify *notify = ctx->notify;
   struct Mailbox *m = ctx->mailbox;
@@ -294,30 +294,29 @@ void ctx_update_tables(struct Context *ctx, bool committing)
  */
 int ctx_mailbox_observer(struct NotifyCallback *nc)
 {
-  if (!nc)
+  if (!nc->global_data)
     return -1;
-  if ((nc->obj_type != NT_MAILBOX) || (nc->event_type != NT_MAILBOX))
+  if (nc->event_type != NT_MAILBOX)
     return 0;
-  struct Context *ctx = (struct Context *) nc->data;
-  if (!ctx)
-    return -1;
+
+  struct Context *ctx = nc->global_data;
 
   switch (nc->event_subtype)
   {
-    case MBN_CLOSED:
+    case NT_MAILBOX_CLOSED:
       mutt_clear_threads(ctx);
       ctx_cleanup(ctx);
       break;
-    case MBN_INVALID:
+    case NT_MAILBOX_INVALID:
       ctx_update(ctx);
       break;
-    case MBN_UPDATE:
+    case NT_MAILBOX_UPDATE:
       ctx_update_tables(ctx, true);
       break;
-    case MBN_RESORT:
+    case NT_MAILBOX_RESORT:
       mutt_sort_headers(ctx, true);
       break;
-    case MBN_UNTAG:
+    case NT_MAILBOX_UNTAG:
       if (ctx->last_tag && ctx->last_tag->deleted)
         ctx->last_tag = NULL;
       break;

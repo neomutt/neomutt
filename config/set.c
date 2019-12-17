@@ -188,7 +188,7 @@ void cs_init(struct ConfigSet *cs, size_t size)
   memset(cs, 0, sizeof(*cs));
   cs->hash = mutt_hash_new(size, MUTT_HASH_NO_FLAGS);
   mutt_hash_set_destructor(cs->hash, destroy, (intptr_t) cs);
-  cs->notify = notify_new(cs, NT_CONFIG);
+  cs->notify = notify_new();
 }
 
 /**
@@ -362,7 +362,7 @@ void cs_notify_observers(const struct ConfigSet *cs, struct HashElem *he,
     return;
 
   struct EventConfig ec = { cs, he, name };
-  notify_send(cs->notify, NT_CONFIG, ev, IP & ec);
+  notify_send(cs->notify, NT_CONFIG, ev, &ec);
 }
 
 /**
