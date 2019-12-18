@@ -102,10 +102,11 @@ struct CryptModuleSpecs
   /**
    * sign_message - Cryptographically sign the Body of a message
    * @param a Body of the message
+   * @param from From line
    * @retval ptr  New encrypted Body
    * @retval NULL Error
    */
-  struct Body *(*sign_message)(struct Body *a);
+  struct Body *(*sign_message)(struct Body *a, const struct AddressList *from);
   /**
    * verify_one - Check a signed MIME part against a signature
    * @param sigbdy Body of the signed mail
@@ -132,12 +133,14 @@ struct CryptModuleSpecs
    * @param a       Body of email to encrypt
    * @param keylist List of keys, or fingerprints (space separated)
    * @param sign    If true, sign the message too
+   * @param from    From line, to choose the key to sign
    * @retval ptr  Encrypted Body
    * @retval NULL Error
    *
    * Encrypt the mail body to all the given keys.
    */
-  struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, bool sign);
+  struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, bool sign,
+                                     const struct AddressList *from);
   /**
    * pgp_make_key_attachment - Generate a public key attachment
    * @retval ptr  New Body containing the attachment

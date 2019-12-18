@@ -318,10 +318,10 @@ char *crypt_pgp_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 /**
  * crypt_pgp_sign_message - Wrapper for CryptModuleSpecs::sign_message()
  */
-struct Body *crypt_pgp_sign_message(struct Body *a)
+struct Body *crypt_pgp_sign_message(struct Body *a, const struct AddressList *from)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, sign_message))
-    return CRYPT_MOD_CALL(PGP, sign_message)(a);
+    return CRYPT_MOD_CALL(PGP, sign_message)(a, from);
 
   return NULL;
 }
@@ -329,7 +329,9 @@ struct Body *crypt_pgp_sign_message(struct Body *a)
 /**
  * crypt_pgp_encrypt_message - Wrapper for CryptModuleSpecs::pgp_encrypt_message()
  */
-struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *keylist, int sign)
+struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a,
+                                       char *keylist, int sign,
+                                       const struct AddressList *from)
 {
 #ifdef USE_AUTOCRYPT
   if (e->security & SEC_AUTOCRYPT)
@@ -338,7 +340,7 @@ struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *ke
       return NULL;
 
     OptAutocryptGpgme = true;
-    struct Body *result = pgp_gpgme_encrypt_message(a, keylist, sign);
+    struct Body *result = pgp_gpgme_encrypt_message(a, keylist, sign, from);
     OptAutocryptGpgme = false;
 
     return result;
@@ -346,7 +348,7 @@ struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *ke
 #endif
 
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_encrypt_message))
-    return CRYPT_MOD_CALL(PGP, pgp_encrypt_message)(a, keylist, sign);
+    return CRYPT_MOD_CALL(PGP, pgp_encrypt_message)(a, keylist, sign, from);
 
   return NULL;
 }
@@ -478,10 +480,10 @@ char *crypt_smime_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 /**
  * crypt_smime_sign_message - Wrapper for CryptModuleSpecs::sign_message()
  */
-struct Body *crypt_smime_sign_message(struct Body *a)
+struct Body *crypt_smime_sign_message(struct Body *a, const struct AddressList *from)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, sign_message))
-    return CRYPT_MOD_CALL(SMIME, sign_message)(a);
+    return CRYPT_MOD_CALL(SMIME, sign_message)(a, from);
 
   return NULL;
 }
