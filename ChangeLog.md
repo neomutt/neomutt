@@ -1,3 +1,12 @@
+yyyy-mm-dd
+* Features
+  - GPGMe: infer the signing key from the sender's address
+  - Classc PGP: emit a confirmation when a message is successfully decrypted
+* BugFixes
+  - Avoid crash executing entire-thread inside an IMAP mailbox
+  - Avoid spurious newlines when logging headers
+  - Index: avoid skipping messages when uncollapse_jump is set
+
 2019-12-07  Richard Russon  <rich@flatcap.org>
 * Features
   - compose: draw status bar with highlights
