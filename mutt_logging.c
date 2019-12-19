@@ -37,11 +37,8 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "mutt_logging.h"
-#include "color.h"
-#include "curs_lib.h"
 #include "globals.h"
-#include "mutt_curses.h"
-#include "mutt_window.h"
+#include "gui/lib.h"
 #include "muttlib.h"
 #include "options.h"
 

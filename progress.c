@@ -33,12 +33,9 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "progress.h"
-#include "color.h"
-#include "curs_lib.h"
 #include "globals.h"
-#include "mutt_curses.h"
+#include "gui/lib.h"
 #include "mutt_logging.h"
-#include "mutt_window.h"
 #include "muttlib.h"
 #include "options.h"
 

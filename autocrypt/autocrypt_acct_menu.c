@@ -35,12 +35,11 @@
 #include "config/lib.h"
 #include "mutt.h"
 #include "autocrypt.h"
-#include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "gui/lib.h"
 #include "keymap.h"
 #include "mutt_menu.h"
-#include "mutt_window.h"
 #include "muttlib.h"
 #include "opcodes.h"
 

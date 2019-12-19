@@ -50,7 +50,7 @@
 #include "sasl.h"
 #include "connaccount.h"
 #include "connection.h"
-#include "curs_lib.h"
+#include "gui/lib.h"
 #include "mutt_account.h"
 #include "options.h"
 

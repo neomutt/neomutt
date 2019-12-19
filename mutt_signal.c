@@ -32,8 +32,8 @@
 #include <signal.h>
 #include "mutt/mutt.h"
 #include "globals.h"
+#include "gui/lib.h"
 #include "mutt_attach.h"
-#include "mutt_curses.h"
 #include "protos.h" // IWYU pragma: keep
 #ifdef HAVE_LIBUNWIND
 #include "mutt.h"

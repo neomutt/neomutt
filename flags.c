@@ -35,12 +35,11 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "context.h"
-#include "curs_lib.h"
 #include "globals.h"
+#include "gui/lib.h"
 #include "index.h"
 #include "keymap.h"
 #include "mutt_menu.h"
-#include "mutt_window.h"
 #include "protos.h"
 #include "sort.h"
 

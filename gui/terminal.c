@@ -21,7 +21,7 @@
  */
 
 /**
- * @page terminal Set the terminal title/icon
+ * @page gui_terminal Set the terminal title/icon
  *
  * Set the terminal title/icon
  */

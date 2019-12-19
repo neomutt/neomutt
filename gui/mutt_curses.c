@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page gui_curses Wrapper functions around Curses/Slang
+ *
+ * Wrapper functions around Curses/Slang
+ */
+
 #include "config.h"
 #include "mutt_curses.h"
 #include "color.h"

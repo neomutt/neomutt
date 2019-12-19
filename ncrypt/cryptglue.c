@@ -43,7 +43,7 @@
 #include "crypt_mod.h"
 #include "ncrypt.h"
 #ifndef CRYPT_BACKEND_GPGME
-#include "curs_lib.h"
+#include "gui/lib.h"
 #endif
 #ifdef USE_AUTOCRYPT
 #include "email/lib.h"

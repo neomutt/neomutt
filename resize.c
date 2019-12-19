@@ -31,8 +31,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "mutt_curses.h"
-#include "mutt_window.h"
+#include "gui/lib.h"
 #ifdef USE_SLANG_CURSES
 #include <stdbool.h>
 #endif

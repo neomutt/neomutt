@@ -22,7 +22,7 @@
  */
 
 /**
- * @page curs_lib GUI miscellaneous curses (window drawing) routines
+ * @page gui_curs_lib GUI miscellaneous curses (window drawing) routines
  *
  * GUI miscellaneous curses (window drawing) routines
  */

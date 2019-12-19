@@ -21,7 +21,7 @@
  */
 
 /**
- * @page window Window management
+ * @page gui_window Window management
  *
  * Window management
  */

@@ -41,8 +41,8 @@
 #include "core/lib.h"
 #include "monitor.h"
 #include "context.h"
-#include "curs_lib.h"
 #include "globals.h"
+#include "gui/lib.h"
 #ifndef HAVE_INOTIFY_INIT1
 #include <fcntl.h>
 #endif

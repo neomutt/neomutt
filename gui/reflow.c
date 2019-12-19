@@ -21,7 +21,7 @@
  */
 
 /**
- * @page reflow Window reflowing
+ * @page gui_reflow Window reflowing
  *
  * Window reflowing
  */

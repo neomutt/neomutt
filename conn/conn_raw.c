@@ -46,8 +46,8 @@
 #include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"
-#include "curs_lib.h"
 #include "globals.h"
+#include "gui/lib.h"
 #include "options.h"
 #include "socket.h" // IWYU pragma: keep
 #ifdef HAVE_LIBIDN

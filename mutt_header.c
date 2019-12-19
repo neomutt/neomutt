@@ -39,7 +39,7 @@
 #include "mutt.h"
 #include "mutt_header.h"
 #include "alias.h"
-#include "curs_lib.h"
+#include "gui/lib.h"
 #include "index.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"

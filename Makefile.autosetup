@@ -16,7 +16,7 @@ PWD=		@PWD@
 AR=		@AR@
 CC=		@CC@
 CPP=		@CPP@
-CFLAGS=		@CPPFLAGS@ @CFLAGS@ -I. -I@srcdir@ -Wall $(EXTRA_CFLAGS)
+CFLAGS=		@CPPFLAGS@ @CFLAGS@ -I. -Igui -I@srcdir@ -Wall $(EXTRA_CFLAGS)
 LDFLAGS=	@LDFLAGS@ $(EXTRA_LDFLAGS)
 EXEEXT=		@EXEEXT@
 LIBS=		@LIBS@
@@ -61,21 +61,20 @@ ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o color.o commands.o \
+NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o commands.o \
 		complete.o compose.o compress.o conststrings.o context.o copy.o \
-		curs_lib.o edit.o editmsg.o enriched.o enter.o filter.o flags.o \
+		edit.o editmsg.o enriched.o enter.o filter.o flags.o \
 		git_ver.o handler.o hdrline.o help.o hook.o icommands.o index.o init.o \
 		keymap.o mailcap.o main.o menu.o mutt_account.o mutt_attach.o \
-		mutt_body.o mutt_curses.o mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
-		mutt_parse.o mutt_signal.o mutt_socket.o mutt_thread.o mutt_window.o \
+		mutt_body.o mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
+		mutt_parse.o mutt_signal.o mutt_socket.o mutt_thread.o \
 		muttlib.o mx.o myvar.o pager.o pattern.o postpone.o progress.o query.o \
 		recvattach.o recvcmd.o resize.o rfc3676.o score.o send.o sendlib.o \
-		sidebar.o smtp.o sort.o state.o status.o system.o terminal.o version.o \
-		reflow.o
+		sidebar.o smtp.o sort.o state.o status.o system.o version.o \
+
 @if HAVE_LIBUNWIND
 NEOMUTTOBJS+=	backtrace.o
 @endif
-
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
 @endif
@@ -88,6 +87,7 @@ NEOMUTTOBJS+=	mutt_lua.o
 @if USE_INOTIFY
 NEOMUTTOBJS+=	monitor.o
 @endif
+
 CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
 ALLOBJS+=	$(NEOMUTTOBJS)
 
@@ -119,6 +119,14 @@ LIBNNTPOBJS=	nntp/browse.o nntp/complete.o nntp/newsrc.o nntp/nntp.o
 CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
 MUTTLIBS+=	$(LIBNNTP)
 ALLOBJS+=	$(LIBNNTPOBJS)
+
+###############################################################################
+# libgui
+LIBGUI=	libgui.a
+LIBGUIOBJS=	gui/color.o gui/curs_lib.o gui/mutt_curses.o gui/mutt_window.o gui/reflow.o gui/terminal.o
+CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
+MUTTLIBS+=	$(LIBGUI)
+ALLOBJS+=	$(LIBGUIOBJS)
 
 ###############################################################################
 # libmbox
@@ -351,6 +359,13 @@ $(LIBNNTP): $(PWD)/nntp $(LIBNNTPOBJS)
 	$(RANLIB) $@
 $(PWD)/nntp:
 	$(MKDIR_P) $(PWD)/nntp
+
+# libgui
+$(LIBGUI): $(PWD)/gui $(LIBGUIOBJS)
+	$(AR) cr $@ $(LIBGUIOBJS)
+	$(RANLIB) $@
+$(PWD)/gui:
+	$(MKDIR_P) $(PWD)/gui
 
 # libmbox
 $(LIBMBOX): $(PWD)/mbox $(LIBMBOXOBJS)

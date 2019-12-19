@@ -40,7 +40,7 @@
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "mutt_curses.h"
+#include "gui/lib.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "ncrypt.h"

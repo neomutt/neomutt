@@ -29,7 +29,7 @@
 #include <stdio.h>
 #include "ncrypt.h"
 #ifdef USE_SLANG_CURSES
-#include "mutt_curses.h"
+#include "gui/lib.h"
 #else
 #include <stdbool.h>
 #endif

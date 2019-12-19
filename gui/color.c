@@ -21,7 +21,7 @@
  */
 
 /**
- * @page color Color and attribute parsing
+ * @page gui_color Color and attribute parsing
  *
  * Color and attribute parsing
  */

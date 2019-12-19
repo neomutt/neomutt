@@ -36,7 +36,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "version.h"
-#include "mutt_curses.h"
+#include "gui/lib.h"
 #ifdef HAVE_LIBIDN
 #include "address/lib.h"
 #endif

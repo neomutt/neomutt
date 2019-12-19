@@ -14,6 +14,7 @@ yyyy-mm-dd
 * Docs
 * Website
 * Build
+  - Create libgui
 * Code
   - Refactor Window handling to nest Windows
 * Tidy

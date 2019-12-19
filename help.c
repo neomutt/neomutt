@@ -34,8 +34,8 @@
 #include <string.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
-#include "curs_lib.h"
 #include "globals.h"
+#include "gui/lib.h"
 #include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"
