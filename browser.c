@@ -801,7 +801,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &ml, entries)
       {
-        if (mutt_str_strcmp(mutt_b2s(buf), mailbox_path(np->mailbox)) != 0)
+        if (mutt_str_strcmp(mutt_b2s(buf), mailbox_path(np->mailbox)) == 0)
           break;
       }
 
