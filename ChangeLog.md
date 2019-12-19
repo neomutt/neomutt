@@ -6,6 +6,7 @@ yyyy-mm-dd
   - Avoid crash executing entire-thread inside an IMAP mailbox
   - Avoid spurious newlines when logging headers
   - Index: avoid skipping messages when uncollapse_jump is set
+  - Browser: fix directory browsing without mailboxes defined
 
 2019-12-07  Richard Russon  <rich@flatcap.org>
 * Features
