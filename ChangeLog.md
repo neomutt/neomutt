@@ -17,6 +17,7 @@ yyyy-mm-dd
   - Create libgui
 * Code
   - Refactor Window handling to nest Windows
+  - Add tests for window_reflow()
 * Tidy
 * Upstream
 

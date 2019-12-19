@@ -185,6 +185,8 @@ GROUP_OBJS	= test/group/mutt_group_match.o \
 		  test/group/mutt_grouplist_remove_regex.o \
 		  test/group/mutt_pattern_group.o
 
+GUI_OBJS	= test/gui/reflow.o
+
 HASH_OBJS	= test/hash/mutt_hash_delete.o \
 		  test/hash/mutt_hash_find.o \
 		  test/hash/mutt_hash_find_bucket.o \
@@ -425,7 +427,7 @@ BUILD_DIRS	= $(PWD)/test/address $(PWD)/test/attach $(PWD)/test/base64 \
 		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
 		  $(PWD)/test/config $(PWD)/test/date $(PWD)/test/email \
 		  $(PWD)/test/envelope $(PWD)/test/envlist $(PWD)/test/file \
-		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/hash \
+		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
 		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/list \
 		  $(PWD)/test/logging $(PWD)/test/mapping $(PWD)/test/mbyte \
 		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/parameter \
@@ -449,6 +451,7 @@ TEST_OBJS	= test/main.o \
 		  $(FILE_OBJS) \
 		  $(FROM_OBJS) \
 		  $(GROUP_OBJS) \
+		  $(GUI_OBJS) \
 		  $(HASH_OBJS) \
 		  $(HISTORY_OBJS) \
 		  $(IDNA_OBJS) \

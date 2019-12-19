@@ -403,7 +403,8 @@
   NEOMUTT_TEST_ITEM(test_url_pct_decode)                                       \
   NEOMUTT_TEST_ITEM(test_url_pct_encode)                                       \
   NEOMUTT_TEST_ITEM(test_url_tobuffer)                                         \
-  NEOMUTT_TEST_ITEM(test_url_tostring)
+  NEOMUTT_TEST_ITEM(test_url_tostring)                                         \
+  NEOMUTT_TEST_ITEM(test_window_reflow)
 
 /******************************************************************************
  * You probably don't need to touch what follows.
