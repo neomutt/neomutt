@@ -2682,6 +2682,39 @@ int mutt_index_menu(struct MuttWindow *dlg)
         break;
       }
 
+      case OP_ADD_ID:
+      {
+        if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
+          break;
+        struct Email *e_cur = get_cur_email(Context, menu);
+        if (!e_cur)
+          break;
+        mutt_add_content_id(e_cur, e_cur->content, NULL);
+        break;
+      }
+
+      case OP_EDIT_ID:
+      {
+        if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
+          break;
+        struct Email *e_cur = get_cur_email(Context, menu);
+        if (!e_cur)
+          break;
+        mutt_edit_content_id(e_cur, e_cur->content, NULL);
+        break;
+      }
+
+      case OP_PIPE_ID:
+      {
+        if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
+          break;
+        struct Email *e_cur = get_cur_email(Context, menu);
+        if (!e_cur)
+          break;
+        mutt_pipe_content_id(e_cur, e_cur->content, NULL);
+        break;
+      }
+
       case OP_MAIN_NEXT_UNDELETED:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;

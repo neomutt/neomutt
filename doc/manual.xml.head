@@ -2405,6 +2405,75 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
+              <literal>&lt;add-id&gt;</literal>
+              <anchor id="add-id" />
+            </term>
+            <listitem>
+              <para>
+                This command is used to temporarily add a content ID to an
+                attachment if one is not present already. This ID can be used
+                with a cid: URL to identify the attachment elsewhere in the
+                message. When invoked from the index or from the pager, it will
+                add an ID to the top-level attachment. On the <link
+                    linkend="attach-menu">attachment menu</link>, you can add
+                an ID to any attachment.  These changes are not persistent, and
+                get lost upon changing folders.
+              </para>
+              <para>
+                Note that this command is also available on the
+                <link linkend="compose-menu">compose menu</link>. There, it's
+                used to fine-tune the properties of attachments you are going
+                to send.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <literal>&lt;edit-id&gt;</literal>
+              <anchor id="edit-id" />
+            </term>
+            <listitem>
+              <para>
+                This command is used to temporarily change a content ID of an
+                attachment. This ID can be used with a cid: URL to identify the
+                attachment elsewhere in the message. When invoked from the
+                index or from the pager, it will edit the ID of the top-level
+                attachment. On the <link linkend="attach-menu">attachment
+                menu</link>, you can edit the ID to any attachment.  These
+                changes are not persistent, and get lost upon changing folders.
+              </para>
+              <para>
+                Note that this command is also available on the
+                <link linkend="compose-menu">compose menu</link>. There, it's
+                used to fine-tune the properties of attachments you are going
+                to send.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <literal>&lt;pipe-id&gt;</literal>
+              <anchor id="pipe-id" />
+            </term>
+            <listitem>
+              <para>
+                This command is used to pipe the content ID of an attachment,
+                if it has one, through a specified command (e.g. your clipboard
+                copy command). This ID can be used with a cid: URL to identify
+                the attachment elsewhere in the message. When invoked from the
+                index or from the pager, it will pipe the ID of the top-level
+                attachment. On the <link linkend="attach-menu">attachment
+                  menu</link>, you can pipe the ID of any attachment.
+              </para>
+              <para>
+                Note that this command is also available on the <link
+                    linkend="compose-menu">compose menu</link> as it is most
+                useful when composing emails.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
               <literal>&lt;enter-command&gt;</literal> (default:
               <quote>:</quote>)
               <anchor id="enter-command" />

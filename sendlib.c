@@ -457,6 +457,9 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
   if (a->description)
     fprintf(fp, "Content-Description: %s\n", a->description);
 
+  if (a->id)
+    fprintf(fp, "Content-Id: %s\n", a->id);
+
   if (a->disposition != DISP_NONE)
   {
     const char *dispstr[] = { "inline", "attachment", "form-data" };

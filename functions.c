@@ -143,6 +143,9 @@ const struct Binding OpMain[] = { /* map: index */
   { "edit-or-view-raw-message",  OP_EDIT_OR_VIEW_RAW_MESSAGE,       "e" },
   { "edit-raw-message",          OP_EDIT_RAW_MESSAGE,               NULL },
   { "edit-type",                 OP_EDIT_TYPE,                      "\005" },   // <Ctrl-E>
+  { "add-id",                    OP_ADD_ID,                         NULL },
+  { "edit-id",                   OP_EDIT_ID,                        NULL },
+  { "pipe-id",                   OP_PIPE_ID,                        NULL },
 #ifdef USE_NOTMUCH
   { "entire-thread",             OP_MAIN_ENTIRE_THREAD,             NULL },
 #endif
@@ -292,6 +295,9 @@ const struct Binding OpPager[] = { /* map: pager */
   { "edit-or-view-raw-message",  OP_EDIT_OR_VIEW_RAW_MESSAGE,     "e" },
   { "edit-raw-message",          OP_EDIT_RAW_MESSAGE,             NULL },
   { "edit-type",                 OP_EDIT_TYPE,                    "\005" },     // <Ctrl-E>
+  { "add-id",                    OP_ADD_ID,                       NULL },
+  { "edit-id",                   OP_EDIT_ID,                      NULL },
+  { "pipe-id",                   OP_PIPE_ID,                      NULL },
   { "enter-command",             OP_ENTER_COMMAND,                ":" },
 #ifdef USE_NOTMUCH
   { "entire-thread",             OP_MAIN_ENTIRE_THREAD,           NULL },
@@ -421,6 +427,9 @@ const struct Binding OpAttach[] = { /* map: attachment */
   { "delete-entry",          OP_DELETE,                      "d" },
   { "display-toggle-weed",   OP_DISPLAY_HEADERS,             "h" },
   { "edit-type",             OP_EDIT_TYPE,                   "\005" },          // <Ctrl-E>
+  { "add-id",                OP_ADD_ID,                      NULL },
+  { "edit-id",               OP_EDIT_ID,                     NULL },
+  { "pipe-id",               OP_PIPE_ID,                     NULL },
   { "extract-keys",          OP_EXTRACT_KEYS,                "\013" },          // <Ctrl-K>
 #ifdef USE_NNTP
   { "followup-message",      OP_FOLLOWUP,                    NULL },
@@ -483,6 +492,9 @@ const struct Binding OpCompose[] = { /* map: compose */
   { "edit-subject",          OP_COMPOSE_EDIT_SUBJECT,        "s" },
   { "edit-to",               OP_COMPOSE_EDIT_TO,             "t" },
   { "edit-type",             OP_EDIT_TYPE,                   "\024" },          // <Ctrl-T>
+  { "add-id",                OP_ADD_ID,                      NULL },
+  { "edit-id",               OP_EDIT_ID,                     NULL },
+  { "pipe-id",               OP_PIPE_ID,                     NULL },
 #ifdef USE_NNTP
   { "edit-x-comment-to",     OP_COMPOSE_EDIT_X_COMMENT_TO,   NULL },
 #endif

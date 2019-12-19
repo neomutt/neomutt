@@ -128,6 +128,9 @@
   _fmt(OP_EDIT_OR_VIEW_RAW_MESSAGE,       N_("edit the raw message if the mailbox is not read-only, otherwise view it")) \
   _fmt(OP_EDIT_RAW_MESSAGE,               N_("edit the raw message (edit and edit-raw-message are synonyms)")) \
   _fmt(OP_EDIT_TYPE,                      N_("edit attachment content type")) \
+  _fmt(OP_ADD_ID,                         N_("generate attachment content id if none")) \
+  _fmt(OP_EDIT_ID,                        N_("edit attachment content id")) \
+  _fmt(OP_PIPE_ID,                        N_("pipe attachment content id")) \
   _fmt(OP_END_COND,                       N_("end of conditional execution (noop)")) \
   _fmt(OP_ENTER_COMMAND,                  N_("enter a neomuttrc command")) \
   _fmt(OP_ENTER_MASK,                     N_("enter a file mask")) \

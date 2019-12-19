@@ -39,6 +39,7 @@ struct Body
   struct ParameterList parameter; ///< parameters of the content-type
   char *description;              ///< content-description
   char *form_name;                ///< Content-Disposition form-data name param
+  char *id;                       ///< content-id
   long hdr_offset;                ///< Offset in stream where the headers begin.
                                   ///< This info is used when invoking metamail, where we need to send the headers of the attachment
   LOFF_T offset;                  ///< offset where the actual data begins

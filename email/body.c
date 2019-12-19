@@ -82,6 +82,7 @@ void mutt_body_free(struct Body **ptr)
     FREE(&b->subtype);
     FREE(&b->language);
     FREE(&b->description);
+    FREE(&b->id);
     FREE(&b->form_name);
 
     if (b->email)
@@ -113,6 +114,7 @@ bool mutt_body_cmp_strict(const struct Body *b1, const struct Body *b2)
   if ((b1->type != b2->type) || (b1->encoding != b2->encoding) ||
       (mutt_str_strcmp(b1->subtype, b2->subtype) != 0) ||
       (mutt_str_strcmp(b1->description, b2->description) != 0) ||
+      (mutt_str_strcmp(b1->id, b2->id) != 0) ||
       !mutt_param_cmp_strict(&b1->parameter, &b2->parameter) || (b1->length != b2->length))
   {
     return false;

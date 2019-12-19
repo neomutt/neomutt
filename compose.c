@@ -1886,6 +1886,29 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 
+      case OP_ADD_ID:
+        CHECK_COUNT;
+        {
+          mutt_add_content_id(NULL, CUR_ATTACH->content, NULL);
+        }
+        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+        break;
+
+      case OP_EDIT_ID:
+        CHECK_COUNT;
+        {
+          mutt_edit_content_id(NULL, CUR_ATTACH->content, NULL);
+        }
+        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+        break;
+
+      case OP_PIPE_ID:
+        CHECK_COUNT;
+        {
+          mutt_pipe_content_id(NULL, CUR_ATTACH->content, NULL);
+        }
+        break;
+
       case OP_COMPOSE_EDIT_LANGUAGE:
         CHECK_COUNT;
         buf[0] = '\0'; /* clear buffer first */

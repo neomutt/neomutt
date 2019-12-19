@@ -1342,6 +1342,10 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
         mutt_str_replace(&p->description, c);
         rfc2047_decode(&p->description);
       }
+      else if (mutt_str_strcasecmp("id", line + plen) == 0)
+      {
+        mutt_str_replace(&p->id, c);
+      }
     }
 #ifdef SUN_ATTACHMENT
     else if ((plen = mutt_str_startswith(line, "x-sun-", CASE_IGNORE)))

@@ -90,6 +90,8 @@ bool C_PrintDecode; ///< Config: Decode message before printing it
 bool C_PrintSplit;  ///< Config: Print multiple messages separately
 bool C_PromptAfter; ///< Config: Pause after running an external pager
 
+static const int MUTT_RANDTAG_LEN = 16;
+
 static const char *ExtPagerProgress = "all";
 
 /** The folder the user last saved to.  Used by ci_save_message() */
@@ -1337,6 +1339,135 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   }
 
   return structure_changed;
+}
+
+/**
+ * gen_content_id - Generate a unique Content ID
+ * @retval ptr Content ID
+ *
+ * @note The caller should free the string
+ */
+static char *gen_content_id(struct Body *b)
+{
+  char buf[128];
+  unsigned char rndid[MUTT_RANDTAG_LEN + 1];
+
+  mutt_rand_base32(rndid, sizeof(rndid) - 1);
+  rndid[MUTT_RANDTAG_LEN] = 0;
+
+  const char *basename = mutt_path_basename(b->filename);
+
+  struct tm tm = mutt_date_gmtime(MUTT_DATE_NOW);
+  snprintf(buf, sizeof(buf), "<%d%02d%02d%02d%02d%02d.%s@%s>", tm.tm_year + 1900,
+           tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, rndid, basename);
+  return mutt_str_strdup(buf);
+}
+
+/**
+ * mutt_add_content_id - Add a content id of an attachment if has none
+ * @param e  Email
+ * @param b  Attachment
+ * @param fp File handle to the attachment
+ * @retval bool true if a structural change is made
+ *
+ * recvattach requires the return code to know when to regenerate the actx.
+ */
+bool mutt_add_content_id(struct Email *e, struct Body *b, FILE *fp)
+{
+  char msg[256];
+  bool structure_changed = false;
+
+  if (b->id && mutt_str_strlen(b->id) > 0) {
+    snprintf(msg, sizeof(msg), "Existing ID: %s", b->id);
+  } else {
+    FREE(b->id);
+    b->id = gen_content_id(b);
+    snprintf(msg, sizeof(msg), "Generated ID: %s", b->id);
+    structure_changed = true;
+  }
+
+  mutt_message(msg);
+
+  return structure_changed;
+}
+
+/**
+ * mutt_edit_content_id - Edit the content id of an attachment
+ * @param e  Email
+ * @param b  Attachment
+ * @param fp File handle to the attachment
+ * @retval bool true if a structural change is made
+ *
+ * recvattach requires the return code to know when to regenerate the actx.
+ */
+bool mutt_edit_content_id(struct Email *e, struct Body *b, FILE *fp)
+{
+  char buf[1024];
+  bool structure_changed = false;
+
+  if (!b->id) {
+    mutt_str_strfcpy(buf, "", sizeof(buf));
+  } else {
+    mutt_str_strfcpy(buf, b->id, sizeof(buf));
+  }
+
+  if ((mutt_get_field("Content-Id: ", buf, sizeof(buf), 0) != 0) || (buf[0] == '\0'))
+    return false;
+
+  structure_changed = (mutt_str_strcasecmp(buf, b->id) != 0);
+
+  if (structure_changed)
+  {
+    FREE(b->id);
+    b->id = mutt_str_strdup(buf);
+  }
+
+  return structure_changed;
+}
+
+/**
+ * mutt_pipe_content_id - Pipe content_id of attachment to a command,
+ * @param e  Email
+ * @param b  Attachment
+ * @param fp File handle to the attachment
+ */
+void mutt_pipe_content_id(struct Email *e, struct Body *b, FILE *fp)
+{
+  if (!b)
+    return;
+
+  if (!b->id || mutt_str_strlen(b->id) == 0) {
+    mutt_perror(_("Content has no ID"));
+    return;
+  }
+
+  char buf[1024] = { 0 };
+  int rc = 0;
+  pid_t pid;
+  FILE *fp_out = NULL;
+
+  if ((mutt_get_field(_("Pipe to command: "), buf, sizeof(buf), MUTT_CMD) != 0) ||
+      (buf[0] == '\0'))
+  {
+    return;
+  }
+
+  mutt_expand_path(buf, sizeof(buf));
+
+  pid = filter_create(buf, &fp_out, NULL, NULL);
+  if (pid < 0)
+  {
+    mutt_perror(_("Can't create filter process"));
+    return;
+  }
+
+  fprintf(fp_out, b->id, mutt_str_strlen(b->id));
+
+  mutt_file_fclose(&fp_out);
+  rc = filter_wait(pid);
+
+  if ((rc != 0) || C_WaitKey)
+    mutt_any_key_to_continue(NULL);
 }
 
 /**

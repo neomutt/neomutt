@@ -1133,6 +1133,62 @@ static void recvattach_edit_content_type(struct AttachCtx *actx,
 }
 
 /**
+ * recvattach_add_content_id - Add content id to an attachment if none
+ * @param actx Attachment context
+ * @param menu Menu listing Attachments
+ * @param e  Email
+ */
+static void recvattach_add_content_id(struct AttachCtx *actx,
+                                      struct Menu *menu, struct Email *e)
+{
+  if (!mutt_add_content_id(e, CUR_ATTACH->content, CUR_ATTACH->fp))
+    return;
+
+  /* The mutt_update_recvattach_menu() will overwrite any changes
+   * made to a decrypted CUR_ATTACH->content, so warn the user. */
+  if (CUR_ATTACH->decrypted)
+  {
+    mutt_message(
+        _("Structural changes to decrypted attachments are not supported"));
+    mutt_sleep(1);
+  }
+}
+
+/**
+ * recvattach_edit_content_id - Edit the content id of an attachment
+ * @param actx Attachment context
+ * @param menu Menu listing Attachments
+ * @param e  Email
+ */
+static void recvattach_edit_content_id(struct AttachCtx *actx,
+                                       struct Menu *menu, struct Email *e)
+{
+  if (!mutt_edit_content_id(e, CUR_ATTACH->content, CUR_ATTACH->fp))
+    return;
+
+  /* The mutt_update_recvattach_menu() will overwrite any changes
+   * made to a decrypted CUR_ATTACH->content, so warn the user. */
+  if (CUR_ATTACH->decrypted)
+  {
+    mutt_message(
+        _("Structural changes to decrypted attachments are not supported"));
+    mutt_sleep(1);
+  }
+}
+
+/**
+ * recvattach_pipe_content_id - Pipe the content id of an attachment
+ * @param actx Attachment context
+ * @param menu Menu listing Attachments
+ * @param e  Email
+ */
+static void recvattach_pipe_content_id(struct AttachCtx *actx,
+                                       struct Menu *menu, struct Email *e)
+{
+  mutt_pipe_content_id(e, CUR_ATTACH->content, CUR_ATTACH->fp);
+}
+
+/**
  * mutt_attach_display_loop - Event loop for the Attachment menu
  * @param menu Menu listing Attachments
  * @param op   Operation, e.g. OP_VIEW_ATTACH
@@ -1188,6 +1244,27 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
 
         menu->redraw |= REDRAW_INDEX;
         op = OP_VIEW_ATTACH;
+        break;
+      case OP_ADD_ID:
+        mutt_add_content_id(e, CUR_ATTACH->content, CUR_ATTACH->fp);
+        if (recv)
+          recvattach_add_content_id(actx, menu, e);
+        else
+          mutt_add_content_id(e, CUR_ATTACH->content, CUR_ATTACH->fp);
+        break;
+      case OP_EDIT_ID:
+        mutt_edit_content_id(e, CUR_ATTACH->content, CUR_ATTACH->fp);
+        if (recv)
+          recvattach_edit_content_id(actx, menu, e);
+        else
+          mutt_edit_content_id(e, CUR_ATTACH->content, CUR_ATTACH->fp);
+        break;
+      case OP_PIPE_ID:
+        mutt_pipe_content_id(e, CUR_ATTACH->content, CUR_ATTACH->fp);
+        if (recv)
+          recvattach_pipe_content_id(actx, menu, e);
+        else
+          mutt_pipe_content_id(e, CUR_ATTACH->content, CUR_ATTACH->fp);
         break;
       /* functions which are passed through from the pager */
       case OP_CHECK_TRADITIONAL:
@@ -1716,6 +1793,18 @@ void mutt_view_attachments(struct Email *e)
       case OP_EDIT_TYPE:
         recvattach_edit_content_type(actx, menu, e);
         menu->redraw |= REDRAW_INDEX;
+        break;
+
+      case OP_ADD_ID:
+        recvattach_add_content_id(actx, menu, e);
+        break;
+
+      case OP_EDIT_ID:
+        recvattach_edit_content_id(actx, menu, e);
+        break;
+
+      case OP_PIPE_ID:
+        recvattach_edit_content_id(actx, menu, e);
         break;
 
       case OP_EXIT:
