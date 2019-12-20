@@ -1247,6 +1247,11 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *e_cur, MuttThreadFla
     return e_cur->vnum;
   }
 
+  if (!e_cur->thread)
+  {
+    return e_cur->vnum;
+  }
+
   final = e_cur->vnum;
   thread = e_cur->thread;
   while (thread->parent)
