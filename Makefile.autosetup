@@ -130,6 +130,14 @@ MUTTLIBS+=	$(LIBGUI)
 ALLOBJS+=	$(LIBGUIOBJS)
 
 ###############################################################################
+# libdebug
+LIBDEBUG=	libdebug.a
+LIBDEBUGOBJS=	
+CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
+MUTTLIBS+=	$(LIBDEBUG)
+ALLOBJS+=	$(LIBDEBUGOBJS)
+
+###############################################################################
 # libmbox
 LIBMBOX=	libmbox.a
 LIBMBOXOBJS=	mbox/mbox.o
@@ -367,6 +375,13 @@ $(LIBGUI): $(PWD)/gui $(LIBGUIOBJS)
 	$(RANLIB) $@
 $(PWD)/gui:
 	$(MKDIR_P) $(PWD)/gui
+
+# libdebug
+$(LIBDEBUG): $(PWD)/debug $(LIBDEBUGOBJS)
+	$(AR) cr $@ $(LIBDEBUGOBJS)
+	$(RANLIB) $@
+$(PWD)/debug:
+	$(MKDIR_P) $(PWD)/debug
 
 # libmbox
 $(LIBMBOX): $(PWD)/mbox $(LIBMBOXOBJS)
