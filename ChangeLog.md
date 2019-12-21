@@ -2,11 +2,22 @@ yyyy-mm-dd
 * Features
   - GPGMe: infer the signing key from the sender's address
   - Classc PGP: emit a confirmation when a message is successfully decrypted
-* BugFixes
+* Contrib
+* Bug Fixes
   - Avoid crash executing entire-thread inside an IMAP mailbox
   - Avoid spurious newlines when logging headers
   - Index: avoid skipping messages when uncollapse_jump is set
   - Browser: fix directory browsing without mailboxes defined
+* Changed Config
+* Translations
+* Coverity defects
+* Docs
+* Website
+* Build
+* Code
+  - Refactor Window handling to nest Windows
+* Tidy
+* Upstream
 
 2019-12-07  Richard Russon  <rich@flatcap.org>
 * Features

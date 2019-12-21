@@ -91,7 +91,8 @@ void mutt_resize_screen(void)
   SLsmg_init_smg();
   stdscr = newwin(0, 0, 0, 0);
   keypad(stdscr, true);
-  mutt_window_reflow();
+  mutt_window_set_root(w.ws_row, w.ws_col);
+  mutt_window_reflow(NULL);
 }
 #else
 /**
@@ -119,6 +120,7 @@ void mutt_resize_screen(void)
   }
 
   resizeterm(screenrows, screencols);
-  mutt_window_reflow();
+  mutt_window_set_root(w.ws_row, w.ws_col);
+  mutt_window_reflow(NULL);
 }
 #endif

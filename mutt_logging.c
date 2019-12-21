@@ -169,7 +169,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
     error_pause();
 
   mutt_simple_format(ErrorBuf, sizeof(ErrorBuf), 0,
-                     MuttMessageWindow ? MuttMessageWindow->cols : sizeof(ErrorBuf),
+                     MuttMessageWindow ? MuttMessageWindow->state.cols : sizeof(ErrorBuf),
                      JUSTIFY_LEFT, 0, buf, sizeof(buf), false);
   ErrorBufMessage = true;
 

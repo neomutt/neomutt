@@ -56,6 +56,7 @@
 #include "hook.h"
 #include "index.h"
 #include "keymap.h"
+#include "main.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
@@ -159,7 +160,7 @@ int HeaderPadding[HDR_ATTACH_TITLE] = { 0 };
 int MaxHeaderWidth = 0;
 
 #define HDR_XOFFSET MaxHeaderWidth
-#define W (rd->win->cols - MaxHeaderWidth)
+#define W (rd->win->state.cols - MaxHeaderWidth)
 
 static const char *const Prompts[] = {
   /* L10N: Compose menu field.  May not want to translate. */
@@ -317,8 +318,9 @@ static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line
 {
   struct AttachCtx *actx = menu->data;
 
-  mutt_expando_format(buf, buflen, 0, menu->indexwin->cols, NONULL(C_AttachFormat),
-                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[line]]),
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
+                      NONULL(C_AttachFormat), attach_format_str,
+                      (unsigned long) (actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -557,7 +559,7 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
     if (t && (t[0] == '0') && (t[1] == '\0'))
       t = "<random>";
 
-    if (c + mutt_str_strlen(t) + 2 >= rd->win->cols)
+    if (c + mutt_str_strlen(t) + 2 >= rd->win->state.cols)
       break;
 
     mutt_window_addstr(NONULL(t));
@@ -902,7 +904,7 @@ static void compose_custom_redraw(struct Menu *menu)
 
     draw_envelope(rd);
     menu->offset = HDR_ATTACH;
-    menu->pagelen = menu->indexwin->rows - HDR_ATTACH;
+    menu->pagelen = menu->win_index->state.rows - HDR_ATTACH;
   }
 
   menu_check_recenter(menu);
@@ -910,11 +912,11 @@ static void compose_custom_redraw(struct Menu *menu)
   if (menu->redraw & REDRAW_STATUS)
   {
     char buf[1024];
-    compose_status_line(buf, sizeof(buf), 0, menu->statuswin->cols, menu,
+    compose_status_line(buf, sizeof(buf), 0, menu->win_ibar->state.cols, menu,
                         NONULL(C_ComposeFormat));
-    mutt_window_move(menu->statuswin, 0, 0);
+    mutt_window_move(menu->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
-    mutt_draw_statusline(menu->statuswin->cols, buf, sizeof(buf));
+    mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_NORMAL);
     menu->redraw &= ~REDRAW_STATUS;
   }
@@ -1084,6 +1086,34 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
 }
 
 /**
+ * mutt_dlg_compose_observer - Listen for config changes affecting the Compose menu - Implements ::observer_t()
+ */
+int mutt_dlg_compose_observer(struct NotifyCallback *nc)
+{
+  if (!nc || !nc->event || !nc->data)
+    return -1;
+
+  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  struct MuttWindow *dlg = (struct MuttWindow *) nc->data;
+
+  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+    return 0;
+
+  struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
+
+  if ((C_StatusOnTop && (win_first->type == WT_INDEX)) ||
+      (!C_StatusOnTop && (win_first->type != WT_INDEX)))
+  {
+    // Swap the Index and the IndexBar Windows
+    TAILQ_REMOVE(&dlg->children, win_first, entries);
+    TAILQ_INSERT_TAIL(&dlg->children, win_first, entries);
+  }
+
+  mutt_window_reflow(dlg);
+  return 0;
+}
+
+/**
  * mutt_compose_menu - Allow the user to edit the message envelope
  * @param e      Email to fill
  * @param fcc    Buffer to save FCC
@@ -1108,11 +1138,43 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
   init_header_padding();
 
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  index->type = WT_INDEX;
+  struct MuttWindow *ibar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  ibar->type = WT_INDEX_BAR;
+
   rd->email = e;
   rd->fcc = fcc;
-  rd->win = MuttIndexWindow;
+  rd->win = index;
+
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(dlg, ibar);
+    mutt_window_add_child(dlg, index);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, ibar);
+  }
+
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_dlg_compose_observer,
+                      (intptr_t) dlg);
+  dialog_push(dlg);
 
   struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
+
+  menu->pagelen = index->state.rows;
+  menu->win_index = index;
+  menu->win_ibar = ibar;
+
   menu->offset = HDR_ATTACH;
   menu->menu_make_entry = snd_make_entry;
   menu->menu_tag = attach_tag;
@@ -1189,11 +1251,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), 0) == 0)
         {
           mutt_str_replace(&e->env->newsgroups, buf);
-          mutt_window_move(menu->indexwin, HDR_TO, HDR_XOFFSET);
+          mutt_window_move(menu->win_index, HDR_TO, HDR_XOFFSET);
           if (e->env->newsgroups)
             mutt_paddstr(W, e->env->newsgroups);
           else
-            mutt_window_clrtoeol(menu->indexwin);
+            mutt_window_clrtoeol(menu->win_index);
         }
         break;
 
@@ -1207,11 +1269,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) == 0)
         {
           mutt_str_replace(&e->env->followup_to, buf);
-          mutt_window_move(menu->indexwin, HDR_CC, HDR_XOFFSET);
+          mutt_window_move(menu->win_index, HDR_CC, HDR_XOFFSET);
           if (e->env->followup_to)
             mutt_paddstr(W, e->env->followup_to);
           else
-            mutt_window_clrtoeol(menu->indexwin);
+            mutt_window_clrtoeol(menu->win_index);
         }
         break;
 
@@ -1225,11 +1287,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) == 0)
         {
           mutt_str_replace(&e->env->x_comment_to, buf);
-          mutt_window_move(menu->indexwin, HDR_BCC, HDR_XOFFSET);
+          mutt_window_move(menu->win_index, HDR_BCC, HDR_XOFFSET);
           if (e->env->x_comment_to)
             mutt_paddstr(W, e->env->x_comment_to);
           else
-            mutt_window_clrtoeol(menu->indexwin);
+            mutt_window_clrtoeol(menu->win_index);
         }
         break;
 #endif
@@ -1242,11 +1304,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) == 0)
         {
           mutt_str_replace(&e->env->subject, buf);
-          mutt_window_move(menu->indexwin, HDR_SUBJECT, HDR_XOFFSET);
+          mutt_window_move(menu->win_index, HDR_SUBJECT, HDR_XOFFSET);
           if (e->env->subject)
             mutt_paddstr(W, e->env->subject);
           else
-            mutt_window_clrtoeol(menu->indexwin);
+            mutt_window_clrtoeol(menu->win_index);
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -1262,7 +1324,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         {
           mutt_buffer_copy(fcc, &fname);
           mutt_buffer_pretty_mailbox(fcc);
-          mutt_window_move(menu->indexwin, HDR_FCC, HDR_XOFFSET);
+          mutt_window_move(menu->win_index, HDR_FCC, HDR_XOFFSET);
           mutt_paddstr(W, mutt_b2s(fcc));
           fcc_set = true;
         }
@@ -1684,7 +1746,15 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         Context = ctx;
         OptAttachMsg = true;
         mutt_message(_("Tag the messages you want to attach"));
-        mutt_index_menu();
+        struct MuttWindow *dlg_index = index_pager_init();
+        notify_observer_add(Config->notify, NT_CONFIG, 0,
+                            mutt_dlg_index_observer, (intptr_t) dlg_index);
+        dialog_push(dlg_index);
+        mutt_index_menu(dlg_index);
+        dialog_pop();
+        notify_observer_remove(Config->notify, mutt_dlg_index_observer, (intptr_t) dlg_index);
+        index_pager_shutdown(dlg_index);
+        mutt_window_free(&dlg_index);
         OptAttachMsg = false;
 
         if (!Context)
@@ -2209,7 +2279,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:
-        mix_make_chain(menu->indexwin, &e->chain, menu->indexwin->cols);
+        mix_make_chain(menu->win_index, &e->chain, menu->win_index->state.cols);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 #endif
@@ -2253,6 +2323,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
+  dialog_pop();
+  notify_observer_remove(Config->notify, mutt_dlg_compose_observer, (intptr_t) dlg);
+  mutt_window_free(&dlg);
 
   if (actx->idxlen)
     e->content = actx->idx[0]->content;

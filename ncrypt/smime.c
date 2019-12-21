@@ -54,6 +54,7 @@
 #include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
+#include "mutt_window.h"
 #include "muttlib.h"
 #include "ncrypt.h"
 #include "opcodes.h"
@@ -553,8 +554,38 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   mutt_make_help(buf, sizeof(buf), _("Help"), MENU_SMIME, OP_HELP);
   strcat(helpstr, buf);
 
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  index->type = WT_INDEX;
+  struct MuttWindow *ibar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  ibar->type = WT_INDEX_BAR;
+
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(dlg, ibar);
+    mutt_window_add_child(dlg, index);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, ibar);
+  }
+
+  dialog_push(dlg);
+
   /* Create the menu */
   menu = mutt_menu_new(MENU_SMIME);
+
+  menu->pagelen = index->state.rows;
+  menu->win_index = index;
+  menu->win_ibar = ibar;
+
   menu->max = table_index;
   menu->menu_make_entry = smime_make_entry;
   menu->help = helpstr;
@@ -611,6 +642,8 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
   FREE(&table);
+  dialog_pop();
+  mutt_window_free(&dlg);
 
   return selected_key;
 }

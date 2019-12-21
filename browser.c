@@ -957,14 +957,14 @@ static void folder_make_entry(char *buf, size_t buflen, struct Menu *menu, int l
 #ifdef USE_NNTP
   if (OptNews)
   {
-    mutt_expando_format(buf, buflen, 0, menu->indexwin->cols,
+    mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                         NONULL(C_GroupIndexFormat), group_index_format_str,
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
   else
 #endif
   {
-    mutt_expando_format(buf, buflen, 0, menu->indexwin->cols,
+    mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                         NONULL(C_FolderFormat), folder_format_str,
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
@@ -1140,6 +1140,34 @@ void mutt_browser_select_dir(const char *f)
   char buf[PATH_MAX];
   mutt_get_parent_path(mutt_b2s(&LastDirBackup), buf, sizeof(buf));
   mutt_buffer_strcpy(&LastDir, buf);
+}
+
+/**
+ * mutt_dlg_browser_observer - Listen for config changes affecting the Browser menu - Implements ::observer_t()
+ */
+int mutt_dlg_browser_observer(struct NotifyCallback *nc)
+{
+  if (!nc || !nc->event || !nc->data)
+    return -1;
+
+  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  struct MuttWindow *dlg = (struct MuttWindow *) nc->data;
+
+  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+    return 0;
+
+  struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
+
+  if ((C_StatusOnTop && (win_first->type == WT_INDEX)) ||
+      (!C_StatusOnTop && (win_first->type != WT_INDEX)))
+  {
+    // Swap the Index and the IndexBar Windows
+    TAILQ_REMOVE(&dlg->children, win_first, entries);
+    TAILQ_INSERT_TAIL(&dlg->children, win_first, entries);
+  }
+
+  mutt_window_reflow(dlg);
+  return 0;
 }
 
 /**
@@ -1350,7 +1378,40 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
     if (examine_directory(NULL, &state, mutt_b2s(&LastDir), mutt_b2s(prefix)) == -1)
       goto bail;
   }
+
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  index->type = WT_INDEX;
+  struct MuttWindow *ibar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  ibar->type = WT_INDEX_BAR;
+
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(dlg, ibar);
+    mutt_window_add_child(dlg, index);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, ibar);
+  }
+
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_dlg_browser_observer,
+                      (intptr_t) dlg);
+  dialog_push(dlg);
+
   menu = mutt_menu_new(MENU_FOLDER);
+
+  menu->pagelen = index->state.rows;
+  menu->win_index = index;
+  menu->win_ibar = ibar;
+
   menu->menu_make_entry = folder_make_entry;
   menu->menu_search = select_file_search;
   menu->title = title;
@@ -1985,7 +2046,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           struct Body *b = mutt_make_file_attach(buf2);
           if (b)
           {
-            mutt_view_attachment(NULL, b, MUTT_VA_REGULAR, NULL, NULL, menu->indexwin);
+            mutt_view_attachment(NULL, b, MUTT_VA_REGULAR, NULL, NULL, menu->win_index);
             mutt_body_free(&b);
             menu->redraw = REDRAW_FULL;
           }
@@ -2175,6 +2236,9 @@ bail:
   {
     mutt_menu_pop_current(menu);
     mutt_menu_free(&menu);
+    dialog_pop();
+    notify_observer_remove(Config->notify, mutt_dlg_browser_observer, (intptr_t) dlg);
+    mutt_window_free(&dlg);
   }
 
   goto_swapper[0] = '\0';

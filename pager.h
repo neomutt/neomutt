@@ -69,6 +69,11 @@ struct Pager
   struct Body *body;      ///< Current attachment
   FILE *fp;               ///< Source stream
   struct AttachCtx *actx; ///< Attachment information
+
+  struct MuttWindow *win_ibar;
+  struct MuttWindow *win_index;
+  struct MuttWindow *win_pbar;
+  struct MuttWindow *win_pager;
 };
 
 int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra);

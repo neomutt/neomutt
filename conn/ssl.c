@@ -63,6 +63,7 @@
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
+#include "mutt_window.h"
 #include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
@@ -891,11 +892,40 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   char helpstr[1024];
   char buf[256];
   char title[256];
-  struct Menu *menu = mutt_menu_new(MENU_GENERIC);
   int done;
   FILE *fp = NULL;
   int ALLOW_SKIP = 0; /* All caps tells Coverity that this is effectively a preproc condition */
   bool reset_ignoremacro = false;
+
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  index->type = WT_INDEX;
+  struct MuttWindow *ibar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  ibar->type = WT_INDEX_BAR;
+
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(dlg, ibar);
+    mutt_window_add_child(dlg, index);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, ibar);
+  }
+
+  dialog_push(dlg);
+
+  struct Menu *menu = mutt_menu_new(MENU_GENERIC);
+  menu->pagelen = index->state.rows;
+  menu->win_index = index;
+  menu->win_ibar = ibar;
 
   mutt_menu_push_current(menu);
 
@@ -1040,6 +1070,8 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   mutt_buffer_pool_release(&drow);
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
+  dialog_pop();
+  mutt_window_free(&dlg);
   mutt_debug(LL_DEBUG2, "done=%d\n", done);
   return done == 2;
 }

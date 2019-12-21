@@ -1,6 +1,6 @@
 /**
  * @file
- * Command line processing
+ * Window management
  *
  * @authors
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
@@ -20,16 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MAIN_H
-#define MUTT_MAIN_H
+#ifndef MUTT_REFLOW_H
+#define MUTT_REFLOW_H
 
-#include <stdbool.h>
+struct MuttWindow;
 
-struct NotifyCallback;
+void window_reflow(struct MuttWindow *win);
 
-/* These Config Variables are only used in main.c */
-extern bool C_ResumeEditedDraftFiles;
-
-int mutt_dlg_index_observer(struct NotifyCallback *nc);
-
-#endif /* MUTT_MAIN_H */
+#endif /* MUTT_REFLOW_H */

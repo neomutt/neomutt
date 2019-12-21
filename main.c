@@ -689,13 +689,12 @@ int main(int argc, char *argv[], char *envp[])
   if (!OptNoCurses)
   {
     int crc = start_curses();
-
     if (crc != 0)
       goto main_curses; // TEST08: can't test -- fake term?
 
     /* check whether terminal status is supported (must follow curses init) */
     TsSupported = mutt_ts_capability();
-    mutt_window_reflow();
+    mutt_window_set_root(LINES, COLS);
   }
 
   /* set defaults and read init files */
@@ -1251,7 +1250,15 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef USE_SIDEBAR
       mutt_sb_set_open_mailbox(Context ? Context->mailbox : NULL);
 #endif
-      mutt_index_menu();
+      struct MuttWindow *dlg = index_pager_init();
+      notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_dlg_index_observer,
+                          (intptr_t) dlg);
+      dialog_push(dlg);
+      mutt_index_menu(dlg);
+      dialog_pop();
+      notify_observer_remove(Config->notify, mutt_dlg_index_observer, (intptr_t) dlg);
+      index_pager_shutdown(dlg);
+      mutt_window_free(&dlg);
       ctx_free(&Context);
       log_queue_empty();
       repeat_error = false;

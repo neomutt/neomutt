@@ -416,13 +416,13 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
         clearok(stdscr, true);
         mutt_menu_current_redraw();
       }
-      if (MuttMessageWindow->cols)
+      if (MuttMessageWindow->state.cols)
       {
-        prompt_lines = (msg_wid + answer_string_wid + MuttMessageWindow->cols - 1) /
-                       MuttMessageWindow->cols;
+        prompt_lines = (msg_wid + answer_string_wid + MuttMessageWindow->state.cols - 1) /
+                       MuttMessageWindow->state.cols;
         prompt_lines = MAX(1, MIN(3, prompt_lines));
       }
-      if (prompt_lines != MuttMessageWindow->rows)
+      if (prompt_lines != MuttMessageWindow->state.rows)
       {
         mutt_window_reflow_message_rows(prompt_lines);
         mutt_menu_current_redraw();
@@ -430,8 +430,8 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 
       /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
       trunc_msg_len = mutt_wstr_trunc(
-          msg, (size_t) 4 * prompt_lines * MuttMessageWindow->cols,
-          ((size_t) prompt_lines * MuttMessageWindow->cols) - answer_string_wid, NULL);
+          msg, (size_t) 4 * prompt_lines * MuttMessageWindow->state.cols,
+          ((size_t) prompt_lines * MuttMessageWindow->state.cols) - answer_string_wid, NULL);
 
       mutt_window_move(MuttMessageWindow, 0, 0);
       mutt_curses_set_color(MT_COLOR_PROMPT);
@@ -480,7 +480,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   if (reno_ok)
     regfree(&reno);
 
-  if (MuttMessageWindow->rows == 1)
+  if (MuttMessageWindow->state.rows == 1)
   {
     mutt_window_clearline(MuttMessageWindow, 0);
   }
@@ -620,6 +620,38 @@ int mutt_any_key_to_continue(const char *s)
 }
 
 /**
+ * mutt_dlg_dopager_observer - Listen for config changes affecting the dopager menus - Implements ::observer_t()
+ */
+int mutt_dlg_dopager_observer(struct NotifyCallback *nc)
+{
+  if (!nc)
+    return -1;
+
+  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+    return 0;
+
+  struct MuttWindow *dlg = (struct MuttWindow *) nc->data;
+  if (!dlg)
+    return -1;
+
+  struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
+  if (!win_first)
+    return -1;
+
+  if ((C_StatusOnTop && (win_first->type == WT_PAGER)) ||
+      (!C_StatusOnTop && (win_first->type != WT_PAGER)))
+  {
+    // Swap the Index and the IndexBar Windows
+    TAILQ_REMOVE(&dlg->children, win_first, entries);
+    TAILQ_INSERT_TAIL(&dlg->children, win_first, entries);
+  }
+
+  mutt_window_reflow(dlg);
+  return 0;
+}
+
+/**
  * mutt_do_pager - Display some page-able text to the user
  * @param banner   Message for status bar
  * @param tempfile File to display
@@ -631,6 +663,42 @@ int mutt_any_key_to_continue(const char *s)
 int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
                   struct Pager *info)
 {
+  struct Pager info2 = { 0 };
+  if (!info)
+    info = &info2;
+
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *pager =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  pager->type = WT_PAGER;
+  struct MuttWindow *pbar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  pbar->type = WT_PAGER_BAR;
+
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(dlg, pbar);
+    mutt_window_add_child(dlg, pager);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, pager);
+    mutt_window_add_child(dlg, pbar);
+  }
+
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_dlg_dopager_observer,
+                      (intptr_t) dlg);
+  dialog_push(dlg);
+
+  info->win_ibar = NULL;
+  info->win_index = NULL;
+  info->win_pbar = pbar;
+  info->win_pager = pager;
+
   int rc;
 
   if (!C_Pager || (mutt_str_strcmp(C_Pager, "builtin") == 0))
@@ -652,6 +720,9 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
     mutt_buffer_pool_release(&cmd);
   }
 
+  dialog_pop();
+  notify_observer_remove(Config->notify, mutt_dlg_dopager_observer, (intptr_t) dlg);
+  mutt_window_free(&dlg);
   return rc;
 }
 
@@ -881,7 +952,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         clearok(stdscr, true);
         mutt_menu_current_redraw();
       }
-      if (MuttMessageWindow->cols)
+      if (MuttMessageWindow->state.cols)
       {
         int width = mutt_strwidth(prompt) + 2; // + '?' + space
         /* If we're going to colour the options,
@@ -889,10 +960,11 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         if (opt_cols)
           width -= 2 * mutt_str_strlen(letters);
 
-        prompt_lines = (width + MuttMessageWindow->cols - 1) / MuttMessageWindow->cols;
+        prompt_lines = (width + MuttMessageWindow->state.cols - 1) /
+                       MuttMessageWindow->state.cols;
         prompt_lines = MAX(1, MIN(3, prompt_lines));
       }
-      if (prompt_lines != MuttMessageWindow->rows)
+      if (prompt_lines != MuttMessageWindow->state.rows)
       {
         mutt_window_reflow_message_rows(prompt_lines);
         mutt_menu_current_redraw();
@@ -965,7 +1037,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
     }
     mutt_beep(false);
   }
-  if (MuttMessageWindow->rows == 1)
+  if (MuttMessageWindow->state.rows == 1)
   {
     mutt_window_clearline(MuttMessageWindow, 0);
   }

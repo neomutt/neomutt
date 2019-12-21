@@ -152,9 +152,6 @@ WHERE short C_SleepTime;                     ///< Config: Time to pause after ce
 WHERE short C_Timeout;                       ///< Config: Time to wait for user input in menus
 WHERE short C_Wrap;                          ///< Config: Width to wrap text in the pager
 
-#ifdef USE_SIDEBAR
-WHERE short C_SidebarWidth;                  ///< Config: (sidebar) Width of the sidebar
-#endif
 #ifdef USE_IMAP
 WHERE short C_ImapKeepalive;                 ///< Config: (imap) Time to wait before polling an open IMAP connection
 WHERE short C_ImapPollTimeout;               ///< Config: (imap) Maximum time to wait for a server response
@@ -252,10 +249,6 @@ WHERE bool C_ResumeDraftFiles;               ///< Config: Process draft files li
 WHERE bool C_SaveAddress;                    ///< Config: Use sender's full address as a default save folder
 WHERE bool C_SaveEmpty;                      ///< Config: (mbox,mmdf) Preserve empty mailboxes
 WHERE bool C_Score;                          ///< Config: Use message scoring
-#ifdef USE_SIDEBAR
-WHERE bool C_SidebarVisible;                 ///< Config: (sidebar) Show the sidebar
-WHERE bool C_SidebarOnRight;                 ///< Config: (sidebar) Display the sidebar on the right
-#endif
 WHERE bool C_SizeShowBytes;                  ///< Config: Show smaller sizes in bytes
 WHERE bool C_SizeShowFractions;              ///< Config: Show size fractions with a single decimal place
 WHERE bool C_SizeShowMb;                     ///< Config: Show sizes in megabytes for sizes greater than 1 megabyte

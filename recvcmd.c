@@ -242,9 +242,10 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   snprintf(prompt, sizeof(prompt) - 4,
            ngettext("Bounce message to %s?", "Bounce messages to %s?", p), buf);
 
-  if (mutt_strwidth(prompt) > MuttMessageWindow->cols - EXTRA_SPACE)
+  if (mutt_strwidth(prompt) > MuttMessageWindow->state.cols - EXTRA_SPACE)
   {
-    mutt_simple_format(prompt, sizeof(prompt) - 4, 0, MuttMessageWindow->cols - EXTRA_SPACE,
+    mutt_simple_format(prompt, sizeof(prompt) - 4, 0,
+                       MuttMessageWindow->state.cols - EXTRA_SPACE,
                        JUSTIFY_LEFT, 0, prompt, sizeof(prompt), false);
     mutt_str_strcat(prompt, sizeof(prompt), "...?");
   }

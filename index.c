@@ -894,8 +894,8 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
     }
   }
 
-  mutt_make_string_flags(buf, buflen, menu->indexwin->cols, NONULL(C_IndexFormat),
-                         Context, Context->mailbox, e, flags);
+  mutt_make_string_flags(buf, buflen, menu->win_index->state.cols,
+                         NONULL(C_IndexFormat), Context, Context->mailbox, e, flags);
 }
 
 /**
@@ -1091,9 +1091,9 @@ static void index_custom_redraw(struct Menu *menu)
   {
     char buf[1024];
     menu_status_line(buf, sizeof(buf), menu, NONULL(C_StatusFormat));
-    mutt_window_move(menu->statuswin, 0, 0);
+    mutt_window_move(menu->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
-    mutt_draw_statusline(menu->statuswin->cols, buf, sizeof(buf));
+    mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_NORMAL);
     menu->redraw &= ~REDRAW_STATUS;
     if (C_TsEnabled && TsSupported)
@@ -1110,12 +1110,13 @@ static void index_custom_redraw(struct Menu *menu)
 
 /**
  * mutt_index_menu - Display a list of emails
+ * @param dlg Dialog containing Windows to draw on
  * @retval num How the menu was finished, e.g. OP_QUIT, OP_EXIT
  *
  * This function handles the message index window as well as commands returned
  * from the pager (MENU_PAGER).
  */
-int mutt_index_menu(void)
+int mutt_index_menu(struct MuttWindow *dlg)
 {
   char buf[PATH_MAX], helpstr[1024];
   OpenMailboxFlags flags;
@@ -1130,7 +1131,16 @@ int mutt_index_menu(void)
   int attach_msg = OptAttachMsg;
   bool in_pager = false; /* set when pager redirects a function through the index */
 
+  struct MuttWindow *win_index = mutt_window_find(dlg, WT_INDEX);
+  struct MuttWindow *win_ibar = mutt_window_find(dlg, WT_INDEX_BAR);
+  struct MuttWindow *win_pager = mutt_window_find(dlg, WT_PAGER);
+  struct MuttWindow *win_pbar = mutt_window_find(dlg, WT_PAGER_BAR);
+
   struct Menu *menu = mutt_menu_new(MENU_MAIN);
+  menu->pagelen = win_index->state.rows;
+  menu->win_index = win_index;
+  menu->win_ibar = win_ibar;
+
   menu->menu_make_entry = index_make_entry;
   menu->menu_color = index_color;
   menu->current = ci_first_message(Context);
@@ -1143,7 +1153,7 @@ int mutt_index_menu(void)
           IndexHelp);
   menu->menu_custom_redraw = index_custom_redraw;
   mutt_menu_push_current(menu);
-  mutt_window_reflow();
+  mutt_window_reflow(NULL);
 
   if (!attach_msg)
   {
@@ -1310,13 +1320,13 @@ int mutt_index_menu(void)
         menu->oldcurrent = -1;
 
       if (C_ArrowCursor)
-        mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset, 2);
+        mutt_window_move(menu->win_index, menu->current - menu->top + menu->offset, 2);
       else if (C_BrailleFriendly)
-        mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset, 0);
+        mutt_window_move(menu->win_index, menu->current - menu->top + menu->offset, 0);
       else
       {
-        mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset,
-                         menu->indexwin->cols - 1);
+        mutt_window_move(menu->win_index, menu->current - menu->top + menu->offset,
+                         menu->win_index->state.cols - 1);
       }
       mutt_refresh();
 
@@ -1725,7 +1735,7 @@ int mutt_index_menu(void)
       }
 
       case OP_HELP:
-        mutt_help(MENU_MAIN, MuttIndexWindow->cols);
+        mutt_help(MENU_MAIN, win_index->state.cols);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -1841,6 +1851,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_REDRAW:
+        mutt_window_reflow(NULL);
         clearok(stdscr, true);
         menu->redraw = REDRAW_FULL;
         break;
@@ -2510,7 +2521,8 @@ int mutt_index_menu(void)
           break;
         int hint = e_cur->index;
 
-        op = mutt_display_message(MuttIndexWindow, Context->mailbox, e_cur);
+        op = mutt_display_message(win_index, win_ibar, win_pager, win_pbar,
+                                  Context->mailbox, e_cur);
         if (op < 0)
         {
           OptNeedResort = false;
@@ -3870,7 +3882,7 @@ int mutt_index_menu(void)
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
         bool_str_toggle(Config, "sidebar_visible", NULL);
-        mutt_window_reflow();
+        mutt_window_reflow(NULL);
         break;
 #endif
 
@@ -3969,5 +3981,160 @@ int mutt_reply_observer(struct NotifyCallback *nc)
   }
 
   OptResortInit = true; /* trigger a redraw of the index */
+  return 0;
+}
+
+/**
+ * index_pager_init - Allocate the Windows for the Index/Pager
+ * @retval ptr Dialog containing nested Windows
+ */
+struct MuttWindow *index_pager_init(void)
+{
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *cont_right =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  cont_right->type = WT_CONTAINER;
+  struct MuttWindow *panel_index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  panel_index->type = WT_CONTAINER;
+  struct MuttWindow *panel_pager =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  panel_pager->type = WT_CONTAINER;
+  panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
+
+  struct MuttWindow *win_index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  win_index->type = WT_INDEX;
+  struct MuttWindow *win_pbar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  win_pbar->type = WT_PAGER_BAR;
+  struct MuttWindow *win_pager =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  win_pager->type = WT_PAGER;
+  struct MuttWindow *win_sidebar =
+      mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
+                      MUTT_WIN_SIZE_UNLIMITED, C_SidebarWidth);
+  win_sidebar->type = WT_SIDEBAR;
+  win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
+  struct MuttWindow *win_ibar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  win_ibar->type = WT_INDEX_BAR;
+
+  if (C_SidebarOnRight)
+  {
+    mutt_window_add_child(dlg, cont_right);
+    mutt_window_add_child(dlg, win_sidebar);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, win_sidebar);
+    mutt_window_add_child(dlg, cont_right);
+  }
+
+  mutt_window_add_child(cont_right, panel_index);
+  mutt_window_add_child(panel_index, win_index);
+  mutt_window_add_child(panel_index, win_ibar);
+
+  mutt_window_add_child(cont_right, panel_pager);
+  mutt_window_add_child(panel_pager, win_pager);
+  mutt_window_add_child(panel_pager, win_pbar);
+
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_sb_observer, (intptr_t) win_sidebar);
+
+  return dlg;
+}
+
+/**
+ * index_pager_shutdown - Clear up any non-Window parts
+ * @param dlg Dialog
+ */
+void index_pager_shutdown(struct MuttWindow *dlg)
+{
+  if (!dlg)
+    return;
+
+  struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
+  if (!win_sidebar)
+    return;
+
+  notify_observer_remove(Config->notify, mutt_sb_observer, (intptr_t) win_sidebar);
+}
+
+/**
+ * mutt_dlg_index_observer - Listen for config changes affecting the Index/Pager - Implements ::observer_t()
+ */
+int mutt_dlg_index_observer(struct NotifyCallback *nc)
+{
+  if (!nc || !nc->event || !nc->data)
+    return -1;
+
+  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  struct MuttWindow *dlg = (struct MuttWindow *) nc->data;
+
+  struct MuttWindow *win_index = mutt_window_find(dlg, WT_INDEX);
+  struct MuttWindow *win_pager = mutt_window_find(dlg, WT_PAGER);
+  if (!win_index || !win_pager)
+    return -1;
+
+  if (mutt_str_strcmp(ec->name, "status_on_top") == 0)
+  {
+    struct MuttWindow *parent = win_index->parent;
+    if (!parent)
+      return -1;
+    struct MuttWindow *first = TAILQ_FIRST(&parent->children);
+    if (!first)
+      return -1;
+
+    if ((C_StatusOnTop && (first == win_index)) || (!C_StatusOnTop && (first != win_index)))
+    {
+      // Swap the Index and the Index Bar Windows
+      TAILQ_REMOVE(&parent->children, first, entries);
+      TAILQ_INSERT_TAIL(&parent->children, first, entries);
+    }
+
+    parent = win_pager->parent;
+    first = TAILQ_FIRST(&parent->children);
+
+    if ((C_StatusOnTop && (first == win_pager)) || (!C_StatusOnTop && (first != win_pager)))
+    {
+      // Swap the Pager and Pager Bar Windows
+      TAILQ_REMOVE(&parent->children, first, entries);
+      TAILQ_INSERT_TAIL(&parent->children, first, entries);
+    }
+    goto reflow;
+  }
+
+  if (mutt_str_strcmp(ec->name, "pager_index_lines") == 0)
+  {
+    struct MuttWindow *parent = win_pager->parent;
+    if (parent->state.visible)
+    {
+      int vcount = (Context && Context->mailbox) ? Context->mailbox->vcount : 0;
+      win_index->req_rows = MIN(C_PagerIndexLines, vcount);
+      win_index->size = MUTT_WIN_SIZE_FIXED;
+
+      win_index->parent->size = MUTT_WIN_SIZE_MINIMISE;
+      win_index->parent->state.visible = (C_PagerIndexLines != 0);
+    }
+    else
+    {
+      win_index->req_rows = MUTT_WIN_SIZE_UNLIMITED;
+      win_index->size = MUTT_WIN_SIZE_MAXIMISE;
+
+      win_index->parent->size = MUTT_WIN_SIZE_MAXIMISE;
+      win_index->parent->state.visible = true;
+    }
+  }
+
+reflow:
+  mutt_window_reflow(dlg);
   return 0;
 }

@@ -412,7 +412,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
 
   char columns[16];
-  snprintf(columns, sizeof(columns), "%d", win->cols);
+  snprintf(columns, sizeof(columns), "%d", win->state.cols);
   mutt_envlist_set("COLUMNS", columns, true);
 
   if (use_mailcap)

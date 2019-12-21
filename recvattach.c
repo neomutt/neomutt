@@ -436,9 +436,9 @@ static void attach_make_entry(char *buf, size_t buflen, struct Menu *menu, int l
 {
   struct AttachCtx *actx = menu->data;
 
-  mutt_expando_format(buf, buflen, 0, menu->indexwin->cols, NONULL(C_AttachFormat),
-                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[line]]),
-                      MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
+                      NONULL(C_AttachFormat), attach_format_str,
+                      (unsigned long) (actx->idx[actx->v2r[line]]), MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
@@ -1152,7 +1152,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
 
       case OP_VIEW_ATTACH:
         op = mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content,
-                                  MUTT_VA_REGULAR, e, actx, menu->indexwin);
+                                  MUTT_VA_REGULAR, e, actx, menu->win_index);
         break;
 
       case OP_NEXT_ENTRY:
@@ -1421,7 +1421,37 @@ void mutt_view_attachments(struct Email *e)
   if (!msg)
     return;
 
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  index->type = WT_INDEX;
+  struct MuttWindow *ibar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  ibar->type = WT_INDEX_BAR;
+
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(dlg, ibar);
+    mutt_window_add_child(dlg, index);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, ibar);
+  }
+
+  dialog_push(dlg);
+
   struct Menu *menu = mutt_menu_new(MENU_ATTACH);
+
+  menu->pagelen = index->state.rows;
+  menu->win_index = index;
+  menu->win_ibar = ibar;
+
   menu->title = _("Attachments");
   menu->menu_make_entry = attach_make_entry;
   menu->menu_tag = attach_tag;
@@ -1443,13 +1473,13 @@ void mutt_view_attachments(struct Email *e)
     {
       case OP_ATTACH_VIEW_MAILCAP:
         mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content,
-                             MUTT_VA_MAILCAP, e, actx, menu->indexwin);
+                             MUTT_VA_MAILCAP, e, actx, menu->win_index);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_ATTACH_VIEW_TEXT:
         mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content,
-                             MUTT_VA_AS_TEXT, e, actx, menu->indexwin);
+                             MUTT_VA_AS_TEXT, e, actx, menu->win_index);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -1705,6 +1735,8 @@ void mutt_view_attachments(struct Email *e)
 
         mutt_menu_pop_current(menu);
         mutt_menu_free(&menu);
+        dialog_pop();
+        mutt_window_free(&dlg);
         return;
     }
 

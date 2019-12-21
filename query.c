@@ -326,8 +326,9 @@ static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
   struct QueryEntry *entry = &((struct QueryEntry *) menu->data)[line];
 
   entry->data->num = line;
-  mutt_expando_format(buf, buflen, 0, menu->indexwin->cols, NONULL(C_QueryFormat),
-                      query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
+                      NONULL(C_QueryFormat), query_format_str,
+                      (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
@@ -362,249 +363,285 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     if ((mutt_get_field(_("Query: "), buf, buflen, 0) == 0) && (buf[0] != '\0'))
     {
       results = run_query(buf, 0);
+      if (!results)
+        return;
     }
   }
 
-  if (results)
+  snprintf(title, sizeof(title), _("Query '%s'"), buf);
+
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  index->type = WT_INDEX;
+  struct MuttWindow *ibar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  ibar->type = WT_INDEX_BAR;
+
+  if (C_StatusOnTop)
   {
-    snprintf(title, sizeof(title), _("Query '%s'"), buf);
-
-    menu = mutt_menu_new(MENU_QUERY);
-    menu->menu_make_entry = query_make_entry;
-    menu->menu_search = query_search;
-    menu->menu_tag = query_tag;
-    menu->title = title;
-    char helpstr[1024];
-    menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
-    mutt_menu_push_current(menu);
-
-    /* count the number of results */
-    for (queryp = results; queryp; queryp = queryp->next)
-      menu->max++;
-
-    query_table = mutt_mem_calloc(menu->max, sizeof(struct QueryEntry));
-    menu->data = query_table;
-
-    queryp = results;
-    for (int i = 0; queryp; queryp = queryp->next, i++)
-      query_table[i].data = queryp;
-
-    int done = 0;
-    while (done == 0)
-    {
-      const int op = mutt_menu_loop(menu);
-      switch (op)
-      {
-        case OP_QUERY_APPEND:
-        case OP_QUERY:
-          if ((mutt_get_field(_("Query: "), buf, buflen, 0) == 0) && (buf[0] != '\0'))
-          {
-            struct Query *newresults = run_query(buf, 0);
-
-            menu->redraw = REDRAW_FULL;
-            if (newresults)
-            {
-              snprintf(title, sizeof(title), _("Query '%s'"), buf);
-
-              if (op == OP_QUERY)
-              {
-                query_free(&results);
-                results = newresults;
-                FREE(&query_table);
-              }
-              else
-              {
-                /* append */
-                for (queryp = results; queryp->next; queryp = queryp->next)
-                  ;
-
-                queryp->next = newresults;
-              }
-
-              menu->current = 0;
-              mutt_menu_pop_current(menu);
-              mutt_menu_free(&menu);
-              menu = mutt_menu_new(MENU_QUERY);
-              menu->menu_make_entry = query_make_entry;
-              menu->menu_search = query_search;
-              menu->menu_tag = query_tag;
-              menu->title = title;
-              menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
-              mutt_menu_push_current(menu);
-
-              /* count the number of results */
-              for (queryp = results; queryp; queryp = queryp->next)
-                menu->max++;
-
-              if (op == OP_QUERY)
-              {
-                menu->data = query_table =
-                    mutt_mem_calloc(menu->max, sizeof(struct QueryEntry));
-
-                queryp = results;
-                for (int i = 0; queryp; queryp = queryp->next, i++)
-                  query_table[i].data = queryp;
-              }
-              else
-              {
-                bool clear = false;
-
-                /* append */
-                mutt_mem_realloc(&query_table, menu->max * sizeof(struct QueryEntry));
-
-                menu->data = query_table;
-
-                queryp = results;
-                for (int i = 0; queryp; queryp = queryp->next, i++)
-                {
-                  /* once we hit new entries, clear/init the tag */
-                  if (queryp == newresults)
-                    clear = true;
-
-                  query_table[i].data = queryp;
-                  if (clear)
-                    query_table[i].tagged = false;
-                }
-              }
-            }
-          }
-          break;
-
-        case OP_CREATE_ALIAS:
-          if (menu->tagprefix)
-          {
-            struct AddressList naddr = TAILQ_HEAD_INITIALIZER(naddr);
-
-            for (int i = 0; i < menu->max; i++)
-            {
-              if (query_table[i].tagged)
-              {
-                struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-                if (result_to_addr(&al, query_table[i].data))
-                {
-                  mutt_addrlist_copy(&naddr, &al, false);
-                  mutt_addrlist_clear(&al);
-                }
-              }
-            }
-
-            mutt_alias_create(NULL, &naddr);
-            mutt_addrlist_clear(&naddr);
-          }
-          else
-          {
-            struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-            if (result_to_addr(&al, query_table[menu->current].data))
-            {
-              mutt_alias_create(NULL, &al);
-              mutt_addrlist_clear(&al);
-            }
-          }
-          break;
-
-        case OP_GENERIC_SELECT_ENTRY:
-          if (retbuf)
-          {
-            done = 2;
-            break;
-          }
-        /* fallthrough */
-        case OP_MAIL:
-        {
-          struct Email *e = email_new();
-          e->env = mutt_env_new();
-          if (!menu->tagprefix)
-          {
-            struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-            if (result_to_addr(&al, query_table[menu->current].data))
-            {
-              mutt_addrlist_copy(&e->env->to, &al, false);
-              mutt_addrlist_clear(&al);
-            }
-          }
-          else
-          {
-            for (int i = 0; i < menu->max; i++)
-            {
-              if (query_table[i].tagged)
-              {
-                struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-                if (result_to_addr(&al, query_table[i].data))
-                {
-                  mutt_addrlist_copy(&e->env->to, &al, false);
-                  mutt_addrlist_clear(&al);
-                }
-              }
-            }
-          }
-          ci_send_message(SEND_NO_FLAGS, e, NULL, Context, NULL);
-          menu->redraw = REDRAW_FULL;
-          break;
-        }
-
-        case OP_EXIT:
-          done = 1;
-          break;
-      }
-    }
-
-    /* if we need to return the selected entries */
-    if (retbuf && (done == 2))
-    {
-      bool tagged = false;
-      size_t curpos = 0;
-
-      memset(buf, 0, buflen);
-
-      /* check for tagged entries */
-      for (int i = 0; i < menu->max; i++)
-      {
-        if (query_table[i].tagged)
-        {
-          if (curpos == 0)
-          {
-            struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-            if (result_to_addr(&al, query_table[i].data))
-            {
-              mutt_addrlist_to_local(&al);
-              tagged = true;
-              mutt_addrlist_write(buf, buflen, &al, false);
-              curpos = mutt_str_strlen(buf);
-              mutt_addrlist_clear(&al);
-            }
-          }
-          else if (curpos + 2 < buflen)
-          {
-            struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-            if (result_to_addr(&al, query_table[i].data))
-            {
-              mutt_addrlist_to_local(&al);
-              strcat(buf, ", ");
-              mutt_addrlist_write(buf + curpos + 1, buflen - curpos - 1, &al, false);
-              curpos = mutt_str_strlen(buf);
-              mutt_addrlist_clear(&al);
-            }
-          }
-        }
-      }
-      /* then enter current message */
-      if (!tagged)
-      {
-        struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-        if (result_to_addr(&al, query_table[menu->current].data))
-        {
-          mutt_addrlist_to_local(&al);
-          mutt_addrlist_write(buf, buflen, &al, false);
-          mutt_addrlist_clear(&al);
-        }
-      }
-    }
-
-    query_free(&results);
-    FREE(&query_table);
-    mutt_menu_pop_current(menu);
-    mutt_menu_free(&menu);
+    mutt_window_add_child(dlg, ibar);
+    mutt_window_add_child(dlg, index);
   }
+  else
+  {
+    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, ibar);
+  }
+
+  dialog_push(dlg);
+
+  menu = mutt_menu_new(MENU_QUERY);
+
+  menu->pagelen = index->state.rows;
+  menu->win_index = index;
+  menu->win_ibar = ibar;
+
+  menu->menu_make_entry = query_make_entry;
+  menu->menu_search = query_search;
+  menu->menu_tag = query_tag;
+  menu->title = title;
+  char helpstr[1024];
+  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
+  mutt_menu_push_current(menu);
+
+  /* count the number of results */
+  for (queryp = results; queryp; queryp = queryp->next)
+    menu->max++;
+
+  query_table = mutt_mem_calloc(menu->max, sizeof(struct QueryEntry));
+  menu->data = query_table;
+
+  queryp = results;
+  for (int i = 0; queryp; queryp = queryp->next, i++)
+    query_table[i].data = queryp;
+
+  int done = 0;
+  while (done == 0)
+  {
+    const int op = mutt_menu_loop(menu);
+    switch (op)
+    {
+      case OP_QUERY_APPEND:
+      case OP_QUERY:
+        if ((mutt_get_field(_("Query: "), buf, buflen, 0) == 0) && (buf[0] != '\0'))
+        {
+          struct Query *newresults = run_query(buf, 0);
+
+          menu->redraw = REDRAW_FULL;
+          if (newresults)
+          {
+            snprintf(title, sizeof(title), _("Query '%s'"), buf);
+
+            if (op == OP_QUERY)
+            {
+              query_free(&results);
+              results = newresults;
+              FREE(&query_table);
+            }
+            else
+            {
+              /* append */
+              for (queryp = results; queryp->next; queryp = queryp->next)
+                ;
+
+              queryp->next = newresults;
+            }
+
+            menu->current = 0;
+            mutt_menu_pop_current(menu);
+            mutt_menu_free(&menu);
+            menu = mutt_menu_new(MENU_QUERY);
+
+            menu->pagelen = index->state.rows;
+            menu->win_index = index;
+            menu->win_ibar = ibar;
+
+            menu->menu_make_entry = query_make_entry;
+            menu->menu_search = query_search;
+            menu->menu_tag = query_tag;
+            menu->title = title;
+            menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
+            mutt_menu_push_current(menu);
+
+            /* count the number of results */
+            for (queryp = results; queryp; queryp = queryp->next)
+              menu->max++;
+
+            if (op == OP_QUERY)
+            {
+              menu->data = query_table =
+                  mutt_mem_calloc(menu->max, sizeof(struct QueryEntry));
+
+              queryp = results;
+              for (int i = 0; queryp; queryp = queryp->next, i++)
+                query_table[i].data = queryp;
+            }
+            else
+            {
+              bool clear = false;
+
+              /* append */
+              mutt_mem_realloc(&query_table, menu->max * sizeof(struct QueryEntry));
+
+              menu->data = query_table;
+
+              queryp = results;
+              for (int i = 0; queryp; queryp = queryp->next, i++)
+              {
+                /* once we hit new entries, clear/init the tag */
+                if (queryp == newresults)
+                  clear = true;
+
+                query_table[i].data = queryp;
+                if (clear)
+                  query_table[i].tagged = false;
+              }
+            }
+          }
+        }
+        break;
+
+      case OP_CREATE_ALIAS:
+        if (menu->tagprefix)
+        {
+          struct AddressList naddr = TAILQ_HEAD_INITIALIZER(naddr);
+
+          for (int i = 0; i < menu->max; i++)
+          {
+            if (query_table[i].tagged)
+            {
+              struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+              if (result_to_addr(&al, query_table[i].data))
+              {
+                mutt_addrlist_copy(&naddr, &al, false);
+                mutt_addrlist_clear(&al);
+              }
+            }
+          }
+
+          mutt_alias_create(NULL, &naddr);
+          mutt_addrlist_clear(&naddr);
+        }
+        else
+        {
+          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+          if (result_to_addr(&al, query_table[menu->current].data))
+          {
+            mutt_alias_create(NULL, &al);
+            mutt_addrlist_clear(&al);
+          }
+        }
+        break;
+
+      case OP_GENERIC_SELECT_ENTRY:
+        if (retbuf)
+        {
+          done = 2;
+          break;
+        }
+      /* fallthrough */
+      case OP_MAIL:
+      {
+        struct Email *e = email_new();
+        e->env = mutt_env_new();
+        if (!menu->tagprefix)
+        {
+          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+          if (result_to_addr(&al, query_table[menu->current].data))
+          {
+            mutt_addrlist_copy(&e->env->to, &al, false);
+            mutt_addrlist_clear(&al);
+          }
+        }
+        else
+        {
+          for (int i = 0; i < menu->max; i++)
+          {
+            if (query_table[i].tagged)
+            {
+              struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+              if (result_to_addr(&al, query_table[i].data))
+              {
+                mutt_addrlist_copy(&e->env->to, &al, false);
+                mutt_addrlist_clear(&al);
+              }
+            }
+          }
+        }
+        ci_send_message(SEND_NO_FLAGS, e, NULL, Context, NULL);
+        menu->redraw = REDRAW_FULL;
+        break;
+      }
+
+      case OP_EXIT:
+        done = 1;
+        break;
+    }
+  }
+
+  /* if we need to return the selected entries */
+  if (retbuf && (done == 2))
+  {
+    bool tagged = false;
+    size_t curpos = 0;
+
+    memset(buf, 0, buflen);
+
+    /* check for tagged entries */
+    for (int i = 0; i < menu->max; i++)
+    {
+      if (query_table[i].tagged)
+      {
+        if (curpos == 0)
+        {
+          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+          if (result_to_addr(&al, query_table[i].data))
+          {
+            mutt_addrlist_to_local(&al);
+            tagged = true;
+            mutt_addrlist_write(buf, buflen, &al, false);
+            curpos = mutt_str_strlen(buf);
+            mutt_addrlist_clear(&al);
+          }
+        }
+        else if (curpos + 2 < buflen)
+        {
+          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+          if (result_to_addr(&al, query_table[i].data))
+          {
+            mutt_addrlist_to_local(&al);
+            strcat(buf, ", ");
+            mutt_addrlist_write(buf + curpos + 1, buflen - curpos - 1, &al, false);
+            curpos = mutt_str_strlen(buf);
+            mutt_addrlist_clear(&al);
+          }
+        }
+      }
+    }
+    /* then enter current message */
+    if (!tagged)
+    {
+      struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+      if (result_to_addr(&al, query_table[menu->current].data))
+      {
+        mutt_addrlist_to_local(&al);
+        mutt_addrlist_write(buf, buflen, &al, false);
+        mutt_addrlist_clear(&al);
+      }
+    }
+  }
+
+  query_free(&results);
+  FREE(&query_table);
+  mutt_menu_pop_current(menu);
+  mutt_menu_free(&menu);
+  dialog_pop();
+  mutt_window_free(&dlg);
 }
 
 /**

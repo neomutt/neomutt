@@ -70,7 +70,8 @@ NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o color.o commands.o \
 		mutt_parse.o mutt_signal.o mutt_socket.o mutt_thread.o mutt_window.o \
 		muttlib.o mx.o myvar.o pager.o pattern.o postpone.o progress.o query.o \
 		recvattach.o recvcmd.o resize.o rfc3676.o score.o send.o sendlib.o \
-		sidebar.o smtp.o sort.o state.o status.o system.o terminal.o version.o
+		sidebar.o smtp.o sort.o state.o status.o system.o terminal.o version.o \
+		reflow.o
 @if HAVE_LIBUNWIND
 NEOMUTTOBJS+=	backtrace.o
 @endif
