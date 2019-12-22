@@ -73,9 +73,6 @@ NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o commands.o \
 		sidebar.o smtp.o sort.o state.o status.o system.o version.o \
 		mutt_commands.o mutt_config.o command_parse.o
 
-@if HAVE_LIBUNWIND
-NEOMUTTOBJS+=	backtrace.o
-@endif
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
 @endif
@@ -133,6 +130,9 @@ ALLOBJS+=	$(LIBGUIOBJS)
 # libdebug
 LIBDEBUG=	libdebug.a
 LIBDEBUGOBJS=	
+@if HAVE_LIBUNWIND
+LIBDEBUGOBJS+=	debug/backtrace.o
+@endif
 CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
 MUTTLIBS+=	$(LIBDEBUG)
 ALLOBJS+=	$(LIBDEBUGOBJS)
