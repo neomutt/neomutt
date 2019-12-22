@@ -23,5 +23,11 @@
 #ifndef MUTT_DEBUG_LIB_H
 #define MUTT_DEBUG_LIB_H
 
+#include "config.h"
+#include "mutt/mutt.h"
+#include "core/lib.h"
+
+// Parse Set
+void test_parse_set(void);
 
 #endif /* MUTT_DEBUG_LIB_H */

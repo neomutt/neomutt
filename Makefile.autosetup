@@ -129,7 +129,7 @@ ALLOBJS+=	$(LIBGUIOBJS)
 ###############################################################################
 # libdebug
 LIBDEBUG=	libdebug.a
-LIBDEBUGOBJS=	
+LIBDEBUGOBJS=	debug/parse_test.o
 @if HAVE_LIBUNWIND
 LIBDEBUGOBJS+=	debug/backtrace.o
 @endif
