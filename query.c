@@ -281,7 +281,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
   switch (op)
   {
     case 'a':
-      mutt_addrlist_write(tmp, sizeof(tmp), &query->addr, true);
+      mutt_addrlist_write(&query->addr, tmp, sizeof(tmp), true);
       mutt_format_s(buf, buflen, prec, tmp);
       break;
     case 'c':
@@ -603,7 +603,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           {
             mutt_addrlist_to_local(&al);
             tagged = true;
-            mutt_addrlist_write(buf, buflen, &al, false);
+            mutt_addrlist_write(&al, buf, buflen, false);
             curpos = mutt_str_strlen(buf);
             mutt_addrlist_clear(&al);
           }
@@ -615,7 +615,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           {
             mutt_addrlist_to_local(&al);
             strcat(buf, ", ");
-            mutt_addrlist_write(buf + curpos + 1, buflen - curpos - 1, &al, false);
+            mutt_addrlist_write(&al, buf + curpos + 1, buflen - curpos - 1, false);
             curpos = mutt_str_strlen(buf);
             mutt_addrlist_clear(&al);
           }
@@ -629,7 +629,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
       if (result_to_addr(&al, query_table[menu->current].data))
       {
         mutt_addrlist_to_local(&al);
-        mutt_addrlist_write(buf, buflen, &al, false);
+        mutt_addrlist_write(&al, buf, buflen, false);
         mutt_addrlist_clear(&al);
       }
     }
@@ -668,7 +668,7 @@ int mutt_query_complete(char *buf, size_t buflen)
       {
         mutt_addrlist_to_local(&al);
         buf[0] = '\0';
-        mutt_addrlist_write(buf, buflen, &al, false);
+        mutt_addrlist_write(&al, buf, buflen, false);
         mutt_addrlist_clear(&al);
         query_free(&results);
         mutt_clear_error();

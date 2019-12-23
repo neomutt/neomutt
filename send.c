@@ -215,7 +215,7 @@ int mutt_edit_address(struct AddressList *al, const char *field, bool expand_ali
   {
     buf[0] = '\0';
     mutt_addrlist_to_local(al);
-    mutt_addrlist_write(buf, sizeof(buf), al, false);
+    mutt_addrlist_write(al, buf, sizeof(buf), false);
     if (mutt_get_field(field, buf, sizeof(buf), MUTT_ALIAS) != 0)
       return -1;
     mutt_addrlist_clear(al);
@@ -771,8 +771,7 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
         reply_to && TAILQ_NEXT(TAILQ_FIRST(&env->reply_to), entries);
     if ((from_is_reply_to && !multiple_reply_to && !reply_to->personal) ||
         (C_IgnoreListReplyTo && mutt_is_mail_list(reply_to) &&
-         (mutt_addrlist_search(reply_to, &env->to) ||
-          mutt_addrlist_search(reply_to, &env->cc))))
+         (mutt_addrlist_search(&env->to, reply_to) || mutt_addrlist_search(&env->cc, reply_to))))
     {
       /* If the Reply-To: address is a mailing list, assume that it was
        * put there by the mailing list, and use the From: address

@@ -647,7 +647,7 @@ static void draw_envelope_addr(int line, struct AddressList *al, struct ComposeR
   char buf[1024];
 
   buf[0] = '\0';
-  mutt_addrlist_write(buf, sizeof(buf), al, true);
+  mutt_addrlist_write(al, buf, sizeof(buf), true);
   mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(rd->win, line, 0, "%*s", HeaderPadding[line], _(Prompts[line]));
   mutt_curses_set_color(MT_COLOR_NORMAL);
@@ -730,7 +730,7 @@ static void edit_address_list(int line, struct AddressList *al, struct ComposeRe
   char *err = NULL;
 
   mutt_addrlist_to_local(al);
-  mutt_addrlist_write(buf, sizeof(buf), al, false);
+  mutt_addrlist_write(al, buf, sizeof(buf), false);
   if (mutt_get_field(_(Prompts[line]), buf, sizeof(buf), MUTT_ALIAS) == 0)
   {
     mutt_addrlist_clear(al);
@@ -747,7 +747,7 @@ static void edit_address_list(int line, struct AddressList *al, struct ComposeRe
 
   /* redraw the expanded list so the user can see the result */
   buf[0] = '\0';
-  mutt_addrlist_write(buf, sizeof(buf), al, true);
+  mutt_addrlist_write(al, buf, sizeof(buf), true);
   mutt_window_move(rd->win, line, HDR_XOFFSET);
   mutt_paddstr(W, buf);
 }

@@ -234,7 +234,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   }
 
   buf[0] = '\0';
-  mutt_addrlist_write(buf, sizeof(buf), &al, true);
+  mutt_addrlist_write(&al, buf, sizeof(buf), true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   /* See commands.c.  */

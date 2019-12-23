@@ -33,11 +33,11 @@ void test_mutt_addrlist_search(void)
 
   {
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    TEST_CHECK(!mutt_addrlist_search(NULL, &al));
+    TEST_CHECK(!mutt_addrlist_search(&al, NULL));
   }
 
   {
     struct Address a = { 0 };
-    TEST_CHECK(!mutt_addrlist_search(&a, NULL));
+    TEST_CHECK(!mutt_addrlist_search(NULL, &a));
   }
 }

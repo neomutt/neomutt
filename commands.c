@@ -455,7 +455,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   }
 
   buf[0] = '\0';
-  mutt_addrlist_write(buf, sizeof(buf), &al, true);
+  mutt_addrlist_write(&al, buf, sizeof(buf), true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   snprintf(scratch, sizeof(scratch),
@@ -918,7 +918,7 @@ void mutt_display_address(struct Envelope *env)
    * paste the on-the-wire form of the address to other, IDN-unable
    * software.  */
   buf[0] = '\0';
-  mutt_addrlist_write(buf, sizeof(buf), al, false);
+  mutt_addrlist_write(al, buf, sizeof(buf), false);
   mutt_message("%s: %s", pfx, buf);
 }
 

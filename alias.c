@@ -469,7 +469,7 @@ retry_name:
   mutt_str_replace(&TAILQ_FIRST(&alias->addr)->personal, buf);
 
   buf[0] = '\0';
-  mutt_addrlist_write(buf, sizeof(buf), &alias->addr, true);
+  mutt_addrlist_write(&alias->addr, buf, sizeof(buf), true);
   snprintf(prompt, sizeof(prompt), _("[%s = %s] Accept?"), alias->name, buf);
   if (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
   {
@@ -517,7 +517,7 @@ retry_name:
   recode_buf(buf, sizeof(buf));
   fprintf(fp_alias, "alias %s ", buf);
   buf[0] = '\0';
-  mutt_addrlist_write(buf, sizeof(buf), &alias->addr, false);
+  mutt_addrlist_write(&alias->addr, buf, sizeof(buf), false);
   recode_buf(buf, sizeof(buf));
   write_safe_address(fp_alias, buf);
   fputc('\n', fp_alias);

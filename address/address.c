@@ -864,11 +864,11 @@ bool mutt_addr_cmp(const struct Address *a, const struct Address *b)
 
 /**
  * mutt_addrlist_search - Search for an e-mail address in a list
- * @param needle   Address containing the search email
  * @param haystack Address List
+ * @param needle   Address containing the search email
  * @retval true If the Address is in the list
  */
-bool mutt_addrlist_search(const struct Address *needle, const struct AddressList *haystack)
+bool mutt_addrlist_search(const struct AddressList *haystack, const struct Address *needle)
 {
   if (!needle || !haystack)
     return false;
@@ -1123,9 +1123,9 @@ done:
 
 /**
  * mutt_addrlist_write - Write an Address to a buffer
+ * @param al      AddressList to display
  * @param buf     Buffer for the Address
  * @param buflen  Length of the buffer
- * @param al      AddressList to display
  * @param display This address will be displayed to the user
  * @retval num    Length of the string written to buf
  *
@@ -1134,7 +1134,7 @@ done:
  *
  * @note It is assumed that `buf` is nul terminated!
  */
-size_t mutt_addrlist_write(char *buf, size_t buflen, const struct AddressList *al, bool display)
+size_t mutt_addrlist_write(const struct AddressList *al, char *buf, size_t buflen, bool display)
 {
   if (!buf || buflen == 0 || !al)
     return 0;

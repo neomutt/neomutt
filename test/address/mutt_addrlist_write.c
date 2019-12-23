@@ -34,12 +34,12 @@ void test_mutt_addrlist_write(void)
 
   {
     struct AddressList al = { 0 };
-    TEST_CHECK(mutt_addrlist_write(NULL, 32, &al, false) == 0);
+    TEST_CHECK(mutt_addrlist_write(&al, NULL, 32, false) == 0);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_addrlist_write(buf, sizeof(buf), NULL, false) == 0);
+    TEST_CHECK(mutt_addrlist_write(NULL, buf, sizeof(buf), false) == 0);
   }
 
   {
@@ -51,28 +51,28 @@ void test_mutt_addrlist_write(void)
 
     {
       char buf[8] = { 0 };
-      size_t nbytes = mutt_addrlist_write(buf, sizeof(buf), &al, false);
+      size_t nbytes = mutt_addrlist_write(&al, buf, sizeof(buf), false);
       TEST_CHECK(nbytes == sizeof(buf) - 1);
       TEST_CHECK_STR_EQ("test@ex", buf);
     }
 
     {
       char buf[24] = { 0 };
-      size_t nbytes = mutt_addrlist_write(buf, sizeof(buf), &al, false);
+      size_t nbytes = mutt_addrlist_write(&al, buf, sizeof(buf), false);
       TEST_CHECK(nbytes == sizeof(buf) - 1);
       TEST_CHECK_STR_EQ("test@example.com, John ", buf);
     }
 
     {
       char buf[43] = { 0 };
-      size_t nbytes = mutt_addrlist_write(buf, sizeof(buf), &al, false);
+      size_t nbytes = mutt_addrlist_write(&al, buf, sizeof(buf), false);
       TEST_CHECK(nbytes == sizeof(buf) - 1);
       TEST_CHECK_STR_EQ("test@example.com, John Doe <john@doe.org>,", buf);
     }
 
     {
       char buf[76] = { 0 };
-      size_t nbytes = mutt_addrlist_write(buf, sizeof(buf), &al, false);
+      size_t nbytes = mutt_addrlist_write(&al, buf, sizeof(buf), false);
       TEST_CHECK(nbytes == sizeof(buf) - 1);
       TEST_CHECK_STR_EQ("test@example.com, John Doe <john@doe.org>, \"Foo J. "
                         "Bar\" <foo-j-bar@baz.com>",

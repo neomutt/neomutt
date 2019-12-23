@@ -2336,14 +2336,14 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   if (!TAILQ_EMPTY(&env->from) && !privacy)
   {
     buf[0] = '\0';
-    mutt_addrlist_write(buf, sizeof(buf), &env->from, false);
+    mutt_addrlist_write(&env->from, buf, sizeof(buf), false);
     fprintf(fp, "From: %s\n", buf);
   }
 
   if (!TAILQ_EMPTY(&env->sender) && !privacy)
   {
     buf[0] = '\0';
-    mutt_addrlist_write(buf, sizeof(buf), &env->sender, false);
+    mutt_addrlist_write(&env->sender, buf, sizeof(buf), false);
     fprintf(fp, "Sender: %s\n", buf);
   }
 
@@ -3151,7 +3151,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to)
     mutt_addrlist_clear(&from_list);
     return -1;
   }
-  mutt_addrlist_write(resent_from, sizeof(resent_from), &from_list, false);
+  mutt_addrlist_write(&from_list, resent_from, sizeof(resent_from), false);
 
 #ifdef USE_NNTP
   OptNewsSend = false;
