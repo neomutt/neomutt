@@ -171,8 +171,8 @@ static void process_protected_headers(struct Email *e)
     if (C_CryptProtectedHeadersSave)
     {
       e->env->changed |= MUTT_ENV_CHANGED_SUBJECT;
-      e->changed = 1;
-      Context->mailbox->changed = 1;
+      e->changed = true;
+      Context->mailbox->changed = true;
     }
   }
 

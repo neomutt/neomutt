@@ -32,7 +32,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "imap/imap_private.h"
+#include "imap_private.h"
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "core/lib.h"

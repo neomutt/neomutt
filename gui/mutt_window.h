@@ -54,8 +54,8 @@ struct WindowState
   bool visible;     ///< Window is visible
   short rows;       ///< Number of rows, can be #MUTT_WIN_SIZE_UNLIMITED
   short cols;       ///< Number of columns, can be #MUTT_WIN_SIZE_UNLIMITED
-  short row_offset; ///< Absolute on screen row
-  short col_offset; ///< Absolute on screen column
+  short row_offset; ///< Absolute on-screen row
+  short col_offset; ///< Absolute on-screen column
 };
 
 /**
