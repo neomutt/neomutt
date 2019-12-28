@@ -33,11 +33,11 @@
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "conn/conn.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "mutt_account.h"
 #include "filter.h"
 #include "globals.h"
-#include "gui/lib.h"
 #include "options.h"
 
 /* These Config Variables are only used in mutt_account.c */

@@ -36,9 +36,9 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
+#include "gui/lib.h"
 #include "rfc3676.h"
 #include "globals.h"
-#include "gui/lib.h"
 #include "muttlib.h"
 #include "state.h"
 

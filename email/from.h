@@ -23,8 +23,8 @@
 #ifndef MUTT_EMAIL_FROM_H
 #define MUTT_EMAIL_FROM_H
 
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <time.h>
 
 bool is_from(const char *s, char *path, size_t pathlen, time_t *tp);

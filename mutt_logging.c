@@ -36,9 +36,9 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
+#include "gui/lib.h"
 #include "mutt_logging.h"
 #include "globals.h"
-#include "gui/lib.h"
 #include "muttlib.h"
 #include "options.h"
 

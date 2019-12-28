@@ -50,8 +50,8 @@
 #ifndef MUTT_HCACHE_HCACHE_H
 #define MUTT_HCACHE_HCACHE_H
 
-#include <stdbool.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 struct Buffer;
 struct Email;

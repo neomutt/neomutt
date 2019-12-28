@@ -9,29 +9,31 @@ BreakBeforeBraces: Allman
 
 IncludeCategories:
   - Regex:      '"acutest\.h"'
-    Priority:   -12
+    Priority:   -130
   - Regex:      '"config\.h"'
-    Priority:   -11
+    Priority:   -120
   - Regex:      '<stddef\.h>'
-    Priority:   -10
+    Priority:   -110
   - Regex:      '<.*>'
-    Priority:   -9
+    Priority:   -100
   - Regex:      '".*_private\.h"'
-    Priority:   -8
+    Priority:   -90
   - Regex:      '"mutt/.*\.h"'
-    Priority:   -7
+    Priority:   -80
   - Regex:      '"address/.*\.h"'
-    Priority:   -6
+    Priority:   -70
   - Regex:      '"config/.*\.h"'
-    Priority:   -5
+    Priority:   -60
   - Regex:      '"email/.*\.h"'
-    Priority:   -4
+    Priority:   -50
   - Regex:      '"core/.*\.h"'
-    Priority:   -3
+    Priority:   -40
   - Regex:      '"conn/.*\.h"'
-    Priority:   -2
+    Priority:   -30
+  - Regex:      '"gui/.*\.h"'
+    Priority:   -20
   - Regex:      '"mutt\.h"'
-    Priority:   -1
+    Priority:   -10
   # Main Header 0
   - Regex:      '".*"'
     Priority:   5

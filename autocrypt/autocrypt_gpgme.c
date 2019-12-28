@@ -34,8 +34,8 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "config/lib.h"
-#include "globals.h"
 #include "gui/lib.h"
+#include "globals.h"
 #include "ncrypt/crypt_gpgme.h"
 #include "options.h"
 

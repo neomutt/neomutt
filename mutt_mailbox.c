@@ -6,9 +6,9 @@
 #include <utime.h>
 #include "mutt/mutt.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "mutt_mailbox.h"
 #include "globals.h"
-#include "gui/lib.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "mx.h"

@@ -28,10 +28,10 @@
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "icommands.h"
 #include "globals.h"
-#include "gui/lib.h"
 #include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"

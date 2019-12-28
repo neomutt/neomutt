@@ -31,11 +31,11 @@
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "mutt_history.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "gui/lib.h"
 #include "keymap.h"
 #include "mutt_menu.h"
 #include "muttlib.h"

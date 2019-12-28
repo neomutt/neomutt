@@ -32,9 +32,9 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "gui/lib.h"
 #include "progress.h"
 #include "globals.h"
-#include "gui/lib.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "options.h"

@@ -38,11 +38,11 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
+#include "gui/lib.h"
 #include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"
 #include "globals.h"
-#include "gui/lib.h"
 #include "keymap.h"
 #include "mutt_account.h"
 #include "mutt_menu.h"

@@ -36,11 +36,11 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "gui/lib.h"
 #include "pgpinvoke.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "gui/lib.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "ncrypt.h"

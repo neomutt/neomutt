@@ -35,8 +35,8 @@
 #include <sys/utsname.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "version.h"
 #include "gui/lib.h"
+#include "version.h"
 #ifdef HAVE_LIBIDN
 #include "address/lib.h"
 #endif

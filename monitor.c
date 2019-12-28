@@ -39,10 +39,10 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "monitor.h"
 #include "context.h"
 #include "globals.h"
-#include "gui/lib.h"
 #ifndef HAVE_INOTIFY_INIT1
 #include <fcntl.h>
 #endif

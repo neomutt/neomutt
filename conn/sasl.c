@@ -47,10 +47,10 @@
 #include <sys/socket.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "gui/lib.h"
 #include "sasl.h"
 #include "connaccount.h"
 #include "connection.h"
-#include "gui/lib.h"
 #include "mutt_account.h"
 #include "options.h"
 
