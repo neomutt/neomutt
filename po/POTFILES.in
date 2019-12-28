@@ -11,7 +11,6 @@ autocrypt/autocrypt_schema.c
 backtrace.c
 bcache.c
 browser.c
-color.c
 commands.c
 complete.c
 compose.c
@@ -44,7 +43,6 @@ copy.c
 core/account.c
 core/mailbox.c
 core/neomutt.c
-curs_lib.c
 edit.c
 editmsg.c
 email/attach.c
@@ -65,6 +63,12 @@ enriched.c
 enter.c
 filter.c
 flags.c
+gui/color.c
+gui/curs_lib.c
+gui/mutt_curses.c
+gui/mutt_window.c
+gui/reflow.c
+gui/terminal.c
 handler.c
 hcache/bdb.c
 hcache/gdbm.c
@@ -129,7 +133,6 @@ muttlib.c
 mutt_account.c
 mutt_attach.c
 mutt_body.c
-mutt_curses.c
 mutt_header.c
 mutt_history.c
 mutt_logging.c
@@ -139,7 +142,6 @@ mutt_parse.c
 mutt_signal.c
 mutt_socket.c
 mutt_thread.c
-mutt_window.c
 mx.c
 myvar.c
 ncrypt/crypt.c
@@ -188,6 +190,5 @@ sort.c
 state.c
 status.c
 system.c
-terminal.c
 version.c
 wcscasecmp.c
