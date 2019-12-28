@@ -1173,6 +1173,8 @@ fail:
 static int tls_socket_poll(struct Connection *conn, time_t wait_secs)
 {
   struct TlsSockData *data = conn->sockdata;
+  if (!data)
+    return -1;
 
   if (gnutls_record_check_pending(data->state))
     return 1;
