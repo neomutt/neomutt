@@ -36,6 +36,7 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "filter.h"
@@ -656,7 +657,7 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
     mutt_window_add_child(dlg, ibar);
   }
 
-  notify_observer_add(Config->notify, mutt_dlg_mixmaster_observer, dlg);
+  notify_observer_add(NeoMutt->notify, mutt_dlg_mixmaster_observer, dlg);
   dialog_push(dlg);
 
   menu = mutt_menu_new(MENU_MIX);
@@ -814,7 +815,7 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
   dialog_pop();
-  notify_observer_remove(Config->notify, mutt_dlg_mixmaster_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, mutt_dlg_mixmaster_observer, dlg);
   mutt_window_free(&dlg);
 
   /* construct the remailer list */

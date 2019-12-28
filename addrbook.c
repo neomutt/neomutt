@@ -34,6 +34,7 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "addrbook.h"
@@ -261,7 +262,7 @@ void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
     mutt_window_add_child(dlg, ibar);
   }
 
-  notify_observer_add(Config->notify, mutt_dlg_alias_observer, dlg);
+  notify_observer_add(NeoMutt->notify, mutt_dlg_alias_observer, dlg);
   dialog_push(dlg);
 
   menu = mutt_menu_new(MENU_ALIAS);
@@ -374,6 +375,6 @@ mam_done:
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
   dialog_pop();
-  notify_observer_remove(Config->notify, mutt_dlg_alias_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, mutt_dlg_alias_observer, dlg);
   mutt_window_free(&dlg);
 }

@@ -37,7 +37,6 @@
 #include "sort.h"
 #endif /* MAIN_C */
 
-WHERE struct ConfigSet *Config; ///< Wrapper around the user's config settings
 WHERE struct Colors    *Colors; ///< Wrapper around the user's colour settings
 
 WHERE struct Context *Context;

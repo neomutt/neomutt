@@ -385,7 +385,7 @@ static bool query_window_check_timebase(const char *timebase)
 static void query_window_reset(void)
 {
   mutt_debug(LL_DEBUG2, "entering\n");
-  cs_str_native_set(Config, "nm_query_window_current_position", 0, NULL);
+  cs_str_native_set(NeoMutt->sub->cs, "nm_query_window_current_position", 0, NULL);
 }
 
 /**

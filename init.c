@@ -407,7 +407,7 @@ static char *getmailname(void)
  * Use several methods to try to find the Fully-Qualified domain name of this host.
  * If the user has already configured a hostname, this function will use it.
  */
-static bool get_hostname(void)
+static bool get_hostname(struct ConfigSet *cs)
 {
   char *str = NULL;
   struct utsname utsname;
@@ -471,7 +471,7 @@ static bool get_hostname(void)
 #endif
   }
   if (C_Hostname)
-    cs_str_initial_set(Config, "hostname", C_Hostname, NULL);
+    cs_str_initial_set(cs, "hostname", C_Hostname, NULL);
 
   return true;
 }
@@ -1255,11 +1255,11 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   // is the item defined as:
-  bool res = cs_get_elem(Config, buf->data) // a variable?
-             || feature_enabled(buf->data)  // a compiled-in feature?
-             || is_function(buf->data)      // a function?
-             || mutt_command_get(buf->data) // a command?
-             || myvar_get(buf->data)        // a my_ variable?
+  bool res = cs_get_elem(NeoMutt->sub->cs, buf->data) // a variable?
+             || feature_enabled(buf->data)            // a compiled-in feature?
+             || is_function(buf->data)                // a function?
+             || mutt_command_get(buf->data)           // a command?
+             || myvar_get(buf->data)                  // a my_ variable?
              || mutt_str_getenv(buf->data); // an environment variable?
 
   if (!MoreArgs(s))
@@ -1584,17 +1584,17 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     bool my = mutt_str_startswith(buf->data, "my_", CASE_MATCH);
     if (!my)
     {
-      he = cs_get_elem(Config, buf->data);
+      he = cs_get_elem(NeoMutt->sub->cs, buf->data);
       if (!he)
       {
         if (reset && (mutt_str_strcmp(buf->data, "all") == 0))
         {
-          struct HashElem **list = get_elem_list(Config);
+          struct HashElem **list = get_elem_list(NeoMutt->sub->cs);
           if (!list)
             return MUTT_CMD_ERROR;
 
           for (size_t i = 0; list[i]; i++)
-            cs_he_reset(Config, list[i], NULL);
+            cs_he_reset(NeoMutt->sub->cs, list[i], NULL);
 
           FREE(&list);
           break;
@@ -1668,7 +1668,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       // mutt_buffer_printf(err, "ACT24 reset variable %s", buf->data);
       if (he)
       {
-        rc = cs_he_reset(Config, he, err);
+        rc = cs_he_reset(NeoMutt->sub->cs, he, err);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
           return MUTT_CMD_ERROR;
       }
@@ -1689,7 +1689,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
           mutt_buffer_addstr(err, buf->data);
           mutt_buffer_addch(err, '=');
           mutt_buffer_reset(buf);
-          rc = cs_he_string_get(Config, he, buf);
+          rc = cs_he_string_get(NeoMutt->sub->cs, he, buf);
           if (CSR_RESULT(rc) != CSR_SUCCESS)
           {
             mutt_buffer_addstr(err, buf->data);
@@ -1769,7 +1769,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
             mutt_buffer_dealloc(&scratch);
           }
 
-          rc = cs_he_string_set(Config, he, buf->data, err);
+          rc = cs_he_string_set(NeoMutt->sub->cs, he, buf->data, err);
           if (CSR_RESULT(rc) != CSR_SUCCESS)
             return MUTT_CMD_ERROR;
         }
@@ -1780,7 +1780,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
         if (bq)
         {
           // mutt_buffer_printf(err, "ACT23 set variable %s to 'yes'", buf->data);
-          rc = cs_he_native_set(Config, he, true, err);
+          rc = cs_he_native_set(NeoMutt->sub->cs, he, true, err);
           if (CSR_RESULT(rc) != CSR_SUCCESS)
             return MUTT_CMD_ERROR;
           continue;
@@ -1793,7 +1793,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
             mutt_buffer_addstr(err, buf->data);
             mutt_buffer_addch(err, '=');
             mutt_buffer_reset(buf);
-            rc = cs_he_string_get(Config, he, buf);
+            rc = cs_he_string_get(NeoMutt->sub->cs, he, buf);
             if (CSR_RESULT(rc) != CSR_SUCCESS)
             {
               mutt_buffer_addstr(err, buf->data);
@@ -1831,14 +1831,14 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       {
         // mutt_buffer_printf(err, "ACT25 TOGGLE bool/quad variable %s", buf->data);
         if (DTYPE(he->type) == DT_BOOL)
-          bool_he_toggle(Config, he, err);
+          bool_he_toggle(NeoMutt->sub->cs, he, err);
         else
-          quad_he_toggle(Config, he, err);
+          quad_he_toggle(NeoMutt->sub->cs, he, err);
       }
       else
       {
         // mutt_buffer_printf(err, "ACT26 UNSET bool/quad variable %s", buf->data);
-        rc = cs_he_native_set(Config, he, false, err);
+        rc = cs_he_native_set(NeoMutt->sub->cs, he, false, err);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
           return MUTT_CMD_ERROR;
       }
@@ -1846,7 +1846,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     }
     else
     {
-      rc = cs_he_string_set(Config, he, NULL, err);
+      rc = cs_he_string_set(NeoMutt->sub->cs, he, NULL, err);
       if (CSR_RESULT(rc) != CSR_SUCCESS)
         return MUTT_CMD_ERROR;
     }
@@ -2872,7 +2872,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       {
         struct Buffer result;
         mutt_buffer_init(&result);
-        int rc = cs_str_string_get(Config, var, &result);
+        int rc = cs_str_string_get(NeoMutt->sub->cs, var, &result);
 
         if (CSR_RESULT(rc) == CSR_SUCCESS)
         {
@@ -2988,12 +2988,13 @@ HookFlags mutt_get_hook_type(const char *name)
 
 /**
  * mutt_init - Initialise NeoMutt
+ * @param cs          Config Set
  * @param skip_sys_rc If true, don't read the system config file
  * @param commands    List of config commands to execute
  * @retval 0 Success
  * @retval 1 Error
  */
-int mutt_init(bool skip_sys_rc, struct ListHead *commands)
+int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 {
   char buf[1024];
   int need_pause = 0;
@@ -3028,8 +3029,8 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 #endif
     p = buf;
   }
-  cs_str_initial_set(Config, "spoolfile", p, NULL);
-  cs_str_reset(Config, "spoolfile", NULL);
+  cs_str_initial_set(cs, "spoolfile", p, NULL);
+  cs_str_reset(cs, "spoolfile", NULL);
 
   p = mutt_str_getenv("REPLYTO");
   if (p)
@@ -3051,19 +3052,19 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   p = mutt_str_getenv("EMAIL");
   if (p)
   {
-    cs_str_initial_set(Config, "from", p, NULL);
-    cs_str_reset(Config, "from", NULL);
+    cs_str_initial_set(cs, "from", p, NULL);
+    cs_str_reset(cs, "from", NULL);
   }
 
   /* "$mailcap_path" precedence: config file, environment, code */
   const char *env_mc = mutt_str_getenv("MAILCAPS");
   if (env_mc)
-    cs_str_string_set(Config, "mailcap_path", env_mc, NULL);
+    cs_str_string_set(cs, "mailcap_path", env_mc, NULL);
 
   /* "$tmpdir" precedence: config file, environment, code */
   const char *env_tmp = mutt_str_getenv("TMPDIR");
   if (env_tmp)
-    cs_str_string_set(Config, "tmpdir", env_tmp, NULL);
+    cs_str_string_set(cs, "tmpdir", env_tmp, NULL);
 
   /* "$visual", "$editor" precedence: config file, environment, code */
   const char *env_ed = mutt_str_getenv("VISUAL");
@@ -3071,12 +3072,12 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     env_ed = mutt_str_getenv("EDITOR");
   if (env_ed)
   {
-    cs_str_string_set(Config, "editor", env_ed, NULL);
-    cs_str_string_set(Config, "visual", env_ed, NULL);
+    cs_str_string_set(cs, "editor", env_ed, NULL);
+    cs_str_string_set(cs, "visual", env_ed, NULL);
   }
 
   C_Charset = mutt_ch_get_langinfo_charset();
-  cs_str_initial_set(Config, "charset", C_Charset, NULL);
+  cs_str_initial_set(cs, "charset", C_Charset, NULL);
   mutt_ch_set_charset(C_Charset);
 
   Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));
@@ -3138,7 +3139,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 
   if (!STAILQ_EMPTY(&Muttrc))
   {
-    cs_str_string_set(Config, "alias_file", STAILQ_FIRST(&Muttrc)->data, NULL);
+    cs_str_string_set(cs, "alias_file", STAILQ_FIRST(&Muttrc)->data, NULL);
   }
 
   /* Process the global rc file if it exists and the user hasn't explicitly
@@ -3192,7 +3193,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   if (execute_commands(commands) != 0)
     need_pause = 1; // TEST13: neomutt -e broken
 
-  if (!get_hostname())
+  if (!get_hostname(cs))
     goto done;
 
   if (!C_Realname)
@@ -3204,7 +3205,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
       C_Realname = mutt_str_strdup(mutt_gecos_name(name, sizeof(name), pw));
     }
   }
-  cs_str_initial_set(Config, "realname", C_Realname, NULL);
+  cs_str_initial_set(cs, "realname", C_Realname, NULL);
 
   if (need_pause && !OptNoCurses)
   {
@@ -3225,7 +3226,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_NOTMUCH);
     struct MailboxNode *mp = STAILQ_FIRST(&ml);
     if (mp)
-      cs_str_string_set(Config, "spoolfile", mailbox_path(mp->mailbox), NULL);
+      cs_str_string_set(cs, "spoolfile", mailbox_path(mp->mailbox), NULL);
     neomutt_mailboxlist_clear(&ml);
   }
 #endif
@@ -3316,14 +3317,14 @@ int mutt_query_variables(struct ListHead *queries)
   {
     mutt_buffer_reset(&value);
 
-    struct HashElem *he = cs_get_elem(Config, np->data);
+    struct HashElem *he = cs_get_elem(NeoMutt->sub->cs, np->data);
     if (!he)
     {
       rc = 1;
       continue;
     }
 
-    int rv = cs_he_string_get(Config, he, &value);
+    int rv = cs_he_string_get(NeoMutt->sub->cs, he, &value);
     if (CSR_RESULT(rv) != CSR_SUCCESS)
     {
       rc = 1;
@@ -3341,7 +3342,7 @@ int mutt_query_variables(struct ListHead *queries)
       mutt_buffer_strcpy(&value, tmp.data);
     }
 
-    dump_config_neo(Config, he, &value, NULL, CS_DUMP_NO_FLAGS, stdout);
+    dump_config_neo(NeoMutt->sub->cs, he, &value, NULL, CS_DUMP_NO_FLAGS, stdout);
   }
 
   mutt_buffer_dealloc(&value);
@@ -3755,7 +3756,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
 
     var[vlen - 1] = '\0';
 
-    struct HashElem *he = cs_get_elem(Config, var);
+    struct HashElem *he = cs_get_elem(NeoMutt->sub->cs, var);
     if (!he)
     {
       myvarval = myvar_get(var);
@@ -3773,7 +3774,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
     {
       struct Buffer value = mutt_buffer_make(256);
       struct Buffer pretty = mutt_buffer_make(256);
-      int rc = cs_he_string_get(Config, he, &value);
+      int rc = cs_he_string_get(NeoMutt->sub->cs, he, &value);
       if (CSR_RESULT(rc) == CSR_SUCCESS)
       {
         pretty_var(value.data, &pretty);

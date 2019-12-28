@@ -201,8 +201,8 @@ reflow:
  */
 void mutt_window_free_all(void)
 {
-  if (Config)
-    notify_observer_remove(Config->notify, mutt_dlg_rootwin_observer, RootWindow);
+  if (NeoMutt)
+    notify_observer_remove(NeoMutt->notify, mutt_dlg_rootwin_observer, RootWindow);
   MuttDialogWindow = NULL;
   MuttHelpWindow = NULL;
   MuttMessageWindow = NULL;
@@ -265,7 +265,7 @@ void mutt_window_init(void)
   }
 
   mutt_window_add_child(RootWindow, MuttMessageWindow);
-  notify_observer_add(Config->notify, mutt_dlg_rootwin_observer, RootWindow);
+  notify_observer_add(NeoMutt->notify, mutt_dlg_rootwin_observer, RootWindow);
 }
 
 /**
