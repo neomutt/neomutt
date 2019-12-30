@@ -537,12 +537,10 @@ static int trash_append(struct Mailbox *m)
 #endif
 
   struct Mailbox *m_trash = mx_path_resolve(C_Trash);
+  const bool old_append = m_trash->append;
   struct Context *ctx_trash = mx_mbox_open(m_trash, MUTT_APPEND);
   if (ctx_trash)
   {
-    bool old_append = m_trash->append;
-    m_trash->append = true;
-
     /* continue from initial scan above */
     for (int i = first_del; i < m->msg_count; i++)
     {
