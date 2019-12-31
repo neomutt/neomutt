@@ -1,6 +1,6 @@
 /**
  * @file
- * Mapping from user command name to function
+ * Definitions of NeoMutt commands
  *
  * @authors
  * Copyright (C) 2016 Bernard Pratz <z+mutt+pub@m0g.net>
@@ -57,6 +57,23 @@ struct Command
   command_t func;   ///< Function to parse the command
   intptr_t data;    ///< Data or flags to pass to the command
 };
+
+/**
+ * enum MuttSetCommand - Flags for parse_set()
+ */
+enum MuttSetCommand
+{
+  MUTT_SET_SET,   ///< default is to set all vars
+  MUTT_SET_INV,   ///< default is to invert all vars
+  MUTT_SET_UNSET, ///< default is to unset all vars
+  MUTT_SET_RESET, ///< default is to reset all vars to default
+};
+
+/* parameter to parse_mailboxes */
+#define MUTT_NAMED   (1 << 0)
+#define MUTT_VIRTUAL (1 << 1)
+
+extern const struct Command Commands[];
 
 const struct Command *mutt_command_get(const char *s);
 void mutt_commands_apply(void *data, void (*application)(void *, const struct Command *));

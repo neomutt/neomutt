@@ -12,6 +12,7 @@ backtrace.c
 bcache.c
 browser.c
 commands.c
+command_parse.c
 complete.c
 compose.c
 compress.c
@@ -133,6 +134,8 @@ muttlib.c
 mutt_account.c
 mutt_attach.c
 mutt_body.c
+mutt_commands.c
+mutt_config.c
 mutt_header.c
 mutt_history.c
 mutt_logging.c

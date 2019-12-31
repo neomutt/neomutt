@@ -71,6 +71,7 @@ NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o commands.o \
 		muttlib.o mx.o myvar.o pager.o pattern.o postpone.o progress.o query.o \
 		recvattach.o recvcmd.o resize.o rfc3676.o score.o send.o sendlib.o \
 		sidebar.o smtp.o sort.o state.o status.o system.o version.o \
+		mutt_commands.o mutt_config.o command_parse.o
 
 @if HAVE_LIBUNWIND
 NEOMUTTOBJS+=	backtrace.o

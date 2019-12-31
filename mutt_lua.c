@@ -48,6 +48,7 @@
 #include "mutt.h"
 #include "mutt_lua.h"
 #include "globals.h"
+#include "init.h"
 #include "mutt_commands.h"
 #include "muttlib.h"
 #include "myvar.h"

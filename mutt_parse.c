@@ -230,3 +230,21 @@ int mutt_count_body_parts(struct Mailbox *m, struct Email *e)
 
   return e->attach_total;
 }
+
+/**
+ * mutt_attachmatch_free - Free an AttachMatch - Implements ::list_free_t
+ * @param ptr AttachMatch to free
+ *
+ * @note We don't free minor because it is either a pointer into major,
+ *       or a static string.
+ */
+void mutt_attachmatch_free(struct AttachMatch **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct AttachMatch *am = *ptr;
+  regfree(&am->minor_regex);
+  FREE(&am->major);
+  FREE(ptr);
+}

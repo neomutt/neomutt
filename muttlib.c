@@ -1808,3 +1808,55 @@ void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
     snprintf(buf, buflen, C_SizeUnitsOnLeft ? ("M%zu") : ("%zuM"), (num + 52428) / 1048576);
   }
 }
+
+/**
+ * add_to_stailq - Add a string to a list
+ * @param head String list
+ * @param str  String to add
+ *
+ * @note Duplicate or empty strings will not be added
+ */
+void add_to_stailq(struct ListHead *head, const char *str)
+{
+  /* don't add a NULL or empty string to the list */
+  if (!str || (*str == '\0'))
+    return;
+
+  /* check to make sure the item is not already on this list */
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, head, entries)
+  {
+    if (mutt_str_strcasecmp(str, np->data) == 0)
+    {
+      return;
+    }
+  }
+  mutt_list_insert_tail(head, mutt_str_strdup(str));
+}
+
+/**
+ * remove_from_stailq - Remove an item, matching a string, from a List
+ * @param head Head of the List
+ * @param str  String to match
+ *
+ * @note The string comparison is case-insensitive
+ */
+void remove_from_stailq(struct ListHead *head, const char *str)
+{
+  if (mutt_str_strcmp("*", str) == 0)
+    mutt_list_free(head); /* "unCMD *" means delete all current entries */
+  else
+  {
+    struct ListNode *np = NULL, *tmp = NULL;
+    STAILQ_FOREACH_SAFE(np, head, entries, tmp)
+    {
+      if (mutt_str_strcasecmp(str, np->data) == 0)
+      {
+        STAILQ_REMOVE(head, np, ListNode, entries);
+        FREE(&np->data);
+        FREE(&np);
+        break;
+      }
+    }
+  }
+}
