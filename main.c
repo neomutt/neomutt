@@ -608,8 +608,6 @@ int main(int argc, char *argv[], char *envp[])
     goto main_curses;
   NeoMutt = neomutt_new(cs);
 
-  notify_set_parent(cs->notify, NeoMutt->notify);
-
   if (!get_user_info(cs))
     goto main_exit;
 
@@ -835,10 +833,10 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST22: neomutt -B
   }
 
-  notify_observer_add(cs->notify, mutt_hist_observer, NULL);
-  notify_observer_add(cs->notify, mutt_log_observer, NULL);
-  notify_observer_add(cs->notify, mutt_menu_config_observer, NULL);
-  notify_observer_add(cs->notify, mutt_reply_observer, NULL);
+  notify_observer_add(NeoMutt->notify, mutt_hist_observer, NULL);
+  notify_observer_add(NeoMutt->notify, mutt_log_observer, NULL);
+  notify_observer_add(NeoMutt->notify, mutt_menu_config_observer, NULL);
+  notify_observer_add(NeoMutt->notify, mutt_reply_observer, NULL);
   if (Colors)
     notify_observer_add(Colors->notify, mutt_menu_color_observer, NULL);
 
@@ -1249,11 +1247,11 @@ int main(int argc, char *argv[], char *envp[])
       mutt_sb_set_open_mailbox(Context ? Context->mailbox : NULL);
 #endif
       struct MuttWindow *dlg = index_pager_init();
-      notify_observer_add(cs->notify, mutt_dlg_index_observer, dlg);
+      notify_observer_add(NeoMutt->notify, mutt_dlg_index_observer, dlg);
       dialog_push(dlg);
       mutt_index_menu(dlg);
       dialog_pop();
-      notify_observer_remove(cs->notify, mutt_dlg_index_observer, dlg);
+      notify_observer_remove(NeoMutt->notify, mutt_dlg_index_observer, dlg);
       index_pager_shutdown(dlg);
       mutt_window_free(&dlg);
       ctx_free(&Context);

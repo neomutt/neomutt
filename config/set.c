@@ -157,7 +157,7 @@ struct ConfigSet *cs_new(size_t size)
 
   cs->hash = mutt_hash_new(size, MUTT_HASH_NO_FLAGS);
   mutt_hash_set_destructor(cs->hash, destroy, (intptr_t) cs);
-  cs->notify = notify_new();
+
   return cs;
 }
 
@@ -173,7 +173,6 @@ void cs_free(struct ConfigSet **ptr)
   struct ConfigSet *cs = *ptr;
 
   mutt_hash_free(&cs->hash);
-  notify_free(&cs->notify);
   FREE(ptr);
 }
 
@@ -336,23 +335,6 @@ void cs_uninherit_variable(const struct ConfigSet *cs, const char *name)
 }
 
 /**
- * cs_notify_observers - Notify all observers of an event
- * @param cs   Config items
- * @param he   HashElem representing config item
- * @param name Name of config item
- * @param ev   Type of event
- */
-void cs_notify_observers(const struct ConfigSet *cs, struct HashElem *he,
-                         const char *name, enum NotifyConfig ev)
-{
-  if (!cs || !he || !name)
-    return;
-
-  struct EventConfig ec = { cs, he, name };
-  notify_send(cs->notify, NT_CONFIG, ev, &ec);
-}
-
-/**
  * cs_he_reset - Reset a config item to its initial value
  * @param cs   Config items
  * @param he   HashElem representing config item
@@ -395,8 +377,6 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
       rc = cst->reset(cs, cdef->var, cdef, err);
   }
 
-  if ((CSR_RESULT(rc) == CSR_SUCCESS) && !(rc & CSR_SUC_NO_CHANGE))
-    cs_notify_observers(cs, he, he->key.strkey, NT_CONFIG_RESET);
   return rc;
 }
 
@@ -459,7 +439,6 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  cs_notify_observers(cs, he, he->key.strkey, NT_CONFIG_INITIAL_SET);
   return CSR_SUCCESS;
 }
 
@@ -598,8 +577,6 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
   if (he->type & DT_INHERITED)
     he->type = cdef->type | DT_INHERITED;
 
-  if (!(rc & CSR_SUC_NO_CHANGE))
-    cs_notify_observers(cs, he, he->key.strkey, NT_CONFIG_SET);
   return rc;
 }
 
@@ -743,8 +720,6 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
   if (he->type & DT_INHERITED)
     he->type = cdef->type | DT_INHERITED;
 
-  if (!(rc & CSR_SUC_NO_CHANGE))
-    cs_notify_observers(cs, he, cdef->name, NT_CONFIG_SET);
   return rc;
 }
 
@@ -798,8 +773,6 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
   if (he->type & DT_INHERITED)
     he->type = cdef->type | DT_INHERITED;
 
-  if (!(rc & CSR_SUC_NO_CHANGE))
-    cs_notify_observers(cs, he, cdef->name, NT_CONFIG_SET);
   return rc;
 }
 

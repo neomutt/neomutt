@@ -610,6 +610,7 @@ void config_address(void)
   mutt_buffer_reset(&err);
 
   struct ConfigSet *cs = cs_new(30);
+  NeoMutt = neomutt_new(cs);
 
   address_init(cs);
   dont_fail = true;
@@ -617,7 +618,7 @@ void config_address(void)
     return;
   dont_fail = false;
 
-  notify_observer_add(cs->notify, log_observer, 0);
+  notify_observer_add(NeoMutt->notify, log_observer, 0);
 
   set_list(cs);
 
@@ -630,6 +631,7 @@ void config_address(void)
   TEST_CHECK(test_validator(cs, &err));
   TEST_CHECK(test_inherit(cs, &err));
 
+  neomutt_free(&NeoMutt);
   cs_free(&cs);
   FREE(&err.data);
 }

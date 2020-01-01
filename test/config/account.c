@@ -54,6 +54,7 @@ void config_account(void)
   mutt_buffer_reset(&err);
 
   struct ConfigSet *cs = cs_new(30);
+  NeoMutt = neomutt_new(cs);
   int rc = 0;
 
   number_init(cs);
@@ -62,7 +63,7 @@ void config_account(void)
 
   set_list(cs);
 
-  notify_observer_add(cs->notify, log_observer, 0);
+  notify_observer_add(NeoMutt->notify, log_observer, 0);
 
   const char *account = "damaged";
   const char *parent = "Pineapple";
@@ -244,6 +245,7 @@ void config_account(void)
 
   account_free(&a);
   cs_subset_free(&sub);
+  neomutt_free(&NeoMutt);
   cs_free(&cs);
   FREE(&err.data);
   log_line(__func__);
