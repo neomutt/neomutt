@@ -119,7 +119,7 @@ void config_account(void)
   he = cs_subset_lookup(a->sub, "Apple");
   mutt_buffer_reset(&err);
 
-  rc = cs_subset_native_set(NULL, he, 33, &err);
+  rc = cs_subset_he_native_set(NULL, he, 33, &err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err.data);
@@ -130,7 +130,7 @@ void config_account(void)
     return;
   }
 
-  rc = cs_subset_native_set(a->sub, NULL, 33, &err);
+  rc = cs_subset_he_native_set(a->sub, NULL, 33, &err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err.data);
@@ -141,14 +141,14 @@ void config_account(void)
     return;
   }
 
-  rc = cs_subset_native_set(a->sub, he, 33, &err);
+  rc = cs_subset_he_native_set(a->sub, he, 33, &err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err.data);
   }
 
   mutt_buffer_reset(&err);
-  rc = cs_subset_string_get(a->sub, he, &err);
+  rc = cs_subset_he_string_get(a->sub, he, &err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s = %s\n", he->key.strkey, err.data);
@@ -160,7 +160,7 @@ void config_account(void)
 
   he = cs_subset_lookup(a->sub, "Cherry");
   mutt_buffer_reset(&err);
-  rc = cs_subset_string_get(a->sub, he, &err);
+  rc = cs_subset_he_string_get(a->sub, he, &err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s = %s\n", he->key.strkey, err.data);
