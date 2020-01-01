@@ -40,23 +40,6 @@ struct ConfigSetType RegisteredTypes[18] = {
 };
 
 /**
- * get_base - Find the root Config Item
- * @param he Config Item to examine
- * @retval ptr Root Config Item
- *
- * Given an inherited HashElem, find the HashElem representing the original
- * Config Item.
- */
-static struct HashElem *get_base(struct HashElem *he)
-{
-  if (!(he->type & DT_INHERITED))
-    return he;
-
-  struct Inheritance *i = he->data;
-  return get_base(i->parent);
-}
-
-/**
  * destroy - Callback function for the Hash Table - Implements ::hashelem_free_t
  * @param type Object type, e.g. #DT_STRING
  * @param obj  Object to destroy
@@ -75,7 +58,7 @@ static void destroy(int type, void *obj, intptr_t data)
   {
     struct Inheritance *i = obj;
 
-    struct HashElem *he_base = get_base(i->parent);
+    struct HashElem *he_base = cs_get_base(i->parent);
     struct ConfigDef *cdef = he_base->data;
 
     cst = cs_get_type_def(cs, he_base->type);
@@ -192,6 +175,23 @@ void cs_free(struct ConfigSet **ptr)
   mutt_hash_free(&cs->hash);
   notify_free(&cs->notify);
   FREE(ptr);
+}
+
+/**
+ * cs_get_base - Find the root Config Item
+ * @param he Config Item to examine
+ * @retval ptr Root Config Item
+ *
+ * Given an inherited HashElem, find the HashElem representing the original
+ * Config Item.
+ */
+struct HashElem *cs_get_base(struct HashElem *he)
+{
+  if (!(he->type & DT_INHERITED))
+    return he;
+
+  struct Inheritance *i = he->data;
+  return cs_get_base(i->parent);
 }
 
 /**
@@ -377,7 +377,7 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
   if (he->type & DT_INHERITED)
   {
     struct Inheritance *i = he->data;
-    struct HashElem *he_base = get_base(he);
+    struct HashElem *he_base = cs_get_base(he);
     cdef = he_base->data;
     cst = cs_get_type_def(cs, he_base->type);
 
@@ -441,7 +441,7 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
 
   if (he->type & DT_INHERITED)
   {
-    struct HashElem *he_base = get_base(he);
+    struct HashElem *he_base = cs_get_base(he);
     cdef = he_base->data;
     mutt_debug(LL_DEBUG1, "Variable '%s' is inherited type\n", cdef->name);
     return CSR_ERR_CODE;
@@ -507,7 +507,7 @@ int cs_he_initial_get(const struct ConfigSet *cs, struct HashElem *he, struct Bu
 
   if (he->type & DT_INHERITED)
   {
-    struct HashElem *he_base = get_base(he);
+    struct HashElem *he_base = cs_get_base(he);
     cdef = he_base->data;
     cst = cs_get_type_def(cs, he_base->type);
   }
@@ -573,7 +573,7 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
   if (he->type & DT_INHERITED)
   {
     struct Inheritance *i = he->data;
-    struct HashElem *he_base = get_base(he);
+    struct HashElem *he_base = cs_get_base(he);
     cdef = he_base->data;
     cst = cs_get_type_def(cs, he_base->type);
     var = &i->var;
@@ -652,7 +652,7 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
       return cs_he_string_get(cs, i->parent, result);
 
     // inherited, value set
-    struct HashElem *he_base = get_base(he);
+    struct HashElem *he_base = cs_get_base(he);
     cdef = he_base->data;
     cst = cs_get_type_def(cs, he_base->type);
     var = &i->var;
@@ -718,7 +718,7 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
   if (he->type & DT_INHERITED)
   {
     struct Inheritance *i = he->data;
-    struct HashElem *he_base = get_base(he);
+    struct HashElem *he_base = cs_get_base(he);
     cdef = he_base->data;
     cst = cs_get_type_def(cs, he_base->type);
     var = &i->var;
@@ -776,7 +776,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
   if (he->type & DT_INHERITED)
   {
     struct Inheritance *i = he->data;
-    struct HashElem *he_base = get_base(he);
+    struct HashElem *he_base = cs_get_base(he);
     cdef = he_base->data;
     cst = cs_get_type_def(cs, he_base->type);
     var = &i->var;
@@ -829,7 +829,7 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
       return cs_he_native_get(cs, i->parent, err);
 
     // inherited, value set
-    struct HashElem *he_base = get_base(he);
+    struct HashElem *he_base = cs_get_base(he);
     cdef = he_base->data;
     cst = cs_get_type_def(cs, he_base->type);
     var = &i->var;
