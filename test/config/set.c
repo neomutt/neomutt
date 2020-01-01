@@ -85,8 +85,6 @@ bool degenerate_tests(struct ConfigSet *cs)
 
   struct HashElem *he = cs_get_elem(cs, "Banana");
 
-  cs_init(NULL, 100);
-  TEST_CHECK_(1, "cs_init(NULL, 100)");
   cs_free(NULL);
   TEST_CHECK_(1, "cs_free(NULL)");
   cs_notify_observers(NULL, he, "apple", NT_CONFIG_SET);

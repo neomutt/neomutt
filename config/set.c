@@ -170,25 +170,12 @@ static struct HashElem *reg_one_var(const struct ConfigSet *cs,
  */
 struct ConfigSet *cs_new(size_t size)
 {
-  struct ConfigSet *cs = mutt_mem_malloc(sizeof(*cs));
-  cs_init(cs, size);
-  return cs;
-}
+  struct ConfigSet *cs = mutt_mem_calloc(1, sizeof(*cs));
 
-/**
- * cs_init - Initialise a Config Set
- * @param cs   Config items
- * @param size Number of expected config items
- */
-void cs_init(struct ConfigSet *cs, size_t size)
-{
-  if (!cs)
-    return;
-
-  memset(cs, 0, sizeof(*cs));
   cs->hash = mutt_hash_new(size, MUTT_HASH_NO_FLAGS);
   mutt_hash_set_destructor(cs->hash, destroy, (intptr_t) cs);
   cs->notify = notify_new();
+  return cs;
 }
 
 /**

@@ -203,7 +203,6 @@ struct EventConfig
 };
 
 struct ConfigSet *cs_new(size_t size);
-void              cs_init(struct ConfigSet *cs, size_t size);
 void              cs_free(struct ConfigSet **ptr);
 
 struct HashElem *           cs_get_elem    (const struct ConfigSet *cs, const char *name);
