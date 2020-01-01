@@ -541,11 +541,11 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   char child[128];
   snprintf(child, sizeof(child), "%s:%s", account, parent);
 
-  struct ConfigSubset *sub = cs_subset_new(NULL, NULL);
+  struct ConfigSubset *sub = cs_subset_new(NULL, NULL, NeoMutt->notify);
   sub->cs = cs;
   struct Account *a = account_new(account, sub);
 
-  struct HashElem *he = cs_subset_create_var(a->sub, parent, err);
+  struct HashElem *he = cs_subset_create_inheritance(a->sub, parent);
   if (!he)
   {
     TEST_MSG("Error: %s\n", err->data);

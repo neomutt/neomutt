@@ -50,8 +50,9 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
 
   TAILQ_INIT(&n->accounts);
   n->notify = notify_new();
-  n->sub = cs_subset_new(NULL, NULL);
+  n->sub = cs_subset_new(NULL, NULL, n->notify);
   n->sub->cs = cs;
+  n->sub->scope = SET_SCOPE_NEOMUTT;
 
   return n;
 }

@@ -61,10 +61,12 @@ void config_subset(void)
 
   cs_subset_free(NULL);
 
-  struct ConfigSubset *sub_a = cs_subset_new("account", NeoMutt->sub);
+  struct ConfigSubset *sub_a = cs_subset_new("account", NeoMutt->sub, NeoMutt->notify);
   sub_a->cs = cs;
-  struct ConfigSubset *sub_m = cs_subset_new("mailbox", sub_a);
+  struct ConfigSubset *sub_m = cs_subset_new("mailbox", sub_a, sub_a->notify);
   sub_m->cs = cs;
+
+  cs_subset_notify_observers(NULL, NULL, NT_CONFIG_SET);
 
   cs_subset_str_native_set(sub_m, name, 123, NULL);
   cs_subset_str_native_set(sub_a, name, 456, NULL);

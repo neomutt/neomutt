@@ -154,7 +154,7 @@ static int lua_mutt_set(lua_State *l)
     return 0;
   }
 
-  struct HashElem *he = cs_get_elem(NeoMutt->sub->cs, param);
+  struct HashElem *he = cs_subset_lookup(NeoMutt->sub, param);
   if (!he)
   {
     luaL_error(l, "NeoMutt parameter not found %s", param);
@@ -183,7 +183,7 @@ static int lua_mutt_set(lua_State *l)
       if (IS_PATH(he))
         mutt_buffer_expand_path(&value_buf);
 
-      int rv = cs_he_string_set(NeoMutt->sub->cs, he, value_buf.data, &err);
+      int rv = cs_subset_he_string_set(NeoMutt->sub, he, value_buf.data, &err);
       mutt_buffer_dealloc(&value_buf);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
@@ -193,7 +193,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_QUAD:
     {
       const intptr_t value = lua_tointeger(l, -1);
-      int rv = cs_he_native_set(NeoMutt->sub->cs, he, value, &err);
+      int rv = cs_subset_he_native_set(NeoMutt->sub, he, value, &err);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
       break;
@@ -201,7 +201,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_BOOL:
     {
       const intptr_t value = lua_toboolean(l, -1);
-      int rv = cs_he_native_set(NeoMutt->sub->cs, he, value, &err);
+      int rv = cs_subset_he_native_set(NeoMutt->sub, he, value, &err);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
       break;
@@ -240,7 +240,7 @@ static int lua_mutt_get(lua_State *l)
     return 1;
   }
 
-  struct HashElem *he = cs_get_elem(NeoMutt->sub->cs, param);
+  struct HashElem *he = cs_subset_lookup(NeoMutt->sub, param);
   if (!he)
   {
     mutt_debug(LL_DEBUG2, " * error\n");
@@ -261,7 +261,7 @@ static int lua_mutt_get(lua_State *l)
     case DT_STRING:
     {
       struct Buffer value = mutt_buffer_make(256);
-      int rc = cs_he_string_get(NeoMutt->sub->cs, he, &value);
+      int rc = cs_subset_he_string_get(NeoMutt->sub, he, &value);
       if (CSR_RESULT(rc) != CSR_SUCCESS)
       {
         mutt_buffer_dealloc(&value);

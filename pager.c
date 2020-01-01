@@ -2486,7 +2486,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (query_quadoption(C_Quit, _("Quit NeoMutt?")) == MUTT_YES)
         {
           /* avoid prompting again in the index menu */
-          cs_str_native_set(NeoMutt->sub->cs, "quit", MUTT_YES, NULL);
+          cs_subset_str_native_set(NeoMutt->sub, "quit", MUTT_YES, NULL);
           ch = -1;
         }
         break;

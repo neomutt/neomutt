@@ -248,7 +248,7 @@ int mutt_log_set_file(const char *file, bool verbose)
     mutt_str_replace(&CurrentFile, C_DebugFile);
   }
 
-  cs_str_string_set(NeoMutt->sub->cs, "debug_file", file, NULL);
+  cs_subset_str_string_set(NeoMutt->sub, "debug_file", file, NULL);
 
   return 0;
 }
@@ -268,7 +268,7 @@ int mutt_log_set_level(enum LogLevel level, bool verbose)
   if (log_file_set_level(level, verbose) != 0)
     return -1;
 
-  cs_str_native_set(NeoMutt->sub->cs, "debug_level", level, NULL);
+  cs_subset_str_native_set(NeoMutt->sub, "debug_level", level, NULL);
   return 0;
 }
 

@@ -239,7 +239,12 @@ int quad_he_toggle(struct ConfigSubset *sub, struct HashElem *he, struct Buffer 
     return CSR_ERR_CODE;
 
   value = quad_toggle(value);
-  return cs_he_native_set(sub->cs, he, value, err);
+  int rc = cs_he_native_set(sub->cs, he, value, err);
+
+  if ((CSR_RESULT(rc) == CSR_SUCCESS) && !(rc & CSR_SUC_NO_CHANGE))
+    cs_subset_notify_observers(sub, he, NT_CONFIG_SET);
+
+  return rc;
 }
 
 /**

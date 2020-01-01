@@ -26,21 +26,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "subset.h"
 
 struct Buffer;
 struct ConfigSet;
 struct HashElem;
 struct ConfigDef;
-
-/**
- * enum NotifyConfig - Config notification types
- */
-enum NotifyConfig
-{
-  NT_CONFIG_SET = 1,     ///< Config item has been set
-  NT_CONFIG_RESET,       ///< Config item has been reset to initial, or parent, value
-  NT_CONFIG_INITIAL_SET, ///< Config item's initial value has been set
-};
 
 /* Config Set Results */
 #define CSR_SUCCESS       0 ///< Action completed successfully
@@ -178,18 +169,6 @@ struct ConfigSet
 {
   struct Hash *hash;              ///< HashTable storing the config items
   struct ConfigSetType types[18]; ///< All the defined config types
-};
-
-/**
- * struct EventConfig - A config-change event
- *
- * Events such as #NT_CONFIG_SET
- */
-struct EventConfig
-{
-  const struct ConfigSet *cs; ///< Config set
-  struct HashElem *he;        ///< Config item that changed
-  const char *name;           ///< Name of config item that changed
 };
 
 struct ConfigSet *cs_new(size_t size);

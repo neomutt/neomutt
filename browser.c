@@ -1838,7 +1838,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           mutt_buffer_strcpy(buf, ".");
 
         struct Buffer errmsg = { 0 };
-        int rc = cs_str_string_set(NeoMutt->sub->cs, "mask", mutt_b2s(buf), NULL);
+        int rc = cs_subset_str_string_set(NeoMutt->sub, "mask", mutt_b2s(buf), NULL);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
           if (!mutt_buffer_is_empty(&errmsg))
@@ -1933,14 +1933,14 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (resort)
         {
           sort |= reverse ? SORT_REVERSE : 0;
-          cs_str_native_set(NeoMutt->sub->cs, "sort_browser", sort, NULL);
+          cs_subset_str_native_set(NeoMutt->sub, "sort_browser", sort, NULL);
           browser_sort(&state);
           browser_highlight_default(&state, menu);
           menu->redraw = REDRAW_FULL;
         }
         else
         {
-          cs_str_native_set(NeoMutt->sub->cs, "sort_browser", sort, NULL);
+          cs_subset_str_native_set(NeoMutt->sub, "sort_browser", sort, NULL);
         }
         break;
       }

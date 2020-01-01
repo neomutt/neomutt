@@ -68,11 +68,11 @@ void config_account(void)
   const char *account = "damaged";
   const char *parent = "Pineapple";
 
-  struct ConfigSubset *sub = cs_subset_new(NULL, NULL);
+  struct ConfigSubset *sub = cs_subset_new(NULL, NULL, NeoMutt->notify);
   sub->cs = cs;
   struct Account *a = account_new(account, sub);
 
-  struct HashElem *he = cs_subset_create_var(a->sub, parent, &err);
+  struct HashElem *he = cs_subset_create_inheritance(a->sub, parent);
 
   account_free(&a);
 
@@ -90,8 +90,8 @@ void config_account(void)
   account = "fruit";
   a = account_new(account, sub);
 
-  struct HashElem *he1 = cs_subset_create_var(a->sub, "Apple", &err);
-  struct HashElem *he2 = cs_subset_create_var(a->sub, "Apple", &err);
+  struct HashElem *he1 = cs_subset_create_inheritance(a->sub, "Apple");
+  struct HashElem *he2 = cs_subset_create_inheritance(a->sub, "Apple");
   if (!he1 || !he2 || (he1 != he2))
   {
     TEST_MSG("%s\n", err.data);
@@ -102,18 +102,18 @@ void config_account(void)
 
   a = account_new(account, sub);
 
-  he = cs_subset_create_var(NULL, "Apple", &err);
+  he = cs_subset_create_inheritance(NULL, "Apple");
   if (he)
     return;
-  he = cs_subset_create_var(a->sub, NULL, &err);
+  he = cs_subset_create_inheritance(a->sub, NULL);
   if (he)
     return;
 
-  he = cs_subset_create_var(a->sub, "Apple", &err);
+  he = cs_subset_create_inheritance(a->sub, "Apple");
   if (!he)
     return;
 
-  he = cs_subset_create_var(a->sub, "Cherry", &err);
+  he = cs_subset_create_inheritance(a->sub, "Cherry");
   if (!he)
     return;
 

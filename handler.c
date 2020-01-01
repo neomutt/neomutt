@@ -1141,7 +1141,7 @@ static int multilingual_handler(struct Body *a, struct State *s)
   if (C_PreferredLanguages)
   {
     struct Buffer *langs = mutt_buffer_pool_get();
-    cs_str_string_get(NeoMutt->sub->cs, "preferred_languages", langs);
+    cs_subset_str_string_get(NeoMutt->sub, "preferred_languages", langs);
     mutt_debug(LL_DEBUG2, "RFC8255 >> preferred_languages set in config to '%s'\n",
                mutt_b2s(langs));
     mutt_buffer_pool_release(&langs);

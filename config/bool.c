@@ -221,7 +221,12 @@ int bool_he_toggle(struct ConfigSubset *sub, struct HashElem *he, struct Buffer 
   if (value == INT_MIN)
     return CSR_ERR_CODE;
 
-  return cs_he_native_set(sub->cs, he, !value, err);
+  int rc = cs_he_native_set(sub->cs, he, !value, err);
+
+  if ((CSR_RESULT(rc) == CSR_SUCCESS) && !(rc & CSR_SUC_NO_CHANGE))
+    cs_subset_notify_observers(sub, he, NT_CONFIG_SET);
+
+  return rc;
 }
 
 /**
