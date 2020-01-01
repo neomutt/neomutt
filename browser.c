@@ -1637,7 +1637,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
 #ifdef USE_IMAP
       case OP_BROWSER_TOGGLE_LSUB:
-        bool_str_toggle(NeoMutt->sub->cs, "imap_list_subscribed", NULL);
+        bool_str_toggle(NeoMutt->sub, "imap_list_subscribed", NULL);
 
         mutt_unget_event(0, OP_CHECK_NEW);
         break;

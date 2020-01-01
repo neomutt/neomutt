@@ -2492,7 +2492,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         /* toggle the weeding of headers so that a user can press the key
          * again while reading the message.  */
         if (op == OP_DISPLAY_HEADERS)
-          bool_str_toggle(NeoMutt->sub->cs, "weed", NULL);
+          bool_str_toggle(NeoMutt->sub, "weed", NULL);
 
         OptNeedResort = false;
 
@@ -3876,7 +3876,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
-        bool_str_toggle(NeoMutt->sub->cs, "sidebar_visible", NULL);
+        bool_str_toggle(NeoMutt->sub, "sidebar_visible", NULL);
         mutt_window_reflow(NULL);
         break;
 #endif

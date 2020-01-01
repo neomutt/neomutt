@@ -1831,9 +1831,9 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       {
         // mutt_buffer_printf(err, "ACT25 TOGGLE bool/quad variable %s", buf->data);
         if (DTYPE(he->type) == DT_BOOL)
-          bool_he_toggle(NeoMutt->sub->cs, he, err);
+          bool_he_toggle(NeoMutt->sub, he, err);
         else
-          quad_he_toggle(NeoMutt->sub->cs, he, err);
+          quad_he_toggle(NeoMutt->sub, he, err);
       }
       else
       {

@@ -623,7 +623,7 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  rc = bool_he_toggle(cs, NULL, err);
+  rc = bool_he_toggle(NeoMutt->sub, NULL, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
   {
     TEST_MSG("Toggle succeeded when is shouldn't have\n");
@@ -637,7 +637,7 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  rc = bool_str_toggle(cs, NULL, err);
+  rc = bool_str_toggle(NeoMutt->sub, NULL, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
   {
     TEST_MSG("Toggle succeeded when is shouldn't have\n");
@@ -666,7 +666,7 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
       return false;
     }
 
-    rc = bool_he_toggle(cs, he, err);
+    rc = bool_he_toggle(NeoMutt->sub, he, err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
       TEST_MSG("Toggle failed: %s\n", err->data);
@@ -703,7 +703,7 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
       return false;
     }
 
-    rc = bool_str_toggle(cs, "Nectarine", err);
+    rc = bool_str_toggle(NeoMutt->sub, "Nectarine", err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
       TEST_MSG("Toggle failed: %s\n", err->data);
@@ -718,28 +718,20 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
     short_line();
   }
 
-  VarNectarine = 8;
-  mutt_buffer_reset(err);
-  rc = bool_he_toggle(cs, he, err);
-  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
-  {
-    TEST_MSG("Expected error: %s\n", err->data);
-  }
-
   name = "Olive";
   he = cs_get_elem(cs, name);
   if (!he)
     return false;
 
   mutt_buffer_reset(err);
-  rc = bool_he_toggle(cs, he, err);
+  rc = bool_he_toggle(NeoMutt->sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
   }
 
   mutt_buffer_reset(err);
-  rc = bool_str_toggle(cs, "unknown", err);
+  rc = bool_str_toggle(NeoMutt->sub, "unknown", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
@@ -763,6 +755,7 @@ void config_bool(void)
   mutt_buffer_reset(&err);
 
   struct ConfigSet *cs = cs_new(30);
+  NeoMutt = neomutt_new(cs);
 
   bool_init(cs);
   quad_init(cs);
@@ -785,6 +778,7 @@ void config_bool(void)
   TEST_CHECK(test_inherit(cs, &err));
   TEST_CHECK(test_toggle(cs, &err));
 
+  neomutt_free(&NeoMutt);
   cs_free(&cs);
   FREE(&err.data);
 }

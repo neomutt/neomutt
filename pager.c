@@ -3514,7 +3514,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
-        bool_str_toggle(NeoMutt->sub->cs, "sidebar_visible", NULL);
+        bool_str_toggle(NeoMutt->sub, "sidebar_visible", NULL);
         mutt_window_reflow(mutt_window_dialog(rd.extra->win_pager));
         break;
 #endif

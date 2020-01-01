@@ -25,6 +25,7 @@
 
 struct Buffer;
 struct ConfigSet;
+struct ConfigSubset;
 struct HashElem;
 
 extern const char *QuadValues[];
@@ -42,6 +43,8 @@ enum QuadOption
 };
 
 void quad_init(struct ConfigSet *cs);
-int quad_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err);
+
+int quad_he_toggle (struct ConfigSubset *sub, struct HashElem *he, struct Buffer *err);
+int quad_str_toggle(struct ConfigSubset *sub, const char *name,    struct Buffer *err);
 
 #endif /* MUTT_CONFIG_QUAD_H */

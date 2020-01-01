@@ -34,6 +34,7 @@
 #include "mutt/mutt.h"
 #include "bool.h"
 #include "set.h"
+#include "subset.h"
 #include "types.h"
 
 /**
@@ -202,53 +203,37 @@ void bool_init(struct ConfigSet *cs)
 
 /**
  * bool_he_toggle - Toggle the value of a bool
- * @param cs  Config items
+ * @param sub Config Subset
  * @param he  HashElem representing config item
  * @param err Buffer for error messages
  * @retval num Result, e.g. #CSR_SUCCESS
  */
-int bool_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err)
+int bool_he_toggle(struct ConfigSubset *sub, struct HashElem *he, struct Buffer *err)
 {
-  if (!cs || !he || !he->data)
+  if (!sub || !he || !he->data)
     return CSR_ERR_CODE;
 
-  if (DTYPE(he->type) != DT_BOOL)
+  struct HashElem *he_base = cs_get_base(he);
+  if (DTYPE(he_base->type) != DT_BOOL)
     return CSR_ERR_CODE;
 
-  const struct ConfigDef *cdef = he->data;
-  char *var = cdef->var;
+  intptr_t value = cs_he_native_get(sub->cs, he, err);
+  if (value == INT_MIN)
+    return CSR_ERR_CODE;
 
-  char value = *var;
-  if ((value < 0) || (value > 1))
-  {
-    mutt_buffer_printf(err, "Invalid boolean value: %d", value);
-    return CSR_ERR_INVALID | CSR_INV_TYPE;
-  }
-
-  *(char *) var = !value;
-
-  cs_notify_observers(cs, he, he->key.strkey, NT_CONFIG_SET);
-  return CSR_SUCCESS;
+  return cs_he_native_set(sub->cs, he, !value, err);
 }
 
 /**
  * bool_str_toggle - Toggle the value of a bool
- * @param cs   Config items
+ * @param sub  Config Subset
  * @param name Name of config item
  * @param err  Buffer for error messages
  * @retval num Result, e.g. #CSR_SUCCESS
  */
-int bool_str_toggle(struct ConfigSet *cs, const char *name, struct Buffer *err)
+int bool_str_toggle(struct ConfigSubset *sub, const char *name, struct Buffer *err)
 {
-  if (!cs || !name)
-    return CSR_ERR_CODE;
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
 
-  struct HashElem *he = cs_get_elem(cs, name);
-  if (!he)
-  {
-    mutt_buffer_printf(err, "Unknown var '%s'", name);
-    return CSR_ERR_UNKNOWN;
-  }
-
-  return bool_he_toggle(cs, he, err);
+  return bool_he_toggle(sub, he, err);
 }
