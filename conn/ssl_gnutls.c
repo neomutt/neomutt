@@ -133,7 +133,7 @@ static int tls_starttls_close(struct Connection *conn)
 }
 
 /**
- * tls_verify_peers - wrapper for gnutls_certificate_verify_peers
+ * tls_verify_peers - Wrapper for gnutls_certificate_verify_peers()
  * @param tlsstate TLS state
  * @retval  0 Success
  * @retval >0 Error, e.g. GNUTLS_CERT_INVALID

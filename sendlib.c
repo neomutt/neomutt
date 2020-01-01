@@ -1784,7 +1784,7 @@ struct Body *mutt_remove_multipart(struct Body *b)
 }
 
 /**
- * mutt_write_addrlist - wrapper around mutt_write_address()
+ * mutt_write_addrlist - Wrapper for mutt_write_address()
  * @param al      Address list
  * @param fp      File to write to
  * @param linelen Line length to use

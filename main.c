@@ -174,14 +174,15 @@ static void test_parse_set(void)
 
 /**
  * reset_tilde - Temporary measure
+ * @param cs Config Set
  */
 static void reset_tilde(struct ConfigSet *cs)
 {
   static const char *names[] = {
-    "alias_file", "certificate_file", "debug_file",
-    "folder",     "history_file",     "mbox",
-    "newsrc",     "news_cache_dir",   "postponed",
-    "record",     "signature",
+    "alias_file", "autocrypt_dir", "certificate_file",
+    "debug_file", "folder",        "history_file",
+    "mbox",       "newsrc",        "news_cache_dir",
+    "postponed",  "record",        "signature",
   };
 
   struct Buffer value = mutt_buffer_make(256);

@@ -94,6 +94,7 @@ static struct ImapEmailData *imap_edata_new(void)
 
 /**
  * imap_edata_get - Get the private data for this Email
+ * @param e Email
  * @retval ptr Private Email data
  */
 struct ImapEmailData *imap_edata_get(struct Email *e)

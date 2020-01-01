@@ -522,7 +522,7 @@ static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
 }
 
 /**
- * mutt_sasl_client_new - wrapper for sasl_client_new
+ * mutt_sasl_client_new - Wrapper for sasl_client_new()
  * @param[in]  conn     Connection to a server
  * @param[out] saslconn SASL connection
  * @retval  0 Success

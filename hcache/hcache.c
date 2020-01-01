@@ -359,7 +359,7 @@ void *mutt_hcache_fetch(header_cache_t *hc, const char *key, size_t keylen)
 
 /**
  * mutt_hcache_fetch_raw - Fetch a message's header from the cache
- * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @retval ptr  Success, the data if found
@@ -420,7 +420,7 @@ int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
 
 /**
  * mutt_hcache_store_raw - store a key / data pair
- * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @param data   Payload to associate with key

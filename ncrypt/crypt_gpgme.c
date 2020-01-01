@@ -2062,8 +2062,16 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
 
 /**
  * verify_one - Do the actual verification step
+ * @param sigbdy   Mime part containing signature
+ * @param s        State to read from
+ * @param tempfile Temporary file to read
+ * @param is_smime Is the key S/MIME?
+ * @retval  0 Success
+ * @retval  1 Bad signature
+ * @retval  2 Warnings
+ * @retval -1 Error
  *
- * With IS_SMIME set to true we assume S/MIME (surprise!)
+ * With IS_SMIME set to true we assume S/MIME.
  */
 static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile, bool is_smime)
 {

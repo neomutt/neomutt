@@ -96,13 +96,13 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
 
 /**
  * mutt_hcache_close - close the connection to the header cache
- * @param hc Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc Pointer to the header_cache_t structure got by mutt_hcache_open()
  */
 void mutt_hcache_close(header_cache_t *hc);
 
 /**
  * mutt_hcache_fetch - fetch and validate a  message's header from the cache
- * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @retval ptr  Success, data if found and valid
@@ -120,7 +120,7 @@ void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen);
 
 /**
  * mutt_hcache_free - free previously fetched data
- * @param hc   Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc   Pointer to the header_cache_t structure got by mutt_hcache_open()
  * @param data Pointer to the data got using hcache_fetch or hcache_fetch_raw
  */
 void mutt_hcache_free(header_cache_t *hc, void **data);
@@ -129,7 +129,7 @@ struct Email *mutt_hcache_restore(const unsigned char *d);
 
 /**
  * mutt_hcache_store - store a Header along with a validity datum
- * @param hc          Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc          Pointer to the header_cache_t structure got by mutt_hcache_open()
  * @param key         Message identification string
  * @param keylen      Length of the string pointed to by key
  * @param e           Email to store
@@ -145,7 +145,7 @@ int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
 
 /**
  * mutt_hcache_delete_header - delete a key / data pair
- * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @retval 0   Success

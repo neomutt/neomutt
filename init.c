@@ -3792,6 +3792,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
 
 /**
  * init_config - Initialise the config system
+ * @param size Size for Config Hash Table
  * @retval ptr New Config Set
  */
 struct ConfigSet *init_config(size_t size)

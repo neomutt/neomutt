@@ -204,6 +204,7 @@ void quad_init(struct ConfigSet *cs)
 
 /**
  * quad_toggle - Toggle (invert) the value of a quad option
+ * @param opt Value to toggle
  *
  * By toggling the low bit, the following are swapped:
  * - #MUTT_NO    <--> #MUTT_YES

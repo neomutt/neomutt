@@ -147,6 +147,7 @@ static void nntp_hashelem_free(int type, void *obj, intptr_t data)
 
 /**
  * nntp_adata_new - Allocate and initialise a new NntpAccountData structure
+ * @param conn Network connection
  * @retval ptr New NntpAccountData
  */
 struct NntpAccountData *nntp_adata_new(struct Connection *conn)
@@ -216,6 +217,7 @@ static struct NntpEmailData *nntp_edata_new(void)
 
 /**
  * nntp_edata_get - Get the private data for this Email
+ * @param e Email
  * @retval ptr Private Email data
  */
 struct NntpEmailData *nntp_edata_get(struct Email *e)

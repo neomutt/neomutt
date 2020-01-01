@@ -159,6 +159,8 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
 
 /**
  * imap_mdata_new - Allocate and initialise a new ImapMboxData structure
+ * @param adata Imap Account data
+ * @param name  Name for Mailbox
  * @retval ptr New ImapMboxData
  */
 struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *name)
@@ -239,6 +241,7 @@ void imap_mdata_free(void **ptr)
 
 /**
  * imap_mdata_get - Get the Mailbox data for this mailbox
+ * @param m Mailbox
  */
 struct ImapMboxData *imap_mdata_get(struct Mailbox *m)
 {

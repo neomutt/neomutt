@@ -29,8 +29,8 @@ struct Buffer;
 struct ConfigSet;
 struct Regex;
 
-void regex_init(struct ConfigSet *cs);
-struct Regex *regex_new(const char *str, int flags, struct Buffer *err);
-void regex_free(struct Regex **regex);
+void          regex_free(struct Regex **regex);
+void          regex_init(struct ConfigSet *cs);
+struct Regex *regex_new (const char *str, int flags, struct Buffer *err);
 
 #endif /* MUTT_CONFIG_REGEX_H */

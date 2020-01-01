@@ -43,6 +43,7 @@ const char AddressSpecials[] = "@.,:;<>[]\\\"()";
 
 /**
  * is_special - Is this character special to an email address?
+ * @param ch Character
  */
 #define is_special(ch) strchr(AddressSpecials, ch)
 

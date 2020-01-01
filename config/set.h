@@ -71,7 +71,7 @@ enum CsObserverAction
 };
 
 /**
- * typedef cs_validator - Validate the "charset" config variable
+ * typedef cs_validator - Validate a config variable
  * @param cs    Config items
  * @param cdef  Config definition
  * @param value Native value
@@ -79,7 +79,7 @@ enum CsObserverAction
  * @retval #CSR_SUCCESS     Success
  * @retval #CSR_ERR_INVALID Failure
  */
-typedef int     (*cs_validator)  (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+typedef int (*cs_validator)(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 /**
  * typedef cst_string_set - Set a config item by string
  * @param cs    Config items
@@ -91,7 +91,7 @@ typedef int     (*cs_validator)  (const struct ConfigSet *cs, const struct Confi
  *
  * If var is NULL, then the config item's initial value will be set.
  */
-typedef int     (*cst_string_set)(const struct ConfigSet *cs, void *var,       struct ConfigDef *cdef, const char *value, struct Buffer *err);
+typedef int (*cst_string_set)(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef, const char *value, struct Buffer *err);
 /**
  * typedef cst_string_get - Get a config item as a string
  * @param cs     Config items
@@ -102,7 +102,7 @@ typedef int     (*cst_string_set)(const struct ConfigSet *cs, void *var,       s
  *
  * If var is NULL, then the config item's initial value will be returned.
  */
-typedef int     (*cst_string_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef,                    struct Buffer *result);
+typedef int (*cst_string_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *result);
 /**
  * typedef cst_native_set - Set a config item by string
  * @param cs    Config items
@@ -112,7 +112,7 @@ typedef int     (*cst_string_get)(const struct ConfigSet *cs, void *var, const s
  * @param err   Buffer for error messages
  * @retval num Result, e.g. #CSR_SUCCESS
  */
-typedef int     (*cst_native_set)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, intptr_t value,    struct Buffer *err);
+typedef int (*cst_native_set)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 /**
  * typedef cst_native_get - Get a string from a config item
  * @param cs   Config items
@@ -122,8 +122,7 @@ typedef int     (*cst_native_set)(const struct ConfigSet *cs, void *var, const s
  * @retval intptr_t Config item string
  * @retval INT_MIN  Error
  */
-typedef intptr_t(*cst_native_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef,                    struct Buffer *err);
-
+typedef intptr_t (*cst_native_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
 /**
  * typedef cst_reset - Reset a config item to its initial value
  * @param cs   Config items
@@ -132,14 +131,14 @@ typedef intptr_t(*cst_native_get)(const struct ConfigSet *cs, void *var, const s
  * @param err  Buffer for error messages
  * @retval num Result, e.g. #CSR_SUCCESS
  */
-typedef int     (*cst_reset)     (const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
+typedef int (*cst_reset)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
 /**
  * typedef cst_destroy - Destroy a config item
  * @param cs   Config items
  * @param var  Variable to destroy
  * @param cdef Variable definition
  */
-typedef void    (*cst_destroy)   (const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef);
+typedef void (*cst_destroy)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef);
 
 #define IP (intptr_t)
 
@@ -207,12 +206,12 @@ struct ConfigSet *cs_new(size_t size);
 void              cs_init(struct ConfigSet *cs, size_t size);
 void              cs_free(struct ConfigSet **ptr);
 
-struct HashElem *           cs_get_elem(const struct ConfigSet *cs, const char *name);
+struct HashElem *           cs_get_elem    (const struct ConfigSet *cs, const char *name);
 const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned int type);
 
-bool             cs_register_type(struct ConfigSet *cs, unsigned int type, const struct ConfigSetType *cst);
+bool             cs_register_type     (struct ConfigSet *cs, unsigned int type, const struct ConfigSetType *cst);
 bool             cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], int flags);
-struct HashElem *cs_inherit_variable(const struct ConfigSet *cs, struct HashElem *parent, const char *name);
+struct HashElem *cs_inherit_variable  (const struct ConfigSet *cs, struct HashElem *parent, const char *name);
 void             cs_uninherit_variable(const struct ConfigSet *cs, const char *name);
 
 void cs_notify_observers(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum NotifyConfig ev);

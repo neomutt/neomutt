@@ -247,6 +247,7 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
 
 /**
  * pop_edata_get - Get the private data for this Email
+ * @param e Email
  * @retval ptr Private Email data
  */
 struct PopEmailData *pop_edata_get(struct Email *e)

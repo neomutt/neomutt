@@ -1363,7 +1363,7 @@ int mutt_strwidth(const char *s)
 }
 
 /**
- * mutt_strwidth - Measure a string's width in screen cells
+ * mutt_strnwidth - Measure a string's width in screen cells
  * @param s String to be measured
  * @param n Length of string to be measured
  * @retval num Screen cells string would use

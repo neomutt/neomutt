@@ -1439,8 +1439,11 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
 }
 
 /**
- * mx_path_canon2 - XXX
- * canonicalise the path to realpath
+ * mx_path_canon2 - Canonicalise the path to realpath
+ * @param m      Mailbox
+ * @param folder Path to canonicalise
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int mx_path_canon2(struct Mailbox *m, const char *folder)
 {
@@ -1520,7 +1523,10 @@ int mx_msg_padding_size(struct Mailbox *m)
 }
 
 /**
- * mx_ac_find - XXX
+ * mx_ac_find - Find the Account owning a Mailbox
+ * @param m Mailbox
+ * @retval ptr  Account
+ * @retval NULL None found
  */
 struct Account *mx_ac_find(struct Mailbox *m)
 {
@@ -1541,9 +1547,10 @@ struct Account *mx_ac_find(struct Mailbox *m)
 }
 
 /**
- * mx_mbox_find - XXX
- *
- * find a mailbox on an account
+ * mx_mbox_find - Find a Mailbox on an Account
+ * @param a    Account to search
+ * @param path Path to find
+ * @retval ptr Mailbox
  */
 struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
 {
@@ -1561,9 +1568,10 @@ struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
 }
 
 /**
- * mx_mbox_find2 - XXX
- *
- * find a mailbox on an account
+ * mx_mbox_find2 - Find a Mailbox on an Account
+ * @param path Path to find
+ * @retval ptr  Mailbox
+ * @retval NULL No match
  */
 struct Mailbox *mx_mbox_find2(const char *path)
 {
@@ -1586,7 +1594,11 @@ struct Mailbox *mx_mbox_find2(const char *path)
 }
 
 /**
- * mx_path_resolve - XXX
+ * mx_path_resolve - Get a Mailbox for a path
+ * @param path Mailbox path
+ * @retval ptr Mailbox
+ *
+ * If there isn't a Mailbox for the path, one will be created.
  */
 struct Mailbox *mx_path_resolve(const char *path)
 {

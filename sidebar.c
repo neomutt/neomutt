@@ -965,6 +965,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 
 /**
  * mutt_sb_draw - Completely redraw the sidebar
+ * @param win Window to draw on
  *
  * Completely refresh the sidebar region.  First draw the divider; then, for
  * each Mailbox, call make_sidebar_entry; finally blank out any remaining space.
