@@ -40,13 +40,21 @@ struct ConfigSubset
 
 struct ConfigSubset *cs_subset_new       (const char *name, struct ConfigSubset *parent);
 void                 cs_subset_free      (struct ConfigSubset **ptr);
-struct HashElem *    cs_subset_lookup    (const struct ConfigSubset *sub, const char *name);
 struct HashElem *    cs_subset_create_var(const struct ConfigSubset *sub, const char *name, struct Buffer *err);
+
+struct HashElem *cs_subset_create_inheritance(const struct ConfigSubset *sub, const char *name);
+struct HashElem *cs_subset_lookup            (const struct ConfigSubset *sub, const char *name);
 
 intptr_t cs_subset_he_native_get(const struct ConfigSubset *sub, struct HashElem *he,                    struct Buffer *err);
 int      cs_subset_he_native_set(const struct ConfigSubset *sub, struct HashElem *he, intptr_t value,    struct Buffer *err);
 int      cs_subset_he_reset     (const struct ConfigSubset *sub, struct HashElem *he,                    struct Buffer *err);
 int      cs_subset_he_string_get(const struct ConfigSubset *sub, struct HashElem *he,                    struct Buffer *result);
 int      cs_subset_he_string_set(const struct ConfigSubset *sub, struct HashElem *he, const char *value, struct Buffer *err);
+
+intptr_t cs_subset_str_native_get(const struct ConfigSubset *sub, const char *name,                    struct Buffer *err);
+int      cs_subset_str_native_set(const struct ConfigSubset *sub, const char *name, intptr_t value,    struct Buffer *err);
+int      cs_subset_str_reset     (const struct ConfigSubset *sub, const char *name,                    struct Buffer *err);
+int      cs_subset_str_string_get(const struct ConfigSubset *sub, const char *name,                    struct Buffer *result);
+int      cs_subset_str_string_set(const struct ConfigSubset *sub, const char *name, const char *value, struct Buffer *err);
 
 #endif /* MUTT_CONFIG_SUBSET_H */

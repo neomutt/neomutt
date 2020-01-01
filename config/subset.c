@@ -128,7 +128,31 @@ struct HashElem *cs_subset_lookup(const struct ConfigSubset *sub, const char *na
 }
 
 /**
- * cs_subset_he_native_get - Natively get the value of an inherited config item
+ * cs_subset_create_inheritance - Create a Subset config item (inherited)
+ * @param sub  Config Subset
+ * @param name Name of config item
+ * @retval ptr  HashElem of the config item
+ * @retval NULL Error
+ */
+struct HashElem *cs_subset_create_inheritance(const struct ConfigSubset *sub, const char *name)
+{
+  if (!sub || !name)
+    return NULL;
+
+  struct HashElem *he = cs_subset_lookup(sub, name);
+  if (he)
+    return he;
+
+  // Create parent before creating name
+  he = cs_subset_create_inheritance(sub->parent, name);
+
+  char scope[256];
+  snprintf(scope, sizeof(scope), "%s:%s", sub->name, name);
+  return cs_inherit_variable(sub->cs, he, scope);
+}
+
+/**
+ * cs_subset_he_native_get - Natively get the value of a HashElem config item
  * @param sub Config Subset
  * @param he  HashElem representing config item
  * @param err Buffer for error messages
@@ -138,14 +162,30 @@ struct HashElem *cs_subset_lookup(const struct ConfigSubset *sub, const char *na
 intptr_t cs_subset_he_native_get(const struct ConfigSubset *sub,
                                  struct HashElem *he, struct Buffer *err)
 {
-  if (!sub || !he)
+  if (!sub)
     return INT_MIN;
 
   return cs_he_native_get(sub->cs, he, err);
 }
 
 /**
- * cs_subset_he_native_set - Natively set the value of an inherited config item
+ * cs_subset_str_native_get - Natively get the value of a string config item
+ * @param sub  Config Subset
+ * @param name Name of config item
+ * @param err Buffer for error messages
+ * @retval intptr_t Native pointer/value
+ * @retval INT_MIN  Error
+ */
+intptr_t cs_subset_str_native_get(const struct ConfigSubset *sub,
+                                  const char *name, struct Buffer *err)
+{
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+
+  return cs_subset_he_native_get(sub, he, err);
+}
+
+/**
+ * cs_subset_he_native_set - Natively set the value of a HashElem config item
  * @param sub   Config Subset
  * @param he    HashElem representing config item
  * @param value Native pointer/value to set
@@ -155,14 +195,30 @@ intptr_t cs_subset_he_native_get(const struct ConfigSubset *sub,
 int cs_subset_he_native_set(const struct ConfigSubset *sub, struct HashElem *he,
                             intptr_t value, struct Buffer *err)
 {
-  if (!sub || !he)
+  if (!sub)
     return CSR_ERR_CODE;
 
   return cs_he_native_set(sub->cs, he, value, err);
 }
 
 /**
- * cs_subset_he_reset - Reset an inherited config item to its parent value
+ * cs_subset_str_native_set - Natively set the value of a string config item
+ * @param sub   Config Subset
+ * @param name  Name of config item
+ * @param value Native pointer/value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_subset_str_native_set(const struct ConfigSubset *sub, const char *name,
+                             intptr_t value, struct Buffer *err)
+{
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+
+  return cs_subset_he_native_set(sub, he, value, err);
+}
+
+/**
+ * cs_subset_he_reset - Reset a config item to its initial value
  * @param sub  Config Subset
  * @param he   HashElem representing config item
  * @param err  Buffer for error messages
@@ -170,14 +226,28 @@ int cs_subset_he_native_set(const struct ConfigSubset *sub, struct HashElem *he,
  */
 int cs_subset_he_reset(const struct ConfigSubset *sub, struct HashElem *he, struct Buffer *err)
 {
-  if (!sub || !he)
+  if (!sub)
     return CSR_ERR_CODE;
 
   return cs_he_reset(sub->cs, he, err);
 }
 
 /**
- * cs_subset_he_string_get - Get an inherited config item as a string
+ * cs_subset_str_reset - Reset a config item to its initial value
+ * @param sub  Config Subset
+ * @param name Name of config item
+ * @param err  Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_subset_str_reset(const struct ConfigSubset *sub, const char *name, struct Buffer *err)
+{
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+
+  return cs_subset_he_reset(sub, he, err);
+}
+
+/**
+ * cs_subset_he_string_get - Get a config item as a string
  * @param sub    Config Subset
  * @param he     HashElem representing config item
  * @param result Buffer for results or error messages
@@ -186,14 +256,29 @@ int cs_subset_he_reset(const struct ConfigSubset *sub, struct HashElem *he, stru
 int cs_subset_he_string_get(const struct ConfigSubset *sub, struct HashElem *he,
                             struct Buffer *result)
 {
-  if (!sub || !he)
+  if (!sub)
     return CSR_ERR_CODE;
 
   return cs_he_string_get(sub->cs, he, result);
 }
 
 /**
- * cs_subset_he_string_set - Set an inherited config item by string
+ * cs_subset_str_string_get - Get a config item as a string
+ * @param sub    Config Subset
+ * @param name   Name of config item
+ * @param result Buffer for results or error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_subset_str_string_get(const struct ConfigSubset *sub, const char *name,
+                             struct Buffer *result)
+{
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+
+  return cs_subset_he_string_get(sub, he, result);
+}
+
+/**
+ * cs_subset_he_string_set - Set a config item by string
  * @param sub   Config Subset
  * @param he    HashElem representing config item
  * @param value Value to set
@@ -203,10 +288,26 @@ int cs_subset_he_string_get(const struct ConfigSubset *sub, struct HashElem *he,
 int cs_subset_he_string_set(const struct ConfigSubset *sub, struct HashElem *he,
                             const char *value, struct Buffer *err)
 {
-  if (!sub || !he)
+  if (!sub)
     return INT_MIN;
 
   return cs_he_string_set(sub->cs, he, value, err);
+}
+
+/**
+ * cs_subset_str_string_set - Set a config item by string
+ * @param sub   Config Subset
+ * @param name  Name of config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_subset_str_string_set(const struct ConfigSubset *sub, const char *name,
+                             const char *value, struct Buffer *err)
+{
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+
+  return cs_subset_he_string_set(sub, he, value, err);
 }
 
 /**
