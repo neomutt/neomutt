@@ -62,7 +62,8 @@ static int path2_tidy(struct Path *path)
 
 /**
  * path2_resolve - Resolve special strings in a Mailbox Path
- * @param path Path to resolve
+ * @param path   Path to resolve
+ * @param folder Current $folder
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -83,7 +84,7 @@ static int path2_tidy(struct Path *path)
  *
  * @note Paths beginning with `~` will be expanded later by MxOps::path2_tidy()
  */
-static int path2_resolve(struct Path *path)
+static int path2_resolve(struct Path *path, const char *folder)
 {
   if (!path || !path->orig)
     return -1;
@@ -104,15 +105,15 @@ static int path2_resolve(struct Path *path)
     }
     else if ((buf[0] == '+') || (buf[0] == '='))
     {
-      size_t folder_len = mutt_str_strlen(C_Folder);
-      if ((folder_len > 0) && (C_Folder[folder_len - 1] != '/'))
+      size_t folder_len = mutt_str_strlen(folder);
+      if ((folder_len > 0) && (folder[folder_len - 1] != '/'))
       {
         buf[0] = '/';
-        mutt_str_inline_replace(buf, sizeof(buf), 0, C_Folder);
+        mutt_str_inline_replace(buf, sizeof(buf), 0, folder);
       }
       else
       {
-        mutt_str_inline_replace(buf, sizeof(buf), 1, C_Folder);
+        mutt_str_inline_replace(buf, sizeof(buf), 1, folder);
       }
     }
     else if ((buf[1] == '/') || (buf[1] == '\0'))
@@ -317,9 +318,9 @@ int mx_path2_probe(struct Path *path)
 /**
  * mx_path2_resolve - XXX
  */
-int mx_path2_resolve(struct Path *path)
+int mx_path2_resolve(struct Path *path, const char *folder)
 {
-  int rc = path2_resolve(path);
+  int rc = path2_resolve(path, folder);
   if (rc < 0)
     return rc;
 

@@ -38,6 +38,8 @@
 #include "mutt_commands.h"
 #include "command_parse.h"
 #include "globals.h"
+#include "init.h"
+#include "mutt_account.h"
 #include "hook.h"
 #include "keymap.h"
 #include "mutt_lua.h"
@@ -46,6 +48,7 @@
 // clang-format off
 const struct Command Commands[] = {
 #ifdef USE_SOCKET
+  { "account",             mutt_parse_account,     0 },
   { "account-hook",        mutt_parse_hook,        MUTT_ACCOUNT_HOOK },
 #endif
   { "alias",               parse_alias,            0 },
@@ -122,6 +125,7 @@ const struct Command Commands[] = {
   { "tag-transforms",      parse_tag_transforms,   0 },
   { "timeout-hook",        mutt_parse_hook,        MUTT_TIMEOUT_HOOK | MUTT_GLOBAL_HOOK },
   { "toggle",              parse_set,              MUTT_SET_INV },
+  { "unaccount",           mutt_parse_unaccount,   0 },
   { "unalias",             parse_unalias,          0 },
   { "unalternates",        parse_unalternates,     0 },
   { "unalternative_order", parse_unstailq,         IP &AlternativeOrderList },

@@ -48,9 +48,14 @@ struct Mailbox *mailbox_new(struct Path *path)
   struct Mailbox *m = mutt_mem_calloc(1, sizeof(struct Mailbox));
 
   if (path)
+  {
     m->path = path;
+    m->type = path->type;
+  }
   else
+  {
     m->path = mutt_path_new();
+  }
 
   m->email_max = 25;
   m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));

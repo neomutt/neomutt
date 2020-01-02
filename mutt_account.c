@@ -30,8 +30,13 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "conn/lib.h"
 #include "mutt_account.h"
+#include "globals.h"
+#include "init.h"
+#include "options.h"
+#include "tracker.h"
 
 /**
  * mutt_account_fromurl - Fill ConnAccount with information from url
@@ -131,4 +136,58 @@ void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
     url->user = cac->user;
   if (cac->flags & MUTT_ACCT_PASS)
     url->pass = cac->pass;
+}
+
+/**
+ * mutt_parse_account - Parse the 'account' command - Implements Command::parse()
+ */
+enum CommandResult mutt_parse_account(struct Buffer *buf, struct Buffer *s,
+                                      intptr_t data, struct Buffer *err)
+{
+  /* Go back to the default account */
+  if (!MoreArgs(s))
+  {
+    ct_set_account(NULL);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+  struct Account *a = account_find(buf->data);
+  if (!a)
+  {
+    a = account_new(buf->data, NeoMutt->sub);
+    neomutt_account_add(NeoMutt, a);
+  }
+
+  /* Set the current account, nothing more to do */
+  if (!MoreArgs(s))
+  {
+    ct_set_account(a);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  /* Temporarily alter the current account */
+  ct_push_top();
+  ct_set_account(a);
+
+  /* Process the rest of the line */
+  enum CommandResult rc = mutt_parse_rc_line(s->dptr, err);
+  if (rc == MUTT_CMD_ERROR)
+    mutt_error("%s", err->data);
+
+  ct_pop(); // Restore the previous account
+  mutt_buffer_reset(s);
+
+  return rc;
+}
+
+/**
+ * mutt_parse_unaccount - Parse the 'unaccount' command - Implements Command::parse()
+ */
+enum CommandResult mutt_parse_unaccount(struct Buffer *buf, struct Buffer *s,
+                                        intptr_t data, struct Buffer *err)
+{
+  mutt_message("%s", s->data);
+  return MUTT_CMD_SUCCESS;
 }

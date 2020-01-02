@@ -74,6 +74,7 @@
 #include "protos.h"
 #include "send.h"
 #include "sendlib.h"
+#include "tracker.h"
 #include "version.h"
 #include "ncrypt/lib.h"
 #ifdef ENABLE_NLS
@@ -1204,7 +1205,21 @@ int main(int argc, char *argv[], char *envp[])
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, NULL);
 
     repeat_error = true;
-    struct Mailbox *m = mx_path_resolve(mutt_b2s(&folder), C_Folder);
+    struct Path *path = mutt_path_new();
+    path->orig = mutt_buffer_strdup(&folder);
+    mx_path2_resolve(path, C_Folder);
+    struct Mailbox *m = mx_path2_find(path);
+    if (m)
+    {
+      mutt_path_free(&path);
+    }
+    else
+    {
+      m = mailbox_new(path);
+      m->mx_ops = mx_get_ops(m->type);
+      m->flags = MB_HIDDEN;
+      path = NULL;
+    }
     Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || C_ReadOnly) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS);
     if (!Context)
     {

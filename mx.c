@@ -1738,3 +1738,55 @@ int mx_save_hcache(struct Mailbox *m, struct Email *e)
 
   return m->mx_ops->msg_save_hcache(m, e);
 }
+
+/**
+ * mx_ac2_find - Find the Account owning a Mailbox Path
+ * @param path Mailbox Path
+ * @retval ptr  Account
+ * @retval NULL None found
+ */
+struct Account *mx_ac2_find(const struct Path *path)
+{
+  if (!path || !path->orig || (path->type <= MUTT_UNKNOWN) || !(path->flags & MPATH_RESOLVED))
+    return NULL;
+
+  const struct MxOps *ops = mx_get_ops(path->type);
+  if (!ops)
+    return NULL;
+
+  struct Account *np = NULL;
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  {
+    if (np->type != path->type)
+      continue;
+
+    if (ops->ac2_is_owner(np, path) == 0)
+      return np;
+  }
+
+  return NULL;
+}
+
+/**
+ * mx_path_find - Find a Mailbox by its Path
+ * XXX
+ */
+struct Mailbox *mx_path2_find(struct Path *path)
+{
+  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+  neomutt_mailboxlist_get_all(&ml, NeoMutt, path->type);
+  struct MailboxNode *np = NULL;
+  struct Mailbox *m = NULL;
+
+  STAILQ_FOREACH(np, &ml, entries)
+  {
+    if (mx_path2_compare(np->mailbox->path, path) == 0)
+    {
+      m = np->mailbox;
+      break;
+    }
+  }
+
+  neomutt_mailboxlist_clear(&ml);
+  return m;
+}

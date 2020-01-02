@@ -65,6 +65,7 @@ struct EventAccount
   struct Account *account; ///< The Account this Event relates to
 };
 
+struct Account *account_find          (const char *name);
 void            account_free          (struct Account **ptr);
 bool            account_mailbox_add   (struct Account *a, struct Mailbox *m);
 bool            account_mailbox_remove(struct Account *a, struct Mailbox *m);

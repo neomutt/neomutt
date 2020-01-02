@@ -208,7 +208,7 @@ struct ImapAccountData
   char delim;
   struct Mailbox *mailbox;      ///< Current selected mailbox
   struct Mailbox *prev_mailbox; ///< Previously selected mailbox
-  struct Account *account;      ///< Parent Account
+  struct Account *account;      ///< Account that owns this Mailbox
 };
 
 /**

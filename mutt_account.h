@@ -25,6 +25,10 @@
 #ifndef MUTT_MUTT_ACCOUNT_H
 #define MUTT_MUTT_ACCOUNT_H
 
+#include <stdbool.h>
+#include <stdint.h>
+#include "mutt_commands.h"
+
 struct ConnAccount;
 struct Url;
 
@@ -42,5 +46,8 @@ enum AccountType
 
 int   mutt_account_fromurl(struct ConnAccount *account, const struct Url *url);
 void  mutt_account_tourl  (struct ConnAccount *account, struct Url *url);
+
+enum CommandResult mutt_parse_account  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_unaccount(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 #endif /* MUTT_MUTT_ACCOUNT_H */

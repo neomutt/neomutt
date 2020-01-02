@@ -227,9 +227,14 @@ static void union_hash_delete(struct HashTable *table, union HashKey key, const 
     {
       *last = he->next;
       if (table->hdata_free)
+      {
         table->hdata_free(he->type, he->data, table->hdata);
+        he->data = NULL;
+      }
       if (table->strdup_keys)
         FREE(&he->key.strkey);
+      else
+        he->key.strkey = NULL;
       FREE(&he);
 
       he = *last;

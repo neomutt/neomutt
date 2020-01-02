@@ -74,7 +74,7 @@ NEOMUTTOBJS=	browser.o commands.o command_parse.o \
 		mx_path.o myvar.o opcodes.o pager.o pattern.o postpone.o progress.o \
 		recvattach.o recvcmd.o resize.o rfc3676.o score.o \
 		send.o sendlib.o sidebar.o smtp.o sort.o state.o status.o \
-		system.o version.o
+		system.o tracker.o version.o
 
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
