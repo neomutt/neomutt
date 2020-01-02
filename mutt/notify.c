@@ -34,15 +34,6 @@
 #include "queue.h"
 
 /**
- * struct Notify - Notification API
- */
-struct Notify
-{
-  struct Notify *parent;
-  struct ObserverList observers;
-};
-
-/**
  * notify_new - Create a new notifications handler
  * @retval ptr New notification handler
  */

@@ -27,17 +27,33 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
+ * | debug/account.c     | @subpage debug_account     |
  * | debug/backtrace.c   | @subpage debug_backtrace   |
  * | debug/graphviz.c    | @subpage debug_graphviz    |
  * | debug/notify.c      | @subpage debug_notify      |
  * | debug/parse_test.c  | @subpage debug_parse       |
+ * | debug/subset.c      | @subpage debug_subset      |
  * | debug/window.c      | @subpage debug_window      |
  */
 
 #ifndef MUTT_DEBUG_LIB_H
 #define MUTT_DEBUG_LIB_H
 
+#include <stddef.h>
+
+struct Buffer;
+struct ConfigSubset;
+struct NeoMutt;
+struct Notify;
 struct NotifyCallback;
+
+// Account
+int  account_observer  (struct NotifyCallback *nc);
+void dump_accounts2    (void);
+void dump_config_notify(const char *level, struct NotifyCallback *nc);
+void kill_accounts     (void);
+int  mailbox_observer  (struct NotifyCallback *nc);
+int  neomutt_observer  (struct NotifyCallback *nc);
 
 // Backtrace
 void show_backtrace(void);
@@ -47,9 +63,15 @@ void dump_graphviz(const char *title);
 
 // Notify
 int debug_notify_observer(struct NotifyCallback *nc);
+size_t observer_count(struct Notify *notify);
 
 // Parse Set
 void test_parse_set(void);
+
+// Subset
+void subset_dump     (const struct ConfigSubset *sub);
+void subset_dump_var (const struct ConfigSubset *sub, const char *var);
+void subset_dump_var2(const struct ConfigSubset *sub, const char *var);
 
 // Window
 void debug_win_dump(void);
