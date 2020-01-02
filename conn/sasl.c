@@ -568,8 +568,7 @@ static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
  * @retval  0 Success
  * @retval -1 Error
  *
- * which also sets various security properties. If this turns out to be fine
- * for POP too we can probably stop exporting mutt_sasl_get_callbacks().
+ * which also sets various security properties.
  */
 int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
 {

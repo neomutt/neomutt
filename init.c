@@ -62,6 +62,8 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
+#include "tracker.h"
+#include "version.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif
@@ -202,6 +204,7 @@ static int execute_commands(struct ListHead *p)
   struct Buffer *err = mutt_buffer_pool_get();
   struct Buffer *token = mutt_buffer_pool_get();
 
+  // printf("\033[1;32mstart of commands\033[0m\n");
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, p, entries)
   {
@@ -221,6 +224,7 @@ static int execute_commands(struct ListHead *p)
   mutt_buffer_pool_release(&token);
   mutt_buffer_pool_release(&err);
 
+  // printf("\033[1;32mend of commands\033[0m\n");
   return rc;
 }
 
@@ -991,6 +995,7 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
   if (!line || !*line)
     return 0;
 
+  // printf("\033[1;33mRC: %s\033[0m\n", line);
   int i;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 

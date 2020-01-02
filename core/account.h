@@ -63,6 +63,7 @@ enum NotifyAccount
   NT_ACCOUNT_REMOVE,  ///< An Account is about to be destroyed
 };
 
+struct Account *account_find          (const char *name);
 void            account_free          (struct Account **ptr);
 bool            account_mailbox_add   (struct Account *a, struct Mailbox *m);
 bool            account_mailbox_remove(struct Account *a, struct Mailbox *m);

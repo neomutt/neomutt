@@ -703,7 +703,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   enum MailboxType magic = mx_path_probe(buf);
   if ((magic == MUTT_MAILBOX_ERROR) || (magic == MUTT_UNKNOWN))
   {
-    // Try to see if the buffer matches a description before we bail.
+    // Try to see if the buffer matches a Mailbox name before we bail.
     // We'll receive a non-null pointer if there is a corresponding mailbox.
     m = mailbox_find_name(buf);
     if (m)
@@ -891,8 +891,22 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
     }
   }
 
-  mutt_make_string_flags(buf, buflen, menu->win_index->state.cols,
-                         NONULL(C_IndexFormat), Context, Context->mailbox, e, flags);
+  // struct Account *a = Context->mailbox->account;
+  struct Mailbox *m = Context->mailbox;
+  if (m)
+  {
+    struct Buffer *value = mutt_buffer_pool_get();
+    cs_subset_str_string_get(m->sub, "index_format", value);
+
+    mutt_make_string_flags(buf, buflen, menu->win_index->state.cols,
+                           mutt_b2s(value), Context, m, e, flags);
+    mutt_buffer_pool_release(&value);
+  }
+  else
+  {
+    mutt_make_string_flags(buf, buflen, menu->win_index->state.cols,
+                           NONULL(C_IndexFormat), Context, Context->mailbox, e, flags);
+  }
 }
 
 /**

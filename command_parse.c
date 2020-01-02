@@ -58,6 +58,7 @@
 #include "myvar.h"
 #include "options.h"
 #include "sidebar.h"
+#include "tracker.h"
 #include "version.h"
 #include "imap/lib.h"
 #ifdef ENABLE_NLS
@@ -482,6 +483,9 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     return -1;
   }
 
+  // printf("\033[1;32mfile: %s\033[0m\n", rcfile_path);
+  ct_push_top(); // Inherit the 'account' of the parent config file
+
   mutt_buffer_init(&token);
   while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_CONT)))
   {
@@ -557,6 +561,8 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     FREE(&np);
   }
 
+  // printf("\033[1;32mend of file: %s\033[0m\n", rcfile_path);
+  ct_pop(); // The 'account' command stops at the end of the file
   return rc;
 }
 
@@ -972,82 +978,101 @@ bail:
 enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
                                    unsigned long data, struct Buffer *err)
 {
+  // These won't change during this command
+  struct Account *a = ct_get_account();
+  struct ConfigSubset *sub = a ? a->sub : NeoMutt->sub;
+  struct Buffer *folder = mutt_buffer_pool_get();
+  cs_subset_str_string_get(sub, "folder", folder);
+
+  int rc = MUTT_CMD_ERROR;
+  struct Path *p = NULL;
+  struct Mailbox *m = NULL;
+
   while (MoreArgs(s))
   {
-    struct Mailbox *m = mailbox_new(NULL);
+    p = mutt_path_new();
 
     if (data & MUTT_NAMED)
     {
       mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-      if (buf->data && (*buf->data != '\0'))
-      {
-        mutt_str_replace(&m->path->desc, buf->data);
-      }
-      else
-      {
-        mailbox_free(&m);
-        continue;
-      }
+      p->desc = mutt_buffer_strdup(buf);
     }
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (mutt_buffer_is_empty(buf))
     {
-      /* Skip empty tokens. */
-      mailbox_free(&m);
+      // Skip empty tokens
+      mutt_path_free(&p);
       continue;
     }
 
-    mutt_str_replace(&m->path->orig, buf->data);
-    /* int rc = */ mx_path_canon2(m, C_Folder);
+    p->orig = mutt_buffer_strdup(buf);
 
-    if (m->magic <= MUTT_UNKNOWN)
+    mx_path2_resolve(p, mutt_b2s(folder));
+    if (p->type <= MUTT_UNKNOWN)
     {
-      mutt_error("Unknown Mailbox: %s", m->path->canon);
-      mailbox_free(&m);
-      return MUTT_CMD_ERROR;
+      mutt_error("Unknown Mailbox: %s", p->orig);
+      goto done;
+    }
+
+    // printf("Path:\n\tDesc: %s\n\tOrig: %s\n", p->desc, p->orig);
+
+    struct Mailbox *m_old = mx_path2_find(p);
+    if (m_old)
+    {
+      if (m_old->flags == MB_HIDDEN)
+      {
+        m_old->flags = MB_NORMAL;
+        mutt_sb_notify_mailbox(m_old, true);
+      }
+      mutt_path_free(&p);
+      // printf("existing mailbox\n");
+      continue;
     }
 
     bool new_account = false;
-    struct Account *a = mx_ac_find(m);
+    m = mailbox_new(p);
+    p = NULL; // The Mailbox has taken ownership of the Path
+    m->mx_ops = mx_get_ops(m->magic);
+
+    if (a)
+    {
+      // Use Account from user-supplied 'account' command
+      if (mx_ac_add(a, m) == 0)
+      {
+        ct_set_mailbox(m);
+        m = NULL; // The Account has taken ownership of the Mailbox
+        continue;
+      }
+
+      // The Account doesn't accept the Mailbox
+      a = NULL;
+    }
+
+    // Find existing Account that accepts Path
+    a = mx_ac2_find(m->path);
     if (!a)
     {
+      // or create a new Account
       a = account_new(NULL, NeoMutt->sub);
       a->magic = m->magic;
       new_account = true;
     }
 
-    if (!new_account)
-    {
-      struct Mailbox *m_old = mx_mbox_find(a, m->path->canon);
-      if (m_old)
-      {
-        if (m_old->flags == MB_HIDDEN)
-        {
-          m_old->flags = MB_NORMAL;
-          mutt_sb_notify_mailbox(m_old, true);
-        }
-        mailbox_free(&m);
-        continue;
-      }
-    }
-
     if (mx_ac_add(a, m) < 0)
     {
-      //error
       mailbox_free(&m);
       if (new_account)
-      {
-        cs_subset_free(&a->sub);
-        FREE(&a->name);
-        notify_free(&a->notify);
-        FREE(&a);
-      }
+        account_free(&a);
+
       continue;
     }
+
+    ct_set_account(a);
     if (new_account)
     {
       neomutt_account_add(NeoMutt, a);
+      m->sub->cs = a->sub->cs; // Work around our lazy-allocation order
     }
 
 #ifdef USE_SIDEBAR
@@ -1056,8 +1081,17 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
 #ifdef USE_INOTIFY
     mutt_monitor_add(m);
 #endif
+    ct_set_mailbox(m);
+    m = NULL; // The Account has taken ownership of the Mailbox
   }
-  return MUTT_CMD_SUCCESS;
+
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  mutt_path_free(&p);
+  mailbox_free(&m);
+  mutt_buffer_pool_release(&folder);
+  return rc;
 }
 
 /**
@@ -1164,6 +1198,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
   static const char *set_commands[] = { "set", "toggle", "unset", "reset" };
 
   int rc = 0;
+  struct ConfigSubset *sub = NeoMutt->sub;
 
   while (MoreArgs(s))
   {
@@ -1215,7 +1250,8 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     bool my = mutt_str_startswith(buf->data, "my_", CASE_MATCH);
     if (!my)
     {
-      he = cs_subset_lookup(NeoMutt->sub, buf->data);
+      sub = ct_get_sub();
+      he = cs_subset_create_inheritance(sub, buf->data);
       if (!he)
       {
         if (reset && (mutt_str_strcmp(buf->data, "all") == 0))
@@ -1388,7 +1424,8 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
             mutt_buffer_dealloc(&scratch);
           }
 
-          rc = cs_subset_he_string_set(NeoMutt->sub, he, buf->data, err);
+          // printf("\033[1;32mSET: %s = %s\033[0m\n", he->key.strkey, buf->data);
+          rc = cs_subset_he_string_set(sub, he, buf->data, err);
           if (CSR_RESULT(rc) != CSR_SUCCESS)
             return MUTT_CMD_ERROR;
         }
@@ -1399,7 +1436,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
         if (bq)
         {
           // mutt_buffer_printf(err, "ACT23 set variable %s to 'yes'", buf->data);
-          rc = cs_subset_he_native_set(NeoMutt->sub, he, true, err);
+          rc = cs_subset_he_native_set(sub, he, true, err);
           if (CSR_RESULT(rc) != CSR_SUCCESS)
             return MUTT_CMD_ERROR;
           continue;
@@ -1459,7 +1496,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       else
       {
         // mutt_buffer_printf(err, "ACT26 UNSET bool/quad variable %s", buf->data);
-        rc = cs_subset_he_native_set(NeoMutt->sub, he, false, err);
+        rc = cs_subset_he_native_set(sub, he, false, err);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
           return MUTT_CMD_ERROR;
       }
@@ -1467,7 +1504,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     }
     else
     {
-      rc = cs_subset_he_string_set(NeoMutt->sub, he, NULL, err);
+      rc = cs_subset_he_string_set(sub, he, NULL, err);
       if (CSR_RESULT(rc) != CSR_SUCCESS)
         return MUTT_CMD_ERROR;
     }

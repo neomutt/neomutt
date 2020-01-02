@@ -1178,7 +1178,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** If set, flagged messages can't be deleted.
   */
-  { "folder", DT_STRING|DT_MAILBOX, &C_Folder, IP "~/Mail" },
+  { "folder", DT_STRING|DT_MAILBOX|DT_INHERIT_ACC, &C_Folder, IP "~/Mail" },
   /*
   ** .pp
   ** Specifies the default location of your mailboxes.  A "+" or "=" at the
@@ -1887,7 +1887,7 @@ struct ConfigDef MuttVars[] = {
   ** This option is a format string, please see the description of
   ** $$index_format for supported \fCprintf(3)\fP-style sequences.
   */
-  { "index_format", DT_STRING|DT_NOT_EMPTY|R_INDEX|R_PAGER, &C_IndexFormat, IP "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s" },
+  { "index_format", DT_STRING|DT_NOT_EMPTY|R_INDEX|R_PAGER|DT_INHERIT_ACC|DT_INHERIT_MBOX, &C_IndexFormat, IP "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s" },
   /*
   ** .pp
   ** This variable allows you to customize the message index display to
@@ -4688,7 +4688,7 @@ struct ConfigDef MuttVars[] = {
   ** When \fIset\fP, the internal-pager will pad blank lines to the bottom of the
   ** screen with a tilde ("~").
   */
-  { "time_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_TimeInc, 0 },
+  { "time_inc", DT_NUMBER|DT_NOT_NEGATIVE|DT_INHERIT_ACC|DT_INHERIT_MBOX, &C_TimeInc, 0 },
   /*
   ** .pp
   ** Along with $$read_inc, $$write_inc, and $$net_inc, this

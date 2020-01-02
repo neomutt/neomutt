@@ -107,10 +107,12 @@ void cs_subset_free(struct ConfigSubset **ptr)
     struct HashElem **list = get_elem_list(sub->cs);
     for (size_t i = 0; list[i]; i++)
     {
-      const char *item = list[i]->key.strkey;
-      if (mutt_str_startswith(item, scope, CASE_MATCH) != 0)
+      if (mutt_str_startswith(list[i]->key.strkey, scope, CASE_MATCH) != 0)
       {
+        // The search item may be used after the actual HashElem has been deleted
+        const char *item = mutt_str_strdup(list[i]->key.strkey);
         cs_uninherit_variable(sub->cs, item);
+        FREE(&item);
       }
     }
     FREE(&list);
