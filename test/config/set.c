@@ -120,6 +120,12 @@ bool degenerate_tests(struct ConfigSet *cs)
     return false;
   if (!TEST_CHECK(cs_inherit_variable(cs, NULL, "apple") == NULL))
     return false;
+  struct ConfigSet cs2 = { 0 };
+  if (!TEST_CHECK(cs_inherit_variable(&cs2, he, "apple") == NULL))
+    return false;
+
+  cs_uninherit_variable(NULL, "apple");
+  cs_uninherit_variable(cs, NULL);
 
   if (!TEST_CHECK(cs_str_native_set(NULL, "apple", IP "hello", NULL) != CSR_SUCCESS))
     return false;

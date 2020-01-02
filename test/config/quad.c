@@ -632,6 +632,20 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
+  rc = quad_str_toggle(NULL, "Apple", err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  {
+    TEST_MSG("Toggle succeeded when is shouldn't have\n");
+    return false;
+  }
+
+  rc = quad_str_toggle(NeoMutt->sub, NULL, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  {
+    TEST_MSG("Toggle succeeded when is shouldn't have\n");
+    return false;
+  }
+
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
     char before = tests[i].before;
@@ -668,10 +682,10 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
     }
   }
 
-  VarNectarine = 8;
   mutt_buffer_reset(err);
-  rc = quad_he_toggle(NeoMutt->sub, he, err);
-  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  struct ConfigSubset sub2 = { 0 };
+  rc = quad_he_toggle(&sub2, he, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
   }

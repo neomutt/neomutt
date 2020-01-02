@@ -399,6 +399,17 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
+  rc = cs_str_reset(cs, "unknown", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", err->data);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err->data);
+    return false;
+  }
+
   if (!TEST_CHECK(VarIlama))
   {
     TEST_MSG("Value of %s changed\n", name);
@@ -579,6 +590,9 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   dump_native(cs, parent, child);
   short_line();
 
+  // reset the already-reset child
+  rc = cs_str_reset(cs, child, err);
+
   // reset parent
   mutt_buffer_reset(err);
   rc = cs_str_reset(cs, parent, err);
@@ -630,7 +644,7 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  rc = bool_str_toggle(NULL, "apple", err);
+  rc = bool_str_toggle(NULL, "Apple", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
   {
     TEST_MSG("Toggle succeeded when is shouldn't have\n");
@@ -716,6 +730,14 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
       return false;
     }
     short_line();
+  }
+
+  mutt_buffer_reset(err);
+  struct ConfigSubset sub2 = { 0 };
+  rc = bool_he_toggle(&sub2, he, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", err->data);
   }
 
   name = "Olive";

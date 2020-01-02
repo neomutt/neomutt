@@ -48,13 +48,10 @@ void cs_subset_free(struct ConfigSubset **ptr)
 
   struct ConfigSubset *sub = *ptr;
 
-  if (sub->name)
+  if (sub->cs && sub->name)
   {
     char scope[256];
-    if (sub->parent && sub->parent->name)
-      snprintf(scope, sizeof(scope), "%s:%s:", sub->parent->name, sub->name);
-    else
-      snprintf(scope, sizeof(scope), "%s:", sub->name);
+    snprintf(scope, sizeof(scope), "%s:", sub->name);
 
     // We don't know if any config items have been set,
     // so search for anything with a matching scope.
@@ -80,7 +77,7 @@ void cs_subset_free(struct ConfigSubset **ptr)
  * @param parent Parent Subset
  * @retval ptr New Subset
  *
- * @note The name will be combined with the parent's names
+ * @note The name will be combined with the parents' names
  */
 struct ConfigSubset *cs_subset_new(const char *name, struct ConfigSubset *parent)
 {
@@ -136,15 +133,21 @@ struct HashElem *cs_subset_lookup(const struct ConfigSubset *sub, const char *na
  */
 struct HashElem *cs_subset_create_inheritance(const struct ConfigSubset *sub, const char *name)
 {
-  if (!sub || !name)
+  if (!sub)
     return NULL;
 
   struct HashElem *he = cs_subset_lookup(sub, name);
   if (he)
     return he;
 
-  // Create parent before creating name
-  he = cs_subset_create_inheritance(sub->parent, name);
+  if (sub->parent)
+  {
+    // Create parent before creating name
+    he = cs_subset_create_inheritance(sub->parent, name);
+  }
+
+  if (!he)
+    return NULL;
 
   char scope[256];
   snprintf(scope, sizeof(scope), "%s:%s", sub->name, name);
@@ -289,7 +292,7 @@ int cs_subset_he_string_set(const struct ConfigSubset *sub, struct HashElem *he,
                             const char *value, struct Buffer *err)
 {
   if (!sub)
-    return INT_MIN;
+    return CSR_ERR_CODE;
 
   return cs_he_string_set(sub->cs, he, value, err);
 }
