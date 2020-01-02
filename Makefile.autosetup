@@ -245,6 +245,10 @@ $(PWD)/core:
 
 ###############################################################################
 # libdebug
+LIBDEBUG=	libdebug.a
+@if USE_DEBUG_ACCOUNT
+LIBDEBUGOBJS+=	debug/account.o debug/subset.o
+@endif
 @if HAVE_LIBUNWIND
 LIBDEBUGOBJS+=	debug/backtrace.o
 @endif
@@ -263,7 +267,7 @@ LIBDEBUGOBJS+=	debug/window.o
 @if USE_DEBUG_WINDOW || USE_DEBUG_NOTIFY
 LIBDEBUGOBJS+=	debug/common.o
 @endif
-@if HAVE_LIBUNWIND || USE_DEBUG_GRAPHVIZ || USE_DEBUG_NOTIFY || USE_DEBUG_PARSE_TEST || USE_DEBUG_WINDOW
+@if HAVE_LIBUNWIND || USE_DEBUG_ACCOUNT || USE_DEBUG_GRAPHVIZ || USE_DEBUG_NOTIFY || USE_DEBUG_PARSE_TEST || USE_DEBUG_WINDOW
 LIBDEBUG=	libdebug.a
 CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
 ALLOBJS+=	$(LIBDEBUGOBJS)

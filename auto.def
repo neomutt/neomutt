@@ -120,6 +120,7 @@ options {
 # Enable all options
   everything=0              => "Enable all options"
 # Debug options
+  debug-account=0           => "DEBUG: Enable account dump"
   debug-backtrace=0         => "DEBUG: Enable backtrace support with libunwind"
   with-backtrace:path       => "Location of libunwind"
   debug-graphviz=0          => "DEBUG: Enable Graphviz dump"
@@ -137,7 +138,7 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     autocrypt bdb coverage debug-backtrace debug-graphviz debug-notify
-    debug-parse-test debug-window doc everything fmemopen full-doc gdbm gnutls
+    debug-account debug-parse-test debug-window doc everything fmemopen full-doc gdbm gnutls
     gpgme gss homespool idn idn2 include-path-in-cflags inotify kyotocabinet
     lmdb locales-fix lua lz4 mixmaster nls notmuch pcre2 pgp pkgconf qdbm
     rocksdb sasl smime sqlite ssl testing tdb tokyocabinet zlib zstd
@@ -1182,6 +1183,11 @@ if {[get-define want-gss]} {
 
 ###############################################################################
 # DEBUG options
+
+# Account dump
+if {[get-define want-debug-account]} {
+  define USE_DEBUG_ACCOUNT 1
+}
 
 # Backtrace support with libunwind
 if {[get-define want-debug-backtrace]} {

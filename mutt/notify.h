@@ -27,7 +27,14 @@
 #include "notify_type.h"
 #include "observer.h"
 
-struct Notify;
+/**
+ * struct Notify - Notification API
+ */
+struct Notify
+{
+  struct Notify *parent;
+  struct ObserverList observers;
+};
 
 struct Notify *notify_new(void);
 void notify_free(struct Notify **ptr);

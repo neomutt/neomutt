@@ -803,6 +803,9 @@ int main(int argc, char *argv[], char *envp[])
 
   if (batch_mode)
   {
+#ifdef USE_DEVEL_GRAPHVIZ
+    dump_graphviz("batch");
+#endif
     goto main_ok; // TEST22: neomutt -B
   }
 

@@ -1739,7 +1739,7 @@ struct ConfigDef MuttVars[] = {
   ** run on every connection attempt that uses the OAUTHBEARER authentication
   ** mechanism.  See "$oauth" for details.
   */
-  { "imap_pass", DT_STRING|DT_SENSITIVE, &C_ImapPass, 0 },
+  { "imap_pass", DT_STRING|DT_SENSITIVE|DT_INHERIT_ACC, &C_ImapPass, 0 },
   /*
   ** .pp
   ** Specifies the password for your IMAP account.  If \fIunset\fP, NeoMutt will
@@ -1815,7 +1815,7 @@ struct ConfigDef MuttVars[] = {
   ** server which are out of the users' hands, you may wish to suppress
   ** them at some point.
   */
-  { "imap_user", DT_STRING|DT_SENSITIVE, &C_ImapUser, 0 },
+  { "imap_user", DT_STRING|DT_SENSITIVE|DT_INHERIT_ACC, &C_ImapUser, 0 },
   /*
   ** .pp
   ** The name of the user whose mail you intend to access on the IMAP
