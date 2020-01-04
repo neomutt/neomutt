@@ -114,8 +114,7 @@ void mutt_parse_mime_message(struct Mailbox *m, struct Email *e)
 {
 }
 
-void mutt_progress_init(struct Progress *progress, const char *msg,
-                        int type, size_t size)
+void mutt_progress_init(struct Progress *progress, const char *msg, int type, size_t size)
 {
 }
 void mutt_progress_update(struct Progress *progress, long pos, int percent)

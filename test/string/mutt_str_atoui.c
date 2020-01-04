@@ -23,8 +23,8 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
-#include "mutt/mutt.h"
 #include <limits.h>
+#include "mutt/mutt.h"
 
 struct TestValue
 {

@@ -261,8 +261,8 @@ bool test_dump_config_neo(void)
     TEST_CHECK_(
         1, "dump_config_neo(cs, he, NULL, &buf_init, CS_DUMP_NO_FLAGS, fp)");
     dump_config_neo(cs, he, &buf_val, NULL, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1,
-                "dump_config_neo(cs, he, &buf_val, NULL, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1, "dump_config_neo(cs, he, &buf_val, NULL, CS_DUMP_NO_FLAGS, fp)");
     dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, NULL);
     TEST_CHECK_(
         1,
@@ -272,12 +272,12 @@ bool test_dump_config_neo(void)
 
     dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(
-        1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
+        1,
+        "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
 
     dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_ONLY_CHANGED, fp);
-    TEST_CHECK_(
-        1,
-        "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_ONLY_CHANGED, fp)");
+    TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, "
+                   "CS_DUMP_ONLY_CHANGED, fp)");
 
     dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_SHOW_DEFAULTS, fp);
     TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, "
@@ -286,7 +286,8 @@ bool test_dump_config_neo(void)
     he = mutt_hash_find_elem(cs->hash, "Damson");
     dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(
-        1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
+        1,
+        "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
 
     fclose(fp);
     mutt_buffer_dealloc(&buf_val);

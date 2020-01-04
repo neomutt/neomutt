@@ -25,8 +25,8 @@
 #include "config.h"
 #include <stdint.h>
 #include "mutt/mutt.h"
-#include "gui/reflow.h"
 #include "gui/mutt_window.h"
+#include "gui/reflow.h"
 
 typedef uint16_t MuttRedrawFlags;
 
