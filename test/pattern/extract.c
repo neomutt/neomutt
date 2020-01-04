@@ -24,6 +24,7 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "filter.h"
 #include "globals.h"
@@ -230,7 +231,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       {
         struct Buffer result;
         mutt_buffer_init(&result);
-        int rc = cs_str_string_get(Config, var, &result);
+        int rc = cs_str_string_get(NeoMutt->sub->cs, var, &result);
 
         if (CSR_RESULT(rc) == CSR_SUCCESS)
         {

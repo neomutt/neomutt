@@ -440,6 +440,7 @@ int main(int argc, char *argv[], char *envp[])
   struct Buffer folder = mutt_buffer_make(0);
   struct Buffer expanded_infile = mutt_buffer_make(0);
   struct Buffer tempfile = mutt_buffer_make(0);
+  struct ConfigSet *cs = NULL;
 
   MuttLogger = log_disp_terminal;
 
@@ -602,31 +603,29 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST04: neomutt -v
   }
 
-  Config = init_config(500);
-  if (!Config)
+  cs = init_config(500);
+  if (!cs)
     goto main_curses;
-  NeoMutt = neomutt_new(Config);
+  NeoMutt = neomutt_new(cs);
 
-  notify_set_parent(Config->notify, NeoMutt->notify);
-
-  if (!get_user_info(Config))
+  if (!get_user_info(cs))
     goto main_exit;
 
   if (test_config)
   {
-    cs_str_initial_set(Config, "from", "rich@flatcap.org", NULL);
-    cs_str_reset(Config, "from", NULL);
+    cs_str_initial_set(cs, "from", "rich@flatcap.org", NULL);
+    cs_str_reset(cs, "from", NULL);
     myvar_set("my_var", "foo");
     test_parse_set();
     goto main_ok;
   }
 
-  reset_tilde(Config);
+  reset_tilde(cs);
 
   if (dfile)
   {
-    cs_str_initial_set(Config, "debug_file", dfile, NULL);
-    cs_str_reset(Config, "debug_file", NULL);
+    cs_str_initial_set(cs, "debug_file", dfile, NULL);
+    cs_str_reset(cs, "debug_file", NULL);
   }
 
   if (dlevel)
@@ -637,8 +636,8 @@ int main(int argc, char *argv[], char *envp[])
       mutt_error(_("Error: value '%s' is invalid for -d"), dlevel);
       goto main_exit; // TEST07: neomutt -d xyz
     }
-    cs_str_initial_set(Config, "debug_level", dlevel, NULL);
-    cs_str_reset(Config, "debug_level", NULL);
+    cs_str_initial_set(cs, "debug_level", dlevel, NULL);
+    cs_str_reset(cs, "debug_level", NULL);
   }
 
   mutt_log_prep();
@@ -695,16 +694,16 @@ int main(int argc, char *argv[], char *envp[])
   }
 
   /* set defaults and read init files */
-  int rc2 = mutt_init(flags & MUTT_CLI_NOSYSRC, &commands);
+  int rc2 = mutt_init(cs, flags & MUTT_CLI_NOSYSRC, &commands);
   mutt_list_free(&commands);
   if (rc2 != 0)
     goto main_curses;
 
   /* The command line overrides the config */
   if (dlevel)
-    cs_str_reset(Config, "debug_level", NULL);
+    cs_str_reset(cs, "debug_level", NULL);
   if (dfile)
-    cs_str_reset(Config, "debug_file", NULL);
+    cs_str_reset(cs, "debug_file", NULL);
 
   if (mutt_log_start() < 0)
   {
@@ -715,20 +714,20 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef USE_NNTP
   /* "$news_server" precedence: command line, config file, environment, system file */
   if (cli_nntp)
-    cs_str_string_set(Config, "news_server", cli_nntp, NULL);
+    cs_str_string_set(cs, "news_server", cli_nntp, NULL);
   if (!C_NewsServer)
   {
     const char *env_nntp = mutt_str_getenv("NNTPSERVER");
-    cs_str_string_set(Config, "news_server", env_nntp, NULL);
+    cs_str_string_set(cs, "news_server", env_nntp, NULL);
   }
   if (!C_NewsServer)
   {
     char buf[1024];
     char *server = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buf, sizeof(buf));
-    cs_str_string_set(Config, "news_server", server, NULL);
+    cs_str_string_set(cs, "news_server", server, NULL);
   }
   if (C_NewsServer)
-    cs_str_initial_set(Config, "news_server", C_NewsServer, NULL);
+    cs_str_initial_set(cs, "news_server", C_NewsServer, NULL);
 #endif
 
   /* Initialize crypto backends.  */
@@ -737,14 +736,14 @@ int main(int argc, char *argv[], char *envp[])
   if (new_magic)
   {
     struct Buffer err = mutt_buffer_make(0);
-    int r = cs_str_initial_set(Config, "mbox_type", new_magic, &err);
+    int r = cs_str_initial_set(cs, "mbox_type", new_magic, &err);
     if (CSR_RESULT(r) != CSR_SUCCESS)
     {
       mutt_error(err.data);
       mutt_buffer_dealloc(&err);
       goto main_curses;
     }
-    cs_str_reset(Config, "mbox_type", NULL);
+    cs_str_reset(cs, "mbox_type", NULL);
   }
 
   if (!STAILQ_EMPTY(&queries))
@@ -755,7 +754,7 @@ int main(int argc, char *argv[], char *envp[])
 
   if (dump_variables)
   {
-    dump_config(Config, hide_sensitive ? CS_DUMP_HIDE_SENSITIVE : CS_DUMP_NO_FLAGS, stdout);
+    dump_config(cs, hide_sensitive ? CS_DUMP_HIDE_SENSITIVE : CS_DUMP_NO_FLAGS, stdout);
     goto main_ok; // TEST18: neomutt -D
   }
 
@@ -834,10 +833,10 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST22: neomutt -B
   }
 
-  notify_observer_add(Config->notify, mutt_hist_observer, NULL);
-  notify_observer_add(Config->notify, mutt_log_observer, NULL);
-  notify_observer_add(Config->notify, mutt_menu_config_observer, NULL);
-  notify_observer_add(Config->notify, mutt_reply_observer, NULL);
+  notify_observer_add(NeoMutt->notify, mutt_hist_observer, NULL);
+  notify_observer_add(NeoMutt->notify, mutt_log_observer, NULL);
+  notify_observer_add(NeoMutt->notify, mutt_menu_config_observer, NULL);
+  notify_observer_add(NeoMutt->notify, mutt_reply_observer, NULL);
   if (Colors)
     notify_observer_add(Colors->notify, mutt_menu_color_observer, NULL);
 
@@ -1013,7 +1012,7 @@ int main(int argc, char *argv[], char *envp[])
           if (mutt_str_startswith(np->data, "X-Mutt-Resume-Draft:", CASE_IGNORE))
           {
             if (C_ResumeEditedDraftFiles)
-              cs_str_native_set(Config, "resume_draft_files", true, NULL);
+              cs_str_native_set(cs, "resume_draft_files", true, NULL);
 
             STAILQ_REMOVE(&e->env->userhdrs, np, ListNode, entries);
             FREE(&np->data);
@@ -1248,11 +1247,11 @@ int main(int argc, char *argv[], char *envp[])
       mutt_sb_set_open_mailbox(Context ? Context->mailbox : NULL);
 #endif
       struct MuttWindow *dlg = index_pager_init();
-      notify_observer_add(Config->notify, mutt_dlg_index_observer, dlg);
+      notify_observer_add(NeoMutt->notify, mutt_dlg_index_observer, dlg);
       dialog_push(dlg);
       mutt_index_menu(dlg);
       dialog_pop();
-      notify_observer_remove(Config->notify, mutt_dlg_index_observer, dlg);
+      notify_observer_remove(NeoMutt->notify, mutt_dlg_index_observer, dlg);
       index_pager_shutdown(dlg);
       mutt_window_free(&dlg);
       ctx_free(&Context);
@@ -1297,7 +1296,7 @@ main_exit:
   mutt_keys_free();
   myvarlist_free(&MyVars);
   neomutt_free(&NeoMutt);
-  cs_free(&Config);
+  cs_free(&cs);
   log_queue_flush(log_disp_terminal);
   log_queue_empty();
   mutt_log_stop();

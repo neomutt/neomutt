@@ -632,11 +632,11 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   char child[128];
   snprintf(child, sizeof(child), "%s:%s", account, parent);
 
-  struct ConfigSubset *sub = cs_subset_new(NULL, NULL);
+  struct ConfigSubset *sub = cs_subset_new(NULL, NULL, NeoMutt->notify);
   sub->cs = cs;
   struct Account *a = account_new(account, sub);
 
-  struct HashElem *he = cs_subset_create_var(a->sub, parent, err);
+  struct HashElem *he = cs_subset_create_inheritance(a->sub, parent);
   if (!he)
   {
     TEST_MSG("Error: %s\n", err->data);
@@ -732,6 +732,7 @@ void config_sort(void)
   mutt_buffer_reset(&err);
 
   struct ConfigSet *cs = cs_new(30);
+  NeoMutt = neomutt_new(cs);
 
   sort_init(cs);
   dont_fail = true;
@@ -739,7 +740,7 @@ void config_sort(void)
     return;
   dont_fail = false;
 
-  notify_observer_add(cs->notify, log_observer, 0);
+  notify_observer_add(NeoMutt->notify, log_observer, 0);
 
   set_list(cs);
 
@@ -757,6 +758,7 @@ void config_sort(void)
   TEST_CHECK(test_inherit(cs, &err));
   TEST_CHECK(test_sort_type(cs, &err));
 
+  neomutt_free(&NeoMutt);
   cs_free(&cs);
   FREE(&err.data);
 }

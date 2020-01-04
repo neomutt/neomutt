@@ -85,16 +85,8 @@ bool degenerate_tests(struct ConfigSet *cs)
 
   struct HashElem *he = cs_get_elem(cs, "Banana");
 
-  cs_init(NULL, 100);
-  TEST_CHECK_(1, "cs_init(NULL, 100)");
   cs_free(NULL);
   TEST_CHECK_(1, "cs_free(NULL)");
-  cs_notify_observers(NULL, he, "apple", NT_CONFIG_SET);
-  TEST_CHECK_(1, "cs_notify_observers(NULL, he, \"apple\", NT_CONFIG_SET)");
-  cs_notify_observers(cs, NULL, "apple", NT_CONFIG_SET);
-  TEST_CHECK_(1, "cs_notify_observers(cs, NULL, \"apple\", NT_CONFIG_SET)");
-  cs_notify_observers(cs, he, NULL, NT_CONFIG_SET);
-  TEST_CHECK_(1, "cs_notify_observers(cs, he, NULL, NT_CONFIG_SET)");
 
   if (!TEST_CHECK(cs_register_type(NULL, DT_NUMBER, &cst_dummy) == false))
     return false;
@@ -122,6 +114,12 @@ bool degenerate_tests(struct ConfigSet *cs)
     return false;
   if (!TEST_CHECK(cs_inherit_variable(cs, NULL, "apple") == NULL))
     return false;
+  struct ConfigSet cs2 = { 0 };
+  if (!TEST_CHECK(cs_inherit_variable(&cs2, he, "apple") == NULL))
+    return false;
+
+  cs_uninherit_variable(NULL, "apple");
+  cs_uninherit_variable(cs, NULL);
 
   if (!TEST_CHECK(cs_str_native_set(NULL, "apple", IP "hello", NULL) != CSR_SUCCESS))
     return false;
@@ -221,6 +219,8 @@ void config_set(void)
   struct ConfigSet *cs = cs_new(30);
   if (!TEST_CHECK(cs != NULL))
     return;
+
+  NeoMutt = neomutt_new(cs);
 
   const struct ConfigSetType cst_dummy = {
     "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
@@ -325,6 +325,7 @@ void config_set(void)
   if (!TEST_CHECK(!cst))
     return;
 
+  neomutt_free(&NeoMutt);
   cs_free(&cs);
   FREE(&err.data);
   log_line(__func__);

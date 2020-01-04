@@ -118,7 +118,7 @@ enum MessageType
 #define MUTT_SPAM   1
 #define MUTT_NOSPAM 2
 
-int mutt_init(bool skip_sys_rc, struct ListHead *commands);
+int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
 struct ConfigSet *init_config(size_t size);
 
 #define EXEC_SHELL "/bin/sh"

@@ -54,6 +54,7 @@ void config_account(void)
   mutt_buffer_reset(&err);
 
   struct ConfigSet *cs = cs_new(30);
+  NeoMutt = neomutt_new(cs);
   int rc = 0;
 
   number_init(cs);
@@ -62,16 +63,16 @@ void config_account(void)
 
   set_list(cs);
 
-  notify_observer_add(cs->notify, log_observer, 0);
+  notify_observer_add(NeoMutt->notify, log_observer, 0);
 
   const char *account = "damaged";
   const char *parent = "Pineapple";
 
-  struct ConfigSubset *sub = cs_subset_new(NULL, NULL);
+  struct ConfigSubset *sub = cs_subset_new(NULL, NULL, NeoMutt->notify);
   sub->cs = cs;
   struct Account *a = account_new(account, sub);
 
-  struct HashElem *he = cs_subset_create_var(a->sub, parent, &err);
+  struct HashElem *he = cs_subset_create_inheritance(a->sub, parent);
 
   account_free(&a);
 
@@ -89,8 +90,8 @@ void config_account(void)
   account = "fruit";
   a = account_new(account, sub);
 
-  struct HashElem *he1 = cs_subset_create_var(a->sub, "Apple", &err);
-  struct HashElem *he2 = cs_subset_create_var(a->sub, "Apple", &err);
+  struct HashElem *he1 = cs_subset_create_inheritance(a->sub, "Apple");
+  struct HashElem *he2 = cs_subset_create_inheritance(a->sub, "Apple");
   if (!he1 || !he2 || (he1 != he2))
   {
     TEST_MSG("%s\n", err.data);
@@ -101,25 +102,25 @@ void config_account(void)
 
   a = account_new(account, sub);
 
-  he = cs_subset_create_var(NULL, "Apple", &err);
+  he = cs_subset_create_inheritance(NULL, "Apple");
   if (he)
     return;
-  he = cs_subset_create_var(a->sub, NULL, &err);
+  he = cs_subset_create_inheritance(a->sub, NULL);
   if (he)
     return;
 
-  he = cs_subset_create_var(a->sub, "Apple", &err);
+  he = cs_subset_create_inheritance(a->sub, "Apple");
   if (!he)
     return;
 
-  he = cs_subset_create_var(a->sub, "Cherry", &err);
+  he = cs_subset_create_inheritance(a->sub, "Cherry");
   if (!he)
     return;
 
   he = cs_subset_lookup(a->sub, "Apple");
   mutt_buffer_reset(&err);
 
-  rc = cs_subset_native_set(NULL, he, 33, &err);
+  rc = cs_subset_he_native_set(NULL, he, 33, &err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err.data);
@@ -130,7 +131,7 @@ void config_account(void)
     return;
   }
 
-  rc = cs_subset_native_set(a->sub, NULL, 33, &err);
+  rc = cs_subset_he_native_set(a->sub, NULL, 33, &err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err.data);
@@ -141,14 +142,14 @@ void config_account(void)
     return;
   }
 
-  rc = cs_subset_native_set(a->sub, he, 33, &err);
+  rc = cs_subset_he_native_set(a->sub, he, 33, &err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err.data);
   }
 
   mutt_buffer_reset(&err);
-  rc = cs_subset_string_get(a->sub, he, &err);
+  rc = cs_subset_he_string_get(a->sub, he, &err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s = %s\n", he->key.strkey, err.data);
@@ -160,7 +161,7 @@ void config_account(void)
 
   he = cs_subset_lookup(a->sub, "Cherry");
   mutt_buffer_reset(&err);
-  rc = cs_subset_string_get(a->sub, he, &err);
+  rc = cs_subset_he_string_get(a->sub, he, &err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s = %s\n", he->key.strkey, err.data);
@@ -244,6 +245,7 @@ void config_account(void)
 
   account_free(&a);
   cs_subset_free(&sub);
+  neomutt_free(&NeoMutt);
   cs_free(&cs);
   FREE(&err.data);
   log_line(__func__);

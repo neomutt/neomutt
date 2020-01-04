@@ -44,6 +44,7 @@
 #include <wchar.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "curs_lib.h"
 #include "browser.h"
@@ -690,7 +691,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
     mutt_window_add_child(dlg, pbar);
   }
 
-  notify_observer_add(Config->notify, mutt_dlg_dopager_observer, dlg);
+  notify_observer_add(NeoMutt->notify, mutt_dlg_dopager_observer, dlg);
   dialog_push(dlg);
 
   info->win_ibar = NULL;
@@ -720,7 +721,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
   }
 
   dialog_pop();
-  notify_observer_remove(Config->notify, mutt_dlg_dopager_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, mutt_dlg_dopager_observer, dlg);
   mutt_window_free(&dlg);
   return rc;
 }

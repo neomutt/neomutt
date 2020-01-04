@@ -30,6 +30,7 @@
 
 #include "config.h"
 #include <sys/stat.h>
+#include "config/lib.h"
 #include "email/lib.h"
 #include "mailbox.h"
 #include "neomutt.h"
@@ -62,12 +63,16 @@ void mailbox_free(struct Mailbox **ptr)
     return;
 
   struct Mailbox *m = *ptr;
+  if (m->mdata && m->free_mdata)
+    m->free_mdata(&m->mdata);
+
   mailbox_changed(m, NT_MAILBOX_CLOSED);
 
   if (m->mdata && m->free_mdata)
     m->free_mdata(&m->mdata);
 
   mutt_buffer_dealloc(&m->pathbuf);
+  cs_subset_free(&m->sub);
   FREE(&m->name);
   FREE(&m->realpath);
   FREE(&m->emails);
@@ -190,4 +195,20 @@ void mailbox_size_add(struct Mailbox *m, const struct Email *e)
 void mailbox_size_sub(struct Mailbox *m, const struct Email *e)
 {
   m->size -= email_size(e);
+}
+
+/**
+ * mailbox_set_subset - Set a Mailbox's Config Subset
+ * @param m   Mailbox
+ * @param sub Parent Config Subset
+ * @retval true Success
+ */
+bool mailbox_set_subset(struct Mailbox *m, struct ConfigSubset *sub)
+{
+  if (!m || m->sub || !sub)
+    return false;
+
+  m->sub = cs_subset_new(m->name, sub, m->notify);
+  m->sub->scope = SET_SCOPE_MAILBOX;
+  return true;
 }

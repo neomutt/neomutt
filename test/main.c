@@ -101,6 +101,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_ch_lookup_remove)                                \
   NEOMUTT_TEST_ITEM(test_mutt_ch_set_charset)                                  \
   NEOMUTT_TEST_ITEM(config_set)                                                \
+  NEOMUTT_TEST_ITEM(config_subset)                                             \
   NEOMUTT_TEST_ITEM(config_account)                                            \
   NEOMUTT_TEST_ITEM(config_initial)                                            \
   NEOMUTT_TEST_ITEM(config_synonym)                                            \

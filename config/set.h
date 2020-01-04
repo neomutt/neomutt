@@ -26,21 +26,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "subset.h"
 
 struct Buffer;
 struct ConfigSet;
 struct HashElem;
 struct ConfigDef;
-
-/**
- * enum NotifyConfig - Config notification types
- */
-enum NotifyConfig
-{
-  NT_CONFIG_SET = 1,     ///< Config item has been set
-  NT_CONFIG_RESET,       ///< Config item has been reset to initial, or parent, value
-  NT_CONFIG_INITIAL_SET, ///< Config item's initial value has been set
-};
 
 /* Config Set Results */
 #define CSR_SUCCESS       0 ///< Action completed successfully
@@ -60,15 +51,6 @@ enum NotifyConfig
 
 #define CSR_RESULT_MASK 0x0F
 #define CSR_RESULT(x) ((x) & CSR_RESULT_MASK)
-
-/**
- * enum CsObserverAction - Config Observer responses
- */
-enum CsObserverAction
-{
-  CSOA_CONTINUE = 1, ///< Continue notifying observers
-  CSOA_STOP,         ///< Stop notifying observers
-};
 
 /**
  * typedef cs_validator - Validate a config variable
@@ -187,25 +169,12 @@ struct ConfigSet
 {
   struct Hash *hash;              ///< HashTable storing the config items
   struct ConfigSetType types[18]; ///< All the defined config types
-  struct Notify *notify;          ///< Notifications system
-};
-
-/**
- * struct EventConfig - A config-change event
- *
- * Events such as #NT_CONFIG_SET
- */
-struct EventConfig
-{
-  const struct ConfigSet *cs; ///< Config set
-  struct HashElem *he;        ///< Config item that changed
-  const char *name;           ///< Name of config item that changed
 };
 
 struct ConfigSet *cs_new(size_t size);
-void              cs_init(struct ConfigSet *cs, size_t size);
 void              cs_free(struct ConfigSet **ptr);
 
+struct HashElem *           cs_get_base    (struct HashElem *he);
 struct HashElem *           cs_get_elem    (const struct ConfigSet *cs, const char *name);
 const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned int type);
 
@@ -213,8 +182,6 @@ bool             cs_register_type     (struct ConfigSet *cs, unsigned int type, 
 bool             cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], int flags);
 struct HashElem *cs_inherit_variable  (const struct ConfigSet *cs, struct HashElem *parent, const char *name);
 void             cs_uninherit_variable(const struct ConfigSet *cs, const char *name);
-
-void cs_notify_observers(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum NotifyConfig ev);
 
 int      cs_he_initial_get (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);
 int      cs_he_initial_set (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);

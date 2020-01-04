@@ -399,6 +399,17 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
+  rc = cs_str_reset(cs, "unknown", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", err->data);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err->data);
+    return false;
+  }
+
   if (!TEST_CHECK(VarIlama))
   {
     TEST_MSG("Value of %s changed\n", name);
@@ -530,11 +541,11 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   char child[128];
   snprintf(child, sizeof(child), "%s:%s", account, parent);
 
-  struct ConfigSubset *sub = cs_subset_new(NULL, NULL);
+  struct ConfigSubset *sub = cs_subset_new(NULL, NULL, NeoMutt->notify);
   sub->cs = cs;
   struct Account *a = account_new(account, sub);
 
-  struct HashElem *he = cs_subset_create_var(a->sub, parent, err);
+  struct HashElem *he = cs_subset_create_inheritance(a->sub, parent);
   if (!he)
   {
     TEST_MSG("Error: %s\n", err->data);
@@ -578,6 +589,9 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   }
   dump_native(cs, parent, child);
   short_line();
+
+  // reset the already-reset child
+  rc = cs_str_reset(cs, child, err);
 
   // reset parent
   mutt_buffer_reset(err);
@@ -623,21 +637,21 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  rc = bool_he_toggle(cs, NULL, err);
+  rc = bool_he_toggle(NeoMutt->sub, NULL, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
   {
     TEST_MSG("Toggle succeeded when is shouldn't have\n");
     return false;
   }
 
-  rc = bool_str_toggle(NULL, "apple", err);
+  rc = bool_str_toggle(NULL, "Apple", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
   {
     TEST_MSG("Toggle succeeded when is shouldn't have\n");
     return false;
   }
 
-  rc = bool_str_toggle(cs, NULL, err);
+  rc = bool_str_toggle(NeoMutt->sub, NULL, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
   {
     TEST_MSG("Toggle succeeded when is shouldn't have\n");
@@ -666,7 +680,7 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
       return false;
     }
 
-    rc = bool_he_toggle(cs, he, err);
+    rc = bool_he_toggle(NeoMutt->sub, he, err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
       TEST_MSG("Toggle failed: %s\n", err->data);
@@ -703,7 +717,7 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
       return false;
     }
 
-    rc = bool_str_toggle(cs, "Nectarine", err);
+    rc = bool_str_toggle(NeoMutt->sub, "Nectarine", err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
       TEST_MSG("Toggle failed: %s\n", err->data);
@@ -718,10 +732,10 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
     short_line();
   }
 
-  VarNectarine = 8;
   mutt_buffer_reset(err);
-  rc = bool_he_toggle(cs, he, err);
-  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  struct ConfigSubset sub2 = { 0 };
+  rc = bool_he_toggle(&sub2, he, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
   }
@@ -732,14 +746,14 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
     return false;
 
   mutt_buffer_reset(err);
-  rc = bool_he_toggle(cs, he, err);
+  rc = bool_he_toggle(NeoMutt->sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
   }
 
   mutt_buffer_reset(err);
-  rc = bool_str_toggle(cs, "unknown", err);
+  rc = bool_str_toggle(NeoMutt->sub, "unknown", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
@@ -763,6 +777,7 @@ void config_bool(void)
   mutt_buffer_reset(&err);
 
   struct ConfigSet *cs = cs_new(30);
+  NeoMutt = neomutt_new(cs);
 
   bool_init(cs);
   quad_init(cs);
@@ -771,7 +786,7 @@ void config_bool(void)
     return;
   dont_fail = false;
 
-  notify_observer_add(cs->notify, log_observer, 0);
+  notify_observer_add(NeoMutt->notify, log_observer, 0);
 
   set_list(cs);
 
@@ -785,6 +800,7 @@ void config_bool(void)
   TEST_CHECK(test_inherit(cs, &err));
   TEST_CHECK(test_toggle(cs, &err));
 
+  neomutt_free(&NeoMutt);
   cs_free(&cs);
   FREE(&err.data);
 }

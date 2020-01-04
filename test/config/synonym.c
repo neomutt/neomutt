@@ -189,6 +189,7 @@ void config_synonym(void)
   mutt_buffer_reset(&err);
 
   struct ConfigSet *cs = cs_new(30);
+  NeoMutt = neomutt_new(cs);
 
   string_init(cs);
   if (!cs_register_variables(cs, Vars, 0))
@@ -202,7 +203,7 @@ void config_synonym(void)
 
   TEST_MSG("Expected error\n");
 
-  notify_observer_add(cs->notify, log_observer, 0);
+  notify_observer_add(NeoMutt->notify, log_observer, 0);
 
   set_list(cs);
 
@@ -212,6 +213,7 @@ void config_synonym(void)
   TEST_CHECK(test_native_get(cs, &err));
   TEST_CHECK(test_reset(cs, &err));
 
+  neomutt_free(&NeoMutt);
   cs_free(&cs);
   FREE(&err.data);
 }

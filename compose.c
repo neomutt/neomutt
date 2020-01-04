@@ -1164,7 +1164,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
     mutt_window_add_child(dlg, ibar);
   }
 
-  notify_observer_add(Config->notify, mutt_dlg_compose_observer, dlg);
+  notify_observer_add(NeoMutt->notify, mutt_dlg_compose_observer, dlg);
   dialog_push(dlg);
 
   struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
@@ -1745,11 +1745,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         OptAttachMsg = true;
         mutt_message(_("Tag the messages you want to attach"));
         struct MuttWindow *dlg_index = index_pager_init();
-        notify_observer_add(Config->notify, mutt_dlg_index_observer, dlg_index);
+        notify_observer_add(NeoMutt->notify, mutt_dlg_index_observer, dlg_index);
         dialog_push(dlg_index);
         mutt_index_menu(dlg_index);
         dialog_pop();
-        notify_observer_remove(Config->notify, mutt_dlg_index_observer, dlg_index);
+        notify_observer_remove(NeoMutt->notify, mutt_dlg_index_observer, dlg_index);
         index_pager_shutdown(dlg_index);
         mutt_window_free(&dlg_index);
         OptAttachMsg = false;
@@ -2321,7 +2321,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
   dialog_pop();
-  notify_observer_remove(Config->notify, mutt_dlg_compose_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, mutt_dlg_compose_observer, dlg);
   mutt_window_free(&dlg);
 
   if (actx->idxlen)

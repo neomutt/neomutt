@@ -1403,7 +1403,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
     mutt_window_add_child(dlg, ibar);
   }
 
-  notify_observer_add(Config->notify, mutt_dlg_browser_observer, dlg);
+  notify_observer_add(NeoMutt->notify, mutt_dlg_browser_observer, dlg);
   dialog_push(dlg);
 
   menu = mutt_menu_new(MENU_FOLDER);
@@ -1637,7 +1637,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
 #ifdef USE_IMAP
       case OP_BROWSER_TOGGLE_LSUB:
-        bool_str_toggle(Config, "imap_list_subscribed", NULL);
+        bool_str_toggle(NeoMutt->sub, "imap_list_subscribed", NULL);
 
         mutt_unget_event(0, OP_CHECK_NEW);
         break;
@@ -1838,7 +1838,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           mutt_buffer_strcpy(buf, ".");
 
         struct Buffer errmsg = { 0 };
-        int rc = cs_str_string_set(Config, "mask", mutt_b2s(buf), NULL);
+        int rc = cs_subset_str_string_set(NeoMutt->sub, "mask", mutt_b2s(buf), NULL);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
           if (!mutt_buffer_is_empty(&errmsg))
@@ -1933,14 +1933,14 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (resort)
         {
           sort |= reverse ? SORT_REVERSE : 0;
-          cs_str_native_set(Config, "sort_browser", sort, NULL);
+          cs_subset_str_native_set(NeoMutt->sub, "sort_browser", sort, NULL);
           browser_sort(&state);
           browser_highlight_default(&state, menu);
           menu->redraw = REDRAW_FULL;
         }
         else
         {
-          cs_str_native_set(Config, "sort_browser", sort, NULL);
+          cs_subset_str_native_set(NeoMutt->sub, "sort_browser", sort, NULL);
         }
         break;
       }
@@ -2237,7 +2237,7 @@ bail:
     mutt_menu_pop_current(menu);
     mutt_menu_free(&menu);
     dialog_pop();
-    notify_observer_remove(Config->notify, mutt_dlg_browser_observer, dlg);
+    notify_observer_remove(NeoMutt->notify, mutt_dlg_browser_observer, dlg);
     mutt_window_free(&dlg);
   }
 

@@ -41,6 +41,7 @@ static char VarKumquat;
 static struct Regex *VarLemon;
 static short VarMango;
 static char *VarNectarine;
+static char *VarOlive;
 
 // clang-format off
 static struct Mapping MagicMap[] = {
@@ -74,6 +75,7 @@ static struct ConfigDef Vars[] = {
   { "Lemon",      DT_REGEX,                          &VarLemon,      0,                           0,            NULL },
   { "Mango",      DT_SORT,                           &VarMango,      1,                           0,            NULL },
   { "Nectarine",  DT_STRING|DT_SENSITIVE,            &VarNectarine,  IP "nectarine",              0,            NULL },
+  { "Olive",      DT_STRING|DT_DEPRECATED,           &VarOlive,      IP "olive",                  0,            NULL },
   { NULL },
 };
 // clang-format on

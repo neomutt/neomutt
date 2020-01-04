@@ -1146,7 +1146,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
     switch (op)
     {
       case OP_DISPLAY_HEADERS:
-        bool_str_toggle(Config, "weed", NULL);
+        bool_str_toggle(NeoMutt->sub, "weed", NULL);
         /* fallthrough */
 
       case OP_VIEW_ATTACH:

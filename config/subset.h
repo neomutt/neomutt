@@ -29,24 +29,66 @@ struct Buffer;
 struct HashElem;
 
 /**
+ * enum ConfigScope - Who does this Config belong to?
+ */
+enum ConfigScope
+{
+  SET_SCOPE_NEOMUTT, ///< This Config is NeoMutt-specific (global)
+  SET_SCOPE_ACCOUNT, ///< This Config is Account-specific
+  SET_SCOPE_MAILBOX, ///< This Config is Mailbox-specific
+};
+
+/**
  * struct ConfigSubset - A set of inherited config items
  */
 struct ConfigSubset
 {
-  char *name;                  ///< Scope name of Subset
+  const char *name;            ///< Scope name of Subset
+  enum ConfigScope scope;      ///< Scope of Subset, e.g. #SET_SCOPE_ACCOUNT
   struct ConfigSubset *parent; ///< Parent Subset
   struct ConfigSet *cs;        ///< Parent ConfigSet
+  struct Notify *notify;       ///< Notifications system
 };
 
-struct ConfigSubset *cs_subset_new       (const char *name, struct ConfigSubset *parent);
-void                 cs_subset_free      (struct ConfigSubset **ptr);
-struct HashElem *    cs_subset_lookup    (const struct ConfigSubset *sub, const char *name);
-struct HashElem *    cs_subset_create_var(const struct ConfigSubset *sub, const char *name, struct Buffer *err);
+/**
+ * enum NotifyConfig - Config notification types
+ */
+enum NotifyConfig
+{
+  NT_CONFIG_SET = 1,     ///< Config item has been set
+  NT_CONFIG_RESET,       ///< Config item has been reset to initial, or parent, value
+  NT_CONFIG_INITIAL_SET, ///< Config item's initial value has been set
+};
 
-intptr_t             cs_subset_native_get(const struct ConfigSubset *sub, struct HashElem *he,                    struct Buffer *err);
-int                  cs_subset_native_set(const struct ConfigSubset *sub, struct HashElem *he, intptr_t value,    struct Buffer *err);
-int                  cs_subset_reset     (const struct ConfigSubset *sub, struct HashElem *he,                    struct Buffer *err);
-int                  cs_subset_string_get(const struct ConfigSubset *sub, struct HashElem *he,                    struct Buffer *result);
-int                  cs_subset_string_set(const struct ConfigSubset *sub, struct HashElem *he, const char *value, struct Buffer *err);
+/**
+ * struct EventConfig - A config-change event
+ *
+ * Events such as #NT_CONFIG_SET
+ */
+struct EventConfig
+{
+  const struct ConfigSubset *sub; ///< Config Subset
+  const char *name;               ///< Name of config item that changed
+  struct HashElem *he;            ///< Config item that changed
+};
+
+struct ConfigSubset *cs_subset_new (const char *name, struct ConfigSubset *sub_parent, struct Notify *not_parent);
+void                 cs_subset_free(struct ConfigSubset **ptr);
+
+struct HashElem *cs_subset_create_inheritance(const struct ConfigSubset *sub, const char *name);
+struct HashElem *cs_subset_lookup            (const struct ConfigSubset *sub, const char *name);
+void             cs_subset_notify_observers  (const struct ConfigSubset *sub, struct HashElem *he, enum NotifyConfig ev);
+
+intptr_t cs_subset_he_native_get(const struct ConfigSubset *sub, struct HashElem *he,                    struct Buffer *err);
+int      cs_subset_he_native_set(const struct ConfigSubset *sub, struct HashElem *he, intptr_t value,    struct Buffer *err);
+int      cs_subset_he_reset     (const struct ConfigSubset *sub, struct HashElem *he,                    struct Buffer *err);
+int      cs_subset_he_string_get(const struct ConfigSubset *sub, struct HashElem *he,                    struct Buffer *result);
+int      cs_subset_he_string_set(const struct ConfigSubset *sub, struct HashElem *he, const char *value, struct Buffer *err);
+
+intptr_t cs_subset_str_native_get(const struct ConfigSubset *sub, const char *name,                    struct Buffer *err);
+int      cs_subset_str_native_set(const struct ConfigSubset *sub, const char *name, intptr_t value,    struct Buffer *err);
+int      cs_subset_str_reset     (const struct ConfigSubset *sub, const char *name,                    struct Buffer *err);
+int      cs_subset_str_string_get(const struct ConfigSubset *sub, const char *name,                    struct Buffer *result);
+int      cs_subset_str_string_set(const struct ConfigSubset *sub, const char *name, const char *value, struct Buffer *err);
 
 #endif /* MUTT_CONFIG_SUBSET_H */
