@@ -23,14 +23,16 @@
 /**
  * @page gui GUI: Graphical code
  *
+ * Curses and Window code.
+ *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
- * | gui/color.c         | @page gui_color            |
- * | gui/curs_lib.c      | @page gui_curs_lib         |
- * | gui/mutt_curses.c   | @page gui_curses           |
- * | gui/mutt_window.c   | @page gui_window           |
- * | gui/reflow.c        | @page gui_reflow           |
- * | gui/terminal.c      | @page gui_terminal         |
+ * | gui/color.c         | @subpage gui_color         |
+ * | gui/curs_lib.c      | @subpage gui_curs_lib      |
+ * | gui/mutt_curses.c   | @subpage gui_curses        |
+ * | gui/mutt_window.c   | @subpage gui_window        |
+ * | gui/reflow.c        | @subpage gui_reflow        |
+ * | gui/terminal.c      | @subpage gui_terminal      |
  */
 
 #ifndef MUTT_GUI_LIB_H
