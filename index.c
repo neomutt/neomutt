@@ -2285,18 +2285,35 @@ int mutt_index_menu(struct MuttWindow *dlg)
 #ifdef USE_NOTMUCH
       case OP_MAIN_VFOLDER_FROM_QUERY:
       case OP_MAIN_VFOLDER_FROM_QUERY_READONLY:
+      {
         buf[0] = '\0';
         if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_NM_QUERY) != 0) || !buf[0])
         {
           mutt_message(_("No query, aborting"));
           break;
         }
-        if (!nm_uri_from_query(NULL, buf, sizeof(buf)))
-          mutt_message(_("Failed to create query, aborting"));
-        else
-          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint, NULL);
-        break;
 
+        // Keep copy of user's querying to name mailbox.
+        char *query_unencoded = mutt_str_strdup(buf);
+
+        if (nm_uri_from_query(NULL, buf, sizeof(buf)))
+        {
+          // Create mailbox and set name.
+          struct Mailbox *m_new_vfolder = mx_path_resolve(buf);
+          m_new_vfolder->name = query_unencoded;
+          query_unencoded = NULL;
+
+          main_change_folder(menu, op, m_new_vfolder, buf, sizeof(buf),
+                             &oldcount, &index_hint, NULL);
+        }
+        else
+        {
+          FREE(&query_unencoded);
+          mutt_message(_("Failed to create query, aborting"));
+        }
+
+        break;
+      }
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
