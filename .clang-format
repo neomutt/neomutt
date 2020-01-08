@@ -34,6 +34,8 @@ IncludeCategories:
     Priority:   -20
   - Regex:      '"mutt\.h"'
     Priority:   -10
+  - Regex:      '"debug/.*\.h"'
+    Priority:   -5
   # Main Header 0
   - Regex:      '".*"'
     Priority:   5

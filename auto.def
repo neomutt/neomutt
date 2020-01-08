@@ -91,12 +91,12 @@ options {
   with-qdbm:path            => "Location of QDBM"
   tokyocabinet=0            => "Use TokyoCabinet for the header cache"
   with-tokyocabinet:path    => "Location of TokyoCabinet"
-# libunwind
-  backtrace=0               => "Enable backtrace support with libunwind"
-  with-backtrace:path       => "Location of libunwind"
 # sqlite
   sqlite=0                  => "Enable SQLite support"
   with-sqlite:path          => "Location of sqlite"
+# Debug options
+  backtrace=0               => "DEBUG: Enable backtrace support with libunwind"
+  with-backtrace:path       => "Location of libunwind"
 # System
   with-sysroot:path         => "Target system root"
 # Testing

@@ -53,6 +53,7 @@
 #include "conn/conn.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "debug/lib.h"
 #include "alias.h"
 #include "browser.h"
 #include "context.h"
@@ -106,71 +107,6 @@ typedef uint8_t CliFlags;         ///< Flags for command line options, e.g. #MUT
 #define MUTT_CLI_NEWS    (1 << 5) ///< -g/-G Start with a list of all newsgroups
 #endif
 // clang-format on
-
-/**
- * test_parse_set - Test the config parsing
- */
-static void test_parse_set(void)
-{
-  const char *vars[] = {
-    "from",        // ADDRESS
-    "beep",        // BOOL
-    "ispell",      // COMMAND
-    "mbox_type",   // MAGIC
-    "to_chars",    // MBTABLE
-    "net_inc",     // NUMBER
-    "signature",   // PATH
-    "print",       // QUAD
-    "mask",        // REGEX
-    "sort",        // SORT
-    "attribution", // STRING
-    "zzz",         // UNKNOWN
-    "my_var",      // MY_VAR
-  };
-
-  const char *commands[] = {
-    "set",
-    "toggle",
-    "reset",
-    "unset",
-  };
-
-  const char *tests[] = {
-    "%s %s",       "%s %s=42",  "%s %s?",     "%s ?%s",    "%s ?%s=42",
-    "%s ?%s?",     "%s no%s",   "%s no%s=42", "%s no%s?",  "%s inv%s",
-    "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
-  };
-
-  struct Buffer tmp = mutt_buffer_make(256);
-  struct Buffer err = mutt_buffer_make(256);
-  char line[64];
-
-  for (size_t v = 0; v < mutt_array_size(vars); v++)
-  {
-    // printf("--------------------------------------------------------------------------------\n");
-    // printf("VARIABLE %s\n", vars[v]);
-    for (size_t c = 0; c < mutt_array_size(commands); c++)
-    {
-      // printf("----------------------------------------\n");
-      // printf("COMMAND %s\n", commands[c]);
-      for (size_t t = 0; t < mutt_array_size(tests); t++)
-      {
-        mutt_buffer_reset(&tmp);
-        mutt_buffer_reset(&err);
-
-        snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
-        printf("%-26s", line);
-        enum CommandResult rc = mutt_parse_rc_line(line, &tmp, &err);
-        printf("%2d %s\n", rc, err.data);
-      }
-      printf("\n");
-    }
-    // printf("\n");
-  }
-
-  mutt_buffer_dealloc(&tmp);
-  mutt_buffer_dealloc(&err);
-}
 
 /**
  * reset_tilde - Temporary measure

@@ -73,9 +73,6 @@ NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o commands.o \
 		sidebar.o smtp.o sort.o state.o status.o system.o version.o \
 		mutt_commands.o mutt_config.o command_parse.o
 
-@if HAVE_LIBUNWIND
-NEOMUTTOBJS+=	backtrace.o
-@endif
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
 @endif
@@ -128,6 +125,17 @@ LIBGUIOBJS=	gui/color.o gui/curs_lib.o gui/mutt_curses.o gui/mutt_window.o gui/r
 CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
 MUTTLIBS+=	$(LIBGUI)
 ALLOBJS+=	$(LIBGUIOBJS)
+
+###############################################################################
+# libdebug
+LIBDEBUG=	libdebug.a
+LIBDEBUGOBJS=	debug/parse_test.o
+@if HAVE_LIBUNWIND
+LIBDEBUGOBJS+=	debug/backtrace.o
+@endif
+CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
+MUTTLIBS+=	$(LIBDEBUG)
+ALLOBJS+=	$(LIBDEBUGOBJS)
 
 ###############################################################################
 # libmbox
@@ -367,6 +375,13 @@ $(LIBGUI): $(PWD)/gui $(LIBGUIOBJS)
 	$(RANLIB) $@
 $(PWD)/gui:
 	$(MKDIR_P) $(PWD)/gui
+
+# libdebug
+$(LIBDEBUG): $(PWD)/debug $(LIBDEBUGOBJS)
+	$(AR) cr $@ $(LIBDEBUGOBJS)
+	$(RANLIB) $@
+$(PWD)/debug:
+	$(MKDIR_P) $(PWD)/debug
 
 # libmbox
 $(LIBMBOX): $(PWD)/mbox $(LIBMBOXOBJS)
