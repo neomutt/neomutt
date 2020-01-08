@@ -1875,12 +1875,18 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
     adata->conn_account = conn_account;
     adata->conn = mutt_conn_new(&conn_account);
     if (!adata->conn)
+    {
+      imap_adata_free((void **) &adata);
       return -1;
+    }
 
     mutt_account_hook(m->realpath);
 
     if (imap_login(adata) < 0)
+    {
+      imap_adata_free((void **) &adata);
       return -1;
+    }
 
     a->adata = adata;
     a->free_adata = imap_adata_free;
