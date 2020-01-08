@@ -4037,12 +4037,28 @@ struct MuttWindow *index_pager_init(void)
   }
 
   mutt_window_add_child(cont_right, panel_index);
-  mutt_window_add_child(panel_index, win_index);
-  mutt_window_add_child(panel_index, win_ibar);
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(panel_index, win_ibar);
+    mutt_window_add_child(panel_index, win_index);
+  }
+  else
+  {
+    mutt_window_add_child(panel_index, win_index);
+    mutt_window_add_child(panel_index, win_ibar);
+  }
 
   mutt_window_add_child(cont_right, panel_pager);
-  mutt_window_add_child(panel_pager, win_pager);
-  mutt_window_add_child(panel_pager, win_pbar);
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(panel_pager, win_pbar);
+    mutt_window_add_child(panel_pager, win_pager);
+  }
+  else
+  {
+    mutt_window_add_child(panel_pager, win_pager);
+    mutt_window_add_child(panel_pager, win_pbar);
+  }
 
   notify_observer_add(NeoMutt->notify, mutt_sb_observer, win_sidebar);
 

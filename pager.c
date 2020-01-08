@@ -2253,6 +2253,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     rd.extra->win_index->size = MUTT_WIN_SIZE_FIXED;
     rd.extra->win_index->req_rows = index_space;
     rd.extra->win_index->parent->size = MUTT_WIN_SIZE_MINIMISE;
+    rd.extra->win_index->parent->state.visible = (index_space > 0);
   }
   rd.extra->win_pager->parent->state.visible = true;
   rd.extra->win_pager->size = MUTT_WIN_SIZE_MAXIMISE;
