@@ -53,53 +53,6 @@ char *C_SmtpOauthRefreshCommand; ///< Config: (smtp) External command to generat
 char *C_SmtpPass; ///< Config: (smtp) Password for the SMTP server
 
 /**
- * mutt_account_match - Compare account info (host/port/user)
- * @param a1 First ConnAccount
- * @param a2 Second ConnAccount
- * @retval true Accounts match
- */
-bool mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2)
-{
-  if (a1->type != a2->type)
-    return false;
-  if (mutt_str_strcasecmp(a1->host, a2->host) != 0)
-    return false;
-  if (a1->port != a2->port)
-    return false;
-  if (a1->flags & a2->flags & MUTT_ACCT_USER)
-    return strcmp(a1->user, a2->user) == 0;
-
-#ifdef USE_NNTP
-  if (a1->type == MUTT_ACCT_TYPE_NNTP)
-    return (a1->flags & MUTT_ACCT_USER) && (a1->user[0] != '\0') ? false : true;
-#endif
-
-  const char *user = NONULL(Username);
-
-#ifdef USE_IMAP
-  if ((a1->type == MUTT_ACCT_TYPE_IMAP) && C_ImapUser)
-    user = C_ImapUser;
-#endif
-
-#ifdef USE_POP
-  if ((a1->type == MUTT_ACCT_TYPE_POP) && C_PopUser)
-    user = C_PopUser;
-#endif
-
-#ifdef USE_NNTP
-  if ((a1->type == MUTT_ACCT_TYPE_NNTP) && C_NntpUser)
-    user = C_NntpUser;
-#endif
-
-  if (a1->flags & MUTT_ACCT_USER)
-    return strcmp(a1->user, user) == 0;
-  if (a2->flags & MUTT_ACCT_USER)
-    return strcmp(a2->user, user) == 0;
-
-  return true;
-}
-
-/**
  * mutt_account_fromurl - Fill ConnAccount with information from url
  * @param account ConnAccount to fill
  * @param url     Url to parse

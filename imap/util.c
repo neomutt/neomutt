@@ -727,7 +727,7 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
   hlen = mutt_str_strlen(home_mailbox);
 
   /* check whether we can do '+' substitution */
-  if (tlen && mutt_account_match(&home_conn_account, &target_conn_account) &&
+  if (tlen && imap_account_match(&home_conn_account, &target_conn_account) &&
       (mutt_str_strncmp(home_mailbox, target_mailbox, hlen) == 0))
   {
     if (hlen == 0)

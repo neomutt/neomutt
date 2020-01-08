@@ -63,13 +63,12 @@ typedef uint8_t MuttAccountFlags;     ///< Flags, Which ConnAccount fields are i
 #define MUTT_ACCT_PASS      (1 << 3)  ///< Password field has been set
 #define MUTT_ACCT_SSL       (1 << 4)  ///< Account uses SSL/TLS
 
-bool mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2);
-int mutt_account_fromurl(struct ConnAccount *account, const struct Url *url);
-void mutt_account_tourl(struct ConnAccount *account, struct Url *url);
-int mutt_account_getuser(struct ConnAccount *account);
-int mutt_account_getlogin(struct ConnAccount *account);
-int mutt_account_getpass(struct ConnAccount *account);
-void mutt_account_unsetpass(struct ConnAccount *account);
+int   mutt_account_fromurl       (struct ConnAccount *account, const struct Url *url);
+void  mutt_account_tourl         (struct ConnAccount *account, struct Url *url);
+int   mutt_account_getuser       (struct ConnAccount *account);
+int   mutt_account_getlogin      (struct ConnAccount *account);
+int   mutt_account_getpass       (struct ConnAccount *account);
+void  mutt_account_unsetpass     (struct ConnAccount *account);
 char *mutt_account_getoauthbearer(struct ConnAccount *account);
 
 #endif /* MUTT_MUTT_ACCOUNT_H */

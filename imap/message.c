@@ -1615,7 +1615,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, const char *dest
   }
 
   /* check that the save-to folder is in the same account */
-  if (!mutt_account_match(&adata->conn->account, &conn_account))
+  if (!imap_account_match(&adata->conn->account, &conn_account))
   {
     mutt_debug(LL_DEBUG3, "%s not same server as %s\n", dest, mailbox_path(m));
     return 1;

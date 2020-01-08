@@ -1540,7 +1540,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
   struct Buffer sync_cmd = mutt_buffer_make(0);
 
   /* check that the save-to folder is in the same account */
-  if (!mutt_account_match(&(adata->conn->account), &(dest_adata->conn->account)))
+  if (!imap_account_match(&(adata->conn->account), &(dest_adata->conn->account)))
   {
     mutt_debug(LL_DEBUG3, "%s not same server as %s\n", dest, mailbox_path(m));
     goto out;
@@ -2041,8 +2041,10 @@ static int imap_mbox_open(struct Mailbox *m)
   struct Mailbox *m_postponed = mx_mbox_find2(C_Postponed);
   struct ImapAccountData *postponed_adata = imap_adata_get(m_postponed);
   if (postponed_adata &&
-      mutt_account_match(&postponed_adata->conn_account, &adata->conn_account))
+      imap_account_match(&postponed_adata->conn_account, &adata->conn_account))
+  {
     imap_mailbox_status(m_postponed, true);
+  }
 
   if (C_ImapCheckSubscribed)
     imap_exec(adata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
