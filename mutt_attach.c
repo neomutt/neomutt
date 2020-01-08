@@ -587,8 +587,10 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
         decode_state.flags = MUTT_CHARCONV;
         mutt_decode_attachment(a, &decode_state);
         if (mutt_file_fclose(&decode_state.fp_out) == EOF)
+        {
           mutt_debug(LL_DEBUG1, "fclose(%s) errno=%d %s\n", mutt_b2s(pagerfile),
                      errno, strerror(errno));
+        }
       }
       else
       {

@@ -437,8 +437,10 @@ int mutt_monitor_poll(void)
               if (len == -1)
               {
                 if (errno != EAGAIN)
+                {
                   mutt_debug(LL_DEBUG2, "read inotify events failed, errno=%d %s\n",
                              errno, strerror(errno));
+                }
                 break;
               }
 

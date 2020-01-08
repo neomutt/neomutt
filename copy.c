@@ -608,8 +608,10 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     if (C_TextFlowed)
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));
     else
+    {
       mutt_make_string(prefix, sizeof(prefix), wraplen, NONULL(C_IndentString),
                        Context, Context->mailbox, e);
+    }
   }
 
   if ((cmflags & MUTT_CM_NOHEADER) == 0)

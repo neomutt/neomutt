@@ -1237,8 +1237,10 @@ int mutt_signed_handler(struct Body *a, struct State *s)
       FREE(&signatures);
     }
     else
+    {
       state_attach_puts(s,
                         _("[-- Warning: Can't find any signatures. --]\n\n"));
+    }
   }
 
   rc = mutt_body_handler(a, s);

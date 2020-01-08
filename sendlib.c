@@ -2966,8 +2966,10 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
         struct stat st;
 
         if ((stat(childout, &st) == 0) && (st.st_size > 0))
+        {
           mutt_do_pager(_("Output of the delivery process"), childout,
                         MUTT_PAGER_NO_FLAGS, NULL);
+        }
       }
     }
   }
@@ -3099,12 +3101,16 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
     }
 #ifdef USE_SMTP
     if (C_SmtpUrl)
+    {
       rc = mutt_smtp_send(env_from, to, NULL, NULL, mutt_b2s(tempfile),
                           e->content->encoding == ENC_8BIT);
+    }
     else
 #endif
+    {
       rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, mutt_b2s(tempfile),
                                 e->content->encoding == ENC_8BIT);
+    }
   }
 
   mutt_buffer_pool_release(&tempfile);

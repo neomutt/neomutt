@@ -77,8 +77,10 @@ int perform_auxsort(int retval, const void *a, const void *b)
   /* If the items still match, use their index positions
    * to maintain a stable sort order */
   if (retval == 0)
+  {
     retval = (*((struct Email const *const *) a))->index -
              (*((struct Email const *const *) b))->index;
+  }
   return retval;
 }
 

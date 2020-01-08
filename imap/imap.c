@@ -1954,8 +1954,10 @@ int imap_login(struct ImapAccountData *adata)
       adata->state = IMAP_AUTHENTICATED;
       FREE(&adata->capstr);
       if (adata->conn->ssf)
+      {
         mutt_debug(LL_DEBUG2, "Communication encrypted at %d bits\n",
                    adata->conn->ssf);
+      }
     }
     else
       mutt_account_unsetpass(&adata->conn->account);

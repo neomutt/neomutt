@@ -607,11 +607,15 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
   }
 
   if (optional)
+  {
     mutt_expando_format(buf, buflen, col, cols, if_str, folder_format_str, data,
                         MUTT_FORMAT_NO_FLAGS);
+  }
   else if (flags & MUTT_FORMAT_OPTIONAL)
+  {
     mutt_expando_format(buf, buflen, col, cols, else_str, folder_format_str,
                         data, MUTT_FORMAT_NO_FLAGS);
+  }
 
   return src;
 }
@@ -1591,8 +1595,10 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           mutt_buffer_strcpy(file, state.entry[menu->current].name);
 #endif
         else
+        {
           mutt_buffer_concat_path(file, mutt_b2s(&LastDir),
                                   state.entry[menu->current].name);
+        }
         /* fallthrough */
 
       case OP_EXIT:

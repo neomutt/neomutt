@@ -164,11 +164,15 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
   }
 
   if (optional)
+  {
     mutt_expando_format(buf, buflen, col, cols, if_str, fmt_pgp_command, data,
                         MUTT_FORMAT_NO_FLAGS);
+  }
   else if (flags & MUTT_FORMAT_OPTIONAL)
+  {
     mutt_expando_format(buf, buflen, col, cols, else_str, fmt_pgp_command, data,
                         MUTT_FORMAT_NO_FLAGS);
+  }
 
   return src;
 }

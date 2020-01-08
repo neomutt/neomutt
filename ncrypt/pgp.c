@@ -1214,8 +1214,10 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
   {
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
+    {
       state_attach_puts(s,
                         _("[-- Error: could not create temporary file --]\n"));
+    }
     return -1;
   }
 

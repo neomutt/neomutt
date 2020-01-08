@@ -2205,8 +2205,10 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       {
         int *cache_entry = pat->all_addr ? &cache->pers_from_all : &cache->pers_from_one;
         if (!is_pattern_cache_set(*cache_entry))
+        {
           set_pattern_cache_value(cache_entry,
                                   match_user(pat->all_addr, &e->env->from, NULL));
+        }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
