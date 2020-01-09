@@ -1595,7 +1595,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, const char *dest
   char mmbox[PATH_MAX];
   char prompt[PATH_MAX + 64];
   int rc;
-  struct ConnAccount cac;
+  struct ConnAccount cac = { { 0 } };
   enum QuadOption err_continue = MUTT_NO;
   int triedcreate = 0;
   struct EmailNode *en = STAILQ_FIRST(el);

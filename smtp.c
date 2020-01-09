@@ -740,7 +740,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
                    const char *msgfile, bool eightbit)
 {
   struct Connection *conn = NULL;
-  struct ConnAccount cac;
+  struct ConnAccount cac = { { 0 } };
   const char *envfrom = NULL;
   char buf[1024];
   int rc = -1;

@@ -132,7 +132,7 @@ struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 int imap_adata_find(const char *path, struct ImapAccountData **adata,
                     struct ImapMboxData **mdata)
 {
-  struct ConnAccount cac;
+  struct ConnAccount cac = { { 0 } };
   struct ImapAccountData *tmp_adata = NULL;
   char tmp[1024];
 
@@ -624,7 +624,6 @@ int imap_parse_path(const char *path, struct ConnAccount *cac, char *mailbox, si
   }
 
   /* Defaults */
-  memset(cac, 0, sizeof(struct ConnAccount));
   cac->port = ImapPort;
   cac->type = MUTT_ACCT_TYPE_IMAP;
 
@@ -707,7 +706,8 @@ int imap_mxcmp(const char *mx1, const char *mx2)
  */
 void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
 {
-  struct ConnAccount cac_target, cac_home;
+  struct ConnAccount cac_target = { { 0 } };
+  struct ConnAccount cac_home = { { 0 } };
   struct Url url = { 0 };
   char *delim = NULL;
   int tlen;
