@@ -554,7 +554,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
  * parse_alias - Parse the 'alias' command - Implements ::command_t
  */
 enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
-                                      unsigned long data, struct Buffer *err)
+                               unsigned long data, struct Buffer *err)
 {
   struct Alias *tmp = NULL;
   char *estr = NULL;
@@ -639,7 +639,7 @@ bail:
  * parse_alternates - Parse the 'alternates' command - Implements ::command_t
  */
 enum CommandResult parse_alternates(struct Buffer *buf, struct Buffer *s,
-                                           unsigned long data, struct Buffer *err)
+                                    unsigned long data, struct Buffer *err)
 {
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
 
@@ -673,7 +673,7 @@ bail:
  * parse_attachments - Parse the 'attachments' command - Implements ::command_t
  */
 enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s,
-                                            unsigned long data, struct Buffer *err)
+                                     unsigned long data, struct Buffer *err)
 {
   char op;
   char *category = NULL;
@@ -734,7 +734,7 @@ enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s,
  * parse_echo - Parse the 'echo' command - Implements ::command_t
  */
 enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
-                                     unsigned long data, struct Buffer *err)
+                              unsigned long data, struct Buffer *err)
 {
   if (!MoreArgs(s))
   {
@@ -758,7 +758,7 @@ enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
  * If the 'finish' command is found, we should stop reading the current file.
  */
 enum CommandResult parse_finish(struct Buffer *buf, struct Buffer *s,
-                                       unsigned long data, struct Buffer *err)
+                                unsigned long data, struct Buffer *err)
 {
   if (MoreArgs(s))
   {
@@ -773,7 +773,7 @@ enum CommandResult parse_finish(struct Buffer *buf, struct Buffer *s,
  * parse_group - Parse the 'group' and 'ungroup' commands - Implements ::command_t
  */
 enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
-                                      unsigned long data, struct Buffer *err)
+                               unsigned long data, struct Buffer *err)
 {
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
   enum GroupState state = GS_NONE;
@@ -869,7 +869,7 @@ warn:
  *      ifndef imap finish
  */
 enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
-                                      unsigned long data, struct Buffer *err)
+                               unsigned long data, struct Buffer *err)
 {
   struct Buffer token = mutt_buffer_make(0);
 
@@ -910,7 +910,7 @@ enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
  * parse_ignore - Parse the 'ignore' command - Implements ::command_t
  */
 enum CommandResult parse_ignore(struct Buffer *buf, struct Buffer *s,
-                                       unsigned long data, struct Buffer *err)
+                                unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -926,7 +926,7 @@ enum CommandResult parse_ignore(struct Buffer *buf, struct Buffer *s,
  * parse_lists - Parse the 'lists' command - Implements ::command_t
  */
 enum CommandResult parse_lists(struct Buffer *buf, struct Buffer *s,
-                                      unsigned long data, struct Buffer *err)
+                               unsigned long data, struct Buffer *err)
 {
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
 
@@ -960,7 +960,7 @@ bail:
  * This is also used by 'virtual-mailboxes'.
  */
 enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
-                                          unsigned long data, struct Buffer *err)
+                                   unsigned long data, struct Buffer *err)
 {
   while (MoreArgs(s))
   {
@@ -1054,7 +1054,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
  * parse_my_hdr - Parse the 'my_hdr' command - Implements ::command_t
  */
 enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
-                                       unsigned long data, struct Buffer *err)
+                                unsigned long data, struct Buffer *err)
 {
   struct ListNode *n = NULL;
   size_t keylen;
@@ -1099,7 +1099,7 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
  * parse_path_list - Parse the 'sidebar_whitelist' command - Implements ::command_t
  */
 enum CommandResult parse_path_list(struct Buffer *buf, struct Buffer *s,
-                                          unsigned long data, struct Buffer *err)
+                                   unsigned long data, struct Buffer *err)
 {
   struct Buffer *path = mutt_buffer_pool_get();
 
@@ -1120,7 +1120,7 @@ enum CommandResult parse_path_list(struct Buffer *buf, struct Buffer *s,
  * parse_path_unlist - Parse the 'unsidebar_whitelist' command - Implements ::command_t
  */
 enum CommandResult parse_path_unlist(struct Buffer *buf, struct Buffer *s,
-                                            unsigned long data, struct Buffer *err)
+                                     unsigned long data, struct Buffer *err)
 {
   struct Buffer *path = mutt_buffer_pool_get();
 
@@ -1148,7 +1148,7 @@ enum CommandResult parse_path_unlist(struct Buffer *buf, struct Buffer *s,
  * This is used by 'reset', 'set', 'toggle' and 'unset'.
  */
 enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
-                                    unsigned long data, struct Buffer *err)
+                             unsigned long data, struct Buffer *err)
 {
   /* The order must match `enum MuttSetCommand` */
   static const char *set_commands[] = { "set", "toggle", "unset", "reset" };
@@ -1480,7 +1480,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
  * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements ::command_t
  */
 enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
-                                       unsigned long data, struct Buffer *err)
+                                unsigned long data, struct Buffer *err)
 {
   char **envp = mutt_envlist_getlist();
 
@@ -1563,7 +1563,7 @@ enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
  * parse_source - Parse the 'source' command - Implements ::command_t
  */
 enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
-                                       unsigned long data, struct Buffer *err)
+                                unsigned long data, struct Buffer *err)
 {
   char path[PATH_MAX];
 
@@ -1592,7 +1592,7 @@ enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
  * parse_spam_list - Parse the 'spam' and 'nospam' commands - Implements ::command_t
  */
 enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
-                                          unsigned long data, struct Buffer *err)
+                                   unsigned long data, struct Buffer *err)
 {
   struct Buffer templ;
 
@@ -1670,7 +1670,7 @@ enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
  * This is used by 'alternative_order', 'auto_view' and several others.
  */
 enum CommandResult parse_stailq(struct Buffer *buf, struct Buffer *s,
-                                       unsigned long data, struct Buffer *err)
+                                unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -1685,7 +1685,7 @@ enum CommandResult parse_stailq(struct Buffer *buf, struct Buffer *s,
  * parse_subjectrx_list - Parse the 'subjectrx' command - Implements ::command_t
  */
 enum CommandResult parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
-                                               unsigned long data, struct Buffer *err)
+                                        unsigned long data, struct Buffer *err)
 {
   enum CommandResult rc;
 
@@ -1699,7 +1699,7 @@ enum CommandResult parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
  * parse_subscribe - Parse the 'subscribe' command - Implements ::command_t
  */
 enum CommandResult parse_subscribe(struct Buffer *buf, struct Buffer *s,
-                                          unsigned long data, struct Buffer *err)
+                                   unsigned long data, struct Buffer *err)
 {
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
 
@@ -1738,7 +1738,7 @@ bail:
  * Use it as follows: subscribe-to =folder
  */
 enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
-                                             unsigned long data, struct Buffer *err)
+                                      unsigned long data, struct Buffer *err)
 {
   if (!buf || !s || !err)
     return MUTT_CMD_ERROR;
@@ -1781,7 +1781,7 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
  * parse_tag_formats - Parse the 'tag-formats' command - Implements ::command_t
  */
 enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s,
-                                            unsigned long data, struct Buffer *err)
+                                     unsigned long data, struct Buffer *err)
 {
   if (!buf || !s)
     return MUTT_CMD_ERROR;
@@ -1820,7 +1820,7 @@ enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s,
  * parse_tag_transforms - Parse the 'tag-transforms' command - Implements ::command_t
  */
 enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
-                                               unsigned long data, struct Buffer *err)
+                                        unsigned long data, struct Buffer *err)
 {
   if (!buf || !s)
     return MUTT_CMD_ERROR;
@@ -1859,7 +1859,7 @@ enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
  * parse_unalias - Parse the 'unalias' command - Implements ::command_t
  */
 enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
-                                        unsigned long data, struct Buffer *err)
+                                 unsigned long data, struct Buffer *err)
 {
   struct Alias *a = NULL;
 
@@ -1909,7 +1909,7 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
  * parse_unalternates - Parse the 'unalternates' command - Implements ::command_t
  */
 enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
-                                             unsigned long data, struct Buffer *err)
+                                      unsigned long data, struct Buffer *err)
 {
   alternates_clean();
   do
@@ -1932,7 +1932,7 @@ enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
  * parse_unattachments - Parse the 'unattachments' command - Implements ::command_t
  */
 enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
-                                              unsigned long data, struct Buffer *err)
+                                       unsigned long data, struct Buffer *err)
 {
   char op;
   char *p = NULL;
@@ -1990,7 +1990,7 @@ enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
  * parse_unignore - Parse the 'unignore' command - Implements ::command_t
  */
 enum CommandResult parse_unignore(struct Buffer *buf, struct Buffer *s,
-                                         unsigned long data, struct Buffer *err)
+                                  unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -2010,7 +2010,7 @@ enum CommandResult parse_unignore(struct Buffer *buf, struct Buffer *s,
  * parse_unlists - Parse the 'unlists' command - Implements ::command_t
  */
 enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
-                                        unsigned long data, struct Buffer *err)
+                                 unsigned long data, struct Buffer *err)
 {
   mutt_hash_free(&AutoSubscribeCache);
   do
@@ -2035,7 +2035,7 @@ enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
  * This is also used by 'unvirtual-mailboxes'
  */
 enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
-                                            unsigned long data, struct Buffer *err)
+                                     unsigned long data, struct Buffer *err)
 {
   bool tmp_valid = false;
   bool clear_all = false;
@@ -2101,7 +2101,7 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
  * parse_unmy_hdr - Parse the 'unmy_hdr' command - Implements ::command_t
  */
 enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
-                                         unsigned long data, struct Buffer *err)
+                                  unsigned long data, struct Buffer *err)
 {
   struct ListNode *np = NULL, *tmp = NULL;
   size_t l;
@@ -2138,7 +2138,7 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
  * This is used by 'unalternative_order', 'unauto_view' and several others.
  */
 enum CommandResult parse_unstailq(struct Buffer *buf, struct Buffer *s,
-                                         unsigned long data, struct Buffer *err)
+                                  unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -2159,7 +2159,7 @@ enum CommandResult parse_unstailq(struct Buffer *buf, struct Buffer *s,
  * parse_unsubjectrx_list - Parse the 'unsubjectrx' command - Implements ::command_t
  */
 enum CommandResult parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
-                                                 unsigned long data, struct Buffer *err)
+                                          unsigned long data, struct Buffer *err)
 {
   enum CommandResult rc;
 
@@ -2173,7 +2173,7 @@ enum CommandResult parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
  * parse_unsubscribe - Parse the 'unsubscribe' command - Implements ::command_t
  */
 enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
-                                            unsigned long data, struct Buffer *err)
+                                     unsigned long data, struct Buffer *err)
 {
   mutt_hash_free(&AutoSubscribeCache);
   do
@@ -2200,7 +2200,7 @@ enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
  * Use it as follows: unsubscribe-from =folder
  */
 enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
-                                                 unsigned long data, struct Buffer *err)
+                                          unsigned long data, struct Buffer *err)
 {
   if (!buf || !s || !err)
     return MUTT_CMD_ERROR;

@@ -83,6 +83,7 @@
 /* This option is deprecated */
 bool C_IgnoreLinearWhiteSpace = false;
 
+// clang-format off
 struct ConfigDef MuttVars[] = {
   /*++*/
 
@@ -4905,3 +4906,4 @@ struct ConfigDef MuttVars[] = {
 
   { NULL, 0, NULL, 0, 0, NULL },
 };
+// clang-format on

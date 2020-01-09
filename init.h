@@ -1,6 +1,6 @@
 /**
  * @file
- * Definitions of user variables, sort methods and commands
+ * Config/command parsing
  *
  * @authors
  * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
