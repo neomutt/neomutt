@@ -148,7 +148,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
     tmp_adata = np->adata;
     if (!tmp_adata)
       continue;
-    if (imap_account_match(&tmp_adata->conn_account, &cac))
+    if (imap_account_match(&tmp_adata->conn->account, &cac))
     {
       *mdata = imap_mdata_new(tmp_adata, tmp);
       *adata = tmp_adata;
@@ -318,7 +318,7 @@ void imap_get_parent_path(const char *path, char *buf, size_t buflen)
   imap_get_parent(mdata->name, adata->delim, mbox, sizeof(mbox));
 
   /* Returns a fully qualified IMAP url */
-  imap_qualify_path(buf, buflen, &adata->conn_account, mbox);
+  imap_qualify_path(buf, buflen, &adata->conn->account, mbox);
   imap_mdata_free((void *) &mdata);
 }
 
@@ -338,7 +338,7 @@ void imap_clean_path(char *path, size_t plen)
     return;
 
   /* Returns a fully qualified IMAP url */
-  imap_qualify_path(path, plen, &adata->conn_account, mdata->name);
+  imap_qualify_path(path, plen, &adata->conn->account, mdata->name);
   imap_mdata_free((void *) &mdata);
 }
 

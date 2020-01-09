@@ -212,7 +212,7 @@ int imap_browse(const char *path, struct BrowserState *state)
   {
     adata = imap_adata_get(np->mailbox);
     // Pick first mailbox connected on the same server
-    if (imap_account_match(&adata->conn_account, &cac))
+    if (imap_account_match(&adata->conn->account, &cac))
       break;
     adata = NULL;
   }

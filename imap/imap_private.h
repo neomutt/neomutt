@@ -167,7 +167,6 @@ struct ImapCommand
 struct ImapAccountData
 {
   struct Connection *conn;
-  struct ConnAccount conn_account;
   bool recovering;
   bool closing; /* If true, we are waiting for CLOSE completion */
   unsigned char state;  ///< ImapState, e.g. #IMAP_AUTHENTICATED

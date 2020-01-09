@@ -1520,7 +1520,7 @@ int imap_complete(char *buf, size_t buflen, const char *path)
   if (completions)
   {
     /* reformat output */
-    imap_qualify_path(buf, buflen, &adata->conn_account, completion);
+    imap_qualify_path(buf, buflen, &adata->conn->account, completion);
     mutt_pretty_mailbox(buf, buflen);
     return 0;
   }
@@ -1859,7 +1859,7 @@ static struct Account *imap_ac_find(struct Account *a, const char *path)
   struct Url *url = url_parse(path);
 
   struct ImapAccountData *adata = a->adata;
-  struct ConnAccount *cac = &adata->conn_account;
+  struct ConnAccount *cac = &adata->conn->account;
 
   if (mutt_str_strcasecmp(url->host, cac->host) != 0)
     a = NULL;
@@ -1889,7 +1889,6 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
       return -1;
 
     adata = imap_adata_new(a);
-    adata->conn_account = cac;
     adata->conn = mutt_conn_new(&cac);
     if (!adata->conn)
     {
@@ -1916,7 +1915,7 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
 
     /* fixup path and realpath, mainly to replace / by /INBOX */
     char buf[1024];
-    imap_qualify_path(buf, sizeof(buf), &adata->conn_account, mdata->name);
+    imap_qualify_path(buf, sizeof(buf), &adata->conn->account, mdata->name);
     mutt_buffer_strcpy(&m->pathbuf, buf);
     mutt_str_replace(&m->realpath, mailbox_path(m));
 
@@ -2075,7 +2074,7 @@ static int imap_mbox_open(struct Mailbox *m)
   struct Mailbox *m_postponed = mx_mbox_find2(C_Postponed);
   struct ImapAccountData *postponed_adata = imap_adata_get(m_postponed);
   if (postponed_adata &&
-      imap_account_match(&postponed_adata->conn_account, &adata->conn_account))
+      imap_account_match(&postponed_adata->conn->account, &adata->conn->account))
   {
     imap_mailbox_status(m_postponed, true);
   }
