@@ -347,18 +347,17 @@ static void ssl_dprint_err_stack(void)
  */
 static int ssl_passwd_cb(char *buf, int buflen, int rwflag, void *userdata)
 {
-  struct ConnAccount *account = userdata;
+  struct ConnAccount *cac = userdata;
 
-  if (mutt_account_getuser(account) < 0)
+  if (mutt_account_getuser(cac) < 0)
     return 0;
 
-  mutt_debug(LL_DEBUG2, "getting password for %s@%s:%u\n", account->user,
-             account->host, account->port);
+  mutt_debug(LL_DEBUG2, "getting password for %s@%s:%u\n", cac->user, cac->host, cac->port);
 
-  if (mutt_account_getpass(account) < 0)
+  if (mutt_account_getpass(cac) < 0)
     return 0;
 
-  return snprintf(buf, buflen, "%s", account->pass);
+  return snprintf(buf, buflen, "%s", cac->pass);
 }
 
 /**

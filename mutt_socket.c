@@ -40,16 +40,16 @@
 
 /**
  * mutt_conn_new - Create a new Connection
- * @param account Credentials to use
+ * @param cac Credentials to use
  * @retval ptr New Connection
  */
-struct Connection *mutt_conn_new(const struct ConnAccount *account)
+struct Connection *mutt_conn_new(const struct ConnAccount *cac)
 {
   enum ConnectionType conn_type;
 
   if (C_Tunnel)
     conn_type = MUTT_CONNECTION_TUNNEL;
-  else if (account->flags & MUTT_ACCT_SSL)
+  else if (cac->flags & MUTT_ACCT_SSL)
     conn_type = MUTT_CONNECTION_SSL;
   else
     conn_type = MUTT_CONNECTION_SIMPLE;
@@ -57,7 +57,7 @@ struct Connection *mutt_conn_new(const struct ConnAccount *account)
   struct Connection *conn = mutt_socket_new(conn_type);
   if (conn)
   {
-    memcpy(&conn->account, account, sizeof(struct ConnAccount));
+    memcpy(&conn->account, cac, sizeof(struct ConnAccount));
   }
   else
   {
@@ -65,7 +65,7 @@ struct Connection *mutt_conn_new(const struct ConnAccount *account)
     {
 #ifndef USE_SSL
       /* that's probably why it failed */
-      mutt_error(_("SSL is unavailable, can't connect to %s"), account->host);
+      mutt_error(_("SSL is unavailable, can't connect to %s"), cac->host);
 #endif
     }
   }
@@ -74,27 +74,26 @@ struct Connection *mutt_conn_new(const struct ConnAccount *account)
 
 /**
  * mutt_conn_find - Find a connection from a list
- * @param start   First connection to try
- * @param account ConnAccount to match
+ * @param start First connection to try
+ * @param cac   ConnAccount to match
  * @retval ptr Matching Connection
  *
- * find a connection off the list of connections whose account matches account.
+ * find a connection off the list of connections whose account matches cac.
  * If start is not null, only search for connections after the given connection
  * (allows higher level socket code to make more fine-grained searches than
  * account info - eg in IMAP we may wish to find a connection which is not in
  * IMAP_SELECTED state)
  */
-struct Connection *mutt_conn_find(const struct Connection *start,
-                                  const struct ConnAccount *account)
+struct Connection *mutt_conn_find(const struct Connection *start, const struct ConnAccount *cac)
 {
   struct Url url = { 0 };
   char hook[1024];
 
-  /* account isn't actually modified, since url isn't either */
-  mutt_account_tourl((struct ConnAccount *) account, &url);
+  /* cac isn't actually modified, since url isn't either */
+  mutt_account_tourl((struct ConnAccount *) cac, &url);
   url.path = NULL;
   url_tostring(&url, hook, sizeof(hook), 0);
   mutt_account_hook(hook);
 
-  return mutt_conn_new(account);
+  return mutt_conn_new(cac);
 }

@@ -56,23 +56,23 @@ unsigned char C_PopReconnect; ///< Config: (pop) Reconnect to the server is the 
 /**
  * pop_parse_path - Parse a POP mailbox name
  * @param path Path to parse
- * @param acct Account to store details
+ * @param cac  Account to store details
  * @retval 0 success
  * @retval -1 error
  *
  * Split a POP path into host, port, username and password
  */
-int pop_parse_path(const char *path, struct ConnAccount *acct)
+int pop_parse_path(const char *path, struct ConnAccount *cac)
 {
   /* Defaults */
-  acct->flags = 0;
-  acct->type = MUTT_ACCT_TYPE_POP;
-  acct->port = 0;
+  cac->flags = 0;
+  cac->type = MUTT_ACCT_TYPE_POP;
+  cac->port = 0;
 
   struct Url *url = url_parse(path);
 
   if (!url || ((url->scheme != U_POP) && (url->scheme != U_POPS)) ||
-      !url->host || (mutt_account_fromurl(acct, url) < 0))
+      !url->host || (mutt_account_fromurl(cac, url) < 0))
   {
     url_free(&url);
     mutt_error(_("Invalid POP URL: %s"), path);
@@ -80,16 +80,16 @@ int pop_parse_path(const char *path, struct ConnAccount *acct)
   }
 
   if (url->scheme == U_POPS)
-    acct->flags |= MUTT_ACCT_SSL;
+    cac->flags |= MUTT_ACCT_SSL;
 
   struct servent *service =
       getservbyname((url->scheme == U_POP) ? "pop3" : "pop3s", "tcp");
-  if (acct->port == 0)
+  if (cac->port == 0)
   {
     if (service)
-      acct->port = ntohs(service->s_port);
+      cac->port = ntohs(service->s_port);
     else
-      acct->port = (url->scheme == U_POP) ? POP_PORT : POP_SSL_PORT;
+      cac->port = (url->scheme == U_POP) ? POP_PORT : POP_SSL_PORT;
   }
 
   url_free(&url);

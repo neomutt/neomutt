@@ -321,19 +321,19 @@ static bool addresses_use_unicode(const struct AddressList *al)
 
 /**
  * smtp_fill_account - Create ConnAccount object from SMTP Url
- * @param account ConnAccount to populate
+ * @param cac ConnAccount to populate
  * @retval  0 Success
  * @retval -1 Error
  */
-static int smtp_fill_account(struct ConnAccount *account)
+static int smtp_fill_account(struct ConnAccount *cac)
 {
-  account->flags = 0;
-  account->port = 0;
-  account->type = MUTT_ACCT_TYPE_SMTP;
+  cac->flags = 0;
+  cac->port = 0;
+  cac->type = MUTT_ACCT_TYPE_SMTP;
 
   struct Url *url = url_parse(C_SmtpUrl);
   if (!url || ((url->scheme != U_SMTP) && (url->scheme != U_SMTPS)) ||
-      !url->host || (mutt_account_fromurl(account, url) < 0))
+      !url->host || (mutt_account_fromurl(cac, url) < 0))
   {
     url_free(&url);
     mutt_error(_("Invalid SMTP URL: %s"), C_SmtpUrl);
@@ -341,12 +341,12 @@ static int smtp_fill_account(struct ConnAccount *account)
   }
 
   if (url->scheme == U_SMTPS)
-    account->flags |= MUTT_ACCT_SSL;
+    cac->flags |= MUTT_ACCT_SSL;
 
-  if (account->port == 0)
+  if (cac->port == 0)
   {
-    if (account->flags & MUTT_ACCT_SSL)
-      account->port = SMTPS_PORT;
+    if (cac->flags & MUTT_ACCT_SSL)
+      cac->port = SMTPS_PORT;
     else
     {
       static unsigned short SmtpPort = 0;
@@ -359,7 +359,7 @@ static int smtp_fill_account(struct ConnAccount *account)
           SmtpPort = SMTP_PORT;
         mutt_debug(LL_DEBUG3, "Using default SMTP port %d\n", SmtpPort);
       }
-      account->port = SmtpPort;
+      cac->port = SmtpPort;
     }
   }
 
@@ -740,7 +740,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
                    const char *msgfile, bool eightbit)
 {
   struct Connection *conn = NULL;
-  struct ConnAccount account;
+  struct ConnAccount cac;
   const char *envfrom = NULL;
   char buf[1024];
   int rc = -1;
@@ -757,10 +757,10 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
     return -1;
   }
 
-  if (smtp_fill_account(&account) < 0)
+  if (smtp_fill_account(&cac) < 0)
     return rc;
 
-  conn = mutt_conn_find(NULL, &account);
+  conn = mutt_conn_find(NULL, &cac);
   if (!conn)
     return -1;
 

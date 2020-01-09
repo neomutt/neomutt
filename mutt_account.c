@@ -54,33 +54,33 @@ char *C_SmtpUser; ///< Config: (smtp) Username for the SMTP server
 
 /**
  * mutt_account_fromurl - Fill ConnAccount with information from url
- * @param account ConnAccount to fill
- * @param url     Url to parse
+ * @param cac ConnAccount to fill
+ * @param url Url to parse
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_account_fromurl(struct ConnAccount *account, const struct Url *url)
+int mutt_account_fromurl(struct ConnAccount *cac, const struct Url *url)
 {
   /* must be present */
   if (url->host)
-    mutt_str_strfcpy(account->host, url->host, sizeof(account->host));
+    mutt_str_strfcpy(cac->host, url->host, sizeof(cac->host));
   else
     return -1;
 
   if (url->user)
   {
-    mutt_str_strfcpy(account->user, url->user, sizeof(account->user));
-    account->flags |= MUTT_ACCT_USER;
+    mutt_str_strfcpy(cac->user, url->user, sizeof(cac->user));
+    cac->flags |= MUTT_ACCT_USER;
   }
   if (url->pass)
   {
-    mutt_str_strfcpy(account->pass, url->pass, sizeof(account->pass));
-    account->flags |= MUTT_ACCT_PASS;
+    mutt_str_strfcpy(cac->pass, url->pass, sizeof(cac->pass));
+    cac->flags |= MUTT_ACCT_PASS;
   }
   if (url->port)
   {
-    account->port = url->port;
-    account->flags |= MUTT_ACCT_PORT;
+    cac->port = url->port;
+    cac->flags |= MUTT_ACCT_PORT;
   }
 
   return 0;
@@ -88,14 +88,14 @@ int mutt_account_fromurl(struct ConnAccount *account, const struct Url *url)
 
 /**
  * mutt_account_tourl - Fill URL with info from account
- * @param account Source ConnAccount
- * @param url     Url to fill
+ * @param cac Source ConnAccount
+ * @param url Url to fill
  *
- * The URL information is a set of pointers into account - don't free or edit
- * account until you've finished with url (make a copy of account if you need
- * it for a while).
+ * The URL information is a set of pointers into cac - don't free or edit cac
+ * until you've finished with url (make a copy of cac if you need it for a
+ * while).
  */
-void mutt_account_tourl(struct ConnAccount *account, struct Url *url)
+void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
 {
   url->scheme = U_UNKNOWN;
   url->user = NULL;
@@ -104,9 +104,9 @@ void mutt_account_tourl(struct ConnAccount *account, struct Url *url)
   url->path = NULL;
 
 #ifdef USE_IMAP
-  if (account->type == MUTT_ACCT_TYPE_IMAP)
+  if (cac->type == MUTT_ACCT_TYPE_IMAP)
   {
-    if (account->flags & MUTT_ACCT_SSL)
+    if (cac->flags & MUTT_ACCT_SSL)
       url->scheme = U_IMAPS;
     else
       url->scheme = U_IMAP;
@@ -114,9 +114,9 @@ void mutt_account_tourl(struct ConnAccount *account, struct Url *url)
 #endif
 
 #ifdef USE_POP
-  if (account->type == MUTT_ACCT_TYPE_POP)
+  if (cac->type == MUTT_ACCT_TYPE_POP)
   {
-    if (account->flags & MUTT_ACCT_SSL)
+    if (cac->flags & MUTT_ACCT_SSL)
       url->scheme = U_POPS;
     else
       url->scheme = U_POP;
@@ -124,9 +124,9 @@ void mutt_account_tourl(struct ConnAccount *account, struct Url *url)
 #endif
 
 #ifdef USE_SMTP
-  if (account->type == MUTT_ACCT_TYPE_SMTP)
+  if (cac->type == MUTT_ACCT_TYPE_SMTP)
   {
-    if (account->flags & MUTT_ACCT_SSL)
+    if (cac->flags & MUTT_ACCT_SSL)
       url->scheme = U_SMTPS;
     else
       url->scheme = U_SMTP;
@@ -134,98 +134,98 @@ void mutt_account_tourl(struct ConnAccount *account, struct Url *url)
 #endif
 
 #ifdef USE_NNTP
-  if (account->type == MUTT_ACCT_TYPE_NNTP)
+  if (cac->type == MUTT_ACCT_TYPE_NNTP)
   {
-    if (account->flags & MUTT_ACCT_SSL)
+    if (cac->flags & MUTT_ACCT_SSL)
       url->scheme = U_NNTPS;
     else
       url->scheme = U_NNTP;
   }
 #endif
 
-  url->host = account->host;
-  if (account->flags & MUTT_ACCT_PORT)
-    url->port = account->port;
-  if (account->flags & MUTT_ACCT_USER)
-    url->user = account->user;
-  if (account->flags & MUTT_ACCT_PASS)
-    url->pass = account->pass;
+  url->host = cac->host;
+  if (cac->flags & MUTT_ACCT_PORT)
+    url->port = cac->port;
+  if (cac->flags & MUTT_ACCT_USER)
+    url->user = cac->user;
+  if (cac->flags & MUTT_ACCT_PASS)
+    url->pass = cac->pass;
 }
 
 /**
  * mutt_account_getuser - Retrieve username into ConnAccount, if necessary
- * @param account ConnAccount to fill
+ * @param cac ConnAccount to fill
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_account_getuser(struct ConnAccount *account)
+int mutt_account_getuser(struct ConnAccount *cac)
 {
   char prompt[256];
 
   /* already set */
-  if (account->flags & MUTT_ACCT_USER)
+  if (cac->flags & MUTT_ACCT_USER)
     return 0;
 #ifdef USE_IMAP
-  else if ((account->type == MUTT_ACCT_TYPE_IMAP) && C_ImapUser)
-    mutt_str_strfcpy(account->user, C_ImapUser, sizeof(account->user));
+  else if ((cac->type == MUTT_ACCT_TYPE_IMAP) && C_ImapUser)
+    mutt_str_strfcpy(cac->user, C_ImapUser, sizeof(cac->user));
 #endif
 #ifdef USE_POP
-  else if ((account->type == MUTT_ACCT_TYPE_POP) && C_PopUser)
-    mutt_str_strfcpy(account->user, C_PopUser, sizeof(account->user));
+  else if ((cac->type == MUTT_ACCT_TYPE_POP) && C_PopUser)
+    mutt_str_strfcpy(cac->user, C_PopUser, sizeof(cac->user));
 #endif
 #ifdef USE_NNTP
-  else if ((account->type == MUTT_ACCT_TYPE_NNTP) && C_NntpUser)
-    mutt_str_strfcpy(account->user, C_NntpUser, sizeof(account->user));
+  else if ((cac->type == MUTT_ACCT_TYPE_NNTP) && C_NntpUser)
+    mutt_str_strfcpy(cac->user, C_NntpUser, sizeof(cac->user));
 #endif
 #ifdef USE_SMTP
-  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpUser)
-    mutt_str_strfcpy(account->user, C_SmtpUser, sizeof(account->user));
+  else if ((cac->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpUser)
+    mutt_str_strfcpy(cac->user, C_SmtpUser, sizeof(cac->user));
 #endif
   else if (OptNoCurses)
     return -1;
-  /* prompt (defaults to unix username), copy into account->user */
+  /* prompt (defaults to unix username), copy into cac->user */
   else
   {
     /* L10N: Example: Username at myhost.com */
-    snprintf(prompt, sizeof(prompt), _("Username at %s: "), account->host);
-    mutt_str_strfcpy(account->user, Username, sizeof(account->user));
-    if (mutt_get_field_unbuffered(prompt, account->user, sizeof(account->user), MUTT_COMP_NO_FLAGS))
+    snprintf(prompt, sizeof(prompt), _("Username at %s: "), cac->host);
+    mutt_str_strfcpy(cac->user, Username, sizeof(cac->user));
+    if (mutt_get_field_unbuffered(prompt, cac->user, sizeof(cac->user), MUTT_COMP_NO_FLAGS))
       return -1;
   }
 
-  account->flags |= MUTT_ACCT_USER;
+  cac->flags |= MUTT_ACCT_USER;
 
   return 0;
 }
 
 /**
  * mutt_account_getlogin - Retrieve login info into ConnAccount, if necessary
- * @param account ConnAccount to fill
+ * @param cac ConnAccount to fill
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_account_getlogin(struct ConnAccount *account)
+int mutt_account_getlogin(struct ConnAccount *cac)
 {
   /* already set */
-  if (account->flags & MUTT_ACCT_LOGIN)
+  if (cac->flags & MUTT_ACCT_LOGIN)
     return 0;
 #ifdef USE_IMAP
-  if (account->type == MUTT_ACCT_TYPE_IMAP)
+  if (cac->type == MUTT_ACCT_TYPE_IMAP)
   {
     if (C_ImapLogin)
     {
-      mutt_str_strfcpy(account->login, C_ImapLogin, sizeof(account->login));
-      account->flags |= MUTT_ACCT_LOGIN;
+      mutt_str_strfcpy(cac->login, C_ImapLogin, sizeof(cac->login));
+      cac->flags |= MUTT_ACCT_LOGIN;
     }
   }
 #endif
 
-  if (!(account->flags & MUTT_ACCT_LOGIN))
+  if (!(cac->flags & MUTT_ACCT_LOGIN))
   {
-    if (mutt_account_getuser(account) == 0)
+    if (mutt_account_getuser(cac) == 0)
     {
-      mutt_str_strfcpy(account->login, account->user, sizeof(account->login));
-      account->flags |= MUTT_ACCT_LOGIN;
+      mutt_str_strfcpy(cac->login, cac->user, sizeof(cac->login));
+      cac->flags |= MUTT_ACCT_LOGIN;
     }
     else
     {
@@ -239,61 +239,60 @@ int mutt_account_getlogin(struct ConnAccount *account)
 
 /**
  * mutt_account_getpass - Fetch password into ConnAccount, if necessary
- * @param account ConnAccount to fill
+ * @param cac ConnAccount to fill
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_account_getpass(struct ConnAccount *account)
+int mutt_account_getpass(struct ConnAccount *cac)
 {
   char prompt[256];
 
-  if (account->flags & MUTT_ACCT_PASS)
+  if (cac->flags & MUTT_ACCT_PASS)
     return 0;
 #ifdef USE_IMAP
-  else if ((account->type == MUTT_ACCT_TYPE_IMAP) && C_ImapPass)
-    mutt_str_strfcpy(account->pass, C_ImapPass, sizeof(account->pass));
+  else if ((cac->type == MUTT_ACCT_TYPE_IMAP) && C_ImapPass)
+    mutt_str_strfcpy(cac->pass, C_ImapPass, sizeof(cac->pass));
 #endif
 #ifdef USE_POP
-  else if ((account->type == MUTT_ACCT_TYPE_POP) && C_PopPass)
-    mutt_str_strfcpy(account->pass, C_PopPass, sizeof(account->pass));
+  else if ((cac->type == MUTT_ACCT_TYPE_POP) && C_PopPass)
+    mutt_str_strfcpy(cac->pass, C_PopPass, sizeof(cac->pass));
 #endif
 #ifdef USE_SMTP
-  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpPass)
-    mutt_str_strfcpy(account->pass, C_SmtpPass, sizeof(account->pass));
+  else if ((cac->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpPass)
+    mutt_str_strfcpy(cac->pass, C_SmtpPass, sizeof(cac->pass));
 #endif
 #ifdef USE_NNTP
-  else if ((account->type == MUTT_ACCT_TYPE_NNTP) && C_NntpPass)
-    mutt_str_strfcpy(account->pass, C_NntpPass, sizeof(account->pass));
+  else if ((cac->type == MUTT_ACCT_TYPE_NNTP) && C_NntpPass)
+    mutt_str_strfcpy(cac->pass, C_NntpPass, sizeof(cac->pass));
 #endif
   else if (OptNoCurses)
     return -1;
   else
   {
     snprintf(prompt, sizeof(prompt), _("Password for %s@%s: "),
-             (account->flags & MUTT_ACCT_LOGIN) ? account->login : account->user,
-             account->host);
-    account->pass[0] = '\0';
-    if (mutt_get_password(prompt, account->pass, sizeof(account->pass)))
+             (cac->flags & MUTT_ACCT_LOGIN) ? cac->login : cac->user, cac->host);
+    cac->pass[0] = '\0';
+    if (mutt_get_password(prompt, cac->pass, sizeof(cac->pass)))
       return -1;
   }
 
-  account->flags |= MUTT_ACCT_PASS;
+  cac->flags |= MUTT_ACCT_PASS;
 
   return 0;
 }
 
 /**
  * mutt_account_unsetpass - Unset ConnAccount's password
- * @param account ConnAccount to modify
+ * @param cac ConnAccount to modify
  */
-void mutt_account_unsetpass(struct ConnAccount *account)
+void mutt_account_unsetpass(struct ConnAccount *cac)
 {
-  account->flags &= ~MUTT_ACCT_PASS;
+  cac->flags &= ~MUTT_ACCT_PASS;
 }
 
 /**
  * mutt_account_getoauthbearer - Get an OAUTHBEARER token
- * @param account Account to use
+ * @param cac Account to use
  * @retval ptr  OAuth token
  * @retval NULL Error
  *
@@ -302,7 +301,7 @@ void mutt_account_unsetpass(struct ConnAccount *account)
  *
  * @note Caller should free the token
  */
-char *mutt_account_getoauthbearer(struct ConnAccount *account)
+char *mutt_account_getoauthbearer(struct ConnAccount *cac)
 {
   FILE *fp = NULL;
   char *cmd = NULL;
@@ -315,19 +314,19 @@ char *mutt_account_getoauthbearer(struct ConnAccount *account)
   pid_t pid;
 
   /* The oauthbearer token includes the login */
-  if (mutt_account_getlogin(account))
+  if (mutt_account_getlogin(cac))
     return NULL;
 
 #ifdef USE_IMAP
-  if ((account->type == MUTT_ACCT_TYPE_IMAP) && C_ImapOauthRefreshCommand)
+  if ((cac->type == MUTT_ACCT_TYPE_IMAP) && C_ImapOauthRefreshCommand)
     cmd = C_ImapOauthRefreshCommand;
 #endif
 #ifdef USE_POP
-  else if ((account->type == MUTT_ACCT_TYPE_POP) && C_PopOauthRefreshCommand)
+  else if ((cac->type == MUTT_ACCT_TYPE_POP) && C_PopOauthRefreshCommand)
     cmd = C_PopOauthRefreshCommand;
 #endif
 #ifdef USE_SMTP
-  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpOauthRefreshCommand)
+  else if ((cac->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpOauthRefreshCommand)
     cmd = C_SmtpOauthRefreshCommand;
 #endif
 
@@ -360,11 +359,11 @@ char *mutt_account_getoauthbearer(struct ConnAccount *account)
   }
 
   /* Determine the length of the keyed message digest, add 50 for overhead. */
-  oalen = strlen(account->login) + strlen(account->host) + strlen(token) + 50;
+  oalen = strlen(cac->login) + strlen(cac->host) + strlen(token) + 50;
   oauthbearer = mutt_mem_malloc(oalen);
 
   snprintf(oauthbearer, oalen, "n,a=%s,\001host=%s\001port=%d\001auth=Bearer %s\001\001",
-           account->login, account->host, account->port, token);
+           cac->login, cac->host, cac->port, token);
 
   FREE(&token);
 

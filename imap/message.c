@@ -1595,7 +1595,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, const char *dest
   char mmbox[PATH_MAX];
   char prompt[PATH_MAX + 64];
   int rc;
-  struct ConnAccount conn_account;
+  struct ConnAccount cac;
   enum QuadOption err_continue = MUTT_NO;
   int triedcreate = 0;
   struct EmailNode *en = STAILQ_FIRST(el);
@@ -1608,14 +1608,14 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, const char *dest
     return 1;
   }
 
-  if (imap_parse_path(dest, &conn_account, buf, sizeof(buf)))
+  if (imap_parse_path(dest, &cac, buf, sizeof(buf)))
   {
     mutt_debug(LL_DEBUG1, "bad destination %s\n", dest);
     return -1;
   }
 
   /* check that the save-to folder is in the same account */
-  if (!imap_account_match(&adata->conn->account, &conn_account))
+  if (!imap_account_match(&adata->conn->account, &cac))
   {
     mutt_debug(LL_DEBUG3, "%s not same server as %s\n", dest, mailbox_path(m));
     return 1;

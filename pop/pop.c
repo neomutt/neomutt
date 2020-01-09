@@ -578,7 +578,7 @@ void pop_fetch_mail(void)
   char buf[1024];
   char msgbuf[128];
   int last = 0, msgs, bytes, rset = 0, ret;
-  struct ConnAccount acct;
+  struct ConnAccount cac;
 
   char *p = mutt_mem_calloc(strlen(C_PopHost) + 7, sizeof(char));
   char *url = p;
@@ -589,7 +589,7 @@ void pop_fetch_mail(void)
   }
   strcpy(p, C_PopHost);
 
-  ret = pop_parse_path(url, &acct);
+  ret = pop_parse_path(url, &cac);
   FREE(&url);
   if (ret)
   {
@@ -597,7 +597,7 @@ void pop_fetch_mail(void)
     return;
   }
 
-  struct Connection *conn = mutt_conn_find(NULL, &acct);
+  struct Connection *conn = mutt_conn_find(NULL, &cac);
   if (!conn)
     return;
 
@@ -757,10 +757,10 @@ static struct Account *pop_ac_find(struct Account *a, const char *path)
     return NULL;
 
   struct PopAccountData *adata = a->adata;
-  struct ConnAccount *ac = &adata->conn_account;
+  struct ConnAccount *cac = &adata->conn_account;
 
-  if ((mutt_str_strcasecmp(url->host, ac->host) != 0) ||
-      (mutt_str_strcasecmp(url->user, ac->user) != 0))
+  if ((mutt_str_strcasecmp(url->host, cac->host) != 0) ||
+      (mutt_str_strcasecmp(url->user, cac->user) != 0))
   {
     a = NULL;
   }
@@ -817,16 +817,16 @@ static int pop_mbox_open(struct Mailbox *m)
     return -1;
 
   char buf[PATH_MAX];
-  struct ConnAccount acct = { { 0 } };
+  struct ConnAccount cac = { { 0 } };
   struct Url url = { 0 };
 
-  if (pop_parse_path(mailbox_path(m), &acct))
+  if (pop_parse_path(mailbox_path(m), &cac))
   {
     mutt_error(_("%s is an invalid POP path"), mailbox_path(m));
     return -1;
   }
 
-  mutt_account_tourl(&acct, &url);
+  mutt_account_tourl(&cac, &url);
   url.path = NULL;
   url_tostring(&url, buf, sizeof(buf), 0);
 
@@ -844,7 +844,7 @@ static int pop_mbox_open(struct Mailbox *m)
   struct Connection *conn = adata->conn;
   if (!conn)
   {
-    adata->conn = mutt_conn_new(&acct);
+    adata->conn = mutt_conn_new(&cac);
     conn = adata->conn;
     if (!conn)
       return -1;
@@ -856,7 +856,7 @@ static int pop_mbox_open(struct Mailbox *m)
   if (pop_open_connection(adata) < 0)
     return -1;
 
-  adata->bcache = mutt_bcache_open(&acct, NULL);
+  adata->bcache = mutt_bcache_open(&cac, NULL);
 
   /* init (hard-coded) ACL rights */
   m->rights = MUTT_ACL_SEEN | MUTT_ACL_DELETE;

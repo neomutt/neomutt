@@ -1859,11 +1859,11 @@ static struct Account *imap_ac_find(struct Account *a, const char *path)
   struct Url *url = url_parse(path);
 
   struct ImapAccountData *adata = a->adata;
-  struct ConnAccount *ac = &adata->conn_account;
+  struct ConnAccount *cac = &adata->conn_account;
 
-  if (mutt_str_strcasecmp(url->host, ac->host) != 0)
+  if (mutt_str_strcasecmp(url->host, cac->host) != 0)
     a = NULL;
-  else if (url->user && (mutt_str_strcasecmp(url->user, ac->user) != 0))
+  else if (url->user && (mutt_str_strcasecmp(url->user, cac->user) != 0))
     a = NULL;
 
   url_free(&url);
@@ -1882,15 +1882,15 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
 
   if (!adata)
   {
-    struct ConnAccount conn_account;
+    struct ConnAccount cac;
     char mailbox[PATH_MAX];
 
-    if (imap_parse_path(mailbox_path(m), &conn_account, mailbox, sizeof(mailbox)) < 0)
+    if (imap_parse_path(mailbox_path(m), &cac, mailbox, sizeof(mailbox)) < 0)
       return -1;
 
     adata = imap_adata_new(a);
-    adata->conn_account = conn_account;
-    adata->conn = mutt_conn_new(&conn_account);
+    adata->conn_account = cac;
+    adata->conn = mutt_conn_new(&cac);
     if (!adata->conn)
     {
       imap_adata_free((void **) &adata);
