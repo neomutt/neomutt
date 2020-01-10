@@ -539,10 +539,13 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
           snprintf(desc, sizeof(desc), _("---Command: %-30.30s Attachment: %s"),
                    mutt_b2s(cmd), type);
         }
+        mutt_wait_filter(pid);
       }
-
-      if ((mutt_wait_filter(pid) || (entry->needsterminal && C_WaitKey)) && !use_pager)
-        mutt_any_key_to_continue(NULL);
+      else
+      {
+        if (mutt_wait_interactive_filter(pid) || (entry->needsterminal && C_WaitKey))
+          mutt_any_key_to_continue(NULL);
+      }
 
       if (fd_temp != -1)
         close(fd_temp);
