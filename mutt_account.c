@@ -50,6 +50,7 @@ char *C_PopPass; ///< Config: (pop) Password of the POP server
 char *C_PopUser; ///< Config: (pop) Username of the POP server
 char *C_SmtpOauthRefreshCommand; ///< Config: (smtp) External command to generate OAUTH refresh token
 char *C_SmtpPass; ///< Config: (smtp) Password for the SMTP server
+char *C_SmtpUser; ///< Config: (smtp) Username for the SMTP server
 
 /**
  * mutt_account_fromurl - Fill ConnAccount with information from url
@@ -175,6 +176,10 @@ int mutt_account_getuser(struct ConnAccount *account)
 #ifdef USE_NNTP
   else if ((account->type == MUTT_ACCT_TYPE_NNTP) && C_NntpUser)
     mutt_str_strfcpy(account->user, C_NntpUser, sizeof(account->user));
+#endif
+#ifdef USE_SMTP
+  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpUser)
+    mutt_str_strfcpy(account->user, C_SmtpUser, sizeof(account->user));
 #endif
   else if (OptNoCurses)
     return -1;

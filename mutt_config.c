@@ -4168,6 +4168,13 @@ struct ConfigDef MuttVars[] = {
   ** fairly secure machine, because the superuser can read your neomuttrc even
   ** if you are the only one who can read the file.
   */
+  { "smtp_user", DT_STRING|DT_SENSITIVE, &C_SmtpUser, 0 },
+  /*
+  ** .pp
+  ** The username for the SMTP server.
+  ** .pp
+  ** This variable defaults to your user name on the local machine.
+  */
   { "smtp_url", DT_STRING|DT_SENSITIVE, &C_SmtpUrl, 0 },
   /*
   ** .pp

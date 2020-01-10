@@ -139,6 +139,7 @@ WHERE char *C_Realname;                      ///< Config: Real name of the user
 WHERE char *C_Shell;                         ///< Config: External command to run subshells in
 WHERE char *C_SimpleSearch;                  ///< Config: Pattern to search for when search doesn't contain ~'s
 #ifdef USE_SMTP
+WHERE char *C_SmtpUser;                      ///< Config: (smtp) Username for the SMTP server
 WHERE char *C_SmtpUrl;                       ///< Config: (smtp) Url of the SMTP server
 #endif /* USE_SMTP */
 WHERE char *C_Spoolfile;                     ///< Config: Inbox
