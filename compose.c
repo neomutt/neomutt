@@ -1710,11 +1710,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 #ifdef USE_NNTP
             if (!OptNews && (nntp_path_probe(mutt_b2s(&fname), NULL) != MUTT_NNTP))
 #endif
-              /* check to make sure the file exists and is readable */
-              if (access(mutt_b2s(&fname), R_OK) == -1)
+              if (mx_path_probe(mutt_b2s(&fname), NULL) != MUTT_NOTMUCH)
               {
-                mutt_perror(mutt_b2s(&fname));
-                break;
+                /* check to make sure the file exists and is readable */
+                if (access(mutt_b2s(&fname), R_OK) == -1)
+                {
+                  mutt_perror(mutt_b2s(&fname));
+                  break;
+                }
               }
 
         menu->redraw = REDRAW_FULL;
