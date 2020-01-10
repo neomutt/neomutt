@@ -48,7 +48,6 @@
 #include "mutt.h"
 #include "crypt.h"
 #include "cryptglue.h"
-#include "filter.h"
 #include "globals.h"
 #include "handler.h"
 #include "hook.h"
@@ -609,7 +608,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
           mutt_file_fclose(&fp_pgp_in);
 
-          wait_filter_rc = mutt_wait_filter(pid);
+          wait_filter_rc = filter_wait(pid);
 
           fflush(fp_pgp_err);
           /* If we are expecting an encrypted message, verify status fd output.
@@ -914,11 +913,11 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
     if (pgp_copy_checksig(fp_pgp_err, s->fp_out) >= 0)
       badsig = 0;
 
-    const int rv = mutt_wait_filter(pid);
+    const int rv = filter_wait(pid);
     if (rv)
       badsig = -1;
 
-    mutt_debug(LL_DEBUG1, "mutt_wait_filter returned %d\n", rv);
+    mutt_debug(LL_DEBUG1, "filter_wait returned %d\n", rv);
   }
 
   mutt_file_fclose(&fp_pgp_err);
@@ -1063,7 +1062,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   }
 
   mutt_file_fclose(&fp_pgp_out);
-  rv = mutt_wait_filter(pid);
+  rv = filter_wait(pid);
   mutt_file_unlink(mutt_b2s(pgptmpfile));
 
   fflush(fp_pgp_err);
@@ -1365,7 +1364,7 @@ struct Body *pgp_class_sign_message(struct Body *a, const struct AddressList *fr
     fputs(buf, stdout);
   }
 
-  if (mutt_wait_filter(pid) && C_PgpCheckExit)
+  if (filter_wait(pid) && C_PgpCheckExit)
     empty = true;
 
   mutt_file_fclose(&fp_pgp_err);
@@ -1611,7 +1610,7 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign,
   }
   mutt_file_fclose(&fp_pgp_in);
 
-  if (mutt_wait_filter(pid) && C_PgpCheckExit)
+  if (filter_wait(pid) && C_PgpCheckExit)
     empty = true;
 
   unlink(mutt_b2s(pgpinfile));
@@ -1782,7 +1781,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
     fprintf(fp_pgp_in, "%s\n", PgpPass);
   mutt_file_fclose(&fp_pgp_in);
 
-  if (mutt_wait_filter(pid) && C_PgpCheckExit)
+  if (filter_wait(pid) && C_PgpCheckExit)
     empty = true;
 
   mutt_file_unlink(mutt_b2s(pgpinfile));

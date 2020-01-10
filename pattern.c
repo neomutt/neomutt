@@ -47,7 +47,6 @@
 #include "alias.h"
 #include "context.h"
 #include "copy.h"
-#include "filter.h"
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
@@ -326,7 +325,7 @@ static bool eat_query(struct Pattern *pat, int flags, struct Buffer *s, struct B
   mutt_message(_("Running search command: %s ..."), cmd_buf.data);
   pat->is_multi = true;
   mutt_list_clear(&pat->p.multi_cases);
-  pid_t pid = mutt_create_filter(cmd_buf.data, NULL, &fp, NULL);
+  pid_t pid = filter_create(cmd_buf.data, NULL, &fp, NULL);
   if (pid < 0)
   {
     mutt_buffer_printf(err, "unable to fork command: %s\n", cmd_buf.data);
@@ -336,7 +335,7 @@ static bool eat_query(struct Pattern *pat, int flags, struct Buffer *s, struct B
 
   mutt_file_map_lines(add_query_msgid, &pat->p.multi_cases, fp, 0);
   mutt_file_fclose(&fp);
-  mutt_wait_filter(pid);
+  filter_wait(pid);
   FREE(&cmd_buf.data);
   return true;
 }

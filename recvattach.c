@@ -42,7 +42,6 @@
 #include "recvattach.h"
 #include "commands.h"
 #include "context.h"
-#include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "handler.h"
@@ -898,10 +897,10 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   if (!filter && !C_AttachSplit)
   {
     mutt_endwin();
-    pid_t pid = mutt_create_filter(buf, &state.fp_out, NULL, NULL);
+    pid_t pid = filter_create(buf, &state.fp_out, NULL, NULL);
     pipe_attachment_list(buf, actx, fp, tag, top, filter, &state);
     mutt_file_fclose(&state.fp_out);
-    if ((mutt_wait_filter(pid) != 0) || C_WaitKey)
+    if ((filter_wait(pid) != 0) || C_WaitKey)
       mutt_any_key_to_continue(NULL);
   }
   else
@@ -1053,10 +1052,10 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
     if (!can_print(actx, top, tag))
       return;
     mutt_endwin();
-    pid_t pid = mutt_create_filter(NONULL(C_PrintCommand), &state.fp_out, NULL, NULL);
+    pid_t pid = filter_create(NONULL(C_PrintCommand), &state.fp_out, NULL, NULL);
     print_attachment_list(actx, fp, tag, top, &state);
     mutt_file_fclose(&state.fp_out);
-    if ((mutt_wait_filter(pid) != 0) || C_WaitKey)
+    if ((filter_wait(pid) != 0) || C_WaitKey)
       mutt_any_key_to_continue(NULL);
   }
 }

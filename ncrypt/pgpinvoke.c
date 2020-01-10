@@ -38,7 +38,6 @@
 #include "address/lib.h"
 #include "gui/lib.h"
 #include "pgpinvoke.h"
-#include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "mutt_logging.h"
@@ -233,7 +232,7 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
 
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, format);
 
-  return mutt_create_filter_fd(cmd, fp_pgp_in, fp_pgp_out, fp_pgp_err,
+  return filter_create_fd(cmd, fp_pgp_in, fp_pgp_out, fp_pgp_err,
                                fd_pgp_in, fd_pgp_out, fd_pgp_err);
 }
 

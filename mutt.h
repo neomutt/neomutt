@@ -121,8 +121,6 @@ enum MessageType
 int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
 struct ConfigSet *init_config(size_t size);
 
-#define EXEC_SHELL "/bin/sh"
-
 char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu, const struct Mapping *items);
 
 int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags);

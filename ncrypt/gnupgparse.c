@@ -44,7 +44,6 @@
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "gnupgparse.h"
-#include "filter.h"
 #include "globals.h"
 #include "ncrypt.h"
 #include "pgpinvoke.h"
@@ -465,7 +464,7 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
     mutt_perror("fgets");
 
   mutt_file_fclose(&fp);
-  mutt_wait_filter(pid);
+  filter_wait(pid);
 
   close(fd_null);
 

@@ -40,7 +40,6 @@
 #include "mutt.h"
 #include "query.h"
 #include "alias.h"
-#include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
@@ -166,7 +165,7 @@ static struct Query *run_query(char *s, int quiet)
 
   mutt_buffer_file_expand_fmt_quote(cmd, C_QueryCommand, s);
 
-  pid = mutt_create_filter(mutt_b2s(cmd), NULL, &fp, NULL);
+  pid = filter_create(mutt_b2s(cmd), NULL, &fp, NULL);
   if (pid < 0)
   {
     mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", mutt_b2s(cmd));
@@ -210,7 +209,7 @@ static struct Query *run_query(char *s, int quiet)
   }
   FREE(&buf);
   mutt_file_fclose(&fp);
-  if (mutt_wait_filter(pid))
+  if (filter_wait(pid))
   {
     mutt_debug(LL_DEBUG1, "Error: %s\n", msg);
     if (!quiet)

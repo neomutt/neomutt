@@ -83,11 +83,6 @@ int mutt_count_body_parts(struct Mailbox *m, struct Email *e)
   return g_body_parts;
 }
 
-pid_t mutt_create_filter(const char *s, FILE **fp_in, FILE **fp_out, FILE **fp_err)
-{
-  return -1;
-}
-
 int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, int complete,
                                bool multiple, char ***files, int *numfiles)
 {
@@ -123,11 +118,6 @@ void mutt_progress_update(struct Progress *progress, long pos, int percent)
 
 void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_mbox)
 {
-}
-
-int mutt_wait_filter(pid_t pid)
-{
-  return -1;
 }
 
 int mx_msg_close(struct Mailbox *m, struct Message **msg)

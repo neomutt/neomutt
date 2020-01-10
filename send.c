@@ -49,7 +49,6 @@
 #include "context.h"
 #include "copy.h"
 #include "edit.h"
-#include "filter.h"
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
@@ -149,7 +148,7 @@ static void append_signature(FILE *fp)
     mutt_file_copy_stream(fp_tmp, fp);
     mutt_file_fclose(&fp_tmp);
     if (pid != -1)
-      mutt_wait_filter(pid);
+      filter_wait(pid);
   }
 }
 

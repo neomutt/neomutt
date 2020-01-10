@@ -36,7 +36,6 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "mutt_account.h"
-#include "filter.h"
 #include "globals.h"
 #include "options.h"
 
@@ -337,7 +336,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *account)
     return NULL;
   }
 
-  pid = mutt_create_filter(cmd, NULL, &fp, NULL);
+  pid = filter_create(cmd, NULL, &fp, NULL);
   if (pid < 0)
   {
     mutt_perror(_("Unable to run refresh command"));
@@ -346,7 +345,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *account)
 
   token = mutt_file_read_line(NULL, &token_size, fp, NULL, 0);
   mutt_file_fclose(&fp);
-  mutt_wait_filter(pid);
+  filter_wait(pid);
 
   if (!token || (*token == '\0'))
   {

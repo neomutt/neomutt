@@ -53,7 +53,6 @@
 #include "alias.h"
 #include "command_parse.h"
 #include "context.h"
-#include "filter.h"
 #include "globals.h"
 #include "keymap.h"
 #include "monitor.h"
@@ -549,7 +548,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         cmd.data = mutt_str_strdup(tok->dptr);
       }
       *pc = '`';
-      pid = mutt_create_filter(cmd.data, NULL, &fp, NULL);
+      pid = filter_create(cmd.data, NULL, &fp, NULL);
       if (pid < 0)
       {
         mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd.data);
@@ -564,7 +563,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       struct Buffer expn = mutt_buffer_make(0);
       expn.data = mutt_file_read_line(NULL, &expn.dsize, fp, &line, 0);
       mutt_file_fclose(&fp);
-      mutt_wait_filter(pid);
+      filter_wait(pid);
 
       /* if we got output, make a new string consisting of the shell output
        * plus whatever else was left on the original line */

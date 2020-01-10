@@ -45,7 +45,6 @@
 #include "handler.h"
 #include "copy.h"
 #include "enriched.h"
-#include "filter.h"
 #include "globals.h"
 #include "keymap.h"
 #include "mailcap.h"
@@ -578,13 +577,13 @@ static int autoview_handler(struct Body *a, struct State *s)
       unlink(mutt_b2s(tempfile));
       fflush(fp_in);
       rewind(fp_in);
-      pid = mutt_create_filter_fd(mutt_b2s(cmd), NULL, &fp_out, &fp_err,
+      pid = filter_create_fd(mutt_b2s(cmd), NULL, &fp_out, &fp_err,
                                   fileno(fp_in), -1, -1);
     }
     else
     {
       mutt_file_fclose(&fp_in);
-      pid = mutt_create_filter(mutt_b2s(cmd), NULL, &fp_out, &fp_err);
+      pid = filter_create(mutt_b2s(cmd), NULL, &fp_out, &fp_err);
     }
 
     if (pid < 0)
@@ -645,7 +644,7 @@ static int autoview_handler(struct Body *a, struct State *s)
     mutt_file_fclose(&fp_out);
     mutt_file_fclose(&fp_err);
 
-    mutt_wait_filter(pid);
+    filter_wait(pid);
     if (piped)
       mutt_file_fclose(&fp_in);
     else

@@ -38,7 +38,6 @@
 #include "mutt.h"
 #include "alias.h"
 #include "context.h"
-#include "filter.h"
 #include "globals.h"
 #include "imap/imap.h"
 #include "init.h"
@@ -519,7 +518,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   FREE(&linebuf);
   mutt_file_fclose(&fp);
   if (pid != -1)
-    mutt_wait_filter(pid);
+    filter_wait(pid);
   if (rc)
   {
     /* the neomuttrc source keyword */

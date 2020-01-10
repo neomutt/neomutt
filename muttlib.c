@@ -51,7 +51,6 @@
 #include "mutt.h"
 #include "muttlib.h"
 #include "alias.h"
-#include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "hook.h"
@@ -962,14 +961,14 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
       col -= wlen; /* reset to passed in value */
       wptr = buf;  /* reset write ptr */
-      pid_t pid = mutt_create_filter(cmd.data, NULL, &fp_filter, NULL);
+      pid_t pid = filter_create(cmd.data, NULL, &fp_filter, NULL);
       if (pid != -1)
       {
         int rc;
 
         n = fread(buf, 1, buflen /* already decremented */, fp_filter);
         mutt_file_fclose(&fp_filter);
-        rc = mutt_wait_filter(pid);
+        rc = filter_wait(pid);
         if (rc != 0)
           mutt_debug(LL_DEBUG1, "format pipe cmd exited code %d\n", rc);
         if (n > 0)
@@ -1419,7 +1418,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
 
     p[len - 1] = 0;
     mutt_endwin();
-    *thepid = mutt_create_filter(p, NULL, &fp, NULL);
+    *thepid = filter_create(p, NULL, &fp, NULL);
     FREE(&p);
   }
   else

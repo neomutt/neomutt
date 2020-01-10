@@ -46,7 +46,6 @@
 #include "copy.h"
 #include "crypt.h"
 #include "cryptglue.h"
-#include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "handler.h"
@@ -410,7 +409,7 @@ static pid_t smime_invoke(FILE **fp_smime_in, FILE **fp_smime_out, FILE **fp_smi
 
   smime_command(cmd, sizeof(cmd), &cctx, format);
 
-  return mutt_create_filter_fd(cmd, fp_smime_in, fp_smime_out, fp_smime_err,
+  return filter_create_fd(cmd, fp_smime_in, fp_smime_out, fp_smime_err,
                                fp_smime_infd, fp_smime_outfd, fp_smime_errfd);
 }
 
@@ -1146,7 +1145,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
     return 1;
   }
 
-  mutt_wait_filter(pid);
+  filter_wait(pid);
 
   fflush(fp_out);
   rewind(fp_out);
@@ -1245,7 +1244,7 @@ static char *smime_extract_certificate(const char *infile)
     goto cleanup;
   }
 
-  mutt_wait_filter(pid);
+  filter_wait(pid);
 
   fflush(fp_out);
   rewind(fp_out);
@@ -1280,7 +1279,7 @@ static char *smime_extract_certificate(const char *infile)
     goto cleanup;
   }
 
-  mutt_wait_filter(pid);
+  filter_wait(pid);
 
   mutt_file_unlink(mutt_b2s(pk7out));
 
@@ -1355,7 +1354,7 @@ static char *smime_extract_signer_certificate(const char *infile)
     goto cleanup;
   }
 
-  mutt_wait_filter(pid);
+  filter_wait(pid);
 
   fflush(fp_out);
   rewind(fp_out);
@@ -1438,7 +1437,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
     fputc('\n', fp_smime_in);
     mutt_file_fclose(&fp_smime_in);
 
-    mutt_wait_filter(pid);
+    filter_wait(pid);
 
     mutt_file_unlink(certfile);
     FREE(&certfile);
@@ -1647,7 +1646,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 
   mutt_file_fclose(&fp_smime_in);
 
-  mutt_wait_filter(pid);
+  filter_wait(pid);
   mutt_file_unlink(mutt_b2s(smime_infile));
 
   fflush(fp_out);
@@ -1817,7 +1816,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   fputc('\n', fp_smime_in);
   mutt_file_fclose(&fp_smime_in);
 
-  mutt_wait_filter(pid);
+  filter_wait(pid);
 
   /* check for errors from OpenSSL */
   err = 0;
@@ -2012,7 +2011,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
     fflush(fp_smime_out);
     mutt_file_fclose(&fp_smime_out);
 
-    if (mutt_wait_filter(pid))
+    if (filter_wait(pid))
       badsig = -1;
     else
     {
@@ -2140,7 +2139,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
 
   mutt_file_fclose(&fp_smime_in);
 
-  mutt_wait_filter(pid);
+  filter_wait(pid);
   mutt_file_unlink(mutt_b2s(&tmpfname));
 
   if (s->flags & MUTT_DISPLAY)

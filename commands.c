@@ -48,7 +48,6 @@
 #include "alias.h"
 #include "context.h"
 #include "copy.h"
-#include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "hdrline.h"
@@ -265,7 +264,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
   {
     fp_filter_out = fp_out;
     fp_out = NULL;
-    filterpid = mutt_create_filter_fd(C_DisplayFilter, &fp_out, NULL, NULL, -1,
+    filterpid = filter_create_fd(C_DisplayFilter, &fp_out, NULL, NULL, -1,
                                       fileno(fp_filter_out), -1);
     if (filterpid < 0)
     {
@@ -305,14 +304,14 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     mutt_error(_("Could not copy message"));
     if (fp_filter_out)
     {
-      mutt_wait_filter(filterpid);
+      filter_wait(filterpid);
       mutt_file_fclose(&fp_filter_out);
     }
     mutt_file_unlink(mutt_b2s(tempfile));
     goto cleanup;
   }
 
-  if (fp_filter_out && (mutt_wait_filter(filterpid) != 0))
+  if (fp_filter_out && (filter_wait(filterpid) != 0))
     mutt_any_key_to_continue(NULL);
 
   mutt_file_fclose(&fp_filter_out); /* XXX - check result? */
@@ -607,7 +606,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
     }
     mutt_endwin();
 
-    pid = mutt_create_filter(cmd, &fp_out, NULL, NULL);
+    pid = filter_create(cmd, &fp_out, NULL, NULL);
     if (pid < 0)
     {
       mutt_perror(_("Can't create filter process"));
@@ -617,7 +616,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
     OptKeepQuiet = true;
     pipe_msg(m, en->email, fp_out, decode, print);
     mutt_file_fclose(&fp_out);
-    rc = mutt_wait_filter(pid);
+    rc = filter_wait(pid);
     OptKeepQuiet = false;
   }
   else
@@ -643,7 +642,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
       {
         mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
         mutt_endwin();
-        pid = mutt_create_filter(cmd, &fp_out, NULL, NULL);
+        pid = filter_create(cmd, &fp_out, NULL, NULL);
         if (pid < 0)
         {
           mutt_perror(_("Can't create filter process"));
@@ -655,7 +654,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
         if (sep)
           fputs(sep, fp_out);
         mutt_file_fclose(&fp_out);
-        if (mutt_wait_filter(pid) != 0)
+        if (filter_wait(pid) != 0)
           rc = 1;
         OptKeepQuiet = false;
       }
@@ -663,7 +662,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
     else
     {
       mutt_endwin();
-      pid = mutt_create_filter(cmd, &fp_out, NULL, NULL);
+      pid = filter_create(cmd, &fp_out, NULL, NULL);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter process"));
@@ -679,7 +678,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
           fputs(sep, fp_out);
       }
       mutt_file_fclose(&fp_out);
-      if (mutt_wait_filter(pid) != 0)
+      if (filter_wait(pid) != 0)
         rc = 1;
       OptKeepQuiet = false;
     }

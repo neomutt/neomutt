@@ -31,15 +31,12 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
-#include "mutt.h"
 #include "filter.h"
-#ifdef USE_IMAP
-#include "imap/imap.h"
-#endif
+#include "envlist.h"
+#include "signal2.h"
 
 /**
- * mutt_create_filter_fd - Run a command on a pipe (optionally connect stdin/stdout)
+ * filter_create_fd - Run a command on a pipe (optionally connect stdin/stdout)
  * @param[in]  cmd    Command line to invoke using `sh -c`
  * @param[out] fp_in  File stream pointing to stdin for the command process, can be NULL
  * @param[out] fp_out File stream pointing to stdout for the command process, can be NULL
@@ -55,13 +52,13 @@
  * present.
  *
  * @code{.c}
- *    mutt_create_filter_fd(commandline, NULL, NULL, NULL, -1, -1, -1);
+ *    filter_create_fd(commandline, NULL, NULL, NULL, -1, -1, -1);
  * @endcode
  *
  * Additionally, fp_in, fp_out, and fp_err will point to FILE* streams
  * representing the processes stdin, stdout, and stderr.
  */
-pid_t mutt_create_filter_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
+pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
                             FILE **fp_err, int fdin, int fdout, int fderr)
 {
   int pin[2], pout[2], perr[2], pid;
@@ -199,57 +196,29 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
 }
 
 /**
- * mutt_create_filter - Set up filter program
- * @param[in]  s      Command string
+ * filter_create - Set up filter program
+ * @param[in]  cmd    Command string
  * @param[out] fp_in  FILE pointer of stdin
  * @param[out] fp_out FILE pointer of stdout
  * @param[out] fp_err FILE pointer of stderr
  * @retval num PID of filter
  */
-pid_t mutt_create_filter(const char *s, FILE **fp_in, FILE **fp_out, FILE **fp_err)
+pid_t filter_create(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err)
 {
-  return mutt_create_filter_fd(s, fp_in, fp_out, fp_err, -1, -1, -1);
+  return filter_create_fd(cmd, fp_in, fp_out, fp_err, -1, -1, -1);
 }
 
 /**
- * mutt_wait_filter - Wait for the exit of a process and return its status
+ * filter_wait - Wait for the exit of a process and return its status
  * @param pid Process id of the process to wait for
  * @retval num Exit status of the process identified by pid
  * @retval -1  Error
  */
-int mutt_wait_filter(pid_t pid)
+int filter_wait(pid_t pid)
 {
-  int rc;
+  int rc = 0;
 
   waitpid(pid, &rc, 0);
-  mutt_sig_unblock_system(true);
-  rc = WIFEXITED(rc) ? WEXITSTATUS(rc) : -1;
-
-  return rc;
-}
-
-/**
- * mutt_wait_interactive_filter - Wait after an interactive filter
- * @param pid Process id of the process to wait for
- * @retval num Exit status of the process identified by pid
- * @retval -1  Error
- *
- * This is used for filters that are actually interactive commands
- * with input piped in: e.g. in mutt_view_attachment(), a mailcap
- * entry without copiousoutput _and_ without a %s.
- *
- * For those cases, we treat it like a blocking system command, and
- * poll IMAP to keep connections open.
- */
-int mutt_wait_interactive_filter(pid_t pid)
-{
-  int rc;
-
-#ifdef USE_IMAP
-  rc = imap_wait_keepalive(pid);
-#else
-  waitpid(pid, &rc, 0);
-#endif
   mutt_sig_unblock_system(true);
   rc = WIFEXITED(rc) ? WEXITSTATUS(rc) : -1;
 

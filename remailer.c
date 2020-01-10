@@ -39,7 +39,6 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
@@ -193,7 +192,7 @@ static struct Remailer **mix_type2_list(size_t *l)
   mutt_buffer_printf(cmd, "%s -T", C_Mixmaster);
 
   pid_t mm_pid =
-      mutt_create_filter_fd(mutt_b2s(cmd), NULL, &fp, NULL, fd_null, -1, fd_null);
+      filter_create_fd(mutt_b2s(cmd), NULL, &fp, NULL, fd_null, -1, fd_null);
   if (mm_pid == -1)
   {
     mutt_buffer_pool_release(&cmd);
@@ -251,7 +250,7 @@ static struct Remailer **mix_type2_list(size_t *l)
   *l = used;
 
   mix_add_entry(&type2_list, NULL, &slots, &used);
-  mutt_wait_filter(mm_pid);
+  filter_wait(mm_pid);
 
   close(fd_null);
 

@@ -46,7 +46,6 @@
 #include "mutt.h"
 #include "pgpkey.h"
 #include "crypt.h"
-#include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "gnupgparse.h"
@@ -760,7 +759,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
           mutt_file_fclose(&fp_null);
         }
 
-        mutt_wait_filter(pid);
+        filter_wait(pid);
         mutt_file_fclose(&fp_tmp);
         mutt_file_fclose(&fp_null);
         mutt_clear_error();
@@ -960,7 +959,7 @@ struct Body *pgp_class_make_key_attachment(void)
     goto cleanup;
   }
 
-  mutt_wait_filter(pid);
+  filter_wait(pid);
 
   mutt_file_fclose(&fp_tmp);
   mutt_file_fclose(&fp_null);
