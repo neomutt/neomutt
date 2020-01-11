@@ -537,31 +537,15 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
   char iplocalport[IP_PORT_BUFLEN], ipremoteport[IP_PORT_BUFLEN];
   char *plp = NULL;
   char *prp = NULL;
-  const char *service = NULL;
   int rc;
 
   if (mutt_sasl_start() != SASL_OK)
     return -1;
 
-  switch (conn->account.type)
+  if (!conn->account.service)
   {
-    case MUTT_ACCT_TYPE_IMAP:
-      service = "imap";
-      break;
-    case MUTT_ACCT_TYPE_POP:
-      service = "pop";
-      break;
-    case MUTT_ACCT_TYPE_SMTP:
-      service = "smtp";
-      break;
-#ifdef USE_NNTP
-    case MUTT_ACCT_TYPE_NNTP:
-      service = "nntp";
-      break;
-#endif
-    default:
-      mutt_error(_("Unknown SASL profile"));
-      return -1;
+    mutt_error(_("Unknown SASL profile"));
+    return -1;
   }
 
   size = sizeof(local);
@@ -588,7 +572,7 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
 
   mutt_debug(LL_DEBUG2, "SASL local ip: %s, remote ip:%s\n", NONULL(plp), NONULL(prp));
 
-  rc = sasl_client_new(service, conn->account.host, plp, prp,
+  rc = sasl_client_new(conn->account.service, conn->account.host, plp, prp,
                        mutt_sasl_get_callbacks(&conn->account), 0, saslconn);
 
   if (rc != SASL_OK)

@@ -1007,6 +1007,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   cac.flags = 0;
   cac.port = NNTP_PORT;
   cac.type = MUTT_ACCT_TYPE_NNTP;
+  cac.service = "nntp";
   snprintf(file, sizeof(file), "%s%s", strstr(server, "://") ? "" : "news://", server);
   struct Url *url = url_parse(file);
   if (!url || (url->path && *url->path) ||

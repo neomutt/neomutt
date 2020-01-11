@@ -330,6 +330,7 @@ static int smtp_fill_account(struct ConnAccount *cac)
   cac->flags = 0;
   cac->port = 0;
   cac->type = MUTT_ACCT_TYPE_SMTP;
+  cac->service = "smtp";
 
   struct Url *url = url_parse(C_SmtpUrl);
   if (!url || ((url->scheme != U_SMTP) && (url->scheme != U_SMTPS)) ||

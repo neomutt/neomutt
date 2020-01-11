@@ -626,6 +626,7 @@ int imap_parse_path(const char *path, struct ConnAccount *cac, char *mailbox, si
   /* Defaults */
   cac->port = ImapPort;
   cac->type = MUTT_ACCT_TYPE_IMAP;
+  cac->service = "imap";
 
   struct Url *url = url_parse(path);
   if (!url)

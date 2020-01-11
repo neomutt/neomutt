@@ -37,6 +37,7 @@ struct ConnAccount
   unsigned short port;
   unsigned char type;     ///< Connection type, e.g. #MUTT_ACCT_TYPE_IMAP
   MuttAccountFlags flags; ///< Which fields are initialised, e.g. #MUTT_ACCT_USER
+  const char *service;    ///< Name of the service, e.g. "imap"
 };
 
 #endif /* MUTT_CONN_ACCOUNT_H */

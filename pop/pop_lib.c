@@ -67,6 +67,7 @@ int pop_parse_path(const char *path, struct ConnAccount *cac)
   /* Defaults */
   cac->flags = 0;
   cac->type = MUTT_ACCT_TYPE_POP;
+  cac->service = "pop";
   cac->port = 0;
 
   struct Url *url = url_parse(path);
