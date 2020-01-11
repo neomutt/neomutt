@@ -51,7 +51,10 @@
 #endif
 
 /* These Config Variables are only used in pop/pop_lib.c */
+char *C_PopOauthRefreshCommand; ///< Config: (pop) External command to generate OAUTH refresh token
+char *C_PopPass; ///< Config: (pop) Password of the POP server
 unsigned char C_PopReconnect; ///< Config: (pop) Reconnect to the server is the connection is lost
+char *C_PopUser; ///< Config: (pop) Username of the POP server
 
 /**
  * pop_get_field - Get connection login credentials - Implements ::ca_get_field_t
@@ -60,6 +63,7 @@ const char *pop_get_field(enum ConnAccountField field)
 {
   switch (field)
   {
+    case MUTT_CA_LOGIN:
     case MUTT_CA_USER:
       return C_PopUser;
     case MUTT_CA_PASS:
@@ -67,7 +71,6 @@ const char *pop_get_field(enum ConnAccountField field)
     case MUTT_CA_OAUTH_CMD:
       return C_PopOauthRefreshCommand;
     case MUTT_CA_HOST:
-    case MUTT_CA_LOGIN:
     default:
       return NULL;
   }

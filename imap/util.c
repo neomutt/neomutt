@@ -60,6 +60,9 @@
 
 /* These Config Variables are only used in imap/util.c */
 char *C_ImapDelimChars; ///< Config: (imap) Characters that denote separators in IMAP folders
+char *C_ImapLogin; ///< Config: (imap) Login name for the IMAP server (defaults to #C_ImapUser)
+char *C_ImapOauthRefreshCommand; ///< Config: (imap) External command to generate OAUTH refresh token
+char *C_ImapPass; ///< Config: (imap) Password for the IMAP server
 short C_ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be queued up
 
 /**

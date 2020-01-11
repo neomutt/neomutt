@@ -29,6 +29,7 @@ config/slist.c
 config/sort.c
 config/string.c
 config/subset.c
+conn/connaccount.c
 conn/conn_globals.c
 conn/conn_raw.c
 conn/getdomain.c

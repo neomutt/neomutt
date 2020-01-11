@@ -207,7 +207,7 @@ ALLOBJS+=	$(LIBIMAPOBJS)
 ###############################################################################
 # libconn
 LIBCONN=	libconn.a
-LIBCONNOBJS=	conn/conn_globals.o conn/conn_raw.o conn/getdomain.o \
+LIBCONNOBJS=	conn/connaccount.o conn/conn_globals.o conn/conn_raw.o conn/getdomain.o \
 		conn/sasl_plain.o conn/socket.o conn/tunnel.o
 @if HAVE_SASL
 LIBCONNOBJS+=	conn/sasl.o

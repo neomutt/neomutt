@@ -1,6 +1,6 @@
 /**
  * @file
- * ConnAccount object
+ * Connection Credentials
  *
  * @authors
  * Copyright (C) 2000-2005,2008 Brendan Cully <brendan@kublai.com>
@@ -44,6 +44,14 @@ enum ConnAccountField
  */
 typedef const char *(*ca_get_field_t)(enum ConnAccountField field);
 
+typedef uint8_t MuttAccountFlags;     ///< Flags, Which ConnAccount fields are initialised, e.g. #MUTT_ACCT_PORT
+#define MUTT_ACCT_NO_FLAGS        0   ///< No flags are set
+#define MUTT_ACCT_PORT      (1 << 0)  ///< Port field has been set
+#define MUTT_ACCT_USER      (1 << 1)  ///< User field has been set
+#define MUTT_ACCT_LOGIN     (1 << 2)  ///< Login field has been set
+#define MUTT_ACCT_PASS      (1 << 3)  ///< Password field has been set
+#define MUTT_ACCT_SSL       (1 << 4)  ///< Account uses SSL/TLS
+
 /**
  * struct ConnAccount - Login details for a remote server
  */
@@ -60,5 +68,11 @@ struct ConnAccount
 
   ca_get_field_t get_field; ///< Function to get some data
 };
+
+int   mutt_account_getlogin      (struct ConnAccount *account);
+char *mutt_account_getoauthbearer(struct ConnAccount *account);
+int   mutt_account_getpass       (struct ConnAccount *account);
+int   mutt_account_getuser       (struct ConnAccount *account);
+void  mutt_account_unsetpass     (struct ConnAccount *account);
 
 #endif /* MUTT_CONN_ACCOUNT_H */

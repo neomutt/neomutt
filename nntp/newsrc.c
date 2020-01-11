@@ -62,6 +62,8 @@
 /* These Config Variables are only used in nntp/newsrc.c */
 char *C_NewsCacheDir; ///< Config: (nntp) Directory for cached news articles
 char *C_Newsrc; ///< Config: (nntp) File containing list of subscribed newsgroups
+char *C_NntpPass; ///< Config: (nntp) Password for the news server
+char *C_NntpUser; ///< Config: (nntp) Username for the news server
 
 struct BodyCache;
 

@@ -80,6 +80,9 @@ extern bool C_ImapServernoise;
 
 /* These Config Variables are only used in imap/util.c */
 extern char *C_ImapDelimChars;
+extern char *C_ImapLogin;
+extern char *C_ImapOauthRefreshCommand;
+extern char *C_ImapPass;
 extern short C_ImapPipelineDepth;
 
 /* imap.c */

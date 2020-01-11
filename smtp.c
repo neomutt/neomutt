@@ -61,6 +61,9 @@
 
 /* These Config Variables are only used in smtp.c */
 struct Slist *C_SmtpAuthenticators; ///< Config: (smtp) List of allowed authentication methods
+char *C_SmtpOauthRefreshCommand; ///< Config: (smtp) External command to generate OAUTH refresh token
+char *C_SmtpPass; ///< Config: (smtp) Password for the SMTP server
+char *C_SmtpUser; ///< Config: (smtp) Username for the SMTP server
 
 #define smtp_success(x) ((x) / 100 == 2)
 #define SMTP_READY 334

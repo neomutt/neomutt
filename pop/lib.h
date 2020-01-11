@@ -46,6 +46,9 @@ extern short         C_PopCheckinterval;
 extern unsigned char C_PopDelete;
 extern char *        C_PopHost;
 extern bool          C_PopLast;
+extern char *        C_PopOauthRefreshCommand;
+extern char *        C_PopPass;
+extern char *        C_PopUser;
 
 /* These Config Variables are only used in pop/pop_auth.c */
 extern struct Slist *C_PopAuthenticators;

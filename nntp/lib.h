@@ -61,6 +61,8 @@ extern bool  C_ShowNewNews;
 /* These Config Variables are only used in nntp/newsrc.c */
 extern char *C_NewsCacheDir;
 extern char *C_Newsrc;
+extern char *C_NntpPass;
+extern char *C_NntpUser;
 
 extern struct NntpAccountData *CurrentNewsSrv; ///< Current NNTP news server
 extern struct MxOps MxNntpOps;
