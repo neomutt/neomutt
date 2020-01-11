@@ -977,6 +977,25 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
 }
 
 /**
+ * nntp_get_field - Get connection login credentials - Implements ::ca_get_field_t
+ */
+static const char *nntp_get_field(enum ConnAccountField field)
+{
+  switch (field)
+  {
+    case MUTT_CA_LOGIN:
+    case MUTT_CA_USER:
+      return C_NntpUser;
+    case MUTT_CA_PASS:
+      return C_NntpPass;
+    case MUTT_CA_OAUTH_CMD:
+    case MUTT_CA_HOST:
+    default:
+      return NULL;
+  }
+}
+
+/**
  * nntp_select_server - Open a connection to an NNTP server
  * @param m          Mailbox
  * @param server     Server URI
@@ -1008,6 +1027,8 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   cac.port = NNTP_PORT;
   cac.type = MUTT_ACCT_TYPE_NNTP;
   cac.service = "nntp";
+  cac.get_field = nntp_get_field;
+
   snprintf(file, sizeof(file), "%s%s", strstr(server, "://") ? "" : "news://", server);
   struct Url *url = url_parse(file);
   if (!url || (url->path && *url->path) ||

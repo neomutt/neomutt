@@ -342,6 +342,27 @@ void imap_clean_path(char *path, size_t plen)
   imap_mdata_free((void *) &mdata);
 }
 
+/**
+ * imap_get_field - Get connection login credentials - Implements ::ca_get_field_t
+ */
+static const char *imap_get_field(enum ConnAccountField field)
+{
+  switch (field)
+  {
+    case MUTT_CA_LOGIN:
+      return C_ImapLogin;
+    case MUTT_CA_USER:
+      return C_ImapUser;
+    case MUTT_CA_PASS:
+      return C_ImapPass;
+    case MUTT_CA_OAUTH_CMD:
+      return C_ImapOauthRefreshCommand;
+    case MUTT_CA_HOST:
+    default:
+      return NULL;
+  }
+}
+
 #ifdef USE_HCACHE
 /**
  * imap_msn_index_to_uid_seqset - Convert MSN index of UIDs to Seqset
@@ -627,6 +648,7 @@ int imap_parse_path(const char *path, struct ConnAccount *cac, char *mailbox, si
   cac->port = ImapPort;
   cac->type = MUTT_ACCT_TYPE_IMAP;
   cac->service = "imap";
+  cac->get_field = imap_get_field;
 
   struct Url *url = url_parse(path);
   if (!url)

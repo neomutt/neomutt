@@ -320,6 +320,26 @@ static bool addresses_use_unicode(const struct AddressList *al)
 }
 
 /**
+ * smtp_get_field - Get connection login credentials - Implements ::ca_get_field_t
+ */
+static const char *smtp_get_field(enum ConnAccountField field)
+{
+  switch (field)
+  {
+    case MUTT_CA_LOGIN:
+    case MUTT_CA_USER:
+      return C_SmtpUser;
+    case MUTT_CA_PASS:
+      return C_SmtpPass;
+    case MUTT_CA_OAUTH_CMD:
+      return C_SmtpOauthRefreshCommand;
+    case MUTT_CA_HOST:
+    default:
+      return NULL;
+  }
+}
+
+/**
  * smtp_fill_account - Create ConnAccount object from SMTP Url
  * @param cac ConnAccount to populate
  * @retval  0 Success
@@ -331,6 +351,7 @@ static int smtp_fill_account(struct ConnAccount *cac)
   cac->port = 0;
   cac->type = MUTT_ACCT_TYPE_SMTP;
   cac->service = "smtp";
+  cac->get_field = smtp_get_field;
 
   struct Url *url = url_parse(C_SmtpUrl);
   if (!url || ((url->scheme != U_SMTP) && (url->scheme != U_SMTPS)) ||

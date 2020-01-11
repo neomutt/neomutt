@@ -54,6 +54,26 @@
 unsigned char C_PopReconnect; ///< Config: (pop) Reconnect to the server is the connection is lost
 
 /**
+ * pop_get_field - Get connection login credentials - Implements ::ca_get_field_t
+ */
+const char *pop_get_field(enum ConnAccountField field)
+{
+  switch (field)
+  {
+    case MUTT_CA_USER:
+      return C_PopUser;
+    case MUTT_CA_PASS:
+      return C_PopPass;
+    case MUTT_CA_OAUTH_CMD:
+      return C_PopOauthRefreshCommand;
+    case MUTT_CA_HOST:
+    case MUTT_CA_LOGIN:
+    default:
+      return NULL;
+  }
+}
+
+/**
  * pop_parse_path - Parse a POP mailbox name
  * @param path Path to parse
  * @param cac  Account to store details
@@ -67,8 +87,9 @@ int pop_parse_path(const char *path, struct ConnAccount *cac)
   /* Defaults */
   cac->flags = 0;
   cac->type = MUTT_ACCT_TYPE_POP;
-  cac->service = "pop";
   cac->port = 0;
+  cac->service = "pop";
+  cac->get_field = pop_get_field;
 
   struct Url *url = url_parse(path);
 

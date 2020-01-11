@@ -160,32 +160,20 @@ void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
  */
 int mutt_account_getuser(struct ConnAccount *cac)
 {
-  char prompt[256];
-
-  /* already set */
   if (cac->flags & MUTT_ACCT_USER)
     return 0;
-#ifdef USE_IMAP
-  else if ((cac->type == MUTT_ACCT_TYPE_IMAP) && C_ImapUser)
-    mutt_str_strfcpy(cac->user, C_ImapUser, sizeof(cac->user));
-#endif
-#ifdef USE_POP
-  else if ((cac->type == MUTT_ACCT_TYPE_POP) && C_PopUser)
-    mutt_str_strfcpy(cac->user, C_PopUser, sizeof(cac->user));
-#endif
-#ifdef USE_NNTP
-  else if ((cac->type == MUTT_ACCT_TYPE_NNTP) && C_NntpUser)
-    mutt_str_strfcpy(cac->user, C_NntpUser, sizeof(cac->user));
-#endif
-#ifdef USE_SMTP
-  else if ((cac->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpUser)
-    mutt_str_strfcpy(cac->user, C_SmtpUser, sizeof(cac->user));
-#endif
+  if (!cac->get_field)
+    return -1;
+
+  const char *user = cac->get_field(MUTT_CA_USER);
+  if (user)
+    mutt_str_strfcpy(cac->user, user, sizeof(cac->user));
   else if (OptNoCurses)
     return -1;
-  /* prompt (defaults to unix username), copy into cac->user */
   else
   {
+    /* prompt (defaults to unix username), copy into cac->user */
+    char prompt[256];
     /* L10N: Example: Username at myhost.com */
     snprintf(prompt, sizeof(prompt), _("Username at %s: "), cac->host);
     mutt_str_strfcpy(cac->user, Username, sizeof(cac->user));
@@ -194,7 +182,6 @@ int mutt_account_getuser(struct ConnAccount *cac)
   }
 
   cac->flags |= MUTT_ACCT_USER;
-
   return 0;
 }
 
@@ -206,34 +193,20 @@ int mutt_account_getuser(struct ConnAccount *cac)
  */
 int mutt_account_getlogin(struct ConnAccount *cac)
 {
-  /* already set */
   if (cac->flags & MUTT_ACCT_LOGIN)
     return 0;
-#ifdef USE_IMAP
-  if (cac->type == MUTT_ACCT_TYPE_IMAP)
-  {
-    if (C_ImapLogin)
-    {
-      mutt_str_strfcpy(cac->login, C_ImapLogin, sizeof(cac->login));
-      cac->flags |= MUTT_ACCT_LOGIN;
-    }
-  }
-#endif
+  if (!cac->get_field)
+    return -1;
 
-  if (!(cac->flags & MUTT_ACCT_LOGIN))
+  const char *login = cac->get_field(MUTT_CA_LOGIN);
+  if (!login)
   {
-    if (mutt_account_getuser(cac) == 0)
-    {
-      mutt_str_strfcpy(cac->login, cac->user, sizeof(cac->login));
-      cac->flags |= MUTT_ACCT_LOGIN;
-    }
-    else
-    {
-      mutt_debug(LL_DEBUG1, "Couldn't get user info\n");
-      return -1;
-    }
+    mutt_debug(LL_DEBUG1, "Couldn't get user info\n");
+    return -1;
   }
 
+  mutt_str_strfcpy(cac->login, login, sizeof(cac->login));
+  cac->flags |= MUTT_ACCT_LOGIN;
   return 0;
 }
 
@@ -245,30 +218,19 @@ int mutt_account_getlogin(struct ConnAccount *cac)
  */
 int mutt_account_getpass(struct ConnAccount *cac)
 {
-  char prompt[256];
-
   if (cac->flags & MUTT_ACCT_PASS)
     return 0;
-#ifdef USE_IMAP
-  else if ((cac->type == MUTT_ACCT_TYPE_IMAP) && C_ImapPass)
-    mutt_str_strfcpy(cac->pass, C_ImapPass, sizeof(cac->pass));
-#endif
-#ifdef USE_POP
-  else if ((cac->type == MUTT_ACCT_TYPE_POP) && C_PopPass)
-    mutt_str_strfcpy(cac->pass, C_PopPass, sizeof(cac->pass));
-#endif
-#ifdef USE_SMTP
-  else if ((cac->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpPass)
-    mutt_str_strfcpy(cac->pass, C_SmtpPass, sizeof(cac->pass));
-#endif
-#ifdef USE_NNTP
-  else if ((cac->type == MUTT_ACCT_TYPE_NNTP) && C_NntpPass)
-    mutt_str_strfcpy(cac->pass, C_NntpPass, sizeof(cac->pass));
-#endif
+  if (!cac->get_field)
+    return -1;
+
+  const char *pass = cac->get_field(MUTT_CA_PASS);
+  if (pass)
+    mutt_str_strfcpy(cac->pass, pass, sizeof(cac->pass));
   else if (OptNoCurses)
     return -1;
   else
   {
+    char prompt[256];
     snprintf(prompt, sizeof(prompt), _("Password for %s@%s: "),
              (cac->flags & MUTT_ACCT_LOGIN) ? cac->login : cac->user, cac->host);
     cac->pass[0] = '\0';
@@ -277,7 +239,6 @@ int mutt_account_getpass(struct ConnAccount *cac)
   }
 
   cac->flags |= MUTT_ACCT_PASS;
-
   return 0;
 }
 
@@ -303,33 +264,14 @@ void mutt_account_unsetpass(struct ConnAccount *cac)
  */
 char *mutt_account_getoauthbearer(struct ConnAccount *cac)
 {
-  FILE *fp = NULL;
-  char *cmd = NULL;
-  char *token = NULL;
-  size_t token_size = 0;
-  char *oauthbearer = NULL;
-  size_t oalen;
-  char *encoded_token = NULL;
-  size_t encoded_len;
-  pid_t pid;
+  if (!cac || !cac->get_field)
+    return NULL;
 
   /* The oauthbearer token includes the login */
   if (mutt_account_getlogin(cac))
     return NULL;
 
-#ifdef USE_IMAP
-  if ((cac->type == MUTT_ACCT_TYPE_IMAP) && C_ImapOauthRefreshCommand)
-    cmd = C_ImapOauthRefreshCommand;
-#endif
-#ifdef USE_POP
-  else if ((cac->type == MUTT_ACCT_TYPE_POP) && C_PopOauthRefreshCommand)
-    cmd = C_PopOauthRefreshCommand;
-#endif
-#ifdef USE_SMTP
-  else if ((cac->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpOauthRefreshCommand)
-    cmd = C_SmtpOauthRefreshCommand;
-#endif
-
+  const char *cmd = cac->get_field(MUTT_CA_OAUTH_CMD);
   if (!cmd)
   {
     /* L10N: You will see this error message if (1) you have "oauthbearer" in
@@ -340,14 +282,16 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac)
     return NULL;
   }
 
-  pid = filter_create(cmd, NULL, &fp, NULL);
+  FILE *fp = NULL;
+  pid_t pid = filter_create(cmd, NULL, &fp, NULL);
   if (pid < 0)
   {
     mutt_perror(_("Unable to run refresh command"));
     return NULL;
   }
 
-  token = mutt_file_read_line(NULL, &token_size, fp, NULL, 0);
+  size_t token_size = 0;
+  char *token = mutt_file_read_line(NULL, &token_size, fp, NULL, 0);
   mutt_file_fclose(&fp);
   filter_wait(pid);
 
@@ -359,16 +303,16 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac)
   }
 
   /* Determine the length of the keyed message digest, add 50 for overhead. */
-  oalen = strlen(cac->login) + strlen(cac->host) + strlen(token) + 50;
-  oauthbearer = mutt_mem_malloc(oalen);
+  size_t oalen = strlen(cac->login) + strlen(cac->host) + strlen(token) + 50;
+  char *oauthbearer = mutt_mem_malloc(oalen);
 
   snprintf(oauthbearer, oalen, "n,a=%s,\001host=%s\001port=%d\001auth=Bearer %s\001\001",
            cac->login, cac->host, cac->port, token);
 
   FREE(&token);
 
-  encoded_len = strlen(oauthbearer) * 4 / 3 + 10;
-  encoded_token = mutt_mem_malloc(encoded_len);
+  size_t encoded_len = strlen(oauthbearer) * 4 / 3 + 10;
+  char *encoded_token = mutt_mem_malloc(encoded_len);
   mutt_b64_encode(oauthbearer, strlen(oauthbearer), encoded_token, encoded_len);
   FREE(&oauthbearer);
   return encoded_token;

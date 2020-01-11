@@ -145,5 +145,6 @@ int pop_reconnect(struct Mailbox *m);
 void pop_logout(struct Mailbox *m);
 struct PopAccountData *pop_adata_get(struct Mailbox *m);
 struct PopEmailData *pop_edata_get(struct Email *e);
+const char *pop_get_field(enum ConnAccountField field);
 
 #endif /* MUTT_POP_POP_PRIVATE_H */

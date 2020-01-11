@@ -26,6 +26,25 @@
 #include "mutt_account.h"
 
 /**
+ * enum ConnAccountField - Login credentials
+ */
+enum ConnAccountField
+{
+  MUTT_CA_HOST = 1,  ///< Server name
+  MUTT_CA_LOGIN,     ///< Login name
+  MUTT_CA_USER,      ///< User name
+  MUTT_CA_PASS,      ///< Password
+  MUTT_CA_OAUTH_CMD, ///< OAuth refresh command
+};
+
+/**
+ * typedef ca_get_field_t - Prototype for a function to get some login credentials
+ * @param field Field to get, e.g. #MUTT_CA_PASS
+ * @retval ptr Requested string
+ */
+typedef const char *(*ca_get_field_t)(enum ConnAccountField field);
+
+/**
  * struct ConnAccount - Login details for a remote server
  */
 struct ConnAccount
@@ -38,6 +57,8 @@ struct ConnAccount
   unsigned char type;     ///< Connection type, e.g. #MUTT_ACCT_TYPE_IMAP
   MuttAccountFlags flags; ///< Which fields are initialised, e.g. #MUTT_ACCT_USER
   const char *service;    ///< Name of the service, e.g. "imap"
+
+  ca_get_field_t get_field; ///< Function to get some data
 };
 
 #endif /* MUTT_CONN_ACCOUNT_H */
