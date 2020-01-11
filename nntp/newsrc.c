@@ -1025,7 +1025,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   url_free(&url);
 
   /* find connection by account */
-  conn = mutt_conn_find(NULL, &cac);
+  conn = mutt_conn_find(&cac);
   if (!conn)
     return NULL;
   if (!(conn->account.flags & MUTT_ACCT_USER) && cac.flags & MUTT_ACCT_USER)

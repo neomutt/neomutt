@@ -597,7 +597,7 @@ void pop_fetch_mail(void)
     return;
   }
 
-  struct Connection *conn = mutt_conn_find(NULL, &cac);
+  struct Connection *conn = mutt_conn_find(&cac);
   if (!conn)
     return;
 

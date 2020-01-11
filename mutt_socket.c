@@ -74,7 +74,6 @@ struct Connection *mutt_conn_new(const struct ConnAccount *cac)
 
 /**
  * mutt_conn_find - Find a connection from a list
- * @param start First connection to try
  * @param cac   ConnAccount to match
  * @retval ptr Matching Connection
  *
@@ -84,7 +83,7 @@ struct Connection *mutt_conn_new(const struct ConnAccount *cac)
  * account info - eg in IMAP we may wish to find a connection which is not in
  * IMAP_SELECTED state)
  */
-struct Connection *mutt_conn_find(const struct Connection *start, const struct ConnAccount *cac)
+struct Connection *mutt_conn_find(const struct ConnAccount *cac)
 {
   struct Url url = { 0 };
   char hook[1024];

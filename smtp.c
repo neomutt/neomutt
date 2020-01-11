@@ -760,7 +760,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
   if (smtp_fill_account(&cac) < 0)
     return rc;
 
-  conn = mutt_conn_find(NULL, &cac);
+  conn = mutt_conn_find(&cac);
   if (!conn)
     return -1;
 
