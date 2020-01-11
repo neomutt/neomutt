@@ -1,0 +1,5 @@
+# CODEOWNERS file syntax documented at:
+# https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
+
+# Set global code owners.
+*   @neomutt/reviewers
