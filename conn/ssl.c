@@ -72,11 +72,6 @@
 
 const int dialog_row_len = 128;
 
-/* Just in case OpenSSL doesn't define DEV_RANDOM */
-#ifndef DEV_RANDOM
-#define DEV_RANDOM "/dev/urandom"
-#endif
-
 /* LibreSSL defines OPENSSL_VERSION_NUMBER but sets it to 0x20000000L.
  * So technically we don't need the defined(OPENSSL_VERSION_NUMBER) check.  */
 #if (defined(OPENSSL_VERSION_NUMBER) && (OPENSSL_VERSION_NUMBER < 0x10100000L)) || \
@@ -92,17 +87,6 @@ const int dialog_row_len = 128;
 /* Unimplemented OpenSSL 1.1 api calls */
 #if (defined(LIBRESSL_VERSION_NUMBER) && (LIBRESSL_VERSION_NUMBER >= 0x2070000fL))
 #define SSL_has_pending SSL_pending
-#endif
-
-/* This is ugly, but as RAND_status came in on OpenSSL version 0.9.5
- * and the code has to support older versions too, this is seemed to
- * be cleaner way compared to having even uglier #ifdefs all around.  */
-#ifdef HAVE_RAND_STATUS
-#define HAVE_ENTROPY() (RAND_status() == 1)
-#else
-static int entropy_byte_count = 0;
-/* OpenSSL fills the entropy pool from /dev/urandom if it exists */
-#define HAVE_ENTROPY() (!access(DEV_RANDOM, R_OK) || entropy_byte_count >= 16)
 #endif
 
 /* index for storing hostname as application specific data in SSL structure */
@@ -581,7 +565,7 @@ static int ssl_init(void)
   if (init_complete)
     return 0;
 
-  if (!HAVE_ENTROPY())
+  if (RAND_status() != 1)
   {
     /* load entropy from files */
     struct Buffer *path = mutt_buffer_pool_get();
@@ -601,7 +585,7 @@ static int ssl_init(void)
     mutt_buffer_pool_release(&path);
 
     mutt_clear_error();
-    if (!HAVE_ENTROPY())
+    if (RAND_status() != 1)
     {
       mutt_error(_("Failed to find enough entropy on your system"));
       return -1;
