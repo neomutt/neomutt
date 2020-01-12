@@ -2139,26 +2139,31 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       mutt_str_strfcpy(pager_progress_str, msg, sizeof(pager_progress_str));
     }
 
-    /* print out the pager status bar */
-    mutt_window_move(rd->extra->win_pbar, 0, 0);
-    mutt_curses_set_color(MT_COLOR_STATUS);
+    struct MuttWindow *win_pager_bar =
+        mutt_window_find(mutt_window_dialog(pager_menu->win_index), WT_PAGER_BAR);
+    if (win_pager_bar->state.visible)
+    {
+      /* print out the pager status bar */
+      mutt_window_move(rd->extra->win_pbar, 0, 0);
+      mutt_curses_set_color(MT_COLOR_STATUS);
 
-    if (IsEmail(rd->extra) || IsMsgAttach(rd->extra))
-    {
-      size_t l1 = rd->extra->win_pbar->state.cols * MB_LEN_MAX;
-      size_t l2 = sizeof(buf);
-      hfi.email = (IsEmail(rd->extra)) ? rd->extra->email : rd->extra->body->email;
-      mutt_make_string_info(buf, (l1 < l2) ? l1 : l2, rd->extra->win_pbar->state.cols,
-                            NONULL(C_PagerFormat), &hfi, MUTT_FORMAT_NO_FLAGS);
-      mutt_draw_statusline(rd->extra->win_pbar->state.cols, buf, l2);
+      if (IsEmail(rd->extra) || IsMsgAttach(rd->extra))
+      {
+        size_t l1 = rd->extra->win_pbar->state.cols * MB_LEN_MAX;
+        size_t l2 = sizeof(buf);
+        hfi.email = (IsEmail(rd->extra)) ? rd->extra->email : rd->extra->body->email;
+        mutt_make_string_info(buf, (l1 < l2) ? l1 : l2, rd->extra->win_pbar->state.cols,
+                              NONULL(C_PagerFormat), &hfi, MUTT_FORMAT_NO_FLAGS);
+        mutt_draw_statusline(rd->extra->win_pbar->state.cols, buf, l2);
+      }
+      else
+      {
+        char bn[256];
+        snprintf(bn, sizeof(bn), "%s (%s)", rd->banner, pager_progress_str);
+        mutt_draw_statusline(rd->extra->win_pbar->state.cols, bn, sizeof(bn));
+      }
+      mutt_curses_set_color(MT_COLOR_NORMAL);
     }
-    else
-    {
-      char bn[256];
-      snprintf(bn, sizeof(bn), "%s (%s)", rd->banner, pager_progress_str);
-      mutt_draw_statusline(rd->extra->win_pbar->state.cols, bn, sizeof(bn));
-    }
-    mutt_curses_set_color(MT_COLOR_NORMAL);
     if (C_TsEnabled && TsSupported && rd->menu)
     {
       menu_status_line(buf, sizeof(buf), rd->menu, NONULL(C_TsStatusFormat));
@@ -2168,7 +2173,9 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     }
   }
 
-  if ((pager_menu->redraw & REDRAW_INDEX) && rd->menu)
+  struct MuttWindow *win_index_bar =
+      mutt_window_find(mutt_window_dialog(pager_menu->win_index), WT_INDEX_BAR);
+  if ((win_index_bar->state.visible) && (pager_menu->redraw & REDRAW_INDEX) && rd->menu)
   {
     /* redraw the pager_index indicator, because the
      * flags for this message might have changed. */

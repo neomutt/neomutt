@@ -1082,7 +1082,9 @@ static void index_custom_redraw(struct Menu *menu)
       menu_redraw_current(menu);
   }
 
-  if (menu->redraw & REDRAW_STATUS)
+  struct MuttWindow *win_index_bar =
+      mutt_window_find(mutt_window_dialog(menu->win_index), WT_INDEX_BAR);
+  if ((win_index_bar->state.visible) && (menu->redraw & REDRAW_STATUS))
   {
     char buf[1024];
     menu_status_line(buf, sizeof(buf), menu, NONULL(C_StatusFormat));
@@ -4116,6 +4118,22 @@ int mutt_dlg_index_observer(struct NotifyCallback *nc)
   struct MuttWindow *win_pager = mutt_window_find(dlg, WT_PAGER);
   if (!win_index || !win_pager)
     return -1;
+
+  if (mutt_str_strcmp(ec->name, "status_format") == 0)
+  {
+    struct MuttWindow *win_index_bar = mutt_window_find(dlg, WT_INDEX_BAR);
+    if (!win_index_bar)
+      return -1;
+    win_index_bar->state.visible = (C_StatusFormat != NULL);
+  }
+
+  if (mutt_str_strcmp(ec->name, "pager_format") == 0)
+  {
+    struct MuttWindow *win_pager_bar = mutt_window_find(dlg, WT_PAGER_BAR);
+    if (!win_pager_bar)
+      return -1;
+    win_pager_bar->state.visible = (C_PagerFormat != NULL);
+  }
 
   if (mutt_str_strcmp(ec->name, "status_on_top") == 0)
   {
