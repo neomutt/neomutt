@@ -249,7 +249,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
       mutt_str_strfcpy(buf, en->newsgroups, sizeof(buf));
     else
       buf[0] = '\0';
-    if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), 0) != 0)
+    if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0)
       return -1;
     FREE(&en->newsgroups);
     en->newsgroups = mutt_str_strdup(buf);
@@ -258,7 +258,8 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
       mutt_str_strfcpy(buf, en->followup_to, sizeof(buf));
     else
       buf[0] = '\0';
-    if (C_AskFollowUp && (mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) != 0))
+    if (C_AskFollowUp &&
+        (mutt_get_field("Followup-To: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0))
     {
       return -1;
     }
@@ -270,7 +271,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
     else
       buf[0] = '\0';
     if (C_XCommentTo && C_AskXCommentTo &&
-        (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) != 0))
+        (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0))
     {
       return -1;
     }
@@ -316,7 +317,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
     }
   }
 
-  if ((mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) != 0) ||
+  if ((mutt_get_field(_("Subject: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
       (!buf[0] &&
        (query_quadoption(C_AbortNosubject, _("No subject, abort?")) != MUTT_NO)))
   {

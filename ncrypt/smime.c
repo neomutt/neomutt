@@ -1410,7 +1410,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   buf[0] = '\0';
   if (C_SmimeAskCertLabel)
   {
-    if ((mutt_get_field(_("Label for certificate: "), buf, sizeof(buf), 0) != 0) ||
+    if ((mutt_get_field(_("Label for certificate: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
         (buf[0] == '\0'))
     {
       mutt_file_fclose(&fp_out);

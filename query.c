@@ -362,7 +362,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
   if (!results)
   {
     /* Prompt for Query */
-    if ((mutt_get_field(_("Query: "), buf, buflen, 0) == 0) && (buf[0] != '\0'))
+    if ((mutt_get_field(_("Query: "), buf, buflen, MUTT_COMP_NO_FLAGS) == 0) &&
+        (buf[0] != '\0'))
     {
       results = run_query(buf, 0);
       if (!results)
@@ -430,7 +431,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     {
       case OP_QUERY_APPEND:
       case OP_QUERY:
-        if ((mutt_get_field(_("Query: "), buf, buflen, 0) == 0) && (buf[0] != '\0'))
+        if ((mutt_get_field(_("Query: "), buf, buflen, MUTT_COMP_NO_FLAGS) == 0) &&
+            (buf[0] != '\0'))
         {
           struct Query *newresults = run_query(buf, 0);
 

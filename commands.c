@@ -1065,7 +1065,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   mutt_buffer_fix_dptr(buf);
 
   mutt_buffer_pretty_mailbox(buf);
-  if (mutt_buffer_enter_fname(prompt, buf, 0) == -1)
+  if (mutt_buffer_enter_fname(prompt, buf, false) == -1)
     goto cleanup;
 
   size_t pathlen = mutt_buffer_len(buf);
@@ -1266,8 +1266,11 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
     }
   }
 
-  if ((mutt_get_field("Content-Type: ", buf, sizeof(buf), 0) != 0) || (buf[0] == '\0'))
+  if ((mutt_get_field("Content-Type: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
+      (buf[0] == '\0'))
+  {
     return false;
+  }
 
   /* clean up previous junk */
   mutt_param_free(&b->parameter);

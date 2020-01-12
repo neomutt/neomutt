@@ -727,33 +727,6 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
 }
 
 /**
- * mutt_enter_fname_full - Ask the user to select a file
- * @param[in]  prompt   Prompt
- * @param[in]  buf      Buffer for the result
- * @param[in]  buflen   Length of the buffer
- * @param[in]  mailbox  If true, select mailboxes
- * @param[in]  multiple Allow multiple selections
- * @param[out] files    List of files selected
- * @param[out] numfiles Number of files selected
- * @param[in]  flags    Flags, see #SelectFileFlags
- * @retval  0 Success
- * @retval -1 Error
- */
-int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool mailbox,
-                          bool multiple, char ***files, int *numfiles, SelectFileFlags flags)
-{
-  struct Buffer *fname = mutt_buffer_pool_get();
-
-  mutt_buffer_addstr(fname, NONULL(buf));
-  int rc = mutt_buffer_enter_fname_full(prompt, fname, mailbox, multiple, files,
-                                        numfiles, flags);
-  mutt_str_strfcpy(buf, mutt_b2s(fname), buflen);
-
-  mutt_buffer_pool_release(&fname);
-  return rc;
-}
-
-/**
  * mutt_buffer_enter_fname_full - Ask the user to select a file
  * @param[in]  prompt   Prompt
  * @param[in]  fname    Buffer for the result

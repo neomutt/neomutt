@@ -402,8 +402,11 @@ void mutt_alias_create(struct Envelope *cur, struct AddressList *al)
 
 retry_name:
   /* L10N: prompt to add a new alias */
-  if ((mutt_get_field(_("Alias as: "), buf, sizeof(buf), 0) != 0) || !buf[0])
+  if ((mutt_get_field(_("Alias as: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
+      !buf[0])
+  {
     return;
+  }
 
   /* check to see if the user already has an alias defined */
   if (mutt_alias_lookup(buf))
@@ -439,7 +442,8 @@ retry_name:
 
   do
   {
-    if ((mutt_get_field(_("Address: "), buf, sizeof(buf), 0) != 0) || !buf[0])
+    if ((mutt_get_field(_("Address: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
+        !buf[0])
     {
       mutt_alias_free(&alias);
       return;
@@ -461,7 +465,7 @@ retry_name:
   else
     buf[0] = '\0';
 
-  if (mutt_get_field(_("Personal name: "), buf, sizeof(buf), 0) != 0)
+  if (mutt_get_field(_("Personal name: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0)
   {
     mutt_alias_free(&alias);
     return;

@@ -1833,7 +1833,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       case OP_ENTER_MASK:
       {
         mutt_buffer_strcpy(buf, C_Mask ? C_Mask->pattern : NULL);
-        if (mutt_get_field(_("File Mask: "), buf->data, buf->dsize, 0) != 0)
+        if (mutt_get_field(_("File Mask: "), buf->data, buf->dsize, MUTT_COMP_NO_FLAGS) != 0)
           break;
 
         mutt_buffer_fix_dptr(buf);
@@ -2147,7 +2147,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             else
               snprintf(tmp2, sizeof(tmp2), _("Unsubscribe pattern: "));
             /* buf comes from the buffer pool, so defaults to size 1024 */
-            if ((mutt_buffer_get_field(tmp2, buf, 0) != 0) || mutt_buffer_is_empty(buf))
+            if ((mutt_buffer_get_field(tmp2, buf, MUTT_COMP_NO_FLAGS) != 0) ||
+                mutt_buffer_is_empty(buf))
             {
               break;
             }

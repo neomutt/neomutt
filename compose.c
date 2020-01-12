@@ -1246,7 +1246,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_str_strfcpy(buf, e->env->newsgroups, sizeof(buf));
         else
           buf[0] = '\0';
-        if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), 0) == 0)
+        if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           mutt_str_replace(&e->env->newsgroups, buf);
           mutt_window_move(menu->win_index, HDR_TO, HDR_XOFFSET);
@@ -1264,7 +1264,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_str_strfcpy(buf, e->env->followup_to, sizeof(buf));
         else
           buf[0] = '\0';
-        if (mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) == 0)
+        if (mutt_get_field("Followup-To: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           mutt_str_replace(&e->env->followup_to, buf);
           mutt_window_move(menu->win_index, HDR_CC, HDR_XOFFSET);
@@ -1282,7 +1282,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_str_strfcpy(buf, e->env->x_comment_to, sizeof(buf));
         else
           buf[0] = '\0';
-        if (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) == 0)
+        if (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           mutt_str_replace(&e->env->x_comment_to, buf);
           mutt_window_move(menu->win_index, HDR_BCC, HDR_XOFFSET);
@@ -1299,7 +1299,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_str_strfcpy(buf, e->env->subject, sizeof(buf));
         else
           buf[0] = '\0';
-        if (mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) == 0)
+        if (mutt_get_field(_("Subject: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           mutt_str_replace(&e->env->subject, buf);
           mutt_window_move(menu->win_index, HDR_SUBJECT, HDR_XOFFSET);
@@ -1838,7 +1838,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
             buf, CUR_ATTACH->content->description ? CUR_ATTACH->content->description : "",
             sizeof(buf));
         /* header names should not be translated */
-        if (mutt_get_field("Description: ", buf, sizeof(buf), 0) == 0)
+        if (mutt_get_field("Description: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           mutt_str_replace(&CUR_ATTACH->content->description, buf);
           menu->redraw = REDRAW_CURRENT;
@@ -1891,7 +1891,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         buf[0] = '\0'; /* clear buffer first */
         if (CUR_ATTACH->content->language)
           mutt_str_strfcpy(buf, CUR_ATTACH->content->language, sizeof(buf));
-        if (mutt_get_field("Content-Language: ", buf, sizeof(buf), 0) == 0)
+        if (mutt_get_field("Content-Language: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           CUR_ATTACH->content->language = mutt_str_strdup(buf);
           menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
@@ -1905,7 +1905,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
       case OP_COMPOSE_EDIT_ENCODING:
         CHECK_COUNT;
         mutt_str_strfcpy(buf, ENCODING(CUR_ATTACH->content->encoding), sizeof(buf));
-        if ((mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0) &&
+        if ((mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf),
+                            MUTT_COMP_NO_FLAGS) == 0) &&
             (buf[0] != '\0'))
         {
           int enc = mutt_check_encoding(buf);
@@ -2042,7 +2043,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
         /* Call to lookup_mime_type () ?  maybe later */
         char type[256] = { 0 };
-        if ((mutt_get_field("Content-Type: ", type, sizeof(type), 0) != 0) ||
+        if ((mutt_get_field("Content-Type: ", type, sizeof(type), MUTT_COMP_NO_FLAGS) != 0) ||
             (type[0] == '\0'))
         {
           continue;

@@ -1472,7 +1472,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
           if (op == OP_GET_MESSAGE)
           {
             buf[0] = '\0';
-            if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf), 0) != 0) ||
+            if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf),
+                                MUTT_COMP_NO_FLAGS) != 0) ||
                 !buf[0])
             {
               break;
@@ -1646,7 +1647,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (isdigit(LastKey))
           mutt_unget_event(LastKey, 0);
         buf[0] = '\0';
-        if ((mutt_get_field(_("Jump to message: "), buf, sizeof(buf), 0) != 0) ||
+        if ((mutt_get_field(_("Jump to message: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
             (buf[0] == '\0'))
         {
           mutt_error(_("Nothing to do"));

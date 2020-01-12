@@ -628,7 +628,7 @@ static void menu_jump(struct Menu *menu)
     mutt_unget_event(LastKey, 0);
     char buf[128];
     buf[0] = '\0';
-    if ((mutt_get_field(_("Jump to: "), buf, sizeof(buf), 0) == 0) && buf[0])
+    if ((mutt_get_field(_("Jump to: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0) && buf[0])
     {
       if ((mutt_str_atoi(buf, &n) == 0) && (n > 0) && (n < menu->max + 1))
       {
