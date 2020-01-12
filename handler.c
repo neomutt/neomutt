@@ -577,8 +577,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       unlink(mutt_b2s(tempfile));
       fflush(fp_in);
       rewind(fp_in);
-      pid = filter_create_fd(mutt_b2s(cmd), NULL, &fp_out, &fp_err,
-                                  fileno(fp_in), -1, -1);
+      pid = filter_create_fd(mutt_b2s(cmd), NULL, &fp_out, &fp_err, fileno(fp_in), -1, -1);
     }
     else
     {

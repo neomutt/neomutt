@@ -541,8 +541,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       }
 
       pid = filter_create_fd(mutt_b2s(cmd), NULL, NULL, NULL,
-                                  use_pipe ? fd_temp : -1,
-                                  use_pager ? fd_pager : -1, -1);
+                             use_pipe ? fd_temp : -1, use_pager ? fd_pager : -1, -1);
 
       if (pid == -1)
       {

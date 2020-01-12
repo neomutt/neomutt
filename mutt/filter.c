@@ -59,7 +59,7 @@
  * representing the processes stdin, stdout, and stderr.
  */
 pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
-                            FILE **fp_err, int fdin, int fdout, int fderr)
+                       FILE **fp_err, int fdin, int fdout, int fderr)
 {
   int pin[2], pout[2], perr[2], pid;
 

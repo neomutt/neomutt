@@ -265,7 +265,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     fp_filter_out = fp_out;
     fp_out = NULL;
     filterpid = filter_create_fd(C_DisplayFilter, &fp_out, NULL, NULL, -1,
-                                      fileno(fp_filter_out), -1);
+                                 fileno(fp_filter_out), -1);
     if (filterpid < 0)
     {
       mutt_error(_("Can't create display filter"));
