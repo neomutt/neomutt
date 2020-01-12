@@ -99,7 +99,7 @@ static struct HashElem *create_synonym(const struct ConfigSet *cs,
   struct HashElem *parent = cs_get_elem(cs, name);
   if (!parent)
   {
-    mutt_buffer_printf(err, "No such variable: %s", name);
+    mutt_buffer_printf(err, _("No such variable: %s"), name);
     return NULL;
   }
 
@@ -131,7 +131,8 @@ static struct HashElem *reg_one_var(const struct ConfigSet *cs,
   const struct ConfigSetType *cst = cs_get_type_def(cs, cdef->type);
   if (!cst)
   {
-    mutt_buffer_printf(err, "Variable '%s' has an invalid type %d", cdef->name, cdef->type);
+    mutt_buffer_printf(err, _("Variable '%s' has an invalid type %d"),
+                       cdef->name, cdef->type);
     return NULL;
   }
 
@@ -395,7 +396,7 @@ int cs_str_reset(const struct ConfigSet *cs, const char *name, struct Buffer *er
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(err, "Unknown var '%s'", name);
+    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -459,7 +460,7 @@ int cs_str_initial_set(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(err, "Unknown var '%s'", name);
+    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -524,7 +525,7 @@ int cs_str_initial_get(const struct ConfigSet *cs, const char *name, struct Buff
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(result, "Unknown var '%s'", name);
+    mutt_buffer_printf(result, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -597,7 +598,7 @@ int cs_str_string_set(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(err, "Unknown var '%s'", name);
+    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -667,7 +668,7 @@ int cs_str_string_get(const struct ConfigSet *cs, const char *name, struct Buffe
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(result, "Unknown var '%s'", name);
+    mutt_buffer_printf(result, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -740,7 +741,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(err, "Unknown var '%s'", name);
+    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -817,7 +818,7 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
 
   if (!cst)
   {
-    mutt_buffer_printf(err, "Variable '%s' has an invalid type %d", cdef->name, he->type);
+    mutt_buffer_printf(err, _("Variable '%s' has an invalid type %d"), cdef->name, he->type);
     return INT_MIN;
   }
 

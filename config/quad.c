@@ -66,7 +66,7 @@ static int quad_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 
   if (num < 0)
   {
-    mutt_buffer_printf(err, "Invalid quad value: %s", value);
+    mutt_buffer_printf(err, _("Invalid quad value: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
@@ -130,7 +130,7 @@ static int quad_native_set(const struct ConfigSet *cs, void *var,
 
   if ((value < 0) || (value >= (mutt_array_size(QuadValues) - 1)))
   {
-    mutt_buffer_printf(err, "Invalid quad value: %ld", value);
+    mutt_buffer_printf(err, _("Invalid quad value: %ld"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 

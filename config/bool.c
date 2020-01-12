@@ -67,7 +67,7 @@ static int bool_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 
   if (num < 0)
   {
-    mutt_buffer_printf(err, "Invalid boolean value: %s", value);
+    mutt_buffer_printf(err, _("Invalid boolean value: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
@@ -128,7 +128,7 @@ static int bool_native_set(const struct ConfigSet *cs, void *var,
 
   if ((value < 0) || (value > 1))
   {
-    mutt_buffer_printf(err, "Invalid boolean value: %ld", value);
+    mutt_buffer_printf(err, _("Invalid boolean value: %ld"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 

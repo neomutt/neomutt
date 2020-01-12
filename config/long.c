@@ -47,13 +47,13 @@ static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   long num = 0;
   if (!value || (value[0] == '\0') || (mutt_str_atol(value, &num) < 0))
   {
-    mutt_buffer_printf(err, "Invalid long: %s", NONULL(value));
+    mutt_buffer_printf(err, _("Invalid long: %s"), NONULL(value));
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if ((num < 0) && (cdef->type & DT_NOT_NEGATIVE))
   {
-    mutt_buffer_printf(err, "Option %s may not be negative", cdef->name);
+    mutt_buffer_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
@@ -111,7 +111,7 @@ static int long_native_set(const struct ConfigSet *cs, void *var,
 
   if ((value < 0) && (cdef->type & DT_NOT_NEGATIVE))
   {
-    mutt_buffer_printf(err, "Option %s may not be negative", cdef->name);
+    mutt_buffer_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
