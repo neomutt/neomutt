@@ -8,7 +8,6 @@ autocrypt/autocrypt_acct_menu.c
 autocrypt/autocrypt_db.c
 autocrypt/autocrypt_gpgme.c
 autocrypt/autocrypt_schema.c
-backtrace.c
 bcache.c
 browser.c
 commands.c
@@ -44,6 +43,8 @@ copy.c
 core/account.c
 core/mailbox.c
 core/neomutt.c
+debug/backtrace.c
+debug/parse_test.c
 edit.c
 editmsg.c
 email/attach.c
@@ -62,7 +63,6 @@ email/thread.c
 email/url.c
 enriched.c
 enter.c
-filter.c
 flags.c
 gui/color.c
 gui/curs_lib.c
@@ -115,6 +115,7 @@ mutt/date.c
 mutt/envlist.c
 mutt/exit.c
 mutt/file.c
+mutt/filter.c
 mutt/hash.c
 mutt/history.c
 mutt/list.c
