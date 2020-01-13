@@ -1861,11 +1861,10 @@ static struct Account *imap_ac_find(struct Account *a, const char *path)
   struct ImapAccountData *adata = a->adata;
   struct ConnAccount *ac = &adata->conn_account;
 
-  if ((mutt_str_strcasecmp(url->host, ac->host) != 0) ||
-      (mutt_str_strcasecmp(url->user, ac->user) != 0))
-  {
+  if (mutt_str_strcasecmp(url->host, ac->host) != 0)
     a = NULL;
-  }
+  else if (url->user && (mutt_str_strcasecmp(url->user, ac->user) != 0))
+    a = NULL;
 
   url_free(&url);
   return a;

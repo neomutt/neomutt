@@ -1581,13 +1581,51 @@ struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
     return NULL;
 
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &a->mailboxes, entries)
+  struct Url *url_p = NULL;
+  struct Url *url_a = NULL;
+
+  const bool use_url = (a->magic == MUTT_NNTP) || (a->magic == MUTT_IMAP) ||
+                       (a->magic == MUTT_NOTMUCH) || (a->magic == MUTT_POP);
+  if (use_url)
   {
-    if (mutt_str_strcmp(np->mailbox->realpath, path) == 0)
-      return np->mailbox;
+    url_p = url_parse(path);
+    if (!url_p)
+      goto done;
   }
 
-  return NULL;
+  STAILQ_FOREACH(np, &a->mailboxes, entries)
+  {
+    if (!use_url && (mutt_str_strcmp(np->mailbox->realpath, path) == 0))
+      return np->mailbox;
+
+    url_free(&url_a);
+    url_a = url_parse(np->mailbox->realpath);
+    if (!url_a)
+      continue;
+
+    if (mutt_str_strcasecmp(url_a->host, url_p->host) != 0)
+      continue;
+    if (url_p->user && (mutt_str_strcasecmp(url_a->user, url_p->user) != 0))
+      continue;
+    if (a->magic == MUTT_IMAP)
+    {
+      if (imap_mxcmp(url_a->path, url_p->path) == 0)
+        break;
+    }
+    else
+    {
+      if (mutt_str_strcmp(url_a->path, url_p->path) == 0)
+        break;
+    }
+  }
+
+done:
+  url_free(&url_p);
+  url_free(&url_a);
+
+  if (!np)
+    return NULL;
+  return np->mailbox;
 }
 
 /**
