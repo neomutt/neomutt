@@ -1323,7 +1323,7 @@ static int imap_mbox_check_stats(struct Mailbox *m, int flags)
  */
 int imap_path_status(const char *path, bool queue)
 {
-  struct Mailbox *m = mx_mbox_find2(path);
+  struct Mailbox *m = mx_mbox_find2(path, C_Folder);
   if (m)
     return imap_mailbox_status(m, queue);
 
@@ -2072,7 +2072,7 @@ static int imap_mbox_open(struct Mailbox *m)
   }
 
   /* pipeline the postponed count if possible */
-  struct Mailbox *m_postponed = mx_mbox_find2(C_Postponed);
+  struct Mailbox *m_postponed = mx_mbox_find2(C_Postponed, C_Folder);
   struct ImapAccountData *postponed_adata = imap_adata_get(m_postponed);
   if (postponed_adata &&
       imap_account_match(&postponed_adata->conn->account, &adata->conn->account))

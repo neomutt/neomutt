@@ -855,7 +855,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, const char *path,
         return -1;
       if (!fgets(buf, sizeof(buf), fp))
         return -1;
-      struct Mailbox *m_att = mx_path_resolve(path);
+      struct Mailbox *m_att = mx_path_resolve(path, C_Folder);
       struct Context *ctx = mx_mbox_open(m_att, MUTT_APPEND | MUTT_QUIET);
       if (!ctx)
       {

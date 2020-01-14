@@ -643,7 +643,7 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  struct Mailbox *m_spool = mx_path_resolve(C_Spoolfile);
+  struct Mailbox *m_spool = mx_path_resolve(C_Spoolfile, C_Folder);
   struct Context *ctx = mx_mbox_open(m_spool, MUTT_OPEN_NO_FLAGS);
   if (!ctx)
   {
