@@ -5059,7 +5059,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     {
       if (the_strong_valid_key)
         k = crypt_copy_key(the_strong_valid_key);
-      else if (a_valid_addrmatch_key)
+      else if (a_valid_addrmatch_key && !C_CryptOpportunisticEncryptStrongKeys)
         k = crypt_copy_key(a_valid_addrmatch_key);
       else
         k = NULL;

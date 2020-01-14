@@ -686,6 +686,20 @@ struct ConfigDef MuttVars[] = {
   ** be manually re-enabled in the pgp or smime menus.
   ** (Crypto only)
   */
+  { "crypt_opportunistic_encrypt_strong_keys", DT_BOOL, &C_CryptOpportunisticEncryptStrongKeys, false },
+  /*
+  ** .pp
+  ** When set, this modifies the behavior of $$crypt_opportunistic_encrypt
+  ** to only search for "strong keys", that is, keys with full validity
+  ** according to the web-of-trust algorithm.  A key with marginal or no
+  ** validity will not enable opportunistic encryption.
+  ** .pp
+  ** For S/MIME, the behavior depends on the backend.  Classic S/MIME will
+  ** filter for certificates with the 't'(trusted) flag in the .index file.
+  ** The GPGME backend will use the same filters as with OpenPGP, and depends
+  ** on GPGME's logic for assigning the GPGME_VALIDITY_FULL and
+  ** GPGME_VALIDITY_ULTIMATE validity flag.
+  */
   { "crypt_protected_headers_read", DT_BOOL, &C_CryptProtectedHeadersRead, true },
   /*
   ** .pp

@@ -268,6 +268,7 @@ WHERE bool C_CryptUsePka;                    ///< Config: Use GPGME to use PKA (
 
 WHERE bool C_CryptConfirmhook;               ///< Config: Prompt the user to confirm keys before use
 WHERE bool C_CryptOpportunisticEncrypt;      ///< Config: Enable encryption when the recipient's key is available
+WHERE bool C_CryptOpportunisticEncryptStrongKeys; ///< Config: Enable encryption only when strong a key is available
 WHERE bool C_CryptProtectedHeadersRead;      ///< Config: Display protected headers (Memory Hole) in the pager
 WHERE bool C_CryptProtectedHeadersSave;      ///< Config: Save the cleartext Subject with the headers
 WHERE bool C_CryptProtectedHeadersWrite;     ///< Config: Generate protected header (Memory Hole) for signed and encrypted emails

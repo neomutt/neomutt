@@ -862,7 +862,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
     {
       if (trusted_match)
         return_key = smime_copy_key(trusted_match);
-      else if (valid_match)
+      else if (valid_match && !C_CryptOpportunisticEncryptStrongKeys)
         return_key = smime_copy_key(valid_match);
       else
         return_key = NULL;
