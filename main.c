@@ -1204,7 +1204,7 @@ int main(int argc, char *argv[], char *envp[])
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, NULL);
 
     repeat_error = true;
-    struct Mailbox *m = mx_path_resolve(mutt_b2s(&folder));
+    struct Mailbox *m = mx_path_resolve(mutt_b2s(&folder), C_Folder);
     Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || C_ReadOnly) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS);
     if (!Context)
     {

@@ -69,7 +69,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   enum MailboxType otype = C_MboxType;
   C_MboxType = MUTT_MBOX;
 
-  struct Mailbox *m_fname = mx_path_resolve(mutt_b2s(fname));
+  struct Mailbox *m_fname = mx_path_resolve(mutt_b2s(fname), C_Folder);
   struct Context *ctx_tmp = mx_mbox_open(m_fname, MUTT_NEWFOLDER);
 
   C_MboxType = otype;

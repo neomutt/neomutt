@@ -1951,7 +1951,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
         menu->redraw = REDRAW_FULL;
 
-        struct Mailbox *m = mx_path_resolve(mutt_b2s(&fname));
+        struct Mailbox *m = mx_path_resolve(mutt_b2s(&fname), C_Folder);
         bool old_readonly = m->readonly;
         struct Context *ctx = mx_mbox_open(m, MUTT_READONLY);
         if (!ctx)

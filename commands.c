@@ -1131,7 +1131,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
 
   mutt_file_resolve_symlink(buf);
-  struct Mailbox *m_save = mx_path_resolve(mutt_b2s(buf));
+  struct Mailbox *m_save = mx_path_resolve(mutt_b2s(buf), C_Folder);
   bool old_append = m_save->append;
   struct Context *ctx_save = mx_mbox_open(m_save, MUTT_NEWFOLDER);
   if (!ctx_save)
