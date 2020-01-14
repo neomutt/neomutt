@@ -53,6 +53,7 @@
 #include "alias.h"
 #include "command_parse.h"
 #include "context.h"
+#include "functions.h"
 #include "globals.h"
 #include "keymap.h"
 #include "monitor.h"

@@ -121,29 +121,6 @@ struct Binding
 const struct Binding *km_get_table(enum MenuType menu);
 const char *mutt_get_func(const struct Binding *bindings, int op);
 
-extern const struct Binding OpGeneric[];
-extern const struct Binding OpPost[];
-extern const struct Binding OpMain[];
-extern const struct Binding OpAttach[];
-extern const struct Binding OpPager[];
-extern const struct Binding OpCompose[];
-extern const struct Binding OpBrowser[];
-extern const struct Binding OpEditor[];
-extern const struct Binding OpQuery[];
-extern const struct Binding OpAlias[];
-
-extern const struct Binding OpPgp[];
-
-extern const struct Binding OpSmime[];
-
-#ifdef MIXMASTER
-extern const struct Binding OpMix[];
-#endif
-
-#ifdef USE_AUTOCRYPT
-extern const struct Binding OpAutocryptAcct[];
-#endif
-
 void mutt_keys_free(void);
 
 enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
