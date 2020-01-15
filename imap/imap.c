@@ -961,18 +961,26 @@ void imap_close_connection(struct ImapAccountData *adata)
  * @retval true Flag exists
  *
  * Do a caseless comparison of the flag against a flag list, return true if
- * found or flag list has '\*'.
+ * found or flag list has '\*'. Note that "flag" might contain additional
+ * whitespace at the end, so we really need to compare up to the length of each
+ * element in "flag_list".
+ * 
  */
 bool imap_has_flag(struct ListHead *flag_list, const char *flag)
 {
   if (STAILQ_EMPTY(flag_list))
     return false;
 
+  const size_t flaglen = mutt_str_strlen(flag);
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, flag_list, entries)
   {
-    if (mutt_str_strcasecmp(np->data, flag) == 0)
+    const size_t nplen = strlen(np->data);
+    if ((flaglen >= nplen) && ((flag[nplen] == '\0') || (flag[nplen] == ' ')) &&
+        (mutt_str_strncasecmp(np->data, flag, nplen) == 0))
+    {
       return true;
+    }
 
     if (mutt_str_strcmp(np->data, "\\*") == 0)
       return true;
