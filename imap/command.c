@@ -790,10 +790,7 @@ static void cmd_parse_search(struct ImapAccountData *adata, const char *s)
  */
 static void cmd_parse_status(struct ImapAccountData *adata, char *s)
 {
-  char *value = NULL;
-  unsigned int olduv, oldun;
-  unsigned int litlen;
-  short new_mail = 0;
+  unsigned int litlen = 0;
 
   char *mailbox = imap_next_word(s);
 
@@ -814,14 +811,14 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
 
     mailbox = adata->buf;
     s = mailbox + litlen;
-    *s = '\0';
+    s[0] = '\0';
     s++;
     SKIPWS(s);
   }
   else
   {
     s = imap_next_word(mailbox);
-    *(s - 1) = '\0';
+    s[-1] = '\0';
     imap_unmunge_mbox_name(adata->unicode, mailbox);
   }
 
@@ -838,17 +835,17 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
     mutt_debug(LL_DEBUG3, "Received status for an unexpected mailbox: %s\n", mailbox);
     return;
   }
-  olduv = mdata->uid_validity;
-  oldun = mdata->uid_next;
+  unsigned int olduv = mdata->uid_validity;
+  unsigned int oldun = mdata->uid_next;
 
   if (*s++ != '(')
   {
     mutt_debug(LL_DEBUG1, "Error parsing STATUS\n");
     return;
   }
-  while (*s && (*s != ')'))
+  while ((s[0] != '\0') && (s[0] != ')'))
   {
-    value = imap_next_word(s);
+    char *value = imap_next_word(s);
 
     errno = 0;
     const unsigned long ulcount = strtoul(value, &value, 10);
@@ -871,7 +868,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
       mdata->unseen = count;
 
     s = value;
-    if (*s && (*s != ')'))
+    if ((s[0] != '\0') && (*s != ')'))
       s = imap_next_word(s);
   }
   mutt_debug(LL_DEBUG3, "%s (UIDVALIDITY: %u, UIDNEXT: %u) %d messages, %d recent, %d unseen\n",
@@ -883,14 +880,15 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
   mutt_debug(LL_DEBUG3, "Found %s in mailbox list (OV: %u ON: %u U: %d)\n",
              mailbox, olduv, oldun, mdata->unseen);
 
+  bool new_mail = false;
   if (C_MailCheckRecent)
   {
-    if (olduv && (olduv == mdata->uid_validity))
+    if ((olduv != 0) && (olduv == mdata->uid_validity))
     {
       if (oldun < mdata->uid_next)
         new_mail = (mdata->unseen > 0);
     }
-    else if (!olduv && !oldun)
+    else if ((olduv == 0) && (oldun == 0))
     {
       /* first check per session, use recent. might need a flag for this. */
       new_mail = (mdata->recent > 0);
@@ -904,7 +902,9 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
 #ifdef USE_SIDEBAR
   if ((m->has_new != new_mail) || (m->msg_count != mdata->messages) ||
       (m->msg_unread != mdata->unseen))
+  {
     mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
+  }
 #endif
 
   m->has_new = new_mail;
