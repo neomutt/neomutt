@@ -781,6 +781,28 @@ static void cmd_parse_search(struct ImapAccountData *adata, const char *s)
 }
 
 /**
+ * find_mailbox - Find a Mailbox by its name
+ * @param adata Imap Account data
+ * @param name  Mailbox to find
+ * @retval ptr Mailbox
+ */
+static struct Mailbox *find_mailbox(struct ImapAccountData *adata, const char *name)
+{
+  if (!adata || !adata->account || !name)
+    return NULL;
+
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &adata->account->mailboxes, entries)
+  {
+    struct ImapMboxData *mdata = imap_mdata_get(np->mailbox);
+    if (mutt_str_strcmp(name, mdata->name) == 0)
+      return np->mailbox;
+  }
+
+  return NULL;
+}
+
+/**
  * cmd_parse_status - Parse status from server
  * @param adata Imap Account data
  * @param s     Command string with status info
@@ -822,13 +844,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
     imap_unmunge_mbox_name(adata->unicode, mailbox);
   }
 
-  struct Url url;
-  mutt_account_tourl(&adata->conn_account, &url);
-  url.path = mailbox;
-  char path[PATH_MAX];
-  url_tostring(&url, path, sizeof(path), 0);
-
-  struct Mailbox *m = mx_mbox_find2(path);
+  struct Mailbox *m = find_mailbox(adata, mailbox);
   struct ImapMboxData *mdata = imap_mdata_get(m);
   if (!mdata)
   {
