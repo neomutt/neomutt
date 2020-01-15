@@ -1879,7 +1879,7 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
     if (imap_parse_path(mailbox_path(m), &conn_account, mailbox, sizeof(mailbox)) < 0)
       return -1;
 
-    adata = imap_adata_new();
+    adata = imap_adata_new(a);
     adata->conn_account = conn_account;
     adata->conn = mutt_conn_new(&conn_account);
     if (!adata->conn)

@@ -92,9 +92,11 @@ void imap_adata_free(void **ptr)
  * imap_adata_new - Allocate and initialise a new ImapAccountData structure
  * @retval ptr New ImapAccountData
  */
-struct ImapAccountData *imap_adata_new(void)
+struct ImapAccountData *imap_adata_new(struct Account *a)
 {
   struct ImapAccountData *adata = mutt_mem_calloc(1, sizeof(struct ImapAccountData));
+  adata->account = a;
+
   static unsigned char new_seqid = 'a';
 
   adata->seqid = new_seqid;
