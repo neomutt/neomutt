@@ -203,6 +203,7 @@ struct ImapAccountData
 
   char delim;
   struct Mailbox *mailbox;     /* Current selected mailbox */
+  struct Account *account;     ///< Parent Account
 };
 
 /**
@@ -311,7 +312,7 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata);
 
 enum QuadOption imap_continue(const char *msg, const char *resp);
 void imap_error(const char *where, const char *msg);
-struct ImapAccountData *imap_adata_new(void);
+struct ImapAccountData *imap_adata_new(struct Account *a);
 void imap_adata_free(void **ptr);
 struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char* name);
 void imap_mdata_free(void **ptr);
