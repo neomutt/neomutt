@@ -709,7 +709,8 @@ int mx_mbox_close(struct Context **ptr)
 
     if ((m->magic == MUTT_IMAP) && (imap_path_probe(mutt_b2s(mbox), NULL) == MUTT_IMAP))
     {
-      /* tag messages for moving, and clear old tags, if any */
+      /* add messages for moving, and clear old tags, if any */
+      struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
       for (i = 0; i < m->msg_count; i++)
       {
         struct Email *e = m->emails[i];
@@ -717,12 +718,16 @@ int mx_mbox_close(struct Context **ptr)
           break;
 
         if (e->read && !e->deleted && !(e->flagged && C_KeepFlagged))
+        {
           e->tagged = true;
+          emaillist_add_email(&el, e);
+        }
         else
           e->tagged = false;
       }
 
-      i = imap_copy_messages(ctx->mailbox, NULL, mutt_b2s(mbox), true);
+      i = imap_copy_messages(ctx->mailbox, &el, mutt_b2s(mbox), true);
+      emaillist_clear(&el);
     }
 
     if (i == 0) /* success */
