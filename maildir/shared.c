@@ -1694,6 +1694,12 @@ int maildir_path_parent(char *buf, size_t buflen)
 
 /**
  * mh_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
+ * @retval #MUTT_REOPENED  mailbox has been externally modified
+ * @retval #MUTT_NEW_MAIL  new mail has arrived
+ * @retval  0 Success
+ * @retval -1 Error
+ *
+ * @note The flag retvals come from a call to a backend sync function
  */
 int mh_mbox_sync(struct Mailbox *m, int *index_hint)
 {
@@ -1703,14 +1709,15 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
   int i, j;
   header_cache_t *hc = NULL;
   struct Progress progress;
+  int check;
 
   if (m->magic == MUTT_MH)
-    i = mh_mbox_check(m, index_hint);
+    check = mh_mbox_check(m, index_hint);
   else
-    i = maildir_mbox_check(m, index_hint);
+    check = maildir_mbox_check(m, index_hint);
 
-  if (i != 0)
-    return i;
+  if (check < 0)
+    return check;
 
 #ifdef USE_HCACHE
   if ((m->magic == MUTT_MAILDIR) || (m->magic == MUTT_MH))
@@ -1760,7 +1767,7 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
     }
   }
 
-  return 0;
+  return check;
 
 err:
 #ifdef USE_HCACHE

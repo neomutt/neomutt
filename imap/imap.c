@@ -1642,8 +1642,12 @@ out:
  * @param m       Mailbox
  * @param expunge if true do expunge
  * @param close   if true we move imap state to CLOSE
+ * @retval #MUTT_REOPENED  mailbox has been externally modified
+ * @retval #MUTT_NEW_MAIL  new mail has arrived
  * @retval  0 Success
  * @retval -1 Error
+ *
+ * @note The flag retvals come from a call to imap_check_mailbox()
  */
 int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 {
@@ -1653,6 +1657,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   struct Email **emails = NULL;
   int oldsort;
   int rc;
+  int check;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -1667,9 +1672,9 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
    * to be changed. */
   imap_allow_reopen(m);
 
-  rc = imap_check_mailbox(m, false);
-  if (rc < 0)
-    return rc;
+  check = imap_check_mailbox(m, false);
+  if (check < 0)
+    return check;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */
   if (expunge && (m->rights & MUTT_ACL_DELETE))
@@ -1841,7 +1846,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   if (C_MessageCacheClean)
     imap_cache_clean(m);
 
-  return 0;
+  return check;
 }
 
 /**
