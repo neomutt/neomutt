@@ -575,8 +575,12 @@ static int trash_append(struct Mailbox *m)
 /**
  * mx_mbox_close - Save changes and close mailbox
  * @param[out] ptr Mailbox
+ * @retval #MUTT_REOPENED  mailbox has been externally modified
+ * @retval #MUTT_NEW_MAIL  new mail has arrived
  * @retval  0 Success
  * @retval -1 Failure
+ *
+ * @note The flag retvals come from a call to a backend sync function
  *
  * @note Context will be freed after it's closed
  */
@@ -794,7 +798,10 @@ int mx_mbox_close(struct Context **ptr)
   {
     int check = imap_sync_mailbox(ctx->mailbox, (purge != MUTT_NO), true);
     if (check != 0)
+    {
+      rc = check;
       goto cleanup;
+    }
   }
   else
 #endif
@@ -817,7 +824,10 @@ int mx_mbox_close(struct Context **ptr)
     {
       int check = sync_mailbox(ctx->mailbox, NULL);
       if (check != 0)
+      {
+        rc = check;
         goto cleanup;
+      }
     }
   }
 
@@ -874,8 +884,12 @@ cleanup:
  * mx_mbox_sync - Save changes to mailbox
  * @param[in]  m          Mailbox
  * @param[out] index_hint Currently selected Email
+ * @retval #MUTT_REOPENED  mailbox has been externally modified
+ * @retval #MUTT_NEW_MAIL  new mail has arrived
  * @retval  0 Success
  * @retval -1 Error
+ *
+ * @note The flag retvals come from a call to a backend sync function
  */
 int mx_mbox_sync(struct Mailbox *m, int *index_hint)
 {
