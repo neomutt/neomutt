@@ -147,6 +147,7 @@ mutt_parse.c
 mutt_signal.c
 mutt_socket.c
 mutt_thread.c
+mutt_zstrm.c
 mx.c
 myvar.c
 ncrypt/crypt.c

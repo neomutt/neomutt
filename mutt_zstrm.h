@@ -1,6 +1,6 @@
 /**
  * @file
- * IMAP traffic compression
+ * Zlib compression of network traffic
  *
  * Copyright(C) 2019 Fabian Groffen <grobian@gentoo.org>
  *
