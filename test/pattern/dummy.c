@@ -154,3 +154,15 @@ struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
 
   return m->emails[inum];
 }
+
+void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
+                             const char *suffix, const char *src, int line)
+{
+}
+
+int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
+                             struct Body *attach, int mode,
+                             bool privacy, bool hide_protected_subject)
+{
+  return 0;
+}

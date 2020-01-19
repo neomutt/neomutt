@@ -53,12 +53,14 @@
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_parse.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "progress.h"
 #include "protos.h"
+#include "sendlib.h"
 #include "state.h"
 #ifndef USE_FMEMOPEN
 #include <sys/stat.h>
@@ -414,7 +416,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 
   for (int v = 0; v < 8; v++)
   {
-    if (s[v] && s[v] >= '0' && s[v] <= '9')
+    if (s[v] && (s[v] >= '0') && (s[v] <= '9'))
       continue;
 
     iso8601 = false;
@@ -1287,8 +1289,8 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
  */
 static const struct PatternFlags Flags[] = {
   { 'A', MUTT_ALL,                 0,                NULL              },
-  { 'b', MUTT_PAT_BODY,            MUTT_PC_FULL_MSG, eat_regex         },
-  { 'B', MUTT_PAT_WHOLE_MSG,       MUTT_PC_FULL_MSG, eat_regex         },
+  { 'b', MUTT_PAT_BODY,            MUTT_PC_FULL_MSG|MUTT_PC_SEND_MODE_SEARCH, eat_regex },
+  { 'B', MUTT_PAT_WHOLE_MSG,       MUTT_PC_FULL_MSG|MUTT_PC_SEND_MODE_SEARCH, eat_regex },
   { 'c', MUTT_PAT_CC,              0,                eat_regex         },
   { 'C', MUTT_PAT_RECIPIENT,       0,                eat_regex         },
   { 'd', MUTT_PAT_DATE,            0,                eat_date          },
@@ -1299,7 +1301,7 @@ static const struct PatternFlags Flags[] = {
   { 'F', MUTT_FLAG,                0,                NULL              },
   { 'g', MUTT_PAT_CRYPT_SIGN,      0,                NULL              },
   { 'G', MUTT_PAT_CRYPT_ENCRYPT,   0,                NULL              },
-  { 'h', MUTT_PAT_HEADER,          MUTT_PC_FULL_MSG, eat_regex         },
+  { 'h', MUTT_PAT_HEADER,          MUTT_PC_FULL_MSG|MUTT_PC_SEND_MODE_SEARCH, eat_regex },
   { 'H', MUTT_PAT_HORMEL,          0,                eat_regex         },
   { 'i', MUTT_PAT_ID,              0,                eat_regex         },
   { 'I', MUTT_PAT_ID_EXTERNAL,     0,                eat_query         },
@@ -1601,6 +1603,9 @@ struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, str
           mutt_buffer_printf(err, _("%c: not supported in this mode"), *ps.dptr);
           goto cleanup;
         }
+        if (flags & MUTT_PC_SEND_MODE_SEARCH)
+          pat->sendmode = true;
+
         pat->op = entry->op;
 
         ps.dptr++; /* eat the operator and any optional whitespace */
@@ -2028,6 +2033,80 @@ static int is_pattern_cache_set(int cache_entry)
 }
 
 /**
+ * msg_search_sendmode - Search in send-mode
+ * @param e   Email to search
+ * @param pat Pattern to find
+ * @retval  1 Success, pattern matched
+ * @retval  0 Pattern did not match
+ * @retval -1 Error
+ */
+static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
+{
+  bool match = false;
+  char *buf = NULL;
+  size_t blen = 0;
+  FILE *fp = NULL;
+
+  if ((pat->op == MUTT_PAT_HEADER) || (pat->op == MUTT_PAT_WHOLE_MSG))
+  {
+    struct Buffer *tempfile = mutt_buffer_pool_get();
+    mutt_buffer_mktemp(tempfile);
+    fp = mutt_file_fopen(mutt_b2s(tempfile), "w+");
+    if (!fp)
+    {
+      mutt_perror(mutt_b2s(tempfile));
+      mutt_buffer_pool_release(&tempfile);
+      return 0;
+    }
+
+    mutt_rfc822_write_header(fp, e->env, e->content, MUTT_WRITE_HEADER_POSTPONE, false, false);
+    fflush(fp);
+    fseek(fp, 0, 0);
+
+    while ((buf = mutt_file_read_line(buf, &blen, fp, NULL, 0)) != NULL)
+    {
+      if (patmatch(pat, buf) == 0)
+      {
+        match = true;
+        break;
+      }
+    }
+
+    FREE(&buf);
+    mutt_file_fclose(&fp);
+    unlink(mutt_b2s(tempfile));
+    mutt_buffer_pool_release(&tempfile);
+
+    if (match)
+      return match;
+  }
+
+  if ((pat->op == MUTT_PAT_BODY) || (pat->op == MUTT_PAT_WHOLE_MSG))
+  {
+    fp = mutt_file_fopen(e->content->filename, "r");
+    if (!fp)
+    {
+      mutt_perror(e->content->filename);
+      return 0;
+    }
+
+    while ((buf = mutt_file_read_line(buf, &blen, fp, NULL, 0)) != NULL)
+    {
+      if (patmatch(pat, buf) == 0)
+      {
+        match = true;
+        break;
+      }
+    }
+
+    FREE(&buf);
+    mutt_file_fclose(&fp);
+  }
+
+  return match;
+}
+
+/**
  * mutt_pattern_exec - Match a pattern against an email header
  * @param pat   Pattern to match
  * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
@@ -2093,6 +2172,12 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_BODY:
     case MUTT_PAT_HEADER:
     case MUTT_PAT_WHOLE_MSG:
+      if (pat->sendmode)
+      {
+        if (!e->content || !e->content->filename)
+          return 0;
+        return pat->pat_not ^ msg_search_sendmode(e, pat);
+      }
       /* m can be NULL in certain cases, such as when replying to a message
        * from the attachment menu and the user has a reply-hook using "~e".
        * This is also the case when message scoring.  */

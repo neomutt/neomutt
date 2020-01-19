@@ -238,11 +238,16 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   else if (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_SAVE_HOOK |
                    MUTT_FCC_HOOK | MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK))
   {
-    pat = mutt_pattern_comp(mutt_b2s(pattern),
-                            (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_FCC_HOOK)) ?
-                                MUTT_PC_NO_FLAGS :
-                                MUTT_PC_FULL_MSG,
-                            err);
+    PatternCompFlags comp_flags;
+
+    if (data & (MUTT_SEND2_HOOK))
+      comp_flags = MUTT_PC_SEND_MODE_SEARCH;
+    else if (data & (MUTT_SEND_HOOK | MUTT_FCC_HOOK))
+      comp_flags = MUTT_PC_NO_FLAGS;
+    else
+      comp_flags = MUTT_PC_FULL_MSG;
+
+    pat = mutt_pattern_comp(mutt_b2s(pattern), comp_flags, err);
     if (!pat)
       goto cleanup;
   }
