@@ -1992,6 +1992,7 @@ int imap_login(struct ImapAccountData *adata)
     if ((adata->capabilities & IMAP_CAP_COMPRESS) && C_ImapDeflate &&
         (imap_exec(adata, "COMPRESS DEFLATE", IMAP_CMD_PASS) == IMAP_EXEC_SUCCESS))
     {
+      mutt_debug(LL_DEBUG2, "IMAP compression is enabled on connection to %s\n", adata->conn->account.host);
       mutt_zstrm_wrap_conn(adata->conn);
     }
 #endif
