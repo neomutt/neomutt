@@ -17505,9 +17505,18 @@ folder-hook ^pop 'set read_inc=1'
         will be gone for the next session.)
       </para>
       <para>
-        To improve performance and permanently cache whole messages, please
-        refer to NeoMutt's so-called
-        <link linkend="body-caching">body caching</link> for details.
+        To improve performance and permanently cache whole messages and
+        headers, please refer to <link linkend="body-caching">body caching</link>
+        and <link linkend="header-caching">header caching</link> for details.
+      </para>
+      <para>
+        Additionally, it may be worth trying some of Mutt's experimental
+        features.  <link linkend="imap-qresync">$imap_qresync</link> (which
+        requires header caching) can provide a huge speed boost opening
+        mailboxes if your IMAP server supports it.
+        <link linkend="imap-deflate">$imap_deflate</link> enables compression,
+        which can also noticeably reduce download time for large mailboxes and
+        messages.
       </para>
     </sect1>
 

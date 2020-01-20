@@ -85,6 +85,9 @@ NEOMUTTOBJS+=	mutt_lua.o
 @if USE_INOTIFY
 NEOMUTTOBJS+=	monitor.o
 @endif
+@if USE_ZLIB
+NEOMUTTOBJS+=	mutt_zstrm.o
+@endif
 
 CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
 ALLOBJS+=	$(NEOMUTTOBJS)

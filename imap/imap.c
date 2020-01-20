@@ -60,10 +60,16 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+#ifdef USE_ZLIB
+#include "mutt_zstrm.h"
+#endif
 
 struct stat;
 
 /* These Config Variables are only used in imap/imap.c */
+#ifdef USE_ZLIB
+bool C_ImapDeflate; ///< Config: (imap) Compress network traffic
+#endif
 bool C_ImapIdle; ///< Config: (imap) Use the IMAP IDLE extension to check for new mail
 bool C_ImapRfc5161; ///< Config: (imap) Use the IMAP ENABLE extension to select capabilities
 
@@ -1979,7 +1985,17 @@ int imap_login(struct ImapAccountData *adata)
   if (adata->state == IMAP_AUTHENTICATED)
   {
     /* capabilities may have changed */
-    imap_exec(adata, "CAPABILITY", IMAP_CMD_QUEUE);
+    imap_exec(adata, "CAPABILITY", IMAP_CMD_PASS);
+
+#ifdef USE_ZLIB
+    /* RFC4978 */
+    if ((adata->capabilities & IMAP_CAP_COMPRESS) && C_ImapDeflate &&
+        (imap_exec(adata, "COMPRESS DEFLATE", IMAP_CMD_PASS) == IMAP_EXEC_SUCCESS))
+    {
+      mutt_debug(LL_DEBUG2, "IMAP compression is enabled on connection to %s\n", adata->conn->account.host);
+      mutt_zstrm_wrap_conn(adata->conn);
+    }
+#endif
 
     /* enable RFC6855, if the server supports that */
     if (C_ImapRfc5161 && (adata->capabilities & IMAP_CAP_ENABLE))

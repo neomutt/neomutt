@@ -134,9 +134,10 @@ typedef uint32_t ImapCapFlags;              ///< Flags, e.g. #IMAP_CAP_IMAP4
 #define IMAP_CAP_CONDSTORE        (1 << 14) ///< RFC7162
 #define IMAP_CAP_QRESYNC          (1 << 15) ///< RFC7162
 #define IMAP_CAP_LIST_EXTENDED    (1 << 16) ///< RFC5258: IMAP4 LIST Command Extensions
-#define IMAP_CAP_X_GM_EXT_1       (1 << 17) ///< https://developers.google.com/gmail/imap/imap-extensions
+#define IMAP_CAP_COMPRESS         (1 << 17) ///< RFC4978: COMPRESS=DEFLATE
+#define IMAP_CAP_X_GM_EXT_1       (1 << 18) ///< https://developers.google.com/gmail/imap/imap-extensions
 
-#define IMAP_CAP_ALL             ((1 << 18) - 1)
+#define IMAP_CAP_ALL             ((1 << 19) - 1)
 
 /**
  * struct ImapList - Items in an IMAP browser

@@ -65,6 +65,9 @@ struct stat;
 extern struct Slist *C_ImapAuthenticators;
 
 /* These Config Variables are only used in imap/imap.c */
+#ifdef USE_ZLIB
+extern bool C_ImapDeflate;
+#endif
 extern bool C_ImapIdle;
 extern bool C_ImapRfc5161;
 

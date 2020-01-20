@@ -94,6 +94,9 @@ options {
 # sqlite
   sqlite=0                  => "Enable SQLite support"
   with-sqlite:path          => "Location of sqlite"
+# zlib
+  zlib=0                    => "Enable zlib support"
+  with-zlib:path            => "Location of zlib"
 # Debug options
   backtrace=0               => "DEBUG: Enable backtrace support with libunwind"
   with-backtrace:path       => "Location of libunwind"
@@ -119,7 +122,7 @@ if {1} {
     autocrypt backtrace bdb coverage doc everything fmemopen full-doc gdbm
     gnutls gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix
     lua mixmaster nls notmuch pgp pkgconf qdbm sasl smime sqlite ssl testing
-    tokyocabinet
+    tokyocabinet zlib
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -129,7 +132,7 @@ if {1} {
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
     bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua mixmaster
-    ncurses nls notmuch qdbm sasl slang sqlite ssl tokyocabinet
+    ncurses nls notmuch qdbm sasl slang sqlite ssl tokyocabinet zlib
   } {
     if {[opt-val with-$opt] ne {}} {
       define want-$opt 1
@@ -635,6 +638,16 @@ if {[get-define want-sqlite]} {
     user-error "Unable to find SQLite"
   }
   define USE_SQLITE
+}
+
+###############################################################################
+# zlib Support
+if {[get-define want-zlib]} {
+  if {![check-inc-and-lib zlib [opt-val with-zlib $prefix] \
+                          zlib.h deflate z]} {
+    user-error "Unable to find zlib"
+  }
+  define USE_ZLIB
 }
 
 ###############################################################################

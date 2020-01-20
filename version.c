@@ -299,6 +299,11 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "typeahead", 0 },
 #endif
+#ifdef USE_ZLIB
+  { "zlib", 1 },
+#else
+  { "zlib", 0 },
+#endif
   { NULL, 0 },
 };
 
