@@ -1290,12 +1290,12 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
   }
 
   /* Allow interruptions, particularly useful if there are network problems. */
-  mutt_sig_allow_interrupt(1);
+  mutt_sig_allow_interrupt(true);
   do
   {
     rc = imap_cmd_step(adata);
   } while (rc == IMAP_RES_CONTINUE);
-  mutt_sig_allow_interrupt(0);
+  mutt_sig_allow_interrupt(false);
 
   if (rc == IMAP_RES_NO)
     return IMAP_EXEC_ERROR;
