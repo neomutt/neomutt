@@ -100,9 +100,6 @@ struct BrowserState
 #ifdef USE_IMAP
   bool imap_browse;
   char *folder;
-  bool noselect : 1;
-  bool marked : 1;
-  bool unmarked : 1;
 #endif
 };
 
