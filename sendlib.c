@@ -608,7 +608,7 @@ int mutt_write_mime_body(struct Body *a, FILE *fp)
   else
     fc = mutt_ch_fgetconv_open(fp_in, 0, 0, 0);
 
-  mutt_sig_allow_interrupt(1);
+  mutt_sig_allow_interrupt(true);
   if (a->encoding == ENC_QUOTED_PRINTABLE)
     encode_quoted(fc, fp, write_as_text_part(a));
   else if (a->encoding == ENC_BASE64)
@@ -617,7 +617,7 @@ int mutt_write_mime_body(struct Body *a, FILE *fp)
     encode_8bit(fc, fp);
   else
     mutt_file_copy_stream(fp_in, fp);
-  mutt_sig_allow_interrupt(0);
+  mutt_sig_allow_interrupt(false);
 
   mutt_ch_fgetconv_close(&fc);
   mutt_file_fclose(&fp_in);

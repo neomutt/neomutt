@@ -91,7 +91,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
   if (C_ConnectTimeout > 0)
     alarm(C_ConnectTimeout);
 
-  mutt_sig_allow_interrupt(1);
+  mutt_sig_allow_interrupt(true);
 
   /* FreeBSD's connect() does not respect SA_RESTART, meaning
    * a SIGWINCH will cause the connect to fail. */
@@ -110,7 +110,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
 
   if (C_ConnectTimeout > 0)
     alarm(0);
-  mutt_sig_allow_interrupt(0);
+  mutt_sig_allow_interrupt(false);
   sigprocmask(SIG_UNBLOCK, &set, NULL);
 
   return save_errno;
@@ -271,7 +271,7 @@ int raw_socket_read(struct Connection *conn, char *buf, size_t count)
 {
   int rc;
 
-  mutt_sig_allow_interrupt(1);
+  mutt_sig_allow_interrupt(true);
   do
   {
     rc = read(conn->fd, buf, count);
@@ -282,7 +282,7 @@ int raw_socket_read(struct Connection *conn, char *buf, size_t count)
     mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));
     SigInt = 0;
   }
-  mutt_sig_allow_interrupt(0);
+  mutt_sig_allow_interrupt(false);
 
   if (SigInt)
   {
@@ -302,7 +302,7 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
   int rc;
   size_t sent = 0;
 
-  mutt_sig_allow_interrupt(1);
+  mutt_sig_allow_interrupt(true);
   do
   {
     do
@@ -313,14 +313,14 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
     if (rc < 0)
     {
       mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));
-      mutt_sig_allow_interrupt(0);
+      mutt_sig_allow_interrupt(false);
       return -1;
     }
 
     sent += rc;
   } while ((sent < count) && (SigInt == 0));
 
-  mutt_sig_allow_interrupt(0);
+  mutt_sig_allow_interrupt(false);
   return sent;
 }
 

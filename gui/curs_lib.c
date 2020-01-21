@@ -198,7 +198,7 @@ struct KeyEvent mutt_getch(void)
 
   SigInt = 0;
 
-  mutt_sig_allow_interrupt(1);
+  mutt_sig_allow_interrupt(true);
 #ifdef KEY_RESIZE
   /* ncurses 4.2 sends this when the screen is resized */
   ch = KEY_RESIZE;
@@ -209,7 +209,7 @@ struct KeyEvent mutt_getch(void)
 #else
   ch = getch();
 #endif /* USE_INOTIFY */
-  mutt_sig_allow_interrupt(0);
+  mutt_sig_allow_interrupt(false);
 
   if (SigInt)
   {
