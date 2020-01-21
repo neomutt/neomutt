@@ -1463,7 +1463,7 @@ int imap_complete(char *buf, size_t buflen, const char *path)
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
   char tmp[2048];
-  struct ImapList listresp;
+  struct ImapList listresp = { 0 };
   char completion[1024];
   int clen;
   size_t matchlen = 0;

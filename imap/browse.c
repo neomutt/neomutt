@@ -144,7 +144,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
 static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd,
                                   struct BrowserState *state, bool isparent)
 {
-  struct ImapList list;
+  struct ImapList list = { 0 };
   int rc;
   struct Url *url = url_parse(state->folder);
 
@@ -184,7 +184,7 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
 int imap_browse(const char *path, struct BrowserState *state)
 {
   struct ImapAccountData *adata = NULL;
-  struct ImapList list;
+  struct ImapList list = { 0 };
   struct ConnAccount conn_account;
   char buf[PATH_MAX + 16];
   char mbox[PATH_MAX];
