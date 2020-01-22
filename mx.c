@@ -460,10 +460,14 @@ static int sync_mailbox(struct Mailbox *m, int *index_hint)
   }
 
   int rc = m->mx_ops->mbox_sync(m, index_hint);
-  if ((rc != 0) && !m->quiet)
+  if (rc != 0)
   {
-    /* L10N: Displayed if a mailbox sync fails */
-    mutt_error(_("Unable to write %s"), mailbox_path(m));
+    mutt_debug(LL_DEBUG2, "mbox_sync returned: %d\n", rc);
+    if ((rc < 0) && !m->quiet)
+    {
+      /* L10N: Displayed if a mailbox sync fails */
+      mutt_error(_("Unable to write %s"), mailbox_path(m));
+    }
   }
 
   return rc;
