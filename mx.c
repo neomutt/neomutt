@@ -556,15 +556,15 @@ static int trash_append(struct Mailbox *m)
       {
         if (mutt_append_message(ctx_trash->mailbox, m, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS) == -1)
         {
-          m_trash->append = old_append;
           mx_mbox_close(&ctx_trash);
+          m_trash->append = old_append;
           return -1;
         }
       }
     }
 
-    m_trash->append = old_append;
     mx_mbox_close(&ctx_trash);
+    m_trash->append = old_append;
   }
   else
   {

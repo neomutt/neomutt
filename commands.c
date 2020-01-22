@@ -1145,8 +1145,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     if (mutt_save_message_ctx(en->email, delete_original, decode, decrypt,
                               ctx_save->mailbox) != 0)
     {
-      m_save->append = old_append;
       mx_mbox_close(&ctx_save);
+      m_save->append = old_append;
       goto cleanup;
     }
 #ifdef USE_COMPRESSED
@@ -1201,8 +1201,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
     if (rc != 0)
     {
-      m_save->append = old_append;
       mx_mbox_close(&ctx_save);
+      m_save->append = old_append;
       goto cleanup;
     }
   }
@@ -1210,8 +1210,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   const bool need_mailbox_cleanup = ((ctx_save->mailbox->magic == MUTT_MBOX) ||
                                      (ctx_save->mailbox->magic == MUTT_MMDF));
 
-  m_save->append = old_append;
   mx_mbox_close(&ctx_save);
+  m_save->append = old_append;
 
   if (need_mailbox_cleanup)
     mutt_mailbox_cleanup(mutt_b2s(buf), &st);
