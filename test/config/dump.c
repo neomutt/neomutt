@@ -68,9 +68,9 @@ static struct ConfigDef Vars[] = {
   { "Elderberry", DT_ADDRESS,                        &VarElderberry, IP "elderberry@example.com", 0,            NULL },
   { "Fig",        DT_STRING|DT_COMMAND|DT_NOT_EMPTY, &VarFig,        IP "fig",                    0,            NULL },
   { "Guava",      DT_LONG,                           &VarGuava,      0,                           0,            NULL },
-  { "Hawthorn",   DT_ENUM,                           &VarHawthorn,   1,                           IP &MagicDef, NULL },
+  { "Hawthorn",   DT_ENUM,                           &VarHawthorn,   2,                           IP &MagicDef, NULL },
   { "Ilama",      DT_MBTABLE,                        &VarIlama,      0,                           0,            NULL },
-  { "Jackfruit",  DT_STRING|DT_PATH,                 &VarJackfruit,  IP "/etc/passwd",            0,            NULL },
+  { "Jackfruit",  DT_PATH|DT_PATH_FILE,              &VarJackfruit,  IP "/etc/passwd",            0,            NULL },
   { "Kumquat",    DT_QUAD,                           &VarKumquat,    0,                           0,            NULL },
   { "Lemon",      DT_REGEX,                          &VarLemon,      0,                           0,            NULL },
   { "Mango",      DT_SORT,                           &VarMango,      1,                           0,            NULL },
@@ -189,6 +189,7 @@ struct ConfigSet *create_sample_data(void)
   mbtable_init(cs);
   number_init(cs);
   quad_init(cs);
+  path_init(cs);
   regex_init(cs);
   sort_init(cs);
   string_init(cs);

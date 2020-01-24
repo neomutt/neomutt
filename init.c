@@ -1555,6 +1555,7 @@ struct ConfigSet *init_config(size_t size)
   long_init(cs);
   mbtable_init(cs);
   number_init(cs);
+  path_init(cs);
   quad_init(cs);
   regex_init(cs);
   slist_init(cs);

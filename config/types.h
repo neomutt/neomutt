@@ -28,17 +28,18 @@
 /* Data Types */
 #define DT_ADDRESS   1  ///< e-mail address
 #define DT_BOOL      2  ///< boolean option
-#define DT_ENUM      4  ///< an enumeration
-#define DT_HCACHE    5  ///< header cache backend
-#define DT_LONG      6  ///< a number (long)
-#define DT_MBTABLE   8  ///< multibyte char table
-#define DT_NUMBER    9  ///< a number
-#define DT_QUAD     11  ///< quad-option (no/yes/ask-no/ask-yes)
-#define DT_REGEX    12  ///< regular expressions
-#define DT_SLIST    13  ///< a list of strings
-#define DT_SORT     14  ///< sorting methods
-#define DT_STRING   15  ///< a string
-#define DT_SYNONYM  16  ///< synonym for another variable
+#define DT_ENUM      3  ///< an enumeration
+#define DT_HCACHE    4  ///< header cache backend
+#define DT_LONG      5  ///< a number (long)
+#define DT_MBTABLE   6  ///< multibyte char table
+#define DT_NUMBER    7  ///< a number
+#define DT_PATH      8  ///< a path to a file/directory
+#define DT_QUAD      9  ///< quad-option (no/yes/ask-no/ask-yes)
+#define DT_REGEX    10  ///< regular expressions
+#define DT_SLIST    11  ///< a list of strings
+#define DT_SORT     12  ///< sorting methods
+#define DT_STRING   13  ///< a string
+#define DT_SYNONYM  14  ///< synonym for another variable
 
 #define DTYPE(x) ((x) & 0x1F)  ///< Mask for the Data Type
 
@@ -46,10 +47,11 @@
 #define DT_NOT_NEGATIVE  (1 << 7)  ///< Negative numbers are not allowed
 #define DT_MAILBOX       (1 << 8)  ///< Don't perform path expansions
 #define DT_SENSITIVE     (1 << 9)  ///< Contains sensitive value, e.g. password
-#define DT_PATH          (1 << 10) ///< A pathname
-#define DT_COMMAND       (1 << 11) ///< A command
-#define DT_INHERIT_ACC   (1 << 12) ///< Config item can be Account-specific
-#define DT_INHERIT_MBOX  (1 << 13) ///< Config item can be Mailbox-specific
+#define DT_COMMAND       (1 << 10) ///< A command
+#define DT_INHERIT_ACC   (1 << 11) ///< Config item can be Account-specific
+#define DT_INHERIT_MBOX  (1 << 12) ///< Config item can be Mailbox-specific
+#define DT_PATH_DIR      (1 << 13) ///< Path is a directory
+#define DT_PATH_FILE     (1 << 14) ///< Path is a file
 
 #define IS_SENSITIVE(x) (((x).type & DT_SENSITIVE) == DT_SENSITIVE)
 #define IS_PATH(x)      (((x)->type & (DT_STRING | DT_PATH)) == (DT_STRING | DT_PATH))

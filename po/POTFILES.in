@@ -22,6 +22,7 @@ config/enum.c
 config/long.c
 config/mbtable.c
 config/number.c
+config/path.c
 config/quad.c
 config/regex.c
 config/set.c
