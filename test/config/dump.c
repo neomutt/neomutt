@@ -188,6 +188,7 @@ struct ConfigSet *create_sample_data(void)
   long_init(cs);
   mbtable_init(cs);
   number_init(cs);
+  path_init(cs);
   quad_init(cs);
   path_init(cs);
   regex_init(cs);

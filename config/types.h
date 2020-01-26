@@ -55,6 +55,7 @@
 
 #define IS_SENSITIVE(x) (((x).type & DT_SENSITIVE) == DT_SENSITIVE)
 #define IS_PATH(x)      (((x)->type & (DT_STRING | DT_PATH)) == (DT_STRING | DT_PATH))
+#define IS_MAILBOX(x)   (((x)->type & (DT_STRING | DT_MAILBOX)) == (DT_STRING | DT_MAILBOX))
 #define IS_COMMAND(x)   (((x)->type & (DT_STRING | DT_COMMAND)) == (DT_STRING | DT_COMMAND))
 
 /* subtypes for... */

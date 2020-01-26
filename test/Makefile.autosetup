@@ -87,6 +87,7 @@ CONFIG_OBJS	= test/config/account.o \
 		  test/config/long.o \
 		  test/config/mbtable.o \
 		  test/config/number.o \
+		  test/config/path.o \
 		  test/config/quad.o \
 		  test/config/regex.o \
 		  test/config/set.o \

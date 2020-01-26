@@ -202,7 +202,7 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
           mutt_buffer_addstr(&value, "***");
         }
 
-        if (IS_PATH(he) && (value.data[0] == '/'))
+        if (((type == DT_PATH) || IS_MAILBOX(he)) && (value.data[0] == '/'))
           mutt_pretty_mailbox(value.data, value.dsize);
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
@@ -224,7 +224,7 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
           break;          /* LCOV_EXCL_LINE */
         }
 
-        if (IS_PATH(he) && !(he->type & DT_MAILBOX))
+        if (((type == DT_PATH) || IS_MAILBOX(he)) && !(he->type & DT_MAILBOX))
           mutt_pretty_mailbox(initial.data, initial.dsize);
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
