@@ -105,10 +105,13 @@ enum DivType
  * | \%d     | Number of deleted messages
  * | \%F     | Number of Flagged messages in the mailbox
  * | \%L     | Number of messages after limiting
- * | \%n     | N if mailbox has new mail, blank otherwise
+ * | \%n     | 'N' if mailbox has new mail, ' ' (space) otherwise
  * | \%N     | Number of unread messages in the mailbox
+ * | \%o     | Number of old unread messages in the mailbox
+ * | \%r     | Number of read messages in the mailbox
  * | \%S     | Size of mailbox (total number of messages)
  * | \%t     | Number of tagged messages
+ * | \%Z     | Number of new unseen messages in the mailbox
  */
 static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int cols,
                                       char op, const char *src, const char *prec,
@@ -195,6 +198,26 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         optional = false;
       break;
 
+    case 'o':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, m->msg_unread - m->msg_new);
+      }
+      else if ((c && (Context->mailbox->msg_unread - Context->mailbox->msg_new) == 0) || !c)
+        optional = false;
+      break;
+
+    case 'r':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, m->msg_count - m->msg_unread);
+      }
+      else if ((c && (Context->mailbox->msg_count - Context->mailbox->msg_unread) == 0) || !c)
+        optional = false;
+      break;
+
     case 'S':
       if (!optional)
       {
@@ -212,6 +235,16 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, c ? Context->mailbox->msg_tagged : 0);
       }
       else if ((c && (Context->mailbox->msg_tagged == 0)) || !c)
+        optional = false;
+      break;
+
+    case 'Z':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, m->msg_new);
+      }
+      else if ((c && (Context->mailbox->msg_new) == 0) || !c)
         optional = false;
       break;
 

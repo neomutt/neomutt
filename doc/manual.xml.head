@@ -793,6 +793,20 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     </entry>
                   </row>
                   <row>
+                    <entry>%o</entry>
+                    <entry>* †</entry>
+                    <entry>
+                      Number of old unread messages in the mailbox
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>%r</entry>
+                    <entry>* †</entry>
+                    <entry>
+                      Number of read messages in the mailbox
+                    </entry>
+                  </row>
+                  <row>
                     <entry>%S</entry>
                     <entry>* †</entry>
                     <entry>
@@ -804,6 +818,13 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     <entry>* ‡</entry>
                     <entry>
                       Number of tagged messages
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>%Z</entry>
+                    <entry>* †</entry>
+                    <entry>
+                      Number of new messages in the mailbox (unread, unseen)
                     </entry>
                   </row>
                   <row>
