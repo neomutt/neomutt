@@ -1315,6 +1315,8 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
             mutt_buffer_addstr(err, buf->data);
             return MUTT_CMD_ERROR;
           }
+          if (DTYPE(he->type) == DT_PATH)
+            mutt_pretty_mailbox(buf->data, buf->dsize);
           pretty_var(buf->data, err);
         }
         else
@@ -1350,30 +1352,16 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
         }
         else
         {
-          if (IS_PATH(he))
+          if (DTYPE(he->type) == DT_PATH)
+          {
+            if (he->type & (DT_PATH_DIR | DT_PATH_FILE))
+              mutt_buffer_expand_path(buf);
+            else
+              mutt_path_tilde(buf->data, buf->dsize, HomeDir);
+          }
+          else if (IS_MAILBOX(he))
           {
             mutt_buffer_expand_path(buf);
-            struct Buffer scratch = mutt_buffer_make(1024);
-            mutt_buffer_copy(&scratch, buf);
-            size_t scratchlen = mutt_buffer_len(&scratch);
-            if (!(he->type & DT_MAILBOX) && (scratchlen != 0))
-            {
-              if ((mutt_b2s(&scratch)[scratchlen - 1] != '|') && /* not a command */
-                  (url_check_scheme(mutt_b2s(&scratch)) == U_UNKNOWN)) /* probably a local file */
-              {
-                struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-                if (mutt_path_to_absolute(scratch.data, np ? NONULL(np->data) : "./"))
-                {
-                  mutt_buffer_reset(buf);
-                  mutt_buffer_addstr(buf, mutt_b2s(&scratch));
-                }
-                else
-                {
-                  mutt_error(_("Error: Can't build path of '%s'"), mutt_b2s(&scratch));
-                }
-              }
-            }
-            mutt_buffer_dealloc(&scratch);
           }
           else if (IS_COMMAND(he))
           {
@@ -1419,6 +1407,8 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
               mutt_buffer_addstr(err, buf->data);
               return MUTT_CMD_ERROR;
             }
+            if (DTYPE(he->type) == DT_PATH)
+              mutt_pretty_mailbox(buf->data, buf->dsize);
             pretty_var(buf->data, err);
           }
           else

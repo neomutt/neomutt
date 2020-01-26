@@ -128,7 +128,7 @@ struct ConfigDef MuttVars[] = {
   ** check only happens after the \fIfirst\fP edit of the file).  When set
   ** to \fIno\fP, composition will never be aborted.
   */
-  { "alias_file", DT_STRING|DT_PATH, &C_AliasFile, IP "~/.neomuttrc" },
+  { "alias_file", DT_PATH|DT_PATH_FILE, &C_AliasFile, IP "~/.neomuttrc" },
   /*
   ** .pp
   ** The default file in which to save aliases created by the
@@ -285,7 +285,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** For an explanation of "soft-fill", see the $$index_format documentation.
   */
-  { "attach_save_dir", DT_STRING|DT_PATH, &C_AttachSaveDir, IP "./" },
+  { "attach_save_dir", DT_PATH|DT_PATH_DIR, &C_AttachSaveDir, IP "./" },
   /*
   ** .pp
   ** The directory where attachments are saved.
@@ -372,7 +372,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** (Autocrypt only)
   */
-  { "autocrypt_dir", DT_STRING|DT_PATH, &C_AutocryptDir, IP "~/.mutt/autocrypt" },
+  { "autocrypt_dir", DT_PATH|DT_PATH_DIR, &C_AutocryptDir, IP "~/.mutt/autocrypt" },
   /*
   ** .pp
   ** This variable sets where autocrypt files are stored, including the GPG
@@ -461,7 +461,7 @@ struct ConfigDef MuttVars[] = {
   */
 #endif
 #ifdef USE_SSL
-  { "certificate_file", DT_STRING|DT_PATH, &C_CertificateFile, IP "~/.mutt_certificates" },
+  { "certificate_file", DT_PATH|DT_PATH_FILE, &C_CertificateFile, IP "~/.mutt_certificates" },
   /*
   ** .pp
   ** This variable specifies the file where the certificates you trust
@@ -845,7 +845,7 @@ struct ConfigDef MuttVars[] = {
   ** rest of the string are expanded in the \fIC\fP locale (that is in US
   ** English).
   */
-  { "debug_file", DT_STRING|DT_PATH, &C_DebugFile, IP "~/.neomuttdebug" },
+  { "debug_file", DT_PATH|DT_PATH_FILE, &C_DebugFile, IP "~/.neomuttdebug" },
   /*
   ** .pp
   ** Debug logging is controlled by the variables \fC$$debug_file\fP and \fC$$debug_level\fP.
@@ -1025,7 +1025,7 @@ struct ConfigDef MuttVars[] = {
   ** misinterpreting the line as a mbox message separator).
   */
 #ifdef USE_SSL_OPENSSL
-  { "entropy_file", DT_STRING|DT_PATH, &C_EntropyFile, 0 },
+  { "entropy_file", DT_PATH|DT_PATH_FILE, &C_EntropyFile, 0 },
   /*
   ** .pp
   ** The file which includes random data that is used to initialize SSL
@@ -1138,7 +1138,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** If set, flagged messages can't be deleted.
   */
-  { "folder", DT_STRING|DT_PATH|DT_MAILBOX, &C_Folder, IP "~/Mail" },
+  { "folder", DT_STRING|DT_MAILBOX, &C_Folder, IP "~/Mail" },
   /*
   ** .pp
   ** Specifies the default location of your mailboxes.  A "+" or "=" at the
@@ -1377,7 +1377,7 @@ struct ConfigDef MuttVars[] = {
   ** The $$weed setting applies.
   */
 #ifdef USE_HCACHE
-  { "header_cache", DT_STRING|DT_PATH, &C_HeaderCache, 0 },
+  { "header_cache", DT_PATH, &C_HeaderCache, 0 },
   /*
   ** .pp
   ** This variable points to the header cache database. If the path points to
@@ -1496,7 +1496,7 @@ struct ConfigDef MuttVars[] = {
   ** the string history buffer per category. The buffer is cleared each time the
   ** variable is set.
   */
-  { "history_file", DT_STRING|DT_PATH, &C_HistoryFile, IP "~/.mutthistory" },
+  { "history_file", DT_PATH|DT_PATH_FILE, &C_HistoryFile, IP "~/.mutthistory" },
   /*
   ** .pp
   ** The file in which NeoMutt will save its history.
@@ -2083,7 +2083,7 @@ struct ConfigDef MuttVars[] = {
   ** the \fInot\fP operator "!".  Only files whose names match this mask
   ** will be shown. The match is always case-sensitive.
   */
-  { "mbox", DT_STRING|DT_PATH|DT_MAILBOX|R_INDEX|R_PAGER, &C_Mbox, IP "~/mbox" },
+  { "mbox", DT_STRING|DT_MAILBOX|R_INDEX|R_PAGER, &C_Mbox, IP "~/mbox" },
   /*
   ** .pp
   ** This specifies the folder into which read mail in your $$spoolfile
@@ -2129,7 +2129,7 @@ struct ConfigDef MuttVars[] = {
   ** every once in a while, since it can be a little slow
   ** (especially for large folders).
   */
-  { "message_cachedir", DT_STRING|DT_PATH, &C_MessageCachedir, 0 },
+  { "message_cachedir", DT_PATH|DT_PATH_DIR, &C_MessageCachedir, 0 },
   /*
   ** .pp
   ** Set this to a directory and NeoMutt will cache copies of messages from
@@ -2309,7 +2309,7 @@ struct ConfigDef MuttVars[] = {
   ** into this command.
   */
 #ifdef USE_NNTP
-  { "news_cache_dir", DT_STRING|DT_PATH, &C_NewsCacheDir, IP "~/.neomutt" },
+  { "news_cache_dir", DT_PATH|DT_PATH_DIR, &C_NewsCacheDir, IP "~/.neomutt" },
   /*
   ** .pp
   ** This variable pointing to directory where NeoMutt will save cached news
@@ -2333,7 +2333,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Character set of newsgroups descriptions.
   */
-  { "newsrc", DT_STRING|DT_PATH, &C_Newsrc, IP "~/.newsrc" },
+  { "newsrc", DT_PATH|DT_PATH_FILE, &C_Newsrc, IP "~/.newsrc" },
   /*
   ** .pp
   ** The file, containing info about subscribed newsgroups - names and
@@ -3131,7 +3131,7 @@ struct ConfigDef MuttVars[] = {
   ** Please use $$pgp_default_key or $$smime_default_key.
   ** (Crypto only)
   */
-  { "postponed", DT_STRING|DT_PATH|DT_MAILBOX|R_INDEX, &C_Postponed, IP "~/postponed" },
+  { "postponed", DT_STRING|DT_MAILBOX|R_INDEX, &C_Postponed, IP "~/postponed" },
   /*
   ** .pp
   ** NeoMutt allows you to indefinitely "$postpone sending a message" which
@@ -3313,7 +3313,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Also see $$postponed variable.
   */
-  { "record", DT_STRING|DT_PATH|DT_MAILBOX, &C_Record, IP "~/sent" },
+  { "record", DT_STRING|DT_MAILBOX, &C_Record, IP "~/sent" },
   /*
   ** .pp
   ** This specifies the file into which your outgoing messages should be
@@ -3833,7 +3833,7 @@ struct ConfigDef MuttVars[] = {
   ** unless you really know what you are doing, and are prepared to take
   ** some heat from netiquette guardians.
   */
-  { "signature", DT_STRING|DT_PATH, &C_Signature, IP "~/.signature" },
+  { "signature", DT_PATH|DT_PATH_FILE, &C_Signature, IP "~/.signature" },
   /*
   ** .pp
   ** Specifies the filename of your signature, which is appended to all
@@ -3917,14 +3917,14 @@ struct ConfigDef MuttVars[] = {
   ** \fIset\fP by default.
   ** (S/MIME only)
   */
-  { "smime_ca_location", DT_STRING|DT_PATH, &C_SmimeCaLocation, 0 },
+  { "smime_ca_location", DT_PATH|DT_PATH_FILE, &C_SmimeCaLocation, 0 },
   /*
   ** .pp
   ** This variable contains the name of either a directory, or a file which
   ** contains trusted certificates for use with OpenSSL.
   ** (S/MIME only)
   */
-  { "smime_certificates", DT_STRING|DT_PATH, &C_SmimeCertificates, 0 },
+  { "smime_certificates", DT_PATH|DT_PATH_DIR, &C_SmimeCertificates, 0 },
   /*
   ** .pp
   ** Since for S/MIME there is no pubring/secring as with PGP, NeoMutt has to handle
@@ -4067,7 +4067,7 @@ struct ConfigDef MuttVars[] = {
   ** (S/MIME only)
   */
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
-  { "smime_keys", DT_STRING|DT_PATH, &C_SmimeKeys, 0 },
+  { "smime_keys", DT_PATH|DT_PATH_DIR, &C_SmimeKeys, 0 },
   /*
   ** .pp
   ** Since for S/MIME there is no pubring/secring as with PGP, NeoMutt has to handle
@@ -4312,7 +4312,7 @@ struct ConfigDef MuttVars[] = {
   ** match will append to the previous, using this variable's value as a
   ** separator.
   */
-  { "spoolfile", DT_STRING|DT_PATH|DT_MAILBOX, &C_Spoolfile, 0 },
+  { "spoolfile", DT_STRING|DT_MAILBOX, &C_Spoolfile, 0 },
   /*
   ** .pp
   ** If your spool mailbox is in a non-default place where NeoMutt can't find
@@ -4324,7 +4324,7 @@ struct ConfigDef MuttVars[] = {
   */
 #ifdef USE_SSL
 #ifdef USE_SSL_GNUTLS
-  { "ssl_ca_certificates_file", DT_STRING|DT_PATH, &C_SslCaCertificatesFile, 0 },
+  { "ssl_ca_certificates_file", DT_PATH|DT_PATH_FILE, &C_SslCaCertificatesFile, 0 },
   /*
   ** .pp
   ** This variable specifies a file containing trusted CA certificates.
@@ -4348,7 +4348,7 @@ struct ConfigDef MuttVars[] = {
   ** syntax and more details. (Note: GnuTLS version 2.1.7 or higher is
   ** required.)
   */
-  { "ssl_client_cert", DT_STRING|DT_PATH, &C_SslClientCert, 0 },
+  { "ssl_client_cert", DT_PATH|DT_PATH_FILE, &C_SslClientCert, 0 },
   /*
   ** .pp
   ** The file containing a client certificate and its associated private
@@ -4651,7 +4651,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** A value of zero or less will cause NeoMutt to never time out.
   */
-  { "tmpdir", DT_STRING|DT_PATH, &C_Tmpdir, IP "/tmp" },
+  { "tmpdir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, &C_Tmpdir, IP "/tmp" },
   /*
   ** .pp
   ** This variable allows you to specify where NeoMutt will place its
@@ -4675,7 +4675,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt 7 .dd R .dd Your address appears in the "Reply-To:" header field but none of the above applies.
   ** .de
   */
-  { "trash", DT_STRING|DT_PATH|DT_MAILBOX, &C_Trash, 0 },
+  { "trash", DT_STRING|DT_MAILBOX, &C_Trash, 0 },
   /*
   ** .pp
   ** If set, this variable specifies the path of the trash folder where the

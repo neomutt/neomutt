@@ -129,7 +129,7 @@ static void reset_tilde(struct ConfigSet *cs)
       continue;
     mutt_buffer_reset(&value);
     cs_he_initial_get(cs, he, &value);
-    mutt_expand_path(value.data, value.dsize);
+    mutt_buffer_expand_path_regex(&value, false);
     cs_he_initial_set(cs, he, value.data, NULL);
     cs_he_reset(cs, he, NULL);
   }
