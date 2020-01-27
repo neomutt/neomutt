@@ -2236,6 +2236,9 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
 }
 #endif
 
+/**
+ * clear_source_stack - Free memory from the stack used for the souce command
+ */
 void clear_source_stack(void)
 {
   mutt_list_free(&MuttrcStack);

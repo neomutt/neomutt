@@ -596,7 +596,7 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata)
  * @retval -1 Failure
  *
  * Given an IMAP mailbox name, return host, port and a path IMAP servers will
- * recognize.  mx.mbox is malloc'd, caller must free it
+ * recognize.
  */
 int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox, size_t mailboxlen)
 {
