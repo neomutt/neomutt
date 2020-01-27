@@ -2849,9 +2849,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           <link linkend="sending-mixmaster">mixmaster</link> or
           <link linkend="smtp">$smtp_url</link>.  Otherwise
           <link linkend="sendmail">$sendmail</link> will be invoked.  Prior to
-          version 1.13, Mutt enabled <link linkend="write-bcc">$write_bcc</link> by
+          version 2019-11-29, NeoMutt enabled <link linkend="write-bcc">$write_bcc</link> by
           default, assuming the MTA would automatically remove a
-          <literal>Bcc:</literal> header as part of delivery.  Starting with 1.13, the
+          <literal>Bcc:</literal> header as part of delivery.  Starting with 2019-11-29, the
           option is unset by default, but no longer affects the fcc copy of the message.
         </para>
       </sect2>
@@ -7279,7 +7279,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
 
         <para>
           <link linkend="size-units-on-left">$size_units_on_left</link> will
-          display the unit (<quote>K</quote> or <quote>M</quote> to the left
+          display the unit (<quote>K</quote> or <quote>M</quote>) to the left
           of the number, instead of the right if unset.
         </para>
 
@@ -10198,8 +10198,8 @@ audio/x-aiff                    aif aifc aiff
     <sect1 id="mailcap">
       <title>MIME Viewer Configuration with Mailcap</title>
       <para>
-        NeoMutt supports RFC 1524 MIME Configuration, in particular the Unix
-        specific format specified in Appendix A of RFC 1524. This file format
+        NeoMutt supports RFC1524 MIME Configuration, in particular the Unix
+        specific format specified in Appendix A of RFC1524. This file format
         is commonly referred to as the <quote>mailcap</quote> format. Many MIME
         compliant programs utilize the mailcap format, allowing you to specify
         handling for all MIME types in one place for all programs. Programs
@@ -10700,7 +10700,7 @@ text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
           </variablelist>
           <para>
             NeoMutt does not currently support the <literal>%F</literal> and
-            <literal>%n</literal> keywords specified in RFC 1524. The main
+            <literal>%n</literal> keywords specified in RFC1524. The main
             purpose of these parameters is for multipart messages, which is
             handled internally by NeoMutt.
           </para>
@@ -17510,7 +17510,7 @@ folder-hook ^pop 'set read_inc=1'
         and <link linkend="header-caching">header caching</link> for details.
       </para>
       <para>
-        Additionally, it may be worth trying some of Mutt's experimental
+        Additionally, it may be worth trying some of NeoMutt's experimental
         features.  <link linkend="imap-qresync">$imap_qresync</link> (which
         requires header caching) can provide a huge speed boost opening
         mailboxes if your IMAP server supports it.

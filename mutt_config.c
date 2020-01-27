@@ -1588,7 +1588,7 @@ struct ConfigDef MuttVars[] = {
   { "imap_condstore", DT_BOOL, &C_ImapCondstore, false },
   /*
   ** .pp
-  ** When \fIset\fP, NeoMutt will use the CONDSTORE extension (RFC 7162)
+  ** When \fIset\fP, NeoMutt will use the CONDSTORE extension (RFC7162)
   ** if advertised by the server.  NeoMutt's current implementation is basic,
   ** used only for initial message fetching and flag updates.
   ** .pp
@@ -1730,7 +1730,7 @@ struct ConfigDef MuttVars[] = {
   { "imap_qresync", DT_BOOL, &C_ImapQresync, false },
   /*
   ** .pp
-  ** When \fIset\fP, NeoMutt will use the QRESYNC extension (RFC 7162)
+  ** When \fIset\fP, NeoMutt will use the QRESYNC extension (RFC7162)
   ** if advertised by the server.  NeoMutt's current implementation is basic,
   ** used only for initial message fetching and flag updates.
   ** .pp
@@ -1741,7 +1741,7 @@ struct ConfigDef MuttVars[] = {
   { "imap_rfc5161", DT_BOOL, &C_ImapRfc5161, true },
   /*
   ** .pp
-  ** When \fIset\fP, NeoMutt will use the IMAP ENABLE extension (RFC 5161) to
+  ** When \fIset\fP, NeoMutt will use the IMAP ENABLE extension (RFC5161) to
   ** select CAPABILITIES. Some servers (notably Coremail System IMap Server) do
   ** not properly respond to ENABLE commands, which might cause NeoMutt to hang.
   ** If your connection seems to freeze at login, try unsetting this. See also

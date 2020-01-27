@@ -970,7 +970,6 @@ void imap_close_connection(struct ImapAccountData *adata)
  * found or flag list has '\*'. Note that "flag" might contain additional
  * whitespace at the end, so we really need to compare up to the length of each
  * element in "flag_list".
- * 
  */
 bool imap_has_flag(struct ListHead *flag_list, const char *flag)
 {
@@ -1997,7 +1996,8 @@ int imap_login(struct ImapAccountData *adata)
     if ((adata->capabilities & IMAP_CAP_COMPRESS) && C_ImapDeflate &&
         (imap_exec(adata, "COMPRESS DEFLATE", IMAP_CMD_PASS) == IMAP_EXEC_SUCCESS))
     {
-      mutt_debug(LL_DEBUG2, "IMAP compression is enabled on connection to %s\n", adata->conn->account.host);
+      mutt_debug(LL_DEBUG2, "IMAP compression is enabled on connection to %s\n",
+                 adata->conn->account.host);
       mutt_zstrm_wrap_conn(adata->conn);
     }
 #endif

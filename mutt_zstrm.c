@@ -43,7 +43,7 @@ struct ZstrmDirection
   char *buf;           ///< Buffer for data being (de-)compressed
   unsigned int len;    ///< Length of data
   unsigned int pos;    ///< Current position
-  bool conn_eof   : 1; ///< Connection end-of-file reached
+  bool conn_eof : 1;   ///< Connection end-of-file reached
   bool stream_eof : 1; ///< Stream end-of-file reached
 };
 
@@ -156,8 +156,7 @@ retry:
   zctx->read.z.next_out = (Bytef *) buf;
 
   zrc = inflate(&zctx->read.z, Z_SYNC_FLUSH);
-  mutt_debug(LL_DEBUG5,
-             "rc=%d, consumed %u/%u bytes, produced %u/%u bytes\n",
+  mutt_debug(LL_DEBUG5, "rc=%d, consumed %u/%u bytes, produced %u/%u bytes\n",
              zrc, zctx->read.pos - zctx->read.z.avail_in, zctx->read.pos,
              len - zctx->read.z.avail_out, len);
 
