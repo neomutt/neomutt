@@ -45,9 +45,7 @@ typedef uint16_t ConfigDumpFlags;         ///< Flags for dump_config(), e.g. #CS
 
 void              dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, ConfigDumpFlags flags, FILE *fp);
 bool              dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp);
-int               elem_list_sort(const void *a, const void *b);
 size_t            escape_string(struct Buffer *buf, const char *src);
-struct HashElem **get_elem_list(struct ConfigSet *cs);
 size_t            pretty_var(const char *str, struct Buffer *buf);
 
 #endif /* MUTT_CONFIG_DUMP_H */

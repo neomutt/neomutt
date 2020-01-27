@@ -92,53 +92,6 @@ size_t pretty_var(const char *str, struct Buffer *buf)
 }
 
 /**
- * elem_list_sort - Sort two HashElem pointers to config
- * @param a First HashElem
- * @param b Second HashElem
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- */
-int elem_list_sort(const void *a, const void *b)
-{
-  if (!a || !b)
-    return 0;
-
-  const struct HashElem *hea = *(struct HashElem const *const *) a;
-  const struct HashElem *heb = *(struct HashElem const *const *) b;
-
-  return mutt_str_strcasecmp(hea->key.strkey, heb->key.strkey);
-}
-
-/**
- * get_elem_list - Create a sorted list of all config items
- * @param cs ConfigSet to read
- * @retval ptr Null-terminated array of HashElem
- */
-struct HashElem **get_elem_list(struct ConfigSet *cs)
-{
-  if (!cs)
-    return NULL;
-
-  struct HashElem **list = mutt_mem_calloc(1024, sizeof(struct HashElem *));
-  size_t index = 0;
-
-  struct HashWalkState walk = { 0 };
-  struct HashElem *he = NULL;
-
-  while ((he = mutt_hash_walk(cs->hash, &walk)))
-  {
-    list[index++] = he;
-    if (index == 1022)
-      break; /* LCOV_EXCL_LINE */
-  }
-
-  qsort(list, index, sizeof(struct HashElem *), elem_list_sort);
-
-  return list;
-}
-
-/**
  * dump_config_neo - Dump the config in the style of NeoMutt
  * @param cs      Config items
  * @param he      HashElem representing config item
