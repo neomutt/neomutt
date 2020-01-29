@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include <stdlib.h>
 
 struct MakeTimeTest
 {
@@ -34,6 +35,8 @@ struct MakeTimeTest
 void test_mutt_date_make_time(void)
 {
   // time_t mutt_date_make_time(struct tm *t, bool local);
+
+  setenv("TZ", "UTC", 1);
 
   {
     TEST_CHECK(mutt_date_make_time(NULL, false) != 0);
