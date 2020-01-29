@@ -24,10 +24,13 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include <stdlib.h>
 
 void test_mutt_date_localtime_format(void)
 {
   // size_t mutt_date_localtime_format(char *buf, size_t buflen, char *format, time_t t);
+
+  setenv("TZ", "UTC", 1);
 
   {
     TEST_CHECK(mutt_date_localtime_format(NULL, 10, "apple", 0) == 0);

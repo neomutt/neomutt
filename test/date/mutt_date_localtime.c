@@ -24,10 +24,13 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include <stdlib.h>
 
 void test_mutt_date_localtime(void)
 {
   // struct tm mutt_date_localtime(time_t t);
+
+  setenv("TZ", "UTC", 1);
 
   {
     TEST_CASE("December, 2000");

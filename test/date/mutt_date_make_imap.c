@@ -24,10 +24,13 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include <stdlib.h>
 
 void test_mutt_date_make_imap(void)
 {
   // int mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp);
+
+  setenv("TZ", "UTC", 1);
 
   {
     TEST_CHECK(mutt_date_make_imap(NULL, 10, 0) != 0);
