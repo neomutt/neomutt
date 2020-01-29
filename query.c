@@ -582,7 +582,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
             }
           }
         }
-        ci_send_message(SEND_NO_FLAGS, e, NULL, Context, NULL);
+        mutt_send_message(SEND_NO_FLAGS, e, NULL, Context, NULL);
         menu->redraw = REDRAW_FULL;
         break;
       }
