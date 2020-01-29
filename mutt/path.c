@@ -207,17 +207,77 @@ bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir)
 }
 
 /**
+ * mutt_path_tilde - Expand '~' in a path
+ * @param buf     Path to modify
+ * @param buflen  Length of the buffer
+ * @param homedir Home directory for '~' substitution
+ * @retval true Success
+ *
+ * Behaviour:
+ * - `~/dir` (~ expanded)
+ * - `~realuser/dir` (~realuser expanded)
+ * - `~nonuser/dir` (~nonuser not changed)
+ */
+bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir)
+{
+  if (!buf || (buf[0] != '~'))
+    return false;
+
+  char result[PATH_MAX] = { 0 };
+  char *dir = NULL;
+  size_t len = 0;
+
+  if ((buf[1] == '/') || (buf[1] == '\0'))
+  {
+    if (!homedir)
+    {
+      mutt_debug(LL_DEBUG3, "no homedir\n");
+      return false;
+    }
+
+    len = mutt_str_strfcpy(result, homedir, sizeof(result));
+    dir = buf + 1;
+  }
+  else
+  {
+    char user[128];
+    dir = strchr(buf + 1, '/');
+    if (dir)
+      mutt_str_strfcpy(user, buf + 1, MIN(dir - buf, (unsigned) sizeof(user)));
+    else
+      mutt_str_strfcpy(user, buf + 1, sizeof(user));
+
+    struct passwd *pw = getpwnam(user);
+    if (!pw || !pw->pw_dir)
+    {
+      mutt_debug(LL_DEBUG1, "no such user: %s\n", user);
+      return false;
+    }
+
+    len = mutt_str_strfcpy(result, pw->pw_dir, sizeof(result));
+  }
+
+  size_t dirlen = mutt_str_strlen(dir);
+  if ((len + dirlen) >= buflen)
+  {
+    mutt_debug(LL_DEBUG3, "result too big for the buffer %ld >= %ld\n", len + dirlen, buflen);
+    return false;
+  }
+
+  mutt_str_strfcpy(result + len, dir, sizeof(result) - len);
+  mutt_str_strfcpy(buf, result, buflen);
+
+  return true;
+}
+
+/**
  * mutt_path_canon - Create the canonical version of a path
  * @param buf     Path to modify
  * @param buflen  Length of the buffer
  * @param homedir Home directory for '~' substitution
  * @retval true Success
  *
- * Remove unnecessary dots and slashes from a path and expand shell '~'
- * abbreviations:
- * - ~/dir (~ expanded)
- * - ~realuser/dir (~realuser expanded)
- * - ~nonuser/dir (~nonuser not changed)
+ * Remove unnecessary dots and slashes from a path and expand '~'.
  */
 bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
 {
@@ -228,49 +288,7 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
 
   if (buf[0] == '~')
   {
-    char *dir = NULL;
-    size_t len = 0;
-
-    if ((buf[1] == '/') || (buf[1] == '\0'))
-    {
-      if (!homedir)
-      {
-        mutt_debug(LL_DEBUG3, "no homedir\n");
-        return false;
-      }
-
-      len = mutt_str_strfcpy(result, homedir, sizeof(result));
-      dir = buf + 1;
-    }
-    else
-    {
-      char user[128];
-      dir = strchr(buf + 1, '/');
-      if (dir)
-        mutt_str_strfcpy(user, buf + 1, MIN(dir - buf, (unsigned) sizeof(user)));
-      else
-        mutt_str_strfcpy(user, buf + 1, sizeof(user));
-
-      struct passwd *pw = getpwnam(user);
-      if (!pw || !pw->pw_dir)
-      {
-        mutt_debug(LL_DEBUG1, "no such user: %s\n", user);
-        return false;
-      }
-
-      len = mutt_str_strfcpy(result, pw->pw_dir, sizeof(result));
-    }
-
-    size_t dirlen = mutt_str_strlen(dir);
-    if ((len + dirlen) >= buflen)
-    {
-      mutt_debug(LL_DEBUG3, "result too big for the buffer %ld >= %ld\n",
-                 len + dirlen, buflen);
-      return false;
-    }
-
-    mutt_str_strfcpy(result + len, dir, sizeof(result) - len);
-    mutt_str_strfcpy(buf, result, buflen);
+    mutt_path_tilde(buf, buflen, homedir);
   }
   else if (buf[0] != '/')
   {
