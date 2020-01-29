@@ -2590,6 +2590,7 @@ static int nm_path_parent(char *buf, size_t buflen)
 struct MxOps MxNotmuchOps = {
   .magic            = MUTT_NOTMUCH,
   .name             = "notmuch",
+  .is_local         = false,
   .ac_find          = nm_ac_find,
   .ac_add           = nm_ac_add,
   .mbox_open        = nm_mbox_open,

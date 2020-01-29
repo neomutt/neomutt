@@ -1710,7 +1710,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 #ifdef USE_NNTP
             if (!OptNews && (nntp_path_probe(mutt_b2s(&fname), NULL) != MUTT_NNTP))
 #endif
-              if (mx_path_probe(mutt_b2s(&fname), NULL) != MUTT_NOTMUCH)
+              if (mx_path_probe(mutt_b2s(&fname)) != MUTT_NOTMUCH)
               {
                 /* check to make sure the file exists and is readable */
                 if (access(mutt_b2s(&fname), R_OK) == -1)

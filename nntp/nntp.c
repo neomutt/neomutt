@@ -2883,6 +2883,7 @@ static int nntp_path_parent(char *buf, size_t buflen)
 struct MxOps MxNntpOps = {
   .magic            = MUTT_NNTP,
   .name             = "nntp",
+  .is_local         = false,
   .ac_find          = nntp_ac_find,
   .ac_add           = nntp_ac_add,
   .mbox_open        = nntp_mbox_open,

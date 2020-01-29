@@ -698,7 +698,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     mx_path_canon(buf, buflen, C_Folder, NULL);
   }
 
-  enum MailboxType magic = mx_path_probe(buf, NULL);
+  enum MailboxType magic = mx_path_probe(buf);
   if ((magic == MUTT_MAILBOX_ERROR) || (magic == MUTT_UNKNOWN))
   {
     // Try to see if the buffer matches a description before we bail.

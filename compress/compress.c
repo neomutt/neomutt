@@ -450,7 +450,7 @@ static int comp_mbox_open(struct Mailbox *m)
 
   unlock_realpath(m);
 
-  m->magic = mx_path_probe(mailbox_path(m), NULL);
+  m->magic = mx_path_probe(mailbox_path(m));
   if (m->magic == MUTT_UNKNOWN)
   {
     mutt_error(_("Can't identify the contents of the compressed file"));
@@ -520,7 +520,7 @@ static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
       mutt_error(_("Compress command failed: %s"), ci->cmd_open);
       goto cmoa_fail2;
     }
-    m->magic = mx_path_probe(mailbox_path(m), NULL);
+    m->magic = mx_path_probe(mailbox_path(m));
   }
   else
     m->magic = C_MboxType;
@@ -936,6 +936,7 @@ static int comp_path_parent(char *buf, size_t buflen)
 struct MxOps MxCompOps = {
   .magic            = MUTT_COMPRESSED,
   .name             = "compressed",
+  .is_local         = true,
   .ac_find          = comp_ac_find,
   .ac_add           = comp_ac_add,
   .mbox_open        = comp_mbox_open,

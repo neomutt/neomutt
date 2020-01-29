@@ -104,6 +104,7 @@ struct MxOps
 {
   enum MailboxType magic; ///< Mailbox type, e.g. #MUTT_IMAP
   const char *name;       ///< Mailbox name, e.g. "imap"
+  bool is_local;          ///< True, if Mailbox type has local files/dirs
 
   /**
    * ac_find - Find an Account that matches a Mailbox path
@@ -287,7 +288,7 @@ int             mx_path_canon      (char *buf, size_t buflen, const char *folder
 int             mx_path_canon2     (struct Mailbox *m, const char *folder);
 int             mx_path_parent     (char *buf, size_t buflen);
 int             mx_path_pretty     (char *buf, size_t buflen, const char *folder);
-enum MailboxType mx_path_probe     (const char *path, struct stat *st);
+enum MailboxType mx_path_probe     (const char *path);
 struct Mailbox *mx_path_resolve    (const char *path);
 int             mx_tags_commit     (struct Mailbox *m, struct Email *e, char *tags);
 int             mx_tags_edit       (struct Mailbox *m, const char *tags, char *buf, size_t buflen);

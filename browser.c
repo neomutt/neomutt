@@ -1321,7 +1321,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         {
           /* If browsing in "local"-mode, than we chose to define LastDir to
            * MailDir */
-          switch (mx_path_probe(CurrentFolder, NULL))
+          switch (mx_path_probe(CurrentFolder))
           {
             case MUTT_IMAP:
             case MUTT_MAILDIR:
@@ -1472,7 +1472,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                                     state.entry[menu->current].name);
           }
 
-          enum MailboxType magic = mx_path_probe(mutt_b2s(buf), NULL);
+          enum MailboxType magic = mx_path_probe(mutt_b2s(buf));
           if ((op == OP_DESCEND_DIRECTORY) || (magic == MUTT_MAILBOX_ERROR) ||
               (magic == MUTT_UNKNOWN)
 #ifdef USE_IMAP
