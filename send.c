@@ -1353,12 +1353,12 @@ struct Address *mutt_default_from(void)
 }
 
 /**
- * send_message - Send an email
+ * invoke_mta - Send an email
  * @param e Email
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int send_message(struct Email *e)
+static int invoke_mta(struct Email *e)
 {
   struct Buffer *tempfile = NULL;
   int rc = -1;
@@ -2577,7 +2577,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
   if (C_FccBeforeSend)
     save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath);
 
-  i = send_message(e_templ);
+  i = invoke_mta(e_templ);
   if (i < 0)
   {
     if (!(flags & SEND_BATCH))
