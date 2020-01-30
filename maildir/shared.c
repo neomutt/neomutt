@@ -1128,6 +1128,10 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
  * maildir_canon_filename - Generate the canonical filename for a Maildir folder
  * @param dest   Buffer for the result
  * @param src    Buffer containing source filename
+ *
+ * @note         maildir filename is defined as: \<base filename\>:2,\<flags\>
+ *               but \<base filename\> may contain additional comma separated
+ *               fields.
  */
 void maildir_canon_filename(struct Buffer *dest, const char *src)
 {
@@ -1139,7 +1143,14 @@ void maildir_canon_filename(struct Buffer *dest, const char *src)
     src = t + 1;
 
   mutt_buffer_strcpy(dest, src);
-  char *u = strrchr(dest->data, ':');
+  char *u = strchr(dest->data, ',');
+  if (u)
+  {
+    *u = '\0';
+    dest->dptr = u;
+    return;
+  }
+  u = strrchr(dest->data, ':');
   if (u)
   {
     *u = '\0';
