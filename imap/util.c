@@ -438,7 +438,7 @@ header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxD
   if ((len > 3) && (strcmp(mutt_b2s(mbox) + len - 3, "/..") == 0))
     goto cleanup;
 
-  struct Url url;
+  struct Url url = { 0 };
   mutt_account_tourl(&adata->conn->account, &url);
   url.path = mbox->data;
   url_tobuffer(&url, cachepath, U_PATH);
@@ -708,7 +708,7 @@ int imap_mxcmp(const char *mx1, const char *mx2)
 void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
 {
   struct ConnAccount target_conn_account, home_conn_account;
-  struct Url url;
+  struct Url url = { 0 };
   char *delim = NULL;
   int tlen;
   int hlen = 0;
@@ -943,7 +943,7 @@ char *imap_next_word(char *s)
  */
 void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *conn_account, char *path)
 {
-  struct Url url;
+  struct Url url = { 0 };
   mutt_account_tourl(conn_account, &url);
   url.path = path;
   url_tostring(&url, buf, buflen, 0);

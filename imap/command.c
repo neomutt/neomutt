@@ -662,7 +662,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   char buf[256];
   char errstr[256];
   struct Buffer err, token;
-  struct Url url;
+  struct Url url = { 0 };
   struct ImapList list = { 0 };
 
   if (adata->cmdresult)

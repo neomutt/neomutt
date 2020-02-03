@@ -358,7 +358,7 @@ static header_cache_t *pop_hcache_open(struct PopAccountData *adata, const char 
   if (!adata || !adata->conn)
     return mutt_hcache_open(C_HeaderCache, path, NULL);
 
-  struct Url url;
+  struct Url url = { 0 };
   char p[1024];
 
   mutt_account_tourl(&adata->conn->account, &url);
@@ -818,7 +818,7 @@ static int pop_mbox_open(struct Mailbox *m)
 
   char buf[PATH_MAX];
   struct ConnAccount acct = { { 0 } };
-  struct Url url;
+  struct Url url = { 0 };
 
   if (pop_parse_path(mailbox_path(m), &acct))
   {

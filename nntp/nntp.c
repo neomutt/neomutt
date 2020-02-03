@@ -2386,7 +2386,7 @@ static struct Account *nntp_ac_find(struct Account *a, const char *path)
   if (!a || (a->type != MUTT_NNTP) || !path)
     return NULL;
 
-  struct Url url;
+  struct Url url = { 0 };
   char tmp[PATH_MAX];
   mutt_str_strfcpy(tmp, path, sizeof(tmp));
   url_parse(&url, tmp);

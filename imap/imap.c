@@ -544,7 +544,7 @@ static int complete_hosts(char *buf, size_t buflen)
 #if 0
   TAILQ_FOREACH(conn, mutt_socket_head(), entries)
   {
-    struct Url url;
+    struct Url url = { 0 };
     char urlstr[1024];
 
     if (conn->account.type != MUTT_ACCT_TYPE_IMAP)

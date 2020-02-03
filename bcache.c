@@ -62,7 +62,7 @@ struct BodyCache
 static int bcache_path(struct ConnAccount *account, const char *mailbox, struct BodyCache *bcache)
 {
   char host[256];
-  struct Url url = { U_UNKNOWN };
+  struct Url url = { 0 };
 
   if (!account || !C_MessageCachedir || !bcache)
     return -1;

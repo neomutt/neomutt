@@ -87,7 +87,7 @@ struct Connection *mutt_conn_new(const struct ConnAccount *account)
 struct Connection *mutt_conn_find(const struct Connection *start,
                                   const struct ConnAccount *account)
 {
-  struct Url url;
+  struct Url url = { 0 };
   char hook[1024];
 
   /* account isn't actually modified, since url isn't either */

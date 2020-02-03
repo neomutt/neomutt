@@ -151,6 +151,44 @@ enum UrlScheme url_check_scheme(const char *s)
 }
 
 /**
+ * url_free - Free the contents of a URL
+ * @param ptr Url to free
+ */
+void url_free(struct Url **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct Url *url = *ptr;
+
+  struct UrlQuery *np = NULL;
+  struct UrlQuery *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, &url->query_strings, entries, tmp)
+  {
+    STAILQ_REMOVE(&url->query_strings, np, UrlQuery, entries);
+    // Don't free 'name', 'value': they are pointers into the 'src' string
+    FREE(&np);
+  }
+
+  FREE(&url->src);
+  FREE(ptr);
+}
+
+/**
+ * url_new - Create a Url
+ * @retval ptr New Url
+ */
+struct Url *url_new(void)
+{
+  struct Url *url = mutt_mem_calloc(1, sizeof(struct Url));
+
+  url->scheme = U_UNKNOWN;
+  STAILQ_INIT(&url->query_strings);
+
+  return url;
+}
+
+/**
  * url_parse - Fill in Url
  * @param src   String to parse
  * @retval ptr  Pointer to the parsed URL
@@ -169,41 +207,34 @@ struct Url *url_parse(const char *src)
 
   char *p = NULL;
   size_t srcsize = strlen(src) + 1;
-  struct Url *u = mutt_mem_calloc(1, sizeof(struct Url) + srcsize);
+  struct Url *url = url_new();
 
-  u->scheme = scheme;
-  u->user = NULL;
-  u->pass = NULL;
-  u->host = NULL;
-  u->port = 0;
-  u->path = NULL;
-  STAILQ_INIT(&u->query_strings);
-  u->src = (char *) u + sizeof(struct Url);
-  mutt_str_strfcpy(u->src, src, srcsize);
+  url->scheme = scheme;
+  url->src = mutt_str_strdup(src);
 
-  char *it = u->src;
+  char *it = url->src;
 
   it = strchr(it, ':') + 1;
 
   if (strncmp(it, "//", 2) != 0)
   {
-    u->path = it;
-    if (url_pct_decode(u->path) < 0)
+    url->path = it;
+    if (url_pct_decode(url->path) < 0)
     {
-      url_free(&u);
+      url_free(&url);
     }
-    return u;
+    return url;
   }
 
   it += 2;
 
   /* We have the length of the string, so let's be fancier than strrchr */
-  for (char *q = u->src + srcsize - 1; q >= it; --q)
+  for (char *q = url->src + srcsize - 1; q >= it; --q)
   {
     if (*q == '?')
     {
       *q = '\0';
-      if (parse_query_string(&u->query_strings, q + 1) < 0)
+      if (parse_query_string(&url->query_strings, q + 1) < 0)
       {
         goto err;
       }
@@ -211,11 +242,11 @@ struct Url *url_parse(const char *src)
     }
   }
 
-  u->path = strchr(it, '/');
-  if (u->path)
+  url->path = strchr(it, '/');
+  if (url->path)
   {
-    *u->path++ = '\0';
-    if (url_pct_decode(u->path) < 0)
+    *url->path++ = '\0';
+    if (url_pct_decode(url->path) < 0)
       goto err;
   }
 
@@ -227,12 +258,12 @@ struct Url *url_parse(const char *src)
     if (p)
     {
       *p = '\0';
-      u->pass = p + 1;
-      if (url_pct_decode(u->pass) < 0)
+      url->pass = p + 1;
+      if (url_pct_decode(url->pass) < 0)
         goto err;
     }
-    u->user = it;
-    if (url_pct_decode(u->user) < 0)
+    url->user = it;
+    if (url_pct_decode(url->user) < 0)
       goto err;
     it = at + 1;
   }
@@ -254,54 +285,29 @@ struct Url *url_parse(const char *src)
     *p++ = '\0';
     if ((mutt_str_atoi(p, &num) < 0) || (num < 0) || (num > 0xffff))
       goto err;
-    u->port = (unsigned short) num;
+    url->port = (unsigned short) num;
   }
   else
-    u->port = 0;
+    url->port = 0;
 
   if (mutt_str_strlen(it) != 0)
   {
-    u->host = it;
-    if (url_pct_decode(u->host) < 0)
+    url->host = it;
+    if (url_pct_decode(url->host) < 0)
       goto err;
   }
-  else if (u->path)
+  else if (url->path)
   {
     /* No host are provided, we restore the / because this is absolute path */
-    u->path = it;
+    url->path = it;
     *it++ = '/';
   }
 
-  return u;
+  return url;
 
 err:
-  url_free(&u);
+  url_free(&url);
   return NULL;
-}
-
-/**
- * url_free - Free the contents of a URL
- * @param[out] u Url to empty
- *
- * @note The Url itself is not freed
- */
-void url_free(struct Url **u)
-{
-  if (!u || !*u)
-    return;
-
-  struct UrlQuery *np = STAILQ_FIRST(&(*u)->query_strings);
-  struct UrlQuery *next = NULL;
-  while (np)
-  {
-    next = STAILQ_NEXT(np, entries);
-    /* NOTE(sileht): We don't free members, they will be freed when
-     * the src char* passed to url_parse() is freed */
-    FREE(&np);
-    np = next;
-  }
-  STAILQ_INIT(&(*u)->query_strings);
-  FREE(u);
 }
 
 /**
@@ -323,7 +329,7 @@ void url_pct_encode(char *buf, size_t buflen, const char *src)
   buflen--;
   while (src && *src && (buflen != 0))
   {
-    if (strchr("/:&%", *src))
+    if (strchr("/:&%=", *src))
     {
       if (buflen < 3)
         break;
@@ -343,67 +349,85 @@ void url_pct_encode(char *buf, size_t buflen, const char *src)
 
 /**
  * url_tobuffer - Output the URL string for a given Url object
- * @param u      Url to turn into a string
+ * @param url    Url to turn into a string
  * @param buf    Buffer for the result
  * @param flags  Flags, e.g. #U_PATH
  * @retval  0 Success
  * @retval -1 Error
  */
-int url_tobuffer(struct Url *u, struct Buffer *buf, int flags)
+int url_tobuffer(struct Url *url, struct Buffer *buf, int flags)
 {
-  if (!u || !buf)
+  if (!url || !buf)
     return -1;
-  if (u->scheme == U_UNKNOWN)
+  if (url->scheme == U_UNKNOWN)
     return -1;
 
-  mutt_buffer_printf(buf, "%s:", mutt_map_get_name(u->scheme, UrlMap));
+  mutt_buffer_printf(buf, "%s:", mutt_map_get_name(url->scheme, UrlMap));
 
-  if (u->host)
+  if (url->host)
   {
     if (!(flags & U_PATH))
       mutt_buffer_addstr(buf, "//");
 
-    if (u->user && (u->user[0] || !(flags & U_PATH)))
+    if (url->user && (url->user[0] || !(flags & U_PATH)))
     {
       char str[256];
-      url_pct_encode(str, sizeof(str), u->user);
+      url_pct_encode(str, sizeof(str), url->user);
       mutt_buffer_add_printf(buf, "%s@", str);
     }
 
-    if (strchr(u->host, ':'))
-      mutt_buffer_add_printf(buf, "[%s]", u->host);
+    if (strchr(url->host, ':'))
+      mutt_buffer_add_printf(buf, "[%s]", url->host);
     else
-      mutt_buffer_add_printf(buf, "%s", u->host);
+      mutt_buffer_add_printf(buf, "%s", url->host);
 
-    if (u->port)
-      mutt_buffer_add_printf(buf, ":%hu/", u->port);
+    if (url->port)
+      mutt_buffer_add_printf(buf, ":%hu/", url->port);
     else
       mutt_buffer_addstr(buf, "/");
   }
 
-  if (u->path)
-    mutt_buffer_addstr(buf, u->path);
+  if (url->path)
+    mutt_buffer_addstr(buf, url->path);
+
+  if (STAILQ_FIRST(&url->query_strings))
+  {
+    mutt_buffer_addstr(buf, "?");
+
+    char str[256];
+    struct UrlQuery *np = NULL;
+    STAILQ_FOREACH(np, &url->query_strings, entries)
+    {
+      url_pct_encode(str, sizeof(str), np->name);
+      mutt_buffer_addstr(buf, str);
+      mutt_buffer_addstr(buf, "=");
+      url_pct_encode(str, sizeof(str), np->value);
+      mutt_buffer_addstr(buf, str);
+      if (STAILQ_NEXT(np, entries))
+        mutt_buffer_addstr(buf, "&");
+    }
+  }
 
   return 0;
 }
 
 /**
  * url_tostring - Output the URL string for a given Url object
- * @param u      Url to turn into a string
+ * @param url    Url to turn into a string
  * @param dest   Buffer for the result
  * @param len    Length of buffer
  * @param flags  Flags, e.g. #U_PATH
  * @retval  0 Success
  * @retval -1 Error
  */
-int url_tostring(struct Url *u, char *dest, size_t len, int flags)
+int url_tostring(struct Url *url, char *dest, size_t len, int flags)
 {
-  if (!u || !dest)
+  if (!url || !dest)
     return -1;
 
   struct Buffer *dest_buf = mutt_buffer_pool_get();
 
-  int retval = url_tobuffer(u, dest_buf, flags);
+  int retval = url_tobuffer(url, dest_buf, flags);
   if (retval == 0)
     mutt_str_strfcpy(dest, mutt_b2s(dest_buf), len);
 

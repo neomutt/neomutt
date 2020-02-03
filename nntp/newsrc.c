@@ -527,7 +527,7 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *acct, con
   /* server subdirectory */
   if (acct)
   {
-    struct Url url;
+    struct Url url = { 0 };
 
     mutt_account_tourl(acct, &url);
     url.path = mutt_str_strdup(src);
@@ -555,7 +555,7 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *acct, con
  */
 void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *acct)
 {
-  struct Url url;
+  struct Url url = { 0 };
 
   mutt_account_tourl(acct, &url);
   url.path = mutt_str_strdup(buf);
@@ -705,7 +705,7 @@ static void nntp_hcache_namer(const char *path, struct Buffer *dest)
  */
 header_cache_t *nntp_hcache_open(struct NntpMboxData *mdata)
 {
-  struct Url url;
+  struct Url url = { 0 };
   char file[PATH_MAX];
 
   if (!mdata->adata || !mdata->adata->cacheable || !mdata->adata->conn ||
@@ -923,7 +923,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
   {
     case 'a':
     {
-      struct Url url;
+      struct Url url = { 0 };
       mutt_account_tourl(acct, &url);
       url_tostring(&url, fn, sizeof(fn), U_PATH);
       char *p = strchr(fn, '/');
@@ -953,7 +953,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
       break;
     case 'S':
     {
-      struct Url url;
+      struct Url url = { 0 };
       mutt_account_tourl(acct, &url);
       url_tostring(&url, fn, sizeof(fn), U_PATH);
       char *p = strchr(fn, ':');
