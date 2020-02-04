@@ -29,6 +29,7 @@
 struct Email;
 struct EmailList;
 struct NotifyCallback;
+extern struct ContextList ContextList;
 
 /**
  * struct Context - The "current" mailbox
@@ -49,7 +50,9 @@ struct Context
 
   struct Mailbox *mailbox;
   struct Notify *notify;             ///< Notifications handler
+  STAILQ_ENTRY(Context) entries;     ///< Linked list
 };
+STAILQ_HEAD(ContextList, Context);
 
 /**
  * struct EventContext - An Event that happened to an Context

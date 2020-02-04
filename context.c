@@ -42,6 +42,8 @@
 #include "sort.h"
 #include "ncrypt/lib.h"
 
+struct ContextList ContextList = STAILQ_HEAD_INITIALIZER(ContextList); ///< List of Contexts
+
 /**
  * ctx_free - Free a Context
  * @param[out] ptr Context to free
@@ -62,6 +64,7 @@ void ctx_free(struct Context **ptr)
   mutt_hash_free(&ctx->thread_hash);
   notify_free(&ctx->notify);
 
+  STAILQ_REMOVE(&ContextList, ctx, Context, entries);
   FREE(ptr);
 }
 
