@@ -2059,36 +2059,28 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
     struct MailboxNode *nptmp = NULL;
     STAILQ_FOREACH_SAFE(np, &ml, entries, nptmp)
     {
-      /* Decide whether to delete all normal mailboxes or all virtual */
-      bool virt = ((np->mailbox->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
-      bool norm = ((np->mailbox->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
-      bool clear_this = clear_all && (virt || norm);
-
       /* Compare against path or desc? Ensure 'buf' is valid */
-      if (!clear_this && tmp_valid)
+      if (!clear_all && tmp_valid &&
+          (mutt_str_strcasecmp(mutt_b2s(buf), mailbox_path(np->mailbox)) != 0) &&
+          (mutt_str_strcasecmp(mutt_b2s(buf), np->mailbox->name) != 0))
       {
-        clear_this =
-            (mutt_str_strcasecmp(mutt_b2s(buf), mailbox_path(np->mailbox)) == 0) ||
-            (mutt_str_strcasecmp(mutt_b2s(buf), np->mailbox->name) == 0);
+        continue;
       }
 
-      if (clear_this)
-      {
 #ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(np->mailbox, false);
+      mutt_sb_notify_mailbox(np->mailbox, false);
 #endif
 #ifdef USE_INOTIFY
-        mutt_monitor_remove(np->mailbox);
+      mutt_monitor_remove(np->mailbox);
 #endif
-        if (Context && (Context->mailbox == np->mailbox))
-        {
-          np->mailbox->flags |= MB_HIDDEN;
-        }
-        else
-        {
-          account_mailbox_remove(np->mailbox->account, np->mailbox);
-          mailbox_free(&np->mailbox);
-        }
+      if (Context && (Context->mailbox == np->mailbox))
+      {
+        np->mailbox->flags |= MB_HIDDEN;
+      }
+      else
+      {
+        account_mailbox_remove(np->mailbox->account, np->mailbox);
+        mailbox_free(&np->mailbox);
       }
     }
     neomutt_mailboxlist_clear(&ml);

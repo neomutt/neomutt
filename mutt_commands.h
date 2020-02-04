@@ -71,7 +71,6 @@ enum MuttSetCommand
 
 /* parameter to parse_mailboxes */
 #define MUTT_NAMED   (1 << 0)
-#define MUTT_VIRTUAL (1 << 1)
 
 extern const struct Command Commands[];
 

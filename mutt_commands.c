@@ -149,8 +149,8 @@ const struct Command Commands[] = {
   { "unsubscribe-from",    parse_unsubscribe_from, 0 },
 #endif
 #ifdef USE_NOTMUCH
-  { "unvirtual-mailboxes", parse_unmailboxes,      MUTT_VIRTUAL },
-  { "virtual-mailboxes",   parse_mailboxes,        MUTT_VIRTUAL | MUTT_NAMED },
+  { "unvirtual-mailboxes", parse_unmailboxes,      0 },
+  { "virtual-mailboxes",   parse_mailboxes,        MUTT_NAMED },
 #endif
   { NULL,                  NULL,                   0 },
 };
