@@ -1,10 +1,10 @@
 # Lithuanian messages for NeoMutt
 #
-# Copyright (c) 2000-2019 NeoMutt project.
+# Copyright (c) 2000-2020 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
 # Tadas <btadas@is.lt>, 2000
-# Marius Gedminas <marius@gedmin.as>, 2000,2017-2019
+# Marius Gedminas <marius@gedmin.as>, 2000,2017-2020
 # Gediminas Paulauskas <menesis@delfi.lt>, 2000
 #
 msgid ""
@@ -1407,90 +1407,90 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "Klaida. Išsaugau laikiną bylą: %s"
 
 #: config/bool.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid boolean value: %s"
-msgstr "Bloga data: %s"
+msgstr "Bloga loginė reikšmė: %s"
 
 #: config/bool.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid boolean value: %ld"
-msgstr "Bloga data: %s"
+msgstr "Bloga loginė reikšmė: %ld"
 
 #: config/enum.c:62
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid enum value: %s"
-msgstr "%s: blogas skaičius: %s"
+msgstr "Bloga parametro reikšmė: %s"
 
 #: config/enum.c:149
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid enum value: %ld"
-msgstr "Bloga parametro %s reikšmė: %ld"
+msgstr "Bloga parametro reikšmė: %ld"
 
 #: config/long.c:50
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid long: %s"
-msgstr "Blogas mėnuo: %s"
+msgstr "Blogas skaičius: %s"
 
 #: config/long.c:56 config/long.c:114 config/number.c:68 config/number.c:133
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be negative"
-msgstr "Negalima įjungti/išjungti parametro %s skaitant laišką"
+msgstr "Parametras %s negali būti neigiamas"
 
 #: config/number.c:49 config/sort.c:145 config/string.c:75 config/string.c:159
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be empty"
-msgstr "Negalima įjungti/išjungti parametro %s skaitant laišką"
+msgstr "Parametras %s negali būti tuščias"
 
 #: config/number.c:56
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid number: %s"
-msgstr "%s: blogas skaičius: %s"
+msgstr "Blogas skaičius: %s"
 
 #: config/number.c:62
 #, c-format
 msgid "Number is too big: %s"
-msgstr ""
+msgstr "Skaičius per didelis: %s"
 
 #: config/number.c:127
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid number: %ld"
-msgstr "%s: blogas skaičius: %s"
+msgstr "Blogas skaičius: %ld"
 
 #: config/quad.c:69
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %s"
-msgstr "Bloga data: %s"
+msgstr "Bloga parametro reikšmė: %s"
 
 #: config/quad.c:133
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %ld"
-msgstr "Bloga parametro %s reikšmė: %ld"
+msgstr "Bloga parametro reikšmė: %ld"
 
 #: config/set.c:102
 #, c-format
 msgid "No such variable: %s"
-msgstr ""
+msgstr "Nėra tokio kintamojo: %s"
 
 #: config/set.c:134 config/set.c:821
-#, fuzzy, c-format
+#, c-format
 msgid "Variable '%s' has an invalid type %d"
-msgstr "Klaida: -d reikšmė '%s' yra netinkama"
+msgstr "Kintamojo '%s' tipas yra neleistinas (%d)"
 
 #: config/set.c:399 config/set.c:463 config/set.c:528 config/set.c:601
 #: config/set.c:671 config/set.c:744
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown variable '%s'"
-msgstr "%s: nežinomas kintamasis"
+msgstr "Nežinomas kintamasis '%s'"
 
 #: config/sort.c:192
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort name: %s"
-msgstr "Bloga data: %s"
+msgstr "Bloga rikiavimo tvarka: %s"
 
 #: config/sort.c:322
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort type: %ld"
-msgstr "Bloga data: %s"
+msgstr "Bloga rikiavimo rūšis: %ld"
 
 #: conn/conn_raw.c:160 conn/conn_raw.c:218
 #, c-format
