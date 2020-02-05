@@ -1141,24 +1141,24 @@ struct ConfigDef MuttVars[] = {
   ** personal taste.  This string is similar to $$index_format, but has
   ** its own set of \fCprintf(3)\fP-like sequences:
   ** .dl
-  ** .dt %C  .dd Current file number
-  ** .dt %d  .dd Date/time folder was last modified
-  ** .dt %D  .dd Date/time folder was last modified using $$date_format.
-  ** .dt %f  .dd Filename ("/" is appended to directory names,
-  **             "@" to symbolic links and "*" to executable files)
-  ** .dt %F  .dd File permissions
-  ** .dt %g  .dd Group name (or numeric gid, if missing)
-  ** .dt %i  .dd Description of the folder
-  ** .dt %l  .dd Number of hard links
-  ** .dt %m  .dd Number of messages in the mailbox *
-  ** .dt %n  .dd Number of unread messages in the mailbox *
-  ** .dt %N  .dd "N" if mailbox has new mail, blank otherwise
-  ** .dt %s  .dd Size in bytes (see $formatstrings-size)
-  ** .dt %t  .dd "*" if the file is tagged, blank otherwise
-  ** .dt %u  .dd Owner name (or numeric uid, if missing)
-  ** .dt %>X .dd Right justify the rest of the string and pad with character "X"
-  ** .dt %|X .dd Pad to the end of the line with character "X"
-  ** .dt %*X .dd Soft-fill with character "X" as pad
+  ** .dt %C  .dd   .dd Current file number
+  ** .dt %d  .dd   .dd Date/time folder was last modified
+  ** .dt %D  .dd   .dd Date/time folder was last modified using $$date_format.
+  ** .dt %f  .dd   .dd Filename ("/" is appended to directory names,
+  **                   "@" to symbolic links and "*" to executable files)
+  ** .dt %F  .dd   .dd File permissions
+  ** .dt %g  .dd   .dd Group name (or numeric gid, if missing)
+  ** .dt %i  .dd   .dd Description of the folder
+  ** .dt %l  .dd   .dd Number of hard links
+  ** .dt %m  .dd * .dd Number of messages in the mailbox
+  ** .dt %n  .dd * .dd Number of unread messages in the mailbox
+  ** .dt %N  .dd   .dd "N" if mailbox has new mail, blank otherwise
+  ** .dt %s  .dd   .dd Size in bytes (see $formatstrings-size)
+  ** .dt %t  .dd   .dd "*" if the file is tagged, blank otherwise
+  ** .dt %u  .dd   .dd Owner name (or numeric uid, if missing)
+  ** .dt %>X .dd   .dd Right justify the rest of the string and pad with character "X"
+  ** .dt %|X .dd   .dd Pad to the end of the line with character "X"
+  ** .dt %*X .dd   .dd Soft-fill with character "X" as pad
   ** .de
   ** .pp
   ** For an explanation of "soft-fill", see the $$index_format documentation.
@@ -3213,14 +3213,14 @@ struct ConfigDef MuttVars[] = {
   ** This variable describes the format of the "query" menu. The
   ** following \fCprintf(3)\fP-style sequences are understood:
   ** .dl
-  ** .dt %a  .dd Destination address
-  ** .dt %c  .dd Current entry number
-  ** .dt %e  .dd Extra information *
-  ** .dt %n  .dd Destination name
-  ** .dt %t  .dd "*" if current entry is tagged, a space otherwise
-  ** .dt %>X .dd Right justify the rest of the string and pad with "X"
-  ** .dt %|X .dd Pad to the end of the line with "X"
-  ** .dt %*X .dd Soft-fill with character "X" as pad
+  ** .dt %a  .dd   .dd Destination address
+  ** .dt %c  .dd   .dd Current entry number
+  ** .dt %e  .dd * .dd Extra information
+  ** .dt %n  .dd   .dd Destination name
+  ** .dt %t  .dd   .dd "*" if current entry is tagged, a space otherwise
+  ** .dt %>X .dd   .dd Right justify the rest of the string and pad with "X"
+  ** .dt %|X .dd   .dd Pad to the end of the line with "X"
+  ** .dt %*X .dd   .dd Soft-fill with character "X" as pad
   ** .de
   ** .pp
   ** For an explanation of "soft-fill", see the $$index_format documentation.
@@ -3684,25 +3684,29 @@ struct ConfigDef MuttVars[] = {
   ** similar to $$index_format, but has its own set of \fCprintf(3)\fP-like
   ** sequences:
   ** .dl
-  ** .dt %B  .dd Name of the mailbox
-  ** .dt %D  .dd Description of the mailbox
-  ** .dt %S  .dd * Size of mailbox (total number of messages)
-  ** .dt %N  .dd * Number of unread messages in the mailbox
-  ** .dt %n  .dd N if mailbox has new mail, blank otherwise
-  ** .dt %F  .dd * Number of Flagged messages in the mailbox
-  ** .dt %!  .dd "!" : one flagged message;
-  **             "!!" : two flagged messages;
-  **             "n!" : n flagged messages (for n > 2).
-  **             Otherwise prints nothing.
-  ** .dt %d  .dd * @ Number of deleted messages
-  ** .dt %L  .dd * @ Number of messages after limiting
-  ** .dt %t  .dd * @ Number of tagged messages
-  ** .dt %>X .dd right justify the rest of the string and pad with "X"
-  ** .dt %|X .dd pad to the end of the line with "X"
-  ** .dt %*X .dd soft-fill with character "X" as pad
+  ** .dt %B .dd     .dd Name of the mailbox
+  ** .dt %d .dd * @ .dd Number of deleted messages in the mailbox
+  ** .dt %D .dd     .dd Descriptive name of the mailbox
+  ** .dt %F .dd *   .dd Number of flagged messages in the mailbox
+  ** .dt %L .dd * @ .dd Number of messages after limiting
+  ** .dt %n .dd     .dd 'N' if mailbox has new mail, ' ' (space) otherwise
+  ** .dt %N .dd *   .dd Number of unread messages in the mailbox (seen or unseen)
+  ** .dt %o .dd *   .dd Number of old messages in the mailbox (unread, seen)
+  ** .dt %r .dd *   .dd Number of read messages in the mailbox (read, seen)
+  ** .dt %S .dd *   .dd Size of mailbox (total number of messages)
+  ** .dt %t .dd * @ .dd Number of tagged messages in the mailbox
+  ** .dt %Z .dd *   .dd Number of new messages in the mailbox (unread, unseen)
+  ** .dt %! .dd     .dd "!" : one flagged message;
+  **                    "!!" : two flagged messages;
+  **                    "n!" : n flagged messages (for n > 2).
+  **                    Otherwise prints nothing.
+  ** .dt %>X .dd .dd Right justify the rest of the string and pad with "X"
+  ** .dt %|X .dd .dd Pad to the end of the line with "X"
+  ** .dt %*X .dd .dd Soft-fill with character "X" as pad
   ** .de
   ** .pp
   ** * = Can be optionally printed if nonzero
+  ** .pp
   ** @ = Only applicable to the current folder
   ** .pp
   ** In order to use %S, %N, %F, and %!, $$mail_check_stats must
@@ -3725,13 +3729,6 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $$sidebar_whitelist, $$sidebar_non_empty_mailbox_only.
   */
-  { "sidebar_non_empty_mailbox_only", DT_BOOL|R_SIDEBAR, &C_SidebarNonEmptyMailboxOnly, false },
-  /*
-  ** .pp
-  ** When set, the sidebar will only display mailboxes that contain one or more mails.
-  ** .pp
-  ** \fBSee also:\fP $$sidebar_new_mail_only, $$sidebar_whitelist.
-  */
   { "sidebar_next_new_wrap", DT_BOOL, &C_SidebarNextNewWrap, false },
   /*
   ** .pp
@@ -3739,6 +3736,13 @@ struct ConfigDef MuttVars[] = {
   ** the list of mailboxes, but wrap around to the beginning. The
   ** \fC<sidebar-prev-new>\fP command is similarly affected, wrapping around to
   ** the end of the list.
+  */
+  { "sidebar_non_empty_mailbox_only", DT_BOOL|R_SIDEBAR, &C_SidebarNonEmptyMailboxOnly, false },
+  /*
+  ** .pp
+  ** When set, the sidebar will only display mailboxes that contain one or more mails.
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_new_mail_only, $$sidebar_whitelist.
   */
   { "sidebar_on_right", DT_BOOL|R_INDEX|R_PAGER|R_REFLOW, &C_SidebarOnRight, false },
   /*
@@ -4472,33 +4476,33 @@ struct ConfigDef MuttVars[] = {
   ** menu.  This string is similar to $$index_format, but has its own
   ** set of \fCprintf(3)\fP-like sequences:
   ** .dl
-  ** .dt %b  .dd Number of mailboxes with new mail *
-  ** .dt %d  .dd Number of deleted messages *
-  ** .dt %D  .dd Description of the mailbox
-  ** .dt %f  .dd The full pathname of the current mailbox
-  ** .dt %F  .dd Number of flagged messages *
-  ** .dt %h  .dd Local hostname
-  ** .dt %l  .dd Size (in bytes) of the current mailbox (see $formatstrings-size) *
-  ** .dt %L  .dd Size (in bytes) of the messages shown
-  **             (i.e., which match the current limit) (see $formatstrings-size) *
-  ** .dt %m  .dd The number of messages in the mailbox *
-  ** .dt %M  .dd The number of messages shown (i.e., which match the current limit) *
-  ** .dt %n  .dd Number of new messages in the mailbox *
-  ** .dt %o  .dd Number of old unread messages *
-  ** .dt %p  .dd Number of postponed messages *
-  ** .dt %P  .dd Percentage of the way through the index
-  ** .dt %r  .dd Modified/read-only/won't-write/attach-message indicator,
-  **             According to $$status_chars
-  ** .dt %R  .dd Number of read messages *
-  ** .dt %s  .dd Current sorting mode ($$sort)
-  ** .dt %S  .dd Current aux sorting method ($$sort_aux)
-  ** .dt %t  .dd Number of tagged messages *
-  ** .dt %u  .dd Number of unread messages *
-  ** .dt %v  .dd NeoMutt version string
-  ** .dt %V  .dd Currently active limit pattern, if any *
-  ** .dt %>X .dd Right justify the rest of the string and pad with "X"
-  ** .dt %|X .dd Pad to the end of the line with "X"
-  ** .dt %*X .dd Soft-fill with character "X" as pad
+  ** .dt %b  .dd * .dd Number of mailboxes with new mail
+  ** .dt %d  .dd * .dd Number of deleted messages
+  ** .dt %D  .dd   .dd Description of the mailbox
+  ** .dt %f  .dd   .dd The full pathname of the current mailbox
+  ** .dt %F  .dd * .dd Number of flagged messages
+  ** .dt %h  .dd   .dd Local hostname
+  ** .dt %l  .dd * .dd Size (in bytes) of the current mailbox (see $formatstrings-size)
+  ** .dt %L  .dd * .dd Size (in bytes) of the messages shown
+  **                   (i.e., which match the current limit) (see $formatstrings-size)
+  ** .dt %m  .dd * .dd The number of messages in the mailbox
+  ** .dt %M  .dd * .dd The number of messages shown (i.e., which match the current limit)
+  ** .dt %n  .dd * .dd Number of new messages in the mailbox (unread, unseen)
+  ** .dt %o  .dd * .dd Number of old messages in the mailbox (unread, seen)
+  ** .dt %p  .dd * .dd Number of postponed messages
+  ** .dt %P  .dd   .dd Percentage of the way through the index
+  ** .dt %r  .dd   .dd Modified/read-only/won't-write/attach-message indicator,
+  **                   According to $$status_chars
+  ** .dt %R  .dd * .dd Number of read messages in the mailbox (read, seen)
+  ** .dt %s  .dd   .dd Current sorting mode ($$sort)
+  ** .dt %S  .dd   .dd Current aux sorting method ($$sort_aux)
+  ** .dt %t  .dd * .dd Number of tagged messages in the mailbox
+  ** .dt %u  .dd * .dd Number of unread messages in the mailbox (seen or unseen)
+  ** .dt %v  .dd   .dd NeoMutt version string
+  ** .dt %V  .dd * .dd Currently active limit pattern, if any
+  ** .dt %>X .dd   .dd Right justify the rest of the string and pad with "X"
+  ** .dt %|X .dd   .dd Pad to the end of the line with "X"
+  ** .dt %*X .dd   .dd Soft-fill with character "X" as pad
   ** .de
   ** .pp
   ** For an explanation of "soft-fill", see the $$index_format documentation.

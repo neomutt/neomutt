@@ -767,7 +767,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     <entry>%F</entry>
                     <entry>* †</entry>
                     <entry>
-                      Number of Flagged messages in the mailbox
+                      Number of flagged messages in the mailbox
                     </entry>
                   </row>
                   <row>
@@ -782,21 +782,21 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     <entry>*</entry>
                     <entry>
                       If there's new mail, display <quote>N</quote>, otherwise
-                      nothing
+                      <quote> </quote> (space).
                     </entry>
                   </row>
                   <row>
                     <entry>%N</entry>
                     <entry>* †</entry>
                     <entry>
-                      Number of New messages in the mailbox
+                      Number of unread messages in the mailbox (seen or unseen)
                     </entry>
                   </row>
                   <row>
                     <entry>%o</entry>
                     <entry>* †</entry>
                     <entry>
-                      Number of old unread messages in the mailbox
+                      Number of old messages in the mailbox (unread, but seen)
                     </entry>
                   </row>
                   <row>
@@ -817,7 +817,14 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     <entry>%t</entry>
                     <entry>* ‡</entry>
                     <entry>
-                      Number of tagged messages
+                      Number of tagged messages in the mailbox
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>%Z</entry>
+                    <entry>* †</entry>
+                    <entry>
+                      Number of new messages in the mailbox (unread, unseen)
                     </entry>
                   </row>
                   <row>
@@ -1079,6 +1086,7 @@ sidebar_whitelist fruit fruit/apple     <emphasis role="comment"># Always displa
 color sidebar_indicator default color17     <emphasis role="comment"># Dark blue background</emphasis>
 color sidebar_highlight white   color238    <emphasis role="comment"># Grey background</emphasis>
 color sidebar_spoolfile yellow  default     <emphasis role="comment"># Yellow</emphasis>
+color sidebar_unread    cyan    default     <emphasis role="comment"># Light blue</emphasis>
 color sidebar_new       green   default     <emphasis role="comment"># Green</emphasis>
 color sidebar_ordinary  default default     <emphasis role="comment"># Default colors</emphasis>
 color sidebar_flagged   red     default     <emphasis role="comment"># Red</emphasis>
@@ -1115,11 +1123,6 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 </row>
                 <row>
                   <entry></entry>
-                  <entry><literal>sidebar_spoolfile</literal></entry>
-                  <entry>Mailbox is the spoolfile (receives incoming mail)</entry>
-                </row>
-                <row>
-                  <entry></entry>
                   <entry><literal>sidebar_new</literal></entry>
                   <entry>Mailbox contains new mail</entry>
                 </row>
@@ -1132,6 +1135,11 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                   <entry></entry>
                   <entry><literal>sidebar_flagged</literal></entry>
                   <entry>Mailbox contains flagged mail</entry>
+                </row>
+                <row>
+                  <entry></entry>
+                  <entry><literal>sidebar_spoolfile</literal></entry>
+                  <entry>Mailbox is the spoolfile (receives incoming mail)</entry>
                 </row>
                 <row>
                   <entry>Lowest</entry>
@@ -16065,6 +16073,11 @@ set sort_browser="reverse-size"
             </thead>
             <tbody>
               <row>
+                <entry><literal>sidebar_component_depth</literal></entry>
+                <entry>number</entry>
+                <entry><literal>0</literal></entry>
+              </row>
+              <row>
                 <entry><literal>sidebar_delim_chars</literal></entry>
                 <entry>string</entry>
                 <entry><literal>/.</literal></entry>
@@ -16099,6 +16112,11 @@ set sort_browser="reverse-size"
                 <entry><literal>no</literal></entry>
               </row>
               <row>
+                <entry><literal>sidebar_non_empty_mailbox_only</literal></entry>
+                <entry>boolean</entry>
+                <entry><literal>no</literal></entry>
+              </row>
+              <row>
                 <entry><literal>sidebar_on_right</literal></entry>
                 <entry>boolean</entry>
                 <entry><literal>no</literal></entry>
@@ -16107,11 +16125,6 @@ set sort_browser="reverse-size"
                 <entry><literal>sidebar_short_path</literal></entry>
                 <entry>boolean</entry>
                 <entry><literal>no</literal></entry>
-              </row>
-              <row>
-                <entry><literal>sidebar_component_depth</literal></entry>
-                <entry>number</entry>
-                <entry><literal>0</literal></entry>
               </row>
               <row>
                 <entry><literal>sidebar_sort_method</literal></entry>
@@ -16339,6 +16352,10 @@ set sort_browser="reverse-size"
                 <entry>Total number of messages</entry>
               </row>
               <row>
+                <entry><literal>desc</literal></entry>
+                <entry>Descriptive name of the mailbox</entry>
+              </row>
+              <row>
                 <entry><literal>flagged</literal></entry>
                 <entry>Number of flagged messages</entry>
               </row>
@@ -16399,6 +16416,8 @@ set sidebar_indent_string = '  '
 set sidebar_new_mail_only = no
 <emphasis role="comment"># Any mailboxes that are whitelisted will always be visible, even if the</emphasis>
 <emphasis role="comment"># sidebar_new_mail_only option is enabled.</emphasis>
+set sidebar_non_empty_mailbox_only = no
+<emphasis role="comment"># Only show mailboxes that contain some mail</emphasis>
 sidebar_whitelist '/home/user/mailbox1'
 sidebar_whitelist '/home/user/mailbox2'
 <emphasis role="comment"># When searching for mailboxes containing new mail, should the search wrap</emphasis>
@@ -16451,6 +16470,8 @@ bind index,pager B sidebar-toggle-visible
 <emphasis role="comment"># Color of the current, open, mailbox</emphasis>
 <emphasis role="comment"># Note: This is a general NeoMutt option which colors all selected items.</emphasis>
 color indicator cyan black
+<emphasis role="comment"># Sidebar-specific color of the selected item</emphasis>
+color sidebar_indicator cyan black
 <emphasis role="comment"># Color of the highlighted, but not open, mailbox.</emphasis>
 color sidebar_highlight black color8
 <emphasis role="comment"># Color of the divider separating the Sidebar from NeoMutt panels</emphasis>
@@ -16461,6 +16482,10 @@ color sidebar_flagged red black
 color sidebar_new green black
 <emphasis role="comment"># Color to give mailboxes containing no new/flagged mail, etc.</emphasis>
 color sidebar_ordinary color245 default
+<emphasis role="comment"># Color to give the spoolfile mailbox</emphasis>
+color sidebar_spoolfile color207 default
+<emphasis role="comment"># Color to give mailboxes containing no unread mail</emphasis>
+color sidebar_unread color136 default
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 
 <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
