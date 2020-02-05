@@ -42,6 +42,7 @@ typedef uint8_t PatternCompFlags;       ///< Flags for mutt_pattern_comp(), e.g.
 #define MUTT_PC_NO_FLAGS            0   ///< No flags are set
 #define MUTT_PC_FULL_MSG        (1<<0)  ///< Enable body and header matching
 #define MUTT_PC_PATTERN_DYNAMIC (1<<1)  ///< Enable runtime date range evaluation
+#define MUTT_PC_SEND_MODE_SEARCH (1<<2) ///< Allow send-mode body searching
 
 /**
  * struct Pattern - A simple (non-regex) pattern
@@ -56,6 +57,7 @@ struct Pattern
   bool ign_case     : 1;         ///< Ignore case for local string_match searches
   bool is_alias     : 1;         ///< Is there an alias for this Address?
   bool dynamic      : 1;         ///< Evaluate date ranges at run time
+  bool sendmode     : 1;         ///< Evaluate searches in send-mode
   bool is_multi     : 1;         ///< Multiple case (only for ~I pattern now)
   int min;                       ///< Minimum for range checks
   int max;                       ///< Maximum for range checks

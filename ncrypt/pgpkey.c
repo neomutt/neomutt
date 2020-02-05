@@ -1124,7 +1124,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
         pgp_remove_key(&matches, the_strong_valid_key);
         k = the_strong_valid_key;
       }
-      else if (a_valid_addrmatch_key)
+      else if (a_valid_addrmatch_key && !C_CryptOpportunisticEncryptStrongKeys)
       {
         pgp_remove_key(&matches, a_valid_addrmatch_key);
         k = a_valid_addrmatch_key;

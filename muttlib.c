@@ -1563,43 +1563,26 @@ const char *mutt_make_version(void)
 }
 
 /**
- * mutt_encode_path - Convert a path into the user's preferred character set
- * @param buf    Buffer for the result
- * @param buflen Length of buffer
- * @param src  Path to convert (OPTIONAL)
- *
- * If `src` is NULL, the path in `buf` will be converted in-place.
- */
-void mutt_encode_path(char *buf, size_t buflen, const char *src)
-{
-  char *p = mutt_str_strdup(src);
-  int rc = mutt_ch_convert_string(&p, C_Charset, "us-ascii", 0);
-  /* 'src' may be NULL, such as when called from the pop3 driver. */
-  size_t len = mutt_str_strfcpy(buf, (rc == 0) ? p : src, buflen);
-
-  /* convert the path to POSIX "Portable Filename Character Set" */
-  for (size_t i = 0; i < len; i++)
-  {
-    if (!isalnum(buf[i]) && !strchr("/.-_", buf[i]))
-    {
-      buf[i] = '_';
-    }
-  }
-  FREE(&p);
-}
-
-/**
- * mutt_buffer_encode_path - Convert a path into the user's preferred character set
+ * mutt_encode_path - Convert a path to 'us-ascii'
  * @param buf Buffer for the result
  * @param src Path to convert (OPTIONAL)
  *
  * If `src` is NULL, the path in `buf` will be converted in-place.
  */
-void mutt_buffer_encode_path(struct Buffer *buf, const char *src)
+void mutt_encode_path(struct Buffer *buf, const char *src)
 {
   char *p = mutt_str_strdup(src);
-  int rc = mutt_ch_convert_string(&p, C_Charset, "utf-8", 0);
-  mutt_buffer_strcpy(buf, (rc == 0) ? NONULL(p) : NONULL(src));
+  int rc = mutt_ch_convert_string(&p, C_Charset, "us-ascii", 0);
+  size_t len = mutt_buffer_strcpy(buf, (rc == 0) ? NONULL(p) : NONULL(src));
+
+  /* convert the path to POSIX "Portable Filename Character Set" */
+  for (size_t i = 0; i < len; i++)
+  {
+    if (!isalnum(buf->data[i]) && !strchr("/.-_", buf->data[i]))
+    {
+      buf->data[i] = '_';
+    }
+  }
   FREE(&p);
 }
 

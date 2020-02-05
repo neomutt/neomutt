@@ -8630,16 +8630,19 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
         <sect3 id="date-absolute">
           <title>Absolute Dates</title>
           <para>
-            Dates <emphasis>must</emphasis> be in DD/MM/YY format (month and
-            year are optional, defaulting to the current month and year). An
+            Dates <emphasis>must</emphasis> be in DD/MM/YY format (month and year
+            are optional, defaulting to the current month and year) or YYYYMMDD.  An
             example of a valid range of dates is:
           </para>
-          <screen>Limit to messages matching: ~d 20/1/95-31/10</screen>
+<screen>
+Limit to messages matching: ~d 20/1/95-31/10
+Limit to messages matching: ~d 19950120-19951031
+</screen>
           <para>
             If you omit the minimum (first) date, and just specify
-            <quote>-DD/MM/YY</quote>, all messages <emphasis>before</emphasis>
-            the given date will be selected. If you omit the maximum (second)
-            date, and specify <quote>DD/MM/YY-</quote>, all messages
+            <quote>-DD/MM/YY</quote> or <quote>-YYYYMMDD</quote>, all messages
+            <emphasis>before</emphasis> the given date will be selected.  If you omit the
+            maximum(second) date, and specify <quote>DD/MM/YY-</quote>, all messages
             <emphasis>after</emphasis> the given date will be selected. If you
             specify a single date with no dash (<quote>-</quote>), only
             messages sent on the given date will be selected.

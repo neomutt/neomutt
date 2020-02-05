@@ -1261,6 +1261,8 @@ Limit to messages matching:
 .IR \fB~d\fP\~20 / 1 / 95 - 31 / 10
 .
 .PP
+Alternatively, you may use \fIYYYYMMDD\fP to specify a date.
+.PP
 When given a two-digit year, NeoMutt will interpret values less than \(lq70\(rq
 as lying in the 21st century (i.e., \(lq38\(rq means 2038 and not 1938, and
 \(lq00\(rq is interpreted as 2000), and values greater than or equal to

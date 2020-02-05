@@ -1073,8 +1073,15 @@ void mutt_menu_pop_current(struct Menu *menu)
   else
   {
     CurrentMenu = MENU_MAIN;
-    mutt_window_move_abs(0, 0);
-    mutt_window_clrtobot();
+    /* Clearing when NeoMutt exits would be an annoying change in behavior for
+     * those who have disabled alternative screens.  The option is currently
+     * set by autocrypt initialization which mixes menus and prompts outside of
+     * the normal menu system state.  */
+    if (OptMenuPopClearScreen)
+    {
+      mutt_window_move_abs(0, 0);
+      mutt_window_clrtobot();
+    }
   }
 }
 

@@ -199,7 +199,7 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
   if (((rc == 0) && !S_ISDIR(sb.st_mode)) || ((rc == -1) && !slash))
   {
     /* An existing file or a non-existing path not ending with a slash */
-    mutt_buffer_encode_path(hcpath, path);
+    mutt_encode_path(hcpath, path);
     return;
   }
 
@@ -223,7 +223,7 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
     mutt_buffer_pool_release(&name);
   }
 
-  mutt_buffer_encode_path(hcpath, mutt_b2s(hcpath));
+  mutt_encode_path(hcpath, mutt_b2s(hcpath));
   create_hcache_dir(mutt_b2s(hcpath));
   mutt_buffer_pool_release(&hcfile);
 }

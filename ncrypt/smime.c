@@ -807,11 +807,11 @@ static struct SmimeKey *smime_get_key_by_hash(char *hash, bool only_public_key)
  * @param mailbox          Email address to match
  * @param abilities        Abilities to match, see #KeyFlags
  * @param only_public_key  If true, only get the public keys
- * @param may_ask          If true, the user may be asked to select a key
+ * @param oppenc_mode      If true, use opportunistic encryption
  * @retval ptr Matching key
  */
 static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
-                                              bool only_public_key, bool may_ask)
+                                              bool only_public_key, bool oppenc_mode)
 {
   if (!mailbox)
     return NULL;
@@ -858,11 +858,11 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
 
   if (matches)
   {
-    if (!may_ask)
+    if (oppenc_mode)
     {
       if (trusted_match)
         return_key = smime_copy_key(trusted_match);
-      else if (valid_match)
+      else if (valid_match && !C_CryptOpportunisticEncryptStrongKeys)
         return_key = smime_copy_key(valid_match);
       else
         return_key = NULL;
@@ -970,7 +970,7 @@ static void getkeys(char *mailbox)
 {
   char *k = NULL;
 
-  struct SmimeKey *key = smime_get_key_by_addr(mailbox, KEYFLAG_CANENCRYPT, false, true);
+  struct SmimeKey *key = smime_get_key_by_addr(mailbox, KEYFLAG_CANENCRYPT, false, false);
 
   if (!key)
   {
@@ -1076,7 +1076,7 @@ char *smime_class_find_keys(struct AddressList *al, bool oppenc_mode)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    key = smime_get_key_by_addr(a->mailbox, KEYFLAG_CANENCRYPT, true, !oppenc_mode);
+    key = smime_get_key_by_addr(a->mailbox, KEYFLAG_CANENCRYPT, true, oppenc_mode);
     if (!key && !oppenc_mode)
     {
       char buf[1024];

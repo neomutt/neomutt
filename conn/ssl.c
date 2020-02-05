@@ -1366,6 +1366,9 @@ free_ssldata:
  */
 static int ssl_socket_poll(struct Connection *conn, time_t wait_secs)
 {
+  if (!conn)
+    return -1;
+
   if (SSL_has_pending(sockdata(conn)->ssl))
     return 1;
 
