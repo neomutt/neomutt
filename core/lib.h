@@ -30,6 +30,7 @@
  * | core/account.c      | @subpage core_account      |
  * | core/mailbox.c      | @subpage core_mailbox      |
  * | core/neomutt.c      | @subpage core_neomutt      |
+ * | core/path.c         | @subpage core_path         |
  */
 
 #ifndef MUTT_CORE_LIB_H
@@ -39,6 +40,7 @@
 #include "account.h"
 #include "mailbox.h"
 #include "neomutt.h"
+#include "path.h"
 // IWYU pragma: end_exports
 
 #endif /* MUTT_CORE_LIB_H */

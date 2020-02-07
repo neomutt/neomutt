@@ -55,6 +55,7 @@ copy.c
 core/account.c
 core/mailbox.c
 core/neomutt.c
+core/path.c
 debug/backtrace.c
 debug/common.c
 debug/graphviz.c
