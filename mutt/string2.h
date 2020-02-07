@@ -104,6 +104,7 @@ size_t      mutt_str_strfcpy(char *dest, const char *src, size_t dsize);
 const char *mutt_str_stristr(const char *haystack, const char *needle);
 size_t      mutt_str_strlen(const char *a);
 char *      mutt_str_strlower(char *s);
+char *      mutt_str_strnlower(char *str, size_t num);
 int         mutt_str_strncasecmp(const char *a, const char *b, size_t l);
 char *      mutt_str_strncat(char *d, size_t l, const char *s, size_t sl);
 int         mutt_str_strncmp(const char *a, const char *b, size_t l);
