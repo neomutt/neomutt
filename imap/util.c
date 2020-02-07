@@ -264,13 +264,11 @@ struct ImapMboxData *imap_mdata_get(struct Mailbox *m)
  */
 void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen)
 {
-  int n;
-
   /* Make a copy of the mailbox name, but only if the pointers are different */
   if (mbox != buf)
     mutt_str_strfcpy(buf, mbox, buflen);
 
-  n = mutt_str_strlen(buf);
+  int n = mutt_str_strlen(buf);
 
   /* Let's go backwards until the next delimiter
    *
@@ -281,7 +279,7 @@ void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen)
    *
    * If buf == '/', then n-- => n == 0, so the loop ends
    * immediately */
-  for (n--; n >= 0 && buf[n] != delim; n--)
+  for (n--; (n >= 0) && (buf[n] != delim); n--)
     ;
 
   /* We stopped before the beginning. There is a trailing slash.  */
@@ -626,20 +624,20 @@ int imap_parse_path(const char *path, struct ConnAccount *cac, char *mailbox, si
 {
   static unsigned short ImapPort = 0;
   static unsigned short ImapsPort = 0;
-  struct servent *service = NULL;
 
   if (ImapPort == 0)
   {
-    service = getservbyname("imap", "tcp");
+    struct servent *service = getservbyname("imap", "tcp");
     if (service)
       ImapPort = ntohs(service->s_port);
     else
       ImapPort = IMAP_PORT;
     mutt_debug(LL_DEBUG3, "Using default IMAP port %d\n", ImapPort);
   }
+
   if (ImapsPort == 0)
   {
-    service = getservbyname("imaps", "tcp");
+    struct servent *service = getservbyname("imaps", "tcp");
     if (service)
       ImapsPort = ntohs(service->s_port);
     else
