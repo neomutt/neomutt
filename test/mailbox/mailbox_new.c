@@ -31,7 +31,9 @@ void test_mailbox_new(void)
   // struct Mailbox *mailbox_new(void);
 
   {
-    struct Mailbox *m = mailbox_new();
+    struct Path *p = mutt_path_new();
+    p->orig = mutt_str_strdup("/home/mutt/mail");
+    struct Mailbox *m = mailbox_new(p);
     TEST_CHECK(m != NULL);
 
     TEST_CHECK(mailbox_path(m) != NULL);

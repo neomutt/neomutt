@@ -31,7 +31,7 @@ void test_mailbox_size_sub(void)
   // void mailbox_size_sub(struct Mailbox *m, const struct Email *e);
 
   {
-    struct Mailbox m = { { 0 } };
+    struct Mailbox m = { 0 };
     mailbox_size_sub(&m, NULL);
     TEST_CHECK_(1, "mailbox_size_sub(&m, NULL)");
   }

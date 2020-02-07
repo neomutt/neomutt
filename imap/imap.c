@@ -1739,7 +1739,7 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
       return -1;
     }
 
-    mutt_account_hook(m->realpath);
+    mutt_account_hook(m->path->orig);
 
     if (imap_login(adata) < 0)
     {
@@ -1759,8 +1759,8 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
     /* fixup path and realpath, mainly to replace / by /INBOX */
     char buf[1024];
     imap_qualify_path(buf, sizeof(buf), &adata->conn->account, mdata->name);
-    mutt_buffer_strcpy(&m->pathbuf, buf);
-    mutt_str_replace(&m->realpath, mailbox_path(m));
+    mutt_str_replace(&m->path->orig, buf);
+    mutt_str_replace(&m->path->canon, mailbox_path(m));
 
     m->mdata = mdata;
     m->mdata_free = imap_mdata_free;
@@ -1894,8 +1894,8 @@ static int imap_mbox_open(struct Mailbox *m)
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
-  mutt_debug(LL_DEBUG3, "opening %s, saving %s\n", m->pathbuf.data,
-             (adata->mailbox ? adata->mailbox->pathbuf.data : "(none)"));
+  mutt_debug(LL_DEBUG3, "opening %s, saving %s\n", m->path->orig,
+             (adata->mailbox ? adata->mailbox->path->orig : "(none)"));
   adata->prev_mailbox = adata->mailbox;
   adata->mailbox = m;
 
@@ -2167,8 +2167,8 @@ static int imap_mbox_close(struct Mailbox *m)
       adata->state = IMAP_AUTHENTICATED;
     }
 
-    mutt_debug(LL_DEBUG3, "closing %s, restoring %s\n", m->pathbuf.data,
-               (adata->prev_mailbox ? adata->prev_mailbox->pathbuf.data : "(none)"));
+    mutt_debug(LL_DEBUG3, "closing %s, restoring %s\n", m->path->orig,
+               (adata->prev_mailbox ? adata->prev_mailbox->path->orig: "(none)"));
     adata->mailbox = adata->prev_mailbox;
     imap_mbox_select(adata->prev_mailbox);
     imap_mdata_cache_reset(m->mdata);

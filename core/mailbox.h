@@ -30,6 +30,8 @@
 #include <sys/types.h>
 #include <time.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "path.h"
 
 struct ConfigSubset;
 struct Email;
@@ -80,9 +82,7 @@ typedef uint16_t AclFlags;          ///< Flags, e.g. #MUTT_ACL_ADMIN
  */
 struct Mailbox
 {
-  struct Buffer pathbuf;
-  char *realpath;                     ///< Used for duplicate detection, context comparison, and the sidebar
-  char *name;                         ///< A short name for the Mailbox
+  struct Path *path;                  ///< Path representing the Mailbox
   struct ConfigSubset *sub;           ///< Inherited config items
   off_t size;                         ///< Size of the Mailbox
   bool has_new;                       ///< Mailbox has new mail
@@ -180,7 +180,7 @@ void            mailbox_changed   (struct Mailbox *m, enum NotifyMailbox action)
 struct Mailbox *mailbox_find      (const char *path);
 struct Mailbox *mailbox_find_name (const char *name);
 void            mailbox_free      (struct Mailbox **ptr);
-struct Mailbox *mailbox_new       (void);
+struct Mailbox *mailbox_new       (struct Path *path);
 bool            mailbox_set_subset(struct Mailbox *m, struct ConfigSubset *sub);
 void            mailbox_size_add  (struct Mailbox *m, const struct Email *e);
 void            mailbox_size_sub  (struct Mailbox *m, const struct Email *e);
@@ -193,7 +193,7 @@ void            mailbox_update    (struct Mailbox *m);
  */
 static inline const char *mailbox_path(const struct Mailbox *m) // LCOV_EXCL_LINE
 {
-  return mutt_b2s(&m->pathbuf); // LCOV_EXCL_LINE
+  return m->path->orig; // LCOV_EXCL_LINE
 }
 
 #endif /* MUTT_CORE_MAILBOX_H */

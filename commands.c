@@ -1147,7 +1147,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   struct Mailbox *m_comp = NULL;
   if (ctx_save->mailbox->compress_info)
   {
-    m_comp = mailbox_find(ctx_save->mailbox->realpath);
+    m_comp = mailbox_find(ctx_save->mailbox->path->canon);
   }
   /* We probably haven't been opened yet */
   if (m_comp && (m_comp->msg_count == 0))

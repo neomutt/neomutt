@@ -825,8 +825,8 @@ static int pop_mbox_open(struct Mailbox *m)
   url.path = NULL;
   url_tostring(&url, buf, sizeof(buf), 0);
 
-  mutt_buffer_strcpy(&m->pathbuf, buf);
-  mutt_str_replace(&m->realpath, mailbox_path(m));
+  mutt_str_replace(&m->path->orig, buf);
+  mutt_str_replace(&m->path->canon, mailbox_path(m));
 
   struct PopAccountData *adata = m->account->adata;
   if (!adata)
@@ -846,7 +846,7 @@ static int pop_mbox_open(struct Mailbox *m)
   }
 
   if (conn->fd < 0)
-    mutt_account_hook(m->realpath);
+    mutt_account_hook(m->path->canon);
 
   if (pop_open_connection(adata) < 0)
     return -1;

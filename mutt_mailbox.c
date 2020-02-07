@@ -100,7 +100,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
   }
 
   /* check to see if the folder is the currently selected folder before polling */
-  if (!m_cur || mutt_buffer_is_empty(&m_cur->pathbuf) ||
+  if (!m_cur || !m_cur->path->orig ||
       (((m_check->type == MUTT_IMAP) || (m_check->type == MUTT_NNTP) ||
         (m_check->type == MUTT_NOTMUCH) || (m_check->type == MUTT_POP)) ?
            (mutt_str_strcmp(mailbox_path(m_check), mailbox_path(m_cur)) != 0) :
@@ -120,7 +120,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       default:; /* do nothing */
     }
   }
-  else if (C_CheckMboxSize && m_cur && mutt_buffer_is_empty(&m_cur->pathbuf))
+  else if (C_CheckMboxSize && m_cur && !m_cur->path->orig)
     m_check->size = (off_t) sb.st_size; /* update the size of current folder */
 
 #ifdef USE_SIDEBAR
@@ -335,7 +335,10 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
       {
         if (np->mailbox->type == MUTT_NOTMUCH) /* only match real mailboxes */
           continue;
-        mutt_buffer_expand_path(&np->mailbox->pathbuf);
+        char buf[PATH_MAX];
+        mutt_str_strfcpy(buf, np->mailbox->path->orig, sizeof(buf));
+        mutt_expand_path(buf, sizeof(buf));
+        mutt_str_replace(&np->mailbox->path->orig, buf);
         if ((found || (pass > 0)) && np->mailbox->has_new)
         {
           mutt_buffer_strcpy(s, mailbox_path(np->mailbox));

@@ -587,21 +587,21 @@ static void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 
   dot_object_header(fp, m, "Mailbox", "#80ff80");
   dot_mailbox_type(fp, "type", m->type);
-  dot_type_string(fp, "name", m->name, false);
+  dot_type_string(fp, "path-&gt;desc", m->path->desc, false);
 
   if ((m->type == MUTT_IMAP) || (m->type == MUTT_POP))
   {
-    dot_path_imap(buf, sizeof(buf), mutt_b2s(&m->pathbuf));
-    dot_type_string(fp, "pathbuf", buf, true);
-    dot_path_imap(buf, sizeof(buf), m->realpath);
-    dot_type_string(fp, "realpath", buf, true);
+    dot_path_imap(buf, sizeof(buf), m->path->orig);
+    dot_type_string(fp, "path-&gt;orig", buf, false);
+    dot_path_imap(buf, sizeof(buf), m->path->canon);
+    dot_type_string(fp, "path-&gt;canon", buf, false);
   }
   else
   {
-    dot_path_fs(buf, sizeof(buf), mutt_b2s(&m->pathbuf));
-    dot_type_string(fp, "pathbuf", buf, true);
-    dot_path_fs(buf, sizeof(buf), m->realpath);
-    dot_type_string(fp, "realpath", buf, true);
+    dot_path_fs(buf, sizeof(buf), m->path->orig);
+    dot_type_string(fp, "path-&gt;orig", buf, false);
+    dot_path_fs(buf, sizeof(buf), m->path->canon);
+    dot_type_string(fp, "path-&gt;canon", buf, false);
   }
 
 #ifdef GV_HIDE_MDATA
@@ -652,10 +652,10 @@ static void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
   }
 
 #ifndef GV_HIDE_CONFIG
-  if (m->name)
+  if (m->path->desc)
   {
-    dot_config(fp, m->name, DT_INHERIT_MBOX, m->sub, links);
-    dot_add_link(links, m, m->name, "Mailbox Config", false, NULL);
+    dot_config(fp, m->path->desc, DT_INHERIT_MBOX, m->sub, links);
+    dot_add_link(links, m, m->path->desc, "Mailbox Config", false, NULL);
   }
 #endif
 }
@@ -689,9 +689,9 @@ static void dot_mailbox_node(FILE *fp, struct MailboxNode *mn, struct ListHead *
 #endif
 
 #ifndef GV_HIDE_CONFIG
-  if (mn->mailbox->name)
+  if (mn->mailbox->path->desc)
   {
-    dot_ptr_name(name, sizeof(name), mn->mailbox->name);
+    dot_ptr_name(name, sizeof(name), mn->mailbox->path->desc);
     mutt_buffer_add_printf(&buf, "%s ", name);
   }
 #endif

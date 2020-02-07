@@ -76,7 +76,7 @@ void test_account_mailbox_add(void)
     struct Account *a = account_new("dummy", sub);
     TEST_CHECK(a != NULL);
 
-    struct Mailbox *m = mailbox_new();
+    struct Mailbox *m = mailbox_new(NULL);
 
     TEST_CHECK(account_mailbox_add(a, m) == true);
 
