@@ -36,6 +36,8 @@ struct Email;
 struct Context;
 struct stat;
 
+extern const struct MxOps *mx_ops[];
+
 /* These Config Variables are only used in mx.c */
 extern unsigned char C_CatchupNewsgroup;
 extern bool          C_KeepFlagged;
