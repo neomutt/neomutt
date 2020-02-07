@@ -293,7 +293,7 @@ ALLOBJS+=	$(PGPEWRAPOBJS)
 ###############################################################################
 # libcore
 LIBCORE=	libcore.a
-LIBCOREOBJS=	core/account.o core/mailbox.o core/neomutt.o
+LIBCOREOBJS=	core/account.o core/mailbox.o core/neomutt.o core/path.o
 
 CLEANFILES+=	$(LIBCORE) $(LIBCOREOBJS)
 MUTTLIBS+=	$(LIBCORE)
