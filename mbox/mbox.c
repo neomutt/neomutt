@@ -1551,7 +1551,7 @@ static int mbox_mbox_close(struct Mailbox *m)
   mutt_file_fclose(&adata->fp);
 
   /* fix up the times so mailbox won't get confused */
-  if (m->peekonly && !mutt_buffer_is_empty(&m->pathbuf) &&
+  if (m->peekonly && m->path->orig &&
       (mutt_file_timespec_compare(&m->mtime, &adata->atime) > 0))
   {
 #ifdef HAVE_UTIMENSAT

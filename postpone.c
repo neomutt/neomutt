@@ -108,7 +108,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     return 0;
 
   // We currently are in the C_Postponed mailbox so just pick the current status
-  if (m && (mutt_str_strcmp(C_Postponed, m->realpath) == 0))
+  if (m && (mutt_str_strcmp(C_Postponed, m->path->canon) == 0))
   {
     PostCount = m->msg_count - m->msg_deleted;
     return PostCount;

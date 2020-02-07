@@ -1897,7 +1897,7 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
       return -1;
     }
 
-    mutt_account_hook(m->realpath);
+    mutt_account_hook(m->path->orig);
 
     if (imap_login(adata) < 0)
     {
@@ -1917,8 +1917,8 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
     /* fixup path and realpath, mainly to replace / by /INBOX */
     char buf[1024];
     imap_qualify_path(buf, sizeof(buf), &adata->conn->account, mdata->name);
-    mutt_buffer_strcpy(&m->pathbuf, buf);
-    mutt_str_replace(&m->realpath, mailbox_path(m));
+    mutt_str_replace(&m->path->orig, buf);
+    mutt_str_replace(&m->path->canon, mailbox_path(m));
 
     m->mdata = mdata;
     m->free_mdata = imap_mdata_free;

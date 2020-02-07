@@ -809,7 +809,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       }
 
       if (np && Context && Context->mailbox &&
-          (mutt_str_strcmp(np->mailbox->realpath, Context->mailbox->realpath) == 0))
+          (mutt_str_strcmp(np->mailbox->path->canon, Context->mailbox->path->canon) == 0))
       {
         np->mailbox->msg_count = Context->mailbox->msg_count;
         np->mailbox->msg_unread = Context->mailbox->msg_unread;
@@ -875,7 +875,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
         continue;
 
       if (Context && Context->mailbox &&
-          (mutt_str_strcmp(np->mailbox->realpath, Context->mailbox->realpath) == 0))
+          (mutt_str_strcmp(np->mailbox->path->canon, Context->mailbox->path->canon) == 0))
       {
         np->mailbox->msg_count = Context->mailbox->msg_count;
         np->mailbox->msg_unread = Context->mailbox->msg_unread;
@@ -889,12 +889,12 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       {
         case MUTT_IMAP:
         case MUTT_POP:
-          add_folder(menu, state, mutt_b2s(mailbox), np->mailbox->name, NULL,
+          add_folder(menu, state, mutt_b2s(mailbox), np->mailbox->path->desc, NULL,
                      np->mailbox, NULL);
           continue;
         case MUTT_NOTMUCH:
         case MUTT_NNTP:
-          add_folder(menu, state, mailbox_path(np->mailbox), np->mailbox->name,
+          add_folder(menu, state, mailbox_path(np->mailbox), np->mailbox->path->desc,
                      NULL, np->mailbox, NULL);
           continue;
         default: /* Continue */
@@ -921,7 +921,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
           s.st_mtime = st2.st_mtime;
       }
 
-      add_folder(menu, state, mutt_b2s(mailbox), np->mailbox->name, &s, np->mailbox, NULL);
+      add_folder(menu, state, mutt_b2s(mailbox), np->mailbox->path->desc, &s, np->mailbox, NULL);
     }
     neomutt_mailboxlist_clear(&ml);
   }

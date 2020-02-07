@@ -34,21 +34,28 @@
 #include "email/lib.h"
 #include "mailbox.h"
 #include "neomutt.h"
+#include "path.h"
 
 /**
  * mailbox_new - Create a new Mailbox
+ * @param path Path to use (OPTIONAL)
  * @retval ptr New Mailbox
+ *
+ * @note If a path is supplied, the Mailbox will take ownership of it.
  */
-struct Mailbox *mailbox_new(void)
+struct Mailbox *mailbox_new(struct Path *path)
 {
   struct Mailbox *m = mutt_mem_calloc(1, sizeof(struct Mailbox));
 
-  mutt_buffer_init(&m->pathbuf);
-  m->notify = notify_new();
+  if (path)
+    m->path = path;
+  else
+    m->path = mutt_path_new();
 
   m->email_max = 25;
   m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
   m->v2r = mutt_mem_calloc(m->email_max, sizeof(int));
+  m->notify = notify_new();
 
   return m;
 }
@@ -71,10 +78,8 @@ void mailbox_free(struct Mailbox **ptr)
   if (m->mdata && m->free_mdata)
     m->free_mdata(&m->mdata);
 
-  mutt_buffer_dealloc(&m->pathbuf);
   cs_subset_free(&m->sub);
-  FREE(&m->name);
-  FREE(&m->realpath);
+  mutt_path_free(&m->path);
   FREE(&m->emails);
   FREE(&m->v2r);
   notify_free(&m->notify);
@@ -133,7 +138,7 @@ struct Mailbox *mailbox_find_name(const char *name)
   struct Mailbox *m = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
-    if (mutt_str_strcmp(np->mailbox->name, name) == 0)
+    if (mutt_str_strcmp(np->mailbox->path->desc, name) == 0)
     {
       m = np->mailbox;
       break;
@@ -208,7 +213,7 @@ bool mailbox_set_subset(struct Mailbox *m, struct ConfigSubset *sub)
   if (!m || m->sub || !sub)
     return false;
 
-  m->sub = cs_subset_new(m->name, sub, m->notify);
+  m->sub = cs_subset_new(m->path->desc, sub, m->notify);
   m->sub->scope = SET_SCOPE_MAILBOX;
   return true;
 }
