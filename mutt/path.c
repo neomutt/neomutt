@@ -45,12 +45,13 @@
 
 /**
  * mutt_path_tidy_slash - Remove unnecessary slashes and dots
- * @param[in,out] buf Path to modify
+ * @param[in,out] buf    Path to modify
+ * @param[in]     is_dir Should a trailing / be removed?
  * @retval true Success
  *
  * Collapse repeated '//' and '/./'
  */
-bool mutt_path_tidy_slash(char *buf)
+bool mutt_path_tidy_slash(char *buf, bool is_dir)
 {
   if (!buf)
     return false;
@@ -86,7 +87,7 @@ bool mutt_path_tidy_slash(char *buf)
   }
 
   /* Strip a trailing / as long as it's not the only character */
-  if ((w > (buf + 1)) && (w[-1] == '/'))
+  if (is_dir && (w > (buf + 1)) && (w[-1] == '/'))
     w--;
 
   *w = '\0';
@@ -165,7 +166,7 @@ bool mutt_path_tidy(char *buf)
   if (!buf || (buf[0] != '/'))
     return false;
 
-  if (!mutt_path_tidy_slash(buf))
+  if (!mutt_path_tidy_slash(buf, true))
     return false;
 
   return mutt_path_tidy_dotdot(buf);
