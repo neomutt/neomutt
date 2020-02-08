@@ -1877,20 +1877,20 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
       case OP_SORT:
       case OP_SORT_REVERSE:
-        if (mutt_select_sort((op == OP_SORT_REVERSE)) == 0)
+        if (mutt_select_sort((op == OP_SORT_REVERSE)) != 0)
+          break;
+
+        if (Context && Context->mailbox && (Context->mailbox->msg_count != 0))
         {
-          if (Context && Context->mailbox && (Context->mailbox->msg_count != 0))
-          {
-            resort_index(Context, menu);
-            OptSearchInvalid = true;
-          }
-          if (in_pager)
-          {
-            op = OP_DISPLAY_MESSAGE;
-            continue;
-          }
-          menu->redraw |= REDRAW_STATUS;
+          resort_index(Context, menu);
+          OptSearchInvalid = true;
         }
+        if (in_pager)
+        {
+          op = OP_DISPLAY_MESSAGE;
+          continue;
+        }
+        menu->redraw |= REDRAW_STATUS;
         break;
 
       case OP_TAG:

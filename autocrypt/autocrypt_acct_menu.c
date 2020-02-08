@@ -115,32 +115,40 @@ static const char *account_format_str(char *dest, size_t destlen, size_t col, in
       break;
     case 'p':
       if (entry->account->prefer_encrypt)
+      {
         /* L10N:
            Autocrypt Account menu.
            flag that an account has prefer-encrypt set
         */
         mutt_format_s(dest, destlen, fmt, _("prefer encrypt"));
+      }
       else
+      {
         /* L10N:
            Autocrypt Account menu.
            flag that an account has prefer-encrypt unset;
            thus encryption will need to be manually enabled.
         */
         mutt_format_s(dest, destlen, fmt, _("manual encrypt"));
+      }
       break;
     case 's':
       if (entry->account->enabled)
+      {
         /* L10N:
            Autocrypt Account menu.
            flag that an account is enabled/active
         */
         mutt_format_s(dest, destlen, fmt, _("active"));
+      }
       else
+      {
         /* L10N:
            Autocrypt Account menu.
            flag that an account is disabled/inactive
         */
         mutt_format_s(dest, destlen, fmt, _("inactive"));
+      }
       break;
   }
 
@@ -316,7 +324,30 @@ void mutt_autocrypt_account_menu(void)
         break;
 
       case OP_AUTOCRYPT_CREATE_ACCT:
-        if (!mutt_autocrypt_account_init(false))
+        if (mutt_autocrypt_account_init(false))
+          break;
+
+        menu_free(&menu);
+        menu = create_menu();
+        menu->pagelen = index->state.rows;
+        menu->win_index = index;
+        menu->win_ibar = ibar;
+        break;
+
+      case OP_AUTOCRYPT_DELETE_ACCT:
+      {
+        if (!menu->data)
+          break;
+
+        struct AccountEntry *entry = (struct AccountEntry *) (menu->data) + menu->current;
+        char msg[128];
+        snprintf(msg, sizeof(msg),
+                  // L10N: Confirmation message when deleting an autocrypt account
+                  _("Really delete account \"%s\"?"), entry->addr->mailbox);
+        if (mutt_yesorno(msg, MUTT_NO) != MUTT_YES)
+          break;
+
+        if (!mutt_autocrypt_db_account_delete(entry->account))
         {
           menu_free(&menu);
           menu = create_menu();
@@ -325,46 +356,29 @@ void mutt_autocrypt_account_menu(void)
           menu->win_ibar = ibar;
         }
         break;
-
-      case OP_AUTOCRYPT_DELETE_ACCT:
-        if (menu->data)
-        {
-          struct AccountEntry *entry = (struct AccountEntry *) (menu->data) + menu->current;
-          char msg[128];
-          snprintf(msg, sizeof(msg),
-                   // L10N: Confirmation message when deleting an autocrypt account
-                   _("Really delete account \"%s\"?"), entry->addr->mailbox);
-          if (mutt_yesorno(msg, MUTT_NO) != MUTT_YES)
-            break;
-
-          if (!mutt_autocrypt_db_account_delete(entry->account))
-          {
-            menu_free(&menu);
-            menu = create_menu();
-            menu->pagelen = index->state.rows;
-            menu->win_index = index;
-            menu->win_ibar = ibar;
-          }
-        }
-        break;
+      }
 
       case OP_AUTOCRYPT_TOGGLE_ACTIVE:
-        if (menu->data)
-        {
-          struct AccountEntry *entry = (struct AccountEntry *) (menu->data) + menu->current;
-          toggle_active(entry);
-          menu->redraw |= REDRAW_FULL;
-        }
+      {
+        if (!menu->data)
+          break;
+
+        struct AccountEntry *entry = (struct AccountEntry *) (menu->data) + menu->current;
+        toggle_active(entry);
+        menu->redraw |= REDRAW_FULL;
         break;
+      }
 
       case OP_AUTOCRYPT_TOGGLE_PREFER:
-        if (menu->data)
-        {
-          struct AccountEntry *entry = (struct AccountEntry *) (menu->data) + menu->current;
-          toggle_prefer_encrypt(entry);
-          menu->redraw |= REDRAW_FULL;
-        }
+      {
+        if (!menu->data)
+          break;
+
+        struct AccountEntry *entry = (struct AccountEntry *) (menu->data) + menu->current;
+        toggle_prefer_encrypt(entry);
+        menu->redraw |= REDRAW_FULL;
         break;
+      }
     }
   }
 

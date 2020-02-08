@@ -550,17 +550,16 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
        * to be able to recall old messages.  */
       case 'm':
       case 'M':
-        if (p[1] == '<')
-        {
-          for (p += 2; (p[0] != '\0') && (p[0] != '>'); p++)
-            ;
-          if (p[0] != '>')
-          {
-            mutt_error(_("Illegal crypto header"));
-            return SEC_NO_FLAGS;
-          }
-        }
+        if (p[1] != '<')
+          break;
 
+        for (p += 2; (p[0] != '\0') && (p[0] != '>'); p++)
+          ;
+        if (p[0] != '>')
+        {
+          mutt_error(_("Illegal crypto header"));
+          return SEC_NO_FLAGS;
+        }
         break;
 
       case 'o':

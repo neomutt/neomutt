@@ -323,21 +323,21 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
         mutt_format_s(buf, buflen, prec, ENCODING(aptr->content->encoding));
       break;
     case 'I':
-      if (!optional)
-      {
-        const char dispchar[] = { 'I', 'A', 'F', '-' };
-        char ch;
+      if (optional)
+        break;
 
-        if (aptr->content->disposition < sizeof(dispchar))
-          ch = dispchar[aptr->content->disposition];
-        else
-        {
-          mutt_debug(LL_DEBUG1, "ERROR: invalid content-disposition %d\n",
-                     aptr->content->disposition);
-          ch = '!';
-        }
-        snprintf(buf, buflen, "%c", ch);
+      const char dispchar[] = { 'I', 'A', 'F', '-' };
+      char ch;
+
+      if (aptr->content->disposition < sizeof(dispchar))
+        ch = dispchar[aptr->content->disposition];
+      else
+      {
+        mutt_debug(LL_DEBUG1, "ERROR: invalid content-disposition %d\n",
+                    aptr->content->disposition);
+        ch = '!';
       }
+      snprintf(buf, buflen, "%c", ch);
       break;
     case 'm':
       if (!optional)
@@ -350,11 +350,11 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
         optional = false;
       break;
     case 'n':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, aptr->num + 1);
-      }
+      if (optional)
+        break;
+
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+      snprintf(buf, buflen, fmt, aptr->num + 1);
       break;
     case 'Q':
       if (optional)

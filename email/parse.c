@@ -724,22 +724,22 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       break;
 
     case 'd':
-      if (mutt_str_strcasecmp("ate", line + 1) == 0)
+      if (mutt_str_strcasecmp("ate", line + 1) != 0)
+        break;
+
+      mutt_str_replace(&env->date, p);
+      if (e)
       {
-        mutt_str_replace(&env->date, p);
-        if (e)
+        struct Tz tz;
+        e->date_sent = mutt_date_parse_date(p, &tz);
+        if (e->date_sent > 0)
         {
-          struct Tz tz;
-          e->date_sent = mutt_date_parse_date(p, &tz);
-          if (e->date_sent > 0)
-          {
-            e->zhours = tz.zhours;
-            e->zminutes = tz.zminutes;
-            e->zoccident = tz.zoccident;
-          }
+          e->zhours = tz.zhours;
+          e->zminutes = tz.zminutes;
+          e->zoccident = tz.zoccident;
         }
-        matched = true;
       }
+      matched = true;
       break;
 
     case 'e':
@@ -770,12 +770,12 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       break;
 
     case 'i':
-      if (mutt_str_strcasecmp(line + 1, "n-reply-to") == 0)
-      {
-        mutt_list_free(&env->in_reply_to);
-        parse_references(&env->in_reply_to, p);
-        matched = true;
-      }
+      if (mutt_str_strcasecmp(line + 1, "n-reply-to") != 0)
+        break;
+
+      mutt_list_free(&env->in_reply_to);
+      parse_references(&env->in_reply_to, p);
+      matched = true;
       break;
 
     case 'l':
@@ -1426,16 +1426,16 @@ void mutt_parse_part(FILE *fp, struct Body *b)
       break;
 
     case TYPE_MESSAGE:
-      if (b->subtype)
-      {
-        fseeko(fp, b->offset, SEEK_SET);
-        if (mutt_is_message_type(b->type, b->subtype))
-          b->parts = mutt_rfc822_parse_message(fp, b);
-        else if (mutt_str_strcasecmp(b->subtype, "external-body") == 0)
-          b->parts = mutt_read_mime_header(fp, 0);
-        else
-          return;
-      }
+      if (!b->subtype)
+        break;
+
+      fseeko(fp, b->offset, SEEK_SET);
+      if (mutt_is_message_type(b->type, b->subtype))
+        b->parts = mutt_rfc822_parse_message(fp, b);
+      else if (mutt_str_strcasecmp(b->subtype, "external-body") == 0)
+        b->parts = mutt_read_mime_header(fp, 0);
+      else
+        return;
       break;
 
     default:

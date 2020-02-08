@@ -2067,62 +2067,66 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #ifdef USE_NNTP
       case OP_CATCHUP:
       case OP_UNCATCHUP:
-        if (OptNews)
+      {
+        if (!OptNews)
+          break;
+
+        struct FolderFile *ff = &state.entry[menu->current];
+        struct NntpMboxData *mdata = NULL;
+
+        int rc = nntp_newsrc_parse(CurrentNewsSrv);
+        if (rc < 0)
+          break;
+
+        if (op == OP_CATCHUP)
+          mdata = mutt_newsgroup_catchup(Context->mailbox, CurrentNewsSrv, ff->name);
+        else
+          mdata = mutt_newsgroup_uncatchup(Context->mailbox, CurrentNewsSrv, ff->name);
+
+        if (mdata)
         {
-          struct FolderFile *ff = &state.entry[menu->current];
-          struct NntpMboxData *mdata = NULL;
-
-          int rc = nntp_newsrc_parse(CurrentNewsSrv);
-          if (rc < 0)
-            break;
-
-          if (op == OP_CATCHUP)
-            mdata = mutt_newsgroup_catchup(Context->mailbox, CurrentNewsSrv, ff->name);
-          else
-            mdata = mutt_newsgroup_uncatchup(Context->mailbox, CurrentNewsSrv, ff->name);
-
-          if (mdata)
-          {
-            nntp_newsrc_update(CurrentNewsSrv);
-            if ((menu->current + 1) < menu->max)
-              menu->current++;
-            menu->redraw = REDRAW_MOTION_RESYNC;
-          }
-          if (rc)
-            menu->redraw = REDRAW_INDEX;
-          nntp_newsrc_close(CurrentNewsSrv);
+          nntp_newsrc_update(CurrentNewsSrv);
+          if ((menu->current + 1) < menu->max)
+            menu->current++;
+          menu->redraw = REDRAW_MOTION_RESYNC;
         }
+        if (rc)
+          menu->redraw = REDRAW_INDEX;
+        nntp_newsrc_close(CurrentNewsSrv);
         break;
+      }
 
       case OP_LOAD_ACTIVE:
-        if (OptNews)
+      {
+        if (!OptNews)
+          break;
+
+        struct NntpAccountData *adata = CurrentNewsSrv;
+
+        if (nntp_newsrc_parse(adata) < 0)
+          break;
+
+        for (size_t i = 0; i < adata->groups_num; i++)
         {
-          struct NntpAccountData *adata = CurrentNewsSrv;
-
-          if (nntp_newsrc_parse(adata) < 0)
-            break;
-
-          for (size_t i = 0; i < adata->groups_num; i++)
-          {
-            struct NntpMboxData *mdata = adata->groups_list[i];
-            if (mdata)
-              mdata->deleted = true;
-          }
-          nntp_active_fetch(adata, true);
-          nntp_newsrc_update(adata);
-          nntp_newsrc_close(adata);
-
-          destroy_state(&state);
-          if (mailbox)
-            examine_mailboxes(menu, &state);
-          else
-          {
-            if (examine_directory(menu, &state, NULL, NULL) == -1)
-              break;
-          }
-          init_menu(&state, menu, title, sizeof(title), mailbox);
+          struct NntpMboxData *mdata = adata->groups_list[i];
+          if (mdata)
+            mdata->deleted = true;
         }
+        nntp_active_fetch(adata, true);
+        nntp_newsrc_update(adata);
+        nntp_newsrc_close(adata);
+
+        destroy_state(&state);
+        if (mailbox)
+          examine_mailboxes(menu, &state);
+        else
+        {
+          if (examine_directory(menu, &state, NULL, NULL) == -1)
+            break;
+        }
+        init_menu(&state, menu, title, sizeof(title), mailbox);
         break;
+      }
 #endif /* USE_NNTP */
 
 #if defined(USE_IMAP) || defined(USE_NNTP)

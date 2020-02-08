@@ -434,80 +434,82 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     {
       case OP_QUERY_APPEND:
       case OP_QUERY:
-        if ((mutt_get_field(_("Query: "), buf, buflen, MUTT_COMP_NO_FLAGS) == 0) &&
-            (buf[0] != '\0'))
+        if ((mutt_get_field(_("Query: "), buf, buflen, MUTT_COMP_NO_FLAGS) != 0) ||
+            (buf[0] == '\0'))
         {
-          struct Query *newresults = run_query(buf, 0);
+          break;
+        }
 
-          menu->redraw = REDRAW_FULL;
-          if (newresults)
+        struct Query *newresults = run_query(buf, 0);
+
+        menu->redraw = REDRAW_FULL;
+        if (newresults)
+        {
+          snprintf(title, sizeof(title), _("Query '%s'"), buf);
+
+          if (op == OP_QUERY)
           {
-            snprintf(title, sizeof(title), _("Query '%s'"), buf);
+            query_free(&results);
+            results = newresults;
+            FREE(&query_table);
+          }
+          else
+          {
+            /* append */
+            for (queryp = results; queryp->next; queryp = queryp->next)
+              ;
 
-            if (op == OP_QUERY)
+            queryp->next = newresults;
+          }
+
+          menu->current = 0;
+          mutt_menu_pop_current(menu);
+          mutt_menu_free(&menu);
+          menu = mutt_menu_new(MENU_QUERY);
+
+          menu->pagelen = index->state.rows;
+          menu->win_index = index;
+          menu->win_ibar = ibar;
+
+          menu->make_entry = query_make_entry;
+          menu->search = query_search;
+          menu->tag = query_tag;
+          menu->title = title;
+          menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
+          mutt_menu_push_current(menu);
+
+          /* count the number of results */
+          for (queryp = results; queryp; queryp = queryp->next)
+            menu->max++;
+
+          if (op == OP_QUERY)
+          {
+            menu->data = query_table =
+                mutt_mem_calloc(menu->max, sizeof(struct QueryEntry));
+
+            queryp = results;
+            for (int i = 0; queryp; queryp = queryp->next, i++)
+              query_table[i].data = queryp;
+          }
+          else
+          {
+            bool clear = false;
+
+            /* append */
+            mutt_mem_realloc(&query_table, menu->max * sizeof(struct QueryEntry));
+
+            menu->data = query_table;
+
+            queryp = results;
+            for (int i = 0; queryp; queryp = queryp->next, i++)
             {
-              query_free(&results);
-              results = newresults;
-              FREE(&query_table);
-            }
-            else
-            {
-              /* append */
-              for (queryp = results; queryp->next; queryp = queryp->next)
-                ;
+              /* once we hit new entries, clear/init the tag */
+              if (queryp == newresults)
+                clear = true;
 
-              queryp->next = newresults;
-            }
-
-            menu->current = 0;
-            mutt_menu_pop_current(menu);
-            mutt_menu_free(&menu);
-            menu = mutt_menu_new(MENU_QUERY);
-
-            menu->pagelen = index->state.rows;
-            menu->win_index = index;
-            menu->win_ibar = ibar;
-
-            menu->make_entry = query_make_entry;
-            menu->search = query_search;
-            menu->tag = query_tag;
-            menu->title = title;
-            menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
-            mutt_menu_push_current(menu);
-
-            /* count the number of results */
-            for (queryp = results; queryp; queryp = queryp->next)
-              menu->max++;
-
-            if (op == OP_QUERY)
-            {
-              menu->data = query_table =
-                  mutt_mem_calloc(menu->max, sizeof(struct QueryEntry));
-
-              queryp = results;
-              for (int i = 0; queryp; queryp = queryp->next, i++)
-                query_table[i].data = queryp;
-            }
-            else
-            {
-              bool clear = false;
-
-              /* append */
-              mutt_mem_realloc(&query_table, menu->max * sizeof(struct QueryEntry));
-
-              menu->data = query_table;
-
-              queryp = results;
-              for (int i = 0; queryp; queryp = queryp->next, i++)
-              {
-                /* once we hit new entries, clear/init the tag */
-                if (queryp == newresults)
-                  clear = true;
-
-                query_table[i].data = queryp;
-                if (clear)
-                  query_table[i].tagged = false;
-              }
+              query_table[i].data = queryp;
+              if (clear)
+                query_table[i].tagged = false;
             }
           }
         }

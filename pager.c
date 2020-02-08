@@ -2823,74 +2823,74 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_PAGER_HIDE_QUOTED:
-        if (rd.has_types)
-        {
-          rd.hide_quoted ^= MUTT_HIDE;
-          if (rd.hide_quoted && (rd.line_info[rd.topline].type == MT_COLOR_QUOTED))
-            rd.topline = up_n_lines(1, rd.line_info, rd.topline, rd.hide_quoted);
-          else
-            pager_menu->redraw = REDRAW_BODY;
-        }
+        if (!rd.has_types)
+          break;
+
+        rd.hide_quoted ^= MUTT_HIDE;
+        if (rd.hide_quoted && (rd.line_info[rd.topline].type == MT_COLOR_QUOTED))
+          rd.topline = up_n_lines(1, rd.line_info, rd.topline, rd.hide_quoted);
+        else
+          pager_menu->redraw = REDRAW_BODY;
         break;
 
       case OP_PAGER_SKIP_QUOTED:
-        if (rd.has_types)
+        if (!rd.has_types)
+          break;
+
+        int dretval = 0;
+        int new_topline = rd.topline;
+
+        /* Skip all the email headers */
+        if (IS_HEADER(rd.line_info[new_topline].type))
         {
-          int dretval = 0;
-          int new_topline = rd.topline;
-
-          /* Skip all the email headers */
-          if (IS_HEADER(rd.line_info[new_topline].type))
-          {
-            while (((new_topline < rd.last_line) ||
-                    (0 == (dretval = display_line(
-                               rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
-                               &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
-                               &rd.quote_list, &rd.q_level, &rd.force_redraw,
-                               &rd.search_re, rd.extra->win_pager)))) &&
-                   IS_HEADER(rd.line_info[new_topline].type))
-            {
-              new_topline++;
-            }
-            rd.topline = new_topline;
-            break;
-          }
-
-          while ((((new_topline + C_SkipQuotedOffset) < rd.last_line) ||
+          while (((new_topline < rd.last_line) ||
                   (0 == (dretval = display_line(
-                             rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
-                             &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
-                             &rd.quote_list, &rd.q_level, &rd.force_redraw,
-                             &rd.search_re, rd.extra->win_pager)))) &&
-                 (rd.line_info[new_topline + C_SkipQuotedOffset].type != MT_COLOR_QUOTED))
+                              rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
+                              &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
+                              &rd.quote_list, &rd.q_level, &rd.force_redraw,
+                              &rd.search_re, rd.extra->win_pager)))) &&
+                  IS_HEADER(rd.line_info[new_topline].type))
           {
             new_topline++;
-          }
-
-          if (dretval < 0)
-          {
-            mutt_error(_("No more quoted text"));
-            break;
-          }
-
-          while ((((new_topline + C_SkipQuotedOffset) < rd.last_line) ||
-                  (0 == (dretval = display_line(
-                             rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
-                             &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
-                             &rd.quote_list, &rd.q_level, &rd.force_redraw,
-                             &rd.search_re, rd.extra->win_pager)))) &&
-                 (rd.line_info[new_topline + C_SkipQuotedOffset].type == MT_COLOR_QUOTED))
-          {
-            new_topline++;
-          }
-
-          if (dretval < 0)
-          {
-            mutt_error(_("No more unquoted text after quoted text"));
-            break;
           }
           rd.topline = new_topline;
+          break;
         }
+
+        while ((((new_topline + C_SkipQuotedOffset) < rd.last_line) ||
+                (0 == (dretval = display_line(
+                            rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
+                            &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
+                            &rd.quote_list, &rd.q_level, &rd.force_redraw,
+                            &rd.search_re, rd.extra->win_pager)))) &&
+                (rd.line_info[new_topline + C_SkipQuotedOffset].type != MT_COLOR_QUOTED))
+        {
+          new_topline++;
+        }
+
+        if (dretval < 0)
+        {
+          mutt_error(_("No more quoted text"));
+          break;
+        }
+
+        while ((((new_topline + C_SkipQuotedOffset) < rd.last_line) ||
+                (0 == (dretval = display_line(
+                            rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
+                            &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
+                            &rd.quote_list, &rd.q_level, &rd.force_redraw,
+                            &rd.search_re, rd.extra->win_pager)))) &&
+                (rd.line_info[new_topline + C_SkipQuotedOffset].type == MT_COLOR_QUOTED))
+        {
+          new_topline++;
+        }
+
+        if (dretval < 0)
+        {
+          mutt_error(_("No more unquoted text after quoted text"));
+          break;
+        }
+        rd.topline = new_topline;
         break;
 
       case OP_PAGER_BOTTOM: /* move to the end of the file */
