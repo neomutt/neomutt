@@ -86,7 +86,7 @@ yyyy-mm-dd
   - fix crash in mutt_extract_token()
   - force a screen refresh
   - fix crash sending message from command line
-  - notmuch: use nm_default_uri if no mailbox data
+  - notmuch: use nm_default_url if no mailbox data
   - fix forward attachments
   - fix: vfprintf undefined behaviour in body_handler
   - Fix relative symlink resolution
@@ -758,7 +758,7 @@ yyyy-mm-dd
   - Fix nntp group selection
   - Fix status color
   - Tidy up S/MIME contrib
-  - Do not try to create Maildir if it is an NNTP URI
+  - Do not try to create Maildir if it is an NNTP URL
   - Fix missing NONULL for mutt.set() in Lua
 * Translations
   - Fix German PGP shortkeys

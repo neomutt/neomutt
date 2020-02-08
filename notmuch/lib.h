@@ -45,7 +45,7 @@ struct stat;
 
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
 extern int   C_NmDbLimit;
-extern char *C_NmDefaultUri;
+extern char *C_NmDefaultUrl;
 extern char *C_NmExcludeTags;
 extern int   C_NmOpenTimeout;
 extern char *C_NmQueryType;
@@ -71,6 +71,6 @@ void  nm_query_window_forward    (void);
 int   nm_read_entire_thread      (struct Mailbox *m, struct Email *e);
 int   nm_record_message          (struct Mailbox *m, char *path, struct Email *e);
 int   nm_update_filename         (struct Mailbox *m, const char *old_file, const char *new_file, struct Email *e);
-char *nm_uri_from_query          (struct Mailbox *m, char *buf, size_t buflen);
+char *nm_url_from_query          (struct Mailbox *m, char *buf, size_t buflen);
 
 #endif /* MUTT_NOTMUCH_LIB_H */

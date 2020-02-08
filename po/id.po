@@ -5075,7 +5075,7 @@ msgstr ""
 
 #: notmuch/mutt_notmuch.c:219 notmuch/mutt_notmuch.c:1939
 #, fuzzy, c-format
-msgid "failed to parse notmuch uri: %s"
+msgid "failed to parse notmuch url: %s"
 msgstr "SASL gagal membaca alamat IP lokal"
 
 #: notmuch/mutt_notmuch.c:449

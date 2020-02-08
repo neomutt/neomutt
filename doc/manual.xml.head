@@ -15172,8 +15172,8 @@ color index_tags green default
       <sect2 id="notmuch-using">
         <title>Using Notmuch</title>
 
-        <sect3 id="notmuch-folder-uri">
-          <title>Folders URI</title>
+        <sect3 id="notmuch-folder-url">
+          <title>Folders URL</title>
           <para>
             <emphasis role="bold">notmuch://[&lt;path&gt;][?&lt;item&gt;=&lt;name&gt;[&amp; ...]]</emphasis>
           </para>
@@ -15186,12 +15186,12 @@ color index_tags green default
           </para>
           <para>
             If the "&lt;path&gt;" is not defined then
-            <literal>$nm_default_uri</literal> or <literal>$folder</literal> is
+            <literal>$nm_default_url</literal> or <literal>$folder</literal> is
             used, for example:
           </para>
 
 <screen>
-set nm_default_uri = "notmuch:///home/foo/maildir"
+set nm_default_url = "notmuch:///home/foo/maildir"
 virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
 </screen>
 
@@ -15207,7 +15207,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
             operators (<quote>and</quote>/<quote>or</quote>) in your queries.
           </para>
           <para>
-            Note that proper URI should not contain blank space and all
+            Note that proper URL should not contain blank space and all
             <quote>bad</quote> chars should be encoded, for example
           </para>
           <para>
@@ -15351,7 +15351,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry></entry>
               </row>
               <row>
-                <entry><literal>nm_default_uri</literal></entry>
+                <entry><literal>nm_default_url</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
                 <entry></entry>
@@ -15440,7 +15440,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry>
                   switch to another virtual folder, a new folder maybe be
                   specified by vfolder description (see virtual-mailboxes) or
-                  URI. the default is next vfolder with unread messages
+                  URL. the default is next vfolder with unread messages
                 </entry>
               </row>
               <row>
@@ -15505,14 +15505,14 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
           <arg choice="plain">
             <replaceable class="parameter">description</replaceable>
             <arg choice="plain">
-              <replaceable class="parameter">notmuch-URI</replaceable>
+              <replaceable class="parameter">notmuch-URL</replaceable>
             </arg>
           </arg>
           <group choice="req" rep="repeat">
             <arg choice="plain">
               <replaceable class="parameter">description</replaceable>
               <arg choice="plain">
-                <replaceable class="parameter">notmuch-URI</replaceable>
+                <replaceable class="parameter">notmuch-URL</replaceable>
               </arg>
             </arg>
           </group>
@@ -15563,7 +15563,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
 set nm_db_limit = 0
 <emphasis role="comment"># This variable specifies the default Notmuch database in format:</emphasis>
 <emphasis role="comment"># notmuch://&lt;absolute path&gt;</emphasis>
-set nm_default_uri = ""
+set nm_default_url = ""
 <emphasis role="comment"># The messages tagged with these tags are excluded and not loaded</emphasis>
 <emphasis role="comment"># from notmuch DB to NeoMutt unless specified explicitly.</emphasis>
 set nm_exclude_tags = ""
@@ -15620,7 +15620,7 @@ bind index &gt; vfolder-window-forward
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># COMMANDS – shown with an example</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
-<emphasis role="comment"># virtual-mailboxes description notmuch-URI { description notmuch-URI ...}</emphasis>
+<emphasis role="comment"># virtual-mailboxes description notmuch-URL { description notmuch-URL ...}</emphasis>
 <emphasis role="comment"># virtual-mailboxes "Climbing" "notmuch://?query=climbing"</emphasis>
 <emphasis role="comment"># unvirtual-mailboxes { * | mailbox ...}</emphasis>
 <emphasis role="comment">#</emphasis>

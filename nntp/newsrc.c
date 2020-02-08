@@ -1000,7 +1000,7 @@ static const char *nntp_get_field(enum ConnAccountField field)
 /**
  * nntp_select_server - Open a connection to an NNTP server
  * @param m          Mailbox
- * @param server     Server URI
+ * @param server     Server URL
  * @param leave_lock Leave the server locked?
  * @retval ptr  NNTP server
  * @retval NULL Error

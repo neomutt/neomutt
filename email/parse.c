@@ -59,7 +59,7 @@
 
 /**
  * mutt_auto_subscribe - Check if user is subscribed to mailing list
- * @param mailto URI of mailing list subscribe
+ * @param mailto URL of mailing list subscribe
  */
 void mutt_auto_subscribe(const char *mailto)
 {
