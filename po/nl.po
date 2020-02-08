@@ -5043,8 +5043,8 @@ msgstr ""
 
 #: notmuch/mutt_notmuch.c:219 notmuch/mutt_notmuch.c:1939
 #, fuzzy, c-format
-msgid "failed to parse notmuch uri: %s"
-msgstr "Kan 'notmuch uri' niet verwerken: %s"
+msgid "failed to parse notmuch url: %s"
+msgstr "Kan 'notmuch url' niet verwerken: %s"
 
 #: notmuch/mutt_notmuch.c:449
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)"

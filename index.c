@@ -2120,7 +2120,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           mutt_str_strcat(buf, sizeof(buf), (e_cur->env->message_id) + msg_id_offset);
           if (buf[strlen(buf) - 1] == '>')
             buf[strlen(buf) - 1] = '\0';
-          if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
+          if (!nm_url_from_query(Context->mailbox, buf, sizeof(buf)))
           {
             mutt_message(_("Failed to create query, aborting"));
             break;
@@ -2297,7 +2297,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         // Keep copy of user's querying to name mailbox.
         char *query_unencoded = mutt_str_strdup(buf);
 
-        if (nm_uri_from_query(NULL, buf, sizeof(buf)))
+        if (nm_url_from_query(NULL, buf, sizeof(buf)))
         {
           // Create mailbox and set name.
           struct Mailbox *m_new_vfolder = mx_path_resolve(buf);
@@ -2331,7 +2331,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         }
         nm_query_window_backward();
         mutt_str_strfcpy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
-        if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
+        if (!nm_url_from_query(Context->mailbox, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
           main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint, NULL);
@@ -2352,7 +2352,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         }
         nm_query_window_forward();
         mutt_str_strfcpy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
-        if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
+        if (!nm_url_from_query(Context->mailbox, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
         {

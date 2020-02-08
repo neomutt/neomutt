@@ -46,7 +46,7 @@
  * @param m Mailbox
  * @retval ptr Filename
  *
- * @note The return value is a pointer into the #C_NmDefaultUri global variable.
+ * @note The return value is a pointer into the #C_NmDefaultUrl global variable.
  *       If that variable changes, the result will be invalid.
  *       It must not be freed.
  */
@@ -58,7 +58,7 @@ const char *nm_db_get_filename(struct Mailbox *m)
   if (mdata && mdata->db_url && mdata->db_url->path)
     db_filename = mdata->db_url->path;
   else
-    db_filename = C_NmDefaultUri;
+    db_filename = C_NmDefaultUrl;
 
   if (!db_filename && !C_Folder)
     return NULL;
@@ -67,7 +67,7 @@ const char *nm_db_get_filename(struct Mailbox *m)
     db_filename = C_Folder;
 
   if (nm_path_probe(db_filename, NULL) == MUTT_NOTMUCH)
-    db_filename += NmUriProtocolLen;
+    db_filename += NmUrlProtocolLen;
 
   mutt_debug(LL_DEBUG2, "nm: db filename '%s'\n", db_filename);
   return db_filename;

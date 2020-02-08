@@ -40,7 +40,7 @@
    (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                        \
     LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
 
-extern const int NmUriProtocolLen;
+extern const int NmUrlProtocolLen;
 
 /**
  * struct NmAccountData - Notmuch-specific Account data - @extends Account
@@ -109,6 +109,6 @@ void                  nm_edata_free(void **ptr);
 struct NmEmailData *  nm_edata_new (void);
 void                  nm_mdata_free(void **ptr);
 struct NmMboxData *   nm_mdata_get (struct Mailbox *m);
-struct NmMboxData *   nm_mdata_new (const char *uri);
+struct NmMboxData *   nm_mdata_new (const char *url);
 
 #endif /* MUTT_NOTMUCH_NOTMUCH_PRIVATE_H */

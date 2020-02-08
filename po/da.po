@@ -5001,7 +5001,7 @@ msgstr ""
 
 #: notmuch/mutt_notmuch.c:219 notmuch/mutt_notmuch.c:1939
 #, fuzzy, c-format
-msgid "failed to parse notmuch uri: %s"
+msgid "failed to parse notmuch url: %s"
 msgstr "Kunne ikke fortolke mailto:-link\n"
 
 #: notmuch/mutt_notmuch.c:449

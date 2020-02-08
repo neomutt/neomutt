@@ -2356,7 +2356,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This variable specifies the default limit used in notmuch queries.
   */
-  { "nm_default_uri", DT_STRING, &C_NmDefaultUri, 0 },
+  { "nm_default_url", DT_STRING, &C_NmDefaultUrl, 0 },
   /*
   ** .pp
   ** This variable specifies the default Notmuch database in format
@@ -4922,6 +4922,7 @@ struct ConfigDef MuttVars[] = {
   { "indent_str",             DT_SYNONYM, NULL, IP "indent_string",            },
   { "mime_fwd",               DT_SYNONYM, NULL, IP "mime_forward",             },
   { "msg_format",             DT_SYNONYM, NULL, IP "message_format",           },
+  { "nm_default_uri",         DT_SYNONYM, NULL, IP "nm_default_url"            },
   { "pgp_autoencrypt",        DT_SYNONYM, NULL, IP "crypt_autoencrypt",        },
   { "pgp_autosign",           DT_SYNONYM, NULL, IP "crypt_autosign",           },
   { "pgp_auto_traditional",   DT_SYNONYM, NULL, IP "pgp_replyinline",          },

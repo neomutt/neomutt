@@ -31,8 +31,8 @@
  * - all functions have to be covered by "mailbox->magic == MUTT_NOTMUCH" check
  *   (it's implemented in nm_mdata_get() and init_mailbox() functions).
  *
- * - exception are nm_nonctx_* functions -- these functions use nm_default_uri
- *   (or parse URI from another resource)
+ * - exception are nm_nonctx_* functions -- these functions use nm_default_url
+ *   (or parse URL from another resource)
  */
 
 /**
@@ -68,12 +68,12 @@
 #include "hcache/lib.h"
 #include "maildir/lib.h"
 
-const char NmUriProtocol[] = "notmuch://";
-const int NmUriProtocolLen = sizeof(NmUriProtocol) - 1;
+const char NmUrlProtocol[] = "notmuch://";
+const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
 
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
 int C_NmDbLimit;       ///< Config: (notmuch) Default limit for Notmuch queries
-char *C_NmDefaultUri;  ///< Config: (notmuch) Path to the Notmuch database
+char *C_NmDefaultUrl;  ///< Config: (notmuch) Path to the Notmuch database
 char *C_NmExcludeTags; ///< Config: (notmuch) Exclude messages with these tags
 int C_NmOpenTimeout;   ///< Config: (notmuch) Database timeout
 char *C_NmQueryType; ///< Config: (notmuch) Default query type: 'threads' or 'messages'
@@ -197,15 +197,15 @@ void nm_mdata_free(void **ptr)
 
 /**
  * nm_mdata_new - Create a new NmMboxData object from a query
- * @param uri Notmuch query string
+ * @param url Notmuch query string
  * @retval ptr New NmMboxData struct
  *
  * A new NmMboxData struct is created, then the query is parsed and saved
  * within it.  This should be freed using nm_mdata_free().
  */
-struct NmMboxData *nm_mdata_new(const char *uri)
+struct NmMboxData *nm_mdata_new(const char *url)
 {
-  if (!uri)
+  if (!url)
     return NULL;
 
   struct NmMboxData *mdata = mutt_mem_calloc(1, sizeof(struct NmMboxData));
@@ -213,10 +213,10 @@ struct NmMboxData *nm_mdata_new(const char *uri)
 
   mdata->db_limit = C_NmDbLimit;
   mdata->query_type = string_to_query_type(C_NmQueryType);
-  mdata->db_url = url_parse(uri);
+  mdata->db_url = url_parse(url);
   if (!mdata->db_url)
   {
-    mutt_error(_("failed to parse notmuch uri: %s"), uri);
+    mutt_error(_("failed to parse notmuch url: %s"), url);
     FREE(&mdata);
     return NULL;
   }
@@ -273,19 +273,19 @@ struct NmEmailData *nm_edata_new(void)
  */
 static struct NmMboxData *nm_get_default_data(void)
 {
-  // path to DB + query + URI "decoration"
-  char uri[PATH_MAX + 1024 + 32];
+  // path to DB + query + url "decoration"
+  char url[PATH_MAX + 1024 + 32];
 
-  // Try to use C_NmDefaultUri or C_Folder.
-  // If neither are set, it is impossible to create a Notmuch URI.
-  if (C_NmDefaultUri)
-    snprintf(uri, sizeof(uri), "%s", C_NmDefaultUri);
+  // Try to use C_NmDefaultUrl or C_Folder.
+  // If neither are set, it is impossible to create a Notmuch URL.
+  if (C_NmDefaultUrl)
+    snprintf(url, sizeof(url), "%s", C_NmDefaultUrl);
   else if (C_Folder)
-    snprintf(uri, sizeof(uri), "notmuch://%s", C_Folder);
+    snprintf(url, sizeof(url), "notmuch://%s", C_Folder);
   else
     return NULL;
 
-  return nm_mdata_new(uri);
+  return nm_mdata_new(url);
 }
 
 /**
@@ -1713,7 +1713,7 @@ done:
 /**
  * nm_parse_type_from_query - Parse a query type out of a query
  * @param mdata Mailbox, used for the query_type
- * @param buf   Buffer for URI
+ * @param buf   Buffer for URL
  *
  * If a user writes a query for a vfolder and includes a type= statement, that
  * type= will be encoded, which Notmuch will treat as part of the query=
@@ -1741,18 +1741,18 @@ void nm_parse_type_from_query(struct NmMboxData *mdata, char *buf)
 }
 
 /**
- * nm_uri_from_query - Turn a query into a URI
+ * nm_url_from_query - Turn a query into a URL
  * @param m      Mailbox
- * @param buf    Buffer for URI
+ * @param buf    Buffer for URL
  * @param buflen Length of buffer
- * @retval ptr  Query as a URI
+ * @retval ptr  Query as a URL
  * @retval NULL Error
  */
-char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
+char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
 {
   mutt_debug(LL_DEBUG2, "(%s)\n", buf);
   struct NmMboxData *mdata = nm_mdata_get(m);
-  char uri[PATH_MAX + 1024 + 32]; /* path to DB + query + URI "decoration" */
+  char url[PATH_MAX + 1024 + 32]; /* path to DB + query + URL "decoration" */
   int added;
   bool using_default_data = false;
 
@@ -1772,31 +1772,31 @@ char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
 
   if (get_limit(mdata) == C_NmDbLimit)
   {
-    added = snprintf(uri, sizeof(uri), "%s%s?type=%s&query=", NmUriProtocol,
+    added = snprintf(url, sizeof(url), "%s%s?type=%s&query=", NmUrlProtocol,
                      nm_db_get_filename(m), query_type_to_string(mdata->query_type));
   }
   else
   {
-    added = snprintf(uri, sizeof(uri), "%s%s?type=%s&limit=%d&query=", NmUriProtocol,
+    added = snprintf(url, sizeof(url), "%s%s?type=%s&limit=%d&query=", NmUrlProtocol,
                      nm_db_get_filename(m),
                      query_type_to_string(mdata->query_type), get_limit(mdata));
   }
 
-  if (added >= sizeof(uri))
+  if (added >= sizeof(url))
   {
-    // snprintf output was truncated, so can't create URI
+    // snprintf output was truncated, so can't create URL
     return NULL;
   }
 
-  url_pct_encode(&uri[added], sizeof(uri) - added, buf);
+  url_pct_encode(&url[added], sizeof(url) - added, buf);
 
-  mutt_str_strfcpy(buf, uri, buflen);
+  mutt_str_strfcpy(buf, url, buflen);
   buf[buflen - 1] = '\0';
 
   if (using_default_data)
     nm_mdata_free((void **) &mdata);
 
-  mutt_debug(LL_DEBUG1, "nm: uri from query '%s'\n", buf);
+  mutt_debug(LL_DEBUG1, "nm: url from query '%s'\n", buf);
   return buf;
 }
 
@@ -1936,7 +1936,7 @@ static int nm_mbox_check_stats(struct Mailbox *m, int flags)
   url = url_parse(mailbox_path(m));
   if (!url)
   {
-    mutt_error(_("failed to parse notmuch uri: %s"), mailbox_path(m));
+    mutt_error(_("failed to parse notmuch url: %s"), mailbox_path(m));
     goto done;
   }
 
@@ -1961,12 +1961,12 @@ static int nm_mbox_check_stats(struct Mailbox *m, int flags)
   db_filename = url->path;
   if (!db_filename)
   {
-    if (C_NmDefaultUri)
+    if (C_NmDefaultUrl)
     {
-      if (nm_path_probe(C_NmDefaultUri, NULL) == MUTT_NOTMUCH)
-        db_filename = C_NmDefaultUri + NmUriProtocolLen;
+      if (nm_path_probe(C_NmDefaultUrl, NULL) == MUTT_NOTMUCH)
+        db_filename = C_NmDefaultUrl + NmUrlProtocolLen;
       else
-        db_filename = C_NmDefaultUri;
+        db_filename = C_NmDefaultUrl;
     }
     else if (C_Folder)
       db_filename = C_Folder;
@@ -2352,7 +2352,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 
   int rc = 0;
   struct Progress progress;
-  char *uri = mutt_str_strdup(mailbox_path(m));
+  char *url = mutt_str_strdup(mailbox_path(m));
   bool changed = false;
 
   mutt_debug(LL_DEBUG1, "nm: sync start\n");
@@ -2394,7 +2394,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
     mutt_buffer_strcpy(&m->pathbuf, edata->folder);
     m->magic = edata->magic;
     rc = mh_sync_mailbox_message(m, i, h);
-    mutt_buffer_strcpy(&m->pathbuf, uri);
+    mutt_buffer_strcpy(&m->pathbuf, url);
     m->magic = MUTT_NOTMUCH;
 
     if (rc)
@@ -2414,7 +2414,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
     FREE(&edata->oldpath);
   }
 
-  mutt_buffer_strcpy(&m->pathbuf, uri);
+  mutt_buffer_strcpy(&m->pathbuf, url);
   m->magic = MUTT_NOTMUCH;
 
   nm_db_release(m);
@@ -2427,7 +2427,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 
   nm_hcache_close(h);
 
-  FREE(&uri);
+  FREE(&url);
   mutt_debug(LL_DEBUG1, "nm: .... sync done [rc=%d]\n", rc);
   return rc;
 }
@@ -2548,7 +2548,7 @@ done:
  */
 enum MailboxType nm_path_probe(const char *path, const struct stat *st)
 {
-  if (!path || !mutt_str_startswith(path, NmUriProtocol, CASE_IGNORE))
+  if (!path || !mutt_str_startswith(path, NmUrlProtocol, CASE_IGNORE))
     return MUTT_UNKNOWN;
 
   return MUTT_NOTMUCH;
