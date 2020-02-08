@@ -73,6 +73,7 @@ struct Email
   bool collapsed : 1;          ///< Is this message part of a collapsed thread?
   bool limited   : 1;          ///< Is this message in a limited view?
   size_t num_hidden;           ///< Number of hidden messages in this view
+                               ///< (only valid for the root header, when collapsed is set)
 
   short recipient;             ///< User_is_recipient()'s return value, cached
 

@@ -48,15 +48,13 @@ typedef uint8_t MuttThreadFlags;         ///< Flags, e.g. #MUTT_THREAD_COLLAPSE
 #define MUTT_THREAD_NO_FLAGS          0  ///< No flags are set
 #define MUTT_THREAD_COLLAPSE    (1 << 0) ///< Collapse an email thread
 #define MUTT_THREAD_UNCOLLAPSE  (1 << 1) ///< Uncollapse an email thread
-#define MUTT_THREAD_GET_HIDDEN  (1 << 2) ///< Count non-visible emails in a thread
-#define MUTT_THREAD_UNREAD      (1 << 3) ///< Count unread emails in a thread
-#define MUTT_THREAD_NEXT_UNREAD (1 << 4) ///< Find the next unread email
-#define MUTT_THREAD_FLAGGED     (1 << 5) ///< Count flagged emails in a thread
+#define MUTT_THREAD_UNREAD      (1 << 2) ///< Count unread emails in a thread
+#define MUTT_THREAD_NEXT_UNREAD (1 << 3) ///< Find the next unread email
+#define MUTT_THREAD_FLAGGED     (1 << 4) ///< Count flagged emails in a thread
 
 int mutt_traverse_thread(struct Context *ctx, struct Email *e, MuttThreadFlags flag);
 #define mutt_collapse_thread(ctx, e)         mutt_traverse_thread(ctx, e, MUTT_THREAD_COLLAPSE)
 #define mutt_uncollapse_thread(ctx, e)       mutt_traverse_thread(ctx, e, MUTT_THREAD_UNCOLLAPSE)
-#define mutt_get_hidden(ctx, e)              mutt_traverse_thread(ctx, e, MUTT_THREAD_GET_HIDDEN)
 #define mutt_thread_contains_unread(ctx, e)  mutt_traverse_thread(ctx, e, MUTT_THREAD_UNREAD)
 #define mutt_thread_contains_flagged(ctx, e) mutt_traverse_thread(ctx, e, MUTT_THREAD_FLAGGED)
 #define mutt_thread_next_unread(ctx, e)      mutt_traverse_thread(ctx, e, MUTT_THREAD_NEXT_UNREAD)
