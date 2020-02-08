@@ -266,6 +266,9 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "nls", 0 },
 #endif
+#ifdef USE_DEBUG_NOTIFY
+  { "notify", 2 },
+#endif
 #ifdef USE_NOTMUCH
   { "notmuch", 1 },
 #else
@@ -313,6 +316,9 @@ static struct CompileOptions comp_opts[] = {
   { "typeahead", 1 },
 #else
   { "typeahead", 0 },
+#endif
+#ifdef USE_DEBUG_WINDOW
+  { "window", 2 },
 #endif
 #ifdef USE_ZLIB
   { "zlib", 1 },

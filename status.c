@@ -85,7 +85,7 @@ static char *get_sort_str(char *buf, size_t buflen, enum SortType method)
  * | \%r     | Readonly/wontwrite/changed flag
  * | \%S     | Current aux sorting method (`$sort_aux`)
  * | \%s     | Current sorting method (`$sort`)
- * | \%t     | # of tagged messages
+ * | \%t     | Number of tagged messages
  * | \%u     | Number of unread messages
  * | \%V     | Currently active limit pattern
  * | \%v     | NeoMutt version

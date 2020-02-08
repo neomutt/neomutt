@@ -47,7 +47,10 @@ core/account.c
 core/mailbox.c
 core/neomutt.c
 debug/backtrace.c
+debug/graphviz.c
+debug/notify.c
 debug/parse_test.c
+debug/window.c
 edit.c
 editmsg.c
 email/attach.c

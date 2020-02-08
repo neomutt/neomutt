@@ -53,6 +53,9 @@ size_t escape_string(struct Buffer *buf, const char *src)
   {
     switch (*src)
     {
+      case '\007':
+        len += mutt_buffer_addstr(buf, "\\g");
+        break;
       case '\n':
         len += mutt_buffer_addstr(buf, "\\n");
         break;

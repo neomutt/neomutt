@@ -32,6 +32,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "lib.h"
 #include "context.h"
 #include "globals.h"
 

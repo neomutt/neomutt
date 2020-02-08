@@ -30,6 +30,7 @@
 #include <libunwind.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "lib.h"
 
 /**
  * show_backtrace - Log the program's call stack
