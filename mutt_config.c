@@ -33,7 +33,7 @@
 #else
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "conn/conn_globals.h"
+#include "conn/lib.h"
 #include "gui/lib.h"
 #include "addrbook.h"
 #include "bcache.h"

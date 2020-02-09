@@ -33,7 +33,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "conn/conn.h" // IWYU pragma: keep
+#include "conn/lib.h" // IWYU pragma: keep
 
 /**
  * getdnsdomainname - Lookup the host's name using DNS

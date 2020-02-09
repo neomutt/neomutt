@@ -35,7 +35,7 @@
 #include <string.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "auth.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"

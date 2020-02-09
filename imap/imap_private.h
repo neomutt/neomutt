@@ -32,7 +32,7 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "hcache/hcache.h"
 
 struct Email;

@@ -38,8 +38,8 @@
  * | conn/tunnel.c       | @subpage conn_tunnel     |
  */
 
-#ifndef MUTT_CONN_CONN_H
-#define MUTT_CONN_CONN_H
+#ifndef MUTT_CONN_LIB_H
+#define MUTT_CONN_LIB_H
 
 #include "config.h"
 #include <stdio.h>
@@ -58,4 +58,4 @@
 
 int getdnsdomainname(char *buf, size_t buflen);
 
-#endif /* MUTT_CONN_CONN_H */
+#endif /* MUTT_CONN_LIB_H */

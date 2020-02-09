@@ -34,7 +34,7 @@
 #include "pop_private.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
