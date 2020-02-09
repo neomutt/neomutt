@@ -25,7 +25,7 @@
 
 #include "config.h"
 #include <stdint.h>
-#include "hcache/hcache.h"
+#include "hcache/lib.h"
 #include "nntp.h"
 
 struct Connection;

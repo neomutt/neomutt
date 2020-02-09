@@ -54,8 +54,8 @@
 #include "mutt_account.h"
 #include "options.h"
 #ifdef USE_HCACHE
-#include "hcache/hcache.h"
 #include "message.h"
+#include "hcache/lib.h"
 #endif
 
 /* These Config Variables are only used in imap/util.c */

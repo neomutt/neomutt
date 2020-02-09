@@ -33,7 +33,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "conn/lib.h"
-#include "hcache/hcache.h"
+#include "hcache/lib.h"
 
 struct Email;
 struct Mailbox;

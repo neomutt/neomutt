@@ -29,7 +29,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <sys/types.h>
-#include "hcache.h"
+#include "lib.h"
 
 struct AddressList;
 struct Body;

@@ -58,7 +58,7 @@
 #include <libintl.h>
 #endif
 #ifdef USE_HCACHE
-#include "hcache/hcache.h"
+#include "hcache/lib.h"
 #endif
 
 struct BodyCache;

@@ -70,7 +70,7 @@
 #include "sort.h"
 #include "version.h"
 #ifdef USE_HCACHE
-#include "hcache/hcache.h"
+#include "hcache/lib.h"
 #endif
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"

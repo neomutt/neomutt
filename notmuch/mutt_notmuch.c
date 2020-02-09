@@ -60,12 +60,12 @@
 #include "mutt.h"
 #include "mutt_notmuch.h"
 #include "globals.h"
-#include "hcache/hcache.h"
 #include "index.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
+#include "hcache/lib.h"
 #include "maildir/lib.h"
 
 const char NmUriProtocol[] = "notmuch://";

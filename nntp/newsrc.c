@@ -56,7 +56,7 @@
 #include "protos.h"
 #include "sort.h"
 #ifdef USE_HCACHE
-#include "hcache/hcache.h"
+#include "hcache/lib.h"
 #endif
 
 /* These Config Variables are only used in nntp/newsrc.c */

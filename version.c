@@ -49,7 +49,7 @@
 
 /* #include "muttlib.h" */
 const char *mutt_make_version(void);
-/* #include "hcache/hcache.h" */
+/* #include "hcache/lib.h" */
 const char *mutt_hcache_backend_list(void);
 
 const int SCREEN_WIDTH = 80;

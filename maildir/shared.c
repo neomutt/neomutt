@@ -50,12 +50,12 @@
 #include "mutt.h"
 #include "copy.h"
 #include "globals.h"
-#include "hcache/hcache.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
+#include "hcache/lib.h"
 #include "maildir/lib.h" // IWYU pragma: keep
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"

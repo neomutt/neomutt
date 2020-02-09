@@ -46,7 +46,6 @@
 #include "nntp.h"
 #include "bcache.h"
 #include "globals.h"
-#include "hcache/hcache.h"
 #include "hook.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
@@ -57,6 +56,7 @@
 #include "ncrypt/ncrypt.h"
 #include "progress.h"
 #include "sort.h"
+#include "hcache/lib.h"
 #ifdef USE_HCACHE
 #include "protos.h"
 #endif

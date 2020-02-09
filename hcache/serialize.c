@@ -37,7 +37,7 @@
 #include "address/lib.h"
 #include "email/lib.h"
 #include "serialize.h"
-#include "hcache.h"
+#include "lib.h"
 
 /**
  * lazy_realloc - Reallocate some memory
