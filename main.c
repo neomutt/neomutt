@@ -89,7 +89,7 @@
 #include "nntp/nntp.h"
 #endif
 #ifdef USE_AUTOCRYPT
-#include "autocrypt/autocrypt.h"
+#include "autocrypt/lib.h"
 #endif
 
 /* These Config Variables are only used in main.c */

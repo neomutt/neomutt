@@ -34,8 +34,8 @@
  * | autocrypt/autocrypt_schema.c    | @subpage autocrypt_schema    |
  */
 
-#ifndef MUTT_AUTOCRYPT_AUTOCRYPT_H
-#define MUTT_AUTOCRYPT_AUTOCRYPT_H
+#ifndef MUTT_AUTOCRYPT_LIB_H
+#define MUTT_AUTOCRYPT_LIB_H
 
 #include <sqlite3.h>
 #include <stdbool.h>
@@ -118,4 +118,4 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation       (struct Email *e, char 
 int               mutt_autocrypt_write_autocrypt_header  (struct Envelope *env, FILE *fp);
 int               mutt_autocrypt_write_gossip_headers    (struct Envelope *env, FILE *fp);
 
-#endif /* MUTT_AUTOCRYPT_AUTOCRYPT_H */
+#endif /* MUTT_AUTOCRYPT_LIB_H */

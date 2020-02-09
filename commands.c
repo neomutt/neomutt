@@ -77,7 +77,7 @@
 #include <libintl.h>
 #endif
 #ifdef USE_AUTOCRYPT
-#include "autocrypt/autocrypt.h"
+#include "autocrypt/lib.h"
 #endif
 
 /* These Config Variables are only used in commands.c */

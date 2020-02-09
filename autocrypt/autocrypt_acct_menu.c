@@ -35,7 +35,7 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "autocrypt.h"
+#include "lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"

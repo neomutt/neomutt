@@ -36,7 +36,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
-#include "autocrypt.h"
+#include "lib.h"
 #include "globals.h"
 #include "muttlib.h"
 #include "mx.h"

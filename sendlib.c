@@ -73,7 +73,7 @@
 #define EX_OK 0
 #endif
 #ifdef USE_AUTOCRYPT
-#include "autocrypt/autocrypt.h"
+#include "autocrypt/lib.h"
 #endif
 
 /* These Config Variables are only used in sendlib.c */

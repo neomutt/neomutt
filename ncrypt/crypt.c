@@ -57,7 +57,7 @@
 #include "sendlib.h"
 #include "state.h"
 #ifdef USE_AUTOCRYPT
-#include "autocrypt/autocrypt.h"
+#include "autocrypt/lib.h"
 #endif
 
 struct Mailbox;
