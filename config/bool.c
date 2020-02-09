@@ -31,7 +31,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "bool.h"
 #include "set.h"
 #include "subset.h"

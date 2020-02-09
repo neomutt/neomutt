@@ -30,7 +30,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "set.h"
 #include "inheritance.h"
 #include "types.h"

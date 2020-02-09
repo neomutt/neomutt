@@ -31,7 +31,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <wchar.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "mbtable.h"
 #include "set.h"
 #include "types.h"

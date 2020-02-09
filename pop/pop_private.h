@@ -26,7 +26,7 @@
 
 #include <stdbool.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "conn/lib.h"
 
 struct Email;

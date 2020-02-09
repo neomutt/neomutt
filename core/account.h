@@ -25,7 +25,7 @@
 #define MUTT_CORE_ACCOUNT_H
 
 #include <stdbool.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "mailbox.h"
 
 struct ConfigSubset;

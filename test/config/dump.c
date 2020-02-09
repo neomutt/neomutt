@@ -23,7 +23,7 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/common.h"
 #include "config/lib.h"
 #include "core/lib.h"

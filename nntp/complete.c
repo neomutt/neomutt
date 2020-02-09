@@ -30,7 +30,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "nntp.h"
 
 /**

@@ -26,7 +26,7 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include <locale.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
 
 struct Rfc2047TestData

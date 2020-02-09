@@ -38,7 +38,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "cryptglue.h"
 #include "crypt_mod.h"
 #include "ncrypt.h"

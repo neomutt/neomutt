@@ -28,7 +28,7 @@
 
 #include "config.h"
 #include <stddef.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "neomutt.h"
 #include "account.h"

@@ -33,7 +33,7 @@
 #include <string.h>
 #include <wchar.h>
 #include <wctype.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "alias.h"

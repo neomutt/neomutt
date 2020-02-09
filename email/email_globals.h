@@ -24,7 +24,7 @@
 #define MUTT_EMAIL_EMAIL_GLOBALS_H
 
 #include <stdbool.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 /* Config items */
 extern bool          C_AutoSubscribe;

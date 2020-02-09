@@ -33,7 +33,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "keymap.h"

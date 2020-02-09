@@ -4,7 +4,7 @@
 #include <sys/time.h>
 #include <time.h>
 #include <utime.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt_mailbox.h"

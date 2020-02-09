@@ -23,7 +23,7 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 void dummy_hash_free(int type, void *obj, intptr_t data)
 {

@@ -26,7 +26,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/common.h"
 #include "config/lib.h"
 #include "core/lib.h"

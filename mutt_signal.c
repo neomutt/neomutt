@@ -30,7 +30,7 @@
 #include <stddef.h>
 #include <errno.h>
 #include <signal.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "gui/lib.h"
 #include "globals.h"
 #include "mutt_attach.h"

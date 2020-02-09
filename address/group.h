@@ -26,7 +26,7 @@
 #define MUTT_GROUP_H
 
 #include <stdbool.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address.h"
 
 #define MUTT_GROUP   0  ///< 'group' config command

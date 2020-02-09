@@ -27,7 +27,7 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "mutt_commands.h"
 
 /**

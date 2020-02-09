@@ -24,7 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include <locale.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
 #include "common.h"
 

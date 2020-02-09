@@ -32,7 +32,7 @@
 #include <inttypes.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"

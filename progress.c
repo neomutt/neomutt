@@ -31,7 +31,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "gui/lib.h"
 #include "progress.h"
 #include "globals.h"

@@ -30,7 +30,7 @@
 #include "config.h"
 #include <fcntl.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "gui/lib.h"
 #ifdef USE_SLANG_CURSES
 #include <stdbool.h>

@@ -37,7 +37,7 @@
 #include <strings.h>
 #include <unistd.h>
 #include "nntp_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"

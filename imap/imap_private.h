@@ -30,7 +30,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "conn/lib.h"
 #include "hcache/hcache.h"

@@ -27,7 +27,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "ncrypt/ncrypt.h"
 #include "tags.h"
 

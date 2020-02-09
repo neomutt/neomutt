@@ -29,7 +29,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 /* Config items */
 bool C_AutoSubscribe; ///< Config: Automatically check if the user is subscribed to a mailing list

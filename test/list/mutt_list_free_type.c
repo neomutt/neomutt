@@ -23,7 +23,7 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "common.h"
 
 void test_list_free(void **ptr)

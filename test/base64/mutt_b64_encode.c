@@ -24,7 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 static const char clear[] = "Hello";
 static const char encoded[] = "SGVsbG8=";

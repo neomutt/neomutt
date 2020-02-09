@@ -26,7 +26,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 struct ConfigDef;
 struct ConfigSet;

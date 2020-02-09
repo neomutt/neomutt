@@ -35,7 +35,7 @@
 #include "hook.h"
 #include "mutt_account.h"
 #ifndef USE_SSL
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #endif
 
 /**

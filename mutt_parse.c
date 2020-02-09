@@ -30,7 +30,7 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
 #include "mutt_parse.h"
 #include "mx.h"

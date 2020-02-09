@@ -30,7 +30,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "pgppacket.h"
 
 #define CHUNK_SIZE 1024 ///< Amount of data to read at once

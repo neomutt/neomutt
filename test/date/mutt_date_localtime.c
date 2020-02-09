@@ -24,7 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include <stdlib.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 void test_mutt_date_localtime(void)
 {

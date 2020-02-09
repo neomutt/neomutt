@@ -31,7 +31,7 @@
 #include "config.h"
 #include <string.h>
 #include "imap_private.h" // IWYU pragma: keep
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "auth.h"
 
 /* These Config Variables are only used in imap/auth.c */

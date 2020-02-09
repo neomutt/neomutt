@@ -32,7 +32,7 @@
 #include <regex.h>
 #include <string.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "mutt.h"
 #include "parse.h"

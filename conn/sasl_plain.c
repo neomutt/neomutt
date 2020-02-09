@@ -28,7 +28,7 @@
 
 #include "config.h"
 #include <stdio.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "sasl_plain.h"
 
 /**

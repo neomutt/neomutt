@@ -29,7 +29,7 @@
 
 #include "config.h"
 #include "imap_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "conn/lib.h"
 #include "auth.h"
 #include "mutt_account.h"

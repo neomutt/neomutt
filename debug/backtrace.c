@@ -29,7 +29,7 @@
 #include "config.h"
 #include <libunwind.h>
 #include <stdio.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 /**
  * show_backtrace - Log the program's call stack

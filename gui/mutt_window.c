@@ -29,7 +29,7 @@
 #include "config.h"
 #include <stdarg.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "mutt_window.h"

@@ -28,7 +28,7 @@
 
 #include "config.h"
 #include <stddef.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "reflow.h"
 #include "mutt_window.h"
 

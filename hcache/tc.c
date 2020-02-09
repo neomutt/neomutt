@@ -33,7 +33,7 @@
 #include <stddef.h>
 #include <tcbdb.h>
 #include <tcutil.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "backend.h"
 #include "globals.h"
 

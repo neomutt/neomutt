@@ -24,7 +24,7 @@
 #define TEST_LIST_COMMON_H
 
 #include <stdbool.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 struct ListHead test_list_create(const char *items[], bool copy);
 

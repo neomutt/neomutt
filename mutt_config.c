@@ -31,7 +31,7 @@
 #ifdef _MAKEDOC
 #include "doc/makedoc_defs.h"
 #else
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
