@@ -58,7 +58,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "mutt_notmuch.h"
+#include "lib.h"
 #include "globals.h"
 #include "index.h"
 #include "mutt_thread.h"

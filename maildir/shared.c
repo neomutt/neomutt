@@ -58,7 +58,7 @@
 #include "hcache/lib.h"
 #include "maildir/lib.h" // IWYU pragma: keep
 #ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
+#include "notmuch/lib.h"
 #endif
 
 /* These Config Variables are only used in maildir/mh.c */

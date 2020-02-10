@@ -37,9 +37,9 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "lib.h"
 #include "globals.h"
 #include "mutt_logging.h"
-#include "mutt_notmuch.h"
 
 /**
  * nm_db_get_filename - Get the filename of the Notmuch database

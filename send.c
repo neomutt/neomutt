@@ -76,7 +76,7 @@
 #include "remailer.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
+#include "notmuch/lib.h"
 #endif
 #ifdef USE_IMAP
 #include "imap/lib.h"

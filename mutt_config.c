@@ -54,7 +54,6 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "notmuch/mutt_notmuch.h"
 #include "pager.h"
 #include "pattern.h"
 #include "pop/pop.h"
@@ -74,6 +73,7 @@
 #include "imap/lib.h"
 #include "maildir/lib.h"
 #include "nntp/lib.h"
+#include "notmuch/lib.h"
 #endif
 
 #ifndef ISPELL

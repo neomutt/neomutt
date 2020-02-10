@@ -49,7 +49,7 @@
 #include "ncrypt/lib.h"
 #ifdef USE_NOTMUCH
 #include "muttlib.h"
-#include "notmuch/mutt_notmuch.h"
+#include "notmuch/lib.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
