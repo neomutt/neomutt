@@ -131,6 +131,7 @@ int mutt_account_getpass(struct ConnAccount *cac)
 void mutt_account_unsetpass(struct ConnAccount *cac)
 {
   cac->flags &= ~MUTT_ACCT_PASS;
+  memset(cac->pass, 0, sizeof(cac->pass));
 }
 
 /**
@@ -184,18 +185,15 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac)
     return NULL;
   }
 
-  /* Determine the length of the keyed message digest, add 50 for overhead. */
-  size_t oalen = strlen(cac->login) + strlen(cac->host) + strlen(token) + 50;
-  char *oauthbearer = mutt_mem_malloc(oalen);
+  char *oauthbearer = NULL;
+  int oalen = mutt_str_asprintf(&oauthbearer, "n,a=%s,\001host=%s\001port=%d\001auth=Bearer %s\001\001",
+                                cac->login, cac->host, cac->port, token);
 
-  snprintf(oauthbearer, oalen, "n,a=%s,\001host=%s\001port=%d\001auth=Bearer %s\001\001",
-           cac->login, cac->host, cac->port, token);
+  size_t encoded_len = oalen * 4 / 3 + 10;
+  char *encoded_token = mutt_mem_malloc(encoded_len);
+  mutt_b64_encode(oauthbearer, oalen, encoded_token, encoded_len);
 
   FREE(&token);
-
-  size_t encoded_len = strlen(oauthbearer) * 4 / 3 + 10;
-  char *encoded_token = mutt_mem_malloc(encoded_len);
-  mutt_b64_encode(oauthbearer, strlen(oauthbearer), encoded_token, encoded_len);
   FREE(&oauthbearer);
   return encoded_token;
 }
