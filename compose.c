@@ -62,7 +62,6 @@
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
@@ -70,6 +69,7 @@
 #include "rfc3676.h"
 #include "sendlib.h"
 #include "sort.h"
+#include "ncrypt/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

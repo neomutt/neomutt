@@ -26,7 +26,7 @@
 
 #include <stdbool.h>
 #include <time.h>
-#include "ncrypt.h"
+#include "lib.h"
 
 /**
  * struct PgpUid - PGP User ID

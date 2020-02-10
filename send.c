@@ -59,7 +59,6 @@
 #include "mutt_logging.h"
 #include "mutt_parse.h"
 #include "muttlib.h"
-#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
@@ -68,6 +67,7 @@
 #include "sendlib.h"
 #include "smtp.h"
 #include "sort.h"
+#include "ncrypt/lib.h"
 #ifdef USE_NNTP
 #include "mx.h"
 #include "nntp/nntp.h"

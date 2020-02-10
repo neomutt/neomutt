@@ -28,7 +28,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include "mutt/lib.h"
-#include "ncrypt/ncrypt.h"
+#include "ncrypt/lib.h"
 #include "tags.h"
 
 /**
@@ -37,7 +37,7 @@
 struct Email
 {
   SecurityFlags security;      ///< bit 0-10: flags, bit 11,12: application, bit 13: traditional pgp
-                               ///< See: ncrypt/ncrypt.h pgplib.h, smime.h
+                               ///< See: ncrypt/lib.h pgplib.h, smime.h
 
   bool mime            : 1;    ///< Has a MIME-Version header?
   bool flagged         : 1;    ///< Marked important?

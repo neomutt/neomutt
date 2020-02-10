@@ -55,8 +55,8 @@
 #include "globals.h"
 #include "hook.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "protos.h"
+#include "ncrypt/lib.h"
 #if defined(HAVE_SYSCALL_H)
 #include <syscall.h>
 #elif defined(HAVE_SYS_SYSCALL_H)

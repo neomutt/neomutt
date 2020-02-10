@@ -38,11 +38,11 @@
 #include "address/lib.h"
 #include "gui/lib.h"
 #include "pgpinvoke.h"
+#include "lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "ncrypt.h"
 #include "pgpkey.h"
 #include "protos.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP

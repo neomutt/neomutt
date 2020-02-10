@@ -40,9 +40,9 @@
 #include "globals.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "send.h"
+#include "ncrypt/lib.h"
 
 /**
  * autocrypt_dir_init - Initialise an Autocrypt directory

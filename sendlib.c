@@ -58,12 +58,12 @@
 #include "mutt_parse.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pager.h"
 #include "send.h"
 #include "smtp.h"
 #include "state.h"
+#include "ncrypt/lib.h"
 #ifdef USE_NNTP
 #include "nntp/nntp.h"
 #endif

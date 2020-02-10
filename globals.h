@@ -33,7 +33,7 @@
 #ifdef MAIN_C
 /* so that global vars get included */
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
+#include "ncrypt/lib.h"
 #include "sort.h"
 #endif /* MAIN_C */
 

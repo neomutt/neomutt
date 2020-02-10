@@ -44,9 +44,9 @@
 #include "handler.h"
 #include "hdrline.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "sendlib.h"
 #include "state.h"
+#include "ncrypt/lib.h"
 #ifdef USE_NOTMUCH
 #include "muttlib.h"
 #include "notmuch/mutt_notmuch.h"

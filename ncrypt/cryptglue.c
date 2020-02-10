@@ -40,15 +40,15 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "cryptglue.h"
+#include "lib.h"
 #include "crypt_mod.h"
-#include "ncrypt.h"
 #ifndef CRYPT_BACKEND_GPGME
 #include "gui/lib.h"
 #endif
 #ifdef USE_AUTOCRYPT
 #include "email/lib.h"
+#include "crypt_gpgme.h"
 #include "globals.h"
-#include "ncrypt/crypt_gpgme.h"
 #include "options.h"
 #include "autocrypt/lib.h"
 #else

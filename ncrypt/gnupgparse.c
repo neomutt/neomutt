@@ -44,8 +44,8 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "gnupgparse.h"
+#include "lib.h"
 #include "globals.h"
-#include "ncrypt.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP

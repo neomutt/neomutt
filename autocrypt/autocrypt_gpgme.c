@@ -36,8 +36,8 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "globals.h"
-#include "ncrypt/crypt_gpgme.h"
 #include "options.h"
+#include "ncrypt/lib.h"
 
 /**
  * create_gpgme_context - Create a GPGME context

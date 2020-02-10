@@ -59,7 +59,6 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"
@@ -72,6 +71,7 @@
 #include "send.h"
 #include "sort.h"
 #include "status.h"
+#include "ncrypt/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif

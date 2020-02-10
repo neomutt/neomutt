@@ -53,10 +53,10 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "progress.h"
 #include "sort.h"
 #include "hcache/lib.h"
+#include "ncrypt/lib.h"
 #ifdef USE_HCACHE
 #include "protos.h"
 #endif

@@ -55,13 +55,13 @@
 #include "mutt_parse.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "progress.h"
 #include "protos.h"
 #include "sendlib.h"
 #include "state.h"
+#include "ncrypt/lib.h"
 #ifndef USE_FMEMOPEN
 #include <sys/stat.h>
 #endif

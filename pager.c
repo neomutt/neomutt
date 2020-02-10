@@ -61,7 +61,6 @@
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
@@ -69,6 +68,7 @@
 #include "recvcmd.h"
 #include "send.h"
 #include "status.h"
+#include "ncrypt/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif

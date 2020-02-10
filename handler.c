@@ -51,11 +51,11 @@
 #include "mutt_attach.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "rfc3676.h"
 #include "state.h"
+#include "ncrypt/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

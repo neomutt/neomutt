@@ -37,10 +37,10 @@
 #include "mutt_header.h"
 #include "mutt_thread.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "pattern.h"
 #include "score.h"
 #include "sort.h"
+#include "ncrypt/lib.h"
 
 /**
  * ctx_free - Free a Context

@@ -41,9 +41,9 @@
 #include "globals.h"
 #include "mutt_commands.h"
 #include "mutt_logging.h"
-#include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#include "ncrypt/lib.h"
 #ifndef USE_SLANG_CURSES
 #include <strings.h>
 #endif

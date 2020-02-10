@@ -41,7 +41,7 @@
 #include "address/lib.h"
 #endif
 #ifdef CRYPT_BACKEND_GPGME
-#include "ncrypt/crypt_gpgme.h"
+#include "ncrypt/lib.h"
 #endif
 #ifdef HAVE_NOTMUCH
 #include <notmuch.h>

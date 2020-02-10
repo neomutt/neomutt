@@ -70,12 +70,12 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "myvar.h"
-#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
 #include "send.h"
 #include "sendlib.h"
 #include "version.h"
+#include "ncrypt/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
