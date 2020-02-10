@@ -4417,7 +4417,7 @@ struct ConfigDef MuttVars[] = {
   ** The file containing a client certificate and its associated private
   ** key.
   */
-  { "ssl_force_tls", DT_BOOL, &C_SslForceTls, true },
+  { "ssl_force_tls", DT_BOOL, &C_SslForceTls, false },
   /*
   ** .pp
   ** If this variable is \fIset\fP, NeoMutt will require that all connections
