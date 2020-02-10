@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_POP_POP_H
-#define MUTT_POP_POP_H
+#ifndef MUTT_POP_LIB_H
+#define MUTT_POP_LIB_H
 
 #include <stdbool.h>
 #include "core/lib.h"
@@ -59,4 +59,4 @@ extern struct MxOps MxPopOps;
 void pop_fetch_mail(void);
 enum MailboxType pop_path_probe(const char *path, const struct stat *st);
 
-#endif /* MUTT_POP_POP_H */
+#endif /* MUTT_POP_LIB_H */

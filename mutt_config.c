@@ -56,7 +56,6 @@
 #include "mx.h"
 #include "pager.h"
 #include "pattern.h"
-#include "pop/pop.h"
 #include "progress.h"
 #include "query.h"
 #include "recvattach.h"
@@ -74,6 +73,7 @@
 #include "maildir/lib.h"
 #include "nntp/lib.h"
 #include "notmuch/lib.h"
+#include "pop/lib.h"
 #endif
 
 #ifndef ISPELL

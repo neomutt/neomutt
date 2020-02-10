@@ -65,7 +65,7 @@
 #include "imap/lib.h"
 #endif
 #ifdef USE_POP
-#include "pop/pop.h"
+#include "pop/lib.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"

@@ -43,7 +43,7 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "mutt.h"
-#include "pop.h"
+#include "lib.h"
 #include "bcache.h"
 #include "context.h"
 #include "globals.h"
