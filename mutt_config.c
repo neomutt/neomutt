@@ -44,7 +44,6 @@
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
-#include "imap/imap.h"
 #include "index.h"
 #include "init.h"
 #include "mailcap.h"
@@ -73,6 +72,7 @@
 #include "smtp.h"
 #include "sort.h"
 #include "status.h"
+#include "imap/lib.h"
 #include "maildir/lib.h"
 #endif
 

@@ -60,7 +60,7 @@
 #include "options.h"
 #include "sendlib.h"
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp/nntp.h"

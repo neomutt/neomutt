@@ -68,7 +68,7 @@
 #include "sendlib.h"
 #include "sort.h"
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"

@@ -66,7 +66,7 @@
 #include <sys/stat.h>
 #endif
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 
 /* These Config Variables are only used in pattern.c */

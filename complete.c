@@ -38,7 +38,7 @@
 #include "options.h"
 #include "protos.h" // IWYU pragma: keep
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp/nntp.h"

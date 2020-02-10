@@ -62,7 +62,7 @@
 #include "compress.h"
 #endif
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 #ifdef USE_POP
 #include "pop/pop.h"

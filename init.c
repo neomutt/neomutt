@@ -76,7 +76,7 @@
 #include "notmuch/mutt_notmuch.h"
 #endif
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>

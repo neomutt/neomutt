@@ -63,7 +63,7 @@
 #include <sys/syscall.h>
 #endif
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 
 /* These Config Variables are only used in muttlib.c */

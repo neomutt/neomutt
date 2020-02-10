@@ -56,7 +56,7 @@
 #include "sendlib.h"
 #include "state.h"
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 
 /**

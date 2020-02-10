@@ -43,7 +43,7 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "imap.h"
+#include "lib.h"
 #include "auth.h"
 #include "commands.h"
 #include "globals.h"

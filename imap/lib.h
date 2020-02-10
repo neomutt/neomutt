@@ -45,8 +45,8 @@
  * | imap/util.c       | @subpage imap_util       |
  */
 
-#ifndef MUTT_IMAP_IMAP_H
-#define MUTT_IMAP_IMAP_H
+#ifndef MUTT_IMAP_LIB_H
+#define MUTT_IMAP_LIB_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -120,4 +120,4 @@ void imap_keepalive(void);
 void imap_get_parent_path(const char *path, char *buf, size_t buflen);
 void imap_clean_path(char *path, size_t plen);
 
-#endif /* MUTT_IMAP_IMAP_H */
+#endif /* MUTT_IMAP_LIB_H */
