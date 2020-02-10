@@ -31,8 +31,8 @@
  * | mbox/mbox.c | @subpage mbox_mbox |
  */
 
-#ifndef MUTT_MBOX_MBOX_H
-#define MUTT_MBOX_MBOX_H
+#ifndef MUTT_MBOX_LIB_H
+#define MUTT_MBOX_LIB_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -64,4 +64,4 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st);
 void             mbox_reset_atime(struct Mailbox *m, struct stat *st);
 bool             mbox_test_new_folder(const char *path);
 
-#endif /* MUTT_MBOX_MBOX_H */
+#endif /* MUTT_MBOX_LIB_H */

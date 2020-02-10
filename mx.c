@@ -48,7 +48,6 @@
 #include "globals.h"
 #include "hook.h"
 #include "keymap.h"
-#include "mbox/mbox.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
@@ -58,6 +57,7 @@
 #include "protos.h"
 #include "sort.h"
 #include "maildir/lib.h"
+#include "mbox/lib.h"
 #ifdef USE_COMPRESSED
 #include "compress.h"
 #endif

@@ -47,7 +47,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
-#include "mbox.h"
+#include "lib.h"
 #include "copy.h"
 #include "globals.h"
 #include "mutt_header.h"
