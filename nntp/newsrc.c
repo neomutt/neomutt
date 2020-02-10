@@ -45,6 +45,7 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "mutt.h"
+#include "lib.h"
 #include "bcache.h"
 #include "format_flags.h"
 #include "globals.h"
@@ -52,7 +53,6 @@
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "muttlib.h"
-#include "nntp.h"
 #include "protos.h"
 #include "sort.h"
 #ifdef USE_HCACHE

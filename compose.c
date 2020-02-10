@@ -77,7 +77,7 @@
 #include "remailer.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp/nntp.h"
+#include "nntp/lib.h"
 #endif
 #ifdef USE_POP
 #include "pop/pop.h"

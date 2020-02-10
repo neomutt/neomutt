@@ -35,8 +35,8 @@
  * | nntp/nntp.c     | @subpage nntp_nntp     |
  */
 
-#ifndef MUTT_NNTP_NNTP_H
-#define MUTT_NNTP_NNTP_H
+#ifndef MUTT_NNTP_LIB_H
+#define MUTT_NNTP_LIB_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -176,4 +176,4 @@ enum MailboxType nntp_path_probe(const char *path, const struct stat *st);
 const char *group_index_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, unsigned long data, MuttFormatFlags flags);
 int nntp_complete(char *buf, size_t buflen);
 
-#endif /* MUTT_NNTP_NNTP_H */
+#endif /* MUTT_NNTP_LIB_H */

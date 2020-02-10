@@ -26,7 +26,7 @@
 #include "config.h"
 #include <stdint.h>
 #include "hcache/lib.h"
-#include "nntp.h"
+#include "lib.h"
 
 struct Connection;
 struct Email;

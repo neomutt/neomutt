@@ -63,7 +63,7 @@
 #include "imap/lib.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp/nntp.h"
+#include "nntp/lib.h"
 #endif
 
 /* These Config Variables are only used in browser.c */

@@ -43,7 +43,7 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
-#include "nntp.h"
+#include "lib.h"
 #include "bcache.h"
 #include "globals.h"
 #include "hook.h"

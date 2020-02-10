@@ -65,7 +65,7 @@
 #include "state.h"
 #include "ncrypt/lib.h"
 #ifdef USE_NNTP
-#include "nntp/nntp.h"
+#include "nntp/lib.h"
 #endif
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>

@@ -68,7 +68,7 @@
 #include "pop/pop.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp/nntp.h"
+#include "nntp/lib.h"
 #endif
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
