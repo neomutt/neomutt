@@ -1642,7 +1642,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_JUMP:
       {
         int msg_num = 0;
-        if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
+        if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
         if (isdigit(LastKey))
           mutt_unget_event(LastKey, 0);
@@ -1686,8 +1686,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
          */
 
       case OP_MAIN_DELETE_PATTERN:
-        if (!prereq(Context, menu,
-                    CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY | CHECK_ATTACH))
+        if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_READONLY | CHECK_ATTACH))
         {
           break;
         }
@@ -1852,11 +1851,17 @@ int mutt_index_menu(struct MuttWindow *dlg)
         menu->redraw = REDRAW_FULL;
         break;
 
-      case OP_SEARCH:
+      // Initiating a search can happen on an empty mailbox, but
+      // searching for next/previous/... needs to be on a message and
+      // thus a non-empty mailbox
       case OP_SEARCH_REVERSE:
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
+          break;
+        /* fallthrough */
+      case OP_SEARCH:
+        if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
         menu->current = mutt_search_command(menu->current, op);
         if (menu->current == -1)
@@ -1926,14 +1931,14 @@ int mutt_index_menu(struct MuttWindow *dlg)
       }
 
       case OP_MAIN_TAG_PATTERN:
-        if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
+        if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
         mutt_pattern_func(MUTT_TAG, _("Tag messages matching: "));
         menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         break;
 
       case OP_MAIN_UNDELETE_PATTERN:
-        if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
@@ -1950,7 +1955,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         break;
 
       case OP_MAIN_UNTAG_PATTERN:
-        if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
+        if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
         if (mutt_pattern_func(MUTT_UNTAG, _("Untag messages matching: ")) == 0)
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
@@ -3189,7 +3194,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       }
 
       case OP_MAIN_COLLAPSE_ALL:
-        if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
+        if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
 
         if ((C_Sort & SORT_MASK) != SORT_THREADS)
