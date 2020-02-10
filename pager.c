@@ -1595,7 +1595,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += k;
       if (pa)
-        mutt_window_addch(ReplacementChar);
+        mutt_addwch(ReplacementChar);
     }
   }
   *pspace = space;
