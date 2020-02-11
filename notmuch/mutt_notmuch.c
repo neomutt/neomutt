@@ -62,11 +62,11 @@
 #include "globals.h"
 #include "hcache/hcache.h"
 #include "index.h"
-#include "maildir/lib.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
+#include "maildir/lib.h"
 
 const char NmUriProtocol[] = "notmuch://";
 const int NmUriProtocolLen = sizeof(NmUriProtocol) - 1;

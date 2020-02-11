@@ -8,6 +8,7 @@ ColumnLimit:       80
 BreakBeforeBraces: Allman
 
 IncludeCategories:
+  # Standard library headers
   - Regex:      '"acutest\.h"'
     Priority:   -130
   - Regex:      '"config\.h"'
@@ -16,8 +17,12 @@ IncludeCategories:
     Priority:   -110
   - Regex:      '<.*>'
     Priority:   -100
+
+  # Backend private header
   - Regex:      '".*_private\.h"'
     Priority:   -90
+
+  # NeoMutt library headers
   - Regex:      '"mutt/.*\.h"'
     Priority:   -80
   - Regex:      '"address/.*\.h"'
@@ -32,17 +37,31 @@ IncludeCategories:
     Priority:   -30
   - Regex:      '"gui/.*\.h"'
     Priority:   -20
+
+  # NeoMutt general purpose headers
   - Regex:      '"mutt\.h"'
     Priority:   -10
   - Regex:      '"debug/.*\.h"'
     Priority:   -5
+
   # Main Header 0
+
+  # Backend using its own library header
+  - Regex:      '"lib\.h"'
+    Priority:   2
+
+  # All backend library headers
+  - Regex:      '".*/lib\.h"'
+    Priority:   10
+
+  # All other NeoMutt headers
   - Regex:      '".*"'
     Priority:   5
 
 AlignAfterOpenBracket:            true
 AlignEscapedNewlinesLeft:         false
 AlignOperands:                    true
+AlignTrailingComments:            true
 AlwaysBreakAfterReturnType:       None
 BinPackArguments:                 true
 BinPackParameters:                true
@@ -69,17 +88,9 @@ SpacesInSquareBrackets:           false
 PenaltyExcessCharacter: 1
 
 # NEVER
-
 AllowShortFunctionsOnASingleLine:    false
 AllowShortBlocksOnASingleLine:       false
 AllowShortCaseLabelsOnASingleLine:   false
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine:        false
 
-# OPTIONAL
-
-AlignTrailingComments:             true
-# AlignConsecutiveAssignments:       true
-# AlignConsecutiveDeclarations:      true
-# AlwaysBreakBeforeMultilineStrings: true
-# SpacesBeforeTrailingComments:      2

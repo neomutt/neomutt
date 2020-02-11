@@ -44,9 +44,9 @@
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "lib.h"
 #include "errno.h"
 #include "globals.h"
-#include "lib.h"
 #include "monitor.h"
 #include "mx.h"
 

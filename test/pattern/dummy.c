@@ -160,9 +160,8 @@ void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
 {
 }
 
-int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
-                             struct Body *attach, int mode,
-                             bool privacy, bool hide_protected_subject)
+int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach,
+                             int mode, bool privacy, bool hide_protected_subject)
 {
   return 0;
 }

@@ -48,7 +48,6 @@
 #include "index.h"
 #include "init.h"
 #include "mailcap.h"
-#include "maildir/lib.h"
 #include "main.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
@@ -74,6 +73,7 @@
 #include "smtp.h"
 #include "sort.h"
 #include "status.h"
+#include "maildir/lib.h"
 #endif
 
 #ifndef ISPELL
