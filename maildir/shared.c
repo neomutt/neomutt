@@ -1143,14 +1143,7 @@ void maildir_canon_filename(struct Buffer *dest, const char *src)
     src = t + 1;
 
   mutt_buffer_strcpy(dest, src);
-  char *u = strchr(dest->data, ',');
-  if (u)
-  {
-    *u = '\0';
-    dest->dptr = u;
-    return;
-  }
-  u = strrchr(dest->data, ':');
+  char *u = strpbrk(dest->data, ",:");
   if (u)
   {
     *u = '\0';
