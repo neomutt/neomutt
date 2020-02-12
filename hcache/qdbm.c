@@ -34,7 +34,7 @@
 #include <depot.h>
 #include <stdbool.h>
 #include <villa.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "backend.h"
 #include "globals.h"
 

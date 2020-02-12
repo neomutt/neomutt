@@ -31,13 +31,13 @@
 #include <gpgme.h>
 #include <stdbool.h>
 #include "autocrypt_private.h" // IWYU pragma: keep
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "globals.h"
-#include "ncrypt/crypt_gpgme.h"
 #include "options.h"
+#include "ncrypt/lib.h"
 
 /**
  * create_gpgme_context - Create a GPGME context

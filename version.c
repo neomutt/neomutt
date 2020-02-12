@@ -34,14 +34,14 @@
 #include <string.h>
 #include <sys/utsname.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "gui/lib.h"
 #include "version.h"
 #ifdef HAVE_LIBIDN
 #include "address/lib.h"
 #endif
 #ifdef CRYPT_BACKEND_GPGME
-#include "ncrypt/crypt_gpgme.h"
+#include "ncrypt/lib.h"
 #endif
 #ifdef HAVE_NOTMUCH
 #include <notmuch.h>
@@ -49,7 +49,7 @@
 
 /* #include "muttlib.h" */
 const char *mutt_make_version(void);
-/* #include "hcache/hcache.h" */
+/* #include "hcache/lib.h" */
 const char *mutt_hcache_backend_list(void);
 
 const int SCREEN_WIDTH = 80;

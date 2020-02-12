@@ -36,7 +36,7 @@
 #include <stdio.h>
 #include <wchar.h>
 #include <wctype.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
 #include "enriched.h"
 #include "state.h"

@@ -28,7 +28,7 @@
 
 #include "config.h"
 #include <stdio.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "idna2.h"
 #ifdef HAVE_LIBIDN
 #include <stdbool.h>

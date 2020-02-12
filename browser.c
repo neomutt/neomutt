@@ -39,11 +39,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "browser.h"
@@ -60,10 +60,10 @@
 #include "options.h"
 #include "sendlib.h"
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp/nntp.h"
+#include "nntp/lib.h"
 #endif
 
 /* These Config Variables are only used in browser.c */

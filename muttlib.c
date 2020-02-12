@@ -42,7 +42,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -55,15 +55,15 @@
 #include "globals.h"
 #include "hook.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "protos.h"
+#include "ncrypt/lib.h"
 #if defined(HAVE_SYSCALL_H)
 #include <syscall.h>
 #elif defined(HAVE_SYS_SYSCALL_H)
 #include <sys/syscall.h>
 #endif
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 
 /* These Config Variables are only used in muttlib.c */

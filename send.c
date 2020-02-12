@@ -36,7 +36,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -59,7 +59,6 @@
 #include "mutt_logging.h"
 #include "mutt_parse.h"
 #include "muttlib.h"
-#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
@@ -68,21 +67,22 @@
 #include "sendlib.h"
 #include "smtp.h"
 #include "sort.h"
+#include "ncrypt/lib.h"
 #ifdef USE_NNTP
 #include "mx.h"
-#include "nntp/nntp.h"
+#include "nntp/lib.h"
 #endif
 #ifdef MIXMASTER
 #include "remailer.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
+#include "notmuch/lib.h"
 #endif
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 #ifdef USE_AUTOCRYPT
-#include "autocrypt/autocrypt.h"
+#include "autocrypt/lib.h"
 #endif
 
 /* These Config Variables are only used in send.c */

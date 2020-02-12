@@ -35,7 +35,7 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "mutt.h"
 #include "tunnel.h"
 #include "conn_globals.h"

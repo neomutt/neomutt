@@ -29,7 +29,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "parameter.h"
 
 /**

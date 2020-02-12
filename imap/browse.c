@@ -33,17 +33,17 @@
 #include <stdio.h>
 #include <string.h>
 #include "imap_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "browser.h"
 #include "globals.h"
-#include "imap/imap.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
+#include "imap/lib.h"
 
 /**
  * add_folder - Format and add an IMAP folder to the browser

@@ -32,9 +32,9 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 #include "autocrypt_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
-#include "autocrypt.h"
+#include "lib.h"
 #include "globals.h"
 
 /* Prepared statements */

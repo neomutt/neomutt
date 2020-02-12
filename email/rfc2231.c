@@ -38,7 +38,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "rfc2231.h"
 #include "email_globals.h"
 #include "mime.h"

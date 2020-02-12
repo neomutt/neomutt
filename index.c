@@ -35,11 +35,11 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "index.h"
@@ -59,7 +59,6 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"
@@ -72,20 +71,21 @@
 #include "send.h"
 #include "sort.h"
 #include "status.h"
+#include "ncrypt/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
 #ifdef USE_POP
-#include "pop/pop.h"
+#include "pop/lib.h"
 #endif
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
+#include "notmuch/lib.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp/nntp.h"
+#include "nntp/lib.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -94,7 +94,7 @@
 #include "monitor.h"
 #endif
 #ifdef USE_AUTOCRYPT
-#include "autocrypt/autocrypt.h"
+#include "autocrypt/lib.h"
 #endif
 
 /* These Config Variables are only used in index.c */

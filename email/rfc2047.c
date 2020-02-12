@@ -35,7 +35,7 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "rfc2047.h"
 #include "email_globals.h"

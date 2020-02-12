@@ -26,7 +26,7 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 
 #define MUTT_ENV_CHANGED_IRT     (1 << 0)  ///< In-Reply-To changed to link/break threads

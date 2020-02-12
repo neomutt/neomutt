@@ -39,10 +39,10 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "smtp.h"
 #include "globals.h"
 #include "mutt_account.h"

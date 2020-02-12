@@ -41,13 +41,13 @@
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
-#include "mbox.h"
+#include "lib.h"
 #include "copy.h"
 #include "globals.h"
 #include "mutt_header.h"

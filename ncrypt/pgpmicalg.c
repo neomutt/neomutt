@@ -31,7 +31,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "pgpmicalg.h"
 #include "handler.h"
 #include "pgppacket.h"

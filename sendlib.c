@@ -42,7 +42,7 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -58,14 +58,14 @@
 #include "mutt_parse.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pager.h"
 #include "send.h"
 #include "smtp.h"
 #include "state.h"
+#include "ncrypt/lib.h"
 #ifdef USE_NNTP
-#include "nntp/nntp.h"
+#include "nntp/lib.h"
 #endif
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
@@ -73,7 +73,7 @@
 #define EX_OK 0
 #endif
 #ifdef USE_AUTOCRYPT
-#include "autocrypt/autocrypt.h"
+#include "autocrypt/lib.h"
 #endif
 
 /* These Config Variables are only used in sendlib.c */

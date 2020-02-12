@@ -56,8 +56,8 @@
  *       the library, but none depends on source from outside.
  */
 
-#ifndef MUTT_LIB_MUTT_H
-#define MUTT_LIB_MUTT_H
+#ifndef MUTT_MUTT_LIB_H
+#define MUTT_MUTT_LIB_H
 
 // IWYU pragma: begin_exports
 #include "base64.h"
@@ -89,4 +89,4 @@
 #include "string2.h"
 // IWYU pragma: end_exports
 
-#endif /* MUTT_LIB_MUTT_H */
+#endif /* MUTT_MUTT_LIB_H */

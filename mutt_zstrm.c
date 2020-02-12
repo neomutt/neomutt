@@ -29,7 +29,7 @@
 #include <errno.h>
 #include <string.h>
 #include <zlib.h>
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "mutt.h"
 #include "mutt_zstrm.h"
 #include "mutt_socket.h"

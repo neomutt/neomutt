@@ -50,13 +50,14 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "crypt_gpgme.h"
+#include "lib.h"
 #include "alias.h"
 #include "crypt.h"
 #include "format_flags.h"
@@ -68,7 +69,6 @@
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
-#include "ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"

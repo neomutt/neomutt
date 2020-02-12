@@ -200,8 +200,7 @@ static char *get_token(char *d, size_t l, char *s)
 
   if (Debug)
   {
-    fprintf(stderr, "%s: Got %stoken: `%s'.\n", Progname,
-            is_quoted ? "quoted " : "", dd);
+    fprintf(stderr, "%s: Got %stoken: `%s'.\n", Progname, is_quoted ? "quoted " : "", dd);
     fprintf(stderr, "%s: Remainder: `%s'.\n", Progname, t);
   }
 
@@ -1044,8 +1043,9 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
     {
       /* heuristic! */
       if (strncmp(s, "SORT_", 5) != 0)
-        fprintf(stderr, "WARNING: expected prefix of SORT_ for type DT_SORT "
-                        "instead of %s\n",
+        fprintf(stderr,
+                "WARNING: expected prefix of SORT_ for type DT_SORT "
+                "instead of %s\n",
                 s);
       strncpy(t, s + 5, l);
       for (; *t; t++)
@@ -1178,7 +1178,8 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
     case F_CONF:
     {
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) || (type == DT_COMMAND))
+          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) ||
+          (type == DT_COMMAND))
       {
         fprintf(out, "\n# set %s=\"", varname);
         conf_print_strval(val, out);
@@ -1190,7 +1191,8 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fprintf(out, "\n#\n# Name: %s", varname);
       fprintf(out, "\n# Type: %s", type2human(type));
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) || (type == DT_COMMAND))
+          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) ||
+          (type == DT_COMMAND))
       {
         fputs("\n# Default: \"", out);
         conf_print_strval(val, out);
@@ -1210,7 +1212,8 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fputs(".nf\n", out);
       fprintf(out, "Type: %s\n", type2human(type));
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) || (type == DT_COMMAND))
+          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) ||
+          (type == DT_COMMAND))
       {
         fputs("Default: \"", out);
         man_print_strval(val, out);
@@ -1238,7 +1241,8 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fprintf(out, "</title>\n<literallayout>Type: %s", type2human(type));
 
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) || (type == DT_COMMAND))
+          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) ||
+          (type == DT_COMMAND))
       {
         if (val && *val)
         {
@@ -1364,8 +1368,9 @@ static void makedoc(FILE *in, FILE *out)
     p = strchr(buffer, '\n');
     if (!p)
     {
-      fprintf(stderr, "%s: Line %d too long.  Ask a wizard to enlarge\n"
-                      "%s: my buffer size.\n",
+      fprintf(stderr,
+              "%s: Line %d too long.  Ask a wizard to enlarge\n"
+              "%s: my buffer size.\n",
               Progname, line, Progname);
       exit(1);
     }

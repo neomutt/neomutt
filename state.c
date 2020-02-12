@@ -30,7 +30,7 @@
 #include <limits.h>
 #include <stdarg.h>
 #include <wchar.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "state.h"
 #include "globals.h"
 

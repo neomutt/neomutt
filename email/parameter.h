@@ -24,7 +24,7 @@
 #define MUTT_EMAIL_PARAMETER_H
 
 #include <stdbool.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 /**
  * struct Parameter - Attribute associated with a MIME part

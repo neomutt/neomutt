@@ -27,7 +27,7 @@
 
 #include "config.h"
 #include <stdio.h>
-#include "ncrypt.h"
+#include "lib.h"
 #ifdef USE_SLANG_CURSES
 #include "gui/lib.h"
 #else

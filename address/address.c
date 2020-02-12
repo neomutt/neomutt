@@ -32,7 +32,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address.h"
 #include "idna2.h"
 

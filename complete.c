@@ -31,17 +31,17 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "core/lib.h"
 #include "globals.h"
 #include "muttlib.h"
 #include "options.h"
 #include "protos.h" // IWYU pragma: keep
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp/nntp.h"
+#include "nntp/lib.h"
 #endif
 
 /**

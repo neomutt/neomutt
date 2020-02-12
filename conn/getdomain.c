@@ -32,8 +32,8 @@
 #include <sys/socket.h>
 #include <time.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
-#include "conn/conn.h" // IWYU pragma: keep
+#include "mutt/lib.h"
+#include "conn/lib.h" // IWYU pragma: keep
 
 /**
  * getdnsdomainname - Lookup the host's name using DNS

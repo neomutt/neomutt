@@ -38,7 +38,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <wchar.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -61,7 +61,6 @@
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
@@ -69,11 +68,12 @@
 #include "recvcmd.h"
 #include "send.h"
 #include "status.h"
+#include "ncrypt/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp/nntp.h"
+#include "nntp/lib.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>

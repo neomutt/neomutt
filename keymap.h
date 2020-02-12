@@ -25,7 +25,7 @@
 
 #include "config.h"
 #include <stddef.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "mutt_commands.h"
 
 #define MUTT_UNBIND  1<<0

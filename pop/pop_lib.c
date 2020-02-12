@@ -36,11 +36,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "pop_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "mutt.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"

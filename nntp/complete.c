@@ -30,8 +30,8 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "mutt/mutt.h"
-#include "nntp.h"
+#include "mutt/lib.h"
+#include "lib.h"
 
 /**
  * nntp_complete - Auto-complete NNTP newsgroups

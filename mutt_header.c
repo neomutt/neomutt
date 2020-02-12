@@ -33,7 +33,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
@@ -42,10 +42,10 @@
 #include "alias.h"
 #include "index.h"
 #include "muttlib.h"
-#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
 #include "sendlib.h"
+#include "ncrypt/lib.h"
 
 /**
  * label_ref_dec - Decrease the refcount of a label

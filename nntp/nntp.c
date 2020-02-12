@@ -37,16 +37,15 @@
 #include <strings.h>
 #include <unistd.h>
 #include "nntp_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "gui/lib.h"
-#include "nntp.h"
+#include "lib.h"
 #include "bcache.h"
 #include "globals.h"
-#include "hcache/hcache.h"
 #include "hook.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
@@ -54,9 +53,10 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "progress.h"
 #include "sort.h"
+#include "hcache/lib.h"
+#include "ncrypt/lib.h"
 #ifdef USE_HCACHE
 #include "protos.h"
 #endif

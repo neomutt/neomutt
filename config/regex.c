@@ -32,7 +32,7 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "regex2.h" // IWYU pragma: keep
 #include "set.h"
 #include "types.h"

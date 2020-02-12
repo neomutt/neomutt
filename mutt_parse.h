@@ -24,7 +24,7 @@
 #define MUTT_MUTT_PARSE_H
 
 #include <regex.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
 
 struct Mailbox;

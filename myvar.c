@@ -28,7 +28,7 @@
 
 #include "config.h"
 #include <stddef.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "myvar.h"
 
 struct MyVarList MyVars = TAILQ_HEAD_INITIALIZER(MyVars);

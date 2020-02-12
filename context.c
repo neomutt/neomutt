@@ -28,7 +28,7 @@
 
 #include "config.h"
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -37,10 +37,10 @@
 #include "mutt_header.h"
 #include "mutt_thread.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "pattern.h"
 #include "score.h"
 #include "sort.h"
+#include "ncrypt/lib.h"
 
 /**
  * ctx_free - Free a Context

@@ -24,7 +24,7 @@
 #define MUTT_DEBUG_LIB_H
 
 #include "config.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "core/lib.h"
 
 // Parse Set

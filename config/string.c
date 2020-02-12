@@ -30,7 +30,7 @@
 #include <stddef.h>
 #include <limits.h>
 #include <stdint.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "set.h"
 #include "string3.h" // IWYU pragma: keep
 #include "types.h"

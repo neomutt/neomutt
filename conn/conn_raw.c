@@ -42,7 +42,7 @@
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "gui/lib.h"
 #include "conn_globals.h"
 #include "connaccount.h"

@@ -47,12 +47,13 @@
  * | ncrypt/smime.c                   | @subpage crypt_smime                 |
  */
 
-#ifndef MUTT_NCRYPT_NCRYPT_H
-#define MUTT_NCRYPT_NCRYPT_H
+#ifndef MUTT_NCRYPT_LIB_H
+#define MUTT_NCRYPT_LIB_H
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "crypt_gpgme.h"
 
 struct Address;
 struct Body;
@@ -224,4 +225,4 @@ int          crypt_smime_verify_sender(struct Mailbox *m, struct Email *e);
 /* crypt_mod.c */
 void crypto_module_free(void);
 
-#endif /* MUTT_NCRYPT_NCRYPT_H */
+#endif /* MUTT_NCRYPT_LIB_H */

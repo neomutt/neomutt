@@ -42,16 +42,16 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "maildir_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "globals.h"
-#include "maildir/lib.h"
 #include "monitor.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "maildir/lib.h"
 #ifdef USE_HCACHE
-#include "hcache/hcache.h"
+#include "hcache/lib.h"
 #endif
 
 // Flags for maildir_mbox_check()

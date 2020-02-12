@@ -28,12 +28,12 @@
 
 #include "config.h"
 #include <stdio.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
+#include "lib.h"
 #include "browser.h"
 #include "format_flags.h"
 #include "muttlib.h"
-#include "nntp.h"
 
 /**
  * group_index_format_str - Format a string for the newsgroup menu - Implements ::format_t

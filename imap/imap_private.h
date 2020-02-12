@@ -30,10 +30,10 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
-#include "conn/conn.h"
-#include "hcache/hcache.h"
+#include "conn/lib.h"
+#include "hcache/lib.h"
 
 struct Email;
 struct Mailbox;

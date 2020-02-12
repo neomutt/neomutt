@@ -45,12 +45,12 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "debug/lib.h"
@@ -70,12 +70,12 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "myvar.h"
-#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
 #include "send.h"
 #include "sendlib.h"
 #include "version.h"
+#include "ncrypt/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -83,13 +83,13 @@
 #include "sidebar.h"
 #endif
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp/nntp.h"
+#include "nntp/lib.h"
 #endif
 #ifdef USE_AUTOCRYPT
-#include "autocrypt/autocrypt.h"
+#include "autocrypt/lib.h"
 #endif
 
 /* These Config Variables are only used in main.c */

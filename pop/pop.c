@@ -37,13 +37,13 @@
 #include <string.h>
 #include <unistd.h>
 #include "pop_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "mutt.h"
-#include "pop.h"
+#include "lib.h"
 #include "bcache.h"
 #include "context.h"
 #include "globals.h"
@@ -54,13 +54,13 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "progress.h"
+#include "ncrypt/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
 #ifdef USE_HCACHE
-#include "hcache/hcache.h"
+#include "hcache/lib.h"
 #endif
 
 struct BodyCache;

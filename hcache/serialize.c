@@ -33,11 +33,11 @@
 #include <stdbool.h>
 #include <string.h>
 #include <sys/types.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
 #include "serialize.h"
-#include "hcache.h"
+#include "lib.h"
 
 /**
  * lazy_realloc - Reallocate some memory

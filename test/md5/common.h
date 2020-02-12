@@ -25,7 +25,7 @@
 
 #define TEST_NO_MAIN
 #include "acutest.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 struct Md5TestData
 {

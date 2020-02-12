@@ -36,7 +36,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "conn_globals.h"

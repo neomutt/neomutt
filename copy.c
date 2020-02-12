@@ -32,7 +32,7 @@
 #include <inttypes.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -44,12 +44,12 @@
 #include "handler.h"
 #include "hdrline.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "sendlib.h"
 #include "state.h"
+#include "ncrypt/lib.h"
 #ifdef USE_NOTMUCH
 #include "muttlib.h"
-#include "notmuch/mutt_notmuch.h"
+#include "notmuch/lib.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>

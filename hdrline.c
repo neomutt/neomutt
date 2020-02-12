@@ -36,7 +36,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -52,8 +52,8 @@
 #include "mutt_parse.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
-#include "ncrypt/ncrypt.h"
 #include "sort.h"
+#include "ncrypt/lib.h"
 
 /* These Config Variables are only used in hdrline.c */
 struct MbTable *C_CryptChars; ///< Config: User-configurable crypto flags: signed, encrypted etc.

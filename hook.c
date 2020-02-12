@@ -34,7 +34,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
@@ -48,8 +48,8 @@
 #include "mutt_commands.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
 #include "pattern.h"
+#include "ncrypt/lib.h"
 #ifdef USE_COMPRESSED
 #include "compress.h"
 #endif

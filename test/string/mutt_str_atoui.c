@@ -24,7 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include <limits.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 struct TestValue
 {

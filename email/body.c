@@ -29,7 +29,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "body.h"
 #include "email.h"
 #include "envelope.h"

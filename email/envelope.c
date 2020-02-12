@@ -31,7 +31,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "envelope.h"
 

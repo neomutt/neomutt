@@ -33,7 +33,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "keymap.h"
@@ -41,14 +41,14 @@
 #include "globals.h"
 #include "mutt_commands.h"
 #include "mutt_logging.h"
-#include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#include "ncrypt/lib.h"
 #ifndef USE_SLANG_CURSES
 #include <strings.h>
 #endif
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 #ifdef USE_INOTIFY
 #include "monitor.h"

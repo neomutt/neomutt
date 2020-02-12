@@ -42,20 +42,20 @@
 #include <time.h>
 #include <unistd.h>
 #include "imap_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "gui/lib.h"
 #include "bcache.h"
 #include "globals.h"
-#include "imap/imap.h"
 #include "mutt_account.h"
 #include "options.h"
+#include "imap/lib.h"
 #ifdef USE_HCACHE
-#include "hcache/hcache.h"
 #include "message.h"
+#include "hcache/lib.h"
 #endif
 
 /* These Config Variables are only used in imap/util.c */

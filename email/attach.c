@@ -28,7 +28,7 @@
  */
 
 #include "config.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "attach.h"
 #include "body.h"
 

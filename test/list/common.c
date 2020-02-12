@@ -22,7 +22,7 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 struct ListHead test_list_create(const char *items[], bool copy)
 {

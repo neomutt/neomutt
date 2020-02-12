@@ -36,17 +36,16 @@
 #include <string.h>
 #include <unistd.h>
 #include "imap_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "message.h"
 #include "bcache.h"
 #include "globals.h"
-#include "imap/imap.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
@@ -54,11 +53,12 @@
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
+#include "imap/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
 #ifdef USE_HCACHE
-#include "hcache/hcache.h"
+#include "hcache/lib.h"
 #endif
 
 struct BodyCache;

@@ -27,7 +27,7 @@
  */
 
 #include "config.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "crypt_mod.h"
 
 /**

@@ -48,10 +48,10 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
+#include "lib.h"
 #include "backend.h"
-#include "hcache.h"
 #include "hcache/hcversion.h"
 
 /* These Config Variables are only used in hcache/hcache.c */

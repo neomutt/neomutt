@@ -25,7 +25,7 @@
 #define MUTT_NCRYPT_PGPKEY_H
 
 #include <stdbool.h>
-#include "ncrypt.h"
+#include "lib.h"
 
 struct Address;
 

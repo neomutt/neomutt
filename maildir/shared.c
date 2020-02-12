@@ -43,22 +43,22 @@
 #include <unistd.h>
 #include <utime.h>
 #include "maildir_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
 #include "copy.h"
 #include "globals.h"
-#include "hcache/hcache.h"
-#include "maildir/lib.h" // IWYU pragma: keep
 #include "muttlib.h"
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
+#include "hcache/lib.h"
+#include "maildir/lib.h" // IWYU pragma: keep
 #ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
+#include "notmuch/lib.h"
 #endif
 
 /* These Config Variables are only used in maildir/mh.c */

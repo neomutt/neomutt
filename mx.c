@@ -36,7 +36,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -48,8 +48,6 @@
 #include "globals.h"
 #include "hook.h"
 #include "keymap.h"
-#include "maildir/lib.h"
-#include "mbox/mbox.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
@@ -58,20 +56,22 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
+#include "maildir/lib.h"
+#include "mbox/lib.h"
 #ifdef USE_COMPRESSED
 #include "compress.h"
 #endif
 #ifdef USE_IMAP
-#include "imap/imap.h"
+#include "imap/lib.h"
 #endif
 #ifdef USE_POP
-#include "pop/pop.h"
+#include "pop/lib.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp/nntp.h"
+#include "nntp/lib.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
+#include "notmuch/lib.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>

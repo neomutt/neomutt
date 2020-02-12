@@ -24,7 +24,7 @@
 #define MUTT_EMAIL_TAGS_H
 
 #include <stdbool.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 /* These Config Variables are only used in email/tags.c */
 extern struct Slist *C_HiddenTags;

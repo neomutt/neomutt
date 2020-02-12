@@ -24,7 +24,7 @@
 #define MUTT_EMAIL_URL_H
 
 #include <stddef.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 /**
  * enum UrlScheme - All recognised Url types

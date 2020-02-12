@@ -28,8 +28,8 @@
 
 #include "config.h"
 #include <stdio.h>
+#include "lib.h"
 #include "crypt_mod.h"
-#include "ncrypt.h"
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 #include "smime.h"
 #endif

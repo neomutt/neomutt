@@ -37,13 +37,14 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "crypt.h"
+#include "lib.h"
 #include "alias.h"
 #include "copy.h"
 #include "cryptglue.h"
@@ -51,13 +52,12 @@
 #include "handler.h"
 #include "mutt_parse.h"
 #include "muttlib.h"
-#include "ncrypt.h"
 #include "options.h"
 #include "send.h"
 #include "sendlib.h"
 #include "state.h"
 #ifdef USE_AUTOCRYPT
-#include "autocrypt/autocrypt.h"
+#include "autocrypt/lib.h"
 #endif
 
 struct Mailbox;

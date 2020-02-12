@@ -39,12 +39,13 @@
 #include <time.h>
 #include <unistd.h>
 #include "nntp_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "conn/conn.h"
+#include "conn/lib.h"
 #include "mutt.h"
+#include "lib.h"
 #include "bcache.h"
 #include "format_flags.h"
 #include "globals.h"
@@ -52,11 +53,10 @@
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "muttlib.h"
-#include "nntp.h"
 #include "protos.h"
 #include "sort.h"
 #ifdef USE_HCACHE
-#include "hcache/hcache.h"
+#include "hcache/lib.h"
 #endif
 
 /* These Config Variables are only used in nntp/newsrc.c */

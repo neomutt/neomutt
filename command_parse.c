@@ -30,7 +30,7 @@
 #include "config.h"
 #include <errno.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -39,7 +39,6 @@
 #include "alias.h"
 #include "context.h"
 #include "globals.h"
-#include "imap/imap.h"
 #include "init.h"
 #include "monitor.h"
 #include "mutt_commands.h"
@@ -52,6 +51,7 @@
 #include "options.h"
 #include "sidebar.h"
 #include "version.h"
+#include "imap/lib.h"
 
 /* LIFO designed to contain the list of config files that have been sourced and
  * avoid cyclic sourcing */

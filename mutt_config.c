@@ -31,9 +31,9 @@
 #ifdef _MAKEDOC
 #include "doc/makedoc_defs.h"
 #else
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
-#include "conn/conn_globals.h"
+#include "conn/lib.h"
 #include "gui/lib.h"
 #include "addrbook.h"
 #include "bcache.h"
@@ -44,11 +44,9 @@
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
-#include "imap/imap.h"
 #include "index.h"
 #include "init.h"
 #include "mailcap.h"
-#include "maildir/lib.h"
 #include "main.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
@@ -56,11 +54,8 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "nntp/nntp.h"
-#include "notmuch/mutt_notmuch.h"
 #include "pager.h"
 #include "pattern.h"
-#include "pop/pop.h"
 #include "progress.h"
 #include "query.h"
 #include "recvattach.h"
@@ -74,6 +69,11 @@
 #include "smtp.h"
 #include "sort.h"
 #include "status.h"
+#include "imap/lib.h"
+#include "maildir/lib.h"
+#include "nntp/lib.h"
+#include "notmuch/lib.h"
+#include "pop/lib.h"
 #endif
 
 #ifndef ISPELL

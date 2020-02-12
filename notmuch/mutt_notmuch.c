@@ -52,21 +52,21 @@
 #include <time.h>
 #include <unistd.h>
 #include "notmuch_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "mutt_notmuch.h"
+#include "lib.h"
 #include "globals.h"
-#include "hcache/hcache.h"
 #include "index.h"
-#include "maildir/lib.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
+#include "hcache/lib.h"
+#include "maildir/lib.h"
 
 const char NmUriProtocol[] = "notmuch://";
 const int NmUriProtocolLen = sizeof(NmUriProtocol) - 1;

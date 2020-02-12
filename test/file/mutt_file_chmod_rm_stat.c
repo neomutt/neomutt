@@ -24,7 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include <sys/stat.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 void test_mutt_file_chmod_rm_stat(void)
 {

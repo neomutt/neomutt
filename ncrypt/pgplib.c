@@ -28,7 +28,7 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgplib.h"
 #endif

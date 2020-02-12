@@ -29,7 +29,7 @@
 #include "config.h"
 #include <ctype.h>
 #include <string.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "url.h"
 #include "mime.h"
 

@@ -38,13 +38,14 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "pgpkey.h"
+#include "lib.h"
 #include "crypt.h"
 #include "format_flags.h"
 #include "globals.h"
@@ -53,7 +54,6 @@
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
-#include "ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"

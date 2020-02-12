@@ -29,7 +29,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 
 struct Email;
 

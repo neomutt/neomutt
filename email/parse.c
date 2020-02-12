@@ -32,7 +32,7 @@
 #include <regex.h>
 #include <string.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "mutt.h"
 #include "parse.h"
@@ -50,7 +50,7 @@
 #include "globals.h"
 #endif
 #ifdef USE_AUTOCRYPT
-#include "autocrypt/autocrypt.h"
+#include "autocrypt/lib.h"
 #endif
 
 /* If the 'Content-Length' is bigger than 1GiB, then it's clearly wrong.

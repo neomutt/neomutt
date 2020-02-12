@@ -40,12 +40,13 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "lib.h"
 #include "crypt.h"
 #include "cryptglue.h"
 #include "globals.h"
@@ -53,7 +54,6 @@
 #include "hook.h"
 #include "mutt_attach.h"
 #include "muttlib.h"
-#include "ncrypt.h"
 #include "options.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"

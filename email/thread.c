@@ -30,7 +30,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "thread.h"
 #include "email.h"
 #include "envelope.h"

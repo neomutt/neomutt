@@ -30,12 +30,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "autocrypt_private.h"
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "autocrypt.h"
+#include "lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"

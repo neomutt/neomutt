@@ -30,11 +30,11 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
 #include "mutt_parse.h"
 #include "mx.h"
-#include "ncrypt/ncrypt.h"
+#include "ncrypt/lib.h"
 
 struct ListHead AttachAllow = STAILQ_HEAD_INITIALIZER(AttachAllow); ///< List of attachment types to be counted
 struct ListHead AttachExclude = STAILQ_HEAD_INITIALIZER(AttachExclude); ///< List of attachment types to be ignored
