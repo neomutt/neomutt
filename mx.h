@@ -475,4 +475,11 @@ void                mx_fastclose_mailbox(struct Mailbox *m);
 const struct MxOps *mx_get_ops          (enum MailboxType magic);
 bool                mx_tags_is_supported(struct Mailbox *m);
 
+int              mx_path2_canon  (struct Path *path);
+int              mx_path2_compare(struct Path *path1, struct Path *path2);
+int              mx_path2_parent (const struct Path *path, struct Path **parent);
+int              mx_path2_pretty (const struct Path *path, const char *folder, char **pretty);
+enum MailboxType mx_path2_probe  (struct Path *path);
+int              mx_path2_resolve(struct Path *path);
+
 #endif /* MUTT_MX_H */
