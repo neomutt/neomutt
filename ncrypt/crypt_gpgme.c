@@ -2241,9 +2241,10 @@ static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fp_out,
   if (r_is_signed)
     *r_is_signed = 0;
 
-  gpgme_ctx_t ctx = create_gpgme_context(is_smime);
-
+  gpgme_ctx_t ctx = NULL;
 restart:
+  ctx = create_gpgme_context(is_smime);
+
   if (a->length < 0)
     return NULL;
   /* Make a data object from the body, create context etc. */
