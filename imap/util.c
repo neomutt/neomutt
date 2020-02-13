@@ -60,6 +60,9 @@
 
 /* These Config Variables are only used in imap/util.c */
 char *C_ImapDelimChars; ///< Config: (imap) Characters that denote separators in IMAP folders
+char *C_ImapLogin; ///< Config: (imap) Login name for the IMAP server (defaults to #C_ImapUser)
+char *C_ImapOauthRefreshCommand; ///< Config: (imap) External command to generate OAUTH refresh token
+char *C_ImapPass; ///< Config: (imap) Password for the IMAP server
 short C_ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be queued up
 
 /**
@@ -132,11 +135,11 @@ struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 int imap_adata_find(const char *path, struct ImapAccountData **adata,
                     struct ImapMboxData **mdata)
 {
-  struct ConnAccount conn_account;
+  struct ConnAccount cac = { { 0 } };
   struct ImapAccountData *tmp_adata = NULL;
   char tmp[1024];
 
-  if (imap_parse_path(path, &conn_account, tmp, sizeof(tmp)) < 0)
+  if (imap_parse_path(path, &cac, tmp, sizeof(tmp)) < 0)
     return -1;
 
   struct Account *np = NULL;
@@ -148,7 +151,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
     tmp_adata = np->adata;
     if (!tmp_adata)
       continue;
-    if (imap_account_match(&tmp_adata->conn_account, &conn_account))
+    if (imap_account_match(&tmp_adata->conn->account, &cac))
     {
       *mdata = imap_mdata_new(tmp_adata, tmp);
       *adata = tmp_adata;
@@ -318,7 +321,7 @@ void imap_get_parent_path(const char *path, char *buf, size_t buflen)
   imap_get_parent(mdata->name, adata->delim, mbox, sizeof(mbox));
 
   /* Returns a fully qualified IMAP url */
-  imap_qualify_path(buf, buflen, &adata->conn_account, mbox);
+  imap_qualify_path(buf, buflen, &adata->conn->account, mbox);
   imap_mdata_free((void *) &mdata);
 }
 
@@ -338,8 +341,29 @@ void imap_clean_path(char *path, size_t plen)
     return;
 
   /* Returns a fully qualified IMAP url */
-  imap_qualify_path(path, plen, &adata->conn_account, mdata->name);
+  imap_qualify_path(path, plen, &adata->conn->account, mdata->name);
   imap_mdata_free((void *) &mdata);
+}
+
+/**
+ * imap_get_field - Get connection login credentials - Implements ::ca_get_field_t
+ */
+static const char *imap_get_field(enum ConnAccountField field)
+{
+  switch (field)
+  {
+    case MUTT_CA_LOGIN:
+      return C_ImapLogin;
+    case MUTT_CA_USER:
+      return C_ImapUser;
+    case MUTT_CA_PASS:
+      return C_ImapPass;
+    case MUTT_CA_OAUTH_CMD:
+      return C_ImapOauthRefreshCommand;
+    case MUTT_CA_HOST:
+    default:
+      return NULL;
+  }
 }
 
 #ifdef USE_HCACHE
@@ -589,7 +613,7 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata)
 /**
  * imap_parse_path - Parse an IMAP mailbox name into ConnAccount, name
  * @param path       Mailbox path to parse
- * @param account    Account credentials
+ * @param cac        Account credentials
  * @param mailbox    Buffer for mailbox name
  * @param mailboxlen Length of buffer
  * @retval  0 Success
@@ -598,7 +622,7 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata)
  * Given an IMAP mailbox name, return host, port and a path IMAP servers will
  * recognize.
  */
-int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox, size_t mailboxlen)
+int imap_parse_path(const char *path, struct ConnAccount *cac, char *mailbox, size_t mailboxlen)
 {
   static unsigned short ImapPort = 0;
   static unsigned short ImapsPort = 0;
@@ -624,9 +648,10 @@ int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox
   }
 
   /* Defaults */
-  memset(account, 0, sizeof(struct ConnAccount));
-  account->port = ImapPort;
-  account->type = MUTT_ACCT_TYPE_IMAP;
+  cac->port = ImapPort;
+  cac->type = MUTT_ACCT_TYPE_IMAP;
+  cac->service = "imap";
+  cac->get_field = imap_get_field;
 
   struct Url *url = url_parse(path);
   if (!url)
@@ -638,21 +663,21 @@ int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox
     return -1;
   }
 
-  if ((mutt_account_fromurl(account, url) < 0) || (account->host[0] == '\0'))
+  if ((mutt_account_fromurl(cac, url) < 0) || (cac->host[0] == '\0'))
   {
     url_free(&url);
     return -1;
   }
 
   if (url->scheme == U_IMAPS)
-    account->flags |= MUTT_ACCT_SSL;
+    cac->flags |= MUTT_ACCT_SSL;
 
   mutt_str_strfcpy(mailbox, url->path, mailboxlen);
 
   url_free(&url);
 
-  if ((account->flags & MUTT_ACCT_SSL) && !(account->flags & MUTT_ACCT_PORT))
-    account->port = ImapsPort;
+  if ((cac->flags & MUTT_ACCT_SSL) && !(cac->flags & MUTT_ACCT_PORT))
+    cac->port = ImapsPort;
 
   return 0;
 }
@@ -707,7 +732,8 @@ int imap_mxcmp(const char *mx1, const char *mx2)
  */
 void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
 {
-  struct ConnAccount target_conn_account, home_conn_account;
+  struct ConnAccount cac_target = { { 0 } };
+  struct ConnAccount cac_home = { { 0 } };
   struct Url url = { 0 };
   char *delim = NULL;
   int tlen;
@@ -716,20 +742,20 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
   char target_mailbox[1024];
   char home_mailbox[1024];
 
-  if (imap_parse_path(path, &target_conn_account, target_mailbox, sizeof(target_mailbox)) < 0)
+  if (imap_parse_path(path, &cac_target, target_mailbox, sizeof(target_mailbox)) < 0)
     return;
 
   if (imap_path_probe(folder, NULL) != MUTT_IMAP)
     goto fallback;
 
-  if (imap_parse_path(folder, &home_conn_account, home_mailbox, sizeof(home_mailbox)) < 0)
+  if (imap_parse_path(folder, &cac_home, home_mailbox, sizeof(home_mailbox)) < 0)
     goto fallback;
 
   tlen = mutt_str_strlen(target_mailbox);
   hlen = mutt_str_strlen(home_mailbox);
 
   /* check whether we can do '+' substitution */
-  if (tlen && imap_account_match(&home_conn_account, &target_conn_account) &&
+  if (tlen && imap_account_match(&cac_home, &cac_target) &&
       (mutt_str_strncmp(home_mailbox, target_mailbox, hlen) == 0))
   {
     if (hlen == 0)
@@ -755,7 +781,7 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
   }
 
 fallback:
-  mutt_account_tourl(&target_conn_account, &url);
+  mutt_account_tourl(&cac_target, &url);
   url.path = target_mailbox;
   url_tostring(&url, path, pathlen, 0);
 }
@@ -938,13 +964,13 @@ char *imap_next_word(char *s)
  * imap_qualify_path - Make an absolute IMAP folder target
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
- * @param conn_account     ConnAccount of the account
+ * @param cac    ConnAccount of the account
  * @param path   Path relative to the mailbox
  */
-void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *conn_account, char *path)
+void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *cac, char *path)
 {
   struct Url url = { 0 };
-  mutt_account_tourl(conn_account, &url);
+  mutt_account_tourl(cac, &url);
   url.path = path;
   url_tostring(&url, buf, buflen, 0);
 }

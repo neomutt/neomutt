@@ -2392,12 +2392,12 @@ static struct Account *nntp_ac_find(struct Account *a, const char *path)
   url_parse(&url, tmp);
 
   struct ImapAccountData *adata = a->data;
-  struct ConnAccount *ac = &adata->conn_account;
+  struct ConnAccount *cac = &adata->conn_account;
 
-  if (mutt_str_strcasecmp(url.host, ac->host) != 0)
+  if (mutt_str_strcasecmp(url.host, cac->host) != 0)
     return NULL;
 
-  if (mutt_str_strcasecmp(url.user, ac->user) != 0)
+  if (mutt_str_strcasecmp(url.user, cac->user) != 0)
     return NULL;
 
   // if (mutt_str_strcmp(path, a->mailbox->realpath) == 0)

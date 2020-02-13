@@ -247,30 +247,29 @@ static int mutt_sasl_cb_authname(void *context, int id, const char **result, uns
   if (!result)
     return SASL_FAIL;
 
-  struct ConnAccount *account = context;
+  struct ConnAccount *cac = context;
 
   *result = NULL;
   if (len)
     *len = 0;
 
-  if (!account)
+  if (!cac)
     return SASL_BADPARAM;
 
   mutt_debug(LL_DEBUG2, "getting %s for %s:%u\n",
-             (id == SASL_CB_AUTHNAME) ? "authname" : "user", account->host,
-             account->port);
+             (id == SASL_CB_AUTHNAME) ? "authname" : "user", cac->host, cac->port);
 
   if (id == SASL_CB_AUTHNAME)
   {
-    if (mutt_account_getlogin(account) < 0)
+    if (mutt_account_getlogin(cac) < 0)
       return SASL_FAIL;
-    *result = account->login;
+    *result = cac->login;
   }
   else
   {
-    if (mutt_account_getuser(account) < 0)
+    if (mutt_account_getuser(cac) < 0)
       return SASL_FAIL;
-    *result = account->user;
+    *result = cac->user;
   }
 
   if (len)
@@ -289,22 +288,21 @@ static int mutt_sasl_cb_authname(void *context, int id, const char **result, uns
  */
 static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secret_t **psecret)
 {
-  struct ConnAccount *account = context;
+  struct ConnAccount *cac = context;
   int len;
 
-  if (!account || !psecret)
+  if (!cac || !psecret)
     return SASL_BADPARAM;
 
-  mutt_debug(LL_DEBUG2, "getting password for %s@%s:%u\n", account->login,
-             account->host, account->port);
+  mutt_debug(LL_DEBUG2, "getting password for %s@%s:%u\n", cac->login, cac->host, cac->port);
 
-  if (mutt_account_getpass(account) < 0)
+  if (mutt_account_getpass(cac) < 0)
     return SASL_FAIL;
 
-  len = strlen(account->pass);
+  len = strlen(cac->pass);
 
   mutt_mem_realloc(&secret_ptr, sizeof(sasl_secret_t) + len);
-  memcpy((char *) secret_ptr->data, account->pass, (size_t) len);
+  memcpy((char *) secret_ptr->data, cac->pass, (size_t) len);
   secret_ptr->len = len;
   *psecret = secret_ptr;
 
@@ -313,26 +311,26 @@ static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secr
 
 /**
  * mutt_sasl_get_callbacks - Get the SASL callback functions
- * @param account ConnAccount to associate with callbacks
+ * @param cac ConnAccount to associate with callbacks
  * @retval ptr Array of callback functions
  */
-static sasl_callback_t *mutt_sasl_get_callbacks(struct ConnAccount *account)
+static sasl_callback_t *mutt_sasl_get_callbacks(struct ConnAccount *cac)
 {
   sasl_callback_t *callback = MuttSaslCallbacks;
 
   callback->id = SASL_CB_USER;
   callback->proc = (int (*)(void)) mutt_sasl_cb_authname;
-  callback->context = account;
+  callback->context = cac;
   callback++;
 
   callback->id = SASL_CB_AUTHNAME;
   callback->proc = (int (*)(void)) mutt_sasl_cb_authname;
-  callback->context = account;
+  callback->context = cac;
   callback++;
 
   callback->id = SASL_CB_PASS;
   callback->proc = (int (*)(void)) mutt_sasl_cb_pass;
-  callback->context = account;
+  callback->context = cac;
   callback++;
 
   callback->id = SASL_CB_GETREALM;
@@ -539,31 +537,15 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
   char iplocalport[IP_PORT_BUFLEN], ipremoteport[IP_PORT_BUFLEN];
   char *plp = NULL;
   char *prp = NULL;
-  const char *service = NULL;
   int rc;
 
   if (mutt_sasl_start() != SASL_OK)
     return -1;
 
-  switch (conn->account.type)
+  if (!conn->account.service)
   {
-    case MUTT_ACCT_TYPE_IMAP:
-      service = "imap";
-      break;
-    case MUTT_ACCT_TYPE_POP:
-      service = "pop";
-      break;
-    case MUTT_ACCT_TYPE_SMTP:
-      service = "smtp";
-      break;
-#ifdef USE_NNTP
-    case MUTT_ACCT_TYPE_NNTP:
-      service = "nntp";
-      break;
-#endif
-    default:
-      mutt_error(_("Unknown SASL profile"));
-      return -1;
+    mutt_error(_("Unknown SASL profile"));
+    return -1;
   }
 
   size = sizeof(local);
@@ -590,7 +572,7 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
 
   mutt_debug(LL_DEBUG2, "SASL local ip: %s, remote ip:%s\n", NONULL(plp), NONULL(prp));
 
-  rc = sasl_client_new(service, conn->account.host, plp, prp,
+  rc = sasl_client_new(conn->account.service, conn->account.host, plp, prp,
                        mutt_sasl_get_callbacks(&conn->account), 0, saslconn);
 
   if (rc != SASL_OK)

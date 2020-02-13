@@ -78,7 +78,6 @@ struct PopCache
 struct PopAccountData
 {
   struct Connection *conn;
-  struct ConnAccount conn_account;
   unsigned int status : 2;
   bool capabilities : 1;
   unsigned int use_stls : 2;
@@ -146,5 +145,6 @@ int pop_reconnect(struct Mailbox *m);
 void pop_logout(struct Mailbox *m);
 struct PopAccountData *pop_adata_get(struct Mailbox *m);
 struct PopEmailData *pop_edata_get(struct Email *e);
+const char *pop_get_field(enum ConnAccountField field);
 
 #endif /* MUTT_POP_POP_PRIVATE_H */

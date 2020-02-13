@@ -62,6 +62,8 @@
 /* These Config Variables are only used in nntp/newsrc.c */
 char *C_NewsCacheDir; ///< Config: (nntp) Directory for cached news articles
 char *C_Newsrc; ///< Config: (nntp) File containing list of subscribed newsgroups
+char *C_NntpPass; ///< Config: (nntp) Password for the news server
+char *C_NntpUser; ///< Config: (nntp) Username for the news server
 
 struct BodyCache;
 
@@ -516,20 +518,20 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
  * cache_expand - Make fully qualified cache file name
  * @param dst    Buffer for filename
  * @param dstlen Length of buffer
- * @param acct   Account
+ * @param cac    Account
  * @param src    Path to add to the URL
  */
-static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *acct, const char *src)
+static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *cac, const char *src)
 {
   char *c = NULL;
   char file[PATH_MAX];
 
   /* server subdirectory */
-  if (acct)
+  if (cac)
   {
     struct Url url = { 0 };
 
-    mutt_account_tourl(acct, &url);
+    mutt_account_tourl(cac, &url);
     url.path = mutt_str_strdup(src);
     url_tostring(&url, file, sizeof(file), U_PATH);
     FREE(&url.path);
@@ -556,13 +558,13 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *acct, con
  * nntp_expand_path - Make fully qualified url from newsgroup name
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
- * @param acct Account to serialise
+ * @param cac    Account to serialise
  */
-void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *acct)
+void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *cac)
 {
   struct Url url = { 0 };
 
-  mutt_account_tourl(acct, &url);
+  mutt_account_tourl(cac, &url);
   url.path = mutt_str_strdup(buf);
   url_tostring(&url, buf, buflen, 0);
   FREE(&url.path);
@@ -921,7 +923,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
                             const char *else_str, unsigned long data, MuttFormatFlags flags)
 {
   struct NntpAccountData *adata = (struct NntpAccountData *) data;
-  struct ConnAccount *acct = &adata->conn->account;
+  struct ConnAccount *cac = &adata->conn->account;
   char fn[128], fmt[128];
 
   switch (op)
@@ -929,7 +931,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
     case 'a':
     {
       struct Url url = { 0 };
-      mutt_account_tourl(acct, &url);
+      mutt_account_tourl(cac, &url);
       url_tostring(&url, fn, sizeof(fn), U_PATH);
       char *p = strchr(fn, '/');
       if (p)
@@ -940,18 +942,18 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
     }
     case 'p':
       snprintf(fmt, sizeof(fmt), "%%%su", prec);
-      snprintf(buf, buflen, fmt, acct->port);
+      snprintf(buf, buflen, fmt, cac->port);
       break;
     case 'P':
       *buf = '\0';
-      if (acct->flags & MUTT_ACCT_PORT)
+      if (cac->flags & MUTT_ACCT_PORT)
       {
         snprintf(fmt, sizeof(fmt), "%%%su", prec);
-        snprintf(buf, buflen, fmt, acct->port);
+        snprintf(buf, buflen, fmt, cac->port);
       }
       break;
     case 's':
-      mutt_str_strfcpy(fn, acct->host, sizeof(fn));
+      mutt_str_strfcpy(fn, cac->host, sizeof(fn));
       mutt_str_strlower(fn);
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, fn);
@@ -959,7 +961,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
     case 'S':
     {
       struct Url url = { 0 };
-      mutt_account_tourl(acct, &url);
+      mutt_account_tourl(cac, &url);
       url_tostring(&url, fn, sizeof(fn), U_PATH);
       char *p = strchr(fn, ':');
       if (p)
@@ -970,10 +972,29 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
     }
     case 'u':
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, acct->user);
+      snprintf(buf, buflen, fmt, cac->user);
       break;
   }
   return src;
+}
+
+/**
+ * nntp_get_field - Get connection login credentials - Implements ::ca_get_field_t
+ */
+static const char *nntp_get_field(enum ConnAccountField field)
+{
+  switch (field)
+  {
+    case MUTT_CA_LOGIN:
+    case MUTT_CA_USER:
+      return C_NntpUser;
+    case MUTT_CA_PASS:
+      return C_NntpPass;
+    case MUTT_CA_OAUTH_CMD:
+    case MUTT_CA_HOST:
+    default:
+      return NULL;
+  }
 }
 
 /**
@@ -993,7 +1014,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
 {
   char file[PATH_MAX];
   int rc;
-  struct ConnAccount acct = { { 0 } };
+  struct ConnAccount cac = { { 0 } };
   struct NntpAccountData *adata = NULL;
   struct Connection *conn = NULL;
 
@@ -1004,14 +1025,17 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   }
 
   /* create account from news server url */
-  acct.flags = 0;
-  acct.port = NNTP_PORT;
-  acct.type = MUTT_ACCT_TYPE_NNTP;
+  cac.flags = 0;
+  cac.port = NNTP_PORT;
+  cac.type = MUTT_ACCT_TYPE_NNTP;
+  cac.service = "nntp";
+  cac.get_field = nntp_get_field;
+
   snprintf(file, sizeof(file), "%s%s", strstr(server, "://") ? "" : "news://", server);
   struct Url *url = url_parse(file);
   if (!url || (url->path && *url->path) ||
       !((url->scheme == U_NNTP) || (url->scheme == U_NNTPS)) || !url->host ||
-      (mutt_account_fromurl(&acct, url) < 0))
+      (mutt_account_fromurl(&cac, url) < 0))
   {
     url_free(&url);
     mutt_error(_("%s is an invalid news server specification"), server);
@@ -1019,16 +1043,16 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   }
   if (url->scheme == U_NNTPS)
   {
-    acct.flags |= MUTT_ACCT_SSL;
-    acct.port = NNTP_SSL_PORT;
+    cac.flags |= MUTT_ACCT_SSL;
+    cac.port = NNTP_SSL_PORT;
   }
   url_free(&url);
 
   /* find connection by account */
-  conn = mutt_conn_find(NULL, &acct);
+  conn = mutt_conn_find(&cac);
   if (!conn)
     return NULL;
-  if (!(conn->account.flags & MUTT_ACCT_USER) && acct.flags & MUTT_ACCT_USER)
+  if (!(conn->account.flags & MUTT_ACCT_USER) && cac.flags & MUTT_ACCT_USER)
   {
     conn->account.flags |= MUTT_ACCT_USER;
     conn->account.user[0] = '\0';

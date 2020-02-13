@@ -167,7 +167,6 @@ struct ImapCommand
 struct ImapAccountData
 {
   struct Connection *conn;
-  struct ConnAccount conn_account;
   bool recovering;
   bool closing; /* If true, we are waiting for CLOSE completion */
   unsigned char state;  ///< ImapState, e.g. #IMAP_AUTHENTICATED
@@ -322,7 +321,6 @@ char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen);
 void imap_cachepath(char delim, const char *mailbox, struct Buffer *dest);
 int imap_get_literal_count(const char *buf, unsigned int *bytes);
 char *imap_get_qualifier(char *buf);
-int imap_mxcmp(const char *mx1, const char *mx2);
 char *imap_next_word(char *s);
 void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *conn_account, char *path);
 void imap_quote_string(char *dest, size_t dlen, const char *src, bool quote_backtick);
