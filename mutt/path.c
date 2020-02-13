@@ -43,6 +43,8 @@
 #include "message.h"
 #include "string2.h"
 
+extern char *HomeDir;
+
 /**
  * mutt_path_tidy_slash - Remove unnecessary slashes and dots
  * @param[in,out] buf    Path to modify
@@ -209,6 +211,32 @@ bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir, bool is_dir
 }
 
 /**
+ * mutt_path2_pretty - Tidy a filesystem path
+ * @param[in]  path    Path to make pretty
+ * @param[in]  homedir Folder to use for abbrevi
+ * @param[out] pretty  Resulting pretty path
+ * @retval true If path was made pretty
+ *
+ * @note The caller must free the returned pretty string
+ */
+bool mutt_path2_pretty(const char *path, const char *homedir, char **pretty)
+{
+  if (!path || !homedir || !pretty)
+    return false;
+
+  const size_t flen = strlen(homedir);
+  if (flen < 2)
+    return false;
+
+  if (mutt_str_startswith(path, homedir, CASE_MATCH) != flen)
+    return false;
+
+  *pretty = mutt_str_strdup(path + flen - 1);
+  *pretty[0] = '~';
+  return true;
+}
+
+/**
  * mutt_path_tilde - Expand '~' in a path
  * @param buf     Path to modify
  * @param buflen  Length of the buffer
@@ -222,8 +250,10 @@ bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir, bool is_dir
  */
 bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir)
 {
-  if (!buf || (buf[0] != '~'))
+  if (!buf)
     return false;
+  if (buf[0] != '~')
+    return true;
 
   char result[PATH_MAX] = { 0 };
   char *dir = NULL;
@@ -515,6 +545,35 @@ bool mutt_path_abbr_folder(char *buf, size_t buflen, const char *folder)
 }
 
 /**
+ * mutt_path2_abbr_folder - Create a folder abbreviation
+ *
+ * Abbreviate a path using '+' to represent the 'folder'.
+ * If the folder path is passed, it won't be abbreviated to just '+'
+ */
+bool mutt_path2_abbr_folder(const char *path, const char *folder, char **abbr)
+{
+  if (!path || !folder || !abbr)
+    return false;
+
+  // folder matches the start of path
+  size_t flen = strlen(folder);
+  if (mutt_str_startswith(path, folder, CASE_MATCH) != flen)
+    return false;
+
+  if (flen != 0) // Skip the path delimiter
+    flen++;
+
+  const size_t rlen = strlen(path + flen);
+  if (rlen == 0)
+    return false;
+
+  *abbr = mutt_mem_malloc(rlen + 2);
+  mutt_str_strfcpy(*abbr + 1, path + flen, rlen + 1);
+  *abbr[0] = '+';
+  return true;
+}
+
+/**
  * mutt_path_escape - Escapes single quotes in a path for a command string
  * @param src the path to escape
  * @retval ptr The escaped string
@@ -578,4 +637,93 @@ const char *mutt_path_getcwd(struct Buffer *cwd)
     mutt_buffer_reset(cwd);
 
   return retval;
+}
+
+/**
+ * mutt_path_to_absolute2 - Convert relative filepath to an absolute path
+ * @param path      Relative path
+ * @param path_len  Length of path buffer
+ * @param reference Absolute path that @a path is relative to
+ * @retval true  Success
+ * @retval false Failure
+ *
+ * Use POSIX functions to convert a path to absolute, relatively to another path
+ *
+ * @note @a path should be at least of PATH_MAX length
+ */
+bool mutt_path_to_absolute2(char *path, size_t path_len, const char *reference)
+{
+  if (!path || !reference)
+    return false;
+
+  /* if path is already absolute, don't do anything */
+  if ((strlen(path) > 1) && (path[0] == '/'))
+    return true;
+
+  char joined[PATH_MAX];
+  if (!mutt_path_concat(joined, reference, path, sizeof(joined)))
+    return false;
+
+  mutt_str_strfcpy(path, joined, path_len);
+  return true;
+}
+
+/**
+ * mutt_path_tidy2 - Tidy a local filesystem path
+ * @param orig   Path to modify
+ * @param is_dir true if the path is a directory
+ * @retval ptr  Success, tidied Path
+ * @retval NULL Error
+ *
+ * @note The caller must free the returned string
+ */
+char *mutt_path_tidy2(const char *orig, bool is_dir)
+{
+  if (!orig)
+    return NULL;
+
+  char *result = NULL;
+  char path[PATH_MAX] = { 0 };
+  mutt_str_strfcpy(path, orig, sizeof(path));
+
+  struct Buffer cwd = mutt_buffer_make(PATH_MAX);
+  if (!mutt_path_getcwd(&cwd))
+    goto done;
+
+  if (!mutt_path_tilde(path, sizeof(path), HomeDir))
+    goto done;
+
+  if (!mutt_path_to_absolute2(path, sizeof(path), cwd.data))
+    goto done;
+
+  if (!mutt_path_tidy_slash(path, true))
+    goto done;
+
+  if (!mutt_path_tidy_dotdot(path))
+    goto done;
+
+  result = mutt_str_strdup(path);
+
+done:
+  mutt_buffer_dealloc(&cwd);
+  return result;
+}
+
+/**
+ * mutt_path_canon2 - Create the canonical version of a path
+ * @param[in]  orig    Path to canonicalise
+ * @param[out] canon   New canonical path
+ * @retval true Success
+ */
+bool mutt_path_canon2(const char *orig, char **canon)
+{
+  if (!orig || !canon || *canon)
+    return false;
+
+  char real[PATH_MAX] = { 0 };
+  if (!realpath(orig, real))
+    return false;
+
+  *canon = mutt_str_strdup(real);
+  return true;
 }
