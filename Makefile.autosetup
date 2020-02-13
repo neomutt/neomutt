@@ -71,7 +71,7 @@ NEOMUTTOBJS=	browser.o commands.o command_parse.o \
 		mutt_attach.o mutt_body.o mutt_commands.o mutt_config.o \
 		mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
 		mutt_parse.o mutt_signal.o mutt_socket.o mutt_thread.o mx.o \
-		myvar.o opcodes.o pager.o pattern.o postpone.o progress.o \
+		mx_path.o myvar.o opcodes.o pager.o pattern.o postpone.o progress.o \
 		recvattach.o recvcmd.o resize.o rfc3676.o score.o \
 		send.o sendlib.o sidebar.o smtp.o sort.o state.o status.o \
 		system.o version.o

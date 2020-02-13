@@ -166,6 +166,7 @@ mutt_signal.c
 mutt_socket.c
 mutt_thread.c
 mx.c
+mx_path.c
 myvar.c
 ncrypt/crypt.c
 ncrypt/cryptglue.c
