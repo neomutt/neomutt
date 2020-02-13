@@ -14,7 +14,7 @@ commands.c
 command_parse.c
 complete.c
 compose.c
-compress.c
+compress/compress.c
 config/address.c
 config/bool.c
 config/dump.c

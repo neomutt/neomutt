@@ -59,7 +59,7 @@
 #include "maildir/lib.h"
 #include "mbox/lib.h"
 #ifdef USE_COMPRESSED
-#include "compress.h"
+#include "compress/lib.h"
 #endif
 #ifdef USE_IMAP
 #include "imap/lib.h"

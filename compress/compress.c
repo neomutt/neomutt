@@ -41,7 +41,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "compress.h"
+#include "lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "hook.h"
