@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMPRESS_H
-#define MUTT_COMPRESS_H
+#ifndef MUTT_COMPRESS_LIB_H
+#define MUTT_COMPRESS_LIB_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -52,4 +52,4 @@ int mutt_comp_valid_command(const char *cmd);
 
 extern struct MxOps MxCompOps;
 
-#endif /* MUTT_COMPRESS_H */
+#endif /* MUTT_COMPRESS_LIB_H */

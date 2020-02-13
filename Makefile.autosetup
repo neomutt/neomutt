@@ -62,7 +62,7 @@ ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o commands.o \
-		complete.o compose.o compress.o conststrings.o context.o copy.o \
+		complete.o compose.o conststrings.o context.o copy.o \
 		edit.o editmsg.o enriched.o enter.o flags.o functions.o \
 		git_ver.o handler.o hdrline.o help.o hook.o icommands.o index.o init.o \
 		keymap.o mailcap.o main.o menu.o mutt_account.o mutt_attach.o \
@@ -120,6 +120,14 @@ LIBNNTPOBJS=	nntp/browse.o nntp/complete.o nntp/newsrc.o nntp/nntp.o
 CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
 MUTTLIBS+=	$(LIBNNTP)
 ALLOBJS+=	$(LIBNNTPOBJS)
+
+###############################################################################
+# libcompress
+LIBCOMPRESS=	libcompress.a
+LIBCOMPRESSOBJS=compress/compress.o
+CLEANFILES+=	$(LIBCOMPRESS) $(LIBCOMPRESSOBJS)
+MUTTLIBS+=	$(LIBCOMPRESS)
+ALLOBJS+=	$(LIBCOMPRESSOBJS)
 
 ###############################################################################
 # libgui
@@ -371,6 +379,13 @@ $(LIBNNTP): $(PWD)/nntp $(LIBNNTPOBJS)
 	$(RANLIB) $@
 $(PWD)/nntp:
 	$(MKDIR_P) $(PWD)/nntp
+
+# libcompress
+$(LIBCOMPRESS): $(PWD)/compress $(LIBCOMPRESSOBJS)
+	$(AR) cr $@ $(LIBCOMPRESSOBJS)
+	$(RANLIB) $@
+$(PWD)/compress:
+	$(MKDIR_P) $(PWD)/compress
 
 # libgui
 $(LIBGUI): $(PWD)/gui $(LIBGUIOBJS)

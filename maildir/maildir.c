@@ -707,6 +707,7 @@ static enum MailboxType maildir_path_probe(const char *path, const struct stat *
 struct MxOps MxMaildirOps = {
   .magic            = MUTT_MAILDIR,
   .name             = "maildir",
+  .is_local         = true,
   .ac_find          = maildir_ac_find,
   .ac_add           = maildir_ac_add,
   .mbox_open        = maildir_mbox_open,

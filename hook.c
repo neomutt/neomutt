@@ -51,7 +51,7 @@
 #include "pattern.h"
 #include "ncrypt/lib.h"
 #ifdef USE_COMPRESSED
-#include "compress.h"
+#include "compress/lib.h"
 #endif
 
 /* These Config Variables are only used in hook.c */

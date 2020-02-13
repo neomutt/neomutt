@@ -199,7 +199,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
       case '=':
       case '+':
       {
-        enum MailboxType mb_type = mx_path_probe(C_Folder, NULL);
+        enum MailboxType mb_type = mx_path_probe(C_Folder);
 
         /* if folder = {host} or imap[s]://host/: don't append slash */
         if ((mb_type == MUTT_IMAP) && ((C_Folder[strlen(C_Folder) - 1] == '}') ||
@@ -1448,7 +1448,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
 {
   int ret = 0;
 
-  enum MailboxType magic = mx_path_probe(s, NULL);
+  enum MailboxType magic = mx_path_probe(s);
 
 #ifdef USE_POP
   if (magic == MUTT_POP)
@@ -1636,7 +1636,7 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
  */
 void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
 {
-  enum MailboxType mb_magic = mx_path_probe(path, NULL);
+  enum MailboxType mb_magic = mx_path_probe(path);
 
   if (mb_magic == MUTT_IMAP)
     imap_get_parent_path(path, buf, buflen);

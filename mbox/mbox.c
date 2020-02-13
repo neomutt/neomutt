@@ -817,7 +817,7 @@ bool mbox_test_new_folder(const char *path)
 {
   bool rc = false;
 
-  enum MailboxType magic = mx_path_probe(path, NULL);
+  enum MailboxType magic = mx_path_probe(path);
 
   if ((magic != MUTT_MBOX) && (magic != MUTT_MMDF))
     return false;
@@ -1848,6 +1848,7 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 struct MxOps MxMboxOps = {
   .magic            = MUTT_MBOX,
   .name             = "mbox",
+  .is_local         = true,
   .ac_find          = mbox_ac_find,
   .ac_add           = mbox_ac_add,
   .mbox_open        = mbox_mbox_open,
@@ -1876,6 +1877,7 @@ struct MxOps MxMboxOps = {
 struct MxOps MxMmdfOps = {
   .magic            = MUTT_MMDF,
   .name             = "mmdf",
+  .is_local         = true,
   .ac_find          = mbox_ac_find,
   .ac_add           = mbox_ac_add,
   .mbox_open        = mbox_mbox_open,

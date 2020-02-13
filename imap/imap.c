@@ -2591,6 +2591,7 @@ static int imap_path_parent(char *buf, size_t buflen)
 struct MxOps MxImapOps = {
   .magic            = MUTT_IMAP,
   .name             = "imap",
+  .is_local         = false,
   .ac_find          = imap_ac_find,
   .ac_add           = imap_ac_add,
   .mbox_open        = imap_mbox_open,

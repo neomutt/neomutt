@@ -60,7 +60,7 @@ void test_mutt_path_tidy_slash(void)
   // clang-format on
 
   {
-    TEST_CHECK(!mutt_path_tidy_slash(NULL));
+    TEST_CHECK(!mutt_path_tidy_slash(NULL, true));
   }
 
   {
@@ -68,7 +68,7 @@ void test_mutt_path_tidy_slash(void)
     for (size_t i = 0; i < mutt_array_size(tests); i++)
     {
       mutt_str_strfcpy(buf, tests[i][0], sizeof(buf));
-      mutt_path_tidy_slash(buf);
+      mutt_path_tidy_slash(buf, true);
       if (!TEST_CHECK(mutt_str_strcmp(buf, tests[i][1]) == 0))
       {
         TEST_MSG("Input:    %s", tests[i][0]);

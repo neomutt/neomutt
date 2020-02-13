@@ -40,7 +40,8 @@ bool        mutt_path_pretty(char *buf, size_t buflen, const char *homedir);
 size_t      mutt_path_realpath(char *buf);
 bool        mutt_path_tidy(char *buf);
 bool        mutt_path_tidy_dotdot(char *buf);
-bool        mutt_path_tidy_slash(char *buf);
+bool        mutt_path_tidy_slash(char *buf, bool is_dir);
+bool        mutt_path_tilde(char *buf, size_t buflen, const char *homedir);
 bool        mutt_path_to_absolute(char *path, const char *reference);
 
 #endif /* MUTT_LIB_PATH_H */

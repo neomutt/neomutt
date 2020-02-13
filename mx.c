@@ -59,7 +59,7 @@
 #include "maildir/lib.h"
 #include "mbox/lib.h"
 #ifdef USE_COMPRESSED
-#include "compress.h"
+#include "compress/lib.h"
 #endif
 #ifdef USE_IMAP
 #include "imap/lib.h"
@@ -103,7 +103,7 @@ struct EnumDef MagicDef = {
 /**
  * mx_ops - All the Mailbox backends
  */
-static const struct MxOps *mx_ops[] = {
+const struct MxOps *mx_ops[] = {
 /* These mailboxes can be recognised by their Url scheme */
 #ifdef USE_IMAP
   &MxImapOps,
@@ -193,7 +193,7 @@ static int mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
   m->append = true;
   if ((m->magic == MUTT_UNKNOWN) || (m->magic == MUTT_MAILBOX_ERROR))
   {
-    m->magic = mx_path_probe(mailbox_path(m), NULL);
+    m->magic = mx_path_probe(mailbox_path(m));
 
     if (m->magic == MUTT_UNKNOWN)
     {
@@ -326,7 +326,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
 
   if (m->magic == MUTT_UNKNOWN)
   {
-    m->magic = mx_path_probe(mailbox_path(m), NULL);
+    m->magic = mx_path_probe(mailbox_path(m));
     m->mx_ops = mx_get_ops(m->magic);
   }
 
@@ -1223,7 +1223,7 @@ void mx_alloc_memory(struct Mailbox *m)
  */
 int mx_check_empty(const char *path)
 {
-  switch (mx_path_probe(path, NULL))
+  switch (mx_path_probe(path))
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
@@ -1304,59 +1304,39 @@ bool mx_tags_is_supported(struct Mailbox *m)
 
 /**
  * mx_path_probe - Find a mailbox that understands a path
- * @param[in]  path  Path to examine
- * @param[out] st    stat buffer (OPTIONAL, for local mailboxes)
+ * @param path Path to examine
  * @retval num Type, e.g. #MUTT_IMAP
  */
-enum MailboxType mx_path_probe(const char *path, struct stat *st)
+enum MailboxType mx_path_probe(const char *path)
 {
   if (!path)
     return MUTT_UNKNOWN;
 
-  static const struct MxOps *no_stat[] = {
-#ifdef USE_IMAP
-    &MxImapOps,
-#endif
-#ifdef USE_NOTMUCH
-    &MxNotmuchOps,
-#endif
-#ifdef USE_POP
-    &MxPopOps,
-#endif
-#ifdef USE_NNTP
-    &MxNntpOps,
-#endif
-  };
-
-  static const struct MxOps *with_stat[] = {
-    &MxMaildirOps, &MxMboxOps, &MxMhOps, &MxMmdfOps,
-#ifdef USE_COMPRESSED
-    &MxCompOps,
-#endif
-  };
-
   enum MailboxType rc;
 
-  for (size_t i = 0; i < mutt_array_size(no_stat); i++)
+  // First, search the non-local Mailbox types (is_local == false)
+  for (const struct MxOps **ops = mx_ops; *ops; ops++)
   {
-    rc = no_stat[i]->path_probe(path, NULL);
+    if ((*ops)->is_local)
+      continue;
+    rc = (*ops)->path_probe(path, NULL);
     if (rc != MUTT_UNKNOWN)
       return rc;
   }
 
-  struct stat st2 = { 0 };
-  if (!st)
-    st = &st2;
-
-  if (stat(path, st) != 0)
+  struct stat st = { 0 };
+  if (stat(path, &st) != 0)
   {
     mutt_debug(LL_DEBUG1, "unable to stat %s: %s (errno %d)\n", path, strerror(errno), errno);
     return MUTT_UNKNOWN;
   }
 
-  for (size_t i = 0; i < mutt_array_size(with_stat); i++)
+  // Next, search the local Mailbox types (is_local == true)
+  for (const struct MxOps **ops = mx_ops; *ops; ops++)
   {
-    rc = with_stat[i]->path_probe(path, st);
+    if (!(*ops)->is_local)
+      continue;
+    rc = (*ops)->path_probe(path, &st);
     if (rc != MUTT_UNKNOWN)
       return rc;
   }
@@ -1446,7 +1426,7 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
   // if (!folder) //XXX - use inherited version, or pass NULL to backend?
   //   return -1;
 
-  enum MailboxType magic2 = mx_path_probe(buf, NULL);
+  enum MailboxType magic2 = mx_path_probe(buf);
   if (magic)
     *magic = magic2;
   const struct MxOps *ops = mx_get_ops(magic2);
@@ -1498,7 +1478,7 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
  */
 int mx_path_pretty(char *buf, size_t buflen, const char *folder)
 {
-  enum MailboxType magic = mx_path_probe(buf, NULL);
+  enum MailboxType magic = mx_path_probe(buf);
   const struct MxOps *ops = mx_get_ops(magic);
   if (!ops)
     return -1;

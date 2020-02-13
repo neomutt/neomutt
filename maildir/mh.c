@@ -814,6 +814,7 @@ static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
 struct MxOps MxMhOps = {
   .magic            = MUTT_MH,
   .name             = "mh",
+  .is_local         = true,
   .ac_find          = maildir_ac_find,
   .ac_add           = maildir_ac_add,
   .mbox_open        = mh_mbox_open,
