@@ -20,12 +20,27 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page debug DEBUG: Debugging tools
+ *
+ * Debugging tools
+ *
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | debug/backtrace.c   | @subpage debug_backtrace   |
+ * | debug/parse_test.c  | @subpage debug_parse       |
+ */
+
 #ifndef MUTT_DEBUG_LIB_H
 #define MUTT_DEBUG_LIB_H
 
 #include "config.h"
 #include "mutt/lib.h"
 #include "core/lib.h"
+
+#ifdef HAVE_LIBUNWIND
+void show_backtrace(void);
+#endif
 
 // Parse Set
 void test_parse_set(void);

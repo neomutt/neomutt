@@ -21,7 +21,7 @@
  */
 
 /**
- * @page backtrace Code backtrace
+ * @page debug_backtrace Code backtrace
  *
  * Code backtrace
  */

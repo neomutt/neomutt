@@ -136,8 +136,4 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line, struct Buffer *tok
 int mutt_query_variables(struct ListHead *queries);
 void reset_value(const char *name);
 
-#ifdef HAVE_LIBUNWIND
-void show_backtrace(void);
-#endif
-
 #endif /* MUTT_MUTT_H */

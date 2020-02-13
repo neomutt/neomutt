@@ -21,6 +21,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page comp COMPRESS: Compressed Mailbox
+ *
+ * Compressed mbox local mailbox type
+ *
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | compress/compress.c | @subpage comp_compress     |
+ */
+
 #ifndef MUTT_COMPRESS_LIB_H
 #define MUTT_COMPRESS_LIB_H
 

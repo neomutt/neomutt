@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page debug_parse Test the config parsing code
+ *
+ * Test the config parsing code
+ */
+
 #include "config.h"
 #include "mutt/lib.h"
 #include "mutt.h"

@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page functions Definitions of user functions
+ *
+ * Definitions of user functions
+ */
+
 #include "config.h"
 #ifdef _MAKEDOC
 #include "doc/makedoc_defs.h"
