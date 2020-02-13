@@ -34,6 +34,7 @@
 
 struct Email;
 struct Context;
+struct Path;
 struct stat;
 
 extern const struct MxOps *mx_ops[];
@@ -291,6 +292,151 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*path_parent)     (char *buf, size_t buflen);
+
+  /**
+   * path2_canon - Canonicalise a Mailbox path
+   * @param path Path to canonicalise
+   * @retval  0 Success
+   * @retval -1 Failure
+   *
+   * **Contract**
+   * - @a path        is not NULL
+   * - @a path->orig  is not NULL
+   * - @a path->canon is NULL
+   * - @a path->type  is not #MUTT_UNKNOWN
+   * - @a path->flags has #MPATH_RESOLVED, #MPATH_TIDY
+   * - @a path->flags does not have #MPATH_CANONICAL
+   *
+   * **On success**
+   * - @a path->canon will be set to a new string
+   * - @a path->flags will have #MPATH_CANONICAL added
+   */
+  int (*path2_canon)(struct Path *path);
+
+  /**
+   * path2_compare - Compare two Mailbox paths
+   * @param path1 First  path to compare
+   * @param path2 Second path to compare
+   * @retval -1 path1 precedes path2
+   * @retval  0 path1 and path2 are identical
+   * @retval  1 path2 precedes path1
+   *
+   * **Contract**
+   * - @a path        is not NULL
+   * - @a path->canon is not NULL
+   * - @a path->type  is not #MUTT_UNKNOWN
+   * - @a path->flags has #MPATH_RESOLVED, #MPATH_TIDY, #MPATH_CANONICAL
+   *
+   * The contract applies to both @a path1 and @a path2
+   */
+  int (*path2_compare)(struct Path *path1, struct Path *path2);
+
+  /**
+   * path2_parent - Find the parent of a Mailbox path
+   * @param[in] path    Mailbox path
+   * @param[out] parent Parent of path
+   * @retval  0 Success, parent returned
+   * @retval -1 Failure, path is root, it has no parent
+   * @retval -2 Error
+   *
+   * **Contract**
+   * - @a path        is not NULL
+   * - @a path->orig  is not NULL
+   * - @a path->type  is not #MUTT_UNKNOWN
+   * - @a path->flags has #MPATH_RESOLVED, #MPATH_TIDY
+   * - @a parent      is not NULL
+   * - @a *parent     is NULL
+   *
+   * **On success**
+   * - @a parent        is set to a new Path
+   * - @a parent->orig  is set to the parent
+   * - @a parent->type  is set to @a path->type
+   * - @a parent->flags has #MPATH_RESOLVED, #MPATH_TIDY
+   *
+   * @note The caller must free the returned Path
+   */
+  int (*path2_parent)(const struct Path *path, struct Path **parent);
+
+  /**
+   * path2_pretty - Abbreviate a Mailbox path
+   * @param[in]  path   Mailbox path
+   * @param[in]  folder Folder string to abbreviate with
+   * @retval  1 Success, Path abbreviated
+   * @retval  0 Failure, No change possible
+   * @retval -1 Error
+   *
+   * **Contract**
+   * - @a path         is not NULL
+   * - @a path->orig   is not NULL
+   * - @a path->pretty is NULL
+   * - @a path->type   is not #MUTT_UNKNOWN
+   * - @a path->flags  has #MPATH_RESOLVED, #MPATH_TIDY
+   * - @a folder       is not NULL, is not empty
+   *
+   * **On success**
+   * - @a path->pretty is set to the abbreviated path
+   *
+   * @note The caller must free the returned Path
+   */
+  int (*path2_pretty)(struct Path *path, const char *folder);
+
+  /**
+   * path2_probe - Does this Mailbox type recognise this path?
+   * @param path Path to examine
+   * @param st   stat buffer (for local filesystems)
+   * @retval  0 Success, path recognised
+   * @retval -1 Error or path not recognised
+   *
+   * **Contract**
+   * - @a path        is not NULL
+   * - @a path->orig  is not NULL
+   * - @a path->canon is NULL
+   * - @a path->type  is #MUTT_UNKNOWN
+   * - @a path->flags has #MPATH_RESOLVED, #MPATH_TIDY
+   * - @a path->flags does not have #MPATH_CANONICAL
+   * - @a st          is not NULL if MxOps::is_local is set
+   *
+   * **On success**
+   * - @a path->type is set, e.g. #MUTT_MAILDIR
+   */
+  int (*path2_probe)(struct Path *path, const struct stat *st);
+
+  /**
+   * path2_tidy - Tidy a Mailbox path
+   * @param path Path to tidy
+   * @retval  0 Success
+   * @retval -1 Failure
+   *
+   * **Contract**
+   * - @a path        is not NULL
+   * - @a path->orig  is not NULL
+   * - @a path->canon is NULL
+   * - @a path->type  is not #MUTT_UNKNOWN
+   * - @a path->flags has #MPATH_RESOLVED
+   * - @a path->flags does not have #MPATH_TIDY, #MPATH_CANONICAL
+   *
+   * **On success**
+   * - @a path->orig  will be replaced by a tidier string
+   * - @a path->flags will have #MPATH_TIDY added
+   */
+  int (*path2_tidy)(struct Path *path);
+
+  /**
+   * ac2_is_owner - Does this Account own this Path?
+   * @param a    Account to search
+   * @param path Path to search for
+   * @retval  0 Success
+   * @retval -1 Error
+   *
+   * **Contract**
+   * - @a a           is not NULL
+   * - @a a->magic    matches the backend
+   * - @a path        is not NULL
+   * - @a path->orig  is not NULL
+   * - @a path->type  matches the backend
+   * - @a path->flags has #MPATH_RESOLVED, #MPATH_TIDY
+   */
+  int (*ac2_is_owner)(struct Account *a, const struct Path *path);
 };
 
 /* Wrappers for the Mailbox API, see MxOps */
