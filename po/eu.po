@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2019-12-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-02-05 23:58+0000\n"
+"POT-Creation-Date: 2020-02-13 17:39+0000\n"
 "PO-Revision-Date: 2008-05-20 22:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -38,7 +38,7 @@ msgid "Select"
 msgstr "Hautatu"
 
 #: addrbook.c:58 autocrypt/autocrypt_acct_menu.c:81 browser.c:83 browser.c:95
-#: compose.c:216 compose.c:228 conn/ssl.c:997 conn/ssl_gnutls.c:722 index.c:118
+#: compose.c:216 compose.c:228 conn/ssl.c:996 conn/ssl_gnutls.c:722 index.c:118
 #: index.c:131 mutt_history.c:48 ncrypt/crypt_gpgme.c:4783 ncrypt/pgpkey.c:673
 #: ncrypt/smime.c:555 pager.c:2297 postpone.c:71 query.c:83 recvattach.c:92
 msgid "Help"
@@ -121,7 +121,7 @@ msgstr "%s ez da existitzen. Sortu?"
 #. error message returned by libc
 #.
 #: autocrypt/autocrypt.c:79 bcache.c:216 hcache/hcache.c:161 main.c:761
-#: nntp/newsrc.c:1074
+#: nntp/newsrc.c:1098
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Ezin da %s sortu: %s"
@@ -602,7 +602,7 @@ msgstr "PGP sinadura arrakastatsuki egiaztaturik"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP sinadura EZIN da egiaztatu"
 
-#: commands.c:378 compose.c:2187 compress.c:320 gui/curs_lib.c:360
+#: commands.c:378 compose.c:2187 compress/compress.c:320 gui/curs_lib.c:360
 #: gui/curs_lib.c:714 index.c:1240 index.c:1290 mutt_attach.c:161
 #: mutt_attach.c:294 pager.c:2433 sendlib.c:1624
 #, c-format
@@ -1401,53 +1401,54 @@ msgstr ""
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP dagoeneko aukeraturik. Garbitu eta jarraitu?"
 
-#: compress.c:354 compress.c:498
+#: compress/compress.c:354 compress/compress.c:498
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr ""
 
-#: compress.c:443 compress.c:510 compress.c:589 compress.c:627 mbox/mbox.c:1208
+#: compress/compress.c:443 compress/compress.c:510 compress/compress.c:589
+#: compress/compress.c:627 mbox/mbox.c:1208
 msgid "Unable to lock mailbox"
 msgstr "Ezin da postakutxa blokeatu"
 
-#: compress.c:447 compress.c:517 compress.c:593
+#: compress/compress.c:447 compress/compress.c:517 compress/compress.c:593
 #, c-format
 msgid "Decompressing %s"
 msgstr ""
 
-#: compress.c:456
+#: compress/compress.c:456
 msgid "Can't identify the contents of the compressed file"
 msgstr ""
 
-#: compress.c:463 compress.c:538
+#: compress/compress.c:463 compress/compress.c:538
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr ""
 
-#: compress.c:520
+#: compress/compress.c:520
 #, fuzzy, c-format
 msgid "Compress command failed: %s"
 msgstr "Aurrekonexio komandoak huts egin du."
 
-#: compress.c:531
+#: compress/compress.c:531
 msgid "Unsupported mailbox type for appending"
 msgstr ""
 
-#: compress.c:617
+#: compress/compress.c:617
 msgid "Can't sync a compressed file without a close-hook"
 msgstr ""
 
-#: compress.c:639 compress.c:691
+#: compress/compress.c:639 compress/compress.c:691
 #, fuzzy, c-format
 msgid "Compressing %s"
 msgstr "Hona kopiatzen %s..."
 
-#: compress.c:686
+#: compress/compress.c:686
 #, fuzzy, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Hona kopiatzen %s..."
 
-#: compress.c:698 editmsg.c:247
+#: compress/compress.c:698 editmsg.c:247
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Errorea. Behin behineko fitxategi gordetzen: %s"
@@ -1538,6 +1539,39 @@ msgstr "Data erlatibo baliogabea: %s"
 msgid "Invalid sort type: %ld"
 msgstr "Data erlatibo baliogabea: %s"
 
+#. L10N: Example: Username at myhost.com
+#: conn/connaccount.c:61
+#, c-format
+msgid "Username at %s: "
+msgstr "%s -n erabiltzaile izena: "
+
+#: conn/connaccount.c:117
+#, c-format
+msgid "Password for %s@%s: "
+msgstr "%s@%s-ren pasahitza: "
+
+#. L10N: You will see this error message if (1) you have "oauthbearer" in
+#. one of your $*_authenticators and (2) you do not have the corresponding
+#. $*_oauth_refresh_command defined. So the message does not mean "None of
+#. your $*_oauth_refresh_command's are defined."
+#: conn/connaccount.c:165
+#, fuzzy
+msgid "No OAUTH refresh command defined"
+msgstr "Bilaketa komadoa ezarri gabea"
+
+#: conn/connaccount.c:173
+msgid "Unable to run refresh command"
+msgstr ""
+
+#: conn/connaccount.c:184
+msgid "Command returned empty string"
+msgstr ""
+
+#: conn/connaccount.c:191
+#, c-format
+msgid "OAUTH token is too big: %ld"
+msgstr ""
+
 #: conn/conn_raw.c:160 conn/conn_raw.c:218
 #, c-format
 msgid "Looking up %s..."
@@ -1558,7 +1592,7 @@ msgstr "%s-ra konektatzen..."
 msgid "Could not connect to %s (%s)"
 msgstr "Ezin da %s (%s)-ra konektatu"
 
-#: conn/conn_raw.c:260 conn/ssl.c:1246 gui/curs_lib.c:569 mutt_logging.c:147
+#: conn/conn_raw.c:260 conn/ssl.c:1245 gui/curs_lib.c:569 mutt_logging.c:147
 msgid "unknown error"
 msgstr "errore ezezaguna"
 
@@ -1572,23 +1606,23 @@ msgstr "Errorea %s (%s) komunikatzerakoan"
 msgid "Connection to %s has been aborted"
 msgstr "%s-rekiko konexioa itxia"
 
-#: conn/sasl.c:565
+#: conn/sasl.c:547
 msgid "Unknown SASL profile"
 msgstr "SASL profil ezezaguna"
 
-#: conn/sasl.c:598
+#: conn/sasl.c:580
 msgid "Error allocating SASL connection"
 msgstr "Errorea SASL konexioa esleitzerakoan"
 
-#: conn/sasl.c:608
+#: conn/sasl.c:590
 msgid "Error setting SASL security properties"
 msgstr "Errorea SASL segurtasun propietateak ezartzean"
 
-#: conn/sasl.c:619
+#: conn/sasl.c:601
 msgid "Error setting SASL external security strength"
 msgstr "Errorea SASL kanpo segurtasun maila ezartzean"
 
-#: conn/sasl.c:629
+#: conn/sasl.c:611
 msgid "Error setting SASL external user name"
 msgstr "Errorea SASL kanpo erabiltzaile izena ezartzean"
 
@@ -1611,84 +1645,84 @@ msgstr "Entropia elkarbiltzea betetzen: %s..."
 msgid "%s has insecure permissions"
 msgstr "%s ziurtasun gabeko biamenak ditu"
 
-#: conn/ssl.c:370
+#: conn/ssl.c:369
 #, fuzzy
 msgid "SSL disabled due to the lack of entropy"
 msgstr "Entropia gabezia dela eta SSL ezgaitu egin da"
 
-#: conn/ssl.c:387
+#: conn/ssl.c:386
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: conn/ssl.c:406 conn/ssl_gnutls.c:188
+#: conn/ssl.c:405 conn/ssl_gnutls.c:188
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[ezin da kalkulatu]"
 
-#: conn/ssl.c:431
+#: conn/ssl.c:430
 msgid "[invalid date]"
 msgstr "[baliogabeko data]"
 
-#: conn/ssl.c:491
+#: conn/ssl.c:490
 msgid "Server certificate is not yet valid"
 msgstr "Jadanik zerbitzari ziurtagiria ez da baliozkoa"
 
-#: conn/ssl.c:501
+#: conn/ssl.c:500
 msgid "Server certificate has expired"
 msgstr "Zerbitzariaren ziurtagiria denboraz kanpo dago"
 
-#: conn/ssl.c:590
+#: conn/ssl.c:589
 msgid "Failed to find enough entropy on your system"
 msgstr "Huts zure sisteman entropia nahikoak bidaltzerakoan"
 
-#: conn/ssl.c:784
+#: conn/ssl.c:783
 #, fuzzy
 msgid "can't get certificate subject"
 msgstr "Auzolagunengatik ezin da ziurtagiria jaso"
 
-#: conn/ssl.c:793 conn/ssl.c:801
+#: conn/ssl.c:792 conn/ssl.c:800
 #, fuzzy
 msgid "can't get certificate common name"
 msgstr "Auzolagunengatik ezin da ziurtagiria jaso"
 
-#: conn/ssl.c:815
+#: conn/ssl.c:814
 #, fuzzy, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "S/MIME ziurtagiriaren jabea ez da mezua bidali duena."
 
-#: conn/ssl.c:918 conn/ssl_gnutls.c:570
+#: conn/ssl.c:917 conn/ssl_gnutls.c:570
 msgid "This certificate belongs to:"
 msgstr "Ziurtagiriaren jabea:"
 
-#: conn/ssl.c:927 conn/ssl_gnutls.c:624
+#: conn/ssl.c:926 conn/ssl_gnutls.c:624
 msgid "This certificate was issued by:"
 msgstr "Honek emandako ziurtagiria:"
 
-#: conn/ssl.c:936 conn/ssl_gnutls.c:635
+#: conn/ssl.c:935 conn/ssl_gnutls.c:635
 msgid "This certificate is valid"
 msgstr "Ziurtagiria hau baliozkoa da"
 
-#: conn/ssl.c:937 conn/ssl_gnutls.c:639
+#: conn/ssl.c:936 conn/ssl_gnutls.c:639
 #, c-format
 msgid "   from %s"
 msgstr "   %s-tik"
 
-#: conn/ssl.c:939 conn/ssl_gnutls.c:643
+#: conn/ssl.c:938 conn/ssl_gnutls.c:643
 #, c-format
 msgid "     to %s"
 msgstr "     %s-ra"
 
-#: conn/ssl.c:945 conn/ssl_gnutls.c:648
+#: conn/ssl.c:944 conn/ssl_gnutls.c:648
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "SHA1 Hatz-marka: %s"
 
-#: conn/ssl.c:951 conn/ssl.c:954 conn/ssl_gnutls.c:654 conn/ssl_gnutls.c:656
+#: conn/ssl.c:950 conn/ssl.c:953 conn/ssl_gnutls.c:654 conn/ssl_gnutls.c:656
 #, fuzzy
 msgid "SHA256 Fingerprint: "
 msgstr "SHA1 Hatz-marka: %s"
 
-#: conn/ssl.c:958 conn/ssl_gnutls.c:695
+#: conn/ssl.c:957 conn/ssl_gnutls.c:695
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr ""
@@ -1697,42 +1731,42 @@ msgstr ""
 #. (r)eject, accept (o)nce, (a)ccept always, (s)kip.
 #. These prompts are the interactive certificate confirmation prompts for
 #. an OpenSSL connection.
-#: conn/ssl.c:978
+#: conn/ssl.c:977
 msgid "roas"
 msgstr ""
 
-#: conn/ssl.c:982
+#: conn/ssl.c:981
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(u)katu, behin (o)nartu, (b)etirko onartu"
 
-#: conn/ssl.c:984 conn/ssl_gnutls.c:702
+#: conn/ssl.c:983 conn/ssl_gnutls.c:702
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(u)katu, behin (o)nartu, (b)etirko onartu"
 
-#: conn/ssl.c:989
+#: conn/ssl.c:988
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(u)katu, behin (o)nartu"
 
-#: conn/ssl.c:991 conn/ssl_gnutls.c:711
+#: conn/ssl.c:990 conn/ssl_gnutls.c:711
 msgid "(r)eject, accept (o)nce"
 msgstr "(u)katu, behin (o)nartu"
 
-#: conn/ssl.c:995 conn/ssl_gnutls.c:720 ncrypt/crypt_gpgme.c:4777
+#: conn/ssl.c:994 conn/ssl_gnutls.c:720 ncrypt/crypt_gpgme.c:4777
 #: ncrypt/pgpkey.c:667 ncrypt/smime.c:551
 msgid "Exit  "
 msgstr "Irten  "
 
-#: conn/ssl.c:1030 conn/ssl_gnutls.c:773
+#: conn/ssl.c:1029 conn/ssl_gnutls.c:773
 msgid "Warning: Couldn't save certificate"
 msgstr "Kontuz: Ezin da ziurtagiria gorde"
 
-#: conn/ssl.c:1034 conn/ssl_gnutls.c:777
+#: conn/ssl.c:1033 conn/ssl_gnutls.c:777
 msgid "Certificate saved"
 msgstr "Ziurtagiria gordea"
 
-#: conn/ssl.c:1148
+#: conn/ssl.c:1147
 #, fuzzy, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Ziurtagiria gordea"
@@ -1740,15 +1774,15 @@ msgstr "Ziurtagiria gordea"
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
-#: conn/ssl.c:1229 conn/ssl_gnutls.c:1105
+#: conn/ssl.c:1228 conn/ssl_gnutls.c:1105
 msgid "Warning: unable to set TLS SNI host name"
 msgstr ""
 
-#: conn/ssl.c:1240
+#: conn/ssl.c:1239
 msgid "I/O error"
 msgstr "S/I errorea"
 
-#: conn/ssl.c:1249
+#: conn/ssl.c:1248
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL hutsa: %s"
@@ -1756,12 +1790,12 @@ msgstr "SSL hutsa: %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/ssl.c:1285
+#: conn/ssl.c:1284
 #, fuzzy
 msgid "Unable to create SSL context"
 msgstr "Errorea: Ezin da OpenSSL azpiprozesua sortu!"
 
-#: conn/ssl.c:1338
+#: conn/ssl.c:1337
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr ""
 
@@ -2388,30 +2422,30 @@ msgstr "GSSAPI autentifikazioak huts egin du"
 msgid "LOGIN disabled on this server"
 msgstr "Zerbitzari honetan saio astea ezgaiturik"
 
-#: imap/auth_login.c:61 imap/auth_plain.c:57 pop/pop_auth.c:288
+#: imap/auth_login.c:61 imap/auth_plain.c:57 pop/pop_auth.c:289
 msgid "Logging in..."
 msgstr "Saio asten..."
 
-#: imap/auth_login.c:79 imap/auth_plain.c:97 pop/pop_auth.c:329
+#: imap/auth_login.c:79 imap/auth_plain.c:97 pop/pop_auth.c:330
 msgid "Login failed"
 msgstr "Huts saioa hasterakoan"
 
-#: imap/auth_oauth.c:64 pop/pop_auth.c:346 smtp.c:524
+#: imap/auth_oauth.c:65 pop/pop_auth.c:347 smtp.c:549
 #, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
 msgstr "Autentifikatzen (SASL)..."
 
-#: imap/auth_oauth.c:96
+#: imap/auth_oauth.c:97
 #, fuzzy
 msgid "OAUTHBEARER authentication failed"
 msgstr "OAUTHBEARER egiaztapenak huts egin du"
 
-#: imap/auth_sasl.c:128 nntp/nntp.c:608 nntp/nntp.c:673 smtp.c:443
+#: imap/auth_sasl.c:128 nntp/nntp.c:608 nntp/nntp.c:673 smtp.c:468
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Autentifikazioa (%s)..."
 
-#: imap/auth_sasl.c:259 pop/pop_auth.c:200 smtp.c:584 smtp.c:646
+#: imap/auth_sasl.c:259 pop/pop_auth.c:201 smtp.c:609 smtp.c:671
 msgid "SASL authentication failed"
 msgstr "SASL egiaztapenak huts egin du"
 
@@ -2494,15 +2528,15 @@ msgstr "SSL hutsa: %s"
 msgid "Closing connection to %s..."
 msgstr "%s-ra konexioak ixten..."
 
-#: imap/imap.c:888 nntp/nntp.c:1891 pop/pop_lib.c:325 smtp.c:687
+#: imap/imap.c:888 nntp/nntp.c:1891 pop/pop_lib.c:350 smtp.c:712
 msgid "Secure connection with TLS?"
 msgstr "TLS-duen konexio ziurra?"
 
-#: imap/imap.c:901 nntp/nntp.c:1912 pop/pop_lib.c:344 smtp.c:702
+#: imap/imap.c:901 nntp/nntp.c:1912 pop/pop_lib.c:369 smtp.c:727
 msgid "Could not negotiate TLS connection"
 msgstr "Ezin da TLS konexioa negoziatu"
 
-#: imap/imap.c:916 pop/pop_lib.c:361
+#: imap/imap.c:916 pop/pop_lib.c:386
 msgid "Encrypted connection unavailable"
 msgstr "Enkriptaturiko konexioa ez da erabilgarria"
 
@@ -2523,7 +2557,7 @@ msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d mezuak %s-ra kopiatzen..."
 msgstr[1] "%d mezuak %s-ra kopiatzen..."
 
-#: imap/imap.c:1612 imap/imap.c:2256 imap/message.c:1713 muttlib.c:1503
+#: imap/imap.c:1612 imap/imap.c:2254 imap/message.c:1713 muttlib.c:1503
 #, c-format
 msgid "Create %s?"
 msgstr "Sortu %s?"
@@ -2563,21 +2597,21 @@ msgstr "Mezuak zerbitzaritik ezabatzen..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE huts egin du"
 
-#: imap/imap.c:2060 nntp/nntp.c:2488
+#: imap/imap.c:2058 nntp/nntp.c:2488
 #, c-format
 msgid "Selecting %s..."
 msgstr "Aukeratzen %s..."
 
-#: imap/imap.c:2223
+#: imap/imap.c:2221
 msgid "Error opening mailbox"
 msgstr "Postakutxa irekitzean errorea"
 
-#: imap/imap.c:2369
+#: imap/imap.c:2367
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "SMTP zerbitzariak ez du autentifikazioa onartzen"
 
-#: imap/imap.c:2413
+#: imap/imap.c:2411
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Baliogabea        "
@@ -2588,7 +2622,7 @@ msgid "Abort download and close mailbox?"
 msgstr ""
 
 #: imap/message.c:554 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
-#: mutt/string.c:1178 mx.c:1195
+#: mutt/string.c:1201 mx.c:1195
 msgid "Out of memory"
 msgstr "Memoriaz kanpo"
 
@@ -2621,15 +2655,15 @@ msgstr "Mezua igotzen..."
 msgid "Copying message %d to %s..."
 msgstr "%d mezua %s-ra kopiatzen..."
 
-#: imap/message.c:1908 imap/message.c:1973 nntp/nntp.c:2739 pop/pop.c:1110
+#: imap/message.c:1908 imap/message.c:1973 nntp/nntp.c:2739 pop/pop.c:1105
 msgid "Fetching message..."
 msgstr "Mezua eskuratzen..."
 
-#: imap/message.c:1959 pop/pop.c:1106
+#: imap/message.c:1959 pop/pop.c:1101
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Mezu sarrera baliogabekoa. Saia zaitez postakutxa berrirekitzen."
 
-#: imap/util.c:772
+#: imap/util.c:796
 msgid "Continue?"
 msgstr "Jarraitu?"
 
@@ -3226,7 +3260,7 @@ msgid "md_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): fitxategian ezin da data ezarri"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1730 mbox/mbox.c:1276 mx.c:459 notmuch/mutt_notmuch.c:2364
+#: maildir/shared.c:1734 mbox/mbox.c:1276 mx.c:459 notmuch/mutt_notmuch.c:2364
 #, c-format
 msgid "Writing %s..."
 msgstr "%s idazten..."
@@ -3507,7 +3541,7 @@ msgstr "%d. mailan arazten.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "%d. mailan arazten.\n"
 
-#: mutt/path.c:401
+#: mutt/path.c:420
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Errorea zerbitzariarekin konektatzerakoan: %s"
@@ -3590,34 +3624,6 @@ msgstr "Mezuak %s-ra gehitu?"
 #, fuzzy
 msgid "Can't save message to news server"
 msgstr "Ezin dira mezuak zerbitzarian utzi"
-
-#. L10N: Example: Username at myhost.com
-#: mutt_account.c:190
-#, c-format
-msgid "Username at %s: "
-msgstr "%s -n erabiltzaile izena: "
-
-#: mutt_account.c:272
-#, c-format
-msgid "Password for %s@%s: "
-msgstr "%s@%s-ren pasahitza: "
-
-#. L10N: You will see this error message if (1) you have "oauthbearer" in
-#. one of your $*_authenticators and (2) you do not have the corresponding
-#. $*_oauth_refresh_command defined. So the message does not mean "None of
-#. your $*_oauth_refresh_command's are defined."
-#: mutt_account.c:340
-#, fuzzy
-msgid "No OAUTH refresh command defined"
-msgstr "Bilaketa komadoa ezarri gabea"
-
-#: mutt_account.c:347
-msgid "Unable to run refresh command"
-msgstr ""
-
-#: mutt_account.c:357
-msgid "Command returned empty string"
-msgstr ""
 
 #: mutt_attach.c:142 mutt_attach.c:276 mutt_attach.c:488 mutt_attach.c:1087
 msgid "Can't match 'nametemplate', continue?"
@@ -3714,7 +3720,7 @@ msgstr ""
 msgid "Couldn't source lua source: %s"
 msgstr "Ezin da %s blokeatu\n"
 
-#: mutt_mailbox.c:214
+#: mutt_mailbox.c:241
 msgid "New mail in "
 msgstr "Posta berria "
 
@@ -4977,20 +4983,20 @@ msgstr "123"
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
-#: nntp/newsrc.c:637
+#: nntp/newsrc.c:639
 msgid "Loading list of groups from cache..."
 msgstr ""
 
-#: nntp/newsrc.c:1002
+#: nntp/newsrc.c:1023
 msgid "No news server defined"
 msgstr ""
 
-#: nntp/newsrc.c:1017
+#: nntp/newsrc.c:1041
 #, fuzzy, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s ez da baliozko datu-bidea"
 
-#: nntp/nntp.c:238 nntp/nntp.c:779 pop/pop.c:742 pop/pop_lib.c:399
+#: nntp/nntp.c:238 nntp/nntp.c:779 pop/pop.c:742 pop/pop_lib.c:424
 msgid "Server closed connection"
 msgstr "Zerbitzariak konexioa itxi du"
 
@@ -4999,7 +5005,7 @@ msgstr "Zerbitzariak konexioa itxi du"
 msgid "Server doesn't support reader mode"
 msgstr "SMTP zerbitzariak ez du autentifikazioa onartzen"
 
-#: nntp/nntp.c:578 pop/pop_auth.c:504 smtp.c:650
+#: nntp/nntp.c:578 pop/pop_auth.c:505 smtp.c:675
 msgid "No authenticators available"
 msgstr "Ez da autentifikatzailerik aukeran"
 
@@ -5018,7 +5024,7 @@ msgstr "%s-rekiko konexioa itxia"
 msgid "Fetching list of articles..."
 msgstr "Mezuen zerrenda eskuratzen..."
 
-#: nntp/nntp.c:1551 nntp/nntp.c:2140 pop/pop.c:614 pop/pop.c:910
+#: nntp/nntp.c:1551 nntp/nntp.c:2140 pop/pop.c:614 pop/pop.c:905
 msgid "Checking for new messages..."
 msgstr "Mezu berriak bilatzen..."
 
@@ -6414,7 +6420,7 @@ msgstr "Bilaketa hasieraraino iritsi da parekorik aurkitu gabe"
 msgid "Search interrupted"
 msgstr "Bilaketa geldiarazirik"
 
-#: pop/pop.c:216 pop/pop_lib.c:234
+#: pop/pop.c:216 pop/pop_lib.c:259
 msgid "Command TOP is not supported by server"
 msgstr "TOP komandoa ez du zerbitzariak onartzen"
 
@@ -6422,7 +6428,7 @@ msgstr "TOP komandoa ez du zerbitzariak onartzen"
 msgid "Can't write header to temporary file"
 msgstr "Ezin da burua fitxategi tenporalean gorde"
 
-#: pop/pop.c:420 pop/pop_lib.c:236
+#: pop/pop.c:420 pop/pop_lib.c:261
 msgid "Command UIDL is not supported by server"
 msgstr "UIDL komandoa ez du zerbitzariak onartzen"
 
@@ -6437,7 +6443,7 @@ msgstr[1] "Mezu sarrera baliogabekoa. Saia zaitez postakutxa berrirekitzen."
 msgid "POP host is not defined"
 msgstr "POP ostalaria ez dago ezarririk"
 
-#: pop/pop.c:596 pop/pop.c:825
+#: pop/pop.c:596 pop/pop.c:790 pop/pop.c:820
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s ez da baliozko datu-bidea"
@@ -6470,66 +6476,66 @@ msgid_plural "%s [%d of %d messages read]"
 msgstr[0] "%s [%d-tik %d mezu irakurririk]"
 msgstr[1] "%s [%d-tik %d mezu irakurririk]"
 
-#: pop/pop.c:876
+#: pop/pop.c:871
 msgid "Fetching list of messages..."
 msgstr "Mezuen zerrenda eskuratzen..."
 
-#: pop/pop.c:959
+#: pop/pop.c:954
 msgid "Marking messages deleted..."
 msgstr "Mezu ezabatuak markatzen..."
 
-#: pop/pop.c:1150
+#: pop/pop.c:1145
 msgid "Can't write message to temporary file"
 msgstr "Ezin da mezua fitxategi tenporalean gorde"
 
-#: pop/pop_auth.c:103
+#: pop/pop_auth.c:104
 msgid "Authenticating (SASL)..."
 msgstr "Autentifikatzen (SASL)..."
 
-#: pop/pop_auth.c:245
+#: pop/pop_auth.c:246
 msgid "POP timestamp is invalid"
 msgstr "POP data-marka baliogabea"
 
-#: pop/pop_auth.c:249
+#: pop/pop_auth.c:250
 msgid "Authenticating (APOP)..."
 msgstr "Autentifikatzen (APOP)..."
 
-#: pop/pop_auth.c:269
+#: pop/pop_auth.c:270
 msgid "APOP authentication failed"
 msgstr "APOP autentifikazioak huts egin du"
 
-#: pop/pop_auth.c:309
+#: pop/pop_auth.c:310
 msgid "Command USER is not supported by server"
 msgstr "USER komandoa ez du zerbitzariak onartzen"
 
-#: pop/pop_auth.c:386
+#: pop/pop_auth.c:387
 #, fuzzy
 msgid "Authentication failed"
 msgstr "SASL egiaztapenak huts egin du"
 
-#: pop/pop_lib.c:78
+#: pop/pop_lib.c:103
 #, fuzzy, c-format
 msgid "Invalid POP URL: %s"
 msgstr "Okerreko SMTP URLa: %s"
 
-#: pop/pop_lib.c:232
+#: pop/pop_lib.c:257
 msgid "Unable to leave messages on server"
 msgstr "Ezin dira mezuak zerbitzarian utzi"
 
-#: pop/pop_lib.c:275
+#: pop/pop_lib.c:300
 #, c-format
 msgid "Error connecting to server: %s"
 msgstr "Errorea zerbitzariarekin konektatzerakoan: %s"
 
-#: pop/pop_lib.c:415
+#: pop/pop_lib.c:440
 msgid "Closing connection to POP server..."
 msgstr "POP Zerbitzariarekiko konexioa ixten..."
 
-#: pop/pop_lib.c:606
+#: pop/pop_lib.c:631
 msgid "Verifying message indexes..."
 msgstr "Mezu indizea egiaztatzen..."
 
-#: pop/pop_lib.c:629
+#: pop/pop_lib.c:654
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "Konexioa galdua. POP zerbitzariarekiko konexio berrasi?"
 
@@ -6934,7 +6940,7 @@ msgstr "gehigarriaren transferentzi kodifikazioa editatu"
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send.c:2570 smtp.c:227
+#: send.c:2570 smtp.c:230
 msgid "Sending message..."
 msgstr "Mezua bidaltzen..."
 
@@ -6996,53 +7002,53 @@ msgstr "Postaketa prozesuaren irteera"
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "%s berbidalketa inprimakia prestatzerakoan IDN okerra"
 
-#: smtp.c:165
+#: smtp.c:168
 #, c-format
 msgid "SMTP session failed: %s"
 msgstr "SMTP saioak huts egin du: %s"
 
-#: smtp.c:222
+#: smtp.c:225
 #, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "SMTP saioak huts egin du: ezin da %s ireki"
 
-#: smtp.c:339
+#: smtp.c:364
 #, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "Okerreko SMTP URLa: %s"
 
-#: smtp.c:618
+#: smtp.c:643
 #, c-format
 msgid "SMTP authentication method %s requires SASL"
 msgstr ""
 
-#: smtp.c:625
+#: smtp.c:650
 #, fuzzy, c-format
 msgid "%s authentication failed, trying next method"
 msgstr "SASL egiaztapenak huts egin du"
 
-#: smtp.c:636
+#: smtp.c:661
 #, fuzzy
 msgid "SMTP authentication requires SASL"
 msgstr "GSSAPI autentifikazioak huts egin du"
 
-#: smtp.c:717
+#: smtp.c:742
 msgid "SMTP server does not support authentication"
 msgstr "SMTP zerbitzariak ez du autentifikazioa onartzen"
 
-#: smtp.c:756
+#: smtp.c:781
 msgid "No from address given"
 msgstr ""
 
-#: smtp.c:821
+#: smtp.c:846
 msgid "SMTP session failed: read error"
 msgstr "SMTP saioak huts egin du: irakurketa errorea"
 
-#: smtp.c:823
+#: smtp.c:848
 msgid "SMTP session failed: write error"
 msgstr "SMTP saioak huts egin du: idazketa errorea"
 
-#: smtp.c:825
+#: smtp.c:850
 msgid "Invalid server response"
 msgstr ""
 

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2019-12-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-02-05 23:58+0000\n"
+"POT-Creation-Date: 2020-02-13 17:39+0000\n"
 "PO-Revision-Date: 2016-11-09 22:45+0000\n"
 "Last-Translator: Velko Hristov <hristov@informatik.hu-berlin.de>\n"
 "Language-Team: none\n"
@@ -41,7 +41,7 @@ msgid "Select"
 msgstr "Избор"
 
 #: addrbook.c:58 autocrypt/autocrypt_acct_menu.c:81 browser.c:83 browser.c:95
-#: compose.c:216 compose.c:228 conn/ssl.c:997 conn/ssl_gnutls.c:722 index.c:118
+#: compose.c:216 compose.c:228 conn/ssl.c:996 conn/ssl_gnutls.c:722 index.c:118
 #: index.c:131 mutt_history.c:48 ncrypt/crypt_gpgme.c:4783 ncrypt/pgpkey.c:673
 #: ncrypt/smime.c:555 pager.c:2297 postpone.c:71 query.c:83 recvattach.c:92
 msgid "Help"
@@ -126,7 +126,7 @@ msgstr "%s не съществува. Да бъде ли създаден?"
 #. error message returned by libc
 #.
 #: autocrypt/autocrypt.c:79 bcache.c:216 hcache/hcache.c:161 main.c:761
-#: nntp/newsrc.c:1074
+#: nntp/newsrc.c:1098
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Грешка при създаване на %s: %s"
@@ -608,7 +608,7 @@ msgstr "PGP-подписът е потвърден успешно"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP-подписът НЕ е потвърден успешно"
 
-#: commands.c:378 compose.c:2187 compress.c:320 gui/curs_lib.c:360
+#: commands.c:378 compose.c:2187 compress/compress.c:320 gui/curs_lib.c:360
 #: gui/curs_lib.c:714 index.c:1240 index.c:1290 mutt_attach.c:161
 #: mutt_attach.c:294 pager.c:2433 sendlib.c:1624
 #, c-format
@@ -1414,53 +1414,54 @@ msgstr ""
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP-шифроване вече е избрано. Clear and continue?"
 
-#: compress.c:354 compress.c:498
+#: compress/compress.c:354 compress/compress.c:498
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr ""
 
-#: compress.c:443 compress.c:510 compress.c:589 compress.c:627 mbox/mbox.c:1208
+#: compress/compress.c:443 compress/compress.c:510 compress/compress.c:589
+#: compress/compress.c:627 mbox/mbox.c:1208
 msgid "Unable to lock mailbox"
 msgstr "Грешка при заключване на пощенската кутия"
 
-#: compress.c:447 compress.c:517 compress.c:593
+#: compress/compress.c:447 compress/compress.c:517 compress/compress.c:593
 #, c-format
 msgid "Decompressing %s"
 msgstr ""
 
-#: compress.c:456
+#: compress/compress.c:456
 msgid "Can't identify the contents of the compressed file"
 msgstr ""
 
-#: compress.c:463 compress.c:538
+#: compress/compress.c:463 compress/compress.c:538
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr ""
 
-#: compress.c:520
+#: compress/compress.c:520
 #, fuzzy, c-format
 msgid "Compress command failed: %s"
 msgstr "Грешка при изпълнение на командата \"preconnect\""
 
-#: compress.c:531
+#: compress/compress.c:531
 msgid "Unsupported mailbox type for appending"
 msgstr ""
 
-#: compress.c:617
+#: compress/compress.c:617
 msgid "Can't sync a compressed file without a close-hook"
 msgstr ""
 
-#: compress.c:639 compress.c:691
+#: compress/compress.c:639 compress/compress.c:691
 #, fuzzy, c-format
 msgid "Compressing %s"
 msgstr "Създаване на копие в %s..."
 
-#: compress.c:686
+#: compress/compress.c:686
 #, fuzzy, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Създаване на копие в %s..."
 
-#: compress.c:698 editmsg.c:247
+#: compress/compress.c:698 editmsg.c:247
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Грешка. Запазване на временния файл: %s"
@@ -1551,6 +1552,39 @@ msgstr "Невалидна дата: %s"
 msgid "Invalid sort type: %ld"
 msgstr "Невалидна дата: %s"
 
+#. L10N: Example: Username at myhost.com
+#: conn/connaccount.c:61
+#, c-format
+msgid "Username at %s: "
+msgstr "Потребителско име на %s: "
+
+#: conn/connaccount.c:117
+#, c-format
+msgid "Password for %s@%s: "
+msgstr "Парола за %s@%s: "
+
+#. L10N: You will see this error message if (1) you have "oauthbearer" in
+#. one of your $*_authenticators and (2) you do not have the corresponding
+#. $*_oauth_refresh_command defined. So the message does not mean "None of
+#. your $*_oauth_refresh_command's are defined."
+#: conn/connaccount.c:165
+#, fuzzy
+msgid "No OAUTH refresh command defined"
+msgstr "Команда за запитване не е дефинирана"
+
+#: conn/connaccount.c:173
+msgid "Unable to run refresh command"
+msgstr ""
+
+#: conn/connaccount.c:184
+msgid "Command returned empty string"
+msgstr ""
+
+#: conn/connaccount.c:191
+#, c-format
+msgid "OAUTH token is too big: %ld"
+msgstr ""
+
 #: conn/conn_raw.c:160 conn/conn_raw.c:218
 #, c-format
 msgid "Looking up %s..."
@@ -1571,7 +1605,7 @@ msgstr "Свързване с %s..."
 msgid "Could not connect to %s (%s)"
 msgstr "Грешка при свързване с %s (%s)"
 
-#: conn/conn_raw.c:260 conn/ssl.c:1246 gui/curs_lib.c:569 mutt_logging.c:147
+#: conn/conn_raw.c:260 conn/ssl.c:1245 gui/curs_lib.c:569 mutt_logging.c:147
 msgid "unknown error"
 msgstr "непозната грешка"
 
@@ -1585,24 +1619,24 @@ msgstr "Грешка в комуникацията с %s (%s)"
 msgid "Connection to %s has been aborted"
 msgstr "Връзката с %s е затворена"
 
-#: conn/sasl.c:565
+#: conn/sasl.c:547
 msgid "Unknown SASL profile"
 msgstr ""
 
-#: conn/sasl.c:598
+#: conn/sasl.c:580
 #, fuzzy
 msgid "Error allocating SASL connection"
 msgstr "грешка в шаблона при: %s"
 
-#: conn/sasl.c:608
+#: conn/sasl.c:590
 msgid "Error setting SASL security properties"
 msgstr ""
 
-#: conn/sasl.c:619
+#: conn/sasl.c:601
 msgid "Error setting SASL external security strength"
 msgstr ""
 
-#: conn/sasl.c:629
+#: conn/sasl.c:611
 msgid "Error setting SASL external user name"
 msgstr ""
 
@@ -1625,84 +1659,84 @@ msgstr "Събиране на ентропия за генератора на с
 msgid "%s has insecure permissions"
 msgstr "%s има несигурни права за достъп"
 
-#: conn/ssl.c:370
+#: conn/ssl.c:369
 #, fuzzy
 msgid "SSL disabled due to the lack of entropy"
 msgstr "SSL е изключен поради липса на достатъчно ентропия"
 
-#: conn/ssl.c:387
+#: conn/ssl.c:386
 msgid "Unknown"
 msgstr "неизвестно"
 
-#: conn/ssl.c:406 conn/ssl_gnutls.c:188
+#: conn/ssl.c:405 conn/ssl_gnutls.c:188
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[грешка при пресмятане]"
 
-#: conn/ssl.c:431
+#: conn/ssl.c:430
 msgid "[invalid date]"
 msgstr "[невалидна дата]"
 
-#: conn/ssl.c:491
+#: conn/ssl.c:490
 msgid "Server certificate is not yet valid"
 msgstr "Сертификатът на сървъра все още не е валиден"
 
-#: conn/ssl.c:501
+#: conn/ssl.c:500
 msgid "Server certificate has expired"
 msgstr "Сертификатът на сървъра е изтекъл"
 
-#: conn/ssl.c:590
+#: conn/ssl.c:589
 msgid "Failed to find enough entropy on your system"
 msgstr "Недостатъчно ентропия в системата"
 
-#: conn/ssl.c:784
+#: conn/ssl.c:783
 #, fuzzy
 msgid "can't get certificate subject"
 msgstr "От сървъра не може да бъде получен сертификат"
 
-#: conn/ssl.c:793 conn/ssl.c:801
+#: conn/ssl.c:792 conn/ssl.c:800
 #, fuzzy
 msgid "can't get certificate common name"
 msgstr "От сървъра не може да бъде получен сертификат"
 
-#: conn/ssl.c:815
+#: conn/ssl.c:814
 #, fuzzy, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "Притежателят на S/MIME сертификата не съвпада с подателя на писмото."
 
-#: conn/ssl.c:918 conn/ssl_gnutls.c:570
+#: conn/ssl.c:917 conn/ssl_gnutls.c:570
 msgid "This certificate belongs to:"
 msgstr "Този сертификат принадлежи на:"
 
-#: conn/ssl.c:927 conn/ssl_gnutls.c:624
+#: conn/ssl.c:926 conn/ssl_gnutls.c:624
 msgid "This certificate was issued by:"
 msgstr "Този сертификат е издаден от:"
 
-#: conn/ssl.c:936 conn/ssl_gnutls.c:635
+#: conn/ssl.c:935 conn/ssl_gnutls.c:635
 msgid "This certificate is valid"
 msgstr "Този сертификат е валиден"
 
-#: conn/ssl.c:937 conn/ssl_gnutls.c:639
+#: conn/ssl.c:936 conn/ssl_gnutls.c:639
 #, c-format
 msgid "   from %s"
 msgstr "   от %s"
 
-#: conn/ssl.c:939 conn/ssl_gnutls.c:643
+#: conn/ssl.c:938 conn/ssl_gnutls.c:643
 #, c-format
 msgid "     to %s"
 msgstr "    до %s"
 
-#: conn/ssl.c:945 conn/ssl_gnutls.c:648
+#: conn/ssl.c:944 conn/ssl_gnutls.c:648
 #, fuzzy, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Пръстов отпечатък: %s"
 
-#: conn/ssl.c:951 conn/ssl.c:954 conn/ssl_gnutls.c:654 conn/ssl_gnutls.c:656
+#: conn/ssl.c:950 conn/ssl.c:953 conn/ssl_gnutls.c:654 conn/ssl_gnutls.c:656
 #, fuzzy
 msgid "SHA256 Fingerprint: "
 msgstr "Пръстов отпечатък: %s"
 
-#: conn/ssl.c:958 conn/ssl_gnutls.c:695
+#: conn/ssl.c:957 conn/ssl_gnutls.c:695
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr ""
@@ -1711,42 +1745,42 @@ msgstr ""
 #. (r)eject, accept (o)nce, (a)ccept always, (s)kip.
 #. These prompts are the interactive certificate confirmation prompts for
 #. an OpenSSL connection.
-#: conn/ssl.c:978
+#: conn/ssl.c:977
 msgid "roas"
 msgstr ""
 
-#: conn/ssl.c:982
+#: conn/ssl.c:981
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "отхвърляне(r), еднократно приемане(o), приемане винаги(a)"
 
-#: conn/ssl.c:984 conn/ssl_gnutls.c:702
+#: conn/ssl.c:983 conn/ssl_gnutls.c:702
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "отхвърляне(r), еднократно приемане(o), приемане винаги(a)"
 
-#: conn/ssl.c:989
+#: conn/ssl.c:988
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "отхвърляне(r), еднократно приемане(o)"
 
-#: conn/ssl.c:991 conn/ssl_gnutls.c:711
+#: conn/ssl.c:990 conn/ssl_gnutls.c:711
 msgid "(r)eject, accept (o)nce"
 msgstr "отхвърляне(r), еднократно приемане(o)"
 
-#: conn/ssl.c:995 conn/ssl_gnutls.c:720 ncrypt/crypt_gpgme.c:4777
+#: conn/ssl.c:994 conn/ssl_gnutls.c:720 ncrypt/crypt_gpgme.c:4777
 #: ncrypt/pgpkey.c:667 ncrypt/smime.c:551
 msgid "Exit  "
 msgstr "Изход"
 
-#: conn/ssl.c:1030 conn/ssl_gnutls.c:773
+#: conn/ssl.c:1029 conn/ssl_gnutls.c:773
 msgid "Warning: Couldn't save certificate"
 msgstr "Предупреждение: Сертификатът не може да бъде запазен"
 
-#: conn/ssl.c:1034 conn/ssl_gnutls.c:777
+#: conn/ssl.c:1033 conn/ssl_gnutls.c:777
 msgid "Certificate saved"
 msgstr "Сертификатът е записан"
 
-#: conn/ssl.c:1148
+#: conn/ssl.c:1147
 #, fuzzy, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Сертификатът е записан"
@@ -1754,15 +1788,15 @@ msgstr "Сертификатът е записан"
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
-#: conn/ssl.c:1229 conn/ssl_gnutls.c:1105
+#: conn/ssl.c:1228 conn/ssl_gnutls.c:1105
 msgid "Warning: unable to set TLS SNI host name"
 msgstr ""
 
-#: conn/ssl.c:1240
+#: conn/ssl.c:1239
 msgid "I/O error"
 msgstr "входно-изходна грешка"
 
-#: conn/ssl.c:1249
+#: conn/ssl.c:1248
 #, c-format
 msgid "SSL failed: %s"
 msgstr "Неуспешен SSL: %s"
@@ -1770,12 +1804,12 @@ msgstr "Неуспешен SSL: %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/ssl.c:1285
+#: conn/ssl.c:1284
 #, fuzzy
 msgid "Unable to create SSL context"
 msgstr "Грешка: не може да бъде стартиран дъщерен OpenSSL процес!"
 
-#: conn/ssl.c:1338
+#: conn/ssl.c:1337
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr ""
 
@@ -2424,30 +2458,30 @@ msgstr "Неуспешна GSSAPI идентификация"
 msgid "LOGIN disabled on this server"
 msgstr "LOGIN е изключен на този сървър"
 
-#: imap/auth_login.c:61 imap/auth_plain.c:57 pop/pop_auth.c:288
+#: imap/auth_login.c:61 imap/auth_plain.c:57 pop/pop_auth.c:289
 msgid "Logging in..."
 msgstr "Включване..."
 
-#: imap/auth_login.c:79 imap/auth_plain.c:97 pop/pop_auth.c:329
+#: imap/auth_login.c:79 imap/auth_plain.c:97 pop/pop_auth.c:330
 msgid "Login failed"
 msgstr "Неуспешно включване"
 
-#: imap/auth_oauth.c:64 pop/pop_auth.c:346 smtp.c:524
+#: imap/auth_oauth.c:65 pop/pop_auth.c:347 smtp.c:549
 #, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
 msgstr "Идентифициране (SASL)..."
 
-#: imap/auth_oauth.c:96
+#: imap/auth_oauth.c:97
 #, fuzzy
 msgid "OAUTHBEARER authentication failed"
 msgstr "Неуспешна OAUTHBEARER идентификация"
 
-#: imap/auth_sasl.c:128 nntp/nntp.c:608 nntp/nntp.c:673 smtp.c:443
+#: imap/auth_sasl.c:128 nntp/nntp.c:608 nntp/nntp.c:673 smtp.c:468
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Идентифициране (%s)..."
 
-#: imap/auth_sasl.c:259 pop/pop_auth.c:200 smtp.c:584 smtp.c:646
+#: imap/auth_sasl.c:259 pop/pop_auth.c:201 smtp.c:609 smtp.c:671
 msgid "SASL authentication failed"
 msgstr "Неуспешна SASL идентификация"
 
@@ -2531,15 +2565,15 @@ msgstr "Неуспешен SSL: %s"
 msgid "Closing connection to %s..."
 msgstr "Затваряне на връзката към %s..."
 
-#: imap/imap.c:888 nntp/nntp.c:1891 pop/pop_lib.c:325 smtp.c:687
+#: imap/imap.c:888 nntp/nntp.c:1891 pop/pop_lib.c:350 smtp.c:712
 msgid "Secure connection with TLS?"
 msgstr "Желаете ли да установите сигурна връзка с TLS?"
 
-#: imap/imap.c:901 nntp/nntp.c:1912 pop/pop_lib.c:344 smtp.c:702
+#: imap/imap.c:901 nntp/nntp.c:1912 pop/pop_lib.c:369 smtp.c:727
 msgid "Could not negotiate TLS connection"
 msgstr "Не може да бъде установена TLS връзка"
 
-#: imap/imap.c:916 pop/pop_lib.c:361
+#: imap/imap.c:916 pop/pop_lib.c:386
 msgid "Encrypted connection unavailable"
 msgstr ""
 
@@ -2560,7 +2594,7 @@ msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Копиране на %d съобщения в %s..."
 msgstr[1] "Копиране на %d съобщения в %s..."
 
-#: imap/imap.c:1612 imap/imap.c:2256 imap/message.c:1713 muttlib.c:1503
+#: imap/imap.c:1612 imap/imap.c:2254 imap/message.c:1713 muttlib.c:1503
 #, c-format
 msgid "Create %s?"
 msgstr "Желаете ли да създадете %s?"
@@ -2601,20 +2635,20 @@ msgstr "Премахване на съобщенията от сървъра..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbo: неуспешен EXPUNGE"
 
-#: imap/imap.c:2060 nntp/nntp.c:2488
+#: imap/imap.c:2058 nntp/nntp.c:2488
 #, c-format
 msgid "Selecting %s..."
 msgstr "Избиране на %s..."
 
-#: imap/imap.c:2223
+#: imap/imap.c:2221
 msgid "Error opening mailbox"
 msgstr "Грешка при отваряне на пощенската кутия"
 
-#: imap/imap.c:2369
+#: imap/imap.c:2367
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2413
+#: imap/imap.c:2411
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Невалиден   "
@@ -2625,7 +2659,7 @@ msgid "Abort download and close mailbox?"
 msgstr ""
 
 #: imap/message.c:554 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
-#: mutt/string.c:1178 mx.c:1195
+#: mutt/string.c:1201 mx.c:1195
 msgid "Out of memory"
 msgstr "Недостатъчно памет"
 
@@ -2661,15 +2695,15 @@ msgstr "Зареждане на писмо на сървъра ..."
 msgid "Copying message %d to %s..."
 msgstr "Копиране на %d-то съобщение в %s..."
 
-#: imap/message.c:1908 imap/message.c:1973 nntp/nntp.c:2739 pop/pop.c:1110
+#: imap/message.c:1908 imap/message.c:1973 nntp/nntp.c:2739 pop/pop.c:1105
 msgid "Fetching message..."
 msgstr "Изтегляне на писмо..."
 
-#: imap/message.c:1959 pop/pop.c:1106
+#: imap/message.c:1959 pop/pop.c:1101
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Невалиден индекс на писмо. Опитайте да отворите отново пощенската кутия."
 
-#: imap/util.c:772
+#: imap/util.c:796
 msgid "Continue?"
 msgstr "Желаете ли да продължите?"
 
@@ -3266,7 +3300,7 @@ msgid "md_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): грешка при поставянето на марка за време на файла"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1730 mbox/mbox.c:1276 mx.c:459 notmuch/mutt_notmuch.c:2364
+#: maildir/shared.c:1734 mbox/mbox.c:1276 mx.c:459 notmuch/mutt_notmuch.c:2364
 #, c-format
 msgid "Writing %s..."
 msgstr "Запис на %s..."
@@ -3547,7 +3581,7 @@ msgstr "Debugging на ниво %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "Debugging на ниво %d.\n"
 
-#: mutt/path.c:401
+#: mutt/path.c:420
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Грешка при свързване със сървъра: %s"
@@ -3629,34 +3663,6 @@ msgstr "Желаете ли да добавите писмата към %s?"
 #, fuzzy
 msgid "Can't save message to news server"
 msgstr "Редактирането на писмо на POP сървър не е възможно"
-
-#. L10N: Example: Username at myhost.com
-#: mutt_account.c:190
-#, c-format
-msgid "Username at %s: "
-msgstr "Потребителско име на %s: "
-
-#: mutt_account.c:272
-#, c-format
-msgid "Password for %s@%s: "
-msgstr "Парола за %s@%s: "
-
-#. L10N: You will see this error message if (1) you have "oauthbearer" in
-#. one of your $*_authenticators and (2) you do not have the corresponding
-#. $*_oauth_refresh_command defined. So the message does not mean "None of
-#. your $*_oauth_refresh_command's are defined."
-#: mutt_account.c:340
-#, fuzzy
-msgid "No OAUTH refresh command defined"
-msgstr "Команда за запитване не е дефинирана"
-
-#: mutt_account.c:347
-msgid "Unable to run refresh command"
-msgstr ""
-
-#: mutt_account.c:357
-msgid "Command returned empty string"
-msgstr ""
 
 #: mutt_attach.c:142 mutt_attach.c:276 mutt_attach.c:488 mutt_attach.c:1087
 msgid "Can't match 'nametemplate', continue?"
@@ -3754,7 +3760,7 @@ msgstr ""
 msgid "Couldn't source lua source: %s"
 msgstr "Невъзможно заключване на %s\n"
 
-#: mutt_mailbox.c:214
+#: mutt_mailbox.c:241
 msgid "New mail in "
 msgstr "Нови писма в "
 
@@ -5020,20 +5026,20 @@ msgstr ""
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr ""
 
-#: nntp/newsrc.c:637
+#: nntp/newsrc.c:639
 msgid "Loading list of groups from cache..."
 msgstr ""
 
-#: nntp/newsrc.c:1002
+#: nntp/newsrc.c:1023
 msgid "No news server defined"
 msgstr ""
 
-#: nntp/newsrc.c:1017
+#: nntp/newsrc.c:1041
 #, fuzzy, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s не е валидна POP пътека"
 
-#: nntp/nntp.c:238 nntp/nntp.c:779 pop/pop.c:742 pop/pop_lib.c:399
+#: nntp/nntp.c:238 nntp/nntp.c:779 pop/pop.c:742 pop/pop_lib.c:424
 msgid "Server closed connection"
 msgstr "Сървърът затвори връзката"
 
@@ -5041,7 +5047,7 @@ msgstr "Сървърът затвори връзката"
 msgid "Server doesn't support reader mode"
 msgstr ""
 
-#: nntp/nntp.c:578 pop/pop_auth.c:504 smtp.c:650
+#: nntp/nntp.c:578 pop/pop_auth.c:505 smtp.c:675
 msgid "No authenticators available"
 msgstr "Няма налични идентификатори."
 
@@ -5060,7 +5066,7 @@ msgstr "Връзката с %s е затворена"
 msgid "Fetching list of articles..."
 msgstr "Изтегляне на списък с писмата..."
 
-#: nntp/nntp.c:1551 nntp/nntp.c:2140 pop/pop.c:614 pop/pop.c:910
+#: nntp/nntp.c:1551 nntp/nntp.c:2140 pop/pop.c:614 pop/pop.c:905
 msgid "Checking for new messages..."
 msgstr "Проверка за нови писма..."
 
@@ -6464,7 +6470,7 @@ msgstr "Търсенето достигна до началото, без да �
 msgid "Search interrupted"
 msgstr "Търсенето е прекъснато"
 
-#: pop/pop.c:216 pop/pop_lib.c:234
+#: pop/pop.c:216 pop/pop_lib.c:259
 msgid "Command TOP is not supported by server"
 msgstr "Сървърът не поддържа командата TOP"
 
@@ -6472,7 +6478,7 @@ msgstr "Сървърът не поддържа командата TOP"
 msgid "Can't write header to temporary file"
 msgstr "Грешка при запис на заглавната част на писмото във временен файл"
 
-#: pop/pop.c:420 pop/pop_lib.c:236
+#: pop/pop.c:420 pop/pop_lib.c:261
 msgid "Command UIDL is not supported by server"
 msgstr "Сървърът не поддържа командата UIDL"
 
@@ -6487,7 +6493,7 @@ msgstr[1] "Невалиден индекс на писмо. Опитайте д�
 msgid "POP host is not defined"
 msgstr "POP хостът не е дефиниран"
 
-#: pop/pop.c:596 pop/pop.c:825
+#: pop/pop.c:596 pop/pop.c:790 pop/pop.c:820
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s не е валидна POP пътека"
@@ -6520,67 +6526,67 @@ msgid_plural "%s [%d of %d messages read]"
 msgstr[0] "%s [%d от %d писма са прочетени]"
 msgstr[1] "%s [%d от %d писма са прочетени]"
 
-#: pop/pop.c:876
+#: pop/pop.c:871
 msgid "Fetching list of messages..."
 msgstr "Изтегляне на списък с писмата..."
 
-#: pop/pop.c:959
+#: pop/pop.c:954
 #, fuzzy
 msgid "Marking messages deleted..."
 msgstr "Маркиране на %d съобщения за изтриване..."
 
-#: pop/pop.c:1150
+#: pop/pop.c:1145
 msgid "Can't write message to temporary file"
 msgstr "Грешка при запис на писмото във временен файл"
 
-#: pop/pop_auth.c:103
+#: pop/pop_auth.c:104
 msgid "Authenticating (SASL)..."
 msgstr "Идентифициране (SASL)..."
 
-#: pop/pop_auth.c:245
+#: pop/pop_auth.c:246
 msgid "POP timestamp is invalid"
 msgstr ""
 
-#: pop/pop_auth.c:249
+#: pop/pop_auth.c:250
 msgid "Authenticating (APOP)..."
 msgstr "Идентифициране (APOP)..."
 
-#: pop/pop_auth.c:269
+#: pop/pop_auth.c:270
 msgid "APOP authentication failed"
 msgstr "Неуспешна APOP идентификация"
 
-#: pop/pop_auth.c:309
+#: pop/pop_auth.c:310
 msgid "Command USER is not supported by server"
 msgstr "Сървърът не поддържа командата USER"
 
-#: pop/pop_auth.c:386
+#: pop/pop_auth.c:387
 #, fuzzy
 msgid "Authentication failed"
 msgstr "Неуспешна SASL идентификация"
 
-#: pop/pop_lib.c:78
+#: pop/pop_lib.c:103
 #, fuzzy, c-format
 msgid "Invalid POP URL: %s"
 msgstr "Невалиден   "
 
-#: pop/pop_lib.c:232
+#: pop/pop_lib.c:257
 msgid "Unable to leave messages on server"
 msgstr "Оставянето на писмата на сървъра е невъзможно"
 
-#: pop/pop_lib.c:275
+#: pop/pop_lib.c:300
 #, c-format
 msgid "Error connecting to server: %s"
 msgstr "Грешка при свързване със сървъра: %s"
 
-#: pop/pop_lib.c:415
+#: pop/pop_lib.c:440
 msgid "Closing connection to POP server..."
 msgstr "Затваряне на връзката към POP сървър..."
 
-#: pop/pop_lib.c:606
+#: pop/pop_lib.c:631
 msgid "Verifying message indexes..."
 msgstr "Потвърждаване индексите на писмата..."
 
-#: pop/pop_lib.c:629
+#: pop/pop_lib.c:654
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "Връзката пропадна. Желаете ли да се включите отново към POP сървъра?"
 
@@ -6988,7 +6994,7 @@ msgstr "променя кодирането на приложението"
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send.c:2570 smtp.c:227
+#: send.c:2570 smtp.c:230
 msgid "Sending message..."
 msgstr "Изпращане на писмото..."
 
@@ -7050,53 +7056,53 @@ msgstr "Изпращащ процес:"
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Лош IDN %s докато формата за повторно изпращане беше подготвяна"
 
-#: smtp.c:165
+#: smtp.c:168
 #, fuzzy, c-format
 msgid "SMTP session failed: %s"
 msgstr "Неуспешен SSL: %s"
 
-#: smtp.c:222
+#: smtp.c:225
 #, fuzzy, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "Неуспешен SSL: %s"
 
-#: smtp.c:339
+#: smtp.c:364
 #, fuzzy, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "Невалиден   "
 
-#: smtp.c:618
+#: smtp.c:643
 #, c-format
 msgid "SMTP authentication method %s requires SASL"
 msgstr ""
 
-#: smtp.c:625
+#: smtp.c:650
 #, fuzzy, c-format
 msgid "%s authentication failed, trying next method"
 msgstr "Неуспешна SASL идентификация."
 
-#: smtp.c:636
+#: smtp.c:661
 #, fuzzy
 msgid "SMTP authentication requires SASL"
 msgstr "Неуспешна GSSAPI идентификация"
 
-#: smtp.c:717
+#: smtp.c:742
 msgid "SMTP server does not support authentication"
 msgstr ""
 
-#: smtp.c:756
+#: smtp.c:781
 msgid "No from address given"
 msgstr ""
 
-#: smtp.c:821
+#: smtp.c:846
 msgid "SMTP session failed: read error"
 msgstr ""
 
-#: smtp.c:823
+#: smtp.c:848
 msgid "SMTP session failed: write error"
 msgstr ""
 
-#: smtp.c:825
+#: smtp.c:850
 msgid "Invalid server response"
 msgstr ""
 
