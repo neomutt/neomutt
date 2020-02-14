@@ -804,7 +804,7 @@ struct ConfigDef MuttVars[] = {
   ** you may \fIunset\fP this setting.
   ** (Crypto only)
   */
-  { "crypt_use_gpgme", DT_BOOL, &C_CryptUseGpgme, false },
+  { "crypt_use_gpgme", DT_BOOL, &C_CryptUseGpgme, true },
   /*
   ** .pp
   ** This variable controls the use of the GPGME-enabled crypto backends.
