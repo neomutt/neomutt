@@ -82,6 +82,11 @@ int mutt_account_getlogin(struct ConnAccount *cac)
     return -1;
 
   const char *login = cac->get_field(MUTT_CA_LOGIN);
+  if (!login && (mutt_account_getuser(cac) == 0))
+  {
+    login = cac->user;
+  }
+
   if (!login)
   {
     mutt_debug(LL_DEBUG1, "Couldn't get user info\n");
