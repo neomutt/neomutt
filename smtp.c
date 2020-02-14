@@ -365,6 +365,15 @@ static int smtp_fill_account(struct ConnAccount *cac)
     return -1;
   }
 
+  // If we set the user from the url, we also have to set the login now,
+  // because later attempts will only try to read from C_SmtpUser via
+  // `smpt_get_field` which may not be set.
+  if ((cac->flags & MUTT_ACCT_USER) && !(cac->flags & MUTT_ACCT_LOGIN))
+  {
+    mutt_str_strfcpy(cac->login, cac->user, sizeof(cac->login));
+    cac->flags |= MUTT_ACCT_LOGIN;
+  }
+
   if (url->scheme == U_SMTPS)
     cac->flags |= MUTT_ACCT_SSL;
 
