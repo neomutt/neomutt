@@ -109,34 +109,6 @@ typedef uint8_t CliFlags;         ///< Flags for command line options, e.g. #MUT
 // clang-format on
 
 /**
- * reset_tilde - Temporary measure
- * @param cs Config Set
- */
-static void reset_tilde(struct ConfigSet *cs)
-{
-  static const char *names[] = {
-    "alias_file", "autocrypt_dir", "certificate_file",
-    "debug_file", "folder",        "history_file",
-    "mbox",       "newsrc",        "news_cache_dir",
-    "postponed",  "record",        "signature",
-  };
-
-  struct Buffer value = mutt_buffer_make(256);
-  for (size_t i = 0; i < mutt_array_size(names); i++)
-  {
-    struct HashElem *he = cs_get_elem(cs, names[i]);
-    if (!he)
-      continue;
-    mutt_buffer_reset(&value);
-    cs_he_initial_get(cs, he, &value);
-    mutt_buffer_expand_path_regex(&value, false);
-    cs_he_initial_set(cs, he, value.data, NULL);
-    cs_he_reset(cs, he, NULL);
-  }
-  mutt_buffer_dealloc(&value);
-}
-
-/**
  * mutt_exit - Leave NeoMutt NOW
  * @param code Value to return to the calling environment
  */
@@ -299,9 +271,6 @@ static void init_locale(void)
  */
 static bool get_user_info(struct ConfigSet *cs)
 {
-  mutt_str_replace(&Username, mutt_str_getenv("USER"));
-  mutt_str_replace(&HomeDir, mutt_str_getenv("HOME"));
-
   const char *shell = mutt_str_getenv("SHELL");
   if (shell)
     cs_str_initial_set(cs, "shell", shell, NULL);
@@ -539,6 +508,9 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST04: neomutt -v
   }
 
+  mutt_str_replace(&Username, mutt_str_getenv("USER"));
+  mutt_str_replace(&HomeDir, mutt_str_getenv("HOME"));
+
   cs = init_config(500);
   if (!cs)
     goto main_curses;
@@ -555,8 +527,6 @@ int main(int argc, char *argv[], char *envp[])
     test_parse_set();
     goto main_ok;
   }
-
-  reset_tilde(cs);
 
   if (dfile)
   {
