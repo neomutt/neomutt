@@ -98,6 +98,8 @@ struct Keymap *km_find_func(enum MenuType menu, int func);
 void km_init(void);
 void km_error_key(enum MenuType menu);
 void mutt_what_key(void);
+void mutt_init_abort_key(void);
+int mutt_abort_key_config_observer(struct NotifyCallback *nc);
 
 enum CommandResult km_bind(char *s, enum MenuType menu, int op, char *macro, char *desc);
 int km_dokey(enum MenuType menu);
@@ -105,6 +107,7 @@ int km_dokey(enum MenuType menu);
 extern struct Keymap *Keymaps[]; ///< Array of Keymap keybindings, one for each Menu
 
 extern int LastKey; ///< Last real key pressed, recorded by dokey()
+extern keycode_t AbortKey; ///< key to abort edits etc, normally Ctrl-G
 
 extern const struct Mapping Menus[];
 

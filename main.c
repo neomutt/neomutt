@@ -604,6 +604,8 @@ int main(int argc, char *argv[], char *envp[])
   if (rc2 != 0)
     goto main_curses;
 
+  mutt_init_abort_key();
+
   /* The command line overrides the config */
   if (dlevel)
     cs_str_reset(cs, "debug_level", NULL);
@@ -742,6 +744,7 @@ int main(int argc, char *argv[], char *envp[])
   notify_observer_add(NeoMutt->notify, mutt_log_observer, NULL);
   notify_observer_add(NeoMutt->notify, mutt_menu_config_observer, NULL);
   notify_observer_add(NeoMutt->notify, mutt_reply_observer, NULL);
+  notify_observer_add(NeoMutt->notify, mutt_abort_key_config_observer, NULL);
   if (Colors)
     notify_observer_add(Colors->notify, mutt_menu_color_observer, NULL);
 

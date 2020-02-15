@@ -143,7 +143,8 @@ static struct Mapping KeyNames[] = {
   { NULL, 0 },
 };
 
-int LastKey; ///< contains the last key the user pressed
+int LastKey;        ///< contains the last key the user pressed
+keycode_t AbortKey; ///< code of key to abort prompts, normally Ctrl-G
 
 struct Keymap *Keymaps[MENU_MAX];
 
@@ -814,6 +815,48 @@ static const char *km_keyname(int c)
   else
     snprintf(buf, sizeof(buf), "\\x%hx", (unsigned short) c);
   return buf;
+}
+
+/**
+ * mutt_init_abort_key - Parse the abort_key config string
+ *
+ * Parse the string into C_AbortKeyStr and put the keycode into AbortKey.
+ */
+void mutt_init_abort_key(void)
+{
+  keycode_t buf[2];
+  size_t len = parsekeys(C_AbortKeyStr, buf, mutt_array_size(buf));
+  if (len == 0)
+  {
+    mutt_error(_("Abort key is not set, defaulting to Ctrl-G"));
+    AbortKey = ctrl('G');
+    return;
+  }
+  if (len > 1)
+  {
+    mutt_warning(
+        _("Specified abort key sequence (%s) will be truncated to first key"), C_AbortKeyStr);
+  }
+  AbortKey = buf[0];
+}
+
+/**
+ * mutt_abort_key_config_observer - Listen for abort_key config changes - Implements ::observer_t()
+ */
+int mutt_abort_key_config_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data)
+    return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+
+  struct EventConfig *ec = nc->event_data;
+
+  if (mutt_str_strcmp(ec->name, "abort_key") != 0)
+    return 0;
+
+  mutt_init_abort_key();
+  return 0;
 }
 
 /**
@@ -1580,15 +1623,16 @@ void mutt_what_key(void)
 {
   int ch;
 
-  mutt_window_mvprintw(MuttMessageWindow, 0, 0, _("Enter keys (^G to abort): "));
+  mutt_window_mvprintw(MuttMessageWindow, 0, 0, _("Enter keys (%s to abort): "),
+                       km_keyname(AbortKey));
   do
   {
     ch = getch();
-    if ((ch != ERR) && (ch != ctrl('G')))
+    if ((ch != ERR) && (ch != AbortKey))
     {
       mutt_message(_("Char = %s, Octal = %o, Decimal = %d"), km_keyname(ch), ch, ch);
     }
-  } while (ch != ERR && ch != ctrl('G'));
+  } while (ch != ERR && ch != AbortKey);
 
   mutt_flushinp();
   mutt_clear_error();
