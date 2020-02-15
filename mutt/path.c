@@ -157,16 +157,17 @@ bool mutt_path_tidy_dotdot(char *buf)
 /**
  * mutt_path_tidy - Remove unnecessary parts of a path
  * @param[in,out] buf Path to modify
+ * @param[in]     is_dir Is the path a directory?
  * @retval true Success
  *
  * Remove unnecessary dots and slashes from a path
  */
-bool mutt_path_tidy(char *buf)
+bool mutt_path_tidy(char *buf, bool is_dir)
 {
   if (!buf || (buf[0] != '/'))
     return false;
 
-  if (!mutt_path_tidy_slash(buf, true))
+  if (!mutt_path_tidy_slash(buf, is_dir))
     return false;
 
   return mutt_path_tidy_dotdot(buf);
@@ -174,19 +175,20 @@ bool mutt_path_tidy(char *buf)
 
 /**
  * mutt_path_pretty - Tidy a filesystem path
- * @param buf    Path to modify
- * @param buflen Length of the buffer
+ * @param buf     Path to modify
+ * @param buflen  Length of the buffer
  * @param homedir Home directory for '~' substitution
+ * @param is_dir  Is the path a directory?
  * @retval true Success
  *
  * Tidy a path and replace a home directory with '~'
  */
-bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir)
+bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir, bool is_dir)
 {
   if (!buf)
     return false;
 
-  mutt_path_tidy(buf);
+  mutt_path_tidy(buf, is_dir);
 
   size_t len = mutt_str_startswith(buf, homedir, CASE_MATCH);
   if (len == 0)
@@ -275,11 +277,12 @@ bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir)
  * @param buf     Path to modify
  * @param buflen  Length of the buffer
  * @param homedir Home directory for '~' substitution
+ * @param is_dir  Is the path a directory?
  * @retval true Success
  *
  * Remove unnecessary dots and slashes from a path and expand '~'.
  */
-bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
+bool mutt_path_canon(char *buf, size_t buflen, const char *homedir, bool is_dir)
 {
   if (!buf)
     return false;
@@ -312,7 +315,7 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
     mutt_str_strfcpy(buf, result, buflen);
   }
 
-  if (!mutt_path_tidy(buf))
+  if (!mutt_path_tidy(buf, is_dir))
     return false;
 
   return true;

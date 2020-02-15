@@ -1435,7 +1435,7 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
 
   if (ops->path_canon(buf, buflen) < 0)
   {
-    mutt_path_canon(buf, buflen, HomeDir);
+    mutt_path_canon(buf, buflen, HomeDir, true);
   }
 
   return 0;

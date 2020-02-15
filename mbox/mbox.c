@@ -1721,7 +1721,7 @@ static int mbox_path_canon(char *buf, size_t buflen)
   if (!buf)
     return -1;
 
-  mutt_path_canon(buf, buflen, HomeDir);
+  mutt_path_canon(buf, buflen, HomeDir, false);
   return 0;
 }
 
@@ -1736,7 +1736,7 @@ static int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
   if (mutt_path_abbr_folder(buf, buflen, folder))
     return 0;
 
-  if (mutt_path_pretty(buf, buflen, HomeDir))
+  if (mutt_path_pretty(buf, buflen, HomeDir, false))
     return 0;
 
   return -1;
@@ -1754,7 +1754,7 @@ static int mbox_path_parent(char *buf, size_t buflen)
     return 0;
 
   if (buf[0] == '~')
-    mutt_path_canon(buf, buflen, HomeDir);
+    mutt_path_canon(buf, buflen, HomeDir, false);
 
   if (mutt_path_parent(buf, buflen))
     return 0;

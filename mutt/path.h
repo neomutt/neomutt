@@ -30,15 +30,15 @@ struct Buffer;
 
 bool        mutt_path_abbr_folder(char *buf, size_t buflen, const char *folder);
 const char *mutt_path_basename(const char *f);
-bool        mutt_path_canon(char *buf, size_t buflen, const char *homedir);
+bool        mutt_path_canon(char *buf, size_t buflen, const char *homedir, bool is_dir);
 char *      mutt_path_concat(char *d, const char *dir, const char *fname, size_t l);
 char *      mutt_path_dirname(const char *path);
 char *      mutt_path_escape(const char *src);
 const char *mutt_path_getcwd(struct Buffer *cwd);
 bool        mutt_path_parent(char *buf, size_t buflen);
-bool        mutt_path_pretty(char *buf, size_t buflen, const char *homedir);
+bool        mutt_path_pretty(char *buf, size_t buflen, const char *homedir, bool is_dir);
 size_t      mutt_path_realpath(char *buf);
-bool        mutt_path_tidy(char *buf);
+bool        mutt_path_tidy(char *buf, bool is_dir);
 bool        mutt_path_tidy_dotdot(char *buf);
 bool        mutt_path_tidy_slash(char *buf, bool is_dir);
 bool        mutt_path_tilde(char *buf, size_t buflen, const char *homedir);
