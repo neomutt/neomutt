@@ -1564,8 +1564,7 @@ struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
   struct Url *url_p = NULL;
   struct Url *url_a = NULL;
 
-  const bool use_url = (a->magic == MUTT_NNTP) || (a->magic == MUTT_IMAP) ||
-                       (a->magic == MUTT_NOTMUCH) || (a->magic == MUTT_POP);
+  const bool use_url = (a->magic == MUTT_IMAP);
   if (use_url)
   {
     url_p = url_parse(path);
@@ -1575,8 +1574,12 @@ struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
 
   STAILQ_FOREACH(np, &a->mailboxes, entries)
   {
-    if (!use_url && (mutt_str_strcmp(np->mailbox->realpath, path) == 0))
-      return np->mailbox;
+    if (!use_url)
+    {
+      if (mutt_str_strcmp(np->mailbox->realpath, path) == 0)
+        return np->mailbox;
+      continue;
+    }
 
     url_free(&url_a);
     url_a = url_parse(np->mailbox->realpath);
