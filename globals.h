@@ -93,6 +93,7 @@ WHERE char *AutocryptDefaultKey; ///< Autocrypt default key id (used for postpon
 WHERE struct Address *C_EnvelopeFromAddress; ///< Config: Manually set the sender for outgoing messages
 WHERE struct Address *C_From;                ///< Config: Default 'From' address to use, if isn't otherwise set
 
+WHERE char *C_AbortKeyStr;                   ///< Config: String representation of key to abort prompts
 WHERE char *C_AliasFile;                     ///< Config: Save new aliases to this file
 WHERE char *C_Attribution;                   ///< Config: Message to start a reply, "On DATE, PERSON wrote:"
 WHERE char *C_AttributionLocale;             ///< Config: Locale for dates in the attribution message

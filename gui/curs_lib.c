@@ -51,6 +51,7 @@
 #include "color.h"
 #include "enter_state.h"
 #include "globals.h"
+#include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
@@ -239,7 +240,7 @@ struct KeyEvent mutt_getch(void)
 
   ret.ch = ch;
   ret.op = 0;
-  return (ch == ctrl('G')) ? err : ret;
+  return (ch == AbortKey) ? err : ret;
 }
 
 /**

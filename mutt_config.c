@@ -95,6 +95,26 @@ bool C_IgnoreLinearWhiteSpace = false;
 struct ConfigDef MuttVars[] = {
   /*++*/
 
+  { "abort_key", DT_STRING|DT_NOT_EMPTY, &C_AbortKeyStr, IP "\007" },
+  /*
+  ** .pp
+  ** Specifies the key that can be used to abort prompts.  The format is the
+  ** same as used in "bind" commands.  The default is equivalent to "\G".
+  ** Note that the specified key should not be used in other bindings, as the
+  ** abort operation has higher precedence and the binding will not have the
+  ** desired effect.
+  ** .pp
+  ** Example:
+  ** .ts
+  ** set abort_key = "<Esc>"
+  ** .te
+  ** .pp
+  ** Please note that when using <Esc> as the abort key, you may also want to
+  ** set the environment variable ESCDELAY to a low value or even 0 which will
+  ** reduce the time that ncurses waits to distinguish singular <Esc> key
+  ** presses from the start of a terminal escape sequence. The default time is
+  ** 1000 milliseconds and thus quite noticeable.
+  */
   { "abort_noattach", DT_QUAD, &C_AbortNoattach, MUTT_NO },
   /*
   ** .pp
