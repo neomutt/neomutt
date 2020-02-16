@@ -4922,7 +4922,9 @@ struct ConfigDef MuttVars[] = {
   { "indent_str",             DT_SYNONYM, NULL, IP "indent_string",            },
   { "mime_fwd",               DT_SYNONYM, NULL, IP "mime_forward",             },
   { "msg_format",             DT_SYNONYM, NULL, IP "message_format",           },
+#ifdef USE_NOTMUCH
   { "nm_default_uri",         DT_SYNONYM, NULL, IP "nm_default_url"            },
+#endif
   { "pgp_autoencrypt",        DT_SYNONYM, NULL, IP "crypt_autoencrypt",        },
   { "pgp_autosign",           DT_SYNONYM, NULL, IP "crypt_autosign",           },
   { "pgp_auto_traditional",   DT_SYNONYM, NULL, IP "pgp_replyinline",          },
