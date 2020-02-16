@@ -1010,9 +1010,16 @@ int main(int argc, char *argv[], char *envp[])
       mutt_list_free(&attach);
     }
 
-    rv = ci_send_message(sendflags, e, bodyfile, NULL, NULL);
-    /* We WANT the "Mail sent." and any possible, later error */
-    log_queue_empty();
+    if (isatty(0))
+    {
+      rv = ci_send_message(sendflags, e, bodyfile, NULL, NULL);
+      /* We WANT the "Mail sent." and any possible, later error */
+      log_queue_empty();
+    }
+    else
+    {
+      mutt_error(_("Error initializing terminal"));
+    }
     if (ErrorBufMessage)
       mutt_message("%s", ErrorBuf);
 
