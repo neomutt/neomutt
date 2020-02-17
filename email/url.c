@@ -430,3 +430,37 @@ int url_tostring(struct Url *url, char *dest, size_t len, int flags)
 
   return retval;
 }
+
+/**
+ * url_query_strings_match - Are two Url Query Lists identical?
+ * @param qs1 First Query List
+ * @param qs2 Second Query List
+ * @retval true If the Query Lists match
+ *
+ * To match, the Query Lists must:
+ * - Have the same number of entries
+ * - Be in the same order
+ * - All names match
+ * - All values match
+ */
+bool url_query_strings_match(const struct UrlQueryList *qs1, const struct UrlQueryList *qs2)
+{
+  struct UrlQuery *q1 = STAILQ_FIRST(qs1);
+  struct UrlQuery *q2 = STAILQ_FIRST(qs2);
+
+  while (q1 && q2)
+  {
+    if (mutt_str_strcmp(q1->name, q2->name) != 0)
+      return false;
+    if (mutt_str_strcmp(q1->value, q2->value) != 0)
+      return false;
+
+    q1 = STAILQ_NEXT(q1, entries);
+    q2 = STAILQ_NEXT(q2, entries);
+  }
+
+  if (q1 || q2)
+    return false;
+
+  return true;
+}

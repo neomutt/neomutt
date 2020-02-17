@@ -80,6 +80,7 @@ void           url_free        (struct Url **ptr);
 struct Url    *url_parse       (const char *src);
 int            url_pct_decode  (char *s);
 void           url_pct_encode  (char *buf, size_t buflen, const char *src);
+bool           url_query_strings_match(const struct UrlQueryList *qs1, const struct UrlQueryList *qs2);
 int            url_tobuffer    (struct Url *url, struct Buffer *dest, int flags);
 int            url_tostring    (struct Url *url, char *buf, size_t buflen, int flags);
 

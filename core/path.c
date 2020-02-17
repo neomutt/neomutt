@@ -62,3 +62,43 @@ struct Path *mutt_path_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct Path));
 }
+
+/**
+ * path_partial_match_string - Compare two strings, allowing for missing values
+ * @param str1 First string
+ * @param str2 Second string
+ * @retval true Strings match
+ *
+ * @note If both strings are present, they must be identical.
+ *       If either one of the strings is missing, that is also a match.
+ */
+bool path_partial_match_string(const char *str1, const char *str2)
+{
+  if (str1 && (str1[0] == '\0'))
+    str1 = NULL;
+  if (str2 && (str2[0] == '\0'))
+    str2 = NULL;
+  if (!str1 && !str2) // both empty
+    return true;
+  if (!str1 ^ !str2) // one is empty, but not the other
+    return true;
+  return (mutt_str_strcmp(str1, str2) == 0);
+}
+
+/**
+ * path_partial_match_number - Compare two numbers, allowing for missing values
+ * @param num1 First number
+ * @param num2 Second number
+ * @retval true Numbers match
+ *
+ * @note If both numbers are non-zero, they must be identical.
+ *       If either one of the numbers is zero, that is also a match.
+ */
+bool path_partial_match_number(int num1, int num2)
+{
+  if ((num1 == 0) && (num2 == 0)) // both zero
+    return true;
+  if ((num1 == 0) ^ (num2 == 0)) // one is zero, but not the other
+    return true;
+  return (num1 == num2);
+}
