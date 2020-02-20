@@ -417,7 +417,7 @@ bool mh_valid_message(const char *s)
 }
 
 /**
- * mh_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::check_stats
+ * mh_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
 static int mh_mbox_check_stats(struct Mailbox *m, int flags)
 {

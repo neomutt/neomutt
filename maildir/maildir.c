@@ -540,7 +540,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
 }
 
 /**
- * maildir_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats
+ * maildir_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
 static int maildir_mbox_check_stats(struct Mailbox *m, int flags)
 {

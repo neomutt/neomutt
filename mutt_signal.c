@@ -30,9 +30,9 @@
 #include <stddef.h>
 #include <errno.h>
 #include <signal.h>
-#include "debug/lib.h"
 #include "mutt/lib.h"
 #include "gui/lib.h"
+#include "debug/lib.h"
 #include "globals.h"
 #include "mutt_attach.h"
 #include "protos.h" // IWYU pragma: keep
