@@ -187,6 +187,7 @@ nntp/nntp.c
 nntp/path.c
 notmuch/mutt_notmuch.c
 notmuch/nm_db.c
+notmuch/path.c
 opcodes.h
 pager.c
 pattern.c

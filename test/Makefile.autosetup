@@ -284,6 +284,10 @@ MX_PATH_OBJS	= test/mx_path/common.o \
 		  test/mx_path/mbox.o \
 		  test/mx_path/nntp.o \
 
+@if USE_NOTMUCH
+MX_PATH_OBJS+=	  test/mx_path/notmuch.o
+@endif
+
 PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
 		  test/parameter/mutt_param_delete.o \
 		  test/parameter/mutt_param_free.o \
