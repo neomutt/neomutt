@@ -124,7 +124,7 @@ ALLOBJS+=	$(LIBNNTPOBJS)
 ###############################################################################
 # libcompress
 LIBCOMPRESS=	libcompress.a
-LIBCOMPRESSOBJS=compress/compress.o
+LIBCOMPRESSOBJS=compress/compress.o compress/path.o
 CLEANFILES+=	$(LIBCOMPRESS) $(LIBCOMPRESSOBJS)
 MUTTLIBS+=	$(LIBCOMPRESS)
 ALLOBJS+=	$(LIBCOMPRESSOBJS)
@@ -560,7 +560,9 @@ coverage: all test
 	  --directory address \
 	  --directory config \
 	  --directory email \
-	  --directory mutt
+	  --directory mutt \
+	  --directory compress \
+
 	-genhtml --output-directory lcov --frames lcov.info
 	lcov --list lcov.info
 @endif

@@ -47,6 +47,7 @@
 #include "hook.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "path.h"
 #include "protos.h"
 
 struct Email;
@@ -957,5 +958,11 @@ struct MxOps MxCompOps = {
   .path_canon       = comp_path_canon,
   .path_pretty      = comp_path_pretty,
   .path_parent      = comp_path_parent,
+  .path2_canon      = comp_path2_canon,
+  .path2_compare    = comp_path2_compare,
+  .path2_parent     = comp_path2_parent,
+  .path2_pretty     = comp_path2_pretty,
+  .path2_probe      = comp_path2_probe,
+  .path2_tidy       = comp_path2_tidy,
 };
 // clang-format on
