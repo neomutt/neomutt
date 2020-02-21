@@ -196,6 +196,7 @@ opcodes.h
 pager.c
 pattern.c
 pgpewrap.c
+pop/path.c
 pop/pop.c
 pop/pop_auth.c
 pop/pop_lib.c

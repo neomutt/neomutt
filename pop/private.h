@@ -27,11 +27,15 @@
 #include <stdbool.h>
 #include <time.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "conn/lib.h"
 
 struct Email;
 struct Mailbox;
+struct Path;
 struct Progress;
+struct stat;
+
 
 #define POP_PORT 110
 #define POP_SSL_PORT 995

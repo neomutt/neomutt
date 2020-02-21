@@ -53,6 +53,7 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "path.h"
 #include "progress.h"
 #include "bcache/lib.h"
 #include "ncrypt/lib.h"
@@ -1271,6 +1272,56 @@ static int pop_path_parent(char *buf, size_t buflen)
   return 0;
 }
 
+/**
+ * pop_ac2_is_owner - Does this Account own this Path? - Implements MxOps::ac2_is_owner()
+ */
+static int pop_ac2_is_owner(struct Account *a, const struct Path *path)
+{
+  if (a->type != MUTT_POP)
+    return -1;
+
+  struct Url *url = url_parse(path->orig);
+  struct PopAccountData *adata = a->adata;
+  struct ConnAccount *cac = &adata->conn->account;
+  int rc = -1;
+
+  if (mutt_str_strcasecmp(cac->host, url->host) != 0)
+    goto done;
+  if (!path_partial_match_string(cac->user, url->user))
+    goto done;
+  if (!path_partial_match_string(cac->pass, url->pass))
+    goto done;
+  if (!path_partial_match_number(cac->port, url->port))
+    goto done;
+
+  rc = 0;
+
+done:
+  url_free(&url);
+  return rc;
+}
+
+/**
+ * pop_path2_canon_wrapper - Canonicalise a Mailbox path - Implements MxOps::path2_canon()
+ */
+static int pop_path2_canon_wrapper(struct Path *path)
+{
+  struct Account *np = NULL;
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  {
+    if (pop_ac2_is_owner(np, path) == 0)
+      break;
+  }
+
+  if (!np)
+    return -1;
+
+  struct PopAccountData *adata = np->adata;
+  struct ConnAccount *cac = &adata->conn->account;
+
+  return pop_path2_canon(path, cac->user, cac->port);
+}
+
 // clang-format off
 /**
  * MxPopOps - POP Mailbox - Implements ::MxOps
@@ -1299,5 +1350,11 @@ struct MxOps MxPopOps = {
   .path_canon       = pop_path_canon,
   .path_pretty      = pop_path_pretty,
   .path_parent      = pop_path_parent,
+  .path2_canon      = pop_path2_canon_wrapper,
+  .path2_compare    = pop_path2_compare,
+  .path2_parent     = pop_path2_parent,
+  .path2_pretty     = pop_path2_pretty,
+  .path2_probe      = pop_path2_probe,
+  .path2_tidy       = pop_path2_tidy,
 };
 // clang-format on
