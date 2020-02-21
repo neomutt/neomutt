@@ -373,7 +373,7 @@ $(PWD)/maildir:
 ###############################################################################
 # libmbox
 LIBMBOX=	libmbox.a
-LIBMBOXOBJS=	mbox/mbox.o
+LIBMBOXOBJS=	mbox/mbox.o mbox/path.o
 CLEANFILES+=	$(LIBMBOX) $(LIBMBOXOBJS)
 ALLOBJS+=	$(LIBMBOXOBJS)
 
@@ -617,6 +617,7 @@ coverage: all test
 	  --directory compmbox \
 	  --directory imap \
 	  --directory maildir \
+	  --directory mbox \
 
 	-genhtml --output-directory lcov --frames lcov.info
 	lcov --list lcov.info

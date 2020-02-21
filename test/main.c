@@ -368,6 +368,14 @@
   NEOMUTT_TEST_ITEM(test_mutt_map_get_value)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_map_get_value_n)                                 \
                                                                                \
+  /* mbox */                                                                   \
+  NEOMUTT_TEST_ITEM(test_mbox_path2_canon)                                     \
+  NEOMUTT_TEST_ITEM(test_mbox_path2_compare)                                   \
+  NEOMUTT_TEST_ITEM(test_mbox_path2_parent)                                    \
+  NEOMUTT_TEST_ITEM(test_mbox_path2_pretty)                                    \
+  NEOMUTT_TEST_ITEM(test_mbox_path2_probe)                                     \
+  NEOMUTT_TEST_ITEM(test_mbox_path2_tidy)                                      \
+                                                                               \
   /* mbyte */                                                                  \
   NEOMUTT_TEST_ITEM(test_mutt_mb_charlen)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_mb_filter_unprintable)                           \
