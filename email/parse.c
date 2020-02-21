@@ -1409,6 +1409,14 @@ void mutt_parse_part(FILE *fp, struct Body *b)
     return;
 
   const char *bound = NULL;
+  static unsigned short recurse_level = 0;
+
+  if (recurse_level >= 100)
+  {
+    mutt_debug(LL_DEBUG1, "recurse level too deep. giving up.\n");
+    return;
+  }
+  recurse_level++;
 
   switch (b->type)
   {
@@ -1435,11 +1443,11 @@ void mutt_parse_part(FILE *fp, struct Body *b)
       else if (mutt_str_strcasecmp(b->subtype, "external-body") == 0)
         b->parts = mutt_read_mime_header(fp, 0);
       else
-        return;
+        goto bail;
       break;
 
     default:
-      return;
+      goto bail;
   }
 
   /* try to recover from parsing error */
@@ -1448,6 +1456,8 @@ void mutt_parse_part(FILE *fp, struct Body *b)
     b->type = TYPE_TEXT;
     mutt_str_replace(&b->subtype, "plain");
   }
+bail:
+  recurse_level--;
 }
 
 /**
