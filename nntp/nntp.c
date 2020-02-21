@@ -56,6 +56,7 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "path.h"
 #include "progress.h"
 #include "sort.h"
 #include "hcache/lib.h"
@@ -2876,6 +2877,92 @@ static int nntp_path_parent(char *buf, size_t buflen)
   return 0;
 }
 
+/**
+ * nntp_ac2_is_owner - Does this Account own this Path? - Implements MxOps::ac2_is_owner()
+ */
+static int nntp_ac2_is_owner(struct Account *a, const struct Path *path)
+{
+  if (a->magic != MUTT_NNTP)
+    return -1;
+
+  struct Url *url = url_parse(path->orig);
+  struct NntpAccountData *adata = a->adata;
+  struct ConnAccount *cac = &adata->conn->account;
+  int rc = -1;
+
+  if (mutt_str_strcasecmp(cac->host, url->host) != 0)
+    goto done;
+  if (!path_partial_match_string(cac->user, url->user))
+    goto done;
+  if (!path_partial_match_string(cac->pass, url->pass))
+    goto done;
+  if (!path_partial_match_number(cac->port, url->port))
+    goto done;
+
+  rc = 0;
+
+done:
+  url_free(&url);
+  return rc;
+}
+
+/**
+ * nntp_path2_canon_wrapper - Canonicalise a Mailbox path - Implements MxOps::path2_canon()
+ */
+static int nntp_path2_canon_wrapper(struct Path *path)
+{
+  struct Account *np = NULL;
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  {
+    if (nntp_ac2_is_owner(np, path) == 0)
+      break;
+  }
+
+  if (!np)
+    return -1;
+
+  struct NntpAccountData *adata = np->adata;
+  struct ConnAccount *cac = &adata->conn->account;
+
+  return nntp_path2_canon(path, cac->user, cac->port);
+}
+
+/**
+ * nntp_path2_parent_wrapper - Find the parent of a Mailbox path - Implements MxOps::path2_parent()
+ * @retval  1 Success, path is root, it has no parent
+ * @retval  0 Success, parent returned
+ * @retval -1 Error
+ */
+int nntp_path2_parent_wrapper(const struct Path *path, struct Path **parent)
+{
+  struct Path *tmp_parent = NULL;
+
+  // First generate the parent's path
+  int rc = nntp_path2_parent(path, &tmp_parent);
+  if (rc != 0)
+    return -1;
+
+  struct Account *np = NULL;
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  {
+    if (nntp_ac2_is_owner(np, path) == 0)
+      break;
+  }
+
+  if (!np)
+    return -1;
+
+  struct NntpAccountData *adata = np->adata;
+
+  // Check if new path exists
+  struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, tmp_parent->orig);
+  if (!mdata)
+    return -1;
+
+  *parent = tmp_parent;
+  return 0;
+}
+
 // clang-format off
 /**
  * MxNntpOps - NNTP Mailbox - Implements ::MxOps
@@ -2904,5 +2991,11 @@ struct MxOps MxNntpOps = {
   .path_canon       = nntp_path_canon,
   .path_pretty      = nntp_path_pretty,
   .path_parent      = nntp_path_parent,
+  .path2_canon      = nntp_path2_canon_wrapper,
+  .path2_compare    = nntp_path2_compare,
+  .path2_parent     = nntp_path2_parent_wrapper,
+  .path2_pretty     = nntp_path2_pretty,
+  .path2_probe      = nntp_path2_probe,
+  .path2_tidy       = nntp_path2_tidy,
 };
 // clang-format on

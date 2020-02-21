@@ -33,6 +33,7 @@
  * | nntp/complete.c | @subpage nntp_complete |
  * | nntp/newsrc.c   | @subpage nntp_newsrc   |
  * | nntp/nntp.c     | @subpage nntp_nntp     |
+ * | nntp/path.c     | @subpage nntp_path     |
  */
 
 #ifndef MUTT_NNTP_LIB_H
@@ -46,6 +47,7 @@
 #include "core/lib.h"
 #include "format_flags.h"
 #include "mx.h"
+#include "path.h"
 
 struct ConnAccount;
 struct stat;
