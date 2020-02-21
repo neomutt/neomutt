@@ -190,6 +190,7 @@ nntp/nntp.c
 nntp/path.c
 notmuch/db.c
 notmuch/notmuch.c
+notmuch/path.c
 opcodes.c
 opcodes.h
 pager.c

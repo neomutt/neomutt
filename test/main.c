@@ -603,6 +603,15 @@
   NEOMUTT_TEST_ITEM(test_url_tobuffer)                                         \
   NEOMUTT_TEST_ITEM(test_url_tostring)
 
+#define NOTMUCH_TEST_LIST                                                      \
+  /* notmuch */                                                                \
+  NEOMUTT_TEST_ITEM(test_nm_path2_canon)                                       \
+  NEOMUTT_TEST_ITEM(test_nm_path2_compare)                                     \
+  NEOMUTT_TEST_ITEM(test_nm_path2_parent)                                      \
+  NEOMUTT_TEST_ITEM(test_nm_path2_pretty)                                      \
+  NEOMUTT_TEST_ITEM(test_nm_path2_probe)                                       \
+  NEOMUTT_TEST_ITEM(test_nm_path2_tidy)
+
 /******************************************************************************
  * You probably don't need to touch what follows.
  *****************************************************************************/
@@ -648,6 +657,9 @@ NEOMUTT_TEST_LIST
 #ifdef HAVE_TC
   NEOMUTT_TEST_ITEM(test_store_tc)
 #endif
+#ifdef USE_NOTMUCH
+NOTMUCH_TEST_LIST
+#endif
 #undef NEOMUTT_TEST_ITEM
 
 TEST_LIST = {
@@ -691,6 +703,9 @@ NEOMUTT_TEST_ITEM(test_compress_common)
 #endif
 #ifdef HAVE_TC
   NEOMUTT_TEST_ITEM(test_store_tc)
+#endif
+#ifdef USE_NOTMUCH
+  NOTMUCH_TEST_LIST
 #endif
 #undef NEOMUTT_TEST_ITEM
   { 0 }

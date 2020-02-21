@@ -443,7 +443,7 @@ $(PWD)/nntp:
 # libnotmuch
 @if USE_NOTMUCH
 LIBNOTMUCH=	libnotmuch.a
-LIBNOTMUCHOBJS=	notmuch/notmuch.o notmuch/db.o
+LIBNOTMUCHOBJS=	notmuch/notmuch.o notmuch/db.o notmuch/path.o
 CLEANFILES+=	$(LIBNOTMUCH) $(LIBNOTMUCHOBJS)
 ALLOBJS+=	$(LIBNOTMUCHOBJS)
 
@@ -619,6 +619,7 @@ coverage: all test
 	  --directory maildir \
 	  --directory mbox \
 	  --directory nntp \
+	  --directory notmuch \
 
 	-genhtml --output-directory lcov --frames lcov.info
 	lcov --list lcov.info

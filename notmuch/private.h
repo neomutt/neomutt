@@ -20,18 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef MUTT_NOTMUCH_PRIVATE_H
+#define MUTT_NOTMUCH_PRIVATE_H
+
 #include <notmuch.h>
 #include <stdbool.h>
 #include <time.h>
 #include "core/lib.h"
 #include "progress.h"
 
-#ifndef MUTT_NOTMUCH_PRIVATE_H
-#define MUTT_NOTMUCH_PRIVATE_H
-
-#ifdef LIBNOTMUCH_CHECK_VERSION
-#undef LIBNOTMUCH_CHECK_VERSION
-#endif
+struct Path;
+struct stat;
 
 /* The definition in <notmuch.h> is broken */
 #define LIBNOTMUCH_CHECK_VERSION(major, minor, micro)                             \
@@ -40,6 +39,7 @@
    (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                        \
     LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
 
+extern const char NmUrlProtocol[];
 extern const int NmUrlProtocolLen;
 
 /**

@@ -63,15 +63,11 @@
 #include "index.h"
 #include "mutt_thread.h"
 #include "mx.h"
+#include "path.h"
 #include "progress.h"
 #include "protos.h"
 #include "hcache/lib.h"
 #include "maildir/lib.h"
-
-struct stat;
-
-const char NmUrlProtocol[] = "notmuch://";
-const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
 
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
 int C_NmDbLimit;       ///< Config: (notmuch) Default limit for Notmuch queries
@@ -2601,5 +2597,11 @@ struct MxOps MxNotmuchOps = {
   .path_canon       = nm_path_canon,
   .path_pretty      = nm_path_pretty,
   .path_parent      = nm_path_parent,
+  .path2_canon      = nm_path2_canon,
+  .path2_compare    = nm_path2_compare,
+  .path2_parent     = nm_path2_parent,
+  .path2_pretty     = nm_path2_pretty,
+  .path2_probe      = nm_path2_probe,
+  .path2_tidy       = nm_path2_tidy,
 };
 // clang-format on
