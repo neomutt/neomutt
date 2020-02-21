@@ -187,6 +187,7 @@ nntp/browse.c
 nntp/complete.c
 nntp/newsrc.c
 nntp/nntp.c
+nntp/path.c
 notmuch/db.c
 notmuch/notmuch.c
 opcodes.c

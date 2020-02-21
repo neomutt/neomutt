@@ -413,6 +413,14 @@
   NEOMUTT_TEST_ITEM(test_neomutt_mailboxlist_get_all)                          \
   NEOMUTT_TEST_ITEM(test_neomutt_new)                                          \
                                                                                \
+  /* nntp */                                                                   \
+  NEOMUTT_TEST_ITEM(test_nntp_path2_canon)                                     \
+  NEOMUTT_TEST_ITEM(test_nntp_path2_compare)                                   \
+  NEOMUTT_TEST_ITEM(test_nntp_path2_parent)                                    \
+  NEOMUTT_TEST_ITEM(test_nntp_path2_pretty)                                    \
+  NEOMUTT_TEST_ITEM(test_nntp_path2_probe)                                     \
+  NEOMUTT_TEST_ITEM(test_nntp_path2_tidy)                                      \
+                                                                               \
   /* notify */                                                                 \
   NEOMUTT_TEST_ITEM(test_notify_free)                                          \
   NEOMUTT_TEST_ITEM(test_notify_new)                                           \

@@ -429,7 +429,7 @@ $(PWD)/ncrypt:
 ###############################################################################
 # libnntp
 LIBNNTP=	libnntp.a
-LIBNNTPOBJS=	nntp/browse.o nntp/complete.o nntp/newsrc.o nntp/nntp.o
+LIBNNTPOBJS=	nntp/browse.o nntp/complete.o nntp/newsrc.o nntp/nntp.o nntp/path.o
 CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
 ALLOBJS+=	$(LIBNNTPOBJS)
 
@@ -618,6 +618,7 @@ coverage: all test
 	  --directory imap \
 	  --directory maildir \
 	  --directory mbox \
+	  --directory nntp \
 
 	-genhtml --output-directory lcov --frames lcov.info
 	lcov --list lcov.info
