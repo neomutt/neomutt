@@ -120,6 +120,7 @@ maildir/path.c
 maildir/shared.c
 main.c
 mbox/mbox.c
+mbox/path.c
 menu.c
 monitor.c
 mutt/base64.c

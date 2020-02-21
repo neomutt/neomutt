@@ -53,6 +53,7 @@
 #include "mutt_header.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "path.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
@@ -1869,6 +1870,12 @@ struct MxOps MxMboxOps = {
   .path_canon       = mbox_path_canon,
   .path_pretty      = mbox_path_pretty,
   .path_parent      = mbox_path_parent,
+  .path2_canon      = mbox_path2_canon,
+  .path2_compare    = mbox_path2_compare,
+  .path2_parent     = mbox_path2_parent,
+  .path2_pretty     = mbox_path2_pretty,
+  .path2_probe      = mbox_path2_probe,
+  .path2_tidy       = mbox_path2_tidy,
 };
 
 /**
@@ -1898,5 +1905,11 @@ struct MxOps MxMmdfOps = {
   .path_canon       = mbox_path_canon,
   .path_pretty      = mbox_path_pretty,
   .path_parent      = mbox_path_parent,
+  .path2_canon      = mbox_path2_canon,
+  .path2_compare    = mbox_path2_compare,
+  .path2_parent     = mbox_path2_parent,
+  .path2_pretty     = mbox_path2_pretty,
+  .path2_probe      = mbox_path2_probe,
+  .path2_tidy       = mbox_path2_tidy,
 };
 // clang-format on
