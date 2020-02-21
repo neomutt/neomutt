@@ -25,6 +25,7 @@
 #include "test_common.h"
 #define TEST_INIT test_init()
 #include "acutest.h"
+#include "config.h"
 
 /******************************************************************************
  * Add your test cases to this list.

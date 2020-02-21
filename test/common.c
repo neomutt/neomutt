@@ -31,19 +31,19 @@
 
 #define TEST_DIR "NEOMUTT_TEST_DIR"
 
-static const char *get_test_dir(void)
+const char *test_get_test_dir(void)
 {
   return mutt_str_getenv(TEST_DIR);
 }
 
 void test_gen_path(char *buf, size_t buflen, const char *fmt)
 {
-  snprintf(buf, buflen, NONULL(fmt), NONULL(get_test_dir()));
+  snprintf(buf, buflen, NONULL(fmt), NONULL(test_get_test_dir()));
 }
 
 void test_init(void)
 {
-  const char *path = get_test_dir();
+  const char *path = test_get_test_dir();
   bool success = false;
 
   TEST_CASE("Common setup");

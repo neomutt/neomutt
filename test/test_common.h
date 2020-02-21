@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 
+const char *test_get_test_dir(void);
 void test_gen_path(char *buf, size_t buflen, const char *fmt);
 void test_init(void);
 

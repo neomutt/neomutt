@@ -340,6 +340,8 @@ NOTIFY_OBJS	= test/notify/notify_free.o \
 		  test/notify/notify_send.o \
 		  test/notify/notify_set_parent.o
 
+MX_PATH_OBJS	= 
+
 PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
 		  test/parameter/mutt_param_delete.o \
 		  test/parameter/mutt_param_free.o \
@@ -551,7 +553,7 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/attach \
 		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \
 		  $(PWD)/test/signal $(PWD)/test/slist $(PWD)/test/store \
 		  $(PWD)/test/string $(PWD)/test/tags $(PWD)/test/thread \
-		  $(PWD)/test/url
+		  $(PWD)/test/url $(PWD)/test/mx_path
 
 TEST_OBJS	= test/main.o test/common.o \
 		  $(ACCOUNT_OBJS) \
@@ -582,6 +584,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(MBYTE_OBJS) \
 		  $(MD5_OBJS) \
 		  $(MEMORY_OBJS) \
+		  $(MX_PATH_OBJS) \
 		  $(NEOMUTT_OBJS) \
 		  $(NOTIFY_OBJS) \
 		  $(PARAMETER_OBJS) \
