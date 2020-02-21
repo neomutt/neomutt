@@ -37,6 +37,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mx.h"
+#include "path.h"
 
 struct Mailbox;
 
