@@ -182,7 +182,7 @@ ALLOBJS+=	$(LIBNOTMUCHOBJS)
 ###############################################################################
 # libmaildir
 LIBMAILDIR=	libmaildir.a
-LIBMAILDIROBJS=	maildir/maildir.o maildir/mh.o maildir/shared.o
+LIBMAILDIROBJS=	maildir/maildir.o maildir/mh.o maildir/path.o maildir/shared.o
 CLEANFILES+=	$(LIBMAILDIR) $(LIBMAILDIROBJS)
 MUTTLIBS+=	$(LIBMAILDIR)
 ALLOBJS+=	$(LIBMAILDIROBJS)
@@ -564,6 +564,7 @@ coverage: all test
 	  --directory mutt \
 	  --directory compress \
 	  --directory imap \
+	  --directory maildir \
 
 	-genhtml --output-directory lcov --frames lcov.info
 	lcov --list lcov.info

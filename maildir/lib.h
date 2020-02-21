@@ -29,6 +29,7 @@
  * | :---------------- | :----------------------- |
  * | maildir/maildir.c | @subpage maildir_maildir |
  * | maildir/mh.c      | @subpage maildir_mh      |
+ * | maildir/path.c    | @subpage maildir_path    |
  * | maildir/shared.c  | @subpage maildir_shared  |
  */
 
@@ -41,6 +42,7 @@
 #include "core/lib.h"
 #include "hcache/lib.h"
 #include "mx.h"
+#include "path.h"
 
 struct Email;
 

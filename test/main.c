@@ -420,6 +420,14 @@
   NEOMUTT_TEST_ITEM(test_imap_path2_pretty)                                    \
   NEOMUTT_TEST_ITEM(test_imap_path2_probe)                                     \
   NEOMUTT_TEST_ITEM(test_imap_path2_tidy)                                      \
+  NEOMUTT_TEST_ITEM(test_maildir_path2_canon)                                  \
+  NEOMUTT_TEST_ITEM(test_maildir_path2_compare)                                \
+  NEOMUTT_TEST_ITEM(test_maildir_path2_parent)                                 \
+  NEOMUTT_TEST_ITEM(test_mh_path2_parent)                                      \
+  NEOMUTT_TEST_ITEM(test_maildir_path2_pretty)                                 \
+  NEOMUTT_TEST_ITEM(test_maildir_path2_probe)                                  \
+  NEOMUTT_TEST_ITEM(test_mh_path2_probe)                                       \
+  NEOMUTT_TEST_ITEM(test_maildir_path2_tidy)                                   \
 
 /******************************************************************************
  * You probably don't need to touch what follows.

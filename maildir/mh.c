@@ -49,6 +49,7 @@
 #include "globals.h"
 #include "monitor.h"
 #include "mx.h"
+#include "path.h"
 
 /**
  * mhs_alloc - Allocate more memory for sequences
@@ -835,5 +836,11 @@ struct MxOps MxMhOps = {
   .path_canon       = maildir_path_canon,
   .path_pretty      = maildir_path_pretty,
   .path_parent      = maildir_path_parent,
+  .path2_canon      = maildir_path2_canon,
+  .path2_compare    = maildir_path2_compare,
+  .path2_parent     = maildir_path2_parent,
+  .path2_pretty     = maildir_path2_pretty,
+  .path2_probe      = mh_path2_probe,
+  .path2_tidy       = maildir_path2_tidy,
 };
 // clang-format on
