@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include "core/lib.h"
 #include "mx.h"
+#include "path.h"
 
 struct Slist;
 struct stat;
@@ -37,6 +38,7 @@ struct stat;
  *
  * | File           | Description       |
  * | :------------- | :---------------- |
+ * | pop/path.c     | @subpage pop_path |
  * | pop/pop_auth.c | @subpage pop_auth |
  * | pop/pop.c      | @subpage pop_pop  |
  * | pop/pop_lib.c  | @subpage pop_lib  |

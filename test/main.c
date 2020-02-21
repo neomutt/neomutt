@@ -440,6 +440,12 @@
   NEOMUTT_TEST_ITEM(test_nntp_path2_pretty)                                    \
   NEOMUTT_TEST_ITEM(test_nntp_path2_probe)                                     \
   NEOMUTT_TEST_ITEM(test_nntp_path2_tidy)                                      \
+  NEOMUTT_TEST_ITEM(test_pop_path2_canon)                                      \
+  NEOMUTT_TEST_ITEM(test_pop_path2_compare)                                    \
+  NEOMUTT_TEST_ITEM(test_pop_path2_parent)                                     \
+  NEOMUTT_TEST_ITEM(test_pop_path2_pretty)                                     \
+  NEOMUTT_TEST_ITEM(test_pop_path2_probe)                                      \
+  NEOMUTT_TEST_ITEM(test_pop_path2_tidy)
 
 #define NOTMUCH_TEST_LIST                                                      \
   NEOMUTT_TEST_ITEM(test_nm_path2_canon)                                       \
