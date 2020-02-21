@@ -54,6 +54,7 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "path.h"
 #include "pattern.h"
 #include "progress.h"
 #include "sort.h"
@@ -2584,6 +2585,86 @@ static int imap_path_parent(char *buf, size_t buflen)
   return 0;
 }
 
+/**
+ * imap_ac2_is_owner - Does this Account own this Path? - Implements MxOps::ac2_is_owner()
+ */
+static int imap_ac2_is_owner(struct Account *a, const struct Path *path)
+{
+  if (a->magic != MUTT_IMAP)
+    return -1;
+
+  struct Url *url = url_parse(path->orig);
+  struct ImapAccountData *adata = a->adata;
+  struct ConnAccount *cac = &adata->conn->account;
+  int rc = -1;
+
+  if (mutt_str_strcasecmp(cac->host, url->host) != 0)
+    goto done;
+  if (!path_partial_match_string(cac->user, url->user))
+    goto done;
+  if (!path_partial_match_string(cac->pass, url->pass))
+    goto done;
+  if (!path_partial_match_number(cac->port, url->port))
+    goto done;
+
+  rc = 0;
+
+done:
+  url_free(&url);
+  return rc;
+}
+
+/**
+ * imap_path2_canon_wrapper - Canonicalise a Mailbox path - Implements MxOps::path2_canon()
+ */
+static int imap_path2_canon_wrapper(struct Path *path)
+{
+  struct Account *np = NULL;
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  {
+    if (imap_ac2_is_owner(np, path) == 0)
+      break;
+  }
+
+  if (!np)
+    return -1;
+
+  struct ImapAccountData *adata = np->adata;
+  struct ConnAccount *cac = &adata->conn->account;
+
+  return imap_path2_canon(path, cac->user, cac->port);
+}
+
+/**
+ * imap_path2_parent_wrapper - Find the parent of a Mailbox path - Implements MxOps::path2_parent()
+ */
+static int imap_path2_parent_wrapper(const struct Path *path, struct Path **parent)
+{
+  // Find the Account, then delegate
+  struct Account *np = NULL;
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  {
+    if (imap_ac2_is_owner(np, path) == 0)
+      break;
+  }
+
+  if (!np)
+    return -1;
+
+  struct ImapAccountData *adata = np->adata;
+  struct Path *tmp_parent = NULL;
+  int rc = imap_path2_parent(path, adata->delim, &tmp_parent);
+  if (rc != 0)
+    return -1;
+
+  // Check new path exists
+  if (!imap_ac_find(np, tmp_parent->orig))
+    return -1;
+
+  *parent = tmp_parent;
+  return 0;
+}
+
 // clang-format off
 /**
  * MxImapOps - IMAP Mailbox - Implements ::MxOps
@@ -2612,5 +2693,12 @@ struct MxOps MxImapOps = {
   .path_canon       = imap_path_canon,
   .path_pretty      = imap_path_pretty,
   .path_parent      = imap_path_parent,
+  .path2_canon      = imap_path2_canon_wrapper,
+  .path2_compare    = imap_path2_compare,
+  .path2_parent     = imap_path2_parent_wrapper,
+  .path2_pretty     = imap_path2_pretty,
+  .path2_probe      = imap_path2_probe,
+  .path2_tidy       = imap_path2_tidy,
+  .ac2_is_owner     = imap_ac2_is_owner,
 };
 // clang-format on

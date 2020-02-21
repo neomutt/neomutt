@@ -279,6 +279,7 @@ MEMORY_OBJS	= test/memory/mutt_mem_calloc.o \
 
 MX_PATH_OBJS	= test/mx_path/common.o \
 		  test/mx_path/comp.o \
+		  test/mx_path/imap.o \
 
 PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
 		  test/parameter/mutt_param_delete.o \
