@@ -22,6 +22,7 @@
  */
 
 #include "acutest.h"
+#include "config.h"
 
 /******************************************************************************
  * Add your test cases to this list.

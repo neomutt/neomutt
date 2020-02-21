@@ -277,6 +277,8 @@ MEMORY_OBJS	= test/memory/mutt_mem_calloc.o \
 		  test/memory/mutt_mem_malloc.o \
 		  test/memory/mutt_mem_realloc.o
 
+MX_PATH_OBJS	= test/mx_path/common.o \
+
 PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
 		  test/parameter/mutt_param_delete.o \
 		  test/parameter/mutt_param_free.o \
@@ -432,11 +434,11 @@ BUILD_DIRS	= $(PWD)/test/address $(PWD)/test/attach $(PWD)/test/base64 \
 		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
 		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/list \
 		  $(PWD)/test/logging $(PWD)/test/mapping $(PWD)/test/mbyte \
-		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/parameter \
-		  $(PWD)/test/parse $(PWD)/test/path $(PWD)/test/pattern \
-		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \
-		  $(PWD)/test/signal $(PWD)/test/string $(PWD)/test/tags \
-		  $(PWD)/test/thread $(PWD)/test/url
+		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/mx_path \
+		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
+		  $(PWD)/test/pattern $(PWD)/test/regex $(PWD)/test/rfc2047 \
+		  $(PWD)/test/rfc2231 $(PWD)/test/signal $(PWD)/test/string \
+		  $(PWD)/test/tags $(PWD)/test/thread $(PWD)/test/url
 
 TEST_OBJS	= test/main.o \
 		  $(ADDRESS_OBJS) \
@@ -463,6 +465,7 @@ TEST_OBJS	= test/main.o \
 		  $(MBYTE_OBJS) \
 		  $(MD5_OBJS) \
 		  $(MEMORY_OBJS) \
+		  $(MX_PATH_OBJS) \
 		  $(PARAMETER_OBJS) \
 		  $(PARSE_OBJS) \
 		  $(PATH_OBJS) \
