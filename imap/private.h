@@ -32,6 +32,8 @@
 #include <time.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
+#include "conn/lib.h"
 #include "hcache/lib.h"
 
 struct Account;
@@ -39,6 +41,7 @@ struct ConnAccount;
 struct Email;
 struct Mailbox;
 struct Message;
+struct Path;
 struct Progress;
 
 #define IMAP_PORT     143  ///< Default port for IMAP

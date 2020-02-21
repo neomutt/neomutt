@@ -339,7 +339,7 @@ LIBIMAP=	libimap.a
 LIBIMAPOBJS=	imap/auth.o \
 		imap/auth_login.o imap/auth_oauth.o imap/auth_plain.o imap/browse.o \
 		imap/command.o imap/imap.o imap/message.o imap/search.o \
-		imap/utf7.o imap/util.o
+		imap/utf7.o imap/util.o imap/path.o
 @if USE_GSS
 LIBIMAPOBJS+=	imap/auth_gss.o
 @endif
@@ -615,6 +615,7 @@ coverage: all test
 	  --directory mutt \
 	  --directory store \
 	  --directory compmbox \
+	  --directory imap \
 
 	-genhtml --output-directory lcov --frames lcov.info
 	lcov --list lcov.info
