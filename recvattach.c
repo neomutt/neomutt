@@ -47,6 +47,7 @@
 #include "handler.h"
 #include "hdrline.h"
 #include "hook.h"
+#include "init.h"
 #include "keymap.h"
 #include "mailcap.h"
 #include "mutt_attach.h"

@@ -30,8 +30,8 @@
 #include <stdio.h>
 #include <zstd.h>
 #include "mutt/lib.h"
-#include "compr.h"
 #include "lib.h"
+#include "compr.h"
 
 /**
  * struct ComprZstdCtx - Private Zstd Compression Context

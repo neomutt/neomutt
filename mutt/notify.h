@@ -24,7 +24,6 @@
 #define MUTT_LIB_NOTIFY_H
 
 #include <stdbool.h>
-#include <stdint.h>
 #include "notify_type.h"
 #include "observer.h"
 

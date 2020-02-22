@@ -44,7 +44,6 @@
 #include "connection.h"
 #include "globals.h"
 #include "keymap.h"
-#include "mutt_account.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"

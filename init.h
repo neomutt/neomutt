@@ -25,11 +25,13 @@
 #define MUTT_INIT_H
 
 #include "config.h"
+#include <stddef.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include "config/lib.h"
+#include "mutt.h"
 #include "hook.h"
 #include "mutt_commands.h"
-#include "mutt.h"
 
 struct Buffer;
 struct ListHead;

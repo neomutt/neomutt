@@ -30,7 +30,6 @@
 #define MUTT_LIB_OBSERVER_H
 
 #include <stdbool.h>
-#include <stdint.h>
 #include "notify_type.h"
 #include "queue.h"
 

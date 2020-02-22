@@ -30,10 +30,12 @@
 #include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "mutt/lib.h"
 #include "subset.h"
-#include "dump.h"
 #include "set.h"
+
+struct Notify;
 
 /**
  * elem_list_sort - Sort two HashElem pointers to config

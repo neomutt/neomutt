@@ -29,10 +29,10 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include "mutt/lib.h"
 #include "dump.h"
 #include "set.h"
+#include "subset.h"
 #include "types.h"
 
 void mutt_pretty_mailbox(char *buf, size_t buflen);

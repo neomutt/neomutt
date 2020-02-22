@@ -28,16 +28,10 @@
 
 #include "config.h"
 #include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "conn/lib.h"
-#include "gui/lib.h"
-#include "mutt.h"
 #include "mutt_account.h"
-#include "globals.h"
-#include "options.h"
 
 /**
  * mutt_account_fromurl - Fill ConnAccount with information from url

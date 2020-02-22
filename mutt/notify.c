@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include "notify.h"
 #include "memory.h"
 #include "queue.h"

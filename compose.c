@@ -54,8 +54,8 @@
 #include "globals.h"
 #include "hook.h"
 #include "index.h"
+#include "init.h"
 #include "keymap.h"
-#include "main.h"
 #include "mutt_attach.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
@@ -1085,7 +1085,7 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
 /**
  * mutt_dlg_compose_observer - Listen for config changes affecting the Compose menu - Implements ::observer_t()
  */
-int mutt_dlg_compose_observer(struct NotifyCallback *nc)
+static int mutt_dlg_compose_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;

@@ -33,8 +33,11 @@
 #include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 #include <strings.h>
+#include <time.h>
 #include <unistd.h>
 #include "nntp_private.h"
 #include "mutt/lib.h"
@@ -47,7 +50,7 @@
 #include "bcache.h"
 #include "globals.h"
 #include "hook.h"
-#include "mutt_account.h"
+#include "init.h"
 #include "mutt_logging.h"
 #include "mutt_parse.h"
 #include "mutt_socket.h"
@@ -67,6 +70,8 @@
 #if defined(USE_SSL) || defined(USE_HCACHE)
 #include "mutt.h"
 #endif
+
+struct stat;
 
 /* These Config Variables are only used in nntp/nntp.c */
 char *C_NntpAuthenticators; ///< Config: (nntp) Allowed authentication methods

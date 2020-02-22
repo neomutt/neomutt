@@ -1148,7 +1148,7 @@ void mutt_browser_select_dir(const char *f)
 /**
  * mutt_dlg_browser_observer - Listen for config changes affecting the Browser menu - Implements ::observer_t()
  */
-int mutt_dlg_browser_observer(struct NotifyCallback *nc)
+static int mutt_dlg_browser_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;

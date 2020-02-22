@@ -53,6 +53,7 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "index.h"
+#include "init.h"
 #include "keymap.h"
 #include "mutt_attach.h"
 #include "mutt_header.h"

@@ -42,12 +42,12 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "conn/lib.h"
-#include "mutt.h"
 #include "lib.h"
 #include "bcache.h"
 #include "context.h"
 #include "globals.h"
 #include "hook.h"
+#include "init.h"
 #include "mutt_account.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
@@ -64,6 +64,7 @@
 #endif
 
 struct BodyCache;
+struct stat;
 
 /* These Config Variables are only used in pop/pop.c */
 short C_PopCheckinterval; ///< Config: (pop) Interval between checks for new mail

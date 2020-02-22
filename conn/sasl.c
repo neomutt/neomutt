@@ -48,10 +48,10 @@
 #include <time.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "sasl.h"
 #include "connaccount.h"
 #include "connection.h"
-#include "mutt_account.h"
 #include "options.h"
 
 /* arbitrary. SASL will probably use a smaller buffer anyway. OTOH it's

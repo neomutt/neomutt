@@ -27,15 +27,9 @@
 #include "config.h"
 #include <stddef.h>
 #include <limits.h>
-#include <stdbool.h>
 #include <stdint.h>
-#include "config/lib.h"
-#include "hook.h"
 #include "keymap.h"
-#include "mutt_commands.h"
 
-struct Buffer;
-struct ListHead;
 struct Mapping;
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
@@ -118,22 +112,7 @@ enum MessageType
 #define MUTT_SPAM   1
 #define MUTT_NOSPAM 2
 
-int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
-struct ConfigSet *init_config(size_t size);
-
 char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu, const struct Mapping *items);
-
-int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
-void mutt_opts_free(void);
-enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt);
-int mutt_label_complete(char *buf, size_t buflen, int numtabs);
-int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs);
-int mutt_var_value_complete(char *buf, size_t buflen, int pos);
-bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs);
-bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs);
-HookFlags mutt_get_hook_type(const char *name);
-enum CommandResult mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buffer *err);
-int mutt_query_variables(struct ListHead *queries);
 void reset_value(const char *name);
 
 #endif /* MUTT_MUTT_H */

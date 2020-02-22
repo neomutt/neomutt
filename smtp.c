@@ -45,13 +45,13 @@
 #include "conn/lib.h"
 #include "smtp.h"
 #include "globals.h"
+#include "init.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"
 #include "progress.h"
 #include "sendlib.h"
 #ifdef USE_SSL
 #include "config/lib.h"
-#include "mutt.h"
 #endif
 #ifdef USE_SASL
 #include <sasl/sasl.h>

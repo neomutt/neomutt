@@ -74,7 +74,4 @@ enum MuttSetCommand
 
 extern const struct Command Commands[];
 
-const struct Command *mutt_command_get(const char *s);
-void mutt_commands_apply(void *data, void (*application)(void *, const struct Command *));
-
 #endif /* MUTT_MUTT_COMMANDS_H */

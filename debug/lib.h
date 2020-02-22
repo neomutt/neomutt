@@ -35,8 +35,6 @@
 #define MUTT_DEBUG_LIB_H
 
 #include "config.h"
-#include "mutt/lib.h"
-#include "core/lib.h"
 
 #ifdef HAVE_LIBUNWIND
 void show_backtrace(void);

@@ -33,7 +33,6 @@
 #include "mutt/lib.h"
 #include "conn/lib.h"
 #include "auth.h"
-#include "mutt_account.h"
 #include "mutt_logging.h"
 
 /**

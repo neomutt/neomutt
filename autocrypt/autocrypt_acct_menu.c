@@ -35,13 +35,13 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
+#include "autocrypt/lib.h"
 
 /**
  * struct AccountEntry - An entry in the Autocrypt account Menu

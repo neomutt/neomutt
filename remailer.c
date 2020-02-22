@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
@@ -562,7 +563,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 /**
  * mutt_dlg_mixmaster_observer - Listen for config changes affecting the Mixmaster menu - Implements ::observer_t()
  */
-int mutt_dlg_mixmaster_observer(struct NotifyCallback *nc)
+static int mutt_dlg_mixmaster_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;

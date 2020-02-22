@@ -29,17 +29,26 @@
 
 #include "config.h"
 #include <errno.h>
+#include <libintl.h>
+#include <limits.h>
+#include <regex.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "command_parse.h"
 #include "alias.h"
 #include "context.h"
 #include "globals.h"
 #include "init.h"
+#include "keymap.h"
 #include "monitor.h"
 #include "mutt_commands.h"
 #include "mutt_logging.h"

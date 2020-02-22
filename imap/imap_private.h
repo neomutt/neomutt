@@ -32,9 +32,10 @@
 #include <time.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "conn/lib.h"
 #include "hcache/lib.h"
 
+struct Account;
+struct ConnAccount;
 struct Email;
 struct Mailbox;
 struct Message;

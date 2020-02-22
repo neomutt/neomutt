@@ -30,7 +30,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "core/lib.h"
+#include "core/neomutt.h"
 #include "account.h"
 #include "mailbox.h"
 

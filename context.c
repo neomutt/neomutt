@@ -29,7 +29,6 @@
 #include "config.h"
 #include <string.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "context.h"

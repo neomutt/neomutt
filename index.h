@@ -31,6 +31,7 @@ struct Email;
 struct Mailbox;
 struct Menu;
 struct MuttWindow;
+struct NotifyCallback;
 
 /* These Config Variables are only used in index.c */
 extern bool  C_ChangeFolderNext;

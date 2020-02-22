@@ -28,9 +28,12 @@
 
 #include "config.h"
 #include <assert.h>
+#include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "connaccount.h"
 #include "globals.h"
 #include "options.h"

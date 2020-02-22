@@ -33,7 +33,7 @@
 #include "mutt.h"
 #include "icommands.h"
 #include "functions.h"
-#include "globals.h"
+#include "init.h"
 #include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"

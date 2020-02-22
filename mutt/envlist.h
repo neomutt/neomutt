@@ -20,10 +20,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdbool.h>
-
 #ifndef MUTT_LIB_ENVLIST_H
 #define MUTT_LIB_ENVLIST_H
+
+#include <stdbool.h>
 
 void   mutt_envlist_free(void);
 char **mutt_envlist_getlist(void);

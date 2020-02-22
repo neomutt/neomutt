@@ -37,6 +37,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
@@ -50,6 +51,7 @@
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
+#include "init.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_parse.h"

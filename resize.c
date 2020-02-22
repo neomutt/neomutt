@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "mutt/lib.h"

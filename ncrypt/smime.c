@@ -42,7 +42,6 @@
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "lib.h"
 #include "alias.h"
 #include "copy.h"
 #include "crypt.h"
@@ -59,6 +58,7 @@
 #include "send.h"
 #include "sendlib.h"
 #include "state.h"
+#include "ncrypt/lib.h"
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 #include "smime.h"
 #endif

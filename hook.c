@@ -44,6 +44,7 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "hdrline.h"
+#include "init.h"
 #include "mutt_attach.h"
 #include "mutt_commands.h"
 #include "muttlib.h"

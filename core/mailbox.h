@@ -31,6 +31,7 @@
 #include <time.h>
 #include "mutt/lib.h"
 
+struct ConfigSubset;
 struct Email;
 
 #define MB_NORMAL 0

@@ -33,12 +33,10 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "mutt_window.h"
-#include "context.h"
 #include "globals.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "options.h"
-#include "pager.h"
 #include "reflow.h"
 
 struct MuttWindow *RootWindow = NULL;        ///< Parent of all Windows
@@ -157,7 +155,7 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
 /**
  * mutt_dlg_rootwin_observer - Listen for config changes affecting the Root Window - Implements ::observer_t()
  */
-int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
+static int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;

@@ -53,6 +53,7 @@
 #include "handler.h"
 #include "hdrline.h"
 #include "hook.h"
+#include "init.h"
 #include "mutt_attach.h"
 #include "mutt_body.h"
 #include "mutt_header.h"

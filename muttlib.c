@@ -54,6 +54,7 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "hook.h"
+#include "init.h"
 #include "mx.h"
 #include "protos.h"
 #include "ncrypt/lib.h"

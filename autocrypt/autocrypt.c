@@ -28,6 +28,8 @@
 
 #include "config.h"
 #include <errno.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 #include "autocrypt_private.h"
@@ -36,12 +38,12 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
-#include "lib.h"
 #include "globals.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "options.h"
 #include "send.h"
+#include "autocrypt/lib.h"
 #include "ncrypt/lib.h"
 
 /**

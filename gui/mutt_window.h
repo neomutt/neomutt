@@ -24,6 +24,8 @@
 #define MUTT_MUTT_WINDOW_H
 
 #include "config.h"
+#include <stdbool.h>
+#include "mutt/lib.h"
 
 /**
  * enum MuttWindowOrientation - Which way does the Window expand?
@@ -138,7 +140,6 @@ void mutt_winlist_free       (struct MuttWindowList *head);
 struct MuttWindow *mutt_window_find(struct MuttWindow *root, enum WindowType type);
 struct MuttWindow *mutt_window_dialog(struct MuttWindow *win);
 
-void mutt_winlist_free       (struct MuttWindowList *head);
 void dialog_pop(void);
 void dialog_push(struct MuttWindow *dlg);
 

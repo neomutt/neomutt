@@ -27,6 +27,7 @@
 #include "core/lib.h"
 #include "mx.h"
 
+struct Slist;
 struct stat;
 
 /**

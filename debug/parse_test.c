@@ -27,8 +27,10 @@
  */
 
 #include "config.h"
+#include <stdio.h>
 #include "mutt/lib.h"
-#include "mutt.h"
+#include "lib.h"
+#include "init.h"
 #include "mutt_commands.h"
 
 /**

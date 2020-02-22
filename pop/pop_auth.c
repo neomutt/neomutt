@@ -36,7 +36,6 @@
 #include "address/lib.h"
 #include "conn/lib.h"
 #include "lib.h"
-#include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #ifdef USE_SASL

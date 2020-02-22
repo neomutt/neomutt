@@ -26,13 +26,14 @@
  */
 
 #include "config.h"
-#include <errno.h>
+#include <stdbool.h>
 #include <string.h>
+#include <time.h>
+#include <zconf.h>
 #include <zlib.h>
+#include "mutt/lib.h"
 #include "conn/lib.h"
-#include "mutt.h"
 #include "mutt_zstrm.h"
-#include "mutt_socket.h"
 
 /**
  * struct ZstrmDirection - A stream of data being (de-)compressed

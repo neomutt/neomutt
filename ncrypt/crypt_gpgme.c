@@ -57,7 +57,6 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "crypt_gpgme.h"
-#include "lib.h"
 #include "alias.h"
 #include "crypt.h"
 #include "format_flags.h"
@@ -77,6 +76,7 @@
 #include "sendlib.h"
 #include "sort.h"
 #include "state.h"
+#include "ncrypt/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

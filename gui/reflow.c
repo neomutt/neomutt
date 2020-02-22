@@ -36,7 +36,7 @@
  * window_reflow_horiz - Reflow Windows using all the available horizontal space
  * @param win Window
  */
-void window_reflow_horiz(struct MuttWindow *win)
+static void window_reflow_horiz(struct MuttWindow *win)
 {
   if (!win)
     return;
@@ -128,7 +128,7 @@ void window_reflow_horiz(struct MuttWindow *win)
  * window_reflow_vert - Reflow Windows using all the available vertical space
  * @param win Window
  */
-void window_reflow_vert(struct MuttWindow *win)
+static void window_reflow_vert(struct MuttWindow *win)
 {
   if (!win)
     return;

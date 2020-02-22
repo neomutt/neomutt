@@ -29,11 +29,8 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <errno.h>
 #include <inttypes.h>
-#include <limits.h>
 #include <pwd.h>
-#include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,30 +53,20 @@
 #include "functions.h"
 #include "globals.h"
 #include "keymap.h"
-#include "monitor.h"
 #include "mutt_commands.h"
 #include "mutt_config.h"
 #include "mutt_menu.h"
 #include "mutt_parse.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "myvar.h"
 #include "options.h"
 #include "protos.h"
-#include "sidebar.h"
 #include "sort.h"
-#include "version.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
-#endif
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
-#ifdef ENABLE_NLS
-#include <libintl.h>
 #endif
 
 /* Initial string that starts completion. No telling how much the user has

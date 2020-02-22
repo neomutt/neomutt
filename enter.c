@@ -41,6 +41,7 @@
 #include "context.h"
 #include "enter_state.h"
 #include "globals.h"
+#include "init.h"
 #include "keymap.h"
 #include "mutt_history.h"
 #include "mutt_mailbox.h"

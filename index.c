@@ -51,6 +51,7 @@
 #include "globals.h"
 #include "hdrline.h"
 #include "hook.h"
+#include "init.h"
 #include "keymap.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"

@@ -26,7 +26,9 @@
 #include <stdint.h>
 
 struct Buffer;
+struct ConfigSet;
 struct HashElem;
+struct Notify;
 
 /**
  * enum ConfigScope - Who does this Config belong to?

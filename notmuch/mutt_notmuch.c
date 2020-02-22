@@ -68,6 +68,8 @@
 #include "hcache/lib.h"
 #include "maildir/lib.h"
 
+struct stat;
+
 const char NmUrlProtocol[] = "notmuch://";
 const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
 

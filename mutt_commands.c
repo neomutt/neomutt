@@ -28,13 +28,17 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "mutt_commands.h"
 #include "command_parse.h"
 #include "globals.h"
-#include "init.h"
+#include "hook.h"
+#include "keymap.h"
 #include "mutt_lua.h"
 #include "score.h"
 

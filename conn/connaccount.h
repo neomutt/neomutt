@@ -23,7 +23,7 @@
 #ifndef MUTT_CONN_ACCOUNT_H
 #define MUTT_CONN_ACCOUNT_H
 
-#include "mutt_account.h"
+#include <stdint.h>
 
 /**
  * enum ConnAccountField - Login credentials

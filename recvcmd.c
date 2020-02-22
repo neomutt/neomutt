@@ -44,6 +44,7 @@
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
+#include "init.h"
 #include "mutt_body.h"
 #include "mutt_logging.h"
 #include "muttlib.h"

@@ -24,7 +24,6 @@
 #define MUTT_MUTT_SOCKET_H
 
 struct ConnAccount;
-struct Connection;
 
 /* logging levels */
 #define MUTT_SOCK_LOG_CMD  2

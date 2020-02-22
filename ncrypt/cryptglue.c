@@ -40,8 +40,8 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "cryptglue.h"
-#include "lib.h"
 #include "crypt_mod.h"
+#include "ncrypt/lib.h"
 #ifndef CRYPT_BACKEND_GPGME
 #include "gui/lib.h"
 #endif

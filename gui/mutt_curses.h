@@ -25,7 +25,6 @@
 #define MUTT_MUTT_CURSES_H
 
 #include "config.h"
-#include <stdbool.h>
 #include "color.h"
 
 #ifdef USE_SLANG_CURSES
@@ -53,7 +52,7 @@
 #else /* USE_SLANG_CURSES */
 
 #ifdef HAVE_NCURSESW_NCURSES_H
-#include <ncursesw/ncurses.h>
+#include <ncursesw/ncurses.h> // IWYU pragma: keep
 #elif defined(HAVE_NCURSES_NCURSES_H)
 #include <ncurses/ncurses.h>
 #elif defined(HAVE_NCURSES_H)

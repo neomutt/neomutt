@@ -53,10 +53,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "crypt_gpgme.h"
 
 struct Address;
 struct Body;
+struct Buffer;
 struct Envelope;
 struct Email;
 struct EmailList;
@@ -224,5 +224,11 @@ int          crypt_smime_verify_sender(struct Mailbox *m, struct Email *e);
 
 /* crypt_mod.c */
 void crypto_module_free(void);
+
+/* crypt_gpgme.c */
+void         pgp_gpgme_init(void);
+int          mutt_gpgme_select_secret_key (struct Buffer *keyid);
+const char  *mutt_gpgme_print_version(void);
+
 
 #endif /* MUTT_NCRYPT_LIB_H */

@@ -27,6 +27,8 @@
 #include <stddef.h>
 #include <time.h>
 
+struct Connection;
+
 /**
  * enum ConnectionType - Type of connection
  */
@@ -36,8 +38,6 @@ enum ConnectionType
   MUTT_CONNECTION_TUNNEL, ///< Tunnelled connection
   MUTT_CONNECTION_SSL,    ///< SSL/TLS-encrypted connection
 };
-
-struct Connection;
 
 struct Connection *mutt_socket_new(enum ConnectionType type);
 

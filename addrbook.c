@@ -188,7 +188,7 @@ static int alias_sort_address(const void *a, const void *b)
 /**
  * mutt_dlg_alias_observer - Listen for config changes affecting the Alias menu - Implements ::observer_t()
  */
-int mutt_dlg_alias_observer(struct NotifyCallback *nc)
+static int mutt_dlg_alias_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;
