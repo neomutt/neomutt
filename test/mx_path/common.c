@@ -21,6 +21,39 @@
  */
 
 #include "config.h"
+#include <stdio.h>
+#include <string.h>
 #include "mutt/lib.h"
 
 const char *HomeDir;
+
+static const char *get_test_path(void)
+{
+  static const char *path = NULL;
+  if (!path)
+    path = mutt_str_getenv("NEOMUTT_TEST_DIR");
+  if (!path)
+    path = "";
+
+  return path;
+}
+
+void test_gen_path(char *buf, size_t buflen, const char *fmt)
+{
+  snprintf(buf, buflen, NONULL(fmt), get_test_path());
+}
+
+void test_gen_dir(char *buf, size_t buflen, const char *fmt)
+{
+  static const char *dir = NULL;
+  if (!dir)
+  {
+    const char *path = get_test_path();
+    const char *slash = strrchr(path, '/');
+    dir = slash + 1;
+  }
+  if (!dir)
+    dir = "";
+
+  snprintf(buf, buflen, NONULL(fmt), dir);
+}

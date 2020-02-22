@@ -34,22 +34,28 @@ void test_nm_path2_canon(void)
 {
   // clang-format off
   static struct TestValue tests[] = {
-    { "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",             "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",              0 }, // Same
-    { "notmuch:///home/mutt/path/notmuch/symlink?one=apple&two=banana",           "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",              0 }, // Symlink
-    { "notmuch:///home/mutt/path/notmuch/cherry?one=apple&two=banana",            "notmuch:///home/mutt/path/notmuch/cherry?one=apple&two=banana",            -1 }, // Missing
-    { "notmuch:///home/mutt/path/notmuch/apple?two=banana&one=apple",             "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",              0 }, // Query (sort)
-    { "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana&one=cherry",  "notmuch:///home/mutt/path/notmuch/apple?one=apple&one=cherry&two=banana",   0 }, // Query (dupe)
-    { "notmuch:///home/mutt/path/notmuch/apple?one=cherry&two=banana&one=cherry", "notmuch:///home/mutt/path/notmuch/apple?one=cherry&one=cherry&two=banana",  0 }, // Query (dupe)
-    { "pop://example.com/",                                                       "pop://example.com/",                                                       -1 },
-    { "junk://example.com/",                                                      "junk://example.com/",                                                      -1 },
+    { "notmuch://%s/notmuch/apple?one=apple&two=banana",             "notmuch://%s/notmuch/apple?one=apple&two=banana",              0 }, // Same
+    { "notmuch://%s/notmuch/symlink?one=apple&two=banana",           "notmuch://%s/notmuch/apple?one=apple&two=banana",              0 }, // Symlink
+    { "notmuch://%s/notmuch/cherry?one=apple&two=banana",            "notmuch://%s/notmuch/cherry?one=apple&two=banana",            -1 }, // Missing
+    { "notmuch://%s/notmuch/apple?two=banana&one=apple",             "notmuch://%s/notmuch/apple?one=apple&two=banana",              0 }, // Query (sort)
+    { "notmuch://%s/notmuch/apple?one=apple&two=banana&one=cherry",  "notmuch://%s/notmuch/apple?one=apple&one=cherry&two=banana",   0 }, // Query (dupe)
+    { "notmuch://%s/notmuch/apple?one=cherry&two=banana&one=cherry", "notmuch://%s/notmuch/apple?one=cherry&one=cherry&two=banana",  0 }, // Query (dupe)
+    { "pop://example.com/",                                          "pop://example.com/",                                          -1 },
+    { "junk://example.com/",                                         "junk://example.com/",                                         -1 },
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
 
   struct Path path = { 0 };
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = (char *) tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path.orig = first;
     TEST_CASE(path.orig);
     path.type = MUTT_NOTMUCH;
     path.flags = MPATH_RESOLVED | MPATH_TIDY;
@@ -60,7 +66,7 @@ void test_nm_path2_canon(void)
     {
       TEST_CHECK(path.flags & MPATH_CANONICAL);
       TEST_CHECK(path.canon != NULL);
-      TEST_CHECK(mutt_str_strcmp(path.canon, tests[i].second) == 0);
+      TEST_CHECK(mutt_str_strcmp(path.canon, second) == 0);
     }
     FREE(&path.canon);
   }
@@ -70,15 +76,18 @@ void test_nm_path2_compare(void)
 {
   // clang-format off
   static struct TestValue tests[] = {
-    { "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",           "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",                0 }, // Match
-    { "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",           "pop://example.com/",                                                          1 }, // Scheme differs
-    { "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",           "notmuch:///home/mutt/path/notmuch/banana?one=apple&two=banana",              -1 }, // Path differs
-    { "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",           "notmuch://?one=apple&two=banana",                                             0 }, // Path missing
-    { "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",           "notmuch:///home/mutt/path/notmuch/apple?one=apple",                           1 }, // Query differs (fewer)
-    { "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",           "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana&three=cherry",  -1 }, // Query differs (more)
-    { "notmuch:///home/mutt/path/notmuch/apple?one=apple&one=apple&two=banana", "notmuch:///home/mutt/path/notmuch/apple?one=apple&one=apple&two=banana",      0 }, // Query (dupes)
+    { "notmuch://%s/notmuch/apple?one=apple&two=banana",           "notmuch://%s/notmuch/apple?one=apple&two=banana",                0 }, // Match
+    { "notmuch://%s/notmuch/apple?one=apple&two=banana",           "pop://example.com/",                                             1 }, // Scheme differs
+    { "notmuch://%s/notmuch/apple?one=apple&two=banana",           "notmuch://%s/notmuch/banana?one=apple&two=banana",              -1 }, // Path differs
+    { "notmuch://%s/notmuch/apple?one=apple&two=banana",           "notmuch://?one=apple&two=banana",                                0 }, // Path missing
+    { "notmuch://%s/notmuch/apple?one=apple&two=banana",           "notmuch://%s/notmuch/apple?one=apple",                           1 }, // Query differs (fewer)
+    { "notmuch://%s/notmuch/apple?one=apple&two=banana",           "notmuch://%s/notmuch/apple?one=apple&two=banana&three=cherry",  -1 }, // Query differs (more)
+    { "notmuch://%s/notmuch/apple?one=apple&one=apple&two=banana", "notmuch://%s/notmuch/apple?one=apple&one=apple&two=banana",      0 }, // Query (dupes)
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
 
   struct Path path1 = {
     .type = MUTT_NOTMUCH,
@@ -92,10 +101,13 @@ void test_nm_path2_compare(void)
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path1.canon = (char *) tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path1.canon = first;
     TEST_CASE(path1.canon);
 
-    path2.canon = (char *) tests[i].second;
+    path2.canon = second;
     TEST_CASE(path2.canon);
 
     rc = nm_path2_compare(&path1, &path2);
@@ -107,9 +119,12 @@ void test_nm_path2_parent(void)
 {
   // clang-format off
   static struct TestValue tests[] = {
-    { "notmuch:///home/mutt/path/notmuch/apple", NULL, -1 },
+    { "notmuch://%s/notmuch/apple", NULL, -1 },
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
 
   struct Path path = {
     .type = MUTT_NOTMUCH,
@@ -120,25 +135,33 @@ void test_nm_path2_parent(void)
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path.orig = first;
     TEST_CASE(path.orig);
 
     rc = nm_path2_parent(&path, &parent);
     TEST_CHECK(rc == tests[i].retval);
-    TEST_CHECK(mutt_str_strcmp(parent ? parent->orig : NULL, tests[i].second) == 0);
+    TEST_CHECK(mutt_str_strcmp(parent ? parent->orig : NULL, second) == 0);
   }
 }
 
 void test_nm_path2_pretty(void)
 {
-  const char *folder = "notmuch:///home/mutt/path/notmuch/apple";
   // clang-format off
   static struct TestValue tests[] = {
-    { "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",  "notmuch://?one=apple&two=banana", 1 },
-    { "notmuch:///home/mutt/path/notmuch/cherry?one=apple&two=banana", NULL,                              0 },
-    { "pop://example.com/",                                            NULL,                              0 },
+    { "notmuch://%s/notmuch/apple?one=apple&two=banana",  "notmuch://?one=apple&two=banana", 1 },
+    { "notmuch://%s/notmuch/cherry?one=apple&two=banana", NULL,                              0 },
+    { "pop://example.com/",                               NULL,                              0 },
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
+  char folder[256] = { 0 };
+
+  test_gen_path(folder, sizeof(folder), "notmuch://%s/notmuch/apple");
 
   struct Path path = {
     .type = MUTT_NOTMUCH,
@@ -149,7 +172,10 @@ void test_nm_path2_pretty(void)
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = (char *) tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path.orig = first;
     TEST_CASE(path.orig);
 
     rc = nm_path2_pretty(&path, folder, &pretty);
@@ -157,7 +183,7 @@ void test_nm_path2_pretty(void)
     if (rc > 0)
     {
       TEST_CHECK(pretty != NULL);
-      TEST_CHECK(mutt_str_strcmp(pretty, tests[i].second) == 0);
+      TEST_CHECK(mutt_str_strcmp(pretty, second) == 0);
     }
     FREE(&pretty);
   }
@@ -167,21 +193,25 @@ void test_nm_path2_probe(void)
 {
   // clang-format off
   static const struct TestValue tests[] = {
-    { "notmuch:///home/mutt/path/notmuch/apple",   NULL,  0 }, // OK
-    { "notmuch:///home/mutt/path/notmuch/symlink", NULL,  0 }, // Symlink
-    { "notmuch:///home/mutt/path/notmuch/banana",  NULL, -1 }, // Missing .notmuch dir
-    { "notmuch:///home/mutt/path/notmuch/cherry",  NULL, -1 }, // Missing dir
-    { "pop://example.com/",                        NULL, -1 },
-    { "junk://example.com/",                       NULL, -1 },
+    { "notmuch://%s/notmuch/apple",   NULL,  0 }, // OK
+    { "notmuch://%s/notmuch/symlink", NULL,  0 }, // Symlink
+    { "notmuch://%s/notmuch/banana",  NULL, -1 }, // Missing .notmuch dir
+    { "notmuch://%s/notmuch/cherry",  NULL, -1 }, // Missing dir
+    { "pop://example.com/",           NULL, -1 },
+    { "junk://example.com/",          NULL, -1 },
   };
   // clang-format on
+
+  char first[256] = { 0 };
 
   struct Path path = { 0 };
   struct stat st;
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = (char *) tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+
+    path.orig = first;
     TEST_CASE(path.orig);
     path.type = MUTT_UNKNOWN;
     path.flags = MPATH_NO_FLAGS;
@@ -200,13 +230,16 @@ void test_nm_path2_tidy(void)
 {
   // clang-format off
   static struct TestValue tests[] = {
-    { "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",          "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",  0 },
-    { "NOTMUCH:///home/mutt/path/notmuch/apple?one=apple&two=banana",          "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",  0 },
-    { "notmuch:///home/mutt/path/../path/notmuch//apple?one=apple&two=banana", "notmuch:///home/mutt/path/notmuch/apple?one=apple&two=banana",  0 },
-    { "pop://example.com/",                                                    "pop://example.com/",                                           -1 },
-    { "junk://example.com/",                                                   "junk://example.com/",                                          -1 },
+    { "notmuch://%s/notmuch/apple?one=apple&two=banana",            "notmuch://%s/notmuch/apple?one=apple&two=banana",  0 },
+    { "NOTMUCH://%s/notmuch/apple?one=apple&two=banana",            "notmuch://%s/notmuch/apple?one=apple&two=banana",  0 },
+    { "notmuch://%s/notmuch/../notmuch/apple?one=apple&two=banana", "notmuch://%s/notmuch/apple?one=apple&two=banana",  0 },
+    { "pop://example.com/",                                         "pop://example.com/",                              -1 },
+    { "junk://example.com/",                                        "junk://example.com/",                             -1 },
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
 
   struct Path path = {
     .type = MUTT_NOTMUCH,
@@ -216,7 +249,10 @@ void test_nm_path2_tidy(void)
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = mutt_str_strdup(tests[i].first);
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path.orig = mutt_str_strdup(first);
     TEST_CASE(path.orig);
 
     rc = nm_path2_tidy(&path);
@@ -225,7 +261,7 @@ void test_nm_path2_tidy(void)
     {
       TEST_CHECK(path.orig != NULL);
       TEST_CHECK(path.flags & MPATH_TIDY);
-      TEST_CHECK(mutt_str_strcmp(path.orig, tests[i].second) == 0);
+      TEST_CHECK(mutt_str_strcmp(path.orig, second) == 0);
     }
     FREE(&path.orig);
   }

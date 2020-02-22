@@ -34,17 +34,23 @@ void test_mbox_path2_canon(void)
 {
   // clang-format off
   static struct TestValue tests[] = {
-    { "/home/mutt/path/mbox/apple.mbox",         "/home/mutt/path/mbox/apple.mbox",  0 }, // Real path
-    { "/home/mutt/path/mbox/symlink/apple.mbox", "/home/mutt/path/mbox/apple.mbox",  0 }, // Symlink
-    { "/home/mutt/path/mbox/missing",            NULL,                              -1 }, // Missing
+    { "%s/mbox/apple.mbox",         "%s/mbox/apple.mbox",  0 }, // Real path
+    { "%s/mbox/symlink/apple.mbox", "%s/mbox/apple.mbox",  0 }, // Symlink
+    { "%s/mbox/missing",            NULL,                 -1 }, // Missing
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
 
   struct Path path = { 0 };
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path.orig = first;
     TEST_CASE(path.orig);
     path.type = MUTT_MBOX;
     path.flags = MPATH_RESOLVED | MPATH_TIDY;
@@ -55,7 +61,7 @@ void test_mbox_path2_canon(void)
     {
       TEST_CHECK(path.flags & MPATH_CANONICAL);
       TEST_CHECK(path.canon != NULL);
-      TEST_CHECK(mutt_str_strcmp(path.canon, tests[i].second) == 0);
+      TEST_CHECK(mutt_str_strcmp(path.canon, second) == 0);
     }
     FREE(&path.canon);
   }
@@ -65,11 +71,14 @@ void test_mbox_path2_compare(void)
 {
   // clang-format off
   static const struct TestValue tests[] = {
-    { "/home/mutt/path/mbox/apple.mbox",  "/home/mutt/path/mbox/apple.mbox",   0 }, // Match
-    { "/home/mutt/path/mbox/apple.mbox",  "/home/mutt/path/mbox/orange.mbox", -1 }, // Differ
-    { "/home/mutt/path/mbox/orange.mbox", "/home/mutt/path/mbox/apple.mbox",   1 }, // Differ
+    { "%s/mbox/apple.mbox",  "%s/mbox/apple.mbox",   0 }, // Match
+    { "%s/mbox/apple.mbox",  "%s/mbox/orange.mbox", -1 }, // Differ
+    { "%s/mbox/orange.mbox", "%s/mbox/apple.mbox",   1 }, // Differ
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
 
   struct Path path1 = {
     .type = MUTT_MBOX,
@@ -83,10 +92,13 @@ void test_mbox_path2_compare(void)
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path1.canon = (char *) tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path1.canon = first;
     TEST_CASE(path1.canon);
 
-    path2.canon = (char *) tests[i].second;
+    path2.canon = second;
     TEST_CASE(path2.canon);
 
     rc = mbox_path2_compare(&path1, &path2);
@@ -98,9 +110,12 @@ void test_mbox_path2_parent(void)
 {
   // clang-format off
   static struct TestValue tests[] = {
-    { "/home/mutt/path/mbox/apple.mbox", NULL, -1 },
+    { "%s/mbox/apple.mbox", NULL, -1 },
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
 
   struct Path path = {
     .type = MUTT_MBOX,
@@ -111,24 +126,32 @@ void test_mbox_path2_parent(void)
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path.orig = first;
     TEST_CASE(path.orig);
 
     rc = mbox_path2_parent(&path, &parent);
     TEST_CHECK(rc == tests[i].retval);
-    TEST_CHECK(mutt_str_strcmp(parent ? parent->orig : NULL, tests[i].second) == 0);
+    TEST_CHECK(mutt_str_strcmp(parent ? parent->orig : NULL, second) == 0);
   }
 }
 
 void test_mbox_path2_pretty(void)
 {
-  static const char *folder = "/home/mutt/path";
   // clang-format off
   static struct TestValue tests[] = {
-    { "/home/mutt/path/mbox/apple.mbox",         "+mbox/apple.mbox",         1 },
-    { "/home/mutt/path/mbox/symlink/apple.mbox", "+mbox/symlink/apple.mbox", 1 },
+    { "%s/mbox/apple.mbox",         "+mbox/apple.mbox",         1 },
+    { "%s/mbox/symlink/apple.mbox", "+mbox/symlink/apple.mbox", 1 },
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
+  char folder[256] = { 0 };
+
+  test_gen_path(folder, sizeof(folder), "%s");
 
   struct Path path = {
     .type = MUTT_MBOX,
@@ -139,7 +162,10 @@ void test_mbox_path2_pretty(void)
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = (char *) tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path.orig = first;
     TEST_CASE(path.orig);
 
     rc = mbox_path2_pretty(&path, folder, &pretty);
@@ -147,25 +173,29 @@ void test_mbox_path2_pretty(void)
     if (rc >= 0)
     {
       TEST_CHECK(pretty != NULL);
-      TEST_CHECK(mutt_str_strcmp(pretty, tests[i].second) == 0);
+      TEST_CHECK(mutt_str_strcmp(pretty, second) == 0);
     }
     FREE(&pretty);
   }
 
-  path.orig = tests[0].first;
-  HomeDir = "/home/mutt";
+  test_gen_path(first, sizeof(first), tests[0].first);
+  test_gen_dir(second, sizeof(second), "~/%s/mbox/apple.mbox");
+  path.orig = first;
+  HomeDir = mutt_str_getenv("HOME");
   rc = mbox_path2_pretty(&path, "nowhere", &pretty);
   TEST_CHECK(rc == 1);
   TEST_CHECK(pretty != NULL);
-  TEST_CHECK(mutt_str_strcmp(pretty, "~/path/mbox/apple.mbox") == 0);
+  TEST_CHECK(mutt_str_strcmp(pretty, second) == 0);
   FREE(&pretty);
 
-  path.orig = tests[0].first;
+  test_gen_path(first, sizeof(first), tests[0].first);
+  test_gen_path(second, sizeof(second), tests[0].first);
+  path.orig = first;
   HomeDir = "/home/another";
   rc = mbox_path2_pretty(&path, "nowhere", &pretty);
   TEST_CHECK(rc == 0);
   TEST_CHECK(pretty != NULL);
-  TEST_CHECK(mutt_str_strcmp(pretty, tests[0].first) == 0);
+  TEST_CHECK(mutt_str_strcmp(pretty, second) == 0);
   FREE(&pretty);
 }
 
@@ -173,23 +203,27 @@ void test_mbox_path2_probe(void)
 {
   // clang-format off
   static const struct TestValue tests[] = {
-    { "/home/mutt/path/mbox/apple.mbox",          NULL,  0 }, // Empty
-    { "/home/mutt/path/mbox/banana.mbox",         NULL,  0 }, // Normal
-    { "/home/mutt/path/mbox/symlink/banana.mbox", NULL,  0 }, // Symlink
-    { "/home/mutt/path/mbox/cherry.mbox",         NULL, -1 }, // Junk
-    { "/home/mutt/path/mbox/damson.mbox",         NULL, -1 }, // Directory
-    { "/home/mutt/path/mbox/endive.mbox",         NULL, -1 }, // Unreadable
-    { "/home/mutt/path/mbox/fig.mbox",            NULL,  0 }, // Mmdf
-    { "/home/mutt/path/mbox/guava.mbox",          NULL,  0 }, // Missing
+    { "%s/mbox/apple.mbox",          NULL,  0 }, // Empty
+    { "%s/mbox/banana.mbox",         NULL,  0 }, // Normal
+    { "%s/mbox/symlink/banana.mbox", NULL,  0 }, // Symlink
+    { "%s/mbox/cherry.mbox",         NULL, -1 }, // Junk
+    { "%s/mbox/damson.mbox",         NULL, -1 }, // Directory
+    { "%s/mbox/endive.mbox",         NULL, -1 }, // Unreadable
+    { "%s/mbox/fig.mbox",            NULL,  0 }, // Mmdf
+    { "%s/mbox/guava.mbox",          NULL,  0 }, // Missing
   };
   // clang-format on
+
+  char first[256] = { 0 };
 
   struct Path path = { 0 };
   struct stat st;
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = (char *) tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+
+    path.orig = first;
     TEST_CASE(path.orig);
     path.type = MUTT_UNKNOWN;
     path.flags = MPATH_NO_FLAGS;
@@ -208,9 +242,12 @@ void test_mbox_path2_tidy(void)
 {
   // clang-format off
   static const struct TestValue tests[] = {
-    { "/home/mutt/path/./mbox/../mbox///apple.mbox", "/home/mutt/path/mbox/apple.mbox", 0 },
+    { "%s/./mbox/../mbox///apple.mbox", "%s/mbox/apple.mbox", 0 },
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
 
   struct Path path = {
     .type = MUTT_MBOX,
@@ -220,12 +257,15 @@ void test_mbox_path2_tidy(void)
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = mutt_str_strdup(tests[i].first);
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path.orig = mutt_str_strdup(first);
     rc = mbox_path2_tidy(&path);
     TEST_CHECK(rc == 0);
     TEST_CHECK(path.orig != NULL);
     TEST_CHECK(path.flags & MPATH_TIDY);
-    TEST_CHECK(strcmp(path.orig, tests[i].second) == 0);
+    TEST_CHECK(strcmp(path.orig, second) == 0);
     FREE(&path.orig);
   }
 }

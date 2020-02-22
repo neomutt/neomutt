@@ -43,17 +43,23 @@ void test_comp_path2_canon(void)
 {
   // clang-format off
   static const struct TestValue tests[] = {
-    { "/home/mutt/path/compress/apple.gz",         "/home/mutt/path/compress/apple.gz",  0 }, // Real path
-    { "/home/mutt/path/compress/symlink/apple.gz", "/home/mutt/path/compress/apple.gz",  0 }, // Symlink
-    { "/home/mutt/path/compress/missing",          NULL,                                -1 }, // Missing
+    { "%s/compress/apple.gz",         "%s/compress/apple.gz",  0 }, // Real path
+    { "%s/compress/symlink/apple.gz", "%s/compress/apple.gz",  0 }, // Symlink
+    { "%s/compress/missing",          NULL,                   -1 }, // Missing
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
 
   struct Path path = { 0 };
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path.orig = first;
     TEST_CASE(path.orig);
     path.type = MUTT_COMPRESSED;
     path.flags = MPATH_RESOLVED | MPATH_TIDY;
@@ -64,7 +70,7 @@ void test_comp_path2_canon(void)
     {
       TEST_CHECK(path.flags & MPATH_CANONICAL);
       TEST_CHECK(path.canon != NULL);
-      TEST_CHECK(mutt_str_strcmp(path.canon, tests[i].second) == 0);
+      TEST_CHECK(mutt_str_strcmp(path.canon, second) == 0);
     }
     FREE(&path.canon);
   }
@@ -74,11 +80,14 @@ void test_comp_path2_compare(void)
 {
   // clang-format off
   static const struct TestValue tests[] = {
-    { "/home/mutt/path/compress/apple.gz",  "/home/mutt/path/compress/apple.gz",   0 }, // Match
-    { "/home/mutt/path/compress/apple.gz",  "/home/mutt/path/compress/orange.gz", -1 }, // Differ
-    { "/home/mutt/path/compress/orange.gz", "/home/mutt/path/compress/apple.gz",   1 }, // Differ
+    { "%s/compress/apple.gz",  "%s/compress/apple.gz",   0 }, // Match
+    { "%s/compress/apple.gz",  "%s/compress/orange.gz", -1 }, // Differ
+    { "%s/compress/orange.gz", "%s/compress/apple.gz",   1 }, // Differ
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
 
   struct Path path1 = {
     .type = MUTT_COMPRESSED,
@@ -92,10 +101,13 @@ void test_comp_path2_compare(void)
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path1.canon = (char *) tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path1.canon = first;
     TEST_CASE(path1.canon);
 
-    path2.canon = (char *) tests[i].second;
+    path2.canon = second;
     TEST_CASE(path2.canon);
 
     rc = comp_path2_compare(&path1, &path2);
@@ -107,9 +119,12 @@ void test_comp_path2_parent(void)
 {
   // clang-format off
   static struct TestValue tests[] = {
-    { "/home/mutt/path/compress/apple.gz", NULL, -1 },
+    { "%s/compress/apple.gz", NULL, -1 },
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
 
   struct Path path = {
     .type = MUTT_COMPRESSED,
@@ -120,24 +135,32 @@ void test_comp_path2_parent(void)
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path.orig = first;
     TEST_CASE(path.orig);
 
     rc = comp_path2_parent(&path, &parent);
     TEST_CHECK(rc == tests[i].retval);
-    TEST_CHECK(mutt_str_strcmp(parent ? parent->orig : NULL, tests[i].second) == 0);
+    TEST_CHECK(mutt_str_strcmp(parent ? parent->orig : NULL, second) == 0);
   }
 }
 
 void test_comp_path2_pretty(void)
 {
-  static const char *folder = "/home/mutt/path";
   // clang-format off
   static struct TestValue tests[] = {
-    { "/home/mutt/path/compress/apple.gz",         "+compress/apple.gz",         1 },
-    { "/home/mutt/path/compress/symlink/apple.gz", "+compress/symlink/apple.gz", 1 },
+    { "%s/compress/apple.gz",         "+compress/apple.gz",         1 },
+    { "%s/compress/symlink/apple.gz", "+compress/symlink/apple.gz", 1 },
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
+  char folder[256] = { 0 };
+
+  test_gen_path(folder, sizeof(folder), "%s");
 
   struct Path path = {
     .type = MUTT_COMPRESSED,
@@ -148,8 +171,11 @@ void test_comp_path2_pretty(void)
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = (char *) tests[i].first;
-    path.canon = (char *) tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path.orig = first;
+    path.canon = first;
     TEST_CASE(path.orig);
 
     rc = comp_path2_pretty(&path, folder, &pretty);
@@ -157,25 +183,29 @@ void test_comp_path2_pretty(void)
     if (rc >= 0)
     {
       TEST_CHECK(pretty != NULL);
-      TEST_CHECK(mutt_str_strcmp(pretty, tests[i].second) == 0);
+      TEST_CHECK(mutt_str_strcmp(pretty, second) == 0);
     }
     FREE(&pretty);
   }
 
-  path.orig = tests[0].first;
-  HomeDir = "/home/mutt";
+  test_gen_path(first, sizeof(first), tests[0].first);
+  test_gen_dir(second, sizeof(second), "~/%s/compress/apple.gz");
+  path.orig = first;
+  HomeDir = mutt_str_getenv("HOME");
   rc = comp_path2_pretty(&path, "nowhere", &pretty);
   TEST_CHECK(rc == 1);
   TEST_CHECK(pretty != NULL);
-  TEST_CHECK(mutt_str_strcmp(pretty, "~/path/compress/apple.gz") == 0);
+  TEST_CHECK(mutt_str_strcmp(pretty, second) == 0);
   FREE(&pretty);
 
-  path.orig = tests[0].first;
+  test_gen_path(first, sizeof(first), tests[0].first);
+  test_gen_path(second, sizeof(second), tests[0].first);
+  path.orig = first;
   HomeDir = "/home/another";
   rc = comp_path2_pretty(&path, "nowhere", &pretty);
   TEST_CHECK(rc == 0);
   TEST_CHECK(pretty != NULL);
-  TEST_CHECK(mutt_str_strcmp(pretty, tests[0].first) == 0);
+  TEST_CHECK(mutt_str_strcmp(pretty, second) == 0);
   FREE(&pretty);
 }
 
@@ -183,19 +213,23 @@ void test_comp_path2_probe(void)
 {
   // clang-format off
   static const struct TestValue tests[] = {
-    { "/home/mutt/path/compress/apple.gz",  NULL,  0 }, // Accepted
-    { "/home/mutt/path/compress/banana.gz", NULL, -1 }, // Directory
-    { "/home/mutt/path/compress/cherry.xz", NULL, -1 }, // Not accepted
-    { "/home/mutt/path/compress/damson.gz", NULL, -1 }, // Missing
+    { "%s/compress/apple.gz",  NULL,  0 }, // Accepted
+    { "%s/compress/banana.gz", NULL, -1 }, // Directory
+    { "%s/compress/cherry.xz", NULL, -1 }, // Not accepted
+    { "%s/compress/damson.gz", NULL, -1 }, // Missing
   };
   // clang-format on
+
+  char first[256] = { 0 };
 
   struct Path path = { 0 };
   struct stat st;
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = (char *) tests[i].first;
+    test_gen_path(first, sizeof(first), tests[i].first);
+
+    path.orig = first;
     TEST_CASE(path.orig);
     path.type = MUTT_UNKNOWN;
     path.flags = MPATH_RESOLVED | MPATH_TIDY;
@@ -214,9 +248,12 @@ void test_comp_path2_tidy(void)
 {
   // clang-format off
   static const struct TestValue tests[] = {
-    { "/home/mutt/path/./compress/../compress///apple.gz", "/home/mutt/path/compress/apple.gz", 0 },
+    { "%s/./compress/../compress///apple.gz", "%s/compress/apple.gz", 0 },
   };
   // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
 
   struct Path path = {
     .type = MUTT_COMPRESSED,
@@ -226,12 +263,15 @@ void test_comp_path2_tidy(void)
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    path.orig = mutt_str_strdup(tests[i].first);
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+
+    path.orig = mutt_str_strdup(first);
     rc = comp_path2_tidy(&path);
     TEST_CHECK(rc == 0);
     TEST_CHECK(path.orig != NULL);
     TEST_CHECK(path.flags & MPATH_TIDY);
-    TEST_CHECK(strcmp(path.orig, tests[i].second) == 0);
+    TEST_CHECK(strcmp(path.orig, second) == 0);
     FREE(&path.orig);
   }
 }

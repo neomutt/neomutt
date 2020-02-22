@@ -32,4 +32,7 @@ struct TestValue
   int retval;
 };
 
+void test_gen_dir (char *buf, size_t buflen, const char *fmt);
+void test_gen_path(char *buf, size_t buflen, const char *fmt);
+
 #endif /* TEST_MX_PATH_COMMON_H */

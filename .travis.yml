@@ -39,6 +39,7 @@ git:
 
 install:
   - git clone --depth 1 https://github.com/neomutt/travis-build.git ~/config
+  - git clone --depth 1 https://github.com/neomutt/neomutt-test-files.git ~/test-files
 
 before_script:
   - ccache --zero-stats
@@ -47,6 +48,8 @@ before_script:
   - export -f travis_nanoseconds
   - export -f travis_time_finish
   - export -f travis_time_start
+  - export NEOMUTT_TEST_DIR="$HOME/test-files"
+  - (cd ~/test-files && ./setup.sh)
 
 script:
   - ~/config/build
