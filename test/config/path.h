@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_path_canon()
+ * Test code for the Path object
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,16 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define TEST_NO_MAIN
-#include "acutest.h"
-#include "config.h"
-#include "mutt/lib.h"
+#ifndef _TEST_PATH_H
+#define _TEST_PATH_H
 
-void test_mutt_path_canon(void)
-{
-  // bool mutt_path_canon(char *buf, size_t buflen, const char *homedir);
+#include <stdbool.h>
 
-  {
-    TEST_CHECK(!mutt_path_canon(NULL, 10, "apple", true));
-  }
-}
+void config_path(void);
+
+#endif /* _TEST_PATH_H */

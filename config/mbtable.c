@@ -108,6 +108,7 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
   if (!cs || !cdef)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
+  /* Store empty strings as NULL */
   if (value && (value[0] == '\0'))
     value = NULL;
 

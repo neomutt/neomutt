@@ -30,11 +30,11 @@ void test_mutt_path_pretty(void)
   // bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir);
 
   {
-    TEST_CHECK(!mutt_path_pretty(NULL, 10, "apple"));
+    TEST_CHECK(!mutt_path_pretty(NULL, 10, "apple", true));
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(!mutt_path_pretty(buf, sizeof(buf), NULL));
+    TEST_CHECK(!mutt_path_pretty(buf, sizeof(buf), NULL, true));
   }
 }

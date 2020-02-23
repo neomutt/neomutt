@@ -172,6 +172,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_ADDRESS:
     case DT_ENUM:
     case DT_MBTABLE:
+    case DT_PATH:
     case DT_REGEX:
     case DT_SLIST:
     case DT_SORT:
@@ -181,7 +182,7 @@ static int lua_mutt_set(lua_State *l)
       size_t val_size = lua_strlen(l, -1);
       struct Buffer value_buf = mutt_buffer_make(val_size);
       mutt_buffer_strcpy_n(&value_buf, value, val_size);
-      if (IS_PATH(he))
+      if (DTYPE(he->type) == DT_PATH)
         mutt_buffer_expand_path(&value_buf);
 
       int rv = cs_subset_he_string_set(NeoMutt->sub, he, value_buf.data, &err);

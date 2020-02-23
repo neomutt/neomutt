@@ -1081,7 +1081,7 @@ int mutt_query_variables(struct ListHead *queries)
     }
 
     int type = DTYPE(he->type);
-    if (IS_PATH(he) && !(he->type & DT_MAILBOX))
+    if (type == DT_PATH)
       mutt_pretty_mailbox(value.data, value.dsize);
 
     if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD))
@@ -1555,6 +1555,7 @@ struct ConfigSet *init_config(size_t size)
   long_init(cs);
   mbtable_init(cs);
   number_init(cs);
+  path_init(cs);
   quad_init(cs);
   regex_init(cs);
   slist_init(cs);
