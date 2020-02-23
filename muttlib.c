@@ -1299,6 +1299,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         }
 
         /* use callback function to handle this case */
+        *tmp = '\0';
         src = callback(tmp, sizeof(tmp), col, cols, ch, src, prefix, if_str,
                        else_str, data, flags);
 
