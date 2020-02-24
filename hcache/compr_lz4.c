@@ -29,9 +29,9 @@
 #include "config.h"
 #include <stddef.h>
 #include <lz4.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
+#include "lib.h"
 #include "compr.h"
-#include "hcache.h"
 
 /**
  * struct ComprLz4Ctx - Private Lz4 Compression Context

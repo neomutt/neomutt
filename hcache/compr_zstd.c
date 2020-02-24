@@ -29,9 +29,9 @@
 #include "config.h"
 #include <stdio.h>
 #include <zstd.h>
-#include "mutt/mutt.h"
+#include "mutt/lib.h"
 #include "compr.h"
-#include "hcache.h"
+#include "lib.h"
 
 /**
  * struct ComprZstdCtx - Private Zstd Compression Context
