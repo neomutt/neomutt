@@ -173,6 +173,9 @@ int mutt_hcache_delete_header(header_cache_t *hc, const char *key, size_t keylen
  * @note The returned string must be free'd by the caller
  */
 const char *mutt_hcache_backend_list(void);
+#ifdef USE_HCACHE_COMPRESSION
+const char *mutt_hcache_compress_list(void);
+#endif
 
 bool mutt_hcache_is_valid_backend(const char *s);
 bool mutt_hcache_is_valid_compression(const char *s);

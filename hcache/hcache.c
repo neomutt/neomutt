@@ -182,6 +182,30 @@ bool mutt_hcache_is_valid_compression(const char *s)
   return hcache_get_backend_compr_ops(s);
 }
 
+/**
+ * mutt_hcache_compress_list - Get a list of compression backend names
+ * @retval ptr Comma-space-separated list of names
+ *
+ * @note The caller should free the string
+ */
+const char *mutt_hcache_compress_list(void)
+{
+  char tmp[256] = { 0 };
+  const struct ComprOps **ops = compr_ops;
+  size_t len = 0;
+
+  for (; *ops; ops++)
+  {
+    if (len != 0)
+    {
+      len += snprintf(tmp + len, sizeof(tmp) - len, ", ");
+    }
+    len += snprintf(tmp + len, sizeof(tmp) - len, "%s", (*ops)->name);
+  }
+
+  return mutt_str_strdup(tmp);
+}
+
 #endif /* USE_HCACHE_COMPRESSION */
 
 /**
@@ -374,6 +398,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
 
     /* remember the buffer of database backend */
     hc->ondisk = NULL;
+    mutt_debug(LL_DEBUG3, "Header cache will use %s compression\n", cops->name);
   }
 #endif
 
@@ -475,11 +500,17 @@ void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen)
   mutt_buffer_dealloc(&path);
 
 #ifdef USE_HCACHE_COMPRESSION
-  if (C_HeaderCacheCompressMethod && blob != NULL)
+  /**
+   * all compression methods use at least 6 bytes for size or magic /TR
+   */
+  if (C_HeaderCacheCompressMethod && blob != NULL && dlen > 6)
   {
     const struct ComprOps *cops = compr_get_ops();
-    hc->ondisk = blob;
-    blob = cops->decompress(hc->cctx, blob, dlen);
+    void *dblob = cops->decompress(hc->cctx, blob, dlen);
+    if (dblob) {
+      hc->ondisk = blob;
+      return dblob;
+    }
   }
 #endif
 
@@ -554,7 +585,13 @@ int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
   {
     /* data/dlen gets ptr to compressed data here */
     const struct ComprOps *cops = compr_get_ops();
-    data = cops->compress(hc->cctx, data, dlen, &dlen);
+    size_t clen = dlen;
+    void *cdata = cops->compress(hc->cctx, data, dlen, &clen);
+    if (cdata)
+    {
+      data = cdata;
+      dlen = clen;
+    }
   }
 #endif
 

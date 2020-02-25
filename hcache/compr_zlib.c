@@ -70,7 +70,7 @@ static void *compr_zlib_compress(void *cctx, const char *data, size_t dlen, size
   const void *ubuf = data;
   int rc = compress2(cbuf, &len, ubuf, dlen, C_HeaderCacheCompressLevel);
   if (rc != Z_OK)
-    mutt_error("Zlib compress2() failed!");
+    return NULL;
   *clen = len + 4;
 
   /* safe ulen to first 4 bytes */
@@ -107,7 +107,7 @@ static void *compr_zlib_decompress(void *cctx, const char *cbuf, size_t clen)
   cs = (const unsigned char *) cbuf;
   int ret = uncompress(ubuf, &ulen, cs + 4, clen - 4);
   if (ret != Z_OK)
-    mutt_error("Zlib uncompress() failed!");
+    return NULL;
 
   return ubuf;
 }
