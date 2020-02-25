@@ -455,8 +455,8 @@ static int pop_fetch_headers(struct Mailbox *m)
         mutt_progress_update(&progress, i + 1 - old_count, -1);
       struct PopEmailData *edata = pop_edata_get(m->emails[i]);
 #ifdef USE_HCACHE
-      void *data = mutt_hcache_fetch(hc, edata->uid, strlen(edata->uid));
-      if (data)
+      struct HCacheEntry hce = mutt_hcache_fetch(hc, edata->uid, strlen(edata->uid), 0);
+      if (hce.email)
       {
         /* Detach the private data */
         m->emails[i]->edata = NULL;
@@ -469,10 +469,8 @@ static int pop_fetch_headers(struct Mailbox *m)
          *   data freed separately elsewhere
          *   (the old e->data should point inside a malloc'd block from
          *   hcache so there shouldn't be a memleak here) */
-        struct Email *e = mutt_hcache_restore((unsigned char *) data);
-        mutt_hcache_free(hc, &data);
         email_free(&m->emails[i]);
-        m->emails[i] = e;
+        m->emails[i] = hce.email;
         m->emails[i]->index = index;
 
         /* Reattach the private data */

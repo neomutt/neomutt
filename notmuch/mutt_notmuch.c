@@ -942,12 +942,8 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
   }
 
 #ifdef USE_HCACHE
-  void *from_cache = mutt_hcache_fetch(h, path, mutt_str_strlen(path));
-  if (from_cache)
-  {
-    e = mutt_hcache_restore(from_cache);
-  }
-  else
+  e = mutt_hcache_fetch(h, path, mutt_str_strlen(path), 0).email;
+  if (!e)
 #endif
   {
     if (access(path, F_OK) == 0)
@@ -970,6 +966,11 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
       }
       FREE(&folder);
     }
+
+#ifdef USE_HCACHE
+    mutt_hcache_store(h, newpath ? newpath : path,
+                      mutt_str_strlen(newpath ? newpath : path), e, 0);
+#endif
   }
 
   if (!e)
@@ -978,18 +979,6 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
     goto done;
   }
 
-#ifdef USE_HCACHE
-
-  if (from_cache)
-  {
-    mutt_hcache_free(h, &from_cache);
-  }
-  else
-  {
-    mutt_hcache_store(h, newpath ? newpath : path,
-                      mutt_str_strlen(newpath ? newpath : path), e, 0);
-  }
-#endif
   if (init_email(e, newpath ? newpath : path, msg) != 0)
   {
     email_free(&e);

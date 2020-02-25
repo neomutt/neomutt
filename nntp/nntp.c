@@ -1186,14 +1186,13 @@ static int parse_overview_line(char *line, void *data)
 
     /* try to replace with header from cache */
     snprintf(buf, sizeof(buf), "%u", anum);
-    void *hdata = mutt_hcache_fetch(fc->hc, buf, strlen(buf));
-    if (hdata)
+    struct HCacheEntry hce = mutt_hcache_fetch(fc->hc, buf, strlen(buf), 0);
+    if (hce.email)
     {
       mutt_debug(LL_DEBUG2, "mutt_hcache_fetch %s\n", buf);
       email_free(&e);
-      e = mutt_hcache_restore(hdata);
+      e = hce.email;
       m->emails[m->msg_count] = e;
-      mutt_hcache_free(fc->hc, &hdata);
       e->edata = NULL;
       e->read = false;
       e->old = false;
@@ -1354,13 +1353,12 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
 
 #ifdef USE_HCACHE
     /* try to fetch header from cache */
-    void *hdata = mutt_hcache_fetch(fc.hc, buf, strlen(buf));
-    if (hdata)
+    struct HCacheEntry hce = mutt_hcache_fetch(fc.hc, buf, strlen(buf), 0);
+    if (hce.email)
     {
       mutt_debug(LL_DEBUG2, "mutt_hcache_fetch %s\n", buf);
-      e = mutt_hcache_restore(hdata);
+      e = hce.email;
       m->emails[m->msg_count] = e;
-      mutt_hcache_free(fc.hc, &hdata);
       e->edata = NULL;
 
       /* skip header marked as deleted in cache */
@@ -1590,7 +1588,6 @@ static int check_mailbox(struct Mailbox *m)
 #ifdef USE_HCACHE
     unsigned char *messages = NULL;
     char buf[16];
-    void *hdata = NULL;
     struct Email *e = NULL;
     anum_t first = mdata->first_message;
 
@@ -1618,14 +1615,13 @@ static int check_mailbox(struct Mailbox *m)
           messages[anum - first] = 1;
 
         snprintf(buf, sizeof(buf), "%u", anum);
-        hdata = mutt_hcache_fetch(hc, buf, strlen(buf));
-        if (hdata)
+        struct HCacheEntry hce = mutt_hcache_fetch(hc, buf, strlen(buf), 0);
+        if (hce.email)
         {
           bool deleted;
 
           mutt_debug(LL_DEBUG2, "#1 mutt_hcache_fetch %s\n", buf);
-          e = mutt_hcache_restore(hdata);
-          mutt_hcache_free(hc, &hdata);
+          e = hce.email;
           e->edata = NULL;
           deleted = e->deleted;
           flagged = e->flagged;
@@ -1664,16 +1660,15 @@ static int check_mailbox(struct Mailbox *m)
         continue;
 
       snprintf(buf, sizeof(buf), "%u", anum);
-      hdata = mutt_hcache_fetch(hc, buf, strlen(buf));
-      if (hdata)
+      struct HCacheEntry hce = mutt_hcache_fetch(hc, buf, strlen(buf), 0);
+      if (hce.email)
       {
         mutt_debug(LL_DEBUG2, "#2 mutt_hcache_fetch %s\n", buf);
         if (m->msg_count >= m->email_max)
           mx_alloc_memory(m);
 
-        e = mutt_hcache_restore(hdata);
+        e = hce.email;
         m->emails[m->msg_count] = e;
-        mutt_hcache_free(hc, &hdata);
         e->edata = NULL;
         if (e->deleted)
         {

@@ -30,6 +30,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <stdbool.h>
 #include <string.h>
 #include <sys/types.h>
@@ -46,7 +47,7 @@
  *
  * The minimum size is 4KiB to avoid repeated resizing.
  */
-static void lazy_realloc(void *ptr, size_t size)
+void lazy_realloc(void *ptr, size_t size)
 {
   void **p = (void **) ptr;
 
@@ -98,6 +99,18 @@ void serial_restore_int(unsigned int *i, const unsigned char *d, int *off)
 {
   memcpy(i, d + *off, sizeof(int));
   (*off) += sizeof(int);
+}
+
+/**
+ * serial_restore_size_t - Unpack an size_t from a binary blob
+ * @param s   Size_t to write to
+ * @param d   Binary blob to read from
+ * @param off Offset into the blob
+ */
+void serial_restore_size_t(size_t *s, const unsigned char *d, int *off)
+{
+  memcpy(s, d + *off, sizeof(size_t));
+  (*off) += sizeof(size_t);
 }
 
 /**
@@ -564,100 +577,4 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
   serial_restore_char(&env->followup_to, d, off, false);
   serial_restore_char(&env->x_comment_to, d, off, convert);
 #endif
-}
-
-/**
- * mutt_hcache_dump - Serialise an Email object
- * @param hc          Header cache handle
- * @param e           Email to serialise
- * @param off         Size of the binary blob
- * @param uidvalidity IMAP server identifier
- * @retval ptr Binary blob representing the Email
- *
- * This function transforms a e into a char so that it is usable by
- * db_store.
- */
-void *mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, size_t uidvalidity)
-{
-  struct Email nh;
-  bool convert = !CharsetIsUtf8;
-
-  *off = 0;
-  unsigned char *d = mutt_mem_malloc(4096);
-
-  d = serial_dump_size_t((uidvalidity != 0) ? uidvalidity : mutt_date_epoch_ms(), d, off);
-  d = serial_dump_int(hc->crc, d, off);
-
-  lazy_realloc(&d, *off + sizeof(struct Email));
-  memcpy(&nh, e, sizeof(struct Email));
-
-  /* some fields are not safe to cache */
-  nh.tagged = false;
-  nh.changed = false;
-  nh.threaded = false;
-  nh.recip_valid = false;
-  nh.searched = false;
-  nh.matched = false;
-  nh.collapsed = false;
-  nh.limited = false;
-  nh.num_hidden = 0;
-  nh.recipient = 0;
-  nh.pair = 0;
-  nh.attach_valid = false;
-  nh.path = NULL;
-  nh.tree = NULL;
-  nh.thread = NULL;
-  STAILQ_INIT(&nh.tags);
-#ifdef MIXMASTER
-  STAILQ_INIT(&nh.chain);
-#endif
-  nh.edata = NULL;
-
-  memcpy(d + *off, &nh, sizeof(struct Email));
-  *off += sizeof(struct Email);
-
-  d = serial_dump_envelope(nh.env, d, off, convert);
-  d = serial_dump_body(nh.content, d, off, convert);
-  d = serial_dump_char(nh.maildir_flags, d, off, convert);
-
-  return d;
-}
-
-/**
- * mutt_hcache_restore - restore an Email from data retrieved from the cache
- * @param d Data retrieved using mutt_hcache_fetch or mutt_hcache_fetch_raw
- * @retval ptr Success, the restored header (can't be NULL)
- *
- * @note The returned Email must be free'd by caller code with
- *       email_free().
- */
-struct Email *mutt_hcache_restore(const unsigned char *d)
-{
-  int off = 0;
-  struct Email *e = email_new();
-  bool convert = !CharsetIsUtf8;
-
-  /* skip validate */
-  off += sizeof(size_t);
-
-  /* skip crc */
-  off += sizeof(unsigned int);
-
-  memcpy(e, d + off, sizeof(struct Email));
-  off += sizeof(struct Email);
-
-  STAILQ_INIT(&e->tags);
-#ifdef MIXMASTER
-  STAILQ_INIT(&e->chain);
-#endif
-
-  e->env = mutt_env_new();
-  serial_restore_envelope(e->env, d, &off, convert);
-
-  e->content = mutt_body_new();
-  serial_restore_body(e->content, d, &off, convert);
-
-  serial_restore_char(&e->maildir_flags, d, &off, convert);
-
-  return e;
 }

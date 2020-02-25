@@ -191,9 +191,10 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
   header_cache_t *hc = imap_hcache_open(adata, mdata);
   if (hc)
   {
-    void *uidvalidity = mutt_hcache_fetch_raw(hc, "/UIDVALIDITY", 12);
-    void *uidnext = mutt_hcache_fetch_raw(hc, "/UIDNEXT", 8);
-    unsigned long long *modseq = mutt_hcache_fetch_raw(hc, "/MODSEQ", 7);
+    size_t dlen = 0;
+    void *uidvalidity = mutt_hcache_fetch_raw(hc, "/UIDVALIDITY", 12, &dlen);
+    void *uidnext = mutt_hcache_fetch_raw(hc, "/UIDNEXT", 8, &dlen);
+    unsigned long long *modseq = mutt_hcache_fetch_raw(hc, "/MODSEQ", 7, &dlen);
     if (uidvalidity)
     {
       mdata->uid_validity = *(unsigned int *) uidvalidity;
@@ -202,9 +203,9 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
       mutt_debug(LL_DEBUG3, "hcache uidvalidity %u, uidnext %u, modseq %llu\n",
                  mdata->uid_validity, mdata->uid_next, mdata->modseq);
     }
-    mutt_hcache_free(hc, &uidvalidity);
-    mutt_hcache_free(hc, &uidnext);
-    mutt_hcache_free(hc, (void **) &modseq);
+    mutt_hcache_free_raw(hc, &uidvalidity);
+    mutt_hcache_free_raw(hc, &uidnext);
+    mutt_hcache_free_raw(hc, (void **) &modseq);
     mutt_hcache_close(hc);
   }
 #endif
@@ -499,21 +500,16 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
     return NULL;
 
   char key[16];
-  struct Email *e = NULL;
 
   sprintf(key, "/%u", uid);
-  void *uv = mutt_hcache_fetch(mdata->hcache, key, mutt_str_strlen(key));
-  if (uv)
+  struct HCacheEntry hce =
+      mutt_hcache_fetch(mdata->hcache, key, mutt_str_strlen(key), mdata->uid_validity);
+  if (!hce.email && hce.uidvalidity)
   {
-    const size_t *const uid_validity = uv;
-    if (*uid_validity == mdata->uid_validity)
-      e = mutt_hcache_restore(uv);
-    else
-      mutt_debug(LL_DEBUG3, "hcache uidvalidity mismatch: %zu\n", *uid_validity);
-    mutt_hcache_free(mdata->hcache, &uv);
+    mutt_debug(LL_DEBUG3, "hcache uidvalidity mismatch: %zu\n", hce.uidvalidity);
   }
 
-  return e;
+  return hce.email;
 }
 
 /**
@@ -599,9 +595,14 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata)
   if (!mdata->hcache)
     return NULL;
 
-  char *hc_seqset = mutt_hcache_fetch_raw(mdata->hcache, "/UIDSEQSET", 10);
-  char *seqset = mutt_str_strdup(hc_seqset);
-  mutt_hcache_free(mdata->hcache, (void **) &hc_seqset);
+  char *seqset = NULL;
+  size_t dlen = 0;
+  char *hc_seqset = mutt_hcache_fetch_raw(mdata->hcache, "/UIDSEQSET", 10, &dlen);
+  if (hc_seqset)
+  {
+    seqset = strndup(hc_seqset, dlen);
+    mutt_hcache_free_raw(mdata->hcache, (void **) &hc_seqset);
+  }
   mutt_debug(LL_DEBUG3, "Retrieved /UIDSEQSET %s\n", NONULL(seqset));
 
   return seqset;

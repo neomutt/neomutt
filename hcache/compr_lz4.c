@@ -58,7 +58,7 @@ static void *compr_lz4_open(void)
  */
 static void *compr_lz4_compress(void *cctx, const char *data, size_t dlen, size_t *clen)
 {
-  if (!cctx || (dlen < 10))
+  if (!cctx)
     return NULL;
 
   struct ComprLz4Ctx *ctx = cctx;
@@ -67,13 +67,12 @@ static void *compr_lz4_compress(void *cctx, const char *data, size_t dlen, size_
   mutt_mem_realloc(&ctx->buf, len + 4);
   char *cbuf = ctx->buf;
 
-  /* int LZ4_compress_fast(const char* src, char* dst, int srcSize, int dstCapacity, int acceleration); */
-  *clen = LZ4_compress_fast(data, cbuf + 4, datalen, len, C_HeaderCacheCompressLevel);
-  if (*clen < 0)
-    mutt_error("LZ4_compress_fast() failed!");
-  *clen += 4;
+  len = LZ4_compress_fast(data, cbuf + 4, datalen, len, C_HeaderCacheCompressLevel);
+  if (len == 0)
+    return NULL;
+  *clen = len + 4;
 
-  /* safe ulen to first 4 bytes */
+  /* save ulen to first 4 bytes */
   unsigned char *cs = ctx->buf;
   cs[0] = dlen & 0xff;
   dlen >>= 8;
@@ -107,7 +106,7 @@ static void *compr_lz4_decompress(void *cctx, const char *cbuf, size_t clen)
   const char *data = cbuf;
   int ret = LZ4_decompress_safe(data + 4, ubuf, clen - 4, ulen);
   if (ret < 0)
-    mutt_error("LZ4_decompress_safe() failed!");
+    return NULL;
 
   return ubuf;
 }

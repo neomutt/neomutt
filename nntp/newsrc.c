@@ -742,7 +742,8 @@ void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc)
   anum_t first = 0, last = 0;
 
   /* fetch previous values of first and last */
-  void *hdata = mutt_hcache_fetch_raw(hc, "index", 5);
+  size_t dlen = 0;
+  void *hdata = mutt_hcache_fetch_raw(hc, "index", 5, &dlen);
   if (hdata)
   {
     mutt_debug(LL_DEBUG2, "mutt_hcache_fetch index: %s\n", (char *) hdata);
@@ -762,7 +763,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc)
         mutt_hcache_delete_header(hc, buf, strlen(buf));
       }
     }
-    mutt_hcache_free(hc, &hdata);
+    mutt_hcache_free_raw(hc, &hdata);
   }
 
   /* store current values of first and last */
@@ -1151,7 +1152,8 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
           continue;
 
         /* fetch previous values of first and last */
-        hdata = mutt_hcache_fetch_raw(hc, "index", 5);
+        size_t dlen = 0;
+        hdata = mutt_hcache_fetch_raw(hc, "index", 5, &dlen);
         if (hdata)
         {
           anum_t first, last;
@@ -1169,7 +1171,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
               mutt_debug(LL_DEBUG2, "%s last_cached=%u\n", mdata->group, last);
             }
           }
-          mutt_hcache_free(hc, &hdata);
+          mutt_hcache_free_raw(hc, &hdata);
         }
         mutt_hcache_close(hc);
       }

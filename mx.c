@@ -1080,7 +1080,7 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, MsgOpenFlags
       locale_t loc = newlocale(LC_TIME_MASK, "C", 0);
       char buf[64] = { 0 };
       struct tm tm = mutt_date_localtime(msg->received);
-      strftime_l(buf, sizeof(buf),  "%a %b %e %H:%M:%S %Y", &tm, loc);
+      strftime_l(buf, sizeof(buf), "%a %b %e %H:%M:%S %Y", &tm, loc);
       freelocale(loc);
       fprintf(msg->fp, "From %s %s\n", p ? p->mailbox : NONULL(Username), buf);
     }

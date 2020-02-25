@@ -735,23 +735,20 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
       key = p->email->path + 3;
       keylen = maildir_hcache_keylen(key);
     }
-    void *data = mutt_hcache_fetch(hc, key, keylen);
-    size_t *when = data;
+    struct HCacheEntry hce = mutt_hcache_fetch(hc, key, keylen, 0);
 
-    if (data && (rc == 0) && (lastchanged.st_mtime <= (*when / 1000)))
+    if (hce.email && (rc == 0) && (lastchanged.st_mtime <= (hce.uidvalidity / 1000)))
     {
-      struct Email *e = mutt_hcache_restore((unsigned char *) data);
-      e->old = p->email->old;
-      e->path = mutt_str_strdup(p->email->path);
+      hce.email->old = p->email->old;
+      hce.email->path = mutt_str_strdup(p->email->path);
       email_free(&p->email);
-      p->email = e;
+      p->email = hce.email;
       if (m->magic == MUTT_MAILDIR)
         maildir_parse_flags(p->email, fn);
     }
     else
-    {
 #endif
-
+    {
       if (maildir_parse_message(m->magic, fn, p->email->old, p->email))
       {
         p->header_parsed = 1;
@@ -771,10 +768,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
       }
       else
         email_free(&p->email);
-#ifdef USE_HCACHE
     }
-    mutt_hcache_free(hc, &data);
-#endif
     last = p;
   }
 #ifdef USE_HCACHE

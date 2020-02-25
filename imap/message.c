@@ -1311,12 +1311,13 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
 
   if (mdata->hcache && initial_download)
   {
-    uid_validity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12);
-    puid_next = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8);
+    size_t dlen = 0;
+    uid_validity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12, &dlen);
+    puid_next = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8, &dlen);
     if (puid_next)
     {
       uid_next = *(unsigned int *) puid_next;
-      mutt_hcache_free(mdata->hcache, &puid_next);
+      mutt_hcache_free_raw(mdata->hcache, &puid_next);
     }
 
     if (mdata->modseq)
@@ -1332,12 +1333,13 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
 
     if (uid_validity && uid_next && (*(unsigned int *) uid_validity == mdata->uid_validity))
     {
+      size_t dlen2 = 0;
       evalhc = true;
-      pmodseq = mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7);
+      pmodseq = mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7, &dlen2);
       if (pmodseq)
       {
         hc_modseq = *pmodseq;
-        mutt_hcache_free(mdata->hcache, (void **) &pmodseq);
+        mutt_hcache_free_raw(mdata->hcache, (void **) &pmodseq);
       }
       if (hc_modseq)
       {
@@ -1352,7 +1354,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
           eval_condstore = true;
       }
     }
-    mutt_hcache_free(mdata->hcache, &uid_validity);
+    mutt_hcache_free_raw(mdata->hcache, &uid_validity);
   }
   if (evalhc)
   {

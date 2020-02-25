@@ -91,7 +91,7 @@ static void *compr_zstd_open(void)
  */
 static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size_t *clen)
 {
-  if (!cctx || (dlen < 10))
+  if (!cctx)
     return NULL;
 
   struct ComprZstdCtx *ctx = cctx;
@@ -106,7 +106,7 @@ static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size
     ret = ZSTD_compressCCtx(ctx->cctx, ctx->buf, len, data, dlen, C_HeaderCacheCompressLevel);
 
   if (ZSTD_isError(ret))
-    mutt_error("ZSTD_compress() failed!");
+    return NULL;
 
   *clen = ret;
 
@@ -120,17 +120,26 @@ static void *compr_zstd_decompress(void *cctx, const char *cbuf, size_t clen)
 {
   struct ComprZstdCtx *ctx = cctx;
 
-  size_t ret;
-  size_t len = ZSTD_getFrameContentSize(cbuf, clen);
+  if (!cctx)
+    return NULL;
+
+  unsigned long long len = ZSTD_getFrameContentSize(cbuf, clen);
+  if (len == ZSTD_CONTENTSIZE_UNKNOWN)
+    return NULL;
+  else if (len == ZSTD_CONTENTSIZE_ERROR)
+    return NULL;
+  else if (len == 0)
+    return NULL;
   mutt_mem_realloc(&ctx->buf, len);
 
+  size_t ret;
   if (ctx->ddict)
     ret = ZSTD_decompress_usingDDict(ctx->dctx, ctx->buf, len, cbuf, clen, ctx->ddict);
   else
     ret = ZSTD_decompressDCtx(ctx->dctx, ctx->buf, len, cbuf, clen);
 
   if (ZSTD_isError(ret))
-    mutt_error("ZSTD_decompress() failed!");
+    return NULL;
 
   return ctx->buf;
 }
@@ -157,9 +166,7 @@ static void compr_zstd_close(void **cctx)
   if (ctx->ddict)
     ZSTD_freeDDict(ctx->ddict);
 
-  if (ctx->buf)
-    FREE(&ctx->buf);
-
+  FREE(&ctx->buf);
   FREE(cctx);
 }
 

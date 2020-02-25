@@ -84,6 +84,16 @@ struct EmailCache
 typedef struct EmailCache header_cache_t;
 
 /**
+ * struct HCacheEntry - Wrapper for Email retrieved from the header cache
+ */
+struct HCacheEntry
+{
+  size_t uidvalidity;  ///< IMAP-specific UIDVALIDITY
+  unsigned int crc;    ///< CRC of Email/Body/etc structs
+  struct Email *email; ///< Retrieved email
+};
+
+/**
  * typedef hcache_namer_t - Prototype for function to compose hcache file names
  * @param path    Path of message
  * @param dest    Buffer for filename
@@ -114,37 +124,10 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
 void mutt_hcache_close(header_cache_t *hc);
 
 /**
- * mutt_hcache_fetch - fetch and validate a  message's header from the cache
- * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open()
- * @param key    Message identification string
- * @param keylen Length of the string pointed to by key
- * @retval ptr  Success, data if found and valid
- * @retval NULL Otherwise
- *
- * @note This function performs a check on the validity of the data found by
- *       comparing it with the crc value of the header_cache_t structure.
- *
- * @note The returned pointer must be freed by calling mutt_hcache_free. This
- *       must be done before closing the header cache with mutt_hcache_close.
- */
-void *mutt_hcache_fetch(header_cache_t *hc, const char *key, size_t keylen);
-
-void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen);
-
-/**
- * mutt_hcache_free - free previously fetched data
- * @param hc   Pointer to the header_cache_t structure got by mutt_hcache_open()
- * @param data Pointer to the data got using hcache_fetch or hcache_fetch_raw
- */
-void mutt_hcache_free(header_cache_t *hc, void **data);
-
-struct Email *mutt_hcache_restore(const unsigned char *d);
-
-/**
  * mutt_hcache_store - store a Header along with a validity datum
  * @param hc          Pointer to the header_cache_t structure got by mutt_hcache_open()
  * @param key         Message identification string
- * @param keylen      Length of the string pointed to by key
+ * @param keylen      Length of the key string
  * @param e           Email to store
  * @param uidvalidity IMAP-specific UIDVALIDITY value, or 0 to use the current time
  * @retval 0   Success
@@ -153,8 +136,31 @@ struct Email *mutt_hcache_restore(const unsigned char *d);
 int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
                       struct Email *e, unsigned int uidvalidity);
 
+/**
+ * mutt_hcache_fetch - fetch and validate a  message's header from the cache
+ * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open()
+ * @param key    Message identification string
+ * @param keylen Length of the string pointed to by key
+ * @param uidvalidity Only restore if it matches the stored uidvalidity
+ * @retval obj Success, HCacheEntry containing an Email
+ * @retval obj Failure, empty HCacheEntry
+ *
+ * @note This function performs a check on the validity of the data found by
+ *       comparing it with the crc value of the header_cache_t structure.
+ */
+struct HCacheEntry mutt_hcache_fetch(header_cache_t *hc, const char *key, size_t keylen, unsigned int uidvalidity);
+
 int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
                           void *data, size_t dlen);
+
+void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen, size_t *dlen);
+
+/**
+ * mutt_hcache_free_raw - free data fetched with mutt_hcache_fetch_raw()
+ * @param hc   Pointer to the header_cache_t structure got by mutt_hcache_open()
+ * @param data Pointer to the data got using mutt_hcache_fetch_raw
+ */
+void mutt_hcache_free_raw(header_cache_t *hc, void **data);
 
 /**
  * mutt_hcache_delete_header - delete a key / data pair
@@ -173,6 +179,9 @@ int mutt_hcache_delete_header(header_cache_t *hc, const char *key, size_t keylen
  * @note The returned string must be free'd by the caller
  */
 const char *mutt_hcache_backend_list(void);
+#ifdef USE_HCACHE_COMPRESSION
+const char *mutt_hcache_compress_list(void);
+#endif
 
 bool mutt_hcache_is_valid_backend(const char *s);
 bool mutt_hcache_is_valid_compression(const char *s);

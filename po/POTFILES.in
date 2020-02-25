@@ -76,6 +76,9 @@ gui/reflow.c
 gui/terminal.c
 handler.c
 hcache/bdb.c
+hcache/compr_lz4.c
+hcache/compr_zlib.c
+hcache/compr_zstd.c
 hcache/gdbm.c
 hcache/hcache.c
 hcache/kc.c

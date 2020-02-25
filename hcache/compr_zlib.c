@@ -59,7 +59,7 @@ static void *compr_zlib_open(void)
  */
 static void *compr_zlib_compress(void *cctx, const char *data, size_t dlen, size_t *clen)
 {
-  if (!cctx || (dlen < 10))
+  if (!cctx)
     return NULL;
 
   struct ComprZlibCtx *ctx = cctx;
@@ -70,10 +70,10 @@ static void *compr_zlib_compress(void *cctx, const char *data, size_t dlen, size
   const void *ubuf = data;
   int rc = compress2(cbuf, &len, ubuf, dlen, C_HeaderCacheCompressLevel);
   if (rc != Z_OK)
-    mutt_error("Zlib compress2() failed!");
+    return NULL;
   *clen = len + 4;
 
-  /* safe ulen to first 4 bytes */
+  /* save ulen to first 4 bytes */
   unsigned char *cs = ctx->buf;
   cs[0] = dlen & 0xff;
   dlen >>= 8;
@@ -100,14 +100,14 @@ static void *compr_zlib_decompress(void *cctx, const char *cbuf, size_t clen)
   const unsigned char *cs = (const unsigned char *) cbuf;
   uLong ulen = cs[0] + (cs[1] << 8) + (cs[2] << 16) + (cs[3] << 24);
   if (ulen == 0)
-    return (void *) cbuf;
+    return NULL;
 
   mutt_mem_realloc(&ctx->buf, ulen);
   Bytef *ubuf = ctx->buf;
   cs = (const unsigned char *) cbuf;
   int ret = uncompress(ubuf, &ulen, cs + 4, clen - 4);
   if (ret != Z_OK)
-    mutt_error("Zlib uncompress() failed!");
+    return NULL;
 
   return ubuf;
 }
