@@ -113,8 +113,6 @@ typedef uint8_t CliFlags;         ///< Flags for command line options, e.g. #MUT
  */
 void mutt_exit(int code)
 {
-  clear();
-  refresh();
   mutt_endwin();
   exit(code);
 }
@@ -1189,8 +1187,6 @@ int main(int argc, char *argv[], char *envp[])
 main_ok:
   rc = 0;
 main_curses:
-  clear();
-  refresh();
   mutt_endwin();
   mutt_unlink_temp_attachments();
   /* Repeat the last message to the user */
