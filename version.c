@@ -51,6 +51,7 @@
 const char *mutt_make_version(void);
 /* #include "hcache/lib.h" */
 const char *mutt_hcache_backend_list(void);
+const char *mutt_hcache_compress_list(void);
 
 const int SCREEN_WIDTH = 80;
 
@@ -459,6 +460,11 @@ void print_version(FILE *fp)
   const char *backends = mutt_hcache_backend_list();
   fprintf(fp, "\nhcache backends: %s", backends);
   FREE(&backends);
+#ifdef USE_HCACHE_COMPRESSION
+  backends = mutt_hcache_compress_list();
+  fprintf(fp, "\nhcache compression: %s", backends);
+  FREE(&backends);
+#endif
 #endif
 
   rstrip_in_place((char *) configure_options);
