@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <errno.h>
-#include <libintl.h>
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
@@ -61,6 +60,9 @@
 #include "sidebar.h"
 #include "version.h"
 #include "imap/lib.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 /* LIFO designed to contain the list of config files that have been sourced and
  * avoid cyclic sourcing */
