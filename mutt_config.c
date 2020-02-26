@@ -215,6 +215,12 @@ struct ConfigDef MuttVars[] = {
   ** be redrawn on the screen when moving to the next or previous entries
   ** in the menu.
   */
+
+  { "arrow_string", DT_STRING|DT_NOT_EMPTY, &C_ArrowString, IP "->" },
+  /*
+  ** .pp
+  ** Specifies the string of arrow_cursor when arrow_cursor enabled.
+  */
   { "ascii_chars", DT_BOOL|R_INDEX|R_PAGER, &C_AsciiChars, false },
   /*
   ** .pp
