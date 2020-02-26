@@ -192,6 +192,7 @@ WHERE unsigned char C_FollowupToPoster;      ///< Config: (nntp) Reply to the po
 #endif
 
 WHERE bool C_ArrowCursor;                    ///< Config: Use an arrow '->' instead of highlighting in the index
+WHERE char *C_ArrowString;                   ///< Config: Use an custom string for arrow_cursor
 WHERE bool C_AsciiChars;                     ///< Config: Use plain ASCII characters, when drawing email threads
 WHERE bool C_Askbcc;                         ///< Config: Ask the user for the blind-carbon-copy recipients
 WHERE bool C_Askcc;                          ///< Config: Ask the user for the carbon-copy recipients

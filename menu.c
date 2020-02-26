@@ -337,7 +337,7 @@ static void menu_make_entry(char *buf, size_t buflen, struct Menu *menu, int i)
 static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
 {
   char *scratch = mutt_str_strdup(buf);
-  int shift = C_ArrowCursor ? 3 : 0;
+  int shift = C_ArrowCursor ? mutt_strwidth(C_ArrowString) + 1 : 0;
   int cols = menu->win_index->state.cols - shift;
 
   mutt_simple_format(buf, buflen, cols, cols, JUSTIFY_LEFT, ' ', scratch,
@@ -433,7 +433,7 @@ void menu_redraw_index(struct Menu *menu)
         mutt_curses_set_color(MT_COLOR_INDICATOR);
         if (C_ArrowCursor)
         {
-          mutt_window_addstr("->");
+          mutt_window_addstr(C_ArrowString);
           mutt_curses_set_attr(attr);
           mutt_window_addch(' ');
         }
@@ -441,7 +441,8 @@ void menu_redraw_index(struct Menu *menu)
           do_color = false;
       }
       else if (C_ArrowCursor)
-        mutt_window_addstr("   ");
+        /* Print space chars to match the screen width of C_ArrowString */
+        mutt_window_printf("%*s", mutt_strwidth(C_ArrowString) + 1, "");
 
       print_enriched_string(i, attr, (unsigned char *) buf, do_color);
     }
@@ -479,20 +480,21 @@ void menu_redraw_motion(struct Menu *menu)
 
   if (C_ArrowCursor)
   {
-    /* clear the pointer */
-    mutt_window_addstr("  ");
+    /* clear the arrow */
+    /* Print space chars to match the screen width of C_ArrowString */
+    mutt_window_printf("%*s", mutt_strwidth(C_ArrowString) + 1, "");
 
     if (menu->redraw & REDRAW_MOTION_RESYNC)
     {
       menu_make_entry(buf, sizeof(buf), menu, menu->oldcurrent);
       menu_pad_string(menu, buf, sizeof(buf));
-      mutt_window_move(menu->win_index, menu->oldcurrent + menu->offset - menu->top, 3);
+      mutt_window_move(menu->win_index, menu->oldcurrent + menu->offset - menu->top, mutt_strwidth(C_ArrowString) + 1);
       print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
     }
 
     /* now draw it in the new location */
     mutt_curses_set_color(MT_COLOR_INDICATOR);
-    mutt_window_mvaddstr(menu->win_index, menu->current + menu->offset - menu->top, 0, "->");
+    mutt_window_mvaddstr(menu->win_index, menu->current + menu->offset - menu->top, 0, C_ArrowString);
   }
   else
   {
@@ -529,7 +531,7 @@ void menu_redraw_current(struct Menu *menu)
   mutt_curses_set_color(MT_COLOR_INDICATOR);
   if (C_ArrowCursor)
   {
-    mutt_window_addstr("->");
+    mutt_window_addstr(C_ArrowString);
     mutt_curses_set_attr(attr);
     mutt_window_addch(' ');
     menu_pad_string(menu, buf, sizeof(buf));
