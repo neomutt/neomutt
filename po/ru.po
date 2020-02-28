@@ -6826,9 +6826,8 @@ msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
 #: send.c:2438
-#, fuzzy
 msgid "Article not posted"
-msgstr "Письмо не отправлено"
+msgstr "Статья не размещена"
 
 #: send.c:2448
 msgid "Message postponed"
@@ -6843,18 +6842,16 @@ msgid "No subject specified"
 msgstr "Тема сообщения не указана"
 
 #: send.c:2497
-#, fuzzy
 msgid "No newsgroup specified"
-msgstr "Тема сообщения не указана"
+msgstr "Не указана группа новостей"
 
 #: send.c:2507
-#, fuzzy
 msgid "No attachments, cancel sending?"
-msgstr "изменить транспортную кодировку для вложения"
+msgstr "Вложения отсутствуют. Отменить отправку?"
 
 #: send.c:2512
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
-msgstr ""
+msgstr "Сообщение содержит текст, соответствуюший \"$abort_noattach_regex\". Отправлено не будет."
 
 #: send.c:2570 smtp.c:230
 msgid "Sending message..."
@@ -6870,7 +6867,7 @@ msgstr "Сообщение отправляется в фоновом режим
 
 #: send.c:2620
 msgid "Article posted"
-msgstr ""
+msgstr "Статья размещена"
 
 #: send.c:2621
 msgid "Mail sent"
@@ -6891,9 +6888,8 @@ msgid "%s isn't a regular file"
 msgstr "%s не является файлом"
 
 #: sendlib.c:1222
-#, fuzzy
 msgid "Could not find any mime.types file."
-msgstr "Сообщение отправить не удалось."
+msgstr "Не удалось найти ни одного mime.types файла."
 
 #: sendlib.c:1313
 #, c-format
@@ -6944,9 +6940,8 @@ msgid "%s authentication failed, trying next method"
 msgstr "Не удалось выполнить %s аутентификацию, пробуем следующий метод"
 
 #: smtp.c:661
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "Ошибка GSSAPI-аутентификации"
+msgstr "Для SMTP аутентификации необходим SASL"
 
 #: smtp.c:742
 msgid "SMTP server does not support authentication"
@@ -7043,9 +7038,8 @@ msgstr ""
 "более подробной информации введите \"neomutt -vv\".\n"
 
 #: version.c:451
-#, fuzzy
 msgid "Default options:"
-msgstr "Параметры компиляции:"
+msgstr "Параметры по умолчанию:"
 
 #: version.c:454
 msgid "Compile options:"
