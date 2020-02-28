@@ -610,7 +610,16 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
 
   /* the cryptalg field must not be empty */
   if (((WithCrypto & APPLICATION_SMIME) != 0) && *smime_cryptalg)
-    mutt_str_replace(&C_SmimeEncryptWith, smime_cryptalg);
+  {
+    struct Buffer errmsg = mutt_buffer_make(0);
+    int rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
+                                      smime_cryptalg, &errmsg);
+
+    if ((CSR_RESULT(rc) != CSR_SUCCESS) && !mutt_buffer_is_empty(&errmsg))
+      mutt_error("%s", mutt_b2s(&errmsg));
+
+    mutt_buffer_dealloc(&errmsg);
+  }
 
   /* Set {Smime,Pgp}SignAs, if desired. */
 

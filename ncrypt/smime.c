@@ -40,6 +40,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "alias.h"
@@ -2480,6 +2481,8 @@ int smime_class_send_menu(struct Email *e)
         e->security |= SEC_ENCRYPT;
         do
         {
+          struct Buffer errmsg = mutt_buffer_make(0);
+          int rc = CSR_SUCCESS;
           switch (mutt_multi_choice(_("Choose algorithm family: (1) DES, (2) "
                                       "RC2, (3) AES, or (c)lear?"),
                                     // L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
@@ -2491,10 +2494,12 @@ int smime_class_send_menu(struct Email *e)
                                                  _("12")))
               {
                 case 1:
-                  mutt_str_replace(&C_SmimeEncryptWith, "des");
+                  rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
+                                                "des", &errmsg);
                   break;
                 case 2:
-                  mutt_str_replace(&C_SmimeEncryptWith, "des3");
+                  rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
+                                                "des3", &errmsg);
                   break;
               }
               break;
@@ -2506,13 +2511,16 @@ int smime_class_send_menu(struct Email *e)
                           _("123")))
               {
                 case 1:
-                  mutt_str_replace(&C_SmimeEncryptWith, "rc2-40");
+                  rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
+                                                "rc2-40", &errmsg);
                   break;
                 case 2:
-                  mutt_str_replace(&C_SmimeEncryptWith, "rc2-64");
+                  rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
+                                                "rc2-64", &errmsg);
                   break;
                 case 3:
-                  mutt_str_replace(&C_SmimeEncryptWith, "rc2-128");
+                  rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
+                                                "rc2-128", &errmsg);
                   break;
               }
               break;
@@ -2524,25 +2532,34 @@ int smime_class_send_menu(struct Email *e)
                           _("123")))
               {
                 case 1:
-                  mutt_str_replace(&C_SmimeEncryptWith, "aes128");
+                  rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
+                                                "aes128", &errmsg);
                   break;
                 case 2:
-                  mutt_str_replace(&C_SmimeEncryptWith, "aes192");
+                  rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
+                                                "aes192", &errmsg);
                   break;
                 case 3:
-                  mutt_str_replace(&C_SmimeEncryptWith, "aes256");
+                  rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
+                                                "aes256", &errmsg);
                   break;
               }
               break;
 
             case 4:
-              FREE(&C_SmimeEncryptWith);
+              rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
+                                            NULL, &errmsg);
             /* (c)lear */
             /* fallthrough */
             case -1: /* Ctrl-G or Enter */
               choice = 0;
               break;
           }
+
+          if ((CSR_RESULT(rc) != CSR_SUCCESS) && !mutt_buffer_is_empty(&errmsg))
+            mutt_error("%s", mutt_b2s(&errmsg));
+
+          mutt_buffer_dealloc(&errmsg);
         } while (choice == -1);
         break;
       }
