@@ -1491,31 +1491,6 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
 }
 
 /**
- * mx_path_pretty - Abbreviate a mailbox path - Wrapper for MxOps::path_pretty()
- */
-int mx_path_pretty(char *buf, size_t buflen, const char *folder)
-{
-  enum MailboxType type = mx_path_probe(buf);
-  const struct MxOps *ops = mx_get_ops(type);
-  if (!ops)
-    return -1;
-
-  if (!ops->path_canon)
-    return -1;
-
-  if (ops->path_canon(buf, buflen) < 0)
-    return -1;
-
-  if (!ops->path_pretty)
-    return -1;
-
-  if (ops->path_pretty(buf, buflen, folder) < 0)
-    return -1;
-
-  return 0;
-}
-
-/**
  * mx_path_parent - Find the parent of a mailbox path - Wrapper for MxOps::path_parent()
  */
 int mx_path_parent(char *buf, size_t buflen)

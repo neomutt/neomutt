@@ -1653,23 +1653,6 @@ int maildir_path_canon(char *buf, size_t buflen)
 }
 
 /**
- * maildir_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
- */
-int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
-{
-  if (!buf)
-    return -1;
-
-  if (mutt_path_abbr_folder(buf, buflen, folder))
-    return 0;
-
-  if (mutt_path_pretty(buf, buflen, HomeDir, false))
-    return 0;
-
-  return -1;
-}
-
-/**
  * maildir_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
 int maildir_path_parent(char *buf, size_t buflen)

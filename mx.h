@@ -275,16 +275,6 @@ struct MxOps
   int (*path_canon)      (char *buf, size_t buflen);
 
   /**
-   * path_pretty - Abbreviate a Mailbox path
-   * @param buf    Path to modify
-   * @param buflen Length of buffer
-   * @param folder Base path for '=' substitution
-   * @retval  0 Success
-   * @retval -1 Failure
-   */
-  int (*path_pretty)     (char *buf, size_t buflen, const char *folder);
-
-  /**
    * path_parent - Find the parent of a Mailbox path
    * @param buf    Path to modify
    * @param buflen Length of buffer
@@ -454,7 +444,6 @@ int             mx_save_hcache     (struct Mailbox *m, struct Email *e);
 int             mx_path_canon      (char *buf, size_t buflen, const char *folder, enum MailboxType *type);
 int             mx_path_canon2     (struct Mailbox *m, const char *folder);
 int             mx_path_parent     (char *buf, size_t buflen);
-int             mx_path_pretty     (char *buf, size_t buflen, const char *folder);
 enum MailboxType mx_path_probe     (const char *path);
 struct Mailbox *mx_path_resolve    (const char *path, const char *folder);
 int             mx_tags_commit     (struct Mailbox *m, struct Email *e, char *tags);
