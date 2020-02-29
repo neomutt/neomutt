@@ -1255,15 +1255,6 @@ static int pop_path_canon(char *buf, size_t buflen)
 }
 
 /**
- * pop_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
- */
-static int pop_path_pretty(char *buf, size_t buflen, const char *folder)
-{
-  /* Succeed, but don't do anything, for now */
-  return 0;
-}
-
-/**
  * pop_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
 static int pop_path_parent(char *buf, size_t buflen)
@@ -1348,7 +1339,6 @@ struct MxOps MxPopOps = {
   .tags_commit      = NULL,
   .path_probe       = pop_path_probe,
   .path_canon       = pop_path_canon,
-  .path_pretty      = pop_path_pretty,
   .path_parent      = pop_path_parent,
   .path2_canon      = pop_path2_canon_wrapper,
   .path2_compare    = pop_path2_compare,

@@ -834,7 +834,6 @@ struct MxOps MxMhOps = {
   .tags_commit      = NULL,
   .path_probe       = mh_path_probe,
   .path_canon       = maildir_path_canon,
-  .path_pretty      = maildir_path_pretty,
   .path_parent      = maildir_path_parent,
   .path2_canon      = maildir_path2_canon,
   .path2_compare    = maildir_path2_compare,
