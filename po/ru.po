@@ -1105,9 +1105,8 @@ msgid "Descrip"
 msgstr "Описание"
 
 #: compose.c:224
-#, fuzzy
 msgid "Newsgroups"
-msgstr "Тема сообщения не указана."
+msgstr "Группы сообщений"
 
 #. L10N: Autocrypt recommendation flag: off.
 #. * This is displayed when Autocrypt is turned off.
@@ -1289,12 +1288,11 @@ msgid "Not sending this message"
 msgstr "Ошибка отправки сообщения"
 
 #: compose.c:1631
-#, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
-msgstr[0] "Вкладываются помеченные файлы..."
-msgstr[1] "Вкладываются помеченные файлы..."
-msgstr[2] "Вкладываются помеченные файлы..."
+msgstr[0] "Вкладываются выбранные файлы..."
+msgstr[1] "Вкладываются выбранные файлы..."
+msgstr[2] "Вкладываются выбранные файлы..."
 
 #: compose.c:1645
 #, c-format
@@ -1388,9 +1386,8 @@ msgid "What we have here is a failure to make an attachment"
 msgstr "Не удалось создать вложение"
 
 #: compose.c:2144
-#, fuzzy
 msgid "Save (postpone) draft message?"
-msgstr "Продолжить отложенное сообщение?"
+msgstr "Сохранить (отложить) сообщение в черновики?"
 
 #: compose.c:2204
 msgid "Write message to mailbox"
@@ -1474,14 +1471,14 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "Ошибка. Временный файл оставлен: %s"
 
 #: config/bool.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid boolean value: %s"
-msgstr "Неверно указана относительная дата: %s"
+msgstr "Неверное логическое значение: %s"
 
 #: config/bool.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid boolean value: %ld"
-msgstr "Неверно указана относительная дата: %s"
+msgstr "Неверное логическое значение: %ld"
 
 #: config/enum.c:62
 #, fuzzy, c-format
