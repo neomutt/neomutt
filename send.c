@@ -1823,6 +1823,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
       {
         e_post->content = mutt_remove_multipart(e_post->content);
         decode_descriptions(e_post->content);
+        mutt_error(_("Error encrypting message. Check your crypt settings."));
         return -1;
       }
       encrypt_as = AutocryptDefaultKey;
@@ -1838,6 +1839,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
         FREE(&pgpkeylist);
         e_post->content = mutt_remove_multipart(e_post->content);
         decode_descriptions(e_post->content);
+        mutt_error(_("Error encrypting message. Check your crypt settings."));
         return -1;
       }
 
