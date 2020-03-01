@@ -202,9 +202,10 @@ done:
  *
  * **Tests**
  * - Path must begin "notmuch://"
- * - Database path must exist
- * - Database path must be a directory
- * - Database path must contain a subdirectory `.notmuch`
+ * - If supplied:
+ *   - Database path must exist
+ *   - Database path must be a directory
+ *   - Database path must contain a subdirectory `.notmuch`
  *
  * @note The case of the URL scheme is ignored
  */
@@ -218,16 +219,19 @@ int nm_path2_probe(struct Path *path, const struct stat *st)
   if (url->scheme != U_NOTMUCH)
     goto done;
 
-  // We stat the dir because NeoMutt can't parse the database path itself.
-  struct stat std = { 0 };
-  if ((stat(url->path, &std) != 0) || !S_ISDIR(std.st_mode))
-    goto done;
+  if (url->path)
+  {
+    // We stat the dir because NeoMutt can't parse the database path itself.
+    struct stat std = { 0 };
+    if ((stat(url->path, &std) != 0) || !S_ISDIR(std.st_mode))
+      goto done;
 
-  char buf[PATH_MAX];
-  snprintf(buf, sizeof(buf), "%s/.notmuch", url->path);
-  memset(&std, 0, sizeof(std));
-  if ((stat(buf, &std) != 0) || !S_ISDIR(std.st_mode))
-    goto done;
+    char buf[PATH_MAX];
+    snprintf(buf, sizeof(buf), "%s/.notmuch", url->path);
+    memset(&std, 0, sizeof(std));
+    if ((stat(buf, &std) != 0) || !S_ISDIR(std.st_mode))
+      goto done;
+  }
 
   path->type = MUTT_NOTMUCH;
   rc = 0;

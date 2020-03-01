@@ -465,7 +465,7 @@ bool                mx_tags_is_supported(struct Mailbox *m);
 int              mx_path2_canon  (struct Path *path);
 int              mx_path2_compare(struct Path *path1, struct Path *path2);
 int              mx_path2_parent (const struct Path *path, struct Path **parent);
-int              mx_path2_pretty (struct Path *path, const char *folder);
+int              mx_path2_pretty (struct Path *path, const char *folder, bool use_desc);
 enum MailboxType mx_path2_probe  (struct Path *path);
 int              mx_path2_resolve(struct Path *path, const char *folder);
 struct Mailbox * mx_path2_find   (struct Path *path);

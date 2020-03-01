@@ -73,6 +73,8 @@ int comp_path2_parent(const struct Path *path, struct Path **parent)
 
 /**
  * comp_path2_pretty - Abbreviate a Mailbox path - Implements MxOps::path2_pretty()
+ *
+ * @note Use the canon path, because that describes the compressed file.
  */
 int comp_path2_pretty(struct Path *path, const char *folder)
 {

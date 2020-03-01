@@ -662,6 +662,14 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
                                files, numfiles);
               if (buf[0] != '\0')
               {
+                char *pretty = NULL;
+                mutt_path2_pretty(buf, HomeDir, &pretty);
+                if (pretty)
+                {
+                  mutt_str_strfcpy(buf, pretty, buflen);
+                  FREE(&pretty);
+                }
+                //JKJ this could be a file/dir or a mailbox!
                 mutt_pretty_mailbox(buf, buflen);
                 if (!pass)
                   mutt_hist_add(hclass, buf, true);

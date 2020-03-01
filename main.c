@@ -783,14 +783,10 @@ int main(int argc, char *argv[], char *envp[])
 
     mutt_buffer_strcpy(fpath, C_Folder);
     mutt_buffer_expand_path(fpath);
-    bool skip = false;
-#ifdef USE_IMAP
-    /* we're not connected yet - skip mail folder creation */
-    skip |= (imap_path_probe(mutt_b2s(fpath), NULL) == MUTT_IMAP);
-#endif
-#ifdef USE_NNTP
-    skip |= (nntp_path_probe(mutt_b2s(fpath), NULL) == MUTT_NNTP);
-#endif
+    enum MailboxType type = mx_path_probe(mutt_b2s(fpath));
+    //QWQ use MxOps.is_local
+    //QWQ or drop create completely
+    bool skip = (type == MUTT_IMAP) || (type == MUTT_NNTP) || (type == MUTT_NOTMUCH);
     if (!skip && (stat(mutt_b2s(fpath), &sb) == -1) && (errno == ENOENT))
     {
       char msg2[256];

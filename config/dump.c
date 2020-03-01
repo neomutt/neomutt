@@ -35,7 +35,7 @@
 #include "subset.h"
 #include "types.h"
 
-void mutt_pretty_mailbox(char *buf, size_t buflen);
+extern char *HomeDir;
 
 /**
  * escape_string - Write a string to a buffer, escaping special characters
@@ -206,7 +206,17 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
         }
 
         if (((type == DT_PATH) || IS_MAILBOX(he)) && (value.data[0] == '/'))
-          mutt_pretty_mailbox(value.data, value.dsize);
+        {
+          //JKJ Always a filesystem path (file/dir)
+          // mailbox code path needs separating
+          char *pretty = NULL;
+          mutt_path2_pretty(value.data, HomeDir, &pretty);
+          if (pretty)
+          {
+            mutt_buffer_strcpy(&value, pretty);
+            FREE(&pretty);
+          }
+        }
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
             (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
@@ -228,7 +238,17 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
         }
 
         if (((type == DT_PATH) || IS_MAILBOX(he)) && !(he->type & DT_MAILBOX))
-          mutt_pretty_mailbox(initial.data, initial.dsize);
+        {
+          //JKJ Always a filesystem path (file/dir)
+          // mailbox code path needs separating
+          char *pretty = NULL;
+          mutt_path2_pretty(initial.data, HomeDir, &pretty);
+          if (pretty)
+          {
+            mutt_buffer_strcpy(&initial, pretty);
+            FREE(&pretty);
+          }
+        }
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
             (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))

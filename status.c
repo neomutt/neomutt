@@ -41,6 +41,7 @@
 #include "mutt_mailbox.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
+#include "mx.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
@@ -126,46 +127,24 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       break;
 
     case 'D':
-    {
-      struct Mailbox *m = Context ? Context->mailbox : NULL;
-      // If there's a descriptive name, use it. Otherwise, fall-through
-      if (m && m->path->desc)
-      {
-        mutt_str_strfcpy(tmp, m->path->desc, sizeof(tmp));
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, tmp);
-        break;
-      }
-    }
-    /* fallthrough */
     case 'f':
     {
       struct Mailbox *m = Context ? Context->mailbox : NULL;
-
-#ifdef USE_COMP_MBOX
-      if (m && m->compress_info && (m->path->canon[0] != '\0'))
-      {
-        mutt_str_strfcpy(tmp, m->path->canon, sizeof(tmp));
-        mutt_pretty_mailbox(tmp, sizeof(tmp));
-      }
-      else
-#endif
-          if (m && (m->type == MUTT_NOTMUCH) && m->path->desc)
-      {
-        mutt_str_strfcpy(tmp, m->path->desc, sizeof(tmp));
-      }
-      else if (m && m->path->orig)
-      {
-        mutt_str_strfcpy(tmp, mailbox_path(m), sizeof(tmp));
-        mutt_pretty_mailbox(tmp, sizeof(tmp));
-      }
-      else
-        mutt_str_strfcpy(tmp, _("(no mailbox)"), sizeof(tmp));
+      if (m)
+        mx_path2_pretty(m->path, C_Folder, (op == 'D'));
 
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, tmp);
+      if (m->path->pretty)
+      {
+        snprintf(buf, buflen, fmt, m->path->pretty);
+      }
+      else
+      {
+        snprintf(buf, buflen, fmt, _("(no mailbox)"));
+      }
       break;
     }
+
     case 'F':
       if (!optional)
       {

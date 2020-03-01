@@ -475,13 +475,18 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     char *folder = nm_email_get_folder(e);
     if (folder && !(C_Weed && mutt_matches_ignore("folder")))
     {
-      char buf[1024];
-      mutt_str_strfcpy(buf, folder, sizeof(buf));
-      mutt_pretty_mailbox(buf, sizeof(buf));
-
-      fputs("Folder: ", fp_out);
-      fputs(buf, fp_out);
-      fputc('\n', fp_out);
+      char *pretty = NULL;
+      //JKJ Always a filesystem path (maildir dir)
+      mutt_path2_pretty(folder, HomeDir, &pretty);
+      if (pretty)
+      {
+        fprintf(fp_out, "Folder: %s\n", pretty);
+        FREE(&pretty);
+      }
+      else
+      {
+        fprintf(fp_out, "Folder: %s\n", folder);
+      }
     }
   }
 #endif

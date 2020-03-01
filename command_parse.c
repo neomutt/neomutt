@@ -1306,9 +1306,19 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
             mutt_buffer_addstr(err, buf->data);
             return MUTT_CMD_ERROR;
           }
+          char *pretty = NULL;
+          //JKJ Always a filesystem path (file/dir)
           if (DTYPE(he->type) == DT_PATH)
-            mutt_pretty_mailbox(buf->data, buf->dsize);
-          pretty_var(buf->data, err);
+            mutt_path2_pretty(buf->data, HomeDir, &pretty);
+          if (pretty)
+          {
+            pretty_var(pretty, err);
+            FREE(&pretty);
+          }
+          else
+          {
+            pretty_var(buf->data, err);
+          }
         }
         else
         {
@@ -1409,9 +1419,19 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
               mutt_buffer_addstr(err, buf->data);
               return MUTT_CMD_ERROR;
             }
+            char *pretty = NULL;
+            //JKJ Always a filesystem path (file/dir)
             if (DTYPE(he->type) == DT_PATH)
-              mutt_pretty_mailbox(buf->data, buf->dsize);
-            pretty_var(buf->data, err);
+              mutt_path2_pretty(buf->data, HomeDir, &pretty);
+            if (pretty)
+            {
+              pretty_var(pretty, err);
+              FREE(&pretty);
+            }
+            else
+            {
+              pretty_var(buf->data, err);
+            }
           }
           else
           {
