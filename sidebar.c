@@ -904,8 +904,8 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
       col = div_width;
 
     mutt_window_move(win, row, col);
-    if (Context && Context->mailbox && (Context->mailbox->path->canon[0] != '\0') &&
-        (mutt_str_strcmp(m->path->canon, Context->mailbox->path->canon) == 0))
+    if (Context && Context->mailbox && (Context->mailbox->path->orig[0] != '\0') &&
+        (mutt_str_strcmp(m->path->orig, Context->mailbox->path->orig) == 0))
     {
       m->msg_unread = Context->mailbox->msg_unread;
       m->msg_count = Context->mailbox->msg_count;

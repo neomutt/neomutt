@@ -195,6 +195,8 @@ int imap_path2_pretty(const struct Path *path, const char *folder, char **pretty
   struct Url *url1 = url_parse(path->orig);
   struct Url *url2 = url_parse(folder);
 
+  if (!url1 || !url2)
+    goto done;
   if (url1->scheme != url2->scheme)
     goto done;
   if (mutt_str_strcasecmp(url1->host, url2->host) != 0)

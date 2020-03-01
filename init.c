@@ -1075,7 +1075,10 @@ int mutt_query_variables(struct ListHead *queries)
 
     int type = DTYPE(he->type);
     if (type == DT_PATH)
+    {
+      //JKJ local file/dir only
       mutt_pretty_mailbox(value.data, value.dsize);
+    }
 
     if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD))
     {

@@ -1522,6 +1522,7 @@ int imap_complete(char *buf, size_t buflen, const char *path)
   {
     /* reformat output */
     imap_qualify_path(buf, buflen, &adata->conn->account, completion);
+    //JKJ imap mailbox only
     mutt_pretty_mailbox(buf, buflen);
     return 0;
   }
