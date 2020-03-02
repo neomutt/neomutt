@@ -154,6 +154,9 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "autocrypt", 0 },
 #endif
+#ifdef HAVE_LIBUNWIND
+  { "backtrace", 2 },
+#endif
 #ifdef HAVE_BKGDSET
   { "bkgdset", 1 },
 #else

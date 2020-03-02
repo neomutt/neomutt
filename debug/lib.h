@@ -28,19 +28,12 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | debug/backtrace.c   | @subpage debug_backtrace   |
- * | debug/parse_test.c  | @subpage debug_parse       |
  */
 
 #ifndef MUTT_DEBUG_LIB_H
 #define MUTT_DEBUG_LIB_H
 
-#include "config.h"
-
-#ifdef HAVE_LIBUNWIND
+// Backtrace
 void show_backtrace(void);
-#endif
-
-// Parse Set
-void test_parse_set(void);
 
 #endif /* MUTT_DEBUG_LIB_H */

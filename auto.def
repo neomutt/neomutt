@@ -101,9 +101,6 @@ options {
   with-zlib:path            => "Location of zlib"
   zstd=0                    => "Enable Zstandard header cache compression support"
   with-zstd:path            => "Location of Zstandard"
-# Debug options
-  backtrace=0               => "DEBUG: Enable backtrace support with libunwind"
-  with-backtrace:path       => "Location of libunwind"
 # System
   with-sysroot:path         => "Target system root"
 # Testing
@@ -113,6 +110,9 @@ options {
   pkgconf=0                 => "Use pkg-config during configure"
 # Enable all options
   everything=0              => "Enable all options"
+# Debug options
+  debug-backtrace=0         => "DEBUG: Enable backtrace support with libunwind"
+  with-backtrace:path       => "Location of libunwind"
 }
 ###############################################################################
 
@@ -123,7 +123,7 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    autocrypt backtrace bdb coverage doc everything fmemopen full-doc gdbm
+    autocrypt bdb coverage debug-backtrace doc everything fmemopen full-doc gdbm
     gnutls gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix
     lua lz4 mixmaster nls notmuch pgp pkgconf qdbm sasl smime sqlite ssl testing
     tokyocabinet zlib zstd
@@ -762,16 +762,6 @@ if {[get-define want-homespool]} {
 }
 
 ###############################################################################
-# Backtrace support with libunwind
-if {[get-define want-backtrace]} {
-  if {![check-inc-and-lib libunwind [opt-val with-backtrace $prefix] \
-                          libunwind.h unw_backtrace unwind]} {
-    user-error "Unable to find libunwind"
-  }
-  define LIBS "-lunwind-generic [get-define LIBS]"
-}
-
-###############################################################################
 # Mixmaster
 if {[get-define want-mixmaster]} {
   define MIXMASTER [opt-val with-mixmaster mixmaster]
@@ -1125,6 +1115,18 @@ if {[get-define want-gss]} {
     define HAVE_HEIMDAL
   }
   define USE_GSS
+}
+
+###############################################################################
+# DEBUG options
+
+# Backtrace support with libunwind
+if {[get-define want-debug-backtrace]} {
+  if {![check-inc-and-lib libunwind [opt-val with-backtrace $prefix] \
+                          libunwind.h unw_backtrace unwind]} {
+    user-error "Unable to find libunwind"
+  }
+  define LIBS "-lunwind-generic [get-define LIBS]"
 }
 
 ###############################################################################
