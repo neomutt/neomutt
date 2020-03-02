@@ -8182,6 +8182,12 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 </entry>
               </row>
               <row>
+                <entry>~Y <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages whose tags match <emphasis>EXPR</emphasis>
+                </entry>
+              </row>
+              <row>
                 <entry>~z [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
                 <entry>
                   messages with a size in the range <emphasis>MIN</emphasis> to

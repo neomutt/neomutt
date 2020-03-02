@@ -1065,6 +1065,10 @@ _
 messages which contain \fIEXPR\fP in their keywords
 T}
 _
+\0~Y \fIEXPR\fP|T{
+messages whose tags match \fIEXPR\fP
+T}
+_
 \0~z \fIMIN\fP-\fIMAX\fP|T{
 messages with a size in the range \fIMIN\fP to \fIMAX\fP \fB**\fP) \fB***\fP)
 T}
