@@ -95,6 +95,12 @@ bool C_IgnoreLinearWhiteSpace = false;
 struct ConfigDef MuttVars[] = {
   /*++*/
 
+  { "abort_backspace", DT_BOOL, &C_AbortBackspace, true },
+  /*
+   ** .pp
+   ** If \fIset\fP, hitting backspace against an empty prompt aborts the
+   ** prompt.
+   */
   { "abort_key", DT_STRING|DT_NOT_EMPTY, &C_AbortKeyStr, IP "\007" },
   /*
   ** .pp
