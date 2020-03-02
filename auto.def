@@ -113,6 +113,7 @@ options {
 # Debug options
   debug-backtrace=0         => "DEBUG: Enable backtrace support with libunwind"
   with-backtrace:path       => "Location of libunwind"
+  debug-parse-test=0        => "DEBUG: Enable 'neomutt -T' for config testing"
 }
 ###############################################################################
 
@@ -123,10 +124,10 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    autocrypt bdb coverage debug-backtrace doc everything fmemopen full-doc gdbm
-    gnutls gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix
-    lua lz4 mixmaster nls notmuch pgp pkgconf qdbm sasl smime sqlite ssl testing
-    tokyocabinet zlib zstd
+    autocrypt bdb coverage debug-backtrace debug-parse-test doc everything
+    fmemopen full-doc gdbm gnutls gpgme gss homespool idn idn2 inotify
+    kyotocabinet lmdb locales-fix lua lz4 mixmaster nls notmuch pgp pkgconf
+    qdbm sasl smime sqlite ssl testing tokyocabinet zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -1127,6 +1128,11 @@ if {[get-define want-debug-backtrace]} {
     user-error "Unable to find libunwind"
   }
   define LIBS "-lunwind-generic [get-define LIBS]"
+}
+
+# Parse Test
+if {[get-define want-debug-parse-test]} {
+  define USE_DEBUG_PARSE_TEST 1
 }
 
 ###############################################################################

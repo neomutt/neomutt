@@ -28,6 +28,7 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | debug/backtrace.c   | @subpage debug_backtrace   |
+ * | debug/parse_test.c  | @subpage debug_parse       |
  */
 
 #ifndef MUTT_DEBUG_LIB_H
@@ -35,5 +36,8 @@
 
 // Backtrace
 void show_backtrace(void);
+
+// Parse Set
+void test_parse_set(void);
 
 #endif /* MUTT_DEBUG_LIB_H */

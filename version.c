@@ -272,6 +272,9 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "openssl", 0 },
 #endif
+#ifdef USE_DEBUG_PARSE_TEST
+  { "parse-test", 2 },
+#endif
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
   { "pgp", 1 },
 #else

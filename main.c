@@ -335,7 +335,9 @@ int main(int argc, char *argv[], char *envp[])
   bool hide_sensitive = false;
   bool batch_mode = false;
   bool edit_infile = false;
+#ifdef USE_DEBUG_PARSE_TEST
   bool test_config = false;
+#endif
   int double_dash = argc, nargc = 1;
   int rc = 1;
   bool repeat_error = false;
@@ -462,9 +464,11 @@ int main(int argc, char *argv[], char *envp[])
         case 's':
           subject = optarg;
           break;
+#ifdef USE_DEBUG_PARSE_TEST
         case 'T':
           test_config = true;
           break;
+#endif
         case 'v':
           version++;
           break;
@@ -516,6 +520,7 @@ int main(int argc, char *argv[], char *envp[])
   if (!get_user_info(cs))
     goto main_exit;
 
+#ifdef USE_DEBUG_PARSE_TEST
   if (test_config)
   {
     cs_str_initial_set(cs, "from", "rich@flatcap.org", NULL);
@@ -524,6 +529,7 @@ int main(int argc, char *argv[], char *envp[])
     test_parse_set();
     goto main_ok;
   }
+#endif
 
   if (dfile)
   {
