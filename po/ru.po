@@ -121,13 +121,12 @@ msgid "Error reading alias file"
 msgstr "Ошибка чтения файла псевдонимов"
 
 #: alias.c:529
-#, fuzzy
 msgid "Trouble adding alias"
-msgstr "Ошибка чтения файла псевдонимов"
+msgstr "Проблема с добавлением псевдонима"
 
 #: alias.c:531
 msgid "Alias added"
-msgstr "Псевдоним создан"
+msgstr "Псевдоним добавлен"
 
 #: alias.c:536
 msgid "Error seeking in alias file"
@@ -330,9 +329,8 @@ msgstr "Учётные записи autocrypt"
 #. account record fails for some odd reason.
 #.
 #: autocrypt/autocrypt_acct_menu.c:244 autocrypt/autocrypt_acct_menu.c:258
-#, fuzzy
 msgid "Error updating account record"
-msgstr "Ошибка сохранения информации об учётной записи"
+msgstr "Ошибка обновления учётной записи"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/autocrypt_acct_menu.c:333
@@ -422,17 +420,17 @@ msgid "Autocrypt database version is too new"
 msgstr "Версия базы данных autocrypt слишком новая"
 
 #: bcache.c:208
-#, fuzzy, c-format
+#, c-format
 msgid "Message cache isn't a directory: %s"
-msgstr "%s не является каталогом"
+msgstr "Кэш сообщений не является каталогом: %s"
 
 #: browser.c:80
 msgid "Chdir"
-msgstr "Перейти в: "
+msgstr "Сменить каталог"
 
 #: browser.c:81
 msgid "Goto"
-msgstr ""
+msgstr "Перейти"
 
 #: browser.c:82 browser.c:94
 msgid "Mask"
@@ -440,21 +438,19 @@ msgstr "Маска"
 
 #: browser.c:90
 msgid "List"
-msgstr ""
+msgstr "Список"
 
 #: browser.c:91
-#, fuzzy
 msgid "Subscribe"
-msgstr "Подключено к %s"
+msgstr "Подписаться"
 
 #: browser.c:92
-#, fuzzy
 msgid "Unsubscribe"
-msgstr "Отключено от %s"
+msgstr "Отписаться"
 
 #: browser.c:93 index.c:130
 msgid "Catchup"
-msgstr ""
+msgstr "Наверстать"
 
 #: browser.c:763 browser.c:1584 browser.c:1825
 #, c-format
@@ -462,14 +458,14 @@ msgid "%s is not a directory"
 msgstr "%s не является каталогом"
 
 #: browser.c:1028
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed newsgroups"
-msgstr "Подключено к %s"
+msgstr "Группы новостей на которые есть подписка"
 
 #: browser.c:1031
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr ""
+msgstr "Группы новостей на сервере [%s]"
 
 #: browser.c:1041
 #, c-format
@@ -507,9 +503,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Удаление поддерживается только для почтовых ящиков на IMAP-серверах"
 
 #: browser.c:1709
-#, fuzzy
 msgid "Can't delete currently selected mailbox"
-msgstr "показать имя текущего файла"
+msgstr "Невозможно удалить выбранный почтовый ящик"
 
 #: browser.c:1713
 #, c-format
