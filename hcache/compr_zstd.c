@@ -98,7 +98,7 @@ static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size
 
   size_t ret;
   size_t len = ZSTD_compressBound(dlen);
-  mutt_mem_realloc(&ctx->buf, len);
+  mutt_mem_realloc_msg(&ctx->buf, len, _("Out of memory, please use smaller Levels for Zstandard or take LZ4."));
 
   if (ctx->cdict)
     ret = ZSTD_compress_usingCDict(ctx->cctx, ctx->buf, len, data, dlen, ctx->cdict);
