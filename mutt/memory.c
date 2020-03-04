@@ -105,13 +105,14 @@ void *mutt_mem_malloc(size_t size)
  * mutt_mem_realloc - Resize a block of memory on the heap
  * @param ptr Memory block to resize
  * @param size New size
+ * @param msg Message to be displayed before exiting
  *
  * @note This function will never return NULL.
  *       It will print an error and exit the program.
  *
  * If the new size is zero, the block will be freed.
  */
-void mutt_mem_realloc(void *ptr, size_t size)
+void mutt_mem_realloc_msg(void *ptr, size_t size, const char *msg)
 {
   if (!ptr)
     return;
@@ -131,9 +132,24 @@ void mutt_mem_realloc(void *ptr, size_t size)
   void *r = realloc(*p, size);
   if (!r)
   {
-    mutt_error(_("Out of memory"));
+    mutt_error(msg);
     mutt_exit(1);
   }
 
   *p = r;
+}
+
+/**
+ * mutt_mem_realloc - Resize a block of memory on the heap
+ * @param ptr Memory block to resize
+ * @param size New size
+ *
+ * @note This function will never return NULL.
+ *       It will print an error and exit the program.
+ *
+ * If the new size is zero, the block will be freed.
+ */
+void mutt_mem_realloc(void *ptr, size_t size)
+{
+  mutt_mem_realloc_msg(ptr, size, _("Out of memory"));
 }

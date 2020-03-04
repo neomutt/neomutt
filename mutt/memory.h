@@ -36,6 +36,7 @@ void *mutt_mem_calloc(size_t nmemb, size_t size);
 void  mutt_mem_free(void *ptr);
 void *mutt_mem_malloc(size_t size);
 void  mutt_mem_realloc(void *ptr, size_t size);
+void  mutt_mem_realloc_msg(void *ptr, size_t size, const char *emsg);
 
 #define FREE(x) mutt_mem_free(x)
 
