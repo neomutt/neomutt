@@ -28,19 +28,30 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | debug/backtrace.c   | @subpage debug_backtrace   |
+ * | debug/graphviz.c    | @subpage debug_graphviz    |
+ * | debug/notify.c      | @subpage debug_notify      |
  * | debug/parse_test.c  | @subpage debug_parse       |
+ * | debug/window.c      | @subpage debug_window      |
  */
 
 #ifndef MUTT_DEBUG_LIB_H
 #define MUTT_DEBUG_LIB_H
 
-#include "config.h"
+struct NotifyCallback;
 
-#ifdef HAVE_LIBUNWIND
+// Backtrace
 void show_backtrace(void);
-#endif
+
+// Graphviz
+void dump_graphviz(const char *title);
+
+// Notify
+int debug_notify_observer(struct NotifyCallback *nc);
 
 // Parse Set
 void test_parse_set(void);
+
+// Window
+void debug_win_dump(void);
 
 #endif /* MUTT_DEBUG_LIB_H */

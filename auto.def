@@ -101,9 +101,6 @@ options {
   with-zlib:path            => "Location of zlib"
   zstd=0                    => "Enable Zstandard header cache compression support"
   with-zstd:path            => "Location of Zstandard"
-# Debug options
-  backtrace=0               => "DEBUG: Enable backtrace support with libunwind"
-  with-backtrace:path       => "Location of libunwind"
 # System
   with-sysroot:path         => "Target system root"
 # Testing
@@ -113,6 +110,13 @@ options {
   pkgconf=0                 => "Use pkg-config during configure"
 # Enable all options
   everything=0              => "Enable all options"
+# Debug options
+  debug-backtrace=0         => "DEBUG: Enable backtrace support with libunwind"
+  with-backtrace:path       => "Location of libunwind"
+  debug-graphviz=0          => "DEBUG: Enable Graphviz dump"
+  debug-notify=0            => "DEBUG: Enable Notifications dump"
+  debug-parse-test=0        => "DEBUG: Enable 'neomutt -T' for config testing"
+  debug-window=0            => "DEBUG: Enable windows dump"
 }
 ###############################################################################
 
@@ -123,9 +127,10 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    autocrypt backtrace bdb coverage doc everything fmemopen full-doc gdbm
-    gnutls gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix
-    lua lz4 mixmaster nls notmuch pgp pkgconf qdbm sasl smime sqlite ssl testing
+    autocrypt bdb coverage debug-backtrace debug-graphviz debug-notify
+    debug-parse-test debug-window doc everything fmemopen full-doc gdbm gnutls
+    gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua lz4
+    mixmaster nls notmuch pgp pkgconf qdbm sasl smime sqlite ssl testing
     tokyocabinet zlib zstd
   } {
     define want-$opt [opt-bool $opt]
@@ -762,16 +767,6 @@ if {[get-define want-homespool]} {
 }
 
 ###############################################################################
-# Backtrace support with libunwind
-if {[get-define want-backtrace]} {
-  if {![check-inc-and-lib libunwind [opt-val with-backtrace $prefix] \
-                          libunwind.h unw_backtrace unwind]} {
-    user-error "Unable to find libunwind"
-  }
-  define LIBS "-lunwind-generic [get-define LIBS]"
-}
-
-###############################################################################
 # Mixmaster
 if {[get-define want-mixmaster]} {
   define MIXMASTER [opt-val with-mixmaster mixmaster]
@@ -1125,6 +1120,38 @@ if {[get-define want-gss]} {
     define HAVE_HEIMDAL
   }
   define USE_GSS
+}
+
+###############################################################################
+# DEBUG options
+
+# Backtrace support with libunwind
+if {[get-define want-debug-backtrace]} {
+  if {![check-inc-and-lib libunwind [opt-val with-backtrace $prefix] \
+                          libunwind.h unw_backtrace unwind]} {
+    user-error "Unable to find libunwind"
+  }
+  define LIBS "-lunwind-generic [get-define LIBS]"
+}
+
+# Graphviz dump
+if {[get-define want-debug-graphviz]} {
+  define USE_DEBUG_GRAPHVIZ 1
+}
+
+# Notifications dump
+if {[get-define want-debug-notify]} {
+  define USE_DEBUG_NOTIFY 1
+}
+
+# Parse Test
+if {[get-define want-debug-parse-test]} {
+  define USE_DEBUG_PARSE_TEST 1
+}
+
+# Windows dump
+if {[get-define want-debug-window]} {
+  define USE_DEBUG_WINDOW 1
 }
 
 ###############################################################################

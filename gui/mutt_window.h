@@ -103,6 +103,9 @@ struct MuttWindow
   enum WindowType type;              ///< Window type, e.g. #WT_SIDEBAR
   void *wdata;                       ///< Private data
   void (*free_wdata)(struct MuttWindow *win, void **); ///< Callback function to free private data
+#ifdef USE_DEBUG_WINDOW
+  const char *name;
+#endif
 };
 
 extern struct MuttWindow *MuttDialogWindow;

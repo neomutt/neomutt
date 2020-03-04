@@ -32,6 +32,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "debug/lib.h"
 #include "mutt_window.h"
 #include "globals.h"
 #include "mutt_curses.h"
@@ -352,6 +353,9 @@ void mutt_window_reflow(struct MuttWindow *win)
   mutt_menu_set_current_redraw_full();
   /* the pager menu needs this flag set to recalc line_info */
   mutt_menu_set_current_redraw(REDRAW_FLOW);
+#ifdef USE_DEBUG_WINDOW
+  debug_win_dump();
+#endif
 }
 
 /**
@@ -610,6 +614,9 @@ void dialog_push(struct MuttWindow *dlg)
   TAILQ_INSERT_TAIL(&MuttDialogWindow->children, dlg, entries);
   dlg->state.visible = true;
   mutt_window_reflow(MuttDialogWindow);
+#ifdef USE_DEBUG_WINDOW
+  debug_win_dump();
+#endif
 }
 
 /**
@@ -636,4 +643,7 @@ void dialog_pop(void)
     last->state.visible = true;
     mutt_window_reflow(MuttDialogWindow);
   }
+#ifdef USE_DEBUG_WINDOW
+  debug_win_dump();
+#endif
 }

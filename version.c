@@ -154,6 +154,9 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "autocrypt", 0 },
 #endif
+#ifdef HAVE_LIBUNWIND
+  { "backtrace", 2 },
+#endif
 #ifdef HAVE_BKGDSET
   { "bkgdset", 1 },
 #else
@@ -203,6 +206,9 @@ static struct CompileOptions comp_opts[] = {
   { "gpgme", 1 },
 #else
   { "gpgme", 0 },
+#endif
+#ifdef USE_DEBUG_GRAPHVIZ
+  { "graphviz", 2 },
 #endif
 #ifdef USE_GSS
   { "gss", 1 },
@@ -268,6 +274,9 @@ static struct CompileOptions comp_opts[] = {
   { "openssl", 1 },
 #else
   { "openssl", 0 },
+#endif
+#ifdef USE_DEBUG_PARSE_TEST
+  { "parse-test", 2 },
 #endif
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
   { "pgp", 1 },

@@ -140,9 +140,20 @@ ALLOBJS+=	$(LIBGUIOBJS)
 ###############################################################################
 # libdebug
 LIBDEBUG=	libdebug.a
-LIBDEBUGOBJS=	debug/parse_test.o
 @if HAVE_LIBUNWIND
 LIBDEBUGOBJS+=	debug/backtrace.o
+@endif
+@if USE_DEBUG_GRAPHVIZ
+LIBDEBUGOBJS+=	debug/graphviz.o
+@endif
+@if USE_DEBUG_NOTIFY
+LIBDEBUGOBJS+=	debug/notify.o
+@endif
+@if USE_DEBUG_PARSE_TEST
+LIBDEBUGOBJS+=	debug/parse_test.o
+@endif
+@if USE_DEBUG_WINDOW
+LIBDEBUGOBJS+=	debug/window.o
 @endif
 CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
 MUTTLIBS+=	$(LIBDEBUG)
