@@ -1544,9 +1544,9 @@ msgid "Command returned empty string"
 msgstr "Komanda grąžino tuščią rezultatą"
 
 #: conn/connaccount.c:191
-#, fuzzy, c-format
+#, c-format
 msgid "OAUTH token is too big: %ld"
-msgstr "Skaičius per didelis: %s"
+msgstr "OAUTH žetonas per didelis: %ld"
 
 #: conn/conn_raw.c:160 conn/conn_raw.c:218
 #, c-format
