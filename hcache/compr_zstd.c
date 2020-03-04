@@ -98,7 +98,7 @@ static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size
 
   size_t ret;
   size_t len = ZSTD_compressBound(dlen);
-  mutt_mem_realloc(&ctx->buf, len);
+  mutt_mem_realloc_msg(&ctx->buf, len, _("Out of memory, please use smaller Levels for Zstandard or take LZ4."));
 
   if (ctx->cdict)
     ret = ZSTD_compress_usingCDict(ctx->cctx, ctx->buf, len, data, dlen, ctx->cdict);
@@ -120,13 +120,19 @@ static void *compr_zstd_decompress(void *cctx, const char *cbuf, size_t clen)
 {
   struct ComprZstdCtx *ctx = cctx;
 
-  if (!cctx || clen < 8)
+  if (!cctx)
     return NULL;
 
-  size_t ret;
-  size_t len = ZSTD_getFrameContentSize(cbuf, clen);
+  unsigned long long len = ZSTD_getFrameContentSize(cbuf, clen);
+  if (len == ZSTD_CONTENTSIZE_UNKNOWN)
+    return NULL;
+  else if (len == ZSTD_CONTENTSIZE_ERROR)
+    return NULL;
+  else if (len == 0)
+    return NULL;
   mutt_mem_realloc(&ctx->buf, len);
 
+  size_t ret;
   if (ctx->ddict)
     ret = ZSTD_decompress_usingDDict(ctx->dctx, ctx->buf, len, cbuf, clen, ctx->ddict);
   else

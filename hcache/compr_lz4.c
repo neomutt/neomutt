@@ -58,7 +58,7 @@ static void *compr_lz4_open(void)
  */
 static void *compr_lz4_compress(void *cctx, const char *data, size_t dlen, size_t *clen)
 {
-  if (!cctx || (dlen < 10))
+  if (!cctx)
     return NULL;
 
   struct ComprLz4Ctx *ctx = cctx;
@@ -68,10 +68,10 @@ static void *compr_lz4_compress(void *cctx, const char *data, size_t dlen, size_
   char *cbuf = ctx->buf;
 
   /* int LZ4_compress_fast(const char* src, char* dst, int srcSize, int dstCapacity, int acceleration); */
-  *clen = LZ4_compress_fast(data, cbuf + 4, datalen, len, C_HeaderCacheCompressLevel);
-  if (*clen < 0)
+  len = LZ4_compress_fast(data, cbuf + 4, datalen, len, C_HeaderCacheCompressLevel);
+  if (len == 0)
     return NULL;
-  *clen += 4;
+  *clen = len + 4;
 
   /* safe ulen to first 4 bytes */
   unsigned char *cs = ctx->buf;
