@@ -33,10 +33,8 @@
  */
 struct HcacheOps
 {
-  /**
-   * name - Backend name
-   */
-  const char *name;
+  const char *name; ///< Header cache name
+
   /**
    * open - backend-specific routing to open the header cache database
    * @param path The path to the database file
@@ -50,6 +48,7 @@ struct HcacheOps
    * all other backend-specific functions (see below).
    */
   void *(*open)(const char *path);
+
   /**
    * fetch - backend-specific routine to fetch a message's headers
    * @param ctx    The backend-specific context retrieved via open()
@@ -59,12 +58,14 @@ struct HcacheOps
    * @retval NULL Otherwise
    */
   void *(*fetch)(void *ctx, const char *key, size_t keylen, size_t *dlen);
+
   /**
    * free - backend-specific routine to free fetched data
    * @param[in]  ctx The backend-specific context retrieved via open()
    * @param[out] data A pointer to the data got with fetch() or fetch_raw()
    */
   void (*free)(void *ctx, void **data);
+
   /**
    * store - backend-specific routine to store a message's headers
    * @param ctx     The backend-specific context retrieved via open()
@@ -76,6 +77,7 @@ struct HcacheOps
    * @retval num Error, a backend-specific error code
    */
   int (*store)(void *ctx, const char *key, size_t keylen, void *data, size_t datalen);
+
   /**
    * delete_header - backend-specific routine to delete a message's headers
    * @param ctx    The backend-specific context retrieved via open()
@@ -85,6 +87,7 @@ struct HcacheOps
    * @retval num Error, a backend-specific error code
    */
   int (*delete_header)(void *ctx, const char *key, size_t keylen);
+
   /**
    * close - backend-specific routine to close a context
    * @param[out] ctx The backend-specific context retrieved via open()
@@ -94,6 +97,7 @@ struct HcacheOps
    * to the context, so that FREE can be invoked on it.
    */
   void (*close)(void **ctx);
+
   /**
    * backend - backend-specific identification string
    * @retval ptr String describing the currently used hcache backend
