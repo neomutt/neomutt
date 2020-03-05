@@ -47,7 +47,7 @@ const char *BoolValues[] = {
 };
 
 /**
- * bool_string_set - Set a Bool by string - Implements ::cst_string_set()
+ * bool_string_set - Set a Bool by string - Implements ConfigSetType::string_set()
  */
 static int bool_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                            const char *value, struct Buffer *err)
@@ -95,7 +95,7 @@ static int bool_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 }
 
 /**
- * bool_string_get - Get a Bool as a string - Implements ::cst_string_get()
+ * bool_string_get - Get a Bool as a string - Implements ConfigSetType::string_get()
  */
 static int bool_string_get(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, struct Buffer *result)
@@ -118,7 +118,7 @@ static int bool_string_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * bool_native_set - Set a Bool config item by bool - Implements ::cst_native_set()
+ * bool_native_set - Set a Bool config item by bool - Implements ConfigSetType::native_set()
  */
 static int bool_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
@@ -148,7 +148,7 @@ static int bool_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * bool_native_get - Get a bool from a Bool config item - Implements ::cst_native_get()
+ * bool_native_get - Get a bool from a Bool config item - Implements ConfigSetType::native_get()
  */
 static intptr_t bool_native_get(const struct ConfigSet *cs, void *var,
                                 const struct ConfigDef *cdef, struct Buffer *err)
@@ -160,7 +160,7 @@ static intptr_t bool_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * bool_reset - Reset a Bool to its initial value - Implements ::cst_reset()
+ * bool_reset - Reset a Bool to its initial value - Implements ConfigSetType::reset()
  */
 static int bool_reset(const struct ConfigSet *cs, void *var,
                       const struct ConfigDef *cdef, struct Buffer *err)

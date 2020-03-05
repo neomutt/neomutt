@@ -36,7 +36,7 @@
 #include "types.h"
 
 /**
- * long_string_set - Set a Long by string - Implements ::cst_string_set()
+ * long_string_set - Set a Long by string - Implements ConfigSetType::string_set()
  */
 static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                            const char *value, struct Buffer *err)
@@ -81,7 +81,7 @@ static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 }
 
 /**
- * long_string_get - Get a Long as a string - Implements ::cst_string_get()
+ * long_string_get - Get a Long as a string - Implements ConfigSetType::string_get()
  */
 static int long_string_get(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, struct Buffer *result)
@@ -101,7 +101,7 @@ static int long_string_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * long_native_set - Set a Long config item by int - Implements ::cst_native_set()
+ * long_native_set - Set a Long config item by int - Implements ConfigSetType::native_set()
  */
 static int long_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
@@ -131,7 +131,7 @@ static int long_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * long_native_get - Get an int from a Long config item - Implements ::cst_native_get()
+ * long_native_get - Get an int from a Long config item - Implements ConfigSetType::native_get()
  */
 static intptr_t long_native_get(const struct ConfigSet *cs, void *var,
                                 const struct ConfigDef *cdef, struct Buffer *err)
@@ -143,7 +143,7 @@ static intptr_t long_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * long_reset - Reset a Long to its initial value - Implements ::cst_reset()
+ * long_reset - Reset a Long to its initial value - Implements ConfigSetType::reset()
  */
 static int long_reset(const struct ConfigSet *cs, void *var,
                       const struct ConfigDef *cdef, struct Buffer *err)

@@ -51,66 +51,6 @@ struct ConfigDef;
 #define CSR_RESULT_MASK 0x0F
 #define CSR_RESULT(x) ((x) & CSR_RESULT_MASK)
 
-/**
- * typedef cst_string_set - Set a config item by string
- * @param cs    Config items
- * @param var   Variable to set
- * @param cdef  Variable definition
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- *
- * If var is NULL, then the config item's initial value will be set.
- */
-typedef int (*cst_string_set)(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef, const char *value, struct Buffer *err);
-/**
- * typedef cst_string_get - Get a config item as a string
- * @param cs     Config items
- * @param var    Variable to get
- * @param cdef   Variable definition
- * @param result Buffer for results or error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- *
- * If var is NULL, then the config item's initial value will be returned.
- */
-typedef int (*cst_string_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *result);
-/**
- * typedef cst_native_set - Set a config item by string
- * @param cs    Config items
- * @param var   Variable to set
- * @param cdef  Variable definition
- * @param value Native pointer/value to set
- * @param err   Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-typedef int (*cst_native_set)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
-/**
- * typedef cst_native_get - Get a string from a config item
- * @param cs   Config items
- * @param var  Variable to get
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval intptr_t Config item string
- * @retval INT_MIN  Error
- */
-typedef intptr_t (*cst_native_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
-/**
- * typedef cst_reset - Reset a config item to its initial value
- * @param cs   Config items
- * @param var  Variable to reset
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-typedef int (*cst_reset)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
-/**
- * typedef cst_destroy - Destroy a config item
- * @param cs   Config items
- * @param var  Variable to destroy
- * @param cdef Variable definition
- */
-typedef void (*cst_destroy)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef);
-
 #define IP (intptr_t)
 
 #define CS_REG_DISABLED (1 << 0)
@@ -148,12 +88,71 @@ struct ConfigDef
 struct ConfigSetType
 {
   const char *name;          ///< Name of the type, e.g. "String"
-  cst_string_set string_set; ///< Convert the variable to a string
-  cst_string_get string_get; ///< Initialise a variable from a string
-  cst_native_set native_set; ///< Set the variable using a C-native type
-  cst_native_get native_get; ///< Get the variable's value as a C-native type
-  cst_reset reset;           ///< Reset the variable to its initial, or parent, value
-  cst_destroy destroy;       ///< Free the resources for a variable
+
+  /**
+   * string_set - Set a config item by string
+   * @param cs    Config items
+   * @param var   Variable to set
+   * @param cdef  Variable definition
+   * @param value Value to set
+   * @param err   Buffer for error messages
+   * @retval num Result, e.g. #CSR_SUCCESS
+   *
+   * If var is NULL, then the config item's initial value will be set.
+   */
+  int (*string_set)(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef, const char *value, struct Buffer *err);
+
+  /**
+   * string_get - Get a config item as a string
+   * @param cs     Config items
+   * @param var    Variable to get
+   * @param cdef   Variable definition
+   * @param result Buffer for results or error messages
+   * @retval num Result, e.g. #CSR_SUCCESS
+   *
+   * If var is NULL, then the config item's initial value will be returned.
+   */
+  int (*string_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *result);
+
+  /**
+   * native_set - Set a config item by string
+   * @param cs    Config items
+   * @param var   Variable to set
+   * @param cdef  Variable definition
+   * @param value Native pointer/value to set
+   * @param err   Buffer for error messages
+   * @retval num Result, e.g. #CSR_SUCCESS
+   */
+  int (*native_set)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+
+  /**
+   * native_get - Get a string from a config item
+   * @param cs   Config items
+   * @param var  Variable to get
+   * @param cdef Variable definition
+   * @param err  Buffer for error messages
+   * @retval intptr_t Config item string
+   * @retval INT_MIN  Error
+   */
+  intptr_t (*native_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
+
+  /**
+   * reset - Reset a config item to its initial value
+   * @param cs   Config items
+   * @param var  Variable to reset
+   * @param cdef Variable definition
+   * @param err  Buffer for error messages
+   * @retval num Result, e.g. #CSR_SUCCESS
+   */
+  int (*reset)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
+
+  /**
+   * destroy - Destroy a config item
+   * @param cs   Config items
+   * @param var  Variable to destroy
+   * @param cdef Variable definition
+   */
+  void (*destroy)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef);
 };
 
 /**
