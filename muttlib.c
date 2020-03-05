@@ -692,6 +692,7 @@ void mutt_buffer_pretty_mailbox(struct Buffer *buf)
   /* This reduces the size of the Buffer, so we can pass it through.
    * We adjust the size just to make sure buf->data is not NULL though */
   mutt_buffer_alloc(buf, PATH_MAX);
+  //JKJ redirect
   mutt_pretty_mailbox(buf->data, buf->dsize);
   mutt_buffer_fix_dptr(buf);
 }
