@@ -321,7 +321,7 @@ void mutt_delete_hooks(HookFlags type)
 }
 
 /**
- * delete_idxfmt_hooklist - Delete a index-format-hook from the Hash Table
+ * delete_idxfmt_hooklist - Delete a index-format-hook from the Hash Table - Implements ::hashelem_free_t
  * @param type Type of Hash Element
  * @param obj  Pointer to Hashed object
  * @param data Private data

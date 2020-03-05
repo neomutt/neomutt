@@ -107,7 +107,7 @@ enum FieldType
 };
 
 /**
- * mutt_is_mail_list - Is this the email address of a mailing list?
+ * mutt_is_mail_list - Is this the email address of a mailing list? - Implements ::addr_predicate_t
  * @param addr Address to test
  * @retval true If it's a mailing list
  */
@@ -119,7 +119,7 @@ bool mutt_is_mail_list(const struct Address *addr)
 }
 
 /**
- * mutt_is_subscribed_list - Is this the email address of a user-subscribed mailing list?
+ * mutt_is_subscribed_list - Is this the email address of a user-subscribed mailing list? - Implements ::addr_predicate_t
  * @param addr Address to test
  * @retval true If it's a subscribed mailing list
  */
