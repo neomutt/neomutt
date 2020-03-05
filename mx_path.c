@@ -100,7 +100,7 @@ static int path2_resolve(struct Path *path, const char *folder)
     {
       if (((buf[2] == '/') || (buf[2] == '\0')))
       {
-        mutt_str_inline_replace(buf, sizeof(buf), 2, LastFolder);
+        mutt_str_inline_replace(buf, sizeof(buf), 2, LastFolder->orig);
       }
     }
     else if ((buf[0] == '+') || (buf[0] == '='))
@@ -124,7 +124,7 @@ static int path2_resolve(struct Path *path, const char *folder)
       }
       else if (buf[0] == '-')
       {
-        mutt_str_inline_replace(buf, sizeof(buf), 1, LastFolder);
+        mutt_str_inline_replace(buf, sizeof(buf), 1, LastFolder->orig);
       }
       else if (buf[0] == '<')
       {
@@ -136,7 +136,7 @@ static int path2_resolve(struct Path *path, const char *folder)
       }
       else if (buf[0] == '^')
       {
-        mutt_str_inline_replace(buf, sizeof(buf), 1, CurrentFolder);
+        mutt_str_inline_replace(buf, sizeof(buf), 1, CurrentFolder->orig);
       }
     }
     else if (buf[0] == '@')

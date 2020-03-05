@@ -64,6 +64,27 @@ struct Path *mutt_path_new(void)
 }
 
 /**
+ * mutt_path_dup - Duplicate a Path
+ * @param p Path
+ * @retval ptr New Path
+ */
+struct Path *mutt_path_dup(struct Path *p)
+{
+  if (!p)
+    return NULL;
+
+  struct Path *p_new = mutt_path_new();
+
+  p_new->desc = mutt_str_strdup(p->desc);
+  p_new->orig = mutt_str_strdup(p->orig);
+  p_new->canon = mutt_str_strdup(p->canon);
+  p_new->type = p->type;
+  p_new->flags = p->flags;
+
+  return p_new;
+}
+
+/**
  * path_partial_match_string - Compare two strings, allowing for missing values
  * @param str1 First string
  * @param str2 Second string

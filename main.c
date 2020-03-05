@@ -664,6 +664,9 @@ int main(int argc, char *argv[], char *envp[])
     mutt_window_set_root(COLS, LINES);
   }
 
+  CurrentFolder = mutt_path_new();
+  LastFolder = mutt_path_new();
+
   /* set defaults and read init files */
   int rc2 = mutt_init(cs, flags & MUTT_CLI_NOSYSRC, &commands);
   mutt_list_free(&commands);
@@ -1186,8 +1189,13 @@ int main(int argc, char *argv[], char *envp[])
 #endif
       mutt_buffer_expand_path(&folder);
 
-    mutt_str_replace(&CurrentFolder, mutt_b2s(&folder));
-    mutt_str_replace(&LastFolder, mutt_b2s(&folder));
+    mutt_path_free(&CurrentFolder);
+    CurrentFolder = mutt_path_new();
+    CurrentFolder->orig = mutt_buffer_strdup(&folder);
+    mx_path2_probe(CurrentFolder);
+
+    mutt_path_free(&LastFolder);
+    LastFolder = mutt_path_dup(CurrentFolder);
 
     if (flags & MUTT_CLI_IGNORE)
     {

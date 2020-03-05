@@ -1373,7 +1373,7 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
     {
       if (((buf[2] == '/') || (buf[2] == '\0')))
       {
-        mutt_str_inline_replace(buf, buflen, 2, LastFolder);
+        mutt_str_inline_replace(buf, buflen, 2, LastFolder->orig);
       }
     }
     else if ((buf[0] == '+') || (buf[0] == '='))
@@ -1397,7 +1397,7 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
       }
       else if (buf[0] == '-')
       {
-        mutt_str_inline_replace(buf, buflen, 1, LastFolder);
+        mutt_str_inline_replace(buf, buflen, 1, LastFolder->orig);
       }
       else if (buf[0] == '<')
       {
@@ -1409,7 +1409,7 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
       }
       else if (buf[0] == '^')
       {
-        mutt_str_inline_replace(buf, buflen, 1, CurrentFolder);
+        mutt_str_inline_replace(buf, buflen, 1, CurrentFolder->orig);
       }
       else if (buf[0] == '~')
       {

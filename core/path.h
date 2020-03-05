@@ -47,6 +47,7 @@ struct Path
 
 void         mutt_path_free(struct Path **ptr);
 struct Path *mutt_path_new(void);
+struct Path *mutt_path_dup(struct Path *p);
 
 bool path_partial_match_string(const char *str1, const char *str2);
 bool path_partial_match_number(int num1, int num2);

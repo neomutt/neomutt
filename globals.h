@@ -52,8 +52,8 @@ WHERE char *ShortHostname; ///< Short version of the hostname
 
 WHERE char *Username; ///< User's login name
 
-WHERE char *CurrentFolder; ///< Currently selected mailbox
-WHERE char *LastFolder;    ///< Previously selected mailbox
+WHERE struct Path *CurrentFolder; ///< Currently selected mailbox
+WHERE struct Path *LastFolder;    ///< Previously selected mailbox
 
 extern const char *GitVer;
 
