@@ -1560,7 +1560,7 @@ struct ConfigSet *init_config(size_t size)
 }
 
 /**
- * charset_validator - Validate the "charset" config variable - Implements ::cs_validator()
+ * charset_validator - Validate the "charset" config variable - Implements ConfigDef::validator()
  */
 int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                       intptr_t value, struct Buffer *err)
@@ -1600,7 +1600,7 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
 #ifdef USE_HCACHE
 /**
- * hcache_validator - Validate the "header_cache_backend" config variable - Implements ::cs_validator()
+ * hcache_validator - Validate the "header_cache_backend" config variable - Implements ConfigDef::validator()
  */
 int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                      intptr_t value, struct Buffer *err)
@@ -1619,7 +1619,7 @@ int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
 #ifdef USE_HCACHE_COMPRESSION
 /**
- * compress_validator - Validate the "header_cache_compress_method" config variable - Implements ::cs_validator()
+ * compress_validator - Validate the "header_cache_compress_method" config variable - Implements ConfigDef::validator()
  */
 int compress_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                        intptr_t value, struct Buffer *err)
@@ -1639,7 +1639,7 @@ int compress_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 #endif /* USE_HCACHE */
 
 /**
- * pager_validator - Check for config variables that can't be set from the pager - Implements ::cs_validator()
+ * pager_validator - Check for config variables that can't be set from the pager - Implements ConfigDef::validator()
  */
 int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)
@@ -1655,7 +1655,7 @@ int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ::cs_validator()
+ * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ConfigDef::validator()
  */
 int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                         intptr_t value, struct Buffer *err)
@@ -1673,7 +1673,7 @@ int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef
 }
 
 /**
- * reply_validator - Validate the "reply_regex" config variable - Implements ::cs_validator()
+ * reply_validator - Validate the "reply_regex" config variable - Implements ConfigDef::validator()
  */
 int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)
@@ -1690,7 +1690,7 @@ int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ::cs_validator()
+ * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator()
  */
 int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                           intptr_t value, struct Buffer *err)

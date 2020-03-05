@@ -52,16 +52,6 @@ struct ConfigDef;
 #define CSR_RESULT(x) ((x) & CSR_RESULT_MASK)
 
 /**
- * typedef cs_validator - Validate a config variable
- * @param cs    Config items
- * @param cdef  Config definition
- * @param value Native value
- * @param err   Message for the user
- * @retval #CSR_SUCCESS     Success
- * @retval #CSR_ERR_INVALID Failure
- */
-typedef int (*cs_validator)(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
-/**
  * typedef cst_string_set - Set a config item by string
  * @param cs    Config items
  * @param var   Variable to set
@@ -137,7 +127,17 @@ struct ConfigDef
   void         *var;       ///< Pointer to the global variable
   intptr_t      initial;   ///< Initial value
   intptr_t      data;      ///< Extra variable data
-  cs_validator  validator; ///< Validator callback function
+
+  /**
+   * validator - Validate a config variable
+   * @param cs    Config items
+   * @param cdef  Config definition
+   * @param value Native value
+   * @param err   Message for the user
+   * @retval #CSR_SUCCESS     Success
+   * @retval #CSR_ERR_INVALID Failure
+   */
+  int (*validator)(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 };
 
 /**

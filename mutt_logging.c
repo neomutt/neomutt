@@ -297,7 +297,7 @@ int mutt_log_start(void)
 }
 
 /**
- * level_validator - Validate the "debug_level" config variable
+ * level_validator - Validate the "debug_level" config variable - Implements ConfigDef::validator()
  * @param cs    Config items
  * @param cdef  Config definition
  * @param value Native value
