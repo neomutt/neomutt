@@ -45,46 +45,46 @@ struct Connection
   void *sockdata;
 
   /**
-   * conn_open - Open a socket Connection
+   * open - Open a socket Connection
    * @param conn Connection to a server
    * @retval  0 Success
    * @retval -1 Error
    */
-  int (*conn_open) (struct Connection *conn);
+  int (*open) (struct Connection *conn);
   /**
-   * conn_read - Read from a socket Connection
+   * read - Read from a socket Connection
    * @param conn  Connection to a server
    * @param buf   Buffer to store the data
    * @param count Number of bytes to read
    * @retval >0 Success, number of bytes read
    * @retval -1 Error, see errno
    */
-  int (*conn_read) (struct Connection *conn, char *buf, size_t count);
+  int (*read) (struct Connection *conn, char *buf, size_t count);
   /**
-   * conn_write - Write to a socket Connection
+   * write - Write to a socket Connection
    * @param conn  Connection to a server
    * @param buf   Buffer to read into
    * @param count Number of bytes to read
    * @retval >0 Success, number of bytes written
    * @retval -1 Error, see errno
    */
-  int (*conn_write)(struct Connection *conn, const char *buf, size_t count);
+  int (*write)(struct Connection *conn, const char *buf, size_t count);
   /**
-   * conn_poll - Check whether a socket read would block
+   * poll - Check whether a socket read would block
    * @param conn Connection to a server
    * @param wait_secs How long to wait for a response
    * @retval >0 There is data to read
    * @retval  0 Read would block
    * @retval -1 Connection doesn't support polling
    */
-  int (*conn_poll) (struct Connection *conn, time_t wait_secs);
+  int (*poll) (struct Connection *conn, time_t wait_secs);
   /**
-   * conn_close - Close a socket Connection
+   * close - Close a socket Connection
    * @param conn Connection to a server
    * @retval  0 Success
    * @retval -1 Error, see errno
    */
-  int (*conn_close)(struct Connection *conn);
+  int (*close)(struct Connection *conn);
 };
 
 #endif /* MUTT_CONN_CONNECTION_H */

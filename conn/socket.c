@@ -78,7 +78,7 @@ int mutt_socket_open(struct Connection *conn)
   if (socket_preconnect())
     return -1;
 
-  rc = conn->conn_open(conn);
+  rc = conn->open(conn);
 
   mutt_debug(LL_DEBUG2, "Connected to %s:%d on fd=%d\n", conn->account.host,
              conn->account.port, conn->fd);
@@ -102,7 +102,7 @@ int mutt_socket_close(struct Connection *conn)
   if (conn->fd < 0)
     mutt_debug(LL_DEBUG1, "Attempt to close closed connection\n");
   else
-    rc = conn->conn_close(conn);
+    rc = conn->close(conn);
 
   conn->fd = -1;
   conn->ssf = 0;
@@ -122,7 +122,7 @@ int mutt_socket_close(struct Connection *conn)
  */
 int mutt_socket_read(struct Connection *conn, char *buf, size_t len)
 {
-  return conn->conn_read(conn, buf, len);
+  return conn->read(conn, buf, len);
 }
 
 /**
@@ -135,7 +135,7 @@ int mutt_socket_read(struct Connection *conn, char *buf, size_t len)
  */
 int mutt_socket_write(struct Connection *conn, const char *buf, size_t len)
 {
-  return conn->conn_write(conn, buf, len);
+  return conn->write(conn, buf, len);
 }
 
 /**
@@ -161,7 +161,7 @@ int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int d
 
   while (sent < len)
   {
-    const int rc = conn->conn_write(conn, buf + sent, len - sent);
+    const int rc = conn->write(conn, buf + sent, len - sent);
     if (rc < 0)
     {
       mutt_debug(LL_DEBUG1, "error writing (%s), closing socket\n", strerror(errno));
@@ -192,8 +192,8 @@ int mutt_socket_poll(struct Connection *conn, time_t wait_secs)
   if (conn->bufpos < conn->available)
     return conn->available - conn->bufpos;
 
-  if (conn->conn_poll)
-    return conn->conn_poll(conn, wait_secs);
+  if (conn->poll)
+    return conn->poll(conn, wait_secs);
 
   return -1;
 }
@@ -210,7 +210,7 @@ int mutt_socket_readchar(struct Connection *conn, char *c)
   if (conn->bufpos >= conn->available)
   {
     if (conn->fd >= 0)
-      conn->available = conn->conn_read(conn, conn->inbuf, sizeof(conn->inbuf));
+      conn->available = conn->read(conn, conn->inbuf, sizeof(conn->inbuf));
     else
     {
       mutt_debug(LL_DEBUG1, "attempt to read from closed connection\n");
@@ -293,11 +293,11 @@ struct Connection *mutt_socket_new(enum ConnectionType type)
   }
   else
   {
-    conn->conn_read = raw_socket_read;
-    conn->conn_write = raw_socket_write;
-    conn->conn_open = raw_socket_open;
-    conn->conn_close = raw_socket_close;
-    conn->conn_poll = raw_socket_poll;
+    conn->read = raw_socket_read;
+    conn->write = raw_socket_write;
+    conn->open = raw_socket_open;
+    conn->close = raw_socket_close;
+    conn->poll = raw_socket_poll;
   }
 
   return conn;

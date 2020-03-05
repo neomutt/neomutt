@@ -83,8 +83,8 @@ void imap_adata_free(void **ptr)
 
   if (adata->conn)
   {
-    if (adata->conn->conn_close)
-      adata->conn->conn_close(adata->conn);
+    if (adata->conn->close)
+      adata->conn->close(adata->conn);
     FREE(&adata->conn);
   }
 

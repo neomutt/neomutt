@@ -116,17 +116,17 @@ static int tls_init(void)
 }
 
 /**
- * tls_starttls_close - Close a TLS connection - Implements Connection::conn_close()
+ * tls_starttls_close - Close a TLS connection - Implements Connection::close()
  */
 static int tls_starttls_close(struct Connection *conn)
 {
   int rc;
 
   rc = tls_socket_close(conn);
-  conn->conn_read = raw_socket_read;
-  conn->conn_write = raw_socket_write;
-  conn->conn_close = raw_socket_close;
-  conn->conn_poll = raw_socket_poll;
+  conn->read = raw_socket_read;
+  conn->write = raw_socket_write;
+  conn->close = raw_socket_close;
+  conn->poll = raw_socket_poll;
 
   return rc;
 }
@@ -1170,7 +1170,7 @@ fail:
 }
 
 /**
- * tls_socket_poll - Check whether a socket read would block - Implements Connection::conn_poll()
+ * tls_socket_poll - Check whether a socket read would block - Implements Connection::poll()
  */
 static int tls_socket_poll(struct Connection *conn, time_t wait_secs)
 {
@@ -1185,7 +1185,7 @@ static int tls_socket_poll(struct Connection *conn, time_t wait_secs)
 }
 
 /**
- * tls_socket_open - Open a TLS socket - Implements Connection::conn_open()
+ * tls_socket_open - Open a TLS socket - Implements Connection::open()
  */
 static int tls_socket_open(struct Connection *conn)
 {
@@ -1202,7 +1202,7 @@ static int tls_socket_open(struct Connection *conn)
 }
 
 /**
- * tls_socket_read - Read data from a TLS socket - Implements Connection::conn_read()
+ * tls_socket_read - Read data from a TLS socket - Implements Connection::read()
  */
 static int tls_socket_read(struct Connection *conn, char *buf, size_t count)
 {
@@ -1229,7 +1229,7 @@ static int tls_socket_read(struct Connection *conn, char *buf, size_t count)
 }
 
 /**
- * tls_socket_write - Write data to a TLS socket - Implements Connection::conn_write()
+ * tls_socket_write - Write data to a TLS socket - Implements Connection::write()
  */
 static int tls_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
@@ -1263,7 +1263,7 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t cou
 }
 
 /**
- * tls_socket_close - Close a TLS socket - Implements Connection::conn_close()
+ * tls_socket_close - Close a TLS socket - Implements Connection::close()
  */
 static int tls_socket_close(struct Connection *conn)
 {
@@ -1298,11 +1298,11 @@ int mutt_ssl_socket_setup(struct Connection *conn)
   if (tls_init() < 0)
     return -1;
 
-  conn->conn_open = tls_socket_open;
-  conn->conn_read = tls_socket_read;
-  conn->conn_write = tls_socket_write;
-  conn->conn_close = tls_socket_close;
-  conn->conn_poll = tls_socket_poll;
+  conn->open = tls_socket_open;
+  conn->read = tls_socket_read;
+  conn->write = tls_socket_write;
+  conn->close = tls_socket_close;
+  conn->poll = tls_socket_poll;
 
   return 0;
 }
@@ -1321,10 +1321,10 @@ int mutt_ssl_starttls(struct Connection *conn)
   if (tls_negotiate(conn) < 0)
     return -1;
 
-  conn->conn_read = tls_socket_read;
-  conn->conn_write = tls_socket_write;
-  conn->conn_close = tls_starttls_close;
-  conn->conn_poll = tls_socket_poll;
+  conn->read = tls_socket_read;
+  conn->write = tls_socket_write;
+  conn->close = tls_starttls_close;
+  conn->poll = tls_socket_poll;
 
   return 0;
 }

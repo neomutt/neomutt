@@ -346,7 +346,7 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct ConnAccount *cac)
 }
 
 /**
- * mutt_sasl_conn_open - empty wrapper for underlying open function - Implements Connection::conn_open()
+ * mutt_sasl_conn_open - empty wrapper for underlying open function - Implements Connection::open()
  *
  * We don't know in advance that a connection will use SASL, so we replace
  * conn's methods with sasl methods when authentication is successful, using
@@ -363,7 +363,7 @@ static int mutt_sasl_conn_open(struct Connection *conn)
 }
 
 /**
- * mutt_sasl_conn_close - close SASL connection - Implements Connection::conn_close()
+ * mutt_sasl_conn_close - close SASL connection - Implements Connection::close()
  *
  * Calls underlying close function and disposes of the sasl_conn_t object, then
  * restores connection to pre-sasl state
@@ -374,24 +374,24 @@ static int mutt_sasl_conn_close(struct Connection *conn)
 
   /* restore connection's underlying methods */
   conn->sockdata = sasldata->sockdata;
-  conn->conn_open = sasldata->msasl_open;
-  conn->conn_read = sasldata->msasl_read;
-  conn->conn_write = sasldata->msasl_write;
-  conn->conn_poll = sasldata->msasl_poll;
-  conn->conn_close = sasldata->msasl_close;
+  conn->open = sasldata->msasl_open;
+  conn->read = sasldata->msasl_read;
+  conn->write = sasldata->msasl_write;
+  conn->poll = sasldata->msasl_poll;
+  conn->close = sasldata->msasl_close;
 
   /* release sasl resources */
   sasl_dispose(&sasldata->saslconn);
   FREE(&sasldata);
 
   /* call underlying close */
-  int rc = (conn->conn_close)(conn);
+  int rc = conn->close(conn);
 
   return rc;
 }
 
 /**
- * mutt_sasl_conn_read - Read data from an SASL connection - Implements Connection::conn_read()
+ * mutt_sasl_conn_read - Read data from an SASL connection - Implements Connection::read()
  */
 static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t count)
 {
@@ -455,7 +455,7 @@ out:
 }
 
 /**
- * mutt_sasl_conn_write - Write to an SASL connection - Implements Connection::conn_write()
+ * mutt_sasl_conn_write - Write to an SASL connection - Implements Connection::write()
  */
 static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t count)
 {
@@ -505,7 +505,7 @@ fail:
 }
 
 /**
- * mutt_sasl_conn_poll - Check an SASL connection for data - Implements Connection::conn_poll()
+ * mutt_sasl_conn_poll - Check an SASL connection for data - Implements Connection::poll()
  */
 static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
 {
@@ -681,19 +681,19 @@ void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 
   /* preserve old functions */
   sasldata->sockdata = conn->sockdata;
-  sasldata->msasl_open = conn->conn_open;
-  sasldata->msasl_read = conn->conn_read;
-  sasldata->msasl_write = conn->conn_write;
-  sasldata->msasl_poll = conn->conn_poll;
-  sasldata->msasl_close = conn->conn_close;
+  sasldata->msasl_open = conn->open;
+  sasldata->msasl_read = conn->read;
+  sasldata->msasl_write = conn->write;
+  sasldata->msasl_poll = conn->poll;
+  sasldata->msasl_close = conn->close;
 
   /* and set up new functions */
   conn->sockdata = sasldata;
-  conn->conn_open = mutt_sasl_conn_open;
-  conn->conn_read = mutt_sasl_conn_read;
-  conn->conn_write = mutt_sasl_conn_write;
-  conn->conn_poll = mutt_sasl_conn_poll;
-  conn->conn_close = mutt_sasl_conn_close;
+  conn->open = mutt_sasl_conn_open;
+  conn->read = mutt_sasl_conn_read;
+  conn->write = mutt_sasl_conn_write;
+  conn->poll = mutt_sasl_conn_poll;
+  conn->close = mutt_sasl_conn_close;
 }
 
 /**

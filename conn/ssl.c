@@ -361,7 +361,7 @@ static int ssl_passwd_cb(char *buf, int buflen, int rwflag, void *userdata)
 }
 
 /**
- * ssl_socket_open_err - Error callback for opening an SSL connection - Implements Connection::conn_open()
+ * ssl_socket_open_err - Error callback for opening an SSL connection - Implements Connection::open()
  * @retval -1 Always
  */
 static int ssl_socket_open_err(struct Connection *conn)
@@ -626,15 +626,15 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
 }
 
 /**
- * ssl_socket_close_and_restore - Close an SSL Connection and restore Connection callbacks - Implements Connection::conn_close()
+ * ssl_socket_close_and_restore - Close an SSL Connection and restore Connection callbacks - Implements Connection::close()
  */
 static int ssl_socket_close_and_restore(struct Connection *conn)
 {
   int rc = ssl_socket_close(conn);
-  conn->conn_read = raw_socket_read;
-  conn->conn_write = raw_socket_write;
-  conn->conn_close = raw_socket_close;
-  conn->conn_poll = raw_socket_poll;
+  conn->read = raw_socket_read;
+  conn->write = raw_socket_write;
+  conn->close = raw_socket_close;
+  conn->poll = raw_socket_poll;
 
   return rc;
 }
@@ -1364,7 +1364,7 @@ free_ssldata:
 }
 
 /**
- * ssl_socket_poll - Check whether a socket read would block - Implements Connection::conn_poll()
+ * ssl_socket_poll - Check whether a socket read would block - Implements Connection::poll()
  */
 static int ssl_socket_poll(struct Connection *conn, time_t wait_secs)
 {
@@ -1378,7 +1378,7 @@ static int ssl_socket_poll(struct Connection *conn, time_t wait_secs)
 }
 
 /**
- * ssl_socket_open - Open an SSL socket - Implements Connection::conn_open()
+ * ssl_socket_open - Open an SSL socket - Implements Connection::open()
  */
 static int ssl_socket_open(struct Connection *conn)
 {
@@ -1393,7 +1393,7 @@ static int ssl_socket_open(struct Connection *conn)
 }
 
 /**
- * ssl_socket_read - Read data from an SSL socket - Implements Connection::conn_read()
+ * ssl_socket_read - Read data from an SSL socket - Implements Connection::read()
  */
 static int ssl_socket_read(struct Connection *conn, char *buf, size_t count)
 {
@@ -1415,7 +1415,7 @@ static int ssl_socket_read(struct Connection *conn, char *buf, size_t count)
 }
 
 /**
- * ssl_socket_write - Write data to an SSL socket - Implements Connection::conn_write()
+ * ssl_socket_write - Write data to an SSL socket - Implements Connection::write()
  */
 static int ssl_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
@@ -1436,7 +1436,7 @@ static int ssl_socket_write(struct Connection *conn, const char *buf, size_t cou
 }
 
 /**
- * ssl_socket_close - Close an SSL connection - Implements Connection::conn_close()
+ * ssl_socket_close - Close an SSL connection - Implements Connection::close()
  */
 static int ssl_socket_close(struct Connection *conn)
 {
@@ -1471,10 +1471,10 @@ int mutt_ssl_starttls(struct Connection *conn)
   int rc = ssl_setup(conn);
 
   /* hmm. watch out if we're starting TLS over any method other than raw. */
-  conn->conn_read = ssl_socket_read;
-  conn->conn_write = ssl_socket_write;
-  conn->conn_close = ssl_socket_close_and_restore;
-  conn->conn_poll = ssl_socket_poll;
+  conn->read = ssl_socket_read;
+  conn->write = ssl_socket_write;
+  conn->close = ssl_socket_close_and_restore;
+  conn->poll = ssl_socket_poll;
 
   return rc;
 }
@@ -1489,15 +1489,15 @@ int mutt_ssl_socket_setup(struct Connection *conn)
 {
   if (ssl_init() < 0)
   {
-    conn->conn_open = ssl_socket_open_err;
+    conn->open = ssl_socket_open_err;
     return -1;
   }
 
-  conn->conn_open = ssl_socket_open;
-  conn->conn_read = ssl_socket_read;
-  conn->conn_write = ssl_socket_write;
-  conn->conn_poll = ssl_socket_poll;
-  conn->conn_close = ssl_socket_close;
+  conn->open = ssl_socket_open;
+  conn->read = ssl_socket_read;
+  conn->write = ssl_socket_write;
+  conn->poll = ssl_socket_poll;
+  conn->close = ssl_socket_close;
 
   return 0;
 }
