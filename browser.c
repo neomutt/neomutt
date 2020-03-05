@@ -1321,7 +1321,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         {
           /* If browsing in "local"-mode, than we chose to define LastDir to
            * MailDir */
-          switch (mx_path_probe(CurrentFolder))
+          switch (CurrentFolder->type)
           {
             case MUTT_IMAP:
             case MUTT_MAILDIR:
@@ -1334,13 +1334,13 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                 mutt_browser_select_dir(C_Spoolfile);
               break;
             default:
-              mutt_browser_select_dir(CurrentFolder);
+              mutt_browser_select_dir(CurrentFolder->orig);
               break;
           }
         }
-        else if (mutt_str_strcmp(CurrentFolder, mutt_b2s(&LastDirBackup)) != 0)
+        else if (mutt_str_strcmp(CurrentFolder->orig, mutt_b2s(&LastDirBackup)) != 0)
         {
-          mutt_browser_select_dir(CurrentFolder);
+          mutt_browser_select_dir(CurrentFolder->orig);
         }
       }
 

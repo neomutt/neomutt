@@ -690,11 +690,12 @@ void mutt_opts_free(void)
 
   mutt_colors_free(&Colors);
 
-  FREE(&CurrentFolder);
   FREE(&HomeDir);
-  FREE(&LastFolder);
   FREE(&ShortHostname);
   FREE(&Username);
+
+  mutt_path_free(&CurrentFolder);
+  mutt_path_free(&LastFolder);
 
   mutt_replacelist_free(&SpamList);
   mutt_replacelist_free(&SubjectRegexList);

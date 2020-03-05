@@ -728,16 +728,10 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
 
   if (Context && Context->mailbox)
   {
-    char *new_last_folder = NULL;
 #ifdef USE_INOTIFY
     int monitor_remove_rc = mutt_monitor_remove(NULL);
 #endif
-#ifdef USE_COMPRESSED
-    if (Context->mailbox->compress_info && (Context->mailbox->path->canon[0] != '\0'))
-      new_last_folder = mutt_str_strdup(Context->mailbox->path->canon);
-    else
-#endif
-      new_last_folder = mutt_str_strdup(mailbox_path(Context->mailbox));
+    struct Path *new_last_folder = mutt_path_dup(Context->mailbox->path);
     *oldcount = Context->mailbox->msg_count;
 
     int check = mx_mbox_close(&Context);
@@ -750,15 +744,18 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
       if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED))
         update_index(menu, Context, check, *oldcount, *index_hint);
 
-      FREE(&new_last_folder);
+      mutt_path_free(&new_last_folder);
       OptSearchInvalid = true;
       menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
       return 0;
     }
-    FREE(&LastFolder);
+    mutt_path_free(&LastFolder);
     LastFolder = new_last_folder;
   }
-  mutt_str_replace(&CurrentFolder, buf);
+  mutt_path_free(&CurrentFolder);
+  CurrentFolder = mutt_path_new();
+  CurrentFolder->orig = mutt_str_strdup(buf);
+  mx_path2_probe(CurrentFolder);
 
   mutt_sleep(0);
 
