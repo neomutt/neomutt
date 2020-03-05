@@ -67,7 +67,7 @@ NEOMUTTOBJS=	browser.o commands.o command_parse.o \
 		complete.o compose.o conststrings.o context.o copy.o edit.o \
 		editmsg.o enriched.o enter.o flags.o functions.o git_ver.o \
 		handler.o hdrline.o help.o hook.o icommands.o index.o init.o \
-		keymap.o mailcap.o maillist.o main.o menu.o muttlib.o mutt_account.o \
+		keymap.o local.o mailcap.o maillist.o main.o menu.o muttlib.o mutt_account.o \
 		mutt_attach.o mutt_body.o mutt_commands.o mutt_config.o \
 		mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
 		mutt_parse.o mutt_signal.o mutt_socket.o mutt_thread.o mx.o \
