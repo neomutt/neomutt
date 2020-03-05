@@ -79,7 +79,7 @@ static struct Hash *IdxFmtHooks = NULL;
 static HookFlags current_hook_type = MUTT_HOOK_NO_FLAGS;
 
 /**
- * mutt_parse_hook - Parse the 'hook' family of commands - Implements ::command_t
+ * mutt_parse_hook - Parse the 'hook' family of commands - Implements Command::parse()
  *
  * This is used by 'account-hook', 'append-hook' and many more.
  */
@@ -350,7 +350,7 @@ static void delete_idxfmt_hooks(void)
 }
 
 /**
- * mutt_parse_idxfmt_hook - Parse the 'index-format-hook' command - Implements ::command_t
+ * mutt_parse_idxfmt_hook - Parse the 'index-format-hook' command - Implements Command::parse()
  */
 enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
                                           unsigned long data, struct Buffer *err)
@@ -452,7 +452,7 @@ out:
 }
 
 /**
- * mutt_parse_unhook - Parse the 'unhook' command - Implements ::command_t
+ * mutt_parse_unhook - Parse the 'unhook' command - Implements Command::parse()
  */
 enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
                                      unsigned long data, struct Buffer *err)

@@ -39,22 +39,22 @@ enum CommandResult
 };
 
 /**
- * typedef command_t - Prototype for a function to parse a command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
- */
-typedef enum CommandResult (*command_t)(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-
-/**
  * struct Command - A user-callable command
  */
 struct Command
 {
   const char *name; ///< Name of the command
-  command_t func;   ///< Function to parse the command
+
+  /**
+   * parse - Function to parse a command
+   * @param buf  Temporary Buffer space
+   * @param s    Buffer containing string to be parsed
+   * @param data Flags associated with the command
+   * @param err  Buffer for error messages
+   * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+   */
+  enum CommandResult (*parse)(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+
   intptr_t data;    ///< Data or flags to pass to the command
 };
 

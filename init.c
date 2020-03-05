@@ -713,7 +713,7 @@ HookFlags mutt_get_hook_type(const char *name)
 {
   for (const struct Command *c = Commands; c->name; c++)
   {
-    if (((c->func == mutt_parse_hook) || (c->func == mutt_parse_idxfmt_hook)) &&
+    if (((c->parse == mutt_parse_hook) || (c->parse == mutt_parse_idxfmt_hook)) &&
         (mutt_str_strcasecmp(c->name, name) == 0))
     {
       return c->data;
@@ -1015,7 +1015,7 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
     {
       if (mutt_str_strcmp(token->data, Commands[i].name) == 0)
       {
-        rc = Commands[i].func(token, &expn, Commands[i].data, err);
+        rc = Commands[i].parse(token, &expn, Commands[i].data, err);
         if (rc != MUTT_CMD_SUCCESS)
         {              /* -1 Error, +1 Finish */
           goto finish; /* Propagate return code */
