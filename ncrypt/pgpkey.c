@@ -339,7 +339,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
 }
 
 /**
- * pgp_make_entry - Format a menu item for the pgp key list - Implements Menu::menu_make_entry()
+ * pgp_make_entry - Format a menu item for the pgp key list - Implements Menu::make_entry()
  */
 static void pgp_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
@@ -708,7 +708,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   menu->win_ibar = ibar;
 
   menu->max = i;
-  menu->menu_make_entry = pgp_make_entry;
+  menu->make_entry = pgp_make_entry;
   menu->help = helpstr;
   menu->data = key_table;
   mutt_menu_push_current(menu);

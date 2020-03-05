@@ -202,7 +202,7 @@ void mutt_update_num_postponed(void)
 }
 
 /**
- * post_make_entry - Format a menu item for the email list - Implements Menu::menu_make_entry()
+ * post_make_entry - Format a menu item for the email list - Implements Menu::make_entry()
  */
 static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
@@ -258,7 +258,7 @@ static struct Email *select_msg(struct Context *ctx)
   menu->win_index = index;
   menu->win_ibar = ibar;
 
-  menu->menu_make_entry = post_make_entry;
+  menu->make_entry = post_make_entry;
   menu->max = ctx->mailbox->msg_count;
   menu->title = _("Postponed Messages");
   menu->data = ctx;

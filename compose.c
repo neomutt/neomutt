@@ -309,7 +309,7 @@ static void init_header_padding(void)
 }
 
 /**
- * snd_make_entry - Format a menu item for the attachment list - Implements Menu::menu_make_entry()
+ * snd_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry()
  */
 static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
@@ -886,7 +886,7 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
 }
 
 /**
- * compose_custom_redraw - Redraw the compose menu - Implements Menu::menu_custom_redraw()
+ * compose_custom_redraw - Redraw the compose menu - Implements Menu::custom_redraw()
  */
 static void compose_custom_redraw(struct Menu *menu)
 {
@@ -1177,15 +1177,15 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
   menu->win_ibar = ibar;
 
   menu->offset = HDR_ATTACH;
-  menu->menu_make_entry = snd_make_entry;
-  menu->menu_tag = attach_tag;
+  menu->make_entry = snd_make_entry;
+  menu->tag = attach_tag;
 #ifdef USE_NNTP
   if (news)
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_COMPOSE, ComposeNewsHelp);
   else
 #endif
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_COMPOSE, ComposeHelp);
-  menu->menu_custom_redraw = compose_custom_redraw;
+  menu->custom_redraw = compose_custom_redraw;
   menu->redraw_data = rd;
   mutt_menu_push_current(menu);
 

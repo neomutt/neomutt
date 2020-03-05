@@ -445,7 +445,7 @@ static char *smime_key_flags(KeyFlags flags)
 }
 
 /**
- * smime_make_entry - Format a menu item for the smime key list - Implements Menu::menu_make_entry()
+ * smime_make_entry - Format a menu item for the smime key list - Implements Menu::make_entry()
  */
 static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
@@ -592,7 +592,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   menu->win_ibar = ibar;
 
   menu->max = table_index;
-  menu->menu_make_entry = smime_make_entry;
+  menu->make_entry = smime_make_entry;
   menu->help = helpstr;
   menu->data = table;
   menu->title = title;

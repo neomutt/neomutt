@@ -1927,7 +1927,7 @@ void mutt_clear_pager_position(void)
 }
 
 /**
- * pager_custom_redraw - Redraw the pager window - Implements Menu::menu_custom_redraw()
+ * pager_custom_redraw - Redraw the pager window - Implements Menu::custom_redraw()
  */
 static void pager_custom_redraw(struct Menu *pager_menu)
 {
@@ -1994,8 +1994,8 @@ static void pager_custom_redraw(struct Menu *pager_menu)
         /* only allocate the space if/when we need the index.
          * Initialise the menu as per the main index */
         rd->menu = mutt_menu_new(MENU_MAIN);
-        rd->menu->menu_make_entry = index_make_entry;
-        rd->menu->menu_color = index_color;
+        rd->menu->make_entry = index_make_entry;
+        rd->menu->color = index_color;
         rd->menu->max = Context ? Context->mailbox->vcount : 0;
         rd->menu->current = rd->extra->email->vnum;
         rd->menu->win_index = rd->extra->win_index;
@@ -2306,7 +2306,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   pager_menu->win_index = extra->win_pager;
   pager_menu->win_ibar = extra->win_pbar;
 
-  pager_menu->menu_custom_redraw = pager_custom_redraw;
+  pager_menu->custom_redraw = pager_custom_redraw;
   pager_menu->redraw_data = &rd;
   mutt_menu_push_current(pager_menu);
 
