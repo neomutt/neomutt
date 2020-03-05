@@ -130,6 +130,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     {
       char *pretty = NULL;
       struct Mailbox *m = Context ? Context->mailbox : NULL;
+      //JKJ this could be a file/dir or a mailbox!
       if (m)
         mx_path2_pretty(m->path, C_Folder, (op == 'D'), &pretty);
 
