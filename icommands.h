@@ -29,22 +29,22 @@
 struct Buffer;
 
 /**
- * typedef icommand_t - Prototype for information commands
- * @param buf  Command
- * @param s    Entire command line
- * @param data Private data to pass to parse function
- * @param err  Buffer for error messages
- * @retval #CommandResult Result, e.g. #MUTT_CMD_SUCCESS
- */
-typedef enum CommandResult (*icommand_t)(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-
-/**
  * struct ICommand - An Informational Command
  */
 struct ICommand
 {
-  char *name;         ///< Name of the command
-  icommand_t func;    ///< Function to parse the command
+  char *name; ///< Name of the command
+
+  /**
+   * parse - Function to parse information commands
+   * @param buf  Command
+   * @param s    Entire command line
+   * @param data Private data to pass to parse function
+   * @param err  Buffer for error messages
+   * @retval #CommandResult Result, e.g. #MUTT_CMD_SUCCESS
+   */
+  enum CommandResult (*parse)(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+
   unsigned long data; ///< Private data to pass to the command
 };
 
