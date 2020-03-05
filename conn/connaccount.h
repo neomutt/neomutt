@@ -37,13 +37,6 @@ enum ConnAccountField
   MUTT_CA_OAUTH_CMD, ///< OAuth refresh command
 };
 
-/**
- * typedef ca_get_field_t - Prototype for a function to get some login credentials
- * @param field Field to get, e.g. #MUTT_CA_PASS
- * @retval ptr Requested string
- */
-typedef const char *(*ca_get_field_t)(enum ConnAccountField field);
-
 typedef uint8_t MuttAccountFlags;     ///< Flags, Which ConnAccount fields are initialised, e.g. #MUTT_ACCT_PORT
 #define MUTT_ACCT_NO_FLAGS        0   ///< No flags are set
 #define MUTT_ACCT_PORT      (1 << 0)  ///< Port field has been set
@@ -66,7 +59,12 @@ struct ConnAccount
   MuttAccountFlags flags; ///< Which fields are initialised, e.g. #MUTT_ACCT_USER
   const char *service;    ///< Name of the service, e.g. "imap"
 
-  ca_get_field_t get_field; ///< Function to get some data
+  /**
+   * get_field - Function to get some login credentials
+   * @param field Field to get, e.g. #MUTT_CA_PASS
+   * @retval ptr Requested string
+   */
+  const char *(*get_field)(enum ConnAccountField field);
 };
 
 int   mutt_account_getlogin      (struct ConnAccount *account);

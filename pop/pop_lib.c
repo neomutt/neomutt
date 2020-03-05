@@ -57,7 +57,7 @@ unsigned char C_PopReconnect; ///< Config: (pop) Reconnect to the server is the 
 char *C_PopUser; ///< Config: (pop) Username of the POP server
 
 /**
- * pop_get_field - Get connection login credentials - Implements ::ca_get_field_t
+ * pop_get_field - Get connection login credentials - Implements ConnAccount::get_field()
  */
 const char *pop_get_field(enum ConnAccountField field)
 {
