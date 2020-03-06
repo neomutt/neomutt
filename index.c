@@ -652,7 +652,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
 }
 
 /**
- * mailbox_index_observer - Listen for Mailbox changes - Implements ::observer_t()
+ * mailbox_index_observer - Listen for Mailbox changes - Implements ::observer_t
  *
  * If a Mailbox is closed, then set a pointer to NULL.
  */
@@ -3967,7 +3967,7 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * mutt_reply_observer - Listen for config changes to "reply_regex" - Implements ::observer_t()
+ * mutt_reply_observer - Listen for config changes to "reply_regex" - Implements ::observer_t
  */
 int mutt_reply_observer(struct NotifyCallback *nc)
 {
@@ -4119,7 +4119,7 @@ void index_pager_shutdown(struct MuttWindow *dlg)
 }
 
 /**
- * mutt_dlg_index_observer - Listen for config changes affecting the Index/Pager - Implements ::observer_t()
+ * mutt_dlg_index_observer - Listen for config changes affecting the Index/Pager - Implements ::observer_t
  */
 int mutt_dlg_index_observer(struct NotifyCallback *nc)
 {

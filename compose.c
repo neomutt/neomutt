@@ -1083,7 +1083,7 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
 }
 
 /**
- * mutt_dlg_compose_observer - Listen for config changes affecting the Compose menu - Implements ::observer_t()
+ * mutt_dlg_compose_observer - Listen for config changes affecting the Compose menu - Implements ::observer_t
  */
 static int mutt_dlg_compose_observer(struct NotifyCallback *nc)
 {

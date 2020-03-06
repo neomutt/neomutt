@@ -841,7 +841,7 @@ void mutt_init_abort_key(void)
 }
 
 /**
- * mutt_abort_key_config_observer - Listen for abort_key config changes - Implements ::observer_t()
+ * mutt_abort_key_config_observer - Listen for abort_key config changes - Implements ::observer_t
  */
 int mutt_abort_key_config_observer(struct NotifyCallback *nc)
 {

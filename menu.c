@@ -1599,7 +1599,7 @@ int mutt_menu_loop(struct Menu *menu)
 }
 
 /**
- * mutt_menu_color_observer - Listen for colour changes affecting the menu - Implements ::observer_t()
+ * mutt_menu_color_observer - Listen for colour changes affecting the menu - Implements ::observer_t
  */
 int mutt_menu_color_observer(struct NotifyCallback *nc)
 {
@@ -1643,7 +1643,7 @@ int mutt_menu_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * mutt_menu_config_observer - Listen for config changes affecting the menu - Implements ::observer_t()
+ * mutt_menu_config_observer - Listen for config changes affecting the menu - Implements ::observer_t
  */
 int mutt_menu_config_observer(struct NotifyCallback *nc)
 {

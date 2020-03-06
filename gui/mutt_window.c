@@ -154,7 +154,7 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
 }
 
 /**
- * mutt_dlg_rootwin_observer - Listen for config changes affecting the Root Window - Implements ::observer_t()
+ * mutt_dlg_rootwin_observer - Listen for config changes affecting the Root Window - Implements ::observer_t
  */
 static int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
 {

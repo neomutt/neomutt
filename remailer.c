@@ -561,7 +561,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 }
 
 /**
- * mutt_dlg_mixmaster_observer - Listen for config changes affecting the Mixmaster menu - Implements ::observer_t()
+ * mutt_dlg_mixmaster_observer - Listen for config changes affecting the Mixmaster menu - Implements ::observer_t
  */
 static int mutt_dlg_mixmaster_observer(struct NotifyCallback *nc)
 {
