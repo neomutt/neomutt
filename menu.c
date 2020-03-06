@@ -488,13 +488,15 @@ void menu_redraw_motion(struct Menu *menu)
     {
       menu_make_entry(buf, sizeof(buf), menu, menu->oldcurrent);
       menu_pad_string(menu, buf, sizeof(buf));
-      mutt_window_move(menu->win_index, menu->oldcurrent + menu->offset - menu->top, mutt_strwidth(C_ArrowString) + 1);
+      mutt_window_move(menu->win_index, menu->oldcurrent + menu->offset - menu->top,
+                       mutt_strwidth(C_ArrowString) + 1);
       print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
     }
 
     /* now draw it in the new location */
     mutt_curses_set_color(MT_COLOR_INDICATOR);
-    mutt_window_mvaddstr(menu->win_index, menu->current + menu->offset - menu->top, 0, C_ArrowString);
+    mutt_window_mvaddstr(menu->win_index, menu->current + menu->offset - menu->top,
+                         0, C_ArrowString);
   }
   else
   {

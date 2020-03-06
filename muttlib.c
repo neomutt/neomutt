@@ -891,7 +891,9 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
   prefix[0] = '\0';
   buflen--; /* save room for the terminal \0 */
-  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && C_ArrowCursor) ? mutt_strwidth(C_ArrowString) + 1 : 0;
+  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && C_ArrowCursor) ?
+             mutt_strwidth(C_ArrowString) + 1 :
+             0;
   col += wlen;
 
   if ((flags & MUTT_FORMAT_NOFILTER) == 0)
@@ -1240,7 +1242,9 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           }
           else if (soft)
           {
-            int offset = ((flags & MUTT_FORMAT_ARROWCURSOR) && C_ArrowCursor) ? mutt_strwidth(C_ArrowString) + 1 : 0;
+            int offset = ((flags & MUTT_FORMAT_ARROWCURSOR) && C_ArrowCursor) ?
+                             mutt_strwidth(C_ArrowString) + 1 :
+                             0;
             int avail_cols = (cols > offset) ? (cols - offset) : 0;
             /* \0-terminate buf for length computation in mutt_wstr_trunc() */
             *wptr = '\0';
