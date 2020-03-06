@@ -162,17 +162,6 @@ enum RangeSide
 };
 
 /**
- * typedef pattern_eat_t - Parse a pattern
- * @param pat   Pattern to store the results in
- * @param flags Flags, e.g. #MUTT_PC_PATTERN_DYNAMIC
- * @param s     String to parse
- * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
- */
-typedef bool pattern_eat_t(struct Pattern *pat, int flags, struct Buffer *s,
-                           struct Buffer *err);
-
-/**
  * struct PatternFlags - Mapping between user character and internal constant
  */
 struct PatternFlags
@@ -180,7 +169,16 @@ struct PatternFlags
   int tag;   ///< Character used to represent this operation, e.g. 'A' for '~A'
   int op;    ///< Operation to perform, e.g. #MUTT_PAT_SCORE
   int flags; ///< Pattern flags, e.g. #MUTT_PC_FULL_MSG
-  pattern_eat_t *eat_arg; ///< Callback function to parse the argument
+
+  /**
+   * eat_arg - Function to parse a pattern
+   * @param pat   Pattern to store the results in
+   * @param flags Flags, e.g. #MUTT_PC_PATTERN_DYNAMIC
+   * @param s     String to parse
+   * @param err   Buffer for error messages
+   * @retval true If the pattern was read successfully
+   */
+  bool (*eat_arg)(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err);
 };
 
 // clang-format off
@@ -210,7 +208,7 @@ static char LastSearchExpn[1024] = { 0 }; ///< expanded version of LastSearch
 typedef bool (*addr_predicate_t)(const struct Address *a);
 
 /**
- * eat_regex - Parse a regex - Implements ::pattern_eat_t
+ * eat_regex - Parse a regex - Implements Pattern::eat_arg()
  */
 static bool eat_regex(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
@@ -278,7 +276,7 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
 }
 
 /**
- * eat_query - Parse a query for an external search program - Implements ::pattern_eat_t
+ * eat_query - Parse a query for an external search program - Implements Pattern::eat_arg()
  */
 static bool eat_query(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
@@ -746,7 +744,7 @@ static bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *
 }
 
 /**
- * eat_range - Parse a number range - Implements ::pattern_eat_t
+ * eat_range - Parse a number range - Implements Pattern::eat_arg()
  */
 static bool eat_range(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
@@ -1030,7 +1028,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
 }
 
 /**
- * eat_message_range - Parse a range of message numbers - Implements ::pattern_eat_t
+ * eat_message_range - Parse a range of message numbers - Implements Pattern::eat_arg()
  */
 static bool eat_message_range(struct Pattern *pat, int flags, struct Buffer *s,
                               struct Buffer *err)
@@ -1074,7 +1072,7 @@ static bool eat_message_range(struct Pattern *pat, int flags, struct Buffer *s,
 }
 
 /**
- * eat_date - Parse a date pattern - Implements ::pattern_eat_t
+ * eat_date - Parse a date pattern - Implements Pattern::eat_arg()
  */
 static bool eat_date(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
