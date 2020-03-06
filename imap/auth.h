@@ -40,18 +40,6 @@ enum ImapAuthRes
   IMAP_AUTH_UNAVAIL,     ///< Authentication method not permitted
 };
 
-/**
- * struct ImapAuth - IMAP authentication multiplexor
- */
-struct ImapAuth
-{
-  /* do authentication, using named method or any available if method is NULL */
-  enum ImapAuthRes (*authenticate)(struct ImapAccountData *adata, const char *method);
-  /* name of authentication method supported, NULL means variable. If this
-   * is not null, authenticate may ignore the second parameter. */
-  const char *method;
-};
-
 /* external authenticator prototypes */
 enum ImapAuthRes imap_auth_plain(struct ImapAccountData *adata, const char *method);
 #ifndef USE_SASL

@@ -36,7 +36,7 @@
 #include "mutt_socket.h"
 
 /**
- * imap_auth_plain - SASL PLAIN support
+ * imap_auth_plain - SASL PLAIN support - Implements ImapAuth::authenticate()
  * @param adata Imap Account data
  * @param method Name of this authentication method
  * @retval #ImapAuthRes Result, e.g. #IMAP_AUTH_SUCCESS

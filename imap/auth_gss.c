@@ -98,7 +98,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 }
 
 /**
- * imap_auth_gss - GSS Authentication support
+ * imap_auth_gss - GSS Authentication support - Implements ImapAuth::authenticate()
  * @param adata Imap Account data
  * @param method Name of this authentication method
  * @retval #ImapAuthRes Result, e.g. #IMAP_AUTH_SUCCESS
