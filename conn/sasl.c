@@ -356,7 +356,7 @@ static int mutt_sasl_conn_open(struct Connection *conn)
 {
   struct SaslSockData *sasldata = conn->sockdata;
   conn->sockdata = sasldata->sockdata;
-  int rc = (sasldata->msasl_open)(conn);
+  int rc = sasldata->open(conn);
   conn->sockdata = sasldata;
 
   return rc;
@@ -374,11 +374,11 @@ static int mutt_sasl_conn_close(struct Connection *conn)
 
   /* restore connection's underlying methods */
   conn->sockdata = sasldata->sockdata;
-  conn->open = sasldata->msasl_open;
-  conn->read = sasldata->msasl_read;
-  conn->write = sasldata->msasl_write;
-  conn->poll = sasldata->msasl_poll;
-  conn->close = sasldata->msasl_close;
+  conn->open = sasldata->open;
+  conn->read = sasldata->read;
+  conn->write = sasldata->write;
+  conn->poll = sasldata->poll;
+  conn->close = sasldata->close;
 
   /* release sasl resources */
   sasl_dispose(&sasldata->saslconn);
@@ -424,7 +424,7 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t count)
     do
     {
       /* call the underlying read function to fill the buffer */
-      rc = (sasldata->msasl_read)(conn, buf, count);
+      rc = sasldata->read(conn, buf, count);
       if (rc <= 0)
         goto out;
 
@@ -446,7 +446,7 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t count)
     rc = olen;
   }
   else
-    rc = (sasldata->msasl_read)(conn, buf, count);
+    rc = sasldata->read(conn, buf, count);
 
 out:
   conn->sockdata = sasldata;
@@ -481,7 +481,7 @@ static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t
         goto fail;
       }
 
-      rc = (sasldata->msasl_write)(conn, pbuf, plen);
+      rc = sasldata->write(conn, pbuf, plen);
       if (rc != plen)
         goto fail;
 
@@ -492,7 +492,7 @@ static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t
   else
   {
     /* just write using the underlying socket function */
-    rc = (sasldata->msasl_write)(conn, buf, count);
+    rc = sasldata->write(conn, buf, count);
   }
 
   conn->sockdata = sasldata;
@@ -513,7 +513,7 @@ static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
   int rc;
 
   conn->sockdata = sasldata->sockdata;
-  rc = sasldata->msasl_poll(conn, wait_secs);
+  rc = sasldata->poll(conn, wait_secs);
   conn->sockdata = sasldata;
 
   return rc;
@@ -681,11 +681,11 @@ void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 
   /* preserve old functions */
   sasldata->sockdata = conn->sockdata;
-  sasldata->msasl_open = conn->open;
-  sasldata->msasl_read = conn->read;
-  sasldata->msasl_write = conn->write;
-  sasldata->msasl_poll = conn->poll;
-  sasldata->msasl_close = conn->close;
+  sasldata->open = conn->open;
+  sasldata->read = conn->read;
+  sasldata->write = conn->write;
+  sasldata->poll = conn->poll;
+  sasldata->close = conn->close;
 
   /* and set up new functions */
   conn->sockdata = sasldata;
