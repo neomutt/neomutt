@@ -37,7 +37,7 @@
 #define SOME_PRIME 149711
 
 /**
- * gen_string_hash - Generate a hash from a string
+ * gen_string_hash - Generate a hash from a string - Implements Hash::gen_hash()
  * @param key String key
  * @param n   Number of elements in the Hash table
  * @retval num Cryptographic hash of the string
@@ -55,7 +55,7 @@ static size_t gen_string_hash(union HashKey key, size_t n)
 }
 
 /**
- * cmp_string_key - Compare two string keys
+ * cmp_string_key - Compare two string keys - Implements Hash::cmp_key()
  * @param a First key to compare
  * @param b Second key to compare
  * @retval -1 a precedes b
@@ -68,7 +68,7 @@ static int cmp_string_key(union HashKey a, union HashKey b)
 }
 
 /**
- * gen_case_string_hash - Generate a hash from a string (ignore the case)
+ * gen_case_string_hash - Generate a hash from a string (ignore the case) - Implements Hash::gen_hash()
  * @param key String key
  * @param n   Number of elements in the Hash table
  * @retval num Cryptographic hash of the string
@@ -86,7 +86,7 @@ static size_t gen_case_string_hash(union HashKey key, size_t n)
 }
 
 /**
- * cmp_case_string_key - Compare two string keys (ignore case)
+ * cmp_case_string_key - Compare two string keys (ignore case) - Implements Hash::cmp_key()
  * @param a First key to compare
  * @param b Second key to compare
  * @retval -1 a precedes b
@@ -99,7 +99,7 @@ static int cmp_case_string_key(union HashKey a, union HashKey b)
 }
 
 /**
- * gen_int_hash - Generate a hash from an integer
+ * gen_int_hash - Generate a hash from an integer - Implements Hash::gen_hash()
  * @param key Integer key
  * @param n   Number of elements in the Hash table
  * @retval num Cryptographic hash of the integer
@@ -110,7 +110,7 @@ static size_t gen_int_hash(union HashKey key, size_t n)
 }
 
 /**
- * cmp_int_key - Compare two integer keys
+ * cmp_int_key - Compare two integer keys - Implements Hash::cmp_key()
  * @param a First key to compare
  * @param b Second key to compare
  * @retval -1 a precedes b
