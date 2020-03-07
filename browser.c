@@ -933,7 +933,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 }
 
 /**
- * select_file_search - Menu search callback for matching files - Implements Menu::menu_search()
+ * select_file_search - Menu search callback for matching files - Implements Menu::search()
  */
 static int select_file_search(struct Menu *menu, regex_t *rx, int line)
 {
@@ -948,7 +948,7 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
 }
 
 /**
- * folder_make_entry - Format a menu item for the folder browser - Implements Menu::menu_make_entry()
+ * folder_make_entry - Format a menu item for the folder browser - Implements Menu::make_entry()
  */
 static void folder_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
@@ -1106,7 +1106,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
 }
 
 /**
- * file_tag - Tag an entry in the menu - Implements Menu::menu_tag()
+ * file_tag - Tag an entry in the menu - Implements Menu::tag()
  */
 static int file_tag(struct Menu *menu, int sel, int act)
 {
@@ -1146,7 +1146,7 @@ void mutt_browser_select_dir(const char *f)
 }
 
 /**
- * mutt_dlg_browser_observer - Listen for config changes affecting the Browser menu - Implements ::observer_t()
+ * mutt_dlg_browser_observer - Listen for config changes affecting the Browser menu - Implements ::observer_t
  */
 static int mutt_dlg_browser_observer(struct NotifyCallback *nc)
 {
@@ -1419,12 +1419,12 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   menu->win_index = index;
   menu->win_ibar = ibar;
 
-  menu->menu_make_entry = folder_make_entry;
-  menu->menu_search = select_file_search;
+  menu->make_entry = folder_make_entry;
+  menu->search = select_file_search;
   menu->title = title;
   menu->data = state.entry;
   if (multiple)
-    menu->menu_tag = file_tag;
+    menu->tag = file_tag;
 
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_FOLDER,
 #ifdef USE_NNTP

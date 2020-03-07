@@ -74,7 +74,7 @@ static const char *history_format_str(char *buf, size_t buflen, size_t col, int 
 }
 
 /**
- * history_make_entry - Format a menu item for the history list - Implements Menu::menu_make_entry()
+ * history_make_entry - Format a menu item for the history list - Implements Menu::make_entry()
  */
 static void history_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
@@ -133,7 +133,7 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
   menu->win_index = index;
   menu->win_ibar = ibar;
 
-  menu->menu_make_entry = history_make_entry;
+  menu->make_entry = history_make_entry;
   menu->title = title;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_GENERIC, HistoryHelp);
   mutt_menu_push_current(menu);
@@ -182,7 +182,7 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 }
 
 /**
- * mutt_hist_observer - Listen for config changes affecting the history - Implements ::observer_t()
+ * mutt_hist_observer - Listen for config changes affecting the history - Implements ::observer_t
  */
 int mutt_hist_observer(struct NotifyCallback *nc)
 {

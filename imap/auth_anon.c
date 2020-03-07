@@ -34,7 +34,7 @@
 #include "mutt_socket.h"
 
 /**
- * imap_auth_anon - Authenticate anonymously
+ * imap_auth_anon - Authenticate anonymously - Implements ImapAuth::authenticate()
  * @param adata Imap Account data
  * @param method Name of this authentication method
  * @retval #ImapAuthRes Result, e.g. #IMAP_AUTH_SUCCESS

@@ -297,7 +297,7 @@ int mutt_log_start(void)
 }
 
 /**
- * level_validator - Validate the "debug_level" config variable
+ * level_validator - Validate the "debug_level" config variable - Implements ConfigDef::validator()
  * @param cs    Config items
  * @param cdef  Config definition
  * @param value Native value
@@ -318,7 +318,7 @@ int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * mutt_log_observer - Listen for config changes affecting the log file - Implements ::observer_t()
+ * mutt_log_observer - Listen for config changes affecting the log file - Implements ::observer_t
  */
 int mutt_log_observer(struct NotifyCallback *nc)
 {

@@ -40,7 +40,7 @@
 #include "mutt_socket.h"
 
 /**
- * imap_auth_sasl - Default authenticator if available
+ * imap_auth_sasl - Default authenticator if available - Implements ImapAuth::authenticate()
  * @param adata Imap Account data
  * @param method Name of this authentication method
  * @retval #ImapAuthRes Result, e.g. #IMAP_AUTH_SUCCESS

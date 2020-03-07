@@ -36,7 +36,7 @@
 #include "mutt_logging.h"
 
 /**
- * imap_auth_login - Plain LOGIN support
+ * imap_auth_login - Plain LOGIN support - Implements ImapAuth::authenticate()
  * @param adata Imap Account data
  * @param method Name of this authentication method
  * @retval #ImapAuthRes Result, e.g. #IMAP_AUTH_SUCCESS

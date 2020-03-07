@@ -508,13 +508,13 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
 }
 
 /**
- * mix_entry - Format a menu item for the mixmaster chain list
+ * mix_make_entry - Format a menu item for the mixmaster chain list - Implements Menu::make_entry()
  * @param[out] buf    Buffer in which to save string
  * @param[in]  buflen Buffer length
  * @param[in]  menu   Menu containing aliases
  * @param[in]  num    Index into the menu
  */
-static void mix_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void mix_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Remailer **type2_list = menu->data;
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
@@ -561,7 +561,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 }
 
 /**
- * mutt_dlg_mixmaster_observer - Listen for config changes affecting the Mixmaster menu - Implements ::observer_t()
+ * mutt_dlg_mixmaster_observer - Listen for config changes affecting the Mixmaster menu - Implements ::observer_t
  */
 static int mutt_dlg_mixmaster_observer(struct NotifyCallback *nc)
 {
@@ -672,8 +672,8 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
   menu->win_ibar = ibar;
 
   menu->max = ttll;
-  menu->menu_make_entry = mix_entry;
-  menu->menu_tag = NULL;
+  menu->make_entry = mix_make_entry;
+  menu->tag = NULL;
   menu->title = _("Select a remailer chain");
   menu->data = type2_list;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MIX, RemailerHelp);

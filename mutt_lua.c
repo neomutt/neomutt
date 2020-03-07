@@ -118,7 +118,7 @@ static int lua_mutt_call(lua_State *l)
   expn.dptr = buf;
   expn.dsize = mutt_str_strlen(buf);
 
-  if (cmd->func(token, &expn, cmd->data, err))
+  if (cmd->parse(token, &expn, cmd->data, err))
   {
     luaL_error(l, "NeoMutt error: %s", mutt_b2s(err));
     rc = -1;
@@ -442,7 +442,7 @@ static bool lua_init(lua_State **l)
 }
 
 /**
- * mutt_lua_parse - Parse the 'lua' command - Implements ::command_t
+ * mutt_lua_parse - Parse the 'lua' command - Implements Command::parse()
  */
 enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
                                   unsigned long data, struct Buffer *err)
@@ -464,7 +464,7 @@ enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * mutt_lua_source_file - Parse the 'lua-source' command - Implements ::command_t
+ * mutt_lua_source_file - Parse the 'lua-source' command - Implements Command::parse()
  */
 enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
                                         unsigned long data, struct Buffer *err)

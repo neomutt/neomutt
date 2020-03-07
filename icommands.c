@@ -95,7 +95,7 @@ enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *er
     if (mutt_str_strcmp(token->data, ICommandList[i].name) != 0)
       continue;
 
-    rc = ICommandList[i].func(token, &expn, ICommandList[i].data, err);
+    rc = ICommandList[i].parse(token, &expn, ICommandList[i].data, err);
     if (rc != 0)
       goto finish;
 
@@ -226,7 +226,7 @@ static void dump_all_menus(struct Buffer *buf, bool bind)
 }
 
 /**
- * icmd_bind - Parse 'bind' and 'macro' commands - Implements ::icommand_t
+ * icmd_bind - Parse 'bind' and 'macro' commands - Implements ICommand::parse()
  */
 static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
                                     unsigned long data, struct Buffer *err)
@@ -302,7 +302,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * icmd_set - Parse 'set' command to display config - Implements ::icommand_t
+ * icmd_set - Parse 'set' command to display config - Implements ICommand::parse()
  */
 static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
                                    unsigned long data, struct Buffer *err)
@@ -345,7 +345,7 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * icmd_version - Parse 'version' command - Implements ::icommand_t
+ * icmd_version - Parse 'version' command - Implements ICommand::parse()
  */
 static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
                                        unsigned long data, struct Buffer *err)

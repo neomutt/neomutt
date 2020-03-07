@@ -81,7 +81,7 @@ static void zstrm_free(void *opaque, void *address)
 }
 
 /**
- * zstrm_open - Open a socket - Implements Connection::conn_open()
+ * zstrm_open - Open a socket - Implements Connection::open()
  * @retval -1 Always
  *
  * Cannot open a zlib connection, must wrap an existing one
@@ -92,13 +92,13 @@ static int zstrm_open(struct Connection *conn)
 }
 
 /**
- * zstrm_close - Close a socket - Implements Connection::conn_close()
+ * zstrm_close - Close a socket - Implements Connection::close()
  */
 static int zstrm_close(struct Connection *conn)
 {
   struct ZstrmContext *zctx = conn->sockdata;
 
-  int rc = zctx->next_conn.conn_close(&zctx->next_conn);
+  int rc = zctx->next_conn.close(&zctx->next_conn);
 
   mutt_debug(LL_DEBUG5, "read %llu->%llu (%.1fx) wrote %llu<-%llu (%.1fx)\n",
              zctx->read.z.total_in, zctx->read.z.total_out,
@@ -108,11 +108,11 @@ static int zstrm_close(struct Connection *conn)
 
   // Restore the Connection's original functions
   conn->sockdata = zctx->next_conn.sockdata;
-  conn->conn_open = zctx->next_conn.conn_open;
-  conn->conn_close = zctx->next_conn.conn_close;
-  conn->conn_read = zctx->next_conn.conn_read;
-  conn->conn_write = zctx->next_conn.conn_write;
-  conn->conn_poll = zctx->next_conn.conn_poll;
+  conn->open = zctx->next_conn.open;
+  conn->close = zctx->next_conn.close;
+  conn->read = zctx->next_conn.read;
+  conn->write = zctx->next_conn.write;
+  conn->poll = zctx->next_conn.poll;
 
   inflateEnd(&zctx->read.z);
   deflateEnd(&zctx->write.z);
@@ -124,7 +124,7 @@ static int zstrm_close(struct Connection *conn)
 }
 
 /**
- * zstrm_read - Read compressed data from a socket - Implements Connection::conn_read()
+ * zstrm_read - Read compressed data from a socket - Implements Connection::read()
  */
 static int zstrm_read(struct Connection *conn, char *buf, size_t len)
 {
@@ -141,7 +141,7 @@ retry:
    * read on the underlying stream in that case (for it might block) */
   if ((zctx->read.pos == 0) && !zctx->read.conn_eof)
   {
-    rc = zctx->next_conn.conn_read(&zctx->next_conn, zctx->read.buf, zctx->read.len);
+    rc = zctx->next_conn.read(&zctx->next_conn, zctx->read.buf, zctx->read.len);
     mutt_debug(LL_DEBUG5, "consuming data from next stream: %d bytes\n", rc);
     if (rc < 0)
       return rc;
@@ -206,7 +206,7 @@ retry:
 }
 
 /**
- * zstrm_poll - Checks whether reads would block - Implements Connection::conn_poll()
+ * zstrm_poll - Checks whether reads would block - Implements Connection::poll()
  */
 static int zstrm_poll(struct Connection *conn, time_t wait_secs)
 {
@@ -219,11 +219,11 @@ static int zstrm_poll(struct Connection *conn, time_t wait_secs)
   if ((zctx->read.z.avail_out == 0) || (zctx->read.pos > 0))
     return 1;
 
-  return zctx->next_conn.conn_poll(&zctx->next_conn, wait_secs);
+  return zctx->next_conn.poll(&zctx->next_conn, wait_secs);
 }
 
 /**
- * zstrm_write - Write compressed data to a socket - Implements Connection::conn_write()
+ * zstrm_write - Write compressed data to a socket - Implements Connection::write()
  */
 static int zstrm_write(struct Connection *conn, const char *buf, size_t count)
 {
@@ -247,7 +247,7 @@ static int zstrm_write(struct Connection *conn, const char *buf, size_t count)
                  count - zctx->write.z.avail_in, count);
       while (zctx->write.pos > 0)
       {
-        rc = zctx->next_conn.conn_write(&zctx->next_conn, wbufp, zctx->write.pos);
+        rc = zctx->next_conn.write(&zctx->next_conn, wbufp, zctx->write.pos);
         mutt_debug(LL_DEBUG5, "next stream wrote: %d bytes\n", rc);
         if (rc < 0)
           return -1; /* we can't recover from write failure */
@@ -292,19 +292,19 @@ void mutt_zstrm_wrap_conn(struct Connection *conn)
   /* store wrapped stream as next stream */
   zctx->next_conn.fd = conn->fd;
   zctx->next_conn.sockdata = conn->sockdata;
-  zctx->next_conn.conn_open = conn->conn_open;
-  zctx->next_conn.conn_close = conn->conn_close;
-  zctx->next_conn.conn_read = conn->conn_read;
-  zctx->next_conn.conn_write = conn->conn_write;
-  zctx->next_conn.conn_poll = conn->conn_poll;
+  zctx->next_conn.open = conn->open;
+  zctx->next_conn.close = conn->close;
+  zctx->next_conn.read = conn->read;
+  zctx->next_conn.write = conn->write;
+  zctx->next_conn.poll = conn->poll;
 
   /* replace connection with our wrappers, where appropriate */
   conn->sockdata = zctx;
-  conn->conn_open = zstrm_open;
-  conn->conn_read = zstrm_read;
-  conn->conn_write = zstrm_write;
-  conn->conn_close = zstrm_close;
-  conn->conn_poll = zstrm_poll;
+  conn->open = zstrm_open;
+  conn->read = zstrm_read;
+  conn->write = zstrm_write;
+  conn->close = zstrm_close;
+  conn->poll = zstrm_poll;
 
   /* allocate/setup (de)compression buffers */
   zctx->read.len = 8192;

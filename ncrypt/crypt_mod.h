@@ -48,11 +48,13 @@ struct CryptModuleSpecs
   /**
    * init - Initialise the crypto module
    */
-  void         (*init)(void);
+  void (*init)(void);
+
   /**
    * void_passphrase - Forget the cached passphrase
    */
-  void         (*void_passphrase)(void);
+  void (*void_passphrase)(void);
+
   /**
    * valid_passphrase - Ensure we have a valid passphrase
    * @retval true  Success
@@ -61,7 +63,8 @@ struct CryptModuleSpecs
    * If the passphrase is within the expiry time (backend-specific), use it.
    * If not prompt the user again.
    */
-  bool         (*valid_passphrase)(void);
+  bool (*valid_passphrase)(void);
+
   /**
    * decrypt_mime - Decrypt an encrypted MIME part
    * @param[in]  fp_in  File containing the encrypted part
@@ -71,7 +74,8 @@ struct CryptModuleSpecs
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int          (*decrypt_mime)(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
+  int (*decrypt_mime)(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
+
   /**
    * application_handler - Manage the MIME type "application/pgp" or "application/smime"
    * @param m Body of the email
@@ -79,7 +83,8 @@ struct CryptModuleSpecs
    * @retval 0 Success
    * @retval -1 Error
    */
-  int          (*application_handler)(struct Body *m, struct State *s);
+  int (*application_handler)(struct Body *m, struct State *s);
+
   /**
    * encrypted_handler - Manage a PGP or S/MIME encrypted MIME part
    * @param m Body of the email
@@ -87,7 +92,8 @@ struct CryptModuleSpecs
    * @retval 0 Success
    * @retval -1 Error
    */
-  int          (*encrypted_handler)(struct Body *m, struct State *s);
+  int (*encrypted_handler)(struct Body *m, struct State *s);
+
   /**
    * find_keys - Find the keyids of the recipients of a message
    * @param addrlist    Address List
@@ -98,7 +104,8 @@ struct CryptModuleSpecs
    * If oppenc_mode is true, only keys that can be determined without prompting
    * will be used.
    */
-  char *       (*find_keys)(struct AddressList *addrlist, bool oppenc_mode);
+  char *(*find_keys)(struct AddressList *addrlist, bool oppenc_mode);
+
   /**
    * sign_message - Cryptographically sign the Body of a message
    * @param a Body of the message
@@ -107,6 +114,7 @@ struct CryptModuleSpecs
    * @retval NULL Error
    */
   struct Body *(*sign_message)(struct Body *a, const struct AddressList *from);
+
   /**
    * verify_one - Check a signed MIME part against a signature
    * @param sigbdy Body of the signed mail
@@ -115,18 +123,20 @@ struct CryptModuleSpecs
    * @retval  0 Success
    * @retval -1 Error
    */
-  int          (*verify_one)(struct Body *sigbdy, struct State *s, const char *tempf);
+  int (*verify_one)(struct Body *sigbdy, struct State *s, const char *tempf);
+
   /**
    * send_menu - Ask the user whether to sign and/or encrypt the email
    * @param e Email
    * @retval num Flags, e.g. #APPLICATION_PGP | #SEC_ENCRYPT
    */
-  int          (*send_menu)(struct Email *e);
+  int (*send_menu)(struct Email *e);
+
   /**
    * set_sender - Set the sender of the email
    * @param sender Email address
    */
-  void         (*set_sender)(const char *sender);
+  void (*set_sender)(const char *sender);
 
   /**
    * pgp_encrypt_message - PGP encrypt an email
@@ -139,14 +149,15 @@ struct CryptModuleSpecs
    *
    * Encrypt the mail body to all the given keys.
    */
-  struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, bool sign,
-                                     const struct AddressList *from);
+    struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, bool sign, const struct AddressList *from);
+
   /**
    * pgp_make_key_attachment - Generate a public key attachment
    * @retval ptr  New Body containing the attachment
    * @retval NULL Error
    */
   struct Body *(*pgp_make_key_attachment)(void);
+
   /**
    * pgp_check_traditional - Look for inline (non-MIME) PGP content
    * @param fp       File pointer to the current attachment
@@ -155,7 +166,8 @@ struct CryptModuleSpecs
    * @retval 1 It's an inline PGP email
    * @retval 0 It's not inline, or an error
    */
-  int          (*pgp_check_traditional)(FILE *fp, struct Body *b, bool just_one);
+  int (*pgp_check_traditional)(FILE *fp, struct Body *b, bool just_one);
+
   /**
    * pgp_traditional_encryptsign - Create an inline PGP encrypted, signed email
    * @param a       Body of the email
@@ -165,28 +177,32 @@ struct CryptModuleSpecs
    * @retval NULL Error
    */
   struct Body *(*pgp_traditional_encryptsign)(struct Body *a, SecurityFlags flags, char *keylist);
+
   /**
    * pgp_invoke_getkeys - Run a command to download a PGP key
    * @param addr Address to search for
    */
-  void         (*pgp_invoke_getkeys)(struct Address *addr);
+  void (*pgp_invoke_getkeys)(struct Address *addr);
+
   /**
    * pgp_invoke_import - Import a key from a message into the user's public key ring
    * @param fname File containing the message
    */
-  void         (*pgp_invoke_import)(const char *fname);
+  void (*pgp_invoke_import)(const char *fname);
+
   /**
    * pgp_extract_key_from_attachment - Extract PGP key from an attachment
    * @param fp  File containing email
    * @param top Body of the email
    */
-  void         (*pgp_extract_key_from_attachment)(FILE *fp, struct Body *top);
+  void (*pgp_extract_key_from_attachment)(FILE *fp, struct Body *top);
 
   /**
    * smime_getkeys - Get the S/MIME keys required to encrypt this email
    * @param env Envelope of the email
    */
-  void         (*smime_getkeys)(struct Envelope *env);
+  void (*smime_getkeys)(struct Envelope *env);
+
   /**
    * smime_verify_sender - Does the sender match the certificate?
    * @param m Mailbox
@@ -194,7 +210,8 @@ struct CryptModuleSpecs
    * @retval 0 Success
    * @retval 1 Failure
    */
-  int          (*smime_verify_sender)(struct Mailbox *m, struct Email *e);
+  int (*smime_verify_sender)(struct Mailbox *m, struct Email *e);
+
   /**
    * smime_build_smime_entity - Encrypt the email body to all recipients
    * @param a        Body of email
@@ -203,12 +220,13 @@ struct CryptModuleSpecs
    * @retval NULL Error
    */
   struct Body *(*smime_build_smime_entity)(struct Body *a, char *certlist);
+
   /**
    * smime_invoke_import - Add a certificate and update index file (externally)
    * @param infile  File containing certificate
    * @param mailbox Mailbox
    */
-  void         (*smime_invoke_import)(const char *infile, const char *mailbox);
+  void (*smime_invoke_import)(const char *infile, const char *mailbox);
 };
 
 /* High Level crypto module interface */

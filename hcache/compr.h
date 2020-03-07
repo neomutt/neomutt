@@ -30,10 +30,7 @@
  */
 struct ComprOps
 {
-  /**
-   * name - Backend name
-   */
-  const char *name;
+  const char *name; ///< Compression name
 
   /**
    * open - Open a compression context

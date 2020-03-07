@@ -979,7 +979,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
 }
 
 /**
- * nntp_get_field - Get connection login credentials - Implements ::ca_get_field_t
+ * nntp_get_field - Get connection login credentials - Implements ConnAccount::get_field()
  */
 static const char *nntp_get_field(enum ConnAccountField field)
 {

@@ -433,7 +433,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
 }
 
 /**
- * attach_make_entry - Format a menu item for the attachment list - Implements Menu::menu_make_entry()
+ * attach_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry()
  */
 static void attach_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
@@ -445,7 +445,7 @@ static void attach_make_entry(char *buf, size_t buflen, struct Menu *menu, int l
 }
 
 /**
- * attach_tag - Tag an attachment - Implements Menu::menu_tag()
+ * attach_tag - Tag an attachment - Implements Menu::tag()
  */
 int attach_tag(struct Menu *menu, int sel, int act)
 {
@@ -1459,8 +1459,8 @@ void mutt_view_attachments(struct Email *e)
   menu->win_ibar = ibar;
 
   menu->title = _("Attachments");
-  menu->menu_make_entry = attach_make_entry;
-  menu->menu_tag = attach_tag;
+  menu->make_entry = attach_make_entry;
+  menu->tag = attach_tag;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ATTACH, AttachHelp);
   mutt_menu_push_current(menu);
 

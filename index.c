@@ -652,7 +652,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
 }
 
 /**
- * mailbox_index_observer - Listen for Mailbox changes - Implements ::observer_t()
+ * mailbox_index_observer - Listen for Mailbox changes - Implements ::observer_t
  *
  * If a Mailbox is closed, then set a pointer to NULL.
  */
@@ -822,7 +822,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
 }
 
 /**
- * index_make_entry - Format a menu item for the index list - Implements Menu::menu_make_entry()
+ * index_make_entry - Format a menu item for the index list - Implements Menu::make_entry()
  */
 void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
@@ -896,7 +896,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 }
 
 /**
- * index_color - Calculate the colour for a line of the index - Implements Menu::menu_color()
+ * index_color - Calculate the colour for a line of the index - Implements Menu::color()
  */
 int index_color(int line)
 {
@@ -1053,7 +1053,7 @@ dsl_finish:
 }
 
 /**
- * index_custom_redraw - Redraw the index - Implements Menu::menu_custom_redraw()
+ * index_custom_redraw - Redraw the index - Implements Menu::custom_redraw()
  */
 static void index_custom_redraw(struct Menu *menu)
 {
@@ -1138,8 +1138,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
   menu->win_index = win_index;
   menu->win_ibar = win_ibar;
 
-  menu->menu_make_entry = index_make_entry;
-  menu->menu_color = index_color;
+  menu->make_entry = index_make_entry;
+  menu->color = index_color;
   menu->current = ci_first_message(Context);
   menu->help = mutt_compile_help(
       helpstr, sizeof(helpstr), MENU_MAIN,
@@ -1148,7 +1148,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           IndexNewsHelp :
 #endif
           IndexHelp);
-  menu->menu_custom_redraw = index_custom_redraw;
+  menu->custom_redraw = index_custom_redraw;
   mutt_menu_push_current(menu);
   mutt_window_reflow(NULL);
 
@@ -3967,7 +3967,7 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * mutt_reply_observer - Listen for config changes to "reply_regex" - Implements ::observer_t()
+ * mutt_reply_observer - Listen for config changes to "reply_regex" - Implements ::observer_t
  */
 int mutt_reply_observer(struct NotifyCallback *nc)
 {
@@ -4119,7 +4119,7 @@ void index_pager_shutdown(struct MuttWindow *dlg)
 }
 
 /**
- * mutt_dlg_index_observer - Listen for config changes affecting the Index/Pager - Implements ::observer_t()
+ * mutt_dlg_index_observer - Listen for config changes affecting the Index/Pager - Implements ::observer_t
  */
 int mutt_dlg_index_observer(struct NotifyCallback *nc)
 {

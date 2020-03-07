@@ -622,7 +622,7 @@ int mutt_any_key_to_continue(const char *s)
 }
 
 /**
- * mutt_dlg_dopager_observer - Listen for config changes affecting the dopager menus - Implements ::observer_t()
+ * mutt_dlg_dopager_observer - Listen for config changes affecting the dopager menus - Implements ::observer_t
  */
 static int mutt_dlg_dopager_observer(struct NotifyCallback *nc)
 {

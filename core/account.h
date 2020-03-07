@@ -35,14 +35,14 @@ struct ConfigSubset;
  */
 struct Account
 {
-  enum MailboxType magic;       ///< Type of Mailboxes this Account contains
-  char *name;                   ///< Name of Account
-  struct ConfigSubset *sub;     ///< Inherited config items
-  struct MailboxList mailboxes; ///< List of Mailboxes
-  struct Notify *notify;        ///< Notifications handler
-  void *adata;                  ///< Private data (for Mailbox backends)
-  void (*free_adata)(void **);  ///< Callback function to free private data
-  TAILQ_ENTRY(Account) entries; ///< Linked list of Accounts
+  enum MailboxType magic;         ///< Type of Mailboxes this Account contains
+  char *name;                     ///< Name of Account
+  struct ConfigSubset *sub;       ///< Inherited config items
+  struct MailboxList mailboxes;   ///< List of Mailboxes
+  struct Notify *notify;          ///< Notifications handler
+  void *adata;                    ///< Private data (for Mailbox backends)
+  void (*free_adata)(void **ptr); ///< Callback function to free private data
+  TAILQ_ENTRY(Account) entries;   ///< Linked list of Accounts
 };
 TAILQ_HEAD(AccountList, Account);
 

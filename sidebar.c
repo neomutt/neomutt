@@ -1203,7 +1203,7 @@ void mutt_sb_notify_mailbox(struct Mailbox *m, bool created)
 }
 
 /**
- * mutt_sb_observer - Listen for config changes affecting the sidebar - Implements ::observer_t()
+ * mutt_sb_observer - Listen for config changes affecting the sidebar - Implements ::observer_t
  * @param nc Notification data
  * @retval bool True, if successful
  */

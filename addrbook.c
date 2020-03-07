@@ -106,7 +106,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * alias_make_entry - Format a menu item for the alias list - Implements Menu::menu_make_entry()
+ * alias_make_entry - Format a menu item for the alias list - Implements Menu::make_entry()
  */
 static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
@@ -117,7 +117,7 @@ static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
 }
 
 /**
- * alias_tag - Tag some aliases - Implements Menu::menu_tag()
+ * alias_tag - Tag some aliases - Implements Menu::tag()
  */
 static int alias_tag(struct Menu *menu, int sel, int act)
 {
@@ -186,7 +186,7 @@ static int alias_sort_address(const void *a, const void *b)
 }
 
 /**
- * mutt_dlg_alias_observer - Listen for config changes affecting the Alias menu - Implements ::observer_t()
+ * mutt_dlg_alias_observer - Listen for config changes affecting the Alias menu - Implements ::observer_t
  */
 static int mutt_dlg_alias_observer(struct NotifyCallback *nc)
 {
@@ -274,8 +274,8 @@ void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
   menu->win_index = index;
   menu->win_ibar = ibar;
 
-  menu->menu_make_entry = alias_make_entry;
-  menu->menu_tag = alias_tag;
+  menu->make_entry = alias_make_entry;
+  menu->tag = alias_tag;
   menu->title = _("Aliases");
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ALIAS, AliasHelp);
   mutt_menu_push_current(menu);

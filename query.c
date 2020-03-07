@@ -226,7 +226,7 @@ static struct Query *run_query(char *s, int quiet)
 }
 
 /**
- * query_search - Search a Address menu item - Implements Menu::menu_search()
+ * query_search - Search a Address menu item - Implements Menu::search()
  *
  * Try to match various Address fields.
  */
@@ -321,7 +321,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * query_make_entry - Format a menu item for the query list - Implements Menu::menu_make_entry()
+ * query_make_entry - Format a menu item for the query list - Implements Menu::make_entry()
  */
 static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
@@ -334,7 +334,7 @@ static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
 }
 
 /**
- * query_tag - Tag an entry in the Query Menu - Implements Menu::menu_tag()
+ * query_tag - Tag an entry in the Query Menu - Implements Menu::tag()
  */
 static int query_tag(struct Menu *menu, int sel, int act)
 {
@@ -407,9 +407,9 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
   menu->win_index = index;
   menu->win_ibar = ibar;
 
-  menu->menu_make_entry = query_make_entry;
-  menu->menu_search = query_search;
-  menu->menu_tag = query_tag;
+  menu->make_entry = query_make_entry;
+  menu->search = query_search;
+  menu->tag = query_tag;
   menu->title = title;
   char helpstr[1024];
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
@@ -468,9 +468,9 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
             menu->win_index = index;
             menu->win_ibar = ibar;
 
-            menu->menu_make_entry = query_make_entry;
-            menu->menu_search = query_search;
-            menu->menu_tag = query_tag;
+            menu->make_entry = query_make_entry;
+            menu->search = query_search;
+            menu->tag = query_tag;
             menu->title = title;
             menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
             mutt_menu_push_current(menu);

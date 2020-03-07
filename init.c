@@ -713,7 +713,7 @@ HookFlags mutt_get_hook_type(const char *name)
 {
   for (const struct Command *c = Commands; c->name; c++)
   {
-    if (((c->func == mutt_parse_hook) || (c->func == mutt_parse_idxfmt_hook)) &&
+    if (((c->parse == mutt_parse_hook) || (c->parse == mutt_parse_idxfmt_hook)) &&
         (mutt_str_strcasecmp(c->name, name) == 0))
     {
       return c->data;
@@ -1015,7 +1015,7 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
     {
       if (mutt_str_strcmp(token->data, Commands[i].name) == 0)
       {
-        rc = Commands[i].func(token, &expn, Commands[i].data, err);
+        rc = Commands[i].parse(token, &expn, Commands[i].data, err);
         if (rc != MUTT_CMD_SUCCESS)
         {              /* -1 Error, +1 Finish */
           goto finish; /* Propagate return code */
@@ -1560,7 +1560,7 @@ struct ConfigSet *init_config(size_t size)
 }
 
 /**
- * charset_validator - Validate the "charset" config variable - Implements ::cs_validator()
+ * charset_validator - Validate the "charset" config variable - Implements ConfigDef::validator()
  */
 int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                       intptr_t value, struct Buffer *err)
@@ -1600,7 +1600,7 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
 #ifdef USE_HCACHE
 /**
- * hcache_validator - Validate the "header_cache_backend" config variable - Implements ::cs_validator()
+ * hcache_validator - Validate the "header_cache_backend" config variable - Implements ConfigDef::validator()
  */
 int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                      intptr_t value, struct Buffer *err)
@@ -1619,7 +1619,7 @@ int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
 #ifdef USE_HCACHE_COMPRESSION
 /**
- * compress_validator - Validate the "header_cache_compress_method" config variable - Implements ::cs_validator()
+ * compress_validator - Validate the "header_cache_compress_method" config variable - Implements ConfigDef::validator()
  */
 int compress_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                        intptr_t value, struct Buffer *err)
@@ -1639,7 +1639,7 @@ int compress_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 #endif /* USE_HCACHE */
 
 /**
- * pager_validator - Check for config variables that can't be set from the pager - Implements ::cs_validator()
+ * pager_validator - Check for config variables that can't be set from the pager - Implements ConfigDef::validator()
  */
 int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)
@@ -1655,7 +1655,7 @@ int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ::cs_validator()
+ * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ConfigDef::validator()
  */
 int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                         intptr_t value, struct Buffer *err)
@@ -1673,7 +1673,7 @@ int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef
 }
 
 /**
- * reply_validator - Validate the "reply_regex" config variable - Implements ::cs_validator()
+ * reply_validator - Validate the "reply_regex" config variable - Implements ConfigDef::validator()
  */
 int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)
@@ -1690,7 +1690,7 @@ int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ::cs_validator()
+ * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator()
  */
 int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                           intptr_t value, struct Buffer *err)

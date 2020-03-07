@@ -113,11 +113,16 @@ struct PopEmailData
  */
 struct PopAuth
 {
-  /* do authentication, using named method or any available if method is NULL */
-  enum PopAuthRes (*authenticate)(struct PopAccountData *, const char *);
-  /* name of authentication method supported, NULL means variable. If this
-   * is not null, authenticate may ignore the second parameter. */
-  const char *method;
+  /**
+   * authenticate - Authenticate a POP connection
+   * @param adata Pop Account data
+   * @param method Use this named method, or any available method if NULL
+   * @retval #ImapAuthRes Result, e.g. #IMAP_AUTH_SUCCESS
+   */
+  enum PopAuthRes (*authenticate)(struct PopAccountData *adata, const char *method);
+
+  const char *method; ///< Name of authentication method supported, NULL means variable.
+                      ///< If this is not null, authenticate may ignore the second parameter.
 };
 
 /* pop_auth.c */
