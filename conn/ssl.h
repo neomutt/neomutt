@@ -1,6 +1,6 @@
 /**
  * @file
- * Handling of OpenSSL encryption
+ * Handling of SSL encryption
  *
  * @authors
  * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>

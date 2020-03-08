@@ -26,24 +26,25 @@
 #include <stdbool.h>
 
 /* These variables are backing for config items */
-extern short C_ConnectTimeout;
+extern short       C_ConnectTimeout;
 
 #ifdef USE_SSL
 extern const char *C_CertificateFile;
 extern const char *C_EntropyFile;
 extern const char *C_SslCiphers;
 extern const char *C_SslClientCert;
-extern bool C_SslUseSslv3;
-extern bool C_SslUseTlsv1;
-extern bool C_SslUseTlsv11;
-extern bool C_SslUseTlsv12;
-extern bool C_SslUseTlsv13;
-extern bool C_SslVerifyDates;
-extern bool C_SslVerifyHost;
+extern bool        C_SslUseSslv3;
+extern bool        C_SslUseTlsv11;
+extern bool        C_SslUseTlsv12;
+extern bool        C_SslUseTlsv13;
+extern bool        C_SslUseTlsv1;
+extern bool        C_SslVerifyDates;
+extern bool        C_SslVerifyHost;
 #endif
+
 #ifdef USE_SSL_GNUTLS
 extern const char *C_SslCaCertificatesFile;
-extern short C_SslMinDhPrimeBits;
+extern short       C_SslMinDhPrimeBits;
 #endif
 
 #ifdef USE_SOCKET
@@ -51,9 +52,8 @@ extern const char *C_Preconnect;
 extern const char *C_Tunnel;
 #endif
 
-/* These Config Variables are only used in conn/conn_raw.c */
 #ifdef HAVE_GETADDRINFO
-extern bool C_UseIpv6;
+extern bool        C_UseIpv6;
 #endif
 
 #endif /* MUTT_CONN_CONN_GLOBALS_H */

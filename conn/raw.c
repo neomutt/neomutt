@@ -42,6 +42,7 @@
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
+#include "conn_private.h"
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "conn_globals.h"

@@ -51,18 +51,20 @@
 #include "options.h"
 #include "protos.h"
 #include "socket.h"
-#include "ssl.h" // IWYU pragma: keep
+#include "ssl.h"
 
+// clang-format off
 /* certificate error bitmap values */
-#define CERTERR_VALID 0
-#define CERTERR_EXPIRED 1
-#define CERTERR_NOTYETVALID 2
-#define CERTERR_REVOKED 4
-#define CERTERR_NOTTRUSTED 8
-#define CERTERR_HOSTNAME 16
-#define CERTERR_SIGNERNOTCA 32
-#define CERTERR_INSECUREALG 64
-#define CERTERR_OTHER 128
+#define CERTERR_VALID              0
+#define CERTERR_EXPIRED      (1 << 0)
+#define CERTERR_NOTYETVALID  (1 << 1)
+#define CERTERR_REVOKED      (1 << 2)
+#define CERTERR_NOTTRUSTED   (1 << 3)
+#define CERTERR_HOSTNAME     (1 << 4)
+#define CERTERR_SIGNERNOTCA  (1 << 5)
+#define CERTERR_INSECUREALG  (1 << 6)
+#define CERTERR_OTHER        (1 << 7)
+// clang-format on
 
 const int dialog_row_len = 128;
 
@@ -197,7 +199,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   regmatch_t pmatch[3];
 
   /* try checking against names stored in stored certs file */
-  FILE *fp = fopen(C_CertificateFile, "r");
+  FILE *fp = mutt_file_fopen(C_CertificateFile, "r");
   if (fp)
   {
     if (REG_COMP(&preg, "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$",
@@ -259,7 +261,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   b64_data_data = mutt_mem_calloc(1, b64_data.size + 1);
   b64_data.data = b64_data_data;
 
-  FILE *fp = fopen(C_CertificateFile, "r");
+  FILE *fp = mutt_file_fopen(C_CertificateFile, "r");
   if (!fp)
     return 0;
 

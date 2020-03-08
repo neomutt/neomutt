@@ -71,8 +71,6 @@
 #include "socket.h"
 #include "ssl.h"
 
-const int dialog_row_len = 128;
-
 /* LibreSSL defines OPENSSL_VERSION_NUMBER but sets it to 0x20000000L.
  * So technically we don't need the defined(OPENSSL_VERSION_NUMBER) check.  */
 #if (defined(OPENSSL_VERSION_NUMBER) && (OPENSSL_VERSION_NUMBER < 0x10100000L)) || \
@@ -138,7 +136,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
     SSL_CTX_set_cert_store(ctx, store);
   }
 
-  FILE *fp = fopen(C_CertificateFile, "rt");
+  FILE *fp = mutt_file_fopen(C_CertificateFile, "rt");
   if (!fp)
     return 0;
 
@@ -236,10 +234,6 @@ static int add_entropy(const char *file)
   if (n <= 0)
     n = RAND_load_file(file, -1);
 
-#ifndef HAVE_RAND_STATUS
-  if (n > 0)
-    entropy_byte_count += n;
-#endif
   return n;
 }
 
@@ -685,7 +679,7 @@ static bool check_certificate_file(X509 *peercert)
   if (!C_CertificateFile)
     return false;
 
-  fp = fopen(C_CertificateFile, "rt");
+  fp = mutt_file_fopen(C_CertificateFile, "rt");
   if (!fp)
     return false;
 

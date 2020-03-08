@@ -286,9 +286,8 @@ struct Connection *mutt_socket_new(enum ConnectionType type)
   }
   else if (type == MUTT_CONNECTION_SSL)
   {
-    int ret = mutt_ssl_socket_setup(conn);
-
-    if (ret < 0)
+    int rc = mutt_ssl_socket_setup(conn);
+    if (rc < 0)
       FREE(&conn);
   }
   else

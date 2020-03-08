@@ -33,16 +33,13 @@
  */
 struct Connection
 {
-  struct ConnAccount account;
-  unsigned int ssf; ///< security strength factor, in bits
-
-  char inbuf[1024];
-  int bufpos;
-
-  int fd;
-  int available;
-
-  void *sockdata;
+  struct ConnAccount account; ///< Account details: username, password, etc
+  unsigned int ssf;           ///< Security strength factor, in bits
+  char inbuf[1024];           ///< Buffer for incoming traffic
+  int bufpos;                 ///< Current position in the buffer
+  int fd;                     ///< Socket file descriptor
+  int available;              ///< Amount of data waiting to be read
+  void *sockdata;             ///< Backend-specific socket data
 
   /**
    * open - Open a socket Connection
@@ -50,7 +47,8 @@ struct Connection
    * @retval  0 Success
    * @retval -1 Error
    */
-  int (*open) (struct Connection *conn);
+  int (*open)(struct Connection *conn);
+
   /**
    * read - Read from a socket Connection
    * @param conn  Connection to a server
@@ -59,7 +57,8 @@ struct Connection
    * @retval >0 Success, number of bytes read
    * @retval -1 Error, see errno
    */
-  int (*read) (struct Connection *conn, char *buf, size_t count);
+  int (*read)(struct Connection *conn, char *buf, size_t count);
+
   /**
    * write - Write to a socket Connection
    * @param conn  Connection to a server
@@ -69,6 +68,7 @@ struct Connection
    * @retval -1 Error, see errno
    */
   int (*write)(struct Connection *conn, const char *buf, size_t count);
+
   /**
    * poll - Check whether a socket read would block
    * @param conn Connection to a server
@@ -77,7 +77,8 @@ struct Connection
    * @retval  0 Read would block
    * @retval -1 Connection doesn't support polling
    */
-  int (*poll) (struct Connection *conn, time_t wait_secs);
+  int (*poll)(struct Connection *conn, time_t wait_secs);
+
   /**
    * close - Close a socket Connection
    * @param conn Connection to a server

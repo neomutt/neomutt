@@ -47,9 +47,9 @@
  */
 struct TunnelSockData
 {
-  pid_t pid;
-  int fd_read;
-  int fd_write;
+  pid_t pid;    ///< Process ID of tunnel program
+  int fd_read;  ///< File descriptor to read from
+  int fd_write; ///< File descriptor to write to
 };
 
 /**
