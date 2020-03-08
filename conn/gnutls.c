@@ -425,6 +425,46 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
 }
 
 /**
+ * add_cert - Look up certificate info and save it to a list
+ * @param title  Title for this block of certificate info
+ * @param cert   Certificate
+ * @param issuer If true, look up the issuer rather than owner details
+ * @param menu   Menu to save info to
+ */
+static void add_cert(const char *title, gnutls_x509_crt_t cert, bool issuer, struct Menu *menu)
+{
+  static const char *part[] = {
+    GNUTLS_OID_X520_COMMON_NAME,              // CN
+    GNUTLS_OID_PKCS9_EMAIL,                   // Email
+    GNUTLS_OID_X520_ORGANIZATION_NAME,        // O
+    GNUTLS_OID_X520_ORGANIZATIONAL_UNIT_NAME, // OU
+    GNUTLS_OID_X520_LOCALITY_NAME,            // L
+    GNUTLS_OID_X520_STATE_OR_PROVINCE_NAME,   // ST
+    GNUTLS_OID_X520_COUNTRY_NAME,             // C
+  };
+
+  char buf[128];
+  char formatted[160];
+  int rc;
+
+  mutt_menu_add_dialog_row(menu, title);
+
+  for (size_t i = 0; i < mutt_array_size(part); i++)
+  {
+    size_t buflen = sizeof(buf);
+    if (issuer)
+      rc = gnutls_x509_crt_get_issuer_dn_by_oid(cert, part[i], 0, 0, buf, &buflen);
+    else
+      rc = gnutls_x509_crt_get_dn_by_oid(cert, part[i], 0, 0, buf, &buflen);
+    if (rc != 0)
+      continue;
+
+    snprintf(formatted, sizeof(formatted), "   %s", buf);
+    mutt_menu_add_dialog_row(menu, formatted);
+  }
+}
+
+/**
  * tls_check_one_certificate - Check a GnuTLS certificate
  * @param certdata List of GnuTLS certificates
  * @param certstat GnuTLS certificate status
@@ -442,14 +482,6 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   gnutls_x509_crt_t cert;
   char buf[128];
   char fpbuf[128];
-  size_t buflen;
-  char dn_common_name[128];
-  char dn_email[128];
-  char dn_organization[128];
-  char dn_organizational_unit[128];
-  char dn_locality[128];
-  char dn_province[128];
-  char dn_country[128];
   time_t t;
   char datestr[30];
   struct Menu *menu = NULL;
@@ -514,109 +546,9 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
 
   mutt_menu_push_current(menu);
 
-  buflen = sizeof(dn_common_name);
-  if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_COMMON_NAME, 0, 0,
-                                    dn_common_name, &buflen) != 0)
-  {
-    dn_common_name[0] = '\0';
-  }
-  buflen = sizeof(dn_email);
-  if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_PKCS9_EMAIL, 0, 0, dn_email, &buflen) != 0)
-    dn_email[0] = '\0';
-  buflen = sizeof(dn_organization);
-  if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_ORGANIZATION_NAME, 0,
-                                    0, dn_organization, &buflen) != 0)
-  {
-    dn_organization[0] = '\0';
-  }
-  buflen = sizeof(dn_organizational_unit);
-  if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_ORGANIZATIONAL_UNIT_NAME,
-                                    0, 0, dn_organizational_unit, &buflen) != 0)
-  {
-    dn_organizational_unit[0] = '\0';
-  }
-  buflen = sizeof(dn_locality);
-  if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_LOCALITY_NAME, 0, 0,
-                                    dn_locality, &buflen) != 0)
-  {
-    dn_locality[0] = '\0';
-  }
-  buflen = sizeof(dn_province);
-  if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_STATE_OR_PROVINCE_NAME,
-                                    0, 0, dn_province, &buflen) != 0)
-  {
-    dn_province[0] = '\0';
-  }
-  buflen = sizeof(dn_country);
-  if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_COUNTRY_NAME, 0, 0,
-                                    dn_country, &buflen) != 0)
-  {
-    dn_country[0] = '\0';
-  }
-
-  mutt_menu_add_dialog_row(menu, _("This certificate belongs to:"));
-  mutt_buffer_printf(drow, "   %s  %s", dn_common_name, dn_email);
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-  mutt_buffer_printf(drow, "   %s", dn_organization);
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-  mutt_buffer_printf(drow, "   %s", dn_organizational_unit);
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-  mutt_buffer_printf(drow, "   %s  %s  %s", dn_locality, dn_province, dn_country);
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-
-  buflen = sizeof(dn_common_name);
-  if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_COMMON_NAME, 0,
-                                           0, dn_common_name, &buflen) != 0)
-  {
-    dn_common_name[0] = '\0';
-  }
-  buflen = sizeof(dn_email);
-  if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_PKCS9_EMAIL, 0, 0,
-                                           dn_email, &buflen) != 0)
-  {
-    dn_email[0] = '\0';
-  }
-  buflen = sizeof(dn_organization);
-  if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_ORGANIZATION_NAME,
-                                           0, 0, dn_organization, &buflen) != 0)
-  {
-    dn_organization[0] = '\0';
-  }
-  buflen = sizeof(dn_organizational_unit);
-  if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_ORGANIZATIONAL_UNIT_NAME,
-                                           0, 0, dn_organizational_unit, &buflen) != 0)
-  {
-    dn_organizational_unit[0] = '\0';
-  }
-  buflen = sizeof(dn_locality);
-  if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_LOCALITY_NAME,
-                                           0, 0, dn_locality, &buflen) != 0)
-  {
-    dn_locality[0] = '\0';
-  }
-  buflen = sizeof(dn_province);
-  if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_STATE_OR_PROVINCE_NAME,
-                                           0, 0, dn_province, &buflen) != 0)
-  {
-    dn_province[0] = '\0';
-  }
-  buflen = sizeof(dn_country);
-  if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_COUNTRY_NAME,
-                                           0, 0, dn_country, &buflen) != 0)
-  {
-    dn_country[0] = '\0';
-  }
-
+  add_cert(_("This certificate belongs to:"), cert, false, menu);
   mutt_menu_add_dialog_row(menu, "");
-  mutt_menu_add_dialog_row(menu, _("This certificate was issued by:"));
-  mutt_buffer_printf(drow, "   %s  %s", dn_common_name, dn_email);
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-  mutt_buffer_printf(drow, "   %s", dn_organization);
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-  mutt_buffer_printf(drow, "   %s", dn_organizational_unit);
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-  mutt_buffer_printf(drow, "   %s  %s  %s", dn_locality, dn_province, dn_country);
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+  add_cert(_("This certificate was issued by:"), cert, true, menu);
 
   mutt_menu_add_dialog_row(menu, "");
   mutt_menu_add_dialog_row(menu, _("This certificate is valid"));
@@ -624,12 +556,14 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   t = gnutls_x509_crt_get_activation_time(cert);
   mutt_date_make_tls(datestr, sizeof(datestr), t);
   mutt_buffer_printf(drow, _("   from %s"), datestr);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
 
   t = gnutls_x509_crt_get_expiration_time(cert);
   mutt_date_make_tls(datestr, sizeof(datestr), t);
   mutt_buffer_printf(drow, _("     to %s"), datestr);
   mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
 
+  mutt_menu_add_dialog_row(menu, "");
   fpbuf[0] = '\0';
   tls_fingerprint(GNUTLS_DIG_SHA, fpbuf, sizeof(fpbuf), certdata);
   mutt_buffer_printf(drow, _("SHA1 Fingerprint: %s"), fpbuf);
