@@ -31,6 +31,7 @@
  * | conn/conn_globals.c | @subpage conn_globals    |
  * | conn/getdomain.c    | @subpage conn_getdomain  |
  * | conn/gnutls.c       | @subpage conn_gnutls     |
+ * | conn/gui.c          | @subpage conn_gui        |
  * | conn/openssl.c      | @subpage conn_openssl    |
  * | conn/raw.c          | @subpage conn_raw        |
  * | conn/sasl.c         | @subpage conn_sasl       |

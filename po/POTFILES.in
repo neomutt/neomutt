@@ -34,6 +34,7 @@ conn/connaccount.c
 conn/conn_globals.c
 conn/getdomain.c
 conn/gnutls.c
+conn/gui.c
 conn/openssl.c
 conn/raw.c
 conn/sasl.c

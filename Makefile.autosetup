@@ -233,6 +233,9 @@ LIBCONNOBJS=	conn/connaccount.o conn/conn_globals.o conn/getdomain.o \
 @if HAVE_SASL
 LIBCONNOBJS+=	conn/sasl.o
 @endif
+@if USE_SSL
+LIBCONNOBJS+=	conn/gui.o
+@endif
 @if USE_SSL_GNUTLS
 LIBCONNOBJS+=	conn/gnutls.o
 @endif
