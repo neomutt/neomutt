@@ -39,18 +39,6 @@ const char *C_CertificateFile = NULL; ///< Config: File containing trusted certi
 const char *C_EntropyFile = NULL; ///< Config: (ssl) File/device containing random data to initialise SSL
 const char *C_SslCiphers = NULL; ///< Config: Ciphers to use when using SSL
 const char *C_SslClientCert = NULL; ///< Config: File containing client certificates
-#ifdef USE_SSL_GNUTLS
-const char *C_SslCaCertificatesFile = NULL; ///< Config: File containing trusted CA certificates
-short C_SslMinDhPrimeBits = 0; ///< Config: Minimum keysize for Diffie-Hellman key exchange
-#endif
-#endif
-
-#ifdef USE_SOCKET
-const char *C_Preconnect = NULL; ///< Config: (socket) External command to run prior to opening a socket
-const char *C_Tunnel = NULL; ///< Config: Shell command to establish a tunnel
-#endif
-
-#ifdef USE_SSL
 bool C_SslUseSslv3;  ///< Config: (ssl) INSECURE: Use SSLv3 for authentication
 bool C_SslUseTlsv1;  ///< Config: (ssl) Use TLSv1 for authentication
 bool C_SslUseTlsv11; ///< Config: (ssl) Use TLSv1.1 for authentication
@@ -58,4 +46,14 @@ bool C_SslUseTlsv12; ///< Config: (ssl) Use TLSv1.2 for authentication
 bool C_SslUseTlsv13; ///< Config: (ssl) Use TLSv1.3 for authentication
 bool C_SslVerifyDates; ///< Config: (ssl) Verify the dates on the server certificate
 bool C_SslVerifyHost; ///< Config: (ssl) Verify the server's hostname against the certificate
+#endif
+
+#ifdef USE_SSL_GNUTLS
+const char *C_SslCaCertificatesFile = NULL; ///< Config: File containing trusted CA certificates
+short C_SslMinDhPrimeBits = 0; ///< Config: Minimum keysize for Diffie-Hellman key exchange
+#endif
+
+#ifdef USE_SOCKET
+const char *C_Preconnect = NULL; ///< Config: (socket) External command to run prior to opening a socket
+const char *C_Tunnel = NULL; ///< Config: Shell command to establish a tunnel
 #endif

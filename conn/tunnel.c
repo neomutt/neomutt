@@ -35,8 +35,8 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
+#include "conn_private.h"
 #include "mutt/lib.h"
-#include "tunnel.h"
 #include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"

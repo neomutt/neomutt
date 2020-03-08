@@ -32,6 +32,7 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
+#include "conn_private.h"
 #include "mutt/lib.h"
 #include "socket.h"
 #include "conn_globals.h"
@@ -39,7 +40,6 @@
 #include "connection.h"
 #include "protos.h"
 #include "ssl.h"
-#include "tunnel.h"
 
 /**
  * socket_preconnect - Execute a command before opening a socket

@@ -36,6 +36,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
+#include "conn_private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
@@ -66,8 +67,6 @@
 const int dialog_row_len = 128;
 
 #define CERT_SEP "-----BEGIN"
-
-static int tls_socket_close(struct Connection *conn);
 
 #ifndef HAVE_GNUTLS_PRIORITY_SET_DIRECT
 /* This array needs to be large enough to hold all the possible values support
@@ -113,22 +112,6 @@ static int tls_init(void)
 
   init_complete = true;
   return 0;
-}
-
-/**
- * tls_starttls_close - Close a TLS connection - Implements Connection::close()
- */
-static int tls_starttls_close(struct Connection *conn)
-{
-  int rc;
-
-  rc = tls_socket_close(conn);
-  conn->read = raw_socket_read;
-  conn->write = raw_socket_write;
-  conn->close = raw_socket_close;
-  conn->poll = raw_socket_poll;
-
-  return rc;
 }
 
 /**
@@ -1185,6 +1168,31 @@ static int tls_socket_poll(struct Connection *conn, time_t wait_secs)
 }
 
 /**
+ * tls_socket_close - Close a TLS socket - Implements Connection::close()
+ */
+static int tls_socket_close(struct Connection *conn)
+{
+  struct TlsSockData *data = conn->sockdata;
+  if (data)
+  {
+    /* shut down only the write half to avoid hanging waiting for the remote to respond.
+     *
+     * RFC5246 7.2.1. "Closure Alerts"
+     *
+     * It is not required for the initiator of the close to wait for the
+     * responding close_notify alert before closing the read side of the
+     * connection.  */
+    gnutls_bye(data->state, GNUTLS_SHUT_WR);
+
+    gnutls_certificate_free_credentials(data->xcred);
+    gnutls_deinit(data->state);
+    FREE(&conn->sockdata);
+  }
+
+  return raw_socket_close(conn);
+}
+
+/**
  * tls_socket_open - Open a TLS socket - Implements Connection::open()
  */
 static int tls_socket_open(struct Connection *conn)
@@ -1263,28 +1271,19 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t cou
 }
 
 /**
- * tls_socket_close - Close a TLS socket - Implements Connection::close()
+ * tls_starttls_close - Close a TLS connection - Implements Connection::close()
  */
-static int tls_socket_close(struct Connection *conn)
+static int tls_starttls_close(struct Connection *conn)
 {
-  struct TlsSockData *data = conn->sockdata;
-  if (data)
-  {
-    /* shut down only the write half to avoid hanging waiting for the remote to respond.
-     *
-     * RFC5246 7.2.1. "Closure Alerts"
-     *
-     * It is not required for the initiator of the close to wait for the
-     * responding close_notify alert before closing the read side of the
-     * connection.  */
-    gnutls_bye(data->state, GNUTLS_SHUT_WR);
+  int rc;
 
-    gnutls_certificate_free_credentials(data->xcred);
-    gnutls_deinit(data->state);
-    FREE(&conn->sockdata);
-  }
+  rc = tls_socket_close(conn);
+  conn->read = raw_socket_read;
+  conn->write = raw_socket_write;
+  conn->close = raw_socket_close;
+  conn->poll = raw_socket_poll;
 
-  return raw_socket_close(conn);
+  return rc;
 }
 
 /**

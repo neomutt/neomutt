@@ -36,46 +36,4 @@ int mutt_sasl_interact(sasl_interact_t *interaction);
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn);
 void mutt_sasl_done(void);
 
-/**
- * struct SaslSockData - SASL authentication API
- */
-struct SaslSockData
-{
-  sasl_conn_t *saslconn;
-  const sasl_ssf_t *ssf;
-  const unsigned int *pbufsize;
-
-  /* read buffer */
-  const char *buf;
-  unsigned int blen;
-  unsigned int bpos;
-
-  void *sockdata; ///< Underlying socket data
-
-  /**
-   * open - Open a socket Connection - Implements Connection::open()
-   */
-  int (*open) (struct Connection *conn);
-
-  /**
-   * read - Read from a socket Connection - Implements Connection::read()
-   */
-  int (*read) (struct Connection *conn, char *buf, size_t count);
-
-  /**
-   * write - Write to a socket Connection - Implements Connection::write()
-   */
-  int (*write)(struct Connection *conn, const char *buf, size_t count);
-
-  /**
-   * poll - Check whether a socket read would block - Implements Connection::poll()
-   */
-  int (*poll) (struct Connection *conn, time_t wait_secs);
-
-  /**
-   * close - Close a socket Connection - Implements Connection::close()
-   */
-  int (*close)(struct Connection *conn);
-};
-
 #endif /* MUTT_CONN_SASL_H */

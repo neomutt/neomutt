@@ -50,12 +50,14 @@
 #include "connection.h"
 #include "sasl_plain.h"
 #include "socket.h"
-#include "ssl.h"
-#include "tunnel.h"
 #ifdef USE_SASL
 #include "sasl.h"
 #endif
 // IWYU pragma: end_exports
+
+#ifdef USE_SSL
+int mutt_ssl_starttls(struct Connection *conn);
+#endif
 
 int getdnsdomainname(char *buf, size_t buflen);
 

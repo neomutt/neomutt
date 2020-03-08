@@ -49,6 +49,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "conn_private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"

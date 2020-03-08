@@ -28,7 +28,6 @@
 struct Connection;
 
 #ifdef USE_SSL
-int mutt_ssl_starttls(struct Connection *conn);
 int mutt_ssl_socket_setup(struct Connection *conn);
 #else
 /**
