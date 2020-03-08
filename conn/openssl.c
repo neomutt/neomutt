@@ -21,7 +21,7 @@
  */
 
 /**
- * @page conn_ssl Handling of OpenSSL encryption
+ * @page conn_openssl Handling of OpenSSL encryption
  *
  * Handling of OpenSSL encryption
  */
@@ -55,7 +55,6 @@
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "ssl.h"
 #include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"
@@ -69,6 +68,7 @@
 #include "options.h"
 #include "protos.h"
 #include "socket.h"
+#include "ssl.h"
 
 const int dialog_row_len = 128;
 

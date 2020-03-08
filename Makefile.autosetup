@@ -228,16 +228,16 @@ ALLOBJS+=	$(LIBIMAPOBJS)
 ###############################################################################
 # libconn
 LIBCONN=	libconn.a
-LIBCONNOBJS=	conn/connaccount.o conn/conn_globals.o conn/conn_raw.o conn/getdomain.o \
-		conn/sasl_plain.o conn/socket.o conn/tunnel.o
+LIBCONNOBJS=	conn/connaccount.o conn/conn_globals.o conn/getdomain.o \
+		conn/raw.o conn/sasl_plain.o conn/socket.o conn/tunnel.o
 @if HAVE_SASL
 LIBCONNOBJS+=	conn/sasl.o
 @endif
-@if USE_SSL_OPENSSL
-LIBCONNOBJS+=	conn/ssl.o
-@endif
 @if USE_SSL_GNUTLS
-LIBCONNOBJS+=	conn/ssl_gnutls.o
+LIBCONNOBJS+=	conn/gnutls.o
+@endif
+@if USE_SSL_OPENSSL
+LIBCONNOBJS+=	conn/openssl.o
 @endif
 CLEANFILES+=	$(LIBCONN) $(LIBCONNOBJS)
 MUTTLIBS+=	$(LIBCONN)

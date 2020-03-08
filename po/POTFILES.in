@@ -32,13 +32,13 @@ config/string.c
 config/subset.c
 conn/connaccount.c
 conn/conn_globals.c
-conn/conn_raw.c
 conn/getdomain.c
+conn/gnutls.c
+conn/openssl.c
+conn/raw.c
 conn/sasl.c
 conn/sasl_plain.c
 conn/socket.c
-conn/ssl.c
-conn/ssl_gnutls.c
 conn/tunnel.c
 context.c
 copy.c
