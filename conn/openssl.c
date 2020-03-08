@@ -378,7 +378,7 @@ static char *x509_get_part(X509_NAME *name, int nid)
   static char data[128];
 
   if (!name || (X509_NAME_get_text_by_NID(name, nid, data, sizeof(data)) < 0))
-    mutt_str_strfcpy(data, _("Unknown"), sizeof(data));
+    return NULL;
 
   return data;
 }
@@ -845,6 +845,46 @@ static int ssl_cache_trusted_cert(X509 *c)
 }
 
 /**
+ * add_cert - Look up certificate info and save it to a list
+ * @param title  Title for this block of certificate info
+ * @param cert   Certificate
+ * @param issuer If true, look up the issuer rather than owner details
+ * @param menu   Menu to save info to
+ */
+static void add_cert(const char *title, X509 *cert, bool issuer, struct Menu *menu)
+{
+  static const int part[] = {
+    NID_commonName,             // CN
+    NID_pkcs9_emailAddress,     // Email
+    NID_organizationName,       // O
+    NID_organizationalUnitName, // OU
+    NID_localityName,           // L
+    NID_stateOrProvinceName,    // ST
+    NID_countryName,            // C
+  };
+
+  X509_NAME *x509 = NULL;
+  if (issuer)
+    x509 = X509_get_issuer_name(cert);
+  else
+    x509 = X509_get_subject_name(cert);
+
+  mutt_menu_add_dialog_row(menu, title);
+
+  char *text = NULL;
+  char formatted[160];
+  for (size_t i = 0; i < mutt_array_size(part); i++)
+  {
+    text = x509_get_part(x509, part[i]);
+    if (text)
+    {
+      snprintf(formatted, sizeof(formatted), "   %s", text);
+      mutt_menu_add_dialog_row(menu, formatted);
+    }
+  }
+}
+
+/**
  * interactive_check_cert - Ask the user if a certificate is valid
  * @param cert         Certificate
  * @param idx          Place of certificate in the chain
@@ -856,17 +896,6 @@ static int ssl_cache_trusted_cert(X509 *c)
  */
 static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bool allow_always)
 {
-  static const int part[] = {
-    NID_commonName,             /* CN */
-    NID_pkcs9_emailAddress,     /* Email */
-    NID_organizationName,       /* O */
-    NID_organizationalUnitName, /* OU */
-    NID_localityName,           /* L */
-    NID_stateOrProvinceName,    /* ST */
-    NID_countryName,            /* C */
-  };
-  X509_NAME *x509_subject = NULL;
-  X509_NAME *x509_issuer = NULL;
   char helpstr[1024];
   char buf[256];
   char title[256];
@@ -910,24 +939,11 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
 
   mutt_menu_push_current(menu);
 
-  struct Buffer *drow = mutt_buffer_pool_get();
-
-  mutt_menu_add_dialog_row(menu, _("This certificate belongs to:"));
-  x509_subject = X509_get_subject_name(cert);
-  for (unsigned int u = 0; u < mutt_array_size(part); u++)
-  {
-    mutt_buffer_printf(drow, "   %s", x509_get_part(x509_subject, part[u]));
-    mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-  }
-
+  add_cert(_("This certificate belongs to:"), cert, false, menu);
   mutt_menu_add_dialog_row(menu, "");
-  mutt_menu_add_dialog_row(menu, _("This certificate was issued by:"));
-  x509_issuer = X509_get_issuer_name(cert);
-  for (unsigned int u = 0; u < mutt_array_size(part); u++)
-  {
-    mutt_buffer_printf(drow, "   %s", x509_get_part(x509_issuer, part[u]));
-    mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-  }
+  add_cert(_("This certificate was issued by:"), cert, true, menu);
+
+  struct Buffer *drow = mutt_buffer_pool_get();
 
   mutt_menu_add_dialog_row(menu, "");
   mutt_menu_add_dialog_row(menu, _("This certificate is valid"));
