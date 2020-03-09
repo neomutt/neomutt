@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2019-12-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-02-13 17:39+0000\n"
+"POT-Creation-Date: 2020-03-09 12:15+0000\n"
 "PO-Revision-Date: 2018-05-31 13:50+0000\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: neomutt-j <neomutt-j-users@lists.osdn.me>\n"
@@ -19,6 +19,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
+msgstr "r:拒否, o:今回のみ承認, a:常に承認, s:無視"
+
+msgid "roas"
+msgstr "roas"
+
+msgid "(r)eject, accept (o)nce, (a)ccept always"
+msgstr "r:拒否, o:今回のみ承認, a:常に承認"
+
+msgid "roa"
+msgstr "roa"
+
+msgid "(r)eject, accept (o)nce, (s)kip"
+msgstr "r:拒否, o:今回のみ承認, s:無視"
+
+msgid "ros"
+msgstr "ros"
+
+msgid "(r)eject, accept (o)nce"
+msgstr "r:拒否, o:今回のみ承認"
+
+msgid "ro"
+msgstr "ro"
 
 #: addrbook.c:56 autocrypt/autocrypt_acct_menu.c:58 browser.c:79 browser.c:89
 #: mutt_history.c:45 pager.c:220 postpone.c:68 query.c:78 recvattach.c:91
@@ -1702,30 +1726,6 @@ msgstr "SHA1 フィンガープリント: %s"
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "SSL 証明書検査 (連鎖内 %2$zu のうち %1$zu 個目)"
 
-#. L10N: These four letters correspond to the choices in the next four strings:
-#. (r)eject, accept (o)nce, (a)ccept always, (s)kip.
-#. These prompts are the interactive certificate confirmation prompts for
-#. an OpenSSL connection.
-#: conn/ssl.c:977
-msgid "roas"
-msgstr "roas"
-
-#: conn/ssl.c:981
-msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "r:拒否, o:今回のみ承認, a:常に承認, s:無視"
-
-#: conn/ssl.c:983 conn/ssl_gnutls.c:702
-msgid "(r)eject, accept (o)nce, (a)ccept always"
-msgstr "r:拒否, o:今回のみ承認, a:常に承認"
-
-#: conn/ssl.c:988
-msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "r:拒否, o:今回のみ承認, s:無視"
-
-#: conn/ssl.c:990 conn/ssl_gnutls.c:711
-msgid "(r)eject, accept (o)nce"
-msgstr "r:拒否, o:今回のみ承認"
-
 #: conn/ssl.c:994 conn/ssl_gnutls.c:720 ncrypt/crypt_gpgme.c:4777
 #: ncrypt/pgpkey.c:667 ncrypt/smime.c:551
 msgid "Exit  "
@@ -1815,22 +1815,6 @@ msgstr "警告: サーバの証明書は署名者が CA でない"
 #: conn/ssl_gnutls.c:690 conn/ssl_gnutls.c:1037
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr "警告: 安全でないアルゴリズムで署名されたサーバ証明書"
-
-#. L10N: These three letters correspond to the choices in the string:
-#. (r)eject, accept (o)nce, (a)ccept always.
-#. This is an interactive certificate confirmation prompt for
-#. a GNUTLS connection.
-#: conn/ssl_gnutls.c:707
-msgid "roa"
-msgstr "roa"
-
-#. L10N: These two letters correspond to the choices in the string:
-#. (r)eject, accept (o)nce.
-#. These is an interactive certificate confirmation prompt for
-#. a GNUTLS connection.
-#: conn/ssl_gnutls.c:716
-msgid "ro"
-msgstr "ro"
 
 #: conn/ssl_gnutls.c:983 conn/ssl_gnutls.c:1025
 msgid "All available protocols for TLS/SSL connection disabled"
