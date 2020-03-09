@@ -139,7 +139,6 @@ ALLOBJS+=	$(LIBGUIOBJS)
 
 ###############################################################################
 # libdebug
-LIBDEBUG=	libdebug.a
 @if HAVE_LIBUNWIND
 LIBDEBUGOBJS+=	debug/backtrace.o
 @endif
@@ -155,9 +154,12 @@ LIBDEBUGOBJS+=	debug/parse_test.o
 @if USE_DEBUG_WINDOW
 LIBDEBUGOBJS+=	debug/window.o
 @endif
+@if HAVE_LIBUNWIND || USE_DEBUG_GRAPHVIZ || USE_DEBUG_NOTIFY || USE_DEBUG_PARSE_TEST || USE_DEBUG_WINDOW
+LIBDEBUG=	libdebug.a
 CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
 MUTTLIBS+=	$(LIBDEBUG)
 ALLOBJS+=	$(LIBDEBUGOBJS)
+@endif
 
 ###############################################################################
 # libmbox
