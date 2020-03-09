@@ -32,6 +32,7 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
+#include "conn_private.h"
 #include "mutt/lib.h"
 #include "socket.h"
 #include "conn_globals.h"
@@ -39,7 +40,6 @@
 #include "connection.h"
 #include "protos.h"
 #include "ssl.h"
-#include "tunnel.h"
 
 /**
  * socket_preconnect - Execute a command before opening a socket
@@ -286,9 +286,8 @@ struct Connection *mutt_socket_new(enum ConnectionType type)
   }
   else if (type == MUTT_CONNECTION_SSL)
   {
-    int ret = mutt_ssl_socket_setup(conn);
-
-    if (ret < 0)
+    int rc = mutt_ssl_socket_setup(conn);
+    if (rc < 0)
       FREE(&conn);
   }
   else

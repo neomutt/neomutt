@@ -54,6 +54,48 @@
 #include "connection.h"
 #include "options.h"
 
+/**
+ * struct SaslSockData - SASL authentication API
+ */
+struct SaslSockData
+{
+  sasl_conn_t *saslconn;
+  const sasl_ssf_t *ssf;
+  const unsigned int *pbufsize;
+
+  /* read buffer */
+  const char *buf;
+  unsigned int blen;
+  unsigned int bpos;
+
+  void *sockdata; ///< Underlying socket data
+
+  /**
+   * open - Open a socket Connection - Implements Connection::open()
+   */
+  int (*open)(struct Connection *conn);
+
+  /**
+   * read - Read from a socket Connection - Implements Connection::read()
+   */
+  int (*read)(struct Connection *conn, char *buf, size_t count);
+
+  /**
+   * write - Write to a socket Connection - Implements Connection::write()
+   */
+  int (*write)(struct Connection *conn, const char *buf, size_t count);
+
+  /**
+   * poll - Check whether a socket read would block - Implements Connection::poll()
+   */
+  int (*poll)(struct Connection *conn, time_t wait_secs);
+
+  /**
+   * close - Close a socket Connection - Implements Connection::close()
+   */
+  int (*close)(struct Connection *conn);
+};
+
 /* arbitrary. SASL will probably use a smaller buffer anyway. OTOH it's
  * been a while since I've had access to an SASL server which negotiated
  * a protection buffer. */

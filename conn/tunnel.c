@@ -35,8 +35,8 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
+#include "conn_private.h"
 #include "mutt/lib.h"
-#include "tunnel.h"
 #include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"
@@ -47,9 +47,9 @@
  */
 struct TunnelSockData
 {
-  pid_t pid;
-  int fd_read;
-  int fd_write;
+  pid_t pid;    ///< Process ID of tunnel program
+  int fd_read;  ///< File descriptor to read from
+  int fd_write; ///< File descriptor to write to
 };
 
 /**

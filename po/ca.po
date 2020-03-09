@@ -58,7 +58,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2019-12-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-02-13 17:39+0000\n"
+"POT-Creation-Date: 2020-03-09 12:15+0000\n"
 "PO-Revision-Date: 2019-05-15 01:16-0400\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -67,6 +67,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
+msgstr "(r)ebutja, accepta (u)na sola volta, accepta (s)empre, sal(t)a"
+
+msgid "roas"
+msgstr "rust"
+
+msgid "(r)eject, accept (o)nce, (a)ccept always"
+msgstr "(r)ebutja, accepta (u)na sola volta, accepta (s)empre"
+
+msgid "roa"
+msgstr "rus"
+
+msgid "(r)eject, accept (o)nce, (s)kip"
+msgstr "(r)ebutja, accepta (u)na sola volta, sal(t)a"
+
+msgid "ros"
+msgstr "rut"
+
+msgid "(r)eject, accept (o)nce"
+msgstr "(r)ebutja, accepta (u)na sola volta"
+
+msgid "ro"
+msgstr "ru"
 
 #: addrbook.c:56 autocrypt/autocrypt_acct_menu.c:58 browser.c:79 browser.c:89
 #: mutt_history.c:45 pager.c:220 postpone.c:68 query.c:78 recvattach.c:91
@@ -1804,30 +1828,6 @@ msgstr "Empremta digital SHA256: "
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "Comprovació del certificat SSL (%zu de %zu en la cadena)"
 
-#. L10N: These four letters correspond to the choices in the next four strings:
-#. (r)eject, accept (o)nce, (a)ccept always, (s)kip.
-#. These prompts are the interactive certificate confirmation prompts for
-#. an OpenSSL connection.
-#: conn/ssl.c:977
-msgid "roas"
-msgstr ""
-
-#: conn/ssl.c:981
-msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(r)ebutja, accepta (u)na sola volta, accepta (s)empre, sal(t)a"
-
-#: conn/ssl.c:983 conn/ssl_gnutls.c:702
-msgid "(r)eject, accept (o)nce, (a)ccept always"
-msgstr "(r)ebutja, accepta (u)na sola volta, accepta (s)empre"
-
-#: conn/ssl.c:988
-msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(r)ebutja, accepta (u)na sola volta, sal(t)a"
-
-#: conn/ssl.c:990 conn/ssl_gnutls.c:711
-msgid "(r)eject, accept (o)nce"
-msgstr "(r)ebutja, accepta (u)na sola volta"
-
 #: conn/ssl.c:994 conn/ssl_gnutls.c:720 ncrypt/crypt_gpgme.c:4777
 #: ncrypt/pgpkey.c:667 ncrypt/smime.c:551
 msgid "Exit  "
@@ -1917,26 +1917,6 @@ msgstr "Avís: El signatari del certificat del servidor no és una CA."
 #: conn/ssl_gnutls.c:690 conn/ssl_gnutls.c:1037
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr "Avís: El certificat del servidor s’ha signat emprant un algorisme insegur."
-
-# ivb (2001/11/27)
-# ivb  (r)ebutja, accepta (u)na sola volta, accepta (s)empre
-#. L10N: These three letters correspond to the choices in the string:
-#. (r)eject, accept (o)nce, (a)ccept always.
-#. This is an interactive certificate confirmation prompt for
-#. a GNUTLS connection.
-#: conn/ssl_gnutls.c:707
-msgid "roa"
-msgstr "rus"
-
-# ivb (2001/11/27)
-# ivb  (r)ebutja, accepta (u)na sola volta
-#. L10N: These two letters correspond to the choices in the string:
-#. (r)eject, accept (o)nce.
-#. These is an interactive certificate confirmation prompt for
-#. a GNUTLS connection.
-#: conn/ssl_gnutls.c:716
-msgid "ro"
-msgstr "ru"
 
 #: conn/ssl_gnutls.c:983 conn/ssl_gnutls.c:1025
 msgid "All available protocols for TLS/SSL connection disabled"

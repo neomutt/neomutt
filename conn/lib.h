@@ -29,13 +29,14 @@
  * | :------------------ | :----------------------- |
  * | conn/connaccount.c  | @subpage conn_account    |
  * | conn/conn_globals.c | @subpage conn_globals    |
- * | conn/conn_raw.c     | @subpage conn_raw        |
  * | conn/getdomain.c    | @subpage conn_getdomain  |
+ * | conn/gnutls.c       | @subpage conn_gnutls     |
+ * | conn/gui.c          | @subpage conn_gui        |
+ * | conn/openssl.c      | @subpage conn_openssl    |
+ * | conn/raw.c          | @subpage conn_raw        |
  * | conn/sasl.c         | @subpage conn_sasl       |
  * | conn/sasl_plain.c   | @subpage conn_sasl_plain |
  * | conn/socket.c       | @subpage conn_socket     |
- * | conn/ssl.c          | @subpage conn_ssl        |
- * | conn/ssl_gnutls.c   | @subpage conn_ssl_gnutls |
  * | conn/tunnel.c       | @subpage conn_tunnel     |
  */
 
@@ -50,12 +51,14 @@
 #include "connection.h"
 #include "sasl_plain.h"
 #include "socket.h"
-#include "ssl.h"
-#include "tunnel.h"
 #ifdef USE_SASL
 #include "sasl.h"
 #endif
 // IWYU pragma: end_exports
+
+#ifdef USE_SSL
+int mutt_ssl_starttls(struct Connection *conn);
+#endif
 
 int getdnsdomainname(char *buf, size_t buflen);
 

@@ -81,8 +81,8 @@ enum TreeChar
  */
 struct Menu
 {
-  char *title;            ///< Title of this menu
-  char *help;             ///< Quickref for the current menu
+  const char *title;      ///< Title of this menu
+  const char *help;       ///< Quickref for the current menu
   void *data;             ///< Extra data for the current menu
   int current;            ///< Current entry
   int max;                ///< Number of entries in the menu

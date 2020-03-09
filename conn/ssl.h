@@ -1,6 +1,6 @@
 /**
  * @file
- * Handling of OpenSSL encryption
+ * Handling of SSL encryption
  *
  * @authors
  * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
@@ -24,12 +24,14 @@
 #define MUTT_CONN_SSL_H
 
 #include "config.h"
+#include <stdbool.h>
 
 struct Connection;
+struct ListHead;
 
 #ifdef USE_SSL
-int mutt_ssl_starttls(struct Connection *conn);
 int mutt_ssl_socket_setup(struct Connection *conn);
+int dlg_verify_cert(const char *title, struct ListHead *list, bool allow_always, bool allow_skip);
 #else
 /**
  * [Dummy] Set up the socket multiplexor

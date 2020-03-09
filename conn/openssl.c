@@ -21,26 +21,25 @@
  */
 
 /**
- * @page conn_ssl Handling of OpenSSL encryption
+ * @page conn_openssl Handling of OpenSSL encryption
  *
  * Handling of OpenSSL encryption
  */
 
 #include "config.h"
 #include <errno.h>
-#include <limits.h>
 #include <openssl/asn1.h>
 #include <openssl/bio.h>
 #include <openssl/err.h>
 #include <openssl/evp.h>
 #include <openssl/obj_mac.h>
+#include <openssl/opensslv.h>
 #include <openssl/ossl_typ.h>
 #include <openssl/pem.h>
 #include <openssl/rand.h>
+#include <openssl/safestack.h>
 #include <openssl/ssl.h>
-#include <openssl/ssl3.h>
 #include <openssl/x509.h>
-#include <openssl/x509_vfy.h>
 #include <openssl/x509v3.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -49,28 +48,14 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "conn_private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
-#include "gui/lib.h"
-#include "mutt.h"
-#include "ssl.h"
-#include "conn_globals.h"
-#include "connaccount.h"
-#include "connection.h"
+#include "lib.h"
 #include "globals.h"
-#include "keymap.h"
-#include "mutt_account.h"
 #include "mutt_logging.h"
-#include "mutt_menu.h"
-#include "muttlib.h"
-#include "opcodes.h"
-#include "options.h"
-#include "protos.h"
-#include "socket.h"
-
-const int dialog_row_len = 128;
+#include "ssl.h"
 
 /* LibreSSL defines OPENSSL_VERSION_NUMBER but sets it to 0x20000000L.
  * So technically we don't need the defined(OPENSSL_VERSION_NUMBER) check.  */
@@ -137,7 +122,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
     SSL_CTX_set_cert_store(ctx, store);
   }
 
-  FILE *fp = fopen(C_CertificateFile, "rt");
+  FILE *fp = mutt_file_fopen(C_CertificateFile, "rt");
   if (!fp)
     return 0;
 
@@ -235,10 +220,6 @@ static int add_entropy(const char *file)
   if (n <= 0)
     n = RAND_load_file(file, -1);
 
-#ifndef HAVE_RAND_STATUS
-  if (n > 0)
-    entropy_byte_count += n;
-#endif
   return n;
 }
 
@@ -383,7 +364,7 @@ static char *x509_get_part(X509_NAME *name, int nid)
   static char data[128];
 
   if (!name || (X509_NAME_get_text_by_NID(name, nid, data, sizeof(data)) < 0))
-    mutt_str_strfcpy(data, _("Unknown"), sizeof(data));
+    return NULL;
 
   return data;
 }
@@ -684,7 +665,7 @@ static bool check_certificate_file(X509 *peercert)
   if (!C_CertificateFile)
     return false;
 
-  fp = fopen(C_CertificateFile, "rt");
+  fp = mutt_file_fopen(C_CertificateFile, "rt");
   if (!fp)
     return false;
 
@@ -850,6 +831,47 @@ static int ssl_cache_trusted_cert(X509 *c)
 }
 
 /**
+ * add_cert - Look up certificate info and save it to a list
+ * @param title  Title for this block of certificate info
+ * @param cert   Certificate
+ * @param issuer If true, look up the issuer rather than owner details
+ * @param list   List to save info to
+ */
+static void add_cert(const char *title, X509 *cert, bool issuer, struct ListHead *list)
+{
+  static const int part[] = {
+    NID_commonName,             // CN
+    NID_pkcs9_emailAddress,     // Email
+    NID_organizationName,       // O
+    NID_organizationalUnitName, // OU
+    NID_localityName,           // L
+    NID_stateOrProvinceName,    // ST
+    NID_countryName,            // C
+  };
+
+  X509_NAME *x509 = NULL;
+  if (issuer)
+    x509 = X509_get_issuer_name(cert);
+  else
+    x509 = X509_get_subject_name(cert);
+
+  // Allocate formatted strings and let the ListHead take ownership
+  mutt_list_insert_tail(list, mutt_str_strdup(title));
+
+  char *line = NULL;
+  char *text = NULL;
+  for (size_t i = 0; i < mutt_array_size(part); i++)
+  {
+    text = x509_get_part(x509, part[i]);
+    if (text)
+    {
+      mutt_str_asprintf(&line, "   %s", text);
+      mutt_list_insert_tail(list, line);
+    }
+  }
+}
+
+/**
  * interactive_check_cert - Ask the user if a certificate is valid
  * @param cert         Certificate
  * @param idx          Place of certificate in the chain
@@ -861,110 +883,46 @@ static int ssl_cache_trusted_cert(X509 *c)
  */
 static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bool allow_always)
 {
-  static const int part[] = {
-    NID_commonName,             /* CN */
-    NID_pkcs9_emailAddress,     /* Email */
-    NID_organizationName,       /* O */
-    NID_organizationalUnitName, /* OU */
-    NID_localityName,           /* L */
-    NID_stateOrProvinceName,    /* ST */
-    NID_countryName,            /* C */
-  };
-  X509_NAME *x509_subject = NULL;
-  X509_NAME *x509_issuer = NULL;
-  char helpstr[1024];
   char buf[256];
-  char title[256];
-  int done;
-  FILE *fp = NULL;
-  int ALLOW_SKIP = 0; /* All caps tells Coverity that this is effectively a preproc condition */
-  bool reset_ignoremacro = false;
+  struct ListHead list = STAILQ_HEAD_INITIALIZER(list);
 
-  struct MuttWindow *dlg =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-#ifdef USE_DEBUG_WINDOW
-  dlg->name = "openssl";
-#endif
-  dlg->type = WT_DIALOG;
-  struct MuttWindow *index =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  index->type = WT_INDEX;
-  struct MuttWindow *ibar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
-  ibar->type = WT_INDEX_BAR;
+  add_cert(_("This certificate belongs to:"), cert, false, &list);
+  mutt_list_insert_tail(&list, NULL);
+  add_cert(_("This certificate was issued by:"), cert, true, &list);
 
-  if (C_StatusOnTop)
-  {
-    mutt_window_add_child(dlg, ibar);
-    mutt_window_add_child(dlg, index);
-  }
-  else
-  {
-    mutt_window_add_child(dlg, index);
-    mutt_window_add_child(dlg, ibar);
-  }
+  char *line = NULL;
+  mutt_list_insert_tail(&list, NULL);
+  mutt_list_insert_tail(&list, mutt_str_strdup(_("This certificate is valid")));
+  mutt_str_asprintf(&line, _("   from %s"), asn1time_to_string(X509_getm_notBefore(cert)));
+  mutt_list_insert_tail(&list, line);
+  mutt_str_asprintf(&line, _("     to %s"), asn1time_to_string(X509_getm_notAfter(cert)));
+  mutt_list_insert_tail(&list, line);
 
-  dialog_push(dlg);
-
-  struct Menu *menu = mutt_menu_new(MENU_GENERIC);
-  menu->pagelen = index->state.rows;
-  menu->win_index = index;
-  menu->win_ibar = ibar;
-
-  mutt_menu_push_current(menu);
-
-  struct Buffer *drow = mutt_buffer_pool_get();
-
-  mutt_menu_add_dialog_row(menu, _("This certificate belongs to:"));
-  x509_subject = X509_get_subject_name(cert);
-  for (unsigned int u = 0; u < mutt_array_size(part); u++)
-  {
-    mutt_buffer_printf(drow, "   %s", x509_get_part(x509_subject, part[u]));
-    mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-  }
-
-  mutt_menu_add_dialog_row(menu, "");
-  mutt_menu_add_dialog_row(menu, _("This certificate was issued by:"));
-  x509_issuer = X509_get_issuer_name(cert);
-  for (unsigned int u = 0; u < mutt_array_size(part); u++)
-  {
-    mutt_buffer_printf(drow, "   %s", x509_get_part(x509_issuer, part[u]));
-    mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-  }
-
-  mutt_menu_add_dialog_row(menu, "");
-  mutt_menu_add_dialog_row(menu, _("This certificate is valid"));
-  mutt_buffer_printf(drow, _("   from %s"), asn1time_to_string(X509_getm_notBefore(cert)));
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-  mutt_buffer_printf(drow, _("     to %s"), asn1time_to_string(X509_getm_notAfter(cert)));
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-
-  mutt_menu_add_dialog_row(menu, "");
+  mutt_list_insert_tail(&list, NULL);
   buf[0] = '\0';
   x509_fingerprint(buf, sizeof(buf), cert, EVP_sha1);
-  mutt_buffer_printf(drow, _("SHA1 Fingerprint: %s"), buf);
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+  mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), buf);
+  mutt_list_insert_tail(&list, line);
   buf[0] = '\0';
   buf[40] = '\0'; /* Ensure the second printed line is null terminated */
   x509_fingerprint(buf, sizeof(buf), cert, EVP_sha256);
   buf[39] = '\0'; /* Divide into two lines of output */
-  mutt_buffer_printf(drow, "%s%s", _("SHA256 Fingerprint: "), buf);
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
-  mutt_buffer_printf(drow, "%*s%s",
-                     (int) mutt_str_strlen(_("SHA256 Fingerprint: ")), "", buf + 40);
-  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+  mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf);
+  mutt_list_insert_tail(&list, line);
+  mutt_str_asprintf(&line, "%*s%s",
+                    (int) mutt_str_strlen(_("SHA256 Fingerprint: ")), "", buf + 40);
+  mutt_list_insert_tail(&list, line);
 
-  snprintf(title, sizeof(title),
-           _("SSL Certificate check (certificate %zu of %zu in chain)"), len - idx, len);
-  menu->title = title;
-
+  bool allow_skip = false;
 /* The leaf/host certificate can't be skipped. */
 #ifdef HAVE_SSL_PARTIAL_CHAIN
   if ((idx != 0) && C_SslVerifyPartialChains)
-    ALLOW_SKIP = 1;
+    allow_skip = true;
 #endif
+
+  char title[256];
+  snprintf(title, sizeof(title),
+           _("SSL Certificate check (certificate %zu of %zu in chain)"), len - idx, len);
 
   /* Inside ssl_verify_callback(), this function is guarded by a call to
    * check_certificate_by_digest().  This means if check_certificate_expiration() is
@@ -973,93 +931,45 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   allow_always = allow_always && C_CertificateFile &&
                  check_certificate_expiration(cert, true);
 
-  /* L10N: These four letters correspond to the choices in the next four strings:
-     (r)eject, accept (o)nce, (a)ccept always, (s)kip.
-     These prompts are the interactive certificate confirmation prompts for
-     an OpenSSL connection. */
-  menu->keys = _("roas");
-  if (allow_always)
-  {
-    if (ALLOW_SKIP)
-      menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always, (s)kip");
-    else
-      menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
-  }
-  else
-  {
-    if (ALLOW_SKIP)
-      menu->prompt = _("(r)eject, accept (o)nce, (s)kip");
-    else
-      menu->prompt = _("(r)eject, accept (o)nce");
-  }
+  int rc = dlg_verify_cert(title, &list, allow_always, allow_skip);
+  if ((rc == 3) && !allow_always)
+    rc = 4;
 
-  helpstr[0] = '\0';
-  mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_GENERIC, OP_EXIT);
-  mutt_str_strcat(helpstr, sizeof(helpstr), buf);
-  mutt_make_help(buf, sizeof(buf), _("Help"), MENU_GENERIC, OP_HELP);
-  mutt_str_strcat(helpstr, sizeof(helpstr), buf);
-  menu->help = helpstr;
-
-  if (!OptIgnoreMacroEvents)
+  switch (rc)
   {
-    OptIgnoreMacroEvents = true;
-    reset_ignoremacro = true;
-  }
-
-  done = 0;
-  while (done == 0)
-  {
-    switch (mutt_menu_loop(menu))
+    case 1: // Reject
+      break;
+    case 2: // Once
+      SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
+      ssl_cache_trusted_cert(cert);
+      break;
+    case 3: // Always
     {
-      case -1:         /* abort */
-      case OP_MAX + 1: /* reject */
-      case OP_EXIT:
-        done = 1;
-        break;
-      case OP_MAX + 3: /* accept always */
-        if (!allow_always)
-          break;
-        done = 0;
-        fp = fopen(C_CertificateFile, "a");
-        if (fp)
-        {
-          if (PEM_write_X509(fp, cert))
-            done = 1;
-          mutt_file_fclose(&fp);
-        }
-        if (done == 0)
-        {
-          mutt_error(_("Warning: Couldn't save certificate"));
-        }
-        else
-        {
-          mutt_message(_("Certificate saved"));
-          mutt_sleep(0);
-        }
-      /* fallthrough */
-      case OP_MAX + 2: /* accept once */
-        done = 2;
-        SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
-        ssl_cache_trusted_cert(cert);
-        break;
-      case OP_MAX + 4: /* skip */
-        if (!ALLOW_SKIP)
-          break;
-        done = 2;
-        SSL_set_ex_data(ssl, SkipModeExDataIndex, &SkipModeExDataIndex);
-        break;
-    }
-  }
-  if (reset_ignoremacro)
-    OptIgnoreMacroEvents = false;
+      bool saved = false;
+      FILE *fp = mutt_file_fopen(C_CertificateFile, "a");
+      if (fp)
+      {
+        if (PEM_write_X509(fp, cert))
+          saved = true;
+        mutt_file_fclose(&fp);
+      }
 
-  mutt_buffer_pool_release(&drow);
-  mutt_menu_pop_current(menu);
-  mutt_menu_free(&menu);
-  dialog_pop();
-  mutt_window_free(&dlg);
-  mutt_debug(LL_DEBUG2, "done=%d\n", done);
-  return done == 2;
+      if (saved)
+        mutt_message(_("Certificate saved"));
+      else
+        mutt_error(_("Warning: Couldn't save certificate"));
+
+      SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
+      ssl_cache_trusted_cert(cert);
+      break;
+    }
+    case 4: // Skip
+      SSL_set_ex_data(ssl, SkipModeExDataIndex, &SkipModeExDataIndex);
+      break;
+  }
+
+  mutt_list_free(&list);
+  return (rc > 1);
 }
 
 /**

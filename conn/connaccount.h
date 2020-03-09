@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CONN_ACCOUNT_H
-#define MUTT_CONN_ACCOUNT_H
+#ifndef MUTT_CONN_CONNACCOUNT_H
+#define MUTT_CONN_CONNACCOUNT_H
 
 #include <stdint.h>
 
@@ -50,11 +50,11 @@ typedef uint8_t MuttAccountFlags;     ///< Flags, Which ConnAccount fields are i
  */
 struct ConnAccount
 {
-  char user[128];
-  char login[128];
-  char pass[256];
-  char host[128];
-  unsigned short port;
+  char host[128];         ///< Server to login to
+  char login[128];        ///< Login name
+  char user[128];         ///< Username
+  char pass[256];         ///< Password
+  unsigned short port;    ///< Port to connect to
   unsigned char type;     ///< Connection type, e.g. #MUTT_ACCT_TYPE_IMAP
   MuttAccountFlags flags; ///< Which fields are initialised, e.g. #MUTT_ACCT_USER
   const char *service;    ///< Name of the service, e.g. "imap"
@@ -73,4 +73,4 @@ int   mutt_account_getpass       (struct ConnAccount *account);
 int   mutt_account_getuser       (struct ConnAccount *account);
 void  mutt_account_unsetpass     (struct ConnAccount *account);
 
-#endif /* MUTT_CONN_ACCOUNT_H */
+#endif /* MUTT_CONN_CONNACCOUNT_H */
