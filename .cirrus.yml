@@ -1,0 +1,30 @@
+freebsd_instance:
+  image_family: freebsd-13-0-snap
+
+task:
+  env:
+    PKG_COMMON:
+      cyrus-sasl db5 docbook-xsl gdbm gettext-tools gpgme iconv jimtcl
+      kyotocabinet libgpg-error libidn2 libxslt lmdb lua53 lynx notmuch pkgconf
+      qdbm tokyocabinet urlview
+    CONFIGURE_COMMON:
+      --autocrypt --bdb --disable-idn --disable-inotify --fmemopen --full-doc
+      --gdbm --gpgme --gss --homespool --idn2 --kyotocabinet --lmdb
+      --locales-fix --lua --mixmaster --notmuch --pkgconf --qdbm --sasl
+      --testing --tokyocabinet --with-domain=example.com --with-lock=flock
+      --zlib
+  matrix:
+    - name: FreeBSD / OpenSSL
+      install_script: pkg install -y ${PKG_COMMON} openssl
+      configure_script: ./configure ${CONFIGURE_COMMON} --ssl
+    - name: FreeBSD / LibreSSL
+      install_script: pkg install -y ${PKG_COMMON} libressl
+      configure_script: ./configure ${CONFIGURE_COMMON} --ssl
+    - name: FreeBSD / GnuTLS
+      install_script: pkg install -y ${PKG_COMMON} gnutls
+      configure_script: ./configure ${CONFIGURE_COMMON} --gnutls
+    - name: FreeBSD / S-Lang
+      install_script: pkg install -y ${PKG_COMMON} libslang2
+      configure_script: ./configure ${CONFIGURE_COMMON} --with-ui=slang
+  build_script: make
+  test_script: make test
