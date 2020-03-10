@@ -2,6 +2,7 @@ freebsd_instance:
   image_family: freebsd-13-0-snap
 
 task:
+  required_pr_labels: "topic:build-process"
   env:
     PKG_COMMON:
       cyrus-sasl db5 docbook-xsl gdbm gettext-tools gpgme iconv jimtcl
