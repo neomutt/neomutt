@@ -1,3 +1,8 @@
+ACCOUNT_OBJS	= test/account/account_free.o \
+		  test/account/account_mailbox_add.o \
+		  test/account/account_mailbox_remove.o \
+		  test/account/account_new.o
+
 ADDRESS_OBJS	= test/address/mutt_addr_cat.o \
 		  test/address/mutt_addr_cmp.o \
 		  test/address/mutt_addr_copy.o \
@@ -247,6 +252,16 @@ LOGGING_OBJS	= test/logging/log_disp_file.o \
 		  test/logging/log_queue_save.o \
 		  test/logging/log_queue_set_max_size.o
 
+MAILBOX_OBJS	= test/mailbox/mailbox_changed.o \
+		  test/mailbox/mailbox_find.o \
+		  test/mailbox/mailbox_find_name.o \
+		  test/mailbox/mailbox_free.o \
+		  test/mailbox/mailbox_new.o \
+		  test/mailbox/mailbox_set_subset.o \
+		  test/mailbox/mailbox_size_add.o \
+		  test/mailbox/mailbox_size_sub.o \
+		  test/mailbox/mailbox_update.o
+
 MAPPING_OBJS	= test/mapping/mutt_map_get_name.o \
 		  test/mapping/mutt_map_get_value.o
 
@@ -276,6 +291,13 @@ MEMORY_OBJS	= test/memory/mutt_mem_calloc.o \
 		  test/memory/mutt_mem_free.o \
 		  test/memory/mutt_mem_malloc.o \
 		  test/memory/mutt_mem_realloc.o
+
+NEOMUTT_OBJS	= test/neo/neomutt_account_add.o \
+		  test/neo/neomutt_account_remove.o \
+		  test/neo/neomutt_free.o \
+		  test/neo/neomutt_mailboxlist_clear.o \
+		  test/neo/neomutt_mailboxlist_get_all.o \
+		  test/neo/neomutt_new.o
 
 PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
 		  test/parameter/mutt_param_delete.o \
@@ -425,20 +447,22 @@ URL_OBJS	= test/url/url_check_scheme.o \
 		  test/url/url_tobuffer.o \
 		  test/url/url_tostring.o
 
-BUILD_DIRS	= $(PWD)/test/address $(PWD)/test/attach $(PWD)/test/base64 \
-		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
-		  $(PWD)/test/config $(PWD)/test/date $(PWD)/test/email \
-		  $(PWD)/test/envelope $(PWD)/test/envlist $(PWD)/test/file \
-		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
-		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/list \
-		  $(PWD)/test/logging $(PWD)/test/mapping $(PWD)/test/mbyte \
-		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/parameter \
-		  $(PWD)/test/parse $(PWD)/test/path $(PWD)/test/pattern \
-		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \
-		  $(PWD)/test/signal $(PWD)/test/string $(PWD)/test/tags \
-		  $(PWD)/test/thread $(PWD)/test/url
+BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/attach \
+		  $(PWD)/test/base64 $(PWD)/test/body $(PWD)/test/buffer \
+		  $(PWD)/test/charset $(PWD)/test/config $(PWD)/test/date \
+		  $(PWD)/test/email $(PWD)/test/envelope $(PWD)/test/envlist \
+		  $(PWD)/test/file $(PWD)/test/from $(PWD)/test/group \
+		  $(PWD)/test/gui $(PWD)/test/hash $(PWD)/test/history \
+		  $(PWD)/test/idna $(PWD)/test/list $(PWD)/test/logging \
+		  $(PWD)/test/mailbox $(PWD)/test/mapping $(PWD)/test/mbyte \
+		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neomutt \
+		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
+		  $(PWD)/test/pattern $(PWD)/test/regex $(PWD)/test/rfc2047 \
+		  $(PWD)/test/rfc2231 $(PWD)/test/signal $(PWD)/test/string \
+		  $(PWD)/test/tags $(PWD)/test/thread $(PWD)/test/url
 
 TEST_OBJS	= test/main.o \
+		  $(ACCOUNT_OBJS) \
 		  $(ADDRESS_OBJS) \
 		  $(ATTACH_OBJS) \
 		  $(BASE64_OBJS) \
@@ -459,10 +483,12 @@ TEST_OBJS	= test/main.o \
 		  $(IDNA_OBJS) \
 		  $(LIST_OBJS) \
 		  $(LOGGING_OBJS) \
+		  $(MAILBOX_OBJS) \
 		  $(MAPPING_OBJS) \
 		  $(MBYTE_OBJS) \
 		  $(MD5_OBJS) \
 		  $(MEMORY_OBJS) \
+		  $(NEOMUTT_OBJS) \
 		  $(PARAMETER_OBJS) \
 		  $(PARSE_OBJS) \
 		  $(PATH_OBJS) \

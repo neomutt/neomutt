@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_env_new()
+ * Test code for mailbox_find()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,16 +24,9 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/lib.h"
-#include "address/lib.h"
-#include "email/lib.h"
+#include "core/lib.h"
 
-void test_mutt_env_new(void)
+void test_mailbox_find(void)
 {
-  // struct Envelope *mutt_env_new(void);
-
-  {
-    struct Envelope *env = mutt_env_new();
-    TEST_CHECK(env != NULL);
-    mutt_env_free(&env);
-  }
+  // struct Mailbox *mailbox_find(const char *path);
 }

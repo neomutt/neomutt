@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_env_new()
+ * Test code for account_free()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,16 +24,40 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/lib.h"
-#include "address/lib.h"
-#include "email/lib.h"
+#include "core/lib.h"
 
-void test_mutt_env_new(void)
+void free_adata(void **ptr)
 {
-  // struct Envelope *mutt_env_new(void);
+  FREE(ptr);
+}
+
+void test_account_free(void)
+{
+  // void account_free(struct Account **ptr);
 
   {
-    struct Envelope *env = mutt_env_new();
-    TEST_CHECK(env != NULL);
-    mutt_env_free(&env);
+    account_free(NULL);
+    TEST_CHECK_(1, "account_free(NULL)");
+  }
+
+  {
+    struct Account *a = NULL;
+    account_free(&a);
+    TEST_CHECK_(1, "account_free(&a)");
+  }
+
+  {
+    struct Account *a = mutt_mem_calloc(1, sizeof(*a));
+    account_free(&a);
+    TEST_CHECK_(1, "account_free(&a)");
+  }
+
+  {
+    struct Account *a = mutt_mem_calloc(1, sizeof(*a));
+    a->adata = mutt_mem_calloc(1, 32);
+    a->free_adata = free_adata;
+
+    account_free(&a);
+    TEST_CHECK_(1, "account_free(&a)");
   }
 }

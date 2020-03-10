@@ -3,8 +3,8 @@
  * Test code hub
  *
  * @authors
- * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018-2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019-2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,6 +27,12 @@
  * Add your test cases to this list.
  *****************************************************************************/
 #define NEOMUTT_TEST_LIST                                                      \
+  /* account */                                                                \
+  NEOMUTT_TEST_ITEM(test_account_free)                                         \
+  NEOMUTT_TEST_ITEM(test_account_mailbox_add)                                  \
+  NEOMUTT_TEST_ITEM(test_account_mailbox_remove)                               \
+  NEOMUTT_TEST_ITEM(test_account_new)                                          \
+                                                                               \
   /* address */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cat)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cmp)                                        \
@@ -292,6 +298,17 @@
   NEOMUTT_TEST_ITEM(test_log_queue_save)                                       \
   NEOMUTT_TEST_ITEM(test_log_queue_set_max_size)                               \
                                                                                \
+  /* mailbox */                                                                \
+  NEOMUTT_TEST_ITEM(test_mailbox_changed)                                      \
+  NEOMUTT_TEST_ITEM(test_mailbox_find)                                         \
+  NEOMUTT_TEST_ITEM(test_mailbox_find_name)                                    \
+  NEOMUTT_TEST_ITEM(test_mailbox_free)                                         \
+  NEOMUTT_TEST_ITEM(test_mailbox_new)                                          \
+  NEOMUTT_TEST_ITEM(test_mailbox_set_subset)                                   \
+  NEOMUTT_TEST_ITEM(test_mailbox_size_add)                                     \
+  NEOMUTT_TEST_ITEM(test_mailbox_size_sub)                                     \
+  NEOMUTT_TEST_ITEM(test_mailbox_update)                                       \
+                                                                               \
   /* mapping */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_map_get_name)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_map_get_value)                                   \
@@ -324,6 +341,14 @@
   NEOMUTT_TEST_ITEM(test_mutt_mem_free)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_mem_malloc)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_mem_realloc)                                     \
+                                                                               \
+  /* neomutt */                                                                \
+  NEOMUTT_TEST_ITEM(test_neomutt_account_add)                                  \
+  NEOMUTT_TEST_ITEM(test_neomutt_account_remove)                               \
+  NEOMUTT_TEST_ITEM(test_neomutt_free)                                         \
+  NEOMUTT_TEST_ITEM(test_neomutt_mailboxlist_clear)                            \
+  NEOMUTT_TEST_ITEM(test_neomutt_mailboxlist_get_all)                          \
+  NEOMUTT_TEST_ITEM(test_neomutt_new)                                          \
                                                                                \
   /* parameter */                                                              \
   NEOMUTT_TEST_ITEM(test_mutt_param_cmp_strict)                                \

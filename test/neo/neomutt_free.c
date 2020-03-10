@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_env_new()
+ * Test code for neomutt_free()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,16 +24,26 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/lib.h"
-#include "address/lib.h"
-#include "email/lib.h"
+#include "core/lib.h"
 
-void test_mutt_env_new(void)
+void test_neomutt_free(void)
 {
-  // struct Envelope *mutt_env_new(void);
+  // void neomutt_free(struct NeoMutt **ptr);
 
   {
-    struct Envelope *env = mutt_env_new();
-    TEST_CHECK(env != NULL);
-    mutt_env_free(&env);
+    neomutt_free(NULL);
+    TEST_CHECK_(1, "neomutt_free(NULL)");
+  }
+
+  {
+    struct NeoMutt *n = NULL;
+    neomutt_free(&n);
+    TEST_CHECK_(1, "neomutt_free(&n)");
+  }
+
+  {
+    struct NeoMutt *n = mutt_mem_calloc(1, sizeof(*n));
+    neomutt_free(&n);
+    TEST_CHECK_(1, "neomutt_free(&n)");
   }
 }

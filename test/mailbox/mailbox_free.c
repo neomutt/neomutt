@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_env_new()
+ * Test code for mailbox_free()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,16 +24,40 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/lib.h"
-#include "address/lib.h"
-#include "email/lib.h"
+#include "core/lib.h"
 
-void test_mutt_env_new(void)
+void free_mdata(void **ptr)
 {
-  // struct Envelope *mutt_env_new(void);
+  FREE(ptr);
+}
+
+void test_mailbox_free(void)
+{
+  // void mailbox_free(struct Mailbox **ptr);
 
   {
-    struct Envelope *env = mutt_env_new();
-    TEST_CHECK(env != NULL);
-    mutt_env_free(&env);
+    mailbox_free(NULL);
+    TEST_CHECK_(1, "mailbox_free(NULL)");
+  }
+
+  {
+    struct Mailbox *m = NULL;
+    mailbox_free(&m);
+    TEST_CHECK_(1, "mailbox_free(&m)");
+  }
+
+  {
+    struct Mailbox *m = mutt_mem_calloc(1, sizeof(*m));
+    mailbox_free(&m);
+    TEST_CHECK_(1, "mailbox_free(&m)");
+  }
+
+  {
+    struct Mailbox *m = mutt_mem_calloc(1, sizeof(*m));
+    m->mdata = mutt_mem_calloc(1, 32);
+    m->free_mdata = free_mdata;
+
+    mailbox_free(&m);
+    TEST_CHECK_(1, "mailbox_free(&m)");
   }
 }
