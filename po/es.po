@@ -53,7 +53,7 @@ msgstr "Salir"
 
 #: addrbook.c:56 index.c:112 index.c:125 pager.c:228 pager.c:238 postpone.c:69
 msgid "Del"
-msgstr "Bor"
+msgstr "Borrar"
 
 #: addrbook.c:57 index.c:113 index.c:126 postpone.c:70
 msgid "Undel"
