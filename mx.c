@@ -32,6 +32,7 @@
 #include "config.h"
 #include <errno.h>
 #include <limits.h>
+#include <locale.h>
 #include <stdbool.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -1075,9 +1076,13 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, MsgOpenFlags
           p = TAILQ_FIRST(&e->env->from);
       }
 
+      // Force a 'C' locale for the date, so that day/month names are in English
+      locale_t loc = newlocale(LC_TIME_MASK, "C", 0);
       char buf[64] = { 0 };
-      mutt_date_localtime_format(buf, sizeof(buf), "%a %b %e %H:%M:%S %Y\n", msg->received);
-      fprintf(msg->fp, "From %s %s", p ? p->mailbox : NONULL(Username), buf);
+      struct tm tm = mutt_date_localtime(msg->received);
+      strftime_l(buf, sizeof(buf),  "%a %b %e %H:%M:%S %Y", &tm, loc);
+      freelocale(loc);
+      fprintf(msg->fp, "From %s %s\n", p ? p->mailbox : NONULL(Username), buf);
     }
   }
   else
