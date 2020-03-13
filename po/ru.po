@@ -121,13 +121,12 @@ msgid "Error reading alias file"
 msgstr "Ошибка чтения файла псевдонимов"
 
 #: alias.c:529
-#, fuzzy
 msgid "Trouble adding alias"
-msgstr "Ошибка чтения файла псевдонимов"
+msgstr "Проблема с добавлением псевдонима"
 
 #: alias.c:531
 msgid "Alias added"
-msgstr "Псевдоним создан"
+msgstr "Псевдоним добавлен"
 
 #: alias.c:536
 msgid "Error seeking in alias file"
@@ -330,9 +329,8 @@ msgstr "Учётные записи autocrypt"
 #. account record fails for some odd reason.
 #.
 #: autocrypt/autocrypt_acct_menu.c:244 autocrypt/autocrypt_acct_menu.c:258
-#, fuzzy
 msgid "Error updating account record"
-msgstr "Ошибка сохранения информации об учётной записи"
+msgstr "Ошибка обновления учётной записи"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/autocrypt_acct_menu.c:333
@@ -422,17 +420,17 @@ msgid "Autocrypt database version is too new"
 msgstr "Версия базы данных autocrypt слишком новая"
 
 #: bcache.c:208
-#, fuzzy, c-format
+#, c-format
 msgid "Message cache isn't a directory: %s"
-msgstr "%s не является каталогом"
+msgstr "Кэш сообщений не является каталогом: %s"
 
 #: browser.c:80
 msgid "Chdir"
-msgstr "Перейти в: "
+msgstr "Сменить каталог"
 
 #: browser.c:81
 msgid "Goto"
-msgstr ""
+msgstr "Перейти"
 
 #: browser.c:82 browser.c:94
 msgid "Mask"
@@ -440,21 +438,19 @@ msgstr "Маска"
 
 #: browser.c:90
 msgid "List"
-msgstr ""
+msgstr "Список"
 
 #: browser.c:91
-#, fuzzy
 msgid "Subscribe"
-msgstr "Подключено к %s"
+msgstr "Подписаться"
 
 #: browser.c:92
-#, fuzzy
 msgid "Unsubscribe"
-msgstr "Отключено от %s"
+msgstr "Отписаться"
 
 #: browser.c:93 index.c:130
 msgid "Catchup"
-msgstr ""
+msgstr "Наверстать"
 
 #: browser.c:763 browser.c:1584 browser.c:1825
 #, c-format
@@ -462,14 +458,14 @@ msgid "%s is not a directory"
 msgstr "%s не является каталогом"
 
 #: browser.c:1028
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed newsgroups"
-msgstr "Подключено к %s"
+msgstr "Группы новостей на которые есть подписка"
 
 #: browser.c:1031
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr ""
+msgstr "Группы новостей на сервере [%s]"
 
 #: browser.c:1041
 #, c-format
@@ -507,9 +503,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Удаление поддерживается только для почтовых ящиков на IMAP-серверах"
 
 #: browser.c:1709
-#, fuzzy
 msgid "Can't delete currently selected mailbox"
-msgstr "показать имя текущего файла"
+msgstr "Невозможно удалить выбранный почтовый ящик"
 
 #: browser.c:1713
 #, c-format
@@ -1105,9 +1100,8 @@ msgid "Descrip"
 msgstr "Описание"
 
 #: compose.c:224
-#, fuzzy
 msgid "Newsgroups"
-msgstr "Тема сообщения не указана."
+msgstr "Группы сообщений"
 
 #. L10N: Autocrypt recommendation flag: off.
 #. * This is displayed when Autocrypt is turned off.
@@ -1289,12 +1283,11 @@ msgid "Not sending this message"
 msgstr "Ошибка отправки сообщения"
 
 #: compose.c:1631
-#, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
-msgstr[0] "Вкладываются помеченные файлы..."
-msgstr[1] "Вкладываются помеченные файлы..."
-msgstr[2] "Вкладываются помеченные файлы..."
+msgstr[0] "Вкладываются выбранные файлы..."
+msgstr[1] "Вкладываются выбранные файлы..."
+msgstr[2] "Вкладываются выбранные файлы..."
 
 #: compose.c:1645
 #, c-format
@@ -1388,9 +1381,8 @@ msgid "What we have here is a failure to make an attachment"
 msgstr "Не удалось создать вложение"
 
 #: compose.c:2144
-#, fuzzy
 msgid "Save (postpone) draft message?"
-msgstr "Продолжить отложенное сообщение?"
+msgstr "Сохранить (отложить) сообщение в черновики?"
 
 #: compose.c:2204
 msgid "Write message to mailbox"
@@ -1474,14 +1466,14 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "Ошибка. Временный файл оставлен: %s"
 
 #: config/bool.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid boolean value: %s"
-msgstr "Неверно указана относительная дата: %s"
+msgstr "Неверное логическое значение: %s"
 
 #: config/bool.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid boolean value: %ld"
-msgstr "Неверно указана относительная дата: %s"
+msgstr "Неверное логическое значение: %ld"
 
 #: config/enum.c:62
 #, fuzzy, c-format
@@ -6826,9 +6818,8 @@ msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
 #: send.c:2438
-#, fuzzy
 msgid "Article not posted"
-msgstr "Письмо не отправлено"
+msgstr "Статья не размещена"
 
 #: send.c:2448
 msgid "Message postponed"
@@ -6843,18 +6834,16 @@ msgid "No subject specified"
 msgstr "Тема сообщения не указана"
 
 #: send.c:2497
-#, fuzzy
 msgid "No newsgroup specified"
-msgstr "Тема сообщения не указана"
+msgstr "Не указана группа новостей"
 
 #: send.c:2507
-#, fuzzy
 msgid "No attachments, cancel sending?"
-msgstr "изменить транспортную кодировку для вложения"
+msgstr "Вложения отсутствуют. Отменить отправку?"
 
 #: send.c:2512
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
-msgstr ""
+msgstr "Сообщение содержит текст, соответствуюший \"$abort_noattach_regex\". Отправлено не будет."
 
 #: send.c:2570 smtp.c:230
 msgid "Sending message..."
@@ -6870,7 +6859,7 @@ msgstr "Сообщение отправляется в фоновом режим
 
 #: send.c:2620
 msgid "Article posted"
-msgstr ""
+msgstr "Статья размещена"
 
 #: send.c:2621
 msgid "Mail sent"
@@ -6891,9 +6880,8 @@ msgid "%s isn't a regular file"
 msgstr "%s не является файлом"
 
 #: sendlib.c:1222
-#, fuzzy
 msgid "Could not find any mime.types file."
-msgstr "Сообщение отправить не удалось."
+msgstr "Не удалось найти ни одного mime.types файла."
 
 #: sendlib.c:1313
 #, c-format
@@ -6944,9 +6932,8 @@ msgid "%s authentication failed, trying next method"
 msgstr "Не удалось выполнить %s аутентификацию, пробуем следующий метод"
 
 #: smtp.c:661
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "Ошибка GSSAPI-аутентификации"
+msgstr "Для SMTP аутентификации необходим SASL"
 
 #: smtp.c:742
 msgid "SMTP server does not support authentication"
@@ -7043,9 +7030,8 @@ msgstr ""
 "более подробной информации введите \"neomutt -vv\".\n"
 
 #: version.c:451
-#, fuzzy
 msgid "Default options:"
-msgstr "Параметры компиляции:"
+msgstr "Параметры по умолчанию:"
 
 #: version.c:454
 msgid "Compile options:"
