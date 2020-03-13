@@ -102,7 +102,7 @@ struct ConfigDef MuttVars[] = {
    ** If \fIset\fP, hitting backspace against an empty prompt aborts the
    ** prompt.
    */
-  { "abort_key", DT_STRING|DT_NOT_EMPTY, &C_AbortKeyStr, IP "\007" },
+  { "abort_key", DT_STRING|DT_NOT_EMPTY, &C_AbortKey, IP "\007" },
   /*
   ** .pp
   ** Specifies the key that can be used to abort prompts.  The format is the

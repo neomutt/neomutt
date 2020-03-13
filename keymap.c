@@ -820,12 +820,12 @@ static const char *km_keyname(int c)
 /**
  * mutt_init_abort_key - Parse the abort_key config string
  *
- * Parse the string into C_AbortKeyStr and put the keycode into AbortKey.
+ * Parse the string into C_AbortKey and put the keycode into AbortKey.
  */
 void mutt_init_abort_key(void)
 {
   keycode_t buf[2];
-  size_t len = parsekeys(C_AbortKeyStr, buf, mutt_array_size(buf));
+  size_t len = parsekeys(C_AbortKey, buf, mutt_array_size(buf));
   if (len == 0)
   {
     mutt_error(_("Abort key is not set, defaulting to Ctrl-G"));
@@ -835,7 +835,7 @@ void mutt_init_abort_key(void)
   if (len > 1)
   {
     mutt_warning(
-        _("Specified abort key sequence (%s) will be truncated to first key"), C_AbortKeyStr);
+        _("Specified abort key sequence (%s) will be truncated to first key"), C_AbortKey);
   }
   AbortKey = buf[0];
 }
