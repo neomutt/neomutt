@@ -147,7 +147,7 @@ static FILE *msg_cache_get(struct Mailbox *m, struct Email *e)
 
   mdata->bcache = msg_cache_open(m);
   char id[64];
-  snprintf(id, sizeof(id), "%u-%u", mdata->uid_validity, imap_edata_get(e)->uid);
+  snprintf(id, sizeof(id), "%u-%u", mdata->uidvalidity, imap_edata_get(e)->uid);
   return mutt_bcache_get(mdata->bcache, id);
 }
 
@@ -168,7 +168,7 @@ static FILE *msg_cache_put(struct Mailbox *m, struct Email *e)
 
   mdata->bcache = msg_cache_open(m);
   char id[64];
-  snprintf(id, sizeof(id), "%u-%u", mdata->uid_validity, imap_edata_get(e)->uid);
+  snprintf(id, sizeof(id), "%u-%u", mdata->uidvalidity, imap_edata_get(e)->uid);
   return mutt_bcache_put(mdata->bcache, id);
 }
 
@@ -189,7 +189,7 @@ static int msg_cache_commit(struct Mailbox *m, struct Email *e)
 
   mdata->bcache = msg_cache_open(m);
   char id[64];
-  snprintf(id, sizeof(id), "%u-%u", mdata->uid_validity, imap_edata_get(e)->uid);
+  snprintf(id, sizeof(id), "%u-%u", mdata->uidvalidity, imap_edata_get(e)->uid);
 
   return mutt_bcache_commit(mdata->bcache, id);
 }
@@ -207,7 +207,7 @@ static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *da
     return 0;
 
   /* bad UID */
-  if ((uv != mdata->uid_validity) || !mutt_hash_int_find(mdata->uid_hash, uid))
+  if ((uv != mdata->uidvalidity) || !mutt_hash_int_find(mdata->uid_hash, uid))
     mutt_bcache_del(bcache, id);
 
   return 0;
@@ -1279,7 +1279,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   bool evalhc = false;
 
 #ifdef USE_HCACHE
-  void *uid_validity = NULL;
+  void *uidvalidity = NULL;
   void *puid_next = NULL;
   unsigned int uid_next = 0;
   bool has_condstore = false;
@@ -1312,7 +1312,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   if (mdata->hcache && initial_download)
   {
     size_t dlen = 0;
-    uid_validity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12, &dlen);
+    uidvalidity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12, &dlen);
     puid_next = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8, &dlen);
     if (puid_next)
     {
@@ -1331,7 +1331,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
         has_qresync = true;
     }
 
-    if (uid_validity && uid_next && (*(unsigned int *) uid_validity == mdata->uid_validity))
+    if (uidvalidity && uid_next && (*(unsigned int *) uidvalidity == mdata->uidvalidity))
     {
       size_t dlen2 = 0;
       evalhc = true;
@@ -1354,7 +1354,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
           eval_condstore = true;
       }
     }
-    mutt_hcache_free_raw(mdata->hcache, &uid_validity);
+    mutt_hcache_free_raw(mdata->hcache, &uidvalidity);
   }
   if (evalhc)
   {
@@ -1396,8 +1396,8 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
     mdata->uid_next = maxuid + 1;
 
 #ifdef USE_HCACHE
-  mutt_hcache_store_raw(mdata->hcache, "/UIDVALIDITY", 12, &mdata->uid_validity,
-                        sizeof(mdata->uid_validity));
+  mutt_hcache_store_raw(mdata->hcache, "/UIDVALIDITY", 12, &mdata->uidvalidity,
+                        sizeof(mdata->uidvalidity));
   if (maxuid && (mdata->uid_next < maxuid + 1))
   {
     mutt_debug(LL_DEBUG2, "Overriding UIDNEXT: %u -> %u\n", mdata->uid_next, maxuid + 1);
@@ -1767,7 +1767,7 @@ int imap_cache_del(struct Mailbox *m, struct Email *e)
 
   mdata->bcache = msg_cache_open(m);
   char id[64];
-  snprintf(id, sizeof(id), "%u-%u", mdata->uid_validity, imap_edata_get(e)->uid);
+  snprintf(id, sizeof(id), "%u-%u", mdata->uidvalidity, imap_edata_get(e)->uid);
   return mutt_bcache_del(mdata->bcache, id);
 }
 

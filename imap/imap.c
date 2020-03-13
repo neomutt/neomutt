@@ -1265,7 +1265,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
  */
 static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool queue)
 {
-  char *uid_validity_flag = NULL;
+  char *uidvalidity_flag = NULL;
   char cmd[2048];
 
   if (!adata || !mdata)
@@ -1282,9 +1282,9 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
   }
 
   if (adata->capabilities & IMAP_CAP_IMAP4REV1)
-    uid_validity_flag = "UIDVALIDITY";
+    uidvalidity_flag = "UIDVALIDITY";
   else if (adata->capabilities & IMAP_CAP_STATUS)
-    uid_validity_flag = "UID-VALIDITY";
+    uidvalidity_flag = "UID-VALIDITY";
   else
   {
     mutt_debug(LL_DEBUG2, "Server doesn't support STATUS\n");
@@ -1292,7 +1292,7 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
   }
 
   snprintf(cmd, sizeof(cmd), "STATUS %s (UIDNEXT %s UNSEEN RECENT MESSAGES)",
-           mdata->munge_name, uid_validity_flag);
+           mdata->munge_name, uidvalidity_flag);
 
   int rc = imap_exec(adata, cmd, queue ? IMAP_CMD_QUEUE : IMAP_CMD_NO_FLAGS | IMAP_CMD_POLL);
   if (rc < 0)
@@ -2122,7 +2122,7 @@ static int imap_mbox_open(struct Mailbox *m)
       mutt_debug(LL_DEBUG3, "Getting mailbox UIDVALIDITY\n");
       pc += 3;
       pc = imap_next_word(pc);
-      if (mutt_str_atoui(pc, &mdata->uid_validity) < 0)
+      if (mutt_str_atoui(pc, &mdata->uidvalidity) < 0)
         goto fail;
     }
     else if (mutt_str_startswith(pc, "OK [UIDNEXT", CASE_IGNORE))
