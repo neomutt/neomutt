@@ -3093,12 +3093,12 @@ msgstr "Rastas ciklas makrokomandoje"
 
 #: keymap.c:831
 msgid "Abort key is not set, defaulting to Ctrl-G"
-msgstr ""
+msgstr "Pertraukimo klavišas nenustatytas, bus naudojama Ctrl-G"
 
 #: keymap.c:838
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
-msgstr ""
+msgstr "Nurodyta pertraukimo klavišų seka (%s) bus sutrumpinta iki pirmo klavišo"
 
 #: keymap.c:1106 keymap.c:1141
 msgid "Key is not bound"
@@ -3133,9 +3133,9 @@ msgid "%s: no such function"
 msgstr "%s: nėra tokios funkcijos"
 
 #: keymap.c:1626
-#, fuzzy, c-format
+#, c-format
 msgid "Enter keys (%s to abort): "
-msgstr "Paspausk klavišus (^G nutraukia): "
+msgstr "Paspausk klavišus (%s nutraukia): "
 
 #: keymap.c:1633
 #, c-format
@@ -6746,7 +6746,7 @@ msgstr "Negaliu atidėti.  $postponed nenustatytas"
 
 #: send.c:1826 send.c:1842
 msgid "Error encrypting message. Check your crypt settings."
-msgstr ""
+msgstr "Klaida šifruojant laišką.  Patikrinkite šifravimo nuostatas."
 
 #: send.c:1937
 msgid "Recall postponed message?"
