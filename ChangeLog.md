@@ -1,25 +1,80 @@
-yyyy-mm-dd
+2020-03-13  Richard Russon  <rich@flatcap.org>
 * Features
-  - GPGMe: infer the signing key from the sender's address
-  - Classc PGP: emit a confirmation when a message is successfully decrypted
-* Contrib
+  - UI: add number of old messages to sidebar_format
+  - UI: support ISO 8601 calendar date
+  - UI: fix commands that don’t need to have a non-empty mailbox to be valid
+  - PGP: inform about successful decryption of inline PGP messages
+  - PGP: try to infer the signing key from the From address
+  - PGP: enable GPGMe by default
+  - Notmuch: use query as name for vfolder-from-query
+  - IMAP: add network traffic compression (COMPRESS=DEFLATE, RFC4978)
+  - Header cache: add support for generic header cache compression
 * Bug Fixes
-  - Avoid crash executing entire-thread inside an IMAP mailbox
-  - Avoid spurious newlines when logging headers
-  - Index: avoid skipping messages when uncollapse_jump is set
-  - Browser: fix directory browsing without mailboxes defined
+  - Fix uncollapse_jump
+  - Only try to perform entire-thread on maildir/mh mailboxes
+  - Fix crash in pager
+  - Avoid logging single new lines at the end of header fields
+  - Fix listing mailboxes
+  - Do not recurse a non-threaded message
+  - Fix initial window order
+  - Fix leaks on IMAP error paths
+  - Notmuch: compose(attach-message): support notmuch backend
+  - Fix IMAP flag comparison code
+  - Fix $move for IMAP mailboxes
+  - Maildir: maildir_mbox_check_stats should only update mailbox stats if requested
+  - Fix unmailboxes for virtual mailboxes
+  - Maildir: sanitize filename before hashing
+  - OAuth: if 'login' name isn't available use 'user'
+  - Add error message on failed encryption
+  - Fix a bunch of crashes
+  - Force C locale for email date
+  - Abort if run without a terminal
 * Changed Config
+  - `$crypt_use_gpgme`                         - Now defaults to 'yes' (enabled)
+  - `$abort_backspace`                         - Hitting backspace against an empty prompt aborts the prompt
+  - `$abort_key`                               - String representation of key to abort prompts
+  - `$arrow_string`                            - Use an custom string for arrow_cursor
+  - `$crypt_opportunistic_encrypt_strong_keys` - Enable encryption only when strong a key is available
+  - `$header_cache_compress_dictionary`        - Filepath to dictionary for zstd compression
+  - `$header_cache_compress_level`             - Level of compression for method
+  - `$header_cache_compress_method`            - Enable generic hcache database compression
+  - `$imap_deflate`                            - Compress network traffic
+  - `$smtp_user`                               - Username for the SMTP server
 * Translations
-* Coverity defects
-* Docs
-* Website
+  - 100% Lithuanian
+  - 81% Spanish
+  - 78% Russian
 * Build
-  - Create libgui
+  - Add libdebug
+  - Rename public headers to lib.h
+  - Create libcompress for compressed folders code
+  - Enable Cirrus CI for FreeBSD
 * Code
-  - Refactor Window handling to nest Windows
-  - Add tests for window_reflow()
-* Tidy
+  - Refactor Windows and Dialogs
+  - Lots of code tidying
+  - Refactor: mutt_addrlist\_{search,write}
+  - Lots of improvements to the Config code
+  - Use Buffers more pervasively
+  - Unify API function naming
+  - Rename library shared headers
+  - Refactor libconn gui dependencies
+  - Refactor: init.[ch]
+  - Refactor config to use subsets
+  - Config: add path type
+  - Remove backend deps from the connection code
 * Upstream
+  - Allow ~b ~B ~h patterns in send2-hook
+  - Rename smime oppenc mode parameter to get_keys_by_addr()
+  - Add $crypt_opportunistic_encrypt_strong_keys config var
+  - Fix crash when polling a closed ssl connection
+  - Turn off auto-clear outside of autocrypt initialization
+  - Add protected-headers="v1" to Content-Type when protecting headers
+  - Fix segv in IMAP postponed menu caused by reopen_allow
+  - Adding ISO 8601 calendar date
+  - Fix $fcc_attach to not prompt in batch mode
+  - Convert remaining mutt_encode_path() call to use struct Buffer
+  - Fix rendering of replacement_char when Charset_is_utf8
+  - Update to latest acutest.h
 
 2019-12-07  Richard Russon  <rich@flatcap.org>
 * Features
