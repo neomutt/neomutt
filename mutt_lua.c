@@ -445,7 +445,7 @@ static bool lua_init(lua_State **l)
  * mutt_lua_parse - Parse the 'lua' command - Implements Command::parse()
  */
 enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
-                                  unsigned long data, struct Buffer *err)
+                                  intptr_t data, struct Buffer *err)
 {
   lua_init(&LuaState);
   mutt_debug(LL_DEBUG2, " * mutt_lua_parse(%s)\n", buf->data);
@@ -467,7 +467,7 @@ enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
  * mutt_lua_source_file - Parse the 'lua-source' command - Implements Command::parse()
  */
 enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
-                                        unsigned long data, struct Buffer *err)
+                                        intptr_t data, struct Buffer *err)
 {
   mutt_debug(LL_DEBUG2, " * mutt_lua_source()\n");
 

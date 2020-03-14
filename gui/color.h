@@ -168,9 +168,9 @@ void mutt_color_free   (struct Colors *c, uint32_t fg,      uint32_t bg);
 struct Colors *mutt_colors_new(void);
 void           mutt_colors_free(struct Colors **ptr);
 
-enum CommandResult mutt_parse_color  (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-enum CommandResult mutt_parse_mono   (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-enum CommandResult mutt_parse_unmono (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+enum CommandResult mutt_parse_color  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_mono   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_unmono (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 #endif /* MUTT_COLOR_H */

@@ -53,9 +53,9 @@ struct Command
    * @param err  Buffer for error messages
    * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
    */
-  enum CommandResult (*parse)(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+  enum CommandResult (*parse)(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
-  intptr_t data;    ///< Data or flags to pass to the command
+  intptr_t data; ///< Data or flags to pass to the command
 };
 
 /**

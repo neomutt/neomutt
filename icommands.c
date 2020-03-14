@@ -47,9 +47,9 @@
  */
 
 // clang-format off
-static enum CommandResult icmd_bind   (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static enum CommandResult icmd_set    (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult icmd_bind   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+static enum CommandResult icmd_set    (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 /**
  * ICommandList - All available informational commands
@@ -229,7 +229,7 @@ static void dump_all_menus(struct Buffer *buf, bool bind)
  * icmd_bind - Parse 'bind' and 'macro' commands - Implements ICommand::parse()
  */
 static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
-                                    unsigned long data, struct Buffer *err)
+                                    intptr_t data, struct Buffer *err)
 {
   FILE *fp_out = NULL;
   char tempfile[PATH_MAX];
@@ -305,7 +305,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
  * icmd_set - Parse 'set' command to display config - Implements ICommand::parse()
  */
 static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
-                                   unsigned long data, struct Buffer *err)
+                                   intptr_t data, struct Buffer *err)
 {
   char tempfile[PATH_MAX];
   mutt_mktemp(tempfile, sizeof(tempfile));
@@ -348,7 +348,7 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
  * icmd_version - Parse 'version' command - Implements ICommand::parse()
  */
 static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
-                                       unsigned long data, struct Buffer *err)
+                                       intptr_t data, struct Buffer *err)
 {
   char tempfile[PATH_MAX];
   mutt_mktemp(tempfile, sizeof(tempfile));

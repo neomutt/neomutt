@@ -43,9 +43,9 @@ struct ICommand
    * @param err  Buffer for error messages
    * @retval #CommandResult Result, e.g. #MUTT_CMD_SUCCESS
    */
-  enum CommandResult (*parse)(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+  enum CommandResult (*parse)(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
-  unsigned long data; ///< Private data to pass to the command
+  intptr_t data; ///< Private data to pass to the command
 };
 
 enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *err);
