@@ -41,7 +41,7 @@
 #include "lib.h"
 #include "context.h"
 #include "globals.h"
-#include "compress/lib.h"
+#include "compmbox/lib.h"
 #include "mbox/lib.h"
 #include "nntp/lib.h"
 #include "notmuch/lib.h"

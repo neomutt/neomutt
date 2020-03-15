@@ -118,12 +118,12 @@ MUTTLIBS+=	$(LIBNNTP)
 ALLOBJS+=	$(LIBNNTPOBJS)
 
 ###############################################################################
-# libcompress
-LIBCOMPRESS=	libcompress.a
-LIBCOMPRESSOBJS=compress/compress.o
-CLEANFILES+=	$(LIBCOMPRESS) $(LIBCOMPRESSOBJS)
-MUTTLIBS+=	$(LIBCOMPRESS)
-ALLOBJS+=	$(LIBCOMPRESSOBJS)
+# libcompmbox
+LIBCOMPMBOX=	libcompmbox.a
+LIBCOMPMBOXOBJS=compmbox/compress.o
+CLEANFILES+=	$(LIBCOMPMBOX) $(LIBCOMPMBOXOBJS)
+MUTTLIBS+=	$(LIBCOMPMBOX)
+ALLOBJS+=	$(LIBCOMPMBOXOBJS)
 
 ###############################################################################
 # libgui
@@ -422,12 +422,12 @@ $(LIBNNTP): $(PWD)/nntp $(LIBNNTPOBJS)
 $(PWD)/nntp:
 	$(MKDIR_P) $(PWD)/nntp
 
-# libcompress
-$(LIBCOMPRESS): $(PWD)/compress $(LIBCOMPRESSOBJS)
-	$(AR) cr $@ $(LIBCOMPRESSOBJS)
+# libcompmbox
+$(LIBCOMPMBOX): $(PWD)/compmbox $(LIBCOMPMBOXOBJS)
+	$(AR) cr $@ $(LIBCOMPMBOXOBJS)
 	$(RANLIB) $@
-$(PWD)/compress:
-	$(MKDIR_P) $(PWD)/compress
+$(PWD)/compmbox:
+	$(MKDIR_P) $(PWD)/compmbox
 
 # libgui
 $(LIBGUI): $(PWD)/gui $(LIBGUIOBJS)

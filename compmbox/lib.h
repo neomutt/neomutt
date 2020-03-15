@@ -22,17 +22,17 @@
  */
 
 /**
- * @page comp COMPRESS: Compressed Mailbox
+ * @page compmbox COMPMBOX: Compressed Mailbox
  *
  * Compressed mbox local mailbox type
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
- * | compress/compress.c | @subpage comp_compress     |
+ * | compress/compress.c | @subpage compmbox_compress |
  */
 
-#ifndef MUTT_COMPRESS_LIB_H
-#define MUTT_COMPRESS_LIB_H
+#ifndef MUTT_COMPMBOX_LIB_H
+#define MUTT_COMPMBOX_LIB_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -58,8 +58,8 @@ struct CompressInfo
 
 bool mutt_comp_can_append(struct Mailbox *m);
 bool mutt_comp_can_read(const char *path);
-int mutt_comp_valid_command(const char *cmd);
+int  mutt_comp_valid_command(const char *cmd);
 
 extern struct MxOps MxCompOps;
 
-#endif /* MUTT_COMPRESS_LIB_H */
+#endif /* MUTT_COMPMBOX_LIB_H */

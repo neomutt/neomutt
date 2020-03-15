@@ -54,7 +54,7 @@ typedef uint32_t HookFlags;          ///< Flags for mutt_parse_hook(), e.g. #MUT
 #define MUTT_ACCOUNT_HOOK  (1 << 9)  ///< account-hook: when changing between accounts
 #define MUTT_REPLY_HOOK    (1 << 10) ///< reply-hook: when replying to an email
 #define MUTT_SEND2_HOOK    (1 << 11) ///< send2-hook: when changing fields in the compose menu
-#ifdef USE_COMPRESSED
+#ifdef USE_COMP_MBOX
 #define MUTT_OPEN_HOOK     (1 << 12) ///< open-hook: to read a compressed mailbox
 #define MUTT_APPEND_HOOK   (1 << 13) ///< append-hook: append to a compressed mailbox
 #define MUTT_CLOSE_HOOK    (1 << 14) ///< close-hook: write to a compressed mailbox

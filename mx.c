@@ -60,8 +60,8 @@
 #include "sort.h"
 #include "maildir/lib.h"
 #include "mbox/lib.h"
-#ifdef USE_COMPRESSED
-#include "compress/lib.h"
+#ifdef USE_COMP_MBOX
+#include "compmbox/lib.h"
 #endif
 #ifdef USE_IMAP
 #include "imap/lib.h"
@@ -127,7 +127,7 @@ const struct MxOps *mx_ops[] = {
   &MxMmdfOps,
 
 /* If everything else fails... */
-#ifdef USE_COMPRESSED
+#ifdef USE_COMP_MBOX
   &MxCompOps,
 #endif
   NULL,
@@ -216,7 +216,7 @@ static int mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
       {
         if (errno == ENOENT)
         {
-#ifdef USE_COMPRESSED
+#ifdef USE_COMP_MBOX
           if (mutt_comp_can_append(m))
             m->type = MUTT_COMPRESSED;
           else

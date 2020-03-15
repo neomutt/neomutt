@@ -51,8 +51,8 @@
 #include "mx.h"
 #include "pattern.h"
 #include "ncrypt/lib.h"
-#ifdef USE_COMPRESSED
-#include "compress/lib.h"
+#ifdef USE_COMP_MBOX
+#include "compmbox/lib.h"
 #endif
 
 /* These Config Variables are only used in hook.c */
@@ -160,7 +160,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_copy(pattern, tmp);
     mutt_buffer_pool_release(&tmp);
   }
-#ifdef USE_COMPRESSED
+#ifdef USE_COMP_MBOX
   else if (data & (MUTT_APPEND_HOOK | MUTT_OPEN_HOOK | MUTT_CLOSE_HOOK))
   {
     if (mutt_comp_valid_command(mutt_b2s(cmd)) == 0)

@@ -1130,7 +1130,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   }
   m_save->append = true;
 
-#ifdef USE_COMPRESSED
+#ifdef USE_COMP_MBOX
   /* If we're saving to a compressed mailbox, the stats won't be updated
    * until the next open.  Until then, improvise. */
   struct Mailbox *m_comp = NULL;
@@ -1151,7 +1151,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
       m_save->append = old_append;
       goto cleanup;
     }
-#ifdef USE_COMPRESSED
+#ifdef USE_COMP_MBOX
     if (m_comp)
     {
       m_comp->msg_count++;
@@ -1181,7 +1181,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
                                  ctx_save->mailbox);
       if (rc != 0)
         break;
-#ifdef USE_COMPRESSED
+#ifdef USE_COMP_MBOX
       if (m_comp)
       {
         struct Email *e2 = en->email;

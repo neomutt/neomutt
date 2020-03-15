@@ -50,14 +50,14 @@ const struct Command Commands[] = {
   { "alias",               parse_alias,            0 },
   { "alternates",          parse_alternates,       0 },
   { "alternative_order",   parse_stailq,           IP &AlternativeOrderList },
-#ifdef USE_COMPRESSED
+#ifdef USE_COMP_MBOX
   { "append-hook",         mutt_parse_hook,        MUTT_APPEND_HOOK },
 #endif
   { "attachments",         parse_attachments,      0 },
   { "auto_view",           parse_stailq,           IP &AutoViewList },
   { "bind",                mutt_parse_bind,        0 },
   { "charset-hook",        mutt_parse_hook,        MUTT_CHARSET_HOOK },
-#ifdef USE_COMPRESSED
+#ifdef USE_COMP_MBOX
   { "close-hook",          mutt_parse_hook,        MUTT_CLOSE_HOOK },
 #endif
 #ifdef HAVE_COLOR
@@ -92,7 +92,7 @@ const struct Command Commands[] = {
   { "my_hdr",              parse_my_hdr,           0 },
   { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
   { "nospam",              parse_spam_list,        MUTT_NOSPAM },
-#ifdef USE_COMPRESSED
+#ifdef USE_COMP_MBOX
   { "open-hook",           mutt_parse_hook,        MUTT_OPEN_HOOK },
 #endif
   { "pgp-hook",            mutt_parse_hook,        MUTT_CRYPT_HOOK },

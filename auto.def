@@ -341,7 +341,7 @@ if {1} {
 
 ###############################################################################
 # Various unconditional defines
-define USE_COMPRESSED
+define USE_COMP_MBOX
 define USE_IMAP
 define USE_NNTP
 define USE_POP

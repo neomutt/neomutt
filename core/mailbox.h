@@ -120,7 +120,7 @@ struct Mailbox
 
   AclFlags rights;                    ///< ACL bits, see #AclFlags
 
-#ifdef USE_COMPRESSED
+#ifdef USE_COMP_MBOX
   void *compress_info;                ///< Compressed mbox module private data
 #endif
 

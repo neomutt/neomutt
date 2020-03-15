@@ -78,8 +78,8 @@
 #ifndef USE_SIDEBAR
 #define USE_SIDEBAR
 #endif
-#ifndef USE_COMPRESSED
-#define USE_COMPRESSED
+#ifndef USE_COMP_MBOX
+#define USE_COMP_MBOX
 #endif
 #ifndef USE_LUA
 #define USE_LUA
