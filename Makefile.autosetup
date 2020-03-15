@@ -85,9 +85,6 @@ NEOMUTTOBJS+=	mutt_lua.o
 @if USE_INOTIFY
 NEOMUTTOBJS+=	monitor.o
 @endif
-@if USE_ZLIB
-NEOMUTTOBJS+=	mutt_zstrm.o
-@endif
 
 CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
 ALLOBJS+=	$(NEOMUTTOBJS)
@@ -241,6 +238,9 @@ LIBCONNOBJS+=	conn/gnutls.o
 @endif
 @if USE_SSL_OPENSSL
 LIBCONNOBJS+=	conn/openssl.o
+@endif
+@if USE_ZLIB
+LIBCONNOBJS+=	conn/zstrm.o
 @endif
 CLEANFILES+=	$(LIBCONN) $(LIBCONNOBJS)
 MUTTLIBS+=	$(LIBCONN)

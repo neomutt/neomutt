@@ -19,11 +19,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_ZSTRM_H
-#define MUTT_ZSTRM_H
+#ifndef MUTT_CONN_ZSTRM_H
+#define MUTT_CONN_ZSTRM_H
 
 struct Connection;
 
 void mutt_zstrm_wrap_conn(struct Connection *conn);
 
-#endif /* MUTT_ZSTRM_H */
+#endif /* MUTT_CONN_ZSTRM_H */

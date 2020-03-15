@@ -60,9 +60,6 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-#ifdef USE_ZLIB
-#include "mutt_zstrm.h"
-#endif
 
 struct stat;
 

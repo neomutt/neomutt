@@ -33,7 +33,7 @@
 #include <zlib.h>
 #include "mutt/lib.h"
 #include "conn/lib.h"
-#include "mutt_zstrm.h"
+#include "zstrm.h"
 
 /**
  * struct ZstrmDirection - A stream of data being (de-)compressed
