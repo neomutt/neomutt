@@ -792,7 +792,8 @@ int mx_mbox_close(struct Context **ptr)
   }
 
   /* copy mails to the trash before expunging */
-  if (purge && (m->msg_deleted != 0) && (mutt_str_strcmp(mailbox_path(m), C_Trash) != 0))
+  const struct Mailbox *m_trash = mx_mbox_find(m->account, C_Trash);
+  if (purge && (m->msg_deleted != 0) && (m != m_trash))
   {
     if (trash_append(ctx->mailbox) != 0)
       goto cleanup;
@@ -966,7 +967,8 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
   msgcount = m->msg_count;
   deleted = m->msg_deleted;
 
-  if (purge && (m->msg_deleted != 0) && (mutt_str_strcmp(mailbox_path(m), C_Trash) != 0))
+  const struct Mailbox *m_trash = mx_mbox_find(m->account, C_Trash);
+  if (purge && (m->msg_deleted != 0) && (m != m_trash))
   {
     if (trash_append(m) != 0)
       return -1;
