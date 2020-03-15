@@ -163,7 +163,7 @@ static void notify_dump_account(struct NotifyCallback *nc)
   struct Account *a = ev_a->account;
 
   mutt_debug(LL_DEBUG1, "\tAccount: %p (%s) %s\n", a,
-             get_mailbox_type(a->magic), NONULL(a->name));
+             get_mailbox_type(a->type), NONULL(a->name));
 }
 
 static void notify_dump_color(struct NotifyCallback *nc)

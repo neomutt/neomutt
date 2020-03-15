@@ -89,7 +89,7 @@ struct NmEmailData
   char *folder; ///< Location of the Email
   char *oldpath;
   char *virtual_id;       ///< Unique Notmuch Id
-  enum MailboxType magic; ///< Type of Mailbox the Email is in
+  enum MailboxType type;  ///< Type of Mailbox the Email is in
 };
 
 notmuch_database_t *nm_db_do_open     (const char *filename, bool writable, bool verbose);

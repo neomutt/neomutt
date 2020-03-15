@@ -69,8 +69,8 @@ bool account_mailbox_add(struct Account *a, struct Mailbox *m)
   if (!a || !m)
     return false;
 
-  if (a->magic == MUTT_UNKNOWN)
-    a->magic = m->magic;
+  if (a->type == MUTT_UNKNOWN)
+    a->type = m->type;
 
   m->account = a;
   struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));

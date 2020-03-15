@@ -3284,7 +3284,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 
   /* We need to add a Content-Length field to avoid problems where a line in
    * the message body begins with "From " */
-  if ((ctx_fcc->mailbox->magic == MUTT_MMDF) || (ctx_fcc->mailbox->magic == MUTT_MBOX))
+  if ((ctx_fcc->mailbox->type == MUTT_MMDF) || (ctx_fcc->mailbox->type == MUTT_MBOX))
   {
     tempfile = mutt_buffer_pool_get();
     mutt_buffer_mktemp(tempfile);
@@ -3331,7 +3331,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   if (post && fcc)
     fprintf(msg->fp, "X-Mutt-Fcc: %s\n", fcc);
 
-  if ((ctx_fcc->mailbox->magic == MUTT_MMDF) || (ctx_fcc->mailbox->magic == MUTT_MBOX))
+  if ((ctx_fcc->mailbox->type == MUTT_MMDF) || (ctx_fcc->mailbox->type == MUTT_MBOX))
     fprintf(msg->fp, "Status: RO\n");
 
   /* mutt_rfc822_write_header() only writes out a Date: header with

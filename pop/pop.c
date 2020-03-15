@@ -748,7 +748,7 @@ fail:
  */
 static struct Account *pop_ac_find(struct Account *a, const char *path)
 {
-  if (!a || (a->magic != MUTT_POP) || !path)
+  if (!a || (a->type != MUTT_POP) || !path)
     return NULL;
 
   struct Url *url = url_parse(path);
@@ -773,7 +773,7 @@ static struct Account *pop_ac_find(struct Account *a, const char *path)
  */
 static int pop_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || (m->magic != MUTT_POP))
+  if (!a || !m || (m->type != MUTT_POP))
     return -1;
 
   if (a->adata)
@@ -1276,7 +1276,7 @@ static int pop_path_parent(char *buf, size_t buflen)
  * MxPopOps - POP Mailbox - Implements ::MxOps
  */
 struct MxOps MxPopOps = {
-  .magic            = MUTT_POP,
+  .type            = MUTT_POP,
   .name             = "pop",
   .is_local         = false,
   .ac_find          = pop_ac_find,

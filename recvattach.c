@@ -1550,7 +1550,7 @@ void mutt_view_attachments(struct Email *e)
         CHECK_READONLY;
 
 #ifdef USE_POP
-        if (m->magic == MUTT_POP)
+        if (m->type == MUTT_POP)
         {
           mutt_flushinp();
           mutt_error(_("Can't delete attachment from POP server"));
@@ -1559,7 +1559,7 @@ void mutt_view_attachments(struct Email *e)
 #endif
 
 #ifdef USE_NNTP
-        if (m->magic == MUTT_NNTP)
+        if (m->type == MUTT_NNTP)
         {
           mutt_flushinp();
           mutt_error(_("Can't delete attachment from news server"));

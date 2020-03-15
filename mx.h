@@ -45,7 +45,7 @@ extern unsigned char C_MboxType;
 extern unsigned char C_Move;
 extern char *        C_Trash;
 
-extern struct EnumDef MagicDef;
+extern struct EnumDef MboxTypeDef;
 
 /* flags for mutt_open_mailbox() */
 typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MUTT_NOSORT
@@ -104,7 +104,7 @@ struct Message
  */
 struct MxOps
 {
-  enum MailboxType magic; ///< Mailbox type, e.g. #MUTT_IMAP
+  enum MailboxType type;  ///< Mailbox type, e.g. #MUTT_IMAP
   const char *name;       ///< Mailbox name, e.g. "imap"
   bool is_local;          ///< True, if Mailbox type has local files/dirs
 
@@ -286,7 +286,7 @@ struct Message *mx_msg_open_new    (struct Mailbox *m, struct Email *e, MsgOpenF
 struct Message *mx_msg_open        (struct Mailbox *m, int msgno);
 int             mx_msg_padding_size(struct Mailbox *m);
 int             mx_save_hcache     (struct Mailbox *m, struct Email *e);
-int             mx_path_canon      (char *buf, size_t buflen, const char *folder, enum MailboxType *magic);
+int             mx_path_canon      (char *buf, size_t buflen, const char *folder, enum MailboxType *type);
 int             mx_path_canon2     (struct Mailbox *m, const char *folder);
 int             mx_path_parent     (char *buf, size_t buflen);
 int             mx_path_pretty     (char *buf, size_t buflen, const char *folder);
@@ -305,7 +305,7 @@ int                 mx_access           (const char *path, int flags);
 void                mx_alloc_memory     (struct Mailbox *m);
 int                 mx_check_empty      (const char *path);
 void                mx_fastclose_mailbox(struct Mailbox *m);
-const struct MxOps *mx_get_ops          (enum MailboxType magic);
+const struct MxOps *mx_get_ops          (enum MailboxType type);
 bool                mx_tags_is_supported(struct Mailbox *m);
 
 #endif /* MUTT_MX_H */

@@ -1453,17 +1453,17 @@ int mutt_save_confirm(const char *s, struct stat *st)
 {
   int ret = 0;
 
-  enum MailboxType magic = mx_path_probe(s);
+  enum MailboxType type = mx_path_probe(s);
 
 #ifdef USE_POP
-  if (magic == MUTT_POP)
+  if (type == MUTT_POP)
   {
     mutt_error(_("Can't save message to POP mailbox"));
     return 1;
   }
 #endif
 
-  if ((magic != MUTT_MAILBOX_ERROR) && (magic != MUTT_UNKNOWN) && !mx_access(s, W_OK))
+  if ((type != MUTT_MAILBOX_ERROR) && (type != MUTT_UNKNOWN) && !mx_access(s, W_OK))
   {
     if (C_Confirmappend)
     {
@@ -1479,7 +1479,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
   }
 
 #ifdef USE_NNTP
-  if (magic == MUTT_NNTP)
+  if (type == MUTT_NNTP)
   {
     mutt_error(_("Can't save message to news server"));
     return 0;
@@ -1488,13 +1488,13 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   if (stat(s, st) != -1)
   {
-    if (magic == MUTT_MAILBOX_ERROR)
+    if (type == MUTT_MAILBOX_ERROR)
     {
       mutt_error(_("%s is not a mailbox"), s);
       return 1;
     }
   }
-  else if (magic != MUTT_IMAP)
+  else if (type != MUTT_IMAP)
   {
     st->st_mtime = 0;
     st->st_atime = 0;
@@ -1641,11 +1641,11 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
  */
 void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
 {
-  enum MailboxType mb_magic = mx_path_probe(path);
+  enum MailboxType mb_type = mx_path_probe(path);
 
-  if (mb_magic == MUTT_IMAP)
+  if (mb_type == MUTT_IMAP)
     imap_get_parent_path(path, buf, buflen);
-  else if (mb_magic == MUTT_NOTMUCH)
+  else if (mb_type == MUTT_NOTMUCH)
     mutt_str_strfcpy(buf, C_Folder, buflen);
   else
   {

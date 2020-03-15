@@ -333,7 +333,7 @@ sort_t mutt_get_sort_func(enum SortType method)
       return compare_label;
     case SORT_ORDER:
 #ifdef USE_NNTP
-      if (Context && Context->mailbox && (Context->mailbox->magic == MUTT_NNTP))
+      if (Context && Context->mailbox && (Context->mailbox->type == MUTT_NNTP))
         return nntp_compare_order;
       else
 #endif

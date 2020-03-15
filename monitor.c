@@ -69,7 +69,7 @@ static int MonitorContextDescriptor = -1;
 enum ResolveResult
 {
   RESOLVE_RES_FAIL_NOMAILBOX = -3, ///< No Mailbox to work on
-  RESOLVE_RES_FAIL_NOMAGIC = -2,   ///< Can't identify Mailbox type
+  RESOLVE_RES_FAIL_NOTYPE = -2,    ///< Can't identify Mailbox type
   RESOLVE_RES_FAIL_STAT = -1,      ///< Can't stat() the Mailbox file
   RESOLVE_RES_OK_NOTEXISTING = 0,  ///< File exists, no monitor is attached
   RESOLVE_RES_OK_EXISTING = 1,     ///< File exists, monitor is already attached
@@ -84,7 +84,7 @@ struct Monitor
   char *mh_backup_path;
   dev_t st_dev;
   ino_t st_ino;
-  enum MailboxType magic;
+  enum MailboxType type;
   int desc;
 };
 
@@ -93,7 +93,7 @@ struct Monitor
  */
 struct MonitorInfo
 {
-  enum MailboxType magic;
+  enum MailboxType type;
   bool is_dir;
   const char *path;
   dev_t st_dev;
@@ -204,12 +204,12 @@ static void monitor_check_free(void)
 static struct Monitor *monitor_new(struct MonitorInfo *info, int descriptor)
 {
   struct Monitor *monitor = mutt_mem_calloc(1, sizeof(struct Monitor));
-  monitor->magic = info->magic;
+  monitor->type = info->type;
   monitor->st_dev = info->st_dev;
   monitor->st_ino = info->st_ino;
   monitor->desc = descriptor;
   monitor->next = Monitor;
-  if (info->magic == MUTT_MH)
+  if (info->type == MUTT_MH)
     monitor->mh_backup_path = mutt_str_strdup(info->path);
 
   Monitor = monitor;
@@ -278,7 +278,7 @@ static int monitor_handle_ignore(int desc)
 
   if (iter)
   {
-    if ((iter->magic == MUTT_MH) && (stat(iter->mh_backup_path, &sb) == 0))
+    if ((iter->type == MUTT_MH) && (stat(iter->mh_backup_path, &sb) == 0))
     {
       new_desc = inotify_add_watch(INotifyFd, iter->mh_backup_path, INOTIFY_MASK_FILE);
       if (new_desc == -1)
@@ -320,8 +320,8 @@ static int monitor_handle_ignore(int desc)
  * @retval >=0 mailbox is valid and locally accessible:
  *               0: no monitor / 1: preexisting monitor
  * @retval  -3 no mailbox (MonitorInfo: no fields set)
- * @retval  -2 magic not set
- * @retval  -1 stat() failed (see errno; MonitorInfo fields: magic, is_dir, path)
+ * @retval  -2 type not set
+ * @retval  -1 stat() failed (see errno; MonitorInfo fields: type, is_dir, path)
  *
  * If m is NULL, the current mailbox (Context) is used.
  */
@@ -332,12 +332,12 @@ static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailb
 
   if (m)
   {
-    info->magic = m->magic;
+    info->type = m->type;
     info->path = m->realpath;
   }
   else if (Context && Context->mailbox)
   {
-    info->magic = Context->mailbox->magic;
+    info->type = Context->mailbox->type;
     info->path = Context->mailbox->realpath;
   }
   else
@@ -345,11 +345,11 @@ static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailb
     return RESOLVE_RES_FAIL_NOMAILBOX;
   }
 
-  if (info->magic == MUTT_UNKNOWN)
+  if (info->type == MUTT_UNKNOWN)
   {
-    return RESOLVE_RES_FAIL_NOMAGIC;
+    return RESOLVE_RES_FAIL_NOTYPE;
   }
-  else if (info->magic == MUTT_MAILDIR)
+  else if (info->type == MUTT_MAILDIR)
   {
     info->is_dir = true;
     fmt = "%s/new";
@@ -357,7 +357,7 @@ static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailb
   else
   {
     info->is_dir = false;
-    if (info->magic == MUTT_MH)
+    if (info->type == MUTT_MH)
       fmt = "%s/.mh_sequences";
   }
   if (fmt)

@@ -853,15 +853,15 @@ static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src
   msg = mx_msg_open_new(dest, e, is_from(buf, NULL, 0, NULL) ? MUTT_MSG_NO_FLAGS : MUTT_ADD_FROM);
   if (!msg)
     return -1;
-  if ((dest->magic == MUTT_MBOX) || (dest->magic == MUTT_MMDF))
+  if ((dest->type == MUTT_MBOX) || (dest->type == MUTT_MMDF))
     chflags |= CH_FROM | CH_FORCE_FROM;
-  chflags |= ((dest->magic == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
+  chflags |= ((dest->type == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
   rc = mutt_copy_message_fp(msg->fp, fp_in, e, cmflags, chflags, 0);
   if (mx_msg_commit(dest, msg) != 0)
     rc = -1;
 
 #ifdef USE_NOTMUCH
-  if (msg->committed_path && (dest->magic == MUTT_MAILDIR) && (src->magic == MUTT_NOTMUCH))
+  if (msg->committed_path && (dest->type == MUTT_MAILDIR) && (src->type == MUTT_NOTMUCH))
     nm_update_filename(src, NULL, msg->committed_path, e);
 #endif
 

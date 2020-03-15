@@ -2286,7 +2286,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   {
     mutt_compile_help(buf, sizeof(buf), MENU_PAGER,
 #ifdef USE_NNTP
-                      (Context && (Context->mailbox->magic == MUTT_NNTP)) ?
+                      (Context && (Context->mailbox->type == MUTT_NNTP)) ?
                           PagerNewsHelpExtra :
 #endif
                           PagerHelpExtra);
@@ -3154,7 +3154,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_POST:
         CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
         CHECK_ATTACH;
-        if (extra->ctx && (extra->ctx->mailbox->magic == MUTT_NNTP) &&
+        if (extra->ctx && (extra->ctx->mailbox->type == MUTT_NNTP) &&
             !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
         {
           break;
@@ -3166,7 +3166,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_FORWARD_TO_GROUP:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
-        if (extra->ctx && (extra->ctx->mailbox->magic == MUTT_NNTP) &&
+        if (extra->ctx && (extra->ctx->mailbox->type == MUTT_NNTP) &&
             !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
         {
           break;
@@ -3196,7 +3196,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             (query_quadoption(C_FollowupToPoster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
-          if (extra->ctx && (extra->ctx->mailbox->magic == MUTT_NNTP) &&
+          if (extra->ctx && (extra->ctx->mailbox->type == MUTT_NNTP) &&
               !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
           {
             break;

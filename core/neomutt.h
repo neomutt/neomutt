@@ -57,6 +57,6 @@ void            neomutt_free          (struct NeoMutt **ptr);
 struct NeoMutt *neomutt_new           (struct ConfigSet *cs);
 
 void               neomutt_mailboxlist_clear  (struct MailboxList *ml);
-struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxType magic);
+struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxType type);
 
 #endif /* MUTT_CORE_NEOMUTT_H */

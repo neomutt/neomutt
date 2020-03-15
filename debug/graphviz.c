@@ -488,11 +488,11 @@ static void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
   char buf[64] = { 0 };
 
   dot_object_header(fp, m, "Mailbox", "#80ff80");
-  dot_mailbox_type(fp, "type", m->magic);
+  dot_mailbox_type(fp, "type", m->type);
   if (m->name)
     dot_type_string(fp, "name", m->name);
 
-  if ((m->magic == MUTT_IMAP) || (m->magic == MUTT_POP))
+  if ((m->type == MUTT_IMAP) || (m->type == MUTT_POP))
   {
     dot_path_imap(buf, sizeof(buf), mutt_b2s(&m->pathbuf));
     dot_type_string(fp, "pathbuf", buf);
@@ -531,17 +531,17 @@ static void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 #ifndef GV_HIDE_MDATA
   if (m->mdata)
   {
-    if (m->magic == MUTT_MAILDIR)
+    if (m->type == MUTT_MAILDIR)
       dot_mailbox_maildir(fp, m->mdata, links);
-    else if (m->magic == MUTT_IMAP)
+    else if (m->type == MUTT_IMAP)
       dot_mailbox_imap(fp, m->mdata, links);
-    else if (m->magic == MUTT_POP)
+    else if (m->type == MUTT_POP)
       dot_mailbox_pop(fp, m->mdata, links);
-    else if (m->magic == MUTT_MBOX)
+    else if (m->type == MUTT_MBOX)
       dot_mailbox_mbox(fp, m->mdata, links);
-    else if (m->magic == MUTT_NNTP)
+    else if (m->type == MUTT_NNTP)
       dot_mailbox_nntp(fp, m->mdata, links);
-    else if (m->magic == MUTT_NOTMUCH)
+    else if (m->type == MUTT_NOTMUCH)
       dot_mailbox_notmuch(fp, m->mdata, links);
 
     dot_add_link(links, m, m->mdata, "Mailbox->mdata", false);
@@ -749,22 +749,22 @@ static void dot_account_pop(FILE *fp, struct PopAccountData *adata, struct ListH
 static void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
 {
   dot_object_header(fp, a, "Account", "#80ffff");
-  dot_mailbox_type(fp, "magic", a->magic);
+  dot_mailbox_type(fp, "type", a->type);
   dot_type_string(fp, "name", a->name);
   // dot_ptr(fp, "adata", a->adata, "#60c0c0");
   dot_object_footer(fp);
 
   if (a->adata)
   {
-    if (a->magic == MUTT_IMAP)
+    if (a->type == MUTT_IMAP)
       dot_account_imap(fp, a->adata, links);
-    else if (a->magic == MUTT_POP)
+    else if (a->type == MUTT_POP)
       dot_account_pop(fp, a->adata, links);
-    else if (a->magic == MUTT_MBOX)
+    else if (a->type == MUTT_MBOX)
       dot_account_mbox(fp, a->adata, links);
-    else if (a->magic == MUTT_NNTP)
+    else if (a->type == MUTT_NNTP)
       dot_account_nntp(fp, a->adata, links);
-    else if (a->magic == MUTT_NOTMUCH)
+    else if (a->type == MUTT_NOTMUCH)
       dot_account_notmuch(fp, a->adata, links);
 
     dot_add_link(links, a, a->adata, "Account->adata", false);
@@ -806,7 +806,7 @@ static void dot_account_list(FILE *fp, struct AccountList *al, struct ListHead *
   TAILQ_FOREACH(np, al, entries)
   {
 #ifdef GV_HIDE_MBOX
-    if (np->magic == MUTT_MBOX)
+    if (np->type == MUTT_MBOX)
       continue;
 #endif
     dot_account(fp, np, links);
@@ -895,7 +895,7 @@ void dump_graphviz(const char *title)
   TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
 #ifdef GV_HIDE_MBOX
-    if (np->magic == MUTT_MBOX)
+    if (np->type == MUTT_MBOX)
       continue;
 #endif
     dot_ptr_name(name, sizeof(name), np);

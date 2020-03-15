@@ -665,7 +665,7 @@ int pop_reconnect(struct Mailbox *m)
  */
 struct PopAccountData *pop_adata_get(struct Mailbox *m)
 {
-  if (!m || (m->magic != MUTT_POP))
+  if (!m || (m->type != MUTT_POP))
     return NULL;
   struct Account *a = m->account;
   if (!a)
