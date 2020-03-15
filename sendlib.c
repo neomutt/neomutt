@@ -3444,8 +3444,11 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     if (mutt_file_fclose(&fp_tmp) != 0)
       rc = -1;
     /* if there was an error, leave the temp version */
-    if (rc == 0)
+    if (rc >= 0)
+    {
       unlink(mutt_b2s(tempfile));
+      rc = 0;
+    }
   }
   else
   {
