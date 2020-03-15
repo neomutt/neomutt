@@ -38,6 +38,7 @@
  * | conn/sasl_plain.c   | @subpage conn_sasl_plain |
  * | conn/socket.c       | @subpage conn_socket     |
  * | conn/tunnel.c       | @subpage conn_tunnel     |
+ * | conn/zstrm.c        | @subpage conn_zstrm      |
  */
 
 #ifndef MUTT_CONN_LIB_H
@@ -53,6 +54,9 @@
 #include "socket.h"
 #ifdef USE_SASL
 #include "sasl.h"
+#endif
+#ifdef USE_ZLIB
+#include "zstrm.h"
 #endif
 // IWYU pragma: end_exports
 
