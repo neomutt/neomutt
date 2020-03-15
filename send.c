@@ -2107,7 +2107,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
       mutt_fix_reply_recipients(e_templ->env);
 
 #ifdef USE_NNTP
-    if ((flags & SEND_NEWS) && ctx && (ctx->mailbox->magic == MUTT_NNTP) &&
+    if ((flags & SEND_NEWS) && ctx && (ctx->mailbox->type == MUTT_NNTP) &&
         !e_templ->env->newsgroups)
     {
       e_templ->env->newsgroups =

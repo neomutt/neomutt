@@ -100,7 +100,7 @@ static struct MboxAccountData *mbox_adata_new(void)
  */
 static struct MboxAccountData *mbox_adata_get(struct Mailbox *m)
 {
-  if (!m || (m->magic != MUTT_MBOX))
+  if (!m || (m->type != MUTT_MBOX))
     return NULL;
   struct Account *a = m->account;
   if (!a)
@@ -116,7 +116,7 @@ static struct MboxAccountData *mbox_adata_get(struct Mailbox *m)
  */
 static int init_mailbox(struct Mailbox *m)
 {
-  if (!m || (m->magic != MUTT_MBOX) || !m->account)
+  if (!m || (m->type != MUTT_MBOX) || !m->account)
     return -1;
 
   if (m->account->adata)
@@ -599,7 +599,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   m->subj_hash = NULL;
   mutt_make_label_hash(m);
 
-  switch (m->magic)
+  switch (m->type)
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
@@ -608,7 +608,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
       adata->fp = mutt_file_fopen(mailbox_path(m), "r");
       if (!adata->fp)
         rc = -1;
-      else if (m->magic == MUTT_MBOX)
+      else if (m->type == MUTT_MBOX)
         rc = mbox_parse_mailbox(m);
       else
         rc = mmdf_parse_mailbox(m);
@@ -817,9 +817,9 @@ bool mbox_test_new_folder(const char *path)
 {
   bool rc = false;
 
-  enum MailboxType magic = mx_path_probe(path);
+  enum MailboxType type = mx_path_probe(path);
 
-  if ((magic != MUTT_MBOX) && (magic != MUTT_MMDF))
+  if ((type != MUTT_MBOX) && (type != MUTT_MMDF))
     return false;
 
   FILE *fp = fopen(path, "rb");
@@ -870,7 +870,7 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
  */
 static struct Account *mbox_ac_find(struct Account *a, const char *path)
 {
-  if (!a || (a->magic != MUTT_MBOX) || !path)
+  if (!a || (a->type != MUTT_MBOX) || !path)
     return NULL;
 
   struct MailboxNode *np = STAILQ_FIRST(&a->mailboxes);
@@ -888,7 +888,7 @@ static struct Account *mbox_ac_find(struct Account *a, const char *path)
  */
 static int mbox_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || (m->magic != MUTT_MBOX))
+  if (!a || !m || (m->type != MUTT_MBOX))
     return -1;
   return 0;
 }
@@ -955,9 +955,9 @@ static int mbox_mbox_open(struct Mailbox *m)
 
   m->has_new = true;
   int rc;
-  if (m->magic == MUTT_MBOX)
+  if (m->type == MUTT_MBOX)
     rc = mbox_parse_mailbox(m);
-  else if (m->magic == MUTT_MMDF)
+  else if (m->type == MUTT_MMDF)
     rc = mmdf_parse_mailbox(m);
   else
     rc = -1;
@@ -1091,14 +1091,14 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
         mutt_debug(LL_DEBUG1, "#1 fseek() failed\n");
       if (fgets(buf, sizeof(buf), adata->fp))
       {
-        if (((m->magic == MUTT_MBOX) && mutt_str_startswith(buf, "From ", CASE_MATCH)) ||
-            ((m->magic == MUTT_MMDF) && (mutt_str_strcmp(buf, MMDF_SEP) == 0)))
+        if (((m->type == MUTT_MBOX) && mutt_str_startswith(buf, "From ", CASE_MATCH)) ||
+            ((m->type == MUTT_MMDF) && (mutt_str_strcmp(buf, MMDF_SEP) == 0)))
         {
           if (fseeko(adata->fp, m->size, SEEK_SET) != 0)
             mutt_debug(LL_DEBUG1, "#2 fseek() failed\n");
 
           int old_msg_count = m->msg_count;
-          if (m->magic == MUTT_MBOX)
+          if (m->type == MUTT_MBOX)
             mbox_parse_mailbox(m);
           else
             mmdf_parse_mailbox(m);
@@ -1263,7 +1263,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   /* the offset stored in the header does not include the MMDF_SEP, so make
    * sure we seek to the correct location */
-  if (m->magic == MUTT_MMDF)
+  if (m->type == MUTT_MMDF)
     offset -= (sizeof(MMDF_SEP) - 1);
 
   /* allocate space for the new offsets */
@@ -1294,7 +1294,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
     {
       j++;
 
-      if (m->magic == MUTT_MMDF)
+      if (m->type == MUTT_MMDF)
       {
         if (fputs(MMDF_SEP, fp) == EOF)
         {
@@ -1323,7 +1323,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
       new_offset[i - first].body = ftello(fp) - m->emails[i]->content->length + offset;
       mutt_body_free(&m->emails[i]->content->parts);
 
-      switch (m->magic)
+      switch (m->type)
       {
         case MUTT_MMDF:
           if (fputs(MMDF_SEP, fp) == EOF)
@@ -1373,8 +1373,8 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   if ((fseeko(adata->fp, offset, SEEK_SET) != 0) || /* seek the append location */
       /* do a sanity check to make sure the mailbox looks ok */
       !fgets(buf, sizeof(buf), adata->fp) ||
-      ((m->magic == MUTT_MBOX) && !mutt_str_startswith(buf, "From ", CASE_MATCH)) ||
-      ((m->magic == MUTT_MMDF) && (mutt_str_strcmp(MMDF_SEP, buf) != 0)))
+      ((m->type == MUTT_MBOX) && !mutt_str_startswith(buf, "From ", CASE_MATCH)) ||
+      ((m->type == MUTT_MMDF) && (mutt_str_strcmp(MMDF_SEP, buf) != 0)))
   {
     mutt_debug(LL_DEBUG1, "message not in expected position\n");
     mutt_debug(LL_DEBUG1, "\tLINE: %s\n", buf);
@@ -1673,7 +1673,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
   {
     /* Some mailbox creation tools erroneously append a blank line to
      * a file before appending a mail message.  This allows neomutt to
-     * detect magic for and thus open those files. */
+     * detect type for and thus open those files. */
     if ((ch != '\n') && (ch != '\r'))
     {
       ungetc(ch, fp);
@@ -1681,14 +1681,14 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
     }
   }
 
-  enum MailboxType magic = MUTT_UNKNOWN;
+  enum MailboxType type = MUTT_UNKNOWN;
   char tmp[256];
   if (fgets(tmp, sizeof(tmp), fp))
   {
     if (mutt_str_startswith(tmp, "From ", CASE_MATCH))
-      magic = MUTT_MBOX;
+      type = MUTT_MBOX;
     else if (mutt_str_strcmp(tmp, MMDF_SEP) == 0)
-      magic = MUTT_MMDF;
+      type = MUTT_MMDF;
   }
   mutt_file_fclose(&fp);
 
@@ -1710,7 +1710,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
 #endif
   }
 
-  return magic;
+  return type;
 }
 
 /**
@@ -1846,7 +1846,7 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
  * MxMboxOps - Mbox Mailbox - Implements ::MxOps
  */
 struct MxOps MxMboxOps = {
-  .magic            = MUTT_MBOX,
+  .type            = MUTT_MBOX,
   .name             = "mbox",
   .is_local         = true,
   .ac_find          = mbox_ac_find,
@@ -1875,7 +1875,7 @@ struct MxOps MxMboxOps = {
  * MxMmdfOps - MMDF Mailbox - Implements ::MxOps
  */
 struct MxOps MxMmdfOps = {
-  .magic            = MUTT_MMDF,
+  .type            = MUTT_MMDF,
   .name             = "mmdf",
   .is_local         = true,
   .ac_find          = mbox_ac_find,

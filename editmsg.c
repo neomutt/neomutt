@@ -66,13 +66,13 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   struct Buffer *fname = mutt_buffer_pool_get();
   mutt_buffer_mktemp(fname);
 
-  enum MailboxType omagic = C_MboxType;
+  enum MailboxType otype = C_MboxType;
   C_MboxType = MUTT_MBOX;
 
   struct Mailbox *m_fname = mx_path_resolve(mutt_b2s(fname));
   struct Context *ctx_tmp = mx_mbox_open(m_fname, MUTT_NEWFOLDER);
 
-  C_MboxType = omagic;
+  C_MboxType = otype;
 
   if (!ctx_tmp)
   {
@@ -84,7 +84,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
 
   const CopyHeaderFlags chflags =
       CH_NOLEN |
-      (((m->magic == MUTT_MBOX) || (m->magic == MUTT_MMDF)) ? CH_NO_FLAGS : CH_NOSTATUS);
+      (((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF)) ? CH_NO_FLAGS : CH_NOSTATUS);
   rc = mutt_append_message(ctx_tmp->mailbox, m, e, MUTT_CM_NO_FLAGS, chflags);
   int oerrno = errno;
 
@@ -186,13 +186,13 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
 
   MsgOpenFlags of = MUTT_MSG_NO_FLAGS;
   CopyHeaderFlags cf =
-      (((ctx_app->mailbox->magic == MUTT_MBOX) || (ctx_app->mailbox->magic == MUTT_MMDF)) ?
+      (((ctx_app->mailbox->type == MUTT_MBOX) || (ctx_app->mailbox->type == MUTT_MMDF)) ?
            CH_NO_FLAGS :
            CH_NOSTATUS);
 
   if (fgets(buf, sizeof(buf), fp) && is_from(buf, NULL, 0, NULL))
   {
-    if ((ctx_app->mailbox->magic == MUTT_MBOX) || (ctx_app->mailbox->magic == MUTT_MMDF))
+    if ((ctx_app->mailbox->type == MUTT_MBOX) || (ctx_app->mailbox->type == MUTT_MMDF))
       cf = CH_FROM | CH_FORCE_FROM;
   }
   else

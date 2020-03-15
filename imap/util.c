@@ -119,7 +119,7 @@ struct ImapAccountData *imap_adata_new(struct Account *a)
  */
 struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 {
-  if (!m || (m->magic != MUTT_IMAP) || !m->account)
+  if (!m || (m->type != MUTT_IMAP) || !m->account)
     return NULL;
   return m->account->adata;
 }
@@ -145,7 +145,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
   struct Account *np = NULL;
   TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
-    if (np->magic != MUTT_IMAP)
+    if (np->type != MUTT_IMAP)
       continue;
 
     tmp_adata = np->adata;
@@ -251,7 +251,7 @@ void imap_mdata_free(void **ptr)
  */
 struct ImapMboxData *imap_mdata_get(struct Mailbox *m)
 {
-  if (!m || (m->magic != MUTT_IMAP) || !m->mdata)
+  if (!m || (m->type != MUTT_IMAP) || !m->mdata)
     return NULL;
   return m->mdata;
 }
@@ -1097,7 +1097,7 @@ void imap_keepalive(void)
   struct Account *np = NULL;
   TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
-    if (np->magic != MUTT_IMAP)
+    if (np->type != MUTT_IMAP)
       continue;
 
     struct ImapAccountData *adata = np->adata;

@@ -406,7 +406,7 @@ static struct Account *comp_ac_find(struct Account *a, const char *path)
  */
 static int comp_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || (m->magic != MUTT_COMPRESSED))
+  if (!a || !m || (m->type != MUTT_COMPRESSED))
     return -1;
   return 0;
 }
@@ -421,7 +421,7 @@ static int comp_ac_add(struct Account *a, struct Mailbox *m)
  */
 static int comp_mbox_open(struct Mailbox *m)
 {
-  if (!m || (m->magic != MUTT_COMPRESSED))
+  if (!m || (m->type != MUTT_COMPRESSED))
     return -1;
 
   struct CompressInfo *ci = set_compress_info(m);
@@ -450,21 +450,21 @@ static int comp_mbox_open(struct Mailbox *m)
 
   unlock_realpath(m);
 
-  m->magic = mx_path_probe(mailbox_path(m));
-  if (m->magic == MUTT_UNKNOWN)
+  m->type = mx_path_probe(mailbox_path(m));
+  if (m->type == MUTT_UNKNOWN)
   {
     mutt_error(_("Can't identify the contents of the compressed file"));
     goto cmo_fail;
   }
 
-  ci->child_ops = mx_get_ops(m->magic);
+  ci->child_ops = mx_get_ops(m->type);
   if (!ci->child_ops)
   {
-    mutt_error(_("Can't find mailbox ops for mailbox type %d"), m->magic);
+    mutt_error(_("Can't find mailbox ops for mailbox type %d"), m->type);
     goto cmo_fail;
   }
 
-  m->account->magic = m->magic;
+  m->account->type = m->type;
   return ci->child_ops->mbox_open(m);
 
 cmo_fail:
@@ -520,22 +520,22 @@ static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
       mutt_error(_("Compress command failed: %s"), ci->cmd_open);
       goto cmoa_fail2;
     }
-    m->magic = mx_path_probe(mailbox_path(m));
+    m->type = mx_path_probe(mailbox_path(m));
   }
   else
-    m->magic = C_MboxType;
+    m->type = C_MboxType;
 
   /* We can only deal with mbox and mmdf mailboxes */
-  if ((m->magic != MUTT_MBOX) && (m->magic != MUTT_MMDF))
+  if ((m->type != MUTT_MBOX) && (m->type != MUTT_MMDF))
   {
     mutt_error(_("Unsupported mailbox type for appending"));
     goto cmoa_fail2;
   }
 
-  ci->child_ops = mx_get_ops(m->magic);
+  ci->child_ops = mx_get_ops(m->type);
   if (!ci->child_ops)
   {
-    mutt_error(_("Can't find mailbox ops for mailbox type %d"), m->magic);
+    mutt_error(_("Can't find mailbox ops for mailbox type %d"), m->type);
     goto cmoa_fail2;
   }
 
@@ -934,7 +934,7 @@ static int comp_path_parent(char *buf, size_t buflen)
  * The message functions are delegated to mbox.
  */
 struct MxOps MxCompOps = {
-  .magic            = MUTT_COMPRESSED,
+  .type            = MUTT_COMPRESSED,
   .name             = "compressed",
   .is_local         = true,
   .ac_find          = comp_ac_find,

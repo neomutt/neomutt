@@ -42,7 +42,7 @@ void test_parse_set(void)
     "from",        // ADDRESS
     "beep",        // BOOL
     "ispell",      // COMMAND
-    "mbox_type",   // MAGIC
+    "mbox_type",   // ENUM
     "to_chars",    // MBTABLE
     "net_inc",     // NUMBER
     "signature",   // PATH

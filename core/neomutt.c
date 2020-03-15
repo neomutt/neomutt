@@ -148,13 +148,13 @@ void neomutt_mailboxlist_clear(struct MailboxList *ml)
 
 /**
  * neomutt_mailboxlist_get_all - Get a List of all Mailboxes
- * @param n     NeoMutt
- * @param magic Type of Account to match, see #MailboxType
+ * @param n    NeoMutt
+ * @param type Type of Account to match, see #MailboxType
  * @retval obj List of Mailboxes
  *
- * @note If magic is #MUTT_MAILBOX_ANY then all Mailbox types will be matched
+ * @note If type is #MUTT_MAILBOX_ANY then all Mailbox types will be matched
  */
-struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxType magic)
+struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxType type)
 {
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
   if (!n)
@@ -165,7 +165,7 @@ struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxTy
 
   TAILQ_FOREACH(a, &n->accounts, entries)
   {
-    if ((magic > MUTT_UNKNOWN) && (a->magic != magic))
+    if ((type > MUTT_UNKNOWN) && (a->type != type))
       continue;
 
     STAILQ_FOREACH(mn, &a->mailboxes, entries)

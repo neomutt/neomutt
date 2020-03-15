@@ -70,29 +70,29 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
   int orig_flagged = m_check->msg_flagged;
 #endif
 
-  enum MailboxType mb_magic = mx_path_probe(mailbox_path(m_check));
+  enum MailboxType mb_type = mx_path_probe(mailbox_path(m_check));
 
   if ((m_cur == m_check) && C_MailCheckRecent)
     m_check->has_new = false;
 
-  switch (mb_magic)
+  switch (mb_type)
   {
     case MUTT_POP:
     case MUTT_NNTP:
     case MUTT_NOTMUCH:
     case MUTT_IMAP:
-      m_check->magic = mb_magic;
+      m_check->type = mb_type;
       break;
     default:
       if ((stat(mailbox_path(m_check), &sb) != 0) ||
-          ((m_check->magic == MUTT_UNKNOWN) && S_ISREG(sb.st_mode) && (sb.st_size == 0)) ||
-          ((m_check->magic == MUTT_UNKNOWN) &&
-           ((m_check->magic = mx_path_probe(mailbox_path(m_check))) <= 0)))
+          ((m_check->type == MUTT_UNKNOWN) && S_ISREG(sb.st_mode) && (sb.st_size == 0)) ||
+          ((m_check->type == MUTT_UNKNOWN) &&
+           ((m_check->type = mx_path_probe(mailbox_path(m_check))) <= 0)))
       {
         /* if the mailbox still doesn't exist, set the newly created flag to be
          * ready for when it does. */
         m_check->newly_created = true;
-        m_check->magic = MUTT_UNKNOWN;
+        m_check->type = MUTT_UNKNOWN;
         m_check->size = 0;
         return;
       }
@@ -101,12 +101,12 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
 
   /* check to see if the folder is the currently selected folder before polling */
   if (!m_cur || mutt_buffer_is_empty(&m_cur->pathbuf) ||
-      (((m_check->magic == MUTT_IMAP) || (m_check->magic == MUTT_NNTP) ||
-        (m_check->magic == MUTT_NOTMUCH) || (m_check->magic == MUTT_POP)) ?
+      (((m_check->type == MUTT_IMAP) || (m_check->type == MUTT_NNTP) ||
+        (m_check->type == MUTT_NOTMUCH) || (m_check->type == MUTT_POP)) ?
            (mutt_str_strcmp(mailbox_path(m_check), mailbox_path(m_cur)) != 0) :
            ((sb.st_dev != ctx_sb->st_dev) || (sb.st_ino != ctx_sb->st_ino))))
   {
-    switch (m_check->magic)
+    switch (m_check->type)
     {
       case MUTT_IMAP:
       case MUTT_MBOX:
@@ -183,9 +183,9 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
   MailboxNotify = 0;
 
   /* check device ID and serial number instead of comparing paths */
-  if (!m_cur || (m_cur->magic == MUTT_IMAP) || (m_cur->magic == MUTT_POP)
+  if (!m_cur || (m_cur->type == MUTT_IMAP) || (m_cur->type == MUTT_POP)
 #ifdef USE_NNTP
-      || (m_cur->magic == MUTT_NNTP)
+      || (m_cur->type == MUTT_NNTP)
 #endif
       || stat(mailbox_path(m_cur), &contex_sb) != 0)
   {
@@ -328,7 +328,7 @@ void mutt_mailbox_next_buffer(struct Mailbox *m_cur, struct Buffer *s)
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &ml, entries)
       {
-        if (np->mailbox->magic == MUTT_NOTMUCH) /* only match real mailboxes */
+        if (np->mailbox->type == MUTT_NOTMUCH) /* only match real mailboxes */
           continue;
         mutt_buffer_expand_path(&np->mailbox->pathbuf);
         if ((found || (pass > 0)) && np->mailbox->has_new)

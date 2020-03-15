@@ -696,7 +696,7 @@ void imap_logout_all(void)
   struct Account *np = NULL;
   TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
-    if (np->magic != MUTT_IMAP)
+    if (np->type != MUTT_IMAP)
       continue;
 
     struct ImapAccountData *adata = np->adata;
@@ -1853,7 +1853,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
  */
 static struct Account *imap_ac_find(struct Account *a, const char *path)
 {
-  if (!a || (a->magic != MUTT_IMAP) || !path)
+  if (!a || (a->type != MUTT_IMAP) || !path)
     return NULL;
 
   struct Url *url = url_parse(path);
@@ -1875,7 +1875,7 @@ static struct Account *imap_ac_find(struct Account *a, const char *path)
  */
 static int imap_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || (m->magic != MUTT_IMAP))
+  if (!a || !m || (m->type != MUTT_IMAP))
     return -1;
 
   struct ImapAccountData *adata = a->adata;
@@ -2589,7 +2589,7 @@ static int imap_path_parent(char *buf, size_t buflen)
  * MxImapOps - IMAP Mailbox - Implements ::MxOps
  */
 struct MxOps MxImapOps = {
-  .magic            = MUTT_IMAP,
+  .type            = MUTT_IMAP,
   .name             = "imap",
   .is_local         = false,
   .ac_find          = imap_ac_find,

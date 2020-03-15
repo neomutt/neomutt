@@ -35,7 +35,7 @@ struct ConfigSubset;
  */
 struct Account
 {
-  enum MailboxType magic;         ///< Type of Mailboxes this Account contains
+  enum MailboxType type;          ///< Type of Mailboxes this Account contains
   char *name;                     ///< Name of Account
   struct ConfigSubset *sub;       ///< Inherited config items
   struct MailboxList mailboxes;   ///< List of Mailboxes

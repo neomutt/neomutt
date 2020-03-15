@@ -100,7 +100,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
   dirp = opendir(mutt_b2s(path));
   if (!dirp)
   {
-    m->magic = MUTT_UNKNOWN;
+    m->type = MUTT_UNKNOWN;
     goto cleanup;
   }
 
@@ -705,7 +705,7 @@ static enum MailboxType maildir_path_probe(const char *path, const struct stat *
  * MxMaildirOps - Maildir Mailbox - Implements ::MxOps
  */
 struct MxOps MxMaildirOps = {
-  .magic            = MUTT_MAILDIR,
+  .type            = MUTT_MAILDIR,
   .name             = "maildir",
   .is_local         = true,
   .ac_find          = maildir_ac_find,

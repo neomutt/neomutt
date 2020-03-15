@@ -869,9 +869,9 @@ int mutt_save_attachment(FILE *fp, struct Body *m, const char *path,
         mx_mbox_close(&ctx);
         return -1;
       }
-      if ((ctx->mailbox->magic == MUTT_MBOX) || (ctx->mailbox->magic == MUTT_MMDF))
+      if ((ctx->mailbox->type == MUTT_MBOX) || (ctx->mailbox->type == MUTT_MMDF))
         chflags = CH_FROM | CH_UPDATE_LEN;
-      chflags |= ((ctx->mailbox->magic == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
+      chflags |= ((ctx->mailbox->type == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
       if ((mutt_copy_message_fp(msg->fp, fp, e_new, MUTT_CM_NO_FLAGS, chflags, 0) == 0) &&
           (mx_msg_commit(ctx->mailbox, msg) == 0))
       {

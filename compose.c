@@ -1684,7 +1684,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (Context)
         {
 #ifdef USE_NNTP
-          if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->mailbox->magic == MUTT_NNTP))
+          if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->mailbox->type == MUTT_NNTP))
 #endif
           {
             mutt_buffer_strcpy(&fname, mailbox_path(Context->mailbox));

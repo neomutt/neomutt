@@ -885,7 +885,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       if (C_BrowserAbbreviateMailboxes)
         mutt_buffer_pretty_mailbox(mailbox);
 
-      switch (np->mailbox->magic)
+      switch (np->mailbox->type)
       {
         case MUTT_IMAP:
         case MUTT_POP:
@@ -907,7 +907,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       if ((!S_ISREG(s.st_mode)) && (!S_ISDIR(s.st_mode)) && (!S_ISLNK(s.st_mode)))
         continue;
 
-      if (np->mailbox->magic == MUTT_MAILDIR)
+      if (np->mailbox->type == MUTT_MAILDIR)
       {
         struct stat st2;
 
@@ -1475,9 +1475,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                                     state.entry[menu->current].name);
           }
 
-          enum MailboxType magic = mx_path_probe(mutt_b2s(buf));
-          if ((op == OP_DESCEND_DIRECTORY) || (magic == MUTT_MAILBOX_ERROR) ||
-              (magic == MUTT_UNKNOWN)
+          enum MailboxType type = mx_path_probe(mutt_b2s(buf));
+          if ((op == OP_DESCEND_DIRECTORY) || (type == MUTT_MAILBOX_ERROR) ||
+              (type == MUTT_UNKNOWN)
 #ifdef USE_IMAP
               || state.entry[menu->current].inferiors
 #endif

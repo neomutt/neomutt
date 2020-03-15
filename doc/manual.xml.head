@@ -6656,7 +6656,7 @@ set spam_separator=", "
             </listitem>
           </varlistentry>
           <varlistentry>
-            <term>folder magic</term>
+            <term>folder type</term>
             <listitem>
               <para>
                 Specifies the type of folder to use: <emphasis>mbox</emphasis>,

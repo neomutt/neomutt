@@ -295,7 +295,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
 
   chflags = (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_FROM | CH_DISPLAY;
 #ifdef USE_NOTMUCH
-  if (m->magic == MUTT_NOTMUCH)
+  if (m->type == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
   res = mutt_copy_message(fp_out, m, e, cmflags, chflags, win_pager->state.cols);
@@ -1099,7 +1099,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   mutt_message(_("Copying to %s..."), mutt_b2s(buf));
 
 #ifdef USE_IMAP
-  if ((m->magic == MUTT_IMAP) && !(decode || decrypt) &&
+  if ((m->type == MUTT_IMAP) && !(decode || decrypt) &&
       (imap_path_probe(mutt_b2s(buf), NULL) == MUTT_IMAP))
   {
     switch (imap_copy_messages(m, el, mutt_b2s(buf), delete_original))
@@ -1170,7 +1170,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     rc = 0;
 
 #ifdef USE_NOTMUCH
-    if (m->magic == MUTT_NOTMUCH)
+    if (m->type == MUTT_NOTMUCH)
       nm_db_longrun_init(m, true);
 #endif
     STAILQ_FOREACH(en, el, entries)
@@ -1197,7 +1197,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
     }
 #ifdef USE_NOTMUCH
-    if (m->magic == MUTT_NOTMUCH)
+    if (m->type == MUTT_NOTMUCH)
       nm_db_longrun_done(m);
 #endif
     if (rc != 0)
@@ -1208,8 +1208,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     }
   }
 
-  const bool need_mailbox_cleanup = ((ctx_save->mailbox->magic == MUTT_MBOX) ||
-                                     (ctx_save->mailbox->magic == MUTT_MMDF));
+  const bool need_mailbox_cleanup = ((ctx_save->mailbox->type == MUTT_MBOX) ||
+                                     (ctx_save->mailbox->type == MUTT_MMDF));
 
   mx_mbox_close(&ctx_save);
   m_save->append = old_append;

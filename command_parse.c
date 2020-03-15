@@ -1001,7 +1001,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_strcpy(&m->pathbuf, buf->data);
     /* int rc = */ mx_path_canon2(m, C_Folder);
 
-    if (m->magic <= MUTT_UNKNOWN)
+    if (m->type <= MUTT_UNKNOWN)
     {
       mutt_error("Unknown Mailbox: %s", m->realpath);
       mailbox_free(&m);
@@ -1013,7 +1013,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     if (!a)
     {
       a = account_new(NULL, NeoMutt->sub);
-      a->magic = m->magic;
+      a->type = m->type;
       new_account = true;
     }
 

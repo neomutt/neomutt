@@ -28,7 +28,7 @@
  *
  * - all exported functions are usable within notmuch context only
  *
- * - all functions have to be covered by "mailbox->magic == MUTT_NOTMUCH" check
+ * - all functions have to be covered by "mailbox->type == MUTT_NOTMUCH" check
  *   (it's implemented in nm_mdata_get() and init_mailbox() functions).
  *
  * - exception are nm_nonctx_* functions -- these functions use nm_default_url
@@ -165,7 +165,7 @@ struct NmAccountData *nm_adata_new(void)
  */
 struct NmAccountData *nm_adata_get(struct Mailbox *m)
 {
-  if (!m || (m->magic != MUTT_NOTMUCH))
+  if (!m || (m->type != MUTT_NOTMUCH))
     return NULL;
 
   struct Account *a = m->account;
@@ -233,7 +233,7 @@ struct NmMboxData *nm_mdata_new(const char *url)
  */
 struct NmMboxData *nm_mdata_get(struct Mailbox *m)
 {
-  if (!m || (m->magic != MUTT_NOTMUCH))
+  if (!m || (m->type != MUTT_NOTMUCH))
     return NULL;
 
   return m->mdata;
@@ -302,7 +302,7 @@ static struct NmMboxData *nm_get_default_data(void)
  */
 static int init_mailbox(struct Mailbox *m)
 {
-  if (!m || (m->magic != MUTT_NOTMUCH))
+  if (!m || (m->type != MUTT_NOTMUCH))
     return -1;
 
   if (m->mdata)
@@ -689,7 +689,7 @@ static int update_message_path(struct Email *e, const char *path)
       ((strncmp(p - 3, "cur", 3) == 0) || (strncmp(p - 3, "new", 3) == 0) ||
        (strncmp(p - 3, "tmp", 3) == 0)))
   {
-    edata->magic = MUTT_MAILDIR;
+    edata->type = MUTT_MAILDIR;
 
     FREE(&e->path);
     FREE(&edata->folder);
@@ -2119,7 +2119,7 @@ done:
  */
 static struct Account *nm_ac_find(struct Account *a, const char *path)
 {
-  if (!a || (a->magic != MUTT_NOTMUCH) || !path)
+  if (!a || (a->type != MUTT_NOTMUCH) || !path)
     return NULL;
 
   return a;
@@ -2130,7 +2130,7 @@ static struct Account *nm_ac_find(struct Account *a, const char *path)
  */
 static int nm_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || (m->magic != MUTT_NOTMUCH))
+  if (!a || !m || (m->type != MUTT_NOTMUCH))
     return -1;
 
   if (a->adata)
@@ -2383,10 +2383,10 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
       email_get_fullpath(e, old_file, sizeof(old_file));
 
     mutt_buffer_strcpy(&m->pathbuf, edata->folder);
-    m->magic = edata->magic;
+    m->type = edata->type;
     rc = mh_sync_mailbox_message(m, i, h);
     mutt_buffer_strcpy(&m->pathbuf, url);
-    m->magic = MUTT_NOTMUCH;
+    m->type = MUTT_NOTMUCH;
 
     if (rc)
       break;
@@ -2406,7 +2406,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
   }
 
   mutt_buffer_strcpy(&m->pathbuf, url);
-  m->magic = MUTT_NOTMUCH;
+  m->type = MUTT_NOTMUCH;
 
   nm_db_release(m);
 
@@ -2452,7 +2452,7 @@ static int nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   msg->fp = fopen(path, "r");
   if (!msg->fp && (errno == ENOENT) &&
-      ((m->magic == MUTT_MAILDIR) || (m->magic == MUTT_NOTMUCH)))
+      ((m->type == MUTT_MAILDIR) || (m->type == MUTT_NOTMUCH)))
   {
     msg->fp = maildir_open_find_message(folder, e->path, NULL);
   }
@@ -2579,7 +2579,7 @@ static int nm_path_parent(char *buf, size_t buflen)
  * MxNotmuchOps - Notmuch Mailbox - Implements ::MxOps
  */
 struct MxOps MxNotmuchOps = {
-  .magic            = MUTT_NOTMUCH,
+  .type            = MUTT_NOTMUCH,
   .name             = "notmuch",
   .is_local         = false,
   .ac_find          = nm_ac_find,
