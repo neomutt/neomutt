@@ -2166,7 +2166,10 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
       process_user_header(e_templ->env);
 
     if (flags & SEND_BATCH)
-      mutt_file_copy_stream(stdin, fp_tmp);
+    {
+      if (mutt_file_copy_stream(stdin, fp_tmp) < 1)
+        goto cleanup;
+    }
 
     if (C_SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
         C_Editor && (mutt_str_strcmp(C_Editor, "builtin") != 0))

@@ -1398,7 +1398,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
       if (ferror(adata->fp))
         i = -1;
     }
-    if (i == 0)
+    if (i >= 0)
     {
       m->size = ftello(adata->fp); /* update the mailbox->size of the mailbox */
       if ((m->size < 0) || (ftruncate(fileno(adata->fp), m->size) != 0))

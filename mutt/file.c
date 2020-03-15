@@ -265,7 +265,7 @@ int mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size)
  * mutt_file_copy_stream - Copy the contents of one file into another
  * @param fp_in  Source file
  * @param fp_out Destination file
- * @retval  0 Success
+ * @retval  n Success, number of bytes copied
  * @retval -1 Error, see errno
  */
 int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out)
@@ -273,6 +273,7 @@ int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out)
   if (!fp_in || !fp_out)
     return -1;
 
+  size_t total = 0;
   size_t l;
   char buf[1024];
 
@@ -280,11 +281,12 @@ int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out)
   {
     if (fwrite(buf, 1, l, fp_out) != l)
       return -1;
+    total += l;
   }
 
   if (fflush(fp_out) != 0)
     return -1;
-  return 0;
+  return total;
 }
 
 /**
