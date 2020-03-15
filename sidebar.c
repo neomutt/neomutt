@@ -36,6 +36,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "sidebar.h"
@@ -834,6 +835,48 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
 }
 
 /**
+ * imap_is_prefix - Check if folder matches the beginning of mbox
+ * @param folder Folder
+ * @param mbox   Mailbox path
+ * @param plen   Prefix length
+ * @retval true If folder is the prefix of mbox
+ */
+static bool imap_is_prefix(const char *folder, const char *mbox, size_t *plen)
+{
+  struct Url *url_m = url_parse(mbox);
+  struct Url *url_f = url_parse(folder);
+
+  if (!url_m || !url_f)
+    return false;
+
+  bool rc = false;
+
+  if (mutt_str_strcasecmp(url_m->host, url_f->host) != 0)
+    goto done;
+
+  if (url_m->user && url_f->user && (mutt_str_strcasecmp(url_m->user, url_f->user) != 0))
+    goto done;
+
+  size_t mlen = mutt_str_strlen(url_m->path);
+  size_t flen = mutt_str_strlen(url_f->path);
+  if (flen > mlen)
+    goto done;
+
+  if (mutt_str_strncmp(url_m->path, url_f->path, flen) != 0)
+    goto done;
+
+  if (url_m->user && !url_f->user)
+    *plen += mutt_str_strlen(url_m->user) + 1;
+  rc = true;
+
+done:
+  url_free(&url_m);
+  url_free(&url_f);
+
+  return rc;
+}
+
+/**
  * draw_sidebar - Write out a list of mailboxes, in a panel
  * @param win        Window to draw on
  * @param num_rows   Height of the Sidebar
@@ -915,15 +958,24 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
     size_t maildirlen = mutt_str_strlen(C_Folder);
     if (maildirlen && C_SidebarDelimChars &&
         strchr(C_SidebarDelimChars, C_Folder[maildirlen - 1]))
+    {
       maildirlen--;
+    }
 
     /* check whether C_Folder is a prefix of the current folder's path */
     bool maildir_is_prefix = false;
-    if ((mutt_buffer_len(&m->pathbuf) > maildirlen) &&
-        (mutt_str_strncmp(C_Folder, mailbox_path(m), maildirlen) == 0) &&
-        C_SidebarDelimChars && strchr(C_SidebarDelimChars, mailbox_path(m)[maildirlen]))
+    if (m->type == MUTT_IMAP)
     {
-      maildir_is_prefix = true;
+      maildir_is_prefix = imap_is_prefix(C_Folder, mailbox_path(m), &maildirlen);
+    }
+    else
+    {
+      if ((mutt_buffer_len(&m->pathbuf) > maildirlen) &&
+          (mutt_str_strncmp(C_Folder, mailbox_path(m), maildirlen) == 0) &&
+          C_SidebarDelimChars && strchr(C_SidebarDelimChars, mailbox_path(m)[maildirlen]))
+      {
+        maildir_is_prefix = true;
+      }
     }
 
     /* calculate depth of current folder and generate its display name with indented spaces */
