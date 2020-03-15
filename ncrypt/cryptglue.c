@@ -122,11 +122,6 @@ void crypt_init(void)
 #ifdef CRYPT_BACKEND_GPGME
     crypto_module_register(&CryptModPgpGpgme);
     crypto_module_register(&CryptModSmimeGpgme);
-#else
-    mutt_message(_("\"crypt_use_gpgme\" set"
-                   " but not built with GPGME support"));
-    if (mutt_any_key_to_continue(NULL) == -1)
-      mutt_exit(1);
 #endif
   }
 
