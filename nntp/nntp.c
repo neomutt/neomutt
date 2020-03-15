@@ -47,7 +47,7 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
-#include "bcache.h"
+#include "bcache/lib.h"
 #include "globals.h"
 #include "hook.h"
 #include "init.h"

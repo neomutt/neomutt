@@ -41,7 +41,7 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "addrbook.h"
-#include "bcache.h"
+#include "bcache/lib.h"
 #include "browser.h"
 #include "commands.h"
 #include "compose.h"

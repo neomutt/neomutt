@@ -46,7 +46,7 @@
 #include "conn/lib.h"
 #include "mutt.h"
 #include "lib.h"
-#include "bcache.h"
+#include "bcache/lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "mutt_account.h"

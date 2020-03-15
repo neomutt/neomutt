@@ -36,7 +36,7 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
-#include "bcache.h"
+#include "bcache/lib.h"
 #include "mutt_account.h"
 #include "muttlib.h"
 

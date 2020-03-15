@@ -126,7 +126,6 @@ WHERE long C_HeaderCachePagesize;            ///< Config: (hcache) Database page
 #endif /* HAVE_GDBM || HAVE_BDB */
 #endif /* USE_HCACHE */
 
-
 #ifdef USE_NNTP
 WHERE char *C_NewsServer;                    ///< Config: (nntp) Url of the news server
 #endif

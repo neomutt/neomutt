@@ -48,7 +48,7 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
-#include "bcache.h"
+#include "bcache/lib.h"
 #include "globals.h"
 #include "mutt_account.h"
 #include "options.h"

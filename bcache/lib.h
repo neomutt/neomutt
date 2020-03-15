@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_BCACHE_H
-#define MUTT_BCACHE_H
+#ifndef MUTT_BCACHE_LIB_H
+#define MUTT_BCACHE_LIB_H
 
 #include <stdio.h>
 
@@ -44,13 +44,13 @@ extern char *C_MessageCachedir;
  */
 typedef int (*bcache_list_t)(const char *id, struct BodyCache *bcache, void *data);
 
-void              mutt_bcache_close(struct BodyCache **bcache);
+void              mutt_bcache_close (struct BodyCache **bcache);
 int               mutt_bcache_commit(struct BodyCache *bcache, const char *id);
-int               mutt_bcache_del(struct BodyCache *bcache, const char *id);
+int               mutt_bcache_del   (struct BodyCache *bcache, const char *id);
 int               mutt_bcache_exists(struct BodyCache *bcache, const char *id);
-FILE *            mutt_bcache_get(struct BodyCache *bcache, const char *id);
-int               mutt_bcache_list(struct BodyCache *bcache, bcache_list_t want_id, void *data);
-struct BodyCache *mutt_bcache_open(struct ConnAccount *account, const char *mailbox);
-FILE *            mutt_bcache_put(struct BodyCache *bcache, const char *id);
+FILE *            mutt_bcache_get   (struct BodyCache *bcache, const char *id);
+int               mutt_bcache_list  (struct BodyCache *bcache, bcache_list_t want_id, void *data);
+struct BodyCache *mutt_bcache_open  (struct ConnAccount *account, const char *mailbox);
+FILE *            mutt_bcache_put   (struct BodyCache *bcache, const char *id);
 
-#endif /* MUTT_BCACHE_H */
+#endif /* MUTT_BCACHE_LIB_H */
