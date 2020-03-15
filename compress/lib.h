@@ -20,8 +20,20 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_HCACHE_COMPR_H
-#define MUTT_HCACHE_COMPR_H
+/**
+ * @page compress COMPRESS: Compression
+ *
+ * Compression Backends:
+ *
+ * | File                | Description            |
+ * | :------------------ | :--------------------- |
+ * | compress/lz4.c      | @subpage compress_lz4  |
+ * | compress/zlib.c     | @subpage compress_zlib |
+ * | compress/zstd.c     | @subpage compress_zstd |
+ */
+
+#ifndef MUTT_COMPRESS_LIB_H
+#define MUTT_COMPRESS_LIB_H
 
 #include <stdlib.h>
 
@@ -76,13 +88,11 @@ struct ComprOps
   void (*close)(void **cctx);
 };
 
-#define HCACHE_COMPRESS_OPS(_name)                  \
-  const struct ComprOps compr_##_name##_ops = {     \
-    .name       = #_name,                           \
-    .open       = compr_##_name##_open,             \
-    .compress   = compr_##_name##_compress,         \
-    .decompress = compr_##_name##_decompress,       \
-    .close      = compr_##_name##_close,            \
-  };
+extern const struct ComprOps compr_lz4_ops;
+extern const struct ComprOps compr_zlib_ops;
+extern const struct ComprOps compr_zstd_ops;
 
-#endif /* MUTT_HCACHE_COMPR_H */
+const struct ComprOps *compress_get_ops(const char *compr);
+const char *           compress_list   (void);
+
+#endif /* MUTT_COMPRESS_LIB_H */

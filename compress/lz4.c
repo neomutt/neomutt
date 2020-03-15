@@ -21,7 +21,7 @@
  */
 
 /**
- * @page hc_comp_lz4 LZ4 compression
+ * @page compress_lz4 LZ4 compression
  *
  * Use LZ4 header cache compression for database backends.
  */
@@ -29,9 +29,10 @@
 #include "config.h"
 #include <stddef.h>
 #include <lz4.h>
+#include "compress_private.h"
 #include "mutt/lib.h"
 #include "lib.h"
-#include "compr.h"
+#include "hcache/lib.h"
 
 /**
  * struct ComprLz4Ctx - Private Lz4 Compression Context
@@ -125,4 +126,4 @@ static void compr_lz4_close(void **cctx)
   FREE(cctx);
 }
 
-HCACHE_COMPRESS_OPS(lz4)
+COMPRESS_OPS(lz4)

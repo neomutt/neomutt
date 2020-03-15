@@ -37,6 +37,7 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "version.h"
+#include "compress/lib.h"
 #ifdef HAVE_LIBIDN
 #include "address/lib.h"
 #endif
@@ -486,7 +487,7 @@ void print_version(FILE *fp)
   fprintf(fp, "\nhcache backends: %s", backends);
   FREE(&backends);
 #ifdef USE_HCACHE_COMPRESSION
-  backends = mutt_hcache_compress_list();
+  backends = compress_list();
   fprintf(fp, "\nhcache compression: %s", backends);
   FREE(&backends);
 #endif

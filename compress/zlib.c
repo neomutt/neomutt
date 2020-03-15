@@ -21,7 +21,7 @@
  */
 
 /**
- * @page hc_comp_zlib ZLIB compression
+ * @page compress_zlib ZLIB compression
  *
  * Use ZLIB header cache compression for database backends.
  */
@@ -32,7 +32,8 @@
 #include <zlib.h>
 #include "mutt/lib.h"
 #include "lib.h"
-#include "compr.h"
+#include "compress_private.h"
+#include "hcache/lib.h"
 
 /**
  * struct ComprZlibCtx - Private Zlib Compression Context
@@ -126,4 +127,4 @@ static void compr_zlib_close(void **cctx)
   FREE(cctx);
 }
 
-HCACHE_COMPRESS_OPS(zlib)
+COMPRESS_OPS(zlib)

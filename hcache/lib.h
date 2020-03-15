@@ -45,14 +45,6 @@
  * | hcache/lmdb.c | @subpage hc_lmdb |
  * | hcache/qdbm.c | @subpage hc_qdbm |
  * | hcache/tc.c   | @subpage hc_tc   |
- *
- * Compression Backends:
- *
- * | File                | Description           |
- * | :------------------ | :-------------------- |
- * | hcache/compr_lz4.c  | @subpage hc_comp_lz4  |
- * | hcache/compr_zlib.c | @subpage hc_comp_zlib |
- * | hcache/compr_zstd.c | @subpage hc_comp_zstd |
  */
 
 #ifndef MUTT_HCACHE_LIB_H
@@ -60,6 +52,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include "compress/lib.h"
 
 struct Buffer;
 struct Email;
@@ -184,6 +177,5 @@ const char *mutt_hcache_compress_list(void);
 #endif
 
 bool mutt_hcache_is_valid_backend(const char *s);
-bool mutt_hcache_is_valid_compression(const char *s);
 
 #endif /* MUTT_HCACHE_LIB_H */

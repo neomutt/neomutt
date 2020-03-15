@@ -54,8 +54,8 @@
 #include "email/lib.h"
 #include "lib.h"
 #include "backend.h"
-#include "compr.h"
 #include "hcache/hcversion.h"
+#include "compress/lib.h"
 
 /* These Config Variables are only used in hcache/hcache.c */
 char *C_HeaderCacheBackend; ///< Config: (hcache) Header cache backend to use
@@ -124,90 +124,8 @@ char *C_HeaderCacheCompressDictionary; ///< Config: (hcache) Filepath to diction
 short C_HeaderCacheCompressLevel; ///< Config: (hcache) Level of compression for method
 char *C_HeaderCacheCompressMethod; ///< Config: (hcache) Enable generic hcache database compression
 
-#define HCACHE_COMPR(name) extern const struct ComprOps compr_##name##_ops;
-HCACHE_COMPR(lz4)
-HCACHE_COMPR(zlib)
-HCACHE_COMPR(zstd)
-#undef HCACHE_COMPR
-
-#define compr_get_ops()                                                        \
-  hcache_get_backend_compr_ops(C_HeaderCacheCompressMethod)
-
-/**
- * compr_ops - Backend implementations
- */
-const struct ComprOps *compr_ops[] = {
-#ifdef HAVE_LZ4
-  &compr_lz4_ops,
+#define compr_get_ops() compress_get_ops(C_HeaderCacheCompressMethod)
 #endif
-#ifdef HAVE_ZLIB
-  &compr_zlib_ops,
-#endif
-#ifdef HAVE_ZSTD
-  &compr_zstd_ops,
-#endif
-  NULL
-};
-
-/**
- * hcache_get_backend_compr_ops - Get the API functions for an hcache compress backend
- * @param compr Name of the backend
- * @retval ptr Set of function pointers
- */
-static const struct ComprOps *hcache_get_backend_compr_ops(const char *compr)
-{
-  const struct ComprOps **ops = compr_ops;
-
-  if (!compr || !*compr)
-  {
-    return *ops;
-  }
-
-  for (; *ops; ops++)
-  {
-    if (strcmp(compr, (*ops)->name) == 0)
-      break;
-  }
-
-  return *ops;
-}
-
-/**
- * mutt_hcache_is_valid_compression - Is the string a valid hcache compression backend
- * @param s String identifying a compression method
- * @retval true  s is recognized as a valid backend
- * @retval false otherwise
- */
-bool mutt_hcache_is_valid_compression(const char *s)
-{
-  return hcache_get_backend_compr_ops(s);
-}
-
-/**
- * mutt_hcache_compress_list - Get a list of compression backend names
- * @retval ptr Comma-space-separated list of names
- *
- * @note The caller should free the string
- */
-const char *mutt_hcache_compress_list(void)
-{
-  char tmp[256] = { 0 };
-  const struct ComprOps **ops = compr_ops;
-  size_t len = 0;
-
-  for (; *ops; ops++)
-  {
-    if (len != 0)
-    {
-      len += snprintf(tmp + len, sizeof(tmp) - len, ", ");
-    }
-    len += snprintf(tmp + len, sizeof(tmp) - len, "%s", (*ops)->name);
-  }
-
-  return mutt_str_strdup(tmp);
-}
-
-#endif /* USE_HCACHE_COMPRESSION */
 
 /**
  * header_size - Compute the size of the header with uuid validity

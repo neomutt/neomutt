@@ -271,16 +271,26 @@ LIBHCACHEOBJS+=	hcache/qdbm.o
 @if HAVE_TC
 LIBHCACHEOBJS+=	hcache/tc.o
 @endif
-@if HAVE_LZ4
-LIBHCACHEOBJS+=	hcache/compr_lz4.o
-@endif
-@if HAVE_ZLIB
-LIBHCACHEOBJS+=	hcache/compr_zlib.o
-@endif
-@if HAVE_ZSTD
-LIBHCACHEOBJS+=	hcache/compr_zstd.o
-@endif
 @endif # USE_HCACHE
+
+###############################################################################
+# libcompress
+@if USE_LZ4
+LIBCOMPRESSOBJS+=compress/lz4.o
+@endif
+@if USE_ZLIB
+LIBCOMPRESSOBJS+=compress/zlib.o
+@endif
+@if USE_ZSTD
+LIBCOMPRESSOBJS+=compress/zstd.o
+@endif
+@if USE_LZ4 || USE_ZLIB || USE_ZSTD
+LIBCOMPRESSOBJS+=compress/compress.o
+LIBCOMPRESS=	libcompress.a
+CLEANFILES+=	$(LIBCOMPRESS) $(LIBCOMPRESSOBJS)
+MUTTLIBS+=	$(LIBCOMPRESS)
+ALLOBJS+=	$(LIBCOMPRESSOBJS)
+@endif
 
 ###############################################################################
 # libbcache
@@ -428,6 +438,13 @@ $(LIBCOMPMBOX): $(PWD)/compmbox $(LIBCOMPMBOXOBJS)
 	$(RANLIB) $@
 $(PWD)/compmbox:
 	$(MKDIR_P) $(PWD)/compmbox
+
+# libcompress
+$(LIBCOMPRESS): $(PWD)/compress $(LIBCOMPRESSOBJS)
+	$(AR) cr $@ $(LIBCOMPRESSOBJS)
+	$(RANLIB) $@
+$(PWD)/compress:
+	$(MKDIR_P) $(PWD)/compress
 
 # libgui
 $(LIBGUI): $(PWD)/gui $(LIBGUIOBJS)

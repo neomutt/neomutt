@@ -21,7 +21,7 @@
  */
 
 /**
- * @page hc_comp_zstd Zstandard compression
+ * @page compress_zstd Zstandard compression
  *
  * Use Zstandard header cache compression for database backends.
  */
@@ -31,7 +31,8 @@
 #include <zstd.h>
 #include "mutt/lib.h"
 #include "lib.h"
-#include "compr.h"
+#include "compress_private.h"
+#include "hcache/lib.h"
 
 /**
  * struct ComprZstdCtx - Private Zstd Compression Context
@@ -170,4 +171,4 @@ static void compr_zstd_close(void **cctx)
   FREE(cctx);
 }
 
-HCACHE_COMPRESS_OPS(zstd)
+COMPRESS_OPS(zstd)
