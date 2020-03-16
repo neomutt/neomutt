@@ -29,7 +29,9 @@
 /* pseudo options */
 
 WHERE bool OptAttachMsg;           ///< (pseudo) used by attach-message
+#ifdef USE_AUTOCRYPT
 WHERE bool OptAutocryptGpgme;      ///< (pseudo) use Autocrypt context inside ncrypt/crypt_gpgme.c
+#endif
 WHERE bool OptAuxSort;             ///< (pseudo) using auxiliary sort function
 WHERE bool OptDontHandlePgpKeys;   ///< (pseudo) used to extract PGP keys
 WHERE bool OptForceRefresh;        ///< (pseudo) refresh even during macros
