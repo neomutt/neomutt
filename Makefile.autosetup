@@ -93,9 +93,8 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 # libautocrypt
 @if USE_AUTOCRYPT
 LIBAUTOCRYPT=	libautocrypt.a
-LIBAUTOCRYPTOBJS=	autocrypt/autocrypt.o autocrypt/autocrypt_acct_menu.o \
-			autocrypt/autocrypt_db.o autocrypt/autocrypt_gpgme.o \
-			autocrypt/autocrypt_schema.o
+LIBAUTOCRYPTOBJS=autocrypt/autocrypt.o autocrypt/acct_menu.o autocrypt/db.o \
+		 autocrypt/gpgme.o autocrypt/schema.o
 
 CLEANFILES+=	$(LIBAUTOCRYPT) $(LIBAUTOCRYPTOBJS)
 MUTTLIBS+=	$(LIBAUTOCRYPT)
