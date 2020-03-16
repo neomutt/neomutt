@@ -441,6 +441,7 @@ if {[get-define want-gpgme]} {
     if {[scan $gpgme_version "%d.%d.%d" gpgme_maj gpgme_min gpgme_patch] != 3} {
       user-error "Could not parse GPGMe version $gpgme_version"
     }
+    msg-result $gpgme_version
     if {[get-define want-autocrypt]} {
       if {$gpgme_maj < 1 || $gpgme_min < 8} {
         user-error "Found GPGME version $gpgme_version, need 1.8.0 for AutoCrypt"
@@ -453,7 +454,7 @@ if {[get-define want-gpgme]} {
     define GPGME_VERSION_NUMBER [format "0x%02x%02x%02x" $gpgme_maj $gpgme_min $gpgme_patch]
 
     # RHEL6 doesn't have this function yet
-    cc-check-functions gpgme_op_export_keys
+    cc-check-function-in-lib gpgme_op_export_keys gpgme
 
     # CFLAGS
     if {[catch {exec-with-stderr $gpgme_config --cflags} res err]} {
@@ -467,7 +468,6 @@ if {[get-define want-gpgme]} {
     }
     define-append LIBS $res
   }
-  msg-result $gpgme_version
   define-feature gpgme
 
   msg-checking "Checking for gpg-error..."
