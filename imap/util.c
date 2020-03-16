@@ -48,10 +48,10 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
-#include "bcache/lib.h"
 #include "globals.h"
 #include "mutt_account.h"
 #include "options.h"
+#include "bcache/lib.h"
 #include "imap/lib.h"
 #ifdef USE_HCACHE
 #include "message.h"

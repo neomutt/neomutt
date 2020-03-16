@@ -162,8 +162,8 @@ static void notify_dump_account(struct NotifyCallback *nc)
   struct EventAccount *ev_a = nc->event_data;
   struct Account *a = ev_a->account;
 
-  mutt_debug(LL_DEBUG1, "\tAccount: %p (%s) %s\n", a,
-             get_mailbox_type(a->type), NONULL(a->name));
+  mutt_debug(LL_DEBUG1, "\tAccount: %p (%s) %s\n", a, get_mailbox_type(a->type),
+             NONULL(a->name));
 }
 
 static void notify_dump_color(struct NotifyCallback *nc)

@@ -29,9 +29,9 @@
 #include "config.h"
 #include <stdio.h>
 #include <zstd.h>
+#include "compress_private.h"
 #include "mutt/lib.h"
 #include "lib.h"
-#include "compress_private.h"
 #include "hcache/lib.h"
 
 /**

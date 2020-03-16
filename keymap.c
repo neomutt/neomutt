@@ -939,7 +939,6 @@ static const char *find_ext_name(const char *key)
 void init_extended_keys(void)
 {
 #ifdef NCURSES_VERSION
-
   use_extended_names(true);
 
   for (int j = 0; KeyNames[j].name; j++)

@@ -20,7 +20,7 @@
  */
 
 /**
- * @page zlib Zlib compression of network traffic
+ * @page conn_zstrm Zlib compression of network traffic
  *
  * Zlib compression of network traffic
  */

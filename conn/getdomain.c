@@ -60,7 +60,6 @@ int getdnsdomainname(char *buf, size_t buflen)
   hints.ai_family = AF_UNSPEC;
 
 #ifdef HAVE_GETADDRINFO_A
-
   /* Allow 0.1 seconds to get the FQDN (fully-qualified domain name).
    * If it takes longer, the system is mis-configured and the network is not
    * working properly, so...  */
@@ -89,13 +88,10 @@ int getdnsdomainname(char *buf, size_t buflen)
       mutt_debug(LL_DEBUG1, "fail: (%d) %s\n", status, gai_strerror(status));
   }
   FREE(&reqs[0]);
-
 #else /* !HAVE_GETADDRINFO_A */
-
   mutt_debug(LL_DEBUG3, "before getaddrinfo\n");
   getaddrinfo(node, NULL, &hints, &h);
   mutt_debug(LL_DEBUG3, "after getaddrinfo\n");
-
 #endif
 
   char *p = NULL;
@@ -106,7 +102,6 @@ int getdnsdomainname(char *buf, size_t buflen)
     mutt_debug(LL_DEBUG1, "Hostname: %s\n", buf);
     freeaddrinfo(h);
   }
-
 #endif /* HAVE_GETADDRINFO || defined HAVE_GETADDRINFO_A */
 
   return rc;

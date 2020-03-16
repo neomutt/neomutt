@@ -342,8 +342,8 @@ void mutt_autocrypt_account_menu(void)
         struct AccountEntry *entry = (struct AccountEntry *) (menu->data) + menu->current;
         char msg[128];
         snprintf(msg, sizeof(msg),
-                  // L10N: Confirmation message when deleting an autocrypt account
-                  _("Really delete account \"%s\"?"), entry->addr->mailbox);
+                 // L10N: Confirmation message when deleting an autocrypt account
+                 _("Really delete account \"%s\"?"), entry->addr->mailbox);
         if (mutt_yesorno(msg, MUTT_NO) != MUTT_YES)
           break;
 

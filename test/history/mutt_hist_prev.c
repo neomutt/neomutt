@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/lib.h"
+#include "history/lib.h"
 
 void test_mutt_hist_prev(void)
 {

@@ -36,9 +36,9 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
-#include "bcache/lib.h"
 #include "mutt_account.h"
 #include "muttlib.h"
+#include "bcache/lib.h"
 
 /* These Config Variables are only used in bcache.c */
 char *C_MessageCachedir; ///< Config: (imap/pop) Directory for the message cache

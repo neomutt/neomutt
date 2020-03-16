@@ -2176,8 +2176,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         }
         break;
       }
-
 #endif
+
       case OP_MAIN_MODIFY_TAGS:
       case OP_MAIN_MODIFY_TAGS_THEN_HIDE:
       {

@@ -2845,11 +2845,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         {
           while (((new_topline < rd.last_line) ||
                   (0 == (dretval = display_line(
-                              rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
-                              &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
-                              &rd.quote_list, &rd.q_level, &rd.force_redraw,
-                              &rd.search_re, rd.extra->win_pager)))) &&
-                  IS_HEADER(rd.line_info[new_topline].type))
+                             rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
+                             &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
+                             &rd.quote_list, &rd.q_level, &rd.force_redraw,
+                             &rd.search_re, rd.extra->win_pager)))) &&
+                 IS_HEADER(rd.line_info[new_topline].type))
           {
             new_topline++;
           }
@@ -2859,11 +2859,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         while ((((new_topline + C_SkipQuotedOffset) < rd.last_line) ||
                 (0 == (dretval = display_line(
-                            rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
-                            &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
-                            &rd.quote_list, &rd.q_level, &rd.force_redraw,
-                            &rd.search_re, rd.extra->win_pager)))) &&
-                (rd.line_info[new_topline + C_SkipQuotedOffset].type != MT_COLOR_QUOTED))
+                           rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
+                           &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
+                           &rd.quote_list, &rd.q_level, &rd.force_redraw,
+                           &rd.search_re, rd.extra->win_pager)))) &&
+               (rd.line_info[new_topline + C_SkipQuotedOffset].type != MT_COLOR_QUOTED))
         {
           new_topline++;
         }
@@ -2876,11 +2876,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         while ((((new_topline + C_SkipQuotedOffset) < rd.last_line) ||
                 (0 == (dretval = display_line(
-                            rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
-                            &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
-                            &rd.quote_list, &rd.q_level, &rd.force_redraw,
-                            &rd.search_re, rd.extra->win_pager)))) &&
-                (rd.line_info[new_topline + C_SkipQuotedOffset].type == MT_COLOR_QUOTED))
+                           rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
+                           &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
+                           &rd.quote_list, &rd.q_level, &rd.force_redraw,
+                           &rd.search_re, rd.extra->win_pager)))) &&
+               (rd.line_info[new_topline + C_SkipQuotedOffset].type == MT_COLOR_QUOTED))
         {
           new_topline++;
         }

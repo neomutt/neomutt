@@ -41,7 +41,6 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "addrbook.h"
-#include "bcache/lib.h"
 #include "browser.h"
 #include "commands.h"
 #include "compose.h"
@@ -75,6 +74,7 @@
 #include "smtp.h"
 #include "sort.h"
 #include "status.h"
+#include "bcache/lib.h"
 #include "hcache/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
@@ -222,7 +222,6 @@ struct ConfigDef MuttVars[] = {
   ** be redrawn on the screen when moving to the next or previous entries
   ** in the menu.
   */
-
   { "arrow_string", DT_STRING|DT_NOT_EMPTY, &C_ArrowString, IP "->" },
   /*
   ** .pp
