@@ -73,16 +73,10 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include "history.h"
-#include "charset.h"
-#include "file.h"
-#include "hash.h"
-#include "logging.h"
-#include "memory.h"
-#include "message.h"
-#include "string2.h"
+#include "lib.h"
+#include "mutt/lib.h"
 
-/* These Config Variables are only used in history.c */
+/* These Config Variables are only used in history/history.c */
 short C_History; ///< Config: Number of history entries to keep in memory per category
 char *C_HistoryFile;      ///< Config: File to save history in
 bool C_HistoryRemoveDups; ///< Config: Remove duplicate entries from the history

@@ -20,12 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_HISTORY_H
-#define MUTT_LIB_HISTORY_H
+#ifndef MUTT_HISTORY_LIB_H
+#define MUTT_HISTORY_LIB_H
 
 #include <stdbool.h>
 
-/* These Config Variables are only used in mutt/history.c */
+/* These Config Variables are only used in history/history.c */
 extern short C_History;
 extern char *C_HistoryFile;
 extern bool  C_HistoryRemoveDups;
@@ -48,15 +48,15 @@ enum HistoryClass
   HC_MAX,
 };
 
-void  mutt_hist_add(enum HistoryClass hclass, const char *str, bool save);
-bool  mutt_hist_at_scratch(enum HistoryClass hclass);
-void  mutt_hist_free(void);
-void  mutt_hist_init(void);
-char *mutt_hist_next(enum HistoryClass hclass);
-char *mutt_hist_prev(enum HistoryClass hclass);
-void  mutt_hist_read_file(void);
-void  mutt_hist_reset_state(enum HistoryClass hclass);
+void  mutt_hist_add         (enum HistoryClass hclass, const char *str, bool save);
+bool  mutt_hist_at_scratch  (enum HistoryClass hclass);
+void  mutt_hist_free        (void);
+void  mutt_hist_init        (void);
+char *mutt_hist_next        (enum HistoryClass hclass);
+char *mutt_hist_prev        (enum HistoryClass hclass);
+void  mutt_hist_read_file   (void);
+void  mutt_hist_reset_state (enum HistoryClass hclass);
 void  mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
-int   mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **matches);
+int   mutt_hist_search      (const char *search_buf, enum HistoryClass hclass, char **matches);
 
-#endif /* MUTT_LIB_HISTORY_H */
+#endif /* MUTT_HISTORY_LIB_H */

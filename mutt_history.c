@@ -40,6 +40,7 @@
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
+#include "history/lib.h"
 
 static const struct Mapping HistoryHelp[] = {
   { N_("Exit"), OP_EXIT },

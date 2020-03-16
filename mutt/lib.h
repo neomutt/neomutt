@@ -36,7 +36,6 @@
  * | mutt/file.c      | @subpage file      |
  * | mutt/filter.c    | @subpage filter    |
  * | mutt/hash.c      | @subpage hash      |
- * | mutt/history.c   | @subpage history   |
  * | mutt/list.c      | @subpage list      |
  * | mutt/logging.c   | @subpage logging   |
  * | mutt/mapping.c   | @subpage mapping   |
@@ -69,7 +68,6 @@
 #include "file.h"
 #include "filter.h"
 #include "hash.h"
-#include "history.h"
 #include "list.h"
 #include "logging.h"
 #include "mapping.h"

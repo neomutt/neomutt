@@ -292,6 +292,15 @@ MUTTLIBS+=	$(LIBBCACHE)
 ALLOBJS+=	$(LIBBCACHEOBJS)
 
 ###############################################################################
+# libhistory
+LIBHISTORY=	libhistory.a
+LIBHISTORYOBJS=	history/history.o
+
+CLEANFILES+=	$(LIBHISTORY) $(LIBHISTORYOBJS)
+MUTTLIBS+=	$(LIBHISTORY)
+ALLOBJS+=	$(LIBHISTORYOBJS)
+
+###############################################################################
 # pgpewrap
 PGPEWRAP=	pgpewrap$(EXEEXT)
 PGPEWRAPOBJS=	pgpewrap.o
@@ -343,7 +352,7 @@ ALLOBJS+=	$(LIBADDRESSOBJS)
 # libmutt
 LIBMUTT=	libmutt.a
 LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
-		mutt/envlist.o mutt/exit.o mutt/file.o mutt/filter.o mutt/hash.o mutt/history.o \
+		mutt/envlist.o mutt/exit.o mutt/file.o mutt/filter.o mutt/hash.o \
 		mutt/list.o mutt/logging.o mutt/mapping.o mutt/mbyte.o mutt/md5.o \
 		mutt/memory.o mutt/notify.o mutt/path.o mutt/pool.o mutt/regex.o \
 		mutt/signal.o mutt/slist.o mutt/string.o
@@ -504,6 +513,13 @@ $(LIBBCACHE): $(PWD)/bcache $(LIBBCACHEOBJS)
 	$(RANLIB) $@
 $(PWD)/bcache:
 	$(MKDIR_P) $(PWD)/bcache
+
+# libhistory
+$(LIBHISTORY): $(PWD)/history $(LIBHISTORYOBJS)
+	$(AR) cr $@ $(LIBHISTORYOBJS)
+	$(RANLIB) $@
+$(PWD)/history:
+	$(MKDIR_P) $(PWD)/history
 
 # pgpewrap
 $(PGPEWRAP): $(PGPEWRAPOBJS)

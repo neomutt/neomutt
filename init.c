@@ -39,6 +39,7 @@
 #include <sys/utsname.h>
 #include <unistd.h>
 #include "mutt/lib.h"
+#include "history/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
