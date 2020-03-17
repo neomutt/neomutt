@@ -349,8 +349,8 @@ msgstr "Impossible d'ouvrir la BAL %s"
 # , c-format
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
-msgstr "erreur lors de la création du contexte gpgme : %s"
+msgid "error creating GPGME context: %s"
+msgstr "erreur lors de la création du contexte GPGME : %s"
 
 #. L10N:
 #. Message displayed just before a GPG key is generated for a created
@@ -4145,8 +4145,8 @@ msgstr "erreur lors de l'activation du protocole CMS : %s"
 # , c-format
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
-msgstr "erreur lors de la création de l'objet gpgme : %s"
+msgid "error creating GPGME data object: %s"
+msgstr "erreur lors de la création de l'objet GPGME : %s"
 
 # , c-format
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096

@@ -331,8 +331,8 @@ msgstr "Nemožno uzamknúť schránku!"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
-msgstr "Chyba pri vytváraní gpgme kontextu: %s"
+msgid "error creating GPGME context: %s"
+msgstr "Chyba pri vytváraní GPGME kontextu: %s"
 
 #. L10N:
 #. Message displayed just before a GPG key is generated for a created
@@ -4023,8 +4023,8 @@ msgstr "Chyba pri zapínaní CMS protokolu: %s"
 
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
-msgstr "Chyba pri vytváraní gpgme dátového objektu: %s"
+msgid "error creating GPGME data object: %s"
+msgstr "Chyba pri vytváraní GPGME dátového objektu: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096
 #: ncrypt/crypt_gpgme.c:2854

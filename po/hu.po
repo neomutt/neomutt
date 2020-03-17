@@ -333,7 +333,7 @@ msgstr "Nem tudom zárolni a postafiókot!"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, fuzzy, c-format
-msgid "error creating gpgme context: %s"
+msgid "error creating GPGME context: %s"
 msgstr "hiba a mintában: %s"
 
 #. L10N:
@@ -4049,7 +4049,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:805
 #, fuzzy, c-format
-msgid "error creating gpgme data object: %s"
+msgid "error creating GPGME data object: %s"
 msgstr "hiba a mintában: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096

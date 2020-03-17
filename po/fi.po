@@ -337,8 +337,8 @@ msgstr "Ei voitu avata postilaatikkoa %s"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
-msgstr "virhe gpgme-kontekstin luonnissa: %s"
+msgid "error creating GPGME context: %s"
+msgstr "virhe GPGME-kontekstin luonnissa: %s"
 
 #. L10N:
 #. Message displayed just before a GPG key is generated for a created
@@ -3959,7 +3959,7 @@ msgstr "virhe CMS-protokollan käyttöönotossa: %s"
 
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
+msgid "error creating GPGME data object: %s"
 msgstr "virhe gpgpme-dataobjektin luonnissa: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096

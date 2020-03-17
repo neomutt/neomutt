@@ -329,8 +329,8 @@ msgstr "Не удалось открыть базу данных autocrypt %s"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
-msgstr "ошибка создания gpgme контекста: %s"
+msgid "error creating GPGME context: %s"
+msgstr "ошибка создания GPGME контекста: %s"
 
 #. L10N:
 #. Message displayed just before a GPG key is generated for a created
@@ -3973,8 +3973,8 @@ msgstr "ошибка включения CMS протокола: %s"
 
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
-msgstr "ошибка создания объекта данных gpgme: %s"
+msgid "error creating GPGME data object: %s"
+msgstr "ошибка создания объекта данных GPGME: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096
 #: ncrypt/crypt_gpgme.c:2854

@@ -52,7 +52,7 @@ static int create_gpgme_context(gpgme_ctx_t *ctx)
     err = gpgme_ctx_set_engine_info(*ctx, GPGME_PROTOCOL_OpenPGP, NULL, C_AutocryptDir);
   if (err)
   {
-    mutt_error(_("error creating gpgme context: %s"), gpgme_strerror(err));
+    mutt_error(_("error creating GPGME context: %s"), gpgme_strerror(err));
     return -1;
   }
 
@@ -159,7 +159,7 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   gpgme_key_t primary_key = NULL;
   char buf[1024] = { 0 };
 
-  /* gpgme says addresses should not be in idna form */
+  /* GPGME says addresses should not be in idna form */
   struct Address *copy = mutt_addr_copy(addr);
   mutt_addr_to_local(copy);
   mutt_addr_write(buf, sizeof(buf), copy, false);

@@ -112,7 +112,7 @@ struct DnArray
 };
 
 /* We work based on user IDs, getting from a user ID to the key is
- * check and does not need any memory (gpgme uses reference counting). */
+ * check and does not need any memory (GPGME uses reference counting). */
 /**
  * struct CryptKeyInfo - A stored PGP key
  */
@@ -204,7 +204,7 @@ static bool is_pka_notation(gpgme_sig_notation_t notation)
 static void redraw_if_needed(gpgme_ctx_t ctx)
 {
 #if (GPGME_VERSION_NUMBER < 0x010800)
-  /* gpgme_get_ctx_flag is not available in gpgme < 1.8.0. In this case, stay
+  /* gpgme_get_ctx_flag is not available in GPGME < 1.8.0. In this case, stay
    * on the safe side and always redraw. */
   (void) ctx;
   mutt_need_hard_redraw();
@@ -281,7 +281,7 @@ static int cmp_version_strings(const char *a, const char *b, int level)
 {
   return gpgrt_cmp_version(a, b, level);
 }
-#elif (GPGME_VERSION_NUMBER >= 0x010900) /* gpgme >= 1.9.0 */
+#elif (GPGME_VERSION_NUMBER >= 0x010900) /* GPGME >= 1.9.0 */
 
 /**
  * parse_version_number - Parse a version string
@@ -460,7 +460,7 @@ static int cmp_version_strings(const char *a, const char *b, int level)
     return positive;
   return negative;
 }
-#endif                                   /* gpgme >= 1.9.0 */
+#endif                                   /* GPGME >= 1.9.0 */
 
 /**
  * crypt_keyid - Find the ID for the key
@@ -770,7 +770,7 @@ static gpgme_ctx_t create_gpgme_context(bool for_smime)
 
   if (err != 0)
   {
-    mutt_error(_("error creating gpgme context: %s"), gpgme_strerror(err));
+    mutt_error(_("error creating GPGME context: %s"), gpgme_strerror(err));
     mutt_exit(1);
   }
 
@@ -802,13 +802,13 @@ static gpgme_data_t create_gpgme_data(void)
   gpgme_error_t err = gpgme_data_new(&data);
   if (err != 0)
   {
-    mutt_error(_("error creating gpgme data object: %s"), gpgme_strerror(err));
+    mutt_error(_("error creating GPGME data object: %s"), gpgme_strerror(err));
     mutt_exit(1);
   }
   return data;
 }
 
-#if GPGME_VERSION_NUMBER >= 0x010900 /* gpgme >= 1.9.0 */
+#if GPGME_VERSION_NUMBER >= 0x010900 /* GPGME >= 1.9.0 */
 /**
  * have_gpg_version - Do we have a sufficient GPG version
  * @param version Minimum version
@@ -1042,7 +1042,7 @@ cleanup:
   return rv;
 }
 
-#if (GPGME_VERSION_NUMBER >= 0x010b00) /* gpgme >= 1.11.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010b00) /* GPGME >= 1.11.0 */
 /**
  * create_recipient_string - Create a string of recipients
  * @param keylist    Keys, space-separated
@@ -1298,7 +1298,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
   gpgme_data_t ciphertext = NULL;
   char *outfile = NULL;
 
-#if GPGME_VERSION_NUMBER >= 0x010b00 /* gpgme >= 1.11.0 */
+#if GPGME_VERSION_NUMBER >= 0x010b00 /* GPGME >= 1.11.0 */
   struct Buffer *recpstring = mutt_buffer_pool_get();
   create_recipient_string(keylist, recpstring, use_smime);
   if (mutt_buffer_is_empty(recpstring))
@@ -1330,7 +1330,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
         goto cleanup;
     }
 
-#if (GPGME_VERSION_NUMBER >= 0x010b00) /* gpgme >= 1.11.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010b00) /* GPGME >= 1.11.0 */
     err = gpgme_op_encrypt_sign_ext(ctx, NULL, mutt_b2s(recpstring),
                                     GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
 #else
@@ -1339,7 +1339,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
   }
   else
   {
-#if (GPGME_VERSION_NUMBER >= 0x010b00) /* gpgme >= 1.11.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010b00) /* GPGME >= 1.11.0 */
     err = gpgme_op_encrypt_ext(ctx, NULL, mutt_b2s(recpstring),
                                GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
 #else
@@ -1357,7 +1357,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
   outfile = data_object_to_tempfile(ciphertext, NULL);
 
 cleanup:
-#if (GPGME_VERSION_NUMBER >= 0x010b00) /* gpgme >= 1.11.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010b00) /* GPGME >= 1.11.0 */
   mutt_buffer_pool_release(&recpstring);
 #else
   recipient_set_free(&rset);
@@ -1513,7 +1513,7 @@ static struct Body *sign_message(struct Body *a, const struct AddressList *from,
   mutt_generate_boundary(&t->parameter);
   mutt_param_set(&t->parameter, "protocol",
                  use_smime ? "application/pkcs7-signature" : "application/pgp-signature");
-  /* Get the micalg from gpgme.  Old gpgme versions don't support this
+  /* Get the micalg from GPGME.  Old gpgme versions don't support this
    * for S/MIME so we assume sha-1 in this case. */
   if (get_micalg(ctx, use_smime, buf, sizeof(buf)) == 0)
     mutt_param_set(&t->parameter, "micalg", buf);
@@ -1995,7 +1995,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
       }
       else
       {
-        key = NULL; /* Old gpgme versions did not set KEY to NULL on
+        key = NULL; /* Old GPGME versions did not set KEY to NULL on
                          error.   Do it here to avoid a double free. */
       }
     }
@@ -2084,7 +2084,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   if (!signature)
     return -1;
 
-  /* We need to tell gpgme about the encoding because the backend can't
+  /* We need to tell GPGME about the encoding because the backend can't
    * auto-detect plain base-64 encoding which is used by S/MIME. */
   if (is_smime)
     gpgme_data_set_encoding(signature, GPGME_DATA_ENCODING_BASE64);
@@ -2283,7 +2283,7 @@ restart:
     {
       /* Check whether this might be a signed message despite what the mime
        * header told us.  Retry then.  gpgsm returns the error information
-       * "unsupported Algorithm '?'" but gpgme will not store this unknown
+       * "unsupported Algorithm '?'" but GPGME will not store this unknown
        * algorithm, thus we test that it has not been set. */
       gpgme_decrypt_result_t result;
 
@@ -2591,7 +2591,7 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
  */
 static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
 {
-  /* Before gpgme 1.9.0 and gpg 2.1.14 there was no side-effect free
+  /* Before GPGME 1.9.0 and gpg 2.1.14 there was no side-effect free
    * way to view key data in GPGME, so we import the key into a
    * temporary keyring if we detect an older system.  */
   bool legacy_api;
@@ -2609,9 +2609,9 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   int rc = -1;
   time_t tt;
 
-#if GPGME_VERSION_NUMBER >= 0x010900 /* gpgme >= 1.9.0 */
+#if GPGME_VERSION_NUMBER >= 0x010900 /* GPGME >= 1.9.0 */
   legacy_api = !have_gpg_version("2.1.14");
-#else /* gpgme < 1.9.0 */
+#else /* GPGME < 1.9.0 */
   legacy_api = true;
 #endif
 
@@ -2656,7 +2656,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   if (!legacy_api)
     err = gpgme_op_keylist_from_data_start(tmpctx, keydata, 0);
   else
-#endif /* gpgme >= 1.9.0 */
+#endif /* GPGME >= 1.9.0 */
   {
     err = gpgme_op_keylist_start(tmpctx, NULL, 0);
   }
@@ -2907,7 +2907,7 @@ void pgp_gpgme_invoke_import(const char *fname)
     /* Fixme: Should we lookup each imported key and print more infos? */
   }
   /* Now print keys which failed the import.  Unfortunately in most
-   * cases gpg will bail out early and not tell gpgme about.  */
+   * cases gpg will bail out early and not tell GPGME about.  */
   /* FIXME: We could instead use the new GPGME_AUDITLOG_DIAG to show
    * the actual gpg diagnostics.  But I fear that would clutter the
    * output too much.  Maybe a dedicated prompt or option to do this
@@ -4000,7 +4000,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
  * @retval ptr Array of Distinguished Names
  *
  * This is not a validating parser and it does not support any old-stylish
- * syntax; gpgme is expected to return only rfc2253 compatible strings.
+ * syntax; GPGME is expected to return only rfc2253 compatible strings.
  */
 static struct DnArray *parse_dn(const char *str)
 {
@@ -4870,7 +4870,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
 
       case OP_GENERIC_SELECT_ENTRY:
         /* FIXME make error reporting more verbose - this should be
-         * easy because gpgme provides more information */
+         * easy because GPGME provides more information */
         if (OptPgpCheckTrust)
         {
           if (!crypt_key_is_valid(key_table[menu->current]))
@@ -4925,15 +4925,15 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
           }
 
           /* A '!' is appended to a key in find_keys() when forced_valid is
-           * set.  Prior to gpgme 1.11.0, encrypt_gpgme_object() called
+           * set.  Prior to GPGME 1.11.0, encrypt_gpgme_object() called
            * create_recipient_set() which interpreted the '!' to mean set
            * GPGME_VALIDITY_FULL for the key.
            *
-           * Starting in gpgme 1.11.0, we now use a '\n' delimited recipient
+           * Starting in GPGME 1.11.0, we now use a '\n' delimited recipient
            * string, which is passed directly to the gpgme_op_encrypt_ext()
            * function.  This allows to use the original meaning of '!' to
            * force a subkey use. */
-#if (GPGME_VERSION_NUMBER < 0x010b00) /* gpgme < 1.11.0 */
+#if (GPGME_VERSION_NUMBER < 0x010b00) /* GPGME < 1.11.0 */
           *forced_valid = 1;
 #endif
         }

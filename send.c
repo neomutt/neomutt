@@ -2397,7 +2397,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
   }
 
   /* Deal with the corner case where the crypto module backend is not available.
-   * This can happen if configured without pgp/smime and with gpgme, but
+   * This can happen if configured without PGP/SMIME and with GPGME, but
    * $crypt_use_gpgme is unset.  */
   if (e_templ->security && !crypt_has_module_backend(e_templ->security))
   {

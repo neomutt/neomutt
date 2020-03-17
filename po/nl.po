@@ -331,7 +331,7 @@ msgstr "Kan postvak %s niet openen"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
+msgid "error creating GPGME context: %s"
 msgstr "fout bij het creëren van GPGME-context: %s"
 
 #. L10N:
@@ -3980,7 +3980,7 @@ msgstr "fout bij het inschakelen van CMS-protocol: %s"
 
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
+msgid "error creating GPGME data object: %s"
 msgstr "fout bij het creëren van GPGME-gegevensobject: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096

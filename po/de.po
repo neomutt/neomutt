@@ -331,7 +331,7 @@ msgstr "Kann Autocrypt-Datenbank %s nicht öffnen"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
+msgid "error creating GPGME context: %s"
 msgstr "Fehler beim Erzeugen des GPGME-Kontexts: %s"
 
 #. L10N:
@@ -3948,7 +3948,7 @@ msgstr "Fehler beim Aktivieren des CMS-Protokolls : %s"
 
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
+msgid "error creating GPGME data object: %s"
 msgstr "Fehler beim Erzeugen des GPGME-Datenobjekts: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096

@@ -5,7 +5,7 @@
   - UI: fix commands that don’t need to have a non-empty mailbox to be valid
   - PGP: inform about successful decryption of inline PGP messages
   - PGP: try to infer the signing key from the From address
-  - PGP: enable GPGMe by default
+  - PGP: enable GPGME by default
   - Notmuch: use query as name for vfolder-from-query
   - IMAP: add network traffic compression (COMPRESS=DEFLATE, RFC4978)
   - Header cache: add support for generic header cache compression

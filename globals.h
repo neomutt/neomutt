@@ -101,7 +101,7 @@ WHERE char *C_AttributionLocale;             ///< Config: Locale for dates in th
 WHERE char *C_AttachFormat;                  ///< Config: printf-like format string for the attachment menu
 #ifdef USE_AUTOCRYPT
 WHERE char *C_AutocryptAcctFormat;           ///< Config: Format of the autocrypt account menu
-WHERE char *C_AutocryptDir;                  ///< Config: Location of autocrypt files, including the GPG keyring and sqlite database
+WHERE char *C_AutocryptDir;                  ///< Config: Location of autocrypt files, including the GPG keyring and SQLite database
 #endif
 WHERE char *C_ConfigCharset;                 ///< Config: Character set that the config files are in
 WHERE char *C_CryptProtectedHeadersSubject;  ///< Config: Use this as the subject for encrypted emails

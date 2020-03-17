@@ -104,7 +104,7 @@ These are often the same: if you have your dependencies installed in
 end up in `/usr/bin` and its documentation in `/usr/share/doc`. This behavior
 can be tweaked by specifying where 3rd party dependencies are to be found. This
 is done on a per-dependency basis using the `--with-<dep>=path` family of
-options. As an example, a GPGMe installation in `/opt` can be looked up using
+options. As an example, a GPGME installation in `/opt` can be looked up using
 the arguments `--gpgme --with-gpgme=/opt`.
 
 The build can be adjusted by setting any of six environment variables:

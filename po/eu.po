@@ -331,8 +331,8 @@ msgstr "Ezin da postakutxa blokeatu!"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
-msgstr "errorea gpgme ingurunea sortzean: %s"
+msgid "error creating GPGME context: %s"
+msgstr "errorea GPGME ingurunea sortzean: %s"
 
 #. L10N:
 #. Message displayed just before a GPG key is generated for a created
@@ -4016,8 +4016,8 @@ msgstr "errorea CMS protokoloa gaitzerakoan: %s"
 
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
-msgstr "errorea gpgme datu objektua sortzerakoan: %s"
+msgid "error creating GPGME data object: %s"
+msgstr "errorea GPGME datu objektua sortzerakoan: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096
 #: ncrypt/crypt_gpgme.c:2854
