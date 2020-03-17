@@ -62,7 +62,7 @@ options {
   sasl=0                    => "Use the SASL network security library"
   with-sasl:path            => "Location of the SASL network security library"
   # AutoCrypt
-  autocrypt=0               => "Enable AutoCrypt support (requires gpgme and sqlite)"
+  autocrypt=0               => "Enable AutoCrypt support (requires GPGME and SQLite)"
 # Lua
   lua=0                     => "Enable Lua scripting support"
   with-lua:path             => "Location of Lua"
@@ -93,7 +93,7 @@ options {
   with-tokyocabinet:path    => "Location of TokyoCabinet"
 # sqlite
   sqlite=0                  => "Enable SQLite support"
-  with-sqlite:path          => "Location of sqlite"
+  with-sqlite:path          => "Location of SQLite"
 # compression
   lz4=0                     => "Enable LZ4 header cache compression support"
   with-lz4:path             => "Location of LZ4"
@@ -420,7 +420,7 @@ if {[get-define want-gpgme]} {
     define-append CFLAGS -D_FILE_OFFSET_BITS=[get-define _FILE_OFFSET_BITS]
   }
 
-  msg-checking "Checking for GPGMe..."
+  msg-checking "Checking for GPGME..."
   if {1} {
     # Locate gpgme-config
     set gpgme_prefix [opt-val with-gpgme $prefix]
@@ -439,7 +439,7 @@ if {[get-define want-gpgme]} {
       user-error "Could not derive --version from $gpgme_config"
     }
     if {[scan $gpgme_version "%d.%d.%d" gpgme_maj gpgme_min gpgme_patch] != 3} {
-      user-error "Could not parse GPGMe version $gpgme_version"
+      user-error "Could not parse GPGME version $gpgme_version"
     }
     msg-result $gpgme_version
     if {[get-define want-autocrypt]} {

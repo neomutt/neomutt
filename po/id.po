@@ -334,8 +334,8 @@ msgstr "Tidak bisa mengunci kotak surat!"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
-msgstr "error saat membuat konteks gpgme: %s"
+msgid "error creating GPGME context: %s"
+msgstr "error saat membuat konteks GPGME: %s"
 
 #. L10N:
 #. Message displayed just before a GPG key is generated for a created
@@ -3999,8 +3999,8 @@ msgstr "error saat mengaktifkan protokol CMS: %s"
 
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
-msgstr "error saat membuat objek data gpgme: %s"
+msgid "error creating GPGME data object: %s"
+msgstr "error saat membuat objek data GPGME: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096
 #: ncrypt/crypt_gpgme.c:2854

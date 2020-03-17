@@ -331,8 +331,8 @@ msgstr "Ne eblas malfermi poŝtfakon %s"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
-msgstr "eraro en kreado de gpgme-kunteksto: %s"
+msgid "error creating GPGME context: %s"
+msgstr "eraro en kreado de GPGME-kunteksto: %s"
 
 #. L10N:
 #. Message displayed just before a GPG key is generated for a created
@@ -3977,8 +3977,8 @@ msgstr "eraro en funkciigo de CMS-protokolo: %s"
 
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
-msgstr "eraro en kreado de gpgme-datenobjekto: %s"
+msgid "error creating GPGME data object: %s"
+msgstr "eraro en kreado de GPGME-datenobjekto: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096
 #: ncrypt/crypt_gpgme.c:2854

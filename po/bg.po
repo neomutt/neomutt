@@ -336,7 +336,7 @@ msgstr "Грешка при заключване на пощенската ку�
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, fuzzy, c-format
-msgid "error creating gpgme context: %s"
+msgid "error creating GPGME context: %s"
 msgstr "грешка в шаблона при: %s"
 
 #. L10N:
@@ -4051,7 +4051,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:805
 #, fuzzy, c-format
-msgid "error creating gpgme data object: %s"
+msgid "error creating GPGME data object: %s"
 msgstr "грешка в шаблона при: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096

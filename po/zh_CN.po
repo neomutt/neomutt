@@ -332,8 +332,8 @@ msgstr "无法打开 autocrypt 数据库 %s"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
-msgstr "创建 gpgme 上下文出错：%s"
+msgid "error creating GPGME context: %s"
+msgstr "创建 GPGME 上下文出错：%s"
 
 #. L10N:
 #. Message displayed just before a GPG key is generated for a created
@@ -3928,8 +3928,8 @@ msgstr "开启 CMS 协议时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
-msgstr "创建 gpgme 数据对象时出错：%s"
+msgid "error creating GPGME data object: %s"
+msgstr "创建 GPGME 数据对象时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096
 #: ncrypt/crypt_gpgme.c:2854

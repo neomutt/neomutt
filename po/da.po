@@ -328,8 +328,8 @@ msgstr "Kan ikke åbne autocrypt-databasen %s"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
-msgstr "dannelse af gpgme-kontekst fejlede: %s"
+msgid "error creating GPGME context: %s"
+msgstr "dannelse af GPGME-kontekst fejlede: %s"
 
 #. L10N:
 #. Message displayed just before a GPG key is generated for a created
@@ -3952,8 +3952,8 @@ msgstr "fejl ved aktivering af CMS-protokol: %s"
 
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
-msgstr "dannelse af gpgme-dataobjekt fejlede: %s"
+msgid "error creating GPGME data object: %s"
+msgstr "dannelse af GPGME-dataobjekt fejlede: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096
 #: ncrypt/crypt_gpgme.c:2854

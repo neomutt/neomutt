@@ -51,7 +51,7 @@ static sqlite3_stmt *GossipHistoryInsertStmt;
 sqlite3 *AutocryptDB = NULL;
 
 /**
- * autocrypt_db_create - Create an Autocrypt sqlite database
+ * autocrypt_db_create - Create an Autocrypt SQLite database
  * @param db_path Path to database file
  * @retval  0 Success
  * @retval -1 Error
@@ -72,7 +72,7 @@ static int autocrypt_db_create(const char *db_path)
 }
 
 /**
- * mutt_autocrypt_db_init - Initialise the Autocrypt sqlite database
+ * mutt_autocrypt_db_init - Initialise the Autocrypt SQLite database
  * @param can_create If true, the directory may be created
  * @retval  0 Success
  * @retval -1 Error
@@ -96,7 +96,7 @@ int mutt_autocrypt_db_init(bool can_create)
     if (sqlite3_open_v2(mutt_b2s(db_path), &AutocryptDB, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
     {
       /* L10N:
-         Error message if autocrypt couldn't open the sqlite database
+         Error message if autocrypt couldn't open the SQLite database
          for some reason.  The %s is the full path of the database file.
       */
       mutt_error(_("Unable to open autocrypt database %s"), mutt_b2s(db_path));
@@ -125,7 +125,7 @@ cleanup:
 }
 
 /**
- * mutt_autocrypt_db_close - Close the Autocrypt sqlite database connection
+ * mutt_autocrypt_db_close - Close the Autocrypt SQLite database connection
  */
 void mutt_autocrypt_db_close(void)
 {
@@ -218,7 +218,7 @@ static struct Address *copy_normalize_addr(struct Address *addr)
 
 /**
  * strdup_column_text - Copy a string from the database
- * @param stmt  Sqlite database statement
+ * @param stmt  SQLite database statement
  * @param index Database row
  * @retval ptr Copy of string
  */

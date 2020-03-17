@@ -327,8 +327,8 @@ msgstr "Nie można otworzyć zaszyfrowanej skrzynki pocztowej %s"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
-msgstr "Błąd tworzenia kontekstu gpgme: %s"
+msgid "error creating GPGME context: %s"
+msgstr "Błąd tworzenia kontekstu GPGME: %s"
 
 #. L10N:
 #. Message displayed just before a GPG key is generated for a created
@@ -3904,8 +3904,8 @@ msgstr "Błąd uruchamiania protokołu CMS: %s"
 
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
-msgstr "Błąd tworzenia obiektu danych gpgme: %s"
+msgid "error creating GPGME data object: %s"
+msgstr "Błąd tworzenia obiektu danych GPGME: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096
 #: ncrypt/crypt_gpgme.c:2854

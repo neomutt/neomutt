@@ -332,7 +332,7 @@ msgstr "¡Imposible bloquea-lo buzón!"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, fuzzy, c-format
-msgid "error creating gpgme context: %s"
+msgid "error creating GPGME context: %s"
 msgstr "erro no patrón en: %s"
 
 #. L10N:
@@ -4066,7 +4066,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:805
 #, fuzzy, c-format
-msgid "error creating gpgme data object: %s"
+msgid "error creating GPGME data object: %s"
 msgstr "erro no patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096

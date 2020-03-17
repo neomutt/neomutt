@@ -378,7 +378,7 @@ msgstr "No s’ha pogut obrir la base de dades d’Autocrypt «%s»"
 
 #: autocrypt/autocrypt_gpgme.c:55 ncrypt/crypt_gpgme.c:773
 #, c-format
-msgid "error creating gpgme context: %s"
+msgid "error creating GPGME context: %s"
 msgstr "Error en crear el context GPGME: %s"
 
 #. L10N:
@@ -4150,7 +4150,7 @@ msgstr "Error en habilitar el protocol CMS: %s"
 
 #: ncrypt/crypt_gpgme.c:805
 #, c-format
-msgid "error creating gpgme data object: %s"
+msgid "error creating GPGME data object: %s"
 msgstr "Error en crear l’objecte de dades GPGME: %s"
 
 #: ncrypt/crypt_gpgme.c:906 ncrypt/crypt_gpgme.c:933 ncrypt/crypt_gpgme.c:2096

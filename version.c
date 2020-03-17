@@ -460,7 +460,7 @@ void print_version(FILE *fp)
 #endif
 
 #ifdef CRYPT_BACKEND_GPGME
-  fprintf(fp, "\nGPGme: %s", mutt_gpgme_print_version());
+  fprintf(fp, "\nGPGME: %s", mutt_gpgme_print_version());
 #endif
 
 #ifdef USE_SSL_OPENSSL

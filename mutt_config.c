@@ -416,7 +416,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** This variable sets where autocrypt files are stored, including the GPG
-  ** keyring and sqlite database.  See ``$autocryptdoc'' for more details.
+  ** keyring and SQLite database.  See ``$autocryptdoc'' for more details.
   ** (Autocrypt only)
   */
   { "autocrypt_reply", DT_BOOL, &C_AutocryptReply, true },
@@ -848,7 +848,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** This variable controls the use of the GPGME-enabled crypto backends.
-  ** If it is \fIset\fP and NeoMutt was built with gpgme support, the gpgme code for
+  ** If it is \fIset\fP and NeoMutt was built with GPGME support, the gpgme code for
   ** S/MIME and PGP will be used instead of the classic code.  Note that
   ** you need to set this option in .neomuttrc; it won't have any effect when
   ** used interactively.
