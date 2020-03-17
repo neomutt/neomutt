@@ -258,7 +258,9 @@ WHERE bool C_WaitKey;                        ///< Config: Prompt to press a key 
 WHERE bool C_WrapSearch;                     ///< Config: Wrap around when the search hits the end
 WHERE bool C_WriteBcc;                       ///< Config: Write out the 'Bcc' field when preparing to send a mail
 
+#ifdef CRYPT_BACKEND_GPGME
 WHERE bool C_CryptUsePka;                    ///< Config: Use GPGME to use PKA (lookup PGP keys using DNS)
+#endif
 
 /* PGP options */
 

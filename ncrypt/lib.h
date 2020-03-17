@@ -73,8 +73,10 @@ extern bool          C_PgpStrictEnc;
 extern unsigned char C_SmimeEncryptSelf; ///< Deprecated, see #C_SmimeSelfEncrypt
 extern bool          C_SmimeSelfEncrypt;
 
+#ifdef CRYPT_BACKEND_GPGME
 /* These Config Variables are only used in ncrypt/cryptglue.c */
 extern bool C_CryptUseGpgme;
+#endif
 
 /* These Config Variables are only used in ncrypt/pgp.c */
 extern bool          C_PgpCheckExit;
@@ -225,12 +227,13 @@ int          crypt_smime_verify_sender(struct Mailbox *m, struct Email *e);
 /* crypt_mod.c */
 void crypto_module_free(void);
 
+#ifdef CRYPT_BACKEND_GPGME
 /* crypt_gpgme.c */
 void         pgp_gpgme_init(void);
 #ifdef USE_AUTOCRYPT
 int          mutt_gpgme_select_secret_key (struct Buffer *keyid);
 #endif
 const char  *mutt_gpgme_print_version(void);
-
+#endif
 
 #endif /* MUTT_NCRYPT_LIB_H */

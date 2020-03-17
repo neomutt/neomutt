@@ -254,7 +254,11 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   if (WithCrypto & APPLICATION_PGP)
     tmp_pgp_pbody = e->content;
 
-  if (C_CryptUsePka && sign)
+#ifdef CRYPT_BACKEND_GPGME
+  if (sign && C_CryptUsePka)
+#else
+  if (sign)
+#endif
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
