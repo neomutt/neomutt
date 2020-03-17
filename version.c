@@ -46,6 +46,12 @@
 #ifdef HAVE_NOTMUCH
 #include <notmuch.h>
 #endif
+#ifdef USE_SSL_OPENSSL
+#include <openssl/opensslv.h>
+#endif
+#ifdef USE_SSL_GNUTLS
+#include <gnutls/gnutls.h>
+#endif
 
 /* #include "muttlib.h" */
 const char *mutt_make_version(void);
@@ -455,6 +461,19 @@ void print_version(FILE *fp)
 
 #ifdef CRYPT_BACKEND_GPGME
   fprintf(fp, "\nGPGme: %s", mutt_gpgme_print_version());
+#endif
+
+#ifdef USE_SSL_OPENSSL
+#ifdef LIBRESSL_VERSION_TEXT
+  fprintf(fp, "\nLibreSSL: %s", LIBRESSL_VERSION_TEXT);
+#endif
+#ifdef OPENSSL_VERSION_TEXT
+  fprintf(fp, "\nOpenSSL: %s", OPENSSL_VERSION_TEXT);
+#endif
+#endif
+
+#ifdef USE_SSL_GNUTLS
+  fprintf(fp, "\nGnuTLS: %s", GNUTLS_VERSION);
 #endif
 
 #ifdef HAVE_NOTMUCH
