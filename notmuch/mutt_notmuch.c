@@ -967,17 +967,18 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
       FREE(&folder);
     }
 
+    if (!e)
+    {
+      mutt_debug(LL_DEBUG1, "nm: failed to parse message: %s\n", path);
+      goto done;
+    }
+
 #ifdef USE_HCACHE
     mutt_hcache_store(h, newpath ? newpath : path,
                       mutt_str_strlen(newpath ? newpath : path), e, 0);
 #endif
   }
 
-  if (!e)
-  {
-    mutt_debug(LL_DEBUG1, "nm: failed to parse message: %s\n", path);
-    goto done;
-  }
 
   if (init_email(e, newpath ? newpath : path, msg) != 0)
   {
