@@ -1603,3 +1603,21 @@ int mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type,
   mutt_file_get_stat_timespec(&b, sbb, sbb_type);
   return mutt_file_timespec_compare(&a, &b);
 }
+
+/**
+ * mutt_file_resolve_symlink - Resolve a symlink in place
+ * @param buf Input/output path
+ */
+void mutt_file_resolve_symlink(struct Buffer *buf)
+{
+  struct stat st;
+  int rc = lstat(mutt_b2s(buf), &st);
+  if ((rc != -1) && S_ISLNK(st.st_mode))
+  {
+    char path[PATH_MAX];
+    if (realpath(mutt_b2s(buf), path))
+    {
+      mutt_buffer_strcpy(buf, path);
+    }
+  }
+}

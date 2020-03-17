@@ -316,21 +316,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
    * folders. May possibly fail, in which case buf should be the same. */
   if (imap_path_probe(mutt_b2s(buf), NULL) == MUTT_IMAP)
     imap_expand_path(buf);
-  else
 #endif
-  {
-    /* Resolve symbolic links */
-    struct stat st;
-    int rc = lstat(mutt_b2s(buf), &st);
-    if ((rc != -1) && S_ISLNK(st.st_mode))
-    {
-      char path[PATH_MAX];
-      if (realpath(mutt_b2s(buf), path))
-      {
-        mutt_buffer_strcpy(buf, path);
-      }
-    }
-  }
 }
 
 /**
