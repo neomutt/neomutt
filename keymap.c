@@ -820,12 +820,12 @@ static const char *km_keyname(int c)
 /**
  * mutt_init_abort_key - Parse the abort_key config string
  *
- * Parse the string into C_AbortKeyStr and put the keycode into AbortKey.
+ * Parse the string into C_AbortKey and put the keycode into AbortKey.
  */
 void mutt_init_abort_key(void)
 {
   keycode_t buf[2];
-  size_t len = parsekeys(C_AbortKeyStr, buf, mutt_array_size(buf));
+  size_t len = parsekeys(C_AbortKey, buf, mutt_array_size(buf));
   if (len == 0)
   {
     mutt_error(_("Abort key is not set, defaulting to Ctrl-G"));
@@ -835,7 +835,7 @@ void mutt_init_abort_key(void)
   if (len > 1)
   {
     mutt_warning(
-        _("Specified abort key sequence (%s) will be truncated to first key"), C_AbortKeyStr);
+        _("Specified abort key sequence (%s) will be truncated to first key"), C_AbortKey);
   }
   AbortKey = buf[0];
 }
@@ -939,7 +939,6 @@ static const char *find_ext_name(const char *key)
 void init_extended_keys(void)
 {
 #ifdef NCURSES_VERSION
-
   use_extended_names(true);
 
   for (int j = 0; KeyNames[j].name; j++)
@@ -1150,7 +1149,7 @@ void km_error_key(enum MenuType menu)
  * mutt_parse_push - Parse the 'push' command - Implements Command::parse()
  */
 enum CommandResult mutt_parse_push(struct Buffer *buf, struct Buffer *s,
-                                   unsigned long data, struct Buffer *err)
+                                   intptr_t data, struct Buffer *err)
 {
   mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
   if (MoreArgs(s))
@@ -1313,7 +1312,7 @@ const struct Binding *km_get_table(enum MenuType menu)
  * bind menu-name `<key_sequence>` function-name
  */
 enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
-                                   unsigned long data, struct Buffer *err)
+                                   intptr_t data, struct Buffer *err)
 {
   const struct Binding *bindings = NULL;
   enum MenuType menu[sizeof(Menus) / sizeof(struct Mapping) - 1];
@@ -1454,7 +1453,7 @@ static void km_unbind_all(struct Keymap **map, unsigned long mode)
  * unbind `<menu-name[,...]|*>` [`<key_sequence>`]
  */
 enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
-                                     unsigned long data, struct Buffer *err)
+                                     intptr_t data, struct Buffer *err)
 {
   bool menu[MENU_MAX] = { 0 };
   bool all_keys = false;
@@ -1519,7 +1518,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
  * macro `<menu>` `<key>` `<macro>` `<description>`
  */
 enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
-                                    unsigned long data, struct Buffer *err)
+                                    intptr_t data, struct Buffer *err)
 {
   enum MenuType menu[sizeof(Menus) / sizeof(struct Mapping) - 1];
   int num_menus = 0;
@@ -1573,7 +1572,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
  * mutt_parse_exec - Parse the 'exec' command - Implements Command::parse()
  */
 enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
-                                   unsigned long data, struct Buffer *err)
+                                   intptr_t data, struct Buffer *err)
 {
   int ops[128];
   int nops = 0;

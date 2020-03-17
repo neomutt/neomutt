@@ -162,8 +162,8 @@ static void notify_dump_account(struct NotifyCallback *nc)
   struct EventAccount *ev_a = nc->event_data;
   struct Account *a = ev_a->account;
 
-  mutt_debug(LL_DEBUG1, "\tAccount: %p (%s) %s\n", a,
-             get_mailbox_type(a->type), NONULL(a->name));
+  mutt_debug(LL_DEBUG1, "\tAccount: %p (%s) %s\n", a, get_mailbox_type(a->type),
+             NONULL(a->name));
 }
 
 static void notify_dump_color(struct NotifyCallback *nc)
@@ -197,7 +197,7 @@ static void notify_dump_command(struct NotifyCallback *nc)
   struct Command *cmd = nc->event_data;
 
   if (cmd->data < 4096)
-    mutt_debug(LL_DEBUG1, "\tCommand: %s, data: %d\n", cmd->name, cmd->data);
+    mutt_debug(LL_DEBUG1, "\tCommand: %s, data: %ld\n", cmd->name, cmd->data);
   else
     mutt_debug(LL_DEBUG1, "\tCommand: %s, data: %p\n", cmd->name, (void *) cmd->data);
 }

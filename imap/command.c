@@ -864,7 +864,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
     mutt_debug(LL_DEBUG3, "Received status for an unexpected mailbox: %s\n", mailbox);
     return;
   }
-  unsigned int olduv = mdata->uid_validity;
+  unsigned int olduv = mdata->uidvalidity;
   unsigned int oldun = mdata->uid_next;
 
   if (*s++ != '(')
@@ -892,7 +892,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
     else if (mutt_str_startswith(s, "UIDNEXT", CASE_MATCH))
       mdata->uid_next = count;
     else if (mutt_str_startswith(s, "UIDVALIDITY", CASE_MATCH))
-      mdata->uid_validity = count;
+      mdata->uidvalidity = count;
     else if (mutt_str_startswith(s, "UNSEEN", CASE_MATCH))
       mdata->unseen = count;
 
@@ -901,7 +901,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
       s = imap_next_word(s);
   }
   mutt_debug(LL_DEBUG3, "%s (UIDVALIDITY: %u, UIDNEXT: %u) %d messages, %d recent, %d unseen\n",
-             mdata->name, mdata->uid_validity, mdata->uid_next, mdata->messages,
+             mdata->name, mdata->uidvalidity, mdata->uid_next, mdata->messages,
              mdata->recent, mdata->unseen);
 
   mutt_debug(LL_DEBUG3, "Running default STATUS handler\n");
@@ -912,7 +912,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
   bool new_mail = false;
   if (C_MailCheckRecent)
   {
-    if ((olduv != 0) && (olduv == mdata->uid_validity))
+    if ((olduv != 0) && (olduv == mdata->uidvalidity))
     {
       if (oldun < mdata->uid_next)
         new_mail = (mdata->unseen > 0);

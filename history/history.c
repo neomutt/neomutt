@@ -73,8 +73,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include "lib.h"
 #include "mutt/lib.h"
+#include "lib.h"
 
 /* These Config Variables are only used in history/history.c */
 short C_History; ///< Config: Number of history entries to keep in memory per category

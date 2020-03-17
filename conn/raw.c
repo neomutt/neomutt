@@ -194,7 +194,6 @@ int raw_socket_open(struct Connection *conn)
   }
 
   freeaddrinfo(res);
-
 #else
   /* --- IPv4 only --- */
 
@@ -253,7 +252,6 @@ int raw_socket_open(struct Connection *conn)
         close(fd);
     }
   }
-
 #endif
   if (rc)
   {

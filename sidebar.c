@@ -971,8 +971,8 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
     else
     {
       if ((mutt_buffer_len(&m->pathbuf) > maildirlen) &&
-          (mutt_str_strncmp(C_Folder, mailbox_path(m), maildirlen) == 0) &&
-          C_SidebarDelimChars && strchr(C_SidebarDelimChars, mailbox_path(m)[maildirlen]))
+          (mutt_str_strncmp(C_Folder, mailbox_path(m), maildirlen) == 0) && C_SidebarDelimChars &&
+          strchr(C_SidebarDelimChars, mailbox_path(m)[maildirlen]))
       {
         maildir_is_prefix = true;
       }

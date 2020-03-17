@@ -35,7 +35,6 @@
 #ifndef MUTT_MAILDIR_LIB_H
 #define MUTT_MAILDIR_LIB_H
 
-#include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include "core/lib.h"

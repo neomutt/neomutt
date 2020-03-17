@@ -30,7 +30,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include <string.h>
 #include <sys/types.h>
@@ -38,7 +37,6 @@
 #include "address/lib.h"
 #include "email/lib.h"
 #include "serialize.h"
-#include "lib.h"
 
 /**
  * lazy_realloc - Reallocate some memory
@@ -117,13 +115,13 @@ void serial_restore_size_t(size_t *s, const unsigned char *d, int *off)
  * serial_dump_char_size - Pack a fixed-length string into a binary blob
  * @param c       String to pack
  * @param d       Binary blob to add to
- * @param off     Offset into the blob
  * @param size    Size of the string
+ * @param off     Offset into the blob
  * @param convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_char_size(char *c, unsigned char *d, int *off,
-                                     ssize_t size, bool convert)
+unsigned char *serial_dump_char_size(char *c, ssize_t size, unsigned char *d,
+                                     int *off, bool convert)
 {
   char *p = c;
 
@@ -164,7 +162,7 @@ unsigned char *serial_dump_char_size(char *c, unsigned char *d, int *off,
  */
 unsigned char *serial_dump_char(char *c, unsigned char *d, int *off, bool convert)
 {
-  return serial_dump_char_size(c, d, off, mutt_str_strlen(c) + 1, convert);
+  return serial_dump_char_size(c, mutt_str_strlen(c) + 1, d, off, convert);
 }
 
 /**
@@ -327,7 +325,7 @@ unsigned char *serial_dump_buffer(struct Buffer *buf, unsigned char *d, int *off
 
   d = serial_dump_int(1, d, off);
 
-  d = serial_dump_char_size(buf->data, d, off, buf->dsize + 1, convert);
+  d = serial_dump_char_size(buf->data, buf->dsize + 1, d, off, convert);
   d = serial_dump_int(buf->dptr - buf->data, d, off);
   d = serial_dump_int(buf->dsize, d, off);
 

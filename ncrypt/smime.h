@@ -26,13 +26,9 @@
 #define MUTT_NCRYPT_SMIME_H
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "lib.h"
-#ifdef USE_SLANG_CURSES
-#include "gui/lib.h"
-#else
-#include <stdbool.h>
-#endif
 
 struct AddressList;
 struct Body;

@@ -921,7 +921,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
  * mutt_parse_uncolor - Parse the 'uncolor' command - Implements Command::parse()
  */
 enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
-                                      unsigned long data, struct Buffer *err)
+                                      intptr_t data, struct Buffer *err)
 {
   return parse_uncolor(buf, s, data, err, true);
 }
@@ -931,7 +931,7 @@ enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
  * mutt_parse_unmono - Parse the 'unmono' command - Implements Command::parse()
  */
 enum CommandResult mutt_parse_unmono(struct Buffer *buf, struct Buffer *s,
-                                     unsigned long data, struct Buffer *err)
+                                     intptr_t data, struct Buffer *err)
 {
   return parse_uncolor(buf, s, data, err, false);
 }
@@ -1353,7 +1353,7 @@ static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, stru
  * mutt_parse_color - Parse the 'color' command - Implements Command::parse()
  */
 enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
-                                    unsigned long data, struct Buffer *err)
+                                    intptr_t data, struct Buffer *err)
 {
   bool dry_run = false;
 
@@ -1369,7 +1369,7 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
  * mutt_parse_mono - Parse the 'mono' command - Implements Command::parse()
  */
 enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
-                                   unsigned long data, struct Buffer *err)
+                                   intptr_t data, struct Buffer *err)
 {
   bool dry_run = false;
 
