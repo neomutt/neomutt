@@ -309,14 +309,15 @@ int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, Completion
 int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionFlags complete,
                         bool multiple, char ***files, int *numfiles)
 {
-  struct Buffer *tmp = mutt_buffer_pool_get();
+  if (!buf)
+    return -1;
 
-  mutt_buffer_addstr(tmp, buf);
-  int rc = mutt_buffer_get_field_full(field, tmp, complete, multiple, files, numfiles);
-  mutt_str_strfcpy(buf, mutt_b2s(tmp), buflen);
-
-  mutt_buffer_pool_release(&tmp);
-  return rc;
+  struct Buffer tmp = {
+    .data = buf,
+    .dptr = buf + mutt_str_strlen(buf),
+    .dsize = buflen,
+  };
+  return mutt_buffer_get_field_full(field, &tmp, complete, multiple, files, numfiles);
 }
 
 /**
