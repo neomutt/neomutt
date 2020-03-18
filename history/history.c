@@ -207,7 +207,7 @@ static void shrink_histfile(void)
   bool regen_file = false;
   struct Hash *dup_hashes[HC_MAX] = { 0 };
 
-  FILE *fp = fopen(C_HistoryFile, "r");
+  FILE *fp = mutt_file_fopen(C_HistoryFile, "r");
   if (!fp)
     return;
 
@@ -284,7 +284,7 @@ cleanup:
   FREE(&linebuf);
   if (fp_tmp)
   {
-    if ((fflush(fp_tmp) == 0) && (fp = fopen(C_HistoryFile, "w")))
+    if ((fflush(fp_tmp) == 0) && (fp = mutt_file_fopen(C_HistoryFile, "w")))
     {
       rewind(fp_tmp);
       mutt_file_copy_stream(fp_tmp, fp);
@@ -310,12 +310,9 @@ static void save_history(enum HistoryClass hclass, const char *str)
   if (!str || !*str) /* This shouldn't happen, but it's safer. */
     return;
 
-  FILE *fp = fopen(C_HistoryFile, "a");
+  FILE *fp = mutt_file_fopen(C_HistoryFile, "a");
   if (!fp)
-  {
-    mutt_perror("fopen");
     return;
-  }
 
   tmp = mutt_str_strdup(str);
   mutt_ch_convert_string(&tmp, C_Charset, "utf-8", 0);
@@ -584,7 +581,7 @@ void mutt_hist_read_file(void)
   if (!C_HistoryFile)
     return;
 
-  FILE *fp = fopen(C_HistoryFile, "r");
+  FILE *fp = mutt_file_fopen(C_HistoryFile, "r");
   if (!fp)
     return;
 
