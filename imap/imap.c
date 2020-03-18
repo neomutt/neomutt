@@ -1931,6 +1931,9 @@ static void imap_mbox_select(struct Mailbox *m)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!adata || !mdata)
+    return;
+
   const char *condstore = NULL;
 #ifdef USE_HCACHE
   if ((adata->capabilities & IMAP_CAP_CONDSTORE) && C_ImapCondstore)
@@ -2045,6 +2048,10 @@ static int imap_mbox_open(struct Mailbox *m)
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
+  mutt_debug(LL_DEBUG3, "opening %s, saving %s\n",
+      m->pathbuf.data,
+      (adata->mailbox ? adata->mailbox->pathbuf.data : "(none)"));
+  adata->prev_mailbox = adata->mailbox;
   adata->mailbox = m;
 
   /* clear mailbox status */
@@ -2314,7 +2321,11 @@ static int imap_mbox_close(struct Mailbox *m)
       adata->state = IMAP_AUTHENTICATED;
     }
 
-    adata->mailbox = NULL;
+    mutt_debug(LL_DEBUG3, "closing %s, restoring %s\n",
+        m->pathbuf.data,
+        (adata->prev_mailbox ? adata->prev_mailbox->pathbuf.data: "(none)"));
+    adata->mailbox = adata->prev_mailbox;
+    imap_mbox_select(adata->prev_mailbox);
     imap_mdata_cache_reset(m->mdata);
   }
 
