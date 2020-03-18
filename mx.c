@@ -804,7 +804,7 @@ int mx_mbox_close(struct Context **ptr)
   if (m->type == MUTT_IMAP)
   {
     int check = imap_sync_mailbox(ctx->mailbox, (purge != MUTT_NO), true);
-    if (check != 0)
+    if (check < 0)
     {
       rc = check;
       goto cleanup;
@@ -980,7 +980,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
   else
 #endif
     rc = sync_mailbox(m, index_hint);
-  if (rc == 0)
+  if (rc >= 0)
   {
 #ifdef USE_IMAP
     if ((m->type == MUTT_IMAP) && !purge)
