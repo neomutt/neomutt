@@ -211,7 +211,8 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   char columns[16];
-  snprintf(columns, sizeof(columns), "%d", win_pager->state.cols);
+  // win_pager might not be visible and have a size yet, so use win_index
+  snprintf(columns, sizeof(columns), "%d", win_index->state.cols);
   mutt_envlist_set("COLUMNS", columns, true);
 
   /* see if crypto is needed for this message.  if so, we should exit curses */
