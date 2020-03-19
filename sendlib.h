@@ -35,7 +35,7 @@ struct Mailbox;
 
 /* These Config Variables are only used in sendlib.c */
 extern bool  C_Allow8bit;
-extern char *C_AttachCharset;
+extern struct Slist *C_AttachCharset;
 extern bool  C_BounceDelivered;
 extern bool  C_EncodeFrom;
 extern bool  C_ForwardDecrypt;

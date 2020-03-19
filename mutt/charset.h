@@ -30,7 +30,7 @@
 
 struct Buffer;
 
-extern char *C_AssumedCharset;
+extern struct Slist *C_AssumedCharset;
 extern char *C_Charset;
 extern bool CharsetIsUtf8;
 extern wchar_t ReplacementChar;
@@ -86,7 +86,7 @@ void             mutt_ch_canonical_charset(char *buf, size_t buflen, const char 
 const char *     mutt_ch_charset_lookup(const char *chs);
 int              mutt_ch_check(const char *s, size_t slen, const char *from, const char *to);
 bool             mutt_ch_check_charset(const char *cs, bool strict);
-char *           mutt_ch_choose(const char *fromcode, const char *charsets, const char *u, size_t ulen, char **d, size_t *dlen);
+char *           mutt_ch_choose(const char *fromcode, const struct Slist *charsets, const char *u, size_t ulen, char **d, size_t *dlen);
 bool             mutt_ch_chscmp(const char *cs1, const char *cs2);
 int              mutt_ch_convert_nonmime_string(char **ps);
 int              mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags);

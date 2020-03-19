@@ -260,7 +260,7 @@ struct ConfigDef MuttVars[] = {
   ** If \fIset\fP, NeoMutt will prompt you for carbon-copy (Cc) recipients before
   ** editing the body of an outgoing message.
   */
-  { "assumed_charset", DT_STRING, &C_AssumedCharset, 0, 0, charset_validator },
+  { "assumed_charset", DT_SLIST|SLIST_SEP_COLON, &C_AssumedCharset, 0, 0, charset_validator },
   /*
   ** .pp
   ** This variable is a colon-separated list of character encoding
@@ -277,7 +277,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** However, only the first content is valid for the message body.
   */
-  { "attach_charset", DT_STRING, &C_AttachCharset, 0, 0, charset_validator },
+  { "attach_charset", DT_SLIST|SLIST_SEP_COLON, &C_AttachCharset, 0, 0, charset_validator },
   /*
   ** .pp
   ** This variable is a colon-separated list of character encoding
@@ -528,7 +528,7 @@ struct ConfigDef MuttVars[] = {
   ** mailbox suggestion will start at the next folder in your "$mailboxes"
   ** list, instead of starting at the first folder in the list.
   */
-  { "charset", DT_STRING|DT_NOT_EMPTY, &C_Charset, 0, 0, charset_validator },
+  { "charset", DT_STRING|DT_NOT_EMPTY, &C_Charset, 0, 0, single_charset_validator },
   /*
   ** .pp
   ** Character set your terminal uses to display and enter textual data.
@@ -601,7 +601,7 @@ struct ConfigDef MuttVars[] = {
   ** See the text describing the $$status_format option for more
   ** information on how to set $$compose_format.
   */
-  { "config_charset", DT_STRING, &C_ConfigCharset, 0, 0, charset_validator },
+  { "config_charset", DT_STRING, &C_ConfigCharset, 0, 0, single_charset_validator },
   /*
   ** .pp
   ** When defined, NeoMutt will recode commands in rc files from this
@@ -2361,7 +2361,7 @@ struct ConfigDef MuttVars[] = {
   ** environment variable \fC$$$NNTPSERVER\fP, or putting the server name in the
   ** file "/etc/nntpserver".
   */
-  { "newsgroups_charset", DT_STRING, &C_NewsgroupsCharset, IP "utf-8", 0, charset_validator },
+  { "newsgroups_charset", DT_STRING, &C_NewsgroupsCharset, IP "utf-8", 0, single_charset_validator },
   /*
   ** .pp
   ** Character set of newsgroups descriptions.
@@ -3607,7 +3607,7 @@ struct ConfigDef MuttVars[] = {
   ** For the pager, this variable specifies the number of lines shown
   ** before search results. By default, search results will be top-aligned.
   */
-  { "send_charset", DT_STRING, &C_SendCharset, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator },
+  { "send_charset", DT_SLIST|SLIST_SEP_COLON, &C_SendCharset, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator },
   /*
   ** .pp
   ** A colon-delimited list of character sets for outgoing messages. NeoMutt will use the

@@ -30,7 +30,7 @@
 extern bool          C_AutoSubscribe;
 extern bool          C_MarkOld;
 extern struct Regex *C_ReplyRegex;
-extern char *        C_SendCharset;
+extern struct Slist *C_SendCharset;
 extern char *        C_SpamSeparator;
 extern bool          C_Weed;
 

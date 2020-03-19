@@ -40,7 +40,6 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "compress/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -63,6 +62,7 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
+#include "compress/lib.h"
 #include "history/lib.h"
 #include "store/lib.h"
 #ifdef USE_HCACHE
@@ -1571,9 +1571,9 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   if (value == 0)
     return CSR_SUCCESS;
 
-  const char *str = (const char *) value;
+  const struct Slist *list = (const struct Slist *) value;
 
-  if ((strcmp(cdef->name, "charset") == 0) && strchr(str, ':'))
+  if ((strcmp(cdef->name, "charset") == 0) && (list->count > 1))
   {
     mutt_buffer_printf(
         err, _("'charset' must contain exactly one character set name"));
@@ -1581,24 +1581,36 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   }
 
   int rc = CSR_SUCCESS;
-  bool strict = (strcmp(cdef->name, "send_charset") == 0);
-  char *q = NULL;
-  char *s = mutt_str_strdup(str);
-
-  for (char *p = strtok_r(s, ":", &q); p; p = strtok_r(NULL, ":", &q))
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &list->head, entries)
   {
-    if (!*p)
-      continue;
-    if (!mutt_ch_check_charset(p, strict))
-    {
-      rc = CSR_ERR_INVALID;
-      mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, p);
+    rc = single_charset_validator(cs, cdef, (intptr_t) np->data, err);
+    if (rc != CSR_SUCCESS)
       break;
-    }
   }
 
-  FREE(&s);
   return rc;
+}
+
+/**
+ * single_charset_validator - Validates a single charset variable - Implements ConfigDef::validator()
+ */
+int single_charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                             intptr_t value, struct Buffer *err)
+{
+  if (value == 0)
+    return CSR_SUCCESS;
+
+  const char *charset = (const char *) value;
+  const bool strict = (strcmp(cdef->name, "send_charset") == 0);
+
+  if (!mutt_ch_check_charset(charset, strict))
+  {
+    mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, value);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
 }
 
 #ifdef USE_HCACHE
