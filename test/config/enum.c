@@ -655,7 +655,7 @@ ti_out:
   return result;
 }
 
-void config_enum(void)
+void test_config_enum(void)
 {
   struct Buffer err;
   mutt_buffer_init(&err);

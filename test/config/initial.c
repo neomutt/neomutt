@@ -88,7 +88,7 @@ static bool test_set_initial(struct ConfigSet *cs, struct Buffer *err)
           (mutt_str_strcmp(VarCherry, cval) != 0));
 }
 
-void config_initial(void)
+void test_config_initial(void)
 {
   log_line(__func__);
 

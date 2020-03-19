@@ -768,7 +768,7 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
-void config_bool(void)
+void test_config_bool(void)
 {
   struct Buffer err;
   mutt_buffer_init(&err);

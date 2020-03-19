@@ -335,7 +335,7 @@ bool test_dump_config(void)
   return true;
 }
 
-void config_dump(void)
+void test_config_dump(void)
 {
   TEST_CHECK(test_pretty_var());
   TEST_CHECK(test_escape_string());

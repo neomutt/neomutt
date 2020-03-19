@@ -1,9 +1,17 @@
+ACCOUNT_OBJS	= test/account/account_free.o \
+		  test/account/account_mailbox_add.o \
+		  test/account/account_mailbox_remove.o \
+		  test/account/account_new.o
+
 ADDRESS_OBJS	= test/address/mutt_addr_cat.o \
 		  test/address/mutt_addr_cmp.o \
 		  test/address/mutt_addr_copy.o \
+		  test/address/mutt_addr_create.o \
 		  test/address/mutt_addr_for_display.o \
 		  test/address/mutt_addr_free.o \
 		  test/address/mutt_addr_new.o \
+		  test/address/mutt_addr_to_intl.o \
+		  test/address/mutt_addr_to_local.o \
 		  test/address/mutt_addr_valid_msgid.o \
 		  test/address/mutt_addr_write.o \
 		  test/address/mutt_addrlist_append.o \
@@ -27,7 +35,8 @@ ATTACH_OBJS	= test/attach/mutt_actx_add_attach.o \
 		  test/attach/mutt_actx_add_body.o \
 		  test/attach/mutt_actx_add_fp.o \
 		  test/attach/mutt_actx_entries_free.o \
-		  test/attach/mutt_actx_free.o
+		  test/attach/mutt_actx_free.o \
+		  test/attach/mutt_actx_new.o
 
 BASE64_OBJS	= test/base64/mutt_b64_buffer_decode.o \
 		  test/base64/mutt_b64_buffer_encode.o \
@@ -44,17 +53,23 @@ BUFFER_OBJS	= test/buffer/mutt_buffer_add_printf.o \
 		  test/buffer/mutt_buffer_addstr_n.o \
 		  test/buffer/mutt_buffer_alloc.o \
 		  test/buffer/mutt_buffer_concat_path.o \
+		  test/buffer/mutt_buffer_concatn_path.o \
+		  test/buffer/mutt_buffer_copy.o \
+		  test/buffer/mutt_buffer_dealloc.o \
 		  test/buffer/mutt_buffer_fix_dptr.o \
 		  test/buffer/mutt_buffer_init.o \
 		  test/buffer/mutt_buffer_is_empty.o \
 		  test/buffer/mutt_buffer_len.o \
+		  test/buffer/mutt_buffer_make.o \
 		  test/buffer/mutt_buffer_pool_free.o \
 		  test/buffer/mutt_buffer_pool_get.o \
 		  test/buffer/mutt_buffer_pool_release.o \
 		  test/buffer/mutt_buffer_printf.o \
 		  test/buffer/mutt_buffer_reset.o \
 		  test/buffer/mutt_buffer_strcpy.o \
-		  test/buffer/mutt_buffer_strcpy_n.o
+		  test/buffer/mutt_buffer_strcpy_n.o \
+		  test/buffer/mutt_buffer_strdup.o \
+		  test/buffer/mutt_buffer_substrcpy.o
 
 CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \
 		  test/charset/mutt_ch_charset_lookup.o \
@@ -99,6 +114,8 @@ CONFIG_OBJS	= test/config/account.o \
 
 DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_check_month.o \
+		  test/date/mutt_date_epoch.o \
+		  test/date/mutt_date_epoch_ms.o \
 		  test/date/mutt_date_gmtime.o \
 		  test/date/mutt_date_is_day_name.o \
 		  test/date/mutt_date_local_tz.o \
@@ -110,26 +127,30 @@ DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_make_tls.o \
 		  test/date/mutt_date_normalize_time.o \
 		  test/date/mutt_date_parse_date.o \
-		  test/date/mutt_date_parse_imap.o
+		  test/date/mutt_date_parse_imap.o \
+		  test/date/mutt_date_sleep_ms.o
 
 EMAIL_OBJS	= test/email/common.o \
 		  test/email/email_cmp_strict.o \
 		  test/email/email_free.o \
 		  test/email/email_new.o \
-		  test/email/email_size.o
+		  test/email/email_size.o \
+		  test/email/emaillist_add_email.o \
+		  test/email/emaillist_clear.o
 
-ENVELOPE_OBJS	= test/envelope/mutt_env_cmp_strict.o \
+ENVELOPE_OBJS	= test/envelope/mutt_autocrypthdr_free.o \
+		  test/envelope/mutt_env_cmp_strict.o \
 		  test/envelope/mutt_env_free.o \
 		  test/envelope/mutt_env_merge.o \
 		  test/envelope/mutt_env_new.o \
 		  test/envelope/mutt_env_to_intl.o \
 		  test/envelope/mutt_env_to_local.o
 
-ENVLIST_OBJS	= test/envlist/mutt_envlist_unset.o \
-		  test/envlist/mutt_envlist_set.o \
-		  test/envlist/mutt_envlist_init.o \
+ENVLIST_OBJS	= test/envlist/mutt_envlist_free.o \
 		  test/envlist/mutt_envlist_getlist.o \
-		  test/envlist/mutt_envlist_free.o
+		  test/envlist/mutt_envlist_init.o \
+		  test/envlist/mutt_envlist_set.o \
+		  test/envlist/mutt_envlist_unset.o
 
 FILE_OBJS	= test/file/common.o \
 		  test/file/mutt_buffer_file_expand_fmt_quote.o \
@@ -172,6 +193,10 @@ FILE_OBJS	= test/file/common.o \
 		  test/file/mutt_file_unlink.o \
 		  test/file/mutt_file_unlink_empty.o \
 		  test/file/mutt_file_unlock.o
+
+FILTER_OBJS	= test/filter/filter_create.o \
+		  test/filter/filter_create_fd.o \
+		  test/filter/filter_wait.o
 
 FROM_OBJS	= test/from/is_from.o
 
@@ -233,6 +258,7 @@ LIST_OBJS	= test/list/common.o \
 		  test/list/mutt_list_str_split.o
 
 LOGGING_OBJS	= test/logging/log_disp_file.o \
+		  test/logging/log_disp_null.o \
 		  test/logging/log_disp_queue.o \
 		  test/logging/log_disp_terminal.o \
 		  test/logging/log_file_close.o \
@@ -246,6 +272,16 @@ LOGGING_OBJS	= test/logging/log_disp_file.o \
 		  test/logging/log_queue_flush.o \
 		  test/logging/log_queue_save.o \
 		  test/logging/log_queue_set_max_size.o
+
+MAILBOX_OBJS	= test/mailbox/mailbox_changed.o \
+		  test/mailbox/mailbox_find.o \
+		  test/mailbox/mailbox_find_name.o \
+		  test/mailbox/mailbox_free.o \
+		  test/mailbox/mailbox_new.o \
+		  test/mailbox/mailbox_set_subset.o \
+		  test/mailbox/mailbox_size_add.o \
+		  test/mailbox/mailbox_size_sub.o \
+		  test/mailbox/mailbox_update.o
 
 MAPPING_OBJS	= test/mapping/mutt_map_get_name.o \
 		  test/mapping/mutt_map_get_value.o
@@ -276,6 +312,20 @@ MEMORY_OBJS	= test/memory/mutt_mem_calloc.o \
 		  test/memory/mutt_mem_free.o \
 		  test/memory/mutt_mem_malloc.o \
 		  test/memory/mutt_mem_realloc.o
+
+NEOMUTT_OBJS	= test/neo/neomutt_account_add.o \
+		  test/neo/neomutt_account_remove.o \
+		  test/neo/neomutt_free.o \
+		  test/neo/neomutt_mailboxlist_clear.o \
+		  test/neo/neomutt_mailboxlist_get_all.o \
+		  test/neo/neomutt_new.o
+
+NOTIFY_OBJS	= test/notify/notify_free.o \
+		  test/notify/notify_new.o \
+		  test/notify/notify_observer_add.o \
+		  test/notify/notify_observer_remove.o \
+		  test/notify/notify_send.o \
+		  test/notify/notify_set_parent.o
 
 PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
 		  test/parameter/mutt_param_delete.o \
@@ -314,6 +364,7 @@ PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_tidy.o \
 		  test/path/mutt_path_tidy_dotdot.o \
 		  test/path/mutt_path_tidy_slash.o \
+		  test/path/mutt_path_tilde.o \
 		  test/path/mutt_path_to_absolute.o
 
 PATTERN_OBJS	= pattern.o \
@@ -321,7 +372,8 @@ PATTERN_OBJS	= pattern.o \
 		  test/pattern/dummy.o \
 		  test/pattern/extract.o
 
-REGEX_OBJS	= test/regex/mutt_regex_compile.o \
+REGEX_OBJS	= test/regex/mutt_regex_capture.o \
+		  test/regex/mutt_regex_compile.o \
 		  test/regex/mutt_regex_free.o \
 		  test/regex/mutt_regex_match.o \
 		  test/regex/mutt_regex_new.o \
@@ -356,6 +408,16 @@ SIGNAL_OBJS	= test/signal/mutt_sig_allow_interrupt.o \
 		  test/signal/mutt_sig_init.o \
 		  test/signal/mutt_sig_unblock.o \
 		  test/signal/mutt_sig_unblock_system.o
+
+SLIST_OBJS	= test/slist/slist_add_list.o \
+		  test/slist/slist_add_string.o \
+		  test/slist/slist_compare.o \
+		  test/slist/slist_dup.o \
+		  test/slist/slist_empty.o \
+		  test/slist/slist_free.o \
+		  test/slist/slist_is_member.o \
+		  test/slist/slist_parse.o \
+		  test/slist/slist_remove_string.o
 
 STRING_OBJS	= test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_append_item.o \
@@ -397,6 +459,7 @@ STRING_OBJS	= test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_strncat.o \
 		  test/string/mutt_str_strncmp.o \
 		  test/string/mutt_str_strnfcpy.o \
+		  test/string/mutt_str_strnlower.o \
 		  test/string/mutt_str_substr_copy.o \
 		  test/string/mutt_str_substr_dup.o \
 		  test/string/mutt_str_sysexit.o \
@@ -419,26 +482,30 @@ THREAD_OBJS	= test/thread/clean_references.o \
 
 URL_OBJS	= test/url/url_check_scheme.o \
 		  test/url/url_free.o \
+		  test/url/url_new.o \
 		  test/url/url_parse.o \
 		  test/url/url_pct_decode.o \
 		  test/url/url_pct_encode.o \
 		  test/url/url_tobuffer.o \
 		  test/url/url_tostring.o
 
-BUILD_DIRS	= $(PWD)/test/address $(PWD)/test/attach $(PWD)/test/base64 \
-		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
-		  $(PWD)/test/config $(PWD)/test/date $(PWD)/test/email \
-		  $(PWD)/test/envelope $(PWD)/test/envlist $(PWD)/test/file \
-		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
+BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/attach \
+		  $(PWD)/test/base64 $(PWD)/test/body $(PWD)/test/buffer \
+		  $(PWD)/test/charset $(PWD)/test/config $(PWD)/test/date \
+		  $(PWD)/test/email $(PWD)/test/envelope $(PWD)/test/envlist \
+		  $(PWD)/test/file $(PWD)/test/filter $(PWD)/test/from \
+		  $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
 		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/list \
-		  $(PWD)/test/logging $(PWD)/test/mapping $(PWD)/test/mbyte \
-		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/parameter \
+		  $(PWD)/test/logging $(PWD)/test/mailbox $(PWD)/test/mapping \
+		  $(PWD)/test/mbyte $(PWD)/test/md5 $(PWD)/test/memory \
+		  $(PWD)/test/neomutt $(PWD)/test/notify $(PWD)/test/parameter \
 		  $(PWD)/test/parse $(PWD)/test/path $(PWD)/test/pattern \
 		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \
-		  $(PWD)/test/signal $(PWD)/test/string $(PWD)/test/tags \
-		  $(PWD)/test/thread $(PWD)/test/url
+		  $(PWD)/test/signal $(PWD)/test/slist $(PWD)/test/string \
+		  $(PWD)/test/tags $(PWD)/test/thread $(PWD)/test/url
 
 TEST_OBJS	= test/main.o \
+		  $(ACCOUNT_OBJS) \
 		  $(ADDRESS_OBJS) \
 		  $(ATTACH_OBJS) \
 		  $(BASE64_OBJS) \
@@ -451,6 +518,7 @@ TEST_OBJS	= test/main.o \
 		  $(ENVELOPE_OBJS) \
 		  $(ENVLIST_OBJS) \
 		  $(FILE_OBJS) \
+		  $(FILTER_OBJS) \
 		  $(FROM_OBJS) \
 		  $(GROUP_OBJS) \
 		  $(GUI_OBJS) \
@@ -459,10 +527,13 @@ TEST_OBJS	= test/main.o \
 		  $(IDNA_OBJS) \
 		  $(LIST_OBJS) \
 		  $(LOGGING_OBJS) \
+		  $(MAILBOX_OBJS) \
 		  $(MAPPING_OBJS) \
 		  $(MBYTE_OBJS) \
 		  $(MD5_OBJS) \
 		  $(MEMORY_OBJS) \
+		  $(NEOMUTT_OBJS) \
+		  $(NOTIFY_OBJS) \
 		  $(PARAMETER_OBJS) \
 		  $(PARSE_OBJS) \
 		  $(PATH_OBJS) \
@@ -471,6 +542,7 @@ TEST_OBJS	= test/main.o \
 		  $(RFC2047_OBJS) \
 		  $(RFC2231_OBJS) \
 		  $(SIGNAL_OBJS) \
+		  $(SLIST_OBJS) \
 		  $(STRING_OBJS) \
 		  $(TAGS_OBJS) \
 		  $(THREAD_OBJS) \

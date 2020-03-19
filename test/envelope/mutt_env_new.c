@@ -30,4 +30,10 @@
 void test_mutt_env_new(void)
 {
   // struct Envelope *mutt_env_new(void);
+
+  {
+    struct Envelope *env = mutt_env_new();
+    TEST_CHECK(env != NULL);
+    mutt_env_free(&env);
+  }
 }

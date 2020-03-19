@@ -607,6 +607,7 @@ coverage: all test
 	lcov --test-name "test" --output-file lcov.info --capture \
 	  --directory address \
 	  --directory config \
+	  --directory core \
 	  --directory email \
 	  --directory mutt
 	-genhtml --output-directory lcov --frames lcov.info

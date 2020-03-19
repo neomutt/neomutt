@@ -930,7 +930,7 @@ bool slist_test_separator(struct ConfigDef Vars[], struct Buffer *err)
   return true;
 }
 
-void config_slist(void)
+void test_config_slist(void)
 {
   log_line(__func__);
 

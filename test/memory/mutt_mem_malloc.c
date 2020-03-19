@@ -25,7 +25,22 @@
 #include "config.h"
 #include "mutt/lib.h"
 
+bool exit_called = false;
+
+void mutt_exit(int code)
+{
+  exit_called = true;
+}
+
 void test_mutt_mem_malloc(void)
 {
   // void *mutt_mem_malloc(size_t size);
+
+  MuttLogger = log_disp_null;
+  size_t big = ~0;
+  void *ptr = mutt_mem_malloc(big);
+  TEST_CHECK(ptr == NULL);
+  TEST_CHECK(exit_called == true);
+
+  FREE(&ptr);
 }
