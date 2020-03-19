@@ -27,6 +27,7 @@
  * Add your test cases to this list.
  *****************************************************************************/
 #define NEOMUTT_TEST_LIST                                                      \
+  /* address */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cat)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cmp)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_copy)                                       \
@@ -51,20 +52,28 @@
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_intl)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_local)                               \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_write)                                  \
+                                                                               \
+  /* attach */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_attach)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_body)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_fp)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_actx_free)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_actx_entries_free)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_actx_free)                                       \
+                                                                               \
+  /* base64 */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_b64_buffer_decode)                               \
   NEOMUTT_TEST_ITEM(test_mutt_b64_buffer_encode)                               \
   NEOMUTT_TEST_ITEM(test_mutt_b64_decode)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_b64_encode)                                      \
+                                                                               \
+  /* body */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_body_cmp_strict)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_body_free)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_body_new)                                        \
-  NEOMUTT_TEST_ITEM(test_mutt_buffer_addch)                                    \
+                                                                               \
+  /* buffer */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_add_printf)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_addch)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_addstr)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_addstr_n)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_alloc)                                    \
@@ -80,6 +89,8 @@
   NEOMUTT_TEST_ITEM(test_mutt_buffer_reset)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_strcpy)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_strcpy_n)                                 \
+                                                                               \
+  /* charset */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_ch_canonical_charset)                            \
   NEOMUTT_TEST_ITEM(test_mutt_ch_charset_lookup)                               \
   NEOMUTT_TEST_ITEM(test_mutt_ch_check)                                        \
@@ -100,31 +111,35 @@
   NEOMUTT_TEST_ITEM(test_mutt_ch_lookup_add)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_ch_lookup_remove)                                \
   NEOMUTT_TEST_ITEM(test_mutt_ch_set_charset)                                  \
-  NEOMUTT_TEST_ITEM(config_set)                                                \
-  NEOMUTT_TEST_ITEM(config_subset)                                             \
+                                                                               \
+  /* config */                                                                 \
   NEOMUTT_TEST_ITEM(config_account)                                            \
-  NEOMUTT_TEST_ITEM(config_initial)                                            \
-  NEOMUTT_TEST_ITEM(config_synonym)                                            \
   NEOMUTT_TEST_ITEM(config_address)                                            \
   NEOMUTT_TEST_ITEM(config_bool)                                               \
+  NEOMUTT_TEST_ITEM(config_dump)                                               \
   NEOMUTT_TEST_ITEM(config_enum)                                               \
+  NEOMUTT_TEST_ITEM(config_initial)                                            \
   NEOMUTT_TEST_ITEM(config_long)                                               \
   NEOMUTT_TEST_ITEM(config_mbtable)                                            \
   NEOMUTT_TEST_ITEM(config_number)                                             \
   NEOMUTT_TEST_ITEM(config_path)                                               \
   NEOMUTT_TEST_ITEM(config_quad)                                               \
   NEOMUTT_TEST_ITEM(config_regex)                                              \
+  NEOMUTT_TEST_ITEM(config_set)                                                \
   NEOMUTT_TEST_ITEM(config_slist)                                              \
   NEOMUTT_TEST_ITEM(config_sort)                                               \
   NEOMUTT_TEST_ITEM(config_string)                                             \
-  NEOMUTT_TEST_ITEM(config_dump)                                               \
+  NEOMUTT_TEST_ITEM(config_subset)                                             \
+  NEOMUTT_TEST_ITEM(config_synonym)                                            \
+                                                                               \
+  /* date */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_add_timeout)                                \
   NEOMUTT_TEST_ITEM(test_mutt_date_check_month)                                \
   NEOMUTT_TEST_ITEM(test_mutt_date_gmtime)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_date_is_day_name)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_date_local_tz)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_localtime)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_date_localtime_format)                           \
-  NEOMUTT_TEST_ITEM(test_mutt_date_local_tz)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_make_date)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_date_make_imap)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_date_make_time)                                  \
@@ -132,32 +147,41 @@
   NEOMUTT_TEST_ITEM(test_mutt_date_normalize_time)                             \
   NEOMUTT_TEST_ITEM(test_mutt_date_parse_date)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_date_parse_imap)                                 \
+                                                                               \
+  /* email */                                                                  \
   NEOMUTT_TEST_ITEM(test_email_cmp_strict)                                     \
   NEOMUTT_TEST_ITEM(test_email_free)                                           \
   NEOMUTT_TEST_ITEM(test_email_new)                                            \
   NEOMUTT_TEST_ITEM(test_email_size)                                           \
+                                                                               \
+  /* envelope */                                                               \
   NEOMUTT_TEST_ITEM(test_mutt_env_cmp_strict)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_env_free)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_env_merge)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_env_new)                                         \
   NEOMUTT_TEST_ITEM(test_mutt_env_to_intl)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_env_to_local)                                    \
+                                                                               \
+  /* envlist */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_envlist_free)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_envlist_getlist)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_envlist_init)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_envlist_set)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_envlist_unset)                                   \
+                                                                               \
+  /* file */                                                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_file_expand_fmt_quote)                    \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_quote_filename)                           \
   NEOMUTT_TEST_ITEM(test_mutt_file_check_empty)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_file_chmod)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_file_chmod_add)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_file_chmod_add_stat)                             \
-  NEOMUTT_TEST_ITEM(test_mutt_file_chmod)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_file_chmod_rm)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_file_chmod_rm_stat)                              \
   NEOMUTT_TEST_ITEM(test_mutt_file_copy_bytes)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_file_copy_stream)                                \
   NEOMUTT_TEST_ITEM(test_mutt_file_decrease_mtime)                             \
   NEOMUTT_TEST_ITEM(test_mutt_file_expand_fmt)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_buffer_file_expand_fmt_quote)                    \
   NEOMUTT_TEST_ITEM(test_mutt_file_fclose)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_file_fopen)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_file_fsync_close)                                \
@@ -186,6 +210,12 @@
   NEOMUTT_TEST_ITEM(test_mutt_file_unlink)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_file_unlink_empty)                               \
   NEOMUTT_TEST_ITEM(test_mutt_file_unlock)                                     \
+                                                                               \
+  /* from */                                                                   \
+  NEOMUTT_TEST_ITEM(test_is_from)                                              \
+                                                                               \
+  /* group */                                                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_group_match)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_add)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_add_addrlist)                          \
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_add_regex)                             \
@@ -195,11 +225,15 @@
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_init)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_remove_addrlist)                       \
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_remove_regex)                          \
-  NEOMUTT_TEST_ITEM(test_mutt_group_match)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_pattern_group)                                   \
+                                                                               \
+  /* gui */                                                                    \
+  NEOMUTT_TEST_ITEM(test_window_reflow)                                        \
+                                                                               \
+  /* hash */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_hash_delete)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_hash_find_bucket)                                \
   NEOMUTT_TEST_ITEM(test_mutt_hash_find)                                       \
+  NEOMUTT_TEST_ITEM(test_mutt_hash_find_bucket)                                \
   NEOMUTT_TEST_ITEM(test_mutt_hash_find_elem)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_hash_free)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_hash_insert)                                     \
@@ -211,6 +245,8 @@
   NEOMUTT_TEST_ITEM(test_mutt_hash_set_destructor)                             \
   NEOMUTT_TEST_ITEM(test_mutt_hash_typed_insert)                               \
   NEOMUTT_TEST_ITEM(test_mutt_hash_walk)                                       \
+                                                                               \
+  /* history */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_hist_add)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_hist_at_scratch)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_hist_free)                                       \
@@ -221,10 +257,14 @@
   NEOMUTT_TEST_ITEM(test_mutt_hist_reset_state)                                \
   NEOMUTT_TEST_ITEM(test_mutt_hist_save_scratch)                               \
   NEOMUTT_TEST_ITEM(test_mutt_hist_search)                                     \
+                                                                               \
+  /* idna */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_idna_intl_to_local)                              \
   NEOMUTT_TEST_ITEM(test_mutt_idna_local_to_intl)                              \
   NEOMUTT_TEST_ITEM(test_mutt_idna_print_version)                              \
   NEOMUTT_TEST_ITEM(test_mutt_idna_to_ascii_lz)                                \
+                                                                               \
+  /* list */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_list_clear)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_list_compare)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_list_find)                                       \
@@ -235,6 +275,8 @@
   NEOMUTT_TEST_ITEM(test_mutt_list_insert_tail)                                \
   NEOMUTT_TEST_ITEM(test_mutt_list_match)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_list_str_split)                                  \
+                                                                               \
+  /* logging */                                                                \
   NEOMUTT_TEST_ITEM(test_log_disp_file)                                        \
   NEOMUTT_TEST_ITEM(test_log_disp_queue)                                       \
   NEOMUTT_TEST_ITEM(test_log_disp_terminal)                                    \
@@ -249,8 +291,12 @@
   NEOMUTT_TEST_ITEM(test_log_queue_flush)                                      \
   NEOMUTT_TEST_ITEM(test_log_queue_save)                                       \
   NEOMUTT_TEST_ITEM(test_log_queue_set_max_size)                               \
+                                                                               \
+  /* mapping */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_map_get_name)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_map_get_value)                                   \
+                                                                               \
+  /* mbyte */                                                                  \
   NEOMUTT_TEST_ITEM(test_mutt_mb_charlen)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_mb_filter_unprintable)                           \
   NEOMUTT_TEST_ITEM(test_mutt_mb_get_initials)                                 \
@@ -263,17 +309,23 @@
   NEOMUTT_TEST_ITEM(test_mutt_mb_wcwidth)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_mb_width)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_mb_width_ceiling)                                \
-  NEOMUTT_TEST_ITEM(test_mutt_md5_bytes)                                       \
+                                                                               \
+  /* md5 */                                                                    \
   NEOMUTT_TEST_ITEM(test_mutt_md5)                                             \
+  NEOMUTT_TEST_ITEM(test_mutt_md5_bytes)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_md5_finish_ctx)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_md5_init_ctx)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_md5_process_bytes)                               \
   NEOMUTT_TEST_ITEM(test_mutt_md5_process)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_md5_process_bytes)                               \
   NEOMUTT_TEST_ITEM(test_mutt_md5_toascii)                                     \
+                                                                               \
+  /* memory */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_mem_calloc)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_mem_free)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_mem_malloc)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_mem_realloc)                                     \
+                                                                               \
+  /* parameter */                                                              \
   NEOMUTT_TEST_ITEM(test_mutt_param_cmp_strict)                                \
   NEOMUTT_TEST_ITEM(test_mutt_param_delete)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_param_free)                                      \
@@ -281,6 +333,8 @@
   NEOMUTT_TEST_ITEM(test_mutt_param_get)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_param_new)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_param_set)                                       \
+                                                                               \
+  /* parse */                                                                  \
   NEOMUTT_TEST_ITEM(test_mutt_auto_subscribe)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_check_encoding)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_check_mime_type)                                 \
@@ -296,6 +350,8 @@
   NEOMUTT_TEST_ITEM(test_mutt_rfc822_parse_message)                            \
   NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_header)                              \
   NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_line)                                \
+                                                                               \
+  /* path */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_path_abbr_folder)                                \
   NEOMUTT_TEST_ITEM(test_mutt_path_basename)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_path_canon)                                      \
@@ -310,30 +366,40 @@
   NEOMUTT_TEST_ITEM(test_mutt_path_tidy_dotdot)                                \
   NEOMUTT_TEST_ITEM(test_mutt_path_tidy_slash)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_path_to_absolute)                                \
+                                                                               \
+  /* pattern */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_pattern_comp)                                    \
+                                                                               \
+  /* regex */                                                                  \
   NEOMUTT_TEST_ITEM(test_mutt_regex_compile)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_regex_free)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_regex_match)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_regex_new)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_regexlist_add)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_regexlist_free)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_regexlist_match)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_regexlist_new)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_regexlist_remove)                                \
-  NEOMUTT_TEST_ITEM(test_mutt_regex_new)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_replacelist_add)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_replacelist_apply)                               \
   NEOMUTT_TEST_ITEM(test_mutt_replacelist_free)                                \
   NEOMUTT_TEST_ITEM(test_mutt_replacelist_match)                               \
   NEOMUTT_TEST_ITEM(test_mutt_replacelist_new)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_replacelist_remove)                              \
+                                                                               \
+  /* rfc2047 */                                                                \
   NEOMUTT_TEST_ITEM(test_rfc2047_decode)                                       \
   NEOMUTT_TEST_ITEM(test_rfc2047_decode_addrlist)                              \
   NEOMUTT_TEST_ITEM(test_rfc2047_decode_envelope)                              \
   NEOMUTT_TEST_ITEM(test_rfc2047_encode)                                       \
   NEOMUTT_TEST_ITEM(test_rfc2047_encode_addrlist)                              \
   NEOMUTT_TEST_ITEM(test_rfc2047_encode_envelope)                              \
+                                                                               \
+  /* rfc2231 */                                                                \
   NEOMUTT_TEST_ITEM(test_rfc2231_decode_parameters)                            \
   NEOMUTT_TEST_ITEM(test_rfc2231_encode_string)                                \
+                                                                               \
+  /* signal */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_sig_allow_interrupt)                             \
   NEOMUTT_TEST_ITEM(test_mutt_sig_block)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_sig_block_system)                                \
@@ -342,6 +408,8 @@
   NEOMUTT_TEST_ITEM(test_mutt_sig_init)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_sig_unblock)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_sig_unblock_system)                              \
+                                                                               \
+  /* string */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_adjust)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_append_item)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_asprintf)                                    \
@@ -386,12 +454,16 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_substr_dup)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_sysexit)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_word_casecmp)                                \
+                                                                               \
+  /* tags */                                                                   \
   NEOMUTT_TEST_ITEM(test_driver_tags_free)                                     \
   NEOMUTT_TEST_ITEM(test_driver_tags_get)                                      \
   NEOMUTT_TEST_ITEM(test_driver_tags_get_transformed)                          \
   NEOMUTT_TEST_ITEM(test_driver_tags_get_transformed_for)                      \
   NEOMUTT_TEST_ITEM(test_driver_tags_get_with_hidden)                          \
   NEOMUTT_TEST_ITEM(test_driver_tags_replace)                                  \
+                                                                               \
+  /* thread */                                                                 \
   NEOMUTT_TEST_ITEM(test_clean_references)                                     \
   NEOMUTT_TEST_ITEM(test_find_virtual)                                         \
   NEOMUTT_TEST_ITEM(test_insert_message)                                       \
@@ -399,14 +471,15 @@
   NEOMUTT_TEST_ITEM(test_mutt_break_thread)                                    \
   NEOMUTT_TEST_ITEM(test_thread_hash_destructor)                               \
   NEOMUTT_TEST_ITEM(test_unlink_message)                                       \
+                                                                               \
+  /* url */                                                                    \
   NEOMUTT_TEST_ITEM(test_url_check_scheme)                                     \
   NEOMUTT_TEST_ITEM(test_url_free)                                             \
   NEOMUTT_TEST_ITEM(test_url_parse)                                            \
   NEOMUTT_TEST_ITEM(test_url_pct_decode)                                       \
   NEOMUTT_TEST_ITEM(test_url_pct_encode)                                       \
   NEOMUTT_TEST_ITEM(test_url_tobuffer)                                         \
-  NEOMUTT_TEST_ITEM(test_url_tostring)                                         \
-  NEOMUTT_TEST_ITEM(test_window_reflow)
+  NEOMUTT_TEST_ITEM(test_url_tostring)
 
 /******************************************************************************
  * You probably don't need to touch what follows.
