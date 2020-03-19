@@ -481,8 +481,7 @@ void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save)
 
     /* don't add to prompt history:
      *  - lines beginning by a space
-     *  - repeated lines
-     */
+     *  - repeated lines */
     if ((*str != ' ') && (!h->hist[prev] || (mutt_str_strcmp(h->hist[prev], str) != 0)))
     {
       if (C_HistoryRemoveDups)

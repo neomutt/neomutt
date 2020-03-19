@@ -64,20 +64,16 @@ static int autocrypt_dir_init(bool can_create)
     return -1;
 
   struct Buffer *prompt = mutt_buffer_pool_get();
-  /* L10N:
-     %s is a directory.  NeoMutt is looking for a directory it needs
+  /* L10N: s is a directory.  NeoMutt is looking for a directory it needs
      for some reason (e.g. autocrypt, header cache, bcache), but it
-     doesn't exist.  The prompt is asking whether to create the directory
-  */
+     doesn't exist.  The prompt is asking whether to create the directory */
   mutt_buffer_printf(prompt, _("%s does not exist. Create it?"), C_AutocryptDir);
   if (mutt_yesorno(mutt_b2s(prompt), MUTT_YES) == MUTT_YES)
   {
     if (mutt_file_mkdir(C_AutocryptDir, S_IRWXU) < 0)
     {
-      /* L10N:
-         mkdir() on the directory %s failed.  The second %s is the
-         error message returned by libc
-      */
+      /* L10N: mkdir() on the directory %s failed.  The second %s is the
+         error message returned by libc */
       mutt_error(_("Can't create %s: %s"), C_AutocryptDir, strerror(errno));
       rc = -1;
     }
@@ -157,11 +153,9 @@ int mutt_autocrypt_account_init(bool prompt)
 
   if (prompt)
   {
-    /* L10N:
-       The first time NeoMutt is started with $autocrypt set, it will
-       create $autocrypt_dir and then prompt to create an autocrypt
-       account with this message.
-    */
+    /* L10N: The first time NeoMutt is started with $autocrypt set, it will
+       create $autocrypt_dir and then prompt to create an autocrypt account
+       with this message.  */
     if (mutt_yesorno(_("Create an initial autocrypt account?"), MUTT_YES) != MUTT_YES)
       return 0;
   }
@@ -181,22 +175,18 @@ int mutt_autocrypt_account_init(bool prompt)
 
   do
   {
-    /* L10N:
-       Autocrypt is asking for the email address to use for the
+    /* L10N: Autocrypt is asking for the email address to use for the
        autocrypt account.  This will generate a key and add a record
-       to the database for use in autocrypt operations.
-    */
+       to the database for use in autocrypt operations.  */
     if (mutt_edit_address(&al, _("Autocrypt account address: "), false) != 0)
       goto cleanup;
 
     addr = TAILQ_FIRST(&al);
     if (!addr || !addr->mailbox || TAILQ_NEXT(addr, entries))
     {
-      /* L10N:
-         Autocrypt prompts for an account email address, and requires
+      /* L10N: Autocrypt prompts for an account email address, and requires
          a single address.  This is shown if they entered something invalid,
-         nothing, or more than one address for some reason.
-      */
+         nothing, or more than one address for some reason.  */
       mutt_error(_("Please enter a single email address"));
       done = false;
     }
@@ -209,11 +199,9 @@ int mutt_autocrypt_account_init(bool prompt)
     goto cleanup;
   if (account)
   {
-    /* L10N:
-       When creating an autocrypt account, this message will be displayed
+    /* L10N: When creating an autocrypt account, this message will be displayed
        if there is already an account in the database with the email address
-       they just entered.
-    */
+       they just entered.  */
     mutt_error(_("That email address already has an autocrypt account"));
     goto cleanup;
   }
@@ -221,14 +209,12 @@ int mutt_autocrypt_account_init(bool prompt)
   if (mutt_autocrypt_gpgme_select_or_create_key(addr, keyid, keydata))
     goto cleanup;
 
-  /* L10N:
-     Autocrypt has a setting "prefer-encrypt".
-     When the recommendation algorithm returns "available" and BOTH
-     sender and recipient choose "prefer-encrypt", encryption will be
-     automatically enabled.
+  /* L10N: Autocrypt has a setting "prefer-encrypt".
+     When the recommendation algorithm returns "available" and BOTH sender and
+     recipient choose "prefer-encrypt", encryption will be automatically
+     enabled.
      Otherwise the UI will show encryption is "available" but the user
-     will be required to enable encryption manually.
-  */
+     will be required to enable encryption manually.  */
   if (mutt_yesorno(_("Prefer encryption?"), MUTT_NO) == MUTT_YES)
     prefer_encrypt = true;
 
@@ -239,15 +225,11 @@ int mutt_autocrypt_account_init(bool prompt)
 
 cleanup:
   if (rc == 0)
-    /* L10N:
-       Message displayed after an autocrypt account is successfully created.
-    */
+    /* L10N: Message displayed after an autocrypt account is successfully created.  */
     mutt_message(_("Autocrypt account creation succeeded"));
   else
-    /* L10N:
-       Error message displayed if creating an autocrypt account failed
-       or was aborted by the user.
-    */
+    /* L10N: Error message displayed if creating an autocrypt account failed
+       or was aborted by the user.  */
     mutt_error(_("Autocrypt account creation aborted"));
 
   mutt_autocrypt_db_account_free(&account);
@@ -611,11 +593,9 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
     {
       if (keylist)
       {
-        /* L10N:
-           %s is an email address.  Autocrypt is scanning for the keyids
+        /* L10N: s is an email address.  Autocrypt is scanning for the keyids
            to use to encrypt, but it can't find a valid keyid for this address.
-           The message is printed and they are returned to the compose menu.
-         */
+           The message is printed and they are returned to the compose menu.  */
         mutt_message(_("No (valid) autocrypt key found for %s"), recip->mailbox);
       }
       goto cleanup;
@@ -902,13 +882,10 @@ void mutt_autocrypt_scan_mailboxes(void)
 
   struct Buffer *folderbuf = mutt_buffer_pool_get();
 
-  /* L10N:
-     The first time autocrypt is enabled, NeoMutt will ask to scan
-     through one or more mailboxes for Autocrypt: headers.
-     Those headers are then captured in the database as peer records
-     and used for encryption.
-     If this is answered yes, they will be prompted for a mailbox.
-  */
+  /* L10N: The first time autocrypt is enabled, NeoMutt will ask to scan
+     through one or more mailboxes for Autocrypt: headers.  Those headers are
+     then captured in the database as peer records and used for encryption.
+     If this is answered yes, they will be prompted for a mailbox.  */
   int scan = mutt_yesorno(_("Scan a mailbox for autocrypt headers?"), MUTT_YES);
   while (scan == MUTT_YES)
   {
@@ -926,13 +903,11 @@ void mutt_autocrypt_scan_mailboxes(void)
       mutt_buffer_reset(folderbuf);
     }
 
-    /* L10N:
-       This is the second prompt to see if the user would like
+    /* L10N: This is the second prompt to see if the user would like
        to scan more than one mailbox for Autocrypt headers.
        I'm purposely being extra verbose; asking first then prompting
        for a mailbox.  This is because this is a one-time operation
-       and I don't want them to accidentally ctrl-g and abort it.
-    */
+       and I don't want them to accidentally ctrl-g and abort it.  */
     scan = mutt_yesorno(_("Scan another mailbox for autocrypt headers?"), MUTT_YES);
   }
 

@@ -979,7 +979,6 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
 #endif
   }
 
-
   if (init_email(e, newpath ? newpath : path, msg) != 0)
   {
     email_free(&e);

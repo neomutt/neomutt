@@ -57,26 +57,22 @@ struct AccountEntry
 static const struct Mapping AutocryptAcctHelp[] = {
   { N_("Exit"), OP_EXIT },
   /* L10N: Autocrypt Account Menu Help line:
-     create new account
-  */
+     create new account */
   { N_("Create"), OP_AUTOCRYPT_CREATE_ACCT },
   /* L10N: Autocrypt Account Menu Help line:
-     delete account
-  */
+     delete account */
   { N_("Delete"), OP_AUTOCRYPT_DELETE_ACCT },
   /* L10N: Autocrypt Account Menu Help line:
      toggle an account active/inactive
      The words here are abbreviated to keep the help line compact.
      It currently has the content:
-     q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
-  */
+     q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help */
   { N_("Tgl Active"), OP_AUTOCRYPT_TOGGLE_ACTIVE },
   /* L10N: Autocrypt Account Menu Help line:
      toggle "prefer-encrypt" on an account
      The words here are abbreviated to keep the help line compact.
      It currently has the content:
-     q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
-  */
+     q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help */
   { N_("Prf Encr"), OP_AUTOCRYPT_TOGGLE_PREFER },
   { N_("Help"), OP_HELP },
   { NULL, 0 }
@@ -116,37 +112,29 @@ static const char *account_format_str(char *dest, size_t destlen, size_t col, in
     case 'p':
       if (entry->account->prefer_encrypt)
       {
-        /* L10N:
-           Autocrypt Account menu.
-           flag that an account has prefer-encrypt set
-        */
+        /* L10N: Autocrypt Account menu.
+           flag that an account has prefer-encrypt set */
         mutt_format_s(dest, destlen, fmt, _("prefer encrypt"));
       }
       else
       {
-        /* L10N:
-           Autocrypt Account menu.
+        /* L10N: Autocrypt Account menu.
            flag that an account has prefer-encrypt unset;
-           thus encryption will need to be manually enabled.
-        */
+           thus encryption will need to be manually enabled.  */
         mutt_format_s(dest, destlen, fmt, _("manual encrypt"));
       }
       break;
     case 's':
       if (entry->account->enabled)
       {
-        /* L10N:
-           Autocrypt Account menu.
-           flag that an account is enabled/active
-        */
+        /* L10N: Autocrypt Account menu.
+           flag that an account is enabled/active */
         mutt_format_s(dest, destlen, fmt, _("active"));
       }
       else
       {
-        /* L10N:
-           Autocrypt Account menu.
-           flag that an account is disabled/inactive
-        */
+        /* L10N: Autocrypt Account menu.
+           flag that an account is disabled/inactive */
         mutt_format_s(dest, destlen, fmt, _("inactive"));
       }
       break;
@@ -245,10 +233,8 @@ static void toggle_active(struct AccountEntry *entry)
   if (mutt_autocrypt_db_account_update(entry->account) != 0)
   {
     entry->account->enabled = !entry->account->enabled;
-    /* L10N:
-       This error message is displayed if a database update of an
-       account record fails for some odd reason.
-    */
+    /* L10N: This error message is displayed if a database update of an
+       account record fails for some odd reason.  */
     mutt_error(_("Error updating account record"));
   }
 }

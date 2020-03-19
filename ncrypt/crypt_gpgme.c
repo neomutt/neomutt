@@ -4838,8 +4838,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
 
     if (p)
     {
-      /* L10N:
-         %1$s is one of the previous four entries.
+      /* L10N: 1$s is one of the previous four entries.
          %2$s is an address.
          e.g. "S/MIME keys matching <me@mutt.org>" */
       snprintf(buf, sizeof(buf), _("%s <%s>"), ts, p->mailbox);
@@ -5441,10 +5440,8 @@ int mutt_gpgme_select_secret_key(struct Buffer *keyid)
 
   if (!results)
   {
-    /* L10N:
-       mutt_gpgme_select_secret_key() tries to list all secret keys to choose
-       from.  This error is displayed if no results were found.
-    */
+    /* L10N: mutt_gpgme_select_secret_key() tries to list all secret keys to choose
+       from.  This error is displayed if no results were found.  */
     mutt_error(_("No secret keys found"));
     goto cleanup;
   }

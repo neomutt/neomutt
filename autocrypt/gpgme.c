@@ -168,10 +168,8 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   if (create_gpgme_context(&ctx))
     goto cleanup;
 
-  /* L10N:
-     Message displayed just before a GPG key is generated for a created
-     autocrypt account.
-  */
+  /* L10N: Message displayed just before a GPG key is generated for a created
+     autocrypt account.  */
   mutt_message(_("Generating autocrypt key..."));
 
   /* Primary key */
@@ -180,10 +178,8 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
                                              GPGME_CREATE_NOEXPIRE);
   if (err)
   {
-    /* L10N:
-       GPGME was unable to generate a key for some reason.
-       %s is the error message returned by GPGME.
-    */
+    /* L10N: GPGME was unable to generate a key for some reason.
+       %s is the error message returned by GPGME.  */
     mutt_error(_("Error creating autocrypt key: %s"), gpgme_strerror(err));
     goto cleanup;
   }
@@ -246,12 +242,10 @@ int mutt_autocrypt_gpgme_select_key(struct Buffer *keyid, struct Buffer *keydata
   if (key->revoked || key->expired || key->disabled || key->invalid ||
       !key->can_encrypt || !key->can_sign)
   {
-    /* L10N:
-       After selecting a key for an autocrypt account,
+    /* L10N: After selecting a key for an autocrypt account,
        this is displayed if the key was revoked/expired/disabled/invalid
        or can't be used for both signing and encryption.
-       %s is the key fingerprint.
-    */
+       %s is the key fingerprint.  */
     mutt_error(_("The key %s is not usable for autocrypt"), mutt_b2s(keyid));
     goto cleanup;
   }
@@ -281,16 +275,12 @@ int mutt_autocrypt_gpgme_select_or_create_key(struct Address *addr, struct Buffe
 {
   int rc = -1;
 
-  /* L10N:
-     During autocrypt account creation, this prompt asks the
+  /* L10N: During autocrypt account creation, this prompt asks the
      user whether they want to create a new GPG key for the account,
-     or select an existing account from the keyring.
-  */
+     or select an existing account from the keyring.  */
   const char *prompt = _("(c)reate new, or (s)elect existing GPG key?");
-  /* L10N:
-     The letters corresponding to the
-     "(c)reate new, or (s)elect existing GPG key?" prompt.
-  */
+  /* L10N: The letters corresponding to the
+     "(c)reate new, or (s)elect existing GPG key?" prompt.  */
   const char *letters = _("cs");
 
   int choice = mutt_multi_choice(prompt, letters);
@@ -301,10 +291,8 @@ int mutt_autocrypt_gpgme_select_or_create_key(struct Address *addr, struct Buffe
       if (rc == 0)
         break;
 
-      /* L10N:
-         During autocrypt account creation, if selecting an existing key fails
-         for some reason, we prompt to see if they want to create a key instead.
-      */
+      /* L10N: During autocrypt account creation, if selecting an existing key fails
+         for some reason, we prompt to see if they want to create a key instead.  */
       if (mutt_yesorno(_("Create a new gpg key for this account, instead?"), MUTT_YES) == MUTT_NO)
         break;
       /* fallthrough */

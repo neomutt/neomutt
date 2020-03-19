@@ -116,12 +116,10 @@ int mutt_autocrypt_schema_update(void)
 
   if (version > 1)
   {
-    /* L10N:
-       The autocrypt database keeps track of schema version numbers.
+    /* L10N: The autocrypt database keeps track of schema version numbers.
        This error occurs if the version number is too high.
        Presumably because this is an old version of NeoMutt and the
-       database was upgraded by a future version.
-    */
+       database was upgraded by a future version.  */
     mutt_error(_("Autocrypt database version is too new"));
     goto cleanup;
   }

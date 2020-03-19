@@ -1240,8 +1240,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
      *   msn_begin = mdata->max_msn + 1;
      * but with chunking (and the mythical header cache holes) this
      * may not be correct.  So here we must assume the msn values have
-     * not been altered during or after the fetch.
-     */
+     * not been altered during or after the fetch.  */
     msn_begin = fetch_msn_end + 1;
   }
 

@@ -180,13 +180,11 @@ static const char *const Prompts[] = {
 #endif
   /* L10N: Compose menu field.  Holds "Encrypt", "Sign" related information */
   N_("Security: "),
-  /* L10N:
-     This string is used by the compose menu.
-     Since it is hidden by default, it does not increase the
-     indentation of other compose menu fields.  However, if possible,
-     it should not be longer than the other compose menu fields.
-     Since it shares the row with "Encrypt with:", it should not be longer
-     than 15-20 character cells.  */
+  /* L10N: This string is used by the compose menu.
+     Since it is hidden by default, it does not increase the indentation of
+     other compose menu fields.  However, if possible, it should not be longer
+     than the other compose menu fields.  Since it shares the row with "Encrypt
+     with:", it should not be longer than 15-20 character cells.  */
   N_("Sign as: "),
 #ifdef USE_AUTOCRYPT
   // L10N: The compose menu autocrypt line
@@ -328,20 +326,16 @@ static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line
  */
 static void autocrypt_compose_menu(struct Email *e)
 {
-  /* L10N:
-     The compose menu autocrypt prompt.
+  /* L10N: The compose menu autocrypt prompt.
      (e)ncrypt enables encryption via autocrypt.
      (c)lear sets cleartext.
-     (a)utomatic defers to the recommendation.
-  */
+     (a)utomatic defers to the recommendation.  */
   const char *prompt = _("Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?");
 
   e->security |= APPLICATION_PGP;
 
-  /* L10N:
-     The letter corresponding to the compose menu autocrypt prompt
-     (e)ncrypt, (c)lear, (a)utomatic
-   */
+  /* L10N: The letter corresponding to the compose menu autocrypt prompt
+     (e)ncrypt, (c)lear, (a)utomatic */
   const char *letters = _("eca");
 
   int choice = mutt_multi_choice(prompt, letters);
@@ -474,11 +468,9 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
 
     mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
     mutt_window_mvprintw(rd->win, HDR_AUTOCRYPT, 40, "%s",
-                         /* L10N:
-                             The autocrypt compose menu Recommendation field.
+                         /* L10N: The autocrypt compose menu Recommendation field.
                              Displays the output of the recommendation engine
-                             (Off, No, Discouraged, Available, Yes)
-                          */
+                             (Off, No, Discouraged, Available, Yes) */
                          _("Recommendation: "));
     mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_window_printf("%s", _(AutocryptRecUiFlags[rd->autocrypt_rec]));
@@ -590,13 +582,10 @@ static int check_attachments(struct AttachCtx *actx)
         pretty = mutt_buffer_pool_get();
       mutt_buffer_strcpy(pretty, actx->idx[i]->content->filename);
       mutt_buffer_pretty_mailbox(pretty);
-      /* L10N:
-         This message is displayed in the compose menu when an attachment
-         doesn't stat.  %d is the attachment number and %s is the
-         attachment filename.
-         The filename is located last to avoid a long path hiding the
-         error message.
-      */
+      /* L10N: This message is displayed in the compose menu when an attachment
+         doesn't stat.  %d is the attachment number and %s is the attachment
+         filename.  The filename is located last to avoid a long path hiding
+         the error message.  */
       mutt_error(_("Attachment #%d no longer exists: %s"), i + 1, mutt_b2s(pretty));
       goto cleanup;
     }
@@ -610,13 +599,10 @@ static int check_attachments(struct AttachCtx *actx)
 
       if (!msg)
         msg = mutt_buffer_pool_get();
-      /* L10N:
-         This message is displayed in the compose menu when an attachment
-         is modified behind the scenes.  %d is the attachment number
-         and %s is the attachment filename.
-         The filename is located last to avoid a long path hiding the
-         prompt question.
-      */
+      /* L10N: This message is displayed in the compose menu when an attachment
+         is modified behind the scenes.  %d is the attachment number and %s is
+         the attachment filename.  The filename is located last to avoid a long
+         path hiding the prompt question.  */
       mutt_buffer_printf(msg, _("Attachment #%d modified. Update encoding for %s?"),
                          i + 1, mutt_b2s(pretty));
 

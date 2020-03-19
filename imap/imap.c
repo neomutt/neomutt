@@ -833,8 +833,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
        * pointers in the msn_index and uid_hash.
        *
        * So this is another hack to work around the hacks.  We don't want to
-       * remove the messages, so make sure active is on.
-       */
+       * remove the messages, so make sure active is on.  */
       e->active = true;
     }
   }
@@ -2048,9 +2047,8 @@ static int imap_mbox_open(struct Mailbox *m)
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
-  mutt_debug(LL_DEBUG3, "opening %s, saving %s\n",
-      m->pathbuf.data,
-      (adata->mailbox ? adata->mailbox->pathbuf.data : "(none)"));
+  mutt_debug(LL_DEBUG3, "opening %s, saving %s\n", m->pathbuf.data,
+             (adata->mailbox ? adata->mailbox->pathbuf.data : "(none)"));
   adata->prev_mailbox = adata->mailbox;
   adata->mailbox = m;
 
@@ -2321,9 +2319,8 @@ static int imap_mbox_close(struct Mailbox *m)
       adata->state = IMAP_AUTHENTICATED;
     }
 
-    mutt_debug(LL_DEBUG3, "closing %s, restoring %s\n",
-        m->pathbuf.data,
-        (adata->prev_mailbox ? adata->prev_mailbox->pathbuf.data: "(none)"));
+    mutt_debug(LL_DEBUG3, "closing %s, restoring %s\n", m->pathbuf.data,
+               (adata->prev_mailbox ? adata->prev_mailbox->pathbuf.data : "(none)"));
     adata->mailbox = adata->prev_mailbox;
     imap_mbox_select(adata->prev_mailbox);
     imap_mdata_cache_reset(m->mdata);

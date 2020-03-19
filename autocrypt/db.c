@@ -61,10 +61,8 @@ static int autocrypt_db_create(const char *db_path)
   if (sqlite3_open_v2(db_path, &AutocryptDB,
                       SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL) != SQLITE_OK)
   {
-    /* L10N:
-       %s is the path to the database.
-       For some reason sqlite3 failed to open that database file.
-    */
+    /* L10N: s is the path to the database.
+       For some reason sqlite3 failed to open that database file.  */
     mutt_error(_("Unable to open autocrypt database %s"), db_path);
     return -1;
   }
@@ -95,10 +93,8 @@ int mutt_autocrypt_db_init(bool can_create)
   {
     if (sqlite3_open_v2(mutt_b2s(db_path), &AutocryptDB, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
     {
-      /* L10N:
-         Error message if autocrypt couldn't open the SQLite database
-         for some reason.  The %s is the full path of the database file.
-      */
+      /* L10N: Error message if autocrypt couldn't open the SQLite database
+         for some reason.  The %s is the full path of the database file.  */
       mutt_error(_("Unable to open autocrypt database %s"), mutt_b2s(db_path));
       goto cleanup;
     }

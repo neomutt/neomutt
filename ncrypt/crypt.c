@@ -385,10 +385,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
         goto bail;
       }
 
-      /* destroy temporary signature envelope when doing retainable
-       * signatures.
-
-       */
+      // destroy temporary signature envelope when doing retainable signatures.
       if (has_retainable_sig)
       {
         tmp_pgp_pbody = mutt_remove_multipart(tmp_pgp_pbody);

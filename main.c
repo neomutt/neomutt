@@ -949,8 +949,7 @@ int main(int argc, char *argv[], char *envp[])
        * Note that SEND_NO_FREE_HEADER is set above so it isn't unlinked.  */
       else if (edit_infile)
         bodyfile = mutt_b2s(&expanded_infile);
-      /* For bodytext and unedited include_file: use the tempfile.
-       */
+      // For bodytext and unedited include_file: use the tempfile.
       else
         bodyfile = mutt_b2s(&tempfile);
 

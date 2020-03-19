@@ -424,8 +424,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
 
         /* Dirty hack to make messages readable by Outlook Express
          * for the Mac: force quotes around the boundary parameter
-         * even when they aren't needed.
-         */
+         * even when they aren't needed.  */
         if (!mutt_str_strcasecmp(cont->attribute, "boundary") &&
             !mutt_str_strcmp(buf, cont->value))
           snprintf(buf, sizeof(buf), "\"%s\"", cont->value);
