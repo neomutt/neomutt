@@ -63,8 +63,6 @@ void mailbox_free(struct Mailbox **ptr)
     return;
 
   struct Mailbox *m = *ptr;
-  if (m->mdata && m->free_mdata)
-    m->free_mdata(&m->mdata);
 
   mailbox_changed(m, NT_MAILBOX_CLOSED);
 
