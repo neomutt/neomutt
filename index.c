@@ -1179,7 +1179,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
      * from any new menu launched, and change $sort/$sort_aux */
     if (OptNeedResort && Context && Context->mailbox &&
         (Context->mailbox->msg_count != 0) && (menu->current >= 0))
+    {
       resort_index(Context, menu);
+    }
 
     menu->max = (Context && Context->mailbox) ? Context->mailbox->vcount : 0;
     oldcount = (Context && Context->mailbox) ? Context->mailbox->msg_count : 0;
@@ -1300,7 +1302,16 @@ int mutt_index_menu(struct MuttWindow *dlg)
     if (op >= 0)
       mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
-    if (!in_pager)
+    if (in_pager)
+    {
+      if (menu->current < menu->max)
+        menu->oldcurrent = menu->current;
+      else
+        menu->oldcurrent = -1;
+
+      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE); /* fallback from the pager */
+    }
+    else
     {
       index_custom_redraw(menu);
 
@@ -1388,18 +1399,11 @@ int mutt_index_menu(struct MuttWindow *dlg)
       }
       else if (C_AutoTag && Context && Context->mailbox &&
                (Context->mailbox->msg_tagged != 0))
+      {
         tag = true;
+      }
 
       mutt_clear_error();
-    }
-    else
-    {
-      if (menu->current < menu->max)
-        menu->oldcurrent = menu->current;
-      else
-        menu->oldcurrent = -1;
-
-      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE); /* fallback from the pager */
     }
 
 #ifdef USE_NNTP
