@@ -113,24 +113,24 @@
   NEOMUTT_TEST_ITEM(test_mutt_ch_set_charset)                                  \
                                                                                \
   /* config */                                                                 \
-  NEOMUTT_TEST_ITEM(config_account)                                            \
-  NEOMUTT_TEST_ITEM(config_address)                                            \
-  NEOMUTT_TEST_ITEM(config_bool)                                               \
-  NEOMUTT_TEST_ITEM(config_dump)                                               \
-  NEOMUTT_TEST_ITEM(config_enum)                                               \
-  NEOMUTT_TEST_ITEM(config_initial)                                            \
-  NEOMUTT_TEST_ITEM(config_long)                                               \
-  NEOMUTT_TEST_ITEM(config_mbtable)                                            \
-  NEOMUTT_TEST_ITEM(config_number)                                             \
-  NEOMUTT_TEST_ITEM(config_path)                                               \
-  NEOMUTT_TEST_ITEM(config_quad)                                               \
-  NEOMUTT_TEST_ITEM(config_regex)                                              \
-  NEOMUTT_TEST_ITEM(config_set)                                                \
-  NEOMUTT_TEST_ITEM(config_slist)                                              \
-  NEOMUTT_TEST_ITEM(config_sort)                                               \
-  NEOMUTT_TEST_ITEM(config_string)                                             \
-  NEOMUTT_TEST_ITEM(config_subset)                                             \
-  NEOMUTT_TEST_ITEM(config_synonym)                                            \
+  NEOMUTT_TEST_ITEM(test_config_account)                                       \
+  NEOMUTT_TEST_ITEM(test_config_address)                                       \
+  NEOMUTT_TEST_ITEM(test_config_bool)                                          \
+  NEOMUTT_TEST_ITEM(test_config_dump)                                          \
+  NEOMUTT_TEST_ITEM(test_config_enum)                                          \
+  NEOMUTT_TEST_ITEM(test_config_initial)                                       \
+  NEOMUTT_TEST_ITEM(test_config_long)                                          \
+  NEOMUTT_TEST_ITEM(test_config_mbtable)                                       \
+  NEOMUTT_TEST_ITEM(test_config_number)                                        \
+  NEOMUTT_TEST_ITEM(test_config_path)                                          \
+  NEOMUTT_TEST_ITEM(test_config_quad)                                          \
+  NEOMUTT_TEST_ITEM(test_config_regex)                                         \
+  NEOMUTT_TEST_ITEM(test_config_set)                                           \
+  NEOMUTT_TEST_ITEM(test_config_slist)                                         \
+  NEOMUTT_TEST_ITEM(test_config_sort)                                          \
+  NEOMUTT_TEST_ITEM(test_config_string)                                        \
+  NEOMUTT_TEST_ITEM(test_config_subset)                                        \
+  NEOMUTT_TEST_ITEM(test_config_synonym)                                       \
                                                                                \
   /* date */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_add_timeout)                                \

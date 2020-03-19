@@ -628,7 +628,7 @@ ti_out:
   return result;
 }
 
-void config_path(void)
+void test_config_path(void)
 {
   struct Buffer err;
   mutt_buffer_init(&err);

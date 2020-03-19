@@ -178,7 +178,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
-void config_synonym(void)
+void test_config_synonym(void)
 {
   log_line(__func__);
 

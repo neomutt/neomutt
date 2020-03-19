@@ -206,7 +206,7 @@ bool invalid_tests(struct ConfigSet *cs)
   return true;
 }
 
-void config_set(void)
+void test_config_set(void)
 {
   log_line(__func__);
 

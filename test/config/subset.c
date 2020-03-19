@@ -41,7 +41,7 @@ static struct ConfigDef Vars[] = {
 };
 // clang-format on
 
-void config_subset(void)
+void test_config_subset(void)
 {
   log_line(__func__);
 

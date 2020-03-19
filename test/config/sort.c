@@ -723,7 +723,7 @@ static bool test_sort_type(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
-void config_sort(void)
+void test_config_sort(void)
 {
   struct Buffer err;
   mutt_buffer_init(&err);

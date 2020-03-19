@@ -617,7 +617,7 @@ ti_out:
   return result;
 }
 
-void config_mbtable(void)
+void test_config_mbtable(void)
 {
   struct Buffer err;
   mutt_buffer_init(&err);

@@ -677,7 +677,7 @@ ti_out:
   return result;
 }
 
-void config_regex(void)
+void test_config_regex(void)
 {
   struct Buffer err;
   mutt_buffer_init(&err);
