@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_mem_malloc()
+ * Test code for mutt_autocrypthdr_free()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,22 +25,7 @@
 #include "config.h"
 #include "mutt/lib.h"
 
-bool exit_called = false;
-
-void mutt_exit(int code)
+void test_mutt_autocrypthdr_free(void)
 {
-  exit_called = true;
-}
-
-void test_mutt_mem_malloc(void)
-{
-  // void *mutt_mem_malloc(size_t size);
-
-  MuttLogger = log_disp_null;
-  size_t big = ~0;
-  void *ptr = mutt_mem_malloc(big);
-  TEST_CHECK(ptr == NULL);
-  TEST_CHECK(exit_called == true);
-
-  FREE(&ptr);
+  // void mutt_autocrypthdr_free(struct AutocryptHeader **p);
 }

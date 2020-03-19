@@ -37,9 +37,12 @@
   NEOMUTT_TEST_ITEM(test_mutt_addr_cat)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cmp)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_copy)                                       \
+  NEOMUTT_TEST_ITEM(test_mutt_addr_create)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_addr_for_display)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_free)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_addr_new)                                        \
+  NEOMUTT_TEST_ITEM(test_mutt_addr_to_intl)                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_addr_to_local)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_addr_valid_msgid)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_write)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_append)                                 \
@@ -65,6 +68,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_fp)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_actx_entries_free)                               \
   NEOMUTT_TEST_ITEM(test_mutt_actx_free)                                       \
+  NEOMUTT_TEST_ITEM(test_mutt_actx_new)                                        \
                                                                                \
   /* base64 */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_b64_buffer_decode)                               \
@@ -84,10 +88,14 @@
   NEOMUTT_TEST_ITEM(test_mutt_buffer_addstr_n)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_alloc)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_concat_path)                              \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_concatn_path)                             \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_copy)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_dealloc)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_fix_dptr)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_init)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_is_empty)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_len)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_make)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_pool_free)                                \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_pool_get)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_pool_release)                             \
@@ -95,6 +103,8 @@
   NEOMUTT_TEST_ITEM(test_mutt_buffer_reset)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_strcpy)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_strcpy_n)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_strdup)                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_substrcpy)                                \
                                                                                \
   /* charset */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_ch_canonical_charset)                            \
@@ -141,6 +151,8 @@
   /* date */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_add_timeout)                                \
   NEOMUTT_TEST_ITEM(test_mutt_date_check_month)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_date_epoch)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_date_epoch_ms)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_gmtime)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_date_is_day_name)                                \
   NEOMUTT_TEST_ITEM(test_mutt_date_local_tz)                                   \
@@ -153,14 +165,18 @@
   NEOMUTT_TEST_ITEM(test_mutt_date_normalize_time)                             \
   NEOMUTT_TEST_ITEM(test_mutt_date_parse_date)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_date_parse_imap)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_date_sleep_ms)                                   \
                                                                                \
   /* email */                                                                  \
   NEOMUTT_TEST_ITEM(test_email_cmp_strict)                                     \
   NEOMUTT_TEST_ITEM(test_email_free)                                           \
   NEOMUTT_TEST_ITEM(test_email_new)                                            \
   NEOMUTT_TEST_ITEM(test_email_size)                                           \
+  NEOMUTT_TEST_ITEM(test_emaillist_add_email)                                  \
+  NEOMUTT_TEST_ITEM(test_emaillist_clear)                                      \
                                                                                \
   /* envelope */                                                               \
+  NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_free)                               \
   NEOMUTT_TEST_ITEM(test_mutt_env_cmp_strict)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_env_free)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_env_merge)                                       \
@@ -216,6 +232,11 @@
   NEOMUTT_TEST_ITEM(test_mutt_file_unlink)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_file_unlink_empty)                               \
   NEOMUTT_TEST_ITEM(test_mutt_file_unlock)                                     \
+                                                                               \
+  /* filter */                                                                 \
+  NEOMUTT_TEST_ITEM(test_filter_create)                                        \
+  NEOMUTT_TEST_ITEM(test_filter_create_fd)                                     \
+  NEOMUTT_TEST_ITEM(test_filter_wait)                                          \
                                                                                \
   /* from */                                                                   \
   NEOMUTT_TEST_ITEM(test_is_from)                                              \
@@ -284,6 +305,7 @@
                                                                                \
   /* logging */                                                                \
   NEOMUTT_TEST_ITEM(test_log_disp_file)                                        \
+  NEOMUTT_TEST_ITEM(test_log_disp_null)                                        \
   NEOMUTT_TEST_ITEM(test_log_disp_queue)                                       \
   NEOMUTT_TEST_ITEM(test_log_disp_terminal)                                    \
   NEOMUTT_TEST_ITEM(test_log_file_close)                                       \
@@ -350,6 +372,14 @@
   NEOMUTT_TEST_ITEM(test_neomutt_mailboxlist_get_all)                          \
   NEOMUTT_TEST_ITEM(test_neomutt_new)                                          \
                                                                                \
+  /* notify */                                                                 \
+  NEOMUTT_TEST_ITEM(test_notify_free)                                          \
+  NEOMUTT_TEST_ITEM(test_notify_new)                                           \
+  NEOMUTT_TEST_ITEM(test_notify_observer_add)                                  \
+  NEOMUTT_TEST_ITEM(test_notify_observer_remove)                               \
+  NEOMUTT_TEST_ITEM(test_notify_send)                                          \
+  NEOMUTT_TEST_ITEM(test_notify_set_parent)                                    \
+                                                                               \
   /* parameter */                                                              \
   NEOMUTT_TEST_ITEM(test_mutt_param_cmp_strict)                                \
   NEOMUTT_TEST_ITEM(test_mutt_param_delete)                                    \
@@ -390,12 +420,14 @@
   NEOMUTT_TEST_ITEM(test_mutt_path_tidy)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_path_tidy_dotdot)                                \
   NEOMUTT_TEST_ITEM(test_mutt_path_tidy_slash)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_path_tilde)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_path_to_absolute)                                \
                                                                                \
   /* pattern */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_pattern_comp)                                    \
                                                                                \
   /* regex */                                                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_regex_capture)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_regex_compile)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_regex_free)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_regex_match)                                     \
@@ -433,6 +465,17 @@
   NEOMUTT_TEST_ITEM(test_mutt_sig_init)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_sig_unblock)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_sig_unblock_system)                              \
+                                                                               \
+  /* slist */                                                                  \
+  NEOMUTT_TEST_ITEM(test_slist_add_list)                                       \
+  NEOMUTT_TEST_ITEM(test_slist_add_string)                                     \
+  NEOMUTT_TEST_ITEM(test_slist_compare)                                        \
+  NEOMUTT_TEST_ITEM(test_slist_dup)                                            \
+  NEOMUTT_TEST_ITEM(test_slist_empty)                                          \
+  NEOMUTT_TEST_ITEM(test_slist_free)                                           \
+  NEOMUTT_TEST_ITEM(test_slist_is_member)                                      \
+  NEOMUTT_TEST_ITEM(test_slist_parse)                                          \
+  NEOMUTT_TEST_ITEM(test_slist_remove_string)                                  \
                                                                                \
   /* string */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_adjust)                                      \
@@ -475,6 +518,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_strncat)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_strncmp)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_strnfcpy)                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_str_strnlower)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_substr_copy)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_substr_dup)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_sysexit)                                     \
@@ -500,6 +544,7 @@
   /* url */                                                                    \
   NEOMUTT_TEST_ITEM(test_url_check_scheme)                                     \
   NEOMUTT_TEST_ITEM(test_url_free)                                             \
+  NEOMUTT_TEST_ITEM(test_url_new)                                              \
   NEOMUTT_TEST_ITEM(test_url_parse)                                            \
   NEOMUTT_TEST_ITEM(test_url_pct_decode)                                       \
   NEOMUTT_TEST_ITEM(test_url_pct_encode)                                       \

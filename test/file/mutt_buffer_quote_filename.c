@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_file_quote_filename()
+ * Test code for mutt_buffer_quote_filename()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
