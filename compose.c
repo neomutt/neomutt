@@ -634,18 +634,97 @@ cleanup:
 
 /**
  * draw_envelope_addr - Write addresses to the compose window
- * @param line Line to write to (index into Prompts)
- * @param al   Address list to write
- * @param win  Window
+ * @param line      Line to write to (index into Prompts)
+ * @param al        Address list to write
+ * @param win       Window
+ * @retval num Lines used
  */
-static void draw_envelope_addr(int line, struct AddressList *al, struct MuttWindow *win)
+static int draw_envelope_addr(int line, struct AddressList *al, struct MuttWindow *win)
 {
+  const size_t max_lines = 1;
   draw_header(win, line, line);
 
-  char buf[1024];
-  buf[0] = '\0';
-  mutt_addrlist_write(al, buf, sizeof(buf), true);
-  mutt_paddstr(win->state.cols - MaxHeaderWidth, buf);
+  struct ListHead list = STAILQ_HEAD_INITIALIZER(list);
+  int count = mutt_addrlist_write_list(al, &list);
+
+  int lines_used = 1;
+  int addr_len;
+  int width_left = win->state.cols - MaxHeaderWidth;
+  int reserve;
+  char more[32];
+  int more_len = 0;
+
+  char *sep = NULL;
+  struct ListNode *next = NULL;
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &list, entries)
+  {
+    next = STAILQ_NEXT(np, entries);
+    addr_len = mutt_strwidth(np->data);
+    if (next)
+    {
+      sep = ", ";
+      addr_len += 2;
+    }
+    else
+    {
+      sep = "";
+    }
+
+    count--;
+  try_again:
+    more_len = snprintf(more, sizeof(more),
+                        ngettext("(+%d more)", "(+%d more)", count), count);
+
+    reserve = ((count > 0) && (lines_used == max_lines)) ? more_len : 0;
+    if (addr_len >= (width_left - reserve))
+    {
+      if (lines_used == max_lines)
+      {
+        mutt_paddstr(width_left, np->data);
+        break;
+      }
+
+      if (width_left == (win->state.cols - MaxHeaderWidth))
+      {
+        mutt_paddstr(width_left, np->data);
+        break;
+      }
+
+      mutt_window_clrtoeol(win);
+      line++;
+      lines_used++;
+      width_left = win->state.cols - MaxHeaderWidth;
+      mutt_window_move(win, line, MaxHeaderWidth);
+      goto try_again;
+    }
+
+    if (addr_len < width_left)
+    {
+      mutt_window_addstr(np->data);
+      mutt_window_addstr(sep);
+      width_left -= addr_len;
+    }
+  }
+  mutt_list_free(&list);
+
+  if (count > 0)
+  {
+    mutt_window_move(win, line, win->state.cols - more_len);
+    mutt_window_addstr(more);
+  }
+  else
+  {
+    mutt_window_clrtoeol(win);
+  }
+
+  for (int i = lines_used; i < max_lines; i++)
+  {
+    mutt_window_move(win, line + i, 0);
+    mutt_window_clrtoeol(win);
+  }
+
+  return lines_used;
 }
 
 /**
