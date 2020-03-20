@@ -887,7 +887,6 @@ static void compose_custom_redraw(struct Menu *menu)
   {
     menu_redraw_full(menu);
     draw_envelope(rd);
-    menu->offset = 0;
     menu->pagelen = menu->win_index->state.rows;
   }
 
@@ -1182,7 +1181,6 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
   menu->win_index = attach;
   menu->win_ibar = ebar;
 
-  menu->offset = 0;
   menu->make_entry = snd_make_entry;
   menu->tag = attach_tag;
 #ifdef USE_NNTP
