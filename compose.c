@@ -654,16 +654,9 @@ static void draw_envelope(struct ComposeRedrawData *rd)
   const char *fcc = mutt_b2s(rd->fcc);
 
   draw_envelope_addr(HDR_FROM, &e->env->from, rd);
+
 #ifdef USE_NNTP
-  if (!OptNewsSend)
-  {
-#endif
-    draw_envelope_addr(HDR_TO, &e->env->to, rd);
-    draw_envelope_addr(HDR_CC, &e->env->cc, rd);
-    draw_envelope_addr(HDR_BCC, &e->env->bcc, rd);
-#ifdef USE_NNTP
-  }
-  else
+  if (OptNewsSend)
   {
     mutt_window_mvprintw(rd->win_envelope, HDR_TO, 0, "%*s",
                          HeaderPadding[HDR_NEWSGROUPS], Prompts[HDR_NEWSGROUPS]);
@@ -678,7 +671,13 @@ static void draw_envelope(struct ComposeRedrawData *rd)
       mutt_paddstr(W, NONULL(e->env->x_comment_to));
     }
   }
+  else
 #endif
+  {
+    draw_envelope_addr(HDR_TO, &e->env->to, rd);
+    draw_envelope_addr(HDR_CC, &e->env->cc, rd);
+    draw_envelope_addr(HDR_BCC, &e->env->bcc, rd);
+  }
 
   mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(rd->win_envelope, HDR_SUBJECT, 0, "%*s",
