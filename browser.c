@@ -1846,14 +1846,14 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (mutt_buffer_is_empty(buf))
           mutt_buffer_strcpy(buf, ".");
 
-        struct Buffer errmsg = { 0 };
-        int rc = cs_subset_str_string_set(NeoMutt->sub, "mask", mutt_b2s(buf), NULL);
+        struct Buffer errmsg = mutt_buffer_make(256);
+        int rc = cs_subset_str_string_set(NeoMutt->sub, "mask", mutt_b2s(buf), &errmsg);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
           if (!mutt_buffer_is_empty(&errmsg))
           {
-            mutt_error("%s", errmsg.data);
-            FREE(&errmsg.data);
+            mutt_error("%s", mutt_b2s(&errmsg));
+            mutt_buffer_dealloc(&errmsg);
           }
           break;
         }
