@@ -1181,6 +1181,30 @@ size_t mutt_addrlist_write(const struct AddressList *al, char *buf, size_t bufle
 }
 
 /**
+ * mutt_addrlist_write_list - Write Addresses to a List
+ * @param al   AddressList to write
+ * @param list List for the Addresses
+ * @retval num Number of addresses written
+ */
+size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *list)
+{
+  if (!al || !list)
+    return 0;
+
+  char addr[256];
+  size_t count = 0;
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
+  {
+    mutt_addr_write(addr, sizeof(addr), a, true);
+    mutt_list_insert_tail(list, strdup(addr));
+    count++;
+  }
+
+  return count;
+}
+
+/**
  * mutt_addr_to_intl - Convert an Address to Punycode
  * @param a Address to convert
  * @retval bool True on success, false otherwise
