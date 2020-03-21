@@ -629,19 +629,18 @@ cleanup:
  * draw_envelope_addr - Write addresses to the compose window
  * @param line Line to write to (index into Prompts)
  * @param al   Address list to write
- * @param rd  Email and other compose data
+ * @param win  Window
  */
-static void draw_envelope_addr(int line, struct AddressList *al, struct ComposeRedrawData *rd)
+static void draw_envelope_addr(int line, struct AddressList *al, struct MuttWindow *win)
 {
   char buf[1024];
 
   buf[0] = '\0';
   mutt_addrlist_write(al, buf, sizeof(buf), true);
   mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(rd->win_envelope, line, 0, "%*s", HeaderPadding[line],
-                       _(Prompts[line]));
+  mutt_window_mvprintw(win, line, 0, "%*s", HeaderPadding[line], _(Prompts[line]));
   mutt_curses_set_color(MT_COLOR_NORMAL);
-  mutt_paddstr(W, buf);
+  mutt_paddstr(win->state.cols - MaxHeaderWidth, buf);
 }
 
 /**
@@ -653,7 +652,7 @@ static void draw_envelope(struct ComposeRedrawData *rd)
   struct Email *e = rd->email;
   const char *fcc = mutt_b2s(rd->fcc);
 
-  draw_envelope_addr(HDR_FROM, &e->env->from, rd);
+  draw_envelope_addr(HDR_FROM, &e->env->from, rd->win_envelope);
 
 #ifdef USE_NNTP
   if (OptNewsSend)
@@ -674,9 +673,9 @@ static void draw_envelope(struct ComposeRedrawData *rd)
   else
 #endif
   {
-    draw_envelope_addr(HDR_TO, &e->env->to, rd);
-    draw_envelope_addr(HDR_CC, &e->env->cc, rd);
-    draw_envelope_addr(HDR_BCC, &e->env->bcc, rd);
+    draw_envelope_addr(HDR_TO, &e->env->to, rd->win_envelope);
+    draw_envelope_addr(HDR_CC, &e->env->cc, rd->win_envelope);
+    draw_envelope_addr(HDR_BCC, &e->env->bcc, rd->win_envelope);
   }
 
   mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
@@ -685,7 +684,7 @@ static void draw_envelope(struct ComposeRedrawData *rd)
   mutt_curses_set_color(MT_COLOR_NORMAL);
   mutt_paddstr(W, NONULL(e->env->subject));
 
-  draw_envelope_addr(HDR_REPLYTO, &e->env->reply_to, rd);
+  draw_envelope_addr(HDR_REPLYTO, &e->env->reply_to, rd->win_envelope);
 
   mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(rd->win_envelope, HDR_FCC, 0, "%*s",
