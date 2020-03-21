@@ -710,9 +710,9 @@ static void draw_envelope(struct ComposeRedrawData *rd)
  * edit_address_list - Let the user edit the address list
  * @param[in]     line Index into the Prompts lists
  * @param[in,out] al   AddressList to edit
- * @param rd  Email and other compose data
+ * @param[in]     win  Window
  */
-static void edit_address_list(int line, struct AddressList *al, struct ComposeRedrawData *rd)
+static void edit_address_list(int line, struct AddressList *al, struct MuttWindow *win)
 {
   char buf[8192] = { 0 }; /* needs to be large for alias expansion */
   char *err = NULL;
@@ -736,8 +736,8 @@ static void edit_address_list(int line, struct AddressList *al, struct ComposeRe
   /* redraw the expanded list so the user can see the result */
   buf[0] = '\0';
   mutt_addrlist_write(al, buf, sizeof(buf), true);
-  mutt_window_move(rd->win_envelope, line, HDR_XOFFSET);
-  mutt_paddstr(W, buf);
+  mutt_window_move(win, line, HDR_XOFFSET);
+  mutt_paddstr(win->state.cols - MaxHeaderWidth, buf);
 }
 
 /**
@@ -1210,7 +1210,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
     switch (op)
     {
       case OP_COMPOSE_EDIT_FROM:
-        edit_address_list(HDR_FROM, &e->env->from, rd);
+        edit_address_list(HDR_FROM, &e->env->from, rd->win_envelope);
         update_crypt_info(rd);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -1220,7 +1220,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (news)
           break;
 #endif
-        edit_address_list(HDR_TO, &e->env->to, rd);
+        edit_address_list(HDR_TO, &e->env->to, rd->win_envelope);
         update_crypt_info(rd);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -1230,7 +1230,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (news)
           break;
 #endif
-        edit_address_list(HDR_BCC, &e->env->bcc, rd);
+        edit_address_list(HDR_BCC, &e->env->bcc, rd->win_envelope);
         update_crypt_info(rd);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -1240,7 +1240,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (news)
           break;
 #endif
-        edit_address_list(HDR_CC, &e->env->cc, rd);
+        edit_address_list(HDR_CC, &e->env->cc, rd->win_envelope);
         update_crypt_info(rd);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -1319,7 +1319,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         break;
 
       case OP_COMPOSE_EDIT_REPLY_TO:
-        edit_address_list(HDR_REPLYTO, &e->env->reply_to, rd);
+        edit_address_list(HDR_REPLYTO, &e->env->reply_to, rd->win_envelope);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 
