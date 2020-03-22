@@ -13487,11 +13487,6 @@ shutdown-hook 'exec sync-mailbox'
                 <entry>number</entry>
                 <entry><literal>1</literal></entry>
               </row>
-              <row>
-                <entry><literal>header_cache_compress_dictionary</literal></entry>
-                <entry>string</entry>
-                <entry><literal>~/.dictionary</literal></entry>
-              </row>
             </tbody>
           </tgroup>
         </table>
@@ -13536,23 +13531,6 @@ shutdown-hook 'exec sync-mailbox'
               </tbody>
             </tgroup>
           </table>
-        </para>
-        <para>
-          The <literal>header_cache_compress_dictionary</literal> is a special
-          option for the <literal>zstd</literal> compression method. On a lot
-          small files, this compression method can be trained for some level by
-          using a command like this for e.g. level 3:
-        </para>
-<screen>
-zstd --train -3 -r cur new tmp -o dict-level-3
-</screen>
-        <para>
-          This command will create an file called <literal>dict-level-3</literal>,
-          which should be put to the path given in the
-          <literal>header_cache_compress_dictionary</literal> variable. The
-          speed and space gain can be huge, when using zstd dictionaries.  See
-          <ulink url="https://github.com/facebook/zstd">https://github.com/facebook/zstd</ulink>
-          for more information about this.
         </para>
       </sect2>
       <sect2 id="hccompress-neomuttrc">

@@ -1,9 +1,9 @@
 /**
  * @file
- * Zstd header cache compression
+ * Zstandard header cache compression
  *
  * @authors
- * Copyright (C) 2019 Tino Reichardt <milky-neomutt@mcmilk.de>
+ * Copyright (C) 2019-2020 Tino Reichardt <milky-neomutt@mcmilk.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,30 +34,31 @@
 #include "lib.h"
 #include "hcache/lib.h"
 
+#define MIN_COMP_LEVEL 1  ///< Minimum compression level for zstd
+#define MAX_COMP_LEVEL 22 ///< Maximum compression level for zstd
+
 /**
- * struct ComprZstdCtx - Private Zstd Compression Context
+ * struct ComprZstdCtx - Private Zstandard Compression Context
  */
 struct ComprZstdCtx
 {
-  void *buf;         ///< Temporary buffer
-  ZSTD_CCtx *cctx;   ///< Compression context
-  ZSTD_DCtx *dctx;   ///< Decompression context
-  ZSTD_CDict *cdict; ///< Compression dictionary
-  ZSTD_DDict *ddict; ///< Decompression dictionary
+  void *buf;   ///< Temporary buffer
+  short level; ///< Compression Level to be used
+
+  ZSTD_CCtx *cctx; ///< Compression context
+  ZSTD_DCtx *dctx; ///< Decompression context
 };
 
 /**
  * compr_zstd_open - Implements ComprOps::open()
  */
-static void *compr_zstd_open(void)
+static void *compr_zstd_open(short level)
 {
   struct ComprZstdCtx *ctx = mutt_mem_malloc(sizeof(struct ComprZstdCtx));
 
   ctx->buf = mutt_mem_malloc(ZSTD_compressBound(1024 * 128));
   ctx->cctx = ZSTD_createCCtx();
   ctx->dctx = ZSTD_createDCtx();
-  ctx->cdict = NULL;
-  ctx->ddict = NULL;
 
   if (!ctx->cctx || !ctx->dctx)
   {
@@ -65,24 +66,14 @@ static void *compr_zstd_open(void)
     return NULL;
   }
 
-  if (C_HeaderCacheCompressDictionary)
+  if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
   {
-    FILE *fp = fopen(C_HeaderCacheCompressDictionary, "r");
-    if (fp)
-    {
-      fseek(fp, 0, SEEK_END);
-      long dsize = ftell(fp);
-      mutt_mem_realloc(&ctx->buf, dsize);
-      rewind(fp);
-      size_t done = fread(ctx->buf, 1, dsize, fp);
-      if (done == dsize)
-      {
-        ctx->cdict = ZSTD_createCDict(ctx->buf, dsize, C_HeaderCacheCompressLevel);
-        ctx->ddict = ZSTD_createDDict(ctx->buf, dsize);
-      }
-      fclose(fp);
-    }
+    mutt_warning(_("The compression level for %s should be between %d and %d"),
+                 compr_zstd_ops.name, MIN_COMP_LEVEL, MAX_COMP_LEVEL);
+    level = MIN_COMP_LEVEL;
   }
+
+  ctx->level = level;
 
   return ctx;
 }
@@ -97,15 +88,10 @@ static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size
 
   struct ComprZstdCtx *ctx = cctx;
 
-  size_t ret;
   size_t len = ZSTD_compressBound(dlen);
   mutt_mem_realloc(&ctx->buf, len);
 
-  if (ctx->cdict)
-    ret = ZSTD_compress_usingCDict(ctx->cctx, ctx->buf, len, data, dlen, ctx->cdict);
-  else
-    ret = ZSTD_compressCCtx(ctx->cctx, ctx->buf, len, data, dlen, C_HeaderCacheCompressLevel);
-
+  size_t ret = ZSTD_compressCCtx(ctx->cctx, ctx->buf, len, data, dlen, ctx->level);
   if (ZSTD_isError(ret))
     return NULL;
 
@@ -133,12 +119,7 @@ static void *compr_zstd_decompress(void *cctx, const char *cbuf, size_t clen)
     return NULL;
   mutt_mem_realloc(&ctx->buf, len);
 
-  size_t ret;
-  if (ctx->ddict)
-    ret = ZSTD_decompress_usingDDict(ctx->dctx, ctx->buf, len, cbuf, clen, ctx->ddict);
-  else
-    ret = ZSTD_decompressDCtx(ctx->dctx, ctx->buf, len, cbuf, clen);
-
+  size_t ret = ZSTD_decompressDCtx(ctx->dctx, ctx->buf, len, cbuf, clen);
   if (ZSTD_isError(ret))
     return NULL;
 
@@ -160,12 +141,6 @@ static void compr_zstd_close(void **cctx)
 
   if (ctx->dctx)
     ZSTD_freeDCtx(ctx->dctx);
-
-  if (ctx->cdict)
-    ZSTD_freeCDict(ctx->cdict);
-
-  if (ctx->ddict)
-    ZSTD_freeDDict(ctx->ddict);
 
   FREE(&ctx->buf);
   FREE(cctx);

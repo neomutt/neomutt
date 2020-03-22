@@ -1,9 +1,9 @@
 /**
  * @file
- * Zlib header cache compression
+ * ZLIB header cache compression
  *
  * @authors
- * Copyright (C) 2019 Tino Reichardt <milky-neomutt@mcmilk.de>
+ * Copyright (C) 2019-2020 Tino Reichardt <milky-neomutt@mcmilk.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,22 +35,35 @@
 #include "lib.h"
 #include "hcache/lib.h"
 
+#define MIN_COMP_LEVEL 1 ///< Minimum compression level for zlib
+#define MAX_COMP_LEVEL 9 ///< Maximum compression level for zlib
+
 /**
  * struct ComprZlibCtx - Private Zlib Compression Context
  */
 struct ComprZlibCtx
 {
-  void *buf; ///< Temporary buffer
+  void *buf;   ///< Temporary buffer
+  short level; ///< Compression Level to be used
 };
 
 /**
  * compr_zlib_open - Implements ComprOps::open()
  */
-static void *compr_zlib_open(void)
+static void *compr_zlib_open(short level)
 {
   struct ComprZlibCtx *ctx = mutt_mem_malloc(sizeof(struct ComprZlibCtx));
 
   ctx->buf = mutt_mem_malloc(compressBound(1024 * 32));
+
+  if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
+  {
+    mutt_warning(_("The compression level for %s should be between %d and %d"),
+                 compr_zlib_ops.name, MIN_COMP_LEVEL, MAX_COMP_LEVEL);
+    level = MIN_COMP_LEVEL;
+  }
+
+  ctx->level = level;
 
   return ctx;
 }
@@ -69,7 +82,7 @@ static void *compr_zlib_compress(void *cctx, const char *data, size_t dlen, size
   mutt_mem_realloc(&ctx->buf, len + 4);
   Bytef *cbuf = (unsigned char *) ctx->buf + 4;
   const void *ubuf = data;
-  int rc = compress2(cbuf, &len, ubuf, dlen, C_HeaderCacheCompressLevel);
+  int rc = compress2(cbuf, &len, ubuf, dlen, ctx->level);
   if (rc != Z_OK)
     return NULL;
   *clen = len + 4;

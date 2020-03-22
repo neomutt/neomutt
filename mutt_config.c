@@ -1459,14 +1459,6 @@ struct ConfigDef MuttVars[] = {
   */
 #endif /* HAVE_GDBM || HAVE_BDB */
 #if defined(USE_HCACHE_COMPRESSION)
-#ifdef HAVE_ZSTD
-  { "header_cache_compress_dictionary", DT_STRING|DT_PATH, &C_HeaderCacheCompressDictionary, IP "~/.dictionary" },
-  /*
-  ** .pp
-  ** When NeoMutt is compiled with zstd, the header cache backend can be used together
-  ** with a dictionary to achieve better compression on the cache files.
-  */
-#endif /* HAVE_ZSTD */
   { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, &C_HeaderCacheCompressLevel, 1 },
   /*
   ** .pp
