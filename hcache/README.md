@@ -8,6 +8,7 @@ There are six different databases to choose from:
 - KyotoCabinet
 - LMDB
 - QDBM
+- TDB
 - TokyoCabinet
 
 And three different compression methods:

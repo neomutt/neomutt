@@ -37,7 +37,7 @@
 #include "serialize.h"
 
 #if !(defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) ||           \
-      defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_TC))
+      defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_TDB))
 #error "No hcache backend defined"
 #endif
 
@@ -68,6 +68,7 @@ HCACHE_BACKEND(gdbm)
 HCACHE_BACKEND(kyotocabinet)
 HCACHE_BACKEND(lmdb)
 HCACHE_BACKEND(qdbm)
+HCACHE_BACKEND(tdb)
 HCACHE_BACKEND(tokyocabinet)
 #undef HCACHE_BACKEND
 
@@ -91,6 +92,9 @@ const struct HcacheOps *hcache_ops[] = {
 #endif
 #ifdef HAVE_BDB
   &hcache_bdb_ops,
+#endif
+#ifdef HAVE_TDB
+  &hcache_tdb_ops,
 #endif
 #ifdef HAVE_LMDB
   &hcache_lmdb_ops,

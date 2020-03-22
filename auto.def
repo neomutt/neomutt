@@ -89,6 +89,8 @@ options {
   with-lmdb:path            => "Location of LMDB"
   qdbm=0                    => "Use QDBM for the header cache"
   with-qdbm:path            => "Location of QDBM"
+  tdb=0                     => "Use TDB for the header cache"
+  with-tdb:path             => "Location of TDB"
   tokyocabinet=0            => "Use TokyoCabinet for the header cache"
   with-tokyocabinet:path    => "Location of TokyoCabinet"
 # sqlite
@@ -131,7 +133,7 @@ if {1} {
     debug-parse-test debug-window doc everything fmemopen full-doc gdbm gnutls
     gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua lz4
     mixmaster nls notmuch pgp pkgconf qdbm sasl smime sqlite ssl testing
-    tokyocabinet zlib zstd
+    tdb tokyocabinet zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -141,7 +143,7 @@ if {1} {
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
     bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua lz4 mixmaster
-    ncurses nls notmuch qdbm sasl slang sqlite ssl tokyocabinet zlib zstd
+    ncurses nls notmuch qdbm sasl slang sqlite ssl tdb tokyocabinet zlib zstd
   } {
     if {[opt-val with-$opt] ne {}} {
       define want-$opt 1
@@ -357,7 +359,7 @@ set prefix [opt-val with-sysroot][get-define prefix]
 # Everything
 if {[get-define want-everything]} {
   foreach opt {bdb gdbm gpgme kyotocabinet lmdb lua lz4 notmuch pgp qdbm smime
-               tokyocabinet zlib zstd} {
+               tokyocabinet tdb zlib zstd} {
     define want-$opt
     append conf_options "--$opt "
   }
@@ -1014,6 +1016,24 @@ if {[get-define want-qdbm]} {
     }
   }
   define-append HCACHE_BACKENDS "qdbm"
+  define USE_HCACHE
+}
+
+###############################################################################
+# Header Cache - TDB
+if {[get-define want-tdb]} {
+  if {[get-define want-pkgconf]} {
+    pkgconf true tdb
+    define-feature tdb
+  } else {
+    cc-with {-includes sys/stat.h} {
+      if {![check-inc-and-lib tdb [opt-val with-tdb $prefix] \
+                              tdb.h tdb_close tdb]} {
+        user-error "Unable to find TDB"
+      }
+    }
+  }
+  define-append HCACHE_BACKENDS "tdb"
   define USE_HCACHE
 }
 
