@@ -7,7 +7,7 @@
  * Copyright (C) 2004 Tobias Werth <sitowert@stud.uni-erlangen.de>
  * Copyright (C) 2004 Brian Fundakowski Feldman <green@FreeBSD.org>
  * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2019 Tino Reichardt <milky-neomutt@mcmilk.de>
+ * Copyright (C) 2019-2020 Tino Reichardt <milky-neomutt@mcmilk.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -120,7 +120,6 @@ static const struct HcacheOps *hcache_get_backend_ops(const char *backend)
 }
 
 #ifdef USE_HCACHE_COMPRESSION
-char *C_HeaderCacheCompressDictionary; ///< Config: (hcache) Filepath to dictionary for zstd compression
 short C_HeaderCacheCompressLevel; ///< Config: (hcache) Level of compression for method
 char *C_HeaderCacheCompressMethod; ///< Config: (hcache) Enable generic hcache database compression
 
@@ -428,7 +427,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
   {
     const struct ComprOps *cops = compr_get_ops();
 
-    hc->cctx = cops->open();
+    hc->cctx = cops->open(C_HeaderCacheCompressLevel);
     if (!hc->cctx)
     {
       FREE(&hc);
@@ -436,7 +435,6 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     }
 
     /* remember the buffer of database backend */
-    hc->ondisk = NULL;
     mutt_debug(LL_DEBUG3, "Header cache will use %s compression\n", cops->name);
   }
 #endif
@@ -524,6 +522,7 @@ struct HCacheEntry mutt_hcache_fetch(header_cache_t *hc, const char *key,
   if (C_HeaderCacheCompressMethod)
   {
     const struct ComprOps *cops = compr_get_ops();
+
     void *dblob = cops->decompress(hc->cctx, (char *) data + hlen, dlen - hlen);
     if (!dblob)
     {
@@ -598,8 +597,9 @@ int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
      * decompressing on fetch().  */
     size_t hlen = header_size();
 
-    /* data/dlen gets ptr to compressed data here */
     const struct ComprOps *cops = compr_get_ops();
+
+    /* data / dlen gets ptr to compressed data here */
     size_t clen = dlen;
     void *cdata = cops->compress(hc->cctx, data + hlen, dlen - hlen, &clen);
     if (!cdata)

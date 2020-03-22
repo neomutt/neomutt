@@ -3,7 +3,7 @@
  * LZ4 header cache compression
  *
  * @authors
- * Copyright (C) 2019 Tino Reichardt <milky-neomutt@mcmilk.de>
+ * Copyright (C) 2019-2020 Tino Reichardt <milky-neomutt@mcmilk.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,22 +34,35 @@
 #include "lib.h"
 #include "hcache/lib.h"
 
+#define MIN_COMP_LEVEL 1  ///< Minimum compression level for lz4
+#define MAX_COMP_LEVEL 12 ///< Maximum compression level for lz4
+
 /**
  * struct ComprLz4Ctx - Private Lz4 Compression Context
  */
 struct ComprLz4Ctx
 {
-  void *buf; ///< Temporary buffer
+  void *buf;   ///< Temporary buffer
+  short level; ///< Compression Level to be used
 };
 
 /**
  * compr_lz4_open - Implements ComprOps::open()
  */
-static void *compr_lz4_open(void)
+static void *compr_lz4_open(short level)
 {
   struct ComprLz4Ctx *ctx = mutt_mem_malloc(sizeof(struct ComprLz4Ctx));
 
   ctx->buf = mutt_mem_malloc(LZ4_compressBound(1024 * 32));
+
+  if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
+  {
+    mutt_warning(_("The compression level for %s should be between %d and %d"),
+                 compr_lz4_ops.name, MIN_COMP_LEVEL, MAX_COMP_LEVEL);
+    level = MIN_COMP_LEVEL;
+  }
+
+  ctx->level = level;
 
   return ctx;
 }
@@ -63,12 +76,13 @@ static void *compr_lz4_compress(void *cctx, const char *data, size_t dlen, size_
     return NULL;
 
   struct ComprLz4Ctx *ctx = cctx;
+
   int datalen = dlen;
   int len = LZ4_compressBound(dlen);
   mutt_mem_realloc(&ctx->buf, len + 4);
   char *cbuf = ctx->buf;
 
-  len = LZ4_compress_fast(data, cbuf + 4, datalen, len, C_HeaderCacheCompressLevel);
+  len = LZ4_compress_fast(data, cbuf + 4, datalen, len, ctx->level);
   if (len == 0)
     return NULL;
   *clen = len + 4;

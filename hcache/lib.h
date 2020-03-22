@@ -7,6 +7,7 @@
  * Copyright (C) 2004 Tobias Werth <sitowert@stud.uni-erlangen.de>
  * Copyright (C) 2004 Brian Fundakowski Feldman <green@FreeBSD.org>
  * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Tino Reichardt <milky-neomutt@mcmilk.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -71,7 +72,6 @@ struct EmailCache
   unsigned int crc;
   void *ctx;
   void *cctx;
-  void *ondisk;
 };
 
 typedef struct EmailCache header_cache_t;
@@ -95,7 +95,6 @@ typedef void (*hcache_namer_t)(const char *path, struct Buffer *dest);
 
 /* These Config Variables are only used in hcache/hcache.c */
 extern char *C_HeaderCacheBackend;
-extern char *C_HeaderCacheCompressDictionary;
 extern short C_HeaderCacheCompressLevel;
 extern char *C_HeaderCacheCompressMethod;
 

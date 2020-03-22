@@ -3,7 +3,7 @@
  * API for the header cache compression
  *
  * @authors
- * Copyright (C) 2019 Tino Reichardt <milky-neomutt@mcmilk.de>
+ * Copyright (C) 2019-2020 Tino Reichardt <milky-neomutt@mcmilk.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,6 +32,10 @@
  * | compress/lz4.c      | @subpage compress_lz4  |
  * | compress/zlib.c     | @subpage compress_zlib |
  * | compress/zstd.c     | @subpage compress_zstd |
+ *
+ * Usage with Compression Level set to X:
+ * - open(level X) -> N times compress() -> close()
+ * - open(level X) -> N times decompress() -> close()
  */
 
 #ifndef MUTT_COMPRESS_LIB_H
@@ -48,10 +52,11 @@ struct ComprOps
 
   /**
    * open - Open a compression context
+   * @param[in]  level The compression level
    * @retval ptr  Success, backend-specific context
    * @retval NULL Otherwise
    */
-  void *(*open)(void);
+  void *(*open)(short level);
 
   /**
    * compress - Compress header cache data
