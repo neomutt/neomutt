@@ -46,6 +46,7 @@
  * | hcache/lmdb.c | @subpage hc_lmdb |
  * | hcache/qdbm.c | @subpage hc_qdbm |
  * | hcache/tc.c   | @subpage hc_tc   |
+ * | hcache/tdb.c  | @subpage hc_tdb  |
  */
 
 #ifndef MUTT_HCACHE_LIB_H
@@ -53,7 +54,6 @@
 
 #include <stddef.h>
 #include <stdbool.h>
-#include "compress/lib.h"
 
 struct Buffer;
 struct Email;

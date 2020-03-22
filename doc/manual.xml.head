@@ -11811,7 +11811,8 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
         </para>
         <para>
           Header caching can be enabled by configuring one of the database
-          backends. One of tokyocabinet, kyotocabinet, qdbm, gdbm, lmdb or bdb.
+          backends. One of bdb, gdbm, kyotocabinet, lmdb, qdbm, tdb,
+          tokyocabinet.
         </para>
         <para>
           If enabled, <link linkend="header-cache">$header_cache</link> can be
@@ -11826,7 +11827,7 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
           be used to specify which backend to use. The list of available
           backends can be specified at configure time with a set of
           --with-&lt;backend&gt; options. Currently, the following backends are
-          supported: tokyocabinet, kyotocabinet, qdbm, gdbm, bdb, lmdb.
+          supported: bdb, gdbm, kyotocabinet, lmdb, qdbm, tdb, tokyocabinet.
         </para>
       </sect2>
 
