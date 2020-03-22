@@ -1,6 +1,6 @@
 /**
  * @file
- * GDMB backend for the header cache
+ * GDBM backend for the header cache
  *
  * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
@@ -24,7 +24,7 @@
  */
 
 /**
- * @page hc_gdbm GDMB
+ * @page hc_gdbm GDBM
  *
  * Use a GNU dbm file as a header cache backend.
  */
