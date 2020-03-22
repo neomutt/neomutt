@@ -2940,11 +2940,11 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <emphasis>&lt;id&gt;</emphasis> ]
           </para>
           <para>
-            <quote>E</quote> selects encryption, <quote>S</quote> selects
-            signing and <quote>S&lt;id&gt;</quote> selects signing with the
-            given key, setting <link linkend="pgp-sign-as">$pgp_sign_as</link>
-            for the duration of the message composition session. The selection
-            can later be changed in the compose menu.
+            <quote>E</quote> selects encryption, <quote>S</quote> selects signing
+            and <quote>S&lt;id&gt;</quote> selects signing with the given key,
+            setting <link linkend="pgp-sign-as">$pgp_sign_as</link> for the
+            duration of the message composition session. The selection can later
+            be changed in the compose menu.
           </para>
         </sect3>
 
