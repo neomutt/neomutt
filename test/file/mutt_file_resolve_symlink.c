@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_file_unlock()
+ * Test code for mutt_file_resolve_symlink()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,11 +25,14 @@
 #include "config.h"
 #include "mutt/lib.h"
 
-void test_mutt_file_unlock(void)
+void test_mutt_file_resolve_symlink(void)
 {
-  // int mutt_file_unlock(int fd);
+  // void mutt_file_resolve_symlink(struct Buffer *buf);
 
   {
-    TEST_CHECK(mutt_file_unlock(0) == 0);
+    struct Buffer file = mutt_buffer_make(0);
+    mutt_file_resolve_symlink(&file);
+    TEST_CHECK_(1, "mutt_file_resolve_symlink(&file)");
+    mutt_buffer_dealloc(&file);
   }
 }

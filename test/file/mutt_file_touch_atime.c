@@ -28,4 +28,9 @@
 void test_mutt_file_touch_atime(void)
 {
   // void mutt_file_touch_atime(int fd);
+
+  {
+    mutt_file_touch_atime(0);
+    TEST_CHECK_(1, "mutt_file_touch_atime(0)");
+  }
 }

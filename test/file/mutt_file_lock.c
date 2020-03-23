@@ -28,4 +28,8 @@
 void test_mutt_file_lock(void)
 {
   // int mutt_file_lock(int fd, bool excl, bool timeout);
+
+  {
+    TEST_CHECK(mutt_file_lock(0, false, false) == 0);
+  }
 }

@@ -180,6 +180,7 @@ FILE_OBJS	= test/file/common.o \
 		  test/file/mutt_file_read_keyword.o \
 		  test/file/mutt_file_read_line.o \
 		  test/file/mutt_file_rename.o \
+		  test/file/mutt_file_resolve_symlink.o \
 		  test/file/mutt_file_rmtree.o \
 		  test/file/mutt_file_safe_rename.o \
 		  test/file/mutt_file_sanitize_filename.o \
