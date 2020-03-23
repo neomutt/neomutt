@@ -304,30 +304,20 @@ int mutt_ch_convert_nonmime_string(char **ps)
   if (!ps)
     return -1;
 
-  const struct ListNode *np = NULL;
+  if (!*ps || (**ps == '\0'))
+    return 0;
 
+  const struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &C_AssumedCharset->head, entries)
   {
     const char *from = (const char *) np->data;
-    char *u = *ps;
-    size_t ulen = mutt_str_strlen(*ps);
-
-    if (!u || !*u)
+    if (!from)
       return 0;
 
-    size_t n = mutt_str_strlen(from);
-    if (n == 0)
+    if (mutt_ch_convert_string(ps, from, C_Charset, 0) == 0)
       return 0;
-    char *str = mutt_str_substr_dup(u, u + ulen);
-    int rc = mutt_ch_convert_string(&str, from, C_Charset, 0);
-    FREE(&str);
-    if (rc == 0)
-    {
-      return 0;
-    }
   }
-  mutt_ch_convert_string(ps, (const char *) mutt_ch_get_default_charset(),
-                         C_Charset, MUTT_ICONV_HOOK_FROM);
+  mutt_ch_convert_string(ps, mutt_ch_get_default_charset(), C_Charset, MUTT_ICONV_HOOK_FROM);
   return -1;
 }
 
