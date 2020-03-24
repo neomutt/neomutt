@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/lib.h"
+#include "common.h"
 
 void test_mutt_file_check_empty(void)
 {
@@ -31,5 +32,28 @@ void test_mutt_file_check_empty(void)
 
   {
     TEST_CHECK(mutt_file_check_empty(NULL) != 0);
+  }
+
+  // clang-format off
+  static struct TestValue tests[] = {
+    { NULL,                      NULL, -1 }, // Invalid
+    { "",                        NULL, -1 }, // Invalid
+    { "%s/file/empty",           NULL,  1 }, // Empty file
+    { "%s/file/empty_symlink",   NULL,  1 }, // Symlink
+    { "%s/file/size",            NULL,  0 }, // Non-empty file
+    { "%s/file/missing_symlink", NULL, -1 }, // Broken symlink
+    { "%s/file/missing",         NULL, -1 }, // Missing file
+  };
+  // clang-format on
+
+  char first[256] = { 0 };
+  int rc;
+  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  {
+    test_gen_path(first, sizeof(first), tests[i].first);
+
+    TEST_CASE(first);
+    rc = mutt_file_check_empty(first);
+    TEST_CHECK(rc == tests[i].retval);
   }
 }
