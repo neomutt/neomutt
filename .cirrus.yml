@@ -2,6 +2,8 @@ freebsd_instance:
   image_family: freebsd-13-0-snap
 
 task:
+  only_if: $CIRRUS_BRANCH == "master" || $CIRRUS_PR != ""
+  skip: $CIRRUS_PR_DRAFT == "true"
   env:
     PKG_COMMON:
       cyrus-sasl db5 docbook-xsl gdbm gettext-tools gpgme iconv jimtcl
