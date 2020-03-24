@@ -52,7 +52,7 @@ void test_mutt_file_resolve_symlink(void)
     test_gen_path(second, sizeof(second), tests[i].second);
     mutt_buffer_strcpy(&result, first);
 
-    TEST_CASE(tests[i].first);
+    TEST_CASE(first);
     mutt_file_resolve_symlink(&result);
     if (!TEST_CHECK(mutt_str_strcmp(mutt_b2s(&result), second) == 0))
     {
