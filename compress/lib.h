@@ -23,6 +23,8 @@
 /**
  * @page compress COMPRESS: Compression
  *
+ * @subpage compress_compress
+ *
  * Compression Backends:
  *
  * | File                | Description            |
