@@ -23,16 +23,44 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
+#include <limits.h>
 #include "mutt/lib.h"
+#include "common.h"
 
 void test_mutt_file_resolve_symlink(void)
 {
   // void mutt_file_resolve_symlink(struct Buffer *buf);
 
+  // clang-format off
+  static struct TestValue tests[] = {
+    { NULL,                      "",                        }, // Invalid
+    { "",                        "",                        }, // Invalid
+    { "%s/file/size",            "%s/file/size",            }, // Real file
+    { "%s/file/size_symlink",    "%s/file/size",            }, // Symlink
+    { "%s/file/missing_symlink", "%s/file/missing_symlink", }, // Broken symlink
+    { "%s/file/missing",         "%s/file/missing",         }, // Missing file
+  };
+  // clang-format on
+
+  char first[256] = { 0 };
+  char second[256] = { 0 };
+
+  struct Buffer result = mutt_buffer_make(256);
+  for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    struct Buffer file = mutt_buffer_make(0);
-    mutt_file_resolve_symlink(&file);
-    TEST_CHECK_(1, "mutt_file_resolve_symlink(&file)");
-    mutt_buffer_dealloc(&file);
+    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(second, sizeof(second), tests[i].second);
+    mutt_buffer_strcpy(&result, first);
+
+    TEST_CASE(tests[i].first);
+    mutt_file_resolve_symlink(&result);
+    if (!TEST_CHECK(mutt_str_strcmp(mutt_b2s(&result), second) == 0))
+    {
+      TEST_MSG("Original: %s", NONULL(tests[i].first));
+      TEST_MSG("Expected: %s", second);
+      TEST_MSG("Actual:   %s", mutt_b2s(&result));
+    }
   }
+
+  mutt_buffer_dealloc(&result);
 }

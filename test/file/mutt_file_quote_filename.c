@@ -24,10 +24,19 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/lib.h"
+#include "common.h"
 
 void test_mutt_file_quote_filename(void)
 {
   // size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen);
+
+  // clang-format off
+  static struct TestValue tests[] = {
+    { "plain",  "'plain'",       7 },
+    { "ba`ck",  "'ba'\\`'ck'",  10 },
+    { "qu'ote", "'qu'\\''ote'", 11 },
+  };
+  // clang-format on
 
   {
     char buf[32] = { 0 };
@@ -36,5 +45,23 @@ void test_mutt_file_quote_filename(void)
 
   {
     TEST_CHECK(mutt_file_quote_filename("apple", NULL, 10) == 0);
+  }
+
+  int rc;
+  char buf[256];
+  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  {
+    TEST_CASE(tests[i].first);
+    memset(buf, 0, sizeof(buf));
+    rc = mutt_file_quote_filename(tests[i].first, buf, sizeof(buf));
+    if (!TEST_CHECK(rc == tests[i].retval) ||
+        !TEST_CHECK(mutt_str_strcmp(buf, tests[i].second) == 0))
+    {
+      TEST_MSG("Expected: %d", tests[i].retval);
+      TEST_MSG("Actual:   %d", rc);
+      TEST_MSG("Original: %s", tests[i].first);
+      TEST_MSG("Expected: %s", tests[i].second);
+      TEST_MSG("Actual:   %s", buf);
+    }
   }
 }

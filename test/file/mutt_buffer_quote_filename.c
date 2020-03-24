@@ -24,19 +24,40 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/lib.h"
+#include "common.h"
 
 void test_mutt_buffer_quote_filename(void)
 {
   // void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename, bool add_outer)
 
-  {
-    mutt_buffer_quote_filename(NULL, "apple", false);
-    TEST_CHECK_(1, "mutt_buffer_quote_filename(NULL, \"apple\", false)");
-  }
+  // clang-format off
+  static struct TestValue tests[] = {
+    { "plain",  "plain",        },
+    { "plain",  "'plain'",      },
+    { "ba`ck",  "ba'\\`'ck",    },
+    { "ba`ck",  "'ba'\\`'ck'",  },
+    { "qu'ote", "qu'\\''ote",   },
+    { "qu'ote", "'qu'\\''ote'", },
+  };
+  // clang-format on
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_quote_filename(&buf, NULL, false);
-    TEST_CHECK_(1, "mutt_buffer_quote_filename(&buf, NULL, false)");
+    mutt_buffer_quote_filename(NULL, NULL, false);
+    TEST_CHECK_(1, "mutt_buffer_quote_filename(NULL, NULL, false)");
   }
+
+  struct Buffer result = mutt_buffer_make(256);
+  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  {
+    TEST_CASE(tests[i].first);
+    mutt_buffer_quote_filename(&result, tests[i].first, (i % 2));
+    if (!TEST_CHECK(mutt_str_strcmp(mutt_b2s(&result), tests[i].second) == 0))
+    {
+      TEST_MSG("Original: %s", tests[i].first);
+      TEST_MSG("Expected: %s", tests[i].second);
+      TEST_MSG("Actual:   %s", mutt_b2s(&result));
+    }
+  }
+
+  mutt_buffer_dealloc(&result);
 }
