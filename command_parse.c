@@ -1114,7 +1114,7 @@ enum CommandResult parse_path_list(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(path, s, MUTT_TOKEN_NO_FLAGS);
+    mutt_extract_token(path, s, MUTT_TOKEN_BACKTICK_VARS);
     mutt_buffer_expand_path(path);
     add_to_stailq((struct ListHead *) data, mutt_b2s(path));
   } while (MoreArgs(s));
@@ -1135,7 +1135,7 @@ enum CommandResult parse_path_unlist(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(path, s, MUTT_TOKEN_NO_FLAGS);
+    mutt_extract_token(path, s, MUTT_TOKEN_BACKTICK_VARS);
     /* Check for deletion of entire list */
     if (mutt_str_strcmp(mutt_b2s(path), "*") == 0)
     {
