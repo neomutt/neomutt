@@ -1,6 +1,6 @@
 /**
  * @file
- * Trivial DataBase backend for the header cache
+ * Trivial DataBase backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2020 Tino Reichardt <milky-neomutt@mcmilk.de>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page hc_tdb TDB
+ * @page store_tdb Trivial DataBase
  *
- * Use a Trivial DataBase file as a header cache backend.
+ * Trivial DataBase backend for the key/value Store
  */
 
 #include "config.h"
@@ -34,89 +34,89 @@
 #include "lib.h"
 
 /**
- * hcache_tdb_open - Implements HcacheOps::open()
+ * store_tdb_open - Implements StoreOps::open()
  */
-static void *hcache_tdb_open(const char *path)
+static void *store_tdb_open(const char *path)
 {
-  /**
-   * TDB_NOLOCK - not needed
-   * TDB_NOSYNC - not needed
-   * TDB_INCOMPATIBLE_HASH - faster then the old one
+  /* TDB_NOLOCK - Don't do any locking
+   * TDB_NOSYNC - Don't use synchronous transactions
+   * TDB_INCOMPATIBLE_HASH - Better hashing
    */
-  int flags = TDB_NOLOCK | TDB_INCOMPATIBLE_HASH | TDB_NOSYNC;
-  return tdb_open(path, 33657, flags, O_CREAT | O_RDWR, 00600);
+  const int flags = TDB_NOLOCK | TDB_INCOMPATIBLE_HASH | TDB_NOSYNC;
+  const int hash_size = 0; // Let TDB use its default value
+  return tdb_open(path, hash_size, flags, O_CREAT | O_RDWR, 00600);
 }
 
 /**
- * hcache_tdb_fetch - Implements HcacheOps::fetch()
+ * store_tdb_fetch - Implements StoreOps::fetch()
  */
-static void *hcache_tdb_fetch(void *ctx, const char *key, size_t keylen, size_t *dlen)
+static void *store_tdb_fetch(void *store, const char *key, size_t klen, size_t *vlen)
 {
-  if (!ctx)
+  if (!store)
     return NULL;
 
-  TDB_CONTEXT *db = ctx;
+  TDB_CONTEXT *db = store;
   TDB_DATA dkey;
   TDB_DATA data;
 
   dkey.dptr = (unsigned char *) key;
-  dkey.dsize = keylen;
+  dkey.dsize = klen;
   data = tdb_fetch(db, dkey);
 
-  *dlen = data.dsize;
+  *vlen = data.dsize;
   return data.dptr;
 }
 
 /**
- * hcache_tdb_free - Implements HcacheOps::free()
+ * store_tdb_free - Implements StoreOps::free()
  */
-static void hcache_tdb_free(void *vctx, void **data)
+static void store_tdb_free(void *store, void **ptr)
 {
-  FREE(data);
+  FREE(ptr);
 }
 
 /**
- * hcache_tdb_store - Implements HcacheOps::store()
+ * store_tdb_store - Implements StoreOps::store()
  */
-static int hcache_tdb_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
+static int store_tdb_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
 {
-  if (!ctx)
+  if (!store)
     return -1;
 
-  TDB_CONTEXT *db = ctx;
+  TDB_CONTEXT *db = store;
   TDB_DATA dkey;
   TDB_DATA databuf;
 
   dkey.dptr = (unsigned char *) key;
-  dkey.dsize = keylen;
+  dkey.dsize = klen;
 
-  databuf.dsize = dlen;
-  databuf.dptr = data;
+  databuf.dsize = vlen;
+  databuf.dptr = value;
 
   return tdb_store(db, dkey, databuf, TDB_INSERT);
 }
 
 /**
- * hcache_tdb_delete_header - Implements HcacheOps::delete_header()
+ * store_tdb_delete_record - Implements StoreOps::delete_record()
  */
-static int hcache_tdb_delete_header(void *ctx, const char *key, size_t keylen)
+static int store_tdb_delete_record(void *store, const char *key, size_t klen)
 {
-  if (!ctx)
+  if (!store)
     return -1;
 
-  TDB_CONTEXT *db = ctx;
+  TDB_CONTEXT *db = store;
   TDB_DATA dkey;
 
   dkey.dptr = (unsigned char *) key;
-  dkey.dsize = keylen;
+  dkey.dsize = klen;
 
   return tdb_delete(db, dkey);
 }
 
 /**
- * hcache_tdb_close - Implements HcacheOps::close()
+ * store_tdb_close - Implements StoreOps::close()
  */
-static void hcache_tdb_close(void **ptr)
+static void store_tdb_close(void **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -127,11 +127,12 @@ static void hcache_tdb_close(void **ptr)
 }
 
 /**
- * hcache_tdb_backend - Implements HcacheOps::backend()
+ * store_tdb_version - Implements StoreOps::version()
  */
-static const char *hcache_tdb_backend(void)
+static const char *store_tdb_version(void)
 {
+  // TDB doesn't supply any version info
   return "tdb";
 }
 
-HCACHE_BACKEND_OPS(tdb)
+STORE_BACKEND_OPS(tdb)

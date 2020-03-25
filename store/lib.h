@@ -1,12 +1,10 @@
 /**
  * @file
- * API for the header cache
+ * Key value store
  *
  * @authors
- * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
- * Copyright (C) 2004 Tobias Werth <sitowert@stud.uni-erlangen.de>
- * Copyright (C) 2004 Brian Fundakowski Feldman <green@FreeBSD.org>
  * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,113 +28,108 @@
  *
  * @subpage store_store
  *
- * | File          | Description      |
- * | :------------ | :--------------- |
- * | store/bdb.c   | @subpage hc_bdb  |
- * | store/gdbm.c  | @subpage hc_gdbm |
- * | store/kc.c    | @subpage hc_kc   |
- * | store/lmdb.c  | @subpage hc_lmdb |
- * | store/qdbm.c  | @subpage hc_qdbm |
- * | store/tc.c    | @subpage hc_tc   |
- * | store/tdb.c   | @subpage hc_tdb  |
+ * | File          | Description         |
+ * | :------------ | :------------------ |
+ * | store/bdb.c   | @subpage store_bdb  |
+ * | store/gdbm.c  | @subpage store_gdbm |
+ * | store/kc.c    | @subpage store_kc   |
+ * | store/lmdb.c  | @subpage store_lmdb |
+ * | store/qdbm.c  | @subpage store_qdbm |
+ * | store/tc.c    | @subpage store_tc   |
+ * | store/tdb.c   | @subpage store_tdb  |
  */
 
-#ifndef MUTT_HCACHE_BACKEND_H
-#define MUTT_HCACHE_BACKEND_H
+#ifndef MUTT_STORE_LIB_H
+#define MUTT_STORE_LIB_H
 
+#include <stdbool.h>
 #include <stdlib.h>
 
 /**
- * struct HcacheOps - Header Cache API
+ * struct StoreOps - Key Value Store API
  */
-struct HcacheOps
+struct StoreOps
 {
-  const char *name; ///< Header cache name
+  const char *name; ///< Store name
 
   /**
-   * open - backend-specific routing to open the header cache database
-   * @param path The path to the database file
-   * @retval ptr  Success, backend-specific context
-   * @retval NULL Otherwise
+   * open - Open a connection to a Store
+   * @param[in] path Path to the database file
+   * @retval ptr  Success, Store pointer
+   * @retval NULL Failure
    *
    * The open function has the purpose of opening a backend-specific
    * connection to the database file specified by the path parameter. Backends
-   * MUST return non-NULL specific context information on success. This will be
-   * stored in the ctx member of the header_cache_t structure and passed on to
-   * all other backend-specific functions (see below).
+   * MUST return non-NULL specific context information on success.
    */
   void *(*open)(const char *path);
 
   /**
-   * fetch - backend-specific routine to fetch a message's headers
-   * @param ctx    The backend-specific context retrieved via open()
-   * @param key    A message identification string
-   * @param keylen The length of the string pointed to by key
-   * @retval ptr  Success, message's headers
-   * @retval NULL Otherwise
+   * fetch - Fetch a Value from the Store
+   * @param[in]  store Store retrieved via open()
+   * @param[in]  key   Key identifying the record
+   * @param[in]  klen  Length of the Key string
+   * @param[out] vlen  Length of the Value
+   * @retval ptr  Success, Value associated with the Key
+   * @retval NULL Error, or Key not found
    */
-  void *(*fetch)(void *ctx, const char *key, size_t keylen, size_t *dlen);
+  void *(*fetch)(void *store, const char *key, size_t klen, size_t *vlen);
 
   /**
-   * free - backend-specific routine to free fetched data
-   * @param[in]  ctx The backend-specific context retrieved via open()
-   * @param[out] data A pointer to the data got with fetch() or fetch_raw()
+   * free - Free a Value returned by fetch()
+   * @param[in]  store Store retrieved via open()
+   * @param[out] ptr   Value to be freed
    */
-  void (*free)(void *ctx, void **data);
+  void (*free)(void *store, void **ptr);
 
   /**
-   * store - backend-specific routine to store a message's headers
-   * @param ctx     The backend-specific context retrieved via open()
-   * @param key     A message identification string
-   * @param keylen  The length of the string pointed to by key
-   * @param data    The message headers data
-   * @param datalen The length of the string pointed to by data
+   * store - Write a Value to the Store
+   * @param[in] store Store retrieved via open()
+   * @param[in] key   Key identifying the record
+   * @param[in] klen  Length of the Key string
+   * @param[in] value Value to save
+   * @param[in] vlen  Length of the Value
    * @retval 0   Success
    * @retval num Error, a backend-specific error code
    */
-  int (*store)(void *ctx, const char *key, size_t keylen, void *data, size_t datalen);
+  int (*store)(void *store, const char *key, size_t klen, void *value, size_t vlen);
 
   /**
-   * delete_header - backend-specific routine to delete a message's headers
-   * @param ctx    The backend-specific context retrieved via open()
-   * @param key    A message identification string
-   * @param keylen The length of the string pointed to by key
+   * delete_record - Delete a record from the Store
+   * @param[in] store Store retrieved via open()
+   * @param[in] key   Key identifying the record
+   * @param[in] klen  Length of the Key string
    * @retval 0   Success
    * @retval num Error, a backend-specific error code
    */
-  int (*delete_header)(void *ctx, const char *key, size_t keylen);
+  int (*delete_record)(void *store, const char *key, size_t klen);
 
   /**
-   * close - backend-specific routine to close a context
-   * @param[out] ctx The backend-specific context retrieved via open()
-   *
-   * Backend code is responsible for freeing any resources associated with the
-   * @a ctx parameter. For this reason, backend code is passed a pointer-to-pointer
-   * to the context, so that FREE can be invoked on it.
+   * close - Close a Store connection
+   * @param[in,out] ptr Store retrieved via open()
    */
-  void (*close)(void **ctx);
+  void (*close)(void **ptr);
 
   /**
-   * backend - backend-specific identification string
-   * @retval ptr String describing the currently used hcache backend
+   * version - Get a Store version string
+   * @retval ptr String describing the currently used Store
    */
-  const char *(*backend)(void);
+  const char *(*version)(void);
 };
 
-const char *mutt_hcache_backend_list(void);
-bool mutt_hcache_is_valid_backend(const char *s);
-const struct HcacheOps *hcache_get_backend_ops(const char *backend);
+const struct StoreOps *store_get_backend_ops(const char *str);
+bool                   store_is_valid_backend(const char *str);
 
-#define HCACHE_BACKEND_OPS(_name)                                              \
-  const struct HcacheOps hcache_##_name##_ops = {                              \
-    .name    = #_name,                                                         \
-    .open    = hcache_##_name##_open,                                          \
-    .fetch   = hcache_##_name##_fetch,                                         \
-    .free    = hcache_##_name##_free,                                          \
-    .store   = hcache_##_name##_store,                                         \
-    .delete_header  = hcache_##_name##_delete_header,                          \
-    .close   = hcache_##_name##_close,                                         \
-    .backend = hcache_##_name##_backend,                                       \
+#define STORE_BACKEND_OPS(_name)                                               \
+  const struct StoreOps store_##_name##_ops = {                                \
+    .name           = #_name,                                                  \
+    .open           = store_##_name##_open,                                    \
+    .fetch          = store_##_name##_fetch,                                   \
+    .free           = store_##_name##_free,                                    \
+    .store          = store_##_name##_store,                                   \
+    .delete_record  = store_##_name##_delete_record,                           \
+    .close          = store_##_name##_close,                                   \
+    .version        = store_##_name##_version,                                 \
   };
 
-#endif /* MUTT_HCACHE_BACKEND_H */
+#endif /* MUTT_STORE_LIB_H */

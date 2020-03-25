@@ -20,6 +20,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page history HISTORY: Read/write command history from/to a file
+ *
+ * Read/write command history from/to a file
+ *
+ * | File              | Description              |
+ * | :---------------- | :----------------------- |
+ * | history/history.c | @subpage history_history |
+ */
+
 #ifndef MUTT_HISTORY_LIB_H
 #define MUTT_HISTORY_LIB_H
 

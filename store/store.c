@@ -33,54 +33,54 @@
 #include "mutt/lib.h"
 #include "lib.h"
 
-#define HCACHE_BACKEND(name) extern const struct HcacheOps hcache_##name##_ops;
-HCACHE_BACKEND(bdb)
-HCACHE_BACKEND(gdbm)
-HCACHE_BACKEND(kyotocabinet)
-HCACHE_BACKEND(lmdb)
-HCACHE_BACKEND(qdbm)
-HCACHE_BACKEND(tdb)
-HCACHE_BACKEND(tokyocabinet)
-#undef HCACHE_BACKEND
+#define STORE_BACKEND(name) extern const struct StoreOps store_##name##_ops;
+STORE_BACKEND(bdb)
+STORE_BACKEND(gdbm)
+STORE_BACKEND(kyotocabinet)
+STORE_BACKEND(lmdb)
+STORE_BACKEND(qdbm)
+STORE_BACKEND(tdb)
+STORE_BACKEND(tokyocabinet)
+#undef STORE_BACKEND
 
 /**
- * hcache_ops - Backend implementations
+ * store_ops - Backend implementations
  */
-const struct HcacheOps *hcache_ops[] = {
+const struct StoreOps *store_ops[] = {
 #ifdef HAVE_TC
-  &hcache_tokyocabinet_ops,
+  &store_tokyocabinet_ops,
 #endif
 #ifdef HAVE_KC
-  &hcache_kyotocabinet_ops,
+  &store_kyotocabinet_ops,
 #endif
 #ifdef HAVE_QDBM
-  &hcache_qdbm_ops,
+  &store_qdbm_ops,
 #endif
 #ifdef HAVE_GDBM
-  &hcache_gdbm_ops,
+  &store_gdbm_ops,
 #endif
 #ifdef HAVE_BDB
-  &hcache_bdb_ops,
+  &store_bdb_ops,
 #endif
 #ifdef HAVE_TDB
-  &hcache_tdb_ops,
+  &store_tdb_ops,
 #endif
 #ifdef HAVE_LMDB
-  &hcache_lmdb_ops,
+  &store_lmdb_ops,
 #endif
   NULL,
 };
 
 /**
- * mutt_hcache_backend_list - Get a list of backend names
+ * store_backend_list - Get a list of backend names
  * @retval ptr Comma-space-separated list of names
  *
- * @note The returned string must be free'd by the caller
+ * The caller should free the string.
  */
-const char *mutt_hcache_backend_list(void)
+const char *store_backend_list(void)
 {
   char tmp[256] = { 0 };
-  const struct HcacheOps **ops = hcache_ops;
+  const struct StoreOps **ops = store_ops;
   size_t len = 0;
 
   for (; *ops; ops++)
@@ -96,33 +96,33 @@ const char *mutt_hcache_backend_list(void)
 }
 
 /**
- * hcache_get_backend_ops - Get the API functions for an hcache backend
- * @param backend Name of the backend
+ * store_get_backend_ops - Get the API functions for an store backend
+ * @param str Name of the Store
  * @retval ptr Set of function pointers
  */
-const struct HcacheOps *hcache_get_backend_ops(const char *backend)
+const struct StoreOps *store_get_backend_ops(const char *str)
 {
-  const struct HcacheOps **ops = hcache_ops;
+  const struct StoreOps **ops = store_ops;
 
-  if (!backend || !*backend)
+  if (!str || !*str)
   {
     return *ops;
   }
 
   for (; *ops; ops++)
-    if (strcmp(backend, (*ops)->name) == 0)
+    if (strcmp(str, (*ops)->name) == 0)
       break;
 
   return *ops;
 }
 
 /**
- * mutt_hcache_is_valid_backend - Is the string a valid hcache backend
- * @param s String identifying a backend
+ * store_is_valid_backend - Is the string a valid Store backend
+ * @param str Store name
  * @retval true  s is recognized as a valid backend
  * @retval false otherwise
  */
-bool mutt_hcache_is_valid_backend(const char *s)
+bool store_is_valid_backend(const char *str)
 {
-  return hcache_get_backend_ops(s);
+  return store_get_backend_ops(str);
 }

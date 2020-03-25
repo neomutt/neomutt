@@ -61,7 +61,7 @@ char *C_HeaderCacheBackend; ///< Config: (hcache) Header cache backend to use
 
 static unsigned int hcachever = 0x0;
 
-#define hcache_get_ops() hcache_get_backend_ops(C_HeaderCacheBackend)
+#define hcache_get_ops() store_get_backend_ops(C_HeaderCacheBackend)
 
 #ifdef USE_HCACHE_COMPRESSION
 short C_HeaderCacheCompressLevel; ///< Config: (hcache) Level of compression for method
@@ -320,11 +320,11 @@ static char *get_foldername(const char *folder)
 }
 
 /**
- * mutt_hcache_open - Multiplexor for HcacheOps::open
+ * mutt_hcache_open - Multiplexor for StoreOps::open
  */
 header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 {
-  const struct HcacheOps *ops = hcache_get_ops();
+  const struct StoreOps *ops = hcache_get_ops();
   if (!ops)
     return NULL;
 
@@ -416,11 +416,11 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
 }
 
 /**
- * mutt_hcache_close - Multiplexor for HcacheOps::close
+ * mutt_hcache_close - Multiplexor for StoreOps::close
  */
 void mutt_hcache_close(header_cache_t *hc)
 {
-  const struct HcacheOps *ops = hcache_get_ops();
+  const struct StoreOps *ops = hcache_get_ops();
   if (!hc || !ops)
     return;
 
@@ -435,7 +435,7 @@ void mutt_hcache_close(header_cache_t *hc)
 }
 
 /**
- * mutt_hcache_fetch - Multiplexor for HcacheOps::fetch
+ * mutt_hcache_fetch - Multiplexor for StoreOps::fetch
  */
 struct HCacheEntry mutt_hcache_fetch(header_cache_t *hc, const char *key,
                                      size_t keylen, unsigned int uidvalidity)
@@ -497,7 +497,7 @@ end:
  */
 void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen, size_t *dlen)
 {
-  const struct HcacheOps *ops = hcache_get_ops();
+  const struct StoreOps *ops = hcache_get_ops();
 
   if (!hc || !ops)
     return NULL;
@@ -510,11 +510,11 @@ void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen, 
 }
 
 /**
- * mutt_hcache_free - Multiplexor for HcacheOps::free
+ * mutt_hcache_free - Multiplexor for StoreOps::free
  */
 void mutt_hcache_free_raw(header_cache_t *hc, void **data)
 {
-  const struct HcacheOps *ops = hcache_get_ops();
+  const struct StoreOps *ops = hcache_get_ops();
 
   if (!hc || !ops || !data || !*data)
     return;
@@ -523,7 +523,7 @@ void mutt_hcache_free_raw(header_cache_t *hc, void **data)
 }
 
 /**
- * mutt_hcache_store - Multiplexor for HcacheOps::store
+ * mutt_hcache_store - Multiplexor for StoreOps::store
  */
 int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
                       struct Email *e, unsigned int uidvalidity)
@@ -585,7 +585,7 @@ int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
 int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
                           void *data, size_t dlen)
 {
-  const struct HcacheOps *ops = hcache_get_ops();
+  const struct StoreOps *ops = hcache_get_ops();
 
   if (!hc || !ops)
     return -1;
@@ -600,11 +600,11 @@ int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
 }
 
 /**
- * mutt_hcache_delete_header - Multiplexor for HcacheOps::delete_header
+ * mutt_hcache_delete_header - Multiplexor for StoreOps::delete_header
  */
 int mutt_hcache_delete_header(header_cache_t *hc, const char *key, size_t keylen)
 {
-  const struct HcacheOps *ops = hcache_get_ops();
+  const struct StoreOps *ops = hcache_get_ops();
   if (!hc)
     return -1;
 
@@ -612,7 +612,7 @@ int mutt_hcache_delete_header(header_cache_t *hc, const char *key, size_t keylen
 
   keylen = mutt_buffer_printf(&path, "%s%s", hc->folder, key);
 
-  int rc = ops->delete_header(hc->ctx, mutt_b2s(&path), keylen);
+  int rc = ops->delete_record(hc->ctx, mutt_b2s(&path), keylen);
   mutt_buffer_dealloc(&path);
   return rc;
 }

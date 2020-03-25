@@ -21,7 +21,7 @@
  */
 
 /**
- * @page compress COMPRESS: Compression
+ * @page compress COMPRESS: API for the header cache compression
  *
  * @subpage compress_compress
  *
