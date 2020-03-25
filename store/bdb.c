@@ -94,9 +94,7 @@ static void *store_bdb_open(const char *path)
 
   struct StoreDbCtx *ctx = mutt_mem_malloc(sizeof(struct StoreDbCtx));
 
-  int pagesize = C_HeaderCachePagesize;
-  if (pagesize <= 0)
-    pagesize = 16384;
+  const int pagesize = 512;
 
   ctx->lockfile = mutt_buffer_make(128);
   mutt_buffer_printf(&ctx->lockfile, "%s-lock-hack", path);

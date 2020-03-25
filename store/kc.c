@@ -47,8 +47,7 @@ static void *store_kyotocabinet_open(const char *path)
 
   struct Buffer kcdbpath = mutt_buffer_make(1024);
 
-  mutt_buffer_printf(&kcdbpath, "%s#type=kct#opts=%s#rcomp=lex", path,
-                     C_HeaderCacheCompress ? "lc" : "l");
+  mutt_buffer_printf(&kcdbpath, "%s#type=kct#opts=l#rcomp=lex", path);
 
   if (!kcdbopen(db, mutt_b2s(&kcdbpath), KCOWRITER | KCOCREATE))
   {

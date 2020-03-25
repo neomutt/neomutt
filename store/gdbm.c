@@ -41,9 +41,7 @@
  */
 static void *store_gdbm_open(const char *path)
 {
-  int pagesize = C_HeaderCachePagesize;
-  if (pagesize <= 0)
-    pagesize = 16384;
+  const int pagesize = 4096;
 
   GDBM_FILE db = gdbm_open((char *) path, pagesize, GDBM_WRCREAT, 00600, NULL);
   if (db)

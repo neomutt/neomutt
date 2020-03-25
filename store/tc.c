@@ -45,8 +45,6 @@ static void *store_tokyocabinet_open(const char *path)
   TCBDB *db = tcbdbnew();
   if (!db)
     return NULL;
-  if (C_HeaderCacheCompress)
-    tcbdbtune(db, 0, 0, 0, -1, -1, BDBTDEFLATE);
   if (tcbdbopen(db, path, BDBOWRITER | BDBOCREAT))
     return db;
 

@@ -89,8 +89,9 @@
 #define ISPELL "ispell"
 #endif
 
-/* This option is deprecated */
+/* These options are deprecated */
 bool C_IgnoreLinearWhiteSpace = false;
+bool C_HeaderCacheCompress = false;
 
 // clang-format off
 struct ConfigDef MuttVars[] = {
@@ -1435,29 +1436,6 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This variable specifies the header cache backend.
   */
-#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-  { "header_cache_compress", DT_BOOL, &C_HeaderCacheCompress, true },
-  /*
-  ** .pp
-  ** When NeoMutt is compiled with qdbm, tokyocabinet or kyotocabinet
-  ** as header cache backend, this option determines whether the
-  ** database will be compressed. Compression results in database
-  ** files roughly being one fifth of the usual diskspace, but the
-  ** decompression can result in a slower opening of cached folder(s)
-  ** which in general is still much faster than opening non header
-  ** cached folders.
-  */
-#endif /* HAVE_QDBM */
-#if defined(HAVE_GDBM) || defined(HAVE_BDB)
-  { "header_cache_pagesize", DT_LONG|DT_NOT_NEGATIVE, &C_HeaderCachePagesize, 16384 },
-  /*
-  ** .pp
-  ** When NeoMutt is compiled with either gdbm or bdb4 as the header cache backend,
-  ** this option changes the database page size.  Too large or too small
-  ** values can waste space, memory, or CPU time. The default should be more
-  ** or less optimal for most use cases.
-  */
-#endif /* HAVE_GDBM || HAVE_BDB */
 #if defined(USE_HCACHE_COMPRESSION)
   { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, &C_HeaderCacheCompressLevel, 1 },
   /*
@@ -4961,6 +4939,12 @@ struct ConfigDef MuttVars[] = {
 #endif
   /*--*/
 
+#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
+  { "header_cache_compress",     DT_DEPRECATED|DT_BOOL,            &C_HeaderCacheCompress,    false   },
+#endif
+#if defined(HAVE_GDBM) || defined(HAVE_BDB)
+  { "header_cache_pagesize",     DT_DEPRECATED|DT_LONG,            &C_HeaderCachePagesize,    0       },
+#endif
   { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,            &C_IgnoreLinearWhiteSpace, false   },
   { "pgp_encrypt_self",          DT_DEPRECATED|DT_QUAD,            &C_PgpEncryptSelf,         MUTT_NO },
   { "smime_encrypt_self",        DT_DEPRECATED|DT_QUAD,            &C_SmimeEncryptSelf,       MUTT_NO },

@@ -43,12 +43,7 @@
  */
 static void *store_qdbm_open(const char *path)
 {
-  int flags = VL_OWRITER | VL_OCREAT;
-
-  if (C_HeaderCacheCompress)
-    flags |= VL_OZCOMP;
-
-  return vlopen(path, flags, VL_CMPLEX);
+  return vlopen(path, VL_OWRITER | VL_OCREAT, VL_CMPLEX);
 }
 
 /**

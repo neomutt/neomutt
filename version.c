@@ -484,11 +484,11 @@ void print_version(FILE *fp)
 
 #ifdef USE_HCACHE
   const char *backends = store_backend_list();
-  fprintf(fp, "\nhcache backends: %s", backends);
+  fprintf(fp, "\nstorage: %s", backends);
   FREE(&backends);
 #ifdef USE_HCACHE_COMPRESSION
   backends = compress_list();
-  fprintf(fp, "\nhcache compression: %s", backends);
+  fprintf(fp, "\ncompression: %s", backends);
   FREE(&backends);
 #endif
 #endif

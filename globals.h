@@ -213,11 +213,6 @@ WHERE bool C_EditHeaders;                    ///< Config: Let the user edit the 
 WHERE bool C_FlagSafe;                       ///< Config: Protect flagged messages from deletion
 WHERE bool C_ForwardDecode;                  ///< Config: Decode the message when forwarding it
 WHERE bool C_ForwardQuote;                   ///< Config: Automatically quote a forwarded message using #C_IndentString
-#ifdef USE_HCACHE
-#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-WHERE bool C_HeaderCacheCompress;            ///< Config: (hcache) Enable database compression (qdbm,tokyocabinet,kyotocabinet)
-#endif /* HAVE_QDBM | HAVE_TC | HAVE_KC */
-#endif /* USE_HCACHE */
 WHERE bool C_Header;                         ///< Config: Include the message headers in the reply email (Weed applies)
 WHERE bool C_Help;                           ///< Config: Display a help line with common key bindings
 #ifdef USE_IMAP
