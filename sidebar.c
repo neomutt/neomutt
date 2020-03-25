@@ -978,14 +978,17 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
       }
     }
 
+    if (m->name)
+      maildir_is_prefix = false;
+
     /* calculate depth of current folder and generate its display name with indented spaces */
     int sidebar_folder_depth = 0;
-    const char *sidebar_folder_name = NULL;
+    const char *sidebar_folder_name = m->name ? m->name : mailbox_path(m);
     struct Buffer *short_folder_name = NULL;
+
     if (C_SidebarShortPath)
     {
       /* disregard a trailing separator, so strlen() - 2 */
-      sidebar_folder_name = mailbox_path(m);
       for (int i = mutt_str_strlen(sidebar_folder_name) - 2; i >= 0; i--)
       {
         if (C_SidebarDelimChars && strchr(C_SidebarDelimChars, sidebar_folder_name[i]))
@@ -997,7 +1000,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
     }
     else if ((C_SidebarComponentDepth > 0) && C_SidebarDelimChars)
     {
-      sidebar_folder_name = mailbox_path(m) + maildir_is_prefix * (maildirlen + 1);
+      sidebar_folder_name += maildir_is_prefix * (maildirlen + 1);
       for (int i = 0; i < C_SidebarComponentDepth; i++)
       {
         char *chars_after_delim = strpbrk(sidebar_folder_name, C_SidebarDelimChars);
@@ -1008,16 +1011,12 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
       }
     }
     else
-      sidebar_folder_name = mailbox_path(m) + maildir_is_prefix * (maildirlen + 1);
+      sidebar_folder_name += maildir_is_prefix * (maildirlen + 1);
 
-    if (m->name)
-    {
-      sidebar_folder_name = m->name;
-    }
-    else if (maildir_is_prefix && C_SidebarFolderIndent)
+    if ((m->name || maildir_is_prefix) && C_SidebarFolderIndent)
     {
       int lastsep = 0;
-      const char *tmp_folder_name = mailbox_path(m) + maildirlen + 1;
+      const char *tmp_folder_name = m->name ? m->name : mailbox_path(m) + maildirlen + 1;
       int tmplen = (int) mutt_str_strlen(tmp_folder_name) - 1;
       for (int i = 0; i < tmplen; i++)
       {
