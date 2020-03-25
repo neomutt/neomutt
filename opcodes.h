@@ -301,6 +301,8 @@
   _fmt(OP_VIEW_ID,                        N_("view the key's user id")) \
 
 #define OPS_SIDEBAR(_fmt) \
+  _fmt(OP_SIDEBAR_FIRST,                  N_("move the highlight to the first mailbox")) \
+  _fmt(OP_SIDEBAR_LAST,                   N_("move the highlight to the last mailbox")) \
   _fmt(OP_SIDEBAR_NEXT,                   N_("move the highlight to next mailbox")) \
   _fmt(OP_SIDEBAR_NEXT_NEW,               N_("move the highlight to next mailbox with new mail")) \
   _fmt(OP_SIDEBAR_OPEN,                   N_("open highlighted mailbox")) \

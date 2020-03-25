@@ -219,6 +219,8 @@ const struct Binding OpMain[] = { /* map: index */
   { "show-log-messages",         OP_SHOW_LOG_MESSAGES,              "M" },
   { "show-version",              OP_VERSION,                        "V" },
 #ifdef USE_SIDEBAR
+  { "sidebar-first",             OP_SIDEBAR_FIRST,                  NULL },
+  { "sidebar-last",              OP_SIDEBAR_LAST,                   NULL },
   { "sidebar-next",              OP_SIDEBAR_NEXT,                   NULL },
   { "sidebar-next-new",          OP_SIDEBAR_NEXT_NEW,               NULL },
   { "sidebar-open",              OP_SIDEBAR_OPEN,                   NULL },
@@ -377,6 +379,8 @@ const struct Binding OpPager[] = { /* map: pager */
   { "shell-escape",              OP_SHELL_ESCAPE,                 "!" },
   { "show-version",              OP_VERSION,                      "V" },
 #ifdef USE_SIDEBAR
+  { "sidebar-first",             OP_SIDEBAR_FIRST,                NULL },
+  { "sidebar-last",              OP_SIDEBAR_LAST,                 NULL },
   { "sidebar-next",              OP_SIDEBAR_NEXT,                 NULL },
   { "sidebar-next-new",          OP_SIDEBAR_NEXT_NEW,             NULL },
   { "sidebar-open",              OP_SIDEBAR_OPEN,                 NULL },
