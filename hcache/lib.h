@@ -35,18 +35,6 @@
  * @subpage hc_serial
  *
  * @subpage hc_hcache
- *
- * Backends:
- *
- * | File          | Description      |
- * | :------------ | :--------------- |
- * | hcache/bdb.c  | @subpage hc_bdb  |
- * | hcache/gdbm.c | @subpage hc_gdbm |
- * | hcache/kc.c   | @subpage hc_kc   |
- * | hcache/lmdb.c | @subpage hc_lmdb |
- * | hcache/qdbm.c | @subpage hc_qdbm |
- * | hcache/tc.c   | @subpage hc_tc   |
- * | hcache/tdb.c  | @subpage hc_tdb  |
  */
 
 #ifndef MUTT_HCACHE_LIB_H
@@ -163,18 +151,5 @@ void mutt_hcache_free_raw(header_cache_t *hc, void **data);
  * @retval num Generic or backend-specific error code otherwise
  */
 int mutt_hcache_delete_header(header_cache_t *hc, const char *key, size_t keylen);
-
-/**
- * mutt_hcache_backend_list - get a list of backend identification strings
- * @retval ptr Comma separated string describing the compiled-in backends
- *
- * @note The returned string must be free'd by the caller
- */
-const char *mutt_hcache_backend_list(void);
-#ifdef USE_HCACHE_COMPRESSION
-const char *mutt_hcache_compress_list(void);
-#endif
-
-bool mutt_hcache_is_valid_backend(const char *s);
 
 #endif /* MUTT_HCACHE_LIB_H */

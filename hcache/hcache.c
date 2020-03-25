@@ -33,14 +33,6 @@
  */
 
 #include "config.h"
-#include "muttlib.h"
-#include "serialize.h"
-
-#if !(defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) ||           \
-      defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_TDB))
-#error "No hcache backend defined"
-#endif
-
 #include <assert.h>
 #include <errno.h>
 #include <limits.h>
@@ -53,75 +45,23 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "lib.h"
-#include "backend.h"
 #include "hcache/hcversion.h"
+#include "muttlib.h"
+#include "serialize.h"
 #include "compress/lib.h"
+#include "store/lib.h"
+
+#if !(defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) ||           \
+      defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_TDB))
+#error "No hcache backend defined"
+#endif
 
 /* These Config Variables are only used in hcache/hcache.c */
 char *C_HeaderCacheBackend; ///< Config: (hcache) Header cache backend to use
 
 static unsigned int hcachever = 0x0;
 
-#define HCACHE_BACKEND(name) extern const struct HcacheOps hcache_##name##_ops;
-HCACHE_BACKEND(bdb)
-HCACHE_BACKEND(gdbm)
-HCACHE_BACKEND(kyotocabinet)
-HCACHE_BACKEND(lmdb)
-HCACHE_BACKEND(qdbm)
-HCACHE_BACKEND(tdb)
-HCACHE_BACKEND(tokyocabinet)
-#undef HCACHE_BACKEND
-
 #define hcache_get_ops() hcache_get_backend_ops(C_HeaderCacheBackend)
-
-/**
- * hcache_ops - Backend implementations
- */
-const struct HcacheOps *hcache_ops[] = {
-#ifdef HAVE_TC
-  &hcache_tokyocabinet_ops,
-#endif
-#ifdef HAVE_KC
-  &hcache_kyotocabinet_ops,
-#endif
-#ifdef HAVE_QDBM
-  &hcache_qdbm_ops,
-#endif
-#ifdef HAVE_GDBM
-  &hcache_gdbm_ops,
-#endif
-#ifdef HAVE_BDB
-  &hcache_bdb_ops,
-#endif
-#ifdef HAVE_TDB
-  &hcache_tdb_ops,
-#endif
-#ifdef HAVE_LMDB
-  &hcache_lmdb_ops,
-#endif
-  NULL,
-};
-
-/**
- * hcache_get_backend_ops - Get the API functions for an hcache backend
- * @param backend Name of the backend
- * @retval ptr Set of function pointers
- */
-static const struct HcacheOps *hcache_get_backend_ops(const char *backend)
-{
-  const struct HcacheOps **ops = hcache_ops;
-
-  if (!backend || !*backend)
-  {
-    return *ops;
-  }
-
-  for (; *ops; ops++)
-    if (strcmp(backend, (*ops)->name) == 0)
-      break;
-
-  return *ops;
-}
 
 #ifdef USE_HCACHE_COMPRESSION
 short C_HeaderCacheCompressLevel; ///< Config: (hcache) Level of compression for method
@@ -675,39 +615,4 @@ int mutt_hcache_delete_header(header_cache_t *hc, const char *key, size_t keylen
   int rc = ops->delete_header(hc->ctx, mutt_b2s(&path), keylen);
   mutt_buffer_dealloc(&path);
   return rc;
-}
-
-/**
- * mutt_hcache_backend_list - Get a list of backend names
- * @retval ptr Comma-space-separated list of names
- *
- * The caller should free the string.
- */
-const char *mutt_hcache_backend_list(void)
-{
-  char tmp[256] = { 0 };
-  const struct HcacheOps **ops = hcache_ops;
-  size_t len = 0;
-
-  for (; *ops; ops++)
-  {
-    if (len != 0)
-    {
-      len += snprintf(tmp + len, sizeof(tmp) - len, ", ");
-    }
-    len += snprintf(tmp + len, sizeof(tmp) - len, "%s", (*ops)->name);
-  }
-
-  return mutt_str_strdup(tmp);
-}
-
-/**
- * mutt_hcache_is_valid_backend - Is the string a valid hcache backend
- * @param s String identifying a backend
- * @retval true  s is recognized as a valid backend
- * @retval false otherwise
- */
-bool mutt_hcache_is_valid_backend(const char *s)
-{
-  return hcache_get_backend_ops(s);
 }

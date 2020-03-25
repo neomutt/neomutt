@@ -63,7 +63,9 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
+#include "compress/lib.h"
 #include "history/lib.h"
+#include "store/lib.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif

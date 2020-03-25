@@ -23,6 +23,24 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page store STORE: Key value store
+ *
+ * Key value store
+ *
+ * @subpage store_store
+ *
+ * | File          | Description      |
+ * | :------------ | :--------------- |
+ * | store/bdb.c   | @subpage hc_bdb  |
+ * | store/gdbm.c  | @subpage hc_gdbm |
+ * | store/kc.c    | @subpage hc_kc   |
+ * | store/lmdb.c  | @subpage hc_lmdb |
+ * | store/qdbm.c  | @subpage hc_qdbm |
+ * | store/tc.c    | @subpage hc_tc   |
+ * | store/tdb.c   | @subpage hc_tdb  |
+ */
+
 #ifndef MUTT_HCACHE_BACKEND_H
 #define MUTT_HCACHE_BACKEND_H
 
@@ -104,6 +122,10 @@ struct HcacheOps
    */
   const char *(*backend)(void);
 };
+
+const char *mutt_hcache_backend_list(void);
+bool mutt_hcache_is_valid_backend(const char *s);
+const struct HcacheOps *hcache_get_backend_ops(const char *backend);
 
 #define HCACHE_BACKEND_OPS(_name)                                              \
   const struct HcacheOps hcache_##_name##_ops = {                              \

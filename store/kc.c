@@ -33,7 +33,7 @@
 #include <kclangc.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "backend.h"
+#include "lib.h"
 #include "globals.h"
 
 /**

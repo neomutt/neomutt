@@ -56,7 +56,7 @@
 
 /* #include "muttlib.h" */
 const char *mutt_make_version(void);
-/* #include "hcache/lib.h" */
+/* #include "store/lib.h" */
 const char *mutt_hcache_backend_list(void);
 const char *mutt_hcache_compress_list(void);
 

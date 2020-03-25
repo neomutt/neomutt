@@ -31,7 +31,7 @@
 #include <fcntl.h>
 #include <tdb.h>
 #include "mutt/lib.h"
-#include "backend.h"
+#include "lib.h"
 
 /**
  * hcache_tdb_open - Implements HcacheOps::open()

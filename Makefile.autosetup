@@ -126,6 +126,37 @@ MUTTLIBS+=	$(LIBCOMPMBOX)
 ALLOBJS+=	$(LIBCOMPMBOXOBJS)
 
 ###############################################################################
+# libstore
+@if HAVE_BDB
+LIBSTOREOBJS+=	store/bdb.o
+@endif
+@if HAVE_GDBM
+LIBSTOREOBJS+=	store/gdbm.o
+@endif
+@if HAVE_KC
+LIBSTOREOBJS+=	store/kc.o
+@endif
+@if HAVE_LMDB
+LIBSTOREOBJS+=	store/lmdb.o
+@endif
+@if HAVE_QDBM
+LIBSTOREOBJS+=	store/qdbm.o
+@endif
+@if HAVE_TDB
+LIBSTOREOBJS+=	store/tdb.o
+@endif
+@if HAVE_TC
+LIBSTOREOBJS+=	store/tc.o
+@endif
+@if HAVE_BDB || HAVE_GDBM || HAVE_KC || HAVE_LMDB || HAVE_QDBM || HAVE_TDB || HAVE_TC
+LIBSTORE=	libstore.a
+LIBSTOREOBJS+=	store/store.o
+CLEANFILES+=	$(LIBSTORE) $(LIBSTOREOBJS)
+MUTTLIBS+=	$(LIBSTORE)
+ALLOBJS+=	$(LIBSTOREOBJS)
+@endif
+
+###############################################################################
 # libgui
 LIBGUI=	libgui.a
 LIBGUIOBJS=	gui/color.o gui/curs_lib.o gui/mutt_curses.o gui/mutt_window.o gui/reflow.o gui/terminal.o
@@ -253,27 +284,6 @@ LIBHCACHEOBJS=	hcache/hcache.o hcache/serialize.o
 CLEANFILES+=	$(LIBHCACHE) $(LIBHCACHEOBJS)
 MUTTLIBS+=	$(LIBHCACHE)
 ALLOBJS+=	$(LIBHCACHEOBJS)
-@if HAVE_BDB
-LIBHCACHEOBJS+=	hcache/bdb.o
-@endif
-@if HAVE_GDBM
-LIBHCACHEOBJS+=	hcache/gdbm.o
-@endif
-@if HAVE_KC
-LIBHCACHEOBJS+=	hcache/kc.o
-@endif
-@if HAVE_LMDB
-LIBHCACHEOBJS+=	hcache/lmdb.o
-@endif
-@if HAVE_QDBM
-LIBHCACHEOBJS+=	hcache/qdbm.o
-@endif
-@if HAVE_TDB
-LIBHCACHEOBJS+=	hcache/tdb.o
-@endif
-@if HAVE_TC
-LIBHCACHEOBJS+=	hcache/tc.o
-@endif
 @endif # USE_HCACHE
 
 ###############################################################################
@@ -441,6 +451,13 @@ $(LIBCOMPMBOX): $(PWD)/compmbox $(LIBCOMPMBOXOBJS)
 	$(RANLIB) $@
 $(PWD)/compmbox:
 	$(MKDIR_P) $(PWD)/compmbox
+
+# libstore
+$(LIBSTORE): $(PWD)/store $(LIBSTOREOBJS)
+	$(AR) cr $@ $(LIBSTOREOBJS)
+	$(RANLIB) $@
+$(PWD)/store:
+	$(MKDIR_P) $(PWD)/store
 
 # libcompress
 $(LIBCOMPRESS): $(PWD)/compress $(LIBCOMPRESSOBJS)
