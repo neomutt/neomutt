@@ -495,8 +495,10 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
     else
     {
       wdata->hil_index = 0;
+      /* Note is_hidden will only be set when C_SidebarNewMailOnly */
       if (wdata->entries[wdata->hil_index]->is_hidden)
-        select_next(wdata);
+        if (!select_next(wdata))
+          wdata->hil_index = -1;
     }
   }
 
@@ -533,7 +535,8 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
     wdata->bot_index = wdata->entry_count - 1;
 
   wdata->previous_sort = C_SidebarSortMethod;
-  return true;
+
+  return (wdata->hil_index >= 0);
 }
 
 /**
@@ -1068,7 +1071,9 @@ void sb_draw(struct MuttWindow *win)
     neomutt_mailboxlist_clear(&ml);
   }
 
-  if (!prepare_sidebar(wdata, num_rows))
+  if (prepare_sidebar(wdata, num_rows))
+    draw_sidebar(wdata, win, num_rows, num_cols, wdata->divider_width);
+  else
   {
     fill_empty_space(win, 0, num_rows, wdata->divider_width, num_cols - wdata->divider_width);
     return;
