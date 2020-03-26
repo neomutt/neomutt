@@ -1,6 +1,6 @@
 /**
  * @file
- * LMDB backend for the header cache
+ * LMDB backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
@@ -24,16 +24,16 @@
  */
 
 /**
- * @page hc_lmdb LMDB
+ * @page store_lmdb LMDB
  *
- * Use a Lightning Memory-Mapped Database file as a header cache backend.
+ * Use a Lightning Memory-Mapped Database file as a key/value Store.
  */
 
 #include "config.h"
 #include <stddef.h>
 #include <lmdb.h>
 #include "mutt/lib.h"
-#include "backend.h"
+#include "lib.h"
 
 /** The maximum size of the database file (2GiB).
  * The file is mmap(2)'d into memory. */
@@ -50,9 +50,9 @@ enum MdbTxnMode
 };
 
 /**
- * struct HcacheLmdbCtx - LMDB context
+ * struct StoreLmdbCtx - LMDB context
  */
-struct HcacheLmdbCtx
+struct StoreLmdbCtx
 {
   MDB_env *env;
   MDB_txn *txn;
@@ -65,7 +65,7 @@ struct HcacheLmdbCtx
  * @param ctx LMDB context
  * @retval num LMDB return code, e.g. MDB_SUCCESS
  */
-static int mdb_get_r_txn(struct HcacheLmdbCtx *ctx)
+static int mdb_get_r_txn(struct StoreLmdbCtx *ctx)
 {
   int rc;
 
@@ -93,7 +93,7 @@ static int mdb_get_r_txn(struct HcacheLmdbCtx *ctx)
  * @param ctx LMDB context
  * @retval num LMDB return code, e.g. MDB_SUCCESS
  */
-static int mdb_get_w_txn(struct HcacheLmdbCtx *ctx)
+static int mdb_get_w_txn(struct StoreLmdbCtx *ctx)
 {
   int rc;
 
@@ -116,13 +116,13 @@ static int mdb_get_w_txn(struct HcacheLmdbCtx *ctx)
 }
 
 /**
- * hcache_lmdb_open - Implements HcacheOps::open()
+ * store_lmdb_open - Implements StoreOps::open()
  */
-static void *hcache_lmdb_open(const char *path)
+static void *store_lmdb_open(const char *path)
 {
   int rc;
 
-  struct HcacheLmdbCtx *ctx = mutt_mem_calloc(1, sizeof(struct HcacheLmdbCtx));
+  struct StoreLmdbCtx *ctx = mutt_mem_calloc(1, sizeof(struct StoreLmdbCtx));
 
   rc = mdb_env_create(&ctx->env);
   if (rc != MDB_SUCCESS)
@@ -171,20 +171,20 @@ fail_env:
 }
 
 /**
- * hcache_lmdb_fetch - Implements HcacheOps::fetch()
+ * store_lmdb_fetch - Implements StoreOps::fetch()
  */
-static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen, size_t *dlen)
+static void *store_lmdb_fetch(void *store, const char *key, size_t klen, size_t *vlen)
 {
-  if (!vctx)
+  if (!store)
     return NULL;
 
   MDB_val dkey;
   MDB_val data;
 
-  struct HcacheLmdbCtx *ctx = vctx;
+  struct StoreLmdbCtx *ctx = store;
 
   dkey.mv_data = (void *) key;
-  dkey.mv_size = keylen;
+  dkey.mv_size = klen;
   data.mv_data = NULL;
   data.mv_size = 0;
   int rc = mdb_get_r_txn(ctx);
@@ -205,35 +205,35 @@ static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen, size_
     return NULL;
   }
 
-  *dlen = data.mv_size;
+  *vlen = data.mv_size;
   return data.mv_data;
 }
 
 /**
- * hcache_lmdb_free - Implements HcacheOps::free()
+ * store_lmdb_free - Implements StoreOps::free()
  */
-static void hcache_lmdb_free(void *vctx, void **data)
+static void store_lmdb_free(void *store, void **ptr)
 {
   /* LMDB data is owned by the database */
 }
 
 /**
- * hcache_lmdb_store - Implements HcacheOps::store()
+ * store_lmdb_store - Implements StoreOps::store()
  */
-static int hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t dlen)
+static int store_lmdb_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
 {
-  if (!vctx)
+  if (!store)
     return -1;
 
   MDB_val dkey;
   MDB_val databuf;
 
-  struct HcacheLmdbCtx *ctx = vctx;
+  struct StoreLmdbCtx *ctx = store;
 
   dkey.mv_data = (void *) key;
-  dkey.mv_size = keylen;
-  databuf.mv_data = data;
-  databuf.mv_size = dlen;
+  dkey.mv_size = klen;
+  databuf.mv_data = value;
+  databuf.mv_size = vlen;
   int rc = mdb_get_w_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
@@ -252,19 +252,19 @@ static int hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *d
 }
 
 /**
- * hcache_lmdb_delete_header - Implements HcacheOps::delete_header()
+ * store_lmdb_delete_record - Implements StoreOps::delete_record()
  */
-static int hcache_lmdb_delete_header(void *vctx, const char *key, size_t keylen)
+static int store_lmdb_delete_record(void *store, const char *key, size_t klen)
 {
-  if (!vctx)
+  if (!store)
     return -1;
 
   MDB_val dkey;
 
-  struct HcacheLmdbCtx *ctx = vctx;
+  struct StoreLmdbCtx *ctx = store;
 
   dkey.mv_data = (void *) key;
-  dkey.mv_size = keylen;
+  dkey.mv_size = klen;
   int rc = mdb_get_w_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
@@ -284,14 +284,14 @@ static int hcache_lmdb_delete_header(void *vctx, const char *key, size_t keylen)
 }
 
 /**
- * hcache_lmdb_close - Implements HcacheOps::close()
+ * store_lmdb_close - Implements StoreOps::close()
  */
-static void hcache_lmdb_close(void **ptr)
+static void store_lmdb_close(void **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct HcacheLmdbCtx *db = *ptr;
+  struct StoreLmdbCtx *db = *ptr;
 
   if (db->txn)
   {
@@ -309,11 +309,11 @@ static void hcache_lmdb_close(void **ptr)
 }
 
 /**
- * hcache_lmdb_backend - Implements HcacheOps::backend()
+ * store_lmdb_version - Implements StoreOps::version()
  */
-static const char *hcache_lmdb_backend(void)
+static const char *store_lmdb_version(void)
 {
   return "lmdb " MDB_VERSION_STRING;
 }
 
-HCACHE_BACKEND_OPS(lmdb)
+STORE_BACKEND_OPS(lmdb)

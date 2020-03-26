@@ -1,6 +1,6 @@
 /**
  * @file
- * Tokyocabinet DB backend for the header cache
+ * Tokyo Cabinet DB backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
@@ -24,9 +24,9 @@
  */
 
 /**
- * @page hc_tc Tokyo Cabinet
+ * @page store_tc Tokyo Cabinet DB
  *
- * Use a a Tokyo Cabinet file as a header cache backend.
+ * Tokyo Cabinet DB backend for the key/value Store
  */
 
 #include "config.h"
@@ -34,19 +34,17 @@
 #include <tcbdb.h>
 #include <tcutil.h>
 #include "mutt/lib.h"
-#include "backend.h"
+#include "lib.h"
 #include "globals.h"
 
 /**
- * hcache_tokyocabinet_open - Implements HcacheOps::open()
+ * store_tokyocabinet_open - Implements StoreOps::open()
  */
-static void *hcache_tokyocabinet_open(const char *path)
+static void *store_tokyocabinet_open(const char *path)
 {
   TCBDB *db = tcbdbnew();
   if (!db)
     return NULL;
-  if (C_HeaderCacheCompress)
-    tcbdbtune(db, 0, 0, 0, -1, -1, BDBTDEFLATE);
   if (tcbdbopen(db, path, BDBOWRITER | BDBOCREAT))
     return db;
 
@@ -58,39 +56,39 @@ static void *hcache_tokyocabinet_open(const char *path)
 }
 
 /**
- * hcache_tokyocabinet_fetch - Implements HcacheOps::fetch()
+ * store_tokyocabinet_fetch - Implements StoreOps::fetch()
  */
-static void *hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen, size_t *dlen)
+static void *store_tokyocabinet_fetch(void *store, const char *key, size_t klen, size_t *vlen)
 {
-  if (!ctx)
+  if (!store)
     return NULL;
 
   int sp = 0;
-  TCBDB *db = ctx;
-  void *rv = tcbdbget(db, key, keylen, &sp);
-  *dlen = sp;
+  TCBDB *db = store;
+  void *rv = tcbdbget(db, key, klen, &sp);
+  *vlen = sp;
   return rv;
 }
 
 /**
- * hcache_tokyocabinet_free - Implements HcacheOps::free()
+ * store_tokyocabinet_free - Implements StoreOps::free()
  */
-static void hcache_tokyocabinet_free(void *ctx, void **data)
+static void store_tokyocabinet_free(void *store, void **ptr)
 {
-  FREE(data);
+  FREE(ptr);
 }
 
 /**
- * hcache_tokyocabinet_store - Implements HcacheOps::store()
+ * store_tokyocabinet_store - Implements StoreOps::store()
  */
-static int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,
-                                     void *data, size_t dlen)
+static int store_tokyocabinet_store(void *store, const char *key, size_t klen,
+                                    void *value, size_t vlen)
 {
-  if (!ctx)
+  if (!store)
     return -1;
 
-  TCBDB *db = ctx;
-  if (!tcbdbput(db, key, keylen, data, dlen))
+  TCBDB *db = store;
+  if (!tcbdbput(db, key, klen, value, vlen))
   {
     int ecode = tcbdbecode(db);
     return ecode ? ecode : -1;
@@ -99,15 +97,15 @@ static int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,
 }
 
 /**
- * hcache_tokyocabinet_delete_header - Implements HcacheOps::delete_header()
+ * store_tokyocabinet_delete_record - Implements StoreOps::delete_record()
  */
-static int hcache_tokyocabinet_delete_header(void *ctx, const char *key, size_t keylen)
+static int store_tokyocabinet_delete_record(void *store, const char *key, size_t klen)
 {
-  if (!ctx)
+  if (!store)
     return -1;
 
-  TCBDB *db = ctx;
-  if (!tcbdbout(db, key, keylen))
+  TCBDB *db = store;
+  if (!tcbdbout(db, key, klen))
   {
     int ecode = tcbdbecode(db);
     return ecode ? ecode : -1;
@@ -116,9 +114,9 @@ static int hcache_tokyocabinet_delete_header(void *ctx, const char *key, size_t 
 }
 
 /**
- * hcache_tokyocabinet_close - Implements HcacheOps::close()
+ * store_tokyocabinet_close - Implements StoreOps::close()
  */
-static void hcache_tokyocabinet_close(void **ptr)
+static void store_tokyocabinet_close(void **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -134,11 +132,11 @@ static void hcache_tokyocabinet_close(void **ptr)
 }
 
 /**
- * hcache_tokyocabinet_backend - Implements HcacheOps::backend()
+ * store_tokyocabinet_version - Implements StoreOps::version()
  */
-static const char *hcache_tokyocabinet_backend(void)
+static const char *store_tokyocabinet_version(void)
 {
   return "tokyocabinet " _TC_VERSION;
 }
 
-HCACHE_BACKEND_OPS(tokyocabinet)
+STORE_BACKEND_OPS(tokyocabinet)

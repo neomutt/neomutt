@@ -1,6 +1,6 @@
 /**
  * @file
- * GDBM backend for the header cache
+ * GDBM backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
@@ -24,26 +24,24 @@
  */
 
 /**
- * @page hc_gdbm GDBM
+ * @page store_gdbm GDBM
  *
- * Use a GNU dbm file as a header cache backend.
+ * GDBM backend for the key/value Store
  */
 
 #include "config.h"
 #include <stddef.h>
 #include <gdbm.h>
 #include "mutt/lib.h"
-#include "backend.h"
+#include "lib.h"
 #include "globals.h"
 
 /**
- * hcache_gdbm_open - Implements HcacheOps::open()
+ * store_gdbm_open - Implements StoreOps::open()
  */
-static void *hcache_gdbm_open(const char *path)
+static void *store_gdbm_open(const char *path)
 {
-  int pagesize = C_HeaderCachePagesize;
-  if (pagesize <= 0)
-    pagesize = 16384;
+  const int pagesize = 4096;
 
   GDBM_FILE db = gdbm_open((char *) path, pagesize, GDBM_WRCREAT, 00600, NULL);
   if (db)
@@ -54,78 +52,78 @@ static void *hcache_gdbm_open(const char *path)
 }
 
 /**
- * hcache_gdbm_fetch - Implements HcacheOps::fetch()
+ * store_gdbm_fetch - Implements StoreOps::fetch()
  */
-static void *hcache_gdbm_fetch(void *ctx, const char *key, size_t keylen, size_t *dlen)
+static void *store_gdbm_fetch(void *store, const char *key, size_t klen, size_t *vlen)
 {
-  if (!ctx)
+  if (!store)
     return NULL;
 
   datum dkey;
   datum data;
 
-  GDBM_FILE db = ctx;
+  GDBM_FILE db = store;
 
   dkey.dptr = (char *) key;
-  dkey.dsize = keylen;
+  dkey.dsize = klen;
   data = gdbm_fetch(db, dkey);
 
-  *dlen = data.dsize;
+  *vlen = data.dsize;
   return data.dptr;
 }
 
 /**
- * hcache_gdbm_free - Implements HcacheOps::free()
+ * store_gdbm_free - Implements StoreOps::free()
  */
-static void hcache_gdbm_free(void *vctx, void **data)
+static void store_gdbm_free(void *store, void **ptr)
 {
-  FREE(data);
+  FREE(ptr);
 }
 
 /**
- * hcache_gdbm_store - Implements HcacheOps::store()
+ * store_gdbm_store - Implements StoreOps::store()
  */
-static int hcache_gdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
+static int store_gdbm_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
 {
-  if (!ctx)
+  if (!store)
     return -1;
 
   datum dkey;
   datum databuf;
 
-  GDBM_FILE db = ctx;
+  GDBM_FILE db = store;
 
   dkey.dptr = (char *) key;
-  dkey.dsize = keylen;
+  dkey.dsize = klen;
 
-  databuf.dsize = dlen;
-  databuf.dptr = data;
+  databuf.dsize = vlen;
+  databuf.dptr = value;
 
   return gdbm_store(db, dkey, databuf, GDBM_REPLACE);
 }
 
 /**
- * hcache_gdbm_delete_header - Implements HcacheOps::delete_header()
+ * store_gdbm_delete_record - Implements StoreOps::delete_record()
  */
-static int hcache_gdbm_delete_header(void *ctx, const char *key, size_t keylen)
+static int store_gdbm_delete_record(void *store, const char *key, size_t klen)
 {
-  if (!ctx)
+  if (!store)
     return -1;
 
   datum dkey;
 
-  GDBM_FILE db = ctx;
+  GDBM_FILE db = store;
 
   dkey.dptr = (char *) key;
-  dkey.dsize = keylen;
+  dkey.dsize = klen;
 
   return gdbm_delete(db, dkey);
 }
 
 /**
- * hcache_gdbm_close - Implements HcacheOps::close()
+ * store_gdbm_close - Implements StoreOps::close()
  */
-static void hcache_gdbm_close(void **ptr)
+static void store_gdbm_close(void **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -136,11 +134,11 @@ static void hcache_gdbm_close(void **ptr)
 }
 
 /**
- * hcache_gdbm_backend - Implements HcacheOps::backend()
+ * store_gdbm_version - Implements StoreOps::version()
  */
-static const char *hcache_gdbm_backend(void)
+static const char *store_gdbm_version(void)
 {
   return gdbm_version;
 }
 
-HCACHE_BACKEND_OPS(gdbm)
+STORE_BACKEND_OPS(gdbm)

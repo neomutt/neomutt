@@ -1,6 +1,6 @@
 /**
  * @file
- * Kyotocabinet DB backend for the header cache
+ * Kyoto Cabinet DB backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
@@ -24,22 +24,22 @@
  */
 
 /**
- * @page hc_kc Kyoto Cabinet
+ * @page store_kc Kyoto Cabinet DB
  *
- * Use a Kyoto Cabinet file as a header cache backend.
+ * Kyoto Cabinet DB backend for the key/value Store
  */
 
 #include "config.h"
 #include <kclangc.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "backend.h"
+#include "lib.h"
 #include "globals.h"
 
 /**
- * hcache_kyotocabinet_open - Implements HcacheOps::open()
+ * store_kyotocabinet_open - Implements StoreOps::open()
  */
-static void *hcache_kyotocabinet_open(const char *path)
+static void *store_kyotocabinet_open(const char *path)
 {
   KCDB *db = kcdbnew();
   if (!db)
@@ -47,8 +47,7 @@ static void *hcache_kyotocabinet_open(const char *path)
 
   struct Buffer kcdbpath = mutt_buffer_make(1024);
 
-  mutt_buffer_printf(&kcdbpath, "%s#type=kct#opts=%s#rcomp=lex", path,
-                     C_HeaderCacheCompress ? "lc" : "l");
+  mutt_buffer_printf(&kcdbpath, "%s#type=kct#opts=l#rcomp=lex", path);
 
   if (!kcdbopen(db, mutt_b2s(&kcdbpath), KCOWRITER | KCOCREATE))
   {
@@ -64,37 +63,37 @@ static void *hcache_kyotocabinet_open(const char *path)
 }
 
 /**
- * hcache_kyotocabinet_fetch - Implements HcacheOps::fetch()
+ * store_kyotocabinet_fetch - Implements StoreOps::fetch()
  */
-static void *hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen, size_t *dlen)
+static void *store_kyotocabinet_fetch(void *store, const char *key, size_t klen, size_t *vlen)
 {
-  if (!ctx)
+  if (!store)
     return NULL;
 
-  KCDB *db = ctx;
-  return kcdbget(db, key, keylen, dlen);
+  KCDB *db = store;
+  return kcdbget(db, key, klen, vlen);
 }
 
 /**
- * hcache_kyotocabinet_free - Implements HcacheOps::free()
+ * store_kyotocabinet_free - Implements StoreOps::free()
  */
-static void hcache_kyotocabinet_free(void *vctx, void **data)
+static void store_kyotocabinet_free(void *store, void **ptr)
 {
-  kcfree(*data);
-  *data = NULL;
+  kcfree(*ptr);
+  *ptr = NULL;
 }
 
 /**
- * hcache_kyotocabinet_store - Implements HcacheOps::store()
+ * store_kyotocabinet_store - Implements StoreOps::store()
  */
-static int hcache_kyotocabinet_store(void *ctx, const char *key, size_t keylen,
-                                     void *data, size_t dlen)
+static int store_kyotocabinet_store(void *store, const char *key, size_t klen,
+                                    void *value, size_t vlen)
 {
-  if (!ctx)
+  if (!store)
     return -1;
 
-  KCDB *db = ctx;
-  if (!kcdbset(db, key, keylen, data, dlen))
+  KCDB *db = store;
+  if (!kcdbset(db, key, klen, value, vlen))
   {
     int ecode = kcdbecode(db);
     return ecode ? ecode : -1;
@@ -103,15 +102,15 @@ static int hcache_kyotocabinet_store(void *ctx, const char *key, size_t keylen,
 }
 
 /**
- * hcache_kyotocabinet_delete_header - Implements HcacheOps::delete_header()
+ * store_kyotocabinet_delete_record - Implements StoreOps::delete_record()
  */
-static int hcache_kyotocabinet_delete_header(void *ctx, const char *key, size_t keylen)
+static int store_kyotocabinet_delete_record(void *store, const char *key, size_t klen)
 {
-  if (!ctx)
+  if (!store)
     return -1;
 
-  KCDB *db = ctx;
-  if (!kcdbremove(db, key, keylen))
+  KCDB *db = store;
+  if (!kcdbremove(db, key, klen))
   {
     int ecode = kcdbecode(db);
     return ecode ? ecode : -1;
@@ -120,9 +119,9 @@ static int hcache_kyotocabinet_delete_header(void *ctx, const char *key, size_t 
 }
 
 /**
- * hcache_kyotocabinet_close - Implements HcacheOps::close()
+ * store_kyotocabinet_close - Implements StoreOps::close()
  */
-static void hcache_kyotocabinet_close(void **ptr)
+static void store_kyotocabinet_close(void **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -138,9 +137,9 @@ static void hcache_kyotocabinet_close(void **ptr)
 }
 
 /**
- * hcache_kyotocabinet_backend - Implements HcacheOps::backend()
+ * store_kyotocabinet_version - Implements StoreOps::version()
  */
-static const char *hcache_kyotocabinet_backend(void)
+static const char *store_kyotocabinet_version(void)
 {
   static char version_cache[128] = { 0 }; ///< should be more than enough for KCVERSION
   if (version_cache[0] == '\0')
@@ -149,4 +148,4 @@ static const char *hcache_kyotocabinet_backend(void)
   return version_cache;
 }
 
-HCACHE_BACKEND_OPS(kyotocabinet)
+STORE_BACKEND_OPS(kyotocabinet)

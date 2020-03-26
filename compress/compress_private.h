@@ -23,7 +23,7 @@
 #ifndef MUTT_COMPRESS_COMPRESS_PRIVATE_H
 #define MUTT_COMPRESS_COMPRESS_PRIVATE_H
 
-#define COMPRESS_OPS(_name)                  \
+#define COMPRESS_OPS(_name)                         \
   const struct ComprOps compr_##_name##_ops = {     \
     .name       = #_name,                           \
     .open       = compr_##_name##_open,             \

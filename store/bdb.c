@@ -1,6 +1,6 @@
 /**
  * @file
- * Berkeley DB backend for the header cache
+ * Berkeley DB backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
@@ -24,9 +24,9 @@
  */
 
 /**
- * @page hc_bdb Berkeley DB
+ * @page store_bdb Berkeley DB
  *
- * Use a Berkeley DB file as a header cache backend.
+ * Berkeley DB backend for the key/value Store
  */
 
 #include "config.h"
@@ -39,13 +39,13 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "mutt/lib.h"
-#include "backend.h"
+#include "lib.h"
 #include "globals.h"
 
 /**
- * struct HcacheDbCtx - Berkeley DB context
+ * struct StoreDbCtx - Berkeley DB context
  */
-struct HcacheDbCtx
+struct StoreDbCtx
 {
   DB_ENV *env;
   DB *db;
@@ -84,19 +84,17 @@ static void dbt_empty_init(DBT *dbt)
 }
 
 /**
- * hcache_bdb_open - Implements HcacheOps::open()
+ * store_bdb_open - Implements StoreOps::open()
  */
-static void *hcache_bdb_open(const char *path)
+static void *store_bdb_open(const char *path)
 {
   struct stat sb;
   int ret;
   u_int32_t createflags = DB_CREATE;
 
-  struct HcacheDbCtx *ctx = mutt_mem_malloc(sizeof(struct HcacheDbCtx));
+  struct StoreDbCtx *ctx = mutt_mem_malloc(sizeof(struct StoreDbCtx));
 
-  int pagesize = C_HeaderCachePagesize;
-  if (pagesize <= 0)
-    pagesize = 16384;
+  const int pagesize = 512;
 
   ctx->lockfile = mutt_buffer_make(128);
   mutt_buffer_printf(&ctx->lockfile, "%s-lock-hack", path);
@@ -152,84 +150,84 @@ fail_close:
 }
 
 /**
- * hcache_bdb_fetch - Implements HcacheOps::fetch()
+ * store_bdb_fetch - Implements StoreOps::fetch()
  */
-static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen, size_t *dlen)
+static void *store_bdb_fetch(void *store, const char *key, size_t klen, size_t *vlen)
 {
-  if (!vctx)
+  if (!store)
     return NULL;
 
   DBT dkey;
   DBT data;
 
-  struct HcacheDbCtx *ctx = vctx;
+  struct StoreDbCtx *ctx = store;
 
-  dbt_init(&dkey, (void *) key, keylen);
+  dbt_init(&dkey, (void *) key, klen);
   dbt_empty_init(&data);
   data.flags = DB_DBT_MALLOC;
 
   ctx->db->get(ctx->db, NULL, &dkey, &data, 0);
 
-  *dlen = data.size;
+  *vlen = data.size;
   return data.data;
 }
 
 /**
- * hcache_bdb_free - Implements HcacheOps::free()
+ * store_bdb_free - Implements StoreOps::free()
  */
-static void hcache_bdb_free(void *vctx, void **data)
+static void store_bdb_free(void *store, void **ptr)
 {
-  FREE(data);
+  FREE(ptr);
 }
 
 /**
- * hcache_bdb_store - Implements HcacheOps::store()
+ * store_bdb_store - Implements StoreOps::store()
  */
-static int hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t dlen)
+static int store_bdb_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
 {
-  if (!vctx)
+  if (!store)
     return -1;
 
   DBT dkey;
   DBT databuf;
 
-  struct HcacheDbCtx *ctx = vctx;
+  struct StoreDbCtx *ctx = store;
 
-  dbt_init(&dkey, (void *) key, keylen);
+  dbt_init(&dkey, (void *) key, klen);
   dbt_empty_init(&databuf);
   databuf.flags = DB_DBT_USERMEM;
-  databuf.data = data;
-  databuf.size = dlen;
-  databuf.ulen = dlen;
+  databuf.data = value;
+  databuf.size = vlen;
+  databuf.ulen = vlen;
 
   return ctx->db->put(ctx->db, NULL, &dkey, &databuf, 0);
 }
 
 /**
- * hcache_bdb_delete_header - Implements HcacheOps::delete_header()
+ * store_bdb_delete_record - Implements StoreOps::delete_record()
  */
-static int hcache_bdb_delete_header(void *vctx, const char *key, size_t keylen)
+static int store_bdb_delete_record(void *store, const char *key, size_t klen)
 {
-  if (!vctx)
+  if (!store)
     return -1;
 
   DBT dkey;
 
-  struct HcacheDbCtx *ctx = vctx;
+  struct StoreDbCtx *ctx = store;
 
-  dbt_init(&dkey, (void *) key, keylen);
+  dbt_init(&dkey, (void *) key, klen);
   return ctx->db->del(ctx->db, NULL, &dkey, 0);
 }
 
 /**
- * hcache_bdb_close - Implements HcacheOps::close()
+ * store_bdb_close - Implements StoreOps::close()
  */
-static void hcache_bdb_close(void **ptr)
+static void store_bdb_close(void **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct HcacheDbCtx *db = *ptr;
+  struct StoreDbCtx *db = *ptr;
 
   db->db->close(db->db, 0);
   db->env->close(db->env, 0);
@@ -241,11 +239,11 @@ static void hcache_bdb_close(void **ptr)
 }
 
 /**
- * hcache_bdb_backend - Implements HcacheOps::backend()
+ * store_bdb_version - Implements StoreOps::version()
  */
-static const char *hcache_bdb_backend(void)
+static const char *store_bdb_version(void)
 {
   return DB_VERSION_STRING;
 }
 
-HCACHE_BACKEND_OPS(bdb)
+STORE_BACKEND_OPS(bdb)

@@ -1,6 +1,6 @@
 /**
  * @file
- * QDBM backend for the header cache
+ * QDBM backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
@@ -24,9 +24,9 @@
  */
 
 /**
- * @page hc_qdbm QDBM
+ * @page store_qdbm QDBM
  *
- * Use a Quick DataBase Manager file as a header cache backend.
+ * Use a Quick DataBase Manager file as a key/value Store.
  */
 
 #include "config.h"
@@ -35,79 +35,74 @@
 #include <stdbool.h>
 #include <villa.h>
 #include "mutt/lib.h"
-#include "backend.h"
+#include "lib.h"
 #include "globals.h"
 
 /**
- * hcache_qdbm_open - Implements HcacheOps::open()
+ * store_qdbm_open - Implements StoreOps::open()
  */
-static void *hcache_qdbm_open(const char *path)
+static void *store_qdbm_open(const char *path)
 {
-  int flags = VL_OWRITER | VL_OCREAT;
-
-  if (C_HeaderCacheCompress)
-    flags |= VL_OZCOMP;
-
-  return vlopen(path, flags, VL_CMPLEX);
+  return vlopen(path, VL_OWRITER | VL_OCREAT, VL_CMPLEX);
 }
 
 /**
- * hcache_qdbm_fetch - Implements HcacheOps::fetch()
+ * store_qdbm_fetch - Implements StoreOps::fetch()
  */
-static void *hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen, size_t *dlen)
+static void *store_qdbm_fetch(void *store, const char *key, size_t klen, size_t *vlen)
 {
-  if (!ctx)
+  if (!store)
     return NULL;
 
-  VILLA *db = ctx;
+  VILLA *db = store;
   int sp = 0;
-  void *rv = vlget(db, key, keylen, &sp);
-  *dlen = sp;
+  void *rv = vlget(db, key, klen, &sp);
+  *vlen = sp;
   return rv;
 }
 
 /**
- * hcache_qdbm_free - Implements HcacheOps::free()
+ * store_qdbm_free - Implements StoreOps::free()
  */
-static void hcache_qdbm_free(void *ctx, void **data)
+static void store_qdbm_free(void *store, void **ptr)
 {
-  FREE(data);
+  FREE(ptr);
 }
 
 /**
- * hcache_qdbm_store - Implements HcacheOps::store()
+ * store_qdbm_store - Implements StoreOps::store()
  */
-static int hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
+static int store_qdbm_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
 {
-  if (!ctx)
+  if (!store)
     return -1;
 
-  VILLA *db = ctx;
+  VILLA *db = store;
   /* Not sure if dbecode is reset on success, so better to explicitly return 0
    * on success */
-  bool success = vlput(db, key, keylen, data, dlen, VL_DOVER);
+  bool success = vlput(db, key, klen, value, vlen, VL_DOVER);
   return success ? 0 : dpecode ? dpecode : -1;
 }
 
 /**
- * hcache_qdbm_delete_header - Implements HcacheOps::delete_header()
+ * store_qdbm_delete_record - Implements StoreOps::delete_record()
  */
-static int hcache_qdbm_delete_header(void *ctx, const char *key, size_t keylen)
+static int store_qdbm_delete_record(void *store, const char *key, size_t klen)
 {
-  if (!ctx)
+  if (!store)
     return -1;
 
-  VILLA *db = ctx;
+  VILLA *db = store;
   /* Not sure if dbecode is reset on success, so better to explicitly return 0
    * on success */
-  bool success = vlout(db, key, keylen);
+  bool success = vlout(db, key, klen);
   return success ? 0 : dpecode ? dpecode : -1;
 }
 
 /**
- * hcache_qdbm_close - Implements HcacheOps::close()
+ * store_qdbm_close - Implements StoreOps::close()
  */
-static void hcache_qdbm_close(void **ptr)
+static void store_qdbm_close(void **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -118,11 +113,11 @@ static void hcache_qdbm_close(void **ptr)
 }
 
 /**
- * hcache_qdbm_backend - Implements HcacheOps::backend()
+ * store_qdbm_version - Implements StoreOps::version()
  */
-static const char *hcache_qdbm_backend(void)
+static const char *store_qdbm_version(void)
 {
   return "qdbm " _QDBM_VERSION;
 }
 
-HCACHE_BACKEND_OPS(qdbm)
+STORE_BACKEND_OPS(qdbm)
