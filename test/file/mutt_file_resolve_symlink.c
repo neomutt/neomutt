@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_file_stat_compare()
+ * Test code for mutt_file_resolve_symlink()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,54 +23,44 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
-#include <sys/stat.h>
+#include <limits.h>
 #include "mutt/lib.h"
 #include "common.h"
 
-void test_mutt_file_stat_compare(void)
+void test_mutt_file_resolve_symlink(void)
 {
-  // int mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type, struct stat *sbb, enum MuttStatType sbb_type);
+  // void mutt_file_resolve_symlink(struct Buffer *buf);
 
   // clang-format off
   static struct TestValue tests[] = {
-    { "%s/file/stat/old",   "%s/file/stat/same1", -1 },
-    { "%s/file/stat/same1", "%s/file/stat/same2",  0 },
-    { "%s/file/stat/same2", "%s/file/stat/same1",  0 },
-    { "%s/file/stat/new",   "%s/file/stat/same2",  1 },
+    { NULL,                      "",                        }, // Invalid
+    { "",                        "",                        }, // Invalid
+    { "%s/file/size",            "%s/file/size",            }, // Real file
+    { "%s/file/size_symlink",    "%s/file/size",            }, // Symlink
+    { "%s/file/missing_symlink", "%s/file/missing_symlink", }, // Broken symlink
+    { "%s/file/missing",         "%s/file/missing",         }, // Missing file
   };
   // clang-format on
 
-  {
-    struct stat stat = { 0 };
-    TEST_CHECK(mutt_file_stat_compare(NULL, 0, &stat, 0) == 0);
-  }
-
-  {
-    struct stat stat = { 0 };
-    TEST_CHECK(mutt_file_stat_compare(&stat, 0, NULL, 0) == 0);
-  }
-
-  int rc;
-  struct stat st1;
-  struct stat st2;
   char first[256] = { 0 };
   char second[256] = { 0 };
+
+  struct Buffer result = mutt_buffer_make(256);
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    memset(&st1, 0, sizeof(st1));
-    memset(&st2, 0, sizeof(st2));
     test_gen_path(first, sizeof(first), tests[i].first);
     test_gen_path(second, sizeof(second), tests[i].second);
+    mutt_buffer_strcpy(&result, first);
 
     TEST_CASE(first);
-    TEST_CHECK(stat(first, &st1) == 0);
-    TEST_CHECK(stat(second, &st2) == 0);
-
-    rc = mutt_file_stat_compare(&st1, MUTT_STAT_MTIME, &st2, MUTT_STAT_MTIME);
-    if (!TEST_CHECK(rc == tests[i].retval))
+    mutt_file_resolve_symlink(&result);
+    if (!TEST_CHECK(mutt_str_strcmp(mutt_b2s(&result), second) == 0))
     {
-      TEST_MSG("Expected: %d", tests[i].retval);
-      TEST_MSG("Actual:   %d", rc);
+      TEST_MSG("Original: %s", NONULL(tests[i].first));
+      TEST_MSG("Expected: %s", second);
+      TEST_MSG("Actual:   %s", mutt_b2s(&result));
     }
   }
+
+  mutt_buffer_dealloc(&result);
 }

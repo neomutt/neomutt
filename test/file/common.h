@@ -37,4 +37,13 @@ size_t file_num_test_lines(void);
 #define SET_UP() (file_set_up(__func__))
 #define TEAR_DOWN(fp) (file_tear_down((fp), __func__))
 
+struct TestValue
+{
+  char *first;
+  char *second;
+  int retval;
+};
+
+void test_gen_path(char *buf, size_t buflen, const char *fmt);
+
 #endif /* TEST_FILE_COMMON_H */

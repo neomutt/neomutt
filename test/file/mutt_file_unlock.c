@@ -28,4 +28,8 @@
 void test_mutt_file_unlock(void)
 {
   // int mutt_file_unlock(int fd);
+
+  {
+    TEST_CHECK(mutt_file_unlock(0) == 0);
+  }
 }

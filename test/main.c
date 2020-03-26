@@ -219,6 +219,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_file_read_keyword)                               \
   NEOMUTT_TEST_ITEM(test_mutt_file_read_line)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_file_rename)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_file_resolve_symlink)                            \
   NEOMUTT_TEST_ITEM(test_mutt_file_rmtree)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_file_safe_rename)                                \
   NEOMUTT_TEST_ITEM(test_mutt_file_sanitize_filename)                          \

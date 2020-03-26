@@ -24,12 +24,31 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/lib.h"
+#include "common.h"
 
 void test_mutt_file_get_size(void)
 {
   // long mutt_file_get_size(const char *path);
 
+  // clang-format off
+  static struct TestValue tests[] = {
+    { NULL,                      "Invalid",        0,    },
+    { "%s/file/size",            "Real path",      1234, },
+    { "%s/file/size_symlink",    "Symlink",        1234, },
+    { "%s/file/missing_symlink", "Broken symlink", 0,    },
+    { "%s/file/missing",         "Missing",        0,    },
+  };
+  // clang-format on
+
+  char first[256] = { 0 };
+
+  int rc;
+  for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    TEST_CHECK(mutt_file_get_size(NULL) == 0);
+    test_gen_path(first, sizeof(first), tests[i].first);
+
+    TEST_CASE(tests[i].second);
+    rc = mutt_file_get_size(first);
+    TEST_CHECK(rc == tests[i].retval);
   }
 }

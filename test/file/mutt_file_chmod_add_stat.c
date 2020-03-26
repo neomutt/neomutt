@@ -23,8 +23,10 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
+#include <fcntl.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
+#include "common.h"
 
 void test_mutt_file_chmod_add_stat(void)
 {
@@ -37,5 +39,45 @@ void test_mutt_file_chmod_add_stat(void)
 
   {
     TEST_CHECK(mutt_file_chmod_add_stat("apple", 0, NULL) != 0);
+  }
+
+  char first[256] = { 0 };
+  int rc;
+
+  // clang-format off
+  static struct TestValue tests[] = {
+    { "%s/file/chmod",         NULL, 0666 }, // Real file
+    { "%s/file/chmod_symlink", NULL, 0666 }, // Symlink
+  };
+  // clang-format on
+
+  struct stat st;
+  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  {
+    test_gen_path(first, sizeof(first), tests[i].first);
+
+    TEST_CASE(first);
+
+    TEST_CHECK(chmod(first, 0444) == 0);
+    TEST_CHECK(stat(first, &st) == 0);
+    rc = mutt_file_chmod_add_stat(first, 0222, &st);
+    TEST_CHECK(rc == 0);
+    TEST_CHECK(stat(first, &st) == 0);
+    if (!TEST_CHECK((st.st_mode & 0777) == tests[i].retval))
+    {
+      TEST_MSG("Expected: %o", tests[i].retval);
+      TEST_MSG("Actual:   %o", (st.st_mode & 0777));
+    }
+
+    TEST_CHECK(chmod(first, 0666) == 0);
+    TEST_CHECK(stat(first, &st) == 0);
+    rc = mutt_file_chmod_add_stat(first, 0222, &st);
+    TEST_CHECK(rc == 0);
+    TEST_CHECK(stat(first, &st) == 0);
+    if (!TEST_CHECK((st.st_mode & 0777) == tests[i].retval))
+    {
+      TEST_MSG("Expected: %o", tests[i].retval);
+      TEST_MSG("Actual:   %o", (st.st_mode & 0777));
+    }
   }
 }
