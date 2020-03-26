@@ -108,6 +108,29 @@ typedef uint8_t CliFlags;         ///< Flags for command line options, e.g. #MUT
 // clang-format on
 
 /**
+ * reset_tilde - Temporary measure
+ * @param cs Config Set
+ */
+static void reset_tilde(struct ConfigSet *cs)
+{
+  static const char *names[] = { "folder", "mbox", "postponed", "record" };
+
+  struct Buffer value = mutt_buffer_make(256);
+  for (size_t i = 0; i < mutt_array_size(names); i++)
+  {
+    struct HashElem *he = cs_get_elem(cs, names[i]);
+    if (!he)
+      continue;
+    mutt_buffer_reset(&value);
+    cs_he_initial_get(cs, he, &value);
+    mutt_buffer_expand_path_regex(&value, false);
+    cs_he_initial_set(cs, he, value.data, NULL);
+    cs_he_reset(cs, he, NULL);
+  }
+  mutt_buffer_dealloc(&value);
+}
+
+/**
  * mutt_exit - Leave NeoMutt NOW
  * @param code Value to return to the calling environment
  */
@@ -534,6 +557,8 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok;
   }
 #endif
+
+  reset_tilde(cs);
 
   if (dfile)
   {
