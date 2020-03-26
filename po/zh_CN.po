@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-03-20\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-03-20 12:49+0000\n"
+"POT-Creation-Date: 2020-03-26 22:04+0000\n"
 "PO-Revision-Date: 2019-09-09 09:44-0500\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -186,14 +186,14 @@ msgstr "真的要删除 \"%s\" 帐号吗？"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:70 main.c:736
+#: autocrypt/autocrypt.c:70 main.c:761
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s 不存在。创建它吗？"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:77 bcache/bcache.c:216 hcache/hcache.c:289 main.c:740
+#: autocrypt/autocrypt.c:77 bcache/bcache.c:216 hcache/hcache.c:232 main.c:765
 #: nntp/newsrc.c:1099
 #, c-format
 msgid "Can't create %s: %s"
@@ -541,7 +541,7 @@ msgstr "PGP 签名“无法”验证"
 
 #: commands.c:380 compmbox/compress.c:320 compose.c:2176 gui/curs_lib.c:362
 #: gui/curs_lib.c:719 index.c:1244 index.c:1294 mutt_attach.c:161
-#: mutt_attach.c:294 pager.c:2434 sendlib.c:1623
+#: mutt_attach.c:294 pager.c:2434 sendlib.c:1628
 #, c-format
 msgid "Error running \"%s\""
 msgstr "执行 \"%s\" 时出错"
@@ -1267,7 +1267,7 @@ msgid "Rename to: "
 msgstr "重命名为："
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose.c:2006 editmsg.c:101 editmsg.c:137 sendlib.c:1048
+#: compose.c:2006 editmsg.c:101 editmsg.c:137 sendlib.c:1038
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "无法 stat %s：%s"
@@ -1326,6 +1326,11 @@ msgstr "未配置 S/MIME 后端"
 #: compose.c:2254
 msgid "PGP already selected. Clear and continue?"
 msgstr "已经选择了 PGP。清除并继续？"
+
+#: compress/lz4.c:60 compress/zlib.c:61 compress/zstd.c:71
+#, c-format
+msgid "The compression level for %s should be between %d and %d"
+msgstr ""
 
 #: config/bool.c:70
 #, fuzzy, c-format
@@ -2961,46 +2966,46 @@ msgstr "不允许在这个组里发帖，帖子可能会被审核，继续？"
 msgid "Can't undelete message"
 msgstr "不能反删除信件"
 
-#: init.c:211
+#: init.c:213
 #, c-format
 msgid "Error in command line: %s"
 msgstr "命令行有错：%s"
 
-#: init.c:213
+#: init.c:215
 #, fuzzy, c-format
 msgid "Warning in command line: %s"
 msgstr "命令行有错：%s"
 
-#: init.c:324
+#: init.c:326
 msgid "unable to determine nodename via uname()"
 msgstr "无法通过 uname() 确定节点名称"
 
-#: init.c:1030
+#: init.c:1032
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s：未知命令"
 
-#: init.c:1577
+#: init.c:1579
 msgid "'charset' must contain exactly one character set name"
 msgstr "“charset”值只能包含单个字符集名称"
 
-#: init.c:1593 init.c:1617 init.c:1636 init.c:1672
+#: init.c:1609 init.c:1631 init.c:1650 init.c:1686
 #, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "选项 %s 的值无效：%s"
 
-#: init.c:1650
+#: init.c:1664
 #, c-format
 msgid "Option %s may not be set or reset from the pager"
 msgstr "不能从分页器设置或重置选项 %s"
 
-#: init.c:1688
+#: init.c:1702
 #, c-format
 msgid "Option %s may not be set when in attach-message mode"
 msgstr "在附加信件(attach-message)模式下不能设置 %s 选项"
 
 #. L10N: This applies to the "$wrap_headers" config variable
-#: init.c:1703
+#: init.c:1717
 #, c-format
 msgid "Option %s must between 78 and 998 inclusive"
 msgstr ""
@@ -3104,7 +3109,7 @@ msgid "Writing %s..."
 msgstr "正在写入 %s..."
 
 #. L10N: Try to limit to 80 columns
-#: main.c:129
+#: main.c:152
 msgid ""
 "usage:\n"
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
@@ -3145,7 +3150,7 @@ msgstr ""
 "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:149
+#: main.c:172
 msgid ""
 "options:\n"
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
@@ -3224,54 +3229,54 @@ msgstr ""
 "  -Z            打开第一个有新信件的信箱，如果一个也没有的话立即退出并返回 1\n"
 "  -z            打开非空的第一个或 (-f) 指定的信箱否则立即退出并返回 1"
 
-#: main.c:214
+#: main.c:237
 msgid "Error initializing terminal"
 msgstr "初始化终端时出错"
 
-#: main.c:289
+#: main.c:312
 msgid "unable to determine username"
 msgstr "无法确定用户名"
 
-#: main.c:295
+#: main.c:318
 msgid "unable to determine home directory"
 msgstr "无法确定用户主目录"
 
-#: main.c:549
+#: main.c:574
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "错误：变量'%s'对于 -d 来说无效"
 
-#: main.c:795
+#: main.c:820
 msgid "Failed to parse mailto: link"
 msgstr "解析 mailto: 链接失败"
 
-#: main.c:807 send.c:2467 send.c:2471
+#: main.c:832 send.c:2467 send.c:2471
 msgid "No recipients specified"
 msgstr "没有指定接收者"
 
-#: main.c:834
+#: main.c:859
 msgid "Can't use -E flag with stdin"
 msgstr "无法使用 -E 选项在stdin情况下"
 
-#: main.c:918
+#: main.c:943
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "无法解析信件模板：%s"
 
-#: main.c:983 mutt_header.c:329
+#: main.c:1008 mutt_header.c:329
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s：无法附加文件"
 
-#: main.c:1066
+#: main.c:1091
 msgid "No mailbox with new mail"
 msgstr "没有信箱有新信件"
 
-#: main.c:1090
+#: main.c:1115
 msgid "No incoming mailboxes defined"
 msgstr "未定义收信信箱"
 
-#: main.c:1140
+#: main.c:1165
 msgid "Mailbox is empty"
 msgstr "信箱是空的"
 
@@ -6692,34 +6697,34 @@ msgstr "没有发现分界变量！[请报告这个错误]"
 msgid "%s no longer exists"
 msgstr "%s 已经不存在了"
 
-#: sendlib.c:1054
+#: sendlib.c:1044
 #, c-format
 msgid "%s isn't a regular file"
 msgstr "%s 不是常规文件"
 
-#: sendlib.c:1221
+#: sendlib.c:1226
 msgid "Could not find any mime.types file."
 msgstr "找不到任何 mime.types 文件。"
 
-#: sendlib.c:1312
+#: sendlib.c:1317
 #, c-format
 msgid "Could not open %s"
 msgstr "无法打开 %s"
 
-#: sendlib.c:2854
+#: sendlib.c:2859
 msgid "$sendmail must be set in order to send mail"
 msgstr "为了发送邮件必须配置 $sendmail"
 
-#: sendlib.c:2961
+#: sendlib.c:2966
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "发送信件出错，子进程已退出 %d (%s)"
 
-#: sendlib.c:2968
+#: sendlib.c:2973
 msgid "Output of the delivery process"
 msgstr "投递进程的输出"
 
-#: sendlib.c:3153
+#: sendlib.c:3158
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "准备 resent-from 时发生错误的 IDN %s"

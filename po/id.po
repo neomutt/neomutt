@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-03-20\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-03-20 12:49+0000\n"
+"POT-Creation-Date: 2020-03-26 22:04+0000\n"
 "PO-Revision-Date: 2007-11-07 10:39+1100\n"
 "Last-Translator: Ronny Haryanto <ronny@haryan.to>\n"
 "Language-Team: Indonesian <web@linux.or.id>\n"
@@ -186,14 +186,14 @@ msgstr "Yakin hapus kotak surat \"%s\"?"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:70 main.c:736
+#: autocrypt/autocrypt.c:70 main.c:761
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s tidak ada. Buat?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:77 bcache/bcache.c:216 hcache/hcache.c:289 main.c:740
+#: autocrypt/autocrypt.c:77 bcache/bcache.c:216 hcache/hcache.c:232 main.c:765
 #: nntp/newsrc.c:1099
 #, c-format
 msgid "Can't create %s: %s"
@@ -550,7 +550,7 @@ msgstr "Tanda tangan PGP TIDAK berhasil diverifikasi"
 
 #: commands.c:380 compmbox/compress.c:320 compose.c:2176 gui/curs_lib.c:362
 #: gui/curs_lib.c:719 index.c:1244 index.c:1294 mutt_attach.c:161
-#: mutt_attach.c:294 pager.c:2434 sendlib.c:1623
+#: mutt_attach.c:294 pager.c:2434 sendlib.c:1628
 #, c-format
 msgid "Error running \"%s\""
 msgstr "Gagal menjalankan \"%s\""
@@ -1317,7 +1317,7 @@ msgid "Rename to: "
 msgstr "Ganti nama ke: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose.c:2006 editmsg.c:101 editmsg.c:137 sendlib.c:1048
+#: compose.c:2006 editmsg.c:101 editmsg.c:137 sendlib.c:1038
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Tidak bisa stat %s: %s"
@@ -1377,6 +1377,11 @@ msgstr ""
 #: compose.c:2254
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP sudah dipilih. Bersihkan & lanjut?"
+
+#: compress/lz4.c:60 compress/zlib.c:61 compress/zstd.c:71
+#, c-format
+msgid "The compression level for %s should be between %d and %d"
+msgstr ""
 
 #: config/bool.c:70
 #, fuzzy, c-format
@@ -3065,47 +3070,47 @@ msgstr ""
 msgid "Can't undelete message"
 msgstr "tidak jadi hapus surat"
 
-#: init.c:211
+#: init.c:213
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Error di baris perintah: %s"
 
-#: init.c:213
+#: init.c:215
 #, fuzzy, c-format
 msgid "Warning in command line: %s"
 msgstr "Error di baris perintah: %s"
 
-#: init.c:324
+#: init.c:326
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "tidak bisa menentukan username"
 
-#: init.c:1030
+#: init.c:1032
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: perintah tidak dikenali"
 
-#: init.c:1577
+#: init.c:1579
 msgid "'charset' must contain exactly one character set name"
 msgstr ""
 
-#: init.c:1593 init.c:1617 init.c:1636 init.c:1672
+#: init.c:1609 init.c:1631 init.c:1650 init.c:1686
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Tidak tanggal: %s"
 
-#: init.c:1650
+#: init.c:1664
 #, c-format
 msgid "Option %s may not be set or reset from the pager"
 msgstr ""
 
-#: init.c:1688
+#: init.c:1702
 #, fuzzy, c-format
 msgid "Option %s may not be set when in attach-message mode"
 msgstr "Fungsi ini tidak diperbolehkan pada mode pelampiran-surat"
 
 #. L10N: This applies to the "$wrap_headers" config variable
-#: init.c:1703
+#: init.c:1717
 #, c-format
 msgid "Option %s must between 78 and 998 inclusive"
 msgstr ""
@@ -3211,7 +3216,7 @@ msgid "Writing %s..."
 msgstr "Menulis %s..."
 
 #. L10N: Try to limit to 80 columns
-#: main.c:129
+#: main.c:152
 msgid ""
 "usage:\n"
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
@@ -3234,7 +3239,7 @@ msgid ""
 msgstr ""
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:149
+#: main.c:172
 msgid ""
 "options:\n"
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
@@ -3277,54 +3282,54 @@ msgid ""
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 
-#: main.c:214
+#: main.c:237
 msgid "Error initializing terminal"
 msgstr "Gagal menginisialisasi terminal"
 
-#: main.c:289
+#: main.c:312
 msgid "unable to determine username"
 msgstr "tidak bisa menentukan username"
 
-#: main.c:295
+#: main.c:318
 msgid "unable to determine home directory"
 msgstr "tidak bisa menentukan home direktori"
 
-#: main.c:549
+#: main.c:574
 #, fuzzy, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Error: IDN '%s' tidak benar"
 
-#: main.c:795
+#: main.c:820
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:807 send.c:2467 send.c:2471
+#: main.c:832 send.c:2467 send.c:2471
 msgid "No recipients specified"
 msgstr "Tidak ada penerima yang disebutkan"
 
-#: main.c:834
+#: main.c:859
 msgid "Can't use -E flag with stdin"
 msgstr ""
 
-#: main.c:918
+#: main.c:943
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "Tidak bisa membuka file surat: %s"
 
-#: main.c:983 mutt_header.c:329
+#: main.c:1008 mutt_header.c:329
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: tidak bisa melampirkan file"
 
-#: main.c:1066
+#: main.c:1091
 msgid "No mailbox with new mail"
 msgstr "Tidak ada kotak surat dengan surat baru"
 
-#: main.c:1090
+#: main.c:1115
 msgid "No incoming mailboxes defined"
 msgstr "Tidak ada kotak surat incoming yang didefinisikan"
 
-#: main.c:1140
+#: main.c:1165
 msgid "Mailbox is empty"
 msgstr "Kotak surat kosong"
 
@@ -6877,35 +6882,35 @@ msgstr "Tidak ada parameter batas yang bisa ditemukan [laporkan error ini]"
 msgid "%s no longer exists"
 msgstr "%s tidak ada lagi"
 
-#: sendlib.c:1054
+#: sendlib.c:1044
 #, c-format
 msgid "%s isn't a regular file"
 msgstr "%s bukan file biasa"
 
-#: sendlib.c:1221
+#: sendlib.c:1226
 #, fuzzy
 msgid "Could not find any mime.types file."
 msgstr "Tidak bisa mengirim surat."
 
-#: sendlib.c:1312
+#: sendlib.c:1317
 #, c-format
 msgid "Could not open %s"
 msgstr "Tidak bisa membuka %s"
 
-#: sendlib.c:2854
+#: sendlib.c:2859
 msgid "$sendmail must be set in order to send mail"
 msgstr ""
 
-#: sendlib.c:2961
+#: sendlib.c:2966
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Error mengirimkan surat, proses keluar dengan kode %d (%s)"
 
-#: sendlib.c:2968
+#: sendlib.c:2973
 msgid "Output of the delivery process"
 msgstr "Keluaran dari proses pengiriman"
 
-#: sendlib.c:3153
+#: sendlib.c:3158
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "IDN %s pada saat mempersiapkan resent-from tidak benar"

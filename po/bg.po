@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-03-20\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-03-20 12:49+0000\n"
+"POT-Creation-Date: 2020-03-26 22:04+0000\n"
 "PO-Revision-Date: 2016-11-09 22:45+0000\n"
 "Last-Translator: Velko Hristov <hristov@informatik.hu-berlin.de>\n"
 "Language-Team: none\n"
@@ -188,14 +188,14 @@ msgstr "Действително ли желаете да изтриете по�
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:70 main.c:736
+#: autocrypt/autocrypt.c:70 main.c:761
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s не съществува. Да бъде ли създаден?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:77 bcache/bcache.c:216 hcache/hcache.c:289 main.c:740
+#: autocrypt/autocrypt.c:77 bcache/bcache.c:216 hcache/hcache.c:232 main.c:765
 #: nntp/newsrc.c:1099
 #, c-format
 msgid "Can't create %s: %s"
@@ -553,7 +553,7 @@ msgstr "PGP-подписът НЕ е потвърден успешно"
 
 #: commands.c:380 compmbox/compress.c:320 compose.c:2176 gui/curs_lib.c:362
 #: gui/curs_lib.c:719 index.c:1244 index.c:1294 mutt_attach.c:161
-#: mutt_attach.c:294 pager.c:2434 sendlib.c:1623
+#: mutt_attach.c:294 pager.c:2434 sendlib.c:1628
 #, c-format
 msgid "Error running \"%s\""
 msgstr "Грешка при изпълнението на \"%s\""
@@ -1332,7 +1332,7 @@ msgid "Rename to: "
 msgstr "Преименуване в: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose.c:2006 editmsg.c:101 editmsg.c:137 sendlib.c:1048
+#: compose.c:2006 editmsg.c:101 editmsg.c:137 sendlib.c:1038
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Грешка при отваряне на %s: %s"
@@ -1394,6 +1394,11 @@ msgstr ""
 #, fuzzy
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP-шифроване вече е избрано. Clear and continue?"
+
+#: compress/lz4.c:60 compress/zlib.c:61 compress/zstd.c:71
+#, c-format
+msgid "The compression level for %s should be between %d and %d"
+msgstr ""
 
 #: config/bool.c:70
 #, fuzzy, c-format
@@ -3119,47 +3124,47 @@ msgstr ""
 msgid "Can't undelete message"
 msgstr "Няма възстановени писма."
 
-#: init.c:211
+#: init.c:213
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Грешка в командния ред: %s"
 
-#: init.c:213
+#: init.c:215
 #, fuzzy, c-format
 msgid "Warning in command line: %s"
 msgstr "Грешка в командния ред: %s"
 
-#: init.c:324
+#: init.c:326
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "потребителското Ви име не може да бъде установено"
 
-#: init.c:1030
+#: init.c:1032
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: непозната команда"
 
-#: init.c:1577
+#: init.c:1579
 msgid "'charset' must contain exactly one character set name"
 msgstr ""
 
-#: init.c:1593 init.c:1617 init.c:1636 init.c:1672
+#: init.c:1609 init.c:1631 init.c:1650 init.c:1686
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Невалиден ден от месеца: %s"
 
-#: init.c:1650
+#: init.c:1664
 #, c-format
 msgid "Option %s may not be set or reset from the pager"
 msgstr ""
 
-#: init.c:1688
+#: init.c:1702
 #, fuzzy, c-format
 msgid "Option %s may not be set when in attach-message mode"
 msgstr "Тази функция не може да се изпълни при прилагане на писма."
 
 #. L10N: This applies to the "$wrap_headers" config variable
-#: init.c:1703
+#: init.c:1717
 #, c-format
 msgid "Option %s must between 78 and 998 inclusive"
 msgstr ""
@@ -3265,7 +3270,7 @@ msgid "Writing %s..."
 msgstr "Запис на %s..."
 
 #. L10N: Try to limit to 80 columns
-#: main.c:129
+#: main.c:152
 msgid ""
 "usage:\n"
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
@@ -3288,7 +3293,7 @@ msgid ""
 msgstr ""
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:149
+#: main.c:172
 msgid ""
 "options:\n"
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
@@ -3331,54 +3336,54 @@ msgid ""
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 
-#: main.c:214
+#: main.c:237
 msgid "Error initializing terminal"
 msgstr "Грешка при инициализация на терминала"
 
-#: main.c:289
+#: main.c:312
 msgid "unable to determine username"
 msgstr "потребителското Ви име не може да бъде установено"
 
-#: main.c:295
+#: main.c:318
 msgid "unable to determine home directory"
 msgstr "личната Ви директория не може да бъде намерена"
 
-#: main.c:549
+#: main.c:574
 #, fuzzy, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Грешка: '%s' е невалиден IDN"
 
-#: main.c:795
+#: main.c:820
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:807 send.c:2467 send.c:2471
+#: main.c:832 send.c:2467 send.c:2471
 msgid "No recipients specified"
 msgstr "Не са указани получатели"
 
-#: main.c:834
+#: main.c:859
 msgid "Can't use -E flag with stdin"
 msgstr ""
 
-#: main.c:918
+#: main.c:943
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "Грешка при отваряне на файла: %s"
 
-#: main.c:983 mutt_header.c:329
+#: main.c:1008 mutt_header.c:329
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: грешка при прилагането на файл"
 
-#: main.c:1066
+#: main.c:1091
 msgid "No mailbox with new mail"
 msgstr "Няма пощенска кутия с нови писма"
 
-#: main.c:1090
+#: main.c:1115
 msgid "No incoming mailboxes defined"
 msgstr "Не са дефинирани входни пощенски кутии"
 
-#: main.c:1140
+#: main.c:1165
 msgid "Mailbox is empty"
 msgstr "Пощенската кутия е празна"
 
@@ -6955,35 +6960,35 @@ msgstr "Не е намерен \"boundary\" параметър [моля, съо
 msgid "%s no longer exists"
 msgstr "%s вече не съществува"
 
-#: sendlib.c:1054
+#: sendlib.c:1044
 #, c-format
 msgid "%s isn't a regular file"
 msgstr "%s не е обикновен файл"
 
-#: sendlib.c:1221
+#: sendlib.c:1226
 #, fuzzy
 msgid "Could not find any mime.types file."
 msgstr "Писмото не може да бъде изпратено."
 
-#: sendlib.c:1312
+#: sendlib.c:1317
 #, c-format
 msgid "Could not open %s"
 msgstr "Грешка при отваряне на %s"
 
-#: sendlib.c:2854
+#: sendlib.c:2859
 msgid "$sendmail must be set in order to send mail"
 msgstr ""
 
-#: sendlib.c:2961
+#: sendlib.c:2966
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Грешка %d (%s) при изпращане на писмото"
 
-#: sendlib.c:2968
+#: sendlib.c:2973
 msgid "Output of the delivery process"
 msgstr "Изпращащ процес:"
 
-#: sendlib.c:3153
+#: sendlib.c:3158
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Лош IDN %s докато формата за повторно изпращане беше подготвяна"
