@@ -108,7 +108,7 @@ struct ConfigDef SendVars[] = {
     "(nntp) Ask the user for the 'X-Comment-To' field before editing"
   },
 #endif
-  { "attach_charset", DT_STRING, NULL, 0, 0, charset_validator,
+  { "attach_charset", DT_SLIST|SLIST_SEP_COLON, NULL, 0, 0, charset_validator,
     "When attaching files, use one of these character sets"
   },
   { "bounce_delivered", DT_BOOL, NULL, true, 0, NULL,

@@ -215,7 +215,7 @@ struct ConfigDef MainVars[] = {
   { "askcc", DT_BOOL, &C_Askcc, false, 0, NULL,
     "Ask the user for the carbon-copy recipients"
   },
-  { "assumed_charset", DT_STRING, &C_AssumedCharset, 0, 0, charset_validator,
+  { "assumed_charset", DT_SLIST|SLIST_SEP_COLON, &C_AssumedCharset, 0, 0, charset_validator,
     "If a message is missing a character set, assume this character set"
   },
   { "attach_format", DT_STRING|DT_NOT_EMPTY, &C_AttachFormat, IP "%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] ", 0, NULL,
@@ -266,7 +266,7 @@ struct ConfigDef MainVars[] = {
   { "change_folder_next", DT_BOOL, &C_ChangeFolderNext, false, 0, NULL,
     "Suggest the next folder, rather than the first when using '<change-folder>'"
   },
-  { "charset", DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, &C_Charset, 0, 0, charset_validator,
+  { "charset", DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, &C_Charset, 0, 0, single_charset_validator,
     "Default character set for displaying text on screen"
   },
   { "collapse_all", DT_BOOL, &C_CollapseAll, false, 0, NULL,
@@ -278,7 +278,7 @@ struct ConfigDef MainVars[] = {
   { "collapse_unread", DT_BOOL, &C_CollapseUnread, true, 0, NULL,
     "Prevent the collapse of threads with unread emails"
   },
-  { "config_charset", DT_STRING, &C_ConfigCharset, 0, 0, charset_validator,
+  { "config_charset", DT_STRING, &C_ConfigCharset, 0, 0, single_charset_validator,
     "Character set that the config files are in"
   },
   { "confirmappend", DT_BOOL, &C_Confirmappend, true, 0, NULL,
@@ -618,7 +618,7 @@ struct ConfigDef MainVars[] = {
   { "search_context", DT_NUMBER|DT_NOT_NEGATIVE, &C_SearchContext, 0, 0, NULL,
     "Context to display around search matches"
   },
-  { "send_charset", DT_STRING|DT_CHARSET_STRICT, &C_SendCharset, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
+  { "send_charset", DT_SLIST|SLIST_SEP_COLON|DT_CHARSET_STRICT, &C_SendCharset, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
     "Character sets for outgoing mail"
   },
   { "shell", DT_STRING|DT_COMMAND, &C_Shell, IP "/bin/sh", 0, NULL,

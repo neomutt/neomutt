@@ -66,7 +66,7 @@ struct ConfigDef NntpVars[] = {
   { "group_index_format", DT_STRING|DT_NOT_EMPTY|R_INDEX|R_PAGER, &C_GroupIndexFormat, IP "%4C %M%N %5s  %-45.45f %d", 0, NULL,
     "(nntp) printf-like format string for the browser's display of newsgroups"
   },
-  { "newsgroups_charset", DT_STRING, &C_NewsgroupsCharset, IP "utf-8", 0, charset_validator,
+  { "newsgroups_charset", DT_STRING, &C_NewsgroupsCharset, IP "utf-8", 0, single_charset_validator,
     "(nntp) Character set of newsgroups' descriptions"
   },
   { "newsrc", DT_PATH|DT_PATH_FILE, &C_Newsrc, IP "~/.newsrc", 0, NULL,

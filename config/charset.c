@@ -34,6 +34,27 @@
 #include "lib.h"
 
 /**
+ * single_charset_validator - Validates a single charset variable - Implements ConfigDef::validator()
+ */
+int single_charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                             intptr_t value, struct Buffer *err)
+{
+  if (value == 0)
+    return CSR_SUCCESS;
+
+  const char *charset = (const char *) value;
+  const bool strict = (cdef->type & DT_CHARSET_STRICT);
+
+  if (!mutt_ch_check_charset(charset, strict))
+  {
+    mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, value);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}
+
+/**
  * charset_validator - Validate the "charset" config variable - Implements ConfigDef::validator()
  */
 int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
@@ -42,9 +63,9 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   if (value == 0)
     return CSR_SUCCESS;
 
-  const char *str = (const char *) value;
+  const struct Slist *list = (const struct Slist *) value;
 
-  if ((cdef->type & DT_CHARSET_SINGLE) && strchr(str, ':'))
+  if ((cdef->type & DT_CHARSET_SINGLE) && (list->count > 1))
   {
     mutt_buffer_printf(
         err, _("'charset' must contain exactly one character set name"));
@@ -52,22 +73,14 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   }
 
   int rc = CSR_SUCCESS;
-  bool strict = (cdef->type & DT_CHARSET_STRICT);
-  char *q = NULL;
-  char *s = mutt_str_dup(str);
 
-  for (char *p = strtok_r(s, ":", &q); p; p = strtok_r(NULL, ":", &q))
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &list->head, entries)
   {
-    if (*p == '\0')
-      continue;
-    if (!mutt_ch_check_charset(p, strict))
-    {
-      rc = CSR_ERR_INVALID;
-      mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, p);
+    rc = single_charset_validator(cs, cdef, (intptr_t) np->data, err);
+    if (rc != CSR_SUCCESS)
       break;
-    }
   }
 
-  FREE(&s);
   return rc;
 }
