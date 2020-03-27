@@ -69,7 +69,8 @@ static struct UrlTest test[] = {
     NULL
   },
   {
-    "pop://user@example.com@pop.example.com:234/some/where?encoding=binary",
+    "pop://user@example.com@pop.example.com:234/some/where?encoding=binary"
+    "&second=third&some%20space=%22quoted%20content%22",
     true,
     {
       U_POP,
@@ -79,7 +80,7 @@ static struct UrlTest test[] = {
       234,
       "some/where",
     },
-    "encoding|binary|"
+    "encoding|binary|second|third|some space|\"quoted content\"|"
   }
 };
 // clang-format on
