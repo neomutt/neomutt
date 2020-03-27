@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <ctype.h>
 #include <string.h>
 #include "mutt/lib.h"
@@ -52,40 +53,45 @@ static const struct Mapping UrlMap[] = {
  */
 static int parse_query_string(struct UrlQueryList *list, char *src)
 {
-  struct UrlQuery *qs = NULL;
-  char *k = NULL, *v = NULL;
+  int rc = 0;
+  regmatch_t match[3];
+  regmatch_t *keymatch = &match[1];
+  regmatch_t *valmatch = &match[2];
+
+  struct Regex *re = mutt_regex_compile("([^&]+)=([^&]+)", REG_EXTENDED);
+  assert(re && "Something is wrong with your RE engine.");
 
   while (src && *src)
   {
-    qs = mutt_mem_calloc(1, sizeof(struct UrlQuery));
-    k = strchr(src, '&');
-    if (k)
-      *k = '\0';
+    if (!mutt_regex_capture(re, src, mutt_array_size(match), match))
+    {
+      goto done;
+    }
+    char next = src[valmatch->rm_eo];
 
-    v = strchr(src, '=');
-    if (v)
+    char *key = src + keymatch->rm_so;
+    char *val = src + valmatch->rm_so;
+    src[keymatch->rm_eo] = '\0';
+    src[valmatch->rm_eo] = '\0';
+    if ((url_pct_decode(key) < 0) || (url_pct_decode(val) < 0))
     {
-      *v = '\0';
-      qs->value = v + 1;
-      if (url_pct_decode(qs->value) < 0)
-      {
-        FREE(&qs);
-        return -1;
-      }
+      rc = -1;
+      goto done;
     }
-    qs->name = src;
-    if (url_pct_decode(qs->name) < 0)
-    {
-      FREE(&qs);
-      return -1;
-    }
+
+    struct UrlQuery *qs = mutt_mem_calloc(1, sizeof(struct UrlQuery));
+    qs->name = key;
+    qs->value = val;
     STAILQ_INSERT_TAIL(list, qs, entries);
 
-    if (!k)
-      break;
-    src = k + 1;
+    src += valmatch->rm_eo;
+    if (next == '&')
+      ++src;
   }
-  return 0;
+
+done:
+  mutt_regex_free(&re);
+  return rc;
 }
 
 /**
