@@ -42,18 +42,14 @@ void test_rfc2047_encode(void)
   C_Charset = "utf-8";
 
   {
-    struct Slist *charsets = slist_parse("apple", SLIST_SEP_COLON);
-    rfc2047_encode(NULL, AddressSpecials, 0, charsets);
+    rfc2047_encode(NULL, AddressSpecials, 0, "apple");
     TEST_CHECK_(1, "rfc2047_encode(NULL, AddressSpecials, 0, \"apple\")");
-    slist_free(&charsets);
   }
 
   {
-    struct Slist *charsets = slist_parse("apple", SLIST_SEP_COLON);
     char *pd = NULL;
-    rfc2047_encode(&pd, NULL, 0, charsets);
+    rfc2047_encode(&pd, NULL, 0, "apple");
     TEST_CHECK_(1, "rfc2047_encode(&pd, NULL, 0, \"apple\")");
-    slist_free(&charsets);
   }
 
   {
@@ -67,8 +63,7 @@ void test_rfc2047_encode(void)
     {
       /* encode the expected result */
       char *s = mutt_str_strdup(rfc2047_test_data[i].decoded);
-      struct Slist *charsets = slist_parse("utf-8", SLIST_SEP_COLON);
-      rfc2047_encode(&s, NULL, 0, charsets);
+      rfc2047_encode(&s, NULL, 0, "utf-8");
       if (!TEST_CHECK(strcmp(s, rfc2047_test_data[i].encoded) == 0))
       {
         TEST_MSG("Iteration: %zu", i);
@@ -76,7 +71,6 @@ void test_rfc2047_encode(void)
         TEST_MSG("Actual   : %s", s);
       }
       FREE(&s);
-      slist_free(&charsets);
     }
   }
 

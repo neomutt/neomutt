@@ -426,7 +426,7 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
  * @retval 0 Success
  */
 static int encode(const char *d, size_t dlen, int col, const char *fromcode,
-                  const struct Slist *charsets, char **e, size_t *elen, const char *specials)
+                  const char *charsets, char **e, size_t *elen, const char *specials)
 {
   int rc = 0;
   char *buf = NULL;
@@ -624,20 +624,18 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
  * @param[in]     col      Starting index in string
  * @param[in]     charsets List of charsets to choose from
  */
-void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist *charsets)
+void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets)
 {
   if (!C_Charset || !pd || !*pd)
     return;
 
-  struct Slist *fallback_charsets = NULL;
   if (!charsets)
-    charsets = fallback_charsets = slist_parse("utf-8", SLIST_SEP_COLON);
+    charsets = "utf-8";
 
   char *e = NULL;
   size_t elen = 0;
   encode(*pd, strlen(*pd), col, C_Charset, charsets, &e, &elen, specials);
 
-  slist_free(&fallback_charsets);
   FREE(pd);
   *pd = e;
 }
