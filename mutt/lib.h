@@ -46,6 +46,7 @@
  * | mutt/observer.h  | @subpage observer  |
  * | mutt/path.c      | @subpage path      |
  * | mutt/pool.c      | @subpage pool      |
+ * | mutt/prex.c      | @subpage prex      |
  * | mutt/regex.c     | @subpage regex     |
  * | mutt/slist.c     | @subpage slist     |
  * | mutt/signal.c    | @subpage signal    |
@@ -80,6 +81,7 @@
 #include "observer.h"
 #include "path.h"
 #include "pool.h"
+#include "prex.h"
 #include "queue.h"
 #include "regex3.h"
 #include "signal2.h"

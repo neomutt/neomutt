@@ -39,6 +39,19 @@ struct UrlTest
 // clang-format off
 static struct UrlTest test[] = {
   {
+    "mailto:mail@example.com",
+    true,
+    {
+      U_MAILTO,
+      NULL,
+      NULL,
+      NULL,
+      0,
+      "mail@example.com"
+    },
+    NULL
+  },
+  {
     "foobar foobar",
     false,
   },
@@ -81,6 +94,17 @@ static struct UrlTest test[] = {
       "some/where",
     },
     "encoding|binary|second|third|some space|\"quoted content\"|"
+  },
+  {
+    "snews://user@[2000:4860:0:2001::68]:563",
+    true,
+    {
+      U_NNTPS,
+      "user",
+      NULL,
+      "2000:4860:0:2001::68",
+      563
+    }
   }
 };
 // clang-format on

@@ -1233,6 +1233,7 @@ main_exit:
   mutt_opts_free();
   mutt_keys_free();
   myvarlist_free(&MyVars);
+  mutt_prex_free();
   neomutt_free(&NeoMutt);
   cs_free(&cs);
   log_queue_flush(log_disp_terminal);
