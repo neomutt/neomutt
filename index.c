@@ -2155,6 +2155,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           }
         }
         oldcount = Context->mailbox->msg_count;
+        e_cur = get_cur_email(Context, menu);
         struct Email *e_oldcur = e_cur;
         if (nm_read_entire_thread(Context->mailbox, e_cur) < 0)
         {
