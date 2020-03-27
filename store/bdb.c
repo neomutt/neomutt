@@ -24,9 +24,10 @@
  */
 
 /**
- * @page store_bdb Berkeley DB
+ * @page store_bdb Berkeley DB (BDB)
  *
- * Berkeley DB backend for the key/value Store
+ * Berkeley DB backend for the key/value Store.
+ * https://en.wikipedia.org/wiki/Berkeley_DB
  */
 
 #include "config.h"

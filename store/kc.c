@@ -1,6 +1,6 @@
 /**
  * @file
- * Kyoto Cabinet DB backend for the key/value Store
+ * Kyoto Cabinet backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
@@ -24,9 +24,10 @@
  */
 
 /**
- * @page store_kc Kyoto Cabinet DB
+ * @page store_kc Kyoto Cabinet
  *
- * Kyoto Cabinet DB backend for the key/value Store
+ * Kyoto Cabinet backend for the key/value Store.
+ * https://fallabs.com/kyotocabinet/
  */
 
 #include "config.h"

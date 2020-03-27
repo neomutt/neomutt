@@ -1,6 +1,6 @@
 /**
  * @file
- * QDBM backend for the key/value Store
+ * Quick Database Manager (QDBM) backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
@@ -24,9 +24,10 @@
  */
 
 /**
- * @page store_qdbm QDBM
+ * @page store_qdbm Quick Database Manager (QDBM)
  *
- * Use a Quick DataBase Manager file as a key/value Store.
+ * Quick Database Manager (QDBM) backend for the key/value Store.
+ * https://fallabs.com/qdbm/
  */
 
 #include "config.h"

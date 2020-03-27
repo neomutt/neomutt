@@ -24,19 +24,28 @@
 /**
  * @page store STORE: Key value store
  *
- * Key value store
+ * These databases provide Key/Value storage for NeoMutt.
+ * They are used by the \ref hcache.
+ *
+ * @sa https://en.wikipedia.org/wiki/Key-value_database
+ *
+ * ## Interface
+ *
+ * Each Store backend implements the StoreOps API.
+ *
+ * ## Source
  *
  * @subpage store_store
  *
- * | File          | Description         |
- * | :------------ | :------------------ |
- * | store/bdb.c   | @subpage store_bdb  |
- * | store/gdbm.c  | @subpage store_gdbm |
- * | store/kc.c    | @subpage store_kc   |
- * | store/lmdb.c  | @subpage store_lmdb |
- * | store/qdbm.c  | @subpage store_qdbm |
- * | store/tc.c    | @subpage store_tc   |
- * | store/tdb.c   | @subpage store_tdb  |
+ * | Name                | File          | Home Page                                 |
+ * | :------------------ | :------------ | :---------------------------------------- |
+ * | @subpage store_bdb  | store/bdb.c   | https://en.wikipedia.org/wiki/Berkeley_DB |
+ * | @subpage store_gdbm | store/gdbm.c  | https://www.gnu.org.ua/software/gdbm/     |
+ * | @subpage store_kc   | store/kc.c    | https://fallabs.com/kyotocabinet/         |
+ * | @subpage store_lmdb | store/lmdb.c  | https://symas.com/lmdb/                   |
+ * | @subpage store_qdbm | store/qdbm.c  | https://fallabs.com/qdbm/                 |
+ * | @subpage store_tc   | store/tc.c    | https://tdb.samba.org/                    |
+ * | @subpage store_tdb  | store/tdb.c   | https://fallabs.com/tokyocabinet/         |
  */
 
 #ifndef MUTT_STORE_LIB_H

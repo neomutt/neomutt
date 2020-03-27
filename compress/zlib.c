@@ -1,6 +1,6 @@
 /**
  * @file
- * ZLIB header cache compression
+ * ZLIB compression
  *
  * @authors
  * Copyright (C) 2019-2020 Tino Reichardt <milky-neomutt@mcmilk.de>
@@ -23,7 +23,8 @@
 /**
  * @page compress_zlib ZLIB compression
  *
- * Use ZLIB header cache compression for database backends.
+ * ZLIB compression.
+ * https://www.zlib.net/
  */
 
 #include "config.h"
