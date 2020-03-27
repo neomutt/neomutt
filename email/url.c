@@ -140,23 +140,22 @@ int url_pct_decode(char *s)
  */
 enum UrlScheme url_check_scheme(const char *s)
 {
-  char sbuf[256];
-  char *t = NULL;
-  int i;
+  enum UrlScheme ret = U_UNKNOWN;
 
-  if (!s || !(t = strchr(s, ':')))
-    return U_UNKNOWN;
-  if ((size_t)(t - s) >= (sizeof(sbuf) - 1))
-    return U_UNKNOWN;
+  /* Spec: https://tools.ietf.org/html/rfc3986#section-3.1 */
+  struct Regex *re = mutt_regex_compile("^([a-zA-Z]([-+.a-zA-Z0-9])+):", REG_EXTENDED);
+  assert(re && "Something is wrong with your RE engine.");
 
-  mutt_str_strfcpy(sbuf, s, t - s + 1);
-  mutt_str_strlower(sbuf);
+  regmatch_t match[2];
+  if (mutt_regex_capture(re, s, mutt_array_size(match), match))
+  {
+    int i = mutt_map_get_value_n(s, match[1].rm_eo, UrlMap);
+    if (i != -1)
+      ret = i;
+  }
 
-  i = mutt_map_get_value(sbuf, UrlMap);
-  if (i == -1)
-    return U_UNKNOWN;
-
-  return (enum UrlScheme) i;
+  mutt_regex_free(&re);
+  return ret;
 }
 
 /**

@@ -52,6 +52,30 @@ const char *mutt_map_get_name(int val, const struct Mapping *map)
 }
 
 /**
+ * mutt_map_get_value_n - Lookup the constant for a string
+ * @param name String to locate in map
+ * @param len  Length of the name string (need not be null terminated)
+ * @param map  NULL-terminated map of strings and constants
+ * @retval num  ID matching string
+ * @retval -1   Error, or string not found
+ */
+int mutt_map_get_value_n(const char *name, size_t len, const struct Mapping *map)
+{
+  if (!name || (len == 0) || !map)
+    return -1;
+
+  for (size_t i = 0; map[i].name; i++)
+  {
+    if ((mutt_str_strncasecmp(map[i].name, name, len) == 0) && (map[i].name[len] == '\0'))
+    {
+      return map[i].value;
+    }
+  }
+
+  return -1;
+}
+
+/**
  * mutt_map_get_value - Lookup the constant for a string
  * @param name String to locate in map
  * @param map  NULL-terminated map of strings and constants
@@ -60,12 +84,5 @@ const char *mutt_map_get_name(int val, const struct Mapping *map)
  */
 int mutt_map_get_value(const char *name, const struct Mapping *map)
 {
-  if (!name || !map)
-    return -1;
-
-  for (size_t i = 0; map[i].name; i++)
-    if (mutt_str_strcasecmp(map[i].name, name) == 0)
-      return map[i].value;
-
-  return -1;
+  return mutt_map_get_value_n(name, mutt_str_strlen(name), map);
 }
