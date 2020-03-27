@@ -54,6 +54,10 @@ static const struct Mapping UrlMap[] = {
 static int parse_query_string(struct UrlQueryList *list, char *src)
 {
   int rc = 0;
+
+  if (!src || !*src)
+    return rc;
+
   regmatch_t match[3];
   regmatch_t *keymatch = &match[1];
   regmatch_t *valmatch = &match[2];
@@ -61,13 +65,14 @@ static int parse_query_string(struct UrlQueryList *list, char *src)
   struct Regex *re = mutt_regex_compile("([^&]+)=([^&]+)", REG_EXTENDED);
   assert(re && "Something is wrong with your RE engine.");
 
-  while (src && *src)
+  bool again = true;
+  while (again)
   {
     if (!mutt_regex_capture(re, src, mutt_array_size(match), match))
     {
       goto done;
     }
-    char next = src[valmatch->rm_eo];
+    again = src[valmatch->rm_eo] != '\0';
 
     char *key = src + keymatch->rm_so;
     char *val = src + valmatch->rm_so;
@@ -84,9 +89,7 @@ static int parse_query_string(struct UrlQueryList *list, char *src)
     qs->value = val;
     STAILQ_INSERT_TAIL(list, qs, entries);
 
-    src += valmatch->rm_eo;
-    if (next == '&')
-      ++src;
+    src += valmatch->rm_eo + again;
   }
 
 done:
