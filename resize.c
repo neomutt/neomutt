@@ -91,7 +91,7 @@ void mutt_resize_screen(void)
   SLsmg_init_smg();
   stdscr = newwin(0, 0, 0, 0);
   keypad(stdscr, true);
-  mutt_window_set_root(w.ws_row, w.ws_col);
+  mutt_window_set_root(SLtt_Screen_Rows, SLtt_Screen_Cols);
   mutt_window_reflow(NULL);
 }
 #else
@@ -114,13 +114,13 @@ void mutt_resize_screen(void)
 
   if (screencols <= 0)
   {
-    const char *cp = mutt_str_getenv("LINES");
+    const char *cp = mutt_str_getenv("COLUMNS");
     if (cp && (mutt_str_atoi(cp, &screencols) < 0))
       screencols = 80;
   }
 
   resizeterm(screenrows, screencols);
-  mutt_window_set_root(w.ws_row, w.ws_col);
+  mutt_window_set_root(screenrows, screencols);
   mutt_window_reflow(NULL);
 }
 #endif
