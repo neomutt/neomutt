@@ -1,6 +1,6 @@
 /**
  * @file
- * Trivial DataBase backend for the key/value Store
+ * Trivial DataBase (TDB) backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2020 Tino Reichardt <milky-neomutt@mcmilk.de>
@@ -23,7 +23,8 @@
 /**
  * @page store_tdb Trivial DataBase
  *
- * Trivial DataBase backend for the key/value Store
+ * Trivial DataBase (TDB) backend for the key/value Store.
+ * https://tdb.samba.org/
  */
 
 #include "config.h"

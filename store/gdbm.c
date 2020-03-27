@@ -1,6 +1,6 @@
 /**
  * @file
- * GDBM backend for the key/value Store
+ * GNU dbm backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
@@ -24,9 +24,10 @@
  */
 
 /**
- * @page store_gdbm GDBM
+ * @page store_gdbm GNU dbm (GDBM)
  *
- * GDBM backend for the key/value Store
+ * GNU dbm backend for the key/value Store.
+ * https://www.gnu.org.ua/software/gdbm/
  */
 
 #include "config.h"

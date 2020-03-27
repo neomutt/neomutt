@@ -1,6 +1,6 @@
 /**
  * @file
- * Zstandard header cache compression
+ * Zstandard (zstd) compression
  *
  * @authors
  * Copyright (C) 2019-2020 Tino Reichardt <milky-neomutt@mcmilk.de>
@@ -21,9 +21,10 @@
  */
 
 /**
- * @page compress_zstd Zstandard compression
+ * @page compress_zstd Zstandard (zstd) compression
  *
- * Use Zstandard header cache compression for database backends.
+ * Zstandard (zstd) compression.
+ * https://www.zstd.net
  */
 
 #include "config.h"

@@ -27,14 +27,40 @@
 /**
  * @page hcache HCACHE: Header cache API
  *
- * Header cache API
+ * The Header Cache saves data from email headers to a local store in order to
+ * speed up network mailboxes.
  *
- * This module defines the user-visible header cache API, which is used within
- * neomutt to cache and restore mail header data.
+ * @sa \ref store
+ * @sa \ref compress
  *
- * @subpage hc_serial
+ * ## Operation
  *
- * @subpage hc_hcache
+ * When NeoMutt parses an email, it stores the results in a number of structures
+ * (listed below).  To save time and network traffic, NeoMutt can save the
+ * results into a \ref store (optionally using \ref compress).
+ *
+ * @sa Address Body Buffer Email Envelope ListNode Parameter
+ * 
+ * To save the data, the Header Cache uses a set of 'dump' functions
+ * (\ref hc_serial) to 'serialise' the structures.  The cache also stores a CRC
+ * checksum of the C structs that were used.  When retrieving the data, the
+ * Header Cache uses a set of 'restore' functions to turn the data back into
+ * structs.
+ *
+ * The CRC checksum is created by `hcache/hcachever.sh` during the build
+ * process.  Whenever the definition of any of the structs changes, the CRC will
+ * change, invalidating any existing cached data.
+ *
+ * @note Adding or removing a field from the set of serialised fields will
+ * **not** affect the CRC.  In this case, it is vital that you bump the
+ * **`BASEVERSION`** variable in `hcache/hcachever.sh`
+ *
+ * ## Source
+ *
+ * | File                | Description        |
+ * | :------------------ | :----------------- |
+ * | hcache/hcache.c     | @subpage hc_hcache |
+ * | hcache/serialize.c  | @subpage hc_serial |
  */
 
 #ifndef MUTT_HCACHE_LIB_H

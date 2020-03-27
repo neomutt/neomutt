@@ -21,17 +21,23 @@
  */
 
 /**
- * @page compress COMPRESS: API for the header cache compression
+ * @page compress COMPRESS: Data compression
+ *
+ * These compression methods are used by the \ref hcache.
+ *
+ * ## Interface
+ *
+ * Each Compression backend implements the ComprOps API.
+ *
+ * ## Source
  *
  * @subpage compress_compress
  *
- * Compression Backends:
- *
- * | File                | Description            |
- * | :------------------ | :--------------------- |
- * | compress/lz4.c      | @subpage compress_lz4  |
- * | compress/zlib.c     | @subpage compress_zlib |
- * | compress/zstd.c     | @subpage compress_zstd |
+ * | Name                   | File                | Home Page                  |
+ * | :--------------------- | :------------------ | :------------------------- |
+ * | @subpage compress_lz4  | compress/lz4.c      | https://github.com/lz4/lz4 |
+ * | @subpage compress_zlib | compress/zlib.c     | https://www.zlib.net/      |
+ * | @subpage compress_zstd | compress/zstd.c     | https://www.zstd.net/      |
  *
  * Usage with Compression Level set to X:
  * - open(level X) -> N times compress() -> close()
