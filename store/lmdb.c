@@ -24,7 +24,7 @@
  */
 
 /**
- * @page store_lmdb LMDB
+ * @page store_lmdb Lightning Memory-Mapped Database (LMDB)
  *
  * Lightning Memory-Mapped Database (LMDB) backend for the key/value Store.
  * https://symas.com/lmdb/

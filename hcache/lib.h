@@ -40,7 +40,7 @@
  * results into a \ref store (optionally using \ref compress).
  *
  * @sa Address Body Buffer Email Envelope ListNode Parameter
- * 
+ *
  * To save the data, the Header Cache uses a set of 'dump' functions
  * (\ref hc_serial) to 'serialise' the structures.  The cache also stores a CRC
  * checksum of the C structs that were used.  When retrieving the data, the

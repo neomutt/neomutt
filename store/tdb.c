@@ -21,7 +21,7 @@
  */
 
 /**
- * @page store_tdb Trivial DataBase
+ * @page store_tdb Trivial DataBase (TDB)
  *
  * Trivial DataBase (TDB) backend for the key/value Store.
  * https://tdb.samba.org/
