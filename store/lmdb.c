@@ -1,6 +1,6 @@
 /**
  * @file
- * LMDB backend for the key/value Store
+ * Lightning Memory-Mapped Database (LMDB) backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
@@ -26,7 +26,8 @@
 /**
  * @page store_lmdb LMDB
  *
- * Use a Lightning Memory-Mapped Database file as a key/value Store.
+ * Lightning Memory-Mapped Database (LMDB) backend for the key/value Store.
+ * https://symas.com/lmdb/
  */
 
 #include "config.h"

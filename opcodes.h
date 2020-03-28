@@ -24,16 +24,23 @@
 #define MUTT_OPCODES_H
 
 // clang-format off
-#define OPS_CORE(_fmt) \
-  _fmt(OP_NULL,                           N_("null operation")) \
-  _fmt(OP_ATTACH_COLLAPSE,                N_("toggle display of subparts")) \
-  _fmt(OP_ATTACH_VIEW_MAILCAP,            N_("force viewing of attachment using mailcap")) \
-  _fmt(OP_ATTACH_VIEW_TEXT,               N_("view attachment as text")) \
+#ifdef USE_AUTOCRYPT
+#define OPS_AUTOCRYPT(_fmt) \
   _fmt(OP_AUTOCRYPT_ACCT_MENU,            N_("manage autocrypt accounts")) \
   _fmt(OP_AUTOCRYPT_CREATE_ACCT,          N_("create a new autocrypt account")) \
   _fmt(OP_AUTOCRYPT_DELETE_ACCT,          N_("delete the current account")) \
   _fmt(OP_AUTOCRYPT_TOGGLE_ACTIVE,        N_("toggle the current account active/inactive")) \
   _fmt(OP_AUTOCRYPT_TOGGLE_PREFER,        N_("toggle the current account prefer-encrypt flag")) \
+  _fmt(OP_COMPOSE_AUTOCRYPT_MENU,         N_("show autocrypt compose menu options"))
+#else
+#define OPS_AUTOCRYPT(_)
+#endif
+
+#define OPS_CORE(_fmt) \
+  _fmt(OP_NULL,                           N_("null operation")) \
+  _fmt(OP_ATTACH_COLLAPSE,                N_("toggle display of subparts")) \
+  _fmt(OP_ATTACH_VIEW_MAILCAP,            N_("force viewing of attachment using mailcap")) \
+  _fmt(OP_ATTACH_VIEW_TEXT,               N_("view attachment as text")) \
   _fmt(OP_BOTTOM_PAGE,                    N_("move to the bottom of the page")) \
   _fmt(OP_BOUNCE_MESSAGE,                 N_("remail a message to another user")) \
   _fmt(OP_BROWSER_GOTO_FOLDER,            N_("swap the current folder position with $folder if it exists")) \
@@ -49,7 +56,6 @@
   _fmt(OP_CHECK_STATS,                    N_("calculate message statistics for all mailboxes")) \
   _fmt(OP_COMPOSE_ATTACH_FILE,            N_("attach files to this message")) \
   _fmt(OP_COMPOSE_ATTACH_MESSAGE,         N_("attach messages to this message")) \
-  _fmt(OP_COMPOSE_AUTOCRYPT_MENU,         N_("show autocrypt compose menu options")) \
   _fmt(OP_COMPOSE_ATTACH_NEWS_MESSAGE,    N_("attach news articles to this message")) \
   _fmt(OP_COMPOSE_EDIT_BCC,               N_("edit the BCC list")) \
   _fmt(OP_COMPOSE_EDIT_CC,                N_("edit the CC list")) \
@@ -309,6 +315,7 @@
   _fmt(OP_COMPOSE_SMIME_MENU,             N_("show S/MIME options")) \
 
 #define OPS(_fmt) \
+  OPS_AUTOCRYPT(_fmt) \
   OPS_CORE(_fmt) \
   OPS_SIDEBAR(_fmt) \
   OPS_MIX(_fmt) \

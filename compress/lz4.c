@@ -1,6 +1,6 @@
 /**
  * @file
- * LZ4 header cache compression
+ * LZ4 compression
  *
  * @authors
  * Copyright (C) 2019-2020 Tino Reichardt <milky-neomutt@mcmilk.de>
@@ -23,7 +23,8 @@
 /**
  * @page compress_lz4 LZ4 compression
  *
- * Use LZ4 header cache compression for database backends.
+ * LZ4 compression.
+ * https://github.com/lz4/lz4
  */
 
 #include "config.h"

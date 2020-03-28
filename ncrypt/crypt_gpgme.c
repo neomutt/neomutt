@@ -24,8 +24,6 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * crypt_gpgme.c - GPGME based crypto operations
  */
 
 /**
@@ -2275,10 +2273,12 @@ restart:
   ciphertext = NULL;
   if (err != 0)
   {
+#ifdef USE_AUTOCRYPT
     /* Abort right away and silently.
      * Autocrypt will retry on the normal keyring. */
     if (OptAutocryptGpgme)
       goto cleanup;
+#endif
     if (is_smime && !maybe_signed && (gpg_err_code(err) == GPG_ERR_NO_DATA))
     {
       /* Check whether this might be a signed message despite what the mime
@@ -3304,7 +3304,9 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   }
   else
   {
+#ifdef USE_AUTOCRYPT
     if (!OptAutocryptGpgme)
+#endif
     {
       mutt_error(_("Could not decrypt PGP message"));
     }
@@ -5371,6 +5373,7 @@ char *smime_gpgme_find_keys(struct AddressList *addrlist, bool oppenc_mode)
   return find_keys(addrlist, APPLICATION_SMIME, oppenc_mode);
 }
 
+#ifdef USE_AUTOCRYPT
 /**
  * mutt_gpgme_select_secret_key - Select a private Autocrypt key for a new account
  * @param keyid Autocrypt Key id
@@ -5459,6 +5462,7 @@ cleanup:
   gpgme_release(ctx);
   return rc;
 }
+#endif
 
 /**
  * pgp_gpgme_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment()

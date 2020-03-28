@@ -1,6 +1,6 @@
 /**
  * @file
- * Tokyo Cabinet DB backend for the key/value Store
+ * Tokyo Cabinet backend for the key/value Store
  *
  * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
@@ -24,9 +24,10 @@
  */
 
 /**
- * @page store_tc Tokyo Cabinet DB
+ * @page store_tc Tokyo Cabinet
  *
- * Tokyo Cabinet DB backend for the key/value Store
+ * Tokyo Cabinet backend for the key/value Store.
+ * https://fallabs.com/tokyocabinet/
  */
 
 #include "config.h"
