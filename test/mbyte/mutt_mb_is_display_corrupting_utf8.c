@@ -28,4 +28,8 @@
 void test_mutt_mb_is_display_corrupting_utf8(void)
 {
   // bool mutt_mb_is_display_corrupting_utf8(wchar_t wc);
+
+  {
+    TEST_CHECK(mutt_mb_is_display_corrupting_utf8(0) == false);
+  }
 }

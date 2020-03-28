@@ -27,5 +27,9 @@
 
 void test_mutt_buffer_concatn_path(void)
 {
-  // size_t mutt_buffer_concatn_path(struct Buffer *buf, const char *dir,;
+  // size_t mutt_buffer_concatn_path(struct Buffer *buf, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
+
+  {
+    TEST_CHECK(mutt_buffer_concatn_path(NULL, NULL, 0, NULL, 0) == 0);
+  }
 }

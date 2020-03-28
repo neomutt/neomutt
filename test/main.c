@@ -174,6 +174,7 @@
   NEOMUTT_TEST_ITEM(test_email_size)                                           \
   NEOMUTT_TEST_ITEM(test_emaillist_add_email)                                  \
   NEOMUTT_TEST_ITEM(test_emaillist_clear)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_new)                                \
                                                                                \
   /* envelope */                                                               \
   NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_free)                               \

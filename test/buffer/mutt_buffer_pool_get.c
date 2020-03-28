@@ -28,4 +28,10 @@
 void test_mutt_buffer_pool_get(void)
 {
   // struct Buffer *mutt_buffer_pool_get(void);
+
+  {
+    struct Buffer *buf = mutt_buffer_pool_get();
+    TEST_CHECK(buf != NULL);
+    mutt_buffer_pool_free();
+  }
 }

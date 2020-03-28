@@ -28,4 +28,8 @@
 void test_mutt_buffer_copy(void)
 {
   // size_t mutt_buffer_copy(struct Buffer *dst, const struct Buffer *src);
+
+  {
+    TEST_CHECK(mutt_buffer_copy(NULL, NULL) == 0);
+  }
 }

@@ -28,4 +28,9 @@
 void test_mutt_date_sleep_ms(void)
 {
   // void mutt_date_sleep_ms(size_t ms);
+
+  {
+    mutt_date_sleep_ms(1);
+    TEST_CHECK_(1, "mutt_date_sleep_ms(1)");
+  }
 }

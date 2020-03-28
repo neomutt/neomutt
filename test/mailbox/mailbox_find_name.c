@@ -29,4 +29,8 @@
 void test_mailbox_find_name(void)
 {
   // struct Mailbox *mailbox_find_name(const char *name);
+
+  {
+    TEST_CHECK(mailbox_find_name(NULL) == NULL);
+  }
 }

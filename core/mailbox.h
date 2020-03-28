@@ -189,9 +189,9 @@ void            mailbox_update    (struct Mailbox *m);
  * @param m Mailbox
  * @retval ptr Path string
  */
-static inline const char *mailbox_path(const struct Mailbox *m)
+static inline const char *mailbox_path(const struct Mailbox *m) // LCOV_EXCL_LINE
 {
-  return mutt_b2s(&m->pathbuf);
+  return mutt_b2s(&m->pathbuf); // LCOV_EXCL_LINE
 }
 
 #endif /* MUTT_CORE_MAILBOX_H */

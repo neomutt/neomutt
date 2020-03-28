@@ -74,13 +74,6 @@ static void path_destroy(const struct ConfigSet *cs, void *var, const struct Con
   if (!*str)
     return;
 
-  /* Don't free paths from the var definition */
-  if (*(char **) var == (char *) cdef->initial)
-  {
-    *(char **) var = NULL;
-    return;
-  }
-
   FREE(var);
 }
 
@@ -128,10 +121,6 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   }
   else
   {
-    /* we're already using the initial value */
-    if (*(char **) cdef->var == (char *) cdef->initial)
-      *(char **) cdef->var = mutt_str_strdup((char *) cdef->initial);
-
     if (cdef->type & DT_INITIAL_SET)
       FREE(&cdef->initial);
 

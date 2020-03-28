@@ -135,9 +135,9 @@ bool test_escape_string(void)
   }
 
   {
-    const char *before = "apple\nbanana\rcherry\tdamson\\endive\"fig'grape";
+    const char *before = "apple\nbanana\rcherry\tdam\007son\\endive\"fig'grape";
     const char *after =
-        "apple\\nbanana\\rcherry\\tdamson\\\\endive\\\"fig'grape";
+        "apple\\nbanana\\rcherry\\tdam\\gson\\\\endive\\\"fig'grape";
     struct Buffer buf = mutt_buffer_make(256);
     if (!TEST_CHECK(escape_string(&buf, before) > 0))
     {

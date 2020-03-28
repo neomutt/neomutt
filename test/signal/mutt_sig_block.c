@@ -28,4 +28,9 @@
 void test_mutt_sig_block(void)
 {
   // void mutt_sig_block(void);
+
+  {
+    mutt_sig_block();
+    TEST_CHECK_(1, "mutt_sig_block()");
+  }
 }

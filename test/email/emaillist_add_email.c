@@ -24,8 +24,13 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/lib.h"
+#include "email/lib.h"
 
 void test_emaillist_add_email(void)
 {
   // int emaillist_add_email(struct EmailList *el, struct Email *e);
+
+  {
+    TEST_CHECK(emaillist_add_email(NULL, NULL) == -1);
+  }
 }

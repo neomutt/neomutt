@@ -28,4 +28,9 @@
 void test_mutt_sig_exit_handler(void)
 {
   // void mutt_sig_exit_handler(int sig);
+
+  {
+    mutt_sig_exit_handler(SIGINT);
+    TEST_CHECK_(1, "mutt_sig_exit_handler(SIGINT)");
+  }
 }

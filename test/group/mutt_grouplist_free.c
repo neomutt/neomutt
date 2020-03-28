@@ -29,4 +29,9 @@
 void test_mutt_grouplist_free(void)
 {
   // void mutt_grouplist_free(void);
+
+  {
+    mutt_grouplist_free();
+    TEST_CHECK_(1, "mutt_grouplist_free()");
+  }
 }

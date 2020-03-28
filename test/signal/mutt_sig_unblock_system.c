@@ -28,4 +28,9 @@
 void test_mutt_sig_unblock_system(void)
 {
   // void mutt_sig_unblock_system(bool catch);
+
+  {
+    mutt_sig_unblock_system(false);
+    TEST_CHECK_(1, "mutt_sig_unblock_system(false)");
+  }
 }

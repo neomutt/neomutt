@@ -29,4 +29,9 @@
 void test_mailbox_update(void)
 {
   // void mailbox_update(struct Mailbox *m);
+
+  {
+    mailbox_update(NULL);
+    TEST_CHECK_(1, "mailbox_update(NULL)");
+  }
 }

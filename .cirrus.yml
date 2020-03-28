@@ -23,7 +23,7 @@ task:
         - pkg install -y ${PKG_COMMON}
         - git clone --depth 1 https://github.com/neomutt/neomutt-test-files.git ${NEOMUTT_TEST_DIR}
         - (cd ${NEOMUTT_TEST_DIR} && ./setup.sh)
-      configure_script: ./configure --disable-doc --disable-idn --idn2 --testing
+      configure_script: ./configure --autocrypt --disable-doc --disable-idn --idn2 --testing
       build_script: make
       version_script: ./neomutt -v
       test_script: make test

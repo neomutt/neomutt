@@ -30,4 +30,11 @@
 void test_email_new(void)
 {
   // struct Email *email_new(void);
+
+  {
+    struct Email *e = email_new();
+    TEST_CHECK(e != NULL);
+    email_free(&e);
+    TEST_CHECK(e == NULL);
+  }
 }

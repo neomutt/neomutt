@@ -28,4 +28,9 @@
 void test_mutt_envlist_getlist(void)
 {
   // char **mutt_envlist_getlist(void);
+
+  {
+    char **env = mutt_envlist_getlist();
+    TEST_CHECK(env == NULL);
+  }
 }

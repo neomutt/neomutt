@@ -24,8 +24,13 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/lib.h"
+#include "address/lib.h"
 
 void test_mutt_addr_to_intl(void)
 {
   // bool mutt_addr_to_intl(struct Address *a);
+
+  {
+    TEST_CHECK(mutt_addr_to_intl(NULL) == true);
+  }
 }

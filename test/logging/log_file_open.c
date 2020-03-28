@@ -28,4 +28,8 @@
 void test_log_file_open(void)
 {
   // int log_file_open(bool verbose);
+
+  {
+    TEST_CHECK(log_file_open(false) == -1);
+  }
 }

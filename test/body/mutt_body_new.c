@@ -30,4 +30,11 @@
 void test_mutt_body_new(void)
 {
   // struct Body *mutt_body_new(void);
+
+  {
+    struct Body *body = mutt_body_new();
+    TEST_CHECK(body != NULL);
+    mutt_body_free(&body);
+    TEST_CHECK(body == NULL);
+  }
 }

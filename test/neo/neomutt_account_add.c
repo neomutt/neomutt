@@ -29,4 +29,8 @@
 void test_neomutt_account_add(void)
 {
   // bool neomutt_account_add(struct NeoMutt *n, struct Account *a);
+
+  {
+    TEST_CHECK(neomutt_account_add(NULL, NULL) == false);
+  }
 }

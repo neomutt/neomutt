@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_actx_new()
+ * Test code for mutt_autocrypthdr_new()
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -26,14 +26,15 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 
-void test_mutt_actx_new(void)
+void test_mutt_autocrypthdr_new(void)
 {
-  // struct AttachCtx *mutt_actx_new(void);
+  // struct AutocryptHeader *mutt_autocrypthdr_new(void);
 
+#ifdef USE_AUTOCRYPT
   {
-    struct AttachCtx *actx = mutt_actx_new();
-    TEST_CHECK(actx != NULL);
-    mutt_actx_free(&actx);
-    TEST_CHECK(actx == NULL);
+    struct AutocryptHeader *ah = mutt_autocrypthdr_new();
+    TEST_CHECK(ah != NULL);
+    mutt_autocrypthdr_free(&ah);
   }
+#endif
 }

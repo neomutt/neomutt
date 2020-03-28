@@ -28,4 +28,8 @@
 void test_log_file_running(void)
 {
   // bool log_file_running(void);
+
+  {
+    TEST_CHECK(log_file_running() == false);
+  }
 }

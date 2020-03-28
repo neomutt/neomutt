@@ -28,4 +28,9 @@
 void test_log_queue_set_max_size(void)
 {
   // void log_queue_set_max_size(int size);
+
+  {
+    log_queue_set_max_size(-1);
+    TEST_CHECK_(1, "log_queue_set_max_size(-1)");
+  }
 }
