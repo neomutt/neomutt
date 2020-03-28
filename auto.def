@@ -20,7 +20,7 @@ define PACKAGE_VERSION  "20200320"
 define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
 
 # Subdirectories that contain additional Makefile.autosetup files
-set subdirs {po doc contrib}
+set subdirs {po docs contrib}
 ###############################################################################
 
 ###############################################################################
@@ -1247,7 +1247,7 @@ define VPATH $vpath
 
 ###############################################################################
 # Define package timestamp (UTC) based on PACKAGE_VERSION for:
-# doc/neomuttrc.5, doc/neomutt.1
+# docs/neomuttrc.5, docs/neomutt.1
 define PACKAGE_DATE \
   [regsub {(....)(..)(..)} [get-define PACKAGE_VERSION] {\1-\2-\3}]
 

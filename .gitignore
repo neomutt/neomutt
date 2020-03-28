@@ -7,7 +7,7 @@ conftest__.c
 Makefile
 
 # Binaries
-doc/makedoc
+docs/makedoc
 neomutt
 pgpewrap
 test/neomutt-test
@@ -25,12 +25,12 @@ po/*.mo
 po/neomutt.pot
 
 # Docs
-doc/*.html
-doc/manual.txt
-doc/manual.xml
-doc/neomutt.1
-doc/neomuttrc
-doc/neomuttrc.5
+docs/*.html
+docs/manual.txt
+docs/manual.xml
+docs/neomutt.1
+docs/neomuttrc
+docs/neomuttrc.5
 
 # Generated source
 config.h

@@ -6,7 +6,7 @@ PACKAGE_VERSION=@PACKAGE_VERSION@
 PACKAGE_DATE=	@PACKAGE_DATE@
 
 # Build-time compiler and flags. These are used for building executables that
-# are only used at build-time, e.g., doc/makedoc. These are different from CC /
+# are only used at build-time, e.g., docs/makedoc. These are different from CC /
 # CFLAGS / LDFLAGS because the host and target systems might be different.
 CC_FOR_BUILD=		@CC_FOR_BUILD@
 CFLAGS_FOR_BUILD=	@CFLAGS_FOR_BUILD@ $(EXTRA_CFLAGS_FOR_BUILD)
@@ -615,7 +615,7 @@ uninstall: $(UNINSTALL_TARGETS)
 # distclean
 distclean: clean
 	$(RM) $(DEPFILES) autosetup/jimsh0 config.h config.log conststrings.c \
-		contrib/Makefile doc/Makefile doc/neomutt.1 html Makefile po/Makefile \
+		contrib/Makefile docs/Makefile docs/neomutt.1 html Makefile po/Makefile \
 		test/Makefile .clang_complete
 	$(RM) *.gc?? */*.gc?? test/*/*.gc??
 	$(RM) lcov.info lcov
@@ -644,7 +644,7 @@ coverage: all test
 # dedicated all-, clean-, install-, and uninstall- targets.
 @include @srcdir@/po/Makefile.autosetup
 @include @srcdir@/contrib/Makefile.autosetup
-@include @srcdir@/doc/Makefile.autosetup
+@include @srcdir@/docs/Makefile.autosetup
 @if ENABLE_UNIT_TESTS
 @include @srcdir@/test/Makefile.autosetup
 @endif

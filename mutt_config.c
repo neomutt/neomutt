@@ -29,7 +29,7 @@
 
 #include "config.h"
 #ifdef _MAKEDOC
-#include "doc/makedoc_defs.h"
+#include "docs/makedoc_defs.h"
 #else
 #include <stddef.h>
 #include <stdbool.h>

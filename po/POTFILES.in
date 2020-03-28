@@ -133,6 +133,7 @@ mutt/memory.c
 mutt/notify.c
 mutt/path.c
 mutt/pool.c
+mutt/prex.c
 mutt/regex.c
 mutt/signal.c
 mutt/slist.c
