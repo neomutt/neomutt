@@ -20,16 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_POP_LIB_H
-#define MUTT_POP_LIB_H
-
-#include <stdbool.h>
-#include "core/lib.h"
-#include "mx.h"
-
-struct Slist;
-struct stat;
-
 /**
  * @page pop POP: Network mailbox
  *
@@ -41,6 +31,16 @@ struct stat;
  * | pop/pop.c      | @subpage pop_pop  |
  * | pop/pop_lib.c  | @subpage pop_lib  |
  */
+
+#ifndef MUTT_POP_LIB_H
+#define MUTT_POP_LIB_H
+
+#include <stdbool.h>
+#include "core/lib.h"
+#include "mx.h"
+
+struct Slist;
+struct stat;
 
 /* These Config Variables are only used in pop/pop.c */
 extern short         C_PopCheckinterval;

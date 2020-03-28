@@ -845,6 +845,7 @@ struct ConfigDef MuttVars[] = {
   ** you may \fIunset\fP this setting.
   ** (Crypto only)
   */
+#ifdef CRYPT_BACKEND_GPGME
   { "crypt_use_gpgme", DT_BOOL, &C_CryptUseGpgme, true },
   /*
   ** .pp
@@ -864,6 +865,7 @@ struct ConfigDef MuttVars[] = {
   ** (see http://www.g10code.de/docs/pka-intro.de.pdf) during signature
   ** verification (only supported by the GPGME backend).
   */
+#endif
   { "crypt_verify_sig", DT_QUAD, &C_CryptVerifySig, MUTT_YES },
   /*
   ** .pp

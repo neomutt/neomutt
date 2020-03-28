@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page icommands Information commands
+ *
+ * Information commands
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
@@ -39,12 +45,6 @@
 #include "opcodes.h"
 #include "pager.h"
 #include "version.h"
-
-/**
- * @page icommands Information commands
- *
- * Information commands
- */
 
 // clang-format off
 static enum CommandResult icmd_bind   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);

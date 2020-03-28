@@ -254,7 +254,11 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   if (WithCrypto & APPLICATION_PGP)
     tmp_pgp_pbody = e->content;
 
-  if (C_CryptUsePka && sign)
+#ifdef CRYPT_BACKEND_GPGME
+  if (sign && C_CryptUsePka)
+#else
+  if (sign)
+#endif
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
@@ -298,6 +302,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
     mutt_param_delete(&e->content->parameter, "protected-headers");
   }
 
+#ifdef USE_AUTOCRYPT
   /* A note about e->content->mime_headers.  If postpone or send
    * fails, the mime_headers is cleared out before returning to the
    * compose menu.  So despite the "robustness" code above and in the
@@ -309,7 +314,6 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
    * compose menu.  We don't want mutt_write_rfc822_header() to write
    * stale data from one option if the other is set.
    */
-#ifdef USE_AUTOCRYPT
   if (C_Autocrypt && !postpone && (security & SEC_AUTOCRYPT))
   {
     mutt_autocrypt_generate_gossip_list(e);
