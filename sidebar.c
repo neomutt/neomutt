@@ -843,13 +843,12 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
  */
 static bool imap_is_prefix(const char *folder, const char *mbox, size_t *plen)
 {
+  bool rc = false;
+
   struct Url *url_m = url_parse(mbox);
   struct Url *url_f = url_parse(folder);
-
   if (!url_m || !url_f)
-    return false;
-
-  bool rc = false;
+    goto done;
 
   if (mutt_str_strcasecmp(url_m->host, url_f->host) != 0)
     goto done;

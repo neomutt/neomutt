@@ -732,9 +732,9 @@ int main(int argc, char *argv[], char *envp[])
     log_queue_set_max_size(100);
   }
 
+#ifdef USE_AUTOCRYPT
   /* Initialize autocrypt after curses messages are working,
    * because of the initial account setup screens. */
-#ifdef USE_AUTOCRYPT
   if (C_Autocrypt)
     mutt_autocrypt_init(!(sendflags & SEND_BATCH));
 #endif

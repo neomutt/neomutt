@@ -13543,7 +13543,6 @@ shutdown-hook 'exec sync-mailbox'
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># VARIABLES – shown with their default values</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
-set header_cache_compress_dictionary = "~/.dictionary"
 set header_cache_compress_level = 1
 set header_cache_compress_method = ""
 

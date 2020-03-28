@@ -40,7 +40,6 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "compress/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -63,6 +62,7 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
+#include "compress/lib.h"
 #include "history/lib.h"
 #include "store/lib.h"
 #ifdef USE_HCACHE
