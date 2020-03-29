@@ -437,7 +437,7 @@ char *mutt_ch_get_default_charset(void)
   const struct Slist *list = C_AssumedCharset;
   const struct ListNode *c = NULL;
 
-  if (list->count > 0 && (c = STAILQ_FIRST(&list->head)) != NULL)
+  if (list && (list->count > 0) && (c = STAILQ_FIRST(&list->head)) != NULL)
   {
     strcpy(fcharset, c->data);
     return fcharset;
