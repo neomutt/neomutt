@@ -7,6 +7,9 @@ language: c
 compiler: gcc
 cache: ccache
 
+git:
+  depth: 3
+
 addons:
   apt:
     packages:
@@ -15,6 +18,7 @@ addons:
       - docbook-xsl
       - gettext
       - gpgsm
+      - graphviz
       - jimsh
       - libdb-dev
       - libgdbm-dev
@@ -32,6 +36,7 @@ addons:
       - libsasl2-dev
       - libslang2-dev
       - libssl-dev
+      - libtdb-dev
       - libtokyocabinet-dev
       - libxml2-utils
       - libzstd-dev
