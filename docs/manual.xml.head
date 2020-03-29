@@ -10458,7 +10458,8 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
           When in the index menu and being idle (also see
           <link linkend="timeout">$timeout</link>), NeoMutt periodically checks
           for new mail in all folders which have been configured via the
-          <command>mailboxes</command> command. The interval depends on the
+          <command>mailboxes</command> command (excepting those specified with
+          the <literal>-nopoll</literal> flag). The interval depends on the
           folder type: for local/IMAP folders it consults
           <link linkend="mail-check">$mail_check</link> and
           <link linkend="pop-check-interval">$pop_check_interval</link> for POP
@@ -10503,7 +10504,8 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
           files is supported (Linux only) and not disabled at compilation time,
           NeoMutt immediately notifies about new mail for all folders configured
           via the <link linkend="mailboxes"><command>mailboxes</command></link>
-          command.  Dependent on <link linkend="mailbox-formats">mailbox format</link>
+          command (excepting those specified with the <literal>-nopoll</literal> flag).
+          Dependent on <link linkend="mailbox-formats">mailbox format</link>
           also added <emphasis>old</emphasis> mails are tracked (not for Maildir).
         </para>
         <para>
