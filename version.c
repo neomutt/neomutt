@@ -355,8 +355,11 @@ static struct CompileOptions comp_opts[] = {
  */
 static void print_compile_options(struct CompileOptions *co, FILE *fp)
 {
+  if (!co || !fp)
+    return;
+
   size_t used = 2;
-  bool tty = fp ? isatty(fileno(fp)) : false;
+  bool tty = isatty(fileno(fp));
 
   fprintf(fp, "  ");
   for (int i = 0; co[i].name; i++)
@@ -425,8 +428,11 @@ static char *rstrip_in_place(char *s)
  */
 void print_version(FILE *fp)
 {
+  if (!fp)
+    return;
+
   struct utsname uts;
-  bool tty = fp ? isatty(fileno(fp)) : false;
+  bool tty = isatty(fileno(fp));
   const char *fmt = "%s\n";
 
   if (tty)

@@ -113,7 +113,7 @@ static void *compr_lz4_decompress(void *cctx, const char *cbuf, size_t clen)
 
   /* first 4 bytes store the size */
   const unsigned char *cs = (const unsigned char *) cbuf;
-  size_t ulen = cs[0] + (cs[1] << 8) + (cs[2] << 16) + (cs[3] << 24);
+  size_t ulen = cs[0] + (cs[1] << 8) + (cs[2] << 16) + ((size_t) cs[3] << 24);
   if (ulen == 0)
     return (void *) cbuf;
 

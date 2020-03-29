@@ -63,7 +63,11 @@ static void *compr_zstd_open(short level)
 
   if (!ctx->cctx || !ctx->dctx)
   {
-    FREE(ctx);
+    if (ctx->cctx)
+      ZSTD_freeCCtx(ctx->cctx);
+    if (ctx->dctx)
+      ZSTD_freeDCtx(ctx->dctx);
+    FREE(&ctx);
     return NULL;
   }
 

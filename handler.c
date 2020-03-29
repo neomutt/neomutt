@@ -1376,6 +1376,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       if (!s->fp_in)
       {
         mutt_perror(_("failed to re-open 'memory stream'"));
+        FREE(&temp);
         return -1;
       }
 #else
@@ -1407,13 +1408,13 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
 
       /* restore the original source stream */
       mutt_file_fclose(&s->fp_in);
-#ifdef USE_FMEMOPEN
-      FREE(&temp);
-#endif
       s->fp_in = fp;
     }
   }
   s->flags |= MUTT_FIRSTDONE;
+#ifdef USE_FMEMOPEN
+  FREE(&temp);
+#endif
 
   return rc;
 }

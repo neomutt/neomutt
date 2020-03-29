@@ -1333,9 +1333,6 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp)
     goto cleanup;
   }
 
-  if (!fp_in)
-    goto cleanup;
-
   fseeko(fp_in, a->offset, SEEK_SET);
   a->parts = mutt_rfc822_parse_message(fp_in, a);
 
