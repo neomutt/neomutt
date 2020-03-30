@@ -1402,7 +1402,6 @@ int imap_subscribe(char *path, bool subscribe)
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
   char buf[2048];
-  char errstr[256];
   struct Buffer err, token;
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
@@ -1413,13 +1412,14 @@ int imap_subscribe(char *path, bool subscribe)
     char mbox[1024];
     mutt_buffer_init(&token);
     mutt_buffer_init(&err);
-    err.data = errstr;
-    err.dsize = sizeof(errstr);
+    err.dsize = 256;
+    err.data = mutt_mem_malloc(err.dsize);
     size_t len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
     imap_quote_string(mbox + len, sizeof(mbox) - len, path, true);
     if (mutt_parse_rc_line(mbox, &token, &err))
-      mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", errstr);
+      mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", err.data);
     FREE(&token.data);
+    FREE(&err.data);
   }
 
   if (subscribe)
