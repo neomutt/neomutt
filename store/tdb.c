@@ -44,7 +44,7 @@ static void *store_tdb_open(const char *path)
    * TDB_INCOMPATIBLE_HASH - Better hashing
    */
   const int flags = TDB_NOLOCK | TDB_INCOMPATIBLE_HASH | TDB_NOSYNC;
-  const int hash_size = 0; // Let TDB use its default value
+  const int hash_size = 33533; // Based on test timings for 100K emails
   return tdb_open(path, hash_size, flags, O_CREAT | O_RDWR, 00600);
 }
 
