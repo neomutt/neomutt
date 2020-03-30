@@ -489,9 +489,11 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
         case 'r':
           if (*p)
           {
-            mutt_str_strfcpy(tmp, p, sizeof(tmp));
-            mutt_expand_path(tmp, sizeof(tmp));
-            buf = be_snarf_file(tmp, buf, &bufmax, &buflen, true);
+            struct Buffer *filename = mutt_buffer_pool_get();
+            mutt_buffer_strcpy(filename, p);
+            mutt_buffer_expand_path(filename);
+            buf = be_snarf_file(mutt_b2s(filename), buf, &bufmax, &buflen, true);
+            mutt_buffer_pool_release(&filename);
           }
           else
             mutt_window_addstr(_("missing filename.\n"));
