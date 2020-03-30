@@ -764,7 +764,7 @@ cleanup:
  * @param body    Attachment
  * @param filter  Is this command a filter?
  */
-static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bool filter)
+static void query_pipe_attachment(const char *command, FILE *fp, struct Body *body, bool filter)
 {
   char tfile[PATH_MAX];
 
@@ -843,8 +843,9 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
  * @param filter  Is this command a filter?
  * @param state   File state for decoding the attachments
  */
-static void pipe_attachment_list(char *command, struct AttachCtx *actx, FILE *fp, bool tag,
-                                 struct Body *top, bool filter, struct State *state)
+static void pipe_attachment_list(const char *command, struct AttachCtx *actx,
+                                 FILE *fp, bool tag, struct Body *top,
+                                 bool filter, struct State *state)
 {
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
@@ -877,35 +878,40 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                struct Body *top, bool filter)
 {
   struct State state = { 0 };
-  char buf[PATH_MAX];
+  struct Buffer *buf = NULL;
 
   if (fp)
     filter = false; /* sanity check: we can't filter in the recv case yet */
 
-  buf[0] = '\0';
+  buf = mutt_buffer_pool_get();
   /* perform charset conversion on text attachments when piping */
   state.flags = MUTT_CHARCONV;
 
-  if ((mutt_get_field((filter ? _("Filter through: ") : _("Pipe to: ")), buf,
-                      sizeof(buf), MUTT_CMD) != 0) ||
-      (buf[0] == '\0'))
+  if (mutt_buffer_get_field((filter ? _("Filter through: ") : _("Pipe to: ")),
+                            buf, MUTT_CMD) != 0)
   {
-    return;
+    goto cleanup;
   }
 
-  mutt_expand_path(buf, sizeof(buf));
+  if (mutt_buffer_len(buf) == 0)
+    goto cleanup;
+
+  mutt_buffer_expand_path(buf);
 
   if (!filter && !C_AttachSplit)
   {
     mutt_endwin();
-    pid_t pid = filter_create(buf, &state.fp_out, NULL, NULL);
-    pipe_attachment_list(buf, actx, fp, tag, top, filter, &state);
+    pid_t pid = filter_create(mutt_b2s(buf), &state.fp_out, NULL, NULL);
+    pipe_attachment_list(mutt_b2s(buf), actx, fp, tag, top, filter, &state);
     mutt_file_fclose(&state.fp_out);
     if ((filter_wait(pid) != 0) || C_WaitKey)
       mutt_any_key_to_continue(NULL);
   }
   else
-    pipe_attachment_list(buf, actx, fp, tag, top, filter, &state);
+    pipe_attachment_list(mutt_b2s(buf), actx, fp, tag, top, filter, &state);
+
+cleanup:
+  mutt_buffer_pool_release(&buf);
 }
 
 /**
