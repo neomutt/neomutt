@@ -578,7 +578,7 @@ static void pipe_msg(struct Mailbox *m, struct Email *e, FILE *fp, bool decode, 
  *
  * The following code is shared between printing and piping.
  */
-static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
+static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd,
                         bool decode, bool print, bool split, const char *sep)
 {
   if (!m || !el)
@@ -701,16 +701,19 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el)
     return;
 
-  char buf[1024] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
 
-  if ((mutt_get_field(_("Pipe to command: "), buf, sizeof(buf), MUTT_CMD) != 0) ||
-      (buf[0] == '\0'))
-  {
-    return;
-  }
+  if (mutt_buffer_get_field(_("Pipe to command: "), buf, MUTT_CMD) != 0)
+    goto cleanup;
 
-  mutt_expand_path(buf, sizeof(buf));
-  pipe_message(m, el, buf, C_PipeDecode, false, C_PipeSplit, C_PipeSep);
+  if (mutt_buffer_len(buf) == 0)
+    goto cleanup;
+
+  mutt_buffer_expand_path(buf);
+  pipe_message(m, el, mutt_b2s(buf), C_PipeDecode, false, C_PipeSplit, C_PipeSep);
+
+cleanup:
+  mutt_buffer_pool_release(&buf);
 }
 
 /**
