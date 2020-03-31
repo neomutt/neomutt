@@ -138,6 +138,18 @@ void crypt_init(void)
 }
 
 /**
+ * crypt_cleanup - Clean up backend
+ */
+void crypt_cleanup(void)
+{
+  if (CRYPT_MOD_CALL_CHECK(PGP, cleanup))
+    (CRYPT_MOD_CALL(PGP, cleanup))();
+
+  if (CRYPT_MOD_CALL_CHECK(SMIME, cleanup))
+    (CRYPT_MOD_CALL(SMIME, cleanup))();
+}
+
+/**
  * crypt_invoke_message - Display an informative message
  * @param type Crypto type, see #SecurityFlags
  *

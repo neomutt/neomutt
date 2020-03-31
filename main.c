@@ -1232,6 +1232,7 @@ main_exit:
   mutt_envlist_free();
   mutt_browser_cleanup();
   mutt_commands_cleanup();
+  crypt_cleanup();
   mutt_opts_free();
   mutt_keys_free();
   myvarlist_free(&MyVars);

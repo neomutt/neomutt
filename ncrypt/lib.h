@@ -207,6 +207,7 @@ bool         mutt_should_hide_protected_subject(struct Email *e);
 int          mutt_signed_handler(struct Body *a, struct State *s);
 
 /* cryptglue.c */
+void         crypt_cleanup(void);
 bool         crypt_has_module_backend(SecurityFlags type);
 void         crypt_init(void);
 void         crypt_invoke_message(SecurityFlags type);

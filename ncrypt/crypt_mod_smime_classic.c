@@ -34,6 +34,22 @@
 #include "smime.h"
 #endif
 
+/**
+ * smime_class_init - Initialise smime
+ */
+static void smime_class_init(void)
+{
+  smime_init();
+}
+
+/**
+ * smime_class_cleanup - Clean up smime
+ */
+static void smime_class_cleanup(void)
+{
+  smime_cleanup();
+}
+
 // clang-format off
 /**
  * CryptModSmimeClassic - CLI SMIME - Implements ::CryptModuleSpecs
@@ -41,7 +57,8 @@
 struct CryptModuleSpecs CryptModSmimeClassic = {
   APPLICATION_SMIME,
 
-  NULL, /* init */
+  smime_class_init,
+  smime_class_cleanup,
   smime_class_void_passphrase,
   smime_class_valid_passphrase,
   smime_class_decrypt_mime,

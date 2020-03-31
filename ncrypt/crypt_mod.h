@@ -51,6 +51,11 @@ struct CryptModuleSpecs
   void (*init)(void);
 
   /**
+   * cleanup - Clean up the crypt module
+   */
+  void(*cleanup)(void);
+
+  /**
    * void_passphrase - Forget the cached passphrase
    */
   void (*void_passphrase)(void);

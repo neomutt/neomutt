@@ -51,6 +51,9 @@ struct SmimeKey
   struct SmimeKey *next;
 };
 
+void smime_init(void);
+void smime_cleanup(void);
+
 int          smime_class_application_handler(struct Body *m, struct State *s);
 struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist);
 int          smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);

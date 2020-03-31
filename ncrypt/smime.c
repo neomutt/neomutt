@@ -105,6 +105,20 @@ static char SmimeCertToUse[PATH_MAX];
 static char fp_smime_intermediateToUse[PATH_MAX];
 
 /**
+ * smime_init - Initialise smime globals
+ */
+void smime_init(void)
+{
+}
+
+/**
+ * smime_cleanup - Clean up smime globals
+ */
+void smime_cleanup(void)
+{
+}
+
+/**
  * smime_key_free - Free a list of SMIME keys
  * @param[out] keylist List of keys to free
  */

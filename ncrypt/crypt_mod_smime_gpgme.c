@@ -60,6 +60,7 @@ struct CryptModuleSpecs CryptModSmimeGpgme = {
   APPLICATION_SMIME,
 
   smime_gpgme_init,
+  NULL, /* cleanup */
   smime_gpgme_void_passphrase,
   smime_gpgme_valid_passphrase,
   smime_gpgme_decrypt_mime,
