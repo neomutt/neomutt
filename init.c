@@ -346,12 +346,12 @@ static bool get_hostname(struct ConfigSet *cs)
     C_Hostname = getmailname();
     if (!C_Hostname)
     {
-      char buffer[1024];
-      if (getdnsdomainname(buffer, sizeof(buffer)) == 0)
+      struct Buffer *domain = mutt_buffer_pool_get();
+      if (getdnsdomainname(domain) == 0)
       {
-        C_Hostname = mutt_mem_malloc(mutt_str_strlen(buffer) +
+        C_Hostname = mutt_mem_malloc(mutt_buffer_len(domain) +
                                      mutt_str_strlen(ShortHostname) + 2);
-        sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), buffer);
+        sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), mutt_b2s(domain));
       }
       else
       {
@@ -364,6 +364,7 @@ static bool get_hostname(struct ConfigSet *cs)
          * won't work in their network.  */
         C_Hostname = mutt_str_strdup(utsname.nodename);
       }
+      mutt_buffer_pool_release(&domain);
     }
 #endif
   }
@@ -732,10 +733,10 @@ HookFlags mutt_get_hook_type(const char *name)
  */
 int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 {
-  char buf[1024];
   int need_pause = 0;
   int rc = 1;
   struct Buffer err = mutt_buffer_make(256);
+  struct Buffer buf = mutt_buffer_make(256);
 
   mutt_grouplist_init();
   /* reverse alias keys need to be strdup'ed because of idna conversions */
@@ -759,11 +760,11 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   if (!p)
   {
 #ifdef HOMESPOOL
-    mutt_path_concat(buf, NONULL(HomeDir), MAILPATH, sizeof(buf));
+    mutt_buffer_concat_path(&buf, NONULL(HomeDir), MAILPATH);
 #else
-    mutt_path_concat(buf, MAILPATH, NONULL(Username), sizeof(buf));
+    mutt_buffer_concat_path(&buf, MAILPATH, NONULL(Username));
 #endif
-    p = buf;
+    p = mutt_b2s(&buf);
   }
   cs_str_initial_set(cs, "spoolfile", p, NULL);
   cs_str_reset(cs, "spoolfile", NULL);
@@ -771,17 +772,11 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   p = mutt_str_getenv("REPLYTO");
   if (p)
   {
-    struct Buffer tmp, token;
+    struct Buffer token;
 
-    snprintf(buf, sizeof(buf), "Reply-To: %s", p);
-
-    mutt_buffer_init(&tmp);
-    tmp.data = buf;
-    tmp.dptr = buf;
-    tmp.dsize = mutt_str_strlen(buf);
-
+    mutt_buffer_printf(&buf, "Reply-To: %s", p);
     mutt_buffer_init(&token);
-    parse_my_hdr(&token, &tmp, 0, &err); /* adds to UserHeader */
+    parse_my_hdr(&token, &buf, 0, &err); /* adds to UserHeader */
     FREE(&token.data);
   }
 
@@ -846,8 +841,8 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 
     if (!xdg_cfg_home && HomeDir)
     {
-      snprintf(buf, sizeof(buf), "%s/.config", HomeDir);
-      xdg_cfg_home = buf;
+      mutt_buffer_printf(&buf, "%s/.config", HomeDir);
+      xdg_cfg_home = mutt_b2s(&buf);
     }
 
     char *config = find_cfg(HomeDir, xdg_cfg_home);
@@ -861,10 +856,10 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &Muttrc, entries)
     {
-      mutt_str_strfcpy(buf, np->data, sizeof(buf));
+      mutt_buffer_strcpy(&buf, np->data);
       FREE(&np->data);
-      mutt_expand_path(buf, sizeof(buf));
-      np->data = mutt_str_strdup(buf);
+      mutt_buffer_expand_path(&buf);
+      np->data = mutt_buffer_strdup(&buf);
       if (access(np->data, F_OK))
       {
         mutt_perror(np->data);
@@ -884,27 +879,27 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   {
     do
     {
-      if (mutt_set_xdg_path(XDG_CONFIG_DIRS, buf, sizeof(buf)))
+      if (mutt_set_xdg_path(XDG_CONFIG_DIRS, &buf))
         break;
 
-      snprintf(buf, sizeof(buf), "%s/neomuttrc", SYSCONFDIR);
-      if (access(buf, F_OK) == 0)
+      mutt_buffer_printf(&buf, "%s/neomuttrc", SYSCONFDIR);
+      if (access(mutt_b2s(&buf), F_OK) == 0)
         break;
 
-      snprintf(buf, sizeof(buf), "%s/Muttrc", SYSCONFDIR);
-      if (access(buf, F_OK) == 0)
+      mutt_buffer_printf(&buf, "%s/Muttrc", SYSCONFDIR);
+      if (access(mutt_b2s(&buf), F_OK) == 0)
         break;
 
-      snprintf(buf, sizeof(buf), "%s/neomuttrc", PKGDATADIR);
-      if (access(buf, F_OK) == 0)
+      mutt_buffer_printf(&buf, "%s/neomuttrc", PKGDATADIR);
+      if (access(mutt_b2s(&buf), F_OK) == 0)
         break;
 
-      snprintf(buf, sizeof(buf), "%s/Muttrc", PKGDATADIR);
+      mutt_buffer_printf(&buf, "%s/Muttrc", PKGDATADIR);
     } while (false);
 
-    if (access(buf, F_OK) == 0)
+    if (access(mutt_b2s(&buf), F_OK) == 0)
     {
-      if (source_rc(buf, &err) != 0)
+      if (source_rc(mutt_b2s(&buf), &err) != 0)
       {
         mutt_error("%s", err.data);
         need_pause = 1; // TEST11: neomutt (error in /etc/neomuttrc)
@@ -969,7 +964,8 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   rc = 0;
 
 done:
-  FREE(&err.data);
+  mutt_buffer_dealloc(&err);
+  mutt_buffer_dealloc(&buf);
   return rc;
 }
 

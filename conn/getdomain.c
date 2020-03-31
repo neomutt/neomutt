@@ -37,12 +37,11 @@
 
 /**
  * getdnsdomainname - Lookup the host's name using DNS
- * @param buf    Buffer for the result
- * @param buflen Length of the buffer
+ * @param domain Buffer for the result
  * @retval  0 Success
  * @retval -1 Error
  */
-int getdnsdomainname(char *buf, size_t buflen)
+int getdnsdomainname(struct Buffer *domain)
 {
   int rc = -1;
 
@@ -54,7 +53,7 @@ int getdnsdomainname(char *buf, size_t buflen)
   struct addrinfo hints;
   struct addrinfo *h = NULL;
 
-  *buf = '\0';
+  mutt_buffer_reset(domain);
   memset(&hints, 0, sizeof(struct addrinfo));
   hints.ai_flags = AI_CANONNAME;
   hints.ai_family = AF_UNSPEC;
@@ -97,9 +96,9 @@ int getdnsdomainname(char *buf, size_t buflen)
   char *p = NULL;
   if (h && h->ai_canonname && (p = strchr(h->ai_canonname, '.')))
   {
-    mutt_str_strfcpy(buf, ++p, buflen);
+    mutt_buffer_strcpy(domain, ++p);
     rc = 0;
-    mutt_debug(LL_DEBUG1, "Hostname: %s\n", buf);
+    mutt_debug(LL_DEBUG1, "Hostname: %s\n", mutt_b2s(domain));
     freeaddrinfo(h);
   }
 #endif /* HAVE_GETADDRINFO || defined HAVE_GETADDRINFO_A */
