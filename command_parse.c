@@ -429,14 +429,13 @@ static int parse_grouplist(struct GroupList *gl, struct Buffer *buf,
  */
 int source_rc(const char *rcfile_path, struct Buffer *err)
 {
-  int line = 0, rc = 0, warnings = 0;
+  int lineno = 0, rc = 0, warnings = 0;
   enum CommandResult line_rc;
-  struct Buffer token;
-  char *linebuf = NULL;
+  struct Buffer *token = NULL, *linebuf = NULL;
+  char *line = NULL;
   char *currentline = NULL;
   char rcfile[PATH_MAX];
-  size_t buflen;
-
+  size_t linelen = 0;
   pid_t pid;
 
   mutt_str_strfcpy(rcfile, rcfile_path, sizeof(rcfile));
@@ -481,24 +480,29 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     return -1;
   }
 
-  mutt_buffer_init(&token);
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_CONT)))
+  token = mutt_buffer_pool_get();
+  linebuf = mutt_buffer_pool_get();
+
+  while ((line = mutt_file_read_line(line, &linelen, fp, &lineno, MUTT_CONT)) != NULL)
   {
     const bool conv = C_ConfigCharset && C_Charset;
     if (conv)
     {
-      currentline = mutt_str_strdup(linebuf);
+      currentline = mutt_str_strdup(line);
       if (!currentline)
         continue;
       mutt_ch_convert_string(&currentline, C_ConfigCharset, C_Charset, 0);
     }
     else
-      currentline = linebuf;
+      currentline = line;
+
+    mutt_buffer_strcpy(linebuf, currentline);
+
     mutt_buffer_reset(err);
-    line_rc = mutt_parse_rc_line(currentline, &token, err);
+    line_rc = mutt_parse_rc_buffer(linebuf, token, err);
     if (line_rc == MUTT_CMD_ERROR)
     {
-      mutt_error(_("Error in %s, line %d: %s"), rcfile, line, err->data);
+      mutt_error(_("Error in %s, line %d: %s"), rcfile, lineno, err->data);
       if (--rc < -MAX_ERRS)
       {
         if (conv)
@@ -509,7 +513,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     else if (line_rc == MUTT_CMD_WARNING)
     {
       /* Warning */
-      mutt_warning(_("Warning in %s, line %d: %s"), rcfile, line, err->data);
+      mutt_warning(_("Warning in %s, line %d: %s"), rcfile, lineno, err->data);
       warnings++;
     }
     else if (line_rc == MUTT_CMD_FINISH)
@@ -524,11 +528,12 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     if (conv)
       FREE(&currentline);
   }
-  FREE(&token.data);
-  FREE(&linebuf);
+
+  FREE(&line);
   mutt_file_fclose(&fp);
   if (pid != -1)
     filter_wait(pid);
+
   if (rc)
   {
     /* the neomuttrc source keyword */
@@ -556,6 +561,8 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     FREE(&np);
   }
 
+  mutt_buffer_pool_release(&token);
+  mutt_buffer_pool_release(&linebuf);
   return rc;
 }
 
@@ -880,8 +887,6 @@ warn:
 enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
                                intptr_t data, struct Buffer *err)
 {
-  struct Buffer token = mutt_buffer_make(0);
-
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   // is the item defined as:
@@ -902,14 +907,12 @@ enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
   /* ifdef KNOWN_SYMBOL or ifndef UNKNOWN_SYMBOL */
   if ((res && (data == 0)) || (!res && (data == 1)))
   {
-    enum CommandResult rc = mutt_parse_rc_line(buf->data, &token, err);
+    enum CommandResult rc = mutt_parse_rc_line(buf->data, err);
     if (rc == MUTT_CMD_ERROR)
     {
       mutt_error(_("Error: %s"), err->data);
-      FREE(&token.data);
       return MUTT_CMD_ERROR;
     }
-    FREE(&token.data);
     return rc;
   }
   return MUTT_CMD_SUCCESS;

@@ -871,7 +871,6 @@ void mutt_enter_command(void)
     return;
 
   struct Buffer err = mutt_buffer_make(256);
-  struct Buffer token = mutt_buffer_make(256);
 
   /* check if buf is a valid icommand, else fall back quietly to parse_rc_lines */
   enum CommandResult rc = mutt_parse_icommand(buf, &err);
@@ -887,7 +886,7 @@ void mutt_enter_command(void)
   }
   else if (rc != MUTT_CMD_SUCCESS)
   {
-    rc = mutt_parse_rc_line(buf, &token, &err);
+    rc = mutt_parse_rc_line(buf, &err);
     if (!mutt_buffer_is_empty(&err))
     {
       if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */
@@ -900,7 +899,6 @@ void mutt_enter_command(void)
   }
   /* else successful command */
 
-  mutt_buffer_dealloc(&token);
   mutt_buffer_dealloc(&err);
 }
 

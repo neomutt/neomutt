@@ -203,12 +203,11 @@ static int execute_commands(struct ListHead *p)
 {
   int rc = 0;
   struct Buffer *err = mutt_buffer_pool_get();
-  struct Buffer *token = mutt_buffer_pool_get();
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, p, entries)
   {
-    enum CommandResult rc2 = mutt_parse_rc_line(np->data, token, err);
+    enum CommandResult rc2 = mutt_parse_rc_line(np->data, err);
     if (rc2 == MUTT_CMD_ERROR)
       mutt_error(_("Error in command line: %s"), mutt_b2s(err));
     else if (rc2 == MUTT_CMD_WARNING)
@@ -216,12 +215,10 @@ static int execute_commands(struct ListHead *p)
 
     if ((rc2 == MUTT_CMD_ERROR) || (rc2 == MUTT_CMD_WARNING))
     {
-      mutt_buffer_pool_release(&token);
       mutt_buffer_pool_release(&err);
       return -1;
     }
   }
-  mutt_buffer_pool_release(&token);
   mutt_buffer_pool_release(&err);
 
   return rc;
@@ -977,48 +974,46 @@ done:
 }
 
 /**
- * mutt_parse_rc_line - Parse a line of user config
+ * mutt_parse_rc_buffer - Parse a line of user config
  * @param line  config line to read
  * @param token scratch buffer to be used by parser
  * @param err   where to write error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
- * Caller should free token->data when finished.  the reason for this variable
- * is to avoid having to allocate and deallocate a lot of memory if we are
- * parsing many lines.  the caller can pass in the memory to use, which avoids
- * having to create new space for every call to this function.
+ * The reason for `token` is to avoid having to allocate and deallocate a lot
+ * of memory if we are parsing many lines.  the caller can pass in the memory
+ * to use, which avoids having to create new space for every call to this function.
  */
-enum CommandResult mutt_parse_rc_line(/* const */ char *line,
-                                      struct Buffer *token, struct Buffer *err)
+enum CommandResult mutt_parse_rc_buffer(struct Buffer *line,
+                                        struct Buffer *token, struct Buffer *err)
 {
-  if (!line || !*line)
+  if (mutt_buffer_len(line) == 0)
     return 0;
 
   int i;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
-  struct Buffer expn = mutt_buffer_make(128);
-  mutt_buffer_addstr(&expn, line);
-  expn.dptr = expn.data;
+  mutt_buffer_reset(err);
 
-  *err->data = 0;
+  /* Read from the beginning of line->data */
+  line->dptr = line->data;
 
-  SKIPWS(expn.dptr);
-  while (*expn.dptr != '\0')
+  SKIPWS(line->dptr);
+  while (*line->dptr)
   {
-    if (*expn.dptr == '#')
+    if (*line->dptr == '#')
       break; /* rest of line is a comment */
-    if (*expn.dptr == ';')
+    if (*line->dptr == ';')
     {
-      expn.dptr++;
+      line->dptr++;
       continue;
     }
-    mutt_extract_token(token, &expn, MUTT_TOKEN_NO_FLAGS);
+    mutt_extract_token(token, line, MUTT_TOKEN_NO_FLAGS);
     for (i = 0; Commands[i].name; i++)
     {
       if (mutt_str_strcmp(token->data, Commands[i].name) == 0)
       {
-        rc = Commands[i].parse(token, &expn, Commands[i].data, err);
+        rc = Commands[i].parse(token, line, Commands[i].data, err);
         if (rc != MUTT_CMD_SUCCESS)
         {              /* -1 Error, +1 Finish */
           goto finish; /* Propagate return code */
@@ -1035,7 +1030,29 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
     }
   }
 finish:
-  mutt_buffer_dealloc(&expn);
+  return rc;
+}
+
+/**
+ * mutt_parse_rc_line - Parse a line of user config
+ * @param line Config line to read
+ * @param err  Where to write error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ */
+enum CommandResult mutt_parse_rc_line(const char *line, struct Buffer *err)
+{
+  if (!line || !*line)
+    return MUTT_CMD_ERROR;
+
+  struct Buffer *line_buffer = mutt_buffer_pool_get();
+  struct Buffer *token = mutt_buffer_pool_get();
+
+  mutt_buffer_strcpy(line_buffer, line);
+
+  enum CommandResult rc = mutt_parse_rc_buffer(line_buffer, token, err);
+
+  mutt_buffer_pool_release(&line_buffer);
+  mutt_buffer_pool_release(&token);
   return rc;
 }
 

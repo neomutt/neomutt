@@ -301,11 +301,10 @@ static int lua_mutt_enter(lua_State *l)
 {
   mutt_debug(LL_DEBUG2, " * lua_mutt_enter()\n");
   struct Buffer *err = mutt_buffer_pool_get();
-  struct Buffer *token = mutt_buffer_pool_get();
   char *buf = mutt_str_strdup(lua_tostring(l, -1));
   int rc = 0;
 
-  if (mutt_parse_rc_line(buf, token, err))
+  if (mutt_parse_rc_line(buf, err))
   {
     luaL_error(l, "NeoMutt error: %s", mutt_b2s(err));
     rc = -1;
@@ -319,7 +318,6 @@ static int lua_mutt_enter(lua_State *l)
   }
 
   FREE(&buf);
-  mutt_buffer_pool_release(&token);
   mutt_buffer_pool_release(&err);
 
   return rc;

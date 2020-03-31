@@ -67,7 +67,6 @@ void test_parse_set(void)
     "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
   };
 
-  struct Buffer tmp = mutt_buffer_make(256);
   struct Buffer err = mutt_buffer_make(256);
   char line[64];
 
@@ -81,12 +80,11 @@ void test_parse_set(void)
       // printf("COMMAND %s\n", commands[c]);
       for (size_t t = 0; t < mutt_array_size(tests); t++)
       {
-        mutt_buffer_reset(&tmp);
         mutt_buffer_reset(&err);
 
         snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
         printf("%-26s", line);
-        enum CommandResult rc = mutt_parse_rc_line(line, &tmp, &err);
+        enum CommandResult rc = mutt_parse_rc_line(line, &err);
         printf("%2d %s\n", rc, err.data);
       }
       printf("\n");
@@ -94,6 +92,5 @@ void test_parse_set(void)
     // printf("\n");
   }
 
-  mutt_buffer_dealloc(&tmp);
   mutt_buffer_dealloc(&err);
 }
