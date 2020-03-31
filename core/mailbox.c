@@ -73,6 +73,7 @@ void mailbox_free(struct Mailbox **ptr)
   cs_subset_free(&m->sub);
   FREE(&m->name);
   FREE(&m->realpath);
+  url_free(&m->url);
   FREE(&m->emails);
   FREE(&m->v2r);
   notify_free(&m->notify);

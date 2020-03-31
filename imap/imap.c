@@ -1906,8 +1906,9 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
 
   if (!m->mdata)
   {
-    struct Url *url = url_parse(mailbox_path(m));
-    struct ImapMboxData *mdata = imap_mdata_new(adata, url->path);
+    if (!m->url)
+      m->url = url_parse(mailbox_path(m));
+    struct ImapMboxData *mdata = imap_mdata_new(adata, m->url->path);
 
     /* fixup path and realpath, mainly to replace / by /INBOX */
     char buf[1024];
@@ -1917,7 +1918,6 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
 
     m->mdata = mdata;
     m->free_mdata = imap_mdata_free;
-    url_free(&url);
   }
   return 0;
 }

@@ -82,6 +82,7 @@ struct Mailbox
 {
   struct Buffer pathbuf;
   char *realpath;                     ///< Used for duplicate detection, context comparison, and the sidebar
+  struct Url *url;                    ///< Parsed mailbox URL
   char *name;                         ///< A short name for the Mailbox
   struct ConfigSubset *sub;           ///< Inherited config items
   off_t size;                         ///< Size of the Mailbox

@@ -837,15 +837,15 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
 /**
  * imap_is_prefix - Check if folder matches the beginning of mbox
  * @param folder Folder
- * @param mbox   Mailbox path
+ * @param m      Mailbox
  * @param plen   Prefix length
  * @retval true If folder is the prefix of mbox
  */
-static bool imap_is_prefix(const char *folder, const char *mbox, size_t *plen)
+static bool imap_is_prefix(const char *folder, struct Mailbox *m, size_t *plen)
 {
   bool rc = false;
 
-  struct Url *url_m = url_parse(mbox);
+  struct Url *url_m = m->url ? m->url : (m->url = url_parse(mailbox_path(m)));
   struct Url *url_f = url_parse(folder);
   if (!url_m || !url_f)
     goto done;
@@ -869,7 +869,6 @@ static bool imap_is_prefix(const char *folder, const char *mbox, size_t *plen)
   rc = true;
 
 done:
-  url_free(&url_m);
   url_free(&url_f);
 
   return rc;
@@ -965,7 +964,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
     bool maildir_is_prefix = false;
     if (m->type == MUTT_IMAP)
     {
-      maildir_is_prefix = imap_is_prefix(C_Folder, mailbox_path(m), &maildirlen);
+      maildir_is_prefix = imap_is_prefix(C_Folder, m, &maildirlen);
     }
     else
     {

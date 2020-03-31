@@ -1570,7 +1570,6 @@ struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
 
   struct MailboxNode *np = NULL;
   struct Url *url_p = NULL;
-  struct Url *url_a = NULL;
 
   const bool use_url = (a->type == MUTT_IMAP);
   if (use_url)
@@ -1589,30 +1588,29 @@ struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
       continue;
     }
 
-    url_free(&url_a);
-    url_a = url_parse(np->mailbox->realpath);
-    if (!url_a)
+    if (!np->mailbox->url)
+      np->mailbox->url = url_parse(mailbox_path(np->mailbox));
+    if (!np->mailbox->url)
       continue;
 
-    if (mutt_str_strcasecmp(url_a->host, url_p->host) != 0)
+    if (mutt_str_strcasecmp(np->mailbox->url->host, url_p->host) != 0)
       continue;
-    if (url_p->user && (mutt_str_strcasecmp(url_a->user, url_p->user) != 0))
+    if (url_p->user && (mutt_str_strcasecmp(np->mailbox->url->user, url_p->user) != 0))
       continue;
     if (a->type == MUTT_IMAP)
     {
-      if (imap_mxcmp(url_a->path, url_p->path) == 0)
+      if (imap_mxcmp(np->mailbox->url->path, url_p->path) == 0)
         break;
     }
     else
     {
-      if (mutt_str_strcmp(url_a->path, url_p->path) == 0)
+      if (mutt_str_strcmp(np->mailbox->url->path, url_p->path) == 0)
         break;
     }
   }
 
 done:
   url_free(&url_p);
-  url_free(&url_a);
 
   if (!np)
     return NULL;
