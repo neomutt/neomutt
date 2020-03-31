@@ -31,7 +31,10 @@ void test_url_check_scheme(void)
 {
   // enum UrlScheme url_check_scheme(const char *s);
 
-  {
-    TEST_CHECK(url_check_scheme(NULL) == 0);
-  }
+  TEST_CHECK(url_check_scheme(NULL) == U_UNKNOWN);
+  TEST_CHECK(url_check_scheme("foobar") == U_UNKNOWN);
+  TEST_CHECK(url_check_scheme("foobar:") == U_UNKNOWN);
+  TEST_CHECK(url_check_scheme("PoP:") == U_POP);
+  TEST_CHECK(url_check_scheme("IMAPS:") == U_IMAPS);
+  TEST_CHECK(url_check_scheme("ImApSBAR:") == U_UNKNOWN);
 }
