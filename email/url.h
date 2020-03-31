@@ -77,7 +77,6 @@ struct Url
 
 enum UrlScheme url_check_scheme(const char *s);
 void           url_free        (struct Url **ptr);
-struct Url *   url_new         (void);
 struct Url    *url_parse       (const char *src);
 int            url_pct_decode  (char *s);
 void           url_pct_encode  (char *buf, size_t buflen, const char *src);

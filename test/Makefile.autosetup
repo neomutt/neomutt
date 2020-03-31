@@ -484,7 +484,6 @@ THREAD_OBJS	= test/thread/clean_references.o \
 
 URL_OBJS	= test/url/url_check_scheme.o \
 		  test/url/url_free.o \
-		  test/url/url_new.o \
 		  test/url/url_parse.o \
 		  test/url/url_pct_decode.o \
 		  test/url/url_pct_encode.o \

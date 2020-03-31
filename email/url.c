@@ -122,6 +122,17 @@ int url_pct_decode(char *s)
 }
 
 /**
+ * url_new - Create a Url
+ * @retval ptr New Url
+ */
+static struct Url *url_new(void)
+{
+  struct Url *url = mutt_mem_calloc(1, sizeof(struct Url));
+  STAILQ_INIT(&url->query_strings);
+  return url;
+}
+
+/**
  * parse - Parse a URL
  * @param src String to parse
  * @param scheme If not NULL, save the parsed scheme
@@ -292,20 +303,6 @@ void url_free(struct Url **ptr)
 
   FREE(&url->src);
   FREE(ptr);
-}
-
-/**
- * url_new - Create a Url
- * @retval ptr New Url
- */
-struct Url *url_new(void)
-{
-  struct Url *url = mutt_mem_calloc(1, sizeof(struct Url));
-
-  url->scheme = U_UNKNOWN;
-  STAILQ_INIT(&url->query_strings);
-
-  return url;
 }
 
 /**
