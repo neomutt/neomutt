@@ -292,11 +292,11 @@ void url_free(struct Url **ptr)
 
   struct Url *url = *ptr;
 
-  struct UrlQuery *np = NULL;
-  struct UrlQuery *tmp = NULL;
-  STAILQ_FOREACH_SAFE(np, &url->query_strings, entries, tmp)
+  struct UrlQueryList *l = &url->query_strings;
+  while (!STAILQ_EMPTY(l))
   {
-    STAILQ_REMOVE(&url->query_strings, np, UrlQuery, entries);
+    struct UrlQuery *np = STAILQ_FIRST(l);
+    STAILQ_REMOVE_HEAD(l, entries);
     // Don't free 'name', 'value': they are pointers into the 'src' string
     FREE(&np);
   }
