@@ -94,7 +94,15 @@ bool C_PromptAfter; ///< Config: Pause after running an external pager
 static const char *ExtPagerProgress = "all";
 
 /** The folder the user last saved to.  Used by ci_save_message() */
-static char LastSaveFolder[PATH_MAX] = "";
+static struct Buffer LastSaveFolder = { 0 };
+
+/**
+ * mutt_commands_cleanup - Clean up commands globals
+ */
+void mutt_commands_cleanup(void)
+{
+  mutt_buffer_dealloc(&LastSaveFolder);
+}
 
 /**
  * process_protected_headers - Get the protected header and update the index
@@ -1081,10 +1089,12 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 
   /* This is an undocumented feature of ELM pointed out to me by Felix von
    * Leitner <leitner@prz.fu-berlin.de> */
+  if (mutt_buffer_len(&LastSaveFolder) == 0)
+    mutt_buffer_alloc(&LastSaveFolder, PATH_MAX);
   if (mutt_str_strcmp(mutt_b2s(buf), ".") == 0)
-    mutt_buffer_strcpy(buf, LastSaveFolder);
+    mutt_buffer_copy(buf, &LastSaveFolder);
   else
-    mutt_str_strfcpy(LastSaveFolder, mutt_b2s(buf), sizeof(LastSaveFolder));
+    mutt_buffer_strcpy(&LastSaveFolder, mutt_b2s(buf));
 
   mutt_buffer_expand_path(buf);
 

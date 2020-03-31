@@ -55,6 +55,7 @@
 #include "debug/lib.h"
 #include "alias.h"
 #include "browser.h"
+#include "commands.h"
 #include "context.h"
 #include "globals.h"
 #include "hook.h"
@@ -1230,6 +1231,7 @@ main_exit:
   mutt_buffer_pool_free();
   mutt_envlist_free();
   mutt_browser_cleanup();
+  mutt_commands_cleanup();
   mutt_opts_free();
   mutt_keys_free();
   myvarlist_free(&MyVars);
