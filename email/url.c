@@ -257,10 +257,10 @@ struct Url *url_parse(const char *src)
    * path (see https://tools.ietf.org/html/rfc3986#section-3). */
   if (mutt_regmatch_start(pathonly) != -1)
   {
+    url->src[mutt_regmatch_end(pathonly)] = '\0';
     url->path = url->src + mutt_regmatch_start(pathonly);
     if (url_pct_decode(url->path) < 0)
       goto err;
-    return url;
   }
 
   /* separate userinfo part */

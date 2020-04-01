@@ -52,6 +52,19 @@ static struct UrlTest test[] = {
     NULL
   },
   {
+    "mailto:mail@example.com?subject=see%20this&cc=me%40example.com",
+    true,
+    {
+      U_MAILTO,
+      NULL,
+      NULL,
+      NULL,
+      0,
+      "mail@example.com"
+    },
+    "subject|see this|cc|me@example.com|"
+  },
+  {
     "foobar foobar",
     false,
   },
