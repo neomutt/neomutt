@@ -76,7 +76,7 @@ void mutt_auto_subscribe(const char *mailto)
 
   struct Envelope *lpenv = mutt_env_new(); /* parsed envelope from the List-Post mailto: URL */
 
-  if ((mutt_parse_mailto(lpenv, NULL, mailto) != -1) && !TAILQ_EMPTY(&lpenv->to))
+  if (mutt_parse_mailto(lpenv, NULL, mailto) && !TAILQ_EMPTY(&lpenv->to))
   {
     const char *mailbox = TAILQ_FIRST(&lpenv->to)->mailbox;
     if (mailbox && !mutt_regexlist_match(&SubscribedLists, mailbox) &&
@@ -1589,23 +1589,23 @@ struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
  * @param[in]  e    Envelope to fill
  * @param[out] body Body to
  * @param[in]  src  String to parse
- * @retval  0 Success
- * @retval -1 Error
+ * @retval true  Success
+ * @retval false Error
  */
-int mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
+bool mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
 {
   if (!e || !src)
-    return -1;
+    return false;
 
   struct Url *url = url_parse(src);
   if (!url)
-    return -1;
+    return false;
 
   if (url->host)
   {
-    /* this is not a simple path */
+    /* this is not a path-only URL */
     url_free(&url);
-    return -1;
+    return false;
   }
 
   mutt_addrlist_parse(&e->to, url->path);
@@ -1650,5 +1650,5 @@ int mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
   rfc2047_decode_envelope(e);
 
   url_free(&url);
-  return 0;
+  return true;
 }
