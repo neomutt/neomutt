@@ -62,11 +62,11 @@ static struct PrexStorage *prex(enum Prex which)
   static struct PrexStorage storage[] = {
     /* clang-format off */
     {
-#define UNR_PCTENC_SUBDEL "-a-zA-Z0-9._~%!$&'()*+,;="
-#define PATH ":@/"
       PREX_URL,
       PREX_URL_MATCH_MAX,
       /* Spec: https://tools.ietf.org/html/rfc3986#section-3 */
+#define UNR_PCTENC_SUBDEL "-a-zA-Z0-9._~%!$&'()*+,;="
+#define PATH ":@/"
       "^([a-zA-Z][-+.a-zA-Z0-9]+):"                // . scheme
       "("                                          // . rest
         "("                                        // . . authority + path
@@ -95,9 +95,9 @@ static struct PrexStorage *prex(enum Prex which)
 #undef UNR_PCTENC_SUBDEL
     },
     {
-#define QUERY_PART "-a-zA-Z0-9._~%!$'()*+,;:@/"
       PREX_URL_QUERY_KEY_VAL,
       PREX_URL_QUERY_KEY_VAL_MATCH_MAX,
+#define QUERY_PART "-a-zA-Z0-9._~%!$'()*+,;:@/"
       "([" QUERY_PART "]+)=([" QUERY_PART " ]+)"   // query + ' '
 #undef QUERY_PART
     },
@@ -116,6 +116,35 @@ static struct PrexStorage *prex(enum Prex which)
       PREX_GNUTLS_CERT_HOST_HASH,
       PREX_GNUTLS_CERT_HOST_HASH_MATCH_MAX,
       "^\\#H ([a-zA-Z0-9_\\.-]+) ([a-zA-Z0-9]{4}( [a-zA-Z0-9]{4}){7})[ \t]*$"
+    },
+    {
+      PREX_RFC6854_DATE,
+      PREX_RFC6854_DATE_MATCH_MAX,
+      /* Spec: https://tools.ietf.org/html/rfc5322#section-3.3 */
+#define C "" //"\\([^()\\]*\\)?" // Comment are obsolete but still allowed
+      "^"
+        "("
+        C " *"
+          "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)"  // Day of week
+        C ", "
+        ")?"
+        C " *([0-9]{1,2}) " C        // Day
+        "(Jan|Feb|Mar|Apr|May|Jun|"  // Month
+        "Jul|Aug|Sep|Oct|Nov|Dec)"
+        C " ([0-9]{2,4}) " C         // Year
+        C "([0-9]{2})" C             // Hour
+        ":" C "([0-9]{2})" C         // Minute
+        "(:" C "([0-9]{2})" C ")?"   // Second
+        " *"
+        "\\(?"
+        "("
+        "([+-][0-9]{4})|"            // TZ
+        "([A-Z ]+)"                  // Obsolete TZ
+        ")"
+        "\\)?"
+        C
+      "$"
+#undef C
     }
     /* clang-format on */
   };

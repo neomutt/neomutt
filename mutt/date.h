@@ -41,7 +41,7 @@
  */
 struct Tz
 {
-  char tzname[5];         ///< Name, e.g. UTC
+  char tzname[8];         ///< Name, e.g. UTC
   unsigned char zhours;   ///< Hours away from UTC
   unsigned char zminutes; ///< Minutes away from UTC
   bool zoccident;         ///< True if west of UTC, False if East

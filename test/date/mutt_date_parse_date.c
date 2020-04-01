@@ -75,7 +75,7 @@ void test_mutt_date_parse_date(void)
 
      { "Wed, 13 Jun 2007 12:34:56 -0100",  1181741696  },
 
-     { "13 Jun 2007 12:34:56",             1181738096  },
+     { "13 Jun 2007 12:34:56",             -1          }, /* TZ is mandatory */
      { "13 Jun 2007",                      -1          },
   };
   // clang-format on
@@ -87,8 +87,11 @@ void test_mutt_date_parse_date(void)
       memset(&tz, 0, sizeof(tz));
       TEST_CASE(parse_tests[i].str);
       time_t result = mutt_date_parse_date(parse_tests[i].str, &tz);
-      TEST_CHECK(result == parse_tests[i].expected);
-      TEST_MSG("result = %ld", result);
+      if (!TEST_CHECK(result == parse_tests[i].expected))
+      {
+        TEST_MSG("Expected: %ld", parse_tests[i].expected);
+        TEST_MSG("Actual  : %ld", result);
+      }
     }
   }
 }
