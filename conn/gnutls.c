@@ -185,46 +185,35 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   char *linestr = NULL;
   size_t linestrsize = 0;
   int linenum = 0;
-  regex_t preg;
-  regmatch_t pmatch[3];
 
   /* try checking against names stored in stored certs file */
   FILE *fp = mutt_file_fopen(C_CertificateFile, "r");
-  if (fp)
-  {
-    if (REG_COMP(&preg, "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$",
-                 REG_ICASE) != 0)
-    {
-      mutt_file_fclose(&fp);
-      return 0;
-    }
+  if (!fp)
+    return 0;
 
-    char buf[80];
-    buf[0] = '\0';
-    tls_fingerprint(GNUTLS_DIG_MD5, buf, sizeof(buf), cert);
-    while ((linestr = mutt_file_read_line(linestr, &linestrsize, fp, &linenum, 0)))
+  char buf[80];
+  buf[0] = '\0';
+  tls_fingerprint(GNUTLS_DIG_MD5, buf, sizeof(buf), cert);
+  while ((linestr = mutt_file_read_line(linestr, &linestrsize, fp, &linenum, 0)))
+  {
+    regmatch_t *match = mutt_prex_capture(PREX_GNUTLS_CERT_HOST_HASH, linestr);
+    if (match)
     {
-      if ((linestr[0] == '#') && (linestr[1] == 'H'))
+      regmatch_t *mhost = &match[PREX_GNUTLS_CERT_HOST_HASH_MATCH_HOST];
+      regmatch_t *mhash = &match[PREX_GNUTLS_CERT_HOST_HASH_MATCH_HASH];
+      linestr[mutt_regmatch_end(mhost)] = '\0';
+      linestr[mutt_regmatch_end(mhash)] = '\0';
+      if ((strcmp(linestr + mutt_regmatch_start(mhost), hostname) == 0) &&
+          (strcmp(linestr + mutt_regmatch_start(mhash), buf) == 0))
       {
-        if (regexec(&preg, linestr, 3, pmatch, 0) == 0)
-        {
-          linestr[pmatch[1].rm_eo] = '\0';
-          linestr[pmatch[2].rm_eo] = '\0';
-          if ((strcmp(linestr + pmatch[1].rm_so, hostname) == 0) &&
-              (strcmp(linestr + pmatch[2].rm_so, buf) == 0))
-          {
-            regfree(&preg);
-            FREE(&linestr);
-            mutt_file_fclose(&fp);
-            return 1;
-          }
-        }
+        FREE(&linestr);
+        mutt_file_fclose(&fp);
+        return 1;
       }
     }
-
-    regfree(&preg);
-    mutt_file_fclose(&fp);
   }
+
+  mutt_file_fclose(&fp);
 
   /* not found a matching name */
   return 0;
