@@ -32,7 +32,6 @@
 #include <assert.h>
 #include <errno.h>
 #include <iconv.h>
-#include <regex.h>
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/lib.h"
@@ -139,39 +138,25 @@ static size_t q_encoder(char *str, const char *buf, size_t buflen, const char *t
 static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **charset,
                                 size_t *charsetlen, char **text, size_t *textlen)
 {
-  regmatch_t match[4];
-  size_t nmatch = 4;
-  struct Regex *re = mutt_regex_compile("=\\?"
-                                        "([^][()<>@,;:\\\"/?. =]+)" /* charset */
-                                        "\\?"
-                                        "([qQbB])" /* encoding */
-                                        "\\?"
-                                        "([^?]+)" /* encoded text - we accept whitespace
-                                         as some mailers do that, see #1189. */
-                                        "\\?=",
-                                        REG_EXTENDED);
-  assert(re && "Something is wrong with your RE engine.");
+  regmatch_t *match = mutt_prex_capture(PREX_RFC2047_ENCODED_WORD, str);
+  if (!match)
+    return NULL;
 
-  char *res = NULL;
+  const regmatch_t *mfull = &match[PREX_RFC2047_ENCODED_WORD_MATCH_FULL];
+  const regmatch_t *mcharset = &match[PREX_RFC2047_ENCODED_WORD_MATCH_CHARSET];
+  const regmatch_t *mencoding = &match[PREX_RFC2047_ENCODED_WORD_MATCH_ENCODING];
+  const regmatch_t *mtext = &match[PREX_RFC2047_ENCODED_WORD_MATCH_TEXT];
 
-  if (mutt_regex_capture(re, str, nmatch, match))
-  {
-    /* Charset */
-    *charset = str + match[1].rm_so;
-    *charsetlen = match[1].rm_eo - match[1].rm_so;
+  /* Charset */
+  *charset = str + mutt_regmatch_start(mcharset);
+  *charsetlen = mutt_regmatch_len(mcharset);
 
-    /* Encoding: either Q or B */
-    *enc = ((str[match[2].rm_so] == 'Q') || (str[match[2].rm_so] == 'q')) ?
-               ENC_QUOTED_PRINTABLE :
-               ENC_BASE64;
+  /* Encoding: either Q or B */
+  *enc = (tolower(str[mutt_regmatch_start(mencoding)]) == 'q') ? ENC_QUOTED_PRINTABLE : ENC_BASE64;
 
-    *text = str + match[3].rm_so;
-    *textlen = match[3].rm_eo - match[3].rm_so;
-    res = str + match[0].rm_so;
-  }
-
-  mutt_regex_free(&re);
-  return res;
+  *text = str + mutt_regmatch_start(mtext);
+  *textlen = mutt_regmatch_len(mtext);
+  return str + mutt_regmatch_start(mfull);
 }
 
 /**

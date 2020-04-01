@@ -815,7 +815,7 @@ int main(int argc, char *argv[], char *envp[])
     {
       if (url_check_scheme(argv[i]) == U_MAILTO)
       {
-        if (mutt_parse_mailto(e->env, &bodytext, argv[i]) < 0)
+        if (!mutt_parse_mailto(e->env, &bodytext, argv[i]))
         {
           mutt_error(_("Failed to parse mailto: link"));
           email_free(&e);
@@ -1233,6 +1233,7 @@ main_exit:
   mutt_opts_free();
   mutt_keys_free();
   myvarlist_free(&MyVars);
+  mutt_prex_free();
   neomutt_free(&NeoMutt);
   cs_free(&cs);
   log_queue_flush(log_disp_terminal);

@@ -41,4 +41,14 @@ void test_url_pct_encode(void)
     url_pct_encode(buf, sizeof(buf), NULL);
     TEST_CHECK_(1, "url_pct_encode(&buf, sizeof(buf), NULL)");
   }
+
+  {
+    char buf[32] = { 0 };
+    url_pct_encode(buf, sizeof(buf), "Hello world");
+    if (!TEST_CHECK(strcmp(buf, "Hello%20world") == 0))
+    {
+      TEST_MSG("Expected: %s", "Hello%20world");
+      TEST_MSG("Actual  : %s", buf);
+    }
+  }
 }

@@ -34,4 +34,14 @@ void test_url_pct_decode(void)
   {
     TEST_CHECK(url_pct_decode(NULL) != 0);
   }
+
+  {
+    char s[] = "Hello%20world";
+    TEST_CHECK(url_pct_decode(s) == 0);
+    if (!TEST_CHECK(strcmp(s, "Hello world") == 0))
+    {
+      TEST_MSG("Expected: %s", "Hello world");
+      TEST_MSG("Actual  : %s", s);
+    }
+  }
 }

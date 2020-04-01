@@ -52,6 +52,36 @@ struct Buffer;
 #define REG_COMP(preg, regex, cflags) regcomp(preg, regex, REG_WORDS | REG_EXTENDED | (cflags))
 
 /**
+ * mutt_regmatch_start - Return the start of a match
+ * @param match Match
+ * @retval num Start of the match
+ */
+static inline regoff_t mutt_regmatch_start(const regmatch_t *match)
+{
+  return match->rm_so;
+}
+
+/**
+ * mutt_regmatch_end - Return the end of a match
+ * @param match Match
+ * @retval num End of the match
+ */
+static inline regoff_t mutt_regmatch_end(const regmatch_t *match)
+{
+  return match->rm_eo;
+}
+
+/**
+ * mutt_regmatch_len - Return the length of a match
+ * @param match Match
+ * @retval num Length of the match
+ */
+static inline size_t mutt_regmatch_len(const regmatch_t *match)
+{
+  return match->rm_eo - match->rm_so;
+}
+
+/**
  * struct Regex - Cached regular expression
  */
 struct Regex

@@ -76,7 +76,7 @@ void mutt_auto_subscribe(const char *mailto)
 
   struct Envelope *lpenv = mutt_env_new(); /* parsed envelope from the List-Post mailto: URL */
 
-  if ((mutt_parse_mailto(lpenv, NULL, mailto) != -1) && !TAILQ_EMPTY(&lpenv->to))
+  if (mutt_parse_mailto(lpenv, NULL, mailto) && !TAILQ_EMPTY(&lpenv->to))
   {
     const char *mailbox = TAILQ_FIRST(&lpenv->to)->mailbox;
     if (mailbox && !mutt_regexlist_match(&SubscribedLists, mailbox) &&
@@ -1589,52 +1589,32 @@ struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
  * @param[in]  e    Envelope to fill
  * @param[out] body Body to
  * @param[in]  src  String to parse
- * @retval  0 Success
- * @retval -1 Error
+ * @retval true  Success
+ * @retval false Error
  */
-int mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
+bool mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
 {
   if (!e || !src)
-    return -1;
+    return false;
 
-  char *p = NULL;
-  char *tag = NULL, *value = NULL;
+  struct Url *url = url_parse(src);
+  if (!url)
+    return false;
 
-  int rc = -1;
-
-  char *t = strchr(src, ':');
-  if (!t)
-    return -1;
-
-  /* copy string for safe use of strtok() */
-  char *tmp = mutt_str_strdup(t + 1);
-  if (!tmp)
-    return -1;
-
-  char *headers = strchr(tmp, '?');
-  if (headers)
-    *headers++ = '\0';
-
-  if (url_pct_decode(tmp) < 0)
-    goto out;
-
-  mutt_addrlist_parse(&e->to, tmp);
-
-  tag = headers ? strtok_r(headers, "&", &p) : NULL;
-
-  for (; tag; tag = strtok_r(NULL, "&", &p))
+  if (url->host)
   {
-    value = strchr(tag, '=');
-    if (value)
-      *value++ = '\0';
-    if (!value || !*value)
-      continue;
+    /* this is not a path-only URL */
+    url_free(&url);
+    return false;
+  }
 
-    if (url_pct_decode(tag) < 0)
-      goto out;
-    if (url_pct_decode(value) < 0)
-      goto out;
+  mutt_addrlist_parse(&e->to, url->path);
 
+  struct UrlQuery *np;
+  STAILQ_FOREACH(np, &url->query_strings, entries)
+  {
+    const char *tag = np->name;
+    char *value = np->value;
     /* Determine if this header field is on the allowed list.  Since NeoMutt
      * interprets some header fields specially (such as
      * "Attach: ~/.gnupg/secring.gpg"), care must be taken to ensure that
@@ -1669,9 +1649,6 @@ int mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
   /* RFC2047 decode after the RFC822 parsing */
   rfc2047_decode_envelope(e);
 
-  rc = 0;
-
-out:
-  FREE(&tmp);
-  return rc;
+  url_free(&url);
+  return true;
 }

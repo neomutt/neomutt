@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <ctype.h>
 #include <string.h>
 #include "mutt/lib.h"
@@ -48,53 +47,132 @@ static const struct Mapping UrlMap[] = {
  * parse_query_string - Parse a URL query string
  * @param list List to store the results
  * @param src  String to parse
- * @retval  0 Success
- * @retval -1 Error
+ * @retval true  Success
+ * @retval false Error
  */
-static int parse_query_string(struct UrlQueryList *list, char *src)
+static bool parse_query_string(struct UrlQueryList *list, char *src)
 {
-  int rc = 0;
-
   if (!src || !*src)
-    return rc;
-
-  regmatch_t match[3];
-  regmatch_t *keymatch = &match[1];
-  regmatch_t *valmatch = &match[2];
-
-  struct Regex *re = mutt_regex_compile("([^&]+)=([^&]+)", REG_EXTENDED);
-  assert(re && "Something is wrong with your RE engine.");
+    return false;
 
   bool again = true;
   while (again)
   {
-    if (!mutt_regex_capture(re, src, mutt_array_size(match), match))
-    {
-      goto done;
-    }
-    again = src[valmatch->rm_eo] != '\0';
+    regmatch_t *match = mutt_prex_capture(PREX_URL_QUERY_KEY_VAL, src);
+    if (!match)
+      return false;
 
-    char *key = src + keymatch->rm_so;
-    char *val = src + valmatch->rm_so;
-    src[keymatch->rm_eo] = '\0';
-    src[valmatch->rm_eo] = '\0';
+    regmatch_t *mkey = &match[PREX_URL_QUERY_KEY_VAL_MATCH_KEY];
+    regmatch_t *mval = &match[PREX_URL_QUERY_KEY_VAL_MATCH_VAL];
+
+    again = src[mutt_regmatch_end(mval)] != '\0';
+
+    char *key = src + mutt_regmatch_start(mkey);
+    char *val = src + mutt_regmatch_start(mval);
+    src[mutt_regmatch_end(mkey)] = '\0';
+    src[mutt_regmatch_end(mval)] = '\0';
     if ((url_pct_decode(key) < 0) || (url_pct_decode(val) < 0))
-    {
-      rc = -1;
-      goto done;
-    }
+      return false;
 
     struct UrlQuery *qs = mutt_mem_calloc(1, sizeof(struct UrlQuery));
     qs->name = key;
     qs->value = val;
     STAILQ_INSERT_TAIL(list, qs, entries);
 
-    src += valmatch->rm_eo + again;
+    src += mutt_regmatch_end(mval) + again;
   }
 
-done:
-  mutt_regex_free(&re);
-  return rc;
+  return true;
+}
+
+/**
+ * get_scheme - Extract the scheme part from a matched URL
+ * @param src   Original string that was matched
+ * @param match Result from a matched regex
+ * @retval enum Scheme
+ */
+static enum UrlScheme get_scheme(const char *src, const regmatch_t *match)
+{
+  enum UrlScheme ret = U_UNKNOWN;
+  if (src && match)
+  {
+    ret = mutt_map_get_value_n(src, mutt_regmatch_len(&match[PREX_URL_MATCH_SCHEME]), UrlMap);
+    if (ret == -1)
+      ret = U_UNKNOWN;
+  }
+  return ret;
+}
+
+/**
+ * url_new - Create a Url
+ * @retval ptr New Url
+ */
+static struct Url *url_new(void)
+{
+  struct Url *url = mutt_mem_calloc(1, sizeof(struct Url));
+  STAILQ_INIT(&url->query_strings);
+  return url;
+}
+
+/**
+ * url_free - Free the contents of a URL
+ * @param ptr Url to free
+ */
+void url_free(struct Url **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct Url *url = *ptr;
+
+  struct UrlQueryList *l = &url->query_strings;
+  while (!STAILQ_EMPTY(l))
+  {
+    struct UrlQuery *np = STAILQ_FIRST(l);
+    STAILQ_REMOVE_HEAD(l, entries);
+    // Don't free 'name', 'value': they are pointers into the 'src' string
+    FREE(&np);
+  }
+
+  FREE(&url->src);
+  FREE(ptr);
+}
+
+/**
+ * url_pct_encode - Percent-encode a string
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param src String to encode
+ *
+ * e.g. turn "hello world" into "hello%20world"
+ */
+void url_pct_encode(char *buf, size_t buflen, const char *src)
+{
+  static const char *hex = "0123456789ABCDEF";
+
+  if (!buf)
+    return;
+
+  *buf = '\0';
+  buflen--;
+  while (src && *src && (buflen != 0))
+  {
+    if (strchr(" /:&%=", *src))
+    {
+      if (buflen < 3)
+        break;
+
+      *buf++ = '%';
+      *buf++ = hex[(*src >> 4) & 0xf];
+      *buf++ = hex[*src & 0xf];
+      src++;
+      buflen -= 3;
+      continue;
+    }
+    *buf++ = *src++;
+    buflen--;
+  }
+  *buf = '\0';
 }
 
 /**
@@ -135,180 +213,124 @@ int url_pct_decode(char *s)
 
 /**
  * url_check_scheme - Check the protocol of a URL
- * @param s String to check
+ * @param str String to check
  * @retval num Url type, e.g. #U_IMAPS
  */
-enum UrlScheme url_check_scheme(const char *s)
+enum UrlScheme url_check_scheme(const char *str)
 {
-  enum UrlScheme ret = U_UNKNOWN;
-
-  /* Spec: https://tools.ietf.org/html/rfc3986#section-3.1 */
-  struct Regex *re = mutt_regex_compile("^([a-zA-Z]([-+.a-zA-Z0-9])+):", REG_EXTENDED);
-  assert(re && "Something is wrong with your RE engine.");
-
-  regmatch_t match[2];
-  if (mutt_regex_capture(re, s, mutt_array_size(match), match))
-  {
-    int i = mutt_map_get_value_n(s, match[1].rm_eo, UrlMap);
-    if (i != -1)
-      ret = i;
-  }
-
-  mutt_regex_free(&re);
-  return ret;
-}
-
-/**
- * url_free - Free the contents of a URL
- * @param ptr Url to free
- */
-void url_free(struct Url **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct Url *url = *ptr;
-
-  struct UrlQuery *np = NULL;
-  struct UrlQuery *tmp = NULL;
-  STAILQ_FOREACH_SAFE(np, &url->query_strings, entries, tmp)
-  {
-    STAILQ_REMOVE(&url->query_strings, np, UrlQuery, entries);
-    // Don't free 'name', 'value': they are pointers into the 'src' string
-    FREE(&np);
-  }
-
-  FREE(&url->src);
-  FREE(ptr);
-}
-
-/**
- * url_new - Create a Url
- * @retval ptr New Url
- */
-struct Url *url_new(void)
-{
-  struct Url *url = mutt_mem_calloc(1, sizeof(struct Url));
-
-  url->scheme = U_UNKNOWN;
-  STAILQ_INIT(&url->query_strings);
-
-  return url;
+  return get_scheme(str, mutt_prex_capture(PREX_URL, str));
 }
 
 /**
  * url_parse - Fill in Url
- * @param src   String to parse
- * @retval ptr  Pointer to the parsed URL
- * @retval NULL String is invalid
+ * @param src  String to parse
+ * @retval ptr  Parsed URL
+ * @retval NULL Error
  *
- * To free Url, caller must call url_free()
+ * @note Caller must free returned Url with url_free()
  */
 struct Url *url_parse(const char *src)
 {
-  if (!src || !*src)
+  const regmatch_t *match = mutt_prex_capture(PREX_URL, src);
+  if (!match)
     return NULL;
 
-  enum UrlScheme scheme = url_check_scheme(src);
+  enum UrlScheme scheme = get_scheme(src, match);
   if (scheme == U_UNKNOWN)
     return NULL;
 
-  char *p = NULL;
-  size_t srcsize = strlen(src) + 1;
-  struct Url *url = url_new();
+  const regmatch_t *userinfo = &match[PREX_URL_MATCH_USERINFO];
+  const regmatch_t *user = &match[PREX_URL_MATCH_USER];
+  const regmatch_t *pass = &match[PREX_URL_MATCH_PASS];
+  const regmatch_t *host = &match[PREX_URL_MATCH_HOSTNAME];
+  const regmatch_t *ipvx = &match[PREX_URL_MATCH_HOSTIPVX];
+  const regmatch_t *port = &match[PREX_URL_MATCH_PORT];
+  const regmatch_t *path = &match[PREX_URL_MATCH_PATH];
+  const regmatch_t *query = &match[PREX_URL_MATCH_QUERY];
+  const regmatch_t *pathonly = &match[PREX_URL_MATCH_PATH_ONLY];
 
+  struct Url *url = url_new();
   url->scheme = scheme;
   url->src = mutt_str_strdup(src);
 
-  char *it = url->src;
-
-  it = strchr(it, ':') + 1;
-
-  if (strncmp(it, "//", 2) != 0)
+  /* If the scheme is not followed by two forward slashes, then it's a simple
+   * path (see https://tools.ietf.org/html/rfc3986#section-3). */
+  if (mutt_regmatch_start(pathonly) != -1)
   {
-    url->path = it;
-    if (url_pct_decode(url->path) < 0)
-    {
-      url_free(&url);
-    }
-    return url;
-  }
-
-  it += 2;
-
-  /* We have the length of the string, so let's be fancier than strrchr */
-  for (char *q = url->src + srcsize - 1; q >= it; --q)
-  {
-    if (*q == '?')
-    {
-      *q = '\0';
-      if (parse_query_string(&url->query_strings, q + 1) < 0)
-      {
-        goto err;
-      }
-      break;
-    }
-  }
-
-  url->path = strchr(it, '/');
-  if (url->path)
-  {
-    *url->path++ = '\0';
+    url->src[mutt_regmatch_end(pathonly)] = '\0';
+    url->path = url->src + mutt_regmatch_start(pathonly);
     if (url_pct_decode(url->path) < 0)
       goto err;
   }
 
-  char *at = strrchr(it, '@');
-  if (at)
+  /* separate userinfo part */
+  if (mutt_regmatch_end(userinfo) != -1)
   {
-    *at = '\0';
-    p = strchr(it, ':');
-    if (p)
-    {
-      *p = '\0';
-      url->pass = p + 1;
-      if (url_pct_decode(url->pass) < 0)
-        goto err;
-    }
-    url->user = it;
+    url->src[mutt_regmatch_end(userinfo) - 1] = '\0';
+  }
+
+  /* user */
+  if (mutt_regmatch_end(user) != -1)
+  {
+    url->src[mutt_regmatch_end(user)] = '\0';
+    url->user = url->src + mutt_regmatch_start(user);
     if (url_pct_decode(url->user) < 0)
       goto err;
-    it = at + 1;
   }
 
-  /* IPv6 literal address.  It may contain colons, so set p to start the port
-   * scan after it.  */
-  if ((*it == '[') && (p = strchr(it, ']')))
+  /* pass */
+  if (mutt_regmatch_end(pass) != -1)
   {
-    it++;
-    *p++ = '\0';
-  }
-  else
-    p = it;
-
-  p = strchr(p, ':');
-  if (p)
-  {
-    int num;
-    *p++ = '\0';
-    if ((mutt_str_atoi(p, &num) < 0) || (num < 0) || (num > 0xffff))
+    url->pass = url->src + mutt_regmatch_start(pass);
+    if (url_pct_decode(url->pass) < 0)
       goto err;
+  }
+
+  /* host */
+  if (mutt_regmatch_end(host) != -1)
+  {
+    url->host = url->src + mutt_regmatch_start(host);
+    url->src[mutt_regmatch_end(host)] = '\0';
+  }
+  else if (mutt_regmatch_end(ipvx) != -1)
+  {
+    url->host = url->src + mutt_regmatch_start(ipvx) + 1; /* skip opening '[' */
+    url->src[mutt_regmatch_end(ipvx) - 1] = '\0';         /* skip closing ']' */
+  }
+
+  /* port */
+  if (mutt_regmatch_end(port) != -1)
+  {
+    url->src[mutt_regmatch_end(port)] = '\0';
+    const char *ports = url->src + mutt_regmatch_start(port);
+    int num;
+    if ((mutt_str_atoi(ports, &num) < 0) || (num < 0) || (num > 0xffff))
+    {
+      goto err;
+    }
     url->port = (unsigned short) num;
   }
-  else
-    url->port = 0;
 
-  if (mutt_str_strlen(it) != 0)
+  /* path */
+  if (mutt_regmatch_end(path) != -1)
   {
-    url->host = it;
-    if (url_pct_decode(url->host) < 0)
+    url->src[mutt_regmatch_end(path)] = '\0';
+    url->path = url->src + mutt_regmatch_start(path);
+    if (!url->host)
+    {
+      /* If host is not provided, restore the '/': this is an absolute path */
+      *(--url->path) = '/';
+    }
+    if (url_pct_decode(url->path) < 0)
       goto err;
   }
-  else if (url->path)
+
+  /* query */
+  if (mutt_regmatch_end(query) != -1)
   {
-    /* No host are provided, we restore the / because this is absolute path */
-    url->path = it;
-    *it++ = '/';
+    char *squery = url->src + mutt_regmatch_start(query);
+    if (!parse_query_string(&url->query_strings, squery))
+      goto err;
   }
 
   return url;
@@ -316,43 +338,6 @@ struct Url *url_parse(const char *src)
 err:
   url_free(&url);
   return NULL;
-}
-
-/**
- * url_pct_encode - Percent-encode a string
- * @param buf    Buffer for the result
- * @param buflen Length of buffer
- * @param src String to encode
- *
- * e.g. turn "hello world" into "hello%20world"
- */
-void url_pct_encode(char *buf, size_t buflen, const char *src)
-{
-  static const char *hex = "0123456789ABCDEF";
-
-  if (!buf)
-    return;
-
-  *buf = '\0';
-  buflen--;
-  while (src && *src && (buflen != 0))
-  {
-    if (strchr("/:&%=", *src))
-    {
-      if (buflen < 3)
-        break;
-
-      *buf++ = '%';
-      *buf++ = hex[(*src >> 4) & 0xf];
-      *buf++ = hex[*src & 0xf];
-      src++;
-      buflen -= 3;
-      continue;
-    }
-    *buf++ = *src++;
-    buflen--;
-  }
-  *buf = '\0';
 }
 
 /**

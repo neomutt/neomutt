@@ -546,7 +546,6 @@
   /* url */                                                                    \
   NEOMUTT_TEST_ITEM(test_url_check_scheme)                                     \
   NEOMUTT_TEST_ITEM(test_url_free)                                             \
-  NEOMUTT_TEST_ITEM(test_url_new)                                              \
   NEOMUTT_TEST_ITEM(test_url_parse)                                            \
   NEOMUTT_TEST_ITEM(test_url_pct_decode)                                       \
   NEOMUTT_TEST_ITEM(test_url_pct_encode)                                       \

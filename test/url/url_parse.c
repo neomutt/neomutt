@@ -39,6 +39,32 @@ struct UrlTest
 // clang-format off
 static struct UrlTest test[] = {
   {
+    "mailto:mail@example.com",
+    true,
+    {
+      U_MAILTO,
+      NULL,
+      NULL,
+      NULL,
+      0,
+      "mail@example.com"
+    },
+    NULL
+  },
+  {
+    "mailto:mail@example.com?subject=see%20this&cc=me%40example.com",
+    true,
+    {
+      U_MAILTO,
+      NULL,
+      NULL,
+      NULL,
+      0,
+      "mail@example.com"
+    },
+    "subject|see this|cc|me@example.com|"
+  },
+  {
     "foobar foobar",
     false,
   },
@@ -81,6 +107,17 @@ static struct UrlTest test[] = {
       "some/where",
     },
     "encoding|binary|second|third|some space|\"quoted content\"|"
+  },
+  {
+    "snews://user@[2000:4860:0:2001::68]:563",
+    true,
+    {
+      U_NNTPS,
+      "user",
+      NULL,
+      "2000:4860:0:2001::68",
+      563
+    }
   }
 };
 // clang-format on
@@ -129,7 +166,7 @@ void test_url_parse(void)
   }
 
   {
-    for (size_t i = 0; i < mutt_array_size(test); ++i)
+    for (size_t i = 0; i < mutt_array_size(test); i++)
     {
       struct Url *url = url_parse(test[i].source);
       if (!TEST_CHECK(!((!!url) ^ (!!test[i].valid))))
@@ -174,6 +211,39 @@ void test_url_parse(void)
       check_query_string(test[i].qs_elem, &url->query_strings);
 
       url_free(&url);
+    }
+  }
+
+  {
+    /* Test automatically generated URLs */
+    const char *const al[] = { "imap", "imaps" };
+    const char *const bl[] = { "", "user@", "user@host.com@", "user:pass@" };
+    const char *const cl[] = { "host.com", "[12AB::EF89]", "127.0.0.1" };
+    const char *const dl[] = { "", ":123" };
+    const char *const el[] = { "", "/", "/path", "/path/one/two", "/path.one.two" };
+    for (size_t a = 0; a < mutt_array_size(al); a++)
+    {
+      for (size_t b = 0; b < mutt_array_size(bl); b++)
+      {
+        for (size_t c = 0; c < mutt_array_size(cl); c++)
+        {
+          for (size_t d = 0; d < mutt_array_size(dl); d++)
+          {
+            for (size_t e = 0; e < mutt_array_size(el); e++)
+            {
+              char s[1024];
+              snprintf(s, sizeof(s), "%s://%s%s%s%s", al[a], bl[b], cl[c], dl[d], el[e]);
+              struct Url *u = url_parse(s);
+              if (!TEST_CHECK(u != NULL))
+              {
+                TEST_MSG("Expected: parsed <%s>", s);
+                TEST_MSG("Actual:   NULL");
+              }
+              url_free(&u);
+            }
+          }
+        }
+      }
     }
   }
 }
