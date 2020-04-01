@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <ctype.h>
 #include <string.h>
 #include "mutt/lib.h"
@@ -53,48 +52,37 @@ static const struct Mapping UrlMap[] = {
  */
 static int parse_query_string(struct UrlQueryList *list, char *src)
 {
-  int rc = 0;
-
   if (!src || !*src)
-    return rc;
-
-  regmatch_t match[3];
-  regmatch_t *keymatch = &match[1];
-  regmatch_t *valmatch = &match[2];
-
-  struct Regex *re = mutt_regex_compile("([^&]+)=([^&]+)", REG_EXTENDED);
-  assert(re && "Something is wrong with your RE engine.");
+    return 0;
 
   bool again = true;
   while (again)
   {
-    if (!mutt_regex_capture(re, src, mutt_array_size(match), match))
-    {
-      goto done;
-    }
-    again = src[valmatch->rm_eo] != '\0';
+    regmatch_t *match = mutt_prex_capture(PREX_URL_QUERY_KEY_VAL, src);
+    if (!match)
+      return 0;
 
-    char *key = src + keymatch->rm_so;
-    char *val = src + valmatch->rm_so;
-    src[keymatch->rm_eo] = '\0';
-    src[valmatch->rm_eo] = '\0';
+    regmatch_t *mkey = &match[PREX_URL_QUERY_KEY_VAL_MATCH_KEY];
+    regmatch_t *mval = &match[PREX_URL_QUERY_KEY_VAL_MATCH_VAL];
+
+    again = src[mutt_regmatch_end(mval)] != '\0';
+
+    char *key = src + mutt_regmatch_start(mkey);
+    char *val = src + mutt_regmatch_start(mval);
+    src[mutt_regmatch_end(mkey)] = '\0';
+    src[mutt_regmatch_end(mval)] = '\0';
     if ((url_pct_decode(key) < 0) || (url_pct_decode(val) < 0))
-    {
-      rc = -1;
-      goto done;
-    }
+      return -1;
 
     struct UrlQuery *qs = mutt_mem_calloc(1, sizeof(struct UrlQuery));
     qs->name = key;
     qs->value = val;
     STAILQ_INSERT_TAIL(list, qs, entries);
 
-    src += valmatch->rm_eo + again;
+    src += mutt_regmatch_end(mval) + again;
   }
 
-done:
-  mutt_regex_free(&re);
-  return rc;
+  return 0;
 }
 
 /**
