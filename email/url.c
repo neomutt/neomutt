@@ -157,7 +157,7 @@ void url_pct_encode(char *buf, size_t buflen, const char *src)
   buflen--;
   while (src && *src && (buflen != 0))
   {
-    if (strchr("/:&%=", *src))
+    if (strchr(" /:&%=", *src))
     {
       if (buflen < 3)
         break;
