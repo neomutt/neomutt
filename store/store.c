@@ -39,6 +39,7 @@ STORE_BACKEND(gdbm)
 STORE_BACKEND(kyotocabinet)
 STORE_BACKEND(lmdb)
 STORE_BACKEND(qdbm)
+STORE_BACKEND(rocksdb)
 STORE_BACKEND(tdb)
 STORE_BACKEND(tokyocabinet)
 #undef STORE_BACKEND
@@ -55,6 +56,9 @@ const struct StoreOps *store_ops[] = {
 #endif
 #ifdef HAVE_QDBM
   &store_qdbm_ops,
+#endif
+#ifdef HAVE_ROCKSDB
+  &store_rocksdb_ops,
 #endif
 #ifdef HAVE_GDBM
   &store_gdbm_ops,

@@ -52,7 +52,8 @@
 #include "store/lib.h"
 
 #if !(defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) ||           \
-      defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_TDB))
+      defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_ROCKSDB) ||     \
+      defined(HAVE_TC) || defined(HAVE_TDB))
 #error "No hcache backend defined"
 #endif
 
