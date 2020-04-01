@@ -11811,7 +11811,7 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
         </para>
         <para>
           Header caching can be enabled by configuring one of the database
-          backends. One of bdb, gdbm, kyotocabinet, lmdb, qdbm, tdb,
+          backends. One of bdb, gdbm, kyotocabinet, lmdb, qdbm, rocksdb, tdb,
           tokyocabinet.
         </para>
         <para>
@@ -11827,7 +11827,14 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
           be used to specify which backend to use. The list of available
           backends can be specified at configure time with a set of
           --with-&lt;backend&gt; options. Currently, the following backends are
-          supported: bdb, gdbm, kyotocabinet, lmdb, qdbm, tdb, tokyocabinet.
+          supported: bdb, gdbm, kyotocabinet, lmdb, qdbm, rocksdb, tdb,
+          tokyocabinet.
+        </para>
+         <para>
+          Take a look at the benchmark script provided in the following directory:
+          <ulink url="https://github.com/neomutt/neomutt/blob/master/contrib/hcache-bench">contrib/hcache-bench</ulink>
+          of the neomutt sources, there you can find a way of finding the
+          storage backend for your needs.
         </para>
       </sect2>
 

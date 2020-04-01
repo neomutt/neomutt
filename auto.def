@@ -90,6 +90,8 @@ options {
   qdbm=0                    => "Use QDBM for the header cache"
   with-qdbm:path            => "Location of QDBM"
   tdb=0                     => "Use TDB for the header cache"
+  rocksdb=0                 => "Use RocksDB for the header cache"
+  with-rocksdb:path         => "Location of RocksDB"
   with-tdb:path             => "Location of TDB"
   tokyocabinet=0            => "Use TokyoCabinet for the header cache"
   with-tokyocabinet:path    => "Location of TokyoCabinet"
@@ -132,7 +134,7 @@ if {1} {
     autocrypt bdb coverage debug-backtrace debug-graphviz debug-notify
     debug-parse-test debug-window doc everything fmemopen full-doc gdbm gnutls
     gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua lz4
-    mixmaster nls notmuch pgp pkgconf qdbm sasl smime sqlite ssl testing
+    mixmaster nls notmuch pgp pkgconf qdbm rocksdb sasl smime sqlite ssl testing
     tdb tokyocabinet zlib zstd
   } {
     define want-$opt [opt-bool $opt]
@@ -143,7 +145,7 @@ if {1} {
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
     bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua lz4 mixmaster
-    ncurses nls notmuch qdbm sasl slang sqlite ssl tdb tokyocabinet zlib zstd
+    ncurses nls notmuch qdbm rocksdb sasl slang sqlite ssl tdb tokyocabinet zlib zstd
   } {
     if {[opt-val with-$opt] ne {}} {
       define want-$opt 1
@@ -359,8 +361,8 @@ set prefix [opt-val with-sysroot][get-define prefix]
 ###############################################################################
 # Everything
 if {[get-define want-everything]} {
-  foreach opt {bdb gdbm gpgme kyotocabinet lmdb lua lz4 notmuch pgp qdbm smime
-               tokyocabinet tdb zlib zstd} {
+  foreach opt {bdb gdbm gpgme kyotocabinet lmdb lua lz4 notmuch pgp rocksdb
+               qdbm smime tokyocabinet tdb zlib zstd} {
     define want-$opt
     append conf_options "--$opt "
   }
@@ -1017,6 +1019,17 @@ if {[get-define want-qdbm]} {
     }
   }
   define-append HCACHE_BACKENDS "qdbm"
+  define USE_HCACHE
+}
+
+###############################################################################
+# Header cache - RocksDB
+if {[get-define want-rocksdb]} {
+  if {![check-inc-and-lib rocksdb [opt-val with-rocksdb $prefix] \
+                          rocksdb/c.h rocksdb_open rocksdb]} {
+    user-error "Unable to find RocksDB"
+  }
+  define-append HCACHE_BACKENDS "rocksdb"
   define USE_HCACHE
 }
 
