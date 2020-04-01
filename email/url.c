@@ -134,6 +134,143 @@ int url_pct_decode(char *s)
 }
 
 /**
+ * parse - Parse a URL
+ * @param src String to parse
+ * @param scheme If not NULL, save the parsed scheme
+ *
+ * @note If scheme is not NULL, the function stops after identifying the scheme
+ * and returns NULL.
+ */
+static struct Url *parse(const char *src, enum UrlScheme *scheme)
+{
+  if (!src || !*src)
+    return NULL;
+
+  if (scheme)
+    *scheme = U_UNKNOWN;
+
+  regmatch_t *match = mutt_prex_capture(PREX_URL, src);
+  if (!match)
+    return NULL;
+
+  enum UrlScheme us =
+      mutt_map_get_value_n(src, mutt_regmatch_len(&match[PREX_URL_MATCH_SCHEME]), UrlMap);
+  if (us == -1)
+  {
+    us = U_UNKNOWN;
+  }
+
+  if (scheme)
+  {
+    *scheme = us;
+    return NULL;
+  }
+
+  if (us == U_UNKNOWN)
+    return NULL;
+
+  const regmatch_t *userinfo = &match[PREX_URL_MATCH_USERINFO];
+  const regmatch_t *user = &match[PREX_URL_MATCH_USER];
+  const regmatch_t *pass = &match[PREX_URL_MATCH_PASS];
+  const regmatch_t *host = &match[PREX_URL_MATCH_HOSTNAME];
+  const regmatch_t *ipvx = &match[PREX_URL_MATCH_HOSTIPVX];
+  const regmatch_t *port = &match[PREX_URL_MATCH_PORT];
+  const regmatch_t *path = &match[PREX_URL_MATCH_PATH];
+  const regmatch_t *query = &match[PREX_URL_MATCH_QUERY];
+  const regmatch_t *pathonly = &match[PREX_URL_MATCH_PATH_ONLY];
+
+  struct Url *url = url_new();
+  url->scheme = us;
+  url->src = mutt_str_strdup(src);
+
+  /* If the scheme is not followed by two forward slashes, then it's a simple
+   * path (see https://tools.ietf.org/html/rfc3986#section-3). */
+  if (mutt_regmatch_start(pathonly) != -1)
+  {
+    url->path = url->src + mutt_regmatch_start(pathonly);
+    if (url_pct_decode(url->path) < 0)
+      goto err;
+    return url;
+  }
+
+  /* separate userinfo part */
+  if (mutt_regmatch_end(userinfo) != -1)
+  {
+    url->src[mutt_regmatch_end(userinfo) - 1] = '\0';
+  }
+
+  /* user */
+  if (mutt_regmatch_end(user) != -1)
+  {
+    url->src[mutt_regmatch_end(user)] = '\0';
+    url->user = url->src + mutt_regmatch_start(user);
+    if (url_pct_decode(url->user) < 0)
+      goto err;
+  }
+
+  /* pass */
+  if (mutt_regmatch_end(pass) != -1)
+  {
+    url->pass = url->src + mutt_regmatch_start(pass);
+    if (url_pct_decode(url->pass) < 0)
+      goto err;
+  }
+
+  /* host */
+  if (mutt_regmatch_end(host) != -1)
+  {
+    url->host = url->src + mutt_regmatch_start(host);
+    url->src[mutt_regmatch_end(host)] = '\0';
+  }
+  else if (mutt_regmatch_end(ipvx) != -1)
+  {
+    url->host = url->src + mutt_regmatch_start(ipvx) + 1; /* skip opening '[' */
+    url->src[mutt_regmatch_end(ipvx) - 1] = '\0';         /* skip closing ']' */
+  }
+
+  /* port */
+  if (mutt_regmatch_end(port) != -1)
+  {
+    url->src[mutt_regmatch_end(port)] = '\0';
+    const char *ports = url->src + mutt_regmatch_start(port);
+    int num;
+    if ((mutt_str_atoi(ports, &num) < 0) || (num < 0) || (num > 0xffff))
+    {
+      goto err;
+    }
+    url->port = (unsigned short) num;
+  }
+
+  /* path */
+  if (mutt_regmatch_end(path) != -1)
+  {
+    url->src[mutt_regmatch_end(path)] = '\0';
+    url->path = url->src + mutt_regmatch_start(path);
+    if (!url->host)
+    {
+      /* If host is not provided, restore the '/': this is an absolute path */
+      *(--url->path) = '/';
+    }
+    if (url_pct_decode(url->path) < 0)
+      goto err;
+  }
+
+  /* query */
+  if (mutt_regmatch_end(query) != -1)
+  {
+    char *squery = url->src + mutt_regmatch_start(query);
+    if (parse_query_string(&url->query_strings, squery) < 0)
+      goto err;
+  }
+
+  return url;
+
+err:
+  url_free(&url);
+  return NULL;
+}
+
+/**
  * url_check_scheme - Check the protocol of a URL
  * @param s String to check
  * @retval num Url type, e.g. #U_IMAPS
@@ -141,20 +278,7 @@ int url_pct_decode(char *s)
 enum UrlScheme url_check_scheme(const char *s)
 {
   enum UrlScheme ret = U_UNKNOWN;
-
-  /* Spec: https://tools.ietf.org/html/rfc3986#section-3.1 */
-  struct Regex *re = mutt_regex_compile("^([a-zA-Z]([-+.a-zA-Z0-9])+):", REG_EXTENDED);
-  assert(re && "Something is wrong with your RE engine.");
-
-  regmatch_t match[2];
-  if (mutt_regex_capture(re, s, mutt_array_size(match), match))
-  {
-    int i = mutt_map_get_value_n(s, match[1].rm_eo, UrlMap);
-    if (i != -1)
-      ret = i;
-  }
-
-  mutt_regex_free(&re);
+  parse(s, &ret);
   return ret;
 }
 
@@ -206,116 +330,7 @@ struct Url *url_new(void)
  */
 struct Url *url_parse(const char *src)
 {
-  if (!src || !*src)
-    return NULL;
-
-  enum UrlScheme scheme = url_check_scheme(src);
-  if (scheme == U_UNKNOWN)
-    return NULL;
-
-  char *p = NULL;
-  size_t srcsize = strlen(src) + 1;
-  struct Url *url = url_new();
-
-  url->scheme = scheme;
-  url->src = mutt_str_strdup(src);
-
-  char *it = url->src;
-
-  it = strchr(it, ':') + 1;
-
-  if (strncmp(it, "//", 2) != 0)
-  {
-    url->path = it;
-    if (url_pct_decode(url->path) < 0)
-    {
-      url_free(&url);
-    }
-    return url;
-  }
-
-  it += 2;
-
-  /* We have the length of the string, so let's be fancier than strrchr */
-  for (char *q = url->src + srcsize - 1; q >= it; --q)
-  {
-    if (*q == '?')
-    {
-      *q = '\0';
-      if (parse_query_string(&url->query_strings, q + 1) < 0)
-      {
-        goto err;
-      }
-      break;
-    }
-  }
-
-  url->path = strchr(it, '/');
-  if (url->path)
-  {
-    *url->path++ = '\0';
-    if (url_pct_decode(url->path) < 0)
-      goto err;
-  }
-
-  char *at = strrchr(it, '@');
-  if (at)
-  {
-    *at = '\0';
-    p = strchr(it, ':');
-    if (p)
-    {
-      *p = '\0';
-      url->pass = p + 1;
-      if (url_pct_decode(url->pass) < 0)
-        goto err;
-    }
-    url->user = it;
-    if (url_pct_decode(url->user) < 0)
-      goto err;
-    it = at + 1;
-  }
-
-  /* IPv6 literal address.  It may contain colons, so set p to start the port
-   * scan after it.  */
-  if ((*it == '[') && (p = strchr(it, ']')))
-  {
-    it++;
-    *p++ = '\0';
-  }
-  else
-    p = it;
-
-  p = strchr(p, ':');
-  if (p)
-  {
-    int num;
-    *p++ = '\0';
-    if ((mutt_str_atoi(p, &num) < 0) || (num < 0) || (num > 0xffff))
-      goto err;
-    url->port = (unsigned short) num;
-  }
-  else
-    url->port = 0;
-
-  if (mutt_str_strlen(it) != 0)
-  {
-    url->host = it;
-    if (url_pct_decode(url->host) < 0)
-      goto err;
-  }
-  else if (url->path)
-  {
-    /* No host are provided, we restore the / because this is absolute path */
-    url->path = it;
-    *it++ = '/';
-  }
-
-  return url;
-
-err:
-  url_free(&url);
-  return NULL;
+  return parse(src, NULL);
 }
 
 /**
