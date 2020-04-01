@@ -1338,7 +1338,7 @@ msgstr "PGP jau pasirinktas. Išjungti ir tęsti?"
 #: compress/lz4.c:60 compress/zlib.c:61 compress/zstd.c:71
 #, c-format
 msgid "The compression level for %s should be between %d and %d"
-msgstr ""
+msgstr "%s suspaudimo lygis turi būti tarp %d ir %d"
 
 #: config/bool.c:70
 #, c-format
