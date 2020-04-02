@@ -1,6 +1,6 @@
 /*
  * Acutest -- Another C/C++ Unit Test facility
- * <http://github.com/mity/acutest>
+ * <https://github.com/mity/acutest>
  *
  * Copyright 2013-2020 Martin Mitas
  * Copyright 2019 Garrett D'Amore
@@ -91,7 +91,7 @@
  * main Acutest process.
  *
  * As a side effect of such abortion, your unit tests may cause memory leaks,
- * unflushed file descriptors, and other fenomena caused by the abortion.
+ * unflushed file descriptors, and other phenomena caused by the abortion.
  *
  * Therefore you should not use these as a general replacement for TEST_CHECK.
  * Use it with some caution, especially if your test causes some other side
@@ -180,6 +180,14 @@
  */
 #define TEST_CASE_(...)         test_case_(__VA_ARGS__)
 #define TEST_CASE(name)         test_case_("%s", name)
+
+
+/* Maximal output per TEST_CASE call. Longer messages are cut.
+ * You may define another limit prior including "acutest.h"
+ */
+#ifndef TEST_CASE_MAXSIZE
+    #define TEST_CASE_MAXSIZE    64
+#endif
 
 
 /* printf-like macro for outputting an extra information about a failure.
@@ -288,17 +296,24 @@
 
 /* Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers */
 #if defined(__GNUC__) || defined(__clang__)
-    #define TEST_ATTRIBUTE_(_x)     __attribute__((_x))
+    #define TEST_ATTRIBUTE_(attr)   __attribute__((attr))
 #else
-    #define TEST_ATTRIBUTE_(_x)
+    #define TEST_ATTRIBUTE_(attr)
 #endif
 
 /* Note our global private identifiers end with '_' to mitigate risk of clash
  * with the unit tests implementation. */
 
-
 #ifdef __cplusplus
     extern "C" {
+#endif
+
+#ifdef _MSC_VER
+    /* In the multi-platform code like ours, we cannot use the non-standard
+     * "safe" functions from Microsoft C lib like e.g. sprintf_s() instead of
+     * standard sprintf(). Hence, lets disable the warning C4996. */
+    #pragma warning(push)
+    #pragma warning(disable: 4996)
 #endif
 
 
@@ -348,7 +363,7 @@ static int test_stat_run_units_ = 0;
 
 static const struct test_* test_current_unit_ = NULL;
 static int test_current_index_ = 0;
-static char test_case_name_[64] = "";
+static char test_case_name_[TEST_CASE_MAXSIZE] = "";
 static int test_current_already_logged_ = 0;
 static int test_case_current_already_logged_ = 0;
 static int test_verbose_level_ = 2;
@@ -557,7 +572,7 @@ test_finish_test_line_(int result)
     if(test_tap_) {
         const char* str = (result == 0) ? "ok" : "not ok";
 
-        printf("%s %u - %s\n", str, test_current_index_ + 1, test_current_unit_->name);
+        printf("%s %d - %s\n", str, test_current_index_ + 1, test_current_unit_->name);
 
         if(result == 0  &&  test_timer_) {
             printf("# Duration: ");
@@ -825,18 +840,16 @@ test_set_duration_(int i, double duration)
 static int
 test_name_contains_word_(const char* name, const char* pattern)
 {
-    static const char word_delim[] = " \t-_.";
+    static const char word_delim[] = " \t-_/.,:;";
     const char* substr;
     size_t pattern_len;
-    int starts_on_word_boundary;
-    int ends_on_word_boundary;
 
     pattern_len = strlen(pattern);
 
     substr = strstr(name, pattern);
     while(substr != NULL) {
-        starts_on_word_boundary = (substr == name || strchr(word_delim, substr[-1]) != NULL);
-        ends_on_word_boundary = (substr[pattern_len] == '\0' || strchr(word_delim, substr[pattern_len]) != NULL);
+        int starts_on_word_boundary = (substr == name || strchr(word_delim, substr[-1]) != NULL);
+        int ends_on_word_boundary = (substr[pattern_len] == '\0' || strchr(word_delim, substr[pattern_len]) != NULL);
 
         if(starts_on_word_boundary && ends_on_word_boundary)
             return 1;
@@ -892,12 +905,12 @@ test_lookup_(const char* pattern)
 static void TEST_ATTRIBUTE_(format (printf, 1, 2))
 test_error_(const char* fmt, ...)
 {
-    va_list args;
-
     if(test_verbose_level_ == 0)
         return;
 
     if(test_verbose_level_ >= 2) {
+        va_list args;
+
         test_line_indent_(1);
         if(test_verbose_level_ >= 3)
             test_print_in_color_(TEST_COLOR_RED_INTENSIVE_, "ERROR: ");
@@ -1581,6 +1594,9 @@ main(int argc, char** argv)
 
 #if defined(ACUTEST_WIN_)
     SetUnhandledExceptionFilter(test_seh_exception_filter_);
+#ifdef _MSC_VER
+    _set_abort_behavior(0, _WRITE_ABORT_MSG);
+#endif
 #endif
 
     /* By default, we want to run all tests. */
@@ -1694,9 +1710,12 @@ main(int argc, char** argv)
 
 #endif  /* #ifndef TEST_NO_MAIN */
 
+#ifdef _MSC_VER
+    #pragma warning(pop)
+#endif
+
 #ifdef __cplusplus
     }  /* extern "C" */
 #endif
-
 
 #endif  /* #ifndef ACUTEST_H */
