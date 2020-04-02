@@ -287,7 +287,7 @@ struct Url *url_parse(const char *src)
   }
 
   /* host */
-  if (mutt_regmatch_end(host) != -1)
+  if (mutt_regmatch_len(host) != 0)
   {
     url->host = url->src + mutt_regmatch_start(host);
     url->src[mutt_regmatch_end(host)] = '\0';

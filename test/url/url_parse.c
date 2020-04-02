@@ -118,7 +118,20 @@ static struct UrlTest test[] = {
       "2000:4860:0:2001::68",
       563
     }
-  }
+  },
+  {
+    "notmuch:///Users/bob/.mail/gmail?type=messages&query=tag%3Ainbox",
+    true,
+    {
+      U_NOTMUCH,
+      NULL,
+      NULL,
+      NULL,
+      0,
+      "/Users/bob/.mail/gmail"
+    },
+    "type|messages|query|tag:inbox|",
+  },
 };
 // clang-format on
 
