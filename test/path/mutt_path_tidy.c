@@ -32,6 +32,7 @@ void test_mutt_path_tidy(void)
   // clang-format off
   static const char *tests[][2] =
   {
+    // This struct is VERY wide, keep reading...
     { "/..apple/./../////./banana/banana/./banana/..apple/./banana/..apple/banana///banana/..apple/banana/..apple/banana/banana/..apple",                                     "/banana/banana/banana/..apple/banana/..apple/banana/banana/..apple/banana/..apple/banana/banana/..apple",                                      },
     { "/../../banana///..apple///..apple///banana///banana/banana/banana/..apple/banana/banana/banana/./banana/banana/banana/..apple/banana",                                 "/banana/..apple/..apple/banana/banana/banana/banana/..apple/banana/banana/banana/banana/banana/banana/..apple/banana",                         },
     { "///banana/banana/banana/./..apple/../banana/..apple/../..apple/./banana/./..apple",                                                                                    "/banana/banana/banana/banana/..apple/banana/..apple",                                                                                          },
@@ -143,6 +144,8 @@ void test_mutt_path_tidy(void)
     char buf[192];
     for (size_t i = 0; i < mutt_array_size(tests); i++)
     {
+      TEST_CASE(tests[i][0]);
+
       mutt_str_strfcpy(buf, tests[i][0], sizeof(buf));
       mutt_path_tidy(buf, true);
       if (!TEST_CHECK(mutt_str_strcmp(buf, tests[i][1]) == 0))

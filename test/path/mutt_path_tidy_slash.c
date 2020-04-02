@@ -67,6 +67,8 @@ void test_mutt_path_tidy_slash(void)
     char buf[64];
     for (size_t i = 0; i < mutt_array_size(tests); i++)
     {
+      TEST_CASE(tests[i][0]);
+
       mutt_str_strfcpy(buf, tests[i][0], sizeof(buf));
       mutt_path_tidy_slash(buf, true);
       if (!TEST_CHECK(mutt_str_strcmp(buf, tests[i][1]) == 0))
