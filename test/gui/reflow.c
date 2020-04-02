@@ -21,8 +21,8 @@
  */
 
 #define TEST_NO_MAIN
-#include "acutest.h"
 #include "config.h"
+#include "acutest.h"
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "gui/mutt_window.h"

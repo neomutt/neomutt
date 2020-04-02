@@ -21,8 +21,8 @@
  */
 
 #define TEST_NO_MAIN
-#include "acutest.h"
 #include "config.h"
+#include "acutest.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>

@@ -1,5 +1,5 @@
 #define TEST_NO_MAIN
-
+#include "config.h"
 #include "acutest.h"
 #include "mutt/buffer.h"
 #include "mutt/regex3.h"
