@@ -157,7 +157,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_date_epoch)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_date_epoch_ms)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_gmtime)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_date_is_day_name)                                \
   NEOMUTT_TEST_ITEM(test_mutt_date_local_tz)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_localtime)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_date_localtime_format)                           \

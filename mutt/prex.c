@@ -77,6 +77,7 @@ struct PrexStorage
 
 #define PREX_MONTH "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"
 #define PREX_DOW "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)"
+#define PREX_DOW_NOCASE "([Mm][Oo][Nn]|[Tt][Uu][Ee]|[Ww][Ee][Dd]|[Tt][Hh][Uu]|[Ff][Rr][Ii]|[Ss][Aa][Tt]|[Ss][Uu][Nn])"
 #define PREX_TIME "([[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2})"
 #define PREX_YEAR "([[:digit:]]{4})"
 
@@ -173,8 +174,8 @@ static struct PrexStorage *prex(enum Prex which)
         ")"
     },
     {
-      PREX_RFC5322_DATE_CFWS,
-      PREX_RFC5322_DATE_CFWS_MATCH_MAX,
+      PREX_RFC5322_DATE_LAX,
+      PREX_RFC5322_DATE_LAX_MATCH_MAX,
       /* Spec: https://tools.ietf.org/html/rfc5322#section-3.3 */
 #define FWS " *"
 #define C "(\\(.*\\))?"
@@ -206,6 +207,54 @@ static struct PrexStorage *prex(enum Prex which)
       "-" PREX_YEAR                       // Year
       " " PREX_TIME                       // Time
       " ([+-][[:digit:]]{4})"             // TZ
+    },
+    {
+      PREX_MBOX_FROM,
+      PREX_MBOX_FROM_MATCH_MAX,
+      /* Spec: http://qmail.omnis.ch/man/man5/mbox.html */
+      "^From "                 // From
+      "([^[:space:]]+) +"      // Sender
+      PREX_DOW                 // Day of week
+      " +"
+      PREX_MONTH               // Month
+      " ( ([[:digit:]])|([[:digit:]]{2}))" // Day
+      " +"
+      PREX_TIME                // Time
+      " +"
+      PREX_YEAR                // Year
+    },
+    {
+      PREX_MBOX_FROM_LAX,
+      PREX_MBOX_FROM_LAX_MATCH_MAX,
+      /* Spec: http://qmail.omnis.ch/man/man5/mbox.html */
+      "^From "                  // From
+      "("
+        "[^[:space:]]+"         // Sender
+        "( at [^[:space:]]+)?" // Possibly obfuscated, pipermail-style
+      ")?"
+      " *"
+      PREX_DOW_NOCASE           // Day of week
+      " +"
+      PREX_MONTH                // Month
+      " +"
+      "( "                      // Day
+        "([[:digit:]])|"
+        "([[:digit:]]{2})"
+      ")"
+      " +"
+      "("
+        PREX_TIME               // Time (HH:MM:SS)
+        "|"
+        "([[:digit:]]{2}"       // Time (HH:MM)
+        ":[[:digit:]]{2})"
+      ")"
+      " +"
+      "([[:alpha:] ]*)"         // Timezone (which we skip)
+      "("
+        PREX_YEAR               // Year (YYYY)
+        "|"
+        "([[:digit:]]{2})"      // Year (YY)
+      ")"
     }
     /* clang-format on */
   };

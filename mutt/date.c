@@ -433,26 +433,6 @@ uint64_t mutt_date_epoch_ms(void)
 }
 
 /**
- * mutt_date_is_day_name - Is the string a valid day name
- * @param s String to check
- * @retval true It's a valid day name
- *
- * @note Only the first three characters are checked
- * @note The comparison is case insensitive
- */
-bool mutt_date_is_day_name(const char *s)
-{
-  if (!s || (strlen(s) < 3) || (s[3] == '\0') || !IS_SPACE(s[3]))
-    return false;
-
-  for (int i = 0; i < mutt_array_size(Weekdays); i++)
-    if (mutt_str_startswith(s, Weekdays[i], CASE_IGNORE))
-      return true;
-
-  return false;
-}
-
-/**
  * mutt_date_parse_date - Parse a date string in RFC822 format
  * @param[in]  s      String to parse
  * @param[out] tz_out Pointer to timezone (optional)
@@ -468,29 +448,32 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
   if (!s)
     return -1;
 
-  bool obsolete = false;
+  bool lax = false;
 
-  regmatch_t *match = mutt_prex_capture(PREX_RFC5322_DATE, s);
+  const regmatch_t *match = mutt_prex_capture(PREX_RFC5322_DATE, s);
   if (!match)
   {
-    match = mutt_prex_capture(PREX_RFC5322_DATE_CFWS, s);
+    match = mutt_prex_capture(PREX_RFC5322_DATE_LAX, s);
     if (!match)
+    {
+      mutt_debug(LL_DEBUG1, "Could not parse date: <%s>\n", s);
       return -1;
-    obsolete = true;
-    mutt_debug(LL_DEBUG2, "Fallback to obsolete RFC5322 dates regex\n");
+    }
+    lax = true;
+    mutt_debug(LL_DEBUG2, "Fallback regex for date: <%s>\n", s);
   }
 
   struct tm tm = { 0 };
 
   // clang-format off
-  const regmatch_t *mday    = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_DAY    : PREX_RFC5322_DATE_MATCH_DAY];
-  const regmatch_t *mmonth  = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_MONTH  : PREX_RFC5322_DATE_MATCH_MONTH];
-  const regmatch_t *myear   = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_YEAR   : PREX_RFC5322_DATE_MATCH_YEAR];
-  const regmatch_t *mhour   = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_HOUR   : PREX_RFC5322_DATE_MATCH_HOUR];
-  const regmatch_t *mminute = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_MINUTE : PREX_RFC5322_DATE_MATCH_MINUTE];
-  const regmatch_t *msecond = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_SECOND : PREX_RFC5322_DATE_MATCH_SECOND];
-  const regmatch_t *mtz     = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_TZ     : PREX_RFC5322_DATE_MATCH_TZ];
-  const regmatch_t *mtzobs  = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_TZ_OBS : PREX_RFC5322_DATE_MATCH_TZ_OBS];
+  const regmatch_t *mday    = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_DAY    : PREX_RFC5322_DATE_MATCH_DAY];
+  const regmatch_t *mmonth  = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_MONTH  : PREX_RFC5322_DATE_MATCH_MONTH];
+  const regmatch_t *myear   = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_YEAR   : PREX_RFC5322_DATE_MATCH_YEAR];
+  const regmatch_t *mhour   = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_HOUR   : PREX_RFC5322_DATE_MATCH_HOUR];
+  const regmatch_t *mminute = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_MINUTE : PREX_RFC5322_DATE_MATCH_MINUTE];
+  const regmatch_t *msecond = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_SECOND : PREX_RFC5322_DATE_MATCH_SECOND];
+  const regmatch_t *mtz     = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_TZ     : PREX_RFC5322_DATE_MATCH_TZ];
+  const regmatch_t *mtzobs  = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_TZ_OBS : PREX_RFC5322_DATE_MATCH_TZ_OBS];
   // clang-format on
 
   /* Day */
