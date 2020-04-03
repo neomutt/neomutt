@@ -60,7 +60,10 @@ void test_mutt_date_parse_imap(void)
       TEST_CASE(imap_tests[i]);
       time_t result = mutt_date_parse_imap(imap_tests[i].str);
       if (!TEST_CHECK(result == imap_tests[i].expected))
-        TEST_MSG("Expected: %ld, Got: %ld", imap_tests[i].expected, result);
+      {
+        TEST_MSG("Expected: %ld", imap_tests[i].expected);
+        TEST_MSG("Actual  : %ld", result);
+      }
     }
   }
 }

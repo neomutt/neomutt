@@ -145,6 +145,20 @@ static struct PrexStorage *prex(enum Prex which)
         C
       "$"
 #undef C
+    },
+    {
+      PREX_IMAP_DATE,
+      PREX_IMAP_DATE_MATCH_MAX,
+      "( ([0-9])|([0-9]{2}))"        // Day
+      "-"
+      "(Jan|Feb|Mar|Apr|May|Jun|"    // Month
+      "Jul|Aug|Sep|Oct|Nov|Dec)"
+      "-"
+      "([0-9]{4})"                   // Year
+      " "
+      "([0-9]{2}:[0-9]{2}:[0-9]{2})" // Time
+      " "
+      "([+-][0-9]{4})"               // TZ
     }
     /* clang-format on */
   };

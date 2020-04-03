@@ -151,6 +151,22 @@ static time_t compute_tz(time_t g, struct tm *utc)
 }
 
 /**
+ * add_tz_offset - Compute and add a timezone offset to an UTC time
+ * @param t UTC time
+ * @param w True if west of UTC, false if east
+ * @param h Number of hours in the timezone
+ * @param m Number of minutes in the timezone
+ * @retval Timezone offset in seconds
+ */
+static time_t add_tz_offset(time_t t, bool w, time_t h, time_t m)
+{
+  if ((t != TIME_T_MAX) && (t != TIME_T_MIN))
+    return t + (w ? 1 : -1) * (((time_t) h * 3600) + ((time_t) m * 60));
+  else
+    return t;
+}
+
+/**
  * find_tz - Look up a timezone
  * @param s Timezone to lookup
  * @param len Length of the s string
@@ -527,12 +543,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
     tz_out->zoccident = zoccident;
   }
 
-  time_t time = mutt_date_make_time(&tm, false);
-  /* Check we haven't overflowed the time (on 32-bit arches) */
-  if ((time != TIME_T_MAX) && (time != TIME_T_MIN))
-    time += (zoccident ? 1 : -1) * (((time_t) zhours * 3600) + ((time_t) zminutes * 60));
-
-  return time;
+  return add_tz_offset(mutt_date_make_time(&tm, false), zoccident, zhours, zminutes);
 }
 
 /**
@@ -589,52 +600,32 @@ int mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp)
  */
 time_t mutt_date_parse_imap(const char *s)
 {
-  if (!s)
+  const regmatch_t *match = mutt_prex_capture(PREX_IMAP_DATE, s);
+  if (!match)
     return 0;
 
-  struct tm t;
-  time_t tz;
+  const regmatch_t *mday1 = &match[PREX_IMAP_DATE_MATCH_DAY1];
+  const regmatch_t *mday2 = &match[PREX_IMAP_DATE_MATCH_DAY2];
+  const regmatch_t *mmonth = &match[PREX_IMAP_DATE_MATCH_MONTH];
+  const regmatch_t *myear = &match[PREX_IMAP_DATE_MATCH_YEAR];
+  const regmatch_t *mtime = &match[PREX_IMAP_DATE_MATCH_TIME];
+  const regmatch_t *mtz = &match[PREX_IMAP_DATE_MATCH_TZ];
 
-  t.tm_mday = ((s[0] == ' ') ? s[1] - '0' : (s[0] - '0') * 10 + (s[1] - '0'));
-  s += 2;
-  if (*s != '-')
-    return 0;
-  s++;
-  t.tm_mon = mutt_date_check_month(s);
-  s += 3;
-  if (*s != '-')
-    return 0;
-  s++;
-  t.tm_year = (s[0] - '0') * 1000 + (s[1] - '0') * 100 + (s[2] - '0') * 10 +
-              (s[3] - '0') - 1900;
-  s += 4;
-  if (*s != ' ')
-    return 0;
-  s++;
+  struct tm tm;
 
-  /* time */
-  t.tm_hour = (s[0] - '0') * 10 + (s[1] - '0');
-  s += 2;
-  if (*s != ':')
-    return 0;
-  s++;
-  t.tm_min = (s[0] - '0') * 10 + (s[1] - '0');
-  s += 2;
-  if (*s != ':')
-    return 0;
-  s++;
-  t.tm_sec = (s[0] - '0') * 10 + (s[1] - '0');
-  s += 2;
-  if (*s != ' ')
-    return 0;
-  s++;
+  sscanf(s + mutt_regmatch_start(mutt_regmatch_len(mday1) ? mday1 : mday2),
+         "%d", &tm.tm_mday);
+  tm.tm_mon = mutt_date_check_month(s + mutt_regmatch_start(mmonth));
+  sscanf(s + mutt_regmatch_start(myear), "%d", &tm.tm_year);
+  tm.tm_year -= 1900;
+  sscanf(s + mutt_regmatch_start(mtime), "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
 
-  /* timezone */
-  tz = ((s[1] - '0') * 10 + (s[2] - '0')) * 3600 + ((s[3] - '0') * 10 + (s[4] - '0')) * 60;
-  if (s[0] == '+')
-    tz = -tz;
+  char direction;
+  int zhours, zminutes;
+  sscanf(s + mutt_regmatch_start(mtz), "%c%02d%02d", &direction, &zhours, &zminutes);
+  bool zoccident = (direction == '-');
 
-  return mutt_date_make_time(&t, false) + tz;
+  return add_tz_offset(mutt_date_make_time(&tm, false), zoccident, zhours, zminutes);
 }
 
 /**

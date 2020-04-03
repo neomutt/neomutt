@@ -35,6 +35,7 @@ enum Prex
   PREX_RFC2047_ENCODED_WORD,  ///< `[=?utf-8?Q?=E8=81=AA=E6=98=8E=E7=9A=84?=]`
   PREX_GNUTLS_CERT_HOST_HASH, ///<\c [\#H foo.com A76D 954B EB79 1F49 5B3A 0A0E 0681 65B1]
   PREX_RFC6854_DATE,          ///< `[Mon, 16 Mar 2020 15:09:35 -0700]`
+  PREX_IMAP_DATE,             ///< `[16-MAR-2020 15:09:35 -0700]`
   PREX_MAX
 };
 
@@ -129,6 +130,24 @@ enum PrexRfc6854Date
   PREX_RFC6854_DATE_MATCH_TZ,          ///< `Tue, 3 Mar 2020 14:32:55 [+0200]`
   PREX_RFC6854_DATE_MATCH_TZ_OBS,      ///< `Tue, 3 Mar 2020 14:32:55[UT]`
   PREX_RFC6854_DATE_MATCH_MAX
+};
+
+/**
+ * enum PrexImapDate - Regex matches for an IMAP `INTERNALDATE`
+ *
+ * @note The []s show the matching path of the IMAP date
+ */
+enum PrexImapDate
+{
+  PREX_IMAP_DATE_MATCH_FULL,   ///< `[16-MAR-2020 15:09:35 -0700]`
+  PREX_IMAP_DATE_MATCH_DAY,    ///< `[ 4]-MAR-2020 15:09:35 -0700`
+  PREX_IMAP_DATE_MATCH_DAY1,   ///< ` [4]-MAR-2020 15:09:35 -0700`
+  PREX_IMAP_DATE_MATCH_DAY2,   ///< `[15]-MAR-2020 15:09:35 -0700`
+  PREX_IMAP_DATE_MATCH_MONTH,  ///< `15-[MAR]-2020 15:09:35 -0700`
+  PREX_IMAP_DATE_MATCH_YEAR,   ///< `15-MAR-[2020] 15:09:35 -0700`
+  PREX_IMAP_DATE_MATCH_TIME,   ///< `15-MAR-2020 [15:09:35] -0700`
+  PREX_IMAP_DATE_MATCH_TZ,     ///< `15-MAR-2020 15:09:35 [-0700]`
+  PREX_IMAP_DATE_MATCH_MAX
 };
 
 regmatch_t *mutt_prex_capture(enum Prex which, const char *str);
