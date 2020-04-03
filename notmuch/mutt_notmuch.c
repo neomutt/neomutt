@@ -494,7 +494,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
 
   if (!mdata)
     return NULL;
-  if (mdata->db_query)
+  if (mdata->db_query && !window)
     return mdata->db_query;
 
   mdata->query_type = string_to_query_type(C_NmQueryType); /* user's default */
