@@ -351,6 +351,7 @@ define USE_SIDEBAR
 define USE_SMTP
 define USE_SOCKET
 define SUN_ATTACHMENT
+define TEST_CASE_MAXSIZE 1024
 ###############################################################################
 
 set prefix [opt-val with-sysroot][get-define prefix]
@@ -1209,6 +1210,7 @@ set auto_rep {
   SENDMAIL
   SUN_ATTACHMENT
   SYSCONFDIR
+  TEST_CASE_MAXSIZE
   USE_*
   VPATH
   WORDS_BIGENDIAN

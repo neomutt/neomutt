@@ -21,8 +21,8 @@
  */
 
 #define TEST_NO_MAIN
-#include "acutest.h"
 #include "config.h"
+#include "acutest.h"
 #include <limits.h>
 #include "mutt/lib.h"
 
@@ -97,11 +97,12 @@ void test_mutt_str_atoui(void)
   // Normal tests
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
+    TEST_CASE(tests[i].str);
+
     result = UNEXPECTED;
     retval = mutt_str_atoui(tests[i].str, &result);
 
-    const bool success = (retval == tests[i].retval) && (result == tests[i].result);
-    if (!TEST_CHECK_(success, "Testing '%s'\n", tests[i].str))
+    if (!TEST_CHECK((retval == tests[i].retval) && (result == tests[i].result)))
     {
       TEST_MSG("retval: Expected: %d, Got: %d\n", tests[i].retval, retval);
       TEST_MSG("result: Expected: %lu, Got: %lu\n", tests[i].result, result);

@@ -9,9 +9,9 @@ BreakBeforeBraces: Allman
 
 IncludeCategories:
   # Standard library headers
-  - Regex:      '"acutest\.h"'
-    Priority:   -130
   - Regex:      '"config\.h"'
+    Priority:   -130
+  - Regex:      '"acutest\.h"'
     Priority:   -120
   - Regex:      '<stddef\.h>'
     Priority:   -110

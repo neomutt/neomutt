@@ -21,8 +21,8 @@
  */
 
 #define TEST_NO_MAIN
-#include "acutest.h"
 #include "config.h"
+#include "acutest.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
@@ -181,6 +181,7 @@ void test_url_parse(void)
   {
     for (size_t i = 0; i < mutt_array_size(test); i++)
     {
+      TEST_CASE(test[i].source);
       struct Url *url = url_parse(test[i].source);
       if (!TEST_CHECK(!((!!url) ^ (!!test[i].valid))))
       {
@@ -246,6 +247,7 @@ void test_url_parse(void)
             {
               char s[1024];
               snprintf(s, sizeof(s), "%s://%s%s%s%s", al[a], bl[b], cl[c], dl[d], el[e]);
+              TEST_CASE(s);
               struct Url *u = url_parse(s);
               if (!TEST_CHECK(u != NULL))
               {

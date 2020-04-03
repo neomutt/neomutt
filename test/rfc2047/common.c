@@ -21,8 +21,8 @@
  */
 
 #define TEST_NO_MAIN
-#include "acutest.h"
 #include "config.h"
+#include "acutest.h"
 #include <locale.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
