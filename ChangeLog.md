@@ -1,4 +1,4 @@
-2020-03-20  Richard Russon  <rich@flatcap.org>
+2020-03-20  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - Fix COLUMNS env var
   - Fix sync after delete
@@ -25,7 +25,7 @@
   - Use mutt_file_fopen() on config variables
   - Change commands to use intptr_t for data
 
-2020-03-13  Richard Russon  <rich@flatcap.org>
+2020-03-13  Richard Russon  \<rich@flatcap.org\>
 * Features
   - UI: add number of old messages to sidebar_format
   - UI: support ISO 8601 calendar date
@@ -103,7 +103,7 @@
   - Fix rendering of replacement_char when Charset_is_utf8
   - Update to latest acutest.h
 
-2019-12-07  Richard Russon  <rich@flatcap.org>
+2019-12-07  Richard Russon  \<rich@flatcap.org\>
 * Features
   - compose: draw status bar with highlights
 * Bug Fixes
@@ -124,14 +124,14 @@
   - refactor virtual email lookups
   - factor out global Context
 
-2019-11-29  Richard Russon  <rich@flatcap.org>
+2019-11-29  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Add raw mailsize expando (%cr)
 * Bug Fixes
   - Avoid double question marks in bounce confirmation msg
   - Fix bounce confirmation
   - fix new-mail flags and behaviour
-  - fix: browser <descend-directory>
+  - fix: browser \<descend-directory\>
   - fix ssl crash
   - fix move to trash
   - fix flickering

@@ -25,7 +25,7 @@ CHUNKED_DOCFILES = docs/advancedusage.html docs/configuration.html \
 HTML_DOCFILES = docs/index.html docs/manual.html $(CHUNKED_DOCFILES)
 
 srcdir_DOCFILES = $(SRCDIR)/docs/smime-notes.txt $(SRCDIR)/ChangeLog.md \
-		  $(SRCDIR)/CODE_OF_CONDUCT.md $(SRCDIR)/COPYRIGHT.md \
+		  $(SRCDIR)/docs/CODE_OF_CONDUCT.md \
 		  $(SRCDIR)/INSTALL.md $(SRCDIR)/LICENSE.md $(SRCDIR)/README.md
 
 all-docs:	docs $(CHUNKED_DOCFILES) docs/index.html docs/manual.txt \
