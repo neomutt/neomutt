@@ -45,165 +45,56 @@
  * @retval 0 No, it isn't
  *
  * A valid message separator looks like:
- * `From [ <return-path> ] <weekday> <month> <day> <time> [ <timezone> ] <year>`
+ * `From <return-path> <weekday> <month> <day> <time> <year>`
  */
 bool is_from(const char *s, char *path, size_t pathlen, time_t *tp)
 {
-  struct tm tm;
-  int yr;
+  bool lax = false;
+
+  const regmatch_t *match = mutt_prex_capture(PREX_MBOX_FROM, s);
+  if (!match)
+  {
+    match = mutt_prex_capture(PREX_MBOX_FROM_LAX, s);
+    if (!match)
+    {
+      mutt_debug(LL_DEBUG1, "Could not parse From line: <%s>\n", s);
+      return false;
+    }
+    lax = true;
+    mutt_debug(LL_DEBUG2, "Fallback regex for From line: <%s>\n", s);
+  }
 
   if (path)
-    *path = '\0';
-
-  if (!mutt_str_startswith(s, "From ", CASE_MATCH))
-    return false;
-
-  s = mutt_str_next_word(s); /* skip over the From part. */
-  if (!*s)
-    return false;
-
-  mutt_debug(LL_DEBUG5, "\nis_from(): parsing: %s\n", s);
-
-  if (!mutt_date_is_day_name(s))
   {
-    const char *p = NULL;
-    short q = 0;
-
-    for (p = s; *p && (q || !IS_SPACE(*p)); p++)
-    {
-      if (*p == '\\')
-      {
-        if (*++p == '\0')
-          return false;
-      }
-      else if (*p == '"')
-      {
-        q = !q;
-      }
-    }
-
-    if (q || !*p)
-      return false;
-
-    /* pipermail archives have the return_path obscured such as "me at neomutt.org" */
-    size_t plen = mutt_str_startswith(p, " at ", CASE_IGNORE);
-    if (plen != 0)
-    {
-      p = strchr(p + plen, ' ');
-      if (!p)
-      {
-        mutt_debug(LL_DEBUG1,
-                   "error parsing what appears to be a pipermail-style "
-                   "obscured return_path: %s\n",
-                   s);
-        return false;
-      }
-    }
-
-    if (path)
-    {
-      size_t len = (size_t)(p - s);
-      if ((len + 1) > pathlen)
-        len = pathlen - 1;
-      memcpy(path, s, len);
-      path[len] = '\0';
-      mutt_debug(LL_DEBUG5, "got return path: %s\n", path);
-    }
-
-    s = p + 1;
-    SKIPWS(s);
-    if (!*s)
-      return false;
-
-    if (!mutt_date_is_day_name(s))
-    {
-      mutt_debug(LL_DEBUG1, " expected weekday, got: %s\n", s);
-      return false;
-    }
+    const regmatch_t *msender = &match[lax ? PREX_MBOX_FROM_LAX_MATCH_ENVSENDER : PREX_MBOX_FROM_MATCH_ENVSENDER];
+    const size_t dsize = MIN(pathlen, mutt_regmatch_len(msender) + 1);
+    mutt_str_strfcpy(path, s + mutt_regmatch_start(msender), dsize);
   }
-
-  s = mutt_str_next_word(s);
-  if (!*s)
-    return false;
-
-  /* do a quick check to make sure that this isn't really the day of the week.
-   * this could happen when receiving mail from a local user whose login name
-   * is the same as a three-letter abbreviation of the day of the week.  */
-  if (mutt_date_is_day_name(s))
-  {
-    s = mutt_str_next_word(s);
-    if (!*s)
-      return false;
-  }
-
-  /* now we should be on the month. */
-  tm.tm_mon = mutt_date_check_month(s);
-  if (tm.tm_mon < 0)
-    return false;
-
-  /* day */
-  s = mutt_str_next_word(s);
-  if (!*s)
-    return false;
-  if (sscanf(s, "%d", &tm.tm_mday) != 1)
-    return false;
-  if ((tm.tm_mday < 1) || (tm.tm_mday > 31))
-    return false;
-
-  /* time */
-  s = mutt_str_next_word(s);
-  if (!*s)
-    return false;
-
-  /* Accept either HH:MM or HH:MM:SS */
-  if (sscanf(s, "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec) == 3)
-    ;
-  else if (sscanf(s, "%d:%d", &tm.tm_hour, &tm.tm_min) == 2)
-    tm.tm_sec = 0;
-  else
-    return false;
-
-  if ((tm.tm_hour < 0) || (tm.tm_hour > 23) || (tm.tm_min < 0) ||
-      (tm.tm_min > 59) || (tm.tm_sec < 0) || (tm.tm_sec > 60))
-  {
-    return false;
-  }
-
-  s = mutt_str_next_word(s);
-  if (!*s)
-    return false;
-
-  /* timezone? */
-  if (isalpha((unsigned char) *s) || (*s == '+') || (*s == '-'))
-  {
-    s = mutt_str_next_word(s);
-    if (!*s)
-      return false;
-
-    /* some places have two timezone fields after the time, e.g.
-     *      From xxxx@yyyyyyy.fr Wed Aug  2 00:39:12 MET DST 1995
-     */
-    if (isalpha((unsigned char) *s))
-    {
-      s = mutt_str_next_word(s);
-      if (!*s)
-        return false;
-    }
-  }
-
-  /* year */
-  if (sscanf(s, "%d", &yr) != 1)
-    return false;
-  if ((yr < 0) || (yr > 9999))
-    return false;
-  tm.tm_year = (yr > 1900) ? (yr - 1900) : ((yr < 70) ? (yr + 100) : yr);
-
-  mutt_debug(LL_DEBUG3, "month=%d, day=%d, hr=%d, min=%d, sec=%d, yr=%d\n",
-             tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, tm.tm_year);
-
-  tm.tm_isdst = -1;
 
   if (tp)
+  {
+    // clang-format off
+    const regmatch_t *mmonth = &match[lax ? PREX_MBOX_FROM_LAX_MATCH_MONTH : PREX_MBOX_FROM_MATCH_MONTH];
+    const regmatch_t *mday   = &match[lax ? PREX_MBOX_FROM_LAX_MATCH_DAY   : PREX_MBOX_FROM_MATCH_DAY];
+    const regmatch_t *mtime  = &match[lax ? PREX_MBOX_FROM_LAX_MATCH_TIME  : PREX_MBOX_FROM_MATCH_TIME];
+    const regmatch_t *myear  = &match[lax ? PREX_MBOX_FROM_LAX_MATCH_YEAR  : PREX_MBOX_FROM_MATCH_YEAR];
+    // clang-format on
+
+    struct tm tm = { 0 };
+    tm.tm_isdst = -1;
+    tm.tm_mon = mutt_date_check_month(s + mutt_regmatch_start(mmonth));
+    sscanf(s + mutt_regmatch_start(mday), " %d", &tm.tm_mday);
+    sscanf(s + mutt_regmatch_start(mtime), "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+    int year = 0;
+    sscanf(s + mutt_regmatch_start(myear), "%d", &year);
+    if (year > 1900)
+      tm.tm_year = year - 1900;
+    else if (year < 70)
+      tm.tm_year = year + 100;
+    else
+      tm.tm_year = year;
     *tp = mutt_date_make_time(&tm, false);
+  }
+
   return true;
 }

@@ -117,7 +117,6 @@ DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_epoch.o \
 		  test/date/mutt_date_epoch_ms.o \
 		  test/date/mutt_date_gmtime.o \
-		  test/date/mutt_date_is_day_name.o \
 		  test/date/mutt_date_local_tz.o \
 		  test/date/mutt_date_localtime.o \
 		  test/date/mutt_date_localtime_format.o \
