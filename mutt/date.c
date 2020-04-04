@@ -636,7 +636,7 @@ time_t mutt_date_parse_imap(const char *s)
  *
  * This will truncate instead of overflowing.
  */
-time_t mutt_date_add_timeout(time_t now, long timeout)
+time_t mutt_date_add_timeout(time_t now, time_t timeout)
 {
   if (timeout < 0)
     return now;
