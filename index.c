@@ -1977,7 +1977,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         struct Email *e_cur = get_cur_email(Context, menu);
         el_add_tagged(&el, Context, e_cur, tag);
-        ci_send_message(SEND_TO_SENDER, NULL, NULL, Context, &el);
+        mutt_send_message(SEND_TO_SENDER, NULL, NULL, Context, &el);
         emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
@@ -3418,7 +3418,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
-        ci_send_message(SEND_FORWARD, NULL, NULL, Context, &el);
+        mutt_send_message(SEND_FORWARD, NULL, NULL, Context, &el);
         emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
@@ -3447,7 +3447,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
-        ci_send_message(replyflags, NULL, NULL, Context, &el);
+        mutt_send_message(replyflags, NULL, NULL, Context, &el);
         emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
@@ -3496,7 +3496,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
-        ci_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, Context, &el);
+        mutt_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, Context, &el);
         emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
@@ -3505,7 +3505,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_MAIL:
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
-        ci_send_message(SEND_NO_FLAGS, NULL, NULL, Context, NULL);
+        mutt_send_message(SEND_NO_FLAGS, NULL, NULL, Context, NULL);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3514,7 +3514,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
-        ci_send_message(SEND_KEY, NULL, NULL, NULL, NULL);
+        mutt_send_message(SEND_KEY, NULL, NULL, NULL, NULL);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3680,7 +3680,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_RECALL_MESSAGE:
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
-        ci_send_message(SEND_POSTPONED, NULL, NULL, Context, NULL);
+        mutt_send_message(SEND_POSTPONED, NULL, NULL, Context, NULL);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3734,15 +3734,15 @@ int mutt_index_menu(struct MuttWindow *dlg)
             break;
           }
           if (op == OP_POST)
-            ci_send_message(SEND_NEWS, NULL, NULL, Context, NULL);
+            mutt_send_message(SEND_NEWS, NULL, NULL, Context, NULL);
           else
           {
             if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT))
               break;
             struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
             el_add_tagged(&el, Context, e_cur, tag);
-            ci_send_message(((op == OP_FOLLOWUP) ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
-                            NULL, NULL, Context, &el);
+            mutt_send_message(((op == OP_FOLLOWUP) ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
+                              NULL, NULL, Context, &el);
             emaillist_clear(&el);
           }
           menu->redraw = REDRAW_FULL;
@@ -3764,7 +3764,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
-        ci_send_message(SEND_REPLY, NULL, NULL, Context, &el);
+        mutt_send_message(SEND_REPLY, NULL, NULL, Context, &el);
         emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
@@ -3899,6 +3899,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         break;
 
 #ifdef USE_SIDEBAR
+      case OP_SIDEBAR_FIRST:
+      case OP_SIDEBAR_LAST:
       case OP_SIDEBAR_NEXT:
       case OP_SIDEBAR_NEXT_NEW:
       case OP_SIDEBAR_PAGE_DOWN:

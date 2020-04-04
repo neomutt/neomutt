@@ -1353,12 +1353,12 @@ struct Address *mutt_default_from(void)
 }
 
 /**
- * send_message - Send an email
+ * invoke_mta - Send an email
  * @param e Email
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int send_message(struct Email *e)
+static int invoke_mta(struct Email *e)
 {
   struct Buffer *tempfile = NULL;
   int rc = -1;
@@ -1534,7 +1534,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *e_cur)
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, e_cur);
-  int rc = ci_send_message(SEND_RESEND, e_new, NULL, ctx, &el);
+  int rc = mutt_send_message(SEND_RESEND, e_new, NULL, ctx, &el);
   emaillist_clear(&el);
 
   return rc;
@@ -1880,7 +1880,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
 }
 
 /**
- * ci_send_message - Send an email
+ * mutt_send_message - Send an email
  * @param flags    Send mode, see #SendFlags
  * @param e_templ  Template to use for new message
  * @param tempfile File specified by -i or -H
@@ -1890,8 +1890,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
  * @retval -1 Message was aborted or an error occurred
  * @retval  1 Message was postponed
  */
-int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile,
-                    struct Context *ctx, struct EmailList *el)
+int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile,
+                      struct Context *ctx, struct EmailList *el)
 {
   char buf[1024];
   struct Buffer fcc = mutt_buffer_make(0); /* where to copy this message */
@@ -2577,7 +2577,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
   if (C_FccBeforeSend)
     save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath);
 
-  i = send_message(e_templ);
+  i = invoke_mta(e_templ);
   if (i < 0)
   {
     if (!(flags & SEND_BATCH))

@@ -1556,8 +1556,16 @@ int mutt_body_handler(struct Body *b, struct State *s)
   handler_t handler = NULL;
   handler_t encrypted_handler = NULL;
   int rc = 0;
+  static unsigned short recurse_level = 0;
 
   int oflags = s->flags;
+
+  if (recurse_level >= 100)
+  {
+    mutt_debug(LL_DEBUG1, "recurse level too deep. giving up.\n");
+    return -1;
+  }
+  recurse_level++;
 
   /* first determine which handler to use to process this part */
 
@@ -1735,6 +1743,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
 
 cleanup:
+  recurse_level--;
   s->flags = oflags | (s->flags & MUTT_FIRSTDONE);
   if (rc != 0)
   {

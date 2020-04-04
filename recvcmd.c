@@ -600,7 +600,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   /* now that we have the template, send it. */
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, e_parent);
-  ci_send_message(SEND_NO_FLAGS, e_tmp, mutt_b2s(tmpbody), NULL, &el);
+  mutt_send_message(SEND_NO_FLAGS, e_tmp, mutt_b2s(tmpbody), NULL, &el);
   emaillist_clear(&el);
   mutt_buffer_pool_release(&tmpbody);
   return;
@@ -626,7 +626,7 @@ bail:
  * This is different from the previous function since we want to mimic the
  * index menu's behavior.
  *
- * Code reuse from ci_send_message() is not possible here - it relies on a
+ * Code reuse from mutt_send_message() is not possible here - it relies on a
  * context structure to find messages, while, on the attachment menu, messages
  * are referenced through the attachment index.
  */
@@ -735,10 +735,10 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, e_cur);
-  ci_send_message(flags, e_tmp,
-                  mutt_buffer_is_empty(tmpbody) ? NULL : mutt_b2s(tmpbody), NULL, &el);
+  mutt_send_message(flags, e_tmp, mutt_buffer_is_empty(tmpbody) ? NULL : mutt_b2s(tmpbody),
+                    NULL, &el);
   emaillist_clear(&el);
-  e_tmp = NULL; /* ci_send_message frees this */
+  e_tmp = NULL; /* mutt_send_message frees this */
 
 cleanup:
   email_free(&e_tmp);
@@ -1047,11 +1047,11 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, e_parent ? e_parent : (e_cur ? e_cur->email : NULL));
-  if (ci_send_message(flags, e_tmp, mutt_b2s(tmpbody), NULL, &el) == 0)
+  if (mutt_send_message(flags, e_tmp, mutt_b2s(tmpbody), NULL, &el) == 0)
   {
     mutt_set_flag(Context->mailbox, e, MUTT_REPLIED, true);
   }
-  e_tmp = NULL; /* ci_send_message frees this */
+  e_tmp = NULL; /* mutt_send_message frees this */
 
 cleanup:
   if (fp_tmp)
@@ -1108,5 +1108,5 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
   }
 
   // This call will free e_tmp for us
-  ci_send_message(SEND_NO_FLAGS, e_tmp, NULL, NULL, NULL);
+  mutt_send_message(SEND_NO_FLAGS, e_tmp, NULL, NULL, NULL);
 }

@@ -83,7 +83,7 @@ extern char *        C_Signature;
 extern bool          C_SigOnTop;
 extern bool          C_UseFrom;
 
-typedef uint16_t SendFlags;             ///< Flags for ci_send_message(), e.g. #SEND_REPLY
+typedef uint16_t SendFlags;             ///< Flags for mutt_send_message(), e.g. #SEND_REPLY
 #define SEND_NO_FLAGS               0   ///< No flags are set
 #define SEND_REPLY            (1 << 0)  ///< Reply to sender
 #define SEND_GROUP_REPLY      (1 << 1)  ///< Reply to all
@@ -101,7 +101,7 @@ typedef uint16_t SendFlags;             ///< Flags for ci_send_message(), e.g. #
 #define SEND_GROUP_CHAT_REPLY (1 << 13) ///< Reply to all recipients preserving To/Cc
 #define SEND_NEWS             (1 << 14) ///< Reply to a news article
 
-int             ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile, struct Context *ctx, struct EmailList *el);
+int             mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile, struct Context *ctx, struct EmailList *el);
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
 struct Address *mutt_default_from(void);
 int             mutt_edit_address(struct AddressList *al, const char *field, bool expand_aliases);

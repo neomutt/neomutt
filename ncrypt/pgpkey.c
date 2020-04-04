@@ -327,13 +327,12 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
 
   if (optional)
   {
-    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data,
-                        MUTT_FORMAT_NO_FLAGS);
+    mutt_expando_format(buf, buflen, col, cols, if_str, pgp_entry_fmt, data, MUTT_FORMAT_NO_FLAGS);
   }
   else if (flags & MUTT_FORMAT_OPTIONAL)
   {
-    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str,
-                        data, MUTT_FORMAT_NO_FLAGS);
+    mutt_expando_format(buf, buflen, col, cols, else_str, pgp_entry_fmt, data,
+                        MUTT_FORMAT_NO_FLAGS);
   }
   return src;
 }

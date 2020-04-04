@@ -449,13 +449,16 @@ char *mutt_str_strncat(char *d, size_t l, const char *s, size_t sl)
  * overwrites the pointer to the first string.
  *
  * This function alters the pointer of the caller.
+ *
+ * @note Free *p afterwards to handle the case that *p and s reference the same memory
  */
 void mutt_str_replace(char **p, const char *s)
 {
   if (!p)
     return;
-  FREE(p);
+  const char *tmp = *p;
   *p = mutt_str_strdup(s);
+  FREE(&tmp);
 }
 
 /**

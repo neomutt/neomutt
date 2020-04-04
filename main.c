@@ -785,7 +785,7 @@ int main(int argc, char *argv[], char *envp[])
   {
     if (!OptNoCurses)
       mutt_flushinp();
-    if (ci_send_message(SEND_POSTPONED, NULL, NULL, NULL, NULL) == 0)
+    if (mutt_send_message(SEND_POSTPONED, NULL, NULL, NULL, NULL) == 0)
       rc = 0;
     // TEST23: neomutt -p (postponed message, cancel)
     // TEST24: neomutt -p (no postponed message)
@@ -915,7 +915,7 @@ int main(int argc, char *argv[], char *envp[])
         sendflags |= SEND_NO_FREE_HEADER;
 
       /* Parse the draft_file into the full Email/Body structure.
-       * Set SEND_DRAFT_FILE so ci_send_message doesn't overwrite
+       * Set SEND_DRAFT_FILE so mutt_send_message doesn't overwrite
        * our e->content.  */
       if (draft_file)
       {
@@ -1014,7 +1014,7 @@ int main(int argc, char *argv[], char *envp[])
       mutt_list_free(&attach);
     }
 
-    rv = ci_send_message(sendflags, e, bodyfile, NULL, NULL);
+    rv = mutt_send_message(sendflags, e, bodyfile, NULL, NULL);
     /* We WANT the "Mail sent." and any possible, later error */
     log_queue_empty();
     if (ErrorBufMessage)
