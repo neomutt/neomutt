@@ -47,7 +47,7 @@ struct Tz
   bool zoccident;         ///< True if west of UTC, False if East
 };
 
-time_t    mutt_date_add_timeout(time_t now, long timeout);
+time_t    mutt_date_add_timeout(time_t now, time_t timeout);
 int       mutt_date_check_month(const char *s);
 time_t    mutt_date_epoch(void);
 uint64_t  mutt_date_epoch_ms(void);
