@@ -100,9 +100,29 @@ struct SmimeCommandContext
 char SmimePass[256];
 time_t SmimeExptime = 0; /* when does the cached passphrase expire? */
 
-static char SmimeKeyToUse[PATH_MAX] = { 0 };
-static char SmimeCertToUse[PATH_MAX];
-static char fp_smime_intermediateToUse[PATH_MAX];
+static struct Buffer SmimeKeyToUse = { 0 };
+static struct Buffer SmimeCertToUse = { 0 };
+static struct Buffer SmimeIntermediateToUse = { 0 };
+
+/**
+ * smime_init - Initialise smime globals
+ */
+void smime_init(void)
+{
+  mutt_buffer_alloc(&SmimeKeyToUse, 256);
+  mutt_buffer_alloc(&SmimeCertToUse, 256);
+  mutt_buffer_alloc(&SmimeIntermediateToUse, 256);
+}
+
+/**
+ * smime_cleanup - Clean up smime globals
+ */
+void smime_cleanup(void)
+{
+  mutt_buffer_dealloc(&SmimeKeyToUse);
+  mutt_buffer_dealloc(&SmimeCertToUse);
+  mutt_buffer_dealloc(&SmimeIntermediateToUse);
+}
 
 /**
  * smime_key_free - Free a list of SMIME keys
@@ -972,7 +992,7 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool
  */
 static void getkeys(char *mailbox)
 {
-  char *k = NULL;
+  const char *k = NULL;
 
   struct SmimeKey *key = smime_get_key_by_addr(mailbox, KEYFLAG_CANENCRYPT, false, false);
 
@@ -983,48 +1003,20 @@ static void getkeys(char *mailbox)
     key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, false);
   }
 
-  if (key)
+  size_t smime_keys_len = mutt_str_strlen(C_SmimeKeys);
+
+  k = key ? key->hash : NONULL(C_SmimeDefaultKey);
+
+  /* if the key is different from last time */
+  if ((mutt_buffer_len(&SmimeKeyToUse) <= smime_keys_len) ||
+      (mutt_str_strcasecmp(k, SmimeKeyToUse.data + smime_keys_len + 1) != 0))
   {
-    k = key->hash;
-
-    /* the key used last time. */
-    if (*SmimeKeyToUse &&
-        (mutt_str_strcasecmp(k, SmimeKeyToUse + mutt_str_strlen(C_SmimeKeys) + 1) == 0))
-    {
-      smime_key_free(&key);
-      return;
-    }
-    else
-      smime_class_void_passphrase();
-
-    snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(C_SmimeKeys), k);
-
-    snprintf(SmimeCertToUse, sizeof(SmimeCertToUse), "%s/%s",
-             NONULL(C_SmimeCertificates), k);
-
-    if (mutt_str_strcasecmp(k, C_SmimeDefaultKey) != 0)
-      smime_class_void_passphrase();
-
-    smime_key_free(&key);
-    return;
-  }
-
-  if (*SmimeKeyToUse)
-  {
-    if (mutt_str_strcasecmp(C_SmimeDefaultKey,
-                            SmimeKeyToUse + mutt_str_strlen(C_SmimeKeys) + 1) == 0)
-    {
-      return;
-    }
-
     smime_class_void_passphrase();
+    mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(C_SmimeKeys), k);
+    mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(C_SmimeCertificates), k);
   }
 
-  snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(C_SmimeKeys),
-           NONULL(C_SmimeDefaultKey));
-
-  snprintf(SmimeCertToUse, sizeof(SmimeCertToUse), "%s/%s",
-           NONULL(C_SmimeCertificates), NONULL(C_SmimeDefaultKey));
+  smime_key_free(&key);
 }
 
 /**
@@ -1034,12 +1026,8 @@ void smime_class_getkeys(struct Envelope *env)
 {
   if (C_SmimeDecryptUseDefaultKey && C_SmimeDefaultKey)
   {
-    snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(C_SmimeKeys),
-             C_SmimeDefaultKey);
-
-    snprintf(SmimeCertToUse, sizeof(SmimeCertToUse), "%s/%s",
-             NONULL(C_SmimeCertificates), C_SmimeDefaultKey);
-
+    mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(C_SmimeKeys), C_SmimeDefaultKey);
+    mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(C_SmimeCertificates), C_SmimeDefaultKey);
     return;
   }
 
@@ -1574,10 +1562,10 @@ static pid_t smime_invoke_sign(FILE **fp_smime_in, FILE **fp_smime_out,
                                FILE **fp_smime_err, int fp_smime_infd, int fp_smime_outfd,
                                int fp_smime_errfd, const char *fname)
 {
-  return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
-                      fp_smime_outfd, fp_smime_errfd, fname, NULL, NULL,
-                      C_SmimeSignDigestAlg, SmimeKeyToUse, SmimeCertToUse,
-                      fp_smime_intermediateToUse, C_SmimeSignCommand);
+  return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd, fp_smime_outfd,
+                      fp_smime_errfd, fname, NULL, NULL, C_SmimeSignDigestAlg,
+                      mutt_b2s(&SmimeKeyToUse), mutt_b2s(&SmimeCertToUse),
+                      mutt_b2s(&SmimeIntermediateToUse), C_SmimeSignCommand);
 }
 
 /**
@@ -1792,10 +1780,8 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   mutt_write_mime_body(a, fp_sign);
   mutt_file_fclose(&fp_sign);
 
-  snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(C_SmimeKeys), signas);
-
-  snprintf(SmimeCertToUse, sizeof(SmimeCertToUse), "%s/%s",
-           NONULL(C_SmimeCertificates), signas);
+  mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(C_SmimeKeys), signas);
+  mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(C_SmimeCertificates), signas);
 
   struct SmimeKey *signas_key = smime_get_key_by_hash(signas, 1);
   if ((!signas_key) || (!mutt_str_strcmp("?", signas_key->issuer)))
@@ -1803,8 +1789,8 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   else
     intermediates = signas_key->issuer;
 
-  snprintf(fp_smime_intermediateToUse, sizeof(fp_smime_intermediateToUse),
-           "%s/%s", NONULL(C_SmimeCertificates), intermediates);
+  mutt_buffer_printf(&SmimeIntermediateToUse, "%s/%s",
+                     NONULL(C_SmimeCertificates), intermediates);
 
   smime_key_free(&signas_key);
 
@@ -1945,7 +1931,8 @@ static pid_t smime_invoke_decrypt(FILE **fp_smime_in, FILE **fp_smime_out,
 {
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
                       fp_smime_outfd, fp_smime_errfd, fname, NULL, NULL, NULL,
-                      SmimeKeyToUse, SmimeCertToUse, NULL, C_SmimeDecryptCommand);
+                      mutt_b2s(&SmimeKeyToUse), mutt_b2s(&SmimeCertToUse), NULL,
+                      C_SmimeDecryptCommand);
 }
 
 /**

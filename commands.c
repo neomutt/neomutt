@@ -94,7 +94,15 @@ bool C_PromptAfter; ///< Config: Pause after running an external pager
 static const char *ExtPagerProgress = "all";
 
 /** The folder the user last saved to.  Used by ci_save_message() */
-static char LastSaveFolder[PATH_MAX] = "";
+static struct Buffer LastSaveFolder = { 0 };
+
+/**
+ * mutt_commands_cleanup - Clean up commands globals
+ */
+void mutt_commands_cleanup(void)
+{
+  mutt_buffer_dealloc(&LastSaveFolder);
+}
 
 /**
  * process_protected_headers - Get the protected header and update the index
@@ -578,7 +586,7 @@ static void pipe_msg(struct Mailbox *m, struct Email *e, FILE *fp, bool decode, 
  *
  * The following code is shared between printing and piping.
  */
-static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
+static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd,
                         bool decode, bool print, bool split, const char *sep)
 {
   if (!m || !el)
@@ -701,16 +709,19 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el)
     return;
 
-  char buf[1024] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
 
-  if ((mutt_get_field(_("Pipe to command: "), buf, sizeof(buf), MUTT_CMD) != 0) ||
-      (buf[0] == '\0'))
-  {
-    return;
-  }
+  if (mutt_buffer_get_field(_("Pipe to command: "), buf, MUTT_CMD) != 0)
+    goto cleanup;
 
-  mutt_expand_path(buf, sizeof(buf));
-  pipe_message(m, el, buf, C_PipeDecode, false, C_PipeSplit, C_PipeSep);
+  if (mutt_buffer_len(buf) == 0)
+    goto cleanup;
+
+  mutt_buffer_expand_path(buf);
+  pipe_message(m, el, mutt_b2s(buf), C_PipeDecode, false, C_PipeSplit, C_PipeSep);
+
+cleanup:
+  mutt_buffer_pool_release(&buf);
 }
 
 /**
@@ -868,7 +879,6 @@ void mutt_enter_command(void)
     return;
 
   struct Buffer err = mutt_buffer_make(256);
-  struct Buffer token = mutt_buffer_make(256);
 
   /* check if buf is a valid icommand, else fall back quietly to parse_rc_lines */
   enum CommandResult rc = mutt_parse_icommand(buf, &err);
@@ -884,7 +894,7 @@ void mutt_enter_command(void)
   }
   else if (rc != MUTT_CMD_SUCCESS)
   {
-    rc = mutt_parse_rc_line(buf, &token, &err);
+    rc = mutt_parse_rc_line(buf, &err);
     if (!mutt_buffer_is_empty(&err))
     {
       if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */
@@ -897,7 +907,6 @@ void mutt_enter_command(void)
   }
   /* else successful command */
 
-  mutt_buffer_dealloc(&token);
   mutt_buffer_dealloc(&err);
 }
 
@@ -1080,10 +1089,12 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 
   /* This is an undocumented feature of ELM pointed out to me by Felix von
    * Leitner <leitner@prz.fu-berlin.de> */
+  if (mutt_buffer_len(&LastSaveFolder) == 0)
+    mutt_buffer_alloc(&LastSaveFolder, PATH_MAX);
   if (mutt_str_strcmp(mutt_b2s(buf), ".") == 0)
-    mutt_buffer_strcpy(buf, LastSaveFolder);
+    mutt_buffer_copy(buf, &LastSaveFolder);
   else
-    mutt_str_strfcpy(LastSaveFolder, mutt_b2s(buf), sizeof(LastSaveFolder));
+    mutt_buffer_strcpy(&LastSaveFolder, mutt_b2s(buf));
 
   mutt_buffer_expand_path(buf);
 

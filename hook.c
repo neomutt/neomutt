@@ -512,7 +512,6 @@ void mutt_folder_hook(const char *path, const char *desc)
 
   struct Hook *hook = NULL;
   struct Buffer *err = mutt_buffer_pool_get();
-  struct Buffer *token = mutt_buffer_pool_get();
 
   current_hook_type = MUTT_FOLDER_HOOK;
 
@@ -534,14 +533,13 @@ void mutt_folder_hook(const char *path, const char *desc)
     {
       mutt_debug(LL_DEBUG1, "folder-hook '%s' matches '%s'\n", hook->regex.pattern, match);
       mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
-      if (mutt_parse_rc_line(hook->command, token, err) == MUTT_CMD_ERROR)
+      if (mutt_parse_rc_line(hook->command, err) == MUTT_CMD_ERROR)
       {
         mutt_error("%s", mutt_b2s(err));
         break;
       }
     }
   }
-  mutt_buffer_pool_release(&token);
   mutt_buffer_pool_release(&err);
 
   current_hook_type = MUTT_HOOK_NO_FLAGS;
@@ -581,7 +579,6 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
   struct Buffer *err = mutt_buffer_pool_get();
-  struct Buffer *token = mutt_buffer_pool_get();
 
   current_hook_type = type;
 
@@ -595,9 +592,8 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.pat_not)
       {
-        if (mutt_parse_rc_line(hook->command, token, err) == MUTT_CMD_ERROR)
+        if (mutt_parse_rc_line(hook->command, err) == MUTT_CMD_ERROR)
         {
-          mutt_buffer_pool_release(&token);
           mutt_error("%s", mutt_b2s(err));
           current_hook_type = MUTT_HOOK_NO_FLAGS;
           mutt_buffer_pool_release(&err);
@@ -610,7 +606,6 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
       }
     }
   }
-  mutt_buffer_pool_release(&token);
   mutt_buffer_pool_release(&err);
 
   current_hook_type = MUTT_HOOK_NO_FLAGS;
@@ -772,7 +767,6 @@ void mutt_account_hook(const char *url)
 
   struct Hook *hook = NULL;
   struct Buffer *err = mutt_buffer_pool_get();
-  struct Buffer *token = mutt_buffer_pool_get();
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
@@ -785,9 +779,8 @@ void mutt_account_hook(const char *url)
       mutt_debug(LL_DEBUG1, "account-hook '%s' matches '%s'\n", hook->regex.pattern, url);
       mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
 
-      if (mutt_parse_rc_line(hook->command, token, err) == MUTT_CMD_ERROR)
+      if (mutt_parse_rc_line(hook->command, err) == MUTT_CMD_ERROR)
       {
-        mutt_buffer_pool_release(&token);
         mutt_error("%s", mutt_b2s(err));
         mutt_buffer_pool_release(&err);
 
@@ -799,7 +792,6 @@ void mutt_account_hook(const char *url)
     }
   }
 done:
-  mutt_buffer_pool_release(&token);
   mutt_buffer_pool_release(&err);
 }
 #endif
@@ -813,21 +805,19 @@ done:
 void mutt_timeout_hook(void)
 {
   struct Hook *hook = NULL;
-  struct Buffer token;
   struct Buffer err;
   char buf[256];
 
   mutt_buffer_init(&err);
   err.data = buf;
   err.dsize = sizeof(buf);
-  mutt_buffer_init(&token);
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->type & MUTT_TIMEOUT_HOOK)))
       continue;
 
-    if (mutt_parse_rc_line(hook->command, &token, &err) == MUTT_CMD_ERROR)
+    if (mutt_parse_rc_line(hook->command, &err) == MUTT_CMD_ERROR)
     {
       mutt_error("%s", err.data);
       mutt_buffer_reset(&err);
@@ -836,7 +826,6 @@ void mutt_timeout_hook(void)
        * failed, we'll carry on with the others. */
     }
   }
-  FREE(&token.data);
 
   /* Delete temporary attachment files */
   mutt_unlink_temp_attachments();
@@ -852,26 +841,23 @@ void mutt_timeout_hook(void)
 void mutt_startup_shutdown_hook(HookFlags type)
 {
   struct Hook *hook = NULL;
-  struct Buffer token = mutt_buffer_make(0);
   struct Buffer err = mutt_buffer_make(0);
   char buf[256];
 
   err.data = buf;
   err.dsize = sizeof(buf);
-  mutt_buffer_init(&token);
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->type & type)))
       continue;
 
-    if (mutt_parse_rc_line(hook->command, &token, &err) == MUTT_CMD_ERROR)
+    if (mutt_parse_rc_line(hook->command, &err) == MUTT_CMD_ERROR)
     {
       mutt_error("%s", err.data);
       mutt_buffer_reset(&err);
     }
   }
-  FREE(&token.data);
 }
 
 /**

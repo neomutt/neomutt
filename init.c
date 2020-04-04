@@ -203,12 +203,11 @@ static int execute_commands(struct ListHead *p)
 {
   int rc = 0;
   struct Buffer *err = mutt_buffer_pool_get();
-  struct Buffer *token = mutt_buffer_pool_get();
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, p, entries)
   {
-    enum CommandResult rc2 = mutt_parse_rc_line(np->data, token, err);
+    enum CommandResult rc2 = mutt_parse_rc_line(np->data, err);
     if (rc2 == MUTT_CMD_ERROR)
       mutt_error(_("Error in command line: %s"), mutt_b2s(err));
     else if (rc2 == MUTT_CMD_WARNING)
@@ -216,12 +215,10 @@ static int execute_commands(struct ListHead *p)
 
     if ((rc2 == MUTT_CMD_ERROR) || (rc2 == MUTT_CMD_WARNING))
     {
-      mutt_buffer_pool_release(&token);
       mutt_buffer_pool_release(&err);
       return -1;
     }
   }
-  mutt_buffer_pool_release(&token);
   mutt_buffer_pool_release(&err);
 
   return rc;
@@ -349,12 +346,12 @@ static bool get_hostname(struct ConfigSet *cs)
     C_Hostname = getmailname();
     if (!C_Hostname)
     {
-      char buffer[1024];
-      if (getdnsdomainname(buffer, sizeof(buffer)) == 0)
+      struct Buffer *domain = mutt_buffer_pool_get();
+      if (getdnsdomainname(domain) == 0)
       {
-        C_Hostname = mutt_mem_malloc(mutt_str_strlen(buffer) +
+        C_Hostname = mutt_mem_malloc(mutt_buffer_len(domain) +
                                      mutt_str_strlen(ShortHostname) + 2);
-        sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), buffer);
+        sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), mutt_b2s(domain));
       }
       else
       {
@@ -367,6 +364,7 @@ static bool get_hostname(struct ConfigSet *cs)
          * won't work in their network.  */
         C_Hostname = mutt_str_strdup(utsname.nodename);
       }
+      mutt_buffer_pool_release(&domain);
     }
 #endif
   }
@@ -735,10 +733,10 @@ HookFlags mutt_get_hook_type(const char *name)
  */
 int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 {
-  char buf[1024];
   int need_pause = 0;
   int rc = 1;
   struct Buffer err = mutt_buffer_make(256);
+  struct Buffer buf = mutt_buffer_make(256);
 
   mutt_grouplist_init();
   /* reverse alias keys need to be strdup'ed because of idna conversions */
@@ -762,11 +760,11 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   if (!p)
   {
 #ifdef HOMESPOOL
-    mutt_path_concat(buf, NONULL(HomeDir), MAILPATH, sizeof(buf));
+    mutt_buffer_concat_path(&buf, NONULL(HomeDir), MAILPATH);
 #else
-    mutt_path_concat(buf, MAILPATH, NONULL(Username), sizeof(buf));
+    mutt_buffer_concat_path(&buf, MAILPATH, NONULL(Username));
 #endif
-    p = buf;
+    p = mutt_b2s(&buf);
   }
   cs_str_initial_set(cs, "spoolfile", p, NULL);
   cs_str_reset(cs, "spoolfile", NULL);
@@ -774,17 +772,11 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   p = mutt_str_getenv("REPLYTO");
   if (p)
   {
-    struct Buffer tmp, token;
+    struct Buffer token;
 
-    snprintf(buf, sizeof(buf), "Reply-To: %s", p);
-
-    mutt_buffer_init(&tmp);
-    tmp.data = buf;
-    tmp.dptr = buf;
-    tmp.dsize = mutt_str_strlen(buf);
-
+    mutt_buffer_printf(&buf, "Reply-To: %s", p);
     mutt_buffer_init(&token);
-    parse_my_hdr(&token, &tmp, 0, &err); /* adds to UserHeader */
+    parse_my_hdr(&token, &buf, 0, &err); /* adds to UserHeader */
     FREE(&token.data);
   }
 
@@ -849,8 +841,8 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 
     if (!xdg_cfg_home && HomeDir)
     {
-      snprintf(buf, sizeof(buf), "%s/.config", HomeDir);
-      xdg_cfg_home = buf;
+      mutt_buffer_printf(&buf, "%s/.config", HomeDir);
+      xdg_cfg_home = mutt_b2s(&buf);
     }
 
     char *config = find_cfg(HomeDir, xdg_cfg_home);
@@ -864,10 +856,10 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &Muttrc, entries)
     {
-      mutt_str_strfcpy(buf, np->data, sizeof(buf));
+      mutt_buffer_strcpy(&buf, np->data);
       FREE(&np->data);
-      mutt_expand_path(buf, sizeof(buf));
-      np->data = mutt_str_strdup(buf);
+      mutt_buffer_expand_path(&buf);
+      np->data = mutt_buffer_strdup(&buf);
       if (access(np->data, F_OK))
       {
         mutt_perror(np->data);
@@ -887,27 +879,27 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   {
     do
     {
-      if (mutt_set_xdg_path(XDG_CONFIG_DIRS, buf, sizeof(buf)))
+      if (mutt_set_xdg_path(XDG_CONFIG_DIRS, &buf))
         break;
 
-      snprintf(buf, sizeof(buf), "%s/neomuttrc", SYSCONFDIR);
-      if (access(buf, F_OK) == 0)
+      mutt_buffer_printf(&buf, "%s/neomuttrc", SYSCONFDIR);
+      if (access(mutt_b2s(&buf), F_OK) == 0)
         break;
 
-      snprintf(buf, sizeof(buf), "%s/Muttrc", SYSCONFDIR);
-      if (access(buf, F_OK) == 0)
+      mutt_buffer_printf(&buf, "%s/Muttrc", SYSCONFDIR);
+      if (access(mutt_b2s(&buf), F_OK) == 0)
         break;
 
-      snprintf(buf, sizeof(buf), "%s/neomuttrc", PKGDATADIR);
-      if (access(buf, F_OK) == 0)
+      mutt_buffer_printf(&buf, "%s/neomuttrc", PKGDATADIR);
+      if (access(mutt_b2s(&buf), F_OK) == 0)
         break;
 
-      snprintf(buf, sizeof(buf), "%s/Muttrc", PKGDATADIR);
+      mutt_buffer_printf(&buf, "%s/Muttrc", PKGDATADIR);
     } while (false);
 
-    if (access(buf, F_OK) == 0)
+    if (access(mutt_b2s(&buf), F_OK) == 0)
     {
-      if (source_rc(buf, &err) != 0)
+      if (source_rc(mutt_b2s(&buf), &err) != 0)
       {
         mutt_error("%s", err.data);
         need_pause = 1; // TEST11: neomutt (error in /etc/neomuttrc)
@@ -972,53 +964,52 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   rc = 0;
 
 done:
-  FREE(&err.data);
+  mutt_buffer_dealloc(&err);
+  mutt_buffer_dealloc(&buf);
   return rc;
 }
 
 /**
- * mutt_parse_rc_line - Parse a line of user config
+ * mutt_parse_rc_buffer - Parse a line of user config
  * @param line  config line to read
  * @param token scratch buffer to be used by parser
  * @param err   where to write error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
- * Caller should free token->data when finished.  the reason for this variable
- * is to avoid having to allocate and deallocate a lot of memory if we are
- * parsing many lines.  the caller can pass in the memory to use, which avoids
- * having to create new space for every call to this function.
+ * The reason for `token` is to avoid having to allocate and deallocate a lot
+ * of memory if we are parsing many lines.  the caller can pass in the memory
+ * to use, which avoids having to create new space for every call to this function.
  */
-enum CommandResult mutt_parse_rc_line(/* const */ char *line,
-                                      struct Buffer *token, struct Buffer *err)
+enum CommandResult mutt_parse_rc_buffer(struct Buffer *line,
+                                        struct Buffer *token, struct Buffer *err)
 {
-  if (!line || !*line)
+  if (mutt_buffer_len(line) == 0)
     return 0;
 
   int i;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
-  struct Buffer expn = mutt_buffer_make(128);
-  mutt_buffer_addstr(&expn, line);
-  expn.dptr = expn.data;
+  mutt_buffer_reset(err);
 
-  *err->data = 0;
+  /* Read from the beginning of line->data */
+  line->dptr = line->data;
 
-  SKIPWS(expn.dptr);
-  while (*expn.dptr != '\0')
+  SKIPWS(line->dptr);
+  while (*line->dptr)
   {
-    if (*expn.dptr == '#')
+    if (*line->dptr == '#')
       break; /* rest of line is a comment */
-    if (*expn.dptr == ';')
+    if (*line->dptr == ';')
     {
-      expn.dptr++;
+      line->dptr++;
       continue;
     }
-    mutt_extract_token(token, &expn, MUTT_TOKEN_NO_FLAGS);
+    mutt_extract_token(token, line, MUTT_TOKEN_NO_FLAGS);
     for (i = 0; Commands[i].name; i++)
     {
       if (mutt_str_strcmp(token->data, Commands[i].name) == 0)
       {
-        rc = Commands[i].parse(token, &expn, Commands[i].data, err);
+        rc = Commands[i].parse(token, line, Commands[i].data, err);
         if (rc != MUTT_CMD_SUCCESS)
         {              /* -1 Error, +1 Finish */
           goto finish; /* Propagate return code */
@@ -1035,7 +1026,29 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
     }
   }
 finish:
-  mutt_buffer_dealloc(&expn);
+  return rc;
+}
+
+/**
+ * mutt_parse_rc_line - Parse a line of user config
+ * @param line Config line to read
+ * @param err  Where to write error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ */
+enum CommandResult mutt_parse_rc_line(const char *line, struct Buffer *err)
+{
+  if (!line || !*line)
+    return MUTT_CMD_ERROR;
+
+  struct Buffer *line_buffer = mutt_buffer_pool_get();
+  struct Buffer *token = mutt_buffer_pool_get();
+
+  mutt_buffer_strcpy(line_buffer, line);
+
+  enum CommandResult rc = mutt_parse_rc_buffer(line_buffer, token, err);
+
+  mutt_buffer_pool_release(&line_buffer);
+  mutt_buffer_pool_release(&token);
   return rc;
 }
 

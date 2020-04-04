@@ -63,7 +63,7 @@ int mutt_ev_message(struct Mailbox *m, struct EmailList *el, enum EvMessage acti
 
 int mutt_system(const char *cmd);
 
-int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
+int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf);
 void mutt_help(enum MenuType menu, int wraplan);
 void mutt_make_help(char *d, size_t dlen, const char *txt, enum MenuType menu, int op);
 void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_mbox);

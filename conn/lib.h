@@ -60,10 +60,12 @@
 #endif
 // IWYU pragma: end_exports
 
+struct Buffer;
+
 #ifdef USE_SSL
 int mutt_ssl_starttls(struct Connection *conn);
 #endif
 
-int getdnsdomainname(char *buf, size_t buflen);
+int getdnsdomainname(struct Buffer *domain);
 
 #endif /* MUTT_CONN_LIB_H */

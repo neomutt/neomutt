@@ -60,6 +60,7 @@ struct CryptModuleSpecs CryptModPgpGpgme = {
   APPLICATION_PGP,
 
   pgp_gpgme_init,
+  NULL, /* cleanup */
   pgp_gpgme_void_passphrase,
   pgp_gpgme_valid_passphrase,
   pgp_gpgme_decrypt_mime,

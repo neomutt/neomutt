@@ -44,6 +44,7 @@ struct CryptModuleSpecs CryptModPgpClassic = {
   APPLICATION_PGP,
 
   NULL, /* init */
+  NULL, /* cleanup */
   pgp_class_void_passphrase,
   pgp_class_valid_passphrase,
   pgp_class_decrypt_mime,

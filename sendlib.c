@@ -1510,7 +1510,6 @@ void mutt_update_encoding(struct Body *a)
  */
 struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool attach_msg)
 {
-  char buf[1024];
   struct Body *body = NULL;
   FILE *fp = NULL;
   CopyMessageFlags cmflags;
@@ -1525,19 +1524,25 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
     }
   }
 
-  mutt_mktemp(buf, sizeof(buf));
-  fp = mutt_file_fopen(buf, "w+");
+  struct Buffer *buf = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(buf);
+  fp = mutt_file_fopen(mutt_b2s(buf), "w+");
   if (!fp)
+  {
+    mutt_buffer_pool_release(&buf);
     return NULL;
+  }
 
   body = mutt_body_new();
   body->type = TYPE_MESSAGE;
   body->subtype = mutt_str_strdup("rfc822");
-  body->filename = mutt_str_strdup(buf);
+  body->filename = mutt_str_strdup(mutt_b2s(buf));
   body->unlink = true;
   body->use_disp = false;
   body->disposition = DISP_INLINE;
   body->noconv = true;
+
+  mutt_buffer_pool_release(&buf);
 
   mutt_parse_mime_message(m, e);
 
