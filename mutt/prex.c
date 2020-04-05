@@ -141,6 +141,7 @@ static struct PrexStorage *prex(enum Prex which)
         "([+-][0-9]{4})|"            // TZ
         "([A-Z ]+)"                  // Obsolete TZ
         ")"
+        " *(\\([A-Z]+\\))*"          // Superfluous TZ
         "\\)?"
         C
       "$"
