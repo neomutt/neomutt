@@ -6669,7 +6669,7 @@ msgstr "Többrészes csatolásoknál csak a törlés támogatott"
 
 #: recvcmd.c:79
 msgid "You may only bounce message/rfc822 parts"
-msgstr "Csak levél/rfc222 részeket lehet visszaküldeni"
+msgstr "Csak levél/rfc822 részeket lehet visszaküldeni"
 
 #: recvcmd.c:279
 #, fuzzy
@@ -6717,7 +6717,7 @@ msgstr "Nem tudom az összes kijelölt mellékletet visszaalakítani.  A többit
 #: recvcmd.c:1081
 #, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
-msgstr "Csak levél/rfc222 részeket lehet visszaküldeni"
+msgstr "Csak levél/rfc822 részeket lehet visszaküldeni"
 
 #: remailer.c:75
 msgid "Append"
