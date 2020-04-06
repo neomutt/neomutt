@@ -118,8 +118,8 @@ static struct PrexStorage *prex(enum Prex which)
       "^\\#H ([a-zA-Z0-9_\\.-]+) ([a-zA-Z0-9]{4}( [a-zA-Z0-9]{4}){7})[ \t]*$"
     },
     {
-      PREX_RFC6854_DATE,
-      PREX_RFC6854_DATE_MATCH_MAX,
+      PREX_RFC5322_DATE,
+      PREX_RFC5322_DATE_MATCH_MAX,
       /* Spec: https://tools.ietf.org/html/rfc5322#section-3.3 */
 #define C "" //"\\([^()\\]*\\)?" // Comment are obsolete but still allowed
       "^"
@@ -141,10 +141,8 @@ static struct PrexStorage *prex(enum Prex which)
         "([+-][0-9]{4})|"            // TZ
         "([A-Z ]+)"                  // Obsolete TZ
         ")"
-        " *(\\([A-Z]+\\))*"          // Superfluous TZ
         "\\)?"
         C
-      "$"
 #undef C
     },
     {

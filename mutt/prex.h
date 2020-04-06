@@ -34,7 +34,7 @@ enum Prex
   PREX_URL_QUERY_KEY_VAL,     ///< `https://example.com/?[q=foo]`
   PREX_RFC2047_ENCODED_WORD,  ///< `[=?utf-8?Q?=E8=81=AA=E6=98=8E=E7=9A=84?=]`
   PREX_GNUTLS_CERT_HOST_HASH, ///<\c [\#H foo.com A76D 954B EB79 1F49 5B3A 0A0E 0681 65B1]
-  PREX_RFC6854_DATE,          ///< `[Mon, 16 Mar 2020 15:09:35 -0700]`
+  PREX_RFC5322_DATE,          ///< `[Mon, 16 Mar 2020 15:09:35 -0700]`
   PREX_IMAP_DATE,             ///< `[16-MAR-2020 15:09:35 -0700]`
   PREX_MAX
 };
@@ -110,27 +110,26 @@ enum PrexGnuTlsCertHostnameMatch
 };
 
 /**
- * enum PrexRfc6854Date - Regex Matches for a RFC6854 date
+ * enum PrexRfc5322Date - Regex Matches for a RFC5322 date
  *
- * @note The []s show the matching path of the RFC6854 date
+ * @note The []s show the matching path of the RFC5322 date
  */
-enum PrexRfc6854Date
+enum PrexRfc5322Date
 {
-  PREX_RFC6854_DATE_MATCH_FULL,        ///< `[Mon, 2 Mar 2020 14:32:55 +0200]`
-  PREX_RFC6854_DATE_MATCH_MAYBE_DOW,   ///< `[Mon, ]2 Mar 2020 14:32:55 +0200`
-  PREX_RFC6854_DATE_MATCH_DOW,         ///< `[Mon], 2 Mar 2020 14:32:55 +0200`
-  PREX_RFC6854_DATE_MATCH_DAY,         ///< `Tue, [3] Mar 2020 14:32:55 +0200`
-  PREX_RFC6854_DATE_MATCH_MONTH,       ///< `Tue, 3 [Jan] 2020 14:32:55 +0200`
-  PREX_RFC6854_DATE_MATCH_YEAR,        ///< `Tue, 3 Mar [2020] 14:32:55 +0200`
-  PREX_RFC6854_DATE_MATCH_HOUR,        ///< `Tue, 3 Mar 2020 [14]:32:55 +0200`
-  PREX_RFC6854_DATE_MATCH_MINUTE,      ///< `Tue, 3 Mar 2020 14:[32]:55 +0200`
-  PREX_RFC6854_DATE_MATCH_COLONSECOND, ///< `Tue, 3 Mar 2020 14:32[:55] +0200`
-  PREX_RFC6854_DATE_MATCH_SECOND,      ///< `Tue, 3 Mar 2020 14:32:[55] +0200`
-  PREX_RFC6854_DATE_MATCH_TZFULL,      ///< `Tue, 3 Mar 2020 14:32:55 ([CET])`
-  PREX_RFC6854_DATE_MATCH_TZ,          ///< `Tue, 3 Mar 2020 14:32:55 [+0200]`
-  PREX_RFC6854_DATE_MATCH_TZ_OBS,      ///< `Tue, 3 Mar 2020 14:32:55[UT]`
-  PREX_RFC6854_DATE_MATCH_TZ_OBS2,     ///< `Tue, 3 Mar 2020 14:32:55 +0200[ (UTC)]`
-  PREX_RFC6854_DATE_MATCH_MAX
+  PREX_RFC5322_DATE_MATCH_FULL,        ///< `[Mon, 2 Mar 2020 14:32:55 +0200]`
+  PREX_RFC5322_DATE_MATCH_MAYBE_DOW,   ///< `[Mon, ]2 Mar 2020 14:32:55 +0200`
+  PREX_RFC5322_DATE_MATCH_DOW,         ///< `[Mon], 2 Mar 2020 14:32:55 +0200`
+  PREX_RFC5322_DATE_MATCH_DAY,         ///< `Tue, [3] Mar 2020 14:32:55 +0200`
+  PREX_RFC5322_DATE_MATCH_MONTH,       ///< `Tue, 3 [Jan] 2020 14:32:55 +0200`
+  PREX_RFC5322_DATE_MATCH_YEAR,        ///< `Tue, 3 Mar [2020] 14:32:55 +0200`
+  PREX_RFC5322_DATE_MATCH_HOUR,        ///< `Tue, 3 Mar 2020 [14]:32:55 +0200`
+  PREX_RFC5322_DATE_MATCH_MINUTE,      ///< `Tue, 3 Mar 2020 14:[32]:55 +0200`
+  PREX_RFC5322_DATE_MATCH_COLONSECOND, ///< `Tue, 3 Mar 2020 14:32[:55] +0200`
+  PREX_RFC5322_DATE_MATCH_SECOND,      ///< `Tue, 3 Mar 2020 14:32:[55] +0200`
+  PREX_RFC5322_DATE_MATCH_TZFULL,      ///< `Tue, 3 Mar 2020 14:32:55([CET])`
+  PREX_RFC5322_DATE_MATCH_TZ,          ///< `Tue, 3 Mar 2020 14:32:55 [+0200]`
+  PREX_RFC5322_DATE_MATCH_TZ_OBS,      ///< `Tue, 3 Mar 2020 14:32:55[UT]`
+  PREX_RFC5322_DATE_MATCH_MAX
 };
 
 /**

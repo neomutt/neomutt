@@ -468,20 +468,20 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
   if (!s)
     return -1;
 
-  regmatch_t *match = mutt_prex_capture(PREX_RFC6854_DATE, s);
+  regmatch_t *match = mutt_prex_capture(PREX_RFC5322_DATE, s);
   if (!match)
     return -1;
 
   struct tm tm = { 0 };
 
-  const regmatch_t *mday = &match[PREX_RFC6854_DATE_MATCH_DAY];
-  const regmatch_t *mmonth = &match[PREX_RFC6854_DATE_MATCH_MONTH];
-  const regmatch_t *myear = &match[PREX_RFC6854_DATE_MATCH_YEAR];
-  const regmatch_t *mhour = &match[PREX_RFC6854_DATE_MATCH_HOUR];
-  const regmatch_t *mminute = &match[PREX_RFC6854_DATE_MATCH_MINUTE];
-  const regmatch_t *msecond = &match[PREX_RFC6854_DATE_MATCH_SECOND];
-  const regmatch_t *mtz = &match[PREX_RFC6854_DATE_MATCH_TZ];
-  const regmatch_t *mtzobs = &match[PREX_RFC6854_DATE_MATCH_TZ_OBS];
+  const regmatch_t *mday = &match[PREX_RFC5322_DATE_MATCH_DAY];
+  const regmatch_t *mmonth = &match[PREX_RFC5322_DATE_MATCH_MONTH];
+  const regmatch_t *myear = &match[PREX_RFC5322_DATE_MATCH_YEAR];
+  const regmatch_t *mhour = &match[PREX_RFC5322_DATE_MATCH_HOUR];
+  const regmatch_t *mminute = &match[PREX_RFC5322_DATE_MATCH_MINUTE];
+  const regmatch_t *msecond = &match[PREX_RFC5322_DATE_MATCH_SECOND];
+  const regmatch_t *mtz = &match[PREX_RFC5322_DATE_MATCH_TZ];
+  const regmatch_t *mtzobs = &match[PREX_RFC5322_DATE_MATCH_TZ_OBS];
 
   /* Day */
   sscanf(s + mutt_regmatch_start(mday), "%d", &tm.tm_mday);
