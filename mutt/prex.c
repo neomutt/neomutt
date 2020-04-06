@@ -121,29 +121,30 @@ static struct PrexStorage *prex(enum Prex which)
       PREX_RFC5322_DATE,
       PREX_RFC5322_DATE_MATCH_MAX,
       /* Spec: https://tools.ietf.org/html/rfc5322#section-3.3 */
-#define C "" //"\\([^()\\]*\\)?" // Comment are obsolete but still allowed
+#define FWS " *"
+#define C "(\\(.*\\))?" // Comment are obsolete but still allowed
+#define CFWS FWS C FWS
       "^"
+        CFWS
         "("
-        C " *"
-          "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)"  // Day of week
-        C ", "
+          "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)" // Day of week
+        CFWS ", "
         ")?"
-        C " *([0-9]{1,2}) " C        // Day
-        "(Jan|Feb|Mar|Apr|May|Jun|"  // Month
-        "Jul|Aug|Sep|Oct|Nov|Dec)"
-        C " ([0-9]{2,4}) " C         // Year
-        C "([0-9]{2})" C             // Hour
-        ":" C "([0-9]{2})" C         // Minute
-        "(:" C "([0-9]{2})" C ")?"   // Second
-        " *"
-        "\\(?"
+        CFWS "([0-9]{1,2}) "              // Day
+        CFWS "(Jan|Feb|Mar|Apr|May|Jun|"  // Month
+             "Jul|Aug|Sep|Oct|Nov|Dec)"
+        CFWS "([0-9]{2,4}) "              // Year
+        CFWS "([0-9]{2})"                 // Hour
+        ":" CFWS "([0-9]{2})" CFWS        // Minute
+        "(:" CFWS "([0-9]{2}))?"          // Second
+        CFWS
         "("
-        "([+-][0-9]{4})|"            // TZ
-        "([A-Z ]+)"                  // Obsolete TZ
+        "([+-][0-9]{4})|"                 // TZ
+        "([A-Z ]+)"                       // Obsolete TZ
         ")"
-        "\\)?"
-        C
+#undef CFWS
 #undef C
+#undef FWS
     },
     {
       PREX_IMAP_DATE,
