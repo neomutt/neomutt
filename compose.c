@@ -362,6 +362,33 @@ static void autocrypt_compose_menu(struct Email *e)
 #endif
 
 /**
+ * draw_floating - Draw a floating label
+ * @param win  Window to draw on
+ * @param row  Row to draw at
+ * @param col  Column to draw at
+ * @param text Text to display
+ */
+static void draw_floating(struct MuttWindow *win, int row, int col, const char *text)
+{
+  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
+  mutt_window_mvprintw(win, row, col, "%s", text);
+  mutt_curses_set_color(MT_COLOR_NORMAL);
+}
+
+/**
+ * draw_header - Draw an aligned label
+ * @param win   Window to draw on
+ * @param row   Row to draw at
+ * @param field Field to display, e.g. #HDR_FROM
+ */
+static void draw_header(struct MuttWindow *win, int row, enum HeaderField field)
+{
+  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
+  mutt_window_mvprintw(win, row, 0, "%*s", HeaderPadding[field], _(Prompts[field]));
+  mutt_curses_set_color(MT_COLOR_NORMAL);
+}
+
+/**
  * redraw_crypt_lines - Update the encryption info in the compose window
  * @param rd Email and other compose data
  */
@@ -369,10 +396,7 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
 {
   struct Email *e = rd->email;
 
-  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(rd->win_envelope, HDR_CRYPT, 0, "%*s",
-                       HeaderPadding[HDR_CRYPT], _(Prompts[HDR_CRYPT]));
-  mutt_curses_set_color(MT_COLOR_NORMAL);
+  draw_header(rd->win_envelope, HDR_CRYPT, HDR_CRYPT);
 
   if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
   {
@@ -426,27 +450,21 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
   if (((WithCrypto & APPLICATION_PGP) != 0) &&
       (e->security & APPLICATION_PGP) && (e->security & SEC_SIGN))
   {
-    mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-    mutt_window_printf("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    draw_header(rd->win_envelope, HDR_CRYPTINFO, HDR_CRYPTINFO);
     mutt_window_printf("%s", C_PgpSignAs ? C_PgpSignAs : _("<default>"));
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) &&
       (e->security & APPLICATION_SMIME) && (e->security & SEC_SIGN))
   {
-    mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-    mutt_window_printf("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    draw_header(rd->win_envelope, HDR_CRYPTINFO, HDR_CRYPTINFO);
     mutt_window_printf("%s", C_SmimeSignAs ? C_SmimeSignAs : _("<default>"));
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME) &&
       (e->security & SEC_ENCRYPT) && C_SmimeEncryptWith)
   {
-    mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-    mutt_window_mvprintw(rd->win_envelope, HDR_CRYPTINFO, 40, "%s", _("Encrypt with: "));
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    draw_floating(rd->win_envelope, HDR_CRYPTINFO, 40, _("Encrypt with: "));
     mutt_window_printf("%s", NONULL(C_SmimeEncryptWith));
   }
 
@@ -455,9 +473,7 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
   mutt_window_clrtoeol(rd->win_envelope);
   if (C_Autocrypt)
   {
-    mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-    mutt_window_printf("%*s", HeaderPadding[HDR_AUTOCRYPT], _(Prompts[HDR_AUTOCRYPT]));
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    draw_header(rd->win_envelope, HDR_AUTOCRYPT, HDR_AUTOCRYPT);
     if (e->security & SEC_AUTOCRYPT)
     {
       mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
@@ -469,13 +485,10 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
       mutt_window_addstr(_("Off"));
     }
 
-    mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-    mutt_window_mvprintw(rd->win_envelope, HDR_AUTOCRYPT, 40, "%s",
-                         /* L10N: The autocrypt compose menu Recommendation field.
-                             Displays the output of the recommendation engine
-                             (Off, No, Discouraged, Available, Yes) */
-                         _("Recommendation: "));
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    /* L10N: The autocrypt compose menu Recommendation field.
+       Displays the output of the recommendation engine
+       (Off, No, Discouraged, Available, Yes) */
+    draw_floating(rd->win_envelope, HDR_AUTOCRYPT, 40, _("Recommendation: "));
     mutt_window_printf("%s", _(AutocryptRecUiFlags[rd->autocrypt_rec]));
   }
 #endif
@@ -531,10 +544,7 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
 {
   char *t = NULL;
 
-  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(rd->win_envelope, HDR_MIX, 0, "%*s",
-                       HeaderPadding[HDR_MIX], _(Prompts[HDR_MIX]));
-  mutt_curses_set_color(MT_COLOR_NORMAL);
+  draw_header(rd->win_envelope, HDR_MIX, HDR_MIX);
 
   if (STAILQ_EMPTY(chain))
   {
@@ -633,13 +643,11 @@ cleanup:
  */
 static void draw_envelope_addr(int line, struct AddressList *al, struct MuttWindow *win)
 {
-  char buf[1024];
+  draw_header(win, line, line);
 
+  char buf[1024];
   buf[0] = '\0';
   mutt_addrlist_write(al, buf, sizeof(buf), true);
-  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(win, line, 0, "%*s", HeaderPadding[line], _(Prompts[line]));
-  mutt_curses_set_color(MT_COLOR_NORMAL);
   mutt_paddstr(win->state.cols - MaxHeaderWidth, buf);
 }
 
@@ -657,16 +665,13 @@ static void draw_envelope(struct ComposeRedrawData *rd)
 #ifdef USE_NNTP
   if (OptNewsSend)
   {
-    mutt_window_mvprintw(rd->win_envelope, HDR_TO, 0, "%*s",
-                         HeaderPadding[HDR_NEWSGROUPS], Prompts[HDR_NEWSGROUPS]);
+    draw_header(rd->win_envelope, HDR_NEWSGROUPS, HDR_NEWSGROUPS);
     mutt_paddstr(W, NONULL(e->env->newsgroups));
-    mutt_window_mvprintw(rd->win_envelope, HDR_CC, 0, "%*s",
-                         HeaderPadding[HDR_FOLLOWUPTO], Prompts[HDR_FOLLOWUPTO]);
+    draw_header(rd->win_envelope, HDR_FOLLOWUPTO, HDR_FOLLOWUPTO);
     mutt_paddstr(W, NONULL(e->env->followup_to));
     if (C_XCommentTo)
     {
-      mutt_window_mvprintw(rd->win_envelope, HDR_BCC, 0, "%*s",
-                           HeaderPadding[HDR_XCOMMENTTO], Prompts[HDR_XCOMMENTTO]);
+      draw_header(rd->win_envelope, HDR_XCOMMENTTO, HDR_XCOMMENTTO);
       mutt_paddstr(W, NONULL(e->env->x_comment_to));
     }
   }
@@ -678,18 +683,12 @@ static void draw_envelope(struct ComposeRedrawData *rd)
     draw_envelope_addr(HDR_BCC, &e->env->bcc, rd->win_envelope);
   }
 
-  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(rd->win_envelope, HDR_SUBJECT, 0, "%*s",
-                       HeaderPadding[HDR_SUBJECT], _(Prompts[HDR_SUBJECT]));
-  mutt_curses_set_color(MT_COLOR_NORMAL);
+  draw_header(rd->win_envelope, HDR_SUBJECT, HDR_SUBJECT);
   mutt_paddstr(W, NONULL(e->env->subject));
 
   draw_envelope_addr(HDR_REPLYTO, &e->env->reply_to, rd->win_envelope);
 
-  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(rd->win_envelope, HDR_FCC, 0, "%*s",
-                       HeaderPadding[HDR_FCC], _(Prompts[HDR_FCC]));
-  mutt_curses_set_color(MT_COLOR_NORMAL);
+  draw_header(rd->win_envelope, HDR_FCC, HDR_FCC);
   mutt_paddstr(W, fcc);
 
   if (WithCrypto)
