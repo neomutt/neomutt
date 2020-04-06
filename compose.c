@@ -790,22 +790,30 @@ static int draw_envelope_addr(int field, struct AddressList *al,
   try_again:
     more_len = snprintf(more, sizeof(more),
                         ngettext("(+%d more)", "(+%d more)", count), count);
+    mutt_debug(LL_DEBUG3, "text: '%s'  len: %d\n", more, more_len);
 
     int reserve = ((count > 0) && (lines_used == max_lines)) ? more_len : 0;
+    mutt_debug(LL_DEBUG3, "processing: %s (al:%ld, wl:%d, r:%d, lu:%ld)\n",
+               np->data, addr_len, width_left, reserve, lines_used);
     if (addr_len >= (width_left - reserve))
     {
+      mutt_debug(LL_DEBUG3, "not enough space\n");
       if (lines_used == max_lines)
       {
+        mutt_debug(LL_DEBUG3, "no more lines\n");
+        mutt_debug(LL_DEBUG3, "truncating: %s\n", np->data);
         mutt_paddstr(width_left, np->data);
         break;
       }
 
       if (width_left == (win->state.cols - MaxHeaderWidth))
       {
+        mutt_debug(LL_DEBUG3, "couldn't print: %s\n", np->data);
         mutt_paddstr(width_left, np->data);
         break;
       }
 
+      mutt_debug(LL_DEBUG3, "start a new line\n");
       mutt_window_clrtoeol(win);
       row++;
       lines_used++;
@@ -816,10 +824,13 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 
     if (addr_len < width_left)
     {
+      mutt_debug(LL_DEBUG3, "space for: %s\n", np->data);
       mutt_window_addstr(np->data);
       mutt_window_addstr(sep);
       width_left -= addr_len;
     }
+    mutt_debug(LL_DEBUG3, "%ld addresses remaining\n", count);
+    mutt_debug(LL_DEBUG3, "%ld lines remaining\n", max_lines - lines_used);
   }
   mutt_list_free(&list);
 
@@ -829,6 +840,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
     mutt_curses_set_color(MT_COLOR_BOLD);
     mutt_window_addstr(more);
     mutt_curses_set_color(MT_COLOR_NORMAL);
+    mutt_debug(LL_DEBUG3, "%ld more (len %d)\n", count, more_len);
   }
   else
   {
@@ -841,6 +853,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
     mutt_window_clrtoeol(win);
   }
 
+  mutt_debug(LL_DEBUG3, "used %d lines\n", lines_used);
   return lines_used;
 }
 
