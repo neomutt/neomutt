@@ -6551,7 +6551,7 @@ msgstr "Kan alleen multipart-bijlagen wissen"
 
 #: recvcmd.c:79
 msgid "You may only bounce message/rfc822 parts"
-msgstr "U kunt alleen message/rfc882-gedeelten doorsturen!"
+msgstr "U kunt alleen message/rfc822-gedeelten doorsturen!"
 
 #: recvcmd.c:279
 #, fuzzy
@@ -6599,7 +6599,7 @@ msgstr "Kan niet alle bijlagen decoderen. De rest inpakken met MIME?"
 #: recvcmd.c:1081
 #, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
-msgstr "U kunt alleen message/rfc882-gedeelten doorsturen!"
+msgstr "U kunt alleen message/rfc822-gedeelten doorsturen!"
 
 #: remailer.c:75
 msgid "Append"

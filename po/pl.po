@@ -6406,7 +6406,7 @@ msgstr "Możliwe jest jedynie usuwanie załączników multipart"
 
 #: recvcmd.c:79
 msgid "You may only bounce message/rfc822 parts"
-msgstr "Możesz wysyłać kopie tylko listów zgodnych z RFC822"
+msgstr "Możesz wysyłać kopie tylko listów zgodnych z rfc822"
 
 #: recvcmd.c:279
 msgid "Error bouncing message"
