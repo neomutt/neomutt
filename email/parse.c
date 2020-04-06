@@ -1364,7 +1364,8 @@ bool mutt_is_message_type(int type, const char *subtype)
     return false;
 
   subtype = NONULL(subtype);
-  return mutt_istr_equal(subtype, "rfc822") || mutt_istr_equal(subtype, "news");
+  return (mutt_istr_equal(subtype, "rfc822") ||
+          mutt_istr_equal(subtype, "news") || mutt_istr_equal(subtype, "global"));
 }
 
 /**
