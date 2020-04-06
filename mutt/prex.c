@@ -65,31 +65,31 @@ static struct PrexStorage *prex(enum Prex which)
       PREX_URL,
       PREX_URL_MATCH_MAX,
       /* Spec: https://tools.ietf.org/html/rfc3986#section-3 */
-#define UNR_PCTENC_SUBDEL "-a-zA-Z0-9._~%!$&'()*+,;="
-#define PATH ":@/"
+#define UNR_PCTENC_SUBDEL "][a-zA-Z0-9._~%!$&'()*+,;="
+#define PATH ":@/ "
       "^([a-zA-Z][-+.a-zA-Z0-9]+):"                // . scheme
       "("                                          // . rest
         "("                                        // . . authority + path
                                                    // . . or path only
           "(//"                                    // . . . authority + path
             "("                                    // . . . . user info
-              "([" UNR_PCTENC_SUBDEL "@]*)"        // . . . . . user name + '@'
-              "(:([" UNR_PCTENC_SUBDEL "]*))?"     // . . . . . password
+              "([" UNR_PCTENC_SUBDEL "@-]*)"        // . . . . . user name + '@'
+              "(:([" UNR_PCTENC_SUBDEL "-]*))?"     // . . . . . password
             "@)?"
             "("                                    // . . . . host
-              "([" UNR_PCTENC_SUBDEL "]*)"         // . . . . . host name
+              "([" UNR_PCTENC_SUBDEL "-]*)"         // . . . . . host name
               "|"
               "(\\[[a-zA-Z0-9:.]+\\])"             // . . . . . IPv4 or IPv6
             ")"
             "(:([0-9]+))?"                         // . . . . port
-            "(/([" UNR_PCTENC_SUBDEL PATH "]*))?"  // . . . . path
+            "(/([" UNR_PCTENC_SUBDEL PATH "-]*))?"  // . . . . path
           ")"
           "|"
           "("                                      // . . . path only
-            "[" UNR_PCTENC_SUBDEL PATH "]*"        // . . . . path
+            "[" UNR_PCTENC_SUBDEL PATH "-]*"        // . . . . path
           ")"
         ")"
-        "(\\?([" UNR_PCTENC_SUBDEL PATH " ?]*))?"  // . . query + ' ' and '?'
+        "(\\?([" UNR_PCTENC_SUBDEL PATH "?-]*))?"  // . . query + ' ' and '?'
       ")$"
 #undef PATH
 #undef UNR_PCTENC_SUBDEL
