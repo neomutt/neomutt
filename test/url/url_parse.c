@@ -132,6 +132,18 @@ static struct UrlTest test[] = {
     },
     "type|messages|query|tag:inbox|",
   },
+  {
+    "imaps://gmail.com/[GMail]/Sent messages",
+    true,
+    {
+      U_IMAPS,
+      NULL,
+      NULL,
+      "gmail.com",
+      0,
+      "[GMail]/Sent messages"
+    }
+  }
 };
 // clang-format on
 
