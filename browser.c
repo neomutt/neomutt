@@ -634,7 +634,7 @@ static void add_folder(struct Menu *menu, struct BrowserState *state,
                        const char *name, const char *desc, const struct stat *s,
                        struct Mailbox *m, void *data)
 {
-  if (m && (m->flags & MB_HIDDEN))
+  if ((!menu || menu->is_mailbox_list) && m && (m->flags & MB_HIDDEN))
   {
     return;
   }
@@ -1958,7 +1958,10 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       case OP_BROWSER_GOTO_FOLDER:
       case OP_CHECK_NEW:
         if (op == OP_TOGGLE_MAILBOXES)
+        {
           mailbox = !mailbox;
+          menu->is_mailbox_list = mailbox;
+        }
 
         if (op == OP_BROWSER_GOTO_FOLDER)
         {
