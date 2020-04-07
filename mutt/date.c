@@ -468,20 +468,30 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
   if (!s)
     return -1;
 
+  bool obsolete = false;
+
   regmatch_t *match = mutt_prex_capture(PREX_RFC5322_DATE, s);
   if (!match)
-    return -1;
+  {
+    match = mutt_prex_capture(PREX_RFC5322_DATE_CFWS, s);
+    if (!match)
+      return -1;
+    obsolete = true;
+    mutt_debug(LL_DEBUG2, "Fallback to obsolete RFC5322 dates regex");
+  }
 
   struct tm tm = { 0 };
 
-  const regmatch_t *mday = &match[PREX_RFC5322_DATE_MATCH_DAY];
-  const regmatch_t *mmonth = &match[PREX_RFC5322_DATE_MATCH_MONTH];
-  const regmatch_t *myear = &match[PREX_RFC5322_DATE_MATCH_YEAR];
-  const regmatch_t *mhour = &match[PREX_RFC5322_DATE_MATCH_HOUR];
-  const regmatch_t *mminute = &match[PREX_RFC5322_DATE_MATCH_MINUTE];
-  const regmatch_t *msecond = &match[PREX_RFC5322_DATE_MATCH_SECOND];
-  const regmatch_t *mtz = &match[PREX_RFC5322_DATE_MATCH_TZ];
-  const regmatch_t *mtzobs = &match[PREX_RFC5322_DATE_MATCH_TZ_OBS];
+  // clang-format off
+  const regmatch_t *mday    = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_DAY    : PREX_RFC5322_DATE_MATCH_DAY];
+  const regmatch_t *mmonth  = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_MONTH  : PREX_RFC5322_DATE_MATCH_MONTH];
+  const regmatch_t *myear   = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_YEAR   : PREX_RFC5322_DATE_MATCH_YEAR];
+  const regmatch_t *mhour   = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_HOUR   : PREX_RFC5322_DATE_MATCH_HOUR];
+  const regmatch_t *mminute = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_MINUTE : PREX_RFC5322_DATE_MATCH_MINUTE];
+  const regmatch_t *msecond = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_SECOND : PREX_RFC5322_DATE_MATCH_SECOND];
+  const regmatch_t *mtz     = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_TZ     : PREX_RFC5322_DATE_MATCH_TZ];
+  const regmatch_t *mtzobs  = &match[obsolete ? PREX_RFC5322_DATE_CFWS_MATCH_TZ_OBS : PREX_RFC5322_DATE_MATCH_TZ_OBS];
+  // clang-format on
 
   /* Day */
   sscanf(s + mutt_regmatch_start(mday), "%d", &tm.tm_mday);
@@ -529,10 +539,6 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
       zhours = tz->zhours;
       zminutes = tz->zminutes;
       zoccident = tz->zoccident;
-    }
-    else
-    {
-      mutt_error(_("Cannot parse TZ <%s>"), s + mutt_regmatch_start(mtzobs));
     }
   }
 

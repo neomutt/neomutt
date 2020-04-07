@@ -49,11 +49,11 @@ void test_mutt_date_parse_date(void)
   struct ParseDateTest parse_tests[] = {
      // [ weekday , ] day-of-month month year hour:minute:second [ timezone ]
      { "Wed, 13 Jun 2007 12:34:56 +0100",            1181734496 },
-     /* The following timezone is a comment -> assumed UTC */
-     { "Wed, 13 Jun 2007 12:34:56 (CET)",            1181738096 },
-     /* We stop parsing the following after the time -> assumed UTC */
-     { "Wed, 13 Jun 2007 12:34:56 (CET",             1181738096},
-     { "Wed, 13 Jun 2007 12:34:56 MET DST",          1181730896 },
+     /* A comment followed by the timezone  */
+     { "Wed, 13 Jun 2007 12:34:56 (CET) +0100",      1181734496 },
+     /* No timezone, just a comment */
+     { "Wed, 13 Jun 2007 12:34:56 (CET)",             -1        },
+     { "Wed, 13 Jun 2007 12:34:56 MET DST",          1181734496 },
      { "Wed, ab Jun 2007 12:34:56 +0100",            -1         },
      { "Wed, -2 Jun 2007 12:34:56 +0100",            -1         },
      { "Wed, 32 Jun 2007 12:34:56 +0100",            -1         },
@@ -73,6 +73,8 @@ void test_mutt_date_parse_date(void)
      { "Wed, 13 Jun 2007 12:34:-1 +0100",            -1         },
      { "Wed, 13 Jun 2007 12:34:61 +0100",            -1         },
      { "Wed, 13 Jun 2007 12:34:56 -0100",            1181741696 },
+     /* A timezone we do not understand, default to UTC */
+     { "Wed, 13 Jun 2007 12:34:56 D",                1181738096 },
      { "Wed, 13 Jun (Ju (06)n) 2007 12:34:56 -0100", 1181741696 },
      { "Wed, 13 Jun 2007 12:34:56 -0100 (CET)",      1181741696 },
      { "Wed, 13 Jun 2007 12:34:56 -0100 (CET)",      1181741696 },

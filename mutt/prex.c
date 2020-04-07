@@ -121,8 +121,30 @@ static struct PrexStorage *prex(enum Prex which)
       PREX_RFC5322_DATE,
       PREX_RFC5322_DATE_MATCH_MAX,
       /* Spec: https://tools.ietf.org/html/rfc5322#section-3.3 */
+      "^"
+        "("
+          "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)" // Day of week
+        ", "
+        ")?"
+        "([0-9]{1,2}) "              // Day
+        "(Jan|Feb|Mar|Apr|May|Jun|"  // Month
+        "Jul|Aug|Sep|Oct|Nov|Dec) "
+        "([0-9]{2,4}) "              // Year
+        "([0-9]{2})"                 // Hour
+        ":([0-9]{2})"                // Minute
+        "(:([0-9]{2}))?"             // Second
+        " *"
+        "("
+        "([+-][0-9]{4})|"            // TZ
+        "([A-Z]+)"                   // Obsolete TZ
+        ")"
+    },
+    {
+      PREX_RFC5322_DATE_CFWS,
+      PREX_RFC5322_DATE_CFWS_MATCH_MAX,
+      /* Spec: https://tools.ietf.org/html/rfc5322#section-3.3 */
 #define FWS " *"
-#define C "(\\(.*\\))?" // Comment are obsolete but still allowed
+#define C "(\\(.*\\))?"
 #define CFWS FWS C FWS
       "^"
         CFWS
@@ -140,7 +162,7 @@ static struct PrexStorage *prex(enum Prex which)
         CFWS
         "("
         "([+-][0-9]{4})|"                 // TZ
-        "([A-Z ]+)"                       // Obsolete TZ
+        "([A-Z]+)"                        // Obsolete TZ
         ")"
 #undef CFWS
 #undef C

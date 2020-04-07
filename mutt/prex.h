@@ -35,6 +35,7 @@ enum Prex
   PREX_RFC2047_ENCODED_WORD,  ///< `[=?utf-8?Q?=E8=81=AA=E6=98=8E=E7=9A=84?=]`
   PREX_GNUTLS_CERT_HOST_HASH, ///<\c [\#H foo.com A76D 954B EB79 1F49 5B3A 0A0E 0681 65B1]
   PREX_RFC5322_DATE,          ///< `[Mon, 16 Mar 2020 15:09:35 -0700]`
+  PREX_RFC5322_DATE_CFWS,     ///< `[Mon, (Comment) 16 Mar 2020 15:09:35 -0700]`
   PREX_IMAP_DATE,             ///< `[16-MAR-2020 15:09:35 -0700]`
   PREX_MAX
 };
@@ -113,35 +114,60 @@ enum PrexGnuTlsCertHostnameMatch
  * enum PrexRfc5322Date - Regex Matches for a RFC5322 date
  *
  * @note The []s show the matching path of the RFC5322 date
- *
- * @note The `*_CFWS*` constants match `()`d comments with whitespace
  */
 enum PrexRfc5322Date
 {
   PREX_RFC5322_DATE_MATCH_FULL,        ///< `[Mon, 2 Mar 2020 14:32:55 +0200]`
-  PREX_RFC5322_DATE_MATCH_CFWS1,
   PREX_RFC5322_DATE_MATCH_MAYBE_DOW,   ///< `[Mon, ]2 Mar 2020 14:32:55 +0200`
   PREX_RFC5322_DATE_MATCH_DOW,         ///< `[Mon], 2 Mar 2020 14:32:55 +0200`
-  PREX_RFC5322_DATE_MATCH_CFWS2,
-  PREX_RFC5322_DATE_MATCH_CFWS3,
   PREX_RFC5322_DATE_MATCH_DAY,         ///< `Tue, [3] Mar 2020 14:32:55 +0200`
-  PREX_RFC5322_DATE_MATCH_CFWS4,
   PREX_RFC5322_DATE_MATCH_MONTH,       ///< `Tue, 3 [Jan] 2020 14:32:55 +0200`
-  PREX_RFC5322_DATE_MATCH_CFWS5,
   PREX_RFC5322_DATE_MATCH_YEAR,        ///< `Tue, 3 Mar [2020] 14:32:55 +0200`
-  PREX_RFC5322_DATE_MATCH_CFWS6,
   PREX_RFC5322_DATE_MATCH_HOUR,        ///< `Tue, 3 Mar 2020 [14]:32:55 +0200`
-  PREX_RFC5322_DATE_MATCH_CFWS7,
   PREX_RFC5322_DATE_MATCH_MINUTE,      ///< `Tue, 3 Mar 2020 14:[32]:55 +0200`
-  PREX_RFC5322_DATE_MATCH_CFWS8,
   PREX_RFC5322_DATE_MATCH_COLONSECOND, ///< `Tue, 3 Mar 2020 14:32[:55] +0200`
-  PREX_RFC5322_DATE_MATCH_CFWS9,
   PREX_RFC5322_DATE_MATCH_SECOND,      ///< `Tue, 3 Mar 2020 14:32:[55] +0200`
-  PREX_RFC5322_DATE_MATCH_CFWS10,
-  PREX_RFC5322_DATE_MATCH_TZFULL,      ///< `Tue, 3 Mar 2020 14:32:55([CET])`
+  PREX_RFC5322_DATE_MATCH_TZFULL,      ///< `Tue, 3 Mar 2020 14:32:55[CET]`
   PREX_RFC5322_DATE_MATCH_TZ,          ///< `Tue, 3 Mar 2020 14:32:55 [+0200]`
   PREX_RFC5322_DATE_MATCH_TZ_OBS,      ///< `Tue, 3 Mar 2020 14:32:55[UT]`
   PREX_RFC5322_DATE_MATCH_MAX
+};
+
+/**
+ * enum PrexRfc5322DateCfws - Regex Matches for a RFC5322 date, including obsolete comments in parentheses
+ *
+ * The reason we provide an alternate regex for RFC5322 dates is that the
+ * non-obsolete one is faster, while this one is more complete.
+ *
+ * @note The []s show the matching path of the RFC5322 date
+ * @note The `*_CFWS*` constants match `()`d comments with whitespace
+ */
+enum PrexRfc5322DateCfws
+{
+  PREX_RFC5322_DATE_CFWS_MATCH_FULL,        ///< `[Mon, 2 Mar 2020 14:32:55 +0200]`
+  PREX_RFC5322_DATE_CFWS_MATCH_CFWS1,
+  PREX_RFC5322_DATE_CFWS_MATCH_MAYBE_DOW,   ///< `[Mon, ]2 Mar 2020 14:32:55 +0200`
+  PREX_RFC5322_DATE_CFWS_MATCH_DOW,         ///< `[Mon], 2 Mar 2020 14:32:55 +0200`
+  PREX_RFC5322_DATE_CFWS_MATCH_CFWS2,
+  PREX_RFC5322_DATE_CFWS_MATCH_CFWS3,
+  PREX_RFC5322_DATE_CFWS_MATCH_DAY,         ///< `Tue, [3] Mar 2020 14:32:55 +0200`
+  PREX_RFC5322_DATE_CFWS_MATCH_CFWS4,
+  PREX_RFC5322_DATE_CFWS_MATCH_MONTH,       ///< `Tue, 3 [Jan] 2020 14:32:55 +0200`
+  PREX_RFC5322_DATE_CFWS_MATCH_CFWS5,
+  PREX_RFC5322_DATE_CFWS_MATCH_YEAR,        ///< `Tue, 3 Mar [2020] 14:32:55 +0200`
+  PREX_RFC5322_DATE_CFWS_MATCH_CFWS6,
+  PREX_RFC5322_DATE_CFWS_MATCH_HOUR,        ///< `Tue, 3 Mar 2020 [14]:32:55 +0200`
+  PREX_RFC5322_DATE_CFWS_MATCH_CFWS7,
+  PREX_RFC5322_DATE_CFWS_MATCH_MINUTE,      ///< `Tue, 3 Mar 2020 14:[32]:55 +0200`
+  PREX_RFC5322_DATE_CFWS_MATCH_CFWS8,
+  PREX_RFC5322_DATE_CFWS_MATCH_COLONSECOND, ///< `Tue, 3 Mar 2020 14:32[:55] +0200`
+  PREX_RFC5322_DATE_CFWS_MATCH_CFWS9,
+  PREX_RFC5322_DATE_CFWS_MATCH_SECOND,      ///< `Tue, 3 Mar 2020 14:32:[55] +0200`
+  PREX_RFC5322_DATE_CFWS_MATCH_CFWS10,
+  PREX_RFC5322_DATE_CFWS_MATCH_TZFULL,      ///< `Tue, 3 Mar 2020 14:32:55[CET]`
+  PREX_RFC5322_DATE_CFWS_MATCH_TZ,          ///< `Tue, 3 Mar 2020 14:32:55 [+0200]`
+  PREX_RFC5322_DATE_CFWS_MATCH_TZ_OBS,      ///< `Tue, 3 Mar 2020 14:32:55[UT]`
+  PREX_RFC5322_DATE_CFWS_MATCH_MAX
 };
 
 /**
