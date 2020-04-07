@@ -610,8 +610,7 @@ time_t mutt_date_parse_imap(const char *s)
   if (!match)
     return 0;
 
-  const regmatch_t *mday1 = &match[PREX_IMAP_DATE_MATCH_DAY1];
-  const regmatch_t *mday2 = &match[PREX_IMAP_DATE_MATCH_DAY2];
+  const regmatch_t *mday = &match[PREX_IMAP_DATE_MATCH_DAY];
   const regmatch_t *mmonth = &match[PREX_IMAP_DATE_MATCH_MONTH];
   const regmatch_t *myear = &match[PREX_IMAP_DATE_MATCH_YEAR];
   const regmatch_t *mtime = &match[PREX_IMAP_DATE_MATCH_TIME];
@@ -619,8 +618,7 @@ time_t mutt_date_parse_imap(const char *s)
 
   struct tm tm;
 
-  sscanf(s + mutt_regmatch_start(mutt_regmatch_len(mday1) ? mday1 : mday2),
-         "%d", &tm.tm_mday);
+  sscanf(s + mutt_regmatch_start(mday), " %d", &tm.tm_mday);
   tm.tm_mon = mutt_date_check_month(s + mutt_regmatch_start(mmonth));
   sscanf(s + mutt_regmatch_start(myear), "%d", &tm.tm_year);
   tm.tm_year -= 1900;
