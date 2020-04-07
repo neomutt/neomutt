@@ -2166,7 +2166,11 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if (flags & SEND_BATCH)
     {
       if (mutt_file_copy_stream(stdin, fp_tmp) < 1)
+      {
+        mutt_error(_("Refusing to send an empty email"));
+        mutt_message(_("Try: echo | neomutt -s 'subject' user@example.com"));
         goto cleanup;
+      }
     }
 
     if (C_SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
