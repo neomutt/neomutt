@@ -49,6 +49,11 @@ struct PrexStorage
   regmatch_t *matches; ///< Resulting matches
 };
 
+#define PREX_MONTH "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"
+#define PREX_DOW   "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)"
+#define PREX_TIME  "([[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2})"
+#define PREX_YEAR  "([[:digit:]]{4})"
+
 /**
  * prex - Compile on demand and get data for a predefined regex
  * @param which Which regex to get
@@ -65,28 +70,28 @@ static struct PrexStorage *prex(enum Prex which)
       PREX_URL,
       PREX_URL_MATCH_MAX,
       /* Spec: https://tools.ietf.org/html/rfc3986#section-3 */
-#define UNR_PCTENC_SUBDEL "][a-zA-Z0-9._~%!$&'()*+,;="
+#define UNR_PCTENC_SUBDEL "][[:alnum:]._~%!$&'()*+,;="
 #define PATH ":@/ "
-      "^([a-zA-Z][-+.a-zA-Z0-9]+):"                // . scheme
+      "^([[:alpha:]][-+.[:alnum:]]+):"             // . scheme
       "("                                          // . rest
         "("                                        // . . authority + path
                                                    // . . or path only
           "(//"                                    // . . . authority + path
             "("                                    // . . . . user info
-              "([" UNR_PCTENC_SUBDEL "@-]*)"        // . . . . . user name + '@'
-              "(:([" UNR_PCTENC_SUBDEL "-]*))?"     // . . . . . password
+              "([" UNR_PCTENC_SUBDEL "@-]*)"       // . . . . . user name + '@'
+              "(:([" UNR_PCTENC_SUBDEL "-]*))?"    // . . . . . password
             "@)?"
             "("                                    // . . . . host
-              "([" UNR_PCTENC_SUBDEL "-]*)"         // . . . . . host name
+              "([" UNR_PCTENC_SUBDEL "-]*)"        // . . . . . host name
               "|"
-              "(\\[[a-zA-Z0-9:.]+\\])"             // . . . . . IPv4 or IPv6
+              "(\\[[[:alnum:]:.]+\\])"             // . . . . . IPv4 or IPv6
             ")"
-            "(:([0-9]+))?"                         // . . . . port
-            "(/([" UNR_PCTENC_SUBDEL PATH "-]*))?"  // . . . . path
+            "(:([[:digit:]]+))?"                   // . . . . port
+            "(/([" UNR_PCTENC_SUBDEL PATH "-]*))?" // . . . . path
           ")"
           "|"
           "("                                      // . . . path only
-            "[" UNR_PCTENC_SUBDEL PATH "-]*"        // . . . . path
+            "[" UNR_PCTENC_SUBDEL PATH "-]*"       // . . . . path
           ")"
         ")"
         "(\\?([" UNR_PCTENC_SUBDEL PATH "?-]*))?"  // . . query + ' ' and '?'
@@ -97,7 +102,7 @@ static struct PrexStorage *prex(enum Prex which)
     {
       PREX_URL_QUERY_KEY_VAL,
       PREX_URL_QUERY_KEY_VAL_MATCH_MAX,
-#define QUERY_PART "-a-zA-Z0-9._~%!$'()*+,;:@/"
+#define QUERY_PART "-[:alnum:]._~%!$'()*+,;:@/"
       "([" QUERY_PART "]+)=([" QUERY_PART " ]+)"   // query + ' '
 #undef QUERY_PART
     },
@@ -115,28 +120,24 @@ static struct PrexStorage *prex(enum Prex which)
     {
       PREX_GNUTLS_CERT_HOST_HASH,
       PREX_GNUTLS_CERT_HOST_HASH_MATCH_MAX,
-      "^\\#H ([a-zA-Z0-9_\\.-]+) ([a-zA-Z0-9]{4}( [a-zA-Z0-9]{4}){7})[ \t]*$"
+      "^\\#H ([[:alnum:]_\\.-]+) ([[:alnum:]]{4}( [[:alnum:]]{4}){7})[ \t]*$"
     },
     {
       PREX_RFC5322_DATE,
       PREX_RFC5322_DATE_MATCH_MAX,
       /* Spec: https://tools.ietf.org/html/rfc5322#section-3.3 */
       "^"
-        "("
-          "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)" // Day of week
-        ", "
-        ")?"
-        "([0-9]{1,2}) "              // Day
-        "(Jan|Feb|Mar|Apr|May|Jun|"  // Month
-        "Jul|Aug|Sep|Oct|Nov|Dec) "
-        "([0-9]{2,4}) "              // Year
-        "([0-9]{2})"                 // Hour
-        ":([0-9]{2})"                // Minute
-        "(:([0-9]{2}))?"             // Second
+        "(" PREX_DOW ", )?"       // Day of week
+        "([[:digit:]]{1,2}) "     // Day
+        PREX_MONTH                // Month
+        " ([[:digit:]]{2,4}) "    // Year
+        "([[:digit:]]{2})"        // Hour
+        ":([[:digit:]]{2})"       // Minute
+        "(:([[:digit:]]{2}))?"    // Second
         " *"
         "("
-        "([+-][0-9]{4})|"            // TZ
-        "([A-Z]+)"                   // Obsolete TZ
+        "([+-][[:digit:]]{4})|"   // TZ
+        "([[:alpha:]]+)"          // Obsolete TZ
         ")"
     },
     {
@@ -148,21 +149,17 @@ static struct PrexStorage *prex(enum Prex which)
 #define CFWS FWS C FWS
       "^"
         CFWS
-        "("
-          "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)" // Day of week
-        CFWS ", "
-        ")?"
-        CFWS "([0-9]{1,2}) "              // Day
-        CFWS "(Jan|Feb|Mar|Apr|May|Jun|"  // Month
-             "Jul|Aug|Sep|Oct|Nov|Dec)"
-        CFWS "([0-9]{2,4}) "              // Year
-        CFWS "([0-9]{2})"                 // Hour
-        ":" CFWS "([0-9]{2})" CFWS        // Minute
-        "(:" CFWS "([0-9]{2}))?"          // Second
+        "(" PREX_DOW CFWS ", )?"         // Day of week
+        CFWS "([[:digit:]]{1,2}) "       // Day
+        CFWS PREX_MONTH                  // Month
+        CFWS "([[:digit:]]{2,4}) "       // Year
+        CFWS "([[:digit:]]{2})"          // Hour
+        ":" CFWS "([[:digit:]]{2})" CFWS // Minute
+        "(:" CFWS "([[:digit:]]{2}))?"   // Second
         CFWS
         "("
-        "([+-][0-9]{4})|"                 // TZ
-        "([A-Z]+)"                        // Obsolete TZ
+        "([+-][[:digit:]]{4})|"          // TZ
+        "([[:alpha:]]+)"                 // Obsolete TZ
         ")"
 #undef CFWS
 #undef C
@@ -171,16 +168,11 @@ static struct PrexStorage *prex(enum Prex which)
     {
       PREX_IMAP_DATE,
       PREX_IMAP_DATE_MATCH_MAX,
-      "( ([0-9])|([0-9]{2}))"        // Day
-      "-"
-      "(Jan|Feb|Mar|Apr|May|Jun|"    // Month
-      "Jul|Aug|Sep|Oct|Nov|Dec)"
-      "-"
-      "([0-9]{4})"                   // Year
-      " "
-      "([0-9]{2}:[0-9]{2}:[0-9]{2})" // Time
-      " "
-      "([+-][0-9]{4})"               // TZ
+      "( ([[:digit:]])|([[:digit:]]{2}))" // Day
+      "-" PREX_MONTH                      // Month
+      "-" PREX_YEAR                       // Year
+      " " PREX_TIME                       // Time
+      " ([+-][[:digit:]]{4})"             // TZ
     }
     /* clang-format on */
   };
