@@ -505,7 +505,7 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/attach \
 		  $(PWD)/test/signal $(PWD)/test/slist $(PWD)/test/string \
 		  $(PWD)/test/tags $(PWD)/test/thread $(PWD)/test/url
 
-TEST_OBJS	= test/main.o \
+TEST_OBJS	= test/main.o test/common.o \
 		  $(ACCOUNT_OBJS) \
 		  $(ADDRESS_OBJS) \
 		  $(ATTACH_OBJS) \

@@ -68,19 +68,3 @@ void file_tear_down(FILE *fp, const char *funcname)
   if (res == EOF)
     TEST_MSG("Failed to tear down test %s", funcname);
 }
-
-static const char *get_test_path(void)
-{
-  static const char *path = NULL;
-  if (!path)
-    path = mutt_str_getenv("NEOMUTT_TEST_DIR");
-  if (!path)
-    path = "";
-
-  return path;
-}
-
-void test_gen_path(char *buf, size_t buflen, const char *fmt)
-{
-  snprintf(buf, buflen, NONULL(fmt), get_test_path());
-}

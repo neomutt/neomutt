@@ -26,6 +26,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 #include "common.h"
 
 void test_mutt_file_chmod_add(void)

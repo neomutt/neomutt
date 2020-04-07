@@ -3,7 +3,7 @@
  * Common code for file tests
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,27 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEST_FILE_COMMON_H
-#define TEST_FILE_COMMON_H
+#ifndef TEST_TEST_COMMON_H
+#define TEST_TEST_COMMON_H
 
 #include "acutest.h"
 #include <stdio.h>
 #include "mutt/lib.h"
 
-extern const char *file_lines[];
+void test_gen_path(char *buf, size_t buflen, const char *fmt);
 
-FILE *file_set_up(const char *funcname);
-void file_tear_down(FILE *fp, const char *funcname);
-size_t file_num_test_lines(void);
-
-#define SET_UP() (file_set_up(__func__))
-#define TEAR_DOWN(fp) (file_tear_down((fp), __func__))
-
-struct TestValue
-{
-  char *first;
-  char *second;
-  int retval;
-};
-
-#endif /* TEST_FILE_COMMON_H */
+#endif /* TEST_TEST_COMMON_H */
