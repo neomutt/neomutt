@@ -159,9 +159,6 @@ enum HeaderField
 int HeaderPadding[HDR_ATTACH_TITLE] = { 0 };
 int MaxHeaderWidth = 0;
 
-#define HDR_XOFFSET MaxHeaderWidth
-#define W (rd->win_envelope->state.cols - MaxHeaderWidth)
-
 static const char *const Prompts[] = {
   /* L10N: Compose menu field.  May not want to translate. */
   N_("From: "),
@@ -666,13 +663,13 @@ static void draw_envelope(struct ComposeRedrawData *rd)
   if (OptNewsSend)
   {
     draw_header(rd->win_envelope, HDR_NEWSGROUPS, HDR_NEWSGROUPS);
-    mutt_paddstr(W, NONULL(e->env->newsgroups));
+    mutt_paddstr(rd->win_envelope->state.cols - MaxHeaderWidth, NONULL(e->env->newsgroups));
     draw_header(rd->win_envelope, HDR_FOLLOWUPTO, HDR_FOLLOWUPTO);
-    mutt_paddstr(W, NONULL(e->env->followup_to));
+    mutt_paddstr(rd->win_envelope->state.cols - MaxHeaderWidth, NONULL(e->env->followup_to));
     if (C_XCommentTo)
     {
       draw_header(rd->win_envelope, HDR_XCOMMENTTO, HDR_XCOMMENTTO);
-      mutt_paddstr(W, NONULL(e->env->x_comment_to));
+      mutt_paddstr(rd->win_envelope->state.cols - MaxHeaderWidth, NONULL(e->env->x_comment_to));
     }
   }
   else
@@ -684,12 +681,12 @@ static void draw_envelope(struct ComposeRedrawData *rd)
   }
 
   draw_header(rd->win_envelope, HDR_SUBJECT, HDR_SUBJECT);
-  mutt_paddstr(W, NONULL(e->env->subject));
+  mutt_paddstr(rd->win_envelope->state.cols - MaxHeaderWidth, NONULL(e->env->subject));
 
   draw_envelope_addr(HDR_REPLYTO, &e->env->reply_to, rd->win_envelope);
 
   draw_header(rd->win_envelope, HDR_FCC, HDR_FCC);
-  mutt_paddstr(W, fcc);
+  mutt_paddstr(rd->win_envelope->state.cols - MaxHeaderWidth, fcc);
 
   if (WithCrypto)
     redraw_crypt_lines(rd);
@@ -734,7 +731,7 @@ static void edit_address_list(int line, struct AddressList *al, struct MuttWindo
   /* redraw the expanded list so the user can see the result */
   buf[0] = '\0';
   mutt_addrlist_write(al, buf, sizeof(buf), true);
-  mutt_window_move(win, line, HDR_XOFFSET);
+  mutt_window_move(win, line, MaxHeaderWidth);
   mutt_paddstr(win->state.cols - MaxHeaderWidth, buf);
 }
 
@@ -1254,9 +1251,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (mutt_get_field(Prompts[HDR_NEWSGROUPS], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           mutt_str_replace(&e->env->newsgroups, buf);
-          mutt_window_move(rd->win_envelope, HDR_TO, HDR_XOFFSET);
+          mutt_window_move(rd->win_envelope, HDR_TO, MaxHeaderWidth);
           if (e->env->newsgroups)
-            mutt_paddstr(W, e->env->newsgroups);
+            mutt_paddstr(rd->win_envelope->state.cols - MaxHeaderWidth, e->env->newsgroups);
           else
             mutt_window_clrtoeol(rd->win_envelope);
         }
@@ -1272,9 +1269,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (mutt_get_field(Prompts[HDR_FOLLOWUPTO], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           mutt_str_replace(&e->env->followup_to, buf);
-          mutt_window_move(rd->win_envelope, HDR_CC, HDR_XOFFSET);
+          mutt_window_move(rd->win_envelope, HDR_CC, MaxHeaderWidth);
           if (e->env->followup_to)
-            mutt_paddstr(W, e->env->followup_to);
+            mutt_paddstr(rd->win_envelope->state.cols - MaxHeaderWidth, e->env->followup_to);
           else
             mutt_window_clrtoeol(rd->win_envelope);
         }
@@ -1290,9 +1287,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (mutt_get_field(Prompts[HDR_XCOMMENTTO], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           mutt_str_replace(&e->env->x_comment_to, buf);
-          mutt_window_move(rd->win_envelope, HDR_BCC, HDR_XOFFSET);
+          mutt_window_move(rd->win_envelope, HDR_BCC, MaxHeaderWidth);
           if (e->env->x_comment_to)
-            mutt_paddstr(W, e->env->x_comment_to);
+            mutt_paddstr(rd->win_envelope->state.cols - MaxHeaderWidth, e->env->x_comment_to);
           else
             mutt_window_clrtoeol(rd->win_envelope);
         }
@@ -1307,9 +1304,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (mutt_get_field(Prompts[HDR_SUBJECT], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           mutt_str_replace(&e->env->subject, buf);
-          mutt_window_move(rd->win_envelope, HDR_SUBJECT, HDR_XOFFSET);
+          mutt_window_move(rd->win_envelope, HDR_SUBJECT, MaxHeaderWidth);
           if (e->env->subject)
-            mutt_paddstr(W, e->env->subject);
+            mutt_paddstr(rd->win_envelope->state.cols - MaxHeaderWidth, e->env->subject);
           else
             mutt_window_clrtoeol(rd->win_envelope);
         }
@@ -1327,8 +1324,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         {
           mutt_buffer_copy(fcc, &fname);
           mutt_buffer_pretty_mailbox(fcc);
-          mutt_window_move(rd->win_envelope, HDR_FCC, HDR_XOFFSET);
-          mutt_paddstr(W, mutt_b2s(fcc));
+          mutt_window_move(rd->win_envelope, HDR_FCC, MaxHeaderWidth);
+          mutt_paddstr(rd->win_envelope->state.cols - MaxHeaderWidth, mutt_b2s(fcc));
           fcc_set = true;
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
