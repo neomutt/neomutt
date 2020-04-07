@@ -1015,7 +1015,7 @@ const char *mutt_addr_for_display(const struct Address *a)
  */
 size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display)
 {
-  if (!buf || buflen == 0 || !addr)
+  if (!buf || (buflen == 0) || !addr)
     return 0;
 
   size_t len;

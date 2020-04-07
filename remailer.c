@@ -593,7 +593,7 @@ static int mutt_dlg_mixmaster_observer(struct NotifyCallback *nc)
 /**
  * mix_make_chain - Create a Mixmaster chain
  * @param win       Window
- * @param chainhead List if chain links
+ * @param chainhead List of chain links
  * @param cols      Number of screen columns
  *
  * Ask the user to select Mixmaster hosts to create a chain.

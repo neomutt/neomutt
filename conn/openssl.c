@@ -662,9 +662,6 @@ static bool check_certificate_file(X509 *peercert)
   int pass = false;
   FILE *fp = NULL;
 
-  if (!C_CertificateFile)
-    return false;
-
   fp = mutt_file_fopen(C_CertificateFile, "rt");
   if (!fp)
     return false;

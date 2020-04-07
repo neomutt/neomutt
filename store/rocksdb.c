@@ -28,11 +28,11 @@
  */
 
 #include "config.h"
-#include <string.h>
 #include <stddef.h>
 #include <fcntl.h>
 #include <rocksdb/c.h>
 #include <rocksdb/version.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "lib.h"
 
@@ -76,7 +76,8 @@ static void *store_rocksdb_open(const char *path)
 
   /* open database and check for error in ctx->error */
   ctx->db = rocksdb_open(ctx->options, path, &ctx->err);
-  if (ctx->err) {
+  if (ctx->err)
+  {
     rocksdb_free(ctx->err);
     FREE(&ctx);
     return NULL;
@@ -96,7 +97,8 @@ static void *store_rocksdb_fetch(void *store, const char *key, size_t keylen, si
   struct RocksDB_Ctx *ctx = store;
 
   void *rv = rocksdb_get(ctx->db, ctx->read_options, key, keylen, dlen, &ctx->err);
-  if (ctx->err) {
+  if (ctx->err)
+  {
     rocksdb_free(ctx->err);
     ctx->err = NULL;
     return NULL;
@@ -116,7 +118,8 @@ static void store_rocksdb_free(void *store, void **data)
 /**
  * store_rocksdb_store - Implements StoreOps::store()
  */
-static int store_rocksdb_store(void *store, const char *key, size_t keylen, void *data, size_t dlen)
+static int store_rocksdb_store(void *store, const char *key, size_t keylen,
+                               void *data, size_t dlen)
 {
   if (!store)
     return -1;
@@ -124,7 +127,8 @@ static int store_rocksdb_store(void *store, const char *key, size_t keylen, void
   struct RocksDB_Ctx *ctx = store;
 
   rocksdb_put(ctx->db, ctx->write_options, key, keylen, data, dlen, &ctx->err);
-  if (ctx->err) {
+  if (ctx->err)
+  {
     rocksdb_free(ctx->err);
     ctx->err = NULL;
     return -1;
@@ -144,7 +148,8 @@ static int store_rocksdb_delete_record(void *store, const char *key, size_t keyl
   struct RocksDB_Ctx *ctx = store;
 
   rocksdb_delete(ctx->db, ctx->write_options, key, keylen, &ctx->err);
-  if (ctx->err) {
+  if (ctx->err)
+  {
     rocksdb_free(ctx->err);
     ctx->err = NULL;
     return -1;
@@ -178,9 +183,9 @@ static void store_rocksdb_close(void **ptr)
  */
 static const char *store_rocksdb_version(void)
 {
-  /* return sth. like "RocksDB 6.7.3" */
-  #define RDBVER(major,minor,patch) #major "." #minor "." #patch
-  return "RocksDB " RDBVER(ROCKSDB_MAJOR,ROCKSDB_MINOR,ROCKSDB_PATCH);
+/* return sth. like "RocksDB 6.7.3" */
+#define RDBVER(major, minor, patch) #major "." #minor "." #patch
+  return "RocksDB " RDBVER(ROCKSDB_MAJOR, ROCKSDB_MINOR, ROCKSDB_PATCH);
 }
 
 STORE_BACKEND_OPS(rocksdb)

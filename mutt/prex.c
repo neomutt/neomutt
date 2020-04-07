@@ -50,9 +50,9 @@ struct PrexStorage
 };
 
 #define PREX_MONTH "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"
-#define PREX_DOW   "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)"
-#define PREX_TIME  "([[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2})"
-#define PREX_YEAR  "([[:digit:]]{4})"
+#define PREX_DOW "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)"
+#define PREX_TIME "([[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2})"
+#define PREX_YEAR "([[:digit:]]{4})"
 
 /**
  * prex - Compile on demand and get data for a predefined regex

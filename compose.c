@@ -1227,6 +1227,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         update_crypt_info(rd);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+
 #ifdef USE_NNTP
       case OP_COMPOSE_EDIT_NEWSGROUPS:
         if (!news)
@@ -2273,6 +2274,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 #endif
+
 #ifdef USE_AUTOCRYPT
       case OP_COMPOSE_AUTOCRYPT_MENU:
         if (!C_Autocrypt)

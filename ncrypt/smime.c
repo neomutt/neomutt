@@ -98,7 +98,7 @@ struct SmimeCommandContext
 };
 
 char SmimePass[256];
-time_t SmimeExptime = 0; /* when does the cached passphrase expire? */
+time_t SmimeExpTime = 0; /* when does the cached passphrase expire? */
 
 static struct Buffer SmimeKeyToUse = { 0 };
 static struct Buffer SmimeCertToUse = { 0 };
@@ -181,7 +181,7 @@ static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
 void smime_class_void_passphrase(void)
 {
   memset(SmimePass, 0, sizeof(SmimePass));
-  SmimeExptime = 0;
+  SmimeExpTime = 0;
 }
 
 /**
@@ -190,7 +190,7 @@ void smime_class_void_passphrase(void)
 bool smime_class_valid_passphrase(void)
 {
   const time_t now = mutt_date_epoch();
-  if (now < SmimeExptime)
+  if (now < SmimeExpTime)
   {
     /* Use cached copy.  */
     return true;
@@ -200,11 +200,11 @@ bool smime_class_valid_passphrase(void)
 
   if (mutt_get_password(_("Enter S/MIME passphrase:"), SmimePass, sizeof(SmimePass)) == 0)
   {
-    SmimeExptime = mutt_date_add_timeout(now, C_SmimeTimeout);
+    SmimeExpTime = mutt_date_add_timeout(now, C_SmimeTimeout);
     return true;
   }
   else
-    SmimeExptime = 0;
+    SmimeExpTime = 0;
 
   return false;
 }

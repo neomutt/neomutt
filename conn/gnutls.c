@@ -227,9 +227,9 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
  */
 static int tls_compare_certificates(const gnutls_datum_t *peercert)
 {
-  gnutls_datum_t cert;
+  gnutls_datum_t cert = { 0 };
   unsigned char *ptr = NULL;
-  gnutls_datum_t b64_data;
+  gnutls_datum_t b64_data = { 0 };
   unsigned char *b64_data_data = NULL;
   struct stat filestat;
 
@@ -466,7 +466,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   time_t t;
   char datestr[30];
   char title[256];
-  gnutls_datum_t pemdata;
+  gnutls_datum_t pemdata = { 0 };
 
   if (tls_check_preauth(certdata, certstat, hostname, idx, &certerr, &savedcert) == 0)
     return 1;
