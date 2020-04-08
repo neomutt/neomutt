@@ -53,7 +53,7 @@ struct Progress
   size_t pos;
   size_t size;
   size_t inc;
-  long timestamp;
+  uint64_t timestamp;
   bool is_bytes;
 };
 

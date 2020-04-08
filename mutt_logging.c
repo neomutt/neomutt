@@ -43,7 +43,7 @@
 #include "muttlib.h"
 #include "options.h"
 
-size_t LastError = 0; ///< Time of the last error message (in milliseconds since the Unix epoch)
+uint64_t LastError = 0; ///< Time of the last error message (in milliseconds since the Unix epoch)
 
 short C_DebugLevel = 0;   ///< Config: Logging level for debug logs
 char *C_DebugFile = NULL; ///< Config: File to save debug logs
@@ -59,8 +59,8 @@ const int NumOfLogs = 5;  ///< How many log files to rotate
  */
 static void error_pause(void)
 {
-  const size_t elapsed = mutt_date_epoch_ms() - LastError;
-  const size_t sleep = C_SleepTime * S_TO_MS;
+  const uint64_t elapsed = mutt_date_epoch_ms() - LastError;
+  const uint64_t sleep = C_SleepTime * S_TO_MS;
   if ((LastError == 0) || (elapsed >= sleep))
     return;
 

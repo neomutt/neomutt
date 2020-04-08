@@ -214,7 +214,7 @@ void mutt_progress_update(struct Progress *progress, size_t pos, int percent)
   if (OptNoCurses)
     return;
 
-  const size_t now = mutt_date_epoch_ms();
+  const uint64_t now = mutt_date_epoch_ms();
 
   const bool update = (pos == 0) /* always show the first update */ ||
                       (progress_pos_needs_update(progress, pos) &&

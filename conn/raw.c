@@ -328,14 +328,13 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
  */
 int raw_socket_poll(struct Connection *conn, time_t wait_secs)
 {
-  fd_set rfds;
-  unsigned long wait_millis;
-  struct timeval tv;
-
   if (conn->fd < 0)
     return -1;
 
-  wait_millis = wait_secs * 1000UL;
+  fd_set rfds;
+  struct timeval tv;
+
+  uint64_t wait_millis = wait_secs * 1000UL;
 
   while (true)
   {
@@ -345,9 +344,9 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
     FD_ZERO(&rfds);
     FD_SET(conn->fd, &rfds);
 
-    size_t pre_t = mutt_date_epoch_ms();
+    uint64_t pre_t = mutt_date_epoch_ms();
     const int rc = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
-    size_t post_t = mutt_date_epoch_ms();
+    uint64_t post_t = mutt_date_epoch_ms();
 
     if ((rc > 0) || ((rc < 0) && (errno != EINTR)))
       return rc;
