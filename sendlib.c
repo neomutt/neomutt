@@ -2309,9 +2309,9 @@ static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *u
  * @retval  0 Success
  * @retval -1 Failure
  *
- * Note: all RFC2047 encoding should be done outside of this routine, except
- * for the "real name."  This will allow this routine to be used more than
- * once, if necessary.
+ * @note All RFC2047 encoding should be done outside of this routine, except
+ *       for the "real name."  This will allow this routine to be used more than
+ *       once, if necessary.
  *
  * Likewise, all IDN processing should happen outside of this routine.
  *

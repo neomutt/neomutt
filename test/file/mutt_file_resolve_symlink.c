@@ -25,8 +25,8 @@
 #include "acutest.h"
 #include <limits.h>
 #include "mutt/lib.h"
-#include "test_common.h"
 #include "common.h"
+#include "test_common.h"
 
 void test_mutt_file_resolve_symlink(void)
 {

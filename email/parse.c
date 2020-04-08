@@ -1569,7 +1569,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
  * @param parent info about the message/rfc822 body part
  * @retval ptr New Body containing parsed message
  *
- * NOTE: this assumes that 'parent->length' has been set!
+ * @note This assumes that 'parent->length' has been set!
  */
 struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
 {

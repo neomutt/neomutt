@@ -456,9 +456,9 @@ bail:
  * mutt_rfc3676_space_stuff - Perform RFC3676 space stuffing on an Email
  * @param e Email
  *
- * Note: we don't check the option C_TextFlowed because we want to
- * stuff based the actual content type.  The option only decides
- * whether to *set* format=flowed on new messages.
+ * @note We don't check the option C_TextFlowed because we want to stuff based
+ *       the actual content type.  The option only decides whether to *set*
+ *       format=flowed on new messages.
  */
 void mutt_rfc3676_space_stuff(struct Email *e)
 {

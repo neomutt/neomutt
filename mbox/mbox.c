@@ -341,8 +341,8 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
  * Note that this function is also called when new mail is appended to the
  * currently open folder, and NOT just when the mailbox is initially read.
  *
- * NOTE: it is assumed that the mailbox being read has been locked before this
- * routine gets called.  Strange things could happen if it's not!
+ * @note It is assumed that the mailbox being read has been locked before this
+ *       routine gets called.  Strange things could happen if it's not!
  */
 static int mbox_parse_mailbox(struct Mailbox *m)
 {

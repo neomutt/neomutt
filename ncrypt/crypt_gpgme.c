@@ -564,7 +564,7 @@ static const char *crypt_fpr_or_lkeyid(struct CryptKeyInfo *k)
  * @param flags Flags, see #KeyFlags
  * @retval ptr Flag string
  *
- * Note: The string is statically allocated.
+ * @note The string is statically allocated.
  */
 static char *crypt_key_abilities(KeyFlags flags)
 {

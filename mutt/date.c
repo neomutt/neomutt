@@ -477,7 +477,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
     if (!match)
       return -1;
     obsolete = true;
-    mutt_debug(LL_DEBUG2, "Fallback to obsolete RFC5322 dates regex");
+    mutt_debug(LL_DEBUG2, "Fallback to obsolete RFC5322 dates regex\n");
   }
 
   struct tm tm = { 0 };

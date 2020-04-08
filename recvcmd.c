@@ -341,8 +341,8 @@ static struct AttachPtr *find_common_parent(struct AttachCtx *actx, short nattac
  *
  * check whether attachment i is a parent of the attachment pointed to by cur
  *
- * Note: This and the calling procedure could be optimized quite a bit.
- * For now, it's not worth the effort.
+ * @note This and the calling procedure could be optimized quite a bit.
+ *       For now, it's not worth the effort.
  */
 static int is_parent(short i, struct AttachCtx *actx, struct Body *cur)
 {

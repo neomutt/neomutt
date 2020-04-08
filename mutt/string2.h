@@ -21,7 +21,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* NOTE: This file is called string2.h so that other files can safely
+/* @note This file is called string2.h so that other files can safely
  * #include <string.h>
  */
 

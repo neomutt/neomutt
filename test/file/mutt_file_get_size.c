@@ -24,8 +24,8 @@
 #include "config.h"
 #include "acutest.h"
 #include "mutt/lib.h"
-#include "test_common.h"
 #include "common.h"
+#include "test_common.h"
 
 void test_mutt_file_get_size(void)
 {

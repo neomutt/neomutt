@@ -443,7 +443,7 @@ static pid_t smime_invoke(FILE **fp_smime_in, FILE **fp_smime_out, FILE **fp_smi
  * @param flags Flags, see #KeyFlags
  * @retval ptr Flag string
  *
- * Note: The string is statically allocated.
+ * @note The string is statically allocated
  */
 static char *smime_key_flags(KeyFlags flags)
 {
