@@ -1328,12 +1328,12 @@ int mutt_index_menu(struct MuttWindow *dlg)
         menu->oldcurrent = -1;
 
       if (C_ArrowCursor)
-        mutt_window_move(menu->win_index, menu->current - menu->top + menu->offset, 2);
+        mutt_window_move(menu->win_index, menu->current - menu->top, 2);
       else if (C_BrailleFriendly)
-        mutt_window_move(menu->win_index, menu->current - menu->top + menu->offset, 0);
+        mutt_window_move(menu->win_index, menu->current - menu->top, 0);
       else
       {
-        mutt_window_move(menu->win_index, menu->current - menu->top + menu->offset,
+        mutt_window_move(menu->win_index, menu->current - menu->top,
                          menu->win_index->state.cols - 1);
       }
       mutt_refresh();
