@@ -1371,19 +1371,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
   mutt_buffer_reset(file);
 
-  if (mailbox)
-  {
-    examine_mailboxes(NULL, &state);
-  }
-  else
-#ifdef USE_IMAP
-      if (!state.imap_browse)
-#endif
-  {
-    if (examine_directory(NULL, &state, mutt_b2s(&LastDir), mutt_b2s(prefix)) == -1)
-      goto bail;
-  }
-
   struct MuttWindow *dlg =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -1422,7 +1409,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   menu->make_entry = folder_make_entry;
   menu->search = select_file_search;
   menu->title = title;
-  menu->data = state.entry;
   if (multiple)
     menu->tag = file_tag;
 
@@ -1433,7 +1419,23 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                                            FolderHelp);
   mutt_menu_push_current(menu);
 
+  if (mailbox)
+  {
+    examine_mailboxes(NULL, &state);
+  }
+  else
+#ifdef USE_IMAP
+      if (!state.imap_browse)
+#endif
+  {
+    // examine_directory() calls add_folder() which needs the menu
+    if (examine_directory(menu, &state, mutt_b2s(&LastDir), mutt_b2s(prefix)) == -1)
+      goto bail;
+  }
+
   init_menu(&state, menu, title, sizeof(title), mailbox);
+  // only now do we have a valid state to attach
+  menu->data = state.entry;
 
   int op;
   while (true)
