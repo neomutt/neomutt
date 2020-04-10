@@ -34,7 +34,6 @@
 #include <inttypes.h>
 #include <limits.h>
 #include <pwd.h>
-#include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>

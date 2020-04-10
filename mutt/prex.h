@@ -23,7 +23,7 @@
 #ifndef MUTT_LIB_PREX_H
 #define MUTT_LIB_PREX_H
 
-#include <regex.h>
+#include "regex3.h"
 
 /**
  * enum Prex - Predefined list of regular expressions

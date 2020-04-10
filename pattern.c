@@ -30,7 +30,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <ctype.h>
-#include <regex.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>

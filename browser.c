@@ -33,7 +33,6 @@
 #include <limits.h>
 #include <locale.h>
 #include <pwd.h>
-#include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -24,7 +24,6 @@
 #define MUTT_COLOR_H
 
 #include "config.h"
-#include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
