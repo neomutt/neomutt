@@ -23,7 +23,6 @@
 #ifndef MUTT_MUTT_PARSE_H
 #define MUTT_MUTT_PARSE_H
 
-#include <regex.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 

@@ -24,6 +24,7 @@
 #define MUTT_LIB_REGEX_H
 
 #include <stddef.h>
+#include "config.h"
 #include <regex.h>
 #include <stdbool.h>
 #include "queue.h"

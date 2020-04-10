@@ -30,7 +30,6 @@
 #include <assert.h>
 #include <ctype.h>
 #include <limits.h>
-#include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
