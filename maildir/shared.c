@@ -737,7 +737,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
     }
     struct HCacheEntry hce = mutt_hcache_fetch(hc, key, keylen, 0);
 
-    if (hce.email && (rc == 0) && (lastchanged.st_mtime <= (hce.uidvalidity / 1000)))
+    if (hce.email && (rc == 0) && (lastchanged.st_mtime <= hce.uidvalidity))
     {
       hce.email->old = p->email->old;
       hce.email->path = mutt_str_strdup(p->email->path);

@@ -225,7 +225,7 @@ struct ImapMboxData
 
   // IMAP STATUS information
   struct ListHead flags;
-  unsigned int uidvalidity;
+  uint32_t uidvalidity;
   unsigned int uid_next;
   unsigned long long modseq;
   unsigned int messages;

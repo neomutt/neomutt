@@ -77,7 +77,7 @@ char *C_HeaderCacheCompressMethod; ///< Config: (hcache) Enable generic hcache d
  */
 size_t header_size(void)
 {
-  return sizeof(int) + sizeof(size_t);
+  return sizeof(int) + sizeof(uint32_t);
 }
 
 /**
@@ -91,7 +91,7 @@ size_t header_size(void)
  * This function transforms an Email into a binary string so that it can be
  * saved to a database.
  */
-static void *dump(header_cache_t *hc, const struct Email *e, int *off, size_t uidvalidity)
+static void *dump(header_cache_t *hc, const struct Email *e, int *off, uint32_t uidvalidity)
 {
   struct Email e_dump;
   bool convert = !CharsetIsUtf8;
@@ -99,7 +99,7 @@ static void *dump(header_cache_t *hc, const struct Email *e, int *off, size_t ui
   *off = 0;
   unsigned char *d = mutt_mem_malloc(4096);
 
-  d = serial_dump_size_t((uidvalidity != 0) ? uidvalidity : mutt_date_epoch_ms(), d, off);
+  d = serial_dump_uint32_t((uidvalidity != 0) ? uidvalidity : mutt_date_epoch(), d, off);
   d = serial_dump_int(hc->crc, d, off);
 
   assert(*off == header_size());
@@ -439,7 +439,7 @@ void mutt_hcache_close(header_cache_t *hc)
  * mutt_hcache_fetch - Multiplexor for StoreOps::fetch
  */
 struct HCacheEntry mutt_hcache_fetch(header_cache_t *hc, const char *key,
-                                     size_t keylen, unsigned int uidvalidity)
+                                     size_t keylen, uint32_t uidvalidity)
 {
   struct RealKey *rk = realkey(key, keylen);
   struct HCacheEntry entry = { 0 };
@@ -455,7 +455,7 @@ struct HCacheEntry mutt_hcache_fetch(header_cache_t *hc, const char *key,
   /* restore uidvalidity and crc */
   size_t hlen = header_size();
   int off = 0;
-  serial_restore_size_t(&entry.uidvalidity, data, &off);
+  serial_restore_uint32_t(&entry.uidvalidity, data, &off);
   serial_restore_int(&entry.crc, data, &off);
   assert(off == hlen);
   if (entry.crc != hc->crc || ((uidvalidity != 0) && uidvalidity != entry.uidvalidity))
@@ -527,7 +527,7 @@ void mutt_hcache_free_raw(header_cache_t *hc, void **data)
  * mutt_hcache_store - Multiplexor for StoreOps::store
  */
 int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
-                      struct Email *e, unsigned int uidvalidity)
+                      struct Email *e, uint32_t uidvalidity)
 {
   if (!hc)
     return -1;
