@@ -27,8 +27,16 @@
  */
 
 #include <assert.h>
+#include "config.h"
+#include "logging.h"
 #include "prex.h"
 #include "memory.h"
+
+#ifdef HAVE_PCRE2
+#define PCRE2_CODE_UNIT_WIDTH 8
+#include <pcre2.h>
+#include <string.h>
+#endif
 
 /**
  * struct PrexStorage - A predefined / precompiled regex
@@ -45,7 +53,12 @@ struct PrexStorage
   enum Prex which;     ///< Regex type, e.g. #PREX_URL
   size_t nmatches;     ///< Number of regex matches
   const char *str;     ///< Regex string
+#ifdef HAVE_PCRE2
+  pcre2_code *re;
+  pcre2_match_data *mdata;
+#else
   regex_t *re;         ///< Compiled regex
+#endif
   regmatch_t *matches; ///< Resulting matches
 };
 
@@ -184,12 +197,27 @@ static struct PrexStorage *prex(enum Prex which)
   assert((which == h->which) && "Fix 'storage' array");
   if (!h->re)
   {
+#ifdef HAVE_PCRE2
+    int eno;
+    PCRE2_SIZE eoff;
+    h->re = pcre2_compile((PCRE2_SPTR8)h->str, PCRE2_ZERO_TERMINATED, 0, &eno, &eoff, NULL);
+    if (!h->re)
+    {
+      assert("Fix your RE");
+    }
+    h->mdata = pcre2_match_data_create_from_pattern(h->re, NULL);
+    uint32_t ccount;
+    pcre2_pattern_info(h->re, PCRE2_INFO_CAPTURECOUNT, &ccount);
+    assert(ccount + 1== h->nmatches && "Number of matches do not match (...)");
+    h->matches = mutt_mem_calloc(h->nmatches, sizeof(*h->matches));
+#else
     h->re = mutt_mem_calloc(1, sizeof(*h->re));
     if (regcomp(h->re, h->str, REG_EXTENDED))
     {
       assert("Fix your RE");
     }
     h->matches = mutt_mem_calloc(h->nmatches, sizeof(*h->matches));
+#endif
   }
   return h;
 }
@@ -207,11 +235,30 @@ regmatch_t *mutt_prex_capture(enum Prex which, const char *str)
     return NULL;
 
   struct PrexStorage *h = prex(which);
+#ifdef HAVE_PCRE2
+  size_t len = strlen(str);
+  int rc = pcre2_match(h->re, (PCRE2_SPTR8)str, len, 0, 0, h->mdata, NULL);
+  if (rc < 0)
+    return NULL;
+  PCRE2_SIZE *ovector = pcre2_get_ovector_pointer(h->mdata);
+  int i = 0;
+  for (; i < rc; i++)
+  {
+    h->matches[i].rm_so = ovector[i * 2];
+    h->matches[i].rm_eo = ovector[i * 2 + 1];
+  }
+  for (; i < h->nmatches; i++)
+  {
+    h->matches[i].rm_so = -1;
+    h->matches[i].rm_eo = -1;
+  }
+#else
   if (regexec(h->re, str, h->nmatches, h->matches, 0))
     return NULL;
 
   assert((h->re->re_nsub == (h->nmatches - 1)) &&
          "Regular expression and matches enum are out of sync");
+#endif
   return h->matches;
 }
 
@@ -223,8 +270,13 @@ void mutt_prex_free(void)
   for (enum Prex which = 0; which < PREX_MAX; which++)
   {
     struct PrexStorage *h = prex(which);
+#ifdef HAVE_PCRE2
+    pcre2_match_data_free(h->mdata);
+    pcre2_code_free(h->re);
+#else
     regfree(h->re);
     FREE(&h->re);
+#endif
     FREE(&h->matches);
   }
 }

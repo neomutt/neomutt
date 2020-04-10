@@ -77,6 +77,9 @@ options {
   with-idn:path             => "Location of GNU libidn"
   idn2=0                    => "Enable GNU libidn2 for internationalized domain names"
   with-idn2:path            => "Location of GNU libidn2"
+# PCRE2
+  pcre2=0                   => "Enable PCRE2 regular expressions"
+  with-pcre2:path           => "Location of PCRE2"
 # Header cache
   bdb=0                     => "Use BerkeleyDB for the header cache"
   with-bdb:path             => "Location of BerkeleyDB"
@@ -134,8 +137,8 @@ if {1} {
     autocrypt bdb coverage debug-backtrace debug-graphviz debug-notify
     debug-parse-test debug-window doc everything fmemopen full-doc gdbm gnutls
     gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua lz4
-    mixmaster nls notmuch pgp pkgconf qdbm rocksdb sasl smime sqlite ssl testing
-    tdb tokyocabinet zlib zstd
+    mixmaster nls notmuch pcre2 pgp pkgconf qdbm rocksdb sasl smime sqlite ssl
+    testing tdb tokyocabinet zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -144,8 +147,9 @@ if {1} {
   # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
-    bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua lz4 mixmaster
-    ncurses nls notmuch qdbm rocksdb sasl slang sqlite ssl tdb tokyocabinet zlib zstd
+    bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua lz4
+    mixmaster ncurses nls notmuch pcre2 qdbm rocksdb sasl slang sqlite ssl tdb
+    tokyocabinet zlib zstd
   } {
     if {[opt-val with-$opt] ne {}} {
       define want-$opt 1
@@ -900,6 +904,20 @@ if {[get-define want-idn]} {
                 Please consider using idn1 with './configure --idn'."
   }
   define-feature libidn
+}
+
+###############################################################################
+# PCRE2
+if {[get-define want-pcre2]} {
+  if {[get-define want-pkgconf]} {
+    pkgconf true libpcre2-8
+  } else {
+    set pcre2_prefix [opt-val with-pcre2 $prefix]
+    if {![check-inc-and-lib pcre2 pcre2.h pcre2_compile pcre2-8]} {
+      user-error "Unable to find PCRE2"
+    }
+  }
+  define-feature pcre2
 }
 
 ###############################################################################
