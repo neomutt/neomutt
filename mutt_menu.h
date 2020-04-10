@@ -24,11 +24,11 @@
 #define MUTT_MENU_H
 
 #include "config.h"
-#include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include "keymap.h"
+#include "mutt/regex3.h"
 
 struct NotifyCallback;
 

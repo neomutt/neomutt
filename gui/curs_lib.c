@@ -34,7 +34,6 @@
 #include <fcntl.h>
 #include <langinfo.h>
 #include <limits.h>
-#include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

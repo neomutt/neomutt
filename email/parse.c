@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <regex.h>
 #include <string.h>
 #include <time.h>
 #include "mutt/lib.h"

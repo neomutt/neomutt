@@ -24,7 +24,16 @@
 #define MUTT_LIB_REGEX_H
 
 #include <stddef.h>
+#include "config.h"
+#ifdef HAVE_PCRE2
+#include <pcre2posix.h>
+#define regcomp pcre2_regcomp
+#define regexec pcre2_regexec
+#define regfree pcre2_regfree
+#define regerror pcre2_regerror
+#else
 #include <regex.h>
+#endif
 #include <stdbool.h>
 #include "queue.h"
 

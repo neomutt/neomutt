@@ -23,7 +23,7 @@
 #ifndef MUTT_CONFIG_REGEX_H
 #define MUTT_CONFIG_REGEX_H
 
-#include <regex.h>
+#include "mutt/regex3.h"
 
 struct Buffer;
 struct ConfigSet;

@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <limits.h>
-#include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"

@@ -30,7 +30,6 @@
 #include "config.h"
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>
-#include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
