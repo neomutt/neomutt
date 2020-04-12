@@ -599,11 +599,18 @@ static int autoview_handler(struct Body *a, struct State *s)
 
     if (s->prefix)
     {
+      /* Remove ansi and formatting from autoview output in replies only.  The
+       * user may want to see the formatting in the pager, but it shouldn't be
+       * in their quoted reply text too.  */
+      struct Buffer *stripped = mutt_buffer_pool_get();
       while (fgets(buf, sizeof(buf), fp_out))
       {
+        mutt_buffer_strip_formatting(stripped, buf);
         state_puts(s, s->prefix);
-        state_puts(s, buf);
+        state_puts(s, mutt_b2s(stripped));
       }
+      mutt_buffer_pool_release(&stripped);
+
       /* check for data on stderr */
       if (fgets(buf, sizeof(buf), fp_err))
       {
