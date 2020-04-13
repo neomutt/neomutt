@@ -296,7 +296,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     hfi.mailbox = m;
     hfi.pager_progress = ExtPagerProgress;
     hfi.email = e;
-    mutt_make_string_info(buf, sizeof(buf), win_pager->state.cols,
+    mutt_make_string_info(buf, sizeof(buf), win_index->state.cols,
                           NONULL(C_PagerFormat), &hfi, MUTT_FORMAT_NO_FLAGS);
     fputs(buf, fp_out);
     fputs("\n\n", fp_out);
@@ -307,7 +307,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
   if (m->type == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message(fp_out, m, e, cmflags, chflags, win_pager->state.cols);
+  res = mutt_copy_message(fp_out, m, e, cmflags, chflags, win_index->state.cols);
 
   if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
   {
