@@ -205,6 +205,7 @@ store/gdbm.c
 store/kc.c
 store/lmdb.c
 store/qdbm.c
+store/rocksdb.c
 store/store.c
 store/tc.c
 store/tdb.c
