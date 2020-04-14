@@ -820,7 +820,7 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_error(_("Failed to parse mailto: link"));
           email_free(&e);
-          goto main_curses; // TEST25: neomutt mailto:
+          goto main_curses; // TEST25: neomutt mailto:?
         }
       }
       else
@@ -1181,6 +1181,8 @@ int main(int argc, char *argv[], char *envp[])
         account_mailbox_remove(m->account, m);
 
       mailbox_free(&m);
+      mutt_error(_("Unable to open mailbox %s"), mutt_b2s(&folder));
+      repeat_error = false;
     }
     if (Context || !explicit_folder)
     {
