@@ -154,7 +154,7 @@ static struct Email *restore(const unsigned char *d)
   bool convert = !CharsetIsUtf8;
 
   /* skip validate */
-  off += sizeof(size_t);
+  off += sizeof(uint32_t);
 
   /* skip crc */
   off += sizeof(unsigned int);
