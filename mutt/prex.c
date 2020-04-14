@@ -128,6 +128,7 @@ static struct PrexStorage *prex(enum Prex which)
       /* Spec: https://tools.ietf.org/html/rfc5322#section-3.3 */
       "^"
         "(" PREX_DOW ", )?"       // Day of week
+        " *"
         "([[:digit:]]{1,2}) "     // Day
         PREX_MONTH                // Month
         " ([[:digit:]]{2,4}) "    // Year
