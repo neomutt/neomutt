@@ -530,7 +530,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
     sscanf(s + mutt_regmatch_start(mtz), "%c%02d%02d", &direction, &zhours, &zminutes);
     zoccident = (direction == '-');
   }
-  else
+  else if (mutt_regmatch_start(mtzobs) != -1)
   {
     const struct Tz *tz =
         find_tz(s + mutt_regmatch_start(mtzobs), mutt_regmatch_len(mtzobs));
