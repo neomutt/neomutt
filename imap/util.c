@@ -197,7 +197,7 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
     unsigned long long *modseq = mutt_hcache_fetch_raw(hc, "/MODSEQ", 7, &dlen);
     if (uidvalidity)
     {
-      mdata->uidvalidity = *(unsigned int *) uidvalidity;
+      mdata->uidvalidity = *(uint32_t *) uidvalidity;
       mdata->uid_next = uidnext ? *(unsigned int *) uidnext : 0;
       mdata->modseq = modseq ? *modseq : 0;
       mutt_debug(LL_DEBUG3, "hcache uidvalidity %u, uidnext %u, modseq %llu\n",
@@ -506,7 +506,7 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
       mutt_hcache_fetch(mdata->hcache, key, mutt_str_strlen(key), mdata->uidvalidity);
   if (!hce.email && hce.uidvalidity)
   {
-    mutt_debug(LL_DEBUG3, "hcache uidvalidity mismatch: %zu\n", hce.uidvalidity);
+    mutt_debug(LL_DEBUG3, "hcache uidvalidity mismatch: %u\n", hce.uidvalidity);
   }
 
   return hce.email;

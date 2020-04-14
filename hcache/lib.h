@@ -95,9 +95,9 @@ typedef struct EmailCache header_cache_t;
  */
 struct HCacheEntry
 {
-  size_t uidvalidity;  ///< IMAP-specific UIDVALIDITY
-  unsigned int crc;    ///< CRC of Email/Body/etc structs
-  struct Email *email; ///< Retrieved email
+  uint32_t uidvalidity; ///< IMAP-specific UIDVALIDITY
+  unsigned int crc;     ///< CRC of Email/Body/etc structs
+  struct Email *email;  ///< Retrieved email
 };
 
 /**
@@ -140,7 +140,7 @@ void mutt_hcache_close(header_cache_t *hc);
  * @retval num Generic or backend-specific error code otherwise
  */
 int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
-                      struct Email *e, unsigned int uidvalidity);
+                      struct Email *e, uint32_t uidvalidity);
 
 /**
  * mutt_hcache_fetch - fetch and validate a  message's header from the cache
@@ -154,7 +154,7 @@ int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
  * @note This function performs a check on the validity of the data found by
  *       comparing it with the crc value of the header_cache_t structure.
  */
-struct HCacheEntry mutt_hcache_fetch(header_cache_t *hc, const char *key, size_t keylen, unsigned int uidvalidity);
+struct HCacheEntry mutt_hcache_fetch(header_cache_t *hc, const char *key, size_t keylen, uint32_t uidvalidity);
 
 int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
                           void *data, size_t dlen);

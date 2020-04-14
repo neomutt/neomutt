@@ -200,7 +200,8 @@ static int msg_cache_commit(struct Mailbox *m, struct Email *e)
  */
 static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *data)
 {
-  unsigned int uv, uid;
+  uint32_t uv;
+  unsigned int uid;
   struct ImapMboxData *mdata = data;
 
   if (sscanf(id, "%u-%u", &uv, &uid) != 2)
@@ -1343,7 +1344,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
         has_qresync = true;
     }
 
-    if (uidvalidity && uid_next && (*(unsigned int *) uidvalidity == mdata->uidvalidity))
+    if (uidvalidity && uid_next && (*(uint32_t *) uidvalidity == mdata->uidvalidity))
     {
       size_t dlen2 = 0;
       evalhc = true;

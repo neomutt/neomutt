@@ -863,7 +863,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
     mutt_debug(LL_DEBUG3, "Received status for an unexpected mailbox: %s\n", mailbox);
     return;
   }
-  unsigned int olduv = mdata->uidvalidity;
+  uint32_t olduv = mdata->uidvalidity;
   unsigned int oldun = mdata->uid_next;
 
   if (*s++ != '(')
