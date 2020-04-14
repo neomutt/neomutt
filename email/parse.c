@@ -898,9 +898,10 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         if (e && !e->received)
         {
           char *d = strrchr(p, ';');
+          d = mutt_str_skip_email_wsp(d + 1);
 
           if (d)
-            e->received = mutt_date_parse_date(d + 1, NULL);
+            e->received = mutt_date_parse_date(d, NULL);
         }
       }
       break;

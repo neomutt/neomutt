@@ -154,14 +154,16 @@ static struct PrexStorage *prex(enum Prex which)
         CFWS "([[:digit:]]{1,2}) "       // Day
         CFWS PREX_MONTH                  // Month
         CFWS "([[:digit:]]{2,4}) "       // Year
-        CFWS "([[:digit:]]{2})"          // Hour
+        CFWS "([[:digit:]]{1,2})"        // Hour
         ":" CFWS "([[:digit:]]{2})" CFWS // Minute
         "(:" CFWS "([[:digit:]]{2}))?"   // Second
         CFWS
         "("
         "([+-][[:digit:]]{4})|"          // TZ
         "([[:alpha:]]+)"                 // Obsolete TZ
-        ")"
+        ")?"
+        CFWS
+        "$"
 #undef CFWS
 #undef C
 #undef FWS
