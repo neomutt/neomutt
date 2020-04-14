@@ -1164,9 +1164,9 @@ msgstr "Priedas #%d pasikeitė. Atnaujinti koduotę %s?"
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "(ir dar %d)"
+msgstr[1] "(ir dar %d)"
+msgstr[2] "(ir dar %d)"
 
 #: compose.c:911
 msgid "-- Attachments"
@@ -5989,14 +5989,12 @@ msgid "view the key's user id"
 msgstr "žiūrėti rakto vartotojo id"
 
 #: opcodes.h:304
-#, fuzzy
 msgid "move the highlight to the first mailbox"
-msgstr "pasirinkti kitą pašto dėžutę"
+msgstr "pasirinkti pirmą pašto dėžutę"
 
 #: opcodes.h:305
-#, fuzzy
 msgid "move the highlight to the last mailbox"
-msgstr "pasirinkti kitą pašto dėžutę"
+msgstr "pasirinkti paskutinę pašto dėžutę"
 
 #: opcodes.h:306
 msgid "move the highlight to next mailbox"
@@ -6687,11 +6685,11 @@ msgstr "Tęsti atidėtą laišką?"
 
 #: send.c:2170
 msgid "Refusing to send an empty email"
-msgstr ""
+msgstr "Negalima siųsti tuščio laiško"
 
 #: send.c:2171
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
-msgstr ""
+msgstr "Bandykite echo | neomutt -s 'tema' adresas@example.com"
 
 #: send.c:2247
 msgid "Edit forwarded message?"
