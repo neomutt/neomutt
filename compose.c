@@ -1385,7 +1385,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
   notify_observer_add(NeoMutt->notify, mutt_dlg_compose_observer, dlg);
   dialog_push(dlg);
 
-  envelope->req_rows = calc_envelope(&redraw);
+  envelope->req_rows = calc_envelope(rd);
   mutt_window_reflow(dlg);
 
   struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
@@ -1421,7 +1421,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
     if (redraw_env)
     {
       redraw_env = false;
-      envelope->req_rows = calc_envelope(&redraw);
+      envelope->req_rows = calc_envelope(rd);
       mutt_window_reflow(dlg);
     }
 
