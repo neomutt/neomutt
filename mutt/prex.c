@@ -150,20 +150,19 @@ static struct PrexStorage *prex(enum Prex which)
 #define CFWS FWS C FWS
       "^"
         CFWS
-        "(" PREX_DOW CFWS ", )?"         // Day of week
+        "(([[:alpha:]]+)" CFWS ", *)?"   // Day of week (or whatever)
         CFWS "([[:digit:]]{1,2}) "       // Day
         CFWS PREX_MONTH                  // Month
         CFWS "([[:digit:]]{2,4}) "       // Year
         CFWS "([[:digit:]]{1,2})"        // Hour
-        ":" CFWS "([[:digit:]]{2})" CFWS // Minute
-        "(:" CFWS "([[:digit:]]{2}))?"   // Second
+        ":" CFWS "([[:digit:]]{1,2})"    // Minute
+        CFWS
+        "(:" CFWS "([[:digit:]]{1,2}))?" // Second
         CFWS
         "("
         "([+-][[:digit:]]{4})|"          // TZ
         "([[:alpha:]]+)"                 // Obsolete TZ
         ")?"
-        CFWS
-        "$"
 #undef CFWS
 #undef C
 #undef FWS
