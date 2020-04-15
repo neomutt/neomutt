@@ -1141,7 +1141,7 @@ msgstr "没有列表被定义"
 #. filename.  The filename is located last to avoid a long path hiding
 #. the error message.
 #: compose.c:715
-#, fuzzy, c-format
+#, , c-format
 msgid "Attachment #%d no longer exists: %s"
 msgstr "附件  #%d 已不存在: %s"
 
@@ -1150,7 +1150,7 @@ msgstr "附件  #%d 已不存在: %s"
 #. the attachment filename.  The filename is located last to avoid a long
 #. path hiding the prompt question.
 #: compose.c:732
-#, fuzzy, c-format
+#, , c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "附件 %s [#%d] 已修改。更新编码?"
 
@@ -1335,43 +1335,43 @@ msgid "The compression level for %s should be between %d and %d"
 msgstr "对于 %s 的压缩等级应该介于 %d 和 %d 之间"
 
 #: config/bool.c:70
-#, fuzzy, c-format
+#, , c-format
 msgid "Invalid boolean value: %s"
 msgstr "无效布尔值: %s"
 
 #: config/bool.c:131
-#, fuzzy, c-format
+#, , c-format
 msgid "Invalid boolean value: %ld"
 msgstr "无效的布尔值：%s"
 
 #: config/enum.c:62
-#, fuzzy, c-format
+#, , c-format
 msgid "Invalid enum value: %s"
 msgstr "无效的枚举值: %s"
 
 #: config/enum.c:149
-#, fuzzy, c-format
+#, , c-format
 msgid "Invalid enum value: %ld"
 msgstr "无效的枚举值: %ld"
 
 #: config/long.c:50
-#, fuzzy, c-format
+#, , c-format
 msgid "Invalid long: %s"
 msgstr "无效的长精度：%s"
 
 #: config/long.c:56 config/long.c:114 config/number.c:68 config/number.c:133
-#, fuzzy, c-format
+#, , c-format
 msgid "Option %s may not be negative"
 msgstr "不能从分页器设置或重置选项 %s"
 
 #: config/number.c:49 config/path.c:95 config/path.c:174 config/sort.c:145
 #: config/string.c:75 config/string.c:159
-#, fuzzy, c-format
+#, , c-format
 msgid "Option %s may not be empty"
 msgstr "不能从分页器设置或重置选项 %s"
 
 #: config/number.c:56
-#, fuzzy, c-format
+#, , c-format
 msgid "Invalid number: %s"
 msgstr "无效的数字: %s"
 
@@ -1381,7 +1381,7 @@ msgid "Number is too big: %s"
 msgstr "数字太大: %s"
 
 #: config/number.c:127
-#, fuzzy, c-format
+#, , c-format
 msgid "Invalid number: %ld"
 msgstr "无效数字: %ld"
 
@@ -1401,25 +1401,25 @@ msgid "No such variable: %s"
 msgstr "无这类变量: %s"
 
 #: config/set.c:133 config/set.c:820
-#, fuzzy, c-format
+#, , c-format
 msgid "Variable '%s' has an invalid type %d"
-msgstr "错误：变量'%s'对于 -d 来说无效"
+msgstr "变量'%s'有一个无效类型 %d"
 
 #: config/set.c:398 config/set.c:462 config/set.c:527 config/set.c:600
 #: config/set.c:670 config/set.c:743
-#, fuzzy, c-format
+#, , c-format
 msgid "Unknown variable '%s'"
 msgstr "未知的变量 '%s'"
 
 #: config/sort.c:192
-#, fuzzy, c-format
+#, , c-format
 msgid "Invalid sort name: %s"
-msgstr "无效的相对日期：%s"
+msgstr "无效的排序姓名：%s"
 
 #: config/sort.c:322
-#, fuzzy, c-format
+#, , c-format
 msgid "Invalid sort type: %ld"
-msgstr "无效的相对日期：%s"
+msgstr "无效的排序类型：%s"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:64
