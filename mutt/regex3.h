@@ -25,7 +25,7 @@
 
 #include <stddef.h>
 #include "config.h"
-#ifdef HAVE_PCRE2
+#if defined(HAVE_PCRE2) && defined(NEOMUTT_USE_PCRE2_FOR_EVERYTHING)
 #include <pcre2posix.h>
 #define regcomp pcre2_regcomp
 #define regexec pcre2_regexec
