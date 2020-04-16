@@ -472,7 +472,7 @@ bool mailcap_lookup(struct Body *a, char *type, size_t typelen,
    * we'll make it specifiable in .neomuttrc */
   if (!C_MailcapPath || (C_MailcapPath->count == 0))
   {
-    mutt_error(_("No mailcap path specified"));
+    mutt_error(_("Neither mailcap_path nor MAILCAPS specified"));
     return false;
   }
 
