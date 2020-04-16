@@ -26,10 +26,10 @@
  * Manage precompiled / predefined regular expressions.
  */
 
-#include <assert.h>
 #include "config.h"
-#include "logging.h"
+#include <assert.h>
 #include "prex.h"
+#include "logging.h"
 #include "memory.h"
 
 #ifdef HAVE_PCRE2
@@ -50,14 +50,14 @@
  */
 struct PrexStorage
 {
-  enum Prex which;     ///< Regex type, e.g. #PREX_URL
-  size_t nmatches;     ///< Number of regex matches
-  const char *str;     ///< Regex string
+  enum Prex which; ///< Regex type, e.g. #PREX_URL
+  size_t nmatches; ///< Number of regex matches
+  const char *str; ///< Regex string
 #ifdef HAVE_PCRE2
   pcre2_code *re;
   pcre2_match_data *mdata;
 #else
-  regex_t *re;         ///< Compiled regex
+  regex_t *re; ///< Compiled regex
 #endif
   regmatch_t *matches; ///< Resulting matches
 };
@@ -200,7 +200,7 @@ static struct PrexStorage *prex(enum Prex which)
 #ifdef HAVE_PCRE2
     int eno;
     PCRE2_SIZE eoff;
-    h->re = pcre2_compile((PCRE2_SPTR8)h->str, PCRE2_ZERO_TERMINATED, 0, &eno, &eoff, NULL);
+    h->re = pcre2_compile((PCRE2_SPTR8) h->str, PCRE2_ZERO_TERMINATED, 0, &eno, &eoff, NULL);
     if (!h->re)
     {
       assert("Fix your RE");
@@ -208,7 +208,7 @@ static struct PrexStorage *prex(enum Prex which)
     h->mdata = pcre2_match_data_create_from_pattern(h->re, NULL);
     uint32_t ccount;
     pcre2_pattern_info(h->re, PCRE2_INFO_CAPTURECOUNT, &ccount);
-    assert(ccount + 1== h->nmatches && "Number of matches do not match (...)");
+    assert(ccount + 1 == h->nmatches && "Number of matches do not match (...)");
     h->matches = mutt_mem_calloc(h->nmatches, sizeof(*h->matches));
 #else
     h->re = mutt_mem_calloc(1, sizeof(*h->re));
@@ -237,7 +237,7 @@ regmatch_t *mutt_prex_capture(enum Prex which, const char *str)
   struct PrexStorage *h = prex(which);
 #ifdef HAVE_PCRE2
   size_t len = strlen(str);
-  int rc = pcre2_match(h->re, (PCRE2_SPTR8)str, len, 0, 0, h->mdata, NULL);
+  int rc = pcre2_match(h->re, (PCRE2_SPTR8) str, len, 0, 0, h->mdata, NULL);
   if (rc < 0)
     return NULL;
   PCRE2_SIZE *ovector = pcre2_get_ovector_pointer(h->mdata);
