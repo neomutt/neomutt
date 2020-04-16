@@ -618,9 +618,9 @@ uninstall: $(UNINSTALL_TARGETS)
 # distclean
 distclean: clean
 	$(RM) $(DEPFILES) autosetup/jimsh0 config.h config.log conststrings.c \
-		contrib/Makefile docs/Makefile docs/neomutt.1 html Makefile po/Makefile \
-		test/Makefile .clang_complete
-	$(RM) *.gc?? */*.gc?? test/*/*.gc??
+		contrib/Makefile docs/Makefile docs/neomutt.1 html Makefile \
+		po/Makefile test/Makefile .clang_complete
+	$(RM) *.gc?? */*.gc?? test/*/*.gc?? *.Po
 	$(RM) lcov.info lcov
 
 @if ENABLE_COVERAGE
