@@ -185,11 +185,14 @@ struct ConfigDef MuttVars[] = {
   ** Specifies the format of the data displayed for the "$alias" menu.  The
   ** following \fCprintf(3)\fP-style sequences are available:
   ** .dl
-  ** .dt %a .dd Alias name
-  ** .dt %f .dd Flags - currently, a "d" for an alias marked for deletion
-  ** .dt %n .dd Index number
-  ** .dt %r .dd Address which alias expands to
-  ** .dt %t .dd Character which indicates if the alias is tagged for inclusion
+  ** .dt %a  .dd Alias name
+  ** .dt %f  .dd Flags - currently, a "d" for an alias marked for deletion
+  ** .dt %n  .dd Index number
+  ** .dt %r  .dd Address which alias expands to
+  ** .dt %t  .dd Character which indicates if the alias is tagged for inclusion
+  ** .dt %>X .dd right justify the rest of the string and pad with character "X"
+  ** .dt %|X .dd pad to the end of the line with character "X"
+  ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
   */
   { "allow_8bit", DT_BOOL, &C_Allow8bit, true },
@@ -592,10 +595,13 @@ struct ConfigDef MuttVars[] = {
   ** menu.  This string is similar to $$status_format, but has its own
   ** set of \fCprintf(3)\fP-like sequences:
   ** .dl
-  ** .dt %a .dd Total number of attachments
-  ** .dt %h .dd Local hostname
-  ** .dt %l .dd Approximate size (in bytes) of the current message (see $formatstrings-size)
-  ** .dt %v .dd NeoMutt version string
+  ** .dt %a  .dd Total number of attachments
+  ** .dt %h  .dd Local hostname
+  ** .dt %l  .dd Approximate size (in bytes) of the current message (see $formatstrings-size)
+  ** .dt %v  .dd NeoMutt version string
+  ** .dt %>X .dd right justify the rest of the string and pad with character "X"
+  ** .dt %|X .dd pad to the end of the line with character "X"
+  ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
   ** .pp
   ** See the text describing the $$status_format option for more
@@ -2297,10 +2303,13 @@ struct ConfigDef MuttVars[] = {
   ** chain selection screen.  The following \fCprintf(3)\fP-like sequences are
   ** supported:
   ** .dl
-  ** .dt %a .dd The remailer's e-mail address
-  ** .dt %c .dd Remailer capabilities
-  ** .dt %n .dd The running number on the menu
-  ** .dt %s .dd The remailer's short name
+  ** .dt %a  .dd The remailer's e-mail address
+  ** .dt %c  .dd Remailer capabilities
+  ** .dt %n  .dd The running number on the menu
+  ** .dt %s  .dd The remailer's short name
+  ** .dt %>X .dd right justify the rest of the string and pad with character "X"
+  ** .dt %|X .dd pad to the end of the line with character "X"
+  ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
   */
   { "mixmaster", DT_STRING|DT_COMMAND, &C_Mixmaster, IP MIXMASTER },
@@ -2660,14 +2669,14 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** The PGP command formats have their own set of \fCprintf(3)\fP-like sequences:
   ** .dl
-  ** .dt %p .dd Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty
-  **            string otherwise. Note: This may be used with a %? construct.
-  ** .dt %f .dd Expands to the name of a file containing a message.
-  ** .dt %s .dd Expands to the name of a file containing the signature part
-  ** .          of a \fCmultipart/signed\fP attachment when verifying it.
   ** .dt %a .dd The value of $$pgp_sign_as if set, otherwise the value
   **            of $$pgp_default_key.
+  ** .dt %f .dd Expands to the name of a file containing a message.
+  ** .dt %p .dd Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty
+  **            string otherwise. Note: This may be used with a %? construct.
   ** .dt %r .dd One or more key IDs (or fingerprints if available).
+  ** .dt %s .dd Expands to the name of a file containing the signature part
+  **            of a \fCmultipart/signed\fP attachment when verifying it.
   ** .de
   ** .pp
   ** For examples on how to configure these formats for the various versions
@@ -3982,15 +3991,15 @@ struct ConfigDef MuttVars[] = {
   ** .dl
   ** .dt %f .dd Expands to the name of a file containing a message.
   ** .dt %s .dd Expands to the name of a file containing the signature part
-  ** .          of a \fCmultipart/signed\fP attachment when verifying it.
+  **            of a \fCmultipart/signed\fP attachment when verifying it.
   ** .dt %k .dd The key-pair specified with $$smime_default_key
   ** .dt %i .dd Intermediate certificates
   ** .dt %c .dd One or more certificate IDs.
   ** .dt %a .dd The algorithm used for encryption.
   ** .dt %d .dd The message digest algorithm specified with $$smime_sign_digest_alg.
   ** .dt %C .dd CA location:  Depending on whether $$smime_ca_location
-  ** .          points to a directory or file, this expands to
-  ** .          "-CApath $$smime_ca_location" or "-CAfile $$smime_ca_location".
+  **            points to a directory or file, this expands to
+  **            "-CApath $$smime_ca_location" or "-CAfile $$smime_ca_location".
   ** .de
   ** .pp
   ** For examples on how to configure these formats, see the \fCsmime.rc\fP in
@@ -4964,7 +4973,7 @@ struct ConfigDef MuttVars[] = {
   { "mime_fwd",               DT_SYNONYM, NULL, IP "mime_forward",             },
   { "msg_format",             DT_SYNONYM, NULL, IP "message_format",           },
 #ifdef USE_NOTMUCH
-  { "nm_default_uri",         DT_SYNONYM, NULL, IP "nm_default_url"            },
+  { "nm_default_uri",         DT_SYNONYM, NULL, IP "nm_default_url",           },
 #endif
   { "pgp_autoencrypt",        DT_SYNONYM, NULL, IP "crypt_autoencrypt",        },
   { "pgp_autosign",           DT_SYNONYM, NULL, IP "crypt_autosign",           },

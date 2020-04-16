@@ -7821,44 +7821,51 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
 
         <table id="tab-patterns">
           <title>Pattern modifiers</title>
-          <tgroup cols="2">
+          <tgroup cols="3">
             <thead>
               <row>
                 <entry>Pattern modifier</entry>
+                <entry>Notes</entry>
                 <entry>Description</entry>
               </row>
             </thead>
             <tbody>
               <row>
                 <entry>~A</entry>
+                <entry></entry>
                 <entry>
                   all messages
                 </entry>
               </row>
               <row>
                 <entry>~b <emphasis>EXPR</emphasis></entry>
+                <entry>****</entry>
                 <entry>
                   messages which contain <emphasis>EXPR</emphasis> in the
-                  message body&#160;****)
+                  message body
                 </entry>
               </row>
               <row>
                 <entry>=b <emphasis>STRING</emphasis></entry>
+                <entry></entry>
                 <entry>
                   If IMAP is enabled, like ~b but searches for
                   <emphasis>STRING</emphasis> on the server, rather than
                   downloading each message and searching it locally.
                 </entry>
+                <entry></entry>
               </row>
               <row>
                 <entry>~B <emphasis>EXPR</emphasis></entry>
+                <entry>****</entry>
                 <entry>
                   messages which contain <emphasis>EXPR</emphasis>in the whole
-                  message&#160;****)
+                  message
                 </entry>
               </row>
               <row>
                 <entry>=B <emphasis>STRING</emphasis></entry>
+                <entry></entry>
                 <entry>
                   If IMAP is enabled, like ~B but searches for
                   <emphasis>STRING</emphasis>on the server, rather than
@@ -7867,12 +7874,14 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~c <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages carbon-copied to <emphasis>EXPR</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>%c <emphasis>GROUP</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages carbon-copied to any member of
                   <emphasis>GROUP</emphasis>
@@ -7880,12 +7889,14 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~C <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages either to: or cc: <emphasis>EXPR</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>%C <emphasis>GROUP</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages either to: or cc: to any member of
                   <emphasis>GROUP</emphasis>
@@ -7893,18 +7904,21 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~d [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry></entry>
                 <entry>
                   messages with <quote>date-sent</quote> in a Date range
                 </entry>
               </row>
               <row>
                 <entry>~D</entry>
+                <entry></entry>
                 <entry>
                   deleted messages
                 </entry>
               </row>
               <row>
                 <entry>~e <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages which contains <emphasis>EXPR</emphasis> in the
                   <quote>Sender</quote> field
@@ -7912,6 +7926,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>%e <emphasis>GROUP</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages which contain a member of <emphasis>GROUP</emphasis>
                   in the <quote>Sender</quote> field
@@ -7919,24 +7934,28 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~E</entry>
+                <entry></entry>
                 <entry>
                   expired messages
                 </entry>
               </row>
               <row>
                 <entry>~F</entry>
+                <entry></entry>
                 <entry>
                   flagged messages
                 </entry>
               </row>
               <row>
                 <entry>~f <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages originating from <emphasis>EXPR</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>%f <emphasis>GROUP</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages originating from any member of
                   <emphasis>GROUP</emphasis>
@@ -7944,25 +7963,29 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~g</entry>
+                <entry></entry>
                 <entry>
                   cryptographically signed messages
                 </entry>
               </row>
               <row>
                 <entry>~G</entry>
+                <entry></entry>
                 <entry>
                   cryptographically encrypted messages
                 </entry>
               </row>
               <row>
                 <entry>~h <emphasis>EXPR</emphasis></entry>
+                <entry>****</entry>
                 <entry>
                   messages which contain <emphasis>EXPR</emphasis>in the
-                  message header&#160;****)
+                  message header
                 </entry>
               </row>
               <row>
                 <entry>=h <emphasis>STRING</emphasis></entry>
+                <entry></entry>
                 <entry>
                   If IMAP is enabled, like ~h but searches for
                   <emphasis>STRING</emphasis>on the server, rather than
@@ -7973,6 +7996,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~H <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages with a spam attribute matching
                   <emphasis>EXPR</emphasis>
@@ -7980,6 +8004,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~i <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages which match <emphasis>EXPR</emphasis> in the
                   <quote>Message-ID</quote> field
@@ -7987,6 +8012,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~I <emphasis>QUERY</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages whose <quote>Message-ID</quote> field is included in
                   the results returned from an external search program, when the program
@@ -7997,12 +8023,14 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~k</entry>
+                <entry></entry>
                 <entry>
                   messages which contain PGP key material
                 </entry>
               </row>
               <row>
                 <entry>~L <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages either originated or received by
                   <emphasis>EXPR</emphasis>
@@ -8010,6 +8038,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>%L <emphasis>GROUP</emphasis></entry>
+                <entry></entry>
                 <entry>
                   message either originated or received by any member of
                   <emphasis>GROUP</emphasis>
@@ -8017,70 +8046,81 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~l</entry>
+                <entry></entry>
                 <entry>
                   messages addressed to a known mailing list
                 </entry>
               </row>
               <row>
                 <entry>~m [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>***</entry>
                 <entry>
                   messages with numbers in the range <emphasis>MIN</emphasis>
-                  to <emphasis>MAX</emphasis>&#160;***)
+                  to <emphasis>MAX</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>~m &lt;[<emphasis>MAX</emphasis>]</entry>
+                <entry>***</entry>
                 <entry>
-                  messages with numbers less than <emphasis>MAX</emphasis>&#160;***)
+                  messages with numbers less than <emphasis>MAX</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>~m &gt;[<emphasis>MIN</emphasis>]</entry>
+                <entry>***</entry>
                 <entry>
-                  messages with numbers greater than <emphasis>MIN</emphasis>&#160;***)
+                  messages with numbers greater than <emphasis>MIN</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>~m [<emphasis>M</emphasis>]</entry>
+                <entry>***</entry>
                 <entry>
-                  just message number <emphasis>M</emphasis>&#160;***)
+                  just message number <emphasis>M</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>~m [<emphasis>MIN</emphasis>],[<emphasis>MAX</emphasis>]</entry>
+                <entry>***</entry>
                 <entry>
                   messages with offsets (from selected message) in the range
-                  <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis>&#160;***)
+                  <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>~M <emphasis>EXPR</emphasis></entry>
+                <entry>****</entry>
                 <entry>
                    messages which contain a mime Content-Type matching
-                   <emphasis>EXPR</emphasis>&#160;****)
+                   <emphasis>EXPR</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>~n [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>*</entry>
                 <entry>
                   messages with a score in the range <emphasis>MIN</emphasis>
-                  to <emphasis>MAX</emphasis>&#160;*)
+                  to <emphasis>MAX</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>~N</entry>
+                <entry></entry>
                 <entry>
                   new messages
                 </entry>
               </row>
               <row>
                 <entry>~O</entry>
+                <entry></entry>
                 <entry>
                   old messages
                 </entry>
               </row>
               <row>
                 <entry>~p</entry>
+                <entry></entry>
                 <entry>
                   messages addressed to you (consults <link linkend="from">$from</link>,
                   <command>alternates</command>, and local account/hostname information)
@@ -8088,6 +8128,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~P</entry>
+                <entry></entry>
                 <entry>
                   messages from you (consults <link linkend="from">$from</link>,
                   <command>alternates</command>, and local account/hostname information)
@@ -8095,24 +8136,28 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~Q</entry>
+                <entry></entry>
                 <entry>
                   messages which have been replied to
                 </entry>
               </row>
               <row>
                 <entry>~r [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry></entry>
                 <entry>
                   messages with <quote>date-received</quote> in a Date range
                 </entry>
               </row>
               <row>
                 <entry>~R</entry>
+                <entry></entry>
                 <entry>
                   read messages
                 </entry>
               </row>
               <row>
                 <entry>~s <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages having <emphasis>EXPR</emphasis> in the
                   <quote>Subject</quote> field.
@@ -8120,48 +8165,56 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~S</entry>
+                <entry></entry>
                 <entry>
                   superseded messages
                 </entry>
               </row>
               <row>
                 <entry>~t <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages addressed to <emphasis>EXPR</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>~T</entry>
+                <entry></entry>
                 <entry>
                   tagged messages
                 </entry>
               </row>
               <row>
                 <entry>~u</entry>
+                <entry></entry>
                 <entry>
                   messages addressed to a subscribed mailing list
                 </entry>
               </row>
               <row>
                 <entry>~U</entry>
+                <entry></entry>
                 <entry>
                   unread messages
                 </entry>
               </row>
               <row>
                 <entry>~v</entry>
+                <entry></entry>
                 <entry>
                   messages part of a collapsed thread.
                 </entry>
               </row>
               <row>
                 <entry>~V</entry>
+                <entry></entry>
                 <entry>
                   cryptographically verified messages
                 </entry>
               </row>
               <row>
                 <entry>~x <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages which contain <emphasis>EXPR</emphasis> in the
                   <quote>References</quote> or <quote>In-Reply-To</quote> field
@@ -8169,13 +8222,14 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~X [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>*,&#160;****</entry>
                 <entry>
-                  messages with <emphasis>MIN</emphasis> to
-                  <emphasis>MAX</emphasis> attachments&#160;*)&#160;****)
+                  messages with <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> attachments
                 </entry>
               </row>
               <row>
                 <entry>~y <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages which contain <emphasis>EXPR</emphasis> in their
                   keywords
@@ -8183,19 +8237,22 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~Y <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
                 <entry>
                   messages whose tags match <emphasis>EXPR</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>~z [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>*,&#160;**</entry>
                 <entry>
                   messages with a size in the range <emphasis>MIN</emphasis> to
-                  <emphasis>MAX</emphasis>&#160;*)&#160;**)
+                  <emphasis>MAX</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>=/ <emphasis>STRING</emphasis></entry>
+                <entry></entry>
                 <entry>
                   IMAP custom server-side search for
                   <emphasis>STRING</emphasis>. Currently only defined for
@@ -8205,6 +8262,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~=</entry>
+                <entry></entry>
                 <entry>
                   duplicated messages (see
                   <link linkend="duplicate-threads">$duplicate_threads</link>)
@@ -8212,6 +8270,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~#</entry>
+                <entry></entry>
                 <entry>
                   broken threads (see
                   <link linkend="strict-threads">$strict_threads</link>)
@@ -8219,12 +8278,14 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~$</entry>
+                <entry></entry>
                 <entry>
                   unreferenced messages (requires threaded view)
                 </entry>
               </row>
               <row>
                 <entry>~(<emphasis>PATTERN</emphasis>)</entry>
+                <entry></entry>
                 <entry>
                   messages in threads containing messages matching
                   <emphasis>PATTERN</emphasis>, e.g. all threads containing
@@ -8233,6 +8294,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~&lt;(<emphasis>PATTERN</emphasis>)</entry>
+                <entry></entry>
                 <entry>
                   messages whose immediate parent matches
                   <emphasis>PATTERN</emphasis>, e.g. replies to your messages:
@@ -8241,6 +8303,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~&gt;(<emphasis>PATTERN</emphasis>)</entry>
+                <entry></entry>
                 <entry>
                   messages having an immediate child matching
                   <emphasis>PATTERN</emphasis>, e.g. messages you replied to:
