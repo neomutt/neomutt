@@ -398,8 +398,8 @@ all: $(BINFILES) $(LIBBINFILES) $(ALL_TARGETS)
 
 # compile + dependencies
 .c.o:
-	$(CC) $(CFLAGS) -MT $@ -MD -MP -MF $*.Tpo -c -o $@ $<
-	@mv $*.Tpo $*.Po
+	$(CC) $(CFLAGS) -MT $@ -MD -MP -MF $(@:.o=.Tpo) -c -o $@ $<
+	@mv $(@:.o=.Tpo) $(@:.o=.Po)
 
 $(ALLOBJS):
 
