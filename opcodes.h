@@ -37,7 +37,6 @@
 #endif
 
 #define OPS_CORE(_fmt) \
-  _fmt(OP_NULL,                           N_("null operation")) \
   _fmt(OP_ATTACH_COLLAPSE,                N_("toggle display of subparts")) \
   _fmt(OP_ATTACH_VIEW_MAILCAP,            N_("force viewing of attachment using mailcap")) \
   _fmt(OP_ATTACH_VIEW_TEXT,               N_("view attachment as text")) \
@@ -317,6 +316,7 @@
   _fmt(OP_COMPOSE_SMIME_MENU,             N_("show S/MIME options")) \
 
 #define OPS(_fmt) \
+  _fmt(OP_NULL,                           N_("null operation")) \
   OPS_AUTOCRYPT(_fmt) \
   OPS_CORE(_fmt) \
   OPS_SIDEBAR(_fmt) \
