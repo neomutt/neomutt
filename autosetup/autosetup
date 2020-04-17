@@ -204,10 +204,16 @@ proc main {argv} {
 
 	autosetup_add_dep $autosetup(autodef)
 
-	define CONFIGURE_OPTS ""
+	# Add $argv to CONFIGURE_OPTS, but ignore duplicates and quote if needed
+	set configure_opts {}
 	foreach arg $autosetup(argv) {
-		define-append CONFIGURE_OPTS [quote-if-needed $arg]
+		set quoted [quote-if-needed $arg]
+		# O(n^2), but n will be small
+		if {$quoted ni $configure_opts} {
+			lappend configure_opts $quoted
+		}
 	}
+	define CONFIGURE_OPTS [join $configure_opts]
 	define AUTOREMAKE [file-normalize $autosetup(exe)]
 	define-append AUTOREMAKE [get-define CONFIGURE_OPTS]
 
@@ -342,8 +348,8 @@ proc opt-str {names varname args} {
 	if {![info exists result]} {
 		# No user-specified value. Has options-defaults been set?
 		foreach opt $names {
-			if {[dict exists $::autosetup(options-defaults) $opt]} {
-				set result [dict get $autosetup(options-defaults) $opt]
+			if {[dict exists $::autosetup(optdefault) $opt]} {
+				set result [dict get $autosetup(optdefault) $opt]
 			}
 		}
 	}
@@ -452,8 +458,8 @@ proc options-add {opts} {
 			# String option.
 			lappend autosetup(options) $name
 
-			if {$colon eq ":"} {
-				# Was ":name=default" given?
+			if {$equal ne "="} {
+				# Was the option given as "name:value=default"?
 				# If so, set $value to the display name and $defaultvalue to the default
 				# (This is the preferred way to set a default value for a string option)
 				if {[regexp {^([^=]+)=(.*)$} $value -> value defaultvalue]} {
@@ -467,9 +473,9 @@ proc options-add {opts} {
 				set defaultvalue [dict get $autosetup(options-defaults) $name]
 				dict set autosetup(optdefault) $name $defaultvalue
 			} elseif {![info exists defaultvalue]} {
-				# For backward compatibility, if ":name" was given, use name as both
-				# the display text and the default value, but only if the user
-				# specified the option without the value
+				# No default value was given by value=default or options-defaults
+				# so use the value as the default when the plain option with no
+				# value is given (.e.g. just --opt instead of --opt=value)
 				set defaultvalue $value
 			}
 
@@ -609,12 +615,16 @@ proc options-show {what} {
 # If 'name=1' is used to make the option enabled by default, the description should reflect
 # that with text like "Disable support for ...".
 #
-# An argument option (one which takes a parameter) is of the form:
+# An argument option (one which takes a parameter) is of one of the following forms:
 #
-## name:[=]value  => "Description of this option"
+## name:value         => "Description of this option"
+## name:value=default => "Description of this option with a default value"
+## name:=value        => "Description of this option with an optional value"
 #
 # If the 'name:value' form is used, the value must be provided with the option (as '--name=myvalue').
-# If the 'name:=value' form is used, the value is optional and the given value is used as the default
+# If the 'name:value=default' form is used, the option has the given default value even if not
+# specified by the user.
+# If the 'name:=value' form is used, the value is optional and the given value is used
 # if it is not provided.
 #
 # The description may contain '@default@', in which case it will be replaced with the default
