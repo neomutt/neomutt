@@ -73,6 +73,9 @@ proc pkg-config-init {{required 1}} {
 			# XXX: It's possible that these should be set only when invoking pkg-config
 			global env
 			set env(PKG_CONFIG_DIR) ""
+			# Supposedly setting PKG_CONFIG_LIBDIR means that PKG_CONFIG_PATH is ignored,
+			# but it doesn't seem to work that way in practice
+			set env(PKG_CONFIG_PATH) ""
 			# Do we need to try /usr/local as well or instead?
 			set env(PKG_CONFIG_LIBDIR) $sysroot/usr/lib/pkgconfig:$sysroot/usr/share/pkgconfig
 			set env(PKG_CONFIG_SYSROOT_DIR) $sysroot
@@ -108,18 +111,30 @@ proc pkg-config {module args} {
 		return 0
 	}
 
-	if {[catch {exec [get-define PKG_CONFIG] --modversion "$module $args"} version]} {
+	set pkgconfig [get-define PKG_CONFIG]
+
+	set ret [catch {exec $pkgconfig --modversion "$module $args"} version]
+	configlog "$pkgconfig --modversion $module $args: $version"
+	if {$ret} {
 		msg-result "not found"
-		configlog "pkg-config --modversion $module $args: $version"
+		return 0
+	}
+	# Sometimes --modversion succeeds but because of dependencies it isn't usable
+	# This seems to show up with --cflags
+	set ret [catch {exec $pkgconfig --cflags $module} cflags]
+	if {$ret} {
+		msg-result "unusable ($version - see config.log)"
+		configlog "$pkgconfig --cflags $module"
+		configlog $cflags
 		return 0
 	}
 	msg-result $version
 	set prefix [feature-define-name $module PKG_]
 	define HAVE_${prefix}
 	define ${prefix}_VERSION $version
-	define ${prefix}_LIBS [exec pkg-config --libs-only-l $module]
-	define ${prefix}_LDFLAGS [exec pkg-config --libs-only-L $module]
-	define ${prefix}_CFLAGS [exec pkg-config --cflags $module]
+	define ${prefix}_CFLAGS $cflags
+	define ${prefix}_LIBS [exec $pkgconfig --libs-only-l $module]
+	define ${prefix}_LDFLAGS [exec $pkgconfig --libs-only-L $module]
 	return 1
 }
 
@@ -132,4 +147,21 @@ proc pkg-config {module args} {
 proc pkg-config-get {module name} {
 	set prefix [feature-define-name $module PKG_]
 	get-define ${prefix}_${name} ""
+}
+
+# @pkg-config-get-var module variable
+#
+# Return the value of the given variable from the given pkg-config module.
+# The module must already have been successfully detected with pkg-config.
+# e.g.
+#
+## if {[pkg-config harfbuzz >= 2.5]} {
+##   define harfbuzz_libdir [pkg-config-get-var harfbuzz libdir]
+## }
+#
+# Returns the empty string if the variable isn't defined.
+proc pkg-config-get-var {module variable} {
+	set pkgconfig [get-define PKG_CONFIG]
+	set prefix [feature-define-name $module HAVE_PKG_]
+	exec $pkgconfig $module --variable $variable
 }

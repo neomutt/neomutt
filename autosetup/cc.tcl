@@ -680,11 +680,11 @@ if {[get-define CC] eq ""} {
 define CPP [get-env CPP "[get-define CC] -E"]
 
 # XXX: Could avoid looking for a C++ compiler until requested
-# Note that if CXX isn't found, we just set it to "false". It might not be needed.
+# If CXX isn't found, it is set to the empty string.
 if {[env-is-set CXX]} {
 	define CXX [find-an-executable -required [get-env CXX ""]]
 } else {
-	define CXX [find-an-executable [get-define cross]c++ [get-define cross]g++ false]
+	define CXX [find-an-executable [get-define cross]c++ [get-define cross]g++]
 }
 
 # CXXFLAGS default to CFLAGS if not specified
