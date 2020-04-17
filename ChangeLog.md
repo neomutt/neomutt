@@ -1,3 +1,47 @@
+2020-04-17  Richard Russon  <rich@flatcap.org>
+* Features
+  - Fluid layout for Compose Screen, see: https://vimeo.com/407231157
+  - Trivial Database (TDB) header cache backend
+  - RocksDB header cache backend
+  - Add \<sidebar-first\> and \<sidebar-last\> functions
+* Bug Fixes
+  - add error for CLI empty emails
+  - Allow spaces and square brackets in paths
+  - browser: fix hidden mailboxes
+  - fix initial email display
+  - notmuch: fix time window search.
+  - fix resize bugs
+  - notmuch: fix entire-thread: update current email pointer
+  - sidebar: support indenting and shortening of names
+  - Handle variables inside backticks in sidebar_whitelist
+  - browser: fix mask regex error reporting
+* Translations
+  - 100.00% Lithuanian
+  - 98.88% Chinese (simplified)
+* Build
+  - Use regexes for common parsing tasks: urls, dates
+  - Add configure option `--pcre2` -- Enable PCRE2 regular expressions
+  - Add configure option `--tdb` -- Use TDB for the header cache
+  - Add configure option `--rocksdb` -- Use RocksDB for the header cache
+  - Create libstore (key/value backends)
+  - Update to latest autosetup
+  - Update to latest acutest.h
+  - Rename `doc/` directory to `docs/`
+  - make: fix location of .Po dependency files
+  - Change libcompress to be more universal
+  - Fix test fails on х32
+  - fix uidvalidity to unsigned 32-bit int
+* Code
+  - Increase test coverage
+  - Fix memory leaks
+  - Fix null checks
+* Upstream
+  - Buffer refactoring
+  - Fix use-after-free in mutt_str_replace()
+  - Clarify PGP Pseudo-header S\<id\> duration
+  - Try to respect MUTT_QUIET for IMAP contexts too
+  - Limit recurse depth when parsing mime messages
+
 2020-03-20  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - Fix COLUMNS env var
