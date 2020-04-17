@@ -1152,7 +1152,7 @@ msgstr "附件  #%d 已不存在: %s"
 #: compose.c:732
 #, , c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
-msgstr "附件 %s [#%d] 已修改。更新编码?"
+msgstr "附件 %2$s [#%1$d] 已修改。更新编码?"
 
 #: compose.c:792
 #, c-format
@@ -1342,7 +1342,7 @@ msgstr "无效布尔值: %s"
 #: config/bool.c:131
 #, , c-format
 msgid "Invalid boolean value: %ld"
-msgstr "无效的布尔值：%s"
+msgstr "无效的布尔值：%ld"
 
 #: config/enum.c:62
 #, , c-format
@@ -1419,7 +1419,7 @@ msgstr "无效的排序姓名：%s"
 #: config/sort.c:322
 #, , c-format
 msgid "Invalid sort type: %ld"
-msgstr "无效的排序类型：%s"
+msgstr "无效的排序类型：%ld"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:64
