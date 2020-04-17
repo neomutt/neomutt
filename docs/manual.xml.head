@@ -4810,7 +4810,8 @@ folder-hook work "set sort=threads"
           such as <literal>green</literal>, <literal>blue</literal>,
           or by their number in the palette,
           such as <literal>color12</literal>, <literal>color207</literal>
-          (the palette consists of 256 colors).
+          (the palette consists of the
+          <ulink url="https://web.archive.org/web/20190712111427/https://jonasjacek.github.io/colors/">256 Xterm colors</ulink>).
         </para>
         <para>
           Named colours may also be prefixed by a <emphasis>modifier</emphasis>.
