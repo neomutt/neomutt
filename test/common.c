@@ -43,18 +43,19 @@ void test_gen_path(char *buf, size_t buflen, const char *fmt)
 void test_common(void)
 {
   const char *path = get_test_dir();
+  bool success = false;
 
   if (!TEST_CHECK(path != NULL))
   {
     TEST_MSG("Environment variable '%s' isn't set\n", TEST_DIR);
-    return;
+    goto done;
   }
 
   size_t len = strlen(path);
   if (!TEST_CHECK(path[len - 1] != '/'))
   {
     TEST_MSG("Environment variable '%s' mustn't end with a '/'\n", TEST_DIR);
-    return;
+    goto done;
   }
 
   struct stat st = { 0 };
@@ -62,11 +63,16 @@ void test_common(void)
   if (!TEST_CHECK(stat(path, &st) == 0))
   {
     TEST_MSG("Test dir '%s' doesn't exist\n", path);
-    return;
+    goto done;
   }
 
   if (!TEST_CHECK(S_ISDIR(st.st_mode) == true))
   {
     TEST_MSG("Test dir '%s' isn't a directory\n", path);
+    goto done;
   }
+  success = true;
+done:
+  if (!success)
+    TEST_MSG("See: https://github.com/neomutt/neomutt-test-files#test-files\n");
 }
