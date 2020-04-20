@@ -1353,6 +1353,8 @@ enum MailboxType mx_path_probe(const char *path)
   {
     if (!(*ops)->is_local)
       continue;
+    if (!(*ops)->path_probe)
+      continue;
     rc = (*ops)->path_probe(path, &st);
     if (rc != MUTT_UNKNOWN)
       return rc;
