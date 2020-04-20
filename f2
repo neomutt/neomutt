@@ -1,0 +1,13 @@
+local path FILE|DIR
+can't change HOMEDIR
+seldom compare
+flags: must exist?  create path?
+P { desc, orig, canon } set to "./" (relative) expand when needed
+set to full path, expand path (but save) - NO ~bob!
+should P {} contain pretty?  solves freeing problem
+Local has no desc (only M)  pretty(P, folder) or HomeDir (*folder* has priority)
+M.config -> MxAPI visible need A, $folder ???
+Most M.config would be relative "$trash" what use is a config type?
+pretty/expand  local, M(net), M(local)  mx_path2_pretty()
+Config + Local?  tidy = dupe of local code?
+

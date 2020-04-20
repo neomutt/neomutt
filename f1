@@ -1,0 +1,47 @@
+C_AliasFile             alias_file               DT_PATH_FILE ~/.neomuttr           Save new aliases to this file
+C_CertificateFile       certificate_file         DT_PATH_FILE ~/.mutt_certificates  File containing trusted certificates
+C_DebugFile             debug_file               DT_PATH_FILE ~/.neomuttdebug       File to save debug logs
+C_EntropyFile           entropy_file             DT_PATH_FILE 0                     (ssl) File/device containing random data to initialise SSL
+C_HistoryFile           history_file             DT_PATH_FILE ~/.mutthistory        File to save history in
+C_Newsrc                newsrc                   DT_PATH_FILE ~/.newsrc             (nntp) File containing list of subscribed newsgroups
+C_Signature             signature                DT_PATH_FILE ~/.signature          File containing a signature to append to all mail
+C_SmimeCaLocation       smime_ca_location        DT_PATH_FILE 0                     File containing trusted certificates
+C_SslCaCertificatesFile ssl_ca_certificates_file DT_PATH_FILE 0                     File containing trusted CA certificates
+C_SslClientCert         ssl_client_cert          DT_PATH_FILE 0                     File containing client certificates
+
+C_AttachSaveDir         attach_save_dir          DT_PATH_DIR  ./                    Default directory attachments are saved
+C_AutocryptDir          autocrypt_dir            DT_PATH_DIR  ~/.mutt/autocrypt     Location of autocrypt files, including the GPG keyring and SQLite database
+C_MessageCachedir       message_cachedir         DT_PATH_DIR  0                     (imap/pop) Directory for the message cache
+C_NewsCacheDir          news_cache_dir           DT_PATH_DIR  ~/.neomutt            (nntp) Directory for cached news articles
+C_SmimeCertificates     smime_certificates       DT_PATH_DIR  0                     File containing user's public certificates
+C_SmimeKeys             smime_keys               DT_PATH_DIR  0                     File containing user's private certificates
+C_Tmpdir                tmpdir                   DT_PATH_DIR  /tmp                  Directory for temporary files
+
+C_HeaderCache           header_cache                          0                     (hcache) Directory/file for the header cache database
+
+C_Folder                folder                   DT_MAILBOX   ~/Mail                Base folder for a set of mailboxes
+C_Mbox                  mbox                     DT_MAILBOX   ~/mbox                Folder that receives read emails (see Move)
+C_Postponed             postponed                DT_MAILBOX   ~/postponed           Folder to store postponed messages
+C_Record                record                   DT_MAILBOX   ~/sent                Folder to save 'sent' messages
+C_Spoolfile             spoolfile                DT_MAILBOX   0                     Inbox
+C_Trash                 trash                    DT_MAILBOX   0                     Folder to put deleted emails
+
+globals.h:49:       HomeDir                    char *HomeDir;     ///< User's home directory
+mutt/logging.c:55:  LogFileName                char *LogFileName; ///< Log file name
+mutt_logging.c:50:  CurrentFile                char *CurrentFile; ///< The previous log file name
+
+commands.c:97:      LastSaveFolder             char LastSaveFolder[PATH_MAX] = { 0 };
+
+ncrypt/smime.c:103: SmimeKeyToUse              char SmimeKeyToUse[PATH_MAX] = { 0 };
+ncrypt/smime.c:104: SmimeCertToUse             char SmimeCertToUse[PATH_MAX];
+ncrypt/smime.c:105: SmimeIntermediateToUse     char fp_smime_intermediateToUse[PATH_MAX];
+
+char *local_pretty(struct Path *p)
+{
+  if (!p)
+    return NULL;
+
+	p->desc = mx_path2_pretty()
+	return Path.desc
+}
+

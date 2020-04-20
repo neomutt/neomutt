@@ -1,0 +1,51 @@
+## GENERAL
+
+OP_MAIN_CHANGE_FOLDER
+OP_MAIN_CHANGE_FOLDER_READONLY
+	user entry
+	matching entry
+		main_change_folder (MAILBOX)
+	else
+		main_change_folder (STRING)
+
+OP_SIDEBAR_OPEN
+OP_MAIN_NEXT_UNREAD_MAILBOX
+	direct mailbox
+	main_change_folder (MAILBOX)
+
+## NOTMUCH
+
+OP_MAIN_CHANGE_VFOLDER
+	user entry
+	matching entry
+		main_change_folder (MAILBOX)
+	else
+		main_change_folder (STRING)
+
+OP_MAIN_VFOLDER_FROM_QUERY
+OP_MAIN_VFOLDER_FROM_QUERY_READONLY
+	user entry -> generate url -> mailbox
+	main_change_folder (MAILBOX)
+
+OP_MAIN_WINDOWED_VFOLDER_BACKWARD
+OP_MAIN_WINDOWED_VFOLDER_FORWARD
+	generate url
+		why not create mailbox?
+	main_change_folder (STRING)
+
+OP_MAIN_ENTIRE_THREAD
+	email -> generate url
+		why not create mailbox?
+	main_change_folder (STRING)
+
+## NNTP
+
+OP_MAIN_CHANGE_GROUP
+OP_MAIN_CHANGE_GROUP_READONLY
+	find next new (have mailbox don't use it)
+	allow user to select mailbox
+		1) existing mailbox (subscribed)
+		   (should use Mailbox, but don't)
+		2) non-existing mailbox (unsubscribed)
+	main_change_folder (STRING)
+

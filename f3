@@ -1,0 +1,126 @@
+# ------------------------------------------------------------------------------
+mbox
+	config
+		# file: /home/user/mail/mbox
+		set folder = "~/mail"
+		named-mailboxes "My Mbox" "+mbox"
+	mailbox
+		FILE
+			desc: "My Mbox"
+			orig: "/home/user/mail/mbox" (expanded, tidied)
+			canon: "/home/user/mail/mbox" (realpath, symlinks followed)
+			pretty: "+mbox" ($folder), "~/mail/mbox" (HomeDir)
+	email
+		NONE (offset)
+
+# ------------------------------------------------------------------------------
+maildir
+	config
+		# dirs: /home/user/mail/maildir/{cur,new,tmp}
+		set folder = "~/mail"
+		named-mailboxes "My Maildir" "+home"
+	mailbox
+		DIR
+			desc: "My Maildir"
+			orig: "/home/user/mail/maildir" (expanded, tidied)
+			canon: "/home/user/mail/maildir" (realpath, symlinks followed)
+			pretty: "+maildir" ($folder), "~/mail/maildir" (HomeDir)
+	email
+		FILE
+			desc: NONE
+			orig: "/home/user/mail/maildir/cur/1575677617.R10594061336260270039.laptop:2,S"
+			canon: "1575677617.R10594061336260270039.laptop:2" (unique filename stem)
+			pretty: NONE
+		canon_fname FILE
+
+# ------------------------------------------------------------------------------
+nntp
+	config
+		set folder = "news://news.gmane.org:1234/"
+		set nntp_user = "username"
+		set nntp_pass = "secret"
+		named-mailboxes "My Nntp" "+alt.binaries.kittens"
+	mailbox
+		NET
+			desc: "My Nntp"
+			orig: "news://news.gmane.org/alt.binaries.kittens" (tidied, no user, port?)
+			canon: "news://username@news.gmane.org:1234/alt.binaries.kittens" (username, port)
+			pretty: "+alt.binaries.kittens" ($folder)
+	email
+		NONE (article number)
+	other
+		newsrc FILE
+			desc: NONE
+			orig: "/home/user/.newsrc" (from config)
+			canon: "/home/user/.newsrc" (realpath, symlinks followed)
+			pretty: NONE
+
+# ------------------------------------------------------------------------------
+imap
+	config
+		set folder = "imaps://example.com:1234/"
+		set imap_user = "username"
+		set imap_pass = "secret"
+		named-mailboxes "My Imap" "+imap"
+	mailbox
+		NET
+			desc: "My Imap"
+			orig: "imaps://example.com:1234/imap" (tidied, no user, port?)
+			canon: "imaps://username@example.com:1234/imap" (username, port)
+			pretty: "+imap" ($folder)
+	email
+		NONE (UID)
+
+# ------------------------------------------------------------------------------
+pop
+	config
+		set folder = "pops://example.com:1234/"
+		set pop_user = "username"
+		set pop_pass = "secret"
+		named-mailboxes "My Pop" "+pop"
+	mailbox
+		NET
+			desc: "My Pop"
+			orig: "pops://example.com:1234/pop" (tidied, no user, port?)
+			canon: "pops://username@example.com:1234/pop" (username, port)
+			pretty: "+pop" ($folder)
+	email
+		NONE (refno)
+
+# ------------------------------------------------------------------------------
+compressed
+	config
+		# file: /home/user/mail/compressed.gz
+		set folder = "~/mail"
+		named-mailboxes "My Compressed" "+compressed.gz"
+	mailbox
+		FILE
+			desc: "My Compressed"
+			orig: "/home/user/mail/compressed.gz" (tidied)
+			canon: "/tmp/neomutt-1234" (decompressed tmp file)
+			pretty: "+compressed.gz" ($folder), "~/mail/compressed.gz" (HomeDir)
+	email
+		NONE (offset)
+	other
+		locking FILE
+
+# ------------------------------------------------------------------------------
+notmuch
+	config
+		# dir: /home/user/mail/maildir/{cur,new,tmp}
+		# dir: /home/user/mail/.notmuch
+		set folder = "notmuch:///home/user/mail"
+		named-mailboxes "My Notmuch" "notmuch://?query=work"
+	mailbox
+		DB FILE
+			desc: "My Notmuch"
+			orig: "notmuch:///home/user/mail?query=work" (tidied db path)
+			canon: "notmuch:///home/user/mail?query=work" (realpath of database, symlinks followed)
+			pretty: "notmuch://?query=work" ($folder) (not HomeDir)
+	email
+		FILE
+			desc: NONE
+			orig: "/home/user/mail/maildir/cur/1575677617.R10594061336260270039.laptop:2,S" (within maildir)
+			canon: "1575677617.R10594061336260270039.laptop:2" (unique filename stem)
+			pretty: NONE
+

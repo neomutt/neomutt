@@ -1,0 +1,69 @@
+command_parse.c:1366:18: mutt_pretty_mailbox(buf->data, buf->dsize);
+command_parse.c:1459:20: mutt_pretty_mailbox(buf->data, buf->dsize);
+config/dump.c:38:11:void mutt_pretty_mailbox(char *buf, size_t buflen);
+config/dump.c:206:16:    mutt_pretty_mailbox(value.data, value.dsize);
+config/dump.c:228:16:    mutt_pretty_mailbox(initial.data, initial.dsize);
+copy.c:480:12:           mutt_pretty_mailbox(buf, sizeof(buf));
+enter.c:654:22:          mutt_pretty_mailbox(buf, buflen);
+imap/imap.c:1525:10:     mutt_pretty_mailbox(buf, buflen);
+init.c:1077:12:          mutt_pretty_mailbox(value.data, value.dsize);
+muttlib.c:710:8:         mutt_pretty_mailbox(buf->data, buf->dsize);
+status.c:148:14:         mutt_pretty_mailbox(tmp, sizeof(tmp));
+status.c:159:14:         mutt_pretty_mailbox(tmp, sizeof(tmp));
+
+browser.c:886:21:        mutt_buffer_pretty_mailbox(mailbox);
+browser.c:1049:19:       mutt_buffer_pretty_mailbox(path);
+commands.c:1068:15:      mutt_buffer_pretty_mailbox(buf);
+compose.c:592:19:        mutt_buffer_pretty_mailbox(pretty);
+compose.c:609:19:        mutt_buffer_pretty_mailbox(pretty);
+compose.c:1325:23:       mutt_buffer_pretty_mailbox(fcc);
+compose.c:1689:25:       mutt_buffer_pretty_mailbox(&fname);
+compose.c:2010:21:       mutt_buffer_pretty_mailbox(&fname);
+compose.c:2201:23:       mutt_buffer_pretty_mailbox(&fname);
+hook.c:725:15:           mutt_buffer_pretty_mailbox(path);
+index.c:2445:23:         mutt_buffer_pretty_mailbox(folderbuf);
+index.c:2471:25:         mutt_buffer_pretty_mailbox(folderbuf);
+mbox/mbox.c:1428:17:     mutt_buffer_pretty_mailbox(savefile);
+mutt_header.c:292:21:    mutt_buffer_pretty_mailbox(fcc);
+mutt_header.c:328:23:    mutt_buffer_pretty_mailbox(path);
+mutt_mailbox.c:251:17:   mutt_buffer_pretty_mailbox(path);
+mutt_mailbox.c:340:23:   mutt_buffer_pretty_mailbox(s);
+postpone.c:437:19:       mutt_buffer_pretty_mailbox(fcc);
+recvattach.c:305:23:     mutt_buffer_pretty_mailbox(path);
+send.c:2431:17:          mutt_buffer_pretty_mailbox(&fcc);
+
+muttlib.c:641:10:        imap_pretty_mailbox(buf, buflen, C_Folder);
+
+compose.c:581:18:        struct Buffer *pretty = NULL, *msg = NULL;
+compose.c:589:12:        if (!pretty)
+compose.c:590:9:         pretty = mutt_buffer_pool_get();
+compose.c:591:26:        mutt_buffer_strcpy(pretty, actx->idx[i]->content->filename);
+compose.c:600:76:        mutt_error(_("Attachment #%d no longer exists: %s"), i + 1, mutt_b2s(pretty));
+compose.c:606:12:        if (!pretty)
+compose.c:607:9:         pretty = mutt_buffer_pool_get();
+compose.c:608:26:        mutt_buffer_strcpy(pretty, actx->idx[i]->content->filename);
+compose.c:621:42:        i + 1, mutt_b2s(pretty));
+compose.c:634:29:        mutt_buffer_pool_release(&pretty);
+compmbox/path.c:79:50:   if (mutt_path2_abbr_folder(path->orig, folder, pretty))
+compmbox/path.c:85:4:    *pretty = mutt_str_strdup(path->orig);
+imap/path.c:206:55:      if (!mutt_path2_abbr_folder(url1->path, url2->path, pretty))
+init.c:1506:23:          struct Buffer pretty = mutt_buffer_make(256);
+init.c:1508:57:          snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty.data);
+init.c:1509:30:          mutt_buffer_dealloc(&pretty);
+init.c:1517:21:          struct Buffer pretty = mutt_buffer_make(256);
+init.c:1522:57:          snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty.data);
+init.c:1524:30:          mutt_buffer_dealloc(&pretty);
+init.c:1528:28:          mutt_buffer_dealloc(&pretty);
+maildir/path.c:166:50:   if (mutt_path2_abbr_folder(path->orig, folder, pretty))
+maildir/path.c:172:4:    *pretty = mutt_str_strdup(path->orig);
+mbox/path.c:81:50:       if (mutt_path2_abbr_folder(path->orig, folder, pretty))
+mbox/path.c:87:4:        *pretty = mutt_str_strdup(path->orig);
+mutt/path.c:218:28:      if (!path || !folder || !pretty)
+mutt/path.c:228:4:       *pretty = mutt_str_strdup(path + flen - 1);
+mutt/path.c:229:4:       *pretty[0] = '~';
+mx_path.c:250:54:        !(path->flags & MPATH_RESOLVED) || !folder || !pretty || *pretty)
+mx_path.c:257:6:         *pretty = mutt_str_strdup(path->desc);
+nntp/path.c:185:55:      if (!mutt_path2_abbr_folder(url1->path, url2->path, pretty))
+notmuch/path.c:191:20:   mutt_str_replace(pretty, mutt_b2s(&buf));
+pop/path.c:155:55:       if (!mutt_path2_abbr_folder(url1->path, url2->path, pretty))
+
