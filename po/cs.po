@@ -14,14 +14,16 @@
 # tag - značka
 # flag - příznak
 # option - volba, přepínač (?)
+# enum → výčet (?)
+# quad → přepínač (?)
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-04-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2020-04-17 11:38+0100\n"
-"PO-Revision-Date: 2018-03-06 15:18+0100\n"
-"Last-Translator: David Sterba <dsterba@suse.cz>\n"
+"PO-Revision-Date: 2020-04-20 15:18+0100\n"
+"Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -1358,91 +1360,91 @@ msgid "The compression level for %s should be between %d and %d"
 msgstr ""
 
 #: config/bool.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid boolean value: %s"
-msgstr "Chybné relativní datum: %s"
+msgstr "Chybná boolean hodnota: %s"
 
 #: config/bool.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid boolean value: %ld"
-msgstr "Chybné relativní datum: %s"
+msgstr "Chybná boolean hodnota: %s"
 
 #: config/enum.c:62
 #, fuzzy, c-format
 msgid "Invalid enum value: %s"
-msgstr "%s neplatné číslo: %s"
+msgstr "Neplatná hodnota výčtu: %s"
 
 #: config/enum.c:149
 #, fuzzy, c-format
 msgid "Invalid enum value: %ld"
-msgstr "Neplatná hodnota přepínače %s: „%ld“"
+msgstr "Neplatná hodnota výčtu: %s"
 
 #: config/long.c:50
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid long: %s"
-msgstr "Neplatný měsíc: %s"
+msgstr "Neplatné číslo: %s"
 
 #: config/long.c:56 config/long.c:114 config/number.c:68 config/number.c:133
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be negative"
-msgstr "Volba %s nemůže být nastavena z pageru"
+msgstr "Volba %s nemůže být záporná"
 
 #: config/number.c:49 config/path.c:95 config/path.c:174 config/sort.c:145
 #: config/string.c:75 config/string.c:159
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be empty"
-msgstr "Volba %s nemůže být nastavena z pageru"
+msgstr "Volba %s nemůže být prázdná"
 
 #: config/number.c:56
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid number: %s"
-msgstr "%s neplatné číslo: %s"
+msgstr "Neplatné číslo: %s"
 
 #: config/number.c:62
 #, c-format
 msgid "Number is too big: %s"
-msgstr ""
+msgstr "Číslo je příliš vysoké: %s"
 
 #: config/number.c:127
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid number: %ld"
-msgstr "%s neplatné číslo: %s"
+msgstr "Neplatné číslo: %ld"
 
 #: config/quad.c:69
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %s"
-msgstr "Chybné relativní datum: %s"
+msgstr "Neplatná hodnota přepínače: %s"
 
 #: config/quad.c:133
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %ld"
-msgstr "Neplatná hodnota přepínače %s: „%ld“"
+msgstr "Neplatná hodnota přepínače: %ld"
 
 #: config/set.c:101
 #, c-format
 msgid "No such variable: %s"
-msgstr ""
+msgstr "Proměnná „%s“ není definována"
 
 #: config/set.c:133 config/set.c:820
-#, fuzzy, c-format
+#, c-format
 msgid "Variable '%s' has an invalid type %d"
-msgstr "Chyba: pro -d je „%s“ neplatná hodnota"
+msgstr "Proměnná „%s“ nemůže být typu %d"
 
 #: config/set.c:398 config/set.c:462 config/set.c:527 config/set.c:600
 #: config/set.c:670 config/set.c:743
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown variable '%s'"
-msgstr "Proměnná %s není známa."
+msgstr "Proměnná „%s“ není známa."
 
 #: config/sort.c:192
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort name: %s"
-msgstr "Chybné relativní datum: %s"
+msgstr "Neplatné jméno řazení: %s"
 
 #: config/sort.c:322
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort type: %ld"
-msgstr "Chybné relativní datum: %s"
+msgstr "Neplatný typ řazení: %s"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:64
@@ -3103,9 +3105,9 @@ msgid "%s: no such function"
 msgstr "funkce %s není známa"
 
 #: keymap.c:1625
-#, fuzzy, c-format
+#, c-format
 msgid "Enter keys (%s to abort): "
-msgstr "Zadejte klávesy (nebo stiskněte ^G pro zrušení): "
+msgstr "Zadejte klávesy (nebo stiskněte %s pro zrušení): "
 
 #: keymap.c:1632
 #, c-format
@@ -6005,14 +6007,12 @@ msgid "view the key's user id"
 msgstr "zobrazit uživatelské ID klíče"
 
 #: opcodes.h:304
-#, fuzzy
 msgid "move the highlight to the first mailbox"
-msgstr "přesunout zvýraznění na další schránku"
+msgstr "přesunout zvýraznění na první schránku"
 
 #: opcodes.h:305
-#, fuzzy
 msgid "move the highlight to the last mailbox"
-msgstr "přesunout zvýraznění na další schránku"
+msgstr "přesunout zvýraznění na poslední schránku"
 
 #: opcodes.h:306
 msgid "move the highlight to next mailbox"
