@@ -143,7 +143,28 @@ static struct UrlTest test[] = {
       0,
       "[GMail]/Sent messages"
     }
-  }
+  },
+  {
+    /* Invalid fragment (#) character, see also
+     * https://github.com/neomutt/neomutt/issues/2276 */
+    "mailto:a@b?subject=#",
+    false,
+  },
+  {
+    /* Correctly escaped fragment (#) chracter, see also
+     * https://github.com/neomutt/neomutt/issues/2276 */
+    "mailto:a@b?subject=%23",
+    true,
+    {
+      U_MAILTO,
+      NULL,
+      NULL,
+      NULL,
+      0,
+      "a@b"
+    },
+    "subject|#|"
+  },
 };
 // clang-format on
 
