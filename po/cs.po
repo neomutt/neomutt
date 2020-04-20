@@ -1357,7 +1357,7 @@ msgstr "Je aktivní PGP, zrušit jej a pokračovat?"
 #: compress/lz4.c:61 compress/zlib.c:62 compress/zstd.c:76
 #, c-format
 msgid "The compression level for %s should be between %d and %d"
-msgstr ""
+msgstr "Úroveň komprese pro %s by měla být mezi %d a %d"
 
 #: config/bool.c:70
 #, c-format
@@ -1367,7 +1367,7 @@ msgstr "Chybná boolean hodnota: %s"
 #: config/bool.c:131
 #, c-format
 msgid "Invalid boolean value: %ld"
-msgstr "Chybná boolean hodnota: %s"
+msgstr "Chybná boolean hodnota: %ld"
 
 #: config/enum.c:62
 #, fuzzy, c-format
@@ -1444,7 +1444,7 @@ msgstr "Neplatné jméno řazení: %s"
 #: config/sort.c:322
 #, c-format
 msgid "Invalid sort type: %ld"
-msgstr "Neplatný typ řazení: %s"
+msgstr "Neplatný typ řazení: %ld"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:64
@@ -1476,7 +1476,7 @@ msgstr "Příkaz vrátil prázdný řetězec"
 #: conn/connaccount.c:199
 #, c-format
 msgid "OAUTH token is too big: %ld"
-msgstr ""
+msgstr "OAUTH token je příliš dlouhý: %ld"
 
 #: conn/gnutls.c:125 conn/gnutls.c:622 conn/gnutls.c:631
 msgid "Unable to get certificate from peer"
@@ -3065,12 +3065,12 @@ msgstr "Detekována smyčka v makru"
 
 #: keymap.c:831
 msgid "Abort key is not set, defaulting to Ctrl-G"
-msgstr ""
+msgstr "Klávesová zkratka pro přerušení není nastavena, pokračuji s výchozí Ctrl-G"
 
 #: keymap.c:838
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
-msgstr ""
+msgstr "Zadaná klávesová zkraktka pro přerušení (%s) bude zkrácena na první klávesu"
 
 #: keymap.c:1105 keymap.c:1140
 msgid "Key is not bound"
@@ -6696,19 +6696,20 @@ msgstr "Nelze odložit.  $postponed není nastaveno"
 
 #: send.c:1824 send.c:1840
 msgid "Error encrypting message. Check your crypt settings."
-msgstr ""
+msgstr "Chyba při rozšifrovávání zprávy. Zkontrolujte své nastavení šífrování."
 
 #: send.c:1935
 msgid "Recall postponed message?"
 msgstr "Vrátit se k odloženým zprávám?"
 
 #: send.c:2170
+#, fuzzy
 msgid "Refusing to send an empty email"
-msgstr ""
+msgstr "Odmítám poslat prázdnou zprávu"
 
 #: send.c:2171
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
-msgstr ""
+msgstr "Zkuste: echo | neomutt -s 'subject' user@example.com"
 
 #: send.c:2247
 msgid "Edit forwarded message?"
