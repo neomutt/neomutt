@@ -11,11 +11,11 @@ task:
     PKG_COMMON:
       cyrus-sasl db5 docbook-xsl gdbm gettext-tools git gpgme iconv jimtcl
       kyotocabinet libgpg-error libidn2 liblz4 libxslt lmdb lua53 lynx notmuch
-      pkgconf qdbm rocksdb tdb tokyocabinet urlview zstd
+      pcre2 qdbm rocksdb tdb tokyocabinet urlview zstd
     CONFIGURE_COMMON:
       --autocrypt --bdb --disable-idn --disable-inotify --fmemopen --full-doc
       --gdbm --gpgme --gss --homespool --idn2 --kyotocabinet --lmdb --locales-fix
-      --lua --lz4 --mixmaster --notmuch --pkgconf --qdbm --rocksdb --sasl --tdb
+      --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb
       --tokyocabinet --with-domain=example.com --with-lock=flock --zlib --zstd
   matrix:
     - name: FreeBSD / Test
@@ -62,3 +62,9 @@ task:
       configure_script: ./configure ${CONFIGURE_COMMON} --with-ui=slang
       build_script: make
       version_script: ./neomutt -v
+
+    - name: FreeBSD / pkgconf
+      install_script:
+        - ${PKG_UPDATE}
+        - ${PKG_INSTALL} ${PKG_COMMON} pkgconf
+      configure_script: ./configure ${CONFIGURE_COMMON} --pkgconf
