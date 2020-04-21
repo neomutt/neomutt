@@ -1058,7 +1058,7 @@ if {[get-define want-tdb]} {
     pkgconf true tdb
     define-feature tdb
   } else {
-    cc-with {-includes sys/stat.h} {
+    cc-with {-includes {sys/stat.h stddef.h} } {
       if {![check-inc-and-lib tdb [opt-val with-tdb $prefix] \
                               tdb.h tdb_close tdb]} {
         user-error "Unable to find TDB"
