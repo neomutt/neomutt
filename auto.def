@@ -912,9 +912,11 @@ if {[get-define want-pcre2]} {
   if {[get-define want-pkgconf]} {
     pkgconf true libpcre2-8
   } else {
-    set pcre2_prefix [opt-val with-pcre2 $prefix]
-    if {![check-inc-and-lib pcre2 pcre2.h pcre2_compile pcre2-8]} {
-      user-error "Unable to find PCRE2"
+    cc-with {-cflags -DPCRE2_CODE_UNIT_WIDTH=8} {
+      if {![check-inc-and-lib pcre2 [opt-val with-pcre2 $prefix] \
+                              pcre2.h pcre2_compile_8 pcre2-8]} {
+        user-error "Unable to find PCRE2"
+      }
     }
   }
   define-feature pcre2
