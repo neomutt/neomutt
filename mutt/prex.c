@@ -36,6 +36,19 @@
 #define PCRE2_CODE_UNIT_WIDTH 8
 #include <pcre2.h>
 #include <string.h>
+/**
+ * pcre2_has_unicode - Does pcre2 support Unicode?
+ * @retval bool true, if it does
+ */
+static bool pcre2_has_unicode(void)
+{
+  static uint32_t checked = -1;
+  if (checked == -1)
+  {
+    pcre2_config(PCRE2_CONFIG_UNICODE, &checked);
+  }
+  return checked;
+}
 #endif
 
 /**
@@ -83,7 +96,11 @@ static struct PrexStorage *prex(enum Prex which)
       PREX_URL,
       PREX_URL_MATCH_MAX,
       /* Spec: https://tools.ietf.org/html/rfc3986#section-3 */
+#ifdef HAVE_PCRE2
+#define UNR_PCTENC_SUBDEL "][\\p{L}\\p{N}._~%!$&'()*+,;="
+#else
 #define UNR_PCTENC_SUBDEL "][[:alnum:]._~%!$&'()*+,;="
+#endif
 #define PATH ":@/ "
       "^([[:alpha:]][-+.[:alnum:]]+):"             // . scheme
       "("                                          // . rest
@@ -97,7 +114,7 @@ static struct PrexStorage *prex(enum Prex which)
             "("                                    // . . . . host
               "([" UNR_PCTENC_SUBDEL "-]*)"        // . . . . . host name
               "|"
-              "(\\[[[:alnum:]:.]+\\])"             // . . . . . IPv4 or IPv6
+              "(\\[[[:xdigit:]:.]+\\])"            // . . . . . IPv4 or IPv6
             ")"
             "(:([[:digit:]]+))?"                   // . . . . port
             "(/([" UNR_PCTENC_SUBDEL PATH "-]*))?" // . . . . path
@@ -198,9 +215,11 @@ static struct PrexStorage *prex(enum Prex which)
   if (!h->re)
   {
 #ifdef HAVE_PCRE2
+    uint32_t opt = pcre2_has_unicode() ? PCRE2_UTF : 0;
     int eno;
     PCRE2_SIZE eoff;
-    h->re = pcre2_compile((PCRE2_SPTR8) h->str, PCRE2_ZERO_TERMINATED, 0, &eno, &eoff, NULL);
+    h->re = pcre2_compile((PCRE2_SPTR8) h->str, PCRE2_ZERO_TERMINATED, opt,
+                          &eno, &eoff, NULL);
     if (!h->re)
     {
       assert("Fix your RE");
@@ -239,7 +258,12 @@ regmatch_t *mutt_prex_capture(enum Prex which, const char *str)
   size_t len = strlen(str);
   int rc = pcre2_match(h->re, (PCRE2_SPTR8) str, len, 0, 0, h->mdata, NULL);
   if (rc < 0)
+  {
+    PCRE2_UCHAR errmsg[1024];
+    pcre2_get_error_message(rc, errmsg, sizeof(errmsg));
+    mutt_debug(LL_DEBUG2, "pcre2_match - <%s> -> <%s> =  %s\n", h->str, str, errmsg);
     return NULL;
+  }
   PCRE2_SIZE *ovector = pcre2_get_ovector_pointer(h->mdata);
   int i = 0;
   for (; i < rc; i++)

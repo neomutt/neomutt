@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <locale.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
@@ -165,6 +166,19 @@ static struct UrlTest test[] = {
     },
     "subject|#|"
   },
+  {
+    /* UTF-8 mailbox name */
+    "imaps://foobar@gmail.com@imap.gmail.com/Отправленные письма",
+    true,
+    {
+      U_IMAPS,
+      "foobar@gmail.com",
+      NULL,
+      "imap.gmail.com",
+      0,
+      "Отправленные письма"
+    }
+  }
 };
 // clang-format on
 
@@ -205,6 +219,9 @@ void check_query_string(const char *exp, const struct UrlQueryList *act)
 
 void test_url_parse(void)
 {
+  // let's pick a utf-8 locale, since we're also parsing utf-8 text */
+  setlocale(LC_ALL, "en_US.UTF-8");
+
   // struct Url *url_parse(const char *src);
 
   {
