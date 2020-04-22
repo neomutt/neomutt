@@ -178,6 +178,15 @@ static struct UrlTest test[] = {
       0,
       "Отправленные письма"
     }
+  },
+  {
+    /* Notmuch queries */
+    "notmuch://?query=folder:\"[Gmail]/Sent Mail\"",
+    true,
+    {
+      U_NOTMUCH
+    },
+    "query|folder:\"[Gmail]/Sent Mail\"|"
   }
 };
 // clang-format on
