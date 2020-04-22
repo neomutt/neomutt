@@ -53,6 +53,10 @@
 #ifdef USE_SSL_GNUTLS
 #include <gnutls/gnutls.h>
 #endif
+#ifdef HAVE_PCRE2
+#define PCRE2_CODE_UNIT_WIDTH 8
+#include <pcre2.h>
+#endif
 
 /* #include "muttlib.h" */
 const char *mutt_make_version(void);
@@ -289,10 +293,16 @@ static struct CompileOptions comp_opts[] = {
 #ifdef USE_DEBUG_PARSE_TEST
   { "parse-test", 2 },
 #endif
+#ifdef HAVE_PCRE2
+  { "pcre2", 1 },
+#endif
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
   { "pgp", 1 },
 #else
   { "pgp", 0 },
+#endif
+#ifndef HAVE_PCRE2
+  { "regex", 1 },
 #endif
 #ifdef USE_SASL
   { "sasl", 1 },
@@ -486,6 +496,14 @@ void print_version(FILE *fp)
 #ifdef HAVE_NOTMUCH
   fprintf(fp, "\nlibnotmuch: %d.%d.%d", LIBNOTMUCH_MAJOR_VERSION,
           LIBNOTMUCH_MINOR_VERSION, LIBNOTMUCH_MICRO_VERSION);
+#endif
+
+#ifdef HAVE_PCRE2
+  {
+    char version[24];
+    pcre2_config(PCRE2_CONFIG_VERSION, version);
+    fprintf(fp, "\nPCRE2: %s", version);
+  }
 #endif
 
 #ifdef USE_HCACHE
