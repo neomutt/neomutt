@@ -124,7 +124,8 @@ static struct PrexStorage *prex(enum Prex which)
             "[" UNR_PCTENC_SUBDEL PATH "-]*"       // . . . . path
           ")"
         ")"
-        "(\\?([" UNR_PCTENC_SUBDEL PATH "?-]*))?"  // . . query + ' ' and '?'
+        // Should be: "(\\?([" UNR_PCTENC_SUBDEL PATH "?-]*))?"
+        "(\\?([^#]*))?"                            // . . query
       ")$"
 #undef PATH
 #undef UNR_PCTENC_SUBDEL
@@ -132,8 +133,8 @@ static struct PrexStorage *prex(enum Prex which)
     {
       PREX_URL_QUERY_KEY_VAL,
       PREX_URL_QUERY_KEY_VAL_MATCH_MAX,
-#define QUERY_PART "-[:alnum:]._~%!$'()*+,;:@/"
-      "([" QUERY_PART "]+)=([" QUERY_PART " ]+)"   // query + ' '
+#define QUERY_PART "^&=" // Should be: "-[:alnum:]._~%!$'()*+,;:@/"
+      "([" QUERY_PART "]+)=([" QUERY_PART "]+)"   // query + ' '
 #undef QUERY_PART
     },
     {
