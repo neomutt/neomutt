@@ -877,12 +877,11 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
  * imap_is_prefix - Check if folder matches the beginning of mbox
  * @param folder Folder
  * @param mbox   Mailbox path
- * @param plen   Prefix length
- * @retval true If folder is the prefix of mbox
+ * @retval num Length of the prefix
  */
-static bool imap_is_prefix(const char *folder, const char *mbox, size_t *plen)
+static int imap_is_prefix(const char *folder, const char *mbox)
 {
-  bool rc = false;
+  int plen = 0;
 
   struct Url *url_m = url_parse(mbox);
   struct Url *url_f = url_parse(folder);
@@ -903,15 +902,113 @@ static bool imap_is_prefix(const char *folder, const char *mbox, size_t *plen)
   if (mutt_str_strncmp(url_m->path, url_f->path, flen) != 0)
     goto done;
 
-  if (url_m->user && !url_f->user)
-    *plen += mutt_str_strlen(url_m->user) + 1;
-  rc = true;
+  plen = strlen(mbox) - mlen + flen;
 
 done:
   url_free(&url_m);
   url_free(&url_f);
 
-  return rc;
+  return plen;
+}
+
+/**
+ * abbrev_folder - Abbreviate a Mailbox path using a folder
+ * @param mbox   Mailbox path to shorten
+ * @param folder Folder path to use
+ * @param type   Mailbox type
+ * @retval ptr Pointer into the mbox param
+ */
+static const char *abbrev_folder(const char *mbox, const char *folder, enum MailboxType type)
+{
+  if (!mbox || !folder)
+    return NULL;
+
+  if (type == MUTT_IMAP)
+  {
+    int prefix = imap_is_prefix(folder, mbox);
+    if (prefix == 0)
+      return NULL;
+    return mbox + prefix;
+  }
+
+  if (!C_SidebarDelimChars)
+    return NULL;
+
+  size_t flen = mutt_str_strlen(folder);
+  if (flen == 0)
+    return NULL;
+  if (strchr(C_SidebarDelimChars, folder[flen - 1])) // folder ends with a delimiter
+    flen--;
+
+  size_t mlen = mutt_str_strlen(mbox);
+  if (mlen <= flen)
+    return NULL;
+
+  if (mutt_str_strncmp(folder, mbox, flen) != 0)
+    return NULL;
+
+  // After the match, check that mbox has a delimiter
+  if (!strchr(C_SidebarDelimChars, mbox[flen]))
+    return NULL;
+
+  return mbox + flen + 1;
+}
+
+/**
+ * abbrev_url - Abbreviate a url-style Mailbox path
+ * @param mbox Mailbox path to shorten
+ * @param type Mailbox type
+ *
+ * Use heuristics to shorten a non-local Mailbox path.
+ * Strip the host part (or database part for Notmuch).
+ *
+ * e.g.
+ * - `imap://user@host.com/apple/banana` becomes `apple/banana`
+ * - `notmuch:///home/user/db?query=hello` becomes `query=hello`
+ */
+static const char *abbrev_url(const char *mbox, enum MailboxType type)
+{
+  /* This is large enough to skip `notmuch://`,
+   * but not so large that it will go past the host part. */
+  const int scheme_len = 10;
+
+  size_t len = mutt_str_strlen(mbox);
+  if ((len < scheme_len) || ((type != MUTT_NNTP) && (type != MUTT_IMAP) &&
+                             (type != MUTT_NOTMUCH) && (type != MUTT_POP)))
+  {
+    return mbox;
+  }
+
+  const char split = (type == MUTT_NOTMUCH) ? '?' : '/';
+
+  // Skip over the scheme, e.g. `imaps://`, `notmuch://`
+  const char *last = strchr(mbox + scheme_len, split);
+  if (last)
+    mbox = last + 1;
+  return mbox;
+}
+
+/**
+ * calc_path_depth - Calculate the depth of a Mailbox path
+ * @param[in]  mbox      Mailbox path to examine
+ * @param[in]  delims    Delimiter characters
+ * @param[out] last_part Last path component
+ */
+static int calc_path_depth(const char *mbox, const char *delims, const char **last_part)
+{
+  if (!mbox || !delims || !last_part)
+    return 0;
+
+  int depth = 0;
+  const char *match = NULL;
+  while ((match = strpbrk(mbox, delims)))
+  {
+    depth++;
+    mbox = match + 1;
+  }
+
+  *last_part = mbox;
+  return depth;
 }
 
 /**
@@ -944,6 +1041,8 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 
   int w = MIN(num_cols, (C_SidebarWidth - div_width));
   int row = 0;
+  const char *display = NULL;
+  struct Buffer result = mutt_buffer_make(256);
   for (int entryidx = TopIndex; (entryidx < EntryCount) && (row < num_rows); entryidx++)
   {
     entry = Entries[entryidx];
@@ -992,95 +1091,41 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
       m->msg_flagged = Context->mailbox->msg_flagged;
     }
 
-    /* compute length of C_Folder without trailing separator */
-    size_t maildirlen = mutt_str_strlen(C_Folder);
-    if (maildirlen && C_SidebarDelimChars &&
-        strchr(C_SidebarDelimChars, C_Folder[maildirlen - 1]))
-    {
-      maildirlen--;
-    }
+    display = m->name;
+    if (!display)
+      display = mailbox_path(m);
 
-    /* check whether C_Folder is a prefix of the current folder's path */
-    bool maildir_is_prefix = false;
-    if (m->type == MUTT_IMAP)
-    {
-      maildir_is_prefix = imap_is_prefix(C_Folder, mailbox_path(m), &maildirlen);
-    }
-    else
-    {
-      if ((mutt_buffer_len(&m->pathbuf) > maildirlen) &&
-          (mutt_str_strncmp(C_Folder, mailbox_path(m), maildirlen) == 0) && C_SidebarDelimChars &&
-          strchr(C_SidebarDelimChars, mailbox_path(m)[maildirlen]))
-      {
-        maildir_is_prefix = true;
-      }
-    }
+    const char *abbr = m->name;
+    if (!abbr)
+      abbr = abbrev_folder(display, C_Folder, m->type);
+    if (!abbr)
+      abbr = abbrev_url(display, m->type);
 
-    if (m->name)
-      maildir_is_prefix = false;
-
-    /* calculate depth of current folder and generate its display name with indented spaces */
-    int sidebar_folder_depth = 0;
-    const char *sidebar_folder_name = m->name ? m->name : mailbox_path(m);
-    struct Buffer *short_folder_name = NULL;
+    const char *last_part = abbr;
+    int depth = calc_path_depth(abbr, C_SidebarDelimChars, &last_part);
 
     if (C_SidebarShortPath)
-    {
-      /* disregard a trailing separator, so strlen() - 2 */
-      for (int i = mutt_str_strlen(sidebar_folder_name) - 2; i >= 0; i--)
-      {
-        if (C_SidebarDelimChars && strchr(C_SidebarDelimChars, sidebar_folder_name[i]))
-        {
-          sidebar_folder_name += (i + 1);
-          break;
-        }
-      }
-    }
-    else if ((C_SidebarComponentDepth > 0) && C_SidebarDelimChars)
-    {
-      sidebar_folder_name += maildir_is_prefix * (maildirlen + 1);
-      for (int i = 0; i < C_SidebarComponentDepth; i++)
-      {
-        char *chars_after_delim = strpbrk(sidebar_folder_name, C_SidebarDelimChars);
-        if (!chars_after_delim)
-          break;
+      display = last_part;
 
-        sidebar_folder_name = chars_after_delim + 1;
-      }
-    }
-    else
-      sidebar_folder_name += maildir_is_prefix * (maildirlen + 1);
+    mutt_buffer_reset(&result);
 
-    if ((m->name || maildir_is_prefix) && C_SidebarFolderIndent)
+    if (C_SidebarFolderIndent)
     {
-      int lastsep = 0;
-      const char *tmp_folder_name = m->name ? m->name : mailbox_path(m) + maildirlen + 1;
-      int tmplen = (int) mutt_str_strlen(tmp_folder_name) - 1;
-      for (int i = 0; i < tmplen; i++)
-      {
-        if (C_SidebarDelimChars && strchr(C_SidebarDelimChars, tmp_folder_name[i]))
-        {
-          sidebar_folder_depth++;
-          lastsep = i + 1;
-        }
-      }
-      if (sidebar_folder_depth > 0)
-      {
-        if (C_SidebarShortPath)
-          tmp_folder_name += lastsep; /* basename */
-        short_folder_name = mutt_buffer_pool_get();
-        for (int i = 0; i < sidebar_folder_depth; i++)
-          mutt_buffer_addstr(short_folder_name, NONULL(C_SidebarIndentString));
-        mutt_buffer_addstr(short_folder_name, tmp_folder_name);
-        sidebar_folder_name = mutt_b2s(short_folder_name);
-      }
+      if (C_SidebarComponentDepth > 0)
+        depth -= C_SidebarComponentDepth;
+
+      for (int i = 0; i < depth; i++)
+        mutt_buffer_addstr(&result, C_SidebarIndentString);
     }
+
+    mutt_buffer_addstr(&result, display);
+
     char str[256];
-    make_sidebar_entry(str, sizeof(str), w, sidebar_folder_name, entry);
+    make_sidebar_entry(str, sizeof(str), w, mutt_b2s(&result), entry);
     mutt_window_printf("%s", str);
-    mutt_buffer_pool_release(&short_folder_name);
     row++;
   }
+  mutt_buffer_dealloc(&result);
 
   fill_empty_space(win, row, num_rows - row, div_width, w);
 }
