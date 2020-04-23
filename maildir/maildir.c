@@ -500,6 +500,8 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
        * event.  We know it disappeared because we just scanned the
        * subdirectory it used to reside in.  */
       occult = true;
+      e->deleted = true;
+      e->purge = true;
     }
     else
     {
