@@ -97,8 +97,7 @@ void test_mutt_addrlist_parse(void)
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-    int parsed = mutt_addrlist_parse(
-        &alist, "Foo \\(Bar\\) <foo@bar.baz>");
+    int parsed = mutt_addrlist_parse(&alist, "Foo \\(Bar\\) <foo@bar.baz>");
     TEST_CHECK(parsed == 1);
     const struct Address *a = TAILQ_FIRST(&alist);
     TEST_CHECK_STR_EQ("Foo (Bar)", a->personal);
