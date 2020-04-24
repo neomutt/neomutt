@@ -58,7 +58,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-04-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-04-17 11:38+0100\n"
+"POT-Creation-Date: 2020-04-24 16:26+0100\n"
 "PO-Revision-Date: 2019-05-15 01:16-0400\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -2034,7 +2034,7 @@ msgstr "No s’ha pogut obrir el fitxer missatge: %s"
 msgid "Can't append to folder: %s"
 msgstr "No s’ha pogut afegir a la carpeta: %s"
 
-#: email/parse.c:1479
+#: email/parse.c:1480
 msgid "multipart message has no boundary parameter"
 msgstr "El missatge «multipart» no té paràmetre «boundary»."
 
@@ -2610,7 +2610,7 @@ msgid_plural "Copying %d messages to %s..."
 msgstr[0] "S’estan copiant %d missatges a «%s»…"
 msgstr[1] "S’estan copiant %d missatges a «%s»…"
 
-#: imap/imap.c:1606 imap/imap.c:2262 imap/message.c:1729 muttlib.c:1494
+#: imap/imap.c:1606 imap/imap.c:2264 imap/message.c:1729 muttlib.c:1494
 #, c-format
 msgid "Create %s?"
 msgstr "Voleu crear «%s»?"
@@ -2649,21 +2649,21 @@ msgstr "S’estan eliminant missatges del servidor…"
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: Ha fallat «EXPUNGE»."
 
-#: imap/imap.c:2066 nntp/nntp.c:2488
+#: imap/imap.c:2068 nntp/nntp.c:2488
 #, c-format
 msgid "Selecting %s..."
 msgstr "S’està seleccionant la bústia «%s»…"
 
-#: imap/imap.c:2229
+#: imap/imap.c:2231
 msgid "Error opening mailbox"
 msgstr "Error en obrir la bústia."
 
-#: imap/imap.c:2378
+#: imap/imap.c:2380
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "El servidor SMTP no admet autenticació."
 
-#: imap/imap.c:2422
+#: imap/imap.c:2424
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "No vàlid    "
@@ -5298,1090 +5298,1090 @@ msgstr "Canvia entre preferir xifrar o no amb el compte d’Autocrypt actual"
 msgid "show autocrypt compose menu options"
 msgstr "Mostra les opcions d’Autocrypt"
 
-# ivb (2001/11/24)
-# ivb  Totes aquestes cadenes són missatges d’ajuda.  No sembla haver
-# ivb  restriccions de longitud.
 #: opcodes.h:40
-msgid "null operation"
-msgstr "L’operació nul·la."
-
-#: opcodes.h:41
 msgid "toggle display of subparts"
 msgstr "Activa o desactiva la visualització de les subparts."
 
-#: opcodes.h:42
+#: opcodes.h:41
 msgid "force viewing of attachment using mailcap"
 msgstr "Força la visualització d’una adjunció emprant «mailcap»."
 
-#: opcodes.h:43
+#: opcodes.h:42
 msgid "view attachment as text"
 msgstr "Mostra una adjunció com a text."
 
-#: opcodes.h:44
+#: opcodes.h:43
 msgid "move to the bottom of the page"
 msgstr "Va al final de la pàgina."
 
-#: opcodes.h:45
+#: opcodes.h:44
 msgid "remail a message to another user"
 msgstr "Redirigeix un missatge a un altre destinatari."
 
-#: opcodes.h:46
+#: opcodes.h:45
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
-#: opcodes.h:47
+#: opcodes.h:46
 msgid "select a new file in this directory"
 msgstr "Selecciona un nou fitxer d’aquest directori."
 
-#: opcodes.h:48
+#: opcodes.h:47
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "Se subscriu a la bústia actual (només a IMAP/NNTP)."
 
-#: opcodes.h:49
+#: opcodes.h:48
 msgid "display the currently selected file's name"
 msgstr "Mostra el nom del fitxer seleccionat actualment."
 
-#: opcodes.h:50
+#: opcodes.h:49
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "Canvia entre veure totes les bústies o tan sols les subscrites (només a IMAP)."
 
-#: opcodes.h:51
+#: opcodes.h:50
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "Es dessubscriu de la bústia actual (només a IMAP/NNTP)."
 
-#: opcodes.h:52
+#: opcodes.h:51
 msgid "view file"
 msgstr "Mostra un fitxer."
 
-#: opcodes.h:53
+#: opcodes.h:52
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
-#: opcodes.h:54
+#: opcodes.h:53
 msgid "change directories"
 msgstr "Canvia de directori."
 
-#: opcodes.h:55
+#: opcodes.h:54
 msgid "check mailboxes for new mail"
 msgstr "Comprova si hi ha correu nou a les bústies."
 
-#: opcodes.h:56
+#: opcodes.h:55
 msgid "calculate message statistics for all mailboxes"
 msgstr "Calcula estadístiques dels missatges de totes les bústies."
 
-#: opcodes.h:57
+#: opcodes.h:56
 #, fuzzy
 msgid "attach files to this message"
 msgstr "Adjunta fitxers a aquest missatge."
 
-#: opcodes.h:58
+#: opcodes.h:57
 #, fuzzy
 msgid "attach messages to this message"
 msgstr "Adjunta missatges a aquest missatge."
 
-#: opcodes.h:59
+#: opcodes.h:58
 #, fuzzy
 msgid "attach news articles to this message"
 msgstr "Adjunta fitxers a aquest missatge."
 
-#: opcodes.h:60
+#: opcodes.h:59
 msgid "edit the BCC list"
 msgstr "Edita la llista de còpia oculta (Bcc)."
 
-#: opcodes.h:61
+#: opcodes.h:60
 msgid "edit the CC list"
 msgstr "Edita la llista de còpia (Cc)."
 
-#: opcodes.h:62
+#: opcodes.h:61
 msgid "edit attachment description"
 msgstr "Edita la descripció d’una adjunció."
 
-#: opcodes.h:63
+#: opcodes.h:62
 msgid "edit attachment transfer-encoding"
 msgstr "Edita la codificació de transferència d’una adjunció."
 
-#: opcodes.h:64
+#: opcodes.h:63
 msgid "enter a file to save a copy of this message in"
 msgstr "Demana un fitxer on desar una còpia d’aquest missatge."
 
-#: opcodes.h:65
+#: opcodes.h:64
 msgid "edit the file to be attached"
 msgstr "Edita un fitxer a adjuntar."
 
-#: opcodes.h:66
+#: opcodes.h:65
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "Edita el camp de resposta (Reply-To)."
 
-#: opcodes.h:67
+#: opcodes.h:66
 msgid "edit the from field"
 msgstr "Edita el camp de remitent (From)."
 
-#: opcodes.h:68
+#: opcodes.h:67
 msgid "edit the message with headers"
 msgstr "Edita el missatge amb capçaleres."
 
-#: opcodes.h:69
+#: opcodes.h:68
 #, fuzzy
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "Edita un fitxer a adjuntar."
 
-#: opcodes.h:70
+#: opcodes.h:69
 msgid "edit the message"
 msgstr "Edita el missatge."
 
-#: opcodes.h:71
+#: opcodes.h:70
 msgid "edit attachment using mailcap entry"
 msgstr "Edita l’adjunció emprant l’entrada de «mailcap»."
 
-#: opcodes.h:72
+#: opcodes.h:71
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "Edita la llista de còpia (Cc)."
 
-#: opcodes.h:73
+#: opcodes.h:72
 msgid "edit the Reply-To field"
 msgstr "Edita el camp de resposta (Reply-To)."
 
-#: opcodes.h:74
+#: opcodes.h:73
 msgid "edit the subject of this message"
 msgstr "Edita l’assumpte del missatge (Subject)."
 
-#: opcodes.h:75
+#: opcodes.h:74
 msgid "edit the TO list"
 msgstr "Edita la llista de destinataris (To)."
 
-#: opcodes.h:76
+#: opcodes.h:75
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "Edita el camp de resposta (Reply-To)."
 
-#: opcodes.h:77
+#: opcodes.h:76
 msgid "get a temporary copy of an attachment"
 msgstr "Crea una còpia temporal d’una adjunció."
 
-#: opcodes.h:78
+#: opcodes.h:77
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr ""
 
-#: opcodes.h:79
+#: opcodes.h:78
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr ""
 
-#: opcodes.h:80
+#: opcodes.h:79
 msgid "run ispell on the message"
 msgstr "Executa «ispell» (comprovació ortogràfica) sobre el missatge."
 
-#: opcodes.h:81
+#: opcodes.h:80
 #, fuzzy
 msgid "move an attachment down in the attachment list"
 msgstr "Envia l’adjunt amb el nom: "
 
-#: opcodes.h:82
+#: opcodes.h:81
 #, fuzzy
 msgid "move an attachment up in the attachment list"
 msgstr "Envia l’adjunt amb el nom: "
 
-#: opcodes.h:83
+#: opcodes.h:82
 msgid "compose new attachment using mailcap entry"
 msgstr "Crea una nova adjunció emprant l’entrada de «mailcap»."
 
-#: opcodes.h:84
+#: opcodes.h:83
 msgid "save this message to send later"
 msgstr "Desa aquest missatge per a enviar-lo més endavant."
 
-#: opcodes.h:85
+#: opcodes.h:84
 msgid "send attachment with a different name"
 msgstr "Canvia el nom amb què s’enviarà una adjunció."
 
-#: opcodes.h:86
+#: opcodes.h:85
 msgid "rename/move an attached file"
 msgstr "Reanomena (o mou) un fitxer adjunt."
 
-#: opcodes.h:87
+#: opcodes.h:86
 msgid "send the message"
 msgstr "Envia el missatge."
 
-#: opcodes.h:88
+#: opcodes.h:87
 msgid "toggle disposition between inline/attachment"
 msgstr "Canvia la disposició entre en línia o adjunt."
 
-#: opcodes.h:89
+#: opcodes.h:88
 msgid "toggle recoding of this attachment"
 msgstr "Estableix si una adjunció serà recodificada."
 
-#: opcodes.h:90
+#: opcodes.h:89
 msgid "toggle whether to delete file after sending it"
 msgstr "Estableix si cal esborrar un fitxer una volta enviat."
 
-#: opcodes.h:91
+#: opcodes.h:90
 msgid "compose new message to the current message sender"
 msgstr "Redacta un nou missatge adreçat al remitent de l’actual."
 
-#: opcodes.h:92
+#: opcodes.h:91
 msgid "update an attachment's encoding info"
 msgstr "Edita la informació de codificació d’un missatge."
 
-#: opcodes.h:93
+#: opcodes.h:92
 msgid "write the message to a folder"
 msgstr "Escriu el missatge en una carpeta."
 
-#: opcodes.h:94
+#: opcodes.h:93
 msgid "copy a message to a file/mailbox"
 msgstr "Copia un missatge en un fitxer o bústia."
 
-#: opcodes.h:95
+#: opcodes.h:94
 msgid "create an alias from a message sender"
 msgstr "Crea un àlies partint del remitent d’un missatge."
 
-#: opcodes.h:96
+#: opcodes.h:95
 msgid "create a new mailbox (IMAP only)"
 msgstr "Crea una nova bústia (només a IMAP)."
 
-#: opcodes.h:97
+#: opcodes.h:96
 msgid "move entry to bottom of screen"
 msgstr "Mou l’indicador al final de la pantalla."
 
-#: opcodes.h:98
+#: opcodes.h:97
 msgid "move entry to middle of screen"
 msgstr "Mou l’indicador al centre de la pantalla."
 
-#: opcodes.h:99
+#: opcodes.h:98
 msgid "move entry to top of screen"
 msgstr "Mou l’indicador al començament de la pantalla."
 
-#: opcodes.h:100
+#: opcodes.h:99
 msgid "make decoded (text/plain) copy"
 msgstr "Crea una còpia descodificada (text/plain) del missatge."
 
-#: opcodes.h:101
+#: opcodes.h:100
 msgid "make decoded copy (text/plain) and delete"
 msgstr "Crea una còpia descodificada (text/plain) del missatge i l’esborra."
 
-#: opcodes.h:102
+#: opcodes.h:101
 msgid "delete the current entry"
 msgstr "Esborra l’entrada actual."
 
-#: opcodes.h:103
+#: opcodes.h:102
 msgid "delete the current mailbox (IMAP only)"
 msgstr "Esborra la bústia actual (només a IMAP)."
 
-#: opcodes.h:104
+#: opcodes.h:103
 msgid "delete all messages in subthread"
 msgstr "Esborra tots els missatges d’un subfil."
 
-#: opcodes.h:105
+#: opcodes.h:104
 msgid "delete all messages in thread"
 msgstr "Esborra tots els missatges d’un fil."
 
-#: opcodes.h:106
+#: opcodes.h:105
 msgid "descend into a directory"
 msgstr "Entra en un directori."
 
-#: opcodes.h:107
+#: opcodes.h:106
 msgid "display full address of sender"
 msgstr "Mostra l’adreça completa del remitent."
 
-#: opcodes.h:108
+#: opcodes.h:107
 msgid "display message and toggle header weeding"
 msgstr "Mostra un missatge i oculta o mostra certs camps de la capçalera."
 
-#: opcodes.h:109
+#: opcodes.h:108
 msgid "display a message"
 msgstr "Mostra un missatge."
 
-#: opcodes.h:110
+#: opcodes.h:109
 msgid "delete the char in front of the cursor"
 msgstr "Esborra el caràcter anterior al cursor."
 
-#: opcodes.h:111
+#: opcodes.h:110
 msgid "move the cursor one character to the left"
 msgstr "Mou el cursor un caràcter a l’esquerra."
 
-#: opcodes.h:112
+#: opcodes.h:111
 msgid "move the cursor to the beginning of the word"
 msgstr "Mou el cursor al començament de la paraula."
 
-#: opcodes.h:113
+#: opcodes.h:112
 msgid "jump to the beginning of the line"
 msgstr "Salta al començament de la línia."
 
-#: opcodes.h:114
+#: opcodes.h:113
 msgid "capitalize the word"
 msgstr "Posa la primera lletra de la paraula en majúscula."
 
-#: opcodes.h:115
+#: opcodes.h:114
 msgid "complete filename or alias"
 msgstr "Completa el nom de fitxer o l’àlies."
 
-#: opcodes.h:116
+#: opcodes.h:115
 msgid "complete address with query"
 msgstr "Completa una adreça fent una consulta."
 
-#: opcodes.h:117
+#: opcodes.h:116
 msgid "delete the char under the cursor"
 msgstr "Esborra el caràcter sota el cursor."
 
-#: opcodes.h:118
+#: opcodes.h:117
 msgid "convert the word to lower case"
 msgstr "Converteix la paraula a minúscules."
 
-#: opcodes.h:119
+#: opcodes.h:118
 msgid "jump to the end of the line"
 msgstr "Salta al final de la línia."
 
-#: opcodes.h:120
+#: opcodes.h:119
 msgid "move the cursor one character to the right"
 msgstr "Mou el cursor un caràcter a la dreta."
 
-#: opcodes.h:121
+#: opcodes.h:120
 msgid "move the cursor to the end of the word"
 msgstr "Mou el cursor al final de la paraula."
 
-#: opcodes.h:122
+#: opcodes.h:121
 msgid "scroll down through the history list"
 msgstr "Es desplaça cap avall a la llista d’historial."
 
-#: opcodes.h:123
+#: opcodes.h:122
 #, fuzzy
 msgid "search through the history list"
 msgstr "Es desplaça cap amunt a la llista d’historial."
 
-#: opcodes.h:124
+#: opcodes.h:123
 msgid "scroll up through the history list"
 msgstr "Es desplaça cap amunt a la llista d’historial."
 
-#: opcodes.h:125
+#: opcodes.h:124
 msgid "delete chars from cursor to end of line"
 msgstr "Esborra els caràcters des del cursor fins al final de la línia."
 
-#: opcodes.h:126
+#: opcodes.h:125
 msgid "delete chars from the cursor to the end of the word"
 msgstr "Esborra els caràcters des del cursor fins al final de la paraula."
 
-#: opcodes.h:127
+#: opcodes.h:126
 msgid "delete all chars on the line"
 msgstr "Esborra tots els caràcters de la línia."
 
 # Sí, enfront és a l’esquerra.  ivb
-#: opcodes.h:128
+#: opcodes.h:127
 msgid "delete the word in front of the cursor"
 msgstr "Esborra la paraula a l’esquerra del cursor."
 
 # ivb (2001/12/07)
 # ivb  Es refereix a les definides en «mailboxes».
-#: opcodes.h:129
+#: opcodes.h:128
 msgid "cycle among incoming mailboxes"
 msgstr "Canvia entre les bústies d’entrada."
 
-#: opcodes.h:130
+#: opcodes.h:129
 msgid "quote the next typed key"
 msgstr "Escriu tal qual la tecla premuda a continuació."
 
-#: opcodes.h:131
+#: opcodes.h:130
 msgid "transpose character under cursor with previous"
 msgstr "Transposa el caràcter sota el cursor i l’anterior."
 
-#: opcodes.h:132
+#: opcodes.h:131
 msgid "convert the word to upper case"
 msgstr "Converteix la paraula a majúscules."
 
-#: opcodes.h:133
+#: opcodes.h:132
 msgid "add, change, or delete a message's label"
 msgstr "Afegeix, canvia o esborra etiquetes d’un missatge."
 
-#: opcodes.h:134
+#: opcodes.h:133
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr ""
 
-#: opcodes.h:135
+#: opcodes.h:134
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr ""
 
-#: opcodes.h:136
+#: opcodes.h:135
 msgid "edit attachment content type"
 msgstr "Edita el tipus de contingut d’una adjunció."
 
-#: opcodes.h:137
+#: opcodes.h:136
 msgid "end of conditional execution (noop)"
 msgstr "Termina l’execució condicional (operació nul·la)."
 
-#: opcodes.h:138
+#: opcodes.h:137
 msgid "enter a neomuttrc command"
 msgstr "Executa una ordre de «neomuttrc»."
 
-#: opcodes.h:139
+#: opcodes.h:138
 msgid "enter a file mask"
 msgstr "Estableix una màscara de fitxers."
 
-#: opcodes.h:140
+#: opcodes.h:139
 msgid "exit this menu"
 msgstr "Abandona aquest menú."
 
-#: opcodes.h:141
+#: opcodes.h:140
 msgid "filter attachment through a shell command"
 msgstr "Filtra una adjunció amb una ordre de l’intèrpret."
 
-#: opcodes.h:142
+#: opcodes.h:141
 msgid "move to the first entry"
 msgstr "Va a la primera entrada."
 
-#: opcodes.h:143
+#: opcodes.h:142
 msgid "toggle a message's 'important' flag"
 msgstr "Canvia el senyalador «important» d’un missatge."
 
 # ivb (2001/12/07)
 # ivb  El primer «%s» és una adreça de correu i el segon potser «,...».
-#: opcodes.h:144
+#: opcodes.h:143
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "Voleu escriure un seguiment a %s%s?"
 
-#: opcodes.h:145
+#: opcodes.h:144
 msgid "forward a message with comments"
 msgstr "Reenvia un missatge amb comentaris."
 
-#: opcodes.h:146
+#: opcodes.h:145
 msgid "forward to newsgroup"
 msgstr ""
 
-#: opcodes.h:147
+#: opcodes.h:146
 msgid "select the current entry"
 msgstr "Selecciona l’entrada actual."
 
-#: opcodes.h:148
+#: opcodes.h:147
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "Vos trobeu sobre el primer missatge."
 
-#: opcodes.h:149
+#: opcodes.h:148
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "Edita el missatge amb capçaleres."
 
-#: opcodes.h:150
+#: opcodes.h:149
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "Vos trobeu sobre el primer missatge."
 
-#: opcodes.h:151
+#: opcodes.h:150
 #, fuzzy
 msgid "go to parent directory"
 msgstr "«%s» no és un directori."
 
-#: opcodes.h:152
+#: opcodes.h:151
 msgid "reply to all recipients preserving To/Cc"
 msgstr "Respon a tots els destinataris, mantenint els camps «To» (destinatari) i «Cc» (en còpia)."
 
-#: opcodes.h:153
+#: opcodes.h:152
 msgid "reply to all recipients"
 msgstr "Respon a tots els destinataris."
 
-#: opcodes.h:154
+#: opcodes.h:153
 msgid "scroll down 1/2 page"
 msgstr "Avança mitja pàgina."
 
-#: opcodes.h:155
+#: opcodes.h:154
 msgid "scroll up 1/2 page"
 msgstr "Endarrereix mitja pàgina."
 
-#: opcodes.h:156
+#: opcodes.h:155
 msgid "this screen"
 msgstr "Mostra aquesta pantalla."
 
-#: opcodes.h:157
+#: opcodes.h:156
 msgid "jump to an index number"
 msgstr "Salta a un número d’índex."
 
-#: opcodes.h:158
+#: opcodes.h:157
 msgid "move to the last entry"
 msgstr "Va a la darrera entrada."
 
-#: opcodes.h:159
+#: opcodes.h:158
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "Marca el fil actual."
 
-#: opcodes.h:160
+#: opcodes.h:159
 msgid "reply to specified mailing list"
 msgstr "Respon a la llista de correu indicada."
 
-#: opcodes.h:161
+#: opcodes.h:160
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
-#: opcodes.h:162
+#: opcodes.h:161
 msgid "execute a macro"
 msgstr "Executa una macro."
 
-#: opcodes.h:163
+#: opcodes.h:162
 msgid "compose a new mail message"
 msgstr "Redacta un nou missatge de correu."
 
-#: opcodes.h:164
+#: opcodes.h:163
 msgid "list mailboxes with new mail"
 msgstr "Llista les bústies amb correu nou."
 
-#: opcodes.h:165
+#: opcodes.h:164
 msgid "break the thread in two"
 msgstr "Parteix el fil en dos."
 
-#: opcodes.h:166
+#: opcodes.h:165
 msgid "open a different folder"
 msgstr "Obri una carpeta diferent."
 
-#: opcodes.h:167
+#: opcodes.h:166
 msgid "open a different folder in read only mode"
 msgstr "Obri una carpeta diferent en mode de només lectura."
 
-#: opcodes.h:168
+#: opcodes.h:167
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "Obri una carpeta diferent."
 
-#: opcodes.h:169
+#: opcodes.h:168
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "Obri una carpeta diferent en mode de només lectura."
 
-#: opcodes.h:170
+#: opcodes.h:169
 msgid "clear a status flag from a message"
 msgstr "Elimina un senyalador d’estat d’un missatge."
 
-#: opcodes.h:171
+#: opcodes.h:170
 msgid "collapse/uncollapse all threads"
 msgstr "Plega o desplega tots els fils."
 
-#: opcodes.h:172
+#: opcodes.h:171
 msgid "collapse/uncollapse current thread"
 msgstr "Plega o desplega el fil actual."
 
-#: opcodes.h:173
+#: opcodes.h:172
 msgid "delete messages matching a pattern"
 msgstr "Esborra els missatges que concorden amb un patró."
 
-#: opcodes.h:174
+#: opcodes.h:173
 msgid "retrieve mail from POP server"
 msgstr "Obté el correu d’un servidor POP."
 
-#: opcodes.h:175
+#: opcodes.h:174
 msgid "force retrieval of mail from IMAP server"
 msgstr "Força l’obtenció del correu d’un servidor IMAP."
 
-#: opcodes.h:176
+#: opcodes.h:175
 msgid "logout from all IMAP servers"
 msgstr "Ix de tots els servidors IMAP."
 
-#: opcodes.h:177
+#: opcodes.h:176
 msgid "show only messages matching a pattern"
 msgstr "Mostra només els missatges que concorden amb un patró."
 
-#: opcodes.h:178
+#: opcodes.h:177
 msgid "link tagged message to the current one"
 msgstr "Enllaça el missatge marcat a l’actual."
 
-#: opcodes.h:179
+#: opcodes.h:178
 msgid "modify (notmuch/imap) tags"
 msgstr ""
 
-#: opcodes.h:180
+#: opcodes.h:179
 #, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "Vos trobeu sobre el primer missatge."
 
-#: opcodes.h:181
+#: opcodes.h:180
 msgid "jump to the next new message"
 msgstr "Salta al següent missatge nou."
 
-#: opcodes.h:182
+#: opcodes.h:181
 msgid "jump to the next new or unread message"
 msgstr "Salta al següent missatge nou o no llegit."
 
-#: opcodes.h:183
+#: opcodes.h:182
 msgid "jump to the next subthread"
 msgstr "Salta al subfil següent."
 
-#: opcodes.h:184
+#: opcodes.h:183
 msgid "jump to the next thread"
 msgstr "Salta al fil següent."
 
-#: opcodes.h:185
+#: opcodes.h:184
 msgid "move to the next undeleted message"
 msgstr "Va al següent missatge no esborrat."
 
-#: opcodes.h:186
+#: opcodes.h:185
 msgid "jump to the next unread message"
 msgstr "Salta al següent missatge no llegit."
 
-#: opcodes.h:187
+#: opcodes.h:186
 msgid "open next mailbox with new mail"
 msgstr "Obri la següent bústia amb correu nou."
 
-#: opcodes.h:188
+#: opcodes.h:187
 msgid "jump to parent message in thread"
 msgstr "Salta al missatge pare del fil."
 
-#: opcodes.h:189
+#: opcodes.h:188
 msgid "jump to the previous new message"
 msgstr "Salta a l’anterior missatge nou."
 
-#: opcodes.h:190
+#: opcodes.h:189
 msgid "jump to the previous new or unread message"
 msgstr "Salta a l’anterior missatge nou o no llegit."
 
-#: opcodes.h:191
+#: opcodes.h:190
 msgid "jump to previous subthread"
 msgstr "Salta al subfil anterior."
 
-#: opcodes.h:192
+#: opcodes.h:191
 msgid "jump to previous thread"
 msgstr "Salta al fil anterior."
 
-#: opcodes.h:193
+#: opcodes.h:192
 msgid "move to the previous undeleted message"
 msgstr "Va a l’anterior missatge no llegit."
 
-#: opcodes.h:194
+#: opcodes.h:193
 msgid "jump to the previous unread message"
 msgstr "Salta a l’anterior missatge no llegit."
 
-#: opcodes.h:195
+#: opcodes.h:194
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr ""
 
-#: opcodes.h:196
+#: opcodes.h:195
 msgid "mark the current subthread as read"
 msgstr "Marca el subfil actual com a llegit."
 
-#: opcodes.h:197
+#: opcodes.h:196
 msgid "mark the current thread as read"
 msgstr "Marca el fil actual com a llegit."
 
-#: opcodes.h:198
+#: opcodes.h:197
 msgid "jump to root message in thread"
 msgstr "Salta al missatge arrel del fil."
 
-#: opcodes.h:199
+#: opcodes.h:198
 msgid "set a status flag on a message"
 msgstr "Estableix un senyalador d’estat d’un missatge."
 
-#: opcodes.h:200
+#: opcodes.h:199
 msgid "show currently active limit pattern"
 msgstr "Mostra el patró limitant actiu."
 
-#: opcodes.h:201
+#: opcodes.h:200
 msgid "save changes to mailbox"
 msgstr "Desa els canvis realitzats a la bústia."
 
-#: opcodes.h:202
+#: opcodes.h:201
 msgid "tag messages matching a pattern"
 msgstr "Marca els missatges que concorden amb un patró."
 
-#: opcodes.h:203
+#: opcodes.h:202
 msgid "undelete messages matching a pattern"
 msgstr "Restaura els missatges que concorden amb un patró."
 
-#: opcodes.h:204
+#: opcodes.h:203
 msgid "untag messages matching a pattern"
 msgstr "Desmarca els missatges que concorden amb un patró."
 
-#: opcodes.h:205
+#: opcodes.h:204
 msgid "create a hotkey macro for the current message"
 msgstr "Crea una drecera de teclat per al missatge actual."
 
-#: opcodes.h:206
+#: opcodes.h:205
 msgid "move to the middle of the page"
 msgstr "Va al centre de la pàgina."
 
-#: opcodes.h:207
+#: opcodes.h:206
 msgid "move to the next entry"
 msgstr "Va a l’entrada següent."
 
-#: opcodes.h:208
+#: opcodes.h:207
 msgid "scroll down one line"
 msgstr "Avança una línia."
 
-#: opcodes.h:209
+#: opcodes.h:208
 msgid "move to the next page"
 msgstr "Va a la pàgina següent."
 
-#: opcodes.h:210
+#: opcodes.h:209
 msgid "jump to the bottom of the message"
 msgstr "Salta al final del missatge."
 
-#: opcodes.h:211
+#: opcodes.h:210
 msgid "toggle display of quoted text"
 msgstr "Oculta o mostra el text citat."
 
-#: opcodes.h:212
+#: opcodes.h:211
 msgid "skip beyond quoted text"
 msgstr "Avança fins al final del text citat."
 
-#: opcodes.h:213
+#: opcodes.h:212
 msgid "jump to the top of the message"
 msgstr "Salta a l’inici del missatge."
 
-#: opcodes.h:214
+#: opcodes.h:213
 msgid "pipe message/attachment to a shell command"
 msgstr "Redirigeix un missatge o adjunció a una ordre de l’intèrpret."
 
 # ivb (2001/12/02)
 # ivb  El programa posa l’interrogant.
-#: opcodes.h:215
+#: opcodes.h:214
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "Voleu redirigir el missatge a «%s»"
 
-#: opcodes.h:216
+#: opcodes.h:215
 msgid "move to the previous entry"
 msgstr "Va a l’entrada anterior."
 
-#: opcodes.h:217
+#: opcodes.h:216
 msgid "scroll up one line"
 msgstr "Endarrereix una línia."
 
-#: opcodes.h:218
+#: opcodes.h:217
 msgid "move to the previous page"
 msgstr "Va a la pàgina anterior."
 
-#: opcodes.h:219
+#: opcodes.h:218
 msgid "print the current entry"
 msgstr "Imprimeix l’entrada actual."
 
-#: opcodes.h:220
+#: opcodes.h:219
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "Esborra completament l’entrada actual, sense emprar la paperera."
 
-#: opcodes.h:221
+#: opcodes.h:220
 #, fuzzy
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "Esborra completament l’entrada actual, sense emprar la paperera."
 
-#: opcodes.h:222
+#: opcodes.h:221
 msgid "query external program for addresses"
 msgstr "Pregunta a un programa extern per una adreça."
 
-#: opcodes.h:223
+#: opcodes.h:222
 msgid "append new query results to current results"
 msgstr "Afegeix els resultats d’una consulta nova als resultats actuals."
 
-#: opcodes.h:224
+#: opcodes.h:223
 msgid "save changes to mailbox and quit"
 msgstr "Desa els canvis realitzats a la bústia i ix."
 
-#: opcodes.h:225
+#: opcodes.h:224
 msgid "recall a postponed message"
 msgstr "Recupera un missatge posposat."
 
-#: opcodes.h:226
+#: opcodes.h:225
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "El fil conté missatges no llegits."
 
-#: opcodes.h:227
+#: opcodes.h:226
 msgid "clear and redraw the screen"
 msgstr "Neteja i redibuixa la pantalla."
 
 # ivb (2001/11/26)
 # ivb  Es refereix a una funció -> femení.
-#: opcodes.h:228
+#: opcodes.h:227
 msgid "{internal}"
 msgstr "{interna}"
 
-#: opcodes.h:229
+#: opcodes.h:228
 msgid "rename the current mailbox (IMAP only)"
 msgstr "Reanomena la bústia actual (només a IMAP)."
 
-#: opcodes.h:230
+#: opcodes.h:229
 msgid "reply to a message"
 msgstr "Respon a un missatge."
 
-#: opcodes.h:231
+#: opcodes.h:230
 msgid "use the current message as a template for a new one"
 msgstr "Empra el missatge actual com a plantilla per a un de nou."
 
-#: opcodes.h:232
+#: opcodes.h:231
 msgid "save message/attachment to a mailbox/file"
 msgstr "Desa un missatge o adjunció en una bústia o fitxer."
 
-#: opcodes.h:233
+#: opcodes.h:232
 msgid "search for a regular expression"
 msgstr "Cerca una expressió regular."
 
-#: opcodes.h:234
+#: opcodes.h:233
 msgid "search for next match"
 msgstr "Cerca la concordança següent."
 
-#: opcodes.h:235
+#: opcodes.h:234
 msgid "search for next match in opposite direction"
 msgstr "Cerca la concordança anterior."
 
-#: opcodes.h:236
+#: opcodes.h:235
 msgid "search backwards for a regular expression"
 msgstr "Cerca cap enrere una expressió regular."
 
-#: opcodes.h:237
+#: opcodes.h:236
 msgid "toggle search pattern coloring"
 msgstr "Estableix si cal resaltar les concordances trobades."
 
-#: opcodes.h:238
+#: opcodes.h:237
 msgid "invoke a command in a subshell"
 msgstr "Invoca una ordre en un subintèrpret."
 
-#: opcodes.h:239
+#: opcodes.h:238
 #, fuzzy
 msgid "show log (and debug) messages"
 msgstr "Ordena els missatges."
 
-#: opcodes.h:240
+#: opcodes.h:239
 msgid "sort messages"
 msgstr "Ordena els missatges."
 
-#: opcodes.h:241
+#: opcodes.h:240
 msgid "sort messages in reverse order"
 msgstr "Ordena inversament els missatges."
 
-#: opcodes.h:242
+#: opcodes.h:241
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "Desmarca els missatges que concorden amb un patró."
 
-#: opcodes.h:243
+#: opcodes.h:242
 msgid "tag the current entry"
 msgstr "Marca l’entrada actual."
 
-#: opcodes.h:244
+#: opcodes.h:243
 msgid "apply next function to tagged messages"
 msgstr "Aplica la funció següent als missatges marcats."
 
-#: opcodes.h:245
+#: opcodes.h:244
 msgid "apply next function ONLY to tagged messages"
 msgstr "Aplica la funció següent NOMÉS als missatges marcats."
 
-#: opcodes.h:246
+#: opcodes.h:245
 msgid "tag the current subthread"
 msgstr "Marca el subfil actual."
 
-#: opcodes.h:247
+#: opcodes.h:246
 msgid "tag the current thread"
 msgstr "Marca el fil actual."
 
 # ivb (2001/12/07)
 # ivb  Es refereix a les definides en «mailboxes».
-#: opcodes.h:248
+#: opcodes.h:247
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "Estableix si es navegarà només per les bústies d’entrada o per tots els fitxers."
 
-#: opcodes.h:249
+#: opcodes.h:248
 msgid "toggle a message's 'new' flag"
 msgstr "Canvia el senyalador «nou» d’un missatge."
 
-#: opcodes.h:250
+#: opcodes.h:249
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "Salta a l’anterior missatge nou o no llegit."
 
-#: opcodes.h:251
+#: opcodes.h:250
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "Estableix si s’escriuran els canvis a la bústia."
 
-#: opcodes.h:252
+#: opcodes.h:251
 msgid "move to the top of the page"
 msgstr "Va a l’inici de la pàgina."
 
-#: opcodes.h:253
+#: opcodes.h:252
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
-#: opcodes.h:254
+#: opcodes.h:253
 msgid "undelete the current entry"
 msgstr "Restaura l’entrada actual."
 
-#: opcodes.h:255
+#: opcodes.h:254
 msgid "undelete all messages in subthread"
 msgstr "Restaura tots els missatges d’un subfil."
 
-#: opcodes.h:256
+#: opcodes.h:255
 msgid "undelete all messages in thread"
 msgstr "Restaura tots els missatges d’un fil."
 
-#: opcodes.h:257
+#: opcodes.h:256
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "Desmarca els missatges que concorden amb un patró."
 
-#: opcodes.h:258
+#: opcodes.h:257
 msgid "show the NeoMutt version number and date"
 msgstr "Mostra el número de versió i la data de NeoMutt."
 
-#: opcodes.h:259
+#: opcodes.h:258
 msgid "view attachment using mailcap entry if necessary"
 msgstr "Mostra una adjunció emprant l’entrada de «mailcap» si és necessari."
 
-#: opcodes.h:260
+#: opcodes.h:259
 msgid "show MIME attachments"
 msgstr "Mostra les adjuncions MIME."
 
-#: opcodes.h:261
+#: opcodes.h:260
 #, fuzzy
 msgid "show the raw message"
 msgstr "Edita un missatge en brut."
 
-#: opcodes.h:262
+#: opcodes.h:261
 msgid "display the keycode for a key press"
 msgstr "Mostra el codi d’una tecla premuda."
 
-#: opcodes.h:265
+#: opcodes.h:264
 msgid "make decrypted copy"
 msgstr "Fa una còpia desxifrada del missatge."
 
-#: opcodes.h:266
+#: opcodes.h:265
 msgid "make decrypted copy and delete"
 msgstr "Fa una còpia desxifrada del missatge i esborra aquest."
 
-#: opcodes.h:267
+#: opcodes.h:266
 msgid "extract supported public keys"
 msgstr "Extreu totes les claus públiques possibles."
 
-#: opcodes.h:268
+#: opcodes.h:267
 #, fuzzy
 msgid "wipe passphrases from memory"
 msgstr "Esborra de la memòria les frases clau."
 
-#: opcodes.h:272
+#: opcodes.h:271
 msgid "send the message through a mixmaster remailer chain"
 msgstr "Envia el missatge per una cadena de redistribuïdors Mixmaster."
 
-#: opcodes.h:273
+#: opcodes.h:272
 msgid "append a remailer to the chain"
 msgstr "Afegeix un redistribuïdor a la cadena."
 
-#: opcodes.h:274
+#: opcodes.h:273
 msgid "select the next element of the chain"
 msgstr "Selecciona l’element següent de la cadena."
 
-#: opcodes.h:275
+#: opcodes.h:274
 msgid "select the previous element of the chain"
 msgstr "Selecciona l’element anterior de la cadena."
 
-#: opcodes.h:276
+#: opcodes.h:275
 msgid "delete a remailer from the chain"
 msgstr "Esborra un redistribuïdor de la cadena."
 
-#: opcodes.h:277
+#: opcodes.h:276
 msgid "insert a remailer into the chain"
 msgstr "Insereix un redistribuïdor a la cadena."
 
-#: opcodes.h:278
+#: opcodes.h:277
 msgid "accept the chain constructed"
 msgstr "Accepta la cadena construïda."
 
-#: opcodes.h:285
+#: opcodes.h:284
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "Obri una carpeta diferent."
 
-#: opcodes.h:286
+#: opcodes.h:285
 msgid "read entire thread of the current message"
 msgstr ""
 
-#: opcodes.h:287
+#: opcodes.h:286
 msgid "generate virtual folder from query"
 msgstr ""
 
-#: opcodes.h:288
+#: opcodes.h:287
 msgid "generate a read-only virtual folder from query"
 msgstr ""
 
-#: opcodes.h:289
+#: opcodes.h:288
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
-#: opcodes.h:290
+#: opcodes.h:289
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
 # ivb (2001/12/02)
 # ivb  Es refereix al format del missatge.
-#: opcodes.h:296
+#: opcodes.h:295
 msgid "check for classic PGP"
 msgstr "Comprova si s’ha emprat el PGP clàssic."
 
-#: opcodes.h:297
+#: opcodes.h:296
 msgid "attach a PGP public key"
 msgstr "Adjunta una clau pública PGP."
 
-#: opcodes.h:298
+#: opcodes.h:297
 msgid "show PGP options"
 msgstr "Mostra les opcions de PGP."
 
-#: opcodes.h:299
+#: opcodes.h:298
 msgid "mail a PGP public key"
 msgstr "Envia una clau pública PGP."
 
-#: opcodes.h:300
+#: opcodes.h:299
 msgid "verify a PGP public key"
 msgstr "Verifica una clau pública PGP."
 
-#: opcodes.h:301
+#: opcodes.h:300
 msgid "view the key's user id"
 msgstr "Mostra l’identificador d’usuari d’una clau."
 
-#: opcodes.h:304
+#: opcodes.h:303
 #, fuzzy
 msgid "move the highlight to the first mailbox"
 msgstr "Mou la selecció a la bústia següent."
 
-#: opcodes.h:305
+#: opcodes.h:304
 #, fuzzy
 msgid "move the highlight to the last mailbox"
 msgstr "Mou la selecció a la bústia següent."
 
-#: opcodes.h:306
+#: opcodes.h:305
 msgid "move the highlight to next mailbox"
 msgstr "Mou la selecció a la bústia següent."
 
-#: opcodes.h:307
+#: opcodes.h:306
 msgid "move the highlight to next mailbox with new mail"
 msgstr "Mou la selecció a la següent bústia amb correu nou."
 
-#: opcodes.h:308
+#: opcodes.h:307
 msgid "open highlighted mailbox"
 msgstr "Obri la bústia seleccionada."
 
 # Crec que «llista de bústies» s’entèn més que «barra lateral».  ivb
-#: opcodes.h:309
+#: opcodes.h:308
 msgid "scroll the sidebar down 1 page"
 msgstr "Avança una pàgina la llista de bústies."
 
-#: opcodes.h:310
+#: opcodes.h:309
 msgid "scroll the sidebar up 1 page"
 msgstr "Endarrereix una pàgina la llista de bústies."
 
-#: opcodes.h:311
+#: opcodes.h:310
 msgid "move the highlight to previous mailbox"
 msgstr "Mou la selecció a la bústia anterior."
 
-#: opcodes.h:312
+#: opcodes.h:311
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "Mou la selecció a l’anterior bústia amb correu nou."
 
 # ivb (2001/12/07)
 # ivb  Es refereix a les definides en «mailboxes».
-#: opcodes.h:313
+#: opcodes.h:312
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "Estableix si es navegarà només per les bústies d’entrada o per tots els fitxers."
 
-#: opcodes.h:314
+#: opcodes.h:313
 msgid "make the sidebar (in)visible"
 msgstr "Mostra o amaga la llista de bústies."
 
-#: opcodes.h:317
+#: opcodes.h:316
 msgid "show S/MIME options"
 msgstr "Mostra les opcions de S/MIME."
+
+# ivb (2001/11/24)
+# ivb  Totes aquestes cadenes són missatges d’ajuda.  No sembla haver
+# ivb  restriccions de longitud.
+#: opcodes.h:319
+msgid "null operation"
+msgstr "L’operació nul·la."
 
 #: pager.c:214
 msgid "Not available in this menu"
@@ -7250,7 +7250,7 @@ msgstr "No s’ha pogut trobar la funció d’ordenació (informeu d’aquest er
 msgid "(no mailbox)"
 msgstr "(cap bústia)"
 
-#: version.c:81
+#: version.c:85
 #, fuzzy
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
@@ -7259,7 +7259,7 @@ msgstr ""
 "Moltes altres persones que no s’hi mencionen han contribuït amb codi,\n"
 "solucions i suggeriments.\n"
 
-#: version.c:85
+#: version.c:89
 #, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
@@ -7291,7 +7291,7 @@ msgstr ""
 "    Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,\n"
 "    MA  02110-1301, USA.\n"
 
-#: version.c:101
+#: version.c:105
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -7299,7 +7299,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:108
+#: version.c:112
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -7311,12 +7311,12 @@ msgstr ""
 "detalls.  NeoMutt és programari lliure, i podeu, si voleu, redistribuir‐lo sota\n"
 "certes condicions; empreu «mutt -vv» per a obtenir‐ne més detalls.\n"
 
-#: version.c:508
+#: version.c:526
 #, fuzzy
 msgid "Default options:"
 msgstr "Opcions de compilació:"
 
-#: version.c:511
+#: version.c:529
 msgid "Compile options:"
 msgstr "Opcions de compilació:"
 

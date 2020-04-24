@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-04-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-04-17 11:38+0100\n"
+"POT-Creation-Date: 2020-04-24 16:26+0100\n"
 "PO-Revision-Date: 2018-05-31 13:50+0000\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: neomutt-j <neomutt-j-users@lists.osdn.me>\n"
@@ -1933,7 +1933,7 @@ msgstr "メッセージファイルをオープンできない: %s"
 msgid "Can't append to folder: %s"
 msgstr "フォルダに追加できない: %s"
 
-#: email/parse.c:1479
+#: email/parse.c:1480
 msgid "multipart message has no boundary parameter"
 msgstr "マルチパートのメッセージだが boundary パラメータがない"
 
@@ -2482,7 +2482,7 @@ msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d メッセージを %s にコピー中..."
 
-#: imap/imap.c:1606 imap/imap.c:2262 imap/message.c:1729 muttlib.c:1494
+#: imap/imap.c:1606 imap/imap.c:2264 imap/message.c:1729 muttlib.c:1494
 #, c-format
 msgid "Create %s?"
 msgstr "%s を作成?"
@@ -2519,22 +2519,22 @@ msgstr "サーバからメッセージを削除中..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: 削除に失敗した"
 
-#: imap/imap.c:2066 nntp/nntp.c:2488
+#: imap/imap.c:2068 nntp/nntp.c:2488
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s を選択中..."
 
-#: imap/imap.c:2229
+#: imap/imap.c:2231
 msgid "Error opening mailbox"
 msgstr "メールボックスオープン時エラー"
 
-#: imap/imap.c:2378
+#: imap/imap.c:2380
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "SMTP サーバがユーザ認証をサポートしていない"
 
 # 不正より不信か？
-#: imap/imap.c:2422
+#: imap/imap.c:2424
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "不正      "
@@ -5012,1074 +5012,1074 @@ msgid "show autocrypt compose menu options"
 msgstr "autocrypt オプションを表示"
 
 #: opcodes.h:40
-msgid "null operation"
-msgstr "動作の指定がない"
-
-#: opcodes.h:41
 msgid "toggle display of subparts"
 msgstr "副パートの表示を切替"
 
-#: opcodes.h:42
+#: opcodes.h:41
 msgid "force viewing of attachment using mailcap"
 msgstr "mailcap を使って添付ファイルを強制表示"
 
-#: opcodes.h:43
+#: opcodes.h:42
 msgid "view attachment as text"
 msgstr "添付ファイルをテキストとして表示"
 
-#: opcodes.h:44
+#: opcodes.h:43
 msgid "move to the bottom of the page"
 msgstr "ページの一番下に移動"
 
-#: opcodes.h:45
+#: opcodes.h:44
 msgid "remail a message to another user"
 msgstr "メッセージを他のユーザに再送"
 
-#: opcodes.h:46
+#: opcodes.h:45
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
-#: opcodes.h:47
+#: opcodes.h:46
 msgid "select a new file in this directory"
 msgstr "このディレクトリ中の新しいファイルを選択"
 
-#: opcodes.h:48
+#: opcodes.h:47
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "現在のメールボックスを購読(IMAPのみ)"
 
-#: opcodes.h:49
+#: opcodes.h:48
 msgid "display the currently selected file's name"
 msgstr "選択中のファイル名を表示"
 
-#: opcodes.h:50
+#: opcodes.h:49
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "「全ボックス/購読中のみ」閲覧切替(IMAPのみ)"
 
-#: opcodes.h:51
+#: opcodes.h:50
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "現在のメールボックスの購読を中止(IMAPのみ)"
 
-#: opcodes.h:52
+#: opcodes.h:51
 msgid "view file"
 msgstr "ファイルを閲覧"
 
-#: opcodes.h:53
+#: opcodes.h:52
 msgid "mark all articles in newsgroup as read"
 msgstr "ニュースグループ内の記事を全て既読にする"
 
-#: opcodes.h:54
+#: opcodes.h:53
 msgid "change directories"
 msgstr "ディレクトリを変更"
 
-#: opcodes.h:55
+#: opcodes.h:54
 msgid "check mailboxes for new mail"
 msgstr "メールボックスに新着メールがあるか検査"
 
-#: opcodes.h:56
+#: opcodes.h:55
 #, fuzzy
 msgid "calculate message statistics for all mailboxes"
 msgstr "メール/添付ファイルをボックス/ファイルに保存"
 
-#: opcodes.h:57
+#: opcodes.h:56
 #, fuzzy
 msgid "attach files to this message"
 msgstr "このメッセージにファイルを添付"
 
-#: opcodes.h:58
+#: opcodes.h:57
 #, fuzzy
 msgid "attach messages to this message"
 msgstr "このメッセージにメッセージを添付"
 
-#: opcodes.h:59
+#: opcodes.h:58
 #, fuzzy
 msgid "attach news articles to this message"
 msgstr "このメッセージにファイルを添付"
 
-#: opcodes.h:60
+#: opcodes.h:59
 msgid "edit the BCC list"
 msgstr "BCCリストを編集"
 
-#: opcodes.h:61
+#: opcodes.h:60
 msgid "edit the CC list"
 msgstr "CCリストを編集"
 
-#: opcodes.h:62
+#: opcodes.h:61
 msgid "edit attachment description"
 msgstr "添付ファイルの内容説明文を編集"
 
-#: opcodes.h:63
+#: opcodes.h:62
 msgid "edit attachment transfer-encoding"
 msgstr "添付ファイルの content-trasfer-encoding を編集"
 
-#: opcodes.h:64
+#: opcodes.h:63
 msgid "enter a file to save a copy of this message in"
 msgstr "メッセージのコピーを保存するファイル名を入力"
 
-#: opcodes.h:65
+#: opcodes.h:64
 msgid "edit the file to be attached"
 msgstr "添付するファイルを編集"
 
-#: opcodes.h:66
+#: opcodes.h:65
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "Reply-To フィールドを編集"
 
-#: opcodes.h:67
+#: opcodes.h:66
 msgid "edit the from field"
 msgstr "From フィールドを編集"
 
-#: opcodes.h:68
+#: opcodes.h:67
 msgid "edit the message with headers"
 msgstr "メッセージをヘッダごと編集"
 
-#: opcodes.h:69
+#: opcodes.h:68
 #, fuzzy
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "添付するファイルを編集"
 
-#: opcodes.h:70
+#: opcodes.h:69
 msgid "edit the message"
 msgstr "メッセージを編集"
 
-#: opcodes.h:71
+#: opcodes.h:70
 msgid "edit attachment using mailcap entry"
 msgstr "添付ファイルを mailcap エントリを使って編集"
 
-#: opcodes.h:72
+#: opcodes.h:71
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "CCリストを編集"
 
-#: opcodes.h:73
+#: opcodes.h:72
 msgid "edit the Reply-To field"
 msgstr "Reply-To フィールドを編集"
 
-#: opcodes.h:74
+#: opcodes.h:73
 msgid "edit the subject of this message"
 msgstr "メッセージの題名を編集"
 
-#: opcodes.h:75
+#: opcodes.h:74
 msgid "edit the TO list"
 msgstr "TO リストを編集"
 
-#: opcodes.h:76
+#: opcodes.h:75
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "Reply-To フィールドを編集"
 
-#: opcodes.h:77
+#: opcodes.h:76
 msgid "get a temporary copy of an attachment"
 msgstr "添付ファイルの一時的なコピーを作成"
 
-#: opcodes.h:78
+#: opcodes.h:77
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr ""
 
-#: opcodes.h:79
+#: opcodes.h:78
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr ""
 
-#: opcodes.h:80
+#: opcodes.h:79
 msgid "run ispell on the message"
 msgstr "メッセージに ispell を実行"
 
 # OP_COMPOSE_RENAME_ATTACHMENT つまり名前を変えるとき
-#: opcodes.h:81
+#: opcodes.h:80
 #, fuzzy
 msgid "move an attachment down in the attachment list"
 msgstr "添付ファイルを別の名前で送る: "
 
 # OP_COMPOSE_RENAME_ATTACHMENT つまり名前を変えるとき
-#: opcodes.h:82
+#: opcodes.h:81
 #, fuzzy
 msgid "move an attachment up in the attachment list"
 msgstr "添付ファイルを別の名前で送る: "
 
-#: opcodes.h:83
+#: opcodes.h:82
 msgid "compose new attachment using mailcap entry"
 msgstr "mailcap エントリを使って添付ファイルを作成"
 
-#: opcodes.h:84
+#: opcodes.h:83
 msgid "save this message to send later"
 msgstr "このメッセージを「書きかけ」にする"
 
 # OP_COMPOSE_RENAME_ATTACHMENT つまり名前を変えるとき
-#: opcodes.h:85
+#: opcodes.h:84
 msgid "send attachment with a different name"
 msgstr "添付ファイルを別の名前で送る"
 
-#: opcodes.h:86
+#: opcodes.h:85
 msgid "rename/move an attached file"
 msgstr "添付ファイルをリネーム(移動)"
 
-#: opcodes.h:87
+#: opcodes.h:86
 msgid "send the message"
 msgstr "メッセージを送信"
 
-#: opcodes.h:88
+#: opcodes.h:87
 msgid "toggle disposition between inline/attachment"
 msgstr "disposition の inline/attachment を切替"
 
-#: opcodes.h:89
+#: opcodes.h:88
 msgid "toggle recoding of this attachment"
 msgstr "この添付ファイルのコード変換の有無を切替"
 
-#: opcodes.h:90
+#: opcodes.h:89
 msgid "toggle whether to delete file after sending it"
 msgstr "送信後にファイルを消すかどうかを切替"
 
-#: opcodes.h:91
+#: opcodes.h:90
 #, fuzzy
 msgid "compose new message to the current message sender"
 msgstr "新規メッセージを作成"
 
-#: opcodes.h:92
+#: opcodes.h:91
 msgid "update an attachment's encoding info"
 msgstr "添付ファイルのエンコード情報を更新"
 
-#: opcodes.h:93
+#: opcodes.h:92
 msgid "write the message to a folder"
 msgstr "フォルダにメッセージを書き込む"
 
-#: opcodes.h:94
+#: opcodes.h:93
 msgid "copy a message to a file/mailbox"
 msgstr "メッセージをファイルやメールボックスにコピー"
 
-#: opcodes.h:95
+#: opcodes.h:94
 msgid "create an alias from a message sender"
 msgstr "メッセージの送信者から別名を作成"
 
-#: opcodes.h:96
+#: opcodes.h:95
 msgid "create a new mailbox (IMAP only)"
 msgstr "新しいメールボックスを作成(IMAPのみ)"
 
-#: opcodes.h:97
+#: opcodes.h:96
 msgid "move entry to bottom of screen"
 msgstr "スクリーンの一番下にエントリ移動"
 
-#: opcodes.h:98
+#: opcodes.h:97
 msgid "move entry to middle of screen"
 msgstr "スクリーンの中央にエントリ移動"
 
-#: opcodes.h:99
+#: opcodes.h:98
 msgid "move entry to top of screen"
 msgstr "スクリーンの一番上にエントリ移動"
 
-#: opcodes.h:100
+#: opcodes.h:99
 msgid "make decoded (text/plain) copy"
 msgstr "text/plain にデコードしたコピーを作成"
 
-#: opcodes.h:101
+#: opcodes.h:100
 msgid "make decoded copy (text/plain) and delete"
 msgstr "text/plain にデコードしたコピーを作成し削除"
 
-#: opcodes.h:102
+#: opcodes.h:101
 msgid "delete the current entry"
 msgstr "現在のエントリを削除"
 
-#: opcodes.h:103
+#: opcodes.h:102
 msgid "delete the current mailbox (IMAP only)"
 msgstr "現在のメールボックスを削除(IMAPのみ)"
 
-#: opcodes.h:104
+#: opcodes.h:103
 msgid "delete all messages in subthread"
 msgstr "副スレッドのメッセージをすべて削除"
 
-#: opcodes.h:105
+#: opcodes.h:104
 msgid "delete all messages in thread"
 msgstr "スレッドのメッセージをすべて削除"
 
-#: opcodes.h:106
+#: opcodes.h:105
 #, fuzzy
 msgid "descend into a directory"
 msgstr "%s はディレクトリではない。"
 
-#: opcodes.h:107
+#: opcodes.h:106
 msgid "display full address of sender"
 msgstr "送信者の完全なアドレスを表示"
 
-#: opcodes.h:108
+#: opcodes.h:107
 msgid "display message and toggle header weeding"
 msgstr "メッセージを表示し、ヘッダ抑止を切替"
 
-#: opcodes.h:109
+#: opcodes.h:108
 msgid "display a message"
 msgstr "メッセージを表示"
 
-#: opcodes.h:110
+#: opcodes.h:109
 msgid "delete the char in front of the cursor"
 msgstr "カーソルの前の文字を削除"
 
-#: opcodes.h:111
+#: opcodes.h:110
 msgid "move the cursor one character to the left"
 msgstr "カーソルを一文字左に移動"
 
-#: opcodes.h:112
+#: opcodes.h:111
 msgid "move the cursor to the beginning of the word"
 msgstr "カーソルを単語の先頭に移動"
 
-#: opcodes.h:113
+#: opcodes.h:112
 msgid "jump to the beginning of the line"
 msgstr "行頭に移動"
 
-#: opcodes.h:114
+#: opcodes.h:113
 msgid "capitalize the word"
 msgstr "単語の先頭文字を大文字化"
 
-#: opcodes.h:115
+#: opcodes.h:114
 msgid "complete filename or alias"
 msgstr "ファイル名や別名を補完"
 
-#: opcodes.h:116
+#: opcodes.h:115
 msgid "complete address with query"
 msgstr "問い合わせによりアドレスを補完"
 
-#: opcodes.h:117
+#: opcodes.h:116
 msgid "delete the char under the cursor"
 msgstr "カーソルの下の字を削除"
 
-#: opcodes.h:118
+#: opcodes.h:117
 msgid "convert the word to lower case"
 msgstr "単語を小文字化"
 
-#: opcodes.h:119
+#: opcodes.h:118
 msgid "jump to the end of the line"
 msgstr "行末に移動"
 
-#: opcodes.h:120
+#: opcodes.h:119
 msgid "move the cursor one character to the right"
 msgstr "カーソルを一文字右に移動"
 
-#: opcodes.h:121
+#: opcodes.h:120
 msgid "move the cursor to the end of the word"
 msgstr "カーソルを単語の最後に移動"
 
-#: opcodes.h:122
+#: opcodes.h:121
 msgid "scroll down through the history list"
 msgstr "履歴リストを下にスクロール"
 
-#: opcodes.h:123
+#: opcodes.h:122
 #, fuzzy
 msgid "search through the history list"
 msgstr "履歴リストを上にスクロール"
 
-#: opcodes.h:124
+#: opcodes.h:123
 msgid "scroll up through the history list"
 msgstr "履歴リストを上にスクロール"
 
-#: opcodes.h:125
+#: opcodes.h:124
 msgid "delete chars from cursor to end of line"
 msgstr "カーソルから行末まで削除"
 
-#: opcodes.h:126
+#: opcodes.h:125
 msgid "delete chars from the cursor to the end of the word"
 msgstr "カーソルから単語末まで削除"
 
-#: opcodes.h:127
+#: opcodes.h:126
 msgid "delete all chars on the line"
 msgstr "その行の文字をすべて削除"
 
-#: opcodes.h:128
+#: opcodes.h:127
 msgid "delete the word in front of the cursor"
 msgstr "カーソルの前方の単語を削除"
 
-#: opcodes.h:129
+#: opcodes.h:128
 msgid "cycle among incoming mailboxes"
 msgstr "到着用メールボックスを巡回"
 
-#: opcodes.h:130
+#: opcodes.h:129
 msgid "quote the next typed key"
 msgstr "次にタイプする文字を引用符でくくる"
 
-#: opcodes.h:131
+#: opcodes.h:130
 msgid "transpose character under cursor with previous"
 msgstr "カーソル位置の文字とその前の文字とを入れ換え"
 
-#: opcodes.h:132
+#: opcodes.h:131
 msgid "convert the word to upper case"
 msgstr "単語を大文字化"
 
-#: opcodes.h:133
+#: opcodes.h:132
 msgid "add, change, or delete a message's label"
 msgstr "メッセージのラベルを追加、編集、削除"
 
-#: opcodes.h:134
+#: opcodes.h:133
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr "元のメッセージを編集、読み取り専用の場合は閲覧のみ"
 
-#: opcodes.h:135
+#: opcodes.h:134
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr ""
 
-#: opcodes.h:136
+#: opcodes.h:135
 msgid "edit attachment content type"
 msgstr "添付ファイルの content-type を編集"
 
-#: opcodes.h:137
+#: opcodes.h:136
 msgid "end of conditional execution (noop)"
 msgstr "条件付き実行の終了 (何もしない)"
 
-#: opcodes.h:138
+#: opcodes.h:137
 msgid "enter a neomuttrc command"
 msgstr "neomuttrc のコマンドを入力"
 
-#: opcodes.h:139
+#: opcodes.h:138
 msgid "enter a file mask"
 msgstr "ファイルマスクを入力"
 
-#: opcodes.h:140
+#: opcodes.h:139
 msgid "exit this menu"
 msgstr "このメニューを終了"
 
-#: opcodes.h:141
+#: opcodes.h:140
 msgid "filter attachment through a shell command"
 msgstr "シェルコマンドを通して添付ファイルを表示"
 
-#: opcodes.h:142
+#: opcodes.h:141
 msgid "move to the first entry"
 msgstr "最初のエントリに移動"
 
-#: opcodes.h:143
+#: opcodes.h:142
 msgid "toggle a message's 'important' flag"
 msgstr "「重要」フラグの切替"
 
-#: opcodes.h:144
+#: opcodes.h:143
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "%s%s へのフォローアップ?"
 
-#: opcodes.h:145
+#: opcodes.h:144
 msgid "forward a message with comments"
 msgstr "コメント付きでメッセージを転送"
 
-#: opcodes.h:146
+#: opcodes.h:145
 msgid "forward to newsgroup"
 msgstr "ニュースグループへ転送"
 
-#: opcodes.h:147
+#: opcodes.h:146
 msgid "select the current entry"
 msgstr "現在のエントリを選択"
 
-#: opcodes.h:148
+#: opcodes.h:147
 msgid "get all children of the current message"
 msgstr "全ての子メッセージを取得"
 
-#: opcodes.h:149
+#: opcodes.h:148
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "メッセージをヘッダごと編集"
 
-#: opcodes.h:150
+#: opcodes.h:149
 msgid "get parent of the current message"
 msgstr "親メッセージを取得"
 
-#: opcodes.h:151
+#: opcodes.h:150
 #, fuzzy
 msgid "go to parent directory"
 msgstr "%s はディレクトリではない。"
 
-#: opcodes.h:152
+#: opcodes.h:151
 #, fuzzy
 msgid "reply to all recipients preserving To/Cc"
 msgstr "すべての受信者に返信"
 
-#: opcodes.h:153
+#: opcodes.h:152
 msgid "reply to all recipients"
 msgstr "すべての受信者に返信"
 
-#: opcodes.h:154
+#: opcodes.h:153
 msgid "scroll down 1/2 page"
 msgstr "半ページ下にスクロール"
 
-#: opcodes.h:155
+#: opcodes.h:154
 msgid "scroll up 1/2 page"
 msgstr "半ページ上にスクロール"
 
-#: opcodes.h:156
+#: opcodes.h:155
 msgid "this screen"
 msgstr "この画面"
 
-#: opcodes.h:157
+#: opcodes.h:156
 msgid "jump to an index number"
 msgstr "インデックス番号に飛ぶ"
 
-#: opcodes.h:158
+#: opcodes.h:157
 msgid "move to the last entry"
 msgstr "最後のエントリに移動"
 
-#: opcodes.h:159
+#: opcodes.h:158
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "現在のスレッドにタグを付ける"
 
-#: opcodes.h:160
+#: opcodes.h:159
 msgid "reply to specified mailing list"
 msgstr "指定済みメーリングリスト宛てに返信"
 
-#: opcodes.h:161
+#: opcodes.h:160
 msgid "load list of all newsgroups from NNTP server"
 msgstr "NNTPサーバから全てのニュースグループ一覧を取得"
 
-#: opcodes.h:162
+#: opcodes.h:161
 msgid "execute a macro"
 msgstr "マクロを実行"
 
-#: opcodes.h:163
+#: opcodes.h:162
 msgid "compose a new mail message"
 msgstr "新規メッセージを作成"
 
-#: opcodes.h:164
+#: opcodes.h:163
 msgid "list mailboxes with new mail"
 msgstr "新着メールのあるメールボックスを一覧表示"
 
-#: opcodes.h:165
+#: opcodes.h:164
 msgid "break the thread in two"
 msgstr "スレッドをはずす"
 
-#: opcodes.h:166
+#: opcodes.h:165
 msgid "open a different folder"
 msgstr "別のフォルダをオープン"
 
-#: opcodes.h:167
+#: opcodes.h:166
 msgid "open a different folder in read only mode"
 msgstr "読み出し専用モードで別のフォルダをオープン"
 
-#: opcodes.h:168
+#: opcodes.h:167
 msgid "open a different newsgroup"
 msgstr "別のニュースグループをオープン"
 
-#: opcodes.h:169
+#: opcodes.h:168
 msgid "open a different newsgroup in read only mode"
 msgstr "読み出し専用モードで別のニュースグループをオープン"
 
-#: opcodes.h:170
+#: opcodes.h:169
 msgid "clear a status flag from a message"
 msgstr "メッセージのステータスフラグを解除"
 
-#: opcodes.h:171
+#: opcodes.h:170
 msgid "collapse/uncollapse all threads"
 msgstr "すべてのスレッドを展開/非展開"
 
-#: opcodes.h:172
+#: opcodes.h:171
 msgid "collapse/uncollapse current thread"
 msgstr "現在のスレッドを展開/非展開"
 
-#: opcodes.h:173
+#: opcodes.h:172
 msgid "delete messages matching a pattern"
 msgstr "パターンに一致したメッセージを削除"
 
-#: opcodes.h:174
+#: opcodes.h:173
 msgid "retrieve mail from POP server"
 msgstr "POP サーバからメールを取得"
 
-#: opcodes.h:175
+#: opcodes.h:174
 msgid "force retrieval of mail from IMAP server"
 msgstr "IMAP サーバからメールを取得"
 
-#: opcodes.h:176
+#: opcodes.h:175
 msgid "logout from all IMAP servers"
 msgstr "すべての IMAP サーバからログアウト"
 
-#: opcodes.h:177
+#: opcodes.h:176
 msgid "show only messages matching a pattern"
 msgstr "パターンに一致したメッセージだけ表示"
 
-#: opcodes.h:178
+#: opcodes.h:177
 msgid "link tagged message to the current one"
 msgstr "タグ付きメッセージを現在位置につなぐ"
 
-#: opcodes.h:179
+#: opcodes.h:178
 msgid "modify (notmuch/imap) tags"
 msgstr "(notmuch/imap) タグを変更"
 
-#: opcodes.h:180
+#: opcodes.h:179
 #, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "すでに最初のメッセージ。"
 
-#: opcodes.h:181
+#: opcodes.h:180
 msgid "jump to the next new message"
 msgstr "次の新着メッセージに移動"
 
-#: opcodes.h:182
+#: opcodes.h:181
 msgid "jump to the next new or unread message"
 msgstr "次の新着または未読のメッセージへ移動"
 
-#: opcodes.h:183
+#: opcodes.h:182
 msgid "jump to the next subthread"
 msgstr "次のサブスレッドに移動"
 
-#: opcodes.h:184
+#: opcodes.h:183
 msgid "jump to the next thread"
 msgstr "次のスレッドに移動"
 
-#: opcodes.h:185
+#: opcodes.h:184
 msgid "move to the next undeleted message"
 msgstr "次の未削除メッセージに移動"
 
-#: opcodes.h:186
+#: opcodes.h:185
 msgid "jump to the next unread message"
 msgstr "次の未読メッセージへ移動"
 
-#: opcodes.h:187
+#: opcodes.h:186
 msgid "open next mailbox with new mail"
 msgstr "新着のある次のメールボックスを開く"
 
-#: opcodes.h:188
+#: opcodes.h:187
 msgid "jump to parent message in thread"
 msgstr "スレッドの親メッセージに移動"
 
-#: opcodes.h:189
+#: opcodes.h:188
 msgid "jump to the previous new message"
 msgstr "前の新着メッセージに移動"
 
-#: opcodes.h:190
+#: opcodes.h:189
 msgid "jump to the previous new or unread message"
 msgstr "前の新着または未読メッセージに移動"
 
-#: opcodes.h:191
+#: opcodes.h:190
 msgid "jump to previous subthread"
 msgstr "前のサブスレッドに移動"
 
-#: opcodes.h:192
+#: opcodes.h:191
 msgid "jump to previous thread"
 msgstr "前のスレッドに移動"
 
-#: opcodes.h:193
+#: opcodes.h:192
 msgid "move to the previous undeleted message"
 msgstr "前の未削除メッセージに移動"
 
-#: opcodes.h:194
+#: opcodes.h:193
 msgid "jump to the previous unread message"
 msgstr "前の未読メッセージに移動"
 
-#: opcodes.h:195
+#: opcodes.h:194
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr "NeoMuttから削除, ディスク上のデータは変更しない"
 
-#: opcodes.h:196
+#: opcodes.h:195
 msgid "mark the current subthread as read"
 msgstr "現在のサブスレッドを既読にする"
 
-#: opcodes.h:197
+#: opcodes.h:196
 msgid "mark the current thread as read"
 msgstr "現在のスレッドを既読にする"
 
-#: opcodes.h:198
+#: opcodes.h:197
 msgid "jump to root message in thread"
 msgstr "スレッドのルートメッセージに移動"
 
-#: opcodes.h:199
+#: opcodes.h:198
 msgid "set a status flag on a message"
 msgstr "メッセージにステータスフラグを設定"
 
-#: opcodes.h:200
+#: opcodes.h:199
 msgid "show currently active limit pattern"
 msgstr "現在有効な制限パターンの値を表示"
 
-#: opcodes.h:201
+#: opcodes.h:200
 msgid "save changes to mailbox"
 msgstr "変更をメールボックスに保存"
 
-#: opcodes.h:202
+#: opcodes.h:201
 msgid "tag messages matching a pattern"
 msgstr "パターンに一致したメッセージにタグを付ける"
 
-#: opcodes.h:203
+#: opcodes.h:202
 msgid "undelete messages matching a pattern"
 msgstr "パターンに一致したメッセージの削除状態を解除"
 
-#: opcodes.h:204
+#: opcodes.h:203
 msgid "untag messages matching a pattern"
 msgstr "パターンに一致したメッセージのタグをはずす"
 
-#: opcodes.h:205
+#: opcodes.h:204
 msgid "create a hotkey macro for the current message"
 msgstr "現在のメッセージに戻るホットキーマクロを作成"
 
-#: opcodes.h:206
+#: opcodes.h:205
 msgid "move to the middle of the page"
 msgstr "ページの中央に移動"
 
-#: opcodes.h:207
+#: opcodes.h:206
 msgid "move to the next entry"
 msgstr "次のエントリに移動"
 
-#: opcodes.h:208
+#: opcodes.h:207
 msgid "scroll down one line"
 msgstr "一行下にスクロール"
 
-#: opcodes.h:209
+#: opcodes.h:208
 msgid "move to the next page"
 msgstr "次ページへ移動"
 
-#: opcodes.h:210
+#: opcodes.h:209
 msgid "jump to the bottom of the message"
 msgstr "メッセージの一番下に移動"
 
-#: opcodes.h:211
+#: opcodes.h:210
 msgid "toggle display of quoted text"
 msgstr "引用文の表示をするかどうか切替"
 
-#: opcodes.h:212
+#: opcodes.h:211
 msgid "skip beyond quoted text"
 msgstr "引用文をスキップする"
 
-#: opcodes.h:213
+#: opcodes.h:212
 msgid "jump to the top of the message"
 msgstr "メッセージの一番上に移動"
 
-#: opcodes.h:214
+#: opcodes.h:213
 msgid "pipe message/attachment to a shell command"
 msgstr "メッセージ/添付ファイルをコマンドにパイプ"
 
-#: opcodes.h:215
+#: opcodes.h:214
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "マクロ化するための Message-ID がない。"
 
-#: opcodes.h:216
+#: opcodes.h:215
 msgid "move to the previous entry"
 msgstr "前のエントリに移動"
 
-#: opcodes.h:217
+#: opcodes.h:216
 msgid "scroll up one line"
 msgstr "一行上にスクロール"
 
-#: opcodes.h:218
+#: opcodes.h:217
 msgid "move to the previous page"
 msgstr "前のページに移動"
 
-#: opcodes.h:219
+#: opcodes.h:218
 msgid "print the current entry"
 msgstr "現在のエントリを印刷"
 
-#: opcodes.h:220
+#: opcodes.h:219
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "ごみ箱に入れず、現在のエントリを即座に削除"
 
-#: opcodes.h:221
+#: opcodes.h:220
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "ごみ箱に入れず、現在のエントリを即座に削除"
 
-#: opcodes.h:222
+#: opcodes.h:221
 msgid "query external program for addresses"
 msgstr "外部プログラムにアドレスを問い合わせ"
 
-#: opcodes.h:223
+#: opcodes.h:222
 msgid "append new query results to current results"
 msgstr "新たな問い合わせ結果を現在の結果に追加"
 
-#: opcodes.h:224
+#: opcodes.h:223
 msgid "save changes to mailbox and quit"
 msgstr "変更をメールボックスに保存後終了"
 
-#: opcodes.h:225
+#: opcodes.h:224
 msgid "recall a postponed message"
 msgstr "書きかけのメッセージを呼び出す"
 
-#: opcodes.h:226
+#: opcodes.h:225
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "スレッド中に未読メッセージがある。"
 
-#: opcodes.h:227
+#: opcodes.h:226
 msgid "clear and redraw the screen"
 msgstr "画面をクリアし再描画"
 
-#: opcodes.h:228
+#: opcodes.h:227
 msgid "{internal}"
 msgstr "{内部}"
 
-#: opcodes.h:229
+#: opcodes.h:228
 msgid "rename the current mailbox (IMAP only)"
 msgstr "現在のメールボックスをリネーム(IMAPのみ)"
 
-#: opcodes.h:230
+#: opcodes.h:229
 msgid "reply to a message"
 msgstr "メッセージに返信"
 
 # これでギリギリ一行におさまるハズ
-#: opcodes.h:231
+#: opcodes.h:230
 msgid "use the current message as a template for a new one"
 msgstr "現在のメッセージを新しいものの原形として利用"
 
-#: opcodes.h:232
+#: opcodes.h:231
 msgid "save message/attachment to a mailbox/file"
 msgstr "メール/添付ファイルをボックス/ファイルに保存"
 
-#: opcodes.h:233
+#: opcodes.h:232
 msgid "search for a regular expression"
 msgstr "正規表現検索"
 
-#: opcodes.h:234
+#: opcodes.h:233
 msgid "search for next match"
 msgstr "次に一致するものを検索"
 
-#: opcodes.h:235
+#: opcodes.h:234
 msgid "search for next match in opposite direction"
 msgstr "逆順で一致するものを検索"
 
-#: opcodes.h:236
+#: opcodes.h:235
 msgid "search backwards for a regular expression"
 msgstr "逆順の正規表現検索"
 
-#: opcodes.h:237
+#: opcodes.h:236
 msgid "toggle search pattern coloring"
 msgstr "検索パターンを着色するかどうか切替"
 
-#: opcodes.h:238
+#: opcodes.h:237
 msgid "invoke a command in a subshell"
 msgstr "サブシェルでコマンドを起動"
 
-#: opcodes.h:239
+#: opcodes.h:238
 #, fuzzy
 msgid "show log (and debug) messages"
 msgstr "メッセージを整列"
 
-#: opcodes.h:240
+#: opcodes.h:239
 msgid "sort messages"
 msgstr "メッセージを整列"
 
-#: opcodes.h:241
+#: opcodes.h:240
 msgid "sort messages in reverse order"
 msgstr "メッセージを逆順で整列"
 
-#: opcodes.h:242
+#: opcodes.h:241
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "パターンに一致したメッセージのタグをはずす"
 
-#: opcodes.h:243
+#: opcodes.h:242
 msgid "tag the current entry"
 msgstr "メッセージにタグ付け"
 
-#: opcodes.h:244
+#: opcodes.h:243
 msgid "apply next function to tagged messages"
 msgstr "次に入力する機能をタグ付きメッセージに適用"
 
-#: opcodes.h:245
+#: opcodes.h:244
 msgid "apply next function ONLY to tagged messages"
 msgstr "次に入力する機能をタグ付きメッセージにのみ適用"
 
-#: opcodes.h:246
+#: opcodes.h:245
 msgid "tag the current subthread"
 msgstr "現在のサブスレッドにタグを付ける"
 
-#: opcodes.h:247
+#: opcodes.h:246
 msgid "tag the current thread"
 msgstr "現在のスレッドにタグを付ける"
 
-#: opcodes.h:248
+#: opcodes.h:247
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "閲覧法を「メールボックス/全ファイル」間で切替"
 
-#: opcodes.h:249
+#: opcodes.h:248
 msgid "toggle a message's 'new' flag"
 msgstr "メッセージの「新着」フラグを切替"
 
-#: opcodes.h:250
+#: opcodes.h:249
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "前の新着または未読メッセージに移動"
 
-#: opcodes.h:251
+#: opcodes.h:250
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "メールボックスに変更を書き込むかどうかを切替"
 
-#: opcodes.h:252
+#: opcodes.h:251
 msgid "move to the top of the page"
 msgstr "ページの一番上に移動"
 
-#: opcodes.h:253
+#: opcodes.h:252
 msgid "mark all articles in newsgroup as unread"
 msgstr "ニュースグループ内の全ての記事を未読にする"
 
-#: opcodes.h:254
+#: opcodes.h:253
 msgid "undelete the current entry"
 msgstr "エントリの削除状態を解除"
 
-#: opcodes.h:255
+#: opcodes.h:254
 msgid "undelete all messages in subthread"
 msgstr "サブスレッドのすべてのメッセージの削除を解除"
 
-#: opcodes.h:256
+#: opcodes.h:255
 msgid "undelete all messages in thread"
 msgstr "スレッドのすべてのメッセージの削除状態を解除"
 
-#: opcodes.h:257
+#: opcodes.h:256
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "パターンに一致したメッセージのタグをはずす"
 
-#: opcodes.h:258
+#: opcodes.h:257
 msgid "show the NeoMutt version number and date"
 msgstr "NeoMutt のバージョンの番号と日付を表示"
 
-#: opcodes.h:259
+#: opcodes.h:258
 msgid "view attachment using mailcap entry if necessary"
 msgstr "添付ファイル閲覧(必要ならmailcapエントリ使用)"
 
-#: opcodes.h:260
+#: opcodes.h:259
 msgid "show MIME attachments"
 msgstr "MIME 添付ファイルを表示"
 
-#: opcodes.h:261
+#: opcodes.h:260
 #, fuzzy
 msgid "show the raw message"
 msgstr "生のメッセージを編集"
 
-#: opcodes.h:262
+#: opcodes.h:261
 msgid "display the keycode for a key press"
 msgstr "次に押すキーのコードを表示"
 
-#: opcodes.h:265
+#: opcodes.h:264
 msgid "make decrypted copy"
 msgstr "復号化したコピーを作成"
 
-#: opcodes.h:266
+#: opcodes.h:265
 msgid "make decrypted copy and delete"
 msgstr "復号化したコピーを作ってから削除"
 
-#: opcodes.h:267
+#: opcodes.h:266
 msgid "extract supported public keys"
 msgstr "サポートされている公開鍵を抽出"
 
-#: opcodes.h:268
+#: opcodes.h:267
 #, fuzzy
 msgid "wipe passphrases from memory"
 msgstr "パスフレーズをすべてメモリから消去"
 
-#: opcodes.h:272
+#: opcodes.h:271
 msgid "send the message through a mixmaster remailer chain"
 msgstr "mixmaster remailer チェーンを使って送信"
 
-#: opcodes.h:273
+#: opcodes.h:272
 msgid "append a remailer to the chain"
 msgstr "チェーンに remailer を追加"
 
-#: opcodes.h:274
+#: opcodes.h:273
 msgid "select the next element of the chain"
 msgstr "次のチェーンエレメントを選択"
 
-#: opcodes.h:275
+#: opcodes.h:274
 msgid "select the previous element of the chain"
 msgstr "前のチェーンエレメントを選択"
 
-#: opcodes.h:276
+#: opcodes.h:275
 msgid "delete a remailer from the chain"
 msgstr "チェーンから remailer を削除"
 
-#: opcodes.h:277
+#: opcodes.h:276
 msgid "insert a remailer into the chain"
 msgstr "チェーンに remailer を挿入"
 
 # remailer.c の OP_MIX_USE つまり「OK」の説明
-#: opcodes.h:278
+#: opcodes.h:277
 msgid "accept the chain constructed"
 msgstr "構築されたチェーンを受容"
 
-#: opcodes.h:285
+#: opcodes.h:284
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "別のフォルダをオープン"
 
-#: opcodes.h:286
+#: opcodes.h:285
 msgid "read entire thread of the current message"
 msgstr "メッセージに関連したスレッド全体を読む"
 
-#: opcodes.h:287
+#: opcodes.h:286
 msgid "generate virtual folder from query"
 msgstr "クエリからバーチャルフォルダを作成"
 
-#: opcodes.h:288
+#: opcodes.h:287
 msgid "generate a read-only virtual folder from query"
 msgstr "クエリから読み取り専用のバーチャルフォルダを作成"
 
-#: opcodes.h:289
+#: opcodes.h:288
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
-#: opcodes.h:290
+#: opcodes.h:289
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
-#: opcodes.h:296
+#: opcodes.h:295
 msgid "check for classic PGP"
 msgstr "旧形式の PGP をチェック"
 
-#: opcodes.h:297
+#: opcodes.h:296
 msgid "attach a PGP public key"
 msgstr "PGP 公開鍵を添付"
 
-#: opcodes.h:298
+#: opcodes.h:297
 msgid "show PGP options"
 msgstr "PGP オプションを表示"
 
-#: opcodes.h:299
+#: opcodes.h:298
 msgid "mail a PGP public key"
 msgstr "PGP 公開鍵をメール送信"
 
-#: opcodes.h:300
+#: opcodes.h:299
 msgid "verify a PGP public key"
 msgstr "PGP 公開鍵を検証"
 
-#: opcodes.h:301
+#: opcodes.h:300
 msgid "view the key's user id"
 msgstr "鍵のユーザ ID を表示"
 
-#: opcodes.h:304
+#: opcodes.h:303
 #, fuzzy
 msgid "move the highlight to the first mailbox"
 msgstr "(サイドバー) 次のメールボックスを選択"
 
-#: opcodes.h:305
+#: opcodes.h:304
 #, fuzzy
 msgid "move the highlight to the last mailbox"
 msgstr "(サイドバー) 次のメールボックスを選択"
 
-#: opcodes.h:306
+#: opcodes.h:305
 msgid "move the highlight to next mailbox"
 msgstr "(サイドバー) 次のメールボックスを選択"
 
-#: opcodes.h:307
+#: opcodes.h:306
 msgid "move the highlight to next mailbox with new mail"
 msgstr "(サイドバー) 次の新着ありメールボックスを選択"
 
-#: opcodes.h:308
+#: opcodes.h:307
 msgid "open highlighted mailbox"
 msgstr "(サイドバー) 選択したメールボックスをオープン"
 
-#: opcodes.h:309
+#: opcodes.h:308
 msgid "scroll the sidebar down 1 page"
 msgstr "(サイドバー) 1ページ下にスクロール"
 
-#: opcodes.h:310
+#: opcodes.h:309
 msgid "scroll the sidebar up 1 page"
 msgstr "(サイドバー) 1ページ上にスクロール"
 
-#: opcodes.h:311
+#: opcodes.h:310
 msgid "move the highlight to previous mailbox"
 msgstr "(サイドバー) 前のメールボックスを選択"
 
-#: opcodes.h:312
+#: opcodes.h:311
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "(サイドバー) 前の新着ありメールボックスを選択"
 
-#: opcodes.h:313
+#: opcodes.h:312
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "閲覧法を「メールボックス/全ファイル」間で切替"
 
-#: opcodes.h:314
+#: opcodes.h:313
 msgid "make the sidebar (in)visible"
 msgstr "サイドバーを(不)可にする"
 
-#: opcodes.h:317
+#: opcodes.h:316
 msgid "show S/MIME options"
 msgstr "S/MIME オプションを表示"
+
+#: opcodes.h:319
+msgid "null operation"
+msgstr "動作の指定がない"
 
 #: pager.c:214
 msgid "Not available in this menu"
@@ -6906,13 +6906,13 @@ msgstr "整列機能が見つからなかった [このバグを報告せよ]"
 msgid "(no mailbox)"
 msgstr "(メールボックスがない)"
 
-#: version.c:81
+#: version.c:85
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
 
-#: version.c:85
+#: version.c:89
 #, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
@@ -6943,7 +6943,7 @@ msgstr ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
-#: version.c:101
+#: version.c:105
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -6951,7 +6951,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:108
+#: version.c:112
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -6959,12 +6959,12 @@ msgid ""
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 
-#: version.c:508
+#: version.c:526
 #, fuzzy
 msgid "Default options:"
 msgstr "コンパイル時オプション:"
 
-#: version.c:511
+#: version.c:529
 msgid "Compile options:"
 msgstr "コンパイル時オプション:"
 

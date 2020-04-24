@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-04-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-04-17 11:38+0100\n"
+"POT-Creation-Date: 2020-04-24 16:26+0100\n"
 "PO-Revision-Date: 2019-05-10 21:15+0200\n"
 "Last-Translator: Morten Bo Johansen <mbj@mbjnet.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -1943,7 +1943,7 @@ msgstr "Kan ikke åbne brev: %s"
 msgid "Can't append to folder: %s"
 msgstr "Kan ikke føje til brevbakke: %s"
 
-#: email/parse.c:1479
+#: email/parse.c:1480
 msgid "multipart message has no boundary parameter"
 msgstr "brev med flere dele har ingen \"boundary\"-parameter"
 
@@ -2491,7 +2491,7 @@ msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Kopierer %d breve til %s ..."
 msgstr[1] "Kopierer %d breve til %s ..."
 
-#: imap/imap.c:1606 imap/imap.c:2262 imap/message.c:1729 muttlib.c:1494
+#: imap/imap.c:1606 imap/imap.c:2264 imap/message.c:1729 muttlib.c:1494
 #, c-format
 msgid "Create %s?"
 msgstr "Opret %s?"
@@ -2530,21 +2530,21 @@ msgstr "Sletter breve på server ..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE slog fejl"
 
-#: imap/imap.c:2066 nntp/nntp.c:2488
+#: imap/imap.c:2068 nntp/nntp.c:2488
 #, c-format
 msgid "Selecting %s..."
 msgstr "Vælger %s ..."
 
-#: imap/imap.c:2229
+#: imap/imap.c:2231
 msgid "Error opening mailbox"
 msgstr "Fejl ved åbning af brevbakke"
 
-#: imap/imap.c:2378
+#: imap/imap.c:2380
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "SMTP-server understøtter ikke godkendelse"
 
-#: imap/imap.c:2422
+#: imap/imap.c:2424
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Ugyldigt   "
@@ -5008,1072 +5008,1072 @@ msgid "show autocrypt compose menu options"
 msgstr "vis menuvalg for autocrypt i compose-menuen"
 
 #: opcodes.h:40
-msgid "null operation"
-msgstr "tom funktion"
-
-#: opcodes.h:41
 msgid "toggle display of subparts"
 msgstr "Slå visning af underdele fra eller til"
 
-#: opcodes.h:42
+#: opcodes.h:41
 msgid "force viewing of attachment using mailcap"
 msgstr "fremtving visning af denne del ved brug af mailcap"
 
-#: opcodes.h:43
+#: opcodes.h:42
 msgid "view attachment as text"
 msgstr "vis denne del som tekst"
 
-#: opcodes.h:44
+#: opcodes.h:43
 msgid "move to the bottom of the page"
 msgstr "gå til bunden af siden"
 
-#: opcodes.h:45
+#: opcodes.h:44
 msgid "remail a message to another user"
 msgstr "videresend et brev til en anden modtager"
 
-#: opcodes.h:46
+#: opcodes.h:45
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
-#: opcodes.h:47
+#: opcodes.h:46
 msgid "select a new file in this directory"
 msgstr "vælg en ny fil i dette filkatalog"
 
-#: opcodes.h:48
+#: opcodes.h:47
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "abonnér på aktuelle brevbakke (kun IMAP)"
 
-#: opcodes.h:49
+#: opcodes.h:48
 msgid "display the currently selected file's name"
 msgstr "vis navnet på den aktuelt valgte fil"
 
-#: opcodes.h:50
+#: opcodes.h:49
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "skift mellem visning af alle/abonnerede postbakker (kun IMAP)"
 
-#: opcodes.h:51
+#: opcodes.h:50
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "afmeld abonnement på aktuelle brevbakke (kun IMAP)"
 
-#: opcodes.h:52
+#: opcodes.h:51
 msgid "view file"
 msgstr "vis fil"
 
-#: opcodes.h:53
+#: opcodes.h:52
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
-#: opcodes.h:54
+#: opcodes.h:53
 msgid "change directories"
 msgstr "skift filkatalog"
 
-#: opcodes.h:55
+#: opcodes.h:54
 msgid "check mailboxes for new mail"
 msgstr "undersøg brevbakker for nye breve"
 
-#: opcodes.h:56
+#: opcodes.h:55
 #, fuzzy
 msgid "calculate message statistics for all mailboxes"
 msgstr "gem brev/brevdel i en brevbakke/fil"
 
-#: opcodes.h:57
+#: opcodes.h:56
 #, fuzzy
 msgid "attach files to this message"
 msgstr "vedlæg fil(er) til dette brev"
 
-#: opcodes.h:58
+#: opcodes.h:57
 #, fuzzy
 msgid "attach messages to this message"
 msgstr "vedlæg breve til dette brev"
 
-#: opcodes.h:59
+#: opcodes.h:58
 #, fuzzy
 msgid "attach news articles to this message"
 msgstr "vedlæg fil(er) til dette brev"
 
-#: opcodes.h:60
+#: opcodes.h:59
 msgid "edit the BCC list"
 msgstr "ret i Bcc-listen"
 
-#: opcodes.h:61
+#: opcodes.h:60
 msgid "edit the CC list"
 msgstr "ret i Cc-listen"
 
-#: opcodes.h:62
+#: opcodes.h:61
 msgid "edit attachment description"
 msgstr "ret brevdelens beskrivelse"
 
-#: opcodes.h:63
+#: opcodes.h:62
 msgid "edit attachment transfer-encoding"
 msgstr "ret brevdelens indkodning"
 
-#: opcodes.h:64
+#: opcodes.h:63
 msgid "enter a file to save a copy of this message in"
 msgstr "kopiér dette brev til fil"
 
-#: opcodes.h:65
+#: opcodes.h:64
 msgid "edit the file to be attached"
 msgstr "redigér i den fil der skal vedlægges"
 
-#: opcodes.h:66
+#: opcodes.h:65
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "ret Reply-To-feltet"
 
-#: opcodes.h:67
+#: opcodes.h:66
 msgid "edit the from field"
 msgstr "ret afsender (from:)"
 
-#: opcodes.h:68
+#: opcodes.h:67
 msgid "edit the message with headers"
 msgstr "redigér brevet med brevhoved"
 
-#: opcodes.h:69
+#: opcodes.h:68
 #, fuzzy
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "redigér i den fil der skal vedlægges"
 
-#: opcodes.h:70
+#: opcodes.h:69
 msgid "edit the message"
 msgstr "redigér brev"
 
-#: opcodes.h:71
+#: opcodes.h:70
 msgid "edit attachment using mailcap entry"
 msgstr "redigér brevdel efter mailcap-regel"
 
-#: opcodes.h:72
+#: opcodes.h:71
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "ret i Cc-listen"
 
-#: opcodes.h:73
+#: opcodes.h:72
 msgid "edit the Reply-To field"
 msgstr "ret Reply-To-feltet"
 
-#: opcodes.h:74
+#: opcodes.h:73
 msgid "edit the subject of this message"
 msgstr "ret dette brevs emne (Subject:)"
 
-#: opcodes.h:75
+#: opcodes.h:74
 msgid "edit the TO list"
 msgstr "ret listen over modtagere (To:)"
 
-#: opcodes.h:76
+#: opcodes.h:75
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "ret Reply-To-feltet"
 
-#: opcodes.h:77
+#: opcodes.h:76
 msgid "get a temporary copy of an attachment"
 msgstr "lav en midlertidig kopi af en brevdel"
 
-#: opcodes.h:78
+#: opcodes.h:77
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr ""
 
-#: opcodes.h:79
+#: opcodes.h:78
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr ""
 
-#: opcodes.h:80
+#: opcodes.h:79
 msgid "run ispell on the message"
 msgstr "stavekontrollér brevet"
 
-#: opcodes.h:81
+#: opcodes.h:80
 #, fuzzy
 msgid "move an attachment down in the attachment list"
 msgstr "Send bilag med navn: "
 
-#: opcodes.h:82
+#: opcodes.h:81
 #, fuzzy
 msgid "move an attachment up in the attachment list"
 msgstr "Send bilag med navn: "
 
-#: opcodes.h:83
+#: opcodes.h:82
 msgid "compose new attachment using mailcap entry"
 msgstr "lav en ny brevdel efter mailcap-regel"
 
-#: opcodes.h:84
+#: opcodes.h:83
 msgid "save this message to send later"
 msgstr "gem dette brev til senere forsendelse"
 
-#: opcodes.h:85
+#: opcodes.h:84
 msgid "send attachment with a different name"
 msgstr "send bilag med et andet navn"
 
-#: opcodes.h:86
+#: opcodes.h:85
 msgid "rename/move an attached file"
 msgstr "omdøb/flyt en vedlagt fil"
 
-#: opcodes.h:87
+#: opcodes.h:86
 msgid "send the message"
 msgstr "send brevet"
 
-#: opcodes.h:88
+#: opcodes.h:87
 msgid "toggle disposition between inline/attachment"
 msgstr "skift status mellem integreret og bilagt"
 
-#: opcodes.h:89
+#: opcodes.h:88
 msgid "toggle recoding of this attachment"
 msgstr "slå omkodning af denne brevdel til/fra"
 
-#: opcodes.h:90
+#: opcodes.h:89
 msgid "toggle whether to delete file after sending it"
 msgstr "vælg om filen skal slettes efter afsendelse"
 
-#: opcodes.h:91
+#: opcodes.h:90
 #, fuzzy
 msgid "compose new message to the current message sender"
 msgstr "skriv et nyt brev"
 
-#: opcodes.h:92
+#: opcodes.h:91
 msgid "update an attachment's encoding info"
 msgstr "opdatér data om brevdelens indkodning"
 
-#: opcodes.h:93
+#: opcodes.h:92
 msgid "write the message to a folder"
 msgstr "læg brevet i en brevbakke"
 
-#: opcodes.h:94
+#: opcodes.h:93
 msgid "copy a message to a file/mailbox"
 msgstr "kopiér brev til en fil/brevbakke"
 
-#: opcodes.h:95
+#: opcodes.h:94
 msgid "create an alias from a message sender"
 msgstr "opret et alias fra afsenderadresse"
 
-#: opcodes.h:96
+#: opcodes.h:95
 msgid "create a new mailbox (IMAP only)"
 msgstr "opret en ny brevbakke (kun IMAP)"
 
-#: opcodes.h:97
+#: opcodes.h:96
 msgid "move entry to bottom of screen"
 msgstr "flyt element til bunden af skærmen"
 
-#: opcodes.h:98
+#: opcodes.h:97
 msgid "move entry to middle of screen"
 msgstr "flyt element til midten af skærmen"
 
-#: opcodes.h:99
+#: opcodes.h:98
 msgid "move entry to top of screen"
 msgstr "flyt element til bunden af skærmen"
 
-#: opcodes.h:100
+#: opcodes.h:99
 msgid "make decoded (text/plain) copy"
 msgstr "lav en afkodet kopi (text/plain)"
 
-#: opcodes.h:101
+#: opcodes.h:100
 msgid "make decoded copy (text/plain) and delete"
 msgstr "lav en afkodet kopi (text/plain) og slet"
 
-#: opcodes.h:102
+#: opcodes.h:101
 msgid "delete the current entry"
 msgstr "slet den aktuelle listning"
 
-#: opcodes.h:103
+#: opcodes.h:102
 msgid "delete the current mailbox (IMAP only)"
 msgstr "slet den aktuelle brevbakke (kun IMAP)"
 
-#: opcodes.h:104
+#: opcodes.h:103
 msgid "delete all messages in subthread"
 msgstr "slet alle breve i deltråd"
 
-#: opcodes.h:105
+#: opcodes.h:104
 msgid "delete all messages in thread"
 msgstr "slet alle breve i tråd"
 
-#: opcodes.h:106
+#: opcodes.h:105
 msgid "descend into a directory"
 msgstr "gå ned i et katalog"
 
-#: opcodes.h:107
+#: opcodes.h:106
 msgid "display full address of sender"
 msgstr "vis fuld afsenderadresse"
 
-#: opcodes.h:108
+#: opcodes.h:107
 msgid "display message and toggle header weeding"
 msgstr "fremvis brev med helt eller beskåret brevhoved"
 
-#: opcodes.h:109
+#: opcodes.h:108
 msgid "display a message"
 msgstr "fremvis et brev"
 
-#: opcodes.h:110
+#: opcodes.h:109
 msgid "delete the char in front of the cursor"
 msgstr "slet tegnet foran markøren"
 
-#: opcodes.h:111
+#: opcodes.h:110
 msgid "move the cursor one character to the left"
 msgstr "flyt markøren et tegn til venstre"
 
-#: opcodes.h:112
+#: opcodes.h:111
 msgid "move the cursor to the beginning of the word"
 msgstr "flyt markøren til begyndelse af ord"
 
-#: opcodes.h:113
+#: opcodes.h:112
 msgid "jump to the beginning of the line"
 msgstr "gå til begyndelsen af linje"
 
-#: opcodes.h:114
+#: opcodes.h:113
 msgid "capitalize the word"
 msgstr "skriv ord med stort begyndelsesbogstav"
 
-#: opcodes.h:115
+#: opcodes.h:114
 msgid "complete filename or alias"
 msgstr "færdiggør filnavn eller alias"
 
-#: opcodes.h:116
+#: opcodes.h:115
 msgid "complete address with query"
 msgstr "færdiggør adresse ved forespørgsel"
 
-#: opcodes.h:117
+#: opcodes.h:116
 msgid "delete the char under the cursor"
 msgstr "slet tegnet under markøren"
 
-#: opcodes.h:118
+#: opcodes.h:117
 msgid "convert the word to lower case"
 msgstr "skriv ord med små bogstaver"
 
-#: opcodes.h:119
+#: opcodes.h:118
 msgid "jump to the end of the line"
 msgstr "gå til linjeslut"
 
-#: opcodes.h:120
+#: opcodes.h:119
 msgid "move the cursor one character to the right"
 msgstr "flyt markøren et tegn til højre"
 
-#: opcodes.h:121
+#: opcodes.h:120
 msgid "move the cursor to the end of the word"
 msgstr "flyt markøren til slutning af ord"
 
-#: opcodes.h:122
+#: opcodes.h:121
 msgid "scroll down through the history list"
 msgstr "gå ned igennem historik-listen"
 
-#: opcodes.h:123
+#: opcodes.h:122
 msgid "search through the history list"
 msgstr "gennemsøg historik-listen"
 
-#: opcodes.h:124
+#: opcodes.h:123
 msgid "scroll up through the history list"
 msgstr "gå op igennem historik-listen"
 
-#: opcodes.h:125
+#: opcodes.h:124
 msgid "delete chars from cursor to end of line"
 msgstr "slet alle tegn til linjeafslutning"
 
-#: opcodes.h:126
+#: opcodes.h:125
 msgid "delete chars from the cursor to the end of the word"
 msgstr "slet resten af ord fra markørens position"
 
-#: opcodes.h:127
+#: opcodes.h:126
 msgid "delete all chars on the line"
 msgstr "slet linje"
 
-#: opcodes.h:128
+#: opcodes.h:127
 msgid "delete the word in front of the cursor"
 msgstr "slet ord foran markør"
 
-#: opcodes.h:129
+#: opcodes.h:128
 msgid "cycle among incoming mailboxes"
 msgstr "gennemløb indbakker"
 
-#: opcodes.h:130
+#: opcodes.h:129
 msgid "quote the next typed key"
 msgstr "citér den næste tast"
 
-#: opcodes.h:131
+#: opcodes.h:130
 msgid "transpose character under cursor with previous"
 msgstr "udskift tegn under markøren med forrige"
 
-#: opcodes.h:132
+#: opcodes.h:131
 msgid "convert the word to upper case"
 msgstr "skriv ord med store bogstaver"
 
-#: opcodes.h:133
+#: opcodes.h:132
 msgid "add, change, or delete a message's label"
 msgstr "tilføj, ændr eller slet en beskeds etiket"
 
-#: opcodes.h:134
+#: opcodes.h:133
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr ""
 
-#: opcodes.h:135
+#: opcodes.h:134
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr ""
 
-#: opcodes.h:136
+#: opcodes.h:135
 msgid "edit attachment content type"
 msgstr "ret brevdelens \"content-type\""
 
-#: opcodes.h:137
+#: opcodes.h:136
 msgid "end of conditional execution (noop)"
 msgstr "slut på betinget udførelse (noop)"
 
-#: opcodes.h:138
+#: opcodes.h:137
 msgid "enter a neomuttrc command"
 msgstr "skriv en neomuttrc-kommando"
 
-#: opcodes.h:139
+#: opcodes.h:138
 msgid "enter a file mask"
 msgstr "skriv en filmaske"
 
-#: opcodes.h:140
+#: opcodes.h:139
 msgid "exit this menu"
 msgstr "forlad denne menu"
 
-#: opcodes.h:141
+#: opcodes.h:140
 msgid "filter attachment through a shell command"
 msgstr "filtrér brevdel gennem en skalkommando"
 
-#: opcodes.h:142
+#: opcodes.h:141
 msgid "move to the first entry"
 msgstr "gå til den første listning"
 
-#: opcodes.h:143
+#: opcodes.h:142
 msgid "toggle a message's 'important' flag"
 msgstr "markér brev som vigtig/fjern markering"
 
-#: opcodes.h:144
+#: opcodes.h:143
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "Opfølg til %s%s?"
 
-#: opcodes.h:145
+#: opcodes.h:144
 msgid "forward a message with comments"
 msgstr "videresend et brev med kommentarer"
 
-#: opcodes.h:146
+#: opcodes.h:145
 msgid "forward to newsgroup"
 msgstr ""
 
-#: opcodes.h:147
+#: opcodes.h:146
 msgid "select the current entry"
 msgstr "vælg den aktuelle listning"
 
-#: opcodes.h:148
+#: opcodes.h:147
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "lav en genvejstast-makro for det aktuelle brev"
 
-#: opcodes.h:149
+#: opcodes.h:148
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "redigér brevet med brevhoved"
 
-#: opcodes.h:150
+#: opcodes.h:149
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "lav en genvejstast-makro for det aktuelle brev"
 
-#: opcodes.h:151
+#: opcodes.h:150
 #, fuzzy
 msgid "go to parent directory"
 msgstr "%s er ikke et filkatalog."
 
-#: opcodes.h:152
+#: opcodes.h:151
 msgid "reply to all recipients preserving To/Cc"
 msgstr "svar til alle modtagere og bevar To/Cc"
 
-#: opcodes.h:153
+#: opcodes.h:152
 msgid "reply to all recipients"
 msgstr "svar til alle modtagere"
 
-#: opcodes.h:154
+#: opcodes.h:153
 msgid "scroll down 1/2 page"
 msgstr "gå ½ side ned"
 
-#: opcodes.h:155
+#: opcodes.h:154
 msgid "scroll up 1/2 page"
 msgstr "gå ½ side op"
 
-#: opcodes.h:156
+#: opcodes.h:155
 msgid "this screen"
 msgstr "dette skærmbillede"
 
-#: opcodes.h:157
+#: opcodes.h:156
 msgid "jump to an index number"
 msgstr "gå til et indeksnummer"
 
-#: opcodes.h:158
+#: opcodes.h:157
 msgid "move to the last entry"
 msgstr "gå til den sidste listning"
 
-#: opcodes.h:159
+#: opcodes.h:158
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "markér den aktuelle tråd"
 
-#: opcodes.h:160
+#: opcodes.h:159
 msgid "reply to specified mailing list"
 msgstr "svar til en angivet postliste"
 
-#: opcodes.h:161
+#: opcodes.h:160
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
-#: opcodes.h:162
+#: opcodes.h:161
 msgid "execute a macro"
 msgstr "udfør makro"
 
-#: opcodes.h:163
+#: opcodes.h:162
 msgid "compose a new mail message"
 msgstr "skriv et nyt brev"
 
-#: opcodes.h:164
+#: opcodes.h:163
 msgid "list mailboxes with new mail"
 msgstr "oplist brevbakker med nye breve"
 
-#: opcodes.h:165
+#: opcodes.h:164
 msgid "break the thread in two"
 msgstr "del tråden i to"
 
-#: opcodes.h:166
+#: opcodes.h:165
 msgid "open a different folder"
 msgstr "åbn en anden brevbakke"
 
-#: opcodes.h:167
+#: opcodes.h:166
 msgid "open a different folder in read only mode"
 msgstr "åbn en anden brevbakke som skrivebeskyttet"
 
-#: opcodes.h:168
+#: opcodes.h:167
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "åbn en anden brevbakke"
 
-#: opcodes.h:169
+#: opcodes.h:168
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "åbn en anden brevbakke som skrivebeskyttet"
 
-#: opcodes.h:170
+#: opcodes.h:169
 msgid "clear a status flag from a message"
 msgstr "fjern statusindikator fra brev"
 
-#: opcodes.h:171
+#: opcodes.h:170
 msgid "collapse/uncollapse all threads"
 msgstr "sammen-/udfold alle tråde"
 
-#: opcodes.h:172
+#: opcodes.h:171
 msgid "collapse/uncollapse current thread"
 msgstr "sammen-/udfold den aktuelle tråd"
 
-#: opcodes.h:173
+#: opcodes.h:172
 msgid "delete messages matching a pattern"
 msgstr "slet breve efter mønster"
 
-#: opcodes.h:174
+#: opcodes.h:173
 msgid "retrieve mail from POP server"
 msgstr "hent post fra POP-server"
 
-#: opcodes.h:175
+#: opcodes.h:174
 msgid "force retrieval of mail from IMAP server"
 msgstr "hent post fra IMAP-server nu"
 
-#: opcodes.h:176
+#: opcodes.h:175
 msgid "logout from all IMAP servers"
 msgstr "log ud fra alle IMAP-servere"
 
-#: opcodes.h:177
+#: opcodes.h:176
 msgid "show only messages matching a pattern"
 msgstr "vis kun breve, der matcher et mønster"
 
-#: opcodes.h:178
+#: opcodes.h:177
 msgid "link tagged message to the current one"
 msgstr "sammenkæd markeret brev med det aktuelle"
 
-#: opcodes.h:179
+#: opcodes.h:178
 msgid "modify (notmuch/imap) tags"
 msgstr ""
 
-#: opcodes.h:180
+#: opcodes.h:179
 #, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "Du er ved første brev."
 
-#: opcodes.h:181
+#: opcodes.h:180
 msgid "jump to the next new message"
 msgstr "hop til det næste nye brev"
 
-#: opcodes.h:182
+#: opcodes.h:181
 msgid "jump to the next new or unread message"
 msgstr "hop til næste nye eller ulæste brev"
 
-#: opcodes.h:183
+#: opcodes.h:182
 msgid "jump to the next subthread"
 msgstr "hop til næste deltråd"
 
-#: opcodes.h:184
+#: opcodes.h:183
 msgid "jump to the next thread"
 msgstr "hop til næste tråd"
 
-#: opcodes.h:185
+#: opcodes.h:184
 msgid "move to the next undeleted message"
 msgstr "hop til næste ikke-slettede brev"
 
-#: opcodes.h:186
+#: opcodes.h:185
 msgid "jump to the next unread message"
 msgstr "hop til næste ulæste brev"
 
-#: opcodes.h:187
+#: opcodes.h:186
 msgid "open next mailbox with new mail"
 msgstr "åbn næste brevbakke med nye breve"
 
-#: opcodes.h:188
+#: opcodes.h:187
 msgid "jump to parent message in thread"
 msgstr "hop til forrige brev i tråden"
 
-#: opcodes.h:189
+#: opcodes.h:188
 msgid "jump to the previous new message"
 msgstr "hop til forrige nye brev"
 
-#: opcodes.h:190
+#: opcodes.h:189
 msgid "jump to the previous new or unread message"
 msgstr "hop til forrige nye eller ulæste brev"
 
-#: opcodes.h:191
+#: opcodes.h:190
 msgid "jump to previous subthread"
 msgstr "hop til forrige deltråd"
 
-#: opcodes.h:192
+#: opcodes.h:191
 msgid "jump to previous thread"
 msgstr "hop til forrige tråd"
 
-#: opcodes.h:193
+#: opcodes.h:192
 msgid "move to the previous undeleted message"
 msgstr "hop til forrige ikke-slettede brev"
 
-#: opcodes.h:194
+#: opcodes.h:193
 msgid "jump to the previous unread message"
 msgstr "hop til forrige ulæste brev"
 
-#: opcodes.h:195
+#: opcodes.h:194
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr ""
 
-#: opcodes.h:196
+#: opcodes.h:195
 msgid "mark the current subthread as read"
 msgstr "markér den aktuelle deltråd som læst"
 
-#: opcodes.h:197
+#: opcodes.h:196
 msgid "mark the current thread as read"
 msgstr "markér den aktuelle tråd som læst"
 
-#: opcodes.h:198
+#: opcodes.h:197
 msgid "jump to root message in thread"
 msgstr "hop til første brev i tråden"
 
-#: opcodes.h:199
+#: opcodes.h:198
 msgid "set a status flag on a message"
 msgstr "sæt en statusindikator på et brev"
 
-#: opcodes.h:200
+#: opcodes.h:199
 msgid "show currently active limit pattern"
 msgstr "vis det aktive afgrænsningsmønster"
 
-#: opcodes.h:201
+#: opcodes.h:200
 msgid "save changes to mailbox"
 msgstr "gem ændringer i brevbakke"
 
-#: opcodes.h:202
+#: opcodes.h:201
 msgid "tag messages matching a pattern"
 msgstr "udvælg breve efter et mønster"
 
-#: opcodes.h:203
+#: opcodes.h:202
 msgid "undelete messages matching a pattern"
 msgstr "fjern slet-markering efter mønster"
 
-#: opcodes.h:204
+#: opcodes.h:203
 msgid "untag messages matching a pattern"
 msgstr "fjern valg efter mønster"
 
-#: opcodes.h:205
+#: opcodes.h:204
 msgid "create a hotkey macro for the current message"
 msgstr "lav en genvejstast-makro for det aktuelle brev"
 
-#: opcodes.h:206
+#: opcodes.h:205
 msgid "move to the middle of the page"
 msgstr "gå til midten af siden"
 
-#: opcodes.h:207
+#: opcodes.h:206
 msgid "move to the next entry"
 msgstr "gå til næste listning"
 
-#: opcodes.h:208
+#: opcodes.h:207
 msgid "scroll down one line"
 msgstr "flyt en linje ned"
 
-#: opcodes.h:209
+#: opcodes.h:208
 msgid "move to the next page"
 msgstr "gå til næste side"
 
-#: opcodes.h:210
+#: opcodes.h:209
 msgid "jump to the bottom of the message"
 msgstr "gå til bunden af brevet"
 
-#: opcodes.h:211
+#: opcodes.h:210
 msgid "toggle display of quoted text"
 msgstr "vælg om citeret tekst skal vises"
 
-#: opcodes.h:212
+#: opcodes.h:211
 msgid "skip beyond quoted text"
 msgstr "gå forbi citeret tekst"
 
-#: opcodes.h:213
+#: opcodes.h:212
 msgid "jump to the top of the message"
 msgstr "gå til toppen af brevet"
 
-#: opcodes.h:214
+#: opcodes.h:213
 msgid "pipe message/attachment to a shell command"
 msgstr "overfør brev/brevdel til en skalkommando"
 
-#: opcodes.h:215
+#: opcodes.h:214
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "Ingen brev-ID for makro."
 
-#: opcodes.h:216
+#: opcodes.h:215
 msgid "move to the previous entry"
 msgstr "gå til forrige listning"
 
-#: opcodes.h:217
+#: opcodes.h:216
 msgid "scroll up one line"
 msgstr "flyt en linje op"
 
-#: opcodes.h:218
+#: opcodes.h:217
 msgid "move to the previous page"
 msgstr "gå til den forrige side"
 
-#: opcodes.h:219
+#: opcodes.h:218
 msgid "print the current entry"
 msgstr "udskriv den aktuelle listning"
 
-#: opcodes.h:220
+#: opcodes.h:219
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "slet det aktuelle brev uden om papirkurven"
 
-#: opcodes.h:221
+#: opcodes.h:220
 #, fuzzy
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "skal den aktuelle listning virkelig slettes, uden om papirkurven?"
 
-#: opcodes.h:222
+#: opcodes.h:221
 msgid "query external program for addresses"
 msgstr "send adresse-forespørgsel til hjælpeprogram"
 
-#: opcodes.h:223
+#: opcodes.h:222
 msgid "append new query results to current results"
 msgstr "føj nye resultater af forespørgsel til de aktuelle resultater"
 
-#: opcodes.h:224
+#: opcodes.h:223
 msgid "save changes to mailbox and quit"
 msgstr "gem ændringer i brevbakke og afslut"
 
-#: opcodes.h:225
+#: opcodes.h:224
 msgid "recall a postponed message"
 msgstr "genindlæs et tilbageholdt brev"
 
-#: opcodes.h:226
+#: opcodes.h:225
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "Tråden indeholder ulæste breve."
 
-#: opcodes.h:227
+#: opcodes.h:226
 msgid "clear and redraw the screen"
 msgstr "ryd og opfrisk skærmen"
 
-#: opcodes.h:228
+#: opcodes.h:227
 msgid "{internal}"
 msgstr "{intern}"
 
-#: opcodes.h:229
+#: opcodes.h:228
 msgid "rename the current mailbox (IMAP only)"
 msgstr "omdøb den aktuelle brevbakke (kun IMAP)"
 
-#: opcodes.h:230
+#: opcodes.h:229
 msgid "reply to a message"
 msgstr "svar på et brev"
 
-#: opcodes.h:231
+#: opcodes.h:230
 msgid "use the current message as a template for a new one"
 msgstr "brug det aktuelle brev som forlæg for et nyt"
 
-#: opcodes.h:232
+#: opcodes.h:231
 msgid "save message/attachment to a mailbox/file"
 msgstr "gem brev/brevdel i en brevbakke/fil"
 
-#: opcodes.h:233
+#: opcodes.h:232
 msgid "search for a regular expression"
 msgstr "søg efter et regulært udtryk"
 
-#: opcodes.h:234
+#: opcodes.h:233
 msgid "search for next match"
 msgstr "søg efter næste resultat"
 
-#: opcodes.h:235
+#: opcodes.h:234
 msgid "search for next match in opposite direction"
 msgstr "søg efter næste resultat i modsat retning"
 
-#: opcodes.h:236
+#: opcodes.h:235
 msgid "search backwards for a regular expression"
 msgstr "søg baglæns efter et regulært udtryk"
 
-#: opcodes.h:237
+#: opcodes.h:236
 msgid "toggle search pattern coloring"
 msgstr "vælg om fundne søgningsmønstre skal farves"
 
-#: opcodes.h:238
+#: opcodes.h:237
 msgid "invoke a command in a subshell"
 msgstr "kør en kommando i en under-skal"
 
-#: opcodes.h:239
+#: opcodes.h:238
 #, fuzzy
 msgid "show log (and debug) messages"
 msgstr "sortér breve"
 
-#: opcodes.h:240
+#: opcodes.h:239
 msgid "sort messages"
 msgstr "sortér breve"
 
-#: opcodes.h:241
+#: opcodes.h:240
 msgid "sort messages in reverse order"
 msgstr "sortér breve i omvendt rækkefølge"
 
-#: opcodes.h:242
+#: opcodes.h:241
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "fjern valg efter mønster"
 
-#: opcodes.h:243
+#: opcodes.h:242
 msgid "tag the current entry"
 msgstr "udvælg den aktuelle listning"
 
-#: opcodes.h:244
+#: opcodes.h:243
 msgid "apply next function to tagged messages"
 msgstr "anvend næste funktion på de udvalgte breve"
 
-#: opcodes.h:245
+#: opcodes.h:244
 msgid "apply next function ONLY to tagged messages"
 msgstr "anvend næste funktion KUN på udvalgte breve"
 
-#: opcodes.h:246
+#: opcodes.h:245
 msgid "tag the current subthread"
 msgstr "markér den aktuelle deltråd"
 
-#: opcodes.h:247
+#: opcodes.h:246
 msgid "tag the current thread"
 msgstr "markér den aktuelle tråd"
 
-#: opcodes.h:248
+#: opcodes.h:247
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "skift mellem visning af brevbakker eller alle filer"
 
-#: opcodes.h:249
+#: opcodes.h:248
 msgid "toggle a message's 'new' flag"
 msgstr "sæt/fjern et brevs \"ny\"-indikator"
 
-#: opcodes.h:250
+#: opcodes.h:249
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "hop til forrige nye eller ulæste brev"
 
-#: opcodes.h:251
+#: opcodes.h:250
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "slå genskrivning af brevbakke til/fra"
 
-#: opcodes.h:252
+#: opcodes.h:251
 msgid "move to the top of the page"
 msgstr "gå til toppen af siden"
 
-#: opcodes.h:253
+#: opcodes.h:252
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
-#: opcodes.h:254
+#: opcodes.h:253
 msgid "undelete the current entry"
 msgstr "fjern slet-markering fra den aktuelle listning"
 
-#: opcodes.h:255
+#: opcodes.h:254
 msgid "undelete all messages in subthread"
 msgstr "fjern slet-markering fra alle breve i deltråd"
 
-#: opcodes.h:256
+#: opcodes.h:255
 msgid "undelete all messages in thread"
 msgstr "fjern slet-markering fra alle breve i tråd"
 
-#: opcodes.h:257
+#: opcodes.h:256
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "fjern valg efter mønster"
 
-#: opcodes.h:258
+#: opcodes.h:257
 msgid "show the NeoMutt version number and date"
 msgstr "vis NeoMutts versionsnummer og dato"
 
-#: opcodes.h:259
+#: opcodes.h:258
 msgid "view attachment using mailcap entry if necessary"
 msgstr "vis brevdel, om nødvendigt ved brug af mailcap"
 
-#: opcodes.h:260
+#: opcodes.h:259
 msgid "show MIME attachments"
 msgstr "vis MIME-dele"
 
-#: opcodes.h:261
+#: opcodes.h:260
 #, fuzzy
 msgid "show the raw message"
 msgstr "redigér det \"rå\" brev"
 
-#: opcodes.h:262
+#: opcodes.h:261
 msgid "display the keycode for a key press"
 msgstr "vis tastekoden for et tastetryk"
 
-#: opcodes.h:265
+#: opcodes.h:264
 msgid "make decrypted copy"
 msgstr "opret dekrypteret kopi"
 
-#: opcodes.h:266
+#: opcodes.h:265
 msgid "make decrypted copy and delete"
 msgstr "opret dekrypteret kopi og slet"
 
-#: opcodes.h:267
+#: opcodes.h:266
 msgid "extract supported public keys"
 msgstr "udtræk understøttede offentlige nøgler"
 
-#: opcodes.h:268
+#: opcodes.h:267
 #, fuzzy
 msgid "wipe passphrases from memory"
 msgstr "fjern løsen(er) fra hukommelse"
 
-#: opcodes.h:272
+#: opcodes.h:271
 msgid "send the message through a mixmaster remailer chain"
 msgstr "send brevet gennem en mixmaster-genposterkæde"
 
-#: opcodes.h:273
+#: opcodes.h:272
 msgid "append a remailer to the chain"
 msgstr "føj en genposter til kæden"
 
-#: opcodes.h:274
+#: opcodes.h:273
 msgid "select the next element of the chain"
 msgstr "vælg kædens næste led"
 
-#: opcodes.h:275
+#: opcodes.h:274
 msgid "select the previous element of the chain"
 msgstr "vælg kædens forrige led"
 
-#: opcodes.h:276
+#: opcodes.h:275
 msgid "delete a remailer from the chain"
 msgstr "slet en genposter fra kæden"
 
-#: opcodes.h:277
+#: opcodes.h:276
 msgid "insert a remailer into the chain"
 msgstr "indsæt en genposter i kæden"
 
-#: opcodes.h:278
+#: opcodes.h:277
 msgid "accept the chain constructed"
 msgstr "acceptér den opbyggede kæde"
 
-#: opcodes.h:285
+#: opcodes.h:284
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "åbn en anden brevbakke"
 
-#: opcodes.h:286
+#: opcodes.h:285
 #, fuzzy
 msgid "read entire thread of the current message"
 msgstr "lav en genvejstast-makro for det aktuelle brev"
 
-#: opcodes.h:287
+#: opcodes.h:286
 msgid "generate virtual folder from query"
 msgstr ""
 
-#: opcodes.h:288
+#: opcodes.h:287
 msgid "generate a read-only virtual folder from query"
 msgstr ""
 
-#: opcodes.h:289
+#: opcodes.h:288
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
-#: opcodes.h:290
+#: opcodes.h:289
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
-#: opcodes.h:296
+#: opcodes.h:295
 msgid "check for classic PGP"
 msgstr "søg efter klassisk pgp"
 
-#: opcodes.h:297
+#: opcodes.h:296
 msgid "attach a PGP public key"
 msgstr "vedlæg en offentlig PGP-nøgle (public key)"
 
-#: opcodes.h:298
+#: opcodes.h:297
 msgid "show PGP options"
 msgstr "vis tilvalg for PGP"
 
-#: opcodes.h:299
+#: opcodes.h:298
 msgid "mail a PGP public key"
 msgstr "send en offentlig PGP-nøgle"
 
-#: opcodes.h:300
+#: opcodes.h:299
 msgid "verify a PGP public key"
 msgstr "verificér en offentlig PGP-nøgle"
 
-#: opcodes.h:301
+#: opcodes.h:300
 msgid "view the key's user id"
 msgstr "vis nøglens bruger-id"
 
-#: opcodes.h:304
+#: opcodes.h:303
 #, fuzzy
 msgid "move the highlight to the first mailbox"
 msgstr "flyt det markerede til den næste brevbakke"
 
-#: opcodes.h:305
+#: opcodes.h:304
 #, fuzzy
 msgid "move the highlight to the last mailbox"
 msgstr "flyt det markerede til den næste brevbakke"
 
-#: opcodes.h:306
+#: opcodes.h:305
 msgid "move the highlight to next mailbox"
 msgstr "flyt det markerede til den næste brevbakke"
 
-#: opcodes.h:307
+#: opcodes.h:306
 msgid "move the highlight to next mailbox with new mail"
 msgstr "flyt det markerede til den næste brevbakke med ny post"
 
-#: opcodes.h:308
+#: opcodes.h:307
 msgid "open highlighted mailbox"
 msgstr "åbner markeret brevbakke"
 
-#: opcodes.h:309
+#: opcodes.h:308
 msgid "scroll the sidebar down 1 page"
 msgstr "gå 1 side ned i sidepanelet"
 
-#: opcodes.h:310
+#: opcodes.h:309
 msgid "scroll the sidebar up 1 page"
 msgstr "gå 1 side op i sidepanelet"
 
-#: opcodes.h:311
+#: opcodes.h:310
 msgid "move the highlight to previous mailbox"
 msgstr "flyt det markerede til den forrige brevbakke"
 
-#: opcodes.h:312
+#: opcodes.h:311
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "flyt det markerede til den forrige brevbakke med ny post"
 
-#: opcodes.h:313
+#: opcodes.h:312
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "skift mellem visning af brevbakker eller alle filer"
 
-#: opcodes.h:314
+#: opcodes.h:313
 msgid "make the sidebar (in)visible"
 msgstr "gør sidepanelet (u)synligt"
 
-#: opcodes.h:317
+#: opcodes.h:316
 msgid "show S/MIME options"
 msgstr "vis tilvalg for S/MIME"
+
+#: opcodes.h:319
+msgid "null operation"
+msgstr "tom funktion"
 
 #: pager.c:214
 msgid "Not available in this menu"
@@ -6904,7 +6904,7 @@ msgstr "Kunne ikke finde sorteringsfunktion [rapportér denne fejl]"
 msgid "(no mailbox)"
 msgstr "(ingen brevbakke)"
 
-#: version.c:81
+#: version.c:85
 #, fuzzy
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
@@ -6913,7 +6913,7 @@ msgstr ""
 "Mange andre, som ikke er nævnt her, har bidraget med kode, rettelser\n"
 "og forslag.\n"
 
-#: version.c:85
+#: version.c:89
 #, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
@@ -6944,7 +6944,7 @@ msgstr ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
-#: version.c:101
+#: version.c:105
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -6952,7 +6952,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:108
+#: version.c:112
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -6964,12 +6964,12 @@ msgstr ""
 "NeoMutt er et frit program, og du er velkommen til at redistribuere det\n"
 "under visse betingelser; tast 'neomutt -vv' for detaljer.\n"
 
-#: version.c:508
+#: version.c:526
 #, fuzzy
 msgid "Default options:"
 msgstr "Tilvalg ved oversættelsen:"
 
-#: version.c:511
+#: version.c:529
 msgid "Compile options:"
 msgstr "Tilvalg ved oversættelsen:"
 

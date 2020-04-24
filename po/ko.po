@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-04-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-04-17 11:38+0100\n"
+"POT-Creation-Date: 2020-04-24 16:26+0100\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -1987,7 +1987,7 @@ msgstr "메세지 파일을 열 수 없음: %s"
 msgid "Can't append to folder: %s"
 msgstr "폴더에 첨가할 수 없음: %s"
 
-#: email/parse.c:1479
+#: email/parse.c:1480
 msgid "multipart message has no boundary parameter"
 msgstr "다중 파트 메일에 경계 변수가 없음"
 
@@ -2535,7 +2535,7 @@ msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d개의 메세지를 %s로 복사 중..."
 
-#: imap/imap.c:1606 imap/imap.c:2262 imap/message.c:1729 muttlib.c:1494
+#: imap/imap.c:1606 imap/imap.c:2264 imap/message.c:1729 muttlib.c:1494
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
@@ -2573,20 +2573,20 @@ msgstr "서버에서 메세지 삭제 중..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: 삭제 실패"
 
-#: imap/imap.c:2066 nntp/nntp.c:2488
+#: imap/imap.c:2068 nntp/nntp.c:2488
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s 선택 중..."
 
-#: imap/imap.c:2229
+#: imap/imap.c:2231
 msgid "Error opening mailbox"
 msgstr "메일함 여는중 오류"
 
-#: imap/imap.c:2378
+#: imap/imap.c:2380
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2422
+#: imap/imap.c:2424
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "무효   "
@@ -5135,1093 +5135,1093 @@ msgid "show autocrypt compose menu options"
 msgstr ""
 
 #: opcodes.h:40
-msgid "null operation"
-msgstr "공백 연산"
-
-#: opcodes.h:41
 msgid "toggle display of subparts"
 msgstr "추가 첨부물의 표시 상태 바꿈"
 
-#: opcodes.h:42
+#: opcodes.h:41
 msgid "force viewing of attachment using mailcap"
 msgstr "mailcap을 사용해 강제로 첨부물을 봄"
 
-#: opcodes.h:43
+#: opcodes.h:42
 msgid "view attachment as text"
 msgstr "첨부물을 text로 보기"
 
-#: opcodes.h:44
+#: opcodes.h:43
 msgid "move to the bottom of the page"
 msgstr "페이지 마지막으로 이동"
 
-#: opcodes.h:45
+#: opcodes.h:44
 msgid "remail a message to another user"
 msgstr "메세지를 다른 사람에게 보냄"
 
-#: opcodes.h:46
+#: opcodes.h:45
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
-#: opcodes.h:47
+#: opcodes.h:46
 msgid "select a new file in this directory"
 msgstr "현재 디렉토리에서 새 파일 선택"
 
-#: opcodes.h:48
+#: opcodes.h:47
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "현재 메일함 가입 (IMAP만 지원)"
 
-#: opcodes.h:49
+#: opcodes.h:48
 msgid "display the currently selected file's name"
 msgstr "현재 선택된 파일의 이름 보기"
 
-#: opcodes.h:50
+#: opcodes.h:49
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "모든/가입된 메일함 보기 선택 (IMAP만 지원)"
 
-#: opcodes.h:51
+#: opcodes.h:50
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "현재 메일함 탈퇴 (IMAP만 지원)"
 
-#: opcodes.h:52
+#: opcodes.h:51
 msgid "view file"
 msgstr "파일 보기"
 
-#: opcodes.h:53
+#: opcodes.h:52
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
-#: opcodes.h:54
+#: opcodes.h:53
 msgid "change directories"
 msgstr "디렉토리 바꾸기"
 
-#: opcodes.h:55
+#: opcodes.h:54
 msgid "check mailboxes for new mail"
 msgstr "메일함의 새 메일 확인"
 
-#: opcodes.h:56
+#: opcodes.h:55
 #, fuzzy
 msgid "calculate message statistics for all mailboxes"
 msgstr "메일/첨부물 파일로 저장"
 
-#: opcodes.h:57
+#: opcodes.h:56
 #, fuzzy
 msgid "attach files to this message"
 msgstr "현재 메세지에 파일 첨부"
 
-#: opcodes.h:58
+#: opcodes.h:57
 #, fuzzy
 msgid "attach messages to this message"
 msgstr "현재 메세지에 메세지 첨부"
 
-#: opcodes.h:59
+#: opcodes.h:58
 #, fuzzy
 msgid "attach news articles to this message"
 msgstr "현재 메세지에 파일 첨부"
 
-#: opcodes.h:60
+#: opcodes.h:59
 msgid "edit the BCC list"
 msgstr "BCC 목록 편집"
 
-#: opcodes.h:61
+#: opcodes.h:60
 msgid "edit the CC list"
 msgstr "CC 목록 편집"
 
-#: opcodes.h:62
+#: opcodes.h:61
 msgid "edit attachment description"
 msgstr "첨부물 설명 편집"
 
-#: opcodes.h:63
+#: opcodes.h:62
 msgid "edit attachment transfer-encoding"
 msgstr "첨부물 전송 부호화 방법 편집"
 
-#: opcodes.h:64
+#: opcodes.h:63
 msgid "enter a file to save a copy of this message in"
 msgstr "현재 메세지의 복사본을 저장할 파일 선택"
 
-#: opcodes.h:65
+#: opcodes.h:64
 msgid "edit the file to be attached"
 msgstr "파일을 고친 후 첨부하기"
 
-#: opcodes.h:66
+#: opcodes.h:65
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "Reply-To 필드 편집"
 
-#: opcodes.h:67
+#: opcodes.h:66
 msgid "edit the from field"
 msgstr "from 필드 편집"
 
-#: opcodes.h:68
+#: opcodes.h:67
 msgid "edit the message with headers"
 msgstr "헤더를 포함한 메세지 편집"
 
-#: opcodes.h:69
+#: opcodes.h:68
 #, fuzzy
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "파일을 고친 후 첨부하기"
 
-#: opcodes.h:70
+#: opcodes.h:69
 msgid "edit the message"
 msgstr "메세지 편집"
 
-#: opcodes.h:71
+#: opcodes.h:70
 msgid "edit attachment using mailcap entry"
 msgstr "mailcap 항목을 사용하여 첨부물 편집"
 
-#: opcodes.h:72
+#: opcodes.h:71
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "CC 목록 편집"
 
-#: opcodes.h:73
+#: opcodes.h:72
 msgid "edit the Reply-To field"
 msgstr "Reply-To 필드 편집"
 
-#: opcodes.h:74
+#: opcodes.h:73
 msgid "edit the subject of this message"
 msgstr "제목 편집"
 
-#: opcodes.h:75
+#: opcodes.h:74
 msgid "edit the TO list"
 msgstr "TO 목록 편집하기"
 
-#: opcodes.h:76
+#: opcodes.h:75
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "Reply-To 필드 편집"
 
-#: opcodes.h:77
+#: opcodes.h:76
 msgid "get a temporary copy of an attachment"
 msgstr "첨부물의 임시 사본 가져옴"
 
-#: opcodes.h:78
+#: opcodes.h:77
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr ""
 
-#: opcodes.h:79
+#: opcodes.h:78
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr ""
 
-#: opcodes.h:80
+#: opcodes.h:79
 msgid "run ispell on the message"
 msgstr "ispell로 메일 검사"
 
-#: opcodes.h:81
+#: opcodes.h:80
 #, fuzzy
 msgid "move an attachment down in the attachment list"
 msgstr "첨부물을 text로 보기"
 
-#: opcodes.h:82
+#: opcodes.h:81
 #, fuzzy
 msgid "move an attachment up in the attachment list"
 msgstr "첨부물을 text로 보기"
 
-#: opcodes.h:83
+#: opcodes.h:82
 msgid "compose new attachment using mailcap entry"
 msgstr "mailcap 항목을 사용해 새로운 첨부물 작성"
 
-#: opcodes.h:84
+#: opcodes.h:83
 msgid "save this message to send later"
 msgstr "현재 메일을 저장 후 나중에 보냄"
 
-#: opcodes.h:85
+#: opcodes.h:84
 #, fuzzy
 msgid "send attachment with a different name"
 msgstr "첨부물 전송 부호화 방법 편집"
 
-#: opcodes.h:86
+#: opcodes.h:85
 msgid "rename/move an attached file"
 msgstr "첨부 파일 이름 변경/이동"
 
-#: opcodes.h:87
+#: opcodes.h:86
 msgid "send the message"
 msgstr "메일 보냄"
 
-#: opcodes.h:88
+#: opcodes.h:87
 msgid "toggle disposition between inline/attachment"
 msgstr "inline 또는 attachment 선택"
 
-#: opcodes.h:89
+#: opcodes.h:88
 msgid "toggle recoding of this attachment"
 msgstr "첨부물의 저장 상태 토글"
 
-#: opcodes.h:90
+#: opcodes.h:89
 msgid "toggle whether to delete file after sending it"
 msgstr "발신 후 파일을 지울지 선택"
 
-#: opcodes.h:91
+#: opcodes.h:90
 #, fuzzy
 msgid "compose new message to the current message sender"
 msgstr "새로운 메일 작성"
 
-#: opcodes.h:92
+#: opcodes.h:91
 msgid "update an attachment's encoding info"
 msgstr "첨부물의 인코딩 정보 다시 읽기"
 
-#: opcodes.h:93
+#: opcodes.h:92
 msgid "write the message to a folder"
 msgstr "메일을 폴더에 저장"
 
-#: opcodes.h:94
+#: opcodes.h:93
 msgid "copy a message to a file/mailbox"
 msgstr "메일을 파일/메일함에 복사"
 
-#: opcodes.h:95
+#: opcodes.h:94
 msgid "create an alias from a message sender"
 msgstr "발신인의 별칭 만들기"
 
-#: opcodes.h:96
+#: opcodes.h:95
 msgid "create a new mailbox (IMAP only)"
 msgstr "새로운 메일함 만듬 (IMAP만 지원)"
 
-#: opcodes.h:97
+#: opcodes.h:96
 msgid "move entry to bottom of screen"
 msgstr "항목을 화면 아래로 이동"
 
-#: opcodes.h:98
+#: opcodes.h:97
 msgid "move entry to middle of screen"
 msgstr "항목을 화면 중간으로 이동"
 
-#: opcodes.h:99
+#: opcodes.h:98
 msgid "move entry to top of screen"
 msgstr "항목을 화면 위로 이동"
 
-#: opcodes.h:100
+#: opcodes.h:99
 msgid "make decoded (text/plain) copy"
 msgstr "text/plain 으로 디코딩후 복사"
 
-#: opcodes.h:101
+#: opcodes.h:100
 msgid "make decoded copy (text/plain) and delete"
 msgstr "text/plain 으로 디코딩후 복사, 지우기"
 
-#: opcodes.h:102
+#: opcodes.h:101
 msgid "delete the current entry"
 msgstr "현재 항목 지움"
 
-#: opcodes.h:103
+#: opcodes.h:102
 msgid "delete the current mailbox (IMAP only)"
 msgstr "현재 메일함을 삭제 (IMAP에서만)"
 
-#: opcodes.h:104
+#: opcodes.h:103
 msgid "delete all messages in subthread"
 msgstr "부속 글타래의 모든 메일 지움"
 
-#: opcodes.h:105
+#: opcodes.h:104
 msgid "delete all messages in thread"
 msgstr "글타래의 모든 메일 지우기"
 
-#: opcodes.h:106
+#: opcodes.h:105
 #, fuzzy
 msgid "descend into a directory"
 msgstr "%s는 디렉토리가 아닙니다"
 
-#: opcodes.h:107
+#: opcodes.h:106
 msgid "display full address of sender"
 msgstr "송신인의 주소 전부 보기"
 
-#: opcodes.h:108
+#: opcodes.h:107
 msgid "display message and toggle header weeding"
 msgstr "메일 출력과 헤더 숨기기 토글"
 
-#: opcodes.h:109
+#: opcodes.h:108
 msgid "display a message"
 msgstr "메일 보기"
 
-#: opcodes.h:110
+#: opcodes.h:109
 msgid "delete the char in front of the cursor"
 msgstr "커서 앞의 글자 지움"
 
-#: opcodes.h:111
+#: opcodes.h:110
 msgid "move the cursor one character to the left"
 msgstr "커서를 한글자 왼쪽으로 보냄"
 
-#: opcodes.h:112
+#: opcodes.h:111
 msgid "move the cursor to the beginning of the word"
 msgstr "단어의 처음으로 이동"
 
-#: opcodes.h:113
+#: opcodes.h:112
 msgid "jump to the beginning of the line"
 msgstr "줄의 처음으로 이동"
 
-#: opcodes.h:114
+#: opcodes.h:113
 msgid "capitalize the word"
 msgstr "대문자로 변환"
 
-#: opcodes.h:115
+#: opcodes.h:114
 msgid "complete filename or alias"
 msgstr "파일명 또는 별칭 완성하기"
 
-#: opcodes.h:116
+#: opcodes.h:115
 msgid "complete address with query"
 msgstr "쿼리로 주소 완성하기"
 
-#: opcodes.h:117
+#: opcodes.h:116
 msgid "delete the char under the cursor"
 msgstr "커서의 글자 지움"
 
-#: opcodes.h:118
+#: opcodes.h:117
 msgid "convert the word to lower case"
 msgstr "소문자로 변환"
 
-#: opcodes.h:119
+#: opcodes.h:118
 msgid "jump to the end of the line"
 msgstr "줄의 끝으로 이동"
 
-#: opcodes.h:120
+#: opcodes.h:119
 msgid "move the cursor one character to the right"
 msgstr "한글자 오른쪽으로 이동"
 
-#: opcodes.h:121
+#: opcodes.h:120
 msgid "move the cursor to the end of the word"
 msgstr "단어의 끝으로 이동"
 
-#: opcodes.h:122
+#: opcodes.h:121
 msgid "scroll down through the history list"
 msgstr "history 목록 아래로 내리기"
 
-#: opcodes.h:123
+#: opcodes.h:122
 #, fuzzy
 msgid "search through the history list"
 msgstr "history 목록 위로 올리기"
 
-#: opcodes.h:124
+#: opcodes.h:123
 msgid "scroll up through the history list"
 msgstr "history 목록 위로 올리기"
 
-#: opcodes.h:125
+#: opcodes.h:124
 msgid "delete chars from cursor to end of line"
 msgstr "커서부터 줄의 끝까지 글자 지움"
 
-#: opcodes.h:126
+#: opcodes.h:125
 msgid "delete chars from the cursor to the end of the word"
 msgstr "커서부터 단어의 끝까지 지움"
 
-#: opcodes.h:127
+#: opcodes.h:126
 msgid "delete all chars on the line"
 msgstr "현재 줄의 모든 글자 지움"
 
-#: opcodes.h:128
+#: opcodes.h:127
 msgid "delete the word in front of the cursor"
 msgstr "커서 앞의 단어 지움"
 
-#: opcodes.h:129
+#: opcodes.h:128
 msgid "cycle among incoming mailboxes"
 msgstr "수신 메일함 보기"
 
-#: opcodes.h:130
+#: opcodes.h:129
 msgid "quote the next typed key"
 msgstr "다음에 입력되는 문자를 인용"
 
-#: opcodes.h:131
+#: opcodes.h:130
 msgid "transpose character under cursor with previous"
 msgstr "앞뒤 문자 바꾸기"
 
-#: opcodes.h:132
+#: opcodes.h:131
 msgid "convert the word to upper case"
 msgstr "대문자로 변환"
 
-#: opcodes.h:133
+#: opcodes.h:132
 msgid "add, change, or delete a message's label"
 msgstr ""
 
-#: opcodes.h:134
+#: opcodes.h:133
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr ""
 
-#: opcodes.h:135
+#: opcodes.h:134
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr ""
 
-#: opcodes.h:136
+#: opcodes.h:135
 msgid "edit attachment content type"
 msgstr "첨부물 내용 유형 편집"
 
-#: opcodes.h:137
+#: opcodes.h:136
 msgid "end of conditional execution (noop)"
 msgstr ""
 
-#: opcodes.h:138
+#: opcodes.h:137
 msgid "enter a neomuttrc command"
 msgstr "neomuttrc 명령어 입력"
 
-#: opcodes.h:139
+#: opcodes.h:138
 msgid "enter a file mask"
 msgstr "파일 매스크 입력"
 
-#: opcodes.h:140
+#: opcodes.h:139
 msgid "exit this menu"
 msgstr "현재 메뉴 나감"
 
-#: opcodes.h:141
+#: opcodes.h:140
 msgid "filter attachment through a shell command"
 msgstr "쉘 명령어를 통해 첨부물 걸르기"
 
-#: opcodes.h:142
+#: opcodes.h:141
 msgid "move to the first entry"
 msgstr "처음 항목으로 이동"
 
-#: opcodes.h:143
+#: opcodes.h:142
 msgid "toggle a message's 'important' flag"
 msgstr "메일의 '중요' 플래그 상태 바꾸기"
 
-#: opcodes.h:144
+#: opcodes.h:143
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "%s%s에게 댓글?"
 
-#: opcodes.h:145
+#: opcodes.h:144
 msgid "forward a message with comments"
 msgstr "메일 포워딩"
 
-#: opcodes.h:146
+#: opcodes.h:145
 msgid "forward to newsgroup"
 msgstr ""
 
-#: opcodes.h:147
+#: opcodes.h:146
 msgid "select the current entry"
 msgstr "현재 항목 선택"
 
-#: opcodes.h:148
+#: opcodes.h:147
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "첫번째 메세지입니다."
 
-#: opcodes.h:149
+#: opcodes.h:148
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "헤더를 포함한 메세지 편집"
 
-#: opcodes.h:150
+#: opcodes.h:149
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "첫번째 메세지입니다."
 
-#: opcodes.h:151
+#: opcodes.h:150
 #, fuzzy
 msgid "go to parent directory"
 msgstr "%s는 디렉토리가 아닙니다."
 
-#: opcodes.h:152
+#: opcodes.h:151
 #, fuzzy
 msgid "reply to all recipients preserving To/Cc"
 msgstr "모든 수신자에게 답장"
 
-#: opcodes.h:153
+#: opcodes.h:152
 msgid "reply to all recipients"
 msgstr "모든 수신자에게 답장"
 
-#: opcodes.h:154
+#: opcodes.h:153
 msgid "scroll down 1/2 page"
 msgstr "1/2 페이지 내리기"
 
-#: opcodes.h:155
+#: opcodes.h:154
 msgid "scroll up 1/2 page"
 msgstr "1/2 페이지 올리기"
 
-#: opcodes.h:156
+#: opcodes.h:155
 msgid "this screen"
 msgstr "현재 화면"
 
-#: opcodes.h:157
+#: opcodes.h:156
 msgid "jump to an index number"
 msgstr "번호로 이동"
 
-#: opcodes.h:158
+#: opcodes.h:157
 msgid "move to the last entry"
 msgstr "마지막 항목으로 이동"
 
-#: opcodes.h:159
+#: opcodes.h:158
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "현재 글타래에 태그 붙임"
 
-#: opcodes.h:160
+#: opcodes.h:159
 msgid "reply to specified mailing list"
 msgstr "지정된 메일링 리스트로 답장하기"
 
-#: opcodes.h:161
+#: opcodes.h:160
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
-#: opcodes.h:162
+#: opcodes.h:161
 msgid "execute a macro"
 msgstr "매크로 실행"
 
-#: opcodes.h:163
+#: opcodes.h:162
 msgid "compose a new mail message"
 msgstr "새로운 메일 작성"
 
-#: opcodes.h:164
+#: opcodes.h:163
 msgid "list mailboxes with new mail"
 msgstr "새 메일이 도착한 메일함 목록."
 
-#: opcodes.h:165
+#: opcodes.h:164
 msgid "break the thread in two"
 msgstr ""
 
-#: opcodes.h:166
+#: opcodes.h:165
 msgid "open a different folder"
 msgstr "다른 폴더 열기"
 
-#: opcodes.h:167
+#: opcodes.h:166
 msgid "open a different folder in read only mode"
 msgstr "다른 폴더를 읽기 전용으로 열기"
 
-#: opcodes.h:168
+#: opcodes.h:167
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "다른 폴더 열기"
 
-#: opcodes.h:169
+#: opcodes.h:168
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "다른 폴더를 읽기 전용으로 열기"
 
-#: opcodes.h:170
+#: opcodes.h:169
 msgid "clear a status flag from a message"
 msgstr "메일의 상태 플래그 해제하기"
 
-#: opcodes.h:171
+#: opcodes.h:170
 msgid "collapse/uncollapse all threads"
 msgstr "모든 글타래 펴기/접기"
 
-#: opcodes.h:172
+#: opcodes.h:171
 msgid "collapse/uncollapse current thread"
 msgstr "현재 글타래 펴기/접기"
 
-#: opcodes.h:173
+#: opcodes.h:172
 msgid "delete messages matching a pattern"
 msgstr "패턴과 일치하는 메일 삭제"
 
-#: opcodes.h:174
+#: opcodes.h:173
 msgid "retrieve mail from POP server"
 msgstr "POP 서버에서 메일 가져오기"
 
-#: opcodes.h:175
+#: opcodes.h:174
 msgid "force retrieval of mail from IMAP server"
 msgstr "IMAP 서버에서 메일 가져오기"
 
-#: opcodes.h:176
+#: opcodes.h:175
 msgid "logout from all IMAP servers"
 msgstr ""
 
-#: opcodes.h:177
+#: opcodes.h:176
 msgid "show only messages matching a pattern"
 msgstr "패턴과 일치하는 메일만 보임"
 
-#: opcodes.h:178
+#: opcodes.h:177
 #, fuzzy
 msgid "link tagged message to the current one"
 msgstr "선택한 메일을 전달한 주소: "
 
-#: opcodes.h:179
+#: opcodes.h:178
 msgid "modify (notmuch/imap) tags"
 msgstr ""
 
-#: opcodes.h:180
+#: opcodes.h:179
 #, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "첫번째 메세지입니다."
 
-#: opcodes.h:181
+#: opcodes.h:180
 msgid "jump to the next new message"
 msgstr "다음 새 메일로 이동"
 
-#: opcodes.h:182
+#: opcodes.h:181
 msgid "jump to the next new or unread message"
 msgstr "읽지 않은 다음 메일/새 메일로 이동"
 
-#: opcodes.h:183
+#: opcodes.h:182
 msgid "jump to the next subthread"
 msgstr "다음 부속 글타래로 이동"
 
-#: opcodes.h:184
+#: opcodes.h:183
 msgid "jump to the next thread"
 msgstr "다음 글타래로 이동"
 
-#: opcodes.h:185
+#: opcodes.h:184
 msgid "move to the next undeleted message"
 msgstr "삭제되지 않은 다음 메일로 이동"
 
-#: opcodes.h:186
+#: opcodes.h:185
 msgid "jump to the next unread message"
 msgstr "읽지 않은 다음 메일로 이동"
 
-#: opcodes.h:187
+#: opcodes.h:186
 #, fuzzy
 msgid "open next mailbox with new mail"
 msgstr "새 메일이 도착한 메일함 없음."
 
-#: opcodes.h:188
+#: opcodes.h:187
 msgid "jump to parent message in thread"
 msgstr "글타래의 부모 메일로 이동"
 
-#: opcodes.h:189
+#: opcodes.h:188
 msgid "jump to the previous new message"
 msgstr "이전 새 메일로 이동"
 
-#: opcodes.h:190
+#: opcodes.h:189
 msgid "jump to the previous new or unread message"
 msgstr "읽지 않은 이전 메일/새 메일로 이동"
 
-#: opcodes.h:191
+#: opcodes.h:190
 msgid "jump to previous subthread"
 msgstr "이전 부속 글타래로 이동"
 
-#: opcodes.h:192
+#: opcodes.h:191
 msgid "jump to previous thread"
 msgstr "이전 글타래로 이동"
 
-#: opcodes.h:193
+#: opcodes.h:192
 msgid "move to the previous undeleted message"
 msgstr "삭제되지 않은 이전 메일로 이동"
 
-#: opcodes.h:194
+#: opcodes.h:193
 msgid "jump to the previous unread message"
 msgstr "읽지 않은 이전 메일로 이동"
 
-#: opcodes.h:195
+#: opcodes.h:194
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr ""
 
-#: opcodes.h:196
+#: opcodes.h:195
 msgid "mark the current subthread as read"
 msgstr "현재 부속 글타래에 읽은 표시하기"
 
-#: opcodes.h:197
+#: opcodes.h:196
 msgid "mark the current thread as read"
 msgstr "현재 글타래에 읽은 표시하기"
 
-#: opcodes.h:198
+#: opcodes.h:197
 #, fuzzy
 msgid "jump to root message in thread"
 msgstr "글타래의 부모 메일로 이동"
 
-#: opcodes.h:199
+#: opcodes.h:198
 msgid "set a status flag on a message"
 msgstr "메일의 상태 플래그 설정하기"
 
-#: opcodes.h:200
+#: opcodes.h:199
 msgid "show currently active limit pattern"
 msgstr "현재 제한 패턴 보기"
 
-#: opcodes.h:201
+#: opcodes.h:200
 msgid "save changes to mailbox"
 msgstr "메일함 변경 사항 저장"
 
-#: opcodes.h:202
+#: opcodes.h:201
 msgid "tag messages matching a pattern"
 msgstr "패턴과 일치하는 메일에 태그 붙임"
 
-#: opcodes.h:203
+#: opcodes.h:202
 msgid "undelete messages matching a pattern"
 msgstr "패턴과 일치하는 메일 복구"
 
-#: opcodes.h:204
+#: opcodes.h:203
 msgid "untag messages matching a pattern"
 msgstr "패턴과 일치하는 메일의 태그 해제"
 
-#: opcodes.h:205
+#: opcodes.h:204
 #, fuzzy
 msgid "create a hotkey macro for the current message"
 msgstr "첫번째 메세지입니다."
 
-#: opcodes.h:206
+#: opcodes.h:205
 msgid "move to the middle of the page"
 msgstr "페이지 중간으로 이동"
 
-#: opcodes.h:207
+#: opcodes.h:206
 msgid "move to the next entry"
 msgstr "다음 항목으로 이동"
 
-#: opcodes.h:208
+#: opcodes.h:207
 msgid "scroll down one line"
 msgstr "한줄씩 내리기"
 
-#: opcodes.h:209
+#: opcodes.h:208
 msgid "move to the next page"
 msgstr "다음 페이지로 이동"
 
-#: opcodes.h:210
+#: opcodes.h:209
 msgid "jump to the bottom of the message"
 msgstr "메세지 마지막으로 이동"
 
-#: opcodes.h:211
+#: opcodes.h:210
 msgid "toggle display of quoted text"
 msgstr "인용문의 표시 상태 바꾸기"
 
-#: opcodes.h:212
+#: opcodes.h:211
 msgid "skip beyond quoted text"
 msgstr "인용문 다음으로 넘어가기"
 
-#: opcodes.h:213
+#: opcodes.h:212
 msgid "jump to the top of the message"
 msgstr "메세지 처음으로 이동"
 
-#: opcodes.h:214
+#: opcodes.h:213
 msgid "pipe message/attachment to a shell command"
 msgstr "메일/첨부물을 쉘 명령으로 연결하기"
 
-#: opcodes.h:215
+#: opcodes.h:214
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "%s에게 메일 전달"
 
-#: opcodes.h:216
+#: opcodes.h:215
 msgid "move to the previous entry"
 msgstr "이전 항목으로 이동"
 
-#: opcodes.h:217
+#: opcodes.h:216
 msgid "scroll up one line"
 msgstr "한줄씩 올리기"
 
-#: opcodes.h:218
+#: opcodes.h:217
 msgid "move to the previous page"
 msgstr "이전 페이지로 이동"
 
-#: opcodes.h:219
+#: opcodes.h:218
 msgid "print the current entry"
 msgstr "현재 항목 출력"
 
-#: opcodes.h:220
+#: opcodes.h:219
 msgid "delete the current entry, bypassing the trash folder"
 msgstr ""
 
-#: opcodes.h:221
+#: opcodes.h:220
 msgid "delete the current thread, bypassing the trash folder"
 msgstr ""
 
-#: opcodes.h:222
+#: opcodes.h:221
 msgid "query external program for addresses"
 msgstr "주소를 얻기 위해 외부 프로그램 실행"
 
-#: opcodes.h:223
+#: opcodes.h:222
 msgid "append new query results to current results"
 msgstr "쿼리 결과를 현재 결과에 추가"
 
-#: opcodes.h:224
+#: opcodes.h:223
 msgid "save changes to mailbox and quit"
 msgstr "메일함의 변경 사항 저장 후 끝내기"
 
-#: opcodes.h:225
+#: opcodes.h:224
 msgid "recall a postponed message"
 msgstr "발송 연기한 메일 다시 부르기"
 
-#: opcodes.h:226
+#: opcodes.h:225
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "글타래에 읽지 않은 메세지 있음."
 
-#: opcodes.h:227
+#: opcodes.h:226
 msgid "clear and redraw the screen"
 msgstr "화면 다시 그리기"
 
-#: opcodes.h:228
+#: opcodes.h:227
 msgid "{internal}"
 msgstr "{내부의}"
 
-#: opcodes.h:229
+#: opcodes.h:228
 #, fuzzy
 msgid "rename the current mailbox (IMAP only)"
 msgstr "현재 메일함을 삭제 (IMAP에서만)"
 
-#: opcodes.h:230
+#: opcodes.h:229
 msgid "reply to a message"
 msgstr "메일에 답장하기"
 
-#: opcodes.h:231
+#: opcodes.h:230
 msgid "use the current message as a template for a new one"
 msgstr "현재 메일을 새 메일의 템플레이트로 사용함"
 
-#: opcodes.h:232
+#: opcodes.h:231
 #, fuzzy
 msgid "save message/attachment to a mailbox/file"
 msgstr "메일/첨부물 파일로 저장"
 
-#: opcodes.h:233
+#: opcodes.h:232
 msgid "search for a regular expression"
 msgstr "정규 표현식을 이용해 검색"
 
-#: opcodes.h:234
+#: opcodes.h:233
 msgid "search for next match"
 msgstr "다음 찾기"
 
-#: opcodes.h:235
+#: opcodes.h:234
 msgid "search for next match in opposite direction"
 msgstr "역순으로 찾기"
 
-#: opcodes.h:236
+#: opcodes.h:235
 msgid "search backwards for a regular expression"
 msgstr "정규 표현식을 이용해 역순 검색"
 
-#: opcodes.h:237
+#: opcodes.h:236
 msgid "toggle search pattern coloring"
 msgstr "검색 패턴 컬러링 선택"
 
-#: opcodes.h:238
+#: opcodes.h:237
 msgid "invoke a command in a subshell"
 msgstr "하부 쉘 실행"
 
-#: opcodes.h:239
+#: opcodes.h:238
 #, fuzzy
 msgid "show log (and debug) messages"
 msgstr "메일 정렬"
 
-#: opcodes.h:240
+#: opcodes.h:239
 msgid "sort messages"
 msgstr "메일 정렬"
 
-#: opcodes.h:241
+#: opcodes.h:240
 msgid "sort messages in reverse order"
 msgstr "메일 역순 정렬"
 
-#: opcodes.h:242
+#: opcodes.h:241
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "패턴과 일치하는 메일의 태그 해제"
 
-#: opcodes.h:243
+#: opcodes.h:242
 msgid "tag the current entry"
 msgstr "현재 항목에 태그 붙임"
 
-#: opcodes.h:244
+#: opcodes.h:243
 msgid "apply next function to tagged messages"
 msgstr "다음 기능을 태그가 붙은 메일에 적용"
 
-#: opcodes.h:245
+#: opcodes.h:244
 msgid "apply next function ONLY to tagged messages"
 msgstr "다음 기능을 태그가 붙은 메일에 적용"
 
-#: opcodes.h:246
+#: opcodes.h:245
 msgid "tag the current subthread"
 msgstr "현재 부속 글타래에 태그 붙임"
 
-#: opcodes.h:247
+#: opcodes.h:246
 msgid "tag the current thread"
 msgstr "현재 글타래에 태그 붙임"
 
-#: opcodes.h:248
+#: opcodes.h:247
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "메일함을 볼지 모든 파일을 볼지 선택"
 
-#: opcodes.h:249
+#: opcodes.h:248
 msgid "toggle a message's 'new' flag"
 msgstr "메일의 '새글' 플래그 상태 바꿈"
 
-#: opcodes.h:250
+#: opcodes.h:249
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "읽지 않은 이전 메일/새 메일로 이동"
 
-#: opcodes.h:251
+#: opcodes.h:250
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "메일함을 다시 쓸 것인지 선택"
 
-#: opcodes.h:252
+#: opcodes.h:251
 msgid "move to the top of the page"
 msgstr "첫 페이지로 이동"
 
-#: opcodes.h:253
+#: opcodes.h:252
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
-#: opcodes.h:254
+#: opcodes.h:253
 msgid "undelete the current entry"
 msgstr "현재 항목 복구"
 
-#: opcodes.h:255
+#: opcodes.h:254
 msgid "undelete all messages in subthread"
 msgstr "부속 글타래의 모든 메일 복구하기"
 
-#: opcodes.h:256
+#: opcodes.h:255
 msgid "undelete all messages in thread"
 msgstr "글타래의 모든 메일 복구하기"
 
-#: opcodes.h:257
+#: opcodes.h:256
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "패턴과 일치하는 메일의 태그 해제"
 
-#: opcodes.h:258
+#: opcodes.h:257
 msgid "show the NeoMutt version number and date"
 msgstr "NeoMutt의 버젼과 제작일 보기"
 
-#: opcodes.h:259
+#: opcodes.h:258
 msgid "view attachment using mailcap entry if necessary"
 msgstr "필요하다면 mailcap 항목을 사용해 첨부물을 보여줌"
 
-#: opcodes.h:260
+#: opcodes.h:259
 msgid "show MIME attachments"
 msgstr "MIME 첨부물 보기"
 
-#: opcodes.h:261
+#: opcodes.h:260
 #, fuzzy
 msgid "show the raw message"
 msgstr "저장된 상태의 메일 편집"
 
-#: opcodes.h:262
+#: opcodes.h:261
 msgid "display the keycode for a key press"
 msgstr "눌려진 키 값 표시하기"
 
-#: opcodes.h:265
+#: opcodes.h:264
 msgid "make decrypted copy"
 msgstr "해독 사본 만들기"
 
-#: opcodes.h:266
+#: opcodes.h:265
 msgid "make decrypted copy and delete"
 msgstr "해독 사본 만든 후 삭제하기"
 
-#: opcodes.h:267
+#: opcodes.h:266
 msgid "extract supported public keys"
 msgstr "공개 열쇠 추출"
 
-#: opcodes.h:268
+#: opcodes.h:267
 #, fuzzy
 msgid "wipe passphrases from memory"
 msgstr "메모리에서 암호 문구 지움"
 
-#: opcodes.h:272
+#: opcodes.h:271
 msgid "send the message through a mixmaster remailer chain"
 msgstr "mixmaster 리메일러 체인을 통한 메일 보내기"
 
-#: opcodes.h:273
+#: opcodes.h:272
 #, fuzzy
 msgid "append a remailer to the chain"
 msgstr "체인에 리메일러 첨가"
 
-#: opcodes.h:274
+#: opcodes.h:273
 #, fuzzy
 msgid "select the next element of the chain"
 msgstr "체인의 다음 항목 선택"
 
-#: opcodes.h:275
+#: opcodes.h:274
 #, fuzzy
 msgid "select the previous element of the chain"
 msgstr "체인의 이전 항목 선택"
 
-#: opcodes.h:276
+#: opcodes.h:275
 #, fuzzy
 msgid "delete a remailer from the chain"
 msgstr "체인에서 리메일러 삭제"
 
-#: opcodes.h:277
+#: opcodes.h:276
 #, fuzzy
 msgid "insert a remailer into the chain"
 msgstr "체인에 리메일러 삽입"
 
-#: opcodes.h:278
+#: opcodes.h:277
 #, fuzzy
 msgid "accept the chain constructed"
 msgstr "체인 구조를 허가함"
 
-#: opcodes.h:285
+#: opcodes.h:284
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "다른 폴더 열기"
 
-#: opcodes.h:286
+#: opcodes.h:285
 msgid "read entire thread of the current message"
 msgstr ""
 
-#: opcodes.h:287
+#: opcodes.h:286
 msgid "generate virtual folder from query"
 msgstr ""
 
-#: opcodes.h:288
+#: opcodes.h:287
 msgid "generate a read-only virtual folder from query"
 msgstr ""
 
-#: opcodes.h:289
+#: opcodes.h:288
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
-#: opcodes.h:290
+#: opcodes.h:289
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
-#: opcodes.h:296
+#: opcodes.h:295
 #, fuzzy
 msgid "check for classic PGP"
 msgstr "Classic PGP 확인"
 
-#: opcodes.h:297
+#: opcodes.h:296
 msgid "attach a PGP public key"
 msgstr "PGP 공개 열쇠 첨부"
 
-#: opcodes.h:298
+#: opcodes.h:297
 msgid "show PGP options"
 msgstr "PGP 옵션 보기"
 
-#: opcodes.h:299
+#: opcodes.h:298
 msgid "mail a PGP public key"
 msgstr "PGP 공개 열쇠 발송"
 
-#: opcodes.h:300
+#: opcodes.h:299
 msgid "verify a PGP public key"
 msgstr "PGP 공개 열쇠 확인"
 
-#: opcodes.h:301
+#: opcodes.h:300
 msgid "view the key's user id"
 msgstr "열쇠의 사용자 ID 보기"
 
-#: opcodes.h:304
+#: opcodes.h:303
 #, fuzzy
 msgid "move the highlight to the first mailbox"
 msgstr "이전 페이지로 이동"
 
-#: opcodes.h:305
+#: opcodes.h:304
 #, fuzzy
 msgid "move the highlight to the last mailbox"
 msgstr "이전 페이지로 이동"
 
-#: opcodes.h:306
+#: opcodes.h:305
 msgid "move the highlight to next mailbox"
 msgstr ""
 
-#: opcodes.h:307
+#: opcodes.h:306
 #, fuzzy
 msgid "move the highlight to next mailbox with new mail"
 msgstr "새 메일이 도착한 메일함 없음."
 
-#: opcodes.h:308
+#: opcodes.h:307
 #, fuzzy
 msgid "open highlighted mailbox"
 msgstr "메일함을 다시 여는 중..."
 
-#: opcodes.h:309
+#: opcodes.h:308
 #, fuzzy
 msgid "scroll the sidebar down 1 page"
 msgstr "1/2 페이지 내리기"
 
-#: opcodes.h:310
+#: opcodes.h:309
 #, fuzzy
 msgid "scroll the sidebar up 1 page"
 msgstr "1/2 페이지 올리기"
 
-#: opcodes.h:311
+#: opcodes.h:310
 #, fuzzy
 msgid "move the highlight to previous mailbox"
 msgstr "이전 페이지로 이동"
 
-#: opcodes.h:312
+#: opcodes.h:311
 #, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "새 메일이 도착한 메일함 없음."
 
-#: opcodes.h:313
+#: opcodes.h:312
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "메일함을 볼지 모든 파일을 볼지 선택"
 
-#: opcodes.h:314
+#: opcodes.h:313
 msgid "make the sidebar (in)visible"
 msgstr ""
 
-#: opcodes.h:317
+#: opcodes.h:316
 msgid "show S/MIME options"
 msgstr "S/MIME 옵션 보기"
+
+#: opcodes.h:319
+msgid "null operation"
+msgstr "공백 연산"
 
 #: pager.c:214
 msgid "Not available in this menu"
@@ -7056,13 +7056,13 @@ msgstr "정렬 함수 찾을 수 없음 [버그 보고 바람]"
 msgid "(no mailbox)"
 msgstr "(메일함 없음)"
 
-#: version.c:81
+#: version.c:85
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
 
-#: version.c:85
+#: version.c:89
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -7079,7 +7079,7 @@ msgid ""
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
-#: version.c:101
+#: version.c:105
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -7087,7 +7087,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:108
+#: version.c:112
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
@@ -7100,12 +7100,12 @@ msgstr ""
 "바랍니다. NeoMutt은 공개 소프트웨어이며, 일정 사항만 지킨다면 여러분께서 자유\n"
 "로이 재배포할 수 있습니다. 자세한 사항은 'neomutt -vv'로 확인하시기 바랍니다.\n"
 
-#: version.c:508
+#: version.c:526
 #, fuzzy
 msgid "Default options:"
 msgstr "컴파일 선택사항:"
 
-#: version.c:511
+#: version.c:529
 msgid "Compile options:"
 msgstr "컴파일 선택사항:"
 

@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-04-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-04-17 11:38+0100\n"
+"POT-Creation-Date: 2020-04-24 16:26+0100\n"
 "PO-Revision-Date: 2019-09-09 09:44-0500\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -1896,7 +1896,7 @@ msgstr "无法打开信件文件：%s"
 msgid "Can't append to folder: %s"
 msgstr "无法添加到文件夹末尾：%s"
 
-#: email/parse.c:1479
+#: email/parse.c:1480
 msgid "multipart message has no boundary parameter"
 msgstr "多部份信件没有边界参数"
 
@@ -2436,7 +2436,7 @@ msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "正在复制 %d 封信件到 %s ..."
 
-#: imap/imap.c:1606 imap/imap.c:2262 imap/message.c:1729 muttlib.c:1494
+#: imap/imap.c:1606 imap/imap.c:2264 imap/message.c:1729 muttlib.c:1494
 #, c-format
 msgid "Create %s?"
 msgstr "创建 %s 吗？"
@@ -2473,20 +2473,20 @@ msgstr "正在服务器上执行信件删除..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox：EXPUNGE(执行删除)失败"
 
-#: imap/imap.c:2066 nntp/nntp.c:2488
+#: imap/imap.c:2068 nntp/nntp.c:2488
 #, c-format
 msgid "Selecting %s..."
 msgstr "正在选择 %s..."
 
-#: imap/imap.c:2229
+#: imap/imap.c:2231
 msgid "Error opening mailbox"
 msgstr "打开信箱时出错"
 
-#: imap/imap.c:2378
+#: imap/imap.c:2380
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP 服务器不支持自定义标记"
 
-#: imap/imap.c:2422
+#: imap/imap.c:2424
 msgid "Invalid IMAP flags"
 msgstr "无效的 IMAP 标记"
 
@@ -4967,1038 +4967,1038 @@ msgid "show autocrypt compose menu options"
 msgstr "显示 autocrypt 撰写菜单选项"
 
 #: opcodes.h:40
-msgid "null operation"
-msgstr "空操作"
-
-#: opcodes.h:41
 msgid "toggle display of subparts"
 msgstr "切换子部分的显示"
 
-#: opcodes.h:42
+#: opcodes.h:41
 msgid "force viewing of attachment using mailcap"
 msgstr "强迫使用 mailcap 查看附件"
 
-#: opcodes.h:43
+#: opcodes.h:42
 msgid "view attachment as text"
 msgstr "作为文本查看附件"
 
-#: opcodes.h:44
+#: opcodes.h:43
 msgid "move to the bottom of the page"
 msgstr "移到页面底端"
 
-#: opcodes.h:45
+#: opcodes.h:44
 msgid "remail a message to another user"
 msgstr "将信件转发给另一用户"
 
-#: opcodes.h:46
+#: opcodes.h:45
 msgid "swap the current folder position with $folder if it exists"
 msgstr "在 $folder 存在的情况下交换目前所在文件夹位置"
 
-#: opcodes.h:47
+#: opcodes.h:46
 msgid "select a new file in this directory"
 msgstr "请选择本目录中一个新的文件"
 
-#: opcodes.h:48
+#: opcodes.h:47
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "订阅当前信箱 (只适用于 IMAP/NNTP)"
 
-#: opcodes.h:49
+#: opcodes.h:48
 msgid "display the currently selected file's name"
 msgstr "显示当前所选择的文件名"
 
-#: opcodes.h:50
+#: opcodes.h:49
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "切换查看 全部/已订阅 的信箱 (只适用于 IMAP)"
 
-#: opcodes.h:51
+#: opcodes.h:50
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "退订当前信箱 (只适用于 IMAP/NNTP)"
 
-#: opcodes.h:52
+#: opcodes.h:51
 msgid "view file"
 msgstr "查看文件"
 
-#: opcodes.h:53
+#: opcodes.h:52
 msgid "mark all articles in newsgroup as read"
 msgstr "标记所有在新闻组的帖子已读"
 
-#: opcodes.h:54
+#: opcodes.h:53
 msgid "change directories"
 msgstr "改变目录"
 
-#: opcodes.h:55
+#: opcodes.h:54
 msgid "check mailboxes for new mail"
 msgstr "检查信箱是否有新信件"
 
-#: opcodes.h:56
+#: opcodes.h:55
 msgid "calculate message statistics for all mailboxes"
 msgstr "计算所有信箱的信件统计数据"
 
-#: opcodes.h:57
+#: opcodes.h:56
 msgid "attach files to this message"
 msgstr "将文件附加到此信件作为附件"
 
-#: opcodes.h:58
+#: opcodes.h:57
 msgid "attach messages to this message"
 msgstr "将信件附加到此信件作为附件"
 
-#: opcodes.h:59
+#: opcodes.h:58
 msgid "attach news articles to this message"
 msgstr "将帖子附加到此信件作为附件"
 
-#: opcodes.h:60
+#: opcodes.h:59
 msgid "edit the BCC list"
 msgstr "编辑密件抄送(BCC)列表"
 
-#: opcodes.h:61
+#: opcodes.h:60
 msgid "edit the CC list"
 msgstr "编辑抄送(CC)列表"
 
-#: opcodes.h:62
+#: opcodes.h:61
 msgid "edit attachment description"
 msgstr "编辑附件说明"
 
-#: opcodes.h:63
+#: opcodes.h:62
 msgid "edit attachment transfer-encoding"
 msgstr "编辑附件的传输编码"
 
-#: opcodes.h:64
+#: opcodes.h:63
 msgid "enter a file to save a copy of this message in"
 msgstr "请输入用来保存这封信件副本的文件名称"
 
-#: opcodes.h:65
+#: opcodes.h:64
 msgid "edit the file to be attached"
 msgstr "编辑附件文件"
 
-#: opcodes.h:66
+#: opcodes.h:65
 msgid "edit the Followup-To field"
 msgstr "编辑 Followup-To 域"
 
-#: opcodes.h:67
+#: opcodes.h:66
 msgid "edit the from field"
 msgstr "编辑发件人域"
 
-#: opcodes.h:68
+#: opcodes.h:67
 msgid "edit the message with headers"
 msgstr "编辑有信件头的信件"
 
-#: opcodes.h:69
+#: opcodes.h:68
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "编辑附件的 'Content-Language'"
 
-#: opcodes.h:70
+#: opcodes.h:69
 msgid "edit the message"
 msgstr "编辑信件"
 
-#: opcodes.h:71
+#: opcodes.h:70
 msgid "edit attachment using mailcap entry"
 msgstr "使用 mailcap 条目编辑附件"
 
-#: opcodes.h:72
+#: opcodes.h:71
 msgid "edit the newsgroups list"
 msgstr "编辑新闻组列表"
 
-#: opcodes.h:73
+#: opcodes.h:72
 msgid "edit the Reply-To field"
 msgstr "编辑 Reply-To 域"
 
-#: opcodes.h:74
+#: opcodes.h:73
 msgid "edit the subject of this message"
 msgstr "编辑此信件的主题"
 
-#: opcodes.h:75
+#: opcodes.h:74
 msgid "edit the TO list"
 msgstr "编辑 TO 列表"
 
-#: opcodes.h:76
+#: opcodes.h:75
 msgid "edit the X-Comment-To field"
 msgstr "编辑 X-Comment-To 域"
 
-#: opcodes.h:77
+#: opcodes.h:76
 msgid "get a temporary copy of an attachment"
 msgstr "取得附件的临时副本"
 
-#: opcodes.h:78
+#: opcodes.h:77
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "将已标记的附件组为 'multipart/alternative'"
 
-#: opcodes.h:79
+#: opcodes.h:78
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr "将已标记的附件组为 'multipart/multilingual'"
 
-#: opcodes.h:80
+#: opcodes.h:79
 msgid "run ispell on the message"
 msgstr "对这封信件运行 ispell"
 
-#: opcodes.h:81
+#: opcodes.h:80
 msgid "move an attachment down in the attachment list"
 msgstr "在附件列表中向下移动附件"
 
-#: opcodes.h:82
+#: opcodes.h:81
 msgid "move an attachment up in the attachment list"
 msgstr "在附件列表中向上移动附件"
 
-#: opcodes.h:83
+#: opcodes.h:82
 msgid "compose new attachment using mailcap entry"
 msgstr "使用 mailcap 条目来编写新附件"
 
-#: opcodes.h:84
+#: opcodes.h:83
 msgid "save this message to send later"
 msgstr "保存信件以便稍后寄出"
 
-#: opcodes.h:85
+#: opcodes.h:84
 msgid "send attachment with a different name"
 msgstr "使用另一个名字发送附件"
 
-#: opcodes.h:86
+#: opcodes.h:85
 msgid "rename/move an attached file"
 msgstr "重命名/移动 附件文件"
 
-#: opcodes.h:87
+#: opcodes.h:86
 msgid "send the message"
 msgstr "发送信件"
 
-#: opcodes.h:88
+#: opcodes.h:87
 msgid "toggle disposition between inline/attachment"
 msgstr "在嵌入/附件之间切换"
 
-#: opcodes.h:89
+#: opcodes.h:88
 msgid "toggle recoding of this attachment"
 msgstr "切换是否为此附件重新编码"
 
-#: opcodes.h:90
+#: opcodes.h:89
 msgid "toggle whether to delete file after sending it"
 msgstr "切换发送后是否删除文件"
 
-#: opcodes.h:91
+#: opcodes.h:90
 msgid "compose new message to the current message sender"
 msgstr "撰写新信件给当前信件发件人"
 
-#: opcodes.h:92
+#: opcodes.h:91
 msgid "update an attachment's encoding info"
 msgstr "更新附件的编码信息"
 
-#: opcodes.h:93
+#: opcodes.h:92
 msgid "write the message to a folder"
 msgstr "将信件写到文件夹"
 
-#: opcodes.h:94
+#: opcodes.h:93
 msgid "copy a message to a file/mailbox"
 msgstr "复制一封信件到文件/信箱"
 
-#: opcodes.h:95
+#: opcodes.h:94
 msgid "create an alias from a message sender"
 msgstr "从信件的发件人创建别名"
 
-#: opcodes.h:96
+#: opcodes.h:95
 msgid "create a new mailbox (IMAP only)"
 msgstr "创建新信箱 (只适用于 IMAP)"
 
-#: opcodes.h:97
+#: opcodes.h:96
 msgid "move entry to bottom of screen"
 msgstr "移动条目到屏幕底端"
 
-#: opcodes.h:98
+#: opcodes.h:97
 msgid "move entry to middle of screen"
 msgstr "移动条目到屏幕中央"
 
-#: opcodes.h:99
+#: opcodes.h:98
 msgid "move entry to top of screen"
 msgstr "移动条目到屏幕顶端"
 
-#: opcodes.h:100
+#: opcodes.h:99
 msgid "make decoded (text/plain) copy"
 msgstr "制作已解码的(text/plain)副本"
 
-#: opcodes.h:101
+#: opcodes.h:100
 msgid "make decoded copy (text/plain) and delete"
 msgstr "制作已解码的副本(text/plain)并且删除之"
 
-#: opcodes.h:102
+#: opcodes.h:101
 msgid "delete the current entry"
 msgstr "删除当前条目"
 
-#: opcodes.h:103
+#: opcodes.h:102
 msgid "delete the current mailbox (IMAP only)"
 msgstr "删除当前信箱 (只适用于 IMAP)"
 
-#: opcodes.h:104
+#: opcodes.h:103
 msgid "delete all messages in subthread"
 msgstr "删除所有子线索中的信件"
 
-#: opcodes.h:105
+#: opcodes.h:104
 msgid "delete all messages in thread"
 msgstr "删除所有线索中的信件"
 
-#: opcodes.h:106
+#: opcodes.h:105
 msgid "descend into a directory"
 msgstr "进入上一级目录"
 
-#: opcodes.h:107
+#: opcodes.h:106
 msgid "display full address of sender"
 msgstr "显示发件人的完整地址"
 
-#: opcodes.h:108
+#: opcodes.h:107
 msgid "display message and toggle header weeding"
 msgstr "显示信件并切换信件头资料内容显示"
 
-#: opcodes.h:109
+#: opcodes.h:108
 msgid "display a message"
 msgstr "显示信件"
 
-#: opcodes.h:110
+#: opcodes.h:109
 msgid "delete the char in front of the cursor"
 msgstr "删除光标位置之前的字符"
 
-#: opcodes.h:111
+#: opcodes.h:110
 msgid "move the cursor one character to the left"
 msgstr "将光标向左移动一个字符"
 
-#: opcodes.h:112
+#: opcodes.h:111
 msgid "move the cursor to the beginning of the word"
 msgstr "将光标移动到单词开头"
 
-#: opcodes.h:113
+#: opcodes.h:112
 msgid "jump to the beginning of the line"
 msgstr "跳到行首"
 
-#: opcodes.h:114
+#: opcodes.h:113
 msgid "capitalize the word"
 msgstr "将单词首字母转换为大写"
 
-#: opcodes.h:115
+#: opcodes.h:114
 msgid "complete filename or alias"
 msgstr "补全文件名或别名"
 
-#: opcodes.h:116
+#: opcodes.h:115
 msgid "complete address with query"
 msgstr "查询补全地址"
 
-#: opcodes.h:117
+#: opcodes.h:116
 msgid "delete the char under the cursor"
 msgstr "删除光标下的字符"
 
-#: opcodes.h:118
+#: opcodes.h:117
 msgid "convert the word to lower case"
 msgstr "将单词转换为小写"
 
-#: opcodes.h:119
+#: opcodes.h:118
 msgid "jump to the end of the line"
 msgstr "跳到行尾"
 
-#: opcodes.h:120
+#: opcodes.h:119
 msgid "move the cursor one character to the right"
 msgstr "将光标向右移动一个字符"
 
-#: opcodes.h:121
+#: opcodes.h:120
 msgid "move the cursor to the end of the word"
 msgstr "将光标移到单词结尾"
 
-#: opcodes.h:122
+#: opcodes.h:121
 msgid "scroll down through the history list"
 msgstr "向下卷动历史列表"
 
-#: opcodes.h:123
+#: opcodes.h:122
 msgid "search through the history list"
 msgstr "搜索历史列表"
 
-#: opcodes.h:124
+#: opcodes.h:123
 msgid "scroll up through the history list"
 msgstr "向上卷动历史列表"
 
-#: opcodes.h:125
+#: opcodes.h:124
 msgid "delete chars from cursor to end of line"
 msgstr "删除光标所在位置到行尾的字符"
 
-#: opcodes.h:126
+#: opcodes.h:125
 msgid "delete chars from the cursor to the end of the word"
 msgstr "删除光标所在位置到单词结尾的字符"
 
-#: opcodes.h:127
+#: opcodes.h:126
 msgid "delete all chars on the line"
 msgstr "删除本行所有字符"
 
-#: opcodes.h:128
+#: opcodes.h:127
 msgid "delete the word in front of the cursor"
 msgstr "删除光标之前的词"
 
-#: opcodes.h:129
+#: opcodes.h:128
 msgid "cycle among incoming mailboxes"
 msgstr "在来信信箱中循环选择"
 
-#: opcodes.h:130
+#: opcodes.h:129
 msgid "quote the next typed key"
 msgstr "对下一个输入的键加引号"
 
-#: opcodes.h:131
+#: opcodes.h:130
 msgid "transpose character under cursor with previous"
 msgstr "颠倒光标位置的字符和其前一个字符"
 
-#: opcodes.h:132
+#: opcodes.h:131
 msgid "convert the word to upper case"
 msgstr "将单词转换为大写"
 
-#: opcodes.h:133
+#: opcodes.h:132
 msgid "add, change, or delete a message's label"
 msgstr "增加，改变，或者删除一封信件的标签"
 
-#: opcodes.h:134
+#: opcodes.h:133
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr "如果信箱只读则浏览信件原文，否则修改信件原文"
 
-#: opcodes.h:135
+#: opcodes.h:134
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr "修改信件原文（edit 和 edit-raw-message 同义）"
 
-#: opcodes.h:136
+#: opcodes.h:135
 msgid "edit attachment content type"
 msgstr "编辑附件内容类型"
 
-#: opcodes.h:137
+#: opcodes.h:136
 msgid "end of conditional execution (noop)"
 msgstr "条件运行结束 (无操作)"
 
-#: opcodes.h:138
+#: opcodes.h:137
 msgid "enter a neomuttrc command"
 msgstr "输入一条 neomuttrc 指令"
 
-#: opcodes.h:139
+#: opcodes.h:138
 msgid "enter a file mask"
 msgstr "输入文件掩码"
 
-#: opcodes.h:140
+#: opcodes.h:139
 msgid "exit this menu"
 msgstr "退出本菜单"
 
-#: opcodes.h:141
+#: opcodes.h:140
 msgid "filter attachment through a shell command"
 msgstr "使用 shell 命令过滤附件"
 
-#: opcodes.h:142
+#: opcodes.h:141
 msgid "move to the first entry"
 msgstr "移到第一项条目"
 
-#: opcodes.h:143
+#: opcodes.h:142
 msgid "toggle a message's 'important' flag"
 msgstr "切换信件的'重要'标记"
 
-#: opcodes.h:144
+#: opcodes.h:143
 msgid "followup to newsgroup"
 msgstr "回帖到新闻组"
 
-#: opcodes.h:145
+#: opcodes.h:144
 msgid "forward a message with comments"
 msgstr "转发信件并注释"
 
-#: opcodes.h:146
+#: opcodes.h:145
 msgid "forward to newsgroup"
 msgstr "转发到新闻组"
 
-#: opcodes.h:147
+#: opcodes.h:146
 msgid "select the current entry"
 msgstr "选择当前条目"
 
-#: opcodes.h:148
+#: opcodes.h:147
 msgid "get all children of the current message"
 msgstr "获取当前信件的所有子信件"
 
-#: opcodes.h:149
+#: opcodes.h:148
 msgid "get message with Message-Id"
 msgstr "通过信件 ID 获取信件"
 
-#: opcodes.h:150
+#: opcodes.h:149
 msgid "get parent of the current message"
 msgstr "获取当前信件的父信件"
 
-#: opcodes.h:151
+#: opcodes.h:150
 msgid "go to parent directory"
 msgstr "转到父目录"
 
-#: opcodes.h:152
+#: opcodes.h:151
 msgid "reply to all recipients preserving To/Cc"
 msgstr "回复给所有收件人，保留 To/Cc"
 
-#: opcodes.h:153
+#: opcodes.h:152
 msgid "reply to all recipients"
 msgstr "回复给所有收件人"
 
-#: opcodes.h:154
+#: opcodes.h:153
 msgid "scroll down 1/2 page"
 msgstr "向下卷动半页"
 
-#: opcodes.h:155
+#: opcodes.h:154
 msgid "scroll up 1/2 page"
 msgstr "向上卷动半页"
 
-#: opcodes.h:156
+#: opcodes.h:155
 msgid "this screen"
 msgstr "这个屏幕"
 
-#: opcodes.h:157
+#: opcodes.h:156
 msgid "jump to an index number"
 msgstr "跳转到索引号码"
 
-#: opcodes.h:158
+#: opcodes.h:157
 msgid "move to the last entry"
 msgstr "移动到最后一项"
 
-#: opcodes.h:159
+#: opcodes.h:158
 msgid "limit view to current thread"
 msgstr "将视图限制在当前线索中"
 
-#: opcodes.h:160
+#: opcodes.h:159
 msgid "reply to specified mailing list"
 msgstr "回复给指定的邮件列表"
 
-#: opcodes.h:161
+#: opcodes.h:160
 msgid "load list of all newsgroups from NNTP server"
 msgstr "从 NNTP 服务器加载所有新闻组的列表"
 
-#: opcodes.h:162
+#: opcodes.h:161
 msgid "execute a macro"
 msgstr "执行宏"
 
-#: opcodes.h:163
+#: opcodes.h:162
 msgid "compose a new mail message"
 msgstr "撰写新邮件"
 
-#: opcodes.h:164
+#: opcodes.h:163
 msgid "list mailboxes with new mail"
 msgstr "列出有新邮件的信箱"
 
-#: opcodes.h:165
+#: opcodes.h:164
 msgid "break the thread in two"
 msgstr "将线索拆为两个"
 
-#: opcodes.h:166
+#: opcodes.h:165
 msgid "open a different folder"
 msgstr "打开另一个文件夹"
 
-#: opcodes.h:167
+#: opcodes.h:166
 msgid "open a different folder in read only mode"
 msgstr "用只读模式打开另一个文件夹"
 
-#: opcodes.h:168
+#: opcodes.h:167
 msgid "open a different newsgroup"
 msgstr "打开另一个新闻组"
 
-#: opcodes.h:169
+#: opcodes.h:168
 msgid "open a different newsgroup in read only mode"
 msgstr "用只读模式打开另一个新闻组"
 
-#: opcodes.h:170
+#: opcodes.h:169
 msgid "clear a status flag from a message"
 msgstr "清除某封信件上的状态标记"
 
-#: opcodes.h:171
+#: opcodes.h:170
 msgid "collapse/uncollapse all threads"
 msgstr "折叠/展开 所有线索"
 
-#: opcodes.h:172
+#: opcodes.h:171
 msgid "collapse/uncollapse current thread"
 msgstr "折叠/展开 当前线索"
 
-#: opcodes.h:173
+#: opcodes.h:172
 msgid "delete messages matching a pattern"
 msgstr "删除符合某个模式的信件"
 
-#: opcodes.h:174
+#: opcodes.h:173
 msgid "retrieve mail from POP server"
 msgstr "从 POP 服务器取回信件"
 
-#: opcodes.h:175
+#: opcodes.h:174
 msgid "force retrieval of mail from IMAP server"
 msgstr "强制从 IMAP 服务器取回邮件"
 
-#: opcodes.h:176
+#: opcodes.h:175
 msgid "logout from all IMAP servers"
 msgstr "从所有的 IMAP 服务器中退出"
 
-#: opcodes.h:177
+#: opcodes.h:176
 msgid "show only messages matching a pattern"
 msgstr "只显示匹配某个模式的信件"
 
-#: opcodes.h:178
+#: opcodes.h:177
 msgid "link tagged message to the current one"
 msgstr "连接已标记的信件到当前信件"
 
-#: opcodes.h:179
+#: opcodes.h:178
 msgid "modify (notmuch/imap) tags"
 msgstr "修改 (notmuch/imap) 标签"
 
-#: opcodes.h:180
+#: opcodes.h:179
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "修改 (notmuch/imap) 标签并隐藏信件"
 
-#: opcodes.h:181
+#: opcodes.h:180
 msgid "jump to the next new message"
 msgstr "跳到下一封新信件"
 
-#: opcodes.h:182
+#: opcodes.h:181
 msgid "jump to the next new or unread message"
 msgstr "跳到下一个新的或未读取的信件"
 
-#: opcodes.h:183
+#: opcodes.h:182
 msgid "jump to the next subthread"
 msgstr "跳到下一个子线索"
 
-#: opcodes.h:184
+#: opcodes.h:183
 msgid "jump to the next thread"
 msgstr "跳到下一个线索"
 
-#: opcodes.h:185
+#: opcodes.h:184
 msgid "move to the next undeleted message"
 msgstr "移动到下一个未删除信件"
 
-#: opcodes.h:186
+#: opcodes.h:185
 msgid "jump to the next unread message"
 msgstr "跳到下一个未读取信件"
 
-#: opcodes.h:187
+#: opcodes.h:186
 msgid "open next mailbox with new mail"
 msgstr "打开下一个有新邮件的信箱"
 
-#: opcodes.h:188
+#: opcodes.h:187
 msgid "jump to parent message in thread"
 msgstr "跳到本线索中的父信件"
 
-#: opcodes.h:189
+#: opcodes.h:188
 msgid "jump to the previous new message"
 msgstr "跳到上一个新信件"
 
-#: opcodes.h:190
+#: opcodes.h:189
 msgid "jump to the previous new or unread message"
 msgstr "跳到上一个新的或未读取的信件"
 
-#: opcodes.h:191
+#: opcodes.h:190
 msgid "jump to previous subthread"
 msgstr "跳到上一个子线索"
 
-#: opcodes.h:192
+#: opcodes.h:191
 msgid "jump to previous thread"
 msgstr "跳到上一个线索"
 
-#: opcodes.h:193
+#: opcodes.h:192
 msgid "move to the previous undeleted message"
 msgstr "移动到上一个未删除信件"
 
-#: opcodes.h:194
+#: opcodes.h:193
 msgid "jump to the previous unread message"
 msgstr "跳到上一个未读取的信件"
 
-#: opcodes.h:195
+#: opcodes.h:194
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr "在 NeoMutt 中隐藏，但不从磁盘上删除"
 
-#: opcodes.h:196
+#: opcodes.h:195
 msgid "mark the current subthread as read"
 msgstr "标记当前子线索为已读取"
 
-#: opcodes.h:197
+#: opcodes.h:196
 msgid "mark the current thread as read"
 msgstr "标记当前线索为已读取"
 
-#: opcodes.h:198
+#: opcodes.h:197
 msgid "jump to root message in thread"
 msgstr "跳到本线索中的根信件"
 
-#: opcodes.h:199
+#: opcodes.h:198
 msgid "set a status flag on a message"
 msgstr "设定某一封信件的状态标记"
 
-#: opcodes.h:200
+#: opcodes.h:199
 msgid "show currently active limit pattern"
 msgstr "显示当前激活的限制模式"
 
-#: opcodes.h:201
+#: opcodes.h:200
 msgid "save changes to mailbox"
 msgstr "保存修改到信箱"
 
-#: opcodes.h:202
+#: opcodes.h:201
 msgid "tag messages matching a pattern"
 msgstr "标记符合某个模式的信件"
 
-#: opcodes.h:203
+#: opcodes.h:202
 msgid "undelete messages matching a pattern"
 msgstr "反删除符合某个模式的信件"
 
-#: opcodes.h:204
+#: opcodes.h:203
 msgid "untag messages matching a pattern"
 msgstr "反标记符合某个模式的信件"
 
-#: opcodes.h:205
+#: opcodes.h:204
 msgid "create a hotkey macro for the current message"
 msgstr "为当前信件创建一个热键宏"
 
-#: opcodes.h:206
+#: opcodes.h:205
 msgid "move to the middle of the page"
 msgstr "移动到本页的中间"
 
-#: opcodes.h:207
+#: opcodes.h:206
 msgid "move to the next entry"
 msgstr "移动到下一条目"
 
-#: opcodes.h:208
+#: opcodes.h:207
 msgid "scroll down one line"
 msgstr "向下卷动一行"
 
-#: opcodes.h:209
+#: opcodes.h:208
 msgid "move to the next page"
 msgstr "移动到下一页"
 
-#: opcodes.h:210
+#: opcodes.h:209
 msgid "jump to the bottom of the message"
 msgstr "跳到信件的底端"
 
-#: opcodes.h:211
+#: opcodes.h:210
 msgid "toggle display of quoted text"
 msgstr "切换引用文本的显示"
 
-#: opcodes.h:212
+#: opcodes.h:211
 msgid "skip beyond quoted text"
 msgstr "跳过引用"
 
-#: opcodes.h:213
+#: opcodes.h:212
 msgid "jump to the top of the message"
 msgstr "跳到信件的顶端"
 
-#: opcodes.h:214
+#: opcodes.h:213
 msgid "pipe message/attachment to a shell command"
 msgstr "将 讯息/附件 通过管道传递给 shell 命令"
 
-#: opcodes.h:215
+#: opcodes.h:214
 msgid "post message to newsgroup"
 msgstr "发帖至新闻组"
 
-#: opcodes.h:216
+#: opcodes.h:215
 msgid "move to the previous entry"
 msgstr "移到上一条目"
 
-#: opcodes.h:217
+#: opcodes.h:216
 msgid "scroll up one line"
 msgstr "向上卷动一行"
 
-#: opcodes.h:218
+#: opcodes.h:217
 msgid "move to the previous page"
 msgstr "移动到上一页"
 
-#: opcodes.h:219
+#: opcodes.h:218
 msgid "print the current entry"
 msgstr "打印当前条目"
 
-#: opcodes.h:220
+#: opcodes.h:219
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "彻底删除目前的项，不归到回收站"
 
-#: opcodes.h:221
+#: opcodes.h:220
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "彻底删除目前的线索，不归到回收站"
 
-#: opcodes.h:222
+#: opcodes.h:221
 msgid "query external program for addresses"
 msgstr "向外部程序查询地址"
 
-#: opcodes.h:223
+#: opcodes.h:222
 msgid "append new query results to current results"
 msgstr "附加新查询结果到当前结果"
 
-#: opcodes.h:224
+#: opcodes.h:223
 msgid "save changes to mailbox and quit"
 msgstr "保存修改到信箱并且离开"
 
-#: opcodes.h:225
+#: opcodes.h:224
 msgid "recall a postponed message"
 msgstr "重新叫出一封被延迟寄出的信件"
 
-#: opcodes.h:226
+#: opcodes.h:225
 msgid "reconstruct thread containing current message"
 msgstr "重新构建包含当前信件的线索"
 
-#: opcodes.h:227
+#: opcodes.h:226
 msgid "clear and redraw the screen"
 msgstr "清除并重新绘制屏幕"
 
-#: opcodes.h:228
+#: opcodes.h:227
 msgid "{internal}"
 msgstr "{内部的}"
 
-#: opcodes.h:229
+#: opcodes.h:228
 msgid "rename the current mailbox (IMAP only)"
 msgstr "重命名当前信箱 (只适用于 IMAP)"
 
-#: opcodes.h:230
+#: opcodes.h:229
 msgid "reply to a message"
 msgstr "回复一封信件"
 
-#: opcodes.h:231
+#: opcodes.h:230
 msgid "use the current message as a template for a new one"
 msgstr "用当前信件作为新信件的模板"
 
-#: opcodes.h:232
+#: opcodes.h:231
 msgid "save message/attachment to a mailbox/file"
 msgstr "保存 信件/附件 到 信箱/文件"
 
-#: opcodes.h:233
+#: opcodes.h:232
 msgid "search for a regular expression"
 msgstr "用正则表示式搜索"
 
-#: opcodes.h:234
+#: opcodes.h:233
 msgid "search for next match"
 msgstr "搜索下一个匹配"
 
-#: opcodes.h:235
+#: opcodes.h:234
 msgid "search for next match in opposite direction"
 msgstr "反向搜索下一个匹配"
 
-#: opcodes.h:236
+#: opcodes.h:235
 msgid "search backwards for a regular expression"
 msgstr "用正则表示式向后搜索"
 
-#: opcodes.h:237
+#: opcodes.h:236
 msgid "toggle search pattern coloring"
 msgstr "切换搜寻模式的颜色"
 
-#: opcodes.h:238
+#: opcodes.h:237
 msgid "invoke a command in a subshell"
 msgstr "在 subshell 中调用命令"
 
-#: opcodes.h:239
+#: opcodes.h:238
 msgid "show log (and debug) messages"
 msgstr "显示日志（和调试）信息"
 
-#: opcodes.h:240
+#: opcodes.h:239
 msgid "sort messages"
 msgstr "排序信件"
 
-#: opcodes.h:241
+#: opcodes.h:240
 msgid "sort messages in reverse order"
 msgstr "反向排序信件"
 
-#: opcodes.h:242
+#: opcodes.h:241
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "订阅符合某个模式的新闻组"
 
-#: opcodes.h:243
+#: opcodes.h:242
 msgid "tag the current entry"
 msgstr "标记当前条目"
 
-#: opcodes.h:244
+#: opcodes.h:243
 msgid "apply next function to tagged messages"
 msgstr "对已标记的信件应用下一功能"
 
-#: opcodes.h:245
+#: opcodes.h:244
 msgid "apply next function ONLY to tagged messages"
 msgstr "“仅”对已标记的信件应用下一功能"
 
-#: opcodes.h:246
+#: opcodes.h:245
 msgid "tag the current subthread"
 msgstr "标记当前子线索"
 
-#: opcodes.h:247
+#: opcodes.h:246
 msgid "tag the current thread"
 msgstr "标记当前线索"
 
-#: opcodes.h:248
+#: opcodes.h:247
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "切换是否浏览信箱或所有文件"
 
-#: opcodes.h:249
+#: opcodes.h:248
 msgid "toggle a message's 'new' flag"
 msgstr "切换信件的'新信件'标记"
 
-#: opcodes.h:250
+#: opcodes.h:249
 msgid "toggle view of read messages"
 msgstr "切换已读信件的显示"
 
-#: opcodes.h:251
+#: opcodes.h:250
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "切换信箱是否要重写"
 
-#: opcodes.h:252
+#: opcodes.h:251
 msgid "move to the top of the page"
 msgstr "移到页首"
 
-#: opcodes.h:253
+#: opcodes.h:252
 msgid "mark all articles in newsgroup as unread"
 msgstr "标记所有新闻组的帖子为未读"
 
-#: opcodes.h:254
+#: opcodes.h:253
 msgid "undelete the current entry"
 msgstr "反删除当前条目"
 
-#: opcodes.h:255
+#: opcodes.h:254
 msgid "undelete all messages in subthread"
 msgstr "反删除子线索中的所有信件"
 
-#: opcodes.h:256
+#: opcodes.h:255
 msgid "undelete all messages in thread"
 msgstr "反删除线索中的所有信件"
 
-#: opcodes.h:257
+#: opcodes.h:256
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "退订符合某个模式的新闻组"
 
-#: opcodes.h:258
+#: opcodes.h:257
 msgid "show the NeoMutt version number and date"
 msgstr "显示 NeoMutt 的版本号与日期"
 
-#: opcodes.h:259
+#: opcodes.h:258
 msgid "view attachment using mailcap entry if necessary"
 msgstr "如果需要的话使用 mailcap 条目浏览附件"
 
-#: opcodes.h:260
+#: opcodes.h:259
 msgid "show MIME attachments"
 msgstr "显示 MIME 附件"
 
-#: opcodes.h:261
+#: opcodes.h:260
 msgid "show the raw message"
 msgstr "显示信件原文"
 
-#: opcodes.h:262
+#: opcodes.h:261
 msgid "display the keycode for a key press"
 msgstr "显示按键的键码"
 
-#: opcodes.h:265
+#: opcodes.h:264
 msgid "make decrypted copy"
 msgstr "制作解密的副本"
 
-#: opcodes.h:266
+#: opcodes.h:265
 msgid "make decrypted copy and delete"
 msgstr "制作解密的副本并且删除之"
 
-#: opcodes.h:267
+#: opcodes.h:266
 msgid "extract supported public keys"
 msgstr "取出支持的公钥"
 
-#: opcodes.h:268
+#: opcodes.h:267
 msgid "wipe passphrases from memory"
 msgstr "从内存中清除通行密钥"
 
-#: opcodes.h:272
+#: opcodes.h:271
 msgid "send the message through a mixmaster remailer chain"
 msgstr "通过 mixmaster 转发者链发送信件"
 
-#: opcodes.h:273
+#: opcodes.h:272
 msgid "append a remailer to the chain"
 msgstr "附加转发者到链"
 
-#: opcodes.h:274
+#: opcodes.h:273
 msgid "select the next element of the chain"
 msgstr "选择链中的下一个元素"
 
-#: opcodes.h:275
+#: opcodes.h:274
 msgid "select the previous element of the chain"
 msgstr "选择链中的前一个元素"
 
-#: opcodes.h:276
+#: opcodes.h:275
 msgid "delete a remailer from the chain"
 msgstr "从链中删除转发者"
 
-#: opcodes.h:277
+#: opcodes.h:276
 msgid "insert a remailer into the chain"
 msgstr "插入转发者到链"
 
-#: opcodes.h:278
+#: opcodes.h:277
 msgid "accept the chain constructed"
 msgstr "接受构建的链"
 
-#: opcodes.h:285
+#: opcodes.h:284
 msgid "open a different virtual folder"
 msgstr "打开另一个虚拟文件夹"
 
-#: opcodes.h:286
+#: opcodes.h:285
 msgid "read entire thread of the current message"
 msgstr "读目前信件的整个线索"
 
-#: opcodes.h:287
+#: opcodes.h:286
 msgid "generate virtual folder from query"
 msgstr "产生虚拟文件夹从查询"
 
-#: opcodes.h:288
+#: opcodes.h:287
 msgid "generate a read-only virtual folder from query"
 msgstr "从查询生成只读虚拟文件夹"
 
-#: opcodes.h:289
+#: opcodes.h:288
 msgid "shifts virtual folder time window backwards"
 msgstr "向后移动虚拟文件夹时间窗口"
 
-#: opcodes.h:290
+#: opcodes.h:289
 msgid "shifts virtual folder time window forwards"
 msgstr "向前移动虚拟文件夹时间窗口"
 
-#: opcodes.h:296
+#: opcodes.h:295
 msgid "check for classic PGP"
 msgstr "检查经典 PGP"
 
-#: opcodes.h:297
+#: opcodes.h:296
 msgid "attach a PGP public key"
 msgstr "附加 PGP 公钥"
 
-#: opcodes.h:298
+#: opcodes.h:297
 msgid "show PGP options"
 msgstr "显示 PGP 选项"
 
-#: opcodes.h:299
+#: opcodes.h:298
 msgid "mail a PGP public key"
 msgstr "邮寄 PGP 公钥"
 
-#: opcodes.h:300
+#: opcodes.h:299
 msgid "verify a PGP public key"
 msgstr "验证 PGP 公钥"
 
-#: opcodes.h:301
+#: opcodes.h:300
 msgid "view the key's user id"
 msgstr "查看密钥的用户 id"
 
-#: opcodes.h:304
+#: opcodes.h:303
 #, fuzzy
 msgid "move the highlight to the first mailbox"
 msgstr "移动高亮到下一个信箱"
 
-#: opcodes.h:305
+#: opcodes.h:304
 #, fuzzy
 msgid "move the highlight to the last mailbox"
 msgstr "移动高亮到下一个信箱"
 
-#: opcodes.h:306
+#: opcodes.h:305
 msgid "move the highlight to next mailbox"
 msgstr "移动高亮到下一个信箱"
 
-#: opcodes.h:307
+#: opcodes.h:306
 msgid "move the highlight to next mailbox with new mail"
 msgstr "移动高亮到下一个有新邮件的信箱"
 
-#: opcodes.h:308
+#: opcodes.h:307
 msgid "open highlighted mailbox"
 msgstr "打开高亮的信箱"
 
-#: opcodes.h:309
+#: opcodes.h:308
 msgid "scroll the sidebar down 1 page"
 msgstr "将侧边栏向下滚动一页"
 
-#: opcodes.h:310
+#: opcodes.h:309
 msgid "scroll the sidebar up 1 page"
 msgstr "将侧边栏向上滚动一页"
 
-#: opcodes.h:311
+#: opcodes.h:310
 msgid "move the highlight to previous mailbox"
 msgstr "移动高亮到上一个信箱"
 
-#: opcodes.h:312
+#: opcodes.h:311
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "移动高亮到上一个有新邮件的信箱"
 
-#: opcodes.h:313
+#: opcodes.h:312
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "在信箱和虚拟信箱列表之间切换"
 
-#: opcodes.h:314
+#: opcodes.h:313
 msgid "make the sidebar (in)visible"
 msgstr "使侧边栏(不)可见"
 
-#: opcodes.h:317
+#: opcodes.h:316
 msgid "show S/MIME options"
 msgstr "显示 S/MIME 选项"
+
+#: opcodes.h:319
+msgid "null operation"
+msgstr "空操作"
 
 #: pager.c:214
 msgid "Not available in this menu"
@@ -6809,13 +6809,13 @@ msgstr "找不到排序函数！[请报告这个问题]"
 msgid "(no mailbox)"
 msgstr "(没有信箱)"
 
-#: version.c:81
+#: version.c:85
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr "许多这里没有提到的人也贡献了代码，修正以及建议。\n"
 
-#: version.c:85
+#: version.c:89
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -6841,7 +6841,7 @@ msgstr ""
 "    您应已收到附随于本程序的 GNU 通用公共许可的副本；如果没有，请写信\n"
 "    至自由软件基金会，51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n"
 
-#: version.c:101
+#: version.c:105
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -6853,7 +6853,7 @@ msgstr ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "或者发送邮件至：<neomutt-devel@neomutt.org>\n"
 
-#: version.c:108
+#: version.c:112
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -6865,11 +6865,11 @@ msgstr ""
 "NeoMutt 是自由软件，欢迎您在某些条件下\n"
 "重新发行它；请键入 'neomutt -vv' 以获取详细信息。\n"
 
-#: version.c:508
+#: version.c:526
 msgid "Default options:"
 msgstr "默认选项："
 
-#: version.c:511
+#: version.c:529
 msgid "Compile options:"
 msgstr "编译选项："
 

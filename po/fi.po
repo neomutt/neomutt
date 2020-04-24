@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-04-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-04-17 11:38+0100\n"
+"POT-Creation-Date: 2020-04-24 16:26+0100\n"
 "PO-Revision-Date: 2018-09-19 03:36+0200\n"
 "Last-Translator: Flammie A Pirinen <flammie@iki.fi>\n"
 "Language-Team: Finnish\n"
@@ -1915,7 +1915,7 @@ msgstr "Ei voitu avata viestitiedostoa: %s"
 msgid "Can't append to folder: %s"
 msgstr "Ei voitu avata kansiota: %s"
 
-#: email/parse.c:1479
+#: email/parse.c:1480
 msgid "multipart message has no boundary parameter"
 msgstr "multipart-viestillä ei ole rajoitinmerkkiparametriä"
 
@@ -2457,7 +2457,7 @@ msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Kopioidaan %d viestiä kansioon %s..."
 msgstr[1] "Kopioidaan %d viestejä kansioon %s..."
 
-#: imap/imap.c:1606 imap/imap.c:2262 imap/message.c:1729 muttlib.c:1494
+#: imap/imap.c:1606 imap/imap.c:2264 imap/message.c:1729 muttlib.c:1494
 #, c-format
 msgid "Create %s?"
 msgstr "Luodaanko %s?"
@@ -2496,20 +2496,20 @@ msgstr "Poistetaan viestejä palvelimelta..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE epäonnistui"
 
-#: imap/imap.c:2066 nntp/nntp.c:2488
+#: imap/imap.c:2068 nntp/nntp.c:2488
 #, c-format
 msgid "Selecting %s..."
 msgstr "Valitaan %s..."
 
-#: imap/imap.c:2229
+#: imap/imap.c:2231
 msgid "Error opening mailbox"
 msgstr "Virhe avattaessa postilaatikkoa"
 
-#: imap/imap.c:2378
+#: imap/imap.c:2380
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP-palvelin ei tue omia merkintöjä"
 
-#: imap/imap.c:2422
+#: imap/imap.c:2424
 msgid "Invalid IMAP flags"
 msgstr "Vialliset IMAP-merkinnät  "
 
@@ -5003,1041 +5003,1041 @@ msgid "show autocrypt compose menu options"
 msgstr ""
 
 #: opcodes.h:40
-msgid "null operation"
-msgstr "nollatoiminto"
-
-#: opcodes.h:41
 msgid "toggle display of subparts"
 msgstr "vaihda aliosien näkyvyyttä"
 
-#: opcodes.h:42
+#: opcodes.h:41
 msgid "force viewing of attachment using mailcap"
 msgstr "näytä liitteet väkisin mailcapin perusteella"
 
-#: opcodes.h:43
+#: opcodes.h:42
 msgid "view attachment as text"
 msgstr "näytä liitteet tekstinä"
 
-#: opcodes.h:44
+#: opcodes.h:43
 msgid "move to the bottom of the page"
 msgstr "siirry sivun loppuun"
 
-#: opcodes.h:45
+#: opcodes.h:44
 msgid "remail a message to another user"
 msgstr "uudelleenpostita viesti toiselle käyttäjälle"
 
-#: opcodes.h:46
+#: opcodes.h:45
 msgid "swap the current folder position with $folder if it exists"
 msgstr "vaihda nykyisen kansion ja $folder-kansion paikkaa jos se on olemassa"
 
-#: opcodes.h:47
+#: opcodes.h:46
 msgid "select a new file in this directory"
 msgstr "valitse uusi tiedosto hakemistosta"
 
-#: opcodes.h:48
+#: opcodes.h:47
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "tilaa tämä postilaatikko (vain IMAP tai NNTP)"
 
-#: opcodes.h:49
+#: opcodes.h:48
 msgid "display the currently selected file's name"
 msgstr "näytä nykyisen valitun tiedoston nimi"
 
-#: opcodes.h:50
+#: opcodes.h:49
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "vaihda näkyvyyttä kaikille/tilatuille (vain IMAP)"
 
-#: opcodes.h:51
+#: opcodes.h:50
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "poista tämän postilaatikon tilaus (vain IMAP tai NNTP)"
 
-#: opcodes.h:52
+#: opcodes.h:51
 msgid "view file"
 msgstr "näytä tiedosto"
 
-#: opcodes.h:53
+#: opcodes.h:52
 msgid "mark all articles in newsgroup as read"
 msgstr "merkitse uutisryhmän kaikki artikkelit luetuiksi"
 
-#: opcodes.h:54
+#: opcodes.h:53
 msgid "change directories"
 msgstr "vaihda hakemistoa"
 
-#: opcodes.h:55
+#: opcodes.h:54
 msgid "check mailboxes for new mail"
 msgstr "tarkasta uusi posti postilaatikoista"
 
-#: opcodes.h:56
+#: opcodes.h:55
 msgid "calculate message statistics for all mailboxes"
 msgstr "laske viestin tilastot kaikille postilaatikoille"
 
-#: opcodes.h:57
+#: opcodes.h:56
 msgid "attach files to this message"
 msgstr "liitä tiedostoja tähän viestiin"
 
-#: opcodes.h:58
+#: opcodes.h:57
 msgid "attach messages to this message"
 msgstr "liitä viestejä tähän viestiin"
 
-#: opcodes.h:59
+#: opcodes.h:58
 msgid "attach news articles to this message"
 msgstr "liitä uutisryhmäartikkeleja tähän viestiin"
 
-#: opcodes.h:60
+#: opcodes.h:59
 msgid "edit the BCC list"
 msgstr "muokkaa BCC:tä"
 
-#: opcodes.h:61
+#: opcodes.h:60
 msgid "edit the CC list"
 msgstr "muokkaa CC:tä"
 
-#: opcodes.h:62
+#: opcodes.h:61
 msgid "edit attachment description"
 msgstr "muokkaa liitteen kuvausta"
 
-#: opcodes.h:63
+#: opcodes.h:62
 msgid "edit attachment transfer-encoding"
 msgstr "muokkaa liitteen transfer-encodingia"
 
-#: opcodes.h:64
+#: opcodes.h:63
 msgid "enter a file to save a copy of this message in"
 msgstr "tiedosto johon kopio viestistä tallennetaan"
 
-#: opcodes.h:65
+#: opcodes.h:64
 msgid "edit the file to be attached"
 msgstr "muokkaa tiedostoa joka liitettään"
 
-#: opcodes.h:66
+#: opcodes.h:65
 msgid "edit the Followup-To field"
 msgstr "muokka Followup-To-kenttää"
 
-#: opcodes.h:67
+#: opcodes.h:66
 msgid "edit the from field"
 msgstr "muokkaa lähettäjä-kenttää"
 
-#: opcodes.h:68
+#: opcodes.h:67
 msgid "edit the message with headers"
 msgstr "muokkaa viestiä otsakkeineen"
 
-#: opcodes.h:69
+#: opcodes.h:68
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "muokkaa liitteen 'Content-Language'-kenttää"
 
-#: opcodes.h:70
+#: opcodes.h:69
 msgid "edit the message"
 msgstr "muokkaa viestiä"
 
-#: opcodes.h:71
+#: opcodes.h:70
 msgid "edit attachment using mailcap entry"
 msgstr "muokkaa liitettä mailcapin perusteella"
 
-#: opcodes.h:72
+#: opcodes.h:71
 msgid "edit the newsgroups list"
 msgstr "muokkaa uutisryhmälistaa"
 
-#: opcodes.h:73
+#: opcodes.h:72
 msgid "edit the Reply-To field"
 msgstr "muokka Reply-To-kenttää"
 
-#: opcodes.h:74
+#: opcodes.h:73
 msgid "edit the subject of this message"
 msgstr "muokkaa viestin aihekenttää"
 
-#: opcodes.h:75
+#: opcodes.h:74
 msgid "edit the TO list"
 msgstr "muokkaa vastaanottajia"
 
-#: opcodes.h:76
+#: opcodes.h:75
 msgid "edit the X-Comment-To field"
 msgstr "muokkaa X-Comment-To-kenttää"
 
-#: opcodes.h:77
+#: opcodes.h:76
 msgid "get a temporary copy of an attachment"
 msgstr "hae väliaikaiskopio liitteestä"
 
-#: opcodes.h:78
+#: opcodes.h:77
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "ryhmitä merkityt liitteet tyypiksi 'multipart/alternative'"
 
-#: opcodes.h:79
+#: opcodes.h:78
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr "ryhmitä merkityt liitteet tyypiksi 'multipart/multilingual'"
 
-#: opcodes.h:80
+#: opcodes.h:79
 msgid "run ispell on the message"
 msgstr "käytä ispelliä viestiin"
 
-#: opcodes.h:81
+#: opcodes.h:80
 msgid "move an attachment down in the attachment list"
 msgstr "Siirrä liitettä alemmas liitelistassa"
 
-#: opcodes.h:82
+#: opcodes.h:81
 msgid "move an attachment up in the attachment list"
 msgstr "Siirrä liitettä ylemmäs liitelistassa"
 
-#: opcodes.h:83
+#: opcodes.h:82
 msgid "compose new attachment using mailcap entry"
 msgstr "luo uusi liite mailcapin perusteella"
 
-#: opcodes.h:84
+#: opcodes.h:83
 msgid "save this message to send later"
 msgstr "tallenna viesti myöhempää lähetystä varten"
 
-#: opcodes.h:85
+#: opcodes.h:84
 msgid "send attachment with a different name"
 msgstr "lähetä liite toisella nimellä"
 
-#: opcodes.h:86
+#: opcodes.h:85
 msgid "rename/move an attached file"
 msgstr "uudelleennimeä/siirrä liitetiedostoa"
 
-#: opcodes.h:87
+#: opcodes.h:86
 msgid "send the message"
 msgstr "lähetä viesti"
 
-#: opcodes.h:88
+#: opcodes.h:87
 msgid "toggle disposition between inline/attachment"
 msgstr "vaihda dispositioksi inline/attachment"
 
-#: opcodes.h:89
+#: opcodes.h:88
 msgid "toggle recoding of this attachment"
 msgstr "vaihda liitteen uudelleenkoodausta"
 
-#: opcodes.h:90
+#: opcodes.h:89
 msgid "toggle whether to delete file after sending it"
 msgstr "vaihda poistetanako tiedosto lähettämisen jälkeen"
 
-#: opcodes.h:91
+#: opcodes.h:90
 msgid "compose new message to the current message sender"
 msgstr "kirjoita uusi viesti ja lähetä lähettäjälle"
 
-#: opcodes.h:92
+#: opcodes.h:91
 msgid "update an attachment's encoding info"
 msgstr "päivitä liitteen koodausinfo"
 
-#: opcodes.h:93
+#: opcodes.h:92
 msgid "write the message to a folder"
 msgstr "kirjoita viesti kansioon"
 
-#: opcodes.h:94
+#: opcodes.h:93
 msgid "copy a message to a file/mailbox"
 msgstr "kopioi viesti tiedostoon/postilaatikkoon"
 
-#: opcodes.h:95
+#: opcodes.h:94
 msgid "create an alias from a message sender"
 msgstr "luo alias viestin lähettäjästä"
 
-#: opcodes.h:96
+#: opcodes.h:95
 msgid "create a new mailbox (IMAP only)"
 msgstr "luo uusi postilaatikko (vain IMAP)"
 
-#: opcodes.h:97
+#: opcodes.h:96
 msgid "move entry to bottom of screen"
 msgstr "siirrä tietue näytön pohjalle"
 
-#: opcodes.h:98
+#: opcodes.h:97
 msgid "move entry to middle of screen"
 msgstr "siirrä tietue näytön puoliväliin"
 
-#: opcodes.h:99
+#: opcodes.h:98
 msgid "move entry to top of screen"
 msgstr "siirrä tietue näytön alkuun"
 
-#: opcodes.h:100
+#: opcodes.h:99
 msgid "make decoded (text/plain) copy"
 msgstr "tee purettu (text/plain) kopio"
 
-#: opcodes.h:101
+#: opcodes.h:100
 msgid "make decoded copy (text/plain) and delete"
 msgstr "tee purettu kopio (text/plain) ja poista"
 
-#: opcodes.h:102
+#: opcodes.h:101
 msgid "delete the current entry"
 msgstr "poista nykyinen tietue"
 
-#: opcodes.h:103
+#: opcodes.h:102
 msgid "delete the current mailbox (IMAP only)"
 msgstr "poista nykyinen postilaatikko (vain IMAP)"
 
-#: opcodes.h:104
+#: opcodes.h:103
 msgid "delete all messages in subthread"
 msgstr "poista kaikki viestit aliketjussa"
 
-#: opcodes.h:105
+#: opcodes.h:104
 msgid "delete all messages in thread"
 msgstr "poista kaikki viestit ketjussa"
 
-#: opcodes.h:106
+#: opcodes.h:105
 #, fuzzy
 msgid "descend into a directory"
 msgstr "%s ei ole hakemisto"
 
-#: opcodes.h:107
+#: opcodes.h:106
 msgid "display full address of sender"
 msgstr "näytä lähettäjän koko osoite"
 
-#: opcodes.h:108
+#: opcodes.h:107
 msgid "display message and toggle header weeding"
 msgstr "näytä viesti ja vaihda otsakkeiden suodatusta"
 
-#: opcodes.h:109
+#: opcodes.h:108
 msgid "display a message"
 msgstr "näytä viesti"
 
-#: opcodes.h:110
+#: opcodes.h:109
 msgid "delete the char in front of the cursor"
 msgstr "poista merkkejä kursorin edestä"
 
-#: opcodes.h:111
+#: opcodes.h:110
 msgid "move the cursor one character to the left"
 msgstr "siirrä kursoria vasemmalle merkin verran"
 
-#: opcodes.h:112
+#: opcodes.h:111
 msgid "move the cursor to the beginning of the word"
 msgstr "siirrä kursori sanan alkuun"
 
-#: opcodes.h:113
+#: opcodes.h:112
 msgid "jump to the beginning of the line"
 msgstr "siirry rivin alkuun"
 
-#: opcodes.h:114
+#: opcodes.h:113
 msgid "capitalize the word"
 msgstr "kirjoita sana isolla alkukirjaimella"
 
-#: opcodes.h:115
+#: opcodes.h:114
 msgid "complete filename or alias"
 msgstr "täydennä tiedostonimi tai alias"
 
-#: opcodes.h:116
+#: opcodes.h:115
 msgid "complete address with query"
 msgstr "täydennä osoite haulla"
 
-#: opcodes.h:117
+#: opcodes.h:116
 msgid "delete the char under the cursor"
 msgstr "poista merkki kursorin alta"
 
-#: opcodes.h:118
+#: opcodes.h:117
 msgid "convert the word to lower case"
 msgstr "kirjoita sana pienellä"
 
-#: opcodes.h:119
+#: opcodes.h:118
 msgid "jump to the end of the line"
 msgstr "siirry rivin loppuun"
 
-#: opcodes.h:120
+#: opcodes.h:119
 msgid "move the cursor one character to the right"
 msgstr "siirrä kursoria merkin verran oikealle"
 
-#: opcodes.h:121
+#: opcodes.h:120
 msgid "move the cursor to the end of the word"
 msgstr "siirrä kursoria sanan loppuun"
 
-#: opcodes.h:122
+#: opcodes.h:121
 msgid "scroll down through the history list"
 msgstr "vieritä alaspäin historialistaa"
 
-#: opcodes.h:123
+#: opcodes.h:122
 msgid "search through the history list"
 msgstr "hae historialistan lävitse"
 
-#: opcodes.h:124
+#: opcodes.h:123
 msgid "scroll up through the history list"
 msgstr "vieritä ylöspäin historialistaa"
 
-#: opcodes.h:125
+#: opcodes.h:124
 msgid "delete chars from cursor to end of line"
 msgstr "poista merkkejä kursorista rivin loppuun"
 
-#: opcodes.h:126
+#: opcodes.h:125
 msgid "delete chars from the cursor to the end of the word"
 msgstr "poista merkkejä kursorista sanan loppuun"
 
-#: opcodes.h:127
+#: opcodes.h:126
 msgid "delete all chars on the line"
 msgstr "poista kaikki merkit riviltä"
 
-#: opcodes.h:128
+#: opcodes.h:127
 msgid "delete the word in front of the cursor"
 msgstr "poista sana kursorin edestä"
 
-#: opcodes.h:129
+#: opcodes.h:128
 msgid "cycle among incoming mailboxes"
 msgstr "vaihda vastaanottopostilaatikoiden välillä"
 
-#: opcodes.h:130
+#: opcodes.h:129
 msgid "quote the next typed key"
 msgstr "lainaa seuraava merkki"
 
-#: opcodes.h:131
+#: opcodes.h:130
 msgid "transpose character under cursor with previous"
 msgstr "vaihda merkki kursorin alla edellisen kanssa"
 
-#: opcodes.h:132
+#: opcodes.h:131
 msgid "convert the word to upper case"
 msgstr "kirjoita sana isolla"
 
-#: opcodes.h:133
+#: opcodes.h:132
 msgid "add, change, or delete a message's label"
 msgstr "lisää, muuta tai poista viestin merkintöjä"
 
-#: opcodes.h:134
+#: opcodes.h:133
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr "muokkaa raakaa viestiä jos postilaatikko ei ole kirjoitussuojattu, muuten näytä viesti"
 
-#: opcodes.h:135
+#: opcodes.h:134
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr "muokkaa raakaa viestiä (edit ja edit-raw-message ovat samat)"
 
-#: opcodes.h:136
+#: opcodes.h:135
 msgid "edit attachment content type"
 msgstr "muokkaa liitteen sisältötyyppiä"
 
-#: opcodes.h:137
+#: opcodes.h:136
 msgid "end of conditional execution (noop)"
 msgstr "ehdollisen suorituksen loppu (noop)"
 
-#: opcodes.h:138
+#: opcodes.h:137
 msgid "enter a neomuttrc command"
 msgstr "neomuttrc-komento"
 
-#: opcodes.h:139
+#: opcodes.h:138
 msgid "enter a file mask"
 msgstr "tiedostomaski"
 
-#: opcodes.h:140
+#: opcodes.h:139
 msgid "exit this menu"
 msgstr "poistu valikosta"
 
-#: opcodes.h:141
+#: opcodes.h:140
 msgid "filter attachment through a shell command"
 msgstr "filtteröi liitteet shell-komennolla"
 
-#: opcodes.h:142
+#: opcodes.h:141
 msgid "move to the first entry"
 msgstr "siirry ensimmäiseen tietueeseen"
 
-#: opcodes.h:143
+#: opcodes.h:142
 msgid "toggle a message's 'important' flag"
 msgstr "vaihda viestin important-merkintää"
 
-#: opcodes.h:144
+#: opcodes.h:143
 msgid "followup to newsgroup"
 msgstr "vastineet uutisryhmään"
 
-#: opcodes.h:145
+#: opcodes.h:144
 msgid "forward a message with comments"
 msgstr "edelleenlähetä ja kommentoi"
 
-#: opcodes.h:146
+#: opcodes.h:145
 msgid "forward to newsgroup"
 msgstr "edelleenlähetä uutisryhmään"
 
-#: opcodes.h:147
+#: opcodes.h:146
 msgid "select the current entry"
 msgstr "valitse nykyinen tietue"
 
-#: opcodes.h:148
+#: opcodes.h:147
 msgid "get all children of the current message"
 msgstr "hae kaikki tämän viestin jälkeläiset"
 
-#: opcodes.h:149
+#: opcodes.h:148
 msgid "get message with Message-Id"
 msgstr "hae viesti ID:llä"
 
-#: opcodes.h:150
+#: opcodes.h:149
 msgid "get parent of the current message"
 msgstr "hae viestin vanhempi"
 
-#: opcodes.h:151
+#: opcodes.h:150
 msgid "go to parent directory"
 msgstr "mene ylempään hakemistoon"
 
-#: opcodes.h:152
+#: opcodes.h:151
 #, fuzzy
 msgid "reply to all recipients preserving To/Cc"
 msgstr "vastaa kaikille vastaanottajille"
 
-#: opcodes.h:153
+#: opcodes.h:152
 msgid "reply to all recipients"
 msgstr "vastaa kaikille vastaanottajille"
 
-#: opcodes.h:154
+#: opcodes.h:153
 msgid "scroll down 1/2 page"
 msgstr "vieritä alaspäin puoli sivua"
 
-#: opcodes.h:155
+#: opcodes.h:154
 msgid "scroll up 1/2 page"
 msgstr "vieritä ylöspäin puoli sivua"
 
-#: opcodes.h:156
+#: opcodes.h:155
 msgid "this screen"
 msgstr "tämä näyttö"
 
-#: opcodes.h:157
+#: opcodes.h:156
 msgid "jump to an index number"
 msgstr "siirry indeksinumeroon"
 
-#: opcodes.h:158
+#: opcodes.h:157
 msgid "move to the last entry"
 msgstr "siirry viimeiseen"
 
-#: opcodes.h:159
+#: opcodes.h:158
 msgid "limit view to current thread"
 msgstr "rajoita näkymä tähän ketjuun"
 
-#: opcodes.h:160
+#: opcodes.h:159
 msgid "reply to specified mailing list"
 msgstr "vastaa postituslistalle"
 
-#: opcodes.h:161
+#: opcodes.h:160
 msgid "load list of all newsgroups from NNTP server"
 msgstr "lataa kaikkien uutisryhmien lista NNTP-palvelimelta"
 
-#: opcodes.h:162
+#: opcodes.h:161
 msgid "execute a macro"
 msgstr "suorita makro"
 
-#: opcodes.h:163
+#: opcodes.h:162
 msgid "compose a new mail message"
 msgstr "kirjoita uusi viesti"
 
-#: opcodes.h:164
+#: opcodes.h:163
 msgid "list mailboxes with new mail"
 msgstr "luettele postilaatikot joissa on uutta postia"
 
-#: opcodes.h:165
+#: opcodes.h:164
 msgid "break the thread in two"
 msgstr "katkaise ketju kahtia"
 
-#: opcodes.h:166
+#: opcodes.h:165
 msgid "open a different folder"
 msgstr "avaa uusi kansio"
 
-#: opcodes.h:167
+#: opcodes.h:166
 msgid "open a different folder in read only mode"
 msgstr "avaa toinen kansio kirjoitussuojattuna"
 
-#: opcodes.h:168
+#: opcodes.h:167
 msgid "open a different newsgroup"
 msgstr "avaa toinen uutisryhmä"
 
-#: opcodes.h:169
+#: opcodes.h:168
 msgid "open a different newsgroup in read only mode"
 msgstr "avaa toinen uutisryhmä kirjoitussuojattuna"
 
-#: opcodes.h:170
+#: opcodes.h:169
 msgid "clear a status flag from a message"
 msgstr "poista statusmerkit viestistä"
 
-#: opcodes.h:171
+#: opcodes.h:170
 msgid "collapse/uncollapse all threads"
 msgstr "avaa/sulje kaikki ketjut"
 
-#: opcodes.h:172
+#: opcodes.h:171
 msgid "collapse/uncollapse current thread"
 msgstr "avaa/sulje ketju"
 
-#: opcodes.h:173
+#: opcodes.h:172
 msgid "delete messages matching a pattern"
 msgstr "poista viestit hakulausekkeen perusteella"
 
-#: opcodes.h:174
+#: opcodes.h:173
 msgid "retrieve mail from POP server"
 msgstr "hae viestit POP-palvelimelta"
 
-#: opcodes.h:175
+#: opcodes.h:174
 msgid "force retrieval of mail from IMAP server"
 msgstr "hae viestit IMAP-palvelimelta väkisin"
 
-#: opcodes.h:176
+#: opcodes.h:175
 msgid "logout from all IMAP servers"
 msgstr "kirjaudu ulos kaikilta IMAP-palvelimilta"
 
-#: opcodes.h:177
+#: opcodes.h:176
 msgid "show only messages matching a pattern"
 msgstr "näytä vain täsmäävät viestit"
 
-#: opcodes.h:178
+#: opcodes.h:177
 msgid "link tagged message to the current one"
 msgstr "linkitä merkitty viesti tähän"
 
-#: opcodes.h:179
+#: opcodes.h:178
 msgid "modify (notmuch/imap) tags"
 msgstr "muokkaa (notmuch- tai imap-)merkintöjä"
 
-#: opcodes.h:180
+#: opcodes.h:179
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "muokkaa (notmuch- tai imap-)merkintöjä ja piilota viesti"
 
-#: opcodes.h:181
+#: opcodes.h:180
 msgid "jump to the next new message"
 msgstr "siirry seuraavaan uuteen viestiin"
 
-#: opcodes.h:182
+#: opcodes.h:181
 msgid "jump to the next new or unread message"
 msgstr "siirry seuraavaan uuteen tai lukemattomaan viestiin"
 
-#: opcodes.h:183
+#: opcodes.h:182
 msgid "jump to the next subthread"
 msgstr "siirry seuraavaan aliketjuun"
 
-#: opcodes.h:184
+#: opcodes.h:183
 msgid "jump to the next thread"
 msgstr "siirry seuraavaan ketjuun"
 
-#: opcodes.h:185
+#: opcodes.h:184
 msgid "move to the next undeleted message"
 msgstr "siirry seuraavaan viestiin jonka poistaminen on peruttu"
 
-#: opcodes.h:186
+#: opcodes.h:185
 msgid "jump to the next unread message"
 msgstr "siirry seuraavaan lukemattomaan viestiin"
 
-#: opcodes.h:187
+#: opcodes.h:186
 msgid "open next mailbox with new mail"
 msgstr "avaa seuraava postilaatikko jossa on uutta postia"
 
-#: opcodes.h:188
+#: opcodes.h:187
 msgid "jump to parent message in thread"
 msgstr "siirry ylempään viestiin ketjussa"
 
-#: opcodes.h:189
+#: opcodes.h:188
 msgid "jump to the previous new message"
 msgstr "siirry edelliseen uuteen viestiin"
 
-#: opcodes.h:190
+#: opcodes.h:189
 msgid "jump to the previous new or unread message"
 msgstr "siirry edelliseen uuteen tai lukemattomaan viestiin"
 
-#: opcodes.h:191
+#: opcodes.h:190
 msgid "jump to previous subthread"
 msgstr "siirry edelliseen aliketjuun"
 
-#: opcodes.h:192
+#: opcodes.h:191
 msgid "jump to previous thread"
 msgstr "siirry edelliseen ketjuun"
 
-#: opcodes.h:193
+#: opcodes.h:192
 msgid "move to the previous undeleted message"
 msgstr "siirry edelliseen viestiin jonka poistaminen on peruttu"
 
-#: opcodes.h:194
+#: opcodes.h:193
 msgid "jump to the previous unread message"
 msgstr "siirry edelliseen lukemattomaan viestiin"
 
-#: opcodes.h:195
+#: opcodes.h:194
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr "poista neomuttista, säästä levyllä"
 
-#: opcodes.h:196
+#: opcodes.h:195
 msgid "mark the current subthread as read"
 msgstr "merkitse tämä aliketju luetuksi"
 
-#: opcodes.h:197
+#: opcodes.h:196
 msgid "mark the current thread as read"
 msgstr "merkitse tämä ketju luetuksi"
 
-#: opcodes.h:198
+#: opcodes.h:197
 msgid "jump to root message in thread"
 msgstr "siirry ketjun aloitusviestiin"
 
-#: opcodes.h:199
+#: opcodes.h:198
 msgid "set a status flag on a message"
 msgstr "aseta status-merkintä viestille"
 
-#: opcodes.h:200
+#: opcodes.h:199
 msgid "show currently active limit pattern"
 msgstr "näytä aktiivinen hakulauseke"
 
-#: opcodes.h:201
+#: opcodes.h:200
 msgid "save changes to mailbox"
 msgstr "tallenna muutokset postilaatikkoon"
 
-#: opcodes.h:202
+#: opcodes.h:201
 msgid "tag messages matching a pattern"
 msgstr "merkitse täsmäävät viestit"
 
-#: opcodes.h:203
+#: opcodes.h:202
 msgid "undelete messages matching a pattern"
 msgstr "peru täsmäävien viestien poisto"
 
-#: opcodes.h:204
+#: opcodes.h:203
 msgid "untag messages matching a pattern"
 msgstr "peru täsmäävien viestine merkinnät"
 
-#: opcodes.h:205
+#: opcodes.h:204
 msgid "create a hotkey macro for the current message"
 msgstr "luo näppäinmakro tälle viestille"
 
-#: opcodes.h:206
+#: opcodes.h:205
 msgid "move to the middle of the page"
 msgstr "siirry sivun puoliväliin"
 
-#: opcodes.h:207
+#: opcodes.h:206
 msgid "move to the next entry"
 msgstr "siirry seuraavaan tietueeseen"
 
-#: opcodes.h:208
+#: opcodes.h:207
 msgid "scroll down one line"
 msgstr "vieritä alaspäin rivin verran"
 
-#: opcodes.h:209
+#: opcodes.h:208
 msgid "move to the next page"
 msgstr "siirry seuraavalle sivulle"
 
-#: opcodes.h:210
+#: opcodes.h:209
 msgid "jump to the bottom of the message"
 msgstr "siirry viestin loppuun"
 
-#: opcodes.h:211
+#: opcodes.h:210
 msgid "toggle display of quoted text"
 msgstr "vaihda lainatun tekstin näkyvyyttä"
 
-#: opcodes.h:212
+#: opcodes.h:211
 msgid "skip beyond quoted text"
 msgstr "ohita lainatun tekstin ohi"
 
-#: opcodes.h:213
+#: opcodes.h:212
 msgid "jump to the top of the message"
 msgstr "siirry viestin alkuun"
 
-#: opcodes.h:214
+#: opcodes.h:213
 msgid "pipe message/attachment to a shell command"
 msgstr "putkita viesti/liite shell-komennolle"
 
-#: opcodes.h:215
+#: opcodes.h:214
 msgid "post message to newsgroup"
 msgstr "postaa uutisryhmään"
 
-#: opcodes.h:216
+#: opcodes.h:215
 msgid "move to the previous entry"
 msgstr "siirry edelliseen tietueeseen"
 
-#: opcodes.h:217
+#: opcodes.h:216
 msgid "scroll up one line"
 msgstr "vieritä ylöspäin rivin verran"
 
-#: opcodes.h:218
+#: opcodes.h:217
 msgid "move to the previous page"
 msgstr "siirry edelliselle sivulle"
 
-#: opcodes.h:219
+#: opcodes.h:218
 msgid "print the current entry"
 msgstr "tulosta tämä tietue"
 
-#: opcodes.h:220
+#: opcodes.h:219
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "poista tämä tietue käyttämättä roskakoria"
 
-#: opcodes.h:221
+#: opcodes.h:220
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "poista tämä ketju käyttämättä roskakoria"
 
-#: opcodes.h:222
+#: opcodes.h:221
 msgid "query external program for addresses"
 msgstr "käytä ulkoista sovellusta osoitehakuun"
 
-#: opcodes.h:223
+#: opcodes.h:222
 msgid "append new query results to current results"
 msgstr "lisää uudet hakutulokset nykyisiin"
 
-#: opcodes.h:224
+#: opcodes.h:223
 msgid "save changes to mailbox and quit"
 msgstr "tallenna muutokset postilaatikkoon ja lopeta"
 
-#: opcodes.h:225
+#: opcodes.h:224
 msgid "recall a postponed message"
 msgstr "hae lykätty viesti"
 
-#: opcodes.h:226
+#: opcodes.h:225
 msgid "reconstruct thread containing current message"
 msgstr "uudelleenmuodosta ketju jossa tämä viesti on"
 
-#: opcodes.h:227
+#: opcodes.h:226
 msgid "clear and redraw the screen"
 msgstr "tyhjennä ja piirrä ruutu uudestaan"
 
-#: opcodes.h:228
+#: opcodes.h:227
 msgid "{internal}"
 msgstr "{sisäinen}"
 
-#: opcodes.h:229
+#: opcodes.h:228
 msgid "rename the current mailbox (IMAP only)"
 msgstr "uudelleennimeä tämä postilaatikko (vain IMAP)"
 
-#: opcodes.h:230
+#: opcodes.h:229
 msgid "reply to a message"
 msgstr "vastaa viestiin"
 
-#: opcodes.h:231
+#: opcodes.h:230
 msgid "use the current message as a template for a new one"
 msgstr "käytä nykyistä viestiä mallineenan uudelle"
 
-#: opcodes.h:232
+#: opcodes.h:231
 msgid "save message/attachment to a mailbox/file"
 msgstr "tallenna viesti/liite postilaatikkoon/tiedostoon"
 
-#: opcodes.h:233
+#: opcodes.h:232
 msgid "search for a regular expression"
 msgstr "hae säännöllisellä ilmauksella"
 
-#: opcodes.h:234
+#: opcodes.h:233
 msgid "search for next match"
 msgstr "hae seuraavaa täsmäystä"
 
-#: opcodes.h:235
+#: opcodes.h:234
 msgid "search for next match in opposite direction"
 msgstr "hae seuraavaa täsmäystä vastakkaiseen suuntaan"
 
-#: opcodes.h:236
+#: opcodes.h:235
 msgid "search backwards for a regular expression"
 msgstr "hae takaperin säännöllisellä ilmauksella"
 
-#: opcodes.h:237
+#: opcodes.h:236
 msgid "toggle search pattern coloring"
 msgstr "vaihda hakulausekkeen väritystä"
 
-#: opcodes.h:238
+#: opcodes.h:237
 msgid "invoke a command in a subshell"
 msgstr "käynnistä komento subshellissä"
 
-#: opcodes.h:239
+#: opcodes.h:238
 msgid "show log (and debug) messages"
 msgstr "näytä loki (ja vianjäljitys)"
 
-#: opcodes.h:240
+#: opcodes.h:239
 msgid "sort messages"
 msgstr "järjestele viestit"
 
-#: opcodes.h:241
+#: opcodes.h:240
 msgid "sort messages in reverse order"
 msgstr "järjestele viestit takaperin"
 
-#: opcodes.h:242
+#: opcodes.h:241
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "tilaa uutisryhmät jotka täsmäävät kuvioon"
 
-#: opcodes.h:243
+#: opcodes.h:242
 msgid "tag the current entry"
 msgstr "merkitse tämä tietue"
 
-#: opcodes.h:244
+#: opcodes.h:243
 msgid "apply next function to tagged messages"
 msgstr "tee seuraava komento merkityille viesteille"
 
-#: opcodes.h:245
+#: opcodes.h:244
 msgid "apply next function ONLY to tagged messages"
 msgstr "tee seuraava komento vain merkityille viesteille"
 
-#: opcodes.h:246
+#: opcodes.h:245
 msgid "tag the current subthread"
 msgstr "merkitse tämä aliketju"
 
-#: opcodes.h:247
+#: opcodes.h:246
 msgid "tag the current thread"
 msgstr "merkitse tämä ketju"
 
-#: opcodes.h:248
+#: opcodes.h:247
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "vaihda selataanko postilaatikoita vai tiedostoja"
 
-#: opcodes.h:249
+#: opcodes.h:248
 msgid "toggle a message's 'new' flag"
 msgstr "vaihda viestin uutuusmerkkiä"
 
-#: opcodes.h:250
+#: opcodes.h:249
 msgid "toggle view of read messages"
 msgstr "vaihda luettujen viestien näkyvyyttä"
 
-#: opcodes.h:251
+#: opcodes.h:250
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "vaihda postilaatikon uudelleenkirjoitusta"
 
-#: opcodes.h:252
+#: opcodes.h:251
 msgid "move to the top of the page"
 msgstr "siirry sivun alkuun"
 
-#: opcodes.h:253
+#: opcodes.h:252
 msgid "mark all articles in newsgroup as unread"
 msgstr "merkitse kaikki artikkelit uutisryhmässä lukemattomiksi"
 
-#: opcodes.h:254
+#: opcodes.h:253
 msgid "undelete the current entry"
 msgstr "peru tämän tietueen poisto"
 
-#: opcodes.h:255
+#: opcodes.h:254
 msgid "undelete all messages in subthread"
 msgstr "peru kaikkien viestien poistot aliketjusta"
 
-#: opcodes.h:256
+#: opcodes.h:255
 msgid "undelete all messages in thread"
 msgstr "peri kaikkien viestin poistot tästä ketjusta"
 
-#: opcodes.h:257
+#: opcodes.h:256
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "peru täsmäävien uutisryhmien tilaus"
 
-#: opcodes.h:258
+#: opcodes.h:257
 msgid "show the NeoMutt version number and date"
 msgstr "näytä NeoMuttin versionumero ja päiväys"
 
-#: opcodes.h:259
+#: opcodes.h:258
 msgid "view attachment using mailcap entry if necessary"
 msgstr "näytä liitteet mailcapin perusteella jos tarpeen"
 
-#: opcodes.h:260
+#: opcodes.h:259
 msgid "show MIME attachments"
 msgstr "näytä MIME-liitteet"
 
-#: opcodes.h:261
+#: opcodes.h:260
 msgid "show the raw message"
 msgstr "näytä raakaviesti"
 
-#: opcodes.h:262
+#: opcodes.h:261
 msgid "display the keycode for a key press"
 msgstr "näytä näppäinkoodi näppäilylle"
 
-#: opcodes.h:265
+#: opcodes.h:264
 msgid "make decrypted copy"
 msgstr "luo purettu kopio"
 
-#: opcodes.h:266
+#: opcodes.h:265
 msgid "make decrypted copy and delete"
 msgstr "luo purettu kopio ja poista"
 
-#: opcodes.h:267
+#: opcodes.h:266
 msgid "extract supported public keys"
 msgstr "hae tuetut julkiset avaimet"
 
-#: opcodes.h:268
+#: opcodes.h:267
 msgid "wipe passphrases from memory"
 msgstr "pyyhi salasanat pois muistista"
 
-#: opcodes.h:272
+#: opcodes.h:271
 msgid "send the message through a mixmaster remailer chain"
 msgstr "lähetä viestit mixmastern uudelleenpostitusketjun lävitse"
 
-#: opcodes.h:273
+#: opcodes.h:272
 msgid "append a remailer to the chain"
 msgstr "lisää uudelleenpostitus ketjun perään"
 
-#: opcodes.h:274
+#: opcodes.h:273
 msgid "select the next element of the chain"
 msgstr "valitse seuraava elementti ketjusta"
 
-#: opcodes.h:275
+#: opcodes.h:274
 msgid "select the previous element of the chain"
 msgstr "valtise edellinen elementti ketjusta"
 
-#: opcodes.h:276
+#: opcodes.h:275
 msgid "delete a remailer from the chain"
 msgstr "poista uudelleenpostitus ketjusta"
 
-#: opcodes.h:277
+#: opcodes.h:276
 msgid "insert a remailer into the chain"
 msgstr "lisää uudelleenpostitus ketjuun"
 
-#: opcodes.h:278
+#: opcodes.h:277
 msgid "accept the chain constructed"
 msgstr "hyväksy rakennettu ketju"
 
-#: opcodes.h:285
+#: opcodes.h:284
 msgid "open a different virtual folder"
 msgstr "avaa toinen virtuaalikansio"
 
-#: opcodes.h:286
+#: opcodes.h:285
 msgid "read entire thread of the current message"
 msgstr "lue koko ketju tästä viestistä"
 
-#: opcodes.h:287
+#: opcodes.h:286
 msgid "generate virtual folder from query"
 msgstr "generoi virtuaalinen kansio hausta"
 
-#: opcodes.h:288
+#: opcodes.h:287
 #, fuzzy
 msgid "generate a read-only virtual folder from query"
 msgstr "generoi virtuaalinen kansio hausta"
 
-#: opcodes.h:289
+#: opcodes.h:288
 msgid "shifts virtual folder time window backwards"
 msgstr "siirrä virtuaalikansion aikaikkunaa taaksepäin"
 
-#: opcodes.h:290
+#: opcodes.h:289
 msgid "shifts virtual folder time window forwards"
 msgstr "siirrä virtuaalikansion aikaikkunaa eteenpäin"
 
-#: opcodes.h:296
+#: opcodes.h:295
 msgid "check for classic PGP"
 msgstr "tarkista klassinen PGP"
 
-#: opcodes.h:297
+#: opcodes.h:296
 msgid "attach a PGP public key"
 msgstr "liitä julkinen PGP-avain"
 
-#: opcodes.h:298
+#: opcodes.h:297
 msgid "show PGP options"
 msgstr "näytä PGP-asetukset"
 
-#: opcodes.h:299
+#: opcodes.h:298
 msgid "mail a PGP public key"
 msgstr "lähetä julkinen PGP-avain"
 
-#: opcodes.h:300
+#: opcodes.h:299
 msgid "verify a PGP public key"
 msgstr "varmista julkinen PGP-avain"
 
-#: opcodes.h:301
+#: opcodes.h:300
 msgid "view the key's user id"
 msgstr "näytä avainmen käyttäjätunnus"
 
-#: opcodes.h:304
+#: opcodes.h:303
 #, fuzzy
 msgid "move the highlight to the first mailbox"
 msgstr "siirrä korostus seuraavaan postilaatikkoon"
 
-#: opcodes.h:305
+#: opcodes.h:304
 #, fuzzy
 msgid "move the highlight to the last mailbox"
 msgstr "siirrä korostus seuraavaan postilaatikkoon"
 
-#: opcodes.h:306
+#: opcodes.h:305
 msgid "move the highlight to next mailbox"
 msgstr "siirrä korostus seuraavaan postilaatikkoon"
 
-#: opcodes.h:307
+#: opcodes.h:306
 msgid "move the highlight to next mailbox with new mail"
 msgstr "siirrä korostus seuraavaan postilaatikkoon jossa on uusia viestejä"
 
-#: opcodes.h:308
+#: opcodes.h:307
 msgid "open highlighted mailbox"
 msgstr "avaa korostettu postilaatikko"
 
-#: opcodes.h:309
+#: opcodes.h:308
 msgid "scroll the sidebar down 1 page"
 msgstr "vieritä palkkia alas sivun verran"
 
-#: opcodes.h:310
+#: opcodes.h:309
 msgid "scroll the sidebar up 1 page"
 msgstr "vieritä palkkia ylös sivun verran"
 
-#: opcodes.h:311
+#: opcodes.h:310
 msgid "move the highlight to previous mailbox"
 msgstr "siirrä korostus seuravaan postilaatikkoon"
 
-#: opcodes.h:312
+#: opcodes.h:311
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "siirrä korostus edelliseen postilaatikkoon jossa on uusia viestejä"
 
-#: opcodes.h:313
+#: opcodes.h:312
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "vaihda selataanko postilaatikoita vai virtuaalilaatikoita"
 
-#: opcodes.h:314
+#: opcodes.h:313
 msgid "make the sidebar (in)visible"
 msgstr "tee palkista näkyvä / näkymätön"
 
-#: opcodes.h:317
+#: opcodes.h:316
 msgid "show S/MIME options"
 msgstr "näytä S/MIME-asetukset"
+
+#: opcodes.h:319
+msgid "null operation"
+msgstr "nollatoiminto"
 
 #: pager.c:214
 msgid "Not available in this menu"
@@ -6858,13 +6858,13 @@ msgstr "Ei voitu löytää järjestelyfunktiota (ilmoita ohjelmistoviasta)"
 msgid "(no mailbox)"
 msgstr "(ei postilaatikkoa)"
 
-#: version.c:81
+#: version.c:85
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr "Monet muutkin ovat lähettäneet koodia, korjauksia ja ehdotuksia.\n"
 
-#: version.c:85
+#: version.c:89
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -6890,7 +6890,7 @@ msgstr ""
 "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
 "    GNU General Public License for more details.\n"
 
-#: version.c:101
+#: version.c:105
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -6902,7 +6902,7 @@ msgstr ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "tai sähköpostitse: <neomutt-devel@neomutt.org>\n"
 
-#: version.c:108
+#: version.c:112
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -6914,11 +6914,11 @@ msgstr ""
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; lisätietoja komennolla `mutt -vv'.\n"
 
-#: version.c:508
+#: version.c:526
 msgid "Default options:"
 msgstr "Oletusasetukset:"
 
-#: version.c:511
+#: version.c:529
 msgid "Compile options:"
 msgstr "Käännösaikaiset asetukset:"
 

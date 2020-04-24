@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-04-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-04-17 11:38+0100\n"
+"POT-Creation-Date: 2020-04-24 16:26+0100\n"
 "PO-Revision-Date: 2019-10-31 06:24+0100\n"
 "Last-Translator: André Berger <andre.berger@web.de>\n"
 "Language-Team: none\n"
@@ -1903,7 +1903,7 @@ msgstr "Kann Nachrichtendatei nicht öffnen: %s"
 msgid "Can't append to folder: %s"
 msgstr "Hinzufügen zu Mailbox %s nicht möglich"
 
-#: email/parse.c:1479
+#: email/parse.c:1480
 msgid "multipart message has no boundary parameter"
 msgstr "Mehrteilige Nachricht hat keinen \"boundary\"-Parameter"
 
@@ -2446,7 +2446,7 @@ msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Kopiere %d Nachricht nach %s..."
 msgstr[1] "Kopiere %d Nachrichten nach %s..."
 
-#: imap/imap.c:1606 imap/imap.c:2262 imap/message.c:1729 muttlib.c:1494
+#: imap/imap.c:1606 imap/imap.c:2264 imap/message.c:1729 muttlib.c:1494
 #, c-format
 msgid "Create %s?"
 msgstr "%s erstellen?"
@@ -2485,20 +2485,20 @@ msgstr "Lösche Nachrichten auf dem Server..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE fehlgeschlagen"
 
-#: imap/imap.c:2066 nntp/nntp.c:2488
+#: imap/imap.c:2068 nntp/nntp.c:2488
 #, c-format
 msgid "Selecting %s..."
 msgstr "Wähle %s aus..."
 
-#: imap/imap.c:2229
+#: imap/imap.c:2231
 msgid "Error opening mailbox"
 msgstr "Fehler beim Öffnen der Mailbox"
 
-#: imap/imap.c:2378
+#: imap/imap.c:2380
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP-Server unterstützt keine selbstdefinierten Statusindikatoren"
 
-#: imap/imap.c:2422
+#: imap/imap.c:2424
 msgid "Invalid IMAP flags"
 msgstr "Ungültige IMAP-Statusindikatoren"
 
@@ -4989,1038 +4989,1038 @@ msgid "show autocrypt compose menu options"
 msgstr "Zeige Einstellungen für Autocrypt-Erstellungsmenü"
 
 #: opcodes.h:40
-msgid "null operation"
-msgstr "Leere Funktion"
-
-#: opcodes.h:41
 msgid "toggle display of subparts"
 msgstr "Schalte Anzeige von Teilen ein/aus"
 
-#: opcodes.h:42
+#: opcodes.h:41
 msgid "force viewing of attachment using mailcap"
 msgstr "Erzwinge Ansicht des Anhangs mittels Mailcap"
 
-#: opcodes.h:43
+#: opcodes.h:42
 msgid "view attachment as text"
 msgstr "Zeige Anhang als Text an"
 
-#: opcodes.h:44
+#: opcodes.h:43
 msgid "move to the bottom of the page"
 msgstr "Gehe zum Ende der Seite"
 
-#: opcodes.h:45
+#: opcodes.h:44
 msgid "remail a message to another user"
 msgstr "Versende Nachricht erneut an anderen Empfänger"
 
-#: opcodes.h:46
+#: opcodes.h:45
 msgid "swap the current folder position with $folder if it exists"
 msgstr "Vertausche die aktuelle Ordnerposition mit $folder, falls dieser existiert"
 
-#: opcodes.h:47
+#: opcodes.h:46
 msgid "select a new file in this directory"
 msgstr "Wähle eine neue Datei in diesem Verzeichnis aus"
 
-#: opcodes.h:48
+#: opcodes.h:47
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "Abonniere aktuelle Mailbox (nur für IMAP/NNTP)"
 
-#: opcodes.h:49
+#: opcodes.h:48
 msgid "display the currently selected file's name"
 msgstr "Zeige den Namen der derzeit ausgewählten Datei"
 
-#: opcodes.h:50
+#: opcodes.h:49
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "Schalte um zwischen Ansicht aller/abonnierter Mailboxen (nur für IMAP)"
 
-#: opcodes.h:51
+#: opcodes.h:50
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "Kündige Abonnement der aktuellen Mailbox (nur für IMAP/NNTP)"
 
-#: opcodes.h:52
+#: opcodes.h:51
 msgid "view file"
 msgstr "Zeige Datei an"
 
-#: opcodes.h:53
+#: opcodes.h:52
 msgid "mark all articles in newsgroup as read"
 msgstr "Markiere alle Artikel in dieser Newsgroup als gelesen"
 
-#: opcodes.h:54
+#: opcodes.h:53
 msgid "change directories"
 msgstr "Wechsle Verzeichnisse"
 
-#: opcodes.h:55
+#: opcodes.h:54
 msgid "check mailboxes for new mail"
 msgstr "Überprüfe Mailboxen auf neue Nachrichten"
 
-#: opcodes.h:56
+#: opcodes.h:55
 msgid "calculate message statistics for all mailboxes"
 msgstr "Berechne Nachrichtenstatistik für alle Mailboxen"
 
-#: opcodes.h:57
+#: opcodes.h:56
 msgid "attach files to this message"
 msgstr "Hänge Datei(en) an diese Nachricht an"
 
-#: opcodes.h:58
+#: opcodes.h:57
 msgid "attach messages to this message"
 msgstr "Hänge Nachricht(en) an diese Nachricht an"
 
-#: opcodes.h:59
+#: opcodes.h:58
 msgid "attach news articles to this message"
 msgstr "Hänge News-Artikel an diese Nachricht an"
 
-#: opcodes.h:60
+#: opcodes.h:59
 msgid "edit the BCC list"
 msgstr "Bearbeite die BCC-Liste"
 
-#: opcodes.h:61
+#: opcodes.h:60
 msgid "edit the CC list"
 msgstr "Bearbeite die CC-Liste"
 
-#: opcodes.h:62
+#: opcodes.h:61
 msgid "edit attachment description"
 msgstr "Bearbeite Beschreibung des Anhangs"
 
-#: opcodes.h:63
+#: opcodes.h:62
 msgid "edit attachment transfer-encoding"
 msgstr "Bearbeite Kodierung des Anhangs"
 
-#: opcodes.h:64
+#: opcodes.h:63
 msgid "enter a file to save a copy of this message in"
 msgstr "Wähle Datei, in die die Nachricht kopiert werden soll"
 
-#: opcodes.h:65
+#: opcodes.h:64
 msgid "edit the file to be attached"
 msgstr "Bearbeite die anzuhängende Datei"
 
-#: opcodes.h:66
+#: opcodes.h:65
 msgid "edit the Followup-To field"
 msgstr "Bearbeite Followup-To-Feld"
 
-#: opcodes.h:67
+#: opcodes.h:66
 msgid "edit the from field"
 msgstr "Bearbeite das From-Feld"
 
-#: opcodes.h:68
+#: opcodes.h:67
 msgid "edit the message with headers"
 msgstr "Bearbeite Nachricht (einschließlich Kopf)"
 
-#: opcodes.h:69
+#: opcodes.h:68
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "Bearbeite 'Content-Language'-Feld des Anhangs"
 
-#: opcodes.h:70
+#: opcodes.h:69
 msgid "edit the message"
 msgstr "Bearbeite Nachricht"
 
-#: opcodes.h:71
+#: opcodes.h:70
 msgid "edit attachment using mailcap entry"
 msgstr "Bearbeite Anhang mittels Mailcap"
 
-#: opcodes.h:72
+#: opcodes.h:71
 msgid "edit the newsgroups list"
 msgstr "Bearbeite Liste der Newsgroups"
 
-#: opcodes.h:73
+#: opcodes.h:72
 msgid "edit the Reply-To field"
 msgstr "Bearbeite Reply-To-Feld"
 
-#: opcodes.h:74
+#: opcodes.h:73
 msgid "edit the subject of this message"
 msgstr "Bearbeite Betreff dieser Nachricht (Subject)"
 
-#: opcodes.h:75
+#: opcodes.h:74
 msgid "edit the TO list"
 msgstr "Bearbeite Empfängerliste (To)"
 
-#: opcodes.h:76
+#: opcodes.h:75
 msgid "edit the X-Comment-To field"
 msgstr "Bearbeite X-Comment-To-Feld"
 
-#: opcodes.h:77
+#: opcodes.h:76
 msgid "get a temporary copy of an attachment"
 msgstr "Lade eine temporäre Kopie eines Anhangs"
 
-#: opcodes.h:78
+#: opcodes.h:77
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "Gruppiere markierte Anhänge als 'multipart/alternative'"
 
-#: opcodes.h:79
+#: opcodes.h:78
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr "Gruppiere markierte Anhänge als 'multipart/multilingual'"
 
-#: opcodes.h:80
+#: opcodes.h:79
 msgid "run ispell on the message"
 msgstr "Rechtschreibprüfung der Nachricht via Ispell"
 
-#: opcodes.h:81
+#: opcodes.h:80
 msgid "move an attachment down in the attachment list"
 msgstr "Verschiebe einen Anhang innerhalb der Auflistung abwärts"
 
-#: opcodes.h:82
+#: opcodes.h:81
 msgid "move an attachment up in the attachment list"
 msgstr "Verschiebe einen Anhang innerhalb der Auflistung aufwärts"
 
-#: opcodes.h:83
+#: opcodes.h:82
 msgid "compose new attachment using mailcap entry"
 msgstr "Erzeuge neues Attachment via Mailcap"
 
-#: opcodes.h:84
+#: opcodes.h:83
 msgid "save this message to send later"
 msgstr "Stelle Nachricht zum späteren Versand zurück"
 
-#: opcodes.h:85
+#: opcodes.h:84
 msgid "send attachment with a different name"
 msgstr "Sende Anhang unter anderem Namen"
 
-#: opcodes.h:86
+#: opcodes.h:85
 msgid "rename/move an attached file"
 msgstr "Benenne angehängte Datei um"
 
-#: opcodes.h:87
+#: opcodes.h:86
 msgid "send the message"
 msgstr "Verschicke Nachricht"
 
-#: opcodes.h:88
+#: opcodes.h:87
 msgid "toggle disposition between inline/attachment"
 msgstr "Umschalten zwischen Inline/Anhang"
 
-#: opcodes.h:89
+#: opcodes.h:88
 msgid "toggle recoding of this attachment"
 msgstr "Schalte Ändern der Kodierung für diesen Anhang ein/aus"
 
-#: opcodes.h:90
+#: opcodes.h:89
 msgid "toggle whether to delete file after sending it"
 msgstr "Wähle, ob Datei nach Versand gelöscht wird"
 
-#: opcodes.h:91
+#: opcodes.h:90
 msgid "compose new message to the current message sender"
 msgstr "Erzeuge neue Nachricht an den aktuellen Absender"
 
-#: opcodes.h:92
+#: opcodes.h:91
 msgid "update an attachment's encoding info"
 msgstr "Aktualisiere Kodierungsinformation eines Anhangs"
 
-#: opcodes.h:93
+#: opcodes.h:92
 msgid "write the message to a folder"
 msgstr "Schreibe Nachricht in Mailbox"
 
-#: opcodes.h:94
+#: opcodes.h:93
 msgid "copy a message to a file/mailbox"
 msgstr "Kopiere Nachricht in Datei/Mailbox"
 
-#: opcodes.h:95
+#: opcodes.h:94
 msgid "create an alias from a message sender"
 msgstr "Erzeuge Kurzname aus dem Absender"
 
-#: opcodes.h:96
+#: opcodes.h:95
 msgid "create a new mailbox (IMAP only)"
 msgstr "Erzeuge eine neue Mailbox (nur für IMAP)"
 
-#: opcodes.h:97
+#: opcodes.h:96
 msgid "move entry to bottom of screen"
 msgstr "Bewege Eintrag zum unteren Ende des Bildschirms"
 
-#: opcodes.h:98
+#: opcodes.h:97
 msgid "move entry to middle of screen"
 msgstr "Bewege Eintrag zur Bildschirmmitte"
 
-#: opcodes.h:99
+#: opcodes.h:98
 msgid "move entry to top of screen"
 msgstr "Bewege Eintrag zum Bildschirmanfang"
 
-#: opcodes.h:100
+#: opcodes.h:99
 msgid "make decoded (text/plain) copy"
 msgstr "Erzeuge dekodierte Kopie (text/plain)"
 
-#: opcodes.h:101
+#: opcodes.h:100
 msgid "make decoded copy (text/plain) and delete"
 msgstr "Erzeuge dekodierte Kopie (text/plain) und lösche"
 
-#: opcodes.h:102
+#: opcodes.h:101
 msgid "delete the current entry"
 msgstr "Lösche aktuellen Eintrag"
 
-#: opcodes.h:103
+#: opcodes.h:102
 msgid "delete the current mailbox (IMAP only)"
 msgstr "Lösche die aktuelle Mailbox (nur für IMAP)"
 
-#: opcodes.h:104
+#: opcodes.h:103
 msgid "delete all messages in subthread"
 msgstr "Lösche alle Nachrichten im Diskussionsfadenteil"
 
-#: opcodes.h:105
+#: opcodes.h:104
 msgid "delete all messages in thread"
 msgstr "Lösche alle Nachrichten im Diskussionsfaden"
 
-#: opcodes.h:106
+#: opcodes.h:105
 msgid "descend into a directory"
 msgstr "Verzeichnis betreten"
 
-#: opcodes.h:107
+#: opcodes.h:106
 msgid "display full address of sender"
 msgstr "Zeige komplette Absenderadresse"
 
-#: opcodes.h:108
+#: opcodes.h:107
 msgid "display message and toggle header weeding"
 msgstr "Zeige Nachricht an und schalte zwischen allen/ausgesuchten Headern um"
 
-#: opcodes.h:109
+#: opcodes.h:108
 msgid "display a message"
 msgstr "Zeige Nachricht an"
 
-#: opcodes.h:110
+#: opcodes.h:109
 msgid "delete the char in front of the cursor"
 msgstr "Lösche Zeichen vor dem Cursor"
 
-#: opcodes.h:111
+#: opcodes.h:110
 msgid "move the cursor one character to the left"
 msgstr "Bewege Cursor ein Zeichen nach links"
 
-#: opcodes.h:112
+#: opcodes.h:111
 msgid "move the cursor to the beginning of the word"
 msgstr "Springe zum Anfang des Wortes"
 
-#: opcodes.h:113
+#: opcodes.h:112
 msgid "jump to the beginning of the line"
 msgstr "Springe zum Zeilenanfang"
 
-#: opcodes.h:114
+#: opcodes.h:113
 msgid "capitalize the word"
 msgstr "Kapitalisiere das Wort (Anfang groß, Rest klein)"
 
-#: opcodes.h:115
+#: opcodes.h:114
 msgid "complete filename or alias"
 msgstr "Vervollständige Dateiname oder Kurzname"
 
-#: opcodes.h:116
+#: opcodes.h:115
 msgid "complete address with query"
 msgstr "Vervollständige Adresse mittels Abfrage (query)"
 
-#: opcodes.h:117
+#: opcodes.h:116
 msgid "delete the char under the cursor"
 msgstr "Lösche das Zeichen unter dem Cursor"
 
-#: opcodes.h:118
+#: opcodes.h:117
 msgid "convert the word to lower case"
 msgstr "Konvertiere Wort in Kleinbuchstaben"
 
-#: opcodes.h:119
+#: opcodes.h:118
 msgid "jump to the end of the line"
 msgstr "Springe zum Zeilenende"
 
-#: opcodes.h:120
+#: opcodes.h:119
 msgid "move the cursor one character to the right"
 msgstr "Bewege den Cursor ein Zeichen nach rechts"
 
-#: opcodes.h:121
+#: opcodes.h:120
 msgid "move the cursor to the end of the word"
 msgstr "Springe zum Ende des Wortes"
 
-#: opcodes.h:122
+#: opcodes.h:121
 msgid "scroll down through the history list"
 msgstr "Gehe in der Verlaufliste nach unten"
 
-#: opcodes.h:123
+#: opcodes.h:122
 msgid "search through the history list"
 msgstr "Durchsuche die Verlaufliste"
 
-#: opcodes.h:124
+#: opcodes.h:123
 msgid "scroll up through the history list"
 msgstr "Gehe in der Verlaufliste nach oben"
 
-#: opcodes.h:125
+#: opcodes.h:124
 msgid "delete chars from cursor to end of line"
 msgstr "Lösche bis Ende der Zeile"
 
-#: opcodes.h:126
+#: opcodes.h:125
 msgid "delete chars from the cursor to the end of the word"
 msgstr "Lösche vom Cursor bis zum Ende des Wortes"
 
-#: opcodes.h:127
+#: opcodes.h:126
 msgid "delete all chars on the line"
 msgstr "Lösche Zeile"
 
-#: opcodes.h:128
+#: opcodes.h:127
 msgid "delete the word in front of the cursor"
 msgstr "Lösche Wort vor Cursor"
 
-#: opcodes.h:129
+#: opcodes.h:128
 msgid "cycle among incoming mailboxes"
 msgstr "Rotiere unter den Eingangs-Mailboxen"
 
-#: opcodes.h:130
+#: opcodes.h:129
 msgid "quote the next typed key"
 msgstr "Übernehme nächste Taste unverändert"
 
-#: opcodes.h:131
+#: opcodes.h:130
 msgid "transpose character under cursor with previous"
 msgstr "Ersetze Zeichen unter dem Cursor mit vorhergehendem"
 
-#: opcodes.h:132
+#: opcodes.h:131
 msgid "convert the word to upper case"
 msgstr "Konvertiere Wort in Großbuchstaben"
 
-#: opcodes.h:133
+#: opcodes.h:132
 msgid "add, change, or delete a message's label"
 msgstr "Nachrichtenetikett hinzufügen, ändern oder löschen"
 
-#: opcodes.h:134
+#: opcodes.h:133
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr "Bearbeite die Rohnachricht, falls die Mailbox nicht schreibgeschützt ist, andernfalls zeige sie an"
 
-#: opcodes.h:135
+#: opcodes.h:134
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr "Bearbeite die Rohnachricht (edit und edit-raw-message ist das Gleiche)"
 
-#: opcodes.h:136
+#: opcodes.h:135
 msgid "edit attachment content type"
 msgstr "Bearbeite Content-Type des Anhangs"
 
-#: opcodes.h:137
+#: opcodes.h:136
 msgid "end of conditional execution (noop)"
 msgstr "Ende der bedingten Ausführung (noop)"
 
-#: opcodes.h:138
+#: opcodes.h:137
 msgid "enter a neomuttrc command"
 msgstr "Gib ein neomuttrc-Kommando ein"
 
-#: opcodes.h:139
+#: opcodes.h:138
 msgid "enter a file mask"
 msgstr "Gib Dateimaske ein"
 
-#: opcodes.h:140
+#: opcodes.h:139
 msgid "exit this menu"
 msgstr "Menü verlassen"
 
-#: opcodes.h:141
+#: opcodes.h:140
 msgid "filter attachment through a shell command"
 msgstr "Filtere Anhang durch Shell-Kommando"
 
-#: opcodes.h:142
+#: opcodes.h:141
 msgid "move to the first entry"
 msgstr "Gehe zum ersten Eintrag"
 
-#: opcodes.h:143
+#: opcodes.h:142
 msgid "toggle a message's 'important' flag"
 msgstr "Schalte 'Wichtig'-Statusindikator der Nachricht ein/aus"
 
-#: opcodes.h:144
+#: opcodes.h:143
 msgid "followup to newsgroup"
 msgstr "Antworte in der Newsgroup"
 
-#: opcodes.h:145
+#: opcodes.h:144
 msgid "forward a message with comments"
 msgstr "Leite Nachricht mit Kommentar weiter"
 
-#: opcodes.h:146
+#: opcodes.h:145
 msgid "forward to newsgroup"
 msgstr "Leite in die Newsgroup weiter"
 
-#: opcodes.h:147
+#: opcodes.h:146
 msgid "select the current entry"
 msgstr "Wähle den aktuellen Eintrag aus"
 
-#: opcodes.h:148
+#: opcodes.h:147
 msgid "get all children of the current message"
 msgstr "Alle Folgenachrichten der aktuellen Nachricht laden"
 
-#: opcodes.h:149
+#: opcodes.h:148
 msgid "get message with Message-Id"
 msgstr "Lade Nachricht mit Message-ID"
 
-#: opcodes.h:150
+#: opcodes.h:149
 msgid "get parent of the current message"
 msgstr "Lade Bezugsnachricht der aktuellen"
 
-#: opcodes.h:151
+#: opcodes.h:150
 msgid "go to parent directory"
 msgstr "Gehe zum übergeordneten Verzeichnis"
 
-#: opcodes.h:152
+#: opcodes.h:151
 msgid "reply to all recipients preserving To/Cc"
 msgstr "Antworte an alle Empfänger und übernimm To/Cc"
 
-#: opcodes.h:153
+#: opcodes.h:152
 msgid "reply to all recipients"
 msgstr "Antworte an alle Empfänger"
 
-#: opcodes.h:154
+#: opcodes.h:153
 msgid "scroll down 1/2 page"
 msgstr "Gehe eine halbe Seite nach unten"
 
-#: opcodes.h:155
+#: opcodes.h:154
 msgid "scroll up 1/2 page"
 msgstr "Gehe eine halbe Seite nach oben"
 
-#: opcodes.h:156
+#: opcodes.h:155
 msgid "this screen"
 msgstr "Dieser Bildschirm"
 
-#: opcodes.h:157
+#: opcodes.h:156
 msgid "jump to an index number"
 msgstr "Springe zu einer Indexnummer"
 
-#: opcodes.h:158
+#: opcodes.h:157
 msgid "move to the last entry"
 msgstr "Springe zum letzten Eintrag"
 
-#: opcodes.h:159
+#: opcodes.h:158
 msgid "limit view to current thread"
 msgstr "Beschränke Ansicht auf aktuellen Diskussionsfaden"
 
-#: opcodes.h:160
+#: opcodes.h:159
 msgid "reply to specified mailing list"
 msgstr "Antworte an Mailingliste"
 
-#: opcodes.h:161
+#: opcodes.h:160
 msgid "load list of all newsgroups from NNTP server"
 msgstr "Lade Liste aller Newsgroups vom NNTP-Server"
 
-#: opcodes.h:162
+#: opcodes.h:161
 msgid "execute a macro"
 msgstr "Führe Makro aus"
 
-#: opcodes.h:163
+#: opcodes.h:162
 msgid "compose a new mail message"
 msgstr "Erzeuge neue Nachricht"
 
-#: opcodes.h:164
+#: opcodes.h:163
 msgid "list mailboxes with new mail"
 msgstr "Liste Mailboxen mit neuen Nachrichten"
 
-#: opcodes.h:165
+#: opcodes.h:164
 msgid "break the thread in two"
 msgstr "Zerlege Diskussionsfaden in zwei"
 
-#: opcodes.h:166
+#: opcodes.h:165
 msgid "open a different folder"
 msgstr "Öffne eine andere Mailbox"
 
-#: opcodes.h:167
+#: opcodes.h:166
 msgid "open a different folder in read only mode"
 msgstr "Öffne eine andere Mailbox im Nur-Lesen-Modus"
 
-#: opcodes.h:168
+#: opcodes.h:167
 msgid "open a different newsgroup"
 msgstr "Öffne eine andere Newsgroup"
 
-#: opcodes.h:169
+#: opcodes.h:168
 msgid "open a different newsgroup in read only mode"
 msgstr "Öffne eine andere Newsgroup im Nur-Lesen-Modus"
 
-#: opcodes.h:170
+#: opcodes.h:169
 msgid "clear a status flag from a message"
 msgstr "Entferne einen Statusindikator"
 
-#: opcodes.h:171
+#: opcodes.h:170
 msgid "collapse/uncollapse all threads"
 msgstr "Auf- und Zuklappen aller Diskussionsfäden"
 
-#: opcodes.h:172
+#: opcodes.h:171
 msgid "collapse/uncollapse current thread"
 msgstr "Auf- und Zuklappen des aktuellen Diskussionsfadens"
 
-#: opcodes.h:173
+#: opcodes.h:172
 msgid "delete messages matching a pattern"
 msgstr "Lösche Nachrichten nach Muster"
 
-#: opcodes.h:174
+#: opcodes.h:173
 msgid "retrieve mail from POP server"
 msgstr "Hole Nachrichten vom POP-Server"
 
-#: opcodes.h:175
+#: opcodes.h:174
 msgid "force retrieval of mail from IMAP server"
 msgstr "Hole Nachrichten vom IMAP-Server"
 
-#: opcodes.h:176
+#: opcodes.h:175
 msgid "logout from all IMAP servers"
 msgstr "Abmeldung von allen IMAP-Servern"
 
-#: opcodes.h:177
+#: opcodes.h:176
 msgid "show only messages matching a pattern"
 msgstr "Wähle anzuzeigende Nachrichten mit Muster aus"
 
-#: opcodes.h:178
+#: opcodes.h:177
 msgid "link tagged message to the current one"
 msgstr "Markierte Nachrichten mit der aktuellen verbinden"
 
-#: opcodes.h:179
+#: opcodes.h:178
 msgid "modify (notmuch/imap) tags"
 msgstr "Ändere (Notmuch/IMAP) Markierungen"
 
-#: opcodes.h:180
+#: opcodes.h:179
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "Ändere das (Notmuch/IMAP) Etikett und verbirg die Nachricht dann"
 
-#: opcodes.h:181
+#: opcodes.h:180
 msgid "jump to the next new message"
 msgstr "Springe zur nächsten neuen Nachricht"
 
-#: opcodes.h:182
+#: opcodes.h:181
 msgid "jump to the next new or unread message"
 msgstr "Springe zur nächsten neuen oder ungelesenen Nachricht"
 
-#: opcodes.h:183
+#: opcodes.h:182
 msgid "jump to the next subthread"
 msgstr "Springe zum nächsten Diskussionsfadenteil"
 
-#: opcodes.h:184
+#: opcodes.h:183
 msgid "jump to the next thread"
 msgstr "Springe zum nächsten Diskussionsfaden"
 
-#: opcodes.h:185
+#: opcodes.h:184
 msgid "move to the next undeleted message"
 msgstr "Springe zur nächsten ungelöschten Nachricht"
 
-#: opcodes.h:186
+#: opcodes.h:185
 msgid "jump to the next unread message"
 msgstr "Springe zur nächsten ungelesenen Nachricht"
 
-#: opcodes.h:187
+#: opcodes.h:186
 msgid "open next mailbox with new mail"
 msgstr "Öffne nächste Mailbox mit neuen Nachrichten"
 
-#: opcodes.h:188
+#: opcodes.h:187
 msgid "jump to parent message in thread"
 msgstr "Springe zur Bezugsnachricht im Diskussionsfaden"
 
-#: opcodes.h:189
+#: opcodes.h:188
 msgid "jump to the previous new message"
 msgstr "Springe zur vorigen neuen Nachricht"
 
-#: opcodes.h:190
+#: opcodes.h:189
 msgid "jump to the previous new or unread message"
 msgstr "Springe zur vorigen neuen oder ungelesenen Nachricht"
 
-#: opcodes.h:191
+#: opcodes.h:190
 msgid "jump to previous subthread"
 msgstr "Springe zum vorigen Diskussionsfadenteil"
 
-#: opcodes.h:192
+#: opcodes.h:191
 msgid "jump to previous thread"
 msgstr "Springe zum vorigen Diskussionsfaden"
 
-#: opcodes.h:193
+#: opcodes.h:192
 msgid "move to the previous undeleted message"
 msgstr "Springe zur vorigen ungelöschten Nachricht"
 
-#: opcodes.h:194
+#: opcodes.h:193
 msgid "jump to the previous unread message"
 msgstr "Springe zur vorigen ungelesenen Nachricht"
 
-#: opcodes.h:195
+#: opcodes.h:194
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr "Nur im NeoMutt Index verbergen, kein Löschen"
 
-#: opcodes.h:196
+#: opcodes.h:195
 msgid "mark the current subthread as read"
 msgstr "Markiere den aktuellen Diskussionsfadenteil als gelesen"
 
-#: opcodes.h:197
+#: opcodes.h:196
 msgid "mark the current thread as read"
 msgstr "Markiere den aktuellen Diskussionsfaden als gelesen"
 
-#: opcodes.h:198
+#: opcodes.h:197
 msgid "jump to root message in thread"
 msgstr "Springe zur obersten Bezugsnachricht im Diskussionsfaden"
 
-#: opcodes.h:199
+#: opcodes.h:198
 msgid "set a status flag on a message"
 msgstr "Setze Statusindikator einer Nachricht"
 
-#: opcodes.h:200
+#: opcodes.h:199
 msgid "show currently active limit pattern"
 msgstr "Zeige derzeit aktives Begrenzungsmuster"
 
-#: opcodes.h:201
+#: opcodes.h:200
 msgid "save changes to mailbox"
 msgstr "Speichere Änderungen in Mailbox"
 
-#: opcodes.h:202
+#: opcodes.h:201
 msgid "tag messages matching a pattern"
 msgstr "Markiere Nachrichten nach Muster"
 
-#: opcodes.h:203
+#: opcodes.h:202
 msgid "undelete messages matching a pattern"
 msgstr "Entferne Löschmarkierung nach Muster"
 
-#: opcodes.h:204
+#: opcodes.h:203
 msgid "untag messages matching a pattern"
 msgstr "Entferne Markierung nach Muster"
 
-#: opcodes.h:205
+#: opcodes.h:204
 msgid "create a hotkey macro for the current message"
 msgstr "Erzeuge ein Kurztastenmakro für die aktuelle Nachricht"
 
-#: opcodes.h:206
+#: opcodes.h:205
 msgid "move to the middle of the page"
 msgstr "Gehe zur Seitenmitte"
 
-#: opcodes.h:207
+#: opcodes.h:206
 msgid "move to the next entry"
 msgstr "Gehe zum nächsten Eintrag"
 
-#: opcodes.h:208
+#: opcodes.h:207
 msgid "scroll down one line"
 msgstr "Gehe eine Zeile nach unten"
 
-#: opcodes.h:209
+#: opcodes.h:208
 msgid "move to the next page"
 msgstr "Gehe zur nächsten Seite"
 
-#: opcodes.h:210
+#: opcodes.h:209
 msgid "jump to the bottom of the message"
 msgstr "Springe zum Ende der Nachricht"
 
-#: opcodes.h:211
+#: opcodes.h:210
 msgid "toggle display of quoted text"
 msgstr "Schalte Anzeige von zitiertem Text ein/aus"
 
-#: opcodes.h:212
+#: opcodes.h:211
 msgid "skip beyond quoted text"
 msgstr "Übergehe zitierten Text"
 
-#: opcodes.h:213
+#: opcodes.h:212
 msgid "jump to the top of the message"
 msgstr "Springe zum Nachrichtenanfang"
 
-#: opcodes.h:214
+#: opcodes.h:213
 msgid "pipe message/attachment to a shell command"
 msgstr "Bearbeite (pipe) Nachricht/Anhang mit Shell-Kommando"
 
-#: opcodes.h:215
+#: opcodes.h:214
 msgid "post message to newsgroup"
 msgstr "Artikel in der Newsgroup veröffentlichen"
 
-#: opcodes.h:216
+#: opcodes.h:215
 msgid "move to the previous entry"
 msgstr "Gehe zum vorigen Eintrag"
 
-#: opcodes.h:217
+#: opcodes.h:216
 msgid "scroll up one line"
 msgstr "Gehe eine Zeile nach oben"
 
-#: opcodes.h:218
+#: opcodes.h:217
 msgid "move to the previous page"
 msgstr "Gehe zur vorigen Seite"
 
-#: opcodes.h:219
+#: opcodes.h:218
 msgid "print the current entry"
 msgstr "Drucke aktuellen Eintrag"
 
-#: opcodes.h:220
+#: opcodes.h:219
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "Lösche aktuellen Eintrag endgültig, umgehe den Papierkorb"
 
-#: opcodes.h:221
+#: opcodes.h:220
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "Lösche aktuellen Diskussionsfaden endgültig, umgehe den Papierkorb"
 
-#: opcodes.h:222
+#: opcodes.h:221
 msgid "query external program for addresses"
 msgstr "Externe Adressabfrage"
 
-#: opcodes.h:223
+#: opcodes.h:222
 msgid "append new query results to current results"
 msgstr "Füge neue Abfrageergebnisse bestehenden hinzu"
 
-#: opcodes.h:224
+#: opcodes.h:223
 msgid "save changes to mailbox and quit"
 msgstr "Speichere Änderungen in Mailbox und beende das Programm"
 
-#: opcodes.h:225
+#: opcodes.h:224
 msgid "recall a postponed message"
 msgstr "Bearbeite eine zuvor zurückgestellte Nachricht"
 
-#: opcodes.h:226
+#: opcodes.h:225
 msgid "reconstruct thread containing current message"
 msgstr "Diskussionsfaden um die aktuelle Nachricht neu erstellen"
 
-#: opcodes.h:227
+#: opcodes.h:226
 msgid "clear and redraw the screen"
 msgstr "Erzeuge Bildschirmanzeige neu"
 
-#: opcodes.h:228
+#: opcodes.h:227
 msgid "{internal}"
 msgstr "{intern}"
 
-#: opcodes.h:229
+#: opcodes.h:228
 msgid "rename the current mailbox (IMAP only)"
 msgstr "Benenne die aktuelle Mailbox um (nur für IMAP)"
 
-#: opcodes.h:230
+#: opcodes.h:229
 msgid "reply to a message"
 msgstr "Beantworte Nachricht"
 
-#: opcodes.h:231
+#: opcodes.h:230
 msgid "use the current message as a template for a new one"
 msgstr "Verwende aktuelle Nachricht als Vorlage für neue Nachricht"
 
-#: opcodes.h:232
+#: opcodes.h:231
 msgid "save message/attachment to a mailbox/file"
 msgstr "Speichere Nachricht/Anhang in Mailbox/Datei"
 
-#: opcodes.h:233
+#: opcodes.h:232
 msgid "search for a regular expression"
 msgstr "Suche nach regulärem Ausdruck"
 
-#: opcodes.h:234
+#: opcodes.h:233
 msgid "search for next match"
 msgstr "Suche nächsten Treffer"
 
-#: opcodes.h:235
+#: opcodes.h:234
 msgid "search for next match in opposite direction"
 msgstr "Suche nächsten Treffer in umgekehrter Richtung"
 
-#: opcodes.h:236
+#: opcodes.h:235
 msgid "search backwards for a regular expression"
 msgstr "Suche rückwärts nach regulärem Ausdruck"
 
-#: opcodes.h:237
+#: opcodes.h:236
 msgid "toggle search pattern coloring"
 msgstr "Schalte Hervorhebung für Suchtreffer ein/aus"
 
-#: opcodes.h:238
+#: opcodes.h:237
 msgid "invoke a command in a subshell"
 msgstr "Rufe Kommando in Shell auf"
 
-#: opcodes.h:239
+#: opcodes.h:238
 msgid "show log (and debug) messages"
 msgstr "Zeige Log- und Fehlerprotokoll"
 
-#: opcodes.h:240
+#: opcodes.h:239
 msgid "sort messages"
 msgstr "Sortiere Nachrichten"
 
-#: opcodes.h:241
+#: opcodes.h:240
 msgid "sort messages in reverse order"
 msgstr "Sortiere Nachrichten in umgekehrter Reihenfolge"
 
-#: opcodes.h:242
+#: opcodes.h:241
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "Newsgroups nach Muster abonnieren"
 
-#: opcodes.h:243
+#: opcodes.h:242
 msgid "tag the current entry"
 msgstr "Markiere aktuellen Eintrag"
 
-#: opcodes.h:244
+#: opcodes.h:243
 msgid "apply next function to tagged messages"
 msgstr "Wende nächste Funktion auf markierte Nachrichten an"
 
-#: opcodes.h:245
+#: opcodes.h:244
 msgid "apply next function ONLY to tagged messages"
 msgstr "Wende nächste Funktion NUR auf markierte Nachrichten an"
 
-#: opcodes.h:246
+#: opcodes.h:245
 msgid "tag the current subthread"
 msgstr "Markiere aktuellen Diskussionsfadenteil"
 
-#: opcodes.h:247
+#: opcodes.h:246
 msgid "tag the current thread"
 msgstr "Markiere aktuellen Diskussionsfaden"
 
-#: opcodes.h:248
+#: opcodes.h:247
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "Schalte um zwischen Durchblättern von Mailboxen/allen Dateien"
 
-#: opcodes.h:249
+#: opcodes.h:248
 msgid "toggle a message's 'new' flag"
 msgstr "Setze/Entferne den \"Neu\"-Statusindikator einer Nachricht"
 
-#: opcodes.h:250
+#: opcodes.h:249
 msgid "toggle view of read messages"
 msgstr "Schalte um zwischen Ansicht gelesener/ungelesener Nachrichten"
 
-#: opcodes.h:251
+#: opcodes.h:250
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "Schalte Sichern von Änderungen ein/aus"
 
-#: opcodes.h:252
+#: opcodes.h:251
 msgid "move to the top of the page"
 msgstr "Springe zum Anfang der Seite"
 
-#: opcodes.h:253
+#: opcodes.h:252
 msgid "mark all articles in newsgroup as unread"
 msgstr "Markiere alle Artikel in dieser Newsgroup als ungelesen"
 
-#: opcodes.h:254
+#: opcodes.h:253
 msgid "undelete the current entry"
 msgstr "Entferne Löschmarkierung vom aktuellen Eintrag"
 
-#: opcodes.h:255
+#: opcodes.h:254
 msgid "undelete all messages in subthread"
 msgstr "Entferne Löschmarkierung von allen Nachrichten im Diskussionsfadenteil"
 
-#: opcodes.h:256
+#: opcodes.h:255
 msgid "undelete all messages in thread"
 msgstr "Entferne Löschmarkierung von allen Nachrichten im Diskussionsfaden"
 
-#: opcodes.h:257
+#: opcodes.h:256
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "Newsgroups nach Muster abbestellen"
 
-#: opcodes.h:258
+#: opcodes.h:257
 msgid "show the NeoMutt version number and date"
 msgstr "Zeige Versionsnummer und -datum an"
 
-#: opcodes.h:259
+#: opcodes.h:258
 msgid "view attachment using mailcap entry if necessary"
 msgstr "Zeige Anhang, wenn nötig via Mailcap"
 
-#: opcodes.h:260
+#: opcodes.h:259
 msgid "show MIME attachments"
 msgstr "Zeige MIME-Anhänge"
 
-#: opcodes.h:261
+#: opcodes.h:260
 msgid "show the raw message"
 msgstr "Bearbeite Rohnachricht"
 
-#: opcodes.h:262
+#: opcodes.h:261
 msgid "display the keycode for a key press"
 msgstr "Zeige den Tastenkode einer Taste"
 
-#: opcodes.h:265
+#: opcodes.h:264
 msgid "make decrypted copy"
 msgstr "Erzeuge dechiffrierte Kopie"
 
-#: opcodes.h:266
+#: opcodes.h:265
 msgid "make decrypted copy and delete"
 msgstr "Erzeuge dechiffrierte Kopie und lösche"
 
-#: opcodes.h:267
+#: opcodes.h:266
 msgid "extract supported public keys"
 msgstr "Extrahiere unterstützte öffentliche Schlüssel"
 
-#: opcodes.h:268
+#: opcodes.h:267
 msgid "wipe passphrases from memory"
 msgstr "Entferne Mantra(s) aus Speicher"
 
-#: opcodes.h:272
+#: opcodes.h:271
 msgid "send the message through a mixmaster remailer chain"
 msgstr "Verschicke die Nachricht über eine Mixmaster-Remailer-Kette"
 
-#: opcodes.h:273
+#: opcodes.h:272
 msgid "append a remailer to the chain"
 msgstr "Füge der Kette einen Remailer hinzu"
 
-#: opcodes.h:274
+#: opcodes.h:273
 msgid "select the next element of the chain"
 msgstr "Wähle das nächste Element der Kette aus"
 
-#: opcodes.h:275
+#: opcodes.h:274
 msgid "select the previous element of the chain"
 msgstr "Wähle das vorhergehende Element der Kette aus"
 
-#: opcodes.h:276
+#: opcodes.h:275
 msgid "delete a remailer from the chain"
 msgstr "Lösche einen Remailer aus der Kette"
 
-#: opcodes.h:277
+#: opcodes.h:276
 msgid "insert a remailer into the chain"
 msgstr "Füge einen Remailer in die Kette ein"
 
-#: opcodes.h:278
+#: opcodes.h:277
 msgid "accept the chain constructed"
 msgstr "Akzeptiere die erstellte Kette"
 
-#: opcodes.h:285
+#: opcodes.h:284
 msgid "open a different virtual folder"
 msgstr "Öffne eine andere virtuelle Mailbox"
 
-#: opcodes.h:286
+#: opcodes.h:285
 msgid "read entire thread of the current message"
 msgstr "Lies den vollständigen Diskussionsfaden zur aktuellen Nachricht"
 
-#: opcodes.h:287
+#: opcodes.h:286
 msgid "generate virtual folder from query"
 msgstr "Erzeuge virtuelle Mailbox aus der Abfrage"
 
-#: opcodes.h:288
+#: opcodes.h:287
 msgid "generate a read-only virtual folder from query"
 msgstr "Erzeuge nur lesbare virtuelle Mailbox aus der Abfrage"
 
-#: opcodes.h:289
+#: opcodes.h:288
 msgid "shifts virtual folder time window backwards"
 msgstr "Verschiebt das Zeitfenster des virtuellen Ordners in die Vergangenheit"
 
-#: opcodes.h:290
+#: opcodes.h:289
 msgid "shifts virtual folder time window forwards"
 msgstr "Verschiebt das Zeitfenster des virtuellen Ordners in die Zukunft"
 
-#: opcodes.h:296
+#: opcodes.h:295
 msgid "check for classic PGP"
 msgstr "Suche nach klassischem PGP"
 
-#: opcodes.h:297
+#: opcodes.h:296
 msgid "attach a PGP public key"
 msgstr "Hänge öffentlichen PGP-Schlüssel an"
 
-#: opcodes.h:298
+#: opcodes.h:297
 msgid "show PGP options"
 msgstr "Zeige PGP-Optionen"
 
-#: opcodes.h:299
+#: opcodes.h:298
 msgid "mail a PGP public key"
 msgstr "Verschicke öffentlichen PGP-Schlüssel"
 
-#: opcodes.h:300
+#: opcodes.h:299
 msgid "verify a PGP public key"
 msgstr "Prüfe öffentlichen PGP-Schlüssel"
 
-#: opcodes.h:301
+#: opcodes.h:300
 msgid "view the key's user id"
 msgstr "Zeige Nutzer-ID zu Schlüssel an"
 
-#: opcodes.h:304
+#: opcodes.h:303
 #, fuzzy
 msgid "move the highlight to the first mailbox"
 msgstr "Bewege Auswahl in die nächste Mailbox"
 
-#: opcodes.h:305
+#: opcodes.h:304
 #, fuzzy
 msgid "move the highlight to the last mailbox"
 msgstr "Bewege Auswahl in die nächste Mailbox"
 
-#: opcodes.h:306
+#: opcodes.h:305
 msgid "move the highlight to next mailbox"
 msgstr "Bewege Auswahl in die nächste Mailbox"
 
-#: opcodes.h:307
+#: opcodes.h:306
 msgid "move the highlight to next mailbox with new mail"
 msgstr "Bewege Auswahl in die nächste Mailbox mit neuen Nachrichten"
 
-#: opcodes.h:308
+#: opcodes.h:307
 msgid "open highlighted mailbox"
 msgstr "Öffne ausgewählte Mailbox"
 
-#: opcodes.h:309
+#: opcodes.h:308
 msgid "scroll the sidebar down 1 page"
 msgstr "Gehe eine Seite nach unten"
 
-#: opcodes.h:310
+#: opcodes.h:309
 msgid "scroll the sidebar up 1 page"
 msgstr "Gehe eine Seite nach oben"
 
-#: opcodes.h:311
+#: opcodes.h:310
 msgid "move the highlight to previous mailbox"
 msgstr "Bewege Auswahl in die vorhergehende Mailbox"
 
-#: opcodes.h:312
+#: opcodes.h:311
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "Bewege Auswahl in die vorhergehende Mailbox mit neuen Nachrichten"
 
-#: opcodes.h:313
+#: opcodes.h:312
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "Schalte um zwischen Mailboxen/virtuellen Mailboxen"
 
-#: opcodes.h:314
+#: opcodes.h:313
 msgid "make the sidebar (in)visible"
 msgstr "Schalte um zwischen Seitenleiste sichtbar/unsichtbar"
 
-#: opcodes.h:317
+#: opcodes.h:316
 msgid "show S/MIME options"
 msgstr "Zeige S/MIME-Optionen"
+
+#: opcodes.h:319
+msgid "null operation"
+msgstr "Leere Funktion"
 
 #: pager.c:214
 msgid "Not available in this menu"
@@ -6837,7 +6837,7 @@ msgstr "Sortierfunktion nicht gefunden (bitte Bug melden)"
 msgid "(no mailbox)"
 msgstr "(keine Mailbox)"
 
-#: version.c:81
+#: version.c:85
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -6845,7 +6845,7 @@ msgstr ""
 "Viele andere, welche hier nicht explizit genannt werden, haben Code,\n"
 "Fehlerkorrekturen und Hinweise beigesteuert.\n"
 
-#: version.c:85
+#: version.c:89
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -6876,7 +6876,7 @@ msgstr ""
 "    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
 "    Boston, MA 02110-1301, USA.\n"
 
-#: version.c:101
+#: version.c:105
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -6888,7 +6888,7 @@ msgstr ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "oder senden Sie eine E-Mail an: <neomutt-devel@neomutt.org>\n"
 
-#: version.c:108
+#: version.c:112
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -6901,11 +6901,11 @@ msgstr ""
 "Sie können es unter bestimmten Bedingungen weitergeben; starten Sie\n"
 "'neomutt -vv' für weitere Details.\n"
 
-#: version.c:508
+#: version.c:526
 msgid "Default options:"
 msgstr "Standard Einstellungen:"
 
-#: version.c:511
+#: version.c:529
 msgid "Compile options:"
 msgstr "Einstellungen bei der Kompilierung:"
 
