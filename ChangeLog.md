@@ -1,3 +1,20 @@
+2020-04-24  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  -Fix history corruption
+  -Handle pretty much anything in a URL query part
+  -Correctly parse escaped characters in header phrases
+  -Fix crash reading received header
+  -Fix sidebar indentation
+  -Avoid crashing on failure to parse an IMAP mailbox
+  -Maildir: handle deleted emails correctly
+  -Ensure OP_NULL is always first
+* Translations
+  -100% Czech
+* Build
+  -cirrus: enable pcre2, make pkgconf a special case
+  -Fix finding pcre2 w/o pkgconf
+  -build: tdb.h needs size_t, bring it in with stddef.h
+
 2020-04-17  Richard Russon  <rich@flatcap.org>
 * Features
   - Fluid layout for Compose Screen, see: https://vimeo.com/407231157
