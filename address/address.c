@@ -560,6 +560,8 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
       default:
         if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)) && ws_pending)
           phrase[phraselen++] = ' ';
+        *s == '\\' && (phrase[phraselen++] = (s++, *s++));
+
         s = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
         if (!s)
         {
