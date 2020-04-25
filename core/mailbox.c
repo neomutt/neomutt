@@ -69,6 +69,9 @@ void mailbox_free(struct Mailbox **ptr)
   if (m->mdata && m->mdata_free)
     m->mdata_free(&m->mdata);
 
+  for (size_t i = 0; i < m->email_max; i++)
+    email_free(&m->emails[i]);
+
   mutt_buffer_dealloc(&m->pathbuf);
   cs_subset_free(&m->sub);
   FREE(&m->name);
