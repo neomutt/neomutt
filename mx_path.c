@@ -239,10 +239,11 @@ int mx_path2_parent(const struct Path *path, struct Path **parent)
 }
 
 /**
- * mx_path2_pretty - Abbreviate a Mailbox path - Wrapper for MxOps::path2_pretty()
- * @param[in]  path     Mailbox path
+ * mx_path2_pretty - Abbreviate a Mailbox Path - Wrapper for MxOps::path2_pretty()
+ * @param[in]  path     Mailbox Path
  * @param[in]  folder   Folder string to abbreviate with
  * @param[in]  use_desc If true, use the Path's description (if available)
+ * @retval  2 Success, Description used
  * @retval  1 Success, Path abbreviated
  * @retval  0 Failure, No change possible (orig path returned)
  * @retval -1 Error
@@ -258,7 +259,7 @@ int mx_path2_pretty(struct Path *path, const char *folder, bool use_desc)
 
   if (use_desc && path->desc)
   {
-    path->pretty = mutt_str_strdup(path->desc);
+    mutt_str_replace(&path->pretty, path->desc);
     return 2;
   }
 

@@ -47,11 +47,11 @@
 #include "nntp/lib.h"
 #include "notmuch/lib.h"
 
-// #define GV_HIDE_CONTEXT
+#define GV_HIDE_CONTEXT
 #define GV_HIDE_CONTEXT_CONTENTS
-// #define GV_HIDE_MBOX
-// #define GV_HIDE_NEOMUTT
-// #define GV_HIDE_CONFIG
+#define GV_HIDE_MBOX
+#define GV_HIDE_NEOMUTT
+#define GV_HIDE_CONFIG
 // #define GV_HIDE_MDATA
 
 static void dot_email(FILE *fp, const struct Email *e, struct ListHead *links);
@@ -254,8 +254,7 @@ static void dot_ptr(FILE *fp, const char *name, void *ptr, const char *colour)
   fprintf(fp, "\t\t</tr>\n");
 }
 
-static void dot_add_link(struct ListHead *links, const void *src, const void *dst,
-                         const char *label, bool back, const char *colour)
+static void dot_add_link(struct ListHead *links, const void *src, const void *dst, const char *label, bool back, const char *colour)
 {
   if (!src || !dst)
     return;
@@ -371,7 +370,7 @@ static void dot_node_link(FILE *fp, void *ptr, const char *name, void *link, con
   dot_object_footer(fp);
 }
 
-static void dot_path_fs(char *buf, size_t buflen, const char *path)
+void dot_path_fs(char *buf, size_t buflen, const char *path)
 {
   if (!path)
   {
@@ -388,7 +387,7 @@ static void dot_path_fs(char *buf, size_t buflen, const char *path)
   mutt_str_strfcpy(buf, slash, buflen);
 }
 
-static void dot_path_imap(char *buf, size_t buflen, const char *path)
+void dot_path_imap(char *buf, size_t buflen, const char *path)
 {
   char tmp[1024] = { 0 };
   mutt_str_strfcpy(tmp, path, sizeof(tmp));
@@ -403,8 +402,7 @@ static void dot_path_imap(char *buf, size_t buflen, const char *path)
   url_free(&u);
 }
 
-static void dot_config(FILE *fp, const char *name, int type,
-                       struct ConfigSubset *sub, struct ListHead *links)
+void dot_config(FILE *fp, const char *name, int type, struct ConfigSubset *sub, struct ListHead *links)
 {
   if (!sub)
     return;
@@ -511,6 +509,61 @@ static void dot_mailbox_type(FILE *fp, const char *name, enum MailboxType type)
   fprintf(fp, "\t\t</tr>\n");
 }
 
+static void dot_path_flags(FILE *fp, const char *name, PathFlags flags)
+{
+  struct Buffer buf = mutt_buffer_make(256);
+
+  if (flags & MPATH_RESOLVED)
+    mutt_buffer_addstr(&buf, "resolved ");
+  if (flags & MPATH_TIDY)
+    mutt_buffer_addstr(&buf, "tidy ");
+  if (flags & MPATH_CANONICAL)
+    mutt_buffer_addstr(&buf, "canonical ");
+  if (flags & MPATH_ROOT)
+    mutt_buffer_addstr(&buf, "root ");
+
+  fprintf(fp, "\t\t<tr>\n");
+  fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%s</td>\n", name);
+  fprintf(fp, "\t\t\t<td border=\"0\">=</td>\n");
+  fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%s</td>\n", mutt_b2s(&buf));
+  fprintf(fp, "\t\t</tr>\n");
+
+  mutt_buffer_dealloc(&buf);
+}
+
+static void dot_path(FILE *fp, const char *name, struct Path *path)
+{
+  dot_object_header(fp, path, "Path", "#ff80ff");
+
+  dot_mailbox_type(fp, "type", path->type);
+  dot_type_string(fp, "desc", path->desc, false);
+  dot_type_string(fp, "pretty", path->pretty, false);
+
+#if 0
+  char buf[64] = { 0 };
+  if ((path->type == MUTT_IMAP) || (path->type == MUTT_POP))
+  {
+    dot_path_imap(buf, sizeof(buf), path->orig);
+    dot_type_string(fp, "orig", buf, false);
+    dot_path_imap(buf, sizeof(buf), path->canon);
+    dot_type_string(fp, "canon", buf, false);
+  }
+  else
+  {
+    dot_path_fs(buf, sizeof(buf), path->orig);
+    dot_type_string(fp, "orig", buf, false);
+    dot_path_fs(buf, sizeof(buf), path->canon);
+    dot_type_string(fp, "canon", buf, false);
+  }
+#else
+  dot_type_string(fp, "orig", path->orig, false);
+  dot_type_string(fp, "canon", path->canon, false);
+#endif
+
+  dot_path_flags(fp, "flags", path->flags);
+  dot_object_footer(fp);
+}
+
 static void dot_mailbox_imap(FILE *fp, struct ImapMboxData *mdata, struct ListHead *links)
 {
   dot_object_header(fp, mdata, "ImapMboxData", "#60c060");
@@ -583,26 +636,9 @@ static void dot_mailbox_pop(FILE *fp, struct PopAccountData *mdata, struct ListH
 
 static void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 {
-  char buf[64] = { 0 };
-
   dot_object_header(fp, m, "Mailbox", "#80ff80");
   dot_mailbox_type(fp, "type", m->type);
-  dot_type_string(fp, "path-&gt;desc", m->path->desc, false);
-
-  if ((m->type == MUTT_IMAP) || (m->type == MUTT_POP))
-  {
-    dot_path_imap(buf, sizeof(buf), m->path->orig);
-    dot_type_string(fp, "path-&gt;orig", buf, false);
-    dot_path_imap(buf, sizeof(buf), m->path->canon);
-    dot_type_string(fp, "path-&gt;canon", buf, false);
-  }
-  else
-  {
-    dot_path_fs(buf, sizeof(buf), m->path->orig);
-    dot_type_string(fp, "path-&gt;orig", buf, false);
-    dot_path_fs(buf, sizeof(buf), m->path->canon);
-    dot_type_string(fp, "path-&gt;canon", buf, false);
-  }
+  // dot_ptr(fp, "path", m->path, NULL);
 
 #ifdef GV_HIDE_MDATA
   dot_ptr(fp, "mdata", m->mdata, NULL);
@@ -616,10 +652,10 @@ static void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
   // dot_type_number(fp, "msg_deleted", m->msg_deleted);
   // dot_type_number(fp, "msg_tagged", m->msg_tagged);
 
-  dot_ptr(fp, "emails", m->emails, NULL);
-  dot_type_number(fp, "email_max", m->email_max);
-  dot_ptr(fp, "v2r", m->v2r, NULL);
-  dot_type_number(fp, "vcount", m->vcount);
+  // dot_ptr(fp, "emails", m->emails, NULL);
+  // dot_type_number(fp, "email_max", m->email_max);
+  // dot_ptr(fp, "v2r", m->v2r, NULL);
+  // dot_type_number(fp, "vcount", m->vcount);
 
   dot_object_footer(fp);
 
@@ -658,6 +694,9 @@ static void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
     dot_add_link(links, m, m->path->desc, "Mailbox Config", false, NULL);
   }
 #endif
+
+  dot_path(fp, "path", m->path);
+  dot_add_link(links, m, m->path, "Mailbox->path", false, NULL);
 }
 
 static void dot_mailbox_node(FILE *fp, struct MailboxNode *mn, struct ListHead *links)
@@ -678,6 +717,9 @@ static void dot_mailbox_node(FILE *fp, struct MailboxNode *mn, struct ListHead *
   mutt_buffer_add_printf(&buf, "%s ", name);
 
   dot_ptr_name(name, sizeof(name), mn->mailbox);
+  mutt_buffer_add_printf(&buf, "%s ", name);
+
+  dot_ptr_name(name, sizeof(name), mn->mailbox->path);
   mutt_buffer_add_printf(&buf, "%s ", name);
 
 #ifndef GV_HIDE_MDATA
@@ -914,7 +956,7 @@ static void dot_account_list(FILE *fp, struct AccountList *al, struct ListHead *
   }
 }
 
-static void dot_context(FILE *fp, struct Context *ctx, struct ListHead *links)
+void dot_context(FILE *fp, struct Context *ctx, struct ListHead *links)
 {
   dot_object_header(fp, ctx, "Context", "#ff80ff");
   dot_ptr(fp, "mailbox", ctx->mailbox, "#80ff80");
