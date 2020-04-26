@@ -73,7 +73,7 @@ static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
 struct SbEntry
 {
   char box[256];           ///< Formatted Mailbox name
-  struct Mailbox *mailbox; ///< Mailbox this represents
+  struct Mailbox *mailbo2; ///< Mailbox this represents
   bool is_hidden;          ///< Don't show, e.g. $sidebar_new_mail_only
 };
 
@@ -128,7 +128,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
 
   buf[0] = '\0'; /* Just in case there's nothing to do */
 
-  struct Mailbox *m = sbe->mailbox;
+  struct Mailbox *m = sbe->mailbo2;
   if (!m)
     return src;
 
@@ -154,8 +154,8 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       break;
 
     case 'D':
-      if (sbe->mailbox->path)
-        mutt_format_s(buf, buflen, prec, sbe->mailbox->path->desc);
+      if (sbe->mailbo2->path)
+        mutt_format_s(buf, buflen, prec, sbe->mailbo2->path->desc);
       else
         mutt_format_s(buf, buflen, prec, sbe->box);
       break;
@@ -336,8 +336,8 @@ static int cb_qsort_sbe(const void *a, const void *b)
 {
   const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
   const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
-  const struct Mailbox *m1 = sbe1->mailbox;
-  const struct Mailbox *m2 = sbe2->mailbox;
+  const struct Mailbox *m1 = sbe1->mailbo2;
+  const struct Mailbox *m2 = sbe2->mailbo2;
 
   int rc = 0;
 
@@ -414,26 +414,26 @@ static void update_entries_visibility(void)
     sbe->is_hidden = false;
 
     if (Context &&
-        (mutt_str_strcmp(sbe->mailbox->path->canon, Context->mailbox->path->canon) == 0))
+        (mutt_str_strcmp(sbe->mailbo2->path->canon, Context->mailbox->path->canon) == 0))
     {
       /* Spool directories are always visible */
       continue;
     }
 
-    if (mutt_list_find(&SidebarWhitelist, mailbox_path(sbe->mailbox)) ||
-        mutt_list_find(&SidebarWhitelist, sbe->mailbox->path->desc))
+    if (mutt_list_find(&SidebarWhitelist, mailbox_path(sbe->mailbo2)) ||
+        mutt_list_find(&SidebarWhitelist, sbe->mailbo2->path->desc))
     {
       /* Explicitly asked to be visible */
       continue;
     }
 
-    if (non_empty_only && (i != OpnIndex) && (sbe->mailbox->msg_count == 0))
+    if (non_empty_only && (i != OpnIndex) && (sbe->mailbo2->msg_count == 0))
     {
       sbe->is_hidden = true;
     }
 
-    if (new_only && (i != OpnIndex) && (sbe->mailbox->msg_unread == 0) &&
-        (sbe->mailbox->msg_flagged == 0) && !sbe->mailbox->has_new)
+    if (new_only && (i != OpnIndex) && (sbe->mailbo2->msg_unread == 0) &&
+        (sbe->mailbo2->msg_flagged == 0) && !sbe->mailbo2->has_new)
     {
       sbe->is_hidden = true;
     }
@@ -456,7 +456,7 @@ static void unsort_entries(void)
       break;
 
     int j = i;
-    while ((j < EntryCount) && (Entries[j]->mailbox != np->mailbox))
+    while ((j < EntryCount) && (Entries[j]->mailbo2 != np->mailbox))
       j++;
     if (j < EntryCount)
     {
@@ -541,7 +541,7 @@ static bool select_next_new(void)
     }
     if (entry == HilIndex)
       return false;
-  } while (!Entries[entry]->mailbox->has_new && (Entries[entry]->mailbox->msg_unread == 0));
+  } while (!Entries[entry]->mailbo2->has_new && (Entries[entry]->mailbo2->msg_unread == 0));
 
   HilIndex = entry;
   return true;
@@ -596,7 +596,7 @@ static bool select_prev_new(void)
     }
     if (entry == HilIndex)
       return false;
-  } while (!Entries[entry]->mailbox->has_new && (Entries[entry]->mailbox->msg_unread == 0));
+  } while (!Entries[entry]->mailbo2->has_new && (Entries[entry]->mailbo2->msg_unread == 0));
 
   HilIndex = entry;
   return true;
@@ -1054,7 +1054,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
     entry = Entries[entryidx];
     if (entry->is_hidden)
       continue;
-    m = entry->mailbox;
+    m = entry->mailbo2;
 
     if (entryidx == OpnIndex)
     {
@@ -1268,7 +1268,7 @@ struct Mailbox *sb_get_highlight(void)
   if ((EntryCount == 0) || (HilIndex < 0))
     return NULL;
 
-  return Entries[HilIndex]->mailbox;
+  return Entries[HilIndex]->mailbo2;
 }
 
 /**
@@ -1287,7 +1287,7 @@ void sb_set_open_mailbox(struct Mailbox *m)
 
   for (int entry = 0; entry < EntryCount; entry++)
   {
-    if (mutt_str_strcmp(Entries[entry]->mailbox->path->canon, m->path->canon) == 0)
+    if (mutt_str_strcmp(Entries[entry]->mailbo2->path->canon, m->path->canon) == 0)
     {
       OpnIndex = entry;
       HilIndex = entry;
@@ -1323,7 +1323,7 @@ void sb_notify_mailbox(struct Mailbox *m, bool created)
       mutt_mem_realloc(&Entries, EntryLen * sizeof(struct SbEntry *));
     }
     Entries[EntryCount] = mutt_mem_calloc(1, sizeof(struct SbEntry));
-    Entries[EntryCount]->mailbox = m;
+    Entries[EntryCount]->mailbo2 = m;
 
     if (TopIndex < 0)
       TopIndex = EntryCount;
@@ -1341,7 +1341,7 @@ void sb_notify_mailbox(struct Mailbox *m, bool created)
   {
     int del_index;
     for (del_index = 0; del_index < EntryCount; del_index++)
-      if (Entries[del_index]->mailbox == m)
+      if (Entries[del_index]->mailbo2 == m)
         break;
     if (del_index == EntryCount)
       return;
