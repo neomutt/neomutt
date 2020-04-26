@@ -24,6 +24,7 @@
 #define MUTT_CORE_PATH_H
 
 #include <stdint.h>
+#include "mailbox.h"
 
 typedef uint8_t PathFlags;       ///< Flags for Path, e.g. #MPATH_RESOLVED
 #define MPATH_NO_FLAGS        0  ///< No flags are set
@@ -37,12 +38,12 @@ typedef uint8_t PathFlags;       ///< Flags for Path, e.g. #MPATH_RESOLVED
  */
 struct Path
 {
-  char *orig;      ///< User-entered path
-  char *canon;     ///< Canonical path
-  char *desc;      ///< Descriptive name
-  char *pretty;    ///< Abbreviated version (for display)
-  int type;        ///< Path type, enum MailboxType
-  PathFlags flags; ///< Flags describing what's known about the path
+  char *orig;            ///< User-entered path
+  char *canon;           ///< Canonical path
+  char *desc;            ///< Descriptive name
+  char *pretty;          ///< Abbreviated version (for display)
+  enum MailboxType type; ///< Path type
+  PathFlags flags;       ///< Flags describing what's known about the path
 };
 
 void         mutt_path_free(struct Path **ptr);
@@ -51,5 +52,15 @@ struct Path *mutt_path_dup(struct Path *p);
 
 bool path_partial_match_string(const char *str1, const char *str2);
 bool path_partial_match_number(int num1, int num2);
+
+/**
+ * mailbox_path - Get the Mailbox's path string
+ * @param m Mailbox
+ * @retval ptr Path string
+ */
+static inline const char *mailbox_path(const struct Mailbox *m) // LCOV_EXCL_LINE
+{
+  return m->path->orig; // LCOV_EXCL_LINE
+}
 
 #endif /* MUTT_CORE_PATH_H */

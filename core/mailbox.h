@@ -31,10 +31,10 @@
 #include <time.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "path.h"
 
 struct ConfigSubset;
 struct Email;
+struct Path;
 
 #define MB_NORMAL 0
 #define MB_HIDDEN 1
@@ -187,15 +187,5 @@ bool            mailbox_set_subset(struct Mailbox *m, struct ConfigSubset *sub);
 void            mailbox_size_add  (struct Mailbox *m, const struct Email *e);
 void            mailbox_size_sub  (struct Mailbox *m, const struct Email *e);
 void            mailbox_update    (struct Mailbox *m);
-
-/**
- * mailbox_path - Get the Mailbox's path string
- * @param m Mailbox
- * @retval ptr Path string
- */
-static inline const char *mailbox_path(const struct Mailbox *m) // LCOV_EXCL_LINE
-{
-  return m->path->orig; // LCOV_EXCL_LINE
-}
 
 #endif /* MUTT_CORE_MAILBOX_H */
