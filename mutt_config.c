@@ -1667,9 +1667,9 @@ struct ConfigDef MuttVars[] = {
   { "imap_delim_chars", DT_STRING, &C_ImapDelimChars, IP "/." },
   /*
   ** .pp
-  ** This contains the list of characters which you would like to treat
-  ** as folder separators for displaying IMAP paths. In particular it
-  ** helps in using the "=" shortcut for your \fIfolder\fP variable.
+  ** This contains the list of characters that NeoMutt will use as folder
+  ** separators for IMAP paths, when no separator is provided on the IMAP
+  ** connection.
   */
   { "imap_fetch_chunk_size", DT_LONG|DT_NOT_NEGATIVE, &C_ImapFetchChunkSize, 0 },
   /*
