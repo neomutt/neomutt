@@ -177,6 +177,7 @@ nntp/newsrc.c
 nntp/nntp.c
 notmuch/mutt_notmuch.c
 notmuch/nm_db.c
+opcodes.c
 opcodes.h
 pager.c
 pattern.c

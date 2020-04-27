@@ -2344,6 +2344,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     if (ch >= 0)
     {
       mutt_clear_error();
+      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[ch][0], ch);
     }
     mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 

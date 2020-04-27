@@ -334,4 +334,6 @@ enum MuttOps {
 };
 // clang-format on
 
+extern const char *OpStrings[][2];
+
 #endif /* MUTT_OPCODES_H */

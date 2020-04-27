@@ -1436,10 +1436,12 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   // only now do we have a valid state to attach
   menu->data = state.entry;
 
-  int op;
   while (true)
   {
-    switch (op = mutt_menu_loop(menu))
+    int op = mutt_menu_loop(menu);
+    if (op >= 0)
+      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
+    switch (op)
     {
       case OP_DESCEND_DIRECTORY:
       case OP_GENERIC_SELECT_ENTRY:

@@ -1429,6 +1429,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
     OptNews = false; /* for any case */
 #endif
     const int op = mutt_menu_loop(menu);
+    if (op >= 0)
+      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
     switch (op)
     {
       case OP_COMPOSE_EDIT_FROM:
