@@ -27,8 +27,7 @@
 #define DEFINE_HELP_MESSAGE(opcode, op_string) { #opcode, op_string },
 
 const char *OpStrings[][2] = {
-  OPS(DEFINE_HELP_MESSAGE)
-  { NULL, NULL },
+  OPS(DEFINE_HELP_MESSAGE){ NULL, NULL },
 };
 
 #undef DEFINE_HELP_MESSAGE

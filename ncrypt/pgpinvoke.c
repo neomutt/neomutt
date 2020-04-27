@@ -79,7 +79,7 @@ struct PgpCommandContext
 };
 
 /**
- * fmt_pgp_command - Format a PGP command string - Implements ::format_t
+ * pgp_command_format_str - Format a PGP command string - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
@@ -89,10 +89,10 @@ struct PgpCommandContext
  * | \%r     | One or more key IDs (or fingerprints if available)
  * | \%s     | File containing the signature part of a multipart/signed attachment when verifying it
  */
-static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int cols,
-                                   char op, const char *src, const char *prec,
-                                   const char *if_str, const char *else_str,
-                                   unsigned long data, MuttFormatFlags flags)
+static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                          char op, const char *src, const char *prec,
+                                          const char *if_str, const char *else_str,
+                                          unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128];
   struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
@@ -164,13 +164,13 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
 
   if (optional)
   {
-    mutt_expando_format(buf, buflen, col, cols, if_str, fmt_pgp_command, data,
-                        MUTT_FORMAT_NO_FLAGS);
+    mutt_expando_format(buf, buflen, col, cols, if_str, pgp_command_format_str,
+                        data, MUTT_FORMAT_NO_FLAGS);
   }
   else if (flags & MUTT_FORMAT_OPTIONAL)
   {
-    mutt_expando_format(buf, buflen, col, cols, else_str, fmt_pgp_command, data,
-                        MUTT_FORMAT_NO_FLAGS);
+    mutt_expando_format(buf, buflen, col, cols, else_str,
+                        pgp_command_format_str, data, MUTT_FORMAT_NO_FLAGS);
   }
 
   return src;
@@ -186,7 +186,7 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
 static void mutt_pgp_command(char *buf, size_t buflen,
                              struct PgpCommandContext *cctx, const char *fmt)
 {
-  mutt_expando_format(buf, buflen, 0, buflen, NONULL(fmt), fmt_pgp_command,
+  mutt_expando_format(buf, buflen, 0, buflen, NONULL(fmt), pgp_command_format_str,
                       (unsigned long) cctx, MUTT_FORMAT_NO_FLAGS);
   mutt_debug(LL_DEBUG2, "%s\n", buf);
 }
