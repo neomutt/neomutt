@@ -2418,7 +2418,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           mutt_buffer_strcpy(folderbuf, mailbox_path(Context->mailbox));
           mutt_buffer_pretty_mailbox(folderbuf);
-          mutt_mailbox_next_buffer(Context ? Context->mailbox : NULL, folderbuf);
+          mutt_mailbox_next(Context ? Context->mailbox : NULL, folderbuf);
           if (mutt_buffer_is_empty(folderbuf))
           {
             mutt_error(_("No mailboxes have new mail"));
@@ -2465,7 +2465,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           {
             /* By default, fill buf with the next mailbox that contains unread
              * mail */
-            mutt_mailbox_next_buffer(Context ? Context->mailbox : NULL, folderbuf);
+            mutt_mailbox_next(Context ? Context->mailbox : NULL, folderbuf);
           }
 
           if (mutt_buffer_enter_fname(cp, folderbuf, true) == -1)

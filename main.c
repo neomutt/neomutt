@@ -1093,7 +1093,7 @@ int main(int argc, char *argv[], char *envp[])
         goto main_curses; // TEST37: neomutt -Z (no new mail)
       }
       mutt_buffer_reset(&folder);
-      mutt_mailbox_next_buffer(Context ? Context->mailbox : NULL, &folder);
+      mutt_mailbox_next(Context ? Context->mailbox : NULL, &folder);
 #ifdef USE_IMAP
       C_ImapPassive = passive;
 #endif
