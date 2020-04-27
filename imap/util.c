@@ -809,11 +809,14 @@ void imap_error(const char *where, const char *msg)
 
 /**
  * imap_fix_path - Fix up the imap path
- * @param server_delim  Imap Server Delim
- * @param mailbox       Mailbox path
- * @param path          Buffer for the result
- * @param plen          Length of buffer
- * @retval ptr          Fixed-up path
+ * @param delim     Delimiter specified by the server, '\0' for C_ImapDelimChars 
+ * @param mailbox   Mailbox path
+ * @param path      Buffer for the result
+ * @param plen      Length of buffer
+ * @retval ptr      Fixed-up path
+ *
+ * @note if delim is '\0', the first character in mailbox matching any of the
+ * characters in C_ImapDelimChars is used as a delimiter.
  *
  * This is necessary because the rest of neomutt assumes a hierarchy delimiter of
  * '/', which is not necessarily true in IMAP.  Additionally, the filesystem
@@ -821,38 +824,27 @@ void imap_error(const char *where, const char *msg)
  * to "/".  IMAP servers are not required to do this.
  * Moreover, IMAP servers may dislike the path ending with the delimiter.
  */
-char *imap_fix_path(char server_delim, const char *mailbox, char *path, size_t plen)
+char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen)
 {
   int i = 0;
-  char delim = server_delim;
-
-  while (mailbox && *mailbox && (i < plen - 1))
+  for (; mailbox && *mailbox && (i < plen - 1); i++)
   {
-    if ((C_ImapDelimChars && strchr(C_ImapDelimChars, *mailbox)) ||
-        (delim && (*mailbox == delim)))
+    if (*mailbox == delim || (!delim && strchr(NONULL(C_ImapDelimChars), *mailbox)))
     {
-      /* use connection delimiter if known. Otherwise use user delimiter */
-      if (server_delim == '\0')
-        delim = *mailbox;
-
-      while (*mailbox && ((C_ImapDelimChars && strchr(C_ImapDelimChars, *mailbox)) ||
-                          (delim && (*mailbox == delim))))
-      {
+      delim = *mailbox;
+      /* Skip multiple occurrences of delim */
+      while (*mailbox && *(mailbox + 1) == delim)
         mailbox++;
-      }
-      path[i] = delim;
     }
-    else
-    {
-      path[i] = *mailbox;
-      mailbox++;
-    }
-    i++;
+    path[i] = *mailbox++;
   }
-  if (i && (path[--i] != delim))
-    i++;
-  path[i] = '\0';
 
+  /* Do not terminate with a delimiter */
+  if (i && path[i - 1] == delim)
+    i--;
+
+  /* Ensure null termination */
+  path[i] = '\0';
   return path;
 }
 
