@@ -1101,6 +1101,10 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
     if (!abbr)
       abbr = abbrev_url(display, m->type);
 
+    // Use the abbreviation if we have one. The full path is not preferable.
+    if (abbr)
+      display = abbr;
+
     const char *last_part = abbr;
     int depth = calc_path_depth(abbr, C_SidebarDelimChars, &last_part);
 
