@@ -1091,9 +1091,10 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
       m->msg_flagged = Context->mailbox->msg_flagged;
     }
 
+    const char *full_path = mailbox_path(m);
     display = m->name;
     if (!display)
-      display = mailbox_path(m);
+      display = full_path;
 
     const char *abbr = m->name;
     if (!abbr)
@@ -1113,7 +1114,9 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 
     mutt_buffer_reset(&result);
 
-    if (C_SidebarFolderIndent)
+    // Don't indent if we were unable to create an abbreviation.
+    // Otherwise, the full path will be indent, and it looks unusual.
+    if (C_SidebarFolderIndent && mutt_str_strncmp(display, full_path, sizeof(display)))
     {
       if (C_SidebarComponentDepth > 0)
         depth -= C_SidebarComponentDepth;
