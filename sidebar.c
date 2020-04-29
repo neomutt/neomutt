@@ -1109,14 +1109,19 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
     const char *last_part = abbr;
     int depth = calc_path_depth(abbr, C_SidebarDelimChars, &last_part);
 
+    // At this point, we don't have an abbreviation so let's keep track
+    // before using short path.
+    bool no_abbr = mutt_str_strncmp(display, full_path, sizeof(display));
     if (C_SidebarShortPath)
+    {
       display = last_part;
+    }
 
     mutt_buffer_reset(&result);
 
     // Don't indent if we were unable to create an abbreviation.
     // Otherwise, the full path will be indent, and it looks unusual.
-    if (C_SidebarFolderIndent && mutt_str_strncmp(display, full_path, sizeof(display)))
+    if (C_SidebarFolderIndent && no_abbr)
     {
       if (C_SidebarComponentDepth > 0)
         depth -= C_SidebarComponentDepth;
