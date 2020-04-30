@@ -825,6 +825,8 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
  */
 void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
+  buf[0] = '\0';
+
   if (!Context || !Context->mailbox || !menu || (line < 0) ||
       (line >= Context->mailbox->email_max))
     return;
@@ -927,7 +929,7 @@ int index_color(int line)
  */
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
 {
-  if (!buf)
+  if (!buf || !stdscr)
     return;
 
   size_t i = 0;
@@ -942,9 +944,6 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
     int first;
     int last;
   } *syntax = NULL;
-
-  if (!buf || !stdscr)
-    return;
 
   do
   {
