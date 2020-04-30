@@ -294,10 +294,13 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
 static void make_sidebar_entry(char *buf, size_t buflen, int width,
                                const char *box, struct SbEntry *sbe)
 {
-  if (!buf || !box || !sbe)
+  if (!buf)
     return;
 
-  mutt_str_strfcpy(sbe->box, box, sizeof(sbe->box));
+  if (box && sbe)
+    mutt_str_strfcpy(sbe->box, box, sizeof(sbe->box));
+  else
+    buf[0] = '\0';
 
   mutt_expando_format(buf, buflen, 0, width, NONULL(C_SidebarFormat),
                       sidebar_format_str, (unsigned long) sbe, MUTT_FORMAT_NO_FLAGS);
