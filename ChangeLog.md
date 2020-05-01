@@ -1,3 +1,12 @@
+2020-05-01  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - Make sure buffers are initialized on error
+  - fix(sidebar): use abbreviated path if possible
+* Translations
+  - 100% Lithuanian
+* Docs
+  - make header cache config more explicit
+
 2020-04-24  Richard Russon  <rich@flatcap.org>
 * Bug Fixes
   -Fix history corruption
