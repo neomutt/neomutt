@@ -1004,19 +1004,19 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
     imap_hcache_close(mdata);
     imap_expunge_mailbox(m);
 
-    /* undo expunge count updates.
-     * ctx_update() will do this at the end of the header fetch. */
-    m->vcount = 0;
-    m->msg_tagged = 0;
-    m->msg_deleted = 0;
-    m->msg_new = 0;
-    m->msg_unread = 0;
-    m->msg_flagged = 0;
-    m->changed = 0;
-
     imap_hcache_open(adata, mdata);
     mdata->reopen &= ~IMAP_EXPUNGE_PENDING;
   }
+
+  /* undo expunge count updates.
+   * ctx_update() will do this at the end of the header fetch. */
+  m->vcount = 0;
+  m->msg_tagged = 0;
+  m->msg_deleted = 0;
+  m->msg_new = 0;
+  m->msg_unread = 0;
+  m->msg_flagged = 0;
+  m->changed = false;
 
   return 0;
 }
