@@ -1442,7 +1442,8 @@ struct ConfigDef MuttVars[] = {
   { "header_cache_backend", DT_STRING, &C_HeaderCacheBackend, 0, 0, hcache_validator },
   /*
   ** .pp
-  ** This variable specifies the header cache backend.
+  ** This variable specifies the header cache backend.  By default it is
+  ** \fIunset\fP so no header caching will be used.
   */
 #if defined(USE_HCACHE_COMPRESSION)
   { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, &C_HeaderCacheCompressLevel, 1 },
