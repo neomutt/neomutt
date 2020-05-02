@@ -17360,7 +17360,7 @@ bind index D purge-message
           your muttrc.  The first time NeoMutt is run after that, you will be
           prompted to create
           <link linkend="autocrypt-dir">$autocrypt_dir</link>.  NeoMutt will then
-          automatically create an sqlite3 database and gpg keyring in that
+          automatically create an sqlite3 database and GPG keyring in that
           directory.  Note since these files should be considered private,
           NeoMutt will create this directory with mode
           <literal>700</literal>.  If you create the directory manually,
@@ -17633,7 +17633,7 @@ bind index D purge-message
           </listitem>
           <listitem>
             <para>
-              When NeoMutt creates an account from a gpg key, it exports the
+              When NeoMutt creates an account from a GPG key, it exports the
               public key, base64 encodes it, and stores that value in the
               sqlite3 database.  The value is then used in the Autocrypt
               header added to outgoing emails.  The ECC keys NeoMutt creates

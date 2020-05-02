@@ -375,7 +375,7 @@ msgstr "cs"
 #. L10N: During autocrypt account creation, if selecting an existing key fails
 #. for some reason, we prompt to see if they want to create a key instead.
 #: autocrypt/gpgme.c:296
-msgid "Create a new gpg key for this account, instead?"
+msgid "Create a new GPG key for this account, instead?"
 msgstr "Натомість, створити новий ключ GPG для цього облікового запису?"
 
 #. L10N: The autocrypt database keeps track of schema version numbers.
