@@ -1355,8 +1355,9 @@ static const struct PatternFlags *lookup_tag(char tag)
 /**
  * find_matching_paren - Find the matching parenthesis
  * @param s string to search
- * @retval ptr Matching close parenthesis
- * @retval ptr End of string NUL, if not found
+ * @retval ptr
+ * - Matching close parenthesis
+ * - End of string NUL, if not found
  */
 static /* const */ char *find_matching_paren(/* const */ char *s)
 {
@@ -1733,8 +1734,9 @@ static int perform_or(struct PatternList *pat, PatternExecFlags flags,
  * @param match_personal If true, also match the pattern against the real name
  * @param n              Number of Addresses supplied
  * @param ...            Variable number of Addresses
- * @retval true One Address matches (all_addr is false)
- * @retval true All the Addresses match (all_addr is true)
+ * @retval true
+ * - One Address matches (all_addr is false)
+ * - All the Addresses match (all_addr is true)
  */
 static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
 {
@@ -1782,8 +1784,9 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
  * @param all_addr If true, ALL Addresses must match
  * @param e       Envelope
  * @param p       Predicate function, e.g. mutt_is_subscribed_list()
- * @retval true One Address matches (all_addr is false)
- * @retval true All the Addresses match (all_addr is true)
+ * @retval true
+ * - One Address matches (all_addr is false)
+ * - All the Addresses match (all_addr is true)
  *
  * Test the 'To' and 'Cc' fields of an Address using a test function (the predicate).
  */
@@ -1807,8 +1810,9 @@ static int mutt_is_predicate_recipient(bool all_addr, struct Envelope *e, addr_p
  * mutt_is_subscribed_list_recipient - Matches subscribed mailing lists
  * @param all_addr If true, ALL Addresses must be on the subscribed list
  * @param e       Envelope
- * @retval true One Address is subscribed (all_addr is false)
- * @retval true All the Addresses are subscribed (all_addr is true)
+ * @retval true
+ * - One Address is subscribed (all_addr is false)
+ * - All the Addresses are subscribed (all_addr is true)
  */
 int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *e)
 {
@@ -1819,8 +1823,9 @@ int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *e)
  * mutt_is_list_recipient - Matches known mailing lists
  * @param all_addr If true, ALL Addresses must be mailing lists
  * @param e       Envelope
- * @retval true One Address is a mailing list (all_addr is false)
- * @retval true All the Addresses are mailing lists (all_addr is true)
+ * @retval true
+ * - One Address is a mailing list (all_addr is false)
+ * - All the Addresses are mailing lists (all_addr is true)
  */
 int mutt_is_list_recipient(bool all_addr, struct Envelope *e)
 {
@@ -1832,8 +1837,9 @@ int mutt_is_list_recipient(bool all_addr, struct Envelope *e)
  * @param all_addr If true, ALL Addresses must refer to the user
  * @param al1     First AddressList
  * @param al2     Second AddressList
- * @retval true One Address refers to the user (all_addr is false)
- * @retval true All the Addresses refer to the user (all_addr is true)
+ * @retval true
+ * - One Address refers to the user (all_addr is false)
+ * - All the Addresses refer to the user (all_addr is true)
  */
 static int match_user(int all_addr, struct AddressList *al1, struct AddressList *al2)
 {

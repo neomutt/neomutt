@@ -106,8 +106,7 @@ struct ImapEmailData *imap_edata_get(struct Email *e)
 /**
  * msg_cache_open - Open a message cache
  * @param m     Selected Imap Mailbox
- * @retval ptr  Success, using existing cache
- * @retval ptr  Success, opened new cache
+ * @retval ptr  Success, using existing cache (or opened new cache)
  * @retval NULL Failure
  */
 static struct BodyCache *msg_cache_open(struct Mailbox *m)

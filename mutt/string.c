@@ -552,8 +552,9 @@ char *mutt_str_strnlower(char *str, size_t num)
  * mutt_str_strchrnul - Find first occurrence of character in string
  * @param s Haystack
  * @param c Needle
- * @retval ptr Success, first occurrence of the character
- * @retval ptr Failure, pointer to the terminating NUL character
+ * @retval ptr
+ * - Success, first occurrence of the character
+ * - Failure, pointer to the terminating NUL character
  *
  * This function is like GNU's strchrnul, which is similar to the standard
  * strchr function: it looks for the c character in the NULL-terminated string
@@ -740,8 +741,9 @@ const char *mutt_str_stristr(const char *haystack, const char *needle)
 /**
  * mutt_str_skip_whitespace - Find the first non-whitespace character in a string
  * @param p String to search
- * @retval ptr First non-whitespace character
- * @retval ptr Terminating NUL character, if the string was entirely whitespace
+ * @retval ptr
+ * - First non-whitespace character
+ * - Terminating NUL character, if the string was entirely whitespace
  */
 char *mutt_str_skip_whitespace(const char *p)
 {
@@ -794,8 +796,9 @@ size_t mutt_str_strfcpy(char *dest, const char *src, size_t dsize)
 /**
  * mutt_str_skip_email_wsp - Skip over whitespace as defined by RFC5322
  * @param s String to search
- * @retval ptr First non-whitespace character
- * @retval ptr Terminating NUL character, if the string was entirely whitespace
+ * @retval ptr
+ * - First non-whitespace character
+ * - Terminating NUL character, if the string was entirely whitespace
  *
  * This is used primarily for parsing header fields.
  */

@@ -98,8 +98,8 @@ static int check_capabilities(struct ImapAccountData *adata)
  * get_flags - Make a simple list out of a FLAGS response
  * @param hflags List to store flags
  * @param s      String containing flags
- * @retval ptr End of the flags
- * @retval ptr NULL Failure
+ * @retval ptr  End of the flags
+ * @retval NULL Failure
  *
  * return stream following FLAGS response
  */

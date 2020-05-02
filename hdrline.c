@@ -500,11 +500,10 @@ static bool thread_is_old(struct Context *ctx, struct Email *e)
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
- * | \%(fmt) | Date/time when the message was received
  * | \%a     | Address of the author
  * | \%A     | Reply-to address (if present; otherwise: address of author)
  * | \%b     | Filename of the original message folder (think mailbox)
- * | \%B     | The list to which the letter was sent, or else the folder name (%b)
+ * | \%B     | The list to which the email was sent, or else the folder name (%b)
  * | \%C     | Current message number
  * | \%c     | Number of characters (bytes) in the body of the message
  * | \%cr    | Number of characters (bytes) in the message, including header
@@ -521,7 +520,7 @@ static bool thread_is_old(struct Context *ctx, struct Email *e)
  * | \%I     | Initials of author
  * | \%i     | Message-id of the current message
  * | \%J     | Message tags (if present, tree unfolded, and != parent's tags)
- * | \%K     | The list to which the letter was sent (if any; otherwise: empty)
+ * | \%K     | The list to which the email was sent (if any; otherwise: empty)
  * | \%L     | Like %F, except 'lists' are displayed first
  * | \%l     | Number of lines in the message
  * | \%M     | Number of hidden messages if the thread is collapsed
@@ -548,6 +547,7 @@ static bool thread_is_old(struct Context *ctx, struct Email *e)
  * | \%zs    | Message status flags
  * | \%zt    | Message tag flags
  * | \%Z     | Combined message flags
+ * | \%(fmt) | Date/time when the message was received
  * | \%[fmt] | Message date/time converted to the local time zone
  * | \%{fmt} | Message date/time converted to sender's time zone
  */
