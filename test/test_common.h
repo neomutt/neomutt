@@ -23,10 +23,10 @@
 #ifndef TEST_TEST_COMMON_H
 #define TEST_TEST_COMMON_H
 
-#include "acutest.h"
 #include <stdio.h>
 #include "mutt/lib.h"
 
 void test_gen_path(char *buf, size_t buflen, const char *fmt);
+void test_init(void);
 
 #endif /* TEST_TEST_COMMON_H */
