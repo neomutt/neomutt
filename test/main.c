@@ -22,14 +22,14 @@
  */
 
 #include "config.h"
+#include "test_common.h"
+#define TEST_INIT test_init()
 #include "acutest.h"
 
 /******************************************************************************
  * Add your test cases to this list.
  *****************************************************************************/
 #define NEOMUTT_TEST_LIST                                                      \
-  NEOMUTT_TEST_ITEM(test_common)                                               \
-                                                                               \
   /* account */                                                                \
   NEOMUTT_TEST_ITEM(test_account_free)                                         \
   NEOMUTT_TEST_ITEM(test_account_mailbox_add)                                  \

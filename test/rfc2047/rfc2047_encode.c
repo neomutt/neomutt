@@ -32,12 +32,6 @@ void test_rfc2047_encode(void)
 {
   // void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
 
-  if (!TEST_CHECK((setlocale(LC_ALL, "en_US.UTF-8") != NULL) ||
-                  (setlocale(LC_ALL, "C.UTF-8") != NULL)))
-  {
-    TEST_MSG("Cannot set locale to (en_US|C).UTF-8");
-    return;
-  }
   char *previous_charset = C_Charset;
   C_Charset = "utf-8";
 
