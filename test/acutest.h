@@ -925,6 +925,26 @@ test_error_(const char* fmt, ...)
     }
 }
 
+/* This is called just before each test */
+static void
+test_init_(const char *test_name)
+{
+#ifdef TEST_INIT
+  TEST_INIT
+  ; /* Allow for a single unterminated function call */
+#endif
+}
+
+/* This is called after each test */
+static void
+test_fini_(const char *test_name)
+{
+#ifdef TEST_FINI
+  TEST_FINI
+  ; /* Allow for a single unterminated function call */
+#endif
+}
+
 /* Call directly the given test unit function. */
 static int
 test_do_run_(const struct test_* test, int index)
@@ -936,13 +956,13 @@ test_do_run_(const struct test_* test, int index)
     test_current_already_logged_ = 0;
     test_cond_failed_ = 0;
 
-    test_begin_test_line_(test);
-
 #ifdef __cplusplus
     try {
 #endif
+        test_init_(test->name);
+        test_begin_test_line_(test);
 
-        /* This is good to do for case the test unit e.g. crashes. */
+        /* This is good to do in case the test unit crashes. */
         fflush(stdout);
         fflush(stderr);
 
@@ -988,6 +1008,7 @@ aborted:
             test_finish_test_line_(0);
         }
 
+        test_fini_(test->name);
         test_case_(NULL);
         test_current_unit_ = NULL;
         return (test_current_failures_ == 0) ? 0 : -1;
