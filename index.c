@@ -4154,9 +4154,9 @@ void index_pager_shutdown(struct MuttWindow *dlg)
 }
 
 /**
- * mutt_dlg_index_observer - Listen for config changes affecting the Index/Pager - Implements ::observer_t
+ * mutt_dlgindex_observer - Listen for config changes affecting the Index/Pager - Implements ::observer_t
  */
-int mutt_dlg_index_observer(struct NotifyCallback *nc)
+int mutt_dlgindex_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;

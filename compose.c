@@ -1973,14 +1973,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         Context = ctx;
         OptAttachMsg = true;
         mutt_message(_("Tag the messages you want to attach"));
-        struct MuttWindow *dlg_index = index_pager_init();
-        notify_observer_add(NeoMutt->notify, mutt_dlg_index_observer, dlg_index);
-        dialog_push(dlg_index);
-        mutt_index_menu(dlg_index);
+        struct MuttWindow *dlgindex = index_pager_init();
+        notify_observer_add(NeoMutt->notify, mutt_dlgindex_observer, dlgindex);
+        dialog_push(dlgindex);
+        mutt_index_menu(dlgindex);
         dialog_pop();
-        notify_observer_remove(NeoMutt->notify, mutt_dlg_index_observer, dlg_index);
-        index_pager_shutdown(dlg_index);
-        mutt_window_free(&dlg_index);
+        notify_observer_remove(NeoMutt->notify, mutt_dlgindex_observer, dlgindex);
+        index_pager_shutdown(dlgindex);
+        mutt_window_free(&dlgindex);
         OptAttachMsg = false;
 
         if (!Context)
