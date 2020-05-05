@@ -541,8 +541,7 @@ static const char *crypt_fpr(struct CryptKeyInfo *k)
 /**
  * crypt_fpr_or_lkeyid - Find the fingerprint of a key
  * @param k Key to examine
- * @retval ptr Fingerprint if available
- * @retval ptr Otherwise the long keyid
+ * @retval ptr Fingerprint if available, otherwise the long keyid
  */
 static const char *crypt_fpr_or_lkeyid(struct CryptKeyInfo *k)
 {

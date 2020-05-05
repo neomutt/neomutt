@@ -320,8 +320,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
  * rfc2231_encode_string - Encode a string to be suitable for an RFC2231 header
  * @param attribute Name of attribute to encode
  * @param value     Value of attribute to encode
- * @retval obj String encoded as a ParameterList
- * @retval obj Error: empty object
+ * @retval obj String encoded as a ParameterList, empty on error
  *
  * If the value is large, the list will contain continuation lines.
  */

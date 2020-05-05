@@ -746,7 +746,6 @@ static const struct AddressList *choose_default_to(const struct Address *from,
  */
 static int default_to(struct AddressList *to, struct Envelope *env, SendFlags flags, int hmfupto)
 {
-  char prompt[256];
   const struct Address *from = TAILQ_FIRST(&env->from);
   const struct Address *reply_to = TAILQ_FIRST(&env->reply_to);
 
@@ -782,6 +781,7 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
     }
     else if (!(from_is_reply_to && !multiple_reply_to) && (C_ReplyTo != MUTT_YES))
     {
+      char prompt[256];
       /* There are quite a few mailing lists which set the Reply-To:
        * header field to the list address, which makes it quite impossible
        * to send a message to only the sender of the message.  This

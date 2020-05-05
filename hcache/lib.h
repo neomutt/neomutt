@@ -148,8 +148,7 @@ int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @param uidvalidity Only restore if it matches the stored uidvalidity
- * @retval obj Success, HCacheEntry containing an Email
- * @retval obj Failure, empty HCacheEntry
+ * @retval obj HCacheEntry containing an Email, empty on failure
  *
  * @note This function performs a check on the validity of the data found by
  *       comparing it with the crc value of the header_cache_t structure.

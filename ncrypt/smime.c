@@ -214,7 +214,7 @@ bool smime_class_valid_passphrase(void)
  */
 
 /**
- * fmt_smime_command - Format an SMIME command - Implements ::format_t
+ * smime_command_format_str - Format an SMIME command - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
@@ -227,10 +227,11 @@ bool smime_class_valid_passphrase(void)
  * | \%k     | The key-pair specified with `$smime_default_key`
  * | \%s     | File containing the signature part of a multipart/signed attachment when verifying it
  */
-static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int cols,
-                                     char op, const char *src, const char *prec,
-                                     const char *if_str, const char *else_str,
-                                     unsigned long data, MuttFormatFlags flags)
+static const char *smime_command_format_str(char *buf, size_t buflen, size_t col,
+                                            int cols, char op, const char *src,
+                                            const char *prec, const char *if_str,
+                                            const char *else_str, unsigned long data,
+                                            MuttFormatFlags flags)
 {
   char fmt[128];
   struct SmimeCommandContext *cctx = (struct SmimeCommandContext *) data;
@@ -359,13 +360,13 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
 
   if (optional)
   {
-    mutt_expando_format(buf, buflen, col, cols, if_str, fmt_smime_command, data,
-                        MUTT_FORMAT_NO_FLAGS);
+    mutt_expando_format(buf, buflen, col, cols, if_str,
+                        smime_command_format_str, data, MUTT_FORMAT_NO_FLAGS);
   }
   else if (flags & MUTT_FORMAT_OPTIONAL)
   {
-    mutt_expando_format(buf, buflen, col, cols, else_str, fmt_smime_command,
-                        data, MUTT_FORMAT_NO_FLAGS);
+    mutt_expando_format(buf, buflen, col, cols, else_str,
+                        smime_command_format_str, data, MUTT_FORMAT_NO_FLAGS);
   }
 
   return src;
@@ -381,7 +382,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
 static void smime_command(char *buf, size_t buflen,
                           struct SmimeCommandContext *cctx, const char *fmt)
 {
-  mutt_expando_format(buf, buflen, 0, buflen, NONULL(fmt), fmt_smime_command,
+  mutt_expando_format(buf, buflen, 0, buflen, NONULL(fmt), smime_command_format_str,
                       (unsigned long) cctx, MUTT_FORMAT_NO_FLAGS);
   mutt_debug(LL_DEBUG2, "%s\n", buf);
 }

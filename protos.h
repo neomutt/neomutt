@@ -28,10 +28,10 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "mutt/regex3.h"
 #include "mutt.h"
 #include "keymap.h"
 #include "ncrypt/lib.h"
-#include "mutt/regex3.h"
 
 struct Buffer;
 struct Context;

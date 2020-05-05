@@ -595,8 +595,6 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         }
         else /* PGP started successfully */
         {
-          int wait_filter_rc, checksig_rc;
-
           if (needpass)
           {
             if (!pgp_class_valid_passphrase())
@@ -608,7 +606,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
           mutt_file_fclose(&fp_pgp_in);
 
-          wait_filter_rc = filter_wait(pid);
+          int wait_filter_rc = filter_wait(pid);
 
           fflush(fp_pgp_err);
           /* If we are expecting an encrypted message, verify status fd output.
@@ -629,7 +627,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           {
             rewind(fp_pgp_err);
             crypt_current_time(s, "PGP");
-            checksig_rc = pgp_copy_checksig(fp_pgp_err, s->fp_out);
+            int checksig_rc = pgp_copy_checksig(fp_pgp_err, s->fp_out);
 
             if (checksig_rc == 0)
               have_any_sigs = true;

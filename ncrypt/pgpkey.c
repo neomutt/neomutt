@@ -163,7 +163,7 @@ static struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
 }
 
 /**
- * pgp_entry_fmt - Format an entry on the PGP key selection menu - Implements ::format_t
+ * pgp_entry_format_str - Format an entry on the PGP key selection menu - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
@@ -184,10 +184,10 @@ static struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
  * | \%K     | Key id of the principal key
  * | \%L     | Length of the principal key
  */
-static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
-                                 char op, const char *src, const char *prec,
-                                 const char *if_str, const char *else_str,
-                                 unsigned long data, MuttFormatFlags flags)
+static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                        char op, const char *src, const char *prec,
+                                        const char *if_str, const char *else_str,
+                                        unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128];
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -327,12 +327,13 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
 
   if (optional)
   {
-    mutt_expando_format(buf, buflen, col, cols, if_str, pgp_entry_fmt, data, MUTT_FORMAT_NO_FLAGS);
+    mutt_expando_format(buf, buflen, col, cols, if_str, pgp_entry_format_str,
+                        data, MUTT_FORMAT_NO_FLAGS);
   }
   else if (flags & MUTT_FORMAT_OPTIONAL)
   {
-    mutt_expando_format(buf, buflen, col, cols, else_str, pgp_entry_fmt, data,
-                        MUTT_FORMAT_NO_FLAGS);
+    mutt_expando_format(buf, buflen, col, cols, else_str, pgp_entry_format_str,
+                        data, MUTT_FORMAT_NO_FLAGS);
   }
   return src;
 }
@@ -349,7 +350,7 @@ static void pgp_make_entry(char *buf, size_t buflen, struct Menu *menu, int line
   entry.num = line + 1;
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                      NONULL(C_PgpEntryFormat), pgp_entry_fmt,
+                      NONULL(C_PgpEntryFormat), pgp_entry_format_str,
                       (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 

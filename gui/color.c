@@ -1060,8 +1060,6 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
                                            uint32_t *fg, uint32_t *bg,
                                            int *attr, struct Buffer *err)
 {
-  enum CommandResult rc = MUTT_CMD_SUCCESS;
-
   while (true)
   {
     if (!MoreArgs(s))
@@ -1086,7 +1084,7 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
       *attr |= A_UNDERLINE;
     else
     {
-      rc = parse_color_name(buf->data, fg, attr, true, err);
+      enum CommandResult rc = parse_color_name(buf->data, fg, attr, true, err);
       if (rc != MUTT_CMD_SUCCESS)
         return rc;
       break;

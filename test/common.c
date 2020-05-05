@@ -84,5 +84,3 @@ done:
   if (!success)
     TEST_MSG("See: https://github.com/neomutt/neomutt-test-files#test-files\n");
 }
-
-

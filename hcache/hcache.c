@@ -334,7 +334,8 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
   /* Calculate the current hcache version from dynamic configuration */
   if (hcachever == 0x0)
   {
-    union {
+    union
+    {
       unsigned char charval[16];
       unsigned int intval;
     } digest;

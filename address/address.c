@@ -1342,7 +1342,6 @@ int mutt_addrlist_to_local(struct AddressList *al)
 /**
  * mutt_addrlist_dedupe - Remove duplicate addresses
  * @param al Address list to de-dupe
- * @retval ptr Updated Address list
  *
  * Given a list of addresses, return a list of unique addresses
  */

@@ -872,7 +872,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
               * = Can be optionally printed if nonzero
             </para>
             <para>
-              † = To use this expandos, you must first:
+              † = To use these expandos, you must first:
             </para>
             <screen>set mail_check_stats</screen>
             <para>

@@ -70,9 +70,10 @@ const struct ICommand ICommandList[] = {
  * @param line Command to execute
  * @param err  Buffer for error messages
  * @retval #MUTT_CMD_SUCCESS Success
- * @retval #MUTT_CMD_ERROR   Error (no message): command not found
- * @retval #MUTT_CMD_ERROR   Error with message: command failed
  * @retval #MUTT_CMD_WARNING Warning with message: command failed
+ * @retval #MUTT_CMD_ERROR
+ * - Error (no message): command not found
+ * - Error with message: command failed
  */
 enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *err)
 {
