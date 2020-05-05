@@ -28,8 +28,8 @@
 #include <stdbool.h>
 #include <time.h>
 #include "mutt/lib.h"
-#include "ncrypt/lib.h"
 #include "tags.h"
+#include "ncrypt/lib.h"
 
 /**
  * struct Email - The envelope/body of an email

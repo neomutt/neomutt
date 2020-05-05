@@ -54,7 +54,6 @@
 #include <sys/types.h>
 #include "core/lib.h"
 #include "mx.h"
-#include "config.h"
 
 struct BrowserState;
 struct Buffer;

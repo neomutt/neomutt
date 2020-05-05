@@ -1185,7 +1185,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
         conf_print_strval(val, out);
         fputs("\"", out);
       }
-      else if (type != DT_SYNONYM)
+      else
         fprintf(out, "\n# set %s=%s", varname, val);
 
       fprintf(out, "\n#\n# Name: %s", varname);

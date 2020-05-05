@@ -26,8 +26,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "ncrypt/lib.h"
 #include "pgpkey.h"
+#include "ncrypt/lib.h"
 
 struct Address;
 struct ListHead;

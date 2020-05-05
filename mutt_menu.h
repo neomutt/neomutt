@@ -27,8 +27,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "keymap.h"
 #include "mutt/regex3.h"
+#include "keymap.h"
 
 struct NotifyCallback;
 

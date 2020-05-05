@@ -24,8 +24,8 @@
 #define MUTT_NNTP_NNTP_PRIVATE_H
 
 #include <stdint.h>
-#include "hcache/lib.h"
 #include "lib.h"
+#include "hcache/lib.h"
 
 struct Connection;
 struct Email;

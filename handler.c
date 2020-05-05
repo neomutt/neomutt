@@ -1688,11 +1688,11 @@ int mutt_body_handler(struct Body *b, struct State *s)
    * if we're not already being called from there */
   else if (s->flags & MUTT_DISPLAY)
   {
-    char keystroke[128] = { 0 };
     struct Buffer msg = mutt_buffer_make(256);
 
     if (!OptViewAttach)
     {
+      char keystroke[128] = { 0 };
       if (km_expand_key(keystroke, sizeof(keystroke),
                         km_find_func(MENU_PAGER, OP_VIEW_ATTACHMENTS)))
       {
