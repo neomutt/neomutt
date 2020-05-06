@@ -34,17 +34,32 @@ int cmp(const void *a, const void *b)
   return strcmp(a, *(char **) b);
 }
 
+struct TestData
+{
+  const char *in; // string to parse
+  char *out;      // expected result
+  size_t len;     // expected parsed len
+} test[] = {
+  { NULL, NULL, 0 },
+  { "apple", NULL, 0 },
+  { "foo bar <baz", NULL, 0 },
+  { "foo bar > baz", NULL, 0 },
+  { "foo bar <foo.bar> boo bar", "<foo.bar>", 17 },
+};
+
 void test_mutt_extract_message_id(void)
 {
-  // char *mutt_extract_message_id(const char *s, const char **saveptr);
-
+  for (size_t i = 0; i < mutt_array_size(test); i++)
   {
-    size_t len;
-    TEST_CHECK(!mutt_extract_message_id(NULL, &len));
-  }
-
-  {
-    TEST_CHECK(!mutt_extract_message_id("apple", NULL));
+    size_t len = 0;
+    char *out = mutt_extract_message_id(test[i].in, &len);
+    TEST_CHECK_STR_EQ(test[i].out, out);
+    if (!TEST_CHECK(test[i].len == len))
+    {
+      TEST_MSG("Expected: %zu", test[i].len);
+      TEST_MSG("Actual  : %zu", len);
+    }
+    FREE(&out);
   }
 
   {
