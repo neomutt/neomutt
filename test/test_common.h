@@ -29,4 +29,14 @@
 void test_gen_path(char *buf, size_t buflen, const char *fmt);
 void test_init(void);
 
+#define TEST_CHECK_STR_EQ(expected, actual)                                    \
+  do                                                                           \
+  {                                                                            \
+    if (!TEST_CHECK(strcmp(expected, actual) == 0))                            \
+    {                                                                          \
+      TEST_MSG("Expected: %s", expected);                                      \
+      TEST_MSG("Actual  : %s", actual);                                        \
+    }                                                                          \
+  } while (false)
+
 #endif /* TEST_TEST_COMMON_H */

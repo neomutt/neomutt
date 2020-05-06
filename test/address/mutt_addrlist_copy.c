@@ -27,7 +27,7 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "common.h"
+#include "test_common.h"
 
 void test_mutt_addrlist_copy(void)
 {
