@@ -1337,28 +1337,49 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
   struct MuttWindow *dlg =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-#ifdef USE_DEBUG_WINDOW
-  dlg->name = "compose";
-#endif
   dlg->type = WT_DIALOG;
+  dlg->notify = notify_new();
+#ifdef USE_DEBUG_WINDOW
+  dlg->name = "compose dialog";
+#endif
 
   struct MuttWindow *envelope =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                       HDR_ATTACH_TITLE - 1, MUTT_WIN_SIZE_UNLIMITED);
   envelope->type = WT_PAGER;
+  envelope->notify = notify_new();
+  notify_set_parent(envelope->notify, dlg->notify);
+#ifdef USE_DEBUG_WINDOW
+  envelope->name = "envelope";
+#endif
 
   struct MuttWindow *abar = mutt_window_new(
       MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
   abar->type = WT_PAGER_BAR;
+  abar->notify = notify_new();
+  notify_set_parent(abar->notify, dlg->notify);
+#ifdef USE_DEBUG_WINDOW
+  abar->name = "attach bar";
+#endif
 
   struct MuttWindow *attach =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   attach->type = WT_INDEX;
+  attach->notify = notify_new();
+  notify_set_parent(attach->notify, dlg->notify);
+#ifdef USE_DEBUG_WINDOW
+  attach->name = "attach";
+#endif
 
   struct MuttWindow *ebar = mutt_window_new(
       MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
   ebar->type = WT_INDEX_BAR;
+  ebar->notify = notify_new();
+  notify_set_parent(ebar->notify, dlg->notify);
+#ifdef USE_DEBUG_WINDOW
+  ebar->name = "envelope bar";
+#endif
 
   rd->email = e;
   rd->fcc = fcc;

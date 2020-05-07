@@ -100,6 +100,8 @@ struct MuttWindow
   struct MuttWindow *parent;         ///< Parent Window
   struct MuttWindowList children;    ///< Children Windows
 
+  struct Notify *notify;             ///< Notifications system
+
   enum WindowType type;              ///< Window type, e.g. #WT_SIDEBAR
   void *wdata;                       ///< Private data
   void (*free_wdata)(struct MuttWindow *win, void **ptr); ///< Callback function to free private data

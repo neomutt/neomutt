@@ -241,16 +241,39 @@ void mutt_window_init(void)
 
   RootWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
   RootWindow->type = WT_ROOT;
+  RootWindow->notify = notify_new();
+  notify_set_parent(RootWindow->notify, NeoMutt->notify);
+#ifdef USE_DEBUG_WINDOW
+  RootWindow->name = "root";
+#endif
+
   MuttHelpWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                    1, MUTT_WIN_SIZE_UNLIMITED);
   MuttHelpWindow->type = WT_HELP_BAR;
   MuttHelpWindow->state.visible = C_Help;
+  MuttHelpWindow->notify = notify_new();
+  notify_set_parent(MuttHelpWindow->notify, RootWindow->notify);
+#ifdef USE_DEBUG_WINDOW
+  MuttHelpWindow->name = "help bar";
+#endif
+
   MuttDialogWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   MuttDialogWindow->type = WT_ALL_DIALOGS;
+  MuttDialogWindow->notify = notify_new();
+  notify_set_parent(MuttDialogWindow->notify, RootWindow->notify);
+#ifdef USE_DEBUG_WINDOW
+  MuttDialogWindow->name = "all dialogs";
+#endif
+
   MuttMessageWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                       1, MUTT_WIN_SIZE_UNLIMITED);
   MuttMessageWindow->type = WT_MESSAGE;
+  MuttMessageWindow->notify = notify_new();
+  notify_set_parent(MuttMessageWindow->notify, RootWindow->notify);
+#ifdef USE_DEBUG_WINDOW
+  MuttMessageWindow->name = "message";
+#endif
 
   if (C_StatusOnTop)
   {
@@ -612,6 +635,7 @@ void dialog_push(struct MuttWindow *dlg)
     last->state.visible = false;
 
   TAILQ_INSERT_TAIL(&MuttDialogWindow->children, dlg, entries);
+  notify_set_parent(dlg->notify, MuttDialogWindow->notify);
   dlg->state.visible = true;
   mutt_window_reflow(MuttDialogWindow);
 #ifdef USE_DEBUG_WINDOW
