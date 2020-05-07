@@ -46,6 +46,25 @@ struct MuttWindow *MuttHelpWindow = NULL;    ///< Help Window
 struct MuttWindow *MuttMessageWindow = NULL; ///< Message Window
 
 /**
+ * window_set_visible - Set a Window (and its children) visible or hidden
+ * @param win     Window
+ * @param visible If true, make Window visible, otherwise hidden
+ */
+void window_set_visible(struct MuttWindow *win, bool visible)
+{
+  if (!win)
+    win = RootWindow;
+
+  win->state.visible = visible;
+
+  struct MuttWindow *np = NULL;
+  TAILQ_FOREACH(np, &win->children, entries)
+  {
+    window_set_visible(np, visible);
+  }
+}
+
+/**
  * mutt_window_new - Create a new Window
  * @param orient Window orientation, e.g. #MUTT_WIN_ORIENT_VERTICAL
  * @param size   Window size, e.g. #MUTT_WIN_SIZE_MAXIMISE
