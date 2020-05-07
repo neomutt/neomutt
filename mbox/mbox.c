@@ -123,7 +123,7 @@ static int init_mailbox(struct Mailbox *m)
     return 0;
 
   m->account->adata = mbox_adata_new();
-  m->account->free_adata = mbox_adata_free;
+  m->account->adata_free = mbox_adata_free;
   return 0;
 }
 

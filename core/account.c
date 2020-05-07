@@ -130,8 +130,8 @@ void account_free(struct Account **ptr)
 
   struct Account *a = *ptr;
 
-  if (a->free_adata)
-    a->free_adata(&a->adata);
+  if (a->adata_free)
+    a->adata_free(&a->adata);
 
   account_mailbox_remove(a, NULL);
   cs_subset_free(&a->sub);

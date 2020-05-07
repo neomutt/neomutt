@@ -45,8 +45,8 @@ void email_free(struct Email **ptr)
 
   struct Email *e = *ptr;
 
-  if (e->edata && e->free_edata)
-    e->free_edata(&e->edata);
+  if (e->edata && e->edata_free)
+    e->edata_free(&e->edata);
 
   mutt_env_free(&e->env);
   mutt_body_free(&e->content);

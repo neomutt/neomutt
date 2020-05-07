@@ -104,7 +104,7 @@ struct Email
   char *maildir_flags;         ///< Unknown maildir flags
 
   void *edata;                    ///< Driver-specific data
-  void (*free_edata)(void **ptr); ///< Driver-specific data free function
+  void (*edata_free)(void **ptr); ///< Driver-specific data free function
   struct Notify *notify;          ///< Notifications handler
 };
 

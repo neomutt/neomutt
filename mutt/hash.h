@@ -66,8 +66,8 @@ struct Hash
   struct HashElem **table;                      ///< Array of Hash keys
   size_t (*gen_hash)(union HashKey, size_t);    ///< Function to generate hash id from the key
   int (*cmp_key)(union HashKey, union HashKey); ///< Function to compare two Hash keys
-  intptr_t hdata;                               ///< Data to pass to the free_hdata() function
-  hashelem_free_t free_hdata;                   ///< Function to free a Hash element
+  intptr_t hdata;                               ///< Data to pass to the hdata_free() function
+  hashelem_free_t hdata_free;                   ///< Function to free a Hash element
 };
 
 typedef uint8_t HashFlags;             ///< Flags for mutt_hash_new(), e.g. #MUTT_HASH_STRCASECMP

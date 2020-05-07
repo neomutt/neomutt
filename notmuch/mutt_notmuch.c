@@ -312,7 +312,7 @@ static int init_mailbox(struct Mailbox *m)
   if (!m->mdata)
     return -1;
 
-  m->free_mdata = nm_mdata_free;
+  m->mdata_free = nm_mdata_free;
   return 0;
 }
 
@@ -769,7 +769,7 @@ static int init_email(struct Email *e, const char *path, notmuch_message_t *msg)
 
   struct NmEmailData *edata = nm_edata_new();
   e->edata = edata;
-  e->free_edata = nm_edata_free;
+  e->edata_free = nm_edata_free;
 
   /* Notmuch ensures that message Id exists (if not notmuch Notmuch will
    * generate an ID), so it's more safe than use neomutt Email->env->id */
@@ -2138,7 +2138,7 @@ static int nm_ac_add(struct Account *a, struct Mailbox *m)
 
   struct NmAccountData *adata = nm_adata_new();
   a->adata = adata;
-  a->free_adata = nm_adata_free;
+  a->adata_free = nm_adata_free;
 
   return 0;
 }

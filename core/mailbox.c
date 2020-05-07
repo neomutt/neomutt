@@ -66,8 +66,8 @@ void mailbox_free(struct Mailbox **ptr)
 
   mailbox_changed(m, NT_MAILBOX_CLOSED);
 
-  if (m->mdata && m->free_mdata)
-    m->free_mdata(&m->mdata);
+  if (m->mdata && m->mdata_free)
+    m->mdata_free(&m->mdata);
 
   mutt_buffer_dealloc(&m->pathbuf);
   cs_subset_free(&m->sub);

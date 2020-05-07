@@ -41,7 +41,7 @@ struct Account
   struct MailboxList mailboxes;   ///< List of Mailboxes
   struct Notify *notify;          ///< Notifications handler
   void *adata;                    ///< Private data (for Mailbox backends)
-  void (*free_adata)(void **ptr); ///< Callback function to free private data
+  void (*adata_free)(void **ptr); ///< Callback function to free private data
   TAILQ_ENTRY(Account) entries;   ///< Linked list of Accounts
 };
 TAILQ_HEAD(AccountList, Account);

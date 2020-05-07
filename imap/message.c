@@ -826,7 +826,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
 
         /*  mailbox->emails[msgno]->received is restored from mutt_hcache_restore */
         e->edata = h.edata;
-        e->free_edata = imap_edata_free;
+        e->edata_free = imap_edata_free;
         STAILQ_INIT(&e->tags);
 
         /* We take a copy of the tags so we can split the string */
@@ -900,7 +900,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
 
       struct ImapEmailData *edata = imap_edata_new();
       e->edata = edata;
-      e->free_edata = imap_edata_free;
+      e->edata_free = imap_edata_free;
 
       e->index = m->msg_count;
       e->active = true;
@@ -1199,7 +1199,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         e->replied = h.edata->replied;
         e->received = h.received;
         e->edata = (void *) (h.edata);
-        e->free_edata = imap_edata_free;
+        e->edata_free = imap_edata_free;
         STAILQ_INIT(&e->tags);
 
         /* We take a copy of the tags so we can split the string */

@@ -808,7 +808,7 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
   {
     mdata = maildir_mdata_new();
     m->mdata = mdata;
-    m->free_mdata = maildir_mdata_free;
+    m->mdata_free = maildir_mdata_free;
   }
 
   maildir_update_mtime(m);

@@ -1225,7 +1225,7 @@ static int parse_overview_line(char *line, void *data)
     e->old = false;
     e->deleted = false;
     e->edata = nntp_edata_new();
-    e->free_edata = nntp_edata_free;
+    e->edata_free = nntp_edata_free;
     nntp_edata_get(e)->article_num = anum;
     if (fc->restore)
       e->changed = true;
@@ -1444,7 +1444,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     e->old = false;
     e->deleted = false;
     e->edata = nntp_edata_new();
-    e->free_edata = nntp_edata_free;
+    e->edata_free = nntp_edata_free;
     nntp_edata_get(e)->article_num = current;
     if (restore)
       e->changed = true;
@@ -1685,7 +1685,7 @@ static int check_mailbox(struct Mailbox *m)
         e->read = false;
         e->old = false;
         e->edata = nntp_edata_new();
-        e->free_edata = nntp_edata_free;
+        e->edata_free = nntp_edata_free;
         nntp_edata_get(e)->article_num = anum;
         nntp_article_status(m, e, NULL, anum);
         if (!e->read)
@@ -2259,7 +2259,7 @@ int nntp_check_msgid(struct Mailbox *m, const char *msgid)
   m->emails[m->msg_count] = email_new();
   struct Email *e = m->emails[m->msg_count];
   e->edata = nntp_edata_new();
-  e->free_edata = nntp_edata_free;
+  e->edata_free = nntp_edata_free;
   e->env = mutt_rfc822_read_header(fp, e, false, false);
   mutt_file_fclose(&fp);
 
@@ -2453,7 +2453,7 @@ static int nntp_mbox_open(struct Mailbox *m)
   {
     adata = nntp_select_server(m, server, true);
     m->account->adata = adata;
-    m->account->free_adata = nntp_adata_free;
+    m->account->adata_free = nntp_adata_free;
   }
 
   if (!adata)
@@ -2542,7 +2542,7 @@ static int nntp_mbox_open(struct Mailbox *m)
   m->mdata = mdata;
   // Every known newsgroup has an mdata which is stored in adata->groups_list.
   // Currently we don't let the Mailbox free the mdata.
-  // m->free_mdata = nntp_mdata_free;
+  // m->mdata_free = nntp_mdata_free;
   if (!mdata->bcache && (mdata->newsrc_ent || mdata->subscribed || C_SaveUnsubscribed))
     mdata->bcache = mutt_bcache_open(&adata->conn->account, mdata->group);
 

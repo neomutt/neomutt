@@ -1908,7 +1908,7 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
     }
 
     a->adata = adata;
-    a->free_adata = imap_adata_free;
+    a->adata_free = imap_adata_free;
   }
 
   if (!m->mdata)
@@ -1923,7 +1923,7 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
     mutt_str_replace(&m->realpath, mailbox_path(m));
 
     m->mdata = mdata;
-    m->free_mdata = imap_mdata_free;
+    m->mdata_free = imap_mdata_free;
     url_free(&url);
   }
   return 0;

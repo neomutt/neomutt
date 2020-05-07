@@ -134,7 +134,7 @@ struct Mailbox
   int flags;                          ///< e.g. #MB_NORMAL
 
   void *mdata;                        ///< Driver specific data
-  void (*free_mdata)(void **ptr);     ///< Driver-specific data free function
+  void (*mdata_free)(void **ptr);     ///< Driver-specific data free function
 
   struct Notify *notify;              ///< Notifications handler
 };
