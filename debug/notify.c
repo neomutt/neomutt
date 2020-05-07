@@ -59,6 +59,8 @@ static const char *get_event_type(enum NotifyType type)
       return "global";
     case NT_MAILBOX:
       return "mailbox";
+    case NT_WINDOW:
+      return "window";
     default:
       return "UNKNOWN";
   }
@@ -249,6 +251,43 @@ static void notify_dump_mailbox(struct NotifyCallback *nc)
   mutt_debug(LL_DEBUG1, "\tMailbox: %s %s\n", get_mailbox_event(nc->event_subtype), path);
 }
 
+static void notify_dump_window(struct NotifyCallback *nc)
+{
+  struct EventWindow *ev_w = nc->event_data;
+  const struct MuttWindow *win = ev_w->win;
+  WindowNotifyFlags flags = ev_w->flags;
+
+  struct Buffer buf = mutt_buffer_make(128);
+
+  if (win->name)
+    mutt_buffer_add_printf(&buf, "[%s] ", win->name);
+
+  if (flags & WN_VISIBLE)
+    mutt_buffer_addstr(&buf, "visible ");
+  if (flags & WN_HIDDEN)
+    mutt_buffer_addstr(&buf, "hidden ");
+
+  if (flags & WN_MOVED)
+  {
+    mutt_buffer_add_printf(&buf, "moved (C%d,R%d)->(C%d,R%d) ",
+                           win->old.col_offset, win->old.row_offset,
+                           win->state.col_offset, win->state.row_offset);
+  }
+
+  if (flags & WN_TALLER)
+    mutt_buffer_add_printf(&buf, "taller [%d->%d] ", win->old.rows, win->state.rows);
+  if (flags & WN_SHORTER)
+    mutt_buffer_add_printf(&buf, "shorter [%d->%d] ", win->old.rows, win->state.rows);
+  if (flags & WN_WIDER)
+    mutt_buffer_add_printf(&buf, "wider [%d->%d] ", win->old.cols, win->state.cols);
+  if (flags & WN_NARROWER)
+    mutt_buffer_add_printf(&buf, "narrower [%d->%d] ", win->old.cols, win->state.cols);
+
+  mutt_debug(LL_DEBUG1, "\tWindow: %s\n", mutt_b2s(&buf));
+
+  mutt_buffer_dealloc(&buf);
+}
+
 int debug_notify_observer(struct NotifyCallback *nc)
 {
   mutt_debug(LL_DEBUG1, "\033[1;31mNotification:\033[0m %s\n", get_event_type(nc->event_type));
@@ -279,8 +318,11 @@ int debug_notify_observer(struct NotifyCallback *nc)
     case NT_MAILBOX:
       notify_dump_mailbox(nc);
       break;
+    case NT_WINDOW:
+      notify_dump_window(nc);
+      break;
     default:
-      mutt_debug(LL_DEBUG1, "\tEvent Type: %s\n", nc->event_type);
+      mutt_debug(LL_DEBUG1, "\tEvent Type: %d\n", nc->event_type);
       mutt_debug(LL_DEBUG1, "\tEvent Sub-type: %d\n", nc->event_subtype);
       mutt_debug(LL_DEBUG1, "\tEvent Data: %p\n", nc->event_data);
       break;
