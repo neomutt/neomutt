@@ -679,7 +679,7 @@ static int mailbox_index_observer(struct NotifyCallback *nc)
  * @param read_only  Open Mailbox in read-only mode
  */
 static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m,
-                                 int *oldcount, int *index_hint, bool read_only)
+                                  int *oldcount, int *index_hint, bool read_only)
 {
   if (!m)
     return;
@@ -772,8 +772,8 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m,
  * @param index_hint Remember our place in the index
  * @param read_only  Open Mailbox in read-only mode
  */
-static struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf,
-                                             int buflen, int *oldcount, int *index_hint, bool read_only)
+static struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen,
+                                             int *oldcount, int *index_hint, bool read_only)
 {
   if (!nm_url_from_query(NULL, buf, buflen))
   {
@@ -798,7 +798,7 @@ static struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf,
  * @param read_only  Open Mailbox in read-only mode
  */
 static void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldcount,
-                          int *index_hint, bool *pager_return, bool read_only)
+                                 int *index_hint, bool *pager_return, bool read_only)
 {
 #ifdef USE_NNTP
   if (OptNews)
@@ -2319,7 +2319,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         char *query_unencoded = mutt_str_strdup(buf);
 
         struct Mailbox *m_query =
-            change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &index_hint, (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY));
+            change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &index_hint,
+                                  (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY));
         if (m_query)
         {
           m_query->name = query_unencoded;
@@ -2455,7 +2456,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         else
         {
           change_folder_string(menu, folderbuf->data, folderbuf->dsize,
-                             &oldcount, &index_hint, &pager_return, read_only);
+                               &oldcount, &index_hint, &pager_return, read_only);
         }
 
       changefoldercleanup:
@@ -2527,7 +2528,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         else
         {
           change_folder_string(menu, folderbuf->data, folderbuf->dsize,
-                             &oldcount, &index_hint, &pager_return, read_only);
+                               &oldcount, &index_hint, &pager_return, read_only);
         }
         menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MAIN, IndexNewsHelp);
 
