@@ -1189,9 +1189,10 @@ int imap_cmd_step(struct ImapAccountData *adata)
           adata->lastcmd = (adata->lastcmd + 1) % adata->cmdslots;
         }
         cmd->state = cmd_status(adata->buf);
-        /* bogus - we don't know which command result to return here. Caller
-         * should provide a tag. */
-        rc = cmd->state;
+        if (cmd->state == IMAP_RES_NO)
+        {
+          mutt_message(_("IMAP command failed: %s"), adata->buf);
+        }
       }
       else
         stillrunning++;
