@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 2004 Justin Hibbits <jrh29@po.cwru.edu>
  * Copyright (C) 2004 Thomer M. Gil <mutt@thomer.com>
- * Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2015-2020 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2016-2017 Kevin J. McCarthy <kevin@8t8.us>
  *
  * @copyright
@@ -71,7 +71,7 @@ static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
  */
 struct SbEntry
 {
-  char box[256];           ///< formatted mailbox name
+  char box[256];           ///< Formatted Mailbox name
   struct Mailbox *mailbox; ///< Mailbox this represents
   bool is_hidden;          ///< Don't show, e.g. $sidebar_new_mail_only
 };
@@ -379,7 +379,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
 }
 
 /**
- * update_entries_visibility - Should a sidebar_entry be displayed in the sidebar
+ * update_entries_visibility - Should a SbEntry be displayed in the sidebar?
  *
  * For each SbEntry in the Entries array, check whether we should display it.
  * This is determined by several criteria.  If the Mailbox:
@@ -496,10 +496,10 @@ static void sort_entries(void)
  */
 static bool select_next(void)
 {
-  int entry = HilIndex;
-
-  if (!EntryCount || (HilIndex < 0))
+  if ((EntryCount == 0) || (HilIndex < 0))
     return false;
+
+  int entry = HilIndex;
 
   do
   {
@@ -519,12 +519,12 @@ static bool select_next(void)
  *
  * Search down the list of mail folders for one containing new mail.
  */
-static int select_next_new(void)
+static bool select_next_new(void)
 {
-  int entry = HilIndex;
-
-  if (!EntryCount || (HilIndex < 0))
+  if ((EntryCount == 0) || (HilIndex < 0))
     return false;
+
+  int entry = HilIndex;
 
   do
   {
@@ -551,10 +551,10 @@ static int select_next_new(void)
  */
 static bool select_prev(void)
 {
-  int entry = HilIndex;
-
-  if (!EntryCount || (HilIndex < 0))
+  if ((EntryCount == 0) || (HilIndex < 0))
     return false;
+
+  int entry = HilIndex;
 
   do
   {
@@ -576,10 +576,10 @@ static bool select_prev(void)
  */
 static bool select_prev_new(void)
 {
-  int entry = HilIndex;
-
-  if (!EntryCount || (HilIndex < 0))
+  if ((EntryCount == 0) || (HilIndex < 0))
     return false;
+
+  int entry = HilIndex;
 
   do
   {
@@ -604,12 +604,12 @@ static bool select_prev_new(void)
  * @retval true  Success
  * @retval false Failure
  */
-static int select_page_down(void)
+static bool select_page_down(void)
 {
-  int orig_hil_index = HilIndex;
+  if ((EntryCount == 0) || (BotIndex < 0))
+    return false;
 
-  if (!EntryCount || (BotIndex < 0))
-    return 0;
+  int orig_hil_index = HilIndex;
 
   HilIndex = BotIndex;
   select_next();
@@ -617,7 +617,7 @@ static int select_page_down(void)
   if (Entries[HilIndex]->is_hidden)
     select_prev();
 
-  return orig_hil_index != HilIndex;
+  return (orig_hil_index != HilIndex);
 }
 
 /**
@@ -625,12 +625,12 @@ static int select_page_down(void)
  * @retval true  Success
  * @retval false Failure
  */
-static int select_page_up(void)
+static bool select_page_up(void)
 {
-  int orig_hil_index = HilIndex;
+  if ((EntryCount == 0) || (TopIndex < 0))
+    return false;
 
-  if (!EntryCount || (TopIndex < 0))
-    return 0;
+  int orig_hil_index = HilIndex;
 
   HilIndex = TopIndex;
   select_prev();
@@ -638,7 +638,7 @@ static int select_page_up(void)
   if (Entries[HilIndex]->is_hidden)
     select_next();
 
-  return orig_hil_index != HilIndex;
+  return (orig_hil_index != HilIndex);
 }
 
 /**
@@ -646,12 +646,12 @@ static int select_page_up(void)
  * @retval true  Success
  * @retval false Failure
  */
-static int select_first(void)
+static bool select_first(void)
 {
-  int orig_hil_index = HilIndex;
-
-  if (!EntryCount || (HilIndex < 0))
+  if ((EntryCount == 0) || (HilIndex < 0))
     return false;
+
+  int orig_hil_index = HilIndex;
 
   HilIndex = 0;
   if (Entries[HilIndex]->is_hidden)
@@ -666,12 +666,12 @@ static int select_first(void)
  * @retval true  Success
  * @retval false Failure
  */
-static int select_last(void)
+static bool select_last(void)
 {
-  int orig_hil_index = HilIndex;
-
-  if (!EntryCount || (HilIndex < 0))
+  if ((EntryCount == 0) || (HilIndex < 0))
     return false;
+
+  int orig_hil_index = HilIndex;
 
   HilIndex = EntryCount;
   if (!select_prev())
@@ -694,7 +694,7 @@ static int select_last(void)
  */
 static bool prepare_sidebar(int page_size)
 {
-  if (!EntryCount || (page_size <= 0))
+  if ((EntryCount == 0) || (page_size <= 0))
     return false;
 
   const struct SbEntry *opn_entry = (OpnIndex >= 0) ? Entries[OpnIndex] : NULL;
@@ -1146,13 +1146,13 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 }
 
 /**
- * mutt_sb_draw - Completely redraw the sidebar
+ * sb_draw - Completely redraw the sidebar
  * @param win Window to draw on
  *
  * Completely refresh the sidebar region.  First draw the divider; then, for
  * each Mailbox, call make_sidebar_entry; finally blank out any remaining space.
  */
-void mutt_sb_draw(struct MuttWindow *win)
+void sb_draw(struct MuttWindow *win)
 {
   if (!C_SidebarVisible || !win)
     return;
@@ -1174,7 +1174,7 @@ void mutt_sb_draw(struct MuttWindow *win)
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &ml, entries)
     {
-      mutt_sb_notify_mailbox(np->mailbox, true);
+      sb_notify_mailbox(np->mailbox, true);
     }
     neomutt_mailboxlist_clear(&ml);
   }
@@ -1190,7 +1190,7 @@ void mutt_sb_draw(struct MuttWindow *win)
 }
 
 /**
- * mutt_sb_change_mailbox - Change the selected mailbox
+ * sb_change_mailbox - Change the selected mailbox
  * @param op Operation code
  *
  * Change the selected mailbox, e.g. "Next mailbox", "Previous Mailbox
@@ -1204,7 +1204,7 @@ void mutt_sb_draw(struct MuttWindow *win)
  * OP_SIDEBAR_PAGE_DOWN, OP_SIDEBAR_PAGE_UP, OP_SIDEBAR_PREV,
  * OP_SIDEBAR_PREV_NEW.
  */
-void mutt_sb_change_mailbox(int op)
+void sb_change_mailbox(int op)
 {
   if (!C_SidebarVisible)
     return;
@@ -1253,28 +1253,28 @@ void mutt_sb_change_mailbox(int op)
 }
 
 /**
- * mutt_sb_get_highlight - Get the Mailbox that's highlighted in the sidebar
+ * sb_get_highlight - Get the Mailbox that's highlighted in the sidebar
  * @retval ptr Mailbox
  */
-struct Mailbox *mutt_sb_get_highlight(void)
+struct Mailbox *sb_get_highlight(void)
 {
   if (!C_SidebarVisible)
     return NULL;
 
-  if (!EntryCount || (HilIndex < 0))
+  if ((EntryCount == 0) || (HilIndex < 0))
     return NULL;
 
   return Entries[HilIndex]->mailbox;
 }
 
 /**
- * mutt_sb_set_open_mailbox - Set the 'open' Mailbox
+ * sb_set_open_mailbox - Set the 'open' Mailbox
  * @param m Mailbox
  *
  * Search through the list of mailboxes.
  * If a Mailbox has a matching path, set OpnMailbox to it.
  */
-void mutt_sb_set_open_mailbox(struct Mailbox *m)
+void sb_set_open_mailbox(struct Mailbox *m)
 {
   OpnIndex = -1;
 
@@ -1293,7 +1293,7 @@ void mutt_sb_set_open_mailbox(struct Mailbox *m)
 }
 
 /**
- * mutt_sb_notify_mailbox - The state of a Mailbox is about to change
+ * sb_notify_mailbox - The state of a Mailbox is about to change
  * @param m       Folder
  * @param created True if folder created, false if deleted
  *
@@ -1303,7 +1303,7 @@ void mutt_sb_set_open_mailbox(struct Mailbox *m)
  *
  * Before a deletion, check that our pointers won't be invalidated.
  */
-void mutt_sb_notify_mailbox(struct Mailbox *m, bool created)
+void sb_notify_mailbox(struct Mailbox *m, bool created)
 {
   if (!m)
     return;
@@ -1361,11 +1361,11 @@ void mutt_sb_notify_mailbox(struct Mailbox *m, bool created)
 }
 
 /**
- * mutt_sb_observer - Listen for config changes affecting the sidebar - Implements ::observer_t
+ * sb_observer - Listen for config changes affecting the sidebar - Implements ::observer_t
  * @param nc Notification data
  * @retval bool True, if successful
  */
-int mutt_sb_observer(struct NotifyCallback *nc)
+int sb_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;
@@ -1380,7 +1380,7 @@ int mutt_sb_observer(struct NotifyCallback *nc)
 
   bool repaint = false;
 
-  if (win->state.visible == !C_SidebarVisible)
+  if (win->state.visible != C_SidebarVisible)
   {
     window_set_visible(win, C_SidebarVisible);
     repaint = true;

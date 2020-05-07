@@ -753,7 +753,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m,
     collapse_all(Context, menu, 0);
 
 #ifdef USE_SIDEBAR
-  mutt_sb_set_open_mailbox(Context ? Context->mailbox : NULL);
+  sb_set_open_mailbox(Context ? Context->mailbox : NULL);
 #endif
 
   mutt_clear_error();
@@ -2376,7 +2376,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
 #ifdef USE_SIDEBAR
       case OP_SIDEBAR_OPEN:
-        change_folder_mailbox(menu, mutt_sb_get_highlight(), &oldcount, &index_hint, false);
+        change_folder_mailbox(menu, sb_get_highlight(), &oldcount, &index_hint, false);
         break;
 #endif
 
@@ -3936,7 +3936,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_SIDEBAR_PAGE_UP:
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
-        mutt_sb_change_mailbox(op);
+        sb_change_mailbox(op);
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
@@ -4172,7 +4172,7 @@ struct MuttWindow *index_pager_init(void)
     mutt_window_add_child(panel_pager, win_pbar);
   }
 
-  notify_observer_add(NeoMutt->notify, mutt_sb_observer, win_sidebar);
+  notify_observer_add(NeoMutt->notify, sb_observer, win_sidebar);
 
   return dlg;
 }
@@ -4190,7 +4190,7 @@ void index_pager_shutdown(struct MuttWindow *dlg)
   if (!win_sidebar)
     return;
 
-  notify_observer_remove(NeoMutt->notify, mutt_sb_observer, win_sidebar);
+  notify_observer_remove(NeoMutt->notify, sb_observer, win_sidebar);
 }
 
 /**

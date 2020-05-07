@@ -1187,7 +1187,7 @@ int main(int argc, char *argv[], char *envp[])
     if (Context || !explicit_folder)
     {
 #ifdef USE_SIDEBAR
-      mutt_sb_set_open_mailbox(Context ? Context->mailbox : NULL);
+      sb_set_open_mailbox(Context ? Context->mailbox : NULL);
 #endif
       struct MuttWindow *dlg = index_pager_init();
       notify_observer_add(NeoMutt->notify, mutt_dlgindex_observer, dlg);

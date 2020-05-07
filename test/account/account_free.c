@@ -26,7 +26,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 
-void free_adata(void **ptr)
+void adata_free(void **ptr)
 {
   FREE(ptr);
 }
@@ -55,7 +55,7 @@ void test_account_free(void)
   {
     struct Account *a = mutt_mem_calloc(1, sizeof(*a));
     a->adata = mutt_mem_calloc(1, 32);
-    a->free_adata = free_adata;
+    a->adata_free = adata_free;
 
     account_free(&a);
     TEST_CHECK_(1, "account_free(&a)");

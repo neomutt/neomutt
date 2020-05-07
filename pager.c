@@ -3516,7 +3516,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_SIDEBAR_PAGE_UP:
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
-        mutt_sb_change_mailbox(ch);
+        sb_change_mailbox(ch);
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:

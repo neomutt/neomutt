@@ -47,11 +47,11 @@ extern short C_SidebarSortMethod;
 extern bool  C_SidebarVisible;
 extern short C_SidebarWidth;
 
-void            mutt_sb_change_mailbox  (int op);
-void            mutt_sb_draw            (struct MuttWindow *win);
-struct Mailbox *mutt_sb_get_highlight   (void);
-void            mutt_sb_notify_mailbox  (struct Mailbox *m, bool created);
-int             mutt_sb_observer        (struct NotifyCallback *nc);
-void            mutt_sb_set_open_mailbox(struct Mailbox *m);
+void            sb_change_mailbox  (int op);
+void            sb_draw            (struct MuttWindow *win);
+struct Mailbox *sb_get_highlight   (void);
+void            sb_notify_mailbox  (struct Mailbox *m, bool created);
+int             sb_observer        (struct NotifyCallback *nc);
+void            sb_set_open_mailbox(struct Mailbox *m);
 
 #endif /* MUTT_SIDEBAR_H */

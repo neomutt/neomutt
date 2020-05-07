@@ -1109,11 +1109,6 @@ static void compose_custom_redraw(struct Menu *menu)
     menu->redraw &= ~REDRAW_STATUS;
   }
 
-#ifdef USE_SIDEBAR
-  if (menu->redraw & REDRAW_SIDEBAR)
-    menu_redraw_sidebar(menu);
-#endif
-
   if (menu->redraw & REDRAW_INDEX)
     menu_redraw_index(menu);
   else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNC))

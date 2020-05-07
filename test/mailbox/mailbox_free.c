@@ -26,7 +26,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 
-void free_mdata(void **ptr)
+void mdata_free(void **ptr)
 {
   FREE(ptr);
 }
@@ -55,7 +55,7 @@ void test_mailbox_free(void)
   {
     struct Mailbox *m = mutt_mem_calloc(1, sizeof(*m));
     m->mdata = mutt_mem_calloc(1, 32);
-    m->free_mdata = free_mdata;
+    m->mdata_free = mdata_free;
 
     mailbox_free(&m);
     TEST_CHECK_(1, "mailbox_free(&m)");

@@ -1026,7 +1026,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
         if (m_old->flags == MB_HIDDEN)
         {
           m_old->flags = MB_NORMAL;
-          mutt_sb_notify_mailbox(m_old, true);
+          sb_notify_mailbox(m_old, true);
         }
         mailbox_free(&m);
         continue;
@@ -1052,7 +1052,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     }
 
 #ifdef USE_SIDEBAR
-    mutt_sb_notify_mailbox(m, true);
+    sb_notify_mailbox(m, true);
 #endif
 #ifdef USE_INOTIFY
     mutt_monitor_add(m);
@@ -2070,7 +2070,7 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
       }
 
 #ifdef USE_SIDEBAR
-      mutt_sb_notify_mailbox(np->mailbox, false);
+      sb_notify_mailbox(np->mailbox, false);
 #endif
 #ifdef USE_INOTIFY
       mutt_monitor_remove(np->mailbox);
