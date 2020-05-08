@@ -767,16 +767,18 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
             if (!end)
               break;
 
+            char *mlist = mutt_str_substr_dup(beg, end);
             /* Take the first mailto URL */
-            if (url_check_scheme(beg) == U_MAILTO)
+            if (url_check_scheme(mlist) == U_MAILTO)
             {
               FREE(&env->list_post);
-              env->list_post = mutt_str_substr_dup(beg, end);
+              env->list_post = mlist;
               if (C_AutoSubscribe)
                 mutt_auto_subscribe(env->list_post);
 
               break;
             }
+            FREE(&mlist);
           }
         }
         matched = true;

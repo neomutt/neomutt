@@ -37,4 +37,5 @@ void test_url_check_scheme(void)
   TEST_CHECK(url_check_scheme("PoP:") == U_POP);
   TEST_CHECK(url_check_scheme("IMAPS:") == U_IMAPS);
   TEST_CHECK(url_check_scheme("ImApSBAR:") == U_UNKNOWN);
+  TEST_CHECK(url_check_scheme("mailto:foo@bar.baz>") == U_UNKNOWN);
 }
