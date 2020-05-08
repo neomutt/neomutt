@@ -127,6 +127,14 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     }
   }
 
+  /* re-stat after the truncate, to avoid false "modified" bugs */
+  rc = stat(mutt_b2s(fname), &sb);
+  if (rc == -1)
+  {
+    mutt_error(_("Can't stat %s: %s"), mutt_b2s(fname), strerror(errno));
+    goto bail;
+  }
+
   /* Do not reuse the stat sb here as it is outdated. */
   time_t mtime = mutt_file_decrease_mtime(mutt_b2s(fname), NULL);
 
