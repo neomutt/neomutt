@@ -1339,6 +1339,12 @@ enum MailboxType mx_path_probe(const char *path)
     return MUTT_UNKNOWN;
   }
 
+  if (S_ISFIFO(st.st_mode))
+  {
+    mutt_error(_("Can't open %s: it is a pipe"), path);
+    return MUTT_UNKNOWN;
+  }
+
   // Next, search the local Mailbox types (is_local == true)
   for (const struct MxOps **ops = mx_ops; *ops; ops++)
   {
