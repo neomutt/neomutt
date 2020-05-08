@@ -987,10 +987,15 @@ int md_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
       if (msg->received)
       {
         struct utimbuf ut;
+        int rc_utime;
 
         ut.actime = msg->received;
         ut.modtime = msg->received;
-        if (utime(mutt_b2s(full), &ut))
+        do
+        {
+          rc_utime = utime(mutt_b2s(full), &ut);
+        } while ((rc_utime == -1) && (errno == EINTR));
+        if (rc_utime == -1)
         {
           mutt_perror(_("md_commit_message(): unable to set time on file"));
           rc = -1;
