@@ -2284,6 +2284,11 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   {
     struct stat st;
     time_t mtime = mutt_file_decrease_mtime(e_templ->content->filename, NULL);
+    if (mtime == (time_t) -1)
+    {
+      mutt_perror(e_templ->content->filename);
+      goto cleanup;
+    }
 
     mutt_update_encoding(e_templ->content, sub);
 

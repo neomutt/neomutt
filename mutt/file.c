@@ -982,7 +982,14 @@ time_t mutt_file_decrease_mtime(const char *fp, struct stat *st)
     mtime -= 1;
     utim.actime = mtime;
     utim.modtime = mtime;
-    utime(fp, &utim);
+    int rc;
+    do
+    {
+      rc = utime(fp, &utim);
+    } while ((rc == -1) && (errno == EINTR));
+
+    if (rc == -1)
+      return -1;
   }
 
   return mtime;

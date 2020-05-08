@@ -137,6 +137,12 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
 
   /* Do not reuse the stat sb here as it is outdated. */
   time_t mtime = mutt_file_decrease_mtime(mutt_b2s(fname), NULL);
+  if (mtime == (time_t) -1)
+  {
+    rc = -1;
+    mutt_perror(mutt_b2s(fname));
+    goto bail;
+  }
 
   mutt_edit_file(NONULL(C_Editor), mutt_b2s(fname));
 

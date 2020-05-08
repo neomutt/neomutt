@@ -209,6 +209,11 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   }
 
   mtime = mutt_file_decrease_mtime(mutt_b2s(path), &st);
+  if (mtime == (time_t) -1)
+  {
+    mutt_perror(mutt_b2s(path));
+    goto cleanup;
+  }
 
   mutt_edit_file(editor, mutt_b2s(path));
   stat(mutt_b2s(path), &st);
