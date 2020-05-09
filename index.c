@@ -795,7 +795,9 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
     collapse_all(Context, menu, 0);
 
 #ifdef USE_SIDEBAR
-  sb_set_open_mailbox(Context ? Context->mailbox : NULL);
+  struct MuttWindow *dlg = mutt_window_dialog(menu->win_index);
+  struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
+  sb_set_open_mailbox(win_sidebar, Context ? Context->mailbox : NULL);
 #endif
 
   mutt_clear_error();
@@ -2405,8 +2407,11 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
 #ifdef USE_SIDEBAR
       case OP_SIDEBAR_OPEN:
-        change_folder_mailbox(menu, sb_get_highlight(), &oldcount, &cur, false);
+      {
+        struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
+        change_folder_mailbox(menu, sb_get_highlight(win_sidebar), &oldcount, &cur, false);
         break;
+      }
 #endif
 
       case OP_MAIN_NEXT_UNREAD_MAILBOX:
@@ -3924,8 +3929,13 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_SIDEBAR_PAGE_UP:
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
-        sb_change_mailbox(op);
+      {
+        struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
+        if (!win_sidebar)
+          break;
+        sb_change_mailbox(win_sidebar, op);
         break;
+      }
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
         bool_str_toggle(NeoMutt->sub, "sidebar_visible", NULL);

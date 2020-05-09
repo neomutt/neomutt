@@ -3509,8 +3509,14 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_SIDEBAR_PAGE_UP:
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
-        sb_change_mailbox(ch);
+      {
+        struct MuttWindow *win_sidebar =
+            mutt_window_find(mutt_window_dialog(rd.extra->win_pager), WT_SIDEBAR);
+        if (!win_sidebar)
+          break;
+        sb_change_mailbox(win_sidebar, ch);
         break;
+      }
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
         bool_str_toggle(NeoMutt->sub, "sidebar_visible", NULL);

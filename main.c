@@ -1209,11 +1209,12 @@ int main(int argc, char *argv[], char *envp[])
     }
     if (Context || !explicit_folder)
     {
-#ifdef USE_SIDEBAR
-      sb_set_open_mailbox(Context ? Context->mailbox : NULL);
-#endif
       struct MuttWindow *dlg = index_pager_init();
       dialog_push(dlg);
+#ifdef USE_SIDEBAR
+      struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
+      sb_set_open_mailbox(win_sidebar, Context ? Context->mailbox : NULL);
+#endif
       mutt_index_menu(dlg);
       dialog_pop();
       index_pager_shutdown(dlg);

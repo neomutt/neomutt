@@ -34,26 +34,28 @@
 #include "mutt_menu.h"
 #include "opcodes.h"
 
+struct MuttWindow;
+
 /**
  * select_next - Selects the next unhidden mailbox
  * @retval true  Success
  * @retval false Failure
  */
-bool select_next(void)
+bool select_next(struct SidebarWindowData *wdata)
 {
-  if ((EntryCount == 0) || (HilIndex < 0))
+  if ((wdata->entry_count == 0) || (wdata->hil_index < 0))
     return false;
 
-  int entry = HilIndex;
+  int entry = wdata->hil_index;
 
   do
   {
     entry++;
-    if (entry == EntryCount)
+    if (entry == wdata->entry_count)
       return false;
-  } while (Entries[entry]->is_hidden);
+  } while (wdata->entries[entry]->is_hidden);
 
-  HilIndex = entry;
+  wdata->hil_index = entry;
   return true;
 }
 
@@ -64,28 +66,29 @@ bool select_next(void)
  *
  * Search down the list of mail folders for one containing new mail.
  */
-static bool select_next_new(void)
+static bool select_next_new(struct SidebarWindowData *wdata)
 {
-  if ((EntryCount == 0) || (HilIndex < 0))
+  if ((wdata->entry_count == 0) || (wdata->hil_index < 0))
     return false;
 
-  int entry = HilIndex;
+  int entry = wdata->hil_index;
 
   do
   {
     entry++;
-    if (entry == EntryCount)
+    if (entry == wdata->entry_count)
     {
       if (C_SidebarNextNewWrap)
         entry = 0;
       else
         return false;
     }
-    if (entry == HilIndex)
+    if (entry == wdata->hil_index)
       return false;
-  } while (!Entries[entry]->mailbox->has_new && (Entries[entry]->mailbox->msg_unread == 0));
+  } while (!wdata->entries[entry]->mailbox->has_new &&
+           (wdata->entries[entry]->mailbox->msg_unread == 0));
 
-  HilIndex = entry;
+  wdata->hil_index = entry;
   return true;
 }
 
@@ -94,21 +97,21 @@ static bool select_next_new(void)
  * @retval true  Success
  * @retval false Failure
  */
-static bool select_prev(void)
+static bool select_prev(struct SidebarWindowData *wdata)
 {
-  if ((EntryCount == 0) || (HilIndex < 0))
+  if ((wdata->entry_count == 0) || (wdata->hil_index < 0))
     return false;
 
-  int entry = HilIndex;
+  int entry = wdata->hil_index;
 
   do
   {
     entry--;
     if (entry < 0)
       return false;
-  } while (Entries[entry]->is_hidden);
+  } while (wdata->entries[entry]->is_hidden);
 
-  HilIndex = entry;
+  wdata->hil_index = entry;
   return true;
 }
 
@@ -119,12 +122,12 @@ static bool select_prev(void)
  *
  * Search up the list of mail folders for one containing new mail.
  */
-static bool select_prev_new(void)
+static bool select_prev_new(struct SidebarWindowData *wdata)
 {
-  if ((EntryCount == 0) || (HilIndex < 0))
+  if ((wdata->entry_count == 0) || (wdata->hil_index < 0))
     return false;
 
-  int entry = HilIndex;
+  int entry = wdata->hil_index;
 
   do
   {
@@ -132,15 +135,16 @@ static bool select_prev_new(void)
     if (entry < 0)
     {
       if (C_SidebarNextNewWrap)
-        entry = EntryCount - 1;
+        entry = wdata->entry_count - 1;
       else
         return false;
     }
-    if (entry == HilIndex)
+    if (entry == wdata->hil_index)
       return false;
-  } while (!Entries[entry]->mailbox->has_new && (Entries[entry]->mailbox->msg_unread == 0));
+  } while (!wdata->entries[entry]->mailbox->has_new &&
+           (wdata->entries[entry]->mailbox->msg_unread == 0));
 
-  HilIndex = entry;
+  wdata->hil_index = entry;
   return true;
 }
 
@@ -149,20 +153,20 @@ static bool select_prev_new(void)
  * @retval true  Success
  * @retval false Failure
  */
-static bool select_page_down(void)
+static bool select_page_down(struct SidebarWindowData *wdata)
 {
-  if ((EntryCount == 0) || (BotIndex < 0))
+  if ((wdata->entry_count == 0) || (wdata->bot_index < 0))
     return false;
 
-  int orig_hil_index = HilIndex;
+  int orig_hil_index = wdata->hil_index;
 
-  HilIndex = BotIndex;
-  select_next();
+  wdata->hil_index = wdata->bot_index;
+  select_next(wdata);
   /* If the rest of the entries are hidden, go up to the last unhidden one */
-  if (Entries[HilIndex]->is_hidden)
-    select_prev();
+  if (wdata->entries[wdata->hil_index]->is_hidden)
+    select_prev(wdata);
 
-  return (orig_hil_index != HilIndex);
+  return (orig_hil_index != wdata->hil_index);
 }
 
 /**
@@ -170,20 +174,20 @@ static bool select_page_down(void)
  * @retval true  Success
  * @retval false Failure
  */
-static bool select_page_up(void)
+static bool select_page_up(struct SidebarWindowData *wdata)
 {
-  if ((EntryCount == 0) || (TopIndex < 0))
+  if ((wdata->entry_count == 0) || (wdata->top_index < 0))
     return false;
 
-  int orig_hil_index = HilIndex;
+  int orig_hil_index = wdata->hil_index;
 
-  HilIndex = TopIndex;
-  select_prev();
+  wdata->hil_index = wdata->top_index;
+  select_prev(wdata);
   /* If the rest of the entries are hidden, go down to the last unhidden one */
-  if (Entries[HilIndex]->is_hidden)
-    select_next();
+  if (wdata->entries[wdata->hil_index]->is_hidden)
+    select_next(wdata);
 
-  return (orig_hil_index != HilIndex);
+  return (orig_hil_index != wdata->hil_index);
 }
 
 /**
@@ -191,19 +195,19 @@ static bool select_page_up(void)
  * @retval true  Success
  * @retval false Failure
  */
-static bool select_first(void)
+static bool select_first(struct SidebarWindowData *wdata)
 {
-  if ((EntryCount == 0) || (HilIndex < 0))
+  if ((wdata->entry_count == 0) || (wdata->hil_index < 0))
     return false;
 
-  int orig_hil_index = HilIndex;
+  int orig_hil_index = wdata->hil_index;
 
-  HilIndex = 0;
-  if (Entries[HilIndex]->is_hidden)
-    if (!select_next())
-      HilIndex = orig_hil_index;
+  wdata->hil_index = 0;
+  if (wdata->entries[wdata->hil_index]->is_hidden)
+    if (!select_next(wdata))
+      wdata->hil_index = orig_hil_index;
 
-  return (orig_hil_index != HilIndex);
+  return (orig_hil_index != wdata->hil_index);
 }
 
 /**
@@ -211,75 +215,69 @@ static bool select_first(void)
  * @retval true  Success
  * @retval false Failure
  */
-static bool select_last(void)
+static bool select_last(struct SidebarWindowData *wdata)
 {
-  if ((EntryCount == 0) || (HilIndex < 0))
+  if ((wdata->entry_count == 0) || (wdata->hil_index < 0))
     return false;
 
-  int orig_hil_index = HilIndex;
+  int orig_hil_index = wdata->hil_index;
 
-  HilIndex = EntryCount;
-  if (!select_prev())
-    HilIndex = orig_hil_index;
+  wdata->hil_index = wdata->entry_count;
+  if (!select_prev(wdata))
+    wdata->hil_index = orig_hil_index;
 
-  return (orig_hil_index != HilIndex);
+  return (orig_hil_index != wdata->hil_index);
 }
 
 /**
- * sb_change_mailbox - Change the selected mailbox
- * @param op Operation code
- *
- * Change the selected mailbox, e.g. "Next mailbox", "Previous Mailbox
- * with new mail". The operations are listed in opcodes.h.
- *
- * If the operation is successful, HilMailbox will be set to the new mailbox.
- * This function only *selects* the mailbox, doesn't *open* it.
- *
- * Allowed values are: OP_SIDEBAR_FIRST, OP_SIDEBAR_LAST,
- * OP_SIDEBAR_NEXT, OP_SIDEBAR_NEXT_NEW,
- * OP_SIDEBAR_PAGE_DOWN, OP_SIDEBAR_PAGE_UP, OP_SIDEBAR_PREV,
- * OP_SIDEBAR_PREV_NEW.
+ * sb_change_mailbox - Perform a Sidebar function
+ * @param win Sidebar Window
+ * @param op  Operation to perform, e.g. OP_SIDEBAR_NEXT_NEW
  */
-void sb_change_mailbox(int op)
+void sb_change_mailbox(struct MuttWindow *win, int op)
 {
   if (!C_SidebarVisible)
     return;
 
-  if (HilIndex < 0) /* It'll get reset on the next draw */
+  struct SidebarWindowData *wdata = sb_wdata_get(win);
+  if (!wdata)
+    return;
+
+  if (wdata->hil_index < 0) /* It'll get reset on the next draw */
     return;
 
   switch (op)
   {
     case OP_SIDEBAR_FIRST:
-      if (!select_first())
+      if (!select_first(wdata))
         return;
       break;
     case OP_SIDEBAR_LAST:
-      if (!select_last())
+      if (!select_last(wdata))
         return;
       break;
     case OP_SIDEBAR_NEXT:
-      if (!select_next())
+      if (!select_next(wdata))
         return;
       break;
     case OP_SIDEBAR_NEXT_NEW:
-      if (!select_next_new())
+      if (!select_next_new(wdata))
         return;
       break;
     case OP_SIDEBAR_PAGE_DOWN:
-      if (!select_page_down())
+      if (!select_page_down(wdata))
         return;
       break;
     case OP_SIDEBAR_PAGE_UP:
-      if (!select_page_up())
+      if (!select_page_up(wdata))
         return;
       break;
     case OP_SIDEBAR_PREV:
-      if (!select_prev())
+      if (!select_prev(wdata))
         return;
       break;
     case OP_SIDEBAR_PREV_NEW:
-      if (!select_prev_new())
+      if (!select_prev_new(wdata))
         return;
       break;
     default:
