@@ -56,7 +56,7 @@ UNINSTALL_TARGETS=	@UNINSTALL_TARGETS@
 
 VPATH=		@VPATH@
 
-ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
+ALL_FILES!=	(cd $(SRCDIR) && git ls-files | xargs realpath) 2>/dev/null || true
 
 ###############################################################################
 # neomutt
@@ -568,7 +568,7 @@ $(PGPEWRAP): $(PGPEWRAPOBJS)
 
 # generated
 git_ver.c: $(ALL_FILES)
-	version=`git describe --dirty --abbrev=6 --match "20[0-9][0-9][0-9][0-9][0-9][0-9]" 2> /dev/null | \
+	version=`git -C $(SRCDIR) describe --dirty --abbrev=6 --match "20[0-9][0-9][0-9][0-9][0-9][0-9]" 2> /dev/null | \
 		sed -e 's/^[0-9]\{8\}//; s/-g\([a-z0-9]\{6\}\)/-\1/'`; \
 	echo 'const char *GitVer = "'$$version'";' > $@.tmp; \
 	cmp -s $@.tmp $@ || mv $@.tmp $@; \
