@@ -551,7 +551,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
         else
         {
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (result_to_addr(&al, query_table[menu->current].data))
+          if (query_table && result_to_addr(&al, query_table[menu->current].data))
           {
             mutt_alias_create(NULL, &al);
             mutt_addrlist_clear(&al);
@@ -573,7 +573,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
         if (!menu->tagprefix)
         {
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (result_to_addr(&al, query_table[menu->current].data))
+          if (query_table && result_to_addr(&al, query_table[menu->current].data))
           {
             mutt_addrlist_copy(&e->env->to, &al, false);
             mutt_addrlist_clear(&al);
@@ -648,7 +648,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     if (!tagged)
     {
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-      if (result_to_addr(&al, query_table[menu->current].data))
+      if (query_table && result_to_addr(&al, query_table[menu->current].data))
       {
         mutt_addrlist_to_local(&al);
         mutt_addrlist_write(&al, buf, buflen, false);
