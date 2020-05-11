@@ -61,17 +61,18 @@ ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	addrbook.o alias.o browser.o commands.o \
-		complete.o compose.o conststrings.o context.o copy.o \
-		edit.o editmsg.o enriched.o enter.o flags.o functions.o \
-		git_ver.o handler.o hdrline.o help.o hook.o icommands.o index.o init.o \
-		keymap.o mailcap.o main.o menu.o mutt_account.o mutt_attach.o \
-		mutt_body.o mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
-		mutt_parse.o mutt_signal.o mutt_socket.o mutt_thread.o \
-		muttlib.o mx.o myvar.o opcodes.o pager.o pattern.o postpone.o progress.o query.o \
-		recvattach.o recvcmd.o resize.o rfc3676.o score.o send.o sendlib.o \
-		sidebar.o smtp.o sort.o state.o status.o system.o version.o \
-		mutt_commands.o mutt_config.o command_parse.o
+NEOMUTTOBJS=	addrbook.o alias.o browser.o commands.o command_parse.o \
+		complete.o compose.o conststrings.o context.o copy.o edit.o \
+		editmsg.o enriched.o enter.o flags.o functions.o git_ver.o \
+		handler.o hdrline.o help.o hook.o icommands.o index.o init.o \
+		keymap.o mailcap.o main.o menu.o muttlib.o mutt_account.o \
+		mutt_attach.o mutt_body.o mutt_commands.o mutt_config.o \
+		mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
+		mutt_parse.o mutt_signal.o mutt_socket.o mutt_thread.o mx.o \
+		myvar.o opcodes.o pager.o pattern.o postpone.o progress.o \
+		query.o recvattach.o recvcmd.o resize.o rfc3676.o score.o \
+		send.o sendlib.o sidebar.o smtp.o sort.o state.o status.o \
+		system.o version.o
 
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
