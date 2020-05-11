@@ -179,6 +179,8 @@ void ctx_update(struct Context *ctx)
       m->msg_flagged++;
     if (e->deleted)
       m->msg_deleted++;
+    if (e->tagged)
+      m->msg_tagged++;
     if (!e->read)
     {
       m->msg_unread++;
