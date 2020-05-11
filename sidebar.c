@@ -1382,7 +1382,7 @@ int mutt_sb_observer(struct NotifyCallback *nc)
 
   if (win->state.visible == !C_SidebarVisible)
   {
-    win->state.visible = C_SidebarVisible;
+    window_set_visible(win, C_SidebarVisible);
     repaint = true;
   }
 

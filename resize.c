@@ -92,7 +92,7 @@ void mutt_resize_screen(void)
   stdscr = newwin(0, 0, 0, 0);
   keypad(stdscr, true);
   mutt_window_set_root(SLtt_Screen_Rows, SLtt_Screen_Cols);
-  mutt_window_reflow(NULL);
+  window_notify_all(NULL);
 }
 #else
 /**
@@ -121,6 +121,6 @@ void mutt_resize_screen(void)
 
   resizeterm(screenrows, screencols);
   mutt_window_set_root(screenrows, screencols);
-  mutt_window_reflow(NULL);
+  window_notify_all(NULL);
 }
 #endif

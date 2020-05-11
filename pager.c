@@ -2253,9 +2253,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     rd.extra->win_index->size = MUTT_WIN_SIZE_FIXED;
     rd.extra->win_index->req_rows = index_space;
     rd.extra->win_index->parent->size = MUTT_WIN_SIZE_MINIMISE;
-    rd.extra->win_index->parent->state.visible = (index_space > 0);
+    window_set_visible(rd.extra->win_index->parent, (index_space > 0));
   }
-  rd.extra->win_pager->parent->state.visible = true;
+  window_set_visible(rd.extra->win_pager->parent, true);
   rd.extra->win_pager->size = MUTT_WIN_SIZE_MAXIMISE;
   mutt_window_reflow(mutt_window_dialog(rd.extra->win_pager));
 
@@ -3571,13 +3571,13 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
   if (rd.extra->win_index)
   {
-    rd.extra->win_index->parent->state.visible = true;
     rd.extra->win_index->size = MUTT_WIN_SIZE_MAXIMISE;
     rd.extra->win_index->req_rows = MUTT_WIN_SIZE_UNLIMITED;
     rd.extra->win_index->parent->size = MUTT_WIN_SIZE_MAXIMISE;
     rd.extra->win_index->parent->req_rows = MUTT_WIN_SIZE_UNLIMITED;
+    window_set_visible(rd.extra->win_index->parent, true);
   }
-  rd.extra->win_pager->parent->state.visible = false;
+  window_set_visible(rd.extra->win_pager->parent, false);
   mutt_window_reflow(mutt_window_dialog(rd.extra->win_pager));
 
   return (rc != -1) ? rc : 0;

@@ -51,8 +51,6 @@ static void window_reflow_horiz(struct MuttWindow *win)
     if (!np->state.visible)
       continue;
 
-    np->old = np->state; // Save the old state for later notifications
-
     switch (np->size)
     {
       case MUTT_WIN_SIZE_FIXED:
@@ -142,8 +140,6 @@ static void window_reflow_vert(struct MuttWindow *win)
   {
     if (!np->state.visible)
       continue;
-
-    np->old = np->state; // Save the old state for later notifications
 
     switch (np->size)
     {

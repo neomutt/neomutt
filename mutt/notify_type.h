@@ -36,6 +36,7 @@ enum NotifyType
   NT_EMAIL,   ///< Email has changed
   NT_GLOBAL,  ///< Not object-related
   NT_MAILBOX, ///< Mailbox has changed
+  NT_WINDOW,  ///< MuttWindow has changed
 };
 
 #endif /* MUTT_LIB_NOTIFY_TYPE_H */

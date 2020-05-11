@@ -100,12 +100,47 @@ struct MuttWindow
   struct MuttWindow *parent;         ///< Parent Window
   struct MuttWindowList children;    ///< Children Windows
 
+  struct Notify *notify;             ///< Notifications system
+
   enum WindowType type;              ///< Window type, e.g. #WT_SIDEBAR
   void *wdata;                       ///< Private data
   void (*free_wdata)(struct MuttWindow *win, void **ptr); ///< Callback function to free private data
 #ifdef USE_DEBUG_WINDOW
   const char *name;
 #endif
+};
+
+typedef uint8_t WindowNotifyFlags; ///< Changes to a MuttWindow
+#define WN_NO_FLAGS        0       ///< No flags are set
+#define WN_TALLER    (1 << 0)      ///< Window became taller
+#define WN_SHORTER   (1 << 1)      ///< Window became shorter
+#define WN_WIDER     (1 << 2)      ///< Window became wider
+#define WN_NARROWER  (1 << 3)      ///< Window became narrower
+#define WN_MOVED     (1 << 4)      ///< Window moved
+#define WN_VISIBLE   (1 << 5)      ///< Window became visible
+#define WN_HIDDEN    (1 << 6)      ///< Window became hidden
+
+/**
+ * struct EventWindow - An Event that happened to a Window
+ *
+ * Observers of EventWindow will be passed a type of #NT_WINDOW and a subtype
+ * of #NotifyWindow.
+ * 
+ */
+struct EventWindow
+{
+  struct MuttWindow *win;  ///< Window that changed
+  WindowNotifyFlags flags; ///< Attributes of Window that changed
+};
+
+/**
+ * enum NotifyWindow - Window notification types
+ *
+ * These are associated with Event type #NT_INDEX.
+ */
+enum NotifyWindow
+{
+  NT_WINDOW_STATE = 1, ///< Window state has changed, e.g. #WN_VISIBLE
 };
 
 extern struct MuttWindow *MuttDialogWindow;
@@ -142,6 +177,8 @@ bool mutt_window_is_visible(struct MuttWindow *win);
 void mutt_winlist_free       (struct MuttWindowList *head);
 struct MuttWindow *mutt_window_find(struct MuttWindow *root, enum WindowType type);
 struct MuttWindow *mutt_window_dialog(struct MuttWindow *win);
+void window_notify_all(struct MuttWindow *win);
+void window_set_visible(struct MuttWindow *win, bool visible);
 
 void dialog_pop(void);
 void dialog_push(struct MuttWindow *dlg);

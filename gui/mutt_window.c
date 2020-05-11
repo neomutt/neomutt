@@ -46,6 +46,80 @@ struct MuttWindow *MuttHelpWindow = NULL;    ///< Help Window
 struct MuttWindow *MuttMessageWindow = NULL; ///< Message Window
 
 /**
+ * window_notify - Notify observers of changes to a Window
+ * @param win Window
+ */
+static void window_notify(struct MuttWindow *win)
+{
+  if (!win->notify)
+    return;
+
+  const struct WindowState *old = &win->old;
+  const struct WindowState *new = &win->state;
+  WindowNotifyFlags flags = WN_NO_FLAGS;
+
+  if (new->visible != old->visible)
+    flags |= new->visible ? WN_VISIBLE : WN_HIDDEN;
+
+  if ((new->row_offset != old->row_offset) || (new->col_offset != old->col_offset))
+    flags |= WN_MOVED;
+
+  if (new->rows > old->rows)
+    flags |= WN_TALLER;
+  else if (new->rows < old->rows)
+    flags |= WN_SHORTER;
+
+  if (new->cols > old->cols)
+    flags |= WN_WIDER;
+  else if (new->cols < old->cols)
+    flags |= WN_NARROWER;
+
+  if (flags == WN_NO_FLAGS)
+    return;
+
+  struct EventWindow ev_w = { win, flags };
+  notify_send(win->notify, NT_WINDOW, NT_WINDOW_STATE, &ev_w);
+  win->old = win->state;
+}
+
+/**
+ * window_notify_all - Notify observers of changes to a Window and its children
+ * @param win Window
+ */
+void window_notify_all(struct MuttWindow *win)
+{
+  if (!win)
+    win = RootWindow;
+
+  window_notify(win);
+
+  struct MuttWindow *np = NULL;
+  TAILQ_FOREACH(np, &win->children, entries)
+  {
+    window_notify_all(np);
+  }
+}
+
+/**
+ * window_set_visible - Set a Window (and its children) visible or hidden
+ * @param win     Window
+ * @param visible If true, make Window visible, otherwise hidden
+ */
+void window_set_visible(struct MuttWindow *win, bool visible)
+{
+  if (!win)
+    win = RootWindow;
+
+  win->state.visible = visible;
+
+  struct MuttWindow *np = NULL;
+  TAILQ_FOREACH(np, &win->children, entries)
+  {
+    window_set_visible(np, visible);
+  }
+}
+
+/**
  * mutt_window_new - Create a new Window
  * @param orient Window orientation, e.g. #MUTT_WIN_ORIENT_VERTICAL
  * @param size   Window size, e.g. #MUTT_WIN_SIZE_MAXIMISE
@@ -77,6 +151,8 @@ void mutt_window_free(struct MuttWindow **ptr)
     return;
 
   struct MuttWindow *win = *ptr;
+
+  notify_free(&win->notify);
 
   if (win->wdata && win->free_wdata)
     win->free_wdata(win, &win->wdata); // Custom function to free private data
@@ -241,16 +317,39 @@ void mutt_window_init(void)
 
   RootWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
   RootWindow->type = WT_ROOT;
+  RootWindow->notify = notify_new();
+  notify_set_parent(RootWindow->notify, NeoMutt->notify);
+#ifdef USE_DEBUG_WINDOW
+  RootWindow->name = "root";
+#endif
+
   MuttHelpWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                    1, MUTT_WIN_SIZE_UNLIMITED);
   MuttHelpWindow->type = WT_HELP_BAR;
   MuttHelpWindow->state.visible = C_Help;
+  MuttHelpWindow->notify = notify_new();
+  notify_set_parent(MuttHelpWindow->notify, RootWindow->notify);
+#ifdef USE_DEBUG_WINDOW
+  MuttHelpWindow->name = "help bar";
+#endif
+
   MuttDialogWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   MuttDialogWindow->type = WT_ALL_DIALOGS;
+  MuttDialogWindow->notify = notify_new();
+  notify_set_parent(MuttDialogWindow->notify, RootWindow->notify);
+#ifdef USE_DEBUG_WINDOW
+  MuttDialogWindow->name = "all dialogs";
+#endif
+
   MuttMessageWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                       1, MUTT_WIN_SIZE_UNLIMITED);
   MuttMessageWindow->type = WT_MESSAGE;
+  MuttMessageWindow->notify = notify_new();
+  notify_set_parent(MuttMessageWindow->notify, RootWindow->notify);
+#ifdef USE_DEBUG_WINDOW
+  MuttMessageWindow->name = "message";
+#endif
 
   if (C_StatusOnTop)
   {
@@ -347,8 +446,12 @@ void mutt_window_reflow(struct MuttWindow *win)
   if (OptNoCurses)
     return;
 
+  if (!win)
+    win = RootWindow;
+
   mutt_debug(LL_DEBUG2, "entering\n");
-  window_reflow(win ? win : RootWindow);
+  window_reflow(win);
+  window_notify_all(win);
 
   mutt_menu_set_current_redraw_full();
   /* the pager menu needs this flag set to recalc line_info */
@@ -494,7 +597,7 @@ void mutt_winlist_free(struct MuttWindowList *head)
   {
     TAILQ_REMOVE(head, np, entries);
     mutt_winlist_free(&np->children);
-    FREE(&np);
+    mutt_window_free(&np);
   }
 }
 
@@ -559,12 +662,11 @@ bool mutt_window_is_visible(struct MuttWindow *win)
  */
 struct MuttWindow *mutt_window_dialog(struct MuttWindow *win)
 {
-  if (!win)
-    return NULL;
-  if (win->type == WT_DIALOG)
-    return win;
+  for (; win; win = win->parent)
+    if (win->type == WT_DIALOG)
+      return win;
 
-  return mutt_window_dialog(win->parent);
+  return NULL;
 }
 
 /**
@@ -612,6 +714,7 @@ void dialog_push(struct MuttWindow *dlg)
     last->state.visible = false;
 
   TAILQ_INSERT_TAIL(&MuttDialogWindow->children, dlg, entries);
+  notify_set_parent(dlg->notify, MuttDialogWindow->notify);
   dlg->state.visible = true;
   mutt_window_reflow(MuttDialogWindow);
 #ifdef USE_DEBUG_WINDOW

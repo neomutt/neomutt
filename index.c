@@ -4054,48 +4054,87 @@ struct MuttWindow *index_pager_init(void)
       mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   dlg->type = WT_DIALOG;
+  dlg->notify = notify_new();
+  notify_observer_add(NeoMutt->notify, mutt_dlgindex_observer, dlg);
 #ifdef USE_DEBUG_WINDOW
-  dlg->name = "index";
+  dlg->name = "index dialog";
 #endif
-  struct MuttWindow *cont_right =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  cont_right->type = WT_CONTAINER;
-  struct MuttWindow *panel_index =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-#ifdef USE_DEBUG_WINDOW
-  panel_index->name = "index panel";
-#endif
-  panel_index->type = WT_CONTAINER;
-  struct MuttWindow *panel_pager =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-#ifdef USE_DEBUG_WINDOW
-  panel_pager->name = "pager panel";
-#endif
-  panel_pager->type = WT_CONTAINER;
-  panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
 
-  struct MuttWindow *win_index =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  win_index->type = WT_INDEX;
-  struct MuttWindow *win_pbar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
-  win_pbar->type = WT_PAGER_BAR;
-  struct MuttWindow *win_pager =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  win_pager->type = WT_PAGER;
   struct MuttWindow *win_sidebar =
       mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
                       MUTT_WIN_SIZE_UNLIMITED, C_SidebarWidth);
   win_sidebar->type = WT_SIDEBAR;
   win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
+  win_sidebar->notify = notify_new();
+  notify_set_parent(win_sidebar->notify, dlg->notify);
+#ifdef USE_DEBUG_WINDOW
+  win_sidebar->name = "sidebar";
+#endif
+
+  struct MuttWindow *cont_right =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  cont_right->type = WT_CONTAINER;
+#ifdef USE_DEBUG_WINDOW
+  cont_right->name = "index container";
+#endif
+
+  struct MuttWindow *panel_index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  panel_index->type = WT_CONTAINER;
+#ifdef USE_DEBUG_WINDOW
+  panel_index->name = "index panel";
+#endif
+
+  struct MuttWindow *win_index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  win_index->type = WT_INDEX;
+  win_index->notify = notify_new();
+  notify_set_parent(win_index->notify, dlg->notify);
+#ifdef USE_DEBUG_WINDOW
+  win_index->name = "index";
+#endif
+
   struct MuttWindow *win_ibar = mutt_window_new(
       MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
   win_ibar->type = WT_INDEX_BAR;
+  win_ibar->notify = notify_new();
+  notify_set_parent(win_ibar->notify, dlg->notify);
+#ifdef USE_DEBUG_WINDOW
+  win_ibar->name = "index bar";
+#endif
+
+  struct MuttWindow *panel_pager =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  panel_pager->type = WT_CONTAINER;
+  panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
+#ifdef USE_DEBUG_WINDOW
+  panel_pager->name = "pager panel";
+#endif
+
+  struct MuttWindow *win_pager =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  win_pager->type = WT_PAGER;
+  win_pager->state.visible = false;
+  win_pager->notify = notify_new();
+  notify_set_parent(win_pager->notify, dlg->notify);
+#ifdef USE_DEBUG_WINDOW
+  win_pager->name = "pager";
+#endif
+
+  struct MuttWindow *win_pbar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  win_pbar->type = WT_PAGER_BAR;
+  win_pbar->state.visible = false;
+  win_pbar->notify = notify_new();
+  notify_set_parent(win_pbar->notify, dlg->notify);
+#ifdef USE_DEBUG_WINDOW
+  win_pbar->name = "pager bar";
+#endif
 
   if (C_SidebarOnRight)
   {
@@ -4154,9 +4193,9 @@ void index_pager_shutdown(struct MuttWindow *dlg)
 }
 
 /**
- * mutt_dlg_index_observer - Listen for config changes affecting the Index/Pager - Implements ::observer_t
+ * mutt_dlgindex_observer - Listen for config changes affecting the Index/Pager - Implements ::observer_t
  */
-int mutt_dlg_index_observer(struct NotifyCallback *nc)
+int mutt_dlgindex_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;
