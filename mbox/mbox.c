@@ -100,7 +100,9 @@ static struct MboxAccountData *mbox_adata_new(void)
  */
 static struct MboxAccountData *mbox_adata_get(struct Mailbox *m)
 {
-  if (!m || (m->type != MUTT_MBOX))
+  if (!m)
+    return NULL;
+  if ((m->type != MUTT_MBOX) && (m->type != MUTT_MMDF))
     return NULL;
   struct Account *a = m->account;
   if (!a)
@@ -116,9 +118,10 @@ static struct MboxAccountData *mbox_adata_get(struct Mailbox *m)
  */
 static int init_mailbox(struct Mailbox *m)
 {
-  if (!m || (m->type != MUTT_MBOX) || !m->account)
+  if (!m || !m->account)
     return -1;
-
+  if ((m->type != MUTT_MBOX) && (m->type != MUTT_MMDF))
+    return -1;
   if (m->account->adata)
     return 0;
 
@@ -870,7 +873,9 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
  */
 static struct Account *mbox_ac_find(struct Account *a, const char *path)
 {
-  if (!a || (a->type != MUTT_MBOX) || !path)
+  if (!a || !path)
+    return NULL;
+  if ((a->type != MUTT_MBOX) && (a->type != MUTT_MMDF))
     return NULL;
 
   struct MailboxNode *np = STAILQ_FIRST(&a->mailboxes);
@@ -888,7 +893,9 @@ static struct Account *mbox_ac_find(struct Account *a, const char *path)
  */
 static int mbox_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || (m->type != MUTT_MBOX))
+  if (!a || !m)
+    return -1;
+  if ((m->type != MUTT_MBOX) && (m->type != MUTT_MMDF))
     return -1;
   return 0;
 }
