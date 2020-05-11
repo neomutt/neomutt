@@ -58,6 +58,8 @@ VPATH=		@VPATH@
 
 ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 
+default:	all
+
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
@@ -91,15 +93,347 @@ CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
 ALLOBJS+=	$(NEOMUTTOBJS)
 
 ###############################################################################
+# libaddress
+LIBADDRESS=	libaddress.a
+LIBADDRESSOBJS=	address/address.o address/group.o address/idna.o
+CLEANFILES+=	$(LIBADDRESS) $(LIBADDRESSOBJS)
+ALLOBJS+=	$(LIBADDRESSOBJS)
+
+$(LIBADDRESS): $(PWD)/address $(LIBADDRESSOBJS)
+	$(AR) cr $@ $(LIBADDRESSOBJS)
+	$(RANLIB) $@
+$(PWD)/address:
+	$(MKDIR_P) $(PWD)/address
+
+###############################################################################
 # libautocrypt
 @if USE_AUTOCRYPT
 LIBAUTOCRYPT=	libautocrypt.a
 LIBAUTOCRYPTOBJS=autocrypt/autocrypt.o autocrypt/acct_menu.o autocrypt/db.o \
 		 autocrypt/gpgme.o autocrypt/schema.o
-
 CLEANFILES+=	$(LIBAUTOCRYPT) $(LIBAUTOCRYPTOBJS)
-MUTTLIBS+=	$(LIBAUTOCRYPT)
 ALLOBJS+=	$(LIBAUTOCRYPTOBJS)
+
+$(LIBAUTOCRYPT): $(PWD)/autocrypt $(LIBAUTOCRYPTOBJS)
+	$(AR) cr $@ $(LIBAUTOCRYPTOBJS)
+	$(RANLIB) $@
+$(PWD)/autocrypt:
+	$(MKDIR_P) $(PWD)/autocrypt
+@endif
+
+###############################################################################
+# libbcache
+LIBBCACHE=	libbcache.a
+LIBBCACHEOBJS=	bcache/bcache.o
+CLEANFILES+=	$(LIBBCACHE) $(LIBBCACHEOBJS)
+ALLOBJS+=	$(LIBBCACHEOBJS)
+
+$(LIBBCACHE): $(PWD)/bcache $(LIBBCACHEOBJS)
+	$(AR) cr $@ $(LIBBCACHEOBJS)
+	$(RANLIB) $@
+$(PWD)/bcache:
+	$(MKDIR_P) $(PWD)/bcache
+
+###############################################################################
+# libcompmbox
+LIBCOMPMBOX=	libcompmbox.a
+LIBCOMPMBOXOBJS=compmbox/compress.o
+CLEANFILES+=	$(LIBCOMPMBOX) $(LIBCOMPMBOXOBJS)
+ALLOBJS+=	$(LIBCOMPMBOXOBJS)
+
+$(LIBCOMPMBOX): $(PWD)/compmbox $(LIBCOMPMBOXOBJS)
+	$(AR) cr $@ $(LIBCOMPMBOXOBJS)
+	$(RANLIB) $@
+$(PWD)/compmbox:
+	$(MKDIR_P) $(PWD)/compmbox
+
+###############################################################################
+# libcompress
+@if USE_LZ4
+LIBCOMPRESSOBJS+=compress/lz4.o
+@endif
+@if USE_ZLIB
+LIBCOMPRESSOBJS+=compress/zlib.o
+@endif
+@if USE_ZSTD
+LIBCOMPRESSOBJS+=compress/zstd.o
+@endif
+@if USE_LZ4 || USE_ZLIB || USE_ZSTD
+LIBCOMPRESSOBJS+=compress/compress.o
+LIBCOMPRESS=	libcompress.a
+CLEANFILES+=	$(LIBCOMPRESS) $(LIBCOMPRESSOBJS)
+ALLOBJS+=	$(LIBCOMPRESSOBJS)
+
+$(LIBCOMPRESS): $(PWD)/compress $(LIBCOMPRESSOBJS)
+	$(AR) cr $@ $(LIBCOMPRESSOBJS)
+	$(RANLIB) $@
+$(PWD)/compress:
+	$(MKDIR_P) $(PWD)/compress
+@endif
+
+###############################################################################
+# libconfig
+LIBCONFIG=	libconfig.a
+LIBCONFIGOBJS=	config/address.o config/bool.o config/dump.o config/enum.o \
+		config/long.o config/mbtable.o config/number.o config/path.o config/quad.o \
+		config/regex.o config/set.o config/slist.o config/sort.o \
+		config/string.o config/subset.o
+CLEANFILES+=	$(LIBCONFIG) $(LIBCONFIGOBJS)
+ALLOBJS+=	$(LIBCONFIGOBJS)
+
+$(LIBCONFIG): $(PWD)/config $(LIBCONFIGOBJS)
+	$(AR) cr $@ $(LIBCONFIGOBJS)
+	$(RANLIB) $@
+$(PWD)/config:
+	$(MKDIR_P) $(PWD)/config
+
+###############################################################################
+# libconn
+LIBCONN=	libconn.a
+LIBCONNOBJS=	conn/connaccount.o conn/conn_globals.o conn/getdomain.o \
+		conn/raw.o conn/sasl_plain.o conn/socket.o conn/tunnel.o
+@if HAVE_SASL
+LIBCONNOBJS+=	conn/sasl.o
+@endif
+@if USE_SSL
+LIBCONNOBJS+=	conn/gui.o
+@endif
+@if USE_SSL_GNUTLS
+LIBCONNOBJS+=	conn/gnutls.o
+@endif
+@if USE_SSL_OPENSSL
+LIBCONNOBJS+=	conn/openssl.o
+@endif
+@if USE_ZLIB
+LIBCONNOBJS+=	conn/zstrm.o
+@endif
+CLEANFILES+=	$(LIBCONN) $(LIBCONNOBJS)
+ALLOBJS+=	$(LIBCONNOBJS)
+
+$(LIBCONN): $(PWD)/conn $(LIBCONNOBJS)
+	$(AR) cr $@ $(LIBCONNOBJS)
+	$(RANLIB) $@
+$(PWD)/conn:
+	$(MKDIR_P) $(PWD)/conn
+
+###############################################################################
+# libcore
+LIBCORE=	libcore.a
+LIBCOREOBJS=	core/account.o core/mailbox.o core/neomutt.o
+CLEANFILES+=	$(LIBCORE) $(LIBCOREOBJS)
+ALLOBJS+=	$(LIBCOREOBJS)
+
+$(LIBCORE): $(PWD)/core $(LIBCOREOBJS)
+	$(AR) cr $@ $(LIBCOREOBJS)
+	$(RANLIB) $@
+$(PWD)/core:
+	$(MKDIR_P) $(PWD)/core
+
+###############################################################################
+# libdebug
+@if HAVE_LIBUNWIND
+LIBDEBUGOBJS+=	debug/backtrace.o
+@endif
+@if USE_DEBUG_GRAPHVIZ
+LIBDEBUGOBJS+=	debug/graphviz.o
+@endif
+@if USE_DEBUG_NOTIFY
+LIBDEBUGOBJS+=	debug/notify.o
+@endif
+@if USE_DEBUG_PARSE_TEST
+LIBDEBUGOBJS+=	debug/parse_test.o
+@endif
+@if USE_DEBUG_WINDOW
+LIBDEBUGOBJS+=	debug/window.o
+@endif
+@if HAVE_LIBUNWIND || USE_DEBUG_GRAPHVIZ || USE_DEBUG_NOTIFY || USE_DEBUG_PARSE_TEST || USE_DEBUG_WINDOW
+LIBDEBUG=	libdebug.a
+CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
+ALLOBJS+=	$(LIBDEBUGOBJS)
+
+$(LIBDEBUG): $(PWD)/debug $(LIBDEBUGOBJS)
+	$(AR) cr $@ $(LIBDEBUGOBJS)
+	$(RANLIB) $@
+$(PWD)/debug:
+	$(MKDIR_P) $(PWD)/debug
+@endif
+
+###############################################################################
+# libemail
+LIBEMAIL=	libemail.a
+LIBEMAILOBJS=	email/attach.o email/body.o email/email.o \
+		email/email_globals.o email/envelope.o email/from.o email/mime.o \
+		email/parameter.o email/parse.o email/rfc2047.o email/rfc2231.o \
+		email/tags.o email/thread.o email/url.o
+CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
+ALLOBJS+=	$(LIBEMAILOBJS)
+
+$(LIBEMAIL): $(PWD)/email $(LIBEMAILOBJS)
+	$(AR) cr $@ $(LIBEMAILOBJS)
+	$(RANLIB) $@
+$(PWD)/email:
+	$(MKDIR_P) $(PWD)/email
+
+###############################################################################
+# libgui
+LIBGUI=	libgui.a
+LIBGUIOBJS=	gui/color.o gui/curs_lib.o gui/mutt_curses.o gui/mutt_window.o gui/reflow.o gui/terminal.o
+CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
+ALLOBJS+=	$(LIBGUIOBJS)
+
+$(LIBGUI): $(PWD)/gui $(LIBGUIOBJS)
+	$(AR) cr $@ $(LIBGUIOBJS)
+	$(RANLIB) $@
+$(PWD)/gui:
+	$(MKDIR_P) $(PWD)/gui
+
+###############################################################################
+# libhcache
+@if USE_HCACHE
+LIBHCACHE=	libhcache.a
+LIBHCACHEOBJS=	hcache/hcache.o hcache/serialize.o
+CLEANFILES+=	$(LIBHCACHE) $(LIBHCACHEOBJS)
+ALLOBJS+=	$(LIBHCACHEOBJS)
+
+hcache/hcache.o:	hcache/hcversion.h
+$(LIBHCACHE): $(PWD)/hcache $(LIBHCACHEOBJS)
+	$(AR) cr $@ $(LIBHCACHEOBJS)
+	$(RANLIB) $@
+$(PWD)/hcache:
+	$(MKDIR_P) $(PWD)/hcache
+@endif
+
+###############################################################################
+# libhistory
+LIBHISTORY=	libhistory.a
+LIBHISTORYOBJS=	history/history.o
+CLEANFILES+=	$(LIBHISTORY) $(LIBHISTORYOBJS)
+ALLOBJS+=	$(LIBHISTORYOBJS)
+
+$(LIBHISTORY): $(PWD)/history $(LIBHISTORYOBJS)
+	$(AR) cr $@ $(LIBHISTORYOBJS)
+	$(RANLIB) $@
+$(PWD)/history:
+	$(MKDIR_P) $(PWD)/history
+
+###############################################################################
+# libimap
+LIBIMAP=	libimap.a
+LIBIMAPOBJS=	imap/auth.o \
+		imap/auth_login.o imap/auth_oauth.o imap/auth_plain.o imap/browse.o \
+		imap/command.o imap/imap.o imap/message.o imap/utf7.o imap/util.o
+@if USE_GSS
+LIBIMAPOBJS+=	imap/auth_gss.o
+@endif
+@if HAVE_SASL
+LIBIMAPOBJS+=	imap/auth_sasl.o
+@else
+LIBIMAPOBJS+=	imap/auth_anon.o imap/auth_cram.o
+@endif
+CLEANFILES+=	$(LIBIMAP) $(LIBIMAPOBJS)
+ALLOBJS+=	$(LIBIMAPOBJS)
+
+$(LIBIMAP): $(PWD)/imap $(LIBIMAPOBJS)
+	$(AR) cr $@ $(LIBIMAPOBJS)
+	$(RANLIB) $@
+$(PWD)/imap:
+	$(MKDIR_P) $(PWD)/imap
+
+###############################################################################
+# libmaildir
+LIBMAILDIR=	libmaildir.a
+LIBMAILDIROBJS=	maildir/maildir.o maildir/mh.o maildir/shared.o
+CLEANFILES+=	$(LIBMAILDIR) $(LIBMAILDIROBJS)
+ALLOBJS+=	$(LIBMAILDIROBJS)
+
+$(LIBMAILDIR): $(PWD)/maildir $(LIBMAILDIROBJS)
+	$(AR) cr $@ $(LIBMAILDIROBJS)
+	$(RANLIB) $@
+$(PWD)/maildir:
+	$(MKDIR_P) $(PWD)/maildir
+
+###############################################################################
+# libmbox
+LIBMBOX=	libmbox.a
+LIBMBOXOBJS=	mbox/mbox.o
+CLEANFILES+=	$(LIBMBOX) $(LIBMBOXOBJS)
+ALLOBJS+=	$(LIBMBOXOBJS)
+
+$(LIBMBOX): $(PWD)/mbox $(LIBMBOXOBJS)
+	$(AR) cr $@ $(LIBMBOXOBJS)
+	$(RANLIB) $@
+$(PWD)/mbox:
+	$(MKDIR_P) $(PWD)/mbox
+
+###############################################################################
+# libmutt
+LIBMUTT=	libmutt.a
+LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
+		mutt/envlist.o mutt/exit.o mutt/file.o mutt/filter.o \
+		mutt/hash.o mutt/list.o mutt/logging.o mutt/mapping.o \
+		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/notify.o \
+		mutt/path.o mutt/pool.o mutt/prex.o mutt/regex.o \
+		mutt/signal.o mutt/slist.o mutt/string.o
+CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
+ALLOBJS+=	$(LIBMUTTOBJS)
+
+$(LIBMUTT): $(PWD)/mutt $(LIBMUTTOBJS)
+	$(AR) cr $@ $(LIBMUTTOBJS)
+	$(RANLIB) $@
+$(PWD)/mutt:
+	$(MKDIR_P) $(PWD)/mutt
+
+###############################################################################
+# libncrypt
+LIBNCRYPT=	libncrypt.a
+LIBNCRYPTOBJS=	ncrypt/crypt.o ncrypt/cryptglue.o ncrypt/crypt_mod.o
+@if HAVE_GPGME
+LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/crypt_mod_pgp_gpgme.o \
+		ncrypt/crypt_mod_smime_gpgme.o
+@endif
+@if HAVE_PGP
+LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/gnupgparse.o \
+		ncrypt/pgp.o ncrypt/pgpinvoke.o ncrypt/pgpkey.o ncrypt/pgplib.o \
+		ncrypt/pgpmicalg.o ncrypt/pgppacket.o
+@endif
+@if HAVE_SMIME
+LIBNCRYPTOBJS+=	ncrypt/crypt_mod_smime_classic.o ncrypt/smime.o
+@endif
+CLEANFILES+=	$(LIBNCRYPT) $(LIBNCRYPTOBJS)
+ALLOBJS+=	$(LIBNCRYPTOBJS)
+
+$(LIBNCRYPT): $(PWD)/ncrypt $(LIBNCRYPTOBJS)
+	$(AR) cr $@ $(LIBNCRYPTOBJS)
+	$(RANLIB) $@
+$(PWD)/ncrypt:
+	$(MKDIR_P) $(PWD)/ncrypt
+
+###############################################################################
+# libnntp
+LIBNNTP=	libnntp.a
+LIBNNTPOBJS=	nntp/browse.o nntp/complete.o nntp/newsrc.o nntp/nntp.o
+CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
+ALLOBJS+=	$(LIBNNTPOBJS)
+
+$(LIBNNTP): $(PWD)/nntp $(LIBNNTPOBJS)
+	$(AR) cr $@ $(LIBNNTPOBJS)
+	$(RANLIB) $@
+$(PWD)/nntp:
+	$(MKDIR_P) $(PWD)/nntp
+
+###############################################################################
+# libnotmuch
+@if USE_NOTMUCH
+LIBNOTMUCH=	libnotmuch.a
+LIBNOTMUCHOBJS=	notmuch/mutt_notmuch.o notmuch/nm_db.o
+CLEANFILES+=	$(LIBNOTMUCH) $(LIBNOTMUCHOBJS)
+ALLOBJS+=	$(LIBNOTMUCHOBJS)
+
+$(LIBNOTMUCH): $(PWD)/notmuch $(LIBNOTMUCHOBJS)
+	$(AR) cr $@ $(LIBNOTMUCHOBJS)
+	$(RANLIB) $@
+$(PWD)/notmuch:
+	$(MKDIR_P) $(PWD)/notmuch
 @endif
 
 ###############################################################################
@@ -107,24 +441,13 @@ ALLOBJS+=	$(LIBAUTOCRYPTOBJS)
 LIBPOP=	libpop.a
 LIBPOPOBJS=	pop/pop.o pop/pop_auth.o pop/pop_lib.o
 CLEANFILES+=	$(LIBPOP) $(LIBPOPOBJS)
-MUTTLIBS+=	$(LIBPOP)
 ALLOBJS+=	$(LIBPOPOBJS)
 
-###############################################################################
-# libnntp
-LIBNNTP=	libnntp.a
-LIBNNTPOBJS=	nntp/browse.o nntp/complete.o nntp/newsrc.o nntp/nntp.o
-CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
-MUTTLIBS+=	$(LIBNNTP)
-ALLOBJS+=	$(LIBNNTPOBJS)
-
-###############################################################################
-# libcompmbox
-LIBCOMPMBOX=	libcompmbox.a
-LIBCOMPMBOXOBJS=compmbox/compress.o
-CLEANFILES+=	$(LIBCOMPMBOX) $(LIBCOMPMBOXOBJS)
-MUTTLIBS+=	$(LIBCOMPMBOX)
-ALLOBJS+=	$(LIBCOMPMBOXOBJS)
+$(LIBPOP): $(PWD)/pop $(LIBPOPOBJS)
+	$(AR) cr $@ $(LIBPOPOBJS)
+	$(RANLIB) $@
+$(PWD)/pop:
+	$(MKDIR_P) $(PWD)/pop
 
 ###############################################################################
 # libstore
@@ -156,176 +479,14 @@ LIBSTOREOBJS+=	store/tc.o
 LIBSTORE=	libstore.a
 LIBSTOREOBJS+=	store/store.o
 CLEANFILES+=	$(LIBSTORE) $(LIBSTOREOBJS)
-MUTTLIBS+=	$(LIBSTORE)
 ALLOBJS+=	$(LIBSTOREOBJS)
-@endif
 
-###############################################################################
-# libgui
-LIBGUI=	libgui.a
-LIBGUIOBJS=	gui/color.o gui/curs_lib.o gui/mutt_curses.o gui/mutt_window.o gui/reflow.o gui/terminal.o
-CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
-MUTTLIBS+=	$(LIBGUI)
-ALLOBJS+=	$(LIBGUIOBJS)
-
-###############################################################################
-# libdebug
-@if HAVE_LIBUNWIND
-LIBDEBUGOBJS+=	debug/backtrace.o
+$(LIBSTORE): $(PWD)/store $(LIBSTOREOBJS)
+	$(AR) cr $@ $(LIBSTOREOBJS)
+	$(RANLIB) $@
+$(PWD)/store:
+	$(MKDIR_P) $(PWD)/store
 @endif
-@if USE_DEBUG_GRAPHVIZ
-LIBDEBUGOBJS+=	debug/graphviz.o
-@endif
-@if USE_DEBUG_NOTIFY
-LIBDEBUGOBJS+=	debug/notify.o
-@endif
-@if USE_DEBUG_PARSE_TEST
-LIBDEBUGOBJS+=	debug/parse_test.o
-@endif
-@if USE_DEBUG_WINDOW
-LIBDEBUGOBJS+=	debug/window.o
-@endif
-@if HAVE_LIBUNWIND || USE_DEBUG_GRAPHVIZ || USE_DEBUG_NOTIFY || USE_DEBUG_PARSE_TEST || USE_DEBUG_WINDOW
-LIBDEBUG=	libdebug.a
-CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
-MUTTLIBS+=	$(LIBDEBUG)
-ALLOBJS+=	$(LIBDEBUGOBJS)
-@endif
-
-###############################################################################
-# libmbox
-LIBMBOX=	libmbox.a
-LIBMBOXOBJS=	mbox/mbox.o
-CLEANFILES+=	$(LIBMBOX) $(LIBMBOXOBJS)
-MUTTLIBS+=	$(LIBMBOX)
-ALLOBJS+=	$(LIBMBOXOBJS)
-
-###############################################################################
-# libnotmuch
-@if USE_NOTMUCH
-LIBNOTMUCH=	libnotmuch.a
-LIBNOTMUCHOBJS=	notmuch/mutt_notmuch.o notmuch/nm_db.o
-CLEANFILES+=	$(LIBNOTMUCH) $(LIBNOTMUCHOBJS)
-MUTTLIBS+=	$(LIBNOTMUCH)
-ALLOBJS+=	$(LIBNOTMUCHOBJS)
-@endif
-
-###############################################################################
-# libmaildir
-LIBMAILDIR=	libmaildir.a
-LIBMAILDIROBJS=	maildir/maildir.o maildir/mh.o maildir/shared.o
-CLEANFILES+=	$(LIBMAILDIR) $(LIBMAILDIROBJS)
-MUTTLIBS+=	$(LIBMAILDIR)
-ALLOBJS+=	$(LIBMAILDIROBJS)
-
-###############################################################################
-# libncrypt
-LIBNCRYPT=	libncrypt.a
-LIBNCRYPTOBJS=	ncrypt/crypt.o ncrypt/cryptglue.o ncrypt/crypt_mod.o
-@if HAVE_GPGME
-LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/crypt_mod_pgp_gpgme.o \
-		ncrypt/crypt_mod_smime_gpgme.o
-@endif
-@if HAVE_PGP
-LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/gnupgparse.o \
-		ncrypt/pgp.o ncrypt/pgpinvoke.o ncrypt/pgpkey.o ncrypt/pgplib.o \
-		ncrypt/pgpmicalg.o ncrypt/pgppacket.o
-@endif
-@if HAVE_SMIME
-LIBNCRYPTOBJS+=	ncrypt/crypt_mod_smime_classic.o ncrypt/smime.o
-@endif
-CLEANFILES+=	$(LIBNCRYPT) $(LIBNCRYPTOBJS)
-MUTTLIBS+=	$(LIBNCRYPT)
-ALLOBJS+=	$(LIBNCRYPTOBJS)
-
-###############################################################################
-# libimap
-LIBIMAP=	libimap.a
-LIBIMAPOBJS=	imap/auth.o \
-		imap/auth_login.o imap/auth_oauth.o imap/auth_plain.o imap/browse.o \
-		imap/command.o imap/imap.o imap/message.o imap/utf7.o imap/util.o
-@if USE_GSS
-LIBIMAPOBJS+=	imap/auth_gss.o
-@endif
-@if HAVE_SASL
-LIBIMAPOBJS+=	imap/auth_sasl.o
-@else
-LIBIMAPOBJS+=	imap/auth_anon.o imap/auth_cram.o
-@endif
-CLEANFILES+=	$(LIBIMAP) $(LIBIMAPOBJS)
-MUTTLIBS+=	$(LIBIMAP)
-ALLOBJS+=	$(LIBIMAPOBJS)
-
-###############################################################################
-# libconn
-LIBCONN=	libconn.a
-LIBCONNOBJS=	conn/connaccount.o conn/conn_globals.o conn/getdomain.o \
-		conn/raw.o conn/sasl_plain.o conn/socket.o conn/tunnel.o
-@if HAVE_SASL
-LIBCONNOBJS+=	conn/sasl.o
-@endif
-@if USE_SSL
-LIBCONNOBJS+=	conn/gui.o
-@endif
-@if USE_SSL_GNUTLS
-LIBCONNOBJS+=	conn/gnutls.o
-@endif
-@if USE_SSL_OPENSSL
-LIBCONNOBJS+=	conn/openssl.o
-@endif
-@if USE_ZLIB
-LIBCONNOBJS+=	conn/zstrm.o
-@endif
-CLEANFILES+=	$(LIBCONN) $(LIBCONNOBJS)
-MUTTLIBS+=	$(LIBCONN)
-ALLOBJS+=	$(LIBCONNOBJS)
-
-###############################################################################
-# libhcache
-@if USE_HCACHE
-LIBHCACHE=	libhcache.a
-LIBHCACHEOBJS=	hcache/hcache.o hcache/serialize.o
-CLEANFILES+=	$(LIBHCACHE) $(LIBHCACHEOBJS)
-MUTTLIBS+=	$(LIBHCACHE)
-ALLOBJS+=	$(LIBHCACHEOBJS)
-@endif # USE_HCACHE
-
-###############################################################################
-# libcompress
-@if USE_LZ4
-LIBCOMPRESSOBJS+=compress/lz4.o
-@endif
-@if USE_ZLIB
-LIBCOMPRESSOBJS+=compress/zlib.o
-@endif
-@if USE_ZSTD
-LIBCOMPRESSOBJS+=compress/zstd.o
-@endif
-@if USE_LZ4 || USE_ZLIB || USE_ZSTD
-LIBCOMPRESSOBJS+=compress/compress.o
-LIBCOMPRESS=	libcompress.a
-CLEANFILES+=	$(LIBCOMPRESS) $(LIBCOMPRESSOBJS)
-MUTTLIBS+=	$(LIBCOMPRESS)
-ALLOBJS+=	$(LIBCOMPRESSOBJS)
-@endif
-
-###############################################################################
-# libbcache
-LIBBCACHE=	libbcache.a
-LIBBCACHEOBJS=	bcache/bcache.o
-
-CLEANFILES+=	$(LIBBCACHE) $(LIBBCACHEOBJS)
-MUTTLIBS+=	$(LIBBCACHE)
-ALLOBJS+=	$(LIBBCACHEOBJS)
-
-###############################################################################
-# libhistory
-LIBHISTORY=	libhistory.a
-LIBHISTORYOBJS=	history/history.o
-
-CLEANFILES+=	$(LIBHISTORY) $(LIBHISTORYOBJS)
-MUTTLIBS+=	$(LIBHISTORY)
-ALLOBJS+=	$(LIBHISTORYOBJS)
 
 ###############################################################################
 # pgpewrap
@@ -334,64 +495,8 @@ PGPEWRAPOBJS=	pgpewrap.o
 CLEANFILES+=	$(PGPEWRAP) $(PGPEWRAPOBJS)
 ALLOBJS+=	$(PGPEWRAPOBJS)
 
-###############################################################################
-# libcore
-LIBCORE=	libcore.a
-LIBCOREOBJS=	core/account.o core/mailbox.o core/neomutt.o
-
-CLEANFILES+=	$(LIBCORE) $(LIBCOREOBJS)
-MUTTLIBS+=	$(LIBCORE)
-ALLOBJS+=	$(LIBCOREOBJS)
-
-###############################################################################
-# libconfig
-LIBCONFIG=	libconfig.a
-LIBCONFIGOBJS=	config/address.o config/bool.o config/dump.o config/enum.o \
-		config/long.o config/mbtable.o config/number.o config/path.o config/quad.o \
-		config/regex.o config/set.o config/slist.o config/sort.o \
-		config/string.o config/subset.o
-
-CLEANFILES+=	$(LIBCONFIG) $(LIBCONFIGOBJS)
-MUTTLIBS+=	$(LIBCONFIG)
-ALLOBJS+=	$(LIBCONFIGOBJS)
-
-###############################################################################
-# libemail
-LIBEMAIL=	libemail.a
-LIBEMAILOBJS=	email/attach.o email/body.o email/email.o \
-		email/email_globals.o email/envelope.o email/from.o email/mime.o \
-		email/parameter.o email/parse.o email/rfc2047.o email/rfc2231.o \
-		email/tags.o email/thread.o email/url.o
-CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
-MUTTLIBS+=	$(LIBEMAIL)
-ALLOBJS+=	$(LIBEMAILOBJS)
-
-###############################################################################
-# libaddress
-LIBADDRESS=	libaddress.a
-LIBADDRESSOBJS=	address/address.o address/group.o address/idna.o
-
-CLEANFILES+=	$(LIBADDRESS) $(LIBADDRESSOBJS)
-MUTTLIBS+=	$(LIBADDRESS)
-ALLOBJS+=	$(LIBADDRESSOBJS)
-
-###############################################################################
-# libmutt
-LIBMUTT=	libmutt.a
-LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
-		mutt/envlist.o mutt/exit.o mutt/file.o mutt/filter.o \
-		mutt/hash.o mutt/list.o mutt/logging.o mutt/mapping.o \
-		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/notify.o \
-		mutt/path.o mutt/pool.o mutt/prex.o mutt/regex.o \
-		mutt/signal.o mutt/slist.o mutt/string.o
-CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
-MUTTLIBS+=	$(LIBMUTT)
-ALLOBJS+=	$(LIBMUTTOBJS)
-
-###############################################################################
-# generated
-GENERATED=	git_ver.c hcache/hcversion.h
-CLEANFILES+=	$(GENERATED)
+$(PGPEWRAP): $(PGPEWRAPOBJS)
+	$(CC) $(LDFLAGS) -o $@ $(PGPEWRAPOBJS)
 
 ##############################################################################
 # targets
@@ -404,191 +509,17 @@ all: $(BINFILES) $(LIBBINFILES) $(ALL_TARGETS)
 
 $(ALLOBJS):
 
-# mutt
+# The order of these libraries depends on their dependencies.
+# The libraries with the most dependencies will come first.
+MUTTLIBS+=	$(LIBAUTOCRYPT) $(LIBPOP) $(LIBNNTP) $(LIBCOMPMBOX) \
+		$(LIBSTORE) $(LIBGUI) $(LIBDEBUG) $(LIBMBOX) $(LIBNOTMUCH) \
+		$(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
+		$(LIBCOMPRESS) $(LIBBCACHE) $(LIBHISTORY) $(LIBCORE) \
+		$(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) $(LIBMUTT)
+
+# neomutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(NEOMUTTOBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
-
-# libmutt
-$(LIBMUTT): $(PWD)/mutt $(LIBMUTTOBJS)
-	$(AR) cr $@ $(LIBMUTTOBJS)
-	$(RANLIB) $@
-$(PWD)/mutt:
-	$(MKDIR_P) $(PWD)/mutt
-
-# libaddress
-$(LIBADDRESS): $(PWD)/address $(LIBADDRESSOBJS)
-	$(AR) cr $@ $(LIBADDRESSOBJS)
-	$(RANLIB) $@
-$(PWD)/address:
-	$(MKDIR_P) $(PWD)/address
-
-# libautocrypt
-$(LIBAUTOCRYPT): $(PWD)/autocrypt $(LIBAUTOCRYPTOBJS)
-	$(AR) cr $@ $(LIBAUTOCRYPTOBJS)
-	$(RANLIB) $@
-$(PWD)/autocrypt:
-	$(MKDIR_P) $(PWD)/autocrypt
-
-# libemail
-$(LIBEMAIL): $(PWD)/email $(LIBEMAILOBJS)
-	$(AR) cr $@ $(LIBEMAILOBJS)
-	$(RANLIB) $@
-$(PWD)/email:
-	$(MKDIR_P) $(PWD)/email
-
-# libpop
-$(LIBPOP): $(PWD)/pop $(LIBPOPOBJS)
-	$(AR) cr $@ $(LIBPOPOBJS)
-	$(RANLIB) $@
-$(PWD)/pop:
-	$(MKDIR_P) $(PWD)/pop
-
-# libnntp
-$(LIBNNTP): $(PWD)/nntp $(LIBNNTPOBJS)
-	$(AR) cr $@ $(LIBNNTPOBJS)
-	$(RANLIB) $@
-$(PWD)/nntp:
-	$(MKDIR_P) $(PWD)/nntp
-
-# libcompmbox
-$(LIBCOMPMBOX): $(PWD)/compmbox $(LIBCOMPMBOXOBJS)
-	$(AR) cr $@ $(LIBCOMPMBOXOBJS)
-	$(RANLIB) $@
-$(PWD)/compmbox:
-	$(MKDIR_P) $(PWD)/compmbox
-
-# libstore
-$(LIBSTORE): $(PWD)/store $(LIBSTOREOBJS)
-	$(AR) cr $@ $(LIBSTOREOBJS)
-	$(RANLIB) $@
-$(PWD)/store:
-	$(MKDIR_P) $(PWD)/store
-
-# libcompress
-$(LIBCOMPRESS): $(PWD)/compress $(LIBCOMPRESSOBJS)
-	$(AR) cr $@ $(LIBCOMPRESSOBJS)
-	$(RANLIB) $@
-$(PWD)/compress:
-	$(MKDIR_P) $(PWD)/compress
-
-# libgui
-$(LIBGUI): $(PWD)/gui $(LIBGUIOBJS)
-	$(AR) cr $@ $(LIBGUIOBJS)
-	$(RANLIB) $@
-$(PWD)/gui:
-	$(MKDIR_P) $(PWD)/gui
-
-# libdebug
-$(LIBDEBUG): $(PWD)/debug $(LIBDEBUGOBJS)
-	$(AR) cr $@ $(LIBDEBUGOBJS)
-	$(RANLIB) $@
-$(PWD)/debug:
-	$(MKDIR_P) $(PWD)/debug
-
-# libmbox
-$(LIBMBOX): $(PWD)/mbox $(LIBMBOXOBJS)
-	$(AR) cr $@ $(LIBMBOXOBJS)
-	$(RANLIB) $@
-$(PWD)/mbox:
-	$(MKDIR_P) $(PWD)/mbox
-
-# libnotmuch
-$(LIBNOTMUCH): $(PWD)/notmuch $(LIBNOTMUCHOBJS)
-	$(AR) cr $@ $(LIBNOTMUCHOBJS)
-	$(RANLIB) $@
-$(PWD)/notmuch:
-	$(MKDIR_P) $(PWD)/notmuch
-
-# libmaildir
-$(LIBMAILDIR): $(PWD)/maildir $(LIBMAILDIROBJS)
-	$(AR) cr $@ $(LIBMAILDIROBJS)
-	$(RANLIB) $@
-$(PWD)/maildir:
-	$(MKDIR_P) $(PWD)/maildir
-
-# libncrypt
-$(LIBNCRYPT): $(PWD)/ncrypt $(LIBNCRYPTOBJS)
-	$(AR) cr $@ $(LIBNCRYPTOBJS)
-	$(RANLIB) $@
-$(PWD)/ncrypt:
-	$(MKDIR_P) $(PWD)/ncrypt
-
-# libimap
-$(LIBIMAP): $(PWD)/imap $(LIBIMAPOBJS)
-	$(AR) cr $@ $(LIBIMAPOBJS)
-	$(RANLIB) $@
-$(PWD)/imap:
-	$(MKDIR_P) $(PWD)/imap
-
-# libconn
-$(LIBCONN): $(PWD)/conn $(LIBCONNOBJS)
-	$(AR) cr $@ $(LIBCONNOBJS)
-	$(RANLIB) $@
-$(PWD)/conn:
-	$(MKDIR_P) $(PWD)/conn
-
-# libcore
-$(LIBCORE): $(PWD)/core $(LIBCOREOBJS)
-	$(AR) cr $@ $(LIBCOREOBJS)
-	$(RANLIB) $@
-$(PWD)/core:
-	$(MKDIR_P) $(PWD)/core
-
-# libconfig
-$(LIBCONFIG): $(PWD)/config $(LIBCONFIGOBJS)
-	$(AR) cr $@ $(LIBCONFIGOBJS)
-	$(RANLIB) $@
-$(PWD)/config:
-	$(MKDIR_P) $(PWD)/config
-
-# libhcache
-hcache/hcache.o:	hcache/hcversion.h
-$(LIBHCACHE): $(PWD)/hcache $(LIBHCACHEOBJS)
-	$(AR) cr $@ $(LIBHCACHEOBJS)
-	$(RANLIB) $@
-$(PWD)/hcache:
-	$(MKDIR_P) $(PWD)/hcache
-
-# libbcache
-$(LIBBCACHE): $(PWD)/bcache $(LIBBCACHEOBJS)
-	$(AR) cr $@ $(LIBBCACHEOBJS)
-	$(RANLIB) $@
-$(PWD)/bcache:
-	$(MKDIR_P) $(PWD)/bcache
-
-# libhistory
-$(LIBHISTORY): $(PWD)/history $(LIBHISTORYOBJS)
-	$(AR) cr $@ $(LIBHISTORYOBJS)
-	$(RANLIB) $@
-$(PWD)/history:
-	$(MKDIR_P) $(PWD)/history
-
-# pgpewrap
-$(PGPEWRAP): $(PGPEWRAPOBJS)
-	$(CC) $(LDFLAGS) -o $@ $(PGPEWRAPOBJS)
-
-# generated
-git_ver.c: $(ALL_FILES)
-	version=`git describe --dirty --abbrev=6 --match "20[0-9][0-9][0-9][0-9][0-9][0-9]" 2> /dev/null | \
-		sed -e 's/^[0-9]\{8\}//; s/-g\([a-z0-9]\{6\}\)/-\1/'`; \
-	echo 'const char *GitVer = "'$$version'";' > $@.tmp; \
-	cmp -s $@.tmp $@ || mv $@.tmp $@; \
-	rm -f $@.tmp
-
-hcache/hcversion.h:	$(SRCDIR)/address/address.h $(SRCDIR)/email/body.h \
-			$(SRCDIR)/email/email.h $(SRCDIR)/email/envelope.h \
-			$(SRCDIR)/email/parameter.h $(SRCDIR)/hcache/hcachever.sh \
-			$(SRCDIR)/mutt/buffer.h $(SRCDIR)/mutt/list.h
-	$(MKDIR_P) $(PWD)/hcache
-	( echo '#include "config.h"'; \
-	echo '#include "address/address.h"'; \
-	echo '#include "email/body.h"'; \
-	echo '#include "email/email.h"'; \
-	echo '#include "email/envelope.h"'; \
-	echo '#include "email/parameter.h"'; \
-	echo '#include "mutt/buffer.h"'; \
-	echo '#include "mutt/list.h"';) | $(CPP) $(CFLAGS) - | \
-	sh $(SRCDIR)/hcache/hcachever.sh hcache/hcversion.h
 
 # clean
 clean: $(CLEAN_TARGETS)
@@ -624,8 +555,36 @@ distclean: clean
 	$(RM) *.gc?? */*.gc?? test/*/*.gc??
 	$(RM) lcov.info lcov
 
+###############################################################################
+# generated
+GENERATED=	git_ver.c hcache/hcversion.h
+CLEANFILES+=	$(GENERATED)
+
+git_ver.c: $(ALL_FILES)
+	version=`git describe --dirty --abbrev=6 --match "20[0-9][0-9][0-9][0-9][0-9][0-9]" 2> /dev/null | \
+		sed -e 's/^[0-9]\{8\}//; s/-g\([a-z0-9]\{6\}\)/-\1/'`; \
+	echo 'const char *GitVer = "'$$version'";' > $@.tmp; \
+	cmp -s $@.tmp $@ || mv $@.tmp $@; \
+	rm -f $@.tmp
+
+hcache/hcversion.h:	$(SRCDIR)/address/address.h $(SRCDIR)/email/body.h \
+			$(SRCDIR)/email/email.h $(SRCDIR)/email/envelope.h \
+			$(SRCDIR)/email/parameter.h $(SRCDIR)/hcache/hcachever.sh \
+			$(SRCDIR)/mutt/buffer.h $(SRCDIR)/mutt/list.h
+	$(MKDIR_P) $(PWD)/hcache
+	( echo '#include "config.h"'; \
+	echo '#include "address/address.h"'; \
+	echo '#include "email/body.h"'; \
+	echo '#include "email/email.h"'; \
+	echo '#include "email/envelope.h"'; \
+	echo '#include "email/parameter.h"'; \
+	echo '#include "mutt/buffer.h"'; \
+	echo '#include "mutt/list.h"';) | $(CPP) $(CFLAGS) - | \
+	sh $(SRCDIR)/hcache/hcachever.sh hcache/hcversion.h
+
+###############################################################################
+# coverage
 @if ENABLE_COVERAGE
-# coverage testing
 coverage: all test
 	$(RM) lcov
 	$(RM) mutt/exit.gc??
