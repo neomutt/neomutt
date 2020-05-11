@@ -559,12 +559,10 @@ static int mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   if (!m)
     return -1;
 
-  if (!(flags & MUTT_APPENDNEW))
-  {
+  if (!(flags & (MUTT_APPENDNEW | MUTT_NEWFOLDER)))
     return 0;
-  }
 
-  if (mkdir(mailbox_path(m), S_IRWXU))
+  if (mutt_file_mkdir(mailbox_path(m), S_IRWXU))
   {
     mutt_perror(mailbox_path(m));
     return -1;
