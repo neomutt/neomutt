@@ -245,7 +245,6 @@ $(PWD)/core:
 
 ###############################################################################
 # libdebug
-LIBDEBUG=	libdebug.a
 @if USE_DEBUG_ACCOUNT
 LIBDEBUGOBJS+=	debug/account.o debug/subset.o
 @endif
