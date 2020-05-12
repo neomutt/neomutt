@@ -1189,6 +1189,7 @@ int imap_cmd_step(struct ImapAccountData *adata)
           adata->lastcmd = (adata->lastcmd + 1) % adata->cmdslots;
         }
         cmd->state = cmd_status(adata->buf);
+        rc = cmd->state;
         if (cmd->state == IMAP_RES_NO || cmd->state == IMAP_RES_BAD)
         {
           mutt_message(_("IMAP command failed: %s"), adata->buf);
