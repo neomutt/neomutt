@@ -38,10 +38,12 @@ struct Alias
 {
   char *name;                 ///< Short name
   struct AddressList addr;    ///< List of Addresses the Alias expands to
+  char *comment;              ///< Free-form comment string
+  TAILQ_ENTRY(Alias) entries; ///< Linked list
+
   bool tagged;                ///< Is it tagged?
   bool del;                   ///< Is it deleted?
   short num;                  ///< Index number in list
-  TAILQ_ENTRY(Alias) entries; ///< Linked list
 };
 TAILQ_HEAD(AliasList, Alias);
 

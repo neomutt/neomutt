@@ -64,6 +64,7 @@ static const struct Mapping AliasHelp[] = {
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
  * | \%a     | Alias name
+ * | \%c     | Comments
  * | \%f     | Flags - currently, a 'd' for an alias marked for deletion
  * | \%n     | Index number
  * | \%r     | Address which alias expands to
@@ -81,6 +82,9 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
   {
     case 'a':
       mutt_format_s(buf, buflen, prec, alias->name);
+      break;
+    case 'c':
+      mutt_format_s(buf, buflen, prec, alias->comment);
       break;
     case 'f':
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);

@@ -186,6 +186,7 @@ struct ConfigDef MuttVars[] = {
   ** following \fCprintf(3)\fP-style sequences are available:
   ** .dl
   ** .dt %a  .dd Alias name
+  ** .dt %c  .dd Comment
   ** .dt %f  .dd Flags - currently, a "d" for an alias marked for deletion
   ** .dt %n  .dd Index number
   ** .dt %r  .dd Address which alias expands to
