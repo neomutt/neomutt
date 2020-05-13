@@ -4456,6 +4456,35 @@ bind index gg first-entry
 </screen>
 
       </sect2>
+
+      <sect2 id="stty">
+        <title>Terminal Keybindings</title>
+        <para>
+          Some key bindings are controlled by the terminal, and so by
+          default can't be bound inside NeoMutt.  These include
+          <literal>^C</literal>, <literal>^\</literal>, and on BSD/Mac
+          <literal>^Y</literal>.  These terminal settings can be viewed and
+          changed using the <literal>stty</literal> program.
+        </para>
+        <para>
+          <quote><literal>stty -a</literal></quote> will list the bound
+          characters, and what actions they take when pressed.  For example,
+          you may see <quote><literal>intr = ^C</literal></quote> in its
+          output.  This means typing <literal>^C</literal> will send an
+          interrupt signal.  <quote><literal>quit = ^\</literal></quote>
+          means typing <literal>^\</literal> (commonly also
+          <literal>^4</literal>) will send a quit signal.
+        </para>
+        <para>
+          To unbind a key from an action, you invoke <quote>stty action
+          undef</quote>.  For example, <quote><literal>stty quit
+          undef</literal></quote> will unbind <literal>^\</literal> (and
+          <literal>^4</literal>) from sending the quit signal.  Once unbound
+          (e.g, by placing that line in your .bashrc, or in a NeoMutt wrapper
+          script/function) you can use the key sequence in your NeoMutt
+          bindings.
+        </para>
+      </sect2>
     </sect1>
 
     <sect1 id="charset-hook">
