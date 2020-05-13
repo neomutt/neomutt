@@ -4461,14 +4461,16 @@ bind index gg first-entry
         <title>Terminal Keybindings</title>
         <para>
           Some key bindings are controlled by the terminal, and so by
-          default can't be bound inside NeoMutt.  These include
-          <literal>^C</literal>, <literal>^\</literal>, and on BSD/Mac
+          default can't be bound inside NeoMutt.  These may include
+          <literal>^C</literal>, <literal>^\</literal>, <literal>^Q</literal>,
+          <literal>^S</literal>, <literal>^Z</literal>, and on BSD/Mac
           <literal>^Y</literal>.  These terminal settings can be viewed and
           changed using the <literal>stty</literal> program.
         </para>
         <para>
           <quote><literal>stty -a</literal></quote> will list the bound
-          characters, and what actions they take when pressed.  For example,
+          characters (not all of them affect NeoMutt), and what actions they
+          take when pressed.  For example,
           you may see <quote><literal>intr = ^C</literal></quote> in its
           output.  This means typing <literal>^C</literal> will send an
           interrupt signal.  <quote><literal>quit = ^\</literal></quote>
