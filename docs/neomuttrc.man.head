@@ -189,6 +189,7 @@ A \fImime-subtype\fP of \(lq\fB*\fP\(rq matches any
 .PP
 .nf
 \fBbind\fP \fImap\fP[\fB,\fP\fImap\fP ... ] \fIkey\fP \fIfunction\fP
+\fBunbind\fP { \fB*\fP | \fImap\fP | [\fB,\fP\fImap\fP...]} [ \fIkey\fP ]
 .fi
 .IP
 This command allows you to change the default or define additional key bindings
@@ -208,6 +209,8 @@ symbolic names for the keys on your keyboard.
 .IP
 \fIfunction\fP specifies which action to take when key is pressed. Note that
 the function name is to be specified without angle brackets.
+.IP
+Missing key sequence in \fBunbind\fP command means unbind all bindings in menus given in \fImap\fP .
 .IP
 For more information on keys and functions, please consult the NeoMutt manual.
 .
@@ -488,6 +491,7 @@ The \fB\-group\fP flag adds all of the subsequent regular expressions to the
 .PP
 .nf
 \fBmacro\fP \fImenu\fP[\fB,\fP\fImenu\fP ... ] \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
+\fBunmacro\fP { \fB*\fP | \fImenu\fP | [\fB,\fP\fImenu\fP...]} [ \fIkey\fP ]
 .fi
 .IP
 This command binds the given \fIsequence\fP of keys to the given \fIkey\fP in
@@ -496,6 +500,8 @@ command above. To specify multiple menus, put only a comma between the menus.
 .IP
 Optionally you can specify a descriptive text after \fIsequence\fP, which is
 shown in the help screens if they contain a \fIdescription\fP.
+.IP
+Missing key sequence in \fBunmacro\fP command means unmacro all macros in menus given in \fImenu\fP.
 .
 .PP
 .nf

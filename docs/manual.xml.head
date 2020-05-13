@@ -4136,8 +4136,8 @@ set alias_file=~/.mail_aliases
       </para>
       <note>
         <para>
-          Missing key sequence in unmacro command means unmacro all macros in menus
-          given in <emphasis>menu</emphasis>.
+          Missing key sequence in unbind command means unibind all bindings in menus
+          given in <emphasis>map</emphasis>.
         </para>
       </note>
       <anchor id="maps" />
