@@ -74,7 +74,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
                                     const char *if_str, const char *else_str,
                                     unsigned long data, MuttFormatFlags flags)
 {
-  char fmt[128], addr[128];
+  char fmt[128], addr[1024];
   struct Alias *alias = (struct Alias *) data;
 
   switch (op)
@@ -93,8 +93,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
     case 'r':
       addr[0] = '\0';
       mutt_addrlist_write(&alias->addr, addr, sizeof(addr), true);
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, addr);
+      mutt_format_s(buf, buflen, prec, addr);
       break;
     case 't':
       buf[0] = alias->tagged ? '*' : ' ';
