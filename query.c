@@ -148,7 +148,7 @@ static void query_free(struct Query **query)
  * @param quiet If true, don't print progress messages
  * @retval ptr Query List of results
  */
-static struct Query *run_query(char *s, int quiet)
+static struct Query *run_query(char *s, bool quiet)
 {
   FILE *fp = NULL;
   struct Query *first = NULL;
@@ -363,7 +363,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     if ((mutt_get_field(_("Query: "), buf, buflen, MUTT_COMP_NO_FLAGS) == 0) &&
         (buf[0] != '\0'))
     {
-      results = run_query(buf, 0);
+      results = run_query(buf, false);
       if (!results)
         return;
     }
@@ -451,7 +451,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           break;
         }
 
-        struct Query *newresults = run_query(buf, 0);
+        struct Query *newresults = run_query(buf, false);
 
         menu->redraw = REDRAW_FULL;
         if (newresults)
@@ -678,7 +678,7 @@ int mutt_query_complete(char *buf, size_t buflen)
     return 0;
   }
 
-  struct Query *results = run_query(buf, 1);
+  struct Query *results = run_query(buf, true);
   if (results)
   {
     /* only one response? */
