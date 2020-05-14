@@ -305,7 +305,6 @@ static int mh_read_token(char *t, int *first, int *last)
  */
 int mh_read_sequences(struct MhSequences *mhs, const char *path)
 {
-  int line = 1;
   char *buf = NULL;
   size_t sz = 0;
 
@@ -319,7 +318,7 @@ int mh_read_sequences(struct MhSequences *mhs, const char *path)
   if (!fp)
     return 0; /* yes, ask callers to silently ignore the error */
 
-  while ((buf = mutt_file_read_line(buf, &sz, fp, &line, 0)))
+  while ((buf = mutt_file_read_line(buf, &sz, fp, NULL, 0)))
   {
     char *t = strtok(buf, " \t:");
     if (!t)

@@ -252,10 +252,9 @@ static int pgp_copy_checksig(FILE *fp_in, FILE *fp_out)
   if (C_PgpGoodSign && C_PgpGoodSign->regex)
   {
     char *line = NULL;
-    int lineno = 0;
     size_t linelen;
 
-    while ((line = mutt_file_read_line(line, &linelen, fp_in, &lineno, 0)))
+    while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, 0)))
     {
       if (mutt_regex_match(C_PgpGoodSign, line))
       {
@@ -299,10 +298,9 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fp_in)
   if (C_PgpDecryptionOkay && C_PgpDecryptionOkay->regex)
   {
     char *line = NULL;
-    int lineno = 0;
     size_t linelen;
 
-    while ((line = mutt_file_read_line(line, &linelen, fp_in, &lineno, 0)))
+    while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, 0)))
     {
       if (mutt_regex_match(C_PgpDecryptionOkay, line))
       {
@@ -348,14 +346,13 @@ static int pgp_check_decryption_okay(FILE *fp_in)
 {
   int rc = -1;
   char *line = NULL, *s = NULL;
-  int lineno = 0;
   size_t linelen;
   int inside_decrypt = 0;
 
   if (!C_PgpCheckGpgDecryptStatusFd)
     return pgp_check_pgp_decryption_okay_regex(fp_in);
 
-  while ((line = mutt_file_read_line(line, &linelen, fp_in, &lineno, 0)))
+  while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, 0)))
   {
     size_t plen = mutt_str_startswith(line, "[GNUPG:] ", CASE_MATCH);
     if (plen == 0)

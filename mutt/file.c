@@ -653,9 +653,9 @@ int mutt_file_sanitize_regex(struct Buffer *dest, const char *src)
 /**
  * mutt_file_read_line - Read a line from a file
  * @param[out] line     Buffer allocated on the head (optional)
- * @param[in]  size     Length of buffer (optional)
+ * @param[in]  size     Length of buffer
  * @param[in]  fp       File to read
- * @param[out] line_num Current line number
+ * @param[out] line_num Current line number (optional)
  * @param[in]  flags    Flags, e.g. #MUTT_CONT
  * @retval ptr          The allocated string
  *

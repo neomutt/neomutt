@@ -504,7 +504,6 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
     {
       FILE *fp = NULL;
       pid_t pid;
-      int line = 0;
 
       pc = tok->dptr;
       do
@@ -550,7 +549,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
 
       /* read line */
       struct Buffer expn = mutt_buffer_make(0);
-      expn.data = mutt_file_read_line(NULL, &expn.dsize, fp, &line, 0);
+      expn.data = mutt_file_read_line(NULL, &expn.dsize, fp, NULL, 0);
       mutt_file_fclose(&fp);
       filter_wait(pid);
 

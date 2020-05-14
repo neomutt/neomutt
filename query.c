@@ -155,7 +155,6 @@ static struct Query *run_query(char *s, int quiet)
   struct Query *cur = NULL;
   char *buf = NULL;
   size_t buflen;
-  int dummy = 0;
   char *msg = NULL;
   size_t msglen = 0;
   char *p = NULL;
@@ -178,8 +177,8 @@ static struct Query *run_query(char *s, int quiet)
 
   /* The query protocol first reads one NL-terminated line. If an error
    * occurs, this is assumed to be an error message. Otherwise it's ignored. */
-  msg = mutt_file_read_line(msg, &msglen, fp, &dummy, 0);
-  while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)))
+  msg = mutt_file_read_line(msg, &msglen, fp, NULL, 0);
+  while ((buf = mutt_file_read_line(buf, &buflen, fp, NULL, 0)))
   {
     p = strtok(buf, "\t\n");
     if (p)

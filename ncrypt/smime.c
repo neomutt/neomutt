@@ -2021,13 +2021,12 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
     else
     {
       char *line = NULL;
-      int lineno = 0;
       size_t linelen;
 
       fflush(fp_smime_err);
       rewind(fp_smime_err);
 
-      line = mutt_file_read_line(line, &linelen, fp_smime_err, &lineno, 0);
+      line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, 0);
       if (linelen && (mutt_str_strcasecmp(line, "verification successful") == 0))
         badsig = 0;
 
@@ -2269,12 +2268,11 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   if (type & SEC_SIGNOPAQUE)
   {
     char *line = NULL;
-    int lineno = 0;
     size_t linelen;
 
     rewind(fp_smime_err);
 
-    line = mutt_file_read_line(line, &linelen, fp_smime_err, &lineno, 0);
+    line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, 0);
     if (linelen && (mutt_str_strcasecmp(line, "verification successful") == 0))
       m->goodsig = true;
     FREE(&line);

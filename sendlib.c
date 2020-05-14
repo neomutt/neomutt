@@ -1613,7 +1613,6 @@ static void run_mime_type_query(struct Body *att)
   FILE *fp = NULL, *fp_err = NULL;
   char *buf = NULL;
   size_t buflen;
-  int dummy = 0;
   pid_t pid;
   struct Buffer *cmd = mutt_buffer_pool_get();
 
@@ -1628,7 +1627,7 @@ static void run_mime_type_query(struct Body *att)
   }
   mutt_buffer_pool_release(&cmd);
 
-  buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0);
+  buf = mutt_file_read_line(buf, &buflen, fp, NULL, 0);
   if (buf)
   {
     if (strchr(buf, '/'))
