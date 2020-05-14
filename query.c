@@ -636,7 +636,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           {
             mutt_addrlist_to_local(&al);
             strcat(buf, ", ");
-            mutt_addrlist_write(&al, buf + curpos + 1, buflen - curpos - 1, false);
+            mutt_addrlist_write(&al, buf + curpos + 2, buflen - curpos - 2, false);
             curpos = mutt_str_strlen(buf);
             mutt_addrlist_clear(&al);
           }
