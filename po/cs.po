@@ -92,8 +92,8 @@ msgstr "Vlastní jméno: "
 
 #: alias.c:477
 #, c-format
-msgid "[%s = %s] Accept?"
-msgstr "[%s = %s] Přijmout?"
+msgid "Accept?"
+msgstr "Přijmout?"
 
 #: alias.c:488 recvattach.c:531 recvattach.c:553 recvattach.c:567
 #: recvattach.c:582 recvattach.c:681
