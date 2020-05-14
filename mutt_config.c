@@ -179,7 +179,7 @@ struct ConfigDef MuttVars[] = {
   ** The default for this option is the currently used neomuttrc file, or
   ** "~/.neomuttrc" if no user neomuttrc was found.
   */
-  { "alias_format", DT_STRING|DT_NOT_EMPTY, &C_AliasFormat, IP "%4n %2f %t %-10a   %r" },
+  { "alias_format", DT_STRING|DT_NOT_EMPTY, &C_AliasFormat, IP "%3n %f%t %-15a %-56r | %c" },
   /*
   ** .pp
   ** Specifies the format of the data displayed for the "$alias" menu.  The
