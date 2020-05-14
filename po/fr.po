@@ -96,8 +96,8 @@ msgstr "Nom de la personne : "
 # , c-format
 #: alias.c:477
 #, c-format
-msgid "[%s = %s] Accept?"
-msgstr "[%s = %s] Accepter?"
+msgid "Accept?"
+msgstr "Accepter?"
 
 #: alias.c:488 recvattach.c:531 recvattach.c:553 recvattach.c:567
 #: recvattach.c:582 recvattach.c:681

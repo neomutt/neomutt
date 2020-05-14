@@ -643,6 +643,13 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     }
   }
   mutt_grouplist_destroy(&gl);
+  if (!MoreArgs(s) && (s->dptr[0] == '#'))
+  {
+    char *comment = s->dptr + 1;
+    SKIPWS(comment);
+    tmp->comment = mutt_str_strdup(comment);
+  }
+
   return MUTT_CMD_SUCCESS;
 
 bail:

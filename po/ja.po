@@ -81,8 +81,8 @@ msgstr "個人名: "
 
 #: alias.c:477
 #, c-format
-msgid "[%s = %s] Accept?"
-msgstr "[%s = %s] 了解?"
+msgid "Accept?"
+msgstr "了解?"
 
 #: alias.c:488 recvattach.c:531 recvattach.c:553 recvattach.c:567
 #: recvattach.c:582 recvattach.c:681

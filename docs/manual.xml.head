@@ -3987,6 +3987,9 @@ alternates -group me -group work address3
         <arg choice="opt" rep="repeat">
           <replaceable class="parameter">, address</replaceable>
         </arg>
+        <arg choice="opt">
+          <replaceable class="parameter"># comment</replaceable>
+        </arg>
         <command>unalias</command>
         <arg choice="opt" rep="repeat">
           <option>-group</option>
@@ -4023,8 +4026,13 @@ alternates -group me -group work address3
       </para>
 
 <screen>
-alias muttdude me@cs.hmc.edu (Michael Elkins)
-alias theguys manny, moe, jack
+<emphasis role="comment"># Some aliases, one with a comment</emphasis>
+alias alan   Alan Jones &lt;alan@example.com&gt;
+alias briony Briony Williams &lt;bw@example.com&gt;
+alias jim    James Smith &lt;js@example.com&gt; <emphasis role="comment"># Pointy-haired boss</emphasis>
+
+<emphasis role="comment"># An alias that references two other aliases</emphasis>
+alias friends alan, briony
 </screen>
 
       <para>

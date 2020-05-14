@@ -473,8 +473,20 @@ retry_name:
   mutt_str_replace(&TAILQ_FIRST(&alias->addr)->personal, buf);
 
   buf[0] = '\0';
+  if (mutt_get_field(_("Comment: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+    mutt_str_replace(&alias->comment, buf);
+
+  buf[0] = '\0';
   mutt_addrlist_write(&alias->addr, buf, sizeof(buf), true);
-  snprintf(prompt, sizeof(prompt), _("[%s = %s] Accept?"), alias->name, buf);
+  if (alias->comment)
+  {
+    snprintf(prompt, sizeof(prompt), "[%s = %s # %s] %s", alias->name, buf,
+             alias->comment, _("Accept?"));
+  }
+  else
+  {
+    snprintf(prompt, sizeof(prompt), "[%s = %s] %s", alias->name, buf, _("Accept?"));
+  }
   if (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
   {
     mutt_alias_free(&alias);
@@ -485,7 +497,7 @@ retry_name:
   TAILQ_INSERT_TAIL(&Aliases, alias, entries);
 
   mutt_str_strfcpy(buf, C_AliasFile, sizeof(buf));
-  if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE) != 0)
+  if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) != 0)
     return;
   mutt_expand_path(buf, sizeof(buf));
   FILE *fp_alias = fopen(buf, "a+");
@@ -524,6 +536,8 @@ retry_name:
   mutt_addrlist_write(&alias->addr, buf, sizeof(buf), false);
   recode_buf(buf, sizeof(buf));
   write_safe_address(fp_alias, buf);
+  if (alias->comment)
+    fprintf(fp_alias, " # %s", alias->comment);
   fputc('\n', fp_alias);
   if (mutt_file_fsync_close(&fp_alias) != 0)
     mutt_perror(_("Trouble adding alias"));
@@ -751,6 +765,7 @@ void mutt_alias_free(struct Alias **ptr)
 
   mutt_alias_delete_reverse(a);
   FREE(&a->name);
+  FREE(&a->comment);
   mutt_addrlist_clear(&(a->addr));
   FREE(ptr);
 }
