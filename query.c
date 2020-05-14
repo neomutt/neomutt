@@ -234,18 +234,18 @@ static int query_search(struct Menu *menu, regex_t *rx, int line)
   struct QueryEntry *table = menu->data;
   struct Query *query = table[line].data;
 
-  if (query->name && !regexec(rx, query->name, 0, NULL, 0))
+  if (query->name && (regexec(rx, query->name, 0, NULL, 0) == 0))
     return 0;
-  if (query->other && !regexec(rx, query->other, 0, NULL, 0))
+  if (query->other && (regexec(rx, query->other, 0, NULL, 0) == 0))
     return 0;
   if (!TAILQ_EMPTY(&query->addr))
   {
     struct Address *addr = TAILQ_FIRST(&query->addr);
-    if (addr->personal && !regexec(rx, addr->personal, 0, NULL, 0))
+    if (addr->personal && (regexec(rx, addr->personal, 0, NULL, 0) == 0))
     {
       return 0;
     }
-    if (addr->mailbox && !regexec(rx, addr->mailbox, 0, NULL, 0))
+    if (addr->mailbox && (regexec(rx, addr->mailbox, 0, NULL, 0) == 0))
     {
       return 0;
     }
