@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <limits.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 struct TestValue
 {
@@ -48,7 +49,7 @@ static const struct TestValue tests[] = {
   { "4294967295",  0,    4294967295 },
 
   // Out of range tests
-#if (__WORDSIZE == 64)
+#if LONG_IS_64
   { "4294967296",  -2,   0 },
   { "4294967297",  -2,   0 },
   { "4294967298",  -2,   0 },
@@ -60,7 +61,7 @@ static const struct TestValue tests[] = {
   { "18446744073709551616", -1, 0 },
 
   // Invalid tests
-#if (__WORDSIZE == 64)
+#if LONG_IS_64
   { "-3",          -2,   0 },
   { " -3",         -2,   0 },
   { "  -3",        -2,   0 },

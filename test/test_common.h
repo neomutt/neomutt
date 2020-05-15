@@ -39,4 +39,6 @@ void test_init(void);
     }                                                                          \
   } while (false)
 
+#define LONG_IS_64 (LONG_MAX == 9223372036854775807)
+
 #endif /* TEST_TEST_COMMON_H */
