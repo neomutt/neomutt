@@ -986,7 +986,7 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool
   while (true)
   {
     resp[0] = '\0';
-    if (mutt_get_field(prompt, resp, sizeof(resp), MUTT_CLEAR) != 0)
+    if (mutt_get_field(prompt, resp, sizeof(resp), MUTT_COMP_NO_FLAGS) != 0)
       return NULL;
 
     key = smime_get_key_by_str(resp, abilities, only_public_key);

@@ -5213,7 +5213,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
   while (true)
   {
     resp[0] = '\0';
-    if (mutt_get_field(tag, resp, sizeof(resp), MUTT_CLEAR) != 0)
+    if (mutt_get_field(tag, resp, sizeof(resp), MUTT_COMP_NO_FLAGS) != 0)
       return NULL;
 
     if (whatfor)

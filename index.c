@@ -3679,7 +3679,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           /* L10N: This is the prompt for <mark-message>.  Whatever they
              enter will be prefixed by $mark_macro_prefix and will become
              a macro hotkey to jump to the currently selected message. */
-          if (!mutt_get_field(_("Enter macro stroke: "), buf2, sizeof(buf2), MUTT_CLEAR) &&
+          if (!mutt_get_field(_("Enter macro stroke: "), buf2, sizeof(buf2), MUTT_COMP_NO_FLAGS) &&
               buf2[0])
           {
             char str[256], macro[256];

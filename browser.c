@@ -2173,7 +2173,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             else
               snprintf(tmp2, sizeof(tmp2), _("Unsubscribe pattern: "));
             /* buf comes from the buffer pool, so defaults to size 1024 */
-            if ((mutt_buffer_get_field(tmp2, buf, MUTT_COMP_NO_FLAGS) != 0) ||
+            if ((mutt_buffer_get_field(tmp2, buf, MUTT_PATTERN) != 0) ||
                 mutt_buffer_is_empty(buf))
             {
               break;

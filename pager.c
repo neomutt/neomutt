@@ -2665,7 +2665,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (mutt_get_field(((ch == OP_SEARCH) || (ch == OP_SEARCH_NEXT)) ?
                                _("Search for: ") :
                                _("Reverse search for: "),
-                           buf, sizeof(buf), MUTT_CLEAR) != 0)
+                           buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN) != 0)
         {
           break;
         }
