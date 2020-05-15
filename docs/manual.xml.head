@@ -7848,7 +7848,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~b <emphasis>EXPR</emphasis></entry>
-                <entry>****</entry>
+                <entry>d)</entry>
                 <entry>
                   messages which contain <emphasis>EXPR</emphasis> in the
                   message body
@@ -7866,7 +7866,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~B <emphasis>EXPR</emphasis></entry>
-                <entry>****</entry>
+                <entry>d)</entry>
                 <entry>
                   messages which contain <emphasis>EXPR</emphasis>in the whole
                   message
@@ -7986,7 +7986,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~h <emphasis>EXPR</emphasis></entry>
-                <entry>****</entry>
+                <entry>d)</entry>
                 <entry>
                   messages which contain <emphasis>EXPR</emphasis>in the
                   message header
@@ -8062,7 +8062,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~m [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
-                <entry>***</entry>
+                <entry>c)</entry>
                 <entry>
                   messages with numbers in the range <emphasis>MIN</emphasis>
                   to <emphasis>MAX</emphasis>
@@ -8070,28 +8070,28 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~m &lt;[<emphasis>MAX</emphasis>]</entry>
-                <entry>***</entry>
+                <entry>c)</entry>
                 <entry>
                   messages with numbers less than <emphasis>MAX</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>~m &gt;[<emphasis>MIN</emphasis>]</entry>
-                <entry>***</entry>
+                <entry>c)</entry>
                 <entry>
                   messages with numbers greater than <emphasis>MIN</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>~m [<emphasis>M</emphasis>]</entry>
-                <entry>***</entry>
+                <entry>c)</entry>
                 <entry>
                   just message number <emphasis>M</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>~m [<emphasis>MIN</emphasis>],[<emphasis>MAX</emphasis>]</entry>
-                <entry>***</entry>
+                <entry>c)</entry>
                 <entry>
                   messages with offsets (from selected message) in the range
                   <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis>
@@ -8099,7 +8099,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~M <emphasis>EXPR</emphasis></entry>
-                <entry>****</entry>
+                <entry>d)</entry>
                 <entry>
                    messages which contain a mime Content-Type matching
                    <emphasis>EXPR</emphasis>
@@ -8107,7 +8107,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~n [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
-                <entry>*</entry>
+                <entry>a)</entry>
                 <entry>
                   messages with a score in the range <emphasis>MIN</emphasis>
                   to <emphasis>MAX</emphasis>
@@ -8231,7 +8231,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~X [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
-                <entry>*,&#160;****</entry>
+                <entry>a), d)</entry>
                 <entry>
                   messages with <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> attachments
                 </entry>
@@ -8253,7 +8253,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </row>
               <row>
                 <entry>~z [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
-                <entry>*,&#160;**</entry>
+                <entry>a), b)</entry>
                 <entry>
                   messages with a size in the range <emphasis>MIN</emphasis> to
                   <emphasis>MAX</emphasis>
@@ -8329,22 +8329,22 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
           <link linkend="addrgroup">address group</link>.
         </para>
         <para>
-          *) The forms <quote>&lt;[<emphasis>MAX</emphasis>]</quote>,
+          a) The forms <quote>&lt;[<emphasis>MAX</emphasis>]</quote>,
           <quote>&gt;[<emphasis>MIN</emphasis>]</quote>,
           <quote>[<emphasis>MIN</emphasis>]-</quote> and
           <quote>-[<emphasis>MAX</emphasis>]</quote> are allowed, too.
         </para>
         <para>
-          **) The suffixes <quote>K</quote> and <quote>M</quote> are allowed to
+          b) The suffixes <quote>K</quote> and <quote>M</quote> are allowed to
           specify kilobyte and megabyte respectively.
         </para>
         <para>
-          ***) The message number ranges (introduced by <literal>~m</literal>)
+          c) The message number ranges (introduced by <literal>~m</literal>)
           are even more general and powerful than the other types of ranges.
           Read on and see <xref linkend="message-ranges" /> below.
         </para>
         <para>
-          ****) These patterns read each message in, and can therefore be much
+          d) These patterns read each message in, and can therefore be much
           slower.  Over IMAP this will entail downloading each message.  They
           can not be used for <link linkend="score-command">message scoring</link>,
           and it is recommended to avoid using them for index coloring.
