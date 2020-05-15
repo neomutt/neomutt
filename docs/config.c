@@ -4078,7 +4078,7 @@
 { "sidebar_sort_method", DT_SORT, SORT_ORDER },
 /*
 ** .pp
-** Specifies how to sort entries in the file browser.  By default, the
+** Specifies how to sort mailbox entries in the sidebar.  By default, the
 ** entries are sorted alphabetically.  Valid values:
 ** .il
 ** .dd alpha (alphabetically)
@@ -4092,7 +4092,7 @@
 ** .ie
 ** .pp
 ** You may optionally use the "reverse-" prefix to specify reverse sorting
-** order (example: "\fCset sort_browser=reverse-date\fP").
+** order (example: "\fCset sidebar_sort_method=reverse-alpha\fP").
 */
 
 { "sidebar_visible", DT_BOOL, false },
