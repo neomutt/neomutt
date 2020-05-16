@@ -127,6 +127,7 @@ struct StoreOps
   const char *(*version)(void);
 };
 
+const char *           store_backend_list(void);
 const struct StoreOps *store_get_backend_ops(const char *str);
 bool                   store_is_valid_backend(const char *str);
 

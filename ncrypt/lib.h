@@ -57,9 +57,9 @@
 struct Address;
 struct Body;
 struct Buffer;
-struct Envelope;
 struct Email;
 struct EmailList;
+struct Envelope;
 struct Mailbox;
 struct State;
 

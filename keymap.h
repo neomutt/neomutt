@@ -25,6 +25,7 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <stdint.h>
 #include "mutt/lib.h"
 #include "mutt_commands.h"
 
@@ -126,11 +127,11 @@ const char *mutt_get_func(const struct Binding *bindings, int op);
 
 void mutt_keys_free(void);
 
-enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult mutt_parse_push(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_bind   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_exec   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_macro  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_push   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_unbind (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_unmacro(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 #endif /* MUTT_KEYMAP_H */

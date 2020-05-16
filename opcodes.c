@@ -21,7 +21,6 @@
  */
 
 #include <stddef.h>
-#include "mutt/lib.h"
 #include "opcodes.h"
 
 #define DEFINE_HELP_MESSAGE(opcode, op_string) { #opcode, op_string },

@@ -30,7 +30,6 @@
 struct Buffer;
 struct ConfigSet;
 struct HashElem;
-struct ConfigDef;
 
 /* Config Set Results */
 #define CSR_SUCCESS       0 ///< Action completed successfully

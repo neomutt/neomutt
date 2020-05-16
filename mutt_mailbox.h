@@ -1,7 +1,6 @@
 #ifndef MUTT_MUTT_MAILBOX_H
 #define MUTT_MUTT_MAILBOX_H
 
-#include <stddef.h>
 #include <stdbool.h>
 
 struct Buffer;

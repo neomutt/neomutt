@@ -23,6 +23,9 @@
 #ifndef MUTT_OPCODES_H
 #define MUTT_OPCODES_H
 
+#include "config.h"
+#include "mutt/lib.h"
+
 // clang-format off
 #ifdef USE_AUTOCRYPT
 #define OPS_AUTOCRYPT(_fmt) \

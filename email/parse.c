@@ -993,6 +993,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         mutt_addrlist_parse(&env->x_original_to, p);
         matched = true;
       }
+      break;
 
     default:
       break;

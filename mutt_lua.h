@@ -23,11 +23,13 @@
 #ifndef MUTT_MUTT_LUA_H
 #define MUTT_MUTT_LUA_H
 
+#include <stdint.h>
 #include "mutt_commands.h"
+#include <stdint.h>
 
 struct Buffer;
 
-enum CommandResult mutt_lua_parse(struct Buffer *tmp, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_lua_parse      (struct Buffer *tmp, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 #endif /* MUTT_MUTT_LUA_H */

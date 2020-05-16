@@ -25,6 +25,7 @@
 #define MUTT_COMMAND_PARSE_H
 
 #include "config.h"
+#include <stdint.h>
 #include "mutt_commands.h"
 
 struct Buffer;

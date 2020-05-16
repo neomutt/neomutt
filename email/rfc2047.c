@@ -30,6 +30,7 @@
 
 #include "config.h"
 #include <assert.h>
+#include <ctype.h>
 #include <errno.h>
 #include <iconv.h>
 #include <stdbool.h>

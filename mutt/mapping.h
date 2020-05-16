@@ -23,6 +23,8 @@
 #ifndef MUTT_LIB_MAPPING_H
 #define MUTT_LIB_MAPPING_H
 
+#include <stddef.h>
+
 /**
  * struct Mapping - Mapping between user-readable string and a constant
  */

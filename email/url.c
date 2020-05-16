@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <stdbool.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "url.h"

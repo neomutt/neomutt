@@ -23,6 +23,7 @@
 #ifndef MUTT_EMAIL_PARSE_H
 #define MUTT_EMAIL_PARSE_H
 
+#include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include "mime.h"

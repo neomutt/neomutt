@@ -33,12 +33,6 @@
 #include "mutt/lib.h"
 #include "lib.h"
 
-#define COMPRESS_EXPORT(name) extern const struct ComprOps compr_##name##_ops;
-COMPRESS_EXPORT(lz4)
-COMPRESS_EXPORT(zlib)
-COMPRESS_EXPORT(zstd)
-#undef COMPRESS_EXPORT
-
 /**
  * compr_ops - Backend implementations
  */

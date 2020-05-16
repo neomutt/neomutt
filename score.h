@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include "mutt_commands.h"
+#include <stdint.h>
 
 struct Buffer;
 struct Email;

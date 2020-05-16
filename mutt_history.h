@@ -24,8 +24,9 @@
 #define MUTT_MUTT_HISTORY_H
 
 #include <stdio.h>
-#include "mutt/lib.h"
 #include "history/lib.h"
+
+struct NotifyCallback;
 
 void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass);
 int  mutt_hist_observer(struct NotifyCallback *nc);

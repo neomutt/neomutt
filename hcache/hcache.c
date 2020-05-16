@@ -37,6 +37,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -75,7 +76,7 @@ char *C_HeaderCacheCompressMethod; ///< Config: (hcache) Enable generic hcache d
  * header_size - Compute the size of the header with uuid validity
  * and crc.
  */
-size_t header_size(void)
+static size_t header_size(void)
 {
   return sizeof(int) + sizeof(uint32_t);
 }

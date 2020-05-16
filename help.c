@@ -35,6 +35,7 @@
 #include <wchar.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "functions.h"
 #include "globals.h"
 #include "keymap.h"
