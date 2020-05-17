@@ -470,7 +470,7 @@ static char *smime_key_flags(KeyFlags flags)
  */
 static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct SmimeKey **table = menu->data;
+  struct SmimeKey **table = menu->mdata;
   struct SmimeKey *key = table[line];
   char *truststate = NULL;
   switch (key->trust)
@@ -628,7 +628,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   menu->max = table_index;
   menu->make_entry = smime_make_entry;
   menu->help = helpstr;
-  menu->data = table;
+  menu->mdata = table;
   menu->title = title;
   mutt_menu_push_current(menu);
   /* sorting keys might be done later - TODO */

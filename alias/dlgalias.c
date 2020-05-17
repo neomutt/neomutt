@@ -115,7 +115,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
  */
 static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  const struct AliasMenuData *mdata = menu->data;
+  const struct AliasMenuData *mdata = menu->mdata;
   const struct AliasView *av = mdata->av[line];
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(C_AliasFormat),
@@ -127,7 +127,7 @@ static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
  */
 static int alias_tag(struct Menu *menu, int sel, int act)
 {
-  struct AliasMenuData *mdata = (struct AliasMenuData *) menu->data;
+  struct AliasMenuData *mdata = (struct AliasMenuData *) menu->mdata;
   struct AliasView *av = mdata->av[sel];
 
   bool ot = av->is_tagged;
@@ -149,7 +149,7 @@ static int alias_data_observer(struct NotifyCallback *nc)
 
   struct EventAlias *ea = nc->event_data;
   struct Menu *menu = nc->global_data;
-  struct AliasMenuData *mdata = menu->data;
+  struct AliasMenuData *mdata = menu->mdata;
   struct Alias *alias = ea->alias;
 
   if (nc->event_subtype == NT_ALIAS_NEW)
@@ -270,7 +270,7 @@ static void alias_menu(char *buf, size_t buflen, struct AliasMenuData *mdata)
   mutt_menu_push_current(menu);
 
   menu->max = mdata->num_views;
-  menu->data = mdata;
+  menu->mdata = mdata;
   notify_observer_add(NeoMutt->notify, alias_data_observer, menu);
 
   if ((C_SortAlias & SORT_MASK) != SORT_ORDER)

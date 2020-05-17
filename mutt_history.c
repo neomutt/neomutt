@@ -79,7 +79,7 @@ static const char *history_format_str(char *buf, size_t buflen, size_t col, int 
  */
 static void history_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  char *entry = ((char **) menu->data)[line];
+  char *entry = ((char **) menu->mdata)[line];
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, "%s", history_format_str,
                       (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
@@ -153,7 +153,7 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
   mutt_menu_push_current(menu);
 
   menu->max = match_count;
-  menu->data = matches;
+  menu->mdata = matches;
 
   while (!done)
   {

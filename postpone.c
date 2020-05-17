@@ -206,7 +206,7 @@ void mutt_update_num_postponed(void)
  */
 static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct Context *ctx = menu->data;
+  struct Context *ctx = menu->mdata;
 
   mutt_make_string_flags(buf, buflen, menu->win_index->state.cols,
                          NONULL(C_IndexFormat), ctx, ctx->mailbox,
@@ -274,7 +274,7 @@ static struct Email *select_msg(struct Context *ctx)
   menu->make_entry = post_make_entry;
   menu->max = ctx->mailbox->msg_count;
   menu->title = _("Postponed Messages");
-  menu->data = ctx;
+  menu->mdata = ctx;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_POSTPONE, PostponeHelp);
   mutt_menu_push_current(menu);
 

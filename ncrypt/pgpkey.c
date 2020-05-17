@@ -343,7 +343,7 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
  */
 static void pgp_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct PgpUid **key_table = menu->data;
+  struct PgpUid **key_table = menu->mdata;
   struct PgpEntry entry;
 
   entry.uid = key_table[line];
@@ -723,7 +723,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   menu->max = i;
   menu->make_entry = pgp_make_entry;
   menu->help = helpstr;
-  menu->data = key_table;
+  menu->mdata = key_table;
   mutt_menu_push_current(menu);
 
   if (p)

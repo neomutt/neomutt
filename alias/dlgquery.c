@@ -96,7 +96,7 @@ static bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
  */
 static int query_search(struct Menu *menu, regex_t *rx, int line)
 {
-  struct AliasMenuData *mdata = menu->data;
+  struct AliasMenuData *mdata = menu->mdata;
   struct AliasView *av = mdata->av[line];
   struct Alias *alias = av->alias;
 
@@ -197,7 +197,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
  */
 static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct AliasMenuData *mdata = menu->data;
+  struct AliasMenuData *mdata = menu->mdata;
   struct AliasView *av = mdata->av[line];
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(C_QueryFormat),
@@ -209,7 +209,7 @@ static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
  */
 static int query_tag(struct Menu *menu, int sel, int act)
 {
-  struct AliasMenuData *mdata = menu->data;
+  struct AliasMenuData *mdata = menu->mdata;
   struct AliasView *av = mdata->av[sel];
 
   bool ot = av->is_tagged;
@@ -366,7 +366,7 @@ static void query_menu(char *buf, size_t buflen, struct AliasList *all, bool ret
   char helpstr[1024];
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
   menu->max = mdata->num_views;
-  menu->data = mdata;
+  menu->mdata = mdata;
   mutt_menu_push_current(menu);
 
   int done = 0;

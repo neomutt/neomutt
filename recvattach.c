@@ -437,7 +437,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
  */
 static void attach_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct AttachCtx *actx = menu->data;
+  struct AttachCtx *actx = menu->mdata;
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                       NONULL(C_AttachFormat), attach_format_str,
@@ -449,7 +449,7 @@ static void attach_make_entry(char *buf, size_t buflen, struct Menu *menu, int l
  */
 int attach_tag(struct Menu *menu, int sel, int act)
 {
-  struct AttachCtx *actx = menu->data;
+  struct AttachCtx *actx = menu->mdata;
   struct Body *cur = actx->idx[actx->v2r[sel]]->content;
   bool ot = cur->tagged;
 
@@ -1365,7 +1365,7 @@ static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *men
     mutt_generate_recvattach_list(actx, actx->email, actx->email->content,
                                   actx->fp_root, -1, 0, 0);
     mutt_attach_init(actx);
-    menu->data = actx;
+    menu->mdata = actx;
   }
 
   mutt_update_tree(actx);

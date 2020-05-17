@@ -3646,7 +3646,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
  */
 static void crypt_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct CryptKeyInfo **key_table = menu->data;
+  struct CryptKeyInfo **key_table = menu->mdata;
   struct CryptEntry entry;
 
   entry.key = key_table[line];
@@ -4835,7 +4835,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   menu->max = i;
   menu->make_entry = crypt_make_entry;
   menu->help = helpstr;
-  menu->data = key_table;
+  menu->mdata = key_table;
   mutt_menu_push_current(menu);
 
   {
