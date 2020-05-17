@@ -826,7 +826,7 @@ static const char *get_message_last_filename(notmuch_message_t *msg)
  */
 static void progress_reset(struct Mailbox *m)
 {
-  if (m->quiet)
+  if (!m->verbose)
     return;
 
   struct NmMboxData *mdata = nm_mdata_get(m);
@@ -849,7 +849,7 @@ static void progress_update(struct Mailbox *m, notmuch_query_t *q)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
 
-  if (m->quiet || !mdata || mdata->noprogress)
+  if (!m->verbose || !mdata || mdata->noprogress)
     return;
 
   if (!mdata->progress_ready && q)
@@ -2348,7 +2348,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 
   mutt_debug(LL_DEBUG1, "nm: sync start\n");
 
-  if (!m->quiet)
+  if (m->verbose)
   {
     /* all is in this function so we don't use data->progress here */
     char msg[PATH_MAX];
@@ -2367,7 +2367,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 
     struct NmEmailData *edata = e->edata;
 
-    if (!m->quiet)
+    if (m->verbose)
       mutt_progress_update(&progress, i, -1);
 
     *old_file = '\0';

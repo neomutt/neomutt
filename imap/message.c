@@ -736,7 +736,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
   struct ImapMboxData *mdata = imap_mdata_get(m);
   int idx = m->msg_count;
 
-  if (!m->quiet)
+  if (m->verbose)
   {
     /* L10N: Comparing the cached data with the IMAP server's data */
     mutt_progress_init(&progress, _("Evaluating cache..."), MUTT_PROGRESS_READ, msn_end);
@@ -758,7 +758,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
     if (SigInt && query_abort_header_download(adata))
       return -1;
 
-    if (!m->quiet)
+    if (m->verbose)
       mutt_progress_update(&progress, msgno, -1);
 
     memset(&h, 0, sizeof(h));
@@ -950,7 +950,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   struct Mailbox *m = adata->mailbox;
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
-  if (!m->quiet)
+  if (m->verbose)
   {
     /* L10N: Fetching IMAP flag changes, using the CONDSTORE extension */
     mutt_progress_init(&progress, _("Fetching flag updates..."), MUTT_PROGRESS_READ, msn_end);
@@ -967,7 +967,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
     if (SigInt && query_abort_header_download(adata))
       return -1;
 
-    if (!m->quiet)
+    if (m->verbose)
       mutt_progress_update(&progress, msgno, -1);
 
     /* cmd_parse_fetch will update the flags */
@@ -1103,7 +1103,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   unlink(mutt_b2s(tempfile));
   mutt_buffer_pool_release(&tempfile);
 
-  if (!m->quiet)
+  if (m->verbose)
   {
     mutt_progress_init(&progress, _("Fetching message headers..."),
                        MUTT_PROGRESS_READ, msn_end);
@@ -1136,7 +1136,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
       if (initial_download && SigInt && query_abort_header_download(adata))
         goto bail;
 
-      if (!m->quiet)
+      if (m->verbose)
         mutt_progress_update(&progress, msgno, -1);
 
       rewind(fp);
@@ -1509,7 +1509,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   }
   rewind(fp);
 
-  if (!m->quiet)
+  if (m->verbose)
     mutt_progress_init(&progress, _("Uploading message..."), MUTT_PROGRESS_NET, len);
 
   mutt_date_make_imap(internaldate, sizeof(internaldate), msg->received);
@@ -1551,7 +1551,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
       sent += len;
       if (flush_buffer(buf, &len, adata->conn) < 0)
         goto fail;
-      if (!m->quiet)
+      if (m->verbose)
         mutt_progress_update(&progress, sent, -1);
     }
   }
@@ -1918,7 +1918,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   /* This function is called in a few places after endwin()
    * e.g. mutt_pipe_message(). */
-  output_progress = !isendwin() && !m->quiet;
+  output_progress = !isendwin() && m->verbose;
   if (output_progress)
     mutt_message(_("Fetching message..."));
 

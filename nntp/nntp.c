@@ -1131,7 +1131,7 @@ static int parse_overview_line(char *line, void *data)
   if (!fc->messages[anum - fc->first])
   {
     /* progress */
-    if (!m->quiet)
+    if (m->verbose)
       mutt_progress_update(&fc->progress, anum - fc->first + 1, -1);
     return 0;
   }
@@ -1242,7 +1242,7 @@ static int parse_overview_line(char *line, void *data)
     email_free(&e);
 
   /* progress */
-  if (!m->quiet)
+  if (m->verbose)
     mutt_progress_update(&fc->progress, anum - fc->first + 1, -1);
   return 0;
 }
@@ -1287,7 +1287,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   /* fetch list of articles */
   if (C_NntpListgroup && mdata->adata->hasLISTGROUP && !mdata->deleted)
   {
-    if (!m->quiet)
+    if (m->verbose)
       mutt_message(_("Fetching list of articles..."));
     if (mdata->adata->hasLISTGROUPrange)
       snprintf(buf, sizeof(buf), "LISTGROUP %s %u-%u\r\n", mdata->group, first, last);
@@ -1329,14 +1329,14 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   }
 
   /* fetching header from cache or server, or fallback to fetch overview */
-  if (!m->quiet)
+  if (m->verbose)
   {
     mutt_progress_init(&fc.progress, _("Fetching message headers..."),
                        MUTT_PROGRESS_READ, last - first + 1);
   }
   for (current = first; current <= last && rc == 0; current++)
   {
-    if (!m->quiet)
+    if (m->verbose)
       mutt_progress_update(&fc.progress, current - first + 1, -1);
 
 #ifdef USE_HCACHE
@@ -1707,8 +1707,8 @@ static int check_mailbox(struct Mailbox *m)
   if (mdata->last_message > mdata->last_loaded)
   {
     int oldmsgcount = m->msg_count;
-    bool quiet = m->quiet;
-    m->quiet = true;
+    bool verbose = m->verbose;
+    m->verbose = false;
 #ifdef USE_HCACHE
     if (!hc)
     {
@@ -1718,7 +1718,7 @@ static int check_mailbox(struct Mailbox *m)
 #endif
     int old_msg_count = m->msg_count;
     rc2 = nntp_fetch_headers(m, hc, mdata->last_loaded + 1, mdata->last_message, false);
-    m->quiet = quiet;
+    m->verbose = verbose;
     if (rc2 == 0)
     {
       if (m->msg_count > old_msg_count)
@@ -2304,7 +2304,6 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
   struct ChildCtx cc;
   char buf[256];
   int rc;
-  bool quiet;
   void *hc = NULL;
 
   if (!mdata || !mdata->adata)
@@ -2339,8 +2338,8 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
   }
 
   /* fetch all found messages */
-  quiet = m->quiet;
-  m->quiet = true;
+  bool verbose = m->verbose;
+  m->verbose = false;
 #ifdef USE_HCACHE
   hc = nntp_hcache_open(mdata);
 #endif
@@ -2357,7 +2356,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
 #endif
-  m->quiet = quiet;
+  m->verbose = verbose;
   FREE(&cc.child);
   return (rc < 0) ? -1 : 0;
 }

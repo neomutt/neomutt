@@ -115,7 +115,7 @@ struct Mailbox
   bool dontwrite              : 1;    ///< Don't write the mailbox on close
   bool first_check_stats_done : 1;    ///< True when the check have been done at least on time
   bool peekonly               : 1;    ///< Just taking a glance, revert atime
-  bool quiet                  : 1;    ///< Inhibit status messages?
+  bool verbose                : 1;    ///< Display status messages?
   bool readonly               : 1;    ///< Don't allow changes to the mailbox
 
   AclFlags rights;                    ///< ACL bits, see #AclFlags

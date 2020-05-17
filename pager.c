@@ -2397,10 +2397,10 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
             index_hint = e->index;
 
-            bool q = Context->mailbox->quiet;
-            Context->mailbox->quiet = true;
+            bool verbose = Context->mailbox->verbose;
+            Context->mailbox->verbose = false;
             update_index(rd.menu, Context, check, oldcount, index_hint);
-            Context->mailbox->quiet = q;
+            Context->mailbox->verbose = verbose;
 
             rd.menu->max = Context->mailbox->vcount;
 

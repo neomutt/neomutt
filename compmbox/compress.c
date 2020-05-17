@@ -301,7 +301,7 @@ static int execute_command(struct Mailbox *m, const char *command, const char *p
   if (!m || !command || !progress)
     return 0;
 
-  if (!m->quiet)
+  if (m->verbose)
     mutt_message(progress, m->realpath);
 
   int rc = 1;

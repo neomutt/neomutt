@@ -301,7 +301,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   ctx->msg_not_read_yet = -1;
   ctx->collapsed = false;
 
-  m->quiet = (flags & MUTT_QUIET);
+  m->verbose = !(flags & MUTT_QUIET);
   if (flags & MUTT_READONLY)
     m->readonly = true;
   m->peekonly = (flags & MUTT_PEEK);
@@ -349,7 +349,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
    * flag to indicate that we should really refresh the screen.  */
   OptForceRefresh = true;
 
-  if (!m->quiet)
+  if (m->verbose)
     mutt_message(_("Reading %s..."), mailbox_path(m));
 
   // Clear out any existing emails
@@ -380,7 +380,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
       OptSortSubthreads = false;
       OptNeedRescore = false;
     }
-    if (!m->quiet)
+    if (m->verbose)
       mutt_clear_error();
     if (rc == -2)
     {
@@ -455,7 +455,7 @@ static int sync_mailbox(struct Mailbox *m, int *index_hint)
   if (!m || !m->mx_ops || !m->mx_ops->mbox_sync)
     return -1;
 
-  if (!m->quiet)
+  if (m->verbose)
   {
     /* L10N: Displayed before/as a mailbox is being synced */
     mutt_message(_("Writing %s..."), mailbox_path(m));
@@ -465,7 +465,7 @@ static int sync_mailbox(struct Mailbox *m, int *index_hint)
   if (rc != 0)
   {
     mutt_debug(LL_DEBUG2, "mbox_sync returned: %d\n", rc);
-    if ((rc < 0) && !m->quiet)
+    if ((rc < 0) && m->verbose)
     {
       /* L10N: Displayed if a mailbox sync fails */
       mutt_error(_("Unable to write %s"), mailbox_path(m));
@@ -710,7 +710,7 @@ int mx_mbox_close(struct Context **ptr)
 
   if (move_messages)
   {
-    if (!m->quiet)
+    if (m->verbose)
       mutt_message(_("Moving read messages to %s..."), mutt_b2s(mbox));
 
 #ifdef USE_IMAP
@@ -781,7 +781,7 @@ int mx_mbox_close(struct Context **ptr)
   }
   else if (!m->changed && (m->msg_deleted == 0))
   {
-    if (!m->quiet)
+    if (m->verbose)
       mutt_message(_("Mailbox is unchanged"));
     if ((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF))
       mbox_reset_atime(m, NULL);
@@ -838,7 +838,7 @@ int mx_mbox_close(struct Context **ptr)
     }
   }
 
-  if (!m->quiet)
+  if (m->verbose)
   {
     if (move_messages)
     {
@@ -926,7 +926,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (!m->changed && (m->msg_deleted == 0))
   {
-    if (!m->quiet)
+    if (m->verbose)
       mutt_message(_("Mailbox is unchanged"));
     return 0;
   }
@@ -985,13 +985,13 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
 #ifdef USE_IMAP
     if ((m->type == MUTT_IMAP) && !purge)
     {
-      if (!m->quiet)
+      if (m->verbose)
         mutt_message(_("Mailbox checkpointed"));
     }
     else
 #endif
     {
-      if (!m->quiet)
+      if (m->verbose)
         mutt_message(_("%d kept, %d deleted"), msgcount - deleted, deleted);
     }
 

@@ -1584,7 +1584,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
       mutt_debug(LL_DEBUG1, "could not queue copy\n");
       goto out;
     }
-    else if (!m->quiet)
+    else if (m->verbose)
     {
       mutt_message(ngettext("Copying %d message to %s...", "Copying %d messages to %s...", rc),
                    rc, dest_mdata->name);
@@ -1692,7 +1692,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
         if (e->deleted && e->changed)
           e->active = false;
       }
-      if (!m->quiet)
+      if (m->verbose)
       {
         mutt_message(ngettext("Marking %d message deleted...",
                               "Marking %d messages deleted...", rc),
@@ -1732,7 +1732,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
       if ((e->env && e->env->changed) || e->attach_del)
       {
         /* L10N: The plural is chosen by the last %d, i.e. the total number */
-        if (!m->quiet)
+        if (m->verbose)
         {
           mutt_message(ngettext("Saving changed message... [%d/%d]",
                                 "Saving changed messages... [%d/%d]", m->msg_count),
@@ -1823,7 +1823,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   /* We must send an EXPUNGE command if we're not closing. */
   if (expunge && !close && (m->rights & MUTT_ACL_DELETE))
   {
-    if (!m->quiet)
+    if (m->verbose)
       mutt_message(_("Expunging messages from server..."));
     /* Set expunge bit so we don't get spurious reopened messages */
     mdata->reopen |= IMAP_EXPUNGE_EXPECTED;
@@ -2064,7 +2064,7 @@ static int imap_mbox_open(struct Mailbox *m)
   m->rights = 0;
   mdata->new_mail_count = 0;
 
-  if (!m->quiet)
+  if (m->verbose)
     mutt_message(_("Selecting %s..."), mdata->name);
 
   /* pipeline ACL test */
