@@ -1694,7 +1694,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
     gpgme_verify_result_t result = gpgme_op_verify_result(ctx);
 
     for (sig2 = result->signatures, i = 0; sig2 && (i < idx); sig2 = sig2->next, i++)
-      ;
+      ; // do nothing
 
     state_puts(s, _("Warning: The signature expired at: "));
     print_time(sig2 ? sig2->exp_timestamp : 0, s);
@@ -1733,7 +1733,8 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
     /* Try to figure out some more detailed system error information. */
     result = gpgme_op_verify_result(ctx);
     for (sig2 = result->signatures, i = 0; sig2 && (i < idx); sig2 = sig2->next, i++)
-      ;
+      ; // do nothing
+
     if (sig2)
     {
       t0 = "";
@@ -1842,7 +1843,7 @@ static void show_one_sig_validity(gpgme_ctx_t ctx, int idx, struct State *s)
   gpgme_verify_result_t result = gpgme_op_verify_result(ctx);
   if (result)
     for (sig = result->signatures; sig && (idx > 0); sig = sig->next, idx--)
-      ;
+      ; // do nothing
 
   switch (sig ? sig->validity : 0)
   {
@@ -1966,7 +1967,8 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
      * -moritz.  */
     int i;
     for (i = 0, sig = result->signatures; sig && (i < idx); i++, sig = sig->next)
-      ;
+      ; // do nothing
+
     if (!sig)
       return -1; /* Signature not found.  */
 
@@ -3914,7 +3916,8 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
 
   /* parse attribute type */
   for (s = str + 1; (s[0] != '\0') && (s[0] != '='); s++)
-    ;
+    ; // do nothing
+
   if (s[0] == '\0')
     return NULL; /* error */
   n = s - str;

@@ -111,7 +111,7 @@ static void mutt_poll_fd_add(int fd, short events)
 {
   int i = 0;
   for (; (i < PollFdsCount) && (PollFds[i].fd != fd); i++)
-    ;
+    ; // do nothing
 
   if (i == PollFdsCount)
   {
@@ -138,7 +138,8 @@ static int mutt_poll_fd_remove(int fd)
 {
   int i = 0;
   for (; (i < PollFdsCount) && (PollFds[i].fd != fd); i++)
-    ;
+    ; // do nothing
+
   if (i == PollFdsCount)
     return -1;
   int d = PollFdsCount - i - 1;

@@ -470,7 +470,7 @@ bool mutt_path_parent(char *buf, size_t buflen)
 
   // Find the previous '/'
   for (n--; ((n >= 0) && (buf[n] != '/')); n--)
-    ;
+    ; // do nothing
 
   if (n == 0) // Always keep at least one '/'
     n++;

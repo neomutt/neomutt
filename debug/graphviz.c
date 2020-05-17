@@ -352,7 +352,8 @@ static void dot_config(FILE *fp, const char *name, int type,
     struct HashElem **list = get_elem_list(sub->cs);
     int i = 0;
     for (; list[i]; i++)
-      ;
+      ; // do nothing
+
     dot_type_number(fp, "count", i);
   }
 

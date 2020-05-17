@@ -2587,7 +2587,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if (!(flags & SEND_BATCH))
     {
       if (!WithCrypto)
-        ;
+        ; // do nothing
+
       else if ((e_templ->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) ||
                ((e_templ->security & SEC_SIGN) && (e_templ->content->type == TYPE_APPLICATION)))
       {

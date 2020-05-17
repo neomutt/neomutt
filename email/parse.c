@@ -454,7 +454,8 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
   {
     *subtype++ = '\0';
     for (pc = subtype; *pc && !IS_SPACE(*pc) && (*pc != ';'); pc++)
-      ;
+      ; // do nothing
+
     *pc = '\0';
     ct->subtype = mutt_str_strdup(subtype);
   }
@@ -1069,7 +1070,8 @@ char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
 
       /* eat tabs and spaces from the beginning of the continuation line */
       while (((ch = fgetc(fp)) == ' ') || (ch == '\t'))
-        ;
+        ; // do nothing
+
       ungetc(ch, fp);
       *++buf = ' '; /* string is still terminated because we removed
                        at least one whitespace char above */

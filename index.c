@@ -537,7 +537,8 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
       {
         struct MuttThread *j = h;
         for (; !j->message; j = j->child)
-          ;
+          ; // do nothing
+
         mutt_uncollapse_thread(ctx, j->message);
       }
       mutt_set_vnum(ctx);

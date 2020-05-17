@@ -698,7 +698,7 @@ static int update_message_path(struct Email *e, const char *path)
     e->path = mutt_str_strdup(p);
 
     for (; (p > path) && (*(p - 1) == '/'); p--)
-      ;
+      ; // do nothing
 
     edata->folder = mutt_str_substr_dup(path, p);
 
@@ -725,7 +725,7 @@ static char *get_folder_from_path(const char *path)
   {
     p -= 3;
     for (; (p > path) && (*(p - 1) == '/'); p--)
-      ;
+      ; // do nothing
 
     return mutt_str_substr_dup(path, p);
   }

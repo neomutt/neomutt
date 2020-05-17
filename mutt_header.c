@@ -320,7 +320,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
         {
           body2->description = mutt_str_strdup(p);
           for (parts = e->content; parts->next; parts = parts->next)
-            ;
+            ; // do nothing
+
           parts->next = body2;
         }
         else
