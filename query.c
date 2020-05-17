@@ -144,11 +144,11 @@ static void query_free(struct Query **query)
 
 /**
  * run_query - Run an external program to find Addresses
- * @param s     String to match
- * @param quiet If true, don't print progress messages
+ * @param s       String to match
+ * @param verbose If true, print progress messages
  * @retval ptr Query List of results
  */
-static struct Query *run_query(char *s, bool quiet)
+static struct Query *run_query(char *s, bool verbose)
 {
   FILE *fp = NULL;
   struct Query *first = NULL;
@@ -172,7 +172,7 @@ static struct Query *run_query(char *s, bool quiet)
   }
   mutt_buffer_pool_release(&cmd);
 
-  if (!quiet)
+  if (verbose)
     mutt_message(_("Waiting for response..."));
 
   /* The query protocol first reads one NL-terminated line. If an error
@@ -210,12 +210,12 @@ static struct Query *run_query(char *s, bool quiet)
   if (filter_wait(pid))
   {
     mutt_debug(LL_DEBUG1, "Error: %s\n", msg);
-    if (!quiet)
+    if (verbose)
       mutt_error("%s", msg);
   }
   else
   {
-    if (!quiet)
+    if (verbose)
       mutt_message("%s", msg);
   }
   FREE(&msg);
@@ -363,7 +363,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     if ((mutt_get_field(_("Query: "), buf, buflen, MUTT_COMP_NO_FLAGS) == 0) &&
         (buf[0] != '\0'))
     {
-      results = run_query(buf, false);
+      results = run_query(buf, true);
       if (!results)
         return;
     }
@@ -451,7 +451,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           break;
         }
 
-        struct Query *newresults = run_query(buf, false);
+        struct Query *newresults = run_query(buf, true);
 
         menu->redraw = REDRAW_FULL;
         if (newresults)
@@ -678,7 +678,7 @@ int mutt_query_complete(char *buf, size_t buflen)
     return 0;
   }
 
-  struct Query *results = run_query(buf, true);
+  struct Query *results = run_query(buf, false);
   if (results)
   {
     /* only one response? */

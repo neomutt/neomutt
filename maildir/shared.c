@@ -380,7 +380,7 @@ int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
     if (count)
     {
       (*count)++;
-      if (!m->quiet && progress)
+      if (m->verbose && progress)
         mutt_progress_update(progress, *count, -1);
     }
 
@@ -696,7 +696,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
       continue;
     }
 
-    if (!m->quiet && progress)
+    if (m->verbose && progress)
       mutt_progress_update(progress, count, -1);
 
     if (!sort)
@@ -795,7 +795,7 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
   struct Maildir **last = NULL;
   struct Progress progress;
 
-  if (!m->quiet)
+  if (m->verbose)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Scanning %s..."), mailbox_path(m));
@@ -818,7 +818,7 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
   if (maildir_parse_dir(m, &last, subdir, &count, &progress) < 0)
     return -1;
 
-  if (!m->quiet)
+  if (m->verbose)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
@@ -1721,7 +1721,7 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
     hc = mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
 #endif
 
-  if (!m->quiet)
+  if (m->verbose)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
@@ -1730,7 +1730,7 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
 
   for (i = 0; i < m->msg_count; i++)
   {
-    if (!m->quiet)
+    if (m->verbose)
       mutt_progress_update(&progress, i, -1);
 
     if (mh_sync_mailbox_message(m, i, hc) == -1)

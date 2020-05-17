@@ -212,7 +212,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
 
   buf[sizeof(buf) - 1] = '\0';
 
-  if (!m->quiet)
+  if (m->verbose)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
@@ -234,7 +234,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
         return -1;
 
       count++;
-      if (!m->quiet)
+      if (m->verbose)
         mutt_progress_update(&progress, count, (int) (loc / (m->size / 100 + 1)));
 
       if (m->msg_count == m->email_max)
@@ -378,7 +378,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
   if (!m->readonly)
     m->readonly = access(mailbox_path(m), W_OK) ? true : false;
 
-  if (!m->quiet)
+  if (m->verbose)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
@@ -406,7 +406,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 
       count++;
 
-      if (!m->quiet)
+      if (m->verbose)
       {
         mutt_progress_update(&progress, count,
                              (int) (ftello(adata->fp) / (m->size / 100 + 1)));
@@ -556,7 +556,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   int rc = -1;
 
   /* silent operations */
-  m->quiet = true;
+  m->verbose = false;
 
   /* our heuristics require the old mailbox to be unsorted */
   if (C_Sort != SORT_ORDER)
@@ -629,7 +629,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
       email_free(&(e_old[i]));
     FREE(&e_old);
 
-    m->quiet = false;
+    m->verbose = true;
     return -1;
   }
 
@@ -710,7 +710,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   }
 
   mailbox_changed(m, NT_MAILBOX_UPDATE);
-  m->quiet = false;
+  m->verbose = true;
 
   return (m->changed || msg_mod) ? MUTT_REOPENED : MUTT_NEW_MAIL;
 }
@@ -1277,7 +1277,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   new_offset = mutt_mem_calloc(m->msg_count - first, sizeof(struct MUpdate));
   old_offset = mutt_mem_calloc(m->msg_count - first, sizeof(struct MUpdate));
 
-  if (!m->quiet)
+  if (m->verbose)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
@@ -1286,7 +1286,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   for (i = first, j = 0; i < m->msg_count; i++)
   {
-    if (!m->quiet)
+    if (m->verbose)
       mutt_progress_update(&progress, i, (int) (ftello(adata->fp) / (m->size / 100 + 1)));
     /* back up some information which is needed to restore offsets when
      * something fails.  */
@@ -1398,7 +1398,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
     {
       /* copy the temp mailbox back into place starting at the first
        * change/deleted message */
-      if (!m->quiet)
+      if (m->verbose)
         mutt_message(_("Committing changes..."));
       i = mutt_file_copy_stream(fp, adata->fp);
 

@@ -1266,10 +1266,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
         if (Context && Context->mailbox)
         {
-          bool q = Context->mailbox->quiet;
-          Context->mailbox->quiet = true;
+          bool verbose = Context->mailbox->verbose;
+          Context->mailbox->verbose = false;
           update_index(menu, Context, check, oldcount, index_hint);
-          Context->mailbox->quiet = q;
+          Context->mailbox->verbose = verbose;
           menu->max = Context->mailbox->vcount;
         }
         else
@@ -1600,12 +1600,12 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (Context->mailbox->msg_count > oldmsgcount)
         {
           struct Email *e_oldcur = get_cur_email(Context, menu);
-          bool quiet = Context->mailbox->quiet;
+          bool verbose = Context->mailbox->verbose;
 
           if (rc < 0)
-            Context->mailbox->quiet = true;
+            Context->mailbox->verbose = false;
           mutt_sort_headers(Context, (op == OP_RECONSTRUCT_THREAD));
-          Context->mailbox->quiet = quiet;
+          Context->mailbox->verbose = verbose;
 
           /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
             * update the index */
@@ -2222,7 +2222,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           struct Progress progress;
 
-          if (!m->quiet)
+          if (m->verbose)
           {
             mutt_progress_init(&progress, _("Update tags..."),
                                MUTT_PROGRESS_WRITE, m->msg_tagged);
@@ -2240,7 +2240,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             if (!message_is_tagged(Context, e))
               continue;
 
-            if (!m->quiet)
+            if (m->verbose)
               mutt_progress_update(&progress, ++px, -1);
             mx_tags_commit(m, e, buf);
             if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
