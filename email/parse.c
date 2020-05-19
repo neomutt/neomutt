@@ -57,6 +57,10 @@
  * Cap the value to prevent overflow of Body.length */
 #define CONTENT_TOO_BIG (1 << 30)
 
+static void parse_part(FILE *fp, struct Body *b, int *counter);
+static struct Body *rfc822_parse_message(FILE *fp, struct Body *parent, int *counter);
+static struct Body *parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest, int *counter);
+
 /**
  * mutt_auto_subscribe - Check if user is subscribed to mailing list
  * @param mailto URL of mailing list subscribe
@@ -1369,11 +1373,12 @@ bool mutt_is_message_type(int type, const char *subtype)
 }
 
 /**
- * mutt_parse_part - Parse a MIME part
- * @param fp File to read from
- * @param b  Body to store the results in
+ * parse_part - Parse a MIME part
+ * @param fp      File to read from
+ * @param b       Body to store the results in
+ * @param counter Number of parts processed so far
  */
-void mutt_parse_part(FILE *fp, struct Body *b)
+static void parse_part(FILE *fp, struct Body *b, int *counter)
 {
   if (!fp || !b)
     return;
@@ -1381,7 +1386,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
   const char *bound = NULL;
   static unsigned short recurse_level = 0;
 
-  if (recurse_level >= 100)
+  if (recurse_level >= MUTT_MIME_MAX_DEPTH)
   {
     mutt_debug(LL_DEBUG1, "recurse level too deep. giving up.\n");
     return;
@@ -1399,8 +1404,8 @@ void mutt_parse_part(FILE *fp, struct Body *b)
         bound = mutt_param_get(&b->parameter, "boundary");
 
       fseeko(fp, b->offset, SEEK_SET);
-      b->parts = mutt_parse_multipart(fp, bound, b->offset + b->length,
-                                      mutt_istr_equal("digest", b->subtype));
+      b->parts = parse_multipart(fp, bound, b->offset + b->length,
+                                  mutt_istr_equal("digest", b->subtype), counter);
       break;
 
     case TYPE_MESSAGE:
@@ -1409,7 +1414,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
 
       fseeko(fp, b->offset, SEEK_SET);
       if (mutt_is_message_type(b->type, b->subtype))
-        b->parts = mutt_rfc822_parse_message(fp, b);
+        b->parts = rfc822_parse_message(fp, b, counter);
       else if (mutt_istr_equal(b->subtype, "external-body"))
         b->parts = mutt_read_mime_header(fp, 0);
       else
@@ -1431,15 +1436,17 @@ bail:
 }
 
 /**
- * mutt_parse_multipart - parse a multipart structure
- * @param fp       stream to read from
- * @param boundary body separator
- * @param end_off  length of the multipart body (used when the final
+ * parse_multipart - Parse a multipart structure
+ * @param fp       Stream to read from
+ * @param boundary Body separator
+ * @param end_off  Length of the multipart body (used when the final
  *                 boundary is missing to avoid reading too far)
  * @param digest   true if reading a multipart/digest
+ * @param counter  Number of parts processed so far
  * @retval ptr New Body containing parsed structure
  */
-struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest)
+static struct Body *parse_multipart(FILE *fp, const char *boundary,
+                                     LOFF_T end_off, bool digest, int *counter)
 {
   if (!fp)
     return NULL;
@@ -1518,6 +1525,13 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
           last = new_body;
           head = new_body;
         }
+
+        /* It seems more intuitive to add the counter increment to
+         * parse_part(), but we want to stop the case where a multipart
+         * contains thousands of tiny parts before the memory and data
+         * structures are allocated.  */
+        if (++(*counter) >= MUTT_MIME_MAX_PARTS)
+          break;
       }
     }
   }
@@ -1528,20 +1542,21 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
 
   /* parse recursive MIME parts */
   for (last = head; last; last = last->next)
-    mutt_parse_part(fp, last);
+    parse_part(fp, last, counter);
 
   return head;
 }
 
 /**
- * mutt_rfc822_parse_message - parse a Message/RFC822 body
- * @param fp     stream to read from
- * @param parent info about the message/rfc822 body part
+ * rfc822_parse_message - parse a Message/RFC822 body
+ * @param fp      Stream to read from
+ * @param parent  Info about the message/rfc822 body part
+ * @param counter Number of parts processed so far
  * @retval ptr New Body containing parsed message
  *
  * @note This assumes that 'parent->length' has been set!
  */
-struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
+static struct Body *rfc822_parse_message(FILE *fp, struct Body *parent, int *counter)
 {
   if (!fp || !parent)
     return NULL;
@@ -1560,7 +1575,7 @@ struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
   if (msg->length < 0)
     msg->length = 0;
 
-  mutt_parse_part(fp, msg);
+  parse_part(fp, msg, counter);
   return msg;
 }
 
@@ -1631,4 +1646,47 @@ bool mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
 
   url_free(&url);
   return true;
+}
+
+/**
+ * mutt_parse_part - Parse a MIME part
+ * @param fp File to read from
+ * @param b  Body to store the results in
+ */
+void mutt_parse_part(FILE *fp, struct Body *b)
+{
+  int counter = 0;
+
+  parse_part(fp, b, &counter);
+}
+
+/**
+ * mutt_rfc822_parse_message - parse a Message/RFC822 body
+ * @param fp      Stream to read from
+ * @param parent  Info about the message/rfc822 body part
+ * @retval ptr New Body containing parsed message
+ *
+ * @note This assumes that 'parent->length' has been set!
+ */
+struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
+{
+  int counter = 0;
+
+  return rfc822_parse_message(fp, parent, &counter);
+}
+
+/**
+ * mutt_parse_multipart - Parse a multipart structure
+ * @param fp       Stream to read from
+ * @param boundary Body separator
+ * @param end_off  Length of the multipart body (used when the final
+ *                 boundary is missing to avoid reading too far)
+ * @param digest   true if reading a multipart/digest
+ * @retval ptr New Body containing parsed structure
+ */
+struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest)
+{
+  int counter = 0;
+
+  return parse_multipart(fp, boundary, end_off, digest, &counter);
 }

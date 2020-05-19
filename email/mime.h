@@ -65,6 +65,11 @@ enum ContentDisposition
   DISP_NONE,      ///< No preferred disposition
 };
 
+/* Some limits to mitigate stack overflow and denial of service attacks */
+#define MUTT_MIME_MAX_DEPTH  50
+#define MUTT_MIME_MAX_PARTS  5000
+
+
 /* MIME encoding/decoding global vars */
 
 extern const int IndexHex[128];
