@@ -183,7 +183,6 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
 {
   char *linestr = NULL;
   size_t linestrsize = 0;
-  int linenum = 0;
 
   /* try checking against names stored in stored certs file */
   FILE *fp = mutt_file_fopen(C_CertificateFile, "r");
@@ -193,7 +192,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   char buf[80];
   buf[0] = '\0';
   tls_fingerprint(GNUTLS_DIG_MD5, buf, sizeof(buf), cert);
-  while ((linestr = mutt_file_read_line(linestr, &linestrsize, fp, &linenum, 0)))
+  while ((linestr = mutt_file_read_line(linestr, &linestrsize, fp, NULL, 0)))
   {
     regmatch_t *match = mutt_prex_capture(PREX_GNUTLS_CERT_HOST_HASH, linestr);
     if (match)

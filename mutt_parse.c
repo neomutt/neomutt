@@ -94,7 +94,7 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
     mutt_debug(LL_DEBUG3, "%s %d/%s ?? %s/%s [%d]... ", dflt ? "[OK]   " : "[EXCL] ",
                b->type, b->subtype ? b->subtype : "*", a->major, a->minor, a->major_int);
     if (((a->major_int == TYPE_ANY) || (a->major_int == b->type)) &&
-        (!b->subtype || !regexec(&a->minor_regex, b->subtype, 0, NULL, 0)))
+        (!b->subtype || (regexec(&a->minor_regex, b->subtype, 0, NULL, 0) == 0)))
     {
       mutt_debug(LL_DEBUG3, "yes\n");
       return true;

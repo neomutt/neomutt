@@ -197,7 +197,6 @@ static void mh_sequences_add_one(struct Mailbox *m, int n, bool unseen, bool fla
   char seq_flagged[256];
 
   char *buf = NULL;
-  int line = 0;
   size_t sz;
 
   FILE *fp_new = NULL;
@@ -212,7 +211,7 @@ static void mh_sequences_add_one(struct Mailbox *m, int n, bool unseen, bool fla
   FILE *fp_old = fopen(sequences, "r");
   if (fp_old)
   {
-    while ((buf = mutt_file_read_line(buf, &sz, fp_old, &line, 0)))
+    while ((buf = mutt_file_read_line(buf, &sz, fp_old, NULL, 0)))
     {
       if (unseen && (strncmp(buf, seq_unseen, mutt_str_strlen(seq_unseen)) == 0))
       {

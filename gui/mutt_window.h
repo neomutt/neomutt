@@ -136,7 +136,7 @@ struct EventWindow
 /**
  * enum NotifyWindow - Window notification types
  *
- * These are associated with Event type #NT_INDEX.
+ * These are associated with Event type #NT_WINDOW.
  */
 enum NotifyWindow
 {

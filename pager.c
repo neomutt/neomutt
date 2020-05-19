@@ -1358,13 +1358,12 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
 {
   unsigned char *p = NULL, *q = NULL;
   static int b_read;
-  int l = 0;
 
   if (*buf_ready == 0)
   {
     if (offset != *last_pos)
       fseeko(fp, offset, SEEK_SET);
-    *buf = (unsigned char *) mutt_file_read_line((char *) *buf, blen, fp, &l, MUTT_EOL);
+    *buf = (unsigned char *) mutt_file_read_line((char *) *buf, blen, fp, NULL, MUTT_EOL);
     if (!*buf)
     {
       fmt[0] = NULL;

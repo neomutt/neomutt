@@ -148,14 +148,13 @@ static void query_free(struct Query **query)
  * @param quiet If true, don't print progress messages
  * @retval ptr Query List of results
  */
-static struct Query *run_query(char *s, int quiet)
+static struct Query *run_query(char *s, bool quiet)
 {
   FILE *fp = NULL;
   struct Query *first = NULL;
   struct Query *cur = NULL;
   char *buf = NULL;
   size_t buflen;
-  int dummy = 0;
   char *msg = NULL;
   size_t msglen = 0;
   char *p = NULL;
@@ -178,8 +177,8 @@ static struct Query *run_query(char *s, int quiet)
 
   /* The query protocol first reads one NL-terminated line. If an error
    * occurs, this is assumed to be an error message. Otherwise it's ignored. */
-  msg = mutt_file_read_line(msg, &msglen, fp, &dummy, 0);
-  while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)))
+  msg = mutt_file_read_line(msg, &msglen, fp, NULL, 0);
+  while ((buf = mutt_file_read_line(buf, &buflen, fp, NULL, 0)))
   {
     p = strtok(buf, "\t\n");
     if (p)
@@ -234,18 +233,18 @@ static int query_search(struct Menu *menu, regex_t *rx, int line)
   struct QueryEntry *table = menu->data;
   struct Query *query = table[line].data;
 
-  if (query->name && !regexec(rx, query->name, 0, NULL, 0))
+  if (query->name && (regexec(rx, query->name, 0, NULL, 0) == 0))
     return 0;
-  if (query->other && !regexec(rx, query->other, 0, NULL, 0))
+  if (query->other && (regexec(rx, query->other, 0, NULL, 0) == 0))
     return 0;
   if (!TAILQ_EMPTY(&query->addr))
   {
     struct Address *addr = TAILQ_FIRST(&query->addr);
-    if (addr->personal && !regexec(rx, addr->personal, 0, NULL, 0))
+    if (addr->personal && (regexec(rx, addr->personal, 0, NULL, 0) == 0))
     {
       return 0;
     }
-    if (addr->mailbox && !regexec(rx, addr->mailbox, 0, NULL, 0))
+    if (addr->mailbox && (regexec(rx, addr->mailbox, 0, NULL, 0) == 0))
     {
       return 0;
     }
@@ -364,7 +363,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     if ((mutt_get_field(_("Query: "), buf, buflen, MUTT_COMP_NO_FLAGS) == 0) &&
         (buf[0] != '\0'))
     {
-      results = run_query(buf, 0);
+      results = run_query(buf, false);
       if (!results)
         return;
     }
@@ -452,7 +451,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           break;
         }
 
-        struct Query *newresults = run_query(buf, 0);
+        struct Query *newresults = run_query(buf, false);
 
         menu->redraw = REDRAW_FULL;
         if (newresults)
@@ -570,16 +569,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
       {
         struct Email *e = email_new();
         e->env = mutt_env_new();
-        if (!menu->tagprefix)
-        {
-          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (query_table && result_to_addr(&al, query_table[menu->current].data))
-          {
-            mutt_addrlist_copy(&e->env->to, &al, false);
-            mutt_addrlist_clear(&al);
-          }
-        }
-        else
+        if (menu->tagprefix)
         {
           for (int i = 0; i < menu->max; i++)
           {
@@ -592,6 +582,15 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
                 mutt_addrlist_clear(&al);
               }
             }
+          }
+        }
+        else
+        {
+          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+          if (query_table && result_to_addr(&al, query_table[menu->current].data))
+          {
+            mutt_addrlist_copy(&e->env->to, &al, false);
+            mutt_addrlist_clear(&al);
           }
         }
         mutt_send_message(SEND_NO_FLAGS, e, NULL, Context, NULL);
@@ -679,7 +678,7 @@ int mutt_query_complete(char *buf, size_t buflen)
     return 0;
   }
 
-  struct Query *results = run_query(buf, 1);
+  struct Query *results = run_query(buf, true);
   if (results)
   {
     /* only one response? */
@@ -716,14 +715,13 @@ void mutt_query_menu(char *buf, size_t buflen)
     return;
   }
 
-  if (!buf)
+  if (buf)
   {
-    char tmp[256] = { 0 };
-
-    query_menu(tmp, sizeof(tmp), NULL, false);
+    query_menu(buf, buflen, NULL, true);
   }
   else
   {
-    query_menu(buf, buflen, NULL, true);
+    char tmp[256] = { 0 };
+    query_menu(tmp, sizeof(tmp), NULL, false);
   }
 }
