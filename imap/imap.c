@@ -334,103 +334,97 @@ static int sync_helper(struct Mailbox *m, AclFlags right, int flag, const char *
   return count;
 }
 
+// fwd-declaration, check_pattern and check_pattern_list are mutually recursive.
+static int check_pattern_list(const struct PatternList *patterns);
+
 /**
- * do_search - Perform a search of messages
- * @param search  List of pattern to match
- * @param allpats Must all patterns match?
- * @retval num Number of patterns search that should be done server-side
- *
- * Count the number of patterns that can be done by the server (are full-text).
+ * check_pattern - Check whether a pattern can be executed server-side
+ * @param pat Pattern to check
+ * @retval True if pattern can be done server-side
  */
-static int do_search(const struct PatternList *search, bool allpats)
+static bool check_pattern(const struct Pattern *pat)
 {
-  int rc = 0;
-  const struct Pattern *pat = NULL;
-
-  SLIST_FOREACH(pat, search, entries)
+  switch (pat->op)
   {
-    switch (pat->op)
-    {
-      case MUTT_PAT_BODY:
-      case MUTT_PAT_HEADER:
-      case MUTT_PAT_WHOLE_MSG:
-        if (pat->string_match)
-          rc++;
-        break;
-      case MUTT_PAT_SERVERSEARCH:
-        rc++;
-        break;
-      default:
-        if (pat->child && do_search(pat->child, true))
-          rc++;
-    }
-
-    if (!allpats)
+    case MUTT_PAT_BODY:
+    case MUTT_PAT_HEADER:
+    case MUTT_PAT_WHOLE_MSG:
+      if (pat->string_match)
+        return true;
+      break;
+    case MUTT_PAT_SERVERSEARCH:
+      return true;
+      break;
+    default:
+      if (pat->child && check_pattern_list(pat->child))
+        return true;
       break;
   }
+  return false;
+}
 
-  return rc;
+/**
+ * check_pattern_list - Check how many patterns in a list can be executed server-side
+ * @param search  List of pattern to match
+ * @retval num Number of patterns search that can be done server-side
+ */
+static int check_pattern_list(const struct PatternList *patterns)
+{
+  int positives = 0;
+
+  const struct Pattern *pat = NULL;
+  SLIST_FOREACH(pat, patterns, entries)
+  {
+    positives += check_pattern(pat);
+  }
+
+  return positives;
 }
 
 /**
  * compile_search - Convert NeoMutt pattern to IMAP search
- * @param m   Mailbox
+ * @param adata Imap Account data
  * @param pat Pattern to convert
  * @param buf Buffer for result
- * @retval  0 Success
- * @retval -1 Failure
+ * @retval True on success
+ * @retval False on failure
  *
  * Convert neomutt Pattern to IMAP SEARCH command containing only elements
  * that require full-text search (neomutt already has what it needs for most
  * match types, and does a better job (eg server doesn't support regexes).
  */
-static int compile_search(struct Mailbox *m, const struct PatternList *pat, struct Buffer *buf)
+static bool compile_search(const struct ImapAccountData *adata,
+                           const struct Pattern *pat, struct Buffer *buf)
 {
-  struct Pattern *firstpat = SLIST_FIRST(pat);
+  if (!check_pattern(pat))
+    return true;
 
-  if (do_search(pat, false) == 0)
-    return 0;
-
-  if (firstpat->pat_not)
+  if (pat->pat_not)
     mutt_buffer_addstr(buf, "NOT ");
 
-  if (firstpat->child)
+  if (pat->child)
   {
-    int clauses = do_search(firstpat->child, true);
+    int clauses = check_pattern_list(pat->child);
     if (clauses > 0)
     {
       mutt_buffer_addch(buf, '(');
 
-      struct PatternList clause = SLIST_HEAD_INITIALIZER(clause);
-      struct Pattern *c = NULL;
-      SLIST_FOREACH(c, firstpat->child, entries)
-      {
-        struct Pattern *c2 = mutt_mem_malloc(sizeof(struct Pattern));
-        memcpy(c2, c, sizeof(struct Pattern));
-        SLIST_INSERT_HEAD(&clause, c2, entries);
-      }
-
+      struct Pattern *c = SLIST_FIRST(pat->child);
       while (clauses)
       {
-        if (do_search(&clause, false))
+        if (check_pattern(c))
         {
-          if ((firstpat->op == MUTT_PAT_OR) && (clauses > 1))
+          if ((pat->op == MUTT_PAT_OR) && (clauses > 1))
             mutt_buffer_addstr(buf, "OR ");
           clauses--;
 
-          if (compile_search(m, &clause, buf) < 0)
-            return -1;
+          if (!compile_search(adata, c, buf))
+            return false;
 
           if (clauses)
             mutt_buffer_addch(buf, ' ');
         }
-        SLIST_REMOVE_HEAD(&clause, entries);
-      }
-      while (!SLIST_EMPTY(&clause))
-      {
-        struct Pattern *c2 = SLIST_FIRST(&clause);
-        SLIST_REMOVE_HEAD(&clause, entries);
-        FREE(&c2);
+        c = SLIST_NEXT(c, entries);
       }
 
       mutt_buffer_addch(buf, ')');
@@ -441,20 +435,20 @@ static int compile_search(struct Mailbox *m, const struct PatternList *pat, stru
     char term[256];
     char *delim = NULL;
 
-    switch (firstpat->op)
+    switch (pat->op)
     {
       case MUTT_PAT_HEADER:
         mutt_buffer_addstr(buf, "HEADER ");
 
         /* extract header name */
-        delim = strchr(firstpat->p.str, ':');
+        delim = strchr(pat->p.str, ':');
         if (!delim)
         {
-          mutt_error(_("Header search without header name: %s"), firstpat->p.str);
-          return -1;
+          mutt_error(_("Header search without header name: %s"), pat->p.str);
+          return false;
         }
         *delim = '\0';
-        imap_quote_string(term, sizeof(term), firstpat->p.str, false);
+        imap_quote_string(term, sizeof(term), pat->p.str, false);
         mutt_buffer_addstr(buf, term);
         mutt_buffer_addch(buf, ' ');
 
@@ -467,32 +461,28 @@ static int compile_search(struct Mailbox *m, const struct PatternList *pat, stru
         break;
       case MUTT_PAT_BODY:
         mutt_buffer_addstr(buf, "BODY ");
-        imap_quote_string(term, sizeof(term), firstpat->p.str, false);
+        imap_quote_string(term, sizeof(term), pat->p.str, false);
         mutt_buffer_addstr(buf, term);
         break;
       case MUTT_PAT_WHOLE_MSG:
         mutt_buffer_addstr(buf, "TEXT ");
-        imap_quote_string(term, sizeof(term), firstpat->p.str, false);
+        imap_quote_string(term, sizeof(term), pat->p.str, false);
         mutt_buffer_addstr(buf, term);
         break;
       case MUTT_PAT_SERVERSEARCH:
-      {
-        struct ImapAccountData *adata = imap_adata_get(m);
         if (!(adata->capabilities & IMAP_CAP_X_GM_EXT_1))
         {
-          mutt_error(_("Server-side custom search not supported: %s"),
-                     firstpat->p.str);
-          return -1;
+          mutt_error(_("Server-side custom search not supported: %s"), pat->p.str);
+          return false;
         }
-      }
         mutt_buffer_addstr(buf, "X-GM-RAW ");
-        imap_quote_string(term, sizeof(term), firstpat->p.str, false);
+        imap_quote_string(term, sizeof(term), pat->p.str, false);
         mutt_buffer_addstr(buf, term);
         break;
     }
   }
 
-  return 0;
+  return true;
 }
 
 /**
@@ -1364,16 +1354,14 @@ int imap_mailbox_status(struct Mailbox *m, bool queue)
 }
 
 /**
- * imap_search - Find a matching mailbox
+ * imap_search - Find messages in mailbox matching a pattern
  * @param m   Mailbox
  * @param pat Pattern to match
- * @retval  0 Success
- * @retval -1 Failure
+ * @retval true  Success
+ * @retval false Failure
  */
-int imap_search(struct Mailbox *m, const struct PatternList *pat)
+bool imap_search(struct Mailbox *m, const struct PatternList *pat)
 {
-  struct Buffer buf;
-  struct ImapAccountData *adata = imap_adata_get(m);
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
@@ -1382,24 +1370,19 @@ int imap_search(struct Mailbox *m, const struct PatternList *pat)
     e->matched = false;
   }
 
-  if (do_search(pat, true) == 0)
-    return 0;
+  if (check_pattern_list(pat) == 0)
+    return true;
 
+  struct Buffer buf;
   mutt_buffer_init(&buf);
   mutt_buffer_addstr(&buf, "UID SEARCH ");
-  if (compile_search(m, pat, &buf) < 0)
-  {
-    FREE(&buf.data);
-    return -1;
-  }
-  if (imap_exec(adata, buf.data, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
-  {
-    FREE(&buf.data);
-    return -1;
-  }
+
+  struct ImapAccountData *adata = imap_adata_get(m);
+  const bool ok = compile_search(adata, SLIST_FIRST(pat), &buf) &&
+                  (imap_exec(adata, buf.data, IMAP_CMD_NO_FLAGS) == IMAP_EXEC_SUCCESS);
 
   FREE(&buf.data);
-  return 0;
+  return ok;
 }
 
 /**
