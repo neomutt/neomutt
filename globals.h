@@ -29,6 +29,7 @@
 #include "mutt/lib.h"
 #include "keymap.h"
 #include "where.h"
+#include "alias/lib.h"
 
 #ifdef MAIN_C
 /* so that global vars get included */

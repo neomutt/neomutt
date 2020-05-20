@@ -36,12 +36,9 @@
 #include "lib.h"
 #include "alias.h"
 #include "command_parse.h"
-#include "globals.h"
 #include "init.h"
 #include "mutt_commands.h"
 #include "mutt_logging.h"
-#include "mutt_menu.h"
-#include "options.h"
 #include "reverse.h"
 
 /**

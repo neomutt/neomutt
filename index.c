@@ -3275,7 +3275,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_QUERY:
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
-        mutt_query_menu(NULL, 0);
+        query_index();
         break;
 
       case OP_PURGE_MESSAGE:

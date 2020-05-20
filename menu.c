@@ -1355,12 +1355,6 @@ int mutt_menu_loop(struct Menu *menu)
 
   while (true)
   {
-    if (OptMenuCaller)
-    {
-      OptMenuCaller = false;
-      return OP_NULL;
-    }
-
     /* Clear the tag prefix unless we just started it.  Don't clear
      * the prefix on a timeout (i==-2), but do clear on an abort (i==-1) */
     if (menu->tagprefix && (i != OP_TAG_PREFIX) && (i != OP_TAG_PREFIX_COND) && (i != -2))
