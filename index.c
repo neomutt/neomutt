@@ -3264,7 +3264,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
       {
         struct Email *e_cur = get_cur_email(Context, menu);
 
-        alias_create(e_cur ? e_cur->env : NULL, NULL);
+        struct AddressList *al = NULL;
+        if (e_cur && e_cur->env)
+          al = mutt_get_address(e_cur->env, NULL);
+        alias_create(al);
         menu->redraw |= REDRAW_CURRENT;
         break;
       }

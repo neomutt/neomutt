@@ -547,7 +547,7 @@ void query_menu(char *buf, size_t buflen, struct Query *results, bool retbuf)
             }
           }
 
-          alias_create(NULL, &naddr);
+          alias_create(&naddr);
           mutt_addrlist_clear(&naddr);
         }
         else
@@ -555,7 +555,7 @@ void query_menu(char *buf, size_t buflen, struct Query *results, bool retbuf)
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
           if (query_table && alias_to_addrlist(&al, query_table[menu->current].data))
           {
-            alias_create(NULL, &al);
+            alias_create(&al);
             mutt_addrlist_clear(&al);
           }
         }

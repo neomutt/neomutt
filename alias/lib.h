@@ -61,7 +61,7 @@ extern struct Hash *ReverseAliases;
 void alias_init    (void);
 void alias_shutdown(void);
 
-void                alias_create           (struct Envelope *cur, struct AddressList *al);
+void                alias_create           (struct AddressList *al);
 struct AddressList *alias_lookup           (const char *name);
 
 bool                mutt_addr_is_user      (const struct Address *addr);

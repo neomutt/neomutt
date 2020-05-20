@@ -2980,10 +2980,12 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_CREATE_ALIAS:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
+        struct AddressList *al = NULL;
         if (IsMsgAttach(extra))
-          alias_create(extra->body->email->env, NULL);
+          al = mutt_get_address(extra->body->email->env, NULL);
         else
-          alias_create(extra->email->env, NULL);
+          al = mutt_get_address(extra->email->env, NULL);
+        alias_create(al);
         break;
 
       case OP_PURGE_MESSAGE:

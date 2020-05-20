@@ -360,22 +360,16 @@ struct AddressList *mutt_get_address(struct Envelope *env, const char **prefix)
 }
 
 /**
- * alias_create - Create a new Alias from an Envelope or an Address
- * @param cur Envelope to use
- * @param al  Address to use
+ * alias_create - Create a new Alias from an Address
+ * @param al Address to use
  */
-void alias_create(struct Envelope *cur, struct AddressList *al)
+void alias_create(struct AddressList *al)
 {
   struct Address *addr = NULL;
   char buf[1024], tmp[1024] = { 0 }, prompt[128];
   char *pc = NULL;
   char *err = NULL;
   char fixed[1024];
-
-  if (cur)
-  {
-    al = mutt_get_address(cur, NULL);
-  }
 
   if (al)
   {
