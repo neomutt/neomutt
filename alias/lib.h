@@ -61,22 +61,22 @@ extern struct Hash *ReverseAliases;
 void alias_init    (void);
 void alias_shutdown(void);
 
-void            mutt_alias_create(struct Envelope *cur, struct AddressList *al);
-struct AddressList *mutt_alias_lookup(const char *s);
+void                alias_create           (struct Envelope *cur, struct AddressList *al);
+struct AddressList *alias_lookup           (const char *name);
 
 bool                mutt_addr_is_user      (const struct Address *addr);
 void                mutt_expand_aliases_env(struct Envelope *env);
 void                mutt_expand_aliases    (struct AddressList *al);
-struct AddressList *mutt_get_address       (struct Envelope *env, const char **pfxp);
+struct AddressList *mutt_get_address       (struct Envelope *env, const char **prefix);
 
 enum CommandResult parse_alias  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
-int mutt_alias_complete(char *buf, size_t buflen);
+int  alias_complete(char *buf, size_t buflen);
 
-int  mutt_query_complete(char *buf, size_t buflen);
+int  query_complete(char *buf, size_t buflen);
 void mutt_query_menu(char *buf, size_t buflen);
 
-struct Address *mutt_alias_reverse_lookup(const struct Address *a);
+struct Address *alias_reverse_lookup(const struct Address *addr);
 
 #endif /* MUTT_ALIAS_LIB_H */

@@ -560,7 +560,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             for (; (i < state->lastchar) && (state->wbuf[i] == ' '); i++)
               ;
             mutt_mb_wcstombs(buf, buflen, state->wbuf + i, state->curpos - i);
-            int rc2 = mutt_alias_complete(buf, buflen);
+            int rc2 = alias_complete(buf, buflen);
             replace_part(state, i, buf);
             if (rc2 != 1)
             {
@@ -622,7 +622,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             }
 
             mutt_mb_wcstombs(buf, buflen, state->wbuf + i, state->curpos - i);
-            mutt_query_complete(buf, buflen);
+            query_complete(buf, buflen);
             replace_part(state, i, buf);
 
             rc = 1;

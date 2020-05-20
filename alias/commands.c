@@ -46,6 +46,8 @@
 
 /**
  * parse_alias - Parse the 'alias' command - Implements Command::parse()
+ *
+ * e.g. "alias jim James Smith <js@example.com> # Pointy-haired boss"
  */
 enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
                                intptr_t data, struct Buffer *err)
@@ -74,7 +76,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
 
   if (tmp)
   {
-    mutt_alias_delete_reverse(tmp);
+    alias_reverse_delete(tmp);
     /* override the previous value */
     mutt_addrlist_clear(&tmp->addr);
     FREE(&tmp->comment);
@@ -84,7 +86,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   else
   {
     /* create a new alias */
-    tmp = mutt_alias_new();
+    tmp = alias_new();
     tmp->name = mutt_str_strdup(buf->data);
     TAILQ_INSERT_TAIL(&Aliases, tmp, entries);
     /* give the main addressbook code a chance */
@@ -105,7 +107,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   }
 
   mutt_grouplist_add_addrlist(&gl, &tmp->addr);
-  mutt_alias_add_reverse(tmp);
+  alias_reverse_add(tmp);
 
   if (C_DebugLevel > LL_DEBUG4)
   {
@@ -160,7 +162,7 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
         mutt_menu_set_current_redraw_full();
       }
       else
-        mutt_aliaslist_free(&Aliases);
+        aliaslist_free(&Aliases);
       break;
     }
     else
@@ -177,7 +179,7 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
           else
           {
             TAILQ_REMOVE(&Aliases, a, entries);
-            mutt_alias_free(&a);
+            alias_free(&a);
           }
           break;
         }

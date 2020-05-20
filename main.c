@@ -738,7 +738,7 @@ int main(int argc, char *argv[], char *envp[])
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &alias_queries, entries)
     {
-      struct AddressList *al = mutt_alias_lookup(np->data);
+      struct AddressList *al = alias_lookup(np->data);
       if (al)
       {
         /* output in machine-readable form */

@@ -28,6 +28,6 @@
 struct Alias;
 
 int alias_sort_address(const void *a, const void *b);
-int alias_sort_alias  (const void *a, const void *b);
+int alias_sort_name   (const void *a, const void *b);
 
 #endif /* MUTT_ALIAS_GUI_H */

@@ -1749,7 +1749,7 @@ static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
     struct Address *a = NULL;
     TAILQ_FOREACH(a, al, entries)
     {
-      if (pat->all_addr ^ ((!pat->is_alias || mutt_alias_reverse_lookup(a)) &&
+      if (pat->all_addr ^ ((!pat->is_alias || alias_reverse_lookup(a)) &&
                            ((a->mailbox && patmatch(pat, a->mailbox)) ||
                             (match_personal && a->personal && patmatch(pat, a->personal)))))
       {

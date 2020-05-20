@@ -120,23 +120,23 @@ static void query_free(struct Query **query)
 }
 
 /**
- * result_to_addr - Turn a Query into an AddressList
- * @param al AddressList to fill (must be empty)
- * @param r Query to use
+ * alias_to_addrlist - Turn a Query into an AddressList
+ * @param al    AddressList to fill (must be empty)
+ * @param alias Query to use
  * @retval bool True on success
  */
-static bool result_to_addr(struct AddressList *al, struct Query *r)
+static bool alias_to_addrlist(struct AddressList *al, struct Query *alias)
 {
-  if (!al || !TAILQ_EMPTY(al) || !r)
+  if (!al || !TAILQ_EMPTY(al) || !alias)
     return false;
 
-  mutt_addrlist_copy(al, &r->addr, false);
+  mutt_addrlist_copy(al, &alias->addr, false);
   if (!TAILQ_EMPTY(al))
   {
     struct Address *first = TAILQ_FIRST(al);
     struct Address *second = TAILQ_NEXT(first, entries);
     if (!second && !first->personal)
-      first->personal = mutt_str_strdup(r->name);
+      first->personal = mutt_str_strdup(alias->name);
 
     mutt_addrlist_to_intl(al, NULL);
   }
@@ -265,12 +265,12 @@ static int query_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * run_query - Run an external program to find Addresses
+ * query_run - Run an external program to find Addresses
  * @param s       String to match
  * @param verbose If true, print progress messages
  * @retval ptr Query List of results
  */
-static struct Query *run_query(char *s, bool verbose)
+static struct Query *query_run(char *s, bool verbose)
 {
   FILE *fp = NULL;
   struct Query *first = NULL;
@@ -280,12 +280,11 @@ static struct Query *run_query(char *s, bool verbose)
   char *msg = NULL;
   size_t msglen = 0;
   char *p = NULL;
-  pid_t pid;
   struct Buffer *cmd = mutt_buffer_pool_get();
 
   mutt_buffer_file_expand_fmt_quote(cmd, C_QueryCommand, s);
 
-  pid = filter_create(mutt_b2s(cmd), NULL, &fp, NULL);
+  pid_t pid = filter_create(mutt_b2s(cmd), NULL, &fp, NULL);
   if (pid < 0)
   {
     mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", mutt_b2s(cmd));
@@ -347,12 +346,12 @@ static struct Query *run_query(char *s, bool verbose)
 
 /**
  * query_menu - Get the user to enter an Address Query
- * @param buf     Buffer for the query
- * @param buflen  Length of buffer
+ * @param buf    Buffer for the query
+ * @param buflen Length of buffer
  * @param results Query List
- * @param retbuf  If true, populate the results
+ * @param retbuf If true, populate the results
  */
-static void query_menu(char *buf, size_t buflen, struct Query *results, bool retbuf)
+void query_menu(char *buf, size_t buflen, struct Query *results, bool retbuf)
 {
   struct Menu *menu = NULL;
   struct QueryEntry *query_table = NULL;
@@ -365,7 +364,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     if ((mutt_get_field(_("Query: "), buf, buflen, MUTT_COMP_NO_FLAGS) == 0) &&
         (buf[0] != '\0'))
     {
-      results = run_query(buf, true);
+      results = query_run(buf, true);
       if (!results)
         return;
     }
@@ -447,13 +446,14 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     {
       case OP_QUERY_APPEND:
       case OP_QUERY:
+      {
         if ((mutt_get_field(_("Query: "), buf, buflen, MUTT_COMP_NO_FLAGS) != 0) ||
             (buf[0] == '\0'))
         {
           break;
         }
 
-        struct Query *newresults = run_query(buf, true);
+        struct Query *newresults = query_run(buf, true);
 
         menu->redraw = REDRAW_FULL;
         if (newresults)
@@ -527,6 +527,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           }
         }
         break;
+      }
 
       case OP_CREATE_ALIAS:
         if (menu->tagprefix)
@@ -538,7 +539,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
             if (query_table[i].tagged)
             {
               struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-              if (result_to_addr(&al, query_table[i].data))
+              if (alias_to_addrlist(&al, query_table[i].data))
               {
                 mutt_addrlist_copy(&naddr, &al, false);
                 mutt_addrlist_clear(&al);
@@ -546,15 +547,15 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
             }
           }
 
-          mutt_alias_create(NULL, &naddr);
+          alias_create(NULL, &naddr);
           mutt_addrlist_clear(&naddr);
         }
         else
         {
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (query_table && result_to_addr(&al, query_table[menu->current].data))
+          if (query_table && alias_to_addrlist(&al, query_table[menu->current].data))
           {
-            mutt_alias_create(NULL, &al);
+            alias_create(NULL, &al);
             mutt_addrlist_clear(&al);
           }
         }
@@ -578,7 +579,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
             if (query_table[i].tagged)
             {
               struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-              if (result_to_addr(&al, query_table[i].data))
+              if (alias_to_addrlist(&al, query_table[i].data))
               {
                 mutt_addrlist_copy(&e->env->to, &al, false);
                 mutt_addrlist_clear(&al);
@@ -589,7 +590,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
         else
         {
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (query_table && result_to_addr(&al, query_table[menu->current].data))
+          if (query_table && alias_to_addrlist(&al, query_table[menu->current].data))
           {
             mutt_addrlist_copy(&e->env->to, &al, false);
             mutt_addrlist_clear(&al);
@@ -622,7 +623,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
         if (curpos == 0)
         {
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (result_to_addr(&al, query_table[i].data))
+          if (alias_to_addrlist(&al, query_table[i].data))
           {
             mutt_addrlist_to_local(&al);
             tagged = true;
@@ -634,7 +635,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
         else if (curpos + 2 < buflen)
         {
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (result_to_addr(&al, query_table[i].data))
+          if (alias_to_addrlist(&al, query_table[i].data))
           {
             mutt_addrlist_to_local(&al);
             strcat(buf, ", ");
@@ -649,7 +650,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     if (!tagged)
     {
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-      if (query_table && result_to_addr(&al, query_table[menu->current].data))
+      if (query_table && alias_to_addrlist(&al, query_table[menu->current].data))
       {
         mutt_addrlist_to_local(&al);
         mutt_addrlist_write(&al, buf, buflen, false);
@@ -667,27 +668,27 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
 }
 
 /**
- * mutt_query_complete - Perform auto-complete using an Address Query
+ * query_complete - Perform auto-complete using an Address Query
  * @param buf    Buffer for completion
  * @param buflen Length of buffer
  * @retval 0 Always
  */
-int mutt_query_complete(char *buf, size_t buflen)
+int query_complete(char *buf, size_t buflen)
 {
   if (!C_QueryCommand)
   {
-    mutt_error(_("Query command not defined"));
+    mutt_warning(_("Query command not defined"));
     return 0;
   }
 
-  struct Query *results = run_query(buf, false);
+  struct Query *results = query_run(buf, false);
   if (results)
   {
     /* only one response? */
     if (!results->next)
     {
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-      if (result_to_addr(&al, results))
+      if (alias_to_addrlist(&al, results))
       {
         mutt_addrlist_to_local(&al);
         buf[0] = '\0';
@@ -713,7 +714,7 @@ void mutt_query_menu(char *buf, size_t buflen)
 {
   if (!C_QueryCommand)
   {
-    mutt_error(_("Query command not defined"));
+    mutt_warning(_("Query command not defined"));
     return;
   }
 

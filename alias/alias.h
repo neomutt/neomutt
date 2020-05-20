@@ -45,8 +45,8 @@ TAILQ_HEAD(AliasList, Alias);
 
 extern struct AliasList Aliases;
 
-void            mutt_alias_free(struct Alias **ptr);
-void            mutt_aliaslist_free(struct AliasList *a_list);
-struct Alias   *mutt_alias_new(void);
+void          alias_free    (struct Alias **ptr);
+void          aliaslist_free(struct AliasList *al);
+struct Alias *alias_new     (void);
 
 #endif /* MUTT_ALIAS_ALIAS_H */

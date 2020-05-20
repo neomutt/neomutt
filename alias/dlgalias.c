@@ -134,9 +134,9 @@ static int alias_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * mutt_dlg_alias_observer - Listen for config changes affecting the Alias menu - Implements ::observer_t
+ * alias_config_observer - Listen for config changes affecting the Alias menu - Implements ::observer_t
  */
-static int mutt_dlg_alias_observer(struct NotifyCallback *nc)
+static int alias_config_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;
@@ -164,18 +164,16 @@ static int mutt_dlg_alias_observer(struct NotifyCallback *nc)
 }
 
 /**
- * mutt_alias_menu - Display a menu of Aliases
+ * alias_menu - Display a menu of Aliases
  * @param buf    Buffer for expanded aliases
  * @param buflen Length of buffer
  * @param aliases Alias List
  */
-static void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
+static void alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
 {
   struct Alias *a = NULL, *last = NULL;
-  struct Menu *menu = NULL;
   struct Alias **alias_table = NULL;
   int t = -1;
-  int i;
   bool done = false;
   char helpstr[1024];
 
@@ -183,7 +181,7 @@ static void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
 
   if (TAILQ_EMPTY(aliases))
   {
-    mutt_error(_("You have no aliases"));
+    mutt_warning(_("You have no aliases"));
     return;
   }
 
@@ -226,10 +224,10 @@ static void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
     mutt_window_add_child(dlg, ibar);
   }
 
-  notify_observer_add(NeoMutt->notify, mutt_dlg_alias_observer, dlg);
+  notify_observer_add(NeoMutt->notify, alias_config_observer, dlg);
   dialog_push(dlg);
 
-  menu = mutt_menu_new(MENU_ALIAS);
+  struct Menu *menu = mutt_menu_new(MENU_ALIAS);
 
   menu->pagelen = index->state.rows;
   menu->win_index = index;
@@ -260,40 +258,40 @@ new_aliases:
   if (last)
     a = TAILQ_NEXT(last, entries);
 
-  i = omax;
+  int j = omax;
   TAILQ_FOREACH_FROM(a, aliases, entries)
   {
-    alias_table[i] = a;
-    i++;
+    alias_table[j] = a;
+    j++;
   }
 
   if ((C_SortAlias & SORT_MASK) != SORT_ORDER)
   {
     qsort(alias_table, menu->max, sizeof(struct Alias *),
-          ((C_SortAlias & SORT_MASK) == SORT_ADDRESS) ? alias_sort_address : alias_sort_alias);
+          ((C_SortAlias & SORT_MASK) == SORT_ADDRESS) ? alias_sort_address : alias_sort_name);
   }
 
-  for (i = 0; i < menu->max; i++)
+  for (int i = 0; i < menu->max; i++)
     alias_table[i]->num = i;
 
   last = TAILQ_LAST(aliases, AliasList);
 
   while (!done)
   {
-    int op;
     if (TAILQ_NEXT(last, entries))
     {
       menu->redraw |= REDRAW_FULL;
       a = TAILQ_NEXT(last, entries);
       goto new_aliases;
     }
-    switch ((op = mutt_menu_loop(menu)))
+    int op = mutt_menu_loop(menu);
+    switch (op)
     {
       case OP_DELETE:
       case OP_UNDELETE:
         if (menu->tagprefix)
         {
-          for (i = 0; i < menu->max; i++)
+          for (int i = 0; i < menu->max; i++)
             if (alias_table[i]->tagged)
               alias_table[i]->del = (op == OP_DELETE);
           menu->redraw |= REDRAW_INDEX;
@@ -319,7 +317,7 @@ new_aliases:
     }
   }
 
-  for (i = 0; i < menu->max; i++)
+  for (int i = 0; i < menu->max; i++)
   {
     if (alias_table[i]->tagged)
     {
@@ -339,12 +337,12 @@ mam_done:
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
   dialog_pop();
-  notify_observer_remove(NeoMutt->notify, mutt_dlg_alias_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, alias_config_observer, dlg);
   mutt_window_free(&dlg);
 }
 
 /**
- * mutt_alias_complete - alias completion routine
+ * alias_complete - alias completion routine
  * @param buf    Partial Alias to complete
  * @param buflen Length of buffer
  * @retval 1 Success
@@ -354,27 +352,27 @@ mam_done:
  * from the alias list as much as possible. if given empty search string
  * or found nothing, present all aliases
  */
-int mutt_alias_complete(char *buf, size_t buflen)
+int alias_complete(char *buf, size_t buflen)
 {
-  struct Alias *a = NULL, *tmp = NULL;
+  struct Alias *np = NULL, *tmp = NULL;
   struct AliasList a_list = TAILQ_HEAD_INITIALIZER(a_list);
   char bestname[8192] = { 0 };
 
   if (buf[0] != '\0')
   {
-    TAILQ_FOREACH(a, &Aliases, entries)
+    TAILQ_FOREACH(np, &Aliases, entries)
     {
-      if (a->name && (strncmp(a->name, buf, strlen(buf)) == 0))
+      if (np->name && (strncmp(np->name, buf, strlen(buf)) == 0))
       {
         if (bestname[0] == '\0') /* init */
         {
-          mutt_str_strfcpy(bestname, a->name,
-                           MIN(mutt_str_strlen(a->name) + 1, sizeof(bestname)));
+          mutt_str_strfcpy(bestname, np->name,
+                           MIN(mutt_str_strlen(np->name) + 1, sizeof(bestname)));
         }
         else
         {
           int i;
-          for (i = 0; a->name[i] && (a->name[i] == bestname[i]); i++)
+          for (i = 0; np->name[i] && (np->name[i] == bestname[i]); i++)
             ;
           bestname[i] = '\0';
         }
@@ -391,12 +389,12 @@ int mutt_alias_complete(char *buf, size_t buflen)
       }
 
       /* build alias list and show it */
-      TAILQ_FOREACH(a, &Aliases, entries)
+      TAILQ_FOREACH(np, &Aliases, entries)
       {
-        if (a->name && (strncmp(a->name, buf, strlen(buf)) == 0))
+        if (np->name && (strncmp(np->name, buf, strlen(buf)) == 0))
         {
           tmp = mutt_mem_calloc(1, sizeof(struct Alias));
-          memcpy(tmp, a, sizeof(struct Alias));
+          memcpy(tmp, np, sizeof(struct Alias));
           TAILQ_INSERT_TAIL(&a_list, tmp, entries);
         }
       }
@@ -404,24 +402,24 @@ int mutt_alias_complete(char *buf, size_t buflen)
   }
 
   bestname[0] = '\0';
-  mutt_alias_menu(bestname, sizeof(bestname), !TAILQ_EMPTY(&a_list) ? &a_list : &Aliases);
+  alias_menu(bestname, sizeof(bestname), !TAILQ_EMPTY(&a_list) ? &a_list : &Aliases);
   if (bestname[0] != '\0')
     mutt_str_strfcpy(buf, bestname, buflen);
 
   /* free the alias list */
-  TAILQ_FOREACH_SAFE(a, &a_list, entries, tmp)
+  TAILQ_FOREACH_SAFE(np, &a_list, entries, tmp)
   {
-    TAILQ_REMOVE(&a_list, a, entries);
-    FREE(&a);
+    TAILQ_REMOVE(&a_list, np, entries);
+    FREE(&np);
   }
 
   /* remove any aliases marked for deletion */
-  TAILQ_FOREACH_SAFE(a, &Aliases, entries, tmp)
+  TAILQ_FOREACH_SAFE(np, &Aliases, entries, tmp)
   {
-    if (a->del)
+    if (np->del)
     {
-      TAILQ_REMOVE(&Aliases, a, entries);
-      mutt_alias_free(&a);
+      TAILQ_REMOVE(&Aliases, np, entries);
+      alias_free(&np);
     }
   }
 

@@ -2981,9 +2981,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_CREATE_ALIAS:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
         if (IsMsgAttach(extra))
-          mutt_alias_create(extra->body->email->env, NULL);
+          alias_create(extra->body->email->env, NULL);
         else
-          mutt_alias_create(extra->email->env, NULL);
+          alias_create(extra->email->env, NULL);
         break;
 
       case OP_PURGE_MESSAGE:

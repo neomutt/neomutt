@@ -160,7 +160,7 @@ const char *mutt_get_name(const struct Address *a)
 
   if (a)
   {
-    if (C_ReverseAlias && (ali = mutt_alias_reverse_lookup(a)) && ali->personal)
+    if (C_ReverseAlias && (ali = alias_reverse_lookup(a)) && ali->personal)
       return ali->personal;
     if (a->personal)
       return a->personal;

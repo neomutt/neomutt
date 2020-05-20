@@ -39,14 +39,14 @@
 #define RSORT(num) ((C_SortAlias & SORT_REVERSE) ? -num : num)
 
 /**
- * alias_sort_alias - Compare two Aliases
+ * alias_sort_name - Compare two Aliases by their short names
  * @param a First  Alias to compare
  * @param b Second Alias to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int alias_sort_alias(const void *a, const void *b)
+int alias_sort_name(const void *a, const void *b)
 {
   const struct Alias *pa = *(struct Alias const *const *) a;
   const struct Alias *pb = *(struct Alias const *const *) b;
@@ -56,40 +56,39 @@ int alias_sort_alias(const void *a, const void *b)
 }
 
 /**
- * alias_sort_address - Compare two Addresses
- * @param a First  Address to compare
- * @param b Second Address to compare
+ * alias_sort_address - Compare two Aliases by their Addresses
+ * @param a First  Alias to compare
+ * @param b Second Alias to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
 int alias_sort_address(const void *a, const void *b)
 {
-  const struct AddressList *pal = &(*(struct Alias const *const *) a)->addr;
-  const struct AddressList *pbl = &(*(struct Alias const *const *) b)->addr;
+  const struct AddressList *al_a = &(*(struct Alias const *const *) a)->addr;
+  const struct AddressList *al_b = &(*(struct Alias const *const *) b)->addr;
   int r;
-
-  if (pal == pbl)
+  if (al_a == al_b)
     r = 0;
-  else if (!pal)
+  else if (!al_a)
     r = -1;
-  else if (!pbl)
+  else if (!al_b)
     r = 1;
   else
   {
-    const struct Address *pa = TAILQ_FIRST(pal);
-    const struct Address *pb = TAILQ_FIRST(pbl);
-    if (pa->personal)
+    const struct Address *addr_a = TAILQ_FIRST(al_a);
+    const struct Address *addr_b = TAILQ_FIRST(al_b);
+    if (addr_a->personal)
     {
-      if (pb->personal)
-        r = mutt_str_strcasecmp(pa->personal, pb->personal);
+      if (addr_b->personal)
+        r = mutt_str_strcasecmp(addr_a->personal, addr_b->personal);
       else
         r = 1;
     }
-    else if (pb->personal)
+    else if (addr_b->personal)
       r = -1;
     else
-      r = mutt_str_strcasecmp(pa->mailbox, pb->mailbox);
+      r = mutt_str_strcasecmp(addr_a->mailbox, addr_b->mailbox);
   }
   return RSORT(r);
 }

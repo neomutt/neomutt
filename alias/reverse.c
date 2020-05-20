@@ -35,57 +35,57 @@
 struct Hash *ReverseAliases; ///< Hash table of aliases (email address -> alias)
 
 /**
- * mutt_alias_add_reverse - Add an email address lookup for an Alias
- * @param t Alias to use
+ * alias_reverse_add - Add an email address lookup for an Alias
+ * @param alias Alias to use
  */
-void mutt_alias_add_reverse(struct Alias *t)
+void alias_reverse_add(struct Alias *alias)
 {
-  if (!t)
+  if (!alias)
     return;
 
   /* Note that the address mailbox should be converted to intl form
    * before using as a key in the hash.  This is currently done
    * by all callers, but added here mostly as documentation. */
-  mutt_addrlist_to_intl(&t->addr, NULL);
+  mutt_addrlist_to_intl(&alias->addr, NULL);
 
-  struct Address *a = NULL;
-  TAILQ_FOREACH(a, &t->addr, entries)
+  struct Address *addr = NULL;
+  TAILQ_FOREACH(addr, &alias->addr, entries)
   {
-    if (!a->group && a->mailbox)
-      mutt_hash_insert(ReverseAliases, a->mailbox, a);
+    if (!addr->group && addr->mailbox)
+      mutt_hash_insert(ReverseAliases, addr->mailbox, addr);
   }
 }
 
 /**
- * mutt_alias_delete_reverse - Remove an email address lookup for an Alias
- * @param t Alias to use
+ * alias_reverse_delete - Remove an email address lookup for an Alias
+ * @param alias Alias to use
  */
-void mutt_alias_delete_reverse(struct Alias *t)
+void alias_reverse_delete(struct Alias *alias)
 {
-  if (!t)
+  if (!alias)
     return;
 
   /* If the alias addresses were converted to local form, they won't
    * match the hash entries. */
-  mutt_addrlist_to_intl(&t->addr, NULL);
+  mutt_addrlist_to_intl(&alias->addr, NULL);
 
-  struct Address *a = NULL;
-  TAILQ_FOREACH(a, &t->addr, entries)
+  struct Address *addr = NULL;
+  TAILQ_FOREACH(addr, &alias->addr, entries)
   {
-    if (!a->group && a->mailbox)
-      mutt_hash_delete(ReverseAliases, a->mailbox, a);
+    if (!addr->group && addr->mailbox)
+      mutt_hash_delete(ReverseAliases, addr->mailbox, addr);
   }
 }
 
 /**
- * mutt_alias_reverse_lookup - Does the user have an alias for the given address
- * @param a Address to lookup
+ * alias_reverse_lookup - Does the user have an alias for the given address
+ * @param addr Address to lookup
  * @retval ptr Matching Address
  */
-struct Address *mutt_alias_reverse_lookup(const struct Address *a)
+struct Address *alias_reverse_lookup(const struct Address *addr)
 {
-  if (!a || !a->mailbox)
+  if (!addr || !addr->mailbox)
     return NULL;
 
-  return mutt_hash_find(ReverseAliases, a->mailbox);
+  return mutt_hash_find(ReverseAliases, addr->mailbox);
 }
