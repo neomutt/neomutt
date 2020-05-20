@@ -77,7 +77,8 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
                                     unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128], addr[1024];
-  struct Alias *alias = (struct Alias *) data;
+  struct AliasView *av = (struct AliasView *) data;
+  struct Alias *alias = av->alias;
 
   switch (op)
   {
@@ -89,11 +90,11 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
       break;
     case 'f':
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, alias->del ? "D" : " ");
+      snprintf(buf, buflen, fmt, av->is_deleted ? "D" : " ");
       break;
     case 'n':
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, alias->num + 1);
+      snprintf(buf, buflen, fmt, av->num + 1);
       break;
     case 'r':
       addr[0] = '\0';
@@ -101,7 +102,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
       mutt_format_s(buf, buflen, prec, addr);
       break;
     case 't':
-      buf[0] = alias->tagged ? '*' : ' ';
+      buf[0] = av->is_tagged ? '*' : ' ';
       buf[1] = '\0';
       break;
   }
@@ -114,10 +115,11 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
  */
 static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                      NONULL(C_AliasFormat), alias_format_str,
-                      (unsigned long) ((struct Alias **) menu->data)[line],
-                      MUTT_FORMAT_ARROWCURSOR);
+  const struct AliasMenuData *mdata = menu->data;
+  const struct AliasView *av = mdata->av[line];
+
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(C_AliasFormat),
+                      alias_format_str, (unsigned long) av, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
@@ -125,12 +127,44 @@ static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
  */
 static int alias_tag(struct Menu *menu, int sel, int act)
 {
-  struct Alias *cur = ((struct Alias **) menu->data)[sel];
-  bool ot = cur->tagged;
+  struct AliasMenuData *mdata = (struct AliasMenuData *) menu->data;
+  struct AliasView *av = mdata->av[sel];
 
-  cur->tagged = ((act >= 0) ? act : !cur->tagged);
+  bool ot = av->is_tagged;
 
-  return cur->tagged - ot;
+  av->is_tagged = ((act >= 0) ? act : !av->is_tagged);
+
+  return av->is_tagged - ot;
+}
+
+/**
+ * alias_data_observer - Listen for data changes affecting the Alias menu - Implements ::observer_t
+ */
+static int alias_data_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_ALIAS)
+    return 0;
+
+  struct EventAlias *ea = nc->event_data;
+  struct Menu *menu = nc->global_data;
+  struct AliasMenuData *mdata = menu->data;
+  struct Alias *alias = ea->alias;
+
+  if (nc->event_subtype == NT_ALIAS_NEW)
+  {
+    menu_data_alias_add(mdata, alias);
+  }
+  else if (nc->event_subtype == NT_ALIAS_DELETED)
+  {
+    menu_data_alias_delete(mdata, alias);
+  }
+  menu_data_sort(mdata);
+
+  menu->max = mdata->num_views;
+  menu->redraw = REDRAW_FULL;
+  return 0;
 }
 
 /**
@@ -167,23 +201,19 @@ static int alias_config_observer(struct NotifyCallback *nc)
  * alias_menu - Display a menu of Aliases
  * @param buf    Buffer for expanded aliases
  * @param buflen Length of buffer
- * @param aliases Alias List
+ * @param mdata  Menu data holding Aliases
  */
-static void alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
+static void alias_menu(char *buf, size_t buflen, struct AliasMenuData *mdata)
 {
-  struct Alias *a = NULL, *last = NULL;
-  struct Alias **alias_table = NULL;
-  int t = -1;
-  bool done = false;
-  char helpstr[1024];
-
-  int omax;
-
-  if (TAILQ_EMPTY(aliases))
+  if (mdata->num_views == 0)
   {
     mutt_warning(_("You have no aliases"));
     return;
   }
+
+  int t = -1;
+  bool done = false;
+  char helpstr[1024];
 
   struct MuttWindow *dlg =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
@@ -239,51 +269,21 @@ static void alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ALIAS, AliasHelp);
   mutt_menu_push_current(menu);
 
-new_aliases:
-  omax = menu->max;
-
-  /* count the number of aliases */
-  TAILQ_FOREACH_FROM(a, aliases, entries)
-  {
-    a->del = false;
-    a->tagged = false;
-    menu->max++;
-  }
-
-  mutt_mem_realloc(&alias_table, menu->max * sizeof(struct Alias *));
-  menu->data = alias_table;
-  if (!alias_table)
-    goto mam_done;
-
-  if (last)
-    a = TAILQ_NEXT(last, entries);
-
-  int j = omax;
-  TAILQ_FOREACH_FROM(a, aliases, entries)
-  {
-    alias_table[j] = a;
-    j++;
-  }
+  menu->max = mdata->num_views;
+  menu->data = mdata;
+  notify_observer_add(NeoMutt->notify, alias_data_observer, menu);
 
   if ((C_SortAlias & SORT_MASK) != SORT_ORDER)
   {
-    qsort(alias_table, menu->max, sizeof(struct Alias *),
+    qsort(mdata->av, mdata->num_views, sizeof(struct AliasView *),
           ((C_SortAlias & SORT_MASK) == SORT_ADDRESS) ? alias_sort_address : alias_sort_name);
   }
 
   for (int i = 0; i < menu->max; i++)
-    alias_table[i]->num = i;
-
-  last = TAILQ_LAST(aliases, AliasList);
+    mdata->av[i]->num = i;
 
   while (!done)
   {
-    if (TAILQ_NEXT(last, entries))
-    {
-      menu->redraw |= REDRAW_FULL;
-      a = TAILQ_NEXT(last, entries);
-      goto new_aliases;
-    }
     int op = mutt_menu_loop(menu);
     switch (op)
     {
@@ -292,13 +292,13 @@ new_aliases:
         if (menu->tagprefix)
         {
           for (int i = 0; i < menu->max; i++)
-            if (alias_table[i]->tagged)
-              alias_table[i]->del = (op == OP_DELETE);
+            if (mdata->av[i]->is_tagged)
+              mdata->av[i]->is_deleted = (op == OP_DELETE);
           menu->redraw |= REDRAW_INDEX;
         }
         else
         {
-          alias_table[menu->current]->del = (op == OP_DELETE);
+          mdata->av[menu->current]->is_deleted = (op == OP_DELETE);
           menu->redraw |= REDRAW_CURRENT;
           if (C_Resolve && (menu->current < menu->max - 1))
           {
@@ -309,6 +309,8 @@ new_aliases:
         break;
       case OP_GENERIC_SELECT_ENTRY:
         t = menu->current;
+        if (t >= mdata->num_views)
+          t = -1;
         done = true;
         break;
       case OP_EXIT:
@@ -319,21 +321,19 @@ new_aliases:
 
   for (int i = 0; i < menu->max; i++)
   {
-    if (alias_table[i]->tagged)
+    if (mdata->av[i]->is_tagged)
     {
-      mutt_addrlist_write(&alias_table[i]->addr, buf, buflen, true);
+      mutt_addrlist_write(&mdata->av[i]->alias->addr, buf, buflen, true);
       t = -1;
     }
   }
 
   if (t != -1)
   {
-    mutt_addrlist_write(&alias_table[t]->addr, buf, buflen, true);
+    mutt_addrlist_write(&mdata->av[t]->alias->addr, buf, buflen, true);
   }
 
-  FREE(&alias_table);
-
-mam_done:
+  notify_observer_remove(NeoMutt->notify, alias_data_observer, menu);
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
   dialog_pop();
@@ -354,9 +354,9 @@ mam_done:
  */
 int alias_complete(char *buf, size_t buflen)
 {
-  struct Alias *np = NULL, *tmp = NULL;
-  struct AliasList a_list = TAILQ_HEAD_INITIALIZER(a_list);
+  struct Alias *np = NULL;
   char bestname[8192] = { 0 };
+  struct AliasMenuData *mdata = NULL;
 
   if (buf[0] != '\0')
   {
@@ -389,39 +389,43 @@ int alias_complete(char *buf, size_t buflen)
       }
 
       /* build alias list and show it */
+      mdata = menu_data_new();
       TAILQ_FOREACH(np, &Aliases, entries)
       {
         if (np->name && (strncmp(np->name, buf, strlen(buf)) == 0))
         {
-          tmp = mutt_mem_calloc(1, sizeof(struct Alias));
-          memcpy(tmp, np, sizeof(struct Alias));
-          TAILQ_INSERT_TAIL(&a_list, tmp, entries);
+          menu_data_alias_add(mdata, np);
         }
       }
     }
   }
 
+  if (!mdata)
+  {
+    mdata = menu_data_new();
+    TAILQ_FOREACH(np, &Aliases, entries)
+    {
+      menu_data_alias_add(mdata, np);
+    }
+  }
+  menu_data_sort(mdata);
+
   bestname[0] = '\0';
-  alias_menu(bestname, sizeof(bestname), !TAILQ_EMPTY(&a_list) ? &a_list : &Aliases);
+  alias_menu(bestname, sizeof(bestname), mdata);
   if (bestname[0] != '\0')
     mutt_str_strfcpy(buf, bestname, buflen);
 
-  /* free the alias list */
-  TAILQ_FOREACH_SAFE(np, &a_list, entries, tmp)
+  for (int i = 0; i < mdata->num_views; i++)
   {
-    TAILQ_REMOVE(&a_list, np, entries);
-    FREE(&np);
+    struct AliasView *av = mdata->av[i];
+    if (!av->is_deleted)
+      continue;
+
+    TAILQ_REMOVE(&Aliases, av->alias, entries);
+    alias_free(&av->alias);
   }
 
-  /* remove any aliases marked for deletion */
-  TAILQ_FOREACH_SAFE(np, &Aliases, entries, tmp)
-  {
-    if (np->del)
-    {
-      TAILQ_REMOVE(&Aliases, np, entries);
-      alias_free(&np);
-    }
-  }
+  menu_data_free(&mdata);
 
   return 0;
 }
