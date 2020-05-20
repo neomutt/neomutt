@@ -2588,7 +2588,7 @@ int mutt_pattern_func(int op, char *prompt)
   }
 
 #ifdef USE_IMAP
-  if ((m->type == MUTT_IMAP) && (imap_search(m, pat) < 0))
+  if ((m->type == MUTT_IMAP) && (!imap_search(m, pat)))
     goto bail;
 #endif
 
@@ -2755,7 +2755,7 @@ int mutt_search_command(int cur, int op)
       Context->mailbox->emails[i]->searched = false;
 #ifdef USE_IMAP
     if ((Context->mailbox->type == MUTT_IMAP) &&
-        (imap_search(Context->mailbox, SearchPattern) < 0))
+        (!imap_search(Context->mailbox, SearchPattern)))
       return -1;
 #endif
     OptSearchInvalid = false;

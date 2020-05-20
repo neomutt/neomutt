@@ -49,9 +49,9 @@ int crypt_valid_passphrase(int flags)
   return 0;
 }
 
-int imap_search(struct Mailbox *m, const struct Pattern *pat)
+bool imap_search(struct Mailbox *m, const struct Pattern *pat)
 {
-  return -1;
+  return false;
 }
 
 bool mutt_addr_is_user(struct Address *addr)

@@ -93,7 +93,7 @@ int imap_delete_mailbox(struct Mailbox *m, char *path);
 int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close);
 int imap_path_status(const char *path, bool queue);
 int imap_mailbox_status(struct Mailbox *m, bool queue);
-int imap_search(struct Mailbox *m, const struct PatternList *pat);
+bool imap_search(struct Mailbox *m, const struct PatternList *pat);
 int imap_subscribe(char *path, bool subscribe);
 int imap_complete(char *buf, size_t buflen, const char *path);
 int imap_fast_trash(struct Mailbox *m, char *dest);
