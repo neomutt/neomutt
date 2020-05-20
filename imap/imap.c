@@ -396,29 +396,41 @@ static int compile_search(struct Mailbox *m, const struct PatternList *pat, stru
 
   if (firstpat->child)
   {
-    int clauses;
-
-    clauses = do_search(firstpat->child, true);
+    int clauses = do_search(firstpat->child, true);
     if (clauses > 0)
     {
       mutt_buffer_addch(buf, '(');
 
+      struct PatternList clause = SLIST_HEAD_INITIALIZER(clause);
+      struct Pattern *c = NULL;
+      SLIST_FOREACH(c, firstpat->child, entries)
+      {
+        struct Pattern *c2 = mutt_mem_malloc(sizeof(struct Pattern));
+        memcpy(c2, c, sizeof(struct Pattern));
+        SLIST_INSERT_HEAD(&clause, c2, entries);
+      }
+
       while (clauses)
       {
-        if (do_search(firstpat->child, false))
+        if (do_search(&clause, false))
         {
           if ((firstpat->op == MUTT_PAT_OR) && (clauses > 1))
             mutt_buffer_addstr(buf, "OR ");
           clauses--;
 
-          if (compile_search(m, firstpat->child, buf) < 0)
+          if (compile_search(m, &clause, buf) < 0)
             return -1;
 
           if (clauses)
             mutt_buffer_addch(buf, ' ');
         }
-
-        SLIST_REMOVE_HEAD(firstpat->child, entries);
+        SLIST_REMOVE_HEAD(&clause, entries);
+      }
+      while (!SLIST_EMPTY(&clause))
+      {
+        struct Pattern *c = SLIST_FIRST(&clause);
+        SLIST_REMOVE_HEAD(&clause, entries);
+        FREE(&c);
       }
 
       mutt_buffer_addch(buf, ')');
