@@ -55,6 +55,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   struct Alias *tmp = NULL;
   char *estr = NULL;
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
+  enum NotifyAlias event;
 
   if (!MoreArgs(s))
   {
@@ -80,8 +81,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     /* override the previous value */
     mutt_addrlist_clear(&tmp->addr);
     FREE(&tmp->comment);
-    if (CurrentMenu == MENU_ALIAS)
-      mutt_menu_set_current_redraw_full();
+    event = NT_ALIAS_CHANGED;
   }
   else
   {
@@ -89,9 +89,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     tmp = alias_new();
     tmp->name = mutt_str_strdup(buf->data);
     TAILQ_INSERT_TAIL(&Aliases, tmp, entries);
-    /* give the main addressbook code a chance */
-    if (CurrentMenu == MENU_ALIAS)
-      OptMenuCaller = true;
+    event = NT_ALIAS_NEW;
   }
 
   mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
@@ -107,7 +105,6 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   }
 
   mutt_grouplist_add_addrlist(&gl, &tmp->addr);
-  alias_reverse_add(tmp);
 
   if (C_DebugLevel > LL_DEBUG4)
   {
@@ -132,6 +129,11 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     tmp->comment = mutt_str_strdup(comment);
   }
 
+  alias_reverse_add(tmp);
+
+  struct EventAlias ea = { tmp };
+  notify_send(NeoMutt->notify, NT_ALIAS, event, &ea);
+
   return MUTT_CMD_SUCCESS;
 
 bail:
@@ -145,45 +147,31 @@ bail:
 enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
                                  intptr_t data, struct Buffer *err)
 {
-  struct Alias *a = NULL;
-
   do
   {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
+    struct Alias *np = NULL;
     if (mutt_str_strcmp("*", buf->data) == 0)
     {
-      if (CurrentMenu == MENU_ALIAS)
+      TAILQ_FOREACH(np, &Aliases, entries)
       {
-        TAILQ_FOREACH(a, &Aliases, entries)
-        {
-          a->del = true;
-        }
-        mutt_menu_set_current_redraw_full();
+        alias_reverse_delete(np);
       }
-      else
-        aliaslist_free(&Aliases);
-      break;
+
+      aliaslist_free(&Aliases);
+      return MUTT_CMD_SUCCESS;
     }
-    else
+
+    TAILQ_FOREACH(np, &Aliases, entries)
     {
-      TAILQ_FOREACH(a, &Aliases, entries)
-      {
-        if (mutt_str_strcasecmp(buf->data, a->name) == 0)
-        {
-          if (CurrentMenu == MENU_ALIAS)
-          {
-            a->del = true;
-            mutt_menu_set_current_redraw_full();
-          }
-          else
-          {
-            TAILQ_REMOVE(&Aliases, a, entries);
-            alias_free(&a);
-          }
-          break;
-        }
-      }
+      if (mutt_str_strcasecmp(buf->data, np->name) != 0)
+        continue;
+
+      TAILQ_REMOVE(&Aliases, np, entries);
+      alias_reverse_delete(np);
+      alias_free(&np);
+      break;
     }
   } while (MoreArgs(s));
   return MUTT_CMD_SUCCESS;

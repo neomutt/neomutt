@@ -621,7 +621,9 @@ void alias_free(struct Alias **ptr)
 
   struct Alias *alias = *ptr;
 
-  alias_reverse_delete(alias);
+  struct EventAlias ea = { alias };
+  notify_send(NeoMutt->notify, NT_ALIAS, NT_ALIAS_DELETED, &ea);
+
   FREE(&alias->name);
   FREE(&alias->comment);
   mutt_addrlist_clear(&(alias->addr));
@@ -658,6 +660,11 @@ void alias_init(void)
  */
 void alias_shutdown(void)
 {
+  struct Alias *np = NULL;
+  TAILQ_FOREACH(np, &Aliases, entries)
+  {
+    alias_reverse_delete(np);
+  }
   aliaslist_free(&Aliases);
   mutt_hash_free(&ReverseAliases);
 }

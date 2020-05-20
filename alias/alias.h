@@ -45,6 +45,26 @@ TAILQ_HEAD(AliasList, Alias);
 
 extern struct AliasList Aliases;
 
+/**
+ * enum NotifyAlias - Alias notification types
+ */
+enum NotifyAlias
+{
+  NT_ALIAS_NEW = 1, ///< A new Alias has been created
+  NT_ALIAS_CHANGED, ///< An Alias has been changed
+  NT_ALIAS_DELETED, ///< An Alias is about to be deleted
+};
+
+/**
+ * struct EventAlias - An alias-change event
+ *
+ * Events such as #NT_ALIAS_NEW
+ */
+struct EventAlias
+{
+  struct Alias *alias;
+};
+
 void          alias_free    (struct Alias **ptr);
 void          aliaslist_free(struct AliasList *al);
 struct Alias *alias_new     (void);
