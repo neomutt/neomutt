@@ -181,7 +181,7 @@ size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensiti
     }
   }
 
-  return (!*prefix) ? prefix - saved_prefix : 0;
+  return (!*prefix) ? (prefix - saved_prefix) : 0;
 }
 
 /**

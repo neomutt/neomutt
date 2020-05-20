@@ -38,13 +38,18 @@
 #include "state.h"
 
 /**
- * struct HashAlgorithms - PGP Hashing algorithms
+ * struct HashAlgorithm - PGP Hashing algorithm
  */
-static const struct
+struct HashAlgorithm
 {
-  short id;
-  const char *name;
-} HashAlgorithms[] = {
+  short id;         ///< Algorithm Id
+  const char *name; ///< Algorithm name
+};
+
+/**
+ * HashAlgorithms - PGP Hashing algorithms
+ */
+static const struct HashAlgorithm HashAlgorithms[] = {
   { 1, "pgp-md5" },     { 2, "pgp-sha1" },     { 3, "pgp-ripemd160" },
   { 5, "pgp-md2" },     { 6, "pgp-tiger192" }, { 7, "pgp-haval-5-160" },
   { 8, "pgp-sha256" },  { 9, "pgp-sha384" },   { 10, "pgp-sha512" },

@@ -91,6 +91,9 @@
 /* These options are deprecated */
 bool C_IgnoreLinearWhiteSpace = false;
 bool C_HeaderCacheCompress = false;
+#if defined(HAVE_GDBM) || defined(HAVE_BDB)
+long C_HeaderCachePagesize = 0;
+#endif
 
 // clang-format off
 struct ConfigDef MuttVars[] = {
@@ -3266,7 +3269,7 @@ struct ConfigDef MuttVars[] = {
   ** the string, NeoMutt will append the user's query to the end of the string.
   ** See "$query" for more information.
   */
-  { "query_format", DT_STRING|DT_NOT_EMPTY, &C_QueryFormat, IP "%3c %t %-25.25n %-25.25a │ %e" },
+  { "query_format", DT_STRING|DT_NOT_EMPTY, &C_QueryFormat, IP "%3c %t %-25.25n %-25.25a | %e" },
   /*
   ** .pp
   ** This variable describes the format of the "query" menu. The

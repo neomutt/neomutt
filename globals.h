@@ -119,9 +119,6 @@ WHERE struct Slist *C_MailcapPath;           ///< Config: Colon-separated list o
 WHERE char *C_Folder;                        ///< Config: Base folder for a set of mailboxes
 #ifdef USE_HCACHE
 WHERE char *C_HeaderCache;                   ///< Config: (hcache) Directory/file for the header cache database
-#if defined(HAVE_GDBM) || defined(HAVE_BDB)
-WHERE long C_HeaderCachePagesize;            ///< Config: (hcache) Database page size (gdbm,bdb4)
-#endif /* HAVE_GDBM || HAVE_BDB */
 #endif /* USE_HCACHE */
 
 #ifdef USE_NNTP
