@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2000,2003,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -22,7 +23,7 @@
  */
 
 /**
- * @page query Routines for querying and external address book
+ * @page alias_dlgquery Routines for querying and external address book
  *
  * Routines for querying and external address book
  */
@@ -37,10 +38,11 @@
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "query.h"
+#include "lib.h"
 #include "alias.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "gui.h"
 #include "keymap.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
@@ -48,9 +50,19 @@
 #include "opcodes.h"
 #include "send.h"
 
-/* These Config Variables are only used in query.c */
+/* These Config Variables are only used in dlgquery.c */
 char *C_QueryCommand; ///< Config: External command to query and external address book
 char *C_QueryFormat; ///< Config: printf-like format string for the query menu (address book)
+
+static const struct Mapping QueryHelp[] = {
+  { N_("Exit"), OP_EXIT },
+  { N_("Mail"), OP_MAIL },
+  { N_("New Query"), OP_QUERY },
+  { N_("Make Alias"), OP_CREATE_ALIAS },
+  { N_("Search"), OP_SEARCH },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
+};
 
 /**
  * struct Query - An entry from an external address-book
@@ -72,41 +84,6 @@ struct QueryEntry
   bool tagged;
   struct Query *data;
 };
-
-static const struct Mapping QueryHelp[] = {
-  { N_("Exit"), OP_EXIT },
-  { N_("Mail"), OP_MAIL },
-  { N_("New Query"), OP_QUERY },
-  { N_("Make Alias"), OP_CREATE_ALIAS },
-  { N_("Search"), OP_SEARCH },
-  { N_("Help"), OP_HELP },
-  { NULL, 0 },
-};
-
-/**
- * result_to_addr - Turn a Query into an AddressList
- * @param al AddressList to fill (must be empty)
- * @param r Query to use
- * @retval bool True on success
- */
-static bool result_to_addr(struct AddressList *al, struct Query *r)
-{
-  if (!al || !TAILQ_EMPTY(al) || !r)
-    return false;
-
-  mutt_addrlist_copy(al, &r->addr, false);
-  if (!TAILQ_EMPTY(al))
-  {
-    struct Address *first = TAILQ_FIRST(al);
-    struct Address *second = TAILQ_NEXT(first, entries);
-    if (!second && !first->personal)
-      first->personal = mutt_str_strdup(r->name);
-
-    mutt_addrlist_to_intl(al, NULL);
-  }
-
-  return true;
-}
 
 /**
  * query_new - Create a new query
@@ -143,84 +120,28 @@ static void query_free(struct Query **query)
 }
 
 /**
- * run_query - Run an external program to find Addresses
- * @param s       String to match
- * @param verbose If true, print progress messages
- * @retval ptr Query List of results
+ * result_to_addr - Turn a Query into an AddressList
+ * @param al AddressList to fill (must be empty)
+ * @param r Query to use
+ * @retval bool True on success
  */
-static struct Query *run_query(char *s, bool verbose)
+static bool result_to_addr(struct AddressList *al, struct Query *r)
 {
-  FILE *fp = NULL;
-  struct Query *first = NULL;
-  struct Query *cur = NULL;
-  char *buf = NULL;
-  size_t buflen;
-  char *msg = NULL;
-  size_t msglen = 0;
-  char *p = NULL;
-  pid_t pid;
-  struct Buffer *cmd = mutt_buffer_pool_get();
+  if (!al || !TAILQ_EMPTY(al) || !r)
+    return false;
 
-  mutt_buffer_file_expand_fmt_quote(cmd, C_QueryCommand, s);
-
-  pid = filter_create(mutt_b2s(cmd), NULL, &fp, NULL);
-  if (pid < 0)
+  mutt_addrlist_copy(al, &r->addr, false);
+  if (!TAILQ_EMPTY(al))
   {
-    mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", mutt_b2s(cmd));
-    mutt_buffer_pool_release(&cmd);
-    return 0;
-  }
-  mutt_buffer_pool_release(&cmd);
+    struct Address *first = TAILQ_FIRST(al);
+    struct Address *second = TAILQ_NEXT(first, entries);
+    if (!second && !first->personal)
+      first->personal = mutt_str_strdup(r->name);
 
-  if (verbose)
-    mutt_message(_("Waiting for response..."));
-
-  /* The query protocol first reads one NL-terminated line. If an error
-   * occurs, this is assumed to be an error message. Otherwise it's ignored. */
-  msg = mutt_file_read_line(msg, &msglen, fp, NULL, 0);
-  while ((buf = mutt_file_read_line(buf, &buflen, fp, NULL, 0)))
-  {
-    p = strtok(buf, "\t\n");
-    if (p)
-    {
-      if (first)
-      {
-        cur->next = query_new();
-        cur = cur->next;
-      }
-      else
-      {
-        first = query_new();
-        cur = first;
-      }
-
-      mutt_addrlist_parse(&cur->addr, p);
-      p = strtok(NULL, "\t\n");
-      if (p)
-      {
-        cur->name = mutt_str_strdup(p);
-        p = strtok(NULL, "\t\n");
-        if (p)
-          cur->other = mutt_str_strdup(p);
-      }
-    }
+    mutt_addrlist_to_intl(al, NULL);
   }
-  FREE(&buf);
-  mutt_file_fclose(&fp);
-  if (filter_wait(pid))
-  {
-    mutt_debug(LL_DEBUG1, "Error: %s\n", msg);
-    if (verbose)
-      mutt_error("%s", msg);
-  }
-  else
-  {
-    if (verbose)
-      mutt_message("%s", msg);
-  }
-  FREE(&msg);
 
-  return first;
+  return true;
 }
 
 /**
@@ -341,6 +262,87 @@ static int query_tag(struct Menu *menu, int sel, int act)
 
   cur->tagged = ((act >= 0) ? act : !cur->tagged);
   return cur->tagged - ot;
+}
+
+/**
+ * run_query - Run an external program to find Addresses
+ * @param s       String to match
+ * @param verbose If true, print progress messages
+ * @retval ptr Query List of results
+ */
+static struct Query *run_query(char *s, bool verbose)
+{
+  FILE *fp = NULL;
+  struct Query *first = NULL;
+  struct Query *cur = NULL;
+  char *buf = NULL;
+  size_t buflen;
+  char *msg = NULL;
+  size_t msglen = 0;
+  char *p = NULL;
+  pid_t pid;
+  struct Buffer *cmd = mutt_buffer_pool_get();
+
+  mutt_buffer_file_expand_fmt_quote(cmd, C_QueryCommand, s);
+
+  pid = filter_create(mutt_b2s(cmd), NULL, &fp, NULL);
+  if (pid < 0)
+  {
+    mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", mutt_b2s(cmd));
+    mutt_buffer_pool_release(&cmd);
+    return 0;
+  }
+  mutt_buffer_pool_release(&cmd);
+
+  if (verbose)
+    mutt_message(_("Waiting for response..."));
+
+  /* The query protocol first reads one NL-terminated line. If an error
+   * occurs, this is assumed to be an error message. Otherwise it's ignored. */
+  msg = mutt_file_read_line(msg, &msglen, fp, NULL, 0);
+  while ((buf = mutt_file_read_line(buf, &buflen, fp, NULL, 0)))
+  {
+    p = strtok(buf, "\t\n");
+    if (p)
+    {
+      if (first)
+      {
+        cur->next = query_new();
+        cur = cur->next;
+      }
+      else
+      {
+        first = query_new();
+        cur = first;
+      }
+
+      mutt_addrlist_parse(&cur->addr, p);
+      p = strtok(NULL, "\t\n");
+      if (p)
+      {
+        cur->name = mutt_str_strdup(p);
+        p = strtok(NULL, "\t\n");
+        if (p)
+          cur->other = mutt_str_strdup(p);
+      }
+    }
+  }
+  FREE(&buf);
+  mutt_file_fclose(&fp);
+  if (filter_wait(pid))
+  {
+    mutt_debug(LL_DEBUG1, "Error: %s\n", msg);
+    if (verbose)
+      mutt_error("%s", msg);
+  }
+  else
+  {
+    if (verbose)
+      mutt_message("%s", msg);
+  }
+  FREE(&msg);
+
+  return first;
 }
 
 /**

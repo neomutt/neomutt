@@ -56,7 +56,6 @@ WHERE char *LastFolder;    ///< Previously selected mailbox
 
 extern const char *GitVer;
 
-WHERE struct Hash *ReverseAliases;     ///< Hash table of aliases (email address -> alias)
 WHERE struct Hash *TagFormats;         ///< Hash table of tag-formats (tag -> format string)
 
 /* Lists of strings */
@@ -80,8 +79,6 @@ WHERE SIG_ATOMIC_VOLATILE_T SigInt;   ///< true after SIGINT is received
 WHERE SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
 
 WHERE enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
-
-WHERE struct AliasList Aliases INITVAL(TAILQ_HEAD_INITIALIZER(Aliases)); ///< List of all the user's email aliases
 
 #ifdef USE_AUTOCRYPT
 WHERE char *AutocryptSignAs;     ///< Autocrypt Key id to sign as

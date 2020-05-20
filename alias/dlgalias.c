@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -22,7 +23,7 @@
  */
 
 /**
- * @page addrbook Address book handling aliases
+ * @page alias_dlgalias Address book handling aliases
  *
  * Address book handling aliases
  */
@@ -31,26 +32,26 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "addrbook.h"
+#include "lib.h"
 #include "alias.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "gui.h"
 #include "keymap.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
 
-/* These Config Variables are only used in addrbook.c */
+/* These Config Variables are only used in dlgalias.c */
 char *C_AliasFormat; ///< Config: printf-like format string for the alias menu
 short C_SortAlias;   ///< Config: Sort method for the alias menu
-
-#define RSORT(num) ((C_SortAlias & SORT_REVERSE) ? -num : num)
 
 static const struct Mapping AliasHelp[] = {
   { N_("Exit"), OP_EXIT },      { N_("Del"), OP_DELETE },
@@ -133,62 +134,6 @@ static int alias_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * alias_sort_alias - Compare two Aliases
- * @param a First  Alias to compare
- * @param b Second Alias to compare
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- */
-static int alias_sort_alias(const void *a, const void *b)
-{
-  const struct Alias *pa = *(struct Alias const *const *) a;
-  const struct Alias *pb = *(struct Alias const *const *) b;
-  int r = mutt_str_strcasecmp(pa->name, pb->name);
-
-  return RSORT(r);
-}
-
-/**
- * alias_sort_address - Compare two Addresses
- * @param a First  Address to compare
- * @param b Second Address to compare
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- */
-static int alias_sort_address(const void *a, const void *b)
-{
-  const struct AddressList *pal = &(*(struct Alias const *const *) a)->addr;
-  const struct AddressList *pbl = &(*(struct Alias const *const *) b)->addr;
-  int r;
-
-  if (pal == pbl)
-    r = 0;
-  else if (!pal)
-    r = -1;
-  else if (!pbl)
-    r = 1;
-  else
-  {
-    const struct Address *pa = TAILQ_FIRST(pal);
-    const struct Address *pb = TAILQ_FIRST(pbl);
-    if (pa->personal)
-    {
-      if (pb->personal)
-        r = mutt_str_strcasecmp(pa->personal, pb->personal);
-      else
-        r = 1;
-    }
-    else if (pb->personal)
-      r = -1;
-    else
-      r = mutt_str_strcasecmp(pa->mailbox, pb->mailbox);
-  }
-  return RSORT(r);
-}
-
-/**
  * mutt_dlg_alias_observer - Listen for config changes affecting the Alias menu - Implements ::observer_t
  */
 static int mutt_dlg_alias_observer(struct NotifyCallback *nc)
@@ -224,7 +169,7 @@ static int mutt_dlg_alias_observer(struct NotifyCallback *nc)
  * @param buflen Length of buffer
  * @param aliases Alias List
  */
-void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
+static void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
 {
   struct Alias *a = NULL, *last = NULL;
   struct Menu *menu = NULL;
@@ -396,4 +341,89 @@ mam_done:
   dialog_pop();
   notify_observer_remove(NeoMutt->notify, mutt_dlg_alias_observer, dlg);
   mutt_window_free(&dlg);
+}
+
+/**
+ * mutt_alias_complete - alias completion routine
+ * @param buf    Partial Alias to complete
+ * @param buflen Length of buffer
+ * @retval 1 Success
+ * @retval 0 Error
+ *
+ * Given a partial alias, this routine attempts to fill in the alias
+ * from the alias list as much as possible. if given empty search string
+ * or found nothing, present all aliases
+ */
+int mutt_alias_complete(char *buf, size_t buflen)
+{
+  struct Alias *a = NULL, *tmp = NULL;
+  struct AliasList a_list = TAILQ_HEAD_INITIALIZER(a_list);
+  char bestname[8192] = { 0 };
+
+  if (buf[0] != '\0')
+  {
+    TAILQ_FOREACH(a, &Aliases, entries)
+    {
+      if (a->name && (strncmp(a->name, buf, strlen(buf)) == 0))
+      {
+        if (bestname[0] == '\0') /* init */
+        {
+          mutt_str_strfcpy(bestname, a->name,
+                           MIN(mutt_str_strlen(a->name) + 1, sizeof(bestname)));
+        }
+        else
+        {
+          int i;
+          for (i = 0; a->name[i] && (a->name[i] == bestname[i]); i++)
+            ;
+          bestname[i] = '\0';
+        }
+      }
+    }
+
+    if (bestname[0] != '\0')
+    {
+      if (mutt_str_strcmp(bestname, buf) != 0)
+      {
+        /* we are adding something to the completion */
+        mutt_str_strfcpy(buf, bestname, mutt_str_strlen(bestname) + 1);
+        return 1;
+      }
+
+      /* build alias list and show it */
+      TAILQ_FOREACH(a, &Aliases, entries)
+      {
+        if (a->name && (strncmp(a->name, buf, strlen(buf)) == 0))
+        {
+          tmp = mutt_mem_calloc(1, sizeof(struct Alias));
+          memcpy(tmp, a, sizeof(struct Alias));
+          TAILQ_INSERT_TAIL(&a_list, tmp, entries);
+        }
+      }
+    }
+  }
+
+  bestname[0] = '\0';
+  mutt_alias_menu(bestname, sizeof(bestname), !TAILQ_EMPTY(&a_list) ? &a_list : &Aliases);
+  if (bestname[0] != '\0')
+    mutt_str_strfcpy(buf, bestname, buflen);
+
+  /* free the alias list */
+  TAILQ_FOREACH_SAFE(a, &a_list, entries, tmp)
+  {
+    TAILQ_REMOVE(&a_list, a, entries);
+    FREE(&a);
+  }
+
+  /* remove any aliases marked for deletion */
+  TAILQ_FOREACH_SAFE(a, &Aliases, entries, tmp)
+  {
+    if (a->del)
+    {
+      TAILQ_REMOVE(&Aliases, a, entries);
+      mutt_alias_free(&a);
+    }
+  }
+
+  return 0;
 }

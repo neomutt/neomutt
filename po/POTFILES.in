@@ -1,8 +1,12 @@
-addrbook.c
 address/address.c
 address/group.c
 address/idna.c
-alias.c
+alias/alias.c
+alias/commands.c
+alias/dlgalias.c
+alias/dlgquery.c
+alias/gui.c
+alias/reverse.c
 autocrypt/acct_menu.c
 autocrypt/autocrypt.c
 autocrypt/db.c
@@ -112,6 +116,7 @@ mailcap.c
 maildir/maildir.c
 maildir/mh.c
 maildir/shared.c
+maillist.c
 main.c
 mbox/mbox.c
 menu.c
@@ -188,7 +193,6 @@ pop/pop_auth.c
 pop/pop_lib.c
 postpone.c
 progress.c
-query.c
 recvattach.c
 recvcmd.c
 remailer.c

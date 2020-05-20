@@ -43,11 +43,11 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "init.h"
-#include "alias.h"
 #include "command_parse.h"
 #include "context.h"
 #include "functions.h"
@@ -649,7 +649,7 @@ void mutt_opts_free(void)
 {
   clear_source_stack();
 
-  mutt_aliaslist_free(&Aliases);
+  alias_shutdown();
 
   mutt_regexlist_free(&Alternates);
   mutt_regexlist_free(&MailLists);
@@ -660,7 +660,6 @@ void mutt_opts_free(void)
   mutt_regexlist_free(&UnSubscribedLists);
 
   mutt_grouplist_free();
-  mutt_hash_free(&ReverseAliases);
   mutt_hash_free(&TagFormats);
   mutt_hash_free(&TagTransforms);
 
@@ -738,9 +737,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   struct Buffer buf = mutt_buffer_make(256);
 
   mutt_grouplist_init();
-  /* reverse alias keys need to be strdup'ed because of idna conversions */
-  ReverseAliases = mutt_hash_new(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS |
-                                           MUTT_HASH_ALLOW_DUPS);
+  alias_init();
   TagTransforms = mutt_hash_new(64, MUTT_HASH_STRCASECMP);
   TagFormats = mutt_hash_new(64, MUTT_HASH_NO_FLAGS);
 

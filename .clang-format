@@ -33,6 +33,8 @@ IncludeCategories:
     Priority:   -50
   - Regex:      '"core/.*\.h"'
     Priority:   -40
+  - Regex:      '"alias/.*\.h"'
+    Priority:   -35
   - Regex:      '"conn/.*\.h"'
     Priority:   -30
   - Regex:      '"gui/.*\.h"'

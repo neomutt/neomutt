@@ -32,6 +32,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "mutt_commands.h"

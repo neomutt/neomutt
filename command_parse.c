@@ -39,10 +39,10 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "command_parse.h"
-#include "alias.h"
 #include "context.h"
 #include "globals.h"
 #include "init.h"
@@ -393,8 +393,8 @@ static void alternates_clean(void)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int parse_grouplist(struct GroupList *gl, struct Buffer *buf,
-                           struct Buffer *s, struct Buffer *err)
+int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s,
+                    struct Buffer *err)
 {
   while (mutt_str_strcasecmp(buf->data, "-group") == 0)
   {
@@ -563,98 +563,6 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   mutt_buffer_pool_release(&token);
   mutt_buffer_pool_release(&linebuf);
   return rc;
-}
-
-/**
- * parse_alias - Parse the 'alias' command - Implements Command::parse()
- */
-enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
-                               intptr_t data, struct Buffer *err)
-{
-  struct Alias *tmp = NULL;
-  char *estr = NULL;
-  struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
-
-  if (!MoreArgs(s))
-  {
-    mutt_buffer_strcpy(err, _("alias: no address"));
-    return MUTT_CMD_WARNING;
-  }
-
-  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-
-  if (parse_grouplist(&gl, buf, s, err) == -1)
-    return MUTT_CMD_ERROR;
-
-  /* check to see if an alias with this name already exists */
-  TAILQ_FOREACH(tmp, &Aliases, entries)
-  {
-    if (mutt_str_strcasecmp(tmp->name, buf->data) == 0)
-      break;
-  }
-
-  if (tmp)
-  {
-    mutt_alias_delete_reverse(tmp);
-    /* override the previous value */
-    mutt_addrlist_clear(&tmp->addr);
-    if (CurrentMenu == MENU_ALIAS)
-      mutt_menu_set_current_redraw_full();
-  }
-  else
-  {
-    /* create a new alias */
-    tmp = mutt_alias_new();
-    tmp->name = mutt_str_strdup(buf->data);
-    TAILQ_INSERT_TAIL(&Aliases, tmp, entries);
-    /* give the main addressbook code a chance */
-    if (CurrentMenu == MENU_ALIAS)
-      OptMenuCaller = true;
-  }
-
-  mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
-  mutt_debug(LL_DEBUG5, "Second token is '%s'\n", buf->data);
-
-  mutt_addrlist_parse2(&tmp->addr, buf->data);
-
-  if (mutt_addrlist_to_intl(&tmp->addr, &estr))
-  {
-    mutt_buffer_printf(err, _("Warning: Bad IDN '%s' in alias '%s'"), estr, tmp->name);
-    FREE(&estr);
-    goto bail;
-  }
-
-  mutt_grouplist_add_addrlist(&gl, &tmp->addr);
-  mutt_alias_add_reverse(tmp);
-
-  if (C_DebugLevel > LL_DEBUG4)
-  {
-    /* A group is terminated with an empty address, so check a->mailbox */
-    struct Address *a = NULL;
-    TAILQ_FOREACH(a, &tmp->addr, entries)
-    {
-      if (!a->mailbox)
-        break;
-
-      if (a->group)
-        mutt_debug(LL_DEBUG5, "  Group %s\n", a->mailbox);
-      else
-        mutt_debug(LL_DEBUG5, "  %s\n", a->mailbox);
-    }
-  }
-  mutt_grouplist_destroy(&gl);
-  if (!MoreArgs(s) && (s->dptr[0] == '#'))
-  {
-    char *comment = s->dptr + 1;
-    SKIPWS(comment);
-    tmp->comment = mutt_str_strdup(comment);
-  }
-
-  return MUTT_CMD_SUCCESS;
-
-bail:
-  mutt_grouplist_destroy(&gl);
-  return MUTT_CMD_ERROR;
 }
 
 /**
@@ -1860,56 +1768,6 @@ enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
 
     mutt_hash_insert(TagTransforms, tag, transform);
   }
-  return MUTT_CMD_SUCCESS;
-}
-
-/**
- * parse_unalias - Parse the 'unalias' command - Implements Command::parse()
- */
-enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
-                                 intptr_t data, struct Buffer *err)
-{
-  struct Alias *a = NULL;
-
-  do
-  {
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-
-    if (mutt_str_strcmp("*", buf->data) == 0)
-    {
-      if (CurrentMenu == MENU_ALIAS)
-      {
-        TAILQ_FOREACH(a, &Aliases, entries)
-        {
-          a->del = true;
-        }
-        mutt_menu_set_current_redraw_full();
-      }
-      else
-        mutt_aliaslist_free(&Aliases);
-      break;
-    }
-    else
-    {
-      TAILQ_FOREACH(a, &Aliases, entries)
-      {
-        if (mutt_str_strcasecmp(buf->data, a->name) == 0)
-        {
-          if (CurrentMenu == MENU_ALIAS)
-          {
-            a->del = true;
-            mutt_menu_set_current_redraw_full();
-          }
-          else
-          {
-            TAILQ_REMOVE(&Aliases, a, entries);
-            mutt_alias_free(&a);
-          }
-          break;
-        }
-      }
-    }
-  } while (MoreArgs(s));
   return MUTT_CMD_SUCCESS;
 }
 

@@ -30,7 +30,6 @@
 
 struct Buffer;
 
-enum CommandResult parse_alias           (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_alternates      (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_attachments     (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_echo            (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
@@ -57,7 +56,6 @@ enum CommandResult parse_subscribe_to    (struct Buffer *buf, struct Buffer *s, 
 #endif
 enum CommandResult parse_tag_formats     (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_tag_transforms  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult parse_unalias         (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unalternates    (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unattachments   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unignore        (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
@@ -71,6 +69,7 @@ enum CommandResult parse_unsubscribe     (struct Buffer *buf, struct Buffer *s, 
 enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 #endif
 
+int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s, struct Buffer *err);
 void clear_source_stack(void);
 int source_rc(const char *rcfile_path, struct Buffer *err);
 

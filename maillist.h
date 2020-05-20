@@ -1,9 +1,9 @@
 /**
  * @file
- * Routines for querying and external address book
+ * Handle mailing lists
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,16 +20,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_QUERY_H
-#define MUTT_QUERY_H
+#ifndef MUTT_MAILLIST_H
+#define MUTT_MAILLIST_H
 
-#include <stdio.h>
+#include <stddef.h>
+#include <stdbool.h>
 
-/* These Config Variables are only used in query.c */
-extern char *C_QueryCommand;
-extern char *C_QueryFormat;
+struct Address;
+struct AddressList;
 
-int  mutt_query_complete(char *buf, size_t buflen);
-void mutt_query_menu(char *buf, size_t buflen);
+bool check_for_mailing_list     (struct AddressList *al, const char *pfx, char *buf, int buflen);
+bool check_for_mailing_list_addr(struct AddressList *al, char *buf, int buflen);
+bool first_mailing_list         (char *buf, size_t buflen, struct AddressList *al);
+bool mutt_is_mail_list          (const struct Address *addr);
+bool mutt_is_subscribed_list    (const struct Address *addr);
 
-#endif /* MUTT_QUERY_H */
+#endif /* MUTT_MAILLIST_H */
