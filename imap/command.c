@@ -770,29 +770,6 @@ static void cmd_parse_myrights(struct ImapAccountData *adata, const char *s)
 }
 
 /**
- * cmd_parse_search - store SEARCH response for later use
- * @param adata Imap Account data
- * @param s     Command string with search results
- */
-static void cmd_parse_search(struct ImapAccountData *adata, const char *s)
-{
-  unsigned int uid;
-  struct Email *e = NULL;
-  struct ImapMboxData *mdata = adata->mailbox->mdata;
-
-  mutt_debug(LL_DEBUG2, "Handling SEARCH\n");
-
-  while ((s = imap_next_word((char *) s)) && (*s != '\0'))
-  {
-    if (mutt_str_atoui(s, &uid) < 0)
-      continue;
-    e = mutt_hash_int_find(mdata->uid_hash, uid);
-    if (e)
-      e->matched = true;
-  }
-}
-
-/**
  * find_mailbox - Find a Mailbox by its name
  * @param adata Imap Account data
  * @param name  Mailbox to find

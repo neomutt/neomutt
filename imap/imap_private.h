@@ -342,4 +342,7 @@ void imap_utf_decode(bool unicode, char **s);
 void imap_allow_reopen(struct Mailbox *m);
 void imap_disallow_reopen(struct Mailbox *m);
 
+/* search.c */
+void cmd_parse_search(struct ImapAccountData *adata, const char *s);
+
 #endif /* MUTT_IMAP_IMAP_PRIVATE_H */
