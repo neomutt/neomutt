@@ -325,6 +325,35 @@ static bool get_user_info(struct ConfigSet *cs)
 }
 
 /**
+ * log_translation - Log the translation being used
+ *
+ * Read the header info from the translation file.
+ *
+ * @note Call bindtextdomain() first
+ */
+static void log_translation(void)
+{
+  const char *header = ""; // Do not merge these two lines
+  header = _(header);      // otherwise the .po files will end up badly ordered
+  const char *lang = strcasestr(header, "Language:");
+  int len = 64;
+  if (lang)
+  {
+    lang += 9; // skip label
+    SKIPWS(lang);
+    char *nl = strchr(lang, '\n');
+    if (nl)
+      len = (nl - lang);
+  }
+  else
+  {
+    lang = "NONE";
+  }
+
+  mutt_debug(LL_DEBUG1, "Translation: %.*s\n", len, lang);
+}
+
+/**
  * main - Start NeoMutt
  * @param argc Number of command line arguments
  * @param argv List of command line arguments
@@ -584,6 +613,8 @@ int main(int argc, char *argv[], char *envp[])
     mutt_log_start();
 
   MuttLogger = log_disp_queue;
+
+  log_translation();
 
   if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
   {
