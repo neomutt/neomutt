@@ -102,6 +102,7 @@ imap/browse.c
 imap/command.c
 imap/imap.c
 imap/message.c
+imap/search.c
 imap/utf7.c
 imap/util.c
 index.c
