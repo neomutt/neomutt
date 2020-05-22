@@ -185,8 +185,10 @@ void quad_init(struct ConfigSet *cs)
     quad_string_get,
     quad_native_set,
     quad_native_get,
+    NULL, // string_plus_equals
+    NULL, // string_minus_equals
     quad_reset,
-    NULL,
+    NULL, // destroy
   };
   cs_register_type(cs, DT_QUAD, &cst_quad);
 }

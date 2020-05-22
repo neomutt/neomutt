@@ -182,8 +182,10 @@ void number_init(struct ConfigSet *cs)
     number_string_get,
     number_native_set,
     number_native_get,
+    NULL, // string_plus_equals
+    NULL, // string_minus_equals
     number_reset,
-    NULL,
+    NULL, // destroy
   };
   cs_register_type(cs, DT_NUMBER, &cst_number);
 }

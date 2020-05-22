@@ -223,8 +223,10 @@ void enum_init(struct ConfigSet *cs)
     enum_string_get,
     enum_native_set,
     enum_native_get,
+    NULL, // string_plus_equals
+    NULL, // string_minus_equals
     enum_reset,
-    NULL,
+    NULL, // destroy
   };
   cs_register_type(cs, DT_ENUM, &cst_enum);
 }

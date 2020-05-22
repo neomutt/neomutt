@@ -183,8 +183,10 @@ void bool_init(struct ConfigSet *cs)
     bool_string_get,
     bool_native_set,
     bool_native_get,
+    NULL, // string_plus_equals
+    NULL, // string_minus_equals
     bool_reset,
-    NULL,
+    NULL, // destroy
   };
   cs_register_type(cs, DT_BOOL, &cst_bool);
 }

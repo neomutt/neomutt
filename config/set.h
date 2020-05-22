@@ -46,6 +46,7 @@ struct HashElem;
 /* Flags for CSR_INVALID */
 #define CSR_INV_TYPE      (1 << 4) ///< Value is not valid for the type
 #define CSR_INV_VALIDATOR (1 << 5) ///< Value was rejected by the validator
+#define CSV_INV_NOT_IMPL  (1 << 6) ///< Operation not permitted for the type
 
 #define CSR_RESULT_MASK 0x0F
 #define CSR_RESULT(x) ((x) & CSR_RESULT_MASK)
@@ -153,6 +154,38 @@ struct ConfigSetType
    * - @a cdef is not NULL
    */
   intptr_t (*native_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
+
+  /**
+   * string_plus_equals - Add to a config item by string
+   * @param cs    Config items
+   * @param var   Variable to set
+   * @param cdef  Variable definition
+   * @param value Value to set
+   * @param err   Buffer for error messages (may be NULL)
+   * @retval num Result, e.g. #CSR_SUCCESS
+   *
+   * **Contract**
+   * - @a cs   is not NULL
+   * - @a var  is not NULL
+   * - @a cdef is not NULL
+   */
+  int (*string_plus_equals)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, const char *value, struct Buffer *err);
+
+  /**
+   * string_minus_equals - Remove from a config item as a string
+   * @param cs    Config items
+   * @param var   Variable to set
+   * @param cdef  Variable definition
+   * @param value Value to set
+   * @param err   Buffer for error messages (may be NULL)
+   * @retval num Result, e.g. #CSR_SUCCESS
+   *
+   * **Contract**
+   * - @a cs   is not NULL
+   * - @a var  is not NULL
+   * - @a cdef is not NULL
+   */
+  int (*string_minus_equals)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, const char *value, struct Buffer *err);
 
   /**
    * reset - Reset a config item to its initial value

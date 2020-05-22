@@ -169,8 +169,10 @@ void long_init(struct ConfigSet *cs)
     long_string_get,
     long_native_set,
     long_native_get,
+    NULL, // string_plus_equals
+    NULL, // string_minus_equals
     long_reset,
-    NULL,
+    NULL, // destroy
   };
   cs_register_type(cs, DT_LONG, &cst_long);
 }

@@ -243,8 +243,15 @@ static int path_reset(const struct ConfigSet *cs, void *var,
 void path_init(struct ConfigSet *cs)
 {
   const struct ConfigSetType cst_path = {
-    "path",          path_string_set, path_string_get, path_native_set,
-    path_native_get, path_reset,      path_destroy,
+    "path",
+    path_string_set,
+    path_string_get,
+    path_native_set,
+    path_native_get,
+    NULL, // string_plus_equals
+    NULL, // string_minus_equals
+    path_reset,
+    path_destroy,
   };
   cs_register_type(cs, DT_PATH, &cst_path);
 }

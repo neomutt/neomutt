@@ -231,8 +231,14 @@ static int address_reset(const struct ConfigSet *cs, void *var,
 void address_init(struct ConfigSet *cs)
 {
   const struct ConfigSetType cst_address = {
-    "address",          address_string_set, address_string_get,
-    address_native_set, address_native_get, address_reset,
+    "address",
+    address_string_set,
+    address_string_get,
+    address_native_set,
+    address_native_get,
+    NULL, // string_plus_equals
+    NULL, // string_minus_equals
+    address_reset,
     address_destroy,
   };
   cs_register_type(cs, DT_ADDRESS, &cst_address);

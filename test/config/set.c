@@ -67,6 +67,18 @@ static intptr_t dummy_native_get(const struct ConfigSet *cs, void *var,
   return INT_MIN;
 }
 
+int dummy_plus_equals(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef,
+                      const char *value, struct Buffer *err)
+{
+  return CSR_ERR_CODE;
+}
+
+int dummy_minus_equals(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef,
+                       const char *value, struct Buffer *err)
+{
+  return CSR_ERR_CODE;
+}
+
 static int dummy_reset(const struct ConfigSet *cs, void *var,
                        const struct ConfigDef *cdef, struct Buffer *err)
 {
@@ -237,8 +249,9 @@ void test_config_set(void)
   }
 
   const struct ConfigSetType cst_dummy2 = {
-    "dummy2",         dummy_string_set, dummy_string_get, dummy_native_set,
-    dummy_native_get, dummy_reset,      dummy_destroy,
+    "dummy2",           dummy_string_set, dummy_string_get,
+    dummy_native_set,   dummy_native_get, dummy_plus_equals,
+    dummy_minus_equals, dummy_reset,      dummy_destroy,
   };
 
   if (TEST_CHECK(!cs_register_type(cs, 25, &cst_dummy2)))

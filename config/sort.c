@@ -371,8 +371,10 @@ void sort_init(struct ConfigSet *cs)
     sort_string_get,
     sort_native_set,
     sort_native_get,
+    NULL, // string_plus_equals
+    NULL, // string_minus_equals
     sort_reset,
-    NULL,
+    NULL, // destroy
   };
   cs_register_type(cs, DT_SORT, &cst_sort);
 }
