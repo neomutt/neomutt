@@ -257,11 +257,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "lua", 0 },
 #endif
-#ifdef USE_LZ4
-  { "lz4", 1 },
-#else
-  { "lz4", 0 },
-#endif
 #ifdef HAVE_META
   { "meta", 1 },
 #else
@@ -336,16 +331,6 @@ static struct CompileOptions comp_opts[] = {
 #endif
 #ifdef USE_DEBUG_WINDOW
   { "window", 2 },
-#endif
-#ifdef USE_ZLIB
-  { "zlib", 1 },
-#else
-  { "zlib", 0 },
-#endif
-#ifdef USE_ZSTD
-  { "zstd", 1 },
-#else
-  { "zstd", 0 },
 #endif
   { NULL, 0 },
 };
