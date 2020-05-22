@@ -399,3 +399,79 @@ int cs_subset_str_string_set(const struct ConfigSubset *sub, const char *name,
 
   return cs_subset_he_string_set(sub, he, value, err);
 }
+
+/**
+ * cs_subset_he_string_plus_equals - Add to a config item by string
+ * @param sub   Config Subset
+ * @param he    HashElem representing config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_subset_he_string_plus_equals(const struct ConfigSubset *sub, struct HashElem *he,
+                                    const char *value, struct Buffer *err)
+{
+  if (!sub)
+    return CSR_ERR_CODE;
+
+  int rc = cs_he_string_plus_equals(sub->cs, he, value, err);
+
+  if ((CSR_RESULT(rc) == CSR_SUCCESS) && !(rc & CSR_SUC_NO_CHANGE))
+    cs_subset_notify_observers(sub, he, NT_CONFIG_SET);
+
+  return rc;
+}
+
+/**
+ * cs_subset_str_string_plus_equals - Add to a config item by string
+ * @param sub   Config Subset
+ * @param name  Name of config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_subset_str_string_plus_equals(const struct ConfigSubset *sub, const char *name,
+                                     const char *value, struct Buffer *err)
+{
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+
+  return cs_subset_he_string_plus_equals(sub, he, value, err);
+}
+
+/**
+ * cs_subset_he_string_minus_equals - Remove from a config item by string
+ * @param sub   Config Subset
+ * @param he    HashElem representing config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_subset_he_string_minus_equals(const struct ConfigSubset *sub, struct HashElem *he,
+                                     const char *value, struct Buffer *err)
+{
+  if (!sub)
+    return CSR_ERR_CODE;
+
+  int rc = cs_he_string_minus_equals(sub->cs, he, value, err);
+
+  if ((CSR_RESULT(rc) == CSR_SUCCESS) && !(rc & CSR_SUC_NO_CHANGE))
+    cs_subset_notify_observers(sub, he, NT_CONFIG_SET);
+
+  return rc;
+}
+
+/**
+ * cs_subset_str_string_minus_equals - Remove from a config item by string
+ * @param sub   Config Subset
+ * @param name  Name of config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_subset_str_string_minus_equals(const struct ConfigSubset *sub, const char *name,
+                                      const char *value, struct Buffer *err)
+{
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+
+  return cs_subset_he_string_minus_equals(sub, he, value, err);
+}
