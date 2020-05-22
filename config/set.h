@@ -242,20 +242,24 @@ bool             cs_register_variables(const struct ConfigSet *cs, struct Config
 struct HashElem *cs_inherit_variable  (const struct ConfigSet *cs, struct HashElem *parent, const char *name);
 void             cs_uninherit_variable(const struct ConfigSet *cs, const char *name);
 
-int      cs_he_initial_get (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);
-int      cs_he_initial_set (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
-intptr_t cs_he_native_get  (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *err);
-int      cs_he_native_set  (const struct ConfigSet *cs, struct HashElem *he, intptr_t value,    struct Buffer *err);
-int      cs_he_reset       (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *err);
-int      cs_he_string_get  (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);
-int      cs_he_string_set  (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
+int      cs_he_initial_get         (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);
+int      cs_he_initial_set         (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
+intptr_t cs_he_native_get          (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *err);
+int      cs_he_native_set          (const struct ConfigSet *cs, struct HashElem *he, intptr_t value,    struct Buffer *err);
+int      cs_he_reset               (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *err);
+int      cs_he_string_get          (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);
+int      cs_he_string_minus_equals (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
+int      cs_he_string_plus_equals  (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
+int      cs_he_string_set          (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
 
-int      cs_str_initial_get(const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
-int      cs_str_initial_set(const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
-intptr_t cs_str_native_get (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
-int      cs_str_native_set (const struct ConfigSet *cs, const char *name,    intptr_t value,    struct Buffer *err);
-int      cs_str_reset      (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
-int      cs_str_string_get (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
-int      cs_str_string_set (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
+int      cs_str_initial_get        (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
+int      cs_str_initial_set        (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
+intptr_t cs_str_native_get         (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
+int      cs_str_native_set         (const struct ConfigSet *cs, const char *name,    intptr_t value,    struct Buffer *err);
+int      cs_str_reset              (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
+int      cs_str_string_get         (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
+int      cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
+int      cs_str_string_plus_equals (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
+int      cs_str_string_set         (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
 
 #endif /* MUTT_CONFIG_SET_H */
