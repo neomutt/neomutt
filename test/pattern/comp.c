@@ -28,7 +28,7 @@
 #include <string.h>
 #include "mutt/buffer.h"
 #include "mutt/memory.h"
-#include "alias.h"
+#include "alias/lib.h"
 #include "globals.h"
 #include "pattern.h"
 

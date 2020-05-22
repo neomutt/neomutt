@@ -35,8 +35,8 @@
 #include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "sort.h"
-#include "alias.h"
 #include "context.h"
 #include "globals.h"
 #include "mutt_logging.h"
@@ -160,7 +160,7 @@ const char *mutt_get_name(const struct Address *a)
 
   if (a)
   {
-    if (C_ReverseAlias && (ali = mutt_alias_reverse_lookup(a)) && ali->personal)
+    if (C_ReverseAlias && (ali = alias_reverse_lookup(a)) && ali->personal)
       return ali->personal;
     if (a->personal)
       return a->personal;

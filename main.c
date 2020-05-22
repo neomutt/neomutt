@@ -50,10 +50,10 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "debug/lib.h"
-#include "alias.h"
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
@@ -738,7 +738,7 @@ int main(int argc, char *argv[], char *envp[])
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &alias_queries, entries)
     {
-      struct AddressList *al = mutt_alias_lookup(np->data);
+      struct AddressList *al = alias_lookup(np->data);
       if (al)
       {
         /* output in machine-readable form */

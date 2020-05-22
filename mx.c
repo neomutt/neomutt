@@ -41,9 +41,9 @@
 #include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "mutt.h"
 #include "mx.h"
-#include "alias.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
@@ -1419,7 +1419,7 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
     else if (buf[0] == '@')
     {
       /* elm compatibility, @ expands alias to user name */
-      struct AddressList *al = mutt_alias_lookup(buf + 1);
+      struct AddressList *al = alias_lookup(buf + 1);
       if (!al || TAILQ_EMPTY(al))
         break;
 

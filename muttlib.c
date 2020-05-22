@@ -46,10 +46,10 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "muttlib.h"
-#include "alias.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "hook.h"
@@ -222,7 +222,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
 
       case '@':
       {
-        struct AddressList *al = mutt_alias_lookup(s + 1);
+        struct AddressList *al = alias_lookup(s + 1);
         if (al && !TAILQ_EMPTY(al))
         {
           struct Email *e = email_new();

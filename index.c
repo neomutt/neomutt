@@ -38,12 +38,12 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "debug/lib.h"
 #include "index.h"
-#include "alias.h"
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
@@ -66,7 +66,6 @@
 #include "pattern.h"
 #include "progress.h"
 #include "protos.h"
-#include "query.h"
 #include "recvattach.h"
 #include "score.h"
 #include "send.h"
@@ -3265,7 +3264,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
       {
         struct Email *e_cur = get_cur_email(Context, menu);
 
-        mutt_alias_create(e_cur ? e_cur->env : NULL, NULL);
+        struct AddressList *al = NULL;
+        if (e_cur && e_cur->env)
+          al = mutt_get_address(e_cur->env, NULL);
+        alias_create(al);
         menu->redraw |= REDRAW_CURRENT;
         break;
       }
@@ -3273,7 +3275,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_QUERY:
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
-        mutt_query_menu(NULL, 0);
+        query_index();
         break;
 
       case OP_PURGE_MESSAGE:

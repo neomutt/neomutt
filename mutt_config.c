@@ -38,9 +38,9 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
-#include "addrbook.h"
 #include "browser.h"
 #include "commands.h"
 #include "compose.h"
@@ -62,7 +62,6 @@
 #include "pager.h"
 #include "pattern.h"
 #include "progress.h"
-#include "query.h"
 #include "recvattach.h"
 #include "recvcmd.h"
 #include "remailer.h"
@@ -3267,7 +3266,7 @@ struct ConfigDef MuttVars[] = {
   ** the string, NeoMutt will append the user's query to the end of the string.
   ** See "$query" for more information.
   */
-  { "query_format", DT_STRING|DT_NOT_EMPTY, &C_QueryFormat, IP "%4c %t %-25.25a %-25.25n %?e?(%e)?" },
+  { "query_format", DT_STRING|DT_NOT_EMPTY, &C_QueryFormat, IP "%3c %t %-25.25n %-25.25a │ %e" },
   /*
   ** .pp
   ** This variable describes the format of the "query" menu. The

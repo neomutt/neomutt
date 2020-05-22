@@ -21,18 +21,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_ALIAS_H
-#define MUTT_ALIAS_H
+#ifndef MUTT_ALIAS_ALIAS_H
+#define MUTT_ALIAS_ALIAS_H
 
-#include <stddef.h>
-#include <stdbool.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
 
-struct Envelope;
-
 /**
- * struct Alias - A shortcut for an email address
+ * struct Alias - A shortcut for an email address or addresses
  */
 struct Alias
 {
@@ -40,26 +36,33 @@ struct Alias
   struct AddressList addr;    ///< List of Addresses the Alias expands to
   char *comment;              ///< Free-form comment string
   TAILQ_ENTRY(Alias) entries; ///< Linked list
-
-  bool tagged;                ///< Is it tagged?
-  bool del;                   ///< Is it deleted?
-  short num;                  ///< Index number in list
 };
 TAILQ_HEAD(AliasList, Alias);
 
-struct Alias   *mutt_alias_new(void);
-void            mutt_alias_free(struct Alias **ptr);
-void            mutt_alias_create(struct Envelope *cur, struct AddressList *al);
-void            mutt_aliaslist_free(struct AliasList *a_list);
-struct AddressList *mutt_alias_lookup(const char *s);
-void            mutt_expand_aliases_env(struct Envelope *env);
-void            mutt_expand_aliases(struct AddressList *al);
-struct AddressList *mutt_get_address(struct Envelope *env, const char **pfxp);
+extern struct AliasList Aliases;
 
-bool mutt_addr_is_user(const struct Address *addr);
-int mutt_alias_complete(char *buf, size_t buflen);
-void mutt_alias_add_reverse(struct Alias *t);
-void mutt_alias_delete_reverse(struct Alias *t);
-struct Address *mutt_alias_reverse_lookup(const struct Address *a);
+/**
+ * enum NotifyAlias - Alias notification types
+ */
+enum NotifyAlias
+{
+  NT_ALIAS_NEW = 1, ///< A new Alias has been created
+  NT_ALIAS_CHANGED, ///< An Alias has been changed
+  NT_ALIAS_DELETED, ///< An Alias is about to be deleted
+};
 
-#endif /* MUTT_ALIAS_H */
+/**
+ * struct EventAlias - An alias-change event
+ *
+ * Events such as #NT_ALIAS_NEW
+ */
+struct EventAlias
+{
+  struct Alias *alias;
+};
+
+void          alias_free    (struct Alias **ptr);
+void          aliaslist_free(struct AliasList *al);
+struct Alias *alias_new     (void);
+
+#endif /* MUTT_ALIAS_ALIAS_H */
