@@ -785,12 +785,12 @@ msgstr[2] "Listy nie zostały wydrukowane"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:777
-msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Odwr-Sortowanie (d)ata/(a)ut/o(t)rzym/t(e)m/d(o)/(w)ąt/(b)ez/ro(z)m/wa(g)a/(s)pam,(e)tykieta?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:781
-msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Sortowanie (d)ata/(a)ut/o(t)rzym/t(e)m/d(o)/(w)ąt/(b)ez/ro(z)m/wa(g)a/(s)pam,(e)tykieta?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"

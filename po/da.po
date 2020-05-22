@@ -797,12 +797,12 @@ msgstr[1] "Brevene kunne ikke udskrives"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:777
-msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Omv-sort. (d)ato/(f)ra/(m)odt./(e)mne/ti(l)/(t)råd/(u)sort/(s)tr./s(c)ore/s(p)am/(e)tiket?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:781
-msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Sort. (d)ato/(f)ra/(m)odt./(e)mne/ti(l)/(t)råd/(u)sort/(s)tr./s(c)ore/s(p)am/(e)tiket?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"

@@ -805,13 +805,13 @@ msgstr[2] "Správy nemohli byť vytlačené."
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:777
 #, fuzzy
-msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Spät.tried.(d)át/(f)-od/p(r)í/(s)-pred/k(o)mu/(t)-reť/(u)-ne/(z)-veľ/(c)-skóre/sPam/Label?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:781
 #, fuzzy
-msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Tried. (d)át/(f)-od/p(r)í/(s)-pred/k(o)mu/(t)-reť/(u)-ne/(z)-veľ/(c)-skó/sPam/Lab?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"

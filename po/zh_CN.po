@@ -778,12 +778,12 @@ msgstr[0] "信件无法打印"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:777
-msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "按日期(d)/发信人(f)/收信时间(r)/主题(s)/收信人(o)/线索(t)/不排(u)/大小(z)/分数(c)/垃圾邮件(p)/标签(l)反向排序?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:781
-msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "按日期(d)/发信人(f)/收信时间(r)/主题(s)/收信人(o)/线索(t)/不排(u)/大小(z)/分数(c)/垃圾邮件(p)/标签(l)反向排序?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"

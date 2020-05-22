@@ -801,12 +801,12 @@ msgstr[2] "Не удалось напечатать сообщения"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:777
-msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Обр.пор.:(d)дата/(f)от/(r)получ/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт/(p)спам/(l)метка?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:781
-msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Порядок:(d)дата/(f)от/(r)получ/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт/(p)спам/(l)метка?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"

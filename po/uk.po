@@ -802,12 +802,12 @@ msgstr[2] "Повідомлення не можуть бути надруков�
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:777
-msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Звор.Сорт.:(d)дата/(f)від/(r)отр/(s)тема/(o)кому/(t)розмова/(u)без/(z)розмір/(c)рахунок/(p)спам/(l)позн?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:781
-msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Сортувати: (d)дата/(f)від/(r)отр/(s)тема/(o)кому/(t)розмова/(u)без/(z)розмір/(c)рахунок/(p)спам/(l)позн?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
