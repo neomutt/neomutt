@@ -58,6 +58,7 @@ const struct Command Commands[] = {
   { "attachments",         parse_attachments,      0 },
   { "auto_view",           parse_stailq,           IP &AutoViewList },
   { "bind",                mutt_parse_bind,        0 },
+  { "cd",                  parse_cd,               0 },
   { "charset-hook",        mutt_parse_hook,        MUTT_CHARSET_HOOK },
 #ifdef USE_COMP_MBOX
   { "close-hook",          mutt_parse_hook,        MUTT_CLOSE_HOOK },

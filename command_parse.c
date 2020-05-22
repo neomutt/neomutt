@@ -660,6 +660,34 @@ enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
+ * parse_cd - Parse the 'cd' command - Implements Command::parse()
+ */
+enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s, intptr_t data,
+                            struct Buffer *err)
+{
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+  mutt_buffer_expand_path(buf);
+  if (mutt_buffer_len(buf) == 0)
+  {
+    if (HomeDir)
+      mutt_buffer_strcpy(buf, HomeDir);
+    else
+    {
+      mutt_buffer_printf(err, _("%s: too few arguments"), "cd");
+      return MUTT_CMD_ERROR;
+    }
+  }
+
+  if (chdir(mutt_b2s(buf)) != 0)
+  {
+    mutt_buffer_printf(err, "cd: %s", strerror(errno));
+    return MUTT_CMD_ERROR;
+  }
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
  * parse_echo - Parse the 'echo' command - Implements Command::parse()
  */
 enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,

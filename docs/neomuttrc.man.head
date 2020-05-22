@@ -543,6 +543,9 @@ NeoMutt initializes the default list to contain only the \fBSubject\fP and
 Prints \fImessage\fP to the message window. After printing the
 message, echo will pause for the number of seconds specified by
 $sleep_time.
+.TP
+\fBcd\fP \fIdirectory\fP
+Changes the current working directory.
 .
 .PP
 .nf

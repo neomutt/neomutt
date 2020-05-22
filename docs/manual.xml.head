@@ -4489,6 +4489,24 @@ bind index gg first-entry
       </sect2>
     </sect1>
 
+    <sect1 id="cd">
+      <title>Changing the current working directory</title>
+      <para>Usage:</para>
+      <cmdsynopsis>
+        <command>cd</command>
+        <arg choice="plain">
+          <replaceable class="parameter">directory</replaceable>
+        </arg>
+      </cmdsynopsis>
+      <para>
+        The <literal>cd</literal> command changes NeoMutt's current working directory.
+        This affects commands and functions like <literal>source</literal>,
+        <literal>change-folder</literal>, and <literal>save-entry</literal> that use
+        relative paths. Using <literal>cd</literal> without directory changes to your
+        home directory.
+      </para>
+    </sect1>
+
     <sect1 id="charset-hook">
       <title>Defining Aliases for Character Sets</title>
       <anchor id="iconv-hook" />
@@ -18501,6 +18519,14 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">function</replaceable>
+            </arg>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command><link linkend="cd">cd</link></command>
+            <arg choice="plain">
+              <replaceable class="parameter">directory</replaceable>
             </arg>
           </cmdsynopsis>
         </listitem>
