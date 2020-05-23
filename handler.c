@@ -53,6 +53,7 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
+#include "pager.h"
 #include "rfc3676.h"
 #include "state.h"
 #include "ncrypt/lib.h"
@@ -605,7 +606,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       struct Buffer *stripped = mutt_buffer_pool_get();
       while (fgets(buf, sizeof(buf), fp_out))
       {
-        mutt_buffer_strip_formatting(stripped, buf);
+        mutt_buffer_strip_formatting(stripped, buf, false);
         state_puts(s, s->prefix);
         state_puts(s, mutt_b2s(stripped));
       }

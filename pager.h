@@ -77,6 +77,7 @@ struct Pager
 };
 
 int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra);
+void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
 
 void mutt_clear_pager_position(void);
 
