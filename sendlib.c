@@ -129,12 +129,18 @@ static const char *const userhdrs_override_headers[] = {
   "user-agent:",
 };
 
+/**
+ * enum UserHdrsOverrideIdx - Headers that the user may override
+ */
 enum UserHdrsOverrideIdx
 {
-  USERHDRS_OVERRIDE_CONTENT_TYPE,
-  USERHDRS_OVERRIDE_USER_AGENT,
+  USERHDRS_OVERRIDE_CONTENT_TYPE, ///< Override the "Content-Type"
+  USERHDRS_OVERRIDE_USER_AGENT,   ///< Override the "User-Agent"
 };
 
+/**
+ * struct UserHdrsOverride - Which headers have been overridden
+ */
 struct UserHdrsOverride
 {
   bool is_overridden[mutt_array_size(userhdrs_override_headers)];

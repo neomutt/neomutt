@@ -788,12 +788,12 @@ msgstr[0] "メッセージは印刷できなかった"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:777
-msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "逆順 (d)時 (f)送者 (r)着順 (s)題 (o)宛 (t)スレ (u)無 (z)長 (c)得点 (p)スパム (l)ラベル"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:781
-msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "整列 (d)時 (f)送者 (r)着順 (s)題 (o)宛 (t)スレ (u)無 (z)長 (c)得点 (p)スパム (l)ラベル"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"

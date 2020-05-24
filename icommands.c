@@ -270,8 +270,8 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
 
   if (mutt_buffer_is_empty(&filebuf))
   {
-    // L10N: '%s' is the name of the menu, e.g. 'index' or 'pager', it might
-    // L10N: also be 'all' when all menus are affected.
+    // L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
+    //       it might also be 'all' when all menus are affected.
     mutt_buffer_printf(err, bind ? _("%s: no binds for this menu") : _("%s: no macros for this menu"),
                        dump_all ? "all" : buf->data);
     mutt_buffer_dealloc(&filebuf);

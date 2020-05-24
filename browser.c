@@ -644,7 +644,7 @@ static void add_folder(struct Menu *menu, struct BrowserState *state,
     mutt_mem_realloc(&state->entry, sizeof(struct FolderFile) * (state->entrymax += 256));
     memset(&state->entry[state->entrylen], 0, sizeof(struct FolderFile) * 256);
     if (menu)
-      menu->data = state->entry;
+      menu->mdata = state->entry;
   }
 
   if (s)
@@ -695,7 +695,7 @@ static void init_state(struct BrowserState *state, struct Menu *menu)
   state->imap_browse = false;
 #endif
   if (menu)
-    menu->data = state->entry;
+    menu->mdata = state->entry;
 }
 
 /**
@@ -938,9 +938,9 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
 {
 #ifdef USE_NNTP
   if (OptNews)
-    return regexec(rx, ((struct FolderFile *) menu->data)[line].desc, 0, NULL, 0);
+    return regexec(rx, ((struct FolderFile *) menu->mdata)[line].desc, 0, NULL, 0);
 #endif
-  struct FolderFile current_ff = ((struct FolderFile *) menu->data)[line];
+  struct FolderFile current_ff = ((struct FolderFile *) menu->mdata)[line];
   char *search_on = current_ff.desc ? current_ff.desc : current_ff.name;
 
   return regexec(rx, search_on, 0, NULL, 0);
@@ -953,7 +953,7 @@ static void folder_make_entry(char *buf, size_t buflen, struct Menu *menu, int l
 {
   struct Folder folder;
 
-  folder.ff = &((struct FolderFile *) menu->data)[line];
+  folder.ff = &((struct FolderFile *) menu->mdata)[line];
   folder.num = line;
 
 #ifdef USE_NNTP
@@ -1109,7 +1109,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
  */
 static int file_tag(struct Menu *menu, int sel, int act)
 {
-  struct FolderFile *ff = &(((struct FolderFile *) menu->data)[sel]);
+  struct FolderFile *ff = &(((struct FolderFile *) menu->mdata)[sel]);
   if (S_ISDIR(ff->mode) || (S_ISLNK(ff->mode) && link_is_dir(mutt_b2s(&LastDir), ff->name)))
   {
     mutt_error(_("Can't attach a directory"));
@@ -1447,7 +1447,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
   init_menu(&state, menu, title, sizeof(title), mailbox);
   // only now do we have a valid state to attach
-  menu->data = state.entry;
+  menu->mdata = state.entry;
 
   while (true)
   {
@@ -1571,7 +1571,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               state.imap_browse = true;
               imap_browse(mutt_b2s(&LastDir), &state);
               browser_sort(&state);
-              menu->data = state.entry;
+              menu->mdata = state.entry;
             }
             else
 #endif
@@ -1683,7 +1683,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           state.imap_browse = true;
           imap_browse(mutt_b2s(&LastDir), &state);
           browser_sort(&state);
-          menu->data = state.entry;
+          menu->mdata = state.entry;
           browser_highlight_default(&state, menu);
           init_menu(&state, menu, title, sizeof(title), mailbox);
         }
@@ -1704,7 +1704,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             state.imap_browse = true;
             imap_browse(mutt_b2s(&LastDir), &state);
             browser_sort(&state);
-            menu->data = state.entry;
+            menu->mdata = state.entry;
             browser_highlight_default(&state, menu);
             init_menu(&state, menu, title, sizeof(title), mailbox);
           }
@@ -1800,7 +1800,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             state.imap_browse = true;
             imap_browse(mutt_b2s(&LastDir), &state);
             browser_sort(&state);
-            menu->data = state.entry;
+            menu->mdata = state.entry;
             browser_highlight_default(&state, menu);
             init_menu(&state, menu, title, sizeof(title), mailbox);
           }
@@ -1882,7 +1882,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           state.imap_browse = true;
           imap_browse(mutt_b2s(&LastDir), &state);
           browser_sort(&state);
-          menu->data = state.entry;
+          menu->mdata = state.entry;
           init_menu(&state, menu, title, sizeof(title), mailbox);
         }
         else
@@ -2019,7 +2019,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           state.imap_browse = true;
           imap_browse(mutt_b2s(&LastDir), &state);
           browser_sort(&state);
-          menu->data = state.entry;
+          menu->mdata = state.entry;
         }
 #endif
         else if (examine_directory(menu, &state, mutt_b2s(&LastDir), mutt_b2s(prefix)) == -1)

@@ -832,7 +832,6 @@ size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen)
  * @param buf       Buffer for the result
  * @param filename  String to convert
  * @param add_outer If true, add 'single quotes' around the result
- * @retval num Bytes written to the buffer
  */
 void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename, bool add_outer)
 {

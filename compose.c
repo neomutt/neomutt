@@ -159,7 +159,7 @@ enum HeaderField
   HDR_CRYPT,     ///< "Security:" field (encryption/signing info)
   HDR_CRYPTINFO, ///< "Sign as:" field (encryption/signing info)
 #ifdef USE_AUTOCRYPT
-  HDR_AUTOCRYPT,
+  HDR_AUTOCRYPT, ///< "Autocrypt:" and "Recommendation:" fields
 #endif
 #ifdef USE_NNTP
   HDR_NEWSGROUPS, ///< "Newsgroups:" field
@@ -324,7 +324,7 @@ static void init_header_padding(void)
  */
 static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct AttachCtx *actx = menu->data;
+  struct AttachCtx *actx = menu->mdata;
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                       NONULL(C_AttachFormat), attach_format_str,
@@ -1039,7 +1039,7 @@ static void mutt_update_compose_menu(struct AttachCtx *actx, struct Menu *menu, 
   {
     mutt_gen_compose_attach_list(actx, actx->email->content, -1, 0);
     mutt_attach_init(actx);
-    menu->data = actx;
+    menu->mdata = actx;
   }
 
   mutt_update_tree(actx);
@@ -1160,7 +1160,7 @@ static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short 
 static unsigned long cum_attachs_size(struct Menu *menu)
 {
   size_t s = 0;
-  struct AttachCtx *actx = menu->data;
+  struct AttachCtx *actx = menu->mdata;
   struct AttachPtr **idx = actx->idx;
   struct Content *info = NULL;
   struct Body *b = NULL;

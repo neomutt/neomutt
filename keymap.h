@@ -89,7 +89,7 @@ enum MenuType
   MENU_MIX,              ///< Create/edit a Mixmaster chain
 #endif
 #ifdef USE_AUTOCRYPT
-  MENU_AUTOCRYPT_ACCT,
+  MENU_AUTOCRYPT_ACCT,   ///< Autocrypt Account menu
 #endif
   MENU_MAX,
 };

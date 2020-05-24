@@ -132,9 +132,8 @@ struct EventEmail
  */
 enum NotifyEmail
 {
-  NT_EMAIL_ADD = 1,
-  NT_EMAIL_REMOVE,
-  NT_EMAIL_NEW,
+  NT_EMAIL_ADD = 1, ///< A new Email has just been created
+  NT_EMAIL_REMOVE,  ///< An Email is about to be destroyed
 };
 
 bool          email_cmp_strict(const struct Email *e1, const struct Email *e2);

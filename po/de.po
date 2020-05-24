@@ -783,12 +783,12 @@ msgstr[1] "Nachrichten konnten nicht gedruckt werden"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:777
-msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Umgekehrt sortieren (d)atum/(a)bs./ei(n)g./(b)etr./(e)mpf./(f)aden/(u)nsort./(g)röße/be(w)ert./s(p)am/e(t)ikett?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:781
-msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
+msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Sortieren (d)atum/(a)bs./ei(n)g./(b)etr./(e)mpf/(f)aden/(u)nsort./(g)röße/be(w)ert./s(p)am/e(t)ikett?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"

@@ -810,7 +810,7 @@ void imap_error(const char *where, const char *msg)
 
 /**
  * imap_fix_path - Fix up the imap path
- * @param delim     Delimiter specified by the server, '\0' for C_ImapDelimChars 
+ * @param delim     Delimiter specified by the server, '\0' for C_ImapDelimChars
  * @param mailbox   Mailbox path
  * @param path      Buffer for the result
  * @param plen      Length of buffer

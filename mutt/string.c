@@ -47,7 +47,7 @@
 #endif
 
 /**
- * char_cmp - Pointer to a function taking two characters and returning bool
+ * typedef char_cmp - Pointer to a function taking two characters and returning bool
  */
 typedef bool (*char_cmp)(char, char);
 
@@ -181,7 +181,7 @@ size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensiti
     }
   }
 
-  return (!*prefix) ? prefix - saved_prefix : 0;
+  return (!*prefix) ? (prefix - saved_prefix) : 0;
 }
 
 /**

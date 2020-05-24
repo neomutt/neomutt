@@ -516,7 +516,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
  */
 static void mix_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  struct Remailer **type2_list = menu->data;
+  struct Remailer **type2_list = menu->mdata;
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                       NONULL(C_MixEntryFormat), mix_format_str,
                       (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
@@ -688,7 +688,7 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
   menu->make_entry = mix_make_entry;
   menu->tag = NULL;
   menu->title = _("Select a remailer chain");
-  menu->data = type2_list;
+  menu->mdata = type2_list;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MIX, RemailerHelp);
   menu->pagelen = MIX_VOFFSET - 1;
   mutt_menu_push_current(menu);

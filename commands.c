@@ -775,12 +775,12 @@ int mutt_select_sort(bool reverse)
   switch (mutt_multi_choice(reverse ?
                                 /* L10N: The highlighted letters must match the "Sort" options */
                                 _("Rev-Sort "
-                                  "(d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/"
-                                  "(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?") :
+                                  "(d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)"
+                                  "nsort,si(z)e,s(c)ore,s(p)am,(l)abel?") :
                                 /* L10N: The highlighted letters must match the "Rev-Sort" options */
                                 _("Sort "
-                                  "(d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/"
-                                  "(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"),
+                                  "(d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)"
+                                  "nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"),
                             /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
                             _("dfrsotuzcpl")))
   {
