@@ -229,7 +229,7 @@ static void compress_info_free(struct Mailbox *m)
 static const char *compress_format_str(char *buf, size_t buflen, size_t col, int cols,
                                        char op, const char *src, const char *prec,
                                        const char *if_str, const char *else_str,
-                                       unsigned long data, MuttFormatFlags flags)
+                                       intptr_t data, MuttFormatFlags flags)
 {
   if (!buf || (data == 0))
     return src;
@@ -282,7 +282,7 @@ static void expand_command_str(const struct Mailbox *m, const char *cmd, char *b
     return;
 
   mutt_expando_format(buf, buflen, 0, buflen, cmd, compress_format_str,
-                      (unsigned long) m, MUTT_FORMAT_NO_FLAGS);
+                      (intptr_t) m, MUTT_FORMAT_NO_FLAGS);
 }
 
 /**

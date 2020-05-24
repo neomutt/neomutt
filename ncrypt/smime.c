@@ -230,7 +230,7 @@ bool smime_class_valid_passphrase(void)
 static const char *smime_command_format_str(char *buf, size_t buflen, size_t col,
                                             int cols, char op, const char *src,
                                             const char *prec, const char *if_str,
-                                            const char *else_str, unsigned long data,
+                                            const char *else_str, intptr_t data,
                                             MuttFormatFlags flags)
 {
   char fmt[128];
@@ -383,7 +383,7 @@ static void smime_command(char *buf, size_t buflen,
                           struct SmimeCommandContext *cctx, const char *fmt)
 {
   mutt_expando_format(buf, buflen, 0, buflen, NONULL(fmt), smime_command_format_str,
-                      (unsigned long) cctx, MUTT_FORMAT_NO_FLAGS);
+                      (intptr_t) cctx, MUTT_FORMAT_NO_FLAGS);
   mutt_debug(LL_DEBUG2, "%s\n", buf);
 }
 

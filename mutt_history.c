@@ -60,7 +60,7 @@ static const struct Mapping HistoryHelp[] = {
 static const char *history_format_str(char *buf, size_t buflen, size_t col, int cols,
                                       char op, const char *src, const char *prec,
                                       const char *if_str, const char *else_str,
-                                      unsigned long data, MuttFormatFlags flags)
+                                      intptr_t data, MuttFormatFlags flags)
 {
   char *match = (char *) data;
 
@@ -81,8 +81,8 @@ static void history_make_entry(char *buf, size_t buflen, struct Menu *menu, int 
 {
   char *entry = ((char **) menu->mdata)[line];
 
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, "%s", history_format_str,
-                      (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, "%s",
+                      history_format_str, (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

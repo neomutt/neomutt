@@ -455,7 +455,7 @@ static bool thread_is_old(struct Context *ctx, struct Email *e)
 static const char *index_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
                                     const char *if_str, const char *else_str,
-                                    unsigned long data, MuttFormatFlags flags)
+                                    intptr_t data, MuttFormatFlags flags)
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   char fmt[128], tmp[1024];
@@ -1381,12 +1381,12 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   if (optional)
   {
     mutt_expando_format(buf, buflen, col, cols, if_str, index_format_str,
-                        (unsigned long) hfi, flags);
+                        (intptr_t) hfi, flags);
   }
   else if (flags & MUTT_FORMAT_OPTIONAL)
   {
     mutt_expando_format(buf, buflen, col, cols, else_str, index_format_str,
-                        (unsigned long) hfi, flags);
+                        (intptr_t) hfi, flags);
   }
 
   return src;
@@ -1414,7 +1414,7 @@ void mutt_make_string_flags(char *buf, size_t buflen, int cols, const char *s,
   hfi.mailbox = m;
   hfi.pager_progress = 0;
 
-  mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (unsigned long) &hfi, flags);
+  mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (intptr_t) &hfi, flags);
 }
 
 /**
@@ -1429,5 +1429,5 @@ void mutt_make_string_flags(char *buf, size_t buflen, int cols, const char *s,
 void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s,
                            struct HdrFormatInfo *hfi, MuttFormatFlags flags)
 {
-  mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (unsigned long) hfi, flags);
+  mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (intptr_t) hfi, flags);
 }

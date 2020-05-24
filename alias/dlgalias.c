@@ -74,7 +74,7 @@ static const struct Mapping AliasHelp[] = {
 static const char *alias_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
                                     const char *if_str, const char *else_str,
-                                    unsigned long data, MuttFormatFlags flags)
+                                    intptr_t data, MuttFormatFlags flags)
 {
   char fmt[128], addr[1024];
   struct AliasView *av = (struct AliasView *) data;
@@ -119,7 +119,7 @@ static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
   const struct AliasView *av = mdata->av[line];
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(C_AliasFormat),
-                      alias_format_str, (unsigned long) av, MUTT_FORMAT_ARROWCURSOR);
+                      alias_format_str, IP av, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

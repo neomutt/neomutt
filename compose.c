@@ -326,9 +326,8 @@ static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line
 {
   struct AttachCtx *actx = menu->mdata;
 
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                      NONULL(C_AttachFormat), attach_format_str,
-                      (unsigned long) (actx->idx[actx->v2r[line]]),
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(C_AttachFormat),
+                      attach_format_str, (intptr_t)(actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -1206,7 +1205,7 @@ static unsigned long cum_attachs_size(struct Menu *menu)
 static const char *compose_format_str(char *buf, size_t buflen, size_t col, int cols,
                                       char op, const char *src, const char *prec,
                                       const char *if_str, const char *else_str,
-                                      unsigned long data, MuttFormatFlags flags)
+                                      intptr_t data, MuttFormatFlags flags)
 {
   char fmt[128], tmp[128];
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -1265,7 +1264,7 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
                                 struct Menu *menu, const char *src)
 {
   mutt_expando_format(buf, buflen, col, cols, src, compose_format_str,
-                      (unsigned long) menu, MUTT_FORMAT_NO_FLAGS);
+                      (intptr_t) menu, MUTT_FORMAT_NO_FLAGS);
 }
 
 /**

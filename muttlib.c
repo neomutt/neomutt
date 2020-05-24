@@ -860,7 +860,7 @@ void mutt_safe_path(struct Buffer *dest, const struct Address *a)
  * @param[in]  flags    Callback flags
  */
 void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src,
-                         format_t *callback, unsigned long data, MuttFormatFlags flags)
+                         format_t *callback, intptr_t data, MuttFormatFlags flags)
 {
   char prefix[128], tmp[1024];
   char *cp = NULL, *wptr = buf;

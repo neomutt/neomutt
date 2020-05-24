@@ -134,7 +134,7 @@ static int query_search(struct Menu *menu, regex_t *rx, int line)
 static const char *query_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
                                     const char *if_str, const char *else_str,
-                                    unsigned long data, MuttFormatFlags flags)
+                                    intptr_t data, MuttFormatFlags flags)
 {
   struct AliasView *av = (struct AliasView *) data;
   struct Alias *alias = av->alias;
@@ -201,7 +201,7 @@ static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
   struct AliasView *av = mdata->av[line];
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(C_QueryFormat),
-                      query_format_str, (unsigned long) av, MUTT_FORMAT_ARROWCURSOR);
+                      query_format_str, IP av, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

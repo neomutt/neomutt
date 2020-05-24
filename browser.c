@@ -378,7 +378,7 @@ static bool link_is_dir(const char *folder, const char *path)
 static const char *folder_format_str(char *buf, size_t buflen, size_t col, int cols,
                                      char op, const char *src, const char *prec,
                                      const char *if_str, const char *else_str,
-                                     unsigned long data, MuttFormatFlags flags)
+                                     intptr_t data, MuttFormatFlags flags)
 {
   char fn[128], fmt[128];
   struct Folder *folder = (struct Folder *) data;
@@ -961,14 +961,14 @@ static void folder_make_entry(char *buf, size_t buflen, struct Menu *menu, int l
   {
     mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                         NONULL(C_GroupIndexFormat), group_index_format_str,
-                        (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
+                        (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
   else
 #endif
   {
     mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                         NONULL(C_FolderFormat), folder_format_str,
-                        (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
+                        (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
 }
 

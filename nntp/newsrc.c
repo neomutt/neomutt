@@ -921,7 +921,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
  */
 const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char op,
                             const char *src, const char *prec, const char *if_str,
-                            const char *else_str, unsigned long data, MuttFormatFlags flags)
+                            const char *else_str, intptr_t data, MuttFormatFlags flags)
 {
   struct NntpAccountData *adata = (struct NntpAccountData *) data;
   struct ConnAccount *cac = &adata->conn->account;
@@ -1105,7 +1105,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   if (rc >= 0)
   {
     mutt_expando_format(file, sizeof(file), 0, sizeof(file), NONULL(C_Newsrc),
-                        nntp_format_str, (unsigned long) adata, MUTT_FORMAT_NO_FLAGS);
+                        nntp_format_str, IP adata, MUTT_FORMAT_NO_FLAGS);
     mutt_expand_path(file, sizeof(file));
     adata->newsrc_file = mutt_str_strdup(file);
     rc = nntp_newsrc_parse(adata);

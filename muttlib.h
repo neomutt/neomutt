@@ -50,7 +50,7 @@ void        mutt_buffer_sanitize_filename (struct Buffer *buf, const char *path,
 void        mutt_buffer_save_path(struct Buffer *dest, const struct Address *a);
 int         mutt_check_overwrite(const char *attname, const char *path, struct Buffer *fname, enum SaveAttach *opt, char **directory);
 void        mutt_encode_path(struct Buffer *buf, const char *src);
-void        mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src, format_t *callback, unsigned long data, MuttFormatFlags flags);
+void        mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src, format_t *callback, intptr_t data, MuttFormatFlags flags);
 char *      mutt_expand_path(char *s, size_t slen);
 char *      mutt_expand_path_regex(char *buf, size_t buflen, bool regex);
 char *      mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);

@@ -3441,7 +3441,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
 static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
                                     const char *if_str, const char *else_str,
-                                    unsigned long data, MuttFormatFlags flags)
+                                    intptr_t data, MuttFormatFlags flags)
 {
   char fmt[128];
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -3656,7 +3656,7 @@ static void crypt_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                       NONULL(C_PgpEntryFormat), crypt_format_str,
-                      (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
+                      (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

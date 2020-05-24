@@ -92,7 +92,7 @@ static const struct Mapping AutocryptAcctHelp[] = {
 static const char *account_format_str(char *dest, size_t destlen, size_t col, int cols,
                                       char op, const char *src, const char *fmt,
                                       const char *ifstring, const char *elsestring,
-                                      unsigned long data, MuttFormatFlags flags)
+                                      intptr_t data, MuttFormatFlags flags)
 {
   struct AccountEntry *entry = (struct AccountEntry *) data;
   char tmp[128];
@@ -156,7 +156,7 @@ static void account_make_entry(char *buf, size_t buflen, struct Menu *menu, int 
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                       NONULL(C_AutocryptAcctFormat), account_format_str,
-                      (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
+                      IP entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

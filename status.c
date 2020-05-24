@@ -93,7 +93,7 @@ static char *get_sort_str(char *buf, size_t buflen, enum SortType method)
 static const char *status_format_str(char *buf, size_t buflen, size_t col, int cols,
                                      char op, const char *src, const char *prec,
                                      const char *if_str, const char *else_str,
-                                     unsigned long data, MuttFormatFlags flags)
+                                     intptr_t data, MuttFormatFlags flags)
 {
   char fmt[128], tmp[128];
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -388,12 +388,12 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
   if (optional)
   {
     mutt_expando_format(buf, buflen, col, cols, if_str, status_format_str,
-                        (unsigned long) menu, MUTT_FORMAT_NO_FLAGS);
+                        (intptr_t) menu, MUTT_FORMAT_NO_FLAGS);
   }
   else if (flags & MUTT_FORMAT_OPTIONAL)
   {
     mutt_expando_format(buf, buflen, col, cols, else_str, status_format_str,
-                        (unsigned long) menu, MUTT_FORMAT_NO_FLAGS);
+                        (intptr_t) menu, MUTT_FORMAT_NO_FLAGS);
   }
 
   return src;
@@ -408,6 +408,6 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
  */
 void menu_status_line(char *buf, size_t buflen, struct Menu *menu, const char *p)
 {
-  mutt_expando_format(buf, buflen, 0, menu ? menu->win_ibar->state.cols : buflen, p,
-                      status_format_str, (unsigned long) menu, MUTT_FORMAT_NO_FLAGS);
+  mutt_expando_format(buf, buflen, 0, menu ? menu->win_ibar->state.cols : buflen,
+                      p, status_format_str, (intptr_t) menu, MUTT_FORMAT_NO_FLAGS);
 }

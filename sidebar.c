@@ -117,7 +117,7 @@ enum DivType
 static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int cols,
                                       char op, const char *src, const char *prec,
                                       const char *if_str, const char *else_str,
-                                      unsigned long data, MuttFormatFlags flags)
+                                      intptr_t data, MuttFormatFlags flags)
 {
   struct SbEntry *sbe = (struct SbEntry *) data;
   char fmt[256];
@@ -267,12 +267,12 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   if (optional)
   {
     mutt_expando_format(buf, buflen, col, C_SidebarWidth, if_str,
-                        sidebar_format_str, (unsigned long) sbe, flags);
+                        sidebar_format_str, IP sbe, flags);
   }
   else if (flags & MUTT_FORMAT_OPTIONAL)
   {
     mutt_expando_format(buf, buflen, col, C_SidebarWidth, else_str,
-                        sidebar_format_str, (unsigned long) sbe, flags);
+                        sidebar_format_str, IP sbe, flags);
   }
 
   /* We return the format string, unchanged */
@@ -303,7 +303,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
     buf[0] = '\0';
 
   mutt_expando_format(buf, buflen, 0, width, NONULL(C_SidebarFormat),
-                      sidebar_format_str, (unsigned long) sbe, MUTT_FORMAT_NO_FLAGS);
+                      sidebar_format_str, IP sbe, MUTT_FORMAT_NO_FLAGS);
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);

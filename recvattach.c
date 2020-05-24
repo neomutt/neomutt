@@ -205,10 +205,9 @@ void mutt_update_tree(struct AttachCtx *actx)
  * | \%u     | Unlink
  * | \%X     | Number of qualifying MIME parts in this part and its children
  */
-const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
-                              char op, const char *src, const char *prec,
-                              const char *if_str, const char *else_str,
-                              unsigned long data, MuttFormatFlags flags)
+const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, char op,
+                              const char *src, const char *prec, const char *if_str,
+                              const char *else_str, intptr_t data, MuttFormatFlags flags)
 {
   char fmt[128];
   char charset[128];
@@ -441,7 +440,7 @@ static void attach_make_entry(char *buf, size_t buflen, struct Menu *menu, int l
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                       NONULL(C_AttachFormat), attach_format_str,
-                      (unsigned long) (actx->idx[actx->v2r[line]]), MUTT_FORMAT_ARROWCURSOR);
+                      (intptr_t)(actx->idx[actx->v2r[line]]), MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

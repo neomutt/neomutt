@@ -92,7 +92,7 @@ struct PgpCommandContext
 static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, int cols,
                                           char op, const char *src, const char *prec,
                                           const char *if_str, const char *else_str,
-                                          unsigned long data, MuttFormatFlags flags)
+                                          intptr_t data, MuttFormatFlags flags)
 {
   char fmt[128];
   struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
@@ -187,7 +187,7 @@ static void mutt_pgp_command(char *buf, size_t buflen,
                              struct PgpCommandContext *cctx, const char *fmt)
 {
   mutt_expando_format(buf, buflen, 0, buflen, NONULL(fmt), pgp_command_format_str,
-                      (unsigned long) cctx, MUTT_FORMAT_NO_FLAGS);
+                      (intptr_t) cctx, MUTT_FORMAT_NO_FLAGS);
   mutt_debug(LL_DEBUG2, "%s\n", buf);
 }
 
