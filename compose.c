@@ -159,7 +159,7 @@ enum HeaderField
   HDR_CRYPT,     ///< "Security:" field (encryption/signing info)
   HDR_CRYPTINFO, ///< "Sign as:" field (encryption/signing info)
 #ifdef USE_AUTOCRYPT
-  HDR_AUTOCRYPT,
+  HDR_AUTOCRYPT, ///< "Autocrypt:" and "Recommendation:" fields
 #endif
 #ifdef USE_NNTP
   HDR_NEWSGROUPS, ///< "Newsgroups:" field

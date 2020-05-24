@@ -125,7 +125,6 @@ typedef uint8_t WindowNotifyFlags; ///< Changes to a MuttWindow
  *
  * Observers of EventWindow will be passed a type of #NT_WINDOW and a subtype
  * of #NotifyWindow.
- * 
  */
 struct EventWindow
 {

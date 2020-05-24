@@ -47,7 +47,7 @@
 #endif
 
 /**
- * char_cmp - Pointer to a function taking two characters and returning bool
+ * typedef char_cmp - Pointer to a function taking two characters and returning bool
  */
 typedef bool (*char_cmp)(char, char);
 

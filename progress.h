@@ -35,7 +35,7 @@ extern short C_WriteInc;
 extern short C_NetInc;
 
 /**
- * Enum ProgressType - What kind of operation is this progress tracking?
+ * enum ProgressType - What kind of operation is this progress tracking?
  */
 enum ProgressType
 {
