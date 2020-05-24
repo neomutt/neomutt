@@ -1114,7 +1114,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 
     // At this point, we don't have an abbreviation so let's keep track
     // before using short path.
-    bool no_abbr = mutt_str_strncmp(display, full_path, sizeof(display));
+    bool no_abbr = (mutt_str_strncmp(display, full_path, mutt_str_strlen(display)) != 0);
     if (C_SidebarShortPath)
     {
       display = last_part;
