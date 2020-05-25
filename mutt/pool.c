@@ -122,7 +122,8 @@ void mutt_buffer_pool_release(struct Buffer **pbuf)
   }
 
   struct Buffer *buf = *pbuf;
-  if (buf->dsize > 2 * BufferPoolInitialBufferSize)
+  if ((buf->dsize > (2 * BufferPoolInitialBufferSize)) ||
+      (buf->dsize < BufferPoolInitialBufferSize))
   {
     buf->dsize = BufferPoolInitialBufferSize;
     mutt_mem_realloc(&buf->data, buf->dsize);

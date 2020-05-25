@@ -111,8 +111,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_printf(err, _("%s: too few arguments"), "score");
     return MUTT_CMD_WARNING;
   }
-  pattern = buf->data;
-  mutt_buffer_init(buf);
+  pattern = mutt_buffer_strdup(buf);
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   if (MoreArgs(s))
   {
