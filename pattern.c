@@ -1452,6 +1452,12 @@ struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, str
   char *buf = NULL;
   struct Buffer ps;
 
+  if (!s || !*s)
+  {
+    mutt_str_copy(err->data, _("empty pattern"), err->dsize);
+    return NULL;
+  }
+
   mutt_buffer_init(&ps);
   ps.dptr = (char *) s;
   ps.dsize = mutt_str_len(s);
