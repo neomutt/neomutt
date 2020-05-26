@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 
+struct MuttWindow;
 struct NotifyCallback;
 
 extern struct ListHead SidebarWhitelist;
@@ -59,8 +60,33 @@ enum DivType
   SB_DIV_UTF8,  ///< A unicode line-drawing character
 };
 
+/**
+ * struct SidebarWindowData - Sidebar private Window data - @extends MuttWindow
+ */
+struct SidebarWindowData
+{
+  struct SbEntry **entries; ///< Items to display in the sidebar
+  int entry_count;          ///< Number of items in entries
+  int entry_max;            ///< Size of the entries array
+
+  int top_index; ///< First mailbox visible in sidebar
+  int opn_index; ///< Current (open) mailbox
+  int hil_index; ///< Highlighted mailbox
+  int bot_index; ///< Last mailbox visible in sidebar
+
+  short previous_sort; ///< sidebar_sort_method
+
+  short divider_width;       ///< Width of the divider in screen columns
+  enum DivType divider_type; ///< Type of divider, e.g. #SB_DIV_UTF8
+};
+
 // observer.c
 int sb_insertion_observer(struct NotifyCallback *nc);
 int sb_observer(struct NotifyCallback *nc);
+
+// wdata.c
+void                      sb_wdata_free(struct MuttWindow *win, void **ptr);
+struct SidebarWindowData *sb_wdata_new(void);
+struct SidebarWindowData *sb_wdata_get(struct MuttWindow *win);
 
 #endif /* MUTT_SIDEBAR_SIDEBAR_PRIVATE_H */
