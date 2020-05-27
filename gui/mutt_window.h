@@ -121,25 +121,22 @@ typedef uint8_t WindowNotifyFlags; ///< Changes to a MuttWindow
 #define WN_HIDDEN    (1 << 6)      ///< Window became hidden
 
 /**
- * struct EventWindow - An Event that happened to a Window
+ * enum NotifyWindow - Window notification types
  *
- * Observers of EventWindow will be passed a type of #NT_WINDOW and a subtype
- * of #NotifyWindow.
+ * Observers of #NT_WINDOW will be passed an #EventWindow.
+ */
+enum NotifyWindow
+{
+  NT_WINDOW_STATE = 1, ///< Window state has changed, e.g. #WN_VISIBLE
+};
+
+/**
+ * struct EventWindow - An Event that happened to a Window
  */
 struct EventWindow
 {
   struct MuttWindow *win;  ///< Window that changed
   WindowNotifyFlags flags; ///< Attributes of Window that changed
-};
-
-/**
- * enum NotifyWindow - Window notification types
- *
- * These are associated with Event type #NT_WINDOW.
- */
-enum NotifyWindow
-{
-  NT_WINDOW_STATE = 1, ///< Window state has changed, e.g. #WN_VISIBLE
 };
 
 extern struct MuttWindow *MuttDialogWindow;

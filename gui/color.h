@@ -150,10 +150,10 @@ struct Colors
 };
 
 /**
- * struct EventColor - An Event that happened to an Colour
+ * struct EventColor - An Event that happened to a Colour
  *
- * Observers of EventColor will be passed a type of #NT_COLOR and a subtype
- * which describes the colour that changed, e.g. #MT_COLOR_SIDEBAR_HIGHLIGHT.
+ * Observers will be passed a type of #NT_COLOR and a subtype which
+ * describes the colour that changed, e.g. #MT_COLOR_SIDEBAR_HIGHLIGHT.
  */
 struct EventColor
 {

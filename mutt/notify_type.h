@@ -25,19 +25,21 @@
 
 /**
  * enum NotifyType - Notification Types
+ *
+ * Each type lists the associated Event object
  */
 enum NotifyType
 {
-  NT_ACCOUNT, ///< Account has changed
-  NT_COLOR,   ///< Colour has changed
-  NT_COMMAND, ///< A Command has been executed
-  NT_CONFIG,  ///< Config has changed
-  NT_CONTEXT, ///< Context has changed
-  NT_EMAIL,   ///< Email has changed
-  NT_GLOBAL,  ///< Not object-related
-  NT_MAILBOX, ///< Mailbox has changed
-  NT_WINDOW,  ///< MuttWindow has changed
-  NT_ALIAS,   ///< Alias has changed
+  NT_ACCOUNT, ///< Account has changed, #NotifyAccount, #EventAccount
+  NT_COLOR,   ///< Colour has changed, #ColorId, #EventColor
+  NT_COMMAND, ///< A Command has been executed, #Command
+  NT_CONFIG,  ///< Config has changed, #NotifyConfig, #EventConfig
+  NT_CONTEXT, ///< Context has changed, #NotifyContext, #EventContext
+  NT_EMAIL,   ///< Email has changed, #NotifyEmail, #EventEmail
+  NT_GLOBAL,  ///< Not object-related, #NotifyGlobal
+  NT_MAILBOX, ///< Mailbox has changed, #NotifyMailbox, #EventMailbox
+  NT_WINDOW,  ///< MuttWindow has changed, #NotifyWindow, #EventWindow
+  NT_ALIAS,   ///< Alias has changed, #NotifyAlias, #EventAlias
 };
 
 #endif /* MUTT_LIB_NOTIFY_TYPE_H */

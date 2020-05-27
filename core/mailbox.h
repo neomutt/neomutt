@@ -150,15 +150,9 @@ struct MailboxNode
 STAILQ_HEAD(MailboxList, MailboxNode);
 
 /**
- * struct EventMailbox - An Event that happened to a Mailbox
- */
-struct EventMailbox
-{
-  struct Mailbox *mailbox; ///< The Mailbox this Event relates to
-};
-
-/**
  * enum NotifyMailbox - Types of Mailbox Event
+ *
+ * Observers of #NT_MAILBOX will be passed an #EventMailbox.
  */
 enum NotifyMailbox
 {
@@ -172,6 +166,14 @@ enum NotifyMailbox
   NT_MAILBOX_RESORT,  ///< Email list needs resorting
   NT_MAILBOX_UPDATE,  ///< Update internal tables
   NT_MAILBOX_UNTAG,   ///< Clear the 'last-tagged' pointer
+};
+
+/**
+ * struct EventMailbox - An Event that happened to a Mailbox
+ */
+struct EventMailbox
+{
+  struct Mailbox *mailbox; ///< The Mailbox this Event relates to
 };
 
 void            mailbox_changed   (struct Mailbox *m, enum NotifyMailbox action);

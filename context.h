@@ -53,20 +53,22 @@ struct Context
 };
 
 /**
- * struct EventContext - An Event that happened to an Context
- */
-struct EventContext
-{
-  struct Context *context; ///< The Context this Event relates to
-};
-
-/**
  * enum NotifyContext - Types of Context Event
+ *
+ * Observers of #NT_CONTEXT will be passed an #EventContext.
  */
 enum NotifyContext
 {
   NT_CONTEXT_OPEN = 1, ///< The Context has been opened
   NT_CONTEXT_CLOSE,    ///< The Context is about to be destroyed
+};
+
+/**
+ * struct EventContext - An Event that happened to an Context
+ */
+struct EventContext
+{
+  struct Context *context; ///< The Context this Event relates to
 };
 
 void            ctx_free            (struct Context **ptr);

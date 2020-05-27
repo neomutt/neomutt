@@ -43,6 +43,8 @@ extern struct AliasList Aliases;
 
 /**
  * enum NotifyAlias - Alias notification types
+ *
+ * Observers of #NT_ALIAS will be passed an #EventAlias.
  */
 enum NotifyAlias
 {
@@ -53,8 +55,6 @@ enum NotifyAlias
 
 /**
  * struct EventAlias - An alias-change event
- *
- * Events such as #NT_ALIAS_NEW
  */
 struct EventAlias
 {

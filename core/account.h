@@ -47,20 +47,22 @@ struct Account
 TAILQ_HEAD(AccountList, Account);
 
 /**
- * struct EventAccount - An Event that happened to an Account
- */
-struct EventAccount
-{
-  struct Account *account; ///< The Account this Event relates to
-};
-
-/**
  * enum NotifyAccount - Types of Account Event
+ *
+ * Observers of #NT_ACCOUNT will be passed an #EventAccount.
  */
 enum NotifyAccount
 {
   NT_ACCOUNT_ADD = 1, ///< A new Account has been created
   NT_ACCOUNT_REMOVE,  ///< An Account is about to be destroyed
+};
+
+/**
+ * struct EventAccount - An Event that happened to an Account
+ */
+struct EventAccount
+{
+  struct Account *account; ///< The Account this Event relates to
 };
 
 void            account_free          (struct Account **ptr);

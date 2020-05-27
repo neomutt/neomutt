@@ -54,6 +54,8 @@ struct ConfigSubset
 
 /**
  * enum NotifyConfig - Config notification types
+ *
+ * Observers of #NT_CONFIG will be passed an #EventConfig.
  */
 enum NotifyConfig
 {
@@ -64,8 +66,6 @@ enum NotifyConfig
 
 /**
  * struct EventConfig - A config-change event
- *
- * Events such as #NT_CONFIG_SET
  */
 struct EventConfig
 {
