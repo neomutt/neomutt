@@ -1837,7 +1837,7 @@ bool mutt_can_decode(struct Body *a)
  */
 void mutt_decode_attachment(struct Body *b, struct State *s)
 {
-  int istext = mutt_is_text_part(b);
+  int istext = mutt_is_text_part(b) && (b->disposition == DISP_INLINE);
   iconv_t cd = (iconv_t)(-1);
 
   if (istext && s->flags & MUTT_CHARCONV)
