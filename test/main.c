@@ -557,13 +557,39 @@
 /******************************************************************************
  * You probably don't need to touch what follows.
  *****************************************************************************/
+// clang-format off
 #define NEOMUTT_TEST_ITEM(x) void x(void);
 NEOMUTT_TEST_LIST
+#if defined(USE_LZ4) || defined(USE_ZLIB) || defined(USE_ZSTD)
+NEOMUTT_TEST_ITEM(test_compress_common)
+#endif
+#ifdef USE_LZ4
+NEOMUTT_TEST_ITEM(test_compress_lz4)
+#endif
+#ifdef USE_ZLIB
+NEOMUTT_TEST_ITEM(test_compress_zlib)
+#endif
+#ifdef USE_ZSTD
+NEOMUTT_TEST_ITEM(test_compress_zstd)
+#endif
 #undef NEOMUTT_TEST_ITEM
 
 TEST_LIST = {
 #define NEOMUTT_TEST_ITEM(x) { #x, x },
   NEOMUTT_TEST_LIST
+#if defined(USE_LZ4) || defined(USE_ZLIB) || defined(USE_ZSTD)
+NEOMUTT_TEST_ITEM(test_compress_common)
+#endif
+#ifdef USE_LZ4
+  NEOMUTT_TEST_ITEM(test_compress_lz4)
+#endif
+#ifdef USE_ZLIB
+  NEOMUTT_TEST_ITEM(test_compress_zlib)
+#endif
+#ifdef USE_ZSTD
+  NEOMUTT_TEST_ITEM(test_compress_zstd)
+#endif
 #undef NEOMUTT_TEST_ITEM
   { 0 }
 };
+// clang-format on

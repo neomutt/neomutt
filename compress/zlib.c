@@ -85,7 +85,7 @@ static void *compr_zlib_compress(void *cctx, const char *data, size_t dlen, size
   const void *ubuf = data;
   int rc = compress2(cbuf, &len, ubuf, dlen, ctx->level);
   if (rc != Z_OK)
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
   *clen = len + 4;
 
   /* save ulen to first 4 bytes */

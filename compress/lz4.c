@@ -85,7 +85,7 @@ static void *compr_lz4_compress(void *cctx, const char *data, size_t dlen, size_
 
   len = LZ4_compress_fast(data, cbuf + 4, datalen, len, ctx->level);
   if (len == 0)
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
   *clen = len + 4;
 
   /* save ulen to first 4 bytes */

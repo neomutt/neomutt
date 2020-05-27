@@ -63,12 +63,13 @@ static void *compr_zstd_open(short level)
 
   if (!ctx->cctx || !ctx->dctx)
   {
-    if (ctx->cctx)
-      ZSTD_freeCCtx(ctx->cctx);
-    if (ctx->dctx)
-      ZSTD_freeDCtx(ctx->dctx);
+    // LCOV_EXCL_START
+    ZSTD_freeCCtx(ctx->cctx);
+    ZSTD_freeDCtx(ctx->dctx);
+    FREE(&ctx->buf);
     FREE(&ctx);
     return NULL;
+    // LCOV_EXCL_STOP
   }
 
   if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
@@ -98,7 +99,7 @@ static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size
 
   size_t ret = ZSTD_compressCCtx(ctx->cctx, ctx->buf, len, data, dlen, ctx->level);
   if (ZSTD_isError(ret))
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
 
   *clen = ret;
 
@@ -117,16 +118,16 @@ static void *compr_zstd_decompress(void *cctx, const char *cbuf, size_t clen)
 
   unsigned long long len = ZSTD_getFrameContentSize(cbuf, clen);
   if (len == ZSTD_CONTENTSIZE_UNKNOWN)
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
   else if (len == ZSTD_CONTENTSIZE_ERROR)
     return NULL;
   else if (len == 0)
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
   mutt_mem_realloc(&ctx->buf, len);
 
   size_t ret = ZSTD_decompressDCtx(ctx->dctx, ctx->buf, len, cbuf, clen);
   if (ZSTD_isError(ret))
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
 
   return ctx->buf;
 }

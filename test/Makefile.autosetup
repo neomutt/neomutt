@@ -92,6 +92,19 @@ CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \
 		  test/charset/mutt_ch_lookup_remove.o \
 		  test/charset/mutt_ch_set_charset.o
 
+@if USE_LZ4 || USE_ZLIB || USE_ZSTD
+COMPRESS_OBJS	+= test/compress/common.o
+@endif
+@if USE_LZ4
+COMPRESS_OBJS	+= test/compress/lz4.o
+@endif
+@if USE_ZLIB
+COMPRESS_OBJS	+= test/compress/zlib.o
+@endif
+@if USE_ZSTD
+COMPRESS_OBJS	+= test/compress/zstd.o
+@endif
+
 CONFIG_OBJS	= test/config/account.o \
 		  test/config/address.o \
 		  test/config/bool.o \
@@ -491,7 +504,7 @@ URL_OBJS	= test/url/url_check_scheme.o \
 
 BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/attach \
 		  $(PWD)/test/base64 $(PWD)/test/body $(PWD)/test/buffer \
-		  $(PWD)/test/charset $(PWD)/test/config $(PWD)/test/date \
+		  $(PWD)/test/charset $(PWD)/test/compress $(PWD)/test/config $(PWD)/test/date \
 		  $(PWD)/test/email $(PWD)/test/envelope $(PWD)/test/envlist \
 		  $(PWD)/test/file $(PWD)/test/filter $(PWD)/test/from \
 		  $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
@@ -512,6 +525,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(BODY_OBJS) \
 		  $(BUFFER_OBJS) \
 		  $(CHARSET_OBJS) \
+		  $(COMPRESS_OBJS) \
 		  $(CONFIG_OBJS) \
 		  $(DATE_OBJS) \
 		  $(EMAIL_OBJS) \
