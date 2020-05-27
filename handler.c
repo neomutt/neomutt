@@ -1487,6 +1487,7 @@ void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd)
 {
   char buf[5];
   int ch, i;
+  bool cr = false;
   char bufi[BUFI_SIZE];
   size_t l = 0;
 
@@ -1515,24 +1516,58 @@ void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd)
 
     const int c1 = base64val(buf[0]);
     const int c2 = base64val(buf[1]);
-    ch = (c1 << 2) | (c2 >> 4);
-    bufi[l++] = ch;
 
+    /* first char */
+    ch = (c1 << 2) | (c2 >> 4);
+
+    if (cr && (ch != '\n'))
+      bufi[l++] = '\r';
+
+    cr = false;
+
+    if (istext && (ch == '\r'))
+      cr = true;
+    else
+      bufi[l++] = ch;
+
+    /* second char */
     if (buf[2] == '=')
       break;
     const int c3 = base64val(buf[2]);
     ch = ((c2 & 0xf) << 4) | (c3 >> 2);
-    bufi[l++] = ch;
 
+    if (cr && (ch != '\n'))
+      bufi[l++] = '\r';
+
+    cr = false;
+
+    if (istext && (ch == '\r'))
+      cr = true;
+    else
+      bufi[l++] = ch;
+
+    /* third char */
     if (buf[3] == '=')
       break;
     const int c4 = base64val(buf[3]);
     ch = ((c3 & 0x3) << 6) | c4;
-    bufi[l++] = ch;
+
+    if (cr && (ch != '\n'))
+      bufi[l++] = '\r';
+
+    cr = false;
+
+    if (istext && (ch == '\r'))
+      cr = true;
+    else
+      bufi[l++] = ch;
 
     if ((l + 8) >= sizeof(bufi))
       convert_to_state(cd, bufi, &l, s);
   }
+
+  if (cr)
+    bufi[l++] = '\r';
 
   convert_to_state(cd, bufi, &l, s);
   convert_to_state(cd, 0, 0, s);
