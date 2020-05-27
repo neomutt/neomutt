@@ -1840,16 +1840,18 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   int istext = mutt_is_text_part(b) && (b->disposition == DISP_INLINE);
   iconv_t cd = (iconv_t)(-1);
 
-  if (istext && s->flags & MUTT_CHARCONV)
+  if (istext && (b->charset || (s->flags & MUTT_CHARCONV)))
   {
-    char *charset = mutt_param_get(&b->parameter, "charset");
-    if (!charset && C_AssumedCharset)
-      charset = mutt_ch_get_default_charset();
+    const char *charset = b->charset;
+    if (!charset)
+    {
+      charset = mutt_param_get(&b->parameter, "charset");
+      if (!charset && C_AssumedCharset)
+        charset = mutt_ch_get_default_charset();
+    }
     if (charset && C_Charset)
       cd = mutt_ch_iconv_open(C_Charset, charset, MUTT_ICONV_HOOK_FROM);
   }
-  else if (istext && b->charset)
-    cd = mutt_ch_iconv_open(C_Charset, b->charset, MUTT_ICONV_HOOK_FROM);
 
   fseeko(s->fp_in, b->offset, SEEK_SET);
   switch (b->encoding)
