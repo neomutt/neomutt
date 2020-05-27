@@ -89,10 +89,11 @@ static void win_dump(struct MuttWindow *win, int indent)
 {
   bool visible = mutt_window_is_visible(win);
 
-  mutt_debug(LL_DEBUG1, "%*s%s[%d,%d] %s %s %s (%d,%d)%s\n", indent, "",
-             visible ? "" : "\033[1;30m", win->state.col_offset, win->state.row_offset,
-             win_size(win), win->name ? win->name : "", win_type(win),
-             win->state.cols, win->state.rows, visible ? "" : "\033[0m");
+  mutt_debug(LL_DEBUG1, "%*s%s[%d,%d] %s-%c \033[1;33m%s\033[0m %s (%d,%d)%s\n", indent,
+             "", visible ? "" : "\033[1;30m", win->state.col_offset, win->state.row_offset,
+             win_size(win), (win->orient == MUTT_WIN_ORIENT_VERTICAL) ? 'V' : 'H',
+             win->name ? win->name : "", win_type(win), win->state.cols,
+             win->state.rows, visible ? "" : "\033[0m");
 
   struct MuttWindow *np = NULL;
   TAILQ_FOREACH(np, &win->children, entries)
