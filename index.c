@@ -4049,40 +4049,13 @@ int mutt_reply_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_pager_init - Allocate the Windows for the Index/Pager
- * @retval ptr Dialog containing nested Windows
+ * create_panel_index - Create the Windows for the Index panel
+ * @param parent        Parent Window
+ * @param status_on_top true, if the Index bar should be on top
+ * @retval ptr Nested Windows
  */
-struct MuttWindow *index_pager_init(void)
+static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool status_on_top)
 {
-  struct MuttWindow *dlg =
-      mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  dlg->type = WT_DIALOG;
-  dlg->notify = notify_new();
-  notify_observer_add(NeoMutt->notify, mutt_dlgindex_observer, dlg);
-#ifdef USE_DEBUG_WINDOW
-  dlg->name = "index dialog";
-#endif
-
-  struct MuttWindow *win_sidebar =
-      mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                      MUTT_WIN_SIZE_UNLIMITED, C_SidebarWidth);
-  win_sidebar->type = WT_SIDEBAR;
-  win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
-  win_sidebar->notify = notify_new();
-  notify_set_parent(win_sidebar->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  win_sidebar->name = "sidebar";
-#endif
-
-  struct MuttWindow *cont_right =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  cont_right->type = WT_CONTAINER;
-#ifdef USE_DEBUG_WINDOW
-  cont_right->name = "index container";
-#endif
-
   struct MuttWindow *panel_index =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -4096,7 +4069,7 @@ struct MuttWindow *index_pager_init(void)
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   win_index->type = WT_INDEX;
   win_index->notify = notify_new();
-  notify_set_parent(win_index->notify, dlg->notify);
+  notify_set_parent(win_index->notify, parent->notify);
 #ifdef USE_DEBUG_WINDOW
   win_index->name = "index";
 #endif
@@ -4105,11 +4078,33 @@ struct MuttWindow *index_pager_init(void)
       MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
   win_ibar->type = WT_INDEX_BAR;
   win_ibar->notify = notify_new();
-  notify_set_parent(win_ibar->notify, dlg->notify);
+  notify_set_parent(win_ibar->notify, parent->notify);
 #ifdef USE_DEBUG_WINDOW
   win_ibar->name = "index bar";
 #endif
 
+  if (status_on_top)
+  {
+    mutt_window_add_child(panel_index, win_ibar);
+    mutt_window_add_child(panel_index, win_index);
+  }
+  else
+  {
+    mutt_window_add_child(panel_index, win_index);
+    mutt_window_add_child(panel_index, win_ibar);
+  }
+
+  return panel_index;
+}
+
+/**
+ * create_panel_pager - Create the Windows for the Pager panel
+ * @param parent        Parent Window
+ * @param status_on_top true, if the Pager bar should be on top
+ * @retval ptr Nested Windows
+ */
+static struct MuttWindow *create_panel_pager(struct MuttWindow *parent, bool status_on_top)
+{
   struct MuttWindow *panel_pager =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -4125,7 +4120,7 @@ struct MuttWindow *index_pager_init(void)
   win_pager->type = WT_PAGER;
   win_pager->state.visible = false;
   win_pager->notify = notify_new();
-  notify_set_parent(win_pager->notify, dlg->notify);
+  notify_set_parent(win_pager->notify, parent->notify);
 #ifdef USE_DEBUG_WINDOW
   win_pager->name = "pager";
 #endif
@@ -4135,9 +4130,70 @@ struct MuttWindow *index_pager_init(void)
   win_pbar->type = WT_PAGER_BAR;
   win_pbar->state.visible = false;
   win_pbar->notify = notify_new();
-  notify_set_parent(win_pbar->notify, dlg->notify);
+  notify_set_parent(win_pbar->notify, parent->notify);
 #ifdef USE_DEBUG_WINDOW
   win_pbar->name = "pager bar";
+#endif
+
+  if (status_on_top)
+  {
+    mutt_window_add_child(panel_pager, win_pbar);
+    mutt_window_add_child(panel_pager, win_pager);
+  }
+  else
+  {
+    mutt_window_add_child(panel_pager, win_pager);
+    mutt_window_add_child(panel_pager, win_pbar);
+  }
+
+  return panel_pager;
+}
+
+/**
+ * create_panel_sidebar - Create the Sidebar Window
+ * @param parent Parent Window
+ * @retval ptr Window
+ */
+static struct MuttWindow *create_panel_sidebar(struct MuttWindow *parent)
+{
+  struct MuttWindow *win_sidebar =
+      mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
+                      MUTT_WIN_SIZE_UNLIMITED, C_SidebarWidth);
+  win_sidebar->type = WT_SIDEBAR;
+  win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
+  win_sidebar->notify = notify_new();
+  notify_set_parent(win_sidebar->notify, parent->notify);
+#ifdef USE_DEBUG_WINDOW
+  win_sidebar->name = "sidebar";
+#endif
+
+  return win_sidebar;
+}
+
+/**
+ * index_pager_init - Allocate the Windows for the Index/Pager
+ * @retval ptr Dialog containing nested Windows
+ */
+struct MuttWindow *index_pager_init(void)
+{
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  dlg->notify = notify_new();
+  notify_observer_add(NeoMutt->notify, mutt_dlgindex_observer, dlg);
+#ifdef USE_DEBUG_WINDOW
+  dlg->name = "index dialog";
+#endif
+
+  struct MuttWindow *win_sidebar = create_panel_sidebar(dlg);
+
+  struct MuttWindow *cont_right =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  cont_right->type = WT_CONTAINER;
+#ifdef USE_DEBUG_WINDOW
+  cont_right->name = "index container";
 #endif
 
   if (C_SidebarOnRight)
@@ -4151,29 +4207,8 @@ struct MuttWindow *index_pager_init(void)
     mutt_window_add_child(dlg, cont_right);
   }
 
-  mutt_window_add_child(cont_right, panel_index);
-  if (C_StatusOnTop)
-  {
-    mutt_window_add_child(panel_index, win_ibar);
-    mutt_window_add_child(panel_index, win_index);
-  }
-  else
-  {
-    mutt_window_add_child(panel_index, win_index);
-    mutt_window_add_child(panel_index, win_ibar);
-  }
-
-  mutt_window_add_child(cont_right, panel_pager);
-  if (C_StatusOnTop)
-  {
-    mutt_window_add_child(panel_pager, win_pbar);
-    mutt_window_add_child(panel_pager, win_pager);
-  }
-  else
-  {
-    mutt_window_add_child(panel_pager, win_pager);
-    mutt_window_add_child(panel_pager, win_pbar);
-  }
+  mutt_window_add_child(cont_right, create_panel_index(cont_right, C_StatusOnTop));
+  mutt_window_add_child(cont_right, create_panel_pager(cont_right, C_StatusOnTop));
 
   notify_observer_add(NeoMutt->notify, sb_observer, win_sidebar);
 
