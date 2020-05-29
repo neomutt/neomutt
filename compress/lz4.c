@@ -58,8 +58,8 @@ static void *compr_lz4_open(short level)
 
   if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
   {
-    mutt_warning(_("The compression level for %s should be between %d and %d"),
-                 compr_lz4_ops.name, MIN_COMP_LEVEL, MAX_COMP_LEVEL);
+    mutt_debug(LL_DEBUG1, "The compression level for %s should be between %d and %d",
+               compr_lz4_ops.name, MIN_COMP_LEVEL, MAX_COMP_LEVEL);
     level = MIN_COMP_LEVEL;
   }
 

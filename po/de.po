@@ -1339,11 +1339,6 @@ msgstr "Kein S/MIME-Backend eingerichtet"
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP bereits ausgewählt. Löschen und fortfahren?"
 
-#: compress/lz4.c:61 compress/zlib.c:62 compress/zstd.c:76
-#, c-format
-msgid "The compression level for %s should be between %d and %d"
-msgstr ""
-
 #: config/bool.c:70
 #, fuzzy, c-format
 msgid "Invalid boolean value: %s"
@@ -3030,8 +3025,8 @@ msgstr "Option %s kann im Nachrichte-Anhangmodus nicht gesetzt werden"
 #. L10N: This applies to the "$wrap_headers" config variable
 #: init.c:1717
 #, c-format
-msgid "Option %s must between 78 and 998 inclusive"
-msgstr "Option %s muss zwischen 78 und einschließlich 998 eingestellt werden"
+msgid "Option %s must be between %d and %d inclusive"
+msgstr "Option %s muss zwischen %d und einschließlich %d eingestellt werden"
 
 #: keymap.c:373 keymap.c:381
 #, c-format

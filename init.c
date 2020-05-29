@@ -1740,10 +1740,14 @@ int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                           intptr_t value, struct Buffer *err)
 {
-  if ((value >= 78) && (value <= 998)) // Recommendation from RFC5233
+  const int min_length = 78; // Recommendations from RFC5233
+  const int max_length = 998;
+
+  if ((value >= min_length) && (value <= max_length))
     return CSR_SUCCESS;
 
-  // L10N: This applies to the "$wrap_headers" config variable
-  mutt_buffer_printf(err, _("Option %s must between 78 and 998 inclusive"), cdef->name);
+  // L10N: This applies to the "$wrap_headers" config variable.
+  mutt_buffer_printf(err, _("Option %s must be between %d and %d inclusive"),
+                     cdef->name, min_length, max_length);
   return CSR_ERR_INVALID;
 }

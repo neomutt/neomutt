@@ -1349,11 +1349,6 @@ msgstr ""
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP ya ha sido seleccionado. ¿Limpiar y continuar?"
 
-#: compress/lz4.c:61 compress/zlib.c:62 compress/zstd.c:76
-#, c-format
-msgid "The compression level for %s should be between %d and %d"
-msgstr ""
-
 #: config/bool.c:70
 #, c-format
 msgid "Invalid boolean value: %s"
@@ -3060,8 +3055,8 @@ msgstr "No se puede establecer la opción %s en el modo de adjuntar mensaje"
 #. L10N: This applies to the "$wrap_headers" config variable
 #: init.c:1717
 #, c-format
-msgid "Option %s must between 78 and 998 inclusive"
-msgstr "La opción %s debe ir entre 78 y 998, ambos inclusive"
+msgid "Option %s must be between %d and %d inclusive"
+msgstr "La opción %s debe ir entre %d y %d, ambos inclusive"
 
 #: keymap.c:373 keymap.c:381
 #, c-format

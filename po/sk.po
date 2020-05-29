@@ -1380,11 +1380,6 @@ msgstr ""
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP je už vybrané. Vyčistiť & pokračovať?"
 
-#: compress/lz4.c:61 compress/zlib.c:62 compress/zstd.c:76
-#, c-format
-msgid "The compression level for %s should be between %d and %d"
-msgstr ""
-
 #: config/bool.c:70
 #, fuzzy, c-format
 msgid "Invalid boolean value: %s"
@@ -3147,7 +3142,7 @@ msgstr "V režime prikladania správ táto funkcia nie je dovolená"
 #. L10N: This applies to the "$wrap_headers" config variable
 #: init.c:1717
 #, c-format
-msgid "Option %s must between 78 and 998 inclusive"
+msgid "Option %s must be between %d and %d inclusive"
 msgstr ""
 
 #: keymap.c:373 keymap.c:381

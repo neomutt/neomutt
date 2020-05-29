@@ -1333,11 +1333,6 @@ msgstr "未配置 S/MIME 后端"
 msgid "PGP already selected. Clear and continue?"
 msgstr "已经选择了 PGP。清除并继续？"
 
-#: compress/lz4.c:61 compress/zlib.c:62 compress/zstd.c:76
-#, c-format
-msgid "The compression level for %s should be between %d and %d"
-msgstr "对于 %s 的压缩等级应该介于 %d 和 %d 之间"
-
 #: config/bool.c:70
 #, c-format
 msgid "Invalid boolean value: %s"
@@ -3017,7 +3012,7 @@ msgstr "在附加信件(attach-message)模式下不能设置 %s 选项"
 #. L10N: This applies to the "$wrap_headers" config variable
 #: init.c:1717
 #, c-format
-msgid "Option %s must between 78 and 998 inclusive"
+msgid "Option %s must be between %d and %d inclusive"
 msgstr ""
 
 #: keymap.c:373 keymap.c:381

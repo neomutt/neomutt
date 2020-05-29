@@ -1343,11 +1343,6 @@ msgstr "S/MIME nesukonfigūruotas"
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP jau pasirinktas. Išjungti ir tęsti?"
 
-#: compress/lz4.c:61 compress/zlib.c:62 compress/zstd.c:76
-#, c-format
-msgid "The compression level for %s should be between %d and %d"
-msgstr "%s suspaudimo lygis turi būti tarp %d ir %d"
-
 #: config/bool.c:70
 #, c-format
 msgid "Invalid boolean value: %s"
@@ -3042,8 +3037,8 @@ msgstr "Negalima įjungti parametro %s laiško prisegimo režime"
 #. L10N: This applies to the "$wrap_headers" config variable
 #: init.c:1717
 #, c-format
-msgid "Option %s must between 78 and 998 inclusive"
-msgstr "Parinktis %s turi būti tarp 78 ir 998 imtinai"
+msgid "Option %s must be between %d and %d inclusive"
+msgstr "Parinktis %s turi būti tarp %d ir %d imtinai"
 
 #: keymap.c:373 keymap.c:381
 #, c-format

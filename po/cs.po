@@ -1358,11 +1358,6 @@ msgstr "Není nakonfigurováno a přeloženo s podporou S/MIME"
 msgid "PGP already selected. Clear and continue?"
 msgstr "Je aktivní PGP, zrušit jej a pokračovat?"
 
-#: compress/lz4.c:61 compress/zlib.c:62 compress/zstd.c:76
-#, c-format
-msgid "The compression level for %s should be between %d and %d"
-msgstr "Úroveň komprese pro %s by měla být mezi %d a %d"
-
 #: config/bool.c:70
 #, c-format
 msgid "Invalid boolean value: %s"
@@ -3060,8 +3055,8 @@ msgstr "Volba %s nemůže být nastavena v režimu přikládání zpráv."
 #. L10N: This applies to the "$wrap_headers" config variable
 #: init.c:1717
 #, c-format
-msgid "Option %s must between 78 and 998 inclusive"
-msgstr "Hodnota %s musí být v rozmezí 78 a 998"
+msgid "Option %s must be between %d and %d inclusive"
+msgstr "Hodnota %s musí být v rozmezí %d a %d"
 
 #: keymap.c:373 keymap.c:381
 #, c-format
