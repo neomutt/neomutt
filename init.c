@@ -656,6 +656,9 @@ void mutt_opts_free(void)
   clear_source_stack();
 
   alias_shutdown();
+#ifdef USE_SIDEBAR
+  sb_shutdown();
+#endif
 
   mutt_regexlist_free(&Alternates);
   mutt_regexlist_free(&MailLists);
@@ -677,9 +680,6 @@ void mutt_opts_free(void)
   mutt_list_free(&MailToAllow);
   mutt_list_free(&MimeLookupList);
   mutt_list_free(&Muttrc);
-#ifdef USE_SIDEBAR
-  mutt_list_free(&SidebarWhitelist);
-#endif
   mutt_list_free(&UnIgnore);
   mutt_list_free(&UserHeader);
 
@@ -748,6 +748,9 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   TagFormats = mutt_hash_new(64, MUTT_HASH_NO_FLAGS);
 
   mutt_menu_init();
+#ifdef USE_SIDEBAR
+  sb_init();
+#endif
 
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a", // Escape
            mutt_rand64());

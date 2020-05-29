@@ -27,6 +27,8 @@
 
 struct NotifyCallback;
 
+extern struct ListHead SidebarWhitelist;
+
 extern int EntryCount;
 extern int EntryLen;
 extern struct SbEntry **Entries;

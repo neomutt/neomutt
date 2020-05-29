@@ -1088,3 +1088,23 @@ void sb_draw(struct MuttWindow *win)
   draw_sidebar(win, num_rows, num_cols, div_width);
   mutt_window_move(win, col, row);
 }
+
+/**
+ * sb_init - Set up the Sidebar
+ */
+void sb_init(void)
+{
+  // Soon this will initialise the Sidebar's:
+  // - Colours
+  // - Commands
+  // - Config
+  // - Functions
+}
+
+/**
+ * sb_shutdown - Clean up the Sidebar
+ */
+void sb_shutdown(void)
+{
+  mutt_list_free(&SidebarWhitelist);
+}

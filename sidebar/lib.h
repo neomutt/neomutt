@@ -49,7 +49,8 @@ extern short C_SidebarSortMethod;
 extern bool  C_SidebarVisible;
 extern short C_SidebarWidth;
 
-extern struct ListHead SidebarWhitelist;
+void sb_init    (void);
+void sb_shutdown(void);
 
 /**
  * enum SidebarNotification - what happened to a mailbox
