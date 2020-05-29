@@ -101,10 +101,10 @@ struct ConfigDef MuttVars[] = {
 
   { "abort_backspace", DT_BOOL, &C_AbortBackspace, true },
   /*
-   ** .pp
-   ** If \fIset\fP, hitting backspace against an empty prompt aborts the
-   ** prompt.
-   */
+  ** .pp
+  ** If \fIset\fP, hitting backspace against an empty prompt aborts the
+  ** prompt.
+  */
   { "abort_key", DT_STRING|DT_NOT_EMPTY, &C_AbortKey, IP "\007" },
   /*
   ** .pp
@@ -755,7 +755,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** When set, NeoMutt will display protected headers ("Memory Hole") in the pager,
   ** and will update the index and header cache with revised headers.
-  **
+  ** .pp
   ** Protected headers are stored inside the encrypted or signed part of an
   ** an email, to prevent disclosure or tampering.
   ** For more information see https://github.com/autocrypt/memoryhole.
@@ -799,7 +799,7 @@ struct ConfigDef MuttVars[] = {
   ** When $$crypt_protected_headers_write is set, and the message is marked
   ** for encryption, this will be substituted into the Subject field in the
   ** message headers.
-  **
+  ** .pp
   ** To prevent a subject from being substituted, unset this variable, or set it
   ** to the empty string.
   ** (Crypto only)
@@ -809,11 +809,11 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** When set, NeoMutt will generate protected headers ("Memory Hole") for
   ** signed and encrypted emails.
-  **
+  ** .pp
   ** Protected headers are stored inside the encrypted or signed part of an
   ** an email, to prevent disclosure or tampering.
   ** For more information see https://github.com/autocrypt/memoryhole.
-  **
+  ** .pp
   ** Currently NeoMutt only supports the Subject header.
   ** (Crypto only)
   */
@@ -2760,8 +2760,9 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** This variable allows you to customize the PGP key selection menu to
-  ** your personal taste. This string is similar to $$index_format, but
-  ** has its own set of \fCprintf(3)\fP-like sequences:
+  ** your personal taste. If $$crypt_use_gpgme is \fIset\fP, then it applies
+  ** to S/MIME key selection menu also. This string is similar to $$index_format,
+  ** but has its own set of \fCprintf(3)\fP-like sequences:
   ** .dl
   ** .dt %a     .dd Algorithm
   ** .dt %c     .dd Capabilities
@@ -2775,7 +2776,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt %[<s>] .dd Date of the key where <s> is an \fCstrftime(3)\fP expression
   ** .de
   ** .pp
-  ** (PGP only)
+  ** (Crypto only) or (PGP only when GPGME disabled)
   */
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
   { "pgp_export_command", DT_STRING|DT_COMMAND, &C_PgpExportCommand, 0 },
@@ -4854,7 +4855,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** When \fIset\fP, NeoMutt will use the first defined virtual mailbox (see
   ** virtual-mailboxes) as a spool file.
-  **
+  ** .pp
   ** This command is now unnecessary. $$spoolfile has been extended to support
   ** mailbox descriptions as a value.
   */
