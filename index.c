@@ -73,7 +73,7 @@
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 #ifdef USE_SIDEBAR
-#include "sidebar.h"
+#include "sidebar/lib.h"
 #endif
 #ifdef USE_POP
 #include "pop/lib.h"

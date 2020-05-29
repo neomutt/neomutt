@@ -70,7 +70,7 @@
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 #ifdef USE_SIDEBAR
-#include "sidebar.h"
+#include "sidebar/lib.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"

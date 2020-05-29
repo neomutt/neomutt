@@ -35,18 +35,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "sidebar.h"
+#include "lib.h"
 #include "context.h"
 #include "format_flags.h"
 #include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
-#include "opcodes.h"
 
 /* These Config Variables are only used in sidebar.c */
 short C_SidebarComponentDepth; ///< Config: (sidebar) Strip leading path components from sidebar folders
@@ -64,38 +64,19 @@ short C_SidebarSortMethod; ///< Config: (sidebar) Method to sort the sidebar
 bool C_SidebarVisible;     ///< Config: (sidebar) Show the sidebar
 short C_SidebarWidth;      ///< Config: (sidebar) Width of the sidebar
 
+struct ListHead SidebarWhitelist = STAILQ_HEAD_INITIALIZER(SidebarWhitelist); ///< List of mailboxes to always display in the sidebar
+
+int EntryCount = 0;
+int EntryLen = 0;
+struct SbEntry **Entries = NULL;
+
+int TopIndex = -1; ///< First mailbox visible in sidebar
+int OpnIndex = -1; ///< Current (open) mailbox
+int HilIndex = -1; ///< Highlighted mailbox
+int BotIndex = -1; ///< Last mailbox visible in sidebar
+
 /* Previous values for some sidebar config */
-static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
-
-/**
- * struct SbEntry - Info about folders in the sidebar
- */
-struct SbEntry
-{
-  char box[256];           ///< Mailbox path (possibly abbreviated)
-  int depth;               ///< Indentation depth
-  struct Mailbox *mailbox; ///< Mailbox this represents
-  bool is_hidden;          ///< Don't show, e.g. $sidebar_new_mail_only
-};
-
-static int EntryCount = 0;
-static int EntryLen = 0;
-static struct SbEntry **Entries = NULL;
-
-static int TopIndex = -1; ///< First mailbox visible in sidebar
-static int OpnIndex = -1; ///< Current (open) mailbox
-static int HilIndex = -1; ///< Highlighted mailbox
-static int BotIndex = -1; ///< Last mailbox visible in sidebar
-
-/**
- * enum DivType - Source of the sidebar divider character
- */
-enum DivType
-{
-  SB_DIV_USER,  ///< User configured using $sidebar_divider_char
-  SB_DIV_ASCII, ///< An ASCII vertical bar (pipe)
-  SB_DIV_UTF8,  ///< A unicode line-drawing character
-};
+short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
 
 /**
  * add_indent - Generate the needed indentation
@@ -498,197 +479,6 @@ static void sort_entries(void)
     qsort(Entries, EntryCount, sizeof(*Entries), cb_qsort_sbe);
   else if ((ssm == SORT_ORDER) && (C_SidebarSortMethod != PreviousSort))
     unsort_entries();
-}
-
-/**
- * select_next - Selects the next unhidden mailbox
- * @retval true  Success
- * @retval false Failure
- */
-static bool select_next(void)
-{
-  if ((EntryCount == 0) || (HilIndex < 0))
-    return false;
-
-  int entry = HilIndex;
-
-  do
-  {
-    entry++;
-    if (entry == EntryCount)
-      return false;
-  } while (Entries[entry]->is_hidden);
-
-  HilIndex = entry;
-  return true;
-}
-
-/**
- * select_next_new - Selects the next new mailbox
- * @retval true  Success
- * @retval false Failure
- *
- * Search down the list of mail folders for one containing new mail.
- */
-static bool select_next_new(void)
-{
-  if ((EntryCount == 0) || (HilIndex < 0))
-    return false;
-
-  int entry = HilIndex;
-
-  do
-  {
-    entry++;
-    if (entry == EntryCount)
-    {
-      if (C_SidebarNextNewWrap)
-        entry = 0;
-      else
-        return false;
-    }
-    if (entry == HilIndex)
-      return false;
-  } while (!Entries[entry]->mailbox->has_new && (Entries[entry]->mailbox->msg_unread == 0));
-
-  HilIndex = entry;
-  return true;
-}
-
-/**
- * select_prev - Selects the previous unhidden mailbox
- * @retval true  Success
- * @retval false Failure
- */
-static bool select_prev(void)
-{
-  if ((EntryCount == 0) || (HilIndex < 0))
-    return false;
-
-  int entry = HilIndex;
-
-  do
-  {
-    entry--;
-    if (entry < 0)
-      return false;
-  } while (Entries[entry]->is_hidden);
-
-  HilIndex = entry;
-  return true;
-}
-
-/**
- * select_prev_new - Selects the previous new mailbox
- * @retval true  Success
- * @retval false Failure
- *
- * Search up the list of mail folders for one containing new mail.
- */
-static bool select_prev_new(void)
-{
-  if ((EntryCount == 0) || (HilIndex < 0))
-    return false;
-
-  int entry = HilIndex;
-
-  do
-  {
-    entry--;
-    if (entry < 0)
-    {
-      if (C_SidebarNextNewWrap)
-        entry = EntryCount - 1;
-      else
-        return false;
-    }
-    if (entry == HilIndex)
-      return false;
-  } while (!Entries[entry]->mailbox->has_new && (Entries[entry]->mailbox->msg_unread == 0));
-
-  HilIndex = entry;
-  return true;
-}
-
-/**
- * select_page_down - Selects the first entry in the next page of mailboxes
- * @retval true  Success
- * @retval false Failure
- */
-static bool select_page_down(void)
-{
-  if ((EntryCount == 0) || (BotIndex < 0))
-    return false;
-
-  int orig_hil_index = HilIndex;
-
-  HilIndex = BotIndex;
-  select_next();
-  /* If the rest of the entries are hidden, go up to the last unhidden one */
-  if (Entries[HilIndex]->is_hidden)
-    select_prev();
-
-  return (orig_hil_index != HilIndex);
-}
-
-/**
- * select_page_up - Selects the last entry in the previous page of mailboxes
- * @retval true  Success
- * @retval false Failure
- */
-static bool select_page_up(void)
-{
-  if ((EntryCount == 0) || (TopIndex < 0))
-    return false;
-
-  int orig_hil_index = HilIndex;
-
-  HilIndex = TopIndex;
-  select_prev();
-  /* If the rest of the entries are hidden, go down to the last unhidden one */
-  if (Entries[HilIndex]->is_hidden)
-    select_next();
-
-  return (orig_hil_index != HilIndex);
-}
-
-/**
- * select_first - Selects the first unhidden mailbox
- * @retval true  Success
- * @retval false Failure
- */
-static bool select_first(void)
-{
-  if ((EntryCount == 0) || (HilIndex < 0))
-    return false;
-
-  int orig_hil_index = HilIndex;
-
-  HilIndex = 0;
-  if (Entries[HilIndex]->is_hidden)
-    if (!select_next())
-      HilIndex = orig_hil_index;
-
-  return (orig_hil_index != HilIndex);
-}
-
-/**
- * select_last - Selects the last unhidden mailbox
- * @retval true  Success
- * @retval false Failure
- */
-static bool select_last(void)
-{
-  if ((EntryCount == 0) || (HilIndex < 0))
-    return false;
-
-  int orig_hil_index = HilIndex;
-
-  HilIndex = EntryCount;
-  if (!select_prev())
-    HilIndex = orig_hil_index;
-
-  return (orig_hil_index != HilIndex);
 }
 
 /**
@@ -1142,114 +932,6 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 }
 
 /**
- * sb_draw - Completely redraw the sidebar
- * @param win Window to draw on
- *
- * Completely refresh the sidebar region.  First draw the divider; then, for
- * each Mailbox, call make_sidebar_entry; finally blank out any remaining space.
- */
-void sb_draw(struct MuttWindow *win)
-{
-  if (!C_SidebarVisible || !win)
-    return;
-
-  if (!mutt_window_is_visible(win))
-    return;
-
-  int col = 0, row = 0;
-  mutt_window_get_coords(win, &col, &row);
-
-  int num_rows = win->state.rows;
-  int num_cols = win->state.cols;
-
-  int div_width = draw_divider(win, num_rows, num_cols);
-
-  if (!Entries)
-  {
-    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-    struct MailboxNode *np = NULL;
-    STAILQ_FOREACH(np, &ml, entries)
-    {
-      sb_notify_mailbox(np->mailbox, SBN_CREATED);
-    }
-    neomutt_mailboxlist_clear(&ml);
-  }
-
-  if (!prepare_sidebar(num_rows))
-  {
-    fill_empty_space(win, 0, num_rows, div_width, num_cols - div_width);
-    return;
-  }
-
-  draw_sidebar(win, num_rows, num_cols, div_width);
-  mutt_window_move(win, col, row);
-}
-
-/**
- * sb_change_mailbox - Change the selected mailbox
- * @param op Operation code
- *
- * Change the selected mailbox, e.g. "Next mailbox", "Previous Mailbox
- * with new mail". The operations are listed in opcodes.h.
- *
- * If the operation is successful, HilMailbox will be set to the new mailbox.
- * This function only *selects* the mailbox, doesn't *open* it.
- *
- * Allowed values are: OP_SIDEBAR_FIRST, OP_SIDEBAR_LAST,
- * OP_SIDEBAR_NEXT, OP_SIDEBAR_NEXT_NEW,
- * OP_SIDEBAR_PAGE_DOWN, OP_SIDEBAR_PAGE_UP, OP_SIDEBAR_PREV,
- * OP_SIDEBAR_PREV_NEW.
- */
-void sb_change_mailbox(int op)
-{
-  if (!C_SidebarVisible)
-    return;
-
-  if (HilIndex < 0) /* It'll get reset on the next draw */
-    return;
-
-  switch (op)
-  {
-    case OP_SIDEBAR_FIRST:
-      if (!select_first())
-        return;
-      break;
-    case OP_SIDEBAR_LAST:
-      if (!select_last())
-        return;
-      break;
-    case OP_SIDEBAR_NEXT:
-      if (!select_next())
-        return;
-      break;
-    case OP_SIDEBAR_NEXT_NEW:
-      if (!select_next_new())
-        return;
-      break;
-    case OP_SIDEBAR_PAGE_DOWN:
-      if (!select_page_down())
-        return;
-      break;
-    case OP_SIDEBAR_PAGE_UP:
-      if (!select_page_up())
-        return;
-      break;
-    case OP_SIDEBAR_PREV:
-      if (!select_prev())
-        return;
-      break;
-    case OP_SIDEBAR_PREV_NEW:
-      if (!select_prev_new())
-        return;
-      break;
-    default:
-      return;
-  }
-  mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
-}
-
-/**
  * sb_get_highlight - Get the Mailbox that's highlighted in the sidebar
  * @retval ptr Mailbox
  */
@@ -1363,54 +1045,46 @@ void sb_notify_mailbox(struct Mailbox *m, enum SidebarNotification sbn)
 }
 
 /**
- * sb_observer - Listen for config changes affecting the sidebar - Implements ::observer_t
- * @param nc Notification data
- * @retval bool True, if successful
+ * sb_draw - Completely redraw the sidebar
+ * @param win Window to draw on
+ *
+ * Completely refresh the sidebar region.  First draw the divider; then, for
+ * each Mailbox, call make_sidebar_entry; finally blank out any remaining space.
  */
-int sb_observer(struct NotifyCallback *nc)
+void sb_draw(struct MuttWindow *win)
 {
-  if (!nc->event_data || !nc->global_data)
-    return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
+  if (!C_SidebarVisible || !win)
+    return;
 
-  struct MuttWindow *win = nc->global_data;
-  struct EventConfig *ec = nc->event_data;
+  if (!mutt_window_is_visible(win))
+    return;
 
-  if (!mutt_strn_equal(ec->name, "sidebar_", 8))
-    return 0;
+  int col = 0, row = 0;
+  mutt_window_get_coords(win, &col, &row);
 
-  bool repaint = false;
+  int num_rows = win->state.rows;
+  int num_cols = win->state.cols;
 
-  if (win->state.visible != C_SidebarVisible)
+  int div_width = draw_divider(win, num_rows, num_cols);
+
+  if (!Entries)
   {
-    window_set_visible(win, C_SidebarVisible);
-    repaint = true;
+    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+    struct MailboxNode *np = NULL;
+    STAILQ_FOREACH(np, &ml, entries)
+    {
+      sb_notify_mailbox(np->mailbox, SBN_CREATED);
+    }
+    neomutt_mailboxlist_clear(&ml);
   }
 
-  if (win->req_cols != C_SidebarWidth)
+  if (!prepare_sidebar(num_rows))
   {
-    win->req_cols = C_SidebarWidth;
-    repaint = true;
+    fill_empty_space(win, 0, num_rows, div_width, num_cols - div_width);
+    return;
   }
 
-  struct MuttWindow *parent = win->parent;
-  struct MuttWindow *first = TAILQ_FIRST(&parent->children);
-
-  if ((C_SidebarOnRight && (first == win)) || (!C_SidebarOnRight && (first != win)))
-  {
-    // Swap the Sidebar and the Container of the Index/Pager
-    TAILQ_REMOVE(&parent->children, first, entries);
-    TAILQ_INSERT_TAIL(&parent->children, first, entries);
-    repaint = true;
-  }
-
-  if (repaint)
-  {
-    mutt_debug(LL_NOTIFY, "repaint sidebar\n");
-    mutt_window_reflow(MuttDialogWindow);
-    mutt_menu_set_current_redraw_full();
-  }
-
-  return 0;
+  draw_sidebar(win, num_rows, num_cols, div_width);
+  mutt_window_move(win, col, row);
 }

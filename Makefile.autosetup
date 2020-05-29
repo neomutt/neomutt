@@ -73,8 +73,7 @@ NEOMUTTOBJS=	browser.o commands.o command_parse.o \
 		mutt_parse.o mutt_signal.o mutt_socket.o mutt_thread.o mx.o \
 		myvar.o opcodes.o pager.o pattern.o postpone.o progress.o \
 		recvattach.o recvcmd.o resize.o rfc3676.o score.o \
-		sidebar.o sort.o state.o status.o \
-		system.o version.o
+		sort.o state.o status.o system.o version.o
 
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
@@ -481,6 +480,22 @@ $(PWD)/send:
 	$(MKDIR_P) $(PWD)/send
 
 ###############################################################################
+# libsidebar
+@if USE_SIDEBAR
+LIBSIDEBAR=	libsidebar.a
+LIBSIDEBAROBJS=	sidebar/sidebar.o sidebar/commands.o sidebar/functions.o \
+		sidebar/observer.o
+CLEANFILES+=	$(LIBSIDEBAR) $(LIBSIDEBAROBJS)
+ALLOBJS+=	$(LIBSIDEBAROBJS)
+
+$(LIBSIDEBAR): $(PWD)/sidebar $(LIBSIDEBAROBJS)
+	$(AR) cr $@ $(LIBSIDEBAROBJS)
+	$(RANLIB) $@
+$(PWD)/sidebar:
+	$(MKDIR_P) $(PWD)/sidebar
+@endif
+
+###############################################################################
 # libstore
 @if HAVE_BDB
 LIBSTOREOBJS+=	store/bdb.o
@@ -545,9 +560,9 @@ $(ALLOBJS):
 MUTTLIBS+=	$(LIBAUTOCRYPT) $(LIBPOP) $(LIBNNTP) $(LIBCOMPMBOX) \
 		$(LIBSTORE) $(LIBGUI) $(LIBDEBUG) $(LIBMBOX) $(LIBNOTMUCH) \
 		$(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
-		$(LIBCOMPRESS) $(LIBBCACHE) $(LIBHISTORY) $(LIBALIAS) \
-		$(LIBSEND) $(LIBCORE) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
-		$(LIBMUTT)
+		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
+		$(LIBALIAS) $(LIBSEND) $(LIBCORE) $(LIBCONFIG) $(LIBEMAIL) \
+		$(LIBADDRESS) $(LIBMUTT)
 
 # neomutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)

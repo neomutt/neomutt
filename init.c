@@ -65,6 +65,9 @@
 #include "compress/lib.h"
 #include "history/lib.h"
 #include "store/lib.h"
+#ifdef USE_SIDEBAR
+#include "sidebar/lib.h"
+#endif
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif
