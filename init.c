@@ -1633,10 +1633,10 @@ int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
 #ifdef USE_HCACHE_COMPRESSION
 /**
- * compress_validator - Validate the "header_cache_compress_method" config variable - Implements ConfigDef::validator()
+ * compress_method_validator - Validate the "header_cache_compress_method" config variable - Implements ConfigDef::validator()
  */
-int compress_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                       intptr_t value, struct Buffer *err)
+int compress_method_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                              intptr_t value, struct Buffer *err)
 {
   if (value == 0)
     return CSR_SUCCESS;
@@ -1648,6 +1648,37 @@ int compress_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
   return CSR_ERR_INVALID;
+}
+/**
+ * compress_level_validator - Validate the "header_cache_compress_level" config variable - Implements ConfigDef::validator()
+ */
+int compress_level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                             intptr_t value, struct Buffer *err)
+{
+  if (!C_HeaderCacheCompressMethod)
+  {
+    mutt_buffer_printf(err, _("Set option %s before setting %s"), "header_cache_compress_method", cdef->name);
+    return CSR_ERR_INVALID;
+  }
+
+  const struct ComprOps *cops = compress_get_ops(C_HeaderCacheCompressMethod);
+  if (!cops)
+  {
+    mutt_buffer_printf(err, _("Invalid value for option %s: %s"),
+                       "header_cache_compress_method", C_HeaderCacheCompressMethod);
+    return CSR_ERR_INVALID;
+  }
+
+  if ((value < cops->min_level) || (value > cops->max_level))
+  {
+    // L10N: This applies to the "$header_cache_compress_level" config variable.
+    //       It shows the minimum and maximum values, e.g. 'between 1 and 22'
+    mutt_buffer_printf(err, _("Option %s must be between %d and %d inclusive"),
+                       cdef->name, cops->min_level, cops->max_level);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
 }
 #endif /* USE_HCACHE_COMPRESSION */
 #endif /* USE_HCACHE */

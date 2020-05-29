@@ -141,4 +141,4 @@ static void compr_zlib_close(void **cctx)
   FREE(cctx);
 }
 
-COMPRESS_OPS(zlib)
+COMPRESS_OPS(zlib, MIN_COMP_LEVEL, MAX_COMP_LEVEL)

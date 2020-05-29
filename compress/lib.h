@@ -55,6 +55,8 @@
 struct ComprOps
 {
   const char *name; ///< Compression name
+  short min_level;  ///< Minimum compression level
+  short max_level;  ///< Maximum compression level
 
   /**
    * open - Open a compression context

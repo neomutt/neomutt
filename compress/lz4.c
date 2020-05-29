@@ -141,4 +141,4 @@ static void compr_lz4_close(void **cctx)
   FREE(cctx);
 }
 
-COMPRESS_OPS(lz4)
+COMPRESS_OPS(lz4, MIN_COMP_LEVEL, MAX_COMP_LEVEL)

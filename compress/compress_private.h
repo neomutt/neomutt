@@ -23,9 +23,11 @@
 #ifndef MUTT_COMPRESS_COMPRESS_PRIVATE_H
 #define MUTT_COMPRESS_COMPRESS_PRIVATE_H
 
-#define COMPRESS_OPS(_name)                         \
+#define COMPRESS_OPS(_name, _min_level, _max_level) \
   const struct ComprOps compr_##_name##_ops = {     \
     .name       = #_name,                           \
+    .min_level  = _min_level,                       \
+    .max_level  = _max_level,                       \
     .open       = compr_##_name##_open,             \
     .compress   = compr_##_name##_compress,         \
     .decompress = compr_##_name##_decompress,       \

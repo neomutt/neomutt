@@ -1449,13 +1449,13 @@ struct ConfigDef MuttVars[] = {
   ** \fIunset\fP so no header caching will be used.
   */
 #if defined(USE_HCACHE_COMPRESSION)
-  { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, &C_HeaderCacheCompressLevel, 1 },
+  { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, &C_HeaderCacheCompressLevel, 1, 0, compress_level_validator },
   /*
   ** .pp
   ** When NeoMutt is compiled with lz4, zstd or zlib, this option can be used
   ** to setup the compression level.
   */
-  { "header_cache_compress_method", DT_STRING, &C_HeaderCacheCompressMethod, 0, 0, compress_validator },
+  { "header_cache_compress_method", DT_STRING, &C_HeaderCacheCompressMethod, 0, 0, compress_method_validator },
   /*
   ** .pp
   ** When NeoMutt is compiled with lz4, zstd or zlib, the header cache backend

@@ -152,4 +152,4 @@ static void compr_zstd_close(void **cctx)
   FREE(cctx);
 }
 
-COMPRESS_OPS(zstd)
+COMPRESS_OPS(zstd, MIN_COMP_LEVEL, MAX_COMP_LEVEL)
