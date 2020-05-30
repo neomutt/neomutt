@@ -3,7 +3,7 @@
  * Window management
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -139,6 +139,7 @@ struct MuttWindow *mutt_window_new(enum WindowType type, enum MuttWindowOrientat
   win->req_rows = rows;
   win->req_cols = cols;
   win->state.visible = true;
+  win->notify = notify_new();
   TAILQ_INIT(&win->children);
   return win;
 }
@@ -154,12 +155,12 @@ void mutt_window_free(struct MuttWindow **ptr)
 
   struct MuttWindow *win = *ptr;
 
-  notify_free(&win->notify);
+  mutt_winlist_free(&win->children);
 
   if (win->wdata && win->wdata_free)
     win->wdata_free(win, &win->wdata); // Custom function to free private data
 
-  mutt_winlist_free(&win->children);
+  notify_free(&win->notify);
 
   FREE(ptr);
 }
@@ -319,25 +320,18 @@ void mutt_window_init(void)
 
   RootWindow =
       mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
-  RootWindow->notify = notify_new();
   notify_set_parent(RootWindow->notify, NeoMutt->notify);
 
   MuttHelpWindow = mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
                                    MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   MuttHelpWindow->state.visible = C_Help;
-  MuttHelpWindow->notify = notify_new();
-  notify_set_parent(MuttHelpWindow->notify, RootWindow->notify);
 
   MuttDialogWindow = mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL,
                                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
                                      MUTT_WIN_SIZE_UNLIMITED);
-  MuttDialogWindow->notify = notify_new();
-  notify_set_parent(MuttDialogWindow->notify, RootWindow->notify);
 
   MuttMessageWindow = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL,
                                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  MuttMessageWindow->notify = notify_new();
-  notify_set_parent(MuttMessageWindow->notify, RootWindow->notify);
 
   if (C_StatusOnTop)
   {
@@ -568,6 +562,8 @@ void mutt_window_add_child(struct MuttWindow *parent, struct MuttWindow *child)
 
   TAILQ_INSERT_TAIL(&parent->children, child, entries);
   child->parent = parent;
+
+  notify_set_parent(child->notify, parent->notify);
 }
 
 /**
