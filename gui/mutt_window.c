@@ -123,12 +123,12 @@ void window_set_visible(struct MuttWindow *win, bool visible)
  * mutt_window_new - Create a new Window
  * @param orient Window orientation, e.g. #MUTT_WIN_ORIENT_VERTICAL
  * @param size   Window size, e.g. #MUTT_WIN_SIZE_MAXIMISE
- * @param rows   Initial number of rows to allocate, can be #MUTT_WIN_SIZE_UNLIMITED
  * @param cols   Initial number of columns to allocate, can be #MUTT_WIN_SIZE_UNLIMITED
+ * @param rows   Initial number of rows to allocate, can be #MUTT_WIN_SIZE_UNLIMITED
  * @retval ptr New Window
  */
 struct MuttWindow *mutt_window_new(enum MuttWindowOrientation orient,
-                                   enum MuttWindowSize size, int rows, int cols)
+                                   enum MuttWindowSize size, int cols, int rows)
 {
   struct MuttWindow *win = mutt_mem_calloc(1, sizeof(struct MuttWindow));
 
@@ -187,7 +187,7 @@ static int vw_printw(SLcurses_Window_Type *win, const char *fmt, va_list ap)
  */
 void mutt_window_clearline(struct MuttWindow *win, int row)
 {
-  mutt_window_move(win, row, 0);
+  mutt_window_move(win, 0, row);
   mutt_window_clrtoeol(win);
 }
 
@@ -287,13 +287,13 @@ void mutt_window_free_all(void)
 /**
  * mutt_window_get_coords - Get the cursor position in the Window
  * @param[in]  win Window
- * @param[out] row Row in Window
  * @param[out] col Column in Window
+ * @param[out] row Row in Window
  *
  * Assumes the current position is inside the window.  Otherwise it will
  * happily return negative or values outside the window boundaries
  */
-void mutt_window_get_coords(struct MuttWindow *win, int *row, int *col)
+void mutt_window_get_coords(struct MuttWindow *win, int *col, int *row)
 {
   int x = 0;
   int y = 0;
@@ -321,7 +321,7 @@ void mutt_window_init(void)
   notify_set_parent(RootWindow->notify, NeoMutt->notify);
 
   MuttHelpWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                   1, MUTT_WIN_SIZE_UNLIMITED);
+                                   MUTT_WIN_SIZE_UNLIMITED, 1);
   MuttHelpWindow->type = WT_HELP_BAR;
   MuttHelpWindow->state.visible = C_Help;
   MuttHelpWindow->notify = notify_new();
@@ -334,7 +334,7 @@ void mutt_window_init(void)
   notify_set_parent(MuttDialogWindow->notify, RootWindow->notify);
 
   MuttMessageWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                      1, MUTT_WIN_SIZE_UNLIMITED);
+                                      MUTT_WIN_SIZE_UNLIMITED, 1);
   MuttMessageWindow->type = WT_MESSAGE;
   MuttMessageWindow->notify = notify_new();
   notify_set_parent(MuttMessageWindow->notify, RootWindow->notify);
@@ -357,12 +357,12 @@ void mutt_window_init(void)
 /**
  * mutt_window_move - Move the cursor in a Window
  * @param win Window
- * @param row Row to move to
  * @param col Column to move to
+ * @param row Row to move to
  * @retval OK  Success
  * @retval ERR Error
  */
-int mutt_window_move(struct MuttWindow *win, int row, int col)
+int mutt_window_move(struct MuttWindow *win, int col, int row)
 {
   return move(win->state.row_offset + row, win->state.col_offset + col);
 }
@@ -370,13 +370,13 @@ int mutt_window_move(struct MuttWindow *win, int row, int col)
 /**
  * mutt_window_mvaddstr - Move the cursor and write a fixed string to a Window
  * @param win Window to write to
- * @param row Row to move to
  * @param col Column to move to
+ * @param row Row to move to
  * @param str String to write
  * @retval OK  Success
  * @retval ERR Error
  */
-int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str)
+int mutt_window_mvaddstr(struct MuttWindow *win, int col, int row, const char *str)
 {
 #ifdef USE_SLANG_CURSES
   return mvaddstr(win->state.row_offset + row, win->state.col_offset + col, (char *) str);
@@ -388,16 +388,16 @@ int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *s
 /**
  * mutt_window_mvprintw - Move the cursor and write a formatted string to a Window
  * @param win Window to write to
- * @param row Row to move to
  * @param col Column to move to
+ * @param row Row to move to
  * @param fmt printf format string
  * @param ... printf arguments
  * @retval num Success, characters written
  * @retval ERR Error, move failed
  */
-int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...)
+int mutt_window_mvprintw(struct MuttWindow *win, int col, int row, const char *fmt, ...)
 {
-  int rc = mutt_window_move(win, row, col);
+  int rc = mutt_window_move(win, col, row);
   if (rc == ERR)
     return rc;
 
@@ -532,10 +532,10 @@ int mutt_window_addstr(const char *str)
 
 /**
  * mutt_window_move_abs - Move the cursor to an absolute screen position
- * @param row Screen row (0-based)
  * @param col Screen column (0-based)
+ * @param row Screen row (0-based)
  */
-void mutt_window_move_abs(int row, int col)
+void mutt_window_move_abs(int col, int row)
 {
   move(row, col);
 }
@@ -594,7 +594,7 @@ void mutt_winlist_free(struct MuttWindowList *head)
  * @param rows
  * @param cols
  */
-void mutt_window_set_root(int rows, int cols)
+void mutt_window_set_root(int cols, int rows)
 {
   if (!RootWindow)
     return;

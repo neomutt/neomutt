@@ -238,7 +238,7 @@ static struct Email *select_msg(struct Context *ctx)
   notify_set_parent(index->notify, dlg->notify);
 
   struct MuttWindow *ibar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   ibar->type = WT_INDEX_BAR;
   ibar->notify = notify_new();
   notify_set_parent(ibar->notify, dlg->notify);

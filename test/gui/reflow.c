@@ -97,12 +97,12 @@ void test_window_reflow(void)
         "<FIX {0x,0y} [80C,24R]<FIX {0x,0y} [40C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 40);
+                                              40, MUTT_WIN_SIZE_UNLIMITED);
     fix1->req_cols = 40;
 
     mutt_window_add_child(root, fix1);
@@ -125,7 +125,7 @@ void test_window_reflow(void)
         "<FIX {0x,0y} [80C,24R]<MAX {0x,0y} [80C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -153,7 +153,7 @@ void test_window_reflow(void)
         "<FIX {0x,0y} [80C,24R]<MIN {0x,0y} [20C,24R]<FIX {0x,0y} [20C,24R]>>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -161,7 +161,7 @@ void test_window_reflow(void)
         mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MINIMISE, 0, 0);
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 20);
+                                              20, MUTT_WIN_SIZE_UNLIMITED);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
@@ -186,7 +186,7 @@ void test_window_reflow(void)
         "<FIX {0x,0y} [80C,24R]<MIN {0x,0y} [20C,24R]<FIX {0x,0y} [20C,24R]>>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -194,12 +194,12 @@ void test_window_reflow(void)
         mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MINIMISE, 0, 0);
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 20);
+                                              20, MUTT_WIN_SIZE_UNLIMITED);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
     struct MuttWindow *inv1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 20);
+                                              20, MUTT_WIN_SIZE_UNLIMITED);
     inv1->state.visible = false;
 
     mutt_window_add_child(root, min1);
@@ -225,7 +225,7 @@ void test_window_reflow(void)
         "[20C,24R]><FIX {20x,0y} [10C,24R]>>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -233,12 +233,12 @@ void test_window_reflow(void)
         mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MINIMISE, 0, 0);
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 20);
+                                              20, MUTT_WIN_SIZE_UNLIMITED);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 10);
+                                              10, MUTT_WIN_SIZE_UNLIMITED);
     fix2->state.rows = fix2->req_rows;
     fix2->state.cols = fix2->req_cols;
 
@@ -264,17 +264,17 @@ void test_window_reflow(void)
                                   "[40C,24R]><FIX {40x,0y} [20C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 40);
+                                              40, MUTT_WIN_SIZE_UNLIMITED);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 20);
+                                              20, MUTT_WIN_SIZE_UNLIMITED);
     fix2->state.rows = fix2->req_rows;
     fix2->state.cols = fix2->req_cols;
 
@@ -299,12 +299,12 @@ void test_window_reflow(void)
                                   "[35C,24R]><MAX {35x,0y} [45C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 35);
+                                              35, MUTT_WIN_SIZE_UNLIMITED);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
@@ -333,17 +333,17 @@ void test_window_reflow(void)
                                   "[35C,24R]><MAX {35x,0y} [45C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 35);
+                                              35, MUTT_WIN_SIZE_UNLIMITED);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
     struct MuttWindow *inv1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 35);
+                                              35, MUTT_WIN_SIZE_UNLIMITED);
     inv1->state.visible = false;
 
     struct MuttWindow *max1 =
@@ -378,7 +378,7 @@ void test_window_reflow(void)
                                   "[45C,24R]><FIX {45x,0y} [35C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -387,7 +387,7 @@ void test_window_reflow(void)
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 35);
+                                              35, MUTT_WIN_SIZE_UNLIMITED);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
@@ -412,7 +412,7 @@ void test_window_reflow(void)
                                   "[40C,24R]><MAX {40x,0y} [40C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -445,7 +445,7 @@ void test_window_reflow(void)
         "[20C,24R]><MAX {40x,0y} [20C,24R]><MAX {60x,0y} [20C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -487,16 +487,16 @@ void test_window_reflow(void)
         "[30C,24R]><FIX {70x,0y} [10C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 40);
+                                              40, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 30);
+                                              30, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *fix3 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 30);
+                                              30, MUTT_WIN_SIZE_UNLIMITED);
 
     mutt_window_add_child(root, fix1);
     mutt_window_add_child(root, fix2);
@@ -522,16 +522,16 @@ void test_window_reflow(void)
         "[40C,24R]><FIX {80x,0y} [0C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 40);
+                                              40, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 60);
+                                              60, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *fix3 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 20);
+                                              20, MUTT_WIN_SIZE_UNLIMITED);
 
     mutt_window_add_child(root, fix1);
     mutt_window_add_child(root, fix2);
@@ -556,14 +556,14 @@ void test_window_reflow(void)
         "[10C,24R]><MAX {10x,0y} [35C,24R]>><MAX {45x,0y} [35C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 45);
+                                              45, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 10);
+                                              10, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *max1 =
         mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -595,14 +595,14 @@ void test_window_reflow(void)
         "[35C,24R]><FIX {35x,0y} [10C,24R]>><FIX {45x,0y} [35C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 10);
+                                              10, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 35);
+                                              35, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *max1 =
         mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -634,14 +634,14 @@ void test_window_reflow(void)
         "[25C,24R]><FIX {25x,0y} [10C,24R]>><MAX {35x,0y} [45C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 35);
+                                              35, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 10);
+                                              10, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *max1 =
         mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -673,14 +673,14 @@ void test_window_reflow(void)
         "[35C,24R]><FIX {35x,0y} [10C,24R]>><FIX {45x,0y} [35C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 10);
+                                              10, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                              MUTT_WIN_SIZE_UNLIMITED, 35);
+                                              35, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *max1 =
         mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -715,12 +715,12 @@ void test_window_reflow(void)
         "<FIX {0x,0y} [80C,24R]<FIX {0x,0y} [80C,20R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              20, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 20);
     fix1->req_rows = 20;
 
     mutt_window_add_child(root, fix1);
@@ -743,7 +743,7 @@ void test_window_reflow(void)
         "<FIX {0x,0y} [80C,24R]<MAX {0x,0y} [80C,24R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -771,7 +771,7 @@ void test_window_reflow(void)
         "<FIX {0x,0y} [80C,24R]<MIN {0x,0y} [80C,20R]<FIX {0x,0y} [80C,20R]>>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -779,7 +779,7 @@ void test_window_reflow(void)
         mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MINIMISE, 0, 0);
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              20, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 20);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
@@ -804,7 +804,7 @@ void test_window_reflow(void)
         "<FIX {0x,0y} [80C,24R]<MIN {0x,0y} [80C,20R]<FIX {0x,0y} [80C,20R]>>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -812,12 +812,12 @@ void test_window_reflow(void)
         mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MINIMISE, 0, 0);
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              20, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 20);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
     struct MuttWindow *inv1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              20, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 20);
     inv1->state.visible = false;
 
     mutt_window_add_child(root, min1);
@@ -843,7 +843,7 @@ void test_window_reflow(void)
         "[80C,10R]><FIX {0x,10y} [80C,5R]>>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -851,12 +851,12 @@ void test_window_reflow(void)
         mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MINIMISE, 0, 0);
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              10, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 10);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              5, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 5);
     fix2->state.rows = fix2->req_rows;
     fix2->state.cols = fix2->req_cols;
 
@@ -882,17 +882,17 @@ void test_window_reflow(void)
         "<FIX {0x,0y} [80C,24R]<FIX {0x,0y} [80C,10R]><FIX {0x,10y} [80C,5R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              10, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 10);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              5, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 5);
     fix2->state.rows = fix2->req_rows;
     fix2->state.cols = fix2->req_cols;
 
@@ -917,12 +917,12 @@ void test_window_reflow(void)
         "<FIX {0x,0y} [80C,24R]<FIX {0x,0y} [80C,15R]><MAX {0x,15y} [80C,9R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              15, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 15);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
@@ -951,17 +951,17 @@ void test_window_reflow(void)
         "<FIX {0x,0y} [80C,24R]<FIX {0x,0y} [80C,15R]><MAX {0x,15y} [80C,9R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              15, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 15);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
     struct MuttWindow *inv1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              5, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 5);
     inv1->state.visible = false;
 
     struct MuttWindow *max1 =
@@ -996,7 +996,7 @@ void test_window_reflow(void)
         "<FIX {0x,0y} [80C,24R]<MAX {0x,0y} [80C,9R]><FIX {0x,9y} [80C,15R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -1005,7 +1005,7 @@ void test_window_reflow(void)
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              15, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 15);
     fix1->state.rows = fix1->req_rows;
     fix1->state.cols = fix1->req_cols;
 
@@ -1030,7 +1030,7 @@ void test_window_reflow(void)
                                   "[80C,12R]><MAX {0x,12y} [80C,12R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -1063,7 +1063,7 @@ void test_window_reflow(void)
         "[80C,6R]><MAX {0x,12y} [80C,6R]><MAX {0x,18y} [80C,6R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
@@ -1105,16 +1105,16 @@ void test_window_reflow(void)
         "[80C,12R]><FIX {0x,22y} [80C,2R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              10, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 10);
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              12, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 12);
     struct MuttWindow *fix3 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              15, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 15);
 
     mutt_window_add_child(root, fix1);
     mutt_window_add_child(root, fix2);
@@ -1140,16 +1140,16 @@ void test_window_reflow(void)
         "[80C,4R]><FIX {0x,24y} [80C,0R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              20, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 20);
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              10, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 10);
     struct MuttWindow *fix3 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              5, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 5);
 
     mutt_window_add_child(root, fix1);
     mutt_window_add_child(root, fix2);
@@ -1174,14 +1174,14 @@ void test_window_reflow(void)
         "[80C,5R]><MAX {0x,5y} [80C,10R]>><MAX {0x,15y} [80C,9R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              15, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 15);
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              5, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 5);
     struct MuttWindow *max1 =
         mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -1213,14 +1213,14 @@ void test_window_reflow(void)
         "[80C,2R]><FIX {0x,2y} [80C,10R]>><FIX {0x,12y} [80C,12R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              10, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 10);
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              12, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 12);
     struct MuttWindow *max1 =
         mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -1252,14 +1252,14 @@ void test_window_reflow(void)
         "[80C,5R]><FIX {0x,5y} [80C,10R]>><MAX {0x,15y} [80C,9R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              15, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 15);
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              10, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 10);
     struct MuttWindow *max1 =
         mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -1291,14 +1291,14 @@ void test_window_reflow(void)
         "[80C,9R]><FIX {0x,9y} [80C,10R]>><FIX {0x,19y} [80C,5R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *fix1 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              10, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 10);
     struct MuttWindow *fix2 = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              5, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 5);
     struct MuttWindow *max1 =
         mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -1336,17 +1336,17 @@ void test_window_reflow(void)
         "{15x,22y} [65C,1R]>>>>><FIX {0x,23y} [80C,1R]>>";
 
     struct MuttWindow *root =
-        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 24, 80);
+        mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
     root->state.rows = root->req_rows;
     root->state.cols = root->req_cols;
 
     struct MuttWindow *help = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                              1, MUTT_WIN_SIZE_UNLIMITED);
+                                              MUTT_WIN_SIZE_UNLIMITED, 1);
     struct MuttWindow *all_dialogs =
         mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *message = mutt_window_new(
-        MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+        MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
     mutt_window_add_child(root, help);
     mutt_window_add_child(root, all_dialogs);
@@ -1355,8 +1355,8 @@ void test_window_reflow(void)
     struct MuttWindow *index_dlg =
         mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-    struct MuttWindow *sidebar = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                                 MUTT_WIN_SIZE_UNLIMITED, 15);
+    struct MuttWindow *sidebar = mutt_window_new(
+        MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED, 15, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *right_cont =
         mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -1368,9 +1368,9 @@ void test_window_reflow(void)
     struct MuttWindow *index_panel =
         mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MINIMISE, 0, 0);
     struct MuttWindow *index = mutt_window_new(
-        MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 5, MUTT_WIN_SIZE_UNLIMITED);
+        MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 5);
     struct MuttWindow *index_bar = mutt_window_new(
-        MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+        MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
     mutt_window_add_child(index_panel, index);
     mutt_window_add_child(index_panel, index_bar);
@@ -1382,7 +1382,7 @@ void test_window_reflow(void)
         mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                         MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
     struct MuttWindow *pager_bar = mutt_window_new(
-        MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+        MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
     mutt_window_add_child(pager_panel, pager);
     mutt_window_add_child(pager_panel, pager_bar);

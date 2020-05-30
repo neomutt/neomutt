@@ -423,7 +423,7 @@ void menu_redraw_index(struct Menu *menu)
       menu_pad_string(menu, buf, sizeof(buf));
 
       mutt_curses_set_attr(attr);
-      mutt_window_move(menu->win_index, i - menu->top, 0);
+      mutt_window_move(menu->win_index, 0, i - menu->top);
       do_color = true;
 
       if (i == menu->current)
@@ -473,7 +473,7 @@ void menu_redraw_motion(struct Menu *menu)
    * generate status messages.  So we want to call it *before* we
    * position the cursor for drawing. */
   const int old_color = menu->color(menu->oldcurrent);
-  mutt_window_move(menu->win_index, menu->oldcurrent - menu->top, 0);
+  mutt_window_move(menu->win_index, 0, menu->oldcurrent - menu->top);
   mutt_curses_set_attr(old_color);
 
   if (C_ArrowCursor)
@@ -486,14 +486,14 @@ void menu_redraw_motion(struct Menu *menu)
     {
       make_entry(buf, sizeof(buf), menu, menu->oldcurrent);
       menu_pad_string(menu, buf, sizeof(buf));
-      mutt_window_move(menu->win_index, menu->oldcurrent - menu->top,
-                       mutt_strwidth(C_ArrowString) + 1);
+      mutt_window_move(menu->win_index, mutt_strwidth(C_ArrowString) + 1,
+                       menu->oldcurrent - menu->top);
       print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
     }
 
     /* now draw it in the new location */
     mutt_curses_set_color(MT_COLOR_INDICATOR);
-    mutt_window_mvaddstr(menu->win_index, menu->current - menu->top, 0, C_ArrowString);
+    mutt_window_mvaddstr(menu->win_index, 0, menu->current - menu->top, C_ArrowString);
   }
   else
   {
@@ -507,7 +507,7 @@ void menu_redraw_motion(struct Menu *menu)
     make_entry(buf, sizeof(buf), menu, menu->current);
     menu_pad_string(menu, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_INDICATOR);
-    mutt_window_move(menu->win_index, menu->current - menu->top, 0);
+    mutt_window_move(menu->win_index, 0, menu->current - menu->top);
     print_enriched_string(menu->current, cur_color, (unsigned char *) buf, false);
   }
   menu->redraw &= REDRAW_STATUS;
@@ -523,7 +523,7 @@ void menu_redraw_current(struct Menu *menu)
   char buf[1024];
   int attr = menu->color(menu->current);
 
-  mutt_window_move(menu->win_index, menu->current - menu->top, 0);
+  mutt_window_move(menu->win_index, 0, menu->current - menu->top);
   make_entry(buf, sizeof(buf), menu, menu->current);
   menu_pad_string(menu, buf, sizeof(buf));
 
@@ -1376,13 +1376,13 @@ int mutt_menu_loop(struct Menu *menu)
 
     /* move the cursor out of the way */
     if (C_ArrowCursor)
-      mutt_window_move(menu->win_index, menu->current - menu->top, 2);
+      mutt_window_move(menu->win_index, 2, menu->current - menu->top);
     else if (C_BrailleFriendly)
-      mutt_window_move(menu->win_index, menu->current - menu->top, 0);
+      mutt_window_move(menu->win_index, 0, menu->current - menu->top);
     else
     {
-      mutt_window_move(menu->win_index, menu->current - menu->top,
-                       menu->win_index->state.cols - 1);
+      mutt_window_move(menu->win_index, menu->win_index->state.cols - 1,
+                       menu->current - menu->top);
     }
 
     mutt_refresh();

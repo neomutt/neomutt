@@ -276,7 +276,7 @@ int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, Completion
     mutt_window_addstr(field);
     mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_refresh();
-    mutt_window_get_coords(MuttMessageWindow, NULL, &col);
+    mutt_window_get_coords(MuttMessageWindow, &col, NULL);
     ret = mutt_enter_string_full(buf->data, buf->dsize, col, complete, multiple,
                                  files, numfiles, es);
   } while (ret == 1);
@@ -683,7 +683,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
   notify_set_parent(pager->notify, dlg->notify);
 
   struct MuttWindow *pbar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   pbar->type = WT_PAGER_BAR;
   pbar->notify = notify_new();
   notify_set_parent(pbar->notify, dlg->notify);

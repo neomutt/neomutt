@@ -1339,13 +1339,13 @@ int mutt_index_menu(struct MuttWindow *dlg)
         menu->oldcurrent = -1;
 
       if (C_ArrowCursor)
-        mutt_window_move(menu->win_index, menu->current - menu->top, 2);
+        mutt_window_move(menu->win_index, 2, menu->current - menu->top);
       else if (C_BrailleFriendly)
-        mutt_window_move(menu->win_index, menu->current - menu->top, 0);
+        mutt_window_move(menu->win_index, 0, menu->current - menu->top);
       else
       {
-        mutt_window_move(menu->win_index, menu->current - menu->top,
-                         menu->win_index->state.cols - 1);
+        mutt_window_move(menu->win_index, menu->win_index->state.cols - 1,
+                         menu->current - menu->top);
       }
       mutt_refresh();
 
@@ -4069,7 +4069,7 @@ static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool sta
   notify_set_parent(win_index->notify, parent->notify);
 
   struct MuttWindow *win_ibar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   win_ibar->type = WT_INDEX_BAR;
   win_ibar->notify = notify_new();
   notify_set_parent(win_ibar->notify, parent->notify);
@@ -4111,7 +4111,7 @@ static struct MuttWindow *create_panel_pager(struct MuttWindow *parent, bool sta
   notify_set_parent(win_pager->notify, parent->notify);
 
   struct MuttWindow *win_pbar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   win_pbar->type = WT_PAGER_BAR;
   win_pbar->state.visible = false;
   win_pbar->notify = notify_new();
@@ -4140,7 +4140,7 @@ static struct MuttWindow *create_panel_sidebar(struct MuttWindow *parent)
 {
   struct MuttWindow *win_sidebar =
       mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                      MUTT_WIN_SIZE_UNLIMITED, C_SidebarWidth);
+                      C_SidebarWidth, MUTT_WIN_SIZE_UNLIMITED);
   win_sidebar->type = WT_SIDEBAR;
   win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
   win_sidebar->notify = notify_new();

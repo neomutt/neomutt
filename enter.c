@@ -237,7 +237,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             state->wbuf, state->lastchar,
             mutt_mb_wcswidth(state->wbuf, state->curpos) - (width / 2));
       }
-      mutt_window_move(MuttMessageWindow, 0, col);
+      mutt_window_move(MuttMessageWindow, col, 0);
       int w = 0;
       for (size_t i = state->begin; i < state->lastchar; i++)
       {
@@ -247,9 +247,10 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
         my_addwch(state->wbuf[i]);
       }
       mutt_window_clrtoeol(MuttMessageWindow);
-      mutt_window_move(MuttMessageWindow, 0,
+      mutt_window_move(MuttMessageWindow,
                        col + mutt_mb_wcswidth(state->wbuf + state->begin,
-                                              state->curpos - state->begin));
+                                              state->curpos - state->begin),
+                       0);
     }
     mutt_refresh();
 

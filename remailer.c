@@ -341,7 +341,7 @@ static void mix_redraw_ce(struct MuttWindow *win, struct Remailer **type2_list,
     else
       mutt_curses_set_color(MT_COLOR_NORMAL);
 
-    mutt_window_mvaddstr(win, coords[i].r, coords[i].c, type2_list[chain->ch[i]]->shortname);
+    mutt_window_mvaddstr(win, coords[i].c, coords[i].r, type2_list[chain->ch[i]]->shortname);
     mutt_curses_set_color(MT_COLOR_NORMAL);
 
     if (i + 1 < chain->cl)
@@ -362,7 +362,7 @@ static void mix_redraw_chain(struct MuttWindow *win, struct Remailer **type2_lis
 {
   for (int i = MIX_VOFFSET; i < MIX_MAXROW; i++)
   {
-    mutt_window_move(win, i, 0);
+    mutt_window_move(win, 0, i);
     mutt_window_clrtoeol(win);
   }
 
@@ -378,7 +378,7 @@ static void mix_redraw_chain(struct MuttWindow *win, struct Remailer **type2_lis
 static void mix_redraw_head(struct MuttWindow *win, struct MixChain *chain)
 {
   mutt_curses_set_color(MT_COLOR_STATUS);
-  mutt_window_mvprintw(win, MIX_VOFFSET - 1, 0,
+  mutt_window_mvprintw(win, 0, MIX_VOFFSET - 1,
                        "-- Remailer chain [Length: %d]", chain ? chain->cl : 0);
   mutt_window_clrtoeol(win);
   mutt_curses_set_color(MT_COLOR_NORMAL);
@@ -651,7 +651,7 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
   notify_set_parent(index->notify, dlg->notify);
 
   struct MuttWindow *ibar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   ibar->type = WT_INDEX_BAR;
   ibar->notify = notify_new();
   notify_set_parent(ibar->notify, dlg->notify);
