@@ -1657,7 +1657,8 @@ int compress_level_validator(const struct ConfigSet *cs, const struct ConfigDef 
 {
   if (!C_HeaderCacheCompressMethod)
   {
-    mutt_buffer_printf(err, _("Set option %s before setting %s"), "header_cache_compress_method", cdef->name);
+    mutt_buffer_printf(err, _("Set option %s before setting %s"),
+                       "header_cache_compress_method", cdef->name);
     return CSR_ERR_INVALID;
   }
 

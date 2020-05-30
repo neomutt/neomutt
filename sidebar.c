@@ -1327,7 +1327,9 @@ void sb_notify_mailbox(struct Mailbox *m, bool created)
       BotIndex = EntryCount;
     if ((OpnIndex < 0) && Context &&
         (mutt_str_strcmp(m->realpath, Context->mailbox->realpath) == 0))
+    {
       OpnIndex = EntryCount;
+    }
 
     EntryCount++;
   }

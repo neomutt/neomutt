@@ -1445,7 +1445,7 @@ void mutt_view_attachments(struct Email *e)
   index->notify = notify_new();
   notify_set_parent(index->notify, dlg->notify);
 #ifdef USE_DEBUG_WINDOW
-  dlg->name = "attach";
+  index->name = "attach";
 #endif
 
   struct MuttWindow *ibar = mutt_window_new(
@@ -1454,7 +1454,7 @@ void mutt_view_attachments(struct Email *e)
   ibar->notify = notify_new();
   notify_set_parent(ibar->notify, dlg->notify);
 #ifdef USE_DEBUG_WINDOW
-  dlg->name = "attach bar";
+  ibar->name = "attach bar";
 #endif
 
   if (C_StatusOnTop)

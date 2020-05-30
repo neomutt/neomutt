@@ -290,7 +290,7 @@ $(PWD)/email:
 
 ###############################################################################
 # libgui
-LIBGUI=	libgui.a
+LIBGUI=		libgui.a
 LIBGUIOBJS=	gui/color.o gui/curs_lib.o gui/mutt_curses.o gui/mutt_window.o gui/reflow.o gui/terminal.o
 CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
 ALLOBJS+=	$(LIBGUIOBJS)
@@ -453,7 +453,7 @@ $(PWD)/notmuch:
 
 ###############################################################################
 # libpop
-LIBPOP=	libpop.a
+LIBPOP=		libpop.a
 LIBPOPOBJS=	pop/pop.o pop/pop_auth.o pop/pop_lib.o
 CLEANFILES+=	$(LIBPOP) $(LIBPOPOBJS)
 ALLOBJS+=	$(LIBPOPOBJS)
