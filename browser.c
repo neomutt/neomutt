@@ -775,7 +775,8 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
 
     init_state(state, menu);
 
-    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
+    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
     while ((de = readdir(dp)))
     {
       if (mutt_str_strcmp(de->d_name, ".") == 0)
@@ -866,7 +867,8 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
     md = mutt_buffer_pool_get();
     mutt_mailbox_check(Context ? Context->mailbox : NULL, 0);
 
-    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
+    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &ml, entries)
     {

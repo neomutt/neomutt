@@ -148,18 +148,20 @@ void neomutt_mailboxlist_clear(struct MailboxList *ml)
 
 /**
  * neomutt_mailboxlist_get_all - Get a List of all Mailboxes
+ * @param head List to store the Mailboxes
  * @param n    NeoMutt
  * @param type Type of Account to match, see #MailboxType
- * @retval obj List of Mailboxes
+ * @retval num Number of Mailboxes in the List
  *
  * @note If type is #MUTT_MAILBOX_ANY then all Mailbox types will be matched
  */
-struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxType type)
+size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n,
+                                   enum MailboxType type)
 {
-  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
   if (!n)
-    return ml;
+    return 0;
 
+  size_t count = 0;
   struct Account *a = NULL;
   struct MailboxNode *mn = NULL;
 
@@ -172,9 +174,10 @@ struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxTy
     {
       struct MailboxNode *mn2 = mutt_mem_calloc(1, sizeof(*mn2));
       mn2->mailbox = mn->mailbox;
-      STAILQ_INSERT_TAIL(&ml, mn2, entries);
+      STAILQ_INSERT_TAIL(head, mn2, entries);
+      count++;
     }
   }
 
-  return ml;
+  return count;
 }
