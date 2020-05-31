@@ -29,15 +29,19 @@
 
 void test_rfc2231_encode_string(void)
 {
-  // struct ParameterList rfc2231_encode_string(const char *attribute, char *value);
+  // size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, char *value);
 
   {
-    struct ParameterList apple = rfc2231_encode_string(NULL, "apple");
+    struct ParameterList apple = TAILQ_HEAD_INITIALIZER(apple);
+    size_t count = rfc2231_encode_string(&apple, NULL, "apple");
+    TEST_CHECK(count == 0);
     TEST_CHECK(TAILQ_EMPTY(&apple));
   }
 
   {
-    struct ParameterList banana = rfc2231_encode_string("banana", NULL);
+    struct ParameterList banana = TAILQ_HEAD_INITIALIZER(banana);
+    size_t count = rfc2231_encode_string(&banana, "banana", NULL);
+    TEST_CHECK(count == 0);
     TEST_CHECK(TAILQ_EMPTY(&banana));
   }
 }
