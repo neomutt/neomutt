@@ -52,6 +52,6 @@ struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, 
 struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s);
 struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s);
 bool             mutt_list_match(const char *s, struct ListHead *h);
-struct ListHead  mutt_list_str_split(const char *src, char sep);
+size_t           mutt_list_str_split(struct ListHead *head, const char *src, char sep);
 
 #endif /* MUTT_LIB_LIST_H */
