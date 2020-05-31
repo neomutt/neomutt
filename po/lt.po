@@ -81,9 +81,8 @@ msgid "Personal name: "
 msgstr "Asmens vardas: "
 
 #: alias.c:476
-#, fuzzy
 msgid "Comment: "
-msgstr "X-Komentuoti: "
+msgstr "Komentaras: "
 
 #: alias.c:484 alias.c:488
 msgid "Accept?"
@@ -2396,9 +2395,9 @@ msgid "Mailbox %s@%s closed"
 msgstr "Pašto dėžutė %s@%s uždaryta"
 
 #: imap/command.c:1172
-#, fuzzy, c-format
+#, c-format
 msgid "IMAP command failed: %s"
-msgstr "Suspaudimo komanda nepavyko: %s"
+msgstr "IMAP komanda nepavyko: %s"
 
 #: imap/command.c:1265 imap/command.c:1377
 #, c-format
@@ -3732,9 +3731,9 @@ msgid "Mailbox checkpointed"
 msgstr "Dėžutė sutikrinta"
 
 #: mx.c:1344
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open %s: it is a pipe"
-msgstr "Negaliu atidaryti laiško bylos: %s"
+msgstr "Negaliu atidaryti %s: tai vamzdis"
 
 #: ncrypt/crypt.c:92
 #, c-format
