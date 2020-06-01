@@ -725,11 +725,12 @@
 /*
 ** .pp
 ** When set, NeoMutt will display protected headers ("Memory Hole") in the pager,
+** When set, NeoMutt will display protected headers in the pager,
 ** and will update the index and header cache with revised headers.
 ** .pp
 ** Protected headers are stored inside the encrypted or signed part of an
 ** an email, to prevent disclosure or tampering.
-** For more information see https://github.com/autocrypt/memoryhole.
+** For more information see https://github.com/autocrypt/protected-headers
 ** Currently NeoMutt only supports the Subject header.
 ** .pp
 ** Encrypted messages using protected headers often substitute the exposed
@@ -781,12 +782,12 @@
 { "crypt_protected_headers_write", DT_BOOL, false },
 /*
 ** .pp
-** When set, NeoMutt will generate protected headers ("Memory Hole") for
-** signed and encrypted emails.
+** When set, NeoMutt will generate protected headers for signed and encrypted
+** emails.
 ** .pp
 ** Protected headers are stored inside the encrypted or signed part of an
 ** an email, to prevent disclosure or tampering.
-** For more information see https://github.com/autocrypt/memoryhole.
+** For more information see https://github.com/autocrypt/protected-headers
 ** .pp
 ** Currently NeoMutt only supports the Subject header.
 ** (Crypto only)
