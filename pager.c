@@ -2092,7 +2092,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
           rd->lines++;
         }
         rd->curline++;
-        mutt_window_move(rd->extra->win_pager, rd->lines, 0);
+        mutt_window_move(rd->extra->win_pager, 0, rd->lines);
       }
       rd->last_offset = rd->line_info[rd->curline].offset;
     } while (rd->force_redraw);
@@ -2104,7 +2104,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       if (C_Tilde)
         mutt_window_addch('~');
       rd->lines++;
-      mutt_window_move(rd->extra->win_pager, rd->lines, 0);
+      mutt_window_move(rd->extra->win_pager, 0, rd->lines);
     }
     mutt_curses_set_color(MT_COLOR_NORMAL);
 
@@ -2318,12 +2318,12 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     {
       if (braille_line != -1)
       {
-        mutt_window_move_abs(braille_line + 1, 0);
+        mutt_window_move_abs(0, braille_line + 1);
         braille_line = -1;
       }
     }
     else
-      mutt_window_move(rd.extra->win_pbar, 0, rd.extra->win_pager->state.cols - 1);
+      mutt_window_move(rd.extra->win_pbar, rd.extra->win_pager->state.cols - 1, 0);
 
     mutt_refresh();
 

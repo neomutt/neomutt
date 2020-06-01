@@ -54,10 +54,10 @@ enum MuttWindowSize
 struct WindowState
 {
   bool visible;     ///< Window is visible
-  short rows;       ///< Number of rows, can be #MUTT_WIN_SIZE_UNLIMITED
   short cols;       ///< Number of columns, can be #MUTT_WIN_SIZE_UNLIMITED
-  short row_offset; ///< Absolute on-screen row
+  short rows;       ///< Number of rows, can be #MUTT_WIN_SIZE_UNLIMITED
   short col_offset; ///< Absolute on-screen column
+  short row_offset; ///< Absolute on-screen row
 };
 
 /**
@@ -65,17 +65,37 @@ struct WindowState
  */
 enum WindowType
 {
-  WT_ROOT,        ///< Parent of All Windows
-  WT_ALL_DIALOGS, ///< Container for All Dialogs (nested Windows)
-  WT_DIALOG,      ///< Dialog (nested Windows) displayed to the user
-  WT_CONTAINER,   ///< Invisible shaping container Window
-  WT_HELP_BAR,    ///< Help Bar containing list of useful key bindings
-  WT_MESSAGE,     ///< Window for messages/errors and command entry
-  WT_INDEX,       ///< An Index Window containing a selection list
-  WT_INDEX_BAR,   ///< Index Bar containing status info about the Index
-  WT_PAGER,       ///< Window containing paged free-form text
-  WT_PAGER_BAR,   ///< Pager Bar containing status info about the Pager
-  WT_SIDEBAR,     ///< Side panel containing Accounts or groups of data
+  // Structural Windows
+  WT_ROOT,            ///< Parent of All Windows
+  WT_CONTAINER,       ///< Invisible shaping container Window
+  WT_ALL_DIALOGS,     ///< Container for All Dialogs (nested Windows)
+
+  // Dialogs (nested Windows) displayed to the user
+  WT_DLG_ALIAS,       ///< Alias Dialog,       alias_menu()
+  WT_DLG_ATTACH,      ///< Attach Dialog,      mutt_view_attachments()
+  WT_DLG_AUTOCRYPT,   ///< Autocrypt Dialog,   mutt_autocrypt_account_menu()
+  WT_DLG_BROWSER,     ///< Browser Dialog,     mutt_buffer_select_file()
+  WT_DLG_CERTIFICATE, ///< Certificate Dialog, dlg_verify_cert()
+  WT_DLG_COMPOSE,     ///< Compose Dialog,     mutt_compose_menu()
+  WT_DLG_CRYPT_GPGME, ///< Crypt-GPGME Dialog, crypt_select_key()
+  WT_DLG_DO_PAGER,    ///< Pager Dialog,       mutt_do_pager()
+  WT_DLG_HISTORY,     ///< History Dialog,     history_menu()
+  WT_DLG_INDEX,       ///< Index Dialog,       index_pager_init()
+  WT_DLG_PGP,         ///< Pgp Dialog,         pgp_select_key()
+  WT_DLG_POSTPONE,    ///< Postpone Dialog,    select_msg()
+  WT_DLG_QUERY,       ///< Query Dialog,       query_menu()
+  WT_DLG_REMAILER,    ///< Remailer Dialog,    mix_make_chain()
+  WT_DLG_SMIME,       ///< Smime Dialog,       smime_select_key()
+
+  // Common Windows
+  WT_CUSTOM,          ///< Window with a custom drawing function
+  WT_HELP_BAR,        ///< Help Bar containing list of useful key bindings
+  WT_INDEX,           ///< An Index Window containing a selection list
+  WT_INDEX_BAR,       ///< Index Bar containing status info about the Index
+  WT_MESSAGE,         ///< Window for messages/errors and command entry
+  WT_PAGER,           ///< Window containing paged free-form text
+  WT_PAGER_BAR,       ///< Pager Bar containing status info about the Pager
+  WT_SIDEBAR,         ///< Side panel containing Accounts or groups of data
 };
 
 TAILQ_HEAD(MuttWindowList, MuttWindow);
@@ -87,8 +107,8 @@ TAILQ_HEAD(MuttWindowList, MuttWindow);
  */
 struct MuttWindow
 {
-  short req_rows;                    ///< Number of rows required
   short req_cols;                    ///< Number of columns required
+  short req_rows;                    ///< Number of rows required
 
   struct WindowState state;          ///< Current state of the Window
   struct WindowState old;            ///< Previous state of the Window
@@ -105,9 +125,6 @@ struct MuttWindow
   enum WindowType type;              ///< Window type, e.g. #WT_SIDEBAR
   void *wdata;                       ///< Private data
   void (*wdata_free)(struct MuttWindow *win, void **ptr); ///< Callback function to free private data
-#ifdef USE_DEBUG_WINDOW
-  const char *name;
-#endif
 };
 
 typedef uint8_t WindowNotifyFlags; ///< Changes to a MuttWindow
@@ -148,12 +165,12 @@ void               mutt_window_add_child          (struct MuttWindow *parent, st
 void               mutt_window_copy_size          (const struct MuttWindow *win_src, struct MuttWindow *win_dst);
 void               mutt_window_free               (struct MuttWindow **ptr);
 void               mutt_window_free_all           (void);
-void               mutt_window_get_coords         (struct MuttWindow *win, int *row, int *col);
+void               mutt_window_get_coords         (struct MuttWindow *win, int *col, int *row);
 void               mutt_window_init               (void);
-struct MuttWindow *mutt_window_new                (enum MuttWindowOrientation orient, enum MuttWindowSize size, int rows, int cols);
+struct MuttWindow *mutt_window_new                (enum WindowType type, enum MuttWindowOrientation orient, enum MuttWindowSize size, int cols, int rows);
 void               mutt_window_reflow             (struct MuttWindow *win);
 void               mutt_window_reflow_message_rows(int mw_rows);
-void               mutt_window_set_root           (int rows, int cols);
+void               mutt_window_set_root           (int cols, int rows);
 int                mutt_window_wrap_cols          (int width, short wrap);
 
 // Functions for drawing on the Window
@@ -163,18 +180,18 @@ int  mutt_window_addstr   (const char *str);
 void mutt_window_clearline(struct MuttWindow *win, int row);
 void mutt_window_clrtobot (void);
 void mutt_window_clrtoeol (struct MuttWindow *win);
-int  mutt_window_move     (struct MuttWindow *win, int row, int col);
-void mutt_window_move_abs (int row, int col);
-int  mutt_window_mvaddstr (struct MuttWindow *win, int row, int col, const char *str);
-int  mutt_window_mvprintw (struct MuttWindow *win, int row, int col, const char *fmt, ...);
+int  mutt_window_move     (struct MuttWindow *win, int col, int row);
+void mutt_window_move_abs (int col, int row);
+int  mutt_window_mvaddstr (struct MuttWindow *win, int col, int row, const char *str);
+int  mutt_window_mvprintw (struct MuttWindow *win, int col, int row, const char *fmt, ...);
 int  mutt_window_printf   (const char *format, ...);
 bool mutt_window_is_visible(struct MuttWindow *win);
 
-void mutt_winlist_free       (struct MuttWindowList *head);
-struct MuttWindow *mutt_window_find(struct MuttWindow *root, enum WindowType type);
+void               mutt_winlist_free (struct MuttWindowList *head);
+struct MuttWindow *mutt_window_find  (struct MuttWindow *root, enum WindowType type);
 struct MuttWindow *mutt_window_dialog(struct MuttWindow *win);
-void window_notify_all(struct MuttWindow *win);
-void window_set_visible(struct MuttWindow *win, bool visible);
+void               window_notify_all (struct MuttWindow *win);
+void               window_set_visible(struct MuttWindow *win, bool visible);
 
 void dialog_pop(void);
 void dialog_push(struct MuttWindow *dlg);

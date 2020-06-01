@@ -373,14 +373,14 @@ static void autocrypt_compose_menu(struct Email *e)
 /**
  * draw_floating - Draw a floating label
  * @param win  Window to draw on
- * @param row  Row to draw at
  * @param col  Column to draw at
+ * @param row  Row to draw at
  * @param text Text to display
  */
-static void draw_floating(struct MuttWindow *win, int row, int col, const char *text)
+static void draw_floating(struct MuttWindow *win, int col, int row, const char *text)
 {
   mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(win, row, col, "%s", text);
+  mutt_window_mvprintw(win, col, row, "%s", text);
   mutt_curses_set_color(MT_COLOR_NORMAL);
 }
 
@@ -393,7 +393,7 @@ static void draw_floating(struct MuttWindow *win, int row, int col, const char *
 static void draw_header(struct MuttWindow *win, int row, enum HeaderField field)
 {
   mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(win, row, 0, "%*s", HeaderPadding[field], _(Prompts[field]));
+  mutt_window_mvprintw(win, 0, row, "%*s", HeaderPadding[field], _(Prompts[field]));
   mutt_curses_set_color(MT_COLOR_NORMAL);
 }
 
@@ -401,13 +401,14 @@ static void draw_header(struct MuttWindow *win, int row, enum HeaderField field)
  * calc_address - Calculate how many rows an AddressList will need
  * @param[in]  al    Address List
  * @param[out] slist String list
- * @param[out] srows Rows needed
  * @param[in]  cols Screen columns available
+ * @param[out] srows Rows needed
  * @retval num Rows needed
  *
  * @note Number of rows is capped at #MAX_ADDR_ROWS
  */
-static int calc_address(struct AddressList *al, struct ListHead *slist, short *srows, short cols)
+static int calc_address(struct AddressList *al, struct ListHead *slist,
+                        short cols, short *srows)
 {
   mutt_list_free(slist);
   mutt_addrlist_write_list(al, slist);
@@ -492,9 +493,9 @@ static int calc_envelope(struct ComposeRedrawData *rd)
   else
 #endif
   {
-    rows += calc_address(&env->to, &rd->to_list, &rd->to_rows, cols);
-    rows += calc_address(&env->cc, &rd->cc_list, &rd->cc_rows, cols);
-    rows += calc_address(&env->bcc, &rd->bcc_list, &rd->bcc_rows, cols);
+    rows += calc_address(&env->to, &rd->to_list, cols, &rd->to_rows);
+    rows += calc_address(&env->cc, &rd->cc_list, cols, &rd->cc_rows);
+    rows += calc_address(&env->bcc, &rd->bcc_list, cols, &rd->bcc_rows);
   }
   rows += calc_security(e, &rd->sec_rows);
 
@@ -576,7 +577,7 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME) &&
       (e->security & SEC_ENCRYPT) && C_SmimeEncryptWith)
   {
-    draw_floating(rd->win_envelope, row - 1, 40, _("Encrypt with: "));
+    draw_floating(rd->win_envelope, 40, row - 1, _("Encrypt with: "));
     mutt_window_printf("%s", NONULL(C_SmimeEncryptWith));
   }
 
@@ -598,7 +599,7 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
     /* L10N: The autocrypt compose menu Recommendation field.
        Displays the output of the recommendation engine
        (Off, No, Discouraged, Available, Yes) */
-    draw_floating(rd->win_envelope, row, 40, _("Recommendation: "));
+    draw_floating(rd->win_envelope, 40, row, _("Recommendation: "));
     mutt_window_printf("%s", _(AutocryptRecUiFlags[rd->autocrypt_rec]));
 
     used++;
@@ -817,7 +818,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
       row++;
       lines_used++;
       width_left = win->state.cols - MaxHeaderWidth;
-      mutt_window_move(win, row, MaxHeaderWidth);
+      mutt_window_move(win, MaxHeaderWidth, row);
       goto try_again;
     }
 
@@ -835,7 +836,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 
   if (count > 0)
   {
-    mutt_window_move(win, row, win->state.cols - more_len);
+    mutt_window_move(win, win->state.cols - more_len, row);
     mutt_curses_set_color(MT_COLOR_BOLD);
     mutt_window_addstr(more);
     mutt_curses_set_color(MT_COLOR_NORMAL);
@@ -848,7 +849,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 
   for (int i = lines_used; i < max_lines; i++)
   {
-    mutt_window_move(win, row + i, 0);
+    mutt_window_move(win, 0, row + i);
     mutt_window_clrtoeol(win);
   }
 
@@ -1329,51 +1330,33 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
   init_header_padding();
 
   struct MuttWindow *dlg =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_DLG_COMPOSE, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  dlg->type = WT_DIALOG;
   dlg->notify = notify_new();
-#ifdef USE_DEBUG_WINDOW
-  dlg->name = "compose dialog";
-#endif
 
   struct MuttWindow *envelope =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                      HDR_ATTACH_TITLE - 1, MUTT_WIN_SIZE_UNLIMITED);
-  envelope->type = WT_PAGER;
+      mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+                      MUTT_WIN_SIZE_UNLIMITED, HDR_ATTACH_TITLE - 1);
   envelope->notify = notify_new();
   notify_set_parent(envelope->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  envelope->name = "envelope";
-#endif
 
-  struct MuttWindow *abar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
-  abar->type = WT_PAGER_BAR;
+  struct MuttWindow *abar =
+      mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+                      MUTT_WIN_SIZE_UNLIMITED, 1);
   abar->notify = notify_new();
   notify_set_parent(abar->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  abar->name = "attach bar";
-#endif
 
   struct MuttWindow *attach =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  attach->type = WT_INDEX;
   attach->notify = notify_new();
   notify_set_parent(attach->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  attach->name = "attach";
-#endif
 
-  struct MuttWindow *ebar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
-  ebar->type = WT_INDEX_BAR;
+  struct MuttWindow *ebar =
+      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   ebar->notify = notify_new();
   notify_set_parent(ebar->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  ebar->name = "envelope bar";
-#endif
 
   rd->email = e;
   rd->fcc = fcc;

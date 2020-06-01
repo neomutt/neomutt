@@ -660,7 +660,7 @@ int main(int argc, char *argv[], char *envp[])
 
     /* check whether terminal status is supported (must follow curses init) */
     TsSupported = mutt_ts_capability();
-    mutt_window_set_root(LINES, COLS);
+    mutt_window_set_root(COLS, LINES);
   }
 
   /* set defaults and read init files */

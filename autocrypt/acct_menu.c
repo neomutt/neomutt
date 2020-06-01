@@ -265,32 +265,20 @@ void mutt_autocrypt_account_menu(void)
     return;
 
   struct MuttWindow *dlg =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_DLG_AUTOCRYPT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  dlg->type = WT_DIALOG;
-  dlg->notify = notify_new();
-#ifdef USE_DEBUG_WINDOW
-  dlg->name = "autocrypt dialog";
-#endif
 
   struct MuttWindow *index =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  index->type = WT_INDEX;
   index->notify = notify_new();
   notify_set_parent(index->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  index->name = "autocrypt";
-#endif
 
-  struct MuttWindow *ibar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
-  ibar->type = WT_INDEX_BAR;
+  struct MuttWindow *ibar =
+      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   ibar->notify = notify_new();
   notify_set_parent(ibar->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  ibar->name = "autocrypt bar";
-#endif
 
   if (C_StatusOnTop)
   {

@@ -830,7 +830,7 @@ static int draw_divider(struct MuttWindow *win, int num_rows, int num_cols)
 
   for (int i = 0; i < num_rows; i++)
   {
-    mutt_window_move(win, i, col);
+    mutt_window_move(win, col, i);
 
     switch (altchar)
     {
@@ -869,7 +869,7 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
     div_width = 0;
   for (int r = 0; r < num_rows; r++)
   {
-    mutt_window_move(win, first_row + r, div_width);
+    mutt_window_move(win, div_width, first_row + r);
 
     for (int i = 0; i < num_cols; i++)
       mutt_window_addch(' ');
@@ -1085,7 +1085,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
     if (C_SidebarOnRight)
       col = div_width;
 
-    mutt_window_move(win, row, col);
+    mutt_window_move(win, col, row);
     if (Context && Context->mailbox && (Context->mailbox->realpath[0] != '\0') &&
         (mutt_str_strcmp(m->realpath, Context->mailbox->realpath) == 0))
     {
@@ -1160,8 +1160,8 @@ void sb_draw(struct MuttWindow *win)
   if (!mutt_window_is_visible(win))
     return;
 
-  int row = 0, col = 0;
-  mutt_window_get_coords(win, &row, &col);
+  int col = 0, row = 0;
+  mutt_window_get_coords(win, &col, &row);
 
   int num_rows = win->state.rows;
   int num_cols = win->state.cols;
@@ -1186,7 +1186,7 @@ void sb_draw(struct MuttWindow *win)
   }
 
   draw_sidebar(win, num_rows, num_cols, div_width);
-  mutt_window_move(win, row, col);
+  mutt_window_move(win, col, row);
 }
 
 /**
