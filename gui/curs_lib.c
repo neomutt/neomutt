@@ -673,10 +673,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   dlg->notify = notify_new();
-  dlg->type = WT_DIALOG;
-#ifdef USE_DEBUG_WINDOW
-  dlg->name = "do-pager dialog";
-#endif
+  dlg->type = WT_DLG_DO_PAGER;
 
   struct MuttWindow *pager =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
@@ -684,18 +681,12 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
   pager->type = WT_PAGER;
   pager->notify = notify_new();
   notify_set_parent(pager->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  pager->name = "pager";
-#endif
 
   struct MuttWindow *pbar = mutt_window_new(
       MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
   pbar->type = WT_PAGER_BAR;
   pbar->notify = notify_new();
   notify_set_parent(pbar->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  pbar->name = "pager bar";
-#endif
 
   if (C_StatusOnTop)
   {

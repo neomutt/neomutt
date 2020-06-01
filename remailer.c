@@ -640,11 +640,8 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
   struct MuttWindow *dlg =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  dlg->type = WT_DIALOG;
+  dlg->type = WT_DLG_REMAILER;
   dlg->notify = notify_new();
-#ifdef USE_DEBUG_WINDOW
-  dlg->name = "remailer dialog";
-#endif
 
   struct MuttWindow *index =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
@@ -652,18 +649,12 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
   index->type = WT_INDEX;
   index->notify = notify_new();
   notify_set_parent(index->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  index->name = "remailier";
-#endif
 
   struct MuttWindow *ibar = mutt_window_new(
       MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
   ibar->type = WT_INDEX_BAR;
   ibar->notify = notify_new();
   notify_set_parent(ibar->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  ibar->name = "remailer bar";
-#endif
 
   if (C_StatusOnTop)
   {

@@ -319,9 +319,6 @@ void mutt_window_init(void)
   RootWindow->type = WT_ROOT;
   RootWindow->notify = notify_new();
   notify_set_parent(RootWindow->notify, NeoMutt->notify);
-#ifdef USE_DEBUG_WINDOW
-  RootWindow->name = "root";
-#endif
 
   MuttHelpWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                    1, MUTT_WIN_SIZE_UNLIMITED);
@@ -329,27 +326,18 @@ void mutt_window_init(void)
   MuttHelpWindow->state.visible = C_Help;
   MuttHelpWindow->notify = notify_new();
   notify_set_parent(MuttHelpWindow->notify, RootWindow->notify);
-#ifdef USE_DEBUG_WINDOW
-  MuttHelpWindow->name = "help bar";
-#endif
 
   MuttDialogWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   MuttDialogWindow->type = WT_ALL_DIALOGS;
   MuttDialogWindow->notify = notify_new();
   notify_set_parent(MuttDialogWindow->notify, RootWindow->notify);
-#ifdef USE_DEBUG_WINDOW
-  MuttDialogWindow->name = "all dialogs";
-#endif
 
   MuttMessageWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                       1, MUTT_WIN_SIZE_UNLIMITED);
   MuttMessageWindow->type = WT_MESSAGE;
   MuttMessageWindow->notify = notify_new();
   notify_set_parent(MuttMessageWindow->notify, RootWindow->notify);
-#ifdef USE_DEBUG_WINDOW
-  MuttMessageWindow->name = "message";
-#endif
 
   if (C_StatusOnTop)
   {
@@ -658,13 +646,15 @@ bool mutt_window_is_visible(struct MuttWindow *win)
  * @param win Window
  * @retval ptr Dialog
  *
- * Windows may be nested under a MuttWindow of type #WT_DIALOG.
+ * Dialog Windows will be owned by a MuttWindow of type #WT_ALL_DIALOGS.
  */
 struct MuttWindow *mutt_window_dialog(struct MuttWindow *win)
 {
-  for (; win; win = win->parent)
-    if (win->type == WT_DIALOG)
+  for (; win && win->parent; win = win->parent)
+  {
+    if (win->parent->type == WT_ALL_DIALOGS)
       return win;
+  }
 
   return NULL;
 }
@@ -716,6 +706,7 @@ void dialog_push(struct MuttWindow *dlg)
   TAILQ_INSERT_TAIL(&MuttDialogWindow->children, dlg, entries);
   notify_set_parent(dlg->notify, MuttDialogWindow->notify);
   dlg->state.visible = true;
+  dlg->parent = MuttDialogWindow;
   mutt_window_reflow(MuttDialogWindow);
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
@@ -738,6 +729,7 @@ void dialog_pop(void)
     return;
 
   last->state.visible = false;
+  last->parent = NULL;
   TAILQ_REMOVE(&MuttDialogWindow->children, last, entries);
 
   last = TAILQ_LAST(&MuttDialogWindow->children, MuttWindowList);

@@ -33,7 +33,7 @@
 
 extern struct MuttWindow *RootWindow;
 
-static const char *win_size(struct MuttWindow *win)
+static const char *win_size(const struct MuttWindow *win)
 {
   if (!win)
     return "???";
@@ -51,49 +51,79 @@ static const char *win_size(struct MuttWindow *win)
   return "???";
 }
 
-static const char *win_type(struct MuttWindow *win)
+static const char *win_name(const struct MuttWindow *win)
 {
   if (!win)
     return "UNKNOWN";
 
   switch (win->type)
   {
-    case WT_ROOT:
-      return "root";
     case WT_ALL_DIALOGS:
-      return "all-dialogs";
-    case WT_DIALOG:
-      return "dialog";
+      return "All Dialogs";
     case WT_CONTAINER:
-      return "container";
+      return "Container";
+    case WT_CUSTOM:
+      return "Custom";
+    case WT_DLG_ALIAS:
+      return "Alias Dialog";
+    case WT_DLG_ATTACH:
+      return "Attach Dialog";
+    case WT_DLG_AUTOCRYPT:
+      return "Autocrypt Dialog";
+    case WT_DLG_BROWSER:
+      return "Browser Dialog";
+    case WT_DLG_CERTIFICATE:
+      return "Certificate Dialog";
+    case WT_DLG_COMPOSE:
+      return "Compose Dialog";
+    case WT_DLG_CRYPT_GPGME:
+      return "Crypt-GPGME Dialog";
+    case WT_DLG_DO_PAGER:
+      return "Pager Dialog";
+    case WT_DLG_HISTORY:
+      return "History Dialog";
+    case WT_DLG_INDEX:
+      return "Index Dialog";
+    case WT_DLG_PGP:
+      return "Pgp Dialog";
+    case WT_DLG_POSTPONE:
+      return "Postpone Dialog";
+    case WT_DLG_QUERY:
+      return "Query Dialog";
+    case WT_DLG_REMAILER:
+      return "Remailer Dialog";
+    case WT_DLG_SMIME:
+      return "Smime Dialog";
     case WT_HELP_BAR:
-      return "help-bar";
-    case WT_MESSAGE:
-      return "message";
+      return "Help Bar";
     case WT_INDEX:
-      return "index";
+      return "Index";
     case WT_INDEX_BAR:
-      return "index-bar";
+      return "Index Bar";
+    case WT_MESSAGE:
+      return "Message";
     case WT_PAGER:
-      return "pager";
+      return "Pager";
     case WT_PAGER_BAR:
-      return "pager-bar";
+      return "Pager Bar";
+    case WT_ROOT:
+      return "Root Dialog";
     case WT_SIDEBAR:
-      return "sidebar";
+      return "Sidebar";
+    default:
+      return "UNKNOWN";
   }
-
-  return "UNKNOWN";
 }
 
 static void win_dump(struct MuttWindow *win, int indent)
 {
   bool visible = mutt_window_is_visible(win);
 
-  mutt_debug(LL_DEBUG1, "%*s%s[%d,%d] %s-%c \033[1;33m%s\033[0m %s (%d,%d)%s\n", indent,
-             "", visible ? "" : "\033[1;30m", win->state.col_offset, win->state.row_offset,
-             win_size(win), (win->orient == MUTT_WIN_ORIENT_VERTICAL) ? 'V' : 'H',
-             win->name ? win->name : "", win_type(win), win->state.cols,
-             win->state.rows, visible ? "" : "\033[0m");
+  mutt_debug(LL_DEBUG1, "%*s%s[%d,%d] %s-%c \033[1;33m%s\033[0m (%d,%d)%s\n",
+             indent, "", visible ? "" : "\033[1;30m", win->state.col_offset,
+             win->state.row_offset, win_size(win),
+             (win->orient == MUTT_WIN_ORIENT_VERTICAL) ? 'V' : 'H', win_name(win),
+             win->state.cols, win->state.rows, visible ? "" : "\033[0m");
 
   struct MuttWindow *np = NULL;
   TAILQ_FOREACH(np, &win->children, entries)

@@ -103,11 +103,8 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
   struct MuttWindow *dlg =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  dlg->type = WT_DIALOG;
+  dlg->type = WT_DLG_HISTORY;
   dlg->notify = notify_new();
-#ifdef USE_DEBUG_WINDOW
-  dlg->name = "history dialog";
-#endif
 
   struct MuttWindow *index =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
@@ -115,18 +112,12 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
   index->type = WT_INDEX;
   index->notify = notify_new();
   notify_set_parent(index->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  index->name = "history";
-#endif
 
   struct MuttWindow *ibar = mutt_window_new(
       MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
   ibar->type = WT_INDEX_BAR;
   ibar->notify = notify_new();
   notify_set_parent(ibar->notify, dlg->notify);
-#ifdef USE_DEBUG_WINDOW
-  ibar->name = "history bar";
-#endif
 
   if (C_StatusOnTop)
   {
