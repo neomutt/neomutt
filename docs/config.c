@@ -766,7 +766,7 @@
 ** (Crypto only)
 */
 
-{ "crypt_protected_headers_subject", DT_STRING, "Encrypted subject" },
+{ "crypt_protected_headers_subject", DT_STRING, "..." },
 /*
 ** .pp
 ** When $$crypt_protected_headers_write is set, and the message is marked

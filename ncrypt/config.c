@@ -114,7 +114,7 @@ struct ConfigDef NcryptVars[] = {
   { "crypt_opportunistic_encrypt",             DT_BOOL,                   &C_CryptOpportunisticEncrypt,           false },
   { "crypt_opportunistic_encrypt_strong_keys", DT_BOOL,                   &C_CryptOpportunisticEncryptStrongKeys, false },
   { "crypt_protected_headers_read",            DT_BOOL,                   &C_CryptProtectedHeadersRead,           true },
-  { "crypt_protected_headers_subject",         DT_STRING,                 &C_CryptProtectedHeadersSubject,        IP "Encrypted subject" },
+  { "crypt_protected_headers_subject",         DT_STRING,                 &C_CryptProtectedHeadersSubject,        IP "..." },
   { "crypt_protected_headers_write",           DT_BOOL,                   &C_CryptProtectedHeadersWrite,          false },
   { "crypt_timestamp",                         DT_BOOL,                   &C_CryptTimestamp,                      true },
 #ifdef CRYPT_BACKEND_GPGME
