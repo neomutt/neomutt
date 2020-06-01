@@ -1330,34 +1330,31 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
   init_header_padding();
 
   struct MuttWindow *dlg =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_DLG_COMPOSE, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  dlg->type = WT_DLG_COMPOSE;
   dlg->notify = notify_new();
 
   struct MuttWindow *envelope =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+      mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                       MUTT_WIN_SIZE_UNLIMITED, HDR_ATTACH_TITLE - 1);
-  envelope->type = WT_CUSTOM;
   envelope->notify = notify_new();
   notify_set_parent(envelope->notify, dlg->notify);
 
-  struct MuttWindow *abar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  abar->type = WT_CUSTOM;
+  struct MuttWindow *abar =
+      mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+                      MUTT_WIN_SIZE_UNLIMITED, 1);
   abar->notify = notify_new();
   notify_set_parent(abar->notify, dlg->notify);
 
   struct MuttWindow *attach =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  attach->type = WT_INDEX;
   attach->notify = notify_new();
   notify_set_parent(attach->notify, dlg->notify);
 
-  struct MuttWindow *ebar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  ebar->type = WT_INDEX_BAR;
+  struct MuttWindow *ebar =
+      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   ebar->notify = notify_new();
   notify_set_parent(ebar->notify, dlg->notify);
 

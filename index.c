@@ -4057,20 +4057,18 @@ int mutt_reply_observer(struct NotifyCallback *nc)
 static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool status_on_top)
 {
   struct MuttWindow *panel_index =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  panel_index->type = WT_CONTAINER;
 
   struct MuttWindow *win_index =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  win_index->type = WT_INDEX;
   win_index->notify = notify_new();
   notify_set_parent(win_index->notify, parent->notify);
 
-  struct MuttWindow *win_ibar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  win_ibar->type = WT_INDEX_BAR;
+  struct MuttWindow *win_ibar =
+      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   win_ibar->notify = notify_new();
   notify_set_parent(win_ibar->notify, parent->notify);
 
@@ -4097,22 +4095,20 @@ static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool sta
 static struct MuttWindow *create_panel_pager(struct MuttWindow *parent, bool status_on_top)
 {
   struct MuttWindow *panel_pager =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  panel_pager->type = WT_CONTAINER;
   panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
 
   struct MuttWindow *win_pager =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  win_pager->type = WT_PAGER;
   win_pager->state.visible = false;
   win_pager->notify = notify_new();
   notify_set_parent(win_pager->notify, parent->notify);
 
-  struct MuttWindow *win_pbar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  win_pbar->type = WT_PAGER_BAR;
+  struct MuttWindow *win_pbar =
+      mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   win_pbar->state.visible = false;
   win_pbar->notify = notify_new();
   notify_set_parent(win_pbar->notify, parent->notify);
@@ -4139,9 +4135,8 @@ static struct MuttWindow *create_panel_pager(struct MuttWindow *parent, bool sta
 static struct MuttWindow *create_panel_sidebar(struct MuttWindow *parent)
 {
   struct MuttWindow *win_sidebar =
-      mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
+      mutt_window_new(WT_SIDEBAR, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
                       C_SidebarWidth, MUTT_WIN_SIZE_UNLIMITED);
-  win_sidebar->type = WT_SIDEBAR;
   win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
   win_sidebar->notify = notify_new();
   notify_set_parent(win_sidebar->notify, parent->notify);
@@ -4156,18 +4151,16 @@ static struct MuttWindow *create_panel_sidebar(struct MuttWindow *parent)
 struct MuttWindow *index_pager_init(void)
 {
   struct MuttWindow *dlg =
-      mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_DLG_INDEX, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  dlg->type = WT_DLG_INDEX;
   dlg->notify = notify_new();
   notify_observer_add(NeoMutt->notify, mutt_dlgindex_observer, dlg);
 
   struct MuttWindow *win_sidebar = create_panel_sidebar(dlg);
 
   struct MuttWindow *cont_right =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  cont_right->type = WT_CONTAINER;
 
   if (C_SidebarOnRight)
   {

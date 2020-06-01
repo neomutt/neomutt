@@ -121,17 +121,19 @@ void window_set_visible(struct MuttWindow *win, bool visible)
 
 /**
  * mutt_window_new - Create a new Window
+ * @param type   Window type, e.g. #WT_ROOT
  * @param orient Window orientation, e.g. #MUTT_WIN_ORIENT_VERTICAL
  * @param size   Window size, e.g. #MUTT_WIN_SIZE_MAXIMISE
  * @param cols   Initial number of columns to allocate, can be #MUTT_WIN_SIZE_UNLIMITED
  * @param rows   Initial number of rows to allocate, can be #MUTT_WIN_SIZE_UNLIMITED
  * @retval ptr New Window
  */
-struct MuttWindow *mutt_window_new(enum MuttWindowOrientation orient,
+struct MuttWindow *mutt_window_new(enum WindowType type, enum MuttWindowOrientation orient,
                                    enum MuttWindowSize size, int cols, int rows)
 {
   struct MuttWindow *win = mutt_mem_calloc(1, sizeof(struct MuttWindow));
 
+  win->type = type;
   win->orient = orient;
   win->size = size;
   win->req_rows = rows;
@@ -315,27 +317,25 @@ void mutt_window_init(void)
   if (RootWindow)
     return;
 
-  RootWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
-  RootWindow->type = WT_ROOT;
+  RootWindow =
+      mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
   RootWindow->notify = notify_new();
   notify_set_parent(RootWindow->notify, NeoMutt->notify);
 
-  MuttHelpWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                   MUTT_WIN_SIZE_UNLIMITED, 1);
-  MuttHelpWindow->type = WT_HELP_BAR;
+  MuttHelpWindow = mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                                   MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   MuttHelpWindow->state.visible = C_Help;
   MuttHelpWindow->notify = notify_new();
   notify_set_parent(MuttHelpWindow->notify, RootWindow->notify);
 
-  MuttDialogWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                                     MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  MuttDialogWindow->type = WT_ALL_DIALOGS;
+  MuttDialogWindow = mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL,
+                                     MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                     MUTT_WIN_SIZE_UNLIMITED);
   MuttDialogWindow->notify = notify_new();
   notify_set_parent(MuttDialogWindow->notify, RootWindow->notify);
 
-  MuttMessageWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                      MUTT_WIN_SIZE_UNLIMITED, 1);
-  MuttMessageWindow->type = WT_MESSAGE;
+  MuttMessageWindow = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL,
+                                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   MuttMessageWindow->notify = notify_new();
   notify_set_parent(MuttMessageWindow->notify, RootWindow->notify);
 

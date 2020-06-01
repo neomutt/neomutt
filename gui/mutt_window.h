@@ -167,7 +167,7 @@ void               mutt_window_free               (struct MuttWindow **ptr);
 void               mutt_window_free_all           (void);
 void               mutt_window_get_coords         (struct MuttWindow *win, int *col, int *row);
 void               mutt_window_init               (void);
-struct MuttWindow *mutt_window_new                (enum MuttWindowOrientation orient, enum MuttWindowSize size, int cols, int rows);
+struct MuttWindow *mutt_window_new                (enum WindowType type, enum MuttWindowOrientation orient, enum MuttWindowSize size, int cols, int rows);
 void               mutt_window_reflow             (struct MuttWindow *win);
 void               mutt_window_reflow_message_rows(int mw_rows);
 void               mutt_window_set_root           (int cols, int rows);

@@ -670,21 +670,19 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
     info = &info2;
 
   struct MuttWindow *dlg =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_DLG_DO_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   dlg->notify = notify_new();
-  dlg->type = WT_DLG_DO_PAGER;
 
   struct MuttWindow *pager =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  pager->type = WT_PAGER;
   pager->notify = notify_new();
   notify_set_parent(pager->notify, dlg->notify);
 
-  struct MuttWindow *pbar = mutt_window_new(
-      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  pbar->type = WT_PAGER_BAR;
+  struct MuttWindow *pbar =
+      mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   pbar->notify = notify_new();
   notify_set_parent(pbar->notify, dlg->notify);
 
