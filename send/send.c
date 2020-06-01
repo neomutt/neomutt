@@ -1783,6 +1783,7 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
       e->body = clear_content;
       e->security &= ~(SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT);
       mutt_env_free(&e->body->mime_headers);
+      mutt_param_delete(&e->body->parameter, "protected-headers");
     }
 
     const enum QuadOption c_fcc_attach = cs_subset_quad(sub, "fcc_attach");
@@ -2019,6 +2020,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
       e_post->body = clear_content;
     }
     mutt_env_free(&e_post->body->mime_headers); /* protected headers */
+    mutt_param_delete(&e_post->body->parameter, "protected-headers");
     e_post->body = mutt_remove_multipart(e_post->body);
     decode_descriptions(e_post->body);
     mutt_unprepare_envelope(e_post->env);
@@ -2869,6 +2871,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
       FREE(&pgpkeylist);
       mutt_env_free(&e_templ->body->mime_headers); /* protected headers */
+      mutt_param_delete(&e_templ->body->parameter, "protected-headers");
       e_templ->body = mutt_remove_multipart(e_templ->body);
       decode_descriptions(e_templ->body);
       mutt_unprepare_envelope(e_templ->env);
