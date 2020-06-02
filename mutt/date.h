@@ -27,6 +27,8 @@
 #include <stdint.h>
 #include <time.h>
 
+struct Buffer;
+
 /* theoretically time_t can be float but it is integer on most (if not all) systems */
 #define TIME_T_MAX ((((time_t) 1 << (sizeof(time_t) * 8 - 2)) - 1) * 2 + 1)
 #define TIME_T_MIN (-TIME_T_MAX - 1)
@@ -55,7 +57,7 @@ struct tm mutt_date_gmtime(time_t t);
 size_t    mutt_date_localtime_format(char *buf, size_t buflen, const char *format, time_t t);
 struct tm mutt_date_localtime(time_t t);
 time_t    mutt_date_local_tz(time_t t);
-char *    mutt_date_make_date(char *buf, size_t buflen);
+void      mutt_date_make_date(struct Buffer *buf);
 int       mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp);
 time_t    mutt_date_make_time(struct tm *t, bool local);
 int       mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp);
