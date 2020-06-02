@@ -703,7 +703,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
       write_userhdrs(fp, &env->userhdrs, privacy, sub);
 
   if ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC) ||
-      (mode == MUTT_WRITE_HEADER_POSTPONE))
+      (mode == MUTT_WRITE_HEADER_POSTPONE) || (mode == MUTT_WRITE_HEADER_MIME))
   {
     if (!STAILQ_EMPTY(&env->references))
     {

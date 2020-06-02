@@ -1585,16 +1585,6 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
   if ((ctx_fcc->mailbox->type == MUTT_MMDF) || (ctx_fcc->mailbox->type == MUTT_MBOX))
     fprintf(msg->fp, "Status: RO\n");
 
-  /* mutt_rfc822_write_header() only writes out a Date: header with
-   * mode == 0, i.e. _not_ postponement; so write out one ourself */
-  if (post)
-  {
-    struct Buffer *date = mutt_buffer_pool_get();
-    mutt_date_make_date(date);
-    fprintf(msg->fp, "Date: %s\n", mutt_b2s(date));
-    mutt_buffer_pool_release(&date);
-  }
-
   /* (postponement) if the mail is to be signed or encrypted, save this info */
   if (((WithCrypto & APPLICATION_PGP) != 0) && post && (e->security & APPLICATION_PGP))
   {
