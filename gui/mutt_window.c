@@ -567,6 +567,24 @@ void mutt_window_add_child(struct MuttWindow *parent, struct MuttWindow *child)
 }
 
 /**
+ * mutt_window_remove_child - Remove a child from a Window
+ * @param parent Window to remove from
+ * @param child  Window to remove
+ */
+struct MuttWindow *mutt_window_remove_child(struct MuttWindow *parent, struct MuttWindow *child)
+{
+  if (!parent || !child)
+    return NULL;
+
+  TAILQ_REMOVE(&parent->children, child, entries);
+  child->parent = NULL;
+
+  notify_set_parent(child->notify, NULL);
+
+  return child;
+}
+
+/**
  * mutt_winlist_free - Free a tree of Windows
  * @param head WindowList to free
  */
