@@ -419,7 +419,8 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
       if (!np->attribute || !np->value)
         continue;
 
-      struct ParameterList pl_conts = rfc2231_encode_string(np->attribute, np->value);
+      struct ParameterList pl_conts = TAILQ_HEAD_INITIALIZER(pl_conts);
+      rfc2231_encode_string(&pl_conts, np->attribute, np->value);
       struct Parameter *cont = NULL;
       TAILQ_FOREACH(cont, &pl_conts, entries)
       {
@@ -486,7 +487,8 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
           else
             t = fn;
 
-          struct ParameterList pl_conts = rfc2231_encode_string("filename", t);
+          struct ParameterList pl_conts = TAILQ_HEAD_INITIALIZER(pl_conts);
+          rfc2231_encode_string(&pl_conts, "filename", t);
           struct Parameter *cont = NULL;
           TAILQ_FOREACH(cont, &pl_conts, entries)
           {

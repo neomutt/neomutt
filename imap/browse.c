@@ -112,7 +112,8 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   (state->entry)[state->entrylen].selectable = !noselect;
   (state->entry)[state->entrylen].inferiors = !noinferiors;
 
-  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
+  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
@@ -206,7 +207,8 @@ int imap_browse(const char *path, struct BrowserState *state)
   C_ImapCheckSubscribed = false;
 
   // Pick first mailbox connected to the same server
-  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_IMAP);
+  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_IMAP);
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {

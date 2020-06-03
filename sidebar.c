@@ -445,7 +445,8 @@ static void unsort_entries(void)
 {
   int i = 0;
 
-  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
+  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
@@ -1170,7 +1171,8 @@ void sb_draw(struct MuttWindow *win)
 
   if (!Entries)
   {
-    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
+    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &ml, entries)
     {

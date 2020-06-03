@@ -1921,7 +1921,8 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
       tmp_valid = true;
     }
 
-    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
+    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
     struct MailboxNode *np = NULL;
     struct MailboxNode *nptmp = NULL;
     STAILQ_FOREACH_SAFE(np, &ml, entries, nptmp)

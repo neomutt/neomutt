@@ -240,23 +240,25 @@ bool mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
 
 /**
  * mutt_list_str_split - Split a string into a list using a separator char
- * @param src String to split
- * @param sep Word separator
+ * @param head List to add to
+ * @param src  String to split
+ * @param sep  Word separator
+ * @retval num Number of items in list
  */
-struct ListHead mutt_list_str_split(const char *src, char sep)
+size_t mutt_list_str_split(struct ListHead *head, const char *src, char sep)
 {
-  struct ListHead head = STAILQ_HEAD_INITIALIZER(head);
-
   if (!src || !*src)
-    return head;
+    return 0;
 
+  size_t count = 0;
   while (true)
   {
     const char *start = src;
     while (*src && (*src != sep))
       src++;
 
-    mutt_list_insert_tail(&head, mutt_str_substr_dup(start, src));
+    mutt_list_insert_tail(head, mutt_str_substr_dup(start, src));
+    count++;
 
     if (!*src)
       break;
@@ -264,5 +266,5 @@ struct ListHead mutt_list_str_split(const char *src, char sep)
     src++;
   }
 
-  return head;
+  return count;
 }

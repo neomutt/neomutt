@@ -952,7 +952,8 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   if (C_VirtualSpoolfile)
   {
     /* Find the first virtual folder and open it */
-    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_NOTMUCH);
+    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_NOTMUCH);
     struct MailboxNode *mp = STAILQ_FIRST(&ml);
     if (mp)
       cs_str_string_set(cs, "spoolfile", mailbox_path(mp->mailbox), NULL);

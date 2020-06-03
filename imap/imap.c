@@ -372,7 +372,8 @@ static int complete_hosts(char *buf, size_t buflen)
   size_t matchlen;
 
   matchlen = mutt_str_strlen(buf);
-  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
+  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {

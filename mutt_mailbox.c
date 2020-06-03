@@ -193,7 +193,8 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
     contex_sb.st_ino = 0;
   }
 
-  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
+  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
@@ -239,7 +240,8 @@ bool mutt_mailbox_list(void)
 
   mailboxlist[0] = '\0';
   pos += strlen(strncat(mailboxlist, _("New mail in "), sizeof(mailboxlist) - 1 - pos));
-  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
+  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
@@ -326,7 +328,8 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
     bool found = false;
     for (int pass = 0; pass < 2; pass++)
     {
-      struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
+      struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+      neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &ml, entries)
       {

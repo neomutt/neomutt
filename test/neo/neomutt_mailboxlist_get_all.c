@@ -28,10 +28,12 @@
 
 void test_neomutt_mailboxlist_get_all(void)
 {
-  // struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxType magic);
+  // size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n, enum MailboxType magic);
 
   {
-    struct MailboxList ml = neomutt_mailboxlist_get_all(NULL, MUTT_MAILDIR);
+    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+    size_t count = neomutt_mailboxlist_get_all(&ml, NULL, MUTT_MAILDIR);
+    TEST_CHECK(count == 0);
     TEST_CHECK(STAILQ_EMPTY(&ml) == true);
   }
 }
