@@ -563,8 +563,11 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         if (*s == '\\')
         {
           s++;
-          phrase[phraselen++] = *s;
-          s++;
+          if (*s && (phraselen < (sizeof(phrase) - 1)))
+          {
+            phrase[phraselen++] = *s;
+            s++;
+          }
         }
         s = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
         if (!s)

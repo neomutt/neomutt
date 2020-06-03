@@ -103,4 +103,10 @@ void test_mutt_addrlist_parse(void)
     TEST_CHECK_STR_EQ("Foo (Bar)", a->personal);
     TEST_CHECK_STR_EQ("foo@bar.baz", a->mailbox);
   }
+
+  {
+    struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
+    int parsed = mutt_addrlist_parse(&alist, "\\");
+    TEST_CHECK(parsed == 0);
+  }
 }
