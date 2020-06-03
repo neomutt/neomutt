@@ -739,3 +739,59 @@ void dialog_pop(void)
   debug_win_dump();
 #endif
 }
+
+/**
+ * window_recalc - Recalculate a tree of Windows
+ * @param win Window to start at
+ */
+void window_recalc(struct MuttWindow *win)
+{
+  if (!win)
+    return;
+
+  if (win->recalc)
+    win->recalc(win, false);
+
+  struct MuttWindow *np = NULL;
+  TAILQ_FOREACH(np, &win->children, entries)
+  {
+    if (np->recalc)
+      np->recalc(np, false);
+  }
+}
+
+/**
+ * window_repaint - Repaint a tree of Windows
+ * @param win Window to start at
+ */
+void window_repaint(struct MuttWindow *win)
+{
+  if (!win)
+    return;
+
+  if (win->repaint)
+    win->repaint(win, false);
+
+  struct MuttWindow *np = NULL;
+  TAILQ_FOREACH(np, &win->children, entries)
+  {
+    if (np->repaint)
+      np->repaint(np, false);
+  }
+}
+
+/**
+ * window_redraw - Reflow, recalc and repaint a tree of Windows
+ * @param win Window to start at
+ */
+void window_redraw(struct MuttWindow *win)
+{
+  if (!win)
+    return;
+
+  window_reflow(win);
+  window_notify_all(win);
+
+  window_recalc(win);
+  window_repaint(win);
+}

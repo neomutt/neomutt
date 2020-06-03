@@ -3,7 +3,7 @@
  * Window management
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -100,6 +100,12 @@ enum WindowType
 
 TAILQ_HEAD(MuttWindowList, MuttWindow);
 
+typedef uint8_t WindowActionFlags; ///< Actions waiting to be performed on a MuttWindow
+#define WA_NO_FLAGS        0       ///< No flags are set
+#define WA_REFLOW    (1 << 0)      ///< Reflow the Window and its children
+#define WA_RECALC    (1 << 1)      ///< Recalculate the contents of the Window
+#define WA_REPAINT   (1 << 2)      ///< Redraw the contents of the Window
+
 /**
  * struct MuttWindow - A division of the screen
  *
@@ -115,6 +121,7 @@ struct MuttWindow
 
   enum MuttWindowOrientation orient; ///< Which direction the Window will expand
   enum MuttWindowSize size;          ///< Type of Window, e.g. #MUTT_WIN_SIZE_FIXED
+  WindowActionFlags actions;         ///< Actions to be performed, e.g. #WA_RECALC
 
   TAILQ_ENTRY(MuttWindow) entries;   ///< Linked list
   struct MuttWindow *parent;         ///< Parent Window
@@ -125,6 +132,20 @@ struct MuttWindow
   enum WindowType type;              ///< Window type, e.g. #WT_SIDEBAR
   void *wdata;                       ///< Private data
   void (*wdata_free)(struct MuttWindow *win, void **ptr); ///< Callback function to free private data
+
+  /**
+   * recalc - Recalculate the Window data
+   * @param win Window
+   * @param all Forcibly recalculate all data
+   */
+  int (*recalc)(struct MuttWindow *win, bool all);
+
+  /**
+   * repaint - Repaint the Window
+   * @param win Window
+   * @param all Forcibly repaint the entire Window
+   */
+  int (*repaint)(struct MuttWindow *win, bool all);
 };
 
 typedef uint8_t WindowNotifyFlags; ///< Changes to a MuttWindow
@@ -144,7 +165,10 @@ typedef uint8_t WindowNotifyFlags; ///< Changes to a MuttWindow
  */
 enum NotifyWindow
 {
-  NT_WINDOW_STATE = 1, ///< Window state has changed, e.g. #WN_VISIBLE
+  NT_WINDOW_NEW = 1, ///< New Window has been added
+  NT_WINDOW_DELETE,  ///< Window is about to be deleted
+  NT_WINDOW_STATE,   ///< Window state has changed, e.g. #WN_VISIBLE
+  NT_WINDOW_DIALOG,  ///< A new Dialog Window has been created, e.g. #WT_DLG_INDEX
 };
 
 /**
@@ -195,5 +219,7 @@ void               window_set_visible(struct MuttWindow *win, bool visible);
 
 void dialog_pop(void);
 void dialog_push(struct MuttWindow *dlg);
+
+void window_redraw(struct MuttWindow *win);
 
 #endif /* MUTT_MUTT_WINDOW_H */
