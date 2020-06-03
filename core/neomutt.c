@@ -116,7 +116,9 @@ bool neomutt_account_remove(struct NeoMutt *n, struct Account *a)
     {
       struct EventAccount ev_a = { np };
       notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_REMOVE, &ev_a);
+
       TAILQ_REMOVE(&n->accounts, np, entries);
+      notify_set_parent(n->notify, NULL);
       account_free(&np);
       result = true;
       if (a)

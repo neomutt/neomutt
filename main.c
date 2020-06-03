@@ -1221,11 +1221,9 @@ int main(int argc, char *argv[], char *envp[])
       sb_set_open_mailbox(Context ? Context->mailbox : NULL);
 #endif
       struct MuttWindow *dlg = index_pager_init();
-      notify_observer_add(NeoMutt->notify, mutt_dlgindex_observer, dlg);
       dialog_push(dlg);
       mutt_index_menu(dlg);
       dialog_pop();
-      notify_observer_remove(NeoMutt->notify, mutt_dlgindex_observer, dlg);
       index_pager_shutdown(dlg);
       mutt_window_free(&dlg);
       ctx_free(&Context);

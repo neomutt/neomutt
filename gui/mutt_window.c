@@ -155,6 +155,9 @@ void mutt_window_free(struct MuttWindow **ptr)
 
   struct MuttWindow *win = *ptr;
 
+  struct EventWindow ev_w = { win, WN_NO_FLAGS };
+  notify_send(win->notify, NT_WINDOW, NT_WINDOW_DELETE, &ev_w);
+
   mutt_winlist_free(&win->children);
 
   if (win->wdata && win->wdata_free)
@@ -564,6 +567,9 @@ void mutt_window_add_child(struct MuttWindow *parent, struct MuttWindow *child)
   child->parent = parent;
 
   notify_set_parent(child->notify, parent->notify);
+
+  struct EventWindow ev_w = { child, WN_NO_FLAGS };
+  notify_send(child->notify, NT_WINDOW, NT_WINDOW_NEW, &ev_w);
 }
 
 /**
@@ -575,6 +581,9 @@ struct MuttWindow *mutt_window_remove_child(struct MuttWindow *parent, struct Mu
 {
   if (!parent || !child)
     return NULL;
+
+  struct EventWindow ev_w = { child, WN_NO_FLAGS };
+  notify_send(child->notify, NT_WINDOW, NT_WINDOW_DELETE, &ev_w);
 
   TAILQ_REMOVE(&parent->children, child, entries);
   child->parent = NULL;
@@ -719,6 +728,11 @@ void dialog_push(struct MuttWindow *dlg)
 
   TAILQ_INSERT_TAIL(&MuttDialogWindow->children, dlg, entries);
   notify_set_parent(dlg->notify, MuttDialogWindow->notify);
+
+  // Notify the world, allowing plugins to integrate
+  struct EventWindow ev_w = { dlg, WN_VISIBLE };
+  notify_send(dlg->notify, NT_WINDOW, NT_WINDOW_DIALOG, &ev_w);
+
   dlg->state.visible = true;
   dlg->parent = MuttDialogWindow;
   mutt_window_reflow(MuttDialogWindow);
@@ -741,6 +755,10 @@ void dialog_pop(void)
   struct MuttWindow *last = TAILQ_LAST(&MuttDialogWindow->children, MuttWindowList);
   if (!last)
     return;
+
+  // Notify the world, allowing plugins to clean up
+  struct EventWindow ev_w = { last, WN_HIDDEN };
+  notify_send(last->notify, NT_WINDOW, NT_WINDOW_DIALOG, &ev_w);
 
   last->state.visible = false;
   last->parent = NULL;

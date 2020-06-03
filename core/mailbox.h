@@ -158,12 +158,14 @@ enum NotifyMailbox
 {
   NT_MAILBOX_ADD = 1, ///< A new Mailbox has been created
   NT_MAILBOX_REMOVE,  ///< A Mailbox is about to be destroyed
+  NT_MAILBOX_CHANGED, ///< Mailbox data has changed
 
   /* These don't really belong here as they are tied to GUI operations.
    * Eventually, they'll be eliminated. */
   NT_MAILBOX_CLOSED,  ///< Mailbox was closed
   NT_MAILBOX_INVALID, ///< Email list was changed
   NT_MAILBOX_RESORT,  ///< Email list needs resorting
+  NT_MAILBOX_SWITCH,  ///< Current Mailbox has changed
   NT_MAILBOX_UPDATE,  ///< Update internal tables
   NT_MAILBOX_UNTAG,   ///< Clear the 'last-tagged' pointer
 };
