@@ -28,6 +28,7 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | debug/backtrace.c   | @subpage debug_backtrace   |
+ * | debug/common.c      | @subpage debug_common      |
  * | debug/graphviz.c    | @subpage debug_graphviz    |
  * | debug/notify.c      | @subpage debug_notify      |
  * | debug/parse_test.c  | @subpage debug_parse       |
@@ -37,10 +38,14 @@
 #ifndef MUTT_DEBUG_LIB_H
 #define MUTT_DEBUG_LIB_H
 
+struct MuttWindow;
 struct NotifyCallback;
 
 // Backtrace
 void show_backtrace(void);
+
+// Common
+const char *win_name(const struct MuttWindow *win);
 
 // Graphviz
 void dump_graphviz(const char *title);
