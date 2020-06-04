@@ -47,7 +47,6 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <time.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"

@@ -27,7 +27,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/types.h>
-#include <time.h>
 
 struct Buffer;
 struct stat;
@@ -38,7 +37,9 @@ extern const char filename_safe_chars[];
 #define MUTT_CONT (1 << 0) ///< \-continuation
 #define MUTT_EOL  (1 << 1) ///< don't strip `\n` / `\r\n`
 
-#ifndef HAVE_STRUCT_TIMESPEC
+#ifdef HAVE_STRUCT_TIMESPEC
+struct timespec;
+#else
 /**
  * struct timespec - Time value with nanosecond precision
  */

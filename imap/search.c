@@ -30,6 +30,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <string.h>
 #include "imap_private.h"
 #include "email/lib.h"

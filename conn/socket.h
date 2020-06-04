@@ -24,7 +24,6 @@
 #ifndef MUTT_CONN_SOCKET_H
 #define MUTT_CONN_SOCKET_H
 
-#include <stddef.h>
 #include <time.h>
 
 struct Connection;

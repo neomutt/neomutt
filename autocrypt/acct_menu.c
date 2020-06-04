@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include "autocrypt_private.h"
 #include "mutt/lib.h"

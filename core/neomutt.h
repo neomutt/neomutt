@@ -23,6 +23,7 @@
 #ifndef MUTT_CORE_NEOMUTT_H
 #define MUTT_CORE_NEOMUTT_H
 
+#include <stddef.h>
 #include <stdbool.h>
 #include "account.h"
 #include "mailbox.h"

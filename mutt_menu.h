@@ -27,10 +27,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt/regex3.h"
+#include "mutt/lib.h"
 #include "keymap.h"
-
-struct NotifyCallback;
 
 /* These Config Variables are only used in menu.c */
 extern short C_MenuContext;

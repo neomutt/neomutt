@@ -24,6 +24,7 @@
 #ifndef MUTT_LIB_LIST_H
 #define MUTT_LIB_LIST_H
 
+#include <stddef.h>
 #include <stdbool.h>
 #include "queue.h"
 

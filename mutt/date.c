@@ -27,18 +27,15 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/time.h>
 #include <time.h>
 #include "date.h"
 #include "logging.h"
 #include "memory.h"
-#include "message.h"
 #include "prex.h"
 #include "regex3.h"
 #include "string2.h"

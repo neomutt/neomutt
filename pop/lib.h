@@ -39,7 +39,6 @@
 #include "core/lib.h"
 #include "mx.h"
 
-struct Slist;
 struct stat;
 
 /* These Config Variables are only used in pop/pop.c */

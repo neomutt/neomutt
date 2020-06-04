@@ -40,7 +40,6 @@
 #include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"
-#include "socket.h"
 
 /**
  * struct TunnelSockData - A network tunnel (pair of sockets)

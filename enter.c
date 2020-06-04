@@ -48,6 +48,7 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "protos.h"
+#include "history/lib.h"
 
 /**
  * enum EnterRedrawFlags - redraw flags for mutt_enter_string_full()

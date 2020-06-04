@@ -25,9 +25,7 @@
 #ifndef MUTT_CONN_SASL_H
 #define MUTT_CONN_SASL_H
 
-#include <stddef.h>
 #include <sasl/sasl.h>
-#include <sys/types.h>
 
 struct Connection;
 

@@ -45,7 +45,6 @@
 #define MUTT_CONN_LIB_H
 
 #include "config.h"
-#include <stdio.h>
 // IWYU pragma: begin_exports
 #include "conn_globals.h"
 #include "connaccount.h"
