@@ -52,7 +52,7 @@ const char *BoolValues[] = {
 static int bool_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                            const char *value, struct Buffer *err)
 {
-  if (!cs || !cdef || !value)
+  if (!value)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
   int num = -1;
@@ -100,9 +100,6 @@ static int bool_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 static int bool_string_get(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, struct Buffer *result)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   int index;
 
   if (var)
@@ -123,9 +120,6 @@ static int bool_string_get(const struct ConfigSet *cs, void *var,
 static int bool_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   if ((value < 0) || (value > 1))
   {
     mutt_buffer_printf(err, _("Invalid boolean value: %ld"), value);
@@ -153,9 +147,6 @@ static int bool_native_set(const struct ConfigSet *cs, void *var,
 static intptr_t bool_native_get(const struct ConfigSet *cs, void *var,
                                 const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return INT_MIN; /* LCOV_EXCL_LINE */
-
   return *(bool *) var;
 }
 
@@ -165,9 +156,6 @@ static intptr_t bool_native_get(const struct ConfigSet *cs, void *var,
 static int bool_reset(const struct ConfigSet *cs, void *var,
                       const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   if (cdef->initial == (*(bool *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 

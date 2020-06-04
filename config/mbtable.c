@@ -89,9 +89,6 @@ struct MbTable *mbtable_parse(const char *s)
  */
 static void mbtable_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef)
 {
-  if (!cs || !var || !cdef)
-    return; /* LCOV_EXCL_LINE */
-
   struct MbTable **m = var;
   if (!*m)
     return;
@@ -105,9 +102,6 @@ static void mbtable_destroy(const struct ConfigSet *cs, void *var, const struct 
 static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                               const char *value, struct Buffer *err)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   /* Store empty strings as NULL */
   if (value && (value[0] == '\0'))
     value = NULL;
@@ -160,9 +154,6 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
 static int mbtable_string_get(const struct ConfigSet *cs, void *var,
                               const struct ConfigDef *cdef, struct Buffer *result)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   const char *str = NULL;
 
   if (var)
@@ -203,9 +194,6 @@ static int mbtable_native_set(const struct ConfigSet *cs, void *var,
                               const struct ConfigDef *cdef, intptr_t value,
                               struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   int rc;
 
   if (cdef->validator)
@@ -234,9 +222,6 @@ static int mbtable_native_set(const struct ConfigSet *cs, void *var,
 static intptr_t mbtable_native_get(const struct ConfigSet *cs, void *var,
                                    const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return INT_MIN; /* LCOV_EXCL_LINE */
-
   struct MbTable *table = *(struct MbTable **) var;
 
   return (intptr_t) table;
@@ -248,9 +233,6 @@ static intptr_t mbtable_native_get(const struct ConfigSet *cs, void *var,
 static int mbtable_reset(const struct ConfigSet *cs, void *var,
                          const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   struct MbTable *table = NULL;
   const char *initial = (const char *) cdef->initial;
 

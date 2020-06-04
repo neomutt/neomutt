@@ -67,9 +67,6 @@ static char *path_tidy(const char *path, bool is_dir)
  */
 static void path_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef)
 {
-  if (!cs || !var || !cdef)
-    return; /* LCOV_EXCL_LINE */
-
   const char **str = (const char **) var;
   if (!*str)
     return;
@@ -83,9 +80,6 @@ static void path_destroy(const struct ConfigSet *cs, void *var, const struct Con
 static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                            const char *value, struct Buffer *err)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   /* Store empty paths as NULL */
   if (value && (value[0] == '\0'))
     value = NULL;
@@ -137,9 +131,6 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 static int path_string_get(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, struct Buffer *result)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   const char *str = NULL;
 
   if (var)
@@ -160,9 +151,6 @@ static int path_string_get(const struct ConfigSet *cs, void *var,
 static int path_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   char *str = (char *) value;
 
   /* Store empty paths as NULL */
@@ -205,9 +193,6 @@ static int path_native_set(const struct ConfigSet *cs, void *var,
 static intptr_t path_native_get(const struct ConfigSet *cs, void *var,
                                 const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return INT_MIN; /* LCOV_EXCL_LINE */
-
   const char *str = *(const char **) var;
 
   return (intptr_t) str;
@@ -219,9 +204,6 @@ static intptr_t path_native_get(const struct ConfigSet *cs, void *var,
 static int path_reset(const struct ConfigSet *cs, void *var,
                       const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   int rc = CSR_SUCCESS;
 
   const char *str = path_tidy((const char *) cdef->initial, cdef->type & DT_PATH_DIR);

@@ -57,9 +57,6 @@ void regex_free(struct Regex **r)
  */
 static void regex_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef)
 {
-  if (!cs || !var || !cdef)
-    return; /* LCOV_EXCL_LINE */
-
   struct Regex **r = var;
   if (!*r)
     return;
@@ -118,9 +115,6 @@ struct Regex *regex_new(const char *str, int flags, struct Buffer *err)
 static int regex_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                             const char *value, struct Buffer *err)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   /* Store empty strings as NULL */
   if (value && (value[0] == '\0'))
     value = NULL;
@@ -178,9 +172,6 @@ static int regex_string_set(const struct ConfigSet *cs, void *var, struct Config
 static int regex_string_get(const struct ConfigSet *cs, void *var,
                             const struct ConfigDef *cdef, struct Buffer *result)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   const char *str = NULL;
 
   if (var)
@@ -207,9 +198,6 @@ static int regex_string_get(const struct ConfigSet *cs, void *var,
 static int regex_native_set(const struct ConfigSet *cs, void *var,
                             const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   int rc;
 
   if (cdef->validator)
@@ -251,9 +239,6 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
 static intptr_t regex_native_get(const struct ConfigSet *cs, void *var,
                                  const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return INT_MIN; /* LCOV_EXCL_LINE */
-
   struct Regex *r = *(struct Regex **) var;
 
   return (intptr_t) r;
@@ -265,9 +250,6 @@ static intptr_t regex_native_get(const struct ConfigSet *cs, void *var,
 static int regex_reset(const struct ConfigSet *cs, void *var,
                        const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   struct Regex *r = NULL;
   const char *initial = (const char *) cdef->initial;
 

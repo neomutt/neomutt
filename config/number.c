@@ -41,9 +41,6 @@
 static int number_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                              const char *value, struct Buffer *err)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   if (!value || !value[0])
   {
     mutt_buffer_printf(err, _("Option %s may not be empty"), cdef->name);
@@ -98,9 +95,6 @@ static int number_string_set(const struct ConfigSet *cs, void *var, struct Confi
 static int number_string_get(const struct ConfigSet *cs, void *var,
                              const struct ConfigDef *cdef, struct Buffer *result)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   int value;
 
   if (var)
@@ -119,9 +113,6 @@ static int number_native_set(const struct ConfigSet *cs, void *var,
                              const struct ConfigDef *cdef, intptr_t value,
                              struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   if ((value < SHRT_MIN) || (value > SHRT_MAX))
   {
     mutt_buffer_printf(err, _("Invalid number: %ld"), value);
@@ -155,9 +146,6 @@ static int number_native_set(const struct ConfigSet *cs, void *var,
 static intptr_t number_native_get(const struct ConfigSet *cs, void *var,
                                   const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return INT_MIN; /* LCOV_EXCL_LINE */
-
   return *(short *) var;
 }
 
@@ -167,9 +155,6 @@ static intptr_t number_native_get(const struct ConfigSet *cs, void *var,
 static int number_reset(const struct ConfigSet *cs, void *var,
                         const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   if (cdef->initial == (*(short *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 

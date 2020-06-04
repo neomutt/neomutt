@@ -91,25 +91,34 @@ struct ConfigSetType
   /**
    * string_set - Set a config item by string
    * @param cs    Config items
-   * @param var   Variable to set
+   * @param var   Variable to set (may be NULL)
    * @param cdef  Variable definition
-   * @param value Value to set
-   * @param err   Buffer for error messages
+   * @param value Value to set (may be NULL)
+   * @param err   Buffer for error messages (may be NULL)
    * @retval num Result, e.g. #CSR_SUCCESS
    *
    * If var is NULL, then the config item's initial value will be set.
+   *
+   * **Contract**
+   * - @a cs   is not NULL
+   * - @a cdef is not NULL
    */
   int (*string_set)(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef, const char *value, struct Buffer *err);
 
   /**
    * string_get - Get a config item as a string
    * @param cs     Config items
-   * @param var    Variable to get
+   * @param var    Variable to get (may be NULL)
    * @param cdef   Variable definition
    * @param result Buffer for results or error messages
    * @retval num Result, e.g. #CSR_SUCCESS
    *
    * If var is NULL, then the config item's initial value will be returned.
+   *
+   * **Contract**
+   * - @a cs     is not NULL
+   * - @a cdef   is not NULL
+   * - @a result is not NULL
    */
   int (*string_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *result);
 
@@ -119,8 +128,13 @@ struct ConfigSetType
    * @param var   Variable to set
    * @param cdef  Variable definition
    * @param value Native pointer/value to set
-   * @param err   Buffer for error messages
+   * @param err   Buffer for error messages (may be NULL)
    * @retval num Result, e.g. #CSR_SUCCESS
+   *
+   * **Contract**
+   * - @a cs   is not NULL
+   * - @a var  is not NULL
+   * - @a cdef is not NULL
    */
   int (*native_set)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 
@@ -129,9 +143,14 @@ struct ConfigSetType
    * @param cs   Config items
    * @param var  Variable to get
    * @param cdef Variable definition
-   * @param err  Buffer for error messages
+   * @param err  Buffer for error messages (may be NULL)
    * @retval intptr_t Config item string
    * @retval INT_MIN  Error
+   *
+   * **Contract**
+   * - @a cs   is not NULL
+   * - @a var  is not NULL
+   * - @a cdef is not NULL
    */
   intptr_t (*native_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
 
@@ -140,8 +159,13 @@ struct ConfigSetType
    * @param cs   Config items
    * @param var  Variable to reset
    * @param cdef Variable definition
-   * @param err  Buffer for error messages
+   * @param err  Buffer for error messages (may be NULL)
    * @retval num Result, e.g. #CSR_SUCCESS
+   *
+   * **Contract**
+   * - @a cs   is not NULL
+   * - @a var  is not NULL
+   * - @a cdef is not NULL
    */
   int (*reset)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
 
@@ -150,6 +174,11 @@ struct ConfigSetType
    * @param cs   Config items
    * @param var  Variable to destroy
    * @param cdef Variable definition
+   *
+   * **Contract**
+   * - @a cs   is not NULL
+   * - @a var  is not NULL
+   * - @a cdef is not NULL
    */
   void (*destroy)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef);
 };

@@ -60,6 +60,9 @@ static void destroy(int type, void *obj, intptr_t data)
     struct HashElem *he_base = cs_get_base(i->parent);
     struct ConfigDef *cdef = he_base->data;
 
+    if (!cdef)
+      return; // LCOV_EXCL_LINE
+
     cst = cs_get_type_def(cs, he_base->type);
     if (cst && cst->destroy)
       cst->destroy(cs, (void **) &i->var, cdef);
@@ -70,6 +73,9 @@ static void destroy(int type, void *obj, intptr_t data)
   else
   {
     struct ConfigDef *cdef = obj;
+
+    if (!cdef || !cdef->var)
+      return; // LCOV_EXCL_LINE
 
     cst = cs_get_type_def(cs, type);
     if (cst && cst->destroy)
@@ -363,6 +369,9 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
     cdef = he_base->data;
     cst = cs_get_type_def(cs, he_base->type);
 
+    if (!cdef)
+      return CSR_ERR_CODE; // LCOV_EXCL_LINE
+
     if (cst && cst->destroy)
       cst->destroy(cs, (void **) &i->var, cdef);
 
@@ -372,6 +381,9 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
   {
     cdef = he->data;
     cst = cs_get_type_def(cs, he->type);
+
+    if (!cdef || !cdef->var)
+      return CSR_ERR_CODE; // LCOV_EXCL_LINE
 
     if (cst)
       rc = cst->reset(cs, cdef->var, cdef, err);
@@ -428,6 +440,9 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
   }
 
   cdef = he->data;
+  if (!cdef)
+    return CSR_ERR_CODE; // LCOV_EXCL_LINE
+
   cst = cs_get_type_def(cs, he->type);
   if (!cst)
   {
@@ -478,7 +493,7 @@ int cs_str_initial_set(const struct ConfigSet *cs, const char *name,
  */
 int cs_he_initial_get(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *result)
 {
-  if (!cs || !he)
+  if (!cs || !he || !result)
     return CSR_ERR_CODE;
 
   const struct ConfigDef *cdef = NULL;
@@ -497,11 +512,7 @@ int cs_he_initial_get(const struct ConfigSet *cs, struct HashElem *he, struct Bu
   }
 
   if (!cst)
-  {
-    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name,
-               DTYPE(he->type));
-    return CSR_ERR_CODE;
-  }
+    return CSR_ERR_CODE; // LCOV_EXCL_LINE
 
   return cst->string_get(cs, NULL, cdef, result);
 }
@@ -613,7 +624,7 @@ int cs_str_string_set(const struct ConfigSet *cs, const char *name,
  */
 int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *result)
 {
-  if (!cs || !he)
+  if (!cs || !he || !result)
     return CSR_ERR_CODE;
 
   const struct ConfigDef *cdef = NULL;
@@ -643,11 +654,7 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
   }
 
   if (!cst)
-  {
-    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name,
-               DTYPE(he->type));
-    return CSR_ERR_CODE;
-  }
+    return CSR_ERR_CODE; // LCOV_EXCL_LINE
 
   return cst->string_get(cs, var, cdef, result);
 }
@@ -713,6 +720,9 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
     return CSR_ERR_CODE;
   }
 
+  if (!var || !cdef)
+    return CSR_ERR_CODE; // LCOV_EXCL_LINE
+
   int rc = cst->native_set(cs, var, cdef, value, err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
@@ -763,7 +773,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
     var = cdef->var;
   }
 
-  if (!cst)
+  if (!cst || !var || !cdef)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
   int rc = cst->native_set(cs, var, cdef, value, err);
@@ -820,6 +830,9 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
     mutt_buffer_printf(err, _("Variable '%s' has an invalid type %d"), cdef->name, he->type);
     return INT_MIN;
   }
+
+  if (!var || !cdef)
+    return CSR_ERR_CODE; // LCOV_EXCL_LINE
 
   return cst->native_get(cs, var, cdef, err);
 }
