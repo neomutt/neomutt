@@ -124,9 +124,9 @@ struct Mailbox
   void *compress_info;                ///< Compressed mbox module private data
 #endif
 
-  struct Hash *id_hash;               ///< Hash table by msg id
-  struct Hash *subj_hash;             ///< Hash table by subject
-  struct Hash *label_hash;            ///< Hash table for x-labels
+  struct HashTable *id_hash;          ///< Hash Table by msg id
+  struct HashTable *subj_hash;        ///< Hash Table by subject
+  struct HashTable *label_hash;       ///< Hash Table for x-labels
 
   struct Account *account;            ///< Account that owns this Mailbox
   int opened;                         ///< Number of times mailbox is opened

@@ -100,7 +100,7 @@ struct NntpAccountData
   unsigned int groups_num;
   unsigned int groups_max;
   void **groups_list;
-  struct Hash *groups_hash;
+  struct HashTable *groups_hash;
   struct Connection *conn;
 };
 

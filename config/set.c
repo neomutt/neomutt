@@ -39,7 +39,7 @@ struct ConfigSetType RegisteredTypes[18] = {
 };
 
 /**
- * destroy - Callback function for the Hash Table - Implements ::hashelem_free_t
+ * destroy - Callback function for the Hash Table - Implements ::hash_hdata_free_t
  * @param type Object type, e.g. #DT_STRING
  * @param obj  Object to destroy
  * @param data ConfigSet associated with the object

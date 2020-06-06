@@ -27,7 +27,7 @@
 
 void test_mutt_hash_free(void)
 {
-  // void mutt_hash_free(struct Hash **ptr);
+  // void mutt_hash_free(struct HashTable **ptr);
 
   {
     mutt_hash_free(NULL);
@@ -35,8 +35,8 @@ void test_mutt_hash_free(void)
   }
 
   {
-    struct Hash *hash = NULL;
-    mutt_hash_free(&hash);
-    TEST_CHECK_(1, "mutt_hash_free(&hash)");
+    struct HashTable *table = NULL;
+    mutt_hash_free(&table);
+    TEST_CHECK_(1, "mutt_hash_free(&table)");
   }
 }

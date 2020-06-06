@@ -150,7 +150,7 @@ static void init_history(struct History *h)
  *
  * If the string's refcount is 1, then the string will be deleted.
  */
-static int dup_hash_dec(struct Hash *dup_hash, char *str)
+static int dup_hash_dec(struct HashTable *dup_hash, char *str)
 {
   struct HashElem *elem = mutt_hash_find_elem(dup_hash, str);
   if (!elem)
@@ -176,7 +176,7 @@ static int dup_hash_dec(struct Hash *dup_hash, char *str)
  *
  * If the string isn't found it will be added to the Hash Table.
  */
-static int dup_hash_inc(struct Hash *dup_hash, char *str)
+static int dup_hash_inc(struct HashTable *dup_hash, char *str)
 {
   uintptr_t count;
 
@@ -205,7 +205,7 @@ static void shrink_histfile(void)
   char *linebuf = NULL, *p = NULL;
   size_t buflen;
   bool regen_file = false;
-  struct Hash *dup_hashes[HC_MAX] = { 0 };
+  struct HashTable *dup_hashes[HC_MAX] = { 0 };
 
   FILE *fp = mutt_file_fopen(C_HistoryFile, "r");
   if (!fp)

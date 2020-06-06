@@ -31,24 +31,24 @@ void dummy_hash_free(int type, void *obj, intptr_t data)
 
 void test_mutt_hash_set_destructor(void)
 {
-  // void mutt_hash_set_destructor(struct Hash *table, hashelem_free_t fn, intptr_t fn_data);
+  // void mutt_hash_set_destructor(struct HashTable *table, hash_hdata_free_t fn, intptr_t fn_data);
 
   {
-    hashelem_free_t fn = dummy_hash_free;
+    hash_hdata_free_t fn = dummy_hash_free;
     mutt_hash_set_destructor(NULL, fn, (intptr_t) "apple");
     TEST_CHECK_(1, "mutt_hash_set_destructor(NULL, fn, \"apple\")");
   }
 
   {
-    struct Hash hash = { 0 };
-    mutt_hash_set_destructor(&hash, NULL, (intptr_t) "apple");
-    TEST_CHECK_(1, "mutt_hash_set_destructor(&hash, NULL, \"apple\")");
+    struct HashTable table = { 0 };
+    mutt_hash_set_destructor(&table, NULL, (intptr_t) "apple");
+    TEST_CHECK_(1, "mutt_hash_set_destructor(&table, NULL, \"apple\")");
   }
 
   {
-    struct Hash hash = { 0 };
-    hashelem_free_t fn = dummy_hash_free;
-    mutt_hash_set_destructor(&hash, fn, 0);
-    TEST_CHECK_(1, "mutt_hash_set_destructor(&hash, fn, NULL)");
+    struct HashTable table = { 0 };
+    hash_hdata_free_t fn = dummy_hash_free;
+    mutt_hash_set_destructor(&table, fn, 0);
+    TEST_CHECK_(1, "mutt_hash_set_destructor(&table, fn, NULL)");
   }
 }

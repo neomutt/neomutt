@@ -502,12 +502,12 @@ static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur
  * @param m Mailbox
  * @retval ptr Newly allocated Hash Table
  */
-static struct Hash *make_subj_hash(struct Mailbox *m)
+static struct HashTable *make_subj_hash(struct Mailbox *m)
 {
   if (!m)
     return NULL;
 
-  struct Hash *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
+  struct HashTable *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -1453,9 +1453,9 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, int flag)
  * @param m Mailbox
  * @retval ptr Newly allocated Hash Table
  */
-struct Hash *mutt_make_id_hash(struct Mailbox *m)
+struct HashTable *mutt_make_id_hash(struct Mailbox *m)
 {
-  struct Hash *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_NO_FLAGS);
+  struct HashTable *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_NO_FLAGS);
 
   for (int i = 0; i < m->msg_count; i++)
   {

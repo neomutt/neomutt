@@ -379,7 +379,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
   struct Maildir **last = NULL;
   struct Maildir *p = NULL;
   int count = 0;
-  struct Hash *fnames = NULL; /* hash table for quickly looking up the base filename
+  struct HashTable *fnames = NULL; /* hash table for quickly looking up the base filename
                                  for a maildir message */
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 

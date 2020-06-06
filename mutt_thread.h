@@ -70,7 +70,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads);
 void               mutt_clear_threads     (struct Context *ctx);
 void               mutt_draw_tree         (struct Context *ctx);
 bool               mutt_link_threads      (struct Email *parent, struct EmailList *children, struct Mailbox *m);
-struct Hash *      mutt_make_id_hash      (struct Mailbox *m);
+struct HashTable * mutt_make_id_hash      (struct Mailbox *m);
 int                mutt_messages_in_thread(struct Mailbox *m, struct Email *e, int flag);
 int                mutt_parent_message    (struct Context *ctx, struct Email *e, bool find_root);
 void               mutt_set_vnum          (struct Context *ctx);

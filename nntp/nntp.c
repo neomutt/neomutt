@@ -143,7 +143,7 @@ static void nntp_adata_free(void **ptr)
 }
 
 /**
- * nntp_hashelem_free - Free our hash table data - Implements ::hashelem_free_t
+ * nntp_hashelem_free - Free our hash table data - Implements ::hash_hdata_free_t
  */
 static void nntp_hashelem_free(int type, void *obj, intptr_t data)
 {

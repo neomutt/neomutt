@@ -604,7 +604,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
   struct Maildir **last = NULL;
   struct MhSequences mhs = { 0 };
   int count = 0;
-  struct Hash *fnames = NULL;
+  struct HashTable *fnames = NULL;
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
   if (!C_CheckNew)

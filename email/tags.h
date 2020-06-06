@@ -29,7 +29,7 @@
 /* These Config Variables are only used in email/tags.c */
 extern struct Slist *C_HiddenTags;
 
-extern struct Hash *TagTransforms;
+extern struct HashTable *TagTransforms;
 
 /**
  * struct Tag - LinkedList Tag Element

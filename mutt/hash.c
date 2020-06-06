@@ -1,10 +1,10 @@
 /**
  * @file
- * Hash table data structure
+ * Hash Table data structure
  *
  * @authors
  * Copyright (C) 1996-2009 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -22,9 +22,9 @@
  */
 
 /**
- * @page hash Hash table data structure
+ * @page hash Hash Table data structure
  *
- * Hash table data structure.
+ * Hash Table data structure.
  */
 
 #include "config.h"
@@ -37,30 +37,22 @@
 #define SOME_PRIME 149711
 
 /**
- * gen_string_hash - Generate a hash from a string - Implements Hash::gen_hash()
- * @param key String key
- * @param n   Number of elements in the Hash table
- * @retval num Cryptographic hash of the string
+ * gen_string_hash - Generate a hash from a string - Implements hash_gen_hash_t
  */
-static size_t gen_string_hash(union HashKey key, size_t n)
+static size_t gen_string_hash(union HashKey key, size_t num_elems)
 {
-  size_t h = 0;
+  size_t hash = 0;
   const unsigned char *s = (const unsigned char *) key.strkey;
 
-  while (*s)
-    h += ((h << 7) + *s++);
-  h = (h * SOME_PRIME) % n;
+  while (*s != '\0')
+    hash += ((hash << 7) + *s++);
+  hash = (hash * SOME_PRIME) % num_elems;
 
-  return h;
+  return hash;
 }
 
 /**
- * cmp_string_key - Compare two string keys - Implements Hash::cmp_key()
- * @param a First key to compare
- * @param b Second key to compare
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * cmp_string_key - Compare two string keys - Implements hash_cmp_key_t
  */
 static int cmp_string_key(union HashKey a, union HashKey b)
 {
@@ -68,30 +60,22 @@ static int cmp_string_key(union HashKey a, union HashKey b)
 }
 
 /**
- * gen_case_string_hash - Generate a hash from a string (ignore the case) - Implements Hash::gen_hash()
- * @param key String key
- * @param n   Number of elements in the Hash table
- * @retval num Cryptographic hash of the string
+ * gen_case_string_hash - Generate a hash from a string (ignore the case) - Implements hash_gen_hash_t
  */
-static size_t gen_case_string_hash(union HashKey key, size_t n)
+static size_t gen_case_string_hash(union HashKey key, size_t num_elems)
 {
-  size_t h = 0;
+  size_t hash = 0;
   const unsigned char *s = (const unsigned char *) key.strkey;
 
-  while (*s)
-    h += ((h << 7) + tolower(*s++));
-  h = (h * SOME_PRIME) % n;
+  while (*s != '\0')
+    hash += ((hash << 7) + tolower(*s++));
+  hash = (hash * SOME_PRIME) % num_elems;
 
-  return h;
+  return hash;
 }
 
 /**
- * cmp_case_string_key - Compare two string keys (ignore case) - Implements Hash::cmp_key()
- * @param a First key to compare
- * @param b Second key to compare
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * cmp_case_string_key - Compare two string keys (ignore case) - Implements hash_cmp_key_t
  */
 static int cmp_case_string_key(union HashKey a, union HashKey b)
 {
@@ -99,23 +83,15 @@ static int cmp_case_string_key(union HashKey a, union HashKey b)
 }
 
 /**
- * gen_int_hash - Generate a hash from an integer - Implements Hash::gen_hash()
- * @param key Integer key
- * @param n   Number of elements in the Hash table
- * @retval num Cryptographic hash of the integer
+ * gen_int_hash - Generate a hash from an integer - Implements hash_gen_hash_t
  */
-static size_t gen_int_hash(union HashKey key, size_t n)
+static size_t gen_int_hash(union HashKey key, size_t num_elems)
 {
-  return key.intkey % n;
+  return (key.intkey % num_elems);
 }
 
 /**
- * cmp_int_key - Compare two integer keys - Implements Hash::cmp_key()
- * @param a First key to compare
- * @param b Second key to compare
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * cmp_int_key - Compare two integer keys - Implements hash_cmp_key_t
  */
 static int cmp_int_key(union HashKey a, union HashKey b)
 {
@@ -127,84 +103,84 @@ static int cmp_int_key(union HashKey a, union HashKey b)
 }
 
 /**
- * hash_new - Create a new Hash table
- * @param nelem Number of elements it should contain
- * @retval ptr New Hash table
+ * hash_new - Create a new Hash Table
+ * @param num_elems Number of elements it should contain
+ * @retval ptr New Hash Table
  *
- * The Hash table can contain more elements than nelem, but they will be
+ * The Hash Table can contain more elements than num_elems, but they will be
  * chained together.
  */
-static struct Hash *hash_new(size_t nelem)
+static struct HashTable *hash_new(size_t num_elems)
 {
-  struct Hash *table = mutt_mem_calloc(1, sizeof(struct Hash));
-  if (nelem == 0)
-    nelem = 2;
-  table->nelem = nelem;
-  table->table = mutt_mem_calloc(nelem, sizeof(struct HashElem *));
+  struct HashTable *table = mutt_mem_calloc(1, sizeof(struct HashTable));
+  if (num_elems == 0)
+    num_elems = 2;
+  table->num_elems = num_elems;
+  table->table = mutt_mem_calloc(num_elems, sizeof(struct HashElem *));
   return table;
 }
 
 /**
  * union_hash_insert - Insert into a hash table using a union as a key
- * @param table Hash table to update
+ * @param table Hash Table to update
  * @param key   Key to hash on
  * @param type  Data type
  * @param data  Data to associate with key
  * @retval ptr Newly inserted HashElem
  */
-static struct HashElem *union_hash_insert(struct Hash *table, union HashKey key,
-                                          int type, void *data)
+static struct HashElem *union_hash_insert(struct HashTable *table,
+                                          union HashKey key, int type, void *data)
 {
   if (!table)
     return NULL;
 
-  struct HashElem *he = mutt_mem_malloc(sizeof(struct HashElem));
-  unsigned int h = table->gen_hash(key, table->nelem);
+  struct HashElem *he = mutt_mem_calloc(1, sizeof(struct HashElem));
+  size_t hash = table->gen_hash(key, table->num_elems);
   he->key = key;
   he->data = data;
   he->type = type;
 
   if (table->allow_dups)
   {
-    he->next = table->table[h];
-    table->table[h] = he;
+    he->next = table->table[hash];
+    table->table[hash] = he;
   }
   else
   {
     struct HashElem *tmp = NULL, *last = NULL;
 
-    for (tmp = table->table[h], last = NULL; tmp; last = tmp, tmp = tmp->next)
+    for (tmp = table->table[hash], last = NULL; tmp; last = tmp, tmp = tmp->next)
     {
-      const int r = table->cmp_key(tmp->key, key);
-      if (r == 0)
+      const int rc = table->cmp_key(tmp->key, key);
+      if (rc == 0)
       {
         FREE(&he);
         return NULL;
       }
-      if (r > 0)
+      if (rc > 0)
         break;
     }
     if (last)
       last->next = he;
     else
-      table->table[h] = he;
+      table->table[hash] = he;
     he->next = tmp;
   }
   return he;
 }
 
 /**
- * union_hash_find_elem - Find a HashElem in a Hash table element using a key
- * @param table Hash table to search
+ * union_hash_find_elem - Find a HashElem in a Hash Table element using a key
+ * @param table Hash Table to search
  * @param key   Key (either string or integer)
  * @retval ptr HashElem matching the key
  */
-static struct HashElem *union_hash_find_elem(const struct Hash *table, union HashKey key)
+static struct HashElem *union_hash_find_elem(const struct HashTable *table, union HashKey key)
 {
   if (!table)
     return NULL;
 
-  int hash = table->gen_hash(key, table->nelem);
+  size_t hash = table->gen_hash(key, table->num_elems);
   struct HashElem *he = table->table[hash];
   for (; he; he = he->next)
   {
@@ -215,12 +191,12 @@ static struct HashElem *union_hash_find_elem(const struct Hash *table, union Has
 }
 
 /**
- * union_hash_find - Find the HashElem data in a Hash table element using a key
- * @param table Hash table to search
+ * union_hash_find - Find the HashElem data in a Hash Table element using a key
+ * @param table Hash Table to search
  * @param key   Key (either string or integer)
  * @retval ptr Data attached to the HashElem matching the key
  */
-static void *union_hash_find(const struct Hash *table, union HashKey key)
+static void *union_hash_find(const struct HashTable *table, union HashKey key)
 {
   if (!table)
     return NULL;
@@ -231,17 +207,17 @@ static void *union_hash_find(const struct Hash *table, union HashKey key)
 }
 
 /**
- * union_hash_delete - Remove an element from a Hash table
- * @param table   Hash table to use
+ * union_hash_delete - Remove an element from a Hash Table
+ * @param table   Hash Table to use
  * @param key     Key (either string or integer)
  * @param data    Private data to match (or NULL for any match)
  */
-static void union_hash_delete(struct Hash *table, union HashKey key, const void *data)
+static void union_hash_delete(struct HashTable *table, union HashKey key, const void *data)
 {
   if (!table)
     return;
 
-  int hash = table->gen_hash(key, table->nelem);
+  size_t hash = table->gen_hash(key, table->num_elems);
   struct HashElem *he = table->table[hash];
   struct HashElem **last = &table->table[hash];
 
@@ -267,14 +243,14 @@ static void union_hash_delete(struct Hash *table, union HashKey key, const void 
 }
 
 /**
- * mutt_hash_new - Create a new Hash table (with string keys)
- * @param nelem Number of elements it should contain
+ * mutt_hash_new - Create a new Hash Table (with string keys)
+ * @param num_elems Number of elements it should contain
  * @param flags Flags, see #HashFlags
- * @retval ptr New Hash table
+ * @retval ptr New Hash Table
  */
-struct Hash *mutt_hash_new(size_t nelem, HashFlags flags)
+struct HashTable *mutt_hash_new(size_t num_elems, HashFlags flags)
 {
-  struct Hash *table = hash_new(nelem);
+  struct HashTable *table = hash_new(num_elems);
   if (flags & MUTT_HASH_STRCASECMP)
   {
     table->gen_hash = gen_case_string_hash;
@@ -293,14 +269,14 @@ struct Hash *mutt_hash_new(size_t nelem, HashFlags flags)
 }
 
 /**
- * mutt_hash_int_new - Create a new Hash table (with integer keys)
- * @param nelem Number of elements it should contain
+ * mutt_hash_int_new - Create a new Hash Table (with integer keys)
+ * @param num_elems Number of elements it should contain
  * @param flags Flags, see #HashFlags
- * @retval ptr New Hash table
+ * @retval ptr New Hash Table
  */
-struct Hash *mutt_hash_int_new(size_t nelem, HashFlags flags)
+struct HashTable *mutt_hash_int_new(size_t num_elems, HashFlags flags)
 {
-  struct Hash *table = hash_new(nelem);
+  struct HashTable *table = hash_new(num_elems);
   table->gen_hash = gen_int_hash;
   table->cmp_key = cmp_int_key;
   if (flags & MUTT_HASH_ALLOW_DUPS)
@@ -310,11 +286,11 @@ struct Hash *mutt_hash_int_new(size_t nelem, HashFlags flags)
 
 /**
  * mutt_hash_set_destructor - Set the destructor for a Hash Table
- * @param table   Hash table to use
+ * @param table   Hash Table to use
  * @param fn      Callback function to free Hash Table's resources
  * @param fn_data Data to pass to the callback function
  */
-void mutt_hash_set_destructor(struct Hash *table, hashelem_free_t fn, intptr_t fn_data)
+void mutt_hash_set_destructor(struct HashTable *table, hash_hdata_free_t fn, intptr_t fn_data)
 {
   if (!table)
     return;
@@ -324,14 +300,14 @@ void mutt_hash_set_destructor(struct Hash *table, hashelem_free_t fn, intptr_t f
 
 /**
  * mutt_hash_typed_insert - Insert a string with type info into a Hash Table
- * @param table  Hash table to use
+ * @param table  Hash Table to use
  * @param strkey String key
  * @param type   Type to associate with the key
  * @param data   Private data associated with the key
  * @retval ptr Newly inserted HashElem
  */
-struct HashElem *mutt_hash_typed_insert(struct Hash *table, const char *strkey,
-                                        int type, void *data)
+struct HashElem *mutt_hash_typed_insert(struct HashTable *table,
+                                        const char *strkey, int type, void *data)
 {
   if (!table || !strkey)
     return NULL;
@@ -342,25 +318,25 @@ struct HashElem *mutt_hash_typed_insert(struct Hash *table, const char *strkey,
 }
 
 /**
- * mutt_hash_insert - Add a new element to the Hash table (with string keys)
- * @param table  Hash table (with string keys)
+ * mutt_hash_insert - Add a new element to the Hash Table (with string keys)
+ * @param table  Hash Table (with string keys)
  * @param strkey String key
  * @param data   Private data associated with the key
  * @retval ptr Newly inserted HashElem
  */
-struct HashElem *mutt_hash_insert(struct Hash *table, const char *strkey, void *data)
+struct HashElem *mutt_hash_insert(struct HashTable *table, const char *strkey, void *data)
 {
   return mutt_hash_typed_insert(table, strkey, -1, data);
 }
 
 /**
- * mutt_hash_int_insert - Add a new element to the Hash table (with integer keys)
- * @param table  Hash table (with integer keys)
+ * mutt_hash_int_insert - Add a new element to the Hash Table (with integer keys)
+ * @param table  Hash Table (with integer keys)
  * @param intkey Integer key
  * @param data   Private data associated with the key
  * @retval ptr Newly inserted HashElem
  */
-struct HashElem *mutt_hash_int_insert(struct Hash *table, unsigned int intkey, void *data)
+struct HashElem *mutt_hash_int_insert(struct HashTable *table, unsigned int intkey, void *data)
 {
   if (!table)
     return NULL;
@@ -370,12 +346,12 @@ struct HashElem *mutt_hash_int_insert(struct Hash *table, unsigned int intkey, v
 }
 
 /**
- * mutt_hash_find - Find the HashElem data in a Hash table element using a key
- * @param table  Hash table to search
+ * mutt_hash_find - Find the HashElem data in a Hash Table element using a key
+ * @param table  Hash Table to search
  * @param strkey String key to search for
  * @retval ptr Data attached to the HashElem matching the key
  */
-void *mutt_hash_find(const struct Hash *table, const char *strkey)
+void *mutt_hash_find(const struct HashTable *table, const char *strkey)
 {
   if (!table || !strkey)
     return NULL;
@@ -385,12 +361,12 @@ void *mutt_hash_find(const struct Hash *table, const char *strkey)
 }
 
 /**
- * mutt_hash_find_elem - Find the HashElem in a Hash table element using a key
- * @param table  Hash table to search
+ * mutt_hash_find_elem - Find the HashElem in a Hash Table element using a key
+ * @param table  Hash Table to search
  * @param strkey String key to search for
  * @retval ptr HashElem matching the key
  */
-struct HashElem *mutt_hash_find_elem(const struct Hash *table, const char *strkey)
+struct HashElem *mutt_hash_find_elem(const struct HashTable *table, const char *strkey)
 {
   if (!table || !strkey)
     return NULL;
@@ -400,12 +376,12 @@ struct HashElem *mutt_hash_find_elem(const struct Hash *table, const char *strke
 }
 
 /**
- * mutt_hash_int_find - Find the HashElem data in a Hash table element using a key
- * @param table  Hash table to search
+ * mutt_hash_int_find - Find the HashElem data in a Hash Table element using a key
+ * @param table  Hash Table to search
  * @param intkey Integer key
  * @retval ptr Data attached to the HashElem matching the key
  */
-void *mutt_hash_int_find(const struct Hash *table, unsigned int intkey)
+void *mutt_hash_int_find(const struct HashTable *table, unsigned int intkey)
 {
   if (!table)
     return NULL;
@@ -415,14 +391,14 @@ void *mutt_hash_int_find(const struct Hash *table, unsigned int intkey)
 }
 
 /**
- * mutt_hash_find_bucket - Find the HashElem in a Hash table element using a key
- * @param table Hash table to search
+ * mutt_hash_find_bucket - Find the HashElem in a Hash Table element using a key
+ * @param table Hash Table to search
  * @param strkey String key to search for
  * @retval ptr HashElem matching the key
  *
  * Unlike mutt_hash_find_elem(), this will return the first matching entry.
  */
-struct HashElem *mutt_hash_find_bucket(const struct Hash *table, const char *strkey)
+struct HashElem *mutt_hash_find_bucket(const struct HashTable *table, const char *strkey)
 {
   if (!table || !strkey)
     return NULL;
@@ -430,17 +406,17 @@ struct HashElem *mutt_hash_find_bucket(const struct Hash *table, const char *str
   union HashKey key;
 
   key.strkey = strkey;
-  int hash = table->gen_hash(key, table->nelem);
+  size_t hash = table->gen_hash(key, table->num_elems);
   return table->table[hash];
 }
 
 /**
- * mutt_hash_delete - Remove an element from a Hash table
- * @param table   Hash table to use
+ * mutt_hash_delete - Remove an element from a Hash Table
+ * @param table   Hash Table to use
  * @param strkey  String key to match
  * @param data    Private data to match (or NULL for any match)
  */
-void mutt_hash_delete(struct Hash *table, const char *strkey, const void *data)
+void mutt_hash_delete(struct HashTable *table, const char *strkey, const void *data)
 {
   if (!table || !strkey)
     return;
@@ -450,12 +426,12 @@ void mutt_hash_delete(struct Hash *table, const char *strkey, const void *data)
 }
 
 /**
- * mutt_hash_int_delete - Remove an element from a Hash table
- * @param table   Hash table to use
+ * mutt_hash_int_delete - Remove an element from a Hash Table
+ * @param table   Hash Table to use
  * @param intkey  Integer key to match
  * @param data    Private data to match (or NULL for any match)
  */
-void mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *data)
+void mutt_hash_int_delete(struct HashTable *table, unsigned int intkey, const void *data)
 {
   if (!table)
     return;
@@ -468,39 +444,39 @@ void mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *d
  * mutt_hash_free - Free a hash table
  * @param[out] ptr Hash Table to be freed
  */
-void mutt_hash_free(struct Hash **ptr)
+void mutt_hash_free(struct HashTable **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct Hash *hash = *ptr;
+  struct HashTable *table = *ptr;
   struct HashElem *elem = NULL, *tmp = NULL;
 
-  for (size_t i = 0; i < hash->nelem; i++)
+  for (size_t i = 0; i < table->num_elems; i++)
   {
-    for (elem = hash->table[i]; elem;)
+    for (elem = table->table[i]; elem;)
     {
       tmp = elem;
       elem = elem->next;
-      if (hash->hdata_free)
-        hash->hdata_free(tmp->type, tmp->data, hash->hdata);
-      if (hash->strdup_keys)
+      if (table->hdata_free)
+        table->hdata_free(tmp->type, tmp->data, table->hdata);
+      if (table->strdup_keys)
         FREE(&tmp->key.strkey);
       FREE(&tmp);
     }
   }
-  FREE(&hash->table);
+  FREE(&table->table);
   FREE(ptr);
 }
 
 /**
- * mutt_hash_walk - Iterate through all the HashElem's in a Hash table
- * @param table Hash table to search
+ * mutt_hash_walk - Iterate through all the HashElem's in a Hash Table
+ * @param table Hash Table to search
  * @param state Cursor to keep track
- * @retval ptr  Next HashElem in the Hash table
+ * @retval ptr  Next HashElem in the Hash Table
  * @retval NULL When the last HashElem has been seen
  */
-struct HashElem *mutt_hash_walk(const struct Hash *table, struct HashWalkState *state)
+struct HashElem *mutt_hash_walk(const struct HashTable *table, struct HashWalkState *state)
 {
   if (!table || !state)
     return NULL;
@@ -514,7 +490,7 @@ struct HashElem *mutt_hash_walk(const struct Hash *table, struct HashWalkState *
   if (state->last)
     state->index++;
 
-  while (state->index < table->nelem)
+  while (state->index < table->num_elems)
   {
     if (table->table[state->index])
     {

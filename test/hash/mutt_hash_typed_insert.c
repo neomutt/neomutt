@@ -27,20 +27,20 @@
 
 void test_mutt_hash_typed_insert(void)
 {
-  // struct HashElem *mutt_hash_typed_insert(struct Hash *table, const char *strkey, int type, void *data);
+  // struct HashElem *mutt_hash_typed_insert(struct HashTable *table, const char *strkey, int type, void *data);
 
   {
     TEST_CHECK(!mutt_hash_typed_insert(NULL, "apple", 0, "banana"));
   }
 
   {
-    struct Hash hash = { 0 };
-    TEST_CHECK(!mutt_hash_typed_insert(&hash, NULL, 0, "banana"));
+    struct HashTable table = { 0 };
+    TEST_CHECK(!mutt_hash_typed_insert(&table, NULL, 0, "banana"));
   }
 
   {
-    struct Hash *hash = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
-    TEST_CHECK(mutt_hash_typed_insert(hash, "apple", 0, NULL) != NULL);
-    mutt_hash_free(&hash);
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
+    TEST_CHECK(mutt_hash_typed_insert(table, "apple", 0, NULL) != NULL);
+    mutt_hash_free(&table);
   }
 }

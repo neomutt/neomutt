@@ -32,7 +32,7 @@
 #include "address/lib.h"
 #include "alias.h"
 
-struct Hash *ReverseAliases; ///< Hash table of aliases (email address -> alias)
+struct HashTable *ReverseAliases; ///< Hash Table of aliases (email address -> alias)
 
 /**
  * alias_reverse_add - Add an email address lookup for an Alias

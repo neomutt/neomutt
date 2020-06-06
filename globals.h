@@ -57,7 +57,7 @@ WHERE char *LastFolder;    ///< Previously selected mailbox
 
 extern const char *GitVer;
 
-WHERE struct Hash *TagFormats;         ///< Hash table of tag-formats (tag -> format string)
+WHERE struct HashTable *TagFormats; ///< Hash Table of tag-formats (tag -> format string)
 
 /* Lists of strings */
 WHERE struct ListHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList)); ///< List of preferred mime types to display

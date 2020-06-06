@@ -56,7 +56,7 @@ extern short C_SortAlias;
 extern char *C_QueryCommand;
 extern char *C_QueryFormat;
 
-extern struct Hash *ReverseAliases;
+extern struct HashTable *ReverseAliases;
 
 void alias_init    (void);
 void alias_shutdown(void);

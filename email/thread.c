@@ -106,7 +106,7 @@ void insert_message(struct MuttThread **add, struct MuttThread *parent, struct M
 }
 
 /**
- * thread_hash_destructor - Hash Destructor callback - Implements ::hashelem_free_t
+ * thread_hash_destructor - Hash Destructor callback - Implements ::hash_hdata_free_t
  */
 void thread_hash_destructor(int type, void *obj, intptr_t data)
 {

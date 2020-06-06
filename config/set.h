@@ -193,7 +193,7 @@ struct ConfigSetType
  */
 struct ConfigSet
 {
-  struct Hash *hash;              ///< HashTable storing the config items
+  struct HashTable *hash;         ///< HashTable storing the config items
   struct ConfigSetType types[18]; ///< All the defined config types
 };
 

@@ -27,5 +27,5 @@
 
 void test_mutt_hash_int_new(void)
 {
-  // struct Hash *mutt_hash_int_new(size_t nelem, HashFlags flags);
+  // struct HashTable *mutt_hash_int_new(size_t num_elems, HashFlags flags);
 }

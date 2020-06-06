@@ -233,7 +233,7 @@ struct ImapMboxData
   unsigned int unseen;
 
   // Cached data used only when the mailbox is opened
-  struct Hash *uid_hash;
+  struct HashTable *uid_hash;
   struct Email **msn_index;   ///< look up headers by (MSN-1)
   size_t msn_index_size;       ///< allocation size
   unsigned int max_msn;        ///< the largest MSN fetched so far
