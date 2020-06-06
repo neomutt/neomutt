@@ -64,6 +64,42 @@
 #define INS_SORT_THRESHOLD 6
 
 /**
+ * maildir_edata_free - Free data attached to the Email
+ * @param[out] ptr Maildir data
+ */
+void maildir_edata_free(void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  // struct MaildirEmailData *edata = *ptr;
+
+  FREE(ptr);
+}
+
+/**
+ * maildir_edata_new - Create a new MaildirEmailData object
+ * @retval ptr New MaildirEmailData struct
+ */
+struct MaildirEmailData *maildir_edata_new(void)
+{
+  struct MaildirEmailData *edata = mutt_mem_calloc(1, sizeof(struct MaildirEmailData));
+  return edata;
+}
+
+/**
+ * maildir_edata_get - Get the private data for this Email
+ * @param e Email
+ * @retval ptr MaildirEmailData
+ */
+struct MaildirEmailData *maildir_edata_get(struct Email *e)
+{
+  if (!e)
+    return NULL;
+  return e->edata;
+}
+
+/**
  * maildir_mdata_free - Free data attached to the Mailbox
  * @param[out] ptr Maildir data
  */
