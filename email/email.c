@@ -52,7 +52,6 @@ void email_free(struct Email **ptr)
 
   mutt_env_free(&e->env);
   mutt_body_free(&e->content);
-  FREE(&e->maildir_flags);
   FREE(&e->tree);
   FREE(&e->path);
 #ifdef MIXMASTER

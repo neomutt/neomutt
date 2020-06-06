@@ -52,7 +52,7 @@ const char *win_name(const struct MuttWindow *win);
 // Graphviz
 void        add_flag               (struct Buffer *buf, bool is_set, const char *name);
 void        dump_graphviz          (const char *title);
-void        dump_graphviz_email    (const struct Email *e);
+void        dump_graphviz_email    (struct Email *e);
 const char *get_content_disposition(enum ContentDisposition disp);
 const char *get_content_encoding   (enum ContentEncoding enc);
 const char *get_content_type       (enum ContentType type);
