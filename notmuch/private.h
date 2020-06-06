@@ -26,8 +26,8 @@
 #include "core/lib.h"
 #include "progress.h"
 
-#ifndef MUTT_NOTMUCH_NOTMUCH_PRIVATE_H
-#define MUTT_NOTMUCH_NOTMUCH_PRIVATE_H
+#ifndef MUTT_NOTMUCH_PRIVATE_H
+#define MUTT_NOTMUCH_PRIVATE_H
 
 #ifdef LIBNOTMUCH_CHECK_VERSION
 #undef LIBNOTMUCH_CHECK_VERSION
@@ -111,4 +111,4 @@ void                  nm_mdata_free(void **ptr);
 struct NmMboxData *   nm_mdata_get (struct Mailbox *m);
 struct NmMboxData *   nm_mdata_new (const char *url);
 
-#endif /* MUTT_NOTMUCH_NOTMUCH_PRIVATE_H */
+#endif /* MUTT_NOTMUCH_PRIVATE_H */

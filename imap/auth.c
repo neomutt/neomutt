@@ -30,7 +30,7 @@
 
 #include "config.h"
 #include <string.h>
-#include "imap_private.h" // IWYU pragma: keep
+#include "private.h"
 #include "mutt/lib.h"
 #include "auth.h"
 

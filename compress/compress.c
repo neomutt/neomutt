@@ -29,7 +29,7 @@
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
-#include "compress_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "lib.h"
 

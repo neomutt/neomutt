@@ -42,7 +42,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <utime.h>
-#include "maildir_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -56,7 +56,7 @@
 #include "protos.h"
 #include "sort.h"
 #include "hcache/lib.h"
-#include "maildir/lib.h" // IWYU pragma: keep
+#include "maildir/lib.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif

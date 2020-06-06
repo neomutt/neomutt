@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CONN_CONN_PRIVATE_H
-#define MUTT_CONN_CONN_PRIVATE_H
+#ifndef MUTT_CONN_PRIVATE_H
+#define MUTT_CONN_PRIVATE_H
 
 #include <stddef.h>
 #include <time.h>
@@ -36,4 +36,4 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count);
 
 void mutt_tunnel_socket_setup(struct Connection *conn);
 
-#endif /* MUTT_CONN_CONN_PRIVATE_H */
+#endif /* MUTT_CONN_PRIVATE_H */

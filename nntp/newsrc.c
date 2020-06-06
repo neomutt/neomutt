@@ -38,7 +38,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include "nntp_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"

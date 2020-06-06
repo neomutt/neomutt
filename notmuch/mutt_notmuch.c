@@ -51,7 +51,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include "notmuch_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"

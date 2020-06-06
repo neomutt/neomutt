@@ -31,7 +31,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "pop_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "conn/lib.h"

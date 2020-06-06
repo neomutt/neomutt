@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMPRESS_COMPRESS_PRIVATE_H
-#define MUTT_COMPRESS_COMPRESS_PRIVATE_H
+#ifndef MUTT_COMPRESS_PRIVATE_H
+#define MUTT_COMPRESS_PRIVATE_H
 
 #define COMPRESS_OPS(_name, _min_level, _max_level) \
   const struct ComprOps compr_##_name##_ops = {     \
@@ -34,4 +34,4 @@
     .close      = compr_##_name##_close,            \
   };
 
-#endif /* MUTT_COMPRESS_COMPRESS_PRIVATE_H */
+#endif /* MUTT_COMPRESS_PRIVATE_H */

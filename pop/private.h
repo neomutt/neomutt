@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_POP_POP_PRIVATE_H
-#define MUTT_POP_POP_PRIVATE_H
+#ifndef MUTT_POP_PRIVATE_H
+#define MUTT_POP_PRIVATE_H
 
 #include <stdbool.h>
 #include <time.h>
@@ -152,4 +152,4 @@ struct PopAccountData *pop_adata_get(struct Mailbox *m);
 struct PopEmailData *pop_edata_get(struct Email *e);
 const char *pop_get_field(enum ConnAccountField field);
 
-#endif /* MUTT_POP_POP_PRIVATE_H */
+#endif /* MUTT_POP_PRIVATE_H */

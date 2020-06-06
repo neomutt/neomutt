@@ -30,7 +30,7 @@
 #include <stddef.h>
 #include <gpgme.h>
 #include <stdbool.h>
-#include "autocrypt_private.h" // IWYU pragma: keep
+#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"

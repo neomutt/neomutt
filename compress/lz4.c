@@ -30,7 +30,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <lz4.h>
-#include "compress_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "lib.h"
 #include "hcache/lib.h"

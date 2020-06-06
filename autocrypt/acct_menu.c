@@ -30,7 +30,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "autocrypt_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"

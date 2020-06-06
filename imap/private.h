@@ -22,8 +22,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_IMAP_IMAP_PRIVATE_H
-#define MUTT_IMAP_IMAP_PRIVATE_H
+#ifndef MUTT_IMAP_PRIVATE_H
+#define MUTT_IMAP_PRIVATE_H
 
 #include "config.h"
 #include <stdbool.h>
@@ -345,4 +345,4 @@ void imap_disallow_reopen(struct Mailbox *m);
 /* search.c */
 void cmd_parse_search(struct ImapAccountData *adata, const char *s);
 
-#endif /* MUTT_IMAP_IMAP_PRIVATE_H */
+#endif /* MUTT_IMAP_PRIVATE_H */

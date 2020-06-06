@@ -31,7 +31,7 @@
 #include <stddef.h>
 #include <zconf.h>
 #include <zlib.h>
-#include "compress_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "lib.h"
 #include "hcache/lib.h"

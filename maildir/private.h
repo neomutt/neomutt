@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MAILDIR_MAILDIR_PRIVATE_H
-#define MUTT_MAILDIR_MAILDIR_PRIVATE_H
+#ifndef MUTT_MAILDIR_PRIVATE_H
+#define MUTT_MAILDIR_PRIVATE_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -110,4 +110,4 @@ int mh_sync_message(struct Mailbox *m, int msgno);
 int maildir_sync_message(struct Mailbox *m, int msgno);
 int mh_rewrite_message(struct Mailbox *m, int msgno);
 
-#endif /* MUTT_MAILDIR_MAILDIR_PRIVATE_H */
+#endif /* MUTT_MAILDIR_PRIVATE_H */

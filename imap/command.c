@@ -38,7 +38,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "imap_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"

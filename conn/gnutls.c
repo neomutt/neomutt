@@ -34,7 +34,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "conn_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "lib.h"

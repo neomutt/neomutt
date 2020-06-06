@@ -28,7 +28,7 @@
  */
 
 #include "config.h"
-#include "imap_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "conn/lib.h"
 #include "auth.h"

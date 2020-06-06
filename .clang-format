@@ -19,7 +19,7 @@ IncludeCategories:
     Priority:   -100
 
   # Backend private header
-  - Regex:      '".*_private\.h"'
+  - Regex:      '"private\.h"'
     Priority:   -90
 
   # NeoMutt library headers

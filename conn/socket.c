@@ -32,7 +32,7 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
-#include "conn_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "socket.h"
 #include "conn_globals.h"

@@ -43,7 +43,7 @@
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
-#include "conn_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "conn_globals.h"
@@ -51,7 +51,7 @@
 #include "connection.h"
 #include "globals.h"
 #include "options.h"
-#include "socket.h" // IWYU pragma: keep
+#include "socket.h"
 #ifdef HAVE_LIBIDN
 #include "address/lib.h"
 #endif

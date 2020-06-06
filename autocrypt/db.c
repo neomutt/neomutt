@@ -31,7 +31,7 @@
 #include <sqlite3.h>
 #include <stdbool.h>
 #include <sys/stat.h>
-#include "autocrypt_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "globals.h"

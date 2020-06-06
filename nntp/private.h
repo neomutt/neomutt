@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_NNTP_NNTP_PRIVATE_H
-#define MUTT_NNTP_NNTP_PRIVATE_H
+#ifndef MUTT_NNTP_PRIVATE_H
+#define MUTT_NNTP_PRIVATE_H
 
 #include <stdint.h>
 #include "lib.h"
@@ -61,4 +61,4 @@ void                    nntp_mdata_free        (void **ptr);
 void                    nntp_newsrc_gen_entries(struct Mailbox *m);
 int                     nntp_open_connection   (struct NntpAccountData *adata);
 
-#endif /* MUTT_NNTP_NNTP_PRIVATE_H */
+#endif /* MUTT_NNTP_PRIVATE_H */

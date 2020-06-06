@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_AUTOCRYPT_AUTOCRYPT_PRIVATE_H
-#define MUTT_AUTOCRYPT_AUTOCRYPT_PRIVATE_H
+#ifndef MUTT_AUTOCRYPT_PRIVATE_H
+#define MUTT_AUTOCRYPT_PRIVATE_H
 
 #include <sqlite3.h>
 #include <stdbool.h>
@@ -72,4 +72,4 @@ bool                           mutt_autocrypt_gpgme_is_valid_key(const char *key
 int                            mutt_autocrypt_gpgme_select_key(struct Buffer *keyid, struct Buffer *keydata);
 int                            mutt_autocrypt_gpgme_select_or_create_key(struct Address *addr, struct Buffer *keyid, struct Buffer *keydata);
 
-#endif /* MUTT_AUTOCRYPT_AUTOCRYPT_PRIVATE_H */
+#endif /* MUTT_AUTOCRYPT_PRIVATE_H */

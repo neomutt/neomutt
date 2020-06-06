@@ -29,7 +29,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <sqlite3.h>
-#include "autocrypt_private.h"
+#include "private.h"
 #include "mutt/lib.h"
 
 /**
