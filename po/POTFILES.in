@@ -56,6 +56,7 @@ core/account.c
 core/mailbox.c
 core/neomutt.c
 debug/backtrace.c
+debug/common.c
 debug/graphviz.c
 debug/notify.c
 debug/parse_test.c
@@ -181,8 +182,8 @@ nntp/browse.c
 nntp/complete.c
 nntp/newsrc.c
 nntp/nntp.c
-notmuch/mutt_notmuch.c
-notmuch/nm_db.c
+notmuch/db.c
+notmuch/notmuch.c
 opcodes.c
 opcodes.h
 pager.c
