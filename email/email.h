@@ -106,8 +106,6 @@ struct Email
 
   struct TagList tags;         ///< For drivers that support server tagging
 
-  char *maildir_flags;         ///< Unknown maildir flags
-
   void *edata;                    ///< Driver-specific data
   void (*edata_free)(void **ptr); ///< Driver-specific data free function
   struct Notify *notify;          ///< Notifications handler
