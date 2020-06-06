@@ -154,7 +154,7 @@ struct CryptModuleSpecs
    *
    * Encrypt the mail body to all the given keys.
    */
-    struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, bool sign, const struct AddressList *from);
+  struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, bool sign, const struct AddressList *from);
 
   /**
    * pgp_make_key_attachment - Generate a public key attachment

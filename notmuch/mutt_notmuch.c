@@ -21,6 +21,12 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * @page nm_notmuch Notmuch virtual mailbox type
+ *
+ * Notmuch virtual mailbox type
  *
  * ## Notes
  *
@@ -33,12 +39,6 @@
  *
  * - exception are nm_nonctx_* functions -- these functions use nm_default_url
  *   (or parse URL from another resource)
- */
-
-/**
- * @page nm_notmuch Notmuch virtual mailbox type
- *
- * Notmuch virtual mailbox type
  */
 
 #include "config.h"
@@ -298,7 +298,7 @@ static struct NmMboxData *nm_get_default_data(void)
  *
  * Create a new NmMboxData struct and add it Mailbox::data.
  * Notmuch-specific data will be stored in this struct.
- * This struct can be freed using nm_edata_free().
+ * This struct can be freed using nm_mdata_free().
  */
 static int init_mailbox(struct Mailbox *m)
 {

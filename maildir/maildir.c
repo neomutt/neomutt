@@ -487,7 +487,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
       }
       e->trash = p->email->trash;
 
-      /* this is a duplicate of an existing header, so remove it */
+      /* this is a duplicate of an existing email, so remove it */
       email_free(&p->email);
     }
     /* This message was not in the list of messages we just scanned.

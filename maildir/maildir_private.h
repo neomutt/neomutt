@@ -58,7 +58,7 @@ struct Maildir
 };
 
 typedef uint8_t MhSeqFlags;     ///< Flags, e.g. #MH_SEQ_UNSEEN
-#define MH_SEQ_NO_FLAGS         ///< No flags are set
+#define MH_SEQ_NO_FLAGS      0  ///< No flags are set
 #define MH_SEQ_UNSEEN  (1 << 0) ///< Email hasn't been read
 #define MH_SEQ_REPLIED (1 << 1) ///< Email has been replied to
 #define MH_SEQ_FLAGGED (1 << 2) ///< Email is flagged

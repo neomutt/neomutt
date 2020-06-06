@@ -198,15 +198,15 @@ enum PrexImapDate
  */
 enum PrexMboxFrom
 {
-  PREX_MBOX_FROM_MATCH_FULL,      /// `[From god@heaven.af.mil Sat Jan  3 01:05:34 1996]`
-  PREX_MBOX_FROM_MATCH_ENVSENDER, /// `From [god@heaven.af.mil] Sat Jan  3 01:05:34 1996`
-  PREX_MBOX_FROM_MATCH_DOW,       /// `From god@heaven.af.mil [Sat] Jan  3 01:05:34 1996`
-  PREX_MBOX_FROM_MATCH_MONTH,     /// `From god@heaven.af.mil Sat [Jan]  3 01:05:34 1996`
-  PREX_MBOX_FROM_MATCH_DAY,       /// `From god@heaven.af.mil Sat Jan [ 3] 01:05:34 1996`
-  PREX_MBOX_FROM_MATCH_DAY1,      /// `From god@heaven.af.mil Sat Jan  [3] 01:05:34 1996`
-  PREX_MBOX_FROM_MATCH_DAY2,      /// `From god@heaven.af.mil Sat Jan [10] 01:05:34 1996`
-  PREX_MBOX_FROM_MATCH_TIME,      /// `From god@heaven.af.mil Sat Jan 10 [01:05:34] 1996`
-  PREX_MBOX_FROM_MATCH_YEAR,      /// `From god@heaven.af.mil Sat Jan 10 01:05:34 [1996]`
+  PREX_MBOX_FROM_MATCH_FULL,      ///< `[From god@heaven.af.mil Sat Jan  3 01:05:34 1996]`
+  PREX_MBOX_FROM_MATCH_ENVSENDER, ///< `From [god@heaven.af.mil] Sat Jan  3 01:05:34 1996`
+  PREX_MBOX_FROM_MATCH_DOW,       ///< `From god@heaven.af.mil [Sat] Jan  3 01:05:34 1996`
+  PREX_MBOX_FROM_MATCH_MONTH,     ///< `From god@heaven.af.mil Sat [Jan]  3 01:05:34 1996`
+  PREX_MBOX_FROM_MATCH_DAY,       ///< `From god@heaven.af.mil Sat Jan [ 3] 01:05:34 1996`
+  PREX_MBOX_FROM_MATCH_DAY1,      ///< `From god@heaven.af.mil Sat Jan  [3] 01:05:34 1996`
+  PREX_MBOX_FROM_MATCH_DAY2,      ///< `From god@heaven.af.mil Sat Jan [10] 01:05:34 1996`
+  PREX_MBOX_FROM_MATCH_TIME,      ///< `From god@heaven.af.mil Sat Jan 10 [01:05:34] 1996`
+  PREX_MBOX_FROM_MATCH_YEAR,      ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [1996]`
   PREX_MBOX_FROM_MATCH_MAX
 };
 
@@ -217,21 +217,21 @@ enum PrexMboxFrom
  */
 enum PrexMboxFromLax
 {
-  PREX_MBOX_FROM_LAX_MATCH_FULL,            /// `[From god@heaven.af.mil Sat Jan  3 01:05:34 1996]`
-  PREX_MBOX_FROM_LAX_MATCH_ENVSENDER,       /// `From [god at heaven.af.mil] Sat Jan  3 01:05:34 1996`
-  PREX_MBOX_FROM_LAX_MATCH_ENVSENDER_PIPER, /// `From [god@heaven.af.mil] Sat Jan  3 01:05:34 1996`
-  PREX_MBOX_FROM_LAX_MATCH_DOW,             /// `From god@heaven.af.mil [Sat] Jan  3 01:05:34 1996`
-  PREX_MBOX_FROM_LAX_MATCH_MONTH,           /// `From god@heaven.af.mil Sat [Jan]  3 01:05:34 1996`
-  PREX_MBOX_FROM_LAX_MATCH_DAY,             /// `From god@heaven.af.mil Sat Jan [ 3] 01:05:34 1996`
-  PREX_MBOX_FROM_LAX_MATCH_DAY1,            /// `From god@heaven.af.mil Sat Jan  [3] 01:05:34 1996`
-  PREX_MBOX_FROM_LAX_MATCH_DAY2,            /// `From god@heaven.af.mil Sat Jan [10] 01:05:34 1996`
-  PREX_MBOX_FROM_LAX_MATCH_TIME,            /// `From god@heaven.af.mil Sat Jan 10 [01:05:34] 1996`
-  PREX_MBOX_FROM_LAX_MATCH_TIME_SEC,        /// `From god@heaven.af.mil Sat Jan 10 [01:05:34] 1996`
-  PREX_MBOX_FROM_LAX_MATCH_TIME_NOSEC,      /// `From god@heaven.af.mil Sat Jan 10 [01:05] 1996`
-  PREX_MBOX_FROM_LAX_MATCH_TZ,              /// `From god@heaven.af.mil Sat Jan 10 01:05:34 [MET DST] 1996`
-  PREX_MBOX_FROM_LAX_MATCH_YEAR,            /// `From god@heaven.af.mil Sat Jan 10 01:05:34 [1996]`
-  PREX_MBOX_FROM_LAX_MATCH_YEAR_4DIG,       /// `From god@heaven.af.mil Sat Jan 10 01:05:34 [1996]`
-  PREX_MBOX_FROM_LAX_MATCH_YEAR_2DIG,       /// `From god@heaven.af.mil Sat Jan 10 01:05:34 [96]`
+  PREX_MBOX_FROM_LAX_MATCH_FULL,            ///< `[From god@heaven.af.mil Sat Jan  3 01:05:34 1996]`
+  PREX_MBOX_FROM_LAX_MATCH_ENVSENDER,       ///< `From [god at heaven.af.mil] Sat Jan  3 01:05:34 1996`
+  PREX_MBOX_FROM_LAX_MATCH_ENVSENDER_PIPER, ///< `From [god@heaven.af.mil] Sat Jan  3 01:05:34 1996`
+  PREX_MBOX_FROM_LAX_MATCH_DOW,             ///< `From god@heaven.af.mil [Sat] Jan  3 01:05:34 1996`
+  PREX_MBOX_FROM_LAX_MATCH_MONTH,           ///< `From god@heaven.af.mil Sat [Jan]  3 01:05:34 1996`
+  PREX_MBOX_FROM_LAX_MATCH_DAY,             ///< `From god@heaven.af.mil Sat Jan [ 3] 01:05:34 1996`
+  PREX_MBOX_FROM_LAX_MATCH_DAY1,            ///< `From god@heaven.af.mil Sat Jan  [3] 01:05:34 1996`
+  PREX_MBOX_FROM_LAX_MATCH_DAY2,            ///< `From god@heaven.af.mil Sat Jan [10] 01:05:34 1996`
+  PREX_MBOX_FROM_LAX_MATCH_TIME,            ///< `From god@heaven.af.mil Sat Jan 10 [01:05:34] 1996`
+  PREX_MBOX_FROM_LAX_MATCH_TIME_SEC,        ///< `From god@heaven.af.mil Sat Jan 10 [01:05:34] 1996`
+  PREX_MBOX_FROM_LAX_MATCH_TIME_NOSEC,      ///< `From god@heaven.af.mil Sat Jan 10 [01:05] 1996`
+  PREX_MBOX_FROM_LAX_MATCH_TZ,              ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [MET DST] 1996`
+  PREX_MBOX_FROM_LAX_MATCH_YEAR,            ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [1996]`
+  PREX_MBOX_FROM_LAX_MATCH_YEAR_4DIG,       ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [1996]`
+  PREX_MBOX_FROM_LAX_MATCH_YEAR_2DIG,       ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [96]`
   PREX_MBOX_FROM_LAX_MATCH_MAX
 };
 
