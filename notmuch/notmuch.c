@@ -268,7 +268,7 @@ struct NmEmailData *nm_edata_get(struct Email *e)
   if (!e)
     return NULL;
 
-  return e->edata;
+  return e->nm_edata;
 }
 
 /**
@@ -775,8 +775,7 @@ static int init_email(struct Email *e, const char *path, notmuch_message_t *msg)
     return 0;
 
   struct NmEmailData *edata = nm_edata_new();
-  e->edata = edata;
-  e->edata_free = nm_edata_free;
+  e->nm_edata = edata;
 
   /* Notmuch ensures that message Id exists (if not notmuch Notmuch will
    * generate an ID), so it's more safe than use neomutt Email->env->id */

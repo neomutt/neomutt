@@ -100,6 +100,10 @@ struct Email
   struct ListHead chain;       ///< Mixmaster chain
 #endif
 
+#ifdef USE_NOTMUCH
+  void *nm_edata;              ///< Notmuch private data
+#endif
+
   struct TagList tags;         ///< For drivers that support server tagging
 
   char *maildir_flags;         ///< Unknown maildir flags
