@@ -1865,6 +1865,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           }
           break;
         }
+        mutt_buffer_dealloc(&errmsg);
 
         destroy_state(&state);
 #ifdef USE_IMAP

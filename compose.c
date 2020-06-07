@@ -1846,6 +1846,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
                                           &numfiles, MUTT_SEL_MULTI) == -1) ||
             mutt_buffer_is_empty(&fname))
         {
+          for (int i = 0; i < numfiles; i++)
+            FREE(&files[i]);
+
+          FREE(&files);
           break;
         }
 
@@ -2564,5 +2568,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
   mutt_actx_free(&actx);
 
+  mutt_list_free(&redraw.to_list);
+  mutt_list_free(&redraw.cc_list);
+  mutt_list_free(&redraw.bcc_list);
   return rc;
 }
