@@ -110,6 +110,8 @@ options {
   with-zstd:path            => "Location of Zstandard"
 # System
   with-sysroot:path         => "Target system root"
+# Misc
+  include-path-in-cflags=1  => "Remove include paths from CFLAGS in the output of neomutt -v"
 # Testing
   testing=0                 => "Enable Unit Testing"
   coverage=0                => "Enable Coverage Testing"
@@ -136,9 +138,9 @@ if {1} {
   foreach opt {
     autocrypt bdb coverage debug-backtrace debug-graphviz debug-notify
     debug-parse-test debug-window doc everything fmemopen full-doc gdbm gnutls
-    gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua lz4
-    mixmaster nls notmuch pcre2 pgp pkgconf qdbm rocksdb sasl smime sqlite ssl
-    testing tdb tokyocabinet zlib zstd
+    gpgme gss homespool idn idn2 include-path-in-cflags inotify kyotocabinet
+    lmdb locales-fix lua lz4 mixmaster nls notmuch pcre2 pgp pkgconf qdbm
+    rocksdb sasl smime sqlite ssl testing tdb tokyocabinet zlib zstd 
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -1211,7 +1213,13 @@ if {[get-define want-debug-window]} {
 ###############################################################################
 # Generate conststrings.c
 set conststrings "\
-  unsigned char cc_cflags\[\] = {[text2c [get-define CFLAGS]]};\n\
+  unsigned char cc_cflags\[\] = {[text2c [expr {
+    [get-define want-include-path-in-cflags]
+    ? [get-define CFLAGS]
+    : [lmap x [get-define CFLAGS] {
+        expr {[string equal -length 2 $x {-I}] ? [continue] : $x}
+      }]
+  }]]};\n\
   unsigned char configure_options\[\] = {[text2c $conf_options]};\n"
 if {[catch {set fd [open conststrings.c w]
             puts $fd $conststrings
