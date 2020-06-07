@@ -176,10 +176,10 @@
   NEOMUTT_TEST_ITEM(test_email_size)                                           \
   NEOMUTT_TEST_ITEM(test_emaillist_add_email)                                  \
   NEOMUTT_TEST_ITEM(test_emaillist_clear)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_free)                               \
   NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_new)                                \
                                                                                \
   /* envelope */                                                               \
-  NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_free)                               \
   NEOMUTT_TEST_ITEM(test_mutt_env_cmp_strict)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_env_free)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_env_merge)                                       \
@@ -561,16 +561,16 @@
 #define NEOMUTT_TEST_ITEM(x) void x(void);
 NEOMUTT_TEST_LIST
 #if defined(USE_LZ4) || defined(USE_ZLIB) || defined(USE_ZSTD)
-NEOMUTT_TEST_ITEM(test_compress_common)
+  NEOMUTT_TEST_ITEM(test_compress_common)
 #endif
 #ifdef USE_LZ4
-NEOMUTT_TEST_ITEM(test_compress_lz4)
+  NEOMUTT_TEST_ITEM(test_compress_lz4)
 #endif
 #ifdef USE_ZLIB
-NEOMUTT_TEST_ITEM(test_compress_zlib)
+  NEOMUTT_TEST_ITEM(test_compress_zlib)
 #endif
 #ifdef USE_ZSTD
-NEOMUTT_TEST_ITEM(test_compress_zstd)
+  NEOMUTT_TEST_ITEM(test_compress_zstd)
 #endif
 #undef NEOMUTT_TEST_ITEM
 

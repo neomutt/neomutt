@@ -61,9 +61,6 @@ BUFFER_OBJS	= test/buffer/mutt_buffer_add_printf.o \
 		  test/buffer/mutt_buffer_is_empty.o \
 		  test/buffer/mutt_buffer_len.o \
 		  test/buffer/mutt_buffer_make.o \
-		  test/buffer/mutt_buffer_pool_free.o \
-		  test/buffer/mutt_buffer_pool_get.o \
-		  test/buffer/mutt_buffer_pool_release.o \
 		  test/buffer/mutt_buffer_printf.o \
 		  test/buffer/mutt_buffer_reset.o \
 		  test/buffer/mutt_buffer_strcpy.o \
@@ -149,10 +146,10 @@ EMAIL_OBJS	= test/email/common.o \
 		  test/email/email_size.o \
 		  test/email/emaillist_add_email.o \
 		  test/email/emaillist_clear.o \
+		  test/email/mutt_autocrypthdr_free.o \
 		  test/email/mutt_autocrypthdr_new.o
 
-ENVELOPE_OBJS	= test/envelope/mutt_autocrypthdr_free.o \
-		  test/envelope/mutt_env_cmp_strict.o \
+ENVELOPE_OBJS	= test/envelope/mutt_env_cmp_strict.o \
 		  test/envelope/mutt_env_free.o \
 		  test/envelope/mutt_env_merge.o \
 		  test/envelope/mutt_env_new.o \
@@ -386,6 +383,10 @@ PATTERN_OBJS	= pattern.o \
 		  test/pattern/dummy.o \
 		  test/pattern/extract.o
 
+POOL_OBJS	= test/pool/mutt_buffer_pool_free.o \
+		  test/pool/mutt_buffer_pool_get.o \
+		  test/pool/mutt_buffer_pool_release.o
+
 REGEX_OBJS	= test/regex/mutt_regex_capture.o \
 		  test/regex/mutt_regex_compile.o \
 		  test/regex/mutt_regex_free.o \
@@ -552,6 +553,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(PARSE_OBJS) \
 		  $(PATH_OBJS) \
 		  $(PATTERN_OBJS) \
+		  $(POOL_OBJS) \
 		  $(REGEX_OBJS) \
 		  $(RFC2047_OBJS) \
 		  $(RFC2231_OBJS) \
