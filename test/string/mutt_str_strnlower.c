@@ -25,11 +25,40 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 
+struct TestString
+{
+  char *src;
+  char *result;
+  int len;
+};
+
 void test_mutt_str_strnlower(void)
 {
   // char *mutt_str_strnlower(char *str, size_t num);
 
+  static const struct TestString tests[] = {
+    { "", "", 0 },       { "", "", 10 },      { "abc", "abc", 3 },
+    { "AbC", "abc", 3 }, { "ABC", "abC", 2 }, { "$%^", "$%^", 3 },
+  };
+
   {
     TEST_CHECK(mutt_str_strnlower(NULL, 0) == NULL);
+  }
+
+  {
+    char buf[32];
+    char *result = NULL;
+
+    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    {
+      TEST_CASE_("'%s', %d", tests[i].src, tests[i].len);
+      mutt_str_strfcpy(buf, tests[i].src, sizeof(buf));
+      result = mutt_str_strnlower(buf, tests[i].len);
+      if (!TEST_CHECK(mutt_str_strcmp(result, tests[i].result) == 0))
+      {
+        TEST_MSG("Expected: '%s'", tests[i].result);
+        TEST_MSG("Actual:   '%s'", buf);
+      }
+    }
   }
 }

@@ -64,6 +64,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_intl)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_local)                               \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_write)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_write_list)                             \
                                                                                \
   /* attach */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_attach)                                 \
@@ -338,6 +339,7 @@
   /* mapping */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_map_get_name)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_map_get_value)                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_map_get_value_n)                                 \
                                                                                \
   /* mbyte */                                                                  \
   NEOMUTT_TEST_ITEM(test_mutt_mb_charlen)                                      \
@@ -429,6 +431,10 @@
                                                                                \
   /* pattern */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_pattern_comp)                                    \
+                                                                               \
+  /* prex */                                                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_prex_capture)                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_prex_free)                                       \
                                                                                \
   /* regex */                                                                  \
   NEOMUTT_TEST_ITEM(test_mutt_regex_capture)                                   \

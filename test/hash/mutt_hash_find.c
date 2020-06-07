@@ -29,6 +29,10 @@ void test_mutt_hash_find(void)
 {
   // void *mutt_hash_find(const struct HashTable *table, const char *strkey);
 
+  int dummy1 = 42;
+  int dummy2 = 13;
+  int dummy3 = 99;
+
   {
     TEST_CHECK(!mutt_hash_find(NULL, "apple"));
   }
@@ -36,6 +40,15 @@ void test_mutt_hash_find(void)
   {
     struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
     TEST_CHECK(!mutt_hash_find(table, "apple"));
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
+    mutt_hash_insert(table, "apple", &dummy1);
+    mutt_hash_insert(table, "banana", &dummy2);
+    mutt_hash_insert(table, "cherry", &dummy3);
+    TEST_CHECK(mutt_hash_find(table, "apple") != NULL);
     mutt_hash_free(&table);
   }
 }

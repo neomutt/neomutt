@@ -29,7 +29,8 @@ ADDRESS_OBJS	= test/address/mutt_addr_cat.o \
 		  test/address/mutt_addrlist_search.o \
 		  test/address/mutt_addrlist_to_intl.o \
 		  test/address/mutt_addrlist_to_local.o \
-		  test/address/mutt_addrlist_write.o
+		  test/address/mutt_addrlist_write.o \
+		  test/address/mutt_addrlist_write_list.o
 
 ATTACH_OBJS	= test/attach/mutt_actx_add_attach.o \
 		  test/attach/mutt_actx_add_body.o \
@@ -295,7 +296,8 @@ MAILBOX_OBJS	= test/mailbox/mailbox_changed.o \
 		  test/mailbox/mailbox_update.o
 
 MAPPING_OBJS	= test/mapping/mutt_map_get_name.o \
-		  test/mapping/mutt_map_get_value.o
+		  test/mapping/mutt_map_get_value.o \
+		  test/mapping/mutt_map_get_value_n.o
 
 MBYTE_OBJS	= test/mbyte/mutt_mb_charlen.o \
 		  test/mbyte/mutt_mb_filter_unprintable.o \
@@ -386,6 +388,9 @@ PATTERN_OBJS	= pattern.o \
 POOL_OBJS	= test/pool/mutt_buffer_pool_free.o \
 		  test/pool/mutt_buffer_pool_get.o \
 		  test/pool/mutt_buffer_pool_release.o
+
+PREX_OBJS	= test/prex/mutt_prex_capture.o \
+		  test/prex/mutt_prex_free.o
 
 REGEX_OBJS	= test/regex/mutt_regex_capture.o \
 		  test/regex/mutt_regex_compile.o \
@@ -554,6 +559,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(PATH_OBJS) \
 		  $(PATTERN_OBJS) \
 		  $(POOL_OBJS) \
+		  $(PREX_OBJS) \
 		  $(REGEX_OBJS) \
 		  $(RFC2047_OBJS) \
 		  $(RFC2231_OBJS) \

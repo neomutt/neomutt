@@ -28,4 +28,40 @@
 void test_mutt_hash_new(void)
 {
   // struct HashTable *mutt_hash_new(size_t num_elems, HashFlags flags);
+
+  int dummy1 = 42;
+  int dummy2 = 13;
+  int dummy3 = 99;
+
+  {
+    struct HashTable *table = mutt_hash_new(0, MUTT_HASH_NO_FLAGS);
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(32, MUTT_HASH_STRCASECMP);
+    char buf[32];
+    for (size_t i = 0; i < 50; i++)
+    {
+      snprintf(buf, sizeof(buf), "apple%ld", i);
+      mutt_hash_insert(table, strdup(buf), &dummy1);
+    }
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(128, MUTT_HASH_STRDUP_KEYS);
+    mutt_hash_insert(table, "apple", &dummy1);
+    mutt_hash_insert(table, "banana", &dummy2);
+    mutt_hash_insert(table, "cherry", &dummy3);
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(128, MUTT_HASH_ALLOW_DUPS);
+    mutt_hash_insert(table, "apple", &dummy1);
+    mutt_hash_insert(table, "apple", &dummy2);
+    mutt_hash_insert(table, "apple", &dummy3);
+    mutt_hash_free(&table);
+  }
 }

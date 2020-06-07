@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_strdup()
+ * Test code for mutt_addrlist_write_list()
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -23,32 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "mutt/lib.h"
 
-void test_mutt_buffer_strdup(void)
+void test_mutt_addrlist_write_list(void)
 {
-  // char *mutt_buffer_strdup(struct Buffer *buf);
-
-  {
-    char *str = mutt_buffer_strdup(NULL);
-    TEST_CHECK(str == NULL);
-  }
-
-  {
-    char *src = "abcdefghij";
-    char *result = NULL;
-
-    struct Buffer buf = mutt_buffer_make(32);
-
-    mutt_buffer_strcpy(&buf, src);
-
-    result = mutt_buffer_strdup(&buf);
-
-    TEST_CHECK(result != NULL);
-    TEST_CHECK(strcmp(result, src) == 0);
-
-    FREE(&result);
-
-    mutt_buffer_dealloc(&buf);
-  }
+  // size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *list);
 }

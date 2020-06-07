@@ -46,6 +46,7 @@ void test_init(void)
   const char *path = get_test_dir();
   bool success = false;
 
+  TEST_CASE("Common setup");
   if (!TEST_CHECK(path != NULL))
   {
     TEST_MSG("Environment variable '%s' isn't set\n", TEST_DIR);

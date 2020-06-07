@@ -28,4 +28,27 @@
 void test_mutt_hash_int_new(void)
 {
   // struct HashTable *mutt_hash_int_new(size_t num_elems, HashFlags flags);
+
+  {
+    struct HashTable *table = mutt_hash_int_new(0, MUTT_HASH_NO_FLAGS);
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_int_new(128, MUTT_HASH_NO_FLAGS);
+    mutt_hash_int_insert(table, 42, "apple");
+    mutt_hash_int_insert(table, 42, "banana");
+    mutt_hash_int_insert(table, 42 + 128, "cherry");
+    mutt_hash_int_insert(table, 20 + 128, "damson");
+    mutt_hash_int_insert(table, 20, "endive");
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_int_new(128, MUTT_HASH_ALLOW_DUPS);
+    mutt_hash_int_insert(table, 42, "apple");
+    mutt_hash_int_insert(table, 42, "banana");
+    mutt_hash_int_insert(table, 42 + 128, "cherry");
+    mutt_hash_free(&table);
+  }
 }

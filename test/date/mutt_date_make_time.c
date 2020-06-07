@@ -53,7 +53,8 @@ void test_mutt_date_make_time(void)
     { { 0,  0,  24, 1,  0,  100,   0 }, TIME_T_MIN },
     { { 0,  0,  0,  0,  0,  100,   0 }, TIME_T_MIN },
     { { 0,  0,  0,  32, 0,  100,   0 }, TIME_T_MIN },
-    { { 0,  0,  0,  1,  0,  10000, 0 }, TIME_T_MAX },
+    { { 0,  0,  0,  1,  0,  10001, 0 }, TIME_T_MAX },
+    { { 0,  0,  0,  1,  0, -10001, 0 }, TIME_T_MIN },
   };
   // clang-format on
 

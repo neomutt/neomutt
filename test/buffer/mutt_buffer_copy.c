@@ -32,4 +32,34 @@ void test_mutt_buffer_copy(void)
   {
     TEST_CHECK(mutt_buffer_copy(NULL, NULL) == 0);
   }
+
+  {
+    struct Buffer buf1 = mutt_buffer_make(0);
+    struct Buffer buf2 = mutt_buffer_make(0);
+
+    size_t len = mutt_buffer_copy(&buf2, &buf1);
+
+    TEST_CHECK(len == 0);
+    TEST_CHECK(mutt_buffer_is_empty(&buf2) == true);
+
+    mutt_buffer_dealloc(&buf1);
+    mutt_buffer_dealloc(&buf2);
+  }
+
+  {
+    char *src = "abcdefghij";
+
+    struct Buffer buf1 = mutt_buffer_make(32);
+    struct Buffer buf2 = mutt_buffer_make(0);
+
+    mutt_buffer_strcpy(&buf1, src);
+
+    size_t len = mutt_buffer_copy(&buf2, &buf1);
+
+    TEST_CHECK(len == 10);
+    TEST_CHECK(mutt_str_strcmp(mutt_b2s(&buf1), mutt_b2s(&buf2)) == 0);
+
+    mutt_buffer_dealloc(&buf1);
+    mutt_buffer_dealloc(&buf2);
+  }
 }

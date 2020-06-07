@@ -132,7 +132,7 @@ static struct HashElem *union_hash_insert(struct HashTable *table,
                                           union HashKey key, int type, void *data)
 {
   if (!table)
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
 
   struct HashElem *he = mutt_mem_calloc(1, sizeof(struct HashElem));
   size_t hash = table->gen_hash(key, table->num_elems);
@@ -178,7 +178,7 @@ static struct HashElem *union_hash_insert(struct HashTable *table,
 static struct HashElem *union_hash_find_elem(const struct HashTable *table, union HashKey key)
 {
   if (!table)
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
 
   size_t hash = table->gen_hash(key, table->num_elems);
   struct HashElem *he = table->table[hash];
@@ -199,7 +199,7 @@ static struct HashElem *union_hash_find_elem(const struct HashTable *table, unio
 static void *union_hash_find(const struct HashTable *table, union HashKey key)
 {
   if (!table)
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
   struct HashElem *he = union_hash_find_elem(table, key);
   if (he)
     return he->data;
@@ -215,7 +215,7 @@ static void *union_hash_find(const struct HashTable *table, union HashKey key)
 static void union_hash_delete(struct HashTable *table, union HashKey key, const void *data)
 {
   if (!table)
-    return;
+    return; // LCOV_EXCL_LINE
 
   size_t hash = table->gen_hash(key, table->num_elems);
   struct HashElem *he = table->table[hash];

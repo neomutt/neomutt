@@ -32,4 +32,19 @@ void test_mutt_buffer_concatn_path(void)
   {
     TEST_CHECK(mutt_buffer_concatn_path(NULL, NULL, 0, NULL, 0) == 0);
   }
+
+  {
+    struct Buffer buf = mutt_buffer_make(0);
+
+    const char *dir = "/home/jim/work";
+    const char *file = "file.txt";
+    const char *result = "/home/jim/file";
+
+    size_t len = mutt_buffer_concatn_path(&buf, dir, 9, file, 4);
+
+    TEST_CHECK(len == 14);
+    TEST_CHECK(mutt_str_strcmp(mutt_b2s(&buf), result) == 0);
+
+    mutt_buffer_dealloc(&buf);
+  }
 }
