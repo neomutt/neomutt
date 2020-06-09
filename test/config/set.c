@@ -175,6 +175,22 @@ bool degenerate_tests(struct ConfigSet *cs)
     return false;
   if (!TEST_CHECK(cs_str_string_set(cs, NULL, "42", NULL) != CSR_SUCCESS))
     return false;
+  if (!TEST_CHECK(cs_he_string_plus_equals(NULL, he, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_string_plus_equals(cs, NULL, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_string_plus_equals(NULL, "apple", "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_string_plus_equals(cs, NULL, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_string_minus_equals(NULL, he, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_string_minus_equals(cs, NULL, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_string_minus_equals(NULL, "apple", "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_string_minus_equals(cs, NULL, "42", NULL) != CSR_SUCCESS))
+    return false;
   if (!TEST_CHECK(cs_he_string_get(NULL, he, NULL) != CSR_SUCCESS))
     return false;
   if (!TEST_CHECK(cs_he_string_get(cs, NULL, NULL) != CSR_SUCCESS))
@@ -198,8 +214,16 @@ bool degenerate_tests(struct ConfigSet *cs)
 bool invalid_tests(struct ConfigSet *cs)
 {
   struct HashElem *he = cs_get_elem(cs, "Banana");
+
+  // Boolean doesn't support +=/-=
+  if (!TEST_CHECK(cs_he_string_plus_equals(cs, he, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_string_minus_equals(cs, he, "42", NULL) != CSR_SUCCESS))
+    return false;
+
   he->type = 30;
 
+  // Unknown type
   if (!TEST_CHECK(cs_he_initial_set(cs, he, "42", NULL) != CSR_SUCCESS))
     return false;
   if (!TEST_CHECK(cs_he_initial_get(cs, he, NULL) != CSR_SUCCESS))
@@ -213,6 +237,10 @@ bool invalid_tests(struct ConfigSet *cs)
   if (!TEST_CHECK(cs_he_native_get(cs, he, NULL) != CSR_SUCCESS))
     return false;
   if (!TEST_CHECK(cs_str_native_set(cs, "apple", 42, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_string_plus_equals(cs, he, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_string_minus_equals(cs, he, "42", NULL) != CSR_SUCCESS))
     return false;
 
   return true;
@@ -285,6 +313,28 @@ void test_config_set(void)
 
   const char *name = "Unknown";
   int result = cs_str_string_set(cs, name, "hello", &err);
+  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
+  {
+    TEST_MSG("Expected error: Unknown var '%s'\n", name);
+  }
+  else
+  {
+    TEST_MSG("This should have failed 1\n");
+    return;
+  }
+
+  result = cs_str_string_plus_equals(cs, name, "42", &err);
+  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
+  {
+    TEST_MSG("Expected error: Unknown var '%s'\n", name);
+  }
+  else
+  {
+    TEST_MSG("This should have failed 1\n");
+    return;
+  }
+
+  result = cs_str_string_minus_equals(cs, name, "42", &err);
   if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'\n", name);
