@@ -430,6 +430,8 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
     {
       if ((IS_SPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
           ((ch == '#') && !(flags & MUTT_TOKEN_COMMENT)) ||
+          ((ch == '+') && (flags & MUTT_TOKEN_PLUS)) ||
+          ((ch == '-') && (flags & MUTT_TOKEN_MINUS)) ||
           ((ch == '=') && (flags & MUTT_TOKEN_EQUAL)) ||
           ((ch == '?') && (flags & MUTT_TOKEN_QUESTION)) ||
           ((ch == ';') && !(flags & MUTT_TOKEN_SEMICOLON)) ||

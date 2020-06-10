@@ -1122,7 +1122,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     }
 
     /* get the variable name */
-    mutt_extract_token(buf, s, MUTT_TOKEN_EQUAL | MUTT_TOKEN_QUESTION);
+    mutt_extract_token(buf, s, MUTT_TOKEN_EQUAL | MUTT_TOKEN_QUESTION | MUTT_TOKEN_PLUS | MUTT_TOKEN_MINUS);
 
     bool bq = false;
     bool equals = false;
