@@ -137,6 +137,78 @@ static intptr_t long_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * long_string_plus_equals - Add to a Long by string - Implements ConfigSetType::string_plus_equals()
+ */
+static int long_string_plus_equals(const struct ConfigSet *cs, void *var,
+                                   const struct ConfigDef *cdef,
+                                   const char *value, struct Buffer *err)
+{
+  long num = 0;
+  if (!value || !value[0] || (mutt_str_atol(value, &num) < 0))
+  {
+    mutt_buffer_printf(err, _("Invalid long: %s"), NONULL(value));
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
+  }
+
+  long result = *((long *) var) + num;
+  if ((result < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  {
+    mutt_buffer_printf(err, _("Option %s may not be negative"), cdef->name);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+  }
+
+  if (result == (*(long *) var))
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (cdef->validator)
+  {
+    int rc = cdef->validator(cs, cdef, (intptr_t) result, err);
+
+    if (CSR_RESULT(rc) != CSR_SUCCESS)
+      return rc | CSR_INV_VALIDATOR;
+  }
+
+  *(long *) var = result;
+  return CSR_SUCCESS;
+}
+
+/**
+ * long_string_minus_equals - Subtract from a Long by string - Implements ConfigSetType::string_plus_equals()
+ */
+static int long_string_minus_equals(const struct ConfigSet *cs, void *var,
+                                    const struct ConfigDef *cdef,
+                                    const char *value, struct Buffer *err)
+{
+  long num = 0;
+  if (!value || !value[0] || (mutt_str_atol(value, &num) < 0))
+  {
+    mutt_buffer_printf(err, _("Invalid long: %s"), value);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
+  }
+
+  long result = *((long *) var) - num;
+  if ((result < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  {
+    mutt_buffer_printf(err, _("Option %s may not be negative"), cdef->name);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+  }
+
+  if (result == (*(long *) var))
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (cdef->validator)
+  {
+    int rc = cdef->validator(cs, cdef, (intptr_t) result, err);
+
+    if (CSR_RESULT(rc) != CSR_SUCCESS)
+      return rc | CSR_INV_VALIDATOR;
+  }
+
+  *(long *) var = result;
+  return CSR_SUCCESS;
+}
+
+/**
  * long_reset - Reset a Long to its initial value - Implements ConfigSetType::reset()
  */
 static int long_reset(const struct ConfigSet *cs, void *var,
@@ -169,8 +241,8 @@ void long_init(struct ConfigSet *cs)
     long_string_get,
     long_native_set,
     long_native_get,
-    NULL, // string_plus_equals
-    NULL, // string_minus_equals
+    long_string_plus_equals,
+    long_string_minus_equals,
     long_reset,
     NULL, // destroy
   };
