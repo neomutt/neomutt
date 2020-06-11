@@ -2829,7 +2829,7 @@ static char **add_option(char **args, size_t *argslen, size_t *argsmax, char *s)
  */
 int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
                          struct AddressList *cc, struct AddressList *bcc,
-                         const char *msg, int eightbit)
+                         const char *msg, bool eightbit)
 {
   char *ps = NULL, *path = NULL, *s = NULL, *childout = NULL;
   char **args = NULL;
@@ -3116,7 +3116,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
 #endif
     {
       rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, mutt_b2s(tempfile),
-                                e->content->encoding == ENC_8BIT);
+                                (e->content->encoding == ENC_8BIT));
     }
   }
 

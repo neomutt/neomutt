@@ -750,7 +750,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
     {
       if (maildir_parse_message(m->type, fn, p->email->old, p->email))
       {
-        p->header_parsed = 1;
+        p->header_parsed = true;
 #ifdef USE_HCACHE
         if (m->type == MUTT_MH)
         {
