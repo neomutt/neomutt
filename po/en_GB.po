@@ -1445,6 +1445,11 @@ msgstr "Variable '%s' has an invalid type %d"
 msgid "Unknown variable '%s'"
 msgstr "Unknown variable '%s'"
 
+#. L10N: e.g. Type 'boolean' doesn't support operation '+='
+#, c-format
+msgid "Type '%s' doesn't support operation '%s'"
+msgstr "Type '%s' doesn't support operation '%s'"
+
 #: config/sort.c:192
 #, c-format
 msgid "Invalid sort name: %s"

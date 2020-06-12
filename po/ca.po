@@ -1574,6 +1574,11 @@ msgstr "Error: L’argument de l’opció «-d» no és vàlid: %s"
 msgid "Unknown variable '%s'"
 msgstr "%s: La variable no és coneguda."
 
+#. L10N: e.g. Type 'boolean' doesn't support operation '+='
+#, c-format
+msgid "Type '%s' doesn't support operation '%s'"
+msgstr ""
+
 #: config/sort.c:192
 #, fuzzy, c-format
 msgid "Invalid sort name: %s"

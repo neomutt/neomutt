@@ -1504,6 +1504,11 @@ msgstr "錯誤：「%s」是無效的 IDN"
 msgid "Unknown variable '%s'"
 msgstr "%s：不明的變數"
 
+#. L10N: e.g. Type 'boolean' doesn't support operation '+='
+#, c-format
+msgid "Type '%s' doesn't support operation '%s'"
+msgstr ""
+
 #: config/sort.c:192
 #, fuzzy, c-format
 msgid "Invalid sort name: %s"

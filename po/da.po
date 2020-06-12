@@ -1490,6 +1490,11 @@ msgstr "Fejl: 'værdien \"%s\" er ugyldig til -d"
 msgid "Unknown variable '%s'"
 msgstr "%s: ukendt variabel"
 
+#. L10N: e.g. Type 'boolean' doesn't support operation '+='
+#, c-format
+msgid "Type '%s' doesn't support operation '%s'"
+msgstr ""
+
 #: config/sort.c:192
 #, fuzzy, c-format
 msgid "Invalid sort name: %s"
