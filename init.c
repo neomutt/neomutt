@@ -1038,7 +1038,7 @@ finish:
  */
 enum CommandResult mutt_parse_rc_line(const char *line, struct Buffer *err)
 {
-  if (!line || !*line)
+  if (!line || (*line == '\0'))
     return MUTT_CMD_ERROR;
 
   struct Buffer *line_buffer = mutt_buffer_pool_get();
@@ -1601,7 +1601,7 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   for (char *p = strtok_r(s, ":", &q); p; p = strtok_r(NULL, ":", &q))
   {
-    if (!*p)
+    if ((*p == '\0'))
       continue;
     if (!mutt_ch_check_charset(p, strict))
     {

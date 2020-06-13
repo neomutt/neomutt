@@ -354,7 +354,7 @@ enum ContentType mutt_check_mime_type(const char *s)
  */
 char *mutt_extract_message_id(const char *s, size_t *len)
 {
-  if (!s || !*s)
+  if (!s || (*s == '\0'))
     return NULL;
 
   char *decoded = mutt_str_strdup(s);
@@ -1199,7 +1199,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
 
     *p = '\0';
     p = mutt_str_skip_email_wsp(p + 1);
-    if (!*p)
+    if ((*p == '\0'))
       continue; /* skip empty header fields */
 
     mutt_rfc822_parse_line(env, e, line, p, user_hdrs, weed, true);
@@ -1284,7 +1284,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
     {
       *c = '\0';
       c = mutt_str_skip_email_wsp(c + 1);
-      if (!*c)
+      if ((*c == '\0'))
       {
         mutt_debug(LL_DEBUG1, "skipping empty header field: %s\n", line);
         continue;

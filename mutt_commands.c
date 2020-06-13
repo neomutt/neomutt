@@ -62,7 +62,7 @@ const struct Command Commands[] = {
   { "close-hook",          mutt_parse_hook,        MUTT_CLOSE_HOOK },
 #endif
 #ifdef HAVE_COLOR
-  { "color",               mutt_parse_color,       IP &Colors },
+  { "color",               mutt_parse_color,       0 },
 #endif
   { "crypt-hook",          mutt_parse_hook,        MUTT_CRYPT_HOOK },
   { "echo",                parse_echo,             0 },
@@ -77,7 +77,7 @@ const struct Command Commands[] = {
   { "ifdef",               parse_ifdef,            0 },
   { "ifndef",              parse_ifdef,            1 },
   { "ignore",              parse_ignore,           0 },
-  { "index-format-hook",   mutt_parse_idxfmt_hook, MUTT_IDXFMTHOOK },
+  { "index-format-hook",   mutt_parse_idxfmt_hook, 0 },
   { "lists",               parse_lists,            0 },
 #ifdef USE_LUA
   { "lua",                 mutt_lua_parse,         0 },
@@ -89,7 +89,7 @@ const struct Command Commands[] = {
   { "mbox-hook",           mutt_parse_hook,        MUTT_MBOX_HOOK },
   { "message-hook",        mutt_parse_hook,        MUTT_MESSAGE_HOOK },
   { "mime_lookup",         parse_stailq,           IP &MimeLookupList },
-  { "mono",                mutt_parse_mono,        IP &Colors },
+  { "mono",                mutt_parse_mono,        0 },
   { "my_hdr",              parse_my_hdr,           0 },
   { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
   { "nospam",              parse_spam_list,        MUTT_NOSPAM },
@@ -113,7 +113,7 @@ const struct Command Commands[] = {
   { "source",              parse_source,           0 },
   { "spam",                parse_spam_list,        MUTT_SPAM },
   { "startup-hook",        mutt_parse_hook,        MUTT_STARTUP_HOOK | MUTT_GLOBAL_HOOK },
-  { "subjectrx",           parse_subjectrx_list,   IP &SubjectRegexList },
+  { "subjectrx",           parse_subjectrx_list,   0 },
   { "subscribe",           parse_subscribe,        0 },
 #ifdef USE_IMAP
   { "subscribe-to",        parse_subscribe_to,     0 },
@@ -129,7 +129,7 @@ const struct Command Commands[] = {
   { "unauto_view",         parse_unstailq,         IP &AutoViewList },
   { "unbind",              mutt_parse_unbind,      MUTT_UNBIND },
 #ifdef HAVE_COLOR
-  { "uncolor",             mutt_parse_uncolor,     IP &Colors },
+  { "uncolor",             mutt_parse_uncolor,     0 },
 #endif
   { "ungroup",             parse_group,            MUTT_UNGROUP },
   { "unhdr_order",         parse_unstailq,         IP &HeaderOrderList },
@@ -140,7 +140,7 @@ const struct Command Commands[] = {
   { "unmailboxes",         parse_unmailboxes,      0 },
   { "unmailto_allow",      parse_unstailq,         IP &MailToAllow },
   { "unmime_lookup",       parse_unstailq,         IP &MimeLookupList },
-  { "unmono",              mutt_parse_unmono,      IP &Colors },
+  { "unmono",              mutt_parse_unmono,      0 },
   { "unmy_hdr",            parse_unmy_hdr,         0 },
   { "unscore",             mutt_parse_unscore,     0 },
   { "unset",               parse_set,              MUTT_SET_UNSET },
@@ -148,7 +148,7 @@ const struct Command Commands[] = {
 #ifdef USE_SIDEBAR
   { "unsidebar_whitelist", parse_path_unlist,      IP &SidebarWhitelist },
 #endif
-  { "unsubjectrx",         parse_unsubjectrx_list, IP &SubjectRegexList },
+  { "unsubjectrx",         parse_unsubjectrx_list, 0 },
   { "unsubscribe",         parse_unsubscribe,      0 },
 #ifdef USE_IMAP
   { "unsubscribe-from",    parse_unsubscribe_from, 0 },

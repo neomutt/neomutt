@@ -2070,7 +2070,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
  * @retval  2 Warnings
  * @retval -1 Error
  *
- * With IS_SMIME set to true we assume S/MIME.
+ * With is_smime set to true we assume S/MIME.
  */
 static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile, bool is_smime)
 {
@@ -5133,7 +5133,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
     mutt_debug(LL_DEBUG5, "matching \"%s\" against key %s, \"%s\": ", p,
                crypt_long_keyid(k), k->uid);
 
-    if (!*p || (pfcopy && (mutt_str_strcasecmp(pfcopy, crypt_fpr(k)) == 0)) ||
+    if ((*p == '\0') || (pfcopy && (mutt_str_strcasecmp(pfcopy, crypt_fpr(k)) == 0)) ||
         (pl && (mutt_str_strcasecmp(pl, crypt_long_keyid(k)) == 0)) ||
         (ps && (mutt_str_strcasecmp(ps, crypt_short_keyid(k)) == 0)) ||
         mutt_str_stristr(k->uid, p))
@@ -5599,7 +5599,7 @@ void smime_gpgme_init(void)
  * @param is_smime True if an SMIME message
  * @retval num Flags, e.g. #APPLICATION_SMIME | #SEC_ENCRYPT
  */
-static int gpgme_send_menu(struct Email *e, int is_smime)
+static int gpgme_send_menu(struct Email *e, bool is_smime)
 {
   struct CryptKeyInfo *p = NULL;
   const char *prompt = NULL;
@@ -5762,7 +5762,7 @@ static int gpgme_send_menu(struct Email *e, int is_smime)
  */
 int pgp_gpgme_send_menu(struct Email *e)
 {
-  return gpgme_send_menu(e, 0);
+  return gpgme_send_menu(e, false);
 }
 
 /**
@@ -5770,7 +5770,7 @@ int pgp_gpgme_send_menu(struct Email *e)
  */
 int smime_gpgme_send_menu(struct Email *e)
 {
-  return gpgme_send_menu(e, 1);
+  return gpgme_send_menu(e, true);
 }
 
 /**

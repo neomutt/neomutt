@@ -56,7 +56,7 @@ int mutt_system(const char *cmd)
   struct sigaction oldcont;
   pid_t pid;
 
-  if (!cmd || !*cmd)
+  if (!cmd || (*cmd == '\0'))
     return 0;
 
   /* must ignore SIGINT and SIGQUIT */

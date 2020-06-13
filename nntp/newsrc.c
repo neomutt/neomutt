@@ -1019,7 +1019,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   struct NntpAccountData *adata = NULL;
   struct Connection *conn = NULL;
 
-  if (!server || !*server)
+  if (!server || (*server == '\0'))
   {
     mutt_error(_("No news server defined"));
     return NULL;
@@ -1248,7 +1248,7 @@ void nntp_article_status(struct Mailbox *m, struct Email *e, char *group, anum_t
  */
 struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpAccountData *adata, char *group)
 {
-  if (!adata || !adata->groups_hash || !group || !*group)
+  if (!adata || !adata->groups_hash || !group || (*group == '\0'))
     return NULL;
 
   struct NntpMboxData *mdata = mdata_find(adata, group);
@@ -1272,7 +1272,7 @@ struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpAccountData *adata, cha
  */
 struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, char *group)
 {
-  if (!adata || !adata->groups_hash || !group || !*group)
+  if (!adata || !adata->groups_hash || !group || (*group == '\0'))
     return NULL;
 
   struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, group);
@@ -1299,7 +1299,7 @@ struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, c
 struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m,
                                             struct NntpAccountData *adata, char *group)
 {
-  if (!adata || !adata->groups_hash || !group || !*group)
+  if (!adata || !adata->groups_hash || !group || (*group == '\0'))
     return NULL;
 
   struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, group);
@@ -1338,7 +1338,7 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m,
 struct NntpMboxData *mutt_newsgroup_uncatchup(struct Mailbox *m,
                                               struct NntpAccountData *adata, char *group)
 {
-  if (!adata || !adata->groups_hash || !group || !*group)
+  if (!adata || !adata->groups_hash || !group || (*group == '\0'))
     return NULL;
 
   struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, group);

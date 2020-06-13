@@ -309,7 +309,7 @@ int mutt_ch_convert_nonmime_string(char **ps)
     char *u = *ps;
     size_t ulen = mutt_str_strlen(*ps);
 
-    if (!u || !*u)
+    if (!u || (*u == '\0'))
       return 0;
 
     c1 = strchr(c, ':');
@@ -751,7 +751,7 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flag
 
   char *s = *ps;
 
-  if (!s || !*s)
+  if (!s || (*s == '\0'))
     return 0;
 
   if (!to || !from)

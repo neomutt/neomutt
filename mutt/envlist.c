@@ -131,7 +131,7 @@ bool mutt_envlist_set(const char *name, const char *value, bool overwrite)
  */
 bool mutt_envlist_unset(const char *name)
 {
-  if (!name || !name[0])
+  if (!name || (name[0] == '\0'))
     return false;
 
   char **envp = EnvList;

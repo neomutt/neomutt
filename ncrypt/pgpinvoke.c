@@ -218,7 +218,7 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
   struct PgpCommandContext cctx = { 0 };
   char cmd[STR_COMMAND];
 
-  if (!format || !*format)
+  if (!format || (*format == '\0'))
     return (pid_t) -1;
 
   cctx.need_passphrase = need_passphrase;

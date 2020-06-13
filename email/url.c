@@ -38,10 +38,11 @@
  * UrlMap - Constants for URL protocols
  */
 static const struct Mapping UrlMap[] = {
-  { "file", U_FILE },   { "imap", U_IMAP },     { "imaps", U_IMAPS },
-  { "pop", U_POP },     { "pops", U_POPS },     { "news", U_NNTP },
-  { "snews", U_NNTPS }, { "mailto", U_MAILTO }, { "notmuch", U_NOTMUCH },
-  { "smtp", U_SMTP },   { "smtps", U_SMTPS },   { NULL, U_UNKNOWN },
+  { "file", U_FILE },     { "imap", U_IMAP },       { "imaps", U_IMAPS },
+  { "pop", U_POP },       { "pops", U_POPS },       { "news", U_NNTP },
+  { "nntp", U_NNTP },     { "snews", U_NNTPS },     { "nntps", U_NNTPS },
+  { "mailto", U_MAILTO }, { "notmuch", U_NOTMUCH }, { "smtp", U_SMTP },
+  { "smtps", U_SMTPS },   { NULL, U_UNKNOWN },
 };
 
 /**
@@ -53,7 +54,7 @@ static const struct Mapping UrlMap[] = {
  */
 static bool parse_query_string(struct UrlQueryList *list, char *src)
 {
-  if (!src || !*src)
+  if (!src || (*src == '\0'))
     return false;
 
   bool again = true;

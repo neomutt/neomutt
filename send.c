@@ -54,6 +54,7 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "init.h"
+#include "maillist.h"
 #include "mutt_attach.h"
 #include "mutt_body.h"
 #include "mutt_header.h"
@@ -319,7 +320,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
   }
 
   if ((mutt_get_field(_("Subject: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
-      (!buf[0] &&
+      ((buf[0] == '\0') &&
        (query_quadoption(C_AbortNosubject, _("No subject, abort?")) != MUTT_NO)))
   {
     mutt_message(_("No subject, aborting"));
@@ -2526,7 +2527,6 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     {
       if (!WithCrypto)
         ; // do nothing
-
       else if ((e_templ->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) ||
                ((e_templ->security & SEC_SIGN) && (e_templ->content->type == TYPE_APPLICATION)))
       {

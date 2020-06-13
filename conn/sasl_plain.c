@@ -59,7 +59,7 @@ size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
   size_t len = 0;
   size_t tmplen;
 
-  if (!user || !*user || !pass || !*pass)
+  if (!user || (*user == '\0') || !pass || (*pass == '\0'))
     return 0;
 
   tmplen = snprintf(tmp, sizeof(tmp), "%s%c%s%c%s", NONULL(authz), '\0', user, '\0', pass);

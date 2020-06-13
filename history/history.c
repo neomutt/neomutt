@@ -307,7 +307,7 @@ static void save_history(enum HistoryClass hclass, const char *str)
   static int n = 0;
   char *tmp = NULL;
 
-  if (!str || !*str) /* This shouldn't happen, but it's safer. */
+  if (!str || (*str == '\0')) /* This shouldn't happen, but it's safer. */
     return;
 
   FILE *fp = mutt_file_fopen(C_HistoryFile, "a");

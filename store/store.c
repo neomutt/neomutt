@@ -108,7 +108,7 @@ const struct StoreOps *store_get_backend_ops(const char *str)
 {
   const struct StoreOps **ops = store_ops;
 
-  if (!str || !*str)
+  if (!str || (*str == '\0'))
   {
     return *ops;
   }

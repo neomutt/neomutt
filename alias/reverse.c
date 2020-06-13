@@ -30,6 +30,8 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "reverse.h"
+#include "lib.h"
 #include "alias.h"
 
 struct HashTable *ReverseAliases; ///< Hash Table of aliases (email address -> alias)

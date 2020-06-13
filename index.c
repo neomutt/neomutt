@@ -1491,7 +1491,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             buf[0] = '\0';
             if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf),
                                 MUTT_COMP_NO_FLAGS) != 0) ||
-                !buf[0])
+                (buf[0] == '\0'))
             {
               break;
             }
@@ -1788,7 +1788,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           else
           {
             mutt_str_strfcpy(buf2, Context->pattern + 8, sizeof(buf2));
-            if (!*buf2 || (strncmp(buf2, ".*", 2) == 0))
+            if ((*buf2 == '\0') || (strncmp(buf2, ".*", 2) == 0))
               snprintf(buf2, sizeof(buf2), "~A");
           }
           FREE(&Context->pattern);
@@ -2309,7 +2309,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_MAIN_VFOLDER_FROM_QUERY_READONLY:
       {
         buf[0] = '\0';
-        if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_NM_QUERY) != 0) || !buf[0])
+        if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_NM_QUERY) != 0) ||
+            (buf[0] == '\0'))
         {
           mutt_message(_("No query, aborting"));
           break;

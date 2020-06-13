@@ -54,7 +54,7 @@ bool OptLocales; ///< (pseudo) set if user has valid locale definition
  */
 int mutt_mb_charlen(const char *s, int *width)
 {
-  if (!s || !*s)
+  if (!s || (*s == '\0'))
     return 0;
 
   wchar_t wc;

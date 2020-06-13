@@ -750,7 +750,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
     {
       if (maildir_parse_message(m->type, fn, p->email->old, p->email))
       {
-        p->header_parsed = 1;
+        p->header_parsed = true;
 #ifdef USE_HCACHE
         if (m->type == MUTT_MH)
         {
@@ -888,7 +888,7 @@ int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e, bool 
         break;
       cp++;
     }
-    if (!*cp)
+    if ((*cp == '\0'))
     {
       if (mutt_str_atoui(dep, &n) < 0)
         mutt_debug(LL_DEBUG2, "Invalid MH message number '%s'\n", dep);

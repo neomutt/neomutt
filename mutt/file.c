@@ -874,7 +874,7 @@ void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename, bool a
  */
 int mutt_file_mkdir(const char *path, mode_t mode)
 {
-  if (!path || !*path)
+  if (!path || (*path == '\0'))
   {
     errno = EINVAL;
     return -1;
