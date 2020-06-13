@@ -595,7 +595,7 @@ void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
                src, line, buflen, n);
   }
   mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\"\n", src, line, buf);
-  if (unlink(buf) && (errno != ENOENT))
+  if ((unlink(buf) != 0) && (errno != ENOENT))
   {
     mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src,
                line, buf, strerror(errno), errno);
@@ -1450,7 +1450,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
   }
 #endif
 
-  if ((type != MUTT_MAILBOX_ERROR) && (type != MUTT_UNKNOWN) && !mx_access(s, W_OK))
+  if ((type != MUTT_MAILBOX_ERROR) && (type != MUTT_UNKNOWN) && (mx_access(s, W_OK) == 0))
   {
     if (C_Confirmappend)
     {

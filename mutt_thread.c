@@ -420,7 +420,7 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
     if (dateptr)
     {
       thisdate = C_ThreadReceived ? cur->message->received : cur->message->date_sent;
-      if (!*dateptr || (thisdate < *dateptr))
+      if ((*dateptr == 0) || (thisdate < *dateptr))
         *dateptr = thisdate;
     }
 
