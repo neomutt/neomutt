@@ -355,7 +355,7 @@ char *mutt_path_concat(char *d, const char *dir, const char *fname, size_t l)
 
   const char *fmt = "%s/%s";
 
-  if ((fname[0] == '\0') || (*dir && (dir[strlen(dir) - 1] == '/')))
+  if ((fname[0] == '\0') || ((dir[0] != '\0') && (dir[strlen(dir) - 1] == '/')))
     fmt = "%s%s";
 
   snprintf(d, l, fmt, dir, fname);

@@ -93,7 +93,7 @@ static const char *xdg_defaults[] = {
  */
 void mutt_adv_mktemp(struct Buffer *buf)
 {
-  if (!(buf->data && buf->data[0]))
+  if (!(buf->data && (buf->data[0] != '\0')))
   {
     mutt_buffer_mktemp(buf);
   }
@@ -928,7 +928,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         mutt_buffer_addch(&cmd, '\'');
         mutt_expando_format(tmp, sizeof(tmp), 0, cols, word.data, callback,
                             data, flags | MUTT_FORMAT_NOFILTER);
-        for (char *p = tmp; p && *p; p++)
+        for (char *p = tmp; p && (*p != '\0'); p++)
         {
           if (*p == '\'')
           {
@@ -1137,7 +1137,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           src++; /* skip the & */
         cp = else_str;
         count = 0;
-        while ((lrbalance > 0) && (count < sizeof(else_str)) && *src)
+        while ((lrbalance > 0) && (count < sizeof(else_str)) && (*src != '\0'))
         {
           if ((src[0] == '%') && (src[1] == '>'))
           {

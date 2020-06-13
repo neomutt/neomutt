@@ -628,7 +628,7 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
   {
     s += clen;
     *col = strtoul(s, &eptr, 10);
-    if ((*s == '\0') || *eptr || ((*col >= COLORS) && !OptNoCurses && has_colors()))
+    if ((*s == '\0') || (*eptr != '\0') || ((*col >= COLORS) && !OptNoCurses && has_colors()))
     {
       mutt_buffer_printf(err, _("%s: color not supported by term"), s);
       return MUTT_CMD_ERROR;
@@ -639,7 +639,7 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
   {
     s += 1;
     *col = strtoul(s, &eptr, 16);
-    if ((*s == '\0') || *eptr || ((*col == COLOR_UNSET) && !OptNoCurses && has_colors()))
+    if ((*s == '\0') || (*eptr != '\0') || ((*col == COLOR_UNSET) && !OptNoCurses && has_colors()))
     {
       snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
       return MUTT_CMD_ERROR;
