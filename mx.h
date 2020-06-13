@@ -116,6 +116,7 @@ struct MxOps
    * @retval -1 Error
    */
   struct Account *(*ac_find)  (struct Account *a, const char *path);
+
   /**
    * ac_add - Add a Mailbox to an Account
    * @param a Account to add to
@@ -124,6 +125,7 @@ struct MxOps
    * @retval -1 Error
    */
   int             (*ac_add)   (struct Account *a, struct Mailbox *m);
+
   /**
    * mbox_open - Open a Mailbox
    * @param m Mailbox to open
@@ -132,6 +134,7 @@ struct MxOps
    * @retval -2 Aborted
    */
   int (*mbox_open)       (struct Mailbox *m);
+
   /**
    * mbox_open_append - Open a Mailbox for appending
    * @param m     Mailbox to open
@@ -140,6 +143,7 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*mbox_open_append)(struct Mailbox *m, OpenMailboxFlags flags);
+
   /**
    * mbox_check - Check for new mail
    * @param m          Mailbox
@@ -148,6 +152,7 @@ struct MxOps
    * @retval -1 Error
    */
   int (*mbox_check)      (struct Mailbox *m, int *index_hint);
+
   /**
    * mbox_check_stats - Check the Mailbox statistics
    * @param m     Mailbox to check
@@ -157,6 +162,7 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*mbox_check_stats)(struct Mailbox *m, int flags);
+
   /**
    * mbox_sync - Save changes to the Mailbox
    * @param m          Mailbox to sync
@@ -165,6 +171,7 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*mbox_sync)       (struct Mailbox *m, int *index_hint);
+
   /**
    * mbox_close - Close a Mailbox
    * @param m Mailbox to close
@@ -172,6 +179,7 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*mbox_close)      (struct Mailbox *m);
+
   /**
    * msg_open - Open an email message in a Mailbox
    * @param m     Mailbox
@@ -181,6 +189,7 @@ struct MxOps
    * @retval -1 Error
    */
   int (*msg_open)        (struct Mailbox *m, struct Message *msg, int msgno);
+
   /**
    * msg_open_new - Open a new message in a Mailbox
    * @param m   Mailbox
@@ -190,6 +199,7 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*msg_open_new)    (struct Mailbox *m, struct Message *msg, struct Email *e);
+
   /**
    * msg_commit - Save changes to an email
    * @param m   Mailbox
@@ -198,6 +208,7 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*msg_commit)      (struct Mailbox *m, struct Message *msg);
+
   /**
    * msg_close - Close an email
    * @param m   Mailbox
@@ -206,12 +217,14 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*msg_close)       (struct Mailbox *m, struct Message *msg);
+
   /**
    * msg_padding_size - Bytes of padding between messages
    * @param m Mailbox
    * @retval num Bytes of padding
    */
   int (*msg_padding_size)(struct Mailbox *m);
+
   /**
    * msg_save_hcache - Save message to the header cache
    * @param m Mailbox
@@ -220,6 +233,7 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*msg_save_hcache) (struct Mailbox *m, struct Email *e);
+
   /**
    * tags_edit - Prompt and validate new messages tags
    * @param m      Mailbox
@@ -231,6 +245,7 @@ struct MxOps
    * @retval  1 Buf set
    */
   int (*tags_edit)       (struct Mailbox *m, const char *tags, char *buf, size_t buflen);
+
   /**
    * tags_commit - Save the tags to a message
    * @param m Mailbox
@@ -240,6 +255,7 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*tags_commit)     (struct Mailbox *m, struct Email *e, char *buf);
+
   /**
    * path_probe - Does this Mailbox type recognise this path?
    * @param path Path to examine
@@ -247,6 +263,7 @@ struct MxOps
    * @retval num Type, e.g. #MUTT_IMAP
    */
   enum MailboxType (*path_probe)(const char *path, const struct stat *st);
+
   /**
    * path_canon - Canonicalise a Mailbox path
    * @param buf    Path to modify
@@ -255,6 +272,7 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*path_canon)      (char *buf, size_t buflen);
+
   /**
    * path_pretty - Abbreviate a Mailbox path
    * @param buf    Path to modify
@@ -264,6 +282,7 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*path_pretty)     (char *buf, size_t buflen, const char *folder);
+
   /**
    * path_parent - Find the parent of a Mailbox path
    * @param buf    Path to modify

@@ -177,7 +177,6 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
           *is_subkey = true;
         else if (mutt_str_strcmp(p, "sec") == 0)
           ; // do nothing
-
         else if (mutt_str_strcmp(p, "ssb") == 0)
           *is_subkey = true;
         else if (mutt_str_strcmp(p, "uid") == 0)
