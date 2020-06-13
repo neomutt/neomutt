@@ -159,7 +159,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
     if (pend)
       *pend++ = 0;
     field++;
-    if (!*p && (field != 1) && (field != 10))
+    if ((*p == '\0') && (field != 1) && (field != 10))
       continue;
 
     if (is_fpr && (field != 10))

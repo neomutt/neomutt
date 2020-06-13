@@ -640,7 +640,7 @@ static int update_email_tags(struct Email *e, notmuch_message_t *msg)
        tags && notmuch_tags_valid(tags); notmuch_tags_move_to_next(tags))
   {
     const char *t = notmuch_tags_get(tags);
-    if (!t || !*t)
+    if (!t || (*t == '\0'))
       continue;
 
     mutt_str_append_item(&new_tags, t, ' ');

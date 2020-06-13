@@ -1172,7 +1172,7 @@ static int search(struct Menu *menu, int op)
                             _("Search for: ") :
                             _("Reverse search for: "),
                         buf, sizeof(buf), MUTT_CLEAR) != 0) ||
-        !buf[0])
+        (buf[0] == '\0'))
     {
       return -1;
     }

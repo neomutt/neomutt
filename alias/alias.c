@@ -389,7 +389,7 @@ void alias_create(struct AddressList *al)
 retry_name:
   /* L10N: prompt to add a new alias */
   if ((mutt_get_field(_("Alias as: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
-      !buf[0])
+      (buf[0] == '\0'))
   {
     return;
   }
@@ -429,7 +429,7 @@ retry_name:
   do
   {
     if ((mutt_get_field(_("Address: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
-        !buf[0])
+        (buf[0] == '\0'))
     {
       alias_free(&alias);
       return;

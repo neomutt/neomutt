@@ -50,7 +50,7 @@ extern char *HomeDir;
  */
 static char *path_tidy(const char *path, bool is_dir)
 {
-  if (!path || !*path)
+  if (!path || (*path == '\0'))
     return NULL;
 
   char buf[PATH_MAX] = { 0 };

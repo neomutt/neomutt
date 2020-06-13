@@ -41,7 +41,7 @@
 static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                            const char *value, struct Buffer *err)
 {
-  if (!value || !value[0])
+  if (!value || (value[0] == '\0'))
   {
     mutt_buffer_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
@@ -144,7 +144,7 @@ static int long_string_plus_equals(const struct ConfigSet *cs, void *var,
                                    const char *value, struct Buffer *err)
 {
   long num = 0;
-  if (!value || !value[0] || (mutt_str_atol(value, &num) < 0))
+  if (!value || (value[0] == '\0') || (mutt_str_atol(value, &num) < 0))
   {
     mutt_buffer_printf(err, _("Invalid long: %s"), NONULL(value));
     return CSR_ERR_INVALID | CSR_INV_TYPE;
@@ -180,7 +180,7 @@ static int long_string_minus_equals(const struct ConfigSet *cs, void *var,
                                     const char *value, struct Buffer *err)
 {
   long num = 0;
-  if (!value || !value[0] || (mutt_str_atol(value, &num) < 0))
+  if (!value || (value[0] == '\0') || (mutt_str_atol(value, &num) < 0))
   {
     mutt_buffer_printf(err, _("Invalid long: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;

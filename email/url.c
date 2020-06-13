@@ -54,7 +54,7 @@ static const struct Mapping UrlMap[] = {
  */
 static bool parse_query_string(struct UrlQueryList *list, char *src)
 {
-  if (!src || !*src)
+  if (!src || (*src == '\0'))
     return false;
 
   bool again = true;

@@ -419,7 +419,7 @@ static pid_t smime_invoke(FILE **fp_smime_in, FILE **fp_smime_out, FILE **fp_smi
   struct SmimeCommandContext cctx = { 0 };
   char cmd[STR_COMMAND];
 
-  if (!format || !*format)
+  if (!format || (*format == '\0'))
     return (pid_t) -1;
 
   cctx.fname = fname;
@@ -700,7 +700,7 @@ static struct SmimeKey *smime_parse_key(char *buf)
 
     /* For backward compatibility, don't count consecutive delimiters
      * as an empty field.  */
-    if (!*p)
+    if ((*p == '\0'))
       continue;
 
     field++;
@@ -787,7 +787,7 @@ static struct SmimeKey *smime_get_candidates(char *search, bool only_public_key)
 
   while (fgets(buf, sizeof(buf), fp))
   {
-    if ((!*search) || mutt_str_stristr(buf, search))
+    if (((*search == '\0')) || mutt_str_stristr(buf, search))
     {
       key = smime_parse_key(buf);
       if (key)
@@ -1752,7 +1752,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   char *intermediates = NULL;
 
   char *signas = C_SmimeSignAs ? C_SmimeSignAs : C_SmimeDefaultKey;
-  if (!signas || !*signas)
+  if (!signas || (*signas == '\0'))
   {
     mutt_error(_("Can't sign: No key specified. Use Sign As."));
     return NULL;

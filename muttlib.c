@@ -1081,7 +1081,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         }
         *cp = '\0';
 
-        if (!*src)
+        if (*src == '\0')
           break; /* bad format */
 
         ch = *src++; /* save the character to switch on */
@@ -1170,7 +1170,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         }
         *cp = '\0';
 
-        if (!*src)
+        if ((*src == '\0'))
           break; /* bad format */
 
         src++; /* move past the trailing '>' (formerly '?') */

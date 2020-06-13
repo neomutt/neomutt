@@ -268,7 +268,7 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
 {
   struct ListHead *msgid_list = (struct ListHead *) (user_data);
   char *nows = mutt_str_skip_whitespace(line);
-  if (!*nows)
+  if (*nows == '\0')
     return true;
   mutt_str_remove_trailing_ws(nows);
   mutt_list_insert_tail(msgid_list, mutt_str_strdup(nows));
@@ -2698,7 +2698,7 @@ int mutt_search_command(int cur, int op)
 {
   struct Progress progress;
 
-  if (!*LastSearch || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
+  if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
     char buf[256];
     mutt_str_strfcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
@@ -2706,7 +2706,7 @@ int mutt_search_command(int cur, int op)
                             _("Search for: ") :
                             _("Reverse search for: "),
                         buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN) != 0) ||
-        !buf[0])
+        (buf[0] == '\0'))
     {
       return -1;
     }

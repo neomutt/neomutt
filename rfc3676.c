@@ -227,7 +227,7 @@ static void print_flowed_line(char *line, struct State *s, int ql,
   char *p = NULL;
   char last;
 
-  if (!line || !*line)
+  if (!line || (*line == '\0'))
   {
     /* flush current paragraph (if any) first */
     flush_par(s, fst);
@@ -248,7 +248,7 @@ static void print_flowed_line(char *line, struct State *s, int ql,
                fst->width, line);
 
     /* remember number of spaces */
-    if (!*p)
+    if ((*p == '\0'))
     {
       mutt_debug(LL_DEBUG3, "f=f: additional space\n");
       fst->spaces++;

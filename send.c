@@ -320,7 +320,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
   }
 
   if ((mutt_get_field(_("Subject: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
-      (!buf[0] &&
+      ((buf[0] == '\0') &&
        (query_quadoption(C_AbortNosubject, _("No subject, abort?")) != MUTT_NO)))
   {
     mutt_message(_("No subject, aborting"));

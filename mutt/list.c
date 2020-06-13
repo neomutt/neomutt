@@ -246,7 +246,7 @@ bool mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
  */
 size_t mutt_list_str_split(struct ListHead *head, const char *src, char sep)
 {
-  if (!src || !*src)
+  if (!src || (*src == '\0'))
     return 0;
 
   size_t count = 0;
@@ -259,7 +259,7 @@ size_t mutt_list_str_split(struct ListHead *head, const char *src, char sep)
     mutt_list_insert_tail(head, mutt_str_substr_dup(start, src));
     count++;
 
-    if (!*src)
+    if ((*src == '\0'))
       break;
 
     src++;

@@ -458,7 +458,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
         case 'M':
           if (Context)
           {
-            if (!*p && e_cur)
+            if ((*p == '\0') && e_cur)
             {
               /* include the current message */
               p = tmp + mutt_str_strlen(tmp) + 1;

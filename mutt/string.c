@@ -181,7 +181,7 @@ size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensiti
     }
   }
 
-  return (!*prefix) ? (prefix - saved_prefix) : 0;
+  return (*prefix == '\0') ? (prefix - saved_prefix) : 0;
 }
 
 /**
@@ -200,7 +200,7 @@ int mutt_str_atol(const char *str, long *dst)
   if (dst)
     *dst = 0;
 
-  if (!str || !*str) /* no input: 0 */
+  if (!str || (*str == '\0')) /* no input: 0 */
     return 0;
 
   char *e = NULL;
@@ -323,7 +323,7 @@ int mutt_str_atoul(const char *str, unsigned long *dst)
   if (dst)
     *dst = 0;
 
-  if (!str || !*str) /* no input: 0 */
+  if (!str || (*str == '\0')) /* no input: 0 */
     return 0;
 
   char *e = NULL;
@@ -355,7 +355,7 @@ int mutt_str_atoull(const char *str, unsigned long long *dst)
   if (dst)
     *dst = 0;
 
-  if (!str || !*str) /* no input: 0 */
+  if (!str || (*str == '\0')) /* no input: 0 */
     return 0;
 
   char *e = NULL;
@@ -379,7 +379,7 @@ int mutt_str_atoull(const char *str, unsigned long long *dst)
  */
 char *mutt_str_strdup(const char *str)
 {
-  if (!str || !*str)
+  if (!str || (*str == '\0'))
     return NULL;
 
   return strdup(str);
@@ -732,7 +732,7 @@ const char *mutt_str_stristr(const char *haystack, const char *needle)
          p++, q++)
     {
     }
-    if (!*q)
+    if ((*q == '\0'))
       return haystack;
     haystack++;
   }
@@ -1014,7 +1014,7 @@ int mutt_str_word_casecmp(const char *a, const char *b)
   int i;
   for (i = 0; i < (sizeof(tmp) - 2); i++, b++)
   {
-    if (!*b || IS_SPACE(*b))
+    if ((*b == '\0') || IS_SPACE(*b))
     {
       tmp[i] = '\0';
       break;

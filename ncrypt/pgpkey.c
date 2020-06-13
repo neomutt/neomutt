@@ -1205,7 +1205,7 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
 
     mutt_debug(LL_DEBUG5, "matching \"%s\" against key %s:\n", p, pgp_long_keyid(k));
 
-    if (!*p || (pfcopy && (mutt_str_strcasecmp(pfcopy, k->fingerprint) == 0)) ||
+    if ((*p == '\0') || (pfcopy && (mutt_str_strcasecmp(pfcopy, k->fingerprint) == 0)) ||
         (pl && (mutt_str_strcasecmp(pl, pgp_long_keyid(k)) == 0)) ||
         (ps && (mutt_str_strcasecmp(ps, pgp_short_keyid(k)) == 0)))
     {

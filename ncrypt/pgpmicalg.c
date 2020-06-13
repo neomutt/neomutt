@@ -101,7 +101,7 @@ static void pgp_dearmor(FILE *fp_in, FILE *fp_out)
   while ((r = fgets(line, sizeof(line), fp_in)))
   {
     SKIPWS(r);
-    if (!*r)
+    if ((*r == '\0'))
       break;
   }
   if (!r)

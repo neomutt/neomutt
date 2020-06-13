@@ -137,7 +137,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   intptr_t id = -1;
   int flags = 0;
 
-  if (!value || !value[0])
+  if (!value || (value[0] == '\0'))
   {
     mutt_buffer_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_TYPE;

@@ -77,7 +77,7 @@ const struct ICommand ICommandList[] = {
  */
 enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *err)
 {
-  if (!line || !*line || !err)
+  if (!line || (*line == '\0') || !err)
     return MUTT_CMD_ERROR;
 
   enum CommandResult rc = MUTT_CMD_ERROR;

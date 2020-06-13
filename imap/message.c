@@ -1638,7 +1638,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, const char *dest
   }
 
   imap_fix_path(adata->delim, buf, mbox, sizeof(mbox));
-  if (!*mbox)
+  if ((*mbox == '\0'))
     mutt_str_strfcpy(mbox, "INBOX", sizeof(mbox));
   imap_munge_mbox_name(adata->unicode, mmbox, sizeof(mmbox), mbox);
 

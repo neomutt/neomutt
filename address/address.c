@@ -205,7 +205,7 @@ static const char *parse_mailboxdomain(const char *s, const char *nonspecial,
   while (*s)
   {
     s = mutt_str_skip_email_wsp(s);
-    if (!*s)
+    if ((*s == '\0'))
       return s;
 
     if (!strchr(nonspecial, *s) && is_special(*s))
@@ -615,7 +615,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
  */
 int mutt_addrlist_parse2(struct AddressList *al, const char *s)
 {
-  if (!s || !*s)
+  if (!s || (*s == '\0'))
     return 0;
 
   int parsed = 0;
@@ -649,7 +649,7 @@ int mutt_addrlist_parse2(struct AddressList *al, const char *s)
  */
 void mutt_addrlist_qualify(struct AddressList *al, const char *host)
 {
-  if (!al || !host || !*host)
+  if (!al || !host || (*host == '\0'))
     return;
 
   struct Address *a = NULL;
@@ -784,7 +784,7 @@ bool mutt_addr_valid_msgid(const char *msgid)
    * domain-literal = "[" *(dtext / quoted-pair) "]"
    */
 
-  if (!msgid || !*msgid)
+  if (!msgid || (*msgid == '\0'))
     return false;
 
   size_t l = mutt_str_strlen(msgid);

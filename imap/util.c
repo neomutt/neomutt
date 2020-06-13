@@ -699,9 +699,9 @@ int imap_mxcmp(const char *mx1, const char *mx2)
   char *b2 = NULL;
   int rc;
 
-  if (!mx1 || !*mx1)
+  if (!mx1 || (*mx1 == '\0'))
     mx1 = "INBOX";
-  if (!mx2 || !*mx2)
+  if (!mx2 || (*mx2 == '\0'))
     mx2 = "INBOX";
   if ((mutt_str_strcasecmp(mx1, "INBOX") == 0) &&
       (mutt_str_strcasecmp(mx2, "INBOX") == 0))
@@ -1216,7 +1216,7 @@ bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *
  */
 struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset)
 {
-  if (!seqset || !*seqset)
+  if (!seqset || (*seqset == '\0'))
     return NULL;
 
   struct SeqsetIterator *iter = mutt_mem_calloc(1, sizeof(struct SeqsetIterator));

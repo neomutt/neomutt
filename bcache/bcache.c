@@ -102,7 +102,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
  */
 static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char *newid)
 {
-  if (!bcache || !id || !*id || !newid || !*newid)
+  if (!bcache || !id || (*id == '\0') || !newid || (*newid == '\0'))
     return -1;
 
   struct Buffer *path = mutt_buffer_pool_get();
@@ -167,7 +167,7 @@ void mutt_bcache_close(struct BodyCache **bcache)
  */
 FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
 {
-  if (!id || !*id || !bcache)
+  if (!id || (*id == '\0') || !bcache)
     return NULL;
 
   struct Buffer *path = mutt_buffer_pool_get();
@@ -194,7 +194,7 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
  */
 FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
 {
-  if (!id || !*id || !bcache)
+  if (!id || (*id == '\0') || !bcache)
     return NULL;
 
   struct Buffer *path = mutt_buffer_pool_get();
@@ -251,7 +251,7 @@ int mutt_bcache_commit(struct BodyCache *bcache, const char *id)
  */
 int mutt_bcache_del(struct BodyCache *bcache, const char *id)
 {
-  if (!id || !*id || !bcache)
+  if (!id || (*id == '\0') || !bcache)
     return -1;
 
   struct Buffer *path = mutt_buffer_pool_get();
@@ -274,7 +274,7 @@ int mutt_bcache_del(struct BodyCache *bcache, const char *id)
  */
 int mutt_bcache_exists(struct BodyCache *bcache, const char *id)
 {
-  if (!id || !*id || !bcache)
+  if (!id || (*id == '\0') || !bcache)
     return -1;
 
   struct Buffer *path = mutt_buffer_pool_get();

@@ -1939,7 +1939,7 @@ static int print_val(FILE *fp, const char *pfx, const char *value,
 static int fold_one_header(FILE *fp, const char *tag, const char *value, size_t vlen,
                            const char *pfx, int wraplen, CopyHeaderFlags chflags)
 {
-  if (!value || !*value || !vlen)
+  if (!value || (*value == '\0') || !vlen)
     return 0;
 
   const char *p = value;
@@ -2844,7 +2844,7 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
 
     mutt_expando_format(cmd, sizeof(cmd), 0, sizeof(cmd), NONULL(C_Inews),
                         nntp_format_str, 0, MUTT_FORMAT_NO_FLAGS);
-    if (!*cmd)
+    if ((*cmd == '\0'))
     {
       i = nntp_post(Context->mailbox, msg);
       unlink(msg);
@@ -3235,7 +3235,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
 
   while ((tok = strtok(NULL, ",")))
   {
-    if (!*tok)
+    if ((*tok == '\0'))
       continue;
 
     /* Only call mutt_expand_path if tok has some data */

@@ -162,7 +162,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
     case 'e':
       if (!optional)
         mutt_format_s(buf, buflen, prec, NONULL(alias->comment));
-      else if (!alias->comment || !*alias->comment)
+      else if (!alias->comment || (*alias->comment == '\0'))
         optional = false;
       break;
     case 'n':
