@@ -195,6 +195,60 @@ void test_config_subset(void)
   }
 
   mutt_buffer_reset(&err);
+  expected = "142";
+  rc = cs_subset_he_string_plus_equals(NULL, NULL, expected, &err);
+  if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("This test should have failed\n");
+    return;
+  }
+
+  mutt_buffer_reset(&err);
+  expected = "678";
+  rc = cs_subset_he_string_plus_equals(NeoMutt->sub, he, expected, &err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("cs_subset_he_string_plus_equals failed\n");
+    return;
+  }
+
+  mutt_buffer_reset(&err);
+  expected = "678";
+  rc = cs_subset_str_string_plus_equals(NeoMutt->sub, name, expected, &err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("cs_subset_str_string_plus_equals failed\n");
+    return;
+  }
+
+  mutt_buffer_reset(&err);
+  expected = "142";
+  rc = cs_subset_he_string_minus_equals(NULL, NULL, expected, &err);
+  if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("This test should have failed\n");
+    return;
+  }
+
+  mutt_buffer_reset(&err);
+  expected = "678";
+  rc = cs_subset_he_string_minus_equals(NeoMutt->sub, he, expected, &err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("cs_subset_he_string_minus_equals failed\n");
+    return;
+  }
+
+  mutt_buffer_reset(&err);
+  expected = "678";
+  rc = cs_subset_str_string_minus_equals(NeoMutt->sub, name, expected, &err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("cs_subset_str_string_minus_equals failed\n");
+    return;
+  }
+
+  mutt_buffer_reset(&err);
   rc = cs_subset_he_reset(NULL, NULL, &err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {

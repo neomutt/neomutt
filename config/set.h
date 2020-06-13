@@ -46,6 +46,7 @@ struct HashElem;
 /* Flags for CSR_INVALID */
 #define CSR_INV_TYPE      (1 << 4) ///< Value is not valid for the type
 #define CSR_INV_VALIDATOR (1 << 5) ///< Value was rejected by the validator
+#define CSV_INV_NOT_IMPL  (1 << 6) ///< Operation not permitted for the type
 
 #define CSR_RESULT_MASK 0x0F
 #define CSR_RESULT(x) ((x) & CSR_RESULT_MASK)
@@ -155,6 +156,38 @@ struct ConfigSetType
   intptr_t (*native_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
 
   /**
+   * string_plus_equals - Add to a config item by string
+   * @param cs    Config items
+   * @param var   Variable to set
+   * @param cdef  Variable definition
+   * @param value Value to set
+   * @param err   Buffer for error messages (may be NULL)
+   * @retval num Result, e.g. #CSR_SUCCESS
+   *
+   * **Contract**
+   * - @a cs   is not NULL
+   * - @a var  is not NULL
+   * - @a cdef is not NULL
+   */
+  int (*string_plus_equals)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, const char *value, struct Buffer *err);
+
+  /**
+   * string_minus_equals - Remove from a config item as a string
+   * @param cs    Config items
+   * @param var   Variable to set
+   * @param cdef  Variable definition
+   * @param value Value to set
+   * @param err   Buffer for error messages (may be NULL)
+   * @retval num Result, e.g. #CSR_SUCCESS
+   *
+   * **Contract**
+   * - @a cs   is not NULL
+   * - @a var  is not NULL
+   * - @a cdef is not NULL
+   */
+  int (*string_minus_equals)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, const char *value, struct Buffer *err);
+
+  /**
    * reset - Reset a config item to its initial value
    * @param cs   Config items
    * @param var  Variable to reset
@@ -209,20 +242,24 @@ bool             cs_register_variables(const struct ConfigSet *cs, struct Config
 struct HashElem *cs_inherit_variable  (const struct ConfigSet *cs, struct HashElem *parent, const char *name);
 void             cs_uninherit_variable(const struct ConfigSet *cs, const char *name);
 
-int      cs_he_initial_get (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);
-int      cs_he_initial_set (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
-intptr_t cs_he_native_get  (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *err);
-int      cs_he_native_set  (const struct ConfigSet *cs, struct HashElem *he, intptr_t value,    struct Buffer *err);
-int      cs_he_reset       (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *err);
-int      cs_he_string_get  (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);
-int      cs_he_string_set  (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
+int      cs_he_initial_get         (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);
+int      cs_he_initial_set         (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
+intptr_t cs_he_native_get          (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *err);
+int      cs_he_native_set          (const struct ConfigSet *cs, struct HashElem *he, intptr_t value,    struct Buffer *err);
+int      cs_he_reset               (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *err);
+int      cs_he_string_get          (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);
+int      cs_he_string_minus_equals (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
+int      cs_he_string_plus_equals  (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
+int      cs_he_string_set          (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
 
-int      cs_str_initial_get(const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
-int      cs_str_initial_set(const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
-intptr_t cs_str_native_get (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
-int      cs_str_native_set (const struct ConfigSet *cs, const char *name,    intptr_t value,    struct Buffer *err);
-int      cs_str_reset      (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
-int      cs_str_string_get (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
-int      cs_str_string_set (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
+int      cs_str_initial_get        (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
+int      cs_str_initial_set        (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
+intptr_t cs_str_native_get         (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
+int      cs_str_native_set         (const struct ConfigSet *cs, const char *name,    intptr_t value,    struct Buffer *err);
+int      cs_str_reset              (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
+int      cs_str_string_get         (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
+int      cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
+int      cs_str_string_plus_equals (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
+int      cs_str_string_set         (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
 
 #endif /* MUTT_CONFIG_SET_H */

@@ -691,7 +691,8 @@ the list of all score entries.
 .
 .PP
 .nf
-\fBset\fP { [ \fBno\fP | \fBinv\fP | \fB&\fP | \fB?\fP ]\fIvariable\fP | \fIvariable\fP=\fIvalue\fP } [ ... ]
+\fBset\fP { [ \fBno\fP | \fBinv\fP | \fB&\fP | \fB?\fP ]\fIvariable\fP } [ ... ]
+\fBset\fP { \fIvariable\fP=\fIvalue\fP | \fIvariable+=increment\fP | \fIvariable-=decrement\fP } [ ... ]
 \fBunset\fP \fIvariable\fP  [ \fIvariable\fP ... ]
 \fBreset\fP \fIvariable\fP  [ \fIvariable\fP ... ]
 \fBtoggle\fP \fIvariable\fP [ \fIvariable\fP ... ]
@@ -702,7 +703,8 @@ These commands are used to set and manipulate configuration \fIvariable\fPs.
 NeoMutt knows four basic types of \fIvariable\fPs: boolean, number, string and
 quadoption. Boolean \fIvariable\fPs can be \fBset\fP (true), \fBunset\fP
 (false), or \fBtoggle\fPd. Number \fIvariable\fPs can be assigned a positive
-integer \fIvalue\fP.
+integer \fIvalue\fP. Value of number \fIvariable\fPs can be incremented "\fB+=\fP"
+and decremented "\fB-=\fP".
 .IP
 String \fIvariable\fPs consist of any number of printable characters and must
 be enclosed in quotes if they contain spaces or tabs. You may also use the

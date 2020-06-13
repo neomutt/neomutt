@@ -853,3 +853,163 @@ intptr_t cs_str_native_get(const struct ConfigSet *cs, const char *name, struct 
   struct HashElem *he = cs_get_elem(cs, name);
   return cs_he_native_get(cs, he, err);
 }
+
+/**
+ * cs_he_string_plus_equals - Add to a config item by string
+ * @param cs    Config items
+ * @param he    HashElem representing config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_he_string_plus_equals(const struct ConfigSet *cs, struct HashElem *he,
+                             const char *value, struct Buffer *err)
+{
+  if (!cs || !he)
+    return CSR_ERR_CODE;
+
+  struct ConfigDef *cdef = NULL;
+  const struct ConfigSetType *cst = NULL;
+  void *var = NULL;
+
+  if (he->type & DT_INHERITED)
+  {
+    struct Inheritance *i = he->data;
+    struct HashElem *he_base = cs_get_base(he);
+    cdef = he_base->data;
+    cst = cs_get_type_def(cs, he_base->type);
+    var = &i->var;
+  }
+  else
+  {
+    cdef = he->data;
+    cst = cs_get_type_def(cs, he->type);
+    var = cdef->var;
+  }
+
+  if (!cst)
+  {
+    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
+    return CSR_ERR_CODE;
+  }
+
+  if (!cst->string_plus_equals)
+  {
+    // L10N: e.g. Type 'boolean' doesn't support operation '+='
+    mutt_buffer_printf(err, _("Type '%s' doesn't support operation '%s'"), cst->name, "+=");
+    return CSR_ERR_INVALID | CSV_INV_NOT_IMPL;
+  }
+
+  int rc = cst->string_plus_equals(cs, var, cdef, value, err);
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
+    return rc;
+
+  if (he->type & DT_INHERITED)
+    he->type = cdef->type | DT_INHERITED;
+
+  return rc;
+}
+
+/**
+ * cs_str_string_plus_equals - Add to a config item by string
+ * @param cs    Config items
+ * @param name  Name of config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_string_plus_equals(const struct ConfigSet *cs, const char *name,
+                              const char *value, struct Buffer *err)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_string_plus_equals(cs, he, value, err);
+}
+
+/**
+ * cs_he_string_minus_equals - Remove from a config item by string
+ * @param cs    Config items
+ * @param he    HashElem representing config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_he_string_minus_equals(const struct ConfigSet *cs, struct HashElem *he,
+                              const char *value, struct Buffer *err)
+{
+  if (!cs || !he)
+    return CSR_ERR_CODE;
+
+  struct ConfigDef *cdef = NULL;
+  const struct ConfigSetType *cst = NULL;
+  void *var = NULL;
+
+  if (he->type & DT_INHERITED)
+  {
+    struct Inheritance *i = he->data;
+    struct HashElem *he_base = cs_get_base(he);
+    cdef = he_base->data;
+    cst = cs_get_type_def(cs, he_base->type);
+    var = &i->var;
+  }
+  else
+  {
+    cdef = he->data;
+    cst = cs_get_type_def(cs, he->type);
+    var = cdef->var;
+  }
+
+  if (!cst)
+  {
+    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
+    return CSR_ERR_CODE;
+  }
+
+  if (!cst->string_minus_equals)
+  {
+    // L10N: e.g. Type 'boolean' doesn't support operation '+='
+    mutt_buffer_printf(err, _("Type '%s' doesn't support operation '%s'"), cst->name, "-=");
+    return CSR_ERR_INVALID | CSV_INV_NOT_IMPL;
+  }
+
+  int rc = cst->string_minus_equals(cs, var, cdef, value, err);
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
+    return rc;
+
+  if (he->type & DT_INHERITED)
+    he->type = cdef->type | DT_INHERITED;
+
+  return rc;
+}
+
+/**
+ * cs_str_string_minus_equals - Remove from a config item by string
+ * @param cs    Config items
+ * @param name  Name of config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,
+                               const char *value, struct Buffer *err)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_string_minus_equals(cs, he, value, err);
+}

@@ -6725,8 +6725,18 @@ set spam_separator=", "
               </group>
               <replaceable class="parameter">variable</replaceable>
             </arg>
+          </group>
+          <arg choice="opt" rep="repeat"></arg>
+          <command>set</command>
+          <group choice="req">
             <arg choice="plain">
               <replaceable class="parameter">variable=value</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">variable+=increment</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">variable-=decrement</replaceable>
             </arg>
           </group>
           <arg choice="opt" rep="repeat"></arg>
@@ -6759,7 +6769,9 @@ set spam_separator=", "
           quadoption. <emphasis>boolean</emphasis> variables can be
           <emphasis>set</emphasis> (true) or <emphasis>unset</emphasis>
           (false). <emphasis>number</emphasis> variables can be assigned
-          a positive integer value. <emphasis>string</emphasis> variables
+          a positive integer value. Value of number variables can be
+          incremented <emphasis>+=</emphasis> and decremented
+          <emphasis>-=</emphasis>. <emphasis>string</emphasis> variables
           consist of any number of printable characters and must be enclosed in
           quotes if they contain spaces or tabs. You may also use the escape
           sequences <quote>\n</quote> and <quote>\t</quote> for newline and

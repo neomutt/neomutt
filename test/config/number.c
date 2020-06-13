@@ -357,6 +357,159 @@ static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
+static bool test_string_plus_equals(struct ConfigSet *cs, struct Buffer *err)
+{
+  log_line(__func__);
+
+  const char *valid[] = { "-123", "0", "-42", "456" };
+  int numbers[] = { -165, -42, -84, 414 };
+  const char *invalid[] = { "-33183", "111132868", "junk", "", NULL };
+  const char *name = "Damson";
+
+  int rc;
+  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  {
+    VarDamson = -42;
+
+    TEST_MSG("Increasing %s with initial value %d by %s\n", name, VarDamson, valid[i]);
+    mutt_buffer_reset(err);
+    rc = cs_str_string_plus_equals(cs, name, valid[i], err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("%s\n", err->data);
+      return false;
+    }
+
+    if (rc & CSR_SUC_NO_CHANGE)
+    {
+      TEST_MSG("Value of %s wasn't changed\n", name);
+      continue;
+    }
+
+    if (!TEST_CHECK(VarDamson == numbers[i]))
+    {
+      TEST_MSG("Value of %s wasn't changed\n", name);
+      return false;
+    }
+    TEST_MSG("%s = %d, set by '%s'\n", name, VarDamson, valid[i]);
+    short_line();
+  }
+
+  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  {
+    TEST_MSG("Increasing %s with initial value %d by %s\n", name, VarDamson,
+             NONULL(invalid[i]));
+    mutt_buffer_reset(err);
+    rc = cs_str_string_plus_equals(cs, name, invalid[i], err);
+    if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+    {
+      TEST_MSG("Expected error: %s\n", err->data);
+    }
+    else
+    {
+      TEST_MSG("%s = %d, set by '%s'\n", name, VarDamson, invalid[i]);
+      TEST_MSG("This test should have failed\n");
+      return false;
+    }
+    short_line();
+  }
+
+  name = "Elderberry";
+  mutt_buffer_reset(err);
+  TEST_MSG("Increasing %s by %s\n", name, "-42");
+  rc = cs_str_string_plus_equals(cs, name, "-42", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", err->data);
+  }
+  else
+  {
+    TEST_MSG("This test should have failed\n");
+    return false;
+  }
+
+  log_line(__func__);
+  return true;
+}
+
+static bool test_string_minus_equals(struct ConfigSet *cs, struct Buffer *err)
+{
+  log_line(__func__);
+
+  const char *valid[] = { "-123", "0", "-42", "456" };
+  int numbers[] = { 81, -42, 0, -498 };
+  const char *invalid[] = { "32271",
+                            "-1844674407370955161000005"
+                            "junk",
+                            "", NULL };
+  const char *name = "Damson";
+
+  int rc;
+  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  {
+    VarDamson = -42;
+
+    TEST_MSG("Decreasing %s with initial value %d by %s\n", name, VarDamson, valid[i]);
+    mutt_buffer_reset(err);
+    rc = cs_str_string_minus_equals(cs, name, valid[i], err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("%s\n", err->data);
+      return false;
+    }
+
+    if (rc & CSR_SUC_NO_CHANGE)
+    {
+      TEST_MSG("Value of %s wasn't changed\n", name);
+      continue;
+    }
+
+    if (!TEST_CHECK(VarDamson == numbers[i]))
+    {
+      TEST_MSG("Value of %s wasn't changed\n", name);
+      return false;
+    }
+    TEST_MSG("%s = %d, set by '%s'\n", name, VarDamson, valid[i]);
+    short_line();
+  }
+
+  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  {
+    TEST_MSG("Decreasing %s with initial value %d by %s\n", name, VarDamson,
+             NONULL(invalid[i]));
+    mutt_buffer_reset(err);
+    rc = cs_str_string_minus_equals(cs, name, invalid[i], err);
+    if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+    {
+      TEST_MSG("Expected error: %s\n", err->data);
+    }
+    else
+    {
+      TEST_MSG("%s = %d, decreased by '%s'\n", name, VarDamson, invalid[i]);
+      TEST_MSG("This test should have failed\n");
+      return false;
+    }
+    short_line();
+  }
+
+  name = "Elderberry";
+  mutt_buffer_reset(err);
+  TEST_MSG("Increasing %s by %s\n", name, "42");
+  rc = cs_str_string_minus_equals(cs, name, "42", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", err->data);
+  }
+  else
+  {
+    TEST_MSG("This test should have failed\n");
+    return false;
+  }
+
+  log_line(__func__);
+  return true;
+}
+
 static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
@@ -451,6 +604,38 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   TEST_MSG("Native: %s = %d\n", name, VarLemon);
   short_line();
 
+  VarLemon = 456;
+  mutt_buffer_reset(err);
+  rc = cs_str_string_plus_equals(cs, name, "123", err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("%s\n", err->data);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err->data);
+    return false;
+  }
+  TEST_CHECK(VarLemon == 579);
+  TEST_MSG("PlusEquals: %s = %d\n", name, VarLemon);
+  short_line();
+
+  VarLemon = 456;
+  mutt_buffer_reset(err);
+  rc = cs_str_string_minus_equals(cs, name, "123", err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("%s\n", err->data);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err->data);
+    return false;
+  }
+  TEST_CHECK(VarLemon == 333);
+  TEST_MSG("MinusEquals: %s = %d\n", name, VarLemon);
+  short_line();
+
   name = "Mango";
   VarMango = 123;
   mutt_buffer_reset(err);
@@ -527,6 +712,38 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
   TEST_MSG("Native: %s = %d\n", name, VarNectarine);
+  short_line();
+
+  VarNectarine = 456;
+  mutt_buffer_reset(err);
+  rc = cs_str_string_plus_equals(cs, name, "123", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", err->data);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err->data);
+    return false;
+  }
+  TEST_CHECK(VarNectarine == 456);
+  TEST_MSG("PlusEquals: %s = %d\n", name, VarNectarine);
+  short_line();
+
+  VarNectarine = 456;
+  mutt_buffer_reset(err);
+  rc = cs_str_string_minus_equals(cs, name, "123", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", err->data);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err->data);
+    return false;
+  }
+  TEST_CHECK(VarNectarine == 456);
+  TEST_MSG("MinusEquals: %s = %d\n", name, VarNectarine);
 
   log_line(__func__);
   return true;
@@ -605,6 +822,53 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
     goto ti_out;
   }
   dump_native(cs, parent, child);
+  short_line();
+
+  // plus_equals parent
+  VarOlive = 123;
+  mutt_buffer_reset(err);
+  rc = cs_str_string_plus_equals(cs, parent, "456", err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("Error: %s\n", err->data);
+    goto ti_out;
+  }
+  dump_native(cs, parent, child);
+  short_line();
+
+  // plus_equals child
+  mutt_buffer_reset(err);
+  rc = cs_str_string_plus_equals(cs, child, "-99", err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("Error: %s\n", err->data);
+    goto ti_out;
+  }
+  dump_native(cs, parent, child);
+  short_line();
+
+  // minus_equals parent
+  VarOlive = 123;
+  mutt_buffer_reset(err);
+  rc = cs_str_string_minus_equals(cs, parent, "456", err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("Error: %s\n", err->data);
+    goto ti_out;
+  }
+  dump_native(cs, parent, child);
+  short_line();
+
+  // minus_equals child
+  mutt_buffer_reset(err);
+  rc = cs_str_string_minus_equals(cs, child, "-99", err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("Error: %s\n", err->data);
+    goto ti_out;
+  }
+  dump_native(cs, parent, child);
+  short_line();
 
   log_line(__func__);
   result = true;
@@ -638,6 +902,8 @@ void test_config_number(void)
   TEST_CHECK(test_initial_values(cs, &err));
   TEST_CHECK(test_string_set(cs, &err));
   TEST_CHECK(test_string_get(cs, &err));
+  TEST_CHECK(test_string_plus_equals(cs, &err));
+  TEST_CHECK(test_string_minus_equals(cs, &err));
   TEST_CHECK(test_native_set(cs, &err));
   TEST_CHECK(test_native_get(cs, &err));
   TEST_CHECK(test_reset(cs, &err));

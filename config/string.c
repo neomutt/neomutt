@@ -222,8 +222,15 @@ static int string_reset(const struct ConfigSet *cs, void *var,
 void string_init(struct ConfigSet *cs)
 {
   const struct ConfigSetType cst_string = {
-    "string",          string_string_set, string_string_get, string_native_set,
-    string_native_get, string_reset,      string_destroy,
+    "string",
+    string_string_set,
+    string_string_get,
+    string_native_set,
+    string_native_get,
+    NULL, // string_plus_equals
+    NULL, // string_minus_equals
+    string_reset,
+    string_destroy,
   };
   cs_register_type(cs, DT_STRING, &cst_string);
 }

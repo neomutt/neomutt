@@ -276,8 +276,14 @@ static int mbtable_reset(const struct ConfigSet *cs, void *var,
 void mbtable_init(struct ConfigSet *cs)
 {
   const struct ConfigSetType cst_mbtable = {
-    "mbtable",          mbtable_string_set, mbtable_string_get,
-    mbtable_native_set, mbtable_native_get, mbtable_reset,
+    "mbtable",
+    mbtable_string_set,
+    mbtable_string_get,
+    mbtable_native_set,
+    mbtable_native_get,
+    NULL, // string_plus_equals
+    NULL, // string_minus_equals
+    mbtable_reset,
     mbtable_destroy,
   };
   cs_register_type(cs, DT_MBTABLE, &cst_mbtable);

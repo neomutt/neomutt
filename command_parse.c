@@ -1122,10 +1122,12 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     }
 
     /* get the variable name */
-    mutt_extract_token(buf, s, MUTT_TOKEN_EQUAL | MUTT_TOKEN_QUESTION);
+    mutt_extract_token(buf, s, MUTT_TOKEN_EQUAL | MUTT_TOKEN_QUESTION | MUTT_TOKEN_PLUS | MUTT_TOKEN_MINUS);
 
     bool bq = false;
     bool equals = false;
+    bool increment = false;
+    bool decrement = false;
 
     struct HashElem *he = NULL;
     bool my = mutt_str_startswith(buf->data, "my_", CASE_MATCH);
@@ -1174,6 +1176,33 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 
       query = true;
       s->dptr++;
+    }
+    else if (*s->dptr == '+' || *s->dptr == '-')
+    {
+      if (prefix)
+      {
+        mutt_buffer_printf(err, "ERR04 can't use prefix when incrementing or "
+                                "decrementing a variable");
+        return MUTT_CMD_WARNING;
+      }
+
+      if (reset || unset || inv)
+      {
+        mutt_buffer_printf(err, "ERR05 can't set a variable with the '%s' command",
+                           set_commands[data]);
+        return MUTT_CMD_WARNING;
+      }
+      if (*s->dptr == '+')
+        increment = true;
+      else
+        decrement = true;
+
+      s->dptr++;
+      if (*s->dptr == '=')
+      {
+        equals = true;
+        s->dptr++;
+      }
     }
     else if (*s->dptr == '=')
     {
@@ -1303,8 +1332,18 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
             mutt_buffer_addstr(buf, mutt_b2s(&scratch));
             mutt_buffer_dealloc(&scratch);
           }
-
-          rc = cs_subset_he_string_set(NeoMutt->sub, he, buf->data, err);
+          if (increment)
+          {
+            rc = cs_subset_he_string_plus_equals(NeoMutt->sub, he, buf->data, err);
+          }
+          else if (decrement)
+          {
+            rc = cs_subset_he_string_minus_equals(NeoMutt->sub, he, buf->data, err);
+          }
+          else
+          {
+            rc = cs_subset_he_string_set(NeoMutt->sub, he, buf->data, err);
+          }
           if (CSR_RESULT(rc) != CSR_SUCCESS)
             return MUTT_CMD_ERROR;
         }

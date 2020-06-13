@@ -78,6 +78,8 @@ typedef uint16_t TokenFlags;               ///< Flags for mutt_extract_token(), 
 #define MUTT_TOKEN_BACKTICK_VARS (1 << 7)  ///< Expand variables within backticks
 #define MUTT_TOKEN_NOSHELL       (1 << 8)  ///< Don't expand environment variables
 #define MUTT_TOKEN_QUESTION      (1 << 9)  ///< Treat '?' as a special
+#define MUTT_TOKEN_PLUS          (1 << 10)  ///< Treat '+' as a special
+#define MUTT_TOKEN_MINUS         (1 << 11)  ///< Treat '-' as a special
 
 /**
  * enum MessageType - To set flags or match patterns

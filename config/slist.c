@@ -267,8 +267,15 @@ static int slist_reset(const struct ConfigSet *cs, void *var,
 void slist_init(struct ConfigSet *cs)
 {
   const struct ConfigSetType cst_slist = {
-    "slist",          slist_string_set, slist_string_get, slist_native_set,
-    slist_native_get, slist_reset,      slist_destroy,
+    "slist",
+    slist_string_set,
+    slist_string_get,
+    slist_native_set,
+    slist_native_get,
+    NULL, // string_plus_equals
+    NULL, // string_minus_equals
+    slist_reset,
+    slist_destroy,
   };
   cs_register_type(cs, DT_SLIST, &cst_slist);
 }
