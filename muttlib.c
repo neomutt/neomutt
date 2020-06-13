@@ -1031,14 +1031,14 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         char *p = (char *) src;
         *p = '<';
         /* skip over "x" */
-        for (; *p && *p != '?'; p++)
+        for (; *p && (*p != '?'); p++)
           ; // do nothing
 
         /* nothing */
         if (*p == '?')
           p++;
         /* fix up the "y&z" section */
-        for (; *p && *p != '?'; p++)
+        for (; *p && (*p != '?'); p++)
         {
           /* escape '<' and '>' to work inside nested-if */
           if ((*p == '<') || (*p == '>'))
@@ -1211,7 +1211,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             {
               /* Add pre-spacing to make multi-column pad characters and
                * the contents after padding line up */
-              while ((col + (pad * pw) + wid < cols) && (wlen + (pad * pl) + len < buflen))
+              while (((col + (pad * pw) + wid) < cols) && ((wlen + (pad * pl) + len) < buflen))
               {
                 *wptr++ = ' ';
                 wlen++;
@@ -1241,7 +1241,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             wptr = buf + wlen;
             /* Multi-column characters may be truncated in the middle.
              * Add spacing so the right hand side lines up. */
-            while ((col + wid < avail_cols) && (wlen + len < buflen))
+            while (((col + wid) < avail_cols) && ((wlen + len) < buflen))
             {
               *wptr++ = ' ';
               wlen++;
@@ -1270,7 +1270,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         if ((col < cols) && (wlen < buflen))
         {
           int c = (cols - col) / pw;
-          if ((c > 0) && (wlen + (c * pl) > buflen))
+          if ((c > 0) && ((wlen + (c * pl)) > buflen))
             c = ((signed) (buflen - wlen)) / pl;
           while (c > 0)
           {

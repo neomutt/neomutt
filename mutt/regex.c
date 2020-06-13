@@ -498,7 +498,7 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
       mutt_debug(LL_DEBUG5, "%d subs\n", (int) np->regex->regex->re_nsub);
 
       /* Copy template into buf, with substitutions. */
-      for (p = np->templ; *p && tlen < buflen - 1;)
+      for (p = np->templ; *p && (tlen < (buflen - 1));)
       {
         /* backreference to pattern match substring, eg. %1, %2, etc) */
         if (*p == '%')
@@ -516,7 +516,7 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
              * the terminating nul char */
             int idx;
             for (idx = pmatch[n].rm_so;
-                 (idx < pmatch[n].rm_eo) && (tlen < buflen - 1); idx++)
+                 (idx < pmatch[n].rm_eo) && (tlen < (buflen - 1)); idx++)
             {
               buf[tlen++] = str[idx];
             }
