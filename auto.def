@@ -140,7 +140,7 @@ if {1} {
     debug-parse-test debug-window doc everything fmemopen full-doc gdbm gnutls
     gpgme gss homespool idn idn2 include-path-in-cflags inotify kyotocabinet
     lmdb locales-fix lua lz4 mixmaster nls notmuch pcre2 pgp pkgconf qdbm
-    rocksdb sasl smime sqlite ssl testing tdb tokyocabinet zlib zstd 
+    rocksdb sasl smime sqlite ssl testing tdb tokyocabinet zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }

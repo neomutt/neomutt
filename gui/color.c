@@ -807,7 +807,7 @@ static bool do_uncolor(struct Colors *c, struct Buffer *buf, struct Buffer *s,
  * parse_uncolor - Parse an 'uncolor' command
  * @param buf     Temporary Buffer space
  * @param s       Buffer containing string to be parsed
- * @param data    Flags associated with the command
+ * @param c       Global colours to update
  * @param err     Buffer for error messages
  * @param uncolor If true, 'uncolor', else 'unmono'
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
