@@ -422,7 +422,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
     goto out;
 
   hook = mutt_mem_calloc(1, sizeof(struct Hook));
-  hook->type = data;
+  hook->type = MUTT_IDXFMTHOOK;
   hook->command = mutt_buffer_strdup(fmtstring);
   hook->pattern = pat;
   hook->regex.pattern = mutt_buffer_strdup(pattern);

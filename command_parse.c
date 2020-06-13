@@ -83,10 +83,8 @@ enum GroupState
  * parse_unreplace_list - Remove a string replacement rule - Implements Command::parse()
  */
 static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
-                                               intptr_t data, struct Buffer *err)
+                                               struct ReplaceList *list, struct Buffer *err)
 {
-  struct ReplaceList *list = (struct ReplaceList *) data;
-
   /* First token is a regex. */
   if (!MoreArgs(s))
   {
@@ -210,9 +208,8 @@ static void clear_subject_mods(void)
  * parse_replace_list - Parse a string replacement rule - Implements Command::parse()
  */
 static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *s,
-                                             intptr_t data, struct Buffer *err)
+                                             struct ReplaceList *list, struct Buffer *err)
 {
-  struct ReplaceList *list = (struct ReplaceList *) data;
   struct Buffer templ = mutt_buffer_make(0);
 
   /* First token is a regex. */
@@ -1644,7 +1641,7 @@ enum CommandResult parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
 {
   enum CommandResult rc;
 
-  rc = parse_replace_list(buf, s, data, err);
+  rc = parse_replace_list(buf, s, &SubjectRegexList, err);
   if (rc == MUTT_CMD_SUCCESS)
     clear_subject_mods();
   return rc;
@@ -2061,7 +2058,7 @@ enum CommandResult parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
 {
   enum CommandResult rc;
 
-  rc = parse_unreplace_list(buf, s, data, err);
+  rc = parse_unreplace_list(buf, s, &SubjectRegexList, err);
   if (rc == MUTT_CMD_SUCCESS)
     clear_subject_mods();
   return rc;
