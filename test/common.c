@@ -73,9 +73,10 @@ void test_init(void)
     goto done;
   }
 
-  if (!TEST_CHECK(setlocale(LC_ALL, "C.UTF-8") != NULL))
+  if (!TEST_CHECK((setlocale(LC_ALL, "C.UTF-8") != NULL) ||
+                  (setlocale(LC_ALL, "en_US.UTF-8") != NULL)))
   {
-    TEST_MSG("Can't set locale to C.UTF-8");
+    TEST_MSG("Can't set locale to C.UTF-8 or en_US.UTF-8");
     goto done;
   }
 
