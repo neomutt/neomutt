@@ -32,6 +32,8 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
+#include "maillist.h"
+#include "hdrline.h"
 #include "muttlib.h"
 #include "sort.h"
 

@@ -54,6 +54,7 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "init.h"
+#include "maillist.h"
 #include "mutt_attach.h"
 #include "mutt_body.h"
 #include "mutt_header.h"

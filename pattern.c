@@ -51,6 +51,7 @@
 #include "handler.h"
 #include "hdrline.h"
 #include "init.h"
+#include "maillist.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_parse.h"
