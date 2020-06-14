@@ -1,6 +1,7 @@
 ---
-name: Question
-about: Ask a question about NeoMutt
+name: "❓ Question"
+about: "Ask a question about NeoMutt"
+labels: "type:question"
 
 ---
 
@@ -12,5 +13,5 @@ We're working on making it easier to understand.
 Before asking a question, please check:
 
 - NeoMutt Guide: https://neomutt.org/guide/
-- Google:        https://www.google.com/
+- Google:        https://www.google.com j/
 

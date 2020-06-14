@@ -1,6 +1,7 @@
 ---
-name: Feature Request
-about: Suggest an idea for NeoMutt
+name: "🎁 Feature Request"
+about: "Suggest an idea for NeoMutt"
+labels: "type:enhancement, status:discuss"
 
 ---
 
