@@ -1458,7 +1458,7 @@ msgstr "Nežinomas kintamasis '%s'"
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #, c-format
 msgid "Type '%s' doesn't support operation '%s'"
-msgstr ""
+msgstr "Tipas '%s' nepalaiko operacijos '%s'"
 
 #: config/sort.c:192
 #, c-format
@@ -3063,7 +3063,7 @@ msgstr "Bloga parametro %s reikšmė: %s"
 #: init.c:1660
 #, c-format
 msgid "Set option %s before setting %s"
-msgstr ""
+msgstr "Nustatykite %s parinktį prieš nustatydami %s"
 
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
