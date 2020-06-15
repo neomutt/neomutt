@@ -6,7 +6,7 @@
 # Cd Chen <cdchen@mail.cynix.com.tw>, 2001
 # Weichung Chau <weichung@mail.cynix.com.tw>, 2001
 # Anthony Wong <ypwong@debian.org>, 2001
-# Deng Xiyue <manphiz@gmail.com>, 2009
+# Deng Xiyue <manphiz@gmail.com>, 2009,2020
 # lilydjwg <lilydjwg@gmail.com>, 2017
 # Bo Yu <tsu.yubo@gmail.com>, 2017-2019
 # Zero King <l2dy@macports.org>, 2019
@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2020-04-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2020-06-02 00:13+0100\n"
-"PO-Revision-Date: 2019-09-09 09:44-0500\n"
+"PO-Revision-Date: 2020-06-15 02:23-0700\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -54,9 +54,8 @@ msgid "Personal name: "
 msgstr "个人姓名："
 
 #: alias/alias.c:462
-#, fuzzy
 msgid "Comment: "
-msgstr "X-Comment-To: "
+msgstr "注释: "
 
 #: alias/alias.c:470 alias/alias.c:474
 msgid "Accept?"
@@ -1198,7 +1197,7 @@ msgstr "附件 %2$s [#%1$d] 已修改。更新编码?"
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
-msgstr[0] ""
+msgstr[0] "(+%d 更多)"
 
 #: compose.c:911
 msgid "-- Attachments"
@@ -1421,14 +1420,14 @@ msgid "Invalid number: %ld"
 msgstr "无效数字: %ld"
 
 #: config/quad.c:69
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %s"
-msgstr "无效的相对日期：%s"
+msgstr "无效的四项值：%s"
 
 #: config/quad.c:133
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %ld"
-msgstr "选项 %s 的值无效：“%ld”"
+msgstr "无效的四项值：“%ld”"
 
 #: config/set.c:101
 #, c-format
@@ -1449,7 +1448,7 @@ msgstr "未知的变量 '%s'"
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #, c-format
 msgid "Type '%s' doesn't support operation '%s'"
-msgstr ""
+msgstr "“%s”类型的数据不支持“%s”操作"
 
 #: config/sort.c:192
 #, c-format
@@ -1980,12 +1979,12 @@ msgstr "不支持默认的颜色"
 #: gui/color.c:1280
 #, c-format
 msgid "Maximum quoting level is %d"
-msgstr ""
+msgstr "最高支持 %d 层引用"
 
 #: gui/color.c:1317
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid number: %s"
-msgstr "错误：分数：无效数字"
+msgstr "%s：无效数字：%s"
 
 # Don't translate this!!
 #: gui/curs_lib.c:380
@@ -2420,9 +2419,9 @@ msgid "Mailbox %s@%s closed"
 msgstr "信箱 %s@%s 已关闭"
 
 #: imap/command.c:1172
-#, fuzzy, c-format
+#, c-format
 msgid "IMAP command failed: %s"
-msgstr "压缩命令失败：%s"
+msgstr "IMAP 命令失败：%s"
 
 #: imap/command.c:1265 imap/command.c:1377
 #, c-format
@@ -2785,7 +2784,7 @@ msgstr "没有虚拟文件夹及 Message-Id，正在中止"
 
 #: index.c:2158
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
-msgstr ""
+msgstr "在 notmuch 数据库中查找信件失败。请尝试运行“notmuch new”。"
 
 #: index.c:2168
 msgid "Failed to read thread, aborting"
@@ -3014,9 +3013,9 @@ msgid "Error in command line: %s"
 msgstr "命令行有错：%s"
 
 #: init.c:215
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in command line: %s"
-msgstr "命令行有错：%s"
+msgstr "命令行有警告：%s"
 
 #: init.c:324
 msgid "unable to determine nodename via uname()"
@@ -3039,7 +3038,7 @@ msgstr "选项 %s 的值无效：%s"
 #: init.c:1660
 #, c-format
 msgid "Set option %s before setting %s"
-msgstr ""
+msgstr "请先设置 %s 之后再设置 %s"
 
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
@@ -3047,7 +3046,7 @@ msgstr ""
 #: init.c:1677 init.c:1751
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
-msgstr ""
+msgstr "选项 %s 的值必须在 %d 和 %d 之间（闭区间）"
 
 #: init.c:1695
 #, c-format
@@ -3070,12 +3069,12 @@ msgstr "检测到宏中有回环"
 
 #: keymap.c:832
 msgid "Abort key is not set, defaulting to Ctrl-G"
-msgstr ""
+msgstr "没有设置取消键，默认为 Ctrl-G"
 
 #: keymap.c:839
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
-msgstr ""
+msgstr "设置的取消键组合序列（%s）只有第一个键起作用"
 
 #: keymap.c:1106 keymap.c:1141
 msgid "Key is not bound"
@@ -3110,9 +3109,9 @@ msgid "%s: no such function"
 msgstr "%s：没有这样的函数"
 
 #: keymap.c:1626
-#, fuzzy, c-format
+#, c-format
 msgid "Enter keys (%s to abort): "
-msgstr "请按键 (按 ^G 中止)："
+msgstr "请按键 (按 %s 中止)："
 
 #: keymap.c:1633
 #, c-format
@@ -3736,9 +3735,9 @@ msgid "Mailbox checkpointed"
 msgstr "信箱已检查"
 
 #: mx.c:1344
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open %s: it is a pipe"
-msgstr "无法打开信件文件：%s"
+msgstr "无法打开 %s：这是管道设备文件"
 
 #: ncrypt/crypt.c:92
 #, c-format
@@ -5996,14 +5995,12 @@ msgid "view the key's user id"
 msgstr "查看密钥的用户 id"
 
 #: opcodes.h:306
-#, fuzzy
 msgid "move the highlight to the first mailbox"
-msgstr "移动高亮到下一个信箱"
+msgstr "移动高亮到第一个信箱"
 
 #: opcodes.h:307
-#, fuzzy
 msgid "move the highlight to the last mailbox"
-msgstr "移动高亮到下一个信箱"
+msgstr "移动高亮到最后一个信箱"
 
 #: opcodes.h:308
 msgid "move the highlight to next mailbox"
@@ -6653,7 +6650,7 @@ msgstr "无法延迟寄出。未设置 $postponed 值"
 
 #: send.c:1824 send.c:1840
 msgid "Error encrypting message. Check your crypt settings."
-msgstr ""
+msgstr "加密信件出错。请检查你的加密设置。"
 
 #: send.c:1935
 msgid "Recall postponed message?"
@@ -6661,11 +6658,11 @@ msgstr "叫出延迟寄出的信件吗？"
 
 #: send.c:2170
 msgid "Refusing to send an empty email"
-msgstr ""
+msgstr "拒绝发送空邮件"
 
 #: send.c:2171
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
-msgstr ""
+msgstr "请尝试以下命令： echo | neomutt -s 'subject' user@example.com"
 
 #: send.c:2247
 msgid "Edit forwarded message?"
