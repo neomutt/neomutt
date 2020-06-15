@@ -703,11 +703,13 @@ the list of all score entries.
 .IP
 These commands are used to set and manipulate configuration \fIvariable\fPs.
 .IP
-NeoMutt knows four basic types of \fIvariable\fPs: boolean, number, string and
-quadoption. Boolean \fIvariable\fPs can be \fBset\fP (true), \fBunset\fP
+NeoMutt knows four basic types of \fIvariable\fPs: boolean, number, string, string
+list and quadoption. Boolean \fIvariable\fPs can be \fBset\fP (true), \fBunset\fP
 (false), or \fBtoggle\fPd. Number \fIvariable\fPs can be assigned a positive
 integer \fIvalue\fP. Value of number \fIvariable\fPs can be incremented "\fB+=\fP"
-and decremented "\fB-=\fP".
+and decremented "\fB-=\fP". String list \fIvariable\fPs use "\fB+=\fP" for
+appending increment to the string list and "\fB-=\fP" for removal decrement from
+the string list.
 .IP
 String \fIvariable\fPs consist of any number of printable characters and must
 be enclosed in quotes if they contain spaces or tabs. You may also use the

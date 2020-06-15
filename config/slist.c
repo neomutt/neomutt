@@ -194,6 +194,87 @@ static intptr_t slist_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * slist_string_plus_equals - Add to a Slist by string - Implements ConfigSetType::string_plus_equals()
+ */
+static int slist_string_plus_equals(const struct ConfigSet *cs, void *var,
+                                    const struct ConfigDef *cdef,
+                                    const char *value, struct Buffer *err)
+{
+  if (!cs || !cdef)
+    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+
+  int rc = CSR_SUCCESS;
+
+  /* Store empty strings as NULL */
+  if (value && (value[0] == '\0'))
+    return rc |= CSR_SUC_NO_CHANGE;
+
+  struct Slist *orig = *(struct Slist **) var;
+  if (slist_is_member(orig, value))
+    return rc |= CSR_SUC_NO_CHANGE;
+
+  struct Slist *copy = slist_dup(orig);
+  if (!copy)
+    copy = slist_new(cdef->type & SLIST_SEP_MASK);
+
+  slist_add_string(copy, value);
+
+  if (cdef->validator)
+  {
+    rc = cdef->validator(cs, cdef, (intptr_t) copy, err);
+    if (CSR_RESULT(rc) != CSR_SUCCESS)
+    {
+      slist_free(&copy);
+      return (rc | CSR_INV_VALIDATOR);
+    }
+  }
+
+  slist_free(&orig);
+  *(struct Slist **) var = copy;
+
+  return rc;
+}
+
+/**
+ * slist_string_minus_equals - Remove from a Slist by string - Implements ConfigSetType::string_plus_equals()
+ */
+static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
+                                     const struct ConfigDef *cdef,
+                                     const char *value, struct Buffer *err)
+{
+  if (!cs || !cdef)
+    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+
+  int rc = CSR_SUCCESS;
+
+  /* Store empty strings as NULL */
+  if (value && (value[0] == '\0'))
+    return rc |= CSR_SUC_NO_CHANGE;
+
+  struct Slist *orig = *(struct Slist **) var;
+  if (!slist_is_member(orig, value))
+    return rc |= CSR_SUC_NO_CHANGE;
+
+  struct Slist *copy = slist_dup(orig);
+  slist_remove_string(copy, value);
+
+  if (cdef->validator)
+  {
+    rc = cdef->validator(cs, cdef, (intptr_t) copy, err);
+    if (CSR_RESULT(rc) != CSR_SUCCESS)
+    {
+      slist_free(&copy);
+      return (rc | CSR_INV_VALIDATOR);
+    }
+  }
+
+  slist_free(&orig);
+  *(struct Slist **) var = copy;
+
+  return rc;
+}
+
+/**
  * slist_reset - Reset a Slist to its initial value - Implements ConfigSetType::reset()
  */
 static int slist_reset(const struct ConfigSet *cs, void *var,
@@ -240,8 +321,8 @@ const struct ConfigSetType cst_slist = {
   slist_string_get,
   slist_native_set,
   slist_native_get,
-  NULL, // string_plus_equals
-  NULL, // string_minus_equals
+  slist_string_plus_equals,
+  slist_string_minus_equals,
   slist_reset,
   slist_destroy,
 };

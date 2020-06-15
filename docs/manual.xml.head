@@ -6814,13 +6814,16 @@ set spam_separator=", "
         <para>
           This command is used to set (and unset)
           <link linkend="variables">configuration variables</link>. There are
-          four basic types of variables: boolean, number, string and
-          quadoption. <emphasis>boolean</emphasis> variables can be
+          four basic types of variables: boolean, number, string, string list
+          and quadoption. <emphasis>boolean</emphasis> variables can be
           <emphasis>set</emphasis> (true) or <emphasis>unset</emphasis>
           (false). <emphasis>number</emphasis> variables can be assigned
           a positive integer value. Value of number variables can be
           incremented <emphasis>+=</emphasis> and decremented
-          <emphasis>-=</emphasis>. <emphasis>string</emphasis> variables
+          <emphasis>-=</emphasis>. <emphasis>String list</emphasis> variables
+          use <emphasis>+=</emphasis> for appending increment to the string list
+          and <emphasis>-=</emphasis> for removal decrement from the string list.
+          <emphasis>string</emphasis> variables
           consist of any number of printable characters and must be enclosed in
           quotes if they contain spaces or tabs. You may also use the escape
           sequences <quote>\n</quote> and <quote>\t</quote> for newline and
