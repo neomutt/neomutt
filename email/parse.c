@@ -1199,7 +1199,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
 
     *p = '\0';
     p = mutt_str_skip_email_wsp(p + 1);
-    if ((*p == '\0'))
+    if (*p == '\0')
       continue; /* skip empty header fields */
 
     mutt_rfc822_parse_line(env, e, line, p, user_hdrs, weed, true);
@@ -1284,7 +1284,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
     {
       *c = '\0';
       c = mutt_str_skip_email_wsp(c + 1);
-      if ((*c == '\0'))
+      if (*c == '\0')
       {
         mutt_debug(LL_DEBUG1, "skipping empty header field: %s\n", line);
         continue;

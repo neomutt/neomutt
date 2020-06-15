@@ -248,7 +248,7 @@ static void print_flowed_line(char *line, struct State *s, int ql,
                fst->width, line);
 
     /* remember number of spaces */
-    if ((*p == '\0'))
+    if (*p == '\0')
     {
       mutt_debug(LL_DEBUG3, "f=f: additional space\n");
       fst->spaces++;

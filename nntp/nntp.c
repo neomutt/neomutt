@@ -849,7 +849,7 @@ static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
         return nntp_connect_error(adata);
       }
     }
-    if ((*line == '\0'))
+    if (*line == '\0')
       break;
   }
 

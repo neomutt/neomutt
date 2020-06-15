@@ -996,7 +996,7 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
 
   /* UW-IMAP is OK with null flags, Cyrus isn't. The only solution is to
    * explicitly revoke all system flags (if we have permission) */
-  if ((*flags == '\0'))
+  if (*flags == '\0')
   {
     set_flag(m, MUTT_ACL_SEEN, 1, "\\Seen ", flags, sizeof(flags));
     set_flag(m, MUTT_ACL_WRITE, 1, "Old ", flags, sizeof(flags));

@@ -700,7 +700,7 @@ static struct SmimeKey *smime_parse_key(char *buf)
 
     /* For backward compatibility, don't count consecutive delimiters
      * as an empty field.  */
-    if ((*p == '\0'))
+    if (*p == '\0')
       continue;
 
     field++;

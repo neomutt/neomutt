@@ -2844,7 +2844,7 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
 
     mutt_expando_format(cmd, sizeof(cmd), 0, sizeof(cmd), NONULL(C_Inews),
                         nntp_format_str, 0, MUTT_FORMAT_NO_FLAGS);
-    if ((*cmd == '\0'))
+    if (*cmd == '\0')
     {
       i = nntp_post(Context->mailbox, msg);
       unlink(msg);
@@ -3235,7 +3235,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
 
   while ((tok = strtok(NULL, ",")))
   {
-    if ((*tok == '\0'))
+    if (*tok == '\0')
       continue;
 
     /* Only call mutt_expand_path if tok has some data */
