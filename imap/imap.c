@@ -768,6 +768,28 @@ int imap_open_connection(struct ImapAccountData *adata)
   }
   else if (mutt_str_startswith(adata->buf, "* PREAUTH", CASE_IGNORE))
   {
+#ifdef USE_SSL
+    /* An unencrypted PREAUTH response is most likely a MITM attack.
+     * Require a confirmation. */
+    if (adata->conn->ssf == 0)
+    {
+      bool proceed = true;
+      if (C_SslForceTls)
+      {
+        proceed = false;
+      }
+      else if (C_SslStarttls != MUTT_NO)
+      {
+        proceed = mutt_yesorno(_("Abort unencrypted PREAUTH connection?"), C_SslStarttls) != MUTT_NO;
+      }
+      if (!proceed)
+      {
+        mutt_error(_("Encrypted connection unavailable"));
+        goto err_close_conn;
+      }
+    }
+#endif
+
     adata->state = IMAP_AUTHENTICATED;
     if (check_capabilities(adata) != 0)
       goto bail;
