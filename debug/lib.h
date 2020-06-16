@@ -29,6 +29,7 @@
  * | :------------------ | :------------------------- |
  * | debug/backtrace.c   | @subpage debug_backtrace   |
  * | debug/common.c      | @subpage debug_common      |
+ * | debug/email.c       | @subpage debug_email       |
  * | debug/graphviz.c    | @subpage debug_graphviz    |
  * | debug/notify.c      | @subpage debug_notify      |
  * | debug/parse_test.c  | @subpage debug_parse       |
@@ -38,8 +39,13 @@
 #ifndef MUTT_DEBUG_LIB_H
 #define MUTT_DEBUG_LIB_H
 
+#include <stddef.h>
+#include <stdbool.h>
 #include "email/lib.h"
 
+struct AddressList;
+struct Buffer;
+struct ListHead;
 struct MuttWindow;
 struct NotifyCallback;
 
@@ -49,9 +55,23 @@ void show_backtrace(void);
 // Common
 const char *win_name(const struct MuttWindow *win);
 
+// Email
+void        add_flag               (struct Buffer *buf, bool is_set, const char *name);
+void        dump_addr_list         (char *buf, size_t buflen, const struct AddressList *al, const char *name);
+void        dump_attach            (const struct AttachPtr *att);
+void        dump_body              (const struct Body *body);
+void        dump_email             (const struct Email *e);
+void        dump_envelope          (const struct Envelope *env);
+void        dump_list_head         (const struct ListHead *list, const char *name);
+void        dump_param_list        (const struct ParameterList *pl);
+const char *get_content_disposition(enum ContentDisposition disp);
+const char *get_content_encoding   (enum ContentEncoding enc);
+const char *get_content_type       (enum ContentType type);
+
 // Graphviz
 void        add_flag               (struct Buffer *buf, bool is_set, const char *name);
 void        dump_graphviz          (const char *title);
+void        dump_graphviz_attach_ctx(struct AttachCtx *actx);
 void        dump_graphviz_email    (struct Email *e);
 const char *get_content_disposition(enum ContentDisposition disp);
 const char *get_content_encoding   (enum ContentEncoding enc);

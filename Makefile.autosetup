@@ -263,6 +263,9 @@ $(PWD)/core:
 @if HAVE_LIBUNWIND
 LIBDEBUGOBJS+=	debug/backtrace.o
 @endif
+@if USE_DEBUG_EMAIL
+LIBDEBUGOBJS+=	debug/email.o
+@endif
 @if USE_DEBUG_GRAPHVIZ
 LIBDEBUGOBJS+=	debug/graphviz.o
 @endif

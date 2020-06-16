@@ -124,6 +124,7 @@ options {
 # Debug options
   debug-backtrace=0         => "DEBUG: Enable backtrace support with libunwind"
   with-backtrace:path       => "Location of libunwind"
+  debug-email=0             => "DEBUG: Enable Email dump"
   debug-graphviz=0          => "DEBUG: Enable Graphviz dump"
   debug-notify=0            => "DEBUG: Enable Notifications dump"
   debug-parse-test=0        => "DEBUG: Enable 'neomutt -T' for config testing"
@@ -138,7 +139,7 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    asan autocrypt bdb coverage debug-backtrace debug-graphviz debug-notify
+    asan autocrypt bdb coverage debug-backtrace debug-email debug-graphviz debug-notify
     debug-parse-test debug-window doc everything fmemopen full-doc gdbm gnutls
     gpgme gss homespool idn idn2 include-path-in-cflags inotify kyotocabinet
     lmdb locales-fix lua lz4 mixmaster nls notmuch pcre2 pgp pkgconf qdbm
@@ -1186,6 +1187,11 @@ if {[get-define want-debug-backtrace]} {
     user-error "Unable to find libunwind"
   }
   define LIBS "-lunwind-generic [get-define LIBS]"
+}
+
+# Email dump
+if {[get-define want-debug-email]} {
+  define USE_DEBUG_EMAIL 1
 }
 
 # Graphviz dump
