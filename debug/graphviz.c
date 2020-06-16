@@ -57,7 +57,7 @@
 // #define GV_HIDE_MDATA
 
 static void dot_email(FILE *fp, struct Email *e, struct ListHead *links);
-static void dot_envelope(FILE *fp, const struct Envelope *env, struct ListHead *links);
+static void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links);
 
 const char *get_content_type(enum ContentType type)
 {
@@ -256,7 +256,7 @@ static void dot_ptr(FILE *fp, const char *name, void *ptr, const char *colour)
   fprintf(fp, "\t\t</tr>\n");
 }
 
-static void dot_add_link(struct ListHead *links, const void *src, const void *dst,
+static void dot_add_link(struct ListHead *links, void *src, void *dst,
                          const char *label, bool back, const char *colour)
 {
   if (!src || !dst)
@@ -1053,8 +1053,11 @@ static void dot_content(FILE *fp, struct Content *cont, struct ListHead *links)
   mutt_buffer_dealloc(&buf);
 }
 
-static void dot_attach_ptr(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
+void dot_attach_ptr(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
 {
+  if (!aptr)
+    return;
+
   struct Buffer buf = mutt_buffer_make(256);
 
   dot_object_header(fp, aptr, "AttachPtr", "#ff0000");
@@ -1076,7 +1079,7 @@ static void dot_attach_ptr(FILE *fp, struct AttachPtr *aptr, struct ListHead *li
   mutt_buffer_dealloc(&buf);
 }
 
-static void dot_body(FILE *fp, const struct Body *b, struct ListHead *links, bool link_next)
+static void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link_next)
 {
   struct Buffer buf = mutt_buffer_make(256);
 
@@ -1128,6 +1131,7 @@ static void dot_body(FILE *fp, const struct Body *b, struct ListHead *links, boo
   dot_type_number(fp, "length", b->length);
   dot_type_number(fp, "offset", b->offset);
 
+  dot_ptr(fp, "aptr", b->aptr, "#3bcbc4");
   dot_object_footer(fp);
 
   if (!TAILQ_EMPTY(&b->parameter))
@@ -1185,11 +1189,11 @@ static void dot_body(FILE *fp, const struct Body *b, struct ListHead *links, boo
       dot_add_link(links, b, b->content, "Body->content", false, NULL);
     }
 
-    if (b->aptr)
-    {
-      dot_attach_ptr(fp, b->aptr, links);
-      dot_add_link(links, b, b->aptr, "Body->aptr", false, NULL);
-    }
+    // if (b->aptr)
+    // {
+    //   dot_attach_ptr(fp, b->aptr, links);
+    //   dot_add_link(links, b, b->aptr, "Body->aptr", false, NULL);
+    // }
   }
 
   mutt_buffer_dealloc(&buf);
@@ -1229,7 +1233,7 @@ static void dot_addr_list(FILE *fp, const char *name,
   dot_type_string(fp, name, buf, false);
 }
 
-static void dot_envelope(FILE *fp, const struct Envelope *env, struct ListHead *links)
+static void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links)
 {
   struct Buffer buf = mutt_buffer_make(256);
 
@@ -1355,7 +1359,8 @@ static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
   dot_type_number(fp, "attach_total", e->attach_total);
 
   struct MaildirEmailData *edata = maildir_edata_get(e);
-  dot_type_string(fp, "maildir_flags", edata->maildir_flags, false);
+  if (edata)
+    dot_type_string(fp, "maildir_flags", edata->maildir_flags, false);
 
   if (e->date_sent != 0)
   {
@@ -1411,7 +1416,7 @@ void dump_graphviz_email(struct Email *e)
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
 
   time_t now = time(NULL);
-  mutt_date_localtime_format(name, sizeof(name), "%R.gv", now);
+  mutt_date_localtime_format(name, sizeof(name), "%R-email.gv", now);
 
   umask(022);
   FILE *fp = fopen(name, "w");
@@ -1421,6 +1426,168 @@ void dump_graphviz_email(struct Email *e)
   dot_graph_header(fp);
 
   dot_email(fp, e, &links);
+
+  dot_graph_footer(fp, &links);
+  fclose(fp);
+  mutt_list_free(&links);
+}
+
+static void dot_attach_ptr2(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
+{
+  if (!aptr)
+    return;
+
+  struct Buffer buf = mutt_buffer_make(256);
+
+  dot_object_header(fp, aptr, "AttachPtr", "#3bcbc4");
+
+  dot_ptr(fp, "body", aptr->body, "#2020ff");
+  dot_type_file(fp, "fp", aptr->fp);
+
+  dot_type_string(fp, "parent_type", get_content_type(aptr->parent_type), false);
+  dot_type_number(fp, "level", aptr->level);
+  dot_type_number(fp, "num", aptr->num);
+  dot_type_bool(fp, "unowned", aptr->unowned);
+  dot_type_bool(fp, "decrypted", aptr->decrypted);
+
+  // dot_type_string(fp, "tree", aptr->tree, false);
+
+  dot_object_footer(fp);
+
+  mutt_buffer_dealloc(&buf);
+}
+
+static void dot_array_actx_idx(FILE *fp, struct AttachPtr **idx, short idxlen,
+                               short idxmax, struct ListHead *links)
+{
+  dot_object_header(fp, idx, "AttachCtx-&gt;idx", "#9347de");
+
+  dot_type_number(fp, "idxlen", idxlen);
+  dot_type_number(fp, "idxmax", idxmax);
+
+  char arr[32];
+  for (size_t i = 0; i < idxmax; i++)
+  {
+    snprintf(arr, sizeof(arr), "idx[%ld]", i);
+    dot_ptr(fp, arr, idx[i], "#3bcbc4");
+  }
+
+  dot_object_footer(fp);
+
+  for (size_t i = 0; i < idxlen; i++)
+  {
+    dot_attach_ptr2(fp, idx[i], links);
+    dot_add_link(links, idx, idx[i], "AttachCtx-&gt;idx", false, NULL);
+  }
+}
+
+static void dot_array_actx_v2r(FILE *fp, short *v2r, short vcount, struct ListHead *links)
+{
+  dot_object_header(fp, v2r, "AttachCtx-&gt;v2r", "#9347de");
+
+  dot_type_number(fp, "vcount", vcount);
+
+  char arr[32];
+  for (size_t i = 0; i < vcount; i++)
+  {
+    snprintf(arr, sizeof(arr), "v2r[%ld]", i);
+    dot_type_number(fp, arr, v2r[i]);
+  }
+
+  dot_object_footer(fp);
+}
+
+static void dot_array_actx_fp_idx(FILE *fp, FILE **fp_idx, short fp_len,
+                                  short fp_max, struct ListHead *links)
+{
+  dot_object_header(fp, fp_idx, "AttachCtx-&gt;fp_idx", "#f86e28");
+
+  dot_type_number(fp, "fp_len", fp_len);
+  dot_type_number(fp, "fp_max", fp_max);
+
+  char arr[32];
+  for (size_t i = 0; i < fp_max; i++)
+  {
+    snprintf(arr, sizeof(arr), "fp_idx[%ld]", i);
+    dot_type_file(fp, arr, fp_idx[i]);
+  }
+
+  dot_object_footer(fp);
+}
+
+static void dot_array_actx_body_idx(FILE *fp, struct Body **body_idx, short body_len,
+                                    short body_max, struct ListHead *links)
+{
+  dot_object_header(fp, body_idx, "AttachCtx-&gt;body_idx", "#4ff270");
+
+  dot_type_number(fp, "body_len", body_len);
+  dot_type_number(fp, "body_max", body_max);
+
+  char arr[32];
+  for (size_t i = 0; i < body_max; i++)
+  {
+    snprintf(arr, sizeof(arr), "body_idx[%ld]", i);
+    dot_ptr(fp, arr, body_idx[i], "#2020ff");
+  }
+
+  dot_object_footer(fp);
+}
+
+static void dot_attach_ctx(FILE *fp, struct AttachCtx *actx, struct ListHead *links)
+{
+  struct Buffer buf = mutt_buffer_make(256);
+  // char arr[256];
+
+  dot_object_header(fp, actx, "AttachCtx", "#9347de");
+
+  dot_ptr(fp, "email", actx->email, "#ff80ff");
+  dot_type_file(fp, "fp_root", actx->fp_root);
+
+  dot_object_footer(fp);
+
+  if (actx->idx)
+  {
+    dot_array_actx_idx(fp, actx->idx, actx->idxlen, actx->idxmax, links);
+    dot_add_link(links, actx, actx->idx, "AttachCtx-&gt;idx", false, NULL);
+  }
+
+  if (actx->v2r)
+  {
+    dot_array_actx_v2r(fp, actx->v2r, actx->vcount, links);
+    dot_add_link(links, actx, actx->v2r, "AttachCtx-&gt;v2r", false, NULL);
+  }
+
+  if (actx->fp_idx)
+  {
+    dot_array_actx_fp_idx(fp, actx->fp_idx, actx->fp_len, actx->fp_max, links);
+    dot_add_link(links, actx, actx->fp_idx, "AttachCtx-&gt;fp_idx", false, NULL);
+  }
+
+  if (actx->body_idx)
+  {
+    dot_array_actx_body_idx(fp, actx->body_idx, actx->body_len, actx->body_max, links);
+    dot_add_link(links, actx, actx->body_idx, "AttachCtx-&gt;body_idx", false, NULL);
+  }
+
+  mutt_buffer_dealloc(&buf);
+}
+
+void dump_graphviz_attach_ctx(struct AttachCtx *actx)
+{
+  char name[256] = { 0 };
+  struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
+
+  time_t now = time(NULL);
+  mutt_date_localtime_format(name, sizeof(name), "%R-actx.gv", now);
+
+  umask(022);
+  FILE *fp = fopen(name, "w");
+  if (!fp)
+    return;
+
+  dot_graph_header(fp);
+
+  dot_attach_ctx(fp, actx, &links);
 
   dot_graph_footer(fp, &links);
   fclose(fp);
