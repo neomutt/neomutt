@@ -780,7 +780,8 @@ int imap_open_connection(struct ImapAccountData *adata)
       }
       else if (C_SslStarttls != MUTT_NO)
       {
-        proceed = mutt_yesorno(_("Abort unencrypted PREAUTH connection?"), C_SslStarttls) != MUTT_NO;
+        proceed = mutt_yesorno(_("Abort unencrypted PREAUTH connection?"),
+                               C_SslStarttls) != MUTT_NO;
       }
       if (!proceed)
       {
