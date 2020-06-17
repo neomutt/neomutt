@@ -38,6 +38,8 @@
 #ifndef MUTT_DEBUG_LIB_H
 #define MUTT_DEBUG_LIB_H
 
+#include "email/lib.h"
+
 struct MuttWindow;
 struct NotifyCallback;
 
@@ -48,7 +50,12 @@ void show_backtrace(void);
 const char *win_name(const struct MuttWindow *win);
 
 // Graphviz
-void dump_graphviz(const char *title);
+void        add_flag               (struct Buffer *buf, bool is_set, const char *name);
+void        dump_graphviz          (const char *title);
+void        dump_graphviz_email    (const struct Email *e);
+const char *get_content_disposition(enum ContentDisposition disp);
+const char *get_content_encoding   (enum ContentEncoding enc);
+const char *get_content_type       (enum ContentType type);
 
 // Notify
 int debug_notify_observer(struct NotifyCallback *nc);

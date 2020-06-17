@@ -54,6 +54,91 @@
 // #define GV_HIDE_CONFIG
 // #define GV_HIDE_MDATA
 
+static void dot_email(FILE *fp, const struct Email *e, struct ListHead *links);
+static void dot_envelope(FILE *fp, const struct Envelope *env, struct ListHead *links);
+
+const char *get_content_type(enum ContentType type)
+{
+  switch (type)
+  {
+    case TYPE_OTHER:
+      return "TYPE_OTHER";
+    case TYPE_AUDIO:
+      return "TYPE_AUDIO";
+    case TYPE_APPLICATION:
+      return "TYPE_APPLICATION";
+    case TYPE_IMAGE:
+      return "TYPE_IMAGE";
+    case TYPE_MESSAGE:
+      return "TYPE_MESSAGE";
+    case TYPE_MODEL:
+      return "TYPE_MODEL";
+    case TYPE_MULTIPART:
+      return "TYPE_MULTIPART";
+    case TYPE_TEXT:
+      return "TYPE_TEXT";
+    case TYPE_VIDEO:
+      return "TYPE_VIDEO";
+    case TYPE_ANY:
+      return "TYPE_ANY";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+const char *get_content_encoding(enum ContentEncoding enc)
+{
+  switch (enc)
+  {
+    case ENC_OTHER:
+      return "ENC_OTHER";
+    case ENC_7BIT:
+      return "ENC_7BIT";
+    case ENC_8BIT:
+      return "ENC_8BIT";
+    case ENC_QUOTED_PRINTABLE:
+      return "ENC_QUOTED_PRINTABLE";
+    case ENC_BASE64:
+      return "ENC_BASE64";
+    case ENC_BINARY:
+      return "ENC_BINARY";
+    case ENC_UUENCODED:
+      return "ENC_UUENCODED";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+const char *get_content_disposition(enum ContentDisposition disp)
+{
+  switch (disp)
+  {
+    case DISP_INLINE:
+      return "DISP_INLINE";
+    case DISP_ATTACH:
+      return "DISP_ATTACH";
+    case DISP_FORM_DATA:
+      return "DISP_FORM_DATA";
+    case DISP_NONE:
+      return "DISP_NONE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+void add_flag(struct Buffer *buf, bool is_set, const char *name)
+{
+  if (!buf || !name)
+    return;
+
+  if (is_set)
+  {
+    if (!mutt_buffer_is_empty(buf))
+      mutt_buffer_addch(buf, ',');
+    mutt_buffer_addstr(buf, name);
+  }
+}
+
 static void dot_type_bool(FILE *fp, const char *name, bool val)
 {
   static const char *values[] = { "false", "true" };
@@ -915,6 +1000,418 @@ void dump_graphviz(const char *title)
     fprintf(fp, "%s ", name);
   }
   fprintf(fp, "}\n");
+
+  dot_graph_footer(fp, &links);
+  fclose(fp);
+  mutt_list_free(&links);
+}
+
+void dot_parameter_list(FILE *fp, const char *name, const struct ParameterList *pl)
+{
+  if (!pl)
+    return;
+  if (TAILQ_EMPTY(pl))
+    return;
+
+  dot_object_header(fp, pl, "ParameterList", "#00ff00");
+
+  struct Parameter *np = NULL;
+  TAILQ_FOREACH(np, pl, entries)
+  {
+    dot_type_string(fp, np->attribute, np->value, false);
+  }
+
+  dot_object_footer(fp);
+}
+
+static void dot_content(FILE *fp, struct Content *cont, struct ListHead *links)
+{
+  struct Buffer buf = mutt_buffer_make(256);
+
+  dot_object_header(fp, cont, "Content", "#800080");
+
+  dot_type_number(fp, "hibin", cont->hibin);
+  dot_type_number(fp, "lobin", cont->lobin);
+  dot_type_number(fp, "nulbin", cont->nulbin);
+  dot_type_number(fp, "crlf", cont->crlf);
+  dot_type_number(fp, "ascii", cont->ascii);
+  dot_type_number(fp, "linemax", cont->linemax);
+
+#define ADD_BOOL(F) add_flag(&buf, cont->F, #F)
+  ADD_BOOL(space);
+  ADD_BOOL(binary);
+  ADD_BOOL(from);
+  ADD_BOOL(dot);
+  ADD_BOOL(cr);
+#undef ADD_BOOL
+
+  dot_object_footer(fp);
+
+  mutt_buffer_dealloc(&buf);
+}
+
+static void dot_attach_ptr(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
+{
+  struct Buffer buf = mutt_buffer_make(256);
+
+  dot_object_header(fp, aptr, "AttachPtr", "#ff0000");
+
+  dot_type_file(fp, "fp", aptr->fp);
+
+  dot_type_string(fp, "parent_type", get_content_type(aptr->parent_type), false);
+
+  dot_type_number(fp, "level", aptr->level);
+  dot_type_number(fp, "num", aptr->num);
+
+  dot_type_bool(fp, "unowned", aptr->unowned);
+  dot_type_bool(fp, "decrypted", aptr->decrypted);
+
+  dot_object_footer(fp);
+
+  dot_add_link(links, aptr->content, aptr, "AttachPtr->content", true, NULL);
+
+  mutt_buffer_dealloc(&buf);
+}
+
+static void dot_body(FILE *fp, const struct Body *b, struct ListHead *links, bool link_next)
+{
+  struct Buffer buf = mutt_buffer_make(256);
+
+  dot_object_header(fp, b, "Body", "#2020ff");
+
+  char file[256];
+  dot_path_fs(file, sizeof(file), b->filename);
+  dot_type_string(fp, "file", file, false);
+
+  dot_type_string(fp, "charset", b->charset, false);
+  dot_type_string(fp, "description", b->description, false);
+  dot_type_string(fp, "d_filename", b->d_filename, false);
+  dot_type_string(fp, "form_name", b->form_name, false);
+  dot_type_string(fp, "language", b->language, false);
+  dot_type_string(fp, "subtype", b->subtype, false);
+  dot_type_string(fp, "xtype", b->xtype, false);
+
+  dot_type_string(fp, "type", get_content_type(b->type), true);
+  dot_type_string(fp, "encoding", get_content_encoding(b->encoding), true);
+  dot_type_string(fp, "disposition", get_content_disposition(b->disposition), true);
+
+  if (b->stamp != 0)
+  {
+    char arr[64];
+    dot_type_date(arr, sizeof(arr), b->stamp);
+    dot_type_string(fp, "stamp", arr, true);
+  }
+
+#define ADD_BOOL(F) add_flag(&buf, b->F, #F)
+  ADD_BOOL(attach_qualifies);
+  ADD_BOOL(badsig);
+  ADD_BOOL(collapsed);
+  ADD_BOOL(deleted);
+  ADD_BOOL(force_charset);
+  ADD_BOOL(goodsig);
+  ADD_BOOL(is_autocrypt);
+  ADD_BOOL(noconv);
+  ADD_BOOL(tagged);
+  ADD_BOOL(unlink);
+  ADD_BOOL(use_disp);
+  ADD_BOOL(warnsig);
+#undef ADD_BOOL
+  dot_type_string(fp, "bools", mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf), true);
+
+  dot_type_number(fp, "attach_count", b->attach_count);
+  dot_type_number(fp, "hdr_offset", b->hdr_offset);
+  dot_type_number(fp, "length", b->length);
+  dot_type_number(fp, "offset", b->offset);
+
+  dot_object_footer(fp);
+
+  if (!TAILQ_EMPTY(&b->parameter))
+  {
+    dot_parameter_list(fp, "parameter", &b->parameter);
+    dot_add_link(links, b, &b->parameter, "Body->mime_headers", false, NULL);
+  }
+
+  if (b->mime_headers)
+  {
+    dot_envelope(fp, b->mime_headers, links);
+    dot_add_link(links, b, b->mime_headers, "Body->mime_headers", false, NULL);
+  }
+
+  if (b->email)
+  {
+    dot_email(fp, b->email, links);
+    dot_add_link(links, b, b->email, "Body->email", false, NULL);
+  }
+
+  if (b->parts)
+  {
+    if (!b->email)
+      dot_body(fp, b->parts, links, true);
+    dot_add_link(links, b, b->parts, "Body->parts", false, "#ff0000");
+  }
+
+  if (b->next && link_next)
+  {
+    char name[256] = { 0 };
+    mutt_buffer_reset(&buf);
+
+    mutt_buffer_addstr(&buf, "{ rank=same ");
+
+    dot_ptr_name(name, sizeof(name), b);
+    mutt_buffer_add_printf(&buf, "%s ", name);
+
+    for (; b->next; b = b->next)
+    {
+      dot_body(fp, b->next, links, false);
+      dot_add_link(links, b, b->next, "Body->next", false, "#008000");
+
+      dot_ptr_name(name, sizeof(name), b->next);
+      mutt_buffer_add_printf(&buf, "%s ", name);
+    }
+
+    mutt_buffer_addstr(&buf, "}");
+    mutt_list_insert_tail(links, mutt_str_strdup(buf.data));
+  }
+  else
+  {
+    if (b->content)
+    {
+      dot_content(fp, b->content, links);
+      dot_add_link(links, b, b->content, "Body->content", false, NULL);
+    }
+
+    if (b->aptr)
+    {
+      dot_attach_ptr(fp, b->aptr, links);
+      dot_add_link(links, b, b->aptr, "Body->aptr", false, NULL);
+    }
+  }
+
+  mutt_buffer_dealloc(&buf);
+}
+
+void dot_list_head(FILE *fp, const char *name, const struct ListHead *list)
+{
+  if (!list || !name)
+    return;
+  if (STAILQ_EMPTY(list))
+    return;
+
+  struct Buffer buf = mutt_buffer_make(256);
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, list, entries)
+  {
+    if (!mutt_buffer_is_empty(&buf))
+      mutt_buffer_addch(&buf, ',');
+    mutt_buffer_addstr(&buf, np->data);
+  }
+
+  dot_type_string(fp, name, mutt_b2s(&buf), false);
+}
+
+void dot_addr_list(FILE *fp, const char *name, const struct AddressList *al,
+                   struct ListHead *links)
+{
+  if (!al)
+    return;
+  if (TAILQ_EMPTY(al))
+    return;
+
+  char buf[1024] = { 0 };
+
+  mutt_addrlist_write(al, buf, sizeof(buf), true);
+  dot_type_string(fp, name, buf, false);
+}
+
+static void dot_envelope(FILE *fp, const struct Envelope *env, struct ListHead *links)
+{
+  struct Buffer buf = mutt_buffer_make(256);
+
+  dot_object_header(fp, env, "Envelope", "#ffff00");
+
+#define ADD_FLAG(F) add_flag(&buf, (env->changed & F), #F)
+  ADD_FLAG(MUTT_ENV_CHANGED_IRT);
+  ADD_FLAG(MUTT_ENV_CHANGED_REFS);
+  ADD_FLAG(MUTT_ENV_CHANGED_XLABEL);
+  ADD_FLAG(MUTT_ENV_CHANGED_SUBJECT);
+#undef ADD_BOOL
+  dot_type_string(fp, "changed",
+                  mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf), true);
+
+#define ADDR_LIST(AL) dot_addr_list(fp, #AL, &env->AL, links)
+  ADDR_LIST(return_path);
+  ADDR_LIST(from);
+  ADDR_LIST(to);
+  ADDR_LIST(cc);
+  ADDR_LIST(bcc);
+  ADDR_LIST(sender);
+  ADDR_LIST(reply_to);
+  ADDR_LIST(mail_followup_to);
+  ADDR_LIST(x_original_to);
+#undef ADDR_LIST
+
+  dot_type_string(fp, "date", env->date, false);
+  dot_type_string(fp, "disp_subj", env->disp_subj, false);
+  dot_type_string(fp, "followup_to", env->followup_to, false);
+  dot_type_string(fp, "list_post", env->list_post, false);
+  dot_type_string(fp, "message_id", env->message_id, false);
+  dot_type_string(fp, "newsgroups", env->newsgroups, false);
+  dot_type_string(fp, "organization", env->organization, false);
+  dot_type_string(fp, "real_subj", env->real_subj, false);
+  dot_type_string(fp, "spam", mutt_b2s(&env->spam), false);
+  dot_type_string(fp, "subject", env->subject, false);
+  dot_type_string(fp, "supersedes", env->supersedes, false);
+  dot_type_string(fp, "xref", env->xref, false);
+  dot_type_string(fp, "x_comment_to", env->x_comment_to, false);
+  dot_type_string(fp, "x_label", env->x_label, false);
+
+  // dot_list_head(fp, "references", &env->references);
+  // dot_list_head(fp, "in_reply_to", &env->in_reply_to);
+  // dot_list_head(fp, "userhdrs", &env->userhdrs);
+
+#ifdef USE_AUTOCRYPT
+  dot_ptr(fp, "autocrypt", env->autocrypt, NULL);
+  dot_ptr(fp, "autocrypt_gossip", env->autocrypt_gossip, NULL);
+#endif
+
+  dot_object_footer(fp);
+
+  mutt_buffer_dealloc(&buf);
+}
+
+static void dot_email(FILE *fp, const struct Email *e, struct ListHead *links)
+{
+  struct Buffer buf = mutt_buffer_make(256);
+  char arr[256];
+
+  dot_object_header(fp, e, "Email", "#ff80ff");
+
+  dot_type_string(fp, "path", e->path, true);
+
+#define ADD_BOOL(F) add_flag(&buf, e->F, #F)
+  ADD_BOOL(active);
+  ADD_BOOL(attach_del);
+  ADD_BOOL(attach_valid);
+  ADD_BOOL(changed);
+  ADD_BOOL(collapsed);
+  ADD_BOOL(deleted);
+  ADD_BOOL(display_subject);
+  ADD_BOOL(expired);
+  ADD_BOOL(flagged);
+  ADD_BOOL(limited);
+  ADD_BOOL(matched);
+  ADD_BOOL(mime);
+  ADD_BOOL(old);
+  ADD_BOOL(purge);
+  ADD_BOOL(quasi_deleted);
+  ADD_BOOL(read);
+  ADD_BOOL(recip_valid);
+  ADD_BOOL(replied);
+  ADD_BOOL(searched);
+  ADD_BOOL(subject_changed);
+  ADD_BOOL(superseded);
+  ADD_BOOL(tagged);
+  ADD_BOOL(threaded);
+  ADD_BOOL(trash);
+#undef ADD_BOOL
+  dot_type_string(fp, "bools", mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf), true);
+
+  mutt_buffer_reset(&buf);
+#define ADD_BOOL(F) add_flag(&buf, (e->security & F), #F)
+  ADD_BOOL(SEC_ENCRYPT);
+  ADD_BOOL(SEC_SIGN);
+  ADD_BOOL(SEC_GOODSIGN);
+  ADD_BOOL(SEC_BADSIGN);
+  ADD_BOOL(SEC_PARTSIGN);
+  ADD_BOOL(SEC_SIGNOPAQUE);
+  ADD_BOOL(SEC_KEYBLOCK);
+  ADD_BOOL(SEC_INLINE);
+  ADD_BOOL(SEC_OPPENCRYPT);
+  ADD_BOOL(SEC_AUTOCRYPT);
+  ADD_BOOL(SEC_AUTOCRYPT_OVERRIDE);
+  ADD_BOOL(APPLICATION_PGP);
+  ADD_BOOL(APPLICATION_SMIME);
+  ADD_BOOL(PGP_TRADITIONAL_CHECKED);
+#undef ADD_BOOL
+  dot_type_string(fp, "security",
+                  mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf), true);
+
+  dot_type_number(fp, "num_hidden", e->num_hidden);
+  dot_type_number(fp, "offset", e->offset);
+  dot_type_number(fp, "lines", e->lines);
+  dot_type_number(fp, "index", e->index);
+  dot_type_number(fp, "msgno", e->msgno);
+  dot_type_number(fp, "vnum", e->vnum);
+  dot_type_number(fp, "score", e->score);
+  dot_type_number(fp, "attach_total", e->attach_total);
+
+  dot_type_string(fp, "maildir_flags", e->maildir_flags, false);
+
+  if (e->date_sent != 0)
+  {
+    char zone[32];
+    dot_type_date(arr, sizeof(arr), e->date_sent);
+    snprintf(zone, sizeof(zone), " (%c%02u%02u)", e->zoccident ? '-' : '+',
+             e->zhours, e->zminutes);
+    mutt_str_strcat(arr, sizeof(arr), zone);
+    dot_type_string(fp, "date_sent", arr, false);
+  }
+
+  if (e->received != 0)
+  {
+    dot_type_date(arr, sizeof(arr), e->received);
+    dot_type_string(fp, "received", arr, false);
+  }
+
+  dot_object_footer(fp);
+
+  if (e->content)
+  {
+    dot_body(fp, e->content, links, true);
+    dot_add_link(links, e, e->content, "Email->content", false, NULL);
+  }
+
+  if (e->env)
+  {
+    dot_envelope(fp, e->env, links);
+    dot_add_link(links, e, e->env, "Email->env", false, NULL);
+
+    mutt_buffer_reset(&buf);
+    mutt_buffer_addstr(&buf, "{ rank=same ");
+
+    dot_ptr_name(arr, sizeof(arr), e);
+    mutt_buffer_add_printf(&buf, "%s ", arr);
+
+    dot_ptr_name(arr, sizeof(arr), e->env);
+    mutt_buffer_add_printf(&buf, "%s ", arr);
+
+    mutt_buffer_addstr(&buf, "}");
+
+    mutt_list_insert_tail(links, mutt_str_strdup(buf.data));
+  }
+
+  // struct TagList tags;
+
+  mutt_buffer_dealloc(&buf);
+}
+
+void dump_graphviz_email(const struct Email *e)
+{
+  char name[256] = { 0 };
+  struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
+
+  time_t now = time(NULL);
+  mutt_date_localtime_format(name, sizeof(name), "%R.gv", now);
+
+  umask(022);
+  FILE *fp = fopen(name, "w");
+  if (!fp)
+    return;
+
+  dot_graph_header(fp);
+
+  dot_email(fp, e, &links);
 
   dot_graph_footer(fp, &links);
   fclose(fp);
