@@ -738,6 +738,7 @@ void dialog_pop(void)
     last->state.visible = true;
     mutt_window_reflow(MuttDialogWindow);
   }
+  mutt_menu_set_current_redraw(REDRAW_FULL);
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
 #endif
