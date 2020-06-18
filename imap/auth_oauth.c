@@ -52,7 +52,7 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
 
   /* For now, we only support SASL_IR also and over TLS */
   if (!(adata->capabilities & IMAP_CAP_AUTH_OAUTHBEARER) ||
-      !(adata->capabilities & IMAP_CAP_SASL_IR) || !adata->conn->ssf)
+      !(adata->capabilities & IMAP_CAP_SASL_IR) || (adata->conn->ssf == 0))
   {
     return IMAP_AUTH_UNAVAIL;
   }

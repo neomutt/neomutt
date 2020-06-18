@@ -703,7 +703,7 @@ static int smtp_open(struct Connection *conn, bool esmtp)
 
 #ifdef USE_SSL
   enum QuadOption ans = MUTT_NO;
-  if (conn->ssf)
+  if (conn->ssf != 0)
     ans = MUTT_NO;
   else if (C_SslForceTls)
     ans = MUTT_YES;

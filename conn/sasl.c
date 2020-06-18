@@ -462,7 +462,7 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t count)
   sasldata->blen = 0;
 
   /* and decode the result, if necessary */
-  if (*sasldata->ssf)
+  if (*sasldata->ssf != 0)
   {
     do
     {
@@ -510,7 +510,7 @@ static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t
   conn->sockdata = sasldata->sockdata;
 
   /* encode data, if necessary */
-  if (*sasldata->ssf)
+  if (*sasldata->ssf != 0)
   {
     /* handle data larger than MAXOUTBUF */
     do
@@ -635,11 +635,11 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
     return -1;
   }
 
-  if (conn->ssf)
+  if (conn->ssf != 0)
   {
     /* I'm not sure this actually has an effect, at least with SASLv2 */
     mutt_debug(LL_DEBUG2, "External SSF: %d\n", conn->ssf);
-    if (sasl_setprop(*saslconn, SASL_SSF_EXTERNAL, &(conn->ssf)) != SASL_OK)
+    if (sasl_setprop(*saslconn, SASL_SSF_EXTERNAL, &conn->ssf) != SASL_OK)
     {
       mutt_error(_("Error setting SASL external security strength"));
       sasl_dispose(saslconn);
