@@ -23,7 +23,19 @@
 /**
  * @page config_path Type: Path
  *
- * Type representing a path.
+ * Config type representing a path.
+ *
+ * - Backed by `char *`
+ * - Empty path is stored as `NULL`
+ * - Validator is passed `char *`, which may be `NULL`
+ * - Data is freed when `ConfigSet` is freed
+ *
+ * ## Functions supported
+ * - ConfigSetType::string_set()
+ * - ConfigSetType::string_get()
+ * - ConfigSetType::native_set()
+ * - ConfigSetType::native_get()
+ * - ConfigSetType::reset()
  */
 
 #include "config.h"
@@ -75,7 +87,7 @@ static void path_destroy(const struct ConfigSet *cs, void *var, const struct Con
 }
 
 /**
- * path_string_set - Set a Path by path - Implements ConfigSetType::string_set()
+ * path_string_set - Set a Path by string - Implements ConfigSetType::string_set()
  */
 static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                            const char *value, struct Buffer *err)
@@ -126,7 +138,7 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 }
 
 /**
- * path_string_get - Get a Path as a path - Implements ConfigSetType::string_get()
+ * path_string_get - Get a Path as a string - Implements ConfigSetType::string_get()
  */
 static int path_string_get(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, struct Buffer *result)
@@ -146,7 +158,7 @@ static int path_string_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * path_native_set - Set a Path config item by path - Implements ConfigSetType::native_set()
+ * path_native_set - Set a Path config item by string - Implements ConfigSetType::native_set()
  */
 static int path_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
@@ -188,7 +200,7 @@ static int path_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * path_native_get - Get a path from a Path config item - Implements ConfigSetType::native_get()
+ * path_native_get - Get a string from a Path config item - Implements ConfigSetType::native_get()
  */
 static intptr_t path_native_get(const struct ConfigSet *cs, void *var,
                                 const struct ConfigDef *cdef, struct Buffer *err)

@@ -105,7 +105,7 @@ bool slist_compare(const struct Slist *a, const struct Slist *b)
 struct Slist *slist_dup(const struct Slist *list)
 {
   if (!list)
-    return NULL; /* LCOV_EXCL_LINE */
+    return NULL;
 
   struct Slist *l = mutt_mem_calloc(1, sizeof(*l));
   l->flags = list->flags;
@@ -121,13 +121,13 @@ struct Slist *slist_dup(const struct Slist *list)
 
 /**
  * slist_empty - Empty out an Slist object
- * @param list Slist to duplicate
+ * @param list Slist to empty
  * @retval ptr New Slist object
  */
 struct Slist *slist_empty(struct Slist **list)
 {
   if (!list || !*list)
-    return NULL; /* LCOV_EXCL_LINE */
+    return NULL;
 
   mutt_list_free(&(*list)->head);
 
@@ -148,7 +148,7 @@ struct Slist *slist_empty(struct Slist **list)
 void slist_free(struct Slist **list)
 {
   if (!list || !*list)
-    return; /* LCOV_EXCL_LINE */
+    return;
 
   mutt_list_free(&(*list)->head);
   FREE(list);

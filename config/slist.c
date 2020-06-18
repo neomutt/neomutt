@@ -23,7 +23,19 @@
 /**
  * @page config_slist Type: List of strings
  *
- * Type representing a list of strings.
+ * Config type representing a list of strings.
+ *
+ * - Backed by `struct Slist`
+ * - Empty string list is stored as `NULL`
+ * - Validator is passed `struct Slist`, which may be `NULL`
+ * - Data is freed when `ConfigSet` is freed
+ *
+ * ## Functions supported
+ * - ConfigSetType::string_set()
+ * - ConfigSetType::string_get()
+ * - ConfigSetType::native_set()
+ * - ConfigSetType::native_get()
+ * - ConfigSetType::reset()
  */
 
 #include "config.h"
@@ -36,10 +48,7 @@
 #include "types.h"
 
 /**
- * slist_destroy - Destroy an Slist object
- * @param cs   Config items
- * @param var  Variable to destroy
- * @param cdef Variable definition
+ * slist_destroy - Destroy an Slist object - Implements ConfigSetType::destroy()
  */
 static void slist_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef)
 {
@@ -54,15 +63,7 @@ static void slist_destroy(const struct ConfigSet *cs, void *var, const struct Co
 }
 
 /**
- * slist_string_set - Set a Slist by string
- * @param cs    Config items
- * @param var   Variable to set
- * @param cdef  Variable definition
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
- *
- * If var is NULL, then the config item's initial value will be set.
+ * slist_string_set - Set a Slist by string - Implements ConfigSetType::string_set()
  */
 static int slist_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                             const char *value, struct Buffer *err)
@@ -70,7 +71,7 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
   if (!cs || !cdef)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
-  /* Store empty strings as NULL */
+  /* Store empty string list as NULL */
   if (value && (value[0] == '\0'))
     value = NULL;
 
@@ -113,14 +114,7 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
 }
 
 /**
- * slist_string_get - Get a Slist as a string
- * @param cs     Config items
- * @param var    Variable to get
- * @param cdef   Variable definition
- * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
- *
- * If var is NULL, then the config item's initial value will be returned.
+ * slist_string_get - Get a Slist as a string - Implements ConfigSetType::string_get()
  */
 static int slist_string_get(const struct ConfigSet *cs, void *var,
                             const struct ConfigDef *cdef, struct Buffer *result)
@@ -163,13 +157,7 @@ static int slist_string_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * slist_native_set - Set a Slist config item by STAILQ
- * @param cs    Config items
- * @param var   Variable to set
- * @param cdef  Variable definition
- * @param value Mailbox slist
- * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * slist_native_set - Set a Slist config item by Slist - Implements ConfigSetType::native_set()
  */
 static int slist_native_set(const struct ConfigSet *cs, void *var,
                             const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
@@ -200,12 +188,7 @@ static int slist_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * slist_native_get - Get a STAILQ from a Slist config item
- * @param cs   Config items
- * @param var  Variable to get
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval intptr_t Mailbox slist
+ * slist_native_get - Get a Slist from a Slist config item - Implements ConfigSetType::native_get()
  */
 static intptr_t slist_native_get(const struct ConfigSet *cs, void *var,
                                  const struct ConfigDef *cdef, struct Buffer *err)
@@ -219,12 +202,7 @@ static intptr_t slist_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * slist_reset - Reset a Slist to its initial value
- * @param cs   Config items
- * @param var  Variable to reset
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * slist_reset - Reset a Slist to its initial value - Implements ConfigSetType::reset()
  */
 static int slist_reset(const struct ConfigSet *cs, void *var,
                        const struct ConfigDef *cdef, struct Buffer *err)

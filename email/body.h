@@ -62,9 +62,9 @@ struct Body
 
   struct Envelope *mime_headers;  ///< Memory hole protected headers
 
-  unsigned int type : 4;          ///< content-type primary type
-  unsigned int encoding : 3;      ///< content-transfer-encoding
-  unsigned int disposition : 2;   ///< content-disposition
+  unsigned int type : 4;          ///< content-type primary type, #ContentType
+  unsigned int encoding : 3;      ///< content-transfer-encoding, #ContentEncoding
+  unsigned int disposition : 2;   ///< content-disposition, #ContentDisposition
   bool use_disp : 1;              ///< Content-Disposition uses filename= ?
   bool unlink : 1;                ///< If true, `filename` should be unlink()ed before free()ing this structure
   bool tagged : 1;                ///< This attachment is tagged

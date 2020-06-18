@@ -23,7 +23,18 @@
 /**
  * @page config_string Type: String
  *
- * Type representing a string.
+ * Config type representing a string.
+ *
+ * - Backed by `char *`
+ * - Empty string is stored as `NULL`
+ * - Validator is passed `char *`, which may be `NULL`
+ *
+ * ## Functions supported
+ * - ConfigSetType::string_set()
+ * - ConfigSetType::string_get()
+ * - ConfigSetType::native_set()
+ * - ConfigSetType::native_get()
+ * - ConfigSetType::reset()
  */
 
 #include "config.h"

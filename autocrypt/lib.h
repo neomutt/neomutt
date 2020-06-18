@@ -103,7 +103,7 @@ struct AutocryptAccount
   char *email_addr;
   char *keyid;
   char *keydata;
-  bool prefer_encrypt;    /* false = nopref, true = mutual */
+  bool prefer_encrypt; ///< false = nopref, true = mutual
   bool enabled;
 };
 
@@ -117,7 +117,7 @@ struct AutocryptPeer
   sqlite3_int64 autocrypt_timestamp;
   char *keyid;
   char *keydata;
-  bool prefer_encrypt;    /* false = nopref, true = mutual */
+  bool prefer_encrypt; ///< false = nopref, true = mutual
   sqlite3_int64 gossip_timestamp;
   char *gossip_keyid;
   char *gossip_keydata;

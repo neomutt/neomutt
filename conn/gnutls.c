@@ -108,8 +108,9 @@ static int tls_init(void)
 /**
  * tls_verify_peers - Wrapper for gnutls_certificate_verify_peers()
  * @param tlsstate TLS state
+ * @param certstat Certificate state, e.g. GNUTLS_CERT_INVALID
  * @retval  0 Success If certstat was set. note: this does not mean success
- * @retval >0 Error, e.g. GNUTLS_CERT_INVALID
+ * @retval >0 Error
  *
  * Wrapper with sanity-checking.
  *

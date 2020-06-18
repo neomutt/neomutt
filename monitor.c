@@ -99,7 +99,7 @@ struct MonitorInfo
   dev_t st_dev;
   ino_t st_ino;
   struct Monitor *monitor;
-  struct Buffer path_buf; /* access via path only (maybe not initialized) */
+  struct Buffer path_buf; ///< access via path only (maybe not initialized)
 };
 
 /**

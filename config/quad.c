@@ -23,7 +23,18 @@
 /**
  * @page config_quad Type: Quad-option
  *
- * Type representing a quad-option.
+ * Config type representing a quad-option.
+ *
+ * - Backed by `unsigned char`
+ * - Validator is passed `unsigned char`
+ * - Valid user entry: #QuadValues
+ *
+ * ## Functions supported
+ * - ConfigSetType::string_set()
+ * - ConfigSetType::string_get()
+ * - ConfigSetType::native_set()
+ * - ConfigSetType::native_get()
+ * - ConfigSetType::reset()
  */
 
 #include "config.h"

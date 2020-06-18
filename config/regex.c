@@ -23,7 +23,19 @@
 /**
  * @page config_regex Type: Regular expression
  *
- * Type representing a regular expression.
+ * Config type representing a regular expression.
+ *
+ * - Backed by `struct Regex`
+ * - Empty regular expression is stored as `NULL`
+ * - Validator is passed `struct Regex`, which may be `NULL`
+ * - Data is freed when `ConfigSet` is freed
+ *
+ * ## Functions supported
+ * - ConfigSetType::string_set()
+ * - ConfigSetType::string_get()
+ * - ConfigSetType::native_set()
+ * - ConfigSetType::native_get()
+ * - ConfigSetType::reset()
  */
 
 #include "config.h"
@@ -115,7 +127,7 @@ struct Regex *regex_new(const char *str, int flags, struct Buffer *err)
 static int regex_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                             const char *value, struct Buffer *err)
 {
-  /* Store empty strings as NULL */
+  /* Store empty regexes as NULL */
   if (value && (value[0] == '\0'))
     value = NULL;
 

@@ -24,7 +24,19 @@
 /**
  * @page config_address Type: Email address
  *
- * Type representing an email address.
+ * Config type representing an email address.
+ *
+ * - Backed by `struct Address`
+ * - Empty address is stored as `NULL`
+ * - Validator is passed `struct Address *`, which may be `NULL`
+ * - Data is freed when `ConfigSet` is freed
+ *
+ * ## Functions supported
+ * - ConfigSetType::string_set()
+ * - ConfigSetType::string_get()
+ * - ConfigSetType::native_set()
+ * - ConfigSetType::native_get()
+ * - ConfigSetType::reset()
  */
 
 #include "config.h"

@@ -23,7 +23,17 @@
 /**
  * @page config_enum Type: Enumeration
  *
- * Type representing an enumeration.
+ * Config type representing an enumeration.
+ *
+ * - Backed by `unsigned char`
+ * - Validator is passed `unsigned char`
+ *
+ * ## Functions supported
+ * - ConfigSetType::string_set()
+ * - ConfigSetType::string_get()
+ * - ConfigSetType::native_set()
+ * - ConfigSetType::native_get()
+ * - ConfigSetType::reset()
  */
 
 #include "config.h"
@@ -36,15 +46,7 @@
 #include "types.h"
 
 /**
- * enum_string_set - Set a Enumeration by string
- * @param cs    Config items
- * @param var   Variable to set
- * @param cdef  Variable definition
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
- *
- * If var is NULL, then the config item's initial value will be set.
+ * enum_string_set - Set an Enumeration by string - Implements ConfigSetType::string_set()
  */
 static int enum_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                            const char *value, struct Buffer *err)
@@ -87,14 +89,7 @@ static int enum_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 }
 
 /**
- * enum_string_get - Get a Enumeration as a string
- * @param cs     Config items
- * @param var    Variable to get
- * @param cdef   Variable definition
- * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
- *
- * If var is NULL, then the config item's initial value will be returned.
+ * enum_string_get - Get an Enumeration as a string - Implements ConfigSetType::string_get()
  */
 static int enum_string_get(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, struct Buffer *result)
@@ -125,13 +120,7 @@ static int enum_string_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * enum_native_set - Set a Enumeration config item by int
- * @param cs    Config items
- * @param var   Variable to set
- * @param cdef  Variable definition
- * @param value Enumeration value
- * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * enum_native_set - Set an Enumeration config item by int - Implements ConfigSetType::native_set()
  */
 static int enum_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
@@ -166,12 +155,7 @@ static int enum_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * enum_native_get - Get an int object from a Enumeration config item
- * @param cs   Config items
- * @param var  Variable to get
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval intptr_t Enumeration value
+ * enum_native_get - Get an int object from an Enumeration config item - Implements ConfigSetType::native_get()
  */
 static intptr_t enum_native_get(const struct ConfigSet *cs, void *var,
                                 const struct ConfigDef *cdef, struct Buffer *err)
@@ -183,12 +167,7 @@ static intptr_t enum_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * enum_reset - Reset a Enumeration to its initial value
- * @param cs   Config items
- * @param var  Variable to reset
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * enum_reset - Reset an Enumeration to its initial value - Implements ConfigSetType::reset()
  */
 static int enum_reset(const struct ConfigSet *cs, void *var,
                       const struct ConfigDef *cdef, struct Buffer *err)

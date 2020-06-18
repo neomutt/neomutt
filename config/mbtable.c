@@ -23,7 +23,19 @@
 /**
  * @page config_mbtable Type: Multi-byte character table
  *
- * Type representing a multibyte character table.
+ * Config type representing a multibyte character table.
+ *
+ * - Backed by `struct MbTable`
+ * - Empty multibyte character table is stored as `NULL`
+ * - Validator is passed `struct MbTable`, which may be `NULL`
+ * - Data is freed when `ConfigSet` is freed
+ *
+ * ## Functions supported
+ * - ConfigSetType::string_set()
+ * - ConfigSetType::string_get()
+ * - ConfigSetType::native_set()
+ * - ConfigSetType::native_get()
+ * - ConfigSetType::reset()
  */
 
 #include "config.h"
@@ -97,12 +109,12 @@ static void mbtable_destroy(const struct ConfigSet *cs, void *var, const struct 
 }
 
 /**
- * mbtable_string_set - Set a MbTable by string - Implements ConfigSetType::string_set()
+ * mbtable_string_set - Set an MbTable by string - Implements ConfigSetType::string_set()
  */
 static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                               const char *value, struct Buffer *err)
 {
-  /* Store empty strings as NULL */
+  /* Store empty mbtables as NULL */
   if (value && (value[0] == '\0'))
     value = NULL;
 
@@ -188,7 +200,7 @@ static struct MbTable *mbtable_dup(struct MbTable *table)
 }
 
 /**
- * mbtable_native_set - Set a MbTable config item by MbTable object - Implements ConfigSetType::native_set()
+ * mbtable_native_set - Set an MbTable config item by MbTable object - Implements ConfigSetType::native_set()
  */
 static int mbtable_native_set(const struct ConfigSet *cs, void *var,
                               const struct ConfigDef *cdef, intptr_t value,
