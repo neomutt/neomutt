@@ -1899,6 +1899,8 @@ int nntp_open_connection(struct NntpAccountData *adata)
       {
         return nntp_connect_error(adata);
       }
+      // Clear any data after the STARTTLS acknowledgement
+      mutt_socket_empty(conn);
       if (!mutt_str_startswith(buf, "382", CASE_MATCH))
       {
         adata->use_tls = 0;

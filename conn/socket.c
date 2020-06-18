@@ -301,3 +301,23 @@ struct Connection *mutt_socket_new(enum ConnectionType type)
 
   return conn;
 }
+
+/**
+ * mutt_socket_empty - Clear out any queued data
+ *
+ * The internal buffer is emptied and any data that has already arrived at this
+ * machine (in kernel buffers) is read and dropped.
+ */
+void mutt_socket_empty(struct Connection *conn)
+{
+  if (!conn)
+    return;
+
+  char buf[1024];
+  int bytes;
+
+  while ((bytes = mutt_socket_poll(conn, 0)) > 0)
+  {
+    mutt_socket_read(conn, buf, MIN(bytes, sizeof(buf)));
+  }
+}

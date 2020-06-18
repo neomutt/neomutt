@@ -73,6 +73,7 @@ typedef uint8_t ImapCmdFlags;          ///< Flags for imap_exec(), e.g. #IMAP_CM
 #define IMAP_CMD_PASS        (1 << 0)  ///< Command contains a password. Suppress logging
 #define IMAP_CMD_QUEUE       (1 << 1)  ///< Queue a command, do not execute
 #define IMAP_CMD_POLL        (1 << 2)  ///< Poll the tcp connection before running the imap command
+#define IMAP_CMD_SINGLE      (1 << 3)  ///< Run a single command
 
 /**
  * enum ImapExecResult - imap_exec return code

@@ -719,6 +719,8 @@ static int smtp_open(struct Connection *conn, bool esmtp)
     if (mutt_socket_send(conn, "STARTTLS\r\n") < 0)
       return SMTP_ERR_WRITE;
     rc = smtp_get_resp(conn);
+    // Clear any data after the STARTTLS acknowledgement
+    mutt_socket_empty(conn);
     if (rc != 0)
       return rc;
 

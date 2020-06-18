@@ -739,7 +739,10 @@ int imap_open_connection(struct ImapAccountData *adata)
       }
       if (ans == MUTT_YES)
       {
-        enum ImapExecResult rc = imap_exec(adata, "STARTTLS", IMAP_CMD_NO_FLAGS);
+        enum ImapExecResult rc = imap_exec(adata, "STARTTLS", IMAP_CMD_SINGLE);
+        // Clear any data after the STARTTLS acknowledgement
+        mutt_socket_empty(adata->conn);
+
         if (rc == IMAP_EXEC_FATAL)
           goto bail;
         if (rc != IMAP_EXEC_ERROR)

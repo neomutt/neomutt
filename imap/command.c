@@ -1250,6 +1250,13 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
 {
   int rc;
 
+  if (flags & IMAP_CMD_SINGLE)
+  {
+    // Process any existing commands
+    if (adata->nextcmd != adata->lastcmd)
+      imap_exec(adata, NULL, IMAP_CMD_POLL);
+  }
+
   rc = cmd_start(adata, cmdstr, flags);
   if (rc < 0)
   {
@@ -1273,6 +1280,9 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
   do
   {
     rc = imap_cmd_step(adata);
+    // The queue is empty, so the single command has been processed
+    if ((flags & IMAP_CMD_SINGLE) && (adata->nextcmd == adata->lastcmd))
+      break;
   } while (rc == IMAP_RES_CONTINUE);
   mutt_sig_allow_interrupt(false);
 
