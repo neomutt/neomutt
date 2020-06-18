@@ -61,7 +61,7 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
   if (!method && !C_ImapOauthRefreshCommand)
     return IMAP_AUTH_UNAVAIL;
 
-  mutt_message(_("Authenticating (OAUTHBEARER)..."));
+  mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
 
   /* We get the access token from the imap_oauth_refresh_command */
   oauthbearer = mutt_account_getoauthbearer(&adata->conn->account);

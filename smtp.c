@@ -546,7 +546,7 @@ fail:
  */
 static int smtp_auth_oauth(struct Connection *conn)
 {
-  mutt_message(_("Authenticating (OAUTHBEARER)..."));
+  mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
 
   /* We get the access token from the smtp_oauth_refresh_command */
   char *oauthbearer = mutt_account_getoauthbearer(&conn->account);
