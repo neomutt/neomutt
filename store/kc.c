@@ -42,6 +42,9 @@
  */
 static void *store_kyotocabinet_open(const char *path)
 {
+  if (!path)
+    return NULL;
+
   KCDB *db = kcdbnew();
   if (!db)
     return NULL;
@@ -80,6 +83,9 @@ static void *store_kyotocabinet_fetch(void *store, const char *key, size_t klen,
  */
 static void store_kyotocabinet_free(void *store, void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   kcfree(*ptr);
   *ptr = NULL;
 }

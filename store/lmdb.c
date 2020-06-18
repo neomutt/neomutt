@@ -121,6 +121,9 @@ static int mdb_get_w_txn(struct StoreLmdbCtx *ctx)
  */
 static void *store_lmdb_open(const char *path)
 {
+  if (!path)
+    return NULL;
+
   int rc;
 
   struct StoreLmdbCtx *ctx = mutt_mem_calloc(1, sizeof(struct StoreLmdbCtx));

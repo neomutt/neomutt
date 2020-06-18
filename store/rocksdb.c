@@ -53,6 +53,9 @@ struct RocksDB_Ctx
  */
 static void *store_rocksdb_open(const char *path)
 {
+  if (!path)
+    return NULL;
+
   struct RocksDB_Ctx *ctx = mutt_mem_malloc(sizeof(struct RocksDB_Ctx));
 
   /* RocksDB store errors in form of strings */
@@ -110,9 +113,9 @@ static void *store_rocksdb_fetch(void *store, const char *key, size_t keylen, si
 /**
  * store_rocksdb_free - Implements StoreOps::free()
  */
-static void store_rocksdb_free(void *store, void **data)
+static void store_rocksdb_free(void *store, void **ptr)
 {
-  FREE(data);
+  FREE(ptr);
 }
 
 /**

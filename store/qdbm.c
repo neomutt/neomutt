@@ -44,6 +44,9 @@
  */
 static void *store_qdbm_open(const char *path)
 {
+  if (!path)
+    return NULL;
+
   return vlopen(path, VL_OWRITER | VL_OCREAT, VL_CMPLEX);
 }
 

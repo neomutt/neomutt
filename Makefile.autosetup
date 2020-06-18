@@ -612,7 +612,8 @@ coverage: all test
 	  --directory config \
 	  --directory core \
 	  --directory email \
-	  --directory mutt
+	  --directory mutt \
+	  --directory store
 	-genhtml --output-directory lcov --frames lcov.info
 	lcov --list lcov.info
 @endif

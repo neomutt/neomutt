@@ -39,6 +39,9 @@
  */
 static void *store_tdb_open(const char *path)
 {
+  if (!path)
+    return NULL;
+
   /* TDB_NOLOCK - Don't do any locking
    * TDB_NOSYNC - Don't use synchronous transactions
    * TDB_INCOMPATIBLE_HASH - Better hashing

@@ -43,6 +43,9 @@
  */
 static void *store_tokyocabinet_open(const char *path)
 {
+  if (!path)
+    return NULL;
+
   TCBDB *db = tcbdbnew();
   if (!db)
     return NULL;

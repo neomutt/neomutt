@@ -578,6 +578,33 @@ NEOMUTT_TEST_LIST
 #ifdef USE_ZSTD
   NEOMUTT_TEST_ITEM(test_compress_zstd)
 #endif
+#if defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) || defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_ROCKSDB) || defined(HAVE_TC) || defined(HAVE_TDB)
+  NEOMUTT_TEST_ITEM(test_store_store)
+#endif
+#ifdef HAVE_BDB
+  NEOMUTT_TEST_ITEM(test_store_bdb)
+#endif
+#ifdef HAVE_GDBM
+  NEOMUTT_TEST_ITEM(test_store_gdbm)
+#endif
+#ifdef HAVE_KC
+  NEOMUTT_TEST_ITEM(test_store_kc)
+#endif
+#ifdef HAVE_LMDB
+  NEOMUTT_TEST_ITEM(test_store_lmdb)
+#endif
+#ifdef HAVE_QDBM
+  NEOMUTT_TEST_ITEM(test_store_qdbm)
+#endif
+#ifdef HAVE_ROCKSDB
+  NEOMUTT_TEST_ITEM(test_store_rocksdb)
+#endif
+#ifdef HAVE_TDB
+  NEOMUTT_TEST_ITEM(test_store_tdb)
+#endif
+#ifdef HAVE_TC
+  NEOMUTT_TEST_ITEM(test_store_tc)
+#endif
 #undef NEOMUTT_TEST_ITEM
 
 TEST_LIST = {
@@ -594,6 +621,33 @@ NEOMUTT_TEST_ITEM(test_compress_common)
 #endif
 #ifdef USE_ZSTD
   NEOMUTT_TEST_ITEM(test_compress_zstd)
+#endif
+#if defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) || defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_ROCKSDB) || defined(HAVE_TC) || defined(HAVE_TDB)
+  NEOMUTT_TEST_ITEM(test_store_store)
+#endif
+#ifdef HAVE_BDB
+  NEOMUTT_TEST_ITEM(test_store_bdb)
+#endif
+#ifdef HAVE_GDBM
+  NEOMUTT_TEST_ITEM(test_store_gdbm)
+#endif
+#ifdef HAVE_KC
+  NEOMUTT_TEST_ITEM(test_store_kc)
+#endif
+#ifdef HAVE_LMDB
+  NEOMUTT_TEST_ITEM(test_store_lmdb)
+#endif
+#ifdef HAVE_QDBM
+  NEOMUTT_TEST_ITEM(test_store_qdbm)
+#endif
+#ifdef HAVE_ROCKSDB
+  NEOMUTT_TEST_ITEM(test_store_rocksdb)
+#endif
+#ifdef HAVE_TDB
+  NEOMUTT_TEST_ITEM(test_store_tdb)
+#endif
+#ifdef HAVE_TC
+  NEOMUTT_TEST_ITEM(test_store_tc)
 #endif
 #undef NEOMUTT_TEST_ITEM
   { 0 }

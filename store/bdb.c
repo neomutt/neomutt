@@ -89,6 +89,9 @@ static void dbt_empty_init(DBT *dbt)
  */
 static void *store_bdb_open(const char *path)
 {
+  if (!path)
+    return NULL;
+
   struct stat sb;
   int ret;
   u_int32_t createflags = DB_CREATE;
