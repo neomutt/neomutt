@@ -47,7 +47,7 @@
 #include "mutt_socket.h"
 #include "progress.h"
 #ifdef USE_SSL
-#include "globals.h"
+#include "mutt_globals.h"
 #endif
 
 /* These Config Variables are only used in pop/pop_lib.c */

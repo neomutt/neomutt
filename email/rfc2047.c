@@ -38,9 +38,10 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "rfc2047.h"
-#include "email_globals.h"
 #include "envelope.h"
+#include "globals.h"
 #include "mime.h"
+#include "mutt_globals.h"
 
 #define ENCWORD_LEN_MAX 75
 #define ENCWORD_LEN_MIN 9 /* strlen ("=?.?.?.?=") */

@@ -38,7 +38,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "options.h"

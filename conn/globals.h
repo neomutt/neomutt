@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CONN_CONN_GLOBALS_H
-#define MUTT_CONN_CONN_GLOBALS_H
+#ifndef MUTT_CONN_GLOBALS_H
+#define MUTT_CONN_GLOBALS_H
 
 #include <stdbool.h>
 
@@ -57,4 +57,4 @@ extern bool C_TunnelIsSecure;
 extern bool        C_UseIpv6;
 #endif
 
-#endif /* MUTT_CONN_CONN_GLOBALS_H */
+#endif /* MUTT_CONN_GLOBALS_H */

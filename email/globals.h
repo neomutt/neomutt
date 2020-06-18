@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_EMAIL_EMAIL_GLOBALS_H
-#define MUTT_EMAIL_EMAIL_GLOBALS_H
+#ifndef MUTT_EMAIL_GLOBALS_H
+#define MUTT_EMAIL_GLOBALS_H
 
 #include <stdbool.h>
 #include "mutt/lib.h"
@@ -47,4 +47,4 @@ extern struct RegexList UnMailLists;        ///< List of regexes to blacklist fa
 extern struct RegexList SubscribedLists;    ///< List of regexes to match subscribed mailing lists
 extern struct ReplaceList SubjectRegexList; ///< List of regexes to tidy the view of the email's subject
 
-#endif /* MUTT_EMAIL_EMAIL_GLOBALS_H */
+#endif /* MUTT_EMAIL_GLOBALS_H */

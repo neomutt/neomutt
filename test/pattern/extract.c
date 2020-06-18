@@ -26,7 +26,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "myvar.h"
 
 int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags)

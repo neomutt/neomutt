@@ -53,7 +53,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "lib.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "ssl.h"
 

@@ -40,7 +40,7 @@
 #include "pgpinvoke.h"
 #include "lib.h"
 #include "format_flags.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "pgpkey.h"

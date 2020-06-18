@@ -35,7 +35,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "options.h"
 #include "ncrypt/lib.h"
 

@@ -35,7 +35,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt_mailbox.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "mx.h"

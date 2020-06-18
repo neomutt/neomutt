@@ -204,8 +204,8 @@ $(PWD)/config:
 ###############################################################################
 # libconn
 LIBCONN=	libconn.a
-LIBCONNOBJS=	conn/connaccount.o conn/conn_globals.o conn/getdomain.o \
-		conn/raw.o conn/sasl_plain.o conn/socket.o conn/tunnel.o
+LIBCONNOBJS=	conn/connaccount.o conn/getdomain.o conn/globals.o conn/raw.o \
+		conn/sasl_plain.o conn/socket.o conn/tunnel.o
 @if HAVE_SASL
 LIBCONNOBJS+=	conn/sasl.o
 @endif
@@ -278,10 +278,10 @@ $(PWD)/debug:
 ###############################################################################
 # libemail
 LIBEMAIL=	libemail.a
-LIBEMAILOBJS=	email/attach.o email/body.o email/email.o \
-		email/email_globals.o email/envelope.o email/from.o email/mime.o \
-		email/parameter.o email/parse.o email/rfc2047.o email/rfc2231.o \
-		email/tags.o email/thread.o email/url.o
+LIBEMAILOBJS=	email/attach.o email/body.o email/email.o email/envelope.o \
+		email/from.o email/globals.o email/mime.o email/parameter.o \
+		email/parse.o email/rfc2047.o email/rfc2231.o email/tags.o \
+		email/thread.o email/url.o
 CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
 ALLOBJS+=	$(LIBEMAILOBJS)
 
@@ -457,7 +457,7 @@ $(PWD)/notmuch:
 ###############################################################################
 # libpop
 LIBPOP=		libpop.a
-LIBPOPOBJS=	pop/pop.o pop/pop_auth.o pop/pop_lib.o
+LIBPOPOBJS=	pop/pop.o pop/auth.o pop/lib.o
 CLEANFILES+=	$(LIBPOP) $(LIBPOPOBJS)
 ALLOBJS+=	$(LIBPOPOBJS)
 

@@ -38,7 +38,7 @@
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "rfc3676.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "muttlib.h"
 #include "state.h"
 
