@@ -4427,6 +4427,11 @@ struct ConfigDef MuttVars[] = {
   ** If \fIset\fP (the default), NeoMutt will attempt to use \fCSTARTTLS\fP on servers
   ** advertising the capability. When \fIunset\fP, NeoMutt will not attempt to
   ** use \fCSTARTTLS\fP regardless of the server's capabilities.
+  ** .pp
+  ** \fBNote\fP that \fCSTARTTLS\fP is subject to many kinds of
+  ** attacks, including the ability of a machine-in-the-middle to
+  ** suppress the advertising of support.  Setting $$ssl_force_tls is
+  ** recommended if you rely on \fCSTARTTLS\fP.
   */
 #ifdef USE_SSL_OPENSSL
   { "ssl_use_sslv2", DT_BOOL, &C_SslUseSslv2, false },
