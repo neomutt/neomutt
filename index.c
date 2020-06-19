@@ -2374,6 +2374,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &index_hint, false);
         break;
       }
+#endif
 
 #ifdef USE_SIDEBAR
       case OP_SIDEBAR_OPEN:
@@ -2402,7 +2403,6 @@ int mutt_index_menu(struct MuttWindow *dlg)
         change_folder_mailbox(menu, m, &oldcount, &index_hint, false);
         break;
       }
-#endif
 
       case OP_MAIN_CHANGE_FOLDER:
       case OP_MAIN_CHANGE_FOLDER_READONLY:
