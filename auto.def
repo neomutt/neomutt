@@ -982,10 +982,37 @@ if {[get-define want-bdb]} {
 }
 
 ###############################################################################
+# Header cache - QDBM
+# Note: qdbm must come before gdbm because they share library symbols.
+if {[get-define want-qdbm]} {
+  if {[get-define want-pkgconf]} {
+    pkgconf true qdbm
+    define-feature qdbm
+  } else {
+    # On Linux, headers are in a dedicated subdirectory
+    set qdbm_prefix [opt-val with-qdbm $prefix]
+    if {[file isdirectory $qdbm_prefix/include/qdbm]} {
+      set qdbm_inc_subdir qdbm/
+    } else {
+      set qdbm_inc_subdir ""
+    }
+    if {[check-inc-and-lib qdbm [opt-val with-qdbm $qdbm_prefix] \
+                            ${qdbm_inc_subdir}villa.h vlopen qdbm]} {
+      define-append CFLAGS -I$qdbm_prefix/include/$qdbm_inc_subdir
+    } else {
+      user-error "Unable to find QDBM"
+    }
+  }
+  define-append HCACHE_BACKENDS "qdbm"
+  define USE_HCACHE
+}
+
+
+###############################################################################
 # Header Cache - GNU dbm
 if {[get-define want-gdbm]} {
   if {![check-inc-and-lib gdbm [opt-val with-gdbm $prefix] \
-                          gdbm.h gdbm_open gdbm]} {
+                          gdbm.h gdbm_count gdbm]} {
     user-error "Unable to find GNU dbm"
   }
   define-append HCACHE_BACKENDS "gdbm"
@@ -1016,31 +1043,6 @@ if {[get-define want-kyotocabinet]} {
     }
   }
   define-append HCACHE_BACKENDS "kyotocabinet"
-  define USE_HCACHE
-}
-
-###############################################################################
-# Header cache - QDBM
-if {[get-define want-qdbm]} {
-  if {[get-define want-pkgconf]} {
-    pkgconf true qdbm
-    define-feature qdbm
-  } else {
-    # On Linux, headers are in a dedicated subdirectory
-    set qdbm_prefix [opt-val with-qdbm $prefix]
-    if {[file isdirectory $qdbm_prefix/include/qdbm]} {
-      set qdbm_inc_subdir qdbm/
-    } else {
-      set qdbm_inc_subdir ""
-    }
-    if {[check-inc-and-lib qdbm [opt-val with-qdbm $qdbm_prefix] \
-                            ${qdbm_inc_subdir}villa.h vlopen qdbm]} {
-      define-append CFLAGS -I$qdbm_prefix/include/$qdbm_inc_subdir
-    } else {
-      user-error "Unable to find QDBM"
-    }
-  }
-  define-append HCACHE_BACKENDS "qdbm"
   define USE_HCACHE
 }
 
