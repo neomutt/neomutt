@@ -1,3 +1,63 @@
+2020-06-19  Richard Russon  <rich@flatcap.org>
+* Security
+  - Abort GnuTLS certificate check if a cert in the chain is rejected
+  - TLS: clear data after a starttls acknowledgement
+  - Prevent possible IMAP MITM via PREAUTH response
+* Features
+  - add config operations +=/-= for number,long
+  - Address book has a comment field
+  - Query menu has a comment field
+* Contrib
+  - sample.neomuttrc-starter: Do not echo promted password
+* Bug Fixes
+  - make "news://" and "nntp://" schemes interchangeable
+  - Fix CRLF to LF conversion in base64 decoding
+  - Double comma in query
+  - compose: fix redraw after history
+  - Crash inside empty query menu
+  - mmdf: fix creating new mailbox
+  - mh: fix creating new mailbox
+  - mbox: error out when an mbox/mmdf is a pipe
+  - Fix list-reply by correct parsing of List-Post headers
+  - Decode references according to RFC2047
+  - fix tagged message count
+  - hcache: fix keylen not being considered when building the full key
+  - sidebar: fix path comparison
+  - Don't mess with the original pattern when running IMAP searches
+  - Handle IMAP "NO" resps by issuing a msg instead of failing badly
+  - imap: use the connection delimiter if provided
+  - Memory leaks
+* Changed Config
+  - `$alias_format` default changed to include `%c` comment
+  - `$query_format` default changed to include `%e` extra info
+* Translations
+  - 100% Lithuanian
+  - 84% French
+  - Log the translation in use
+* Docs
+  - Add missing commands unbind, unmacro to man pages
+* Build
+  - Check size of long using `LONG_MAX` instead of `__WORDSIZE`
+  - Allow ./configure to not record cflags
+  - fix out-of-tree build
+  - Avoid locating gdbm symbols in qdbm library
+* Code
+  - Refactor unsafe TAILQ returns
+  - add window notifications
+  - flip negative ifs
+  - Update to latest acutest.h
+  - test: add store tests
+  - test: add compression tests
+  - graphviz: email
+  - make more opcode info available
+  - refactor: `main_change_folder()`
+  - refactor: `mutt_mailbox_next()`
+  - refactor: `generate_body()`
+  - compress: add `{min,max}_level` to ComprOps
+  - emphasise empty loops: "// do nothing"
+  - prex: convert `is_from()` to use regex
+  - Refactor IMAP's search routines
+
 2020-05-01  Richard Russon  <rich@flatcap.org>
 * Bug Fixes
   - Make sure buffers are initialized on error
