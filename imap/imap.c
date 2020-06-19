@@ -783,8 +783,22 @@ int imap_open_connection(struct ImapAccountData *adata)
       }
       else if (C_SslStarttls != MUTT_NO)
       {
-        proceed = mutt_yesorno(_("Abort unencrypted PREAUTH connection?"),
-                               C_SslStarttls) != MUTT_NO;
+        proceed = mutt_yesorno(
+            /* L10N:
+               Gitlab ticket #246 identified a machine-in-the-middle attack
+               by sending a "PREAUTH" response instead of "OK".  STARTTLS
+               is not allowed once you are authenticated, so this would be
+               a clever way to prevent encryption, and talk to the MITM instead.
+
+               This prompt is based on the quadoption $ssl_starttls.  The
+               default is "yes" which will automatically abort unencrypted
+               PREAUTH.  But if the user changes to ask-yes or ask-no, this
+               prompt will occur instead to warn them that the connection is
+               an unusual "PREAUTH" and is unencrypted.  The warning is terse,
+               so translator feedback and suggestions most welcome.
+               */
+            _("Abort unencrypted PREAUTH connection?"),
+            C_SslStarttls) != MUTT_NO;
       }
       if (!proceed)
       {
