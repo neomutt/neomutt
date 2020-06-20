@@ -773,8 +773,8 @@ int imap_open_connection(struct ImapAccountData *adata)
   {
 #ifdef USE_SSL
     /* An unencrypted PREAUTH response is most likely a MITM attack.
-     * Require a confirmation. */
-    if (adata->conn->ssf == 0)
+     * Require a confirmation unless using $tunnel. */
+    if ((adata->conn->ssf == 0) && !C_Tunnel)
     {
       bool proceed = true;
       if (C_SslForceTls)
