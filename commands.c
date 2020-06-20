@@ -1302,7 +1302,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   {
     snprintf(tmp, sizeof(tmp), _("Convert to %s upon sending?"),
              mutt_param_get(&b->parameter, "charset"));
-    int ans = mutt_yesorno(tmp, b->noconv ? MUTT_NO : MUTT_YES);
+    enum QuadOption ans = mutt_yesorno(tmp, b->noconv ? MUTT_NO : MUTT_YES);
     if (ans != MUTT_ABORT)
       b->noconv = (ans == MUTT_NO);
   }

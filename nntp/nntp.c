@@ -1886,8 +1886,9 @@ int nntp_open_connection(struct NntpAccountData *adata)
     if (adata->use_tls == 0)
     {
       adata->use_tls =
-          C_SslForceTls || query_quadoption(C_SslStarttls,
-                                            _("Secure connection with TLS?")) == MUTT_YES ?
+          C_SslForceTls ||
+                  (query_quadoption(C_SslStarttls,
+                                    _("Secure connection with TLS?")) == MUTT_YES) ?
               2 :
               1;
     }

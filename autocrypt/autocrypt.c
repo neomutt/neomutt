@@ -883,7 +883,8 @@ void mutt_autocrypt_scan_mailboxes(void)
      through one or more mailboxes for Autocrypt: headers.  Those headers are
      then captured in the database as peer records and used for encryption.
      If this is answered yes, they will be prompted for a mailbox.  */
-  int scan = mutt_yesorno(_("Scan a mailbox for autocrypt headers?"), MUTT_YES);
+  enum QuadOption scan =
+      mutt_yesorno(_("Scan a mailbox for autocrypt headers?"), MUTT_YES);
   while (scan == MUTT_YES)
   {
     // L10N: The prompt for a mailbox to scan for Autocrypt: headers
