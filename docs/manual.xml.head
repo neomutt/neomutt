@@ -13502,7 +13502,7 @@ startup-hook 'echo `action.sh ARGS`'
           </para>
           <para>
             This feature implements a hook that is called when NeoMutt shuts
-            down, but before closing the first mailbox. This is most likely to
+            down, but before closing the last mailbox. This is most likely to
             be useful to users of <link linkend="notmuch">notmuch</link>.
           </para>
         </sect3>

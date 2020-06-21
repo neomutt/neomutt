@@ -440,8 +440,6 @@ static void imap_hcache_namer(const char *path, struct Buffer *dest)
  * imap_hcache_open - Open a header cache
  * @param adata Imap Account data
  * @param mdata Imap Mailbox data
- * @retval ptr HeaderCache
- * @retval NULL Failure
  */
 void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
 {
