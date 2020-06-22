@@ -2472,7 +2472,7 @@ msgstr "Šifruota jungtis negalima"
 
 #: imap/imap.c:786
 msgid "Abort unencrypted PREAUTH connection?"
-msgstr ""
+msgstr "Nutraukti nešifruotą PREAUTH jungtį?"
 
 #: imap/imap.c:1263
 #, c-format
