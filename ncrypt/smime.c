@@ -1788,7 +1788,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(C_SmimeCertificates), signas);
 
   struct SmimeKey *signas_key = smime_get_key_by_hash(signas, 1);
-  if ((!signas_key) || (!mutt_str_strcmp("?", signas_key->issuer)))
+  if (!signas_key || mutt_str_equal("?", signas_key->issuer, CASE_MATCH))
     intermediates = signas; /* so openssl won't complain in any case */
   else
     intermediates = signas_key->issuer;

@@ -76,7 +76,7 @@ const char *myvar_get(const char *var)
 
   TAILQ_FOREACH(myv, &MyVars, entries)
   {
-    if (mutt_str_strcmp(myv->name, var) == 0)
+    if (mutt_str_equal(myv->name, var, CASE_MATCH))
       return NONULL(myv->value);
   }
 
@@ -94,7 +94,7 @@ void myvar_set(const char *var, const char *val)
 
   TAILQ_FOREACH(myv, &MyVars, entries)
   {
-    if (mutt_str_strcmp(myv->name, var) == 0)
+    if (mutt_str_equal(myv->name, var, CASE_MATCH))
     {
       mutt_str_replace(&myv->value, val);
       return;
@@ -115,7 +115,7 @@ void myvar_del(const char *var)
 
   TAILQ_FOREACH(myv, &MyVars, entries)
   {
-    if (mutt_str_strcmp(myv->name, var) == 0)
+    if (mutt_str_equal(myv->name, var, CASE_MATCH))
     {
       TAILQ_REMOVE(&MyVars, myv, entries);
       myvar_free(&myv);

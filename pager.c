@@ -1051,7 +1051,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     line_info[n].type = MT_COLOR_NORMAL;
   else if (check_attachment_marker((char *) raw) == 0)
     line_info[n].type = MT_COLOR_ATTACHMENT;
-  else if ((mutt_str_strcmp("-- \n", buf) == 0) || (mutt_str_strcmp("-- \r\n", buf) == 0))
+  else if (mutt_str_equal("-- \n", buf, CASE_MATCH) ||
+           mutt_str_equal("-- \r\n", buf, CASE_MATCH))
   {
     i = n + 1;
 

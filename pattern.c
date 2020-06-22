@@ -2447,9 +2447,9 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if ((mutt_str_strcasecmp("all", mutt_b2s(buf)) == 0) ||
-        (mutt_str_strcmp("^", mutt_b2s(buf)) == 0) ||
-        (mutt_str_strcmp(".", mutt_b2s(buf)) == 0)) /* ~A is more efficient */
+    if (mutt_str_equal("all", mutt_b2s(buf), CASE_IGNORE) ||
+        mutt_str_equal("^", mutt_b2s(buf), CASE_MATCH) ||
+        mutt_str_equal(".", mutt_b2s(buf), CASE_MATCH)) /* ~A is more efficient */
     {
       mutt_buffer_strcpy(buf, "~A");
     }
@@ -2668,7 +2668,7 @@ int mutt_pattern_func(int op, char *prompt)
     const char *pbuf = buf->data;
     while (*pbuf == ' ')
       pbuf++;
-    if (mutt_str_strcmp(pbuf, "~A") != 0)
+    if (!mutt_str_equal(pbuf, "~A", CASE_MATCH))
     {
       Context->pattern = simple;
       simple = NULL; /* don't clobber it */
@@ -2722,7 +2722,7 @@ int mutt_search_command(int cur, int op)
     mutt_buffer_strcpy(tmp, buf);
     mutt_check_simple(tmp, NONULL(C_SimpleSearch));
 
-    if (!SearchPattern || (mutt_str_strcmp(mutt_b2s(tmp), LastSearchExpn) != 0))
+    if (!SearchPattern || !mutt_str_equal(mutt_b2s(tmp), LastSearchExpn, CASE_MATCH))
     {
       struct Buffer err;
       mutt_buffer_init(&err);

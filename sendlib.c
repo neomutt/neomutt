@@ -433,7 +433,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
          * for the Mac: force quotes around the boundary parameter
          * even when they aren't needed.  */
         if (!mutt_str_strcasecmp(cont->attribute, "boundary") &&
-            !mutt_str_strcmp(buf, cont->value))
+            mutt_str_equal(buf, cont->value, CASE_MATCH))
           snprintf(buf, sizeof(buf), "\"%s\"", cont->value);
 
         tmplen = mutt_str_strlen(buf) + mutt_str_strlen(cont->attribute) + 1;
@@ -591,7 +591,7 @@ int mutt_write_mime_body(struct Body *a, FILE *fp)
 
   /* This is pretty gross, but it's the best solution for now... */
   if (((WithCrypto & APPLICATION_PGP) != 0) && (a->type == TYPE_APPLICATION) &&
-      (mutt_str_strcmp(a->subtype, "pgp-encrypted") == 0) && !a->filename)
+      mutt_str_equal(a->subtype, "pgp-encrypted", CASE_MATCH) && !a->filename)
   {
     fputs("Version: 1\n", fp);
     return 0;
@@ -1738,7 +1738,7 @@ static bool check_boundary(const char *boundary, struct Body *b)
     return true;
 
   p = mutt_param_get(&b->parameter, "boundary");
-  if (p && (mutt_str_strcmp(p, boundary) == 0))
+  if (p && mutt_str_equal(p, boundary, CASE_MATCH))
   {
     return true;
   }
@@ -2873,7 +2873,7 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
 
     if (i)
     {
-      if (mutt_str_strcmp(ps, "--") == 0)
+      if (mutt_str_equal(ps, "--", CASE_MATCH))
         break;
       args[argslen++] = ps;
     }

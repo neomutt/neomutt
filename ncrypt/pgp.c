@@ -428,7 +428,7 @@ static void pgp_copy_clearsigned(FILE *fp_in, struct State *s, char *charset)
       continue;
     }
 
-    if (mutt_str_strcmp(buf, "-----BEGIN PGP SIGNATURE-----\n") == 0)
+    if (mutt_str_equal(buf, "-----BEGIN PGP SIGNATURE-----\n", CASE_MATCH))
       break;
 
     if (armor_header)
@@ -539,10 +539,10 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
         fputs(buf, fp_tmp);
 
-        if ((needpass && (mutt_str_strcmp("-----END PGP MESSAGE-----\n", buf) == 0)) ||
+        if ((needpass && mutt_str_equal("-----END PGP MESSAGE-----\n", buf, CASE_MATCH)) ||
             (!needpass &&
-             ((mutt_str_strcmp("-----END PGP SIGNATURE-----\n", buf) == 0) ||
-              (mutt_str_strcmp("-----END PGP PUBLIC KEY BLOCK-----\n", buf) == 0))))
+             (mutt_str_equal("-----END PGP SIGNATURE-----\n", buf, CASE_MATCH) ||
+              mutt_str_equal("-----END PGP PUBLIC KEY BLOCK-----\n", buf, CASE_MATCH))))
         {
           break;
         }
@@ -1342,9 +1342,9 @@ struct Body *pgp_class_sign_message(struct Body *a, const struct AddressList *fr
    * recommended for future releases of PGP.  */
   while (fgets(buf, sizeof(buf) - 1, fp_pgp_out))
   {
-    if (mutt_str_strcmp("-----BEGIN PGP MESSAGE-----\n", buf) == 0)
+    if (mutt_str_equal("-----BEGIN PGP MESSAGE-----\n", buf, CASE_MATCH))
       fputs("-----BEGIN PGP SIGNATURE-----\n", fp_sig);
-    else if (mutt_str_strcmp("-----END PGP MESSAGE-----\n", buf) == 0)
+    else if (mutt_str_equal("-----END PGP MESSAGE-----\n", buf, CASE_MATCH))
       fputs("-----END PGP SIGNATURE-----\n", fp_sig);
     else
       fputs(buf, fp_sig);

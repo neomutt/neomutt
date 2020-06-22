@@ -279,7 +279,7 @@ static int fetch_uidl(const char *line, void *data)
   for (i = 0; i < m->msg_count; i++)
   {
     struct PopEmailData *edata = pop_edata_get(m->emails[i]);
-    if (mutt_str_strcmp(line, edata->uid) == 0)
+    if (mutt_str_equal(line, edata->uid, CASE_MATCH))
       break;
   }
 
@@ -330,7 +330,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
   {
     struct PopEmailData *edata = pop_edata_get(m->emails[i]);
     /* if the id we get is known for a header: done (i.e. keep in cache) */
-    if (edata->uid && (mutt_str_strcmp(edata->uid, id) == 0))
+    if (edata->uid && mutt_str_equal(edata->uid, id, CASE_MATCH))
       return 0;
   }
 

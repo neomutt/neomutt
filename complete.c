@@ -170,8 +170,8 @@ int mutt_complete(char *buf, size_t buflen)
   {
     while ((de = readdir(dirp)))
     {
-      if ((mutt_str_strcmp(".", de->d_name) != 0) &&
-          (mutt_str_strcmp("..", de->d_name) != 0))
+      if (!mutt_str_equal(".", de->d_name, CASE_MATCH) &&
+          !mutt_str_equal("..", de->d_name, CASE_MATCH))
       {
         mutt_buffer_strcpy(filepart, de->d_name);
         init++;
@@ -224,7 +224,7 @@ int mutt_complete(char *buf, size_t buflen)
   if (!mutt_buffer_is_empty(dirpart))
   {
     mutt_str_strfcpy(buf, mutt_b2s(dirpart), buflen);
-    if ((mutt_str_strcmp("/", mutt_b2s(dirpart)) != 0) &&
+    if (!mutt_str_equal("/", mutt_b2s(dirpart), CASE_MATCH) &&
         (mutt_b2s(dirpart)[0] != '=') && (mutt_b2s(dirpart)[0] != '+'))
     {
       mutt_str_strfcpy(buf + strlen(buf), "/", buflen - strlen(buf));

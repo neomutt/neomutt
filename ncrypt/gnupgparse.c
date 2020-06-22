@@ -171,17 +171,17 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
       {
         mutt_debug(LL_DEBUG2, "record type: %s\n", p);
 
-        if (mutt_str_strcmp(p, "pub") == 0)
+        if (mutt_str_equal(p, "pub", CASE_MATCH))
           is_pub = true;
-        else if (mutt_str_strcmp(p, "sub") == 0)
+        else if (mutt_str_equal(p, "sub", CASE_MATCH))
           *is_subkey = true;
-        else if (mutt_str_strcmp(p, "sec") == 0)
+        else if (mutt_str_equal(p, "sec", CASE_MATCH))
           ; // do nothing
-        else if (mutt_str_strcmp(p, "ssb") == 0)
+        else if (mutt_str_equal(p, "ssb", CASE_MATCH))
           *is_subkey = true;
-        else if (mutt_str_strcmp(p, "uid") == 0)
+        else if (mutt_str_equal(p, "uid", CASE_MATCH))
           is_uid = true;
-        else if (mutt_str_strcmp(p, "fpr") == 0)
+        else if (mutt_str_equal(p, "fpr", CASE_MATCH))
           is_fpr = true;
         else
           return NULL;

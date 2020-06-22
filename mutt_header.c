@@ -102,7 +102,7 @@ static bool label_message(struct Mailbox *m, struct Email *e, char *new_label)
 {
   if (!e)
     return false;
-  if (mutt_str_strcmp(e->env->x_label, new_label) == 0)
+  if (mutt_str_equal(e->env->x_label, new_label, CASE_MATCH))
     return false;
 
   if (e->env->x_label)
@@ -257,8 +257,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   {
     if (!STAILQ_EMPTY(&e->env->in_reply_to) &&
         (STAILQ_EMPTY(&n->in_reply_to) ||
-         (mutt_str_strcmp(STAILQ_FIRST(&n->in_reply_to)->data,
-                          STAILQ_FIRST(&e->env->in_reply_to)->data) != 0)))
+         !mutt_str_equal(STAILQ_FIRST(&n->in_reply_to)->data,
+                         STAILQ_FIRST(&e->env->in_reply_to)->data, CASE_MATCH)))
     {
       mutt_list_free(&e->env->references);
     }

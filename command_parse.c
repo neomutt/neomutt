@@ -95,7 +95,7 @@ static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   /* "*" is a special case. */
-  if (mutt_str_strcmp(buf->data, "*") == 0)
+  if (mutt_str_equal(buf->data, "*", CASE_MATCH))
   {
     mutt_replacelist_free(list);
     return MUTT_CMD_SUCCESS;
@@ -253,7 +253,7 @@ static bool is_function(const char *name)
       continue;
 
     for (int j = 0; b[j].name; j++)
-      if (mutt_str_strcmp(name, b[j].name) == 0)
+      if (mutt_str_equal(name, b[j].name, CASE_MATCH))
         return true;
   }
   return false;
@@ -453,7 +453,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
 
     STAILQ_FOREACH(np, &MuttrcStack, entries)
     {
-      if (mutt_str_strcmp(np->data, rcfile) == 0)
+      if (mutt_str_equal(np->data, rcfile, CASE_MATCH))
       {
         break;
       }
@@ -1051,7 +1051,7 @@ enum CommandResult parse_path_unlist(struct Buffer *buf, struct Buffer *s,
   {
     mutt_extract_token(path, s, MUTT_TOKEN_BACKTICK_VARS);
     /* Check for deletion of entire list */
-    if (mutt_str_strcmp(mutt_b2s(path), "*") == 0)
+    if (mutt_str_equal(mutt_b2s(path), "*", CASE_MATCH))
     {
       mutt_list_free((struct ListHead *) data);
       break;
@@ -1133,7 +1133,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       he = cs_subset_lookup(NeoMutt->sub, buf->data);
       if (!he)
       {
-        if (reset && (mutt_str_strcmp(buf->data, "all") == 0))
+        if (reset && mutt_str_equal(buf->data, "all", CASE_MATCH))
         {
           struct HashElem **list = get_elem_list(NeoMutt->sub->cs);
           if (!list)
@@ -1321,7 +1321,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
             struct Buffer scratch = mutt_buffer_make(1024);
             mutt_buffer_copy(&scratch, buf);
 
-            if (mutt_str_strcmp(buf->data, "builtin") != 0)
+            if (!mutt_str_equal(buf->data, "builtin", CASE_MATCH))
             {
               mutt_buffer_expand_path(&scratch);
             }
@@ -1593,7 +1593,7 @@ enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
     /* nospam only ever has one parameter. */
 
     /* "*" is a special case. */
-    if (mutt_str_strcmp(buf->data, "*") == 0)
+    if (mutt_str_equal(buf->data, "*", CASE_MATCH))
     {
       mutt_replacelist_free(&SpamList);
       mutt_regexlist_free(&NoSpamList);
@@ -1819,7 +1819,7 @@ enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     mutt_regexlist_remove(&Alternates, buf->data);
 
-    if ((mutt_str_strcmp(buf->data, "*") != 0) &&
+    if (!mutt_str_equal(buf->data, "*", CASE_MATCH) &&
         (mutt_regexlist_add(&UnAlternates, buf->data, REG_ICASE, err) != 0))
     {
       return MUTT_CMD_ERROR;
@@ -1921,7 +1921,7 @@ enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
     mutt_regexlist_remove(&SubscribedLists, buf->data);
     mutt_regexlist_remove(&MailLists, buf->data);
 
-    if ((mutt_str_strcmp(buf->data, "*") != 0) &&
+    if (!mutt_str_equal(buf->data, "*", CASE_MATCH) &&
         (mutt_regexlist_add(&UnMailLists, buf->data, REG_ICASE, err) != 0))
     {
       return MUTT_CMD_ERROR;
@@ -1946,7 +1946,7 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
   {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-    if (mutt_str_strcmp(buf->data, "*") == 0)
+    if (mutt_str_equal(buf->data, "*", CASE_MATCH))
     {
       clear_all = true;
       tmp_valid = false;
@@ -2004,7 +2004,7 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
   do
   {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-    if (mutt_str_strcmp("*", buf->data) == 0)
+    if (mutt_str_equal("*", buf->data, CASE_MATCH))
     {
       mutt_list_free(&UserHeader);
       continue;
@@ -2039,7 +2039,7 @@ enum CommandResult parse_unstailq(struct Buffer *buf, struct Buffer *s,
   {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     /* Check for deletion of entire list */
-    if (mutt_str_strcmp(buf->data, "*") == 0)
+    if (mutt_str_equal(buf->data, "*", CASE_MATCH))
     {
       mutt_list_free((struct ListHead *) data);
       break;
@@ -2076,7 +2076,7 @@ enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     mutt_regexlist_remove(&SubscribedLists, buf->data);
 
-    if ((mutt_str_strcmp(buf->data, "*") != 0) &&
+    if (!mutt_str_equal(buf->data, "*", CASE_MATCH) &&
         (mutt_regexlist_add(&UnSubscribedLists, buf->data, REG_ICASE, err) != 0))
     {
       return MUTT_CMD_ERROR;

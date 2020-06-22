@@ -96,7 +96,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     force = true;
   }
 
-  if (mutt_str_strcmp(C_Postponed, OldPostponed) != 0)
+  if (!mutt_str_equal(C_Postponed, OldPostponed, CASE_MATCH))
   {
     FREE(&OldPostponed);
     OldPostponed = mutt_str_strdup(C_Postponed);
@@ -108,7 +108,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     return 0;
 
   // We currently are in the C_Postponed mailbox so just pick the current status
-  if (m && (mutt_str_strcmp(C_Postponed, m->realpath) == 0))
+  if (m && mutt_str_equal(C_Postponed, m->realpath, CASE_MATCH))
   {
     PostCount = m->msg_count - m->msg_deleted;
     return PostCount;
@@ -867,7 +867,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   }
 
   if (C_CryptProtectedHeadersRead && protected_headers && protected_headers->subject &&
-      (mutt_str_strcmp(e_new->env->subject, protected_headers->subject) != 0))
+      !mutt_str_equal(e_new->env->subject, protected_headers->subject, CASE_MATCH))
   {
     mutt_str_replace(&e_new->env->subject, protected_headers->subject);
   }

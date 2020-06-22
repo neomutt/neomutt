@@ -1282,7 +1282,7 @@ static int mutt_dlg_compose_observer(struct NotifyCallback *nc)
   struct EventConfig *ec = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+  if (!mutt_str_equal(ec->name, "status_on_top", CASE_MATCH))
     return 0;
 
   struct MuttWindow *win_ebar = mutt_window_find(dlg, WT_INDEX_BAR);
@@ -1554,7 +1554,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         break;
 
       case OP_COMPOSE_EDIT_MESSAGE:
-        if (C_Editor && (mutt_str_strcmp("builtin", C_Editor) != 0) && !C_EditHeaders)
+        if (C_Editor && !mutt_str_equal("builtin", C_Editor, CASE_MATCH) && !C_EditHeaders)
         {
           mutt_rfc3676_space_unstuff(e);
           mutt_edit_file(C_Editor, e->content->filename);
@@ -1568,7 +1568,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
       case OP_COMPOSE_EDIT_HEADERS:
         mutt_rfc3676_space_unstuff(e);
-        if ((mutt_str_strcmp("builtin", C_Editor) != 0) &&
+        if (!mutt_str_equal("builtin", C_Editor, CASE_MATCH) &&
             ((op == OP_COMPOSE_EDIT_HEADERS) || ((op == OP_COMPOSE_EDIT_MESSAGE) && C_EditHeaders)))
         {
           const char *tag = NULL;

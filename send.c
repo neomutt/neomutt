@@ -1571,7 +1571,7 @@ static int save_fcc(struct Email *e, struct Buffer *fcc, struct Body *clear_cont
   }
 #endif
 
-  if (mutt_buffer_is_empty(fcc) || (mutt_str_strcmp("/dev/null", mutt_b2s(fcc)) == 0))
+  if (mutt_buffer_is_empty(fcc) || mutt_str_equal("/dev/null", mutt_b2s(fcc), CASE_MATCH))
     return rc;
 
   struct Body *tmpbody = e->content;
@@ -1606,8 +1606,8 @@ static int save_fcc(struct Email *e, struct Buffer *fcc, struct Body *clear_cont
     if (!save_atts)
     {
       if ((WithCrypto != 0) && (e->security & (SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT)) &&
-          ((mutt_str_strcmp(e->content->subtype, "encrypted") == 0) ||
-           (mutt_str_strcmp(e->content->subtype, "signed") == 0)))
+          (mutt_str_equal(e->content->subtype, "encrypted", CASE_MATCH) ||
+           mutt_str_equal(e->content->subtype, "signed", CASE_MATCH)))
       {
         if ((clear_content->type == TYPE_MULTIPART) &&
             (query_quadoption(C_FccAttach, _("Save attachments in Fcc?")) == MUTT_NO))
@@ -2113,7 +2113,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
 
     if (C_SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
-        C_Editor && (mutt_str_strcmp(C_Editor, "builtin") != 0))
+        C_Editor && !mutt_str_equal(C_Editor, "builtin", CASE_MATCH))
     {
       append_signature(fp_tmp);
     }
@@ -2126,7 +2126,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
 
     if (!C_SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
-        C_Editor && (mutt_str_strcmp(C_Editor, "builtin") != 0))
+        C_Editor && !mutt_str_equal(C_Editor, "builtin", CASE_MATCH))
     {
       append_signature(fp_tmp);
     }
@@ -2191,7 +2191,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         if (!mutt_edit_attachment(e_templ->content))
           goto cleanup;
       }
-      else if (!C_Editor || (mutt_str_strcmp("builtin", C_Editor) == 0))
+      else if (!C_Editor || mutt_str_equal("builtin", C_Editor, CASE_MATCH))
         mutt_builtin_editor(e_templ->content->filename, e_templ, e_cur);
       else if (C_EditHeaders)
       {

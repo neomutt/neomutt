@@ -133,7 +133,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
     return src;
 
   bool c = Context && Context->mailbox &&
-           (mutt_str_strcmp(Context->mailbox->realpath, m->realpath) == 0);
+           mutt_str_equal(Context->mailbox->realpath, m->realpath, CASE_MATCH);
 
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -413,7 +413,7 @@ static void update_entries_visibility(void)
 
     sbe->is_hidden = false;
 
-    if (Context && (mutt_str_strcmp(sbe->mailbox->realpath, Context->mailbox->realpath) == 0))
+    if (Context && mutt_str_equal(sbe->mailbox->realpath, Context->mailbox->realpath, CASE_MATCH))
     {
       /* Spool directories are always visible */
       continue;
@@ -1071,7 +1071,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
     else if (m->msg_flagged > 0)
       mutt_curses_set_color(MT_COLOR_SIDEBAR_FLAGGED);
     else if ((Colors->defs[MT_COLOR_SIDEBAR_SPOOLFILE] != 0) &&
-             (mutt_str_strcmp(mailbox_path(m), C_Spoolfile) == 0))
+             mutt_str_equal(mailbox_path(m), C_Spoolfile, CASE_MATCH))
     {
       mutt_curses_set_color(MT_COLOR_SIDEBAR_SPOOLFILE);
     }
@@ -1089,7 +1089,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 
     mutt_window_move(win, col, row);
     if (Context && Context->mailbox && (Context->mailbox->realpath[0] != '\0') &&
-        (mutt_str_strcmp(m->realpath, Context->mailbox->realpath) == 0))
+        mutt_str_equal(m->realpath, Context->mailbox->realpath, CASE_MATCH))
     {
       m->msg_unread = Context->mailbox->msg_unread;
       m->msg_count = Context->mailbox->msg_count;
@@ -1286,7 +1286,7 @@ void sb_set_open_mailbox(struct Mailbox *m)
 
   for (int entry = 0; entry < EntryCount; entry++)
   {
-    if (mutt_str_strcmp(Entries[entry]->mailbox->realpath, m->realpath) == 0)
+    if (mutt_str_equal(Entries[entry]->mailbox->realpath, m->realpath, CASE_MATCH))
     {
       OpnIndex = entry;
       HilIndex = entry;
@@ -1329,7 +1329,7 @@ void sb_notify_mailbox(struct Mailbox *m, bool created)
     if (BotIndex < 0)
       BotIndex = EntryCount;
     if ((OpnIndex < 0) && Context &&
-        (mutt_str_strcmp(m->realpath, Context->mailbox->realpath) == 0))
+        mutt_str_equal(m->realpath, Context->mailbox->realpath, CASE_MATCH))
     {
       OpnIndex = EntryCount;
     }

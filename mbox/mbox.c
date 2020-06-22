@@ -227,7 +227,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
     if (SigInt == 1)
       break;
 
-    if (mutt_str_strcmp(buf, MMDF_SEP) == 0)
+    if (mutt_str_equal(buf, MMDF_SEP, CASE_MATCH))
     {
       loc = ftello(adata->fp);
       if (loc < 0)
@@ -279,7 +279,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
         {
           if ((fseeko(adata->fp, tmploc, SEEK_SET) != 0) ||
               !fgets(buf, sizeof(buf) - 1, adata->fp) ||
-              (mutt_str_strcmp(MMDF_SEP, buf) != 0))
+              !mutt_str_equal(MMDF_SEP, buf, CASE_MATCH))
           {
             if (fseeko(adata->fp, loc, SEEK_SET) != 0)
               mutt_debug(LL_DEBUG1, "#2 fseek() failed\n");
@@ -303,7 +303,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
           if (!fgets(buf, sizeof(buf) - 1, adata->fp))
             break;
           lines++;
-        } while (mutt_str_strcmp(buf, MMDF_SEP) != 0);
+        } while (!mutt_str_equal(buf, MMDF_SEP, CASE_MATCH));
 
         e->lines = lines;
         e->content->length = loc - e->content->offset;
@@ -882,7 +882,7 @@ static struct Account *mbox_ac_find(struct Account *a, const char *path)
   if (!np)
     return NULL;
 
-  if (mutt_str_strcmp(mailbox_path(np->mailbox), path) != 0)
+  if (!mutt_str_equal(mailbox_path(np->mailbox), path, CASE_MATCH))
     return NULL;
 
   return a;
@@ -1099,7 +1099,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
       if (fgets(buf, sizeof(buf), adata->fp))
       {
         if (((m->type == MUTT_MBOX) && mutt_str_startswith(buf, "From ", CASE_MATCH)) ||
-            ((m->type == MUTT_MMDF) && (mutt_str_strcmp(buf, MMDF_SEP) == 0)))
+            ((m->type == MUTT_MMDF) && mutt_str_equal(buf, MMDF_SEP, CASE_MATCH)))
         {
           if (fseeko(adata->fp, m->size, SEEK_SET) != 0)
             mutt_debug(LL_DEBUG1, "#2 fseek() failed\n");
@@ -1381,7 +1381,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
       /* do a sanity check to make sure the mailbox looks ok */
       !fgets(buf, sizeof(buf), adata->fp) ||
       ((m->type == MUTT_MBOX) && !mutt_str_startswith(buf, "From ", CASE_MATCH)) ||
-      ((m->type == MUTT_MMDF) && (mutt_str_strcmp(MMDF_SEP, buf) != 0)))
+      ((m->type == MUTT_MMDF) && !mutt_str_equal(MMDF_SEP, buf, CASE_MATCH)))
   {
     mutt_debug(LL_DEBUG1, "message not in expected position\n");
     mutt_debug(LL_DEBUG1, "\tLINE: %s\n", buf);
@@ -1694,7 +1694,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
   {
     if (mutt_str_startswith(tmp, "From ", CASE_MATCH))
       type = MUTT_MBOX;
-    else if (mutt_str_strcmp(tmp, MMDF_SEP) == 0)
+    else if (mutt_str_equal(tmp, MMDF_SEP, CASE_MATCH))
       type = MUTT_MMDF;
   }
   mutt_file_fclose(&fp);

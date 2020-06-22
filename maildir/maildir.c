@@ -257,7 +257,7 @@ int maildir_sync_message(struct Mailbox *m, int msgno)
     mutt_buffer_printf(fullpath, "%s/%s", mailbox_path(m), mutt_b2s(partpath));
     mutt_buffer_printf(oldpath, "%s/%s", mailbox_path(m), e->path);
 
-    if (mutt_str_strcmp(mutt_b2s(fullpath), mutt_b2s(oldpath)) == 0)
+    if (mutt_str_equal(mutt_b2s(fullpath), mutt_b2s(oldpath), CASE_MATCH))
     {
       /* message hasn't really changed */
       goto cleanup;
@@ -468,7 +468,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
 
       /* check to see if the message has moved to a different
        * subdirectory.  If so, update the associated filename.  */
-      if (mutt_str_strcmp(e->path, p->email->path) != 0)
+      if (!mutt_str_equal(e->path, p->email->path, CASE_MATCH))
         mutt_str_replace(&e->path, p->email->path);
 
       /* if the user hasn't modified the flags on this message, update

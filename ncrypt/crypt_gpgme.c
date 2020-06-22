@@ -192,7 +192,7 @@ int KeyInfoPadding[KIP_MAX] = { 0 };
  */
 static bool is_pka_notation(gpgme_sig_notation_t notation)
 {
-  return mutt_str_strcmp(notation->name, PKA_NOTATION_NAME) == 0;
+  return mutt_str_equal(notation->name, PKA_NOTATION_NAME, CASE_MATCH);
 }
 
 /**
@@ -1192,7 +1192,7 @@ static bool set_signer_from_address(gpgme_ctx_t ctx, const char *address, bool f
     char *fpr2 = "fpr2";
     if (key2->subkeys)
       fpr2 = key2->subkeys->fpr ? key2->subkeys->fpr : key2->subkeys->keyid;
-    if (mutt_str_strcmp(fpr, fpr2))
+    if (!mutt_str_equal(fpr, fpr2, CASE_MATCH))
     {
       gpgme_key_unref(key);
       gpgme_key_unref(key2);
