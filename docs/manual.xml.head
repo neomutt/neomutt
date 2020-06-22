@@ -11523,6 +11523,58 @@ smtp://user@host:587/
         are suffixed with <quote>s</quote> for
         <quote>secure communication</quote>.
       </para>
+
+      <sect2 id="starttls">
+        <title>STARTTLS</title>
+        <para>
+          When non-secure URL protocols <literal>imap://</literal>,
+          <literal>pop://</literal>, and <literal>smtp://</literal> are
+          used, the initial connection to the server will be unencrypted.
+          <literal>STARTTLS</literal> can be used to negotiate an encrypted
+          connection after the initial unencrypted connection and exchange.
+        </para>
+        <para>
+          Two configuration variables control NeoMutt's behavior with
+          <literal>STARTTLS</literal>.  <link
+          linkend="ssl-starttls">$ssl_starttls</link> will initiate
+          <literal>STARTTLS</literal> if the server advertises support for
+          it.  <link linkend="ssl-force-tls">$ssl_force_tls</link> will
+          always try to initiate it, whether the server advertises support
+          or not.
+        </para>
+        <para>
+          NeoMutt <emphasis>highly recommends</emphasis> setting <link
+          linkend="ssl-force-tls">$ssl_force_tls</link> unless you need to
+          connect to an unencrypted server.  It's possible for an attacker
+          to spoof interactions during the initial connection and hide
+          support for <literal>STARTTLS</literal>.  The only way to prevent
+          these attacks is by forcing <literal>STARTTLS</literal> with the
+          <link linkend="ssl-force-tls">$ssl_force_tls</link> configuration
+          variable.
+        </para>
+      </sect2>
+
+      <sect2 id="secure-tunnel">
+        <title>Tunnel</title>
+        <para>
+          NeoMutt generally assumes a connection through <link
+          linkend="tunnel">$tunnel</link> is secure: either using a direct
+          pipe or a <literal>ssh</literal> connection.  However, NeoMutt will
+          still attempt to negotiate <literal>STARTTLS</literal> subject to
+          <link linkend="ssl-starttls">$ssl_starttls</link> and <link
+          linkend="ssl-force-tls">$ssl_force_tls</link>.
+        </para>
+        <para>
+          An IMAP server configured for preauthentication
+         (<literal>PREAUTH</literal>) does not allow
+          <literal>STARTTLS</literal> negotation.  If using <link
+          linkend="tunnel">$tunnel</link>, NeoMutt allows the connection to go
+          through.  Outside of a tunnel, setting <link
+          linkend="ssl-force-tls">$ssl_force_tls</link> will abort the
+          connection.
+        </para>
+      </sect2>
+
     </sect1>
 
     <sect1 id="pop">

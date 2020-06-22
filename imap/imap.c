@@ -772,39 +772,15 @@ int imap_open_connection(struct ImapAccountData *adata)
   else if (mutt_str_startswith(adata->buf, "* PREAUTH", CASE_IGNORE))
   {
 #ifdef USE_SSL
-    /* An unencrypted PREAUTH response is most likely a MITM attack.
-     * Require a confirmation unless using $tunnel. */
-    if ((adata->conn->ssf == 0) && !C_Tunnel)
+    /* Unless using a secure $tunnel, an unencrypted PREAUTH response may be a
+     * MITM attack.  The only way to stop "STARTTLS" MITM attacks is via
+     * $ssl_force_tls: an attacker can easily spoof "* OK" and strip the
+     * STARTTLS capability.  So consult $ssl_force_tls, not $ssl_starttls, to
+     * decide whether to abort. */
+    if ((adata->conn->ssf == 0) && !C_Tunnel && !C_SslForceTls)
     {
-      bool proceed = true;
-      if (C_SslForceTls)
-      {
-        proceed = false;
-      }
-      else if (C_SslStarttls != MUTT_NO)
-      {
-        proceed = mutt_yesorno(
-            /* L10N:
-               Gitlab ticket #246 identified a machine-in-the-middle attack
-               by sending a "PREAUTH" response instead of "OK".  STARTTLS
-               is not allowed once you are authenticated, so this would be
-               a clever way to prevent encryption, and talk to the MITM instead.
-
-               This prompt is based on the quadoption $ssl_starttls.  The
-               default is "yes" which will automatically abort unencrypted
-               PREAUTH.  But if the user changes to ask-yes or ask-no, this
-               prompt will occur instead to warn them that the connection is
-               an unusual "PREAUTH" and is unencrypted.  The warning is terse,
-               so translator feedback and suggestions most welcome.
-               */
-            _("Abort unencrypted PREAUTH connection?"),
-            C_SslStarttls) != MUTT_NO;
-      }
-      if (!proceed)
-      {
-        mutt_error(_("Encrypted connection unavailable"));
-        goto err_close_conn;
-      }
+      mutt_error(_("Encrypted connection unavailable"));
+      goto err_close_conn;
     }
 #endif
 
