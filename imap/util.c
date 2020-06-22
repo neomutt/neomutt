@@ -706,8 +706,7 @@ int imap_mxcmp(const char *mx1, const char *mx2)
     mx1 = "INBOX";
   if (!mx2 || (*mx2 == '\0'))
     mx2 = "INBOX";
-  if ((mutt_str_strcasecmp(mx1, "INBOX") == 0) &&
-      (mutt_str_strcasecmp(mx2, "INBOX") == 0))
+  if (mutt_str_equal(mx1, "INBOX", CASE_IGNORE) && mutt_str_equal(mx2, "INBOX", CASE_IGNORE))
   {
     return 0;
   }
@@ -1192,7 +1191,7 @@ bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *
     return false;
   if (a1->type != a2->type)
     return false;
-  if (mutt_str_strcasecmp(a1->host, a2->host) != 0)
+  if (!mutt_str_equal(a1->host, a2->host, CASE_IGNORE))
     return false;
   if ((a1->port != 0) && (a2->port != 0) && (a1->port != a2->port))
     return false;

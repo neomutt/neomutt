@@ -545,7 +545,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 
   for (i = 0; type2_list[i]; i++)
   {
-    if (mutt_str_strcasecmp(s, type2_list[i]->shortname) == 0)
+    if (mutt_str_equal(s, type2_list[i]->shortname, CASE_IGNORE))
     {
       chain->ch[chain->cl++] = i;
       return 0;

@@ -1687,7 +1687,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
 
   if (a->type != TYPE_TEXT)
     goto cleanup;
-  if (mutt_str_strcasecmp(a->subtype, "plain") != 0)
+  if (!mutt_str_equal(a->subtype, "plain", CASE_IGNORE))
     goto cleanup;
 
   FILE *fp_body = fopen(a->filename, "r");

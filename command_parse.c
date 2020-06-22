@@ -143,9 +143,9 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     FREE(&tmp);
 
-    if (mutt_str_strcasecmp(buf->data, "any") == 0)
+    if (mutt_str_equal(buf->data, "any", CASE_IGNORE))
       tmp = mutt_str_strdup("*/.*");
-    else if (mutt_str_strcasecmp(buf->data, "none") == 0)
+    else if (mutt_str_equal(buf->data, "none", CASE_IGNORE))
       tmp = mutt_str_strdup("cheap_hack/this_should_never_match");
     else
       tmp = mutt_str_strdup(buf->data);
@@ -168,7 +168,7 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
       a = (struct AttachMatch *) np->data;
       mutt_debug(LL_DEBUG3, "check %s/%s [%d] : %s/%s [%d]\n", a->major,
                  a->minor, a->major_int, tmp, minor, major);
-      if ((a->major_int == major) && (mutt_str_strcasecmp(minor, a->minor) == 0))
+      if ((a->major_int == major) && mutt_str_equal(minor, a->minor, CASE_IGNORE))
       {
         mutt_debug(LL_DEBUG3, "removed %s/%s [%d]\n", a->major, a->minor, a->major_int);
         regfree(&a->minor_regex);
@@ -295,9 +295,9 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
     a = mutt_attachmatch_new();
 
     /* some cheap hacks that I expect to remove */
-    if (mutt_str_strcasecmp(buf->data, "any") == 0)
+    if (mutt_str_equal(buf->data, "any", CASE_IGNORE))
       a->major = mutt_str_strdup("*/.*");
-    else if (mutt_str_strcasecmp(buf->data, "none") == 0)
+    else if (mutt_str_equal(buf->data, "none", CASE_IGNORE))
       a->major = mutt_str_strdup("cheap_hack/this_should_never_match");
     else
       a->major = mutt_str_strdup(buf->data);
@@ -393,7 +393,7 @@ static void alternates_clean(void)
 int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s,
                     struct Buffer *err)
 {
-  while (mutt_str_strcasecmp(buf->data, "-group") == 0)
+  while (mutt_str_equal(buf->data, "-group", CASE_IGNORE))
   {
     if (!MoreArgs(s))
     {
@@ -711,15 +711,15 @@ enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
     if (parse_grouplist(&gl, buf, s, err) == -1)
       goto bail;
 
-    if ((data == MUTT_UNGROUP) && (mutt_str_strcasecmp(buf->data, "*") == 0))
+    if ((data == MUTT_UNGROUP) && mutt_str_equal(buf->data, "*", CASE_IGNORE))
     {
       mutt_grouplist_clear(&gl);
       goto out;
     }
 
-    if (mutt_str_strcasecmp(buf->data, "-rx") == 0)
+    if (mutt_str_equal(buf->data, "-rx", CASE_IGNORE))
       state = GS_RX;
-    else if (mutt_str_strcasecmp(buf->data, "-addr") == 0)
+    else if (mutt_str_equal(buf->data, "-addr", CASE_IGNORE))
       state = GS_ADDR;
     else
     {
@@ -1965,8 +1965,8 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
     {
       /* Compare against path or desc? Ensure 'buf' is valid */
       if (!clear_all && tmp_valid &&
-          (mutt_str_strcasecmp(mutt_b2s(buf), mailbox_path(np->mailbox)) != 0) &&
-          (mutt_str_strcasecmp(mutt_b2s(buf), np->mailbox->name) != 0))
+          !mutt_str_equal(mutt_b2s(buf), mailbox_path(np->mailbox), CASE_IGNORE) &&
+          !mutt_str_equal(mutt_b2s(buf), np->mailbox->name, CASE_IGNORE))
       {
         continue;
       }

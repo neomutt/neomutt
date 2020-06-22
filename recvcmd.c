@@ -818,8 +818,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
   if ((flags & SEND_NEWS))
   {
     /* in case followup set Newsgroups: with Followup-To: if it present */
-    if (!env->newsgroups && curenv &&
-        (mutt_str_strcasecmp(curenv->followup_to, "poster") != 0))
+    if (!env->newsgroups && curenv && !mutt_str_equal(curenv->followup_to, "poster", CASE_IGNORE))
     {
       env->newsgroups = mutt_str_strdup(curenv->followup_to);
     }

@@ -893,10 +893,10 @@ static int imap_is_prefix(const char *folder, const char *mbox)
   if (!url_m || !url_f)
     goto done;
 
-  if (mutt_str_strcasecmp(url_m->host, url_f->host) != 0)
+  if (!mutt_str_equal(url_m->host, url_f->host, CASE_IGNORE))
     goto done;
 
-  if (url_m->user && url_f->user && (mutt_str_strcasecmp(url_m->user, url_f->user) != 0))
+  if (url_m->user && url_f->user && !mutt_str_equal(url_m->user, url_f->user, CASE_IGNORE))
     goto done;
 
   size_t mlen = mutt_str_strlen(url_m->path);

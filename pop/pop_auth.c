@@ -429,7 +429,7 @@ int pop_authenticate(struct PopAccountData *adata)
       while (authenticator->authenticate)
       {
         if (!authenticator->method ||
-            (mutt_str_strcasecmp(authenticator->method, np->data) == 0))
+            mutt_str_equal(authenticator->method, np->data, CASE_IGNORE))
         {
           ret = authenticator->authenticate(adata, np->data);
           if (ret == POP_A_SOCKET)

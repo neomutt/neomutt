@@ -432,7 +432,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
         /* Dirty hack to make messages readable by Outlook Express
          * for the Mac: force quotes around the boundary parameter
          * even when they aren't needed.  */
-        if (!mutt_str_strcasecmp(cont->attribute, "boundary") &&
+        if (mutt_str_equal(cont->attribute, "boundary", CASE_IGNORE) &&
             mutt_str_equal(buf, cont->value, CASE_MATCH))
           snprintf(buf, sizeof(buf), "\"%s\"", cont->value);
 
@@ -821,7 +821,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
 
   for (int i = 0; i < ncodes; i++)
   {
-    if (mutt_str_strcasecmp(tocodes[i], "utf-8") != 0)
+    if (!mutt_str_equal(tocodes[i], "utf-8", CASE_IGNORE))
       cd[i] = mutt_ch_iconv_open(tocodes[i], "utf-8", 0);
     else
     {
@@ -1190,7 +1190,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
         {
           sze = mutt_str_strlen(p);
           if ((sze > cur_sze) && (szf >= sze) &&
-              (mutt_str_strcasecmp(path + szf - sze, p) == 0) &&
+              mutt_str_equal(path + szf - sze, p, CASE_IGNORE) &&
               ((szf == sze) || (path[szf - sze - 1] == '.')))
           {
             /* get the content-type */
@@ -1424,8 +1424,7 @@ static void set_encoding(struct Body *b, struct Content *info)
     else
       b->encoding = ENC_7BIT;
   }
-  else if ((b->type == TYPE_APPLICATION) &&
-           (mutt_str_strcasecmp(b->subtype, "pgp-keys") == 0))
+  else if ((b->type == TYPE_APPLICATION) && mutt_str_equal(b->subtype, "pgp-keys", CASE_IGNORE))
   {
     b->encoding = ENC_7BIT;
   }

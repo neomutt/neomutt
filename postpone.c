@@ -725,9 +725,8 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   {
     e_new->security |= SEC_SIGN;
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        (mutt_str_strcasecmp(
-             mutt_param_get(&e_new->content->parameter, "protocol"),
-             "application/pgp-signature") == 0))
+        mutt_str_equal(mutt_param_get(&e_new->content->parameter, "protocol"),
+                       "application/pgp-signature", CASE_IGNORE))
     {
       e_new->security |= APPLICATION_PGP;
     }
@@ -783,8 +782,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
 
     if (b->type == TYPE_TEXT)
     {
-      if (mutt_str_strcasecmp("yes",
-                              mutt_param_get(&b->parameter, "x-mutt-noconv")) == 0)
+      if (mutt_str_equal("yes", mutt_param_get(&b->parameter, "x-mutt-noconv"), CASE_IGNORE))
       {
         b->noconv = true;
       }

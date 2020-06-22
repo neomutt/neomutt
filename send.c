@@ -540,9 +540,9 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
     body = actx->idx[i]->content;
     if ((body->type != TYPE_MULTIPART) && !mutt_can_decode(body) &&
         !((body->type == TYPE_APPLICATION) &&
-          ((mutt_str_strcasecmp(body->subtype, "pgp-signature") == 0) ||
-           (mutt_str_strcasecmp(body->subtype, "x-pkcs7-signature") == 0) ||
-           (mutt_str_strcasecmp(body->subtype, "pkcs7-signature") == 0))))
+          (mutt_str_equal(body->subtype, "pgp-signature", CASE_IGNORE) ||
+           mutt_str_equal(body->subtype, "x-pkcs7-signature", CASE_IGNORE) ||
+           mutt_str_equal(body->subtype, "pkcs7-signature", CASE_IGNORE))))
     {
       /* Ask the quadoption only once */
       if (*forwardq == MUTT_ABORT)
@@ -987,8 +987,7 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
     if ((flags & SEND_NEWS))
     {
       /* in case followup set Newsgroups: with Followup-To: if it present */
-      if (!env->newsgroups &&
-          (mutt_str_strcasecmp(curenv->followup_to, "poster") != 0))
+      if (!env->newsgroups && !mutt_str_equal(curenv->followup_to, "poster", CASE_IGNORE))
       {
         env->newsgroups = mutt_str_strdup(curenv->followup_to);
       }
@@ -2139,7 +2138,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!(flags & (SEND_KEY | SEND_POSTPONED | SEND_RESEND | SEND_DRAFT_FILE)))
   {
     if (C_TextFlowed && (e_templ->content->type == TYPE_TEXT) &&
-        (mutt_str_strcasecmp(e_templ->content->subtype, "plain") == 0))
+        mutt_str_equal(e_templ->content->subtype, "plain", CASE_IGNORE))
     {
       mutt_param_set(&e_templ->content->parameter, "format", "flowed");
     }
@@ -2448,7 +2447,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   if (!(flags & SEND_BATCH) && (C_AbortNoattach != MUTT_NO) &&
       !e_templ->content->next && (e_templ->content->type == TYPE_TEXT) &&
-      (mutt_str_strcasecmp(e_templ->content->subtype, "plain") == 0) &&
+      mutt_str_equal(e_templ->content->subtype, "plain", CASE_IGNORE) &&
       search_attach_keyword(e_templ->content->filename) &&
       (query_quadoption(C_AbortNoattach,
                         _("No attachments, cancel sending?")) != MUTT_NO))

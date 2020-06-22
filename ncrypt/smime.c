@@ -818,7 +818,7 @@ static struct SmimeKey *smime_get_key_by_hash(char *hash, bool only_public_key)
   struct SmimeKey *results = smime_get_candidates(hash, only_public_key);
   for (struct SmimeKey *result = results; result; result = result->next)
   {
-    if (mutt_str_strcasecmp(hash, result->hash) == 0)
+    if (mutt_str_equal(hash, result->hash, CASE_IGNORE))
     {
       match = smime_copy_key(result);
       break;
@@ -861,7 +861,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
       continue;
     }
 
-    if (mutt_str_strcasecmp(mailbox, result->email) == 0)
+    if (mutt_str_equal(mailbox, result->email, CASE_IGNORE))
     {
       match = smime_copy_key(result);
       *matches_end = match;
@@ -869,7 +869,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
 
       if (match->trust == 't')
       {
-        if (trusted_match && (mutt_str_strcasecmp(match->hash, trusted_match->hash) != 0))
+        if (trusted_match && !mutt_str_equal(match->hash, trusted_match->hash, CASE_IGNORE))
         {
           multi_trusted_matches = true;
         }
@@ -936,7 +936,7 @@ static struct SmimeKey *smime_get_key_by_str(char *str, KeyFlags abilities, bool
       continue;
     }
 
-    if ((mutt_str_strcasecmp(str, result->hash) == 0) ||
+    if (mutt_str_equal(str, result->hash, CASE_IGNORE) ||
         mutt_str_stristr(result->email, str) || mutt_str_stristr(result->label, str))
     {
       match = smime_copy_key(result);
@@ -1013,7 +1013,7 @@ static void getkeys(char *mailbox)
 
   /* if the key is different from last time */
   if ((mutt_buffer_len(&SmimeKeyToUse) <= smime_keys_len) ||
-      (mutt_str_strcasecmp(k, SmimeKeyToUse.data + smime_keys_len + 1) != 0))
+      !mutt_str_equal(k, SmimeKeyToUse.data + smime_keys_len + 1, CASE_IGNORE))
   {
     smime_class_void_passphrase();
     mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(C_SmimeKeys), k);
@@ -2017,7 +2017,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
       rewind(fp_smime_err);
 
       line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, 0);
-      if (linelen && (mutt_str_strcasecmp(line, "verification successful") == 0))
+      if (linelen && mutt_str_equal(line, "verification successful", CASE_IGNORE))
         badsig = 0;
 
       FREE(&line);
@@ -2263,7 +2263,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     rewind(fp_smime_err);
 
     line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, 0);
-    if (linelen && (mutt_str_strcasecmp(line, "verification successful") == 0))
+    if (linelen && mutt_str_equal(line, "verification successful", CASE_IGNORE))
       m->goodsig = true;
     FREE(&line);
   }

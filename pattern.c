@@ -2453,21 +2453,21 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
     {
       mutt_buffer_strcpy(buf, "~A");
     }
-    else if (mutt_str_strcasecmp("del", mutt_b2s(buf)) == 0)
+    else if (mutt_str_equal("del", mutt_b2s(buf), CASE_IGNORE))
       mutt_buffer_strcpy(buf, "~D");
-    else if (mutt_str_strcasecmp("flag", mutt_b2s(buf)) == 0)
+    else if (mutt_str_equal("flag", mutt_b2s(buf), CASE_IGNORE))
       mutt_buffer_strcpy(buf, "~F");
-    else if (mutt_str_strcasecmp("new", mutt_b2s(buf)) == 0)
+    else if (mutt_str_equal("new", mutt_b2s(buf), CASE_IGNORE))
       mutt_buffer_strcpy(buf, "~N");
-    else if (mutt_str_strcasecmp("old", mutt_b2s(buf)) == 0)
+    else if (mutt_str_equal("old", mutt_b2s(buf), CASE_IGNORE))
       mutt_buffer_strcpy(buf, "~O");
-    else if (mutt_str_strcasecmp("repl", mutt_b2s(buf)) == 0)
+    else if (mutt_str_equal("repl", mutt_b2s(buf), CASE_IGNORE))
       mutt_buffer_strcpy(buf, "~Q");
-    else if (mutt_str_strcasecmp("read", mutt_b2s(buf)) == 0)
+    else if (mutt_str_equal("read", mutt_b2s(buf), CASE_IGNORE))
       mutt_buffer_strcpy(buf, "~R");
-    else if (mutt_str_strcasecmp("tag", mutt_b2s(buf)) == 0)
+    else if (mutt_str_equal("tag", mutt_b2s(buf), CASE_IGNORE))
       mutt_buffer_strcpy(buf, "~T");
-    else if (mutt_str_strcasecmp("unread", mutt_b2s(buf)) == 0)
+    else if (mutt_str_equal("unread", mutt_b2s(buf), CASE_IGNORE))
       mutt_buffer_strcpy(buf, "~U");
     else
     {

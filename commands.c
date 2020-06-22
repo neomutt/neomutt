@@ -1292,9 +1292,9 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   mutt_parse_content_type(buf, b);
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
-  type_changed = (mutt_str_strcasecmp(tmp, obuf) != 0);
+  type_changed = !mutt_str_equal(tmp, obuf, CASE_IGNORE);
   charset_changed =
-      (mutt_str_strcasecmp(charset, mutt_param_get(&b->parameter, "charset")) != 0);
+      !mutt_str_equal(charset, mutt_param_get(&b->parameter, "charset"), CASE_IGNORE);
 
   /* if in send mode, check for conversion - current setting is default. */
 

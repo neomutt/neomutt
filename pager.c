@@ -3193,7 +3193,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         else
           followup_to = extra->email->env->followup_to;
 
-        if (!followup_to || (mutt_str_strcasecmp(followup_to, "poster") != 0) ||
+        if (!followup_to || !mutt_str_equal(followup_to, "poster", CASE_IGNORE) ||
             (query_quadoption(C_FollowupToPoster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {

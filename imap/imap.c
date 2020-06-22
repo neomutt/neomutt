@@ -1694,9 +1694,9 @@ static struct Account *imap_ac_find(struct Account *a, const char *path)
   struct ImapAccountData *adata = a->adata;
   struct ConnAccount *cac = &adata->conn->account;
 
-  if (mutt_str_strcasecmp(url->host, cac->host) != 0)
+  if (!mutt_str_equal(url->host, cac->host, CASE_IGNORE))
     a = NULL;
-  else if (url->user && (mutt_str_strcasecmp(url->user, cac->user) != 0))
+  else if (url->user && !mutt_str_equal(url->user, cac->user, CASE_IGNORE))
     a = NULL;
 
   url_free(&url);

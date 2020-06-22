@@ -734,13 +734,13 @@ static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr,
   if (addr && u_addr)
   {
     if (addr->mailbox && u_addr->mailbox &&
-        (mutt_str_strcasecmp(addr->mailbox, u_addr->mailbox) == 0))
+        mutt_str_equal(addr->mailbox, u_addr->mailbox, CASE_IGNORE))
     {
       rc |= CRYPT_KV_ADDR;
     }
 
     if (addr->personal && u_addr->personal &&
-        (mutt_str_strcasecmp(addr->personal, u_addr->personal) == 0))
+        mutt_str_equal(addr->personal, u_addr->personal, CASE_IGNORE))
     {
       rc |= CRYPT_KV_STRING;
     }
@@ -5133,9 +5133,9 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
     mutt_debug(LL_DEBUG5, "matching \"%s\" against key %s, \"%s\": ", p,
                crypt_long_keyid(k), k->uid);
 
-    if ((*p == '\0') || (pfcopy && (mutt_str_strcasecmp(pfcopy, crypt_fpr(k)) == 0)) ||
-        (pl && (mutt_str_strcasecmp(pl, crypt_long_keyid(k)) == 0)) ||
-        (ps && (mutt_str_strcasecmp(ps, crypt_short_keyid(k)) == 0)) ||
+    if ((*p == '\0') || (pfcopy && mutt_str_equal(pfcopy, crypt_fpr(k), CASE_IGNORE)) ||
+        (pl && mutt_str_equal(pl, crypt_long_keyid(k), CASE_IGNORE)) ||
+        (ps && mutt_str_equal(ps, crypt_short_keyid(k), CASE_IGNORE)) ||
         mutt_str_stristr(k->uid, p))
     {
       mutt_debug(LL_DEBUG5, "match\n");
@@ -5194,7 +5194,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
   {
     for (l = id_defaults; l; l = l->next)
     {
-      if (mutt_str_strcasecmp(whatfor, l->what) == 0)
+      if (mutt_str_equal(whatfor, l->what, CASE_IGNORE))
       {
         mutt_str_strfcpy(resp, l->dflt, sizeof(resp));
         break;
