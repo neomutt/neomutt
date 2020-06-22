@@ -95,4 +95,7 @@ int    mutt_addrlist_to_local    (struct AddressList *al);
 size_t mutt_addrlist_write       (const struct AddressList *al, char *buf, size_t buflen, bool display);
 size_t mutt_addrlist_write_list  (const struct AddressList *al, struct ListHead *list);
 
+bool address_uses_unicode(const char *a);
+bool addresses_use_unicode(const struct AddressList *al);
+
 #endif /* MUTT_EMAIL_ADDRESS_H */
