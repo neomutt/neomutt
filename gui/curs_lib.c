@@ -634,7 +634,7 @@ static int mutt_dlg_dopager_observer(struct NotifyCallback *nc)
   struct EventConfig *ec = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+  if (!mutt_str_equal(ec->name, "status_on_top", CASE_MATCH))
     return 0;
 
   struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
@@ -707,7 +707,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
 
   int rc;
 
-  if (!C_Pager || (mutt_str_strcmp(C_Pager, "builtin") == 0))
+  if (!C_Pager || mutt_str_equal(C_Pager, "builtin", CASE_MATCH))
     rc = mutt_pager(banner, tempfile, do_color, info);
   else
   {

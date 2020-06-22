@@ -779,7 +779,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
     neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
     while ((de = readdir(dp)))
     {
-      if (mutt_str_strcmp(de->d_name, ".") == 0)
+      if (mutt_str_equal(de->d_name, ".", CASE_MATCH))
         continue; /* we don't need . */
 
       if (prefix && *prefix && !mutt_str_startswith(de->d_name, prefix, CASE_MATCH))
@@ -804,12 +804,12 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &ml, entries)
       {
-        if (mutt_str_strcmp(mutt_b2s(buf), mailbox_path(np->mailbox)) == 0)
+        if (mutt_str_equal(mutt_b2s(buf), mailbox_path(np->mailbox), CASE_MATCH))
           break;
       }
 
       if (np && Context && Context->mailbox &&
-          (mutt_str_strcmp(np->mailbox->realpath, Context->mailbox->realpath) == 0))
+          mutt_str_equal(np->mailbox->realpath, Context->mailbox->realpath, CASE_MATCH))
       {
         np->mailbox->msg_count = Context->mailbox->msg_count;
         np->mailbox->msg_unread = Context->mailbox->msg_unread;
@@ -876,7 +876,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
         continue;
 
       if (Context && Context->mailbox &&
-          (mutt_str_strcmp(np->mailbox->realpath, Context->mailbox->realpath) == 0))
+          mutt_str_equal(np->mailbox->realpath, Context->mailbox->realpath, CASE_MATCH))
       {
         np->mailbox->msg_count = Context->mailbox->msg_count;
         np->mailbox->msg_unread = Context->mailbox->msg_unread;
@@ -988,8 +988,8 @@ static void browser_highlight_default(struct BrowserState *state, struct Menu *m
   /* Reset menu position to 1.
    * We do not risk overflow as the init_menu function changes
    * current if it is bigger than state->entrylen.  */
-  if ((mutt_str_strcmp(state->entry[0].desc, "..") == 0) ||
-      (mutt_str_strcmp(state->entry[0].desc, "../") == 0))
+  if (mutt_str_equal(state->entry[0].desc, "..", CASE_MATCH) ||
+      mutt_str_equal(state->entry[0].desc, "../", CASE_MATCH))
   {
     /* Skip the first entry, unless there's only one entry. */
     menu->current = (menu->max > 1);
@@ -1090,7 +1090,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     bool matched = false;
     for (unsigned int i = 0; i < state->entrylen; i++)
     {
-      if (mutt_str_strcmp(state->entry[i].name, target_dir) == 0)
+      if (mutt_str_equal(state->entry[i].name, target_dir, CASE_MATCH))
       {
         menu->current = i;
         matched = true;
@@ -1159,7 +1159,7 @@ static int mutt_dlg_browser_observer(struct NotifyCallback *nc)
   struct EventConfig *ec = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+  if (!mutt_str_equal(ec->name, "status_on_top", CASE_MATCH))
     return 0;
 
   struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
@@ -1340,7 +1340,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               break;
           }
         }
-        else if (mutt_str_strcmp(CurrentFolder, mutt_b2s(&LastDirBackup)) != 0)
+        else if (!mutt_str_equal(CurrentFolder, mutt_b2s(&LastDirBackup), CASE_MATCH))
         {
           mutt_browser_select_dir(CurrentFolder);
         }
@@ -1494,11 +1494,11 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             /* save the old directory */
             mutt_buffer_copy(OldLastDir, &LastDir);
 
-            if (mutt_str_strcmp(state.entry[menu->current].name, "..") == 0)
+            if (mutt_str_equal(state.entry[menu->current].name, "..", CASE_MATCH))
             {
               size_t lastdirlen = mutt_buffer_len(&LastDir);
               if ((lastdirlen > 1) &&
-                  (mutt_str_strcmp("..", mutt_b2s(&LastDir) + lastdirlen - 2) == 0))
+                  mutt_str_equal("..", mutt_b2s(&LastDir) + lastdirlen - 2, CASE_MATCH))
               {
                 mutt_buffer_addstr(&LastDir, "/..");
               }
@@ -1714,8 +1714,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           // TODO(sileht): It could be better to select INBOX instead. But I
           // don't want to manipulate Context/Mailboxes/mailbox->account here for now.
           // Let's just protect neomutt against crash for now. #1417
-          if (mutt_str_strcmp(mailbox_path(Context->mailbox),
-                              state.entry[nentry].name) == 0)
+          if (mutt_str_equal(mailbox_path(Context->mailbox), state.entry[nentry].name, CASE_MATCH))
           {
             mutt_error(_("Can't delete currently selected mailbox"));
             break;
@@ -1981,7 +1980,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                        mutt_b2s(&LastDir));
             if (goto_swapper[0] == '\0')
             {
-              if (mutt_str_strcmp(mutt_b2s(&LastDir), C_Folder) != 0)
+              if (!mutt_str_equal(mutt_b2s(&LastDir), C_Folder, CASE_MATCH))
               {
                 /* Stores into goto_swapper LastDir, and swaps to C_Folder */
                 mutt_str_strfcpy(goto_swapper, mutt_b2s(&LastDir), sizeof(goto_swapper));

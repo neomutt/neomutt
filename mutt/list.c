@@ -107,7 +107,7 @@ struct ListNode *mutt_list_find(const struct ListHead *h, const char *data)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
-    if ((np->data == data) || (mutt_str_strcmp(np->data, data) == 0))
+    if (mutt_str_equal(np->data, data, CASE_MATCH))
     {
       return np;
     }
@@ -225,7 +225,7 @@ bool mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
 
   while (a && b)
   {
-    if (mutt_str_strcmp(a->data, b->data) != 0)
+    if (!mutt_str_equal(a->data, b->data, CASE_MATCH))
       return false;
 
     a = STAILQ_NEXT(a, entries);

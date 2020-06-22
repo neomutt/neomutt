@@ -118,9 +118,9 @@ static void nm_hcache_close(header_cache_t *h)
  */
 static enum NmQueryType string_to_query_type(const char *str)
 {
-  if (mutt_str_strcmp(str, "threads") == 0)
+  if (mutt_str_equal(str, "threads", CASE_MATCH))
     return NM_QUERY_TYPE_THREADS;
-  if (mutt_str_strcmp(str, "messages") == 0)
+  if (mutt_str_equal(str, "messages", CASE_MATCH))
     return NM_QUERY_TYPE_MESGS;
 
   mutt_error(_("failed to parse notmuch query type: %s"), NONULL(str));
@@ -783,7 +783,7 @@ static int init_email(struct Email *e, const char *path, notmuch_message_t *msg)
   {
     e->env->message_id = nm_msg_id;
   }
-  else if (mutt_str_strcmp(e->env->message_id, nm_msg_id) != 0)
+  else if (!mutt_str_equal(e->env->message_id, nm_msg_id, CASE_MATCH))
   {
     FREE(&e->env->message_id);
     e->env->message_id = nm_msg_id;
@@ -1231,7 +1231,7 @@ static bool nm_message_has_tag(notmuch_message_t *msg, char *tag)
        notmuch_tags_move_to_next(tags))
   {
     possible_match_tag = notmuch_tags_get(tags);
-    if (mutt_str_strcmp(possible_match_tag, tag) == 0)
+    if (mutt_str_equal(possible_match_tag, tag, CASE_MATCH))
     {
       return true;
     }
@@ -2277,7 +2277,7 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
     char old_file[PATH_MAX];
     email_get_fullpath(e, old_file, sizeof(old_file));
 
-    if (mutt_str_strcmp(old_file, new_file) != 0)
+    if (!mutt_str_equal(old_file, new_file, CASE_MATCH))
       update_message_path(e, new_file);
 
     if (!e->changed)

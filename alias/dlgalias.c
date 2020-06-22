@@ -180,7 +180,7 @@ static int alias_config_observer(struct NotifyCallback *nc)
   struct EventConfig *ec = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+  if (!mutt_str_equal(ec->name, "status_on_top", CASE_MATCH))
     return 0;
 
   struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
@@ -370,7 +370,7 @@ int alias_complete(char *buf, size_t buflen)
 
     if (bestname[0] != '\0')
     {
-      if (mutt_str_strcmp(bestname, buf) != 0)
+      if (!mutt_str_equal(bestname, buf, CASE_MATCH))
       {
         /* we are adding something to the completion */
         mutt_str_strfcpy(buf, bestname, mutt_str_strlen(bestname) + 1);

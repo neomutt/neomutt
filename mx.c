@@ -1601,7 +1601,7 @@ struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
   {
     if (!use_url)
     {
-      if (mutt_str_strcmp(np->mailbox->realpath, path) == 0)
+      if (mutt_str_equal(np->mailbox->realpath, path, CASE_MATCH))
         return np->mailbox;
       continue;
     }
@@ -1622,7 +1622,7 @@ struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
     }
     else
     {
-      if (mutt_str_strcmp(url_a->path, url_p->path) == 0)
+      if (mutt_str_equal(url_a->path, url_p->path, CASE_MATCH))
         break;
     }
   }

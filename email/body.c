@@ -111,8 +111,8 @@ bool mutt_body_cmp_strict(const struct Body *b1, const struct Body *b2)
     return false;
 
   if ((b1->type != b2->type) || (b1->encoding != b2->encoding) ||
-      (mutt_str_strcmp(b1->subtype, b2->subtype) != 0) ||
-      (mutt_str_strcmp(b1->description, b2->description) != 0) ||
+      !mutt_str_equal(b1->subtype, b2->subtype, CASE_MATCH) ||
+      !mutt_str_equal(b1->description, b2->description, CASE_MATCH) ||
       !mutt_param_cmp_strict(&b1->parameter, &b2->parameter) || (b1->length != b2->length))
   {
     return false;

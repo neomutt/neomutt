@@ -171,7 +171,7 @@ bool slist_is_member(const struct Slist *list, const char *str)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &list->head, entries)
   {
-    if (mutt_str_strcmp(np->data, str) == 0)
+    if (mutt_str_equal(np->data, str, CASE_MATCH))
       return true;
   }
   return false;
@@ -245,7 +245,7 @@ struct Slist *slist_remove_string(struct Slist *list, const char *str)
   struct ListNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &list->head, entries, tmp)
   {
-    if (mutt_str_strcmp(np->data, str) == 0)
+    if (mutt_str_equal(np->data, str, CASE_MATCH))
     {
       if (prev)
         STAILQ_REMOVE_AFTER(&list->head, prev, entries);

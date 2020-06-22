@@ -884,7 +884,7 @@ int main(int argc, char *argv[], char *envp[])
       /* Prepare fp_in and expanded_infile. */
       if (infile)
       {
-        if (mutt_str_strcmp("-", infile) == 0)
+        if (mutt_str_equal("-", infile, CASE_MATCH))
         {
           if (edit_infile)
           {

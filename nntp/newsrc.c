@@ -865,7 +865,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
       struct NntpMboxData *mdata = NULL;
       struct NntpMboxData tmp_mdata;
 
-      if ((mutt_str_strcmp(group, ".") == 0) || (mutt_str_strcmp(group, "..") == 0))
+      if (mutt_str_equal(group, ".", CASE_MATCH) || mutt_str_equal(group, "..", CASE_MATCH))
         continue;
       *fp = '\0';
       mutt_str_strncat(file, sizeof(file), group, strlen(group));
@@ -876,7 +876,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
       if (S_ISREG(sb.st_mode))
       {
         char *ext = group + strlen(group) - 7;
-        if ((strlen(group) < 8) || (mutt_str_strcmp(ext, ".hcache") != 0))
+        if ((strlen(group) < 8) || !mutt_str_equal(ext, ".hcache", CASE_MATCH))
           continue;
         *ext = '\0';
       }
@@ -1391,7 +1391,7 @@ void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen)
       continue;
 
     if ((m->type == MUTT_NNTP) &&
-        (mutt_str_strcmp(mdata->group, ((struct NntpMboxData *) m->mdata)->group) == 0))
+        mutt_str_equal(mdata->group, ((struct NntpMboxData *) m->mdata)->group, CASE_MATCH))
     {
       unsigned int unread = 0;
 

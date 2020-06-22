@@ -138,7 +138,7 @@ static int regex_string_set(const struct ConfigSet *cs, void *var, struct Config
   if (var)
   {
     struct Regex *curval = *(struct Regex **) var;
-    if (curval && (mutt_str_strcmp(value, curval->pattern) == 0))
+    if (curval && mutt_str_equal(value, curval->pattern, CASE_MATCH))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     if (value)
@@ -272,7 +272,7 @@ static int regex_reset(const struct ConfigSet *cs, void *var,
   if (!currx)
     rc |= CSR_SUC_EMPTY;
 
-  if (mutt_str_strcmp(initial, curval) == 0)
+  if (mutt_str_equal(initial, curval, CASE_MATCH))
     return rc | CSR_SUC_NO_CHANGE;
 
   if (initial)

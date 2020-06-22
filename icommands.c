@@ -93,7 +93,7 @@ enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *er
   mutt_extract_token(token, &expn, MUTT_TOKEN_NO_FLAGS);
   for (size_t i = 0; ICommandList[i].name; i++)
   {
-    if (mutt_str_strcmp(token->data, ICommandList[i].name) != 0)
+    if (!mutt_str_equal(token->data, ICommandList[i].name, CASE_MATCH))
       continue;
 
     rc = ICommandList[i].parse(token, &expn, ICommandList[i].data, err);
@@ -319,11 +319,11 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  if (mutt_str_strcmp(s->data, "set all") == 0)
+  if (mutt_str_equal(s->data, "set all", CASE_MATCH))
   {
     dump_config(NeoMutt->sub->cs, CS_DUMP_NO_FLAGS, fp_out);
   }
-  else if (mutt_str_strcmp(s->data, "set") == 0)
+  else if (mutt_str_equal(s->data, "set", CASE_MATCH))
   {
     dump_config(NeoMutt->sub->cs, CS_DUMP_ONLY_CHANGED, fp_out);
   }

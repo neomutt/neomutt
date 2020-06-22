@@ -559,7 +559,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
           break;
       }
     }
-    else if (mutt_str_strcmp(".", tmp) == 0)
+    else if (mutt_str_equal(".", tmp, CASE_MATCH))
       done = true;
     else
     {

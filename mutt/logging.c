@@ -152,7 +152,7 @@ int log_file_set_filename(const char *file, bool verbose)
     return -1;
 
   /* also handles both being NULL */
-  if (mutt_str_strcmp(LogFileName, file) == 0)
+  if (mutt_str_equal(LogFileName, file, CASE_MATCH))
     return 0;
 
   mutt_str_replace(&LogFileName, file);

@@ -117,7 +117,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
-    if (mutt_str_strcmp(tmp, mailbox_path(np->mailbox)) == 0)
+    if (mutt_str_equal(tmp, mailbox_path(np->mailbox), CASE_MATCH))
       break;
   }
 

@@ -852,7 +852,7 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
       return true;
     }
 
-    if (mutt_str_strcmp(np->data, "\\*") == 0)
+    if (mutt_str_equal(np->data, "\\*", CASE_MATCH))
       return true;
   }
 
@@ -2266,9 +2266,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
   new_tag = buf; /* rewind */
   mutt_str_remove_trailing_ws(new_tag);
 
-  if (mutt_str_strcmp(tags, buf) == 0)
-    return 0;
-  return 1;
+  return !mutt_str_equal(tags, buf, CASE_MATCH);
 }
 
 /**

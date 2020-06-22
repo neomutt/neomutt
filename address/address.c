@@ -821,8 +821,8 @@ bool mutt_addrlist_equal(const struct AddressList *ala, const struct AddressList
 
   while (ana && anb)
   {
-    if ((mutt_str_strcmp(ana->mailbox, anb->mailbox) != 0) ||
-        (mutt_str_strcmp(ana->personal, anb->personal) != 0))
+    if (!mutt_str_equal(ana->mailbox, anb->mailbox, CASE_MATCH) ||
+        !mutt_str_equal(ana->personal, anb->personal, CASE_MATCH))
     {
       break;
     }
@@ -1085,7 +1085,7 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
   {
     if (buflen == 0)
       goto done;
-    if (mutt_str_strcmp(addr->mailbox, "@") == 0)
+    if (mutt_str_equal(addr->mailbox, "@", CASE_MATCH))
     {
       *pbuf = '\0';
     }
