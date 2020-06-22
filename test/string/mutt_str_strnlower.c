@@ -54,7 +54,7 @@ void test_mutt_str_strnlower(void)
       TEST_CASE_("'%s', %d", tests[i].src, tests[i].len);
       mutt_str_strfcpy(buf, tests[i].src, sizeof(buf));
       result = mutt_str_strnlower(buf, tests[i].len);
-      if (!TEST_CHECK(mutt_str_strcmp(result, tests[i].result) == 0))
+      if (!TEST_CHECK(mutt_str_equal(result, tests[i].result, CASE_MATCH)))
       {
         TEST_MSG("Expected: '%s'", tests[i].result);
         TEST_MSG("Actual:   '%s'", buf);

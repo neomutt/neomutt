@@ -42,7 +42,7 @@ void test_mutt_buffer_substrcpy(void)
     size_t len = mutt_buffer_substrcpy(&buf, src + 9, src + 18);
 
     TEST_CHECK(len == 9);
-    TEST_CHECK(mutt_str_strcmp(mutt_b2s(&buf), result) == 0);
+    TEST_CHECK(mutt_str_equal(mutt_b2s(&buf), result, CASE_MATCH));
 
     mutt_buffer_dealloc(&buf);
   }

@@ -252,17 +252,17 @@ void test_url_parse(void)
         TEST_MSG("Expected: %d", test[i].url.scheme);
         TEST_MSG("Actual  : %d", url->scheme);
       }
-      if (!TEST_CHECK(mutt_str_strcmp(test[i].url.user, url->user) == 0))
+      if (!TEST_CHECK(mutt_str_equal(test[i].url.user, url->user, CASE_MATCH)))
       {
         TEST_MSG("Expected: %s", test[i].url.user);
         TEST_MSG("Actual  : %s", url->user);
       }
-      if (!TEST_CHECK(mutt_str_strcmp(test[i].url.pass, url->pass) == 0))
+      if (!TEST_CHECK(mutt_str_equal(test[i].url.pass, url->pass, CASE_MATCH)))
       {
         TEST_MSG("Expected: %s", test[i].url.pass);
         TEST_MSG("Actual  : %s", url->pass);
       }
-      if (!TEST_CHECK(mutt_str_strcmp(test[i].url.host, url->host) == 0))
+      if (!TEST_CHECK(mutt_str_equal(test[i].url.host, url->host, CASE_MATCH)))
       {
         TEST_MSG("Expected: %s", test[i].url.host);
         TEST_MSG("Actual  : %s", url->host);
@@ -272,7 +272,7 @@ void test_url_parse(void)
         TEST_MSG("Expected: %hu", test[i].url.port);
         TEST_MSG("Actual  : %hu", url->port);
       }
-      if (!TEST_CHECK(mutt_str_strcmp(test[i].url.path, url->path) == 0))
+      if (!TEST_CHECK(mutt_str_equal(test[i].url.path, url->path, CASE_MATCH)))
       {
         TEST_MSG("Expected: %s", test[i].url.path);
         TEST_MSG("Actual  : %s", url->path);
