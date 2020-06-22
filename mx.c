@@ -155,7 +155,18 @@ const struct MxOps *mx_get_ops(enum MailboxType type)
  */
 static bool mutt_is_spool(const char *str)
 {
-  return mutt_str_strcmp(C_Spoolfile, str) == 0;
+  struct Url *ua = url_parse(str);
+  struct Url *ub = url_parse(C_Spoolfile);
+
+  const bool is_spool =
+      ua && ub && (ua->scheme == ub->scheme) &&
+      (mutt_str_strcasecmp(ua->host, ub->host) == 0) &&
+      (mutt_str_strcasecmp(ua->path, ub->path) == 0) &&
+      (!ua->user || !ub->user || (mutt_str_strcmp(ua->user, ub->user) == 0));
+
+  url_free(&ua);
+  url_free(&ub);
+  return is_spool;
 }
 
 /**
