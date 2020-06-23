@@ -36,7 +36,6 @@
 
 #define NONULL(x) ((x) ? (x) : "")
 #define IS_SPACE(ch) isspace((unsigned char) ch)
-#define EMAIL_WSP " \t\r\n"
 
 /* Exit values */
 #define S_ERR 127

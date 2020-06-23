@@ -791,7 +791,11 @@ char *mutt_str_skip_email_wsp(const char *s)
 {
   if (!s)
     return NULL;
-  return (char *) (s + strspn(s, EMAIL_WSP));
+
+  for (; mutt_str_is_email_wsp(*s); s++)
+    ; // Do nothing
+
+  return (char *) s;
 }
 
 /**
@@ -801,7 +805,7 @@ char *mutt_str_skip_email_wsp(const char *s)
  */
 bool mutt_str_is_email_wsp(char c)
 {
-  return c && (strchr(EMAIL_WSP, c));
+  return c && strchr(" \t\r\n", c);
 }
 
 /**
