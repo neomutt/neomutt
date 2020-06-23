@@ -126,46 +126,14 @@ const char *mutt_str_sysexit(int err_num)
 }
 
 /**
- * char_cmp_identity - Compare two characters
- * @param a First character to compare
- * @param b Second character to compare
- * @retval true If (a == b)
- */
-static inline bool char_cmp_identity(char a, char b)
-{
-  return a == b;
-}
-
-/**
- * char_cmp_lower - Compare two characters ignoring case
- * @param a First character to compare
- * @param b Second character to compare
- * @retval true If (a == b), ignoring case
- */
-static inline bool char_cmp_lower(char a, char b)
-{
-  return tolower((unsigned char) a) == tolower((unsigned char) b);
-}
-
-/**
- * get_char_cmp - Retrieve the correct function to compare characters according to a case sensitivity setting
- * @param cs Case sensitivity setting
- * @retval ptr char_cmp function pointer
- */
-static char_cmp get_char_cmp(enum CaseSensitivity cs)
-{
-  return (cs == CASE_IGNORE) ? char_cmp_lower : char_cmp_identity;
-}
-
-/**
  * startswith - Check whether a string starts with a prefix
  * @param str String to check
  * @param prefix Prefix to match
- * @param cs Case sensitivity setting
+ * @param match_case True if case needs to match
  * @retval num Length of prefix if str starts with prefix
  * @retval 0 if str does not start with prefix
  */
-static size_t startswith(const char *str, const char *prefix, enum CaseSensitivity cs)
+static size_t startswith(const char *str, const char *prefix, bool match_case)
 {
   if (!str || (str[0] == '\0') || !prefix || (prefix[0] == '\0'))
   {
@@ -173,12 +141,15 @@ static size_t startswith(const char *str, const char *prefix, enum CaseSensitivi
   }
 
   const char *saved_prefix = prefix;
-  for (char_cmp fn = get_char_cmp(cs); *str && *prefix; str++, prefix++)
+  for (; *str && *prefix; str++, prefix++)
   {
-    if (!fn(*str, *prefix))
-    {
-      return 0;
-    }
+    if (*str == *prefix)
+      continue;
+
+    if (!match_case && tolower(*str) == tolower(*prefix))
+      continue;
+
+    return 0;
   }
 
   return (*prefix == '\0') ? (prefix - saved_prefix) : 0;
@@ -193,7 +164,7 @@ static size_t startswith(const char *str, const char *prefix, enum CaseSensitivi
  */
 size_t mutt_str_startswith(const char *str, const char *prefix)
 {
-  return startswith(str, prefix, CASE_MATCH);
+  return startswith(str, prefix, true);
 }
 
 /**
@@ -205,7 +176,7 @@ size_t mutt_str_startswith(const char *str, const char *prefix)
  */
 size_t mutt_istr_startswith(const char *str, const char *prefix)
 {
-  return startswith(str, prefix, CASE_IGNORE);
+  return startswith(str, prefix, false);
 }
 
 /**
