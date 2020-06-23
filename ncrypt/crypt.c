@@ -1357,7 +1357,7 @@ const char *crypt_get_fingerprint_or_id(const char *p, const char **pphint,
 bool crypt_is_numerical_keyid(const char *s)
 {
   /* or should we require the "0x"? */
-  if (strncmp(s, "0x", 2) == 0)
+  if (mutt_strn_equal(s, "0x", 2))
     s += 2;
   if (strlen(s) % 8)
     return false;

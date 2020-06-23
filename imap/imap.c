@@ -404,7 +404,7 @@ static int complete_hosts(char *buf, size_t buflen)
     url.user = NULL;
     url.path = NULL;
     url_tostring(&url, urlstr, sizeof(urlstr), 0);
-    if (mutt_str_strncmp(buf, urlstr, matchlen) == 0)
+    if (mutt_strn_equal(buf, urlstr, matchlen))
     {
       if (rc)
       {
@@ -846,7 +846,7 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
   {
     const size_t nplen = strlen(np->data);
     if ((flaglen >= nplen) && ((flag[nplen] == '\0') || (flag[nplen] == ' ')) &&
-        (mutt_str_strncasecmp(np->data, flag, nplen) == 0))
+        mutt_istrn_equal(np->data, flag, nplen))
     {
       return true;
     }

@@ -264,7 +264,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
 
       /* check type */
       ch = get_field(buf);
-      if (!mutt_istr_equal(buf, type) && ((mutt_str_strncasecmp(buf, type, btlen) != 0) ||
+      if (!mutt_istr_equal(buf, type) && (!mutt_istrn_equal(buf, type, btlen) ||
                                           ((buf[btlen] != '\0') && /* implicit wild */
                                            !mutt_str_equal(buf + btlen, "/*")))) /* wildsubtype */
       {

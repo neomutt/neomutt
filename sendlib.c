@@ -2250,7 +2250,7 @@ static int userhdrs_override_cmp(const void *a, const void *b)
 {
   const char *ca = a;
   const char *cb = *(const char **) b;
-  return mutt_str_strncasecmp(ca, cb, strlen(cb));
+  return mutt_istrn_cmp(ca, cb, strlen(cb));
 }
 
 /**

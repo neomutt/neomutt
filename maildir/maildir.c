@@ -493,8 +493,8 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
     /* This message was not in the list of messages we just scanned.
      * Check to see if we have enough information to know if the
      * message has disappeared out from underneath us.  */
-    else if (((changed & MMC_NEW_DIR) && (strncmp(e->path, "new/", 4) == 0)) ||
-             ((changed & MMC_CUR_DIR) && (strncmp(e->path, "cur/", 4) == 0)))
+    else if (((changed & MMC_NEW_DIR) && mutt_strn_equal(e->path, "new/", 4)) ||
+             ((changed & MMC_CUR_DIR) && mutt_strn_equal(e->path, "cur/", 4)))
     {
       /* This message disappeared, so we need to simulate a "reopen"
        * event.  We know it disappeared because we just scanned the

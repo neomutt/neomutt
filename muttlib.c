@@ -634,7 +634,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   if (scheme != U_UNKNOWN)
   {
     p = strchr(buf, ':') + 1;
-    if (strncmp(p, "//", 2) == 0)
+    if (mutt_strn_equal(p, "//", 2))
       q = strchr(p + 2, '/');
     if (!q)
       q = strchr(p, '\0');
@@ -1704,7 +1704,7 @@ int mutt_inbox_cmp(const char *a, const char *b)
   size_t b_len = b_end - b;
   size_t min = MIN(a_len, b_len);
   int same = (a[min] == '/') && (b[min] == '/') && (a[min + 1] != '\0') &&
-             (b[min + 1] != '\0') && (mutt_str_strncasecmp(a, b, min) == 0);
+             (b[min + 1] != '\0') && mutt_istrn_equal(a, b, min);
 
   if (!same)
     return 0;

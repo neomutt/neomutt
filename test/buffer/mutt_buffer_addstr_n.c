@@ -51,7 +51,7 @@ void test_mutt_buffer_addstr_n(void)
       struct Buffer buf = mutt_buffer_make(0);
       TEST_CHECK(mutt_buffer_addstr_n(&buf, str, sizes[i]) == sizes[i]);
       TEST_CHECK(strlen(mutt_b2s(&buf)) == MIN(len, sizes[i]));
-      TEST_CHECK(strncmp(mutt_b2s(&buf), str, sizes[i]) == 0);
+      TEST_CHECK(mutt_strn_equal(mutt_b2s(&buf), str, sizes[i]));
       mutt_buffer_dealloc(&buf);
     }
   }
@@ -73,7 +73,7 @@ void test_mutt_buffer_addstr_n(void)
       mutt_buffer_addstr(&buf, base);
       TEST_CHECK(mutt_buffer_addstr_n(&buf, str, sizes[i]) == sizes[i]);
       TEST_CHECK(strlen(mutt_b2s(&buf)) == (base_len + MIN(len, sizes[i])));
-      TEST_CHECK(strncmp(mutt_b2s(&buf), combined, base_len + sizes[i]) == 0);
+      TEST_CHECK(mutt_strn_equal(mutt_b2s(&buf), combined, base_len + sizes[i]));
       mutt_buffer_dealloc(&buf);
     }
   }

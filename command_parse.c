@@ -994,7 +994,7 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   STAILQ_FOREACH(n, &UserHeader, entries)
   {
     /* see if there is already a field by this name */
-    if (mutt_str_strncasecmp(buf->data, n->data, keylen) == 0)
+    if (mutt_istrn_equal(buf->data, n->data, keylen))
     {
       break;
     }
@@ -2016,7 +2016,7 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
 
     STAILQ_FOREACH_SAFE(np, &UserHeader, entries, tmp)
     {
-      if ((mutt_str_strncasecmp(buf->data, np->data, l) == 0) && (np->data[l] == ':'))
+      if (mutt_istrn_equal(buf->data, np->data, l) && (np->data[l] == ':'))
       {
         STAILQ_REMOVE(&UserHeader, np, ListNode, entries);
         FREE(&np->data);

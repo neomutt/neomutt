@@ -456,8 +456,8 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
 
   imap_cachepath(adata->delim, mdata->name, mbox);
 
-  if (strstr(mutt_b2s(mbox), "/../") || (strcmp(mutt_b2s(mbox), "..") == 0) ||
-      (strncmp(mutt_b2s(mbox), "../", 3) == 0))
+  if (strstr(mutt_b2s(mbox), "/../") || mutt_str_equal(mutt_b2s(mbox), "..") ||
+      mutt_strn_equal(mutt_b2s(mbox), "../", 3))
   {
     goto cleanup;
   }
@@ -758,7 +758,7 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
 
   /* check whether we can do '+' substitution */
   if (tlen && imap_account_match(&cac_home, &cac_target) &&
-      (mutt_str_strncmp(home_mailbox, target_mailbox, hlen) == 0))
+      mutt_strn_equal(home_mailbox, target_mailbox, hlen))
   {
     if (hlen == 0)
       home_match = true;

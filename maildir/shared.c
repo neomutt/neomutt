@@ -213,17 +213,17 @@ static void mh_sequences_add_one(struct Mailbox *m, int n, bool unseen, bool fla
   {
     while ((buf = mutt_file_read_line(buf, &sz, fp_old, NULL, 0)))
     {
-      if (unseen && (strncmp(buf, seq_unseen, mutt_str_strlen(seq_unseen)) == 0))
+      if (unseen && mutt_strn_equal(buf, seq_unseen, mutt_str_strlen(seq_unseen)))
       {
         fprintf(fp_new, "%s %d\n", buf, n);
         unseen_done = true;
       }
-      else if (flagged && (strncmp(buf, seq_flagged, mutt_str_strlen(seq_flagged)) == 0))
+      else if (flagged && mutt_strn_equal(buf, seq_flagged, mutt_str_strlen(seq_flagged)))
       {
         fprintf(fp_new, "%s %d\n", buf, n);
         flagged_done = true;
       }
-      else if (replied && (strncmp(buf, seq_replied, mutt_str_strlen(seq_replied)) == 0))
+      else if (replied && mutt_strn_equal(buf, seq_replied, mutt_str_strlen(seq_replied)))
       {
         fprintf(fp_new, "%s %d\n", buf, n);
         replied_done = true;

@@ -2728,7 +2728,7 @@ err_ctx:
  */
 static int line_compare(const char *a, size_t n, const char *b)
 {
-  if (mutt_str_strncmp(a, b, n) == 0)
+  if (mutt_strn_equal(a, b, n))
   {
     /* at this point we know that 'b' is at least 'n' chars long */
     if ((b[n] == '\n') || ((b[n] == '\r') && (b[n + 1] == '\n')))
@@ -5282,7 +5282,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
         {
           if (crypt_is_numerical_keyid(keyid))
           {
-            if (strncmp(keyid, "0x", 2) == 0)
+            if (mutt_strn_equal(keyid, "0x", 2))
               keyid += 2;
             goto bypass_selection; /* you don't see this. */
           }
@@ -5819,7 +5819,7 @@ static bool verify_sender(struct Email *e)
             int domainname_length = sender_length - mailbox_length;
             int mailbox_match, domainname_match;
 
-            mailbox_match = (strncmp(tmp_email, tmp_sender, mailbox_length) == 0);
+            mailbox_match = mutt_strn_equal(tmp_email, tmp_sender, mailbox_length);
             tmp_email += mailbox_length;
             tmp_sender += mailbox_length;
             domainname_match =
@@ -5829,7 +5829,7 @@ static bool verify_sender(struct Email *e)
           }
           else
           {
-            if (strncmp(uid->email + 1, sender->mailbox, sender_length) == 0)
+            if (mutt_strn_equal(uid->email + 1, sender->mailbox, sender_length))
               rc = false;
           }
         }

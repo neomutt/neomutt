@@ -496,7 +496,7 @@ static bool hostname_match(const char *hostname, const char *certname)
 {
   const char *cmp1 = NULL, *cmp2 = NULL;
 
-  if (strncmp(certname, "*.", 2) == 0)
+  if (mutt_strn_equal(certname, "*.", 2))
   {
     cmp1 = certname + 2;
     cmp2 = strchr(hostname, '.');

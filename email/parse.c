@@ -503,7 +503,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     {
       /* Microsoft Outlook seems to think it is necessary to repeat
        * charset=, strip it off not to confuse ourselves */
-      if (mutt_str_strncasecmp(pc, "charset=", sizeof("charset=") - 1) == 0)
+      if (mutt_istrn_equal(pc, "charset=", sizeof("charset=") - 1))
         mutt_param_set(&ct->parameter, "charset", pc + (sizeof("charset=") - 1));
     }
     else
@@ -758,7 +758,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       else if (mutt_istr_equal(line + 1, "ist-Post"))
       {
         /* RFC2369.  FIXME: We should ignore whitespace, but don't. */
-        if (strncmp(p, "NO", 2) != 0)
+        if (!mutt_strn_equal(p, "NO", 2))
         {
           char *beg = NULL, *end = NULL;
           for (beg = strchr(p, '<'); beg; beg = strchr(end, ','))

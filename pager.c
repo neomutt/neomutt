@@ -611,7 +611,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
     {
       /* case 1: check the top level nodes */
 
-      if (mutt_str_strncmp(qptr, q_list->prefix, length) == 0)
+      if (mutt_strn_equal(qptr, q_list->prefix, length))
       {
         if (length == q_list->length)
           return q_list; /* same prefix: return the current class */
@@ -704,7 +704,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
       /* case 2: try subclassing the current top level node */
 
       /* tmp != NULL means we already found a shorter prefix at case 1 */
-      if (!tmp && (mutt_str_strncmp(qptr, q_list->prefix, q_list->length) == 0))
+      if (!tmp && mutt_strn_equal(qptr, q_list->prefix, q_list->length))
       {
         /* ok, it's a subclass somewhere on this branch */
 
@@ -719,7 +719,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
         {
           if (length <= q_list->length)
           {
-            if (mutt_str_strncmp(tail_qptr, (q_list->prefix) + offset, tail_lng) == 0)
+            if (mutt_strn_equal(tail_qptr, (q_list->prefix) + offset, tail_lng))
             {
               /* same prefix: return the current class */
               if (length == q_list->length)
@@ -806,8 +806,8 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           else
           {
             /* longer than the current prefix: try subclassing it */
-            if (!tmp && (mutt_str_strncmp(tail_qptr, (q_list->prefix) + offset,
-                                          q_list->length - offset) == 0))
+            if (!tmp && mutt_strn_equal(tail_qptr, (q_list->prefix) + offset,
+                                        q_list->length - offset))
             {
               /* still a subclass: go down one level */
               ptr = q_list;

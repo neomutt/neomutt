@@ -174,7 +174,7 @@ static const struct Tz *find_tz(const char *s, size_t len)
 {
   for (size_t i = 0; i < mutt_array_size(TimeZones); i++)
   {
-    if (mutt_str_strncasecmp(TimeZones[i].tzname, s, len) == 0)
+    if (mutt_istrn_equal(TimeZones[i].tzname, s, len))
       return &TimeZones[i];
   }
   return NULL;

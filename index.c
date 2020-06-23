@@ -1790,7 +1790,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           char buf2[1024];
 
-          if (!Context->pattern || (strncmp(Context->pattern, "!~R!~D~s", 8) != 0))
+          if (!Context->pattern || !mutt_strn_equal(Context->pattern, "!~R!~D~s", 8))
           {
             snprintf(buf2, sizeof(buf2), "!~R!~D~s%s",
                      Context->pattern ? Context->pattern : ".*");
@@ -1798,7 +1798,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           else
           {
             mutt_str_strfcpy(buf2, Context->pattern + 8, sizeof(buf2));
-            if ((*buf2 == '\0') || (strncmp(buf2, ".*", 2) == 0))
+            if ((*buf2 == '\0') || mutt_strn_equal(buf2, ".*", 2))
               snprintf(buf2, sizeof(buf2), "~A");
           }
           FREE(&Context->pattern);

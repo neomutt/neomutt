@@ -181,7 +181,7 @@ int mutt_complete(char *buf, size_t buflen)
 
   while ((de = readdir(dirp)))
   {
-    if (mutt_str_strncmp(de->d_name, mutt_b2s(filepart), len) == 0)
+    if (mutt_strn_equal(de->d_name, mutt_b2s(filepart), len))
     {
       if (init)
       {

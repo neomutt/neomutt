@@ -904,7 +904,7 @@ static int imap_is_prefix(const char *folder, const char *mbox)
   if (flen > mlen)
     goto done;
 
-  if (mutt_str_strncmp(url_m->path, url_f->path, flen) != 0)
+  if (!mutt_strn_equal(url_m->path, url_f->path, flen))
     goto done;
 
   plen = strlen(mbox) - mlen + flen;
@@ -949,7 +949,7 @@ static const char *abbrev_folder(const char *mbox, const char *folder, enum Mail
   if (mlen <= flen)
     return NULL;
 
-  if (mutt_str_strncmp(folder, mbox, flen) != 0)
+  if (!mutt_strn_equal(folder, mbox, flen))
     return NULL;
 
   // After the match, check that mbox has a delimiter
@@ -1116,7 +1116,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 
     // At this point, we don't have an abbreviation so let's keep track
     // before using short path.
-    bool no_abbr = (mutt_str_strncmp(display, full_path, mutt_str_strlen(display)) != 0);
+    bool no_abbr = !mutt_strn_equal(display, full_path, mutt_str_strlen(display));
     if (C_SidebarShortPath)
     {
       display = last_part;
@@ -1380,7 +1380,7 @@ int sb_observer(struct NotifyCallback *nc)
   struct MuttWindow *win = nc->global_data;
   struct EventConfig *ec = nc->event_data;
 
-  if (mutt_str_strncmp(ec->name, "sidebar_", 8) != 0)
+  if (!mutt_strn_equal(ec->name, "sidebar_", 8))
     return 0;
 
   bool repaint = false;

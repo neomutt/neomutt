@@ -703,7 +703,7 @@ void rfc2047_decode(char **pd)
         return;
       }
       if (prev.data && ((prev_charsetlen != charsetlen) ||
-                        (mutt_str_strncmp(prev_charset, charset, charsetlen) != 0)))
+                        !mutt_strn_equal(prev_charset, charset, charsetlen)))
       {
         /* Different charset, convert the previous chunk and add it to the
          * final result */

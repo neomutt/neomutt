@@ -350,7 +350,7 @@ int alias_complete(char *buf, size_t buflen)
   {
     TAILQ_FOREACH(np, &Aliases, entries)
     {
-      if (np->name && (strncmp(np->name, buf, strlen(buf)) == 0))
+      if (np->name && mutt_strn_equal(np->name, buf, strlen(buf)))
       {
         if (bestname[0] == '\0') /* init */
         {
@@ -381,7 +381,7 @@ int alias_complete(char *buf, size_t buflen)
       mdata = menu_data_new();
       TAILQ_FOREACH(np, &Aliases, entries)
       {
-        if (np->name && (strncmp(np->name, buf, strlen(buf)) == 0))
+        if (np->name && mutt_strn_equal(np->name, buf, strlen(buf)))
         {
           menu_data_alias_add(mdata, np);
         }

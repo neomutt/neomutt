@@ -264,7 +264,7 @@ static int pgp_copy_checksig(FILE *fp_in, FILE *fp_out)
       else
         mutt_debug(LL_DEBUG2, "\"%s\" doesn't match regex\n", line);
 
-      if (strncmp(line, "[GNUPG:] ", 9) == 0)
+      if (mutt_strn_equal(line, "[GNUPG:] ", 9))
         continue;
       fputs(line, fp_out);
       fputc('\n', fp_out);
@@ -1456,7 +1456,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
         {
           if (crypt_is_numerical_keyid(keyid))
           {
-            if (strncmp(keyid, "0x", 2) == 0)
+            if (mutt_strn_equal(keyid, "0x", 2))
               keyid += 2;
             goto bypass_selection; /* you don't see this. */
           }

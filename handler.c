@@ -452,7 +452,7 @@ static bool is_mmnoask(const char *buf)
     {
       if (q[1] == '*')
       {
-        if (mutt_str_strncasecmp(buf, p, q - p) == 0)
+        if (mutt_istrn_equal(buf, p, q - p))
           return true;
       }
       else
@@ -501,7 +501,7 @@ static bool is_autoview(struct Body *b)
     {
       int i = mutt_str_strlen(np->data) - 1;
       if (((i > 0) && (np->data[i - 1] == '/') && (np->data[i] == '*') &&
-           (mutt_str_strncasecmp(type, np->data, i) == 0)) ||
+           mutt_istrn_equal(type, np->data, i)) ||
           mutt_istr_equal(type, np->data))
       {
         is_av = true;
@@ -970,7 +970,7 @@ static int alternative_handler(struct Body *a, struct State *s)
     while (b)
     {
       const char *bt = TYPE(b);
-      if ((mutt_str_strncasecmp(bt, np->data, btlen) == 0) && (bt[btlen] == 0))
+      if (mutt_istrn_equal(bt, np->data, btlen) && (bt[btlen] == 0))
       {
         /* the basetype matches */
         if (wild || mutt_istr_equal(np->data + btlen + 1, b->subtype))

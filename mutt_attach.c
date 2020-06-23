@@ -336,7 +336,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
   {
     const int i = mutt_str_strlen(np->data) - 1;
     if (((i > 0) && (np->data[i - 1] == '/') && (np->data[i] == '*') &&
-         (mutt_str_strncasecmp(type, np->data, i) == 0)) ||
+         mutt_istrn_equal(type, np->data, i)) ||
         mutt_istr_equal(type, np->data))
     {
       struct Body tmp = { 0 };

@@ -99,11 +99,10 @@ static int get_color(int index, unsigned char *s)
     case MT_COLOR_INDEX_TAG:
       STAILQ_FOREACH(np, &Colors->index_tag_list, entries)
       {
-        if (strncmp((const char *) (s + 1), np->pattern, strlen(np->pattern)) == 0)
+        if (mutt_strn_equal((const char *) (s + 1), np->pattern, strlen(np->pattern)))
           return np->pair;
         const char *transform = mutt_hash_find(TagTransforms, np->pattern);
-        if (transform &&
-            (strncmp((const char *) (s + 1), transform, strlen(transform)) == 0))
+        if (transform && mutt_strn_equal((const char *) (s + 1), transform, strlen(transform)))
         {
           return np->pair;
         }

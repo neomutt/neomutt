@@ -419,8 +419,8 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
   int len1 = mutt_str_strlen(buf);
   int len2 = mutt_str_strlen(cs2);
 
-  return mutt_str_strncasecmp(((len1 > len2) ? buf : cs2),
-                              ((len1 > len2) ? cs2 : buf), MIN(len1, len2)) == 0;
+  return mutt_istrn_equal(((len1 > len2) ? buf : cs2),
+                          ((len1 > len2) ? cs2 : buf), MIN(len1, len2));
 }
 
 /**

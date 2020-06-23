@@ -93,9 +93,7 @@ const char *mutt_str_stristr(const char *haystack, const char *needle);
 size_t      mutt_str_strlen(const char *a);
 char *      mutt_str_strlower(char *s);
 char *      mutt_str_strnlower(char *str, size_t num);
-int         mutt_str_strncasecmp(const char *a, const char *b, size_t l);
 char *      mutt_str_strncat(char *d, size_t l, const char *s, size_t sl);
-int         mutt_str_strncmp(const char *a, const char *b, size_t l);
 size_t      mutt_str_strnfcpy(char *dest, const char *src, size_t n, size_t dsize);
 char *      mutt_str_substr_copy(const char *begin, const char *end, char *buf, size_t buflen);
 char *      mutt_str_substr_dup(const char *begin, const char *end);
@@ -107,9 +105,16 @@ int         mutt_str_cmp(const char *a, const char *b);
 bool        mutt_str_equal(const char *a, const char *b);
 size_t      mutt_str_startswith(const char *str, const char *prefix);
 
+/* case-sensitive, length-bound flavours */
+bool        mutt_strn_equal(const char *a, const char *b, size_t l);
+
 /* case-insensitive flavours */
 int         mutt_istr_cmp(const char *a, const char *b);
 bool        mutt_istr_equal(const char *a, const char *b);
 size_t      mutt_istr_startswith(const char *str, const char *prefix);
+
+/* case-insensitive, length-bound flavours */
+int         mutt_istrn_cmp(const char *a, const char *b, size_t l);
+bool        mutt_istrn_equal(const char *a, const char *b, size_t l);
 
 #endif /* MUTT_LIB_STRING_H */

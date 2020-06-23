@@ -654,21 +654,20 @@ int mutt_istr_cmp(const char *a, const char *b)
 }
 
 /**
- * mutt_str_strncmp - Compare two strings (to a maximum), safely
+ * mutt_strn_equal - Check for equality of two strings (to a maximum), safely
  * @param a First string to compare
  * @param b Second string to compare
  * @param l Maximum number of bytes to compare
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * @retval true First l chars of both strings are equal
+ * @retval false First l chars of both strings not equal
  */
-int mutt_str_strncmp(const char *a, const char *b, size_t l)
+bool mutt_strn_equal(const char *a, const char *b, size_t l)
 {
-  return strncmp(NONULL(a), NONULL(b), l);
+  return strncmp(NONULL(a), NONULL(b), l) == 0;
 }
 
 /**
- * mutt_str_strncasecmp - Compare two strings ignoring case (to a maximum), safely
+ * mutt_istrn_cmp - Compare two strings ignoring case (to a maximum), safely
  * @param a First string to compare
  * @param b Second string to compare
  * @param l Maximum number of bytes to compare
@@ -676,9 +675,23 @@ int mutt_str_strncmp(const char *a, const char *b, size_t l)
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_str_strncasecmp(const char *a, const char *b, size_t l)
+int mutt_istrn_cmp(const char *a, const char *b, size_t l)
 {
   return strncasecmp(NONULL(a), NONULL(b), l);
+}
+
+/**
+ * mutt_istrn_equal - Check for equality of two strings ignoring case (to a maximum), safely
+ * @param a First string to compare
+ * @param b Second string to compare
+ * @param l Maximum number of bytes to compare
+ * @retval -1 a precedes b
+ * @retval true First l chars of both strings are equal, ignoring case
+ * @retval false First l chars of both strings not equal, ignoring case
+ */
+bool mutt_istrn_equal(const char *a, const char *b, size_t l)
+{
+  return strncasecmp(NONULL(a), NONULL(b), l) == 0;
 }
 
 /**

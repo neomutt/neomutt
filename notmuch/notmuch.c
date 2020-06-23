@@ -686,8 +686,8 @@ static int update_message_path(struct Email *e, const char *path)
 
   char *p = strrchr(path, '/');
   if (p && ((p - path) > 3) &&
-      ((strncmp(p - 3, "cur", 3) == 0) || (strncmp(p - 3, "new", 3) == 0) ||
-       (strncmp(p - 3, "tmp", 3) == 0)))
+      (mutt_strn_equal(p - 3, "cur", 3) || mutt_strn_equal(p - 3, "new", 3) ||
+       mutt_strn_equal(p - 3, "tmp", 3)))
   {
     edata->type = MUTT_MAILDIR;
 
@@ -720,8 +720,8 @@ static char *get_folder_from_path(const char *path)
   char *p = strrchr(path, '/');
 
   if (p && ((p - path) > 3) &&
-      ((strncmp(p - 3, "cur", 3) == 0) || (strncmp(p - 3, "new", 3) == 0) ||
-       (strncmp(p - 3, "tmp", 3) == 0)))
+      (mutt_strn_equal(p - 3, "cur", 3) || mutt_strn_equal(p - 3, "new", 3) ||
+       mutt_strn_equal(p - 3, "tmp", 3)))
   {
     p -= 3;
     for (; (p > path) && (*(p - 1) == '/'); p--)

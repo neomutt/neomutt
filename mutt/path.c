@@ -501,7 +501,7 @@ bool mutt_path_abbr_folder(char *buf, size_t buflen, const char *folder)
   if (folder[flen - 1] == '/')
     flen--;
 
-  if (mutt_str_strncmp(buf, folder, flen) != 0)
+  if (!mutt_strn_equal(buf, folder, flen))
     return false;
 
   if (buf[flen + 1] == '\0') // Don't abbreviate to '=/'

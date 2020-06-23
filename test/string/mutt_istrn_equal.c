@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_strncasecmp()
+ * Test code for mutt_istrn_equal()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -25,21 +25,21 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 
-void test_mutt_str_strncasecmp(void)
+void test_mutt_istrn_equal(void)
 {
-  // int mutt_str_strncasecmp(const char *a, const char *b, size_t l);
+  // int mutt_istrn_equal(const char *a, const char *b, size_t l);
 
-  TEST_CHECK(mutt_str_strncasecmp(NULL, "apple", 3) != 0);
-  TEST_CHECK(mutt_str_strncasecmp("apple", NULL, 3) != 0);
-  TEST_CHECK(mutt_str_strncasecmp(NULL, NULL, 3) == 0);
-  TEST_CHECK(mutt_str_strncasecmp("", "", 3) == 0);
+  TEST_CHECK(!mutt_istrn_equal(NULL, "apple", 3));
+  TEST_CHECK(!mutt_istrn_equal("apple", NULL, 3));
+  TEST_CHECK(mutt_istrn_equal(NULL, NULL, 3));
+  TEST_CHECK(mutt_istrn_equal("", "", 3));
 
-  TEST_CHECK(mutt_str_strncasecmp("apple", "apple", 5) == 0);
-  TEST_CHECK(mutt_str_strncasecmp("apple", "APPLE", 5) == 0);
+  TEST_CHECK(mutt_istrn_equal("apple", "apple", 5));
+  TEST_CHECK(mutt_istrn_equal("apple", "APPLE", 5));
 
-  TEST_CHECK(mutt_str_strncasecmp("apple", "apple2", 10) != 0);
-  TEST_CHECK(mutt_str_strncasecmp("apple1", "apple", 10) != 0);
+  TEST_CHECK(!mutt_istrn_equal("apple", "apple2", 10));
+  TEST_CHECK(!mutt_istrn_equal("apple1", "apple", 10));
 
-  TEST_CHECK(mutt_str_strncasecmp("apple", "apple2", 5) == 0);
-  TEST_CHECK(mutt_str_strncasecmp("apple1", "apple", 5) == 0);
+  TEST_CHECK(mutt_istrn_equal("apple", "apple2", 5));
+  TEST_CHECK(mutt_istrn_equal("apple1", "apple", 5));
 }
