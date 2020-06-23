@@ -1156,9 +1156,11 @@ bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *
 int mutt_istr_remall(char *str, const char *target)
 {
   int rc = 1;
+  if (!str || !target)
+    return rc;
 
   // Look through an ensure all instances of the substring are gone.
-  while ((str = (char *) mutt_str_strcasestr(str, target)))
+  while ((str = (char *) strcasestr(str, target)))
   {
     size_t target_len = mutt_str_strlen(target);
     memmove(str, str + target_len, 1 + strlen(str + target_len));
@@ -1166,50 +1168,6 @@ int mutt_istr_remall(char *str, const char *target)
   }
 
   return rc;
-}
-
-/**
- * mutt_str_strcasestr - Find a substring within a string without worrying about case
- * @param haystack String that may or may not contain the substring
- * @param needle   Substring we're looking for
- * @retval ptr  Beginning of substring
- * @retval NULL Substring is not in substring
- *
- * This performs a byte-to-byte check so it will return unspecified
- * results for multibyte locales.
- */
-const char *mutt_str_strcasestr(const char *haystack, const char *needle)
-{
-  if (!needle)
-    return NULL;
-
-  size_t haystack_len = mutt_str_strlen(haystack);
-  size_t needle_len = mutt_str_strlen(needle);
-
-  // Empty string exists at the front of a string. Check strstr if you don't believe me.
-  if (needle_len == 0)
-    return haystack;
-
-  // Check size conditions. No point wasting CPU cycles.
-  if ((haystack_len == 0) || (haystack_len < needle_len))
-    return NULL;
-
-  // Only check space that needle could fit in.
-  // Conditional has + 1 to handle when the haystack and needle are the same length.
-  for (size_t i = 0; i < (haystack_len - needle_len) + 1; i++)
-  {
-    for (size_t j = 0; j < needle_len; j++)
-    {
-      if (tolower((unsigned char) haystack[i + j]) != tolower((unsigned char) needle[j]))
-        break;
-
-      // If this statement is true, the needle has been found.
-      if (j == (needle_len - 1))
-        return haystack + i;
-    }
-  }
-
-  return NULL;
 }
 
 #ifdef HAVE_VASPRINTF

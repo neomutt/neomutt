@@ -516,7 +516,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_email_wsp)                              \
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_whitespace)                             \
   NEOMUTT_TEST_ITEM(test_mutt_str_startswith)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strcasestr)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_strcat)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_strchrnul)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_strcoll)                                     \

@@ -1713,6 +1713,9 @@ done:
  */
 void nm_parse_type_from_query(struct NmMboxData *mdata, char *buf)
 {
+  if (!buf)
+    return;
+
   // The six variations of how type= could appear.
   const char *variants[6] = { "&type=threads", "&type=messages",
                               "type=threads&", "type=messages&",
@@ -1721,7 +1724,7 @@ void nm_parse_type_from_query(struct NmMboxData *mdata, char *buf)
   int variants_size = mutt_array_size(variants);
   for (int i = 0; i < variants_size; i++)
   {
-    if (mutt_str_strcasestr(buf, variants[i]) != NULL)
+    if (strcasestr(buf, variants[i]) != NULL)
     {
       // variants[] is setup such that type can be determined via modulo 2.
       mdata->query_type = ((i % 2) == 0) ? NM_QUERY_TYPE_THREADS : NM_QUERY_TYPE_MESGS;
