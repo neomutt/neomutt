@@ -856,7 +856,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
   dp = opendir(file);
   if (dp)
   {
-    mutt_str_strncat(file, sizeof(file), "/", 1);
+    mutt_strn_cat(file, sizeof(file), "/", 1);
     fp = file + strlen(file);
     while ((entry = readdir(dp)))
     {
@@ -868,7 +868,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
       if (mutt_str_equal(group, ".") || mutt_str_equal(group, ".."))
         continue;
       *fp = '\0';
-      mutt_str_strncat(file, sizeof(file), group, strlen(group));
+      mutt_strn_cat(file, sizeof(file), group, strlen(group));
       if (stat(file, &sb) != 0)
         continue;
 

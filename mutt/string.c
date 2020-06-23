@@ -381,13 +381,13 @@ char *mutt_str_strdup(const char *str)
 }
 
 /**
- * mutt_str_strcat - Concatenate two strings
+ * mutt_str_cat - Concatenate two strings
  * @param buf    Buffer containing source string
  * @param buflen Length of buffer
  * @param s      String to add
  * @retval ptr Start of the buffer
  */
-char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
+char *mutt_str_cat(char *buf, size_t buflen, const char *s)
 {
   if (!buf || (buflen == 0) || !s)
     return buf;
@@ -407,7 +407,7 @@ char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
 }
 
 /**
- * mutt_str_strncat - Concatenate two strings
+ * mutt_strn_cat - Concatenate two strings
  * @param d  Buffer containing source string
  * @param l  Length of buffer
  * @param s  String to add
@@ -416,7 +416,7 @@ char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
  *
  * Add a string to a maximum of @a sl bytes.
  */
-char *mutt_str_strncat(char *d, size_t l, const char *s, size_t sl)
+char *mutt_strn_cat(char *d, size_t l, const char *s, size_t sl)
 {
   if (!d || (l == 0) || !s)
     return d;

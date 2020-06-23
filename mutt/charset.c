@@ -390,8 +390,8 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 out:
   if (ext && *ext)
   {
-    mutt_str_strcat(buf, buflen, "/");
-    mutt_str_strcat(buf, buflen, ext);
+    mutt_str_cat(buf, buflen, "/");
+    mutt_str_cat(buf, buflen, ext);
   }
 }
 

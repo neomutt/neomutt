@@ -391,7 +391,7 @@ static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfun
     {
       char ch[8];
       snprintf(ch, sizeof(ch), "%02X%s", md[i], ((i % 2) ? " " : ""));
-      mutt_str_strcat(s, l, ch);
+      mutt_str_cat(s, l, ch);
     }
   }
 }

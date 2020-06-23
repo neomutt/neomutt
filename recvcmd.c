@@ -247,10 +247,10 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     mutt_simple_format(prompt, sizeof(prompt) - 4, 0,
                        MuttMessageWindow->state.cols - EXTRA_SPACE,
                        JUSTIFY_LEFT, 0, prompt, sizeof(prompt), false);
-    mutt_str_strcat(prompt, sizeof(prompt), "...?");
+    mutt_str_cat(prompt, sizeof(prompt), "...?");
   }
   else
-    mutt_str_strcat(prompt, sizeof(prompt), "?");
+    mutt_str_cat(prompt, sizeof(prompt), "?");
 
   if (query_quadoption(C_Bounce, prompt) != MUTT_YES)
   {

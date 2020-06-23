@@ -411,11 +411,11 @@ bool mutt_path_to_absolute(char *path, const char *reference)
   char *dirpath = mutt_path_dirname(reference);
   mutt_str_strfcpy(abs_path, dirpath, sizeof(abs_path));
   FREE(&dirpath);
-  mutt_str_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
+  mutt_strn_cat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
   path_len = sizeof(abs_path) - strlen(path);
 
-  mutt_str_strncat(abs_path, sizeof(abs_path), path, (path_len > 0) ? path_len : 0);
+  mutt_strn_cat(abs_path, sizeof(abs_path), path, (path_len > 0) ? path_len : 0);
 
   path = realpath(abs_path, path);
   if (!path && (errno != ENOENT))

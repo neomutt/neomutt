@@ -473,7 +473,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
   snprintf(buf, bufsize, "AUTH %s", mech);
   if (len)
   {
-    mutt_str_strcat(buf, bufsize, " ");
+    mutt_str_cat(buf, bufsize, " ");
     if (sasl_encode64(data, len, buf + mutt_str_strlen(buf),
                       bufsize - mutt_str_strlen(buf), &len) != SASL_OK)
     {
@@ -481,7 +481,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
       goto fail;
     }
   }
-  mutt_str_strcat(buf, bufsize, "\r\n");
+  mutt_str_cat(buf, bufsize, "\r\n");
 
   do
   {
@@ -803,7 +803,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
     int len = snprintf(buf, sizeof(buf), "MAIL FROM:<%s>", envfrom);
     if (eightbit && (Capabilities & SMTP_CAP_EIGHTBITMIME))
     {
-      mutt_str_strncat(buf, sizeof(buf), " BODY=8BITMIME", 15);
+      mutt_strn_cat(buf, sizeof(buf), " BODY=8BITMIME", 15);
       len += 14;
     }
     if (C_DsnReturn && (Capabilities & SMTP_CAP_DSN))
@@ -814,7 +814,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
     {
       snprintf(buf + len, sizeof(buf) - len, " SMTPUTF8");
     }
-    mutt_str_strncat(buf, sizeof(buf), "\r\n", 3);
+    mutt_strn_cat(buf, sizeof(buf), "\r\n", 3);
     if (mutt_socket_send(conn, buf) == -1)
     {
       rc = SMTP_ERR_WRITE;

@@ -1354,7 +1354,7 @@ static void dot_email(FILE *fp, const struct Email *e, struct ListHead *links)
     dot_type_date(arr, sizeof(arr), e->date_sent);
     snprintf(zone, sizeof(zone), " (%c%02u%02u)", e->zoccident ? '-' : '+',
              e->zhours, e->zminutes);
-    mutt_str_strcat(arr, sizeof(arr), zone);
+    mutt_str_cat(arr, sizeof(arr), zone);
     dot_type_string(fp, "date_sent", arr, false);
   }
 

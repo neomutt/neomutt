@@ -81,7 +81,6 @@ void        mutt_str_remove_trailing_ws(char *s);
 void        mutt_str_replace(char **p, const char *s);
 char *      mutt_str_skip_email_wsp(const char *s);
 char *      mutt_str_skip_whitespace(const char *p);
-char *      mutt_str_strcat(char *buf, size_t buflen, const char *s);
 const char *mutt_str_strchrnul(const char *s, char c);
 int         mutt_str_strcoll(const char *a, const char *b);
 char *      mutt_str_strdup(const char *str);
@@ -90,7 +89,6 @@ const char *mutt_str_stristr(const char *haystack, const char *needle);
 size_t      mutt_str_strlen(const char *a);
 char *      mutt_str_strlower(char *s);
 char *      mutt_str_strnlower(char *str, size_t num);
-char *      mutt_str_strncat(char *d, size_t l, const char *s, size_t sl);
 size_t      mutt_str_strnfcpy(char *dest, const char *src, size_t n, size_t dsize);
 char *      mutt_str_substr_copy(const char *begin, const char *end, char *buf, size_t buflen);
 char *      mutt_str_substr_dup(const char *begin, const char *end);
@@ -100,10 +98,12 @@ const char *mutt_str_sysexit(int e);
 int         mutt_str_cmp(const char *a, const char *b);
 bool        mutt_str_equal(const char *a, const char *b);
 size_t      mutt_str_startswith(const char *str, const char *prefix);
+char *      mutt_str_cat(char *buf, size_t buflen, const char *s);
 
 /* case-sensitive, length-bound flavours */
 bool        mutt_strn_equal(const char *a, const char *b, size_t l);
 const char *mutt_strn_rstrstr(const char *haystack, size_t haystack_length, const char *needle);
+char *      mutt_strn_cat(char *d, size_t l, const char *s, size_t sl);
 
 /* case-insensitive flavours */
 int         mutt_istr_cmp(const char *a, const char *b);

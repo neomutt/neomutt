@@ -296,7 +296,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
     }
     else if ((plen = mutt_str_startswith(buf, "AUTHINFO ")))
     {
-      mutt_str_strcat(buf, sizeof(buf), " ");
+      mutt_str_cat(buf, sizeof(buf), " ");
       mutt_str_strfcpy(authinfo, buf + plen - 1, sizeof(authinfo));
     }
 #ifdef USE_SASL
@@ -329,8 +329,8 @@ static int nntp_capabilities(struct NntpAccountData *adata)
   if (strcasestr(authinfo, " USER "))
   {
     if (*buf != '\0')
-      mutt_str_strcat(buf, sizeof(buf), " ");
-    mutt_str_strcat(buf, sizeof(buf), "USER");
+      mutt_str_cat(buf, sizeof(buf), " ");
+    mutt_str_cat(buf, sizeof(buf), "USER");
   }
   mutt_str_replace(&adata->authenticators, buf);
 
@@ -686,7 +686,7 @@ static int nntp_auth(struct NntpAccountData *adata)
           {
             nntp_log_binbuf(client_out, client_len, "SASL", MUTT_SOCK_LOG_FULL);
             if (*buf != '\0')
-              mutt_str_strcat(buf, sizeof(buf), " ");
+              mutt_str_cat(buf, sizeof(buf), " ");
             len = strlen(buf);
             if (sasl_encode64(client_out, client_len, buf + len,
                               sizeof(buf) - len, &len) != SASL_OK)
@@ -696,7 +696,7 @@ static int nntp_auth(struct NntpAccountData *adata)
             }
           }
 
-          mutt_str_strcat(buf, sizeof(buf), "\r\n");
+          mutt_str_cat(buf, sizeof(buf), "\r\n");
           if (strchr(buf, ' '))
           {
             mutt_debug(MUTT_SOCK_LOG_CMD, "%d> AUTHINFO SASL %s%s\n", conn->fd,

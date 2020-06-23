@@ -2146,7 +2146,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           int msg_id_offset = 0;
           if ((e_cur->env->message_id)[0] == '<')
             msg_id_offset = 1;
-          mutt_str_strcat(buf, sizeof(buf), (e_cur->env->message_id) + msg_id_offset);
+          mutt_str_cat(buf, sizeof(buf), (e_cur->env->message_id) + msg_id_offset);
           if (buf[strlen(buf) - 1] == '>')
             buf[strlen(buf) - 1] = '\0';
 

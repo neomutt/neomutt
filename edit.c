@@ -563,7 +563,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
       done = true;
     else
     {
-      mutt_str_strcat(tmp, sizeof(tmp), "\n");
+      mutt_str_cat(tmp, sizeof(tmp), "\n");
       if (buflen == bufmax)
         mutt_mem_realloc(&buf, sizeof(char *) * (bufmax += 25));
       buf[buflen++] = mutt_str_strdup((tmp[1] == '~') ? tmp + 1 : tmp);

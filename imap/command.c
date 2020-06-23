@@ -606,7 +606,7 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
   if (!mutt_istr_startswith(s, "NIL"))
   {
     delimbuf[0] = '\0';
-    mutt_str_strcat(delimbuf, 5, s);
+    mutt_str_cat(delimbuf, 5, s);
     imap_unquote_string(delimbuf);
     list->delim = delimbuf[0];
   }
@@ -695,7 +695,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   if (mutt_str_equal(url.user, C_ImapUser))
     url.user = NULL;
   url_tostring(&url, buf + 11, sizeof(buf) - 11, 0);
-  mutt_str_strcat(buf, sizeof(buf), "\"");
+  mutt_str_cat(buf, sizeof(buf), "\"");
   mutt_buffer_init(&err);
   err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);

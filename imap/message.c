@@ -1519,13 +1519,13 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   imap_flags[1] = '\0';
 
   if (msg->flags.read)
-    mutt_str_strcat(imap_flags, sizeof(imap_flags), " \\Seen");
+    mutt_str_cat(imap_flags, sizeof(imap_flags), " \\Seen");
   if (msg->flags.replied)
-    mutt_str_strcat(imap_flags, sizeof(imap_flags), " \\Answered");
+    mutt_str_cat(imap_flags, sizeof(imap_flags), " \\Answered");
   if (msg->flags.flagged)
-    mutt_str_strcat(imap_flags, sizeof(imap_flags), " \\Flagged");
+    mutt_str_cat(imap_flags, sizeof(imap_flags), " \\Flagged");
   if (msg->flags.draft)
-    mutt_str_strcat(imap_flags, sizeof(imap_flags), " \\Draft");
+    mutt_str_cat(imap_flags, sizeof(imap_flags), " \\Draft");
 
   snprintf(buf, sizeof(buf), "APPEND %s (%s) \"%s\" {%lu}", mdata->munge_name,
            imap_flags + 1, internaldate, (unsigned long) len);

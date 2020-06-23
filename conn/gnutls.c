@@ -172,7 +172,7 @@ static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *buf,
     {
       char ch[8];
       snprintf(ch, 8, "%02X%s", md[i], ((i % 2) ? " " : ""));
-      mutt_str_strcat(buf, buflen, ch);
+      mutt_str_cat(buf, buflen, ch);
     }
     buf[2 * n + n / 2 - 1] = '\0'; /* don't want trailing space */
   }

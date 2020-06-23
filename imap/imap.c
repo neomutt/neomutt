@@ -163,7 +163,7 @@ static void set_flag(struct Mailbox *m, AclFlags aclflag, int flag,
 {
   if (m->rights & aclflag)
     if (flag && imap_has_flag(&imap_mdata_get(m)->flags, str))
-      mutt_str_strcat(flags, flsize, str);
+      mutt_str_cat(flags, flsize, str);
 }
 
 /**
@@ -998,12 +998,12 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   {
     /* restore system flags */
     if (imap_edata_get(e)->flags_system)
-      mutt_str_strcat(flags, sizeof(flags), imap_edata_get(e)->flags_system);
+      mutt_str_cat(flags, sizeof(flags), imap_edata_get(e)->flags_system);
     /* set custom flags */
     tags = driver_tags_get_with_hidden(&e->tags);
     if (tags)
     {
-      mutt_str_strcat(flags, sizeof(flags), tags);
+      mutt_str_cat(flags, sizeof(flags), tags);
       FREE(&tags);
     }
   }
@@ -1023,7 +1023,7 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
 
     /* erase custom flags */
     if ((m->rights & MUTT_ACL_WRITE) && imap_edata_get(e)->flags_remote)
-      mutt_str_strcat(flags, sizeof(flags), imap_edata_get(e)->flags_remote);
+      mutt_str_cat(flags, sizeof(flags), imap_edata_get(e)->flags_remote);
 
     mutt_str_remove_trailing_ws(flags);
 

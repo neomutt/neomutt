@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_strcat()
+ * Test code for mutt_str_cat()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -25,46 +25,46 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 
-void test_mutt_str_strcat(void)
+void test_mutt_str_cat(void)
 {
-  // char *mutt_str_strcat(char *buf, size_t buflen, const char *s);
+  // char *mutt_str_cat(char *buf, size_t buflen, const char *s);
 
   {
-    TEST_CHECK(mutt_str_strcat(NULL, 10, "apple") == NULL);
+    TEST_CHECK(mutt_str_cat(NULL, 10, "apple") == NULL);
   }
 
   {
     char buf[64] = { 0 };
-    TEST_CHECK(mutt_str_strcat(buf, 0, "apple") == buf);
+    TEST_CHECK(mutt_str_cat(buf, 0, "apple") == buf);
     TEST_CHECK(strcmp(buf, "") == 0);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_str_strcat(buf, sizeof(buf), NULL) == buf);
+    TEST_CHECK(mutt_str_cat(buf, sizeof(buf), NULL) == buf);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_str_strcat(buf, sizeof(buf), "") == buf);
+    TEST_CHECK(mutt_str_cat(buf, sizeof(buf), "") == buf);
     TEST_CHECK(strcmp(buf, "") == 0);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_str_strcat(buf, sizeof(buf), "banana") == buf);
+    TEST_CHECK(mutt_str_cat(buf, sizeof(buf), "banana") == buf);
     TEST_CHECK(strcmp(buf, "banana") == 0);
   }
 
   {
     char buf[32] = "apple";
-    TEST_CHECK(mutt_str_strcat(buf, sizeof(buf), "") == buf);
+    TEST_CHECK(mutt_str_cat(buf, sizeof(buf), "") == buf);
     TEST_CHECK(strcmp(buf, "apple") == 0);
   }
 
   {
     char buf[32] = "apple";
-    TEST_CHECK(mutt_str_strcat(buf, sizeof(buf), "banana") == buf);
+    TEST_CHECK(mutt_str_cat(buf, sizeof(buf), "banana") == buf);
     TEST_CHECK(strcmp(buf, "applebanana") == 0);
   }
 }

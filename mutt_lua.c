@@ -109,8 +109,8 @@ static int lua_mutt_call(lua_State *l)
   for (int i = 2; i <= lua_gettop(l); i++)
   {
     const char *s = lua_tostring(l, i);
-    mutt_str_strncat(buf, sizeof(buf), s, mutt_str_strlen(s));
-    mutt_str_strncat(buf, sizeof(buf), " ", 1);
+    mutt_strn_cat(buf, sizeof(buf), s, mutt_str_strlen(s));
+    mutt_strn_cat(buf, sizeof(buf), " ", 1);
   }
 
   struct Buffer expn = mutt_buffer_make(0);
