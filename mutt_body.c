@@ -86,15 +86,15 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
   if (mutt_is_text_part(b))
     b->noconv = true;
 
-  b->xtype = mutt_str_strdup(b->xtype);
-  b->subtype = mutt_str_strdup(b->subtype);
-  b->form_name = mutt_str_strdup(b->form_name);
-  b->d_filename = mutt_str_strdup(b->d_filename);
+  b->xtype = mutt_str_dup(b->xtype);
+  b->subtype = mutt_str_dup(b->subtype);
+  b->form_name = mutt_str_dup(b->form_name);
+  b->d_filename = mutt_str_dup(b->d_filename);
   /* mutt_adv_mktemp() will mangle the filename in tmp,
    * so preserve it in d_filename */
   if (!b->d_filename && use_disp)
-    b->d_filename = mutt_str_strdup(src->filename);
-  b->description = mutt_str_strdup(b->description);
+    b->d_filename = mutt_str_dup(src->filename);
+  b->description = mutt_str_dup(b->description);
 
   /* we don't seem to need the Email structure currently.
    * XXX this may change in the future */
@@ -107,8 +107,8 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
   TAILQ_FOREACH(np, &src->parameter, entries)
   {
     new_param = mutt_param_new();
-    new_param->attribute = mutt_str_strdup(np->attribute);
-    new_param->value = mutt_str_strdup(np->value);
+    new_param->attribute = mutt_str_dup(np->attribute);
+    new_param->value = mutt_str_dup(np->value);
     TAILQ_INSERT_HEAD(&b->parameter, new_param, entries);
   }
 

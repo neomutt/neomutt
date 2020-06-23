@@ -513,7 +513,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
     else if (strcmp(item->name, "type") == 0)
       mdata->query_type = string_to_query_type(item->value);
     else if (strcmp(item->name, "query") == 0)
-      mdata->db_query = mutt_str_strdup(item->value);
+      mdata->db_query = mutt_str_dup(item->value);
   }
 
   if (!mdata->db_query)
@@ -530,7 +530,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
     if (!strstr(mdata->db_query, "date:") &&
         windowed_query_from_query(mdata->db_query, buf, sizeof(buf)))
     {
-      mdata->db_query = mutt_str_strdup(buf);
+      mdata->db_query = mutt_str_dup(buf);
     }
 
     mutt_debug(LL_DEBUG2, "nm: query (windowed) '%s'\n", mdata->db_query);
@@ -562,7 +562,7 @@ static void apply_exclude_tags(notmuch_query_t *query)
 
   char *end = NULL, *tag = NULL;
 
-  char *buf = mutt_str_strdup(C_NmExcludeTags);
+  char *buf = mutt_str_dup(C_NmExcludeTags);
 
   for (char *p = buf; p && (p[0] != '\0'); p++)
   {
@@ -695,7 +695,7 @@ static int update_message_path(struct Email *e, const char *path)
     FREE(&edata->folder);
 
     p -= 3; /* skip subfolder (e.g. "new") */
-    e->path = mutt_str_strdup(p);
+    e->path = mutt_str_dup(p);
 
     for (; (p > path) && (*(p - 1) == '/'); p--)
       ; // do nothing
@@ -774,7 +774,7 @@ static int init_email(struct Email *e, const char *path, notmuch_message_t *msg)
   /* Notmuch ensures that message Id exists (if not notmuch Notmuch will
    * generate an ID), so it's more safe than use neomutt Email->env->id */
   const char *id = notmuch_message_get_message_id(msg);
-  edata->virtual_id = mutt_str_strdup(id);
+  edata->virtual_id = mutt_str_dup(id);
 
   mutt_debug(LL_DEBUG2, "nm: [e=%p, edata=%p] (%s)\n", (void *) e, (void *) e->edata, id);
 
@@ -1000,7 +1000,7 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
     if (edata)
     {
       mutt_debug(LL_DEBUG1, "nm: remember obsolete path: %s\n", path);
-      edata->oldpath = mutt_str_strdup(path);
+      edata->oldpath = mutt_str_dup(path);
     }
   }
   progress_update(m, q);
@@ -1248,7 +1248,7 @@ static bool nm_message_has_tag(notmuch_message_t *msg, char *tag)
  */
 static int update_tags(notmuch_message_t *msg, const char *tags)
 {
-  char *buf = mutt_str_strdup(tags);
+  char *buf = mutt_str_dup(tags);
   if (!buf)
     return -1;
 
@@ -1317,7 +1317,7 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
  */
 static int update_email_flags(struct Mailbox *m, struct Email *e, const char *tags)
 {
-  char *buf = mutt_str_strdup(tags);
+  char *buf = mutt_str_dup(tags);
   if (!buf)
     return -1;
 
@@ -2100,7 +2100,7 @@ int nm_get_all_tags(struct Mailbox *m, char **tag_list, int *tag_count)
     if (*tag)
     {
       if (tag_list)
-        tag_list[*tag_count] = mutt_str_strdup(tag);
+        tag_list[*tag_count] = mutt_str_dup(tag);
       (*tag_count)++;
     }
     notmuch_tags_move_to_next(tags);
@@ -2346,7 +2346,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 
   int rc = 0;
   struct Progress progress;
-  char *url = mutt_str_strdup(mailbox_path(m));
+  char *url = mutt_str_dup(mailbox_path(m));
   bool changed = false;
 
   mutt_debug(LL_DEBUG1, "nm: sync start\n");

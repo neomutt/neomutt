@@ -301,9 +301,9 @@ static bool get_user_info(struct ConfigSet *cs)
   if (pw)
   {
     if (!Username)
-      Username = mutt_str_strdup(pw->pw_name);
+      Username = mutt_str_dup(pw->pw_name);
     if (!HomeDir)
-      HomeDir = mutt_str_strdup(pw->pw_dir);
+      HomeDir = mutt_str_dup(pw->pw_dir);
     if (!shell)
       cs_str_initial_set(cs, "shell", pw->pw_shell, NULL);
   }
@@ -434,7 +434,7 @@ int main(int argc, char *argv[], char *envp[])
 
       /* non-option, either an attachment or address */
       if (!STAILQ_EMPTY(&attach))
-        mutt_list_insert_tail(&attach, mutt_str_strdup(argv[optind]));
+        mutt_list_insert_tail(&attach, mutt_str_dup(argv[optind]));
       else
         argv[nargc++] = argv[optind];
     }
@@ -446,19 +446,19 @@ int main(int argc, char *argv[], char *envp[])
       switch (i)
       {
         case 'A':
-          mutt_list_insert_tail(&alias_queries, mutt_str_strdup(optarg));
+          mutt_list_insert_tail(&alias_queries, mutt_str_dup(optarg));
           break;
         case 'a':
-          mutt_list_insert_tail(&attach, mutt_str_strdup(optarg));
+          mutt_list_insert_tail(&attach, mutt_str_dup(optarg));
           break;
         case 'B':
           batch_mode = true;
           break;
         case 'b':
-          mutt_list_insert_tail(&bcc_list, mutt_str_strdup(optarg));
+          mutt_list_insert_tail(&bcc_list, mutt_str_dup(optarg));
           break;
         case 'c':
-          mutt_list_insert_tail(&cc_list, mutt_str_strdup(optarg));
+          mutt_list_insert_tail(&cc_list, mutt_str_dup(optarg));
           break;
         case 'D':
           dump_variables = true;
@@ -470,10 +470,10 @@ int main(int argc, char *argv[], char *envp[])
           edit_infile = true;
           break;
         case 'e':
-          mutt_list_insert_tail(&commands, mutt_str_strdup(optarg));
+          mutt_list_insert_tail(&commands, mutt_str_dup(optarg));
           break;
         case 'F':
-          mutt_list_insert_tail(&Muttrc, mutt_str_strdup(optarg));
+          mutt_list_insert_tail(&Muttrc, mutt_str_dup(optarg));
           break;
         case 'f':
           mutt_buffer_strcpy(&folder, optarg);
@@ -506,7 +506,7 @@ int main(int argc, char *argv[], char *envp[])
           sendflags |= SEND_POSTPONED;
           break;
         case 'Q':
-          mutt_list_insert_tail(&queries, mutt_str_strdup(optarg));
+          mutt_list_insert_tail(&queries, mutt_str_dup(optarg));
           break;
         case 'R':
           flags |= MUTT_CLI_RO; /* read-only mode */
@@ -734,7 +734,7 @@ int main(int argc, char *argv[], char *envp[])
   {
     rc = 0;
     for (; optind < argc; optind++)
-      mutt_list_insert_tail(&alias_queries, mutt_str_strdup(argv[optind]));
+      mutt_list_insert_tail(&alias_queries, mutt_str_dup(argv[optind]));
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &alias_queries, entries)
     {
@@ -867,7 +867,7 @@ int main(int argc, char *argv[], char *envp[])
     }
 
     if (subject)
-      e->env->subject = mutt_str_strdup(subject);
+      e->env->subject = mutt_str_dup(subject);
 
     if (draft_file)
     {

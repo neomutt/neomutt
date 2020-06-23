@@ -71,7 +71,7 @@ static char *path_tidy(const char *path, bool is_dir)
   mutt_path_tilde(buf, sizeof(buf), HomeDir);
   mutt_path_tidy(buf, is_dir);
 
-  return mutt_str_strdup(buf);
+  return mutt_str_dup(buf);
 }
 
 /**
@@ -131,7 +131,7 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
       FREE(&cdef->initial);
 
     cdef->type |= DT_INITIAL_SET;
-    cdef->initial = IP mutt_str_strdup(value);
+    cdef->initial = IP mutt_str_dup(value);
   }
 
   return rc;

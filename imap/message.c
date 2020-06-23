@@ -831,7 +831,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
         STAILQ_INIT(&e->tags);
 
         /* We take a copy of the tags so we can split the string */
-        char *tags_copy = mutt_str_strdup(h.edata->flags_remote);
+        char *tags_copy = mutt_str_dup(h.edata->flags_remote);
         driver_tags_replace(&e->tags, tags_copy);
         FREE(&tags_copy);
 
@@ -1204,7 +1204,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         STAILQ_INIT(&e->tags);
 
         /* We take a copy of the tags so we can split the string */
-        char *tags_copy = mutt_str_strdup(h.edata->flags_remote);
+        char *tags_copy = mutt_str_dup(h.edata->flags_remote);
         driver_tags_replace(&e->tags, tags_copy);
         FREE(&tags_copy);
 
@@ -1843,7 +1843,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
 
   /* Update tags system */
   /* We take a copy of the tags so we can split the string */
-  char *tags_copy = mutt_str_strdup(edata->flags_remote);
+  char *tags_copy = mutt_str_dup(edata->flags_remote);
   driver_tags_replace(&e->tags, tags_copy);
   FREE(&tags_copy);
 

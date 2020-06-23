@@ -1669,7 +1669,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
         struct Body *group = mutt_body_new();
         group->type = TYPE_MULTIPART;
-        group->subtype = mutt_str_strdup("alternative");
+        group->subtype = mutt_str_dup("alternative");
         group->disposition = DISP_INLINE;
 
         struct Body *alts = NULL;
@@ -1730,7 +1730,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
         /* if no group desc yet, make one up */
         if (!group->description)
-          group->description = mutt_str_strdup("unknown alternative group");
+          group->description = mutt_str_dup("unknown alternative group");
 
         struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         gptr->content = group;
@@ -1766,7 +1766,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
         struct Body *group = mutt_body_new();
         group->type = TYPE_MULTIPART;
-        group->subtype = mutt_str_strdup("multilingual");
+        group->subtype = mutt_str_dup("multilingual");
         group->disposition = DISP_INLINE;
 
         struct Body *alts = NULL;
@@ -1827,7 +1827,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
         /* if no group desc yet, make one up */
         if (!group->description)
-          group->description = mutt_str_strdup("unknown multilingual group");
+          group->description = mutt_str_dup("unknown multilingual group");
 
         struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         gptr->content = group;
@@ -2122,7 +2122,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_str_copy(buf, CUR_ATTACH->content->language, sizeof(buf));
         if (mutt_get_field("Content-Language: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
-          CUR_ATTACH->content->language = mutt_str_strdup(buf);
+          CUR_ATTACH->content->language = mutt_str_dup(buf);
           menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
           mutt_clear_error();
         }

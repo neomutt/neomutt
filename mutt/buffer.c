@@ -434,7 +434,7 @@ char *mutt_buffer_strdup(struct Buffer *buf)
   if (!buf)
     return NULL;
 
-  return mutt_str_strdup(buf->data);
+  return mutt_str_dup(buf->data);
 }
 
 /**

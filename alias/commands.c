@@ -84,7 +84,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   {
     /* create a new alias */
     tmp = alias_new();
-    tmp->name = mutt_str_strdup(buf->data);
+    tmp->name = mutt_str_dup(buf->data);
     TAILQ_INSERT_TAIL(&Aliases, tmp, entries);
     event = NT_ALIAS_NEW;
   }
@@ -123,7 +123,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   {
     char *comment = s->dptr + 1;
     SKIPWS(comment);
-    tmp->comment = mutt_str_strdup(comment);
+    tmp->comment = mutt_str_dup(comment);
   }
 
   alias_reverse_add(tmp);

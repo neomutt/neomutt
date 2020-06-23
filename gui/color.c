@@ -1015,7 +1015,7 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
         return MUTT_CMD_ERROR;
       }
     }
-    tmp->pattern = mutt_str_strdup(s);
+    tmp->pattern = mutt_str_dup(s);
     tmp->match = match;
 #ifdef HAVE_COLOR
     if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))

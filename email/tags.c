@@ -82,10 +82,10 @@ static void driver_tags_add(struct TagList *list, char *new_tag)
   char *new_tag_transformed = mutt_hash_find(TagTransforms, new_tag);
 
   struct Tag *tn = mutt_mem_calloc(1, sizeof(struct Tag));
-  tn->name = mutt_str_strdup(new_tag);
+  tn->name = mutt_str_dup(new_tag);
   tn->hidden = false;
   if (new_tag_transformed)
-    tn->transformed = mutt_str_strdup(new_tag_transformed);
+    tn->transformed = mutt_str_dup(new_tag_transformed);
 
   /* filter out hidden tags */
   if (C_HiddenTags)

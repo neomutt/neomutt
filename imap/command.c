@@ -540,7 +540,7 @@ static void cmd_parse_capability(struct ImapAccountData *adata, char *s)
   if (bracket)
     *bracket = '\0';
   FREE(&adata->capstr);
-  adata->capstr = mutt_str_strdup(s);
+  adata->capstr = mutt_str_dup(s);
   adata->capabilities = 0;
 
   while (*s)

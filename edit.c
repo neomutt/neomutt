@@ -115,7 +115,7 @@ static char **be_snarf_data(FILE *fp, char **buf, int *bufmax, int *buflen,
     bytes -= mutt_str_strlen(p);
     if (*bufmax == *buflen)
       mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
-    buf[(*buflen)++] = mutt_str_strdup(tmp);
+    buf[(*buflen)++] = mutt_str_dup(tmp);
   }
   if (buf && (*bufmax == *buflen))
   { /* Do not smash memory past buf */
@@ -235,7 +235,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
 
       if (*bufmax == *buflen)
         mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
-      buf[(*buflen)++] = mutt_str_strdup(tmp);
+      buf[(*buflen)++] = mutt_str_dup(tmp);
 
 #if 0
       /* This only worked for mbox Mailboxes because they had Context->fp set.
@@ -253,7 +253,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
 
       if (*bufmax == *buflen)
         mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
-      buf[(*buflen)++] = mutt_str_strdup("\n");
+      buf[(*buflen)++] = mutt_str_dup("\n");
     }
     else
       mutt_window_printf(_("%d: invalid message number.\n"), n);
@@ -566,7 +566,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
       mutt_str_cat(tmp, sizeof(tmp), "\n");
       if (buflen == bufmax)
         mutt_mem_realloc(&buf, sizeof(char *) * (bufmax += 25));
-      buf[buflen++] = mutt_str_strdup((tmp[1] == '~') ? tmp + 1 : tmp);
+      buf[buflen++] = mutt_str_dup((tmp[1] == '~') ? tmp + 1 : tmp);
     }
 
     tmp[0] = '\0';

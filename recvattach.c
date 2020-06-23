@@ -170,7 +170,7 @@ void mutt_update_tree(struct AttachCtx *actx)
         mutt_str_replace(&actx->idx[rindex]->tree, buf);
     }
     else
-      actx->idx[rindex]->tree = mutt_str_strdup(buf);
+      actx->idx[rindex]->tree = mutt_str_dup(buf);
 
     if (((2 * (actx->idx[rindex]->level + 2)) < sizeof(buf)) &&
         actx->idx[rindex]->level)

@@ -305,7 +305,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
       char *p = buf + plen;
       while (*p == ' ')
         p++;
-      adata->authenticators = mutt_str_strdup(p);
+      adata->authenticators = mutt_str_dup(p);
     }
 #endif
     else if (mutt_str_equal("OVER", buf))
@@ -428,7 +428,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
       return nntp_connect_error(adata);
     }
     if (!mutt_str_startswith(buf, "215"))
-      adata->overview_fmt = mutt_str_strdup(OverviewFmt);
+      adata->overview_fmt = mutt_str_dup(OverviewFmt);
     else
     {
       bool cont = false;
@@ -1022,7 +1022,7 @@ static void nntp_parse_xref(struct Mailbox *m, struct Email *e)
 {
   struct NntpMboxData *mdata = m->mdata;
 
-  char *buf = mutt_str_strdup(e->env->xref);
+  char *buf = mutt_str_dup(e->env->xref);
   char *p = buf;
   while (p)
   {
@@ -1174,7 +1174,7 @@ static int parse_overview_line(char *line, void *data)
   m->emails[m->msg_count] = email_new();
   e = m->emails[m->msg_count];
   e->env = mutt_rfc822_read_header(fp, e, false, false);
-  e->env->newsgroups = mutt_str_strdup(mdata->group);
+  e->env->newsgroups = mutt_str_dup(mdata->group);
   e->received = e->date_sent;
   mutt_file_fclose(&fp);
 
@@ -2742,7 +2742,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     if (!msg->fp)
     {
       mutt_mktemp(buf, sizeof(buf));
-      acache->path = mutt_str_strdup(buf);
+      acache->path = mutt_str_dup(buf);
       acache->index = e->index;
       msg->fp = mutt_file_fopen(acache->path, "w+");
       if (!msg->fp)

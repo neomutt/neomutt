@@ -430,7 +430,7 @@ int log_disp_queue(time_t stamp, const char *file, int line,
   ll->line = line;
   ll->function = function;
   ll->level = level;
-  ll->message = mutt_str_strdup(buf);
+  ll->message = mutt_str_dup(buf);
 
   log_queue_add(ll);
 

@@ -68,7 +68,7 @@ void mutt_envlist_init(char *envp[])
 
   EnvList = mutt_mem_calloc(count + 1, sizeof(char *));
   for (src = envp, dst = EnvList; src && *src; src++, dst++)
-    *dst = mutt_str_strdup(*src);
+    *dst = mutt_str_dup(*src);
 }
 
 /**
@@ -117,7 +117,7 @@ bool mutt_envlist_set(const char *name, const char *value, bool overwrite)
   {
     /* not found, add new slot */
     mutt_mem_realloc(&EnvList, sizeof(char *) * (count + 2));
-    EnvList[count] = mutt_str_strdup(work);
+    EnvList[count] = mutt_str_dup(work);
     EnvList[count + 1] = NULL;
   }
   return true;

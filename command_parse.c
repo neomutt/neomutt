@@ -144,11 +144,11 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
     FREE(&tmp);
 
     if (mutt_istr_equal(buf->data, "any"))
-      tmp = mutt_str_strdup("*/.*");
+      tmp = mutt_str_dup("*/.*");
     else if (mutt_istr_equal(buf->data, "none"))
-      tmp = mutt_str_strdup("cheap_hack/this_should_never_match");
+      tmp = mutt_str_dup("cheap_hack/this_should_never_match");
     else
-      tmp = mutt_str_strdup(buf->data);
+      tmp = mutt_str_dup(buf->data);
 
     minor = strchr(tmp, '/');
     if (minor)
@@ -296,11 +296,11 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
 
     /* some cheap hacks that I expect to remove */
     if (mutt_istr_equal(buf->data, "any"))
-      a->major = mutt_str_strdup("*/.*");
+      a->major = mutt_str_dup("*/.*");
     else if (mutt_istr_equal(buf->data, "none"))
-      a->major = mutt_str_strdup("cheap_hack/this_should_never_match");
+      a->major = mutt_str_dup("cheap_hack/this_should_never_match");
     else
-      a->major = mutt_str_strdup(buf->data);
+      a->major = mutt_str_dup(buf->data);
 
     p = strchr(a->major, '/');
     if (p)
@@ -464,7 +464,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
       return -1;
     }
 
-    mutt_list_insert_head(&MuttrcStack, mutt_str_strdup(rcfile));
+    mutt_list_insert_head(&MuttrcStack, mutt_str_dup(rcfile));
   }
 
   mutt_debug(LL_DEBUG2, "Reading configuration file '%s'\n", rcfile);
@@ -484,7 +484,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     const bool conv = C_ConfigCharset && C_Charset;
     if (conv)
     {
-      currentline = mutt_str_strdup(line);
+      currentline = mutt_str_dup(line);
       if (!currentline)
         continue;
       mutt_ch_convert_string(&currentline, C_ConfigCharset, C_Charset, 0);
@@ -894,7 +894,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
       if (buf->data && (*buf->data != '\0'))
       {
-        m->name = mutt_str_strdup(buf->data);
+        m->name = mutt_str_dup(buf->data);
       }
       else
       {
@@ -1295,7 +1295,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
         const char *name = NULL;
         if (my)
         {
-          name = mutt_str_strdup(buf->data);
+          name = mutt_str_dup(buf->data);
         }
         mutt_extract_token(buf, s, MUTT_TOKEN_BACKTICK_VARS);
         if (my)
@@ -1503,7 +1503,7 @@ enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_WARNING;
   }
 
-  char *name = mutt_str_strdup(buf->data);
+  char *name = mutt_str_dup(buf->data);
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   mutt_envlist_set(name, buf->data, true);
   FREE(&name);
@@ -1746,12 +1746,12 @@ enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s,
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (buf->data && (*buf->data != '\0'))
-      tag = mutt_str_strdup(buf->data);
+      tag = mutt_str_dup(buf->data);
     else
       continue;
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-    format = mutt_str_strdup(buf->data);
+    format = mutt_str_dup(buf->data);
 
     /* avoid duplicates */
     tmp = mutt_hash_find(TagFormats, format);
@@ -1785,12 +1785,12 @@ enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (buf->data && (*buf->data != '\0'))
-      tag = mutt_str_strdup(buf->data);
+      tag = mutt_str_dup(buf->data);
     else
       continue;
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-    transform = mutt_str_strdup(buf->data);
+    transform = mutt_str_dup(buf->data);
 
     /* avoid duplicates */
     tmp = mutt_hash_find(TagTransforms, tag);

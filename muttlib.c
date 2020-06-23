@@ -976,7 +976,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             buf[n] = '\0'; /* remove '%' */
             if ((n > 0) && (buf[n - 1] != '%'))
             {
-              recycler = mutt_str_strdup(buf);
+              recycler = mutt_str_dup(buf);
               if (recycler)
               {
                 /* buflen is decremented at the start of this function
@@ -1406,7 +1406,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
   {
     /* read from a pipe */
 
-    char *p = mutt_str_strdup(path);
+    char *p = mutt_str_dup(path);
 
     p[len - 1] = 0;
     mutt_endwin();
@@ -1563,7 +1563,7 @@ const char *mutt_make_version(void)
  */
 void mutt_encode_path(struct Buffer *buf, const char *src)
 {
-  char *p = mutt_str_strdup(src);
+  char *p = mutt_str_dup(src);
   int rc = mutt_ch_convert_string(&p, C_Charset, "us-ascii", 0);
   size_t len = mutt_buffer_strcpy(buf, (rc == 0) ? NONULL(p) : NONULL(src));
 
@@ -1589,7 +1589,7 @@ void mutt_encode_path(struct Buffer *buf, const char *src)
 int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf)
 {
   const char *xdg_env = mutt_str_getenv(xdg_env_vars[type]);
-  char *xdg = xdg_env ? mutt_str_strdup(xdg_env) : mutt_str_strdup(xdg_defaults[type]);
+  char *xdg = xdg_env ? mutt_str_dup(xdg_env) : mutt_str_dup(xdg_defaults[type]);
   char *x = xdg; /* strsep() changes xdg, so free x instead later */
   char *token = NULL;
   int rc = 0;
@@ -1802,7 +1802,7 @@ void add_to_stailq(struct ListHead *head, const char *str)
       return;
     }
   }
-  mutt_list_insert_tail(head, mutt_str_strdup(str));
+  mutt_list_insert_tail(head, mutt_str_dup(str));
 }
 
 /**

@@ -1541,8 +1541,8 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
 
   body = mutt_body_new();
   body->type = TYPE_MESSAGE;
-  body->subtype = mutt_str_strdup("rfc822");
-  body->filename = mutt_str_strdup(mutt_b2s(buf));
+  body->subtype = mutt_str_dup("rfc822");
+  body->filename = mutt_str_dup(mutt_b2s(buf));
   body->unlink = true;
   body->use_disp = false;
   body->disposition = DISP_INLINE;
@@ -1655,7 +1655,7 @@ static void run_mime_type_query(struct Body *att)
 struct Body *mutt_make_file_attach(const char *path)
 {
   struct Body *att = mutt_body_new();
-  att->filename = mutt_str_strdup(path);
+  att->filename = mutt_str_dup(path);
 
   if (C_MimeTypeQueryCommand && C_MimeTypeQueryFirst)
     run_mime_type_query(att);
@@ -1685,12 +1685,12 @@ struct Body *mutt_make_file_attach(const char *path)
       /* Statistically speaking, there should be more than 10% "lobin"
        * chars if this is really a binary file...  */
       att->type = TYPE_TEXT;
-      att->subtype = mutt_str_strdup("plain");
+      att->subtype = mutt_str_dup("plain");
     }
     else
     {
       att->type = TYPE_APPLICATION;
-      att->subtype = mutt_str_strdup("octet-stream");
+      att->subtype = mutt_str_dup("octet-stream");
     }
   }
 
@@ -1752,7 +1752,7 @@ struct Body *mutt_make_multipart(struct Body *b)
 {
   struct Body *new_body = mutt_body_new();
   new_body->type = TYPE_MULTIPART;
-  new_body->subtype = mutt_str_strdup("mixed");
+  new_body->subtype = mutt_str_dup("mixed");
   new_body->encoding = get_toplevel_encoding(b);
   do
   {
@@ -2162,7 +2162,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   char *last = NULL, *line = NULL;
   int max = 0, w, rc = -1;
   int pfxw = mutt_strwidth(pfx);
-  char *v = mutt_str_strdup(value);
+  char *v = mutt_str_dup(value);
   bool display = (chflags & CH_DISPLAY);
 
   if (!display || C_Weed)
@@ -2511,7 +2511,7 @@ static void encode_headers(struct ListHead *h)
 
     i = p - np->data;
     p = mutt_str_skip_email_wsp(p + 1);
-    tmp = mutt_str_strdup(p);
+    tmp = mutt_str_dup(p);
 
     if (!tmp)
       continue;
@@ -2574,7 +2574,7 @@ static char *gen_msgid(void)
   struct tm tm = mutt_date_gmtime(MUTT_DATE_NOW);
   snprintf(buf, sizeof(buf), "<%d%02d%02d%02d%02d%02d.%s@%s>", tm.tm_year + 1900,
            tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, rndid, fqdn);
-  return mutt_str_strdup(buf);
+  return mutt_str_dup(buf);
 }
 
 /**
@@ -2849,11 +2849,11 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
       return i;
     }
 
-    s = mutt_str_strdup(cmd);
+    s = mutt_str_dup(cmd);
   }
   else
 #endif
-    s = mutt_str_strdup(C_Sendmail);
+    s = mutt_str_dup(C_Sendmail);
 
   /* ensure that $sendmail is set to avoid a crash. http://dev.mutt.org/trac/ticket/3548 */
   if (!s)
@@ -2877,7 +2877,7 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
     }
     else
     {
-      path = mutt_str_strdup(ps);
+      path = mutt_str_dup(ps);
       ps = strrchr(ps, '/');
       if (ps)
         ps++;
@@ -3023,7 +3023,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
       buf[0] = '\0';
       mutt_addr_cat(buf, sizeof(buf), "undisclosed-recipients", AddressSpecials);
 
-      to->mailbox = mutt_str_strdup(buf);
+      to->mailbox = mutt_str_dup(buf);
     }
 
     mutt_set_followup_to(env);
@@ -3150,7 +3150,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to)
    * send-hooks and set the realname last so that it can be changed based
    * upon message criteria.  */
   if (!from->personal)
-    from->personal = mutt_str_strdup(C_Realname);
+    from->personal = mutt_str_dup(C_Realname);
 
   mutt_addrlist_qualify(&from_list, fqdn);
 
@@ -3465,7 +3465,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   if (mx_msg_commit(ctx_fcc->mailbox, msg) != 0)
     rc = -1;
   else if (finalpath)
-    *finalpath = mutt_str_strdup(msg->committed_path);
+    *finalpath = mutt_str_dup(msg->committed_path);
   mx_msg_close(ctx_fcc->mailbox, &msg);
   mx_mbox_close(&ctx_fcc);
 

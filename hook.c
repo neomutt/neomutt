@@ -730,7 +730,7 @@ static void list_hook(struct ListHead *matches, const char *match, HookFlags hoo
   {
     if ((tmp->type & hook) && mutt_regex_match(&tmp->regex, match))
     {
-      mutt_list_insert_tail(matches, mutt_str_strdup(tmp->command));
+      mutt_list_insert_tail(matches, mutt_str_dup(tmp->command));
     }
   }
 }

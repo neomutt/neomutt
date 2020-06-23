@@ -167,7 +167,7 @@ int mutt_autocrypt_account_init(bool prompt)
   {
     addr = mutt_addr_copy(C_From);
     if (!addr->personal && C_Realname)
-      addr->personal = mutt_str_strdup(C_Realname);
+      addr->personal = mutt_str_dup(C_Realname);
   }
 
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
@@ -348,7 +348,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
     peer = mutt_autocrypt_db_peer_new();
     peer->last_seen = e->date_sent;
     peer->autocrypt_timestamp = e->date_sent;
-    peer->keydata = mutt_str_strdup(valid_ac_hdr->keydata);
+    peer->keydata = mutt_str_dup(valid_ac_hdr->keydata);
     peer->prefer_encrypt = valid_ac_hdr->prefer_encrypt;
   }
 
@@ -369,9 +369,9 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
   if (insert_db_history)
   {
     peerhist = mutt_autocrypt_db_peer_history_new();
-    peerhist->email_msgid = mutt_str_strdup(env->message_id);
+    peerhist->email_msgid = mutt_str_dup(env->message_id);
     peerhist->timestamp = e->date_sent;
-    peerhist->keydata = mutt_str_strdup(peer->keydata);
+    peerhist->keydata = mutt_str_dup(peer->keydata);
     if (mutt_autocrypt_db_peer_history_insert(from, peerhist))
       goto cleanup;
   }
@@ -489,7 +489,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
     {
       peer = mutt_autocrypt_db_peer_new();
       peer->gossip_timestamp = e->date_sent;
-      peer->gossip_keydata = mutt_str_strdup(ac_hdr->keydata);
+      peer->gossip_keydata = mutt_str_dup(ac_hdr->keydata);
     }
 
     if (import_gpg)
@@ -508,10 +508,10 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
     if (insert_db_history)
     {
       gossip_hist = mutt_autocrypt_db_gossip_history_new();
-      gossip_hist->sender_email_addr = mutt_str_strdup(from->mailbox);
-      gossip_hist->email_msgid = mutt_str_strdup(env->message_id);
+      gossip_hist->sender_email_addr = mutt_str_dup(from->mailbox);
+      gossip_hist->email_msgid = mutt_str_dup(env->message_id);
       gossip_hist->timestamp = e->date_sent;
-      gossip_hist->gossip_keydata = mutt_str_strdup(peer->gossip_keydata);
+      gossip_hist->gossip_keydata = mutt_str_dup(peer->gossip_keydata);
       if (mutt_autocrypt_db_gossip_history_insert(peer_addr, gossip_hist))
         goto cleanup;
     }
@@ -815,8 +815,8 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
     if (keydata)
     {
       struct AutocryptHeader *gossip = mutt_autocrypthdr_new();
-      gossip->addr = mutt_str_strdup(peer->email_addr);
-      gossip->keydata = mutt_str_strdup(keydata);
+      gossip->addr = mutt_str_dup(peer->email_addr);
+      gossip->keydata = mutt_str_dup(keydata);
       gossip->next = mime_headers->autocrypt_gossip;
       mime_headers->autocrypt_gossip = gossip;
     }
@@ -845,8 +845,8 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
     if (keydata)
     {
       struct AutocryptHeader *gossip = mutt_autocrypthdr_new();
-      gossip->addr = mutt_str_strdup(addr);
-      gossip->keydata = mutt_str_strdup(keydata);
+      gossip->addr = mutt_str_dup(addr);
+      gossip->keydata = mutt_str_dup(keydata);
       gossip->next = mime_headers->autocrypt_gossip;
       mime_headers->autocrypt_gossip = gossip;
     }

@@ -313,7 +313,7 @@ struct HashElem *mutt_hash_typed_insert(struct HashTable *table,
     return NULL;
 
   union HashKey key;
-  key.strkey = table->strdup_keys ? mutt_str_strdup(strkey) : strkey;
+  key.strkey = table->strdup_keys ? mutt_str_dup(strkey) : strkey;
   return union_hash_insert(table, key, type, data);
 }
 

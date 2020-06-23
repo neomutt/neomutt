@@ -669,8 +669,8 @@ static void add_folder(struct Menu *menu, struct BrowserState *state,
     (state->entry)[state->entrylen].msg_unread = m->msg_unread;
   }
 
-  (state->entry)[state->entrylen].name = mutt_str_strdup(name);
-  (state->entry)[state->entrylen].desc = mutt_str_strdup(desc ? desc : name);
+  (state->entry)[state->entrylen].name = mutt_str_dup(name);
+  (state->entry)[state->entrylen].desc = mutt_str_dup(desc ? desc : name);
 #ifdef USE_IMAP
   (state->entry)[state->entrylen].imap = false;
 #endif

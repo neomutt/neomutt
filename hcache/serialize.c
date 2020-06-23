@@ -187,7 +187,7 @@ void serial_restore_char(char **c, const unsigned char *d, int *off, bool conver
   memcpy(*c, d + *off, size);
   if (convert && !mutt_str_is_ascii(*c, size))
   {
-    char *tmp = mutt_str_strdup(*c);
+    char *tmp = mutt_str_dup(*c);
     if (mutt_ch_convert_string(&tmp, "utf-8", C_Charset, 0) == 0)
     {
       FREE(c);

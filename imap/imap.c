@@ -131,7 +131,7 @@ static char *get_flags(struct ListHead *hflags, char *s)
     const char ctmp = *s;
     *s = '\0';
     if (*flag_word)
-      mutt_list_insert_tail(hflags, mutt_str_strdup(flag_word));
+      mutt_list_insert_tail(hflags, mutt_str_dup(flag_word));
     *s = ctmp;
   }
 

@@ -636,7 +636,7 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e
     else
     {
       mutt_debug(LL_DEBUG2, "Success\n");
-      msg->path = mutt_str_strdup(path);
+      msg->path = mutt_str_dup(path);
       break;
     }
   }

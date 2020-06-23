@@ -696,10 +696,10 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m,
 #endif
 #ifdef USE_COMP_MBOX
     if (Context->mailbox->compress_info && (Context->mailbox->realpath[0] != '\0'))
-      new_last_folder = mutt_str_strdup(Context->mailbox->realpath);
+      new_last_folder = mutt_str_dup(Context->mailbox->realpath);
     else
 #endif
-      new_last_folder = mutt_str_strdup(mailbox_path(Context->mailbox));
+      new_last_folder = mutt_str_dup(mailbox_path(Context->mailbox));
     *oldcount = Context->mailbox->msg_count;
 
     int check = mx_mbox_close(&Context);
@@ -726,7 +726,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m,
    * could be deleted, leaving `m` dangling. */
   // TODO: Refactor this function to avoid the need for an observer
   notify_observer_add(m->notify, mailbox_index_observer, &m);
-  char *dup_path = mutt_str_strdup(mailbox_path(m));
+  char *dup_path = mutt_str_dup(mailbox_path(m));
 
   mutt_folder_hook(mailbox_path(m), m ? m->name : NULL);
   if (m)
@@ -1802,7 +1802,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
               snprintf(buf2, sizeof(buf2), "~A");
           }
           FREE(&Context->pattern);
-          Context->pattern = mutt_str_strdup(buf2);
+          Context->pattern = mutt_str_dup(buf2);
           mutt_pattern_func(MUTT_LIMIT, NULL);
         }
 
@@ -2321,7 +2321,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         }
 
         // Keep copy of user's query to name the mailbox
-        char *query_unencoded = mutt_str_strdup(buf);
+        char *query_unencoded = mutt_str_dup(buf);
 
         struct Mailbox *m_query =
             change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &index_hint,

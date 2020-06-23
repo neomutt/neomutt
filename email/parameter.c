@@ -129,8 +129,8 @@ void mutt_param_set(struct ParameterList *pl, const char *attribute, const char 
   }
 
   np = mutt_param_new();
-  np->attribute = mutt_str_strdup(attribute);
-  np->value = mutt_str_strdup(value);
+  np->attribute = mutt_str_dup(attribute);
+  np->value = mutt_str_dup(value);
   TAILQ_INSERT_HEAD(pl, np, entries);
 }
 

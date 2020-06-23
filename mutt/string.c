@@ -367,12 +367,12 @@ int mutt_str_atoull(const char *str, unsigned long long *dst)
 }
 
 /**
- * mutt_str_strdup - Copy a string, safely
+ * mutt_str_dup - Copy a string, safely
  * @param str String to copy
  * @retval ptr  Copy of the string
  * @retval NULL if str was NULL or empty
  */
-char *mutt_str_strdup(const char *str)
+char *mutt_str_dup(const char *str)
 {
   if (!str || (*str == '\0'))
     return NULL;
@@ -452,7 +452,7 @@ void mutt_str_replace(char **p, const char *s)
   if (!p)
     return;
   const char *tmp = *p;
-  *p = mutt_str_strdup(s);
+  *p = mutt_str_dup(s);
   FREE(&tmp);
 }
 

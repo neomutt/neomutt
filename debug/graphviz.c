@@ -275,7 +275,7 @@ static void dot_add_link(struct ListHead *links, const void *src, const void *ds
 
   snprintf(text, sizeof(text), "%s -> %s [ %s %s color=\"%s\" ]", obj1, obj2,
            back ? "dir=back" : "", lstr, colour);
-  mutt_list_insert_tail(links, mutt_str_strdup(text));
+  mutt_list_insert_tail(links, mutt_str_dup(text));
 }
 
 static void dot_graph_header(FILE *fp)
@@ -698,7 +698,7 @@ static void dot_mailbox_node(FILE *fp, struct MailboxNode *mn, struct ListHead *
 
   mutt_buffer_addstr(&buf, "}");
 
-  mutt_list_insert_tail(links, mutt_str_strdup(buf.data));
+  mutt_list_insert_tail(links, mutt_str_dup(buf.data));
   mutt_buffer_dealloc(&buf);
 }
 
@@ -886,7 +886,7 @@ static void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
     mutt_buffer_add_printf(&buf, "%s ", name);
 
     mutt_buffer_addstr(&buf, "}");
-    mutt_list_insert_tail(links, mutt_str_strdup(buf.data));
+    mutt_list_insert_tail(links, mutt_str_dup(buf.data));
     mutt_buffer_dealloc(&buf);
   }
 #endif
@@ -963,7 +963,7 @@ void dump_graphviz(const char *title)
   dot_ptr_name(obj1, sizeof(obj1), NeoMutt);
   dot_ptr_name(obj2, sizeof(obj2), NeoMutt->sub);
   mutt_buffer_printf(&buf, "{ rank=same %s %s }", obj1, obj2);
-  mutt_list_insert_tail(&links, mutt_str_strdup(mutt_b2s(&buf)));
+  mutt_list_insert_tail(&links, mutt_str_dup(mutt_b2s(&buf)));
   mutt_buffer_dealloc(&buf);
 #endif
 #endif
@@ -1170,7 +1170,7 @@ static void dot_body(FILE *fp, const struct Body *b, struct ListHead *links, boo
     }
 
     mutt_buffer_addstr(&buf, "}");
-    mutt_list_insert_tail(links, mutt_str_strdup(buf.data));
+    mutt_list_insert_tail(links, mutt_str_dup(buf.data));
   }
   else
   {
@@ -1388,7 +1388,7 @@ static void dot_email(FILE *fp, const struct Email *e, struct ListHead *links)
 
     mutt_buffer_addstr(&buf, "}");
 
-    mutt_list_insert_tail(links, mutt_str_strdup(buf.data));
+    mutt_list_insert_tail(links, mutt_str_dup(buf.data));
   }
 
   // struct TagList tags;

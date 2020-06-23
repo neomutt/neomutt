@@ -320,7 +320,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
         {
           /* don't let a subkey fpr overwrite an existing primary key fpr */
           if (!tmp.fingerprint)
-            tmp.fingerprint = mutt_str_strdup(p);
+            tmp.fingerprint = mutt_str_dup(p);
           break;
         }
 
@@ -332,7 +332,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
 
         uid = mutt_mem_calloc(1, sizeof(struct PgpUid));
         fix_uid(p);
-        uid->addr = mutt_str_strdup(p);
+        uid->addr = mutt_str_dup(p);
         uid->trust = trust;
         uid->flags |= flags;
         uid->next = tmp.address;

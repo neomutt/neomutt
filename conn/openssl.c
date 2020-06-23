@@ -721,10 +721,10 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
 #ifdef HAVE_LIBIDN
   if (mutt_idna_to_ascii_lz(hostname, &hostname_ascii, 0) != 0)
   {
-    hostname_ascii = mutt_str_strdup(hostname);
+    hostname_ascii = mutt_str_dup(hostname);
   }
 #else
-  hostname_ascii = mutt_str_strdup(hostname);
+  hostname_ascii = mutt_str_dup(hostname);
 #endif
 
   /* Try the DNS subjectAltNames. */
@@ -853,7 +853,7 @@ static void add_cert(const char *title, X509 *cert, bool issuer, struct ListHead
     x509 = X509_get_subject_name(cert);
 
   // Allocate formatted strings and let the ListHead take ownership
-  mutt_list_insert_tail(list, mutt_str_strdup(title));
+  mutt_list_insert_tail(list, mutt_str_dup(title));
 
   char *line = NULL;
   char *text = NULL;
@@ -889,7 +889,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
 
   char *line = NULL;
   mutt_list_insert_tail(&list, NULL);
-  mutt_list_insert_tail(&list, mutt_str_strdup(_("This certificate is valid")));
+  mutt_list_insert_tail(&list, mutt_str_dup(_("This certificate is valid")));
   mutt_str_asprintf(&line, _("   from %s"), asn1time_to_string(X509_getm_notBefore(cert)));
   mutt_list_insert_tail(&list, line);
   mutt_str_asprintf(&line, _("     to %s"), asn1time_to_string(X509_getm_notAfter(cert)));

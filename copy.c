@@ -314,7 +314,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       }
       else
       {
-        this_one = mutt_str_strdup(buf);
+        this_one = mutt_str_dup(buf);
         this_one_len = mutt_str_strlen(this_one);
       }
     }
@@ -507,7 +507,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
      * Context->label_hash strdups the keys.  But to be safe, encode a copy */
     if (!(chflags & CH_DECODE))
     {
-      temp_hdr = mutt_str_strdup(temp_hdr);
+      temp_hdr = mutt_str_dup(temp_hdr);
       rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), C_SendCharset);
     }
     if (mutt_write_one_header(fp_out, "X-Label", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
@@ -526,7 +526,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
      * have to be careful not to encode (and thus free) that memory. */
     if (!(chflags & CH_DECODE))
     {
-      temp_hdr = mutt_str_strdup(temp_hdr);
+      temp_hdr = mutt_str_dup(temp_hdr);
       rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), C_SendCharset);
     }
     if (mutt_write_one_header(fp_out, "Subject", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
@@ -1111,7 +1111,7 @@ static int address_header_decode(char **h)
   /* angle brackets for return path are mandated by RFC5322,
    * so leave Return-Path as-is */
   if (rp)
-    *h = mutt_str_strdup(s);
+    *h = mutt_str_dup(s);
   else
   {
     *h = mutt_mem_calloc(1, l + 2);

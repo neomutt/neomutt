@@ -380,7 +380,7 @@ char *mutt_path_dirname(const char *path)
 
   char buf[PATH_MAX] = { 0 };
   mutt_str_copy(buf, path, sizeof(buf));
-  return mutt_str_strdup(dirname(buf));
+  return mutt_str_dup(dirname(buf));
 }
 
 /**

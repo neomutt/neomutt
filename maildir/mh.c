@@ -675,7 +675,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
   for (p = md; p; p = p->next)
   {
     /* the hash key must survive past the header, which is freed below. */
-    p->canon_fname = mutt_str_strdup(p->email->path);
+    p->canon_fname = mutt_str_dup(p->email->path);
     mutt_hash_insert(fnames, p->canon_fname, p);
   }
 

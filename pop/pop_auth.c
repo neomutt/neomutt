@@ -217,7 +217,7 @@ void pop_apop_timestamp(struct PopAccountData *adata, char *buf)
   if ((p1 = strchr(buf, '<')) && (p2 = strchr(p1, '>')))
   {
     p2[1] = '\0';
-    adata->timestamp = mutt_str_strdup(p1);
+    adata->timestamp = mutt_str_dup(p1);
   }
 }
 

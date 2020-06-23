@@ -216,7 +216,7 @@ static struct RealKey *realkey(const char *key, size_t keylen)
  */
 static bool create_hcache_dir(const char *path)
 {
-  char *dir = mutt_str_strdup(path);
+  char *dir = mutt_str_dup(path);
   if (!dir)
     return false;
 

@@ -221,7 +221,7 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
       mutt_ch_convert_string(&value, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
 
     struct Parameter *np = mutt_param_new();
-    np->attribute = mutt_str_strdup(attribute);
+    np->attribute = mutt_str_dup(attribute);
     np->value = value;
     TAILQ_INSERT_HEAD(pl, np, entries);
   }
@@ -363,7 +363,7 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
     if (src_value)
       free_src_value = true;
     if (!charset)
-      charset = mutt_str_strdup(C_Charset ? C_Charset : "unknown-8bit");
+      charset = mutt_str_dup(C_Charset ? C_Charset : "unknown-8bit");
   }
   if (!src_value)
     src_value = value;

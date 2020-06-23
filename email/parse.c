@@ -262,7 +262,7 @@ static void parse_content_disposition(const char *s, struct Body *ct)
       mutt_str_replace(&ct->filename, s);
     s = mutt_param_get(&pl, "name");
     if (s)
-      ct->form_name = mutt_str_strdup(s);
+      ct->form_name = mutt_str_dup(s);
     mutt_param_free(&pl);
   }
 }
@@ -295,7 +295,7 @@ static void parse_content_language(const char *s, struct Body *ct)
     return;
 
   mutt_debug(LL_DEBUG2, "RFC8255 >> Content-Language set to %s\n", s);
-  ct->language = mutt_str_strdup(s);
+  ct->language = mutt_str_dup(s);
 }
 
 /**
@@ -357,7 +357,7 @@ char *mutt_extract_message_id(const char *s, size_t *len)
   if (!s || (*s == '\0'))
     return NULL;
 
-  char *decoded = mutt_str_strdup(s);
+  char *decoded = mutt_str_dup(s);
   rfc2047_decode(&decoded);
 
   char *res = NULL;
@@ -438,7 +438,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
      * let that take precedence, and don't set it here */
     pc = mutt_param_get(&ct->parameter, "name");
     if (pc && !ct->filename)
-      ct->filename = mutt_str_strdup(pc);
+      ct->filename = mutt_str_dup(pc);
 
 #ifdef SUN_ATTACHMENT
     /* this is deep and utter perversion */
@@ -457,7 +457,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
       ; // do nothing
 
     *pc = '\0';
-    ct->subtype = mutt_str_strdup(subtype);
+    ct->subtype = mutt_str_dup(subtype);
   }
 
   /* Finally, get the major type */
@@ -465,7 +465,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
 
 #ifdef SUN_ATTACHMENT
   if (mutt_istr_equal("x-sun-attachment", s))
-    ct->subtype = mutt_str_strdup("x-sun-attachment");
+    ct->subtype = mutt_str_dup("x-sun-attachment");
 #endif
 
   if (ct->type == TYPE_OTHER)
@@ -478,21 +478,21 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     /* Some older non-MIME mailers (i.e., mailtool, elm) have a content-type
      * field, so we can attempt to convert the type to Body here.  */
     if (ct->type == TYPE_TEXT)
-      ct->subtype = mutt_str_strdup("plain");
+      ct->subtype = mutt_str_dup("plain");
     else if (ct->type == TYPE_AUDIO)
-      ct->subtype = mutt_str_strdup("basic");
+      ct->subtype = mutt_str_dup("basic");
     else if (ct->type == TYPE_MESSAGE)
-      ct->subtype = mutt_str_strdup("rfc822");
+      ct->subtype = mutt_str_dup("rfc822");
     else if (ct->type == TYPE_OTHER)
     {
       char buf[128];
 
       ct->type = TYPE_APPLICATION;
       snprintf(buf, sizeof(buf), "x-%s", s);
-      ct->subtype = mutt_str_strdup(buf);
+      ct->subtype = mutt_str_dup(buf);
     }
     else
-      ct->subtype = mutt_str_strdup("x-unknown");
+      ct->subtype = mutt_str_dup("x-unknown");
   }
 
   /* Default character set for text types. */
@@ -726,7 +726,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         if (!env->followup_to)
         {
           mutt_str_remove_trailing_ws(p);
-          env->followup_to = mutt_str_strdup(mutt_str_skip_whitespace(p));
+          env->followup_to = mutt_str_dup(mutt_str_skip_whitespace(p));
         }
         matched = true;
       }
@@ -827,7 +827,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       {
         FREE(&env->newsgroups);
         mutt_str_remove_trailing_ws(p);
-        env->newsgroups = mutt_str_strdup(mutt_str_skip_whitespace(p));
+        env->newsgroups = mutt_str_dup(mutt_str_skip_whitespace(p));
         matched = true;
       }
       break;
@@ -838,7 +838,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       if (mutt_istr_equal(line + 1, "rganization"))
       {
         if (!env->organization && !mutt_istr_equal(p, "unknown"))
-          env->organization = mutt_str_strdup(p);
+          env->organization = mutt_str_dup(p);
       }
       break;
 
@@ -877,7 +877,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       if (mutt_istr_equal(line + 1, "ubject"))
       {
         if (!env->subject)
-          env->subject = mutt_str_strdup(p);
+          env->subject = mutt_str_dup(p);
         matched = true;
       }
       else if (mutt_istr_equal(line + 1, "ender"))
@@ -912,7 +912,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
                      mutt_istr_equal("upercedes", line + 1)))
       {
         FREE(&env->supersedes);
-        env->supersedes = mutt_str_strdup(p);
+        env->supersedes = mutt_str_dup(p);
       }
       break;
 
@@ -971,20 +971,20 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       else if (mutt_istr_equal(line + 1, "-label"))
       {
         FREE(&env->x_label);
-        env->x_label = mutt_str_strdup(p);
+        env->x_label = mutt_str_dup(p);
         matched = true;
       }
 #ifdef USE_NNTP
       else if (mutt_istr_equal(line + 1, "-comment-to"))
       {
         if (!env->x_comment_to)
-          env->x_comment_to = mutt_str_strdup(p);
+          env->x_comment_to = mutt_str_dup(p);
         matched = true;
       }
       else if (mutt_istr_equal(line + 1, "ref"))
       {
         if (!env->xref)
-          env->xref = mutt_str_strdup(p);
+          env->xref = mutt_str_dup(p);
         matched = true;
       }
 #endif
@@ -1007,7 +1007,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
 
     if (!(weed && C_Weed && mutt_matches_ignore(line)))
     {
-      struct ListNode *np = mutt_list_insert_tail(&env->userhdrs, mutt_str_strdup(line));
+      struct ListNode *np = mutt_list_insert_tail(&env->userhdrs, mutt_str_dup(line));
       if (do_2047)
         rfc2047_decode(&np->data);
     }
@@ -1122,7 +1122,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
 
       /* set the defaults from RFC1521 */
       e->content->type = TYPE_TEXT;
-      e->content->subtype = mutt_str_strdup("plain");
+      e->content->subtype = mutt_str_dup("plain");
       e->content->encoding = ENC_7BIT;
       e->content->length = -1;
 
@@ -1336,9 +1336,9 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
   }
   p->offset = ftello(fp); /* Mark the start of the real data */
   if ((p->type == TYPE_TEXT) && !p->subtype)
-    p->subtype = mutt_str_strdup("plain");
+    p->subtype = mutt_str_dup("plain");
   else if ((p->type == TYPE_MESSAGE) && !p->subtype)
-    p->subtype = mutt_str_strdup("rfc822");
+    p->subtype = mutt_str_dup("rfc822");
 
   FREE(&line);
 

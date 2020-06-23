@@ -93,7 +93,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   }
 
   imap_qualify_path(tmp, sizeof(tmp), &cac, folder);
-  (state->entry)[state->entrylen].name = mutt_str_strdup(tmp);
+  (state->entry)[state->entrylen].name = mutt_str_dup(tmp);
 
   /* mark desc with delim in browser if it can have subfolders */
   if (!isparent && !noinferiors && (strlen(relpath) < sizeof(relpath) - 1))
@@ -102,7 +102,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
     relpath[strlen(relpath)] = delim;
   }
 
-  (state->entry)[state->entrylen].desc = mutt_str_strdup(relpath);
+  (state->entry)[state->entrylen].desc = mutt_str_dup(relpath);
 
   (state->entry)[state->entrylen].imap = true;
   /* delimiter at the root is useless. */
@@ -284,7 +284,7 @@ int imap_browse(const char *path, struct BrowserState *state)
     {
       showparents = true;
       imap_qualify_path(buf, sizeof(buf), &cac, mbox);
-      state->folder = mutt_str_strdup(buf);
+      state->folder = mutt_str_dup(buf);
       n--;
     }
 
@@ -318,7 +318,7 @@ int imap_browse(const char *path, struct BrowserState *state)
         ctmp = mbox[n];
         mbox[n] = '\0';
         imap_qualify_path(buf, sizeof(buf), &cac, mbox);
-        state->folder = mutt_str_strdup(buf);
+        state->folder = mutt_str_dup(buf);
       }
       mbox[n] = ctmp;
     }
@@ -333,7 +333,7 @@ int imap_browse(const char *path, struct BrowserState *state)
       if (!state->folder)
       {
         imap_qualify_path(buf, sizeof(buf), &cac, relpath);
-        state->folder = mutt_str_strdup(buf);
+        state->folder = mutt_str_dup(buf);
       }
     }
   }
@@ -342,7 +342,7 @@ int imap_browse(const char *path, struct BrowserState *state)
   if (!state->folder)
   {
     imap_qualify_path(buf, sizeof(buf), &cac, NULL);
-    state->folder = mutt_str_strdup(buf);
+    state->folder = mutt_str_dup(buf);
   }
 
   mutt_debug(LL_DEBUG3, "Quoting mailbox scan: %s -> ", mbox);

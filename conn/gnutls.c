@@ -431,7 +431,7 @@ static void add_cert(const char *title, gnutls_x509_crt_t cert, bool issuer,
   int rc;
 
   // Allocate formatted strings and let the ListHead take ownership
-  mutt_list_insert_tail(list, mutt_str_strdup(title));
+  mutt_list_insert_tail(list, mutt_str_dup(title));
 
   for (size_t i = 0; i < mutt_array_size(part); i++)
   {
@@ -494,7 +494,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   add_cert(_("This certificate was issued by:"), cert, true, &list);
 
   mutt_list_insert_tail(&list, NULL);
-  mutt_list_insert_tail(&list, mutt_str_strdup(_("This certificate is valid")));
+  mutt_list_insert_tail(&list, mutt_str_dup(_("This certificate is valid")));
 
   char *line = NULL;
   t = gnutls_x509_crt_get_activation_time(cert);
@@ -528,37 +528,35 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   if (certerr & CERTERR_NOTYETVALID)
   {
     mutt_list_insert_tail(
-        &list,
-        mutt_str_strdup(_("WARNING: Server certificate is not yet valid")));
+        &list, mutt_str_dup(_("WARNING: Server certificate is not yet valid")));
   }
   if (certerr & CERTERR_EXPIRED)
   {
     mutt_list_insert_tail(
-        &list, mutt_str_strdup(_("WARNING: Server certificate has expired")));
+        &list, mutt_str_dup(_("WARNING: Server certificate has expired")));
   }
   if (certerr & CERTERR_REVOKED)
   {
     mutt_list_insert_tail(
-        &list,
-        mutt_str_strdup(_("WARNING: Server certificate has been revoked")));
+        &list, mutt_str_dup(_("WARNING: Server certificate has been revoked")));
   }
   if (certerr & CERTERR_HOSTNAME)
   {
     mutt_list_insert_tail(
-        &list, mutt_str_strdup(
-                   _("WARNING: Server hostname does not match certificate")));
+        &list,
+        mutt_str_dup(_("WARNING: Server hostname does not match certificate")));
   }
   if (certerr & CERTERR_SIGNERNOTCA)
   {
     mutt_list_insert_tail(
-        &list, mutt_str_strdup(
-                   _("WARNING: Signer of server certificate is not a CA")));
+        &list,
+        mutt_str_dup(_("WARNING: Signer of server certificate is not a CA")));
   }
   if (certerr & CERTERR_INSECUREALG)
   {
     mutt_list_insert_tail(
-        &list, mutt_str_strdup(_("Warning: Server certificate was signed using "
-                                 "an insecure algorithm")));
+        &list, mutt_str_dup(_("Warning: Server certificate was signed using "
+                              "an insecure algorithm")));
   }
 
   snprintf(title, sizeof(title),

@@ -231,7 +231,7 @@ static bool eat_regex(struct Pattern *pat, int flags, struct Buffer *s, struct B
 
   if (pat->string_match)
   {
-    pat->p.str = mutt_str_strdup(buf.data);
+    pat->p.str = mutt_str_dup(buf.data);
     pat->ign_case = mutt_mb_is_lower(buf.data);
     FREE(&buf.data);
   }
@@ -271,7 +271,7 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
   if (*nows == '\0')
     return true;
   mutt_str_remove_trailing_ws(nows);
-  mutt_list_insert_tail(msgid_list, mutt_str_strdup(nows));
+  mutt_list_insert_tail(msgid_list, mutt_str_dup(nows));
   return true;
 }
 
@@ -1095,7 +1095,7 @@ static bool eat_date(struct Pattern *pat, int flags, struct Buffer *s, struct Bu
   if (flags & MUTT_PC_PATTERN_DYNAMIC)
   {
     pat->dynamic = true;
-    pat->p.str = mutt_str_strdup(tmp->data);
+    pat->p.str = mutt_str_dup(tmp->data);
   }
 
   rc = eval_date_minmax(pat, tmp->data, err);

@@ -473,7 +473,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
 
     if (fp)
     {
-      fname = mutt_str_strdup(a->filename);
+      fname = mutt_str_dup(a->filename);
       mutt_file_sanitize_filename(fname, true);
     }
     else
@@ -1221,7 +1221,7 @@ out:
  */
 void mutt_add_temp_attachment(const char *filename)
 {
-  mutt_list_insert_tail(&TempAttachmentsList, mutt_str_strdup(filename));
+  mutt_list_insert_tail(&TempAttachmentsList, mutt_str_dup(filename));
 }
 
 /**

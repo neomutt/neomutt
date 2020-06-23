@@ -205,7 +205,7 @@ static struct Remailer **mix_type2_list(size_t *l)
   /* first, generate the "random" remailer */
 
   p = remailer_new();
-  p->shortname = mutt_str_strdup(_("<random>"));
+  p->shortname = mutt_str_dup(_("<random>"));
   mix_add_entry(&type2_list, p, &slots, &used);
 
   while (fgets(line, sizeof(line), fp))
@@ -216,13 +216,13 @@ static struct Remailer **mix_type2_list(size_t *l)
     if (!t)
       goto problem;
 
-    p->shortname = mutt_str_strdup(t);
+    p->shortname = mutt_str_dup(t);
 
     t = strtok(NULL, " \t\n");
     if (!t)
       goto problem;
 
-    p->addr = mutt_str_strdup(t);
+    p->addr = mutt_str_dup(t);
 
     t = strtok(NULL, " \t\n");
     if (!t)
@@ -232,7 +232,7 @@ static struct Remailer **mix_type2_list(size_t *l)
     if (!t)
       goto problem;
 
-    p->ver = mutt_str_strdup(t);
+    p->ver = mutt_str_dup(t);
 
     t = strtok(NULL, " \t\n");
     if (!t)
@@ -838,7 +838,7 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
       else
         t = "*";
 
-      mutt_list_insert_tail(chainhead, mutt_str_strdup(t));
+      mutt_list_insert_tail(chainhead, mutt_str_dup(t));
     }
   }
 

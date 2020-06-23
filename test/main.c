@@ -502,6 +502,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_atoull)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_copy)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_str_dequote_comment)                             \
+  NEOMUTT_TEST_ITEM(test_mutt_str_dup)                                         \
   NEOMUTT_TEST_ITEM(test_mutt_str_equal)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_find_word)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_getenv)                                      \
@@ -519,7 +520,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_startswith)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_cat)                                         \
   NEOMUTT_TEST_ITEM(test_mutt_str_strcoll)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strdup)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_stristr)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_strlen)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_substr_dup)                                  \

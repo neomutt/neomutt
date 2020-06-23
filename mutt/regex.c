@@ -54,7 +54,7 @@ struct Regex *mutt_regex_compile(const char *str, int flags)
   if (!str || (*str == '\0'))
     return NULL;
   struct Regex *rx = mutt_mem_calloc(1, sizeof(struct Regex));
-  rx->pattern = mutt_str_strdup(str);
+  rx->pattern = mutt_str_dup(str);
   rx->regex = mutt_mem_calloc(1, sizeof(regex_t));
   if (REG_COMP(rx->regex, str, flags) != 0)
     mutt_regex_free(&rx);
@@ -79,7 +79,7 @@ struct Regex *mutt_regex_new(const char *str, int flags, struct Buffer *err)
   struct Regex *reg = mutt_mem_calloc(1, sizeof(struct Regex));
 
   reg->regex = mutt_mem_calloc(1, sizeof(regex_t));
-  reg->pattern = mutt_str_strdup(str);
+  reg->pattern = mutt_str_dup(str);
 
   /* Should we use smart case matching? */
   if (((flags & DT_REGEX_MATCH_CASE) == 0) && mutt_mb_is_lower(str))
@@ -303,7 +303,7 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
   }
 
   /* Now np is the Replace that we want to modify. It is prepared. */
-  np->templ = mutt_str_strdup(templ);
+  np->templ = mutt_str_dup(templ);
 
   /* Find highest match number in template string */
   np->nmatch = 0;
@@ -435,7 +435,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
   if (buf)
     mutt_str_copy(buf, dst, buflen);
   else
-    buf = mutt_str_strdup(dst);
+    buf = mutt_str_dup(dst);
   return buf;
 }
 

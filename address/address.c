@@ -260,12 +260,12 @@ static const char *parse_address(const char *s, char *token, size_t *tokenlen,
   }
 
   terminate_string(token, *tokenlen, tokenmax);
-  addr->mailbox = mutt_str_strdup(token);
+  addr->mailbox = mutt_str_dup(token);
 
   if (*commentlen && !addr->personal)
   {
     terminate_string(comment, *commentlen, commentmax);
-    addr->personal = mutt_str_strdup(comment);
+    addr->personal = mutt_str_dup(comment);
   }
 
   return s;
@@ -321,7 +321,7 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
   }
 
   if (!addr->mailbox)
-    addr->mailbox = mutt_str_strdup("@");
+    addr->mailbox = mutt_str_dup("@");
 
   s++;
   return s;
@@ -398,8 +398,8 @@ struct Address *mutt_addr_new(void)
 struct Address *mutt_addr_create(const char *personal, const char *mailbox)
 {
   struct Address *a = mutt_addr_new();
-  a->personal = mutt_str_strdup(personal);
-  a->mailbox = mutt_str_strdup(mailbox);
+  a->personal = mutt_str_dup(personal);
+  a->mailbox = mutt_str_dup(mailbox);
   return a;
 }
 
@@ -488,7 +488,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
           if (last && !last->personal)
           {
             terminate_buffer(comment, commentlen);
-            last->personal = mutt_str_strdup(comment);
+            last->personal = mutt_str_dup(comment);
           }
         }
 
@@ -529,7 +529,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
       {
         struct Address *a = mutt_addr_new();
         terminate_buffer(phrase, phraselen);
-        a->mailbox = mutt_str_strdup(phrase);
+        a->mailbox = mutt_str_dup(phrase);
         a->group = true;
         mutt_addrlist_append(al, a);
         phraselen = 0;
@@ -542,7 +542,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
       {
         struct Address *a = mutt_addr_new();
         terminate_buffer(phrase, phraselen);
-        a->personal = mutt_str_strdup(phrase);
+        a->personal = mutt_str_dup(phrase);
         s = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, a);
         if (!s)
         {
@@ -597,7 +597,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
     if (last && !last->personal)
     {
       terminate_buffer(comment, commentlen);
-      last->personal = mutt_str_strdup(comment);
+      last->personal = mutt_str_dup(comment);
     }
   }
 
@@ -623,7 +623,7 @@ int mutt_addrlist_parse2(struct AddressList *al, const char *s)
   /* check for a simple whitespace separated list of addresses */
   if (!strpbrk(s, "\"<>():;,\\"))
   {
-    char *copy = mutt_str_strdup(s);
+    char *copy = mutt_str_dup(s);
     char *r = copy;
     while ((r = strtok(r, " \t")))
     {
@@ -720,8 +720,8 @@ struct Address *mutt_addr_copy(const struct Address *addr)
 
   struct Address *p = mutt_addr_new();
 
-  p->personal = mutt_str_strdup(addr->personal);
-  p->mailbox = mutt_str_strdup(addr->mailbox);
+  p->personal = mutt_str_dup(addr->personal);
+  p->mailbox = mutt_str_dup(addr->mailbox);
   p->group = addr->group;
   p->is_intl = addr->is_intl;
   p->intl_checked = addr->intl_checked;
@@ -938,7 +938,7 @@ static int addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
     return -1;
 
   *user = mutt_str_substr_dup(mbox, ptr);
-  *domain = mutt_str_strdup(ptr + 1);
+  *domain = mutt_str_dup(ptr + 1);
 
   return 0;
 }
@@ -1277,7 +1277,7 @@ int mutt_addrlist_to_intl(struct AddressList *al, char **err)
     {
       rc = -1;
       if (err && !*err)
-        *err = mutt_str_strdup(a->mailbox);
+        *err = mutt_str_dup(a->mailbox);
       continue;
     }
 

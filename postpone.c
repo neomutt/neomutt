@@ -99,7 +99,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
   if (!mutt_str_equal(C_Postponed, OldPostponed))
   {
     FREE(&OldPostponed);
-    OldPostponed = mutt_str_strdup(C_Postponed);
+    OldPostponed = mutt_str_dup(C_Postponed);
     LastModify = 0;
     force = true;
   }
@@ -469,7 +469,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
       char *t = strtok(np->data + 11, " \t\n");
       while (t)
       {
-        mutt_list_insert_tail(&hdr->chain, mutt_str_strdup(t));
+        mutt_list_insert_tail(&hdr->chain, mutt_str_dup(t));
         t = strtok(NULL, " \t\n");
       }
     }
@@ -768,7 +768,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
     if (b->filename)
     {
       mutt_buffer_strcpy(file, b->filename);
-      b->d_filename = mutt_str_strdup(b->filename);
+      b->d_filename = mutt_str_dup(b->filename);
     }
     else
     {

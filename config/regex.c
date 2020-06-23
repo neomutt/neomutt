@@ -93,7 +93,7 @@ struct Regex *regex_new(const char *str, int flags, struct Buffer *err)
   struct Regex *reg = mutt_mem_calloc(1, sizeof(struct Regex));
 
   reg->regex = mutt_mem_calloc(1, sizeof(regex_t));
-  reg->pattern = mutt_str_strdup(str);
+  reg->pattern = mutt_str_dup(str);
 
   /* Should we use smart case matching? */
   if (((flags & DT_REGEX_MATCH_CASE) == 0) && mutt_mb_is_lower(str))
@@ -172,7 +172,7 @@ static int regex_string_set(const struct ConfigSet *cs, void *var, struct Config
       FREE(&cdef->initial);
 
     cdef->type |= DT_INITIAL_SET;
-    cdef->initial = IP mutt_str_strdup(value);
+    cdef->initial = IP mutt_str_dup(value);
   }
 
   return rc;

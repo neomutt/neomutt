@@ -301,7 +301,7 @@ static int lua_mutt_enter(lua_State *l)
 {
   mutt_debug(LL_DEBUG2, " * lua_mutt_enter()\n");
   struct Buffer *err = mutt_buffer_pool_get();
-  char *buf = mutt_str_strdup(lua_tostring(l, -1));
+  char *buf = mutt_str_dup(lua_tostring(l, -1));
   int rc = 0;
 
   if (mutt_parse_rc_line(buf, err))

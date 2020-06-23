@@ -314,7 +314,7 @@ static void save_history(enum HistoryClass hclass, const char *str)
   if (!fp)
     return;
 
-  tmp = mutt_str_strdup(str);
+  tmp = mutt_str_dup(str);
   mutt_ch_convert_string(&tmp, C_Charset, "utf-8", 0);
 
   /* Format of a history item (1 line): "<histclass>:<string>|".
@@ -597,7 +597,7 @@ void mutt_hist_read_file(void)
     if (hclass >= HC_MAX)
       continue;
     *p = '\0';
-    p = mutt_str_strdup(linebuf + read);
+    p = mutt_str_dup(linebuf + read);
     if (p)
     {
       mutt_ch_convert_string(&p, "utf-8", C_Charset, 0);

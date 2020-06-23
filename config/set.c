@@ -315,7 +315,7 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
 
   struct Inheritance *i = mutt_mem_calloc(1, sizeof(*i));
   i->parent = parent;
-  i->name = mutt_str_strdup(name);
+  i->name = mutt_str_dup(name);
 
   struct HashElem *he = mutt_hash_typed_insert(cs->hash, i->name, DT_INHERITED, i);
   if (!he)

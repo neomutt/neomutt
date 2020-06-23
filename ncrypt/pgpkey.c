@@ -895,8 +895,8 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
         l = mutt_mem_malloc(sizeof(struct PgpCache));
         l->next = id_defaults;
         id_defaults = l;
-        l->what = mutt_str_strdup(whatfor);
-        l->dflt = mutt_str_strdup(resp);
+        l->what = mutt_str_dup(whatfor);
+        l->dflt = mutt_str_dup(resp);
       }
     }
 
@@ -971,9 +971,9 @@ struct Body *pgp_class_make_key_attachment(void)
   att->unlink = true;
   att->use_disp = false;
   att->type = TYPE_APPLICATION;
-  att->subtype = mutt_str_strdup("pgp-keys");
+  att->subtype = mutt_str_dup("pgp-keys");
   snprintf(buf, sizeof(buf), _("PGP Key %s"), tmp);
-  att->description = mutt_str_strdup(buf);
+  att->description = mutt_str_dup(buf);
   mutt_update_encoding(att);
 
   stat(mutt_b2s(tempf), &sb);
@@ -994,7 +994,7 @@ cleanup:
  */
 static void pgp_add_string_to_hints(const char *str, struct ListHead *hints)
 {
-  char *scratch = mutt_str_strdup(str);
+  char *scratch = mutt_str_dup(str);
   if (!scratch)
     return;
 
@@ -1002,7 +1002,7 @@ static void pgp_add_string_to_hints(const char *str, struct ListHead *hints)
        t = strtok(NULL, " ,.:\"()<>\n"))
   {
     if (strlen(t) > 3)
-      mutt_list_insert_tail(hints, mutt_str_strdup(t));
+      mutt_list_insert_tail(hints, mutt_str_dup(t));
   }
 
   FREE(&scratch);
@@ -1175,7 +1175,7 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
   size_t l;
   const char *ps = NULL, *pl = NULL, *pfcopy = NULL, *phint = NULL;
 
-  char *p = strdup(cp); // mutt_str_strdup converts "" into NULL, see #1809
+  char *p = strdup(cp); // mutt_str_dup converts "" into NULL, see #1809
   l = mutt_str_strlen(p);
   if ((l > 0) && (p[l - 1] == '!'))
     p[l - 1] = 0;

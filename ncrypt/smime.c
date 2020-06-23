@@ -162,10 +162,10 @@ static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
   struct SmimeKey *copy = NULL;
 
   copy = mutt_mem_calloc(1, sizeof(struct SmimeKey));
-  copy->email = mutt_str_strdup(key->email);
-  copy->hash = mutt_str_strdup(key->hash);
-  copy->label = mutt_str_strdup(key->label);
-  copy->issuer = mutt_str_strdup(key->issuer);
+  copy->email = mutt_str_dup(key->email);
+  copy->hash = mutt_str_dup(key->hash);
+  copy->label = mutt_str_dup(key->label);
+  copy->issuer = mutt_str_dup(key->issuer);
   copy->trust = key->trust;
   copy->flags = key->flags;
 
@@ -708,16 +708,16 @@ static struct SmimeKey *smime_parse_key(char *buf)
     switch (field)
     {
       case 1: /* mailbox */
-        key->email = mutt_str_strdup(p);
+        key->email = mutt_str_dup(p);
         break;
       case 2: /* hash */
-        key->hash = mutt_str_strdup(p);
+        key->hash = mutt_str_dup(p);
         break;
       case 3: /* label */
-        key->label = mutt_str_strdup(p);
+        key->label = mutt_str_dup(p);
         break;
       case 4: /* issuer */
-        key->issuer = mutt_str_strdup(p);
+        key->issuer = mutt_str_dup(p);
         break;
       case 5: /* trust */
         key->trust = *p;
@@ -749,7 +749,7 @@ static struct SmimeKey *smime_parse_key(char *buf)
   }
 
   if (field < 4)
-    key->issuer = mutt_str_strdup("?");
+    key->issuer = mutt_str_dup("?");
 
   if (field < 5)
     key->trust = 't';
@@ -1674,13 +1674,13 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 
   t = mutt_body_new();
   t->type = TYPE_APPLICATION;
-  t->subtype = mutt_str_strdup("x-pkcs7-mime");
+  t->subtype = mutt_str_dup("x-pkcs7-mime");
   mutt_param_set(&t->parameter, "name", "smime.p7m");
   mutt_param_set(&t->parameter, "smime-type", "enveloped-data");
   t->encoding = ENC_BASE64; /* The output of OpenSSL SHOULD be binary */
   t->use_disp = true;
   t->disposition = DISP_ATTACH;
-  t->d_filename = mutt_str_strdup("smime.p7m");
+  t->d_filename = mutt_str_dup("smime.p7m");
   t->filename = mutt_buffer_strdup(tempfile);
   t->unlink = true; /* delete after sending the message */
   t->parts = NULL;
@@ -1730,7 +1730,7 @@ static char *openssl_md_to_smime_micalg(char *md)
   }
   else
   {
-    micalg = mutt_str_strdup(md);
+    micalg = mutt_str_dup(md);
   }
 
   return micalg;
@@ -1842,7 +1842,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
 
   t = mutt_body_new();
   t->type = TYPE_MULTIPART;
-  t->subtype = mutt_str_strdup("signed");
+  t->subtype = mutt_str_dup("signed");
   t->encoding = ENC_7BIT;
   t->use_disp = false;
   t->disposition = DISP_INLINE;
@@ -1861,9 +1861,9 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   t->parts->next = mutt_body_new();
   t = t->parts->next;
   t->type = TYPE_APPLICATION;
-  t->subtype = mutt_str_strdup("x-pkcs7-signature");
+  t->subtype = mutt_str_dup("x-pkcs7-signature");
   t->filename = mutt_buffer_strdup(signedfile);
-  t->d_filename = mutt_str_strdup("smime.p7s");
+  t->d_filename = mutt_str_dup("smime.p7s");
   t->use_disp = true;
   t->disposition = DISP_ATTACH;
   t->encoding = ENC_BASE64;

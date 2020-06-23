@@ -148,7 +148,7 @@ static int smtp_get_resp(struct Connection *conn)
     {
       Capabilities |= SMTP_CAP_AUTH;
       FREE(&AuthMechs);
-      AuthMechs = mutt_str_strdup(s + plen);
+      AuthMechs = mutt_str_dup(s + plen);
     }
     else if (mutt_istr_startswith(s, "DSN"))
       Capabilities |= SMTP_CAP_DSN;

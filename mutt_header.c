@@ -318,7 +318,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
         body2 = mutt_make_file_attach(mutt_b2s(path));
         if (body2)
         {
-          body2->description = mutt_str_strdup(p);
+          body2->description = mutt_str_dup(p);
           for (parts = e->content; parts->next; parts = parts->next)
             ; // do nothing
 

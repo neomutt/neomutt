@@ -194,7 +194,7 @@ static struct Menu *create_menu(void)
     entries[i].account = accounts[i];
 
     entries[i].addr = mutt_addr_new();
-    entries[i].addr->mailbox = mutt_str_strdup(accounts[i]->email_addr);
+    entries[i].addr->mailbox = mutt_str_dup(accounts[i]->email_addr);
     mutt_addr_to_local(entries[i].addr);
   }
   FREE(&accounts);

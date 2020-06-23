@@ -44,8 +44,8 @@ struct MyVarList MyVars = TAILQ_HEAD_INITIALIZER(MyVars);
 static struct MyVar *myvar_new(const char *name, const char *value)
 {
   struct MyVar *myv = mutt_mem_calloc(1, sizeof(struct MyVar));
-  myv->name = mutt_str_strdup(name);
-  myv->value = mutt_str_strdup(value);
+  myv->name = mutt_str_dup(name);
+  myv->value = mutt_str_dup(value);
   return myv;
 }
 

@@ -204,7 +204,7 @@ static struct Address *copy_normalize_addr(struct Address *addr)
    * because of requirements in autocrypt.c */
 
   struct Address *norm_addr = mutt_addr_new();
-  norm_addr->mailbox = mutt_str_strdup(addr->mailbox);
+  norm_addr->mailbox = mutt_str_dup(addr->mailbox);
   norm_addr->is_intl = addr->is_intl;
   norm_addr->intl_checked = addr->intl_checked;
 
@@ -221,7 +221,7 @@ static struct Address *copy_normalize_addr(struct Address *addr)
 static char *strdup_column_text(sqlite3_stmt *stmt, int index)
 {
   const char *val = (const char *) sqlite3_column_text(stmt, index);
-  return mutt_str_strdup(val);
+  return mutt_str_dup(val);
 }
 
 /**

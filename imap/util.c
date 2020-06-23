@@ -174,15 +174,15 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
   char buf[1024];
   struct ImapMboxData *mdata = mutt_mem_calloc(1, sizeof(struct ImapMboxData));
 
-  mdata->real_name = mutt_str_strdup(name);
+  mdata->real_name = mutt_str_dup(name);
 
   imap_fix_path(adata->delim, name, buf, sizeof(buf));
   if (buf[0] == '\0')
     mutt_str_copy(buf, "INBOX", sizeof(buf));
-  mdata->name = mutt_str_strdup(buf);
+  mdata->name = mutt_str_dup(buf);
 
   imap_munge_mbox_name(adata->unicode, buf, sizeof(buf), mdata->name);
-  mdata->munge_name = mutt_str_strdup(buf);
+  mdata->munge_name = mutt_str_dup(buf);
 
   mdata->reopen &= IMAP_REOPEN_ALLOW;
 
@@ -1054,7 +1054,7 @@ void imap_unquote_string(char *s)
  */
 void imap_munge_mbox_name(bool unicode, char *dest, size_t dlen, const char *src)
 {
-  char *buf = mutt_str_strdup(src);
+  char *buf = mutt_str_dup(src);
   imap_utf_encode(unicode, &buf);
 
   imap_quote_string(dest, dlen, buf, false);
@@ -1073,7 +1073,7 @@ void imap_unmunge_mbox_name(bool unicode, char *s)
 {
   imap_unquote_string(s);
 
-  char *buf = mutt_str_strdup(s);
+  char *buf = mutt_str_dup(s);
   if (buf)
   {
     imap_utf_decode(unicode, &buf);
@@ -1222,7 +1222,7 @@ struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset)
     return NULL;
 
   struct SeqsetIterator *iter = mutt_mem_calloc(1, sizeof(struct SeqsetIterator));
-  iter->full_seqset = mutt_str_strdup(seqset);
+  iter->full_seqset = mutt_str_dup(seqset);
   iter->eostr = strchr(iter->full_seqset, '\0');
   iter->substr_cur = iter->substr_end = iter->full_seqset;
 

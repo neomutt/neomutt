@@ -532,7 +532,7 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *cac, cons
     struct Url url = { 0 };
 
     mutt_account_tourl(cac, &url);
-    url.path = mutt_str_strdup(src);
+    url.path = mutt_str_dup(src);
     url_tostring(&url, file, sizeof(file), U_PATH);
     FREE(&url.path);
   }
@@ -565,7 +565,7 @@ void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *cac)
   struct Url url = { 0 };
 
   mutt_account_tourl(cac, &url);
-  url.path = mutt_str_strdup(buf);
+  url.path = mutt_str_dup(buf);
   url_tostring(&url, buf, buflen, 0);
   FREE(&url.path);
 }
@@ -1107,7 +1107,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
     mutt_expando_format(file, sizeof(file), 0, sizeof(file), NONULL(C_Newsrc),
                         nntp_format_str, IP adata, MUTT_FORMAT_NO_FLAGS);
     mutt_expand_path(file, sizeof(file));
-    adata->newsrc_file = mutt_str_strdup(file);
+    adata->newsrc_file = mutt_str_dup(file);
     rc = nntp_newsrc_parse(adata);
   }
   if (rc >= 0)

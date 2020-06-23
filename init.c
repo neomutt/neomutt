@@ -260,7 +260,7 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
 
       snprintf(buf, sizeof(buf), "%s/%s%s", locations[i][0], locations[i][1], names[j]);
       if (access(buf, F_OK) == 0)
-        return mutt_str_strdup(buf);
+        return mutt_str_dup(buf);
     }
   }
 
@@ -333,7 +333,7 @@ static bool get_hostname(struct ConfigSet *cs)
   if (dot)
     ShortHostname = mutt_str_substr_dup(str, dot);
   else
-    ShortHostname = mutt_str_strdup(str);
+    ShortHostname = mutt_str_dup(str);
 
   if (!C_Hostname)
   {
@@ -363,7 +363,7 @@ static bool get_hostname(struct ConfigSet *cs)
          * It could be wrong, but we've done the best we can, at this point the
          * onus is on the user to provide the correct hostname if the nodename
          * won't work in their network.  */
-        C_Hostname = mutt_str_strdup(utsname.nodename);
+        C_Hostname = mutt_str_dup(utsname.nodename);
       }
       mutt_buffer_pool_release(&domain);
     }
@@ -536,7 +536,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       }
       else
       {
-        cmd.data = mutt_str_strdup(tok->dptr);
+        cmd.data = mutt_str_dup(tok->dptr);
       }
       *pc = '`';
       pid = filter_create(cmd.data, NULL, &fp, NULL);
@@ -933,7 +933,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
     if (pw)
     {
       char name[256];
-      C_Realname = mutt_str_strdup(mutt_gecos_name(name, sizeof(name), pw));
+      C_Realname = mutt_str_dup(mutt_gecos_name(name, sizeof(name), pw));
     }
   }
   cs_str_initial_set(cs, "realname", C_Realname, NULL);
@@ -1595,7 +1595,7 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   int rc = CSR_SUCCESS;
   bool strict = (strcmp(cdef->name, "send_charset") == 0);
   char *q = NULL;
-  char *s = mutt_str_strdup(str);
+  char *s = mutt_str_dup(str);
 
   for (char *p = strtok_r(s, ":", &q); p; p = strtok_r(NULL, ":", &q))
   {

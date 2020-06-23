@@ -344,8 +344,8 @@ static enum CommandResult km_bind_err(const char *s, enum MenuType menu, int op,
 
   struct Keymap *map = alloc_keys(len, buf);
   map->op = op;
-  map->macro = mutt_str_strdup(macro);
-  map->desc = mutt_str_strdup(desc);
+  map->macro = mutt_str_dup(macro);
+  map->desc = mutt_str_dup(desc);
 
   struct Keymap *tmp = Keymaps[menu];
 
@@ -1376,7 +1376,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
  */
 static void *parse_menu(bool *menu, char *s, struct Buffer *err)
 {
-  char *menu_names_dup = mutt_str_strdup(s);
+  char *menu_names_dup = mutt_str_dup(s);
   char *marker = menu_names_dup;
   char *menu_name = NULL;
 
@@ -1540,7 +1540,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
   {
     if (MoreArgs(s))
     {
-      seq = mutt_str_strdup(buf->data);
+      seq = mutt_str_dup(buf->data);
       mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
 
       if (MoreArgs(s))

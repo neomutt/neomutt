@@ -150,7 +150,7 @@ struct ConfigSubset *cs_subset_new(const char *name, struct ConfigSubset *sub_pa
     else
       mutt_str_copy(scope, name, sizeof(scope));
 
-    sub->name = mutt_str_strdup(scope);
+    sub->name = mutt_str_dup(scope);
   }
 
   sub->notify = notify_new();

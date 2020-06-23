@@ -130,7 +130,7 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
         }
 
         // Keep a list of aliases that we've already seen
-        mutt_list_insert_head(expn, mutt_str_strdup(a->mailbox));
+        mutt_list_insert_head(expn, mutt_str_dup(a->mailbox));
 
         /* The alias may expand to several addresses,
          * some of which may themselves be aliases.
@@ -188,7 +188,7 @@ static void recode_buf(char *buf, size_t buflen)
   if (!C_ConfigCharset || !C_Charset)
     return;
 
-  char *s = mutt_str_strdup(buf);
+  char *s = mutt_str_dup(buf);
   if (!s)
     return;
   if (mutt_ch_convert_string(&s, C_Charset, C_ConfigCharset, 0) == 0)
@@ -415,7 +415,7 @@ retry_name:
   }
 
   struct Alias *alias = alias_new();
-  alias->name = mutt_str_strdup(buf);
+  alias->name = mutt_str_dup(buf);
 
   mutt_addrlist_to_local(al);
 

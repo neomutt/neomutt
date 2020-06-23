@@ -157,7 +157,7 @@ int mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
     }
     else
     {
-      *tgt = mutt_str_strdup(path);
+      *tgt = mutt_str_dup(path);
       break;
     }
   }
@@ -390,7 +390,7 @@ int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
       e->path = mutt_buffer_strdup(buf);
     }
     else
-      e->path = mutt_str_strdup(de->d_name);
+      e->path = mutt_str_dup(de->d_name);
 
     entry = maildir_entry_new();
     entry->email = e;
@@ -739,7 +739,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
     if (hce.email && (rc == 0) && (lastchanged.st_mtime <= hce.uidvalidity))
     {
       hce.email->old = p->email->old;
-      hce.email->path = mutt_str_strdup(p->email->path);
+      hce.email->path = mutt_str_dup(p->email->path);
       email_free(&p->email);
       p->email = hce.email;
       if (m->type == MUTT_MAILDIR)

@@ -820,7 +820,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
     /* in case followup set Newsgroups: with Followup-To: if it present */
     if (!env->newsgroups && curenv && !mutt_istr_equal(curenv->followup_to, "poster"))
     {
-      env->newsgroups = mutt_str_strdup(curenv->followup_to);
+      env->newsgroups = mutt_str_dup(curenv->followup_to);
     }
   }
   else

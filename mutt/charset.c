@@ -458,9 +458,9 @@ char *mutt_ch_get_langinfo_charset(void)
   mutt_ch_canonical_charset(buf, sizeof(buf), nl_langinfo(CODESET));
 
   if (buf[0] != '\0')
-    return mutt_str_strdup(buf);
+    return mutt_str_dup(buf);
 
-  return mutt_str_strdup("iso-8859-1");
+  return mutt_str_dup("iso-8859-1");
 }
 
 /**
@@ -491,8 +491,8 @@ bool mutt_ch_lookup_add(enum LookupType type, const char *pat,
 
   struct Lookup *l = lookup_new();
   l->type = type;
-  l->replacement = mutt_str_strdup(replace);
-  l->regex.pattern = mutt_str_strdup(pat);
+  l->replacement = mutt_str_dup(replace);
+  l->regex.pattern = mutt_str_dup(pat);
   l->regex.regex = rx;
   l->regex.pat_not = false;
 

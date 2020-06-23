@@ -275,7 +275,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
       char *field = ch;
       ch = get_field(ch);
       if (entry)
-        entry->command = mutt_str_strdup(field);
+        entry->command = mutt_str_dup(field);
 
       /* parse the optional fields */
       found = true;

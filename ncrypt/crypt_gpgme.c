@@ -828,12 +828,12 @@ static bool have_gpg_version(const char *version)
       engineinfo = engineinfo->next;
     if (engineinfo)
     {
-      engine_version = mutt_str_strdup(engineinfo->version);
+      engine_version = mutt_str_dup(engineinfo->version);
     }
     else
     {
       mutt_debug(LL_DEBUG1, "Error finding GPGME PGP engine\n");
-      engine_version = mutt_str_strdup("0.0.0");
+      engine_version = mutt_str_dup("0.0.0");
     }
     gpgme_release(ctx);
   }
@@ -1502,7 +1502,7 @@ static struct Body *sign_message(struct Body *a, const struct AddressList *from,
 
   t = mutt_body_new();
   t->type = TYPE_MULTIPART;
-  t->subtype = mutt_str_strdup("signed");
+  t->subtype = mutt_str_dup("signed");
   t->encoding = ENC_7BIT;
   t->use_disp = false;
   t->disposition = DISP_INLINE;
@@ -1526,16 +1526,16 @@ static struct Body *sign_message(struct Body *a, const struct AddressList *from,
   t->type = TYPE_APPLICATION;
   if (use_smime)
   {
-    t->subtype = mutt_str_strdup("pkcs7-signature");
+    t->subtype = mutt_str_dup("pkcs7-signature");
     mutt_param_set(&t->parameter, "name", "smime.p7s");
     t->encoding = ENC_BASE64;
     t->use_disp = true;
     t->disposition = DISP_ATTACH;
-    t->d_filename = mutt_str_strdup("smime.p7s");
+    t->d_filename = mutt_str_dup("smime.p7s");
   }
   else
   {
-    t->subtype = mutt_str_strdup("pgp-signature");
+    t->subtype = mutt_str_dup("pgp-signature");
     mutt_param_set(&t->parameter, "name", "signature.asc");
     t->use_disp = false;
     t->disposition = DISP_NONE;
@@ -1582,7 +1582,7 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign,
 
   struct Body *t = mutt_body_new();
   t->type = TYPE_MULTIPART;
-  t->subtype = mutt_str_strdup("encrypted");
+  t->subtype = mutt_str_dup("encrypted");
   t->encoding = ENC_7BIT;
   t->use_disp = false;
   t->disposition = DISP_INLINE;
@@ -1592,18 +1592,18 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign,
 
   t->parts = mutt_body_new();
   t->parts->type = TYPE_APPLICATION;
-  t->parts->subtype = mutt_str_strdup("pgp-encrypted");
+  t->parts->subtype = mutt_str_dup("pgp-encrypted");
   t->parts->encoding = ENC_7BIT;
 
   t->parts->next = mutt_body_new();
   t->parts->next->type = TYPE_APPLICATION;
-  t->parts->next->subtype = mutt_str_strdup("octet-stream");
+  t->parts->next->subtype = mutt_str_dup("octet-stream");
   t->parts->next->encoding = ENC_7BIT;
   t->parts->next->filename = outfile;
   t->parts->next->use_disp = true;
   t->parts->next->disposition = DISP_ATTACH;
   t->parts->next->unlink = true; /* delete after sending the message */
-  t->parts->next->d_filename = mutt_str_strdup("msg.asc"); /* non pgp/mime
+  t->parts->next->d_filename = mutt_str_dup("msg.asc"); /* non pgp/mime
                                                            can save */
 
   return t;
@@ -1628,13 +1628,13 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
 
   struct Body *t = mutt_body_new();
   t->type = TYPE_APPLICATION;
-  t->subtype = mutt_str_strdup("pkcs7-mime");
+  t->subtype = mutt_str_dup("pkcs7-mime");
   mutt_param_set(&t->parameter, "name", "smime.p7m");
   mutt_param_set(&t->parameter, "smime-type", "enveloped-data");
   t->encoding = ENC_BASE64; /* The output of OpenSSL SHOULD be binary */
   t->use_disp = true;
   t->disposition = DISP_ATTACH;
-  t->d_filename = mutt_str_strdup("smime.p7m");
+  t->d_filename = mutt_str_dup("smime.p7m");
   t->filename = outfile;
   t->unlink = true; /* delete after sending the message */
   t->parts = 0;
@@ -4579,7 +4579,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags
     STAILQ_FOREACH(np, hints, entries)
     {
       if (np->data && *np->data)
-        patarr[n++] = mutt_str_strdup(np->data);
+        patarr[n++] = mutt_str_dup(np->data);
     }
     patarr[n] = NULL;
     err = gpgme_op_keylist_ext_start(ctx, (const char **) patarr, secret, 0);
@@ -4688,7 +4688,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags
  */
 static void crypt_add_string_to_hints(const char *str, struct ListHead *hints)
 {
-  char *scratch = mutt_str_strdup(str);
+  char *scratch = mutt_str_dup(str);
   if (!scratch)
     return;
 
@@ -4696,7 +4696,7 @@ static void crypt_add_string_to_hints(const char *str, struct ListHead *hints)
        t = strtok(NULL, " ,.:\"()<>\n"))
   {
     if (strlen(t) > 3)
-      mutt_list_insert_tail(hints, mutt_str_strdup(t));
+      mutt_list_insert_tail(hints, mutt_str_dup(t));
   }
 
   FREE(&scratch);
@@ -5216,8 +5216,8 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
         l = mutt_mem_malloc(sizeof(struct CryptCache));
         l->next = id_defaults;
         id_defaults = l;
-        l->what = mutt_str_strdup(whatfor);
-        l->dflt = mutt_str_strdup(resp);
+        l->what = mutt_str_dup(whatfor);
+        l->dflt = mutt_str_dup(resp);
       }
     }
 
@@ -5510,12 +5510,12 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   att->unlink = true;
   att->use_disp = false;
   att->type = TYPE_APPLICATION;
-  att->subtype = mutt_str_strdup("pgp-keys");
+  att->subtype = mutt_str_dup("pgp-keys");
   /* L10N: MIME description for exported (attached) keys.
      You can translate this entry to a non-ASCII string (it will be encoded),
      but it may be safer to keep it untranslated. */
   snprintf(buf, sizeof(buf), _("PGP Key 0x%s"), crypt_keyid(key));
-  att->description = mutt_str_strdup(buf);
+  att->description = mutt_str_dup(buf);
   mutt_update_encoding(att);
 
   stat(tempf, &sb);
@@ -5865,7 +5865,7 @@ void pgp_gpgme_set_sender(const char *sender)
 {
   mutt_debug(LL_DEBUG2, "setting to: %s\n", sender);
   FREE(&current_sender);
-  current_sender = mutt_str_strdup(sender);
+  current_sender = mutt_str_dup(sender);
 }
 
 /**

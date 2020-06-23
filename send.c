@@ -254,7 +254,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
     if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0)
       return -1;
     FREE(&en->newsgroups);
-    en->newsgroups = mutt_str_strdup(buf);
+    en->newsgroups = mutt_str_dup(buf);
 
     if (en->followup_to)
       mutt_str_copy(buf, en->followup_to, sizeof(buf));
@@ -266,7 +266,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
       return -1;
     }
     FREE(&en->followup_to);
-    en->followup_to = mutt_str_strdup(buf);
+    en->followup_to = mutt_str_dup(buf);
 
     if (en->x_comment_to)
       mutt_str_copy(buf, en->x_comment_to, sizeof(buf));
@@ -278,7 +278,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
       return -1;
     }
     FREE(&en->x_comment_to);
-    en->x_comment_to = mutt_str_strdup(buf);
+    en->x_comment_to = mutt_str_dup(buf);
   }
   else
 #endif
@@ -342,7 +342,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
 static char *nntp_get_header(const char *s)
 {
   SKIPWS(s);
-  return mutt_str_strdup(s);
+  return mutt_str_dup(s);
 }
 #endif
 
@@ -417,7 +417,7 @@ static void process_user_header(struct Envelope *env)
              !mutt_istr_startswith(uh->data, "subject:") &&
              !mutt_istr_startswith(uh->data, "return-path:"))
     {
-      mutt_list_insert_tail(&env->userhdrs, mutt_str_strdup(uh->data));
+      mutt_list_insert_tail(&env->userhdrs, mutt_str_dup(uh->data));
     }
   }
 }
@@ -827,7 +827,7 @@ static void add_references(struct ListHead *head, struct Envelope *env)
   struct ListHead *src = STAILQ_EMPTY(&env->references) ? &env->in_reply_to : &env->references;
   STAILQ_FOREACH(np, src, entries)
   {
-    mutt_list_insert_tail(head, mutt_str_strdup(np->data));
+    mutt_list_insert_tail(head, mutt_str_dup(np->data));
   }
 }
 
@@ -840,7 +840,7 @@ static void add_message_id(struct ListHead *head, struct Envelope *env)
 {
   if (env->message_id)
   {
-    mutt_list_insert_head(head, mutt_str_strdup(env->message_id));
+    mutt_list_insert_head(head, mutt_str_dup(env->message_id));
   }
 }
 
@@ -906,7 +906,7 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv)
     sprintf(env->subject, "Re: %s", curenv->real_subj);
   }
   else if (!env->subject)
-    env->subject = mutt_str_strdup(C_EmptySubject);
+    env->subject = mutt_str_dup(C_EmptySubject);
 }
 
 /**
@@ -922,7 +922,7 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv
 
 #ifdef USE_NNTP
   if (OptNewsSend && C_XCommentTo && !TAILQ_EMPTY(&curenv->from))
-    env->x_comment_to = mutt_str_strdup(mutt_get_name(TAILQ_FIRST(&curenv->from)));
+    env->x_comment_to = mutt_str_dup(mutt_get_name(TAILQ_FIRST(&curenv->from)));
 #endif
 }
 
@@ -989,7 +989,7 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
       /* in case followup set Newsgroups: with Followup-To: if it present */
       if (!env->newsgroups && !mutt_istr_equal(curenv->followup_to, "poster"))
       {
-        env->newsgroups = mutt_str_strdup(curenv->followup_to);
+        env->newsgroups = mutt_str_dup(curenv->followup_to);
       }
     }
     else
@@ -1159,7 +1159,7 @@ void mutt_set_followup_to(struct Envelope *env)
   if (OptNewsSend)
   {
     if (!env->followup_to && env->newsgroups && (strrchr(env->newsgroups, ',')))
-      env->followup_to = mutt_str_strdup(env->newsgroups);
+      env->followup_to = mutt_str_dup(env->newsgroups);
     return;
   }
 #endif
@@ -1768,7 +1768,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
 
     if (encrypt_as)
     {
-      pgpkeylist = mutt_str_strdup(encrypt_as);
+      pgpkeylist = mutt_str_dup(encrypt_as);
       clear_content = e_post->content;
       if (mutt_protect(e_post, pgpkeylist, true) == -1)
       {
@@ -1885,9 +1885,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (flags & SEND_POSTPONED)
   {
     if (WithCrypto & APPLICATION_PGP)
-      pgp_signas = mutt_str_strdup(C_PgpSignAs);
+      pgp_signas = mutt_str_dup(C_PgpSignAs);
     if (WithCrypto & APPLICATION_SMIME)
-      smime_signas = mutt_str_strdup(C_SmimeSignAs);
+      smime_signas = mutt_str_dup(C_SmimeSignAs);
   }
 
   /* Delay expansion of aliases until absolutely necessary--shouldn't
@@ -1956,9 +1956,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       pbody->next = e_templ->content; /* don't kill command-line attachments */
       e_templ->content = pbody;
 
-      ctype = mutt_str_strdup(C_ContentType);
+      ctype = mutt_str_dup(C_ContentType);
       if (!ctype)
-        ctype = mutt_str_strdup("text/plain");
+        ctype = mutt_str_dup("text/plain");
       mutt_parse_content_type(ctype, e_templ->content);
       FREE(&ctype);
       e_templ->content->unlink = true;
@@ -1968,13 +1968,13 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       if (tempfile)
       {
         fp_tmp = mutt_file_fopen(tempfile, "a+");
-        e_templ->content->filename = mutt_str_strdup(tempfile);
+        e_templ->content->filename = mutt_str_dup(tempfile);
       }
       else
       {
         mutt_mktemp(buf, sizeof(buf));
         fp_tmp = mutt_file_fopen(buf, "w+");
-        e_templ->content->filename = mutt_str_strdup(buf);
+        e_templ->content->filename = mutt_str_dup(buf);
       }
     }
     else
@@ -2047,7 +2047,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         !e_templ->env->newsgroups)
     {
       e_templ->env->newsgroups =
-          mutt_str_strdup(((struct NntpMboxData *) ctx->mailbox->mdata)->group);
+          mutt_str_dup(((struct NntpMboxData *) ctx->mailbox->mdata)->group);
     }
 #endif
 
@@ -2154,7 +2154,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   {
     struct Address *from = TAILQ_FIRST(&e_templ->env->from);
     if (from && !from->personal && !(flags & (SEND_RESEND | SEND_POSTPONED)))
-      from->personal = mutt_str_strdup(C_Realname);
+      from->personal = mutt_str_dup(C_Realname);
   }
 
   if (!(((WithCrypto & APPLICATION_PGP) != 0) && (flags & SEND_KEY)))

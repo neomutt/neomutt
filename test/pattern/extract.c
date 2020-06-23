@@ -152,7 +152,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       }
       else
       {
-        cmd.data = mutt_str_strdup(tok->dptr);
+        cmd.data = mutt_str_dup(tok->dptr);
       }
       *pc = '`';
       pid = filter_create(cmd.data, NULL, &fp, NULL);

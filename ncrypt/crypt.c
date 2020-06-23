@@ -1311,7 +1311,7 @@ const char *crypt_get_fingerprint_or_id(const char *p, const char **pphint,
   } while (c);
 
   /* If at end of input, check for correct fingerprint length and copy if. */
-  pfcopy = (!c && ((hexdigits == 40) || (hexdigits == 32)) ? mutt_str_strdup(pf) : NULL);
+  pfcopy = (!c && ((hexdigits == 40) || (hexdigits == 32)) ? mutt_str_dup(pf) : NULL);
 
   if (pfcopy)
   {

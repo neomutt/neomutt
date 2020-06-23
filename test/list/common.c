@@ -32,7 +32,7 @@ struct ListHead test_list_create(const char *items[], bool copy)
   {
     struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
     if (copy)
-      np->data = mutt_str_strdup(items[i]);
+      np->data = mutt_str_dup(items[i]);
     else
       np->data = (char *) items[i];
     STAILQ_INSERT_TAIL(&lh, np, entries);

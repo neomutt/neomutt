@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_strdup()
+ * Test code for mutt_str_dup()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -25,21 +25,21 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 
-void test_mutt_str_strdup(void)
+void test_mutt_str_dup(void)
 {
-  // char *mutt_str_strdup(const char *str);
+  // char *mutt_str_dup(const char *str);
 
   {
-    TEST_CHECK(mutt_str_strdup(NULL) == NULL);
+    TEST_CHECK(mutt_str_dup(NULL) == NULL);
   }
 
   {
-    TEST_CHECK(mutt_str_strdup("") == NULL);
+    TEST_CHECK(mutt_str_dup("") == NULL);
   }
 
   {
     char *str = "apple";
-    char *result = mutt_str_strdup(str);
+    char *result = mutt_str_dup(str);
     TEST_CHECK(result != NULL);
     TEST_CHECK(result != str);
     TEST_CHECK(strcmp(result, str) == 0);

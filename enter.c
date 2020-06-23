@@ -792,7 +792,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
           *numfiles = 1;
           tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
           mutt_expand_path(buf, buflen);
-          tfiles[0] = mutt_str_strdup(buf);
+          tfiles[0] = mutt_str_dup(buf);
           *files = tfiles;
         }
         rc = 0;

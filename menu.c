@@ -334,7 +334,7 @@ static void make_entry(char *buf, size_t buflen, struct Menu *menu, int i)
  */
 static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
 {
-  char *scratch = mutt_str_strdup(buf);
+  char *scratch = mutt_str_dup(buf);
   int shift = C_ArrowCursor ? mutt_strwidth(C_ArrowString) + 1 : 0;
   int cols = menu->win_index->state.cols - shift;
 
@@ -1016,7 +1016,7 @@ void mutt_menu_add_dialog_row(struct Menu *menu, const char *row)
     menu->dsize += 10;
     mutt_mem_realloc(&menu->dialog, menu->dsize * sizeof(char *));
   }
-  menu->dialog[menu->max++] = mutt_str_strdup(row);
+  menu->dialog[menu->max++] = mutt_str_dup(row);
 }
 
 /**

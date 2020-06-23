@@ -70,7 +70,7 @@ const char *compress_list(void)
     len += snprintf(tmp + len, sizeof(tmp) - len, "%s", (*ops)->name);
   }
 
-  return mutt_str_strdup(tmp);
+  return mutt_str_dup(tmp);
 }
 
 /**

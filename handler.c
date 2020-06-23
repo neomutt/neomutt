@@ -542,7 +542,7 @@ static int autoview_handler(struct Body *a, struct State *s)
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
   mailcap_lookup(a, type, sizeof(type), entry, MUTT_MC_AUTOVIEW);
 
-  fname = mutt_str_strdup(a->filename);
+  fname = mutt_str_dup(a->filename);
   mutt_file_sanitize_filename(fname, true);
   mailcap_expand_filename(entry->nametemplate, fname, tempfile);
   FREE(&fname);

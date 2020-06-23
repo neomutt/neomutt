@@ -144,7 +144,7 @@ static void pop_edata_free(void **ptr)
 static struct PopEmailData *pop_edata_new(const char *uid)
 {
   struct PopEmailData *edata = mutt_mem_calloc(1, sizeof(struct PopEmailData));
-  edata->uid = mutt_str_strdup(uid);
+  edata->uid = mutt_str_dup(uid);
   return edata;
 }
 
