@@ -157,7 +157,7 @@ static void process_protected_headers(struct Email *e)
 
   /* Update protected headers in the index and header cache. */
   if (C_CryptProtectedHeadersRead && prot_headers && prot_headers->subject &&
-      !mutt_str_equal(e->env->subject, prot_headers->subject, CASE_MATCH))
+      !mutt_str_equal(e->env->subject, prot_headers->subject))
   {
     if (Context->mailbox->subj_hash && e->env->real_subj)
       mutt_hash_delete(Context->mailbox->subj_hash, e->env->real_subj, e);
@@ -284,7 +284,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     }
   }
 
-  if (!C_Pager || mutt_str_equal(C_Pager, "builtin", CASE_MATCH))
+  if (!C_Pager || mutt_str_equal(C_Pager, "builtin"))
     builtin = true;
   else
   {
@@ -1090,7 +1090,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
    * Leitner <leitner@prz.fu-berlin.de> */
   if (mutt_buffer_len(&LastSaveFolder) == 0)
     mutt_buffer_alloc(&LastSaveFolder, PATH_MAX);
-  if (mutt_str_equal(mutt_b2s(buf), ".", CASE_MATCH))
+  if (mutt_str_equal(mutt_b2s(buf), "."))
     mutt_buffer_copy(buf, &LastSaveFolder);
   else
     mutt_buffer_strcpy(&LastSaveFolder, mutt_b2s(buf));
@@ -1292,9 +1292,9 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   mutt_parse_content_type(buf, b);
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
-  type_changed = !mutt_str_equal(tmp, obuf, CASE_IGNORE);
+  type_changed = !mutt_istr_equal(tmp, obuf);
   charset_changed =
-      !mutt_str_equal(charset, mutt_param_get(&b->parameter, "charset"), CASE_IGNORE);
+      !mutt_istr_equal(charset, mutt_param_get(&b->parameter, "charset"));
 
   /* if in send mode, check for conversion - current setting is default. */
 

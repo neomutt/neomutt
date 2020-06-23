@@ -1481,7 +1481,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
       }
 
       /* Check for the end boundary */
-      if (mutt_str_equal(buf + blen + 2, "--", CASE_MATCH))
+      if (mutt_str_equal(buf + blen + 2, "--"))
       {
         final = true;
         break; /* done parsing */

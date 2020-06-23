@@ -818,7 +818,7 @@ static struct SmimeKey *smime_get_key_by_hash(char *hash, bool only_public_key)
   struct SmimeKey *results = smime_get_candidates(hash, only_public_key);
   for (struct SmimeKey *result = results; result; result = result->next)
   {
-    if (mutt_str_equal(hash, result->hash, CASE_IGNORE))
+    if (mutt_istr_equal(hash, result->hash))
     {
       match = smime_copy_key(result);
       break;
@@ -861,7 +861,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
       continue;
     }
 
-    if (mutt_str_equal(mailbox, result->email, CASE_IGNORE))
+    if (mutt_istr_equal(mailbox, result->email))
     {
       match = smime_copy_key(result);
       *matches_end = match;
@@ -869,7 +869,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
 
       if (match->trust == 't')
       {
-        if (trusted_match && !mutt_str_equal(match->hash, trusted_match->hash, CASE_IGNORE))
+        if (trusted_match && !mutt_istr_equal(match->hash, trusted_match->hash))
         {
           multi_trusted_matches = true;
         }
@@ -936,8 +936,8 @@ static struct SmimeKey *smime_get_key_by_str(char *str, KeyFlags abilities, bool
       continue;
     }
 
-    if (mutt_str_equal(str, result->hash, CASE_IGNORE) ||
-        mutt_str_stristr(result->email, str) || mutt_str_stristr(result->label, str))
+    if (mutt_istr_equal(str, result->hash) || mutt_str_stristr(result->email, str) ||
+        mutt_str_stristr(result->label, str))
     {
       match = smime_copy_key(result);
       *matches_end = match;
@@ -1013,7 +1013,7 @@ static void getkeys(char *mailbox)
 
   /* if the key is different from last time */
   if ((mutt_buffer_len(&SmimeKeyToUse) <= smime_keys_len) ||
-      !mutt_str_equal(k, SmimeKeyToUse.data + smime_keys_len + 1, CASE_IGNORE))
+      !mutt_istr_equal(k, SmimeKeyToUse.data + smime_keys_len + 1))
   {
     smime_class_void_passphrase();
     mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(C_SmimeKeys), k);
@@ -1788,7 +1788,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(C_SmimeCertificates), signas);
 
   struct SmimeKey *signas_key = smime_get_key_by_hash(signas, 1);
-  if (!signas_key || mutt_str_equal("?", signas_key->issuer, CASE_MATCH))
+  if (!signas_key || mutt_str_equal("?", signas_key->issuer))
     intermediates = signas; /* so openssl won't complain in any case */
   else
     intermediates = signas_key->issuer;
@@ -2017,7 +2017,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
       rewind(fp_smime_err);
 
       line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, 0);
-      if (linelen && mutt_str_equal(line, "verification successful", CASE_IGNORE))
+      if (linelen && mutt_istr_equal(line, "verification successful"))
         badsig = 0;
 
       FREE(&line);
@@ -2263,7 +2263,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     rewind(fp_smime_err);
 
     line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, 0);
-    if (linelen && mutt_str_equal(line, "verification successful", CASE_IGNORE))
+    if (linelen && mutt_istr_equal(line, "verification successful"))
       m->goodsig = true;
     FREE(&line);
   }

@@ -96,7 +96,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     force = true;
   }
 
-  if (!mutt_str_equal(C_Postponed, OldPostponed, CASE_MATCH))
+  if (!mutt_str_equal(C_Postponed, OldPostponed))
   {
     FREE(&OldPostponed);
     OldPostponed = mutt_str_strdup(C_Postponed);
@@ -108,7 +108,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     return 0;
 
   // We currently are in the C_Postponed mailbox so just pick the current status
-  if (m && mutt_str_equal(C_Postponed, m->realpath, CASE_MATCH))
+  if (m && mutt_str_equal(C_Postponed, m->realpath))
   {
     PostCount = m->msg_count - m->msg_deleted;
     return PostCount;
@@ -725,8 +725,8 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   {
     e_new->security |= SEC_SIGN;
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        mutt_str_equal(mutt_param_get(&e_new->content->parameter, "protocol"),
-                       "application/pgp-signature", CASE_IGNORE))
+        mutt_istr_equal(mutt_param_get(&e_new->content->parameter, "protocol"),
+                        "application/pgp-signature"))
     {
       e_new->security |= APPLICATION_PGP;
     }
@@ -782,7 +782,8 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
 
     if (b->type == TYPE_TEXT)
     {
-      if (mutt_str_equal("yes", mutt_param_get(&b->parameter, "x-mutt-noconv"), CASE_IGNORE))
+      if (mutt_istr_equal("yes",
+                          mutt_param_get(&b->parameter, "x-mutt-noconv")))
       {
         b->noconv = true;
       }
@@ -865,7 +866,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   }
 
   if (C_CryptProtectedHeadersRead && protected_headers && protected_headers->subject &&
-      !mutt_str_equal(e_new->env->subject, protected_headers->subject, CASE_MATCH))
+      !mutt_str_equal(e_new->env->subject, protected_headers->subject))
   {
     mutt_str_replace(&e_new->env->subject, protected_headers->subject);
   }

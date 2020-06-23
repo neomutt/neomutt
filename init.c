@@ -384,7 +384,7 @@ static bool get_hostname(struct ConfigSet *cs)
 const struct Command *mutt_command_get(const char *s)
 {
   for (int i = 0; Commands[i].name; i++)
-    if (mutt_str_equal(s, Commands[i].name, CASE_MATCH))
+    if (mutt_str_equal(s, Commands[i].name))
       return &Commands[i];
   return NULL;
 }
@@ -1008,7 +1008,7 @@ enum CommandResult mutt_parse_rc_buffer(struct Buffer *line,
     mutt_extract_token(token, line, MUTT_TOKEN_NO_FLAGS);
     for (i = 0; Commands[i].name; i++)
     {
-      if (mutt_str_equal(token->data, Commands[i].name, CASE_MATCH))
+      if (mutt_str_equal(token->data, Commands[i].name))
       {
         rc = Commands[i].parse(token, line, Commands[i].data, err);
         if (rc != MUTT_CMD_SUCCESS)
@@ -1714,7 +1714,7 @@ int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef
 
   const char *str = (const char *) value;
 
-  if (mutt_str_equal(str, "inline", CASE_MATCH) || mutt_str_equal(str, "info", CASE_MATCH))
+  if (mutt_str_equal(str, "inline") || mutt_str_equal(str, "info"))
     return CSR_SUCCESS;
 
   mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);

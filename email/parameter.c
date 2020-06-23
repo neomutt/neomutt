@@ -175,8 +175,8 @@ bool mutt_param_cmp_strict(const struct ParameterList *pl1, const struct Paramet
 
   while (np1 && np2)
   {
-    if (!mutt_str_equal(np1->attribute, np2->attribute, CASE_MATCH) ||
-        !mutt_str_equal(np1->value, np2->value, CASE_MATCH))
+    if (!mutt_str_equal(np1->attribute, np2->attribute) ||
+        !mutt_str_equal(np1->value, np2->value))
     {
       return false;
     }

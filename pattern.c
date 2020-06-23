@@ -2447,27 +2447,26 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if (mutt_str_equal("all", mutt_b2s(buf), CASE_IGNORE) ||
-        mutt_str_equal("^", mutt_b2s(buf), CASE_MATCH) ||
-        mutt_str_equal(".", mutt_b2s(buf), CASE_MATCH)) /* ~A is more efficient */
+    if (mutt_istr_equal("all", mutt_b2s(buf)) || mutt_str_equal("^", mutt_b2s(buf)) ||
+        mutt_str_equal(".", mutt_b2s(buf))) /* ~A is more efficient */
     {
       mutt_buffer_strcpy(buf, "~A");
     }
-    else if (mutt_str_equal("del", mutt_b2s(buf), CASE_IGNORE))
+    else if (mutt_istr_equal("del", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~D");
-    else if (mutt_str_equal("flag", mutt_b2s(buf), CASE_IGNORE))
+    else if (mutt_istr_equal("flag", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~F");
-    else if (mutt_str_equal("new", mutt_b2s(buf), CASE_IGNORE))
+    else if (mutt_istr_equal("new", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~N");
-    else if (mutt_str_equal("old", mutt_b2s(buf), CASE_IGNORE))
+    else if (mutt_istr_equal("old", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~O");
-    else if (mutt_str_equal("repl", mutt_b2s(buf), CASE_IGNORE))
+    else if (mutt_istr_equal("repl", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~Q");
-    else if (mutt_str_equal("read", mutt_b2s(buf), CASE_IGNORE))
+    else if (mutt_istr_equal("read", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~R");
-    else if (mutt_str_equal("tag", mutt_b2s(buf), CASE_IGNORE))
+    else if (mutt_istr_equal("tag", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~T");
-    else if (mutt_str_equal("unread", mutt_b2s(buf), CASE_IGNORE))
+    else if (mutt_istr_equal("unread", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~U");
     else
     {
@@ -2668,7 +2667,7 @@ int mutt_pattern_func(int op, char *prompt)
     const char *pbuf = buf->data;
     while (*pbuf == ' ')
       pbuf++;
-    if (!mutt_str_equal(pbuf, "~A", CASE_MATCH))
+    if (!mutt_str_equal(pbuf, "~A"))
     {
       Context->pattern = simple;
       simple = NULL; /* don't clobber it */
@@ -2722,7 +2721,7 @@ int mutt_search_command(int cur, int op)
     mutt_buffer_strcpy(tmp, buf);
     mutt_check_simple(tmp, NONULL(C_SimpleSearch));
 
-    if (!SearchPattern || !mutt_str_equal(mutt_b2s(tmp), LastSearchExpn, CASE_MATCH))
+    if (!SearchPattern || !mutt_str_equal(mutt_b2s(tmp), LastSearchExpn))
     {
       struct Buffer err;
       mutt_buffer_init(&err);

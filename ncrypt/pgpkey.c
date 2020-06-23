@@ -573,14 +573,13 @@ static PgpKeyValidFlags pgp_id_matches_addr(struct Address *addr,
   if (pgp_id_is_strong(uid))
     flags |= PGP_KV_STRONGID;
 
-  if (addr->mailbox && u_addr->mailbox &&
-      mutt_str_equal(addr->mailbox, u_addr->mailbox, CASE_IGNORE))
+  if (addr->mailbox && u_addr->mailbox && mutt_istr_equal(addr->mailbox, u_addr->mailbox))
   {
     flags |= PGP_KV_ADDR;
   }
 
   if (addr->personal && u_addr->personal &&
-      mutt_str_equal(addr->personal, u_addr->personal, CASE_IGNORE))
+      mutt_istr_equal(addr->personal, u_addr->personal))
   {
     flags |= PGP_KV_STRING;
   }
@@ -875,7 +874,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
   {
     for (l = id_defaults; l; l = l->next)
     {
-      if (mutt_str_equal(whatfor, l->what, CASE_IGNORE))
+      if (mutt_istr_equal(whatfor, l->what))
       {
         mutt_str_strfcpy(resp, l->dflt, sizeof(resp));
         break;
@@ -1205,9 +1204,9 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
 
     mutt_debug(LL_DEBUG5, "matching \"%s\" against key %s:\n", p, pgp_long_keyid(k));
 
-    if ((*p == '\0') || (pfcopy && mutt_str_equal(pfcopy, k->fingerprint, CASE_IGNORE)) ||
-        (pl && mutt_str_equal(pl, pgp_long_keyid(k), CASE_IGNORE)) ||
-        (ps && mutt_str_equal(ps, pgp_short_keyid(k), CASE_IGNORE)))
+    if ((*p == '\0') || (pfcopy && mutt_istr_equal(pfcopy, k->fingerprint)) ||
+        (pl && mutt_istr_equal(pl, pgp_long_keyid(k))) ||
+        (ps && mutt_istr_equal(ps, pgp_short_keyid(k))))
     {
       mutt_debug(LL_DEBUG5, "\t\tmatch #1\n");
       match = true;

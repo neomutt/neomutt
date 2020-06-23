@@ -537,7 +537,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
   if (chain->cl >= MAX_MIXES)
     return -1;
 
-  if (mutt_str_equal(s, "0", CASE_MATCH) || mutt_str_equal(s, "<random>", CASE_IGNORE))
+  if (mutt_str_equal(s, "0") || mutt_istr_equal(s, "<random>"))
   {
     chain->ch[chain->cl++] = 0;
     return 0;
@@ -545,7 +545,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 
   for (i = 0; type2_list[i]; i++)
   {
-    if (mutt_str_equal(s, type2_list[i]->shortname, CASE_IGNORE))
+    if (mutt_istr_equal(s, type2_list[i]->shortname))
     {
       chain->ch[chain->cl++] = i;
       return 0;
@@ -573,7 +573,7 @@ static int mutt_dlg_mixmaster_observer(struct NotifyCallback *nc)
   struct EventConfig *ec = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (!mutt_str_equal(ec->name, "status_on_top", CASE_MATCH))
+  if (!mutt_str_equal(ec->name, "status_on_top"))
     return 0;
 
   struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);

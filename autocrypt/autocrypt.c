@@ -323,7 +323,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
       update_db = true;
       peer->autocrypt_timestamp = e->date_sent;
       peer->prefer_encrypt = valid_ac_hdr->prefer_encrypt;
-      if (!mutt_str_equal(peer->keydata, valid_ac_hdr->keydata, CASE_MATCH))
+      if (!mutt_str_equal(peer->keydata, valid_ac_hdr->keydata))
       {
         import_gpg = true;
         insert_db_history = true;
@@ -449,7 +449,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
      * addresses are normalized we use strcmp, not mutt_str_strcasecmp. */
     TAILQ_FOREACH(peer_addr, &recips, entries)
     {
-      if (mutt_str_equal(peer_addr->mailbox, ac_hdr_addr.mailbox, CASE_MATCH))
+      if (mutt_str_equal(peer_addr->mailbox, ac_hdr_addr.mailbox))
         break;
     }
 
@@ -472,9 +472,8 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
       /* This is slightly different from the autocrypt 1.1 spec.
        * Avoid setting an empty peer.gossip_keydata with a value that matches
        * the current peer.keydata. */
-      if ((peer->gossip_keydata &&
-           !mutt_str_equal(peer->gossip_keydata, ac_hdr->keydata, CASE_MATCH)) ||
-          (!peer->gossip_keydata && !mutt_str_equal(peer->keydata, ac_hdr->keydata, CASE_MATCH)))
+      if ((peer->gossip_keydata && !mutt_str_equal(peer->gossip_keydata, ac_hdr->keydata)) ||
+          (!peer->gossip_keydata && !mutt_str_equal(peer->keydata, ac_hdr->keydata)))
       {
         import_gpg = true;
         insert_db_history = true;

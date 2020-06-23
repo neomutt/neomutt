@@ -1816,7 +1816,7 @@ void add_to_stailq(struct ListHead *head, const char *str)
  */
 void remove_from_stailq(struct ListHead *head, const char *str)
 {
-  if (mutt_str_equal("*", str, CASE_MATCH))
+  if (mutt_str_equal("*", str))
     mutt_list_free(head); /* "unCMD *" means delete all current entries */
   else
   {

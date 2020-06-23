@@ -197,7 +197,7 @@ int mutt_hist_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ec = nc->event_data;
 
-  if (!mutt_str_equal(ec->name, "history", CASE_MATCH))
+  if (!mutt_str_equal(ec->name, "history"))
     return 0;
 
   mutt_hist_init();

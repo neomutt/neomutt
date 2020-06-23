@@ -350,7 +350,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
       buf_off++;
 
     /* test for signature separator */
-    const unsigned int sigsep = mutt_str_equal(buf + buf_off, "-- ", CASE_MATCH);
+    const unsigned int sigsep = mutt_str_equal(buf + buf_off, "-- ");
 
     /* a fixed line either has no trailing space or is the
      * signature separator */

@@ -83,9 +83,8 @@ static bool test_set_initial(struct ConfigSet *cs, struct Buffer *err)
   TEST_MSG("Cherry = %s\n", VarCherry);
 
   log_line(__func__);
-  return (!mutt_str_equal(VarApple, aval, CASE_MATCH) &&
-          !mutt_str_equal(VarBanana, bval, CASE_MATCH) &&
-          !mutt_str_equal(VarCherry, cval, CASE_MATCH));
+  return (!mutt_str_equal(VarApple, aval) && !mutt_str_equal(VarBanana, bval) &&
+          !mutt_str_equal(VarCherry, cval));
 }
 
 void test_config_initial(void)

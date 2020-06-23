@@ -361,7 +361,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
   int dest = 0;
   while (source < h->last)
   {
-    if (mutt_str_equal(h->hist[source], str, CASE_MATCH))
+    if (mutt_str_equal(h->hist[source], str))
       FREE(&h->hist[source++]);
     else
       h->hist[dest++] = h->hist[source++];
@@ -381,7 +381,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
   dest = C_History;
   while (source > old_last)
   {
-    if (mutt_str_equal(h->hist[source], str, CASE_MATCH))
+    if (mutt_str_equal(h->hist[source], str))
       FREE(&h->hist[source--]);
     else
       h->hist[dest--] = h->hist[source--];
@@ -482,7 +482,7 @@ void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save)
     /* don't add to prompt history:
      *  - lines beginning by a space
      *  - repeated lines */
-    if ((*str != ' ') && (!h->hist[prev] || !mutt_str_equal(h->hist[prev], str, CASE_MATCH)))
+    if ((*str != ' ') && (!h->hist[prev] || !mutt_str_equal(h->hist[prev], str)))
     {
       if (C_HistoryRemoveDups)
         remove_history_dups(hclass, str);

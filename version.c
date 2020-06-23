@@ -568,14 +568,14 @@ bool feature_enabled(const char *name)
     return false;
   for (int i = 0; comp_opts_default[i].name; i++)
   {
-    if (mutt_str_equal(name, comp_opts_default[i].name, CASE_MATCH))
+    if (mutt_str_equal(name, comp_opts_default[i].name))
     {
       return true;
     }
   }
   for (int i = 0; comp_opts[i].name; i++)
   {
-    if (mutt_str_equal(name, comp_opts[i].name, CASE_MATCH))
+    if (mutt_str_equal(name, comp_opts[i].name))
     {
       return comp_opts[i].enabled;
     }

@@ -853,7 +853,7 @@ int mutt_abort_key_config_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ec = nc->event_data;
 
-  if (!mutt_str_equal(ec->name, "abort_key", CASE_MATCH))
+  if (!mutt_str_equal(ec->name, "abort_key"))
     return 0;
 
   mutt_init_abort_key();
@@ -1244,7 +1244,7 @@ static enum CommandResult try_bind(char *key, enum MenuType menu, char *func,
 {
   for (int i = 0; bindings[i].name; i++)
   {
-    if (mutt_str_equal(func, bindings[i].name, CASE_MATCH))
+    if (mutt_str_equal(func, bindings[i].name))
     {
       return km_bindkey_err(key, menu, bindings[i].op, err);
     }
@@ -1461,7 +1461,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
   char *key = NULL;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-  if (mutt_str_equal(buf->data, "*", CASE_MATCH))
+  if (mutt_str_equal(buf->data, "*"))
   {
     for (enum MenuType i = 0; i < MENU_MAX; i++)
       menu[i] = true;

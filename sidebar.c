@@ -133,7 +133,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
     return src;
 
   bool c = Context && Context->mailbox &&
-           mutt_str_equal(Context->mailbox->realpath, m->realpath, CASE_MATCH);
+           mutt_str_equal(Context->mailbox->realpath, m->realpath);
 
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -413,7 +413,7 @@ static void update_entries_visibility(void)
 
     sbe->is_hidden = false;
 
-    if (Context && mutt_str_equal(sbe->mailbox->realpath, Context->mailbox->realpath, CASE_MATCH))
+    if (Context && mutt_str_equal(sbe->mailbox->realpath, Context->mailbox->realpath))
     {
       /* Spool directories are always visible */
       continue;
@@ -893,10 +893,10 @@ static int imap_is_prefix(const char *folder, const char *mbox)
   if (!url_m || !url_f)
     goto done;
 
-  if (!mutt_str_equal(url_m->host, url_f->host, CASE_IGNORE))
+  if (!mutt_istr_equal(url_m->host, url_f->host))
     goto done;
 
-  if (url_m->user && url_f->user && !mutt_str_equal(url_m->user, url_f->user, CASE_IGNORE))
+  if (url_m->user && url_f->user && !mutt_istr_equal(url_m->user, url_f->user))
     goto done;
 
   size_t mlen = mutt_str_strlen(url_m->path);
@@ -1071,7 +1071,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
     else if (m->msg_flagged > 0)
       mutt_curses_set_color(MT_COLOR_SIDEBAR_FLAGGED);
     else if ((Colors->defs[MT_COLOR_SIDEBAR_SPOOLFILE] != 0) &&
-             mutt_str_equal(mailbox_path(m), C_Spoolfile, CASE_MATCH))
+             mutt_str_equal(mailbox_path(m), C_Spoolfile))
     {
       mutt_curses_set_color(MT_COLOR_SIDEBAR_SPOOLFILE);
     }
@@ -1089,7 +1089,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 
     mutt_window_move(win, col, row);
     if (Context && Context->mailbox && (Context->mailbox->realpath[0] != '\0') &&
-        mutt_str_equal(m->realpath, Context->mailbox->realpath, CASE_MATCH))
+        mutt_str_equal(m->realpath, Context->mailbox->realpath))
     {
       m->msg_unread = Context->mailbox->msg_unread;
       m->msg_count = Context->mailbox->msg_count;
@@ -1286,7 +1286,7 @@ void sb_set_open_mailbox(struct Mailbox *m)
 
   for (int entry = 0; entry < EntryCount; entry++)
   {
-    if (mutt_str_equal(Entries[entry]->mailbox->realpath, m->realpath, CASE_MATCH))
+    if (mutt_str_equal(Entries[entry]->mailbox->realpath, m->realpath))
     {
       OpnIndex = entry;
       HilIndex = entry;
@@ -1329,7 +1329,7 @@ void sb_notify_mailbox(struct Mailbox *m, bool created)
     if (BotIndex < 0)
       BotIndex = EntryCount;
     if ((OpnIndex < 0) && Context &&
-        mutt_str_equal(m->realpath, Context->mailbox->realpath, CASE_MATCH))
+        mutt_str_equal(m->realpath, Context->mailbox->realpath))
     {
       OpnIndex = EntryCount;
     }

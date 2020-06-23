@@ -852,7 +852,7 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
       return true;
     }
 
-    if (mutt_str_equal(np->data, "\\*", CASE_MATCH))
+    if (mutt_str_equal(np->data, "\\*"))
       return true;
   }
 
@@ -1694,9 +1694,9 @@ static struct Account *imap_ac_find(struct Account *a, const char *path)
   struct ImapAccountData *adata = a->adata;
   struct ConnAccount *cac = &adata->conn->account;
 
-  if (!mutt_str_equal(url->host, cac->host, CASE_IGNORE))
+  if (!mutt_istr_equal(url->host, cac->host))
     a = NULL;
-  else if (url->user && !mutt_str_equal(url->user, cac->user, CASE_IGNORE))
+  else if (url->user && !mutt_istr_equal(url->user, cac->user))
     a = NULL;
 
   url_free(&url);
@@ -2266,7 +2266,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
   new_tag = buf; /* rewind */
   mutt_str_remove_trailing_ws(new_tag);
 
-  return !mutt_str_equal(tags, buf, CASE_MATCH);
+  return !mutt_str_equal(tags, buf);
 }
 
 /**

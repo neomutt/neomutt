@@ -486,7 +486,7 @@ static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur
                          (last->message->received < tmp->message->received) :
                          (last->message->date_sent < tmp->message->date_sent))) &&
           tmp->message->env->real_subj &&
-          mutt_str_equal(np->data, tmp->message->env->real_subj, CASE_MATCH))
+          mutt_str_equal(np->data, tmp->message->env->real_subj))
       {
         last = tmp; /* best match so far */
       }
@@ -565,7 +565,7 @@ static void pseudo_threads(struct Context *ctx)
          * parent, since otherwise they rightly belong to the message
          * we're attaching. */
         if ((tmp == cur) || mutt_str_equal(tmp->message->env->real_subj,
-                                           parent->message->env->real_subj, CASE_MATCH))
+                                           parent->message->env->real_subj))
         {
           tmp->message->subject_changed = false;
 
@@ -816,8 +816,7 @@ static void check_subjects(struct Mailbox *m, bool init)
       e->subject_changed = true;
     else if (e->env->real_subj && tmp->message->env->real_subj)
     {
-      e->subject_changed =
-          !mutt_str_equal(e->env->real_subj, tmp->message->env->real_subj, CASE_MATCH);
+      e->subject_changed = !mutt_str_equal(e->env->real_subj, tmp->message->env->real_subj);
     }
     else
     {
@@ -1007,7 +1006,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
           ref = STAILQ_NEXT(ref, entries);
         else
         {
-          if (!mutt_str_equal(ref->data, STAILQ_FIRST(&e->env->references)->data, CASE_MATCH))
+          if (!mutt_str_equal(ref->data, STAILQ_FIRST(&e->env->references)->data))
             ref = STAILQ_FIRST(&e->env->references);
           else
             ref = STAILQ_NEXT(STAILQ_FIRST(&e->env->references), entries);

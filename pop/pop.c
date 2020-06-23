@@ -279,7 +279,7 @@ static int fetch_uidl(const char *line, void *data)
   for (i = 0; i < m->msg_count; i++)
   {
     struct PopEmailData *edata = pop_edata_get(m->emails[i]);
-    if (mutt_str_equal(line, edata->uid, CASE_MATCH))
+    if (mutt_str_equal(line, edata->uid))
       break;
   }
 
@@ -330,7 +330,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
   {
     struct PopEmailData *edata = pop_edata_get(m->emails[i]);
     /* if the id we get is known for a header: done (i.e. keep in cache) */
-    if (edata->uid && mutt_str_equal(edata->uid, id, CASE_MATCH))
+    if (edata->uid && mutt_str_equal(edata->uid, id))
       return 0;
   }
 
@@ -758,8 +758,7 @@ static struct Account *pop_ac_find(struct Account *a, const char *path)
   struct PopAccountData *adata = a->adata;
   struct ConnAccount *cac = &adata->conn->account;
 
-  if (!mutt_str_equal(url->host, cac->host, CASE_IGNORE) ||
-      !mutt_str_equal(url->user, cac->user, CASE_IGNORE))
+  if (!mutt_istr_equal(url->host, cac->host) || !mutt_istr_equal(url->user, cac->user))
   {
     a = NULL;
   }

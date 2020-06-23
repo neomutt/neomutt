@@ -4020,7 +4020,7 @@ int mutt_reply_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ec = nc->event_data;
 
-  if (!mutt_str_equal(ec->name, "reply_regex", CASE_MATCH))
+  if (!mutt_str_equal(ec->name, "reply_regex"))
     return 0;
 
   if (!Context || !Context->mailbox)
@@ -4218,7 +4218,7 @@ int mutt_dlgindex_observer(struct NotifyCallback *nc)
   if (!win_index || !win_pager)
     return -1;
 
-  if (mutt_str_equal(ec->name, "status_on_top", CASE_MATCH))
+  if (mutt_str_equal(ec->name, "status_on_top"))
   {
     struct MuttWindow *parent = win_index->parent;
     if (!parent)
@@ -4246,7 +4246,7 @@ int mutt_dlgindex_observer(struct NotifyCallback *nc)
     goto reflow;
   }
 
-  if (mutt_str_equal(ec->name, "pager_index_lines", CASE_MATCH))
+  if (mutt_str_equal(ec->name, "pager_index_lines"))
   {
     struct MuttWindow *parent = win_pager->parent;
     if (parent->state.visible)

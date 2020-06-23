@@ -349,7 +349,7 @@ int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
   if (subdir)
   {
     mutt_buffer_printf(buf, "%s/%s", mailbox_path(m), subdir);
-    is_old = C_MarkOld ? mutt_str_equal("cur", subdir, CASE_MATCH) : false;
+    is_old = C_MarkOld ? mutt_str_equal("cur", subdir) : false;
   }
   else
     mutt_buffer_strcpy(buf, mailbox_path(m));
@@ -1181,7 +1181,7 @@ static FILE *md_open_find_message(const char *folder, const char *unique,
   {
     maildir_canon_filename(tunique, de->d_name);
 
-    if (mutt_str_equal(mutt_b2s(tunique), unique, CASE_MATCH))
+    if (mutt_str_equal(mutt_b2s(tunique), unique))
     {
       mutt_buffer_printf(fname, "%s/%s/%s", folder, subfolder, de->d_name);
       fp = fopen(mutt_b2s(fname), "r");

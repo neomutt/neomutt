@@ -439,7 +439,7 @@ static bool is_mmnoask(const char *buf)
   char tmp[1024];
   char *q = NULL;
 
-  if (mutt_str_equal(val, "1", CASE_MATCH))
+  if (mutt_str_equal(val, "1"))
     return true;
 
   mutt_str_strfcpy(tmp, val, sizeof(tmp));
@@ -677,7 +677,7 @@ static int text_plain_handler(struct Body *b, struct State *s)
 
   while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, 0)))
   {
-    if (!mutt_str_equal(buf, "-- ", CASE_MATCH) && C_TextFlowed)
+    if (!mutt_str_equal(buf, "-- ") && C_TextFlowed)
     {
       size_t len = mutt_str_strlen(buf);
       while ((len > 0) && (buf[len - 1] == ' '))
@@ -1055,13 +1055,13 @@ static int alternative_handler(struct Body *a, struct State *s)
       mutt_file_copy_bytes(s->fp_in, s->fp_out, choice->offset - choice->hdr_offset);
     }
 
-    if (mutt_str_equal("info", C_ShowMultipartAlternative, CASE_MATCH))
+    if (mutt_str_equal("info", C_ShowMultipartAlternative))
     {
       print_part_line(s, choice, 0);
     }
     mutt_body_handler(choice, s);
 
-    if (mutt_str_equal("info", C_ShowMultipartAlternative, CASE_MATCH))
+    if (mutt_str_equal("info", C_ShowMultipartAlternative))
     {
       if (a->parts)
         b = a->parts;
@@ -1153,12 +1153,12 @@ static int multilingual_handler(struct Body *a, struct State *s)
           if (!first_part)
             first_part = b;
 
-          if (b->language && mutt_str_equal("zxx", b->language, CASE_MATCH))
+          if (b->language && mutt_str_equal("zxx", b->language))
             zxx_part = b;
 
           mutt_debug(LL_DEBUG2, "RFC8255 >> comparing configuration preferred_language='%s' to mail part content-language='%s'\n",
                      np->data, b->language);
-          if (b->language && mutt_str_equal(np->data, b->language, CASE_MATCH))
+          if (b->language && mutt_str_equal(np->data, b->language))
           {
             mutt_debug(LL_DEBUG2, "RFC8255 >> preferred_language='%s' matches content-language='%s' >> part selected to be displayed\n",
                        np->data, b->language);
@@ -1647,12 +1647,12 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
   else if (b->type == TYPE_MULTIPART)
   {
-    if (!mutt_str_equal("inline", C_ShowMultipartAlternative, CASE_MATCH) &&
+    if (!mutt_str_equal("inline", C_ShowMultipartAlternative) &&
         (mutt_str_strcasecmp("alternative", b->subtype) == 0))
     {
       handler = alternative_handler;
     }
-    else if (!mutt_str_equal("inline", C_ShowMultipartAlternative, CASE_MATCH) &&
+    else if (!mutt_str_equal("inline", C_ShowMultipartAlternative) &&
              (mutt_str_strcasecmp("multilingual", b->subtype) == 0))
     {
       handler = multilingual_handler;

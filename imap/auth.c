@@ -99,7 +99,7 @@ int imap_authenticate(struct ImapAccountData *adata)
       for (size_t i = 0; i < mutt_array_size(imap_authenticators); i++)
       {
         const struct ImapAuth *auth = &imap_authenticators[i];
-        if (!auth->method || mutt_str_equal(auth->method, np->data, CASE_IGNORE))
+        if (!auth->method || mutt_istr_equal(auth->method, np->data))
         {
           rc = auth->authenticate(adata, np->data);
           if (rc == IMAP_AUTH_SUCCESS)

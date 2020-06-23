@@ -71,7 +71,7 @@ void test_mutt_path_tidy_slash(void)
 
       mutt_str_strfcpy(buf, tests[i][0], sizeof(buf));
       mutt_path_tidy_slash(buf, true);
-      if (!TEST_CHECK(mutt_str_equal(buf, tests[i][1], CASE_MATCH)))
+      if (!TEST_CHECK(mutt_str_equal(buf, tests[i][1])))
       {
         TEST_MSG("Input:    %s", tests[i][0]);
         TEST_MSG("Expected: %s", tests[i][1]);

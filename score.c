@@ -124,7 +124,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   /* look for an existing entry and update the value, else add it to the end
    * of the list */
   for (ptr = ScoreList, last = NULL; ptr; last = ptr, ptr = ptr->next)
-    if (mutt_str_equal(pattern, ptr->str, CASE_MATCH))
+    if (mutt_str_equal(pattern, ptr->str))
       break;
   if (!ptr)
   {
@@ -211,7 +211,7 @@ enum CommandResult mutt_parse_unscore(struct Buffer *buf, struct Buffer *s,
   while (MoreArgs(s))
   {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-    if (mutt_str_equal("*", buf->data, CASE_MATCH))
+    if (mutt_str_equal("*", buf->data))
     {
       for (tmp = ScoreList; tmp;)
       {
@@ -226,7 +226,7 @@ enum CommandResult mutt_parse_unscore(struct Buffer *buf, struct Buffer *s,
     {
       for (tmp = ScoreList; tmp; last = tmp, tmp = tmp->next)
       {
-        if (mutt_str_equal(buf->data, tmp->str, CASE_MATCH))
+        if (mutt_str_equal(buf->data, tmp->str))
         {
           if (last)
             last->next = tmp->next;

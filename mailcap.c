@@ -266,8 +266,8 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
       ch = get_field(buf);
       if ((mutt_str_strcasecmp(buf, type) != 0) &&
           ((mutt_str_strncasecmp(buf, type, btlen) != 0) ||
-           ((buf[btlen] != '\0') && /* implicit wild */
-            !mutt_str_equal(buf + btlen, "/*", CASE_MATCH)))) /* wildsubtype */
+           ((buf[btlen] != '\0') &&               /* implicit wild */
+            !mutt_str_equal(buf + btlen, "/*")))) /* wildsubtype */
       {
         continue;
       }

@@ -691,7 +691,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   imap_quote_string(quoted_name, sizeof(quoted_name), list.name, true);
   url.path = quoted_name + 1;
   url.path[strlen(url.path) - 1] = '\0';
-  if (mutt_str_equal(url.user, C_ImapUser, CASE_MATCH))
+  if (mutt_str_equal(url.user, C_ImapUser))
     url.user = NULL;
   url_tostring(&url, buf + 11, sizeof(buf) - 11, 0);
   mutt_str_strcat(buf, sizeof(buf), "\"");
@@ -785,7 +785,7 @@ static struct Mailbox *find_mailbox(struct ImapAccountData *adata, const char *n
   STAILQ_FOREACH(np, &adata->account->mailboxes, entries)
   {
     struct ImapMboxData *mdata = imap_mdata_get(np->mailbox);
-    if (mutt_str_equal(name, mdata->name, CASE_MATCH))
+    if (mutt_str_equal(name, mdata->name))
       return np->mailbox;
   }
 

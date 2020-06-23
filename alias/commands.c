@@ -149,7 +149,7 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     struct Alias *np = NULL;
-    if (mutt_str_equal("*", buf->data, CASE_MATCH))
+    if (mutt_str_equal("*", buf->data))
     {
       TAILQ_FOREACH(np, &Aliases, entries)
       {

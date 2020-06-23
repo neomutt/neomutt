@@ -227,7 +227,7 @@ int mutt_regexlist_remove(struct RegexList *rl, const char *str)
   if (!rl || !str)
     return -1;
 
-  if (mutt_str_equal("*", str, CASE_MATCH))
+  if (mutt_str_equal("*", str))
   {
     mutt_regexlist_free(rl); /* "unCMD *" means delete all current entries */
     return 0;
@@ -569,7 +569,7 @@ int mutt_replacelist_remove(struct ReplaceList *rl, const char *pat)
   struct Replace *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
-    if (mutt_str_equal(np->regex->pattern, pat, CASE_MATCH))
+    if (mutt_str_equal(np->regex->pattern, pat))
     {
       STAILQ_REMOVE(rl, np, Replace, entries);
       mutt_regex_free(&np->regex);

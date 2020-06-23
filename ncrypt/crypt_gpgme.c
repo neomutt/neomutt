@@ -192,7 +192,7 @@ int KeyInfoPadding[KIP_MAX] = { 0 };
  */
 static bool is_pka_notation(gpgme_sig_notation_t notation)
 {
-  return mutt_str_equal(notation->name, PKA_NOTATION_NAME, CASE_MATCH);
+  return mutt_str_equal(notation->name, PKA_NOTATION_NAME);
 }
 
 /**
@@ -734,13 +734,13 @@ static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr,
   if (addr && u_addr)
   {
     if (addr->mailbox && u_addr->mailbox &&
-        mutt_str_equal(addr->mailbox, u_addr->mailbox, CASE_IGNORE))
+        mutt_istr_equal(addr->mailbox, u_addr->mailbox))
     {
       rc |= CRYPT_KV_ADDR;
     }
 
     if (addr->personal && u_addr->personal &&
-        mutt_str_equal(addr->personal, u_addr->personal, CASE_IGNORE))
+        mutt_istr_equal(addr->personal, u_addr->personal))
     {
       rc |= CRYPT_KV_STRING;
     }
@@ -1192,7 +1192,7 @@ static bool set_signer_from_address(gpgme_ctx_t ctx, const char *address, bool f
     char *fpr2 = "fpr2";
     if (key2->subkeys)
       fpr2 = key2->subkeys->fpr ? key2->subkeys->fpr : key2->subkeys->keyid;
-    if (!mutt_str_equal(fpr, fpr2, CASE_MATCH))
+    if (!mutt_str_equal(fpr, fpr2))
     {
       gpgme_key_unref(key);
       gpgme_key_unref(key2);
@@ -5133,10 +5133,9 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
     mutt_debug(LL_DEBUG5, "matching \"%s\" against key %s, \"%s\": ", p,
                crypt_long_keyid(k), k->uid);
 
-    if ((*p == '\0') || (pfcopy && mutt_str_equal(pfcopy, crypt_fpr(k), CASE_IGNORE)) ||
-        (pl && mutt_str_equal(pl, crypt_long_keyid(k), CASE_IGNORE)) ||
-        (ps && mutt_str_equal(ps, crypt_short_keyid(k), CASE_IGNORE)) ||
-        mutt_str_stristr(k->uid, p))
+    if ((*p == '\0') || (pfcopy && mutt_istr_equal(pfcopy, crypt_fpr(k))) ||
+        (pl && mutt_istr_equal(pl, crypt_long_keyid(k))) ||
+        (ps && mutt_istr_equal(ps, crypt_short_keyid(k))) || mutt_str_stristr(k->uid, p))
     {
       mutt_debug(LL_DEBUG5, "match\n");
 
@@ -5194,7 +5193,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
   {
     for (l = id_defaults; l; l = l->next)
     {
-      if (mutt_str_equal(whatfor, l->what, CASE_IGNORE))
+      if (mutt_istr_equal(whatfor, l->what))
       {
         mutt_str_strfcpy(resp, l->dflt, sizeof(resp));
         break;

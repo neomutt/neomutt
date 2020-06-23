@@ -774,7 +774,7 @@ static bool do_uncolor(struct Colors *c, struct Buffer *buf, struct Buffer *s,
   do
   {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-    if (mutt_str_equal("*", buf->data, CASE_MATCH))
+    if (mutt_str_equal("*", buf->data))
     {
       rc = STAILQ_FIRST(cl);
       color_line_list_clear(c, cl);
@@ -784,7 +784,7 @@ static bool do_uncolor(struct Colors *c, struct Buffer *buf, struct Buffer *s,
     prev = NULL;
     STAILQ_FOREACH(np, cl, entries)
     {
-      if (mutt_str_equal(buf->data, np->pattern, CASE_MATCH))
+      if (mutt_str_equal(buf->data, np->pattern))
       {
         rc = true;
 
@@ -821,7 +821,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 {
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-  if (mutt_str_equal(buf->data, "*", CASE_MATCH))
+  if (mutt_str_equal(buf->data, "*"))
   {
     colors_clear(c);
     struct EventColor ec = { false }; // Color reset/removed
@@ -960,7 +960,7 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
   {
     if (sensitive)
     {
-      if (mutt_str_equal(s, tmp->pattern, CASE_MATCH))
+      if (mutt_str_equal(s, tmp->pattern))
         break;
     }
     else

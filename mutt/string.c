@@ -937,14 +937,24 @@ void mutt_str_dequote_comment(char *s)
  * mutt_str_equal - Compare two strings
  * @param a First string
  * @param b Second string
- * @param cs Case sensitivity
  * @retval true The strings are equal
  * @retval false The strings are not equal
  */
-bool mutt_str_equal(const char *a, const char *b, enum CaseSensitivity cs)
+bool mutt_str_equal(const char *a, const char *b)
 {
-  return a == b ||
-         ((cs == CASE_MATCH) ? mutt_str_strcmp(a, b) : mutt_str_strcasecmp(a, b)) == 0;
+  return (a == b) || (mutt_str_strcmp(a, b) == 0);
+}
+
+/**
+ * mutt_istr_equal - Compare two strings, ignoring case
+ * @param a First string
+ * @param b Second string
+ * @retval true The strings are equal
+ * @retval false The strings are not equal
+ */
+bool mutt_istr_equal(const char *a, const char *b)
+{
+  return (a == b) || (mutt_str_strcasecmp(a, b) == 0);
 }
 
 /**

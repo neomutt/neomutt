@@ -57,7 +57,7 @@ static char *driver_tags_getter(struct TagList *head, bool show_hidden,
   struct Tag *np = NULL;
   STAILQ_FOREACH(np, head, entries)
   {
-    if (filter && !mutt_str_equal(np->name, filter, CASE_MATCH))
+    if (filter && !mutt_str_equal(np->name, filter))
       continue;
     if (show_hidden || !np->hidden)
     {

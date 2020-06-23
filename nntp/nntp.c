@@ -284,11 +284,11 @@ static int nntp_capabilities(struct NntpAccountData *adata)
     size_t plen = 0;
     if (mutt_socket_readln(buf, sizeof(buf), conn) < 0)
       return nntp_connect_error(adata);
-    if (mutt_str_equal("STARTTLS", buf, CASE_MATCH))
+    if (mutt_str_equal("STARTTLS", buf))
       adata->hasSTARTTLS = true;
-    else if (mutt_str_equal("MODE-READER", buf, CASE_MATCH))
+    else if (mutt_str_equal("MODE-READER", buf))
       mode_reader = true;
-    else if (mutt_str_equal("READER", buf, CASE_MATCH))
+    else if (mutt_str_equal("READER", buf))
     {
       adata->hasDATE = true;
       adata->hasLISTGROUP = true;
@@ -308,7 +308,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
       adata->authenticators = mutt_str_strdup(p);
     }
 #endif
-    else if (mutt_str_equal("OVER", buf, CASE_MATCH))
+    else if (mutt_str_equal("OVER", buf))
       adata->hasOVER = true;
     else if (mutt_str_startswith(buf, "LIST ", CASE_MATCH))
     {
@@ -320,7 +320,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
           adata->hasLIST_NEWSGROUPS = true;
       }
     }
-  } while (!mutt_str_equal(".", buf, CASE_MATCH));
+  } while (!mutt_str_equal(".", buf));
   *buf = '\0';
 #ifdef USE_SASL
   if (adata->authenticators && strcasestr(authinfo, " SASL "))
@@ -391,7 +391,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
       {
         if (mutt_socket_readln(buf, sizeof(buf), conn) < 0)
           return nntp_connect_error(adata);
-      } while (!mutt_str_equal(".", buf, CASE_MATCH));
+      } while (!mutt_str_equal(".", buf));
     }
   }
 
@@ -453,7 +453,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
           return nntp_connect_error(adata);
         }
 
-        if (!cont && mutt_str_equal(".", adata->overview_fmt + off, CASE_MATCH))
+        if (!cont && mutt_str_equal(".", adata->overview_fmt + off))
           break;
 
         cont = (chunk >= (buflen - off));
@@ -969,7 +969,7 @@ static int fetch_description(char *line, void *data)
     desc = strchr(line, '\0');
 
   struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, line);
-  if (mdata && !mutt_str_equal(desc, mdata->desc, CASE_MATCH))
+  if (mdata && !mutt_str_equal(desc, mdata->desc))
   {
     mutt_str_replace(&mdata->desc, desc);
     mutt_debug(LL_DEBUG2, "group: %s, desc: %s\n", line, desc);
@@ -1047,7 +1047,7 @@ static void nntp_parse_xref(struct Mailbox *m, struct Email *e)
       continue;
 
     nntp_article_status(m, e, grp, anum);
-    if (!nntp_edata_get(e)->article_num && mutt_str_equal(mdata->group, grp, CASE_MATCH))
+    if (!nntp_edata_get(e)->article_num && mutt_str_equal(mdata->group, grp))
       nntp_edata_get(e)->article_num = anum;
   }
   FREE(&buf);

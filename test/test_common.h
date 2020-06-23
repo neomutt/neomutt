@@ -32,7 +32,7 @@ void test_init(void);
 #define TEST_CHECK_STR_EQ(expected, actual)                                    \
   do                                                                           \
   {                                                                            \
-    if (!TEST_CHECK(mutt_str_equal(expected, actual, CASE_MATCH)))             \
+    if (!TEST_CHECK(mutt_str_equal(expected, actual)))             \
     {                                                                          \
       TEST_MSG("Expected: %s", expected);                                      \
       TEST_MSG("Actual  : %s", actual);                                        \

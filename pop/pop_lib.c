@@ -599,7 +599,7 @@ static int check_uidl(const char *line, void *data)
   for (int i = 0; i < m->msg_count; i++)
   {
     struct PopEmailData *edata = pop_edata_get(m->emails[i]);
-    if (mutt_str_equal(edata->uid, endp, CASE_MATCH))
+    if (mutt_str_equal(edata->uid, endp))
     {
       edata->refno = index;
       break;

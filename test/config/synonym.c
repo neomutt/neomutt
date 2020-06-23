@@ -73,7 +73,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(VarApple, value, CASE_MATCH)))
+  if (!TEST_CHECK(mutt_str_equal(VarApple, value)))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -115,7 +115,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(VarElderberry, value, CASE_MATCH)))
+  if (!TEST_CHECK(mutt_str_equal(VarElderberry, value)))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -136,7 +136,7 @@ static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   intptr_t value = cs_str_native_get(cs, name, err);
-  if (!TEST_CHECK(mutt_str_equal(VarGuava, (const char *) value, CASE_MATCH)))
+  if (!TEST_CHECK(mutt_str_equal(VarGuava, (const char *) value)))
   {
     TEST_MSG("Get failed: %s\n", err->data);
     return false;
@@ -167,7 +167,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(VarIlama, "iguana", CASE_MATCH)))
+  if (!TEST_CHECK(mutt_str_equal(VarIlama, "iguana")))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;

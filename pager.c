@@ -1051,8 +1051,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     line_info[n].type = MT_COLOR_NORMAL;
   else if (check_attachment_marker((char *) raw) == 0)
     line_info[n].type = MT_COLOR_ATTACHMENT;
-  else if (mutt_str_equal("-- \n", buf, CASE_MATCH) ||
-           mutt_str_equal("-- \r\n", buf, CASE_MATCH))
+  else if (mutt_str_equal("-- \n", buf) || mutt_str_equal("-- \r\n", buf))
   {
     i = n + 1;
 
@@ -3193,7 +3192,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         else
           followup_to = extra->email->env->followup_to;
 
-        if (!followup_to || !mutt_str_equal(followup_to, "poster", CASE_IGNORE) ||
+        if (!followup_to || !mutt_istr_equal(followup_to, "poster") ||
             (query_quadoption(C_FollowupToPoster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {

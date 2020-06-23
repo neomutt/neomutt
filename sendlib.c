@@ -432,8 +432,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
         /* Dirty hack to make messages readable by Outlook Express
          * for the Mac: force quotes around the boundary parameter
          * even when they aren't needed.  */
-        if (mutt_str_equal(cont->attribute, "boundary", CASE_IGNORE) &&
-            mutt_str_equal(buf, cont->value, CASE_MATCH))
+        if (mutt_istr_equal(cont->attribute, "boundary") && mutt_str_equal(buf, cont->value))
           snprintf(buf, sizeof(buf), "\"%s\"", cont->value);
 
         tmplen = mutt_str_strlen(buf) + mutt_str_strlen(cont->attribute) + 1;
@@ -591,7 +590,7 @@ int mutt_write_mime_body(struct Body *a, FILE *fp)
 
   /* This is pretty gross, but it's the best solution for now... */
   if (((WithCrypto & APPLICATION_PGP) != 0) && (a->type == TYPE_APPLICATION) &&
-      mutt_str_equal(a->subtype, "pgp-encrypted", CASE_MATCH) && !a->filename)
+      mutt_str_equal(a->subtype, "pgp-encrypted") && !a->filename)
   {
     fputs("Version: 1\n", fp);
     return 0;
@@ -821,7 +820,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
 
   for (int i = 0; i < ncodes; i++)
   {
-    if (!mutt_str_equal(tocodes[i], "utf-8", CASE_IGNORE))
+    if (!mutt_istr_equal(tocodes[i], "utf-8"))
       cd[i] = mutt_ch_iconv_open(tocodes[i], "utf-8", 0);
     else
     {
@@ -1189,8 +1188,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
         while ((p = strtok(p, " \t\n")))
         {
           sze = mutt_str_strlen(p);
-          if ((sze > cur_sze) && (szf >= sze) &&
-              mutt_str_equal(path + szf - sze, p, CASE_IGNORE) &&
+          if ((sze > cur_sze) && (szf >= sze) && mutt_istr_equal(path + szf - sze, p) &&
               ((szf == sze) || (path[szf - sze - 1] == '.')))
           {
             /* get the content-type */
@@ -1424,7 +1422,8 @@ static void set_encoding(struct Body *b, struct Content *info)
     else
       b->encoding = ENC_7BIT;
   }
-  else if ((b->type == TYPE_APPLICATION) && mutt_str_equal(b->subtype, "pgp-keys", CASE_IGNORE))
+  else if ((b->type == TYPE_APPLICATION) &&
+           mutt_istr_equal(b->subtype, "pgp-keys"))
   {
     b->encoding = ENC_7BIT;
   }
@@ -1737,7 +1736,7 @@ static bool check_boundary(const char *boundary, struct Body *b)
     return true;
 
   p = mutt_param_get(&b->parameter, "boundary");
-  if (p && mutt_str_equal(p, boundary, CASE_MATCH))
+  if (p && mutt_str_equal(p, boundary))
   {
     return true;
   }
@@ -2872,7 +2871,7 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
 
     if (i)
     {
-      if (mutt_str_equal(ps, "--", CASE_MATCH))
+      if (mutt_str_equal(ps, "--"))
         break;
       args[argslen++] = ps;
     }

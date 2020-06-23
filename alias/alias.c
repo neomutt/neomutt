@@ -111,7 +111,7 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
         struct ListNode *np = NULL;
         STAILQ_FOREACH(np, expn, entries)
         {
-          if (mutt_str_equal(a->mailbox, np->data, CASE_MATCH)) /* alias already found */
+          if (mutt_str_equal(a->mailbox, np->data)) /* alias already found */
           {
             mutt_debug(LL_DEBUG1, "loop in alias found for '%s'\n", a->mailbox);
             duplicate = true;

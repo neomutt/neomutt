@@ -166,7 +166,7 @@ void mutt_update_tree(struct AttachCtx *actx)
 
     if (actx->idx[rindex]->tree)
     {
-      if (!mutt_str_equal(actx->idx[rindex]->tree, buf, CASE_MATCH))
+      if (!mutt_str_equal(actx->idx[rindex]->tree, buf))
         mutt_str_replace(&actx->idx[rindex]->tree, buf);
     }
     else

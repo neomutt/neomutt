@@ -324,11 +324,11 @@ int mh_read_sequences(struct MhSequences *mhs, const char *path)
     if (!t)
       continue;
 
-    if (mutt_str_equal(t, C_MhSeqUnseen, CASE_MATCH))
+    if (mutt_str_equal(t, C_MhSeqUnseen))
       flags = MH_SEQ_UNSEEN;
-    else if (mutt_str_equal(t, C_MhSeqFlagged, CASE_MATCH))
+    else if (mutt_str_equal(t, C_MhSeqFlagged))
       flags = MH_SEQ_FLAGGED;
-    else if (mutt_str_equal(t, C_MhSeqReplied, CASE_MATCH))
+    else if (mutt_str_equal(t, C_MhSeqReplied))
       flags = MH_SEQ_REPLIED;
     else /* unknown sequence */
       continue;

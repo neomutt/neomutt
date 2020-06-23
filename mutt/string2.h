@@ -78,7 +78,6 @@ int         mutt_str_atoui(const char *str, unsigned int *dst);
 int         mutt_str_atoul(const char *str, unsigned long *dst);
 int         mutt_str_atoull(const char *str, unsigned long long *dst);
 void        mutt_str_dequote_comment(char *s);
-bool        mutt_str_equal(const char *a, const char *b, enum CaseSensitivity cs);
 const char *mutt_str_find_word(const char *src);
 const char *mutt_str_getenv(const char *name);
 bool        mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *rstr);
@@ -114,5 +113,11 @@ char *      mutt_str_substr_copy(const char *begin, const char *end, char *buf, 
 char *      mutt_str_substr_dup(const char *begin, const char *end);
 const char *mutt_str_sysexit(int e);
 int         mutt_str_word_casecmp(const char *a, const char *b);
+
+/* case-sensitive flavours */
+bool        mutt_str_equal(const char *a, const char *b);
+
+/* case-insensitive flavours */
+bool        mutt_istr_equal(const char *a, const char *b);
 
 #endif /* MUTT_LIB_STRING_H */

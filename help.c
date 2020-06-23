@@ -304,7 +304,7 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
 
   if (ismacro > 0)
   {
-    if (!C_Pager || mutt_str_equal(C_Pager, "builtin", CASE_MATCH))
+    if (!C_Pager || mutt_str_equal(C_Pager, "builtin"))
       fputs("_\010", fp); // Ctrl-H (backspace)
     fputs("M ", fp);
     col += 2;
@@ -344,7 +344,7 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
 
       if (*t3)
       {
-        if (mutt_str_equal(C_Pager, "builtin", CASE_MATCH))
+        if (mutt_str_equal(C_Pager, "builtin"))
         {
           n += col - wraplen;
           if (C_Markers)

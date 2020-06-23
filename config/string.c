@@ -85,7 +85,7 @@ static int string_string_set(const struct ConfigSet *cs, void *var, struct Confi
 
   if (var)
   {
-    if (mutt_str_equal(value, (*(char **) var), CASE_MATCH))
+    if (mutt_str_equal(value, (*(char **) var)))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     if (cdef->validator)
@@ -159,7 +159,7 @@ static int string_native_set(const struct ConfigSet *cs, void *var,
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
-  if (mutt_str_equal((const char *) value, (*(char **) var), CASE_MATCH))
+  if (mutt_str_equal((const char *) value, (*(char **) var)))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   int rc;
@@ -206,7 +206,7 @@ static int string_reset(const struct ConfigSet *cs, void *var,
   if (!str)
     rc |= CSR_SUC_EMPTY;
 
-  if (mutt_str_equal(str, (*(char **) var), CASE_MATCH))
+  if (mutt_str_equal(str, (*(char **) var)))
     return rc | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)

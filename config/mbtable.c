@@ -125,7 +125,7 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
   if (var)
   {
     struct MbTable *curval = *(struct MbTable **) var;
-    if (curval && mutt_str_equal(value, curval->orig_str, CASE_MATCH))
+    if (curval && mutt_str_equal(value, curval->orig_str))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     table = mbtable_parse(value);
@@ -255,7 +255,7 @@ static int mbtable_reset(const struct ConfigSet *cs, void *var,
   if (!curtable)
     rc |= CSR_SUC_EMPTY;
 
-  if (mutt_str_equal(initial, curval, CASE_MATCH))
+  if (mutt_str_equal(initial, curval))
     return rc | CSR_SUC_NO_CHANGE;
 
   if (initial)
