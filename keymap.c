@@ -480,7 +480,7 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
   for (int i = 0; bindings[i].name; i++)
   {
     if (mutt_istrn_equal(start, bindings[i].name, len) &&
-        (mutt_str_strlen(bindings[i].name) == len))
+        (mutt_str_len(bindings[i].name) == len))
     {
       return bindings[i].op;
     }
@@ -521,7 +521,7 @@ const char *mutt_get_func(const struct Binding *bindings, int op)
 static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int))
 {
   char *pp = NULL;
-  char *p = s + mutt_str_strlen(s) - 1;
+  char *p = s + mutt_str_len(s) - 1;
   size_t l;
   int i, op = OP_NULL;
 
@@ -878,7 +878,7 @@ int km_expand_key(char *s, size_t len, struct Keymap *map)
   while (true)
   {
     mutt_str_copy(s, km_keyname(map->keys[p]), len);
-    const size_t l = mutt_str_strlen(s);
+    const size_t l = mutt_str_len(s);
     len -= l;
 
     if ((++p >= map->len) || !len)
@@ -1595,9 +1595,9 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
     if (!bindings && (CurrentMenu != MENU_PAGER))
       bindings = OpGeneric;
 
-    ops[nops] = get_op(bindings, function, mutt_str_strlen(function));
+    ops[nops] = get_op(bindings, function, mutt_str_len(function));
     if ((ops[nops] == OP_NULL) && (CurrentMenu != MENU_PAGER))
-      ops[nops] = get_op(OpGeneric, function, mutt_str_strlen(function));
+      ops[nops] = get_op(OpGeneric, function, mutt_str_len(function));
 
     if (ops[nops] == OP_NULL)
     {

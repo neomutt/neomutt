@@ -244,7 +244,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
 
   while (fgets(buf, sizeof(buf) - 1, fp))
   {
-    buflen = mutt_str_strlen(buf);
+    buflen = mutt_str_len(buf);
     term = buflen && buf[buflen - 1] == '\n';
     if (term && ((buflen == 1) || (buf[buflen - 2] != '\r')))
       snprintf(buf + buflen - 1, sizeof(buf) - buflen + 1, "\r\n");
@@ -474,8 +474,8 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
   if (len)
   {
     mutt_str_cat(buf, bufsize, " ");
-    if (sasl_encode64(data, len, buf + mutt_str_strlen(buf),
-                      bufsize - mutt_str_strlen(buf), &len) != SASL_OK)
+    if (sasl_encode64(data, len, buf + mutt_str_len(buf),
+                      bufsize - mutt_str_len(buf), &len) != SASL_OK)
     {
       mutt_debug(LL_DEBUG1, "#1 error base64-encoding client response\n");
       goto fail;

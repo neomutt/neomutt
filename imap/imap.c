@@ -371,7 +371,7 @@ static int complete_hosts(char *buf, size_t buflen)
   int rc = -1;
   size_t matchlen;
 
-  matchlen = mutt_str_strlen(buf);
+  matchlen = mutt_str_len(buf);
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
   neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
@@ -840,7 +840,7 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
   if (STAILQ_EMPTY(flag_list))
     return false;
 
-  const size_t flaglen = mutt_str_strlen(flag);
+  const size_t flaglen = mutt_str_len(flag);
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, flag_list, entries)
   {

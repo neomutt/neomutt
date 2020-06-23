@@ -340,8 +340,7 @@ static bool get_hostname(struct ConfigSet *cs)
     /* now get FQDN.  Use configured domain first, DNS next, then uname */
 #ifdef DOMAIN
     /* we have a compile-time domain name, use that for C_Hostname */
-    C_Hostname =
-        mutt_mem_malloc(mutt_str_strlen(DOMAIN) + mutt_str_strlen(ShortHostname) + 2);
+    C_Hostname = mutt_mem_malloc(mutt_str_len(DOMAIN) + mutt_str_len(ShortHostname) + 2);
     sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), DOMAIN);
 #else
     C_Hostname = getmailname();
@@ -350,8 +349,8 @@ static bool get_hostname(struct ConfigSet *cs)
       struct Buffer *domain = mutt_buffer_pool_get();
       if (getdnsdomainname(domain) == 0)
       {
-        C_Hostname = mutt_mem_malloc(mutt_buffer_len(domain) +
-                                     mutt_str_strlen(ShortHostname) + 2);
+        C_Hostname =
+            mutt_mem_malloc(mutt_buffer_len(domain) + mutt_str_len(ShortHostname) + 2);
         sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), mutt_b2s(domain));
       }
       else
@@ -1199,7 +1198,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
       {
         if (mutt_str_startswith(pt, prefixes[num]))
         {
-          pt += mutt_str_strlen(prefixes[num]);
+          pt += mutt_str_len(prefixes[num]);
           break;
         }
       }
@@ -1501,7 +1500,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
     char var[256];
     mutt_str_copy(var, pt, sizeof(var));
     /* ignore the trailing '=' when comparing */
-    int vlen = mutt_str_strlen(var);
+    int vlen = mutt_str_len(var);
     if (vlen == 0)
       return 0;
 

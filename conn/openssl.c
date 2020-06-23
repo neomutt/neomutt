@@ -739,7 +739,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
       if (subj_alt_name->type == GEN_DNS)
       {
         if ((subj_alt_name->d.ia5->length >= 0) &&
-            (mutt_str_strlen((char *) subj_alt_name->d.ia5->data) ==
+            (mutt_str_len((char *) subj_alt_name->d.ia5->data) ==
              (size_t) subj_alt_name->d.ia5->length) &&
             (match_found = hostname_match(hostname_ascii,
                                           (char *) (subj_alt_name->d.ia5->data))))
@@ -780,7 +780,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     }
     /* cast is safe since bufsize is incremented above, so bufsize-1 is always
      * zero or greater.  */
-    if (mutt_str_strlen(buf) == (size_t) bufsize - 1)
+    if (mutt_str_len(buf) == (size_t) bufsize - 1)
     {
       match_found = hostname_match(hostname_ascii, buf);
     }
@@ -907,7 +907,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf);
   mutt_list_insert_tail(&list, line);
   mutt_str_asprintf(&line, "%*s%s",
-                    (int) mutt_str_strlen(_("SHA256 Fingerprint: ")), "", buf + 40);
+                    (int) mutt_str_len(_("SHA256 Fingerprint: ")), "", buf + 40);
   mutt_list_insert_tail(&list, line);
 
   bool allow_skip = false;

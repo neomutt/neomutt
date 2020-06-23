@@ -237,7 +237,7 @@ static void print_flowed_line(char *line, struct State *s, int ql,
   }
 
   width = quote_width(s, ql);
-  last = line[mutt_str_strlen(line) - 1];
+  last = line[mutt_str_len(line) - 1];
 
   mutt_debug(LL_DEBUG5, "f=f: line [%s], width = %ld, spaces = %lu\n", line,
              (long) width, fst->spaces);
@@ -334,7 +334,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
   while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, 0)))
   {
-    const size_t buf_len = mutt_str_strlen(buf);
+    const size_t buf_len = mutt_str_len(buf);
     const unsigned int newql = get_quote_level(buf);
 
     /* end flowed paragraph (if we're within one) if quoting level

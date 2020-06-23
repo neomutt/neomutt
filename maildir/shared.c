@@ -213,17 +213,17 @@ static void mh_sequences_add_one(struct Mailbox *m, int n, bool unseen, bool fla
   {
     while ((buf = mutt_file_read_line(buf, &sz, fp_old, NULL, 0)))
     {
-      if (unseen && mutt_strn_equal(buf, seq_unseen, mutt_str_strlen(seq_unseen)))
+      if (unseen && mutt_strn_equal(buf, seq_unseen, mutt_str_len(seq_unseen)))
       {
         fprintf(fp_new, "%s %d\n", buf, n);
         unseen_done = true;
       }
-      else if (flagged && mutt_strn_equal(buf, seq_flagged, mutt_str_strlen(seq_flagged)))
+      else if (flagged && mutt_strn_equal(buf, seq_flagged, mutt_str_len(seq_flagged)))
       {
         fprintf(fp_new, "%s %d\n", buf, n);
         flagged_done = true;
       }
-      else if (replied && mutt_strn_equal(buf, seq_replied, mutt_str_strlen(seq_replied)))
+      else if (replied && mutt_strn_equal(buf, seq_replied, mutt_str_len(seq_replied)))
       {
         fprintf(fp_new, "%s %d\n", buf, n);
         replied_done = true;
@@ -467,7 +467,7 @@ int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **ptr)
 size_t maildir_hcache_keylen(const char *fn)
 {
   const char *p = strrchr(fn, ':');
-  return p ? (size_t)(p - fn) : mutt_str_strlen(fn);
+  return p ? (size_t)(p - fn) : mutt_str_len(fn);
 }
 
 /**

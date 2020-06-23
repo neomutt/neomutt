@@ -308,7 +308,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);
-  int s = mutt_str_strlen(buf);
+  int s = mutt_str_len(buf);
   width = MIN(buflen, width);
   if (w < width)
   {
@@ -899,8 +899,8 @@ static int imap_is_prefix(const char *folder, const char *mbox)
   if (url_m->user && url_f->user && !mutt_istr_equal(url_m->user, url_f->user))
     goto done;
 
-  size_t mlen = mutt_str_strlen(url_m->path);
-  size_t flen = mutt_str_strlen(url_f->path);
+  size_t mlen = mutt_str_len(url_m->path);
+  size_t flen = mutt_str_len(url_f->path);
   if (flen > mlen)
     goto done;
 
@@ -939,13 +939,13 @@ static const char *abbrev_folder(const char *mbox, const char *folder, enum Mail
   if (!C_SidebarDelimChars)
     return NULL;
 
-  size_t flen = mutt_str_strlen(folder);
+  size_t flen = mutt_str_len(folder);
   if (flen == 0)
     return NULL;
   if (strchr(C_SidebarDelimChars, folder[flen - 1])) // folder ends with a delimiter
     flen--;
 
-  size_t mlen = mutt_str_strlen(mbox);
+  size_t mlen = mutt_str_len(mbox);
   if (mlen <= flen)
     return NULL;
 
@@ -977,7 +977,7 @@ static const char *abbrev_url(const char *mbox, enum MailboxType type)
    * but not so large that it will go past the host part. */
   const int scheme_len = 10;
 
-  size_t len = mutt_str_strlen(mbox);
+  size_t len = mutt_str_len(mbox);
   if ((len < scheme_len) || ((type != MUTT_NNTP) && (type != MUTT_IMAP) &&
                              (type != MUTT_NOTMUCH) && (type != MUTT_POP)))
   {
@@ -1116,7 +1116,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 
     // At this point, we don't have an abbreviation so let's keep track
     // before using short path.
-    bool no_abbr = !mutt_strn_equal(display, full_path, mutt_str_strlen(display));
+    bool no_abbr = !mutt_strn_equal(display, full_path, mutt_str_len(display));
     if (C_SidebarShortPath)
     {
       display = last_part;

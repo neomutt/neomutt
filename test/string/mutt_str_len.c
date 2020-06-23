@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_strlen()
+ * Test code for mutt_str_len()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -25,11 +25,11 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 
-void test_mutt_str_strlen(void)
+void test_mutt_str_len(void)
 {
-  // size_t mutt_str_strlen(const char *a);
+  // size_t mutt_str_len(const char *a);
 
-  TEST_CHECK(mutt_str_strlen(NULL) == 0);
-  TEST_CHECK(mutt_str_strlen("") == 0);
-  TEST_CHECK(mutt_str_strlen("hello") == 5);
+  TEST_CHECK(mutt_str_len(NULL) == 0);
+  TEST_CHECK(mutt_str_len("") == 0);
+  TEST_CHECK(mutt_str_len("hello") == 5);
 }

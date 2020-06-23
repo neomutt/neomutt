@@ -432,7 +432,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
     rc = 1;
     icode = 0;
   }
-  ulen = mutt_str_strlen(u);
+  ulen = mutt_str_len(u);
 
   /* Find earliest and latest things we must encode. */
   s0 = 0;
@@ -662,7 +662,7 @@ void rfc2047_decode(char **pd)
     if (beg != s)
     {
       /* Some non-encoded text was found */
-      size_t holelen = beg ? beg - s : mutt_str_strlen(s);
+      size_t holelen = beg ? beg - s : mutt_str_len(s);
 
       /* Ignore whitespace between encoded words */
       if (beg && (mutt_str_lws_len(s, holelen) == holelen))

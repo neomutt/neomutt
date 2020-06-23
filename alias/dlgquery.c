@@ -499,7 +499,7 @@ static void query_menu(char *buf, size_t buflen, struct AliasList *all, bool ret
           mutt_addrlist_to_local(&al);
           tagged = true;
           mutt_addrlist_write(&al, buf, buflen, false);
-          curpos = mutt_str_strlen(buf);
+          curpos = mutt_str_len(buf);
           mutt_addrlist_clear(&al);
         }
       }
@@ -511,7 +511,7 @@ static void query_menu(char *buf, size_t buflen, struct AliasList *all, bool ret
           mutt_addrlist_to_local(&al);
           strcat(buf, ", ");
           mutt_addrlist_write(&al, buf + curpos + 2, buflen - curpos - 2, false);
-          curpos = mutt_str_strlen(buf);
+          curpos = mutt_str_len(buf);
           mutt_addrlist_clear(&al);
         }
       }

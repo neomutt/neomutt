@@ -130,7 +130,7 @@ static size_t add_index_color(char *buf, size_t buflen, MuttFormatFlags flags, c
 
   if (color == MT_COLOR_INDEX)
   { /* buf might be uninitialized other cases */
-    const size_t len = mutt_str_strlen(buf);
+    const size_t len = mutt_str_len(buf);
     buf += len;
     buflen -= len;
   }
@@ -187,7 +187,7 @@ static const char *make_from_prefix(enum FieldType disp)
     return long_prefixes[disp];
 
   const char *pchar = get_nth_wchar(C_FromChars, disp);
-  if (mutt_str_strlen(pchar) == 0)
+  if (mutt_str_len(pchar) == 0)
     return "";
 
   snprintf(padded, sizeof(padded), "%s ", pchar);

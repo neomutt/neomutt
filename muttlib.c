@@ -672,12 +672,12 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   if ((len = mutt_str_startswith(buf, C_Folder)) && (buf[len] == '/'))
   {
     *buf++ = '=';
-    memmove(buf, buf + len, mutt_str_strlen(buf + len) + 1);
+    memmove(buf, buf + len, mutt_str_len(buf + len) + 1);
   }
   else if ((len = mutt_str_startswith(buf, HomeDir)) && (buf[len] == '/'))
   {
     *buf++ = '~';
-    memmove(buf, buf + len - 1, mutt_str_strlen(buf + len - 1) + 1);
+    memmove(buf, buf + len - 1, mutt_str_len(buf + len - 1) + 1);
   }
 }
 
@@ -871,7 +871,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
   char *recycler = NULL;
 
   char src2[256];
-  mutt_str_copy(src2, src, mutt_str_strlen(src) + 1);
+  mutt_str_copy(src2, src, mutt_str_len(src) + 1);
   src = src2;
 
   prefix[0] = '\0';
@@ -886,7 +886,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
     int off = -1;
 
     /* Do not consider filters if no pipe at end */
-    int n = mutt_str_strlen(src);
+    int n = mutt_str_len(src);
     if ((n > 1) && (src[n - 1] == '|'))
     {
       /* Scan backwards for backslashes */
@@ -1043,7 +1043,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           /* escape '<' and '>' to work inside nested-if */
           if ((*p == '<') || (*p == '>'))
           {
-            memmove(p + 2, p, mutt_str_strlen(p) + 1);
+            memmove(p + 2, p, mutt_str_len(p) + 1);
             *p++ = '\\';
             *p++ = '\\';
           }
@@ -1197,7 +1197,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
           /* get contents after padding */
           mutt_expando_format(tmp, sizeof(tmp), 0, cols, src + pl, callback, data, flags);
-          len = mutt_str_strlen(tmp);
+          len = mutt_str_len(tmp);
           wid = mutt_strwidth(tmp);
 
           pad = (cols - col - wid) / pw;
@@ -1313,7 +1313,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
               *p = '_';
         }
 
-        len = mutt_str_strlen(tmp);
+        len = mutt_str_len(tmp);
         if ((len + wlen) > buflen)
           len = mutt_wstr_trunc(tmp, buflen - wlen, cols - col, NULL);
 
@@ -1396,7 +1396,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
   FILE *fp = NULL;
   struct stat s;
 
-  size_t len = mutt_str_strlen(path);
+  size_t len = mutt_str_len(path);
   if (len == 0)
   {
     return NULL;
@@ -1636,7 +1636,7 @@ void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
   else
   {
     mutt_str_copy(buf, path, buflen);
-    int n = mutt_str_strlen(buf);
+    int n = mutt_str_len(buf);
     if (n == 0)
       return;
 

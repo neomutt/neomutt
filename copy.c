@@ -197,7 +197,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         {
           if (address_header_decode(&this_one) == 0)
             rfc2047_decode(&this_one);
-          this_one_len = mutt_str_strlen(this_one);
+          this_one_len = mutt_str_len(this_one);
 
           /* Convert CRLF line endings to LF */
           if ((this_one_len > 2) && (this_one[this_one_len - 2] == '\r') &&
@@ -212,7 +212,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
           headers[x] = this_one;
         else
         {
-          int hlen = mutt_str_strlen(headers[x]);
+          int hlen = mutt_str_len(headers[x]);
 
           mutt_mem_realloc(&headers[x], hlen + this_one_len + sizeof(char));
           strcat(headers[x] + hlen, this_one);
@@ -306,7 +306,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       mutt_debug(LL_DEBUG2, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count);
       if (this_one)
       {
-        size_t blen = mutt_str_strlen(buf);
+        size_t blen = mutt_str_len(buf);
 
         mutt_mem_realloc(&this_one, this_one_len + blen + sizeof(char));
         strcat(this_one + this_one_len, buf);
@@ -315,7 +315,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       else
       {
         this_one = mutt_str_dup(buf);
-        this_one_len = mutt_str_strlen(this_one);
+        this_one_len = mutt_str_len(this_one);
       }
     }
   } /* while (ftello (fp_in) < off_end) */
@@ -327,14 +327,14 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
     {
       if (address_header_decode(&this_one) == 0)
         rfc2047_decode(&this_one);
-      this_one_len = mutt_str_strlen(this_one);
+      this_one_len = mutt_str_len(this_one);
     }
 
     if (!headers[x])
       headers[x] = this_one;
     else
     {
-      int hlen = mutt_str_strlen(headers[x]);
+      int hlen = mutt_str_len(headers[x]);
 
       mutt_mem_realloc(&headers[x], hlen + this_one_len + sizeof(char));
       strcat(headers[x] + hlen, this_one);
@@ -631,7 +631,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       char date[128];
 
       mutt_date_make_date(date, sizeof(date));
-      int dlen = mutt_str_strlen(date);
+      int dlen = mutt_str_len(date);
       if (dlen == 0)
         return -1;
 
@@ -973,7 +973,7 @@ static void format_address_header(char **h, struct AddressList *al)
   char *p = NULL;
   size_t linelen, buflen, plen;
 
-  linelen = mutt_str_strlen(*h);
+  linelen = mutt_str_len(*h);
   plen = linelen;
   buflen = linelen + 3;
 
@@ -1008,8 +1008,8 @@ static void format_address_header(char **h, struct AddressList *al)
       strcpy(c2buf, ",");
     }
 
-    const size_t cbuflen = mutt_str_strlen(cbuf);
-    const size_t c2buflen = mutt_str_strlen(c2buf);
+    const size_t cbuflen = mutt_str_len(cbuf);
+    const size_t c2buflen = mutt_str_len(c2buf);
     buflen += l + cbuflen + c2buflen;
     mutt_mem_realloc(h, buflen);
     p = *h;

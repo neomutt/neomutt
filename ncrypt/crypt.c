@@ -667,7 +667,7 @@ SecurityFlags mutt_is_application_smime(struct Body *m)
 
   /* no .p7c, .p10 support yet. */
 
-  int len = mutt_str_strlen(t) - 4;
+  int len = mutt_str_len(t) - 4;
   if ((len > 0) && (*(t + len) == '.'))
   {
     len++;
@@ -1011,8 +1011,8 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
 
   if (!oppenc_mode && self_encrypt)
   {
-    const size_t keylist_size = mutt_str_strlen(*keylist);
-    mutt_mem_realloc(keylist, keylist_size + mutt_str_strlen(self_encrypt) + 2);
+    const size_t keylist_size = mutt_str_len(*keylist);
+    mutt_mem_realloc(keylist, keylist_size + mutt_str_len(self_encrypt) + 2);
     sprintf(*keylist + keylist_size, " %s", self_encrypt);
   }
 
@@ -1334,9 +1334,9 @@ const char *crypt_get_fingerprint_or_id(const char *p, const char **pphint,
     pl = NULL;
     if (isid == 1)
     {
-      if (mutt_str_strlen(pf) == 16)
+      if (mutt_str_len(pf) == 16)
         pl = pf; /* long key ID */
-      else if (mutt_str_strlen(pf) == 8)
+      else if (mutt_str_len(pf) == 8)
         ps = pf; /* short key ID */
     }
   }

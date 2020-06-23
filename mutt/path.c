@@ -259,7 +259,7 @@ bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir)
     len = mutt_str_copy(result, pw->pw_dir, sizeof(result));
   }
 
-  size_t dirlen = mutt_str_strlen(dir);
+  size_t dirlen = mutt_str_len(dir);
   if ((len + dirlen) >= buflen)
   {
     mutt_debug(LL_DEBUG3, "result too big for the buffer %ld >= %ld\n", len + dirlen, buflen);
@@ -301,8 +301,8 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir, bool is_dir)
       return false;
     }
 
-    size_t cwdlen = mutt_str_strlen(result);
-    size_t dirlen = mutt_str_strlen(buf);
+    size_t cwdlen = mutt_str_len(result);
+    size_t dirlen = mutt_str_len(buf);
     if ((cwdlen + dirlen + 1) >= buflen)
     {
       mutt_debug(LL_DEBUG3, "result too big for the buffer %ld >= %ld\n",
@@ -461,7 +461,7 @@ bool mutt_path_parent(char *buf, size_t buflen)
   if (!buf)
     return false;
 
-  int n = mutt_str_strlen(buf);
+  int n = mutt_str_len(buf);
   if (n < 2)
     return false;
 
@@ -494,7 +494,7 @@ bool mutt_path_abbr_folder(char *buf, size_t buflen, const char *folder)
   if (!buf || !folder)
     return false;
 
-  size_t flen = mutt_str_strlen(folder);
+  size_t flen = mutt_str_len(folder);
   if (flen < 2)
     return false;
 
@@ -507,7 +507,7 @@ bool mutt_path_abbr_folder(char *buf, size_t buflen, const char *folder)
   if (buf[flen + 1] == '\0') // Don't abbreviate to '=/'
     return false;
 
-  size_t rlen = mutt_str_strlen(buf + flen + 1);
+  size_t rlen = mutt_str_len(buf + flen + 1);
 
   buf[0] = '=';
   memmove(buf + 1, buf + flen + 1, rlen + 1);

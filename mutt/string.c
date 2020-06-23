@@ -471,8 +471,8 @@ void mutt_str_append_item(char **str, const char *item, char sep)
   if (!str || !item)
     return;
 
-  size_t sz = mutt_str_strlen(item);
-  size_t ssz = mutt_str_strlen(*str);
+  size_t sz = mutt_str_len(item);
+  size_t ssz = mutt_str_len(*str);
 
   mutt_mem_realloc(str, ssz + (((ssz > 0) && (sep != '\0')) ? 1 : 0) + sz + 1);
   char *p = *str + ssz;
@@ -646,11 +646,11 @@ bool mutt_istrn_equal(const char *a, const char *b, size_t l)
 }
 
 /**
- * mutt_str_strlen - Calculate the length of a string, safely
+ * mutt_str_len - Calculate the length of a string, safely
  * @param a String to measure
  * @retval num Length in bytes
  */
-size_t mutt_str_strlen(const char *a)
+size_t mutt_str_len(const char *a)
 {
   return a ? strlen(a) : 0;
 }
@@ -724,7 +724,7 @@ void mutt_str_remove_trailing_ws(char *s)
   if (!s)
     return;
 
-  for (char *p = s + mutt_str_strlen(s) - 1; (p >= s) && IS_SPACE(*p); p--)
+  for (char *p = s + mutt_str_len(s) - 1; (p >= s) && IS_SPACE(*p); p--)
     *p = '\0';
 }
 
@@ -1037,8 +1037,8 @@ bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *
   if (!buf || !rstr || (xlen >= buflen))
     return false;
 
-  size_t slen = mutt_str_strlen(buf + xlen);
-  size_t rlen = mutt_str_strlen(rstr);
+  size_t slen = mutt_str_len(buf + xlen);
+  size_t rlen = mutt_str_len(rstr);
 
   if ((slen + rlen) >= buflen)
     return false;
@@ -1065,7 +1065,7 @@ int mutt_istr_remall(char *str, const char *target)
   // Look through an ensure all instances of the substring are gone.
   while ((str = (char *) strcasestr(str, target)))
   {
-    size_t target_len = mutt_str_strlen(target);
+    size_t target_len = mutt_str_len(target);
     memmove(str, str + target_len, 1 + strlen(str + target_len));
     rc = 0; // If we got here, then a substring existed and has been removed.
   }

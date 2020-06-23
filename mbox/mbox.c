@@ -757,7 +757,7 @@ static int fseek_last_message(FILE *fp)
   while ((pos -= bytes_read) >= 0)
   {
     /* we save in the buf at the end the first 7 chars from the last read */
-    strncpy(buf + BUFSIZ, buf, 5 + 2); /* 2 == 2 * mutt_str_strlen(CRLF) */
+    strncpy(buf + BUFSIZ, buf, 5 + 2); /* 2 == 2 * mutt_str_len(CRLF) */
     fseeko(fp, pos, SEEK_SET);
     bytes_read = fread(buf, sizeof(char), bytes_read, fp);
     if (bytes_read == 0)

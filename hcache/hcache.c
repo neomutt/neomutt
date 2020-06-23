@@ -265,7 +265,7 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
 {
   struct stat sb;
 
-  int plen = mutt_str_strlen(path);
+  int plen = mutt_str_len(path);
   int rc = stat(path, &sb);
   bool slash = (path[plen - 1] == '/');
 

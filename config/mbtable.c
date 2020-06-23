@@ -60,7 +60,7 @@ struct MbTable *mbtable_parse(const char *s)
   mbstate_t mbstate;
   char *d = NULL;
 
-  slen = mutt_str_strlen(s);
+  slen = mutt_str_len(s);
   if (!slen)
     return NULL;
 

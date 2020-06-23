@@ -270,7 +270,7 @@ void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen)
   if (mbox != buf)
     mutt_str_copy(buf, mbox, buflen);
 
-  int n = mutt_str_strlen(buf);
+  int n = mutt_str_len(buf);
 
   /* Let's go backwards until the next delimiter
    *
@@ -507,7 +507,7 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
 
   sprintf(key, "/%u", uid);
   struct HCacheEntry hce =
-      mutt_hcache_fetch(mdata->hcache, key, mutt_str_strlen(key), mdata->uidvalidity);
+      mutt_hcache_fetch(mdata->hcache, key, mutt_str_len(key), mdata->uidvalidity);
   if (!hce.email && hce.uidvalidity)
   {
     mutt_debug(LL_DEBUG3, "hcache uidvalidity mismatch: %u\n", hce.uidvalidity);
@@ -531,7 +531,7 @@ int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e)
   char key[16];
 
   sprintf(key, "/%u", imap_edata_get(e)->uid);
-  return mutt_hcache_store(mdata->hcache, key, mutt_str_strlen(key), e, mdata->uidvalidity);
+  return mutt_hcache_store(mdata->hcache, key, mutt_str_len(key), e, mdata->uidvalidity);
 }
 
 /**
@@ -549,7 +549,7 @@ int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid)
   char key[16];
 
   sprintf(key, "/%u", uid);
-  return mutt_hcache_delete_header(mdata->hcache, key, mutt_str_strlen(key));
+  return mutt_hcache_delete_header(mdata->hcache, key, mutt_str_len(key));
 }
 
 /**
@@ -753,8 +753,8 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
   if (imap_parse_path(folder, &cac_home, home_mailbox, sizeof(home_mailbox)) < 0)
     goto fallback;
 
-  tlen = mutt_str_strlen(target_mailbox);
-  hlen = mutt_str_strlen(home_mailbox);
+  tlen = mutt_str_len(target_mailbox);
+  hlen = mutt_str_len(home_mailbox);
 
   /* check whether we can do '+' substitution */
   if (tlen && imap_account_match(&cac_home, &cac_target) &&

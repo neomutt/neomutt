@@ -1176,7 +1176,7 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
   const char *ps = NULL, *pl = NULL, *pfcopy = NULL, *phint = NULL;
 
   char *p = strdup(cp); // mutt_str_dup converts "" into NULL, see #1809
-  l = mutt_str_strlen(p);
+  l = mutt_str_len(p);
   if ((l > 0) && (p[l - 1] == '!'))
     p[l - 1] = 0;
 

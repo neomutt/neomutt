@@ -235,7 +235,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
     }
   }
 
-  mailbox = mutt_mem_malloc(mutt_str_strlen(local_user) + mutt_str_strlen(local_domain) + 2);
+  mailbox = mutt_mem_malloc(mutt_str_len(local_user) + mutt_str_len(local_domain) + 2);
   sprintf(mailbox, "%s@%s", NONULL(local_user), NONULL(local_domain));
 
 cleanup:
@@ -293,7 +293,7 @@ char *mutt_idna_local_to_intl(const char *user, const char *domain)
   }
 #endif /* HAVE_LIBIDN */
 
-  mailbox = mutt_mem_malloc(mutt_str_strlen(intl_user) + mutt_str_strlen(intl_domain) + 2);
+  mailbox = mutt_mem_malloc(mutt_str_len(intl_user) + mutt_str_len(intl_domain) + 2);
   sprintf(mailbox, "%s@%s", NONULL(intl_user), NONULL(intl_domain));
 
 cleanup:

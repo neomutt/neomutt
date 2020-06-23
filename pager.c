@@ -1093,7 +1093,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
     /* don't consider line endings part of the buffer
      * for regex matching */
-    nl = mutt_str_strlen(buf);
+    nl = mutt_str_len(buf);
     if ((nl > 0) && (buf[nl - 1] == '\n'))
       buf[nl - 1] = '\0';
 
@@ -1179,7 +1179,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     size_t nl;
 
     /* don't consider line endings part of the buffer for regex matching */
-    nl = mutt_str_strlen(buf);
+    nl = mutt_str_len(buf);
     if ((nl > 0) && (buf[nl - 1] == '\n'))
       buf[nl - 1] = '\0';
 

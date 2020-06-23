@@ -582,7 +582,7 @@ void mailcap_expand_filename(const char *nametemplate, const char *oldfile,
 
       rmatch = true;
 
-      for (j = mutt_str_strlen(oldfile) - 1, k = mutt_str_strlen(nametemplate) - 1;
+      for (j = mutt_str_len(oldfile) - 1, k = mutt_str_len(nametemplate) - 1;
            (j >= (lmatch ? i : 0)) && (k >= (i + 2)); j--, k--)
       {
         if (nametemplate[k] != oldfile[j])

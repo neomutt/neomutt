@@ -518,7 +518,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   fpbuf[39] = '\0'; /* Divide into two lines of output */
   mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), fpbuf);
   mutt_list_insert_tail(&list, line);
-  mutt_str_asprintf(&line, "%*s%s", (int) mutt_str_strlen(_("SHA256 Fingerprint: ")),
+  mutt_str_asprintf(&line, "%*s%s", (int) mutt_str_len(_("SHA256 Fingerprint: ")),
                     "", fpbuf + 40);
   mutt_list_insert_tail(&list, line);
 
@@ -912,7 +912,7 @@ static int tls_negotiate(struct Connection *conn)
   gnutls_transport_set_ptr(data->state, (gnutls_transport_ptr_t)(long) conn->fd);
 
   if (gnutls_server_name_set(data->state, GNUTLS_NAME_DNS, conn->account.host,
-                             mutt_str_strlen(conn->account.host)))
+                             mutt_str_len(conn->account.host)))
   {
     mutt_error(_("Warning: unable to set TLS SNI host name"));
   }

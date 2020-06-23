@@ -942,7 +942,7 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
   }
 
 #ifdef USE_HCACHE
-  e = mutt_hcache_fetch(h, path, mutt_str_strlen(path), 0).email;
+  e = mutt_hcache_fetch(h, path, mutt_str_len(path), 0).email;
   if (!e)
 #endif
   {
@@ -975,7 +975,7 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
 
 #ifdef USE_HCACHE
     mutt_hcache_store(h, newpath ? newpath : path,
-                      mutt_str_strlen(newpath ? newpath : path), e, 0);
+                      mutt_str_len(newpath ? newpath : path), e, 0);
 #endif
   }
 

@@ -61,7 +61,7 @@ int mutt_mb_charlen(const char *s, int *width)
   mbstate_t mbstate;
   size_t k, n;
 
-  n = mutt_str_strlen(s);
+  n = mutt_str_len(s);
   memset(&mbstate, 0, sizeof(mbstate));
   k = mbrtowc(&wc, s, n, &mbstate);
   if (width)

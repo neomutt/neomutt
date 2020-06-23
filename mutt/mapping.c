@@ -84,5 +84,5 @@ int mutt_map_get_value_n(const char *name, size_t len, const struct Mapping *map
  */
 int mutt_map_get_value(const char *name, const struct Mapping *map)
 {
-  return mutt_map_get_value_n(name, mutt_str_strlen(name), map);
+  return mutt_map_get_value_n(name, mutt_str_len(name), map);
 }

@@ -211,7 +211,7 @@ int mutt_b64_buffer_decode(struct Buffer *buf, const char *in)
   if (!buf)
     return -1;
 
-  mutt_buffer_alloc(buf, mutt_str_strlen(in));
+  mutt_buffer_alloc(buf, mutt_str_len(in));
   int olen = mutt_b64_decode(in, buf->data, buf->dsize);
   /* mutt_from_base64 returns raw bytes, so don't terminate the buffer either */
   if (olen > 0)

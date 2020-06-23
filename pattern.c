@@ -1265,7 +1265,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
       match = true;
       break;
     }
-    len -= mutt_str_strlen(buf);
+    len -= mutt_str_len(buf);
   }
 
   FREE(&buf);
@@ -1454,7 +1454,7 @@ struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, str
 
   mutt_buffer_init(&ps);
   ps.dptr = (char *) s;
-  ps.dsize = mutt_str_strlen(s);
+  ps.dsize = mutt_str_len(s);
 
   while (*ps.dptr)
   {

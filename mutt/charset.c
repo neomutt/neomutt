@@ -307,13 +307,13 @@ int mutt_ch_convert_nonmime_string(char **ps)
   for (const char *c = C_AssumedCharset; c; c = c1 ? c1 + 1 : 0)
   {
     char *u = *ps;
-    size_t ulen = mutt_str_strlen(*ps);
+    size_t ulen = mutt_str_len(*ps);
 
     if (!u || (*u == '\0'))
       return 0;
 
     c1 = strchr(c, ':');
-    size_t n = c1 ? c1 - c : mutt_str_strlen(c);
+    size_t n = c1 ? c1 - c : mutt_str_len(c);
     if (n == 0)
       return 0;
     char *fromcode = mutt_mem_malloc(n + 1);
@@ -416,8 +416,8 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
 
   mutt_ch_canonical_charset(buf, sizeof(buf), cs1);
 
-  int len1 = mutt_str_strlen(buf);
-  int len2 = mutt_str_strlen(cs2);
+  int len1 = mutt_str_len(buf);
+  int len2 = mutt_str_len(cs2);
 
   return mutt_istrn_equal(((len1 > len2) ? buf : cs2),
                           ((len1 > len2) ? cs2 : buf), MIN(len1, len2));
@@ -1056,7 +1056,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, const char *u,
       FREE(&s);
       continue;
     }
-    size_t slen = mutt_str_strlen(s);
+    size_t slen = mutt_str_len(s);
 
     if (!tocode || (n < bestn))
     {

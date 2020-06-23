@@ -902,7 +902,7 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv)
   if (curenv->real_subj)
   {
     FREE(&env->subject);
-    env->subject = mutt_mem_malloc(mutt_str_strlen(curenv->real_subj) + 5);
+    env->subject = mutt_mem_malloc(mutt_str_len(curenv->real_subj) + 5);
     sprintf(env->subject, "Re: %s", curenv->real_subj);
   }
   else if (!env->subject)

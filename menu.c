@@ -133,7 +133,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
 {
   wchar_t wc;
   size_t k;
-  size_t n = mutt_str_strlen((char *) s);
+  size_t n = mutt_str_len((char *) s);
   mbstate_t mbstate;
 
   memset(&mbstate, 0, sizeof(mbstate));
@@ -339,7 +339,7 @@ static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
   int cols = menu->win_index->state.cols - shift;
 
   mutt_simple_format(buf, buflen, cols, cols, JUSTIFY_LEFT, ' ', scratch,
-                     mutt_str_strlen(scratch), true);
+                     mutt_str_len(scratch), true);
   buf[buflen - 1] = '\0';
   FREE(&scratch);
 }

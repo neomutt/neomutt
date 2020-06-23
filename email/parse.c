@@ -114,7 +114,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
    * in quite large parameter values.  avoid frequent reallocs by
    * pre-sizing */
   if (allow_value_spaces)
-    mutt_buffer_alloc(buf, mutt_str_strlen(s));
+    mutt_buffer_alloc(buf, mutt_str_len(s));
 
   mutt_debug(LL_DEBUG2, "'%s'\n", s);
 
@@ -1045,7 +1045,7 @@ char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
       return line;
     }
 
-    const size_t len = mutt_str_strlen(buf);
+    const size_t len = mutt_str_len(buf);
     if (len == 0)
       return line;
 
@@ -1452,10 +1452,10 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
   struct Body *head = NULL, *last = NULL, *new_body = NULL;
   bool final = false; /* did we see the ending boundary? */
 
-  const size_t blen = mutt_str_strlen(boundary);
+  const size_t blen = mutt_str_len(boundary);
   while ((ftello(fp) < end_off) && fgets(buf, sizeof(buf), fp))
   {
-    const size_t len = mutt_str_strlen(buf);
+    const size_t len = mutt_str_len(buf);
 
     const size_t crlf = ((len > 1) && (buf[len - 2] == '\r')) ? 1 : 0;
 
@@ -1613,7 +1613,7 @@ bool mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
       else
       {
         char *scratch = NULL;
-        size_t taglen = mutt_str_strlen(tag);
+        size_t taglen = mutt_str_len(tag);
 
         mutt_str_asprintf(&scratch, "%s: %s", tag, value);
         scratch[taglen] = 0; /* overwrite the colon as mutt_rfc822_parse_line expects */

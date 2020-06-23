@@ -2672,7 +2672,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
     while (subkey)
     {
       shortid = subkey->keyid;
-      len = mutt_str_strlen(subkey->keyid);
+      len = mutt_str_len(subkey->keyid);
       if (len > 8)
         shortid += len - 8;
       tt = subkey->timestamp;
@@ -3032,7 +3032,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       break;
 
     LOFF_T offset = ftello(s->fp_in);
-    bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
+    bytes -= (offset - last_pos); /* don't rely on mutt_str_len(buf) */
     last_pos = offset;
 
     size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ");
@@ -4173,7 +4173,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   {
     for (int i = 0; i < KIP_MAX; i++)
     {
-      KeyInfoPadding[i] = mutt_str_strlen(_(KeyInfoPrompts[i]));
+      KeyInfoPadding[i] = mutt_str_len(_(KeyInfoPrompts[i]));
       const int width = mutt_strwidth(_(KeyInfoPrompts[i]));
       if (max_header_width < width)
         max_header_width = width;
@@ -5339,11 +5339,11 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
       keyid = crypt_fpr_or_lkeyid(k_info);
 
     bypass_selection:
-      keylist_size += mutt_str_strlen(keyid) + 4 + 1;
+      keylist_size += mutt_str_len(keyid) + 4 + 1;
       mutt_mem_realloc(&keylist, keylist_size);
       sprintf(keylist + keylist_used, "%s0x%s%s", keylist_used ? " " : "",
               keyid, forced_valid ? "!" : "");
-      keylist_used = mutt_str_strlen(keylist);
+      keylist_used = mutt_str_len(keylist);
 
       key_selected = true;
 

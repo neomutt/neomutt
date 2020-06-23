@@ -411,7 +411,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
 
   if (!TAILQ_EMPTY(&a->parameter))
   {
-    len = 25 + mutt_str_strlen(a->subtype); /* approximate len. of content-type */
+    len = 25 + mutt_str_len(a->subtype); /* approximate len. of content-type */
 
     struct Parameter *np = NULL;
     TAILQ_FOREACH(np, &a->parameter, entries)
@@ -435,7 +435,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
         if (mutt_istr_equal(cont->attribute, "boundary") && mutt_str_equal(buf, cont->value))
           snprintf(buf, sizeof(buf), "\"%s\"", cont->value);
 
-        tmplen = mutt_str_strlen(buf) + mutt_str_strlen(cont->attribute) + 1;
+        tmplen = mutt_str_len(buf) + mutt_str_len(cont->attribute) + 1;
         if (len + tmplen + 2 > 76)
         {
           fputs("\n\t", fp);
@@ -469,7 +469,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
     if (a->disposition < sizeof(dispstr) / sizeof(char *))
     {
       fprintf(fp, "Content-Disposition: %s", dispstr[a->disposition]);
-      len = 21 + mutt_str_strlen(dispstr[a->disposition]);
+      len = 21 + mutt_str_len(dispstr[a->disposition]);
 
       if (a->use_disp && (a->disposition != DISP_INLINE))
       {
@@ -495,7 +495,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
             buf[0] = 0;
             mutt_addr_cat(buf, sizeof(buf), cont->value, MimeSpecials);
 
-            tmplen = mutt_str_strlen(buf) + mutt_str_strlen(cont->attribute) + 1;
+            tmplen = mutt_str_len(buf) + mutt_str_len(cont->attribute) + 1;
             if (len + tmplen + 2 > 76)
             {
               fputs("\n\t", fp);
@@ -1134,7 +1134,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
   bool found_mimetypes = false;
   enum ContentType type = TYPE_OTHER;
 
-  int szf = mutt_str_strlen(path);
+  int szf = mutt_str_len(path);
 
   for (int count = 0; count < 4; count++)
   {
@@ -1187,7 +1187,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
         /* cycle through the file extensions */
         while ((p = strtok(p, " \t\n")))
         {
-          sze = mutt_str_strlen(p);
+          sze = mutt_str_len(p);
           if ((sze > cur_sze) && (szf >= sze) && mutt_istr_equal(path + szf - sze, p) &&
               ((szf == sze) || (path[szf - sze - 1] == '.')))
           {
@@ -1808,7 +1808,7 @@ void mutt_write_addrlist(struct AddressList *al, FILE *fp, int linelen, bool dis
   {
     buf[0] = '\0';
     mutt_addr_write(buf, sizeof(buf), a, display);
-    size_t len = mutt_str_strlen(buf);
+    size_t len = mutt_str_len(buf);
     if (count && (linelen + len > 74))
     {
       fputs("\n\t", fp);
@@ -1950,7 +1950,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value, size_t 
 
   if (tag && *tag && (fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0))
     return -1;
-  col = mutt_str_strlen(tag) + ((tag && (tag[0] != '\0')) ? 2 : 0) + mutt_str_strlen(pfx);
+  col = mutt_str_len(tag) + ((tag && (tag[0] != '\0')) ? 2 : 0) + mutt_str_len(pfx);
 
   while (p && (p[0] != '\0'))
   {
@@ -1976,7 +1976,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value, size_t 
      * and encoded words */
     if (!first && !enc && col && ((col + w) >= wraplen))
     {
-      col = mutt_str_strlen(pfx);
+      col = mutt_str_len(pfx);
       fold = 1;
       if (fprintf(fp, "\n%s", NONULL(pfx)) <= 0)
         return -1;
@@ -2116,7 +2116,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
     }
 
     valbuf = mutt_str_substr_dup(start, end);
-    rc = print_val(fp, pfx, valbuf, chflags, mutt_str_strlen(pfx));
+    rc = print_val(fp, pfx, valbuf, chflags, mutt_str_len(pfx));
   }
   else
   {
@@ -2179,7 +2179,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   else if (wraplen <= 0)
     wraplen = 78;
 
-  const size_t vlen = mutt_str_strlen(v);
+  const size_t vlen = mutt_str_len(v);
   if (tag)
   {
     /* if header is short enough, simply print it */
@@ -2517,7 +2517,7 @@ static void encode_headers(struct ListHead *h)
       continue;
 
     rfc2047_encode(&tmp, NULL, i + 2, C_SendCharset);
-    mutt_mem_realloc(&np->data, i + 2 + mutt_str_strlen(tmp) + 1);
+    mutt_mem_realloc(&np->data, i + 2 + mutt_str_len(tmp) + 1);
 
     sprintf(np->data + i + 2, "%s", tmp);
 

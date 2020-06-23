@@ -436,7 +436,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
 
   mutt_str_copy(rcfile, rcfile_path, sizeof(rcfile));
 
-  size_t rcfilelen = mutt_str_strlen(rcfile);
+  size_t rcfilelen = mutt_str_len(rcfile);
   if (rcfilelen == 0)
     return -1;
 
@@ -2010,7 +2010,7 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
       continue;
     }
 
-    l = mutt_str_strlen(buf->data);
+    l = mutt_str_len(buf->data);
     if (buf->data[l - 1] == ':')
       l--;
 

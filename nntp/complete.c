@@ -53,7 +53,7 @@ int nntp_complete(char *buf, size_t buflen)
 
   /* special case to handle when there is no filepart yet
    * find the first subscribed newsgroup */
-  int len = mutt_str_strlen(filepart);
+  int len = mutt_str_len(filepart);
   if (len == 0)
   {
     for (; n < adata->groups_num; n++)

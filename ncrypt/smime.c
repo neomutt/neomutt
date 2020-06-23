@@ -1007,7 +1007,7 @@ static void getkeys(char *mailbox)
     key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, false);
   }
 
-  size_t smime_keys_len = mutt_str_strlen(C_SmimeKeys);
+  size_t smime_keys_len = mutt_str_len(C_SmimeKeys);
 
   k = key ? key->hash : NONULL(C_SmimeDefaultKey);
 
@@ -1088,10 +1088,10 @@ char *smime_class_find_keys(struct AddressList *al, bool oppenc_mode)
     }
 
     keyid = key->hash;
-    keylist_size += mutt_str_strlen(keyid) + 2;
+    keylist_size += mutt_str_len(keyid) + 2;
     mutt_mem_realloc(&keylist, keylist_size);
     sprintf(keylist + keylist_used, "%s%s", keylist_used ? " " : "", keyid);
-    keylist_used = mutt_str_strlen(keylist);
+    keylist_used = mutt_str_len(keylist);
 
     smime_key_free(&key);
   }
@@ -1150,7 +1150,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
 
   while ((fgets(email, sizeof(email), fp_out)))
   {
-    size_t len = mutt_str_strlen(email);
+    size_t len = mutt_str_len(email);
     if (len && (email[len - 1] == '\n'))
       email[len - 1] = '\0';
     if (mutt_istr_startswith(email, mailbox))
@@ -1181,11 +1181,11 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
     rewind(fp_out);
     while ((fgets(email, sizeof(email), fp_out)))
     {
-      size_t len = mutt_str_strlen(email);
+      size_t len = mutt_str_len(email);
       if (len && (email[len - 1] == '\n'))
         email[len - 1] = '\0';
-      (*buffer)[count] = mutt_mem_calloc(mutt_str_strlen(email) + 1, sizeof(char));
-      strncpy((*buffer)[count], email, mutt_str_strlen(email));
+      (*buffer)[count] = mutt_mem_calloc(mutt_str_len(email) + 1, sizeof(char));
+      strncpy((*buffer)[count], email, mutt_str_len(email));
       count++;
     }
   }
@@ -1618,7 +1618,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
       *cert_end = '\0';
     if (*cert_start)
     {
-      off = mutt_str_strlen(certfile);
+      off = mutt_str_len(certfile);
       snprintf(certfile + off, sizeof(certfile) - off, "%s%s/%s",
                (off != 0) ? " " : "", NONULL(C_SmimeCertificates), cert_start);
     }
@@ -2188,7 +2188,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   char buf[8192];
   while (fgets(buf, sizeof(buf) - 1, fp_smime_out))
   {
-    const size_t len = mutt_str_strlen(buf);
+    const size_t len = mutt_str_len(buf);
     if ((len > 1) && (buf[len - 2] == '\r'))
     {
       buf[len - 2] = '\n';

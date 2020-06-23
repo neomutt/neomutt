@@ -80,7 +80,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
     mutt_str_copy(relpath, "../", sizeof(relpath));
   /* strip current folder from target, to render a relative path */
   else if (mutt_str_startswith(folder, mailbox))
-    mutt_str_copy(relpath, folder + mutt_str_strlen(mailbox), sizeof(relpath));
+    mutt_str_copy(relpath, folder + mutt_str_len(mailbox), sizeof(relpath));
   else
     mutt_str_copy(relpath, folder, sizeof(relpath));
 
@@ -247,7 +247,7 @@ int imap_browse(const char *path, struct BrowserState *state)
   else
   {
     imap_fix_path(adata->delim, buf, mbox, sizeof(mbox));
-    n = mutt_str_strlen(mbox);
+    n = mutt_str_len(mbox);
   }
 
   if (n)
@@ -397,7 +397,7 @@ int imap_mailbox_create(const char *path)
 
   /* append a delimiter if necessary */
   mutt_str_copy(name, mdata->real_name, sizeof(name));
-  n = mutt_str_strlen(name);
+  n = mutt_str_len(name);
   if (n && (n < sizeof(name) - 1) && (name[n - 1] != adata->delim))
   {
     name[n++] = adata->delim;
@@ -407,7 +407,7 @@ int imap_mailbox_create(const char *path)
   if (mutt_get_field(_("Create mailbox: "), name, sizeof(name), MUTT_FILE) < 0)
     goto err;
 
-  if (mutt_str_strlen(name) == 0)
+  if (mutt_str_len(name) == 0)
   {
     mutt_error(_("Mailbox must have a name"));
     goto err;
@@ -459,7 +459,7 @@ int imap_mailbox_rename(const char *path)
   if (mutt_get_field(buf, newname, sizeof(newname), MUTT_FILE) < 0)
     goto err;
 
-  if (mutt_str_strlen(newname) == 0)
+  if (mutt_str_len(newname) == 0)
   {
     mutt_error(_("Mailbox must have a name"));
     goto err;

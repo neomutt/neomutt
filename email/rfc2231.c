@@ -358,7 +358,7 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
     if (C_Charset && C_SendCharset)
     {
       charset = mutt_ch_choose(C_Charset, C_SendCharset, value,
-                               mutt_str_strlen(value), &src_value, NULL);
+                               mutt_str_len(value), &src_value, NULL);
     }
     if (src_value)
       free_src_value = true;
@@ -370,7 +370,7 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
 
   // Count the size the resultant value will need in total
   if (encode)
-    dest_value_len = mutt_str_strlen(charset) + 2; /* charset'' prefix */
+    dest_value_len = mutt_str_len(charset) + 2; /* charset'' prefix */
 
   for (cur = src_value; *cur; cur++)
   {
@@ -397,13 +397,13 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
   }
 
   // Determine if need to split into parameter value continuations
-  max_value_len = 78 - // rfc suggested line length
-                  1 -  // Leading tab on continuation line
-                  mutt_str_strlen(attribute) - // attribute
-                  (encode ? 1 : 0) -           // '*' encoding marker
-                  1 -                          // '='
-                  (add_quotes ? 2 : 0) -       // "...."
-                  1;                           // ';'
+  max_value_len = 78 -                      // rfc suggested line length
+                  1 -                       // Leading tab on continuation line
+                  mutt_str_len(attribute) - // attribute
+                  (encode ? 1 : 0) -        // '*' encoding marker
+                  1 -                       // '='
+                  (add_quotes ? 2 : 0) -    // "...."
+                  1;                        // ';'
 
   if (max_value_len < 30)
     max_value_len = 30;

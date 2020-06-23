@@ -382,7 +382,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
   {
     if (!fgets(tmps, sizeof(tmps), s->fp_in))
       return;
-    len -= mutt_str_strlen(tmps);
+    len -= mutt_str_len(tmps);
     if (mutt_str_startswith(tmps, "begin "))
       break;
   }
@@ -390,7 +390,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
   {
     if (!fgets(tmps, sizeof(tmps), s->fp_in))
       return;
-    len -= mutt_str_strlen(tmps);
+    len -= mutt_str_len(tmps);
     if (mutt_str_startswith(tmps, "end"))
       break;
     pt = tmps;
@@ -499,7 +499,7 @@ static bool is_autoview(struct Body *b)
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &AutoViewList, entries)
     {
-      int i = mutt_str_strlen(np->data) - 1;
+      int i = mutt_str_len(np->data) - 1;
       if (((i > 0) && (np->data[i - 1] == '/') && (np->data[i] == '*') &&
            mutt_istrn_equal(type, np->data, i)) ||
           mutt_istr_equal(type, np->data))
@@ -679,7 +679,7 @@ static int text_plain_handler(struct Body *b, struct State *s)
   {
     if (!mutt_str_equal(buf, "-- ") && C_TextFlowed)
     {
-      size_t len = mutt_str_strlen(buf);
+      size_t len = mutt_str_len(buf);
       while ((len > 0) && (buf[len - 1] == ' '))
         buf[--len] = '\0';
     }
@@ -960,7 +960,7 @@ static int alternative_handler(struct Body *a, struct State *s)
     else
     {
       wild = true;
-      btlen = mutt_str_strlen(np->data);
+      btlen = mutt_str_len(np->data);
     }
 
     if (a->parts)

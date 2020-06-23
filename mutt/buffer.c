@@ -226,7 +226,7 @@ size_t mutt_buffer_addstr(struct Buffer *buf, const char *s)
 {
   if (!buf || !s)
     return 0;
-  return mutt_buffer_addstr_n(buf, s, mutt_str_strlen(s));
+  return mutt_buffer_addstr_n(buf, s, mutt_str_len(s));
 }
 
 /**

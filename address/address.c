@@ -657,7 +657,7 @@ void mutt_addrlist_qualify(struct AddressList *al, const char *host)
   {
     if (!a->group && a->mailbox && !strchr(a->mailbox, '@'))
     {
-      char *p = mutt_mem_malloc(mutt_str_strlen(a->mailbox) + mutt_str_strlen(host) + 2);
+      char *p = mutt_mem_malloc(mutt_str_len(a->mailbox) + mutt_str_len(host) + 2);
       sprintf(p, "%s@%s", a->mailbox, host);
       FREE(&a->mailbox);
       a->mailbox = p;
@@ -787,7 +787,7 @@ bool mutt_addr_valid_msgid(const char *msgid)
   if (!msgid || (*msgid == '\0'))
     return false;
 
-  size_t l = mutt_str_strlen(msgid);
+  size_t l = mutt_str_len(msgid);
   if (l < 5) /* <atom@atom> */
     return false;
   if ((msgid[0] != '<') || (msgid[l - 1] != '>'))
@@ -1149,7 +1149,7 @@ size_t mutt_addrlist_write(const struct AddressList *al, char *buf, size_t bufle
   if (!buf || buflen == 0 || !al)
     return 0;
 
-  size_t len = mutt_str_strlen(buf);
+  size_t len = mutt_str_len(buf);
   if (len >= buflen)
   {
     return 0;

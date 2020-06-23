@@ -193,7 +193,7 @@ static void enriched_wrap(struct EnrichedState *stte)
   if (stte->s->prefix)
   {
     state_puts(stte->s, stte->s->prefix);
-    stte->indent_len += mutt_str_strlen(stte->s->prefix);
+    stte->indent_len += mutt_str_len(stte->s->prefix);
   }
 
   if (stte->tag_level[RICH_EXCERPT])
@@ -204,12 +204,12 @@ static void enriched_wrap(struct EnrichedState *stte)
       if (stte->s->prefix)
       {
         state_puts(stte->s, stte->s->prefix);
-        stte->indent_len += mutt_str_strlen(stte->s->prefix);
+        stte->indent_len += mutt_str_len(stte->s->prefix);
       }
       else
       {
         state_puts(stte->s, "> ");
-        stte->indent_len += mutt_str_strlen("> ");
+        stte->indent_len += mutt_str_len("> ");
       }
       x--;
     }
@@ -350,7 +350,7 @@ static void enriched_puts(const char *s, struct EnrichedState *stte)
 
   const char *c = NULL;
 
-  if ((stte->buf_len < (stte->buf_used + mutt_str_strlen(s))) || !stte->buffer)
+  if ((stte->buf_len < (stte->buf_used + mutt_str_len(s))) || !stte->buffer)
   {
     stte->buf_len += 1024;
     mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
@@ -491,7 +491,7 @@ int text_enriched_handler(struct Body *a, struct State *s)
   if (s->prefix)
   {
     state_puts(s, s->prefix);
-    stte.indent_len += mutt_str_strlen(s->prefix);
+    stte.indent_len += mutt_str_len(s->prefix);
   }
 
   while (state != DONE)

@@ -487,7 +487,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       break;
 
     offset = ftello(s->fp_in);
-    bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
+    bytes -= (offset - last_pos); /* don't rely on mutt_str_len(buf) */
     last_pos = offset;
 
     size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ");
@@ -534,7 +534,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       while ((bytes > 0) && fgets(buf, sizeof(buf) - 1, s->fp_in))
       {
         offset = ftello(s->fp_in);
-        bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
+        bytes -= (offset - last_pos); /* don't rely on mutt_str_len(buf) */
         last_pos = offset;
 
         fputs(buf, fp_tmp);
@@ -552,7 +552,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           size_t l = 0;
           FREE(&gpgcharset);
           gpgcharset = mutt_str_dup(buf + 9);
-          l = mutt_str_strlen(gpgcharset);
+          l = mutt_str_len(gpgcharset);
           if ((l > 0) && (gpgcharset[l - 1] == '\n'))
             gpgcharset[l - 1] = 0;
           if (!mutt_ch_check_charset(gpgcharset, 0))
@@ -1050,7 +1050,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
    * read_mime_header has a hard time parsing the message.  */
   while (fgets(buf, sizeof(buf) - 1, fp_pgp_out))
   {
-    size_t len = mutt_str_strlen(buf);
+    size_t len = mutt_str_len(buf);
     if ((len > 1) && (buf[len - 2] == '\r'))
       strcpy(buf + len - 2, "\n");
     fputs(buf, fp_out);
@@ -1513,10 +1513,10 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
       keyid = pgp_fpr_or_lkeyid(k_info);
 
     bypass_selection:
-      keylist_size += mutt_str_strlen(keyid) + 4;
+      keylist_size += mutt_str_len(keyid) + 4;
       mutt_mem_realloc(&keylist, keylist_size);
       sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "", keyid);
-      keylist_used = mutt_str_strlen(keylist);
+      keylist_used = mutt_str_len(keylist);
 
       key_selected = true;
 

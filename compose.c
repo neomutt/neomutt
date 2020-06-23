@@ -276,7 +276,7 @@ static void calc_header_width_padding(int idx, const char *header, bool calc_max
 {
   int width;
 
-  HeaderPadding[idx] = mutt_str_strlen(header);
+  HeaderPadding[idx] = mutt_str_len(header);
   width = mutt_strwidth(header);
   if (calc_max && (MaxHeaderWidth < width))
     MaxHeaderWidth = width;
@@ -674,14 +674,14 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
     if (t && (t[0] == '0') && (t[1] == '\0'))
       t = "<random>";
 
-    if (c + mutt_str_strlen(t) + 2 >= rd->win_envelope->state.cols)
+    if (c + mutt_str_len(t) + 2 >= rd->win_envelope->state.cols)
       break;
 
     mutt_window_addstr(NONULL(t));
     if (STAILQ_NEXT(np, entries))
       mutt_window_addstr(", ");
 
-    c += mutt_str_strlen(t) + 2;
+    c += mutt_str_len(t) + 2;
   }
 }
 #endif

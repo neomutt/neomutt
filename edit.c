@@ -102,7 +102,7 @@ static char **be_snarf_data(FILE *fp, char **buf, int *bufmax, int *buflen,
   if (prefix)
   {
     mutt_str_copy(tmp, C_IndentString, sizeof(tmp));
-    tmplen = mutt_str_strlen(tmp);
+    tmplen = mutt_str_len(tmp);
     p = tmp + tmplen;
     tmplen = sizeof(tmp) - tmplen;
   }
@@ -112,7 +112,7 @@ static char **be_snarf_data(FILE *fp, char **buf, int *bufmax, int *buflen,
   {
     if (!fgets(p, tmplen - 1, fp))
       break;
-    bytes -= mutt_str_strlen(p);
+    bytes -= mutt_str_len(p);
     if (*bufmax == *buflen)
       mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
     buf[(*buflen)++] = mutt_str_dup(tmp);
@@ -428,7 +428,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
     if (C_Escape && (tmp[0] == C_Escape[0]) && (tmp[1] != C_Escape[0]))
     {
       /* remove trailing whitespace from the line */
-      p = tmp + mutt_str_strlen(tmp) - 1;
+      p = tmp + mutt_str_len(tmp) - 1;
       while ((p >= tmp) && IS_SPACE(*p))
         *p-- = '\0';
 
@@ -461,9 +461,9 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
             if ((*p == '\0') && e_cur)
             {
               /* include the current message */
-              p = tmp + mutt_str_strlen(tmp) + 1;
-              snprintf(tmp + mutt_str_strlen(tmp),
-                       sizeof(tmp) - mutt_str_strlen(tmp), " %d", e_cur->msgno + 1);
+              p = tmp + mutt_str_len(tmp) + 1;
+              snprintf(tmp + mutt_str_len(tmp), sizeof(tmp) - mutt_str_len(tmp),
+                       " %d", e_cur->msgno + 1);
             }
             buf = be_include_messages(p, buf, &bufmax, &buflen, (tolower(tmp[1]) == 'm'),
                                       (isupper((unsigned char) tmp[1])));
@@ -510,7 +510,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
           {
             buflen--;
             mutt_str_copy(tmp, buf[buflen], sizeof(tmp));
-            tmp[mutt_str_strlen(tmp) - 1] = '\0';
+            tmp[mutt_str_len(tmp) - 1] = '\0';
             FREE(&buf[buflen]);
             buf[buflen] = NULL;
             continue;
