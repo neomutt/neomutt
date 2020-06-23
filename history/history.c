@@ -417,7 +417,7 @@ int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **ma
       cur = C_History;
     if (cur == h->last)
       break;
-    if (mutt_str_stristr(h->hist[cur], search_buf))
+    if (mutt_istr_find(h->hist[cur], search_buf))
       matches[match_count++] = h->hist[cur];
   } while (match_count < C_History);
 

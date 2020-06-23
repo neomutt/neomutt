@@ -468,6 +468,7 @@ STORE_OBJS	+= test/store/tc.o
 @endif
 
 STRING_OBJS	= test/string/mutt_istr_equal.o \
+		  test/string/mutt_istr_find.o \
 		  test/string/mutt_istr_remall.o \
 		  test/string/mutt_istrn_equal.o \
 		  test/string/mutt_str_adjust.o \
@@ -499,14 +500,13 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_skip_email_wsp.o \
 		  test/string/mutt_str_skip_whitespace.o \
 		  test/string/mutt_str_startswith.o \
-		  test/string/mutt_str_stristr.o \
 		  test/string/mutt_str_strlen.o \
 		  test/string/mutt_str_substr_dup.o \
 		  test/string/mutt_str_sysexit.o \
 		  test/string/mutt_strn_cat.o \
 		  test/string/mutt_strn_copy.o \
 		  test/string/mutt_strn_equal.o \
-		  test/string/mutt_strn_rstrstr.o
+		  test/string/mutt_strn_rfind.o
 
 TAGS_OBJS	= test/tags/driver_tags_free.o \
 		  test/tags/driver_tags_get.o \

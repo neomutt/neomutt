@@ -489,6 +489,7 @@
                                                                                \
   /* string */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_istr_equal)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_istr_find)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_istr_remall)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_istrn_equal)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_adjust)                                      \
@@ -520,14 +521,13 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_email_wsp)                              \
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_whitespace)                             \
   NEOMUTT_TEST_ITEM(test_mutt_str_startswith)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_str_stristr)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_strlen)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_substr_dup)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_sysexit)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_strn_cat)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_strn_copy)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_strn_equal)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_strn_rstrstr)                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_strn_rfind)                                      \
                                                                                \
   /* tags */                                                                   \
   NEOMUTT_TEST_ITEM(test_driver_tags_free)                                     \

@@ -669,13 +669,13 @@ int mutt_str_coll(const char *a, const char *b)
 }
 
 /**
- * mutt_str_stristr - Find first occurrence of string (ignoring case)
+ * mutt_istr_find - Find first occurrence of string (ignoring case)
  * @param haystack String to search through
  * @param needle   String to find
  * @retval ptr  First match of the search string
  * @retval NULL No match, or an error
  */
-const char *mutt_str_stristr(const char *haystack, const char *needle)
+const char *mutt_istr_find(const char *haystack, const char *needle)
 {
   if (!haystack)
     return NULL;
@@ -929,7 +929,7 @@ const char *mutt_str_next_word(const char *s)
 }
 
 /**
- * mutt_strn_rstrstr - Find last instance of a substring
+ * mutt_strn_rfind - Find last instance of a substring
  * @param haystack        String to search through
  * @param haystack_length Length of the string
  * @param needle          String to find
@@ -939,7 +939,7 @@ const char *mutt_str_next_word(const char *s)
  * Return the last instance of needle in the haystack, or NULL.
  * Like strstr(), only backwards, and for a limited haystack length.
  */
-const char *mutt_strn_rstrstr(const char *haystack, size_t haystack_length, const char *needle)
+const char *mutt_strn_rfind(const char *haystack, size_t haystack_length, const char *needle)
 {
   if (!haystack || (haystack_length == 0) || !needle)
     return NULL;

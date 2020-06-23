@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_stristr()
+ * Test code for mutt_istr_find()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -31,21 +31,21 @@ struct StriTest
   size_t offset;
 };
 
-void test_mutt_str_stristr(void)
+void test_mutt_istr_find(void)
 {
-  // const char *mutt_str_stristr(const char *haystack, const char *needle);
+  // const char *mutt_istr_find(const char *haystack, const char *needle);
 
   {
-    TEST_CHECK(mutt_str_stristr(NULL, "apple") == NULL);
+    TEST_CHECK(mutt_istr_find(NULL, "apple") == NULL);
   }
 
   {
     char *haystack = "apple";
-    TEST_CHECK(mutt_str_stristr(haystack, NULL) == haystack);
+    TEST_CHECK(mutt_istr_find(haystack, NULL) == haystack);
   }
 
   {
-    TEST_CHECK(mutt_str_stristr("apple", "banana") == NULL);
+    TEST_CHECK(mutt_istr_find("apple", "banana") == NULL);
   }
 
   // clang-format off
@@ -73,7 +73,7 @@ void test_mutt_str_stristr(void)
       struct StriTest *t = &stri_tests[i];
       TEST_CASE_("'%s'", t->str);
 
-      const char *result = mutt_str_stristr(t->str, find);
+      const char *result = mutt_istr_find(t->str, find);
       TEST_CHECK(result == (t->str + t->offset));
     }
   }

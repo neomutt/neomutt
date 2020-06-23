@@ -1215,7 +1215,7 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
       {
         mutt_debug(LL_DEBUG5, "matching \"%s\" against key %s, \"%s\":\n", p,
                    pgp_long_keyid(k), NONULL(a->addr));
-        if (mutt_str_stristr(a->addr, p))
+        if (mutt_istr_find(a->addr, p))
         {
           mutt_debug(LL_DEBUG5, "\t\tmatch #2\n");
           match = true;

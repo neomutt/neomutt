@@ -787,7 +787,7 @@ static struct SmimeKey *smime_get_candidates(char *search, bool only_public_key)
 
   while (fgets(buf, sizeof(buf), fp))
   {
-    if (((*search == '\0')) || mutt_str_stristr(buf, search))
+    if (((*search == '\0')) || mutt_istr_find(buf, search))
     {
       key = smime_parse_key(buf);
       if (key)
@@ -936,8 +936,8 @@ static struct SmimeKey *smime_get_key_by_str(char *str, KeyFlags abilities, bool
       continue;
     }
 
-    if (mutt_istr_equal(str, result->hash) || mutt_str_stristr(result->email, str) ||
-        mutt_str_stristr(result->label, str))
+    if (mutt_istr_equal(str, result->hash) ||
+        mutt_istr_find(result->email, str) || mutt_istr_find(result->label, str))
     {
       match = smime_copy_key(result);
       *matches_end = match;

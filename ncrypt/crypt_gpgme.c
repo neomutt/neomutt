@@ -5135,7 +5135,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
 
     if ((*p == '\0') || (pfcopy && mutt_istr_equal(pfcopy, crypt_fpr(k))) ||
         (pl && mutt_istr_equal(pl, crypt_long_keyid(k))) ||
-        (ps && mutt_istr_equal(ps, crypt_short_keyid(k))) || mutt_str_stristr(k->uid, p))
+        (ps && mutt_istr_equal(ps, crypt_short_keyid(k))) || mutt_istr_find(k->uid, p))
     {
       mutt_debug(LL_DEBUG5, "match\n");
 
