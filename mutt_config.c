@@ -4778,6 +4778,20 @@ struct ConfigDef MuttVars[] = {
   ** Please see "$account-hook" in the manual for how to use different
   ** tunnel commands per connection.
   */
+  { "tunnel_is_secure", DT_BOOL, &C_TunnelIsSecure, true },
+  /*
+  ** .pp
+  ** When \fIset\fP, NeoMutt will assume the $$tunnel connection does not need
+  ** STARTTLS to be enabled.  It will also allow IMAP PREAUTH server
+  ** responses inside a $tunnel to proceed.  This is appropriate if $$tunnel
+  ** uses ssh or directly invokes the server locally.
+  ** .pp
+  ** When \fIunset\fP, NeoMutt will negotiate STARTTLS according to the
+  ** $ssl_starttls and $ssl_force_tls variables.  If $ssl_force_tls is
+  ** set, NeoMutt will abort connecting if an IMAP server responds with PREAUTH.
+  ** This setting is appropriate if $$tunnel does not provide security and
+  ** could be tampered with by attackers.
+  */
 #endif
   { "uncollapse_jump", DT_BOOL, &C_UncollapseJump, false },
   /*

@@ -11557,21 +11557,25 @@ smtp://user@host:587/
       <sect2 id="secure-tunnel">
         <title>Tunnel</title>
         <para>
-          NeoMutt generally assumes a connection through <link
-          linkend="tunnel">$tunnel</link> is secure: either using a direct
-          pipe or a <literal>ssh</literal> connection.  However, NeoMutt will
-          still attempt to negotiate <literal>STARTTLS</literal> subject to
-          <link linkend="ssl-starttls">$ssl_starttls</link> and <link
-          linkend="ssl-force-tls">$ssl_force_tls</link>.
+          When connecting through a <link linkend="tunnel">$tunnel</link>
+          and <link linkend="tunnel-is-secure">$tunnel_is_secure"</link> is
+          set(the default), NeoMutt will assume the connection to the server
+          through the pipe is already secured.  NeoMutt will ignore <link
+          linkend="ssl-starttls">$ssl_starttls</link> and <link
+          linkend="ssl-force-tls">$ssl_force_tls</link>, behaving as if TLS
+          has already been negotiated.
         </para>
         <para>
-          An IMAP server configured for preauthentication
-         (<literal>PREAUTH</literal>) does not allow
-          <literal>STARTTLS</literal> negotation.  If using <link
-          linkend="tunnel">$tunnel</link>, NeoMutt allows the connection to go
-          through.  Outside of a tunnel, setting <link
-          linkend="ssl-force-tls">$ssl_force_tls</link> will abort the
-          connection.
+          When <link linkend="tunnel-is-secure">$tunnel_is_secure"</link> is
+          unset, NeoMutt will respect the values of <link
+          linkend="ssl-starttls">$ssl_starttls</link> and <link
+          linkend="ssl-force-tls">$ssl_force_tls</link>.  It is
+          <emphasis>highly recommended</emphasis> to set <link
+          linkend="ssl-force-tls">$ssl_force_tls</link> in this case, to
+          force <literal>STARTTLS</literal> negotiation.  Note that doing so
+          will prevent connection to an IMAP server configured for
+          preauthentication(<literal>PREAUTH</literal>).  If you use this
+          configuration it is recommended to use a secure tunnel.
         </para>
       </sect2>
 

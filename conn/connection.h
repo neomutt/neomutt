@@ -34,12 +34,24 @@
 struct Connection
 {
   struct ConnAccount account; ///< Account details: username, password, etc
-  unsigned int ssf;           ///< Security strength factor, in bits
+  unsigned int ssf;           ///< Security strength factor, in bits (see below)
   char inbuf[1024];           ///< Buffer for incoming traffic
   int bufpos;                 ///< Current position in the buffer
   int fd;                     ///< Socket file descriptor
   int available;              ///< Amount of data waiting to be read
   void *sockdata;             ///< Backend-specific socket data
+
+  /**
+   * Note about ssf: in actuality, NeoMutt uses this as a boolean to determine
+   * if the connection is "secure" using TLS or $tunnel if $tunnel_is_secure is
+   * set.
+   *
+   * The value is passed to SASL, but since no min_ssf is also passed to SASL
+   * I don't believe it makes any difference.
+   *
+   * The GnuTLS code currently even puts bytes in here, so I doubt the exact
+   * value has significance for NeoMutt purposes.
+   */
 
   /**
    * open - Open a socket Connection

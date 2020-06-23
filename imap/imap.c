@@ -776,8 +776,9 @@ int imap_open_connection(struct ImapAccountData *adata)
      * MITM attack.  The only way to stop "STARTTLS" MITM attacks is via
      * $ssl_force_tls: an attacker can easily spoof "* OK" and strip the
      * STARTTLS capability.  So consult $ssl_force_tls, not $ssl_starttls, to
-     * decide whether to abort. */
-    if ((adata->conn->ssf == 0) && !C_Tunnel && !C_SslForceTls)
+     * decide whether to abort. Note that if using $tunnel and
+     * $tunnel_is_secure, adata->conn->ssf will be set to 1. */
+    if ((adata->conn->ssf == 0) && C_SslForceTls)
     {
       mutt_error(_("Encrypted connection unavailable"));
       goto err_close_conn;
