@@ -802,7 +802,7 @@ void mutt_save_path(char *buf, size_t buflen, const struct Address *addr)
       if (p)
         *p = '\0';
     }
-    mutt_str_strlower(buf);
+    mutt_str_lower(buf);
   }
   else
     *buf = '\0';
@@ -827,7 +827,7 @@ void mutt_buffer_save_path(struct Buffer *dest, const struct Address *a)
         mutt_buffer_fix_dptr(dest);
       }
     }
-    mutt_str_strlower(dest->data);
+    mutt_str_lower(dest->data);
   }
   else
     mutt_buffer_reset(dest);
@@ -1304,7 +1304,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
                        else_str, data, flags);
 
         if (to_lower)
-          mutt_str_strlower(tmp);
+          mutt_str_lower(tmp);
         if (no_dots)
         {
           char *p = tmp;

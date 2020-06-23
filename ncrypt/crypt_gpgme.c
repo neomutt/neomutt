@@ -1395,13 +1395,13 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
       {
         /* convert GPGME raw hash name to RFC2633 format */
         snprintf(buf, buflen, "%s", algorithm_name);
-        mutt_str_strlower(buf);
+        mutt_str_lower(buf);
       }
       else
       {
         /* convert GPGME raw hash name to RFC3156 format */
         snprintf(buf, buflen, "pgp-%s", algorithm_name);
-        mutt_str_strlower(buf + 4);
+        mutt_str_lower(buf + 4);
       }
     }
   }

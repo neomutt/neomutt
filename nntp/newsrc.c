@@ -955,7 +955,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
       break;
     case 's':
       mutt_str_strfcpy(fn, cac->host, sizeof(fn));
-      mutt_str_strlower(fn);
+      mutt_str_lower(fn);
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, fn);
       break;

@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_strlower()
+ * Test code for mutt_str_lower()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -25,29 +25,29 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 
-void test_mutt_str_strlower(void)
+void test_mutt_str_lower(void)
 {
-  // char *mutt_str_strlower(char *s);
+  // char *mutt_str_lower(char *s);
 
   {
-    TEST_CHECK(mutt_str_strlower(NULL) == NULL);
+    TEST_CHECK(mutt_str_lower(NULL) == NULL);
   }
 
   {
     char buf[64] = "";
-    mutt_str_strlower(buf);
+    mutt_str_lower(buf);
     TEST_CHECK(strcmp(buf, "") == 0);
   }
 
   {
     char buf[64] = "apple";
-    mutt_str_strlower(buf);
+    mutt_str_lower(buf);
     TEST_CHECK(strcmp(buf, "apple") == 0);
   }
 
   {
     char buf[64] = "aPPLe";
-    mutt_str_strlower(buf);
+    mutt_str_lower(buf);
     TEST_CHECK(strcmp(buf, "apple") == 0);
   }
 }

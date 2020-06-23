@@ -498,13 +498,13 @@ void mutt_str_adjust(char **p)
 }
 
 /**
- * mutt_str_strlower - Convert all characters in the string to lowercase
+ * mutt_str_lower - Convert all characters in the string to lowercase
  * @param s String to lowercase
  * @retval ptr Lowercase string
  *
  * The string is transformed in place.
  */
-char *mutt_str_strlower(char *s)
+char *mutt_str_lower(char *s)
 {
   if (!s)
     return NULL;
@@ -518,29 +518,6 @@ char *mutt_str_strlower(char *s)
   }
 
   return s;
-}
-
-/**
- * mutt_str_strnlower - Convert some characters in the string to lowercase
- * @param str String to lowercase
- * @param num Maximum number of characters to lowercase
- * @retval ptr Lowercase string
- *
- * The string is transformed in place.
- */
-char *mutt_str_strnlower(char *str, size_t num)
-{
-  if (!str)
-    return NULL;
-
-  for (size_t i = 0; i < num; i++)
-  {
-    if (str[i] == '\0')
-      break;
-    str[i] = tolower((unsigned char) str[i]);
-  }
-
-  return str;
 }
 
 /**

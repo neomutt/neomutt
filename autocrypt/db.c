@@ -161,7 +161,7 @@ void mutt_autocrypt_db_close(void)
 void mutt_autocrypt_db_normalize_addr(struct Address *a)
 {
   mutt_addr_to_local(a);
-  mutt_str_strlower(a->mailbox);
+  mutt_str_lower(a->mailbox);
   mutt_addr_to_intl(a);
 }
 
@@ -176,7 +176,7 @@ void mutt_autocrypt_db_normalize_addrlist(struct AddressList *al)
   struct Address *np = NULL;
   TAILQ_FOREACH(np, al, entries)
   {
-    mutt_str_strlower(np->mailbox);
+    mutt_str_lower(np->mailbox);
   }
 
   mutt_addrlist_to_intl(al, NULL);

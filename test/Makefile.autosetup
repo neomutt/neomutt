@@ -487,6 +487,7 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_inline_replace.o \
 		  test/string/mutt_str_is_ascii.o \
 		  test/string/mutt_str_is_email_wsp.o \
+		  test/string/mutt_str_lower.o \
 		  test/string/mutt_str_lws_len.o \
 		  test/string/mutt_str_lws_rlen.o \
 		  test/string/mutt_str_next_word.o \
@@ -501,9 +502,7 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_strfcpy.o \
 		  test/string/mutt_str_stristr.o \
 		  test/string/mutt_str_strlen.o \
-		  test/string/mutt_str_strlower.o \
 		  test/string/mutt_str_strnfcpy.o \
-		  test/string/mutt_str_strnlower.o \
 		  test/string/mutt_str_substr_copy.o \
 		  test/string/mutt_str_substr_dup.o \
 		  test/string/mutt_str_sysexit.o \
