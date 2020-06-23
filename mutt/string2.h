@@ -49,15 +49,10 @@
     ch++;
 
 #define terminate_string(str, strlen, buflen)                                  \
-  do                                                                           \
-  {                                                                            \
-    if ((strlen) < (buflen))                                                   \
-      str[(strlen)] = '\0';                                                    \
-    else                                                                       \
-      str[(buflen)] = '\0';                                                    \
-  } while (false)
+  (str)[MIN((strlen), (buflen))] = '\0'
 
-#define terminate_buffer(str, strlen) terminate_string(str, strlen, sizeof(str) - 1)
+#define terminate_buffer(str, strlen)                                          \
+  terminate_string(str, strlen, sizeof(str) - 1)
 
 void        mutt_str_adjust(char **p);
 void        mutt_str_append_item(char **str, const char *item, char sep);
