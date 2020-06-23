@@ -331,7 +331,7 @@ bool mutt_group_match(struct Group *g, const char *s)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, &g->al, entries)
   {
-    if (a->mailbox && (mutt_str_strcasecmp(s, a->mailbox) == 0))
+    if (a->mailbox && mutt_istr_equal(s, a->mailbox))
       return true;
   }
 

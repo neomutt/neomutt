@@ -891,7 +891,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
             parent_tags =
                 driver_tags_get_transformed(&e->thread->parent->message->tags);
           }
-          if (parent_tags && (mutt_str_strcasecmp(tags, parent_tags) == 0))
+          if (parent_tags && mutt_istr_equal(tags, parent_tags))
             have_tags = false;
           FREE(&parent_tags);
         }
@@ -1206,7 +1206,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         {
           e_tmp = e->thread->parent->message;
         }
-        if (e_tmp && (mutt_str_strcasecmp(e->env->x_label, e_tmp->env->x_label) == 0))
+        if (e_tmp && mutt_istr_equal(e->env->x_label, e_tmp->env->x_label))
           label = false;
       }
       else

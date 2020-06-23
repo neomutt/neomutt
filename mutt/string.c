@@ -633,27 +633,27 @@ char *mutt_str_substr_dup(const char *begin, const char *end)
 }
 
 /**
- * mutt_str_strcmp - Compare two strings, safely
+ * mutt_str_cmp - Compare two strings, safely
  * @param a First string to compare
  * @param b Second string to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_str_strcmp(const char *a, const char *b)
+int mutt_str_cmp(const char *a, const char *b)
 {
   return strcmp(NONULL(a), NONULL(b));
 }
 
 /**
- * mutt_str_strcasecmp - Compare two strings ignoring case, safely
+ * mutt_istr_cmp - Compare two strings ignoring case, safely
  * @param a First string to compare
  * @param b Second string to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_str_strcasecmp(const char *a, const char *b)
+int mutt_istr_cmp(const char *a, const char *b)
 {
   return strcasecmp(NONULL(a), NONULL(b));
 }
@@ -942,7 +942,7 @@ void mutt_str_dequote_comment(char *s)
  */
 bool mutt_str_equal(const char *a, const char *b)
 {
-  return (a == b) || (mutt_str_strcmp(a, b) == 0);
+  return (a == b) || (mutt_str_cmp(a, b) == 0);
 }
 
 /**
@@ -954,7 +954,7 @@ bool mutt_str_equal(const char *a, const char *b)
  */
 bool mutt_istr_equal(const char *a, const char *b)
 {
-  return (a == b) || (mutt_str_strcasecmp(a, b) == 0);
+  return (a == b) || (mutt_istr_cmp(a, b) == 0);
 }
 
 /**
@@ -1047,7 +1047,7 @@ int mutt_str_word_casecmp(const char *a, const char *b)
   }
   tmp[i + 1] = '\0';
 
-  return mutt_str_strcasecmp(a, tmp);
+  return mutt_istr_cmp(a, tmp);
 }
 
 /**

@@ -260,7 +260,7 @@ static bool string_is_address(const char *str, const char *user, const char *dom
   char buf[1024];
 
   snprintf(buf, sizeof(buf), "%s@%s", NONULL(user), NONULL(domain));
-  if (mutt_str_strcasecmp(str, buf) == 0)
+  if (mutt_istr_equal(str, buf))
     return true;
 
   return false;
@@ -280,7 +280,7 @@ struct AddressList *alias_lookup(const char *name)
 
   TAILQ_FOREACH(a, &Aliases, entries)
   {
-    if (mutt_str_strcasecmp(name, a->name) == 0)
+    if (mutt_istr_equal(name, a->name))
       return &a->addr;
   }
   return NULL;
@@ -555,7 +555,7 @@ bool mutt_addr_is_user(const struct Address *addr)
     return false;
   }
 
-  if (mutt_str_strcasecmp(addr->mailbox, Username) == 0)
+  if (mutt_istr_equal(addr->mailbox, Username))
   {
     mutt_debug(LL_DEBUG5, "#1 yes, %s = %s\n", addr->mailbox, Username);
     return true;
@@ -578,7 +578,7 @@ bool mutt_addr_is_user(const struct Address *addr)
     return true;
   }
 
-  if (C_From && (mutt_str_strcasecmp(C_From->mailbox, addr->mailbox) == 0))
+  if (C_From && mutt_istr_equal(C_From->mailbox, addr->mailbox))
   {
     mutt_debug(LL_DEBUG5, "#5 yes, %s = %s\n", addr->mailbox, C_From->mailbox);
     return true;

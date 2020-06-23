@@ -488,6 +488,7 @@
   NEOMUTT_TEST_ITEM(test_slist_remove_string)                                  \
                                                                                \
   /* string */                                                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_istr_equal)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_adjust)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_append_item)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_asprintf)                                    \
@@ -498,6 +499,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_atoul)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_atoull)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_dequote_comment)                             \
+  NEOMUTT_TEST_ITEM(test_mutt_str_equal)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_find_word)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_getenv)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_inline_replace)                              \
@@ -513,11 +515,9 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_email_wsp)                              \
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_whitespace)                             \
   NEOMUTT_TEST_ITEM(test_mutt_str_startswith)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strcasecmp)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_strcasestr)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_strcat)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_strchrnul)                                   \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strcmp)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_strcoll)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_strdup)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_strfcpy)                                     \

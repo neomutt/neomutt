@@ -717,7 +717,7 @@ int imap_mxcmp(const char *mx1, const char *mx2)
   imap_fix_path('\0', mx1, b1, strlen(mx1) + 1);
   imap_fix_path('\0', mx2, b2, strlen(mx2) + 1);
 
-  rc = mutt_str_strcmp(b1, b2);
+  rc = mutt_str_cmp(b1, b2);
   FREE(&b1);
   FREE(&b2);
 

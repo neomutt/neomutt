@@ -270,8 +270,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
     return 0;
 
   /* 1.1 spec also says to skip multipart/report emails */
-  if ((e->content->type == TYPE_MULTIPART) &&
-      (mutt_str_strcasecmp(e->content->subtype, "report") == 0))
+  if ((e->content->type == TYPE_MULTIPART) && mutt_istr_equal(e->content->subtype, "report"))
   {
     return 0;
   }
@@ -289,7 +288,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
     /* NOTE: this assumes the processing is occurring right after
      * mutt_parse_rfc822_line() and the from ADDR is still in the same
      * form (intl) as the autocrypt header addr field */
-    if (mutt_str_strcasecmp(from->mailbox, ac_hdr->addr) != 0)
+    if (!mutt_istr_equal(from->mailbox, ac_hdr->addr))
       continue;
 
     /* 1.1 spec says ignore all, if more than one valid header is found. */
@@ -445,8 +444,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
     ac_hdr_addr.intl_checked = true;
     mutt_autocrypt_db_normalize_addr(&ac_hdr_addr);
 
-    /* Check to make sure the address is in the recipient list.  Since the
-     * addresses are normalized we use strcmp, not mutt_str_strcasecmp. */
+    /* Check to make sure the address is in the recipient list. */
     TAILQ_FOREACH(peer_addr, &recips, entries)
     {
       if (mutt_str_equal(peer_addr->mailbox, ac_hdr_addr.mailbox))

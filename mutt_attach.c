@@ -337,7 +337,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
     const int i = mutt_str_strlen(np->data) - 1;
     if (((i > 0) && (np->data[i - 1] == '/') && (np->data[i] == '*') &&
          (mutt_str_strncasecmp(type, np->data, i) == 0)) ||
-        (mutt_str_strcasecmp(type, np->data) == 0))
+        mutt_istr_equal(type, np->data))
     {
       struct Body tmp = { 0 };
       enum ContentType n;
@@ -1150,8 +1150,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     goto out;
   }
 
-  if ((mutt_str_strcasecmp("text/plain", type) == 0) ||
-      (mutt_str_strcasecmp("application/postscript", type) == 0))
+  if (mutt_istr_equal("text/plain", type) ||
+      mutt_istr_equal("application/postscript", type))
   {
     rc = (mutt_pipe_attachment(fp, a, NONULL(C_PrintCommand), NULL));
     goto out;

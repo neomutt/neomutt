@@ -69,7 +69,7 @@ static int bool_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   int num = -1;
   for (size_t i = 0; BoolValues[i]; i++)
   {
-    if (mutt_str_strcasecmp(BoolValues[i], value) == 0)
+    if (mutt_istr_equal(BoolValues[i], value))
     {
       num = i % 2;
       break;

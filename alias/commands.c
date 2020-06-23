@@ -68,7 +68,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   /* check to see if an alias with this name already exists */
   TAILQ_FOREACH(tmp, &Aliases, entries)
   {
-    if (mutt_str_strcasecmp(tmp->name, buf->data) == 0)
+    if (mutt_istr_equal(tmp->name, buf->data))
       break;
   }
 
@@ -162,7 +162,7 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
 
     TAILQ_FOREACH(np, &Aliases, entries)
     {
-      if (mutt_str_strcasecmp(buf->data, np->name) != 0)
+      if (!mutt_istr_equal(buf->data, np->name))
         continue;
 
       TAILQ_REMOVE(&Aliases, np, entries);

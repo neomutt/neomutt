@@ -411,7 +411,7 @@ bool mutt_needs_mailcap(struct Body *m)
   switch (m->type)
   {
     case TYPE_TEXT:
-      if (mutt_str_strcasecmp("plain", m->subtype) == 0)
+      if (mutt_istr_equal("plain", m->subtype))
         return false;
       break;
     case TYPE_APPLICATION:
@@ -447,13 +447,13 @@ bool mutt_is_text_part(struct Body *b)
 
   if (t == TYPE_MESSAGE)
   {
-    if (mutt_str_strcasecmp("delivery-status", s) == 0)
+    if (mutt_istr_equal("delivery-status", s))
       return true;
   }
 
   if (((WithCrypto & APPLICATION_PGP) != 0) && (t == TYPE_APPLICATION))
   {
-    if (mutt_str_strcasecmp("pgp-keys", s) == 0)
+    if (mutt_istr_equal("pgp-keys", s))
       return true;
   }
 
@@ -1685,9 +1685,7 @@ int mutt_inbox_cmp(const char *a, const char *b)
   /* fast-track in case the paths have been mutt_pretty_mailbox'ified */
   if ((a[0] == '+') && (b[0] == '+'))
   {
-    return (mutt_str_strcasecmp(a + 1, "inbox") == 0) ?
-               -1 :
-               (mutt_str_strcasecmp(b + 1, "inbox") == 0) ? 1 : 0;
+    return mutt_istr_equal(a + 1, "inbox") ? -1 : mutt_istr_equal(b + 1, "inbox") ? 1 : 0;
   }
 
   const char *a_end = strrchr(a, '/');
@@ -1711,10 +1709,10 @@ int mutt_inbox_cmp(const char *a, const char *b)
   if (!same)
     return 0;
 
-  if (mutt_str_strcasecmp(&a[min + 1], "inbox") == 0)
+  if (mutt_istr_equal(&a[min + 1], "inbox"))
     return -1;
 
-  if (mutt_str_strcasecmp(&b[min + 1], "inbox") == 0)
+  if (mutt_istr_equal(&b[min + 1], "inbox"))
     return 1;
 
   return 0;
@@ -1799,7 +1797,7 @@ void add_to_stailq(struct ListHead *head, const char *str)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, head, entries)
   {
-    if (mutt_str_strcasecmp(str, np->data) == 0)
+    if (mutt_istr_equal(str, np->data))
     {
       return;
     }
@@ -1823,7 +1821,7 @@ void remove_from_stailq(struct ListHead *head, const char *str)
     struct ListNode *np = NULL, *tmp = NULL;
     STAILQ_FOREACH_SAFE(np, head, entries, tmp)
     {
-      if (mutt_str_strcasecmp(str, np->data) == 0)
+      if (mutt_istr_equal(str, np->data))
       {
         STAILQ_REMOVE(head, np, ListNode, entries);
         FREE(&np->data);

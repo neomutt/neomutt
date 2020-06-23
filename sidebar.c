@@ -356,7 +356,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
         rc = (m2->msg_unread - m1->msg_unread);
       break;
     case SORT_DESC:
-      rc = mutt_str_strcmp(m1->name, m2->name);
+      rc = mutt_str_cmp(m1->name, m2->name);
       break;
     case SORT_FLAGGED:
       if (m2->msg_flagged == m1->msg_flagged)

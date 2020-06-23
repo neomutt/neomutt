@@ -104,7 +104,7 @@ int mailcap_expand_command(struct Body *a, const char *filename,
         /* In send mode, use the current charset, since the message hasn't
          * been converted yet.   If noconv is set, then we assume the
          * charset parameter has the correct value instead. */
-        if ((mutt_str_strcasecmp(mutt_b2s(param), "charset") == 0) && a->charset && !a->noconv)
+        if (mutt_istr_equal(mutt_b2s(param), "charset") && a->charset && !a->noconv)
           pvalue2 = a->charset;
         else
           pvalue2 = mutt_param_get(&a->parameter, mutt_b2s(param));
@@ -264,10 +264,9 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
 
       /* check type */
       ch = get_field(buf);
-      if ((mutt_str_strcasecmp(buf, type) != 0) &&
-          ((mutt_str_strncasecmp(buf, type, btlen) != 0) ||
-           ((buf[btlen] != '\0') &&               /* implicit wild */
-            !mutt_str_equal(buf + btlen, "/*")))) /* wildsubtype */
+      if (!mutt_istr_equal(buf, type) && ((mutt_str_strncasecmp(buf, type, btlen) != 0) ||
+                                          ((buf[btlen] != '\0') && /* implicit wild */
+                                           !mutt_str_equal(buf + btlen, "/*")))) /* wildsubtype */
       {
         continue;
       }
@@ -292,12 +291,12 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
         mutt_debug(LL_DEBUG2, "field: %s\n", field);
         size_t plen;
 
-        if (mutt_str_strcasecmp(field, "needsterminal") == 0)
+        if (mutt_istr_equal(field, "needsterminal"))
         {
           if (entry)
             entry->needsterminal = true;
         }
-        else if (mutt_str_strcasecmp(field, "copiousoutput") == 0)
+        else if (mutt_istr_equal(field, "copiousoutput"))
         {
           copiousoutput = true;
           if (entry)

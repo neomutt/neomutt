@@ -422,7 +422,7 @@ int mutt_addrlist_remove(struct AddressList *al, const char *mailbox)
   struct Address *a = NULL, *tmp = NULL;
   TAILQ_FOREACH_SAFE(a, al, entries, tmp)
   {
-    if (mutt_str_strcasecmp(mailbox, a->mailbox) == 0)
+    if (mutt_istr_equal(mailbox, a->mailbox))
     {
       TAILQ_REMOVE(al, a, entries);
       mutt_addr_free(&a);
@@ -867,7 +867,7 @@ bool mutt_addr_cmp(const struct Address *a, const struct Address *b)
     return false;
   if (!a->mailbox || !b->mailbox)
     return false;
-  if (mutt_str_strcasecmp(a->mailbox, b->mailbox) != 0)
+  if (!mutt_istr_equal(a->mailbox, b->mailbox))
     return false;
   return true;
 }
@@ -1365,7 +1365,7 @@ void mutt_addrlist_dedupe(struct AddressList *al)
       {
         TAILQ_FOREACH_FROM_SAFE(a2, al, entries, tmp)
         {
-          if (a2->mailbox && (mutt_str_strcasecmp(a->mailbox, a2->mailbox) == 0))
+          if (a2->mailbox && mutt_istr_equal(a->mailbox, a2->mailbox))
           {
             mutt_debug(LL_DEBUG2, "Removing %s\n", a2->mailbox);
             TAILQ_REMOVE(al, a2, entries);

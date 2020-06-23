@@ -2395,13 +2395,13 @@ static struct Account *nntp_ac_find(struct Account *a, const char *path)
   struct ImapAccountData *adata = a->data;
   struct ConnAccount *cac = &adata->conn_account;
 
-  if (mutt_str_strcasecmp(url.host, cac->host) != 0)
+  if (!mutt_istr_equal(url.host, cac->host))
     return NULL;
 
-  if (mutt_str_strcasecmp(url.user, cac->user) != 0)
+  if (!mutt_istr_equal(url.user, cac->user))
     return NULL;
 
-  // if (mutt_str_strcmp(path, a->mailbox->realpath) == 0)
+  // if (mutt_str_equal(path, a->mailbox->realpath))
   //   return a;
 #endif
   return a;

@@ -191,7 +191,7 @@ void clean_references(struct MuttThread *brk, struct MuttThread *cur)
       for (ref = STAILQ_FIRST(&cur->message->env->references);
            p->message && ref; ref = STAILQ_NEXT(ref, entries))
       {
-        if (mutt_str_strcasecmp(ref->data, p->message->env->message_id) == 0)
+        if (mutt_istr_equal(ref->data, p->message->env->message_id))
         {
           done = true;
           break;

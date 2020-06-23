@@ -89,7 +89,7 @@ char *mutt_param_get(const struct ParameterList *pl, const char *s)
   struct Parameter *np = NULL;
   TAILQ_FOREACH(np, pl, entries)
   {
-    if (mutt_str_strcasecmp(s, np->attribute) == 0)
+    if (mutt_istr_equal(s, np->attribute))
       return np->value;
   }
 
@@ -121,7 +121,7 @@ void mutt_param_set(struct ParameterList *pl, const char *attribute, const char 
   struct Parameter *np = NULL;
   TAILQ_FOREACH(np, pl, entries)
   {
-    if (mutt_str_strcasecmp(attribute, np->attribute) == 0)
+    if (mutt_istr_equal(attribute, np->attribute))
     {
       mutt_str_replace(&np->value, value);
       return;
@@ -147,7 +147,7 @@ void mutt_param_delete(struct ParameterList *pl, const char *attribute)
   struct Parameter *np = NULL;
   TAILQ_FOREACH(np, pl, entries)
   {
-    if (mutt_str_strcasecmp(attribute, np->attribute) == 0)
+    if (mutt_istr_equal(attribute, np->attribute))
     {
       TAILQ_REMOVE(pl, np, entries);
       mutt_param_free_one(&np);

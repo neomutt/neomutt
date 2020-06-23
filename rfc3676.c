@@ -325,7 +325,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
   char *t = mutt_param_get(&a->parameter, "delsp");
   if (t)
   {
-    delsp = (mutt_str_strcasecmp(t, "yes") == 0);
+    delsp = mutt_istr_equal(t, "yes");
     t = NULL;
     fst.delsp = true;
   }
@@ -465,11 +465,10 @@ void mutt_rfc3676_space_stuff(struct Email *e)
   if (!e || !e->content || !e->content->filename)
     return;
 
-  if ((e->content->type == TYPE_TEXT) &&
-      (mutt_str_strcasecmp("plain", e->content->subtype) == 0))
+  if ((e->content->type == TYPE_TEXT) && mutt_istr_equal("plain", e->content->subtype))
   {
     const char *format = mutt_param_get(&e->content->parameter, "format");
-    if (mutt_str_strcasecmp("flowed", format) == 0)
+    if (mutt_istr_equal("flowed", format))
       rfc3676_space_stuff(e, false);
   }
 }
@@ -483,11 +482,10 @@ void mutt_rfc3676_space_unstuff(struct Email *e)
   if (!e || !e->content || !e->content->filename)
     return;
 
-  if ((e->content->type == TYPE_TEXT) &&
-      !mutt_str_strcasecmp("plain", e->content->subtype))
+  if ((e->content->type == TYPE_TEXT) && mutt_istr_equal("plain", e->content->subtype))
   {
     const char *format = mutt_param_get(&e->content->parameter, "format");
-    if (mutt_str_strcasecmp("flowed", format) == 0)
+    if (mutt_istr_equal("flowed", format))
       rfc3676_space_stuff(e, true);
   }
 }

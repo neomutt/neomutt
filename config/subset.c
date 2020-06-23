@@ -53,7 +53,7 @@ int elem_list_sort(const void *a, const void *b)
   const struct HashElem *hea = *(struct HashElem const *const *) a;
   const struct HashElem *heb = *(struct HashElem const *const *) b;
 
-  return mutt_str_strcasecmp(hea->key.strkey, heb->key.strkey);
+  return mutt_istr_cmp(hea->key.strkey, heb->key.strkey);
 }
 
 /**

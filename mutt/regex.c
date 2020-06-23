@@ -144,7 +144,7 @@ int mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct 
   struct RegexNode *np = NULL;
   STAILQ_FOREACH(np, rl, entries)
   {
-    if (mutt_str_strcasecmp(rx->pattern, np->regex->pattern) == 0)
+    if (mutt_istr_equal(rx->pattern, np->regex->pattern))
       break; /* already on the rl */
   }
 
@@ -237,7 +237,7 @@ int mutt_regexlist_remove(struct RegexList *rl, const char *str)
   struct RegexNode *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
-    if (mutt_str_strcasecmp(str, np->regex->pattern) == 0)
+    if (mutt_istr_equal(str, np->regex->pattern))
     {
       STAILQ_REMOVE(rl, np, RegexNode, entries);
       mutt_regex_free(&np->regex);
@@ -276,7 +276,7 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
   struct Replace *np = NULL;
   STAILQ_FOREACH(np, rl, entries)
   {
-    if (mutt_str_strcasecmp(rx->pattern, np->regex->pattern) == 0)
+    if (mutt_istr_equal(rx->pattern, np->regex->pattern))
     {
       /* Already on the rl. Formerly we just skipped this case, but
        * now we're supporting removals, which means we're supporting

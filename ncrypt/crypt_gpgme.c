@@ -3673,10 +3673,10 @@ static int compare_key_address(const void *a, const void *b)
   struct CryptKeyInfo **t = (struct CryptKeyInfo **) b;
   int r;
 
-  r = mutt_str_strcasecmp((*s)->uid, (*t)->uid);
+  r = mutt_istr_cmp((*s)->uid, (*t)->uid);
   if (r != 0)
     return r > 0;
-  return mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t)) > 0;
+  return mutt_istr_cmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t)) > 0;
 }
 
 /**
@@ -3707,10 +3707,10 @@ static int compare_keyid(const void *a, const void *b)
   struct CryptKeyInfo **t = (struct CryptKeyInfo **) b;
   int r;
 
-  r = mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t));
+  r = mutt_istr_cmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t));
   if (r != 0)
     return r > 0;
-  return mutt_str_strcasecmp((*s)->uid, (*t)->uid) > 0;
+  return mutt_istr_cmp((*s)->uid, (*t)->uid) > 0;
 }
 
 /**
@@ -3750,7 +3750,7 @@ static int compare_key_date(const void *a, const void *b)
   if (ts < tt)
     return 0;
 
-  return mutt_str_strcasecmp((*s)->uid, (*t)->uid) > 0;
+  return mutt_istr_cmp((*s)->uid, (*t)->uid) > 0;
 }
 
 /**
@@ -3811,10 +3811,10 @@ static int compare_key_trust(const void *a, const void *b)
   if (ts < tt)
     return 0;
 
-  r = mutt_str_strcasecmp((*s)->uid, (*t)->uid);
+  r = mutt_istr_cmp((*s)->uid, (*t)->uid);
   if (r != 0)
     return r > 0;
-  return mutt_str_strcasecmp(crypt_fpr_or_lkeyid((*s)), crypt_fpr_or_lkeyid((*t))) > 0;
+  return mutt_istr_cmp(crypt_fpr_or_lkeyid((*s)), crypt_fpr_or_lkeyid((*t))) > 0;
 }
 
 /**

@@ -56,7 +56,7 @@ static size_t gen_string_hash(union HashKey key, size_t num_elems)
  */
 static int cmp_string_key(union HashKey a, union HashKey b)
 {
-  return mutt_str_strcmp(a.strkey, b.strkey);
+  return mutt_str_cmp(a.strkey, b.strkey);
 }
 
 /**
@@ -79,7 +79,7 @@ static size_t gen_case_string_hash(union HashKey key, size_t num_elems)
  */
 static int cmp_case_string_key(union HashKey a, union HashKey b)
 {
-  return mutt_str_strcasecmp(a.strkey, b.strkey);
+  return mutt_istr_cmp(a.strkey, b.strkey);
 }
 
 /**

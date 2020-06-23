@@ -190,7 +190,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
       goto cleanup;
     }
 
-    if (mutt_str_strcasecmp(user, reversed_user) != 0)
+    if (!mutt_istr_equal(user, reversed_user))
     {
       mutt_debug(LL_DEBUG1, "#1 Not reversible. orig = '%s', reversed = '%s'\n",
                  user, reversed_user);
@@ -227,7 +227,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
     }
 #endif /* HAVE_LIBIDN */
 
-    if (mutt_str_strcasecmp(domain, reversed_domain) != 0)
+    if (!mutt_istr_equal(domain, reversed_domain))
     {
       mutt_debug(LL_DEBUG1, "#2 Not reversible. orig = '%s', reversed = '%s'\n",
                  domain, reversed_domain);

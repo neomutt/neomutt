@@ -249,7 +249,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
   }
 
   struct Buffer filebuf = mutt_buffer_make(4096);
-  if (dump_all || (mutt_str_strcasecmp(buf->data, "all") == 0))
+  if (dump_all || mutt_istr_equal(buf->data, "all"))
   {
     dump_all_menus(&filebuf, bind);
   }

@@ -231,7 +231,7 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
   len_q = len + (ob - buf) + 2 * count;
 
   /* Apparently RFC1468 says to use B encoding for iso-2022-jp. */
-  if (mutt_str_strcasecmp(tocode, "ISO-2022-JP") == 0)
+  if (mutt_istr_equal(tocode, "ISO-2022-JP"))
     len_q = ENCWORD_LEN_MAX + 1;
 
   if ((len_b < len_q) && (len_b <= ENCWORD_LEN_MAX))
@@ -303,7 +303,7 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
 static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
                            const char *tocode, encoder_t *encoder, size_t *wlen)
 {
-  const bool utf8 = fromcode && (mutt_str_strcasecmp(fromcode, "utf-8") == 0);
+  const bool utf8 = fromcode && mutt_istr_equal(fromcode, "utf-8");
 
   size_t n = dlen;
   while (true)

@@ -1331,7 +1331,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_printf(err, _("%s: too many arguments"), "bind");
     rc = MUTT_CMD_ERROR;
   }
-  else if (mutt_str_strcasecmp("noop", buf->data) == 0)
+  else if (mutt_istr_equal("noop", buf->data))
   {
     for (int i = 0; i < num_menus; i++)
     {

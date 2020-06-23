@@ -717,7 +717,7 @@ HookFlags mutt_get_hook_type(const char *name)
   for (const struct Command *c = Commands; c->name; c++)
   {
     if (((c->parse == mutt_parse_hook) || (c->parse == mutt_parse_idxfmt_hook)) &&
-        (mutt_str_strcasecmp(c->name, name) == 0))
+        mutt_istr_equal(c->name, name))
     {
       return c->data;
     }
@@ -1330,7 +1330,7 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
     while ((entry = mutt_hash_walk(Context->mailbox->label_hash, &state)))
       candidate(UserTyped, entry->key.strkey, Completed, sizeof(Completed));
     matches_ensure_morespace(NumMatched);
-    qsort(Matches, NumMatched, sizeof(char *), (sort_t) mutt_str_strcasecmp);
+    qsort(Matches, NumMatched, sizeof(char *), (sort_t) mutt_istr_cmp);
     Matches[NumMatched++] = UserTyped;
 
     /* All matches are stored. Longest non-ambiguous string is ""

@@ -139,7 +139,7 @@ static int compare_subject(const void *a, const void *b)
   else if (!(*pb)->env->real_subj)
     rc = 1;
   else
-    rc = mutt_str_strcasecmp((*pa)->env->real_subj, (*pb)->env->real_subj);
+    rc = mutt_istr_cmp((*pa)->env->real_subj, (*pb)->env->real_subj);
   rc = perform_auxsort(rc, a, b);
   return SORT_CODE(rc);
 }
@@ -312,7 +312,7 @@ static int compare_label(const void *a, const void *b)
   }
 
   /* If both have a label, we just do a lexical compare. */
-  result = mutt_str_strcasecmp((*ppa)->env->x_label, (*ppb)->env->x_label);
+  result = mutt_istr_cmp((*ppa)->env->x_label, (*ppb)->env->x_label);
   return SORT_CODE(result);
 }
 

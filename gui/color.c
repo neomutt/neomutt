@@ -724,7 +724,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_SUCCESS;
   }
 
-  if (mutt_str_strcasecmp(buf->data, "compose") == 0)
+  if (mutt_istr_equal(buf->data, "compose"))
   {
     if (!MoreArgs(s))
     {
@@ -958,15 +958,10 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
 
   STAILQ_FOREACH(tmp, top, entries)
   {
-    if (sensitive)
+    if ((sensitive && mutt_str_equal(s, tmp->pattern)) ||
+        (!sensitive && mutt_istr_equal(s, tmp->pattern)))
     {
-      if (mutt_str_equal(s, tmp->pattern))
-        break;
-    }
-    else
-    {
-      if (mutt_str_strcasecmp(s, tmp->pattern) == 0)
-        break;
+      break;
     }
   }
 
@@ -1068,17 +1063,17 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-    if (mutt_str_strcasecmp("bold", buf->data) == 0)
+    if (mutt_istr_equal("bold", buf->data))
       *attr |= A_BOLD;
-    else if (mutt_str_strcasecmp("none", buf->data) == 0)
+    else if (mutt_istr_equal("none", buf->data))
       *attr = A_NORMAL; // Use '=' to clear other bits
-    else if (mutt_str_strcasecmp("normal", buf->data) == 0)
+    else if (mutt_istr_equal("normal", buf->data))
       *attr = A_NORMAL; // Use '=' to clear other bits
-    else if (mutt_str_strcasecmp("reverse", buf->data) == 0)
+    else if (mutt_istr_equal("reverse", buf->data))
       *attr |= A_REVERSE;
-    else if (mutt_str_strcasecmp("standout", buf->data) == 0)
+    else if (mutt_istr_equal("standout", buf->data))
       *attr |= A_STANDOUT;
-    else if (mutt_str_strcasecmp("underline", buf->data) == 0)
+    else if (mutt_istr_equal("underline", buf->data))
       *attr |= A_UNDERLINE;
     else
     {
@@ -1121,17 +1116,17 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-  if (mutt_str_strcasecmp("bold", buf->data) == 0)
+  if (mutt_istr_equal("bold", buf->data))
     *attr |= A_BOLD;
-  else if (mutt_str_strcasecmp("none", buf->data) == 0)
+  else if (mutt_istr_equal("none", buf->data))
     *attr = A_NORMAL; // Use '=' to clear other bits
-  else if (mutt_str_strcasecmp("normal", buf->data) == 0)
+  else if (mutt_istr_equal("normal", buf->data))
     *attr = A_NORMAL; // Use '=' to clear other bits
-  else if (mutt_str_strcasecmp("reverse", buf->data) == 0)
+  else if (mutt_istr_equal("reverse", buf->data))
     *attr |= A_REVERSE;
-  else if (mutt_str_strcasecmp("standout", buf->data) == 0)
+  else if (mutt_istr_equal("standout", buf->data))
     *attr |= A_STANDOUT;
-  else if (mutt_str_strcasecmp("underline", buf->data) == 0)
+  else if (mutt_istr_equal("underline", buf->data))
     *attr |= A_UNDERLINE;
   else
   {

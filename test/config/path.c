@@ -327,7 +327,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
       continue;
     }
 
-    if (!TEST_CHECK(mutt_str_strcmp(VarJackfruit, valid[i]) == 0))
+    if (!TEST_CHECK(mutt_str_equal(VarJackfruit, valid[i])))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;

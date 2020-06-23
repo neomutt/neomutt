@@ -160,9 +160,8 @@ static bool mutt_is_spool(const char *str)
 
   const bool is_spool =
       ua && ub && (ua->scheme == ub->scheme) &&
-      (mutt_str_strcasecmp(ua->host, ub->host) == 0) &&
-      (mutt_str_strcasecmp(ua->path, ub->path) == 0) &&
-      (!ua->user || !ub->user || (mutt_str_strcmp(ua->user, ub->user) == 0));
+      mutt_istr_equal(ua->host, ub->host) && mutt_istr_equal(ua->path, ub->path) &&
+      (!ua->user || !ub->user || mutt_str_equal(ua->user, ub->user));
 
   url_free(&ua);
   url_free(&ub);
@@ -1611,9 +1610,9 @@ struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
     if (!url_a)
       continue;
 
-    if (mutt_str_strcasecmp(url_a->host, url_p->host) != 0)
+    if (!mutt_istr_equal(url_a->host, url_p->host))
       continue;
-    if (url_p->user && (mutt_str_strcasecmp(url_a->user, url_p->user) != 0))
+    if (url_p->user && !mutt_istr_equal(url_a->user, url_p->user))
       continue;
     if (a->type == MUTT_IMAP)
     {

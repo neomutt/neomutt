@@ -2441,7 +2441,7 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
     }
   }
 
-  /* XXX - is mutt_str_strcasecmp() right here, or should we use locale's
+  /* XXX - is mutt_istr_cmp() right here, or should we use locale's
    * equivalences?  */
 
   if (do_simple) /* yup, so spoof a real request */

@@ -430,7 +430,7 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
       struct ListNode *np = NULL;
       STAILQ_FOREACH(np, subjects, entries)
       {
-        rc = mutt_str_strcmp(env->real_subj, np->data);
+        rc = mutt_str_cmp(env->real_subj, np->data);
         if (rc >= 0)
           break;
       }

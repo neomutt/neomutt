@@ -3759,7 +3759,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!e_cur)
           break;
         if ((op != OP_FOLLOWUP) || !e_cur->env->followup_to ||
-            (mutt_str_strcasecmp(e_cur->env->followup_to, "poster") != 0) ||
+            !mutt_istr_equal(e_cur->env->followup_to, "poster") ||
             (query_quadoption(C_FollowupToPoster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {

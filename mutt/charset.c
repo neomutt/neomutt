@@ -353,8 +353,7 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
   if (ext)
     *ext++ = '\0';
 
-  if ((mutt_str_strcasecmp(in, "utf-8") == 0) ||
-      (mutt_str_strcasecmp(in, "utf8") == 0))
+  if (mutt_istr_equal(in, "utf-8") || mutt_istr_equal(in, "utf8"))
   {
     mutt_str_strfcpy(buf, "utf-8", buflen);
     goto out;
@@ -375,7 +374,7 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 
   for (size_t i = 0; PreferredMimeNames[i].key; i++)
   {
-    if (mutt_str_strcasecmp(scratch, PreferredMimeNames[i].key) == 0)
+    if (mutt_istr_equal(scratch, PreferredMimeNames[i].key))
     {
       mutt_str_strfcpy(buf, PreferredMimeNames[i].pref, buflen);
       goto out;
@@ -820,8 +819,8 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
   {
     for (int i = 0; PreferredMimeNames[i].key; i++)
     {
-      if ((mutt_str_strcasecmp(PreferredMimeNames[i].key, cs) == 0) ||
-          (mutt_str_strcasecmp(PreferredMimeNames[i].pref, cs) == 0))
+      if (mutt_istr_equal(PreferredMimeNames[i].key, cs) ||
+          mutt_istr_equal(PreferredMimeNames[i].pref, cs))
       {
         return true;
       }
