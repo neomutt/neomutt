@@ -480,6 +480,7 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_atoul.o \
 		  test/string/mutt_str_atoull.o \
 		  test/string/mutt_str_cat.o \
+		  test/string/mutt_str_coll.o \
 		  test/string/mutt_str_copy.o \
 		  test/string/mutt_str_dequote_comment.o \
 		  test/string/mutt_str_dup.o \
@@ -498,7 +499,6 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_skip_email_wsp.o \
 		  test/string/mutt_str_skip_whitespace.o \
 		  test/string/mutt_str_startswith.o \
-		  test/string/mutt_str_strcoll.o \
 		  test/string/mutt_str_stristr.o \
 		  test/string/mutt_str_strlen.o \
 		  test/string/mutt_str_substr_dup.o \

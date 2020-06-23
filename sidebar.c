@@ -345,13 +345,13 @@ static int cb_qsort_sbe(const void *a, const void *b)
   {
     case SORT_COUNT:
       if (m2->msg_count == m1->msg_count)
-        rc = mutt_str_strcoll(mailbox_path(m1), mailbox_path(m2));
+        rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
       else
         rc = (m2->msg_count - m1->msg_count);
       break;
     case SORT_UNREAD:
       if (m2->msg_unread == m1->msg_unread)
-        rc = mutt_str_strcoll(mailbox_path(m1), mailbox_path(m2));
+        rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
       else
         rc = (m2->msg_unread - m1->msg_unread);
       break;
@@ -360,7 +360,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
       break;
     case SORT_FLAGGED:
       if (m2->msg_flagged == m1->msg_flagged)
-        rc = mutt_str_strcoll(mailbox_path(m1), mailbox_path(m2));
+        rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
       else
         rc = (m2->msg_flagged - m1->msg_flagged);
       break;
@@ -368,7 +368,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
     {
       rc = mutt_inbox_cmp(mailbox_path(m1), mailbox_path(m2));
       if (rc == 0)
-        rc = mutt_str_strcoll(mailbox_path(m1), mailbox_path(m2));
+        rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
       break;
     }
   }

@@ -159,7 +159,7 @@ static int browser_compare_subject(const void *a, const void *b)
   /* inbox should be sorted ahead of its siblings */
   int r = mutt_inbox_cmp(pa->name, pb->name);
   if (r == 0)
-    r = mutt_str_strcoll(pa->name, pb->name);
+    r = mutt_str_coll(pa->name, pb->name);
   return (C_SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
@@ -176,7 +176,7 @@ static int browser_compare_desc(const void *a, const void *b)
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
-  int r = mutt_str_strcoll(pa->desc, pb->desc);
+  int r = mutt_str_coll(pa->desc, pb->desc);
 
   return (C_SortBrowser & SORT_REVERSE) ? -r : r;
 }
@@ -282,9 +282,9 @@ static int browser_compare(const void *a, const void *b)
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
-  if ((mutt_str_strcoll(pa->desc, "../") == 0) || (mutt_str_strcoll(pa->desc, "..") == 0))
+  if ((mutt_str_coll(pa->desc, "../") == 0) || (mutt_str_coll(pa->desc, "..") == 0))
     return -1;
-  if ((mutt_str_strcoll(pb->desc, "../") == 0) || (mutt_str_strcoll(pb->desc, "..") == 0))
+  if ((mutt_str_coll(pb->desc, "../") == 0) || (mutt_str_coll(pb->desc, "..") == 0))
     return 1;
 
   switch (C_SortBrowser & SORT_MASK)
