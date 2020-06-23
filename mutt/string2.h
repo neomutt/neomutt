@@ -101,7 +101,7 @@ size_t      mutt_str_copy(char *dest, const char *src, size_t dsize);
 bool        mutt_strn_equal(const char *a, const char *b, size_t l);
 const char *mutt_strn_rstrstr(const char *haystack, size_t haystack_length, const char *needle);
 char *      mutt_strn_cat(char *dest, size_t l, const char *s, size_t sl);
-char *      mutt_strn_copy(char *dest, const char *begin, const char *end, size_t dsize);
+char *      mutt_strn_copy(char *dest, const char *src, size_t len, size_t dsize);
 
 /* case-insensitive flavours */
 int         mutt_istr_cmp(const char *a, const char *b);

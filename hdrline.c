@@ -1361,7 +1361,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if ((*end == '@') && (recurse < 20))
       {
         recurse++;
-        mutt_strn_copy(tmp, src, end, sizeof(tmp));
+        mutt_strn_copy(tmp, src, end - src, sizeof(tmp));
         mutt_expando_format(tmp, sizeof(tmp), col, cols,
                             NONULL(mutt_idxfmt_hook(tmp, m, e)),
                             index_format_str, data, flags);

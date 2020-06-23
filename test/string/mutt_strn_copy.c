@@ -34,39 +34,39 @@ void test_mutt_strn_copy(void)
   // clang-format on
 
   {
-    TEST_CHECK(mutt_strn_copy(NULL, str + 3, str + 7, 32) == NULL);
+    TEST_CHECK(mutt_strn_copy(NULL, str + 3, 4, 32) == NULL);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_strn_copy(buf, NULL, str + 7, sizeof(buf)) == buf);
+    TEST_CHECK(mutt_strn_copy(buf, NULL, 7, sizeof(buf)) == buf);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_strn_copy(buf, str + 3, NULL, sizeof(buf)) == buf);
+    TEST_CHECK(mutt_strn_copy(buf, str + 3, 0, sizeof(buf)) == buf);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_strn_copy(buf, str + 3, str + 7, 0) == buf);
+    TEST_CHECK(mutt_strn_copy(buf, str + 3, 4, 0) == buf);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_strn_copy(buf, str + 3, str + 3, sizeof(buf)) == buf);
+    TEST_CHECK(mutt_strn_copy(buf, str + 3, 0, sizeof(buf)) == buf);
     TEST_CHECK(strcmp(buf, "") == 0);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_strn_copy(buf, str + 3, str + 7, sizeof(buf)) == buf);
+    TEST_CHECK(mutt_strn_copy(buf, str + 3, 4, sizeof(buf)) == buf);
     TEST_CHECK(strcmp(buf, "le b") == 0);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_strn_copy(buf, str + 3, str + 64, sizeof(buf)) == buf);
+    TEST_CHECK(mutt_strn_copy(buf, str + 3, 61, sizeof(buf)) == buf);
     TEST_CHECK(strcmp(buf, "le banana") == 0);
   }
 }
