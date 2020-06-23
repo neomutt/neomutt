@@ -1020,45 +1020,6 @@ const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, cons
 }
 
 /**
- * mutt_str_word_casecmp - Find word a in word list b
- * @param a Word to find
- * @param b String to check
- * @retval 0   Word was found
- * @retval !=0 Word was not found
- *
- * Given a word "apple", check if it exists at the start of a string of words,
- * e.g. "apple banana".  It must be an exact match, so "apple" won't match
- * "apples banana".
- *
- * The case of the words is ignored.
- */
-int mutt_str_word_casecmp(const char *a, const char *b)
-{
-  if (!b)
-  {
-    if (a)
-      return 1;
-    return 0;
-  }
-
-  char tmp[128] = { 0 };
-
-  int i;
-  for (i = 0; i < (sizeof(tmp) - 2); i++, b++)
-  {
-    if ((*b == '\0') || IS_SPACE(*b))
-    {
-      tmp[i] = '\0';
-      break;
-    }
-    tmp[i] = *b;
-  }
-  tmp[i + 1] = '\0';
-
-  return mutt_istr_cmp(a, tmp);
-}
-
-/**
  * mutt_str_is_ascii - Is a string ASCII (7-bit)?
  * @param str String to examine
  * @param len Length of string to examine

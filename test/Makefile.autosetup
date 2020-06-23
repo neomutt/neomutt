@@ -509,7 +509,6 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_substr_copy.o \
 		  test/string/mutt_str_substr_dup.o \
 		  test/string/mutt_str_sysexit.o \
-		  test/string/mutt_str_word_casecmp.o \
 		  test/string/mutt_strn_equal.o
 
 TAGS_OBJS	= test/tags/driver_tags_free.o \

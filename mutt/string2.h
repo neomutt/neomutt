@@ -96,7 +96,6 @@ size_t      mutt_str_strnfcpy(char *dest, const char *src, size_t n, size_t dsiz
 char *      mutt_str_substr_copy(const char *begin, const char *end, char *buf, size_t buflen);
 char *      mutt_str_substr_dup(const char *begin, const char *end);
 const char *mutt_str_sysexit(int e);
-int         mutt_str_word_casecmp(const char *a, const char *b);
 
 /* case-sensitive flavours */
 int         mutt_str_cmp(const char *a, const char *b);

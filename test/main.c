@@ -530,7 +530,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_substr_copy)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_substr_dup)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_sysexit)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_str_word_casecmp)                                \
   NEOMUTT_TEST_ITEM(test_mutt_strn_equal)                                      \
                                                                                \
   /* tags */                                                                   \
