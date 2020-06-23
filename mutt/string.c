@@ -546,24 +546,24 @@ const char *mutt_str_strchrnul(const char *s, char c)
 }
 
 /**
- * mutt_str_substr_copy - Copy a sub-string into a buffer
+ * mutt_strn_copy - Copy a sub-string into a buffer
+ * @param dest   Buffer for the result
  * @param begin  Start of the string to copy
  * @param end    End of the string to copy
- * @param buf    Buffer for the result
- * @param buflen Length of buffer
+ * @param dsize  Destination buffer size
  * @retval ptr Destination buffer
  */
-char *mutt_str_substr_copy(const char *begin, const char *end, char *buf, size_t buflen)
+char *mutt_strn_copy(char *dest, const char *begin, const char *end, size_t dsize)
 {
-  if (!begin || !end || !buf || (buflen == 0))
-    return buf;
+  if (!begin || !end || !dest || (dsize == 0))
+    return dest;
 
   size_t len = end - begin;
-  if (len > (buflen - 1))
-    len = buflen - 1;
-  memcpy(buf, begin, len);
-  buf[len] = '\0';
-  return buf;
+  if (len > (dsize - 1))
+    len = dsize - 1;
+  memcpy(dest, begin, len);
+  dest[len] = '\0';
+  return dest;
 }
 
 /**

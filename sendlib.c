@@ -1204,7 +1204,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
             for (q = p; *q && !IS_SPACE(*q); q++)
               ; // do nothing
 
-            mutt_str_substr_copy(p, q, subtype, sizeof(subtype));
+            mutt_strn_copy(subtype, p, q, sizeof(subtype));
 
             type = mutt_check_mime_type(ct);
             if (type == TYPE_OTHER)

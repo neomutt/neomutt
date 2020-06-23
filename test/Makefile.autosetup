@@ -502,10 +502,10 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_strdup.o \
 		  test/string/mutt_str_stristr.o \
 		  test/string/mutt_str_strlen.o \
-		  test/string/mutt_str_substr_copy.o \
 		  test/string/mutt_str_substr_dup.o \
 		  test/string/mutt_str_sysexit.o \
 		  test/string/mutt_strn_cat.o \
+		  test/string/mutt_strn_copy.o \
 		  test/string/mutt_strn_equal.o \
 		  test/string/mutt_strn_rstrstr.o
 
