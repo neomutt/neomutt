@@ -310,7 +310,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
     struct ListNode *uh = NULL;
     STAILQ_FOREACH(uh, &UserHeader, entries)
     {
-      size_t plen = mutt_str_startswith(uh->data, "subject:", CASE_IGNORE);
+      size_t plen = mutt_istr_startswith(uh->data, "subject:");
       if (plen)
       {
         p = mutt_str_skip_email_wsp(uh->data + plen);
@@ -356,18 +356,18 @@ static void process_user_recips(struct Envelope *env)
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     size_t plen;
-    if ((plen = mutt_str_startswith(uh->data, "to:", CASE_IGNORE)))
+    if ((plen = mutt_istr_startswith(uh->data, "to:")))
       mutt_addrlist_parse(&env->to, uh->data + plen);
-    else if ((plen = mutt_str_startswith(uh->data, "cc:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "cc:")))
       mutt_addrlist_parse(&env->cc, uh->data + plen);
-    else if ((plen = mutt_str_startswith(uh->data, "bcc:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "bcc:")))
       mutt_addrlist_parse(&env->bcc, uh->data + plen);
 #ifdef USE_NNTP
-    else if ((plen = mutt_str_startswith(uh->data, "newsgroups:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "newsgroups:")))
       env->newsgroups = nntp_get_header(uh->data + plen);
-    else if ((plen = mutt_str_startswith(uh->data, "followup-to:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "followup-to:")))
       env->followup_to = nntp_get_header(uh->data + plen);
-    else if ((plen = mutt_str_startswith(uh->data, "x-comment-to:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "x-comment-to:")))
       env->x_comment_to = nntp_get_header(uh->data + plen);
 #endif
   }
@@ -383,18 +383,18 @@ static void process_user_header(struct Envelope *env)
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     size_t plen;
-    if ((plen = mutt_str_startswith(uh->data, "from:", CASE_IGNORE)))
+    if ((plen = mutt_istr_startswith(uh->data, "from:")))
     {
       /* User has specified a default From: address.  Remove default address */
       mutt_addrlist_clear(&env->from);
       mutt_addrlist_parse(&env->from, uh->data + plen);
     }
-    else if ((plen = mutt_str_startswith(uh->data, "reply-to:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "reply-to:")))
     {
       mutt_addrlist_clear(&env->reply_to);
       mutt_addrlist_parse(&env->reply_to, uh->data + plen);
     }
-    else if ((plen = mutt_str_startswith(uh->data, "message-id:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "message-id:")))
     {
       char *tmp = mutt_extract_message_id(uh->data + plen, NULL);
       if (mutt_addr_valid_msgid(tmp))
@@ -405,17 +405,17 @@ static void process_user_header(struct Envelope *env)
       else
         FREE(&tmp);
     }
-    else if (!mutt_str_startswith(uh->data, "to:", CASE_IGNORE) &&
-             !mutt_str_startswith(uh->data, "cc:", CASE_IGNORE) &&
-             !mutt_str_startswith(uh->data, "bcc:", CASE_IGNORE) &&
+    else if (!mutt_istr_startswith(uh->data, "to:") &&
+             !mutt_istr_startswith(uh->data, "cc:") &&
+             !mutt_istr_startswith(uh->data, "bcc:") &&
 #ifdef USE_NNTP
-             !mutt_str_startswith(uh->data, "newsgroups:", CASE_IGNORE) &&
-             !mutt_str_startswith(uh->data, "followup-to:", CASE_IGNORE) &&
-             !mutt_str_startswith(uh->data, "x-comment-to:", CASE_IGNORE) &&
+             !mutt_istr_startswith(uh->data, "newsgroups:") &&
+             !mutt_istr_startswith(uh->data, "followup-to:") &&
+             !mutt_istr_startswith(uh->data, "x-comment-to:") &&
 #endif
-             !mutt_str_startswith(uh->data, "supersedes:", CASE_IGNORE) &&
-             !mutt_str_startswith(uh->data, "subject:", CASE_IGNORE) &&
-             !mutt_str_startswith(uh->data, "return-path:", CASE_IGNORE))
+             !mutt_istr_startswith(uh->data, "supersedes:") &&
+             !mutt_istr_startswith(uh->data, "subject:") &&
+             !mutt_istr_startswith(uh->data, "return-path:"))
     {
       mutt_list_insert_tail(&env->userhdrs, mutt_str_strdup(uh->data));
     }

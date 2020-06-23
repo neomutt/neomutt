@@ -87,7 +87,7 @@ bool mutt_ts_capability(void)
   const char *term = mutt_str_getenv("TERM");
   for (const char **termp = known; termp; termp++)
   {
-    if (term && *termp && !mutt_str_startswith(term, *termp, CASE_IGNORE))
+    if (term && *termp && !mutt_istr_startswith(term, *termp))
       return true;
   }
 

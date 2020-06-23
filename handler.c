@@ -383,7 +383,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
     if (!fgets(tmps, sizeof(tmps), s->fp_in))
       return;
     len -= mutt_str_strlen(tmps);
-    if (mutt_str_startswith(tmps, "begin ", CASE_MATCH))
+    if (mutt_str_startswith(tmps, "begin "))
       break;
   }
   while (len > 0)
@@ -391,7 +391,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
     if (!fgets(tmps, sizeof(tmps), s->fp_in))
       return;
     len -= mutt_str_strlen(tmps);
-    if (mutt_str_startswith(tmps, "end", CASE_MATCH))
+    if (mutt_str_startswith(tmps, "end"))
       break;
     pt = tmps;
     const unsigned char linelen = decode_byte(*pt);
@@ -463,7 +463,7 @@ static bool is_mmnoask(const char *buf)
     }
     else
     {
-      const size_t plen = mutt_str_startswith(buf, p, CASE_IGNORE);
+      const size_t plen = mutt_istr_startswith(buf, p);
       if ((plen != 0) && (buf[plen] == '/'))
         return true;
     }

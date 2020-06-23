@@ -131,7 +131,7 @@ static void pop_error(struct PopAccountData *adata, char *msg)
   char *t = strchr(adata->err_msg, '\0');
   char *c = msg;
 
-  size_t plen = mutt_str_startswith(msg, "-ERR ", CASE_MATCH);
+  size_t plen = mutt_str_startswith(msg, "-ERR ");
   if (plen != 0)
   {
     char *c2 = mutt_str_skip_email_wsp(msg + plen);
@@ -154,18 +154,18 @@ static int fetch_capa(const char *line, void *data)
 {
   struct PopAccountData *adata = data;
 
-  if (mutt_str_startswith(line, "SASL", CASE_IGNORE))
+  if (mutt_istr_startswith(line, "SASL"))
   {
     const char *c = mutt_str_skip_email_wsp(line + 4);
     mutt_buffer_strcpy(&adata->auth_list, c);
   }
-  else if (mutt_str_startswith(line, "STLS", CASE_IGNORE))
+  else if (mutt_istr_startswith(line, "STLS"))
     adata->cmd_stls = true;
-  else if (mutt_str_startswith(line, "USER", CASE_IGNORE))
+  else if (mutt_istr_startswith(line, "USER"))
     adata->cmd_user = 1;
-  else if (mutt_str_startswith(line, "UIDL", CASE_IGNORE))
+  else if (mutt_istr_startswith(line, "UIDL"))
     adata->cmd_uidl = 1;
-  else if (mutt_str_startswith(line, "TOP", CASE_IGNORE))
+  else if (mutt_istr_startswith(line, "TOP"))
     adata->cmd_top = 1;
 
   return 0;
@@ -303,7 +303,7 @@ int pop_connect(struct PopAccountData *adata)
 
   adata->status = POP_CONNECTED;
 
-  if (!mutt_str_startswith(buf, "+OK", CASE_MATCH))
+  if (!mutt_str_startswith(buf, "+OK"))
   {
     *adata->err_msg = '\0';
     pop_error(adata, buf);
@@ -495,7 +495,7 @@ int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *ms
     adata->status = POP_DISCONNECTED;
     return -1;
   }
-  if (mutt_str_startswith(buf, "+OK", CASE_MATCH))
+  if (mutt_str_startswith(buf, "+OK"))
     return 0;
 
   pop_error(adata, buf);

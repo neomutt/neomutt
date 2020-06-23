@@ -189,12 +189,12 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
     }
 
     /* Escape lines that begin with/only contain "the message separator". */
-    if ((linelen == 4) && mutt_str_startswith(line, "From", CASE_MATCH))
+    if ((linelen == 4) && mutt_str_startswith(line, "From"))
     {
       mutt_str_strfcpy(line, "=46rom", sizeof(line));
       linelen = 6;
     }
-    else if ((linelen == 4) && mutt_str_startswith(line, "from", CASE_MATCH))
+    else if ((linelen == 4) && mutt_str_startswith(line, "from"))
     {
       mutt_str_strfcpy(line, "=66rom", sizeof(line));
       linelen = 6;
@@ -1396,7 +1396,7 @@ static void set_encoding(struct Body *b, struct Content *info)
   {
     char send_charset[128];
     char *chsname = mutt_body_get_charset(b, send_charset, sizeof(send_charset));
-    if ((info->lobin && !mutt_str_startswith(chsname, "iso-2022", CASE_IGNORE)) ||
+    if ((info->lobin && !mutt_istr_startswith(chsname, "iso-2022")) ||
         (info->linemax > 990) || (info->from && C_EncodeFrom))
     {
       b->encoding = ENC_QUOTED_PRINTABLE;
@@ -1966,7 +1966,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value, size_t 
     /* determine width: character cells for display, bytes for sending
      * (we get pure ascii only) */
     const int w = mutt_mb_width(buf, col, display);
-    const int enc = mutt_str_startswith(buf, "=?", CASE_MATCH);
+    const int enc = mutt_str_startswith(buf, "=?");
 
     mutt_debug(LL_DEBUG5, "word=[%s], col=%d, w=%d, next=[0x0%x]\n",
                (buf[0] == '\n' ? "\\n" : buf), col, w, *next);
@@ -2101,7 +2101,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
 
   int rc = 0;
   const char *valbuf = NULL, *tagbuf = NULL;
-  const bool is_from = (vallen > 5) && mutt_str_startswith(start, "from ", CASE_IGNORE);
+  const bool is_from = (vallen > 5) && mutt_istr_startswith(start, "from ");
 
   /* only pass through folding machinery if necessary for sending,
    * never wrap From_ headers on sending */

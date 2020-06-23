@@ -596,13 +596,13 @@ SecurityFlags mutt_is_application_pgp(struct Body *m)
     if (((p = mutt_param_get(&m->parameter, "x-mutt-action")) ||
          (p = mutt_param_get(&m->parameter, "x-action")) ||
          (p = mutt_param_get(&m->parameter, "action"))) &&
-        mutt_str_startswith(p, "pgp-sign", CASE_IGNORE))
+        mutt_istr_startswith(p, "pgp-sign"))
     {
       t |= PGP_SIGN;
     }
-    else if (p && mutt_str_startswith(p, "pgp-encrypt", CASE_IGNORE))
+    else if (p && mutt_istr_startswith(p, "pgp-encrypt"))
       t |= PGP_ENCRYPT;
-    else if (p && mutt_str_startswith(p, "pgp-keys", CASE_IGNORE))
+    else if (p && mutt_istr_startswith(p, "pgp-keys"))
       t |= PGP_KEY;
   }
   if (t)
@@ -1282,7 +1282,7 @@ const char *crypt_get_fingerprint_or_id(const char *p, const char **pphint,
    * condition of the caller. */
 
   char *pf = mutt_str_skip_whitespace(p);
-  if (mutt_str_startswith(pf, "0x", CASE_IGNORE))
+  if (mutt_istr_startswith(pf, "0x"))
     pf += 2;
 
   /* Check if a fingerprint is given, must be hex digits only, blanks

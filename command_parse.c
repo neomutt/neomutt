@@ -634,14 +634,14 @@ enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s,
     op = '+';
     category--;
   }
-  if (mutt_str_startswith("attachment", category, CASE_IGNORE))
+  if (mutt_istr_startswith("attachment", category))
   {
     if (op == '+')
       head = &AttachAllow;
     else
       head = &AttachExclude;
   }
-  else if (mutt_str_startswith("inline", category, CASE_IGNORE))
+  else if (mutt_istr_startswith("inline", category))
   {
     if (op == '+')
       head = &InlineAllow;
@@ -1092,13 +1092,13 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       query = true;
       s->dptr++;
     }
-    else if (mutt_str_startswith(s->dptr, "no", CASE_MATCH))
+    else if (mutt_str_startswith(s->dptr, "no"))
     {
       prefix = true;
       unset = !unset;
       s->dptr += 2;
     }
-    else if (mutt_str_startswith(s->dptr, "inv", CASE_MATCH))
+    else if (mutt_str_startswith(s->dptr, "inv"))
     {
       prefix = true;
       inv = !inv;
@@ -1127,7 +1127,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     bool decrement = false;
 
     struct HashElem *he = NULL;
-    bool my = mutt_str_startswith(buf->data, "my_", CASE_MATCH);
+    bool my = mutt_str_startswith(buf->data, "my_");
     if (!my)
     {
       he = cs_subset_lookup(NeoMutt->sub, buf->data);
@@ -1460,7 +1460,7 @@ enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
     while (envp && *envp)
     {
       /* This will display all matches for "^QUERY" */
-      if (mutt_str_startswith(*envp, buf->data, CASE_MATCH))
+      if (mutt_str_startswith(*envp, buf->data))
       {
         if (!found)
         {
@@ -1865,14 +1865,14 @@ enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
     op = '+';
     p--;
   }
-  if (mutt_str_startswith("attachment", p, CASE_IGNORE))
+  if (mutt_istr_startswith("attachment", p))
   {
     if (op == '+')
       head = &AttachAllow;
     else
       head = &AttachExclude;
   }
-  else if (mutt_str_startswith("inline", p, CASE_IGNORE))
+  else if (mutt_istr_startswith("inline", p))
   {
     if (op == '+')
       head = &InlineAllow;

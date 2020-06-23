@@ -724,7 +724,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       struct NntpMboxData *mdata = adata->groups_list[i];
       if (!mdata)
         continue;
-      if (prefix && *prefix && !mutt_str_startswith(mdata->group, prefix, CASE_MATCH))
+      if (prefix && *prefix && !mutt_str_startswith(mdata->group, prefix))
         continue;
       if (!mutt_regex_match(C_Mask, mdata->group))
       {
@@ -782,7 +782,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       if (mutt_str_equal(de->d_name, "."))
         continue; /* we don't need . */
 
-      if (prefix && *prefix && !mutt_str_startswith(de->d_name, prefix, CASE_MATCH))
+      if (prefix && *prefix && !mutt_str_startswith(de->d_name, prefix))
       {
         continue;
       }
@@ -1068,7 +1068,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
    * The goal is to highlight the good directory if LastDir is the parent dir
    * of LastDirBackup (this occurs mostly when one hit "../"). It should also work
    * properly when the user is in examine_mailboxes-mode.  */
-  if (mutt_str_startswith(mutt_b2s(&LastDirBackup), mutt_b2s(&LastDir), CASE_MATCH))
+  if (mutt_str_startswith(mutt_b2s(&LastDirBackup), mutt_b2s(&LastDir)))
   {
     char target_dir[PATH_MAX] = { 0 };
 

@@ -283,7 +283,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
     bool keep = true;
     size_t plen;
 
-    if (fcc && (plen = mutt_str_startswith(np->data, "fcc:", CASE_IGNORE)))
+    if (fcc && (plen = mutt_istr_startswith(np->data, "fcc:")))
     {
       p = mutt_str_skip_email_wsp(np->data + plen);
       if (*p)
@@ -293,7 +293,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       }
       keep = false;
     }
-    else if ((plen = mutt_str_startswith(np->data, "attach:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(np->data, "attach:")))
     {
       struct Body *body2 = NULL;
       struct Body *parts = NULL;
@@ -333,7 +333,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       keep = false;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             (plen = mutt_str_startswith(np->data, "pgp:", CASE_IGNORE)))
+             (plen = mutt_istr_startswith(np->data, "pgp:")))
     {
       e->security = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_PGP);
       if (e->security)

@@ -274,7 +274,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
   }
 
   /* no capabilities */
-  if (!mutt_str_startswith(buf, "101", CASE_MATCH))
+  if (!mutt_str_startswith(buf, "101"))
     return 1;
   adata->hasCAPABILITIES = true;
 
@@ -294,13 +294,13 @@ static int nntp_capabilities(struct NntpAccountData *adata)
       adata->hasLISTGROUP = true;
       adata->hasLISTGROUPrange = true;
     }
-    else if ((plen = mutt_str_startswith(buf, "AUTHINFO ", CASE_MATCH)))
+    else if ((plen = mutt_str_startswith(buf, "AUTHINFO ")))
     {
       mutt_str_strcat(buf, sizeof(buf), " ");
       mutt_str_strfcpy(authinfo, buf + plen - 1, sizeof(authinfo));
     }
 #ifdef USE_SASL
-    else if ((plen = mutt_str_startswith(buf, "SASL ", CASE_MATCH)))
+    else if ((plen = mutt_str_startswith(buf, "SASL ")))
     {
       char *p = buf + plen;
       while (*p == ' ')
@@ -310,7 +310,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
 #endif
     else if (mutt_str_equal("OVER", buf))
       adata->hasOVER = true;
-    else if (mutt_str_startswith(buf, "LIST ", CASE_MATCH))
+    else if (mutt_str_startswith(buf, "LIST "))
     {
       char *p = strstr(buf, " NEWSGROUPS");
       if (p)
@@ -367,7 +367,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (!mutt_str_startswith(buf, "500", CASE_MATCH))
+    if (!mutt_str_startswith(buf, "500"))
       adata->hasDATE = true;
 
     if ((mutt_socket_send(conn, "LISTGROUP\r\n") < 0) ||
@@ -375,7 +375,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (!mutt_str_startswith(buf, "500", CASE_MATCH))
+    if (!mutt_str_startswith(buf, "500"))
       adata->hasLISTGROUP = true;
 
     if ((mutt_socket_send(conn, "LIST NEWSGROUPS +\r\n") < 0) ||
@@ -383,9 +383,9 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (!mutt_str_startswith(buf, "500", CASE_MATCH))
+    if (!mutt_str_startswith(buf, "500"))
       adata->hasLIST_NEWSGROUPS = true;
-    if (mutt_str_startswith(buf, "215", CASE_MATCH))
+    if (mutt_str_startswith(buf, "215"))
     {
       do
       {
@@ -403,7 +403,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (!mutt_str_startswith(buf, "500", CASE_MATCH))
+    if (!mutt_str_startswith(buf, "500"))
       adata->hasXGTITLE = true;
   }
 
@@ -415,7 +415,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (!mutt_str_startswith(buf, "500", CASE_MATCH))
+    if (!mutt_str_startswith(buf, "500"))
       adata->hasXOVER = true;
   }
 
@@ -427,7 +427,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (!mutt_str_startswith(buf, "215", CASE_MATCH))
+    if (!mutt_str_startswith(buf, "215"))
       adata->overview_fmt = mutt_str_strdup(OverviewFmt);
     else
     {
@@ -619,11 +619,11 @@ static int nntp_auth(struct NntpAccountData *adata)
         }
 
         /* authenticated, password is not required */
-        if (mutt_str_startswith(buf, "281", CASE_MATCH))
+        if (mutt_str_startswith(buf, "281"))
           return 0;
 
         /* username accepted, sending password */
-        if (mutt_str_startswith(buf, "381", CASE_MATCH))
+        if (mutt_str_startswith(buf, "381"))
         {
           mutt_debug(MUTT_SOCK_LOG_FULL, "%d> AUTHINFO PASS *\n", conn->fd);
           snprintf(buf, sizeof(buf), "AUTHINFO PASS %s\r\n", conn->account.pass);
@@ -634,7 +634,7 @@ static int nntp_auth(struct NntpAccountData *adata)
           }
 
           /* authenticated */
-          if (mutt_str_startswith(buf, "281", CASE_MATCH))
+          if (mutt_str_startswith(buf, "281"))
             return 0;
         }
 
@@ -710,8 +710,7 @@ static int nntp_auth(struct NntpAccountData *adata)
           {
             break;
           }
-          if (!mutt_str_startswith(inbuf, "283 ", CASE_MATCH) &&
-              !mutt_str_startswith(inbuf, "383 ", CASE_MATCH))
+          if (!mutt_str_startswith(inbuf, "283 ") && !mutt_str_startswith(inbuf, "383 "))
           {
             mutt_debug(MUTT_SOCK_LOG_FULL, "%d< %s\n", conn->fd, inbuf);
             break;
@@ -753,7 +752,7 @@ static int nntp_auth(struct NntpAccountData *adata)
         sasl_dispose(&saslconn);
         if (conn->fd < 0)
           break;
-        if (mutt_str_startswith(inbuf, "383 ", CASE_MATCH))
+        if (mutt_str_startswith(inbuf, "383 "))
         {
           if ((mutt_socket_send(conn, "*\r\n") < 0) ||
               (mutt_socket_readln(inbuf, sizeof(inbuf), conn) < 0))
@@ -1413,7 +1412,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
           break;
 
         /* invalid response */
-        if (!mutt_str_startswith(buf, "423", CASE_MATCH))
+        if (!mutt_str_startswith(buf, "423"))
         {
           mutt_error("HEAD: %s", buf);
           break;
@@ -1831,9 +1830,9 @@ int nntp_open_connection(struct NntpAccountData *adata)
   if (mutt_socket_readln(buf, sizeof(buf), conn) < 0)
     return nntp_connect_error(adata);
 
-  if (mutt_str_startswith(buf, "200", CASE_MATCH))
+  if (mutt_str_startswith(buf, "200"))
     posting = true;
-  else if (!mutt_str_startswith(buf, "201", CASE_MATCH))
+  else if (!mutt_str_startswith(buf, "201"))
   {
     mutt_socket_close(conn);
     mutt_str_remove_trailing_ws(buf);
@@ -1855,9 +1854,9 @@ int nntp_open_connection(struct NntpAccountData *adata)
       return nntp_connect_error(adata);
     }
 
-    if (mutt_str_startswith(buf, "200", CASE_MATCH))
+    if (mutt_str_startswith(buf, "200"))
       posting = true;
-    else if (mutt_str_startswith(buf, "201", CASE_MATCH))
+    else if (mutt_str_startswith(buf, "201"))
       posting = false;
     /* error if has capabilities, ignore result if no capabilities */
     else if (adata->hasCAPABILITIES)
@@ -1901,7 +1900,7 @@ int nntp_open_connection(struct NntpAccountData *adata)
       }
       // Clear any data after the STARTTLS acknowledgement
       mutt_socket_empty(conn);
-      if (!mutt_str_startswith(buf, "382", CASE_MATCH))
+      if (!mutt_str_startswith(buf, "382"))
       {
         adata->use_tls = 0;
         mutt_error("STARTTLS: %s", buf);
@@ -1938,7 +1937,7 @@ int nntp_open_connection(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (!mutt_str_startswith(buf, "480", CASE_MATCH))
+    if (!mutt_str_startswith(buf, "480"))
       auth = false;
   }
 
@@ -2249,7 +2248,7 @@ int nntp_check_msgid(struct Mailbox *m, const char *msgid)
     mutt_file_fclose(&fp);
     if (rc < 0)
       return -1;
-    if (mutt_str_startswith(buf, "430", CASE_MATCH))
+    if (mutt_str_startswith(buf, "430"))
       return 1;
     mutt_error("HEAD: %s", buf);
     return -1;
@@ -2328,7 +2327,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
     FREE(&cc.child);
     if (rc > 0)
     {
-      if (!mutt_str_startswith(buf, "500", CASE_MATCH))
+      if (!mutt_str_startswith(buf, "500"))
         mutt_error("XPAT: %s", buf);
       else
       {
@@ -2496,7 +2495,7 @@ static int nntp_mbox_open(struct Mailbox *m)
   }
 
   /* newsgroup not found, remove it */
-  if (mutt_str_startswith(buf, "411", CASE_MATCH))
+  if (mutt_str_startswith(buf, "411"))
   {
     mutt_error(_("Newsgroup %s has been removed from the server"), mdata->group);
     if (!mdata->deleted)
@@ -2770,7 +2769,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       }
       if (rc > 0)
       {
-        if (mutt_str_startswith(buf, nntp_edata_get(e)->article_num ? "423" : "430", CASE_MATCH))
+        if (mutt_str_startswith(buf, nntp_edata_get(e)->article_num ? "423" : "430"))
         {
           mutt_error(_("Article %s not found on the server"),
                      nntp_edata_get(e)->article_num ? article : e->env->message_id);
@@ -2839,10 +2838,10 @@ enum MailboxType nntp_path_probe(const char *path, const struct stat *st)
   if (!path)
     return MUTT_UNKNOWN;
 
-  if (mutt_str_startswith(path, "news://", CASE_IGNORE))
+  if (mutt_istr_startswith(path, "news://"))
     return MUTT_NNTP;
 
-  if (mutt_str_startswith(path, "snews://", CASE_IGNORE))
+  if (mutt_istr_startswith(path, "snews://"))
     return MUTT_NNTP;
 
   return MUTT_UNKNOWN;

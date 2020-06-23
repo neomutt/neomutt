@@ -142,19 +142,19 @@ static int smtp_get_resp(struct Connection *conn)
     const char *s = buf + 4; /* Skip the response code and the space/dash */
     size_t plen;
 
-    if (mutt_str_startswith(s, "8BITMIME", CASE_IGNORE))
+    if (mutt_istr_startswith(s, "8BITMIME"))
       Capabilities |= SMTP_CAP_EIGHTBITMIME;
-    else if ((plen = mutt_str_startswith(s, "AUTH ", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(s, "AUTH ")))
     {
       Capabilities |= SMTP_CAP_AUTH;
       FREE(&AuthMechs);
       AuthMechs = mutt_str_strdup(s + plen);
     }
-    else if (mutt_str_startswith(s, "DSN", CASE_IGNORE))
+    else if (mutt_istr_startswith(s, "DSN"))
       Capabilities |= SMTP_CAP_DSN;
-    else if (mutt_str_startswith(s, "STARTTLS", CASE_IGNORE))
+    else if (mutt_istr_startswith(s, "STARTTLS"))
       Capabilities |= SMTP_CAP_STARTTLS;
-    else if (mutt_str_startswith(s, "SMTPUTF8", CASE_IGNORE))
+    else if (mutt_istr_startswith(s, "SMTPUTF8"))
       Capabilities |= SMTP_CAP_SMTPUTF8;
 
     if (!valid_smtp_code(buf, n, &n))

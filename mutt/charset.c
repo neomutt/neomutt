@@ -361,13 +361,13 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 
   /* catch some common iso-8859-something misspellings */
   size_t plen;
-  if ((plen = mutt_str_startswith(in, "8859", CASE_IGNORE)) && (in[plen] != '-'))
+  if ((plen = mutt_istr_startswith(in, "8859")) && (in[plen] != '-'))
     snprintf(scratch, sizeof(scratch), "iso-8859-%s", in + plen);
-  else if ((plen = mutt_str_startswith(in, "8859-", CASE_IGNORE)))
+  else if ((plen = mutt_istr_startswith(in, "8859-")))
     snprintf(scratch, sizeof(scratch), "iso-8859-%s", in + plen);
-  else if ((plen = mutt_str_startswith(in, "iso8859", CASE_IGNORE)) && (in[plen] != '-'))
+  else if ((plen = mutt_istr_startswith(in, "iso8859")) && (in[plen] != '-'))
     snprintf(scratch, sizeof(scratch), "iso_8859-%s", in + plen);
-  else if ((plen = mutt_str_startswith(in, "iso8859-", CASE_IGNORE)))
+  else if ((plen = mutt_istr_startswith(in, "iso8859-")))
     snprintf(scratch, sizeof(scratch), "iso_8859-%s", in + plen);
   else
     mutt_str_strfcpy(scratch, in, sizeof(scratch));

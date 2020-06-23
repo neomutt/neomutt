@@ -2772,7 +2772,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
   while (fgets(buf, sizeof(buf), fp_tmp))
   {
-    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ", CASE_MATCH);
+    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ");
     if (plen != 0)
     {
       if (MESSAGE(buf + plen))
@@ -3035,7 +3035,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
     bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
     last_pos = offset;
 
-    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ", CASE_MATCH);
+    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ");
     if (plen != 0)
     {
       clearsign = false;

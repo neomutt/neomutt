@@ -427,7 +427,7 @@ static void dot_config(FILE *fp, const char *name, int type,
 
       const char *iname = item->key.strkey;
       size_t slen = strlen(scope);
-      if (mutt_str_startswith(iname, scope, CASE_MATCH) != 0)
+      if (mutt_str_startswith(iname, scope) != 0)
       {
         if (strchr(iname + slen, ':'))
           continue;

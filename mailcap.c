@@ -302,7 +302,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
           if (entry)
             entry->copiousoutput = true;
         }
-        else if ((plen = mutt_str_startswith(field, "composetyped", CASE_IGNORE)))
+        else if ((plen = mutt_istr_startswith(field, "composetyped")))
         {
           /* this compare most occur before compose to match correctly */
           if (get_field_text(field + plen, entry ? &entry->composetypecommand : NULL,
@@ -311,7 +311,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
             composecommand = true;
           }
         }
-        else if ((plen = mutt_str_startswith(field, "compose", CASE_IGNORE)))
+        else if ((plen = mutt_istr_startswith(field, "compose")))
         {
           if (get_field_text(field + plen, entry ? &entry->composecommand : NULL,
                              type, filename, line))
@@ -319,7 +319,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
             composecommand = true;
           }
         }
-        else if ((plen = mutt_str_startswith(field, "print", CASE_IGNORE)))
+        else if ((plen = mutt_istr_startswith(field, "print")))
         {
           if (get_field_text(field + plen, entry ? &entry->printcommand : NULL,
                              type, filename, line))
@@ -327,22 +327,22 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
             printcommand = true;
           }
         }
-        else if ((plen = mutt_str_startswith(field, "edit", CASE_IGNORE)))
+        else if ((plen = mutt_istr_startswith(field, "edit")))
         {
           if (get_field_text(field + plen, entry ? &entry->editcommand : NULL,
                              type, filename, line))
             editcommand = true;
         }
-        else if ((plen = mutt_str_startswith(field, "nametemplate", CASE_IGNORE)))
+        else if ((plen = mutt_istr_startswith(field, "nametemplate")))
         {
           get_field_text(field + plen, entry ? &entry->nametemplate : NULL,
                          type, filename, line);
         }
-        else if ((plen = mutt_str_startswith(field, "x-convert", CASE_IGNORE)))
+        else if ((plen = mutt_istr_startswith(field, "x-convert")))
         {
           get_field_text(field + plen, entry ? &entry->convert : NULL, type, filename, line);
         }
-        else if ((plen = mutt_str_startswith(field, "test", CASE_IGNORE)))
+        else if ((plen = mutt_istr_startswith(field, "test")))
         {
           /* This routine executes the given test command to determine
            * if this is the right entry.  */
@@ -368,7 +368,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
             mutt_buffer_pool_release(&afilename);
           }
         }
-        else if (mutt_str_startswith(field, "x-neomutt-keep", CASE_IGNORE))
+        else if (mutt_istr_startswith(field, "x-neomutt-keep"))
         {
           if (entry)
             entry->xneomuttkeep = true;

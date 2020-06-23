@@ -354,16 +354,16 @@ static int pgp_check_decryption_okay(FILE *fp_in)
 
   while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, 0)))
   {
-    size_t plen = mutt_str_startswith(line, "[GNUPG:] ", CASE_MATCH);
+    size_t plen = mutt_str_startswith(line, "[GNUPG:] ");
     if (plen == 0)
       continue;
     s = line + plen;
     mutt_debug(LL_DEBUG2, "checking \"%s\"\n", line);
-    if (mutt_str_startswith(s, "BEGIN_DECRYPTION", CASE_MATCH))
+    if (mutt_str_startswith(s, "BEGIN_DECRYPTION"))
       inside_decrypt = 1;
-    else if (mutt_str_startswith(s, "END_DECRYPTION", CASE_MATCH))
+    else if (mutt_str_startswith(s, "END_DECRYPTION"))
       inside_decrypt = 0;
-    else if (mutt_str_startswith(s, "PLAINTEXT", CASE_MATCH))
+    else if (mutt_str_startswith(s, "PLAINTEXT"))
     {
       if (!inside_decrypt)
       {
@@ -373,13 +373,13 @@ static int pgp_check_decryption_okay(FILE *fp_in)
         break;
       }
     }
-    else if (mutt_str_startswith(s, "DECRYPTION_FAILED", CASE_MATCH))
+    else if (mutt_str_startswith(s, "DECRYPTION_FAILED"))
     {
       mutt_debug(LL_DEBUG2, "\tDECRYPTION_FAILED encountered.  Failure\n");
       rc = -3;
       break;
     }
-    else if (mutt_str_startswith(s, "DECRYPTION_OKAY", CASE_MATCH))
+    else if (mutt_str_startswith(s, "DECRYPTION_OKAY"))
     {
       /* Don't break out because we still have to check for
        * PLAINTEXT outside of the decryption boundaries. */
@@ -490,21 +490,21 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
     bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
     last_pos = offset;
 
-    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ", CASE_MATCH);
+    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ");
     if (plen != 0)
     {
       clearsign = false;
       could_not_decrypt = false;
       decrypt_okay_rc = 0;
 
-      if (mutt_str_startswith(buf + plen, "MESSAGE-----\n", CASE_MATCH))
+      if (mutt_str_startswith(buf + plen, "MESSAGE-----\n"))
         needpass = 1;
-      else if (mutt_str_startswith(buf + plen, "SIGNED MESSAGE-----\n", CASE_MATCH))
+      else if (mutt_str_startswith(buf + plen, "SIGNED MESSAGE-----\n"))
       {
         clearsign = true;
         needpass = 0;
       }
-      else if (mutt_str_startswith(buf + plen, "PUBLIC KEY BLOCK-----\n", CASE_MATCH))
+      else if (mutt_str_startswith(buf + plen, "PUBLIC KEY BLOCK-----\n"))
       {
         needpass = 0;
         pgp_keyblock = true;
@@ -547,7 +547,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           break;
         }
         /* remember optional Charset: armor header as defined by RFC4880 */
-        if (mutt_str_startswith(buf, "Charset: ", CASE_MATCH))
+        if (mutt_str_startswith(buf, "Charset: "))
         {
           size_t l = 0;
           FREE(&gpgcharset);
@@ -800,14 +800,14 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
   while (fgets(buf, sizeof(buf), fp_tmp))
   {
-    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ", CASE_MATCH);
+    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ");
     if (plen != 0)
     {
-      if (mutt_str_startswith(buf + plen, "MESSAGE-----\n", CASE_MATCH))
+      if (mutt_str_startswith(buf + plen, "MESSAGE-----\n"))
         enc = true;
-      else if (mutt_str_startswith(buf + plen, "SIGNED MESSAGE-----\n", CASE_MATCH))
+      else if (mutt_str_startswith(buf + plen, "SIGNED MESSAGE-----\n"))
         sgn = true;
-      else if (mutt_str_startswith(buf + plen, "PUBLIC KEY BLOCK-----\n", CASE_MATCH))
+      else if (mutt_str_startswith(buf + plen, "PUBLIC KEY BLOCK-----\n"))
         key = true;
     }
   }

@@ -89,12 +89,12 @@ static bool check_idn(char *domain)
   if (!domain)
     return false;
 
-  if (mutt_str_startswith(domain, "xn--", CASE_IGNORE))
+  if (mutt_istr_startswith(domain, "xn--"))
     return true;
 
   while ((domain = strchr(domain, '.')))
   {
-    if (mutt_str_startswith(++domain, "xn--", CASE_IGNORE))
+    if (mutt_istr_startswith(++domain, "xn--"))
       return true;
   }
 

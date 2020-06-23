@@ -1047,7 +1047,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       }
     }
   }
-  else if (mutt_str_startswith(raw, "\033[0m", CASE_MATCH)) // Escape: a little hack...
+  else if (mutt_str_startswith(raw, "\033[0m")) // Escape: a little hack...
     line_info[n].type = MT_COLOR_NORMAL;
   else if (check_attachment_marker((char *) raw) == 0)
     line_info[n].type = MT_COLOR_ATTACHMENT;

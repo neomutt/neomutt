@@ -606,25 +606,25 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
   bool is_alert = false, is_bright = false, is_light = false;
   int clen;
 
-  if ((clen = mutt_str_startswith(s, "bright", CASE_IGNORE)))
+  if ((clen = mutt_istr_startswith(s, "bright")))
   {
     is_bright = true;
     s += clen;
   }
-  else if ((clen = mutt_str_startswith(s, "alert", CASE_IGNORE)))
+  else if ((clen = mutt_istr_startswith(s, "alert")))
   {
     is_alert = true;
     is_bright = true;
     s += clen;
   }
-  else if ((clen = mutt_str_startswith(s, "light", CASE_IGNORE)))
+  else if ((clen = mutt_istr_startswith(s, "light")))
   {
     is_light = true;
     s += clen;
   }
 
   /* allow aliases for xterm color resources */
-  if ((clen = mutt_str_startswith(s, "color", CASE_IGNORE)))
+  if ((clen = mutt_istr_startswith(s, "color")))
   {
     s += clen;
     *col = strtoul(s, &eptr, 10);
@@ -706,7 +706,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
 {
   int rc;
 
-  if (mutt_str_startswith(buf->data, "quoted", CASE_MATCH) != 0)
+  if (mutt_str_startswith(buf->data, "quoted") != 0)
   {
     int val = 0;
     if (buf->data[6] != '\0')

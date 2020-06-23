@@ -158,14 +158,14 @@ static char_cmp get_char_cmp(enum CaseSensitivity cs)
 }
 
 /**
- * mutt_str_startswith - Check whether a string starts with a prefix
+ * startswith - Check whether a string starts with a prefix
  * @param str String to check
  * @param prefix Prefix to match
  * @param cs Case sensitivity setting
  * @retval num Length of prefix if str starts with prefix
  * @retval 0 if str does not start with prefix
  */
-size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensitivity cs)
+static size_t startswith(const char *str, const char *prefix, enum CaseSensitivity cs)
 {
   if (!str || (str[0] == '\0') || !prefix || (prefix[0] == '\0'))
   {
@@ -182,6 +182,30 @@ size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensiti
   }
 
   return (*prefix == '\0') ? (prefix - saved_prefix) : 0;
+}
+
+/**
+ * mutt_str_startswith - Check whether a string starts with a prefix
+ * @param str String to check
+ * @param prefix Prefix to match
+ * @retval num Length of prefix if str starts with prefix
+ * @retval 0 if str does not start with prefix
+ */
+size_t mutt_str_startswith(const char *str, const char *prefix)
+{
+  return startswith(str, prefix, CASE_MATCH);
+}
+
+/**
+ * mutt_istr_startswith - Check whether a string starts with a prefix, ignoring case
+ * @param str String to check
+ * @param prefix Prefix to match
+ * @retval num Length of prefix if str starts with prefix
+ * @retval 0 if str does not start with prefix
+ */
+size_t mutt_istr_startswith(const char *str, const char *prefix)
+{
+  return startswith(str, prefix, CASE_IGNORE);
 }
 
 /**

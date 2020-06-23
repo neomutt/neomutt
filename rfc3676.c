@@ -420,7 +420,7 @@ static void rfc3676_space_stuff(struct Email *e, bool unstuff)
     }
     else
     {
-      if ((buf[0] == ' ') || mutt_str_startswith(buf, "From ", CASE_MATCH))
+      if ((buf[0] == ' ') || mutt_str_startswith(buf, "From "))
         fputc(' ', fp_out);
       fputs(buf, fp_out);
     }

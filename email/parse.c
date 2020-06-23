@@ -244,9 +244,9 @@ static void parse_content_disposition(const char *s, struct Body *ct)
   struct ParameterList pl;
   TAILQ_INIT(&pl);
 
-  if (mutt_str_startswith(s, "inline", CASE_IGNORE))
+  if (mutt_istr_startswith(s, "inline"))
     ct->disposition = DISP_INLINE;
-  else if (mutt_str_startswith(s, "form-data", CASE_IGNORE))
+  else if (mutt_istr_startswith(s, "form-data"))
     ct->disposition = DISP_FORM_DATA;
   else
     ct->disposition = DISP_ATTACH;
@@ -390,20 +390,20 @@ char *mutt_extract_message_id(const char *s, size_t *len)
  */
 int mutt_check_encoding(const char *c)
 {
-  if (mutt_str_startswith(c, "7bit", CASE_IGNORE))
+  if (mutt_istr_startswith(c, "7bit"))
     return ENC_7BIT;
-  if (mutt_str_startswith(c, "8bit", CASE_IGNORE))
+  if (mutt_istr_startswith(c, "8bit"))
     return ENC_8BIT;
-  if (mutt_str_startswith(c, "binary", CASE_IGNORE))
+  if (mutt_istr_startswith(c, "binary"))
     return ENC_BINARY;
-  if (mutt_str_startswith(c, "quoted-printable", CASE_IGNORE))
+  if (mutt_istr_startswith(c, "quoted-printable"))
     return ENC_QUOTED_PRINTABLE;
-  if (mutt_str_startswith(c, "base64", CASE_IGNORE))
+  if (mutt_istr_startswith(c, "base64"))
     return ENC_BASE64;
-  if (mutt_str_startswith(c, "x-uuencode", CASE_IGNORE))
+  if (mutt_istr_startswith(c, "x-uuencode"))
     return ENC_UUENCODED;
 #ifdef SUN_ATTACHMENT
-  if (mutt_str_startswith(c, "uuencode", CASE_IGNORE))
+  if (mutt_istr_startswith(c, "uuencode"))
     return ENC_UUENCODED;
 #endif
   return ENC_OTHER;
@@ -635,7 +635,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       }
       else
       {
-        size_t plen = mutt_str_startswith(line + 1, "ontent-", CASE_IGNORE);
+        size_t plen = mutt_istr_startswith(line + 1, "ontent-");
         if (plen != 0)
         {
           if (mutt_istr_equal(line + 1 + plen, "type"))
@@ -802,7 +802,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       }
       else
       {
-        size_t plen = mutt_str_startswith(line + 1, "ail-", CASE_IGNORE);
+        size_t plen = mutt_istr_startswith(line + 1, "ail-");
         if (plen != 0)
         {
           if (mutt_istr_equal(line + 1 + plen, "reply-to"))
@@ -1143,7 +1143,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
       time_t t;
 
       /* some bogus MTAs will quote the original "From " line */
-      if (mutt_str_startswith(line, ">From ", CASE_MATCH))
+      if (mutt_str_startswith(line, ">From "))
         continue; /* just ignore */
       else if (is_from(line, return_path, sizeof(return_path), &t))
       {
@@ -1295,7 +1295,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
       break;
     }
 
-    size_t plen = mutt_str_startswith(line, "content-", CASE_IGNORE);
+    size_t plen = mutt_istr_startswith(line, "content-");
     if (plen != 0)
     {
       if (mutt_istr_equal("type", line + plen))
@@ -1313,7 +1313,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
       }
     }
 #ifdef SUN_ATTACHMENT
-    else if ((plen = mutt_str_startswith(line, "x-sun-", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(line, "x-sun-")))
     {
       if (mutt_istr_equal("data-type", line + plen))
         mutt_parse_content_type(c, p);
@@ -1459,7 +1459,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
 
     const size_t crlf = ((len > 1) && (buf[len - 2] == '\r')) ? 1 : 0;
 
-    if ((buf[0] == '-') && (buf[1] == '-') && mutt_str_startswith(buf + 2, boundary, CASE_MATCH))
+    if ((buf[0] == '-') && (buf[1] == '-') && mutt_str_startswith(buf + 2, boundary))
     {
       if (last)
       {

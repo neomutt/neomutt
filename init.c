@@ -1186,20 +1186,18 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     /* return the completed command */
     strncpy(buf, Completed, buflen - spaces);
   }
-  else if (mutt_str_startswith(buf, "set", CASE_MATCH) ||
-           mutt_str_startswith(buf, "unset", CASE_MATCH) ||
-           mutt_str_startswith(buf, "reset", CASE_MATCH) ||
-           mutt_str_startswith(buf, "toggle", CASE_MATCH))
+  else if (mutt_str_startswith(buf, "set") || mutt_str_startswith(buf, "unset") ||
+           mutt_str_startswith(buf, "reset") || mutt_str_startswith(buf, "toggle"))
   { /* complete variables */
     static const char *const prefixes[] = { "no", "inv", "?", "&", 0 };
 
     pt++;
     /* loop through all the possible prefixes (no, inv, ...) */
-    if (mutt_str_startswith(buf, "set", CASE_MATCH))
+    if (mutt_str_startswith(buf, "set"))
     {
       for (num = 0; prefixes[num]; num++)
       {
-        if (mutt_str_startswith(pt, prefixes[num], CASE_MATCH))
+        if (mutt_str_startswith(pt, prefixes[num]))
         {
           pt += mutt_str_strlen(prefixes[num]);
           break;
@@ -1244,7 +1242,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
 
     strncpy(pt, Completed, buf + buflen - pt - spaces);
   }
-  else if (mutt_str_startswith(buf, "exec", CASE_MATCH))
+  else if (mutt_str_startswith(buf, "exec"))
   {
     const struct Binding *menu = km_get_table(CurrentMenu);
 
@@ -1497,7 +1495,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
   if (*pt == '=') /* abort if no var before the '=' */
     return 0;
 
-  if (mutt_str_startswith(buf, "set", CASE_MATCH))
+  if (mutt_str_startswith(buf, "set"))
   {
     const char *myvarval = NULL;
     char var[256];

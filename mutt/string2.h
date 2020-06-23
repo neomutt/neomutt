@@ -92,7 +92,6 @@ void        mutt_str_replace(char **p, const char *s);
 const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, const char *needle);
 char *      mutt_str_skip_email_wsp(const char *s);
 char *      mutt_str_skip_whitespace(const char *p);
-size_t      mutt_str_startswith(const char *str, const char *prefix, enum CaseSensitivity cs);
 const char *mutt_str_strcasestr(const char *haystack, const char *needle);
 char *      mutt_str_strcat(char *buf, size_t buflen, const char *s);
 const char *mutt_str_strchrnul(const char *s, char c);
@@ -115,9 +114,11 @@ int         mutt_str_word_casecmp(const char *a, const char *b);
 /* case-sensitive flavours */
 int         mutt_str_cmp(const char *a, const char *b);
 bool        mutt_str_equal(const char *a, const char *b);
+size_t      mutt_str_startswith(const char *str, const char *prefix);
 
 /* case-insensitive flavours */
 int         mutt_istr_cmp(const char *a, const char *b);
 bool        mutt_istr_equal(const char *a, const char *b);
+size_t      mutt_istr_startswith(const char *str, const char *prefix);
 
 #endif /* MUTT_LIB_STRING_H */

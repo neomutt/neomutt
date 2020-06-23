@@ -199,9 +199,8 @@ void mh_update_sequences(struct Mailbox *m)
   {
     while ((buf = mutt_file_read_line(buf, &s, fp_old, NULL, 0)))
     {
-      if (mutt_str_startswith(buf, seq_unseen, CASE_MATCH) ||
-          mutt_str_startswith(buf, seq_flagged, CASE_MATCH) ||
-          mutt_str_startswith(buf, seq_replied, CASE_MATCH))
+      if (mutt_str_startswith(buf, seq_unseen) || mutt_str_startswith(buf, seq_flagged) ||
+          mutt_str_startswith(buf, seq_replied))
       {
         continue;
       }

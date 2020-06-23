@@ -1219,7 +1219,7 @@ void maildir_parse_flags(struct Email *e, const char *path)
   e->replied = false;
 
   char *p = strrchr(path, ':');
-  if (p && mutt_str_startswith(p + 1, "2,", CASE_MATCH))
+  if (p && mutt_str_startswith(p + 1, "2,"))
   {
     p += 3;
 

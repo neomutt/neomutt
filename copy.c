@@ -114,36 +114,38 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       if (nl && (buf[0] != ' ') && (buf[0] != '\t'))
       {
         ignore = true;
-        if (!from && mutt_str_startswith(buf, "From ", CASE_MATCH))
+        if (!from && mutt_str_startswith(buf, "From "))
         {
           if ((chflags & CH_FROM) == 0)
             continue;
           from = true;
         }
-        else if ((chflags & CH_NOQFROM) && mutt_str_startswith(buf, ">From ", CASE_IGNORE))
+        else if ((chflags & CH_NOQFROM) && mutt_istr_startswith(buf, ">From "))
           continue;
         else if ((buf[0] == '\n') || ((buf[0] == '\r') && (buf[1] == '\n')))
           break; /* end of header */
 
         if ((chflags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-            (mutt_str_startswith(buf, "Status:", CASE_IGNORE) ||
-             mutt_str_startswith(buf, "X-Status:", CASE_IGNORE)))
+            (mutt_istr_startswith(buf, "Status:") || mutt_istr_startswith(buf, "X-Status:")))
         {
           continue;
         }
         if ((chflags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-            (mutt_str_startswith(buf, "Content-Length:", CASE_IGNORE) ||
-             mutt_str_startswith(buf, "Lines:", CASE_IGNORE)))
+            (mutt_istr_startswith(buf, "Content-Length:") ||
+             mutt_istr_startswith(buf, "Lines:")))
         {
           continue;
         }
-        if ((chflags & CH_UPDATE_REFS) && mutt_str_startswith(buf, "References:", CASE_IGNORE))
+        if ((chflags & CH_UPDATE_REFS) &&
+            mutt_istr_startswith(buf, "References:"))
           continue;
-        if ((chflags & CH_UPDATE_IRT) && mutt_str_startswith(buf, "In-Reply-To:", CASE_IGNORE))
+        if ((chflags & CH_UPDATE_IRT) &&
+            mutt_istr_startswith(buf, "In-Reply-To:"))
           continue;
-        if (chflags & CH_UPDATE_LABEL && mutt_str_startswith(buf, "X-Label:", CASE_IGNORE))
+        if (chflags & CH_UPDATE_LABEL && mutt_istr_startswith(buf, "X-Label:"))
           continue;
-        if ((chflags & CH_UPDATE_SUBJECT) && mutt_str_startswith(buf, "Subject:", CASE_IGNORE))
+        if ((chflags & CH_UPDATE_SUBJECT) &&
+            mutt_istr_startswith(buf, "Subject:"))
           continue;
 
         ignore = false;
@@ -222,7 +224,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
 
       ignore = true;
       this_is_from = false;
-      if (!from && mutt_str_startswith(buf, "From ", CASE_MATCH))
+      if (!from && mutt_str_startswith(buf, "From "))
       {
         if ((chflags & CH_FROM) == 0)
           continue;
@@ -238,42 +240,46 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       {
         continue;
       }
-      if ((chflags & CH_WEED_DELIVERED) && mutt_str_startswith(buf, "Delivered-To:", CASE_IGNORE))
+      if ((chflags & CH_WEED_DELIVERED) &&
+          mutt_istr_startswith(buf, "Delivered-To:"))
       {
         continue;
       }
       if ((chflags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-          (mutt_str_startswith(buf, "Status:", CASE_IGNORE) ||
-           mutt_str_startswith(buf, "X-Status:", CASE_IGNORE)))
+          (mutt_istr_startswith(buf, "Status:") ||
+           mutt_istr_startswith(buf, "X-Status:")))
       {
         continue;
       }
       if ((chflags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-          (mutt_str_startswith(buf, "Content-Length:", CASE_IGNORE) ||
-           mutt_str_startswith(buf, "Lines:", CASE_IGNORE)))
+          (mutt_istr_startswith(buf, "Content-Length:") || mutt_istr_startswith(buf, "Lines:")))
       {
         continue;
       }
       if ((chflags & CH_MIME))
       {
-        if (mutt_str_startswith(buf, "mime-version:", CASE_IGNORE))
+        if (mutt_istr_startswith(buf, "mime-version:"))
         {
           continue;
         }
-        size_t plen = mutt_str_startswith(buf, "content-", CASE_IGNORE);
-        if ((plen != 0) && (mutt_str_startswith(buf + plen, "transfer-encoding:", CASE_IGNORE) ||
-                            mutt_str_startswith(buf + plen, "type:", CASE_IGNORE)))
+        size_t plen = mutt_istr_startswith(buf, "content-");
+        if ((plen != 0) &&
+            (mutt_istr_startswith(buf + plen, "transfer-encoding:") ||
+             mutt_istr_startswith(buf + plen, "type:")))
         {
           continue;
         }
       }
-      if ((chflags & CH_UPDATE_REFS) && mutt_str_startswith(buf, "References:", CASE_IGNORE))
+      if ((chflags & CH_UPDATE_REFS) &&
+          mutt_istr_startswith(buf, "References:"))
         continue;
-      if ((chflags & CH_UPDATE_IRT) && mutt_str_startswith(buf, "In-Reply-To:", CASE_IGNORE))
+      if ((chflags & CH_UPDATE_IRT) &&
+          mutt_istr_startswith(buf, "In-Reply-To:"))
         continue;
-      if ((chflags & CH_UPDATE_LABEL) && mutt_str_startswith(buf, "X-Label:", CASE_IGNORE))
+      if ((chflags & CH_UPDATE_LABEL) && mutt_istr_startswith(buf, "X-Label:"))
         continue;
-      if ((chflags & CH_UPDATE_SUBJECT) && mutt_str_startswith(buf, "Subject:", CASE_IGNORE))
+      if ((chflags & CH_UPDATE_SUBJECT) &&
+          mutt_istr_startswith(buf, "Subject:"))
         continue;
 
       /* Find x -- the array entry where this header is to be saved */
@@ -284,7 +290,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         STAILQ_FOREACH(np, &HeaderOrderList, entries)
         {
           ++x;
-          if (mutt_str_startswith(buf, np->data, CASE_IGNORE))
+          if (mutt_istr_startswith(buf, np->data))
           {
             mutt_debug(LL_DEBUG2, "Reorder: %s matches %s", np->data, buf);
             break;
@@ -1035,36 +1041,36 @@ static int address_header_decode(char **h)
   {
     case 'b':
     {
-      if (!(l = mutt_str_startswith(s, "bcc:", CASE_IGNORE)))
+      if (!(l = mutt_istr_startswith(s, "bcc:")))
         return 0;
       break;
     }
     case 'c':
     {
-      if (!(l = mutt_str_startswith(s, "cc:", CASE_IGNORE)))
+      if (!(l = mutt_istr_startswith(s, "cc:")))
         return 0;
       break;
     }
     case 'f':
     {
-      if (!(l = mutt_str_startswith(s, "from:", CASE_IGNORE)))
+      if (!(l = mutt_istr_startswith(s, "from:")))
         return 0;
       break;
     }
     case 'm':
     {
-      if (!(l = mutt_str_startswith(s, "mail-followup-to:", CASE_IGNORE)))
+      if (!(l = mutt_istr_startswith(s, "mail-followup-to:")))
         return 0;
       break;
     }
     case 'r':
     {
-      if ((l = mutt_str_startswith(s, "return-path:", CASE_IGNORE)))
+      if ((l = mutt_istr_startswith(s, "return-path:")))
       {
         rp = true;
         break;
       }
-      else if ((l = mutt_str_startswith(s, "reply-to:", CASE_IGNORE)))
+      else if ((l = mutt_istr_startswith(s, "reply-to:")))
       {
         break;
       }
@@ -1072,13 +1078,13 @@ static int address_header_decode(char **h)
     }
     case 's':
     {
-      if (!(l = mutt_str_startswith(s, "sender:", CASE_IGNORE)))
+      if (!(l = mutt_istr_startswith(s, "sender:")))
         return 0;
       break;
     }
     case 't':
     {
-      if (!(l = mutt_str_startswith(s, "to:", CASE_IGNORE)))
+      if (!(l = mutt_istr_startswith(s, "to:")))
         return 0;
       break;
     }

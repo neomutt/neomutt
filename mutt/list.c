@@ -200,7 +200,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
-    if ((*np->data == '*') || mutt_str_startswith(s, np->data, CASE_IGNORE))
+    if ((*np->data == '*') || mutt_istr_startswith(s, np->data))
       return true;
   }
   return false;

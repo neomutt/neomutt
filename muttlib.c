@@ -669,12 +669,12 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
     mutt_str_strfcpy(p, tmp, buflen - (p - buf));
   }
 
-  if ((len = mutt_str_startswith(buf, C_Folder, CASE_MATCH)) && (buf[len] == '/'))
+  if ((len = mutt_str_startswith(buf, C_Folder)) && (buf[len] == '/'))
   {
     *buf++ = '=';
     memmove(buf, buf + len, mutt_str_strlen(buf + len) + 1);
   }
-  else if ((len = mutt_str_startswith(buf, HomeDir, CASE_MATCH)) && (buf[len] == '/'))
+  else if ((len = mutt_str_startswith(buf, HomeDir)) && (buf[len] == '/'))
   {
     *buf++ = '~';
     memmove(buf, buf + len - 1, mutt_str_strlen(buf + len - 1) + 1);

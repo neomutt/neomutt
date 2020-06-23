@@ -83,7 +83,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
 
     if ((adata->capabilities & IMAP_CAP_AUTH_ANONYMOUS) &&
         (!adata->conn->account.user[0] ||
-         mutt_str_startswith(adata->conn->account.user, "anonymous", CASE_MATCH)))
+         mutt_str_startswith(adata->conn->account.user, "anonymous")))
     {
       rc = sasl_client_start(saslconn, "AUTH=ANONYMOUS", NULL, &pc, &olen, &mech);
     }

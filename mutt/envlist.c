@@ -94,7 +94,7 @@ bool mutt_envlist_set(const char *name, const char *value, bool overwrite)
   int count = 0;
   while (envp && *envp)
   {
-    size_t len = mutt_str_startswith(*envp, name, CASE_MATCH);
+    size_t len = mutt_str_startswith(*envp, name);
     if ((len != 0) && ((*envp)[len] == '='))
     {
       if (!overwrite)
@@ -139,7 +139,7 @@ bool mutt_envlist_unset(const char *name)
   int count = 0;
   while (envp && *envp)
   {
-    size_t len = mutt_str_startswith(*envp, name, CASE_MATCH);
+    size_t len = mutt_str_startswith(*envp, name);
     if ((len != 0) && ((*envp)[len] == '='))
     {
       FREE(envp);

@@ -2538,7 +2538,7 @@ done:
  */
 enum MailboxType nm_path_probe(const char *path, const struct stat *st)
 {
-  if (!path || !mutt_str_startswith(path, NmUrlProtocol, CASE_IGNORE))
+  if (!path || !mutt_istr_startswith(path, NmUrlProtocol))
     return MUTT_UNKNOWN;
 
   return MUTT_NOTMUCH;
