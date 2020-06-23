@@ -491,7 +491,6 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_next_word.o \
 		  test/string/mutt_str_remove_trailing_ws.o \
 		  test/string/mutt_str_replace.o \
-		  test/string/mutt_str_rstrnstr.o \
 		  test/string/mutt_str_skip_email_wsp.o \
 		  test/string/mutt_str_skip_whitespace.o \
 		  test/string/mutt_str_startswith.o \
@@ -509,7 +508,8 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_substr_copy.o \
 		  test/string/mutt_str_substr_dup.o \
 		  test/string/mutt_str_sysexit.o \
-		  test/string/mutt_strn_equal.o
+		  test/string/mutt_strn_equal.o \
+		  test/string/mutt_strn_rstrstr.o
 
 TAGS_OBJS	= test/tags/driver_tags_free.o \
 		  test/tags/driver_tags_get.o \

@@ -1376,7 +1376,7 @@ bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
   SKIPWS(buf);
   spaces = buf - pt;
 
-  pt = (char *) mutt_str_rstrnstr((char *) buf, pos, "tag:");
+  pt = (char *) mutt_strn_rstrstr((char *) buf, pos, "tag:");
   if (pt)
   {
     pt += 4;

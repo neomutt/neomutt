@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_rstrnstr()
+ * Test code for mutt_strn_rstrstr()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -32,17 +32,17 @@ struct RstrnTest
   size_t offset;
 };
 
-void test_mutt_str_rstrnstr(void)
+void test_mutt_strn_rstrstr(void)
 {
-  // const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, const char *needle);
+  // const char *mutt_strn_rstrstr(const char *haystack, size_t haystack_length, const char *needle);
 
   {
-    TEST_CHECK(mutt_str_rstrnstr(NULL, 10, "apple") == NULL);
-    TEST_CHECK(mutt_str_rstrnstr("apple", 0, "apple") == NULL);
-    TEST_CHECK(mutt_str_rstrnstr("apple", 10, NULL) == NULL);
-    TEST_CHECK(mutt_str_rstrnstr("", 1, "apple") == NULL);
-    TEST_CHECK(mutt_str_rstrnstr("text", 1, "apple") == NULL);
-    TEST_CHECK(mutt_str_rstrnstr("textapple", 8, "apple") == NULL);
+    TEST_CHECK(mutt_strn_rstrstr(NULL, 10, "apple") == NULL);
+    TEST_CHECK(mutt_strn_rstrstr("apple", 0, "apple") == NULL);
+    TEST_CHECK(mutt_strn_rstrstr("apple", 10, NULL) == NULL);
+    TEST_CHECK(mutt_strn_rstrstr("", 1, "apple") == NULL);
+    TEST_CHECK(mutt_strn_rstrstr("text", 1, "apple") == NULL);
+    TEST_CHECK(mutt_strn_rstrstr("textapple", 8, "apple") == NULL);
   }
 
   // clang-format off
@@ -66,7 +66,7 @@ void test_mutt_str_rstrnstr(void)
       struct RstrnTest *t = &rstrn_tests[i];
       TEST_CASE_("'%s'", t->str);
 
-      const char *result = mutt_str_rstrnstr(t->str, t->len, find);
+      const char *result = mutt_strn_rstrstr(t->str, t->len, find);
       TEST_CHECK(result == (t->str + t->offset));
     }
   }
