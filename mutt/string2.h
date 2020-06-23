@@ -75,7 +75,6 @@ void        mutt_str_remove_trailing_ws(char *s);
 void        mutt_str_replace(char **p, const char *s);
 char *      mutt_str_skip_email_wsp(const char *s);
 char *      mutt_str_skip_whitespace(const char *p);
-const char *mutt_str_strchrnul(const char *s, char c);
 int         mutt_str_strcoll(const char *a, const char *b);
 char *      mutt_str_strdup(const char *str);
 const char *mutt_str_stristr(const char *haystack, const char *needle);

@@ -518,7 +518,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_whitespace)                             \
   NEOMUTT_TEST_ITEM(test_mutt_str_startswith)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_cat)                                         \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strchrnul)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_strcoll)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_strdup)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_stristr)                                     \

@@ -497,7 +497,6 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_skip_email_wsp.o \
 		  test/string/mutt_str_skip_whitespace.o \
 		  test/string/mutt_str_startswith.o \
-		  test/string/mutt_str_strchrnul.o \
 		  test/string/mutt_str_strcoll.o \
 		  test/string/mutt_str_strdup.o \
 		  test/string/mutt_str_stristr.o \

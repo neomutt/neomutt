@@ -521,31 +521,6 @@ char *mutt_str_lower(char *s)
 }
 
 /**
- * mutt_str_strchrnul - Find first occurrence of character in string
- * @param s Haystack
- * @param c Needle
- * @retval ptr
- * - Success, first occurrence of the character
- * - Failure, pointer to the terminating NUL character
- *
- * This function is like GNU's strchrnul, which is similar to the standard
- * strchr function: it looks for the c character in the NULL-terminated string
- * s and returns a pointer to its location. If c is not in s, instead of
- * returning NULL like its standard counterpart, this function returns a
- * pointer to the terminating NUL character.
- */
-const char *mutt_str_strchrnul(const char *s, char c)
-{
-  if (!s)
-    return NULL;
-
-  for (; *s && (*s != c); s++)
-    ; // do nothing
-
-  return s;
-}
-
-/**
  * mutt_strn_copy - Copy a sub-string into a buffer
  * @param dest   Buffer for the result
  * @param src    Start of the string to copy
