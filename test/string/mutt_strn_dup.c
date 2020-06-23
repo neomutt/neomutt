@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_substr_dup()
+ * Test code for mutt_strn_dup()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -25,20 +25,20 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 
-void test_mutt_str_substr_dup(void)
+void test_mutt_strn_dup(void)
 {
-  // char *mutt_str_substr_dup(const char *begin, const char *end);
+  // char *mutt_strn_dup(const char *begin, size_t len);
 
   // clang-format off
   const char *str = "apple banana\0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
   // clang-format on
 
   {
-    TEST_CHECK(mutt_str_substr_dup(NULL, str + 7) == NULL);
+    TEST_CHECK(mutt_strn_dup(NULL, 7) == NULL);
   }
 
   {
-    char *ptr = mutt_str_substr_dup(str, str + 7);
+    char *ptr = mutt_strn_dup(str, 7);
     TEST_CHECK(ptr != NULL);
     TEST_CHECK(strcmp(ptr, "apple b") == 0);
     TEST_MSG(ptr);
@@ -46,7 +46,7 @@ void test_mutt_str_substr_dup(void)
   }
 
   {
-    char *ptr = mutt_str_substr_dup(str + 3, str + 7);
+    char *ptr = mutt_strn_dup(str + 3, 4);
     TEST_CHECK(ptr != NULL);
     TEST_CHECK(strcmp(ptr, "le b") == 0);
     TEST_MSG(ptr);
@@ -54,7 +54,7 @@ void test_mutt_str_substr_dup(void)
   }
 
   {
-    char *ptr = mutt_str_substr_dup(str + 3, str + 64);
+    char *ptr = mutt_strn_dup(str + 3, 61);
     TEST_CHECK(ptr != NULL);
     TEST_CHECK(strcmp(ptr, "le banana") == 0);
     TEST_MSG(ptr);
@@ -62,15 +62,10 @@ void test_mutt_str_substr_dup(void)
   }
 
   {
-    char *ptr = mutt_str_substr_dup(str + 3, NULL);
+    char *ptr = mutt_strn_dup(str + 3, 0);
     TEST_CHECK(ptr != NULL);
-    TEST_CHECK(strcmp(ptr, "le banana") == 0);
+    TEST_CHECK(strcmp(ptr, "") == 0);
     TEST_MSG(ptr);
     FREE(&ptr);
-  }
-
-  {
-    char *ptr = mutt_str_substr_dup(str + 7, str + 3);
-    TEST_CHECK(ptr == NULL);
   }
 }

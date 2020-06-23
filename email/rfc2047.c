@@ -426,7 +426,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
   const char *icode = "utf-8";
 
   /* Try to convert to UTF-8. */
-  char *u = mutt_str_substr_dup(d, d + dlen);
+  char *u = mutt_strn_dup(d, dlen);
   if (mutt_ch_convert_string(&u, fromcode, icode, 0) != 0)
   {
     rc = 1;
@@ -681,7 +681,7 @@ void rfc2047_decode(char **pd)
       {
         if (C_AssumedCharset)
         {
-          char *conv = mutt_str_substr_dup(s, s + holelen);
+          char *conv = mutt_strn_dup(s, holelen);
           mutt_ch_convert_nonmime_string(&conv);
           mutt_buffer_addstr(&buf, conv);
           FREE(&conv);

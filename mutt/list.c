@@ -256,7 +256,7 @@ size_t mutt_list_str_split(struct ListHead *head, const char *src, char sep)
     while ((*src != '\0') && (*src != sep))
       src++;
 
-    mutt_list_insert_tail(head, mutt_str_substr_dup(start, src));
+    mutt_list_insert_tail(head, mutt_strn_dup(start, src - start));
     count++;
 
     if ((*src == '\0'))

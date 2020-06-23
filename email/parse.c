@@ -147,7 +147,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
       else
       {
         pnew = mutt_param_new();
-        pnew->attribute = mutt_str_substr_dup(s, s + i);
+        pnew->attribute = mutt_strn_dup(s, i);
       }
 
       do
@@ -374,7 +374,7 @@ char *mutt_extract_message_id(const char *s, size_t *len)
     {
       if (len)
         *len = p - decoded + 1;
-      res = mutt_str_substr_dup(beg, p + 1);
+      res = mutt_strn_dup(beg, (p + 1) - beg);
       break;
     }
   }
@@ -768,7 +768,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
             if (!end)
               break;
 
-            char *mlist = mutt_str_substr_dup(beg, end);
+            char *mlist = mutt_strn_dup(beg, end - beg);
             /* Take the first mailto URL */
             if (url_check_scheme(mlist) == U_MAILTO)
             {

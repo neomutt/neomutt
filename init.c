@@ -331,7 +331,7 @@ static bool get_hostname(struct ConfigSet *cs)
   /* some systems report the FQDN instead of just the hostname */
   char *dot = strchr(str, '.');
   if (dot)
-    ShortHostname = mutt_str_substr_dup(str, dot);
+    ShortHostname = mutt_strn_dup(str, dot - str);
   else
     ShortHostname = mutt_str_dup(str);
 
@@ -589,7 +589,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         pc = strchr(tok->dptr, '}');
         if (pc)
         {
-          var = mutt_str_substr_dup(tok->dptr + 1, pc);
+          var = mutt_strn_dup(tok->dptr + 1, pc - (tok->dptr + 1));
           tok->dptr = pc + 1;
 
           if ((flags & MUTT_TOKEN_NOSHELL))
@@ -607,7 +607,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         for (pc = tok->dptr; isalnum((unsigned char) *pc) || (pc[0] == '_'); pc++)
           ; // do nothing
 
-        var = mutt_str_substr_dup(tok->dptr, pc);
+        var = mutt_strn_dup(tok->dptr, pc - tok->dptr);
         tok->dptr = pc;
       }
       if (var)

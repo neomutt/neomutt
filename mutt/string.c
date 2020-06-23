@@ -541,35 +541,21 @@ char *mutt_strn_copy(char *dest, const char *src, size_t len, size_t dsize)
 }
 
 /**
- * mutt_str_substr_dup - Duplicate a sub-string
+ * mutt_strn_dup - Duplicate a sub-string
  * @param begin Start of the string to copy
- * @param end   End of the string to copy
+ * @param len   Length of string to copy
  * @retval ptr New string
- *
- * If end is NULL, then the rest of the string from begin will be copied.
  *
  * The caller must free the returned string.
  */
-char *mutt_str_substr_dup(const char *begin, const char *end)
+char *mutt_strn_dup(const char *begin, size_t len)
 {
-  size_t len;
   char *p = NULL;
 
   if (!begin)
   {
     mutt_debug(LL_DEBUG1, "%s: ERROR: 'begin' is NULL\n", __func__);
     return NULL;
-  }
-
-  if (end)
-  {
-    if (begin > end)
-      return NULL;
-    len = end - begin;
-  }
-  else
-  {
-    len = strlen(begin);
   }
 
   p = mutt_mem_malloc(len + 1);

@@ -1547,7 +1547,7 @@ struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, str
           all_addr = false;
           is_alias = false;
           /* compile the sub-expression */
-          buf = mutt_str_substr_dup(ps.dptr + 1, p);
+          buf = mutt_strn_dup(ps.dptr + 1, p - (ps.dptr + 1));
           tmp2 = mutt_pattern_comp(buf, flags, err);
           if (!tmp2)
           {
@@ -1635,7 +1635,7 @@ struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, str
           goto cleanup;
         }
         /* compile the sub-expression */
-        buf = mutt_str_substr_dup(ps.dptr + 1, p);
+        buf = mutt_strn_dup(ps.dptr + 1, p - (ps.dptr + 1));
         tmp = mutt_pattern_comp(buf, flags, err);
         FREE(&buf);
         if (!tmp)

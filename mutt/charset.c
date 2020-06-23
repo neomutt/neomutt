@@ -302,23 +302,22 @@ int mutt_ch_convert_nonmime_string(char **ps)
   if (!ps)
     return -1;
 
+  char *u = *ps;
+  const size_t ulen = mutt_str_len(u);
+  if (ulen == 0)
+    return 0;
+
   const char *c1 = NULL;
 
   for (const char *c = C_AssumedCharset; c; c = c1 ? c1 + 1 : 0)
   {
-    char *u = *ps;
-    size_t ulen = mutt_str_len(*ps);
-
-    if (!u || (*u == '\0'))
-      return 0;
-
     c1 = strchr(c, ':');
     size_t n = c1 ? c1 - c : mutt_str_len(c);
     if (n == 0)
       return 0;
     char *fromcode = mutt_mem_malloc(n + 1);
     mutt_str_copy(fromcode, c, n + 1);
-    char *s = mutt_str_substr_dup(u, u + ulen);
+    char *s = mutt_strn_dup(u, ulen);
     int m = mutt_ch_convert_string(&s, fromcode, C_Charset, 0);
     FREE(&fromcode);
     FREE(&s);
@@ -1047,7 +1046,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, const char *u,
     memcpy(t, p, n);
     t[n] = '\0';
 
-    char *s = mutt_str_substr_dup(u, u + ulen);
+    char *s = mutt_strn_dup(u, ulen);
     const int rc = d ? mutt_ch_convert_string(&s, fromcode, t, 0) :
                        mutt_ch_check(s, ulen, fromcode, t);
     if (rc)

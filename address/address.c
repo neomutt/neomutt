@@ -937,7 +937,7 @@ static int addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
   if (!ptr || (ptr == mbox) || (ptr[1] == '\0'))
     return -1;
 
-  *user = mutt_str_substr_dup(mbox, ptr);
+  *user = mutt_strn_dup(mbox, ptr - mbox);
   *domain = mutt_str_dup(ptr + 1);
 
   return 0;

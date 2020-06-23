@@ -134,7 +134,7 @@ unsigned char *serial_dump_char_size(char *c, ssize_t size, unsigned char *d,
 
   if (convert && !mutt_str_is_ascii(c, size))
   {
-    p = mutt_str_substr_dup(c, c + size);
+    p = mutt_strn_dup(c, size);
     if (mutt_ch_convert_string(&p, C_Charset, "utf-8", 0) == 0)
     {
       size = mutt_str_len(p) + 1;

@@ -501,10 +501,10 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_skip_email_wsp.o \
 		  test/string/mutt_str_skip_whitespace.o \
 		  test/string/mutt_str_startswith.o \
-		  test/string/mutt_str_substr_dup.o \
 		  test/string/mutt_str_sysexit.o \
 		  test/string/mutt_strn_cat.o \
 		  test/string/mutt_strn_copy.o \
+		  test/string/mutt_strn_dup.o \
 		  test/string/mutt_strn_equal.o \
 		  test/string/mutt_strn_rfind.o
 

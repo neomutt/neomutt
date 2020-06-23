@@ -982,7 +982,7 @@ static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *
     c1 = strchr(c, ':');
     if (c1 == c)
       continue;
-    tcode[i] = mutt_str_substr_dup(c, c1);
+    tcode[i] = mutt_strn_dup(c, c1 - c);
   }
 
   ret = (size_t)(-1);
@@ -994,7 +994,7 @@ static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *
       c1 = strchr(c, ':');
       if (c1 == c)
         continue;
-      fcode = mutt_str_substr_dup(c, c1);
+      fcode = mutt_strn_dup(c, c1 - c);
 
       ret = convert_file_to(fp, fcode, ncodes, (char const *const *) tcode, &cn, info);
       if (ret != (size_t)(-1))
@@ -2115,14 +2115,14 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
       }
     }
 
-    valbuf = mutt_str_substr_dup(start, end);
+    valbuf = mutt_strn_dup(start, end - start);
     rc = print_val(fp, pfx, valbuf, chflags, mutt_str_len(pfx));
   }
   else
   {
     if (!is_from)
     {
-      tagbuf = mutt_str_substr_dup(start, t);
+      tagbuf = mutt_strn_dup(start, t - start);
       /* skip over the colon separating the header field name and value */
       t++;
 
@@ -2132,9 +2132,9 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
       while ((*t == ' ') || (*t == '\t'))
         t++;
     }
-    valbuf = mutt_str_substr_dup(is_from ? start : t, end);
-    rc = fold_one_header(fp, tagbuf, valbuf, end - (is_from ? start : t), pfx,
-                         wraplen, chflags);
+    const char *s = is_from ? start : t;
+    valbuf = mutt_strn_dup(s, end - s);
+    rc = fold_one_header(fp, tagbuf, valbuf, end - s, pfx, wraplen, chflags);
   }
 
   FREE(&tagbuf);
