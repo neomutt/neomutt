@@ -702,10 +702,10 @@ void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *spec
     }
     *pc++ = '"';
     *pc = '\0';
-    mutt_str_strfcpy(buf, tmp, buflen);
+    mutt_str_copy(buf, tmp, buflen);
   }
   else
-    mutt_str_strfcpy(buf, value, buflen);
+    mutt_str_copy(buf, value, buflen);
 }
 
 /**
@@ -1062,7 +1062,7 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
     {
       if (buflen == 0)
         goto done;
-      len = mutt_str_strfcpy(pbuf, addr->personal, buflen + 1 /* strfcpy terminates */);
+      len = mutt_str_copy(pbuf, addr->personal, buflen + 1);
       pbuf += len;
       buflen -= len;
     }
@@ -1092,7 +1092,7 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
     else
     {
       const char *a = display ? mutt_addr_for_display(addr) : addr->mailbox;
-      len = mutt_str_strfcpy(pbuf, a, buflen + 1 /* strfcpy terminates */);
+      len = mutt_str_copy(pbuf, a, buflen + 1);
       pbuf += len;
       buflen -= len;
     }

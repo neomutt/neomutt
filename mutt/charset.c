@@ -317,7 +317,7 @@ int mutt_ch_convert_nonmime_string(char **ps)
     if (n == 0)
       return 0;
     char *fromcode = mutt_mem_malloc(n + 1);
-    mutt_str_strfcpy(fromcode, c, n + 1);
+    mutt_str_copy(fromcode, c, n + 1);
     char *s = mutt_str_substr_dup(u, u + ulen);
     int m = mutt_ch_convert_string(&s, fromcode, C_Charset, 0);
     FREE(&fromcode);
@@ -348,14 +348,14 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 
   char in[1024], scratch[1024];
 
-  mutt_str_strfcpy(in, name, sizeof(in));
+  mutt_str_copy(in, name, sizeof(in));
   char *ext = strchr(in, '/');
   if (ext)
     *ext++ = '\0';
 
   if (mutt_istr_equal(in, "utf-8") || mutt_istr_equal(in, "utf8"))
   {
-    mutt_str_strfcpy(buf, "utf-8", buflen);
+    mutt_str_copy(buf, "utf-8", buflen);
     goto out;
   }
 
@@ -370,18 +370,18 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
   else if ((plen = mutt_istr_startswith(in, "iso8859-")))
     snprintf(scratch, sizeof(scratch), "iso_8859-%s", in + plen);
   else
-    mutt_str_strfcpy(scratch, in, sizeof(scratch));
+    mutt_str_copy(scratch, in, sizeof(scratch));
 
   for (size_t i = 0; PreferredMimeNames[i].key; i++)
   {
     if (mutt_istr_equal(scratch, PreferredMimeNames[i].key))
     {
-      mutt_str_strfcpy(buf, PreferredMimeNames[i].pref, buflen);
+      mutt_str_copy(buf, PreferredMimeNames[i].pref, buflen);
       goto out;
     }
   }
 
-  mutt_str_strfcpy(buf, scratch, buflen);
+  mutt_str_copy(buf, scratch, buflen);
 
   /* for cosmetics' sake, transform to lowercase. */
   for (char *p = buf; *p; p++)
@@ -438,7 +438,7 @@ char *mutt_ch_get_default_charset(void)
   if (c)
   {
     c1 = strchr(c, ':');
-    mutt_str_strfcpy(fcharset, c, c1 ? (c1 - c + 1) : sizeof(fcharset));
+    mutt_str_copy(fcharset, c, c1 ? (c1 - c + 1) : sizeof(fcharset));
     return fcharset;
   }
   return strcpy(fcharset, "us-ascii");

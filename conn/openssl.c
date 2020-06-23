@@ -408,7 +408,7 @@ static char *asn1time_to_string(ASN1_UTCTIME *tm)
   static char buf[64];
   BIO *bio = NULL;
 
-  mutt_str_strfcpy(buf, _("[invalid date]"), sizeof(buf));
+  mutt_str_copy(buf, _("[invalid date]"), sizeof(buf));
 
   bio = BIO_new(BIO_s_mem());
   if (bio)
@@ -758,7 +758,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (!x509_subject)
     {
       if (err && errlen)
-        mutt_str_strfcpy(err, _("can't get certificate subject"), errlen);
+        mutt_str_copy(err, _("can't get certificate subject"), errlen);
       goto out;
     }
 
@@ -767,7 +767,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (bufsize == -1)
     {
       if (err && errlen)
-        mutt_str_strfcpy(err, _("can't get certificate common name"), errlen);
+        mutt_str_copy(err, _("can't get certificate common name"), errlen);
       goto out;
     }
     bufsize++; /* space for the terminal nul char */
@@ -775,7 +775,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (X509_NAME_get_text_by_NID(x509_subject, NID_commonName, buf, bufsize) == -1)
     {
       if (err && errlen)
-        mutt_str_strfcpy(err, _("can't get certificate common name"), errlen);
+        mutt_str_copy(err, _("can't get certificate common name"), errlen);
       goto out;
     }
     /* cast is safe since bufsize is incremented above, so bufsize-1 is always

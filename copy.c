@@ -482,7 +482,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     if (folder && !(C_Weed && mutt_matches_ignore("folder")))
     {
       char buf[1024];
-      mutt_str_strfcpy(buf, folder, sizeof(buf));
+      mutt_str_copy(buf, folder, sizeof(buf));
       mutt_pretty_mailbox(buf, sizeof(buf));
 
       fputs("Folder: ", fp_out);
@@ -612,7 +612,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
   if (cmflags & MUTT_CM_PREFIX)
   {
     if (C_TextFlowed)
-      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
+      mutt_str_copy(prefix, ">", sizeof(prefix));
     else
     {
       mutt_make_string(prefix, sizeof(prefix), wraplen, NONULL(C_IndentString),
@@ -1115,7 +1115,7 @@ static int address_header_decode(char **h)
   else
   {
     *h = mutt_mem_calloc(1, l + 2);
-    mutt_str_strfcpy(*h, s, l + 1);
+    mutt_str_copy(*h, s, l + 1);
     format_address_header(h, &al);
   }
 

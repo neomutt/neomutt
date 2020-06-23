@@ -1383,7 +1383,7 @@ static int rename_maildir_filename(const char *old, char *buf, size_t buflen, st
   char suffix[PATH_MAX];
   char folder[PATH_MAX];
 
-  mutt_str_strfcpy(folder, old, sizeof(folder));
+  mutt_str_copy(folder, old, sizeof(folder));
   char *p = strrchr(folder, '/');
   if (p)
   {
@@ -1393,7 +1393,7 @@ static int rename_maildir_filename(const char *old, char *buf, size_t buflen, st
   else
     p = folder;
 
-  mutt_str_strfcpy(filename, p, sizeof(filename));
+  mutt_str_copy(filename, p, sizeof(filename));
 
   /* remove (new,cur,...) from folder path */
   p = strrchr(folder, '/');
@@ -1784,7 +1784,7 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
 
   url_pct_encode(&url[added], sizeof(url) - added, buf);
 
-  mutt_str_strfcpy(buf, url, buflen);
+  mutt_str_copy(buf, url, buflen);
   buf[buflen - 1] = '\0';
 
   if (using_default_data)
@@ -2378,7 +2378,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 
     if (edata->oldpath)
     {
-      mutt_str_strfcpy(old_file, edata->oldpath, sizeof(old_file));
+      mutt_str_copy(old_file, edata->oldpath, sizeof(old_file));
       old_file[sizeof(old_file) - 1] = '\0';
       mutt_debug(LL_DEBUG2, "nm: fixing obsolete path '%s'\n", old_file);
     }

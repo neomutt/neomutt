@@ -178,7 +178,7 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
 
   imap_fix_path(adata->delim, name, buf, sizeof(buf));
   if (buf[0] == '\0')
-    mutt_str_strfcpy(buf, "INBOX", sizeof(buf));
+    mutt_str_copy(buf, "INBOX", sizeof(buf));
   mdata->name = mutt_str_strdup(buf);
 
   imap_munge_mbox_name(adata->unicode, buf, sizeof(buf), mdata->name);
@@ -268,7 +268,7 @@ void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen)
 {
   /* Make a copy of the mailbox name, but only if the pointers are different */
   if (mbox != buf)
-    mutt_str_strfcpy(buf, mbox, buflen);
+    mutt_str_copy(buf, mbox, buflen);
 
   int n = mutt_str_strlen(buf);
 
@@ -313,7 +313,7 @@ void imap_get_parent_path(const char *path, char *buf, size_t buflen)
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
   {
-    mutt_str_strfcpy(buf, path, buflen);
+    mutt_str_copy(buf, path, buflen);
     return;
   }
 
@@ -675,7 +675,7 @@ int imap_parse_path(const char *path, struct ConnAccount *cac, char *mailbox, si
   if (url->scheme == U_IMAPS)
     cac->flags |= MUTT_ACCT_SSL;
 
-  mutt_str_strfcpy(mailbox, url->path, mailboxlen);
+  mutt_str_copy(mailbox, url->path, mailboxlen);
 
   url_free(&url);
 

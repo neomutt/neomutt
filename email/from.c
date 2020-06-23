@@ -67,7 +67,7 @@ bool is_from(const char *s, char *path, size_t pathlen, time_t *tp)
     const regmatch_t *msender =
         &match[lax ? PREX_MBOX_FROM_LAX_MATCH_ENVSENDER : PREX_MBOX_FROM_MATCH_ENVSENDER];
     const size_t dsize = MIN(pathlen, mutt_regmatch_len(msender) + 1);
-    mutt_str_strfcpy(path, s + mutt_regmatch_start(msender), dsize);
+    mutt_str_copy(path, s + mutt_regmatch_start(msender), dsize);
   }
 
   if (tp)

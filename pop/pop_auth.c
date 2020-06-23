@@ -111,7 +111,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   /* looping protocol */
   while (true)
   {
-    mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
+    mutt_str_copy(buf + olen, "\r\n", bufsize - olen);
     mutt_socket_send(adata->conn, buf);
     if (mutt_socket_readln_d(inbuf, sizeof(inbuf), adata->conn, MUTT_SOCK_LOG_FULL) < 0)
     {

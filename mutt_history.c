@@ -150,7 +150,7 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
     switch (mutt_menu_loop(menu))
     {
       case OP_GENERIC_SELECT_ENTRY:
-        mutt_str_strfcpy(buf, matches[menu->current], buflen);
+        mutt_str_copy(buf, matches[menu->current], buflen);
         /* fall through */
 
       case OP_EXIT:
@@ -178,7 +178,7 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
   if (match_count)
   {
     if (match_count == 1)
-      mutt_str_strfcpy(buf, matches[0], buflen);
+      mutt_str_copy(buf, matches[0], buflen);
     else
       history_menu(buf, buflen, matches, match_count);
   }

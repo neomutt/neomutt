@@ -69,7 +69,7 @@ void test_mutt_str_inline_replace(void)
 
       memset(buf, 0, sizeof(buf));
 
-      mutt_str_strfcpy(buf, t->initial, sizeof(buf));
+      mutt_str_copy(buf, t->initial, sizeof(buf));
       bool result = mutt_str_inline_replace(buf, sizeof(buf), t->replace_len, t->replace);
       TEST_CHECK(result == t->success);
       if (result)

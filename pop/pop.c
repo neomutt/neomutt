@@ -87,7 +87,7 @@ bool C_PopLast;  ///< Config: (pop) Use the 'LAST' command to fetch new mail
 static const char *cache_id(const char *id)
 {
   static char clean[128];
-  mutt_str_strfcpy(clean, id, sizeof(clean));
+  mutt_str_copy(clean, id, sizeof(clean));
   mutt_file_sanitize_filename(clean, true);
   return clean;
 }
@@ -613,7 +613,7 @@ void pop_fetch_mail(void)
   mutt_message(_("Checking for new messages..."));
 
   /* find out how many messages are in the mailbox. */
-  mutt_str_strfcpy(buf, "STAT\r\n", sizeof(buf));
+  mutt_str_copy(buf, "STAT\r\n", sizeof(buf));
   ret = pop_query(adata, buf, sizeof(buf));
   if (ret == -1)
     goto fail;
@@ -628,7 +628,7 @@ void pop_fetch_mail(void)
   /* only get unread messages */
   if ((msgs > 0) && C_PopLast)
   {
-    mutt_str_strfcpy(buf, "LAST\r\n", sizeof(buf));
+    mutt_str_copy(buf, "LAST\r\n", sizeof(buf));
     ret = pop_query(adata, buf, sizeof(buf));
     if (ret == -1)
       goto fail;
@@ -722,14 +722,14 @@ void pop_fetch_mail(void)
   if (rset)
   {
     /* make sure no messages get deleted */
-    mutt_str_strfcpy(buf, "RSET\r\n", sizeof(buf));
+    mutt_str_copy(buf, "RSET\r\n", sizeof(buf));
     if (pop_query(adata, buf, sizeof(buf)) == -1)
       goto fail;
   }
 
 finish:
   /* exit gracefully */
-  mutt_str_strfcpy(buf, "QUIT\r\n", sizeof(buf));
+  mutt_str_copy(buf, "QUIT\r\n", sizeof(buf));
   if (pop_query(adata, buf, sizeof(buf)) == -1)
     goto fail;
   mutt_socket_close(conn);
@@ -989,7 +989,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
 
     if (rc == 0)
     {
-      mutt_str_strfcpy(buf, "QUIT\r\n", sizeof(buf));
+      mutt_str_copy(buf, "QUIT\r\n", sizeof(buf));
       rc = pop_query(adata, buf, sizeof(buf));
     }
 

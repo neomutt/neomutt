@@ -3021,7 +3021,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   /* For clearsigned messages we won't be able to get a character set
    * but we know that this may only be text thus we assume Latin-1 here. */
   if (!mutt_body_get_charset(m, body_charset, sizeof(body_charset)))
-    mutt_str_strfcpy(body_charset, "iso-8859-1", sizeof(body_charset));
+    mutt_str_copy(body_charset, "iso-8859-1", sizeof(body_charset));
 
   fseeko(s->fp_in, m->offset, SEEK_SET);
   last_pos = m->offset;
@@ -5195,7 +5195,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
     {
       if (mutt_istr_equal(whatfor, l->what))
       {
-        mutt_str_strfcpy(resp, l->dflt, sizeof(resp));
+        mutt_str_copy(resp, l->dflt, sizeof(resp));
         break;
       }
     }

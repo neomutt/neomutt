@@ -434,7 +434,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   size_t linelen = 0;
   pid_t pid;
 
-  mutt_str_strfcpy(rcfile, rcfile_path, sizeof(rcfile));
+  mutt_str_copy(rcfile, rcfile_path, sizeof(rcfile));
 
   size_t rcfilelen = mutt_str_strlen(rcfile);
   if (rcfilelen == 0)
@@ -1526,7 +1526,7 @@ enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
       mutt_buffer_printf(err, _("source: error at %s"), s->dptr);
       return MUTT_CMD_ERROR;
     }
-    mutt_str_strfcpy(path, buf->data, sizeof(path));
+    mutt_str_copy(path, buf->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
 
     if (source_rc(path, err) < 0)

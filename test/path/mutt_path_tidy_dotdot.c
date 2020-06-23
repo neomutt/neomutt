@@ -82,7 +82,7 @@ void test_mutt_path_tidy_dotdot(void)
     {
       TEST_CASE(tests[i][0]);
 
-      mutt_str_strfcpy(buf, tests[i][0], sizeof(buf));
+      mutt_str_copy(buf, tests[i][0], sizeof(buf));
       mutt_path_tidy_dotdot(buf);
       if (!TEST_CHECK(mutt_str_equal(buf, tests[i][1])))
       {

@@ -81,7 +81,7 @@ void test_mutt_istr_remall(void)
     {
       struct RemallTest *t = &remall_tests[i];
       memset(buf, 0, sizeof(buf));
-      mutt_str_strfcpy(buf, t->str, sizeof(buf));
+      mutt_str_copy(buf, t->str, sizeof(buf));
       TEST_CASE(buf);
 
       mutt_istr_remall(buf, remove);

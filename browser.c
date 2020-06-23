@@ -1076,13 +1076,13 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     /* Check what kind of dir LastDirBackup is. */
     if (imap_path_probe(mutt_b2s(&LastDirBackup), NULL) == MUTT_IMAP)
     {
-      mutt_str_strfcpy(target_dir, mutt_b2s(&LastDirBackup), sizeof(target_dir));
+      mutt_str_copy(target_dir, mutt_b2s(&LastDirBackup), sizeof(target_dir));
       imap_clean_path(target_dir, sizeof(target_dir));
     }
     else
 #endif
-      mutt_str_strfcpy(target_dir, strrchr(mutt_b2s(&LastDirBackup), '/') + 1,
-                       sizeof(target_dir));
+      mutt_str_copy(target_dir, strrchr(mutt_b2s(&LastDirBackup), '/') + 1,
+                    sizeof(target_dir));
 
     /* If we get here, it means that LastDir is the parent directory of
      * LastDirBackup.  I.e., we're returning from a subdirectory, and we want
@@ -1983,7 +1983,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               if (!mutt_str_equal(mutt_b2s(&LastDir), C_Folder))
               {
                 /* Stores into goto_swapper LastDir, and swaps to C_Folder */
-                mutt_str_strfcpy(goto_swapper, mutt_b2s(&LastDir), sizeof(goto_swapper));
+                mutt_str_copy(goto_swapper, mutt_b2s(&LastDir), sizeof(goto_swapper));
                 mutt_buffer_copy(&LastDirBackup, &LastDir);
                 mutt_buffer_strcpy(&LastDir, C_Folder);
               }
@@ -2243,7 +2243,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #ifdef USE_IMAP
         {
           char tmp2[256];
-          mutt_str_strfcpy(tmp2, state.entry[menu->current].name, sizeof(tmp2));
+          mutt_str_copy(tmp2, state.entry[menu->current].name, sizeof(tmp2));
           mutt_expand_path(tmp2, sizeof(tmp2));
           imap_subscribe(tmp2, (op == OP_BROWSER_SUBSCRIBE));
         }
@@ -2284,7 +2284,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 
   mutt_buffer_strcpy(f_buf, NONULL(file));
   mutt_buffer_select_file(f_buf, flags, files, numfiles);
-  mutt_str_strfcpy(file, mutt_b2s(f_buf), filelen);
+  mutt_str_copy(file, mutt_b2s(f_buf), filelen);
 
   mutt_buffer_pool_release(&f_buf);
 }

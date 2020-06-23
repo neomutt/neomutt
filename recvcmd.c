@@ -209,9 +209,9 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   }
 
   if (p)
-    mutt_str_strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
+    mutt_str_copy(prompt, _("Bounce message to: "), sizeof(prompt));
   else
-    mutt_str_strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+    mutt_str_copy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
 
   buf[0] = '\0';
   if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || (buf[0] == '\0'))
@@ -408,14 +408,14 @@ static void include_header(bool quote, FILE *fp_in, struct Email *e, FILE *fp_ou
   if (quote)
   {
     if (prefix)
-      mutt_str_strfcpy(prefix2, prefix, sizeof(prefix2));
+      mutt_str_copy(prefix2, prefix, sizeof(prefix2));
     else if (!C_TextFlowed)
     {
       mutt_make_string(prefix2, sizeof(prefix2), 0, NONULL(C_IndentString),
                        Context, Context->mailbox, e);
     }
     else
-      mutt_str_strfcpy(prefix2, ">", sizeof(prefix2));
+      mutt_str_copy(prefix2, ">", sizeof(prefix2));
 
     chflags |= CH_PREFIX;
   }
@@ -504,7 +504,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   if (C_ForwardQuote)
   {
     if (C_TextFlowed)
-      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
+      mutt_str_copy(prefix, ">", sizeof(prefix));
     else
     {
       mutt_make_string(prefix, sizeof(prefix), 0, NONULL(C_IndentString),
@@ -992,7 +992,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
     if (C_TextFlowed)
     {
-      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
+      mutt_str_copy(prefix, ">", sizeof(prefix));
     }
     else
     {

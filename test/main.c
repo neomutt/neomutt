@@ -500,6 +500,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_atoui)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_atoul)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_atoull)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_str_copy)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_str_dequote_comment)                             \
   NEOMUTT_TEST_ITEM(test_mutt_str_equal)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_find_word)                                   \
@@ -520,10 +521,8 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_strchrnul)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_strcoll)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_strdup)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strfcpy)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_stristr)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_strlen)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strnfcpy)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_str_substr_copy)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_substr_dup)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_sysexit)                                     \

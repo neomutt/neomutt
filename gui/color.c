@@ -432,15 +432,15 @@ static char *get_color_name(char *dest, size_t destlen, uint32_t val)
   switch (val)
   {
     case COLOR_YELLOW:
-      mutt_str_strfcpy(dest, missing[0], destlen);
+      mutt_str_copy(dest, missing[0], destlen);
       return dest;
 
     case COLOR_WHITE:
-      mutt_str_strfcpy(dest, missing[1], destlen);
+      mutt_str_copy(dest, missing[1], destlen);
       return dest;
 
     case COLOR_DEFAULT:
-      mutt_str_strfcpy(dest, missing[2], destlen);
+      mutt_str_copy(dest, missing[2], destlen);
       return dest;
   }
 
@@ -448,7 +448,7 @@ static char *get_color_name(char *dest, size_t destlen, uint32_t val)
   {
     if (ColorNames[i].value == val)
     {
-      mutt_str_strfcpy(dest, ColorNames[i].name, destlen);
+      mutt_str_copy(dest, ColorNames[i].name, destlen);
       return dest;
     }
   }

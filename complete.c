@@ -222,16 +222,16 @@ int mutt_complete(char *buf, size_t buflen)
 
   if (!mutt_buffer_is_empty(dirpart))
   {
-    mutt_str_strfcpy(buf, mutt_b2s(dirpart), buflen);
+    mutt_str_copy(buf, mutt_b2s(dirpart), buflen);
     if (!mutt_str_equal("/", mutt_b2s(dirpart)) &&
         (mutt_b2s(dirpart)[0] != '=') && (mutt_b2s(dirpart)[0] != '+'))
     {
-      mutt_str_strfcpy(buf + strlen(buf), "/", buflen - strlen(buf));
+      mutt_str_copy(buf + strlen(buf), "/", buflen - strlen(buf));
     }
-    mutt_str_strfcpy(buf + strlen(buf), mutt_b2s(filepart), buflen - strlen(buf));
+    mutt_str_copy(buf + strlen(buf), mutt_b2s(filepart), buflen - strlen(buf));
   }
   else
-    mutt_str_strfcpy(buf, mutt_b2s(filepart), buflen);
+    mutt_str_copy(buf, mutt_b2s(filepart), buflen);
 
 cleanup:
   mutt_buffer_pool_release(&dirpart);

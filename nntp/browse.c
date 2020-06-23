@@ -84,7 +84,7 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
       break;
 
     case 'f':
-      mutt_str_strfcpy(fn, folder->ff->name, sizeof(fn));
+      mutt_str_copy(fn, folder->ff->name, sizeof(fn));
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, fn);
       break;

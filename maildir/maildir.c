@@ -610,9 +610,9 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e
     *suffix = '\0';
 
   if (e && (e->read || e->old))
-    mutt_str_strfcpy(subdir, "cur", sizeof(subdir));
+    mutt_str_copy(subdir, "cur", sizeof(subdir));
   else
-    mutt_str_strfcpy(subdir, "new", sizeof(subdir));
+    mutt_str_copy(subdir, "new", sizeof(subdir));
 
   mode_t omask = umask(mh_umask(m));
   while (true)

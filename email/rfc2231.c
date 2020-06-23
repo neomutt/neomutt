@@ -93,7 +93,7 @@ static char *get_charset(char *value, char *charset, size_t chslen)
   }
 
   *t = '\0';
-  mutt_str_strfcpy(charset, value, chslen);
+  mutt_str_copy(charset, value, chslen);
 
   char *u = strchr(t + 1, '\'');
   if (u)
@@ -190,7 +190,7 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
     char *value = NULL;
     size_t l = 0;
 
-    mutt_str_strfcpy(attribute, par->attribute, sizeof(attribute));
+    mutt_str_copy(attribute, par->attribute, sizeof(attribute));
 
     const bool encoded = par->encoded;
     char *valp = NULL;

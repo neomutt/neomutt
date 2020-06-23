@@ -609,7 +609,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
   if (!C_CheckNew)
     return 0;
 
-  mutt_str_strfcpy(buf, mailbox_path(m), sizeof(buf));
+  mutt_str_copy(buf, mailbox_path(m), sizeof(buf));
   if (stat(buf, &st) == -1)
     return -1;
 

@@ -2700,7 +2700,7 @@ int mutt_search_command(int cur, int op)
   if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
     char buf[256];
-    mutt_str_strfcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
+    mutt_str_copy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
     if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                             _("Search for: ") :
                             _("Reverse search for: "),
@@ -2726,8 +2726,8 @@ int mutt_search_command(int cur, int op)
       struct Buffer err;
       mutt_buffer_init(&err);
       OptSearchInvalid = true;
-      mutt_str_strfcpy(LastSearch, buf, sizeof(LastSearch));
-      mutt_str_strfcpy(LastSearchExpn, mutt_b2s(tmp), sizeof(LastSearchExpn));
+      mutt_str_copy(LastSearch, buf, sizeof(LastSearch));
+      mutt_str_copy(LastSearchExpn, mutt_b2s(tmp), sizeof(LastSearchExpn));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;

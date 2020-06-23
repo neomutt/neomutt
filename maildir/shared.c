@@ -317,7 +317,7 @@ static void maildir_update_mtime(struct Mailbox *m)
     if (stat(buf, &st) == 0)
       mutt_file_get_stat_timespec(&mdata->mtime_cur, &st, MUTT_STAT_MTIME);
 
-    mutt_str_strfcpy(buf, mailbox_path(m), sizeof(buf));
+    mutt_str_copy(buf, mailbox_path(m), sizeof(buf));
   }
 
   if (stat(buf, &st) == 0)
@@ -965,12 +965,12 @@ int md_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
 
   /* extract the subdir */
   char *s = strrchr(msg->path, '/') + 1;
-  mutt_str_strfcpy(subdir, s, 4);
+  mutt_str_copy(subdir, s, 4);
 
   /* extract the flags */
   s = strchr(s, ':');
   if (s)
-    mutt_str_strfcpy(suffix, s, sizeof(suffix));
+    mutt_str_copy(suffix, s, sizeof(suffix));
   else
     suffix[0] = '\0';
 
@@ -1066,7 +1066,7 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
     char oldpath[PATH_MAX];
     char partpath[PATH_MAX];
     snprintf(oldpath, sizeof(oldpath), "%s/%s", mailbox_path(m), e->path);
-    mutt_str_strfcpy(partpath, e->path, sizeof(partpath));
+    mutt_str_copy(partpath, e->path, sizeof(partpath));
 
     if (m->type == MUTT_MAILDIR)
       rc = md_commit_message(m, dest, e);

@@ -148,7 +148,7 @@ struct ConfigSubset *cs_subset_new(const char *name, struct ConfigSubset *sub_pa
     if (sub_parent && sub_parent->name)
       snprintf(scope, sizeof(scope), "%s:%s", sub_parent->name, name);
     else
-      mutt_str_strfcpy(scope, name, sizeof(scope));
+      mutt_str_copy(scope, name, sizeof(scope));
 
     sub->name = mutt_str_strdup(scope);
   }
@@ -174,7 +174,7 @@ struct HashElem *cs_subset_lookup(const struct ConfigSubset *sub, const char *na
   if (sub->name)
     snprintf(scope, sizeof(scope), "%s:%s", sub->name, name);
   else
-    mutt_str_strfcpy(scope, name, sizeof(scope));
+    mutt_str_copy(scope, name, sizeof(scope));
 
   return cs_get_elem(sub->cs, scope);
 }

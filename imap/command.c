@@ -686,7 +686,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
 
   mutt_debug(LL_DEBUG3, "Subscribing to %s\n", list.name);
 
-  mutt_str_strfcpy(buf, "mailboxes \"", sizeof(buf));
+  mutt_str_copy(buf, "mailboxes \"", sizeof(buf));
   mutt_account_tourl(&adata->conn->account, &url);
   /* escape \ and " */
   imap_quote_string(quoted_name, sizeof(quoted_name), list.name, true);

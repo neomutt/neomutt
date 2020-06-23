@@ -297,7 +297,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
     else if ((plen = mutt_str_startswith(buf, "AUTHINFO ")))
     {
       mutt_str_cat(buf, sizeof(buf), " ");
-      mutt_str_strfcpy(authinfo, buf + plen - 1, sizeof(authinfo));
+      mutt_str_copy(authinfo, buf + plen - 1, sizeof(authinfo));
     }
 #ifdef USE_SASL
     else if ((plen = mutt_str_startswith(buf, "SASL ")))
@@ -324,7 +324,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
   *buf = '\0';
 #ifdef USE_SASL
   if (adata->authenticators && strcasestr(authinfo, " SASL "))
-    mutt_str_strfcpy(buf, adata->authenticators, sizeof(buf));
+    mutt_str_copy(buf, adata->authenticators, sizeof(buf));
 #endif
   if (strcasestr(authinfo, " USER "))
   {
@@ -473,7 +473,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
           if (strcasecmp(adata->overview_fmt + b, "Bytes:") == 0)
           {
             size_t len = strlen(adata->overview_fmt + b);
-            mutt_str_strfcpy(adata->overview_fmt + b, "Content-Length:", len + 1);
+            mutt_str_copy(adata->overview_fmt + b, "Content-Length:", len + 1);
             off = b + len;
           }
           adata->overview_fmt[off++] = '\0';
@@ -555,10 +555,10 @@ static int nntp_auth(struct NntpAccountData *adata)
 
     /* get list of authenticators */
     if (C_NntpAuthenticators)
-      mutt_str_strfcpy(authenticators, C_NntpAuthenticators, sizeof(authenticators));
+      mutt_str_copy(authenticators, C_NntpAuthenticators, sizeof(authenticators));
     else if (adata->hasCAPABILITIES)
     {
-      mutt_str_strfcpy(authenticators, adata->authenticators, sizeof(authenticators));
+      mutt_str_copy(authenticators, adata->authenticators, sizeof(authenticators));
       p = authenticators;
       while (*p)
       {
@@ -852,7 +852,7 @@ static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
       break;
   }
 
-  mutt_str_strfcpy(line, buf, linelen);
+  mutt_str_copy(line, buf, linelen);
   return 0;
 }
 
@@ -889,12 +889,12 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
     if (msg)
       mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
 
-    mutt_str_strfcpy(buf, query, sizeof(buf));
+    mutt_str_copy(buf, query, sizeof(buf));
     if (nntp_query(mdata, buf, sizeof(buf)) < 0)
       return -1;
     if (buf[0] != '2')
     {
-      mutt_str_strfcpy(query, buf, qlen);
+      mutt_str_copy(query, buf, qlen);
       return 1;
     }
 
@@ -923,7 +923,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
           p++;
       }
 
-      mutt_str_strfcpy(line + off, p, sizeof(buf));
+      mutt_str_copy(line + off, p, sizeof(buf));
 
       if (chunk >= sizeof(buf))
         off += strlen(p);
@@ -1754,7 +1754,7 @@ static int nntp_date(struct NntpAccountData *adata, time_t *now)
 
     mdata.adata = adata;
     mdata.group = NULL;
-    mutt_str_strfcpy(buf, "DATE\r\n", sizeof(buf));
+    mutt_str_copy(buf, "DATE\r\n", sizeof(buf));
     if (nntp_query(&mdata, buf, sizeof(buf)) < 0)
       return -1;
 
@@ -2000,7 +2000,7 @@ int nntp_post(struct Mailbox *m, const char *msg)
     return -1;
   }
 
-  mutt_str_strfcpy(buf, "POST\r\n", sizeof(buf));
+  mutt_str_copy(buf, "POST\r\n", sizeof(buf));
   if (nntp_query(mdata, buf, sizeof(buf)) < 0)
   {
     mutt_file_fclose(&fp);
@@ -2073,7 +2073,7 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new)
   tmp_mdata.adata = adata;
   tmp_mdata.group = NULL;
   i = adata->groups_num;
-  mutt_str_strfcpy(buf, "LIST\r\n", sizeof(buf));
+  mutt_str_copy(buf, "LIST\r\n", sizeof(buf));
   rc = nntp_fetch_lines(&tmp_mdata, buf, sizeof(buf), msg, nntp_add_group, adata);
   if (rc)
   {
@@ -2388,7 +2388,7 @@ static struct Account *nntp_ac_find(struct Account *a, const char *path)
 
   struct Url url = { 0 };
   char tmp[PATH_MAX];
-  mutt_str_strfcpy(tmp, path, sizeof(tmp));
+  mutt_str_copy(tmp, path, sizeof(tmp));
   url_parse(&url, tmp);
 
   struct ImapAccountData *adata = a->data;

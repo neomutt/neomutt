@@ -180,7 +180,7 @@ static int compare_to(const void *a, const void *b)
   struct Email const *const *ppb = (struct Email const *const *) b;
   char fa[128];
 
-  mutt_str_strfcpy(fa, mutt_get_name(TAILQ_FIRST(&(*ppa)->env->to)), sizeof(fa));
+  mutt_str_copy(fa, mutt_get_name(TAILQ_FIRST(&(*ppa)->env->to)), sizeof(fa));
   const char *fb = mutt_get_name(TAILQ_FIRST(&(*ppb)->env->to));
   int result = mutt_istrn_cmp(fa, fb, sizeof(fa));
   result = perform_auxsort(result, a, b);
@@ -196,7 +196,7 @@ static int compare_from(const void *a, const void *b)
   struct Email const *const *ppb = (struct Email const *const *) b;
   char fa[128];
 
-  mutt_str_strfcpy(fa, mutt_get_name(TAILQ_FIRST(&(*ppa)->env->from)), sizeof(fa));
+  mutt_str_copy(fa, mutt_get_name(TAILQ_FIRST(&(*ppa)->env->from)), sizeof(fa));
   const char *fb = mutt_get_name(TAILQ_FIRST(&(*ppb)->env->from));
   int result = mutt_istrn_cmp(fa, fb, sizeof(fa));
   result = perform_auxsort(result, a, b);

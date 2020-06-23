@@ -317,7 +317,7 @@ static void make_entry(char *buf, size_t buflen, struct Menu *menu, int i)
 {
   if (menu->dialog)
   {
-    mutt_str_strfcpy(buf, NONULL(menu->dialog[i]), buflen);
+    mutt_str_copy(buf, NONULL(menu->dialog[i]), buflen);
     menu->current = -1; /* hide menubar */
   }
   else
@@ -1165,8 +1165,8 @@ static int search(struct Menu *menu, int op)
 
   if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
-    mutt_str_strfcpy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "",
-                     sizeof(buf));
+    mutt_str_copy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "",
+                  sizeof(buf));
     if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                             _("Search for: ") :
                             _("Reverse search for: "),

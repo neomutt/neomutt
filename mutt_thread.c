@@ -322,11 +322,11 @@ void mutt_draw_tree(struct Context *ctx)
         if (start_depth > 1)
         {
           strncpy(new_tree, pfx, (size_t) width * (start_depth - 1));
-          mutt_str_strfcpy(new_tree + (start_depth - 1) * width, arrow,
-                           (1 + depth - start_depth) * width + 2);
+          mutt_str_copy(new_tree + (start_depth - 1) * width, arrow,
+                        (1 + depth - start_depth) * width + 2);
         }
         else
-          mutt_str_strfcpy(new_tree, arrow, ((size_t) depth * width) + 2);
+          mutt_str_copy(new_tree, arrow, ((size_t) depth * width) + 2);
         tree->message->tree = new_tree;
       }
     }

@@ -211,7 +211,7 @@ static void dot_type_string(FILE *fp, const char *name, const char *str, bool fo
 
   if (str)
   {
-    mutt_str_strfcpy(buf, str, sizeof(buf));
+    mutt_str_copy(buf, str, sizeof(buf));
     dot_type_string_escape(buf, sizeof(buf));
   }
 
@@ -385,18 +385,18 @@ static void dot_path_fs(char *buf, size_t buflen, const char *path)
   else
     slash = path;
 
-  mutt_str_strfcpy(buf, slash, buflen);
+  mutt_str_copy(buf, slash, buflen);
 }
 
 static void dot_path_imap(char *buf, size_t buflen, const char *path)
 {
   char tmp[1024] = { 0 };
-  mutt_str_strfcpy(tmp, path, sizeof(tmp));
+  mutt_str_copy(tmp, path, sizeof(tmp));
 
   struct Url *u = url_parse(tmp);
 
   if (u->path && (u->path[0] != '\0'))
-    mutt_str_strfcpy(buf, u->path, buflen);
+    mutt_str_copy(buf, u->path, buflen);
   else
     snprintf(buf, buflen, "%s:%s", u->host, u->user);
 

@@ -874,7 +874,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
     {
       if (mutt_istr_equal(whatfor, l->what))
       {
-        mutt_str_strfcpy(resp, l->dflt, sizeof(resp));
+        mutt_str_copy(resp, l->dflt, sizeof(resp));
         break;
       }
     }

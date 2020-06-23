@@ -44,18 +44,18 @@ int mutt_account_fromurl(struct ConnAccount *cac, const struct Url *url)
 {
   /* must be present */
   if (url->host)
-    mutt_str_strfcpy(cac->host, url->host, sizeof(cac->host));
+    mutt_str_copy(cac->host, url->host, sizeof(cac->host));
   else
     return -1;
 
   if (url->user)
   {
-    mutt_str_strfcpy(cac->user, url->user, sizeof(cac->user));
+    mutt_str_copy(cac->user, url->user, sizeof(cac->user));
     cac->flags |= MUTT_ACCT_USER;
   }
   if (url->pass)
   {
-    mutt_str_strfcpy(cac->pass, url->pass, sizeof(cac->pass));
+    mutt_str_copy(cac->pass, url->pass, sizeof(cac->pass));
     cac->flags |= MUTT_ACCT_PASS;
   }
   if (url->port)

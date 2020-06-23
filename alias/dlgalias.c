@@ -354,8 +354,8 @@ int alias_complete(char *buf, size_t buflen)
       {
         if (bestname[0] == '\0') /* init */
         {
-          mutt_str_strfcpy(bestname, np->name,
-                           MIN(mutt_str_strlen(np->name) + 1, sizeof(bestname)));
+          mutt_str_copy(bestname, np->name,
+                        MIN(mutt_str_strlen(np->name) + 1, sizeof(bestname)));
         }
         else
         {
@@ -373,7 +373,7 @@ int alias_complete(char *buf, size_t buflen)
       if (!mutt_str_equal(bestname, buf))
       {
         /* we are adding something to the completion */
-        mutt_str_strfcpy(buf, bestname, mutt_str_strlen(bestname) + 1);
+        mutt_str_copy(buf, bestname, mutt_str_strlen(bestname) + 1);
         return 1;
       }
 
@@ -402,7 +402,7 @@ int alias_complete(char *buf, size_t buflen)
   bestname[0] = '\0';
   alias_menu(bestname, sizeof(bestname), mdata);
   if (bestname[0] != '\0')
-    mutt_str_strfcpy(buf, bestname, buflen);
+    mutt_str_copy(buf, bestname, buflen);
 
   for (int i = 0; i < mdata->num_views; i++)
   {

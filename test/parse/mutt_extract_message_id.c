@@ -68,7 +68,7 @@ void test_mutt_extract_message_id(void)
     size_t off = 0;
     for (size_t i = 0; i < mutt_array_size(tokens); i++)
     {
-      off += mutt_str_strfcpy(&buf[0] + off, tokens[i], sizeof(buf) - off);
+      off += mutt_str_copy(&buf[0] + off, tokens[i], sizeof(buf) - off);
     }
 
     char *tmp = NULL;

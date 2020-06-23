@@ -49,7 +49,7 @@ int nntp_complete(char *buf, size_t buflen)
   char filepart[PATH_MAX];
   bool init = false;
 
-  mutt_str_strfcpy(filepart, buf, sizeof(filepart));
+  mutt_str_copy(filepart, buf, sizeof(filepart));
 
   /* special case to handle when there is no filepart yet
    * find the first subscribed newsgroup */
@@ -62,7 +62,7 @@ int nntp_complete(char *buf, size_t buflen)
 
       if (mdata && mdata->subscribed)
       {
-        mutt_str_strfcpy(filepart, mdata->group, sizeof(filepart));
+        mutt_str_copy(filepart, mdata->group, sizeof(filepart));
         init = true;
         n++;
         break;
@@ -88,12 +88,12 @@ int nntp_complete(char *buf, size_t buflen)
       }
       else
       {
-        mutt_str_strfcpy(filepart, mdata->group, sizeof(filepart));
+        mutt_str_copy(filepart, mdata->group, sizeof(filepart));
         init = true;
       }
     }
   }
 
-  mutt_str_strfcpy(buf, filepart, buflen);
+  mutt_str_copy(buf, filepart, buflen);
   return init ? 0 : -1;
 }

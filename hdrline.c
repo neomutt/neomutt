@@ -284,7 +284,7 @@ static void make_from_addr(struct Envelope *env, char *buf, size_t buflen, bool 
   else if (me && !TAILQ_EMPTY(&env->cc))
     snprintf(buf, buflen, "%s", TAILQ_FIRST(&env->cc)->mailbox);
   else if (!TAILQ_EMPTY(&env->from))
-    mutt_str_strfcpy(buf, TAILQ_FIRST(&env->from)->mailbox, buflen);
+    mutt_str_copy(buf, TAILQ_FIRST(&env->from)->mailbox, buflen);
   else
     *buf = '\0';
 }
@@ -526,7 +526,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       if (buf[0] != '\0')
       {
-        mutt_str_strfcpy(tmp, buf, sizeof(tmp));
+        mutt_str_copy(tmp, buf, sizeof(tmp));
         mutt_format_s(buf, buflen, prec, tmp);
         break;
       }
@@ -545,13 +545,13 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         p = strrchr(mailbox_path(m), '/');
         if (p)
-          mutt_str_strfcpy(buf, p + 1, buflen);
+          mutt_str_copy(buf, p + 1, buflen);
         else
-          mutt_str_strfcpy(buf, mailbox_path(m), buflen);
+          mutt_str_copy(buf, mailbox_path(m), buflen);
       }
       else
-        mutt_str_strfcpy(buf, "(null)", buflen);
-      mutt_str_strfcpy(tmp, buf, sizeof(tmp));
+        mutt_str_copy(buf, "(null)", buflen);
+      mutt_str_copy(tmp, buf, sizeof(tmp));
       mutt_format_s(buf, buflen, prec, tmp);
       break;
 
@@ -946,7 +946,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(buf, buflen, fmt, m->msg_count);
       }
       else
-        mutt_str_strfcpy(buf, "(null)", buflen);
+        mutt_str_copy(buf, "(null)", buflen);
       break;
 
     case 'n':
@@ -1009,7 +1009,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'P':
-      mutt_str_strfcpy(buf, hfi->pager_progress, buflen);
+      mutt_str_copy(buf, hfi->pager_progress, buflen);
       break;
 
 #ifdef USE_NNTP
@@ -1119,7 +1119,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'u':
       if (from && from->mailbox)
       {
-        mutt_str_strfcpy(tmp, mutt_addr_for_display(from), sizeof(tmp));
+        mutt_str_copy(tmp, mutt_addr_for_display(from), sizeof(tmp));
         p = strpbrk(tmp, "%@");
         if (p)
           *p = '\0';

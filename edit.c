@@ -101,7 +101,7 @@ static char **be_snarf_data(FILE *fp, char **buf, int *bufmax, int *buflen,
   tmp[sizeof(tmp) - 1] = '\0';
   if (prefix)
   {
-    mutt_str_strfcpy(tmp, C_IndentString, sizeof(tmp));
+    mutt_str_copy(tmp, C_IndentString, sizeof(tmp));
     tmplen = mutt_str_strlen(tmp);
     p = tmp + tmplen;
     tmplen = sizeof(tmp) - tmplen;
@@ -341,7 +341,7 @@ static void be_edit_header(struct Envelope *e, bool force)
   if (!e->subject || force)
   {
     mutt_window_addstr("Subject: ");
-    mutt_str_strfcpy(tmp, e->subject ? e->subject : "", sizeof(tmp));
+    mutt_str_copy(tmp, e->subject ? e->subject : "", sizeof(tmp));
     if (mutt_enter_string(tmp, sizeof(tmp), 9, MUTT_COMP_NO_FLAGS) == 0)
       mutt_str_replace(&e->subject, tmp);
     mutt_window_addch('\n');
@@ -509,7 +509,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
           if (buflen)
           {
             buflen--;
-            mutt_str_strfcpy(tmp, buf[buflen], sizeof(tmp));
+            mutt_str_copy(tmp, buf[buflen], sizeof(tmp));
             tmp[mutt_str_strlen(tmp) - 1] = '\0';
             FREE(&buf[buflen]);
             buf[buflen] = NULL;

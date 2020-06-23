@@ -248,7 +248,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
   if (OptNewsSend)
   {
     if (en->newsgroups)
-      mutt_str_strfcpy(buf, en->newsgroups, sizeof(buf));
+      mutt_str_copy(buf, en->newsgroups, sizeof(buf));
     else
       buf[0] = '\0';
     if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0)
@@ -257,7 +257,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
     en->newsgroups = mutt_str_strdup(buf);
 
     if (en->followup_to)
-      mutt_str_strfcpy(buf, en->followup_to, sizeof(buf));
+      mutt_str_copy(buf, en->followup_to, sizeof(buf));
     else
       buf[0] = '\0';
     if (C_AskFollowUp &&
@@ -269,7 +269,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
     en->followup_to = mutt_str_strdup(buf);
 
     if (en->x_comment_to)
-      mutt_str_strfcpy(buf, en->x_comment_to, sizeof(buf));
+      mutt_str_copy(buf, en->x_comment_to, sizeof(buf));
     else
       buf[0] = '\0';
     if (C_XCommentTo && C_AskXCommentTo &&
@@ -300,7 +300,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
   {
     if (C_FastReply)
       return 0;
-    mutt_str_strfcpy(buf, en->subject, sizeof(buf));
+    mutt_str_copy(buf, en->subject, sizeof(buf));
   }
   else
   {
@@ -314,7 +314,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
       if (plen)
       {
         p = mutt_str_skip_email_wsp(uh->data + plen);
-        mutt_str_strfcpy(buf, p, sizeof(buf));
+        mutt_str_copy(buf, p, sizeof(buf));
       }
     }
   }

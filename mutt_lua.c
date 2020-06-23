@@ -483,7 +483,7 @@ enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_printf(err, _("%s: too many arguments"), "source");
     return MUTT_CMD_WARNING;
   }
-  mutt_str_strfcpy(path, buf->data, sizeof(path));
+  mutt_str_copy(path, buf->data, sizeof(path));
   mutt_expand_path(path, sizeof(path));
 
   if (luaL_dofile(LuaState, path))

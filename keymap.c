@@ -275,7 +275,7 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
   char c;
   char *t = NULL;
 
-  mutt_str_strfcpy(buf, str, sizeof(buf));
+  mutt_str_copy(buf, str, sizeof(buf));
   char *s = buf;
 
   while (*s && len)
@@ -877,7 +877,7 @@ int km_expand_key(char *s, size_t len, struct Keymap *map)
 
   while (true)
   {
-    mutt_str_strfcpy(s, km_keyname(map->keys[p]), len);
+    mutt_str_copy(s, km_keyname(map->keys[p]), len);
     const size_t l = mutt_str_strlen(s);
     len -= l;
 

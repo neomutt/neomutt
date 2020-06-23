@@ -77,12 +77,12 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
 
   /* render superiors as unix-standard ".." */
   if (isparent)
-    mutt_str_strfcpy(relpath, "../", sizeof(relpath));
+    mutt_str_copy(relpath, "../", sizeof(relpath));
   /* strip current folder from target, to render a relative path */
   else if (mutt_str_startswith(folder, mailbox))
-    mutt_str_strfcpy(relpath, folder + mutt_str_strlen(mailbox), sizeof(relpath));
+    mutt_str_copy(relpath, folder + mutt_str_strlen(mailbox), sizeof(relpath));
   else
-    mutt_str_strfcpy(relpath, folder, sizeof(relpath));
+    mutt_str_copy(relpath, folder, sizeof(relpath));
 
   /* apply filemask filter. This should really be done at menu setup rather
    * than at scan, since it's so expensive to scan. But that's big changes
@@ -396,7 +396,7 @@ int imap_mailbox_create(const char *path)
   }
 
   /* append a delimiter if necessary */
-  mutt_str_strfcpy(name, mdata->real_name, sizeof(name));
+  mutt_str_copy(name, mdata->real_name, sizeof(name));
   n = mutt_str_strlen(name);
   if (n && (n < sizeof(name) - 1) && (name[n - 1] != adata->delim))
   {
@@ -454,7 +454,7 @@ int imap_mailbox_rename(const char *path)
   }
 
   snprintf(buf, sizeof(buf), _("Rename mailbox %s to: "), mdata->name);
-  mutt_str_strfcpy(newname, mdata->name, sizeof(newname));
+  mutt_str_copy(newname, mdata->name, sizeof(newname));
 
   if (mutt_get_field(buf, newname, sizeof(newname), MUTT_FILE) < 0)
     goto err;

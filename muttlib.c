@@ -344,7 +344,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 
   mutt_buffer_addstr(tmp, NONULL(buf));
   mutt_buffer_expand_path_regex(tmp, regex);
-  mutt_str_strfcpy(buf, mutt_b2s(tmp), buflen);
+  mutt_str_copy(buf, mutt_b2s(tmp), buflen);
 
   mutt_buffer_pool_release(&tmp);
 
@@ -376,13 +376,13 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
   if (mutt_regex_capture(C_GecosMask, pw->pw_gecos, 1, pat_match))
   {
-    mutt_str_strfcpy(dest, pw->pw_gecos + pat_match[0].rm_so,
-                     MIN(pat_match[0].rm_eo - pat_match[0].rm_so + 1, destlen));
+    mutt_str_copy(dest, pw->pw_gecos + pat_match[0].rm_so,
+                  MIN(pat_match[0].rm_eo - pat_match[0].rm_so + 1, destlen));
   }
   else if ((p = strchr(pw->pw_gecos, ',')))
-    mutt_str_strfcpy(dest, pw->pw_gecos, MIN(destlen, p - pw->pw_gecos + 1));
+    mutt_str_copy(dest, pw->pw_gecos, MIN(destlen, p - pw->pw_gecos + 1));
   else
-    mutt_str_strfcpy(dest, pw->pw_gecos, destlen);
+    mutt_str_copy(dest, pw->pw_gecos, destlen);
 
   pwnl = strlen(pw->pw_name);
 
@@ -666,7 +666,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   else if (strstr(p, "..") && ((scheme == U_UNKNOWN) || (scheme == U_FILE)) &&
            realpath(p, tmp))
   {
-    mutt_str_strfcpy(p, tmp, buflen - (p - buf));
+    mutt_str_copy(p, tmp, buflen - (p - buf));
   }
 
   if ((len = mutt_str_startswith(buf, C_Folder)) && (buf[len] == '/'))
@@ -795,7 +795,7 @@ void mutt_save_path(char *buf, size_t buflen, const struct Address *addr)
 {
   if (addr && addr->mailbox)
   {
-    mutt_str_strfcpy(buf, addr->mailbox, buflen);
+    mutt_str_copy(buf, addr->mailbox, buflen);
     if (!C_SaveAddress)
     {
       char *p = strpbrk(buf, "%@");
@@ -871,7 +871,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
   char *recycler = NULL;
 
   char src2[256];
-  mutt_str_strfcpy(src2, src, mutt_str_strlen(src) + 1);
+  mutt_str_copy(src2, src, mutt_str_strlen(src) + 1);
   src = src2;
 
   prefix[0] = '\0';
@@ -1632,10 +1632,10 @@ void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
   if (mb_type == MUTT_IMAP)
     imap_get_parent_path(path, buf, buflen);
   else if (mb_type == MUTT_NOTMUCH)
-    mutt_str_strfcpy(buf, C_Folder, buflen);
+    mutt_str_copy(buf, C_Folder, buflen);
   else
   {
-    mutt_str_strfcpy(buf, path, buflen);
+    mutt_str_copy(buf, path, buflen);
     int n = mutt_str_strlen(buf);
     if (n == 0)
       return;
@@ -1757,7 +1757,7 @@ void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
   }
   else if (num == 0)
   {
-    mutt_str_strfcpy(buf, C_SizeUnitsOnLeft ? "K0" : "0K", buflen);
+    mutt_str_copy(buf, C_SizeUnitsOnLeft ? "K0" : "0K", buflen);
   }
   else if (C_SizeShowFractions && (num < 10189)) /* 0.1K - 9.9K */
   {

@@ -198,7 +198,7 @@ void check_query_string(const char *exp, const struct UrlQueryList *act)
   while (exp && *exp)
   {
     next = strchr(exp, '|');
-    mutt_str_strfcpy(tmp, exp, next - exp + 1);
+    mutt_str_copy(tmp, exp, next - exp + 1);
     exp = next + 1;
     if (!TEST_CHECK(strcmp(tmp, np->name) == 0))
     {
@@ -207,7 +207,7 @@ void check_query_string(const char *exp, const struct UrlQueryList *act)
     }
 
     next = strchr(exp, '|');
-    mutt_str_strfcpy(tmp, exp, next - exp + 1);
+    mutt_str_copy(tmp, exp, next - exp + 1);
     exp = next + 1;
     if (!TEST_CHECK(strcmp(tmp, np->value) == 0))
     {

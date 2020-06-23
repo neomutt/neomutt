@@ -382,7 +382,7 @@ static int complete_hosts(char *buf, size_t buflen)
 
     if (rc)
     {
-      mutt_str_strfcpy(buf, mailbox_path(np->mailbox), buflen);
+      mutt_str_copy(buf, mailbox_path(np->mailbox), buflen);
       rc = 0;
     }
     else
@@ -408,7 +408,7 @@ static int complete_hosts(char *buf, size_t buflen)
     {
       if (rc)
       {
-        mutt_str_strfcpy(buf, urlstr, buflen);
+        mutt_str_copy(buf, urlstr, buflen);
         rc = 0;
       }
       else
@@ -1295,7 +1295,7 @@ int imap_complete(char *buf, size_t buflen, const char *path)
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
   {
-    mutt_str_strfcpy(buf, path, buflen);
+    mutt_str_copy(buf, path, buflen);
     return complete_hosts(buf, buflen);
   }
 
@@ -1306,7 +1306,7 @@ int imap_complete(char *buf, size_t buflen, const char *path)
   imap_cmd_start(adata, tmp);
 
   /* and see what the results are */
-  mutt_str_strfcpy(completion, mdata->name, sizeof(completion));
+  mutt_str_copy(completion, mdata->name, sizeof(completion));
   imap_mdata_free((void *) &mdata);
 
   adata->cmdresult = &listresp;
@@ -1328,7 +1328,7 @@ int imap_complete(char *buf, size_t buflen, const char *path)
       /* copy in first word */
       if (!completions)
       {
-        mutt_str_strfcpy(completion, listresp.name, sizeof(completion));
+        mutt_str_copy(completion, listresp.name, sizeof(completion));
         matchlen = strlen(completion);
         completions++;
         continue;
@@ -2212,7 +2212,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
 
   *buf = '\0';
   if (tags)
-    mutt_str_strfcpy(buf, tags, buflen);
+    mutt_str_copy(buf, tags, buflen);
 
   if (mutt_get_field("Tags: ", buf, buflen, MUTT_COMP_NO_FLAGS) != 0)
     return -1;
@@ -2380,7 +2380,7 @@ int imap_path_canon(char *buf, size_t buflen)
   imap_fix_path('\0', url->path, tmp, sizeof(tmp));
   url->path = tmp;
   url_tostring(url, tmp2, sizeof(tmp2), 0);
-  mutt_str_strfcpy(buf, tmp2, buflen);
+  mutt_str_copy(buf, tmp2, buflen);
   url_free(&url);
 
   return 0;
@@ -2420,7 +2420,7 @@ static int imap_path_parent(char *buf, size_t buflen)
   char tmp[PATH_MAX] = { 0 };
 
   imap_get_parent_path(buf, tmp, sizeof(tmp));
-  mutt_str_strfcpy(buf, tmp, buflen);
+  mutt_str_copy(buf, tmp, buflen);
   return 0;
 }
 

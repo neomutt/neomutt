@@ -125,7 +125,7 @@ static void candidate(char *user, const char *src, char *dest, size_t dlen)
   matches_ensure_morespace(NumMatched);
   Matches[NumMatched++] = src;
   if (dest[0] == '\0')
-    mutt_str_strfcpy(dest, src, dlen);
+    mutt_str_copy(dest, src, dlen);
   else
   {
     int l;
@@ -149,7 +149,7 @@ static int complete_all_nm_tags(const char *pt)
   int tag_count_2 = 0;
 
   NumMatched = 0;
-  mutt_str_strfcpy(UserTyped, pt, sizeof(UserTyped));
+  mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
   memset(Matches, 0, MatchesListsize);
   memset(Completed, 0, sizeof(Completed));
 
@@ -1156,7 +1156,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     if (numtabs == 1)
     {
       NumMatched = 0;
-      mutt_str_strfcpy(UserTyped, pt, sizeof(UserTyped));
+      mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
       for (num = 0; Commands[num].name; num++)
@@ -1209,7 +1209,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     if (numtabs == 1)
     {
       NumMatched = 0;
-      mutt_str_strfcpy(UserTyped, pt, sizeof(UserTyped));
+      mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
       for (num = 0; MuttVars[num].name; num++)
@@ -1254,7 +1254,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     if (numtabs == 1)
     {
       NumMatched = 0;
-      mutt_str_strfcpy(UserTyped, pt, sizeof(UserTyped));
+      mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
       for (num = 0; menu[num].name; num++)
@@ -1322,7 +1322,7 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
     struct HashWalkState state = { 0 };
 
     NumMatched = 0;
-    mutt_str_strfcpy(UserTyped, buf, sizeof(UserTyped));
+    mutt_str_copy(UserTyped, buf, sizeof(UserTyped));
     memset(Matches, 0, MatchesListsize);
     memset(Completed, 0, sizeof(Completed));
     while ((entry = mutt_hash_walk(Context->mailbox->label_hash, &state)))
@@ -1499,7 +1499,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
   {
     const char *myvarval = NULL;
     char var[256];
-    mutt_str_strfcpy(var, pt, sizeof(var));
+    mutt_str_copy(var, pt, sizeof(var));
     /* ignore the trailing '=' when comparing */
     int vlen = mutt_str_strlen(var);
     if (vlen == 0)

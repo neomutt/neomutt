@@ -923,7 +923,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
     if (km_expand_key(buf, sizeof(buf), km_find_func(MENU_MAIN, OP_TOGGLE_WRITE)))
       snprintf(tmp, sizeof(tmp), _(" Press '%s' to toggle write"), buf);
     else
-      mutt_str_strfcpy(tmp, _("Use 'toggle-write' to re-enable write"), sizeof(tmp));
+      mutt_str_copy(tmp, _("Use 'toggle-write' to re-enable write"), sizeof(tmp));
 
     mutt_error(_("Mailbox is marked unwritable. %s"), tmp);
     return -1;
@@ -1480,9 +1480,9 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
   char buf[PATH_MAX];
 
   if (m->realpath)
-    mutt_str_strfcpy(buf, m->realpath, sizeof(buf));
+    mutt_str_copy(buf, m->realpath, sizeof(buf));
   else
-    mutt_str_strfcpy(buf, mailbox_path(m), sizeof(buf));
+    mutt_str_copy(buf, mailbox_path(m), sizeof(buf));
 
   int rc = mx_path_canon(buf, sizeof(buf), folder, &m->type);
 
@@ -1647,7 +1647,7 @@ struct Mailbox *mx_mbox_find2(const char *path)
     return NULL;
 
   char buf[PATH_MAX];
-  mutt_str_strfcpy(buf, path, sizeof(buf));
+  mutt_str_copy(buf, path, sizeof(buf));
   mx_path_canon(buf, sizeof(buf), C_Folder, NULL);
 
   struct Account *np = NULL;

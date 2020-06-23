@@ -213,7 +213,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
 
     if (irc == IMAP_RES_RESPOND)
     {
-      mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
+      mutt_str_copy(buf + olen, "\r\n", bufsize - olen);
       mutt_socket_send(adata->conn, buf);
     }
 

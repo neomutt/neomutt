@@ -2135,7 +2135,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
                             _("all") :
                             /* L10N: Status bar message: the end of the email is visible in the pager */
                             _("end");
-      mutt_str_strfcpy(pager_progress_str, msg, sizeof(pager_progress_str));
+      mutt_str_copy(pager_progress_str, msg, sizeof(pager_progress_str));
     }
 
     /* print out the pager status bar */
@@ -2661,7 +2661,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
-        mutt_str_strfcpy(buf, searchbuf, sizeof(buf));
+        mutt_str_copy(buf, searchbuf, sizeof(buf));
         if (mutt_get_field(((ch == OP_SEARCH) || (ch == OP_SEARCH_NEXT)) ?
                                _("Search for: ") :
                                _("Reverse search for: "),
@@ -2688,7 +2688,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (buf[0] == '\0')
           break;
 
-        mutt_str_strfcpy(searchbuf, buf, sizeof(searchbuf));
+        mutt_str_copy(searchbuf, buf, sizeof(searchbuf));
 
         /* leave search_back alone if ch == OP_SEARCH_NEXT */
         if (ch == OP_SEARCH)

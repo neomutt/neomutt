@@ -369,7 +369,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
   src = twinbuf[switcher];
   dst = src;
 
-  mutt_str_strfcpy(src, str, 1024);
+  mutt_str_copy(src, str, 1024);
 
   struct Replace *np = NULL;
   STAILQ_FOREACH(np, rl, entries)
@@ -433,7 +433,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
   }
 
   if (buf)
-    mutt_str_strfcpy(buf, dst, buflen);
+    mutt_str_copy(buf, dst, buflen);
   else
     buf = mutt_str_strdup(dst);
   return buf;

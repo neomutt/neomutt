@@ -442,7 +442,7 @@ static bool is_mmnoask(const char *buf)
   if (mutt_str_equal(val, "1"))
     return true;
 
-  mutt_str_strfcpy(tmp, val, sizeof(tmp));
+  mutt_str_copy(tmp, val, sizeof(tmp));
   p = tmp;
 
   while ((p = strtok(p, ",")))

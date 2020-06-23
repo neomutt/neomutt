@@ -66,7 +66,7 @@ static char *path_tidy(const char *path, bool is_dir)
     return NULL;
 
   char buf[PATH_MAX] = { 0 };
-  mutt_str_strfcpy(buf, path, sizeof(buf));
+  mutt_str_copy(buf, path, sizeof(buf));
 
   mutt_path_tilde(buf, sizeof(buf), HomeDir);
   mutt_path_tidy(buf, is_dir);

@@ -755,13 +755,13 @@ void mutt_str_remove_trailing_ws(char *s)
 }
 
 /**
- * mutt_str_strfcpy - Copy a string into a buffer (guaranteeing NUL-termination)
+ * mutt_str_copy - Copy a string into a buffer (guaranteeing NUL-termination)
  * @param dest  Buffer for the result
  * @param src   String to copy
  * @param dsize Destination buffer size
  * @retval num Destination string length
  */
-size_t mutt_str_strfcpy(char *dest, const char *src, size_t dsize)
+size_t mutt_str_copy(char *dest, const char *src, size_t dsize)
 {
   if (!dest || (dsize == 0))
     return 0;
@@ -803,19 +803,6 @@ char *mutt_str_skip_email_wsp(const char *s)
 bool mutt_str_is_email_wsp(char c)
 {
   return c && (strchr(EMAIL_WSP, c));
-}
-
-/**
- * mutt_str_strnfcpy - Copy a limited string into a buffer (guaranteeing NUL-termination)
- * @param dest  Buffer for the result
- * @param src   String to copy
- * @param n     Maximum number of characters to copy
- * @param dsize Destination buffer size
- * @retval num Destination string length
- */
-size_t mutt_str_strnfcpy(char *dest, const char *src, size_t n, size_t dsize)
-{
-  return mutt_str_strfcpy(dest, src, MIN(n + 1, dsize));
 }
 
 /**

@@ -299,7 +299,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
     return;
 
   if (box && sbe)
-    mutt_str_strfcpy(sbe->box, box, sizeof(sbe->box));
+    mutt_str_copy(sbe->box, box, sizeof(sbe->box));
   else
     buf[0] = '\0';
 

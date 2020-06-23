@@ -895,7 +895,7 @@ int mutt_file_mkdir(const char *path, mode_t mode)
     return 0;
 
   /* Create a mutable copy */
-  mutt_str_strfcpy(tmp_path, path, sizeof(tmp_path));
+  mutt_str_copy(tmp_path, path, sizeof(tmp_path));
 
   for (char *p = tmp_path + 1; *p; p++)
   {

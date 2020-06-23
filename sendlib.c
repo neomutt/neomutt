@@ -191,17 +191,17 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
     /* Escape lines that begin with/only contain "the message separator". */
     if ((linelen == 4) && mutt_str_startswith(line, "From"))
     {
-      mutt_str_strfcpy(line, "=46rom", sizeof(line));
+      mutt_str_copy(line, "=46rom", sizeof(line));
       linelen = 6;
     }
     else if ((linelen == 4) && mutt_str_startswith(line, "from"))
     {
-      mutt_str_strfcpy(line, "=66rom", sizeof(line));
+      mutt_str_copy(line, "=66rom", sizeof(line));
       linelen = 6;
     }
     else if ((linelen == 1) && (line[0] == '.'))
     {
-      mutt_str_strfcpy(line, "=2E", sizeof(line));
+      mutt_str_copy(line, "=2E", sizeof(line));
       linelen = 3;
     }
 
@@ -573,7 +573,7 @@ int mutt_write_mime_body(struct Body *a, FILE *fp)
       return -1;
     }
     char boundary[128];
-    mutt_str_strfcpy(boundary, p, sizeof(boundary));
+    mutt_str_copy(boundary, p, sizeof(boundary));
 
     for (struct Body *t = a->parts; t; t = t->next)
     {
@@ -1145,13 +1145,13 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
       /* last file with last entry to match wins type/xtype */
       case 0:
         /* check default unix mimetypes location first */
-        mutt_str_strfcpy(buf, "/etc/mime.types", sizeof(buf));
+        mutt_str_copy(buf, "/etc/mime.types", sizeof(buf));
         break;
       case 1:
-        mutt_str_strfcpy(buf, SYSCONFDIR "/mime.types", sizeof(buf));
+        mutt_str_copy(buf, SYSCONFDIR "/mime.types", sizeof(buf));
         break;
       case 2:
-        mutt_str_strfcpy(buf, PKGDATADIR "/mime.types", sizeof(buf));
+        mutt_str_copy(buf, PKGDATADIR "/mime.types", sizeof(buf));
         break;
       case 3:
         snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(HomeDir));
@@ -1208,7 +1208,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
 
             type = mutt_check_mime_type(ct);
             if (type == TYPE_OTHER)
-              mutt_str_strfcpy(xtype, ct, sizeof(xtype));
+              mutt_str_copy(xtype, ct, sizeof(xtype));
 
             cur_sze = sze;
           }
@@ -1472,7 +1472,7 @@ char *mutt_body_get_charset(struct Body *b, char *buf, size_t buflen)
   if (p)
     mutt_ch_canonical_charset(buf, buflen, p);
   else
-    mutt_str_strfcpy(buf, "us-ascii", buflen);
+    mutt_str_copy(buf, "us-ascii", buflen);
 
   return buf;
 }
@@ -3219,7 +3219,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
   char fcc_tok[PATH_MAX];
   char fcc_expanded[PATH_MAX];
 
-  mutt_str_strfcpy(fcc_tok, path, sizeof(fcc_tok));
+  mutt_str_copy(fcc_tok, path, sizeof(fcc_tok));
 
   char *tok = strtok(fcc_tok, ",");
   if (!tok)
@@ -3238,7 +3238,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
 
     /* Only call mutt_expand_path if tok has some data */
     mutt_debug(LL_DEBUG1, "Fcc: additional mailbox token = '%s'\n", tok);
-    mutt_str_strfcpy(fcc_expanded, tok, sizeof(fcc_expanded));
+    mutt_str_copy(fcc_expanded, tok, sizeof(fcc_expanded));
     mutt_expand_path(fcc_expanded, sizeof(fcc_expanded));
     mutt_debug(LL_DEBUG1, "     Additional mailbox expanded = '%s'\n", fcc_expanded);
     status = mutt_write_fcc(fcc_expanded, e, msgid, post, fcc, finalpath);

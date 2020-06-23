@@ -134,7 +134,7 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
   {
     // If there's only one email, use its label as a template
     if (en->email->env->x_label)
-      mutt_str_strfcpy(buf, en->email->env->x_label, sizeof(buf));
+      mutt_str_copy(buf, en->email->env->x_label, sizeof(buf));
   }
 
   if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)

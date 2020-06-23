@@ -437,9 +437,9 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   }
 
   if (msg_count == 1)
-    mutt_str_strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
+    mutt_str_copy(prompt, _("Bounce message to: "), sizeof(prompt));
   else
-    mutt_str_strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+    mutt_str_copy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
 
   rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS);
   if (rc || (buf[0] == '\0'))
@@ -850,7 +850,7 @@ void mutt_shell_escape(void)
     return;
 
   if ((buf[0] == '\0') && C_Shell)
-    mutt_str_strfcpy(buf, C_Shell, sizeof(buf));
+    mutt_str_copy(buf, C_Shell, sizeof(buf));
   if (buf[0] == '\0')
     return;
 
@@ -1258,10 +1258,10 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   bool structure_changed = false;
 
   char *cp = mutt_param_get(&b->parameter, "charset");
-  mutt_str_strfcpy(charset, cp, sizeof(charset));
+  mutt_str_copy(charset, cp, sizeof(charset));
 
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
-  mutt_str_strfcpy(obuf, buf, sizeof(obuf));
+  mutt_str_copy(obuf, buf, sizeof(obuf));
   if (!TAILQ_EMPTY(&b->parameter))
   {
     size_t l = strlen(buf);

@@ -647,7 +647,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     }
 
     if (a->description)
-      mutt_str_strfcpy(desc, a->description, sizeof(desc));
+      mutt_str_copy(desc, a->description, sizeof(desc));
     else if (a->filename)
       snprintf(desc, sizeof(desc), _("---Attachment: %s: %s"), a->filename, type);
     else

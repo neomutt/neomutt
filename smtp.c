@@ -522,7 +522,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
         goto fail;
       }
     }
-    mutt_str_strfcpy(buf + len, "\r\n", bufsize - len);
+    mutt_str_copy(buf + len, "\r\n", bufsize - len);
   } while (rc == SMTP_READY && saslrc != SASL_FAIL);
 
   if (smtp_success(rc))

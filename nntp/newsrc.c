@@ -84,7 +84,7 @@ static struct NntpMboxData *mdata_find(struct NntpAccountData *adata, const char
   /* create NntpMboxData structure and add it to hash */
   mdata = mutt_mem_calloc(1, sizeof(struct NntpMboxData) + len);
   mdata->group = (char *) mdata + sizeof(struct NntpMboxData);
-  mutt_str_strfcpy(mdata->group, group, len);
+  mutt_str_copy(mdata->group, group, len);
   mdata->adata = adata;
   mdata->deleted = true;
   mutt_hash_insert(adata->groups_hash, mdata->group, mdata);
@@ -537,7 +537,7 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *cac, cons
     FREE(&url.path);
   }
   else
-    mutt_str_strfcpy(file, src ? src : "", sizeof(file));
+    mutt_str_copy(file, src ? src : "", sizeof(file));
 
   snprintf(dst, dstlen, "%s/%s", C_NewsCacheDir, file);
 
@@ -550,7 +550,7 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *cac, cons
   mutt_buffer_addstr(tmp, dst);
   mutt_buffer_expand_path(tmp);
   mutt_encode_path(tmp, dst);
-  mutt_str_strfcpy(dst, mutt_b2s(tmp), dstlen);
+  mutt_str_copy(dst, mutt_b2s(tmp), dstlen);
   mutt_buffer_pool_release(&tmp);
 }
 
@@ -954,7 +954,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
       }
       break;
     case 's':
-      mutt_str_strfcpy(fn, cac->host, sizeof(fn));
+      mutt_str_copy(fn, cac->host, sizeof(fn));
       mutt_str_lower(fn);
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, fn);
@@ -1406,7 +1406,7 @@ void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen)
       if (unread == 0)
         continue;
     }
-    mutt_str_strfcpy(buf, mdata->group, buflen);
+    mutt_str_copy(buf, mdata->group, buflen);
     break;
   }
 }

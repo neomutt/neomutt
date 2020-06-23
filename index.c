@@ -1514,7 +1514,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
               mutt_error(_("Article has no parent reference"));
               break;
             }
-            mutt_str_strfcpy(buf, STAILQ_FIRST(&e_cur->env->references)->data, sizeof(buf));
+            mutt_str_copy(buf, STAILQ_FIRST(&e_cur->env->references)->data, sizeof(buf));
           }
           if (!Context->mailbox->id_hash)
             Context->mailbox->id_hash = mutt_make_id_hash(Context->mailbox);
@@ -1581,7 +1581,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         mutt_message(_("Fetching message headers..."));
         if (!Context->mailbox->id_hash)
           Context->mailbox->id_hash = mutt_make_id_hash(Context->mailbox);
-        mutt_str_strfcpy(buf, e_cur->env->message_id, sizeof(buf));
+        mutt_str_copy(buf, e_cur->env->message_id, sizeof(buf));
 
         /* trying to find msgid of the root message */
         if (op == OP_RECONSTRUCT_THREAD)
@@ -1598,7 +1598,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
             /* the last msgid in References is the root message */
             if (!STAILQ_NEXT(ref, entries))
-              mutt_str_strfcpy(buf, ref->data, sizeof(buf));
+              mutt_str_copy(buf, ref->data, sizeof(buf));
           }
         }
 
@@ -1797,7 +1797,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           }
           else
           {
-            mutt_str_strfcpy(buf2, Context->pattern + 8, sizeof(buf2));
+            mutt_str_copy(buf2, Context->pattern + 8, sizeof(buf2));
             if ((*buf2 == '\0') || mutt_strn_equal(buf2, ".*", 2))
               snprintf(buf2, sizeof(buf2), "~A");
           }
@@ -2354,7 +2354,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         }
         nm_query_window_backward();
-        mutt_str_strfcpy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
+        mutt_str_copy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
         change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &index_hint, false);
         break;
       }
@@ -2374,7 +2374,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         }
         nm_query_window_forward();
-        mutt_str_strfcpy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
+        mutt_str_copy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
         change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &index_hint, false);
         break;
       }
