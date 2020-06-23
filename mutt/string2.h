@@ -77,7 +77,6 @@ bool        mutt_str_is_email_wsp(char c);
 size_t      mutt_str_lws_len(const char *s, size_t n);
 size_t      mutt_str_lws_rlen(const char *s, size_t n);
 const char *mutt_str_next_word(const char *s);
-int         mutt_str_remall_strcasestr(char *str, const char *target);
 void        mutt_str_remove_trailing_ws(char *s);
 void        mutt_str_replace(char **p, const char *s);
 const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, const char *needle);
@@ -111,6 +110,7 @@ bool        mutt_strn_equal(const char *a, const char *b, size_t l);
 /* case-insensitive flavours */
 int         mutt_istr_cmp(const char *a, const char *b);
 bool        mutt_istr_equal(const char *a, const char *b);
+int         mutt_istr_remall(char *str, const char *target);
 size_t      mutt_istr_startswith(const char *str, const char *prefix);
 
 /* case-insensitive, length-bound flavours */

@@ -1147,13 +1147,13 @@ bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *
 }
 
 /**
- * mutt_str_remall_strcasestr - Remove all occurrences of substring, ignoring case
+ * mutt_istr_remall - Remove all occurrences of substring, ignoring case
  * @param str     String containing the substring
  * @param target  Target substring for removal
  * @retval 0 String contained substring and substring was removed successfully
  * @retval 1 String did not contain substring
  */
-int mutt_str_remall_strcasestr(char *str, const char *target)
+int mutt_istr_remall(char *str, const char *target)
 {
   int rc = 1;
 
