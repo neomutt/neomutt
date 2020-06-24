@@ -91,15 +91,14 @@ typedef uint16_t SendFlags;             ///< Flags for mutt_send_message(), e.g.
 #define SEND_FORWARD          (1 << 3)  ///< Forward email
 #define SEND_POSTPONED        (1 << 4)  ///< Recall a postponed email
 #define SEND_BATCH            (1 << 5)  ///< Send email in batch mode (without user interaction)
-#define SEND_MAILX            (1 << 6)  ///< Send email in Mailx compatibility mode
-#define SEND_KEY              (1 << 7)  ///< Mail a PGP public key
-#define SEND_RESEND           (1 << 8)  ///< Reply using the current email as a template
-#define SEND_POSTPONED_FCC    (1 << 9)  ///< Used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present
-#define SEND_NO_FREE_HEADER   (1 << 10) ///< Used by the -E flag
-#define SEND_DRAFT_FILE       (1 << 11) ///< Used by the -H flag
-#define SEND_TO_SENDER        (1 << 12) ///< Compose new email to sender
-#define SEND_GROUP_CHAT_REPLY (1 << 13) ///< Reply to all recipients preserving To/Cc
-#define SEND_NEWS             (1 << 14) ///< Reply to a news article
+#define SEND_KEY              (1 << 6)  ///< Mail a PGP public key
+#define SEND_RESEND           (1 << 7)  ///< Reply using the current email as a template
+#define SEND_POSTPONED_FCC    (1 << 8)  ///< Used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present
+#define SEND_NO_FREE_HEADER   (1 << 9) ///< Used by the -E flag
+#define SEND_DRAFT_FILE       (1 << 10) ///< Used by the -H flag
+#define SEND_TO_SENDER        (1 << 11) ///< Compose new email to sender
+#define SEND_GROUP_CHAT_REPLY (1 << 12) ///< Reply to all recipients preserving To/Cc
+#define SEND_NEWS             (1 << 13) ///< Reply to a news article
 
 int             mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile, struct Context *ctx, struct EmailList *el);
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);

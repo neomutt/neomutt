@@ -525,9 +525,6 @@ int main(int argc, char *argv[], char *envp[])
         case 'v':
           version++;
           break;
-        case 'x': /* mailx compatible send mode */
-          sendflags |= SEND_MAILX;
-          break;
         case 'y': /* My special hack mode */
           flags |= MUTT_CLI_SELECT;
           break;

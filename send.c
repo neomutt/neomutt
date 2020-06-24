@@ -48,7 +48,6 @@
 #include "compose.h"
 #include "context.h"
 #include "copy.h"
-#include "edit.h"
 #include "handler.h"
 #include "hdrline.h"
 #include "hook.h"
@@ -2051,7 +2050,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
 #endif
 
-    if (!(flags & (SEND_MAILX | SEND_BATCH)) &&
+    if (!(flags & SEND_BATCH) &&
         !(C_Autoedit && C_EditHeaders) && !((flags & SEND_REPLY) && C_FastReply))
     {
       if (edit_envelope(e_templ->env, flags) == -1)
@@ -2111,8 +2110,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       }
     }
 
-    if (C_SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
-        C_Editor && !mutt_str_equal(C_Editor, "builtin"))
+    if (C_SigOnTop && !(flags & (SEND_KEY | SEND_BATCH)) && C_Editor)
     {
       append_signature(fp_tmp);
     }
@@ -2124,8 +2122,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       goto cleanup;
     }
 
-    if (!C_SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
-        C_Editor && !mutt_str_equal(C_Editor, "builtin"))
+    if (!C_SigOnTop && !(flags & (SEND_KEY | SEND_BATCH)) && C_Editor)
     {
       append_signature(fp_tmp);
     }
@@ -2160,12 +2157,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!(((WithCrypto & APPLICATION_PGP) != 0) && (flags & SEND_KEY)))
     mutt_file_fclose(&fp_tmp);
 
-  if (flags & SEND_MAILX)
-  {
-    if (mutt_builtin_editor(e_templ->content->filename, e_templ, e_cur) == -1)
-      goto cleanup;
-  }
-  else if (!(flags & SEND_BATCH))
+  if (!(flags & SEND_BATCH))
   {
     struct stat st;
     time_t mtime = mutt_file_decrease_mtime(e_templ->content->filename, NULL);
@@ -2190,8 +2182,6 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         if (!mutt_edit_attachment(e_templ->content))
           goto cleanup;
       }
-      else if (!C_Editor || mutt_str_equal("builtin", C_Editor))
-        mutt_builtin_editor(e_templ->content->filename, e_templ, e_cur);
       else if (C_EditHeaders)
       {
         mutt_env_to_local(e_templ->env);
@@ -2242,7 +2232,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
    * This is done after allowing the user to edit the message so that security
    * settings can be configured with send2-hook and $edit_headers.  */
   if ((WithCrypto != 0) && (e_templ->security == 0) &&
-      !(flags & (SEND_BATCH | SEND_MAILX | SEND_POSTPONED | SEND_RESEND)))
+      !(flags & (SEND_BATCH | SEND_POSTPONED | SEND_RESEND)))
   {
     if (
 #ifdef USE_AUTOCRYPT
@@ -2369,7 +2359,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   mutt_update_encoding(e_templ->content);
 
-  if (!(flags & (SEND_MAILX | SEND_BATCH)))
+  if (!(flags & SEND_BATCH))
   {
   main_loop:
 
@@ -2511,7 +2501,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       free_clear_content = true;
   }
 
-  if (!OptNoCurses && !(flags & SEND_MAILX))
+  if (!OptNoCurses)
     mutt_message(_("Sending message..."));
 
   mutt_prepare_envelope(e_templ->env, true);
@@ -2559,7 +2549,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!C_FccBeforeSend)
     save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath);
 
-  if (!OptNoCurses && !(flags & SEND_MAILX))
+  if (!OptNoCurses)
   {
     mutt_message((i != 0) ? _("Sending in background") :
                             (flags & SEND_NEWS) ? _("Article posted") : /* USE_NNTP */

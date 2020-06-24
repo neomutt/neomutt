@@ -50,7 +50,6 @@
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
-#include "edit.h"
 #include "format_flags.h"
 #include "hook.h"
 #include "index.h"
@@ -1545,7 +1544,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         break;
 
       case OP_COMPOSE_EDIT_MESSAGE:
-        if (C_Editor && !mutt_str_equal("builtin", C_Editor) && !C_EditHeaders)
+        if (!C_EditHeaders)
         {
           mutt_rfc3676_space_unstuff(e);
           mutt_edit_file(C_Editor, e->content->filename);
@@ -1559,29 +1558,17 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
       case OP_COMPOSE_EDIT_HEADERS:
         mutt_rfc3676_space_unstuff(e);
-        if (!mutt_str_equal("builtin", C_Editor) &&
-            ((op == OP_COMPOSE_EDIT_HEADERS) || ((op == OP_COMPOSE_EDIT_MESSAGE) && C_EditHeaders)))
+        const char *tag = NULL;
+        char *err = NULL;
+        mutt_env_to_local(e->env);
+        mutt_edit_headers(NONULL(C_Editor), e->content->filename, e, fcc);
+        if (mutt_env_to_intl(e->env, &tag, &err))
         {
-          const char *tag = NULL;
-          char *err = NULL;
-          mutt_env_to_local(e->env);
-          mutt_edit_headers(NONULL(C_Editor), e->content->filename, e, fcc);
-          if (mutt_env_to_intl(e->env, &tag, &err))
-          {
-            mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
-            FREE(&err);
-          }
-          update_crypt_info(rd);
-          redraw_env = true;
+          mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
+          FREE(&err);
         }
-        else
-        {
-          /* this is grouped with OP_COMPOSE_EDIT_HEADERS because the
-           * attachment list could change if the user invokes ~v to edit
-           * the message with headers, in which we need to execute the
-           * code below to regenerate the index array */
-          mutt_builtin_editor(e->content->filename, e, e_cur);
-        }
+        update_crypt_info(rd);
+        redraw_env = true;
 
         mutt_rfc3676_space_stuff(e);
         mutt_update_encoding(e->content);
