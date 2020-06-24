@@ -2226,8 +2226,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
    * 2) pgp: header field was present during message editing with $edit_headers (e_templ->security != 0)
    * 3) we are resending a message
    * 4) we are recalling a postponed message (don't override the user's saved settings)
-   * 5) we are in mailx mode
-   * 6) we are in batch mode
+   * 5) we are in batch mode
    *
    * This is done after allowing the user to edit the message so that security
    * settings can be configured with send2-hook and $edit_headers.  */
