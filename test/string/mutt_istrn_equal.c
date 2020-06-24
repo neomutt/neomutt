@@ -27,7 +27,7 @@
 
 void test_mutt_istrn_equal(void)
 {
-  // int mutt_istrn_equal(const char *a, const char *b, size_t l);
+  // bool mutt_istrn_equal(const char *a, const char *b, size_t l);
 
   TEST_CHECK(!mutt_istrn_equal(NULL, "apple", 3));
   TEST_CHECK(!mutt_istrn_equal("apple", NULL, 3));
