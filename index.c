@@ -726,14 +726,24 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m,
    * could be deleted, leaving `m` dangling. */
   // TODO: Refactor this function to avoid the need for an observer
   notify_observer_add(m->notify, mailbox_index_observer, &m);
+  char *dup_path = mutt_str_strdup(mailbox_path(m));
 
   mutt_folder_hook(mailbox_path(m), m ? m->name : NULL);
+  if (m)
+  {
+    /* `m` is still valid, but we won't need the observer again before the end
+     * of the function. */
+    notify_observer_remove(m->notify, mailbox_index_observer, &m);
+  }
+  else
+  {
+    // Recreate the Mailbox (probably because a hook has done `unmailboxes *`)
+    m = mx_path_resolve(dup_path);
+  }
+  FREE(&dup_path);
+
   if (!m)
     return;
-
-  /* `m` is still valid, but we won't need the observer again before the end
-   * of the function. */
-  notify_observer_remove(m->notify, mailbox_index_observer, &m);
 
   const int flags = read_only ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS;
   Context = mx_mbox_open(m, flags);
