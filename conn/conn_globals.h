@@ -50,6 +50,7 @@ extern short       C_SslMinDhPrimeBits;
 #ifdef USE_SOCKET
 extern const char *C_Preconnect;
 extern const char *C_Tunnel;
+extern bool C_TunnelIsSecure;
 #endif
 
 #ifdef HAVE_GETADDRINFO
