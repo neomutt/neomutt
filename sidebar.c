@@ -1177,7 +1177,7 @@ void sb_draw(struct MuttWindow *win)
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &ml, entries)
     {
-      sb_notify_mailbox(np->mailbox, true);
+      sb_notify_mailbox(np->mailbox, SBN_CREATED);
     }
     neomutt_mailboxlist_clear(&ml);
   }
@@ -1297,16 +1297,17 @@ void sb_set_open_mailbox(struct Mailbox *m)
 
 /**
  * sb_notify_mailbox - The state of a Mailbox is about to change
- * @param m       Folder
- * @param created True if folder created, false if deleted
+ * @param m   Folder
+ * @param sbn What happened to the mailbox
  *
  * We receive a notification:
  * - After a new Mailbox has been created
  * - Before a Mailbox is deleted
+ * - After an existing Mailbox is renamed
  *
  * Before a deletion, check that our pointers won't be invalidated.
  */
-void sb_notify_mailbox(struct Mailbox *m, bool created)
+void sb_notify_mailbox(struct Mailbox *m, enum SidebarNotification sbn)
 {
   if (!m)
     return;
@@ -1314,7 +1315,7 @@ void sb_notify_mailbox(struct Mailbox *m, bool created)
   /* Any new/deleted mailboxes will cause a refresh.  As long as
    * they're valid, our pointers will be updated in prepare_sidebar() */
 
-  if (created)
+  if (sbn == SBN_CREATED)
   {
     if (EntryCount >= EntryLen)
     {
@@ -1336,7 +1337,7 @@ void sb_notify_mailbox(struct Mailbox *m, bool created)
 
     EntryCount++;
   }
-  else
+  else if (sbn == SBN_DELETED)
   {
     int del_index;
     for (del_index = 0; del_index < EntryCount; del_index++)
@@ -1361,6 +1362,8 @@ void sb_notify_mailbox(struct Mailbox *m, bool created)
     for (; del_index < EntryCount; del_index++)
       Entries[del_index] = Entries[del_index + 1];
   }
+
+  // otherwise, we just need to redraw
 
   mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 }

@@ -47,10 +47,21 @@ extern short C_SidebarSortMethod;
 extern bool  C_SidebarVisible;
 extern short C_SidebarWidth;
 
+
+/**
+ * enum SidebarNotification - what happened to a mailbox
+ */
+enum SidebarNotification
+{
+  SBN_CREATED, ///< A new mailbox was created
+  SBN_DELETED, ///< An existing mailbox is about to be deleted
+  SBN_RENAMED  ///< An existing mailbox was renamed
+};
+
 void            sb_change_mailbox  (int op);
 void            sb_draw            (struct MuttWindow *win);
 struct Mailbox *sb_get_highlight   (void);
-void            sb_notify_mailbox  (struct Mailbox *m, bool created);
+void            sb_notify_mailbox  (struct Mailbox *m, enum SidebarNotification sbn);
 int             sb_observer        (struct NotifyCallback *nc);
 void            sb_set_open_mailbox(struct Mailbox *m);
 
