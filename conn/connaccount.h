@@ -64,7 +64,9 @@ struct ConnAccount
    * @param field Field to get, e.g. #MUTT_CA_PASS
    * @retval ptr Requested string
    */
-  const char *(*get_field)(enum ConnAccountField field);
+  const char *(*get_field)(enum ConnAccountField field, void *gf_data);
+
+  void *gf_data;          ///< Private data to pass to get_field()
 };
 
 int   mutt_account_getlogin      (struct ConnAccount *account);

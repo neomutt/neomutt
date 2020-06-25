@@ -45,7 +45,6 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "smtp.h"
-#include "gui/lib.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "mutt_socket.h"
@@ -326,7 +325,7 @@ static bool addresses_use_unicode(const struct AddressList *al)
 /**
  * smtp_get_field - Get connection login credentials - Implements ConnAccount::get_field()
  */
-static const char *smtp_get_field(enum ConnAccountField field)
+static const char *smtp_get_field(enum ConnAccountField field, void *gf_data)
 {
   switch (field)
   {

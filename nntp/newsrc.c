@@ -982,7 +982,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
 /**
  * nntp_get_field - Get connection login credentials - Implements ConnAccount::get_field()
  */
-static const char *nntp_get_field(enum ConnAccountField field)
+static const char *nntp_get_field(enum ConnAccountField field, void *gf_data)
 {
   switch (field)
   {

@@ -51,7 +51,7 @@ int mutt_account_getuser(struct ConnAccount *cac)
   if (!cac->get_field)
     return -1;
 
-  const char *user = cac->get_field(MUTT_CA_USER);
+  const char *user = cac->get_field(MUTT_CA_USER, cac->gf_data);
   if (user)
     mutt_str_copy(cac->user, user, sizeof(cac->user));
   else if (OptNoCurses)
@@ -84,7 +84,7 @@ int mutt_account_getlogin(struct ConnAccount *cac)
   if (!cac->get_field)
     return -1;
 
-  const char *login = cac->get_field(MUTT_CA_LOGIN);
+  const char *login = cac->get_field(MUTT_CA_LOGIN, cac->gf_data);
   if (!login && (mutt_account_getuser(cac) == 0))
   {
     login = cac->user;
@@ -114,7 +114,7 @@ int mutt_account_getpass(struct ConnAccount *cac)
   if (!cac->get_field)
     return -1;
 
-  const char *pass = cac->get_field(MUTT_CA_PASS);
+  const char *pass = cac->get_field(MUTT_CA_PASS, cac->gf_data);
   if (pass)
     mutt_str_copy(cac->pass, pass, sizeof(cac->pass));
   else if (OptNoCurses)
@@ -163,7 +163,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac)
   if (mutt_account_getlogin(cac))
     return NULL;
 
-  const char *cmd = cac->get_field(MUTT_CA_OAUTH_CMD);
+  const char *cmd = cac->get_field(MUTT_CA_OAUTH_CMD, cac->gf_data);
   if (!cmd)
   {
     /* L10N: You will see this error message if (1) you have "oauthbearer" in

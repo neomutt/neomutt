@@ -59,7 +59,7 @@ char *C_PopUser; ///< Config: (pop) Username of the POP server
 /**
  * pop_get_field - Get connection login credentials - Implements ConnAccount::get_field()
  */
-const char *pop_get_field(enum ConnAccountField field)
+const char *pop_get_field(enum ConnAccountField field, void *gf_data)
 {
   switch (field)
   {
