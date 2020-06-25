@@ -891,16 +891,9 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
 
     if (data & MUTT_NAMED)
     {
+      // This may be empty, e.g. `named-mailboxes "" +inbox`
       mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-      if (buf->data && (*buf->data != '\0'))
-      {
-        m->name = mutt_str_dup(buf->data);
-      }
-      else
-      {
-        mailbox_free(&m);
-        continue;
-      }
+      m->name = mutt_buffer_strdup(buf);
     }
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
@@ -935,11 +928,24 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       struct Mailbox *m_old = mx_mbox_find(a, m->realpath);
       if (m_old)
       {
-        if (m_old->flags == MB_HIDDEN)
+        const bool show = (m_old->flags == MB_HIDDEN);
+        if (show)
         {
           m_old->flags = MB_NORMAL;
-          sb_notify_mailbox(m_old, true);
         }
+
+        const bool rename = (data & MUTT_NAMED) && !mutt_str_equal(m_old->name, m->name);
+        if (rename)
+        {
+          mutt_str_replace(&m_old->name, m->name);
+        }
+
+#ifdef USE_SIDEBAR
+        if (show || rename)
+        {
+          sb_notify_mailbox(m_old, show ? SBN_CREATED : SBN_RENAMED);
+        }
+#endif
         mailbox_free(&m);
         continue;
       }
@@ -964,7 +970,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     }
 
 #ifdef USE_SIDEBAR
-    sb_notify_mailbox(m, true);
+    sb_notify_mailbox(m, SBN_CREATED);
 #endif
 #ifdef USE_INOTIFY
     mutt_monitor_add(m);
@@ -1972,7 +1978,7 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
       }
 
 #ifdef USE_SIDEBAR
-      sb_notify_mailbox(np->mailbox, false);
+      sb_notify_mailbox(np->mailbox, SBN_DELETED);
 #endif
 #ifdef USE_INOTIFY
       mutt_monitor_remove(np->mailbox);
