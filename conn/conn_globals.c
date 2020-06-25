@@ -27,10 +27,8 @@
  */
 
 #include "config.h"
-#include <stdio.h>
-#ifdef USE_SSL
 #include <stdbool.h>
-#endif
+#include <stdio.h>
 
 // clang-format off
 short       C_ConnectTimeout = 0;           ///< Config: Timeout for making network connections (-1 to wait indefinitely)
