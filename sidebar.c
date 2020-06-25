@@ -72,7 +72,8 @@ static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
  */
 struct SbEntry
 {
-  char box[256];           ///< Formatted Mailbox name
+  char box[256];           ///< Mailbox path (possibly abbreviated)
+  int depth;               ///< Indentation depth
   struct Mailbox *mailbox; ///< Mailbox this represents
   bool is_hidden;          ///< Don't show, e.g. $sidebar_new_mail_only
 };
@@ -95,6 +96,23 @@ enum DivType
   SB_DIV_ASCII, ///< An ASCII vertical bar (pipe)
   SB_DIV_UTF8,  ///< A unicode line-drawing character
 };
+
+/**
+ * add_indent - Generate the needed indentation
+ * @param buf    Output bufer
+ * @param buflen Size of output buffer
+ * @param sbe    Sidebar entry
+ * @retval Number of bytes written
+ */
+static size_t add_indent(char *buf, size_t buflen, const struct SbEntry *sbe)
+{
+  size_t res = 0;
+  for (int i = 0; i < sbe->depth; i++)
+  {
+    res += mutt_str_copy(buf + res, C_SidebarIndentString, buflen - res);
+  }
+  return res;
+}
 
 /**
  * sidebar_format_str - Format a string for the sidebar - Implements ::format_t
@@ -140,8 +158,16 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   switch (op)
   {
     case 'B':
-      mutt_format_s(buf, buflen, prec, sbe->box);
+    case 'D':
+    {
+      char indented[256];
+      size_t off = add_indent(indented, sizeof(indented), sbe);
+      snprintf(indented + off, sizeof(indented) - off, "%s",
+               ((op == 'D') && sbe->mailbox->name) ? sbe->mailbox->name : sbe->box);
+
+      mutt_format_s(buf, buflen, prec, indented);
       break;
+    }
 
     case 'd':
       if (!optional)
@@ -151,13 +177,6 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       }
       else if ((c && (Context->mailbox->msg_deleted == 0)) || !c)
         optional = false;
-      break;
-
-    case 'D':
-      if (sbe->mailbox->name)
-        mutt_format_s(buf, buflen, prec, sbe->mailbox->name);
-      else
-        mutt_format_s(buf, buflen, prec, sbe->box);
       break;
 
     case 'F':
@@ -285,24 +304,14 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
  * @param[out] buf     Buffer in which to save string
  * @param[in]  buflen  Buffer length
  * @param[in]  width   Desired width in screen cells
- * @param[in]  box     Mailbox name
  * @param[in]  sbe     Mailbox object
  *
  * Take all the relevant mailbox data and the desired screen width and then get
  * mutt_expando_format to do the actual work. mutt_expando_format will callback to
  * us using sidebar_format_str() for the sidebar specific formatting characters.
  */
-static void make_sidebar_entry(char *buf, size_t buflen, int width,
-                               const char *box, struct SbEntry *sbe)
+static void make_sidebar_entry(char *buf, size_t buflen, int width, struct SbEntry *sbe)
 {
-  if (!buf)
-    return;
-
-  if (box && sbe)
-    mutt_str_copy(sbe->box, box, sizeof(sbe->box));
-  else
-    buf[0] = '\0';
-
   mutt_expando_format(buf, buflen, 0, width, NONULL(C_SidebarFormat),
                       sidebar_format_str, IP sbe, MUTT_FORMAT_NO_FLAGS);
 
@@ -1046,8 +1055,6 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 
   int w = MIN(num_cols, (C_SidebarWidth - div_width));
   int row = 0;
-  const char *display = NULL;
-  struct Buffer result = mutt_buffer_make(256);
   for (int entryidx = TopIndex; (entryidx < EntryCount) && (row < num_rows); entryidx++)
   {
     entry = Entries[entryidx];
@@ -1096,53 +1103,38 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
       m->msg_flagged = Context->mailbox->msg_flagged;
     }
 
-    const char *full_path = mailbox_path(m);
-    display = m->name;
-    if (!display)
-      display = full_path;
+    const char *path = mailbox_path(m);
 
-    const char *abbr = m->name;
+    // Try to abbreviate the full path
+    const char *abbr = abbrev_folder(path, C_Folder, m->type);
     if (!abbr)
-      abbr = abbrev_folder(display, C_Folder, m->type);
-    if (!abbr)
-      abbr = abbrev_url(display, m->type);
+      abbr = abbrev_url(path, m->type);
+    const char *short_path = abbr ? abbr : path;
 
-    // Use the abbreviation if we have one. The full path is not preferable.
-    if (abbr)
-      display = abbr;
-
+    /* Compute the depth */
     const char *last_part = abbr;
-    int depth = calc_path_depth(abbr, C_SidebarDelimChars, &last_part);
+    entry->depth = calc_path_depth(abbr, C_SidebarDelimChars, &last_part);
 
-    // At this point, we don't have an abbreviation so let's keep track
-    // before using short path.
-    bool no_abbr = !mutt_strn_equal(display, full_path, mutt_str_len(display));
+    const bool short_path_is_abbr = (short_path == abbr);
     if (C_SidebarShortPath)
     {
-      display = last_part;
+      short_path = last_part;
     }
-
-    mutt_buffer_reset(&result);
 
     // Don't indent if we were unable to create an abbreviation.
     // Otherwise, the full path will be indent, and it looks unusual.
-    if (C_SidebarFolderIndent && no_abbr)
+    if (C_SidebarFolderIndent && short_path_is_abbr)
     {
       if (C_SidebarComponentDepth > 0)
-        depth -= C_SidebarComponentDepth;
-
-      for (int i = 0; i < depth; i++)
-        mutt_buffer_addstr(&result, C_SidebarIndentString);
+        entry->depth -= C_SidebarComponentDepth;
     }
 
-    mutt_buffer_addstr(&result, display);
-
+    mutt_str_copy(entry->box, short_path, sizeof(entry->box));
     char str[256];
-    make_sidebar_entry(str, sizeof(str), w, mutt_b2s(&result), entry);
+    make_sidebar_entry(str, sizeof(str), w, entry);
     mutt_window_printf("%s", str);
     row++;
   }
-  mutt_buffer_dealloc(&result);
 
   fill_empty_space(win, row, num_rows - row, div_width, w);
 }
