@@ -1928,7 +1928,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (menu->current == -1)
           menu->current = menu->oldcurrent;
         else
-          menu->redraw = REDRAW_MOTION;
+          menu->redraw |= REDRAW_MOTION;
         break;
 
       case OP_SORT:

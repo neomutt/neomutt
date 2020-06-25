@@ -195,6 +195,7 @@ struct ConfigDef MainVars[] = {
   { "pager_format", DT_STRING|R_PAGER, &C_PagerFormat, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
   { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER|R_REFLOW, &C_PagerIndexLines, 0 },
   { "pager_stop", DT_BOOL, &C_PagerStop, false },
+  { "pattern_format", DT_STRING, &C_PatternFormat, IP "%2n %-15e  %d" },
   { "pipe_decode", DT_BOOL, &C_PipeDecode, false },
   { "pipe_decode_weed", DT_BOOL, &C_PipeDecodeWeed, true },
   { "pipe_sep", DT_STRING, &C_PipeSep, IP "\n" },

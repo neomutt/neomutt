@@ -101,6 +101,7 @@ WHERE char *C_Folder;                        ///< Config: Base folder for a set 
 WHERE char *C_Record;                        ///< Config: Folder to save 'sent' messages
 WHERE char *C_Pager;                         ///< Config: External command for viewing messages, or 'builtin' to use NeoMutt's
 WHERE char *C_PagerFormat;                   ///< Config: printf-like format string for the pager's status bar
+WHERE char *C_PatternFormat;                 ///< Config: printf-like format string for the pattern completion menu
 WHERE char *C_Postponed;                     ///< Config: Folder to store postponed messages
 WHERE char *C_IndentString;                  ///< Config: String used to indent 'reply' text
 WHERE char *C_PrintCommand;                  ///< Config: External command to print a message

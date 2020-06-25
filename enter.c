@@ -47,6 +47,7 @@
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "opcodes.h"
+#include "pattern.h"
 #include "protos.h"
 #include "history/lib.h"
 
@@ -594,8 +595,15 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
           }
           else if ((flags & MUTT_PATTERN) && (ch == OP_EDITOR_COMPLETE))
           {
-            size_t i;
-            for (i = state->curpos; (i > 0) && (state->wbuf[i - 1] != '~'); i--)
+            size_t i = state->curpos;
+            if (i && (state->wbuf[i - 1] == '~'))
+            {
+              if (mutt_ask_pattern(buf, buflen))
+                replace_part(state, i - 1, buf);
+              rc = 1;
+              goto bye;
+            }
+            for (; (i > 0) && (state->wbuf[i - 1] != '~'); i--)
               ; // do nothing
 
             if ((i > 0) && (i < state->curpos) && (state->wbuf[i - 1] == '~') &&

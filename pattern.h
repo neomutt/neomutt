@@ -156,6 +156,7 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
 struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, struct Buffer *err);
 void mutt_check_simple(struct Buffer *s, const char *simple);
 void mutt_pattern_free(struct PatternList **pat);
+bool mutt_ask_pattern(char *buf, size_t buflen);
 
 int mutt_which_case(const char *s);
 int mutt_is_list_recipient(bool all_addr, struct Envelope *e);

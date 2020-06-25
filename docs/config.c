@@ -2750,6 +2750,19 @@
 ** function.
 */
 
+{ "pattern_format", DT_STRING, "%2n %-15e  %d" },
+/*
+** .pp
+** This variable describes the format of the ``pattern completion'' menu. The
+** following \fCprintf(3)\fP-style sequences are understood:
+** .dl
+** .dt %d  .dd pattern description
+** .dt %e  .dd pattern expression
+** .dt %n  .dd index number
+** .de
+** .pp
+*/
+
 { "pgp_auto_decode", DT_BOOL, false },
 /*
 ** .pp
