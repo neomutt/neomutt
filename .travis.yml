@@ -1,6 +1,10 @@
 notifications:
   email: false
 
+branches:
+  except:
+  - /flatcap\/.*/
+
 dist: bionic
 
 language: c
