@@ -1,3 +1,15 @@
+2020-06-26  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - Avoid opening the same hcache file twice
+  - Re-open Mailbox after folder-hook
+  - Fix the matching of the spoolfile Mailbox
+  - Fix link-thread to link all tagged emails
+* Changed Config
+  - Add $tunnel_is_secure config, defaulting to true
+* Upstream
+  - Don't check IMAP PREAUTH encryption if $tunnel is in use
+  - Add recommendation to use $ssl_force_tls
+
 2020-06-19  Richard Russon  <rich@flatcap.org>
 * Security
   - Abort GnuTLS certificate check if a cert in the chain is rejected
