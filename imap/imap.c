@@ -644,7 +644,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
   struct Email *e = NULL;
 
 #ifdef USE_HCACHE
-  mdata->hcache = imap_hcache_open(adata, mdata);
+  imap_hcache_open(adata, mdata);
 #endif
 
   for (int i = 0; i < m->msg_count; i++)
@@ -1532,7 +1532,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   }
 
 #ifdef USE_HCACHE
-  mdata->hcache = imap_hcache_open(adata, mdata);
+  imap_hcache_open(adata, mdata);
 #endif
 
   /* save messages with real (non-flag) changes */

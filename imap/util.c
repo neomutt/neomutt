@@ -189,13 +189,13 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
   STAILQ_INIT(&mdata->flags);
 
 #ifdef USE_HCACHE
-  header_cache_t *hc = imap_hcache_open(adata, mdata);
-  if (hc)
+  imap_hcache_open(adata, mdata);
+  if (mdata->hcache)
   {
     size_t dlen = 0;
-    void *uidvalidity = mutt_hcache_fetch_raw(hc, "/UIDVALIDITY", 12, &dlen);
-    void *uidnext = mutt_hcache_fetch_raw(hc, "/UIDNEXT", 8, &dlen);
-    unsigned long long *modseq = mutt_hcache_fetch_raw(hc, "/MODSEQ", 7, &dlen);
+    void *uidvalidity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12, &dlen);
+    void *uidnext = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8, &dlen);
+    unsigned long long *modseq = mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7, &dlen);
     if (uidvalidity)
     {
       mdata->uidvalidity = *(uint32_t *) uidvalidity;
@@ -204,10 +204,10 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
       mutt_debug(LL_DEBUG3, "hcache uidvalidity %u, uidnext %u, modseq %llu\n",
                  mdata->uidvalidity, mdata->uid_next, mdata->modseq);
     }
-    mutt_hcache_free_raw(hc, &uidvalidity);
-    mutt_hcache_free_raw(hc, &uidnext);
-    mutt_hcache_free_raw(hc, (void **) &modseq);
-    mutt_hcache_close(hc);
+    mutt_hcache_free_raw(mdata->hcache, &uidvalidity);
+    mutt_hcache_free_raw(mdata->hcache, &uidnext);
+    mutt_hcache_free_raw(mdata->hcache, (void **) &modseq);
+    imap_hcache_close(mdata);
   }
 #endif
 
@@ -442,10 +442,13 @@ static void imap_hcache_namer(const char *path, struct Buffer *dest)
  * @retval ptr HeaderCache
  * @retval NULL Failure
  */
-header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
+void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
 {
   if (!adata || !mdata)
-    return NULL;
+    return;
+  
+  if (mdata->hcache)
+    return;
 
   header_cache_t *hc = NULL;
   struct Buffer *mbox = mutt_buffer_pool_get();
@@ -472,7 +475,7 @@ header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxD
 cleanup:
   mutt_buffer_pool_release(&mbox);
   mutt_buffer_pool_release(&cachepath);
-  return hc;
+  mdata->hcache = hc;
 }
 
 /**
