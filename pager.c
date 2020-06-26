@@ -3332,13 +3332,6 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (Context)
         {
           mutt_set_flag(Context->mailbox, extra->email, MUTT_TAG, !extra->email->tagged);
-
-          Context->last_tag =
-              extra->email->tagged ?
-                  extra->email :
-                  ((Context->last_tag == extra->email && !extra->email->tagged) ?
-                       NULL :
-                       Context->last_tag);
         }
 
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;

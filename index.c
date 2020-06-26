@@ -1942,12 +1942,6 @@ int mutt_index_menu(struct MuttWindow *dlg)
             break;
           mutt_set_flag(Context->mailbox, e_cur, MUTT_TAG, !e_cur->tagged);
 
-          Context->last_tag = e_cur->tagged ?
-                                  e_cur :
-                                  (((Context->last_tag == e_cur) && !e_cur->tagged) ?
-                                       NULL :
-                                       Context->last_tag);
-
           menu->redraw |= REDRAW_STATUS;
           if (C_Resolve && (menu->current < Context->mailbox->vcount - 1))
           {
@@ -2685,13 +2679,11 @@ int mutt_index_menu(struct MuttWindow *dlg)
           mutt_error(_("Threading is not enabled"));
         else if (!e_cur->env->message_id)
           mutt_error(_("No Message-ID: header available to link thread"));
-        else if (!tag && (!Context->last_tag || !Context->last_tag->tagged))
-          mutt_error(_("First, please tag a message to be linked here"));
         else
         {
           struct Email *e_oldcur = e_cur;
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-          el_add_tagged(&el, Context, Context->last_tag, tag);
+          el_add_tagged(&el, Context, NULL, true);
 
           if (mutt_link_threads(e_cur, &el, Context->mailbox))
           {
