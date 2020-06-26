@@ -9764,16 +9764,10 @@ mailboxes `find ~/.mail/ -type d -name cur | sort | sed -e 's:/cur/*$::' -e 's/ 
           <quote>In-Reply-To:</quote> and <quote>References:</quote> headers
           when replying to a message. This results in broken discussions
           because NeoMutt has not enough information to guess the correct
-          threading. You can fix this by tagging the reply, then moving to the
-          parent message and using the <literal>&lt;link-threads&gt;</literal>
-          function (bound to &amp; by default). The reply will then be
-          connected to this parent message.
-        </para>
-        <para>
-          You can also connect multiple children at once, tagging them and
-          using the <literal>&lt;tag-prefix&gt;</literal> command
-          (<quote>;</quote>) or the <link linkend="auto-tag">$auto_tag</link>
-          option.
+          threading. You can fix this by tagging a number of replies, then
+          moving to the parent message and using the <literal>
+          &lt;link-threads&gt; </literal> function (bound to &amp; by default).
+          The replies will then be connected to this parent message.
         </para>
       </sect2>
 
