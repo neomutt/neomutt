@@ -87,7 +87,7 @@ bool C_PopLast;  ///< Config: (pop) Use the 'LAST' command to fetch new mail
 static const char *cache_id(const char *id)
 {
   static char clean[128];
-  mutt_str_strfcpy(clean, id, sizeof(clean));
+  mutt_str_copy(clean, id, sizeof(clean));
   mutt_file_sanitize_filename(clean, true);
   return clean;
 }
@@ -144,7 +144,7 @@ static void pop_edata_free(void **ptr)
 static struct PopEmailData *pop_edata_new(const char *uid)
 {
   struct PopEmailData *edata = mutt_mem_calloc(1, sizeof(struct PopEmailData));
-  edata->uid = mutt_str_strdup(uid);
+  edata->uid = mutt_str_dup(uid);
   return edata;
 }
 
@@ -279,7 +279,7 @@ static int fetch_uidl(const char *line, void *data)
   for (i = 0; i < m->msg_count; i++)
   {
     struct PopEmailData *edata = pop_edata_get(m->emails[i]);
-    if (mutt_str_strcmp(line, edata->uid) == 0)
+    if (mutt_str_equal(line, edata->uid))
       break;
   }
 
@@ -330,7 +330,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
   {
     struct PopEmailData *edata = pop_edata_get(m->emails[i]);
     /* if the id we get is known for a header: done (i.e. keep in cache) */
-    if (edata->uid && (mutt_str_strcmp(edata->uid, id) == 0))
+    if (edata->uid && mutt_str_equal(edata->uid, id))
       return 0;
   }
 
@@ -613,7 +613,7 @@ void pop_fetch_mail(void)
   mutt_message(_("Checking for new messages..."));
 
   /* find out how many messages are in the mailbox. */
-  mutt_str_strfcpy(buf, "STAT\r\n", sizeof(buf));
+  mutt_str_copy(buf, "STAT\r\n", sizeof(buf));
   ret = pop_query(adata, buf, sizeof(buf));
   if (ret == -1)
     goto fail;
@@ -628,7 +628,7 @@ void pop_fetch_mail(void)
   /* only get unread messages */
   if ((msgs > 0) && C_PopLast)
   {
-    mutt_str_strfcpy(buf, "LAST\r\n", sizeof(buf));
+    mutt_str_copy(buf, "LAST\r\n", sizeof(buf));
     ret = pop_query(adata, buf, sizeof(buf));
     if (ret == -1)
       goto fail;
@@ -722,14 +722,14 @@ void pop_fetch_mail(void)
   if (rset)
   {
     /* make sure no messages get deleted */
-    mutt_str_strfcpy(buf, "RSET\r\n", sizeof(buf));
+    mutt_str_copy(buf, "RSET\r\n", sizeof(buf));
     if (pop_query(adata, buf, sizeof(buf)) == -1)
       goto fail;
   }
 
 finish:
   /* exit gracefully */
-  mutt_str_strfcpy(buf, "QUIT\r\n", sizeof(buf));
+  mutt_str_copy(buf, "QUIT\r\n", sizeof(buf));
   if (pop_query(adata, buf, sizeof(buf)) == -1)
     goto fail;
   mutt_socket_close(conn);
@@ -758,8 +758,7 @@ static struct Account *pop_ac_find(struct Account *a, const char *path)
   struct PopAccountData *adata = a->adata;
   struct ConnAccount *cac = &adata->conn->account;
 
-  if ((mutt_str_strcasecmp(url->host, cac->host) != 0) ||
-      (mutt_str_strcasecmp(url->user, cac->user) != 0))
+  if (!mutt_istr_equal(url->host, cac->host) || !mutt_istr_equal(url->user, cac->user))
   {
     a = NULL;
   }
@@ -990,7 +989,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
 
     if (rc == 0)
     {
-      mutt_str_strfcpy(buf, "QUIT\r\n", sizeof(buf));
+      mutt_str_copy(buf, "QUIT\r\n", sizeof(buf));
       rc = pop_query(adata, buf, sizeof(buf));
     }
 
@@ -1233,10 +1232,10 @@ enum MailboxType pop_path_probe(const char *path, const struct stat *st)
   if (!path)
     return MUTT_UNKNOWN;
 
-  if (mutt_str_startswith(path, "pop://", CASE_IGNORE))
+  if (mutt_istr_startswith(path, "pop://"))
     return MUTT_POP;
 
-  if (mutt_str_startswith(path, "pops://", CASE_IGNORE))
+  if (mutt_istr_startswith(path, "pops://"))
     return MUTT_POP;
 
   return MUTT_UNKNOWN;

@@ -144,9 +144,9 @@ int dlg_verify_cert(const char *title, struct ListHead *list, bool allow_always,
   char buf[128] = { 0 };
   char helpstr[1024] = { 0 };
   mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_GENERIC, OP_EXIT);
-  mutt_str_strcat(helpstr, sizeof(helpstr), buf);
+  mutt_str_cat(helpstr, sizeof(helpstr), buf);
   mutt_make_help(buf, sizeof(buf), _("Help"), MENU_GENERIC, OP_HELP);
-  mutt_str_strcat(helpstr, sizeof(helpstr), buf);
+  mutt_str_cat(helpstr, sizeof(helpstr), buf);
   menu->help = helpstr;
 
   bool old_ime = OptIgnoreMacroEvents;

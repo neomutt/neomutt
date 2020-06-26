@@ -238,9 +238,9 @@ static int cmd_status(const char *s)
 {
   s = imap_next_word((char *) s);
 
-  if (mutt_str_startswith(s, "OK", CASE_IGNORE))
+  if (mutt_istr_startswith(s, "OK"))
     return IMAP_RES_OK;
-  if (mutt_str_startswith(s, "NO", CASE_IGNORE))
+  if (mutt_istr_startswith(s, "NO"))
     return IMAP_RES_NO;
 
   return IMAP_RES_BAD;
@@ -309,7 +309,7 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
 
   mutt_debug(LL_DEBUG2, "Handling VANISHED\n");
 
-  if (mutt_str_startswith(s, "(EARLIER)", CASE_IGNORE))
+  if (mutt_istr_startswith(s, "(EARLIER)"))
   {
     /* The RFC says we should not decrement msns with the VANISHED EARLIER tag.
      * My experimentation says that's crap. */
@@ -439,7 +439,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
   while (*s)
   {
     SKIPWS(s);
-    size_t plen = mutt_str_startswith(s, "FLAGS", CASE_IGNORE);
+    size_t plen = mutt_istr_startswith(s, "FLAGS");
     if (plen != 0)
     {
       flags = s;
@@ -464,7 +464,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
         return;
       }
     }
-    else if ((plen = mutt_str_startswith(s, "UID", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(s, "UID")))
     {
       s += plen;
       SKIPWS(s);
@@ -483,7 +483,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
         break;
       s = imap_next_word(s);
     }
-    else if ((plen = mutt_str_startswith(s, "MODSEQ", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(s, "MODSEQ")))
     {
       s += plen;
       SKIPWS(s);
@@ -540,14 +540,15 @@ static void cmd_parse_capability(struct ImapAccountData *adata, char *s)
   if (bracket)
     *bracket = '\0';
   FREE(&adata->capstr);
-  adata->capstr = mutt_str_strdup(s);
+  adata->capstr = mutt_str_dup(s);
   adata->capabilities = 0;
 
   while (*s)
   {
     for (size_t i = 0; Capabilities[i]; i++)
     {
-      if (mutt_str_word_casecmp(Capabilities[i], s) == 0)
+      size_t len = mutt_istr_startswith(s, Capabilities[i]);
+      if (len != 0 && ((s[len] == '\0') || IS_SPACE(s[len])))
       {
         adata->capabilities |= (1 << i);
         mutt_debug(LL_DEBUG3, " Found capability \"%s\": %lu\n", Capabilities[i], i);
@@ -587,13 +588,13 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
   s++;
   while (*s)
   {
-    if (mutt_str_startswith(s, "\\NoSelect", CASE_IGNORE))
+    if (mutt_istr_startswith(s, "\\NoSelect"))
       list->noselect = true;
-    else if (mutt_str_startswith(s, "\\NonExistent", CASE_IGNORE)) /* rfc5258 */
+    else if (mutt_istr_startswith(s, "\\NonExistent")) /* rfc5258 */
       list->noselect = true;
-    else if (mutt_str_startswith(s, "\\NoInferiors", CASE_IGNORE))
+    else if (mutt_istr_startswith(s, "\\NoInferiors"))
       list->noinferiors = true;
-    else if (mutt_str_startswith(s, "\\HasNoChildren", CASE_IGNORE)) /* rfc5258*/
+    else if (mutt_istr_startswith(s, "\\HasNoChildren")) /* rfc5258*/
       list->noinferiors = true;
 
     s = imap_next_word(s);
@@ -602,10 +603,10 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
   }
 
   /* Delimiter */
-  if (!mutt_str_startswith(s, "NIL", CASE_IGNORE))
+  if (!mutt_istr_startswith(s, "NIL"))
   {
     delimbuf[0] = '\0';
-    mutt_str_strcat(delimbuf, 5, s);
+    mutt_str_cat(delimbuf, 5, s);
     imap_unquote_string(delimbuf);
     list->delim = delimbuf[0];
   }
@@ -685,16 +686,16 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
 
   mutt_debug(LL_DEBUG3, "Subscribing to %s\n", list.name);
 
-  mutt_str_strfcpy(buf, "mailboxes \"", sizeof(buf));
+  mutt_str_copy(buf, "mailboxes \"", sizeof(buf));
   mutt_account_tourl(&adata->conn->account, &url);
   /* escape \ and " */
   imap_quote_string(quoted_name, sizeof(quoted_name), list.name, true);
   url.path = quoted_name + 1;
   url.path[strlen(url.path) - 1] = '\0';
-  if (mutt_str_strcmp(url.user, C_ImapUser) == 0)
+  if (mutt_str_equal(url.user, C_ImapUser))
     url.user = NULL;
   url_tostring(&url, buf + 11, sizeof(buf) - 11, 0);
-  mutt_str_strcat(buf, sizeof(buf), "\"");
+  mutt_str_cat(buf, sizeof(buf), "\"");
   mutt_buffer_init(&err);
   err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
@@ -785,7 +786,7 @@ static struct Mailbox *find_mailbox(struct ImapAccountData *adata, const char *n
   STAILQ_FOREACH(np, &adata->account->mailboxes, entries)
   {
     struct ImapMboxData *mdata = imap_mdata_get(np->mailbox);
-    if (mutt_str_strcmp(name, mdata->name) == 0)
+    if (mutt_str_equal(name, mdata->name))
       return np->mailbox;
   }
 
@@ -862,15 +863,15 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
     }
     const unsigned int count = (unsigned int) ulcount;
 
-    if (mutt_str_startswith(s, "MESSAGES", CASE_MATCH))
+    if (mutt_str_startswith(s, "MESSAGES"))
       mdata->messages = count;
-    else if (mutt_str_startswith(s, "RECENT", CASE_MATCH))
+    else if (mutt_str_startswith(s, "RECENT"))
       mdata->recent = count;
-    else if (mutt_str_startswith(s, "UIDNEXT", CASE_MATCH))
+    else if (mutt_str_startswith(s, "UIDNEXT"))
       mdata->uid_next = count;
-    else if (mutt_str_startswith(s, "UIDVALIDITY", CASE_MATCH))
+    else if (mutt_str_startswith(s, "UIDVALIDITY"))
       mdata->uidvalidity = count;
-    else if (mutt_str_startswith(s, "UNSEEN", CASE_MATCH))
+    else if (mutt_str_startswith(s, "UNSEEN"))
       mdata->unseen = count;
 
     s = value;
@@ -933,12 +934,12 @@ static void cmd_parse_enabled(struct ImapAccountData *adata, const char *s)
 
   while ((s = imap_next_word((char *) s)) && (*s != '\0'))
   {
-    if (mutt_str_startswith(s, "UTF8=ACCEPT", CASE_IGNORE) ||
-        mutt_str_startswith(s, "UTF8=ONLY", CASE_IGNORE))
+    if (mutt_istr_startswith(s, "UTF8=ACCEPT") ||
+        mutt_istr_startswith(s, "UTF8=ONLY"))
     {
       adata->unicode = true;
     }
-    if (mutt_str_startswith(s, "QRESYNC", CASE_IGNORE))
+    if (mutt_istr_startswith(s, "QRESYNC"))
       adata->qresync = true;
   }
 }
@@ -997,34 +998,35 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
     s = imap_next_word(s);
 
     /* EXISTS, EXPUNGE, FETCH are always related to the SELECTED mailbox */
-    if (mutt_str_startswith(s, "EXISTS", CASE_IGNORE))
+    if (mutt_istr_startswith(s, "EXISTS"))
       cmd_parse_exists(adata, pn);
-    else if (mutt_str_startswith(s, "EXPUNGE", CASE_IGNORE))
+    else if (mutt_istr_startswith(s, "EXPUNGE"))
       cmd_parse_expunge(adata, pn);
-    else if (mutt_str_startswith(s, "FETCH", CASE_IGNORE))
+    else if (mutt_istr_startswith(s, "FETCH"))
       cmd_parse_fetch(adata, pn);
   }
-  else if ((adata->state >= IMAP_SELECTED) && mutt_str_startswith(s, "VANISHED", CASE_IGNORE))
+  else if ((adata->state >= IMAP_SELECTED) &&
+           mutt_istr_startswith(s, "VANISHED"))
     cmd_parse_vanished(adata, pn);
-  else if (mutt_str_startswith(s, "CAPABILITY", CASE_IGNORE))
+  else if (mutt_istr_startswith(s, "CAPABILITY"))
     cmd_parse_capability(adata, s);
-  else if (mutt_str_startswith(s, "OK [CAPABILITY", CASE_IGNORE))
+  else if (mutt_istr_startswith(s, "OK [CAPABILITY"))
     cmd_parse_capability(adata, pn);
-  else if (mutt_str_startswith(pn, "OK [CAPABILITY", CASE_IGNORE))
+  else if (mutt_istr_startswith(pn, "OK [CAPABILITY"))
     cmd_parse_capability(adata, imap_next_word(pn));
-  else if (mutt_str_startswith(s, "LIST", CASE_IGNORE))
+  else if (mutt_istr_startswith(s, "LIST"))
     cmd_parse_list(adata, s);
-  else if (mutt_str_startswith(s, "LSUB", CASE_IGNORE))
+  else if (mutt_istr_startswith(s, "LSUB"))
     cmd_parse_lsub(adata, s);
-  else if (mutt_str_startswith(s, "MYRIGHTS", CASE_IGNORE))
+  else if (mutt_istr_startswith(s, "MYRIGHTS"))
     cmd_parse_myrights(adata, s);
-  else if (mutt_str_startswith(s, "SEARCH", CASE_IGNORE))
+  else if (mutt_istr_startswith(s, "SEARCH"))
     cmd_parse_search(adata, s);
-  else if (mutt_str_startswith(s, "STATUS", CASE_IGNORE))
+  else if (mutt_istr_startswith(s, "STATUS"))
     cmd_parse_status(adata, s);
-  else if (mutt_str_startswith(s, "ENABLED", CASE_IGNORE))
+  else if (mutt_istr_startswith(s, "ENABLED"))
     cmd_parse_enabled(adata, s);
-  else if (mutt_str_startswith(s, "BYE", CASE_IGNORE))
+  else if (mutt_istr_startswith(s, "BYE"))
   {
     mutt_debug(LL_DEBUG2, "Handling BYE\n");
 
@@ -1040,7 +1042,7 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
 
     return -1;
   }
-  else if (C_ImapServernoise && mutt_str_startswith(s, "NO", CASE_IGNORE))
+  else if (C_ImapServernoise && mutt_istr_startswith(s, "NO"))
   {
     mutt_debug(LL_DEBUG2, "Handling untagged NO\n");
 
@@ -1131,8 +1133,8 @@ int imap_cmd_step(struct ImapAccountData *adata)
   adata->lastread = mutt_date_epoch();
 
   /* handle untagged messages. The caller still gets its shot afterwards. */
-  if ((mutt_str_startswith(adata->buf, "* ", CASE_MATCH) ||
-       mutt_str_startswith(imap_next_word(adata->buf), "OK [", CASE_MATCH)) &&
+  if ((mutt_str_startswith(adata->buf, "* ") ||
+       mutt_str_startswith(imap_next_word(adata->buf), "OK [")) &&
       cmd_handle_untagged(adata))
   {
     return IMAP_RES_BAD;
@@ -1159,7 +1161,7 @@ int imap_cmd_step(struct ImapAccountData *adata)
     cmd = &adata->cmds[c];
     if (cmd->state == IMAP_RES_NEW)
     {
-      if (mutt_str_startswith(adata->buf, cmd->seq, CASE_MATCH))
+      if (mutt_str_startswith(adata->buf, cmd->seq))
       {
         if (!stillrunning)
         {
@@ -1220,9 +1222,8 @@ const char *imap_cmd_trailer(struct ImapAccountData *adata)
   }
 
   s = imap_next_word((char *) s);
-  if (!s || (!mutt_str_startswith(s, "OK", CASE_IGNORE) &&
-             !mutt_str_startswith(s, "NO", CASE_IGNORE) &&
-             !mutt_str_startswith(s, "BAD", CASE_IGNORE)))
+  if (!s || (!mutt_istr_startswith(s, "OK") && !mutt_istr_startswith(s, "NO") &&
+             !mutt_istr_startswith(s, "BAD")))
   {
     mutt_debug(LL_DEBUG2, "not a command completion: %s\n", adata->buf);
     return notrailer;

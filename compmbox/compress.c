@@ -192,9 +192,9 @@ static struct CompressInfo *set_compress_info(struct Mailbox *m)
   struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
   m->compress_info = ci;
 
-  ci->cmd_open = mutt_str_strdup(o);
-  ci->cmd_close = mutt_str_strdup(c);
-  ci->cmd_append = mutt_str_strdup(a);
+  ci->cmd_open = mutt_str_dup(o);
+  ci->cmd_close = mutt_str_dup(c);
+  ci->cmd_append = mutt_str_dup(a);
 
   return ci;
 }

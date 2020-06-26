@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_strncmp()
+ * Test code for mutt_str_len()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -25,19 +25,11 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 
-void test_mutt_str_strncmp(void)
+void test_mutt_str_len(void)
 {
-  // int mutt_str_strncmp(const char *a, const char *b, size_t l);
+  // size_t mutt_str_len(const char *a);
 
-  TEST_CHECK(mutt_str_strncmp(NULL, "apple", 5) != 0);
-  TEST_CHECK(mutt_str_strncmp("apple", NULL, 5) != 0);
-  TEST_CHECK(mutt_str_strncmp(NULL, NULL, 5) == 0);
-
-  TEST_CHECK(mutt_str_strncmp("", "", 1) == 0);
-  TEST_CHECK(mutt_str_strncmp("apple", "apple", 5) == 0);
-  TEST_CHECK(mutt_str_strncmp("apple", "APPLE", 5) != 0);
-  TEST_CHECK(mutt_str_strncmp("apple", "apple2", 6) != 0);
-  TEST_CHECK(mutt_str_strncmp("apple1", "apple", 6) != 0);
-  TEST_CHECK(mutt_str_strncmp("apple", "apple2", 5) == 0);
-  TEST_CHECK(mutt_str_strncmp("apple1", "apple", 5) == 0);
+  TEST_CHECK(mutt_str_len(NULL) == 0);
+  TEST_CHECK(mutt_str_len("") == 0);
+  TEST_CHECK(mutt_str_len("hello") == 5);
 }

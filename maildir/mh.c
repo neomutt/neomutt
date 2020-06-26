@@ -199,9 +199,8 @@ void mh_update_sequences(struct Mailbox *m)
   {
     while ((buf = mutt_file_read_line(buf, &s, fp_old, NULL, 0)))
     {
-      if (mutt_str_startswith(buf, seq_unseen, CASE_MATCH) ||
-          mutt_str_startswith(buf, seq_flagged, CASE_MATCH) ||
-          mutt_str_startswith(buf, seq_replied, CASE_MATCH))
+      if (mutt_str_startswith(buf, seq_unseen) || mutt_str_startswith(buf, seq_flagged) ||
+          mutt_str_startswith(buf, seq_replied))
       {
         continue;
       }
@@ -324,11 +323,11 @@ int mh_read_sequences(struct MhSequences *mhs, const char *path)
     if (!t)
       continue;
 
-    if (mutt_str_strcmp(t, C_MhSeqUnseen) == 0)
+    if (mutt_str_equal(t, C_MhSeqUnseen))
       flags = MH_SEQ_UNSEEN;
-    else if (mutt_str_strcmp(t, C_MhSeqFlagged) == 0)
+    else if (mutt_str_equal(t, C_MhSeqFlagged))
       flags = MH_SEQ_FLAGGED;
-    else if (mutt_str_strcmp(t, C_MhSeqReplied) == 0)
+    else if (mutt_str_equal(t, C_MhSeqReplied))
       flags = MH_SEQ_REPLIED;
     else /* unknown sequence */
       continue;
@@ -610,7 +609,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
   if (!C_CheckNew)
     return 0;
 
-  mutt_str_strfcpy(buf, mailbox_path(m), sizeof(buf));
+  mutt_str_copy(buf, mailbox_path(m), sizeof(buf));
   if (stat(buf, &st) == -1)
     return -1;
 
@@ -676,7 +675,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
   for (p = md; p; p = p->next)
   {
     /* the hash key must survive past the header, which is freed below. */
-    p->canon_fname = mutt_str_strdup(p->email->path);
+    p->canon_fname = mutt_str_dup(p->email->path);
     mutt_hash_insert(fnames, p->canon_fname, p);
   }
 

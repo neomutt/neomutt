@@ -57,7 +57,7 @@ void test_mutt_buffer_copy(void)
     size_t len = mutt_buffer_copy(&buf2, &buf1);
 
     TEST_CHECK(len == 10);
-    TEST_CHECK(mutt_str_strcmp(mutt_b2s(&buf1), mutt_b2s(&buf2)) == 0);
+    TEST_CHECK(mutt_str_equal(mutt_b2s(&buf1), mutt_b2s(&buf2)));
 
     mutt_buffer_dealloc(&buf1);
     mutt_buffer_dealloc(&buf2);

@@ -51,7 +51,7 @@ void test_mutt_buffer_quote_filename(void)
   {
     TEST_CASE(tests[i].first);
     mutt_buffer_quote_filename(&result, tests[i].first, (i % 2));
-    if (!TEST_CHECK(mutt_str_strcmp(mutt_b2s(&result), tests[i].second) == 0))
+    if (!TEST_CHECK(mutt_str_equal(mutt_b2s(&result), tests[i].second)))
     {
       TEST_MSG("Original: %s", tests[i].first);
       TEST_MSG("Expected: %s", tests[i].second);

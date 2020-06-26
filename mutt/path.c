@@ -190,7 +190,7 @@ bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir, bool is_dir
 
   mutt_path_tidy(buf, is_dir);
 
-  size_t len = mutt_str_startswith(buf, homedir, CASE_MATCH);
+  size_t len = mutt_str_startswith(buf, homedir);
   if (len == 0)
     return false;
 
@@ -204,7 +204,7 @@ bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir, bool is_dir
     return true;
   }
 
-  mutt_str_strfcpy(buf + 1, buf + len, buflen - len);
+  mutt_str_copy(buf + 1, buf + len, buflen - len);
   return true;
 }
 
@@ -237,7 +237,7 @@ bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir)
       return false;
     }
 
-    len = mutt_str_strfcpy(result, homedir, sizeof(result));
+    len = mutt_str_copy(result, homedir, sizeof(result));
     dir = buf + 1;
   }
   else
@@ -245,9 +245,9 @@ bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir)
     char user[128];
     dir = strchr(buf + 1, '/');
     if (dir)
-      mutt_str_strfcpy(user, buf + 1, MIN(dir - buf, (unsigned) sizeof(user)));
+      mutt_str_copy(user, buf + 1, MIN(dir - buf, (unsigned) sizeof(user)));
     else
-      mutt_str_strfcpy(user, buf + 1, sizeof(user));
+      mutt_str_copy(user, buf + 1, sizeof(user));
 
     struct passwd *pw = getpwnam(user);
     if (!pw || !pw->pw_dir)
@@ -256,18 +256,18 @@ bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir)
       return false;
     }
 
-    len = mutt_str_strfcpy(result, pw->pw_dir, sizeof(result));
+    len = mutt_str_copy(result, pw->pw_dir, sizeof(result));
   }
 
-  size_t dirlen = mutt_str_strlen(dir);
+  size_t dirlen = mutt_str_len(dir);
   if ((len + dirlen) >= buflen)
   {
     mutt_debug(LL_DEBUG3, "result too big for the buffer %ld >= %ld\n", len + dirlen, buflen);
     return false;
   }
 
-  mutt_str_strfcpy(result + len, dir, sizeof(result) - len);
-  mutt_str_strfcpy(buf, result, buflen);
+  mutt_str_copy(result + len, dir, sizeof(result) - len);
+  mutt_str_copy(buf, result, buflen);
 
   return true;
 }
@@ -301,8 +301,8 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir, bool is_dir)
       return false;
     }
 
-    size_t cwdlen = mutt_str_strlen(result);
-    size_t dirlen = mutt_str_strlen(buf);
+    size_t cwdlen = mutt_str_len(result);
+    size_t dirlen = mutt_str_len(buf);
     if ((cwdlen + dirlen + 1) >= buflen)
     {
       mutt_debug(LL_DEBUG3, "result too big for the buffer %ld >= %ld\n",
@@ -311,8 +311,8 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir, bool is_dir)
     }
 
     result[cwdlen] = '/';
-    mutt_str_strfcpy(result + cwdlen + 1, buf, sizeof(result) - cwdlen - 1);
-    mutt_str_strfcpy(buf, result, buflen);
+    mutt_str_copy(result + cwdlen + 1, buf, sizeof(result) - cwdlen - 1);
+    mutt_str_copy(buf, result, buflen);
   }
 
   if (!mutt_path_tidy(buf, is_dir))
@@ -379,8 +379,8 @@ char *mutt_path_dirname(const char *path)
     return NULL;
 
   char buf[PATH_MAX] = { 0 };
-  mutt_str_strfcpy(buf, path, sizeof(buf));
-  return mutt_str_strdup(dirname(buf));
+  mutt_str_copy(buf, path, sizeof(buf));
+  return mutt_str_dup(dirname(buf));
 }
 
 /**
@@ -409,13 +409,13 @@ bool mutt_path_to_absolute(char *path, const char *reference)
   }
 
   char *dirpath = mutt_path_dirname(reference);
-  mutt_str_strfcpy(abs_path, dirpath, sizeof(abs_path));
+  mutt_str_copy(abs_path, dirpath, sizeof(abs_path));
   FREE(&dirpath);
-  mutt_str_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
+  mutt_strn_cat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
   path_len = sizeof(abs_path) - strlen(path);
 
-  mutt_str_strncat(abs_path, sizeof(abs_path), path, (path_len > 0) ? path_len : 0);
+  mutt_strn_cat(abs_path, sizeof(abs_path), path, (path_len > 0) ? path_len : 0);
 
   path = realpath(abs_path, path);
   if (!path && (errno != ENOENT))
@@ -447,7 +447,7 @@ size_t mutt_path_realpath(char *buf)
   if (!realpath(buf, s))
     return 0;
 
-  return mutt_str_strfcpy(buf, s, sizeof(s));
+  return mutt_str_copy(buf, s, sizeof(s));
 }
 
 /**
@@ -461,7 +461,7 @@ bool mutt_path_parent(char *buf, size_t buflen)
   if (!buf)
     return false;
 
-  int n = mutt_str_strlen(buf);
+  int n = mutt_str_len(buf);
   if (n < 2)
     return false;
 
@@ -494,20 +494,20 @@ bool mutt_path_abbr_folder(char *buf, size_t buflen, const char *folder)
   if (!buf || !folder)
     return false;
 
-  size_t flen = mutt_str_strlen(folder);
+  size_t flen = mutt_str_len(folder);
   if (flen < 2)
     return false;
 
   if (folder[flen - 1] == '/')
     flen--;
 
-  if (mutt_str_strncmp(buf, folder, flen) != 0)
+  if (!mutt_strn_equal(buf, folder, flen))
     return false;
 
   if (buf[flen + 1] == '\0') // Don't abbreviate to '=/'
     return false;
 
-  size_t rlen = mutt_str_strlen(buf + flen + 1);
+  size_t rlen = mutt_str_len(buf + flen + 1);
 
   buf[0] = '=';
   memmove(buf + 1, buf + flen + 1, rlen + 1);

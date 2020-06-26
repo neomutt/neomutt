@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_remall_strcasestr()
+ * Test code for mutt_istr_remall()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -31,20 +31,20 @@ struct RemallTest
   const char *expected;
 };
 
-void test_mutt_str_remall_strcasestr(void)
+void test_mutt_istr_remall(void)
 {
-  // int mutt_str_remall_strcasestr(char *str, const char *target);
+  // int mutt_istr_remall(char *str, const char *target);
 
   {
-    TEST_CHECK(mutt_str_remall_strcasestr(NULL, "apple") == 1);
+    TEST_CHECK(mutt_istr_remall(NULL, "apple") == 1);
   }
 
   {
-    TEST_CHECK(mutt_str_remall_strcasestr("apple", NULL) == 1);
+    TEST_CHECK(mutt_istr_remall("apple", NULL) == 1);
   }
 
   {
-    TEST_CHECK(mutt_str_remall_strcasestr(NULL, NULL) == 1);
+    TEST_CHECK(mutt_istr_remall(NULL, NULL) == 1);
   }
 
   // clang-format off
@@ -81,10 +81,10 @@ void test_mutt_str_remall_strcasestr(void)
     {
       struct RemallTest *t = &remall_tests[i];
       memset(buf, 0, sizeof(buf));
-      mutt_str_strfcpy(buf, t->str, sizeof(buf));
+      mutt_str_copy(buf, t->str, sizeof(buf));
       TEST_CASE(buf);
 
-      mutt_str_remall_strcasestr(buf, remove);
+      mutt_istr_remall(buf, remove);
       TEST_CHECK(strcmp(buf, t->expected) == 0);
     }
   }

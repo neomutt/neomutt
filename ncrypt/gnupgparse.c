@@ -171,17 +171,17 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
       {
         mutt_debug(LL_DEBUG2, "record type: %s\n", p);
 
-        if (mutt_str_strcmp(p, "pub") == 0)
+        if (mutt_str_equal(p, "pub"))
           is_pub = true;
-        else if (mutt_str_strcmp(p, "sub") == 0)
+        else if (mutt_str_equal(p, "sub"))
           *is_subkey = true;
-        else if (mutt_str_strcmp(p, "sec") == 0)
+        else if (mutt_str_equal(p, "sec"))
           ; // do nothing
-        else if (mutt_str_strcmp(p, "ssb") == 0)
+        else if (mutt_str_equal(p, "ssb"))
           *is_subkey = true;
-        else if (mutt_str_strcmp(p, "uid") == 0)
+        else if (mutt_str_equal(p, "uid"))
           is_uid = true;
-        else if (mutt_str_strcmp(p, "fpr") == 0)
+        else if (mutt_str_equal(p, "fpr"))
           is_fpr = true;
         else
           return NULL;
@@ -320,7 +320,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
         {
           /* don't let a subkey fpr overwrite an existing primary key fpr */
           if (!tmp.fingerprint)
-            tmp.fingerprint = mutt_str_strdup(p);
+            tmp.fingerprint = mutt_str_dup(p);
           break;
         }
 
@@ -332,7 +332,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
 
         uid = mutt_mem_calloc(1, sizeof(struct PgpUid));
         fix_uid(p);
-        uid->addr = mutt_str_strdup(p);
+        uid->addr = mutt_str_dup(p);
         uid->trust = trust;
         uid->flags |= flags;
         uid->next = tmp.address;

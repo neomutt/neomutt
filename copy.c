@@ -114,36 +114,38 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       if (nl && (buf[0] != ' ') && (buf[0] != '\t'))
       {
         ignore = true;
-        if (!from && mutt_str_startswith(buf, "From ", CASE_MATCH))
+        if (!from && mutt_str_startswith(buf, "From "))
         {
           if ((chflags & CH_FROM) == 0)
             continue;
           from = true;
         }
-        else if ((chflags & CH_NOQFROM) && mutt_str_startswith(buf, ">From ", CASE_IGNORE))
+        else if ((chflags & CH_NOQFROM) && mutt_istr_startswith(buf, ">From "))
           continue;
         else if ((buf[0] == '\n') || ((buf[0] == '\r') && (buf[1] == '\n')))
           break; /* end of header */
 
         if ((chflags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-            (mutt_str_startswith(buf, "Status:", CASE_IGNORE) ||
-             mutt_str_startswith(buf, "X-Status:", CASE_IGNORE)))
+            (mutt_istr_startswith(buf, "Status:") || mutt_istr_startswith(buf, "X-Status:")))
         {
           continue;
         }
         if ((chflags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-            (mutt_str_startswith(buf, "Content-Length:", CASE_IGNORE) ||
-             mutt_str_startswith(buf, "Lines:", CASE_IGNORE)))
+            (mutt_istr_startswith(buf, "Content-Length:") ||
+             mutt_istr_startswith(buf, "Lines:")))
         {
           continue;
         }
-        if ((chflags & CH_UPDATE_REFS) && mutt_str_startswith(buf, "References:", CASE_IGNORE))
+        if ((chflags & CH_UPDATE_REFS) &&
+            mutt_istr_startswith(buf, "References:"))
           continue;
-        if ((chflags & CH_UPDATE_IRT) && mutt_str_startswith(buf, "In-Reply-To:", CASE_IGNORE))
+        if ((chflags & CH_UPDATE_IRT) &&
+            mutt_istr_startswith(buf, "In-Reply-To:"))
           continue;
-        if (chflags & CH_UPDATE_LABEL && mutt_str_startswith(buf, "X-Label:", CASE_IGNORE))
+        if (chflags & CH_UPDATE_LABEL && mutt_istr_startswith(buf, "X-Label:"))
           continue;
-        if ((chflags & CH_UPDATE_SUBJECT) && mutt_str_startswith(buf, "Subject:", CASE_IGNORE))
+        if ((chflags & CH_UPDATE_SUBJECT) &&
+            mutt_istr_startswith(buf, "Subject:"))
           continue;
 
         ignore = false;
@@ -195,7 +197,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         {
           if (address_header_decode(&this_one) == 0)
             rfc2047_decode(&this_one);
-          this_one_len = mutt_str_strlen(this_one);
+          this_one_len = mutt_str_len(this_one);
 
           /* Convert CRLF line endings to LF */
           if ((this_one_len > 2) && (this_one[this_one_len - 2] == '\r') &&
@@ -210,7 +212,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
           headers[x] = this_one;
         else
         {
-          int hlen = mutt_str_strlen(headers[x]);
+          int hlen = mutt_str_len(headers[x]);
 
           mutt_mem_realloc(&headers[x], hlen + this_one_len + sizeof(char));
           strcat(headers[x] + hlen, this_one);
@@ -222,7 +224,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
 
       ignore = true;
       this_is_from = false;
-      if (!from && mutt_str_startswith(buf, "From ", CASE_MATCH))
+      if (!from && mutt_str_startswith(buf, "From "))
       {
         if ((chflags & CH_FROM) == 0)
           continue;
@@ -238,42 +240,46 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       {
         continue;
       }
-      if ((chflags & CH_WEED_DELIVERED) && mutt_str_startswith(buf, "Delivered-To:", CASE_IGNORE))
+      if ((chflags & CH_WEED_DELIVERED) &&
+          mutt_istr_startswith(buf, "Delivered-To:"))
       {
         continue;
       }
       if ((chflags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-          (mutt_str_startswith(buf, "Status:", CASE_IGNORE) ||
-           mutt_str_startswith(buf, "X-Status:", CASE_IGNORE)))
+          (mutt_istr_startswith(buf, "Status:") ||
+           mutt_istr_startswith(buf, "X-Status:")))
       {
         continue;
       }
       if ((chflags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-          (mutt_str_startswith(buf, "Content-Length:", CASE_IGNORE) ||
-           mutt_str_startswith(buf, "Lines:", CASE_IGNORE)))
+          (mutt_istr_startswith(buf, "Content-Length:") || mutt_istr_startswith(buf, "Lines:")))
       {
         continue;
       }
       if ((chflags & CH_MIME))
       {
-        if (mutt_str_startswith(buf, "mime-version:", CASE_IGNORE))
+        if (mutt_istr_startswith(buf, "mime-version:"))
         {
           continue;
         }
-        size_t plen = mutt_str_startswith(buf, "content-", CASE_IGNORE);
-        if ((plen != 0) && (mutt_str_startswith(buf + plen, "transfer-encoding:", CASE_IGNORE) ||
-                            mutt_str_startswith(buf + plen, "type:", CASE_IGNORE)))
+        size_t plen = mutt_istr_startswith(buf, "content-");
+        if ((plen != 0) &&
+            (mutt_istr_startswith(buf + plen, "transfer-encoding:") ||
+             mutt_istr_startswith(buf + plen, "type:")))
         {
           continue;
         }
       }
-      if ((chflags & CH_UPDATE_REFS) && mutt_str_startswith(buf, "References:", CASE_IGNORE))
+      if ((chflags & CH_UPDATE_REFS) &&
+          mutt_istr_startswith(buf, "References:"))
         continue;
-      if ((chflags & CH_UPDATE_IRT) && mutt_str_startswith(buf, "In-Reply-To:", CASE_IGNORE))
+      if ((chflags & CH_UPDATE_IRT) &&
+          mutt_istr_startswith(buf, "In-Reply-To:"))
         continue;
-      if ((chflags & CH_UPDATE_LABEL) && mutt_str_startswith(buf, "X-Label:", CASE_IGNORE))
+      if ((chflags & CH_UPDATE_LABEL) && mutt_istr_startswith(buf, "X-Label:"))
         continue;
-      if ((chflags & CH_UPDATE_SUBJECT) && mutt_str_startswith(buf, "Subject:", CASE_IGNORE))
+      if ((chflags & CH_UPDATE_SUBJECT) &&
+          mutt_istr_startswith(buf, "Subject:"))
         continue;
 
       /* Find x -- the array entry where this header is to be saved */
@@ -284,7 +290,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         STAILQ_FOREACH(np, &HeaderOrderList, entries)
         {
           ++x;
-          if (mutt_str_startswith(buf, np->data, CASE_IGNORE))
+          if (mutt_istr_startswith(buf, np->data))
           {
             mutt_debug(LL_DEBUG2, "Reorder: %s matches %s", np->data, buf);
             break;
@@ -300,7 +306,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       mutt_debug(LL_DEBUG2, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count);
       if (this_one)
       {
-        size_t blen = mutt_str_strlen(buf);
+        size_t blen = mutt_str_len(buf);
 
         mutt_mem_realloc(&this_one, this_one_len + blen + sizeof(char));
         strcat(this_one + this_one_len, buf);
@@ -308,8 +314,8 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       }
       else
       {
-        this_one = mutt_str_strdup(buf);
-        this_one_len = mutt_str_strlen(this_one);
+        this_one = mutt_str_dup(buf);
+        this_one_len = mutt_str_len(this_one);
       }
     }
   } /* while (ftello (fp_in) < off_end) */
@@ -321,14 +327,14 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
     {
       if (address_header_decode(&this_one) == 0)
         rfc2047_decode(&this_one);
-      this_one_len = mutt_str_strlen(this_one);
+      this_one_len = mutt_str_len(this_one);
     }
 
     if (!headers[x])
       headers[x] = this_one;
     else
     {
-      int hlen = mutt_str_strlen(headers[x]);
+      int hlen = mutt_str_len(headers[x]);
 
       mutt_mem_realloc(&headers[x], hlen + this_one_len + sizeof(char));
       strcat(headers[x] + hlen, this_one);
@@ -476,7 +482,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     if (folder && !(C_Weed && mutt_matches_ignore("folder")))
     {
       char buf[1024];
-      mutt_str_strfcpy(buf, folder, sizeof(buf));
+      mutt_str_copy(buf, folder, sizeof(buf));
       mutt_pretty_mailbox(buf, sizeof(buf));
 
       fputs("Folder: ", fp_out);
@@ -501,7 +507,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
      * Context->label_hash strdups the keys.  But to be safe, encode a copy */
     if (!(chflags & CH_DECODE))
     {
-      temp_hdr = mutt_str_strdup(temp_hdr);
+      temp_hdr = mutt_str_dup(temp_hdr);
       rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), C_SendCharset);
     }
     if (mutt_write_one_header(fp_out, "X-Label", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
@@ -520,7 +526,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
      * have to be careful not to encode (and thus free) that memory. */
     if (!(chflags & CH_DECODE))
     {
-      temp_hdr = mutt_str_strdup(temp_hdr);
+      temp_hdr = mutt_str_dup(temp_hdr);
       rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), C_SendCharset);
     }
     if (mutt_write_one_header(fp_out, "Subject", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
@@ -606,7 +612,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
   if (cmflags & MUTT_CM_PREFIX)
   {
     if (C_TextFlowed)
-      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
+      mutt_str_copy(prefix, ">", sizeof(prefix));
     else
     {
       mutt_make_string(prefix, sizeof(prefix), wraplen, NONULL(C_IndentString),
@@ -625,7 +631,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       char date[128];
 
       mutt_date_make_date(date, sizeof(date));
-      int dlen = mutt_str_strlen(date);
+      int dlen = mutt_str_len(date);
       if (dlen == 0)
         return -1;
 
@@ -967,7 +973,7 @@ static void format_address_header(char **h, struct AddressList *al)
   char *p = NULL;
   size_t linelen, buflen, plen;
 
-  linelen = mutt_str_strlen(*h);
+  linelen = mutt_str_len(*h);
   plen = linelen;
   buflen = linelen + 3;
 
@@ -1002,8 +1008,8 @@ static void format_address_header(char **h, struct AddressList *al)
       strcpy(c2buf, ",");
     }
 
-    const size_t cbuflen = mutt_str_strlen(cbuf);
-    const size_t c2buflen = mutt_str_strlen(c2buf);
+    const size_t cbuflen = mutt_str_len(cbuf);
+    const size_t c2buflen = mutt_str_len(c2buf);
     buflen += l + cbuflen + c2buflen;
     mutt_mem_realloc(h, buflen);
     p = *h;
@@ -1035,36 +1041,36 @@ static int address_header_decode(char **h)
   {
     case 'b':
     {
-      if (!(l = mutt_str_startswith(s, "bcc:", CASE_IGNORE)))
+      if (!(l = mutt_istr_startswith(s, "bcc:")))
         return 0;
       break;
     }
     case 'c':
     {
-      if (!(l = mutt_str_startswith(s, "cc:", CASE_IGNORE)))
+      if (!(l = mutt_istr_startswith(s, "cc:")))
         return 0;
       break;
     }
     case 'f':
     {
-      if (!(l = mutt_str_startswith(s, "from:", CASE_IGNORE)))
+      if (!(l = mutt_istr_startswith(s, "from:")))
         return 0;
       break;
     }
     case 'm':
     {
-      if (!(l = mutt_str_startswith(s, "mail-followup-to:", CASE_IGNORE)))
+      if (!(l = mutt_istr_startswith(s, "mail-followup-to:")))
         return 0;
       break;
     }
     case 'r':
     {
-      if ((l = mutt_str_startswith(s, "return-path:", CASE_IGNORE)))
+      if ((l = mutt_istr_startswith(s, "return-path:")))
       {
         rp = true;
         break;
       }
-      else if ((l = mutt_str_startswith(s, "reply-to:", CASE_IGNORE)))
+      else if ((l = mutt_istr_startswith(s, "reply-to:")))
       {
         break;
       }
@@ -1072,13 +1078,13 @@ static int address_header_decode(char **h)
     }
     case 's':
     {
-      if (!(l = mutt_str_startswith(s, "sender:", CASE_IGNORE)))
+      if (!(l = mutt_istr_startswith(s, "sender:")))
         return 0;
       break;
     }
     case 't':
     {
-      if (!(l = mutt_str_startswith(s, "to:", CASE_IGNORE)))
+      if (!(l = mutt_istr_startswith(s, "to:")))
         return 0;
       break;
     }
@@ -1105,11 +1111,11 @@ static int address_header_decode(char **h)
   /* angle brackets for return path are mandated by RFC5322,
    * so leave Return-Path as-is */
   if (rp)
-    *h = mutt_str_strdup(s);
+    *h = mutt_str_dup(s);
   else
   {
     *h = mutt_mem_calloc(1, l + 2);
-    mutt_str_strfcpy(*h, s, l + 1);
+    mutt_str_copy(*h, s, l + 1);
     format_address_header(h, &al);
   }
 

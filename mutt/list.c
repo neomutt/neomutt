@@ -107,7 +107,7 @@ struct ListNode *mutt_list_find(const struct ListHead *h, const char *data)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
-    if ((np->data == data) || (mutt_str_strcmp(np->data, data) == 0))
+    if (mutt_str_equal(np->data, data))
     {
       return np;
     }
@@ -200,7 +200,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
-    if ((*np->data == '*') || mutt_str_startswith(s, np->data, CASE_IGNORE))
+    if ((*np->data == '*') || mutt_istr_startswith(s, np->data))
       return true;
   }
   return false;
@@ -225,7 +225,7 @@ bool mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
 
   while (a && b)
   {
-    if (mutt_str_strcmp(a->data, b->data) != 0)
+    if (!mutt_str_equal(a->data, b->data))
       return false;
 
     a = STAILQ_NEXT(a, entries);
@@ -256,7 +256,7 @@ size_t mutt_list_str_split(struct ListHead *head, const char *src, char sep)
     while ((*src != '\0') && (*src != sep))
       src++;
 
-    mutt_list_insert_tail(head, mutt_str_substr_dup(start, src));
+    mutt_list_insert_tail(head, mutt_strn_dup(start, src - start));
     count++;
 
     if ((*src == '\0'))

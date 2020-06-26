@@ -314,7 +314,7 @@ static void save_history(enum HistoryClass hclass, const char *str)
   if (!fp)
     return;
 
-  tmp = mutt_str_strdup(str);
+  tmp = mutt_str_dup(str);
   mutt_ch_convert_string(&tmp, C_Charset, "utf-8", 0);
 
   /* Format of a history item (1 line): "<histclass>:<string>|".
@@ -361,7 +361,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
   int dest = 0;
   while (source < h->last)
   {
-    if (mutt_str_strcmp(h->hist[source], str) == 0)
+    if (mutt_str_equal(h->hist[source], str))
       FREE(&h->hist[source++]);
     else
       h->hist[dest++] = h->hist[source++];
@@ -381,7 +381,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
   dest = C_History;
   while (source > old_last)
   {
-    if (mutt_str_strcmp(h->hist[source], str) == 0)
+    if (mutt_str_equal(h->hist[source], str))
       FREE(&h->hist[source--]);
     else
       h->hist[dest--] = h->hist[source--];
@@ -417,7 +417,7 @@ int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **ma
       cur = C_History;
     if (cur == h->last)
       break;
-    if (mutt_str_stristr(h->hist[cur], search_buf))
+    if (mutt_istr_find(h->hist[cur], search_buf))
       matches[match_count++] = h->hist[cur];
   } while (match_count < C_History);
 
@@ -482,7 +482,7 @@ void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save)
     /* don't add to prompt history:
      *  - lines beginning by a space
      *  - repeated lines */
-    if ((*str != ' ') && (!h->hist[prev] || (mutt_str_strcmp(h->hist[prev], str) != 0)))
+    if ((*str != ' ') && (!h->hist[prev] || !mutt_str_equal(h->hist[prev], str)))
     {
       if (C_HistoryRemoveDups)
         remove_history_dups(hclass, str);
@@ -597,7 +597,7 @@ void mutt_hist_read_file(void)
     if (hclass >= HC_MAX)
       continue;
     *p = '\0';
-    p = mutt_str_strdup(linebuf + read);
+    p = mutt_str_dup(linebuf + read);
     if (p)
     {
       mutt_ch_convert_string(&p, "utf-8", C_Charset, 0);

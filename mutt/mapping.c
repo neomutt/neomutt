@@ -66,7 +66,7 @@ int mutt_map_get_value_n(const char *name, size_t len, const struct Mapping *map
 
   for (size_t i = 0; map[i].name; i++)
   {
-    if ((mutt_str_strncasecmp(map[i].name, name, len) == 0) && (map[i].name[len] == '\0'))
+    if (mutt_istrn_equal(map[i].name, name, len) && (map[i].name[len] == '\0'))
     {
       return map[i].value;
     }
@@ -84,5 +84,5 @@ int mutt_map_get_value_n(const char *name, size_t len, const struct Mapping *map
  */
 int mutt_map_get_value(const char *name, const struct Mapping *map)
 {
-  return mutt_map_get_value_n(name, mutt_str_strlen(name), map);
+  return mutt_map_get_value_n(name, mutt_str_len(name), map);
 }

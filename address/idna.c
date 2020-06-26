@@ -89,12 +89,12 @@ static bool check_idn(char *domain)
   if (!domain)
     return false;
 
-  if (mutt_str_startswith(domain, "xn--", CASE_IGNORE))
+  if (mutt_istr_startswith(domain, "xn--"))
     return true;
 
   while ((domain = strchr(domain, '.')))
   {
-    if (mutt_str_startswith(++domain, "xn--", CASE_IGNORE))
+    if (mutt_istr_startswith(++domain, "xn--"))
       return true;
   }
 
@@ -150,8 +150,8 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
   char *reversed_user = NULL, *reversed_domain = NULL;
   char *tmp = NULL;
 
-  char *local_user = mutt_str_strdup(user);
-  char *local_domain = mutt_str_strdup(domain);
+  char *local_user = mutt_str_dup(user);
+  char *local_domain = mutt_str_dup(domain);
 
 #ifdef HAVE_LIBIDN
   bool is_idn_encoded = check_idn(local_domain);
@@ -181,7 +181,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
    * user and domain name.  */
   if ((flags & MI_MAY_BE_IRREVERSIBLE) == 0)
   {
-    reversed_user = mutt_str_strdup(local_user);
+    reversed_user = mutt_str_dup(local_user);
 
     if (mutt_ch_convert_string(&reversed_user, C_Charset, "utf-8", 0) != 0)
     {
@@ -190,14 +190,14 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
       goto cleanup;
     }
 
-    if (mutt_str_strcasecmp(user, reversed_user) != 0)
+    if (!mutt_istr_equal(user, reversed_user))
     {
       mutt_debug(LL_DEBUG1, "#1 Not reversible. orig = '%s', reversed = '%s'\n",
                  user, reversed_user);
       goto cleanup;
     }
 
-    reversed_domain = mutt_str_strdup(local_domain);
+    reversed_domain = mutt_str_dup(local_domain);
 
     if (mutt_ch_convert_string(&reversed_domain, C_Charset, "utf-8", 0) != 0)
     {
@@ -227,7 +227,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
     }
 #endif /* HAVE_LIBIDN */
 
-    if (mutt_str_strcasecmp(domain, reversed_domain) != 0)
+    if (!mutt_istr_equal(domain, reversed_domain))
     {
       mutt_debug(LL_DEBUG1, "#2 Not reversible. orig = '%s', reversed = '%s'\n",
                  domain, reversed_domain);
@@ -235,7 +235,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
     }
   }
 
-  mailbox = mutt_mem_malloc(mutt_str_strlen(local_user) + mutt_str_strlen(local_domain) + 2);
+  mailbox = mutt_mem_malloc(mutt_str_len(local_user) + mutt_str_len(local_domain) + 2);
   sprintf(mailbox, "%s@%s", NONULL(local_user), NONULL(local_domain));
 
 cleanup:
@@ -267,8 +267,8 @@ char *mutt_idna_local_to_intl(const char *user, const char *domain)
   char *mailbox = NULL;
   char *tmp = NULL;
 
-  char *intl_user = mutt_str_strdup(user);
-  char *intl_domain = mutt_str_strdup(domain);
+  char *intl_user = mutt_str_dup(user);
+  char *intl_domain = mutt_str_dup(domain);
 
   /* we don't want charset-hook effects, so we set flags to 0 */
   if (mutt_ch_convert_string(&intl_user, C_Charset, "utf-8", 0) != 0)
@@ -293,7 +293,7 @@ char *mutt_idna_local_to_intl(const char *user, const char *domain)
   }
 #endif /* HAVE_LIBIDN */
 
-  mailbox = mutt_mem_malloc(mutt_str_strlen(intl_user) + mutt_str_strlen(intl_domain) + 2);
+  mailbox = mutt_mem_malloc(mutt_str_len(intl_user) + mutt_str_len(intl_domain) + 2);
   sprintf(mailbox, "%s@%s", NONULL(intl_user), NONULL(intl_domain));
 
 cleanup:

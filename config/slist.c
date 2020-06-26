@@ -107,7 +107,7 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
       FREE(&cdef->initial);
 
     cdef->type |= DT_INITIAL_SET;
-    cdef->initial = IP mutt_str_strdup(value);
+    cdef->initial = IP mutt_str_dup(value);
   }
 
   return rc;

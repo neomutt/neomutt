@@ -133,7 +133,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
     return src;
 
   bool c = Context && Context->mailbox &&
-           (mutt_str_strcmp(Context->mailbox->realpath, m->realpath) == 0);
+           mutt_str_equal(Context->mailbox->realpath, m->realpath);
 
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -299,7 +299,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
     return;
 
   if (box && sbe)
-    mutt_str_strfcpy(sbe->box, box, sizeof(sbe->box));
+    mutt_str_copy(sbe->box, box, sizeof(sbe->box));
   else
     buf[0] = '\0';
 
@@ -308,7 +308,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);
-  int s = mutt_str_strlen(buf);
+  int s = mutt_str_len(buf);
   width = MIN(buflen, width);
   if (w < width)
   {
@@ -345,22 +345,22 @@ static int cb_qsort_sbe(const void *a, const void *b)
   {
     case SORT_COUNT:
       if (m2->msg_count == m1->msg_count)
-        rc = mutt_str_strcoll(mailbox_path(m1), mailbox_path(m2));
+        rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
       else
         rc = (m2->msg_count - m1->msg_count);
       break;
     case SORT_UNREAD:
       if (m2->msg_unread == m1->msg_unread)
-        rc = mutt_str_strcoll(mailbox_path(m1), mailbox_path(m2));
+        rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
       else
         rc = (m2->msg_unread - m1->msg_unread);
       break;
     case SORT_DESC:
-      rc = mutt_str_strcmp(m1->name, m2->name);
+      rc = mutt_str_cmp(m1->name, m2->name);
       break;
     case SORT_FLAGGED:
       if (m2->msg_flagged == m1->msg_flagged)
-        rc = mutt_str_strcoll(mailbox_path(m1), mailbox_path(m2));
+        rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
       else
         rc = (m2->msg_flagged - m1->msg_flagged);
       break;
@@ -368,7 +368,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
     {
       rc = mutt_inbox_cmp(mailbox_path(m1), mailbox_path(m2));
       if (rc == 0)
-        rc = mutt_str_strcoll(mailbox_path(m1), mailbox_path(m2));
+        rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
       break;
     }
   }
@@ -413,7 +413,7 @@ static void update_entries_visibility(void)
 
     sbe->is_hidden = false;
 
-    if (Context && (mutt_str_strcmp(sbe->mailbox->realpath, Context->mailbox->realpath) == 0))
+    if (Context && mutt_str_equal(sbe->mailbox->realpath, Context->mailbox->realpath))
     {
       /* Spool directories are always visible */
       continue;
@@ -893,18 +893,18 @@ static int imap_is_prefix(const char *folder, const char *mbox)
   if (!url_m || !url_f)
     goto done;
 
-  if (mutt_str_strcasecmp(url_m->host, url_f->host) != 0)
+  if (!mutt_istr_equal(url_m->host, url_f->host))
     goto done;
 
-  if (url_m->user && url_f->user && (mutt_str_strcasecmp(url_m->user, url_f->user) != 0))
+  if (url_m->user && url_f->user && !mutt_istr_equal(url_m->user, url_f->user))
     goto done;
 
-  size_t mlen = mutt_str_strlen(url_m->path);
-  size_t flen = mutt_str_strlen(url_f->path);
+  size_t mlen = mutt_str_len(url_m->path);
+  size_t flen = mutt_str_len(url_f->path);
   if (flen > mlen)
     goto done;
 
-  if (mutt_str_strncmp(url_m->path, url_f->path, flen) != 0)
+  if (!mutt_strn_equal(url_m->path, url_f->path, flen))
     goto done;
 
   plen = strlen(mbox) - mlen + flen;
@@ -939,17 +939,17 @@ static const char *abbrev_folder(const char *mbox, const char *folder, enum Mail
   if (!C_SidebarDelimChars)
     return NULL;
 
-  size_t flen = mutt_str_strlen(folder);
+  size_t flen = mutt_str_len(folder);
   if (flen == 0)
     return NULL;
   if (strchr(C_SidebarDelimChars, folder[flen - 1])) // folder ends with a delimiter
     flen--;
 
-  size_t mlen = mutt_str_strlen(mbox);
+  size_t mlen = mutt_str_len(mbox);
   if (mlen <= flen)
     return NULL;
 
-  if (mutt_str_strncmp(folder, mbox, flen) != 0)
+  if (!mutt_strn_equal(folder, mbox, flen))
     return NULL;
 
   // After the match, check that mbox has a delimiter
@@ -977,7 +977,7 @@ static const char *abbrev_url(const char *mbox, enum MailboxType type)
    * but not so large that it will go past the host part. */
   const int scheme_len = 10;
 
-  size_t len = mutt_str_strlen(mbox);
+  size_t len = mutt_str_len(mbox);
   if ((len < scheme_len) || ((type != MUTT_NNTP) && (type != MUTT_IMAP) &&
                              (type != MUTT_NOTMUCH) && (type != MUTT_POP)))
   {
@@ -1071,7 +1071,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
     else if (m->msg_flagged > 0)
       mutt_curses_set_color(MT_COLOR_SIDEBAR_FLAGGED);
     else if ((Colors->defs[MT_COLOR_SIDEBAR_SPOOLFILE] != 0) &&
-             (mutt_str_strcmp(mailbox_path(m), C_Spoolfile) == 0))
+             mutt_str_equal(mailbox_path(m), C_Spoolfile))
     {
       mutt_curses_set_color(MT_COLOR_SIDEBAR_SPOOLFILE);
     }
@@ -1089,7 +1089,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 
     mutt_window_move(win, col, row);
     if (Context && Context->mailbox && (Context->mailbox->realpath[0] != '\0') &&
-        (mutt_str_strcmp(m->realpath, Context->mailbox->realpath) == 0))
+        mutt_str_equal(m->realpath, Context->mailbox->realpath))
     {
       m->msg_unread = Context->mailbox->msg_unread;
       m->msg_count = Context->mailbox->msg_count;
@@ -1116,7 +1116,7 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
 
     // At this point, we don't have an abbreviation so let's keep track
     // before using short path.
-    bool no_abbr = (mutt_str_strncmp(display, full_path, mutt_str_strlen(display)) != 0);
+    bool no_abbr = !mutt_strn_equal(display, full_path, mutt_str_len(display));
     if (C_SidebarShortPath)
     {
       display = last_part;
@@ -1286,7 +1286,7 @@ void sb_set_open_mailbox(struct Mailbox *m)
 
   for (int entry = 0; entry < EntryCount; entry++)
   {
-    if (mutt_str_strcmp(Entries[entry]->mailbox->realpath, m->realpath) == 0)
+    if (mutt_str_equal(Entries[entry]->mailbox->realpath, m->realpath))
     {
       OpnIndex = entry;
       HilIndex = entry;
@@ -1329,7 +1329,7 @@ void sb_notify_mailbox(struct Mailbox *m, bool created)
     if (BotIndex < 0)
       BotIndex = EntryCount;
     if ((OpnIndex < 0) && Context &&
-        (mutt_str_strcmp(m->realpath, Context->mailbox->realpath) == 0))
+        mutt_str_equal(m->realpath, Context->mailbox->realpath))
     {
       OpnIndex = EntryCount;
     }
@@ -1380,7 +1380,7 @@ int sb_observer(struct NotifyCallback *nc)
   struct MuttWindow *win = nc->global_data;
   struct EventConfig *ec = nc->event_data;
 
-  if (mutt_str_strncmp(ec->name, "sidebar_", 8) != 0)
+  if (!mutt_strn_equal(ec->name, "sidebar_", 8))
     return 0;
 
   bool repaint = false;

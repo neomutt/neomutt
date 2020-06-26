@@ -237,7 +237,7 @@ static void print_flowed_line(char *line, struct State *s, int ql,
   }
 
   width = quote_width(s, ql);
-  last = line[mutt_str_strlen(line) - 1];
+  last = line[mutt_str_len(line) - 1];
 
   mutt_debug(LL_DEBUG5, "f=f: line [%s], width = %ld, spaces = %lu\n", line,
              (long) width, fst->spaces);
@@ -325,7 +325,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
   char *t = mutt_param_get(&a->parameter, "delsp");
   if (t)
   {
-    delsp = (mutt_str_strcasecmp(t, "yes") == 0);
+    delsp = mutt_istr_equal(t, "yes");
     t = NULL;
     fst.delsp = true;
   }
@@ -334,7 +334,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
   while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, 0)))
   {
-    const size_t buf_len = mutt_str_strlen(buf);
+    const size_t buf_len = mutt_str_len(buf);
     const unsigned int newql = get_quote_level(buf);
 
     /* end flowed paragraph (if we're within one) if quoting level
@@ -350,7 +350,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
       buf_off++;
 
     /* test for signature separator */
-    const unsigned int sigsep = (mutt_str_strcmp(buf + buf_off, "-- ") == 0);
+    const unsigned int sigsep = mutt_str_equal(buf + buf_off, "-- ");
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
@@ -420,7 +420,7 @@ static void rfc3676_space_stuff(struct Email *e, bool unstuff)
     }
     else
     {
-      if ((buf[0] == ' ') || mutt_str_startswith(buf, "From ", CASE_MATCH))
+      if ((buf[0] == ' ') || mutt_str_startswith(buf, "From "))
         fputc(' ', fp_out);
       fputs(buf, fp_out);
     }
@@ -465,11 +465,10 @@ void mutt_rfc3676_space_stuff(struct Email *e)
   if (!e || !e->content || !e->content->filename)
     return;
 
-  if ((e->content->type == TYPE_TEXT) &&
-      (mutt_str_strcasecmp("plain", e->content->subtype) == 0))
+  if ((e->content->type == TYPE_TEXT) && mutt_istr_equal("plain", e->content->subtype))
   {
     const char *format = mutt_param_get(&e->content->parameter, "format");
-    if (mutt_str_strcasecmp("flowed", format) == 0)
+    if (mutt_istr_equal("flowed", format))
       rfc3676_space_stuff(e, false);
   }
 }
@@ -483,11 +482,10 @@ void mutt_rfc3676_space_unstuff(struct Email *e)
   if (!e || !e->content || !e->content->filename)
     return;
 
-  if ((e->content->type == TYPE_TEXT) &&
-      !mutt_str_strcasecmp("plain", e->content->subtype))
+  if ((e->content->type == TYPE_TEXT) && mutt_istr_equal("plain", e->content->subtype))
   {
     const char *format = mutt_param_get(&e->content->parameter, "format");
-    if (mutt_str_strcasecmp("flowed", format) == 0)
+    if (mutt_istr_equal("flowed", format))
       rfc3676_space_stuff(e, true);
   }
 }

@@ -157,7 +157,7 @@ int mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
     }
     else
     {
-      *tgt = mutt_str_strdup(path);
+      *tgt = mutt_str_dup(path);
       break;
     }
   }
@@ -213,17 +213,17 @@ static void mh_sequences_add_one(struct Mailbox *m, int n, bool unseen, bool fla
   {
     while ((buf = mutt_file_read_line(buf, &sz, fp_old, NULL, 0)))
     {
-      if (unseen && (strncmp(buf, seq_unseen, mutt_str_strlen(seq_unseen)) == 0))
+      if (unseen && mutt_strn_equal(buf, seq_unseen, mutt_str_len(seq_unseen)))
       {
         fprintf(fp_new, "%s %d\n", buf, n);
         unseen_done = true;
       }
-      else if (flagged && (strncmp(buf, seq_flagged, mutt_str_strlen(seq_flagged)) == 0))
+      else if (flagged && mutt_strn_equal(buf, seq_flagged, mutt_str_len(seq_flagged)))
       {
         fprintf(fp_new, "%s %d\n", buf, n);
         flagged_done = true;
       }
-      else if (replied && (strncmp(buf, seq_replied, mutt_str_strlen(seq_replied)) == 0))
+      else if (replied && mutt_strn_equal(buf, seq_replied, mutt_str_len(seq_replied)))
       {
         fprintf(fp_new, "%s %d\n", buf, n);
         replied_done = true;
@@ -317,7 +317,7 @@ static void maildir_update_mtime(struct Mailbox *m)
     if (stat(buf, &st) == 0)
       mutt_file_get_stat_timespec(&mdata->mtime_cur, &st, MUTT_STAT_MTIME);
 
-    mutt_str_strfcpy(buf, mailbox_path(m), sizeof(buf));
+    mutt_str_copy(buf, mailbox_path(m), sizeof(buf));
   }
 
   if (stat(buf, &st) == 0)
@@ -349,7 +349,7 @@ int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
   if (subdir)
   {
     mutt_buffer_printf(buf, "%s/%s", mailbox_path(m), subdir);
-    is_old = C_MarkOld ? (mutt_str_strcmp("cur", subdir) == 0) : false;
+    is_old = C_MarkOld ? mutt_str_equal("cur", subdir) : false;
   }
   else
     mutt_buffer_strcpy(buf, mailbox_path(m));
@@ -390,7 +390,7 @@ int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
       e->path = mutt_buffer_strdup(buf);
     }
     else
-      e->path = mutt_str_strdup(de->d_name);
+      e->path = mutt_str_dup(de->d_name);
 
     entry = maildir_entry_new();
     entry->email = e;
@@ -467,7 +467,7 @@ int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **ptr)
 size_t maildir_hcache_keylen(const char *fn)
 {
   const char *p = strrchr(fn, ':');
-  return p ? (size_t)(p - fn) : mutt_str_strlen(fn);
+  return p ? (size_t)(p - fn) : mutt_str_len(fn);
 }
 
 /**
@@ -739,7 +739,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
     if (hce.email && (rc == 0) && (lastchanged.st_mtime <= hce.uidvalidity))
     {
       hce.email->old = p->email->old;
-      hce.email->path = mutt_str_strdup(p->email->path);
+      hce.email->path = mutt_str_dup(p->email->path);
       email_free(&p->email);
       p->email = hce.email;
       if (m->type == MUTT_MAILDIR)
@@ -965,12 +965,12 @@ int md_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
 
   /* extract the subdir */
   char *s = strrchr(msg->path, '/') + 1;
-  mutt_str_strfcpy(subdir, s, 4);
+  mutt_str_copy(subdir, s, 4);
 
   /* extract the flags */
   s = strchr(s, ':');
   if (s)
-    mutt_str_strfcpy(suffix, s, sizeof(suffix));
+    mutt_str_copy(suffix, s, sizeof(suffix));
   else
     suffix[0] = '\0';
 
@@ -1066,7 +1066,7 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
     char oldpath[PATH_MAX];
     char partpath[PATH_MAX];
     snprintf(oldpath, sizeof(oldpath), "%s/%s", mailbox_path(m), e->path);
-    mutt_str_strfcpy(partpath, e->path, sizeof(partpath));
+    mutt_str_copy(partpath, e->path, sizeof(partpath));
 
     if (m->type == MUTT_MAILDIR)
       rc = md_commit_message(m, dest, e);
@@ -1181,7 +1181,7 @@ static FILE *md_open_find_message(const char *folder, const char *unique,
   {
     maildir_canon_filename(tunique, de->d_name);
 
-    if (mutt_str_strcmp(mutt_b2s(tunique), unique) == 0)
+    if (mutt_str_equal(mutt_b2s(tunique), unique))
     {
       mutt_buffer_printf(fname, "%s/%s/%s", folder, subfolder, de->d_name);
       fp = fopen(mutt_b2s(fname), "r");
@@ -1219,7 +1219,7 @@ void maildir_parse_flags(struct Email *e, const char *path)
   e->replied = false;
 
   char *p = strrchr(path, ':');
-  if (p && mutt_str_startswith(p + 1, "2,", CASE_MATCH))
+  if (p && mutt_str_startswith(p + 1, "2,"))
   {
     p += 3;
 

@@ -111,7 +111,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   /* looping protocol */
   while (true)
   {
-    mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
+    mutt_str_copy(buf + olen, "\r\n", bufsize - olen);
     mutt_socket_send(adata->conn, buf);
     if (mutt_socket_readln_d(inbuf, sizeof(inbuf), adata->conn, MUTT_SOCK_LOG_FULL) < 0)
     {
@@ -128,7 +128,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
     if (!client_start && (rc != SASL_CONTINUE))
       break;
 
-    if (mutt_str_startswith(inbuf, "+ ", CASE_MATCH) &&
+    if (mutt_str_startswith(inbuf, "+ ") &&
         (sasl_decode64(inbuf + 2, strlen(inbuf + 2), buf, bufsize - 1, &len) != SASL_OK))
     {
       mutt_debug(LL_DEBUG1, "error base64-decoding server response\n");
@@ -175,7 +175,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   if (rc != SASL_OK)
     goto bail;
 
-  if (mutt_str_startswith(inbuf, "+OK", CASE_MATCH))
+  if (mutt_str_startswith(inbuf, "+OK"))
   {
     mutt_sasl_setup_conn(adata->conn, saslconn);
     FREE(&buf);
@@ -186,7 +186,7 @@ bail:
   sasl_dispose(&saslconn);
 
   /* terminate SASL session if the last response is not +OK nor -ERR */
-  if (mutt_str_startswith(inbuf, "+ ", CASE_MATCH))
+  if (mutt_str_startswith(inbuf, "+ "))
   {
     snprintf(buf, bufsize, "*\r\n");
     if (pop_query(adata, buf, bufsize) == -1)
@@ -217,7 +217,7 @@ void pop_apop_timestamp(struct PopAccountData *adata, char *buf)
   if ((p1 = strchr(buf, '<')) && (p2 = strchr(p1, '>')))
   {
     p2[1] = '\0';
-    adata->timestamp = mutt_str_strdup(p1);
+    adata->timestamp = mutt_str_dup(p1);
   }
 }
 
@@ -428,8 +428,7 @@ int pop_authenticate(struct PopAccountData *adata)
 
       while (authenticator->authenticate)
       {
-        if (!authenticator->method ||
-            (mutt_str_strcasecmp(authenticator->method, np->data) == 0))
+        if (!authenticator->method || mutt_istr_equal(authenticator->method, np->data))
         {
           ret = authenticator->authenticate(adata, np->data);
           if (ret == POP_A_SOCKET)

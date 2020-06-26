@@ -93,7 +93,7 @@ static char *get_charset(char *value, char *charset, size_t chslen)
   }
 
   *t = '\0';
-  mutt_str_strfcpy(charset, value, chslen);
+  mutt_str_copy(charset, value, chslen);
 
   char *u = strchr(t + 1, '\'');
   if (u)
@@ -190,7 +190,7 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
     char *value = NULL;
     size_t l = 0;
 
-    mutt_str_strfcpy(attribute, par->attribute, sizeof(attribute));
+    mutt_str_copy(attribute, par->attribute, sizeof(attribute));
 
     const bool encoded = par->encoded;
     char *valp = NULL;
@@ -221,7 +221,7 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
       mutt_ch_convert_string(&value, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
 
     struct Parameter *np = mutt_param_new();
-    np->attribute = mutt_str_strdup(attribute);
+    np->attribute = mutt_str_dup(attribute);
     np->value = value;
     TAILQ_INSERT_HEAD(pl, np, entries);
   }
@@ -358,19 +358,19 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
     if (C_Charset && C_SendCharset)
     {
       charset = mutt_ch_choose(C_Charset, C_SendCharset, value,
-                               mutt_str_strlen(value), &src_value, NULL);
+                               mutt_str_len(value), &src_value, NULL);
     }
     if (src_value)
       free_src_value = true;
     if (!charset)
-      charset = mutt_str_strdup(C_Charset ? C_Charset : "unknown-8bit");
+      charset = mutt_str_dup(C_Charset ? C_Charset : "unknown-8bit");
   }
   if (!src_value)
     src_value = value;
 
   // Count the size the resultant value will need in total
   if (encode)
-    dest_value_len = mutt_str_strlen(charset) + 2; /* charset'' prefix */
+    dest_value_len = mutt_str_len(charset) + 2; /* charset'' prefix */
 
   for (cur = src_value; *cur; cur++)
   {
@@ -397,13 +397,13 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
   }
 
   // Determine if need to split into parameter value continuations
-  max_value_len = 78 - // rfc suggested line length
-                  1 -  // Leading tab on continuation line
-                  mutt_str_strlen(attribute) - // attribute
-                  (encode ? 1 : 0) -           // '*' encoding marker
-                  1 -                          // '='
-                  (add_quotes ? 2 : 0) -       // "...."
-                  1;                           // ';'
+  max_value_len = 78 -                      // rfc suggested line length
+                  1 -                       // Leading tab on continuation line
+                  mutt_str_len(attribute) - // attribute
+                  (encode ? 1 : 0) -        // '*' encoding marker
+                  1 -                       // '='
+                  (add_quotes ? 2 : 0) -    // "...."
+                  1;                        // ';'
 
   if (max_value_len < 30)
     max_value_len = 30;

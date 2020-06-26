@@ -696,10 +696,10 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m,
 #endif
 #ifdef USE_COMP_MBOX
     if (Context->mailbox->compress_info && (Context->mailbox->realpath[0] != '\0'))
-      new_last_folder = mutt_str_strdup(Context->mailbox->realpath);
+      new_last_folder = mutt_str_dup(Context->mailbox->realpath);
     else
 #endif
-      new_last_folder = mutt_str_strdup(mailbox_path(Context->mailbox));
+      new_last_folder = mutt_str_dup(mailbox_path(Context->mailbox));
     *oldcount = Context->mailbox->msg_count;
 
     int check = mx_mbox_close(&Context);
@@ -726,7 +726,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m,
    * could be deleted, leaving `m` dangling. */
   // TODO: Refactor this function to avoid the need for an observer
   notify_observer_add(m->notify, mailbox_index_observer, &m);
-  char *dup_path = mutt_str_strdup(mailbox_path(m));
+  char *dup_path = mutt_str_dup(mailbox_path(m));
 
   mutt_folder_hook(mailbox_path(m), m ? m->name : NULL);
   if (m)
@@ -1514,7 +1514,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
               mutt_error(_("Article has no parent reference"));
               break;
             }
-            mutt_str_strfcpy(buf, STAILQ_FIRST(&e_cur->env->references)->data, sizeof(buf));
+            mutt_str_copy(buf, STAILQ_FIRST(&e_cur->env->references)->data, sizeof(buf));
           }
           if (!Context->mailbox->id_hash)
             Context->mailbox->id_hash = mutt_make_id_hash(Context->mailbox);
@@ -1581,7 +1581,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         mutt_message(_("Fetching message headers..."));
         if (!Context->mailbox->id_hash)
           Context->mailbox->id_hash = mutt_make_id_hash(Context->mailbox);
-        mutt_str_strfcpy(buf, e_cur->env->message_id, sizeof(buf));
+        mutt_str_copy(buf, e_cur->env->message_id, sizeof(buf));
 
         /* trying to find msgid of the root message */
         if (op == OP_RECONSTRUCT_THREAD)
@@ -1598,7 +1598,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
             /* the last msgid in References is the root message */
             if (!STAILQ_NEXT(ref, entries))
-              mutt_str_strfcpy(buf, ref->data, sizeof(buf));
+              mutt_str_copy(buf, ref->data, sizeof(buf));
           }
         }
 
@@ -1790,19 +1790,19 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           char buf2[1024];
 
-          if (!Context->pattern || (strncmp(Context->pattern, "!~R!~D~s", 8) != 0))
+          if (!Context->pattern || !mutt_strn_equal(Context->pattern, "!~R!~D~s", 8))
           {
             snprintf(buf2, sizeof(buf2), "!~R!~D~s%s",
                      Context->pattern ? Context->pattern : ".*");
           }
           else
           {
-            mutt_str_strfcpy(buf2, Context->pattern + 8, sizeof(buf2));
-            if ((*buf2 == '\0') || (strncmp(buf2, ".*", 2) == 0))
+            mutt_str_copy(buf2, Context->pattern + 8, sizeof(buf2));
+            if ((*buf2 == '\0') || mutt_strn_equal(buf2, ".*", 2))
               snprintf(buf2, sizeof(buf2), "~A");
           }
           FREE(&Context->pattern);
-          Context->pattern = mutt_str_strdup(buf2);
+          Context->pattern = mutt_str_dup(buf2);
           mutt_pattern_func(MUTT_LIMIT, NULL);
         }
 
@@ -2146,7 +2146,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           int msg_id_offset = 0;
           if ((e_cur->env->message_id)[0] == '<')
             msg_id_offset = 1;
-          mutt_str_strcat(buf, sizeof(buf), (e_cur->env->message_id) + msg_id_offset);
+          mutt_str_cat(buf, sizeof(buf), (e_cur->env->message_id) + msg_id_offset);
           if (buf[strlen(buf) - 1] == '>')
             buf[strlen(buf) - 1] = '\0';
 
@@ -2321,7 +2321,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         }
 
         // Keep copy of user's query to name the mailbox
-        char *query_unencoded = mutt_str_strdup(buf);
+        char *query_unencoded = mutt_str_dup(buf);
 
         struct Mailbox *m_query =
             change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &index_hint,
@@ -2354,7 +2354,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         }
         nm_query_window_backward();
-        mutt_str_strfcpy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
+        mutt_str_copy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
         change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &index_hint, false);
         break;
       }
@@ -2374,7 +2374,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         }
         nm_query_window_forward();
-        mutt_str_strfcpy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
+        mutt_str_copy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
         change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &index_hint, false);
         break;
       }
@@ -3759,7 +3759,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!e_cur)
           break;
         if ((op != OP_FOLLOWUP) || !e_cur->env->followup_to ||
-            (mutt_str_strcasecmp(e_cur->env->followup_to, "poster") != 0) ||
+            !mutt_istr_equal(e_cur->env->followup_to, "poster") ||
             (query_quadoption(C_FollowupToPoster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
@@ -4020,7 +4020,7 @@ int mutt_reply_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ec = nc->event_data;
 
-  if (mutt_str_strcmp(ec->name, "reply_regex") != 0)
+  if (!mutt_str_equal(ec->name, "reply_regex"))
     return 0;
 
   if (!Context || !Context->mailbox)
@@ -4218,7 +4218,7 @@ int mutt_dlgindex_observer(struct NotifyCallback *nc)
   if (!win_index || !win_pager)
     return -1;
 
-  if (mutt_str_strcmp(ec->name, "status_on_top") == 0)
+  if (mutt_str_equal(ec->name, "status_on_top"))
   {
     struct MuttWindow *parent = win_index->parent;
     if (!parent)
@@ -4246,7 +4246,7 @@ int mutt_dlgindex_observer(struct NotifyCallback *nc)
     goto reflow;
   }
 
-  if (mutt_str_strcmp(ec->name, "pager_index_lines") == 0)
+  if (mutt_str_equal(ec->name, "pager_index_lines"))
   {
     struct MuttWindow *parent = win_pager->parent;
     if (parent->state.visible)

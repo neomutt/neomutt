@@ -41,7 +41,7 @@ static void check_addrlist(struct AddressList *list, const char *const exp[], si
   for (size_t i = 0; i < num; ++i)
   {
     char *tok = mutt_str_skip_whitespace(strsep(&pp, ","));
-    if (!TEST_CHECK(mutt_str_strcmp(tok, exp[i]) == 0))
+    if (!TEST_CHECK(mutt_str_equal(tok, exp[i])))
     {
       TEST_MSG("Expected: %s", exp[i]);
       TEST_MSG("Actual  : %s", tok);
@@ -91,7 +91,7 @@ void test_mutt_parse_mailto(void)
     }
     check_addrlist(&env->to, to, mutt_array_size(to));
     check_addrlist(&env->cc, cc, mutt_array_size(cc));
-    if (!TEST_CHECK(mutt_str_strcmp(body, parsed_body) == 0))
+    if (!TEST_CHECK(mutt_str_equal(body, parsed_body)))
     {
       TEST_MSG("Expected: %s", body);
       TEST_MSG("Actual  : %s", parsed_body);

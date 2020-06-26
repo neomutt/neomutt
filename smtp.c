@@ -142,19 +142,19 @@ static int smtp_get_resp(struct Connection *conn)
     const char *s = buf + 4; /* Skip the response code and the space/dash */
     size_t plen;
 
-    if (mutt_str_startswith(s, "8BITMIME", CASE_IGNORE))
+    if (mutt_istr_startswith(s, "8BITMIME"))
       Capabilities |= SMTP_CAP_EIGHTBITMIME;
-    else if ((plen = mutt_str_startswith(s, "AUTH ", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(s, "AUTH ")))
     {
       Capabilities |= SMTP_CAP_AUTH;
       FREE(&AuthMechs);
-      AuthMechs = mutt_str_strdup(s + plen);
+      AuthMechs = mutt_str_dup(s + plen);
     }
-    else if (mutt_str_startswith(s, "DSN", CASE_IGNORE))
+    else if (mutt_istr_startswith(s, "DSN"))
       Capabilities |= SMTP_CAP_DSN;
-    else if (mutt_str_startswith(s, "STARTTLS", CASE_IGNORE))
+    else if (mutt_istr_startswith(s, "STARTTLS"))
       Capabilities |= SMTP_CAP_STARTTLS;
-    else if (mutt_str_startswith(s, "SMTPUTF8", CASE_IGNORE))
+    else if (mutt_istr_startswith(s, "SMTPUTF8"))
       Capabilities |= SMTP_CAP_SMTPUTF8;
 
     if (!valid_smtp_code(buf, n, &n))
@@ -244,7 +244,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
 
   while (fgets(buf, sizeof(buf) - 1, fp))
   {
-    buflen = mutt_str_strlen(buf);
+    buflen = mutt_str_len(buf);
     term = buflen && buf[buflen - 1] == '\n';
     if (term && ((buflen == 1) || (buf[buflen - 2] != '\r')))
       snprintf(buf + buflen - 1, sizeof(buf) - buflen + 1, "\r\n");
@@ -473,15 +473,15 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
   snprintf(buf, bufsize, "AUTH %s", mech);
   if (len)
   {
-    mutt_str_strcat(buf, bufsize, " ");
-    if (sasl_encode64(data, len, buf + mutt_str_strlen(buf),
-                      bufsize - mutt_str_strlen(buf), &len) != SASL_OK)
+    mutt_str_cat(buf, bufsize, " ");
+    if (sasl_encode64(data, len, buf + mutt_str_len(buf),
+                      bufsize - mutt_str_len(buf), &len) != SASL_OK)
     {
       mutt_debug(LL_DEBUG1, "#1 error base64-encoding client response\n");
       goto fail;
     }
   }
-  mutt_str_strcat(buf, bufsize, "\r\n");
+  mutt_str_cat(buf, bufsize, "\r\n");
 
   do
   {
@@ -522,7 +522,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
         goto fail;
       }
     }
-    mutt_str_strfcpy(buf + len, "\r\n", bufsize - len);
+    mutt_str_copy(buf + len, "\r\n", bufsize - len);
   } while (rc == SMTP_READY && saslrc != SASL_FAIL);
 
   if (smtp_success(rc))
@@ -803,7 +803,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
     int len = snprintf(buf, sizeof(buf), "MAIL FROM:<%s>", envfrom);
     if (eightbit && (Capabilities & SMTP_CAP_EIGHTBITMIME))
     {
-      mutt_str_strncat(buf, sizeof(buf), " BODY=8BITMIME", 15);
+      mutt_strn_cat(buf, sizeof(buf), " BODY=8BITMIME", 15);
       len += 14;
     }
     if (C_DsnReturn && (Capabilities & SMTP_CAP_DSN))
@@ -814,7 +814,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
     {
       snprintf(buf + len, sizeof(buf) - len, " SMTPUTF8");
     }
-    mutt_str_strncat(buf, sizeof(buf), "\r\n", 3);
+    mutt_strn_cat(buf, sizeof(buf), "\r\n", 3);
     if (mutt_socket_send(conn, buf) == -1)
     {
       rc = SMTP_ERR_WRITE;

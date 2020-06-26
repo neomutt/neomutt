@@ -152,7 +152,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       }
       else
       {
-        cmd.data = mutt_str_strdup(tok->dptr);
+        cmd.data = mutt_str_dup(tok->dptr);
       }
       *pc = '`';
       pid = filter_create(cmd.data, NULL, &fp, NULL);
@@ -206,7 +206,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         pc = strchr(tok->dptr, '}');
         if (pc)
         {
-          var = mutt_str_substr_dup(tok->dptr + 1, pc);
+          var = mutt_strn_dup(tok->dptr + 1, pc - (tok->dptr + 1));
           tok->dptr = pc + 1;
 
           if ((flags & MUTT_TOKEN_NOSHELL))
@@ -223,7 +223,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       {
         for (pc = tok->dptr; isalnum((unsigned char) *pc) || (pc[0] == '_'); pc++)
           ;
-        var = mutt_str_substr_dup(tok->dptr, pc);
+        var = mutt_strn_dup(tok->dptr, pc - tok->dptr);
         tok->dptr = pc;
       }
       if (var)

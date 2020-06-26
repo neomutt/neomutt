@@ -122,7 +122,7 @@ void test_is_from(void)
     if (!valid)
       continue;
 
-    if (!TEST_CHECK(mutt_str_strcmp(t->path, path) == 0))
+    if (!TEST_CHECK(mutt_str_equal(t->path, path)))
     {
       TEST_MSG("Expected: %s", t->path);
       TEST_MSG("Actual  : %s", path);

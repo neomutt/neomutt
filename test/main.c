@@ -488,6 +488,11 @@
   NEOMUTT_TEST_ITEM(test_slist_remove_string)                                  \
                                                                                \
   /* string */                                                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_istr_equal)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_istr_find)                                       \
+  NEOMUTT_TEST_ITEM(test_mutt_istr_remall)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_istrn_cmp)                                       \
+  NEOMUTT_TEST_ITEM(test_mutt_istrn_equal)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_adjust)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_append_item)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_asprintf)                                    \
@@ -497,42 +502,33 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_atoui)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_atoul)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_atoull)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_str_cat)                                         \
+  NEOMUTT_TEST_ITEM(test_mutt_str_coll)                                        \
+  NEOMUTT_TEST_ITEM(test_mutt_str_copy)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_str_dequote_comment)                             \
+  NEOMUTT_TEST_ITEM(test_mutt_str_dup)                                         \
+  NEOMUTT_TEST_ITEM(test_mutt_str_equal)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_find_word)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_getenv)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_inline_replace)                              \
   NEOMUTT_TEST_ITEM(test_mutt_str_is_ascii)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_str_is_email_wsp)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_str_len)                                         \
+  NEOMUTT_TEST_ITEM(test_mutt_str_lower)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_lws_len)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_lws_rlen)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_str_next_word)                                   \
-  NEOMUTT_TEST_ITEM(test_mutt_str_remall_strcasestr)                           \
   NEOMUTT_TEST_ITEM(test_mutt_str_remove_trailing_ws)                          \
   NEOMUTT_TEST_ITEM(test_mutt_str_replace)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_str_rstrnstr)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_email_wsp)                              \
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_whitespace)                             \
   NEOMUTT_TEST_ITEM(test_mutt_str_startswith)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strcasecmp)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strcasestr)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strcat)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strchrnul)                                   \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strcmp)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strcoll)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strdup)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strfcpy)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_str_stristr)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strlen)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strlower)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strncasecmp)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strncat)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strncmp)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strnfcpy)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_str_strnlower)                                   \
-  NEOMUTT_TEST_ITEM(test_mutt_str_substr_copy)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_str_substr_dup)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_sysexit)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_str_word_casecmp)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_strn_cat)                                        \
+  NEOMUTT_TEST_ITEM(test_mutt_strn_copy)                                       \
+  NEOMUTT_TEST_ITEM(test_mutt_strn_dup)                                        \
+  NEOMUTT_TEST_ITEM(test_mutt_strn_equal)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_strn_rfind)                                      \
                                                                                \
   /* tags */                                                                   \
   NEOMUTT_TEST_ITEM(test_driver_tags_free)                                     \

@@ -125,7 +125,7 @@ static void candidate(char *user, const char *src, char *dest, size_t dlen)
   matches_ensure_morespace(NumMatched);
   Matches[NumMatched++] = src;
   if (dest[0] == '\0')
-    mutt_str_strfcpy(dest, src, dlen);
+    mutt_str_copy(dest, src, dlen);
   else
   {
     int l;
@@ -149,7 +149,7 @@ static int complete_all_nm_tags(const char *pt)
   int tag_count_2 = 0;
 
   NumMatched = 0;
-  mutt_str_strfcpy(UserTyped, pt, sizeof(UserTyped));
+  mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
   memset(Matches, 0, MatchesListsize);
   memset(Completed, 0, sizeof(Completed));
 
@@ -260,7 +260,7 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
 
       snprintf(buf, sizeof(buf), "%s/%s%s", locations[i][0], locations[i][1], names[j]);
       if (access(buf, F_OK) == 0)
-        return mutt_str_strdup(buf);
+        return mutt_str_dup(buf);
     }
   }
 
@@ -331,17 +331,16 @@ static bool get_hostname(struct ConfigSet *cs)
   /* some systems report the FQDN instead of just the hostname */
   char *dot = strchr(str, '.');
   if (dot)
-    ShortHostname = mutt_str_substr_dup(str, dot);
+    ShortHostname = mutt_strn_dup(str, dot - str);
   else
-    ShortHostname = mutt_str_strdup(str);
+    ShortHostname = mutt_str_dup(str);
 
   if (!C_Hostname)
   {
     /* now get FQDN.  Use configured domain first, DNS next, then uname */
 #ifdef DOMAIN
     /* we have a compile-time domain name, use that for C_Hostname */
-    C_Hostname =
-        mutt_mem_malloc(mutt_str_strlen(DOMAIN) + mutt_str_strlen(ShortHostname) + 2);
+    C_Hostname = mutt_mem_malloc(mutt_str_len(DOMAIN) + mutt_str_len(ShortHostname) + 2);
     sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), DOMAIN);
 #else
     C_Hostname = getmailname();
@@ -350,8 +349,8 @@ static bool get_hostname(struct ConfigSet *cs)
       struct Buffer *domain = mutt_buffer_pool_get();
       if (getdnsdomainname(domain) == 0)
       {
-        C_Hostname = mutt_mem_malloc(mutt_buffer_len(domain) +
-                                     mutt_str_strlen(ShortHostname) + 2);
+        C_Hostname =
+            mutt_mem_malloc(mutt_buffer_len(domain) + mutt_str_len(ShortHostname) + 2);
         sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), mutt_b2s(domain));
       }
       else
@@ -363,7 +362,7 @@ static bool get_hostname(struct ConfigSet *cs)
          * It could be wrong, but we've done the best we can, at this point the
          * onus is on the user to provide the correct hostname if the nodename
          * won't work in their network.  */
-        C_Hostname = mutt_str_strdup(utsname.nodename);
+        C_Hostname = mutt_str_dup(utsname.nodename);
       }
       mutt_buffer_pool_release(&domain);
     }
@@ -384,7 +383,7 @@ static bool get_hostname(struct ConfigSet *cs)
 const struct Command *mutt_command_get(const char *s)
 {
   for (int i = 0; Commands[i].name; i++)
-    if (mutt_str_strcmp(s, Commands[i].name) == 0)
+    if (mutt_str_equal(s, Commands[i].name))
       return &Commands[i];
   return NULL;
 }
@@ -536,7 +535,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       }
       else
       {
-        cmd.data = mutt_str_strdup(tok->dptr);
+        cmd.data = mutt_str_dup(tok->dptr);
       }
       *pc = '`';
       pid = filter_create(cmd.data, NULL, &fp, NULL);
@@ -590,7 +589,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         pc = strchr(tok->dptr, '}');
         if (pc)
         {
-          var = mutt_str_substr_dup(tok->dptr + 1, pc);
+          var = mutt_strn_dup(tok->dptr + 1, pc - (tok->dptr + 1));
           tok->dptr = pc + 1;
 
           if ((flags & MUTT_TOKEN_NOSHELL))
@@ -608,7 +607,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         for (pc = tok->dptr; isalnum((unsigned char) *pc) || (pc[0] == '_'); pc++)
           ; // do nothing
 
-        var = mutt_str_substr_dup(tok->dptr, pc);
+        var = mutt_strn_dup(tok->dptr, pc - tok->dptr);
         tok->dptr = pc;
       }
       if (var)
@@ -717,7 +716,7 @@ HookFlags mutt_get_hook_type(const char *name)
   for (const struct Command *c = Commands; c->name; c++)
   {
     if (((c->parse == mutt_parse_hook) || (c->parse == mutt_parse_idxfmt_hook)) &&
-        (mutt_str_strcasecmp(c->name, name) == 0))
+        mutt_istr_equal(c->name, name))
     {
       return c->data;
     }
@@ -933,7 +932,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
     if (pw)
     {
       char name[256];
-      C_Realname = mutt_str_strdup(mutt_gecos_name(name, sizeof(name), pw));
+      C_Realname = mutt_str_dup(mutt_gecos_name(name, sizeof(name), pw));
     }
   }
   cs_str_initial_set(cs, "realname", C_Realname, NULL);
@@ -1008,7 +1007,7 @@ enum CommandResult mutt_parse_rc_buffer(struct Buffer *line,
     mutt_extract_token(token, line, MUTT_TOKEN_NO_FLAGS);
     for (i = 0; Commands[i].name; i++)
     {
-      if (mutt_str_strcmp(token->data, Commands[i].name) == 0)
+      if (mutt_str_equal(token->data, Commands[i].name))
       {
         rc = Commands[i].parse(token, line, Commands[i].data, err);
         if (rc != MUTT_CMD_SUCCESS)
@@ -1156,7 +1155,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     if (numtabs == 1)
     {
       NumMatched = 0;
-      mutt_str_strfcpy(UserTyped, pt, sizeof(UserTyped));
+      mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
       for (num = 0; Commands[num].name; num++)
@@ -1186,22 +1185,20 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     /* return the completed command */
     strncpy(buf, Completed, buflen - spaces);
   }
-  else if (mutt_str_startswith(buf, "set", CASE_MATCH) ||
-           mutt_str_startswith(buf, "unset", CASE_MATCH) ||
-           mutt_str_startswith(buf, "reset", CASE_MATCH) ||
-           mutt_str_startswith(buf, "toggle", CASE_MATCH))
+  else if (mutt_str_startswith(buf, "set") || mutt_str_startswith(buf, "unset") ||
+           mutt_str_startswith(buf, "reset") || mutt_str_startswith(buf, "toggle"))
   { /* complete variables */
     static const char *const prefixes[] = { "no", "inv", "?", "&", 0 };
 
     pt++;
     /* loop through all the possible prefixes (no, inv, ...) */
-    if (mutt_str_startswith(buf, "set", CASE_MATCH))
+    if (mutt_str_startswith(buf, "set"))
     {
       for (num = 0; prefixes[num]; num++)
       {
-        if (mutt_str_startswith(pt, prefixes[num], CASE_MATCH))
+        if (mutt_str_startswith(pt, prefixes[num]))
         {
-          pt += mutt_str_strlen(prefixes[num]);
+          pt += mutt_str_len(prefixes[num]);
           break;
         }
       }
@@ -1211,7 +1208,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     if (numtabs == 1)
     {
       NumMatched = 0;
-      mutt_str_strfcpy(UserTyped, pt, sizeof(UserTyped));
+      mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
       for (num = 0; MuttVars[num].name; num++)
@@ -1244,7 +1241,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
 
     strncpy(pt, Completed, buf + buflen - pt - spaces);
   }
-  else if (mutt_str_startswith(buf, "exec", CASE_MATCH))
+  else if (mutt_str_startswith(buf, "exec"))
   {
     const struct Binding *menu = km_get_table(CurrentMenu);
 
@@ -1256,7 +1253,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     if (numtabs == 1)
     {
       NumMatched = 0;
-      mutt_str_strfcpy(UserTyped, pt, sizeof(UserTyped));
+      mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
       for (num = 0; menu[num].name; num++)
@@ -1324,13 +1321,13 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
     struct HashWalkState state = { 0 };
 
     NumMatched = 0;
-    mutt_str_strfcpy(UserTyped, buf, sizeof(UserTyped));
+    mutt_str_copy(UserTyped, buf, sizeof(UserTyped));
     memset(Matches, 0, MatchesListsize);
     memset(Completed, 0, sizeof(Completed));
     while ((entry = mutt_hash_walk(Context->mailbox->label_hash, &state)))
       candidate(UserTyped, entry->key.strkey, Completed, sizeof(Completed));
     matches_ensure_morespace(NumMatched);
-    qsort(Matches, NumMatched, sizeof(char *), (sort_t) mutt_str_strcasecmp);
+    qsort(Matches, NumMatched, sizeof(char *), (sort_t) mutt_istr_cmp);
     Matches[NumMatched++] = UserTyped;
 
     /* All matches are stored. Longest non-ambiguous string is ""
@@ -1378,7 +1375,7 @@ bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
   SKIPWS(buf);
   spaces = buf - pt;
 
-  pt = (char *) mutt_str_rstrnstr((char *) buf, pos, "tag:");
+  pt = (char *) mutt_strn_rfind((char *) buf, pos, "tag:");
   if (pt)
   {
     pt += 4;
@@ -1497,13 +1494,13 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
   if (*pt == '=') /* abort if no var before the '=' */
     return 0;
 
-  if (mutt_str_startswith(buf, "set", CASE_MATCH))
+  if (mutt_str_startswith(buf, "set"))
   {
     const char *myvarval = NULL;
     char var[256];
-    mutt_str_strfcpy(var, pt, sizeof(var));
+    mutt_str_copy(var, pt, sizeof(var));
     /* ignore the trailing '=' when comparing */
-    int vlen = mutt_str_strlen(var);
+    int vlen = mutt_str_len(var);
     if (vlen == 0)
       return 0;
 
@@ -1597,7 +1594,7 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   int rc = CSR_SUCCESS;
   bool strict = (strcmp(cdef->name, "send_charset") == 0);
   char *q = NULL;
-  char *s = mutt_str_strdup(str);
+  char *s = mutt_str_dup(str);
 
   for (char *p = strtok_r(s, ":", &q); p; p = strtok_r(NULL, ":", &q))
   {
@@ -1714,7 +1711,7 @@ int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef
 
   const char *str = (const char *) value;
 
-  if ((mutt_str_strcmp(str, "inline") == 0) || (mutt_str_strcmp(str, "info") == 0))
+  if (mutt_str_equal(str, "inline") || mutt_str_equal(str, "info"))
     return CSR_SUCCESS;
 
   mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);

@@ -82,13 +82,13 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
   TEST_MSG("Apple = %s\n", VarApple->pattern);
   TEST_MSG("Banana = %s\n", VarBanana->pattern);
 
-  if (!TEST_CHECK(mutt_str_strcmp(VarApple->pattern, "apple.*") == 0))
+  if (!TEST_CHECK(mutt_str_equal(VarApple->pattern, "apple.*")))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(VarBanana->pattern, "banana.*") == 0))
+  if (!TEST_CHECK(mutt_str_equal(VarBanana->pattern, "banana.*")))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
@@ -114,7 +114,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(value.data, "apple.*") == 0))
+  if (!TEST_CHECK(mutt_str_equal(value.data, "apple.*")))
   {
     TEST_MSG("Apple's initial value is wrong: '%s'\n", value.data);
     FREE(&value.data);
@@ -132,7 +132,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(value.data, "banana.*") == 0))
+  if (!TEST_CHECK(mutt_str_equal(value.data, "banana.*")))
   {
     TEST_MSG("Banana's initial value is wrong: %s\n", value.data);
     FREE(&value.data);
@@ -203,7 +203,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     }
 
     regex = VarDamson ? VarDamson->pattern : NULL;
-    if (!TEST_CHECK(mutt_str_strcmp(regex, valid[i]) == 0))
+    if (!TEST_CHECK(mutt_str_equal(regex, valid[i])))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -229,7 +229,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     }
 
     regex = VarElderberry ? VarElderberry->pattern : NULL;
-    if (!TEST_CHECK(mutt_str_strcmp(regex, valid[i]) == 0))
+    if (!TEST_CHECK(mutt_str_equal(regex, valid[i])))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -324,7 +324,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   }
 
   regex = VarIlama ? VarIlama->pattern : NULL;
-  if (!TEST_CHECK(mutt_str_strcmp(regex, r->pattern) == 0))
+  if (!TEST_CHECK(mutt_str_equal(regex, r->pattern)))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     goto tns_out;
@@ -438,7 +438,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   }
 
   regex = VarMango ? VarMango->pattern : NULL;
-  if (!TEST_CHECK(mutt_str_strcmp(regex, "mango.*") == 0))
+  if (!TEST_CHECK(mutt_str_equal(regex, "mango.*")))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -479,7 +479,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(VarOlive->pattern, "hel*o") == 0))
+  if (!TEST_CHECK(mutt_str_equal(VarOlive->pattern, "hel*o")))
   {
     TEST_MSG("Value of %s changed\n", name);
     return false;

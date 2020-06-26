@@ -198,7 +198,7 @@ void check_query_string(const char *exp, const struct UrlQueryList *act)
   while (exp && *exp)
   {
     next = strchr(exp, '|');
-    mutt_str_strfcpy(tmp, exp, next - exp + 1);
+    mutt_str_copy(tmp, exp, next - exp + 1);
     exp = next + 1;
     if (!TEST_CHECK(strcmp(tmp, np->name) == 0))
     {
@@ -207,7 +207,7 @@ void check_query_string(const char *exp, const struct UrlQueryList *act)
     }
 
     next = strchr(exp, '|');
-    mutt_str_strfcpy(tmp, exp, next - exp + 1);
+    mutt_str_copy(tmp, exp, next - exp + 1);
     exp = next + 1;
     if (!TEST_CHECK(strcmp(tmp, np->value) == 0))
     {
@@ -252,17 +252,17 @@ void test_url_parse(void)
         TEST_MSG("Expected: %d", test[i].url.scheme);
         TEST_MSG("Actual  : %d", url->scheme);
       }
-      if (!TEST_CHECK(mutt_str_strcmp(test[i].url.user, url->user) == 0))
+      if (!TEST_CHECK(mutt_str_equal(test[i].url.user, url->user)))
       {
         TEST_MSG("Expected: %s", test[i].url.user);
         TEST_MSG("Actual  : %s", url->user);
       }
-      if (!TEST_CHECK(mutt_str_strcmp(test[i].url.pass, url->pass) == 0))
+      if (!TEST_CHECK(mutt_str_equal(test[i].url.pass, url->pass)))
       {
         TEST_MSG("Expected: %s", test[i].url.pass);
         TEST_MSG("Actual  : %s", url->pass);
       }
-      if (!TEST_CHECK(mutt_str_strcmp(test[i].url.host, url->host) == 0))
+      if (!TEST_CHECK(mutt_str_equal(test[i].url.host, url->host)))
       {
         TEST_MSG("Expected: %s", test[i].url.host);
         TEST_MSG("Actual  : %s", url->host);
@@ -272,7 +272,7 @@ void test_url_parse(void)
         TEST_MSG("Expected: %hu", test[i].url.port);
         TEST_MSG("Actual  : %hu", url->port);
       }
-      if (!TEST_CHECK(mutt_str_strcmp(test[i].url.path, url->path) == 0))
+      if (!TEST_CHECK(mutt_str_equal(test[i].url.path, url->path)))
       {
         TEST_MSG("Expected: %s", test[i].url.path);
         TEST_MSG("Actual  : %s", url->path);

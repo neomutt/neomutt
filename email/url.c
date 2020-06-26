@@ -253,7 +253,7 @@ struct Url *url_parse(const char *src)
 
   struct Url *url = url_new();
   url->scheme = scheme;
-  url->src = mutt_str_strdup(src);
+  url->src = mutt_str_dup(src);
 
   /* If the scheme is not followed by two forward slashes, then it's a simple
    * path (see https://tools.ietf.org/html/rfc3986#section-3). */
@@ -424,7 +424,7 @@ int url_tostring(struct Url *url, char *dest, size_t len, int flags)
 
   int retval = url_tobuffer(url, dest_buf, flags);
   if (retval == 0)
-    mutt_str_strfcpy(dest, mutt_b2s(dest_buf), len);
+    mutt_str_copy(dest, mutt_b2s(dest_buf), len);
 
   mutt_buffer_pool_release(&dest_buf);
 

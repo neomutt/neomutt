@@ -275,7 +275,7 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
   char c;
   char *t = NULL;
 
-  mutt_str_strfcpy(buf, str, sizeof(buf));
+  mutt_str_copy(buf, str, sizeof(buf));
   char *s = buf;
 
   while (*s && len)
@@ -344,8 +344,8 @@ static enum CommandResult km_bind_err(const char *s, enum MenuType menu, int op,
 
   struct Keymap *map = alloc_keys(len, buf);
   map->op = op;
-  map->macro = mutt_str_strdup(macro);
-  map->desc = mutt_str_strdup(desc);
+  map->macro = mutt_str_dup(macro);
+  map->desc = mutt_str_dup(desc);
 
   struct Keymap *tmp = Keymaps[menu];
 
@@ -479,8 +479,8 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
 {
   for (int i = 0; bindings[i].name; i++)
   {
-    if ((mutt_str_strncasecmp(start, bindings[i].name, len) == 0) &&
-        (mutt_str_strlen(bindings[i].name) == len))
+    if (mutt_istrn_equal(start, bindings[i].name, len) &&
+        (mutt_str_len(bindings[i].name) == len))
     {
       return bindings[i].op;
     }
@@ -521,7 +521,7 @@ const char *mutt_get_func(const struct Binding *bindings, int op)
 static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int))
 {
   char *pp = NULL;
-  char *p = s + mutt_str_strlen(s) - 1;
+  char *p = s + mutt_str_len(s) - 1;
   size_t l;
   int i, op = OP_NULL;
 
@@ -547,7 +547,7 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
         l = p - pp + 1;
         for (i = 0; KeyNames[i].name; i++)
         {
-          if (mutt_str_strncasecmp(pp, KeyNames[i].name, l) == 0)
+          if (mutt_istrn_equal(pp, KeyNames[i].name, l))
             break;
         }
         if (KeyNames[i].name)
@@ -853,7 +853,7 @@ int mutt_abort_key_config_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ec = nc->event_data;
 
-  if (mutt_str_strcmp(ec->name, "abort_key") != 0)
+  if (!mutt_str_equal(ec->name, "abort_key"))
     return 0;
 
   mutt_init_abort_key();
@@ -877,8 +877,8 @@ int km_expand_key(char *s, size_t len, struct Keymap *map)
 
   while (true)
   {
-    mutt_str_strfcpy(s, km_keyname(map->keys[p]), len);
-    const size_t l = mutt_str_strlen(s);
+    mutt_str_copy(s, km_keyname(map->keys[p]), len);
+    const size_t l = mutt_str_len(s);
     len -= l;
 
     if ((++p >= map->len) || !len)
@@ -1244,7 +1244,7 @@ static enum CommandResult try_bind(char *key, enum MenuType menu, char *func,
 {
   for (int i = 0; bindings[i].name; i++)
   {
-    if (mutt_str_strcmp(func, bindings[i].name) == 0)
+    if (mutt_str_equal(func, bindings[i].name))
     {
       return km_bindkey_err(key, menu, bindings[i].op, err);
     }
@@ -1331,7 +1331,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_printf(err, _("%s: too many arguments"), "bind");
     rc = MUTT_CMD_ERROR;
   }
-  else if (mutt_str_strcasecmp("noop", buf->data) == 0)
+  else if (mutt_istr_equal("noop", buf->data))
   {
     for (int i = 0; i < num_menus; i++)
     {
@@ -1376,7 +1376,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
  */
 static void *parse_menu(bool *menu, char *s, struct Buffer *err)
 {
-  char *menu_names_dup = mutt_str_strdup(s);
+  char *menu_names_dup = mutt_str_dup(s);
   char *marker = menu_names_dup;
   char *menu_name = NULL;
 
@@ -1461,7 +1461,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
   char *key = NULL;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-  if (mutt_str_strcmp(buf->data, "*") == 0)
+  if (mutt_str_equal(buf->data, "*"))
   {
     for (enum MenuType i = 0; i < MENU_MAX; i++)
       menu[i] = true;
@@ -1540,7 +1540,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
   {
     if (MoreArgs(s))
     {
-      seq = mutt_str_strdup(buf->data);
+      seq = mutt_str_dup(buf->data);
       mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
 
       if (MoreArgs(s))
@@ -1595,9 +1595,9 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
     if (!bindings && (CurrentMenu != MENU_PAGER))
       bindings = OpGeneric;
 
-    ops[nops] = get_op(bindings, function, mutt_str_strlen(function));
+    ops[nops] = get_op(bindings, function, mutt_str_len(function));
     if ((ops[nops] == OP_NULL) && (CurrentMenu != MENU_PAGER))
-      ops[nops] = get_op(OpGeneric, function, mutt_str_strlen(function));
+      ops[nops] = get_op(OpGeneric, function, mutt_str_len(function));
 
     if (ops[nops] == OP_NULL)
     {

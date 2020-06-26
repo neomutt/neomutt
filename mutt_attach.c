@@ -334,10 +334,10 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &MimeLookupList, entries)
   {
-    const int i = mutt_str_strlen(np->data) - 1;
+    const int i = mutt_str_len(np->data) - 1;
     if (((i > 0) && (np->data[i - 1] == '/') && (np->data[i] == '*') &&
-         (mutt_str_strncasecmp(type, np->data, i) == 0)) ||
-        (mutt_str_strcasecmp(type, np->data) == 0))
+         mutt_istrn_equal(type, np->data, i)) ||
+        mutt_istr_equal(type, np->data))
     {
       struct Body tmp = { 0 };
       enum ContentType n;
@@ -473,7 +473,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
 
     if (fp)
     {
-      fname = mutt_str_strdup(a->filename);
+      fname = mutt_str_dup(a->filename);
       mutt_file_sanitize_filename(fname, true);
     }
     else
@@ -647,7 +647,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     }
 
     if (a->description)
-      mutt_str_strfcpy(desc, a->description, sizeof(desc));
+      mutt_str_copy(desc, a->description, sizeof(desc));
     else if (a->filename)
       snprintf(desc, sizeof(desc), _("---Attachment: %s: %s"), a->filename, type);
     else
@@ -1150,8 +1150,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     goto out;
   }
 
-  if ((mutt_str_strcasecmp("text/plain", type) == 0) ||
-      (mutt_str_strcasecmp("application/postscript", type) == 0))
+  if (mutt_istr_equal("text/plain", type) ||
+      mutt_istr_equal("application/postscript", type))
   {
     rc = (mutt_pipe_attachment(fp, a, NONULL(C_PrintCommand), NULL));
     goto out;
@@ -1221,7 +1221,7 @@ out:
  */
 void mutt_add_temp_attachment(const char *filename)
 {
-  mutt_list_insert_tail(&TempAttachmentsList, mutt_str_strdup(filename));
+  mutt_list_insert_tail(&TempAttachmentsList, mutt_str_dup(filename));
 }
 
 /**

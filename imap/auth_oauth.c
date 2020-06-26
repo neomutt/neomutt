@@ -68,7 +68,7 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
   if (!oauthbearer)
     return IMAP_AUTH_FAILURE;
 
-  ilen = mutt_str_strlen(oauthbearer) + 30;
+  ilen = mutt_str_len(oauthbearer) + 30;
   ibuf = mutt_mem_malloc(ilen);
   snprintf(ibuf, ilen, "AUTHENTICATE OAUTHBEARER %s", oauthbearer);
 

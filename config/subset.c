@@ -53,7 +53,7 @@ int elem_list_sort(const void *a, const void *b)
   const struct HashElem *hea = *(struct HashElem const *const *) a;
   const struct HashElem *heb = *(struct HashElem const *const *) b;
 
-  return mutt_str_strcasecmp(hea->key.strkey, heb->key.strkey);
+  return mutt_istr_cmp(hea->key.strkey, heb->key.strkey);
 }
 
 /**
@@ -108,7 +108,7 @@ void cs_subset_free(struct ConfigSubset **ptr)
     for (size_t i = 0; list[i]; i++)
     {
       const char *item = list[i]->key.strkey;
-      if (mutt_str_startswith(item, scope, CASE_MATCH) != 0)
+      if (mutt_str_startswith(item, scope) != 0)
       {
         cs_uninherit_variable(sub->cs, item);
       }
@@ -148,9 +148,9 @@ struct ConfigSubset *cs_subset_new(const char *name, struct ConfigSubset *sub_pa
     if (sub_parent && sub_parent->name)
       snprintf(scope, sizeof(scope), "%s:%s", sub_parent->name, name);
     else
-      mutt_str_strfcpy(scope, name, sizeof(scope));
+      mutt_str_copy(scope, name, sizeof(scope));
 
-    sub->name = mutt_str_strdup(scope);
+    sub->name = mutt_str_dup(scope);
   }
 
   sub->notify = notify_new();
@@ -174,7 +174,7 @@ struct HashElem *cs_subset_lookup(const struct ConfigSubset *sub, const char *na
   if (sub->name)
     snprintf(scope, sizeof(scope), "%s:%s", sub->name, name);
   else
-    mutt_str_strfcpy(scope, name, sizeof(scope));
+    mutt_str_copy(scope, name, sizeof(scope));
 
   return cs_get_elem(sub->cs, scope);
 }

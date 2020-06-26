@@ -681,7 +681,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
     if (OptNoCurses || mutt_get_field(prompt, resp, sizeof(resp), MUTT_COMP_NO_FLAGS))
       return SASL_FAIL;
 
-    interaction->len = mutt_str_strlen(resp) + 1;
+    interaction->len = mutt_str_len(resp) + 1;
     char *result = mutt_mem_malloc(interaction->len);
     memcpy(result, resp, interaction->len);
     interaction->result = result;

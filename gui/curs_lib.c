@@ -313,7 +313,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionF
 
   struct Buffer tmp = {
     .data = buf,
-    .dptr = buf + mutt_str_strlen(buf),
+    .dptr = buf + mutt_str_len(buf),
     .dsize = buflen,
   };
   return mutt_buffer_get_field_full(field, &tmp, complete, multiple, files, numfiles);
@@ -634,7 +634,7 @@ static int mutt_dlg_dopager_observer(struct NotifyCallback *nc)
   struct EventConfig *ec = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+  if (!mutt_str_equal(ec->name, "status_on_top"))
     return 0;
 
   struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
@@ -707,7 +707,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
 
   int rc;
 
-  if (!C_Pager || (mutt_str_strcmp(C_Pager, "builtin") == 0))
+  if (!C_Pager || mutt_str_equal(C_Pager, "builtin"))
     rc = mutt_pager(banner, tempfile, do_color, info);
   else
   {
@@ -783,7 +783,7 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
   }
   else
   {
-    char *pc = mutt_mem_malloc(mutt_str_strlen(prompt) + 3);
+    char *pc = mutt_mem_malloc(mutt_str_len(prompt) + 3);
 
     sprintf(pc, "%s: ", prompt);
     if (ch.op == OP_NULL)
@@ -831,7 +831,7 @@ void mutt_unget_event(int ch, int op)
  */
 void mutt_unget_string(const char *s)
 {
-  const char *p = s + mutt_str_strlen(s) - 1;
+  const char *p = s + mutt_str_len(s) - 1;
 
   while (p >= s)
   {
@@ -937,7 +937,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         /* If we're going to colour the options,
          * make an assumption about the modified prompt size. */
         if (opt_cols)
-          width -= 2 * mutt_str_strlen(letters);
+          width -= 2 * mutt_str_len(letters);
 
         prompt_lines = (width + MuttMessageWindow->state.cols - 1) /
                        MuttMessageWindow->state.cols;
@@ -1010,7 +1010,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
       else if ((ch.ch <= '9') && (ch.ch > '0'))
       {
         choice = ch.ch - '0';
-        if (choice <= mutt_str_strlen(letters))
+        if (choice <= mutt_str_len(letters))
           break;
       }
     }
@@ -1210,7 +1210,7 @@ void mutt_format_s_x(char *buf, size_t buflen, const char *prec, const char *s, 
   }
 
   mutt_simple_format(buf, buflen, min_width, max_width, justify, ' ', s,
-                     mutt_str_strlen(s), arboreal);
+                     mutt_str_len(s), arboreal);
 }
 
 /**
@@ -1246,7 +1246,7 @@ void mutt_paddstr(int n, const char *s)
 {
   wchar_t wc;
   size_t k;
-  size_t len = mutt_str_strlen(s);
+  size_t len = mutt_str_len(s);
   mbstate_t mbstate;
 
   memset(&mbstate, 0, sizeof(mbstate));
@@ -1295,7 +1295,7 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
   if (!src)
     goto out;
 
-  n = mutt_str_strlen(src);
+  n = mutt_str_len(src);
 
   memset(&mbstate, 0, sizeof(mbstate));
   for (w = 0; n && (cl = mbrtowc(&wc, src, n, &mbstate)); src += cl, n -= cl)
@@ -1339,7 +1339,7 @@ int mutt_strwidth(const char *s)
 {
   if (!s)
     return 0;
-  return mutt_strnwidth(s, mutt_str_strlen(s));
+  return mutt_strnwidth(s, mutt_str_len(s));
 }
 
 /**

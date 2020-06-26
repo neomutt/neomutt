@@ -73,7 +73,7 @@ int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
 void log_line(const char *fn)
 {
-  int len = 44 - mutt_str_strlen(fn);
+  int len = 44 - mutt_str_len(fn);
   TEST_MSG("\033[36m---- %s %.*s\033[m\n", fn, len, line);
 }
 
@@ -165,7 +165,7 @@ void cs_dump_set(const struct ConfigSet *cs)
     if (!cst)
     {
       snprintf(tmp, sizeof(tmp), "Unknown type: %d", he->type);
-      list[index] = mutt_str_strdup(tmp);
+      list[index] = mutt_str_dup(tmp);
       index++;
       continue;
     }
@@ -178,7 +178,7 @@ void cs_dump_set(const struct ConfigSet *cs)
       snprintf(tmp, sizeof(tmp), "%s %s = %s", cst->name, name, result.data);
     else
       snprintf(tmp, sizeof(tmp), "%s %s: ERROR: %s", cst->name, name, result.data);
-    list[index] = mutt_str_strdup(tmp);
+    list[index] = mutt_str_dup(tmp);
     index++;
   }
 

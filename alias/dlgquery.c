@@ -81,7 +81,7 @@ static bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
     struct Address *first = TAILQ_FIRST(al);
     struct Address *second = TAILQ_NEXT(first, entries);
     if (!second && !first->personal)
-      first->personal = mutt_str_strdup(alias->name);
+      first->personal = mutt_str_dup(alias->name);
 
     mutt_addrlist_to_intl(al, NULL);
   }
@@ -264,10 +264,10 @@ static int query_run(char *s, bool verbose, struct AliasList *al)
       p = strtok(NULL, "\t\n");
       if (p)
       {
-        alias->name = mutt_str_strdup(p);
+        alias->name = mutt_str_dup(p);
         p = strtok(NULL, "\t\n");
         if (p)
-          alias->comment = mutt_str_strdup(p);
+          alias->comment = mutt_str_dup(p);
       }
       TAILQ_INSERT_TAIL(al, alias, entries);
     }
@@ -499,7 +499,7 @@ static void query_menu(char *buf, size_t buflen, struct AliasList *all, bool ret
           mutt_addrlist_to_local(&al);
           tagged = true;
           mutt_addrlist_write(&al, buf, buflen, false);
-          curpos = mutt_str_strlen(buf);
+          curpos = mutt_str_len(buf);
           mutt_addrlist_clear(&al);
         }
       }
@@ -511,7 +511,7 @@ static void query_menu(char *buf, size_t buflen, struct AliasList *all, bool ret
           mutt_addrlist_to_local(&al);
           strcat(buf, ", ");
           mutt_addrlist_write(&al, buf + curpos + 2, buflen - curpos - 2, false);
-          curpos = mutt_str_strlen(buf);
+          curpos = mutt_str_len(buf);
           mutt_addrlist_clear(&al);
         }
       }

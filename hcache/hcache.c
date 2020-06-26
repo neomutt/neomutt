@@ -216,7 +216,7 @@ static struct RealKey *realkey(const char *key, size_t keylen)
  */
 static bool create_hcache_dir(const char *path)
 {
-  char *dir = mutt_str_strdup(path);
+  char *dir = mutt_str_dup(path);
   if (!dir)
     return false;
 
@@ -265,7 +265,7 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
 {
   struct stat sb;
 
-  int plen = mutt_str_strlen(path);
+  int plen = mutt_str_len(path);
   int rc = stat(path, &sb);
   bool slash = (path[plen - 1] == '/');
 

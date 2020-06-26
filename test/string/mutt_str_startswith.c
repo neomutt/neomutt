@@ -29,15 +29,15 @@ void test_mutt_str_startswith(void)
 {
   // size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensitivity cs);
 
-  TEST_CHECK(mutt_str_startswith(NULL, "apple", CASE_MATCH) == 0);
-  TEST_CHECK(mutt_str_startswith("apple", NULL, CASE_MATCH) == 0);
+  TEST_CHECK(mutt_str_startswith(NULL, "apple") == 0);
+  TEST_CHECK(mutt_str_startswith("apple", NULL) == 0);
 
-  TEST_CHECK(mutt_str_startswith("", "apple", CASE_MATCH) == 0);
-  TEST_CHECK(mutt_str_startswith("apple", "", CASE_MATCH) == 0);
+  TEST_CHECK(mutt_str_startswith("", "apple") == 0);
+  TEST_CHECK(mutt_str_startswith("apple", "") == 0);
 
-  TEST_CHECK(mutt_str_startswith("applebanana", "apple", CASE_MATCH) == 5);
-  TEST_CHECK(mutt_str_startswith("APPLEbanana", "apple", CASE_MATCH) == 0);
+  TEST_CHECK(mutt_str_startswith("applebanana", "apple") == 5);
+  TEST_CHECK(mutt_str_startswith("APPLEbanana", "apple") == 0);
 
-  TEST_CHECK(mutt_str_startswith("APPLEbanana", "apple", CASE_IGNORE) == 5);
-  TEST_CHECK(mutt_str_startswith("GUAVAbanana", "apple", CASE_IGNORE) == 0);
+  TEST_CHECK(mutt_istr_startswith("APPLEbanana", "apple") == 5);
+  TEST_CHECK(mutt_istr_startswith("GUAVAbanana", "apple") == 0);
 }

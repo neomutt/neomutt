@@ -55,7 +55,7 @@ void test_mutt_file_quote_filename(void)
     memset(buf, 0, sizeof(buf));
     rc = mutt_file_quote_filename(tests[i].first, buf, sizeof(buf));
     if (!TEST_CHECK(rc == tests[i].retval) ||
-        !TEST_CHECK(mutt_str_strcmp(buf, tests[i].second) == 0))
+        !TEST_CHECK(mutt_str_equal(buf, tests[i].second)))
     {
       TEST_MSG("Expected: %d", tests[i].retval);
       TEST_MSG("Actual:   %d", rc);

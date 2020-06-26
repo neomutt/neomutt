@@ -136,14 +136,14 @@ static int count_body_parts(struct Body *body)
       shallrecurse = true;
 
       /* If it's an external body pointer, don't recurse it. */
-      if (mutt_str_strcasecmp(bp->subtype, "external-body") == 0)
+      if (mutt_istr_equal(bp->subtype, "external-body"))
         shallrecurse = false;
     }
     else if (bp->type == TYPE_MULTIPART)
     {
       /* Always recurse multiparts, except multipart/alternative. */
       shallrecurse = true;
-      if (mutt_str_strcasecmp(bp->subtype, "alternative") == 0)
+      if (mutt_istr_equal(bp->subtype, "alternative"))
         shallrecurse = false;
     }
 

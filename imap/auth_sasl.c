@@ -83,13 +83,12 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
 
     if ((adata->capabilities & IMAP_CAP_AUTH_ANONYMOUS) &&
         (!adata->conn->account.user[0] ||
-         mutt_str_startswith(adata->conn->account.user, "anonymous", CASE_MATCH)))
+         mutt_str_startswith(adata->conn->account.user, "anonymous")))
     {
       rc = sasl_client_start(saslconn, "AUTH=ANONYMOUS", NULL, &pc, &olen, &mech);
     }
   }
-  else if ((mutt_str_strcasecmp("login", method) == 0) &&
-           !strstr(NONULL(adata->capstr), "AUTH=LOGIN"))
+  else if (mutt_istr_equal("login", method) && !strstr(NONULL(adata->capstr), "AUTH=LOGIN"))
   {
     /* do not use SASL login for regular IMAP login */
     sasl_dispose(&saslconn);
@@ -132,7 +131,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
   snprintf(buf, bufsize, "AUTHENTICATE %s", mech);
   if ((adata->capabilities & IMAP_CAP_SASL_IR) && client_start)
   {
-    len = mutt_str_strlen(buf);
+    len = mutt_str_len(buf);
     buf[len++] = ' ';
     if (sasl_encode64(pc, olen, buf + len, bufsize - len, &olen) != SASL_OK)
     {
@@ -214,7 +213,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
 
     if (irc == IMAP_RES_RESPOND)
     {
-      mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
+      mutt_str_copy(buf + olen, "\r\n", bufsize - olen);
       mutt_socket_send(adata->conn, buf);
     }
 

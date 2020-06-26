@@ -60,13 +60,13 @@ struct MbTable *mbtable_parse(const char *s)
   mbstate_t mbstate;
   char *d = NULL;
 
-  slen = mutt_str_strlen(s);
+  slen = mutt_str_len(s);
   if (!slen)
     return NULL;
 
   t = mutt_mem_calloc(1, sizeof(struct MbTable));
 
-  t->orig_str = mutt_str_strdup(s);
+  t->orig_str = mutt_str_dup(s);
   /* This could be more space efficient.  However, being used on tiny
    * strings (C_ToChars and C_StatusChars), the overhead is not great. */
   t->chars = mutt_mem_calloc(slen, sizeof(char *));
@@ -125,7 +125,7 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
   if (var)
   {
     struct MbTable *curval = *(struct MbTable **) var;
-    if (curval && (mutt_str_strcmp(value, curval->orig_str) == 0))
+    if (curval && mutt_str_equal(value, curval->orig_str))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     table = mbtable_parse(value);
@@ -154,7 +154,7 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
       FREE(&cdef->initial);
 
     cdef->type |= DT_INITIAL_SET;
-    cdef->initial = IP mutt_str_strdup(value);
+    cdef->initial = IP mutt_str_dup(value);
   }
 
   return rc;
@@ -195,7 +195,7 @@ static struct MbTable *mbtable_dup(struct MbTable *table)
     return NULL; /* LCOV_EXCL_LINE */
 
   struct MbTable *m = mutt_mem_calloc(1, sizeof(*m));
-  m->orig_str = mutt_str_strdup(table->orig_str);
+  m->orig_str = mutt_str_dup(table->orig_str);
   return m;
 }
 
@@ -255,7 +255,7 @@ static int mbtable_reset(const struct ConfigSet *cs, void *var,
   if (!curtable)
     rc |= CSR_SUC_EMPTY;
 
-  if (mutt_str_strcmp(initial, curval) == 0)
+  if (mutt_str_equal(initial, curval))
     return rc | CSR_SUC_NO_CHANGE;
 
   if (initial)

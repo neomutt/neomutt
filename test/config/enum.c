@@ -137,7 +137,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(value.data, "Dingo") == 0))
+  if (!TEST_CHECK(mutt_str_equal(value.data, "Dingo")))
   {
     TEST_MSG("Apple's initial value is wrong: '%s'\n", value.data);
     FREE(&value.data);
@@ -155,7 +155,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(value.data, "Badger") == 0))
+  if (!TEST_CHECK(mutt_str_equal(value.data, "Badger")))
   {
     TEST_MSG("Banana's initial value is wrong: '%s'\n", value.data);
     FREE(&value.data);

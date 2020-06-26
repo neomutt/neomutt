@@ -67,7 +67,7 @@ void test_mutt_str_sysexit(void)
     TEST_MSG("Testing %d, expecting '%s'\n", tests[i].err_num, NONULL(tests[i].result));
     result = mutt_str_sysexit(tests[i].err_num);
 
-    if (!TEST_CHECK(mutt_str_strcmp(result, tests[i].result) == 0))
+    if (!TEST_CHECK(mutt_str_equal(result, tests[i].result)))
     {
       TEST_MSG("Expected: '%s', Got: '%s'\n", result, NONULL(tests[i].result));
       return;

@@ -162,10 +162,10 @@ static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
   struct SmimeKey *copy = NULL;
 
   copy = mutt_mem_calloc(1, sizeof(struct SmimeKey));
-  copy->email = mutt_str_strdup(key->email);
-  copy->hash = mutt_str_strdup(key->hash);
-  copy->label = mutt_str_strdup(key->label);
-  copy->issuer = mutt_str_strdup(key->issuer);
+  copy->email = mutt_str_dup(key->email);
+  copy->hash = mutt_str_dup(key->hash);
+  copy->label = mutt_str_dup(key->label);
+  copy->issuer = mutt_str_dup(key->issuer);
   copy->trust = key->trust;
   copy->flags = key->flags;
 
@@ -708,16 +708,16 @@ static struct SmimeKey *smime_parse_key(char *buf)
     switch (field)
     {
       case 1: /* mailbox */
-        key->email = mutt_str_strdup(p);
+        key->email = mutt_str_dup(p);
         break;
       case 2: /* hash */
-        key->hash = mutt_str_strdup(p);
+        key->hash = mutt_str_dup(p);
         break;
       case 3: /* label */
-        key->label = mutt_str_strdup(p);
+        key->label = mutt_str_dup(p);
         break;
       case 4: /* issuer */
-        key->issuer = mutt_str_strdup(p);
+        key->issuer = mutt_str_dup(p);
         break;
       case 5: /* trust */
         key->trust = *p;
@@ -749,7 +749,7 @@ static struct SmimeKey *smime_parse_key(char *buf)
   }
 
   if (field < 4)
-    key->issuer = mutt_str_strdup("?");
+    key->issuer = mutt_str_dup("?");
 
   if (field < 5)
     key->trust = 't';
@@ -787,7 +787,7 @@ static struct SmimeKey *smime_get_candidates(char *search, bool only_public_key)
 
   while (fgets(buf, sizeof(buf), fp))
   {
-    if (((*search == '\0')) || mutt_str_stristr(buf, search))
+    if (((*search == '\0')) || mutt_istr_find(buf, search))
     {
       key = smime_parse_key(buf);
       if (key)
@@ -818,7 +818,7 @@ static struct SmimeKey *smime_get_key_by_hash(char *hash, bool only_public_key)
   struct SmimeKey *results = smime_get_candidates(hash, only_public_key);
   for (struct SmimeKey *result = results; result; result = result->next)
   {
-    if (mutt_str_strcasecmp(hash, result->hash) == 0)
+    if (mutt_istr_equal(hash, result->hash))
     {
       match = smime_copy_key(result);
       break;
@@ -861,7 +861,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
       continue;
     }
 
-    if (mutt_str_strcasecmp(mailbox, result->email) == 0)
+    if (mutt_istr_equal(mailbox, result->email))
     {
       match = smime_copy_key(result);
       *matches_end = match;
@@ -869,7 +869,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
 
       if (match->trust == 't')
       {
-        if (trusted_match && (mutt_str_strcasecmp(match->hash, trusted_match->hash) != 0))
+        if (trusted_match && !mutt_istr_equal(match->hash, trusted_match->hash))
         {
           multi_trusted_matches = true;
         }
@@ -936,8 +936,8 @@ static struct SmimeKey *smime_get_key_by_str(char *str, KeyFlags abilities, bool
       continue;
     }
 
-    if ((mutt_str_strcasecmp(str, result->hash) == 0) ||
-        mutt_str_stristr(result->email, str) || mutt_str_stristr(result->label, str))
+    if (mutt_istr_equal(str, result->hash) ||
+        mutt_istr_find(result->email, str) || mutt_istr_find(result->label, str))
     {
       match = smime_copy_key(result);
       *matches_end = match;
@@ -1007,13 +1007,13 @@ static void getkeys(char *mailbox)
     key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, false);
   }
 
-  size_t smime_keys_len = mutt_str_strlen(C_SmimeKeys);
+  size_t smime_keys_len = mutt_str_len(C_SmimeKeys);
 
   k = key ? key->hash : NONULL(C_SmimeDefaultKey);
 
   /* if the key is different from last time */
   if ((mutt_buffer_len(&SmimeKeyToUse) <= smime_keys_len) ||
-      (mutt_str_strcasecmp(k, SmimeKeyToUse.data + smime_keys_len + 1) != 0))
+      !mutt_istr_equal(k, SmimeKeyToUse.data + smime_keys_len + 1))
   {
     smime_class_void_passphrase();
     mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(C_SmimeKeys), k);
@@ -1088,10 +1088,10 @@ char *smime_class_find_keys(struct AddressList *al, bool oppenc_mode)
     }
 
     keyid = key->hash;
-    keylist_size += mutt_str_strlen(keyid) + 2;
+    keylist_size += mutt_str_len(keyid) + 2;
     mutt_mem_realloc(&keylist, keylist_size);
     sprintf(keylist + keylist_used, "%s%s", keylist_used ? " " : "", keyid);
-    keylist_used = mutt_str_strlen(keylist);
+    keylist_used = mutt_str_len(keylist);
 
     smime_key_free(&key);
   }
@@ -1150,10 +1150,10 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
 
   while ((fgets(email, sizeof(email), fp_out)))
   {
-    size_t len = mutt_str_strlen(email);
+    size_t len = mutt_str_len(email);
     if (len && (email[len - 1] == '\n'))
       email[len - 1] = '\0';
-    if (mutt_str_startswith(email, mailbox, CASE_IGNORE))
+    if (mutt_istr_startswith(email, mailbox))
       rc = 1;
 
     rc = (rc < 0) ? 0 : rc;
@@ -1181,11 +1181,11 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
     rewind(fp_out);
     while ((fgets(email, sizeof(email), fp_out)))
     {
-      size_t len = mutt_str_strlen(email);
+      size_t len = mutt_str_len(email);
       if (len && (email[len - 1] == '\n'))
         email[len - 1] = '\0';
-      (*buffer)[count] = mutt_mem_calloc(mutt_str_strlen(email) + 1, sizeof(char));
-      strncpy((*buffer)[count], email, mutt_str_strlen(email));
+      (*buffer)[count] = mutt_mem_calloc(mutt_str_len(email) + 1, sizeof(char));
+      strncpy((*buffer)[count], email, mutt_str_len(email));
       count++;
     }
   }
@@ -1618,7 +1618,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
       *cert_end = '\0';
     if (*cert_start)
     {
-      off = mutt_str_strlen(certfile);
+      off = mutt_str_len(certfile);
       snprintf(certfile + off, sizeof(certfile) - off, "%s%s/%s",
                (off != 0) ? " " : "", NONULL(C_SmimeCertificates), cert_start);
     }
@@ -1674,13 +1674,13 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 
   t = mutt_body_new();
   t->type = TYPE_APPLICATION;
-  t->subtype = mutt_str_strdup("x-pkcs7-mime");
+  t->subtype = mutt_str_dup("x-pkcs7-mime");
   mutt_param_set(&t->parameter, "name", "smime.p7m");
   mutt_param_set(&t->parameter, "smime-type", "enveloped-data");
   t->encoding = ENC_BASE64; /* The output of OpenSSL SHOULD be binary */
   t->use_disp = true;
   t->disposition = DISP_ATTACH;
-  t->d_filename = mutt_str_strdup("smime.p7m");
+  t->d_filename = mutt_str_dup("smime.p7m");
   t->filename = mutt_buffer_strdup(tempfile);
   t->unlink = true; /* delete after sending the message */
   t->parts = NULL;
@@ -1722,7 +1722,7 @@ static char *openssl_md_to_smime_micalg(char *md)
     return 0;
 
   char *micalg = NULL;
-  if (mutt_str_startswith(md, "sha", CASE_IGNORE))
+  if (mutt_istr_startswith(md, "sha"))
   {
     const size_t l = strlen(md) + 2;
     micalg = mutt_mem_malloc(l);
@@ -1730,7 +1730,7 @@ static char *openssl_md_to_smime_micalg(char *md)
   }
   else
   {
-    micalg = mutt_str_strdup(md);
+    micalg = mutt_str_dup(md);
   }
 
   return micalg;
@@ -1788,7 +1788,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(C_SmimeCertificates), signas);
 
   struct SmimeKey *signas_key = smime_get_key_by_hash(signas, 1);
-  if ((!signas_key) || (!mutt_str_strcmp("?", signas_key->issuer)))
+  if (!signas_key || mutt_str_equal("?", signas_key->issuer))
     intermediates = signas; /* so openssl won't complain in any case */
   else
     intermediates = signas_key->issuer;
@@ -1842,7 +1842,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
 
   t = mutt_body_new();
   t->type = TYPE_MULTIPART;
-  t->subtype = mutt_str_strdup("signed");
+  t->subtype = mutt_str_dup("signed");
   t->encoding = ENC_7BIT;
   t->use_disp = false;
   t->disposition = DISP_INLINE;
@@ -1861,9 +1861,9 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   t->parts->next = mutt_body_new();
   t = t->parts->next;
   t->type = TYPE_APPLICATION;
-  t->subtype = mutt_str_strdup("x-pkcs7-signature");
+  t->subtype = mutt_str_dup("x-pkcs7-signature");
   t->filename = mutt_buffer_strdup(signedfile);
-  t->d_filename = mutt_str_strdup("smime.p7s");
+  t->d_filename = mutt_str_dup("smime.p7s");
   t->use_disp = true;
   t->disposition = DISP_ATTACH;
   t->encoding = ENC_BASE64;
@@ -2017,7 +2017,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
       rewind(fp_smime_err);
 
       line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, 0);
-      if (linelen && (mutt_str_strcasecmp(line, "verification successful") == 0))
+      if (linelen && mutt_istr_equal(line, "verification successful"))
         badsig = 0;
 
       FREE(&line);
@@ -2188,7 +2188,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   char buf[8192];
   while (fgets(buf, sizeof(buf) - 1, fp_smime_out))
   {
-    const size_t len = mutt_str_strlen(buf);
+    const size_t len = mutt_str_len(buf);
     if ((len > 1) && (buf[len - 2] == '\r'))
     {
       buf[len - 2] = '\n';
@@ -2263,7 +2263,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     rewind(fp_smime_err);
 
     line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, 0);
-    if (linelen && (mutt_str_strcasecmp(line, "verification successful") == 0))
+    if (linelen && mutt_istr_equal(line, "verification successful"))
       m->goodsig = true;
     FREE(&line);
   }

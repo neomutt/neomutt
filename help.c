@@ -121,7 +121,7 @@ char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu,
       buflen -= 2;
     }
     mutt_make_help(pbuf, buflen, _(items[i].name), menu, items[i].value);
-    const size_t len = mutt_str_strlen(pbuf);
+    const size_t len = mutt_str_len(pbuf);
     pbuf += len;
     buflen -= len;
   }
@@ -142,7 +142,7 @@ static int print_macro(FILE *fp, int maxwidth, const char **macro)
   int n = maxwidth;
   wchar_t wc;
   size_t k;
-  size_t len = mutt_str_strlen(*macro);
+  size_t len = mutt_str_len(*macro);
   mbstate_t mbstate1, mbstate2;
 
   memset(&mbstate1, 0, sizeof(mbstate1));
@@ -213,7 +213,7 @@ static int get_wrapped_width(const char *t, size_t wid)
   wchar_t wc;
   size_t k;
   size_t m, n;
-  size_t len = mutt_str_strlen(t);
+  size_t len = mutt_str_len(t);
   const char *s = t;
   mbstate_t mbstate;
 
@@ -304,7 +304,7 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
 
   if (ismacro > 0)
   {
-    if (!C_Pager || (mutt_str_strcmp(C_Pager, "builtin") == 0))
+    if (!C_Pager || mutt_str_equal(C_Pager, "builtin"))
       fputs("_\010", fp); // Ctrl-H (backspace)
     fputs("M ", fp);
     col += 2;
@@ -344,7 +344,7 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
 
       if (*t3)
       {
-        if (mutt_str_strcmp(C_Pager, "builtin") == 0)
+        if (mutt_str_equal(C_Pager, "builtin"))
         {
           n += col - wraplen;
           if (C_Markers)

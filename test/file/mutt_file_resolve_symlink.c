@@ -55,7 +55,7 @@ void test_mutt_file_resolve_symlink(void)
 
     TEST_CASE(first);
     mutt_file_resolve_symlink(&result);
-    if (!TEST_CHECK(mutt_str_strcmp(mutt_b2s(&result), second) == 0))
+    if (!TEST_CHECK(mutt_str_equal(mutt_b2s(&result), second)))
     {
       TEST_MSG("Original: %s", NONULL(tests[i].first));
       TEST_MSG("Expected: %s", second);

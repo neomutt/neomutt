@@ -60,11 +60,11 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   {
     unsigned char hash_passwd[MD5_DIGEST_LEN];
     mutt_md5_bytes(password, secret_len, hash_passwd);
-    mutt_str_strfcpy((char *) secret, (char *) hash_passwd, MD5_DIGEST_LEN);
+    mutt_str_copy((char *) secret, (char *) hash_passwd, MD5_DIGEST_LEN);
     secret_len = MD5_DIGEST_LEN;
   }
   else
-    mutt_str_strfcpy((char *) secret, password, sizeof(secret));
+    mutt_str_copy((char *) secret, password, sizeof(secret));
 
   memcpy(ipad, secret, secret_len);
   memcpy(opad, secret, secret_len);
@@ -159,7 +159,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
   /* ibuf must be long enough to store the base64 encoding of obuf,
    * plus the additional debris */
   mutt_b64_encode(obuf, strlen(obuf), ibuf, sizeof(ibuf) - 2);
-  mutt_str_strcat(ibuf, sizeof(ibuf), "\r\n");
+  mutt_str_cat(ibuf, sizeof(ibuf), "\r\n");
   mutt_socket_send(adata->conn, ibuf);
 
   do

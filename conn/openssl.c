@@ -391,7 +391,7 @@ static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfun
     {
       char ch[8];
       snprintf(ch, sizeof(ch), "%02X%s", md[i], ((i % 2) ? " " : ""));
-      mutt_str_strcat(s, l, ch);
+      mutt_str_cat(s, l, ch);
     }
   }
 }
@@ -408,7 +408,7 @@ static char *asn1time_to_string(ASN1_UTCTIME *tm)
   static char buf[64];
   BIO *bio = NULL;
 
-  mutt_str_strfcpy(buf, _("[invalid date]"), sizeof(buf));
+  mutt_str_copy(buf, _("[invalid date]"), sizeof(buf));
 
   bio = BIO_new(BIO_s_mem());
   if (bio)
@@ -496,7 +496,7 @@ static bool hostname_match(const char *hostname, const char *certname)
 {
   const char *cmp1 = NULL, *cmp2 = NULL;
 
-  if (strncmp(certname, "*.", 2) == 0)
+  if (mutt_strn_equal(certname, "*.", 2))
   {
     cmp1 = certname + 2;
     cmp2 = strchr(hostname, '.');
@@ -721,10 +721,10 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
 #ifdef HAVE_LIBIDN
   if (mutt_idna_to_ascii_lz(hostname, &hostname_ascii, 0) != 0)
   {
-    hostname_ascii = mutt_str_strdup(hostname);
+    hostname_ascii = mutt_str_dup(hostname);
   }
 #else
-  hostname_ascii = mutt_str_strdup(hostname);
+  hostname_ascii = mutt_str_dup(hostname);
 #endif
 
   /* Try the DNS subjectAltNames. */
@@ -739,7 +739,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
       if (subj_alt_name->type == GEN_DNS)
       {
         if ((subj_alt_name->d.ia5->length >= 0) &&
-            (mutt_str_strlen((char *) subj_alt_name->d.ia5->data) ==
+            (mutt_str_len((char *) subj_alt_name->d.ia5->data) ==
              (size_t) subj_alt_name->d.ia5->length) &&
             (match_found = hostname_match(hostname_ascii,
                                           (char *) (subj_alt_name->d.ia5->data))))
@@ -758,7 +758,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (!x509_subject)
     {
       if (err && errlen)
-        mutt_str_strfcpy(err, _("can't get certificate subject"), errlen);
+        mutt_str_copy(err, _("can't get certificate subject"), errlen);
       goto out;
     }
 
@@ -767,7 +767,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (bufsize == -1)
     {
       if (err && errlen)
-        mutt_str_strfcpy(err, _("can't get certificate common name"), errlen);
+        mutt_str_copy(err, _("can't get certificate common name"), errlen);
       goto out;
     }
     bufsize++; /* space for the terminal nul char */
@@ -775,12 +775,12 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (X509_NAME_get_text_by_NID(x509_subject, NID_commonName, buf, bufsize) == -1)
     {
       if (err && errlen)
-        mutt_str_strfcpy(err, _("can't get certificate common name"), errlen);
+        mutt_str_copy(err, _("can't get certificate common name"), errlen);
       goto out;
     }
     /* cast is safe since bufsize is incremented above, so bufsize-1 is always
      * zero or greater.  */
-    if (mutt_str_strlen(buf) == (size_t) bufsize - 1)
+    if (mutt_str_len(buf) == (size_t) bufsize - 1)
     {
       match_found = hostname_match(hostname_ascii, buf);
     }
@@ -853,7 +853,7 @@ static void add_cert(const char *title, X509 *cert, bool issuer, struct ListHead
     x509 = X509_get_subject_name(cert);
 
   // Allocate formatted strings and let the ListHead take ownership
-  mutt_list_insert_tail(list, mutt_str_strdup(title));
+  mutt_list_insert_tail(list, mutt_str_dup(title));
 
   char *line = NULL;
   char *text = NULL;
@@ -889,7 +889,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
 
   char *line = NULL;
   mutt_list_insert_tail(&list, NULL);
-  mutt_list_insert_tail(&list, mutt_str_strdup(_("This certificate is valid")));
+  mutt_list_insert_tail(&list, mutt_str_dup(_("This certificate is valid")));
   mutt_str_asprintf(&line, _("   from %s"), asn1time_to_string(X509_getm_notBefore(cert)));
   mutt_list_insert_tail(&list, line);
   mutt_str_asprintf(&line, _("     to %s"), asn1time_to_string(X509_getm_notAfter(cert)));
@@ -907,7 +907,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf);
   mutt_list_insert_tail(&list, line);
   mutt_str_asprintf(&line, "%*s%s",
-                    (int) mutt_str_strlen(_("SHA256 Fingerprint: ")), "", buf + 40);
+                    (int) mutt_str_len(_("SHA256 Fingerprint: ")), "", buf + 40);
   mutt_list_insert_tail(&list, line);
 
   bool allow_skip = false;

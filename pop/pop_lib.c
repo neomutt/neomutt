@@ -131,7 +131,7 @@ static void pop_error(struct PopAccountData *adata, char *msg)
   char *t = strchr(adata->err_msg, '\0');
   char *c = msg;
 
-  size_t plen = mutt_str_startswith(msg, "-ERR ", CASE_MATCH);
+  size_t plen = mutt_str_startswith(msg, "-ERR ");
   if (plen != 0)
   {
     char *c2 = mutt_str_skip_email_wsp(msg + plen);
@@ -140,7 +140,7 @@ static void pop_error(struct PopAccountData *adata, char *msg)
       c = c2;
   }
 
-  mutt_str_strfcpy(t, c, sizeof(adata->err_msg) - strlen(adata->err_msg));
+  mutt_str_copy(t, c, sizeof(adata->err_msg) - strlen(adata->err_msg));
   mutt_str_remove_trailing_ws(adata->err_msg);
 }
 
@@ -154,18 +154,18 @@ static int fetch_capa(const char *line, void *data)
 {
   struct PopAccountData *adata = data;
 
-  if (mutt_str_startswith(line, "SASL", CASE_IGNORE))
+  if (mutt_istr_startswith(line, "SASL"))
   {
     const char *c = mutt_str_skip_email_wsp(line + 4);
     mutt_buffer_strcpy(&adata->auth_list, c);
   }
-  else if (mutt_str_startswith(line, "STLS", CASE_IGNORE))
+  else if (mutt_istr_startswith(line, "STLS"))
     adata->cmd_stls = true;
-  else if (mutt_str_startswith(line, "USER", CASE_IGNORE))
+  else if (mutt_istr_startswith(line, "USER"))
     adata->cmd_user = 1;
-  else if (mutt_str_startswith(line, "UIDL", CASE_IGNORE))
+  else if (mutt_istr_startswith(line, "UIDL"))
     adata->cmd_uidl = 1;
-  else if (mutt_str_startswith(line, "TOP", CASE_IGNORE))
+  else if (mutt_istr_startswith(line, "TOP"))
     adata->cmd_top = 1;
 
   return 0;
@@ -223,7 +223,7 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
   /* Execute CAPA command */
   if ((mode == 0) || adata->cmd_capa)
   {
-    mutt_str_strfcpy(buf, "CAPA\r\n", sizeof(buf));
+    mutt_str_copy(buf, "CAPA\r\n", sizeof(buf));
     switch (pop_fetch_data(adata, buf, NULL, fetch_capa, adata))
     {
       case 0:
@@ -243,7 +243,7 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
     adata->cmd_uidl = 2;
     adata->cmd_top = 2;
 
-    mutt_str_strfcpy(buf, "AUTH\r\n", sizeof(buf));
+    mutt_str_copy(buf, "AUTH\r\n", sizeof(buf));
     if (pop_fetch_data(adata, buf, NULL, fetch_auth, adata) == -1)
       return -1;
   }
@@ -303,7 +303,7 @@ int pop_connect(struct PopAccountData *adata)
 
   adata->status = POP_CONNECTED;
 
-  if (!mutt_str_startswith(buf, "+OK", CASE_MATCH))
+  if (!mutt_str_startswith(buf, "+OK"))
   {
     *adata->err_msg = '\0';
     pop_error(adata, buf);
@@ -356,7 +356,7 @@ int pop_open_connection(struct PopAccountData *adata)
     }
     if (adata->use_stls == 2)
     {
-      mutt_str_strfcpy(buf, "STLS\r\n", sizeof(buf));
+      mutt_str_copy(buf, "STLS\r\n", sizeof(buf));
       rc = pop_query(adata, buf, sizeof(buf));
       // Clear any data after the STLS acknowledgement
       mutt_socket_empty(adata->conn);
@@ -406,7 +406,7 @@ int pop_open_connection(struct PopAccountData *adata)
     return -2;
 
   /* get total size of mailbox */
-  mutt_str_strfcpy(buf, "STAT\r\n", sizeof(buf));
+  mutt_str_copy(buf, "STAT\r\n", sizeof(buf));
   rc = pop_query(adata, buf, sizeof(buf));
   if (rc == -1)
     goto err_conn;
@@ -443,13 +443,13 @@ void pop_logout(struct Mailbox *m)
 
     if (m->readonly)
     {
-      mutt_str_strfcpy(buf, "RSET\r\n", sizeof(buf));
+      mutt_str_copy(buf, "RSET\r\n", sizeof(buf));
       ret = pop_query(adata, buf, sizeof(buf));
     }
 
     if (ret != -1)
     {
-      mutt_str_strfcpy(buf, "QUIT\r\n", sizeof(buf));
+      mutt_str_copy(buf, "QUIT\r\n", sizeof(buf));
       ret = pop_query(adata, buf, sizeof(buf));
     }
 
@@ -495,7 +495,7 @@ int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *ms
     adata->status = POP_DISCONNECTED;
     return -1;
   }
-  if (mutt_str_startswith(buf, "+OK", CASE_MATCH))
+  if (mutt_str_startswith(buf, "+OK"))
     return 0;
 
   pop_error(adata, buf);
@@ -524,7 +524,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
   long pos = 0;
   size_t lenbuf = 0;
 
-  mutt_str_strfcpy(buf, query, sizeof(buf));
+  mutt_str_copy(buf, query, sizeof(buf));
   int rc = pop_query(adata, buf, sizeof(buf));
   if (rc < 0)
     return rc;
@@ -550,7 +550,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
       p++;
     }
 
-    mutt_str_strfcpy(inbuf + lenbuf, p, sizeof(buf));
+    mutt_str_copy(inbuf + lenbuf, p, sizeof(buf));
     pos += chunk;
 
     /* cast is safe since we break out of the loop when chunk<=0 */
@@ -599,7 +599,7 @@ static int check_uidl(const char *line, void *data)
   for (int i = 0; i < m->msg_count; i++)
   {
     struct PopEmailData *edata = pop_edata_get(m->emails[i]);
-    if (mutt_str_strcmp(edata->uid, endp) == 0)
+    if (mutt_str_equal(edata->uid, endp))
     {
       edata->refno = index;
       break;

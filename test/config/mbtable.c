@@ -78,13 +78,13 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
   TEST_MSG("Apple = %s\n", VarApple->orig_str);
   TEST_MSG("Banana = %s\n", VarBanana->orig_str);
 
-  if (!TEST_CHECK(mutt_str_strcmp(VarApple->orig_str, "apple") == 0))
+  if (!TEST_CHECK(mutt_str_equal(VarApple->orig_str, "apple")))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(VarBanana->orig_str, "banana") == 0))
+  if (!TEST_CHECK(mutt_str_equal(VarBanana->orig_str, "banana")))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
@@ -110,7 +110,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(value.data, "apple") == 0))
+  if (!TEST_CHECK(mutt_str_equal(value.data, "apple")))
   {
     TEST_MSG("Apple's initial value is wrong: '%s'\n", value.data);
     FREE(&value.data);
@@ -128,7 +128,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(value.data, "banana") == 0))
+  if (!TEST_CHECK(mutt_str_equal(value.data, "banana")))
   {
     TEST_MSG("Banana's initial value is wrong: %s\n", value.data);
     FREE(&value.data);
@@ -198,7 +198,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     }
 
     mb = VarDamson ? VarDamson->orig_str : NULL;
-    if (!TEST_CHECK(mutt_str_strcmp(mb, valid[i]) == 0))
+    if (!TEST_CHECK(mutt_str_equal(mb, valid[i])))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -224,7 +224,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     }
 
     const char *orig_str = VarElderberry ? VarElderberry->orig_str : NULL;
-    if (!TEST_CHECK(mutt_str_strcmp(orig_str, valid[i]) == 0))
+    if (!TEST_CHECK(mutt_str_equal(orig_str, valid[i])))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -308,7 +308,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   }
 
   mb = VarIlama ? VarIlama->orig_str : NULL;
-  if (!TEST_CHECK(mutt_str_strcmp(mb, t->orig_str) == 0))
+  if (!TEST_CHECK(mutt_str_equal(mb, t->orig_str)))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     goto tns_out;
@@ -389,7 +389,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   }
 
   mb = VarLemon ? VarLemon->orig_str : NULL;
-  if (!TEST_CHECK(mutt_str_strcmp(mb, "lemon") == 0))
+  if (!TEST_CHECK(mutt_str_equal(mb, "lemon")))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -419,7 +419,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(VarMango->orig_str, "hello") == 0))
+  if (!TEST_CHECK(mutt_str_equal(VarMango->orig_str, "hello")))
   {
     TEST_MSG("Value of %s changed\n", name);
     return false;

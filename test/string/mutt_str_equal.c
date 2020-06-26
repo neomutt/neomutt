@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_strlen()
+ * Test code for mutt_str_equal()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -25,11 +25,17 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 
-void test_mutt_str_strlen(void)
+void test_mutt_str_equal(void)
 {
-  // size_t mutt_str_strlen(const char *a);
+  // bool mutt_str_equal(const char *a, const char *b);
 
-  TEST_CHECK(mutt_str_strlen(NULL) == 0);
-  TEST_CHECK(mutt_str_strlen("") == 0);
-  TEST_CHECK(mutt_str_strlen("hello") == 5);
+  TEST_CHECK(!mutt_str_equal(NULL, "apple"));
+  TEST_CHECK(!mutt_str_equal("apple", NULL));
+  TEST_CHECK(mutt_str_equal(NULL, NULL));
+
+  TEST_CHECK(mutt_str_equal("", ""));
+  TEST_CHECK(mutt_str_equal("apple", "apple"));
+  TEST_CHECK(!mutt_str_equal("apple", "APPLE"));
+  TEST_CHECK(!mutt_str_equal("apple", "apple2"));
+  TEST_CHECK(!mutt_str_equal("apple1", "apple"));
 }

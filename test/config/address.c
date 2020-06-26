@@ -83,13 +83,13 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
   const char *apple_orig = "apple@example.com";
   const char *banana_orig = "banana@example.com";
 
-  if (!TEST_CHECK(mutt_str_strcmp(VarApple->mailbox, apple_orig) == 0))
+  if (!TEST_CHECK(mutt_str_equal(VarApple->mailbox, apple_orig)))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(VarBanana->mailbox, banana_orig) == 0))
+  if (!TEST_CHECK(mutt_str_equal(VarBanana->mailbox, banana_orig)))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
@@ -115,7 +115,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(value.data, apple_orig) == 0))
+  if (!TEST_CHECK(mutt_str_equal(value.data, apple_orig)))
   {
     TEST_MSG("Apple's initial value is wrong: '%s'\n", value.data);
     FREE(&value.data);
@@ -133,7 +133,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(value.data, banana_orig) == 0))
+  if (!TEST_CHECK(mutt_str_equal(value.data, banana_orig)))
   {
     TEST_MSG("Banana's initial value is wrong: '%s'\n", value.data);
     FREE(&value.data);
@@ -197,7 +197,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     }
 
     addr = VarDamson ? VarDamson->mailbox : NULL;
-    if (!TEST_CHECK(mutt_str_strcmp(addr, valid[i]) == 0))
+    if (!TEST_CHECK(mutt_str_equal(addr, valid[i])))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -217,7 +217,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     }
 
     addr = VarElderberry ? VarElderberry->mailbox : NULL;
-    if (!TEST_CHECK(mutt_str_strcmp(addr, valid[i]) == 0))
+    if (!TEST_CHECK(mutt_str_equal(addr, valid[i])))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -293,7 +293,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   }
 
   addr = VarIlama ? VarIlama->mailbox : NULL;
-  if (!TEST_CHECK(mutt_str_strcmp(addr, a->mailbox) == 0))
+  if (!TEST_CHECK(mutt_str_equal(addr, a->mailbox)))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     goto tbns_out;
@@ -373,7 +373,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   }
 
   addr = VarLemon ? VarLemon->mailbox : NULL;
-  if (!TEST_CHECK(mutt_str_strcmp(addr, "lemon@example.com") == 0))
+  if (!TEST_CHECK(mutt_str_equal(addr, "lemon@example.com")))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -403,7 +403,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_strcmp(VarMango->mailbox, "john@example.com") == 0))
+  if (!TEST_CHECK(mutt_str_equal(VarMango->mailbox, "john@example.com")))
   {
     TEST_MSG("Value of %s changed\n", name);
     return false;

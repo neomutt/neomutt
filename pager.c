@@ -611,7 +611,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
     {
       /* case 1: check the top level nodes */
 
-      if (mutt_str_strncmp(qptr, q_list->prefix, length) == 0)
+      if (mutt_strn_equal(qptr, q_list->prefix, length))
       {
         if (length == q_list->length)
           return q_list; /* same prefix: return the current class */
@@ -704,7 +704,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
       /* case 2: try subclassing the current top level node */
 
       /* tmp != NULL means we already found a shorter prefix at case 1 */
-      if (!tmp && (mutt_str_strncmp(qptr, q_list->prefix, q_list->length) == 0))
+      if (!tmp && mutt_strn_equal(qptr, q_list->prefix, q_list->length))
       {
         /* ok, it's a subclass somewhere on this branch */
 
@@ -719,7 +719,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
         {
           if (length <= q_list->length)
           {
-            if (mutt_str_strncmp(tail_qptr, (q_list->prefix) + offset, tail_lng) == 0)
+            if (mutt_strn_equal(tail_qptr, (q_list->prefix) + offset, tail_lng))
             {
               /* same prefix: return the current class */
               if (length == q_list->length)
@@ -806,8 +806,8 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           else
           {
             /* longer than the current prefix: try subclassing it */
-            if (!tmp && (mutt_str_strncmp(tail_qptr, (q_list->prefix) + offset,
-                                          q_list->length - offset) == 0))
+            if (!tmp && mutt_strn_equal(tail_qptr, (q_list->prefix) + offset,
+                                        q_list->length - offset))
             {
               /* still a subclass: go down one level */
               ptr = q_list;
@@ -1047,11 +1047,11 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       }
     }
   }
-  else if (mutt_str_startswith(raw, "\033[0m", CASE_MATCH)) // Escape: a little hack...
+  else if (mutt_str_startswith(raw, "\033[0m")) // Escape: a little hack...
     line_info[n].type = MT_COLOR_NORMAL;
   else if (check_attachment_marker((char *) raw) == 0)
     line_info[n].type = MT_COLOR_ATTACHMENT;
-  else if ((mutt_str_strcmp("-- \n", buf) == 0) || (mutt_str_strcmp("-- \r\n", buf) == 0))
+  else if (mutt_str_equal("-- \n", buf) || mutt_str_equal("-- \r\n", buf))
   {
     i = n + 1;
 
@@ -1093,7 +1093,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
     /* don't consider line endings part of the buffer
      * for regex matching */
-    nl = mutt_str_strlen(buf);
+    nl = mutt_str_len(buf);
     if ((nl > 0) && (buf[nl - 1] == '\n'))
       buf[nl - 1] = '\0';
 
@@ -1179,7 +1179,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     size_t nl;
 
     /* don't consider line endings part of the buffer for regex matching */
-    nl = mutt_str_strlen(buf);
+    nl = mutt_str_len(buf);
     if ((nl > 0) && (buf[nl - 1] == '\n'))
       buf[nl - 1] = '\0';
 
@@ -2135,7 +2135,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
                             _("all") :
                             /* L10N: Status bar message: the end of the email is visible in the pager */
                             _("end");
-      mutt_str_strfcpy(pager_progress_str, msg, sizeof(pager_progress_str));
+      mutt_str_copy(pager_progress_str, msg, sizeof(pager_progress_str));
     }
 
     /* print out the pager status bar */
@@ -2661,7 +2661,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
-        mutt_str_strfcpy(buf, searchbuf, sizeof(buf));
+        mutt_str_copy(buf, searchbuf, sizeof(buf));
         if (mutt_get_field(((ch == OP_SEARCH) || (ch == OP_SEARCH_NEXT)) ?
                                _("Search for: ") :
                                _("Reverse search for: "),
@@ -2688,7 +2688,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (buf[0] == '\0')
           break;
 
-        mutt_str_strfcpy(searchbuf, buf, sizeof(searchbuf));
+        mutt_str_copy(searchbuf, buf, sizeof(searchbuf));
 
         /* leave search_back alone if ch == OP_SEARCH_NEXT */
         if (ch == OP_SEARCH)
@@ -3192,7 +3192,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         else
           followup_to = extra->email->env->followup_to;
 
-        if (!followup_to || (mutt_str_strcasecmp(followup_to, "poster") != 0) ||
+        if (!followup_to || !mutt_istr_equal(followup_to, "poster") ||
             (query_quadoption(C_FollowupToPoster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {

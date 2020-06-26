@@ -322,11 +322,11 @@ void mutt_draw_tree(struct Context *ctx)
         if (start_depth > 1)
         {
           strncpy(new_tree, pfx, (size_t) width * (start_depth - 1));
-          mutt_str_strfcpy(new_tree + (start_depth - 1) * width, arrow,
-                           (1 + depth - start_depth) * width + 2);
+          mutt_str_copy(new_tree + (start_depth - 1) * width, arrow,
+                        (1 + depth - start_depth) * width + 2);
         }
         else
-          mutt_str_strfcpy(new_tree, arrow, ((size_t) depth * width) + 2);
+          mutt_str_copy(new_tree, arrow, ((size_t) depth * width) + 2);
         tree->message->tree = new_tree;
       }
     }
@@ -430,7 +430,7 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
       struct ListNode *np = NULL;
       STAILQ_FOREACH(np, subjects, entries)
       {
-        rc = mutt_str_strcmp(env->real_subj, np->data);
+        rc = mutt_str_cmp(env->real_subj, np->data);
         if (rc >= 0)
           break;
       }
@@ -486,7 +486,7 @@ static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur
                          (last->message->received < tmp->message->received) :
                          (last->message->date_sent < tmp->message->date_sent))) &&
           tmp->message->env->real_subj &&
-          (mutt_str_strcmp(np->data, tmp->message->env->real_subj) == 0))
+          mutt_str_equal(np->data, tmp->message->env->real_subj))
       {
         last = tmp; /* best match so far */
       }
@@ -564,8 +564,8 @@ static void pseudo_threads(struct Context *ctx)
          * but only do this if they have the same real subject as the
          * parent, since otherwise they rightly belong to the message
          * we're attaching. */
-        if ((tmp == cur) || (mutt_str_strcmp(tmp->message->env->real_subj,
-                                             parent->message->env->real_subj) == 0))
+        if ((tmp == cur) || mutt_str_equal(tmp->message->env->real_subj,
+                                           parent->message->env->real_subj))
         {
           tmp->message->subject_changed = false;
 
@@ -816,8 +816,7 @@ static void check_subjects(struct Mailbox *m, bool init)
       e->subject_changed = true;
     else if (e->env->real_subj && tmp->message->env->real_subj)
     {
-      e->subject_changed =
-          (mutt_str_strcmp(e->env->real_subj, tmp->message->env->real_subj) != 0);
+      e->subject_changed = !mutt_str_equal(e->env->real_subj, tmp->message->env->real_subj);
     }
     else
     {
@@ -1007,7 +1006,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
           ref = STAILQ_NEXT(ref, entries);
         else
         {
-          if (mutt_str_strcmp(ref->data, STAILQ_FIRST(&e->env->references)->data) != 0)
+          if (!mutt_str_equal(ref->data, STAILQ_FIRST(&e->env->references)->data))
             ref = STAILQ_FIRST(&e->env->references);
           else
             ref = STAILQ_NEXT(STAILQ_FIRST(&e->env->references), entries);
@@ -1483,7 +1482,7 @@ static bool link_threads(struct Email *parent, struct Email *child, struct Mailb
     return false;
 
   mutt_break_thread(child);
-  mutt_list_insert_head(&child->env->in_reply_to, mutt_str_strdup(parent->env->message_id));
+  mutt_list_insert_head(&child->env->in_reply_to, mutt_str_dup(parent->env->message_id));
   mutt_set_flag(m, child, MUTT_TAG, false);
 
   child->changed = true;

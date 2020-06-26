@@ -126,46 +126,14 @@ const char *mutt_str_sysexit(int err_num)
 }
 
 /**
- * char_cmp_identity - Compare two characters
- * @param a First character to compare
- * @param b Second character to compare
- * @retval true If (a == b)
- */
-static inline bool char_cmp_identity(char a, char b)
-{
-  return a == b;
-}
-
-/**
- * char_cmp_lower - Compare two characters ignoring case
- * @param a First character to compare
- * @param b Second character to compare
- * @retval true If (a == b), ignoring case
- */
-static inline bool char_cmp_lower(char a, char b)
-{
-  return tolower((unsigned char) a) == tolower((unsigned char) b);
-}
-
-/**
- * get_char_cmp - Retrieve the correct function to compare characters according to a case sensitivity setting
- * @param cs Case sensitivity setting
- * @retval ptr char_cmp function pointer
- */
-static char_cmp get_char_cmp(enum CaseSensitivity cs)
-{
-  return (cs == CASE_IGNORE) ? char_cmp_lower : char_cmp_identity;
-}
-
-/**
- * mutt_str_startswith - Check whether a string starts with a prefix
+ * startswith - Check whether a string starts with a prefix
  * @param str String to check
  * @param prefix Prefix to match
- * @param cs Case sensitivity setting
+ * @param match_case True if case needs to match
  * @retval num Length of prefix if str starts with prefix
  * @retval 0 if str does not start with prefix
  */
-size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensitivity cs)
+static size_t startswith(const char *str, const char *prefix, bool match_case)
 {
   if (!str || (str[0] == '\0') || !prefix || (prefix[0] == '\0'))
   {
@@ -173,15 +141,42 @@ size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensiti
   }
 
   const char *saved_prefix = prefix;
-  for (char_cmp fn = get_char_cmp(cs); *str && *prefix; str++, prefix++)
+  for (; *str && *prefix; str++, prefix++)
   {
-    if (!fn(*str, *prefix))
-    {
-      return 0;
-    }
+    if (*str == *prefix)
+      continue;
+
+    if (!match_case && tolower(*str) == tolower(*prefix))
+      continue;
+
+    return 0;
   }
 
   return (*prefix == '\0') ? (prefix - saved_prefix) : 0;
+}
+
+/**
+ * mutt_str_startswith - Check whether a string starts with a prefix
+ * @param str String to check
+ * @param prefix Prefix to match
+ * @retval num Length of prefix if str starts with prefix
+ * @retval 0 if str does not start with prefix
+ */
+size_t mutt_str_startswith(const char *str, const char *prefix)
+{
+  return startswith(str, prefix, true);
+}
+
+/**
+ * mutt_istr_startswith - Check whether a string starts with a prefix, ignoring case
+ * @param str String to check
+ * @param prefix Prefix to match
+ * @retval num Length of prefix if str starts with prefix
+ * @retval 0 if str does not start with prefix
+ */
+size_t mutt_istr_startswith(const char *str, const char *prefix)
+{
+  return startswith(str, prefix, false);
 }
 
 /**
@@ -372,12 +367,12 @@ int mutt_str_atoull(const char *str, unsigned long long *dst)
 }
 
 /**
- * mutt_str_strdup - Copy a string, safely
+ * mutt_str_dup - Copy a string, safely
  * @param str String to copy
  * @retval ptr  Copy of the string
  * @retval NULL if str was NULL or empty
  */
-char *mutt_str_strdup(const char *str)
+char *mutt_str_dup(const char *str)
 {
   if (!str || (*str == '\0'))
     return NULL;
@@ -386,13 +381,13 @@ char *mutt_str_strdup(const char *str)
 }
 
 /**
- * mutt_str_strcat - Concatenate two strings
+ * mutt_str_cat - Concatenate two strings
  * @param buf    Buffer containing source string
  * @param buflen Length of buffer
  * @param s      String to add
  * @retval ptr Start of the buffer
  */
-char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
+char *mutt_str_cat(char *buf, size_t buflen, const char *s)
 {
   if (!buf || (buflen == 0) || !s)
     return buf;
@@ -412,7 +407,7 @@ char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
 }
 
 /**
- * mutt_str_strncat - Concatenate two strings
+ * mutt_strn_cat - Concatenate two strings
  * @param d  Buffer containing source string
  * @param l  Length of buffer
  * @param s  String to add
@@ -421,7 +416,7 @@ char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
  *
  * Add a string to a maximum of @a sl bytes.
  */
-char *mutt_str_strncat(char *d, size_t l, const char *s, size_t sl)
+char *mutt_strn_cat(char *d, size_t l, const char *s, size_t sl)
 {
   if (!d || (l == 0) || !s)
     return d;
@@ -457,7 +452,7 @@ void mutt_str_replace(char **p, const char *s)
   if (!p)
     return;
   const char *tmp = *p;
-  *p = mutt_str_strdup(s);
+  *p = mutt_str_dup(s);
   FREE(&tmp);
 }
 
@@ -476,8 +471,8 @@ void mutt_str_append_item(char **str, const char *item, char sep)
   if (!str || !item)
     return;
 
-  size_t sz = mutt_str_strlen(item);
-  size_t ssz = mutt_str_strlen(*str);
+  size_t sz = mutt_str_len(item);
+  size_t ssz = mutt_str_len(*str);
 
   mutt_mem_realloc(str, ssz + (((ssz > 0) && (sep != '\0')) ? 1 : 0) + sz + 1);
   char *p = *str + ssz;
@@ -503,13 +498,13 @@ void mutt_str_adjust(char **p)
 }
 
 /**
- * mutt_str_strlower - Convert all characters in the string to lowercase
+ * mutt_str_lower - Convert all characters in the string to lowercase
  * @param s String to lowercase
  * @retval ptr Lowercase string
  *
  * The string is transformed in place.
  */
-char *mutt_str_strlower(char *s)
+char *mutt_str_lower(char *s)
 {
   if (!s)
     return NULL;
@@ -526,104 +521,41 @@ char *mutt_str_strlower(char *s)
 }
 
 /**
- * mutt_str_strnlower - Convert some characters in the string to lowercase
- * @param str String to lowercase
- * @param num Maximum number of characters to lowercase
- * @retval ptr Lowercase string
- *
- * The string is transformed in place.
- */
-char *mutt_str_strnlower(char *str, size_t num)
-{
-  if (!str)
-    return NULL;
-
-  for (size_t i = 0; i < num; i++)
-  {
-    if (str[i] == '\0')
-      break;
-    str[i] = tolower((unsigned char) str[i]);
-  }
-
-  return str;
-}
-
-/**
- * mutt_str_strchrnul - Find first occurrence of character in string
- * @param s Haystack
- * @param c Needle
- * @retval ptr
- * - Success, first occurrence of the character
- * - Failure, pointer to the terminating NUL character
- *
- * This function is like GNU's strchrnul, which is similar to the standard
- * strchr function: it looks for the c character in the NULL-terminated string
- * s and returns a pointer to its location. If c is not in s, instead of
- * returning NULL like its standard counterpart, this function returns a
- * pointer to the terminating NUL character.
- */
-const char *mutt_str_strchrnul(const char *s, char c)
-{
-  if (!s)
-    return NULL;
-
-  for (; *s && (*s != c); s++)
-    ; // do nothing
-
-  return s;
-}
-
-/**
- * mutt_str_substr_copy - Copy a sub-string into a buffer
- * @param begin  Start of the string to copy
- * @param end    End of the string to copy
- * @param buf    Buffer for the result
- * @param buflen Length of buffer
+ * mutt_strn_copy - Copy a sub-string into a buffer
+ * @param dest   Buffer for the result
+ * @param src    Start of the string to copy
+ * @param len    Length of the string to copy
+ * @param dsize  Destination buffer size
  * @retval ptr Destination buffer
  */
-char *mutt_str_substr_copy(const char *begin, const char *end, char *buf, size_t buflen)
+char *mutt_strn_copy(char *dest, const char *src, size_t len, size_t dsize)
 {
-  if (!begin || !end || !buf || (buflen == 0))
-    return buf;
+  if (!src || !dest || (len == 0) || (dsize == 0))
+    return dest;
 
-  size_t len = end - begin;
-  if (len > (buflen - 1))
-    len = buflen - 1;
-  memcpy(buf, begin, len);
-  buf[len] = '\0';
-  return buf;
+  if (len > (dsize - 1))
+    len = dsize - 1;
+  memcpy(dest, src, len);
+  dest[len] = '\0';
+  return dest;
 }
 
 /**
- * mutt_str_substr_dup - Duplicate a sub-string
+ * mutt_strn_dup - Duplicate a sub-string
  * @param begin Start of the string to copy
- * @param end   End of the string to copy
+ * @param len   Length of string to copy
  * @retval ptr New string
- *
- * If end is NULL, then the rest of the string from begin will be copied.
  *
  * The caller must free the returned string.
  */
-char *mutt_str_substr_dup(const char *begin, const char *end)
+char *mutt_strn_dup(const char *begin, size_t len)
 {
-  size_t len;
   char *p = NULL;
 
   if (!begin)
   {
     mutt_debug(LL_DEBUG1, "%s: ERROR: 'begin' is NULL\n", __func__);
     return NULL;
-  }
-
-  if (end)
-  {
-    if (begin > end)
-      return NULL;
-    len = end - begin;
-  }
-  else
-  {
-    len = strlen(begin);
   }
 
   p = mutt_mem_malloc(len + 1);
@@ -633,47 +565,46 @@ char *mutt_str_substr_dup(const char *begin, const char *end)
 }
 
 /**
- * mutt_str_strcmp - Compare two strings, safely
+ * mutt_str_cmp - Compare two strings, safely
  * @param a First string to compare
  * @param b Second string to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_str_strcmp(const char *a, const char *b)
+int mutt_str_cmp(const char *a, const char *b)
 {
   return strcmp(NONULL(a), NONULL(b));
 }
 
 /**
- * mutt_str_strcasecmp - Compare two strings ignoring case, safely
+ * mutt_istr_cmp - Compare two strings ignoring case, safely
  * @param a First string to compare
  * @param b Second string to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_str_strcasecmp(const char *a, const char *b)
+int mutt_istr_cmp(const char *a, const char *b)
 {
   return strcasecmp(NONULL(a), NONULL(b));
 }
 
 /**
- * mutt_str_strncmp - Compare two strings (to a maximum), safely
+ * mutt_strn_equal - Check for equality of two strings (to a maximum), safely
  * @param a First string to compare
  * @param b Second string to compare
  * @param l Maximum number of bytes to compare
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * @retval true First l chars of both strings are equal
+ * @retval false First l chars of both strings not equal
  */
-int mutt_str_strncmp(const char *a, const char *b, size_t l)
+bool mutt_strn_equal(const char *a, const char *b, size_t l)
 {
-  return strncmp(NONULL(a), NONULL(b), l);
+  return strncmp(NONULL(a), NONULL(b), l) == 0;
 }
 
 /**
- * mutt_str_strncasecmp - Compare two strings ignoring case (to a maximum), safely
+ * mutt_istrn_cmp - Compare two strings ignoring case (to a maximum), safely
  * @param a First string to compare
  * @param b Second string to compare
  * @param l Maximum number of bytes to compare
@@ -681,42 +612,56 @@ int mutt_str_strncmp(const char *a, const char *b, size_t l)
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_str_strncasecmp(const char *a, const char *b, size_t l)
+int mutt_istrn_cmp(const char *a, const char *b, size_t l)
 {
   return strncasecmp(NONULL(a), NONULL(b), l);
 }
 
 /**
- * mutt_str_strlen - Calculate the length of a string, safely
+ * mutt_istrn_equal - Check for equality of two strings ignoring case (to a maximum), safely
+ * @param a First string to compare
+ * @param b Second string to compare
+ * @param l Maximum number of bytes to compare
+ * @retval -1 a precedes b
+ * @retval true First l chars of both strings are equal, ignoring case
+ * @retval false First l chars of both strings not equal, ignoring case
+ */
+bool mutt_istrn_equal(const char *a, const char *b, size_t l)
+{
+  return strncasecmp(NONULL(a), NONULL(b), l) == 0;
+}
+
+/**
+ * mutt_str_len - Calculate the length of a string, safely
  * @param a String to measure
  * @retval num Length in bytes
  */
-size_t mutt_str_strlen(const char *a)
+size_t mutt_str_len(const char *a)
 {
   return a ? strlen(a) : 0;
 }
 
 /**
- * mutt_str_strcoll - Collate two strings (compare using locale), safely
+ * mutt_str_coll - Collate two strings (compare using locale), safely
  * @param a First string to compare
  * @param b Second string to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_str_strcoll(const char *a, const char *b)
+int mutt_str_coll(const char *a, const char *b)
 {
   return strcoll(NONULL(a), NONULL(b));
 }
 
 /**
- * mutt_str_stristr - Find first occurrence of string (ignoring case)
+ * mutt_istr_find - Find first occurrence of string (ignoring case)
  * @param haystack String to search through
  * @param needle   String to find
  * @retval ptr  First match of the search string
  * @retval NULL No match, or an error
  */
-const char *mutt_str_stristr(const char *haystack, const char *needle)
+const char *mutt_istr_find(const char *haystack, const char *needle)
 {
   if (!haystack)
     return NULL;
@@ -765,18 +710,18 @@ void mutt_str_remove_trailing_ws(char *s)
   if (!s)
     return;
 
-  for (char *p = s + mutt_str_strlen(s) - 1; (p >= s) && IS_SPACE(*p); p--)
+  for (char *p = s + mutt_str_len(s) - 1; (p >= s) && IS_SPACE(*p); p--)
     *p = '\0';
 }
 
 /**
- * mutt_str_strfcpy - Copy a string into a buffer (guaranteeing NUL-termination)
+ * mutt_str_copy - Copy a string into a buffer (guaranteeing NUL-termination)
  * @param dest  Buffer for the result
  * @param src   String to copy
  * @param dsize Destination buffer size
  * @retval num Destination string length
  */
-size_t mutt_str_strfcpy(char *dest, const char *src, size_t dsize)
+size_t mutt_str_copy(char *dest, const char *src, size_t dsize)
 {
   if (!dest || (dsize == 0))
     return 0;
@@ -807,7 +752,11 @@ char *mutt_str_skip_email_wsp(const char *s)
 {
   if (!s)
     return NULL;
-  return (char *) (s + strspn(s, EMAIL_WSP));
+
+  for (; mutt_str_is_email_wsp(*s); s++)
+    ; // Do nothing
+
+  return (char *) s;
 }
 
 /**
@@ -817,20 +766,7 @@ char *mutt_str_skip_email_wsp(const char *s)
  */
 bool mutt_str_is_email_wsp(char c)
 {
-  return c && (strchr(EMAIL_WSP, c));
-}
-
-/**
- * mutt_str_strnfcpy - Copy a limited string into a buffer (guaranteeing NUL-termination)
- * @param dest  Buffer for the result
- * @param src   String to copy
- * @param n     Maximum number of characters to copy
- * @param dsize Destination buffer size
- * @retval num Destination string length
- */
-size_t mutt_str_strnfcpy(char *dest, const char *src, size_t n, size_t dsize)
-{
-  return mutt_str_strfcpy(dest, src, MIN(n + 1, dsize));
+  return c && strchr(" \t\r\n", c);
 }
 
 /**
@@ -934,6 +870,30 @@ void mutt_str_dequote_comment(char *s)
 }
 
 /**
+ * mutt_str_equal - Compare two strings
+ * @param a First string
+ * @param b Second string
+ * @retval true The strings are equal
+ * @retval false The strings are not equal
+ */
+bool mutt_str_equal(const char *a, const char *b)
+{
+  return (a == b) || (mutt_str_cmp(a, b) == 0);
+}
+
+/**
+ * mutt_istr_equal - Compare two strings, ignoring case
+ * @param a First string
+ * @param b Second string
+ * @retval true The strings are equal
+ * @retval false The strings are not equal
+ */
+bool mutt_istr_equal(const char *a, const char *b)
+{
+  return (a == b) || (mutt_istr_cmp(a, b) == 0);
+}
+
+/**
  * mutt_str_next_word - Find the next word in a string
  * @param s String to examine
  * @retval ptr Next word
@@ -955,7 +915,7 @@ const char *mutt_str_next_word(const char *s)
 }
 
 /**
- * mutt_str_rstrnstr - Find last instance of a substring
+ * mutt_strn_rfind - Find last instance of a substring
  * @param haystack        String to search through
  * @param haystack_length Length of the string
  * @param needle          String to find
@@ -965,7 +925,7 @@ const char *mutt_str_next_word(const char *s)
  * Return the last instance of needle in the haystack, or NULL.
  * Like strstr(), only backwards, and for a limited haystack length.
  */
-const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, const char *needle)
+const char *mutt_strn_rfind(const char *haystack, size_t haystack_length, const char *needle)
 {
   if (!haystack || (haystack_length == 0) || !needle)
     return NULL;
@@ -985,45 +945,6 @@ const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, cons
   next:;
   }
   return NULL;
-}
-
-/**
- * mutt_str_word_casecmp - Find word a in word list b
- * @param a Word to find
- * @param b String to check
- * @retval 0   Word was found
- * @retval !=0 Word was not found
- *
- * Given a word "apple", check if it exists at the start of a string of words,
- * e.g. "apple banana".  It must be an exact match, so "apple" won't match
- * "apples banana".
- *
- * The case of the words is ignored.
- */
-int mutt_str_word_casecmp(const char *a, const char *b)
-{
-  if (!b)
-  {
-    if (a)
-      return 1;
-    return 0;
-  }
-
-  char tmp[128] = { 0 };
-
-  int i;
-  for (i = 0; i < (sizeof(tmp) - 2); i++, b++)
-  {
-    if ((*b == '\0') || IS_SPACE(*b))
-    {
-      tmp[i] = '\0';
-      break;
-    }
-    tmp[i] = *b;
-  }
-  tmp[i + 1] = '\0';
-
-  return mutt_str_strcasecmp(a, tmp);
 }
 
 /**
@@ -1102,8 +1023,8 @@ bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *
   if (!buf || !rstr || (xlen >= buflen))
     return false;
 
-  size_t slen = mutt_str_strlen(buf + xlen);
-  size_t rlen = mutt_str_strlen(rstr);
+  size_t slen = mutt_str_len(buf + xlen);
+  size_t rlen = mutt_str_len(rstr);
 
   if ((slen + rlen) >= buflen)
     return false;
@@ -1115,69 +1036,27 @@ bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *
 }
 
 /**
- * mutt_str_remall_strcasestr - Remove all occurrences of substring, ignoring case
+ * mutt_istr_remall - Remove all occurrences of substring, ignoring case
  * @param str     String containing the substring
  * @param target  Target substring for removal
  * @retval 0 String contained substring and substring was removed successfully
  * @retval 1 String did not contain substring
  */
-int mutt_str_remall_strcasestr(char *str, const char *target)
+int mutt_istr_remall(char *str, const char *target)
 {
   int rc = 1;
+  if (!str || !target)
+    return rc;
 
   // Look through an ensure all instances of the substring are gone.
-  while ((str = (char *) mutt_str_strcasestr(str, target)))
+  while ((str = (char *) strcasestr(str, target)))
   {
-    size_t target_len = mutt_str_strlen(target);
+    size_t target_len = mutt_str_len(target);
     memmove(str, str + target_len, 1 + strlen(str + target_len));
     rc = 0; // If we got here, then a substring existed and has been removed.
   }
 
   return rc;
-}
-
-/**
- * mutt_str_strcasestr - Find a substring within a string without worrying about case
- * @param haystack String that may or may not contain the substring
- * @param needle   Substring we're looking for
- * @retval ptr  Beginning of substring
- * @retval NULL Substring is not in substring
- *
- * This performs a byte-to-byte check so it will return unspecified
- * results for multibyte locales.
- */
-const char *mutt_str_strcasestr(const char *haystack, const char *needle)
-{
-  if (!needle)
-    return NULL;
-
-  size_t haystack_len = mutt_str_strlen(haystack);
-  size_t needle_len = mutt_str_strlen(needle);
-
-  // Empty string exists at the front of a string. Check strstr if you don't believe me.
-  if (needle_len == 0)
-    return haystack;
-
-  // Check size conditions. No point wasting CPU cycles.
-  if ((haystack_len == 0) || (haystack_len < needle_len))
-    return NULL;
-
-  // Only check space that needle could fit in.
-  // Conditional has + 1 to handle when the haystack and needle are the same length.
-  for (size_t i = 0; i < (haystack_len - needle_len) + 1; i++)
-  {
-    for (size_t j = 0; j < needle_len; j++)
-    {
-      if (tolower((unsigned char) haystack[i + j]) != tolower((unsigned char) needle[j]))
-        break;
-
-      // If this statement is true, the needle has been found.
-      if (j == (needle_len - 1))
-        return haystack + i;
-    }
-  }
-
-  return NULL;
 }
 
 #ifdef HAVE_VASPRINTF

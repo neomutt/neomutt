@@ -248,16 +248,16 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
   if (OptNewsSend)
   {
     if (en->newsgroups)
-      mutt_str_strfcpy(buf, en->newsgroups, sizeof(buf));
+      mutt_str_copy(buf, en->newsgroups, sizeof(buf));
     else
       buf[0] = '\0';
     if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0)
       return -1;
     FREE(&en->newsgroups);
-    en->newsgroups = mutt_str_strdup(buf);
+    en->newsgroups = mutt_str_dup(buf);
 
     if (en->followup_to)
-      mutt_str_strfcpy(buf, en->followup_to, sizeof(buf));
+      mutt_str_copy(buf, en->followup_to, sizeof(buf));
     else
       buf[0] = '\0';
     if (C_AskFollowUp &&
@@ -266,10 +266,10 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
       return -1;
     }
     FREE(&en->followup_to);
-    en->followup_to = mutt_str_strdup(buf);
+    en->followup_to = mutt_str_dup(buf);
 
     if (en->x_comment_to)
-      mutt_str_strfcpy(buf, en->x_comment_to, sizeof(buf));
+      mutt_str_copy(buf, en->x_comment_to, sizeof(buf));
     else
       buf[0] = '\0';
     if (C_XCommentTo && C_AskXCommentTo &&
@@ -278,7 +278,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
       return -1;
     }
     FREE(&en->x_comment_to);
-    en->x_comment_to = mutt_str_strdup(buf);
+    en->x_comment_to = mutt_str_dup(buf);
   }
   else
 #endif
@@ -300,7 +300,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
   {
     if (C_FastReply)
       return 0;
-    mutt_str_strfcpy(buf, en->subject, sizeof(buf));
+    mutt_str_copy(buf, en->subject, sizeof(buf));
   }
   else
   {
@@ -310,11 +310,11 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
     struct ListNode *uh = NULL;
     STAILQ_FOREACH(uh, &UserHeader, entries)
     {
-      size_t plen = mutt_str_startswith(uh->data, "subject:", CASE_IGNORE);
+      size_t plen = mutt_istr_startswith(uh->data, "subject:");
       if (plen)
       {
         p = mutt_str_skip_email_wsp(uh->data + plen);
-        mutt_str_strfcpy(buf, p, sizeof(buf));
+        mutt_str_copy(buf, p, sizeof(buf));
       }
     }
   }
@@ -342,7 +342,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
 static char *nntp_get_header(const char *s)
 {
   SKIPWS(s);
-  return mutt_str_strdup(s);
+  return mutt_str_dup(s);
 }
 #endif
 
@@ -356,18 +356,18 @@ static void process_user_recips(struct Envelope *env)
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     size_t plen;
-    if ((plen = mutt_str_startswith(uh->data, "to:", CASE_IGNORE)))
+    if ((plen = mutt_istr_startswith(uh->data, "to:")))
       mutt_addrlist_parse(&env->to, uh->data + plen);
-    else if ((plen = mutt_str_startswith(uh->data, "cc:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "cc:")))
       mutt_addrlist_parse(&env->cc, uh->data + plen);
-    else if ((plen = mutt_str_startswith(uh->data, "bcc:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "bcc:")))
       mutt_addrlist_parse(&env->bcc, uh->data + plen);
 #ifdef USE_NNTP
-    else if ((plen = mutt_str_startswith(uh->data, "newsgroups:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "newsgroups:")))
       env->newsgroups = nntp_get_header(uh->data + plen);
-    else if ((plen = mutt_str_startswith(uh->data, "followup-to:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "followup-to:")))
       env->followup_to = nntp_get_header(uh->data + plen);
-    else if ((plen = mutt_str_startswith(uh->data, "x-comment-to:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "x-comment-to:")))
       env->x_comment_to = nntp_get_header(uh->data + plen);
 #endif
   }
@@ -383,18 +383,18 @@ static void process_user_header(struct Envelope *env)
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     size_t plen;
-    if ((plen = mutt_str_startswith(uh->data, "from:", CASE_IGNORE)))
+    if ((plen = mutt_istr_startswith(uh->data, "from:")))
     {
       /* User has specified a default From: address.  Remove default address */
       mutt_addrlist_clear(&env->from);
       mutt_addrlist_parse(&env->from, uh->data + plen);
     }
-    else if ((plen = mutt_str_startswith(uh->data, "reply-to:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "reply-to:")))
     {
       mutt_addrlist_clear(&env->reply_to);
       mutt_addrlist_parse(&env->reply_to, uh->data + plen);
     }
-    else if ((plen = mutt_str_startswith(uh->data, "message-id:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(uh->data, "message-id:")))
     {
       char *tmp = mutt_extract_message_id(uh->data + plen, NULL);
       if (mutt_addr_valid_msgid(tmp))
@@ -405,19 +405,19 @@ static void process_user_header(struct Envelope *env)
       else
         FREE(&tmp);
     }
-    else if (!mutt_str_startswith(uh->data, "to:", CASE_IGNORE) &&
-             !mutt_str_startswith(uh->data, "cc:", CASE_IGNORE) &&
-             !mutt_str_startswith(uh->data, "bcc:", CASE_IGNORE) &&
+    else if (!mutt_istr_startswith(uh->data, "to:") &&
+             !mutt_istr_startswith(uh->data, "cc:") &&
+             !mutt_istr_startswith(uh->data, "bcc:") &&
 #ifdef USE_NNTP
-             !mutt_str_startswith(uh->data, "newsgroups:", CASE_IGNORE) &&
-             !mutt_str_startswith(uh->data, "followup-to:", CASE_IGNORE) &&
-             !mutt_str_startswith(uh->data, "x-comment-to:", CASE_IGNORE) &&
+             !mutt_istr_startswith(uh->data, "newsgroups:") &&
+             !mutt_istr_startswith(uh->data, "followup-to:") &&
+             !mutt_istr_startswith(uh->data, "x-comment-to:") &&
 #endif
-             !mutt_str_startswith(uh->data, "supersedes:", CASE_IGNORE) &&
-             !mutt_str_startswith(uh->data, "subject:", CASE_IGNORE) &&
-             !mutt_str_startswith(uh->data, "return-path:", CASE_IGNORE))
+             !mutt_istr_startswith(uh->data, "supersedes:") &&
+             !mutt_istr_startswith(uh->data, "subject:") &&
+             !mutt_istr_startswith(uh->data, "return-path:"))
     {
-      mutt_list_insert_tail(&env->userhdrs, mutt_str_strdup(uh->data));
+      mutt_list_insert_tail(&env->userhdrs, mutt_str_dup(uh->data));
     }
   }
 }
@@ -540,9 +540,9 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
     body = actx->idx[i]->content;
     if ((body->type != TYPE_MULTIPART) && !mutt_can_decode(body) &&
         !((body->type == TYPE_APPLICATION) &&
-          ((mutt_str_strcasecmp(body->subtype, "pgp-signature") == 0) ||
-           (mutt_str_strcasecmp(body->subtype, "x-pkcs7-signature") == 0) ||
-           (mutt_str_strcasecmp(body->subtype, "pkcs7-signature") == 0))))
+          (mutt_istr_equal(body->subtype, "pgp-signature") ||
+           mutt_istr_equal(body->subtype, "x-pkcs7-signature") ||
+           mutt_istr_equal(body->subtype, "pkcs7-signature"))))
     {
       /* Ask the quadoption only once */
       if (*forwardq == MUTT_ABORT)
@@ -827,7 +827,7 @@ static void add_references(struct ListHead *head, struct Envelope *env)
   struct ListHead *src = STAILQ_EMPTY(&env->references) ? &env->in_reply_to : &env->references;
   STAILQ_FOREACH(np, src, entries)
   {
-    mutt_list_insert_tail(head, mutt_str_strdup(np->data));
+    mutt_list_insert_tail(head, mutt_str_dup(np->data));
   }
 }
 
@@ -840,7 +840,7 @@ static void add_message_id(struct ListHead *head, struct Envelope *env)
 {
   if (env->message_id)
   {
-    mutt_list_insert_head(head, mutt_str_strdup(env->message_id));
+    mutt_list_insert_head(head, mutt_str_dup(env->message_id));
   }
 }
 
@@ -902,11 +902,11 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv)
   if (curenv->real_subj)
   {
     FREE(&env->subject);
-    env->subject = mutt_mem_malloc(mutt_str_strlen(curenv->real_subj) + 5);
+    env->subject = mutt_mem_malloc(mutt_str_len(curenv->real_subj) + 5);
     sprintf(env->subject, "Re: %s", curenv->real_subj);
   }
   else if (!env->subject)
-    env->subject = mutt_str_strdup(C_EmptySubject);
+    env->subject = mutt_str_dup(C_EmptySubject);
 }
 
 /**
@@ -922,7 +922,7 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv
 
 #ifdef USE_NNTP
   if (OptNewsSend && C_XCommentTo && !TAILQ_EMPTY(&curenv->from))
-    env->x_comment_to = mutt_str_strdup(mutt_get_name(TAILQ_FIRST(&curenv->from)));
+    env->x_comment_to = mutt_str_dup(mutt_get_name(TAILQ_FIRST(&curenv->from)));
 #endif
 }
 
@@ -987,10 +987,9 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
     if ((flags & SEND_NEWS))
     {
       /* in case followup set Newsgroups: with Followup-To: if it present */
-      if (!env->newsgroups &&
-          (mutt_str_strcasecmp(curenv->followup_to, "poster") != 0))
+      if (!env->newsgroups && !mutt_istr_equal(curenv->followup_to, "poster"))
       {
-        env->newsgroups = mutt_str_strdup(curenv->followup_to);
+        env->newsgroups = mutt_str_dup(curenv->followup_to);
       }
     }
     else
@@ -1160,7 +1159,7 @@ void mutt_set_followup_to(struct Envelope *env)
   if (OptNewsSend)
   {
     if (!env->followup_to && env->newsgroups && (strrchr(env->newsgroups, ',')))
-      env->followup_to = mutt_str_strdup(env->newsgroups);
+      env->followup_to = mutt_str_dup(env->newsgroups);
     return;
   }
 #endif
@@ -1571,7 +1570,7 @@ static int save_fcc(struct Email *e, struct Buffer *fcc, struct Body *clear_cont
   }
 #endif
 
-  if (mutt_buffer_is_empty(fcc) || (mutt_str_strcmp("/dev/null", mutt_b2s(fcc)) == 0))
+  if (mutt_buffer_is_empty(fcc) || mutt_str_equal("/dev/null", mutt_b2s(fcc)))
     return rc;
 
   struct Body *tmpbody = e->content;
@@ -1606,8 +1605,8 @@ static int save_fcc(struct Email *e, struct Buffer *fcc, struct Body *clear_cont
     if (!save_atts)
     {
       if ((WithCrypto != 0) && (e->security & (SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT)) &&
-          ((mutt_str_strcmp(e->content->subtype, "encrypted") == 0) ||
-           (mutt_str_strcmp(e->content->subtype, "signed") == 0)))
+          (mutt_str_equal(e->content->subtype, "encrypted") ||
+           mutt_str_equal(e->content->subtype, "signed")))
       {
         if ((clear_content->type == TYPE_MULTIPART) &&
             (query_quadoption(C_FccAttach, _("Save attachments in Fcc?")) == MUTT_NO))
@@ -1769,7 +1768,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
 
     if (encrypt_as)
     {
-      pgpkeylist = mutt_str_strdup(encrypt_as);
+      pgpkeylist = mutt_str_dup(encrypt_as);
       clear_content = e_post->content;
       if (mutt_protect(e_post, pgpkeylist, true) == -1)
       {
@@ -1886,9 +1885,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (flags & SEND_POSTPONED)
   {
     if (WithCrypto & APPLICATION_PGP)
-      pgp_signas = mutt_str_strdup(C_PgpSignAs);
+      pgp_signas = mutt_str_dup(C_PgpSignAs);
     if (WithCrypto & APPLICATION_SMIME)
-      smime_signas = mutt_str_strdup(C_SmimeSignAs);
+      smime_signas = mutt_str_dup(C_SmimeSignAs);
   }
 
   /* Delay expansion of aliases until absolutely necessary--shouldn't
@@ -1957,9 +1956,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       pbody->next = e_templ->content; /* don't kill command-line attachments */
       e_templ->content = pbody;
 
-      ctype = mutt_str_strdup(C_ContentType);
+      ctype = mutt_str_dup(C_ContentType);
       if (!ctype)
-        ctype = mutt_str_strdup("text/plain");
+        ctype = mutt_str_dup("text/plain");
       mutt_parse_content_type(ctype, e_templ->content);
       FREE(&ctype);
       e_templ->content->unlink = true;
@@ -1969,13 +1968,13 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       if (tempfile)
       {
         fp_tmp = mutt_file_fopen(tempfile, "a+");
-        e_templ->content->filename = mutt_str_strdup(tempfile);
+        e_templ->content->filename = mutt_str_dup(tempfile);
       }
       else
       {
         mutt_mktemp(buf, sizeof(buf));
         fp_tmp = mutt_file_fopen(buf, "w+");
-        e_templ->content->filename = mutt_str_strdup(buf);
+        e_templ->content->filename = mutt_str_dup(buf);
       }
     }
     else
@@ -2048,7 +2047,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         !e_templ->env->newsgroups)
     {
       e_templ->env->newsgroups =
-          mutt_str_strdup(((struct NntpMboxData *) ctx->mailbox->mdata)->group);
+          mutt_str_dup(((struct NntpMboxData *) ctx->mailbox->mdata)->group);
     }
 #endif
 
@@ -2113,7 +2112,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
 
     if (C_SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
-        C_Editor && (mutt_str_strcmp(C_Editor, "builtin") != 0))
+        C_Editor && !mutt_str_equal(C_Editor, "builtin"))
     {
       append_signature(fp_tmp);
     }
@@ -2126,7 +2125,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
 
     if (!C_SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
-        C_Editor && (mutt_str_strcmp(C_Editor, "builtin") != 0))
+        C_Editor && !mutt_str_equal(C_Editor, "builtin"))
     {
       append_signature(fp_tmp);
     }
@@ -2139,7 +2138,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!(flags & (SEND_KEY | SEND_POSTPONED | SEND_RESEND | SEND_DRAFT_FILE)))
   {
     if (C_TextFlowed && (e_templ->content->type == TYPE_TEXT) &&
-        (mutt_str_strcasecmp(e_templ->content->subtype, "plain") == 0))
+        mutt_istr_equal(e_templ->content->subtype, "plain"))
     {
       mutt_param_set(&e_templ->content->parameter, "format", "flowed");
     }
@@ -2155,7 +2154,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   {
     struct Address *from = TAILQ_FIRST(&e_templ->env->from);
     if (from && !from->personal && !(flags & (SEND_RESEND | SEND_POSTPONED)))
-      from->personal = mutt_str_strdup(C_Realname);
+      from->personal = mutt_str_dup(C_Realname);
   }
 
   if (!(((WithCrypto & APPLICATION_PGP) != 0) && (flags & SEND_KEY)))
@@ -2191,7 +2190,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         if (!mutt_edit_attachment(e_templ->content))
           goto cleanup;
       }
-      else if (!C_Editor || (mutt_str_strcmp("builtin", C_Editor) == 0))
+      else if (!C_Editor || mutt_str_equal("builtin", C_Editor))
         mutt_builtin_editor(e_templ->content->filename, e_templ, e_cur);
       else if (C_EditHeaders)
       {
@@ -2448,7 +2447,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   if (!(flags & SEND_BATCH) && (C_AbortNoattach != MUTT_NO) &&
       !e_templ->content->next && (e_templ->content->type == TYPE_TEXT) &&
-      (mutt_str_strcasecmp(e_templ->content->subtype, "plain") == 0) &&
+      mutt_istr_equal(e_templ->content->subtype, "plain") &&
       search_attach_keyword(e_templ->content->filename) &&
       (query_quadoption(C_AbortNoattach,
                         _("No attachments, cancel sending?")) != MUTT_NO))

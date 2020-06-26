@@ -329,8 +329,7 @@ int mutt_bcache_list(struct BodyCache *bcache, bcache_list_t want_id, void *data
 
   while ((de = readdir(d)))
   {
-    if (mutt_str_startswith(de->d_name, ".", CASE_MATCH) ||
-        mutt_str_startswith(de->d_name, "..", CASE_MATCH))
+    if (mutt_str_startswith(de->d_name, ".") || mutt_str_startswith(de->d_name, ".."))
     {
       continue;
     }

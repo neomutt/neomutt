@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_strcasecmp()
+ * Test code for mutt_str_coll()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -25,19 +25,17 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 
-void test_mutt_str_strcasecmp(void)
+void test_mutt_str_coll(void)
 {
-  // int mutt_str_strcasecmp(const char *a, const char *b);
+  // int mutt_str_coll(const char *a, const char *b);
 
-  TEST_CHECK(mutt_str_strcasecmp(NULL, "apple") != 0);
-  TEST_CHECK(mutt_str_strcasecmp("apple", NULL) != 0);
-  TEST_CHECK(mutt_str_strcasecmp(NULL, NULL) == 0);
+  TEST_CHECK(mutt_str_coll(NULL, "apple") != 0);
+  TEST_CHECK(mutt_str_coll("apple", NULL) != 0);
+  TEST_CHECK(mutt_str_coll(NULL, NULL) == 0);
 
-  TEST_CHECK(mutt_str_strcasecmp("", "") == 0);
-
-  TEST_CHECK(mutt_str_strcasecmp("apple", "apple") == 0);
-  TEST_CHECK(mutt_str_strcasecmp("apple", "APPLE") == 0);
-
-  TEST_CHECK(mutt_str_strcasecmp("apple", "apple2") != 0);
-  TEST_CHECK(mutt_str_strcasecmp("apple1", "apple") != 0);
+  TEST_CHECK(mutt_str_coll("", "") == 0);
+  TEST_CHECK(mutt_str_coll("apple", "apple") == 0);
+  TEST_CHECK(mutt_str_coll("apple", "APPLE") != 0);
+  TEST_CHECK(mutt_str_coll("apple", "apple2") != 0);
+  TEST_CHECK(mutt_str_coll("apple1", "apple") != 0);
 }

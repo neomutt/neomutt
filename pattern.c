@@ -231,7 +231,7 @@ static bool eat_regex(struct Pattern *pat, int flags, struct Buffer *s, struct B
 
   if (pat->string_match)
   {
-    pat->p.str = mutt_str_strdup(buf.data);
+    pat->p.str = mutt_str_dup(buf.data);
     pat->ign_case = mutt_mb_is_lower(buf.data);
     FREE(&buf.data);
   }
@@ -271,7 +271,7 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
   if (*nows == '\0')
     return true;
   mutt_str_remove_trailing_ws(nows);
-  mutt_list_insert_tail(msgid_list, mutt_str_strdup(nows));
+  mutt_list_insert_tail(msgid_list, mutt_str_dup(nows));
   return true;
 }
 
@@ -1095,7 +1095,7 @@ static bool eat_date(struct Pattern *pat, int flags, struct Buffer *s, struct Bu
   if (flags & MUTT_PC_PATTERN_DYNAMIC)
   {
     pat->dynamic = true;
-    pat->p.str = mutt_str_strdup(tmp->data);
+    pat->p.str = mutt_str_dup(tmp->data);
   }
 
   rc = eval_date_minmax(pat, tmp->data, err);
@@ -1265,7 +1265,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
       match = true;
       break;
     }
-    len -= mutt_str_strlen(buf);
+    len -= mutt_str_len(buf);
   }
 
   FREE(&buf);
@@ -1454,7 +1454,7 @@ struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, str
 
   mutt_buffer_init(&ps);
   ps.dptr = (char *) s;
-  ps.dsize = mutt_str_strlen(s);
+  ps.dsize = mutt_str_len(s);
 
   while (*ps.dptr)
   {
@@ -1547,7 +1547,7 @@ struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, str
           all_addr = false;
           is_alias = false;
           /* compile the sub-expression */
-          buf = mutt_str_substr_dup(ps.dptr + 1, p);
+          buf = mutt_strn_dup(ps.dptr + 1, p - (ps.dptr + 1));
           tmp2 = mutt_pattern_comp(buf, flags, err);
           if (!tmp2)
           {
@@ -1635,7 +1635,7 @@ struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, str
           goto cleanup;
         }
         /* compile the sub-expression */
-        buf = mutt_str_substr_dup(ps.dptr + 1, p);
+        buf = mutt_strn_dup(ps.dptr + 1, p - (ps.dptr + 1));
         tmp = mutt_pattern_comp(buf, flags, err);
         FREE(&buf);
         if (!tmp)
@@ -2441,33 +2441,32 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
     }
   }
 
-  /* XXX - is mutt_str_strcasecmp() right here, or should we use locale's
+  /* XXX - is mutt_istr_cmp() right here, or should we use locale's
    * equivalences?  */
 
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if ((mutt_str_strcasecmp("all", mutt_b2s(buf)) == 0) ||
-        (mutt_str_strcmp("^", mutt_b2s(buf)) == 0) ||
-        (mutt_str_strcmp(".", mutt_b2s(buf)) == 0)) /* ~A is more efficient */
+    if (mutt_istr_equal("all", mutt_b2s(buf)) || mutt_str_equal("^", mutt_b2s(buf)) ||
+        mutt_str_equal(".", mutt_b2s(buf))) /* ~A is more efficient */
     {
       mutt_buffer_strcpy(buf, "~A");
     }
-    else if (mutt_str_strcasecmp("del", mutt_b2s(buf)) == 0)
+    else if (mutt_istr_equal("del", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~D");
-    else if (mutt_str_strcasecmp("flag", mutt_b2s(buf)) == 0)
+    else if (mutt_istr_equal("flag", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~F");
-    else if (mutt_str_strcasecmp("new", mutt_b2s(buf)) == 0)
+    else if (mutt_istr_equal("new", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~N");
-    else if (mutt_str_strcasecmp("old", mutt_b2s(buf)) == 0)
+    else if (mutt_istr_equal("old", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~O");
-    else if (mutt_str_strcasecmp("repl", mutt_b2s(buf)) == 0)
+    else if (mutt_istr_equal("repl", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~Q");
-    else if (mutt_str_strcasecmp("read", mutt_b2s(buf)) == 0)
+    else if (mutt_istr_equal("read", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~R");
-    else if (mutt_str_strcasecmp("tag", mutt_b2s(buf)) == 0)
+    else if (mutt_istr_equal("tag", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~T");
-    else if (mutt_str_strcasecmp("unread", mutt_b2s(buf)) == 0)
+    else if (mutt_istr_equal("unread", mutt_b2s(buf)))
       mutt_buffer_strcpy(buf, "~U");
     else
     {
@@ -2668,7 +2667,7 @@ int mutt_pattern_func(int op, char *prompt)
     const char *pbuf = buf->data;
     while (*pbuf == ' ')
       pbuf++;
-    if (mutt_str_strcmp(pbuf, "~A") != 0)
+    if (!mutt_str_equal(pbuf, "~A"))
     {
       Context->pattern = simple;
       simple = NULL; /* don't clobber it */
@@ -2701,7 +2700,7 @@ int mutt_search_command(int cur, int op)
   if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
     char buf[256];
-    mutt_str_strfcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
+    mutt_str_copy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
     if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                             _("Search for: ") :
                             _("Reverse search for: "),
@@ -2722,13 +2721,13 @@ int mutt_search_command(int cur, int op)
     mutt_buffer_strcpy(tmp, buf);
     mutt_check_simple(tmp, NONULL(C_SimpleSearch));
 
-    if (!SearchPattern || (mutt_str_strcmp(mutt_b2s(tmp), LastSearchExpn) != 0))
+    if (!SearchPattern || !mutt_str_equal(mutt_b2s(tmp), LastSearchExpn))
     {
       struct Buffer err;
       mutt_buffer_init(&err);
       OptSearchInvalid = true;
-      mutt_str_strfcpy(LastSearch, buf, sizeof(LastSearch));
-      mutt_str_strfcpy(LastSearchExpn, mutt_b2s(tmp), sizeof(LastSearchExpn));
+      mutt_str_copy(LastSearch, buf, sizeof(LastSearch));
+      mutt_str_copy(LastSearchExpn, mutt_b2s(tmp), sizeof(LastSearchExpn));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;

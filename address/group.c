@@ -72,7 +72,7 @@ struct Group *mutt_pattern_group(const char *pat)
   {
     mutt_debug(LL_DEBUG2, "Creating group %s\n", pat);
     g = mutt_mem_calloc(1, sizeof(struct Group));
-    g->name = mutt_str_strdup(pat);
+    g->name = mutt_str_dup(pat);
     STAILQ_INIT(&g->rs);
     TAILQ_INIT(&g->al);
     mutt_hash_insert(Groups, g->name, g);
@@ -331,7 +331,7 @@ bool mutt_group_match(struct Group *g, const char *s)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, &g->al, entries)
   {
-    if (a->mailbox && (mutt_str_strcasecmp(s, a->mailbox) == 0))
+    if (a->mailbox && mutt_istr_equal(s, a->mailbox))
       return true;
   }
 

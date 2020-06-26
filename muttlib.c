@@ -344,7 +344,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 
   mutt_buffer_addstr(tmp, NONULL(buf));
   mutt_buffer_expand_path_regex(tmp, regex);
-  mutt_str_strfcpy(buf, mutt_b2s(tmp), buflen);
+  mutt_str_copy(buf, mutt_b2s(tmp), buflen);
 
   mutt_buffer_pool_release(&tmp);
 
@@ -376,13 +376,13 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
   if (mutt_regex_capture(C_GecosMask, pw->pw_gecos, 1, pat_match))
   {
-    mutt_str_strfcpy(dest, pw->pw_gecos + pat_match[0].rm_so,
-                     MIN(pat_match[0].rm_eo - pat_match[0].rm_so + 1, destlen));
+    mutt_str_copy(dest, pw->pw_gecos + pat_match[0].rm_so,
+                  MIN(pat_match[0].rm_eo - pat_match[0].rm_so + 1, destlen));
   }
   else if ((p = strchr(pw->pw_gecos, ',')))
-    mutt_str_strfcpy(dest, pw->pw_gecos, MIN(destlen, p - pw->pw_gecos + 1));
+    mutt_str_copy(dest, pw->pw_gecos, MIN(destlen, p - pw->pw_gecos + 1));
   else
-    mutt_str_strfcpy(dest, pw->pw_gecos, destlen);
+    mutt_str_copy(dest, pw->pw_gecos, destlen);
 
   pwnl = strlen(pw->pw_name);
 
@@ -411,7 +411,7 @@ bool mutt_needs_mailcap(struct Body *m)
   switch (m->type)
   {
     case TYPE_TEXT:
-      if (mutt_str_strcasecmp("plain", m->subtype) == 0)
+      if (mutt_istr_equal("plain", m->subtype))
         return false;
       break;
     case TYPE_APPLICATION:
@@ -447,13 +447,13 @@ bool mutt_is_text_part(struct Body *b)
 
   if (t == TYPE_MESSAGE)
   {
-    if (mutt_str_strcasecmp("delivery-status", s) == 0)
+    if (mutt_istr_equal("delivery-status", s))
       return true;
   }
 
   if (((WithCrypto & APPLICATION_PGP) != 0) && (t == TYPE_APPLICATION))
   {
-    if (mutt_str_strcasecmp("pgp-keys", s) == 0)
+    if (mutt_istr_equal("pgp-keys", s))
       return true;
   }
 
@@ -634,7 +634,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   if (scheme != U_UNKNOWN)
   {
     p = strchr(buf, ':') + 1;
-    if (strncmp(p, "//", 2) == 0)
+    if (mutt_strn_equal(p, "//", 2))
       q = strchr(p + 2, '/');
     if (!q)
       q = strchr(p, '\0');
@@ -666,18 +666,18 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   else if (strstr(p, "..") && ((scheme == U_UNKNOWN) || (scheme == U_FILE)) &&
            realpath(p, tmp))
   {
-    mutt_str_strfcpy(p, tmp, buflen - (p - buf));
+    mutt_str_copy(p, tmp, buflen - (p - buf));
   }
 
-  if ((len = mutt_str_startswith(buf, C_Folder, CASE_MATCH)) && (buf[len] == '/'))
+  if ((len = mutt_str_startswith(buf, C_Folder)) && (buf[len] == '/'))
   {
     *buf++ = '=';
-    memmove(buf, buf + len, mutt_str_strlen(buf + len) + 1);
+    memmove(buf, buf + len, mutt_str_len(buf + len) + 1);
   }
-  else if ((len = mutt_str_startswith(buf, HomeDir, CASE_MATCH)) && (buf[len] == '/'))
+  else if ((len = mutt_str_startswith(buf, HomeDir)) && (buf[len] == '/'))
   {
     *buf++ = '~';
-    memmove(buf, buf + len - 1, mutt_str_strlen(buf + len - 1) + 1);
+    memmove(buf, buf + len - 1, mutt_str_len(buf + len - 1) + 1);
   }
 }
 
@@ -795,14 +795,14 @@ void mutt_save_path(char *buf, size_t buflen, const struct Address *addr)
 {
   if (addr && addr->mailbox)
   {
-    mutt_str_strfcpy(buf, addr->mailbox, buflen);
+    mutt_str_copy(buf, addr->mailbox, buflen);
     if (!C_SaveAddress)
     {
       char *p = strpbrk(buf, "%@");
       if (p)
         *p = '\0';
     }
-    mutt_str_strlower(buf);
+    mutt_str_lower(buf);
   }
   else
     *buf = '\0';
@@ -827,7 +827,7 @@ void mutt_buffer_save_path(struct Buffer *dest, const struct Address *a)
         mutt_buffer_fix_dptr(dest);
       }
     }
-    mutt_str_strlower(dest->data);
+    mutt_str_lower(dest->data);
   }
   else
     mutt_buffer_reset(dest);
@@ -871,7 +871,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
   char *recycler = NULL;
 
   char src2[256];
-  mutt_str_strfcpy(src2, src, mutt_str_strlen(src) + 1);
+  mutt_str_copy(src2, src, mutt_str_len(src) + 1);
   src = src2;
 
   prefix[0] = '\0';
@@ -886,7 +886,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
     int off = -1;
 
     /* Do not consider filters if no pipe at end */
-    int n = mutt_str_strlen(src);
+    int n = mutt_str_len(src);
     if ((n > 1) && (src[n - 1] == '|'))
     {
       /* Scan backwards for backslashes */
@@ -976,7 +976,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             buf[n] = '\0'; /* remove '%' */
             if ((n > 0) && (buf[n - 1] != '%'))
             {
-              recycler = mutt_str_strdup(buf);
+              recycler = mutt_str_dup(buf);
               if (recycler)
               {
                 /* buflen is decremented at the start of this function
@@ -1043,7 +1043,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           /* escape '<' and '>' to work inside nested-if */
           if ((*p == '<') || (*p == '>'))
           {
-            memmove(p + 2, p, mutt_str_strlen(p) + 1);
+            memmove(p + 2, p, mutt_str_len(p) + 1);
             *p++ = '\\';
             *p++ = '\\';
           }
@@ -1197,7 +1197,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
           /* get contents after padding */
           mutt_expando_format(tmp, sizeof(tmp), 0, cols, src + pl, callback, data, flags);
-          len = mutt_str_strlen(tmp);
+          len = mutt_str_len(tmp);
           wid = mutt_strwidth(tmp);
 
           pad = (cols - col - wid) / pw;
@@ -1304,7 +1304,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
                        else_str, data, flags);
 
         if (to_lower)
-          mutt_str_strlower(tmp);
+          mutt_str_lower(tmp);
         if (no_dots)
         {
           char *p = tmp;
@@ -1313,7 +1313,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
               *p = '_';
         }
 
-        len = mutt_str_strlen(tmp);
+        len = mutt_str_len(tmp);
         if ((len + wlen) > buflen)
           len = mutt_wstr_trunc(tmp, buflen - wlen, cols - col, NULL);
 
@@ -1396,7 +1396,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
   FILE *fp = NULL;
   struct stat s;
 
-  size_t len = mutt_str_strlen(path);
+  size_t len = mutt_str_len(path);
   if (len == 0)
   {
     return NULL;
@@ -1406,7 +1406,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
   {
     /* read from a pipe */
 
-    char *p = mutt_str_strdup(path);
+    char *p = mutt_str_dup(path);
 
     p[len - 1] = 0;
     mutt_endwin();
@@ -1563,7 +1563,7 @@ const char *mutt_make_version(void)
  */
 void mutt_encode_path(struct Buffer *buf, const char *src)
 {
-  char *p = mutt_str_strdup(src);
+  char *p = mutt_str_dup(src);
   int rc = mutt_ch_convert_string(&p, C_Charset, "us-ascii", 0);
   size_t len = mutt_buffer_strcpy(buf, (rc == 0) ? NONULL(p) : NONULL(src));
 
@@ -1589,7 +1589,7 @@ void mutt_encode_path(struct Buffer *buf, const char *src)
 int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf)
 {
   const char *xdg_env = mutt_str_getenv(xdg_env_vars[type]);
-  char *xdg = xdg_env ? mutt_str_strdup(xdg_env) : mutt_str_strdup(xdg_defaults[type]);
+  char *xdg = xdg_env ? mutt_str_dup(xdg_env) : mutt_str_dup(xdg_defaults[type]);
   char *x = xdg; /* strsep() changes xdg, so free x instead later */
   char *token = NULL;
   int rc = 0;
@@ -1632,11 +1632,11 @@ void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
   if (mb_type == MUTT_IMAP)
     imap_get_parent_path(path, buf, buflen);
   else if (mb_type == MUTT_NOTMUCH)
-    mutt_str_strfcpy(buf, C_Folder, buflen);
+    mutt_str_copy(buf, C_Folder, buflen);
   else
   {
-    mutt_str_strfcpy(buf, path, buflen);
-    int n = mutt_str_strlen(buf);
+    mutt_str_copy(buf, path, buflen);
+    int n = mutt_str_len(buf);
     if (n == 0)
       return;
 
@@ -1685,9 +1685,7 @@ int mutt_inbox_cmp(const char *a, const char *b)
   /* fast-track in case the paths have been mutt_pretty_mailbox'ified */
   if ((a[0] == '+') && (b[0] == '+'))
   {
-    return (mutt_str_strcasecmp(a + 1, "inbox") == 0) ?
-               -1 :
-               (mutt_str_strcasecmp(b + 1, "inbox") == 0) ? 1 : 0;
+    return mutt_istr_equal(a + 1, "inbox") ? -1 : mutt_istr_equal(b + 1, "inbox") ? 1 : 0;
   }
 
   const char *a_end = strrchr(a, '/');
@@ -1706,15 +1704,15 @@ int mutt_inbox_cmp(const char *a, const char *b)
   size_t b_len = b_end - b;
   size_t min = MIN(a_len, b_len);
   int same = (a[min] == '/') && (b[min] == '/') && (a[min + 1] != '\0') &&
-             (b[min + 1] != '\0') && (mutt_str_strncasecmp(a, b, min) == 0);
+             (b[min + 1] != '\0') && mutt_istrn_equal(a, b, min);
 
   if (!same)
     return 0;
 
-  if (mutt_str_strcasecmp(&a[min + 1], "inbox") == 0)
+  if (mutt_istr_equal(&a[min + 1], "inbox"))
     return -1;
 
-  if (mutt_str_strcasecmp(&b[min + 1], "inbox") == 0)
+  if (mutt_istr_equal(&b[min + 1], "inbox"))
     return 1;
 
   return 0;
@@ -1759,7 +1757,7 @@ void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
   }
   else if (num == 0)
   {
-    mutt_str_strfcpy(buf, C_SizeUnitsOnLeft ? "K0" : "0K", buflen);
+    mutt_str_copy(buf, C_SizeUnitsOnLeft ? "K0" : "0K", buflen);
   }
   else if (C_SizeShowFractions && (num < 10189)) /* 0.1K - 9.9K */
   {
@@ -1799,12 +1797,12 @@ void add_to_stailq(struct ListHead *head, const char *str)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, head, entries)
   {
-    if (mutt_str_strcasecmp(str, np->data) == 0)
+    if (mutt_istr_equal(str, np->data))
     {
       return;
     }
   }
-  mutt_list_insert_tail(head, mutt_str_strdup(str));
+  mutt_list_insert_tail(head, mutt_str_dup(str));
 }
 
 /**
@@ -1816,14 +1814,14 @@ void add_to_stailq(struct ListHead *head, const char *str)
  */
 void remove_from_stailq(struct ListHead *head, const char *str)
 {
-  if (mutt_str_strcmp("*", str) == 0)
+  if (mutt_str_equal("*", str))
     mutt_list_free(head); /* "unCMD *" means delete all current entries */
   else
   {
     struct ListNode *np = NULL, *tmp = NULL;
     STAILQ_FOREACH_SAFE(np, head, entries, tmp)
     {
-      if (mutt_str_strcasecmp(str, np->data) == 0)
+      if (mutt_istr_equal(str, np->data))
       {
         STAILQ_REMOVE(head, np, ListNode, entries);
         FREE(&np->data);

@@ -161,7 +161,7 @@ void mutt_autocrypt_db_close(void)
 void mutt_autocrypt_db_normalize_addr(struct Address *a)
 {
   mutt_addr_to_local(a);
-  mutt_str_strlower(a->mailbox);
+  mutt_str_lower(a->mailbox);
   mutt_addr_to_intl(a);
 }
 
@@ -176,7 +176,7 @@ void mutt_autocrypt_db_normalize_addrlist(struct AddressList *al)
   struct Address *np = NULL;
   TAILQ_FOREACH(np, al, entries)
   {
-    mutt_str_strlower(np->mailbox);
+    mutt_str_lower(np->mailbox);
   }
 
   mutt_addrlist_to_intl(al, NULL);
@@ -204,7 +204,7 @@ static struct Address *copy_normalize_addr(struct Address *addr)
    * because of requirements in autocrypt.c */
 
   struct Address *norm_addr = mutt_addr_new();
-  norm_addr->mailbox = mutt_str_strdup(addr->mailbox);
+  norm_addr->mailbox = mutt_str_dup(addr->mailbox);
   norm_addr->is_intl = addr->is_intl;
   norm_addr->intl_checked = addr->intl_checked;
 
@@ -221,7 +221,7 @@ static struct Address *copy_normalize_addr(struct Address *addr)
 static char *strdup_column_text(sqlite3_stmt *stmt, int index)
 {
   const char *val = (const char *) sqlite3_column_text(stmt, index);
-  return mutt_str_strdup(val);
+  return mutt_str_dup(val);
 }
 
 /**

@@ -54,7 +54,7 @@ struct Regex *mutt_regex_compile(const char *str, int flags)
   if (!str || (*str == '\0'))
     return NULL;
   struct Regex *rx = mutt_mem_calloc(1, sizeof(struct Regex));
-  rx->pattern = mutt_str_strdup(str);
+  rx->pattern = mutt_str_dup(str);
   rx->regex = mutt_mem_calloc(1, sizeof(regex_t));
   if (REG_COMP(rx->regex, str, flags) != 0)
     mutt_regex_free(&rx);
@@ -79,7 +79,7 @@ struct Regex *mutt_regex_new(const char *str, int flags, struct Buffer *err)
   struct Regex *reg = mutt_mem_calloc(1, sizeof(struct Regex));
 
   reg->regex = mutt_mem_calloc(1, sizeof(regex_t));
-  reg->pattern = mutt_str_strdup(str);
+  reg->pattern = mutt_str_dup(str);
 
   /* Should we use smart case matching? */
   if (((flags & DT_REGEX_MATCH_CASE) == 0) && mutt_mb_is_lower(str))
@@ -144,7 +144,7 @@ int mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct 
   struct RegexNode *np = NULL;
   STAILQ_FOREACH(np, rl, entries)
   {
-    if (mutt_str_strcasecmp(rx->pattern, np->regex->pattern) == 0)
+    if (mutt_istr_equal(rx->pattern, np->regex->pattern))
       break; /* already on the rl */
   }
 
@@ -227,7 +227,7 @@ int mutt_regexlist_remove(struct RegexList *rl, const char *str)
   if (!rl || !str)
     return -1;
 
-  if (mutt_str_strcmp("*", str) == 0)
+  if (mutt_str_equal("*", str))
   {
     mutt_regexlist_free(rl); /* "unCMD *" means delete all current entries */
     return 0;
@@ -237,7 +237,7 @@ int mutt_regexlist_remove(struct RegexList *rl, const char *str)
   struct RegexNode *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
-    if (mutt_str_strcasecmp(str, np->regex->pattern) == 0)
+    if (mutt_istr_equal(str, np->regex->pattern))
     {
       STAILQ_REMOVE(rl, np, RegexNode, entries);
       mutt_regex_free(&np->regex);
@@ -276,7 +276,7 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
   struct Replace *np = NULL;
   STAILQ_FOREACH(np, rl, entries)
   {
-    if (mutt_str_strcasecmp(rx->pattern, np->regex->pattern) == 0)
+    if (mutt_istr_equal(rx->pattern, np->regex->pattern))
     {
       /* Already on the rl. Formerly we just skipped this case, but
        * now we're supporting removals, which means we're supporting
@@ -303,7 +303,7 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
   }
 
   /* Now np is the Replace that we want to modify. It is prepared. */
-  np->templ = mutt_str_strdup(templ);
+  np->templ = mutt_str_dup(templ);
 
   /* Find highest match number in template string */
   np->nmatch = 0;
@@ -369,7 +369,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
   src = twinbuf[switcher];
   dst = src;
 
-  mutt_str_strfcpy(src, str, 1024);
+  mutt_str_copy(src, str, 1024);
 
   struct Replace *np = NULL;
   STAILQ_FOREACH(np, rl, entries)
@@ -433,9 +433,9 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
   }
 
   if (buf)
-    mutt_str_strfcpy(buf, dst, buflen);
+    mutt_str_copy(buf, dst, buflen);
   else
-    buf = mutt_str_strdup(dst);
+    buf = mutt_str_dup(dst);
   return buf;
 }
 
@@ -569,7 +569,7 @@ int mutt_replacelist_remove(struct ReplaceList *rl, const char *pat)
   struct Replace *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
-    if (mutt_str_strcmp(np->regex->pattern, pat) == 0)
+    if (mutt_str_equal(np->regex->pattern, pat))
     {
       STAILQ_REMOVE(rl, np, Replace, entries);
       mutt_regex_free(&np->regex);

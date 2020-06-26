@@ -231,7 +231,7 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
   len_q = len + (ob - buf) + 2 * count;
 
   /* Apparently RFC1468 says to use B encoding for iso-2022-jp. */
-  if (mutt_str_strcasecmp(tocode, "ISO-2022-JP") == 0)
+  if (mutt_istr_equal(tocode, "ISO-2022-JP"))
     len_q = ENCWORD_LEN_MAX + 1;
 
   if ((len_b < len_q) && (len_b <= ENCWORD_LEN_MAX))
@@ -303,7 +303,7 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
 static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
                            const char *tocode, encoder_t *encoder, size_t *wlen)
 {
-  const bool utf8 = fromcode && (mutt_str_strcasecmp(fromcode, "utf-8") == 0);
+  const bool utf8 = fromcode && mutt_istr_equal(fromcode, "utf-8");
 
   size_t n = dlen;
   while (true)
@@ -426,13 +426,13 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
   const char *icode = "utf-8";
 
   /* Try to convert to UTF-8. */
-  char *u = mutt_str_substr_dup(d, d + dlen);
+  char *u = mutt_strn_dup(d, dlen);
   if (mutt_ch_convert_string(&u, fromcode, icode, 0) != 0)
   {
     rc = 1;
     icode = 0;
   }
-  ulen = mutt_str_strlen(u);
+  ulen = mutt_str_len(u);
 
   /* Find earliest and latest things we must encode. */
   s0 = 0;
@@ -662,7 +662,7 @@ void rfc2047_decode(char **pd)
     if (beg != s)
     {
       /* Some non-encoded text was found */
-      size_t holelen = beg ? beg - s : mutt_str_strlen(s);
+      size_t holelen = beg ? beg - s : mutt_str_len(s);
 
       /* Ignore whitespace between encoded words */
       if (beg && (mutt_str_lws_len(s, holelen) == holelen))
@@ -681,7 +681,7 @@ void rfc2047_decode(char **pd)
       {
         if (C_AssumedCharset)
         {
-          char *conv = mutt_str_substr_dup(s, s + holelen);
+          char *conv = mutt_strn_dup(s, holelen);
           mutt_ch_convert_nonmime_string(&conv);
           mutt_buffer_addstr(&buf, conv);
           FREE(&conv);
@@ -703,7 +703,7 @@ void rfc2047_decode(char **pd)
         return;
       }
       if (prev.data && ((prev_charsetlen != charsetlen) ||
-                        (mutt_str_strncmp(prev_charset, charset, charsetlen) != 0)))
+                        !mutt_strn_equal(prev_charset, charset, charsetlen)))
       {
         /* Different charset, convert the previous chunk and add it to the
          * final result */

@@ -109,14 +109,14 @@ static int lua_mutt_call(lua_State *l)
   for (int i = 2; i <= lua_gettop(l); i++)
   {
     const char *s = lua_tostring(l, i);
-    mutt_str_strncat(buf, sizeof(buf), s, mutt_str_strlen(s));
-    mutt_str_strncat(buf, sizeof(buf), " ", 1);
+    mutt_strn_cat(buf, sizeof(buf), s, mutt_str_len(s));
+    mutt_strn_cat(buf, sizeof(buf), " ", 1);
   }
 
   struct Buffer expn = mutt_buffer_make(0);
   expn.data = buf;
   expn.dptr = buf;
-  expn.dsize = mutt_str_strlen(buf);
+  expn.dsize = mutt_str_len(buf);
 
   if (cmd->parse(token, &expn, cmd->data, err))
   {
@@ -147,7 +147,7 @@ static int lua_mutt_set(lua_State *l)
   const char *param = lua_tostring(l, -2);
   mutt_debug(LL_DEBUG2, " * lua_mutt_set(%s)\n", param);
 
-  if (mutt_str_startswith(param, "my_", CASE_MATCH))
+  if (mutt_str_startswith(param, "my_"))
   {
     const char *val = lua_tostring(l, -1);
     myvar_set(param, val);
@@ -228,7 +228,7 @@ static int lua_mutt_get(lua_State *l)
   const char *param = lua_tostring(l, -1);
   mutt_debug(LL_DEBUG2, " * lua_mutt_get(%s)\n", param);
 
-  if (mutt_str_startswith(param, "my_", CASE_MATCH))
+  if (mutt_str_startswith(param, "my_"))
   {
     const char *mv = myvar_get(param);
     if (!mv)
@@ -301,7 +301,7 @@ static int lua_mutt_enter(lua_State *l)
 {
   mutt_debug(LL_DEBUG2, " * lua_mutt_enter()\n");
   struct Buffer *err = mutt_buffer_pool_get();
-  char *buf = mutt_str_strdup(lua_tostring(l, -1));
+  char *buf = mutt_str_dup(lua_tostring(l, -1));
   int rc = 0;
 
   if (mutt_parse_rc_line(buf, err))
@@ -483,7 +483,7 @@ enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_printf(err, _("%s: too many arguments"), "source");
     return MUTT_CMD_WARNING;
   }
-  mutt_str_strfcpy(path, buf->data, sizeof(path));
+  mutt_str_copy(path, buf->data, sizeof(path));
   mutt_expand_path(path, sizeof(path));
 
   if (luaL_dofile(LuaState, path))

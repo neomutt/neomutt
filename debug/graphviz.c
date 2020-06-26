@@ -211,7 +211,7 @@ static void dot_type_string(FILE *fp, const char *name, const char *str, bool fo
 
   if (str)
   {
-    mutt_str_strfcpy(buf, str, sizeof(buf));
+    mutt_str_copy(buf, str, sizeof(buf));
     dot_type_string_escape(buf, sizeof(buf));
   }
 
@@ -275,7 +275,7 @@ static void dot_add_link(struct ListHead *links, const void *src, const void *ds
 
   snprintf(text, sizeof(text), "%s -> %s [ %s %s color=\"%s\" ]", obj1, obj2,
            back ? "dir=back" : "", lstr, colour);
-  mutt_list_insert_tail(links, mutt_str_strdup(text));
+  mutt_list_insert_tail(links, mutt_str_dup(text));
 }
 
 static void dot_graph_header(FILE *fp)
@@ -385,18 +385,18 @@ static void dot_path_fs(char *buf, size_t buflen, const char *path)
   else
     slash = path;
 
-  mutt_str_strfcpy(buf, slash, buflen);
+  mutt_str_copy(buf, slash, buflen);
 }
 
 static void dot_path_imap(char *buf, size_t buflen, const char *path)
 {
   char tmp[1024] = { 0 };
-  mutt_str_strfcpy(tmp, path, sizeof(tmp));
+  mutt_str_copy(tmp, path, sizeof(tmp));
 
   struct Url *u = url_parse(tmp);
 
   if (u->path && (u->path[0] != '\0'))
-    mutt_str_strfcpy(buf, u->path, buflen);
+    mutt_str_copy(buf, u->path, buflen);
   else
     snprintf(buf, buflen, "%s:%s", u->host, u->user);
 
@@ -427,7 +427,7 @@ static void dot_config(FILE *fp, const char *name, int type,
 
       const char *iname = item->key.strkey;
       size_t slen = strlen(scope);
-      if (mutt_str_startswith(iname, scope, CASE_MATCH) != 0)
+      if (mutt_str_startswith(iname, scope) != 0)
       {
         if (strchr(iname + slen, ':'))
           continue;
@@ -698,7 +698,7 @@ static void dot_mailbox_node(FILE *fp, struct MailboxNode *mn, struct ListHead *
 
   mutt_buffer_addstr(&buf, "}");
 
-  mutt_list_insert_tail(links, mutt_str_strdup(buf.data));
+  mutt_list_insert_tail(links, mutt_str_dup(buf.data));
   mutt_buffer_dealloc(&buf);
 }
 
@@ -886,7 +886,7 @@ static void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
     mutt_buffer_add_printf(&buf, "%s ", name);
 
     mutt_buffer_addstr(&buf, "}");
-    mutt_list_insert_tail(links, mutt_str_strdup(buf.data));
+    mutt_list_insert_tail(links, mutt_str_dup(buf.data));
     mutt_buffer_dealloc(&buf);
   }
 #endif
@@ -963,7 +963,7 @@ void dump_graphviz(const char *title)
   dot_ptr_name(obj1, sizeof(obj1), NeoMutt);
   dot_ptr_name(obj2, sizeof(obj2), NeoMutt->sub);
   mutt_buffer_printf(&buf, "{ rank=same %s %s }", obj1, obj2);
-  mutt_list_insert_tail(&links, mutt_str_strdup(mutt_b2s(&buf)));
+  mutt_list_insert_tail(&links, mutt_str_dup(mutt_b2s(&buf)));
   mutt_buffer_dealloc(&buf);
 #endif
 #endif
@@ -1170,7 +1170,7 @@ static void dot_body(FILE *fp, const struct Body *b, struct ListHead *links, boo
     }
 
     mutt_buffer_addstr(&buf, "}");
-    mutt_list_insert_tail(links, mutt_str_strdup(buf.data));
+    mutt_list_insert_tail(links, mutt_str_dup(buf.data));
   }
   else
   {
@@ -1354,7 +1354,7 @@ static void dot_email(FILE *fp, const struct Email *e, struct ListHead *links)
     dot_type_date(arr, sizeof(arr), e->date_sent);
     snprintf(zone, sizeof(zone), " (%c%02u%02u)", e->zoccident ? '-' : '+',
              e->zhours, e->zminutes);
-    mutt_str_strcat(arr, sizeof(arr), zone);
+    mutt_str_cat(arr, sizeof(arr), zone);
     dot_type_string(fp, "date_sent", arr, false);
   }
 
@@ -1388,7 +1388,7 @@ static void dot_email(FILE *fp, const struct Email *e, struct ListHead *links)
 
     mutt_buffer_addstr(&buf, "}");
 
-    mutt_list_insert_tail(links, mutt_str_strdup(buf.data));
+    mutt_list_insert_tail(links, mutt_str_dup(buf.data));
   }
 
   // struct TagList tags;

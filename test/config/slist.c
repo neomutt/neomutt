@@ -386,7 +386,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
   size_t i = 0;
   STAILQ_FOREACH(np, &VarApple->head, entries)
   {
-    if (mutt_str_strcmp(values[i], np->data) != 0)
+    if (!mutt_str_equal(values[i], np->data))
       return false;
     i++;
   }
@@ -404,7 +404,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
   i = 0;
   STAILQ_FOREACH(np, &VarBanana->head, entries)
   {
-    if (mutt_str_strcmp(values[i], np->data) != 0)
+    if (!mutt_str_equal(values[i], np->data))
       return false;
     i++;
   }
@@ -422,7 +422,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
   i = 0;
   STAILQ_FOREACH(np, &VarCherry->head, entries)
   {
-    if (mutt_str_strcmp(values[i], np->data) != 0)
+    if (!mutt_str_equal(values[i], np->data))
       return false;
     i++;
   }
@@ -528,7 +528,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (mutt_str_strcmp(initial.data, err->data) != 0)
+  if (!mutt_str_equal(initial.data, err->data))
   {
     TEST_MSG("Differ: %s '%s' '%s'\n", name, initial.data, err->data);
     return false;
@@ -553,7 +553,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (mutt_str_strcmp(initial.data, err->data) != 0)
+  if (!mutt_str_equal(initial.data, err->data))
   {
     TEST_MSG("Differ: %s '%s' '%s'\n", name, initial.data, err->data);
     return false;
@@ -578,7 +578,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (mutt_str_strcmp(initial.data, err->data) != 0)
+  if (!mutt_str_equal(initial.data, err->data))
   {
     TEST_MSG("Differ: %s '%s' '%s'\n", name, initial.data, err->data);
     return false;
@@ -670,7 +670,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   }
 
   item = STAILQ_FIRST(&VarLemon->head)->data;
-  if (!TEST_CHECK(mutt_str_strcmp(item, "lemon") == 0))
+  if (!TEST_CHECK(mutt_str_equal(item, "lemon")))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -703,7 +703,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   }
 
   item = STAILQ_FIRST(&VarMango->head)->data;
-  if (!TEST_CHECK(mutt_str_strcmp(item, "banana") == 0))
+  if (!TEST_CHECK(mutt_str_equal(item, "banana")))
   {
     TEST_MSG("Value of %s changed\n", name);
     return false;

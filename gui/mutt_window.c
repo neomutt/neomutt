@@ -244,13 +244,13 @@ static int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
   struct EventConfig *ec = nc->event_data;
   struct MuttWindow *root_win = nc->global_data;
 
-  if (mutt_str_strcmp(ec->name, "help") == 0)
+  if (mutt_str_equal(ec->name, "help"))
   {
     MuttHelpWindow->state.visible = C_Help;
     goto reflow;
   }
 
-  if (mutt_str_strcmp(ec->name, "status_on_top") == 0)
+  if (mutt_str_equal(ec->name, "status_on_top"))
   {
     struct MuttWindow *first = TAILQ_FIRST(&root_win->children);
     if (!first)

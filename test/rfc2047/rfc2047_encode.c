@@ -56,7 +56,7 @@ void test_rfc2047_encode(void)
     for (size_t i = 0; rfc2047_test_data[i].decoded; i++)
     {
       /* encode the expected result */
-      char *s = mutt_str_strdup(rfc2047_test_data[i].decoded);
+      char *s = mutt_str_dup(rfc2047_test_data[i].decoded);
       rfc2047_encode(&s, NULL, 0, "utf-8");
       if (!TEST_CHECK(strcmp(s, rfc2047_test_data[i].encoded) == 0))
       {

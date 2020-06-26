@@ -189,19 +189,19 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
     }
 
     /* Escape lines that begin with/only contain "the message separator". */
-    if ((linelen == 4) && mutt_str_startswith(line, "From", CASE_MATCH))
+    if ((linelen == 4) && mutt_str_startswith(line, "From"))
     {
-      mutt_str_strfcpy(line, "=46rom", sizeof(line));
+      mutt_str_copy(line, "=46rom", sizeof(line));
       linelen = 6;
     }
-    else if ((linelen == 4) && mutt_str_startswith(line, "from", CASE_MATCH))
+    else if ((linelen == 4) && mutt_str_startswith(line, "from"))
     {
-      mutt_str_strfcpy(line, "=66rom", sizeof(line));
+      mutt_str_copy(line, "=66rom", sizeof(line));
       linelen = 6;
     }
     else if ((linelen == 1) && (line[0] == '.'))
     {
-      mutt_str_strfcpy(line, "=2E", sizeof(line));
+      mutt_str_copy(line, "=2E", sizeof(line));
       linelen = 3;
     }
 
@@ -411,7 +411,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
 
   if (!TAILQ_EMPTY(&a->parameter))
   {
-    len = 25 + mutt_str_strlen(a->subtype); /* approximate len. of content-type */
+    len = 25 + mutt_str_len(a->subtype); /* approximate len. of content-type */
 
     struct Parameter *np = NULL;
     TAILQ_FOREACH(np, &a->parameter, entries)
@@ -432,11 +432,10 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
         /* Dirty hack to make messages readable by Outlook Express
          * for the Mac: force quotes around the boundary parameter
          * even when they aren't needed.  */
-        if (!mutt_str_strcasecmp(cont->attribute, "boundary") &&
-            !mutt_str_strcmp(buf, cont->value))
+        if (mutt_istr_equal(cont->attribute, "boundary") && mutt_str_equal(buf, cont->value))
           snprintf(buf, sizeof(buf), "\"%s\"", cont->value);
 
-        tmplen = mutt_str_strlen(buf) + mutt_str_strlen(cont->attribute) + 1;
+        tmplen = mutt_str_len(buf) + mutt_str_len(cont->attribute) + 1;
         if (len + tmplen + 2 > 76)
         {
           fputs("\n\t", fp);
@@ -470,7 +469,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
     if (a->disposition < sizeof(dispstr) / sizeof(char *))
     {
       fprintf(fp, "Content-Disposition: %s", dispstr[a->disposition]);
-      len = 21 + mutt_str_strlen(dispstr[a->disposition]);
+      len = 21 + mutt_str_len(dispstr[a->disposition]);
 
       if (a->use_disp && (a->disposition != DISP_INLINE))
       {
@@ -496,7 +495,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
             buf[0] = 0;
             mutt_addr_cat(buf, sizeof(buf), cont->value, MimeSpecials);
 
-            tmplen = mutt_str_strlen(buf) + mutt_str_strlen(cont->attribute) + 1;
+            tmplen = mutt_str_len(buf) + mutt_str_len(cont->attribute) + 1;
             if (len + tmplen + 2 > 76)
             {
               fputs("\n\t", fp);
@@ -574,7 +573,7 @@ int mutt_write_mime_body(struct Body *a, FILE *fp)
       return -1;
     }
     char boundary[128];
-    mutt_str_strfcpy(boundary, p, sizeof(boundary));
+    mutt_str_copy(boundary, p, sizeof(boundary));
 
     for (struct Body *t = a->parts; t; t = t->next)
     {
@@ -591,7 +590,7 @@ int mutt_write_mime_body(struct Body *a, FILE *fp)
 
   /* This is pretty gross, but it's the best solution for now... */
   if (((WithCrypto & APPLICATION_PGP) != 0) && (a->type == TYPE_APPLICATION) &&
-      (mutt_str_strcmp(a->subtype, "pgp-encrypted") == 0) && !a->filename)
+      mutt_str_equal(a->subtype, "pgp-encrypted") && !a->filename)
   {
     fputs("Version: 1\n", fp);
     return 0;
@@ -821,7 +820,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
 
   for (int i = 0; i < ncodes; i++)
   {
-    if (mutt_str_strcasecmp(tocodes[i], "utf-8") != 0)
+    if (!mutt_istr_equal(tocodes[i], "utf-8"))
       cd[i] = mutt_ch_iconv_open(tocodes[i], "utf-8", 0);
     else
     {
@@ -983,7 +982,7 @@ static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *
     c1 = strchr(c, ':');
     if (c1 == c)
       continue;
-    tcode[i] = mutt_str_substr_dup(c, c1);
+    tcode[i] = mutt_strn_dup(c, c1 - c);
   }
 
   ret = (size_t)(-1);
@@ -995,7 +994,7 @@ static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *
       c1 = strchr(c, ':');
       if (c1 == c)
         continue;
-      fcode = mutt_str_substr_dup(c, c1);
+      fcode = mutt_strn_dup(c, c1 - c);
 
       ret = convert_file_to(fp, fcode, ncodes, (char const *const *) tcode, &cn, info);
       if (ret != (size_t)(-1))
@@ -1135,7 +1134,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
   bool found_mimetypes = false;
   enum ContentType type = TYPE_OTHER;
 
-  int szf = mutt_str_strlen(path);
+  int szf = mutt_str_len(path);
 
   for (int count = 0; count < 4; count++)
   {
@@ -1146,13 +1145,13 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
       /* last file with last entry to match wins type/xtype */
       case 0:
         /* check default unix mimetypes location first */
-        mutt_str_strfcpy(buf, "/etc/mime.types", sizeof(buf));
+        mutt_str_copy(buf, "/etc/mime.types", sizeof(buf));
         break;
       case 1:
-        mutt_str_strfcpy(buf, SYSCONFDIR "/mime.types", sizeof(buf));
+        mutt_str_copy(buf, SYSCONFDIR "/mime.types", sizeof(buf));
         break;
       case 2:
-        mutt_str_strfcpy(buf, PKGDATADIR "/mime.types", sizeof(buf));
+        mutt_str_copy(buf, PKGDATADIR "/mime.types", sizeof(buf));
         break;
       case 3:
         snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(HomeDir));
@@ -1188,9 +1187,8 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
         /* cycle through the file extensions */
         while ((p = strtok(p, " \t\n")))
         {
-          sze = mutt_str_strlen(p);
-          if ((sze > cur_sze) && (szf >= sze) &&
-              (mutt_str_strcasecmp(path + szf - sze, p) == 0) &&
+          sze = mutt_str_len(p);
+          if ((sze > cur_sze) && (szf >= sze) && mutt_istr_equal(path + szf - sze, p) &&
               ((szf == sze) || (path[szf - sze - 1] == '.')))
           {
             /* get the content-type */
@@ -1206,11 +1204,11 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
             for (q = p; *q && !IS_SPACE(*q); q++)
               ; // do nothing
 
-            mutt_str_substr_copy(p, q, subtype, sizeof(subtype));
+            mutt_strn_copy(subtype, p, q - p, sizeof(subtype));
 
             type = mutt_check_mime_type(ct);
             if (type == TYPE_OTHER)
-              mutt_str_strfcpy(xtype, ct, sizeof(xtype));
+              mutt_str_copy(xtype, ct, sizeof(xtype));
 
             cur_sze = sze;
           }
@@ -1398,7 +1396,7 @@ static void set_encoding(struct Body *b, struct Content *info)
   {
     char send_charset[128];
     char *chsname = mutt_body_get_charset(b, send_charset, sizeof(send_charset));
-    if ((info->lobin && !mutt_str_startswith(chsname, "iso-2022", CASE_IGNORE)) ||
+    if ((info->lobin && !mutt_istr_startswith(chsname, "iso-2022")) ||
         (info->linemax > 990) || (info->from && C_EncodeFrom))
     {
       b->encoding = ENC_QUOTED_PRINTABLE;
@@ -1425,7 +1423,7 @@ static void set_encoding(struct Body *b, struct Content *info)
       b->encoding = ENC_7BIT;
   }
   else if ((b->type == TYPE_APPLICATION) &&
-           (mutt_str_strcasecmp(b->subtype, "pgp-keys") == 0))
+           mutt_istr_equal(b->subtype, "pgp-keys"))
   {
     b->encoding = ENC_7BIT;
   }
@@ -1474,7 +1472,7 @@ char *mutt_body_get_charset(struct Body *b, char *buf, size_t buflen)
   if (p)
     mutt_ch_canonical_charset(buf, buflen, p);
   else
-    mutt_str_strfcpy(buf, "us-ascii", buflen);
+    mutt_str_copy(buf, "us-ascii", buflen);
 
   return buf;
 }
@@ -1543,8 +1541,8 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
 
   body = mutt_body_new();
   body->type = TYPE_MESSAGE;
-  body->subtype = mutt_str_strdup("rfc822");
-  body->filename = mutt_str_strdup(mutt_b2s(buf));
+  body->subtype = mutt_str_dup("rfc822");
+  body->filename = mutt_str_dup(mutt_b2s(buf));
   body->unlink = true;
   body->use_disp = false;
   body->disposition = DISP_INLINE;
@@ -1657,7 +1655,7 @@ static void run_mime_type_query(struct Body *att)
 struct Body *mutt_make_file_attach(const char *path)
 {
   struct Body *att = mutt_body_new();
-  att->filename = mutt_str_strdup(path);
+  att->filename = mutt_str_dup(path);
 
   if (C_MimeTypeQueryCommand && C_MimeTypeQueryFirst)
     run_mime_type_query(att);
@@ -1687,12 +1685,12 @@ struct Body *mutt_make_file_attach(const char *path)
       /* Statistically speaking, there should be more than 10% "lobin"
        * chars if this is really a binary file...  */
       att->type = TYPE_TEXT;
-      att->subtype = mutt_str_strdup("plain");
+      att->subtype = mutt_str_dup("plain");
     }
     else
     {
       att->type = TYPE_APPLICATION;
-      att->subtype = mutt_str_strdup("octet-stream");
+      att->subtype = mutt_str_dup("octet-stream");
     }
   }
 
@@ -1738,7 +1736,7 @@ static bool check_boundary(const char *boundary, struct Body *b)
     return true;
 
   p = mutt_param_get(&b->parameter, "boundary");
-  if (p && (mutt_str_strcmp(p, boundary) == 0))
+  if (p && mutt_str_equal(p, boundary))
   {
     return true;
   }
@@ -1754,7 +1752,7 @@ struct Body *mutt_make_multipart(struct Body *b)
 {
   struct Body *new_body = mutt_body_new();
   new_body->type = TYPE_MULTIPART;
-  new_body->subtype = mutt_str_strdup("mixed");
+  new_body->subtype = mutt_str_dup("mixed");
   new_body->encoding = get_toplevel_encoding(b);
   do
   {
@@ -1810,7 +1808,7 @@ void mutt_write_addrlist(struct AddressList *al, FILE *fp, int linelen, bool dis
   {
     buf[0] = '\0';
     mutt_addr_write(buf, sizeof(buf), a, display);
-    size_t len = mutt_str_strlen(buf);
+    size_t len = mutt_str_len(buf);
     if (count && (linelen + len > 74))
     {
       fputs("\n\t", fp);
@@ -1952,7 +1950,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value, size_t 
 
   if (tag && *tag && (fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0))
     return -1;
-  col = mutt_str_strlen(tag) + ((tag && (tag[0] != '\0')) ? 2 : 0) + mutt_str_strlen(pfx);
+  col = mutt_str_len(tag) + ((tag && (tag[0] != '\0')) ? 2 : 0) + mutt_str_len(pfx);
 
   while (p && (p[0] != '\0'))
   {
@@ -1968,7 +1966,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value, size_t 
     /* determine width: character cells for display, bytes for sending
      * (we get pure ascii only) */
     const int w = mutt_mb_width(buf, col, display);
-    const int enc = mutt_str_startswith(buf, "=?", CASE_MATCH);
+    const int enc = mutt_str_startswith(buf, "=?");
 
     mutt_debug(LL_DEBUG5, "word=[%s], col=%d, w=%d, next=[0x0%x]\n",
                (buf[0] == '\n' ? "\\n" : buf), col, w, *next);
@@ -1978,7 +1976,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value, size_t 
      * and encoded words */
     if (!first && !enc && col && ((col + w) >= wraplen))
     {
-      col = mutt_str_strlen(pfx);
+      col = mutt_str_len(pfx);
       fold = 1;
       if (fprintf(fp, "\n%s", NONULL(pfx)) <= 0)
         return -1;
@@ -2103,7 +2101,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
 
   int rc = 0;
   const char *valbuf = NULL, *tagbuf = NULL;
-  const bool is_from = (vallen > 5) && mutt_str_startswith(start, "from ", CASE_IGNORE);
+  const bool is_from = (vallen > 5) && mutt_istr_startswith(start, "from ");
 
   /* only pass through folding machinery if necessary for sending,
    * never wrap From_ headers on sending */
@@ -2117,14 +2115,14 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
       }
     }
 
-    valbuf = mutt_str_substr_dup(start, end);
-    rc = print_val(fp, pfx, valbuf, chflags, mutt_str_strlen(pfx));
+    valbuf = mutt_strn_dup(start, end - start);
+    rc = print_val(fp, pfx, valbuf, chflags, mutt_str_len(pfx));
   }
   else
   {
     if (!is_from)
     {
-      tagbuf = mutt_str_substr_dup(start, t);
+      tagbuf = mutt_strn_dup(start, t - start);
       /* skip over the colon separating the header field name and value */
       t++;
 
@@ -2134,9 +2132,9 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
       while ((*t == ' ') || (*t == '\t'))
         t++;
     }
-    valbuf = mutt_str_substr_dup(is_from ? start : t, end);
-    rc = fold_one_header(fp, tagbuf, valbuf, end - (is_from ? start : t), pfx,
-                         wraplen, chflags);
+    const char *s = is_from ? start : t;
+    valbuf = mutt_strn_dup(s, end - s);
+    rc = fold_one_header(fp, tagbuf, valbuf, end - s, pfx, wraplen, chflags);
   }
 
   FREE(&tagbuf);
@@ -2164,7 +2162,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   char *last = NULL, *line = NULL;
   int max = 0, w, rc = -1;
   int pfxw = mutt_strwidth(pfx);
-  char *v = mutt_str_strdup(value);
+  char *v = mutt_str_dup(value);
   bool display = (chflags & CH_DISPLAY);
 
   if (!display || C_Weed)
@@ -2181,7 +2179,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   else if (wraplen <= 0)
     wraplen = 78;
 
-  const size_t vlen = mutt_str_strlen(v);
+  const size_t vlen = mutt_str_len(v);
   if (tag)
   {
     /* if header is short enough, simply print it */
@@ -2252,7 +2250,7 @@ static int userhdrs_override_cmp(const void *a, const void *b)
 {
   const char *ca = a;
   const char *cb = *(const char **) b;
-  return mutt_str_strncasecmp(ca, cb, strlen(cb));
+  return mutt_istrn_cmp(ca, cb, strlen(cb));
 }
 
 /**
@@ -2513,13 +2511,13 @@ static void encode_headers(struct ListHead *h)
 
     i = p - np->data;
     p = mutt_str_skip_email_wsp(p + 1);
-    tmp = mutt_str_strdup(p);
+    tmp = mutt_str_dup(p);
 
     if (!tmp)
       continue;
 
     rfc2047_encode(&tmp, NULL, i + 2, C_SendCharset);
-    mutt_mem_realloc(&np->data, i + 2 + mutt_str_strlen(tmp) + 1);
+    mutt_mem_realloc(&np->data, i + 2 + mutt_str_len(tmp) + 1);
 
     sprintf(np->data + i + 2, "%s", tmp);
 
@@ -2576,7 +2574,7 @@ static char *gen_msgid(void)
   struct tm tm = mutt_date_gmtime(MUTT_DATE_NOW);
   snprintf(buf, sizeof(buf), "<%d%02d%02d%02d%02d%02d.%s@%s>", tm.tm_year + 1900,
            tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, rndid, fqdn);
-  return mutt_str_strdup(buf);
+  return mutt_str_dup(buf);
 }
 
 /**
@@ -2851,11 +2849,11 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
       return i;
     }
 
-    s = mutt_str_strdup(cmd);
+    s = mutt_str_dup(cmd);
   }
   else
 #endif
-    s = mutt_str_strdup(C_Sendmail);
+    s = mutt_str_dup(C_Sendmail);
 
   /* ensure that $sendmail is set to avoid a crash. http://dev.mutt.org/trac/ticket/3548 */
   if (!s)
@@ -2873,13 +2871,13 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
 
     if (i)
     {
-      if (mutt_str_strcmp(ps, "--") == 0)
+      if (mutt_str_equal(ps, "--"))
         break;
       args[argslen++] = ps;
     }
     else
     {
-      path = mutt_str_strdup(ps);
+      path = mutt_str_dup(ps);
       ps = strrchr(ps, '/');
       if (ps)
         ps++;
@@ -3025,7 +3023,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
       buf[0] = '\0';
       mutt_addr_cat(buf, sizeof(buf), "undisclosed-recipients", AddressSpecials);
 
-      to->mailbox = mutt_str_strdup(buf);
+      to->mailbox = mutt_str_dup(buf);
     }
 
     mutt_set_followup_to(env);
@@ -3152,7 +3150,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to)
    * send-hooks and set the realname last so that it can be changed based
    * upon message criteria.  */
   if (!from->personal)
-    from->personal = mutt_str_strdup(C_Realname);
+    from->personal = mutt_str_dup(C_Realname);
 
   mutt_addrlist_qualify(&from_list, fqdn);
 
@@ -3221,7 +3219,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
   char fcc_tok[PATH_MAX];
   char fcc_expanded[PATH_MAX];
 
-  mutt_str_strfcpy(fcc_tok, path, sizeof(fcc_tok));
+  mutt_str_copy(fcc_tok, path, sizeof(fcc_tok));
 
   char *tok = strtok(fcc_tok, ",");
   if (!tok)
@@ -3240,7 +3238,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
 
     /* Only call mutt_expand_path if tok has some data */
     mutt_debug(LL_DEBUG1, "Fcc: additional mailbox token = '%s'\n", tok);
-    mutt_str_strfcpy(fcc_expanded, tok, sizeof(fcc_expanded));
+    mutt_str_copy(fcc_expanded, tok, sizeof(fcc_expanded));
     mutt_expand_path(fcc_expanded, sizeof(fcc_expanded));
     mutt_debug(LL_DEBUG1, "     Additional mailbox expanded = '%s'\n", fcc_expanded);
     status = mutt_write_fcc(fcc_expanded, e, msgid, post, fcc, finalpath);
@@ -3467,7 +3465,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   if (mx_msg_commit(ctx_fcc->mailbox, msg) != 0)
     rc = -1;
   else if (finalpath)
-    *finalpath = mutt_str_strdup(msg->committed_path);
+    *finalpath = mutt_str_dup(msg->committed_path);
   mx_msg_close(ctx_fcc->mailbox, &msg);
   mx_mbox_close(&ctx_fcc);
 

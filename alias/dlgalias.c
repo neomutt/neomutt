@@ -180,7 +180,7 @@ static int alias_config_observer(struct NotifyCallback *nc)
   struct EventConfig *ec = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+  if (!mutt_str_equal(ec->name, "status_on_top"))
     return 0;
 
   struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
@@ -350,12 +350,12 @@ int alias_complete(char *buf, size_t buflen)
   {
     TAILQ_FOREACH(np, &Aliases, entries)
     {
-      if (np->name && (strncmp(np->name, buf, strlen(buf)) == 0))
+      if (np->name && mutt_strn_equal(np->name, buf, strlen(buf)))
       {
         if (bestname[0] == '\0') /* init */
         {
-          mutt_str_strfcpy(bestname, np->name,
-                           MIN(mutt_str_strlen(np->name) + 1, sizeof(bestname)));
+          mutt_str_copy(bestname, np->name,
+                        MIN(mutt_str_len(np->name) + 1, sizeof(bestname)));
         }
         else
         {
@@ -370,10 +370,10 @@ int alias_complete(char *buf, size_t buflen)
 
     if (bestname[0] != '\0')
     {
-      if (mutt_str_strcmp(bestname, buf) != 0)
+      if (!mutt_str_equal(bestname, buf))
       {
         /* we are adding something to the completion */
-        mutt_str_strfcpy(buf, bestname, mutt_str_strlen(bestname) + 1);
+        mutt_str_copy(buf, bestname, mutt_str_len(bestname) + 1);
         return 1;
       }
 
@@ -381,7 +381,7 @@ int alias_complete(char *buf, size_t buflen)
       mdata = menu_data_new();
       TAILQ_FOREACH(np, &Aliases, entries)
       {
-        if (np->name && (strncmp(np->name, buf, strlen(buf)) == 0))
+        if (np->name && mutt_strn_equal(np->name, buf, strlen(buf)))
         {
           menu_data_alias_add(mdata, np);
         }
@@ -402,7 +402,7 @@ int alias_complete(char *buf, size_t buflen)
   bestname[0] = '\0';
   alias_menu(bestname, sizeof(bestname), mdata);
   if (bestname[0] != '\0')
-    mutt_str_strfcpy(buf, bestname, buflen);
+    mutt_str_copy(buf, bestname, buflen);
 
   for (int i = 0; i < mdata->num_views; i++)
   {

@@ -93,7 +93,7 @@ void test_mutt_b64_encode(void)
         TEST_MSG("Actual  : %zu", declen);
       }
       out2[declen] = '\0';
-      if (!TEST_CHECK(strncmp(out2, in, i) == 0))
+      if (!TEST_CHECK(mutt_strn_equal(out2, in, i)))
       {
         TEST_MSG("Expected: %s", in);
         TEST_MSG("Actual  : %s", out2);

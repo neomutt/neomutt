@@ -432,15 +432,15 @@ static char *get_color_name(char *dest, size_t destlen, uint32_t val)
   switch (val)
   {
     case COLOR_YELLOW:
-      mutt_str_strfcpy(dest, missing[0], destlen);
+      mutt_str_copy(dest, missing[0], destlen);
       return dest;
 
     case COLOR_WHITE:
-      mutt_str_strfcpy(dest, missing[1], destlen);
+      mutt_str_copy(dest, missing[1], destlen);
       return dest;
 
     case COLOR_DEFAULT:
-      mutt_str_strfcpy(dest, missing[2], destlen);
+      mutt_str_copy(dest, missing[2], destlen);
       return dest;
   }
 
@@ -448,7 +448,7 @@ static char *get_color_name(char *dest, size_t destlen, uint32_t val)
   {
     if (ColorNames[i].value == val)
     {
-      mutt_str_strfcpy(dest, ColorNames[i].name, destlen);
+      mutt_str_copy(dest, ColorNames[i].name, destlen);
       return dest;
     }
   }
@@ -606,25 +606,25 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
   bool is_alert = false, is_bright = false, is_light = false;
   int clen;
 
-  if ((clen = mutt_str_startswith(s, "bright", CASE_IGNORE)))
+  if ((clen = mutt_istr_startswith(s, "bright")))
   {
     is_bright = true;
     s += clen;
   }
-  else if ((clen = mutt_str_startswith(s, "alert", CASE_IGNORE)))
+  else if ((clen = mutt_istr_startswith(s, "alert")))
   {
     is_alert = true;
     is_bright = true;
     s += clen;
   }
-  else if ((clen = mutt_str_startswith(s, "light", CASE_IGNORE)))
+  else if ((clen = mutt_istr_startswith(s, "light")))
   {
     is_light = true;
     s += clen;
   }
 
   /* allow aliases for xterm color resources */
-  if ((clen = mutt_str_startswith(s, "color", CASE_IGNORE)))
+  if ((clen = mutt_istr_startswith(s, "color")))
   {
     s += clen;
     *col = strtoul(s, &eptr, 10);
@@ -706,7 +706,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
 {
   int rc;
 
-  if (mutt_str_startswith(buf->data, "quoted", CASE_MATCH) != 0)
+  if (mutt_str_startswith(buf->data, "quoted") != 0)
   {
     int val = 0;
     if (buf->data[6] != '\0')
@@ -724,7 +724,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_SUCCESS;
   }
 
-  if (mutt_str_strcasecmp(buf->data, "compose") == 0)
+  if (mutt_istr_equal(buf->data, "compose"))
   {
     if (!MoreArgs(s))
     {
@@ -774,7 +774,7 @@ static bool do_uncolor(struct Colors *c, struct Buffer *buf, struct Buffer *s,
   do
   {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-    if (mutt_str_strcmp("*", buf->data) == 0)
+    if (mutt_str_equal("*", buf->data))
     {
       rc = STAILQ_FIRST(cl);
       color_line_list_clear(c, cl);
@@ -784,7 +784,7 @@ static bool do_uncolor(struct Colors *c, struct Buffer *buf, struct Buffer *s,
     prev = NULL;
     STAILQ_FOREACH(np, cl, entries)
     {
-      if (mutt_str_strcmp(buf->data, np->pattern) == 0)
+      if (mutt_str_equal(buf->data, np->pattern))
       {
         rc = true;
 
@@ -821,7 +821,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 {
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-  if (mutt_str_strcmp(buf->data, "*") == 0)
+  if (mutt_str_equal(buf->data, "*"))
   {
     colors_clear(c);
     struct EventColor ec = { false }; // Color reset/removed
@@ -958,15 +958,10 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
 
   STAILQ_FOREACH(tmp, top, entries)
   {
-    if (sensitive)
+    if ((sensitive && mutt_str_equal(s, tmp->pattern)) ||
+        (!sensitive && mutt_istr_equal(s, tmp->pattern)))
     {
-      if (mutt_str_strcmp(s, tmp->pattern) == 0)
-        break;
-    }
-    else
-    {
-      if (mutt_str_strcasecmp(s, tmp->pattern) == 0)
-        break;
+      break;
     }
   }
 
@@ -1020,7 +1015,7 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
         return MUTT_CMD_ERROR;
       }
     }
-    tmp->pattern = mutt_str_strdup(s);
+    tmp->pattern = mutt_str_dup(s);
     tmp->match = match;
 #ifdef HAVE_COLOR
     if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
@@ -1068,17 +1063,17 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-    if (mutt_str_strcasecmp("bold", buf->data) == 0)
+    if (mutt_istr_equal("bold", buf->data))
       *attr |= A_BOLD;
-    else if (mutt_str_strcasecmp("none", buf->data) == 0)
+    else if (mutt_istr_equal("none", buf->data))
       *attr = A_NORMAL; // Use '=' to clear other bits
-    else if (mutt_str_strcasecmp("normal", buf->data) == 0)
+    else if (mutt_istr_equal("normal", buf->data))
       *attr = A_NORMAL; // Use '=' to clear other bits
-    else if (mutt_str_strcasecmp("reverse", buf->data) == 0)
+    else if (mutt_istr_equal("reverse", buf->data))
       *attr |= A_REVERSE;
-    else if (mutt_str_strcasecmp("standout", buf->data) == 0)
+    else if (mutt_istr_equal("standout", buf->data))
       *attr |= A_STANDOUT;
-    else if (mutt_str_strcasecmp("underline", buf->data) == 0)
+    else if (mutt_istr_equal("underline", buf->data))
       *attr |= A_UNDERLINE;
     else
     {
@@ -1121,17 +1116,17 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-  if (mutt_str_strcasecmp("bold", buf->data) == 0)
+  if (mutt_istr_equal("bold", buf->data))
     *attr |= A_BOLD;
-  else if (mutt_str_strcasecmp("none", buf->data) == 0)
+  else if (mutt_istr_equal("none", buf->data))
     *attr = A_NORMAL; // Use '=' to clear other bits
-  else if (mutt_str_strcasecmp("normal", buf->data) == 0)
+  else if (mutt_istr_equal("normal", buf->data))
     *attr = A_NORMAL; // Use '=' to clear other bits
-  else if (mutt_str_strcasecmp("reverse", buf->data) == 0)
+  else if (mutt_istr_equal("reverse", buf->data))
     *attr |= A_REVERSE;
-  else if (mutt_str_strcasecmp("standout", buf->data) == 0)
+  else if (mutt_istr_equal("standout", buf->data))
     *attr |= A_STANDOUT;
-  else if (mutt_str_strcasecmp("underline", buf->data) == 0)
+  else if (mutt_istr_equal("underline", buf->data))
     *attr |= A_UNDERLINE;
   else
   {

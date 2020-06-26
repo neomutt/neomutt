@@ -53,7 +53,7 @@ int mutt_account_getuser(struct ConnAccount *cac)
 
   const char *user = cac->get_field(MUTT_CA_USER);
   if (user)
-    mutt_str_strfcpy(cac->user, user, sizeof(cac->user));
+    mutt_str_copy(cac->user, user, sizeof(cac->user));
   else if (OptNoCurses)
     return -1;
   else
@@ -62,7 +62,7 @@ int mutt_account_getuser(struct ConnAccount *cac)
     char prompt[256];
     /* L10N: Example: Username at myhost.com */
     snprintf(prompt, sizeof(prompt), _("Username at %s: "), cac->host);
-    mutt_str_strfcpy(cac->user, Username, sizeof(cac->user));
+    mutt_str_copy(cac->user, Username, sizeof(cac->user));
     if (mutt_get_field_unbuffered(prompt, cac->user, sizeof(cac->user), MUTT_COMP_NO_FLAGS))
       return -1;
   }
@@ -96,7 +96,7 @@ int mutt_account_getlogin(struct ConnAccount *cac)
     return -1;
   }
 
-  mutt_str_strfcpy(cac->login, login, sizeof(cac->login));
+  mutt_str_copy(cac->login, login, sizeof(cac->login));
   cac->flags |= MUTT_ACCT_LOGIN;
   return 0;
 }
@@ -116,7 +116,7 @@ int mutt_account_getpass(struct ConnAccount *cac)
 
   const char *pass = cac->get_field(MUTT_CA_PASS);
   if (pass)
-    mutt_str_strfcpy(cac->pass, pass, sizeof(cac->pass));
+    mutt_str_copy(cac->pass, pass, sizeof(cac->pass));
   else if (OptNoCurses)
     return -1;
   else

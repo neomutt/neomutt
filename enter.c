@@ -507,7 +507,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             struct Buffer *pool = mutt_buffer_pool_get();
             mutt_buffer_addstr(pool, buf);
             mutt_mailbox_next(Context ? Context->mailbox : NULL, pool);
-            mutt_str_strfcpy(buf, mutt_b2s(pool), buflen);
+            mutt_str_copy(buf, mutt_b2s(pool), buflen);
             mutt_buffer_pool_release(&pool);
 
             state->curpos = state->lastchar =
@@ -792,7 +792,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
           *numfiles = 1;
           tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
           mutt_expand_path(buf, buflen);
-          tfiles[0] = mutt_str_strdup(buf);
+          tfiles[0] = mutt_str_dup(buf);
           *files = tfiles;
         }
         rc = 0;

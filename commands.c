@@ -157,7 +157,7 @@ static void process_protected_headers(struct Email *e)
 
   /* Update protected headers in the index and header cache. */
   if (C_CryptProtectedHeadersRead && prot_headers && prot_headers->subject &&
-      mutt_str_strcmp(e->env->subject, prot_headers->subject))
+      !mutt_str_equal(e->env->subject, prot_headers->subject))
   {
     if (Context->mailbox->subj_hash && e->env->real_subj)
       mutt_hash_delete(Context->mailbox->subj_hash, e->env->real_subj, e);
@@ -284,7 +284,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     }
   }
 
-  if (!C_Pager || (mutt_str_strcmp(C_Pager, "builtin") == 0))
+  if (!C_Pager || mutt_str_equal(C_Pager, "builtin"))
     builtin = true;
   else
   {
@@ -437,9 +437,9 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   }
 
   if (msg_count == 1)
-    mutt_str_strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
+    mutt_str_copy(prompt, _("Bounce message to: "), sizeof(prompt));
   else
-    mutt_str_strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+    mutt_str_copy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
 
   rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS);
   if (rc || (buf[0] == '\0'))
@@ -473,7 +473,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   {
     mutt_simple_format(prompt, sizeof(prompt), 0, MuttMessageWindow->state.cols - EXTRA_SPACE,
                        JUSTIFY_LEFT, 0, scratch, sizeof(scratch), false);
-    mutt_str_strcat(prompt, sizeof(prompt), "...?");
+    mutt_str_cat(prompt, sizeof(prompt), "...?");
   }
   else
     snprintf(prompt, sizeof(prompt), "%s", scratch);
@@ -850,7 +850,7 @@ void mutt_shell_escape(void)
     return;
 
   if ((buf[0] == '\0') && C_Shell)
-    mutt_str_strfcpy(buf, C_Shell, sizeof(buf));
+    mutt_str_copy(buf, C_Shell, sizeof(buf));
   if (buf[0] == '\0')
     return;
 
@@ -1090,7 +1090,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
    * Leitner <leitner@prz.fu-berlin.de> */
   if (mutt_buffer_len(&LastSaveFolder) == 0)
     mutt_buffer_alloc(&LastSaveFolder, PATH_MAX);
-  if (mutt_str_strcmp(mutt_b2s(buf), ".") == 0)
+  if (mutt_str_equal(mutt_b2s(buf), "."))
     mutt_buffer_copy(buf, &LastSaveFolder);
   else
     mutt_buffer_strcpy(&LastSaveFolder, mutt_b2s(buf));
@@ -1258,10 +1258,10 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   bool structure_changed = false;
 
   char *cp = mutt_param_get(&b->parameter, "charset");
-  mutt_str_strfcpy(charset, cp, sizeof(charset));
+  mutt_str_copy(charset, cp, sizeof(charset));
 
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
-  mutt_str_strfcpy(obuf, buf, sizeof(obuf));
+  mutt_str_copy(obuf, buf, sizeof(obuf));
   if (!TAILQ_EMPTY(&b->parameter))
   {
     size_t l = strlen(buf);
@@ -1292,9 +1292,9 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   mutt_parse_content_type(buf, b);
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
-  type_changed = (mutt_str_strcasecmp(tmp, obuf) != 0);
+  type_changed = !mutt_istr_equal(tmp, obuf);
   charset_changed =
-      (mutt_str_strcasecmp(charset, mutt_param_get(&b->parameter, "charset")) != 0);
+      !mutt_istr_equal(charset, mutt_param_get(&b->parameter, "charset"));
 
   /* if in send mode, check for conversion - current setting is default. */
 

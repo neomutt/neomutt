@@ -50,7 +50,7 @@ struct Account *account_new(const char *name, struct ConfigSubset *sub)
   STAILQ_INIT(&a->mailboxes);
   a->notify = notify_new();
   notify_set_parent(a->notify, NeoMutt->notify);
-  a->name = mutt_str_strdup(name);
+  a->name = mutt_str_dup(name);
   a->sub = cs_subset_new(name, sub, a->notify);
   a->sub->cs = sub->cs;
   a->sub->scope = SET_SCOPE_ACCOUNT;

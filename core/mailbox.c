@@ -136,7 +136,7 @@ struct Mailbox *mailbox_find_name(const char *name)
   struct Mailbox *m = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
-    if (mutt_str_strcmp(np->mailbox->name, name) == 0)
+    if (mutt_str_equal(np->mailbox->name, name))
     {
       m = np->mailbox;
       break;

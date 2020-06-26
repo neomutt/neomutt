@@ -237,7 +237,7 @@ void mutt_log_stop(void)
  */
 int mutt_log_set_file(const char *file, bool verbose)
 {
-  if (mutt_str_strcmp(CurrentFile, C_DebugFile) != 0)
+  if (!mutt_str_equal(CurrentFile, C_DebugFile))
   {
     const char *name = rotate_logs(C_DebugFile, NumOfLogs);
     if (!name)
@@ -329,9 +329,9 @@ int mutt_log_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ec = nc->event_data;
 
-  if (mutt_str_strcmp(ec->name, "debug_file") == 0)
+  if (mutt_str_equal(ec->name, "debug_file"))
     mutt_log_set_file(C_DebugFile, true);
-  else if (mutt_str_strcmp(ec->name, "debug_level") == 0)
+  else if (mutt_str_equal(ec->name, "debug_level"))
     mutt_log_set_level(C_DebugLevel, true);
 
   return 0;

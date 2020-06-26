@@ -99,11 +99,10 @@ static int get_color(int index, unsigned char *s)
     case MT_COLOR_INDEX_TAG:
       STAILQ_FOREACH(np, &Colors->index_tag_list, entries)
       {
-        if (strncmp((const char *) (s + 1), np->pattern, strlen(np->pattern)) == 0)
+        if (mutt_strn_equal((const char *) (s + 1), np->pattern, strlen(np->pattern)))
           return np->pair;
         const char *transform = mutt_hash_find(TagTransforms, np->pattern);
-        if (transform &&
-            (strncmp((const char *) (s + 1), transform, strlen(transform)) == 0))
+        if (transform && mutt_strn_equal((const char *) (s + 1), transform, strlen(transform)))
         {
           return np->pair;
         }
@@ -134,7 +133,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
 {
   wchar_t wc;
   size_t k;
-  size_t n = mutt_str_strlen((char *) s);
+  size_t n = mutt_str_len((char *) s);
   mbstate_t mbstate;
 
   memset(&mbstate, 0, sizeof(mbstate));
@@ -318,7 +317,7 @@ static void make_entry(char *buf, size_t buflen, struct Menu *menu, int i)
 {
   if (menu->dialog)
   {
-    mutt_str_strfcpy(buf, NONULL(menu->dialog[i]), buflen);
+    mutt_str_copy(buf, NONULL(menu->dialog[i]), buflen);
     menu->current = -1; /* hide menubar */
   }
   else
@@ -335,12 +334,12 @@ static void make_entry(char *buf, size_t buflen, struct Menu *menu, int i)
  */
 static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
 {
-  char *scratch = mutt_str_strdup(buf);
+  char *scratch = mutt_str_dup(buf);
   int shift = C_ArrowCursor ? mutt_strwidth(C_ArrowString) + 1 : 0;
   int cols = menu->win_index->state.cols - shift;
 
   mutt_simple_format(buf, buflen, cols, cols, JUSTIFY_LEFT, ' ', scratch,
-                     mutt_str_strlen(scratch), true);
+                     mutt_str_len(scratch), true);
   buf[buflen - 1] = '\0';
   FREE(&scratch);
 }
@@ -1017,7 +1016,7 @@ void mutt_menu_add_dialog_row(struct Menu *menu, const char *row)
     menu->dsize += 10;
     mutt_mem_realloc(&menu->dialog, menu->dsize * sizeof(char *));
   }
-  menu->dialog[menu->max++] = mutt_str_strdup(row);
+  menu->dialog[menu->max++] = mutt_str_dup(row);
 }
 
 /**
@@ -1166,8 +1165,8 @@ static int search(struct Menu *menu, int op)
 
   if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
-    mutt_str_strfcpy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "",
-                     sizeof(buf));
+    mutt_str_copy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "",
+                  sizeof(buf));
     if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                             _("Search for: ") :
                             _("Reverse search for: "),

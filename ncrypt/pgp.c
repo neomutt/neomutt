@@ -264,7 +264,7 @@ static int pgp_copy_checksig(FILE *fp_in, FILE *fp_out)
       else
         mutt_debug(LL_DEBUG2, "\"%s\" doesn't match regex\n", line);
 
-      if (strncmp(line, "[GNUPG:] ", 9) == 0)
+      if (mutt_strn_equal(line, "[GNUPG:] ", 9))
         continue;
       fputs(line, fp_out);
       fputc('\n', fp_out);
@@ -354,16 +354,16 @@ static int pgp_check_decryption_okay(FILE *fp_in)
 
   while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, 0)))
   {
-    size_t plen = mutt_str_startswith(line, "[GNUPG:] ", CASE_MATCH);
+    size_t plen = mutt_str_startswith(line, "[GNUPG:] ");
     if (plen == 0)
       continue;
     s = line + plen;
     mutt_debug(LL_DEBUG2, "checking \"%s\"\n", line);
-    if (mutt_str_startswith(s, "BEGIN_DECRYPTION", CASE_MATCH))
+    if (mutt_str_startswith(s, "BEGIN_DECRYPTION"))
       inside_decrypt = 1;
-    else if (mutt_str_startswith(s, "END_DECRYPTION", CASE_MATCH))
+    else if (mutt_str_startswith(s, "END_DECRYPTION"))
       inside_decrypt = 0;
-    else if (mutt_str_startswith(s, "PLAINTEXT", CASE_MATCH))
+    else if (mutt_str_startswith(s, "PLAINTEXT"))
     {
       if (!inside_decrypt)
       {
@@ -373,13 +373,13 @@ static int pgp_check_decryption_okay(FILE *fp_in)
         break;
       }
     }
-    else if (mutt_str_startswith(s, "DECRYPTION_FAILED", CASE_MATCH))
+    else if (mutt_str_startswith(s, "DECRYPTION_FAILED"))
     {
       mutt_debug(LL_DEBUG2, "\tDECRYPTION_FAILED encountered.  Failure\n");
       rc = -3;
       break;
     }
-    else if (mutt_str_startswith(s, "DECRYPTION_OKAY", CASE_MATCH))
+    else if (mutt_str_startswith(s, "DECRYPTION_OKAY"))
     {
       /* Don't break out because we still have to check for
        * PLAINTEXT outside of the decryption boundaries. */
@@ -428,7 +428,7 @@ static void pgp_copy_clearsigned(FILE *fp_in, struct State *s, char *charset)
       continue;
     }
 
-    if (mutt_str_strcmp(buf, "-----BEGIN PGP SIGNATURE-----\n") == 0)
+    if (mutt_str_equal(buf, "-----BEGIN PGP SIGNATURE-----\n"))
       break;
 
     if (armor_header)
@@ -487,24 +487,24 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       break;
 
     offset = ftello(s->fp_in);
-    bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
+    bytes -= (offset - last_pos); /* don't rely on mutt_str_len(buf) */
     last_pos = offset;
 
-    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ", CASE_MATCH);
+    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ");
     if (plen != 0)
     {
       clearsign = false;
       could_not_decrypt = false;
       decrypt_okay_rc = 0;
 
-      if (mutt_str_startswith(buf + plen, "MESSAGE-----\n", CASE_MATCH))
+      if (mutt_str_startswith(buf + plen, "MESSAGE-----\n"))
         needpass = 1;
-      else if (mutt_str_startswith(buf + plen, "SIGNED MESSAGE-----\n", CASE_MATCH))
+      else if (mutt_str_startswith(buf + plen, "SIGNED MESSAGE-----\n"))
       {
         clearsign = true;
         needpass = 0;
       }
-      else if (mutt_str_startswith(buf + plen, "PUBLIC KEY BLOCK-----\n", CASE_MATCH))
+      else if (mutt_str_startswith(buf + plen, "PUBLIC KEY BLOCK-----\n"))
       {
         needpass = 0;
         pgp_keyblock = true;
@@ -534,25 +534,25 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       while ((bytes > 0) && fgets(buf, sizeof(buf) - 1, s->fp_in))
       {
         offset = ftello(s->fp_in);
-        bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
+        bytes -= (offset - last_pos); /* don't rely on mutt_str_len(buf) */
         last_pos = offset;
 
         fputs(buf, fp_tmp);
 
-        if ((needpass && (mutt_str_strcmp("-----END PGP MESSAGE-----\n", buf) == 0)) ||
+        if ((needpass && mutt_str_equal("-----END PGP MESSAGE-----\n", buf)) ||
             (!needpass &&
-             ((mutt_str_strcmp("-----END PGP SIGNATURE-----\n", buf) == 0) ||
-              (mutt_str_strcmp("-----END PGP PUBLIC KEY BLOCK-----\n", buf) == 0))))
+             (mutt_str_equal("-----END PGP SIGNATURE-----\n", buf) ||
+              mutt_str_equal("-----END PGP PUBLIC KEY BLOCK-----\n", buf))))
         {
           break;
         }
         /* remember optional Charset: armor header as defined by RFC4880 */
-        if (mutt_str_startswith(buf, "Charset: ", CASE_MATCH))
+        if (mutt_str_startswith(buf, "Charset: "))
         {
           size_t l = 0;
           FREE(&gpgcharset);
-          gpgcharset = mutt_str_strdup(buf + 9);
-          l = mutt_str_strlen(gpgcharset);
+          gpgcharset = mutt_str_dup(buf + 9);
+          l = mutt_str_len(gpgcharset);
           if ((l > 0) && (gpgcharset[l - 1] == '\n'))
             gpgcharset[l - 1] = 0;
           if (!mutt_ch_check_charset(gpgcharset, 0))
@@ -800,14 +800,14 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
   while (fgets(buf, sizeof(buf), fp_tmp))
   {
-    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ", CASE_MATCH);
+    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ");
     if (plen != 0)
     {
-      if (mutt_str_startswith(buf + plen, "MESSAGE-----\n", CASE_MATCH))
+      if (mutt_str_startswith(buf + plen, "MESSAGE-----\n"))
         enc = true;
-      else if (mutt_str_startswith(buf + plen, "SIGNED MESSAGE-----\n", CASE_MATCH))
+      else if (mutt_str_startswith(buf + plen, "SIGNED MESSAGE-----\n"))
         sgn = true;
-      else if (mutt_str_startswith(buf + plen, "PUBLIC KEY BLOCK-----\n", CASE_MATCH))
+      else if (mutt_str_startswith(buf + plen, "PUBLIC KEY BLOCK-----\n"))
         key = true;
     }
   }
@@ -1050,7 +1050,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
    * read_mime_header has a hard time parsing the message.  */
   while (fgets(buf, sizeof(buf) - 1, fp_pgp_out))
   {
-    size_t len = mutt_str_strlen(buf);
+    size_t len = mutt_str_len(buf);
     if ((len > 1) && (buf[len - 2] == '\r'))
       strcpy(buf + len - 2, "\n");
     fputs(buf, fp_out);
@@ -1342,9 +1342,9 @@ struct Body *pgp_class_sign_message(struct Body *a, const struct AddressList *fr
    * recommended for future releases of PGP.  */
   while (fgets(buf, sizeof(buf) - 1, fp_pgp_out))
   {
-    if (mutt_str_strcmp("-----BEGIN PGP MESSAGE-----\n", buf) == 0)
+    if (mutt_str_equal("-----BEGIN PGP MESSAGE-----\n", buf))
       fputs("-----BEGIN PGP SIGNATURE-----\n", fp_sig);
-    else if (mutt_str_strcmp("-----END PGP MESSAGE-----\n", buf) == 0)
+    else if (mutt_str_equal("-----END PGP MESSAGE-----\n", buf))
       fputs("-----END PGP SIGNATURE-----\n", fp_sig);
     else
       fputs(buf, fp_sig);
@@ -1385,7 +1385,7 @@ struct Body *pgp_class_sign_message(struct Body *a, const struct AddressList *fr
 
   t = mutt_body_new();
   t->type = TYPE_MULTIPART;
-  t->subtype = mutt_str_strdup("signed");
+  t->subtype = mutt_str_dup("signed");
   t->encoding = ENC_7BIT;
   t->use_disp = false;
   t->disposition = DISP_INLINE;
@@ -1400,7 +1400,7 @@ struct Body *pgp_class_sign_message(struct Body *a, const struct AddressList *fr
   t->parts->next = mutt_body_new();
   t = t->parts->next;
   t->type = TYPE_APPLICATION;
-  t->subtype = mutt_str_strdup("pgp-signature");
+  t->subtype = mutt_str_dup("pgp-signature");
   t->filename = mutt_buffer_strdup(sigfile);
   t->use_disp = false;
   t->disposition = DISP_NONE;
@@ -1456,7 +1456,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
         {
           if (crypt_is_numerical_keyid(keyid))
           {
-            if (strncmp(keyid, "0x", 2) == 0)
+            if (mutt_strn_equal(keyid, "0x", 2))
               keyid += 2;
             goto bypass_selection; /* you don't see this. */
           }
@@ -1513,10 +1513,10 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
       keyid = pgp_fpr_or_lkeyid(k_info);
 
     bypass_selection:
-      keylist_size += mutt_str_strlen(keyid) + 4;
+      keylist_size += mutt_str_len(keyid) + 4;
       mutt_mem_realloc(&keylist, keylist_size);
       sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "", keyid);
-      keylist_used = mutt_str_strlen(keylist);
+      keylist_used = mutt_str_len(keylist);
 
       key_selected = true;
 
@@ -1640,7 +1640,7 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign,
 
   t = mutt_body_new();
   t->type = TYPE_MULTIPART;
-  t->subtype = mutt_str_strdup("encrypted");
+  t->subtype = mutt_str_dup("encrypted");
   t->encoding = ENC_7BIT;
   t->use_disp = false;
   t->disposition = DISP_INLINE;
@@ -1650,18 +1650,18 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign,
 
   t->parts = mutt_body_new();
   t->parts->type = TYPE_APPLICATION;
-  t->parts->subtype = mutt_str_strdup("pgp-encrypted");
+  t->parts->subtype = mutt_str_dup("pgp-encrypted");
   t->parts->encoding = ENC_7BIT;
 
   t->parts->next = mutt_body_new();
   t->parts->next->type = TYPE_APPLICATION;
-  t->parts->next->subtype = mutt_str_strdup("octet-stream");
+  t->parts->next->subtype = mutt_str_dup("octet-stream");
   t->parts->next->encoding = ENC_7BIT;
   t->parts->next->filename = mutt_buffer_strdup(tempfile);
   t->parts->next->use_disp = true;
   t->parts->next->disposition = DISP_ATTACH;
   t->parts->next->unlink = true; /* delete after sending the message */
-  t->parts->next->d_filename = mutt_str_strdup("msg.asc"); /* non pgp/mime can save */
+  t->parts->next->d_filename = mutt_str_dup("msg.asc"); /* non pgp/mime can save */
 
 cleanup:
   mutt_buffer_pool_release(&tempfile);
@@ -1687,7 +1687,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
 
   if (a->type != TYPE_TEXT)
     goto cleanup;
-  if (mutt_str_strcasecmp(a->subtype, "plain") != 0)
+  if (!mutt_istr_equal(a->subtype, "plain"))
     goto cleanup;
 
   FILE *fp_body = fopen(a->filename, "r");
@@ -1817,7 +1817,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
   b->encoding = ENC_7BIT;
 
   b->type = TYPE_TEXT;
-  b->subtype = mutt_str_strdup("plain");
+  b->subtype = mutt_str_dup("plain");
 
   mutt_param_set(&b->parameter, "x-action",
                  (flags & SEC_ENCRYPT) ? "pgp-encrypted" : "pgp-signed");

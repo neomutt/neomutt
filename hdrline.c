@@ -130,7 +130,7 @@ static size_t add_index_color(char *buf, size_t buflen, MuttFormatFlags flags, c
 
   if (color == MT_COLOR_INDEX)
   { /* buf might be uninitialized other cases */
-    const size_t len = mutt_str_strlen(buf);
+    const size_t len = mutt_str_len(buf);
     buf += len;
     buflen -= len;
   }
@@ -187,7 +187,7 @@ static const char *make_from_prefix(enum FieldType disp)
     return long_prefixes[disp];
 
   const char *pchar = get_nth_wchar(C_FromChars, disp);
-  if (mutt_str_strlen(pchar) == 0)
+  if (mutt_str_len(pchar) == 0)
     return "";
 
   snprintf(padded, sizeof(padded), "%s ", pchar);
@@ -284,7 +284,7 @@ static void make_from_addr(struct Envelope *env, char *buf, size_t buflen, bool 
   else if (me && !TAILQ_EMPTY(&env->cc))
     snprintf(buf, buflen, "%s", TAILQ_FIRST(&env->cc)->mailbox);
   else if (!TAILQ_EMPTY(&env->from))
-    mutt_str_strfcpy(buf, TAILQ_FIRST(&env->from)->mailbox, buflen);
+    mutt_str_copy(buf, TAILQ_FIRST(&env->from)->mailbox, buflen);
   else
     *buf = '\0';
 }
@@ -526,7 +526,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       if (buf[0] != '\0')
       {
-        mutt_str_strfcpy(tmp, buf, sizeof(tmp));
+        mutt_str_copy(tmp, buf, sizeof(tmp));
         mutt_format_s(buf, buflen, prec, tmp);
         break;
       }
@@ -545,13 +545,13 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         p = strrchr(mailbox_path(m), '/');
         if (p)
-          mutt_str_strfcpy(buf, p + 1, buflen);
+          mutt_str_copy(buf, p + 1, buflen);
         else
-          mutt_str_strfcpy(buf, mailbox_path(m), buflen);
+          mutt_str_copy(buf, mailbox_path(m), buflen);
       }
       else
-        mutt_str_strfcpy(buf, "(null)", buflen);
-      mutt_str_strfcpy(tmp, buf, sizeof(tmp));
+        mutt_str_copy(buf, "(null)", buflen);
+      mutt_str_copy(tmp, buf, sizeof(tmp));
       mutt_format_s(buf, buflen, prec, tmp);
       break;
 
@@ -891,7 +891,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
             parent_tags =
                 driver_tags_get_transformed(&e->thread->parent->message->tags);
           }
-          if (parent_tags && (mutt_str_strcasecmp(tags, parent_tags) == 0))
+          if (parent_tags && mutt_istr_equal(tags, parent_tags))
             have_tags = false;
           FREE(&parent_tags);
         }
@@ -946,7 +946,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(buf, buflen, fmt, m->msg_count);
       }
       else
-        mutt_str_strfcpy(buf, "(null)", buflen);
+        mutt_str_copy(buf, "(null)", buflen);
       break;
 
     case 'n':
@@ -1009,7 +1009,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'P':
-      mutt_str_strfcpy(buf, hfi->pager_progress, buflen);
+      mutt_str_copy(buf, hfi->pager_progress, buflen);
       break;
 
 #ifdef USE_NNTP
@@ -1119,7 +1119,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'u':
       if (from && from->mailbox)
       {
-        mutt_str_strfcpy(tmp, mutt_addr_for_display(from), sizeof(tmp));
+        mutt_str_copy(tmp, mutt_addr_for_display(from), sizeof(tmp));
         p = strpbrk(tmp, "%@");
         if (p)
           *p = '\0';
@@ -1206,7 +1206,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         {
           e_tmp = e->thread->parent->message;
         }
-        if (e_tmp && (mutt_str_strcasecmp(e->env->x_label, e_tmp->env->x_label) == 0))
+        if (e_tmp && mutt_istr_equal(e->env->x_label, e_tmp->env->x_label))
           label = false;
       }
       else
@@ -1361,7 +1361,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if ((*end == '@') && (recurse < 20))
       {
         recurse++;
-        mutt_str_substr_copy(src, end, tmp, sizeof(tmp));
+        mutt_strn_copy(tmp, src, end - src, sizeof(tmp));
         mutt_expando_format(tmp, sizeof(tmp), col, cols,
                             NONULL(mutt_idxfmt_hook(tmp, m, e)),
                             index_format_str, data, flags);

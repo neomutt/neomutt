@@ -467,7 +467,12 @@ STORE_OBJS	+= test/store/tdb.o
 STORE_OBJS	+= test/store/tc.o
 @endif
 
-STRING_OBJS	= test/string/mutt_str_adjust.o \
+STRING_OBJS	= test/string/mutt_istr_equal.o \
+		  test/string/mutt_istr_find.o \
+		  test/string/mutt_istr_remall.o \
+		  test/string/mutt_istrn_cmp.o \
+		  test/string/mutt_istrn_equal.o \
+		  test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_append_item.o \
 		  test/string/mutt_str_asprintf.o \
 		  test/string/mutt_str_atoi.o \
@@ -476,42 +481,33 @@ STRING_OBJS	= test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_atoui.o \
 		  test/string/mutt_str_atoul.o \
 		  test/string/mutt_str_atoull.o \
+		  test/string/mutt_str_cat.o \
+		  test/string/mutt_str_coll.o \
+		  test/string/mutt_str_copy.o \
 		  test/string/mutt_str_dequote_comment.o \
+		  test/string/mutt_str_dup.o \
+		  test/string/mutt_str_equal.o \
 		  test/string/mutt_str_find_word.o \
 		  test/string/mutt_str_getenv.o \
 		  test/string/mutt_str_inline_replace.o \
 		  test/string/mutt_str_is_ascii.o \
 		  test/string/mutt_str_is_email_wsp.o \
+		  test/string/mutt_str_len.o \
+		  test/string/mutt_str_lower.o \
 		  test/string/mutt_str_lws_len.o \
 		  test/string/mutt_str_lws_rlen.o \
 		  test/string/mutt_str_next_word.o \
-		  test/string/mutt_str_remall_strcasestr.o \
 		  test/string/mutt_str_remove_trailing_ws.o \
 		  test/string/mutt_str_replace.o \
-		  test/string/mutt_str_rstrnstr.o \
 		  test/string/mutt_str_skip_email_wsp.o \
 		  test/string/mutt_str_skip_whitespace.o \
 		  test/string/mutt_str_startswith.o \
-		  test/string/mutt_str_strcasecmp.o \
-		  test/string/mutt_str_strcasestr.o \
-		  test/string/mutt_str_strcat.o \
-		  test/string/mutt_str_strchrnul.o \
-		  test/string/mutt_str_strcmp.o \
-		  test/string/mutt_str_strcoll.o \
-		  test/string/mutt_str_strdup.o \
-		  test/string/mutt_str_strfcpy.o \
-		  test/string/mutt_str_stristr.o \
-		  test/string/mutt_str_strlen.o \
-		  test/string/mutt_str_strlower.o \
-		  test/string/mutt_str_strncasecmp.o \
-		  test/string/mutt_str_strncat.o \
-		  test/string/mutt_str_strncmp.o \
-		  test/string/mutt_str_strnfcpy.o \
-		  test/string/mutt_str_strnlower.o \
-		  test/string/mutt_str_substr_copy.o \
-		  test/string/mutt_str_substr_dup.o \
 		  test/string/mutt_str_sysexit.o \
-		  test/string/mutt_str_word_casecmp.o
+		  test/string/mutt_strn_cat.o \
+		  test/string/mutt_strn_copy.o \
+		  test/string/mutt_strn_dup.o \
+		  test/string/mutt_strn_equal.o \
+		  test/string/mutt_strn_rfind.o
 
 TAGS_OBJS	= test/tags/driver_tags_free.o \
 		  test/tags/driver_tags_get.o \

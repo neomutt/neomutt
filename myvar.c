@@ -44,8 +44,8 @@ struct MyVarList MyVars = TAILQ_HEAD_INITIALIZER(MyVars);
 static struct MyVar *myvar_new(const char *name, const char *value)
 {
   struct MyVar *myv = mutt_mem_calloc(1, sizeof(struct MyVar));
-  myv->name = mutt_str_strdup(name);
-  myv->value = mutt_str_strdup(value);
+  myv->name = mutt_str_dup(name);
+  myv->value = mutt_str_dup(value);
   return myv;
 }
 
@@ -76,7 +76,7 @@ const char *myvar_get(const char *var)
 
   TAILQ_FOREACH(myv, &MyVars, entries)
   {
-    if (mutt_str_strcmp(myv->name, var) == 0)
+    if (mutt_str_equal(myv->name, var))
       return NONULL(myv->value);
   }
 
@@ -94,7 +94,7 @@ void myvar_set(const char *var, const char *val)
 
   TAILQ_FOREACH(myv, &MyVars, entries)
   {
-    if (mutt_str_strcmp(myv->name, var) == 0)
+    if (mutt_str_equal(myv->name, var))
     {
       mutt_str_replace(&myv->value, val);
       return;
@@ -115,7 +115,7 @@ void myvar_del(const char *var)
 
   TAILQ_FOREACH(myv, &MyVars, entries)
   {
-    if (mutt_str_strcmp(myv->name, var) == 0)
+    if (mutt_str_equal(myv->name, var))
     {
       TAILQ_REMOVE(&MyVars, myv, entries);
       myvar_free(&myv);

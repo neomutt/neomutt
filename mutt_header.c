@@ -102,7 +102,7 @@ static bool label_message(struct Mailbox *m, struct Email *e, char *new_label)
 {
   if (!e)
     return false;
-  if (mutt_str_strcmp(e->env->x_label, new_label) == 0)
+  if (mutt_str_equal(e->env->x_label, new_label))
     return false;
 
   if (e->env->x_label)
@@ -134,7 +134,7 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
   {
     // If there's only one email, use its label as a template
     if (en->email->env->x_label)
-      mutt_str_strfcpy(buf, en->email->env->x_label, sizeof(buf));
+      mutt_str_copy(buf, en->email->env->x_label, sizeof(buf));
   }
 
   if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)
@@ -257,8 +257,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   {
     if (!STAILQ_EMPTY(&e->env->in_reply_to) &&
         (STAILQ_EMPTY(&n->in_reply_to) ||
-         (mutt_str_strcmp(STAILQ_FIRST(&n->in_reply_to)->data,
-                          STAILQ_FIRST(&e->env->in_reply_to)->data) != 0)))
+         !mutt_str_equal(STAILQ_FIRST(&n->in_reply_to)->data,
+                         STAILQ_FIRST(&e->env->in_reply_to)->data)))
     {
       mutt_list_free(&e->env->references);
     }
@@ -283,7 +283,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
     bool keep = true;
     size_t plen;
 
-    if (fcc && (plen = mutt_str_startswith(np->data, "fcc:", CASE_IGNORE)))
+    if (fcc && (plen = mutt_istr_startswith(np->data, "fcc:")))
     {
       p = mutt_str_skip_email_wsp(np->data + plen);
       if (*p)
@@ -293,7 +293,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       }
       keep = false;
     }
-    else if ((plen = mutt_str_startswith(np->data, "attach:", CASE_IGNORE)))
+    else if ((plen = mutt_istr_startswith(np->data, "attach:")))
     {
       struct Body *body2 = NULL;
       struct Body *parts = NULL;
@@ -318,7 +318,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
         body2 = mutt_make_file_attach(mutt_b2s(path));
         if (body2)
         {
-          body2->description = mutt_str_strdup(p);
+          body2->description = mutt_str_dup(p);
           for (parts = e->content; parts->next; parts = parts->next)
             ; // do nothing
 
@@ -333,7 +333,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       keep = false;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             (plen = mutt_str_startswith(np->data, "pgp:", CASE_IGNORE)))
+             (plen = mutt_istr_startswith(np->data, "pgp:")))
     {
       e->security = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_PGP);
       if (e->security)

@@ -50,7 +50,7 @@ struct Slist *slist_add_list(struct Slist *list, const struct Slist *add)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &add->head, entries)
   {
-    mutt_list_insert_tail(&list->head, mutt_str_strdup((char *) np->data));
+    mutt_list_insert_tail(&list->head, mutt_str_dup((char *) np->data));
     list->count++;
   }
   return list;
@@ -73,7 +73,7 @@ struct Slist *slist_add_string(struct Slist *list, const char *str)
   if (!str && !(list->flags & SLIST_ALLOW_EMPTY))
     return list;
 
-  mutt_list_insert_tail(&list->head, mutt_str_strdup(str));
+  mutt_list_insert_tail(&list->head, mutt_str_dup(str));
   list->count++;
 
   return list;
@@ -114,7 +114,7 @@ struct Slist *slist_dup(const struct Slist *list)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &list->head, entries)
   {
-    mutt_list_insert_tail(&l->head, mutt_str_strdup(np->data));
+    mutt_list_insert_tail(&l->head, mutt_str_dup(np->data));
   }
   return l;
 }
@@ -171,7 +171,7 @@ bool slist_is_member(const struct Slist *list, const char *str)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &list->head, entries)
   {
-    if (mutt_str_strcmp(np->data, str) == 0)
+    if (mutt_str_equal(np->data, str))
       return true;
   }
   return false;
@@ -185,7 +185,7 @@ bool slist_is_member(const struct Slist *list, const char *str)
  */
 struct Slist *slist_parse(const char *str, int flags)
 {
-  char *src = mutt_str_strdup(str);
+  char *src = mutt_str_dup(str);
   if (!src && !(flags & SLIST_ALLOW_EMPTY))
     return NULL;
 
@@ -214,13 +214,13 @@ struct Slist *slist_parse(const char *str, int flags)
     if (p[0] == sep)
     {
       p[0] = '\0';
-      mutt_list_insert_tail(&list->head, mutt_str_strdup(start));
+      mutt_list_insert_tail(&list->head, mutt_str_dup(start));
       list->count++;
       start = p + 1;
     }
   }
 
-  mutt_list_insert_tail(&list->head, mutt_str_strdup(start));
+  mutt_list_insert_tail(&list->head, mutt_str_dup(start));
   list->count++;
 
   FREE(&src);
@@ -245,7 +245,7 @@ struct Slist *slist_remove_string(struct Slist *list, const char *str)
   struct ListNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &list->head, entries, tmp)
   {
-    if (mutt_str_strcmp(np->data, str) == 0)
+    if (mutt_str_equal(np->data, str))
     {
       if (prev)
         STAILQ_REMOVE_AFTER(&list->head, prev, entries);

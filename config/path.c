@@ -66,12 +66,12 @@ static char *path_tidy(const char *path, bool is_dir)
     return NULL;
 
   char buf[PATH_MAX] = { 0 };
-  mutt_str_strfcpy(buf, path, sizeof(buf));
+  mutt_str_copy(buf, path, sizeof(buf));
 
   mutt_path_tilde(buf, sizeof(buf), HomeDir);
   mutt_path_tidy(buf, is_dir);
 
-  return mutt_str_strdup(buf);
+  return mutt_str_dup(buf);
 }
 
 /**
@@ -106,7 +106,7 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 
   if (var)
   {
-    if (mutt_str_strcmp(value, (*(char **) var)) == 0)
+    if (mutt_str_equal(value, (*(char **) var)))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     if (cdef->validator)
@@ -131,7 +131,7 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
       FREE(&cdef->initial);
 
     cdef->type |= DT_INITIAL_SET;
-    cdef->initial = IP mutt_str_strdup(value);
+    cdef->initial = IP mutt_str_dup(value);
   }
 
   return rc;
@@ -175,7 +175,7 @@ static int path_native_set(const struct ConfigSet *cs, void *var,
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
-  if (mutt_str_strcmp((const char *) value, (*(char **) var)) == 0)
+  if (mutt_str_equal((const char *) value, (*(char **) var)))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   int rc;
@@ -222,7 +222,7 @@ static int path_reset(const struct ConfigSet *cs, void *var,
   if (!str)
     rc |= CSR_SUC_EMPTY;
 
-  if (mutt_str_strcmp(str, (*(char **) var)) == 0)
+  if (mutt_str_equal(str, (*(char **) var)))
   {
     FREE(&str);
     return rc | CSR_SUC_NO_CHANGE;

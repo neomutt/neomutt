@@ -209,9 +209,9 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   }
 
   if (p)
-    mutt_str_strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
+    mutt_str_copy(prompt, _("Bounce message to: "), sizeof(prompt));
   else
-    mutt_str_strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+    mutt_str_copy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
 
   buf[0] = '\0';
   if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || (buf[0] == '\0'))
@@ -247,10 +247,10 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     mutt_simple_format(prompt, sizeof(prompt) - 4, 0,
                        MuttMessageWindow->state.cols - EXTRA_SPACE,
                        JUSTIFY_LEFT, 0, prompt, sizeof(prompt), false);
-    mutt_str_strcat(prompt, sizeof(prompt), "...?");
+    mutt_str_cat(prompt, sizeof(prompt), "...?");
   }
   else
-    mutt_str_strcat(prompt, sizeof(prompt), "?");
+    mutt_str_cat(prompt, sizeof(prompt), "?");
 
   if (query_quadoption(C_Bounce, prompt) != MUTT_YES)
   {
@@ -408,14 +408,14 @@ static void include_header(bool quote, FILE *fp_in, struct Email *e, FILE *fp_ou
   if (quote)
   {
     if (prefix)
-      mutt_str_strfcpy(prefix2, prefix, sizeof(prefix2));
+      mutt_str_copy(prefix2, prefix, sizeof(prefix2));
     else if (!C_TextFlowed)
     {
       mutt_make_string(prefix2, sizeof(prefix2), 0, NONULL(C_IndentString),
                        Context, Context->mailbox, e);
     }
     else
-      mutt_str_strfcpy(prefix2, ">", sizeof(prefix2));
+      mutt_str_copy(prefix2, ">", sizeof(prefix2));
 
     chflags |= CH_PREFIX;
   }
@@ -504,7 +504,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   if (C_ForwardQuote)
   {
     if (C_TextFlowed)
-      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
+      mutt_str_copy(prefix, ">", sizeof(prefix));
     else
     {
       mutt_make_string(prefix, sizeof(prefix), 0, NONULL(C_IndentString),
@@ -818,10 +818,9 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
   if ((flags & SEND_NEWS))
   {
     /* in case followup set Newsgroups: with Followup-To: if it present */
-    if (!env->newsgroups && curenv &&
-        (mutt_str_strcasecmp(curenv->followup_to, "poster") != 0))
+    if (!env->newsgroups && curenv && !mutt_istr_equal(curenv->followup_to, "poster"))
     {
-      env->newsgroups = mutt_str_strdup(curenv->followup_to);
+      env->newsgroups = mutt_str_dup(curenv->followup_to);
     }
   }
   else
@@ -993,7 +992,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
     if (C_TextFlowed)
     {
-      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
+      mutt_str_copy(prefix, ">", sizeof(prefix));
     }
     else
     {
