@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2020-06-19\n"
+"Project-Id-Version: neomutt-2020-06-26\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-06-19 13:10+0100\n"
+"POT-Creation-Date: 2020-06-26 12:38+0100\n"
 "PO-Revision-Date: 2018-05-31 13:50+0000\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: neomutt-j <neomutt-j-users@lists.osdn.me>\n"
@@ -667,7 +667,7 @@ msgstr "spam: 一致するパターンがない"
 msgid "nospam: no matching pattern"
 msgstr "nospam: 一致するパターンがない"
 
-#: command_parse.c:1715 imap/imap.c:1276
+#: command_parse.c:1715 imap/imap.c:1267
 #, c-format
 msgid "Subscribed to %s"
 msgstr "%s を購読を開始した"
@@ -690,7 +690,7 @@ msgstr "unattachments: 引数 disposition の指定がない"
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: 引数 disposition が不正"
 
-#: command_parse.c:2118 imap/imap.c:1278
+#: command_parse.c:2118 imap/imap.c:1269
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s の購読を取り消した"
@@ -742,7 +742,7 @@ msgid "PGP signature could NOT be verified"
 msgstr "PGP 署名は検証できなかった。"
 
 #: commands.c:387 compmbox/compress.c:320 compose.c:2416 gui/curs_lib.c:361
-#: gui/curs_lib.c:720 index.c:1255 index.c:1305 mutt_attach.c:161
+#: gui/curs_lib.c:720 index.c:1265 index.c:1315 mutt_attach.c:161
 #: mutt_attach.c:294 pager.c:2433 sendlib.c:1632
 #, c-format
 msgid "Error running \"%s\""
@@ -1976,7 +1976,7 @@ msgstr "フォルダに追加できない: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "マルチパートのメッセージだが boundary パラメータがない"
 
-#: flags.c:381 index.c:2632 index.c:2675 index.c:3205 index.c:3242
+#: flags.c:381 index.c:2636 index.c:2679 index.c:3207 index.c:3244
 #: mutt_thread.c:1091 mutt_thread.c:1158 mutt_thread.c:1246
 msgid "Threading is not enabled"
 msgstr "スレッド表示が有効になっていない。"
@@ -2496,83 +2496,79 @@ msgstr "TLS を使った安全な接続?"
 msgid "Could not negotiate TLS connection"
 msgstr "TLS 接続を確立できなかった"
 
-#: imap/imap.c:767 imap/imap.c:791 pop/pop_lib.c:388
+#: imap/imap.c:767 imap/imap.c:783 pop/pop_lib.c:388
 msgid "Encrypted connection unavailable"
 msgstr "暗号化された接続が利用できない"
 
-#: imap/imap.c:786
-msgid "Abort unencrypted PREAUTH connection?"
-msgstr ""
-
-#: imap/imap.c:1263
+#: imap/imap.c:1254
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s の購読を開始中..."
 
-#: imap/imap.c:1265
+#: imap/imap.c:1256
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "%s の購読を取り消し中..."
 
-#: imap/imap.c:1428 imap/message.c:1690
+#: imap/imap.c:1419 imap/message.c:1690
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d メッセージを %s にコピー中..."
 
-#: imap/imap.c:1445 imap/imap.c:2103 imap/message.c:1729 muttlib.c:1495
+#: imap/imap.c:1436 imap/imap.c:2094 imap/message.c:1729 muttlib.c:1495
 #, c-format
 msgid "Create %s?"
 msgstr "%s を作成?"
 
-#: imap/imap.c:1518
+#: imap/imap.c:1509
 msgid "Expunge failed"
 msgstr "削除に失敗した"
 
-#: imap/imap.c:1536
+#: imap/imap.c:1527
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "%d 個のメッセージに削除をマーク中..."
 
-#: imap/imap.c:1576
+#: imap/imap.c:1567
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "メッセージ変更を保存中... [%d/%d]"
 
-#: imap/imap.c:1633
+#: imap/imap.c:1624
 msgid "Error saving flags. Close anyway?"
 msgstr "フラグ保存エラー。それでも閉じる?"
 
-#: imap/imap.c:1640
+#: imap/imap.c:1631
 msgid "Error saving flags"
 msgstr "フラグ保存エラー"
 
-#: imap/imap.c:1666
+#: imap/imap.c:1657
 msgid "Expunging messages from server..."
 msgstr "サーバからメッセージを削除中..."
 
-#: imap/imap.c:1672
+#: imap/imap.c:1663
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: 削除に失敗した"
 
-#: imap/imap.c:1907 nntp/nntp.c:2489
+#: imap/imap.c:1898 nntp/nntp.c:2489
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s を選択中..."
 
-#: imap/imap.c:2070
+#: imap/imap.c:2061
 msgid "Error opening mailbox"
 msgstr "メールボックスオープン時エラー"
 
-#: imap/imap.c:2219
+#: imap/imap.c:2210
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "SMTP サーバがユーザ認証をサポートしていない"
 
 # 不正より不信か？
-#: imap/imap.c:2263
+#: imap/imap.c:2254
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "不正      "
@@ -2583,7 +2579,7 @@ msgid "Abort download and close mailbox?"
 msgstr "ダウンロードを中止してメールボックスを閉じるか?"
 
 #: imap/message.c:554 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
-#: mutt/string.c:1208 mx.c:1203
+#: mutt/string.c:1208 mx.c:1214
 msgid "Out of memory"
 msgstr "メモリ不足"
 
@@ -2604,7 +2600,7 @@ msgstr "メッセージヘッダ取得中..."
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "このバージョンの IMAP サーバからはへッダを取得できない。"
 
-#: imap/message.c:1109 index.c:1571 nntp/nntp.c:1334 pop/pop.c:427
+#: imap/message.c:1109 index.c:1581 nntp/nntp.c:1334 pop/pop.c:427
 msgid "Fetching message headers..."
 msgstr "メッセージヘッダ取得中..."
 
@@ -2635,7 +2631,7 @@ msgstr "検索するヘッダ名の指定がない: %s"
 msgid "Server-side custom search not supported: %s"
 msgstr "サーバサイドカスタム検索はサポートされていない: %s"
 
-#: imap/util.c:798
+#: imap/util.c:801
 msgid "Continue?"
 msgstr "継続?"
 
@@ -2664,7 +2660,7 @@ msgstr "投稿"
 msgid "Followup"
 msgstr "%s%s へのフォローアップ?"
 
-#: index.c:186 index.c:1391
+#: index.c:186 index.c:1401
 msgid "No mailbox is open"
 msgstr "開いているメールボックスがない。"
 
@@ -2676,7 +2672,7 @@ msgstr "メッセージがない。"
 msgid "No visible messages"
 msgstr "可視メッセージがない。"
 
-#: index.c:204 mx.c:923 pager.c:215 recvattach.c:79
+#: index.c:204 mx.c:934 pager.c:215 recvattach.c:79
 msgid "Mailbox is read-only"
 msgstr "メールボックスは読み出し専用。"
 
@@ -2702,82 +2698,82 @@ msgstr "フォルダ脱出時にフォルダへの変更が書き込まれる。
 msgid "Changes to folder will not be written"
 msgstr "フォルダへの変更は書き込まれない。"
 
-#: index.c:780
+#: index.c:790
 msgid "Failed to create query, aborting"
 msgstr "クエリの作成に失敗. 中止する."
 
-#: index.c:826 muttlib.c:1480 mx.c:208 mx.c:340
+#: index.c:836 muttlib.c:1480 mx.c:219 mx.c:351
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s はメールボックスではない"
 
 # 「不正な可能性あり」だと重大なことのように思えてしまうので変更した。
-#: index.c:1238
+#: index.c:1248
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "メールボックスが外部から変更された。フラグが正確でないかもしれない。"
 
-#: index.c:1247 pager.c:2379
+#: index.c:1257 pager.c:2379
 msgid "New mail in this mailbox"
 msgstr "このメールボックスに新着メール。"
 
-#: index.c:1262
+#: index.c:1272
 msgid "Mailbox was externally modified"
 msgstr "メールボックスが外部から変更された。"
 
-#: index.c:1398
+#: index.c:1408
 msgid "No tagged messages"
 msgstr "タグ付きメッセージがない。"
 
-#: index.c:1402 index.c:1670 menu.c:1417
+#: index.c:1412 index.c:1680 menu.c:1417
 msgid "Nothing to do"
 msgstr "何もしない。"
 
-#: index.c:1492
+#: index.c:1502
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "鍵ID入力: "
 
-#: index.c:1504
+#: index.c:1514
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index.c:1527
+#: index.c:1537
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "ルートメッセージはこの制限された表示範囲では不可視。"
 
-#: index.c:1531
+#: index.c:1541
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "サーバからメッセージを削除中..."
 
-#: index.c:1541 nntp/nntp.c:2775
+#: index.c:1551 nntp/nntp.c:2775
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "記事 %s はこのサーバ上で見つからなかった"
 
-#: index.c:1567
+#: index.c:1577
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Message-Idがないので操作を実行できない."
 
-#: index.c:1646
+#: index.c:1656
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "スレッドのメッセージをすべて削除"
 
-#: index.c:1667
+#: index.c:1677
 msgid "Jump to message: "
 msgstr "メッセージ番号を指定: "
 
-#: index.c:1673
+#: index.c:1683
 msgid "Argument must be a message number"
 msgstr "引数はメッセージ番号でなければならない。"
 
-#: index.c:1675
+#: index.c:1685
 msgid "Invalid message number"
 msgstr "不正なメッセージ番号。"
 
-#: index.c:1677
+#: index.c:1687
 msgid "That message is not visible"
 msgstr "そのメッセージは可視ではない。"
 
@@ -2785,38 +2781,38 @@ msgstr "そのメッセージは可視ではない。"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1714 index.c:3341 pager.c:3040
+#: index.c:1724 index.c:3343 pager.c:3040
 #, fuzzy
 msgid "Can't delete messages"
 msgstr "メッセージを削除できない"
 
-#: index.c:1717
+#: index.c:1727
 msgid "Delete messages matching: "
 msgstr "メッセージを削除するためのパターン: "
 
-#: index.c:1761
+#: index.c:1771
 msgid "No limit pattern is in effect"
 msgstr "現在有効な制限パターンはない。"
 
 #. L10N: ask for a limit to apply
-#: index.c:1766
+#: index.c:1776
 #, c-format
 msgid "Limit: %s"
 msgstr "制限パターン: %s"
 
-#: index.c:1803
+#: index.c:1813
 msgid "Limit to messages matching: "
 msgstr "メッセージの表示を制限するパターン: "
 
-#: index.c:1834
+#: index.c:1844
 msgid "To view all messages, limit to \"all\""
 msgstr "メッセージをすべて見るには制限を \"all\" にする。"
 
-#: index.c:1846 pager.c:2487
+#: index.c:1856 pager.c:2487
 msgid "Quit NeoMutt?"
 msgstr "NeoMutt を中止?"
 
-#: index.c:1956
+#: index.c:1960
 msgid "Tag messages matching: "
 msgstr "メッセージにタグを付けるためのパターン: "
 
@@ -2824,199 +2820,195 @@ msgstr "メッセージにタグを付けるためのパターン: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1967 index.c:3881 pager.c:3397
+#: index.c:1971 index.c:3883 pager.c:3390
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "メッセージの削除状態を解除できない"
 
-#: index.c:1971
+#: index.c:1975
 msgid "Undelete messages matching: "
 msgstr "メッセージの削除を解除するためのパターン: "
 
-#: index.c:1980
+#: index.c:1984
 msgid "Untag messages matching: "
 msgstr "メッセージのタグを外すためのパターン: "
 
-#: index.c:2021
+#: index.c:2025
 msgid "Logged out of IMAP servers"
 msgstr "IMAP サーバからログアウトした。"
 
-#: index.c:2138
+#: index.c:2142
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "無題で中止する。"
 
-#: index.c:2158
+#: index.c:2162
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index.c:2168
+#: index.c:2172
 msgid "Failed to read thread, aborting"
 msgstr "スレッドの読み込みに失敗. 中止する."
 
-#: index.c:2200 mx.c:1279 mx.c:1299
+#: index.c:2204 mx.c:1290 mx.c:1310
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "SMTP サーバがユーザ認証をサポートしていない"
 
-#: index.c:2217
+#: index.c:2221
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "無題で中止する。"
 
-#: index.c:2227
+#: index.c:2231
 msgid "Update tags..."
 msgstr "タグを更新中..."
 
-#: index.c:2267
+#: index.c:2271
 msgid "Failed to modify tags, aborting"
 msgstr "タグの変更に失敗した. 中止する."
 
-#: index.c:2315
+#: index.c:2319
 #, fuzzy
 msgid "No query, aborting"
 msgstr "無題で中止する。"
 
-#: index.c:2344 index.c:2364
+#: index.c:2348 index.c:2368
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index.c:2349 index.c:2369
+#: index.c:2353 index.c:2373
 msgid "No notmuch vfolder currently loaded"
 msgstr "notmuchのバーチャルフォルダを読み込んでいない"
 
-#: index.c:2398
+#: index.c:2403
 msgid "No mailboxes have new mail"
 msgstr "新着メールのあるメールボックスはない"
 
-#: index.c:2421
+#: index.c:2425
 msgid "Open mailbox in read-only mode"
 msgstr "読み出し専用モードでメールボックスをオープン"
 
-#: index.c:2426
+#: index.c:2430
 msgid "Open mailbox"
 msgstr "メールボックスをオープン"
 
-#: index.c:2486
+#: index.c:2490
 msgid "Open newsgroup in read-only mode"
 msgstr "読み出し専用モードでニュースグループをオープン"
 
-#: index.c:2491
+#: index.c:2495
 msgid "Open newsgroup"
 msgstr "ニュースグループを開く"
 
-#: index.c:2609
+#: index.c:2613
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "保存しないで NeoMutt を抜ける?"
 
 #. L10N: CHECK_ACL
-#: index.c:2625
+#: index.c:2629
 #, fuzzy
 msgid "Can't break thread"
 msgstr "スレッドをつなげられない"
 
-#: index.c:2645
+#: index.c:2649
 msgid "Thread broken"
 msgstr "スレッドが外された"
 
-#: index.c:2658
+#: index.c:2662
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "スレッドを外せない。メッセージがスレッドの一部ではない"
 
 #. L10N: CHECK_ACL
-#: index.c:2668
+#: index.c:2672
 msgid "Can't link threads"
 msgstr "スレッドをつなげられない"
 
-#: index.c:2677
+#: index.c:2681
 msgid "No Message-ID: header available to link thread"
 msgstr "Message-ID ヘッダが利用できないのでスレッドをつなげられない"
 
-#: index.c:2679
-msgid "First, please tag a message to be linked here"
-msgstr "その前に、ここへつなげたいメッセージにタグを付けておくこと"
-
-#: index.c:2692
+#: index.c:2694
 msgid "Threads linked"
 msgstr "スレッドがつながった"
 
-#: index.c:2695
+#: index.c:2697
 msgid "No thread linked"
 msgstr "スレッドはつながらなかった"
 
-#: index.c:2736 index.c:2761
+#: index.c:2738 index.c:2763
 msgid "You are on the last message"
 msgstr "すでに最後のメッセージ。"
 
-#: index.c:2744 index.c:2787
+#: index.c:2746 index.c:2789
 msgid "No undeleted messages"
 msgstr "未削除メッセージがない。"
 
-#: index.c:2779 index.c:2804
+#: index.c:2781 index.c:2806
 msgid "You are on the first message"
 msgstr "すでに最初のメッセージ。"
 
-#: index.c:2945
+#: index.c:2947
 msgid "No new messages in this limited view"
 msgstr "この制限された表示範囲には新着メッセージがない。"
 
-#: index.c:2947
+#: index.c:2949
 msgid "No new messages"
 msgstr "新着メッセージがない。"
 
-#: index.c:2952
+#: index.c:2954
 msgid "No unread messages in this limited view"
 msgstr "この制限された表示範囲には未読メッセージがない。"
 
-#: index.c:2954
+#: index.c:2956
 msgid "No unread messages"
 msgstr "未読メッセージがない。"
 
-#: index.c:2964 menu.c:1208 pager.c:2618 pattern.c:2780
+#: index.c:2966 menu.c:1208 pager.c:2618 pattern.c:2780
 msgid "Search wrapped to top"
 msgstr "検索は一番上に戻った。"
 
-#: index.c:2969 pager.c:2643 pattern.c:2791
+#: index.c:2971 pager.c:2643 pattern.c:2791
 msgid "Search wrapped to bottom"
 msgstr "検索は一番下に戻った。"
 
 #. L10N: CHECK_ACL
-#: index.c:2986
+#: index.c:2988
 msgid "Can't flag message"
 msgstr "メッセージにフラグを設定できない"
 
 #. L10N: CHECK_ACL
-#: index.c:3032 pager.c:3356
+#: index.c:3034 pager.c:3349
 msgid "Can't toggle new"
 msgstr "新着フラグを切替できない"
 
-#: index.c:3128
+#: index.c:3130
 msgid "No more threads"
 msgstr "もうスレッドがない。"
 
-#: index.c:3130
+#: index.c:3132
 msgid "You are on the first thread"
 msgstr "すでに最初のスレッド。"
 
-#: index.c:3227
+#: index.c:3229
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "スレッド中に未読メッセージがある。"
 
 #. L10N: CHECK_ACL
-#: index.c:3289 pager.c:2996
+#: index.c:3291 pager.c:2996
 msgid "Can't delete message"
 msgstr "メッセージを削除できない"
 
 #. L10N: CHECK_ACL
-#: index.c:3413
+#: index.c:3415
 msgid "Can't edit message"
 msgstr "メッセージを編集できない"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index.c:3506 pager.c:3474
+#: index.c:3508 pager.c:3467
 #, fuzzy, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -3025,7 +3017,7 @@ msgstr[0] "%d 個のラベルが変更された。"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index.c:3514 pager.c:3478
+#: index.c:3516 pager.c:3471
 msgid "No labels changed"
 msgstr "ラベルは変更されなかった。"
 
@@ -3033,7 +3025,7 @@ msgstr "ラベルは変更されなかった。"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:3645
+#: index.c:3647
 #, fuzzy
 msgid "Can't mark messages as read"
 msgstr "メッセージを既読にマークできない"
@@ -3042,40 +3034,40 @@ msgstr "メッセージを既読にマークできない"
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index.c:3686
+#: index.c:3688
 msgid "Enter macro stroke: "
 msgstr "マクロ名を入力: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index.c:3694
+#: index.c:3696
 msgid "message hotkey"
 msgstr "(mark-message キー)"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index.c:3699
+#: index.c:3701
 #, c-format
 msgid "Message bound to %s"
 msgstr "メッセージは %s に割り当てられた。"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index.c:3708
+#: index.c:3710
 msgid "No message ID to macro"
 msgstr "マクロ化するための Message-ID がない。"
 
-#: index.c:3762 pager.c:3197 recvattach.c:1689
+#: index.c:3764 pager.c:3197 recvattach.c:1689
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: index.c:3765 pager.c:3158 pager.c:3170 pager.c:3200
+#: index.c:3767 pager.c:3158 pager.c:3170 pager.c:3200
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "このニュースグループはモデレートであり、投稿は許可されていない。続ける?"
 
 #. L10N: CHECK_ACL
-#: index.c:3842 pager.c:3376
+#: index.c:3844 pager.c:3369
 msgid "Can't undelete message"
 msgstr "メッセージの削除状態を解除できない"
 
@@ -3209,7 +3201,7 @@ msgstr "%s 形式用の mailcap エントリが見つからなかった"
 msgid "Scanning %s..."
 msgstr "%s をスキャン中..."
 
-#: maildir/shared.c:824 mbox/mbox.c:218 mbox/mbox.c:384 mx.c:353
+#: maildir/shared.c:824 mbox/mbox.c:218 mbox/mbox.c:384 mx.c:364
 #, c-format
 msgid "Reading %s..."
 msgstr "%s 読み出し中..."
@@ -3224,7 +3216,7 @@ msgid "md_commit_message(): unable to set time on file"
 msgstr "_maildir_commit_message(): ファイルに時刻を設定できない"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1727 mbox/mbox.c:1283 mx.c:461 notmuch/notmuch.c:2355
+#: maildir/shared.c:1727 mbox/mbox.c:1283 mx.c:472 notmuch/notmuch.c:2355
 #, c-format
 msgid "Writing %s..."
 msgstr "%s 書き込み中..."
@@ -3680,85 +3672,85 @@ msgstr "%s にメッセージを追加?"
 msgid "Can't save message to news server"
 msgstr "サーバにメッセージを残せない。"
 
-#: mx.c:387
+#: mx.c:398
 #, fuzzy, c-format
 msgid "Reading from %s interrupted..."
 msgstr "検索が中断された。"
 
 #. L10N: Displayed if a mailbox sync fails
-#: mx.c:471
+#: mx.c:482
 #, fuzzy, c-format
 msgid "Unable to write %s"
 msgstr "%s は添付できない"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
-#: mx.c:527
+#: mx.c:538
 #, fuzzy
 msgid "message not deleted"
 msgid_plural "messages not deleted"
 msgstr[0] "メッセージは削除されなかった"
 
-#: mx.c:573
+#: mx.c:584
 msgid "Can't open trash folder"
 msgstr "ごみ箱をオープンできない"
 
-#: mx.c:629
+#: mx.c:640
 msgid "Mark all articles read?"
 msgstr "全ての記事を既読にするか?"
 
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
-#: mx.c:677
+#: mx.c:688
 #, fuzzy, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
 msgstr[0] "既読の %d メッセージを %s に移動?"
 
-#: mx.c:691 mx.c:939
+#: mx.c:702 mx.c:950
 #, fuzzy, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "削除された %d メッセージを廃棄?"
 
-#: mx.c:714
+#: mx.c:725
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "%s に既読メッセージを移動中..."
 
-#: mx.c:785 mx.c:930
+#: mx.c:796 mx.c:941
 msgid "Mailbox is unchanged"
 msgstr "メールボックスは変更されなかった"
 
-#: mx.c:845
+#: mx.c:856
 #, c-format
 msgid "%d kept, %d moved, %d deleted"
 msgstr "%d 保持、%d 移動、%d 廃棄"
 
-#: mx.c:849 mx.c:995
+#: mx.c:860 mx.c:1006
 #, c-format
 msgid "%d kept, %d deleted"
 msgstr "%d 保持、%d 廃棄"
 
-#: mx.c:914
+#: mx.c:925
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " '%s' を押すと変更を書き込むかどうかを切替"
 
-#: mx.c:916
+#: mx.c:927
 msgid "Use 'toggle-write' to re-enable write"
 msgstr "'toggle-write' を使って書き込みを有効にせよ"
 
-#: mx.c:918
+#: mx.c:929
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "メールボックスは書き込み不能にマークされた。%s"
 
-#: mx.c:989
+#: mx.c:1000
 msgid "Mailbox checkpointed"
 msgstr "メールボックスのチェックポイントを採取した。"
 
-#: mx.c:1344
+#: mx.c:1355
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "メッセージファイルをオープンできない: %s"
@@ -6994,3 +6986,6 @@ msgstr "コンパイル時オプション:"
 
 #~ msgid "Certificate is not X.509"
 #~ msgstr "証明書が X.509 でない"
+
+#~ msgid "First, please tag a message to be linked here"
+#~ msgstr "その前に、ここへつなげたいメッセージにタグを付けておくこと"
