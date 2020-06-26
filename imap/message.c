@@ -1017,7 +1017,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
     m->msg_flagged = 0;
     m->changed = 0;
 
-    mdata->hcache = imap_hcache_open(adata, mdata);
+    imap_hcache_open(adata, mdata);
     mdata->reopen &= ~IMAP_EXPUNGE_PENDING;
   }
 
@@ -1320,7 +1320,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   mdata->new_mail_count = 0;
 
 #ifdef USE_HCACHE
-  mdata->hcache = imap_hcache_open(adata, mdata);
+  imap_hcache_open(adata, mdata);
 
   if (mdata->hcache && initial_download)
   {
@@ -2120,7 +2120,7 @@ int imap_msg_save_hcache(struct Mailbox *m, struct Email *e)
   if (mdata->hcache)
     close_hc = false;
   else
-    mdata->hcache = imap_hcache_open(adata, mdata);
+    imap_hcache_open(adata, mdata);
   rc = imap_hcache_put(mdata, e);
   if (close_hc)
     imap_hcache_close(mdata);
