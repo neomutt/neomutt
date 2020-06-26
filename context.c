@@ -278,12 +278,6 @@ void ctx_update_tables(struct Context *ctx, bool committing)
       if (m->id_hash && m->emails[i]->env->message_id)
         mutt_hash_delete(m->id_hash, m->emails[i]->env->message_id, m->emails[i]);
       mutt_label_hash_remove(m, m->emails[i]);
-      /* The path mx_mbox_check() -> imap_check_mailbox() ->
-       *          imap_expunge_mailbox() -> ctx_update_tables()
-       * can occur before a call to mx_mbox_sync(), resulting in
-       * last_tag being stale if it's not reset here.  */
-      if (ctx->last_tag == m->emails[i])
-        ctx->last_tag = NULL;
       email_free(&m->emails[i]);
     }
   }
@@ -316,10 +310,6 @@ int ctx_mailbox_observer(struct NotifyCallback *nc)
       break;
     case NT_MAILBOX_RESORT:
       mutt_sort_headers(ctx, true);
-      break;
-    case NT_MAILBOX_UNTAG:
-      if (ctx->last_tag && ctx->last_tag->deleted)
-        ctx->last_tag = NULL;
       break;
   }
 

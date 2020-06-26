@@ -39,7 +39,6 @@ struct Context
   off_t vsize;
   char *pattern;                     ///< Limit pattern string
   struct PatternList *limit_pattern; ///< Compiled limit pattern
-  struct Email *last_tag;            ///< Last tagged msg (used to link threads)
   struct MuttThread *tree;           ///< Top of thread tree
   struct HashTable *thread_hash;     ///< Hash Table for threading
   int msg_not_read_yet;              ///< Which msg "new" in pager, -1 if none
