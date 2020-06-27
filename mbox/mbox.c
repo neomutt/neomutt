@@ -1285,7 +1285,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   for (i = first, j = 0; i < m->msg_count; i++)
   {
     if (m->verbose)
-      mutt_progress_update(&progress, i, (int) (ftello(adata->fp) / (m->size / 100 + 1)));
+      mutt_progress_update(&progress, i, i / (m->msg_count / 100 + 1));
     /* back up some information which is needed to restore offsets when
      * something fails.  */
 
