@@ -41,7 +41,7 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "lib.h"
-#include "globals.h"
+#include "mutt_globals.h"
 
 /**
  * struct StoreDbCtx - Berkeley DB context

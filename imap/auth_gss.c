@@ -164,7 +164,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
   }
 
   /* now begin login */
-  mutt_message(_("Authenticating (GSSAPI)..."));
+  mutt_message(_("Authenticating (%s)..."), "GSSAPI");
 
   imap_cmd_start(adata, "AUTHENTICATE GSSAPI");
 

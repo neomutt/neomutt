@@ -35,7 +35,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "lib.h"
-#include "globals.h"
+#include "mutt_globals.h"
 
 /**
  * store_kyotocabinet_open - Implements StoreOps::open()

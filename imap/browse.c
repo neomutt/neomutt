@@ -40,7 +40,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "browser.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "imap/lib.h"

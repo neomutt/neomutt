@@ -33,7 +33,7 @@
 #include <sys/stat.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "muttlib.h"
 #include "options.h"
 #include "protos.h" // IWYU pragma: keep

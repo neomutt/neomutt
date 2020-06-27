@@ -42,7 +42,7 @@
 #include "gui/lib.h"
 #include "monitor.h"
 #include "context.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #ifndef HAVE_INOTIFY_INIT1
 #include <fcntl.h>
 #endif

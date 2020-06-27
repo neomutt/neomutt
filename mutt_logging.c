@@ -39,7 +39,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt_logging.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "muttlib.h"
 #include "options.h"
 

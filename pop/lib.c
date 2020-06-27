@@ -47,7 +47,7 @@
 #include "mutt_socket.h"
 #include "progress.h"
 #ifdef USE_SSL
-#include "globals.h"
+#include "mutt_globals.h"
 #endif
 
 /* These Config Variables are only used in pop/pop_lib.c */
@@ -340,7 +340,7 @@ int pop_open_connection(struct PopAccountData *adata)
 
 #ifdef USE_SSL
   /* Attempt STLS if available and desired. */
-  if (!adata->conn->ssf && (adata->cmd_stls || C_SslForceTls))
+  if ((adata->conn->ssf == 0) && (adata->cmd_stls || C_SslForceTls))
   {
     if (C_SslForceTls)
       adata->use_stls = 2;
@@ -383,7 +383,7 @@ int pop_open_connection(struct PopAccountData *adata)
     }
   }
 
-  if (C_SslForceTls && !adata->conn->ssf)
+  if (C_SslForceTls && (adata->conn->ssf == 0))
   {
     mutt_error(_("Encrypted connection unavailable"));
     return -2;

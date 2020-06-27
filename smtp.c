@@ -44,9 +44,9 @@
 #include "email/lib.h"
 #include "conn/lib.h"
 #include "smtp.h"
-#include "globals.h"
 #include "init.h"
 #include "mutt_account.h"
+#include "mutt_globals.h"
 #include "mutt_socket.h"
 #include "progress.h"
 #include "sendlib.h"
@@ -546,7 +546,7 @@ fail:
  */
 static int smtp_auth_oauth(struct Connection *conn)
 {
-  mutt_message(_("Authenticating (OAUTHBEARER)..."));
+  mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
 
   /* We get the access token from the smtp_oauth_refresh_command */
   char *oauthbearer = mutt_account_getoauthbearer(&conn->account);
@@ -703,7 +703,7 @@ static int smtp_open(struct Connection *conn, bool esmtp)
 
 #ifdef USE_SSL
   enum QuadOption ans = MUTT_NO;
-  if (conn->ssf)
+  if (conn->ssf != 0)
     ans = MUTT_NO;
   else if (C_SslForceTls)
     ans = MUTT_YES;

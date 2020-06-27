@@ -38,7 +38,7 @@
 #include "alias/lib.h"
 #include "sort.h"
 #include "context.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "options.h"

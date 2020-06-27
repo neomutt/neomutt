@@ -41,7 +41,7 @@
 #include "mutt.h"
 #include "context.h"
 #include "copy.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"

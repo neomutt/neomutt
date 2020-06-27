@@ -44,9 +44,9 @@
 #include "mutt_attach.h"
 #include "context.h"
 #include "copy.h"
-#include "globals.h"
 #include "handler.h"
 #include "mailcap.h"
+#include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "options.h"
@@ -1094,7 +1094,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     /* in recv mode, save file to newfile first */
     else
     {
-      if (mutt_save_attachment(fp, a, mutt_b2s(newfile), 0, NULL) == -1)
+      if (mutt_save_attachment(fp, a, mutt_b2s(newfile), MUTT_SAVE_NO_FLAGS, NULL) == -1)
         goto mailcap_cleanup;
     }
 
@@ -1164,7 +1164,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     fp_out = NULL;
 
     mutt_buffer_mktemp(newfile);
-    if (mutt_decode_save_attachment(fp, a, mutt_b2s(newfile), MUTT_PRINTING, 0) == 0)
+    if (mutt_decode_save_attachment(fp, a, mutt_b2s(newfile), MUTT_PRINTING,
+                                    MUTT_SAVE_NO_FLAGS) == 0)
     {
       mutt_debug(LL_DEBUG2, "successfully decoded %s type attachment to %s\n",
                  type, mutt_b2s(newfile));

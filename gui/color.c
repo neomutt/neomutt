@@ -37,10 +37,10 @@
 #include "mutt.h"
 #include "color.h"
 #include "context.h"
-#include "globals.h"
 #include "init.h"
 #include "mutt_commands.h"
 #include "mutt_curses.h"
+#include "mutt_globals.h"
 #include "options.h"
 #include "pattern.h"
 #ifdef USE_SLANG_CURSES

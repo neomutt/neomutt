@@ -46,10 +46,10 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "gui/lib.h"
-#include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"
 #include "globals.h"
+#include "mutt_globals.h"
 #include "options.h"
 #include "socket.h"
 #ifdef HAVE_LIBIDN

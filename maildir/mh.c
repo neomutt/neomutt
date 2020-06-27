@@ -46,8 +46,8 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "errno.h"
-#include "globals.h"
 #include "monitor.h"
+#include "mutt_globals.h"
 #include "mx.h"
 
 /**

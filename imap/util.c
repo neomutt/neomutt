@@ -49,8 +49,8 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
-#include "globals.h"
 #include "mutt_account.h"
+#include "mutt_globals.h"
 #include "options.h"
 #include "bcache/lib.h"
 #include "imap/lib.h"
@@ -195,7 +195,8 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
     size_t dlen = 0;
     void *uidvalidity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12, &dlen);
     void *uidnext = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8, &dlen);
-    unsigned long long *modseq = mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7, &dlen);
+    unsigned long long *modseq =
+        mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7, &dlen);
     if (uidvalidity)
     {
       mdata->uidvalidity = *(uint32_t *) uidvalidity;
@@ -439,14 +440,12 @@ static void imap_hcache_namer(const char *path, struct Buffer *dest)
  * imap_hcache_open - Open a header cache
  * @param adata Imap Account data
  * @param mdata Imap Mailbox data
- * @retval ptr HeaderCache
- * @retval NULL Failure
  */
 void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
 {
   if (!adata || !mdata)
     return;
-  
+
   if (mdata->hcache)
     return;
 

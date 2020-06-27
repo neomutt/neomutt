@@ -37,16 +37,17 @@
 #include "parse.h"
 #include "body.h"
 #include "email.h"
-#include "email_globals.h"
 #include "envelope.h"
 #include "from.h"
+#include "globals.h"
 #include "mime.h"
+#include "mutt_globals.h"
 #include "parameter.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
 #include "url.h"
 #ifdef USE_AUTOCRYPT
-#include "globals.h"
+#include "mutt_globals.h"
 #endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"

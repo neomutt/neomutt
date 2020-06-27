@@ -32,7 +32,7 @@
 #include <wchar.h>
 #include "mutt/lib.h"
 #include "state.h"
-#include "globals.h"
+#include "mutt_globals.h"
 
 /**
  * state_mark_attach - Write a unique marker around content

@@ -48,13 +48,13 @@
 #include "context.h"
 #include "copy.h"
 #include "format_flags.h"
-#include "globals.h"
 #include "hdrline.h"
 #include "hook.h"
 #include "icommands.h"
 #include "init.h"
 #include "keymap.h"
 #include "mutt_commands.h"
+#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mutt_menu.h"
@@ -469,14 +469,14 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   snprintf(scratch, sizeof(scratch),
            ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count), buf);
 
-  if (mutt_strwidth(scratch) > MuttMessageWindow->state.cols - EXTRA_SPACE)
+  if (mutt_strwidth(scratch) > (MuttMessageWindow->state.cols - EXTRA_SPACE))
   {
     mutt_simple_format(prompt, sizeof(prompt), 0, MuttMessageWindow->state.cols - EXTRA_SPACE,
                        JUSTIFY_LEFT, 0, scratch, sizeof(scratch), false);
     mutt_str_cat(prompt, sizeof(prompt), "...?");
   }
   else
-    snprintf(prompt, sizeof(prompt), "%s", scratch);
+    mutt_str_copy(prompt, scratch, sizeof(prompt));
 
   if (query_quadoption(C_Bounce, prompt) != MUTT_YES)
   {
@@ -1302,7 +1302,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   {
     snprintf(tmp, sizeof(tmp), _("Convert to %s upon sending?"),
              mutt_param_get(&b->parameter, "charset"));
-    int ans = mutt_yesorno(tmp, b->noconv ? MUTT_NO : MUTT_YES);
+    enum QuadOption ans = mutt_yesorno(tmp, b->noconv ? MUTT_NO : MUTT_YES);
     if (ans != MUTT_ABORT)
       b->noconv = (ans == MUTT_NO);
   }

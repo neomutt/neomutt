@@ -100,7 +100,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
    * sasl_client_start() may in fact return SASL_OK in this case.  */
   unsigned int client_start = olen;
 
-  mutt_message(_("Authenticating (SASL)..."));
+  mutt_message(_("Authenticating (%s)..."), "SASL");
 
   size_t bufsize = MAX((olen * 2), 1024);
   char *buf = mutt_mem_malloc(bufsize);
@@ -246,7 +246,7 @@ static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *m
     return POP_A_UNAVAIL;
   }
 
-  mutt_message(_("Authenticating (APOP)..."));
+  mutt_message(_("Authenticating (%s)..."), "APOP");
 
   /* Compute the authentication hash to send to the server */
   mutt_md5_init_ctx(&md5ctx);
@@ -343,7 +343,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
   if (!method && !C_PopOauthRefreshCommand)
     return POP_A_UNAVAIL;
 
-  mutt_message(_("Authenticating (OAUTHBEARER)..."));
+  mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
 
   char *oauthbearer = mutt_account_getoauthbearer(&adata->conn->account);
   if (!oauthbearer)

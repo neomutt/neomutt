@@ -32,7 +32,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "context.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "mutt_header.h"
 #include "mutt_thread.h"
 #include "mx.h"

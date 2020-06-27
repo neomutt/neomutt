@@ -37,9 +37,9 @@
 #include "conn/lib.h"
 #include "lib.h"
 #include "context.h"
-#include "globals.h"
 #include "imap/private.h"
 #include "maildir/private.h"
+#include "mutt_globals.h"
 #include "notmuch/private.h"
 #include "pop/private.h"
 #include "compmbox/lib.h"
@@ -1006,7 +1006,7 @@ void dump_graphviz(const char *title)
   mutt_list_free(&links);
 }
 
-void dot_parameter_list(FILE *fp, const char *name, const struct ParameterList *pl)
+static void dot_parameter_list(FILE *fp, const char *name, const struct ParameterList *pl)
 {
   if (!pl)
     return;
@@ -1190,7 +1190,7 @@ static void dot_body(FILE *fp, const struct Body *b, struct ListHead *links, boo
   mutt_buffer_dealloc(&buf);
 }
 
-void dot_list_head(FILE *fp, const char *name, const struct ListHead *list)
+static void dot_list_head(FILE *fp, const char *name, const struct ListHead *list)
 {
   if (!list || !name)
     return;
@@ -1210,8 +1210,8 @@ void dot_list_head(FILE *fp, const char *name, const struct ListHead *list)
   dot_type_string(fp, name, mutt_b2s(&buf), false);
 }
 
-void dot_addr_list(FILE *fp, const char *name, const struct AddressList *al,
-                   struct ListHead *links)
+static void dot_addr_list(FILE *fp, const char *name,
+                          const struct AddressList *al, struct ListHead *links)
 {
   if (!al)
     return;
@@ -1266,9 +1266,12 @@ static void dot_envelope(FILE *fp, const struct Envelope *env, struct ListHead *
   dot_type_string(fp, "x_comment_to", env->x_comment_to, false);
   dot_type_string(fp, "x_label", env->x_label, false);
 
-  // dot_list_head(fp, "references", &env->references);
-  // dot_list_head(fp, "in_reply_to", &env->in_reply_to);
-  // dot_list_head(fp, "userhdrs", &env->userhdrs);
+  if (0)
+  {
+    dot_list_head(fp, "references", &env->references);
+    dot_list_head(fp, "in_reply_to", &env->in_reply_to);
+    dot_list_head(fp, "userhdrs", &env->userhdrs);
+  }
 
 #ifdef USE_AUTOCRYPT
   dot_ptr(fp, "autocrypt", env->autocrypt, NULL);

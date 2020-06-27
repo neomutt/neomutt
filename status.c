@@ -37,7 +37,7 @@
 #include "status.h"
 #include "context.h"
 #include "format_flags.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "mutt_mailbox.h"
 #include "mutt_menu.h"
 #include "muttlib.h"

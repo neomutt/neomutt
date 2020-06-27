@@ -49,7 +49,7 @@
 #include "mutt.h"
 #include "lib.h"
 #include "copy.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "mutt_header.h"
 #include "muttlib.h"
 #include "mx.h"

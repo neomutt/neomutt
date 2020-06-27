@@ -45,7 +45,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "message.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "muttlib.h"

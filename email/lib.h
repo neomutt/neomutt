@@ -29,10 +29,10 @@
  * | :--------------------- | :----------------------- |
  * | email/attach.c         | @subpage email_attach    |
  * | email/body.c           | @subpage email_body      |
- * | email/email_globals.c  | @subpage email_globals   |
+ * | email/email.c          | @subpage email_email     |
  * | email/envelope.c       | @subpage email_envelope  |
  * | email/from.c           | @subpage email_from      |
- * | email/email.c          | @subpage email_email     |
+ * | email/globals.c        | @subpage email_globals   |
  * | email/mime.c           | @subpage email_mime      |
  * | email/parameter.c      | @subpage email_parameter |
  * | email/parse.c          | @subpage email_parse     |
@@ -51,9 +51,9 @@
 #include "body.h"
 #include "content.h"
 #include "email.h"
-#include "email_globals.h"
 #include "envelope.h"
 #include "from.h"
+#include "globals.h"
 #include "mime.h"
 #include "parameter.h"
 #include "parse.h"

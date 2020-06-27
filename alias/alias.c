@@ -46,8 +46,8 @@
 #include "mutt.h"
 #include "alias.h"
 #include "lib.h"
-#include "globals.h"
 #include "maillist.h"
+#include "mutt_globals.h"
 #include "muttlib.h"
 #include "reverse.h"
 #include "sendlib.h"
@@ -366,7 +366,7 @@ struct AddressList *mutt_get_address(struct Envelope *env, const char **prefix)
 void alias_create(struct AddressList *al)
 {
   struct Address *addr = NULL;
-  char buf[1024], tmp[1024] = { 0 }, prompt[128];
+  char buf[1024], tmp[1024] = { 0 }, prompt[2048];
   char *pc = NULL;
   char *err = NULL;
   char fixed[1024];

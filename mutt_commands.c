@@ -37,9 +37,9 @@
 #include "mutt.h"
 #include "mutt_commands.h"
 #include "command_parse.h"
-#include "globals.h"
 #include "hook.h"
 #include "keymap.h"
+#include "mutt_globals.h"
 #include "mutt_lua.h"
 #include "score.h"
 

@@ -54,7 +54,7 @@ enum ImapAuthRes imap_auth_anon(struct ImapAccountData *adata, const char *metho
   if (adata->conn->account.user[0] != '\0')
     return IMAP_AUTH_UNAVAIL;
 
-  mutt_message(_("Authenticating (anonymous)..."));
+  mutt_message(_("Authenticating (%s)..."), "anonymous");
 
   imap_cmd_start(adata, "AUTHENTICATE ANONYMOUS");
 

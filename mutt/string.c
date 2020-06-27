@@ -550,15 +550,10 @@ char *mutt_strn_copy(char *dest, const char *src, size_t len, size_t dsize)
  */
 char *mutt_strn_dup(const char *begin, size_t len)
 {
-  char *p = NULL;
-
   if (!begin)
-  {
-    mutt_debug(LL_DEBUG1, "%s: ERROR: 'begin' is NULL\n", __func__);
     return NULL;
-  }
 
-  p = mutt_mem_malloc(len + 1);
+  char *p = mutt_mem_malloc(len + 1);
   memcpy(p, begin, len);
   p[len] = '\0';
   return p;

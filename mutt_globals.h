@@ -27,15 +27,15 @@
 #include <signal.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "alias/lib.h"
 #include "keymap.h"
 #include "where.h"
-#include "alias/lib.h"
 
 #ifdef MAIN_C
 /* so that global vars get included */
 #include "mx.h"
-#include "ncrypt/lib.h"
 #include "sort.h"
+#include "ncrypt/lib.h"
 #endif /* MAIN_C */
 
 WHERE struct Colors    *Colors; ///< Wrapper around the user's colour settings

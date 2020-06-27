@@ -34,7 +34,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "context.h"
-#include "globals.h"
+#include "mutt_globals.h"
 
 extern const struct Mapping Fields[];
 extern const struct Mapping ComposeFields[];

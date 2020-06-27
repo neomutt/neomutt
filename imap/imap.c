@@ -46,10 +46,10 @@
 #include "lib.h"
 #include "auth.h"
 #include "commands.h"
-#include "globals.h"
 #include "hook.h"
 #include "init.h"
 #include "message.h"
+#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "muttlib.h"
@@ -725,7 +725,7 @@ int imap_open_connection(struct ImapAccountData *adata)
     }
 #ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
-    if (!adata->conn->ssf && (C_SslForceTls || (adata->capabilities & IMAP_CAP_STARTTLS)))
+    if ((adata->conn->ssf == 0) && (C_SslForceTls || (adata->capabilities & IMAP_CAP_STARTTLS)))
     {
       enum QuadOption ans;
 
@@ -761,7 +761,7 @@ int imap_open_connection(struct ImapAccountData *adata)
       }
     }
 
-    if (C_SslForceTls && !adata->conn->ssf)
+    if (C_SslForceTls && (adata->conn->ssf == 0))
     {
       mutt_error(_("Encrypted connection unavailable"));
       goto err_close_conn;
@@ -1810,7 +1810,7 @@ int imap_login(struct ImapAccountData *adata)
     {
       adata->state = IMAP_AUTHENTICATED;
       FREE(&adata->capstr);
-      if (adata->conn->ssf)
+      if (adata->conn->ssf != 0)
       {
         mutt_debug(LL_DEBUG2, "Communication encrypted at %d bits\n",
                    adata->conn->ssf);

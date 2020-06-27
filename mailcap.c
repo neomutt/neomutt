@@ -39,8 +39,8 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "mailcap.h"
-#include "globals.h"
 #include "mutt_attach.h"
+#include "mutt_globals.h"
 #include "muttlib.h"
 #include "protos.h"
 

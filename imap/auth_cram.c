@@ -104,7 +104,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
   if (!(adata->capabilities & IMAP_CAP_AUTH_CRAM_MD5))
     return IMAP_AUTH_UNAVAIL;
 
-  mutt_message(_("Authenticating (CRAM-MD5)..."));
+  mutt_message(_("Authenticating (%s)..."), "CRAM-MD5");
 
   /* get auth info */
   if (mutt_account_getlogin(&adata->conn->account) < 0)

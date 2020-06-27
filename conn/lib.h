@@ -28,8 +28,8 @@
  * | File                | Description              |
  * | :------------------ | :----------------------- |
  * | conn/connaccount.c  | @subpage conn_account    |
- * | conn/conn_globals.c | @subpage conn_globals    |
  * | conn/getdomain.c    | @subpage conn_getdomain  |
+ * | conn/globals.c      | @subpage conn_globals    |
  * | conn/gnutls.c       | @subpage conn_gnutls     |
  * | conn/gui.c          | @subpage conn_gui        |
  * | conn/openssl.c      | @subpage conn_openssl    |
@@ -46,9 +46,9 @@
 
 #include "config.h"
 // IWYU pragma: begin_exports
-#include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"
+#include "globals.h"
 #include "sasl_plain.h"
 #include "socket.h"
 #ifdef USE_SASL

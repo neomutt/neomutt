@@ -47,9 +47,9 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
-#include "globals.h"
 #include "hook.h"
 #include "init.h"
+#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_parse.h"
 #include "mutt_socket.h"
@@ -1886,8 +1886,9 @@ int nntp_open_connection(struct NntpAccountData *adata)
     if (adata->use_tls == 0)
     {
       adata->use_tls =
-          C_SslForceTls || query_quadoption(C_SslStarttls,
-                                            _("Secure connection with TLS?")) == MUTT_YES ?
+          C_SslForceTls ||
+                  (query_quadoption(C_SslStarttls,
+                                    _("Secure connection with TLS?")) == MUTT_YES) ?
               2 :
               1;
     }

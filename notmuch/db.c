@@ -38,7 +38,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "lib.h"
-#include "globals.h"
+#include "mutt_globals.h"
 #include "mutt_logging.h"
 
 /**
