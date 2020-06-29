@@ -982,7 +982,10 @@ static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *
     c1 = strchr(c, ':');
     if (c1 == c)
       continue;
-    tcode[i] = mutt_strn_dup(c, c1 - c);
+    if (c1)
+      tcode[i] = mutt_strn_dup(c, c1 - c);
+    else
+      tcode[i] = mutt_str_dup(c);
   }
 
   ret = (size_t)(-1);
@@ -994,7 +997,10 @@ static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *
       c1 = strchr(c, ':');
       if (c1 == c)
         continue;
-      fcode = mutt_strn_dup(c, c1 - c);
+      if (c1)
+        fcode = mutt_strn_dup(c, c1 - c);
+      else
+        fcode = mutt_str_dup(c);
 
       ret = convert_file_to(fp, fcode, ncodes, (char const *const *) tcode, &cn, info);
       if (ret != (size_t)(-1))
