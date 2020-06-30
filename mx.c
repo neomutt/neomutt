@@ -155,6 +155,9 @@ const struct MxOps *mx_get_ops(enum MailboxType type)
  */
 static bool mutt_is_spool(const char *str)
 {
+  if (mutt_str_equal(str, C_Spoolfile))
+    return true;
+
   struct Url *ua = url_parse(str);
   struct Url *ub = url_parse(C_Spoolfile);
 
