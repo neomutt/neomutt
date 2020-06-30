@@ -98,6 +98,7 @@ struct SmtpAccountData
   const char *auth_mechs;    ///< Allowed authorisation mechanisms
   SmtpCapFlags capabilities; ///< Server capabilities
   struct Connection *conn;   ///< Server Connection
+  const char *fqdn;          ///< Fully-qualified domain name
 };
 
 /**
@@ -377,12 +378,8 @@ static int smtp_helo(struct SmtpAccountData *adata, bool esmtp)
 #endif
   }
 
-  const char *fqdn = mutt_fqdn(false);
-  if (!fqdn)
-    fqdn = NONULL(ShortHostname);
-
   char buf[1024];
-  snprintf(buf, sizeof(buf), "%s %s\r\n", esmtp ? "EHLO" : "HELO", fqdn);
+  snprintf(buf, sizeof(buf), "%s %s\r\n", esmtp ? "EHLO" : "HELO", adata->fqdn);
   /* XXX there should probably be a wrapper in mutt_socket.c that
    * repeatedly calls adata->conn->write until all data is sent.  This
    * currently doesn't check for a short write.  */
@@ -735,6 +732,10 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
   const char *envfrom = NULL;
   char buf[1024];
   int rc = -1;
+
+  adata.fqdn = mutt_fqdn(false);
+  if (!adata.fqdn)
+    adata.fqdn = NONULL(ShortHostname);
 
   /* it might be better to synthesize an envelope from from user and host
    * but this condition is most likely arrived at accidentally */
