@@ -2475,6 +2475,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 Asks for an external Unix command and pipes the current or
                 tagged message(s) to it. The variables
                 <link linkend="pipe-decode">$pipe_decode</link>,
+                <link linkend="pipe-decode-weed">$pipe_decode_weed</link>,
                 <link linkend="pipe-split">$pipe_split</link>,
                 <link linkend="pipe-sep">$pipe_sep</link> and
                 <link linkend="wait-key">$wait_key</link> control the exact

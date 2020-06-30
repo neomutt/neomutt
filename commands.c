@@ -526,7 +526,7 @@ static void pipe_set_flags(bool decode, bool print, CopyMessageFlags *cmflags,
     *chflags |= CH_DECODE | CH_REORDER;
     *cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
 
-    if (C_Weed)
+    if (print ? C_PrintDecodeWeed : C_PipeDecodeWeed)
     {
       *chflags |= CH_WEED;
       *cmflags |= MUTT_CM_WEED;
@@ -974,7 +974,7 @@ static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
     {
       *chflags |= CH_DECODE; /* then decode RFC2047 headers, */
 
-      if (C_Weed)
+      if (C_CopyDecodeWeed)
       {
         *chflags |= CH_WEED; /* and respect $weed. */
         *cmflags |= MUTT_CM_WEED;

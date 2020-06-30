@@ -144,6 +144,7 @@ WHERE bool C_BeepNew;                        ///< Config: Make a noise when new 
 WHERE bool C_BrailleFriendly;                ///< Config: Move the cursor to the beginning of the line
 WHERE bool C_Confirmappend;                  ///< Config: Confirm before appending emails to a mailbox
 WHERE bool C_Confirmcreate;                  ///< Config: Confirm before creating a new mailbox
+WHERE bool C_CopyDecodeWeed;                 ///< Config: Controls whether to weed headers when copying or saving emails
 WHERE bool C_DeleteUntag;                    ///< Config: Untag messages when they are marked for deletion
 WHERE bool C_EditHeaders;                    ///< Config: Let the user edit the email headers whilst editing an email
 WHERE bool C_FlagSafe;                       ///< Config: Protect flagged messages from deletion
@@ -153,6 +154,8 @@ WHERE bool C_Header;                         ///< Config: Include the message he
 WHERE bool C_Help;                           ///< Config: Display a help line with common key bindings
 WHERE bool C_MailCheckRecent;                ///< Config: Notify the user about new mail since the last time the mailbox was opened
 WHERE bool C_Markers;                        ///< Config: Display a '+' at the beginning of wrapped lines in the pager
+WHERE bool C_PipeDecodeWeed;                 ///< Config: Control whether to weed headers when piping an email
+WHERE bool C_PrintDecodeWeed;                ///< Config: Control whether to weed headers when printing an email
 WHERE bool C_ReadOnly;                       ///< Config: Open folders in read-only mode
 WHERE bool C_Resolve;                        ///< Config: Move to the next email whenever a command modifies an email
 WHERE bool C_ResumeDraftFiles;               ///< Config: Process draft files like postponed messages

@@ -618,6 +618,13 @@
 ** $$save_name, $$force_name and "$fcc-hook".
 */
 
+{ "copy_decode_weed", DT_BOOL, false },
+/*
+** .pp
+** Controls whether NeoMutt will weed headers when invoking the
+** \fC<decode-copy>\fP or \fC<decode-save>\fP functions.
+*/
+
 { "crypt_autoencrypt", DT_BOOL, false },
 /*
 ** .pp
@@ -1707,7 +1714,7 @@
 { "imap_deflate", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, mutt will use the COMPRESS=DEFLATE extension (RFC4978)
+** When \fIset\fP, NeoMutt will use the COMPRESS=DEFLATE extension (RFC4978)
 ** if advertised by the server.
 ** .pp
 ** In general a good compression efficiency can be achieved, which
@@ -3205,10 +3212,19 @@
 { "pipe_decode", DT_BOOL, false },
 /*
 ** .pp
-** Used in connection with the \fC<pipe-message>\fP command.  When \fIunset\fP,
+** Used in connection with the \fC<pipe-message>\fP function.  When \fIunset\fP,
 ** NeoMutt will pipe the messages without any preprocessing. When \fIset\fP, NeoMutt
-** will weed headers and will attempt to decode the messages
-** first.
+** will attempt to decode the messages first.
+** .pp
+** Also see $$pipe_decode_weed, which controls whether headers will
+** be weeded when this is \fIset\fP.
+*/
+
+{ "pipe_decode_weed", DT_BOOL, true },
+/*
+** .pp
+** For \fC<pipe-message>\fP, when $$pipe_decode is set, this further
+** controls whether NeoMutt will weed headers.
 */
 
 { "pipe_sep", DT_STRING, "\n" },
@@ -3430,19 +3446,29 @@
 { "print_decode", DT_BOOL, true },
 /*
 ** .pp
-** Used in connection with the \fC<print-message>\fP command.  If this
+** Used in connection with the \fC<print-message>\fP function.  If this
 ** option is \fIset\fP, the message is decoded before it is passed to the
 ** external command specified by $$print_command.  If this option
 ** is \fIunset\fP, no processing will be applied to the message when
 ** printing it.  The latter setting may be useful if you are using
 ** some advanced printer filter which is able to properly format
 ** e-mail messages for printing.
+** .pp
+** Also see $$print_decode_weed, which controls whether headers will
+** be weeded when this is \fIset\fP.
+*/
+
+{ "print_decode_weed", DT_BOOL, true },
+/*
+** .pp
+** For \fC<print-message>\fP, when $$print_decode is set, this
+** further controls whether NeoMutt will weed headers.
 */
 
 { "print_split", DT_BOOL, false },
 /*
 ** .pp
-** Used in connection with the \fC<print-message>\fP command.  If this option
+** Used in connection with the \fC<print-message>\fP function.  If this option
 ** is \fIset\fP, the command specified by $$print_command is executed once for
 ** each message which is to be printed.  If this option is \fIunset\fP,
 ** the command specified by $$print_command is executed only once, and
@@ -5254,7 +5280,9 @@
 /*
 ** .pp
 ** When \fIset\fP, NeoMutt will weed headers when displaying, forwarding,
-** printing, or replying to messages.
+** or replying to messages.
+** .pp
+** Also see $$copy_decode_weed, $$pipe_decode_weed, $$print_decode_weed.
 */
 
 { "wrap", DT_NUMBER, 0 },
@@ -5292,14 +5320,14 @@
 { "write_bcc", DT_BOOL, false },
 /*
 ** .pp
-** Controls whether mutt writes out the ``Bcc:'' header when
+** Controls whether NeoMutt writes out the ``Bcc:'' header when
 ** preparing messages to be sent.  Some MTAs, such as Exim and
 ** Courier, do not strip the ``Bcc:'' header; so it is advisable to
 ** leave this unset unless you have a particular need for the header
 ** to be in the sent message.
 ** .pp
-** If mutt is set to deliver directly via SMTP(see $$smtp_url),
-** this option does nothing: mutt will never write out the ``Bcc:''
+** If NeoMutt is set to deliver directly via SMTP(see $$smtp_url),
+** this option does nothing: NeoMutt will never write out the ``Bcc:''
 ** header in this case.
 ** .pp
 ** Note this option only affects the sending of messages.  Fcc'ed
