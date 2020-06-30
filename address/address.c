@@ -1214,6 +1214,53 @@ size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *l
 }
 
 /**
+ * mutt_addrlist_write_file - Wrapper for mutt_write_address()
+ * @param al      Address list
+ * @param fp      File to write to
+ * @param linelen Line length to use
+ * @param display True if these addresses will be displayed to the user
+ *
+ * So we can handle very large recipient lists without needing a huge temporary
+ * buffer in memory
+ */
+void mutt_addrlist_write_file(const struct AddressList *al, FILE *fp, int linelen, bool display)
+{
+  char buf[1024];
+  int count = 0;
+
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
+  {
+    buf[0] = '\0';
+    mutt_addr_write(buf, sizeof(buf), a, display);
+    size_t len = mutt_str_len(buf);
+    if (count && (linelen + len > 74))
+    {
+      fputs("\n\t", fp);
+      linelen = len + 8; /* tab is usually about 8 spaces... */
+    }
+    else
+    {
+      if (count && a->mailbox)
+      {
+        fputc(' ', fp);
+        linelen++;
+      }
+      linelen += len;
+    }
+    fputs(buf, fp);
+    struct Address *next = TAILQ_NEXT(a, entries);
+    if (!a->group && next && next->mailbox)
+    {
+      linelen++;
+      fputc(',', fp);
+    }
+    count++;
+  }
+  fputc('\n', fp);
+}
+
+/**
  * mutt_addr_to_intl - Convert an Address to Punycode
  * @param a Address to convert
  * @retval bool True on success, false otherwise

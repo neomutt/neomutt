@@ -959,8 +959,8 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, char *d
  * @param[out] h  Array of header strings
  * @param[in]  al AddressList
  *
- * This function is the equivalent of mutt_write_addrlist(), but writes to
- * a buffer instead of writing to a stream.  mutt_write_addrlist could be
+ * This function is the equivalent of mutt_addrlist_write_file(), but writes to
+ * a buffer instead of writing to a stream.  mutt_addrlist_write_file could be
  * re-used if we wouldn't store all the decoded headers in a huge array, first.
  *
  * TODO fix that.

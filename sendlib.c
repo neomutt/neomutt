@@ -1769,53 +1769,6 @@ struct Body *mutt_remove_multipart(struct Body *b)
 }
 
 /**
- * mutt_write_addrlist - Wrapper for mutt_write_address()
- * @param al      Address list
- * @param fp      File to write to
- * @param linelen Line length to use
- * @param display True if these addresses will be displayed to the user
- *
- * So we can handle very large recipient lists without needing a huge temporary
- * buffer in memory
- */
-void mutt_write_addrlist(struct AddressList *al, FILE *fp, int linelen, bool display)
-{
-  char buf[1024];
-  int count = 0;
-
-  struct Address *a = NULL;
-  TAILQ_FOREACH(a, al, entries)
-  {
-    buf[0] = '\0';
-    mutt_addr_write(buf, sizeof(buf), a, display);
-    size_t len = mutt_str_len(buf);
-    if (count && (linelen + len > 74))
-    {
-      fputs("\n\t", fp);
-      linelen = len + 8; /* tab is usually about 8 spaces... */
-    }
-    else
-    {
-      if (count && a->mailbox)
-      {
-        fputc(' ', fp);
-        linelen++;
-      }
-      linelen += len;
-    }
-    fputs(buf, fp);
-    struct Address *next = TAILQ_NEXT(a, entries);
-    if (!a->group && next && next->mailbox)
-    {
-      linelen++;
-      fputc(',', fp);
-    }
-    count++;
-  }
-  fputc('\n', fp);
-}
-
-/**
  * mutt_write_references - Add the message references to a list
  * @param r    String List of references
  * @param fp   File to write to
@@ -2335,7 +2288,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   if (!TAILQ_EMPTY(&env->to))
   {
     fputs("To: ", fp);
-    mutt_write_addrlist(&env->to, fp, 4, false);
+    mutt_addrlist_write_file(&env->to, fp, 4, false);
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
 #ifdef USE_NNTP
@@ -2346,7 +2299,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   if (!TAILQ_EMPTY(&env->cc))
   {
     fputs("Cc: ", fp);
-    mutt_write_addrlist(&env->cc, fp, 4, false);
+    mutt_addrlist_write_file(&env->cc, fp, 4, false);
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
 #ifdef USE_NNTP
@@ -2361,7 +2314,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
         ((mode == MUTT_WRITE_HEADER_NORMAL) && C_WriteBcc))
     {
       fputs("Bcc: ", fp);
-      mutt_write_addrlist(&env->bcc, fp, 5, false);
+      mutt_addrlist_write_file(&env->bcc, fp, 5, false);
     }
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
@@ -2406,7 +2359,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   if (!TAILQ_EMPTY(&env->reply_to))
   {
     fputs("Reply-To: ", fp);
-    mutt_write_addrlist(&env->reply_to, fp, 10, false);
+    mutt_addrlist_write_file(&env->reply_to, fp, 10, false);
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
     fputs("Reply-To:\n", fp);
@@ -2418,7 +2371,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 #endif
     {
       fputs("Mail-Followup-To: ", fp);
-      mutt_write_addrlist(&env->mail_followup_to, fp, 18, false);
+      mutt_addrlist_write_file(&env->mail_followup_to, fp, 18, false);
     }
   }
 
@@ -3074,7 +3027,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
     fprintf(fp_tmp, "Resent-Message-ID: %s\n", msgid_str);
     FREE(&msgid_str);
     fputs("Resent-To: ", fp_tmp);
-    mutt_write_addrlist(to, fp_tmp, 11, false);
+    mutt_addrlist_write_file(to, fp_tmp, 11, false);
     mutt_copy_header(fp, e, fp_tmp, chflags, NULL, 0);
     fputc('\n', fp_tmp);
     mutt_file_copy_bytes(fp, fp_tmp, e->content->length);
