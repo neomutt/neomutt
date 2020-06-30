@@ -119,3 +119,29 @@ bool mutt_body_cmp_strict(const struct Body *b1, const struct Body *b2)
   }
   return true;
 }
+
+/**
+ * mutt_body_get_charset - Get a body's character set
+ * @param b      Body to examine
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
+ * @retval ptr  Buffer containing character set
+ * @retval NULL On error, or if not a text type
+ */
+char *mutt_body_get_charset(struct Body *b, char *buf, size_t buflen)
+{
+  char *p = NULL;
+
+  if (b && (b->type != TYPE_TEXT))
+    return NULL;
+
+  if (b)
+    p = mutt_param_get(&b->parameter, "charset");
+
+  if (p)
+    mutt_ch_canonical_charset(buf, buflen, p);
+  else
+    mutt_str_copy(buf, "us-ascii", buflen);
+
+  return buf;
+}
