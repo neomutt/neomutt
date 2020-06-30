@@ -4066,14 +4066,10 @@ static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool sta
   struct MuttWindow *win_index =
       mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  win_index->notify = notify_new();
-  notify_set_parent(win_index->notify, parent->notify);
 
   struct MuttWindow *win_ibar =
       mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  win_ibar->notify = notify_new();
-  notify_set_parent(win_ibar->notify, parent->notify);
 
   if (status_on_top)
   {
@@ -4106,15 +4102,11 @@ static struct MuttWindow *create_panel_pager(struct MuttWindow *parent, bool sta
       mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   win_pager->state.visible = false;
-  win_pager->notify = notify_new();
-  notify_set_parent(win_pager->notify, parent->notify);
 
   struct MuttWindow *win_pbar =
       mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   win_pbar->state.visible = false;
-  win_pbar->notify = notify_new();
-  notify_set_parent(win_pbar->notify, parent->notify);
 
   if (status_on_top)
   {
@@ -4141,8 +4133,6 @@ static struct MuttWindow *create_panel_sidebar(struct MuttWindow *parent)
       mutt_window_new(WT_SIDEBAR, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
                       C_SidebarWidth, MUTT_WIN_SIZE_UNLIMITED);
   win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
-  win_sidebar->notify = notify_new();
-  notify_set_parent(win_sidebar->notify, parent->notify);
 
   return win_sidebar;
 }
@@ -4156,7 +4146,6 @@ struct MuttWindow *index_pager_init(void)
   struct MuttWindow *dlg =
       mutt_window_new(WT_DLG_INDEX, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  dlg->notify = notify_new();
   notify_observer_add(NeoMutt->notify, mutt_dlgindex_observer, dlg);
 
   struct MuttWindow *win_sidebar = create_panel_sidebar(dlg);
@@ -4198,6 +4187,8 @@ void index_pager_shutdown(struct MuttWindow *dlg)
     return;
 
   notify_observer_remove(NeoMutt->notify, sb_observer, win_sidebar);
+
+  notify_observer_remove(NeoMutt->notify, mutt_dlgindex_observer, dlg);
 }
 
 /**

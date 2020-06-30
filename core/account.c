@@ -49,7 +49,6 @@ struct Account *account_new(const char *name, struct ConfigSubset *sub)
 
   STAILQ_INIT(&a->mailboxes);
   a->notify = notify_new();
-  notify_set_parent(a->notify, NeoMutt->notify);
   a->name = mutt_str_dup(name);
   a->sub = cs_subset_new(name, sub, a->notify);
   a->sub->cs = sub->cs;
@@ -106,6 +105,7 @@ bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
     {
       struct EventMailbox ev_m = { m };
       notify_send(a->notify, NT_MAILBOX, NT_MAILBOX_REMOVE, &ev_m);
+      notify_set_parent(a->notify, NULL);
       STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
       if (!m)
         mailbox_free(&np->mailbox);

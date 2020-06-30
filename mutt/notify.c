@@ -81,7 +81,7 @@ void notify_free(struct Notify **ptr)
  */
 void notify_set_parent(struct Notify *notify, struct Notify *parent)
 {
-  if (!notify || !parent)
+  if (!notify)
     return;
 
   notify->parent = parent;
