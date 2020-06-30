@@ -576,6 +576,20 @@ $(PWD)/sidebar:
 @endif
 
 ###############################################################################
+# libpreview
+LIBPREVIEW=	libpreview.a
+LIBPREVIEWOBJS=	preview/preview.o preview/commands.o preview/functions.o \
+		preview/observer.o preview/wdata.o
+CLEANFILES+=	$(LIBPREVIEW) $(LIBPREVIEWOBJS)
+ALLOBJS+=	$(LIBPREVIEWOBJS)
+
+$(LIBPREVIEW): $(PWD)/preview $(LIBPREVIEWOBJS)
+	$(AR) cr $@ $(LIBPREVIEWOBJS)
+	$(RANLIB) $@
+$(PWD)/preview:
+	$(MKDIR_P) $(PWD)/preview
+
+###############################################################################
 # libstore
 @if HAVE_BDB
 LIBSTOREOBJS+=	store/bdb.o
@@ -640,7 +654,7 @@ $(ALLOBJS):
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) $(LIBNNTP) $(LIBCOMPMBOX) \
 		$(LIBSTORE) $(LIBPATTERN) $(LIBGUI) $(LIBHELPBAR) $(LIBMBOX) \
 		$(LIBNOTMUCH) $(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) \
-		$(LIBHCACHE)  $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) \
+		$(LIBHCACHE)  $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBPREVIEW) $(LIBBCACHE) \
 		$(LIBHISTORY) $(LIBALIAS) $(LIBSEND) $(LIBCOMPOSE) $(LIBCORE) $(LIBCONFIG) \
 		$(LIBEMAIL) $(LIBADDRESS) $(LIBDEBUG) $(LIBMUTT)
 
