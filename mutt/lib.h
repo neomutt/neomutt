@@ -47,6 +47,7 @@
  * | mutt/path.c      | @subpage path      |
  * | mutt/pool.c      | @subpage pool      |
  * | mutt/prex.c      | @subpage prex      |
+ * | mutt/random.c    | @subpage random    |
  * | mutt/regex.c     | @subpage regex     |
  * | mutt/slist.c     | @subpage slist     |
  * | mutt/signal.c    | @subpage signal    |
@@ -83,6 +84,7 @@
 #include "pool.h"
 #include "prex.h"
 #include "queue.h"
+#include "random.h"
 #include "regex3.h"
 #include "signal2.h"
 #include "slist.h"

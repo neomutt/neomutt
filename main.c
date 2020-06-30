@@ -409,10 +409,6 @@ int main(int argc, char *argv[], char *envp[])
 
   init_locale();
 
-  int out = 0;
-  if (mutt_randbuf(&out, sizeof(out)) < 0)
-    goto main_exit; // TEST02: neomutt (as root on non-Linux OS, rename /dev/urandom)
-
   umask(077);
 
   mutt_envlist_init(envp);

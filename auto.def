@@ -319,6 +319,7 @@ if {1} {
     ioctl.h \
     sys/ioctl.h \
     syscall.h \
+    sys/random.h \
     sys/syscall.h \
     sysexits.h
 
@@ -327,6 +328,7 @@ if {1} {
     fgetc_unlocked \
     futimens \
     getaddrinfo \
+    getrandom \
     getsid \
     iswblank \
     mkdtemp \

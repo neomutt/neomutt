@@ -69,10 +69,6 @@
 /* These Config Variables are only used in muttlib.c */
 struct Regex *C_GecosMask; ///< Config: Regex for parsing GECOS field of /etc/passwd
 
-static FILE *fp_random;
-
-static const unsigned char base32[] = "abcdefghijklmnopqrstuvwxyz234567";
-
 static const char *xdg_env_vars[] = {
   [XDG_CONFIG_HOME] = "XDG_CONFIG_HOME",
   [XDG_CONFIG_DIRS] = "XDG_CONFIG_DIRS",
@@ -458,92 +454,6 @@ bool mutt_is_text_part(struct Body *b)
   }
 
   return false;
-}
-
-/**
- * mutt_randbuf - Fill a buffer with randomness
- * @param buf    Buffer for result
- * @param buflen Size of buffer
- * @retval  0 Success
- * @retval -1 Error
- */
-int mutt_randbuf(void *buf, size_t buflen)
-{
-  if (buflen > 1048576)
-  {
-    mutt_error(_("mutt_randbuf buflen=%zu"), buflen);
-    return -1;
-  }
-/* XXX switch to HAVE_GETRANDOM and getrandom() in about 2017 */
-#if defined(SYS_getrandom) && defined(__linux__)
-  long ret;
-  do
-  {
-    ret = syscall(SYS_getrandom, buf, buflen, 0, 0, 0, 0);
-  } while ((ret == -1) && (errno == EINTR));
-  if (ret == buflen)
-    return 0;
-#endif
-  /* let's try urandom in case we're on an old kernel, or the user has
-   * configured selinux, seccomp or something to not allow getrandom */
-  if (!fp_random)
-  {
-    fp_random = fopen("/dev/urandom", "rb");
-    if (!fp_random)
-    {
-      mutt_error(_("open /dev/urandom: %s"), strerror(errno));
-      return -1;
-    }
-    setbuf(fp_random, NULL);
-  }
-  if (fread(buf, 1, buflen, fp_random) != buflen)
-  {
-    mutt_error(_("read /dev/urandom: %s"), strerror(errno));
-    return -1;
-  }
-
-  return 0;
-}
-
-/**
- * mutt_rand_base32 - Fill a buffer with a base32-encoded random string
- * @param buf    Buffer for result
- * @param buflen Length of buffer
- */
-void mutt_rand_base32(void *buf, size_t buflen)
-{
-  uint8_t *p = buf;
-
-  if (mutt_randbuf(p, buflen) < 0)
-    mutt_exit(1);
-  for (size_t pos = 0; pos < buflen; pos++)
-    p[pos] = base32[p[pos] % 32];
-}
-
-/**
- * mutt_rand32 - Create a 32-bit random number
- * @retval num Random number
- */
-uint32_t mutt_rand32(void)
-{
-  uint32_t num = 0;
-
-  if (mutt_randbuf(&num, sizeof(num)) < 0)
-    mutt_exit(1);
-  return num;
-}
-
-/**
- * mutt_rand64 - Create a 64-bit random number
- * @retval num Random number
- */
-uint64_t mutt_rand64(void)
-{
-  uint64_t num = 0;
-
-  if (mutt_randbuf(&num, sizeof(num)) < 0)
-    mutt_exit(1);
-  return num;
 }
 
 /**

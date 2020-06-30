@@ -62,10 +62,6 @@ void        mutt_mktemp_full(char *s, size_t slen, const char *prefix, const cha
 bool        mutt_needs_mailcap(struct Body *m);
 FILE *      mutt_open_read(const char *path, pid_t *thepid);
 void        mutt_pretty_mailbox(char *buf, size_t buflen);
-uint32_t    mutt_rand32(void);
-uint64_t    mutt_rand64(void);
-void        mutt_rand_base32(void *out, size_t len);
-int         mutt_randbuf(void *out, size_t len);
 void        mutt_safe_path(struct Buffer *dest, const struct Address *a);
 int         mutt_save_confirm(const char *s, struct stat *st);
 void        mutt_save_path(char *d, size_t dsize, const struct Address *a);
