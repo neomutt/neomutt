@@ -5,6 +5,14 @@
 
 #include "private.h"
 
+void preview_win_init(struct MuttWindow *dlg)
+{
+}
+
+void preview_win_shutdown(struct MuttWindow *dlg)
+{
+}
+
 void preview_init(void)
 {
   notify_observer_add(NeoMutt->notify, NT_WINDOW, preview_insertion_observer, NULL);
