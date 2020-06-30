@@ -2569,7 +2569,7 @@ const char *mutt_fqdn(bool may_hide_host)
 static char *gen_msgid(void)
 {
   char buf[128];
-  unsigned char rndid[MUTT_RANDTAG_LEN + 1];
+  char rndid[MUTT_RANDTAG_LEN + 1];
 
   mutt_rand_base32(rndid, sizeof(rndid) - 1);
   rndid[MUTT_RANDTAG_LEN] = 0;
