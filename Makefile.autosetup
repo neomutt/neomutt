@@ -64,7 +64,7 @@ default:	all
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	browser.o commands.o command_parse.o \
-		complete.o compose.o conststrings.o context.o copy.o edit.o \
+		complete.o compose.o conststrings.o context.o copy.o \
 		editmsg.o enriched.o enter.o flags.o functions.o git_ver.o \
 		handler.o hdrline.o help.o hook.o icommands.o index.o init.o \
 		keymap.o mailcap.o maillist.o main.o menu.o muttlib.o mutt_account.o \

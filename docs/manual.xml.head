@@ -281,8 +281,7 @@ vim: ts=2 sw=2 sts=2 expandtab:
       </para>
       <para>
         Besides an interactive mode, NeoMutt can also be used as a command-line
-        tool to send messages. It also supports
-        a <literal>mailx(1)</literal>-compatible interface, see
+        tool to send messages. See
         <xref linkend="tab-commandline-options" /> for a complete list of
         command-line options.
       </para>
@@ -18104,13 +18103,6 @@ neomutt -a image.jpg *.png -- address1 address2
               <entry>-vv</entry>
               <entry>
                 Print the NeoMutt license and copyright information and exit
-              </entry>
-            </row>
-            <row>
-              <entry>-x</entry>
-              <entry>
-                Simulate the <emphasis role="bold">mailx</emphasis>(1) send
-                mode
               </entry>
             </row>
             <row>

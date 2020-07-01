@@ -203,7 +203,6 @@ static void usage(void)
          "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)\n"
          "  -v            Print the NeoMutt version and compile-time definitions and exit\n"
          "  -vv           Print the NeoMutt license and copyright information and exit\n"
-         "  -x            Simulate the mailx(1) send mode\n"
          "  -y            Start NeoMutt with a listing of all defined mailboxes\n"
          "  -Z            Open the first mailbox with new message or exit immediately with\n"
          "                exit code 1 if none is found in all defined mailboxes\n"
@@ -524,9 +523,6 @@ int main(int argc, char *argv[], char *envp[])
 #endif
         case 'v':
           version++;
-          break;
-        case 'x': /* mailx compatible send mode */
-          sendflags |= SEND_MAILX;
           break;
         case 'y': /* My special hack mode */
           flags |= MUTT_CLI_SELECT;

@@ -295,12 +295,6 @@ Print the NeoMutt version and compile-time definitions and exit
 Print the NeoMutt license and copyright information and exit
 .
 .TP
-.BI \-x
-Simulate the
-.BR mailx (1)
-send mode
-.
-.TP
 .BI \-y
 Start NeoMutt with a listing of all defined mailboxes
 .
@@ -556,7 +550,6 @@ A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 .PP
 .\" sorted by category and name
 .BR gettext (1),
-.BR mailx (1),
 .BR msmtp (1),
 .BR notmuch (1),
 .BR sendmail (1),

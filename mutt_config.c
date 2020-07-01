@@ -44,7 +44,6 @@
 #include "browser.h"
 #include "commands.h"
 #include "compose.h"
-#include "edit.h"
 #include "handler.h"
 #include "hdrline.h"
 #include "hook.h"
@@ -89,6 +88,7 @@
 #endif
 
 /* These options are deprecated */
+char *C_Escape = NULL;
 bool C_IgnoreLinearWhiteSpace = false;
 bool C_HeaderCacheCompress = false;
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
@@ -1043,7 +1043,7 @@ struct ConfigDef MuttVars[] = {
   ** \fBNote\fP that changes made to the References: and Date: headers are
   ** ignored for interoperability reasons.
   */
-  { "editor", DT_STRING|DT_COMMAND, &C_Editor, IP "vi" },
+  { "editor", DT_STRING|DT_NOT_EMPTY|DT_COMMAND, &C_Editor, IP "vi" },
   /*
   ** .pp
   ** This variable specifies which editor is used by NeoMutt.
@@ -1089,11 +1089,6 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Manually sets the \fIenvelope\fP sender for outgoing messages.
   ** This value is ignored if $$use_envelope_from is \fIunset\fP.
-  */
-  { "escape", DT_STRING, &C_Escape, IP "~" },
-  /*
-  ** .pp
-  ** Escape character to use for functions in the built-in editor.
   */
   { "external_search_command", DT_STRING|DT_COMMAND, &C_ExternalSearchCommand, 0 },
   /*
@@ -4974,6 +4969,7 @@ struct ConfigDef MuttVars[] = {
 #endif
   /*--*/
 
+  { "escape", DT_DEPRECATED|DT_STRING, &C_Escape, IP "~" },
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
   { "header_cache_compress",     DT_DEPRECATED|DT_BOOL,            &C_HeaderCacheCompress,    false   },
 #endif
