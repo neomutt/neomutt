@@ -188,7 +188,7 @@ $(PWD)/compress:
 ###############################################################################
 # libconfig
 LIBCONFIG=	libconfig.a
-LIBCONFIGOBJS=	config/address.o config/bool.o config/dump.o config/enum.o \
+LIBCONFIGOBJS=	config/address.o config/bool.o config/dump.o config/enum.o config/helpers.o \
 		config/long.o config/mbtable.o config/number.o config/path.o config/quad.o \
 		config/regex.o config/set.o config/slist.o config/sort.o \
 		config/string.o config/subset.o
