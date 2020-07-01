@@ -64,6 +64,5 @@ enum CommandResult    mutt_parse_rc_buffer   (struct Buffer *line, struct Buffer
 enum CommandResult    mutt_parse_rc_line     (const char *line, struct Buffer *err);
 int                   mutt_query_variables   (struct ListHead *queries);
 int                   mutt_var_value_complete(char *buf, size_t buflen, int pos);
-enum QuadOption       query_quadoption       (enum QuadOption opt, const char *prompt);
 
 #endif /* MUTT_INIT_H */

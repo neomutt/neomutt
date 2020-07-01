@@ -1104,29 +1104,6 @@ int mutt_query_variables(struct ListHead *queries)
 }
 
 /**
- * query_quadoption - Ask the user a quad-question
- * @param opt    Option to use
- * @param prompt Message to show to the user
- * @retval #QuadOption Result, e.g. #MUTT_NO
- */
-enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
-{
-  switch (opt)
-  {
-    case MUTT_YES:
-    case MUTT_NO:
-      return opt;
-
-    default:
-      opt = mutt_yesorno(prompt, (opt == MUTT_ASKYES) ? MUTT_YES : MUTT_NO);
-      mutt_window_clearline(MuttMessageWindow, 0);
-      return opt;
-  }
-
-  /* not reached */
-}
-
-/**
  * mutt_command_complete - Complete a command name
  * @param buf     Buffer for the result
  * @param buflen  Length of the buffer

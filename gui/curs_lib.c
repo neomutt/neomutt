@@ -507,6 +507,29 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 }
 
 /**
+ * query_quadoption - Ask the user a quad-question
+ * @param opt    Option to use
+ * @param prompt Message to show to the user
+ * @retval #QuadOption Result, e.g. #MUTT_NO
+ */
+enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
+{
+  switch (opt)
+  {
+    case MUTT_YES:
+    case MUTT_NO:
+      return opt;
+
+    default:
+      opt = mutt_yesorno(prompt, (opt == MUTT_ASKYES) ? MUTT_YES : MUTT_NO);
+      mutt_window_clearline(MuttMessageWindow, 0);
+      return opt;
+  }
+
+  /* not reached */
+}
+
+/**
  * mutt_query_exit - Ask the user if they want to leave NeoMutt
  *
  * This function is called when the user presses the abort key.

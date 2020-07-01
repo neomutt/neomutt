@@ -80,6 +80,7 @@ void         mutt_unget_event(int ch, int op);
 void         mutt_unget_string(const char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
 enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def);
+enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt);
 
 #define mutt_buffer_get_field(field, buf, complete) mutt_buffer_get_field_full(field, buf, complete, false, NULL, NULL)
 int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, CompletionFlags complete, bool multiple, char ***files, int *numfiles);
