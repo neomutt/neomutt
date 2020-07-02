@@ -61,15 +61,6 @@ struct FgetConvNot
 };
 
 /**
- * struct MimeNames - MIME name lookup entry
- */
-struct MimeNames
-{
-  const char *key;
-  const char *pref;
-};
-
-/**
  * enum LookupType - Types of character set lookups
  */
 enum LookupType
@@ -79,8 +70,6 @@ enum LookupType
 };
 
 #define MUTT_ICONV_HOOK_FROM 1 ///< apply charset-hooks to fromcode
-
-extern const struct MimeNames PreferredMimeNames[];
 
 void             mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name);
 const char *     mutt_ch_charset_lookup(const char *chs);

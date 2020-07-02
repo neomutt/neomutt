@@ -27,13 +27,6 @@
  *
  * - Backed by `short`
  * - Validator is passed `short`
- *
- * ## Functions supported
- * - ConfigSetType::string_set()
- * - ConfigSetType::string_get()
- * - ConfigSetType::native_set()
- * - ConfigSetType::native_get()
- * - ConfigSetType::reset()
  */
 
 #include "config.h"

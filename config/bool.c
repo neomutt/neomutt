@@ -28,13 +28,6 @@
  * - Backed by `bool`
  * - Validator is passed `bool`
  * - Valid user entry: #BoolValues
- *
- * ## Functions supported
- * - ConfigSetType::string_set()
- * - ConfigSetType::string_get()
- * - ConfigSetType::native_set()
- * - ConfigSetType::native_get()
- * - ConfigSetType::reset()
  */
 
 #include "config.h"

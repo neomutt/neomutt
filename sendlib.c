@@ -2361,7 +2361,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   if (!TAILQ_EMPTY(&env->to))
   {
     fputs("To: ", fp);
-    mutt_write_addrlist(&env->to, fp, 4, 0);
+    mutt_write_addrlist(&env->to, fp, 4, false);
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
 #ifdef USE_NNTP
@@ -2372,7 +2372,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   if (!TAILQ_EMPTY(&env->cc))
   {
     fputs("Cc: ", fp);
-    mutt_write_addrlist(&env->cc, fp, 4, 0);
+    mutt_write_addrlist(&env->cc, fp, 4, false);
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
 #ifdef USE_NNTP
@@ -2387,7 +2387,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
         ((mode == MUTT_WRITE_HEADER_NORMAL) && C_WriteBcc))
     {
       fputs("Bcc: ", fp);
-      mutt_write_addrlist(&env->bcc, fp, 5, 0);
+      mutt_write_addrlist(&env->bcc, fp, 5, false);
     }
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
@@ -2432,7 +2432,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   if (!TAILQ_EMPTY(&env->reply_to))
   {
     fputs("Reply-To: ", fp);
-    mutt_write_addrlist(&env->reply_to, fp, 10, 0);
+    mutt_write_addrlist(&env->reply_to, fp, 10, false);
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
     fputs("Reply-To:\n", fp);
@@ -2444,7 +2444,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 #endif
     {
       fputs("Mail-Followup-To: ", fp);
-      mutt_write_addrlist(&env->mail_followup_to, fp, 18, 0);
+      mutt_write_addrlist(&env->mail_followup_to, fp, 18, false);
     }
   }
 
@@ -3100,7 +3100,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
     fprintf(fp_tmp, "Resent-Message-ID: %s\n", msgid_str);
     FREE(&msgid_str);
     fputs("Resent-To: ", fp_tmp);
-    mutt_write_addrlist(to, fp_tmp, 11, 0);
+    mutt_write_addrlist(to, fp_tmp, 11, false);
     mutt_copy_header(fp, e, fp_tmp, chflags, NULL, 0);
     fputc('\n', fp_tmp);
     mutt_file_copy_bytes(fp, fp_tmp, e->content->length);

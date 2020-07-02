@@ -1146,7 +1146,7 @@ done:
  */
 size_t mutt_addrlist_write(const struct AddressList *al, char *buf, size_t buflen, bool display)
 {
-  if (!buf || buflen == 0 || !al)
+  if (!buf || (buflen == 0) || !al)
     return 0;
 
   size_t len = mutt_str_len(buf);

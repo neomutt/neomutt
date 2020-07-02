@@ -1299,7 +1299,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     }
     if (rc == 0)
     {
-      for (current = first; current <= last && rc == 0; current++)
+      for (current = first; (current <= last) && (rc == 0); current++)
       {
         if (fc.messages[current - first])
           continue;
@@ -1333,7 +1333,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     mutt_progress_init(&fc.progress, _("Fetching message headers..."),
                        MUTT_PROGRESS_READ, last - first + 1);
   }
-  for (current = first; current <= last && rc == 0; current++)
+  for (current = first; (current <= last) && (rc == 0); current++)
   {
     if (m->verbose)
       mutt_progress_update(&fc.progress, current - first + 1, -1);

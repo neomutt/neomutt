@@ -735,7 +735,7 @@ int main(int argc, char *argv[], char *envp[])
       {
         /* output in machine-readable form */
         mutt_addrlist_to_intl(al, NULL);
-        mutt_write_addrlist(al, stdout, 0, 0);
+        mutt_write_addrlist(al, stdout, 0, false);
       }
       else
       {

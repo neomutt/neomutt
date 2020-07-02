@@ -2050,8 +2050,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
 #endif
 
-    if (!(flags & SEND_BATCH) &&
-        !(C_Autoedit && C_EditHeaders) && !((flags & SEND_REPLY) && C_FastReply))
+    if (!(flags & SEND_BATCH) && !(C_Autoedit && C_EditHeaders) &&
+        !((flags & SEND_REPLY) && C_FastReply))
     {
       if (edit_envelope(e_templ->env, flags) == -1)
         goto cleanup;

@@ -371,7 +371,7 @@ char *mutt_extract_message_id(const char *s, size_t *len)
       continue;
     }
 
-    if (beg && *p == '>')
+    if (beg && (*p == '>'))
     {
       if (len)
         *len = p - decoded + 1;

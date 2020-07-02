@@ -832,7 +832,7 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
   }
 
   if (!var || !cdef)
-    return CSR_ERR_CODE; // LCOV_EXCL_LINE
+    return INT_MIN; // LCOV_EXCL_LINE
 
   return cst->native_get(cs, var, cdef, err);
 }

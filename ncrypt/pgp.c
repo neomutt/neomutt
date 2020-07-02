@@ -555,7 +555,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           l = mutt_str_len(gpgcharset);
           if ((l > 0) && (gpgcharset[l - 1] == '\n'))
             gpgcharset[l - 1] = 0;
-          if (!mutt_ch_check_charset(gpgcharset, 0))
+          if (!mutt_ch_check_charset(gpgcharset, false))
             mutt_str_replace(&gpgcharset, "UTF-8");
         }
       }

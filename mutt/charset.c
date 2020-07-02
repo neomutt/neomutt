@@ -78,6 +78,15 @@ TAILQ_HEAD(LookupList, Lookup);
 
 static struct LookupList Lookups = TAILQ_HEAD_INITIALIZER(Lookups);
 
+/**
+ * struct MimeNames - MIME name lookup entry
+ */
+struct MimeNames
+{
+  const char *key;
+  const char *pref;
+};
+
 // clang-format off
 /**
  * PreferredMimeNames - Lookup table of preferred charsets

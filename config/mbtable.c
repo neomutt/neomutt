@@ -29,13 +29,6 @@
  * - Empty multibyte character table is stored as `NULL`
  * - Validator is passed `struct MbTable`, which may be `NULL`
  * - Data is freed when `ConfigSet` is freed
- *
- * ## Functions supported
- * - ConfigSetType::string_set()
- * - ConfigSetType::string_get()
- * - ConfigSetType::native_set()
- * - ConfigSetType::native_get()
- * - ConfigSetType::reset()
  */
 
 #include "config.h"
