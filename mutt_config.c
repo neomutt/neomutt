@@ -3735,7 +3735,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_indent_string, $$sidebar_delim_chars.
   */
-  { "sidebar_format", DT_STRING|DT_NOT_EMPTY|R_SIDEBAR, &C_SidebarFormat, IP "%B%*  %n" },
+  { "sidebar_format", DT_STRING|DT_NOT_EMPTY|R_SIDEBAR, &C_SidebarFormat, IP "%D%*  %n" },
   /*
   ** .pp
   ** This variable allows you to customize the sidebar display. This string is

@@ -693,7 +693,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
               <link linkend="formatstrings-conditionals">conditionals</link>.
             </para>
             <para>
-              The default value is: <literal>%B%* %n</literal>
+              The default value is: <literal>%D%* %n</literal>
             </para>
             <para>
               A more detailed value is:
@@ -16375,7 +16375,7 @@ set sort_browser="reverse-size"
               <row>
                 <entry><literal>sidebar_format</literal></entry>
                 <entry>string</entry>
-                <entry><literal>%B%* %n</literal></entry>
+                <entry><literal>%D%* %n</literal></entry>
               </row>
               <row>
                 <entry><literal>sidebar_indent_string</literal></entry>
