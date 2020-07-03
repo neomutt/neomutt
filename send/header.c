@@ -32,10 +32,10 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "header.h"
-#include "lib.h"
 #include "mutt_globals.h"
 #include "options.h"
 #ifdef USE_AUTOCRYPT
@@ -426,16 +426,18 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   char *v = mutt_str_dup(value);
   bool display = (chflags & CH_DISPLAY);
 
-  if (!display || C_Weed)
+  const bool c_weed = cs_subset_bool(sub, "weed");
+  if (!display || c_weed)
     v = unfold_header(v);
 
   /* when not displaying, use sane wrap value */
   if (!display)
   {
-    if ((C_WrapHeaders < 78) || (C_WrapHeaders > 998))
+    const short c_wrap_headers = cs_subset_number(sub, "wrap_headers");
+    if ((c_wrap_headers < 78) || (c_wrap_headers > 998))
       wraplen = 78;
     else
-      wraplen = C_WrapHeaders;
+      wraplen = c_wrap_headers;
   }
   else if (wraplen <= 0)
     wraplen = 78;
@@ -617,9 +619,11 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
 
   if (!TAILQ_EMPTY(&env->bcc))
   {
+    const bool c_write_bcc = cs_subset_bool(sub, "write_bcc");
+
     if ((mode == MUTT_WRITE_HEADER_POSTPONE) ||
         (mode == MUTT_WRITE_HEADER_EDITHDRS) || (mode == MUTT_WRITE_HEADER_FCC) ||
-        ((mode == MUTT_WRITE_HEADER_NORMAL) && C_WriteBcc))
+        ((mode == MUTT_WRITE_HEADER_NORMAL) && c_write_bcc))
     {
       fputs("Bcc: ", fp);
       mutt_addrlist_write_file(&env->bcc, fp, 5, false);
@@ -642,9 +646,10 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
   else if ((mode == MUTT_WRITE_HEADER_EDITHDRS) && OptNewsSend)
     fputs("Followup-To:\n", fp);
 
+  const bool c_x_comment_to = cs_subset_bool(sub, "x_comment_to");
   if (env->x_comment_to)
     fprintf(fp, "X-Comment-To: %s\n", env->x_comment_to);
-  else if ((mode == MUTT_WRITE_HEADER_EDITHDRS) && OptNewsSend && C_XCommentTo)
+  else if ((mode == MUTT_WRITE_HEADER_EDITHDRS) && OptNewsSend && c_x_comment_to)
     fputs("X-Comment-To:\n", fp);
 #endif
 
@@ -654,8 +659,10 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
         ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC) ||
          (mode == MUTT_WRITE_HEADER_POSTPONE)))
     {
-      mutt_write_one_header(fp, "Subject", C_CryptProtectedHeadersSubject, NULL,
-                            0, CH_NO_FLAGS, sub);
+      const char *c_crypt_protected_headers_subject =
+          cs_subset_string(sub, "crypt_protected_headers_subject");
+      mutt_write_one_header(fp, "Subject", c_crypt_protected_headers_subject,
+                            NULL, 0, CH_NO_FLAGS, sub);
     }
     else
       mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, CH_NO_FLAGS, sub);
@@ -716,7 +723,8 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
   }
 
 #ifdef USE_AUTOCRYPT
-  if (C_Autocrypt)
+  const bool c_autocrypt = cs_subset_bool(sub, "autocrypt");
+  if (c_autocrypt)
   {
     if (mode == MUTT_WRITE_HEADER_NORMAL || mode == MUTT_WRITE_HEADER_FCC)
       mutt_autocrypt_write_autocrypt_header(env, fp);
@@ -725,8 +733,9 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
   }
 #endif
 
+  const bool c_user_agent = cs_subset_bool(sub, "user_agent");
   if (((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC)) && !privacy &&
-      C_UserAgent && !userhdrs_overrides.is_overridden[USERHDRS_OVERRIDE_USER_AGENT])
+      c_user_agent && !userhdrs_overrides.is_overridden[USERHDRS_OVERRIDE_USER_AGENT])
   {
     /* Add a vanity header */
     fprintf(fp, "User-Agent: NeoMutt/%s%s\n", PACKAGE_VERSION, GitVer);
@@ -870,12 +879,14 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   if (a->encoding != ENC_7BIT)
     fprintf(fp, "Content-Transfer-Encoding: %s\n", ENCODING(a->encoding));
 
-  if ((C_CryptProtectedHeadersWrite
+  const bool c_crypt_protected_headers_write =
+      cs_subset_bool(sub, "crypt_protected_headers_write");
+  bool autocrypt = false;
 #ifdef USE_AUTOCRYPT
-       || C_Autocrypt
+  autocrypt = cs_subset_bool(sub, "autocrypt");
 #endif
-       ) &&
-      a->mime_headers)
+
+  if ((c_crypt_protected_headers_write || autocrypt) && a->mime_headers)
   {
     mutt_rfc822_write_header(fp, a->mime_headers, NULL, MUTT_WRITE_HEADER_MIME,
                              false, false, sub);

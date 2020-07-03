@@ -46,11 +46,11 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "smtp.h"
-#include "lib.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "mutt_socket.h"
 #include "progress.h"
+#include "send/lib.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
@@ -87,9 +87,6 @@ typedef uint8_t SmtpCapFlags;          ///< Flags, e.g. #SMTP_CAP_STARTTLS
 #define SMTP_CAP_ALL         ((1 << 5) - 1)
 // clang-format on
 
-static char *AuthMechs = NULL;
-static SmtpCapFlags Capabilities;
-
 /**
  * struct SmtpAccountData - Server connection data
  */
@@ -98,6 +95,7 @@ struct SmtpAccountData
   const char *auth_mechs;    ///< Allowed authorisation mechanisms
   SmtpCapFlags capabilities; ///< Server capabilities
   struct Connection *conn;   ///< Server Connection
+  struct ConfigSubset *sub;  ///< Config scope
   const char *fqdn;          ///< Fully-qualified domain name
 };
 
@@ -146,19 +144,19 @@ static int smtp_get_resp(struct SmtpAccountData *adata)
     size_t plen;
 
     if (mutt_istr_startswith(s, "8BITMIME"))
-      Capabilities |= SMTP_CAP_EIGHTBITMIME;
+      adata->capabilities |= SMTP_CAP_EIGHTBITMIME;
     else if ((plen = mutt_istr_startswith(s, "AUTH ")))
     {
-      Capabilities |= SMTP_CAP_AUTH;
-      FREE(&AuthMechs);
-      AuthMechs = mutt_str_dup(s + plen);
+      adata->capabilities |= SMTP_CAP_AUTH;
+      FREE(&adata->auth_mechs);
+      adata->auth_mechs = mutt_str_dup(s + plen);
     }
     else if (mutt_istr_startswith(s, "DSN"))
-      Capabilities |= SMTP_CAP_DSN;
+      adata->capabilities |= SMTP_CAP_DSN;
     else if (mutt_istr_startswith(s, "STARTTLS"))
-      Capabilities |= SMTP_CAP_STARTTLS;
+      adata->capabilities |= SMTP_CAP_STARTTLS;
     else if (mutt_istr_startswith(s, "SMTPUTF8"))
-      Capabilities |= SMTP_CAP_SMTPUTF8;
+      adata->capabilities |= SMTP_CAP_SMTPUTF8;
 
     if (!valid_smtp_code(buf, n, &n))
       return SMTP_ERR_CODE;
@@ -184,6 +182,8 @@ static int smtp_rcpt_to(struct SmtpAccountData *adata, const struct AddressList 
   if (!al)
     return 0;
 
+  const char *c_dsn_notify = cs_subset_string(adata->sub, "dsn_notify");
+
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
@@ -193,8 +193,8 @@ static int smtp_rcpt_to(struct SmtpAccountData *adata, const struct AddressList 
       continue;
     }
     char buf[1024];
-    if ((Capabilities & SMTP_CAP_DSN) && C_DsnNotify)
-      snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", a->mailbox, C_DsnNotify);
+    if ((adata->capabilities & SMTP_CAP_DSN) && c_dsn_notify)
+      snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", a->mailbox, c_dsn_notify);
     else
       snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", a->mailbox);
     if (mutt_socket_send(adata->conn, buf) == -1)
@@ -290,15 +290,29 @@ static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
  */
 static const char *smtp_get_field(enum ConnAccountField field, void *gf_data)
 {
+  struct SmtpAccountData *adata = gf_data;
+  if (!adata)
+    return NULL;
+
   switch (field)
   {
     case MUTT_CA_LOGIN:
     case MUTT_CA_USER:
-      return C_SmtpUser;
+    {
+      const char *c_smtp_user = cs_subset_string(adata->sub, "smtp_user");
+      return c_smtp_user;
+    }
     case MUTT_CA_PASS:
-      return C_SmtpPass;
+    {
+      const char *c_smtp_pass = cs_subset_string(adata->sub, "smtp_pass");
+      return c_smtp_pass;
+    }
     case MUTT_CA_OAUTH_CMD:
-      return C_SmtpOauthRefreshCommand;
+    {
+      const char *c_smtp_oauth_refresh_command =
+          cs_subset_string(adata->sub, "smtp_oauth_refresh_command");
+      return c_smtp_oauth_refresh_command;
+    }
     case MUTT_CA_HOST:
     default:
       return NULL;
@@ -319,13 +333,16 @@ static int smtp_fill_account(struct SmtpAccountData *adata, struct ConnAccount *
   cac->type = MUTT_ACCT_TYPE_SMTP;
   cac->service = "smtp";
   cac->get_field = smtp_get_field;
+  cac->gf_data = adata;
 
-  struct Url *url = url_parse(C_SmtpUrl);
+  const char *c_smtp_url = cs_subset_string(adata->sub, "smtp_url");
+
+  struct Url *url = url_parse(c_smtp_url);
   if (!url || ((url->scheme != U_SMTP) && (url->scheme != U_SMTPS)) ||
       !url->host || (mutt_account_fromurl(cac, url) < 0))
   {
     url_free(&url);
-    mutt_error(_("Invalid SMTP URL: %s"), C_SmtpUrl);
+    mutt_error(_("Invalid SMTP URL: %s"), c_smtp_url);
     return -1;
   }
 
@@ -365,7 +382,7 @@ static int smtp_fill_account(struct SmtpAccountData *adata, struct ConnAccount *
  */
 static int smtp_helo(struct SmtpAccountData *adata, bool esmtp)
 {
-  Capabilities = SMTP_CAP_NO_FLAGS;
+  adata->capabilities = SMTP_CAP_NO_FLAGS;
 
   if (!esmtp)
   {
@@ -373,7 +390,11 @@ static int smtp_helo(struct SmtpAccountData *adata, bool esmtp)
     if (adata->conn->account.flags & MUTT_ACCT_USER)
       esmtp = true;
 #ifdef USE_SSL
-    if (C_SslForceTls || (C_SslStarttls != MUTT_NO))
+    const bool c_ssl_force_tls = cs_subset_bool(adata->sub, "ssl_force_tls");
+    const enum QuadOption c_ssl_starttls =
+        cs_subset_quad(adata->sub, "ssl_starttls");
+
+    if (c_ssl_force_tls || (c_ssl_starttls != MUTT_NO))
       esmtp = true;
 #endif
   }
@@ -581,10 +602,12 @@ static int smtp_auth(struct SmtpAccountData *adata)
 {
   int r = SMTP_AUTH_UNAVAIL;
 
-  if (C_SmtpAuthenticators)
+  const struct Slist *c_smtp_authenticators =
+      cs_subset_slist(adata->sub, "smtp_authenticators");
+  if (c_smtp_authenticators)
   {
     struct ListNode *np = NULL;
-    STAILQ_FOREACH(np, &C_SmtpAuthenticators->head, entries)
+    STAILQ_FOREACH(np, &c_smtp_authenticators->head, entries)
     {
       mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
 
@@ -606,7 +629,7 @@ static int smtp_auth(struct SmtpAccountData *adata)
 #endif
       }
 
-      if ((r == SMTP_AUTH_FAIL) && (C_SmtpAuthenticators->count > 1))
+      if ((r == SMTP_AUTH_FAIL) && (c_smtp_authenticators->count > 1))
       {
         mutt_error(_("%s authentication failed, trying next method"), np->data);
       }
@@ -617,7 +640,7 @@ static int smtp_auth(struct SmtpAccountData *adata)
   else
   {
 #ifdef USE_SASL
-    r = smtp_auth_sasl(adata, AuthMechs);
+    r = smtp_auth_sasl(adata, adata->auth_mechs);
 #else
     mutt_error(_("SMTP authentication requires SASL"));
     r = SMTP_AUTH_UNAVAIL;
@@ -663,13 +686,16 @@ static int smtp_open(struct SmtpAccountData *adata, bool esmtp)
     return rc;
 
 #ifdef USE_SSL
+  const bool c_ssl_force_tls = cs_subset_bool(adata->sub, "ssl_force_tls");
+  const enum QuadOption c_ssl_starttls =
+      cs_subset_quad(adata->sub, "ssl_starttls");
   enum QuadOption ans = MUTT_NO;
   if (adata->conn->ssf != 0)
     ans = MUTT_NO;
-  else if (C_SslForceTls)
+  else if (c_ssl_force_tls)
     ans = MUTT_YES;
-  else if ((Capabilities & SMTP_CAP_STARTTLS) &&
-           ((ans = query_quadoption(C_SslStarttls,
+  else if ((adata->capabilities & SMTP_CAP_STARTTLS) &&
+           ((ans = query_quadoption(c_ssl_starttls,
                                     _("Secure connection with TLS?"))) == MUTT_ABORT))
   {
     return -1;
@@ -700,7 +726,7 @@ static int smtp_open(struct SmtpAccountData *adata, bool esmtp)
 
   if (adata->conn->account.flags & MUTT_ACCT_USER)
   {
-    if (!(Capabilities & SMTP_CAP_AUTH))
+    if (!(adata->capabilities & SMTP_CAP_AUTH))
     {
       mutt_error(_("SMTP server does not support authentication"));
       return -1;
@@ -734,14 +760,18 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
   char buf[1024];
   int rc = -1;
 
-  adata.fqdn = mutt_fqdn(false, sub);
+  adata.sub = sub;
+  adata.fqdn = mutt_fqdn(false, adata.sub);
   if (!adata.fqdn)
     adata.fqdn = NONULL(ShortHostname);
 
+  const struct Address *c_envelope_from_address =
+      cs_subset_address(adata.sub, "envelope_from_address");
+
   /* it might be better to synthesize an envelope from from user and host
    * but this condition is most likely arrived at accidentally */
-  if (C_EnvelopeFromAddress)
-    envfrom = C_EnvelopeFromAddress->mailbox;
+  if (c_envelope_from_address)
+    envfrom = c_envelope_from_address->mailbox;
   else if (from && !TAILQ_EMPTY(from))
     envfrom = TAILQ_FIRST(from)->mailbox;
   else
@@ -757,24 +787,26 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
   if (!adata.conn)
     return -1;
 
+  const char *c_dsn_return = cs_subset_string(adata.sub, "dsn_return");
+
   do
   {
     /* send our greeting */
     rc = smtp_open(&adata, eightbit);
     if (rc != 0)
       break;
-    FREE(&AuthMechs);
+    FREE(&adata.auth_mechs);
 
     /* send the sender's address */
     int len = snprintf(buf, sizeof(buf), "MAIL FROM:<%s>", envfrom);
-    if (eightbit && (Capabilities & SMTP_CAP_EIGHTBITMIME))
+    if (eightbit && (adata.capabilities & SMTP_CAP_EIGHTBITMIME))
     {
       mutt_strn_cat(buf, sizeof(buf), " BODY=8BITMIME", 15);
       len += 14;
     }
-    if (C_DsnReturn && (Capabilities & SMTP_CAP_DSN))
-      len += snprintf(buf + len, sizeof(buf) - len, " RET=%s", C_DsnReturn);
-    if ((Capabilities & SMTP_CAP_SMTPUTF8) &&
+    if (c_dsn_return && (adata.capabilities & SMTP_CAP_DSN))
+      len += snprintf(buf + len, sizeof(buf) - len, " RET=%s", c_dsn_return);
+    if ((adata.capabilities & SMTP_CAP_SMTPUTF8) &&
         (mutt_addr_uses_unicode(envfrom) || mutt_addrlist_uses_unicode(to) ||
          mutt_addrlist_uses_unicode(cc) || mutt_addrlist_uses_unicode(bcc)))
     {

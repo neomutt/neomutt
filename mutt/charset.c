@@ -303,7 +303,7 @@ static const char *lookup_charset(enum LookupType type, const char *cs)
  * @retval 0  Success
  * @retval -1 Error
  *
- * Work through #C_AssumedCharset looking for a character set conversion that
+ * Work through `$assumed_charset` looking for a character set conversion that
  * works.  Failing that, try mutt_ch_get_default_charset().
  */
 int mutt_ch_convert_nonmime_string(char **ps)

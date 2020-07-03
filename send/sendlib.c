@@ -40,6 +40,7 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
@@ -499,12 +500,18 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
 
   info = mutt_mem_calloc(1, sizeof(struct Content));
 
+  const char *c_charset = cs_subset_string(sub, "charset");
+
   if (b && (b->type == TYPE_TEXT) && (!b->noconv && !b->force_charset))
   {
+    const char *c_attach_charset = cs_subset_string(sub, "attach_charset");
+    const char *c_send_charset = cs_subset_string(sub, "send_charset");
+
     char *chs = mutt_param_get(&b->parameter, "charset");
-    char *fchs = b->use_disp ? (C_AttachCharset ? C_AttachCharset : C_Charset) : C_Charset;
-    if (C_Charset && (chs || C_SendCharset) &&
-        (convert_file_from_to(fp, fchs, chs ? chs : C_SendCharset, &fromcode,
+    const char *fchs =
+        b->use_disp ? (c_attach_charset ? c_attach_charset : c_charset) : c_charset;
+    if (c_charset && (chs || c_send_charset) &&
+        (convert_file_from_to(fp, fchs, chs ? chs : c_send_charset, &fromcode,
                               &tocode, info) != (size_t)(-1)))
     {
       if (!chs)
@@ -533,7 +540,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
     mutt_param_set(&b->parameter, "charset",
                    (!info->hibin ?
                         "us-ascii" :
-                        C_Charset && !mutt_ch_is_us_ascii(C_Charset) ? C_Charset : "unknown-8bit"));
+                        c_charset && !mutt_ch_is_us_ascii(c_charset) ? c_charset : "unknown-8bit"));
   }
 
   return info;
@@ -823,18 +830,20 @@ cleanup:
  */
 static void set_encoding(struct Body *b, struct Content *info, struct ConfigSubset *sub)
 {
+  const bool c_allow_8bit = cs_subset_bool(sub, "allow_8bit");
   if (b->type == TYPE_TEXT)
   {
+    const bool c_encode_from = cs_subset_bool(sub, "encode_from");
     char send_charset[128];
     char *chsname = mutt_body_get_charset(b, send_charset, sizeof(send_charset));
     if ((info->lobin && !mutt_istr_startswith(chsname, "iso-2022")) ||
-        (info->linemax > 990) || (info->from && C_EncodeFrom))
+        (info->linemax > 990) || (info->from && c_encode_from))
     {
       b->encoding = ENC_QUOTED_PRINTABLE;
     }
     else if (info->hibin)
     {
-      b->encoding = C_Allow8bit ? ENC_8BIT : ENC_QUOTED_PRINTABLE;
+      b->encoding = c_allow_8bit ? ENC_8BIT : ENC_QUOTED_PRINTABLE;
     }
     else
     {
@@ -845,7 +854,7 @@ static void set_encoding(struct Body *b, struct Content *info, struct ConfigSubs
   {
     if (info->lobin || info->hibin)
     {
-      if (C_Allow8bit && !info->lobin)
+      if (c_allow_8bit && !info->lobin)
         b->encoding = ENC_8BIT;
       else
         mutt_message_to_7bit(b, NULL, sub);
@@ -929,9 +938,11 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
   CopyMessageFlags cmflags;
   SecurityFlags pgp = WithCrypto ? e->security : SEC_NO_FLAGS;
 
+  const bool c_mime_forward_decode = cs_subset_bool(sub, "mime_forward_decode");
+  const bool c_forward_decrypt = cs_subset_bool(sub, "forward_decrypt");
   if (WithCrypto)
   {
-    if ((C_MimeForwardDecode || C_ForwardDecrypt) && (e->security & SEC_ENCRYPT))
+    if ((c_mime_forward_decode || c_forward_decrypt) && (e->security & SEC_ENCRYPT))
     {
       if (!crypt_valid_passphrase(e->security))
         return NULL;
@@ -963,8 +974,9 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
   CopyHeaderFlags chflags = CH_XMIT;
   cmflags = MUTT_CM_NO_FLAGS;
 
-  /* If we are attaching a message, ignore C_MimeForwardDecode */
-  if (!attach_msg && C_MimeForwardDecode)
+  const bool c_forward_decode = cs_subset_bool(sub, "forward_decode");
+  /* If we are attaching a message, ignore `$mime_forward_decode` */
+  if (!attach_msg && c_forward_decode)
   {
     chflags |= CH_MIME | CH_TXTPLAIN;
     cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
@@ -973,7 +985,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
     if (WithCrypto & APPLICATION_SMIME)
       pgp &= ~SMIME_ENCRYPT;
   }
-  else if ((WithCrypto != 0) && C_ForwardDecrypt && (e->security & SEC_ENCRYPT))
+  else if ((WithCrypto != 0) && c_forward_decrypt && (e->security & SEC_ENCRYPT))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(e->content))
     {
@@ -1031,7 +1043,10 @@ static void run_mime_type_query(struct Body *att, struct ConfigSubset *sub)
   pid_t pid;
   struct Buffer *cmd = mutt_buffer_pool_get();
 
-  mutt_buffer_file_expand_fmt_quote(cmd, C_MimeTypeQueryCommand, att->filename);
+  const char *c_mime_type_query_command =
+      cs_subset_string(sub, "mime_type_query_command");
+
+  mutt_buffer_file_expand_fmt_quote(cmd, c_mime_type_query_command, att->filename);
 
   pid = filter_create(mutt_b2s(cmd), NULL, &fp, &fp_err);
   if (pid < 0)
@@ -1067,7 +1082,12 @@ struct Body *mutt_make_file_attach(const char *path, struct ConfigSubset *sub)
   struct Body *att = mutt_body_new();
   att->filename = mutt_str_dup(path);
 
-  if (C_MimeTypeQueryCommand && C_MimeTypeQueryFirst)
+  const char *c_mime_type_query_command =
+      cs_subset_string(sub, "mime_type_query_command");
+  const bool c_mime_type_query_first =
+      cs_subset_bool(sub, "mime_type_query_first");
+
+  if (c_mime_type_query_command && c_mime_type_query_first)
     run_mime_type_query(att, sub);
 
   /* Attempt to determine the appropriate content-type based on the filename
@@ -1075,7 +1095,7 @@ struct Body *mutt_make_file_attach(const char *path, struct ConfigSubset *sub)
   if (!att->subtype)
     mutt_lookup_mime_type(att, path);
 
-  if (!att->subtype && C_MimeTypeQueryCommand && !C_MimeTypeQueryFirst)
+  if (!att->subtype && c_mime_type_query_command && !c_mime_type_query_first)
   {
     run_mime_type_query(att, sub);
   }
@@ -1122,6 +1142,8 @@ static void encode_headers(struct ListHead *h, struct ConfigSubset *sub)
   char *p = NULL;
   int i;
 
+  const char *c_send_charset = cs_subset_string(sub, "send_charset");
+
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
@@ -1136,7 +1158,7 @@ static void encode_headers(struct ListHead *h, struct ConfigSubset *sub)
     if (!tmp)
       continue;
 
-    rfc2047_encode(&tmp, NULL, i + 2, C_SendCharset);
+    rfc2047_encode(&tmp, NULL, i + 2, c_send_charset);
     mutt_mem_realloc(&np->data, i + 2 + mutt_str_len(tmp) + 1);
 
     sprintf(np->data + i + 2, "%s", tmp);
@@ -1156,20 +1178,22 @@ static void encode_headers(struct ListHead *h, struct ConfigSubset *sub)
  */
 const char *mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub)
 {
-  if (!C_Hostname || (C_Hostname[0] == '@'))
+  const char *c_hostname = cs_subset_string(sub, "hostname");
+  if (!c_hostname || (c_hostname[0] == '@'))
     return NULL;
 
-  char *p = C_Hostname;
+  const char *p = c_hostname;
 
-  if (may_hide_host && C_HiddenHost)
+  const bool c_hidden_host = cs_subset_bool(sub, "hidden_host");
+  if (may_hide_host && c_hidden_host)
   {
-    p = strchr(C_Hostname, '.');
+    p = strchr(c_hostname, '.');
     if (p)
       p++;
 
     // sanity check: don't hide the host if the fqdn is something like example.com
     if (!p || !strchr(p, '.'))
-      p = C_Hostname;
+      p = c_hostname;
   }
 
   return p;
@@ -1289,7 +1313,8 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
     char date[128];
     CopyHeaderFlags chflags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
 
-    if (!C_BounceDelivered)
+    const bool c_bounce_delivered = cs_subset_bool(sub, "bounce_delivered");
+    if (!c_bounce_delivered)
       chflags |= CH_WEED_DELIVERED;
 
     fseeko(fp, e->offset, SEEK_SET);
@@ -1310,7 +1335,8 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
       return -1;
     }
 #ifdef USE_SMTP
-    if (C_SmtpUrl)
+    const char *c_smtp_url = cs_subset_string(sub, "smtp_url");
+    if (c_smtp_url)
     {
       rc = mutt_smtp_send(env_from, to, NULL, NULL, mutt_b2s(tempfile),
                           (e->content->encoding == ENC_8BIT), sub);
@@ -1357,7 +1383,10 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
    * send-hooks and set the realname last so that it can be changed based
    * upon message criteria.  */
   if (!from->personal)
-    from->personal = mutt_str_dup(C_Realname);
+  {
+    const char *c_realname = cs_subset_string(sub, "realname");
+    from->personal = mutt_str_dup(c_realname);
+  }
 
   mutt_addrlist_qualify(&from_list, fqdn);
 
@@ -1527,12 +1556,15 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     goto done;
   }
 
+  const bool c_crypt_protected_headers_read =
+      cs_subset_bool(sub, "crypt_protected_headers_read");
+
   /* post == 1 => postpone message.
    * post == 0 => Normal mode.  */
   mutt_rfc822_write_header(
       msg->fp, e->env, e->content,
       post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_FCC, false,
-      C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e), sub);
+      c_crypt_protected_headers_read && mutt_should_hide_protected_subject(e), sub);
 
   /* (postponement) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-
@@ -1566,8 +1598,10 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     if (e->security & SEC_SIGN)
     {
       fputc('S', msg->fp);
-      if (C_PgpSignAs)
-        fprintf(msg->fp, "<%s>", C_PgpSignAs);
+
+      const char *c_pgp_sign_as = cs_subset_string(sub, "pgp_sign_as");
+      if (c_pgp_sign_as)
+        fprintf(msg->fp, "<%s>", c_pgp_sign_as);
     }
     if (e->security & SEC_INLINE)
       fputc('I', msg->fp);
@@ -1587,16 +1621,21 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     if (e->security & SEC_ENCRYPT)
     {
       fputc('E', msg->fp);
-      if (C_SmimeEncryptWith)
-        fprintf(msg->fp, "C<%s>", C_SmimeEncryptWith);
+
+      const char *c_smime_encrypt_with =
+          cs_subset_string(sub, "smime_encrypt_with");
+      if (c_smime_encrypt_with)
+        fprintf(msg->fp, "C<%s>", c_smime_encrypt_with);
     }
     if (e->security & SEC_OPPENCRYPT)
       fputc('O', msg->fp);
     if (e->security & SEC_SIGN)
     {
       fputc('S', msg->fp);
-      if (C_SmimeSignAs)
-        fprintf(msg->fp, "<%s>", C_SmimeSignAs);
+
+      const char *c_smime_sign_as = cs_subset_string(sub, "smime_sign_as");
+      if (c_smime_sign_as)
+        fprintf(msg->fp, "<%s>", c_smime_sign_as);
     }
     if (e->security & SEC_INLINE)
       fputc('I', msg->fp);

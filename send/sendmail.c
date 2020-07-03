@@ -38,6 +38,7 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "context.h"
@@ -54,8 +55,6 @@
 #else
 #define EX_OK 0
 #endif
-
-struct ConfigSubset;
 
 SIG_ATOMIC_VOLATILE_T SigAlrm; ///< true after SIGALRM is received
 
@@ -77,10 +76,12 @@ static void alarm_handler(int sig)
  *                      to the temporary file containing the stdout of the
  *                      child process. If it is NULL, stderr and stdout
  *                      are not redirected.
+ * @param[in]  wait_time How long to wait for sendmail, `$sendmail_wait`
  * @retval  0 Success
  * @retval >0 Failure, return code from sendmail
  */
-static int send_msg(const char *path, char **args, const char *msg, char **tempfile)
+static int send_msg(const char *path, const char **args, const char *msg,
+                    char **tempfile, int wait_time)
 {
   sigset_t set;
   int st;
@@ -92,7 +93,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
   sigaddset(&set, SIGTSTP);
   sigprocmask(SIG_BLOCK, &set, NULL);
 
-  if ((C_SendmailWait >= 0) && tempfile)
+  if ((wait_time >= 0) && tempfile)
   {
     struct Buffer *tmp = mutt_buffer_pool_get();
     mutt_buffer_mktemp(tmp);
@@ -140,7 +141,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
       }
       unlink(msg);
 
-      if ((C_SendmailWait >= 0) && tempfile && *tempfile)
+      if ((wait_time >= 0) && tempfile && *tempfile)
       {
         /* *tempfile will be opened as stdout */
         if (open(*tempfile, O_WRONLY | O_APPEND | O_CREAT | O_EXCL, 0600) < 0)
@@ -159,7 +160,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
 
       /* execvpe is a glibc extension */
       /* execvpe (path, args, mutt_envlist_getlist()); */
-      execvp(path, args);
+      execvp(path, (char **) args);
       _exit(S_ERR);
     }
     else if (pid == -1)
@@ -169,10 +170,10 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
       _exit(S_ERR);
     }
 
-    /* C_SendmailWait > 0: interrupt waitpid() after C_SendmailWait seconds
-     * C_SendmailWait = 0: wait forever
-     * C_SendmailWait < 0: don't wait */
-    if (C_SendmailWait > 0)
+    /* wait_time > 0: interrupt waitpid() after wait_time seconds
+     * wait_time = 0: wait forever
+     * wait_time < 0: don't wait */
+    if (wait_time > 0)
     {
       SigAlrm = 0;
       act.sa_handler = alarm_handler;
@@ -184,15 +185,15 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
 #endif
       sigemptyset(&act.sa_mask);
       sigaction(SIGALRM, &act, &oldalrm);
-      alarm(C_SendmailWait);
+      alarm(wait_time);
     }
-    else if (C_SendmailWait < 0)
+    else if (wait_time < 0)
       _exit(0xff & EX_OK);
 
     if (waitpid(pid, &st, 0) > 0)
     {
       st = WIFEXITED(st) ? WEXITSTATUS(st) : S_ERR;
-      if (C_SendmailWait && (st == (0xff & EX_OK)) && tempfile && *tempfile)
+      if (wait_time && (st == (0xff & EX_OK)) && tempfile && *tempfile)
       {
         unlink(*tempfile); /* no longer needed */
         FREE(tempfile);
@@ -200,15 +201,15 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
     }
     else
     {
-      st = ((C_SendmailWait > 0) && (errno == EINTR) && SigAlrm) ? S_BKG : S_ERR;
-      if ((C_SendmailWait > 0) && tempfile && *tempfile)
+      st = ((wait_time > 0) && (errno == EINTR) && SigAlrm) ? S_BKG : S_ERR;
+      if ((wait_time > 0) && tempfile && *tempfile)
       {
         unlink(*tempfile);
         FREE(tempfile);
       }
     }
 
-    if (C_SendmailWait > 0)
+    if (wait_time > 0)
     {
       /* reset alarm; not really needed, but... */
       alarm(0);
@@ -245,7 +246,8 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
  * @param[in]  addr    Address to add
  * @retval ptr Updated array
  */
-static char **add_args_one(char **args, size_t *argslen, size_t *argsmax, struct Address *addr)
+static const char **add_args_one(const char **args, size_t *argslen,
+                                 size_t *argsmax, const struct Address *addr)
 {
   /* weed out group mailboxes, since those are for display only */
   if (addr->mailbox && !addr->group)
@@ -265,7 +267,8 @@ static char **add_args_one(char **args, size_t *argslen, size_t *argsmax, struct
  * @param[in]  al      Addresses to add
  * @retval ptr Updated array
  */
-static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct AddressList *al)
+static const char **add_args(const char **args, size_t *argslen,
+                             size_t *argsmax, struct AddressList *al)
 {
   if (!al)
     return args;
@@ -288,7 +291,8 @@ static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct Add
  *
  * @note The array may be realloc()'d
  */
-static char **add_option(char **args, size_t *argslen, size_t *argsmax, char *s)
+static const char **add_option(const char **args, size_t *argslen,
+                               size_t *argsmax, const char *s)
 {
   if (*argslen == *argsmax)
     mutt_mem_realloc(&args, (*argsmax += 5) * sizeof(char *));
@@ -313,7 +317,7 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
                          const char *msg, bool eightbit, struct ConfigSubset *sub)
 {
   char *ps = NULL, *path = NULL, *s = NULL, *childout = NULL;
-  char **args = NULL;
+  const char **args = NULL;
   size_t argslen = 0, argsmax = 0;
   char **extra_args = NULL;
   int i;
@@ -323,7 +327,8 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
   {
     char cmd[1024];
 
-    mutt_expando_format(cmd, sizeof(cmd), 0, sizeof(cmd), NONULL(C_Inews),
+    const char *c_inews = cs_subset_string(sub, "inews");
+    mutt_expando_format(cmd, sizeof(cmd), 0, sizeof(cmd), NONULL(c_inews),
                         nntp_format_str, 0, MUTT_FORMAT_NO_FLAGS);
     if (*cmd == '\0')
     {
@@ -336,7 +341,10 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
   }
   else
 #endif
-    s = mutt_str_dup(C_Sendmail);
+  {
+    const char *c_sendmail = cs_subset_string(sub, "sendmail");
+    s = mutt_str_dup(c_sendmail);
+  }
 
   /* ensure that $sendmail is set to avoid a crash. http://dev.mutt.org/trac/ticket/3548 */
   if (!s)
@@ -377,8 +385,8 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
   {
 #endif
     size_t extra_argslen = 0;
-    /* If C_Sendmail contained a "--", we save the recipients to append to
-   * args after other possible options added below. */
+    /* If $sendmail contained a "--", we save the recipients to append to
+     * args after other possible options added below. */
     if (ps)
     {
       ps = NULL;
@@ -393,15 +401,19 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
       }
     }
 
-    if (eightbit && C_Use8bitmime)
+    const bool c_use_8bitmime = cs_subset_bool(sub, "use_8bitmime");
+    if (eightbit && c_use_8bitmime)
       args = add_option(args, &argslen, &argsmax, "-B8BITMIME");
 
-    if (C_UseEnvelopeFrom)
+    const bool c_use_envelope_from = cs_subset_bool(sub, "use_envelope_from");
+    if (c_use_envelope_from)
     {
-      if (C_EnvelopeFromAddress)
+      const struct Address *c_envelope_from_address =
+          cs_subset_address(sub, "envelope_from_address");
+      if (c_envelope_from_address)
       {
         args = add_option(args, &argslen, &argsmax, "-f");
-        args = add_args_one(args, &argslen, &argsmax, C_EnvelopeFromAddress);
+        args = add_args_one(args, &argslen, &argsmax, c_envelope_from_address);
       }
       else if (!TAILQ_EMPTY(from) && !TAILQ_NEXT(TAILQ_FIRST(from), entries))
       {
@@ -410,15 +422,18 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
       }
     }
 
-    if (C_DsnNotify)
+    const char *c_dsn_notify = cs_subset_string(sub, "dsn_notify");
+    if (c_dsn_notify)
     {
       args = add_option(args, &argslen, &argsmax, "-N");
-      args = add_option(args, &argslen, &argsmax, C_DsnNotify);
+      args = add_option(args, &argslen, &argsmax, c_dsn_notify);
     }
-    if (C_DsnReturn)
+
+    const char *c_dsn_return = cs_subset_string(sub, "dsn_return");
+    if (c_dsn_return)
     {
       args = add_option(args, &argslen, &argsmax, "-R");
-      args = add_option(args, &argslen, &argsmax, C_DsnReturn);
+      args = add_option(args, &argslen, &argsmax, c_dsn_return);
     }
     args = add_option(args, &argslen, &argsmax, "--");
     for (i = 0; i < extra_argslen; i++)
@@ -442,7 +457,8 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
   if (!OptNoCurses)
     mutt_need_hard_redraw();
 
-  i = send_msg(path, args, msg, OptNoCurses ? NULL : &childout);
+  const short c_sendmail_wait = cs_subset_number(sub, "sendmail_wait");
+  i = send_msg(path, args, msg, OptNoCurses ? NULL : &childout, c_sendmail_wait);
   if (i != (EX_OK & 0xff))
   {
     if (i != S_BKG)
