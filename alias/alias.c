@@ -168,7 +168,7 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
   }
 
   const char *fqdn = NULL;
-  if (C_UseDomain && (fqdn = mutt_fqdn(true)))
+  if (C_UseDomain && (fqdn = mutt_fqdn(true, NeoMutt->sub)))
   {
     /* now qualify all local addresses */
     mutt_addrlist_qualify(al, fqdn);
@@ -565,13 +565,13 @@ bool mutt_addr_is_user(const struct Address *addr)
     mutt_debug(LL_DEBUG5, "#2 yes, %s = %s @ %s\n", addr->mailbox, Username, ShortHostname);
     return true;
   }
-  const char *fqdn = mutt_fqdn(false);
+  const char *fqdn = mutt_fqdn(false, NeoMutt->sub);
   if (string_is_address(addr->mailbox, Username, fqdn))
   {
     mutt_debug(LL_DEBUG5, "#3 yes, %s = %s @ %s\n", addr->mailbox, Username, NONULL(fqdn));
     return true;
   }
-  fqdn = mutt_fqdn(true);
+  fqdn = mutt_fqdn(true, NeoMutt->sub);
   if (string_is_address(addr->mailbox, Username, fqdn))
   {
     mutt_debug(LL_DEBUG5, "#4 yes, %s = %s @ %s\n", addr->mailbox, Username, NONULL(fqdn));

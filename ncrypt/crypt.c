@@ -41,6 +41,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
@@ -266,7 +267,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
     if (!from)
     {
       free_from = true;
-      from = mutt_default_from();
+      from = mutt_default_from(NeoMutt->sub);
     }
 
     mailbox = from->mailbox;
@@ -288,7 +289,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
     mutt_str_replace(&protected_headers->subject, e->env->subject);
     /* Note: if other headers get added, such as to, cc, then a call to
      * mutt_env_to_intl() will need to be added here too. */
-    mutt_prepare_envelope(protected_headers, 0);
+    mutt_prepare_envelope(protected_headers, 0, NeoMutt->sub);
 
     mutt_env_free(&e->content->mime_headers);
     e->content->mime_headers = protected_headers;
@@ -828,7 +829,7 @@ void crypt_convert_to_7bit(struct Body *a)
              !mutt_istr_equal(a->subtype, "delivery-status"))
     {
       if (a->encoding != ENC_7BIT)
-        mutt_message_to_7bit(a, NULL);
+        mutt_message_to_7bit(a, NULL, NeoMutt->sub);
     }
     else if (a->encoding == ENC_8BIT)
       a->encoding = ENC_QUOTED_PRINTABLE;
@@ -955,7 +956,7 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
     return 0;
 
   struct AddressList addrlist = TAILQ_HEAD_INITIALIZER(addrlist);
-  const char *fqdn = mutt_fqdn(true);
+  const char *fqdn = mutt_fqdn(true, NeoMutt->sub);
   char *self_encrypt = NULL;
 
   /* Do a quick check to make sure that we can find all of the encryption
@@ -1107,8 +1108,8 @@ int mutt_protected_headers_handler(struct Body *a, struct State *s)
       state_mark_protected_header(s);
       int wraplen = display ? mutt_window_wrap_cols(s->wraplen, C_Wrap) : 0;
 
-      mutt_write_one_header(s->fp_out, "Subject", a->mime_headers->subject,
-                            s->prefix, wraplen, display ? CH_DISPLAY : CH_NO_FLAGS);
+      mutt_write_one_header(s->fp_out, "Subject", a->mime_headers->subject, s->prefix,
+                            wraplen, display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
       state_puts(s, "\n");
     }
   }

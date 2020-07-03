@@ -2945,7 +2945,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (IsMsgAttach(extra))
           mutt_attach_resend(extra->fp, extra->actx, extra->body);
         else
-          mutt_resend_message(NULL, extra->ctx, extra->email);
+          mutt_resend_message(NULL, extra->ctx, extra->email, NeoMutt->sub);
         pager_menu->redraw = REDRAW_FULL;
         break;
 
@@ -2958,7 +2958,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           emaillist_add_email(&el, extra->email);
-          mutt_send_message(SEND_TO_SENDER, NULL, NULL, extra->ctx, &el);
+          mutt_send_message(SEND_TO_SENDER, NULL, NULL, extra->ctx, &el, NeoMutt->sub);
           emaillist_clear(&el);
         }
         pager_menu->redraw = REDRAW_FULL;
@@ -3143,7 +3143,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_MAIL:
         CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
         CHECK_ATTACH;
-        mutt_send_message(SEND_NO_FLAGS, NULL, NULL, extra->ctx, NULL);
+        mutt_send_message(SEND_NO_FLAGS, NULL, NULL, extra->ctx, NULL, NeoMutt->sub);
         pager_menu->redraw = REDRAW_FULL;
         break;
 
@@ -3156,7 +3156,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         {
           break;
         }
-        mutt_send_message(SEND_NEWS, NULL, NULL, extra->ctx, NULL);
+        mutt_send_message(SEND_NEWS, NULL, NULL, extra->ctx, NULL, NeoMutt->sub);
         pager_menu->redraw = REDRAW_FULL;
         break;
 
@@ -3174,7 +3174,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           emaillist_add_email(&el, extra->email);
-          mutt_send_message(SEND_NEWS | SEND_FORWARD, NULL, NULL, extra->ctx, &el);
+          mutt_send_message(SEND_NEWS | SEND_FORWARD, NULL, NULL, extra->ctx,
+                            &el, NeoMutt->sub);
           emaillist_clear(&el);
         }
         pager_menu->redraw = REDRAW_FULL;
@@ -3207,7 +3208,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           {
             struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
             emaillist_add_email(&el, extra->email);
-            mutt_send_message(SEND_NEWS | SEND_REPLY, NULL, NULL, extra->ctx, &el);
+            mutt_send_message(SEND_NEWS | SEND_REPLY, NULL, NULL, extra->ctx,
+                              &el, NeoMutt->sub);
             emaillist_clear(&el);
           }
           pager_menu->redraw = REDRAW_FULL;
@@ -3237,7 +3239,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           emaillist_add_email(&el, extra->email);
-          mutt_send_message(replyflags, NULL, NULL, extra->ctx, &el);
+          mutt_send_message(replyflags, NULL, NULL, extra->ctx, &el, NeoMutt->sub);
           emaillist_clear(&el);
         }
         pager_menu->redraw = REDRAW_FULL;
@@ -3250,7 +3252,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_ATTACH;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
-        mutt_send_message(SEND_POSTPONED, NULL, NULL, extra->ctx, &el);
+        mutt_send_message(SEND_POSTPONED, NULL, NULL, extra->ctx, &el, NeoMutt->sub);
         emaillist_clear(&el);
         pager_menu->redraw = REDRAW_FULL;
         break;
@@ -3265,7 +3267,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           emaillist_add_email(&el, extra->email);
-          mutt_send_message(SEND_FORWARD, NULL, NULL, extra->ctx, &el);
+          mutt_send_message(SEND_FORWARD, NULL, NULL, extra->ctx, &el, NeoMutt->sub);
           emaillist_clear(&el);
         }
         pager_menu->redraw = REDRAW_FULL;
@@ -3442,7 +3444,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_ATTACH;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
-        mutt_send_message(SEND_KEY, NULL, NULL, extra->ctx, &el);
+        mutt_send_message(SEND_KEY, NULL, NULL, extra->ctx, &el, NeoMutt->sub);
         emaillist_clear(&el);
         pager_menu->redraw = REDRAW_FULL;
         break;

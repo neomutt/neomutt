@@ -457,11 +457,13 @@ static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *
  * mutt_get_content_info - Analyze file to determine MIME encoding to use
  * @param fname File to examine
  * @param b     Body to update
+ * @param sub   Config Subset
  * @retval ptr Newly allocated Content
  *
  * Also set the body charset, sometimes, or not.
  */
-struct Content *mutt_get_content_info(const char *fname, struct Body *b)
+struct Content *mutt_get_content_info(const char *fname, struct Body *b,
+                                      struct ConfigSubset *sub)
 {
   struct Content *info = NULL;
   struct ContentState state = { 0 };
@@ -665,10 +667,11 @@ bye:
 
 /**
  * transform_to_7bit - Convert MIME parts to 7-bit
- * @param a    Body of the email
+ * @param a     Body of the email
  * @param fp_in File to read
+ * @param sub   Config Subset
  */
-static void transform_to_7bit(struct Body *a, FILE *fp_in)
+static void transform_to_7bit(struct Body *a, FILE *fp_in, struct ConfigSubset *sub)
 {
   struct Buffer *buf = NULL;
   struct State s = { 0 };
@@ -679,11 +682,11 @@ static void transform_to_7bit(struct Body *a, FILE *fp_in)
     if (a->type == TYPE_MULTIPART)
     {
       a->encoding = ENC_7BIT;
-      transform_to_7bit(a->parts, fp_in);
+      transform_to_7bit(a->parts, fp_in, sub);
     }
     else if (mutt_is_message_type(a->type, a->subtype))
     {
-      mutt_message_to_7bit(a, fp_in);
+      mutt_message_to_7bit(a, fp_in, sub);
     }
     else
     {
@@ -716,7 +719,7 @@ static void transform_to_7bit(struct Body *a, FILE *fp_in)
       }
       a->length = sb.st_size;
 
-      mutt_update_encoding(a);
+      mutt_update_encoding(a, sub);
       if (a->encoding == ENC_8BIT)
         a->encoding = ENC_QUOTED_PRINTABLE;
       else if (a->encoding == ENC_BINARY)
@@ -727,10 +730,11 @@ static void transform_to_7bit(struct Body *a, FILE *fp_in)
 
 /**
  * mutt_message_to_7bit - Convert an email's MIME parts to 7-bit
- * @param a  Body of the email
- * @param fp File to read (OPTIONAL)
+ * @param a   Body of the email
+ * @param fp  File to read (OPTIONAL)
+ * @param sub Config Subset
  */
-void mutt_message_to_7bit(struct Body *a, FILE *fp)
+void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
 {
   struct Buffer temp = mutt_buffer_make(0);
   FILE *fp_in = NULL;
@@ -768,15 +772,15 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp)
   fseeko(fp_in, a->offset, SEEK_SET);
   a->parts = mutt_rfc822_parse_message(fp_in, a);
 
-  transform_to_7bit(a->parts, fp_in);
+  transform_to_7bit(a->parts, fp_in, sub);
 
   mutt_copy_hdr(fp_in, fp_out, a->offset, a->offset + a->length,
                 CH_MIME | CH_NONEWLINE | CH_XMIT, NULL, 0);
 
   fputs("MIME-Version: 1.0\n", fp_out);
-  mutt_write_mime_header(a->parts, fp_out);
+  mutt_write_mime_header(a->parts, fp_out, sub);
   fputc('\n', fp_out);
-  mutt_write_mime_body(a->parts, fp_out);
+  mutt_write_mime_body(a->parts, fp_out, sub);
 
   if (fp_in != fp)
     mutt_file_fclose(&fp_in);
@@ -815,8 +819,9 @@ cleanup:
  * set_encoding - determine which Content-Transfer-Encoding to use
  * @param[in]  b    Body of email
  * @param[out] info Info about the email
+ * @param[in]  sub  Config Subset
  */
-static void set_encoding(struct Body *b, struct Content *info)
+static void set_encoding(struct Body *b, struct Content *info, struct ConfigSubset *sub)
 {
   if (b->type == TYPE_TEXT)
   {
@@ -843,7 +848,7 @@ static void set_encoding(struct Body *b, struct Content *info)
       if (C_Allow8bit && !info->lobin)
         b->encoding = ENC_8BIT;
       else
-        mutt_message_to_7bit(b, NULL);
+        mutt_message_to_7bit(b, NULL, sub);
     }
     else
       b->encoding = ENC_7BIT;
@@ -879,11 +884,12 @@ void mutt_stamp_attachment(struct Body *a)
 
 /**
  * mutt_update_encoding - Update the encoding type
- * @param a Body to update
+ * @param a   Body to update
+ * @param sub Config Subset
  *
  * Assumes called from send mode where Body->filename points to actual file
  */
-void mutt_update_encoding(struct Body *a)
+void mutt_update_encoding(struct Body *a, struct ConfigSubset *sub)
 {
   struct Content *info = NULL;
   char chsbuf[256];
@@ -895,11 +901,11 @@ void mutt_update_encoding(struct Body *a)
   if (!a->force_charset && !a->noconv)
     mutt_param_delete(&a->parameter, "charset");
 
-  info = mutt_get_content_info(a->filename, a);
+  info = mutt_get_content_info(a->filename, a, sub);
   if (!info)
     return;
 
-  set_encoding(a, info);
+  set_encoding(a, info, sub);
   mutt_stamp_attachment(a);
 
   FREE(&a->content);
@@ -911,10 +917,12 @@ void mutt_update_encoding(struct Body *a)
  * @param m          Mailbox
  * @param e          Email
  * @param attach_msg true if attaching a message
+ * @param sub        Config Subset
  * @retval ptr  Newly allocated Body
  * @retval NULL Error
  */
-struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool attach_msg)
+struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
+                                      bool attach_msg, struct ConfigSubset *sub)
 {
   struct Body *body = NULL;
   FILE *fp = NULL;
@@ -1000,7 +1008,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
   body->email->env = mutt_rfc822_read_header(fp, body->email, false, false);
   if (WithCrypto)
     body->email->security = pgp;
-  mutt_update_encoding(body);
+  mutt_update_encoding(body, sub);
   body->parts = body->email->content;
 
   mutt_file_fclose(&fp);
@@ -1011,10 +1019,11 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
 /**
  * run_mime_type_query - Run an external command to determine the MIME type
  * @param att Attachment
+ * @param sub Config Subset
  *
  * The command in $mime_type_query_command is run.
  */
-static void run_mime_type_query(struct Body *att)
+static void run_mime_type_query(struct Body *att, struct ConfigSubset *sub)
 {
   FILE *fp = NULL, *fp_err = NULL;
   char *buf = NULL;
@@ -1049,16 +1058,17 @@ static void run_mime_type_query(struct Body *att)
 /**
  * mutt_make_file_attach - Create a file attachment
  * @param path File to attach
+ * @param sub  Config Subset
  * @retval ptr  Newly allocated Body
  * @retval NULL Error
  */
-struct Body *mutt_make_file_attach(const char *path)
+struct Body *mutt_make_file_attach(const char *path, struct ConfigSubset *sub)
 {
   struct Body *att = mutt_body_new();
   att->filename = mutt_str_dup(path);
 
   if (C_MimeTypeQueryCommand && C_MimeTypeQueryFirst)
-    run_mime_type_query(att);
+    run_mime_type_query(att, sub);
 
   /* Attempt to determine the appropriate content-type based on the filename
    * suffix.  */
@@ -1067,10 +1077,10 @@ struct Body *mutt_make_file_attach(const char *path)
 
   if (!att->subtype && C_MimeTypeQueryCommand && !C_MimeTypeQueryFirst)
   {
-    run_mime_type_query(att);
+    run_mime_type_query(att, sub);
   }
 
-  struct Content *info = mutt_get_content_info(path, att);
+  struct Content *info = mutt_get_content_info(path, att, sub);
   if (!info)
   {
     mutt_body_free(&att);
@@ -1095,17 +1105,18 @@ struct Body *mutt_make_file_attach(const char *path)
   }
 
   FREE(&info);
-  mutt_update_encoding(att);
+  mutt_update_encoding(att, sub);
   return att;
 }
 
 /**
  * encode_headers - RFC2047-encode a list of headers
- * @param h String List of headers
+ * @param h   String List of headers
+ * @param sub Config Subset
  *
  * The strings are encoded in-place.
  */
-static void encode_headers(struct ListHead *h)
+static void encode_headers(struct ListHead *h, struct ConfigSubset *sub)
 {
   char *tmp = NULL;
   char *p = NULL;
@@ -1137,12 +1148,13 @@ static void encode_headers(struct ListHead *h)
 /**
  * mutt_fqdn - Get the Fully-Qualified Domain Name
  * @param may_hide_host If true, hide the hostname (leaving just the domain)
+ * @param sub           Config Subset
  * @retval ptr  string pointer into Hostname
  * @retval NULL Error, e.g no Hostname
  *
  * @warning Do not free the returned pointer
  */
-const char *mutt_fqdn(bool may_hide_host)
+const char *mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub)
 {
   if (!C_Hostname || (C_Hostname[0] == '@'))
     return NULL;
@@ -1169,14 +1181,14 @@ const char *mutt_fqdn(bool may_hide_host)
  *
  * @note The caller should free the string
  */
-static char *gen_msgid(void)
+static char *gen_msgid(struct ConfigSubset *sub)
 {
   char buf[128];
   char rndid[MUTT_RANDTAG_LEN + 1];
 
   mutt_rand_base32(rndid, sizeof(rndid) - 1);
   rndid[MUTT_RANDTAG_LEN] = 0;
-  const char *fqdn = mutt_fqdn(false);
+  const char *fqdn = mutt_fqdn(false, sub);
   if (!fqdn)
     fqdn = NONULL(ShortHostname);
 
@@ -1190,12 +1202,13 @@ static char *gen_msgid(void)
  * mutt_prepare_envelope - Prepare an email header
  * @param env   Envelope to prepare
  * @param final true if this email is going to be sent (not postponed)
+ * @param sub   Config Subset
  *
  * Encode all the headers prior to sending the email.
  *
  * For postponing (!final) do the necessary encodings only
  */
-void mutt_prepare_envelope(struct Envelope *env, bool final)
+void mutt_prepare_envelope(struct Envelope *env, bool final, struct ConfigSubset *sub)
 {
   if (final)
   {
@@ -1216,15 +1229,15 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
       to->mailbox = mutt_str_dup(buf);
     }
 
-    mutt_set_followup_to(env);
+    mutt_set_followup_to(env, sub);
 
     if (!env->message_id)
-      env->message_id = gen_msgid();
+      env->message_id = gen_msgid(sub);
   }
 
   /* Take care of 8-bit => 7-bit conversion. */
   rfc2047_encode_envelope(env);
-  encode_headers(&env->userhdrs);
+  encode_headers(&env->userhdrs, sub);
 }
 
 /**
@@ -1255,11 +1268,13 @@ void mutt_unprepare_envelope(struct Envelope *env)
  * @param to          Address to bounce to
  * @param resent_from Address of new sender
  * @param env_from    Envelope of original sender
+ * @param sub         Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
 static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
-                          const char *resent_from, struct AddressList *env_from)
+                          const char *resent_from, struct AddressList *env_from,
+                          struct ConfigSubset *sub)
 {
   if (!e)
     return -1;
@@ -1280,7 +1295,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
     fseeko(fp, e->offset, SEEK_SET);
     fprintf(fp_tmp, "Resent-From: %s", resent_from);
     fprintf(fp_tmp, "\nResent-%s", mutt_date_make_date(date, sizeof(date)));
-    char *msgid_str = gen_msgid();
+    char *msgid_str = gen_msgid(sub);
     fprintf(fp_tmp, "Resent-Message-ID: %s\n", msgid_str);
     FREE(&msgid_str);
     fputs("Resent-To: ", fp_tmp);
@@ -1298,13 +1313,13 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
     if (C_SmtpUrl)
     {
       rc = mutt_smtp_send(env_from, to, NULL, NULL, mutt_b2s(tempfile),
-                          e->content->encoding == ENC_8BIT);
+                          (e->content->encoding == ENC_8BIT), sub);
     }
     else
 #endif
     {
       rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, mutt_b2s(tempfile),
-                                (e->content->encoding == ENC_8BIT));
+                                (e->content->encoding == ENC_8BIT), sub);
     }
   }
 
@@ -1314,23 +1329,25 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
 
 /**
  * mutt_bounce_message - Bounce an email message
- * @param fp Handle of message
- * @param e  Email
- * @param to AddressList to bounce to
+ * @param fp  Handle of message
+ * @param e   Email
+ * @param to  AddressList to bounce to
+ * @param sub Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to)
+int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
+                        struct ConfigSubset *sub)
 {
   if (!fp || !e || !to || TAILQ_EMPTY(to))
     return -1;
 
-  const char *fqdn = mutt_fqdn(true);
+  const char *fqdn = mutt_fqdn(true, sub);
   char resent_from[256];
   char *err = NULL;
 
   resent_from[0] = '\0';
-  struct Address *from = mutt_default_from();
+  struct Address *from = mutt_default_from(sub);
   struct AddressList from_list = TAILQ_HEAD_INITIALIZER(from_list);
   mutt_addrlist_append(&from_list, from);
 
@@ -1364,7 +1381,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to)
   struct AddressList resent_to = TAILQ_HEAD_INITIALIZER(resent_to);
   mutt_addrlist_copy(&resent_to, to, false);
   rfc2047_encode_addrlist(&resent_to, "Resent-To");
-  int rc = bounce_message(fp, e, &resent_to, resent_from, &from_list);
+  int rc = bounce_message(fp, e, &resent_to, resent_from, &from_list, sub);
   mutt_addrlist_clear(&resent_to);
   mutt_addrlist_clear(&from_list);
 
@@ -1395,16 +1412,17 @@ static void set_noconv_flags(struct Body *b, bool flag)
 /**
  * mutt_write_multiple_fcc - Handle FCC with multiple, comma separated entries
  * @param[in]  path      Path to mailboxes (comma separated)
- * @param[in]  e       Email
+ * @param[in]  e         Email
  * @param[in]  msgid     Message id
  * @param[in]  post      If true, postpone message
  * @param[in]  fcc       fcc setting to save (postpone only)
  * @param[out] finalpath Final path of email
+ * @param[in]  sub       Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid,
-                            bool post, char *fcc, char **finalpath)
+int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid, bool post,
+                            char *fcc, char **finalpath, struct ConfigSubset *sub)
 {
   char fcc_tok[PATH_MAX];
   char fcc_expanded[PATH_MAX];
@@ -1417,7 +1435,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
 
   mutt_debug(LL_DEBUG1, "Fcc: initial mailbox = '%s'\n", tok);
   /* mutt_expand_path already called above for the first token */
-  int status = mutt_write_fcc(tok, e, msgid, post, fcc, finalpath);
+  int status = mutt_write_fcc(tok, e, msgid, post, fcc, finalpath, sub);
   if (status != 0)
     return status;
 
@@ -1431,7 +1449,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
     mutt_str_copy(fcc_expanded, tok, sizeof(fcc_expanded));
     mutt_expand_path(fcc_expanded, sizeof(fcc_expanded));
     mutt_debug(LL_DEBUG1, "     Additional mailbox expanded = '%s'\n", fcc_expanded);
-    status = mutt_write_fcc(fcc_expanded, e, msgid, post, fcc, finalpath);
+    status = mutt_write_fcc(fcc_expanded, e, msgid, post, fcc, finalpath, sub);
     if (status != 0)
       return status;
   }
@@ -1447,11 +1465,12 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
  * @param[in]  post      If true, postpone message, else fcc mode
  * @param[in]  fcc       fcc setting to save (postpone only)
  * @param[out] finalpath Final path of email
+ * @param[in]  sub       Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
-                   bool post, const char *fcc, char **finalpath)
+int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool post,
+                   const char *fcc, char **finalpath, struct ConfigSubset *sub)
 {
   struct Message *msg = NULL;
   struct Buffer *tempfile = NULL;
@@ -1511,8 +1530,9 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   /* post == 1 => postpone message.
    * post == 0 => Normal mode.  */
   mutt_rfc822_write_header(
-      msg->fp, e->env, e->content, post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_FCC,
-      false, C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e));
+      msg->fp, e->env, e->content,
+      post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_FCC, false,
+      C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e), sub);
 
   /* (postponement) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-
@@ -1602,7 +1622,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 
   if (fp_tmp)
   {
-    mutt_write_mime_body(e->content, fp_tmp);
+    mutt_write_mime_body(e->content, fp_tmp, sub);
 
     /* make sure the last line ends with a newline.  Emacs doesn't ensure this
      * will happen, and it can cause problems parsing the mailbox later.  */
@@ -1649,7 +1669,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   else
   {
     fputc('\n', msg->fp); /* finish off the header */
-    rc = mutt_write_mime_body(e->content, msg->fp);
+    rc = mutt_write_mime_body(e->content, msg->fp, sub);
   }
 
   if (mx_msg_commit(ctx_fcc->mailbox, msg) != 0)

@@ -2063,7 +2063,8 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
       return 0;
     }
 
-    mutt_rfc822_write_header(fp, e->env, e->content, MUTT_WRITE_HEADER_POSTPONE, false, false);
+    mutt_rfc822_write_header(fp, e->env, e->content, MUTT_WRITE_HEADER_POSTPONE,
+                             false, false, NeoMutt->sub);
     fflush(fp);
     fseek(fp, 0, 0);
 

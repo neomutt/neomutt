@@ -1986,7 +1986,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         struct Email *e_cur = get_cur_email(Context, menu);
         el_add_tagged(&el, Context, e_cur, tag);
-        mutt_send_message(SEND_TO_SENDER, NULL, NULL, Context, &el);
+        mutt_send_message(SEND_TO_SENDER, NULL, NULL, Context, &el, NeoMutt->sub);
         emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
@@ -3447,7 +3447,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
-        mutt_send_message(SEND_FORWARD, NULL, NULL, Context, &el);
+        mutt_send_message(SEND_FORWARD, NULL, NULL, Context, &el, NeoMutt->sub);
         emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
@@ -3476,7 +3476,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
-        mutt_send_message(replyflags, NULL, NULL, Context, &el);
+        mutt_send_message(replyflags, NULL, NULL, Context, &el, NeoMutt->sub);
         emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
@@ -3525,7 +3525,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
-        mutt_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, Context, &el);
+        mutt_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, Context,
+                          &el, NeoMutt->sub);
         emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
@@ -3534,7 +3535,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_MAIL:
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
-        mutt_send_message(SEND_NO_FLAGS, NULL, NULL, Context, NULL);
+        mutt_send_message(SEND_NO_FLAGS, NULL, NULL, Context, NULL, NeoMutt->sub);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3543,7 +3544,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
-        mutt_send_message(SEND_KEY, NULL, NULL, NULL, NULL);
+        mutt_send_message(SEND_KEY, NULL, NULL, NULL, NULL, NeoMutt->sub);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3709,7 +3710,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_RECALL_MESSAGE:
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
-        mutt_send_message(SEND_POSTPONED, NULL, NULL, Context, NULL);
+        mutt_send_message(SEND_POSTPONED, NULL, NULL, Context, NULL, NeoMutt->sub);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3726,13 +3727,13 @@ int mutt_index_menu(struct MuttWindow *dlg)
             if (!e)
               break;
             if (message_is_tagged(Context, e))
-              mutt_resend_message(NULL, Context, e);
+              mutt_resend_message(NULL, Context, e, NeoMutt->sub);
           }
         }
         else
         {
           struct Email *e_cur = get_cur_email(Context, menu);
-          mutt_resend_message(NULL, Context, e_cur);
+          mutt_resend_message(NULL, Context, e_cur, NeoMutt->sub);
         }
 
         menu->redraw = REDRAW_FULL;
@@ -3763,7 +3764,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             break;
           }
           if (op == OP_POST)
-            mutt_send_message(SEND_NEWS, NULL, NULL, Context, NULL);
+            mutt_send_message(SEND_NEWS, NULL, NULL, Context, NULL, NeoMutt->sub);
           else
           {
             if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT))
@@ -3771,7 +3772,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
             el_add_tagged(&el, Context, e_cur, tag);
             mutt_send_message(((op == OP_FOLLOWUP) ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
-                              NULL, NULL, Context, &el);
+                              NULL, NULL, Context, &el, NeoMutt->sub);
             emaillist_clear(&el);
           }
           menu->redraw = REDRAW_FULL;
@@ -3793,7 +3794,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
-        mutt_send_message(SEND_REPLY, NULL, NULL, Context, &el);
+        mutt_send_message(SEND_REPLY, NULL, NULL, Context, &el, NeoMutt->sub);
         emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;

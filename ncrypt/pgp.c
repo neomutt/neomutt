@@ -44,6 +44,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
@@ -1317,9 +1318,9 @@ struct Body *pgp_class_sign_message(struct Body *a, const struct AddressList *fr
     goto cleanup;
   }
 
-  mutt_write_mime_header(a, fp_signed);
+  mutt_write_mime_header(a, fp_signed, NeoMutt->sub);
   fputc('\n', fp_signed);
-  mutt_write_mime_body(a, fp_signed);
+  mutt_write_mime_body(a, fp_signed, NeoMutt->sub);
   mutt_file_fclose(&fp_signed);
 
   pid = pgp_invoke_sign(&fp_pgp_in, &fp_pgp_out, &fp_pgp_err, -1, -1, -1,
@@ -1427,7 +1428,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
   size_t keylist_used = 0;
   struct Address *p = NULL;
   struct PgpKeyInfo *k_info = NULL;
-  const char *fqdn = mutt_fqdn(true);
+  const char *fqdn = mutt_fqdn(true, NeoMutt->sub);
   char buf[1024];
   bool key_selected;
   struct AddressList hookal = TAILQ_HEAD_INITIALIZER(hookal);
@@ -1582,9 +1583,9 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign,
   if (sign)
     crypt_convert_to_7bit(a);
 
-  mutt_write_mime_header(a, fp_tmp);
+  mutt_write_mime_header(a, fp_tmp, NeoMutt->sub);
   fputc('\n', fp_tmp);
-  mutt_write_mime_body(a, fp_tmp);
+  mutt_write_mime_body(a, fp_tmp, NeoMutt->sub);
   mutt_file_fclose(&fp_tmp);
 
   pid = pgp_invoke_encrypt(&fp_pgp_in, NULL, NULL, -1, fileno(fp_out),

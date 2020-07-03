@@ -26,7 +26,8 @@
 #include <stdio.h>
 
 struct Body;
+struct ConfigSubset;
 
-int mutt_write_mime_body(struct Body *a, FILE *fp);
+int mutt_write_mime_body(struct Body *a, FILE *fp, struct ConfigSubset *sub);
 
 #endif /* MUTT_SEND_BODY_H */

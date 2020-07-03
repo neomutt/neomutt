@@ -86,9 +86,10 @@
 
 /**
  * append_signature - Append a signature to an email
- * @param fp File to write to
+ * @param fp  File to write to
+ * @param sub Config Subset
  */
-static void append_signature(FILE *fp)
+static void append_signature(FILE *fp, struct ConfigSubset *sub)
 {
   FILE *fp_tmp = NULL;
   pid_t pid;
@@ -187,10 +188,11 @@ int mutt_edit_address(struct AddressList *al, const char *field, bool expand_ali
  * edit_envelope - Edit Envelope fields
  * @param en    Envelope to edit
  * @param flags Flags, see #SendFlags
+ * @param sub   Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int edit_envelope(struct Envelope *en, SendFlags flags)
+static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubset *sub)
 {
   char buf[8192];
 
@@ -375,10 +377,11 @@ static void process_user_header(struct Envelope *env)
 /**
  * mutt_forward_intro - Add the "start of forwarded message" text
  * @param m   Mailbox
- * @param e Email
+ * @param e   Email
+ * @param sub Config Subset
  * @param fp  File to write to
  */
-void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp)
+void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp, struct ConfigSubset *sub)
 {
   if (!C_ForwardAttributionIntro || !fp)
     return;
@@ -394,10 +397,12 @@ void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp)
 /**
  * mutt_forward_trailer - Add a "end of forwarded message" text
  * @param m   Mailbox
- * @param e Email
+ * @param e   Email
+ * @param sub Config Subset
  * @param fp  File to write to
  */
-void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp)
+void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp,
+                          struct ConfigSubset *sub)
 {
   if (!C_ForwardAttributionTrailer || !fp)
     return;
@@ -416,10 +421,12 @@ void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp)
  * @param m      Mailbox
  * @param e      Email
  * @param fp_out File to write to
+ * @param sub    Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out)
+static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out,
+                           struct ConfigSubset *sub)
 {
   CopyHeaderFlags chflags = CH_DECODE;
   CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
@@ -434,7 +441,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out)
       return -1;
   }
 
-  mutt_forward_intro(m, e, fp_out);
+  mutt_forward_intro(m, e, fp_out, sub);
 
   if (C_ForwardDecode)
   {
@@ -449,7 +456,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out)
     cmflags |= MUTT_CM_PREFIX;
 
   mutt_copy_message(fp_out, m, e, cmflags, chflags, 0);
-  mutt_forward_trailer(m, e, fp_out);
+  mutt_forward_trailer(m, e, fp_out, sub);
   return 0;
 }
 
@@ -459,11 +466,13 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out)
  * @param[in]  e        Current Email
  * @param[out] plast    Pointer to the last Attachment
  * @param[out] forwardq Result of asking the user to forward the attachments, e.g. #MUTT_YES
+ * @param[in]  sub      Config Subset
  * @retval  0 Success
  * @retval -1 Error
  */
 static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
-                                      struct Body ***plast, enum QuadOption *forwardq)
+                                      struct Body ***plast, enum QuadOption *forwardq,
+                                      struct ConfigSubset *sub)
 {
   struct Body **last = *plast;
   struct Body *body = NULL;
@@ -533,8 +542,10 @@ cleanup:
  * @param m      Mailbox
  * @param e      Email
  * @param fp_out File to write to
+ * @param sub    Config Subset
  */
-void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *fp_out)
+void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *fp_out,
+                           struct ConfigSubset *sub)
 {
   if (!C_Attribution || !fp_out)
     return;
@@ -552,8 +563,10 @@ void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *fp_out)
  * @param m      Mailbox
  * @param e      Email
  * @param fp_out File to write to
+ * @param sub    Config Subset
  */
-void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out)
+void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out,
+                           struct ConfigSubset *sub)
 {
   if (!C_PostIndentString || !fp_out)
     return;
@@ -569,10 +582,12 @@ void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out)
  * @param m      Mailbox
  * @param e      Email
  * @param fp_out File to write to
+ * @param sub    Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
+static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
+                         struct ConfigSubset *sub)
 {
   CopyMessageFlags cmflags =
       MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV | MUTT_CM_REPLYING;
@@ -588,7 +603,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
   mutt_parse_mime_message(m, e);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  mutt_make_attribution(m, e, fp_out);
+  mutt_make_attribution(m, e, fp_out, sub);
 
   if (!C_Header)
     cmflags |= MUTT_CM_NOHEADER;
@@ -600,7 +615,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
 
   mutt_copy_message(fp_out, m, e, cmflags, chflags, 0);
 
-  mutt_make_post_indent(m, e, fp_out);
+  mutt_make_post_indent(m, e, fp_out, sub);
 
   return 0;
 }
@@ -609,10 +624,12 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
  * choose_default_to - Pick the best 'to:' value
  * @param from From Address
  * @param env  Envelope
+ * @param sub  Config Subset
  * @retval ptr Addresses to use
  */
 static const struct AddressList *choose_default_to(const struct Address *from,
-                                                   const struct Envelope *env)
+                                                   const struct Envelope *env,
+                                                   struct ConfigSubset *sub)
 {
   if (!C_ReplySelf && mutt_addr_is_user(from))
   {
@@ -631,10 +648,12 @@ static const struct AddressList *choose_default_to(const struct Address *from,
  * @param[in]     env     Envelope to populate
  * @param[in]     flags   Flags, see #SendFlags
  * @param[in]     hmfupto If true, add 'followup-to' address to 'to' address
+ * @param[in]     sub     Config Subset
  * @retval  0 Success
  * @retval -1 Aborted
  */
-static int default_to(struct AddressList *to, struct Envelope *env, SendFlags flags, int hmfupto)
+static int default_to(struct AddressList *to, struct Envelope *env,
+                      SendFlags flags, int hmfupto, struct ConfigSubset *sub)
 {
   const struct Address *from = TAILQ_FIRST(&env->from);
   const struct Address *reply_to = TAILQ_FIRST(&env->reply_to);
@@ -650,7 +669,7 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
   if (flags & SEND_LIST_REPLY)
     return 0;
 
-  const struct AddressList *default_to = choose_default_to(from, env);
+  const struct AddressList *default_to = choose_default_to(from, env, sub);
 
   if (reply_to)
   {
@@ -712,10 +731,12 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
  * @param out   Envelope to populate
  * @param in    Envelope of source email
  * @param flags Flags, see #SendFlags
+ * @param sub   Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags)
+int mutt_fetch_recips(struct Envelope *out, struct Envelope *in,
+                      SendFlags flags, struct ConfigSubset *sub)
 {
   enum QuadOption hmfupto = MUTT_ABORT;
   const struct Address *followup_to = TAILQ_FIRST(&in->mail_followup_to);
@@ -736,7 +757,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags
     add_mailing_lists(&out->to, &in->to, &in->cc);
 
     if (followup_to && (hmfupto == MUTT_YES) &&
-        (default_to(&out->cc, in, flags & SEND_LIST_REPLY, (hmfupto == MUTT_YES)) == MUTT_ABORT))
+        (default_to(&out->cc, in, flags & SEND_LIST_REPLY, (hmfupto == MUTT_YES), sub) == MUTT_ABORT))
     {
       return -1; /* abort */
     }
@@ -748,7 +769,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags
   else
   {
     if (default_to(&out->to, in, flags & (SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY),
-                   (hmfupto == MUTT_YES)) == -1)
+                   (hmfupto == MUTT_YES), sub) == -1)
       return -1; /* abort */
 
     if ((flags & (SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) &&
@@ -797,8 +818,9 @@ static void add_message_id(struct ListHead *head, struct Envelope *env)
 /**
  * mutt_fix_reply_recipients - Remove duplicate recipients
  * @param env Envelope to fix
+ * @param sub Config Subset
  */
-void mutt_fix_reply_recipients(struct Envelope *env)
+void mutt_fix_reply_recipients(struct Envelope *env, struct ConfigSubset *sub)
 {
   if (!C_Metoo)
   {
@@ -823,9 +845,11 @@ void mutt_fix_reply_recipients(struct Envelope *env)
  * mutt_make_forward_subject - Create a subject for a forwarded email
  * @param env Envelope for result
  * @param m   Mailbox
- * @param e Email
+ * @param e   Email
+ * @param sub Config Subset
  */
-void mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m, struct Email *e)
+void mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m,
+                               struct Email *e, struct ConfigSubset *sub)
 {
   if (!env)
     return;
@@ -841,8 +865,10 @@ void mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m, struct E
  * mutt_make_misc_reply_headers - Set subject for a reply
  * @param env    Envelope for result
  * @param curenv Envelope of source email
+ * @param sub    Config Subset
  */
-void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv)
+void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv,
+                                  struct ConfigSubset *sub)
 {
   if (!env || !curenv)
     return;
@@ -863,8 +889,10 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv)
  * mutt_add_to_reference_headers - Generate references for a reply email
  * @param env    Envelope for result
  * @param curenv Envelope of source email
+ * @param sub    Config Subset
  */
-void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv)
+void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv,
+                                   struct ConfigSubset *sub)
 {
   add_references(&env->references, curenv);
   add_message_id(&env->references, curenv);
@@ -880,8 +908,10 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv
  * make_reference_headers - Generate reference headers for an email
  * @param el  List of source Emails
  * @param env Envelope for result
+ * @param sub Config Subset
  */
-static void make_reference_headers(struct EmailList *el, struct Envelope *env)
+static void make_reference_headers(struct EmailList *el, struct Envelope *env,
+                                   struct ConfigSubset *sub)
 {
   if (!el || !env || STAILQ_EMPTY(el))
     return;
@@ -893,11 +923,11 @@ static void make_reference_headers(struct EmailList *el, struct Envelope *env)
   {
     STAILQ_FOREACH(en, el, entries)
     {
-      mutt_add_to_reference_headers(env, en->email->env);
+      mutt_add_to_reference_headers(env, en->email->env, sub);
     }
   }
   else
-    mutt_add_to_reference_headers(env, en->email->env);
+    mutt_add_to_reference_headers(env, en->email->env, sub);
 
   /* if there's more than entry in In-Reply-To (i.e. message has multiple
    * parents), don't generate a References: header as it's discouraged by
@@ -915,11 +945,12 @@ static void make_reference_headers(struct EmailList *el, struct Envelope *env)
  * @param m     Mailbox
  * @param el    List of Emails to use
  * @param flags Flags, see #SendFlags
+ * @param sub   Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
-                             struct EmailList *el, SendFlags flags)
+static int envelope_defaults(struct Envelope *env, struct Mailbox *m, struct EmailList *el,
+                             SendFlags flags, struct ConfigSubset *sub)
 {
   if (!el || STAILQ_EMPTY(el))
     return -1;
@@ -948,11 +979,11 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
     {
       STAILQ_FOREACH(en, el, entries)
       {
-        if (mutt_fetch_recips(env, en->email->env, flags) == -1)
+        if (mutt_fetch_recips(env, en->email->env, flags, sub) == -1)
           return -1;
       }
     }
-    else if (mutt_fetch_recips(env, curenv, flags) == -1)
+    else if (mutt_fetch_recips(env, curenv, flags, sub) == -1)
       return -1;
 
     if ((flags & SEND_LIST_REPLY) && TAILQ_EMPTY(&env->to))
@@ -963,15 +994,15 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
 
     if (flags & SEND_REPLY)
     {
-      mutt_make_misc_reply_headers(env, curenv);
-      make_reference_headers(el, env);
+      mutt_make_misc_reply_headers(env, curenv, sub);
+      make_reference_headers(el, env, sub);
     }
   }
   else if (flags & SEND_FORWARD)
   {
-    mutt_make_forward_subject(env, m, en->email);
+    mutt_make_forward_subject(env, m, en->email, sub);
     if (C_ForwardReferences)
-      make_reference_headers(el, env);
+      make_reference_headers(el, env, sub);
   }
 
   return 0;
@@ -984,11 +1015,12 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
  * @param flags  Compose mode, see #SendFlags
  * @param m      Mailbox
  * @param el     List of Emails to use
+ * @param sub    Config Subset
  * @retval  0 Success
  * @retval -1 Error
  */
 static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
-                         struct Mailbox *m, struct EmailList *el)
+                         struct Mailbox *m, struct EmailList *el, struct ConfigSubset *sub)
 {
   /* An EmailList is required for replying and forwarding */
   if (!el && (flags & (SEND_REPLY | SEND_FORWARD)))
@@ -1007,7 +1039,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
       struct EmailNode *en = NULL;
       STAILQ_FOREACH(en, el, entries)
       {
-        if (include_reply(m, en->email, fp_tmp) == -1)
+        if (include_reply(m, en->email, fp_tmp, sub) == -1)
         {
           mutt_error(_("Could not include all requested messages"));
           return -1;
@@ -1035,7 +1067,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
       struct EmailNode *en = NULL;
       STAILQ_FOREACH(en, el, entries)
       {
-        struct Body *tmp = mutt_make_message_attach(m, en->email, false);
+        struct Body *tmp = mutt_make_message_attach(m, en->email, false, sub);
         if (last)
         {
           last->next = tmp;
@@ -1064,10 +1096,10 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
       STAILQ_FOREACH(en, el, entries)
       {
         struct Email *e_cur = en->email;
-        include_forward(m, e_cur, fp_tmp);
+        include_forward(m, e_cur, fp_tmp, sub);
         if (C_ForwardDecode && (C_ForwardAttachments != MUTT_NO))
         {
-          if (inline_forward_attachments(m, e_cur, &last, &forwardq) != 0)
+          if (inline_forward_attachments(m, e_cur, &last, &forwardq, sub) != 0)
             return -1;
         }
       }
@@ -1097,8 +1129,9 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
 /**
  * mutt_set_followup_to - Set followup-to field
  * @param env Envelope to modify
+ * @param sub Config Subset
  */
-void mutt_set_followup_to(struct Envelope *env)
+void mutt_set_followup_to(struct Envelope *env, struct ConfigSubset *sub)
 {
   /* Only generate the Mail-Followup-To if the user has requested it, and
    * it hasn't already been set */
@@ -1152,7 +1185,7 @@ void mutt_set_followup_to(struct Envelope *env)
       }
       else
       {
-        mutt_addrlist_prepend(&env->mail_followup_to, mutt_default_from());
+        mutt_addrlist_prepend(&env->mail_followup_to, mutt_default_from(sub));
       }
     }
 
@@ -1164,12 +1197,14 @@ void mutt_set_followup_to(struct Envelope *env)
  * set_reverse_name - Try to set the 'from' field from the recipients
  * @param al  AddressList to prepend the found address
  * @param env Envelope to use
+ * @param sub Config Subset
  *
  * Look through the recipients of the message we are replying to, and if we
  * find an address that matches $alternates, we use that as the default from
  * field
  */
-static void set_reverse_name(struct AddressList *al, struct Envelope *env)
+static void set_reverse_name(struct AddressList *al, struct Envelope *env,
+                             struct ConfigSubset *sub)
 {
   struct Address *a = NULL;
   if (TAILQ_EMPTY(al))
@@ -1218,7 +1253,7 @@ static void set_reverse_name(struct AddressList *al, struct Envelope *env)
  * mutt_default_from - Get a default 'from' Address
  * @retval ptr Newly allocated Address
  */
-struct Address *mutt_default_from(void)
+struct Address *mutt_default_from(struct ConfigSubset *sub)
 {
   /* Note: We let $from override $realname here.
    *       Is this the right thing to do?
@@ -1231,7 +1266,8 @@ struct Address *mutt_default_from(void)
   else if (C_UseDomain)
   {
     struct Address *addr = mutt_addr_new();
-    mutt_str_asprintf(&addr->mailbox, "%s@%s", NONULL(Username), NONULL(mutt_fqdn(true)));
+    mutt_str_asprintf(&addr->mailbox, "%s@%s", NONULL(Username),
+                      NONULL(mutt_fqdn(true, sub)));
     return addr;
   }
   else
@@ -1242,11 +1278,12 @@ struct Address *mutt_default_from(void)
 
 /**
  * invoke_mta - Send an email
- * @param e Email
+ * @param e   Email
+ * @param sub Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int invoke_mta(struct Email *e)
+static int invoke_mta(struct Email *e, struct ConfigSubset *sub)
 {
   struct Buffer *tempfile = NULL;
   int rc = -1;
@@ -1269,11 +1306,11 @@ static int invoke_mta(struct Email *e)
 #ifdef MIXMASTER
   mutt_rfc822_write_header(fp_tmp, e->env, e->content, MUTT_WRITE_HEADER_NORMAL,
                            !STAILQ_EMPTY(&e->chain),
-                           mutt_should_hide_protected_subject(e));
+                           mutt_should_hide_protected_subject(e), sub);
 #endif
 #ifndef MIXMASTER
   mutt_rfc822_write_header(fp_tmp, e->env, e->content, MUTT_WRITE_HEADER_NORMAL,
-                           false, mutt_should_hide_protected_subject(e));
+                           false, mutt_should_hide_protected_subject(e), sub);
 #endif
 #ifdef USE_SMTP
   if (old_write_bcc)
@@ -1282,7 +1319,7 @@ static int invoke_mta(struct Email *e)
 
   fputc('\n', fp_tmp); /* tie off the header. */
 
-  if ((mutt_write_mime_body(e->content, fp_tmp) == -1))
+  if ((mutt_write_mime_body(e->content, fp_tmp, sub) == -1))
     goto cleanup;
 
   if (mutt_file_fclose(&fp_tmp) != 0)
@@ -1309,14 +1346,14 @@ static int invoke_mta(struct Email *e)
   if (C_SmtpUrl)
   {
     rc = mutt_smtp_send(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                        mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT));
+                        mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT), sub);
     goto cleanup;
   }
 #endif
 
 sendmail:
   rc = mutt_invoke_sendmail(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                            mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT));
+                            mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT), sub);
 cleanup:
   if (fp_tmp)
   {
@@ -1331,8 +1368,9 @@ cleanup:
  * mutt_encode_descriptions - rfc2047 encode the content-descriptions
  * @param b       Body of email
  * @param recurse If true, encode children parts
+ * @param sub     Config Subset
  */
-void mutt_encode_descriptions(struct Body *b, bool recurse)
+void mutt_encode_descriptions(struct Body *b, bool recurse, struct ConfigSubset *sub)
 {
   for (struct Body *t = b; t; t = t->next)
   {
@@ -1341,7 +1379,7 @@ void mutt_encode_descriptions(struct Body *b, bool recurse)
       rfc2047_encode(&t->description, NULL, sizeof("Content-Description:"), C_SendCharset);
     }
     if (recurse && t->parts)
-      mutt_encode_descriptions(t->parts, recurse);
+      mutt_encode_descriptions(t->parts, recurse, sub);
   }
 }
 
@@ -1385,11 +1423,13 @@ static void fix_end_of_file(const char *data)
  * @param fp    File containing email
  * @param ctx   Mailbox
  * @param e_cur Email to resend
+ * @param sub   Config Subset
  * @retval  0 Message was successfully sent
  * @retval -1 Message was aborted or an error occurred
  * @retval  1 Message was postponed
  */
-int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *e_cur)
+int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *e_cur,
+                        struct ConfigSubset *sub)
 {
   struct Email *e_new = email_new();
 
@@ -1422,7 +1462,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *e_cur)
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, e_cur);
-  int rc = mutt_send_message(SEND_RESEND, e_new, NULL, ctx, &el);
+  int rc = mutt_send_message(SEND_RESEND, e_new, NULL, ctx, &el, sub);
   emaillist_clear(&el);
 
   return rc;
@@ -1446,6 +1486,7 @@ static bool is_reply(struct Email *reply, struct Email *orig)
 /**
  * search_attach_keyword - Search an email for 'attachment' keywords
  * @param filename Filename
+ * @param sub      Config Subset
  * @retval true If the regex matches in the email
  *
  * Search an email for the regex in $abort_noattach_regex.
@@ -1453,7 +1494,7 @@ static bool is_reply(struct Email *reply, struct Email *orig)
  *
  * @note Quoted lines (as defined by $quote_regex) are ignored
  */
-static bool search_attach_keyword(char *filename)
+static bool search_attach_keyword(char *filename, struct ConfigSubset *sub)
 {
   /* Search for the regex in C_AbortNoattachRegex within a file */
   if (!C_AbortNoattachRegex || !C_AbortNoattachRegex->regex || !C_QuoteRegex ||
@@ -1491,11 +1532,13 @@ static bool search_attach_keyword(char *filename)
  * @param[in]  pgpkeylist    List of pgp keys
  * @param[in]  flags         Send mode, see #SendFlags
  * @param[out] finalpath     Path of final folder
+ * @param[in]  sub           Config Subset
  * @retval  0 Success
  * @retval -1 Error
  */
-static int save_fcc(struct Email *e, struct Buffer *fcc, struct Body *clear_content,
-                    char *pgpkeylist, SendFlags flags, char **finalpath)
+static int save_fcc(struct Email *e, struct Buffer *fcc,
+                    struct Body *clear_content, char *pgpkeylist,
+                    SendFlags flags, char **finalpath, struct ConfigSubset *sub)
 {
   int rc = 0;
   struct Body *save_content = NULL;
@@ -1598,7 +1641,7 @@ full_fcc:
      * the From_ line contains the current time instead of when the
      * message was first postponed.  */
     e->received = mutt_date_epoch();
-    rc = mutt_write_multiple_fcc(mutt_b2s(fcc), e, NULL, false, NULL, finalpath);
+    rc = mutt_write_multiple_fcc(mutt_b2s(fcc), e, NULL, false, NULL, finalpath, sub);
     while (rc && !(flags & SEND_BATCH))
     {
       mutt_clear_error();
@@ -1626,7 +1669,7 @@ full_fcc:
           /* fall through */
 
         case 1: /* (r)etry */
-          rc = mutt_write_multiple_fcc(mutt_b2s(fcc), e, NULL, false, NULL, finalpath);
+          rc = mutt_write_multiple_fcc(mutt_b2s(fcc), e, NULL, false, NULL, finalpath, sub);
           break;
 
         case -1: /* abort */
@@ -1671,11 +1714,12 @@ full_fcc:
  * @param e_cur  Current Email in the index
  * @param fcc    Folder for 'sent mail'
  * @param flags  Send mode, see #SendFlags
+ * @param sub    Config Subset
  * @retval  0 Success
  * @retval -1 Error
  */
 static int postpone_message(struct Email *e_post, struct Email *e_cur,
-                            const char *fcc, SendFlags flags)
+                            const char *fcc, SendFlags flags, struct ConfigSubset *sub)
 {
   char *pgpkeylist = NULL;
   char *encrypt_as = NULL;
@@ -1690,7 +1734,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
   if (e_post->content->next)
     e_post->content = mutt_make_multipart(e_post->content);
 
-  mutt_encode_descriptions(e_post->content, true);
+  mutt_encode_descriptions(e_post->content, true, sub);
 
   if ((WithCrypto != 0) && C_PostponeEncrypt &&
       (e_post->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)))
@@ -1731,7 +1775,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
 
       FREE(&pgpkeylist);
 
-      mutt_encode_descriptions(e_post->content, false);
+      mutt_encode_descriptions(e_post->content, false, sub);
     }
   }
 
@@ -1740,12 +1784,12 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
   e_post->read = false;
   e_post->old = false;
 
-  mutt_prepare_envelope(e_post->env, false);
+  mutt_prepare_envelope(e_post->env, false, sub);
   mutt_env_to_intl(e_post->env, NULL, NULL); /* Handle bad IDNAs the next time. */
 
   if (mutt_write_fcc(NONULL(C_Postponed), e_post,
                      (e_cur && (flags & SEND_REPLY)) ? e_cur->env->message_id : NULL,
-                     true, fcc, NULL) < 0)
+                     true, fcc, NULL, sub) < 0)
   {
     if (clear_content)
     {
@@ -1774,12 +1818,13 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
  * @param tempfile File specified by -i or -H
  * @param ctx      Current mailbox
  * @param el       List of Emails to send
+ * @param sub      Config Subset
  * @retval  0 Message was successfully sent
  * @retval -1 Message was aborted or an error occurred
  * @retval  1 Message was postponed
  */
 int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile,
-                      struct Context *ctx, struct EmailList *el)
+                      struct Context *ctx, struct EmailList *el, struct ConfigSubset *sub)
 {
   char buf[1024];
   struct Buffer fcc = mutt_buffer_make(0); /* where to copy this message */
@@ -1954,7 +1999,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
                  TAILQ_FIRST(&e_templ->env->from)->mailbox);
       mutt_addrlist_clear(&e_templ->env->from);
     }
-    set_reverse_name(&e_templ->env->from, e_cur->env);
+    set_reverse_name(&e_templ->env->from, e_cur->env, sub);
   }
   if (e_cur && C_ReplyWithXorig && !(flags & (SEND_POSTPONED | SEND_RESEND | SEND_FORWARD)))
   {
@@ -1978,7 +2023,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       !((flags & SEND_DRAFT_FILE) && C_ResumeDraftFiles))
   {
     if ((flags & (SEND_REPLY | SEND_FORWARD | SEND_TO_SENDER)) && ctx &&
-        (envelope_defaults(e_templ->env, ctx->mailbox, el, flags) == -1))
+        (envelope_defaults(e_templ->env, ctx->mailbox, el, flags, sub) == -1))
     {
       goto cleanup;
     }
@@ -1990,7 +2035,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     mutt_expand_aliases_env(e_templ->env);
 
     if (flags & SEND_REPLY)
-      mutt_fix_reply_recipients(e_templ->env);
+      mutt_fix_reply_recipients(e_templ->env, sub);
 
 #ifdef USE_NNTP
     if ((flags & SEND_NEWS) && ctx && (ctx->mailbox->type == MUTT_NNTP) &&
@@ -2004,7 +2049,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if (!(flags & SEND_BATCH) && !(C_Autoedit && C_EditHeaders) &&
         !((flags & SEND_REPLY) && C_FastReply))
     {
-      if (edit_envelope(e_templ->env, flags) == -1)
+      if (edit_envelope(e_templ->env, flags, sub) == -1)
         goto cleanup;
     }
 
@@ -2016,7 +2061,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     const bool killfrom = TAILQ_EMPTY(&e_templ->env->from);
     if (killfrom)
     {
-      mutt_addrlist_append(&e_templ->env->from, mutt_default_from());
+      mutt_addrlist_append(&e_templ->env->from, mutt_default_from(sub));
     }
 
     if ((flags & SEND_REPLY) && e_cur)
@@ -2045,7 +2090,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     {
       mutt_addrlist_clear(&e_templ->env->from);
       if (C_UseFrom && !(flags & (SEND_POSTPONED | SEND_RESEND)))
-        mutt_addrlist_append(&e_templ->env->from, mutt_default_from());
+        mutt_addrlist_append(&e_templ->env->from, mutt_default_from(sub));
     }
 
     if (C_Hdrs)
@@ -2063,19 +2108,19 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     if (C_SigOnTop && !(flags & (SEND_KEY | SEND_BATCH)) && C_Editor)
     {
-      append_signature(fp_tmp);
+      append_signature(fp_tmp, sub);
     }
 
     /* include replies/forwarded messages, unless we are given a template */
     if (!tempfile && (ctx || !(flags & (SEND_REPLY | SEND_FORWARD))) &&
-        (generate_body(fp_tmp, e_templ, flags, ctx ? ctx->mailbox : NULL, el) == -1))
+        (generate_body(fp_tmp, e_templ, flags, ctx ? ctx->mailbox : NULL, el, sub) == -1))
     {
       goto cleanup;
     }
 
     if (!C_SigOnTop && !(flags & (SEND_KEY | SEND_BATCH)) && C_Editor)
     {
-      append_signature(fp_tmp);
+      append_signature(fp_tmp, sub);
     }
   }
 
@@ -2113,7 +2158,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     struct stat st;
     time_t mtime = mutt_file_decrease_mtime(e_templ->content->filename, NULL);
 
-    mutt_update_encoding(e_templ->content);
+    mutt_update_encoding(e_templ->content, sub);
 
     /* Select whether or not the user's editor should be called now.  We
      * don't want to do this when:
@@ -2296,7 +2341,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     const bool killfrom = TAILQ_EMPTY(&e_templ->env->from);
     if (killfrom)
     {
-      mutt_addrlist_append(&e_templ->env->from, mutt_default_from());
+      mutt_addrlist_append(&e_templ->env->from, mutt_default_from(sub));
     }
     mutt_select_fcc(&fcc, e_templ);
     if (killfrom)
@@ -2307,7 +2352,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   mutt_rfc3676_space_stuff(e_templ);
 
-  mutt_update_encoding(e_templ->content);
+  mutt_update_encoding(e_templ->content, sub);
 
   if (!(flags & SEND_BATCH))
   {
@@ -2329,7 +2374,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
     else if (i == 1)
     {
-      if (postpone_message(e_templ, e_cur, mutt_b2s(&fcc), flags) != 0)
+      if (postpone_message(e_templ, e_cur, mutt_b2s(&fcc), flags, sub) != 0)
         goto main_loop;
       mutt_message(_("Message postponed"));
       rc = 1;
@@ -2388,7 +2433,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!(flags & SEND_BATCH) && (C_AbortNoattach != MUTT_NO) &&
       !e_templ->content->next && (e_templ->content->type == TYPE_TEXT) &&
       mutt_istr_equal(e_templ->content->subtype, "plain") &&
-      search_attach_keyword(e_templ->content->filename) &&
+      search_attach_keyword(e_templ->content->filename, sub) &&
       (query_quadoption(C_AbortNoattach,
                         _("No attachments, cancel sending?")) != MUTT_NO))
   {
@@ -2408,7 +2453,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
    * one place in order to avoid going to main_loop with encoded "env"
    * in case of error.  Ugh.  */
 
-  mutt_encode_descriptions(e_templ->content, true);
+  mutt_encode_descriptions(e_templ->content, true, sub);
 
   /* Make sure that clear_content and free_clear_content are
    * properly initialized -- we may visit this particular place in
@@ -2435,7 +2480,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         decode_descriptions(e_templ->content);
         goto main_loop;
       }
-      mutt_encode_descriptions(e_templ->content, false);
+      mutt_encode_descriptions(e_templ->content, false, sub);
     }
 
     /* at this point, e_templ->content is one of the following three things:
@@ -2454,12 +2499,12 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!OptNoCurses)
     mutt_message(_("Sending message..."));
 
-  mutt_prepare_envelope(e_templ->env, true);
+  mutt_prepare_envelope(e_templ->env, true, sub);
 
   if (C_FccBeforeSend)
-    save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath);
+    save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
 
-  i = invoke_mta(e_templ);
+  i = invoke_mta(e_templ, sub);
   if (i < 0)
   {
     if (!(flags & SEND_BATCH))
@@ -2497,7 +2542,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   }
 
   if (!C_FccBeforeSend)
-    save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath);
+    save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
 
   if (!OptNoCurses)
   {

@@ -36,6 +36,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
@@ -461,7 +462,7 @@ static void query_menu(char *buf, size_t buflen, struct AliasList *all, bool ret
             mutt_addrlist_clear(&al);
           }
         }
-        mutt_send_message(SEND_NO_FLAGS, e, NULL, Context, NULL);
+        mutt_send_message(SEND_NO_FLAGS, e, NULL, Context, NULL, NeoMutt->sub);
         menu->redraw = REDRAW_FULL;
         break;
       }

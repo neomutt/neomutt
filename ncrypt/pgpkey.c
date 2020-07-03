@@ -42,6 +42,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "pgpkey.h"
@@ -969,7 +970,7 @@ struct Body *pgp_class_make_key_attachment(void)
   att->subtype = mutt_str_dup("pgp-keys");
   snprintf(buf, sizeof(buf), _("PGP Key %s"), tmp);
   att->description = mutt_str_dup(buf);
-  mutt_update_encoding(att);
+  mutt_update_encoding(att, NeoMutt->sub);
 
   stat(mutt_b2s(tempf), &sb);
   att->length = sb.st_size;

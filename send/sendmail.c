@@ -55,6 +55,8 @@
 #define EX_OK 0
 #endif
 
+struct ConfigSubset;
+
 SIG_ATOMIC_VOLATILE_T SigAlrm; ///< true after SIGALRM is received
 
 /**
@@ -302,12 +304,13 @@ static char **add_option(char **args, size_t *argslen, size_t *argsmax, char *s)
  * @param bcc      Recipients
  * @param msg      File containing message
  * @param eightbit Message contains 8bit chars
+ * @param sub      Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
 int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
                          struct AddressList *cc, struct AddressList *bcc,
-                         const char *msg, bool eightbit)
+                         const char *msg, bool eightbit, struct ConfigSubset *sub)
 {
   char *ps = NULL, *path = NULL, *s = NULL, *childout = NULL;
   char **args = NULL;

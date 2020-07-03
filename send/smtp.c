@@ -720,12 +720,13 @@ static int smtp_open(struct SmtpAccountData *adata, bool esmtp)
  * @param bcc      Bcc Address
  * @param msgfile  Message to send to the server
  * @param eightbit If true, try for an 8-bit friendly connection
+ * @param sub      Config Subset
  * @retval  0 Success
  * @retval -1 Error
  */
 int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
                    const struct AddressList *cc, const struct AddressList *bcc,
-                   const char *msgfile, bool eightbit)
+                   const char *msgfile, bool eightbit, struct ConfigSubset *sub)
 {
   struct SmtpAccountData adata = { 0 };
   struct ConnAccount cac = { { 0 } };
@@ -733,7 +734,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
   char buf[1024];
   int rc = -1;
 
-  adata.fqdn = mutt_fqdn(false);
+  adata.fqdn = mutt_fqdn(false, sub);
   if (!adata.fqdn)
     adata.fqdn = NONULL(ShortHostname);
 

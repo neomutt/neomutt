@@ -28,6 +28,7 @@
 #include <stdio.h>
 
 struct Body;
+struct ConfigSubset;
 struct Envelope;
 struct ListHead;
 
@@ -43,9 +44,9 @@ enum MuttWriteHeaderMode
   MUTT_WRITE_HEADER_MIME,     ///< Write protected headers
 };
 
-int  mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach, enum MuttWriteHeaderMode mode, bool privacy, bool hide_protected_subject);
-int  mutt_write_mime_header(struct Body *a, FILE *fp);
-int  mutt_write_one_header(FILE *fp, const char *tag, const char *value, const char *pfx, int wraplen, CopyHeaderFlags chflags);
-void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim);
+int  mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach, enum MuttWriteHeaderMode mode, bool privacy, bool hide_protected_subject, struct ConfigSubset *sub);
+int  mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub);
+int  mutt_write_one_header(FILE *fp, const char *tag, const char *value, const char *pfx, int wraplen, CopyHeaderFlags chflags, struct ConfigSubset *sub);
+void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim, struct ConfigSubset *sub);
 
 #endif /* MUTT_SEND_HEADER_H */
