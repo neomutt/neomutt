@@ -315,7 +315,7 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
 {
   mutt_buffer_expand_path(s);
 
-  if (mutt_mailbox_check(m_cur, 0) > 0)
+  if (m_cur)
   {
     bool found = false;
     for (int pass = 0; pass < 2; pass++)
