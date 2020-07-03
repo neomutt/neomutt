@@ -328,7 +328,12 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
         mutt_buffer_expand_path(&np->mailbox->pathbuf);
         if ((found || (pass > 0)) && np->mailbox->has_new)
         {
-          mutt_buffer_strcpy(s, mailbox_path(np->mailbox));
+          // If there's a mailbox name, use it over path.
+          if (np->mailbox->name)
+            mutt_buffer_strcpy(s, np->mailbox->name);
+          else
+            mutt_buffer_strcpy(s, mailbox_path(np->mailbox));
+
           mutt_buffer_pretty_mailbox(s);
           struct Mailbox *m_result = np->mailbox;
           neomutt_mailboxlist_clear(&ml);
