@@ -326,7 +326,7 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
       STAILQ_FOREACH(np, &ml, entries)
       {
         mutt_buffer_expand_path(&np->mailbox->pathbuf);
-        if ((found || (pass > 0)) && np->mailbox->has_new)
+        if ((found || (pass > 0)) && np->mailbox->msg_unread != 0)
         {
           // If there's a mailbox name, use it over path.
           if (np->mailbox->name)
