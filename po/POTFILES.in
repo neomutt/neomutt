@@ -61,7 +61,6 @@ debug/graphviz.c
 debug/notify.c
 debug/parse_test.c
 debug/window.c
-edit.c
 editmsg.c
 email/attach.c
 email/body.c
@@ -141,6 +140,7 @@ mutt/notify.c
 mutt/path.c
 mutt/pool.c
 mutt/prex.c
+mutt/random.c
 mutt/regex.c
 mutt/signal.c
 mutt/slist.c
@@ -200,10 +200,16 @@ remailer.c
 resize.c
 rfc3676.c
 score.c
-send.c
+send/body.c
+send/config.c
+send/header.c
+send/multipart.c
+send/send.c
+send/sendlib.c
+send/sendmail.c
+send/smtp.c
 sendlib.c
 sidebar.c
-smtp.c
 sort.c
 state.c
 status.c

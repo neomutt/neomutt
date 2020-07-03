@@ -42,9 +42,9 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "options.h"
-#include "send.h"
 #include "autocrypt/lib.h"
 #include "ncrypt/lib.h"
+#include "send/lib.h"
 
 /**
  * autocrypt_dir_init - Initialise an Autocrypt directory

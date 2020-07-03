@@ -61,9 +61,9 @@
 #include "options.h"
 #include "progress.h"
 #include "protos.h"
-#include "sendlib.h"
 #include "state.h"
 #include "ncrypt/lib.h"
+#include "send/lib.h"
 #ifndef USE_FMEMOPEN
 #include <sys/stat.h>
 #endif

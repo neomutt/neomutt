@@ -72,10 +72,9 @@
 #include "myvar.h"
 #include "options.h"
 #include "protos.h"
-#include "send.h"
-#include "sendlib.h"
 #include "version.h"
 #include "ncrypt/lib.h"
+#include "send/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

@@ -66,10 +66,7 @@
 #include "remailer.h"
 #include "rfc3676.h"
 #include "score.h"
-#include "send.h"
-#include "sendlib.h"
 #include "sidebar.h"
-#include "smtp.h"
 #include "sort.h"
 #include "status.h"
 #include "bcache/lib.h"
@@ -81,6 +78,7 @@
 #include "nntp/lib.h"
 #include "notmuch/lib.h"
 #include "pop/lib.h"
+#include "send/lib.h"
 #endif
 
 #ifndef ISPELL

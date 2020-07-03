@@ -21,17 +21,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SMTP_H
-#define MUTT_SMTP_H
+#ifndef MUTT_SEND_SMTP_H
+#define MUTT_SEND_SMTP_H
 
 #include "config.h"
 #include <stdbool.h>
-
-/* These Config Variables are only used in smtp.c */
-extern struct Slist *C_SmtpAuthenticators;
-extern char *C_SmtpOauthRefreshCommand;
-extern char *C_SmtpPass;
-extern char *C_SmtpUser;
 
 #ifdef USE_SMTP
 struct AddressList;
@@ -41,4 +35,4 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
                    const char *msgfile, bool eightbit);
 #endif
 
-#endif /* MUTT_SMTP_H */
+#endif /* MUTT_SEND_SMTP_H */

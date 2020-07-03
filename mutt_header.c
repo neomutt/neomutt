@@ -44,8 +44,8 @@
 #include "muttlib.h"
 #include "options.h"
 #include "protos.h"
-#include "sendlib.h"
 #include "ncrypt/lib.h"
+#include "send/lib.h"
 
 /**
  * label_ref_dec - Decrease the refcount of a label

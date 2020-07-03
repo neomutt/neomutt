@@ -57,7 +57,7 @@
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
-#include "sendlib.h"
+#include "send/lib.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif

@@ -67,9 +67,9 @@
 #include "protos.h"
 #include "recvattach.h"
 #include "rfc3676.h"
-#include "sendlib.h"
 #include "sort.h"
 #include "ncrypt/lib.h"
+#include "send/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

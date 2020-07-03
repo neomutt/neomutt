@@ -27,7 +27,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-struct Address;
 struct AddressList;
 struct Body;
 struct Context;
@@ -35,53 +34,6 @@ struct Email;
 struct EmailList;
 struct Envelope;
 struct Mailbox;
-
-/* These Config Variables are only used in send.c */
-extern unsigned char C_AbortNoattach; /* forgotten attachment detector */
-extern struct Regex *C_AbortNoattachRegex;
-extern unsigned char C_AbortNosubject;
-extern unsigned char C_AbortUnmodified;
-extern bool          C_AskFollowUp;
-extern bool          C_AskXCommentTo;
-extern char *        C_ContentType;
-extern bool          C_CryptAutoencrypt;
-extern bool          C_CryptAutopgp;
-extern bool          C_CryptAutosign;
-extern bool          C_CryptAutosmime;
-extern bool          C_CryptReplyencrypt;
-extern bool          C_CryptReplysign;
-extern bool          C_CryptReplysignencrypted;
-extern char *        C_EmptySubject;
-extern bool          C_FastReply;
-extern unsigned char C_FccAttach;
-extern bool          C_FccBeforeSend;
-extern bool          C_FccClear;
-extern bool          C_FollowupTo;
-extern char *        C_ForwardAttributionIntro;
-extern char *        C_ForwardAttributionTrailer;
-extern unsigned char C_ForwardEdit;
-extern char *        C_ForwardFormat;
-extern bool          C_ForwardReferences;
-extern bool          C_Hdrs;
-extern unsigned char C_HonorFollowupTo;
-extern bool          C_IgnoreListReplyTo;
-extern unsigned char C_Include;
-extern bool          C_Metoo;
-extern bool          C_NmRecord;
-extern bool          C_PgpReplyinline;
-extern char *        C_PostIndentString;
-extern bool          C_PostponeEncrypt;
-extern char *        C_PostponeEncryptAs;
-extern unsigned char C_Recall;
-extern bool          C_ReplySelf;
-extern unsigned char C_ReplyTo;
-extern bool          C_ReplyWithXorig;
-extern bool          C_ReverseName;
-extern bool          C_ReverseRealname;
-extern bool          C_SigDashes;
-extern char *        C_Signature;
-extern bool          C_SigOnTop;
-extern bool          C_UseFrom;
 
 typedef uint16_t SendFlags;             ///< Flags for mutt_send_message(), e.g. #SEND_REPLY
 #define SEND_NO_FLAGS               0   ///< No flags are set
@@ -100,7 +52,6 @@ typedef uint16_t SendFlags;             ///< Flags for mutt_send_message(), e.g.
 #define SEND_GROUP_CHAT_REPLY (1 << 12) ///< Reply to all recipients preserving To/Cc
 #define SEND_NEWS             (1 << 13) ///< Reply to a news article
 
-int             mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile, struct Context *ctx, struct EmailList *el);
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
 struct Address *mutt_default_from(void);
 int             mutt_edit_address(struct AddressList *al, const char *field, bool expand_aliases);
@@ -113,8 +64,8 @@ void            mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *
 void            mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m, struct Email *e);
 void            mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv);
 void            mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out);
-struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b);
 int             mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *e_cur);
+int             mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile, struct Context *ctx, struct EmailList *el);
 void            mutt_set_followup_to(struct Envelope *e);
 
 #endif /* MUTT_SEND_H */

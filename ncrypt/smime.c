@@ -57,10 +57,9 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "protos.h"
-#include "send.h"
-#include "sendlib.h"
 #include "state.h"
 #include "ncrypt/lib.h"
+#include "send/lib.h"
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 #include "smime.h"
 #endif

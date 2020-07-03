@@ -24,7 +24,7 @@
 #define MUTT_RECVCMD_H
 
 #include <stdio.h>
-#include "send.h"
+#include "send/lib.h"
 
 struct AttachCtx;
 struct Body;
