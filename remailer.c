@@ -49,7 +49,7 @@
 #include "options.h"
 #include "protos.h"
 #include "recvattach.h"
-#include "sendlib.h"
+#include "send/lib.h"
 #ifdef MIXMASTER
 #include "remailer.h"
 #endif

@@ -71,10 +71,10 @@
 #include "pager.h"
 #include "protos.h"
 #include "recvattach.h"
-#include "sendlib.h"
 #include "sort.h"
 #include "state.h"
 #include "ncrypt/lib.h"
+#include "send/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

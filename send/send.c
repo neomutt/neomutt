@@ -22,7 +22,7 @@
  */
 
 /**
- * @page send Prepare and send an email
+ * @page send_send Prepare and send an email
  *
  * Prepare and send an email
  */
@@ -45,6 +45,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "send.h"
+#include "lib.h"
 #include "compose.h"
 #include "context.h"
 #include "copy.h"
@@ -64,8 +65,6 @@
 #include "protos.h"
 #include "recvattach.h"
 #include "rfc3676.h"
-#include "sendlib.h"
-#include "smtp.h"
 #include "sort.h"
 #include "ncrypt/lib.h"
 #ifdef USE_NNTP
@@ -84,53 +83,6 @@
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
-
-/* These Config Variables are only used in send.c */
-unsigned char C_AbortNoattach; ///< Config: Abort sending the email if attachments are missing
-struct Regex *C_AbortNoattachRegex; ///< Config: Regex to match text indicating attachments are expected
-unsigned char C_AbortNosubject; ///< Config: Abort creating the email if subject is missing
-unsigned char C_AbortUnmodified; ///< Config: Abort the sending if the message hasn't been edited
-bool C_AskFollowUp; ///< Config: (nntp) Ask the user for follow-up groups before editing
-bool C_AskXCommentTo; ///< Config: (nntp) Ask the user for the 'X-Comment-To' field before editing
-char *C_ContentType; ///< Config: Default "Content-Type" for newly composed messages
-bool C_CryptAutoencrypt; ///< Config: Automatically PGP encrypt all outgoing mail
-bool C_CryptAutopgp;     ///< Config: Allow automatic PGP functions
-bool C_CryptAutosign;    ///< Config: Automatically PGP sign all outgoing mail
-bool C_CryptAutosmime;   ///< Config: Allow automatic SMIME functions
-bool C_CryptReplyencrypt; ///< Config: Encrypt replies to encrypted messages
-bool C_CryptReplysign;    ///< Config: Sign replies to signed messages
-bool C_CryptReplysignencrypted; ///< Config: Sign replies to encrypted messages
-char *C_EmptySubject; ///< Config: Subject to use when replying to an email with none
-bool C_FastReply; ///< Config: Don't prompt for the recipients and subject when replying/forwarding
-unsigned char C_FccAttach; ///< Config: Save send message with all their attachments
-bool C_FccBeforeSend;      ///< Config: Save FCCs before sending the message
-bool C_FccClear; ///< Config: Save sent messages unencrypted and unsigned
-bool C_FollowupTo; ///< Config: Add the 'Mail-Followup-To' header is generated when sending mail
-char *C_ForwardAttributionIntro; ///< Config: Prefix message for forwarded messages
-char *C_ForwardAttributionTrailer; ///< Config: Suffix message for forwarded messages
-unsigned char C_ForwardEdit; ///< Config: Automatically start the editor when forwarding a message
-char *C_ForwardFormat; ///< Config: printf-like format string to control the subject when forwarding a message
-bool C_ForwardReferences; ///< Config: Set the 'In-Reply-To' and 'References' headers when forwarding a message
-bool C_Hdrs;              ///< Config: Add custom headers to outgoing mail
-unsigned char C_HonorFollowupTo; ///< Config: Honour the 'Mail-Followup-To' header when group replying
-bool C_IgnoreListReplyTo; ///< Config: Ignore the 'Reply-To' header when using `<reply>` on a mailing list
-unsigned char C_Include; ///< Config: Include a copy of the email that's being replied to
-bool C_Metoo; ///< Config: Remove the user's address from the list of recipients
-bool C_NmRecord; ///< Config: (notmuch) If the 'record' mailbox (sent mail) should be indexed
-bool C_PgpReplyinline; ///< Config: Reply using old-style inline PGP messages (not recommended)
-char *C_PostIndentString; ///< Config: Suffix message to add after reply text
-bool C_PostponeEncrypt;   ///< Config: Self-encrypt postponed messages
-char *C_PostponeEncryptAs; ///< Config: Fallback encryption key for postponed messages
-unsigned char C_Recall; ///< Config: Recall postponed mesaages when asked to compose a message
-bool C_ReplySelf; ///< Config: Really reply to yourself, when replying to your own email
-unsigned char C_ReplyTo; ///< Config: Address to use as a 'Reply-To' header
-bool C_ReplyWithXorig; ///< Config: Create 'From' header from 'X-Original-To' header
-bool C_ReverseName; ///< Config: Set the 'From' from the address the email was sent to
-bool C_ReverseRealname; ///< Config: Set the 'From' from the full 'To' address the email was sent to
-bool C_SigDashes;  ///< Config: Insert '-- ' before the signature
-char *C_Signature; ///< Config: File containing a signature to append to all mail
-bool C_SigOnTop;   ///< Config: Insert the signature before the quoted text
-bool C_UseFrom;    ///< Config: Set the 'From' header for outgoing mail
 
 /**
  * append_signature - Append a signature to an email

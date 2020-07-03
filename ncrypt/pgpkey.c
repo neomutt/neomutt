@@ -60,8 +60,8 @@
 #include "pgpinvoke.h"
 #include "protos.h"
 #include "recvattach.h"
-#include "sendlib.h"
 #include "sort.h"
+#include "send/lib.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"
 #include "pgplib.h"

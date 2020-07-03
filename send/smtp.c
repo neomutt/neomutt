@@ -23,7 +23,7 @@
  */
 
 /**
- * @page smtp Send email to an SMTP server
+ * @page send_smtp Send email to an SMTP server
  *
  * Send email to an SMTP server
  */
@@ -41,29 +41,21 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "smtp.h"
+#include "lib.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "mutt_socket.h"
 #include "progress.h"
-#include "sendlib.h"
-#ifdef USE_SSL
-#include "config/lib.h"
-#endif
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
 #include "options.h"
 #endif
-
-/* These Config Variables are only used in smtp.c */
-struct Slist *C_SmtpAuthenticators; ///< Config: (smtp) List of allowed authentication methods
-char *C_SmtpOauthRefreshCommand; ///< Config: (smtp) External command to generate OAUTH refresh token
-char *C_SmtpPass; ///< Config: (smtp) Password for the SMTP server
-char *C_SmtpUser; ///< Config: (smtp) Username for the SMTP server
 
 #define smtp_success(x) ((x) / 100 == 2)
 #define SMTP_READY 334
@@ -84,8 +76,8 @@ char *C_SmtpUser; ///< Config: (smtp) Username for the SMTP server
 /**
  * typedef SmtpCapFlags - SMTP server capabilities
  */
-typedef uint8_t SmtpCapFlags;           ///< Flags, e.g. #SMTP_CAP_STARTTLS
-#define SMTP_CAP_NO_FLAGS            0  ///< No flags are set
+typedef uint8_t SmtpCapFlags;          ///< Flags, e.g. #SMTP_CAP_STARTTLS
+#define SMTP_CAP_NO_FLAGS           0  ///< No flags are set
 #define SMTP_CAP_STARTTLS     (1 << 0) ///< Server supports STARTTLS command
 #define SMTP_CAP_AUTH         (1 << 1) ///< Server supports AUTH command
 #define SMTP_CAP_DSN          (1 << 2) ///< Server supports Delivery Status Notification
@@ -360,7 +352,7 @@ static int smtp_fill_account(struct ConnAccount *cac)
  */
 static int smtp_helo(struct Connection *conn, bool esmtp)
 {
-  Capabilities = 0;
+  Capabilities = SMTP_CAP_NO_FLAGS;
 
   if (!esmtp)
   {

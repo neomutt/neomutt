@@ -53,10 +53,9 @@
 #include "mutt_parse.h"
 #include "muttlib.h"
 #include "options.h"
-#include "send.h"
-#include "sendlib.h"
 #include "state.h"
 #include "ncrypt/lib.h"
+#include "send/lib.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif

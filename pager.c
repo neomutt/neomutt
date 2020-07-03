@@ -66,9 +66,9 @@
 #include "protos.h"
 #include "recvattach.h"
 #include "recvcmd.h"
-#include "send.h"
 #include "status.h"
 #include "ncrypt/lib.h"
+#include "send/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif

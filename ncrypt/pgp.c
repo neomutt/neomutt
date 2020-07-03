@@ -58,8 +58,8 @@
 #include "pgpinvoke.h"
 #include "pgpkey.h"
 #include "pgpmicalg.h"
-#include "sendlib.h"
 #include "state.h"
+#include "send/lib.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"
 #include "pgplib.h"

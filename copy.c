@@ -44,9 +44,9 @@
 #include "hdrline.h"
 #include "mutt_globals.h"
 #include "mx.h"
-#include "sendlib.h"
 #include "state.h"
 #include "ncrypt/lib.h"
+#include "send/lib.h"
 #ifdef USE_NOTMUCH
 #include "muttlib.h"
 #include "notmuch/lib.h"

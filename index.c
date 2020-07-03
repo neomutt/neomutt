@@ -68,10 +68,10 @@
 #include "protos.h"
 #include "recvattach.h"
 #include "score.h"
-#include "send.h"
 #include "sort.h"
 #include "status.h"
 #include "ncrypt/lib.h"
+#include "send/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif

@@ -48,7 +48,7 @@
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "send.h"
+#include "send/lib.h"
 
 /* These Config Variables are only used in dlgquery.c */
 char *C_QueryCommand; ///< Config: External command to query and external address book
