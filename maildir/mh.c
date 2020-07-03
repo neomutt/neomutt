@@ -590,7 +590,7 @@ static int mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  *
  * Don't change this code unless you _really_ understand what happens.
  */
-int mh_mbox_check(struct Mailbox *m, int *index_hint)
+int mh_mbox_check(struct Mailbox *m)
 {
   if (!m)
     return -1;

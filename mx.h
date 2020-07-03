@@ -147,11 +147,10 @@ struct MxOps
   /**
    * mbox_check - Check for new mail
    * @param m          Mailbox
-   * @param index_hint Remember our place in the index
    * @retval >0 Success, e.g. #MUTT_REOPENED
    * @retval -1 Error
    */
-  int (*mbox_check)      (struct Mailbox *m, int *index_hint);
+  int (*mbox_check)      (struct Mailbox *m);
 
   /**
    * mbox_check_stats - Check the Mailbox statistics
@@ -166,11 +165,10 @@ struct MxOps
   /**
    * mbox_sync - Save changes to the Mailbox
    * @param m          Mailbox to sync
-   * @param index_hint Remember our place in the index
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*mbox_sync)       (struct Mailbox *m, int *index_hint);
+  int (*mbox_sync)       (struct Mailbox *m);
 
   /**
    * mbox_close - Close a Mailbox
@@ -294,11 +292,11 @@ struct MxOps
 };
 
 /* Wrappers for the Mailbox API, see MxOps */
-int             mx_mbox_check      (struct Mailbox *m, int *index_hint);
+int             mx_mbox_check      (struct Mailbox *m);
 int             mx_mbox_check_stats(struct Mailbox *m, int flags);
 int             mx_mbox_close      (struct Context **ptr);
 struct Context *mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
-int             mx_mbox_sync       (struct Mailbox *m, int *index_hint);
+int             mx_mbox_sync       (struct Mailbox *m);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
 int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
 struct Message *mx_msg_open_new    (struct Mailbox *m, struct Email *e, MsgOpenFlags flags);

@@ -107,8 +107,7 @@ static bool label_message(struct Mailbox *m, struct Email *e, char *new_label)
 
   if (e->env->x_label)
     label_ref_dec(m, e->env->x_label);
-  mutt_str_replace(&e->env->x_label, new_label);
-  if (e->env->x_label)
+  if (mutt_str_replace(&e->env->x_label, new_label))
     label_ref_inc(m, e->env->x_label);
 
   e->changed = true;

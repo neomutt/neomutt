@@ -2196,14 +2196,13 @@ static int nm_mbox_open(struct Mailbox *m)
 /**
  * nm_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param m           Mailbox
- * @param index_hint  Remember our place in the index
  * @retval -1 Error
  * @retval  0 Success
  * @retval #MUTT_NEW_MAIL New mail has arrived
  * @retval #MUTT_REOPENED Mailbox closed and reopened
  * @retval #MUTT_FLAGS    Flags have changed
  */
-static int nm_mbox_check(struct Mailbox *m, int *index_hint)
+static int nm_mbox_check(struct Mailbox *m)
 {
   if (!m)
     return -1;
@@ -2335,7 +2334,7 @@ done:
 /**
  * nm_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
  */
-static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
+static int nm_mbox_sync(struct Mailbox *m)
 {
   if (!m)
     return -1;

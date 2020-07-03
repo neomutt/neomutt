@@ -2351,10 +2351,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
     if (Context && Context->mailbox && !OptAttachMsg)
     {
-      int index_hint = 0; /* used to restore cursor position */
       int oldcount = Context->mailbox->msg_count;
       /* check for new mail */
-      int check = mx_mbox_check(Context->mailbox, &index_hint);
+      int check = mx_mbox_check(Context->mailbox);
       if (check < 0)
       {
         if (!Context->mailbox || mutt_buffer_is_empty(&Context->mailbox->pathbuf))
@@ -2395,11 +2394,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             if (!e)
               continue;
 
-            index_hint = e->index;
-
             bool verbose = Context->mailbox->verbose;
             Context->mailbox->verbose = false;
-            update_index(rd.menu, Context, check, oldcount, index_hint);
+            update_index(rd.menu, Context, check, oldcount, e->env->message_id);
             Context->mailbox->verbose = verbose;
 
             rd.menu->max = Context->mailbox->vcount;

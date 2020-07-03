@@ -881,7 +881,7 @@ static int pop_mbox_open(struct Mailbox *m)
 /**
  * pop_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  */
-static int pop_mbox_check(struct Mailbox *m, int *index_hint)
+static int pop_mbox_check(struct Mailbox *m)
 {
   if (!m)
     return -1;
@@ -922,7 +922,7 @@ static int pop_mbox_check(struct Mailbox *m, int *index_hint)
  *
  * Update POP mailbox, delete messages from server
  */
-static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
+static int pop_mbox_sync(struct Mailbox *m)
 {
   if (!m)
     return -1;
