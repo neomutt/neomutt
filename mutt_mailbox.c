@@ -330,10 +330,6 @@ static struct Mailbox *find_next_mailbox(struct Buffer *s, bool find_new)
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &ml, entries)
     {
-      // Match only real mailboxes if looking for new mail.
-      if (find_new && np->mailbox->type == MUTT_NOTMUCH)
-        continue;
-
       buf_expand_path(&np->mailbox->pathbuf);
       struct Mailbox *m_cur = np->mailbox;
 
