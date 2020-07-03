@@ -1496,31 +1496,31 @@ void mutt_addrlist_prepend(struct AddressList *al, struct Address *a)
 }
 
 /**
- * address_uses_unicode - Do any addresses use Unicode
- * @param a Address list to check
- * @retval true if any of the string of addresses use 8-bit characters
+ * mutt_addr_uses_unicode - Does this address use Unicode character
+ * @param str Address string to check
+ * @retval true If the string uses 8-bit characters
  */
-bool address_uses_unicode(const char *a)
+bool mutt_addr_uses_unicode(const char *str)
 {
-  if (!a)
+  if (!str)
     return false;
 
-  while (*a)
+  while (*str)
   {
-    if ((unsigned char) *a & (1 << 7))
+    if ((unsigned char) *str & (1 << 7))
       return true;
-    a++;
+    str++;
   }
 
   return false;
 }
 
 /**
- * addresses_use_unicode - Do any of a list of addresses use Unicode
+ * mutt_addrlist_uses_unicode - Do any of a list of addresses use Unicode characters
  * @param al Address list to check
- * @retval true if any use 8-bit characters
+ * @retval true If any use 8-bit characters
  */
-bool addresses_use_unicode(const struct AddressList *al)
+bool mutt_addrlist_uses_unicode(const struct AddressList *al)
 {
   if (!al)
   {
@@ -1530,7 +1530,7 @@ bool addresses_use_unicode(const struct AddressList *al)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (a->mailbox && !a->group && address_uses_unicode(a->mailbox))
+    if (a->mailbox && !a->group && mutt_addr_uses_unicode(a->mailbox))
       return true;
   }
   return false;

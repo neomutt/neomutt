@@ -768,8 +768,8 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
     if (C_DsnReturn && (Capabilities & SMTP_CAP_DSN))
       len += snprintf(buf + len, sizeof(buf) - len, " RET=%s", C_DsnReturn);
     if ((Capabilities & SMTP_CAP_SMTPUTF8) &&
-        (address_uses_unicode(envfrom) || addresses_use_unicode(to) ||
-         addresses_use_unicode(cc) || addresses_use_unicode(bcc)))
+        (mutt_addr_uses_unicode(envfrom) || mutt_addrlist_uses_unicode(to) ||
+         mutt_addrlist_uses_unicode(cc) || mutt_addrlist_uses_unicode(bcc)))
     {
       snprintf(buf + len, sizeof(buf) - len, " SMTPUTF8");
     }
