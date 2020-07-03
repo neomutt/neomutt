@@ -325,8 +325,6 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &ml, entries)
       {
-        if (np->mailbox->type == MUTT_NOTMUCH) /* only match real mailboxes */
-          continue;
         mutt_buffer_expand_path(&np->mailbox->pathbuf);
         if ((found || (pass > 0)) && np->mailbox->has_new)
         {
