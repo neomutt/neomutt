@@ -75,7 +75,7 @@ size_t      mutt_str_lws_len(const char *s, size_t n);
 size_t      mutt_str_lws_rlen(const char *s, size_t n);
 const char *mutt_str_next_word(const char *s);
 void        mutt_str_remove_trailing_ws(char *s);
-void        mutt_str_replace(char **p, const char *s);
+char *      mutt_str_replace(char **p, const char *s);
 char *      mutt_str_skip_email_wsp(const char *s);
 char *      mutt_str_skip_whitespace(const char *p);
 const char *mutt_str_sysexit(int e);

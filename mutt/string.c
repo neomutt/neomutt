@@ -439,6 +439,7 @@ char *mutt_strn_cat(char *d, size_t l, const char *s, size_t sl)
  * mutt_str_replace - Replace one string with another
  * @param[out] p String to replace
  * @param[in]  s New string
+ * @retval ptr Replaced string
  *
  * This function free()s the original string, strdup()s the new string and
  * overwrites the pointer to the first string.
@@ -447,13 +448,14 @@ char *mutt_strn_cat(char *d, size_t l, const char *s, size_t sl)
  *
  * @note Free *p afterwards to handle the case that *p and s reference the same memory
  */
-void mutt_str_replace(char **p, const char *s)
+char *mutt_str_replace(char **p, const char *s)
 {
   if (!p)
-    return;
+    return NULL;
   const char *tmp = *p;
   *p = mutt_str_dup(s);
   FREE(&tmp);
+  return *p;
 }
 
 /**

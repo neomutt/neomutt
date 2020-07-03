@@ -359,7 +359,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
    * segvs, but probably the flag needs to be reset after downloading
    * headers in imap_open_mailbox().
    */
-  mx_mbox_check(ctx_post->mailbox, NULL);
+  mx_mbox_check(ctx_post->mailbox);
 
   if (ctx_post->mailbox->msg_count == 0)
   {

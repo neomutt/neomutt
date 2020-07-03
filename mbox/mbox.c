@@ -534,11 +534,10 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 /**
  * reopen_mailbox - Close and reopen a mailbox
  * @param m          Mailbox
- * @param index_hint Current email
  * @retval >0 Success, e.g. #MUTT_REOPENED, #MUTT_NEW_MAIL
  * @retval -1 Error
  */
-static int reopen_mailbox(struct Mailbox *m, int *index_hint)
+static int reopen_mailbox(struct Mailbox *m)
 {
   if (!m)
     return -1;
@@ -672,10 +671,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
 
       if (found)
       {
-        /* this is best done here */
-        if (index_hint && (*index_hint == j))
-          *index_hint = i;
-
+        m->changed = true;
         if (e_old[j]->changed)
         {
           /* Only update the flags if the old header was changed;
@@ -1028,14 +1024,13 @@ static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 /**
  * mbox_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param[in]  m          Mailbox
- * @param[out] index_hint Keep track of current index selection
  * @retval #MUTT_REOPENED  Mailbox has been reopened
  * @retval #MUTT_NEW_MAIL  New mail has arrived
  * @retval #MUTT_LOCKED    Couldn't lock the file
  * @retval 0               No change
  * @retval -1              Error
  */
-static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
+static int mbox_mbox_check(struct Mailbox *m)
 {
   if (!m)
     return -1;
@@ -1137,7 +1132,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
 
   if (modified)
   {
-    if (reopen_mailbox(m, index_hint) != -1)
+    if (reopen_mailbox(m) != -1)
     {
       mailbox_changed(m, NT_MAILBOX_INVALID);
       if (unlock)
@@ -1161,7 +1156,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
 /**
  * mbox_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
  */
-static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
+static int mbox_mbox_sync(struct Mailbox *m)
 {
   if (!m)
     return -1;
@@ -1215,7 +1210,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   }
 
   /* Check to make sure that the file hasn't changed on disk */
-  i = mbox_mbox_check(m, index_hint);
+  i = mbox_mbox_check(m);
   if ((i == MUTT_NEW_MAIL) || (i == MUTT_REOPENED))
   {
     /* new mail arrived, or mailbox reopened */

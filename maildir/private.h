@@ -75,13 +75,13 @@ struct MhSequences
 /* MXAPI shared functions */
 int             maildir_ac_add     (struct Account *a, struct Mailbox *m);
 struct Account *maildir_ac_find    (struct Account *a, const char *path);
-int             maildir_mbox_check (struct Mailbox *m, int *index_hint);
+int             maildir_mbox_check (struct Mailbox *m);
 int             maildir_path_canon (char *buf, size_t buflen);
 int             maildir_path_parent(char *buf, size_t buflen);
 int             maildir_path_pretty(char *buf, size_t buflen, const char *folder);
-int             mh_mbox_check      (struct Mailbox *m, int *index_hint);
+int             mh_mbox_check      (struct Mailbox *m);
 int             mh_mbox_close      (struct Mailbox *m);
-int             mh_mbox_sync       (struct Mailbox *m, int *index_hint);
+int             mh_mbox_sync       (struct Mailbox *m);
 int             mh_msg_close       (struct Mailbox *m, struct Message *msg);
 int             mh_msg_save_hcache (struct Mailbox *m, struct Email *e);
 

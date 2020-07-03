@@ -1698,7 +1698,7 @@ int maildir_path_parent(char *buf, size_t buflen)
  *
  * @note The flag retvals come from a call to a backend sync function
  */
-int mh_mbox_sync(struct Mailbox *m, int *index_hint)
+int mh_mbox_sync(struct Mailbox *m)
 {
   if (!m)
     return -1;
@@ -1709,9 +1709,9 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
   int check;
 
   if (m->type == MUTT_MH)
-    check = mh_mbox_check(m, index_hint);
+    check = mh_mbox_check(m);
   else
-    check = maildir_mbox_check(m, index_hint);
+    check = maildir_mbox_check(m);
 
   if (check < 0)
     return check;

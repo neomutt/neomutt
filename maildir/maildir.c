@@ -364,7 +364,7 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  * already knew about.  We don't treat either subdirectory differently, as mail
  * could be copied directly into the cur directory from another agent.
  */
-int maildir_mbox_check(struct Mailbox *m, int *index_hint)
+int maildir_mbox_check(struct Mailbox *m)
 {
   if (!m)
     return -1;

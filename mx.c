@@ -459,11 +459,10 @@ void mx_fastclose_mailbox(struct Mailbox *m)
 /**
  * sync_mailbox - save changes to disk
  * @param m          Mailbox
- * @param index_hint Current email
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int sync_mailbox(struct Mailbox *m, int *index_hint)
+static int sync_mailbox(struct Mailbox *m)
 {
   if (!m || !m->mx_ops || !m->mx_ops->mbox_sync)
     return -1;
@@ -474,7 +473,7 @@ static int sync_mailbox(struct Mailbox *m, int *index_hint)
     mutt_message(_("Writing %s..."), mailbox_path(m));
   }
 
-  int rc = m->mx_ops->mbox_sync(m, index_hint);
+  int rc = m->mx_ops->mbox_sync(m);
   if (rc != 0)
   {
     mutt_debug(LL_DEBUG2, "mbox_sync returned: %d\n", rc);
@@ -842,7 +841,7 @@ int mx_mbox_close(struct Context **ptr)
 
     if (m->changed || (m->msg_deleted != 0))
     {
-      int check = sync_mailbox(ctx->mailbox, NULL);
+      int check = sync_mailbox(ctx->mailbox);
       if (check != 0)
       {
         rc = check;
@@ -903,7 +902,6 @@ cleanup:
 /**
  * mx_mbox_sync - Save changes to mailbox
  * @param[in]  m          Mailbox
- * @param[out] index_hint Currently selected Email
  * @retval #MUTT_REOPENED  mailbox has been externally modified
  * @retval #MUTT_NEW_MAIL  new mail has arrived
  * @retval  0 Success
@@ -911,7 +909,7 @@ cleanup:
  *
  * @note The flag retvals come from a call to a backend sync function
  */
-int mx_mbox_sync(struct Mailbox *m, int *index_hint)
+int mx_mbox_sync(struct Mailbox *m)
 {
   if (!m)
     return -1;
@@ -992,7 +990,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
     rc = imap_sync_mailbox(m, purge, false);
   else
 #endif
-    rc = sync_mailbox(m, index_hint);
+    rc = sync_mailbox(m);
   if (rc >= 0)
   {
 #ifdef USE_IMAP
@@ -1109,17 +1107,16 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, MsgOpenFlags
 /**
  * mx_mbox_check - Check for new mail - Wrapper for MxOps::mbox_check()
  * @param m          Mailbox
- * @param index_hint Current email
  * @retval >0 Success, e.g. #MUTT_NEW_MAIL
  * @retval  0 Success, no change
  * @retval -1 Failure
  */
-int mx_mbox_check(struct Mailbox *m, int *index_hint)
+int mx_mbox_check(struct Mailbox *m)
 {
   if (!m || !m->mx_ops)
     return -1;
 
-  int rc = m->mx_ops->mbox_check(m, index_hint);
+  int rc = m->mx_ops->mbox_check(m);
   if ((rc == MUTT_NEW_MAIL) || (rc == MUTT_REOPENED))
     mailbox_changed(m, NT_MAILBOX_INVALID);
 
