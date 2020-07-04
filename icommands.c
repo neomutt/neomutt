@@ -308,6 +308,12 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
+  const bool set = mutt_str_equal(s->data, "set");
+  const bool set_all = mutt_str_equal(s->data, "set all");
+
+  if (!set && !set_all)
+    return MUTT_CMD_ERROR;
+
   char tempfile[PATH_MAX];
   mutt_mktemp(tempfile, sizeof(tempfile));
 
@@ -319,28 +325,13 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  if (mutt_str_equal(s->data, "set all"))
-  {
+  if (set_all)
     dump_config(NeoMutt->sub->cs, CS_DUMP_NO_FLAGS, fp_out);
-  }
-  else if (mutt_str_equal(s->data, "set"))
-  {
-    dump_config(NeoMutt->sub->cs, CS_DUMP_ONLY_CHANGED, fp_out);
-  }
   else
-  {
-    mutt_file_fclose(&fp_out);
-    return MUTT_CMD_ERROR;
-  }
+    dump_config(NeoMutt->sub->cs, CS_DUMP_ONLY_CHANGED, fp_out);
 
   mutt_file_fclose(&fp_out);
-
-  if (mutt_do_pager("set", tempfile, MUTT_PAGER_NO_FLAGS, NULL) == -1)
-  {
-    // L10N: '%s' is the file name of the temporary file
-    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
-    return MUTT_CMD_ERROR;
-  }
+  mutt_do_pager("set", tempfile, MUTT_PAGER_NO_FLAGS, NULL);
 
   return MUTT_CMD_SUCCESS;
 }
