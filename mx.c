@@ -1686,6 +1686,73 @@ struct Mailbox *mx_path_resolve(const char *path)
 }
 
 /**
+ * mx_mbox_find_by_name - Find a Mailbox with given name under an Account
+ * @param a    Account to search
+ * @param name Name to find
+ * @retval ptr Mailbox
+ */
+static struct Mailbox *mx_mbox_find_by_name_ac(struct Account *a, const char *name)
+{
+  if (!a || !name)
+    return NULL;
+
+  struct MailboxNode *np = NULL;
+
+  STAILQ_FOREACH(np, &a->mailboxes, entries)
+  {
+    if (mutt_str_equal(np->mailbox->name, name))
+      return np->mailbox;
+  }
+
+  return NULL;
+}
+
+/**
+ * mx_mbox_find_by_name - Find a Mailbox with given name
+ * @param name Name to search
+ * @retval ptr Mailbox
+ */
+static struct Mailbox *mx_mbox_find_by_name(const char *name)
+{
+  if (!name)
+    return NULL;
+
+  struct Account *np = NULL;
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  {
+    struct Mailbox *m = mx_mbox_find_by_name_ac(np, name);
+    if (m)
+      return m;
+  }
+
+  return NULL;
+}
+
+/**
+ * mx_resolve - Get a Mailbox from either a path or name
+ * @param path_or_name Mailbox path or name
+ * @retval ptr         Mailbox
+ *
+ * Order of resolving:
+ *  1. Name
+ *  2. Path
+ */
+struct Mailbox *mx_resolve(const char *path_or_name)
+{
+  if (!path_or_name)
+    return NULL;
+
+  // Order is name first because you can create a Mailbox from
+  // a path, but can't from a name. So fallback behavior creates
+  // a new Mailbox for us.
+  struct Mailbox *m = mx_mbox_find_by_name(path_or_name);
+  if (!m)
+    m = mx_path_resolve(path_or_name);
+
+  return m;
+}
+
+/**
  * mx_ac_add - Add a Mailbox to an Account - Wrapper for MxOps::ac_add()
  */
 int mx_ac_add(struct Account *a, struct Mailbox *m)
