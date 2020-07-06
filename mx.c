@@ -305,8 +305,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   if (!m)
     return NULL;
 
-  struct Context *ctx = ctx_new();
-  ctx->mailbox = m;
+  struct Context *ctx = ctx_new(m);
 
   struct EventContext ev_ctx = { ctx };
   notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_OPEN, &ev_ctx);

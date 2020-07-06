@@ -36,8 +36,6 @@ struct NotifyCallback;
 /* These Config Variables are only used in index.c */
 extern bool  C_ChangeFolderNext;
 extern bool  C_CollapseAll;
-extern bool  C_CollapseFlagged;
-extern bool  C_CollapseUnread;
 extern char *C_MarkMacroPrefix;
 extern bool  C_PgpAutoDecode;
 extern bool  C_UncollapseJump;

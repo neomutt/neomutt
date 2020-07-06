@@ -55,6 +55,7 @@
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
+#include "mutt_thread.h"
 #include "mutt_window.h"
 #include "opcodes.h"
 #include "options.h"

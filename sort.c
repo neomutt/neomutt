@@ -366,7 +366,6 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   if (!ctx || !ctx->mailbox || !ctx->mailbox->emails || !ctx->mailbox->emails[0])
     return;
 
-  struct MuttThread *thread = NULL, *top = NULL;
   sort_t sortfunc = NULL;
   struct Mailbox *m = ctx->mailbox;
 
@@ -379,7 +378,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
      * in that routine, so we must make sure to zero the vcount member.  */
     m->vcount = 0;
     ctx->vsize = 0;
-    mutt_clear_threads(ctx);
+    mutt_clear_threads(ctx->threads);
     return; /* nothing to do! */
   }
 
@@ -404,8 +403,8 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     init = true;
   }
 
-  if (init && ctx->tree)
-    mutt_clear_threads(ctx);
+  if (init)
+    mutt_clear_threads(ctx->threads);
 
   if ((C_Sort & SORT_MASK) == SORT_THREADS)
   {
@@ -416,12 +415,11 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     {
       int i = C_Sort;
       C_Sort = C_SortAux;
-      if (ctx->tree)
-        ctx->tree = mutt_sort_subthreads(ctx->tree, true);
+      mutt_sort_subthreads(ctx->threads, true);
       C_Sort = i;
       OptSortSubthreads = false;
     }
-    mutt_sort_threads(ctx, init);
+    mutt_sort_threads(ctx->threads, ctx_has_limit(ctx), init);
   }
   else if (!(sortfunc = mutt_get_sort_func(C_Sort & SORT_MASK)) ||
            !(AuxSort = mutt_get_sort_func(C_SortAux & SORT_MASK)))
@@ -442,7 +440,8 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     if (!e_cur)
       break;
 
-    if ((e_cur->vnum != -1) || (e_cur->collapsed && (!ctx->pattern || e_cur->limited)))
+    if ((e_cur->vnum != -1) ||
+        (e_cur->collapsed && (!ctx_has_limit(ctx) || e_cur->limited)))
     {
       e_cur->vnum = m->vcount;
       m->v2r[m->vcount] = i;
@@ -454,18 +453,9 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   /* re-collapse threads marked as collapsed */
   if ((C_Sort & SORT_MASK) == SORT_THREADS)
   {
-    top = ctx->tree;
-    while ((thread = top))
-    {
-      while (!thread->message)
-        thread = thread->child;
-
-      struct Email *e = thread->message;
-      if (e->collapsed)
-        mutt_collapse_thread(ctx, e);
-      top = top->next;
-    }
-    mutt_set_vnum(ctx);
+    mutt_thread_collapse_collapsed(ctx->threads, ctx_has_limit(ctx));
+    ctx->vsize = mutt_set_vnum(ctx->mailbox, ctx_has_limit(ctx),
+                               mx_msg_padding_size(ctx->mailbox));
   }
 
   if (m->verbose)

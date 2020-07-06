@@ -60,7 +60,7 @@ void ctx_free(struct Context **ptr)
   if (ctx->mailbox)
     notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, ctx);
 
-  mutt_hash_free(&ctx->thread_hash);
+  mutt_thread_ctx_free(&ctx->threads);
   notify_free(&ctx->notify);
 
   FREE(ptr);
@@ -68,14 +68,17 @@ void ctx_free(struct Context **ptr)
 
 /**
  * ctx_new - Create a new Context
+ * @param m Mailbox
  * @retval ptr New Context
  */
-struct Context *ctx_new(void)
+struct Context *ctx_new(struct Mailbox *m)
 {
   struct Context *ctx = mutt_mem_calloc(1, sizeof(struct Context));
 
   ctx->notify = notify_new();
   notify_set_parent(ctx->notify, NeoMutt->notify);
+  ctx->mailbox = m;
+  ctx->threads = mutt_thread_ctx_init(m);
 
   return ctx;
 }
@@ -123,7 +126,7 @@ void ctx_update(struct Context *ctx)
   m->vcount = 0;
   m->changed = false;
 
-  mutt_clear_threads(ctx);
+  mutt_clear_threads(ctx->threads);
 
   struct Email *e = NULL;
   for (int msgno = 0; msgno < m->msg_count; msgno++)
@@ -138,7 +141,7 @@ void ctx_update(struct Context *ctx)
       e->security = crypt_query(e->body);
     }
 
-    if (ctx->pattern)
+    if (ctx_has_limit(ctx))
     {
       e->vnum = -1;
     }
@@ -307,7 +310,7 @@ int ctx_mailbox_observer(struct NotifyCallback *nc)
   switch (nc->event_subtype)
   {
     case NT_MAILBOX_CLOSED:
-      mutt_clear_threads(ctx);
+      mutt_clear_threads(ctx->threads);
       ctx_cleanup(ctx);
       break;
     case NT_MAILBOX_INVALID:
@@ -337,7 +340,7 @@ bool message_is_visible(struct Context *ctx, struct Email *e)
   if (!ctx || !e)
     return false;
 
-  return !ctx->pattern || e->limited;
+  return !ctx_has_limit(ctx) || e->limited;
 }
 
 /**
@@ -423,4 +426,15 @@ struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
     return NULL;
 
   return m->emails[inum];
+}
+
+/**
+ * ctx_has_limit - Is a limit active?
+ * @param ctx Context
+ * @retval true A limit is active
+ * @retval false No limit is active
+ */
+bool ctx_has_limit(const struct Context *ctx)
+{
+  return ctx && ctx->pattern;
 }

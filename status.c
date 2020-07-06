@@ -201,7 +201,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         mutt_str_pretty_size(tmp, sizeof(tmp), Context ? Context->vsize : 0);
         snprintf(buf, buflen, fmt, tmp);
       }
-      else if (!Context || !Context->pattern)
+      else if (!ctx_has_limit(Context))
         optional = false;
       break;
 
@@ -223,7 +223,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt,
                  (Context && Context->mailbox) ? Context->mailbox->vcount : 0);
       }
-      else if (!Context || !Context->pattern)
+      else if (!ctx_has_limit(Context))
         optional = false;
       break;
 
@@ -371,9 +371,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, (Context && Context->pattern) ? Context->pattern : "");
+        snprintf(buf, buflen, fmt, ctx_has_limit(Context) ? Context->pattern : "");
       }
-      else if (!Context || !Context->pattern)
+      else if (!ctx_has_limit(Context))
         optional = false;
       break;
 

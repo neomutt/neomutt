@@ -50,31 +50,6 @@ typedef uint16_t MuttRedrawFlags;      ///< Flags, e.g. #REDRAW_INDEX
 #endif
 
 /**
- * enum TreeChar - Tree characters for menus
- *
- * @sa linearize_tree(), print_enriched_string()
- */
-enum TreeChar
-{
-  MUTT_TREE_LLCORNER = 1, ///< Lower left corner
-  MUTT_TREE_ULCORNER,     ///< Upper left corner
-  MUTT_TREE_LTEE,         ///< Left T-piece
-  MUTT_TREE_HLINE,        ///< Horizontal line
-  MUTT_TREE_VLINE,        ///< Vertical line
-  MUTT_TREE_SPACE,        ///< Blank space
-  MUTT_TREE_RARROW,       ///< Right arrow
-  MUTT_TREE_STAR,         ///< Star character (for threads)
-  MUTT_TREE_HIDDEN,       ///< Ampersand character (for threads)
-  MUTT_TREE_EQUALS,       ///< Equals (for threads)
-  MUTT_TREE_TTEE,         ///< Top T-piece
-  MUTT_TREE_BTEE,         ///< Bottom T-piece
-  MUTT_TREE_MISSING,      ///< Question mark
-  MUTT_TREE_MAX,
-
-  MUTT_SPECIAL_INDEX = MUTT_TREE_MAX, ///< Colour indicator
-};
-
-/**
  * struct Menu - GUI selectable list of items
  */
 struct Menu

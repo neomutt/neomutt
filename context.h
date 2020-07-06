@@ -30,17 +30,17 @@ struct Email;
 struct EmailList;
 struct Mailbox;
 struct NotifyCallback;
+struct ThreadsContext;
 
 /**
  * struct Context - The "current" mailbox
  */
 struct Context
 {
-  off_t vsize;
+  off_t vsize;                       ///< Size (in bytes) of the messages shown
   char *pattern;                     ///< Limit pattern string
   struct PatternList *limit_pattern; ///< Compiled limit pattern
-  struct MuttThread *tree;           ///< Top of thread tree
-  struct HashTable *thread_hash;     ///< Hash Table for threading
+  struct ThreadsContext *threads;    ///< Threads context
   int msg_not_read_yet;              ///< Which msg "new" in pager, -1 if none
 
   struct Menu *menu;                 ///< Needed for pattern compilation
@@ -72,9 +72,10 @@ struct EventContext
 
 void            ctx_free            (struct Context **ptr);
 int             ctx_mailbox_observer(struct NotifyCallback *nc);
-struct Context *ctx_new             (void);
+struct Context *ctx_new             (struct Mailbox *m);
 void            ctx_update          (struct Context *ctx);
 void            ctx_update_tables   (struct Context *ctx, bool committing);
+bool            ctx_has_limit       (const struct Context *ctx);
 
 bool message_is_tagged (struct Context *ctx, struct Email *e);
 bool message_is_visible(struct Context *ctx, struct Email *e);

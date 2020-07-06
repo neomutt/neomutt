@@ -100,8 +100,6 @@
 /* These Config Variables are only used in index.c */
 bool C_ChangeFolderNext; ///< Config: Suggest the next folder, rather than the first when using '<change-folder>'
 bool C_CollapseAll; ///< Config: Collapse all threads when entering a folder
-bool C_CollapseFlagged; ///< Config: Prevent the collapse of threads with flagged emails
-bool C_CollapseUnread; ///< Config: Prevent the collapse of threads with unread emails
 char *C_MarkMacroPrefix; ///< Config: Prefix for macros using '<mark-message>'
 bool C_UncollapseJump; ///< Config: When opening a thread, jump to the next unread message
 bool C_UncollapseNew; ///< Config: Open collapsed threads when new mail arrives
@@ -137,12 +135,6 @@ static const struct Mapping IndexNewsHelp[] = {
   // clang-format on
 };
 #endif
-
-#define UNREAD(email) mutt_thread_contains_unread(Context, email)
-#define FLAGGED(email) mutt_thread_contains_flagged(Context, email)
-
-#define CAN_COLLAPSE(email)                                                    \
-  ((C_CollapseUnread || !UNREAD(email)) && (C_CollapseFlagged || !FLAGGED(email)))
 
 // clang-format off
 /**
@@ -230,6 +222,16 @@ static bool check_acl(struct Context *ctx, AclFlags acl, const char *msg)
 }
 
 /**
+ * set_vnum - wrapper for set_vnum
+ * @param ctx Context
+ */
+static inline void set_vnum(struct Context *ctx)
+{
+  ctx->vsize = mutt_set_vnum(ctx->mailbox, ctx_has_limit(ctx),
+                             mx_msg_padding_size(ctx->mailbox));
+}
+
+/**
  * collapse_all - Collapse/uncollapse all threads
  * @param ctx    Context
  * @param menu   current menu
@@ -250,15 +252,16 @@ static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
   if (!e_cur)
     return;
 
-  struct MuttThread *thread = NULL, *top = NULL;
   int final;
+
+  const bool lmt = ctx_has_limit(ctx);
 
   /* Figure out what the current message would be after folding / unfolding,
    * so that we can restore the cursor in a sane way afterwards. */
   if (e_cur->collapsed && toggle)
-    final = mutt_uncollapse_thread(ctx, e_cur);
-  else if (CAN_COLLAPSE(e_cur))
-    final = mutt_collapse_thread(ctx, e_cur);
+    final = mutt_uncollapse_thread(lmt, e_cur);
+  else if (mutt_thread_can_collapse(lmt, e_cur))
+    final = mutt_collapse_thread(lmt, e_cur);
   else
     final = e_cur->vnum;
 
@@ -270,30 +273,14 @@ static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
     return;
 
   /* Iterate all threads, perform collapse/uncollapse as needed */
-  top = ctx->tree;
   ctx->collapsed = toggle ? !ctx->collapsed : true;
-  struct Email *e = NULL;
-  while ((thread = top))
-  {
-    while (!thread->message)
-      thread = thread->child;
-    e = thread->message;
-
-    if (e->collapsed != ctx->collapsed)
-    {
-      if (e->collapsed)
-        mutt_uncollapse_thread(ctx, e);
-      else if (CAN_COLLAPSE(e))
-        mutt_collapse_thread(ctx, e);
-    }
-    top = top->next;
-  }
+  mutt_thread_collapse(ctx->threads, lmt, ctx->collapsed);
 
   /* Restore the cursor */
-  mutt_set_vnum(ctx);
+  set_vnum(ctx);
   for (int i = 0; i < ctx->mailbox->vcount; i++)
   {
-    e = mutt_get_virt_email(ctx->mailbox, i);
+    struct Email *e = mutt_get_virt_email(ctx->mailbox, i);
     if (!e)
       break;
     if (e->index == base->index)
@@ -460,7 +447,7 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
   }
 
   if (((C_Sort & SORT_MASK) == SORT_THREADS) && (menu->current < 0))
-    menu->current = mutt_parent_message(ctx, e_cur, false);
+    menu->current = mutt_parent_message(ctx_has_limit(ctx), e_cur, false);
 
   if (menu->current < 0)
     menu->current = ci_first_message(ctx);
@@ -477,9 +464,10 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
 static void update_index_threaded(struct Context *ctx, int check, int oldcount)
 {
   struct Email **save_new = NULL;
+  const bool lmt = ctx_has_limit(ctx);
 
   /* save the list of new messages */
-  if ((check != MUTT_REOPENED) && oldcount && (ctx->pattern || C_UncollapseNew))
+  if ((check != MUTT_REOPENED) && oldcount && (lmt || C_UncollapseNew))
   {
     save_new = mutt_mem_malloc(sizeof(struct Email *) * (ctx->mailbox->msg_count - oldcount));
     for (int i = oldcount; i < ctx->mailbox->msg_count; i++)
@@ -492,7 +480,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
    * If the mailbox was reopened, need to rethread from scratch. */
   mutt_sort_headers(ctx, (check == MUTT_REOPENED));
 
-  if (ctx->pattern)
+  if (lmt)
   {
     for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->mailbox->msg_count; i++)
     {
@@ -506,7 +494,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
       if (mutt_pattern_exec(SLIST_FIRST(ctx->limit_pattern),
                             MUTT_MATCH_FULL_ADDRESS, ctx->mailbox, e, NULL))
       {
-        /* vnum will get properly set by mutt_set_vnum(), which
+        /* vnum will get properly set by set_vnum(), which
          * is called by mutt_sort_headers() just below. */
         e->vnum = 1;
         e->limited = true;
@@ -522,27 +510,19 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
     if (check == MUTT_REOPENED)
     {
       ctx->collapsed = false;
-
-      for (struct MuttThread *h = ctx->tree; h; h = h->next)
-      {
-        struct MuttThread *j = h;
-        for (; !j->message; j = j->child)
-          ; // do nothing
-
-        mutt_uncollapse_thread(ctx, j->message);
-      }
-      mutt_set_vnum(ctx);
+      mutt_thread_collapse(ctx->threads, lmt, ctx->collapsed);
+      set_vnum(ctx);
     }
     else if (oldcount)
     {
       for (int j = 0; j < (ctx->mailbox->msg_count - oldcount); j++)
       {
-        if (!ctx->pattern || save_new[j]->limited)
+        if (!lmt || save_new[j]->limited)
         {
-          mutt_uncollapse_thread(ctx, save_new[j]);
+          mutt_uncollapse_thread(lmt, save_new[j]);
         }
       }
-      mutt_set_vnum(ctx);
+      set_vnum(ctx);
     }
   }
 
@@ -560,7 +540,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
   /* We are in a limited view. Check if the new message(s) satisfy
    * the limit criteria. If they do, set their virtual msgno so that
    * they will be visible in the limited view */
-  if (ctx->pattern)
+  if (ctx_has_limit(ctx))
   {
     int padding = mx_msg_padding_size(ctx->mailbox);
     for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->mailbox->msg_count; i++)
@@ -1252,7 +1232,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
     if (OptRedrawTree && Context && Context->mailbox &&
         (Context->mailbox->msg_count != 0) && ((C_Sort & SORT_MASK) == SORT_THREADS))
     {
-      mutt_draw_tree(Context);
+      mutt_draw_tree(ctx_has_limit(Context), Context->threads);
       menu->redraw |= REDRAW_STATUS;
       OptRedrawTree = false;
     }
@@ -1569,8 +1549,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
             }
             else if (e->collapsed)
             {
-              mutt_uncollapse_thread(Context, e);
-              mutt_set_vnum(Context);
+              mutt_uncollapse_thread(ctx_has_limit(Context), e);
+              set_vnum(Context);
               menu->current = e->vnum;
               menu->redraw = REDRAW_MOTION_RESYNC;
             }
@@ -1731,8 +1711,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
           if (mutt_messages_in_thread(Context->mailbox, e, 1) > 1)
           {
-            mutt_uncollapse_thread(Context, e);
-            mutt_set_vnum(Context);
+            mutt_uncollapse_thread(ctx_has_limit(Context), e);
+            set_vnum(Context);
           }
           menu->current = e->vnum;
         }
@@ -1807,7 +1787,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_MAIN_SHOW_LIMIT:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
-        if (!Context->pattern)
+        if (!ctx_has_limit(Context))
           mutt_message(_("No limit pattern is in effect"));
         else
         {
@@ -1824,15 +1804,15 @@ int mutt_index_menu(struct MuttWindow *dlg)
       {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
+        const bool lmt = ctx_has_limit(Context);
         menu->oldcurrent = cur.e ? cur.e->index : -1;
         if (op == OP_TOGGLE_READ)
         {
           char buf2[1024];
 
-          if (!Context->pattern || !mutt_strn_equal(Context->pattern, "!~R!~D~s", 8))
+          if (!lmt || !mutt_strn_equal(Context->pattern, "!~R!~D~s", 8))
           {
-            snprintf(buf2, sizeof(buf2), "!~R!~D~s%s",
-                     Context->pattern ? Context->pattern : ".*");
+            snprintf(buf2, sizeof(buf2), "!~R!~D~s%s", lmt ? Context->pattern : ".*");
           }
           else
           {
@@ -1840,8 +1820,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             if ((*buf2 == '\0') || mutt_strn_equal(buf2, ".*", 2))
               snprintf(buf2, sizeof(buf2), "~A");
           }
-          FREE(&Context->pattern);
-          Context->pattern = mutt_str_dup(buf2);
+          mutt_str_replace(&Context->pattern, buf2);
           mutt_pattern_func(MUTT_LIMIT, NULL);
         }
 
@@ -1875,11 +1854,11 @@ int mutt_index_menu(struct MuttWindow *dlg)
           {
             if (C_CollapseAll)
               collapse_all(Context, menu, 0);
-            mutt_draw_tree(Context);
+            mutt_draw_tree(lmt, Context->threads);
           }
           menu->redraw = REDRAW_FULL;
         }
-        if (Context->pattern)
+        if (lmt)
           mutt_message(_("To view all messages, limit to \"all\""));
         break;
       }
@@ -2213,8 +2192,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
           if (e_oldcur->collapsed || Context->collapsed)
           {
-            menu->current = mutt_uncollapse_thread(Context, cur.e);
-            mutt_set_vnum(Context);
+            menu->current = mutt_uncollapse_thread(ctx_has_limit(Context), cur.e);
+            set_vnum(Context);
           }
         }
         if (in_pager)
@@ -2599,10 +2578,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
         if (((C_Sort & SORT_MASK) == SORT_THREADS) && cur.e->collapsed)
         {
-          mutt_uncollapse_thread(Context, cur.e);
-          mutt_set_vnum(Context);
+          mutt_uncollapse_thread(ctx_has_limit(Context), cur.e);
+          set_vnum(Context);
           if (C_UncollapseJump)
-            menu->current = mutt_thread_next_unread(Context, cur.e);
+            menu->current = mutt_thread_next_unread(ctx_has_limit(Context), cur.e);
         }
 
         if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
@@ -2927,9 +2906,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
             break;
           if (e->collapsed && ((C_Sort & SORT_MASK) == SORT_THREADS))
           {
-            if ((UNREAD(e) != 0) && (first_unread == -1))
+            int unread = mutt_thread_contains_unread(ctx_has_limit(Context), e);
+            if ((unread != 0) && (first_unread == -1))
               first_unread = mcur;
-            if ((UNREAD(e) == 1) && (first_new == -1))
+            if ((unread == 1) && (first_new == -1))
               first_new = mcur;
           }
           else if (!e->deleted && !e->read)
@@ -2968,14 +2948,14 @@ int mutt_index_menu(struct MuttWindow *dlg)
           menu->current = menu->oldcurrent;
           if ((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_PREV_NEW))
           {
-            if (Context->pattern)
+            if (ctx_has_limit(Context))
               mutt_error(_("No new messages in this limited view"));
             else
               mutt_error(_("No new messages"));
           }
           else
           {
-            if (Context->pattern)
+            if (ctx_has_limit(Context))
               mutt_error(_("No unread messages in this limited view"));
             else
               mutt_error(_("No unread messages"));
@@ -3169,7 +3149,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
 
-        menu->current = mutt_parent_message(Context, cur.e, op == OP_MAIN_ROOT_MESSAGE);
+        menu->current = mutt_parent_message(ctx_has_limit(Context), cur.e,
+                                            op == OP_MAIN_ROOT_MESSAGE);
         if (menu->current < 0)
         {
           menu->current = menu->oldcurrent;
@@ -3231,17 +3212,18 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!cur.e)
           break;
 
+        const bool lmt = ctx_has_limit(Context);
         if (cur.e->collapsed)
         {
-          menu->current = mutt_uncollapse_thread(Context, cur.e);
-          mutt_set_vnum(Context);
+          menu->current = mutt_uncollapse_thread(lmt, cur.e);
+          set_vnum(Context);
           if (C_UncollapseJump)
-            menu->current = mutt_thread_next_unread(Context, cur.e);
+            menu->current = mutt_thread_next_unread(lmt, cur.e);
         }
-        else if (CAN_COLLAPSE(cur.e))
+        else if (mutt_thread_can_collapse(lmt, cur.e))
         {
-          menu->current = mutt_collapse_thread(Context, cur.e);
-          mutt_set_vnum(Context);
+          menu->current = mutt_collapse_thread(lmt, cur.e);
+          set_vnum(Context);
         }
         else
         {

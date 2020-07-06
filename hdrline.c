@@ -375,26 +375,26 @@ static char *apply_subject_mods(struct Envelope *env)
 
 /**
  * thread_is_new - Does the email thread contain any new emails?
- * @param ctx Mailbox
+ * @param lmt There is an active limit
  * @param e Email
  * @retval true If thread contains new mail
  */
-static bool thread_is_new(struct Context *ctx, struct Email *e)
+static bool thread_is_new(bool lmt, struct Email *e)
 {
   return e->collapsed && (e->num_hidden > 1) &&
-         (mutt_thread_contains_unread(ctx, e) == 1);
+         (mutt_thread_contains_unread(lmt, e) == 1);
 }
 
 /**
  * thread_is_old - Does the email thread contain any unread emails?
- * @param ctx Mailbox
+ * @param lmt There is an active limit
  * @param e Email
  * @retval true If thread contains unread mail
  */
-static bool thread_is_old(struct Context *ctx, struct Email *e)
+static bool thread_is_old(bool lmt, struct Email *e)
 {
   return e->collapsed && (e->num_hidden > 1) &&
-         (mutt_thread_contains_unread(ctx, e) == 2);
+         (mutt_thread_contains_unread(lmt, e) == 2);
 }
 
 /**
@@ -1228,13 +1228,14 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (src[0] == 's') /* status: deleted/new/old/replied */
       {
         const char *ch = NULL;
+        const bool lmt = ctx_has_limit(ctx);
         if (e->deleted)
           ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_DELETED);
         else if (e->attach_del)
           ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_DELETED_ATTACH);
-        else if (threads && thread_is_new(ctx, e))
+        else if (threads && thread_is_new(lmt, e))
           ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_NEW_THREAD);
-        else if (threads && thread_is_old(ctx, e))
+        else if (threads && thread_is_old(lmt, e))
           ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD_THREAD);
         else if (e->read && (ctx && (ctx->msg_not_read_yet != e->msgno)))
         {
@@ -1298,9 +1299,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     {
       /* New/Old for threads; replied; New/Old for messages */
       const char *first = NULL;
-      if (threads && thread_is_new(ctx, e))
+      const bool lmt = ctx_has_limit(ctx);
+      if (threads && thread_is_new(lmt, e))
         first = get_nth_wchar(C_FlagChars, FLAG_CHAR_NEW_THREAD);
-      else if (threads && thread_is_old(ctx, e))
+      else if (threads && thread_is_old(lmt, e))
         first = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD_THREAD);
       else if (e->read && (ctx && (ctx->msg_not_read_yet != e->msgno)))
       {
