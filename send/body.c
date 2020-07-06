@@ -305,12 +305,13 @@ static bool write_as_text_part(struct Body *b)
 
 /**
  * mutt_write_mime_body - Write a MIME part
- * @param a  Body to use
- * @param fp File to write to
+ * @param a   Body to use
+ * @param fp  File to write to
+ * @param sub Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_write_mime_body(struct Body *a, FILE *fp)
+int mutt_write_mime_body(struct Body *a, FILE *fp, struct ConfigSubset *sub)
 {
   FILE *fp_in = NULL;
   struct FgetConv *fc = NULL;
@@ -331,10 +332,10 @@ int mutt_write_mime_body(struct Body *a, FILE *fp)
     for (struct Body *t = a->parts; t; t = t->next)
     {
       fprintf(fp, "\n--%s\n", boundary);
-      if (mutt_write_mime_header(t, fp) == -1)
+      if (mutt_write_mime_header(t, fp, sub) == -1)
         return -1;
       fputc('\n', fp);
-      if (mutt_write_mime_body(t, fp) == -1)
+      if (mutt_write_mime_body(t, fp, sub) == -1)
         return -1;
     }
     fprintf(fp, "\n--%s--\n", boundary);

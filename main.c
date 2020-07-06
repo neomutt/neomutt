@@ -808,7 +808,7 @@ int main(int argc, char *argv[], char *envp[])
   {
     if (!OptNoCurses)
       mutt_flushinp();
-    if (mutt_send_message(SEND_POSTPONED, NULL, NULL, NULL, NULL) == 0)
+    if (mutt_send_message(SEND_POSTPONED, NULL, NULL, NULL, NULL, NeoMutt->sub) == 0)
       rc = 0;
     // TEST23: neomutt -p (postponed message, cancel)
     // TEST24: neomutt -p (no postponed message)
@@ -1018,12 +1018,12 @@ int main(int argc, char *argv[], char *envp[])
       {
         if (b)
         {
-          b->next = mutt_make_file_attach(np->data);
+          b->next = mutt_make_file_attach(np->data, NeoMutt->sub);
           b = b->next;
         }
         else
         {
-          b = mutt_make_file_attach(np->data);
+          b = mutt_make_file_attach(np->data, NeoMutt->sub);
           e->content = b;
         }
         if (!b)
@@ -1037,7 +1037,7 @@ int main(int argc, char *argv[], char *envp[])
       mutt_list_free(&attach);
     }
 
-    rv = mutt_send_message(sendflags, e, bodyfile, NULL, NULL);
+    rv = mutt_send_message(sendflags, e, bodyfile, NULL, NULL, NeoMutt->sub);
     /* We WANT the "Mail sent." and any possible, later error */
     log_queue_empty();
     if (ErrorBufMessage)
@@ -1069,18 +1069,19 @@ int main(int argc, char *argv[], char *envp[])
         {
           if (e->content->next)
             e->content = mutt_make_multipart(e->content);
-          mutt_encode_descriptions(e->content, true);
-          mutt_prepare_envelope(e->env, false);
+          mutt_encode_descriptions(e->content, true, NeoMutt->sub);
+          mutt_prepare_envelope(e->env, false, NeoMutt->sub);
           mutt_env_to_intl(e->env, NULL, NULL);
         }
 
         mutt_rfc822_write_header(
             fp_out, e->env, e->content, MUTT_WRITE_HEADER_POSTPONE, false,
-            C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e));
+            C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e),
+            NeoMutt->sub);
         if (C_ResumeEditedDraftFiles)
           fprintf(fp_out, "X-Mutt-Resume-Draft: 1\n");
         fputc('\n', fp_out);
-        if ((mutt_write_mime_body(e->content, fp_out) == -1))
+        if ((mutt_write_mime_body(e->content, fp_out, NeoMutt->sub) == -1))
         {
           mutt_file_fclose(&fp_out);
           email_free(&e);

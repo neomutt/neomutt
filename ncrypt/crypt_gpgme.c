@@ -52,6 +52,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
@@ -862,9 +863,9 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
     goto cleanup;
   }
 
-  mutt_write_mime_header(a, fp_tmp);
+  mutt_write_mime_header(a, fp_tmp, NeoMutt->sub);
   fputc('\n', fp_tmp);
-  mutt_write_mime_body(a, fp_tmp);
+  mutt_write_mime_body(a, fp_tmp, NeoMutt->sub);
 
   if (convert)
   {
@@ -5246,7 +5247,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
   size_t keylist_used = 0;
   struct Address *p = NULL;
   struct CryptKeyInfo *k_info = NULL;
-  const char *fqdn = mutt_fqdn(true);
+  const char *fqdn = mutt_fqdn(true, NeoMutt->sub);
   char buf[1024];
   int forced_valid;
   bool key_selected;
@@ -5511,7 +5512,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
      but it may be safer to keep it untranslated. */
   snprintf(buf, sizeof(buf), _("PGP Key 0x%s"), crypt_keyid(key));
   att->description = mutt_str_dup(buf);
-  mutt_update_encoding(att);
+  mutt_update_encoding(att, NeoMutt->sub);
 
   stat(tempf, &sb);
   att->length = sb.st_size;

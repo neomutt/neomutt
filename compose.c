@@ -733,7 +733,7 @@ static int check_attachments(struct AttachCtx *actx)
 
       enum QuadOption ans = mutt_yesorno(mutt_b2s(msg), MUTT_YES);
       if (ans == MUTT_YES)
-        mutt_update_encoding(actx->idx[i]->content);
+        mutt_update_encoding(actx->idx[i]->content, NeoMutt->sub);
       else if (ans == MUTT_ABORT)
         goto cleanup;
     }
@@ -1170,7 +1170,7 @@ static unsigned long cum_attachs_size(struct Menu *menu)
     b = idx[i]->content;
 
     if (!b->content)
-      b->content = mutt_get_content_info(b->filename, b);
+      b->content = mutt_get_content_info(b->filename, b, NeoMutt->sub);
 
     info = b->content;
     if (info)
@@ -1549,7 +1549,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_rfc3676_space_unstuff(e);
           mutt_edit_file(C_Editor, e->content->filename);
           mutt_rfc3676_space_stuff(e);
-          mutt_update_encoding(e->content);
+          mutt_update_encoding(e->content, NeoMutt->sub);
           menu->redraw = REDRAW_FULL;
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           break;
@@ -1571,7 +1571,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         redraw_env = true;
 
         mutt_rfc3676_space_stuff(e);
-        mutt_update_encoding(e->content);
+        mutt_update_encoding(e->content, NeoMutt->sub);
 
         /* attachments may have been added */
         if (actx->idxlen && actx->idx[actx->idxlen - 1]->content->next)
@@ -1843,7 +1843,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           char *att = files[i];
           struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
           ap->unowned = true;
-          ap->content = mutt_make_file_attach(att);
+          ap->content = mutt_make_file_attach(att, NeoMutt->sub);
           if (ap->content)
             update_idx(menu, actx, ap);
           else
@@ -1981,8 +1981,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
             continue;
 
           struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-          ap->content = mutt_make_message_attach(Context->mailbox,
-                                                 Context->mailbox->emails[i], true);
+          ap->content = mutt_make_message_attach(
+              Context->mailbox, Context->mailbox->emails[i], true, NeoMutt->sub);
           if (ap->content)
             update_idx(menu, actx, ap);
           else
@@ -2059,13 +2059,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           for (top = e->content; top; top = top->next)
           {
             if (top->tagged)
-              mutt_update_encoding(top);
+              mutt_update_encoding(top, NeoMutt->sub);
           }
           menu->redraw = REDRAW_FULL;
         }
         else
         {
-          mutt_update_encoding(CUR_ATTACH->content);
+          mutt_update_encoding(CUR_ATTACH->content, NeoMutt->sub);
           menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2084,7 +2084,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_edit_content_type(NULL, CUR_ATTACH->content, NULL);
 
           /* this may have been a change to text/something */
-          mutt_update_encoding(CUR_ATTACH->content);
+          mutt_update_encoding(CUR_ATTACH->content, NeoMutt->sub);
 
           menu->redraw |= REDRAW_CURRENT;
         }
@@ -2158,7 +2158,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
       case OP_COMPOSE_EDIT_FILE:
         CHECK_COUNT;
         mutt_edit_file(NONULL(C_Editor), CUR_ATTACH->content->filename);
-        mutt_update_encoding(CUR_ATTACH->content);
+        mutt_update_encoding(CUR_ATTACH->content, NeoMutt->sub);
         menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -2278,7 +2278,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         }
         mutt_file_fclose(&fp);
 
-        ap->content = mutt_make_file_attach(mutt_b2s(&fname));
+        ap->content = mutt_make_file_attach(mutt_b2s(&fname), NeoMutt->sub);
         if (!ap->content)
         {
           mutt_error(_("What we have here is a failure to make an attachment"));
@@ -2294,7 +2294,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
         if (mutt_compose_attachment(CUR_ATTACH->content))
         {
-          mutt_update_encoding(CUR_ATTACH->content);
+          mutt_update_encoding(CUR_ATTACH->content, NeoMutt->sub);
           menu->redraw = REDRAW_FULL;
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2305,7 +2305,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         CHECK_COUNT;
         if (mutt_edit_attachment(CUR_ATTACH->content))
         {
-          mutt_update_encoding(CUR_ATTACH->content);
+          mutt_update_encoding(CUR_ATTACH->content, NeoMutt->sub);
           menu->redraw = REDRAW_FULL;
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2392,7 +2392,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_error(_("Error running \"%s\""), buf);
         else
         {
-          mutt_update_encoding(e->content);
+          mutt_update_encoding(e->content, NeoMutt->sub);
           menu->redraw |= REDRAW_STATUS;
         }
         break;
@@ -2415,7 +2415,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           if (e->content->next)
             e->content = mutt_make_multipart(e->content);
 
-          if (mutt_write_fcc(mutt_b2s(&fname), e, NULL, false, NULL, NULL) == 0)
+          if (mutt_write_fcc(mutt_b2s(&fname), e, NULL, false, NULL, NULL,
+                             NeoMutt->sub) == 0)
             mutt_message(_("Message written"));
 
           e->content = mutt_remove_multipart(e->content);

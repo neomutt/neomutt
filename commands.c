@@ -498,7 +498,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
       break;
     }
 
-    rc = mutt_bounce_message(msg->fp, en->email, &al);
+    rc = mutt_bounce_message(msg->fp, en->email, &al, NeoMutt->sub);
     mx_msg_close(m, &msg);
 
     if (rc < 0)

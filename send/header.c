@@ -32,10 +32,10 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "header.h"
-#include "lib.h"
 #include "mutt_globals.h"
 #include "options.h"
 #ifdef USE_AUTOCRYPT
@@ -354,9 +354,11 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
  * @param fp       FILE pointer where to write the headers
  * @param userhdrs List of headers to write
  * @param privacy  Omit headers that could identify the user
+ * @param sub      Config Subset
  * @retval obj UserHdrsOverride struct containing a bitmask of which unique headers were written
  */
-static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *userhdrs, bool privacy)
+static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *userhdrs,
+                                              bool privacy, struct ConfigSubset *sub)
 {
   struct UserHdrsOverride overrides = { { 0 } };
 
@@ -392,7 +394,7 @@ static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *u
     }
 
     *colon = '\0';
-    mutt_write_one_header(fp, tmp->data, value, NULL, 0, CH_NO_FLAGS);
+    mutt_write_one_header(fp, tmp->data, value, NULL, 0, CH_NO_FLAGS, sub);
     *colon = ':';
   }
 
@@ -407,6 +409,7 @@ static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *u
  * @param pfx     Prefix for header
  * @param wraplen Column to wrap at
  * @param chflags Flags, see #CopyHeaderFlags
+ * @param sub     Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -414,7 +417,8 @@ static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *u
  * for each one
  */
 int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
-                          const char *pfx, int wraplen, CopyHeaderFlags chflags)
+                          const char *pfx, int wraplen, CopyHeaderFlags chflags,
+                          struct ConfigSubset *sub)
 {
   char *last = NULL, *line = NULL;
   int max = 0, w, rc = -1;
@@ -422,16 +426,18 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   char *v = mutt_str_dup(value);
   bool display = (chflags & CH_DISPLAY);
 
-  if (!display || C_Weed)
+  const bool c_weed = cs_subset_bool(sub, "weed");
+  if (!display || c_weed)
     v = unfold_header(v);
 
   /* when not displaying, use sane wrap value */
   if (!display)
   {
-    if ((C_WrapHeaders < 78) || (C_WrapHeaders > 998))
+    const short c_wrap_headers = cs_subset_number(sub, "wrap_headers");
+    if ((c_wrap_headers < 78) || (c_wrap_headers > 998))
       wraplen = 78;
     else
-      wraplen = C_WrapHeaders;
+      wraplen = c_wrap_headers;
   }
   else if (wraplen <= 0)
     wraplen = 78;
@@ -500,11 +506,13 @@ out:
  * @param r    String List of references
  * @param fp   File to write to
  * @param trim Trim the list to at most this many items
+ * @param sub  Config Subset
  *
  * Write the list in reverse because they are stored in reverse order when
  * parsed to speed up threading.
  */
-void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim)
+void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim,
+                           struct ConfigSubset *sub)
 {
   struct ListNode *np = NULL;
   size_t length = 0;
@@ -545,6 +553,7 @@ void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim)
  * @param mode    Mode, see #MuttWriteHeaderMode
  * @param privacy If true, remove headers that might identify the user
  * @param hide_protected_subject If true, replace subject header
+ * @param sub     Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -561,9 +570,9 @@ void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim)
  * hide_protected_subject: replaces the Subject header with
  * $crypt_protected_headers_subject in NORMAL or POSTPONE mode.
  */
-int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
-                             struct Body *attach, enum MuttWriteHeaderMode mode,
-                             bool privacy, bool hide_protected_subject)
+int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach,
+                             enum MuttWriteHeaderMode mode, bool privacy,
+                             bool hide_protected_subject, struct ConfigSubset *sub)
 {
   char buf[1024];
 
@@ -610,9 +619,11 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 
   if (!TAILQ_EMPTY(&env->bcc))
   {
+    const bool c_write_bcc = cs_subset_bool(sub, "write_bcc");
+
     if ((mode == MUTT_WRITE_HEADER_POSTPONE) ||
         (mode == MUTT_WRITE_HEADER_EDITHDRS) || (mode == MUTT_WRITE_HEADER_FCC) ||
-        ((mode == MUTT_WRITE_HEADER_NORMAL) && C_WriteBcc))
+        ((mode == MUTT_WRITE_HEADER_NORMAL) && c_write_bcc))
     {
       fputs("Bcc: ", fp);
       mutt_addrlist_write_file(&env->bcc, fp, 5, false);
@@ -635,9 +646,10 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   else if ((mode == MUTT_WRITE_HEADER_EDITHDRS) && OptNewsSend)
     fputs("Followup-To:\n", fp);
 
+  const bool c_x_comment_to = cs_subset_bool(sub, "x_comment_to");
   if (env->x_comment_to)
     fprintf(fp, "X-Comment-To: %s\n", env->x_comment_to);
-  else if ((mode == MUTT_WRITE_HEADER_EDITHDRS) && OptNewsSend && C_XCommentTo)
+  else if ((mode == MUTT_WRITE_HEADER_EDITHDRS) && OptNewsSend && c_x_comment_to)
     fputs("X-Comment-To:\n", fp);
 #endif
 
@@ -646,9 +658,14 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     if (hide_protected_subject &&
         ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC) ||
          (mode == MUTT_WRITE_HEADER_POSTPONE)))
-      mutt_write_one_header(fp, "Subject", C_CryptProtectedHeadersSubject, NULL, 0, CH_NO_FLAGS);
+    {
+      const char *c_crypt_protected_headers_subject =
+          cs_subset_string(sub, "crypt_protected_headers_subject");
+      mutt_write_one_header(fp, "Subject", c_crypt_protected_headers_subject,
+                            NULL, 0, CH_NO_FLAGS, sub);
+    }
     else
-      mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, CH_NO_FLAGS);
+      mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, CH_NO_FLAGS, sub);
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
     fputs("Subject:\n", fp);
@@ -677,7 +694,8 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   }
 
   /* Add any user defined headers */
-  struct UserHdrsOverride userhdrs_overrides = write_userhdrs(fp, &env->userhdrs, privacy);
+  struct UserHdrsOverride userhdrs_overrides =
+      write_userhdrs(fp, &env->userhdrs, privacy, sub);
 
   if ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC) ||
       (mode == MUTT_WRITE_HEADER_POSTPONE))
@@ -685,7 +703,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     if (!STAILQ_EMPTY(&env->references))
     {
       fputs("References:", fp);
-      mutt_write_references(&env->references, fp, 10);
+      mutt_write_references(&env->references, fp, 10, sub);
       fputc('\n', fp);
     }
 
@@ -693,19 +711,20 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     if (!userhdrs_overrides.is_overridden[USERHDRS_OVERRIDE_CONTENT_TYPE])
     {
       fputs("MIME-Version: 1.0\n", fp);
-      mutt_write_mime_header(attach, fp);
+      mutt_write_mime_header(attach, fp, sub);
     }
   }
 
   if (!STAILQ_EMPTY(&env->in_reply_to))
   {
     fputs("In-Reply-To:", fp);
-    mutt_write_references(&env->in_reply_to, fp, 0);
+    mutt_write_references(&env->in_reply_to, fp, 0, sub);
     fputc('\n', fp);
   }
 
 #ifdef USE_AUTOCRYPT
-  if (C_Autocrypt)
+  const bool c_autocrypt = cs_subset_bool(sub, "autocrypt");
+  if (c_autocrypt)
   {
     if (mode == MUTT_WRITE_HEADER_NORMAL || mode == MUTT_WRITE_HEADER_FCC)
       mutt_autocrypt_write_autocrypt_header(env, fp);
@@ -714,8 +733,9 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   }
 #endif
 
+  const bool c_user_agent = cs_subset_bool(sub, "user_agent");
   if (((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC)) && !privacy &&
-      C_UserAgent && !userhdrs_overrides.is_overridden[USERHDRS_OVERRIDE_USER_AGENT])
+      c_user_agent && !userhdrs_overrides.is_overridden[USERHDRS_OVERRIDE_USER_AGENT])
   {
     /* Add a vanity header */
     fprintf(fp, "User-Agent: NeoMutt/%s%s\n", PACKAGE_VERSION, GitVer);
@@ -726,12 +746,13 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 
 /**
  * mutt_write_mime_header - Create a MIME header
- * @param a  Body part
- * @param fp File to write to
+ * @param a   Body part
+ * @param fp  File to write to
+ * @param sub Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_write_mime_header(struct Body *a, FILE *fp)
+int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
 {
   if (!a || !fp)
     return -1;
@@ -858,14 +879,17 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
   if (a->encoding != ENC_7BIT)
     fprintf(fp, "Content-Transfer-Encoding: %s\n", ENCODING(a->encoding));
 
-  if ((C_CryptProtectedHeadersWrite
+  const bool c_crypt_protected_headers_write =
+      cs_subset_bool(sub, "crypt_protected_headers_write");
+  bool autocrypt = false;
 #ifdef USE_AUTOCRYPT
-       || C_Autocrypt
+  autocrypt = cs_subset_bool(sub, "autocrypt");
 #endif
-       ) &&
-      a->mime_headers)
+
+  if ((c_crypt_protected_headers_write || autocrypt) && a->mime_headers)
   {
-    mutt_rfc822_write_header(fp, a->mime_headers, NULL, MUTT_WRITE_HEADER_MIME, false, false);
+    mutt_rfc822_write_header(fp, a->mime_headers, NULL, MUTT_WRITE_HEADER_MIME,
+                             false, false, sub);
   }
 
   /* Do NOT add the terminator here!!! */

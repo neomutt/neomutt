@@ -876,7 +876,7 @@ int mix_check_message(struct Email *e)
 
   if (need_hostname)
   {
-    const char *fqdn = mutt_fqdn(true);
+    const char *fqdn = mutt_fqdn(true, NeoMutt->sub);
     if (!fqdn)
     {
       mutt_error(_("Please set the hostname variable to a proper value when "

@@ -26,9 +26,10 @@
 #include <stdbool.h>
 
 struct AddressList;
+struct ConfigSubset;
 
 int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
                          struct AddressList *cc, struct AddressList *bcc,
-                         const char *msg, bool eightbit);
+                         const char *msg, bool eightbit, struct ConfigSubset *sub);
 
 #endif /* MUTT_SEND_SENDMAIL_H */

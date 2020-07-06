@@ -356,7 +356,8 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         const char *pre = (chflags & CH_PREFIX) ? prefix : NULL;
         wraplen = mutt_window_wrap_cols(wraplen, C_Wrap);
 
-        if (mutt_write_one_header(fp_out, 0, headers[x], pre, wraplen, chflags) == -1)
+        if (mutt_write_one_header(fp_out, 0, headers[x], pre, wraplen, chflags,
+                                  NeoMutt->sub) == -1)
         {
           error = true;
           break;
@@ -440,7 +441,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
   if ((chflags & CH_UPDATE_REFS) && !STAILQ_EMPTY(&e->env->references))
   {
     fputs("References:", fp_out);
-    mutt_write_references(&e->env->references, fp_out, 0);
+    mutt_write_references(&e->env->references, fp_out, 0, NeoMutt->sub);
     fputc('\n', fp_out);
   }
 
@@ -510,8 +511,9 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
       temp_hdr = mutt_str_dup(temp_hdr);
       rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), C_SendCharset);
     }
-    if (mutt_write_one_header(fp_out, "X-Label", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
-                              mutt_window_wrap_cols(wraplen, C_Wrap), chflags) == -1)
+    if (mutt_write_one_header(
+            fp_out, "X-Label", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
+            mutt_window_wrap_cols(wraplen, C_Wrap), chflags, NeoMutt->sub) == -1)
     {
       return -1;
     }
@@ -529,8 +531,9 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
       temp_hdr = mutt_str_dup(temp_hdr);
       rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), C_SendCharset);
     }
-    if (mutt_write_one_header(fp_out, "Subject", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
-                              mutt_window_wrap_cols(wraplen, C_Wrap), chflags) == -1)
+    if (mutt_write_one_header(
+            fp_out, "Subject", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
+            mutt_window_wrap_cols(wraplen, C_Wrap), chflags, NeoMutt->sub) == -1)
     {
       return -1;
     }
@@ -753,7 +756,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       return -1;
     }
 
-    mutt_write_mime_header(cur, fp_out);
+    mutt_write_mime_header(cur, fp_out, NeoMutt->sub);
     fputc('\n', fp_out);
 
     if (fseeko(fp, cur->offset, SEEK_SET) < 0)

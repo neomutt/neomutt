@@ -46,11 +46,11 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "smtp.h"
-#include "lib.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "mutt_socket.h"
 #include "progress.h"
+#include "send/lib.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
@@ -87,8 +87,17 @@ typedef uint8_t SmtpCapFlags;          ///< Flags, e.g. #SMTP_CAP_STARTTLS
 #define SMTP_CAP_ALL         ((1 << 5) - 1)
 // clang-format on
 
-static char *AuthMechs = NULL;
-static SmtpCapFlags Capabilities;
+/**
+ * struct SmtpAccountData - Server connection data
+ */
+struct SmtpAccountData
+{
+  const char *auth_mechs;    ///< Allowed authorisation mechanisms
+  SmtpCapFlags capabilities; ///< Server capabilities
+  struct Connection *conn;   ///< Server Connection
+  struct ConfigSubset *sub;  ///< Config scope
+  const char *fqdn;          ///< Fully-qualified domain name
+};
 
 /**
  * valid_smtp_code - Is the is a valid SMTP return code?
@@ -114,18 +123,18 @@ static bool valid_smtp_code(char *buf, size_t buflen, int *n)
 
 /**
  * smtp_get_resp - Read a command response from the SMTP server
- * @param conn SMTP connection
+ * @param adata SMTP Account data
  * @retval  0 Success (2xx code) or continue (354 code)
  * @retval -1 Write error, or any other response code
  */
-static int smtp_get_resp(struct Connection *conn)
+static int smtp_get_resp(struct SmtpAccountData *adata)
 {
   int n;
   char buf[1024];
 
   do
   {
-    n = mutt_socket_readln(buf, sizeof(buf), conn);
+    n = mutt_socket_readln(buf, sizeof(buf), adata->conn);
     if (n < 4)
     {
       /* read error, or no response code */
@@ -135,19 +144,19 @@ static int smtp_get_resp(struct Connection *conn)
     size_t plen;
 
     if (mutt_istr_startswith(s, "8BITMIME"))
-      Capabilities |= SMTP_CAP_EIGHTBITMIME;
+      adata->capabilities |= SMTP_CAP_EIGHTBITMIME;
     else if ((plen = mutt_istr_startswith(s, "AUTH ")))
     {
-      Capabilities |= SMTP_CAP_AUTH;
-      FREE(&AuthMechs);
-      AuthMechs = mutt_str_dup(s + plen);
+      adata->capabilities |= SMTP_CAP_AUTH;
+      FREE(&adata->auth_mechs);
+      adata->auth_mechs = mutt_str_dup(s + plen);
     }
     else if (mutt_istr_startswith(s, "DSN"))
-      Capabilities |= SMTP_CAP_DSN;
+      adata->capabilities |= SMTP_CAP_DSN;
     else if (mutt_istr_startswith(s, "STARTTLS"))
-      Capabilities |= SMTP_CAP_STARTTLS;
+      adata->capabilities |= SMTP_CAP_STARTTLS;
     else if (mutt_istr_startswith(s, "SMTPUTF8"))
-      Capabilities |= SMTP_CAP_SMTPUTF8;
+      adata->capabilities |= SMTP_CAP_SMTPUTF8;
 
     if (!valid_smtp_code(buf, n, &n))
       return SMTP_ERR_CODE;
@@ -163,15 +172,17 @@ static int smtp_get_resp(struct Connection *conn)
 
 /**
  * smtp_rcpt_to - Set the recipient to an Address
- * @param conn Server Connection
- * @param al   AddressList to use
+ * @param adata SMTP Account data
+ * @param al    AddressList to use
  * @retval  0 Success
  * @retval <0 Error, e.g. #SMTP_ERR_WRITE
  */
-static int smtp_rcpt_to(struct Connection *conn, const struct AddressList *al)
+static int smtp_rcpt_to(struct SmtpAccountData *adata, const struct AddressList *al)
 {
   if (!al)
     return 0;
+
+  const char *c_dsn_notify = cs_subset_string(adata->sub, "dsn_notify");
 
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
@@ -182,13 +193,13 @@ static int smtp_rcpt_to(struct Connection *conn, const struct AddressList *al)
       continue;
     }
     char buf[1024];
-    if ((Capabilities & SMTP_CAP_DSN) && C_DsnNotify)
-      snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", a->mailbox, C_DsnNotify);
+    if ((adata->capabilities & SMTP_CAP_DSN) && c_dsn_notify)
+      snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", a->mailbox, c_dsn_notify);
     else
       snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", a->mailbox);
-    if (mutt_socket_send(conn, buf) == -1)
+    if (mutt_socket_send(adata->conn, buf) == -1)
       return SMTP_ERR_WRITE;
-    int rc = smtp_get_resp(conn);
+    int rc = smtp_get_resp(adata);
     if (rc != 0)
       return rc;
   }
@@ -198,12 +209,12 @@ static int smtp_rcpt_to(struct Connection *conn, const struct AddressList *al)
 
 /**
  * smtp_data - Send data to an SMTP server
- * @param conn    SMTP Connection
+ * @param adata   SMTP Account data
  * @param msgfile Filename containing data
  * @retval  0 Success
  * @retval <0 Error, e.g. #SMTP_ERR_WRITE
  */
-static int smtp_data(struct Connection *conn, const char *msgfile)
+static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
 {
   char buf[1024];
   struct Progress progress;
@@ -222,12 +233,12 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   mutt_progress_init(&progress, _("Sending message..."), MUTT_PROGRESS_NET, st.st_size);
 
   snprintf(buf, sizeof(buf), "DATA\r\n");
-  if (mutt_socket_send(conn, buf) == -1)
+  if (mutt_socket_send(adata->conn, buf) == -1)
   {
     mutt_file_fclose(&fp);
     return SMTP_ERR_WRITE;
   }
-  rc = smtp_get_resp(conn);
+  rc = smtp_get_resp(adata);
   if (rc != 0)
   {
     mutt_file_fclose(&fp);
@@ -242,20 +253,21 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
       snprintf(buf + buflen - 1, sizeof(buf) - buflen + 1, "\r\n");
     if (buf[0] == '.')
     {
-      if (mutt_socket_send_d(conn, ".", MUTT_SOCK_LOG_FULL) == -1)
+      if (mutt_socket_send_d(adata->conn, ".", MUTT_SOCK_LOG_FULL) == -1)
       {
         mutt_file_fclose(&fp);
         return SMTP_ERR_WRITE;
       }
     }
-    if (mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) == -1)
+    if (mutt_socket_send_d(adata->conn, buf, MUTT_SOCK_LOG_FULL) == -1)
     {
       mutt_file_fclose(&fp);
       return SMTP_ERR_WRITE;
     }
     mutt_progress_update(&progress, ftell(fp), -1);
   }
-  if (!term && buflen && (mutt_socket_send_d(conn, "\r\n", MUTT_SOCK_LOG_FULL) == -1))
+  if (!term && buflen &&
+      (mutt_socket_send_d(adata->conn, "\r\n", MUTT_SOCK_LOG_FULL) == -1))
   {
     mutt_file_fclose(&fp);
     return SMTP_ERR_WRITE;
@@ -263,10 +275,10 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   mutt_file_fclose(&fp);
 
   /* terminate the message body */
-  if (mutt_socket_send(conn, ".\r\n") == -1)
+  if (mutt_socket_send(adata->conn, ".\r\n") == -1)
     return SMTP_ERR_WRITE;
 
-  rc = smtp_get_resp(conn);
+  rc = smtp_get_resp(adata);
   if (rc != 0)
     return rc;
 
@@ -278,15 +290,29 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
  */
 static const char *smtp_get_field(enum ConnAccountField field, void *gf_data)
 {
+  struct SmtpAccountData *adata = gf_data;
+  if (!adata)
+    return NULL;
+
   switch (field)
   {
     case MUTT_CA_LOGIN:
     case MUTT_CA_USER:
-      return C_SmtpUser;
+    {
+      const char *c_smtp_user = cs_subset_string(adata->sub, "smtp_user");
+      return c_smtp_user;
+    }
     case MUTT_CA_PASS:
-      return C_SmtpPass;
+    {
+      const char *c_smtp_pass = cs_subset_string(adata->sub, "smtp_pass");
+      return c_smtp_pass;
+    }
     case MUTT_CA_OAUTH_CMD:
-      return C_SmtpOauthRefreshCommand;
+    {
+      const char *c_smtp_oauth_refresh_command =
+          cs_subset_string(adata->sub, "smtp_oauth_refresh_command");
+      return c_smtp_oauth_refresh_command;
+    }
     case MUTT_CA_HOST:
     default:
       return NULL;
@@ -295,24 +321,28 @@ static const char *smtp_get_field(enum ConnAccountField field, void *gf_data)
 
 /**
  * smtp_fill_account - Create ConnAccount object from SMTP Url
+ * @param adata SMTP Account data
  * @param cac ConnAccount to populate
  * @retval  0 Success
  * @retval -1 Error
  */
-static int smtp_fill_account(struct ConnAccount *cac)
+static int smtp_fill_account(struct SmtpAccountData *adata, struct ConnAccount *cac)
 {
   cac->flags = 0;
   cac->port = 0;
   cac->type = MUTT_ACCT_TYPE_SMTP;
   cac->service = "smtp";
   cac->get_field = smtp_get_field;
+  cac->gf_data = adata;
 
-  struct Url *url = url_parse(C_SmtpUrl);
+  const char *c_smtp_url = cs_subset_string(adata->sub, "smtp_url");
+
+  struct Url *url = url_parse(c_smtp_url);
   if (!url || ((url->scheme != U_SMTP) && (url->scheme != U_SMTPS)) ||
       !url->host || (mutt_account_fromurl(cac, url) < 0))
   {
     url_free(&url);
-    mutt_error(_("Invalid SMTP URL: %s"), C_SmtpUrl);
+    mutt_error(_("Invalid SMTP URL: %s"), c_smtp_url);
     return -1;
   }
 
@@ -345,49 +375,49 @@ static int smtp_fill_account(struct ConnAccount *cac)
 
 /**
  * smtp_helo - Say hello to an SMTP Server
- * @param conn  SMTP Connection
+ * @param adata SMTP Account data
  * @param esmtp If true, use ESMTP
  * @retval  0 Success
  * @retval <0 Error, e.g. #SMTP_ERR_WRITE
  */
-static int smtp_helo(struct Connection *conn, bool esmtp)
+static int smtp_helo(struct SmtpAccountData *adata, bool esmtp)
 {
-  Capabilities = SMTP_CAP_NO_FLAGS;
+  adata->capabilities = SMTP_CAP_NO_FLAGS;
 
   if (!esmtp)
   {
     /* if TLS or AUTH are requested, use EHLO */
-    if (conn->account.flags & MUTT_ACCT_USER)
+    if (adata->conn->account.flags & MUTT_ACCT_USER)
       esmtp = true;
 #ifdef USE_SSL
-    if (C_SslForceTls || (C_SslStarttls != MUTT_NO))
+    const bool c_ssl_force_tls = cs_subset_bool(adata->sub, "ssl_force_tls");
+    const enum QuadOption c_ssl_starttls =
+        cs_subset_quad(adata->sub, "ssl_starttls");
+
+    if (c_ssl_force_tls || (c_ssl_starttls != MUTT_NO))
       esmtp = true;
 #endif
   }
 
-  const char *fqdn = mutt_fqdn(false);
-  if (!fqdn)
-    fqdn = NONULL(ShortHostname);
-
   char buf[1024];
-  snprintf(buf, sizeof(buf), "%s %s\r\n", esmtp ? "EHLO" : "HELO", fqdn);
+  snprintf(buf, sizeof(buf), "%s %s\r\n", esmtp ? "EHLO" : "HELO", adata->fqdn);
   /* XXX there should probably be a wrapper in mutt_socket.c that
-   * repeatedly calls conn->write until all data is sent.  This
+   * repeatedly calls adata->conn->write until all data is sent.  This
    * currently doesn't check for a short write.  */
-  if (mutt_socket_send(conn, buf) == -1)
+  if (mutt_socket_send(adata->conn, buf) == -1)
     return SMTP_ERR_WRITE;
-  return smtp_get_resp(conn);
+  return smtp_get_resp(adata);
 }
 
 #ifdef USE_SASL
 /**
  * smtp_auth_sasl - Authenticate using SASL
- * @param conn     SMTP Connection
+ * @param adata    SMTP Account data
  * @param mechlist List of mechanisms to use
  * @retval  0 Success
  * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
  */
-static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
+static int smtp_auth_sasl(struct SmtpAccountData *adata, const char *mechlist)
 {
   sasl_conn_t *saslconn = NULL;
   sasl_interact_t *interaction = NULL;
@@ -398,7 +428,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
   size_t bufsize = 0;
   int rc, saslrc;
 
-  if (mutt_sasl_client_new(conn, &saslconn) < 0)
+  if (mutt_sasl_client_new(adata->conn, &saslconn) < 0)
     return SMTP_AUTH_FAIL;
 
   do
@@ -436,9 +466,9 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
 
   do
   {
-    if (mutt_socket_send(conn, buf) < 0)
+    if (mutt_socket_send(adata->conn, buf) < 0)
       goto fail;
-    rc = mutt_socket_readln_d(buf, bufsize, conn, MUTT_SOCK_LOG_FULL);
+    rc = mutt_socket_readln_d(buf, bufsize, adata->conn, MUTT_SOCK_LOG_FULL);
     if (rc < 0)
       goto fail;
     if (!valid_smtp_code(buf, rc, &rc))
@@ -478,7 +508,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
 
   if (smtp_success(rc))
   {
-    mutt_sasl_setup_conn(conn, saslconn);
+    mutt_sasl_setup_conn(adata->conn, saslconn);
     FREE(&buf);
     return SMTP_AUTH_SUCCESS;
   }
@@ -492,15 +522,15 @@ fail:
 
 /**
  * smtp_auth_oauth - Authenticate an SMTP connection using OAUTHBEARER
- * @param conn Connection info
+ * @param adata SMTP Account data
  * @retval num Result, e.g. #SMTP_AUTH_SUCCESS
  */
-static int smtp_auth_oauth(struct Connection *conn)
+static int smtp_auth_oauth(struct SmtpAccountData *adata)
 {
   mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
 
   /* We get the access token from the smtp_oauth_refresh_command */
-  char *oauthbearer = mutt_account_getoauthbearer(&conn->account);
+  char *oauthbearer = mutt_account_getoauthbearer(&adata->conn->account);
   if (!oauthbearer)
     return SMTP_AUTH_FAIL;
 
@@ -508,13 +538,13 @@ static int smtp_auth_oauth(struct Connection *conn)
   char *ibuf = mutt_mem_malloc(ilen);
   snprintf(ibuf, ilen, "AUTH OAUTHBEARER %s\r\n", oauthbearer);
 
-  int rc = mutt_socket_send(conn, ibuf);
+  int rc = mutt_socket_send(adata->conn, ibuf);
   FREE(&oauthbearer);
   FREE(&ibuf);
 
   if (rc == -1)
     return SMTP_AUTH_FAIL;
-  if (smtp_get_resp(conn) != 0)
+  if (smtp_get_resp(adata) != 0)
     return SMTP_AUTH_FAIL;
 
   return SMTP_AUTH_SUCCESS;
@@ -522,24 +552,25 @@ static int smtp_auth_oauth(struct Connection *conn)
 
 /**
  * smtp_auth_plain - Authenticate using plain text
- * @param conn SMTP Connection
+ * @param adata SMTP Account data
  * @retval  0 Success
  * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
  */
-static int smtp_auth_plain(struct Connection *conn)
+static int smtp_auth_plain(struct SmtpAccountData *adata)
 {
   char buf[1024];
 
   /* Get username and password. Bail out of any can't be retrieved. */
-  if ((mutt_account_getuser(&conn->account) < 0) ||
-      (mutt_account_getpass(&conn->account) < 0))
+  if ((mutt_account_getuser(&adata->conn->account) < 0) ||
+      (mutt_account_getpass(&adata->conn->account) < 0))
   {
     goto error;
   }
 
   /* Build the initial client response. */
-  size_t len = mutt_sasl_plain_msg(buf, sizeof(buf), "AUTH PLAIN", conn->account.user,
-                                   conn->account.user, conn->account.pass);
+  size_t len =
+      mutt_sasl_plain_msg(buf, sizeof(buf), "AUTH PLAIN", adata->conn->account.user,
+                          adata->conn->account.user, adata->conn->account.pass);
 
   /* Terminate as per SMTP protocol. Bail out if there's no room left. */
   if (snprintf(buf + len, sizeof(buf) - len, "\r\n") != 2)
@@ -548,7 +579,7 @@ static int smtp_auth_plain(struct Connection *conn)
   }
 
   /* Send request, receive response (with a check for OK code). */
-  if ((mutt_socket_send(conn, buf) < 0) || smtp_get_resp(conn))
+  if ((mutt_socket_send(adata->conn, buf) < 0) || smtp_get_resp(adata))
   {
     goto error;
   }
@@ -563,40 +594,42 @@ error:
 
 /**
  * smtp_auth - Authenticate to an SMTP server
- * @param conn SMTP Connection
+ * @param adata SMTP Account data
  * @retval  0 Success
  * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
  */
-static int smtp_auth(struct Connection *conn)
+static int smtp_auth(struct SmtpAccountData *adata)
 {
   int r = SMTP_AUTH_UNAVAIL;
 
-  if (C_SmtpAuthenticators)
+  const struct Slist *c_smtp_authenticators =
+      cs_subset_slist(adata->sub, "smtp_authenticators");
+  if (c_smtp_authenticators)
   {
     struct ListNode *np = NULL;
-    STAILQ_FOREACH(np, &C_SmtpAuthenticators->head, entries)
+    STAILQ_FOREACH(np, &c_smtp_authenticators->head, entries)
     {
       mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
 
       if (strcmp(np->data, "oauthbearer") == 0)
       {
-        r = smtp_auth_oauth(conn);
+        r = smtp_auth_oauth(adata);
       }
       else if (strcmp(np->data, "plain") == 0)
       {
-        r = smtp_auth_plain(conn);
+        r = smtp_auth_plain(adata);
       }
       else
       {
 #ifdef USE_SASL
-        r = smtp_auth_sasl(conn, np->data);
+        r = smtp_auth_sasl(adata, np->data);
 #else
         mutt_error(_("SMTP authentication method %s requires SASL"), np->data);
         continue;
 #endif
       }
 
-      if ((r == SMTP_AUTH_FAIL) && (C_SmtpAuthenticators->count > 1))
+      if ((r == SMTP_AUTH_FAIL) && (c_smtp_authenticators->count > 1))
       {
         mutt_error(_("%s authentication failed, trying next method"), np->data);
       }
@@ -607,7 +640,7 @@ static int smtp_auth(struct Connection *conn)
   else
   {
 #ifdef USE_SASL
-    r = smtp_auth_sasl(conn, AuthMechs);
+    r = smtp_auth_sasl(adata, adata->auth_mechs);
 #else
     mutt_error(_("SMTP authentication requires SASL"));
     r = SMTP_AUTH_UNAVAIL;
@@ -615,7 +648,7 @@ static int smtp_auth(struct Connection *conn)
   }
 
   if (r != SMTP_AUTH_SUCCESS)
-    mutt_account_unsetpass(&conn->account);
+    mutt_account_unsetpass(&adata->conn->account);
 
   if (r == SMTP_AUTH_FAIL)
   {
@@ -631,35 +664,38 @@ static int smtp_auth(struct Connection *conn)
 
 /**
  * smtp_open - Open an SMTP Connection
- * @param conn  SMTP Connection
+ * @param adata SMTP Account data
  * @param esmtp If true, use ESMTP
  * @retval  0 Success
  * @retval -1 Error
  */
-static int smtp_open(struct Connection *conn, bool esmtp)
+static int smtp_open(struct SmtpAccountData *adata, bool esmtp)
 {
   int rc;
 
-  if (mutt_socket_open(conn))
+  if (mutt_socket_open(adata->conn))
     return -1;
 
   /* get greeting string */
-  rc = smtp_get_resp(conn);
+  rc = smtp_get_resp(adata);
   if (rc != 0)
     return rc;
 
-  rc = smtp_helo(conn, esmtp);
+  rc = smtp_helo(adata, esmtp);
   if (rc != 0)
     return rc;
 
 #ifdef USE_SSL
+  const bool c_ssl_force_tls = cs_subset_bool(adata->sub, "ssl_force_tls");
+  const enum QuadOption c_ssl_starttls =
+      cs_subset_quad(adata->sub, "ssl_starttls");
   enum QuadOption ans = MUTT_NO;
-  if (conn->ssf != 0)
+  if (adata->conn->ssf != 0)
     ans = MUTT_NO;
-  else if (C_SslForceTls)
+  else if (c_ssl_force_tls)
     ans = MUTT_YES;
-  else if ((Capabilities & SMTP_CAP_STARTTLS) &&
-           ((ans = query_quadoption(C_SslStarttls,
+  else if ((adata->capabilities & SMTP_CAP_STARTTLS) &&
+           ((ans = query_quadoption(c_ssl_starttls,
                                     _("Secure connection with TLS?"))) == MUTT_ABORT))
   {
     return -1;
@@ -667,36 +703,36 @@ static int smtp_open(struct Connection *conn, bool esmtp)
 
   if (ans == MUTT_YES)
   {
-    if (mutt_socket_send(conn, "STARTTLS\r\n") < 0)
+    if (mutt_socket_send(adata->conn, "STARTTLS\r\n") < 0)
       return SMTP_ERR_WRITE;
-    rc = smtp_get_resp(conn);
+    rc = smtp_get_resp(adata);
     // Clear any data after the STARTTLS acknowledgement
-    mutt_socket_empty(conn);
+    mutt_socket_empty(adata->conn);
     if (rc != 0)
       return rc;
 
-    if (mutt_ssl_starttls(conn))
+    if (mutt_ssl_starttls(adata->conn))
     {
       mutt_error(_("Could not negotiate TLS connection"));
       return -1;
     }
 
     /* re-EHLO to get authentication mechanisms */
-    rc = smtp_helo(conn, esmtp);
+    rc = smtp_helo(adata, esmtp);
     if (rc != 0)
       return rc;
   }
 #endif
 
-  if (conn->account.flags & MUTT_ACCT_USER)
+  if (adata->conn->account.flags & MUTT_ACCT_USER)
   {
-    if (!(Capabilities & SMTP_CAP_AUTH))
+    if (!(adata->capabilities & SMTP_CAP_AUTH))
     {
       mutt_error(_("SMTP server does not support authentication"));
       return -1;
     }
 
-    return smtp_auth(conn);
+    return smtp_auth(adata);
   }
 
   return 0;
@@ -710,23 +746,32 @@ static int smtp_open(struct Connection *conn, bool esmtp)
  * @param bcc      Bcc Address
  * @param msgfile  Message to send to the server
  * @param eightbit If true, try for an 8-bit friendly connection
+ * @param sub      Config Subset
  * @retval  0 Success
  * @retval -1 Error
  */
 int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
                    const struct AddressList *cc, const struct AddressList *bcc,
-                   const char *msgfile, bool eightbit)
+                   const char *msgfile, bool eightbit, struct ConfigSubset *sub)
 {
-  struct Connection *conn = NULL;
+  struct SmtpAccountData adata = { 0 };
   struct ConnAccount cac = { { 0 } };
   const char *envfrom = NULL;
   char buf[1024];
   int rc = -1;
 
+  adata.sub = sub;
+  adata.fqdn = mutt_fqdn(false, adata.sub);
+  if (!adata.fqdn)
+    adata.fqdn = NONULL(ShortHostname);
+
+  const struct Address *c_envelope_from_address =
+      cs_subset_address(adata.sub, "envelope_from_address");
+
   /* it might be better to synthesize an envelope from from user and host
    * but this condition is most likely arrived at accidentally */
-  if (C_EnvelopeFromAddress)
-    envfrom = C_EnvelopeFromAddress->mailbox;
+  if (c_envelope_from_address)
+    envfrom = c_envelope_from_address->mailbox;
   else if (from && !TAILQ_EMPTY(from))
     envfrom = TAILQ_FIRST(from)->mailbox;
   else
@@ -735,65 +780,67 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
     return -1;
   }
 
-  if (smtp_fill_account(&cac) < 0)
+  if (smtp_fill_account(&adata, &cac) < 0)
     return rc;
 
-  conn = mutt_conn_find(&cac);
-  if (!conn)
+  adata.conn = mutt_conn_find(&cac);
+  if (!adata.conn)
     return -1;
+
+  const char *c_dsn_return = cs_subset_string(adata.sub, "dsn_return");
 
   do
   {
     /* send our greeting */
-    rc = smtp_open(conn, eightbit);
+    rc = smtp_open(&adata, eightbit);
     if (rc != 0)
       break;
-    FREE(&AuthMechs);
+    FREE(&adata.auth_mechs);
 
     /* send the sender's address */
     int len = snprintf(buf, sizeof(buf), "MAIL FROM:<%s>", envfrom);
-    if (eightbit && (Capabilities & SMTP_CAP_EIGHTBITMIME))
+    if (eightbit && (adata.capabilities & SMTP_CAP_EIGHTBITMIME))
     {
       mutt_strn_cat(buf, sizeof(buf), " BODY=8BITMIME", 15);
       len += 14;
     }
-    if (C_DsnReturn && (Capabilities & SMTP_CAP_DSN))
-      len += snprintf(buf + len, sizeof(buf) - len, " RET=%s", C_DsnReturn);
-    if ((Capabilities & SMTP_CAP_SMTPUTF8) &&
+    if (c_dsn_return && (adata.capabilities & SMTP_CAP_DSN))
+      len += snprintf(buf + len, sizeof(buf) - len, " RET=%s", c_dsn_return);
+    if ((adata.capabilities & SMTP_CAP_SMTPUTF8) &&
         (mutt_addr_uses_unicode(envfrom) || mutt_addrlist_uses_unicode(to) ||
          mutt_addrlist_uses_unicode(cc) || mutt_addrlist_uses_unicode(bcc)))
     {
       snprintf(buf + len, sizeof(buf) - len, " SMTPUTF8");
     }
     mutt_strn_cat(buf, sizeof(buf), "\r\n", 3);
-    if (mutt_socket_send(conn, buf) == -1)
+    if (mutt_socket_send(adata.conn, buf) == -1)
     {
       rc = SMTP_ERR_WRITE;
       break;
     }
-    rc = smtp_get_resp(conn);
+    rc = smtp_get_resp(&adata);
     if (rc != 0)
       break;
 
     /* send the recipient list */
-    if ((rc = smtp_rcpt_to(conn, to)) || (rc = smtp_rcpt_to(conn, cc)) ||
-        (rc = smtp_rcpt_to(conn, bcc)))
+    if ((rc = smtp_rcpt_to(&adata, to)) || (rc = smtp_rcpt_to(&adata, cc)) ||
+        (rc = smtp_rcpt_to(&adata, bcc)))
     {
       break;
     }
 
     /* send the message data */
-    rc = smtp_data(conn, msgfile);
+    rc = smtp_data(&adata, msgfile);
     if (rc != 0)
       break;
 
-    mutt_socket_send(conn, "QUIT\r\n");
+    mutt_socket_send(adata.conn, "QUIT\r\n");
 
     rc = 0;
   } while (false);
 
-  mutt_socket_close(conn);
-  FREE(&conn);
+  mutt_socket_close(adata.conn);
+  FREE(&adata.conn);
 
   if (rc == SMTP_ERR_READ)
     mutt_error(_("SMTP session failed: read error"));

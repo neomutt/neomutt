@@ -2058,7 +2058,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
           mutt_path_concat(buf2, mutt_b2s(&LastDir),
                            state.entry[menu->current].name, sizeof(buf2));
-          struct Body *b = mutt_make_file_attach(buf2);
+          struct Body *b = mutt_make_file_attach(buf2, NeoMutt->sub);
           if (b)
           {
             mutt_view_attachment(NULL, b, MUTT_VA_REGULAR, NULL, NULL, menu->win_index);

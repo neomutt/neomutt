@@ -61,7 +61,7 @@ struct MbTable *mbtable_parse(const char *s)
 
   t->orig_str = mutt_str_dup(s);
   /* This could be more space efficient.  However, being used on tiny
-   * strings (C_ToChars and C_StatusChars), the overhead is not great. */
+   * strings (`$to_chars` and `$status_chars`), the overhead is not great. */
   t->chars = mutt_mem_calloc(slen, sizeof(char *));
   t->segmented_str = mutt_mem_calloc(slen * 2, sizeof(char));
   d = t->segmented_str;

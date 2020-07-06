@@ -787,7 +787,7 @@ static void query_pipe_attachment(const char *command, FILE *fp, struct Body *bo
     {
       mutt_file_unlink(body->filename);
       mutt_file_rename(tfile, body->filename);
-      mutt_update_encoding(body);
+      mutt_update_encoding(body, NeoMutt->sub);
       mutt_message(_("Attachment filtered"));
     }
   }

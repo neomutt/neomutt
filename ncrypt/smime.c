@@ -1048,7 +1048,7 @@ void smime_class_getkeys(struct Envelope *env)
     }
   }
 
-  struct Address *f = mutt_default_from();
+  struct Address *f = mutt_default_from(NeoMutt->sub);
   getkeys(f->mailbox);
   mutt_addr_free(&f);
 }
@@ -1621,9 +1621,9 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   }
 
   /* write a MIME entity */
-  mutt_write_mime_header(a, fp_tmp);
+  mutt_write_mime_header(a, fp_tmp, NeoMutt->sub);
   fputc('\n', fp_tmp);
-  mutt_write_mime_body(a, fp_tmp);
+  mutt_write_mime_body(a, fp_tmp, NeoMutt->sub);
   mutt_file_fclose(&fp_tmp);
 
   pid = smime_invoke_encrypt(&fp_smime_in, NULL, NULL, -1, fileno(fp_out),
@@ -1773,9 +1773,9 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
     goto cleanup;
   }
 
-  mutt_write_mime_header(a, fp_sign);
+  mutt_write_mime_header(a, fp_sign, NeoMutt->sub);
   fputc('\n', fp_sign);
-  mutt_write_mime_body(a, fp_sign);
+  mutt_write_mime_body(a, fp_sign, NeoMutt->sub);
   mutt_file_fclose(&fp_sign);
 
   mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(C_SmimeKeys), signas);

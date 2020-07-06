@@ -35,6 +35,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
@@ -261,14 +262,19 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   mutt_window_clearline(MuttMessageWindow, 0);
 
   if (cur)
-    ret = mutt_bounce_message(fp, cur->email, &al);
+    ret = mutt_bounce_message(fp, cur->email, &al, NeoMutt->sub);
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->content->tagged)
-        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->content->email, &al))
+      {
+        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->content->email,
+                                &al, NeoMutt->sub))
+        {
           ret = 1;
+        }
+      }
     }
   }
 
@@ -293,12 +299,17 @@ void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur)
     return;
 
   if (cur)
-    mutt_resend_message(fp, Context, cur->email);
+    mutt_resend_message(fp, Context, cur->email, NeoMutt->sub);
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
+    {
       if (actx->idx[i]->content->tagged)
-        mutt_resend_message(actx->idx[i]->fp, Context, actx->idx[i]->content->email);
+      {
+        mutt_resend_message(actx->idx[i]->fp, Context,
+                            actx->idx[i]->content->email, NeoMutt->sub);
+      }
+    }
   }
 }
 
@@ -484,7 +495,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
   struct Email *e_tmp = email_new();
   e_tmp->env = mutt_env_new();
-  mutt_make_forward_subject(e_tmp->env, Context->mailbox, e_parent);
+  mutt_make_forward_subject(e_tmp->env, Context->mailbox, e_parent, NeoMutt->sub);
 
   tmpbody = mutt_buffer_pool_get();
   mutt_buffer_mktemp(tmpbody);
@@ -496,7 +507,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
     goto bail;
   }
 
-  mutt_forward_intro(Context->mailbox, e_parent, fp_tmp);
+  mutt_forward_intro(Context->mailbox, e_parent, fp_tmp, NeoMutt->sub);
 
   /* prepare the prefix here since we'll need it later. */
 
@@ -591,7 +602,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
       goto bail;
   }
 
-  mutt_forward_trailer(Context->mailbox, e_parent, fp_tmp);
+  mutt_forward_trailer(Context->mailbox, e_parent, fp_tmp, NeoMutt->sub);
 
   mutt_file_fclose(&fp_tmp);
   fp_tmp = NULL;
@@ -599,7 +610,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   /* now that we have the template, send it. */
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, e_parent);
-  mutt_send_message(SEND_NO_FLAGS, e_tmp, mutt_b2s(tmpbody), NULL, &el);
+  mutt_send_message(SEND_NO_FLAGS, e_tmp, mutt_b2s(tmpbody), NULL, &el, NeoMutt->sub);
   emaillist_clear(&el);
   mutt_buffer_pool_release(&tmpbody);
   return;
@@ -657,7 +668,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 
   e_tmp = email_new();
   e_tmp->env = mutt_env_new();
-  mutt_make_forward_subject(e_tmp->env, Context->mailbox, e_cur);
+  mutt_make_forward_subject(e_tmp->env, Context->mailbox, e_cur, NeoMutt->sub);
 
   tmpbody = mutt_buffer_pool_get();
 
@@ -693,9 +704,9 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 
     if (cur)
     {
-      mutt_forward_intro(Context->mailbox, cur->email, fp_tmp);
+      mutt_forward_intro(Context->mailbox, cur->email, fp_tmp, NeoMutt->sub);
       mutt_copy_message_fp(fp_tmp, fp, cur->email, cmflags, chflags, 0);
-      mutt_forward_trailer(Context->mailbox, cur->email, fp_tmp);
+      mutt_forward_trailer(Context->mailbox, cur->email, fp_tmp, NeoMutt->sub);
     }
     else
     {
@@ -703,10 +714,12 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
       {
         if (actx->idx[i]->content->tagged)
         {
-          mutt_forward_intro(Context->mailbox, actx->idx[i]->content->email, fp_tmp);
+          mutt_forward_intro(Context->mailbox, actx->idx[i]->content->email,
+                             fp_tmp, NeoMutt->sub);
           mutt_copy_message_fp(fp_tmp, actx->idx[i]->fp,
                                actx->idx[i]->content->email, cmflags, chflags, 0);
-          mutt_forward_trailer(Context->mailbox, actx->idx[i]->content->email, fp_tmp);
+          mutt_forward_trailer(Context->mailbox, actx->idx[i]->content->email,
+                               fp_tmp, NeoMutt->sub);
         }
       }
     }
@@ -735,7 +748,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, e_cur);
   mutt_send_message(flags, e_tmp, mutt_buffer_is_empty(tmpbody) ? NULL : mutt_b2s(tmpbody),
-                    NULL, &el);
+                    NULL, &el, NeoMutt->sub);
   emaillist_clear(&el);
   e_tmp = NULL; /* mutt_send_message frees this */
 
@@ -827,7 +840,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
   {
     if (parent)
     {
-      if (mutt_fetch_recips(env, curenv, flags) == -1)
+      if (mutt_fetch_recips(env, curenv, flags, NeoMutt->sub) == -1)
         return -1;
     }
     else
@@ -835,7 +848,8 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
       for (short i = 0; i < actx->idxlen; i++)
       {
         if (actx->idx[i]->content->tagged &&
-            (mutt_fetch_recips(env, actx->idx[i]->content->email->env, flags) == -1))
+            (mutt_fetch_recips(env, actx->idx[i]->content->email->env, flags,
+                               NeoMutt->sub) == -1))
         {
           return -1;
         }
@@ -848,18 +862,21 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
       return -1;
     }
 
-    mutt_fix_reply_recipients(env);
+    mutt_fix_reply_recipients(env, NeoMutt->sub);
   }
-  mutt_make_misc_reply_headers(env, curenv);
+  mutt_make_misc_reply_headers(env, curenv, NeoMutt->sub);
 
   if (parent)
-    mutt_add_to_reference_headers(env, curenv);
+    mutt_add_to_reference_headers(env, curenv, NeoMutt->sub);
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->content->tagged)
-        mutt_add_to_reference_headers(env, actx->idx[i]->content->email->env);
+      {
+        mutt_add_to_reference_headers(env, actx->idx[i]->content->email->env,
+                                      NeoMutt->sub);
+      }
     }
   }
 
@@ -877,7 +894,7 @@ static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Email *e)
   CopyMessageFlags cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
   CopyHeaderFlags chflags = CH_DECODE;
 
-  mutt_make_attribution(Context->mailbox, e, fp_tmp);
+  mutt_make_attribution(Context->mailbox, e, fp_tmp, NeoMutt->sub);
 
   if (!C_Header)
     cmflags |= MUTT_CM_NOHEADER;
@@ -888,7 +905,7 @@ static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Email *e)
   }
 
   mutt_copy_message_fp(fp_tmp, fp, e, cmflags, chflags, 0);
-  mutt_make_post_indent(Context->mailbox, e, fp_tmp);
+  mutt_make_post_indent(Context->mailbox, e, fp_tmp, NeoMutt->sub);
 }
 
 /**
@@ -983,7 +1000,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   }
   else
   {
-    mutt_make_attribution(Context->mailbox, e_parent, fp_tmp);
+    mutt_make_attribution(Context->mailbox, e_parent, fp_tmp, NeoMutt->sub);
 
     struct State st;
     memset(&st, 0, sizeof(struct State));
@@ -1032,7 +1049,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
       }
     }
 
-    mutt_make_post_indent(Context->mailbox, e_parent, fp_tmp);
+    mutt_make_post_indent(Context->mailbox, e_parent, fp_tmp, NeoMutt->sub);
 
     if (mime_reply_any && !e_cur &&
         !copy_problematic_attachments(&e_tmp->content, actx, false))
@@ -1045,7 +1062,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, e_parent ? e_parent : (e_cur ? e_cur->email : NULL));
-  if (mutt_send_message(flags, e_tmp, mutt_b2s(tmpbody), NULL, &el) == 0)
+  if (mutt_send_message(flags, e_tmp, mutt_b2s(tmpbody), NULL, &el, NeoMutt->sub) == 0)
   {
     mutt_set_flag(Context->mailbox, e, MUTT_REPLIED, true);
   }
@@ -1085,7 +1102,7 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
   if (cur)
   {
-    if (mutt_fetch_recips(e_tmp->env, cur->email->env, SEND_TO_SENDER) == -1)
+    if (mutt_fetch_recips(e_tmp->env, cur->email->env, SEND_TO_SENDER, NeoMutt->sub) == -1)
     {
       email_free(&e_tmp);
       return;
@@ -1097,7 +1114,7 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
     {
       if (actx->idx[i]->content->tagged &&
           (mutt_fetch_recips(e_tmp->env, actx->idx[i]->content->email->env,
-                             SEND_TO_SENDER) == -1))
+                             SEND_TO_SENDER, NeoMutt->sub) == -1))
       {
         email_free(&e_tmp);
         return;
@@ -1106,5 +1123,5 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
   }
 
   // This call will free e_tmp for us
-  mutt_send_message(SEND_NO_FLAGS, e_tmp, NULL, NULL, NULL);
+  mutt_send_message(SEND_NO_FLAGS, e_tmp, NULL, NULL, NULL, NeoMutt->sub);
 }

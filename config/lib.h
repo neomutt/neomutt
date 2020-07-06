@@ -31,6 +31,7 @@
  * | config/bool.c       | @subpage config_bool       |
  * | config/dump.c       | @subpage config_dump       |
  * | config/enum.c       | @subpage config_enum       |
+ * | config/helpers.c    | @subpage config_helpers    |
  * | config/long.c       | @subpage config_long       |
  * | config/mbtable.c    | @subpage config_mbtable    |
  * | config/number.c     | @subpage config_number     |
@@ -52,6 +53,7 @@
 #include "bool.h"
 #include "dump.h"
 #include "enum.h"
+#include "helpers.h"
 #include "inheritance.h"
 #include "long.h"
 #include "mbtable.h"
