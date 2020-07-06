@@ -746,14 +746,17 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   TagFormats = mutt_hash_new(64, MUTT_HASH_NO_FLAGS);
 
   mutt_menu_init();
+  // XXX: Order matters here because the sidebar does not know the preview.
+  // In this order, the Sidebar will receive the notification first and thus will
+  // setup itself appropriatly.
+  // We can then handle in the preview whether the Sidebar is configured or not.
+  preview_init();
 #ifdef USE_SIDEBAR
   sb_init();
 #endif
 #ifdef USE_NOTMUCH
   nm_init();
 #endif
-
-  preview_init();
 
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a", // Escape
            mutt_rand64());

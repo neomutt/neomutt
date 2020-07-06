@@ -98,6 +98,7 @@ enum WindowType
   WT_PAGER,           ///< Window containing paged free-form text
   WT_PAGER_BAR,       ///< Pager Bar containing status info about the Pager
   WT_SIDEBAR,         ///< Side panel containing Accounts or groups of data
+  WT_PREVIEW,         ///< Panel containing the preview window
 };
 
 TAILQ_HEAD(MuttWindowList, MuttWindow);
