@@ -74,11 +74,12 @@ void preview_win_init(struct MuttWindow *dlg)
   dlg->orient = MUTT_WIN_ORIENT_HORIZONTAL;
 
   struct MuttWindow *index_container = find_index_container(dlg);
-  struct MuttWindow *index_panel = TAILQ_FIRST(&index_container->children);
+  struct MuttWindow *bar = TAILQ_LAST(&index_container->children, MuttWindowList);
+  mutt_window_remove_child(index_container, bar);
 
   struct MuttWindow *preview_window =
       mutt_window_new(WT_PREVIEW, MUTT_WIN_ORIENT_HORIZONTAL,
-                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED, 10);
+                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED, 5);
   {
     preview_window->state.visible = true; // XXX: Config
     preview_window->wdata = preview_wdata_new();
@@ -87,7 +88,8 @@ void preview_win_init(struct MuttWindow *dlg)
     preview_window->repaint = preview_repaint;
   }
 
-  TAILQ_INSERT_AFTER(&index_container->children, index_panel, preview_window, entries);
+  mutt_window_add_child(index_container, preview_window);
+  mutt_window_add_child(index_container, bar);
   debug_window_tree(dlg, 0);
 }
 
