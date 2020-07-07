@@ -28,7 +28,6 @@
  * -> nroff, suitable for inclusion in a manual page
  * -> docbook-xml, suitable for inclusion in the
  *    SGML-based manual
- *
  */
 
 #include "config.h"
@@ -41,9 +40,20 @@
 #include <unistd.h>
 #include "makedoc_defs.h"
 
-extern int optind;
-
-#define BUFSIZE 2048
+// clang-format off
+#define D_NL    (1 <<  0)
+#define D_EM    (1 <<  1)
+#define D_BF    (1 <<  2)
+#define D_TAB   (1 <<  3)
+#define D_NP    (1 <<  4)
+#define D_INIT  (1 <<  5)
+#define D_DL    (1 <<  6)
+#define D_DT    (1 <<  7)
+#define D_DD    (1 <<  8)
+#define D_PA    (1 <<  9)
+#define D_IL    (1 << 10)
+#define D_TT    (1 << 11)
+// clang-format on
 
 /**
  * enum OutputFormats - Documentation output formats
@@ -55,19 +65,6 @@ enum OutputFormats
   F_SGML,
   F_NONE
 };
-
-#define D_NL (1 << 0)
-#define D_EM (1 << 1)
-#define D_BF (1 << 2)
-#define D_TAB (1 << 3)
-#define D_NP (1 << 4)
-#define D_INIT (1 << 5)
-#define D_DL (1 << 6)
-#define D_DT (1 << 7)
-#define D_DD (1 << 8)
-#define D_PA (1 << 9)
-#define D_IL (1 << 10)
-#define D_TT (1 << 11)
 
 /**
  * enum SpecialChars - All specially-treated characters
@@ -95,9 +92,61 @@ enum SpecialChars
   SP_REFER
 };
 
+struct VariableTypes
+{
+  char *machine;
+  char *human;
+};
+
+/**
+ * enum DataType - User-variable types
+ */
+enum DataType
+{
+  DT_NONE = 0,
+  DT_ADDRESS,
+  DT_BOOL,
+  DT_COMMAND,
+  DT_ENUM,
+  DT_LONG,
+  DT_MBTABLE,
+  DT_NUMBER,
+  DT_PATH,
+  DT_QUAD,
+  DT_REGEX,
+  DT_SLIST,
+  DT_SORT,
+  DT_STRING,
+  DT_SYNONYM,
+};
+
 enum OutputFormats OutputFormat = F_NONE;
 char *Progname = NULL;
 short Debug = 0;
+int fd_recurse = 0;
+
+#define BUFSIZE 2048
+
+struct VariableTypes types[] = {
+  // clang-format off
+  { "DT_NONE",    "-none-"             },
+  { "DT_ADDRESS", "e-mail address"     },
+  { "DT_BOOL",    "boolean"            },
+  { "DT_COMMAND", "command"            },
+  { "DT_ENUM",    "enumeration"        },
+  { "DT_LONG",    "number (long)"      },
+  { "DT_MBTABLE", "character string"   },
+  { "DT_NUMBER",  "number"             },
+  { "DT_PATH",    "path"               },
+  { "DT_QUAD",    "quadoption"         },
+  { "DT_REGEX",   "regular expression" },
+  { "DT_SLIST",   "string list"        },
+  { "DT_SORT",    "sort order"         },
+  { "DT_STRING",  "string"             },
+  { "DT_SYNONYM", NULL                 },
+  { NULL,         NULL                 },
+  // clang-format on
+};
 
 /* skip whitespace */
 
@@ -110,11 +159,9 @@ static char *skip_ws(char *s)
 }
 
 /* isolate a token */
-
-static char single_char_tokens[] = "[]{},;|";
-
 static char *get_token(char *d, size_t l, char *s)
 {
+  static char single_char_tokens[] = "[]{},;|";
   char *t = NULL;
   bool is_quoted = false;
   char *dd = d;
@@ -687,8 +734,6 @@ static int print_it(int special, char *str, FILE *fp_out, int docstat)
 
 /* close eventually-open environments. */
 
-static int fd_recurse = 0;
-
 static int flush_doc(int docstat, FILE *fp_out)
 {
   if (docstat & D_INIT)
@@ -932,57 +977,6 @@ static int handle_docline(char *l, FILE *fp_out, int docstat)
   docstat = commit_buf(buf, &d, fp_out, docstat);
   return print_it(SP_NEWLINE, NULL, fp_out, docstat);
 }
-
-/* note: the following enum must be in the same order as the
- * following string definitions!
- */
-
-/**
- * enum DataType - User-variable types
- */
-enum DataType
-{
-  DT_NONE = 0,
-  DT_ADDRESS,
-  DT_BOOL,
-  DT_COMMAND,
-  DT_ENUM,
-  DT_LONG,
-  DT_MBTABLE,
-  DT_NUMBER,
-  DT_PATH,
-  DT_QUAD,
-  DT_REGEX,
-  DT_SLIST,
-  DT_SORT,
-  DT_STRING,
-  DT_SYNONYM,
-};
-
-// clang-format off
-struct VariableTypes
-{
-  char *machine;
-  char *human;
-} types[] = {
-  { "DT_NONE",    "-none-"             },
-  { "DT_ADDRESS", "e-mail address"     },
-  { "DT_BOOL",    "boolean"            },
-  { "DT_COMMAND", "command"            },
-  { "DT_ENUM",    "enumeration"        },
-  { "DT_LONG",    "number (long)"      },
-  { "DT_MBTABLE", "character string"   },
-  { "DT_NUMBER",  "number"             },
-  { "DT_PATH",    "path"               },
-  { "DT_QUAD",    "quadoption"         },
-  { "DT_REGEX",   "regular expression" },
-  { "DT_SLIST",   "string list"        },
-  { "DT_SORT",    "sort order"         },
-  { "DT_STRING",  "string"             },
-  { "DT_SYNONYM", NULL                 },
-  { NULL,         NULL                 },
-};
-// clang-format on
 
 static int buf_to_type(const char *s)
 {
