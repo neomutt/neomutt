@@ -109,6 +109,7 @@ enum DataType
   DT_COMMAND,
   DT_ENUM,
   DT_LONG,
+  DT_MAILBOX,
   DT_MBTABLE,
   DT_NUMBER,
   DT_PATH,
@@ -134,6 +135,7 @@ struct VariableTypes types[] = {
   { "DT_COMMAND", "command"            },
   { "DT_ENUM",    "enumeration"        },
   { "DT_LONG",    "number (long)"      },
+  { "DT_MAILBOX", "mailbox"            },
   { "DT_MBTABLE", "character string"   },
   { "DT_NUMBER",  "number"             },
   { "DT_PATH",    "path"               },
@@ -1045,6 +1047,7 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
     }
     case DT_ADDRESS:
     case DT_COMMAND:
+    case DT_MAILBOX:
     case DT_MBTABLE:
     case DT_PATH:
     case DT_REGEX:
@@ -1169,8 +1172,8 @@ static void print_confline(enum OutputFormats format, const char *varname,
     case F_CONF:
     {
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) ||
-          (type == DT_COMMAND))
+          (type == DT_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
+          (type == DT_PATH) || (type == DT_COMMAND))
       {
         fprintf(fp_out, "\n# set %s=\"", varname);
         conf_print_strval(val, fp_out);
@@ -1182,8 +1185,8 @@ static void print_confline(enum OutputFormats format, const char *varname,
       fprintf(fp_out, "\n#\n# Name: %s", varname);
       fprintf(fp_out, "\n# Type: %s", type2human(type));
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) ||
-          (type == DT_COMMAND))
+          (type == DT_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
+          (type == DT_PATH) || (type == DT_COMMAND))
       {
         fputs("\n# Default: \"", fp_out);
         conf_print_strval(val, fp_out);
@@ -1203,8 +1206,8 @@ static void print_confline(enum OutputFormats format, const char *varname,
       fputs(".nf\n", fp_out);
       fprintf(fp_out, "Type: %s\n", type2human(type));
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) ||
-          (type == DT_COMMAND))
+          (type == DT_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
+          (type == DT_PATH) || (type == DT_COMMAND))
       {
         fputs("Default: \"", fp_out);
         man_print_strval(val, fp_out);
@@ -1232,8 +1235,8 @@ static void print_confline(enum OutputFormats format, const char *varname,
       fprintf(fp_out, "</title>\n<literallayout>Type: %s", type2human(type));
 
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) ||
-          (type == DT_COMMAND))
+          (type == DT_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
+          (type == DT_PATH) || (type == DT_COMMAND))
       {
         if (val && *val)
         {
