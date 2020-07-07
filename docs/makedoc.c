@@ -120,7 +120,6 @@ enum DataType
   DT_SYNONYM,
 };
 
-enum OutputFormats OutputFormat = F_NONE;
 char *Progname = NULL;
 short Debug = 0;
 int fd_recurse = 0;
@@ -278,13 +277,13 @@ static int sgml_fputs(const char *s, FILE *fp_out)
 
 /* print something. */
 
-static int print_it(int special, char *str, FILE *fp_out, int docstat)
+static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_out, int docstat)
 {
   int onl = docstat & (D_NL | D_NP);
 
   docstat &= ~(D_NL | D_NP | D_INIT);
 
-  switch (OutputFormat)
+  switch (format)
   {
     /* configuration file */
     case F_CONF:
@@ -725,7 +724,7 @@ static int print_it(int special, char *str, FILE *fp_out, int docstat)
       break;
     }
 
-    efault:
+    default:
       break;
   }
 
@@ -734,7 +733,7 @@ static int print_it(int special, char *str, FILE *fp_out, int docstat)
 
 /* close eventually-open environments. */
 
-static int flush_doc(int docstat, FILE *fp_out)
+static int flush_doc(enum OutputFormats format, int docstat, FILE *fp_out)
 {
   if (docstat & D_INIT)
     return D_INIT;
@@ -746,30 +745,30 @@ static int flush_doc(int docstat, FILE *fp_out)
   }
 
   if (docstat & (D_PA))
-    docstat = print_it(SP_END_PAR, NULL, fp_out, docstat);
+    docstat = print_it(format, SP_END_PAR, NULL, fp_out, docstat);
 
   if (docstat & (D_TAB))
-    docstat = print_it(SP_END_TAB, NULL, fp_out, docstat);
+    docstat = print_it(format, SP_END_TAB, NULL, fp_out, docstat);
 
   if (docstat & (D_DL))
-    docstat = print_it(SP_END_DL, NULL, fp_out, docstat);
+    docstat = print_it(format, SP_END_DL, NULL, fp_out, docstat);
 
   if (docstat & (D_EM | D_BF | D_TT))
-    docstat = print_it(SP_END_FT, NULL, fp_out, docstat);
+    docstat = print_it(format, SP_END_FT, NULL, fp_out, docstat);
 
-  print_it(SP_END_SECT, NULL, fp_out, docstat);
-  print_it(SP_NEWLINE, NULL, fp_out, 0);
+  print_it(format, SP_END_SECT, NULL, fp_out, docstat);
+  print_it(format, SP_NEWLINE, NULL, fp_out, 0);
 
   fd_recurse--;
   return D_INIT;
 }
 
-static int commit_buf(char *buf, char **d, FILE *fp_out, int docstat)
+static int commit_buf(enum OutputFormats format, char *buf, char **d, FILE *fp_out, int docstat)
 {
   if (*d > buf)
   {
     **d = '\0';
-    docstat = print_it(SP_STR, buf, fp_out, docstat);
+    docstat = print_it(format, SP_STR, buf, fp_out, docstat);
     *d = buf;
   }
 
@@ -831,9 +830,10 @@ static int sgml_id_fputs(const char *s, FILE *fp_out)
   return 0;
 }
 
-void print_ref(FILE *fp_out, bool output_dollar, const char *ref)
+static void print_ref(enum OutputFormats format, FILE *fp_out,
+                      bool output_dollar, const char *ref)
 {
-  switch (OutputFormat)
+  switch (format)
   {
     case F_CONF:
     case F_MAN:
@@ -857,7 +857,7 @@ void print_ref(FILE *fp_out, bool output_dollar, const char *ref)
   }
 }
 
-static int handle_docline(char *l, FILE *fp_out, int docstat)
+static int handle_docline(enum OutputFormats format, char *l, FILE *fp_out, int docstat)
 {
   char buf[BUFSIZE];
   char *s = NULL, *d = NULL;
@@ -867,19 +867,19 @@ static int handle_docline(char *l, FILE *fp_out, int docstat)
     fprintf(stderr, "%s: handle_docline `%s'\n", Progname, l);
 
   if (strncmp(l, ".pp", 3) == 0)
-    return print_it(SP_NEWPAR, NULL, fp_out, docstat);
+    return print_it(format, SP_NEWPAR, NULL, fp_out, docstat);
   if (strncmp(l, ".ts", 3) == 0)
-    return print_it(SP_START_TAB, NULL, fp_out, docstat);
+    return print_it(format, SP_START_TAB, NULL, fp_out, docstat);
   if (strncmp(l, ".te", 3) == 0)
-    return print_it(SP_END_TAB, NULL, fp_out, docstat);
+    return print_it(format, SP_END_TAB, NULL, fp_out, docstat);
   if (strncmp(l, ".dl", 3) == 0)
-    return print_it(SP_START_DL, NULL, fp_out, docstat);
+    return print_it(format, SP_START_DL, NULL, fp_out, docstat);
   if (strncmp(l, ".de", 3) == 0)
-    return print_it(SP_END_DL, NULL, fp_out, docstat);
+    return print_it(format, SP_END_DL, NULL, fp_out, docstat);
   if (strncmp(l, ".il", 3) == 0)
-    return print_it(SP_START_IL, NULL, fp_out, docstat);
+    return print_it(format, SP_START_IL, NULL, fp_out, docstat);
   if (strncmp(l, ".ie", 3) == 0)
-    return print_it(SP_END_IL, NULL, fp_out, docstat);
+    return print_it(format, SP_END_IL, NULL, fp_out, docstat);
   if (strncmp(l, ". ", 2) == 0)
     *l = ' ';
 
@@ -897,48 +897,48 @@ static int handle_docline(char *l, FILE *fp_out, int docstat)
     }
     else if (strncmp(s, "\\fI", 3) == 0)
     {
-      docstat = commit_buf(buf, &d, fp_out, docstat);
-      docstat = print_it(SP_START_EM, NULL, fp_out, docstat);
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+      docstat = print_it(format, SP_START_EM, NULL, fp_out, docstat);
       s += 2;
     }
     else if (strncmp(s, "\\fB", 3) == 0)
     {
-      docstat = commit_buf(buf, &d, fp_out, docstat);
-      docstat = print_it(SP_START_BF, NULL, fp_out, docstat);
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+      docstat = print_it(format, SP_START_BF, NULL, fp_out, docstat);
       s += 2;
     }
     else if (strncmp(s, "\\fC", 3) == 0)
     {
-      docstat = commit_buf(buf, &d, fp_out, docstat);
-      docstat = print_it(SP_START_TT, NULL, fp_out, docstat);
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+      docstat = print_it(format, SP_START_TT, NULL, fp_out, docstat);
       s += 2;
     }
     else if (strncmp(s, "\\fP", 3) == 0)
     {
-      docstat = commit_buf(buf, &d, fp_out, docstat);
-      docstat = print_it(SP_END_FT, NULL, fp_out, docstat);
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+      docstat = print_it(format, SP_END_FT, NULL, fp_out, docstat);
       s += 2;
     }
     else if (strncmp(s, ".dt", 3) == 0)
     {
       if (docstat & D_DD)
       {
-        docstat = commit_buf(buf, &d, fp_out, docstat);
-        docstat = print_it(SP_END_DD, NULL, fp_out, docstat);
+        docstat = commit_buf(format, buf, &d, fp_out, docstat);
+        docstat = print_it(format, SP_END_DD, NULL, fp_out, docstat);
       }
-      docstat = commit_buf(buf, &d, fp_out, docstat);
-      docstat = print_it(SP_DT, NULL, fp_out, docstat);
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+      docstat = print_it(format, SP_DT, NULL, fp_out, docstat);
       s += 3;
     }
     else if (strncmp(s, ".dd", 3) == 0)
     {
       if ((docstat & D_IL) && (docstat & D_DD))
       {
-        docstat = commit_buf(buf, &d, fp_out, docstat);
-        docstat = print_it(SP_END_DD, NULL, fp_out, docstat);
+        docstat = commit_buf(format, buf, &d, fp_out, docstat);
+        docstat = print_it(format, SP_END_DD, NULL, fp_out, docstat);
       }
-      docstat = commit_buf(buf, &d, fp_out, docstat);
-      docstat = print_it(SP_DD, NULL, fp_out, docstat);
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+      docstat = print_it(format, SP_DD, NULL, fp_out, docstat);
       s += 3;
     }
     else if (*s == '$')
@@ -962,10 +962,10 @@ static int handle_docline(char *l, FILE *fp_out, int docstat)
         while (isalnum((unsigned char) *s) || (*s && strchr("-_<>", *s)))
           s++;
 
-        docstat = commit_buf(buf, &d, fp_out, docstat);
+        docstat = commit_buf(format, buf, &d, fp_out, docstat);
         const char save = *s;
         *s = '\0';
-        print_ref(fp_out, output_dollar, ref);
+        print_ref(format, fp_out, output_dollar, ref);
         *s = save;
         s--;
       }
@@ -974,8 +974,8 @@ static int handle_docline(char *l, FILE *fp_out, int docstat)
       *d++ = *s;
   }
 
-  docstat = commit_buf(buf, &d, fp_out, docstat);
-  return print_it(SP_NEWLINE, NULL, fp_out, docstat);
+  docstat = commit_buf(format, buf, &d, fp_out, docstat);
+  return print_it(format, SP_NEWLINE, NULL, fp_out, docstat);
 }
 
 static int buf_to_type(const char *s)
@@ -1157,12 +1157,13 @@ static void sgml_print_strval(const char *v, FILE *fp_out)
   }
 }
 
-static void print_confline(const char *varname, int type, const char *val, FILE *fp_out)
+static void print_confline(enum OutputFormats format, const char *varname,
+                           int type, const char *val, FILE *fp_out)
 {
   if (type == DT_SYNONYM)
     return;
 
-  switch (OutputFormat)
+  switch (format)
   {
     /* configuration file */
     case F_CONF:
@@ -1256,7 +1257,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
   }
 }
 
-static void handle_confline(char *s, FILE *fp_out)
+static void handle_confline(enum OutputFormats format, char *s, FILE *fp_out)
 {
   char varname[BUFSIZE];
   char buf[BUFSIZE];
@@ -1340,10 +1341,10 @@ static void handle_confline(char *s, FILE *fp_out)
   }
 
   pretty_default(val, sizeof(val), tmp, type);
-  print_confline(varname, type, val, fp_out);
+  print_confline(format, varname, type, val, fp_out);
 }
 
-static void makedoc(FILE *fp_in, FILE *fp_out)
+static void makedoc(enum OutputFormats format, FILE *fp_in, FILE *fp_out)
 {
   char buffer[BUFSIZE];
   char token[BUFSIZE];
@@ -1375,18 +1376,18 @@ static void makedoc(FILE *fp_in, FILE *fp_out)
       active = true;
     else if (strcmp(token, "/*--*/") == 0)
     {
-      docstat = flush_doc(docstat, fp_out);
+      docstat = flush_doc(format, docstat, fp_out);
       active = false;
     }
     else if (active && ((strcmp(token, "/**") == 0) || (strcmp(token, "**") == 0)))
-      docstat = handle_docline(p, fp_out, docstat);
+      docstat = handle_docline(format, p, fp_out, docstat);
     else if (active && (strcmp(token, "{") == 0))
     {
-      docstat = flush_doc(docstat, fp_out);
-      handle_confline(p, fp_out);
+      docstat = flush_doc(format, docstat, fp_out);
+      handle_confline(format, p, fp_out);
     }
   }
-  flush_doc(docstat, fp_out);
+  flush_doc(format, docstat, fp_out);
   fputs("\n", fp_out);
 }
 
@@ -1394,6 +1395,7 @@ int main(int argc, char *argv[])
 {
   int c;
   FILE *fp = NULL;
+  enum OutputFormats format = F_NONE;
 
   Progname = strrchr(argv[0], '/');
   if (Progname)
@@ -1406,13 +1408,13 @@ int main(int argc, char *argv[])
     switch (c)
     {
       case 'c':
-        OutputFormat = F_CONF;
+        format = F_CONF;
         break;
       case 'm':
-        OutputFormat = F_MAN;
+        format = F_MAN;
         break;
       case 's':
-        OutputFormat = F_SGML;
+        format = F_SGML;
         break;
       case 'd':
         Debug++;
@@ -1437,12 +1439,12 @@ int main(int argc, char *argv[])
   else
     fp = stdin;
 
-  switch (OutputFormat)
+  switch (format)
   {
     case F_CONF:
     case F_MAN:
     case F_SGML:
-      makedoc(fp, stdout);
+      makedoc(format, fp, stdout);
       break;
     default:
     {
