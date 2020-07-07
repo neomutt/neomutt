@@ -161,8 +161,10 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
     case 'D':
     {
       char indented[256];
-      size_t off = add_indent(indented, sizeof(indented), sbe);
-      snprintf(indented + off, sizeof(indented) - off, "%s",
+
+      size_t offset = add_indent(indented, sizeof(indented), sbe);
+
+      snprintf(indented + offset, sizeof(indented) - offset, "%s",
                ((op == 'D') && sbe->mailbox->name) ? sbe->mailbox->name : sbe->box);
 
       mutt_format_s(buf, buflen, prec, indented);
@@ -1128,6 +1130,8 @@ static void draw_sidebar(struct MuttWindow *win, int num_rows, int num_cols, int
       if (C_SidebarComponentDepth > 0)
         entry->depth -= C_SidebarComponentDepth;
     }
+    else if (!C_SidebarFolderIndent)
+      entry->depth = 0;
 
     mutt_str_copy(entry->box, short_path, sizeof(entry->box));
     char str[256];
