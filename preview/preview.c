@@ -77,7 +77,7 @@ void preview_win_init(struct MuttWindow *dlg)
   struct MuttWindow *index_panel = TAILQ_FIRST(&index_container->children);
 
   struct MuttWindow *preview_window =
-      mutt_window_new(WT_PREVIEW, MUTT_WIN_ORIENT_VERTICAL,
+      mutt_window_new(WT_PREVIEW, MUTT_WIN_ORIENT_HORIZONTAL,
                       MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED, 10);
   {
     preview_window->state.visible = true; // XXX: Config
