@@ -43,6 +43,7 @@
 #ifdef USE_NNTP
 #include "nntp/lib.h"
 #endif
+#include "mx.h"
 
 /**
  * mutt_complete - Attempt to complete a partial pathname
@@ -71,6 +72,13 @@ int mutt_complete(char *buf, size_t buflen)
 #endif
 
   mutt_debug(LL_DEBUG2, "completing %s\n", buf);
+
+  char *name_match = mx_name_complete(buf);
+  if (name_match)
+  {
+    mutt_str_copy(buf, name_match, buflen);
+    return 0;
+  }
 
 #ifdef USE_NNTP
   if (OptNews)

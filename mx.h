@@ -53,6 +53,7 @@ int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
 struct Message *mx_msg_open_new    (struct Mailbox *m, const struct Email *e, MsgOpenFlags flags);
 struct Message *mx_msg_open        (struct Mailbox *m, int msgno);
 int             mx_msg_padding_size(struct Mailbox *m);
+char           *mx_name_complete   (const char *name);
 int             mx_save_hcache     (struct Mailbox *m, struct Email *e);
 int             mx_path_canon      (char *buf, size_t buflen, const char *folder, enum MailboxType *type);
 int             mx_path_canon2     (struct Mailbox *m, const char *folder);

@@ -1817,3 +1817,51 @@ enum MailboxType mx_type(struct Mailbox *m)
 {
   return m ? m->type : MUTT_MAILBOX_ERROR;
 }
+
+static char *mx_name_complete_ac(struct Account *a, const char *name) {
+  if (!a || !name)
+    return NULL;
+
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &a->mailboxes, entries)
+  {
+    char *curr_name = np->mailbox->name;
+    if (mutt_str_startswith(curr_name, name))
+    {
+      mutt_debug(LL_DEBUG5, "%s completes to %s\n", name, curr_name);
+      return curr_name;
+    }
+  }
+
+  if (!np)
+    return NULL;
+  return np->mailbox->name;
+
+}
+
+/**
+ * mx_name_complete - Complete a name to the nearest Mailbox
+ * @param name Name to search
+ * @retval ptr 
+ */
+char *mx_name_complete(const char *name) {
+  if (!name)
+    return NULL;
+
+  mutt_debug(LL_DEBUG5, "Trying to complete %s\n", name);
+
+  char buf[PATH_MAX];
+  mutt_str_copy(buf, name, sizeof(buf));
+
+  struct Account *np = NULL;
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  {
+    char *found_name = mx_name_complete_ac(np, name);
+    mutt_debug(LL_DEBUG5, "Value of found name: %s\n", found_name);
+    if (found_name)
+      return found_name;
+  }
+
+  return NULL;
+}
+
