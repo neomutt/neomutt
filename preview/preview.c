@@ -39,11 +39,39 @@ static struct MuttWindow *find_index_container(struct MuttWindow *root)
   return TAILQ_FIRST(&container->children); // Index container is the first
 }
 
+static int preview_recalc(struct MuttWindow *win)
+{
+  mutt_debug(LL_DEBUG1, "PREVIEW RECALC\n");
+  win->actions |= WA_REPAINT;
+  return -1;
+}
+
+static int preview_repaint(struct MuttWindow *win)
+{
+  mutt_debug(LL_DEBUG1, "SIDEBAR REPAINT\n");
+  preview_draw(win);
+  return -1;
+}
+
 void preview_win_init(struct MuttWindow *dlg)
 {
   dlg->orient = MUTT_WIN_ORIENT_HORIZONTAL;
-  struct MuttWindow *index_panel = find_index_container(dlg);
-  (void) index_panel;
+
+  struct MuttWindow *index_container = find_index_container(dlg);
+  struct MuttWindow *index_panel = TAILQ_FIRST(&index_container->children);
+
+  struct MuttWindow *preview_window =
+      mutt_window_new(WT_PREVIEW, MUTT_WIN_ORIENT_VERTICAL,
+                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED, 10);
+  {
+    preview_window->state.visible = true; // XXX: Config
+    preview_window->wdata = preview_wdata_new();
+    preview_window->wdata_free = preview_wdata_free;
+    preview_window->recalc = preview_recalc;
+    preview_window->repaint = preview_repaint;
+  }
+
+  TAILQ_INSERT_AFTER(&index_container->children, index_panel, preview_window, entries);
 }
 
 void preview_win_shutdown(struct MuttWindow *dlg)

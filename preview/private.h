@@ -11,3 +11,16 @@ int preview_insertion_observer  (struct NotifyCallback *nc);
 
 void preview_win_init       (struct MuttWindow *dlg);
 void preview_win_shutdown   (struct MuttWindow *dlg);
+
+/* draw.c */
+void preview_draw(struct MuttWindow* win);
+
+/* wdata.c */
+
+struct PreviewWindowData {
+  int dummy;
+};
+
+struct PreviewWindowData    *preview_wdata_new(void);
+struct PreviewWindowData    *preview_wdata_get(struct MuttWindow *win);
+void                        preview_wdata_free(struct MuttWindow *win, void **ptr);
