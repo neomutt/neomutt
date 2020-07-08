@@ -203,7 +203,7 @@ bool mutt_limit_current_thread(struct Email *e)
       break;
 
     e->vnum = -1;
-    e->limited = false;
+    e->visible = false;
     e->collapsed = false;
     e->num_hidden = 0;
 
@@ -212,7 +212,7 @@ bool mutt_limit_current_thread(struct Email *e)
       struct Body *body = e->body;
 
       e->vnum = m->vcount;
-      e->limited = true;
+      e->visible = true;
       m->v2r[m->vcount] = i;
       m->vcount++;
       Context->vsize += (body->length + body->offset - body->hdr_offset);
@@ -293,14 +293,14 @@ int mutt_pattern_func(int op, char *prompt)
       mutt_progress_update(&progress, i, -1);
       /* new limit pattern implicitly uncollapses all threads */
       e->vnum = -1;
-      e->limited = false;
+      e->visible = false;
       e->collapsed = false;
       e->num_hidden = 0;
       if (match_all ||
           mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
       {
         e->vnum = m->vcount;
-        e->limited = !match_all;
+        e->visible = true;
         m->v2r[m->vcount] = i;
         m->vcount++;
         struct Body *b = e->body;

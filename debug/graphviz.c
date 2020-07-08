@@ -1305,7 +1305,6 @@ static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
   ADD_BOOL(display_subject);
   ADD_BOOL(expired);
   ADD_BOOL(flagged);
-  ADD_BOOL(limited);
   ADD_BOOL(matched);
   ADD_BOOL(mime);
   ADD_BOOL(old);
@@ -1320,6 +1319,7 @@ static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
   ADD_BOOL(tagged);
   ADD_BOOL(threaded);
   ADD_BOOL(trash);
+  ADD_BOOL(visible);
 #undef ADD_BOOL
   dot_type_string(fp, "bools", mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf), true);
 

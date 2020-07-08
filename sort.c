@@ -419,7 +419,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
       C_Sort = i;
       OptSortSubthreads = false;
     }
-    mutt_sort_threads(ctx->threads, ctx_has_limit(ctx), init);
+    mutt_sort_threads(ctx->threads, init);
   }
   else if (!(sortfunc = mutt_get_sort_func(C_Sort & SORT_MASK)) ||
            !(AuxSort = mutt_get_sort_func(C_SortAux & SORT_MASK)))
@@ -440,8 +440,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     if (!e_cur)
       break;
 
-    if ((e_cur->vnum != -1) ||
-        (e_cur->collapsed && (!ctx_has_limit(ctx) || e_cur->limited)))
+    if ((e_cur->vnum != -1) || (e_cur->collapsed && e_cur->visible))
     {
       e_cur->vnum = m->vcount;
       m->v2r[m->vcount] = i;
@@ -453,9 +452,8 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   /* re-collapse threads marked as collapsed */
   if ((C_Sort & SORT_MASK) == SORT_THREADS)
   {
-    mutt_thread_collapse_collapsed(ctx->threads, ctx_has_limit(ctx));
-    ctx->vsize = mutt_set_vnum(ctx->mailbox, ctx_has_limit(ctx),
-                               mx_msg_padding_size(ctx->mailbox));
+    mutt_thread_collapse_collapsed(ctx->threads);
+    ctx->vsize = mutt_set_vnum(ctx->mailbox, mx_msg_padding_size(ctx->mailbox));
   }
 
   if (m->verbose)

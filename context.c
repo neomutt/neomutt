@@ -328,22 +328,6 @@ int ctx_mailbox_observer(struct NotifyCallback *nc)
 }
 
 /**
- * message_is_visible - Is a message in the index within limit
- * @param ctx Context
- * @param e   Email
- * @retval true The message is within limit
- *
- * If no limit is in effect, all the messages are visible.
- */
-bool message_is_visible(struct Context *ctx, struct Email *e)
-{
-  if (!ctx || !e)
-    return false;
-
-  return !ctx_has_limit(ctx) || e->limited;
-}
-
-/**
  * message_is_tagged - Is a message in the index tagged (and within limit)
  * @param ctx Open mailbox
  * @param e   Email
@@ -353,7 +337,7 @@ bool message_is_visible(struct Context *ctx, struct Email *e)
  */
 bool message_is_tagged(struct Context *ctx, struct Email *e)
 {
-  return message_is_visible(ctx, e) && e->tagged;
+  return e->visible && e->tagged;
 }
 
 /**

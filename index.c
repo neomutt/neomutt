@@ -227,8 +227,7 @@ static bool check_acl(struct Context *ctx, AclFlags acl, const char *msg)
  */
 static inline void set_vnum(struct Context *ctx)
 {
-  ctx->vsize = mutt_set_vnum(ctx->mailbox, ctx_has_limit(ctx),
-                             mx_msg_padding_size(ctx->mailbox));
+  ctx->vsize = mutt_set_vnum(ctx->mailbox, mx_msg_padding_size(ctx->mailbox));
 }
 
 /**
@@ -254,14 +253,12 @@ static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
 
   int final;
 
-  const bool lmt = ctx_has_limit(ctx);
-
   /* Figure out what the current message would be after folding / unfolding,
    * so that we can restore the cursor in a sane way afterwards. */
   if (e_cur->collapsed && toggle)
-    final = mutt_uncollapse_thread(lmt, e_cur);
-  else if (mutt_thread_can_collapse(lmt, e_cur))
-    final = mutt_collapse_thread(lmt, e_cur);
+    final = mutt_uncollapse_thread(e_cur);
+  else if (mutt_thread_can_collapse(e_cur))
+    final = mutt_collapse_thread(e_cur);
   else
     final = e_cur->vnum;
 
@@ -274,7 +271,7 @@ static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
 
   /* Iterate all threads, perform collapse/uncollapse as needed */
   ctx->collapsed = toggle ? !ctx->collapsed : true;
-  mutt_thread_collapse(ctx->threads, lmt, ctx->collapsed);
+  mutt_thread_collapse(ctx->threads, ctx->collapsed);
 
   /* Restore the cursor */
   set_vnum(ctx);
@@ -447,7 +444,7 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
   }
 
   if (((C_Sort & SORT_MASK) == SORT_THREADS) && (menu->current < 0))
-    menu->current = mutt_parent_message(ctx_has_limit(ctx), e_cur, false);
+    menu->current = mutt_parent_message(e_cur, false);
 
   if (menu->current < 0)
     menu->current = ci_first_message(ctx);
@@ -497,11 +494,11 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
         /* vnum will get properly set by set_vnum(), which
          * is called by mutt_sort_headers() just below. */
         e->vnum = 1;
-        e->limited = true;
+        e->visible = true;
       }
       else
       {
-        e->limited = false;
+        e->visible = false;
       }
     }
     /* Need a second sort to set virtual numbers and redraw the tree */
@@ -514,16 +511,16 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
     if (check == MUTT_REOPENED)
     {
       ctx->collapsed = false;
-      mutt_thread_collapse(ctx->threads, lmt, ctx->collapsed);
+      mutt_thread_collapse(ctx->threads, ctx->collapsed);
       set_vnum(ctx);
     }
     else if (oldcount)
     {
       for (int j = 0; j < (ctx->mailbox->msg_count - oldcount); j++)
       {
-        if (!lmt || save_new[j]->limited)
+        if (save_new[j]->visible)
         {
-          mutt_uncollapse_thread(lmt, save_new[j]);
+          mutt_uncollapse_thread(save_new[j]);
         }
       }
       set_vnum(ctx);
@@ -564,14 +561,14 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
         assert(ctx->mailbox->vcount < ctx->mailbox->msg_count);
         e->vnum = ctx->mailbox->vcount;
         ctx->mailbox->v2r[ctx->mailbox->vcount] = i;
-        e->limited = true;
+        e->visible = true;
         ctx->mailbox->vcount++;
         struct Body *b = e->body;
         ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
       else
       {
-        e->limited = false;
+        e->visible = false;
       }
     }
   }
@@ -1240,7 +1237,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
     if (OptRedrawTree && Context && Context->mailbox &&
         (Context->mailbox->msg_count != 0) && ((C_Sort & SORT_MASK) == SORT_THREADS))
     {
-      mutt_draw_tree(ctx_has_limit(Context), Context->threads);
+      mutt_draw_tree(Context->threads);
       menu->redraw |= REDRAW_STATUS;
       OptRedrawTree = false;
     }
@@ -1557,7 +1554,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             }
             else if (e->collapsed)
             {
-              mutt_uncollapse_thread(ctx_has_limit(Context), e);
+              mutt_uncollapse_thread(e);
               set_vnum(Context);
               menu->current = e->vnum;
               menu->redraw = REDRAW_MOTION_RESYNC;
@@ -1711,7 +1708,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           mutt_error(_("Argument must be a message number"));
         else if ((msg_num < 1) || (msg_num > Context->mailbox->msg_count))
           mutt_error(_("Invalid message number"));
-        else if (!message_is_visible(Context, Context->mailbox->emails[msg_num - 1]))
+        else if (!Context->mailbox->emails[msg_num - 1]->visible)
           mutt_error(_("That message is not visible"));
         else
         {
@@ -1719,7 +1716,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
           if (mutt_messages_in_thread(Context->mailbox, e, 1) > 1)
           {
-            mutt_uncollapse_thread(ctx_has_limit(Context), e);
+            mutt_uncollapse_thread(e);
             set_vnum(Context);
           }
           menu->current = e->vnum;
@@ -1862,7 +1859,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           {
             if (C_CollapseAll)
               collapse_all(Context, menu, 0);
-            mutt_draw_tree(lmt, Context->threads);
+            mutt_draw_tree(Context->threads);
           }
           menu->redraw = REDRAW_FULL;
         }
@@ -1956,7 +1953,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             struct Email *e = m->emails[i];
             if (!e)
               break;
-            if (message_is_visible(Context, e))
+            if (e->visible)
               mutt_set_flag(m, e, MUTT_TAG, false);
           }
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
@@ -2200,7 +2197,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
           if (e_oldcur->collapsed || Context->collapsed)
           {
-            menu->current = mutt_uncollapse_thread(ctx_has_limit(Context), cur.e);
+            menu->current = mutt_uncollapse_thread(cur.e);
             set_vnum(Context);
           }
         }
@@ -2586,10 +2583,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
         if (((C_Sort & SORT_MASK) == SORT_THREADS) && cur.e->collapsed)
         {
-          mutt_uncollapse_thread(ctx_has_limit(Context), cur.e);
+          mutt_uncollapse_thread(cur.e);
           set_vnum(Context);
           if (C_UncollapseJump)
-            menu->current = mutt_thread_next_unread(ctx_has_limit(Context), cur.e);
+            menu->current = mutt_thread_next_unread(cur.e);
         }
 
         if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
@@ -2914,7 +2911,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             break;
           if (e->collapsed && ((C_Sort & SORT_MASK) == SORT_THREADS))
           {
-            int unread = mutt_thread_contains_unread(ctx_has_limit(Context), e);
+            int unread = mutt_thread_contains_unread(e);
             if ((unread != 0) && (first_unread == -1))
               first_unread = mcur;
             if ((unread == 1) && (first_new == -1))
@@ -3157,8 +3154,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
 
-        menu->current = mutt_parent_message(ctx_has_limit(Context), cur.e,
-                                            op == OP_MAIN_ROOT_MESSAGE);
+        menu->current = mutt_parent_message(cur.e, op == OP_MAIN_ROOT_MESSAGE);
         if (menu->current < 0)
         {
           menu->current = menu->oldcurrent;
@@ -3220,17 +3216,16 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!cur.e)
           break;
 
-        const bool lmt = ctx_has_limit(Context);
         if (cur.e->collapsed)
         {
-          menu->current = mutt_uncollapse_thread(lmt, cur.e);
+          menu->current = mutt_uncollapse_thread(cur.e);
           set_vnum(Context);
           if (C_UncollapseJump)
-            menu->current = mutt_thread_next_unread(lmt, cur.e);
+            menu->current = mutt_thread_next_unread(cur.e);
         }
-        else if (mutt_thread_can_collapse(lmt, cur.e))
+        else if (mutt_thread_can_collapse(cur.e))
         {
-          menu->current = mutt_collapse_thread(lmt, cur.e);
+          menu->current = mutt_collapse_thread(cur.e);
           set_vnum(Context);
         }
         else

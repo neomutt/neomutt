@@ -76,6 +76,7 @@ struct Email *email_new(void)
   STAILQ_INIT(&e->chain);
 #endif
   STAILQ_INIT(&e->tags);
+  e->visible = true;
   return e;
 }
 

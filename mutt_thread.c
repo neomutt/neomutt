@@ -66,22 +66,20 @@ struct ThreadsContext
 
 /**
  * is_visible - Is the message visible?
- * @param lmt There is an active limit
  * @param e   Email
  * @retval true If the message is not hidden in some way
  */
-static bool is_visible(bool lmt, struct Email *e)
+static bool is_visible(struct Email *e)
 {
-  return e->vnum >= 0 || (e->collapsed && (!lmt || e->limited));
+  return e->vnum >= 0 || (e->collapsed && e->visible);
 }
 
 /**
  * need_display_subject - Determines whether to display a message's subject
- * @param lmt There is an active limit
  * @param e Email
  * @retval true If the subject should be displayed
  */
-static bool need_display_subject(bool lmt, struct Email *e)
+static bool need_display_subject(struct Email *e)
 {
   struct MuttThread *tmp = NULL;
   struct MuttThread *tree = e->thread;
@@ -99,7 +97,7 @@ static bool need_display_subject(bool lmt, struct Email *e)
   for (tmp = tree->prev; tmp; tmp = tmp->prev)
   {
     e = tmp->message;
-    if (e && is_visible(lmt, e))
+    if (e && is_visible(e))
     {
       if (e->subject_changed)
         return true;
@@ -114,7 +112,7 @@ static bool need_display_subject(bool lmt, struct Email *e)
     e = tmp->message;
     if (e)
     {
-      if (is_visible(lmt, e))
+      if (is_visible(e))
         return false;
       if (e->subject_changed)
         return true;
@@ -167,7 +165,6 @@ static void linearize_tree(struct ThreadsContext *tctx)
 
 /**
  * calculate_visibility - Are tree nodes visible
- * @param lmt       There is an active limit
  * @param tree      Threads tree
  * @param max_depth Maximum depth to check
  *
@@ -178,7 +175,7 @@ static void linearize_tree(struct ThreadsContext *tctx)
  * skip parts of the tree in mutt_draw_tree() if we've decided here that we
  * don't care about them any more.
  */
-static void calculate_visibility(bool lmt, struct MuttThread *tree, int *max_depth)
+static void calculate_visibility(struct MuttThread *tree, int *max_depth)
 {
   struct MuttThread *tmp = NULL;
   struct MuttThread *orig_tree = tree;
@@ -200,11 +197,11 @@ static void calculate_visibility(bool lmt, struct MuttThread *tree, int *max_dep
     if (tree->message)
     {
       FREE(&tree->message->tree);
-      if (is_visible(lmt, tree->message))
+      if (is_visible(tree->message))
       {
         tree->deep = true;
         tree->visible = true;
-        tree->message->display_subject = need_display_subject(lmt, tree->message);
+        tree->message->display_subject = need_display_subject(tree->message);
         for (tmp = tree; tmp; tmp = tmp->parent)
         {
           if (tmp->subtree_visible)
@@ -306,7 +303,6 @@ void mutt_thread_ctx_free(struct ThreadsContext **tctx)
 
 /**
  * mutt_draw_tree - Draw a tree of threaded emails
- * @param lmt There is an active limit
  * @param tctx Threading context
  *
  * Since the graphics characters have a value >255, I have to resort to using
@@ -317,7 +313,7 @@ void mutt_thread_ctx_free(struct ThreadsContext **tctx)
  * graphics chars on terminals which don't support them (see the man page for
  * curs_addch).
  */
-void mutt_draw_tree(bool lmt, struct ThreadsContext *tctx)
+void mutt_draw_tree(struct ThreadsContext *tctx)
 {
   char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree = NULL;
   enum TreeChar corner = (C_Sort & SORT_REVERSE) ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
@@ -329,7 +325,7 @@ void mutt_draw_tree(bool lmt, struct ThreadsContext *tctx)
 
   /* Do the visibility calculations and free the old thread chars.
    * From now on we can simply ignore invisible subtrees */
-  calculate_visibility(lmt, tree, &max_depth);
+  calculate_visibility(tree, &max_depth);
   pfx = mutt_mem_malloc((width * max_depth) + 2);
   arrow = mutt_mem_malloc((width * max_depth) + 2);
   while (tree)
@@ -865,10 +861,9 @@ static void check_subjects(struct Mailbox *m, bool init)
 /**
  * mutt_sort_threads - Sort email threads
  * @param tctx Threading context
- * @param lmt  There is an active limit
  * @param init If true, rebuild the thread
  */
-void mutt_sort_threads(struct ThreadsContext *tctx, bool lmt, bool init)
+void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
 {
   if (!tctx || !tctx->mailbox)
     return;
@@ -1106,7 +1101,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool lmt, bool init)
     linearize_tree(tctx);
 
     /* Draw the thread tree. */
-    mutt_draw_tree(lmt, tctx);
+    mutt_draw_tree(tctx);
   }
 }
 
@@ -1175,13 +1170,12 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
 
 /**
  * mutt_parent_message - Find the parent of a message
- * @param lmt       There is an active limit
  * @param e         Current Email
  * @param find_root If true, find the root message
  * @retval >=0 Virtual index number of parent/root message
  * @retval -1 Error
  */
-int mutt_parent_message(bool lmt, struct Email *e, bool find_root)
+int mutt_parent_message(struct Email *e, bool find_root)
 {
   if (!e)
     return -1;
@@ -1215,7 +1209,7 @@ int mutt_parent_message(bool lmt, struct Email *e, bool find_root)
     mutt_error(_("Parent message is not available"));
     return -1;
   }
-  if (!is_visible(lmt, e_parent))
+  if (!is_visible(e_parent))
   {
     if (find_root)
       mutt_error(_("Root message is not visible in this limited view"));
@@ -1229,11 +1223,10 @@ int mutt_parent_message(bool lmt, struct Email *e, bool find_root)
 /**
  * mutt_set_vnum - Set the virtual index number of all the messages in a mailbox
  * @param m       Mailbox
- * @param lmt     There is an active limit
  * @param padding Number of bytes between messages
  * @retval mum Size in bytes of all messages shown
  */
-off_t mutt_set_vnum(struct Mailbox *m, bool lmt, int padding)
+off_t mutt_set_vnum(struct Mailbox *m, int padding)
 {
   if (!m)
     return 0;
@@ -1262,12 +1255,11 @@ off_t mutt_set_vnum(struct Mailbox *m, bool lmt, int padding)
 
 /**
  * mutt_traverse_thread - Recurse through an email thread, matching messages
- * @param lmt   There is an active limit
  * @param e_cur Current Email
  * @param flag  Flag to set, see #MuttThreadFlags
  * @retval num Number of matches
  */
-int mutt_traverse_thread(bool lmt, struct Email *e_cur, MuttThreadFlags flag)
+int mutt_traverse_thread(struct Email *e_cur, MuttThreadFlags flag)
 {
   struct MuttThread *thread = NULL, *top = NULL;
   struct Email *e_root = NULL;
@@ -1275,7 +1267,6 @@ int mutt_traverse_thread(bool lmt, struct Email *e_cur, MuttThreadFlags flag)
   int num_hidden = 0, new_mail = 0, old_mail = 0;
   bool flagged = false;
   int min_unread_msgno = INT_MAX, min_unread = e_cur->vnum;
-#define CHECK_LIMIT (!lmt || e_cur->limited)
 
   if ((C_Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -1298,7 +1289,7 @@ int mutt_traverse_thread(bool lmt, struct Email *e_cur, MuttThreadFlags flag)
   e_cur = thread->message;
   minmsgno = e_cur->msgno;
 
-  if (!e_cur->read && CHECK_LIMIT)
+  if (!e_cur->read && e_cur->visible)
   {
     if (e_cur->old)
       old_mail = 2;
@@ -1311,10 +1302,10 @@ int mutt_traverse_thread(bool lmt, struct Email *e_cur, MuttThreadFlags flag)
     }
   }
 
-  if (e_cur->flagged && CHECK_LIMIT)
+  if (e_cur->flagged && e_cur->visible)
     flagged = true;
 
-  if ((e_cur->vnum == -1) && CHECK_LIMIT)
+  if ((e_cur->vnum == -1) && e_cur->visible)
     num_hidden++;
 
   if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
@@ -1355,14 +1346,15 @@ int mutt_traverse_thread(bool lmt, struct Email *e_cur, MuttThreadFlags flag)
       {
         e_cur->pair = 0; /* force index entry's color to be re-evaluated */
         e_cur->collapsed = flag & MUTT_THREAD_COLLAPSE;
-        if (!e_root && CHECK_LIMIT)
+        if (!e_root && e_cur->visible)
         {
           e_root = e_cur;
           if (flag & MUTT_THREAD_COLLAPSE)
             final = e_root->vnum;
         }
 
-        if (reverse && (flag & MUTT_THREAD_COLLAPSE) && (e_cur->msgno < minmsgno) && CHECK_LIMIT)
+        if (reverse && (flag & MUTT_THREAD_COLLAPSE) &&
+            (e_cur->msgno < minmsgno) && e_cur->visible)
         {
           minmsgno = e_cur->msgno;
           final = e_cur->vnum;
@@ -1375,12 +1367,12 @@ int mutt_traverse_thread(bool lmt, struct Email *e_cur, MuttThreadFlags flag)
         }
         else
         {
-          if (CHECK_LIMIT)
+          if (e_cur->visible)
             e_cur->vnum = e_cur->msgno;
         }
       }
 
-      if (!e_cur->read && CHECK_LIMIT)
+      if (!e_cur->read && e_cur->visible)
       {
         if (e_cur->old)
           old_mail = 2;
@@ -1393,10 +1385,10 @@ int mutt_traverse_thread(bool lmt, struct Email *e_cur, MuttThreadFlags flag)
         }
       }
 
-      if (e_cur->flagged && CHECK_LIMIT)
+      if (e_cur->flagged && e_cur->visible)
         flagged = true;
 
-      if ((e_cur->vnum == -1) && CHECK_LIMIT)
+      if ((e_cur->vnum == -1) && e_cur->visible)
         num_hidden++;
     }
 
@@ -1468,7 +1460,6 @@ int mutt_traverse_thread(bool lmt, struct Email *e_cur, MuttThreadFlags flag)
     return flagged;
 
   return 0;
-#undef CHECK_LIMIT
 }
 
 /**
@@ -1587,9 +1578,8 @@ bool mutt_link_threads(struct Email *parent, struct EmailList *children, struct 
 /**
  * mutt_thread_collapse_collapsed - re-collapse threads marked as collapsed
  * @param tctx Threading context
- * @param lmt  There is a active limit
  */
-void mutt_thread_collapse_collapsed(struct ThreadsContext *tctx, bool lmt)
+void mutt_thread_collapse_collapsed(struct ThreadsContext *tctx)
 {
   struct MuttThread *thread = NULL;
   struct MuttThread *top = tctx->tree;
@@ -1600,7 +1590,7 @@ void mutt_thread_collapse_collapsed(struct ThreadsContext *tctx, bool lmt)
 
     struct Email *e = thread->message;
     if (e->collapsed)
-      mutt_collapse_thread(lmt, e);
+      mutt_collapse_thread(e);
     top = top->next;
   }
 }
@@ -1608,10 +1598,9 @@ void mutt_thread_collapse_collapsed(struct ThreadsContext *tctx, bool lmt)
 /**
  * mutt_thread_coll_set - toggle collapse
  * @param tctx Threading context
- * @param lmt There is a active limit
  * @param collapse Collapse / uncollapse
  */
-void mutt_thread_collapse(struct ThreadsContext *tctx, bool lmt, bool collapse)
+void mutt_thread_collapse(struct ThreadsContext *tctx, bool collapse)
 {
   struct MuttThread *thread = NULL;
   struct MuttThread *top = tctx->tree;
@@ -1625,9 +1614,9 @@ void mutt_thread_collapse(struct ThreadsContext *tctx, bool lmt, bool collapse)
     if (e->collapsed != collapse)
     {
       if (e->collapsed)
-        mutt_uncollapse_thread(lmt, e);
-      else if (mutt_thread_can_collapse(lmt, e))
-        mutt_collapse_thread(lmt, e);
+        mutt_uncollapse_thread(e);
+      else if (mutt_thread_can_collapse(e))
+        mutt_collapse_thread(e);
     }
     top = top->next;
   }
@@ -1635,13 +1624,12 @@ void mutt_thread_collapse(struct ThreadsContext *tctx, bool lmt, bool collapse)
 
 /**
  * mutt_thread_can_collapse - Check whether a thread can be collapsed
- * @param lmt There is an active limit
  * @param e Head of the thread
  * @retval true Can be collapsed
  * @retval false Cannot be collapsed
  */
-bool mutt_thread_can_collapse(bool lmt, struct Email *e)
+bool mutt_thread_can_collapse(struct Email *e)
 {
-  return (C_CollapseUnread || !mutt_thread_contains_unread(lmt, e)) &&
-         (C_CollapseFlagged || !mutt_thread_contains_flagged(lmt, e));
+  return (C_CollapseUnread || !mutt_thread_contains_unread(e)) &&
+         (C_CollapseFlagged || !mutt_thread_contains_flagged(e));
 }
