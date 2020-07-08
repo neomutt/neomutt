@@ -57,10 +57,10 @@ struct ListHead SidebarWhitelist = STAILQ_HEAD_INITIALIZER(SidebarWhitelist); //
  * @param sbe    Sidebar entry
  * @retval Number of bytes written
  */
-static size_t add_indent(char *buf, size_t buflen, const struct SbEntry *sbe)
+static size_t add_indent(char *buf, size_t buflen, const int depth)
 {
   size_t res = 0;
-  for (int i = 0; i < sbe->depth; i++)
+  for (int i = 0; i < depth; i++)
   {
     res += mutt_str_copy(buf + res, C_SidebarIndentString, buflen - res);
   }
@@ -114,9 +114,10 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
     case 'D':
     {
       char indented[256];
-      size_t offset = add_indent(indented, sizeof(indented), sbe);
+      size_t offset = add_indent(indented, sizeof(indented),
+               ((op == 'D') && sbe->mailbox->name) ? sbe->name_depth : sbe->depth);
       snprintf(indented + offset, sizeof(indented) - offset, "%s",
-               ((op == 'D') && sbe->mailbox->name) ? sbe->mailbox->name : sbe->box);
+               ((op == 'D') && sbe->mailbox->name) ? sbe->name : sbe->box);
 
       mutt_format_s(buf, buflen, prec, indented);
       break;
@@ -795,6 +796,35 @@ static int calc_path_depth(const char *mbox, const char *delims, const char **la
   return depth;
 }
 
+static const char *shorten_abbreviate(struct Mailbox *m, const char *name_or_path, int *depth)
+{
+  // Try to abbreviate the full path
+  const char *abbr = abbrev_folder(name_or_path, C_Folder, m->type);
+  if (!abbr)
+    abbr = abbrev_url(name_or_path, m->type);
+  const char *shortened = abbr ? abbr : name_or_path;
+
+  /* Compute the depth */
+  const char *last_part = abbr;
+  *depth = calc_path_depth(abbr, C_SidebarDelimChars, &last_part);
+  if (!C_SidebarFolderIndent)
+    *depth = 0;
+
+  const bool short_is_abbr = (shortened == abbr);
+  if (C_SidebarShortPath)
+    shortened = last_part;
+
+  // Don't indent if we were unable to create an abbreviation.
+  // Otherwise, the full path will be indent, and it looks unusual.
+  if (C_SidebarFolderIndent && short_is_abbr)
+  {
+    if (C_SidebarComponentDepth > 0)
+      *depth -= C_SidebarComponentDepth;
+  }
+
+  return shortened;
+}
+
 /**
  * draw_sidebar - Write out a list of mailboxes, in a panel
  * @param wdata     Sidebar data
@@ -876,35 +906,11 @@ static void draw_sidebar(struct SidebarWindowData *wdata, struct MuttWindow *win
       m->msg_flagged = Context->mailbox->msg_flagged;
     }
 
-    const char *path = mailbox_path(m);
-
-    // Try to abbreviate the full path
-    const char *abbr = abbrev_folder(path, C_Folder, m->type);
-    if (!abbr)
-      abbr = abbrev_url(path, m->type);
-    const char *short_path = abbr ? abbr : path;
-
-    /* Compute the depth */
-    const char *last_part = abbr;
-    entry->depth = calc_path_depth(abbr, C_SidebarDelimChars, &last_part);
-
-    const bool short_path_is_abbr = (short_path == abbr);
-    if (C_SidebarShortPath)
-    {
-      short_path = last_part;
-    }
-
-    // Don't indent if we were unable to create an abbreviation.
-    // Otherwise, the full path will be indent, and it looks unusual.
-    if (C_SidebarFolderIndent && short_path_is_abbr)
-    {
-      if (C_SidebarComponentDepth > 0)
-        entry->depth -= C_SidebarComponentDepth;
-    }
-    else if (!C_SidebarFolderIndent)
-      entry->depth = 0;
+    const char *short_path = shorten_abbreviate(m, mailbox_path(m), &entry->depth);
+    const char *short_name = shorten_abbreviate(m, m->name, &entry->name_depth);
 
     mutt_str_copy(entry->box, short_path, sizeof(entry->box));
+    mutt_str_copy(entry->name, short_name, sizeof(entry->name));
     char str[256];
     make_sidebar_entry(str, sizeof(str), w, entry);
     mutt_window_printf("%s", str);
