@@ -6,6 +6,8 @@ struct MuttWindow;
 /* observers.c */
 
 int preview_insertion_observer  (struct NotifyCallback *nc);
+int preview_neomutt_observer    (struct NotifyCallback *nc);
+int preview_dialog_observer     (struct NotifyCallback *nc);
 
 /* preview.c */
 

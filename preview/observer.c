@@ -3,6 +3,26 @@
 #include "mutt/notify_type.h"
 #include "gui/mutt_window.h"
 
+int preview_neomutt_observer(struct NotifyCallback *nc)
+{
+  struct MuttWindow *win = nc->global_data;
+  win->actions |= WA_RECALC;
+  return 0;
+}
+
+int preview_dialog_observer(struct NotifyCallback *nc)
+{
+  struct MuttWindow *win = nc->global_data;
+  win->actions |= WA_RECALC;
+
+  if (nc->event_type == NT_USER_INDEX)
+  {
+    mutt_debug(LL_DEBUG1, "preview: receive a NT_USER_INDEX event");
+  }
+
+  return 0;
+}
+
 /**
  * preview_insertion_observer - Listen for new Dialogs - Implements ::observer_t
  */

@@ -44,6 +44,16 @@ struct Mailbox;
 struct Menu;
 struct MuttWindow;
 
+struct IndexEvent
+{
+  struct Email *current_email;
+};
+
+enum NotifyIndex
+{
+  NT_USER_EMAIL_SELECTED = 1,   ///< A new mail is selected
+};
+
 int  index_color(struct Menu *menu, int line);
 void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line);
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen);

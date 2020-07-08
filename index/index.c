@@ -587,13 +587,21 @@ static bool is_current_email(const struct CurrentEmail *cur, const struct Email 
 
 /**
  * set_current_email - Keep track of the currently selected Email
+ * @param notify the notification channel on which the NT_USER_EMAIL_SELECTED event is sent
  * @param cur Currently selected Email
  * @param e   Email to set as current
  */
-static void set_current_email(struct CurrentEmail *cur, struct Email *e)
+static void set_current_email(struct Notify *notify, struct CurrentEmail *cur,
+                              struct Email *e)
 {
   cur->e = e;
   cur->sequence = e ? e->sequence : 0;
+
+  struct IndexEvent ev = {
+    .current_email = e,
+  };
+
+  notify_send(notify, NT_USER_INDEX, NT_USER_EMAIL_SELECTED, &ev);
 }
 
 /**
@@ -1318,7 +1326,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
       if (Context)
       {
-        set_current_email(&cur, mutt_get_virt_email(Context->mailbox, menu->current));
+        set_current_email(dlg->notify, &cur,
+                          mutt_get_virt_email(Context->mailbox, menu->current));
       }
     }
 
@@ -2653,7 +2662,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
           mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
           emaillist_clear(&el);
         }
-        set_current_email(&cur, mutt_get_virt_email(Context->mailbox, menu->current));
+        set_current_email(dlg->notify, &cur,
+                          mutt_get_virt_email(Context->mailbox, menu->current));
 
         op = mutt_display_message(win_index, win_ibar, win_pager, win_pbar,
                                   Context->mailbox, cur.e);

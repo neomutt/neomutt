@@ -30,19 +30,20 @@
  */
 enum NotifyType
 {
-  NT_ALL = 0, ///< Register for all notifications
-  NT_ACCOUNT, ///< Account has changed,         #NotifyAccount, #EventAccount
-  NT_COLOR,   ///< Colour has changed,          #ColorId,       #EventColor
-  NT_COMMAND, ///< A Command has been executed, #Command
-  NT_CONFIG,  ///< Config has changed,          #NotifyConfig,  #EventConfig
-  NT_CONTEXT, ///< Context has changed,         #NotifyContext, #EventContext
-  NT_EMAIL,   ///< Email has changed,           #NotifyEmail,   #EventEmail
-  NT_GLOBAL,  ///< Not object-related,          #NotifyGlobal
-  NT_HEADER,  ///< A header has changed,        #NotifyHeader   #EventHeader
-  NT_MAILBOX, ///< Mailbox has changed,         #NotifyMailbox, #EventMailbox
-  NT_WINDOW,  ///< MuttWindow has changed,      #NotifyWindow,  #EventWindow
-  NT_ALIAS,   ///< Alias has changed,           #NotifyAlias,   #EventAlias
-  NT_BINDING, ///< Key binding has changed,     #NotifyBinding, #EventBinding
+  NT_ALL = 0,       ///< Register for all notifications
+  NT_ACCOUNT,       ///< Account has changed,         #NotifyAccount, #EventAccount
+  NT_COLOR,         ///< Colour has changed,          #ColorId,       #EventColor
+  NT_COMMAND,       ///< A Command has been executed, #Command
+  NT_CONFIG,        ///< Config has changed,          #NotifyConfig,  #EventConfig
+  NT_CONTEXT,       ///< Context has changed,         #NotifyContext, #EventContext
+  NT_EMAIL,         ///< Email has changed,           #NotifyEmail,   #EventEmail
+  NT_GLOBAL,        ///< Not object-related,          #NotifyGlobal
+  NT_HEADER,        ///< A header has changed,        #NotifyHeader   #EventHeader
+  NT_MAILBOX,       ///< Mailbox has changed,         #NotifyMailbox, #EventMailbox
+  NT_WINDOW,        ///< MuttWindow has changed,      #NotifyWindow,  #EventWindow
+  NT_ALIAS,         ///< Alias has changed,           #NotifyAlias,   #EventAlias
+  NT_BINDING,       ///< Key binding has changed,     #NotifyBinding, #EventBinding
+  NT_USER_INDEX,    ///< User action on the index,    #NotifyIndex,   #IndexEvent
 };
 
 #endif /* MUTT_LIB_NOTIFY_TYPE_H */

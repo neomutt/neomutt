@@ -90,6 +90,12 @@ void preview_win_init(struct MuttWindow *dlg)
 
   mutt_window_add_child(index_container, preview_window);
   mutt_window_add_child(index_container, bar);
+
+  { // notification registrering
+    notify_observer_add(NeoMutt->notify, NT_WINDOW, preview_neomutt_observer, preview_window);
+    notify_observer_add(dlg->notify, NT_USER_INDEX, preview_dialog_observer, preview_window);
+  }
+
   debug_window_tree(dlg, 0);
 }
 
