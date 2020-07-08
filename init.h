@@ -28,12 +28,13 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "config/lib.h"
 #include "mutt.h"
 #include "hook.h"
 #include "mutt_commands.h"
 
 struct Buffer;
+struct ConfigDef;
+struct ConfigSet;
 struct ListHead;
 
 int charset_validator    (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);

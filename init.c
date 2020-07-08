@@ -63,7 +63,6 @@
 #include "sort.h"
 #include "autocrypt/lib.h"
 #include "compress/lib.h"
-#include "hcache/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
 #include "maildir/lib.h"
