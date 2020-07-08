@@ -1,12 +1,12 @@
+#include "config.h"
 #include <string.h>
+#include "private.h"
+#include "mutt/logging.h"
+#include "mutt/queue.h"
 #include "core/neomutt.h"
 #include "gui/mutt_window.h"
 #include "lib.h"
 #include "mutt_globals.h"
-
-#include "private.h"
-#include "mutt/logging.h"
-#include "mutt/queue.h"
 
 static struct MuttWindow *find_index_container(struct MuttWindow *root)
 {
@@ -64,7 +64,7 @@ static int preview_recalc(struct MuttWindow *win)
 
 static int preview_repaint(struct MuttWindow *win)
 {
-  mutt_debug(LL_DEBUG1, "SIDEBAR REPAINT\n");
+  mutt_debug(LL_DEBUG1, "PREVIEW REPAINT\n");
   preview_draw(win);
   return -1;
 }
