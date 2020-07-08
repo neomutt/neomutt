@@ -1557,7 +1557,7 @@ static int mbox_mbox_close(struct Mailbox *m)
     struct timespec ts[2];
     ts[0] = adata->atime;
     ts[1] = m->mtime;
-    utimensat(0, m->path, ts, 0);
+    utimensat(AT_FDCWD, m->path, ts, 0);
 #else
     struct utimbuf ut;
     ut.actime = adata->atime.tv_sec;
@@ -1701,7 +1701,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
     struct timespec ts[2];
     mutt_file_get_stat_timespec(&ts[0], &st, MUTT_STAT_ATIME);
     mutt_file_get_stat_timespec(&ts[1], &st, MUTT_STAT_MTIME);
-    utimensat(0, path, ts, 0);
+    utimensat(AT_FDCWD, path, ts, 0);
 #else
     struct utimbuf times;
     times.actime = st->st_atime;
