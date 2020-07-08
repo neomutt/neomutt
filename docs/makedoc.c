@@ -20,16 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- ** This program parses neomutt's init.h and generates documentation in
- ** three different formats:
- **
- ** -> a commented neomuttrc configuration file
- ** -> nroff, suitable for inclusion in a manual page
- ** -> docbook-xml, suitable for inclusion in the
- **    SGML-based manual
- **
- **/
+/*
+ * This program parses neomutt's init.h and generates documentation in
+ * three different formats:
+ *
+ * -> a commented neomuttrc configuration file
+ * -> nroff, suitable for inclusion in a manual page
+ * -> docbook-xml, suitable for inclusion in the
+ *    SGML-based manual
+ */
 
 #include "config.h"
 #include <ctype.h>
@@ -41,9 +40,20 @@
 #include <unistd.h>
 #include "makedoc_defs.h"
 
-extern int optind;
-
-#define BUFSIZE 2048
+// clang-format off
+#define D_NL    (1 <<  0)
+#define D_EM    (1 <<  1)
+#define D_BF    (1 <<  2)
+#define D_TAB   (1 <<  3)
+#define D_NP    (1 <<  4)
+#define D_INIT  (1 <<  5)
+#define D_DL    (1 <<  6)
+#define D_DT    (1 <<  7)
+#define D_DD    (1 <<  8)
+#define D_PA    (1 <<  9)
+#define D_IL    (1 << 10)
+#define D_TT    (1 << 11)
+// clang-format on
 
 /**
  * enum OutputFormats - Documentation output formats
@@ -55,19 +65,6 @@ enum OutputFormats
   F_SGML,
   F_NONE
 };
-
-#define D_NL (1 << 0)
-#define D_EM (1 << 1)
-#define D_BF (1 << 2)
-#define D_TAB (1 << 3)
-#define D_NP (1 << 4)
-#define D_INIT (1 << 5)
-#define D_DL (1 << 6)
-#define D_DT (1 << 7)
-#define D_DD (1 << 8)
-#define D_PA (1 << 9)
-#define D_IL (1 << 10)
-#define D_TT (1 << 11)
 
 /**
  * enum SpecialChars - All specially-treated characters
@@ -95,9 +92,62 @@ enum SpecialChars
   SP_REFER
 };
 
-enum OutputFormats OutputFormat = F_NONE;
+struct VariableTypes
+{
+  char *machine;
+  char *human;
+};
+
+/**
+ * enum DataType - User-variable types
+ */
+enum DataType
+{
+  DT_NONE = 0,
+  DT_ADDRESS,
+  DT_BOOL,
+  DT_COMMAND,
+  DT_ENUM,
+  DT_LONG,
+  DT_MAILBOX,
+  DT_MBTABLE,
+  DT_NUMBER,
+  DT_PATH,
+  DT_QUAD,
+  DT_REGEX,
+  DT_SLIST,
+  DT_SORT,
+  DT_STRING,
+  DT_SYNONYM,
+};
+
 char *Progname = NULL;
 short Debug = 0;
+int fd_recurse = 0;
+
+#define BUFSIZE 2048
+
+struct VariableTypes types[] = {
+  // clang-format off
+  { "DT_NONE",    "-none-"             },
+  { "DT_ADDRESS", "e-mail address"     },
+  { "DT_BOOL",    "boolean"            },
+  { "DT_COMMAND", "command"            },
+  { "DT_ENUM",    "enumeration"        },
+  { "DT_LONG",    "number (long)"      },
+  { "DT_MAILBOX", "mailbox"            },
+  { "DT_MBTABLE", "character string"   },
+  { "DT_NUMBER",  "number"             },
+  { "DT_PATH",    "path"               },
+  { "DT_QUAD",    "quadoption"         },
+  { "DT_REGEX",   "regular expression" },
+  { "DT_SLIST",   "string list"        },
+  { "DT_SORT",    "sort order"         },
+  { "DT_STRING",  "string"             },
+  { "DT_SYNONYM", NULL                 },
+  { NULL,         NULL                 },
+  // clang-format on
+};
 
 /* skip whitespace */
 
@@ -110,11 +160,9 @@ static char *skip_ws(char *s)
 }
 
 /* isolate a token */
-
-static char single_char_tokens[] = "[]{},;|";
-
 static char *get_token(char *d, size_t l, char *s)
 {
+  static char single_char_tokens[] = "[]{},;|";
   char *t = NULL;
   bool is_quoted = false;
   char *dd = d;
@@ -137,9 +185,8 @@ static char *get_token(char *d, size_t l, char *s)
   if (strchr(single_char_tokens, *s))
   {
     if (Debug)
-    {
       fprintf(stderr, "%s: found single character token `%c'.\n", Progname, *s);
-    }
+
     d[0] = *s++;
     d[1] = '\0';
     return s;
@@ -148,9 +195,7 @@ static char *get_token(char *d, size_t l, char *s)
   if (*s == '"')
   {
     if (Debug)
-    {
       fprintf(stderr, "%s: found quote character.\n", Progname);
-    }
 
     s++;
     is_quoted = true;
@@ -207,26 +252,26 @@ static char *get_token(char *d, size_t l, char *s)
   return t;
 }
 
-static int sgml_fputc(int c, FILE *out)
+static int sgml_fputc(int c, FILE *fp_out)
 {
   switch (c)
   {
     /* the bare minimum for escaping */
     case '<':
-      return fputs("&lt;", out);
+      return fputs("&lt;", fp_out);
     case '>':
-      return fputs("&gt;", out);
+      return fputs("&gt;", fp_out);
     case '&':
-      return fputs("&amp;", out);
+      return fputs("&amp;", fp_out);
     default:
-      return fputc(c, out);
+      return fputc(c, fp_out);
   }
 }
 
-static int sgml_fputs(const char *s, FILE *out)
+static int sgml_fputs(const char *s, FILE *fp_out)
 {
   for (; *s; s++)
-    if (sgml_fputc((unsigned int) *s, out) == EOF)
+    if (sgml_fputc((unsigned int) *s, fp_out) == EOF)
       return EOF;
 
   return 0;
@@ -234,13 +279,13 @@ static int sgml_fputs(const char *s, FILE *out)
 
 /* print something. */
 
-static int print_it(int special, char *str, FILE *out, int docstat)
+static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_out, int docstat)
 {
   int onl = docstat & (D_NL | D_NP);
 
   docstat &= ~(D_NL | D_NP | D_INIT);
 
-  switch (OutputFormat)
+  switch (format)
   {
     /* configuration file */
     case F_CONF:
@@ -267,7 +312,7 @@ static int print_it(int special, char *str, FILE *out, int docstat)
             docstat |= onl;
           else
           {
-            fputs("\n# ", out);
+            fputs("\n# ", fp_out);
             docstat |= D_NL;
           }
           if (docstat & D_DL)
@@ -283,15 +328,15 @@ static int print_it(int special, char *str, FILE *out, int docstat)
           }
 
           if (!(onl & D_NL))
-            fputs("\n# ", out);
-          fputs("\n# ", out);
+            fputs("\n# ", fp_out);
+          fputs("\n# ", fp_out);
           docstat |= D_NP;
           break;
         }
         case SP_START_TAB:
         {
           if (!onl)
-            fputs("\n# ", out);
+            fputs("\n# ", fp_out);
           docstat |= D_TAB;
           break;
         }
@@ -315,7 +360,7 @@ static int print_it(int special, char *str, FILE *out, int docstat)
         case SP_DD:
         {
           if (docstat & D_IL)
-            fputs("- ", out);
+            fputs("- ", fp_out);
           Continuation = 0;
           break;
         }
@@ -341,13 +386,13 @@ static int print_it(int special, char *str, FILE *out, int docstat)
           if (Continuation)
           {
             Continuation = 0;
-            fputs("        ", out);
+            fputs("        ", fp_out);
           }
-          fputs(str, out);
+          fputs(str, fp_out);
           if (docstat & D_DT)
           {
             for (int i = strlen(str); i < 8; i++)
-              putc(' ', out);
+              putc(' ', fp_out);
             docstat &= ~D_DT;
             docstat |= D_NL;
           }
@@ -364,27 +409,27 @@ static int print_it(int special, char *str, FILE *out, int docstat)
       {
         case SP_END_FT:
         {
-          fputs("\\fP", out);
+          fputs("\\fP", fp_out);
           docstat &= ~(D_EM | D_BF | D_TT);
           break;
         }
         case SP_START_BF:
         {
-          fputs("\\fB", out);
+          fputs("\\fB", fp_out);
           docstat |= D_BF;
           docstat &= ~(D_EM | D_TT);
           break;
         }
         case SP_START_EM:
         {
-          fputs("\\fI", out);
+          fputs("\\fI", fp_out);
           docstat |= D_EM;
           docstat &= ~(D_BF | D_TT);
           break;
         }
         case SP_START_TT:
         {
-          fputs("\\fC", out);
+          fputs("\\fC", fp_out);
           docstat |= D_TT;
           docstat &= ~(D_BF | D_EM);
           break;
@@ -395,7 +440,7 @@ static int print_it(int special, char *str, FILE *out, int docstat)
             docstat |= onl;
           else
           {
-            fputc('\n', out);
+            fputc('\n', fp_out);
             docstat |= D_NL;
           }
           break;
@@ -409,59 +454,59 @@ static int print_it(int special, char *str, FILE *out, int docstat)
           }
 
           if (!(onl & D_NL))
-            fputc('\n', out);
-          fputs(".IP\n", out);
+            fputc('\n', fp_out);
+          fputs(".IP\n", fp_out);
 
           docstat |= D_NP;
           break;
         }
         case SP_START_TAB:
         {
-          fputs("\n.IP\n.EX\n", out);
+          fputs("\n.IP\n.EX\n", fp_out);
           docstat |= D_TAB | D_NL;
           break;
         }
         case SP_END_TAB:
         {
-          fputs("\n.EE\n", out);
+          fputs("\n.EE\n", fp_out);
           docstat &= ~D_TAB;
           docstat |= D_NL;
           break;
         }
         case SP_START_DL:
         {
-          fputs(".RS\n.PD 0\n", out);
+          fputs(".RS\n.PD 0\n", fp_out);
           docstat |= D_DL;
           break;
         }
         case SP_DT:
         {
-          fputs(".TP\n", out);
+          fputs(".TP\n", fp_out);
           break;
         }
         case SP_DD:
         {
           if (docstat & D_IL)
-            fputs(".TP\n\\(hy ", out);
+            fputs(".TP\n\\(hy ", fp_out);
           else
-            fputs("\n", out);
+            fputs("\n", fp_out);
           break;
         }
         case SP_END_DL:
         {
-          fputs(".RE\n.PD 1", out);
+          fputs(".RE\n.PD 1", fp_out);
           docstat &= ~D_DL;
           break;
         }
         case SP_START_IL:
         {
-          fputs(".RS\n.PD 0\n", out);
+          fputs(".RS\n.PD 0\n", fp_out);
           docstat |= D_IL;
           break;
         }
         case SP_END_IL:
         {
-          fputs(".RE\n.PD 1", out);
+          fputs(".RE\n.PD 1", fp_out);
           docstat &= ~D_DL;
           break;
         }
@@ -472,23 +517,23 @@ static int print_it(int special, char *str, FILE *out, int docstat)
             for (; *str; str++)
             {
               if (*str == '"')
-                fputs("\"", out);
+                fputs("\"", fp_out);
               else if (*str == '\\')
-                fputs("\\\\", out);
+                fputs("\\\\", fp_out);
               else if (*str == '-')
-                fputs("\\-", out);
+                fputs("\\-", fp_out);
               else if (strncmp(str, "``", 2) == 0)
               {
-                fputs("\\(lq", out);
+                fputs("\\(lq", fp_out);
                 str++;
               }
               else if (strncmp(str, "''", 2) == 0)
               {
-                fputs("\\(rq", out);
+                fputs("\\(rq", fp_out);
                 str++;
               }
               else
-                fputc(*str, out);
+                fputc(*str, fp_out);
             }
           }
           break;
@@ -505,31 +550,31 @@ static int print_it(int special, char *str, FILE *out, int docstat)
         case SP_END_FT:
         {
           if (docstat & D_EM)
-            fputs("</emphasis>", out);
+            fputs("</emphasis>", fp_out);
           if (docstat & D_BF)
-            fputs("</emphasis>", out);
+            fputs("</emphasis>", fp_out);
           if (docstat & D_TT)
-            fputs("</literal>", out);
+            fputs("</literal>", fp_out);
           docstat &= ~(D_EM | D_BF | D_TT);
           break;
         }
         case SP_START_BF:
         {
-          fputs("<emphasis role=\"bold\">", out);
+          fputs("<emphasis role=\"bold\">", fp_out);
           docstat |= D_BF;
           docstat &= ~(D_EM | D_TT);
           break;
         }
         case SP_START_EM:
         {
-          fputs("<emphasis>", out);
+          fputs("<emphasis>", fp_out);
           docstat |= D_EM;
           docstat &= ~(D_BF | D_TT);
           break;
         }
         case SP_START_TT:
         {
-          fputs("<literal>", out);
+          fputs("<literal>", fp_out);
           docstat |= D_TT;
           docstat &= ~(D_BF | D_EM);
           break;
@@ -540,7 +585,7 @@ static int print_it(int special, char *str, FILE *out, int docstat)
             docstat |= onl;
           else
           {
-            fputc('\n', out);
+            fputc('\n', fp_out);
             docstat |= D_NL;
           }
           break;
@@ -554,10 +599,10 @@ static int print_it(int special, char *str, FILE *out, int docstat)
           }
 
           if (!(onl & D_NL))
-            fputc('\n', out);
+            fputc('\n', fp_out);
           if (docstat & D_PA)
-            fputs("</para>\n", out);
-          fputs("<para>\n", out);
+            fputs("</para>\n", fp_out);
+          fputs("<para>\n", fp_out);
 
           docstat |= D_NP;
           docstat |= D_PA;
@@ -566,7 +611,7 @@ static int print_it(int special, char *str, FILE *out, int docstat)
         }
         case SP_END_PAR:
         {
-          fputs("</para>\n", out);
+          fputs("</para>\n", fp_out);
           docstat &= ~D_PA;
           break;
         }
@@ -574,16 +619,16 @@ static int print_it(int special, char *str, FILE *out, int docstat)
         {
           if (docstat & D_PA)
           {
-            fputs("\n</para>\n", out);
+            fputs("\n</para>\n", fp_out);
             docstat &= ~D_PA;
           }
-          fputs("\n<screen>\n", out);
+          fputs("\n<screen>\n", fp_out);
           docstat |= D_TAB | D_NL;
           break;
         }
         case SP_END_TAB:
         {
-          fputs("</screen>", out);
+          fputs("</screen>", fp_out);
           docstat &= ~D_TAB;
           docstat |= D_NL;
           break;
@@ -592,39 +637,39 @@ static int print_it(int special, char *str, FILE *out, int docstat)
         {
           if (docstat & D_PA)
           {
-            fputs("\n</para>\n", out);
+            fputs("\n</para>\n", fp_out);
             docstat &= ~D_PA;
           }
-          fputs("\n<informaltable>\n<tgroup cols=\"2\">\n<tbody>\n", out);
+          fputs("\n<informaltable>\n<tgroup cols=\"2\">\n<tbody>\n", fp_out);
           docstat |= D_DL;
           break;
         }
         case SP_DT:
         {
-          fputs("<row><entry>", out);
+          fputs("<row><entry>", fp_out);
           break;
         }
         case SP_DD:
         {
           docstat |= D_DD;
           if (docstat & D_DL)
-            fputs("</entry><entry>", out);
+            fputs("</entry><entry>", fp_out);
           else
-            fputs("<listitem><para>", out);
+            fputs("<listitem><para>", fp_out);
           break;
         }
         case SP_END_DD:
         {
           if (docstat & D_DL)
-            fputs("</entry></row>\n", out);
+            fputs("</entry></row>\n", fp_out);
           else
-            fputs("</para></listitem>", out);
+            fputs("</para></listitem>", fp_out);
           docstat &= ~D_DD;
           break;
         }
         case SP_END_DL:
         {
-          fputs("</entry></row></tbody></tgroup></informaltable>\n", out);
+          fputs("</entry></row></tbody></tgroup></informaltable>\n", fp_out);
           docstat &= ~(D_DD | D_DL);
           break;
         }
@@ -632,28 +677,28 @@ static int print_it(int special, char *str, FILE *out, int docstat)
         {
           if (docstat & D_PA)
           {
-            fputs("\n</para>\n", out);
+            fputs("\n</para>\n", fp_out);
             docstat &= ~D_PA;
           }
-          fputs("\n<itemizedlist>\n", out);
+          fputs("\n<itemizedlist>\n", fp_out);
           docstat |= D_IL;
           break;
         }
         case SP_END_IL:
         {
-          fputs("</para></listitem></itemizedlist>\n", out);
+          fputs("</para></listitem></itemizedlist>\n", fp_out);
           docstat &= ~(D_DD | D_DL);
           break;
         }
         case SP_END_SECT:
         {
-          fputs("</sect2>", out);
+          fputs("</sect2>", fp_out);
           break;
         }
         case SP_STR:
         {
           if (docstat & D_TAB)
-            sgml_fputs(str, out);
+            sgml_fputs(str, fp_out);
           else
           {
             while (*str)
@@ -662,16 +707,16 @@ static int print_it(int special, char *str, FILE *out, int docstat)
               {
                 if (strncmp(str, "``", 2) == 0)
                 {
-                  fputs("<quote>", out);
+                  fputs("<quote>", fp_out);
                   str++;
                 }
                 else if (strncmp(str, "''", 2) == 0)
                 {
-                  fputs("</quote>", out);
+                  fputs("</quote>", fp_out);
                   str++;
                 }
                 else
-                  sgml_fputc(*str, out);
+                  sgml_fputc(*str, fp_out);
               }
             }
           }
@@ -680,7 +725,7 @@ static int print_it(int special, char *str, FILE *out, int docstat)
       }
       break;
     }
-    /* make gcc happy (unreached) */
+
     default:
       break;
   }
@@ -690,9 +735,7 @@ static int print_it(int special, char *str, FILE *out, int docstat)
 
 /* close eventually-open environments. */
 
-static int fd_recurse = 0;
-
-static int flush_doc(int docstat, FILE *out)
+static int flush_doc(enum OutputFormats format, int docstat, FILE *fp_out)
 {
   if (docstat & D_INIT)
     return D_INIT;
@@ -704,69 +747,69 @@ static int flush_doc(int docstat, FILE *out)
   }
 
   if (docstat & (D_PA))
-    docstat = print_it(SP_END_PAR, NULL, out, docstat);
+    docstat = print_it(format, SP_END_PAR, NULL, fp_out, docstat);
 
   if (docstat & (D_TAB))
-    docstat = print_it(SP_END_TAB, NULL, out, docstat);
+    docstat = print_it(format, SP_END_TAB, NULL, fp_out, docstat);
 
   if (docstat & (D_DL))
-    docstat = print_it(SP_END_DL, NULL, out, docstat);
+    docstat = print_it(format, SP_END_DL, NULL, fp_out, docstat);
 
   if (docstat & (D_EM | D_BF | D_TT))
-    docstat = print_it(SP_END_FT, NULL, out, docstat);
+    docstat = print_it(format, SP_END_FT, NULL, fp_out, docstat);
 
-  print_it(SP_END_SECT, NULL, out, docstat);
-  print_it(SP_NEWLINE, NULL, out, 0);
+  print_it(format, SP_END_SECT, NULL, fp_out, docstat);
+  print_it(format, SP_NEWLINE, NULL, fp_out, 0);
 
   fd_recurse--;
   return D_INIT;
 }
 
-static int commit_buf(char *buf, char **d, FILE *out, int docstat)
+static int commit_buf(enum OutputFormats format, char *buf, char **d, FILE *fp_out, int docstat)
 {
   if (*d > buf)
   {
     **d = '\0';
-    docstat = print_it(SP_STR, buf, out, docstat);
+    docstat = print_it(format, SP_STR, buf, fp_out, docstat);
     *d = buf;
   }
 
   return docstat;
 }
 
-/**
- ** Documentation line parser
- **
- ** The following code parses specially formatted documentation
- ** comments in init.h.
- **
- ** The format is very remotely inspired by nroff. Most important, it's
- ** easy to parse and convert, and it was easy to generate from the SGML
- ** source of neomutt's original manual.
- **
- ** - \fI switches to italics
- ** - \fB switches to boldface
- ** - \fP switches to normal display
- ** - .dl on a line starts a definition list (name taken taken from HTML).
- ** - .dt starts a term in a definition list.
- ** - .dd starts a definition in a definition list.
- ** - .de on a line finishes a definition list.
- ** - .il on a line starts an itemized list
- ** - .dd starts an item in an itemized list
- ** - .ie on a line finishes an itemized list
- ** - .ts on a line starts a "tscreen" environment (name taken from SGML).
- ** - .te on a line finishes this environment.
- ** - .pp on a line starts a paragraph.
- ** - \$word will be converted to a reference to word, where appropriate.
- **   Note that \$$word is possible as well.
- ** - '. ' in the beginning of a line expands to two space characters.
- **   This is used to protect indentations in tables.
- **/
+/*
+ * Documentation line parser
+ *
+ * The following code parses specially formatted documentation
+ * comments in init.h.
+ *
+ * The format is very remotely inspired by nroff. Most important, it's
+ * easy to parse and convert, and it was easy to generate from the SGML
+ * source of neomutt's original manual.
+ *
+ * - \fI switches to italics
+ * - \fB switches to boldface
+ * - \fP switches to normal display
+ * - .dl on a line starts a definition list (name taken taken from HTML).
+ * - .dt starts a term in a definition list.
+ * - .dd starts a definition in a definition list.
+ * - .de on a line finishes a definition list.
+ * - .il on a line starts an itemized list
+ * - .dd starts an item in an itemized list
+ * - .ie on a line finishes an itemized list
+ * - .ts on a line starts a "tscreen" environment (name taken from SGML).
+ * - .te on a line finishes this environment.
+ * - .pp on a line starts a paragraph.
+ * - \$word will be converted to a reference to word, where appropriate.
+ *   Note that \$$word is possible as well.
+ * - '. ' in the beginning of a line expands to two space characters.
+ *   This is used to protect indentations in tables.
+ */
 
 /**
  * sgml_id_fputs - reduce CDATA to ID
  */
-static int sgml_id_fputs(const char *s, FILE *out)
+static int sgml_id_fputs(const char *s, FILE *fp_out)
 {
   char id;
 
@@ -782,32 +825,33 @@ static int sgml_id_fputs(const char *s, FILE *out)
     if (*s == '>' && !*(s + 1))
       break;
 
-    if (fputc((unsigned int) id, out) == EOF)
+    if (fputc((unsigned int) id, fp_out) == EOF)
       return EOF;
   }
 
   return 0;
 }
 
-void print_ref(FILE *out, bool output_dollar, const char *ref)
+static void print_ref(enum OutputFormats format, FILE *fp_out,
+                      bool output_dollar, const char *ref)
 {
-  switch (OutputFormat)
+  switch (format)
   {
     case F_CONF:
     case F_MAN:
       if (output_dollar)
-        putc('$', out);
-      fputs(ref, out);
+        putc('$', fp_out);
+      fputs(ref, fp_out);
       break;
 
     case F_SGML:
-      fputs("<link linkend=\"", out);
-      sgml_id_fputs(ref, out);
-      fputs("\">", out);
+      fputs("<link linkend=\"", fp_out);
+      sgml_id_fputs(ref, fp_out);
+      fputs("\">", fp_out);
       if (output_dollar)
-        fputc('$', out);
-      sgml_fputs(ref, out);
-      fputs("</link>", out);
+        fputc('$', fp_out);
+      sgml_fputs(ref, fp_out);
+      fputs("</link>", fp_out);
       break;
 
     default:
@@ -815,7 +859,7 @@ void print_ref(FILE *out, bool output_dollar, const char *ref)
   }
 }
 
-static int handle_docline(char *l, FILE *out, int docstat)
+static int handle_docline(enum OutputFormats format, char *l, FILE *fp_out, int docstat)
 {
   char buf[BUFSIZE];
   char *s = NULL, *d = NULL;
@@ -825,19 +869,19 @@ static int handle_docline(char *l, FILE *out, int docstat)
     fprintf(stderr, "%s: handle_docline `%s'\n", Progname, l);
 
   if (strncmp(l, ".pp", 3) == 0)
-    return print_it(SP_NEWPAR, NULL, out, docstat);
+    return print_it(format, SP_NEWPAR, NULL, fp_out, docstat);
   if (strncmp(l, ".ts", 3) == 0)
-    return print_it(SP_START_TAB, NULL, out, docstat);
+    return print_it(format, SP_START_TAB, NULL, fp_out, docstat);
   if (strncmp(l, ".te", 3) == 0)
-    return print_it(SP_END_TAB, NULL, out, docstat);
+    return print_it(format, SP_END_TAB, NULL, fp_out, docstat);
   if (strncmp(l, ".dl", 3) == 0)
-    return print_it(SP_START_DL, NULL, out, docstat);
+    return print_it(format, SP_START_DL, NULL, fp_out, docstat);
   if (strncmp(l, ".de", 3) == 0)
-    return print_it(SP_END_DL, NULL, out, docstat);
+    return print_it(format, SP_END_DL, NULL, fp_out, docstat);
   if (strncmp(l, ".il", 3) == 0)
-    return print_it(SP_START_IL, NULL, out, docstat);
+    return print_it(format, SP_START_IL, NULL, fp_out, docstat);
   if (strncmp(l, ".ie", 3) == 0)
-    return print_it(SP_END_IL, NULL, out, docstat);
+    return print_it(format, SP_END_IL, NULL, fp_out, docstat);
   if (strncmp(l, ". ", 2) == 0)
     *l = ' ';
 
@@ -855,48 +899,48 @@ static int handle_docline(char *l, FILE *out, int docstat)
     }
     else if (strncmp(s, "\\fI", 3) == 0)
     {
-      docstat = commit_buf(buf, &d, out, docstat);
-      docstat = print_it(SP_START_EM, NULL, out, docstat);
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+      docstat = print_it(format, SP_START_EM, NULL, fp_out, docstat);
       s += 2;
     }
     else if (strncmp(s, "\\fB", 3) == 0)
     {
-      docstat = commit_buf(buf, &d, out, docstat);
-      docstat = print_it(SP_START_BF, NULL, out, docstat);
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+      docstat = print_it(format, SP_START_BF, NULL, fp_out, docstat);
       s += 2;
     }
     else if (strncmp(s, "\\fC", 3) == 0)
     {
-      docstat = commit_buf(buf, &d, out, docstat);
-      docstat = print_it(SP_START_TT, NULL, out, docstat);
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+      docstat = print_it(format, SP_START_TT, NULL, fp_out, docstat);
       s += 2;
     }
     else if (strncmp(s, "\\fP", 3) == 0)
     {
-      docstat = commit_buf(buf, &d, out, docstat);
-      docstat = print_it(SP_END_FT, NULL, out, docstat);
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+      docstat = print_it(format, SP_END_FT, NULL, fp_out, docstat);
       s += 2;
     }
     else if (strncmp(s, ".dt", 3) == 0)
     {
       if (docstat & D_DD)
       {
-        docstat = commit_buf(buf, &d, out, docstat);
-        docstat = print_it(SP_END_DD, NULL, out, docstat);
+        docstat = commit_buf(format, buf, &d, fp_out, docstat);
+        docstat = print_it(format, SP_END_DD, NULL, fp_out, docstat);
       }
-      docstat = commit_buf(buf, &d, out, docstat);
-      docstat = print_it(SP_DT, NULL, out, docstat);
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+      docstat = print_it(format, SP_DT, NULL, fp_out, docstat);
       s += 3;
     }
     else if (strncmp(s, ".dd", 3) == 0)
     {
       if ((docstat & D_IL) && (docstat & D_DD))
       {
-        docstat = commit_buf(buf, &d, out, docstat);
-        docstat = print_it(SP_END_DD, NULL, out, docstat);
+        docstat = commit_buf(format, buf, &d, fp_out, docstat);
+        docstat = print_it(format, SP_END_DD, NULL, fp_out, docstat);
       }
-      docstat = commit_buf(buf, &d, out, docstat);
-      docstat = print_it(SP_DD, NULL, out, docstat);
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+      docstat = print_it(format, SP_DD, NULL, fp_out, docstat);
       s += 3;
     }
     else if (*s == '$')
@@ -920,10 +964,10 @@ static int handle_docline(char *l, FILE *out, int docstat)
         while (isalnum((unsigned char) *s) || (*s && strchr("-_<>", *s)))
           s++;
 
-        docstat = commit_buf(buf, &d, out, docstat);
+        docstat = commit_buf(format, buf, &d, fp_out, docstat);
         const char save = *s;
         *s = '\0';
-        print_ref(out, output_dollar, ref);
+        print_ref(format, fp_out, output_dollar, ref);
         *s = save;
         s--;
       }
@@ -932,60 +976,9 @@ static int handle_docline(char *l, FILE *out, int docstat)
       *d++ = *s;
   }
 
-  docstat = commit_buf(buf, &d, out, docstat);
-  return print_it(SP_NEWLINE, NULL, out, docstat);
+  docstat = commit_buf(format, buf, &d, fp_out, docstat);
+  return print_it(format, SP_NEWLINE, NULL, fp_out, docstat);
 }
-
-/* note: the following enum must be in the same order as the
- * following string definitions!
- */
-
-/**
- * enum DataType - User-variable types
- */
-enum DataType
-{
-  DT_NONE = 0,
-  DT_ADDRESS,
-  DT_BOOL,
-  DT_COMMAND,
-  DT_ENUM,
-  DT_LONG,
-  DT_MBTABLE,
-  DT_NUMBER,
-  DT_PATH,
-  DT_QUAD,
-  DT_REGEX,
-  DT_SLIST,
-  DT_SORT,
-  DT_STRING,
-  DT_SYNONYM,
-};
-
-// clang-format off
-struct VariableTypes
-{
-  char *machine;
-  char *human;
-} types[] = {
-  { "DT_NONE",    "-none-"             },
-  { "DT_ADDRESS", "e-mail address"     },
-  { "DT_BOOL",    "boolean"            },
-  { "DT_COMMAND", "command"            },
-  { "DT_ENUM",    "enumeration"        },
-  { "DT_LONG",    "number (long)"      },
-  { "DT_MBTABLE", "character string"   },
-  { "DT_NUMBER",  "number"             },
-  { "DT_PATH",    "path"               },
-  { "DT_QUAD",    "quadoption"         },
-  { "DT_REGEX",   "regular expression" },
-  { "DT_SLIST",   "string list"        },
-  { "DT_SORT",    "sort order"         },
-  { "DT_STRING",  "string"             },
-  { "DT_SYNONYM", NULL                 },
-  { NULL,         NULL                 },
-};
-// clang-format on
 
 static int buf_to_type(const char *s)
 {
@@ -1054,6 +1047,7 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
     }
     case DT_ADDRESS:
     case DT_COMMAND:
+    case DT_MAILBOX:
     case DT_MBTABLE:
     case DT_PATH:
     case DT_REGEX:
@@ -1094,26 +1088,26 @@ static void char_to_escape(char *dest, unsigned int c)
   }
 }
 
-static void conf_char_to_escape(unsigned int c, FILE *out)
+static void conf_char_to_escape(unsigned int c, FILE *fp_out)
 {
   char buf[16];
   char_to_escape(buf, c);
-  fputs(buf, out);
+  fputs(buf, fp_out);
 }
 
-static void conf_print_strval(const char *v, FILE *out)
+static void conf_print_strval(const char *v, FILE *fp_out)
 {
   for (; *v; v++)
   {
     if (*v < ' ' || *v & 0x80)
     {
-      conf_char_to_escape((unsigned int) *v, out);
+      conf_char_to_escape((unsigned int) *v, fp_out);
       continue;
     }
 
     if (*v == '"' || *v == '\\')
-      fputc('\\', out);
-    fputc(*v, out);
+      fputc('\\', fp_out);
+    fputc(*v, fp_out);
   }
 }
 
@@ -1122,37 +1116,36 @@ static const char *type2human(int type)
   return types[type].human;
 }
 
-/**
- ** Configuration line parser
- **
- ** The following code parses a line from init.h which declares
- ** a configuration variable.
- **
- **/
+/*
+ * Configuration line parser
+ *
+ * The following code parses a line from init.h which declares
+ * a configuration variable.
+ */
 
-static void man_print_strval(const char *v, FILE *out)
+static void man_print_strval(const char *v, FILE *fp_out)
 {
   for (; *v; v++)
   {
     if (*v < ' ' || *v & 0x80)
     {
-      fputc('\\', out);
-      conf_char_to_escape((unsigned int) *v, out);
+      fputc('\\', fp_out);
+      conf_char_to_escape((unsigned int) *v, fp_out);
       continue;
     }
 
     if (*v == '"')
-      fputs("\"", out);
+      fputs("\"", fp_out);
     else if (*v == '\\')
-      fputs("\\\\", out);
+      fputs("\\\\", fp_out);
     else if (*v == '-')
-      fputs("\\-", out);
+      fputs("\\-", fp_out);
     else
-      fputc(*v, out);
+      fputc(*v, fp_out);
   }
 }
 
-static void sgml_print_strval(const char *v, FILE *out)
+static void sgml_print_strval(const char *v, FILE *fp_out)
 {
   char buf[16];
   for (; *v; v++)
@@ -1160,73 +1153,74 @@ static void sgml_print_strval(const char *v, FILE *out)
     if (*v < ' ' || *v & 0x80)
     {
       char_to_escape(buf, (unsigned int) *v);
-      sgml_fputs(buf, out);
+      sgml_fputs(buf, fp_out);
       continue;
     }
-    sgml_fputc((unsigned int) *v, out);
+    sgml_fputc((unsigned int) *v, fp_out);
   }
 }
 
-static void print_confline(const char *varname, int type, const char *val, FILE *out)
+static void print_confline(enum OutputFormats format, const char *varname,
+                           int type, const char *val, FILE *fp_out)
 {
   if (type == DT_SYNONYM)
     return;
 
-  switch (OutputFormat)
+  switch (format)
   {
     /* configuration file */
     case F_CONF:
     {
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) ||
-          (type == DT_COMMAND))
+          (type == DT_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
+          (type == DT_PATH) || (type == DT_COMMAND))
       {
-        fprintf(out, "\n# set %s=\"", varname);
-        conf_print_strval(val, out);
-        fputs("\"", out);
+        fprintf(fp_out, "\n# set %s=\"", varname);
+        conf_print_strval(val, fp_out);
+        fputs("\"", fp_out);
       }
       else
-        fprintf(out, "\n# set %s=%s", varname, val);
+        fprintf(fp_out, "\n# set %s=%s", varname, val);
 
-      fprintf(out, "\n#\n# Name: %s", varname);
-      fprintf(out, "\n# Type: %s", type2human(type));
+      fprintf(fp_out, "\n#\n# Name: %s", varname);
+      fprintf(fp_out, "\n# Type: %s", type2human(type));
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) ||
-          (type == DT_COMMAND))
+          (type == DT_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
+          (type == DT_PATH) || (type == DT_COMMAND))
       {
-        fputs("\n# Default: \"", out);
-        conf_print_strval(val, out);
-        fputs("\"", out);
+        fputs("\n# Default: \"", fp_out);
+        conf_print_strval(val, fp_out);
+        fputs("\"", fp_out);
       }
       else
-        fprintf(out, "\n# Default: %s", val);
+        fprintf(fp_out, "\n# Default: %s", val);
 
-      fputs("\n# ", out);
+      fputs("\n# ", fp_out);
       break;
     }
 
     /* manual page */
     case F_MAN:
     {
-      fprintf(out, "\n.TP\n.B %s\n", varname);
-      fputs(".nf\n", out);
-      fprintf(out, "Type: %s\n", type2human(type));
+      fprintf(fp_out, "\n.TP\n.B %s\n", varname);
+      fputs(".nf\n", fp_out);
+      fprintf(fp_out, "Type: %s\n", type2human(type));
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) ||
-          (type == DT_COMMAND))
+          (type == DT_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
+          (type == DT_PATH) || (type == DT_COMMAND))
       {
-        fputs("Default: \"", out);
-        man_print_strval(val, out);
-        fputs("\"\n", out);
+        fputs("Default: \"", fp_out);
+        man_print_strval(val, fp_out);
+        fputs("\"\n", fp_out);
       }
       else
       {
-        fputs("Default: ", out);
-        man_print_strval(val, out);
-        fputs("\n", out);
+        fputs("Default: ", fp_out);
+        man_print_strval(val, fp_out);
+        fputs("\n", fp_out);
       }
 
-      fputs(".fi", out);
+      fputs(".fi", fp_out);
 
       break;
     }
@@ -1234,30 +1228,30 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
     /* SGML based manual */
     case F_SGML:
     {
-      fputs("\n<sect2 id=\"", out);
-      sgml_id_fputs(varname, out);
-      fputs("\">\n<title>", out);
-      sgml_fputs(varname, out);
-      fprintf(out, "</title>\n<literallayout>Type: %s", type2human(type));
+      fputs("\n<sect2 id=\"", fp_out);
+      sgml_id_fputs(varname, fp_out);
+      fputs("\">\n<title>", fp_out);
+      sgml_fputs(varname, fp_out);
+      fprintf(fp_out, "</title>\n<literallayout>Type: %s", type2human(type));
 
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) ||
-          (type == DT_COMMAND))
+          (type == DT_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
+          (type == DT_PATH) || (type == DT_COMMAND))
       {
         if (val && *val)
         {
-          fputs("\nDefault: <quote><literal>", out);
-          sgml_print_strval(val, out);
-          fputs("</literal></quote>", out);
+          fputs("\nDefault: <quote><literal>", fp_out);
+          sgml_print_strval(val, fp_out);
+          fputs("</literal></quote>", fp_out);
         }
         else
         {
-          fputs("\nDefault: (empty)", out);
+          fputs("\nDefault: (empty)", fp_out);
         }
-        fputs("</literallayout>\n", out);
+        fputs("</literallayout>\n", fp_out);
       }
       else
-        fprintf(out, "\nDefault: %s</literallayout>\n", val);
+        fprintf(fp_out, "\nDefault: %s</literallayout>\n", val);
       break;
     }
     /* make gcc happy */
@@ -1266,7 +1260,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
   }
 }
 
-static void handle_confline(char *s, FILE *out)
+static void handle_confline(enum OutputFormats format, char *s, FILE *fp_out)
 {
   char varname[BUFSIZE];
   char buf[BUFSIZE];
@@ -1350,28 +1344,25 @@ static void handle_confline(char *s, FILE *out)
   }
 
   pretty_default(val, sizeof(val), tmp, type);
-  print_confline(varname, type, val, out);
+  print_confline(format, varname, type, val, fp_out);
 }
 
-static void makedoc(FILE *in, FILE *out)
+static void makedoc(enum OutputFormats format, FILE *fp_in, FILE *fp_out)
 {
   char buffer[BUFSIZE];
   char token[BUFSIZE];
   char *p = NULL;
-  int active = 0;
+  bool active = false;
   int line = 0;
   int docstat = D_INIT;
 
-  while ((fgets(buffer, sizeof(buffer), in)))
+  while ((fgets(buffer, sizeof(buffer), fp_in)))
   {
     line++;
     p = strchr(buffer, '\n');
     if (!p)
     {
-      fprintf(stderr,
-              "%s: Line %d too long.  Ask a wizard to enlarge\n"
-              "%s: my buffer size.\n",
-              Progname, line, Progname);
+      fprintf(stderr, "%s: Line %d too long\n", Progname, line);
       exit(1);
     }
     else
@@ -1382,33 +1373,32 @@ static void makedoc(FILE *in, FILE *out)
       continue;
 
     if (Debug)
-    {
       fprintf(stderr, "%s: line %d.  first token: \"%s\".\n", Progname, line, token);
-    }
 
     if (strcmp(token, "/*++*/") == 0)
-      active = 1;
+      active = true;
     else if (strcmp(token, "/*--*/") == 0)
     {
-      docstat = flush_doc(docstat, out);
-      active = 0;
+      docstat = flush_doc(format, docstat, fp_out);
+      active = false;
     }
     else if (active && ((strcmp(token, "/**") == 0) || (strcmp(token, "**") == 0)))
-      docstat = handle_docline(p, out, docstat);
+      docstat = handle_docline(format, p, fp_out, docstat);
     else if (active && (strcmp(token, "{") == 0))
     {
-      docstat = flush_doc(docstat, out);
-      handle_confline(p, out);
+      docstat = flush_doc(format, docstat, fp_out);
+      handle_confline(format, p, fp_out);
     }
   }
-  flush_doc(docstat, out);
-  fputs("\n", out);
+  flush_doc(format, docstat, fp_out);
+  fputs("\n", fp_out);
 }
 
 int main(int argc, char *argv[])
 {
   int c;
-  FILE *f = NULL;
+  FILE *fp = NULL;
+  enum OutputFormats format = F_NONE;
 
   Progname = strrchr(argv[0], '/');
   if (Progname)
@@ -1421,13 +1411,13 @@ int main(int argc, char *argv[])
     switch (c)
     {
       case 'c':
-        OutputFormat = F_CONF;
+        format = F_CONF;
         break;
       case 'm':
-        OutputFormat = F_MAN;
+        format = F_MAN;
         break;
       case 's':
-        OutputFormat = F_SGML;
+        format = F_SGML;
         break;
       case 'd':
         Debug++;
@@ -1442,22 +1432,22 @@ int main(int argc, char *argv[])
 
   if (optind != argc)
   {
-    f = fopen(argv[optind], "r");
-    if (!f)
+    fp = fopen(argv[optind], "r");
+    if (!fp)
     {
       fprintf(stderr, "%s: Can't open %s (%s).\n", Progname, argv[optind], strerror(errno));
       exit(1);
     }
   }
   else
-    f = stdin;
+    fp = stdin;
 
-  switch (OutputFormat)
+  switch (format)
   {
     case F_CONF:
     case F_MAN:
     case F_SGML:
-      makedoc(f, stdout);
+      makedoc(format, fp, stdout);
       break;
     default:
     {
@@ -1466,8 +1456,8 @@ int main(int argc, char *argv[])
     }
   }
 
-  if (f != stdin)
-    fclose(f);
+  if (fp != stdin)
+    fclose(fp);
 
   return 0;
 }
