@@ -64,8 +64,6 @@
 #include "sort.h"
 #include "status.h"
 #include "bcache/lib.h"
-#include "maildir/lib.h"
-#include "ncrypt/lib.h"
 #include "pattern/lib.h"
 
 #ifndef ISPELL

@@ -34,6 +34,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -50,7 +51,6 @@
 #include "format_flags.h"
 #include "hdrline.h"
 #include "hook.h"
-#include "init.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_header.h"
