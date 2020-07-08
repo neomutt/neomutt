@@ -72,6 +72,7 @@
 #include "nntp/lib.h"
 #include "notmuch/lib.h"
 #include "pop/lib.h"
+#include "send/lib.h"
 #include "store/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
@@ -1551,19 +1552,13 @@ struct ConfigSet *init_config(size_t size)
   typedef bool (*config_init_t)(struct ConfigSet * cs);
 
   static config_init_t config_list[] = {
-    config_init_main,
-    config_init_autocrypt,
-    config_init_conn,
-    config_init_hcache,
-    config_init_history,
-    config_init_imap,
-    config_init_maildir,
-    config_init_mbox,
-    config_init_ncrypt,
-    config_init_nntp,
-    config_init_notmuch,
-    config_init_pop,
-    NULL,
+    config_init_main,    config_init_autocrypt,
+    config_init_conn,    config_init_hcache,
+    config_init_history, config_init_imap,
+    config_init_maildir, config_init_mbox,
+    config_init_ncrypt,  config_init_nntp,
+    config_init_notmuch, config_init_pop,
+    config_init_send,    NULL,
   };
 
   struct ConfigSet *cs = cs_new(size);
@@ -1753,23 +1748,5 @@ int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   mutt_buffer_printf(err, _("Option %s may not be set when in attach-message mode"),
                      cdef->name);
-  return CSR_ERR_INVALID;
-}
-
-/**
- * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator()
- */
-int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                          intptr_t value, struct Buffer *err)
-{
-  const int min_length = 78; // Recommendations from RFC5233
-  const int max_length = 998;
-
-  if ((value >= min_length) && (value <= max_length))
-    return CSR_SUCCESS;
-
-  // L10N: This applies to the "$wrap_headers" config variable.
-  mutt_buffer_printf(err, _("Option %s must be between %d and %d inclusive"),
-                     cdef->name, min_length, max_length);
   return CSR_ERR_INVALID;
 }

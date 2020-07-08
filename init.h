@@ -47,7 +47,6 @@ int hcache_validator     (const struct ConfigSet *cs, const struct ConfigDef *cd
 int multipart_validator  (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 int pager_validator      (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 int reply_validator      (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
-int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 
 struct ConfigSet *    init_config            (size_t size);
 int                   mutt_command_complete  (char *buf, size_t buflen, int pos, int numtabs);
