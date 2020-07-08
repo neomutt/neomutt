@@ -453,7 +453,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   if ((C_Sort & SORT_MASK) == SORT_THREADS)
   {
     mutt_thread_collapse_collapsed(ctx->threads);
-    ctx->vsize = mutt_set_vnum(ctx->mailbox, mx_msg_padding_size(ctx->mailbox));
+    ctx->vsize = mutt_set_vnum(ctx->mailbox);
   }
 
   if (m->verbose)
