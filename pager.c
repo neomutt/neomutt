@@ -2396,7 +2396,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
             bool verbose = Context->mailbox->verbose;
             Context->mailbox->verbose = false;
-            update_index(rd.menu, Context, check, oldcount, e->env->message_id);
+            mutt_update_index(rd.menu, Context, check, oldcount, e);
             Context->mailbox->verbose = verbose;
 
             rd.menu->max = Context->mailbox->vcount;
