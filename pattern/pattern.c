@@ -254,6 +254,10 @@ int mutt_pattern_func(int op, char *prompt)
 
   char *simple = mutt_buffer_strdup(buf);
   mutt_check_simple(buf, NONULL(C_SimpleSearch));
+  const char *pbuf = buf->data;
+  while (*pbuf == ' ')
+    pbuf++;
+  const bool match_all = mutt_str_equal(pbuf, "~A");
 
   mutt_buffer_init(&err);
   err.dsize = 256;
@@ -292,10 +296,11 @@ int mutt_pattern_func(int op, char *prompt)
       e->limited = false;
       e->collapsed = false;
       e->num_hidden = 0;
-      if (mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
+      if (match_all ||
+          mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
       {
         e->vnum = m->vcount;
-        e->limited = true;
+        e->limited = !match_all;
         m->v2r[m->vcount] = i;
         m->vcount++;
         struct Body *b = e->body;
@@ -342,10 +347,7 @@ int mutt_pattern_func(int op, char *prompt)
       mutt_error(_("No messages matched criteria"));
 
     /* record new limit pattern, unless match all */
-    const char *pbuf = buf->data;
-    while (*pbuf == ' ')
-      pbuf++;
-    if (!mutt_str_equal(pbuf, "~A"))
+    if (!match_all)
     {
       Context->pattern = simple;
       simple = NULL; /* don't clobber it */

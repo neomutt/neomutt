@@ -499,6 +499,10 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
         e->vnum = 1;
         e->limited = true;
       }
+      else
+      {
+        e->limited = false;
+      }
     }
     /* Need a second sort to set virtual numbers and redraw the tree */
     mutt_sort_headers(ctx, false);
@@ -564,6 +568,10 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
         ctx->mailbox->vcount++;
         struct Body *b = e->body;
         ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
+      }
+      else
+      {
+        e->limited = false;
       }
     }
   }
