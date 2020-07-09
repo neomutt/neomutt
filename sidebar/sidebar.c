@@ -24,7 +24,7 @@
  */
 
 /**
- * @page sidebar GUI display the mailboxes in a side panel
+ * @page sidebar_sidebar GUI display the mailboxes in a side panel
  *
  * GUI display the mailboxes in a side panel
  */
@@ -47,22 +47,6 @@
 #include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
-
-/* These Config Variables are only used in sidebar.c */
-short C_SidebarComponentDepth; ///< Config: (sidebar) Strip leading path components from sidebar folders
-char *C_SidebarDelimChars; ///< Config: (sidebar) Characters that separate nested folders
-char *C_SidebarDividerChar; ///< Config: (sidebar) Character to draw between the sidebar and index
-bool C_SidebarFolderIndent; ///< Config: (sidebar) Indent nested folders
-char *C_SidebarFormat; ///< Config: (sidebar) printf-like format string for the sidebar panel
-char *C_SidebarIndentString; ///< Config: (sidebar) Indent nested folders using this string
-bool C_SidebarNewMailOnly; ///< Config: (sidebar) Only show folders with new/flagged mail
-bool C_SidebarNonEmptyMailboxOnly; ///< Config: (sidebar) Only show folders with a non-zero number of mail
-bool C_SidebarNextNewWrap; ///< Config: (sidebar) Wrap around when searching for the next mailbox with new mail
-bool C_SidebarOnRight; ///< Config: (sidebar) Display the sidebar on the right
-bool C_SidebarShortPath; ///< Config: (sidebar) Abbreviate the paths using the #C_Folder variable
-short C_SidebarSortMethod; ///< Config: (sidebar) Method to sort the sidebar
-bool C_SidebarVisible;     ///< Config: (sidebar) Show the sidebar
-short C_SidebarWidth;      ///< Config: (sidebar) Width of the sidebar
 
 struct ListHead SidebarWhitelist = STAILQ_HEAD_INITIALIZER(SidebarWhitelist); ///< List of mailboxes to always display in the sidebar
 

@@ -67,9 +67,6 @@
 #include "bcache/lib.h"
 #include "maildir/lib.h"
 #include "ncrypt/lib.h"
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
 
 #ifndef ISPELL
 #define ISPELL "ispell"
@@ -236,22 +233,6 @@ struct ConfigDef MainVars[] = {
   { "send_charset", DT_STRING, &C_SendCharset, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator },
   { "shell", DT_STRING|DT_COMMAND, &C_Shell, IP "/bin/sh" },
   { "show_multipart_alternative", DT_STRING, &C_ShowMultipartAlternative, 0, 0, multipart_validator },
-#ifdef USE_SIDEBAR
-  { "sidebar_component_depth", DT_NUMBER|R_SIDEBAR, &C_SidebarComponentDepth, 0 },
-  { "sidebar_delim_chars", DT_STRING|R_SIDEBAR, &C_SidebarDelimChars, IP "/." },
-  { "sidebar_divider_char", DT_STRING|R_SIDEBAR, &C_SidebarDividerChar, 0 },
-  { "sidebar_folder_indent", DT_BOOL|R_SIDEBAR, &C_SidebarFolderIndent, false },
-  { "sidebar_format", DT_STRING|DT_NOT_EMPTY|R_SIDEBAR, &C_SidebarFormat, IP "%D%*  %n" },
-  { "sidebar_indent_string", DT_STRING|R_SIDEBAR, &C_SidebarIndentString, IP "  " },
-  { "sidebar_new_mail_only", DT_BOOL|R_SIDEBAR, &C_SidebarNewMailOnly, false },
-  { "sidebar_next_new_wrap", DT_BOOL, &C_SidebarNextNewWrap, false },
-  { "sidebar_non_empty_mailbox_only", DT_BOOL|R_SIDEBAR, &C_SidebarNonEmptyMailboxOnly, false },
-  { "sidebar_on_right", DT_BOOL|R_INDEX|R_PAGER|R_REFLOW, &C_SidebarOnRight, false },
-  { "sidebar_short_path", DT_BOOL|R_SIDEBAR, &C_SidebarShortPath, false },
-  { "sidebar_sort_method", DT_SORT|DT_SORT_SIDEBAR|R_SIDEBAR, &C_SidebarSortMethod, SORT_ORDER },
-  { "sidebar_visible", DT_BOOL|R_REFLOW, &C_SidebarVisible, false },
-  { "sidebar_width", DT_NUMBER|DT_NOT_NEGATIVE|R_REFLOW, &C_SidebarWidth, 30 },
-#endif
   { "simple_search", DT_STRING, &C_SimpleSearch, IP "~f %s | ~s %s" },
   { "size_show_bytes", DT_BOOL|R_MENU, &C_SizeShowBytes, false },
   { "size_show_fractions", DT_BOOL|R_MENU, &C_SizeShowFractions, true },
