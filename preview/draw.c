@@ -20,7 +20,7 @@ void preview_draw(struct MuttWindow *win)
 
   struct Email *em = data->current_email;
 
-  struct Address *from = TAILQ_FIRST(&em->env->sender);
+  struct Address *from = TAILQ_FIRST(&em->env->from);
   mutt_window_mvprintw(win, 5, 5, "Selected mail id: %s, from: %s, subject: %s",
                        em->env->message_id, from ? from->mailbox : "unknown",
                        em->env->subject);
