@@ -72,7 +72,7 @@ bool cs_subset_bool(const struct ConfigSubset *sub, const char *name)
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   assert(he);
 
-  assert (DTYPE(he->type) == DT_BOOL);
+  assert(DTYPE(he->type) == DT_BOOL);
 
   intptr_t value = cs_subset_he_native_get(sub, he, false);
   assert(value != INT_MIN);
@@ -93,7 +93,7 @@ long cs_subset_long(const struct ConfigSubset *sub, const char *name)
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   assert(he);
 
-  assert (DTYPE(he->type) == DT_LONG);
+  assert(DTYPE(he->type) == DT_LONG);
 
   intptr_t value = cs_subset_he_native_get(sub, he, 0);
   assert(value != INT_MIN);
@@ -114,7 +114,7 @@ short cs_subset_number(const struct ConfigSubset *sub, const char *name)
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   assert(he);
 
-  assert (DTYPE(he->type) == DT_NUMBER);
+  assert(DTYPE(he->type) == DT_NUMBER);
 
   intptr_t value = cs_subset_he_native_get(sub, he, 0);
   assert(value != INT_MIN);
@@ -136,7 +136,7 @@ const char *cs_subset_path(const struct ConfigSubset *sub, const char *name)
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   assert(he);
 
-  assert (DTYPE(he->type) == DT_PATH);
+  assert(DTYPE(he->type) == DT_PATH);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   assert(value != INT_MIN);
@@ -157,7 +157,7 @@ enum QuadOption cs_subset_quad(const struct ConfigSubset *sub, const char *name)
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   assert(he);
 
-  assert (DTYPE(he->type) == DT_QUAD);
+  assert(DTYPE(he->type) == DT_QUAD);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   assert(value != INT_MIN);
@@ -179,7 +179,7 @@ const struct Regex *cs_subset_regex(const struct ConfigSubset *sub, const char *
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   assert(he);
 
-  assert (DTYPE(he->type) == DT_REGEX);
+  assert(DTYPE(he->type) == DT_REGEX);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   assert(value != INT_MIN);
@@ -201,7 +201,7 @@ const struct Slist *cs_subset_slist(const struct ConfigSubset *sub, const char *
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   assert(he);
 
-  assert (DTYPE(he->type) == DT_SLIST);
+  assert(DTYPE(he->type) == DT_SLIST);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   assert(value != INT_MIN);
@@ -223,7 +223,7 @@ const char *cs_subset_string(const struct ConfigSubset *sub, const char *name)
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   assert(he);
 
-  assert (DTYPE(he->type) == DT_STRING);
+  assert(DTYPE(he->type) == DT_STRING);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   assert(value != INT_MIN);

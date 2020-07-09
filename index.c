@@ -678,7 +678,7 @@ void mutt_update_index(struct Menu *menu, struct Context *ctx, int check,
                        int oldcount, const struct Email *cur_email)
 {
   struct CurrentEmail se = { .received = cur_email->received,
-                              .message_id = cur_email->env->message_id };
+                             .message_id = cur_email->env->message_id };
   update_index(menu, ctx, check, oldcount, &se);
 }
 

@@ -27,8 +27,8 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 // clang-format off
 unsigned char C_AbortNoattach;                    ///< Config: Abort sending the email if attachments are missing
