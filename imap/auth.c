@@ -34,9 +34,6 @@
 #include "mutt/lib.h"
 #include "auth.h"
 
-/* These Config Variables are only used in imap/auth.c */
-struct Slist *C_ImapAuthenticators; ///< Config: (imap) List of allowed IMAP authentication methods
-
 /**
  * struct ImapAuth - IMAP authentication multiplexor
  */

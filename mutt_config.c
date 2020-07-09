@@ -65,7 +65,6 @@
 #include "sort.h"
 #include "status.h"
 #include "bcache/lib.h"
-#include "imap/lib.h"
 #include "maildir/lib.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
@@ -224,31 +223,6 @@ struct ConfigDef MainVars[] = {
   { "idn_encode", DT_BOOL|R_MENU, &C_IdnEncode, true },
 #endif
   { "ignore_list_reply_to", DT_BOOL, &C_IgnoreListReplyTo, false },
-#ifdef USE_IMAP
-  { "imap_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_ImapAuthenticators, 0 },
-  { "imap_check_subscribed", DT_BOOL, &C_ImapCheckSubscribed, false },
-  { "imap_condstore", DT_BOOL, &C_ImapCondstore, false },
-#ifdef USE_ZLIB
-  { "imap_deflate", DT_BOOL, &C_ImapDeflate, true },
-#endif
-  { "imap_delim_chars", DT_STRING, &C_ImapDelimChars, IP "/." },
-  { "imap_fetch_chunk_size", DT_LONG|DT_NOT_NEGATIVE, &C_ImapFetchChunkSize, 0 },
-  { "imap_headers", DT_STRING|R_INDEX, &C_ImapHeaders, 0 },
-  { "imap_idle", DT_BOOL, &C_ImapIdle, false },
-  { "imap_keepalive", DT_NUMBER|DT_NOT_NEGATIVE, &C_ImapKeepalive, 300 },
-  { "imap_list_subscribed", DT_BOOL, &C_ImapListSubscribed, false },
-  { "imap_login", DT_STRING|DT_SENSITIVE, &C_ImapLogin, 0 },
-  { "imap_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, &C_ImapOauthRefreshCommand, 0 },
-  { "imap_pass", DT_STRING|DT_SENSITIVE, &C_ImapPass, 0 },
-  { "imap_passive", DT_BOOL, &C_ImapPassive, true },
-  { "imap_peek", DT_BOOL, &C_ImapPeek, true },
-  { "imap_pipeline_depth", DT_NUMBER|DT_NOT_NEGATIVE, &C_ImapPipelineDepth, 15 },
-  { "imap_poll_timeout", DT_NUMBER|DT_NOT_NEGATIVE, &C_ImapPollTimeout, 15 },
-  { "imap_qresync", DT_BOOL, &C_ImapQresync, false },
-  { "imap_rfc5161", DT_BOOL, &C_ImapRfc5161, true },
-  { "imap_servernoise", DT_BOOL, &C_ImapServernoise, true },
-  { "imap_user", DT_STRING|DT_SENSITIVE, &C_ImapUser, 0 },
-#endif
   { "implicit_autoview", DT_BOOL, &C_ImplicitAutoview, false },
   { "include", DT_QUAD, &C_Include, MUTT_ASKYES },
   { "include_encrypted", DT_BOOL, &C_IncludeEncrypted, false },
@@ -277,10 +251,8 @@ struct ConfigDef MainVars[] = {
   { "menu_context", DT_NUMBER|DT_NOT_NEGATIVE, &C_MenuContext, 0 },
   { "menu_move_off", DT_BOOL, &C_MenuMoveOff, true },
   { "menu_scroll", DT_BOOL, &C_MenuScroll, false },
-#if defined(USE_IMAP) || defined(USE_POP)
   { "message_cache_clean", DT_BOOL, &C_MessageCacheClean, false },
   { "message_cachedir", DT_PATH|DT_PATH_DIR, &C_MessageCachedir, 0 },
-#endif
   { "message_format", DT_STRING|DT_NOT_EMPTY, &C_MessageFormat, IP "%s" },
   { "meta_key", DT_BOOL, &C_MetaKey, false },
   { "metoo", DT_BOOL, &C_Metoo, false },

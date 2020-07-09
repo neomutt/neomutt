@@ -44,6 +44,7 @@
 struct ConnAccount;
 
 /* These Config Variables are only used in bcache.c */
+bool C_MessageCacheClean; ///< Config: (imap/pop) Clean out obsolete entries from the message cache
 char *C_MessageCachedir; ///< Config: (imap/pop) Directory for the message cache
 
 /**

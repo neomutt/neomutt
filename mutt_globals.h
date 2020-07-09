@@ -96,9 +96,6 @@ WHERE char *C_ExternalSearchCommand;         ///< Config: External search comman
 WHERE char *C_Hostname;                      ///< Config: Fully-qualified domain name of this machine
 WHERE char *C_IndexFormat;                   ///< Config: printf-like format string for the index menu (emails)
 
-#ifdef USE_IMAP
-WHERE char *C_ImapUser;                      ///< Config: (imap) Username for the IMAP server
-#endif
 WHERE char *C_Mbox;                          ///< Config: Folder that receives read emails (see Move)
 WHERE struct Slist *C_MailcapPath;           ///< Config: Colon-separated list of mailcap files
 WHERE char *C_Folder;                        ///< Config: Base folder for a set of mailboxes
@@ -125,11 +122,6 @@ WHERE char *C_Visual;                        ///< Config: Editor to use when '~v
 WHERE short C_SleepTime;                     ///< Config: Time to pause after certain info messages
 WHERE short C_Timeout;                       ///< Config: Time to wait for user input in menus
 WHERE short C_Wrap;                          ///< Config: Width to wrap text in the pager
-
-#ifdef USE_IMAP
-WHERE short C_ImapKeepalive;                 ///< Config: (imap) Time to wait before polling an open IMAP connection
-WHERE short C_ImapPollTimeout;               ///< Config: (imap) Maximum time to wait for a server response
-#endif
 
 WHERE char *C_PgpDefaultKey;                 ///< Config: Default key to use for PGP operations
 WHERE char *C_PgpSignAs;                     ///< Config: Use this alternative key for signing messages
@@ -182,20 +174,9 @@ WHERE bool C_ForwardDecode;                  ///< Config: Decode the message whe
 WHERE bool C_ForwardQuote;                   ///< Config: Automatically quote a forwarded message using #C_IndentString
 WHERE bool C_Header;                         ///< Config: Include the message headers in the reply email (Weed applies)
 WHERE bool C_Help;                           ///< Config: Display a help line with common key bindings
-#ifdef USE_IMAP
-WHERE bool C_ImapCheckSubscribed;            ///< Config: (imap) When opening a mailbox, ask the server for a list of subscribed folders
-WHERE bool C_ImapCondstore;                  ///< Config: (imap) Enable the CONDSTORE extension
-WHERE bool C_ImapListSubscribed;             ///< Config: (imap) When browsing a mailbox, only display subscribed folders
-WHERE bool C_ImapPassive;                    ///< Config: (imap) Reuse an existing IMAP connection to check for new mail
-WHERE bool C_ImapPeek;                       ///< Config: (imap) Don't mark messages as read when fetching them from the server
-WHERE bool C_ImapQresync;                    ///< Config: (imap) Enable the QRESYNC extension
-#endif
 WHERE bool C_MailCheckRecent;                ///< Config: Notify the user about new mail since the last time the mailbox was opened
 WHERE bool C_MaildirTrash;                   ///< Config: Use the maildir 'trashed' flag, rather than deleting
 WHERE bool C_Markers;                        ///< Config: Display a '+' at the beginning of wrapped lines in the pager
-#if defined(USE_IMAP) || defined(USE_POP)
-WHERE bool C_MessageCacheClean;              ///< Config: (imap/pop) Clean out obsolete entries from the message cache
-#endif
 WHERE bool C_ReadOnly;                       ///< Config: Open folders in read-only mode
 WHERE bool C_Resolve;                        ///< Config: Move to the next email whenever a command modifies an email
 WHERE bool C_ResumeDraftFiles;               ///< Config: Process draft files like postponed messages

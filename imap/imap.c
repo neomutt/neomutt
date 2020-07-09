@@ -57,18 +57,12 @@
 #include "pattern.h"
 #include "progress.h"
 #include "sort.h"
+#include "bcache/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
 
 struct stat;
-
-/* These Config Variables are only used in imap/imap.c */
-#ifdef USE_ZLIB
-bool C_ImapDeflate; ///< Config: (imap) Compress network traffic
-#endif
-bool C_ImapIdle; ///< Config: (imap) Use the IMAP IDLE extension to check for new mail
-bool C_ImapRfc5161; ///< Config: (imap) Use the IMAP ENABLE extension to select capabilities
 
 /**
  * check_capabilities - Make sure we can log in to this server

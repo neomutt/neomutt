@@ -64,10 +64,6 @@
 
 struct BodyCache;
 
-/* These Config Variables are only used in imap/message.c */
-char *C_ImapHeaders; ///< Config: (imap) Additional email headers to download when getting index
-long C_ImapFetchChunkSize; ///< Config: (imap) Download headers in blocks of this size
-
 /**
  * imap_edata_free - free ImapHeader structure
  * @param[out] ptr Private Email data

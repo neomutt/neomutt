@@ -30,6 +30,7 @@ struct ConnAccount;
 struct BodyCache;
 
 /* These Config Variables are only used in bcache.c */
+extern bool  C_MessageCacheClean;
 extern char *C_MessageCachedir;
 
 /**
