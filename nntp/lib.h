@@ -31,6 +31,7 @@
  * | :-------------- | :--------------------- |
  * | nntp/browse.c   | @subpage nntp_browse   |
  * | nntp/complete.c | @subpage nntp_complete |
+ * | nntp/config.c   | @subpage nntp_config   |
  * | nntp/newsrc.c   | @subpage nntp_newsrc   |
  * | nntp/nntp.c     | @subpage nntp_nntp     |
  */
@@ -47,22 +48,19 @@
 #include "format_flags.h"
 #include "mx.h"
 
+struct ConfigSet;
 struct ConnAccount;
 struct stat;
 
-/* These Config Variables are only used in nntp/nntp.c */
-extern char *C_NntpAuthenticators;
-extern short C_NntpContext;
-extern bool  C_NntpListgroup;
-extern bool  C_NntpLoadDescription;
-extern short C_NntpPoll;
-extern bool  C_ShowNewNews;
-
-/* These Config Variables are only used in nntp/newsrc.c */
-extern char *C_NewsCacheDir;
-extern char *C_Newsrc;
-extern char *C_NntpPass;
-extern char *C_NntpUser;
+// These Config Variables are used outside of libnntp
+extern unsigned char C_CatchupNewsgroup;
+extern unsigned char C_FollowupToPoster;
+extern char *        C_GroupIndexFormat;
+extern char *        C_NewsServer;
+extern char *        C_NewsgroupsCharset;
+extern unsigned char C_PostModerated;
+extern bool          C_ShowOnlyUnread;
+extern bool          C_XCommentTo;
 
 extern struct NntpAccountData *CurrentNewsSrv; ///< Current NNTP news server
 extern struct MxOps MxNntpOps;
@@ -177,5 +175,7 @@ int nntp_compare_order(const void *a, const void *b);
 enum MailboxType nntp_path_probe(const char *path, const struct stat *st);
 const char *group_index_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, intptr_t data, MuttFormatFlags flags);
 int nntp_complete(char *buf, size_t buflen);
+
+bool config_init_nntp(struct ConfigSet *cs);
 
 #endif /* MUTT_NNTP_LIB_H */

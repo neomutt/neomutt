@@ -98,9 +98,6 @@ WHERE char *C_Mbox;                          ///< Config: Folder that receives r
 WHERE struct Slist *C_MailcapPath;           ///< Config: Colon-separated list of mailcap files
 WHERE char *C_Folder;                        ///< Config: Base folder for a set of mailboxes
 
-#ifdef USE_NNTP
-WHERE char *C_NewsServer;                    ///< Config: (nntp) Url of the news server
-#endif
 WHERE char *C_Record;                        ///< Config: Folder to save 'sent' messages
 WHERE char *C_Pager;                         ///< Config: External command for viewing messages, or 'builtin' to use NeoMutt's
 WHERE char *C_PagerFormat;                   ///< Config: printf-like format string for the pager's status bar
@@ -139,10 +136,6 @@ WHERE unsigned char C_ForwardAttachments;    ///< Config: Forward attachments wh
 WHERE unsigned char C_MimeForward;           ///< Config: Forward a message as a 'message/RFC822' MIME part
 WHERE unsigned char C_Print;                 ///< Config: Confirm before printing a message
 WHERE unsigned char C_Quit;                  ///< Config: Prompt before exiting NeoMutt
-#ifdef USE_NNTP
-WHERE unsigned char C_PostModerated;         ///< Config: (nntp) Allow posting to moderated newsgroups
-WHERE unsigned char C_FollowupToPoster;      ///< Config: (nntp) Reply to the poster if 'poster' is in the 'Followup-To' header
-#endif
 
 WHERE bool C_ArrowCursor;                    ///< Config: Use an arrow '->' instead of highlighting in the index
 WHERE char *C_ArrowString;                   ///< Config: Use an custom string for arrow_cursor
@@ -183,13 +176,6 @@ WHERE bool C_UseDomain;                      ///< Config: Qualify local addresse
 WHERE bool C_WaitKey;                        ///< Config: Prompt to press a key after running external commands
 WHERE bool C_WrapSearch;                     ///< Config: Wrap around when the search hits the end
 WHERE bool C_WriteBcc;                       ///< Config: Write out the 'Bcc' field when preparing to send a mail
-
-/* news options */
-
-#ifdef USE_NNTP
-WHERE bool C_SaveUnsubscribed;               ///< Config: (nntp) Save a list of unsubscribed newsgroups to the 'newsrc'
-WHERE bool C_XCommentTo;                     ///< Config: (nntp) Add 'X-Comment-To' header that contains article author
-#endif
 
 #ifdef USE_NOTMUCH
 WHERE bool C_VirtualSpoolfile;               ///< Config: (notmuch) Use the first virtual mailbox as a spool file

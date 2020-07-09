@@ -67,7 +67,6 @@
 #include "bcache/lib.h"
 #include "maildir/lib.h"
 #include "ncrypt/lib.h"
-#include "nntp/lib.h"
 #include "notmuch/lib.h"
 #include "pop/lib.h"
 #include "send/lib.h"
@@ -122,9 +121,6 @@ struct ConfigDef MainVars[] = {
   { "bounce_delivered", DT_BOOL, &C_BounceDelivered, true },
   { "braille_friendly", DT_BOOL, &C_BrailleFriendly, false },
   { "browser_abbreviate_mailboxes", DT_BOOL, &C_BrowserAbbreviateMailboxes, true },
-#ifdef USE_NNTP
-  { "catchup_newsgroup", DT_QUAD, &C_CatchupNewsgroup, MUTT_ASKYES },
-#endif
   { "change_folder_next", DT_BOOL, &C_ChangeFolderNext, false },
   { "charset", DT_STRING|DT_NOT_EMPTY, &C_Charset, 0, 0, charset_validator },
   { "collapse_all", DT_BOOL, &C_CollapseAll, false },
@@ -166,9 +162,6 @@ struct ConfigDef MainVars[] = {
   { "folder", DT_STRING|DT_MAILBOX, &C_Folder, IP "~/Mail" },
   { "folder_format", DT_STRING|DT_NOT_EMPTY|R_MENU, &C_FolderFormat, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %i" },
   { "followup_to", DT_BOOL, &C_FollowupTo, true },
-#ifdef USE_NNTP
-  { "followup_to_poster", DT_QUAD, &C_FollowupToPoster, MUTT_ASKYES },
-#endif
   { "force_name", DT_BOOL, &C_ForceName, false },
   { "forward_attachments", DT_QUAD, &C_ForwardAttachments, MUTT_ASKYES },
   { "forward_attribution_intro", DT_STRING, &C_ForwardAttributionIntro, IP "----- Forwarded message from %f -----" },
@@ -182,9 +175,6 @@ struct ConfigDef MainVars[] = {
   { "from", DT_ADDRESS, &C_From, 0 },
   { "from_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_FromChars, 0 },
   { "gecos_mask", DT_REGEX, &C_GecosMask, IP "^[^,]*" },
-#ifdef USE_NNTP
-  { "group_index_format", DT_STRING|DT_NOT_EMPTY|R_INDEX|R_PAGER, &C_GroupIndexFormat, IP "%4C %M%N %5s  %-45.45f %d" },
-#endif
   { "hdrs", DT_BOOL, &C_Hdrs, true },
   { "header", DT_BOOL, &C_Header, false },
   { "header_color_partial", DT_BOOL|R_PAGER_FLOW, &C_HeaderColorPartial, false },
@@ -251,12 +241,6 @@ struct ConfigDef MainVars[] = {
   { "narrow_tree", DT_BOOL|R_TREE|R_INDEX, &C_NarrowTree, false },
   { "net_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_NetInc, 10 },
   { "new_mail_command", DT_STRING|DT_COMMAND, &C_NewMailCommand, 0 },
-#ifdef USE_NNTP
-  { "news_cache_dir", DT_PATH|DT_PATH_DIR, &C_NewsCacheDir, IP "~/.neomutt" },
-  { "news_server", DT_STRING, &C_NewsServer, 0 },
-  { "newsgroups_charset", DT_STRING, &C_NewsgroupsCharset, IP "utf-8", 0, charset_validator },
-  { "newsrc", DT_PATH|DT_PATH_FILE, &C_Newsrc, IP "~/.newsrc" },
-#endif
 #ifdef USE_NOTMUCH
   { "nm_db_limit", DT_NUMBER|DT_NOT_NEGATIVE, &C_NmDbLimit, 0 },
   { "nm_default_url", DT_STRING, &C_NmDefaultUrl, 0 },
@@ -272,15 +256,6 @@ struct ConfigDef MainVars[] = {
   { "nm_record_tags", DT_STRING, &C_NmRecordTags, 0 },
   { "nm_replied_tag", DT_STRING, &C_NmRepliedTag, IP "replied" },
   { "nm_unread_tag", DT_STRING, &C_NmUnreadTag, IP "unread" },
-#endif
-#ifdef USE_NNTP
-  { "nntp_authenticators", DT_STRING, &C_NntpAuthenticators, 0 },
-  { "nntp_context", DT_NUMBER|DT_NOT_NEGATIVE, &C_NntpContext, 1000 },
-  { "nntp_listgroup", DT_BOOL, &C_NntpListgroup, true },
-  { "nntp_load_description", DT_BOOL, &C_NntpLoadDescription, true },
-  { "nntp_pass", DT_STRING|DT_SENSITIVE, &C_NntpPass, 0 },
-  { "nntp_poll", DT_NUMBER|DT_NOT_NEGATIVE, &C_NntpPoll, 60 },
-  { "nntp_user", DT_STRING|DT_SENSITIVE, &C_NntpUser, 0 },
 #endif
   { "pager", DT_STRING|DT_COMMAND, &C_Pager, IP "builtin" },
   { "pager_context", DT_NUMBER|DT_NOT_NEGATIVE, &C_PagerContext, 0 },
@@ -303,9 +278,6 @@ struct ConfigDef MainVars[] = {
   { "pop_user", DT_STRING|DT_SENSITIVE, &C_PopUser, 0 },
 #endif
   { "post_indent_string", DT_STRING, &C_PostIndentString, 0 },
-#ifdef USE_NNTP
-  { "post_moderated", DT_QUAD, &C_PostModerated, MUTT_ASKYES },
-#endif
   { "postpone", DT_QUAD, &C_Postpone, MUTT_ASKYES },
   { "postpone_encrypt", DT_BOOL, &C_PostponeEncrypt, false },
   { "postpone_encrypt_as", DT_STRING, &C_PostponeEncryptAs, 0 },
@@ -342,9 +314,6 @@ struct ConfigDef MainVars[] = {
   { "save_address", DT_BOOL, &C_SaveAddress, false },
   { "save_empty", DT_BOOL, &C_SaveEmpty, true },
   { "save_name", DT_BOOL, &C_SaveName, false },
-#ifdef USE_NNTP
-  { "save_unsubscribed", DT_BOOL, &C_SaveUnsubscribed, false },
-#endif
   { "score", DT_BOOL, &C_Score, true },
   { "score_threshold_delete", DT_NUMBER, &C_ScoreThresholdDelete, -1 },
   { "score_threshold_flag", DT_NUMBER, &C_ScoreThresholdFlag, 9999 },
@@ -355,10 +324,6 @@ struct ConfigDef MainVars[] = {
   { "sendmail_wait", DT_NUMBER, &C_SendmailWait, 0 },
   { "shell", DT_STRING|DT_COMMAND, &C_Shell, IP "/bin/sh" },
   { "show_multipart_alternative", DT_STRING, &C_ShowMultipartAlternative, 0, 0, multipart_validator },
-#ifdef USE_NNTP
-  { "show_new_news", DT_BOOL, &C_ShowNewNews, true },
-  { "show_only_unread", DT_BOOL, &C_ShowOnlyUnread, false },
-#endif
 #ifdef USE_SIDEBAR
   { "sidebar_component_depth", DT_NUMBER|R_SIDEBAR, &C_SidebarComponentDepth, 0 },
   { "sidebar_delim_chars", DT_STRING|R_SIDEBAR, &C_SidebarDelimChars, IP "/." },
@@ -438,9 +403,6 @@ struct ConfigDef MainVars[] = {
   { "wrap_search", DT_BOOL, &C_WrapSearch, true },
   { "write_bcc", DT_BOOL, &C_WriteBcc, false },
   { "write_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_WriteInc, 10 },
-#ifdef USE_NNTP
-  { "x_comment_to", DT_BOOL, &C_XCommentTo, false },
-#endif
   { "escape", DT_DEPRECATED|DT_STRING, &C_Escape, IP "~" },
 
   { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,            &C_IgnoreLinearWhiteSpace, false   },

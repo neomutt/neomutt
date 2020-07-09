@@ -60,6 +60,7 @@
 #include "recvcmd.h"
 #include "state.h"
 #include "ncrypt/lib.h"
+#include "nntp/lib.h"
 #include "send/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

@@ -69,6 +69,7 @@
 #include "maildir/lib.h"
 #include "mbox/lib.h"
 #include "ncrypt/lib.h"
+#include "nntp/lib.h"
 #include "store/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
@@ -1551,11 +1552,17 @@ struct ConfigSet *init_config(size_t size)
   typedef bool (*config_init_t)(struct ConfigSet * cs);
 
   static config_init_t config_list[] = {
-    config_init_main,    config_init_autocrypt,
-    config_init_conn,    config_init_hcache,
-    config_init_history, config_init_imap,
-    config_init_maildir, config_init_mbox,
-    config_init_ncrypt,  NULL,
+    config_init_main,
+    config_init_autocrypt,
+    config_init_conn,
+    config_init_hcache,
+    config_init_history,
+    config_init_imap,
+    config_init_maildir,
+    config_init_mbox,
+    config_init_ncrypt,
+    config_init_nntp,
+    NULL,
   };
 
   struct ConfigSet *cs = cs_new(size);
