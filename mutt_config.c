@@ -67,7 +67,6 @@
 #include "bcache/lib.h"
 #include "maildir/lib.h"
 #include "ncrypt/lib.h"
-#include "pop/lib.h"
 #include "send/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
@@ -248,18 +247,6 @@ struct ConfigDef MainVars[] = {
   { "pipe_decode", DT_BOOL, &C_PipeDecode, false },
   { "pipe_sep", DT_STRING, &C_PipeSep, IP "\n" },
   { "pipe_split", DT_BOOL, &C_PipeSplit, false },
-#ifdef USE_POP
-  { "pop_auth_try_all", DT_BOOL, &C_PopAuthTryAll, true },
-  { "pop_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_PopAuthenticators, 0 },
-  { "pop_checkinterval", DT_NUMBER|DT_NOT_NEGATIVE, &C_PopCheckinterval, 60 },
-  { "pop_delete", DT_QUAD, &C_PopDelete, MUTT_ASKNO },
-  { "pop_host", DT_STRING, &C_PopHost, 0 },
-  { "pop_last", DT_BOOL, &C_PopLast, false },
-  { "pop_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, &C_PopOauthRefreshCommand, 0 },
-  { "pop_pass", DT_STRING|DT_SENSITIVE, &C_PopPass, 0 },
-  { "pop_reconnect", DT_QUAD, &C_PopReconnect, MUTT_ASKYES },
-  { "pop_user", DT_STRING|DT_SENSITIVE, &C_PopUser, 0 },
-#endif
   { "post_indent_string", DT_STRING, &C_PostIndentString, 0 },
   { "postpone", DT_QUAD, &C_Postpone, MUTT_ASKYES },
   { "postpone_encrypt", DT_BOOL, &C_PostponeEncrypt, false },

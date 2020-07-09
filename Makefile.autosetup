@@ -458,7 +458,7 @@ $(PWD)/notmuch:
 ###############################################################################
 # libpop
 LIBPOP=		libpop.a
-LIBPOPOBJS=	pop/pop.o pop/auth.o pop/lib.o
+LIBPOPOBJS=	pop/auth.o pop/config.o pop/lib.o pop/pop.o
 CLEANFILES+=	$(LIBPOP) $(LIBPOPOBJS)
 ALLOBJS+=	$(LIBPOPOBJS)
 

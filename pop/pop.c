@@ -66,12 +66,6 @@
 struct BodyCache;
 struct stat;
 
-/* These Config Variables are only used in pop/pop.c */
-short C_PopCheckinterval; ///< Config: (pop) Interval between checks for new mail
-unsigned char C_PopDelete; ///< Config: (pop) After downloading POP messages, delete them on the server
-char *C_PopHost; ///< Config: (pop) Url of the POP server
-bool C_PopLast;  ///< Config: (pop) Use the 'LAST' command to fetch new mail
-
 #define HC_FNAME "neomutt" /* filename for hcache as POP lacks paths */
 #define HC_FEXT "hcache"   /* extension for hcache as POP lacks paths */
 
