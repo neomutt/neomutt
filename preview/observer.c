@@ -1,7 +1,31 @@
 #include "private.h"
 
 #include "mutt/notify_type.h"
+#include "mutt/observer.h"
 #include "gui/mutt_window.h"
+#include "index.h"
+
+static void handle_selection_change(struct NotifyCallback *nc)
+{
+  mutt_debug(LL_DEBUG1, "preview: receive a NT_USER_INDEX event");
+  if (nc->event_subtype != NT_USER_EMAIL_SELECTED)
+  {
+    return;
+  }
+
+  struct MuttWindow *win = nc->global_data;
+  struct IndexEvent *data = nc->event_data;
+
+  struct PreviewWindowData *preview_data = preview_wdata_get(win);
+
+  if (data->current_email == preview_data->current_email)
+  {
+    return;
+  }
+
+  preview_data->current_email = data->current_email;
+  win->actions |= WA_RECALC;
+}
 
 int preview_neomutt_observer(struct NotifyCallback *nc)
 {
@@ -15,11 +39,14 @@ int preview_dialog_observer(struct NotifyCallback *nc)
   struct MuttWindow *win = nc->global_data;
   win->actions |= WA_RECALC;
 
-  if (nc->event_type == NT_USER_INDEX)
+  switch (nc->event_type)
   {
-    mutt_debug(LL_DEBUG1, "preview: receive a NT_USER_INDEX event");
+    default:
+      return 0;
+    case NT_USER_INDEX:
+      handle_selection_change(nc);
+      break;
   }
-
   return 0;
 }
 

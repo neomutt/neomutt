@@ -19,8 +19,9 @@ void preview_draw(struct MuttWindow* win);
 
 /* wdata.c */
 
-struct PreviewWindowData {
-  int dummy;
+struct PreviewWindowData
+{
+  struct Email *current_email;
 };
 
 struct PreviewWindowData    *preview_wdata_new(void);

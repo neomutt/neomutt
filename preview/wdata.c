@@ -4,7 +4,12 @@
 
 struct PreviewWindowData *preview_wdata_new(void)
 {
-  return calloc(1, sizeof(struct PreviewWindowData));
+  struct PreviewWindowData *data = calloc(1, sizeof(struct PreviewWindowData));
+  *data = (struct PreviewWindowData){
+    .current_email = NULL,
+  };
+
+  return data;
 }
 
 struct PreviewWindowData *preview_wdata_get(struct MuttWindow *win)
