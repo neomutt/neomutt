@@ -118,11 +118,6 @@ WHERE short C_SleepTime;                     ///< Config: Time to pause after ce
 WHERE short C_Timeout;                       ///< Config: Time to wait for user input in menus
 WHERE short C_Wrap;                          ///< Config: Width to wrap text in the pager
 
-#ifdef USE_NOTMUCH
-WHERE int C_NmQueryWindowDuration;           ///< Config: (notmuch) Time duration of the current search window
-WHERE char *C_NmQueryWindowCurrentSearch;    ///< Config: (notmuch) Current search parameters
-#endif
-
 /* These variables are backing for config items */
 WHERE struct Regex *C_Mask;                  ///< Config: Only display files/dirs matching this regex in the browser
 WHERE struct Regex *C_QuoteRegex;            ///< Config: Regex to match quoted text in a reply
@@ -176,9 +171,5 @@ WHERE bool C_UseDomain;                      ///< Config: Qualify local addresse
 WHERE bool C_WaitKey;                        ///< Config: Prompt to press a key after running external commands
 WHERE bool C_WrapSearch;                     ///< Config: Wrap around when the search hits the end
 WHERE bool C_WriteBcc;                       ///< Config: Write out the 'Bcc' field when preparing to send a mail
-
-#ifdef USE_NOTMUCH
-WHERE bool C_VirtualSpoolfile;               ///< Config: (notmuch) Use the first virtual mailbox as a spool file
-#endif
 
 #endif /* MUTT_GLOBALS_H */

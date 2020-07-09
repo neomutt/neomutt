@@ -73,19 +73,6 @@ struct stat;
 const char NmUrlProtocol[] = "notmuch://";
 const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
 
-/* These Config Variables are only used in notmuch/mutt_notmuch.c */
-int C_NmDbLimit;       ///< Config: (notmuch) Default limit for Notmuch queries
-char *C_NmDefaultUrl;  ///< Config: (notmuch) Path to the Notmuch database
-char *C_NmExcludeTags; ///< Config: (notmuch) Exclude messages with these tags
-int C_NmOpenTimeout;   ///< Config: (notmuch) Database timeout
-char *C_NmQueryType; ///< Config: (notmuch) Default query type: 'threads' or 'messages'
-int C_NmQueryWindowCurrentPosition; ///< Config: (notmuch) Position of current search window
-char *C_NmQueryWindowTimebase; ///< Config: (notmuch) Units for the time duration
-char *C_NmRecordTags; ///< Config: (notmuch) Tags to apply to the 'record' mailbox (sent mail)
-char *C_NmUnreadTag;  ///< Config: (notmuch) Tag to use for unread messages
-char *C_NmFlaggedTag; ///< Config: (notmuch) Tag to use for flagged messages
-char *C_NmRepliedTag; ///< Config: (notmuch) Tag to use for replied messages
-
 /**
  * nm_hcache_open - Open a header cache
  * @param m Mailbox

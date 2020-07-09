@@ -68,8 +68,7 @@
 /* These Config Variables are only used in browser.c */
 bool C_BrowserAbbreviateMailboxes; ///< Config: Abbreviate mailboxes using '~' and '=' in the browser
 char *C_FolderFormat; ///< Config: printf-like format string for the browser's display of folders
-short C_SortBrowser;   ///< Config: Sort method for the browser
-char *C_VfolderFormat; ///< Config: (notmuch) printf-like format string for the browser's display of virtual folders
+short C_SortBrowser; ///< Config: Sort method for the browser
 
 static const struct Mapping FolderHelp[] = {
   { N_("Exit"), OP_EXIT },

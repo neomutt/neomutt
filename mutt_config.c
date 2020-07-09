@@ -67,7 +67,6 @@
 #include "bcache/lib.h"
 #include "maildir/lib.h"
 #include "ncrypt/lib.h"
-#include "notmuch/lib.h"
 #include "pop/lib.h"
 #include "send/lib.h"
 #ifdef USE_SIDEBAR
@@ -241,22 +240,6 @@ struct ConfigDef MainVars[] = {
   { "narrow_tree", DT_BOOL|R_TREE|R_INDEX, &C_NarrowTree, false },
   { "net_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_NetInc, 10 },
   { "new_mail_command", DT_STRING|DT_COMMAND, &C_NewMailCommand, 0 },
-#ifdef USE_NOTMUCH
-  { "nm_db_limit", DT_NUMBER|DT_NOT_NEGATIVE, &C_NmDbLimit, 0 },
-  { "nm_default_url", DT_STRING, &C_NmDefaultUrl, 0 },
-  { "nm_exclude_tags", DT_STRING, &C_NmExcludeTags, 0 },
-  { "nm_flagged_tag", DT_STRING, &C_NmFlaggedTag, IP "flagged" },
-  { "nm_open_timeout", DT_NUMBER|DT_NOT_NEGATIVE, &C_NmOpenTimeout, 5 },
-  { "nm_query_type", DT_STRING, &C_NmQueryType, IP "messages" },
-  { "nm_query_window_current_position", DT_NUMBER, &C_NmQueryWindowCurrentPosition, 0 },
-  { "nm_query_window_current_search", DT_STRING, &C_NmQueryWindowCurrentSearch, 0 },
-  { "nm_query_window_duration", DT_NUMBER|DT_NOT_NEGATIVE, &C_NmQueryWindowDuration, 0 },
-  { "nm_query_window_timebase", DT_STRING, &C_NmQueryWindowTimebase, IP "week" },
-  { "nm_record", DT_BOOL, &C_NmRecord, false },
-  { "nm_record_tags", DT_STRING, &C_NmRecordTags, 0 },
-  { "nm_replied_tag", DT_STRING, &C_NmRepliedTag, IP "replied" },
-  { "nm_unread_tag", DT_STRING, &C_NmUnreadTag, IP "unread" },
-#endif
   { "pager", DT_STRING|DT_COMMAND, &C_Pager, IP "builtin" },
   { "pager_context", DT_NUMBER|DT_NOT_NEGATIVE, &C_PagerContext, 0 },
   { "pager_format", DT_STRING|R_PAGER, &C_PagerFormat, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
@@ -391,10 +374,6 @@ struct ConfigDef MainVars[] = {
   { "use_envelope_from", DT_BOOL, &C_UseEnvelopeFrom, false },
   { "use_from", DT_BOOL, &C_UseFrom, true },
   { "user_agent", DT_BOOL, &C_UserAgent, false },
-#ifdef USE_NOTMUCH
-  { "vfolder_format", DT_STRING|DT_NOT_EMPTY|R_INDEX, &C_VfolderFormat, IP "%2C %?n?%4n/&     ?%4m %f" },
-  { "virtual_spoolfile", DT_BOOL, &C_VirtualSpoolfile, false },
-#endif
   { "visual", DT_STRING|DT_COMMAND, &C_Visual, IP "vi" },
   { "wait_key", DT_BOOL, &C_WaitKey, true },
   { "weed", DT_BOOL, &C_Weed, true },
@@ -419,9 +398,6 @@ struct ConfigDef MainVars[] = {
   { "indent_str",             DT_SYNONYM, NULL, IP "indent_string",            },
   { "mime_fwd",               DT_SYNONYM, NULL, IP "mime_forward",             },
   { "msg_format",             DT_SYNONYM, NULL, IP "message_format",           },
-#ifdef USE_NOTMUCH
-  { "nm_default_uri",         DT_SYNONYM, NULL, IP "nm_default_url",           },
-#endif
   { "pgp_autoencrypt",        DT_SYNONYM, NULL, IP "crypt_autoencrypt",        },
   { "pgp_autosign",           DT_SYNONYM, NULL, IP "crypt_autosign",           },
   { "pgp_auto_traditional",   DT_SYNONYM, NULL, IP "pgp_replyinline",          },

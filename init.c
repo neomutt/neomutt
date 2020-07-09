@@ -70,12 +70,10 @@
 #include "mbox/lib.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
+#include "notmuch/lib.h"
 #include "store/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
-#endif
-#ifdef USE_NOTMUCH
-#include "notmuch/lib.h"
 #endif
 
 /* Initial string that starts completion. No telling how much the user has
@@ -1552,17 +1550,10 @@ struct ConfigSet *init_config(size_t size)
   typedef bool (*config_init_t)(struct ConfigSet * cs);
 
   static config_init_t config_list[] = {
-    config_init_main,
-    config_init_autocrypt,
-    config_init_conn,
-    config_init_hcache,
-    config_init_history,
-    config_init_imap,
-    config_init_maildir,
-    config_init_mbox,
-    config_init_ncrypt,
-    config_init_nntp,
-    NULL,
+    config_init_main,    config_init_autocrypt, config_init_conn,
+    config_init_hcache,  config_init_history,   config_init_imap,
+    config_init_maildir, config_init_mbox,      config_init_ncrypt,
+    config_init_nntp,    config_init_notmuch,   NULL,
   };
 
   struct ConfigSet *cs = cs_new(size);

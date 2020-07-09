@@ -92,6 +92,22 @@ struct NmEmailData
   enum MailboxType type;  ///< Type of Mailbox the Email is in
 };
 
+extern int   C_NmDbLimit;
+extern char *C_NmDefaultUrl;
+extern char *C_NmExcludeTags;
+extern char *C_NmFlaggedTag;
+extern int   C_NmOpenTimeout;
+extern char *C_NmQueryType;
+extern int   C_NmQueryWindowCurrentPosition;
+extern char *C_NmQueryWindowCurrentSearch;
+extern int   C_NmQueryWindowDuration;
+extern char *C_NmQueryWindowTimebase;
+extern char *C_NmRecordTags;
+extern char *C_NmRepliedTag;
+extern char *C_NmUnreadTag;
+extern char *C_VfolderFormat;
+extern bool  C_VirtualSpoolfile;
+
 notmuch_database_t *nm_db_do_open     (const char *filename, bool writable, bool verbose);
 void                nm_db_free        (notmuch_database_t *db);
 const char *        nm_db_get_filename(struct Mailbox *m);
