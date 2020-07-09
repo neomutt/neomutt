@@ -161,9 +161,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
     case 'D':
     {
       char indented[256];
-
       size_t offset = add_indent(indented, sizeof(indented), sbe);
-
       snprintf(indented + offset, sizeof(indented) - offset, "%s",
                ((op == 'D') && sbe->mailbox->name) ? sbe->mailbox->name : sbe->box);
 
