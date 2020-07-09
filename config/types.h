@@ -80,6 +80,7 @@ typedef uint32_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
 #define DT_INHERITED    (1 << 28)  ///< Config item is inherited
 #define DT_INITIAL_SET  (1 << 29)  ///< Config item must have its initial value freed
 #define DT_DISABLED     (1 << 30)  ///< Config item is disabled
-#define DT_MY_CONFIG    (1 << 31)  ///< Config item is a "my_" variable
+// #define DT_MY_CONFIG    (1 << 31)  ///< Config item is a "my_" variable
+#define DT_NO_VARIABLE  (1 << 31)  ///< Config item doesn't have a backing global variable
 
 #endif /* MUTT_CONFIG_TYPES_H */

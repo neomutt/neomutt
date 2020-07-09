@@ -151,6 +151,7 @@
   NEOMUTT_TEST_ITEM(test_config_string)                                        \
   NEOMUTT_TEST_ITEM(test_config_subset)                                        \
   NEOMUTT_TEST_ITEM(test_config_synonym)                                       \
+  NEOMUTT_TEST_ITEM(test_config_variable)                                      \
                                                                                \
   /* date */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_add_timeout)                                \

@@ -53,8 +53,6 @@ struct HashElem;
 
 #define IP (intptr_t)
 
-#define CS_REG_DISABLED (1 << 0)
-
 /**
  * struct ConfigDef - Config item definition
  *
