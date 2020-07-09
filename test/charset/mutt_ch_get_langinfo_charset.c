@@ -32,5 +32,6 @@ void test_mutt_ch_get_langinfo_charset(void)
   {
     char *cs = mutt_ch_get_langinfo_charset();
     TEST_CHECK(cs != NULL);
+    FREE(&cs);
   }
 }

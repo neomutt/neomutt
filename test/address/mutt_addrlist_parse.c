@@ -102,6 +102,7 @@ void test_mutt_addrlist_parse(void)
     const struct Address *a = TAILQ_FIRST(&alist);
     TEST_CHECK_STR_EQ("Foo (Bar)", a->personal);
     TEST_CHECK_STR_EQ("foo@bar.baz", a->mailbox);
+    mutt_addrlist_clear(&alist);
   }
 
   {
