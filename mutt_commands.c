@@ -48,9 +48,7 @@
 
 // clang-format off
 const struct Command Commands[] = {
-#ifdef USE_SOCKET
   { "account-hook",        mutt_parse_hook,        MUTT_ACCOUNT_HOOK },
-#endif
   { "alias",               parse_alias,            0 },
   { "alternates",          parse_alternates,       0 },
   { "alternative_order",   parse_stailq,           IP &AlternativeOrderList },

@@ -1551,6 +1551,7 @@ struct ConfigSet *init_config(size_t size)
   static config_init_t config_list[] = {
     config_init_main,
     config_init_autocrypt,
+    config_init_conn,
     NULL,
   };
 

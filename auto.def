@@ -359,7 +359,6 @@ define USE_NNTP
 define USE_POP
 define USE_SIDEBAR
 define USE_SMTP
-define USE_SOCKET
 define SUN_ATTACHMENT
 define TEST_CASE_MAXSIZE 1024
 ###############################################################################

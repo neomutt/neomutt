@@ -36,7 +36,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "conn/lib.h"
 #include "gui/lib.h"
 #include "browser.h"
 #include "commands.h"
@@ -133,9 +132,6 @@ struct ConfigDef MainVars[] = {
 #ifdef USE_NNTP
   { "catchup_newsgroup", DT_QUAD, &C_CatchupNewsgroup, MUTT_ASKYES },
 #endif
-#ifdef USE_SSL
-  { "certificate_file", DT_PATH|DT_PATH_FILE, &C_CertificateFile, IP "~/.mutt_certificates" },
-#endif
   { "change_folder_next", DT_BOOL, &C_ChangeFolderNext, false },
   { "charset", DT_STRING|DT_NOT_EMPTY, &C_Charset, 0, 0, charset_validator },
   { "check_mbox_size", DT_BOOL, &C_CheckMboxSize, false },
@@ -147,7 +143,6 @@ struct ConfigDef MainVars[] = {
   { "config_charset", DT_STRING, &C_ConfigCharset, 0, 0, charset_validator },
   { "confirmappend", DT_BOOL, &C_Confirmappend, true },
   { "confirmcreate", DT_BOOL, &C_Confirmcreate, true },
-  { "connect_timeout", DT_NUMBER, &C_ConnectTimeout, 30 },
   { "content_type", DT_STRING, &C_ContentType, IP "text/plain" },
   { "copy", DT_QUAD, &C_Copy, MUTT_YES },
   { "crypt_autoencrypt", DT_BOOL, &C_CryptAutoencrypt, false },
@@ -186,9 +181,6 @@ struct ConfigDef MainVars[] = {
   { "editor", DT_STRING|DT_NOT_EMPTY|DT_COMMAND, &C_Editor, IP "vi" },
   { "empty_subject", DT_STRING, &C_EmptySubject, IP "Re: your mail" },
   { "encode_from", DT_BOOL, &C_EncodeFrom, false },
-#ifdef USE_SSL_OPENSSL
-  { "entropy_file", DT_PATH|DT_PATH_FILE, &C_EntropyFile, 0 },
-#endif
   { "envelope_from_address", DT_ADDRESS, &C_EnvelopeFromAddress, 0 },
   { "external_search_command", DT_STRING|DT_COMMAND, &C_ExternalSearchCommand, 0 },
   { "fast_reply", DT_BOOL, &C_FastReply, false },
@@ -330,9 +322,7 @@ struct ConfigDef MainVars[] = {
 #endif
   { "move", DT_QUAD, &C_Move, MUTT_NO },
   { "narrow_tree", DT_BOOL|R_TREE|R_INDEX, &C_NarrowTree, false },
-#ifdef USE_SOCKET
   { "net_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_NetInc, 10 },
-#endif
   { "new_mail_command", DT_STRING|DT_COMMAND, &C_NewMailCommand, 0 },
 #ifdef USE_NNTP
   { "news_cache_dir", DT_PATH|DT_PATH_DIR, &C_NewsCacheDir, IP "~/.neomutt" },
@@ -438,9 +428,6 @@ struct ConfigDef MainVars[] = {
   { "postpone_encrypt", DT_BOOL, &C_PostponeEncrypt, false },
   { "postpone_encrypt_as", DT_STRING, &C_PostponeEncryptAs, 0 },
   { "postponed", DT_STRING|DT_MAILBOX|R_INDEX, &C_Postponed, IP "~/postponed" },
-#ifdef USE_SOCKET
-  { "preconnect", DT_STRING, &C_Preconnect, 0 },
-#endif
   { "preferred_languages", DT_SLIST|SLIST_SEP_COMMA, &C_PreferredLanguages, 0 },
   { "print", DT_QUAD, &C_Print, MUTT_ASKNO },
   { "print_command", DT_STRING|DT_COMMAND, &C_PrintCommand, IP "lpr" },
@@ -565,36 +552,6 @@ struct ConfigDef MainVars[] = {
   { "sort_re", DT_BOOL|R_INDEX|R_RESORT|R_RESORT_INIT, &C_SortRe, true, 0, pager_validator },
   { "spam_separator", DT_STRING, &C_SpamSeparator, IP "," },
   { "spoolfile", DT_STRING|DT_MAILBOX, &C_Spoolfile, 0 },
-#ifdef USE_SSL
-#ifdef USE_SSL_GNUTLS
-  { "ssl_ca_certificates_file", DT_PATH|DT_PATH_FILE, &C_SslCaCertificatesFile, 0 },
-#endif
-  { "ssl_ciphers", DT_STRING, &C_SslCiphers, 0 },
-  { "ssl_client_cert", DT_PATH|DT_PATH_FILE, &C_SslClientCert, 0 },
-  { "ssl_force_tls", DT_BOOL, &C_SslForceTls, false },
-#ifdef USE_SSL_GNUTLS
-  { "ssl_min_dh_prime_bits", DT_NUMBER|DT_NOT_NEGATIVE, &C_SslMinDhPrimeBits, 0 },
-#endif
-  { "ssl_starttls", DT_QUAD, &C_SslStarttls, MUTT_YES },
-#ifdef USE_SSL_OPENSSL
-  { "ssl_use_sslv2", DT_BOOL, &C_SslUseSslv2, false },
-#endif
-  { "ssl_use_sslv3", DT_BOOL, &C_SslUseSslv3, false },
-  { "ssl_use_tlsv1", DT_BOOL, &C_SslUseTlsv1, false },
-  { "ssl_use_tlsv1_1", DT_BOOL, &C_SslUseTlsv11, false },
-  { "ssl_use_tlsv1_2", DT_BOOL, &C_SslUseTlsv12, true },
-  { "ssl_use_tlsv1_3", DT_BOOL, &C_SslUseTlsv13, true },
-#ifdef USE_SSL_OPENSSL
-  { "ssl_usesystemcerts", DT_BOOL, &C_SslUsesystemcerts, true },
-#endif
-  { "ssl_verify_dates", DT_BOOL, &C_SslVerifyDates, true },
-  { "ssl_verify_host", DT_BOOL, &C_SslVerifyHost, true },
-#ifdef USE_SSL_OPENSSL
-#ifdef HAVE_SSL_PARTIAL_CHAIN
-  { "ssl_verify_partial_chains", DT_BOOL, &C_SslVerifyPartialChains, false },
-#endif
-#endif
-#endif
   { "status_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_StatusChars, IP "-*%A" },
   { "status_format", DT_STRING|R_INDEX|R_PAGER, &C_StatusFormat, IP "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
   { "status_on_top", DT_BOOL|R_REFLOW, &C_StatusOnTop, false },
@@ -613,19 +570,12 @@ struct ConfigDef MainVars[] = {
   { "ts_enabled", DT_BOOL|R_INDEX|R_PAGER, &C_TsEnabled, false },
   { "ts_icon_format", DT_STRING|R_INDEX|R_PAGER, &C_TsIconFormat, IP "M%?n?AIL&ail?" },
   { "ts_status_format", DT_STRING|R_INDEX|R_PAGER, &C_TsStatusFormat, IP "NeoMutt with %?m?%m messages&no messages?%?n? [%n NEW]?" },
-#ifdef USE_SOCKET
-  { "tunnel", DT_STRING|DT_COMMAND, &C_Tunnel, 0 },
-  { "tunnel_is_secure", DT_BOOL, &C_TunnelIsSecure, true },
-#endif
   { "uncollapse_jump", DT_BOOL, &C_UncollapseJump, false },
   { "uncollapse_new", DT_BOOL, &C_UncollapseNew, true },
   { "use_8bitmime", DT_BOOL, &C_Use8bitmime, false },
   { "use_domain", DT_BOOL, &C_UseDomain, true },
   { "use_envelope_from", DT_BOOL, &C_UseEnvelopeFrom, false },
   { "use_from", DT_BOOL, &C_UseFrom, true },
-#ifdef HAVE_GETADDRINFO
-  { "use_ipv6", DT_BOOL, &C_UseIpv6, true },
-#endif
   { "user_agent", DT_BOOL, &C_UserAgent, false },
 #ifdef USE_NOTMUCH
   { "vfolder_format", DT_STRING|DT_NOT_EMPTY|R_INDEX, &C_VfolderFormat, IP "%2C %?n?%4n/&     ?%4m %f" },

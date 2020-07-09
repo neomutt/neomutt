@@ -37,9 +37,9 @@
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "lib.h"
 #include "connaccount.h"
 #include "connection.h"
-#include "globals.h"
 #include "mutt_globals.h"
 
 /**

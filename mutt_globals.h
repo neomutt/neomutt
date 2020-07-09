@@ -160,9 +160,6 @@ WHERE unsigned char C_ForwardAttachments;    ///< Config: Forward attachments wh
 WHERE unsigned char C_MimeForward;           ///< Config: Forward a message as a 'message/RFC822' MIME part
 WHERE unsigned char C_Print;                 ///< Config: Confirm before printing a message
 WHERE unsigned char C_Quit;                  ///< Config: Prompt before exiting NeoMutt
-#ifdef USE_SSL
-WHERE unsigned char C_SslStarttls;           ///< Config: (ssl) Use STARTTLS on servers advertising the capability
-#endif
 #ifdef USE_NNTP
 WHERE unsigned char C_PostModerated;         ///< Config: (nntp) Allow posting to moderated newsgroups
 WHERE unsigned char C_FollowupToPoster;      ///< Config: (nntp) Reply to the poster if 'poster' is in the 'Followup-To' header
@@ -196,16 +193,6 @@ WHERE bool C_ImapPassive;                    ///< Config: (imap) Reuse an existi
 WHERE bool C_ImapPeek;                       ///< Config: (imap) Don't mark messages as read when fetching them from the server
 WHERE bool C_ImapQresync;                    ///< Config: (imap) Enable the QRESYNC extension
 #endif
-#ifdef USE_SSL
-#ifndef USE_SSL_GNUTLS
-WHERE bool C_SslUsesystemcerts;              ///< Config: (ssl) Use CA certificates in the system-wide store
-WHERE bool C_SslUseSslv2;                    ///< Config: (ssl) INSECURE: Use SSLv2 for authentication
-#endif /* USE_SSL_GNUTLS */
-WHERE bool C_SslForceTls;                    ///< Config: (ssl) Require TLS encryption for all connections
-#if defined(USE_SSL_OPENSSL) && defined(HAVE_SSL_PARTIAL_CHAIN)
-WHERE bool C_SslVerifyPartialChains;         ///< Config: (ssl) Allow verification using partial certificate chains
-#endif /* USE_SSL_OPENSSL */
-#endif /* defined(USE_SSL) */
 WHERE bool C_MailCheckRecent;                ///< Config: Notify the user about new mail since the last time the mailbox was opened
 WHERE bool C_MaildirTrash;                   ///< Config: Use the maildir 'trashed' flag, rather than deleting
 WHERE bool C_Markers;                        ///< Config: Display a '+' at the beginning of wrapped lines in the pager

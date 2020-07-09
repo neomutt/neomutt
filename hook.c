@@ -747,7 +747,6 @@ void mutt_crypt_hook(struct ListHead *list, struct Address *addr)
   list_hook(list, addr->mailbox, MUTT_CRYPT_HOOK);
 }
 
-#ifdef USE_SOCKET
 /**
  * mutt_account_hook - Perform an account hook
  * @param url Account URL to match
@@ -790,7 +789,6 @@ void mutt_account_hook(const char *url)
 done:
   mutt_buffer_pool_release(&err);
 }
-#endif
 
 /**
  * mutt_timeout_hook - Execute any timeout hooks

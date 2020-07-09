@@ -30,6 +30,7 @@
 #include "config.h"
 #include <dirent.h>
 #include <errno.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -39,6 +40,8 @@
 #include "mutt_account.h"
 #include "muttlib.h"
 #include "bcache/lib.h"
+
+struct ConnAccount;
 
 /* These Config Variables are only used in bcache.c */
 char *C_MessageCachedir; ///< Config: (imap/pop) Directory for the message cache
