@@ -73,8 +73,7 @@ static void destroy(int type, void *obj, intptr_t data)
   else
   {
     struct ConfigDef *cdef = obj;
-
-    if (!cdef || !cdef->var)
+    if (!cdef)
       return; // LCOV_EXCL_LINE
 
     cst = cs_get_type_def(cs, type);
@@ -130,7 +129,7 @@ static struct HashElem *reg_one_var(const struct ConfigSet *cs,
   if (!cs || !cdef)
     return NULL; /* LCOV_EXCL_LINE */
 
-  if (cdef->type == DT_SYNONYM)
+  if (DTYPE(cdef->type) == DT_SYNONYM)
     return create_synonym(cs, cdef, err);
 
   const struct ConfigSetType *cst = cs_get_type_def(cs, cdef->type);
@@ -141,8 +140,7 @@ static struct HashElem *reg_one_var(const struct ConfigSet *cs,
     return NULL;
   }
 
-  struct HashElem *he =
-      mutt_hash_typed_insert(cs->hash, cdef->name, cdef->type, (void *) cdef);
+  struct HashElem *he = mutt_hash_typed_insert(cs->hash, cdef->name, cdef->type, cdef);
   if (!he)
     return NULL; /* LCOV_EXCL_LINE */
 
@@ -357,21 +355,17 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
   if ((he->type & DT_INHERITED) && (DTYPE(he->type) == 0))
     return CSR_SUCCESS;
 
-  const struct ConfigDef *cdef = NULL;
-  const struct ConfigSetType *cst = NULL;
-
   int rc = CSR_SUCCESS;
 
   if (he->type & DT_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
-    cdef = he_base->data;
-    cst = cs_get_type_def(cs, he_base->type);
-
+    struct ConfigDef *cdef = he_base->data;
     if (!cdef)
       return CSR_ERR_CODE; // LCOV_EXCL_LINE
 
+    const struct ConfigSetType *cst = cs_get_type_def(cs, he_base->type);
     if (cst && cst->destroy)
       cst->destroy(cs, (void **) &i->var, cdef);
 
@@ -379,12 +373,11 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
   }
   else
   {
-    cdef = he->data;
-    cst = cs_get_type_def(cs, he->type);
-
-    if (!cdef || !cdef->var)
+    struct ConfigDef *cdef = he->data;
+    if (!cdef)
       return CSR_ERR_CODE; // LCOV_EXCL_LINE
 
+    const struct ConfigSetType *cst = cs_get_type_def(cs, he->type);
     if (cst)
       rc = cst->reset(cs, cdef->var, cdef, err);
   }
@@ -429,7 +422,6 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
     return CSR_ERR_CODE;
 
   struct ConfigDef *cdef = NULL;
-  const struct ConfigSetType *cst = NULL;
 
   if (he->type & DT_INHERITED)
   {
@@ -443,7 +435,7 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
   if (!cdef)
     return CSR_ERR_CODE; // LCOV_EXCL_LINE
 
-  cst = cs_get_type_def(cs, he->type);
+  const struct ConfigSetType *cst = cs_get_type_def(cs, he->type);
   if (!cst)
   {
     mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
@@ -575,6 +567,9 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
     var = cdef->var;
   }
 
+  if (!cdef)
+    return CSR_ERR_CODE; // LCOV_EXCL_LINE
+
   if (!cst)
   {
     mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
@@ -653,7 +648,7 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
     var = cdef->var;
   }
 
-  if (!cst)
+  if (!cdef || !cst)
     return CSR_ERR_CODE; // LCOV_EXCL_LINE
 
   return cst->string_get(cs, var, cdef, result);
@@ -825,14 +820,14 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
     var = cdef->var;
   }
 
+  if (!var || !cdef)
+    return INT_MIN; // LCOV_EXCL_LINE
+
   if (!cst)
   {
     mutt_buffer_printf(err, _("Variable '%s' has an invalid type %d"), cdef->name, he->type);
     return INT_MIN;
   }
-
-  if (!var || !cdef)
-    return INT_MIN; // LCOV_EXCL_LINE
 
   return cst->native_get(cs, var, cdef, err);
 }
@@ -886,6 +881,9 @@ int cs_he_string_plus_equals(const struct ConfigSet *cs, struct HashElem *he,
     cst = cs_get_type_def(cs, he->type);
     var = cdef->var;
   }
+
+  if (!var || !cdef)
+    return INT_MIN; // LCOV_EXCL_LINE
 
   if (!cst)
   {
@@ -966,6 +964,9 @@ int cs_he_string_minus_equals(const struct ConfigSet *cs, struct HashElem *he,
     cst = cs_get_type_def(cs, he->type);
     var = cdef->var;
   }
+
+  if (!var || !cdef)
+    return INT_MIN; // LCOV_EXCL_LINE
 
   if (!cst)
   {
