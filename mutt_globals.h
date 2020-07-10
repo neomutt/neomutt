@@ -79,7 +79,6 @@ WHERE enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
 
 /* All the variables below are backing for config items */
 
-WHERE struct Address *C_EnvelopeFromAddress; ///< Config: Manually set the sender for outgoing messages
 WHERE struct Address *C_From;                ///< Config: Default 'From' address to use, if isn't otherwise set
 
 WHERE bool C_AbortBackspace;                 ///< Config: Hitting backspace against an empty prompt aborts the prompt
@@ -89,7 +88,6 @@ WHERE char *C_Attribution;                   ///< Config: Message to start a rep
 WHERE char *C_AttributionLocale;             ///< Config: Locale for dates in the attribution message
 WHERE char *C_AttachFormat;                  ///< Config: printf-like format string for the attachment menu
 WHERE char *C_ConfigCharset;                 ///< Config: Character set that the config files are in
-WHERE char *C_CryptProtectedHeadersSubject;  ///< Config: Use this as the subject for encrypted emails
 WHERE char *C_DateFormat;                    ///< Config: strftime format string for the `%d` expando
 WHERE char *C_Editor;                        ///< Config: External command to use as an email editor
 WHERE char *C_ExternalSearchCommand;         ///< Config: External search command
@@ -122,14 +120,6 @@ WHERE char *C_Visual;                        ///< Config: Editor to use when '~v
 WHERE short C_SleepTime;                     ///< Config: Time to pause after certain info messages
 WHERE short C_Timeout;                       ///< Config: Time to wait for user input in menus
 WHERE short C_Wrap;                          ///< Config: Width to wrap text in the pager
-
-WHERE char *C_PgpDefaultKey;                 ///< Config: Default key to use for PGP operations
-WHERE char *C_PgpSignAs;                     ///< Config: Use this alternative key for signing messages
-WHERE char *C_PgpEntryFormat;                ///< Config: printf-like format string for the PGP key selection menu
-
-WHERE char *C_SmimeDefaultKey;               ///< Config: Default key for SMIME operations
-WHERE char *C_SmimeSignAs;                   ///< Config: Use this alternative key for signing messages
-WHERE char *C_SmimeEncryptWith;              ///< Config: Algorithm for encryption
 
 #ifdef USE_NOTMUCH
 WHERE int C_NmQueryWindowDuration;           ///< Config: (notmuch) Time duration of the current search window
@@ -193,24 +183,6 @@ WHERE bool C_UseDomain;                      ///< Config: Qualify local addresse
 WHERE bool C_WaitKey;                        ///< Config: Prompt to press a key after running external commands
 WHERE bool C_WrapSearch;                     ///< Config: Wrap around when the search hits the end
 WHERE bool C_WriteBcc;                       ///< Config: Write out the 'Bcc' field when preparing to send a mail
-
-#ifdef CRYPT_BACKEND_GPGME
-WHERE bool C_CryptUsePka;                    ///< Config: Use GPGME to use PKA (lookup PGP keys using DNS)
-#endif
-
-/* PGP options */
-
-WHERE bool C_CryptConfirmhook;               ///< Config: Prompt the user to confirm keys before use
-WHERE bool C_CryptOpportunisticEncrypt;      ///< Config: Enable encryption when the recipient's key is available
-WHERE bool C_CryptOpportunisticEncryptStrongKeys; ///< Config: Enable encryption only when strong a key is available
-WHERE bool C_CryptProtectedHeadersRead;      ///< Config: Display protected headers (Memory Hole) in the pager
-WHERE bool C_CryptProtectedHeadersSave;      ///< Config: Save the cleartext Subject with the headers
-WHERE bool C_CryptProtectedHeadersWrite;     ///< Config: Generate protected header (Memory Hole) for signed and encrypted emails
-WHERE bool C_SmimeIsDefault;                 ///< Config: Use SMIME rather than PGP by default
-WHERE bool C_PgpIgnoreSubkeys;               ///< Config: Only use the principal PGP key
-WHERE bool C_PgpLongIds;                     ///< Config: Display long PGP key IDs to the user
-WHERE bool C_PgpShowUnusable;                ///< Config: Show non-usable keys in the key selection
-WHERE bool C_PgpAutoinline;                  ///< Config: Use old-style inline PGP messages (not recommended)
 
 /* news options */
 

@@ -29,6 +29,7 @@
  *
  * | File                             | Description                          |
  * | :------------------------------- | :----------------------------------- |
+ * | ncrypt/config.c                  | @subpage crypt_config                |
  * | ncrypt/crypt.c                   | @subpage crypt_crypt                 |
  * | ncrypt/cryptglue.c               | @subpage crypt_cryptglue             |
  * | ncrypt/crypt_gpgme.c             | @subpage crypt_crypt_gpgme           |
@@ -57,68 +58,22 @@
 struct Address;
 struct Body;
 struct Buffer;
+struct ConfigSet;
 struct Email;
 struct EmailList;
 struct Envelope;
 struct Mailbox;
 struct State;
 
-/* These Config Variables are only used in ncrypt/crypt.c */
-extern bool          C_CryptTimestamp;
-extern unsigned char C_PgpEncryptSelf; ///< Deprecated, see #C_PgpSelfEncrypt
-extern unsigned char C_PgpMimeAuto;
-extern bool          C_PgpRetainableSigs;
-extern bool          C_PgpSelfEncrypt;
-extern bool          C_PgpStrictEnc;
-extern unsigned char C_SmimeEncryptSelf; ///< Deprecated, see #C_SmimeSelfEncrypt
-extern bool          C_SmimeSelfEncrypt;
-
-#ifdef CRYPT_BACKEND_GPGME
-/* These Config Variables are only used in ncrypt/cryptglue.c */
-extern bool C_CryptUseGpgme;
-#endif
-
-/* These Config Variables are only used in ncrypt/pgp.c */
-extern bool          C_PgpCheckExit;
-extern bool          C_PgpCheckGpgDecryptStatusFd;
-extern struct Regex *C_PgpDecryptionOkay;
-extern struct Regex *C_PgpGoodSign;
-extern long          C_PgpTimeout;
-extern bool          C_PgpUseGpgAgent;
-
-/* These Config Variables are only used in ncrypt/pgpinvoke.c */
-extern char *C_PgpClearsignCommand;
-extern char *C_PgpDecodeCommand;
-extern char *C_PgpDecryptCommand;
-extern char *C_PgpEncryptOnlyCommand;
-extern char *C_PgpEncryptSignCommand;
-extern char *C_PgpExportCommand;
-extern char *C_PgpGetkeysCommand;
-extern char *C_PgpImportCommand;
-extern char *C_PgpListPubringCommand;
-extern char *C_PgpListSecringCommand;
-extern char *C_PgpSignCommand;
-extern char *C_PgpVerifyCommand;
-extern char *C_PgpVerifyKeyCommand;
-
-/* These Config Variables are only used in ncrypt/smime.c */
-extern bool  C_SmimeAskCertLabel;
-extern char *C_SmimeCaLocation;
-extern char *C_SmimeCertificates;
-extern char *C_SmimeDecryptCommand;
-extern bool  C_SmimeDecryptUseDefaultKey;
-extern char *C_SmimeEncryptCommand;
-extern char *C_SmimeGetCertCommand;
-extern char *C_SmimeGetCertEmailCommand;
-extern char *C_SmimeGetSignerCertCommand;
-extern char *C_SmimeImportCertCommand;
-extern char *C_SmimeKeys;
-extern char *C_SmimePk7outCommand;
-extern char *C_SmimeSignCommand;
-extern char *C_SmimeSignDigestAlg;
-extern long  C_SmimeTimeout;
-extern char *C_SmimeVerifyCommand;
-extern char *C_SmimeVerifyOpaqueCommand;
+extern bool            C_CryptOpportunisticEncrypt;
+extern bool            C_CryptProtectedHeadersRead;
+extern bool            C_CryptProtectedHeadersSave;
+extern unsigned char   C_CryptVerifySig;
+extern bool            C_PgpAutoDecode;
+extern char *          C_PgpSignAs;
+extern char *          C_SmimeEncryptWith;
+extern bool            C_SmimeIsDefault;
+extern char *          C_SmimeSignAs;
 
 typedef uint16_t SecurityFlags;           ///< Flags, e.g. #SEC_ENCRYPT
 #define SEC_NO_FLAGS                  0   ///< No flags are set
@@ -236,5 +191,7 @@ int          mutt_gpgme_select_secret_key (struct Buffer *keyid);
 #endif
 const char  *mutt_gpgme_print_version(void);
 #endif
+
+bool config_init_ncrypt(struct ConfigSet *cs);
 
 #endif /* MUTT_NCRYPT_LIB_H */

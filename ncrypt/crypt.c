@@ -37,6 +37,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -49,7 +50,6 @@
 #include "copy.h"
 #include "cryptglue.h"
 #include "handler.h"
-#include "init.h"
 #include "mutt_globals.h"
 #include "mutt_parse.h"
 #include "muttlib.h"
@@ -60,18 +60,6 @@
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
-
-struct Mailbox;
-
-/* These Config Variables are only used in ncrypt/crypt.c */
-bool C_CryptTimestamp; ///< Config: Add a timestamp to PGP or SMIME output to prevent spoofing
-unsigned char C_PgpEncryptSelf;
-unsigned char C_PgpMimeAuto; ///< Config: Prompt the user to use MIME if inline PGP fails
-bool C_PgpRetainableSigs; ///< Config: Create nested multipart/signed or encrypted messages
-bool C_PgpSelfEncrypt; ///< Config: Encrypted messages will also be encrypted to C_PgpDefaultKey too
-bool C_PgpStrictEnc; ///< Config: Encode PGP signed messages with quoted-printable (don't unset)
-unsigned char C_SmimeEncryptSelf;
-bool C_SmimeSelfEncrypt; ///< Config: Encrypted messages will also be encrypt to C_SmimeDefaultKey too
 
 /**
  * crypt_current_time - Print the current time

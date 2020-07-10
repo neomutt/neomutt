@@ -103,7 +103,6 @@ bool C_CollapseAll; ///< Config: Collapse all threads when entering a folder
 bool C_CollapseFlagged; ///< Config: Prevent the collapse of threads with flagged emails
 bool C_CollapseUnread; ///< Config: Prevent the collapse of threads with unread emails
 char *C_MarkMacroPrefix; ///< Config: Prefix for macros using '<mark-message>'
-bool C_PgpAutoDecode;    ///< Config: Automatically decrypt PGP messages
 bool C_UncollapseJump; ///< Config: When opening a thread, jump to the next unread message
 bool C_UncollapseNew; ///< Config: Open collapsed threads when new mail arrives
 

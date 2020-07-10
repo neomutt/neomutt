@@ -141,22 +141,6 @@ struct ConfigDef MainVars[] = {
   { "crypt_autosign", DT_BOOL, &C_CryptAutosign, false },
   { "crypt_autosmime", DT_BOOL, &C_CryptAutosmime, true },
   { "crypt_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_CryptChars, IP "SPsK " },
-  { "crypt_confirmhook", DT_BOOL, &C_CryptConfirmhook, true },
-  { "crypt_opportunistic_encrypt", DT_BOOL, &C_CryptOpportunisticEncrypt, false },
-  { "crypt_opportunistic_encrypt_strong_keys", DT_BOOL, &C_CryptOpportunisticEncryptStrongKeys, false },
-  { "crypt_protected_headers_read", DT_BOOL, &C_CryptProtectedHeadersRead, true },
-  { "crypt_protected_headers_save", DT_BOOL, &C_CryptProtectedHeadersSave, false },
-  { "crypt_protected_headers_subject", DT_STRING, &C_CryptProtectedHeadersSubject, IP "Encrypted subject" },
-  { "crypt_protected_headers_write", DT_BOOL, &C_CryptProtectedHeadersWrite, false },
-  { "crypt_replyencrypt", DT_BOOL, &C_CryptReplyencrypt, true },
-  { "crypt_replysign", DT_BOOL, &C_CryptReplysign, false },
-  { "crypt_replysignencrypted", DT_BOOL, &C_CryptReplysignencrypted, false },
-  { "crypt_timestamp", DT_BOOL, &C_CryptTimestamp, true },
-#ifdef CRYPT_BACKEND_GPGME
-  { "crypt_use_gpgme", DT_BOOL, &C_CryptUseGpgme, true },
-  { "crypt_use_pka", DT_BOOL, &C_CryptUsePka, false },
-#endif
-  { "crypt_verify_sig", DT_QUAD, &C_CryptVerifySig, MUTT_YES },
   { "date_format", DT_STRING|DT_NOT_EMPTY|R_MENU, &C_DateFormat, IP "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
   { "debug_file", DT_PATH|DT_PATH_FILE, &C_DebugFile, IP "~/.neomuttdebug" },
   { "debug_level", DT_NUMBER, &C_DebugLevel, 0, 0, level_validator },
@@ -172,7 +156,6 @@ struct ConfigDef MainVars[] = {
   { "editor", DT_STRING|DT_NOT_EMPTY|DT_COMMAND, &C_Editor, IP "vi" },
   { "empty_subject", DT_STRING, &C_EmptySubject, IP "Re: your mail" },
   { "encode_from", DT_BOOL, &C_EncodeFrom, false },
-  { "envelope_from_address", DT_ADDRESS, &C_EnvelopeFromAddress, 0 },
   { "external_search_command", DT_STRING|DT_COMMAND, &C_ExternalSearchCommand, 0 },
   { "fast_reply", DT_BOOL, &C_FastReply, false },
   { "fcc_attach", DT_QUAD, &C_FccAttach, MUTT_YES },
@@ -304,51 +287,6 @@ struct ConfigDef MainVars[] = {
   { "pager_format", DT_STRING|R_PAGER, &C_PagerFormat, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
   { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER|R_REFLOW, &C_PagerIndexLines, 0 },
   { "pager_stop", DT_BOOL, &C_PagerStop, false },
-  { "pgp_auto_decode", DT_BOOL, &C_PgpAutoDecode, false },
-  { "pgp_autoinline", DT_BOOL, &C_PgpAutoinline, false },
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-  { "pgp_check_exit", DT_BOOL, &C_PgpCheckExit, true },
-  { "pgp_check_gpg_decrypt_status_fd", DT_BOOL, &C_PgpCheckGpgDecryptStatusFd, true },
-  { "pgp_clearsign_command", DT_STRING|DT_COMMAND, &C_PgpClearsignCommand, 0 },
-  { "pgp_decode_command", DT_STRING|DT_COMMAND, &C_PgpDecodeCommand, 0 },
-  { "pgp_decrypt_command", DT_STRING|DT_COMMAND, &C_PgpDecryptCommand, 0 },
-  { "pgp_decryption_okay", DT_REGEX, &C_PgpDecryptionOkay, 0 },
-#endif
-  { "pgp_default_key", DT_STRING, &C_PgpDefaultKey, 0 },
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-  { "pgp_encrypt_only_command", DT_STRING|DT_COMMAND, &C_PgpEncryptOnlyCommand, 0 },
-  { "pgp_encrypt_sign_command", DT_STRING|DT_COMMAND, &C_PgpEncryptSignCommand, 0 },
-#endif
-  { "pgp_entry_format", DT_STRING|DT_NOT_EMPTY, &C_PgpEntryFormat, IP "%4n %t%f %4l/0x%k %-4a %2c %u" },
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-  { "pgp_export_command", DT_STRING|DT_COMMAND, &C_PgpExportCommand, 0 },
-  { "pgp_getkeys_command", DT_STRING|DT_COMMAND, &C_PgpGetkeysCommand, 0 },
-  { "pgp_good_sign", DT_REGEX, &C_PgpGoodSign, 0 },
-#endif
-  { "pgp_ignore_subkeys", DT_BOOL, &C_PgpIgnoreSubkeys, true },
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-  { "pgp_import_command", DT_STRING|DT_COMMAND, &C_PgpImportCommand, 0 },
-  { "pgp_list_pubring_command", DT_STRING|DT_COMMAND, &C_PgpListPubringCommand, 0 },
-  { "pgp_list_secring_command", DT_STRING|DT_COMMAND, &C_PgpListSecringCommand, 0 },
-#endif
-  { "pgp_long_ids", DT_BOOL, &C_PgpLongIds, true },
-  { "pgp_mime_auto", DT_QUAD, &C_PgpMimeAuto, MUTT_ASKYES },
-  { "pgp_replyinline", DT_BOOL, &C_PgpReplyinline, false },
-  { "pgp_retainable_sigs", DT_BOOL, &C_PgpRetainableSigs, false },
-  { "pgp_self_encrypt", DT_BOOL, &C_PgpSelfEncrypt, true },
-  { "pgp_show_unusable", DT_BOOL, &C_PgpShowUnusable, true },
-  { "pgp_sign_as", DT_STRING, &C_PgpSignAs, 0 },
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-  { "pgp_sign_command", DT_STRING|DT_COMMAND, &C_PgpSignCommand, 0 },
-#endif
-  { "pgp_sort_keys", DT_SORT|DT_SORT_KEYS, &C_PgpSortKeys, SORT_ADDRESS },
-  { "pgp_strict_enc", DT_BOOL, &C_PgpStrictEnc, true },
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-  { "pgp_timeout", DT_LONG|DT_NOT_NEGATIVE, &C_PgpTimeout, 300 },
-  { "pgp_use_gpg_agent", DT_BOOL, &C_PgpUseGpgAgent, true },
-  { "pgp_verify_command", DT_STRING|DT_COMMAND, &C_PgpVerifyCommand, 0 },
-  { "pgp_verify_key_command", DT_STRING|DT_COMMAND, &C_PgpVerifyKeyCommand, 0 },
-#endif
   { "pipe_decode", DT_BOOL, &C_PipeDecode, false },
   { "pipe_sep", DT_STRING, &C_PipeSep, IP "\n" },
   { "pipe_split", DT_BOOL, &C_PipeSplit, false },
@@ -449,38 +387,6 @@ struct ConfigDef MainVars[] = {
   { "sleep_time", DT_NUMBER|DT_NOT_NEGATIVE, &C_SleepTime, 1 },
   { "smart_wrap", DT_BOOL|R_PAGER_FLOW, &C_SmartWrap, true },
   { "smileys", DT_REGEX|R_PAGER, &C_Smileys, IP "(>From )|(:[-^]?[][)(><}{|/DP])" },
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
-  { "smime_ask_cert_label", DT_BOOL, &C_SmimeAskCertLabel, true },
-  { "smime_ca_location", DT_PATH|DT_PATH_FILE, &C_SmimeCaLocation, 0 },
-  { "smime_certificates", DT_PATH|DT_PATH_DIR, &C_SmimeCertificates, 0 },
-  { "smime_decrypt_command", DT_STRING|DT_COMMAND, &C_SmimeDecryptCommand, 0 },
-  { "smime_decrypt_use_default_key", DT_BOOL, &C_SmimeDecryptUseDefaultKey, true },
-#endif
-  { "smime_default_key", DT_STRING, &C_SmimeDefaultKey, 0 },
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
-  { "smime_encrypt_command", DT_STRING|DT_COMMAND, &C_SmimeEncryptCommand, 0 },
-#endif
-  { "smime_encrypt_with", DT_STRING, &C_SmimeEncryptWith, IP "aes256" },
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
-  { "smime_get_cert_command", DT_STRING|DT_COMMAND, &C_SmimeGetCertCommand, 0 },
-  { "smime_get_cert_email_command", DT_STRING|DT_COMMAND, &C_SmimeGetCertEmailCommand, 0 },
-  { "smime_get_signer_cert_command", DT_STRING|DT_COMMAND, &C_SmimeGetSignerCertCommand, 0 },
-  { "smime_import_cert_command", DT_STRING|DT_COMMAND, &C_SmimeImportCertCommand, 0 },
-#endif
-  { "smime_is_default", DT_BOOL, &C_SmimeIsDefault, false },
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
-  { "smime_keys", DT_PATH|DT_PATH_DIR, &C_SmimeKeys, 0 },
-  { "smime_pk7out_command", DT_STRING|DT_COMMAND, &C_SmimePk7outCommand, 0 },
-#endif
-  { "smime_self_encrypt", DT_BOOL, &C_SmimeSelfEncrypt, true },
-  { "smime_sign_as", DT_STRING, &C_SmimeSignAs, 0 },
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
-  { "smime_sign_command", DT_STRING|DT_COMMAND, &C_SmimeSignCommand, 0 },
-  { "smime_sign_digest_alg", DT_STRING, &C_SmimeSignDigestAlg, IP "sha256" },
-  { "smime_timeout", DT_NUMBER|DT_NOT_NEGATIVE, &C_SmimeTimeout, 300 },
-  { "smime_verify_command", DT_STRING|DT_COMMAND, &C_SmimeVerifyCommand, 0 },
-  { "smime_verify_opaque_command", DT_STRING|DT_COMMAND, &C_SmimeVerifyOpaqueCommand, 0 },
-#endif
 #ifdef USE_SMTP
   { "smtp_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_SmtpAuthenticators, 0 },
   { "smtp_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, &C_SmtpOauthRefreshCommand, 0 },
@@ -538,8 +444,6 @@ struct ConfigDef MainVars[] = {
   { "escape", DT_DEPRECATED|DT_STRING, &C_Escape, IP "~" },
 
   { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,            &C_IgnoreLinearWhiteSpace, false   },
-  { "pgp_encrypt_self",          DT_DEPRECATED|DT_QUAD,            &C_PgpEncryptSelf,         MUTT_NO },
-  { "smime_encrypt_self",        DT_DEPRECATED|DT_QUAD,            &C_SmimeEncryptSelf,       MUTT_NO },
 
   { "abort_noattach_regexp",  DT_SYNONYM, NULL, IP "abort_noattach_regex",     },
   { "attach_keyword",         DT_SYNONYM, NULL, IP "abort_noattach_regex",     },
@@ -559,17 +463,13 @@ struct ConfigDef MainVars[] = {
   { "pgp_autoencrypt",        DT_SYNONYM, NULL, IP "crypt_autoencrypt",        },
   { "pgp_autosign",           DT_SYNONYM, NULL, IP "crypt_autosign",           },
   { "pgp_auto_traditional",   DT_SYNONYM, NULL, IP "pgp_replyinline",          },
-  { "pgp_create_traditional", DT_SYNONYM, NULL, IP "pgp_autoinline",           },
   { "pgp_replyencrypt",       DT_SYNONYM, NULL, IP "crypt_replyencrypt",       },
   { "pgp_replysign",          DT_SYNONYM, NULL, IP "crypt_replysign",          },
   { "pgp_replysignencrypted", DT_SYNONYM, NULL, IP "crypt_replysignencrypted", },
-  { "pgp_self_encrypt_as",    DT_SYNONYM, NULL, IP "pgp_default_key",          },
-  { "pgp_verify_sig",         DT_SYNONYM, NULL, IP "crypt_verify_sig",         },
   { "post_indent_str",        DT_SYNONYM, NULL, IP "post_indent_string",       },
   { "print_cmd",              DT_SYNONYM, NULL, IP "print_command",            },
   { "quote_regexp",           DT_SYNONYM, NULL, IP "quote_regex",              },
   { "reply_regexp",           DT_SYNONYM, NULL, IP "reply_regex",              },
-  { "smime_self_encrypt_as",  DT_SYNONYM, NULL, IP "smime_default_key",        },
   { "xterm_icon",             DT_SYNONYM, NULL, IP "ts_icon_format",           },
   { "xterm_set_titles",       DT_SYNONYM, NULL, IP "ts_enabled",               },
   { "xterm_title",            DT_SYNONYM, NULL, IP "ts_status_format",         },

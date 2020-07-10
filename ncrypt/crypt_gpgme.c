@@ -48,6 +48,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -72,7 +73,6 @@
 #include "pager.h"
 #include "protos.h"
 #include "recvattach.h"
-#include "sort.h"
 #include "state.h"
 #include "autocrypt/lib.h"
 #include "ncrypt/lib.h"
@@ -80,8 +80,6 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-
-struct Mailbox;
 
 // clang-format off
 /* Values used for comparing addresses. */

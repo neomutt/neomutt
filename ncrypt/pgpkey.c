@@ -38,6 +38,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -60,8 +61,6 @@
 #include "pager.h"
 #include "pgpinvoke.h"
 #include "protos.h"
-#include "recvattach.h"
-#include "sort.h"
 #include "send/lib.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"
