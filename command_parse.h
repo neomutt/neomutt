@@ -41,10 +41,6 @@ enum CommandResult parse_ignore          (struct Buffer *buf, struct Buffer *s, 
 enum CommandResult parse_lists           (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_mailboxes       (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_my_hdr          (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-#ifdef USE_SIDEBAR
-enum CommandResult parse_path_list       (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult parse_path_unlist     (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-#endif
 enum CommandResult parse_set             (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_setenv          (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_source          (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
