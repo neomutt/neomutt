@@ -1117,24 +1117,12 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     struct MailcapEntry *entry = mailcap_entry_new();
     mailcap_lookup(a, type, sizeof(type), entry, MUTT_MC_PRINT);
     mailcap_expand_filename(entry->nametemplate, a->filename, newfile);
-    /* send mode: symlink from existing file to the newfile */
-    if (!fp)
-    {
-      if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
-      {
-        if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
-          goto mailcap_cleanup;
-        mutt_buffer_strcpy(newfile, a->filename);
-      }
-      else
-        unlink_newfile = true;
-    }
-    /* in recv mode, save file to newfile first */
-    else
-    {
-      if (mutt_save_attachment(fp, a, mutt_b2s(newfile), MUTT_SAVE_NO_FLAGS, NULL) == -1)
-        goto mailcap_cleanup;
-    }
+
+    if (mutt_save_attachment(fp, a, mutt_b2s(newfile), MUTT_SAVE_NO_FLAGS, NULL) == -1)
+      goto mailcap_cleanup;
+    unlink_newfile = 1;
+
+    mutt_rfc3676_space_unstuff_attachment(a, mutt_b2s(newfile));
 
     mutt_buffer_strcpy(cmd, entry->printcommand);
     piped = mailcap_expand_command(a, mutt_b2s(newfile), type, cmd);
@@ -1179,10 +1167,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     rc = 1;
 
   mailcap_cleanup:
-    if (fp)
+    if (unlink_newfile)
       mutt_file_unlink(mutt_b2s(newfile));
-    else if (unlink_newfile)
-      unlink(mutt_b2s(newfile));
 
     mailcap_entry_free(&entry);
     goto out;
@@ -1205,6 +1191,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     if (mutt_decode_save_attachment(fp, a, mutt_b2s(newfile), MUTT_PRINTING,
                                     MUTT_SAVE_NO_FLAGS) == 0)
     {
+      unlink_newfile = true;
       mutt_debug(LL_DEBUG2, "successfully decoded %s type attachment to %s\n",
                  type, mutt_b2s(newfile));
 
@@ -1239,7 +1226,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   decode_cleanup:
     mutt_file_fclose(&fp_in);
     mutt_file_fclose(&fp_out);
-    mutt_file_unlink(mutt_b2s(newfile));
+    if (unlink_newfile)
+      mutt_file_unlink(mutt_b2s(newfile));
   }
   else
   {
