@@ -65,7 +65,6 @@
 #include "sort.h"
 #include "status.h"
 #include "bcache/lib.h"
-#include "hcache/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
 #include "maildir/lib.h"
@@ -85,10 +84,6 @@
 /* These options are deprecated */
 char *C_Escape = NULL;
 bool C_IgnoreLinearWhiteSpace = false;
-bool C_HeaderCacheCompress = false;
-#if defined(HAVE_GDBM) || defined(HAVE_BDB)
-long C_HeaderCachePagesize = 0;
-#endif
 
 // clang-format off
 struct ConfigDef MainVars[] = {
@@ -213,14 +208,6 @@ struct ConfigDef MainVars[] = {
 #endif
   { "hdrs", DT_BOOL, &C_Hdrs, true },
   { "header", DT_BOOL, &C_Header, false },
-#ifdef USE_HCACHE
-  { "header_cache", DT_PATH, &C_HeaderCache, 0 },
-  { "header_cache_backend", DT_STRING, &C_HeaderCacheBackend, 0, 0, hcache_validator },
-#if defined(USE_HCACHE_COMPRESSION)
-  { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, &C_HeaderCacheCompressLevel, 1, 0, compress_level_validator },
-  { "header_cache_compress_method", DT_STRING, &C_HeaderCacheCompressMethod, 0, 0, compress_method_validator },
-#endif
-#endif
   { "header_color_partial", DT_BOOL|R_PAGER_FLOW, &C_HeaderColorPartial, false },
   { "help", DT_BOOL|R_REFLOW, &C_Help, true },
   { "hidden_host", DT_BOOL, &C_HiddenHost, false },
@@ -284,9 +271,6 @@ struct ConfigDef MainVars[] = {
   { "mailcap_path", DT_SLIST|SLIST_SEP_COLON, &C_MailcapPath, IP "~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap" },
   { "mailcap_sanitize", DT_BOOL, &C_MailcapSanitize, true },
   { "maildir_check_cur", DT_BOOL, &C_MaildirCheckCur, false },
-#ifdef USE_HCACHE
-  { "maildir_header_cache_verify", DT_BOOL, &C_MaildirHeaderCacheVerify, true },
-#endif
   { "maildir_trash", DT_BOOL, &C_MaildirTrash, false },
   { "mark_macro_prefix", DT_STRING, &C_MarkMacroPrefix, IP "'" },
   { "mark_old", DT_BOOL|R_INDEX|R_PAGER, &C_MarkOld, true },
@@ -593,12 +577,6 @@ struct ConfigDef MainVars[] = {
   { "x_comment_to", DT_BOOL, &C_XCommentTo, false },
 #endif
   { "escape", DT_DEPRECATED|DT_STRING, &C_Escape, IP "~" },
-#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-  { "header_cache_compress",     DT_DEPRECATED|DT_BOOL,            &C_HeaderCacheCompress,    false   },
-#endif
-#if defined(HAVE_GDBM) || defined(HAVE_BDB)
-  { "header_cache_pagesize",     DT_DEPRECATED|DT_LONG,            &C_HeaderCachePagesize,    0       },
-#endif
 
   { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,            &C_IgnoreLinearWhiteSpace, false   },
   { "pgp_encrypt_self",          DT_DEPRECATED|DT_QUAD,            &C_PgpEncryptSelf,         MUTT_NO },

@@ -58,17 +58,11 @@
 #error "No hcache backend defined"
 #endif
 
-/* These Config Variables are only used in hcache/hcache.c */
-char *C_HeaderCacheBackend; ///< Config: (hcache) Header cache backend to use
-
 static unsigned int hcachever = 0x0;
 
 #define hcache_get_ops() store_get_backend_ops(C_HeaderCacheBackend)
 
 #ifdef USE_HCACHE_COMPRESSION
-short C_HeaderCacheCompressLevel; ///< Config: (hcache) Level of compression for method
-char *C_HeaderCacheCompressMethod; ///< Config: (hcache) Enable generic hcache database compression
-
 #define compr_get_ops() compress_get_ops(C_HeaderCacheCompressMethod)
 #endif
 

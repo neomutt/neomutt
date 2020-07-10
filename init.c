@@ -63,13 +63,11 @@
 #include "sort.h"
 #include "autocrypt/lib.h"
 #include "compress/lib.h"
+#include "hcache/lib.h"
 #include "history/lib.h"
 #include "store/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
-#endif
-#ifdef USE_HCACHE
-#include "hcache/lib.h"
 #endif
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
@@ -1552,6 +1550,7 @@ struct ConfigSet *init_config(size_t size)
     config_init_main,
     config_init_autocrypt,
     config_init_conn,
+    config_init_hcache,
     NULL,
   };
 

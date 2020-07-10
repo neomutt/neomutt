@@ -308,7 +308,7 @@ $(PWD)/gui:
 # libhcache
 @if USE_HCACHE
 LIBHCACHE=	libhcache.a
-LIBHCACHEOBJS=	hcache/hcache.o hcache/serialize.o
+LIBHCACHEOBJS=	hcache/config.o hcache/hcache.o hcache/serialize.o
 CLEANFILES+=	$(LIBHCACHE) $(LIBHCACHEOBJS)
 ALLOBJS+=	$(LIBHCACHEOBJS)
 
