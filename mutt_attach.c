@@ -704,9 +704,12 @@ return_error:
  */
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile)
 {
-  pid_t pid;
-  int out = -1;
-  int rc = 0;
+  pid_t pid = 0;
+  int out = -1, rc = 0;
+  bool is_flowed = false;
+  bool unlink_unstuff = false;
+  FILE *fp_filter = NULL, *fp_unstuff = NULL, *fp_in = NULL;
+  struct Buffer *unstuff_tempfile = NULL;
 
   if (outfile && *outfile)
   {
@@ -718,74 +721,117 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
     }
   }
 
+  if (mutt_rfc3676_is_format_flowed(b))
+  {
+    is_flowed = true;
+    unstuff_tempfile = mutt_buffer_pool_get();
+    mutt_buffer_mktemp(unstuff_tempfile);
+  }
+
   mutt_endwin();
 
+  if (outfile && *outfile)
+    pid = filter_create_fd(path, &fp_filter, NULL, NULL, -1, out, -1);
+  else
+    pid = filter_create(path, &fp_filter, NULL, NULL);
+  if (pid < 0)
+  {
+    mutt_perror(_("Can't create filter"));
+    goto bail;
+  }
+
+  /* recv case */
   if (fp)
   {
-    /* recv case */
-
     struct State s = { 0 };
 
     /* perform charset conversion on text attachments when piping */
     s.flags = MUTT_CHARCONV;
 
-    if (outfile && *outfile)
-      pid = filter_create_fd(path, &s.fp_out, NULL, NULL, -1, out, -1);
-    else
-      pid = filter_create(path, &s.fp_out, NULL, NULL);
-
-    if (pid < 0)
+    if (is_flowed)
     {
-      mutt_perror(_("Can't create filter"));
-      goto bail;
-    }
+      fp_unstuff = mutt_file_fopen(mutt_b2s(unstuff_tempfile), "w");
+      if (fp_unstuff == NULL)
+      {
+        mutt_perror("mutt_file_fopen");
+        goto bail;
+      }
+      unlink_unstuff = true;
 
-    s.fp_in = fp;
-    mutt_decode_attachment(b, &s);
-    mutt_file_fclose(&s.fp_out);
+      s.fp_in = fp;
+      s.fp_out = fp_unstuff;
+      mutt_decode_attachment(b, &s);
+      mutt_file_fclose(&fp_unstuff);
+
+      mutt_rfc3676_space_unstuff_attachment(b, mutt_b2s(unstuff_tempfile));
+
+      fp_unstuff = mutt_file_fopen(mutt_b2s(unstuff_tempfile), "r");
+      if (fp_unstuff == NULL)
+      {
+        mutt_perror("mutt_file_fopen");
+        goto bail;
+      }
+      mutt_file_copy_stream(fp_unstuff, fp_filter);
+      mutt_file_fclose(&fp_unstuff);
+    }
+    else
+    {
+      s.fp_in = fp;
+      s.fp_out = fp_filter;
+      mutt_decode_attachment(b, &s);
+    }
   }
+
+  /* send case */
   else
   {
-    /* send case */
-    FILE *fp_in = fopen(b->filename, "r");
+    const char *infile = NULL;
+
+    if (is_flowed)
+    {
+      if (mutt_save_attachment(fp, b, mutt_b2s(unstuff_tempfile), MUTT_SAVE_NO_FLAGS, NULL) == -1)
+        goto bail;
+      unlink_unstuff = true;
+      mutt_rfc3676_space_unstuff_attachment(b, mutt_b2s(unstuff_tempfile));
+      infile = mutt_b2s(unstuff_tempfile);
+    }
+    else
+      infile = b->filename;
+
+    fp_in = fopen(infile, "r");
     if (!fp_in)
     {
       mutt_perror("fopen");
-      if (outfile && *outfile)
-      {
-        close(out);
-        unlink(outfile);
-      }
-      return 0;
-    }
-
-    FILE *fp_out = NULL;
-    if (outfile && *outfile)
-      pid = filter_create_fd(path, &fp_out, NULL, NULL, -1, out, -1);
-    else
-      pid = filter_create(path, &fp_out, NULL, NULL);
-
-    if (pid < 0)
-    {
-      mutt_perror(_("Can't create filter"));
-      mutt_file_fclose(&fp_in);
       goto bail;
     }
 
-    mutt_file_copy_stream(fp_in, fp_out);
-    mutt_file_fclose(&fp_out);
+    mutt_file_copy_stream(fp_in, fp_filter);
     mutt_file_fclose(&fp_in);
   }
 
+  mutt_file_fclose(&fp_filter);
   rc = 1;
 
 bail:
-
   if (outfile && *outfile)
+  {
     close(out);
+    if (rc == 0)
+      unlink(outfile);
+    else if (is_flowed)
+      mutt_rfc3676_space_stuff_attachment(NULL, outfile);
+  }
+
+  mutt_file_fclose(&fp_unstuff);
+  mutt_file_fclose(&fp_filter);
+  mutt_file_fclose(&fp_in);
+
+  if (unlink_unstuff)
+    mutt_file_unlink(mutt_b2s(unstuff_tempfile));
+  mutt_buffer_pool_release(&unstuff_tempfile);
 
   /* check for error exit from child process */
-  if (filter_wait(pid) != 0)
+  if ((pid > 0) && (filter_wait(pid) != 0))
     rc = 0;
 
   if ((rc == 0) || C_WaitKey)

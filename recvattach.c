@@ -875,26 +875,85 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
   if (!state || !state->fp_out)
     return;
 
+  FILE *fp_in = NULL;
+  FILE *fp_unstuff = NULL;
+  bool is_flowed = false, unlink_unstuff = false;
+  struct Buffer *unstuff_tempfile = NULL;
+
+  if (mutt_rfc3676_is_format_flowed(b))
+  {
+    is_flowed = true;
+    unstuff_tempfile = mutt_buffer_pool_get();
+    mutt_buffer_mktemp(unstuff_tempfile);
+  }
+
   if (fp)
   {
     state->fp_in = fp;
-    mutt_decode_attachment(b, state);
-    if (C_AttachSep)
-      state_puts(state, C_AttachSep);
+
+    if (is_flowed)
+    {
+      fp_unstuff = mutt_file_fopen(mutt_b2s(unstuff_tempfile), "w");
+      if (fp_unstuff == NULL)
+      {
+        mutt_perror("mutt_file_fopen");
+        goto bail;
+      }
+      unlink_unstuff = true;
+
+      FILE *filter_fp = state->fp_out;
+      state->fp_out = fp_unstuff;
+      mutt_decode_attachment(b, state);
+      mutt_file_fclose(&fp_unstuff);
+      state->fp_out = filter_fp;
+
+      fp_unstuff = mutt_file_fopen(mutt_b2s(unstuff_tempfile), "r");
+      if (fp_unstuff == NULL)
+      {
+        mutt_perror("mutt_file_fopen");
+        goto bail;
+      }
+      mutt_file_copy_stream(fp_unstuff, filter_fp);
+      mutt_file_fclose(&fp_unstuff);
+    }
+    else
+      mutt_decode_attachment(b, state);
   }
   else
   {
-    FILE *fp_in = fopen(b->filename, "r");
+    const char *infile = NULL;
+
+    if (is_flowed)
+    {
+      if (mutt_save_attachment(fp, b, mutt_b2s(unstuff_tempfile), 0, NULL) == -1)
+        goto bail;
+      unlink_unstuff = true;
+      mutt_rfc3676_space_unstuff_attachment(b, mutt_b2s(unstuff_tempfile));
+      infile = mutt_b2s(unstuff_tempfile);
+    }
+    else
+      infile = b->filename;
+
+    fp_in = fopen(infile, "r");
     if (!fp_in)
     {
       mutt_perror("fopen");
-      return;
+      goto bail;
     }
     mutt_file_copy_stream(fp_in, state->fp_out);
     mutt_file_fclose(&fp_in);
-    if (C_AttachSep)
-      state_puts(state, C_AttachSep);
   }
+
+  if (C_AttachSep)
+    state_puts(state, C_AttachSep);
+
+bail:
+  mutt_file_fclose(&fp_unstuff);
+  mutt_file_fclose(&fp_in);
+
+  if (unlink_unstuff)
+    mutt_file_unlink(mutt_b2s(unstuff_tempfile));
+  mutt_buffer_pool_release(&unstuff_tempfile);
 }
 
 /**
