@@ -76,12 +76,6 @@
 #include "mutt/lib.h"
 #include "lib.h"
 
-/* These Config Variables are only used in history/history.c */
-short C_History; ///< Config: Number of history entries to keep in memory per category
-char *C_HistoryFile;      ///< Config: File to save history in
-bool C_HistoryRemoveDups; ///< Config: Remove duplicate entries from the history
-short C_SaveHistory; ///< Config: Number of history entries to save per category
-
 #define HC_FIRST HC_CMD
 
 /**

@@ -65,7 +65,6 @@
 #include "sort.h"
 #include "status.h"
 #include "bcache/lib.h"
-#include "history/lib.h"
 #include "imap/lib.h"
 #include "maildir/lib.h"
 #include "ncrypt/lib.h"
@@ -217,9 +216,6 @@ struct ConfigDef MainVars[] = {
   { "hide_thread_subject", DT_BOOL|R_TREE|R_INDEX, &C_HideThreadSubject, true },
   { "hide_top_limited", DT_BOOL|R_TREE|R_INDEX, &C_HideTopLimited, false },
   { "hide_top_missing", DT_BOOL|R_TREE|R_INDEX, &C_HideTopMissing, true },
-  { "history", DT_NUMBER|DT_NOT_NEGATIVE, &C_History, 10 },
-  { "history_file", DT_PATH|DT_PATH_FILE, &C_HistoryFile, IP "~/.mutthistory" },
-  { "history_remove_dups", DT_BOOL, &C_HistoryRemoveDups, false },
   { "honor_disposition", DT_BOOL, &C_HonorDisposition, false },
   { "honor_followup_to", DT_QUAD, &C_HonorFollowupTo, MUTT_YES },
   { "hostname", DT_STRING, &C_Hostname, 0 },
@@ -443,7 +439,6 @@ struct ConfigDef MainVars[] = {
   { "rfc2047_parameters", DT_BOOL, &C_Rfc2047Parameters, false },
   { "save_address", DT_BOOL, &C_SaveAddress, false },
   { "save_empty", DT_BOOL, &C_SaveEmpty, true },
-  { "save_history", DT_NUMBER|DT_NOT_NEGATIVE, &C_SaveHistory, 0 },
   { "save_name", DT_BOOL, &C_SaveName, false },
 #ifdef USE_NNTP
   { "save_unsubscribed", DT_BOOL, &C_SaveUnsubscribed, false },

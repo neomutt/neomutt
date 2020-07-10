@@ -1547,11 +1547,8 @@ struct ConfigSet *init_config(size_t size)
   typedef bool (*config_init_t)(struct ConfigSet * cs);
 
   static config_init_t config_list[] = {
-    config_init_main,
-    config_init_autocrypt,
-    config_init_conn,
-    config_init_hcache,
-    NULL,
+    config_init_main,   config_init_autocrypt, config_init_conn,
+    config_init_hcache, config_init_history,   NULL,
   };
 
   struct ConfigSet *cs = cs_new(size);
