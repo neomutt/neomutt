@@ -96,7 +96,7 @@ long C_HeaderCachePagesize = 0;
 #endif
 
 // clang-format off
-struct ConfigDef MuttVars[] = {
+struct ConfigDef MainVars[] = {
   /*++*/
 
   { "abort_backspace", DT_BOOL, &C_AbortBackspace, true },
@@ -5016,3 +5016,11 @@ struct ConfigDef MuttVars[] = {
   { NULL, 0, NULL, 0, 0, NULL },
 };
 // clang-format on
+
+/**
+ * config_init_main - Register main config variables
+ */
+bool config_init_main(struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, MainVars, 0);
+}
