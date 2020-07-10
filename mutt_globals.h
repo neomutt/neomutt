@@ -164,7 +164,6 @@ WHERE bool C_AutoTag;                        ///< Config: Automatically apply ac
 WHERE bool C_Beep;                           ///< Config: Make a noise when an error occurs
 WHERE bool C_BeepNew;                        ///< Config: Make a noise when new mail arrives
 WHERE bool C_BrailleFriendly;                ///< Config: Move the cursor to the beginning of the line
-WHERE bool C_CheckMboxSize;                  ///< Config: (mbox,mmdf) Use mailbox size as an indicator of new mail
 WHERE bool C_Confirmappend;                  ///< Config: Confirm before appending emails to a mailbox
 WHERE bool C_Confirmcreate;                  ///< Config: Confirm before creating a new mailbox
 WHERE bool C_DeleteUntag;                    ///< Config: Untag messages when they are marked for deletion

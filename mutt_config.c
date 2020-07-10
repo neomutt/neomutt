@@ -127,7 +127,6 @@ struct ConfigDef MainVars[] = {
 #endif
   { "change_folder_next", DT_BOOL, &C_ChangeFolderNext, false },
   { "charset", DT_STRING|DT_NOT_EMPTY, &C_Charset, 0, 0, charset_validator },
-  { "check_mbox_size", DT_BOOL, &C_CheckMboxSize, false },
   { "collapse_all", DT_BOOL, &C_CollapseAll, false },
   { "collapse_flagged", DT_BOOL, &C_CollapseFlagged, true },
   { "collapse_unread", DT_BOOL, &C_CollapseUnread, true },
