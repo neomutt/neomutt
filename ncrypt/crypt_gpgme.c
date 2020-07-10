@@ -74,6 +74,7 @@
 #include "recvattach.h"
 #include "sort.h"
 #include "state.h"
+#include "autocrypt/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 #ifdef ENABLE_NLS

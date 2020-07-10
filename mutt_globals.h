@@ -77,11 +77,6 @@ WHERE SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
 
 WHERE enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
 
-#ifdef USE_AUTOCRYPT
-WHERE char *AutocryptSignAs;     ///< Autocrypt Key id to sign as
-WHERE char *AutocryptDefaultKey; ///< Autocrypt default key id (used for postponing messages)
-#endif
-
 /* All the variables below are backing for config items */
 
 WHERE struct Address *C_EnvelopeFromAddress; ///< Config: Manually set the sender for outgoing messages
@@ -93,10 +88,6 @@ WHERE char *C_AliasFile;                     ///< Config: Save new aliases to th
 WHERE char *C_Attribution;                   ///< Config: Message to start a reply, "On DATE, PERSON wrote:"
 WHERE char *C_AttributionLocale;             ///< Config: Locale for dates in the attribution message
 WHERE char *C_AttachFormat;                  ///< Config: printf-like format string for the attachment menu
-#ifdef USE_AUTOCRYPT
-WHERE char *C_AutocryptAcctFormat;           ///< Config: Format of the autocrypt account menu
-WHERE char *C_AutocryptDir;                  ///< Config: Location of autocrypt files, including the GPG keyring and SQLite database
-#endif
 WHERE char *C_ConfigCharset;                 ///< Config: Character set that the config files are in
 WHERE char *C_CryptProtectedHeadersSubject;  ///< Config: Use this as the subject for encrypted emails
 WHERE char *C_DateFormat;                    ///< Config: strftime format string for the `%d` expando
@@ -182,10 +173,6 @@ WHERE char *C_ArrowString;                   ///< Config: Use an custom string f
 WHERE bool C_AsciiChars;                     ///< Config: Use plain ASCII characters, when drawing email threads
 WHERE bool C_Askbcc;                         ///< Config: Ask the user for the blind-carbon-copy recipients
 WHERE bool C_Askcc;                          ///< Config: Ask the user for the carbon-copy recipients
-#ifdef USE_AUTOCRYPT
-WHERE bool C_Autocrypt;                      ///< Config: Enables the Autocrypt feature
-WHERE bool C_AutocryptReply;                 ///< Config: Replying to an autocrypt email automatically enables autocrypt in the reply
-#endif
 WHERE bool C_Autoedit;                       ///< Config: Skip the initial compose menu and edit the email
 WHERE bool C_AutoTag;                        ///< Config: Automatically apply actions to all tagged messages
 WHERE bool C_Beep;                           ///< Config: Make a noise when an error occurs

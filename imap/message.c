@@ -52,6 +52,7 @@
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
+#include "autocrypt/lib.h"
 #include "bcache/lib.h"
 #include "imap/lib.h"
 #ifdef ENABLE_NLS

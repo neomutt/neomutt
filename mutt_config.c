@@ -123,12 +123,6 @@ struct ConfigDef MainVars[] = {
   { "attribution_locale", DT_STRING, &C_AttributionLocale, 0 },
   { "auto_subscribe", DT_BOOL, &C_AutoSubscribe, false },
   { "auto_tag", DT_BOOL, &C_AutoTag, false },
-#ifdef USE_AUTOCRYPT
-  { "autocrypt", DT_BOOL, &C_Autocrypt, false },
-  { "autocrypt_acct_format", DT_STRING|R_MENU, &C_AutocryptAcctFormat, IP "%4n %-30a %20p %10s" },
-  { "autocrypt_dir", DT_PATH|DT_PATH_DIR, &C_AutocryptDir, IP "~/.mutt/autocrypt" },
-  { "autocrypt_reply", DT_BOOL, &C_AutocryptReply, true },
-#endif
   { "autoedit", DT_BOOL, &C_Autoedit, false },
   { "beep", DT_BOOL, &C_Beep, true },
   { "beep_new", DT_BOOL, &C_BeepNew, false },

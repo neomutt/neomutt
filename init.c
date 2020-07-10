@@ -61,6 +61,7 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
+#include "autocrypt/lib.h"
 #include "compress/lib.h"
 #include "history/lib.h"
 #include "store/lib.h"
@@ -1549,6 +1550,7 @@ struct ConfigSet *init_config(size_t size)
 
   static config_init_t config_list[] = {
     config_init_main,
+    config_init_autocrypt,
     NULL,
   };
 
