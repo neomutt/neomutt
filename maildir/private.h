@@ -72,6 +72,14 @@ struct MhSequences
   MhSeqFlags *flags; ///< Flags for each email
 };
 
+extern bool  C_CheckNew;
+extern bool  C_MaildirCheckCur;
+extern bool  C_MaildirTrash;
+extern bool  C_MhPurge;
+extern char *C_MhSeqFlagged;
+extern char *C_MhSeqReplied;
+extern char *C_MhSeqUnseen;
+
 /* MXAPI shared functions */
 int             maildir_ac_add     (struct Account *a, struct Mailbox *m);
 struct Account *maildir_ac_find    (struct Account *a, const char *path);

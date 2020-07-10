@@ -39,6 +39,7 @@
 #include "pattern.h"
 #include "score.h"
 #include "sort.h"
+#include "maildir/lib.h"
 #include "ncrypt/lib.h"
 
 /**

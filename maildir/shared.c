@@ -61,13 +61,6 @@
 #include "notmuch/lib.h"
 #endif
 
-/* These Config Variables are only used in maildir/mh.c */
-bool C_CheckNew; ///< Config: (maildir,mh) Check for new mail while the mailbox is open
-bool C_MhPurge;       ///< Config: Really delete files in MH mailboxes
-char *C_MhSeqFlagged; ///< Config: MH sequence for flagged message
-char *C_MhSeqReplied; ///< Config: MH sequence to tag replied messages
-char *C_MhSeqUnseen;  ///< Config: MH sequence for unseen messages
-
 #define INS_SORT_THRESHOLD 6
 
 /**

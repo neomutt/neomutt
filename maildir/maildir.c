@@ -59,9 +59,6 @@
 #define MMC_NEW_DIR (1 << 0) ///< 'new' directory changed
 #define MMC_CUR_DIR (1 << 1) ///< 'cur' directory changed
 
-/* These Config Variables are only used in maildir/maildir.c */
-bool C_MaildirCheckCur; ///< Config: Check both 'new' and 'cur' directories for new mail
-
 /**
  * maildir_check_dir - Check for new mail / mail counts
  * @param m           Mailbox to check

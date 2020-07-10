@@ -175,7 +175,6 @@ WHERE bool C_ForwardQuote;                   ///< Config: Automatically quote a 
 WHERE bool C_Header;                         ///< Config: Include the message headers in the reply email (Weed applies)
 WHERE bool C_Help;                           ///< Config: Display a help line with common key bindings
 WHERE bool C_MailCheckRecent;                ///< Config: Notify the user about new mail since the last time the mailbox was opened
-WHERE bool C_MaildirTrash;                   ///< Config: Use the maildir 'trashed' flag, rather than deleting
 WHERE bool C_Markers;                        ///< Config: Display a '+' at the beginning of wrapped lines in the pager
 WHERE bool C_ReadOnly;                       ///< Config: Open folders in read-only mode
 WHERE bool C_Resolve;                        ///< Config: Move to the next email whenever a command modifies an email
