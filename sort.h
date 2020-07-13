@@ -58,7 +58,4 @@ const char *mutt_get_name(const struct Address *a);
 WHERE short C_Sort;    ///< Config: Sort method for the index
 WHERE short C_SortAux; ///< Config: Secondary sort method for the index
 
-/* FIXME: This one does not belong to here */
-WHERE short C_PgpSortKeys; ///< Config: Sort order for PGP keys
-
 #endif /* MUTT_SORT_H */

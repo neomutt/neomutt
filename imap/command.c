@@ -52,9 +52,6 @@
 #include "mutt_socket.h"
 #include "mx.h"
 
-/* These Config Variables are only used in imap/command.c */
-bool C_ImapServernoise; ///< Config: (imap) Display server warnings as error messages
-
 #define IMAP_CMD_BUFSIZE 512
 
 /**

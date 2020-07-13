@@ -31,13 +31,13 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
+#include "lib.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "ssl.h"
 
 #ifdef USE_SSL
 /**

@@ -37,6 +37,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -63,25 +64,6 @@
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 #include "smime.h"
 #endif
-
-/* These Config Variables are only used in ncrypt/smime.c */
-bool C_SmimeAskCertLabel; ///< Config: Prompt the user for a label for SMIME certificates
-char *C_SmimeCaLocation;   ///< Config: File containing trusted certificates
-char *C_SmimeCertificates; ///< Config: File containing user's public certificates
-char *C_SmimeDecryptCommand; ///< Config: (smime) External command to decrypt an SMIME message
-bool C_SmimeDecryptUseDefaultKey; ///< Config: Use the default key for decryption
-char *C_SmimeEncryptCommand; ///< Config: (smime) External command to encrypt a message
-char *C_SmimeGetCertCommand; ///< Config: (smime) External command to extract a certificate from a message
-char *C_SmimeGetCertEmailCommand; ///< Config: (smime) External command to get a certificate for an email
-char *C_SmimeGetSignerCertCommand; ///< Config: (smime) External command to extract a certificate from an email
-char *C_SmimeImportCertCommand; ///< Config: (smime) External command to import a certificate
-char *C_SmimeKeys; ///< Config: File containing user's private certificates
-char *C_SmimePk7outCommand; ///< Config: (smime) External command to extract a public certificate
-char *C_SmimeSignCommand; ///< Config: (smime) External command to sign a message
-char *C_SmimeSignDigestAlg; ///< Config: Digest algorithm
-long C_SmimeTimeout;        ///< Config: Time in seconds to cache a passphrase
-char *C_SmimeVerifyCommand; ///< Config: (smime) External command to verify a signed message
-char *C_SmimeVerifyOpaqueCommand; ///< Config: (smime) External command to verify a signature
 
 /**
  * struct SmimeCommandContext - Data for a SIME command

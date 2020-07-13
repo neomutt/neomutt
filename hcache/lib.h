@@ -59,6 +59,7 @@
  *
  * | File                | Description        |
  * | :------------------ | :----------------- |
+ * | hcache/config.c     | @subpage hc_config |
  * | hcache/hcache.c     | @subpage hc_hcache |
  * | hcache/serialize.c  | @subpage hc_serial |
  */
@@ -70,6 +71,7 @@
 #include <stdint.h>
 
 struct Buffer;
+struct ConfigSet;
 struct Email;
 
 /**
@@ -107,10 +109,11 @@ struct HCacheEntry
  */
 typedef void (*hcache_namer_t)(const char *path, struct Buffer *dest);
 
-/* These Config Variables are only used in hcache/hcache.c */
+extern char *C_HeaderCache;
 extern char *C_HeaderCacheBackend;
 extern short C_HeaderCacheCompressLevel;
 extern char *C_HeaderCacheCompressMethod;
+extern bool  C_MaildirHeaderCacheVerify;
 
 /**
  * mutt_hcache_open - open the connection to the header cache
@@ -176,5 +179,11 @@ void mutt_hcache_free_raw(header_cache_t *hc, void **data);
  * @retval num Generic or backend-specific error code otherwise
  */
 int mutt_hcache_delete_header(header_cache_t *hc, const char *key, size_t keylen);
+
+#ifdef USE_HCACHE
+bool config_init_hcache(struct ConfigSet *cs);
+#else
+static inline bool config_init_hcache(struct ConfigSet *cs) { return true; }
+#endif
 
 #endif /* MUTT_HCACHE_LIB_H */

@@ -68,11 +68,7 @@
 /* These Config Variables are only used in browser.c */
 bool C_BrowserAbbreviateMailboxes; ///< Config: Abbreviate mailboxes using '~' and '=' in the browser
 char *C_FolderFormat; ///< Config: printf-like format string for the browser's display of folders
-char *C_GroupIndexFormat; ///< Config: (nntp) printf-like format string for the browser's display of newsgroups
-char *C_NewsgroupsCharset; ///< Config: (nntp) Character set of newsgroups' descriptions
-bool C_ShowOnlyUnread; ///< Config: (nntp) Only show subscribed newsgroups with unread articles
-short C_SortBrowser;   ///< Config: Sort method for the browser
-char *C_VfolderFormat; ///< Config: (notmuch) printf-like format string for the browser's display of virtual folders
+short C_SortBrowser; ///< Config: Sort method for the browser
 
 static const struct Mapping FolderHelp[] = {
   { N_("Exit"), OP_EXIT },

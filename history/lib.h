@@ -27,6 +27,7 @@
  *
  * | File              | Description              |
  * | :---------------- | :----------------------- |
+ * | history/config.c  | @subpage history_config  |
  * | history/history.c | @subpage history_history |
  */
 
@@ -35,7 +36,8 @@
 
 #include <stdbool.h>
 
-/* These Config Variables are only used in history/history.c */
+struct ConfigSet;
+
 extern short C_History;
 extern char *C_HistoryFile;
 extern bool  C_HistoryRemoveDups;
@@ -68,5 +70,7 @@ void  mutt_hist_read_file   (void);
 void  mutt_hist_reset_state (enum HistoryClass hclass);
 void  mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
 int   mutt_hist_search      (const char *search_buf, enum HistoryClass hclass, char **matches);
+
+bool config_init_history(struct ConfigSet *cs);
 
 #endif /* MUTT_HISTORY_LIB_H */

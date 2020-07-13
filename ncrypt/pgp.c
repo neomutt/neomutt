@@ -40,6 +40,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -53,7 +54,6 @@
 #include "handler.h"
 #include "hook.h"
 #include "mutt_attach.h"
-#include "mutt_globals.h"
 #include "muttlib.h"
 #include "options.h"
 #include "pgpinvoke.h"
@@ -65,14 +65,6 @@
 #include "pgp.h"
 #include "pgplib.h"
 #endif
-
-/* These Config Variables are only used in ncrypt/pgp.c */
-bool C_PgpCheckExit; ///< Config: Check the exit code of PGP subprocess
-bool C_PgpCheckGpgDecryptStatusFd; ///< Config: File descriptor used for status info
-struct Regex *C_PgpDecryptionOkay; ///< Config: Text indicating a successful decryption
-struct Regex *C_PgpGoodSign; ///< Config: Text indicating a good signature
-long C_PgpTimeout;           ///< Config: Time in seconds to cache a passphrase
-bool C_PgpUseGpgAgent;       ///< Config: Use a PGP agent for caching passwords
 
 char PgpPass[1024];
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */

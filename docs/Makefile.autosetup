@@ -5,10 +5,10 @@ docs/makedoc$(EXEEXT): $(SRCDIR)/docs/makedoc.c
 	    -o $@ $(SRCDIR)/docs/makedoc.c
 
 docs/neomuttrc: docs/makedoc$(EXEEXT) $(SRCDIR)/docs/neomuttrc.head \
-		$(SRCDIR)/mutt_config.c
+		$(SRCDIR)/docs/config.c
 	sed -e 's,@docdir@,$(docdir),' $(SRCDIR)/docs/neomuttrc.head \
 	    > docs/neomuttrc
-	$(MAKEDOC_CPP) $(SRCDIR)/mutt_config.c | docs/makedoc$(EXEEXT) -c \
+	$(MAKEDOC_CPP) $(SRCDIR)/docs/config.c | docs/makedoc$(EXEEXT) -c \
 	    >> docs/neomuttrc
 
 .PHONY: docs
@@ -48,11 +48,11 @@ docs/index.html: $(SRCDIR)/docs/chunk.xsl $(SRCDIR)/docs/neomutt.xsl \
 		$(SRCDIR)/docs/neomutt.css docs/manual.xml
 	xsltproc --nonet -o docs/ $(SRCDIR)/docs/chunk.xsl docs/manual.xml > /dev/null 2>&1
 
-docs/neomuttrc.5:	docs/makedoc$(EXEEXT) $(SRCDIR)/mutt_config.c \
+docs/neomuttrc.5:	docs/makedoc$(EXEEXT) $(SRCDIR)/docs/config.c \
 		$(SRCDIR)/docs/neomuttrc.man.head $(SRCDIR)/docs/neomuttrc.man.tail
 	( sed -e "/^\.TH/s|@MAN_DATE@|$(PACKAGE_DATE)|" \
 	    $(SRCDIR)/docs/neomuttrc.man.head && \
-	    $(MAKEDOC_CPP) $(SRCDIR)/mutt_config.c | docs/makedoc$(EXEEXT) -m && \
+	    $(MAKEDOC_CPP) $(SRCDIR)/docs/config.c | docs/makedoc$(EXEEXT) -m && \
 	    sed -e "s|@MAN_DOCDIR@|$(docdir)|g" \
 	      $(SRCDIR)/docs/neomuttrc.man.tail \
 	) > $@
@@ -68,10 +68,10 @@ docs/neomutt.1:
 
 docs/manual.xml:	docs/makedoc$(EXEEXT) $(SRCDIR)/docs/gen-map-doc \
 		$(SRCDIR)/docs/manual.xml.head $(SRCDIR)/docs/manual.xml.tail\
-		$(SRCDIR)/functions.c $(SRCDIR)/mutt_config.c $(SRCDIR)/opcodes.h
+		$(SRCDIR)/functions.c $(SRCDIR)/docs/config.c $(SRCDIR)/opcodes.h
 	( sed -e "s/@VERSION@/$(PACKAGE_DATE)/; s!/usr/libexec!$(libexecdir)!g" \
 	    $(SRCDIR)/docs/manual.xml.head && \
-	    $(MAKEDOC_CPP) $(SRCDIR)/mutt_config.c | docs/makedoc$(EXEEXT) -s && \
+	    $(MAKEDOC_CPP) $(SRCDIR)/docs/config.c | docs/makedoc$(EXEEXT) -s && \
 	    $(MAKEDOC_CPP) $(SRCDIR)/functions.c | \
 	    perl $(SRCDIR)/docs/gen-map-doc $(SRCDIR)/docs/manual.xml.tail \
 	    $(SRCDIR)/opcodes.h \
@@ -129,7 +129,7 @@ spellcheck-docs:
 	-aspell -d american --mode=nroff --encoding=utf-8 -p \
 	    docs/neomutt.pwl check docs/neomuttrc.man.head
 	-aspell -d american --mode=ccpp --encoding=utf-8 -p \
-	    docs/neomutt.pwl check mutt_config.c
+	    docs/neomutt.pwl check docs/config.c
 
 sortcheck-docs: docs/manual.xml
 	sed -n -e '1,/^<sect1 id="variables">/d' \

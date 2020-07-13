@@ -31,6 +31,7 @@
 #include <sqlite3.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "lib.h"
 
 /**
  * mutt_autocrypt_schema_init - Set up an Autocrypt database

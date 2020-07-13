@@ -1288,53 +1288,15 @@ static void handle_confline(enum OutputFormats format, char *s, FILE *fp_out)
 
   type = buf_to_type(buf);
 
-  while (true)
-  {
-    /* possibly a "|" or comma */
-    s = get_token(buf, sizeof(buf), s);
-    if (!s)
-      return;
-    if (strcmp(buf, ",") == 0)
-      break;
-    int subtype = buf_to_type(buf);
-    if (subtype != DT_NONE)
-      type = subtype;
-  }
-
-  /* variable name */
-  s = get_token(buf, sizeof(buf), s);
-  if (!s)
-    return;
-  if (strcmp(buf, "IP") == 0)
-  {
-    s = get_token(buf, sizeof(buf), s);
-    if (!s)
-      return;
-  }
-
   /* comma */
   s = get_token(buf, sizeof(buf), s);
   if (!s)
     return;
 
-  if (Debug)
-    fprintf(stderr, "%s: Expecting default value.\n", Progname);
-
-  /* <default value> or IP <default value> */
-  s = get_token(buf, sizeof(buf), s);
+  /* <default value> */
+  s = get_token(tmp, sizeof(tmp), s);
   if (!s)
     return;
-  if (strcmp(buf, "IP") == 0)
-  {
-    if (Debug)
-      fprintf(stderr, "%s: Skipping IP.\n", Progname);
-    s = get_token(buf, sizeof(buf), s);
-    if (!s)
-      return;
-  }
-
-  memset(tmp, 0, sizeof(tmp));
-  strncpy(tmp + strlen(tmp), buf, sizeof(tmp) - strlen(tmp));
 
   // Look for unjoined strings (pre-processor artifacts)
   while ((s[0] == ' ') && (s[1] == '"'))

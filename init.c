@@ -53,7 +53,6 @@
 #include "functions.h"
 #include "keymap.h"
 #include "mutt_commands.h"
-#include "mutt_config.h"
 #include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "mutt_parse.h"
@@ -62,17 +61,21 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
+#include "autocrypt/lib.h"
 #include "compress/lib.h"
+#include "hcache/lib.h"
 #include "history/lib.h"
+#include "imap/lib.h"
+#include "maildir/lib.h"
+#include "mbox/lib.h"
+#include "ncrypt/lib.h"
+#include "nntp/lib.h"
+#include "notmuch/lib.h"
+#include "pop/lib.h"
+#include "send/lib.h"
 #include "store/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
-#endif
-#ifdef USE_HCACHE
-#include "hcache/lib.h"
-#endif
-#ifdef USE_NOTMUCH
-#include "notmuch/lib.h"
 #endif
 
 /* Initial string that starts completion. No telling how much the user has
@@ -89,6 +92,8 @@ static int MatchesListsize = 512; // Enough space for all of the config items
 /* List of tags found in last call to mutt_nm_query_complete(). */
 static char **nm_tags;
 #endif
+
+bool config_init_main(struct ConfigSet *cs);
 
 /**
  * matches_ensure_morespace - Allocate more space for auto-completion
@@ -1194,8 +1199,21 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
       mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
-      for (num = 0; MuttVars[num].name; num++)
-        candidate(UserTyped, MuttVars[num].name, Completed, sizeof(Completed));
+
+      struct HashElem *he = NULL;
+      struct HashElem **list = get_elem_list(NeoMutt->sub->cs);
+      for (size_t i = 0; list[i]; i++)
+      {
+        he = list[i];
+        const int type = DTYPE(he->type);
+
+        if ((type == DT_SYNONYM) || (type & DT_DEPRECATED))
+          continue;
+
+        candidate(UserTyped, he->key.strkey, Completed, sizeof(Completed));
+      }
+      FREE(&list);
+
       TAILQ_FOREACH(myv, &MyVars, entries)
       {
         candidate(UserTyped, myv->name, Completed, sizeof(Completed));
@@ -1531,8 +1549,19 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
  */
 struct ConfigSet *init_config(size_t size)
 {
+  typedef bool (*config_init_t)(struct ConfigSet * cs);
+
+  static config_init_t config_list[] = {
+    config_init_main,    config_init_autocrypt, config_init_conn,
+    config_init_hcache,  config_init_history,   config_init_imap,
+    config_init_maildir, config_init_mbox,      config_init_ncrypt,
+    config_init_nntp,    config_init_notmuch,   config_init_pop,
+    config_init_send,    config_init_sidebar,   NULL,
+  };
+
   struct ConfigSet *cs = cs_new(size);
 
+  // Define the config types
   address_init(cs);
   bool_init(cs);
   enum_init(cs);
@@ -1546,11 +1575,13 @@ struct ConfigSet *init_config(size_t size)
   sort_init(cs);
   string_init(cs);
 
-  if (!cs_register_variables(cs, MuttVars, 0))
+  for (size_t i = 0; config_list[i]; i++)
   {
-    mutt_error("cs_register_variables() failed");
-    cs_free(&cs);
-    return NULL;
+    if (!config_list[i](cs))
+    {
+      cs_free(&cs);
+      return NULL;
+    }
   }
 
   return cs;
@@ -1715,23 +1746,5 @@ int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   mutt_buffer_printf(err, _("Option %s may not be set when in attach-message mode"),
                      cdef->name);
-  return CSR_ERR_INVALID;
-}
-
-/**
- * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator()
- */
-int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                          intptr_t value, struct Buffer *err)
-{
-  const int min_length = 78; // Recommendations from RFC5233
-  const int max_length = 998;
-
-  if ((value >= min_length) && (value <= max_length))
-    return CSR_SUCCESS;
-
-  // L10N: This applies to the "$wrap_headers" config variable.
-  mutt_buffer_printf(err, _("Option %s must be between %d and %d inclusive"),
-                     cdef->name, min_length, max_length);
   return CSR_ERR_INVALID;
 }

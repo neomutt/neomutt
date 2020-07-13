@@ -72,6 +72,21 @@ struct SidebarWindowData
   enum DivType divider_type; ///< Type of divider, e.g. #SB_DIV_UTF8
 };
 
+extern short C_SidebarComponentDepth;
+extern char *C_SidebarDelimChars;
+extern char *C_SidebarDividerChar;
+extern bool  C_SidebarFolderIndent;
+extern char *C_SidebarFormat;
+extern char *C_SidebarIndentString;
+extern bool  C_SidebarNewMailOnly;
+extern bool  C_SidebarNextNewWrap;
+extern bool  C_SidebarNonEmptyMailboxOnly;
+extern bool  C_SidebarOnRight;
+extern bool  C_SidebarShortPath;
+extern short C_SidebarSortMethod;
+extern bool  C_SidebarVisible;
+extern short C_SidebarWidth;
+
 // sidebar.c
 void sb_win_init        (struct MuttWindow *dlg);
 void sb_win_shutdown    (struct MuttWindow *dlg);

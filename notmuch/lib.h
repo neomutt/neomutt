@@ -25,10 +25,11 @@
  *
  * Notmuch virtual mailbox type
  *
- * | File                   | Description         |
- * | :--------------------- | :------------------ |
- * | notmuch/mutt_notmuch.c | @subpage nm_notmuch |
- * | notmuch/nm_db.c        | @subpage nm_db      |
+ * | File               | Description         |
+ * | :----------------- | :------------------ |
+ * | notmuch/config.c   | @subpage nm_config  |
+ * | notmuch/db.c       | @subpage nm_db      |
+ * | notmuch/notmuch.c  | @subpage nm_notmuch |
  */
 
 #ifndef MUTT_NOTMUCH_LIB_H
@@ -39,24 +40,18 @@
 #include "core/lib.h"
 #include "mx.h"
 
+struct ConfigSet;
 struct Email;
 struct NmMboxData;
 struct stat;
 
-/* These Config Variables are only used in notmuch/mutt_notmuch.c */
-extern int   C_NmDbLimit;
-extern char *C_NmDefaultUrl;
-extern char *C_NmExcludeTags;
-extern int   C_NmOpenTimeout;
-extern char *C_NmQueryType;
-extern int   C_NmQueryWindowCurrentPosition;
-extern char *C_NmQueryWindowTimebase;
-extern char *C_NmRecordTags;
-extern char *C_NmUnreadTag;
-extern char *C_NmFlaggedTag;
-extern char *C_NmRepliedTag;
-
 extern struct MxOps MxNotmuchOps;
+
+// These Config Variables are used outside of libnotmuch
+extern char *C_NmQueryWindowCurrentSearch;
+extern int   C_NmQueryWindowDuration;
+extern char *C_VfolderFormat;
+extern bool  C_VirtualSpoolfile;
 
 void  nm_db_debug_check          (struct Mailbox *m);
 void  nm_db_longrun_done         (struct Mailbox *m);
@@ -72,5 +67,11 @@ int   nm_read_entire_thread      (struct Mailbox *m, struct Email *e);
 int   nm_record_message          (struct Mailbox *m, char *path, struct Email *e);
 int   nm_update_filename         (struct Mailbox *m, const char *old_file, const char *new_file, struct Email *e);
 char *nm_url_from_query          (struct Mailbox *m, char *buf, size_t buflen);
+
+#ifdef USE_NOTMUCH
+bool config_init_notmuch(struct ConfigSet *cs);
+#else
+static inline bool config_init_notmuch(struct ConfigSet *cs) { return true; }
+#endif
 
 #endif /* MUTT_NOTMUCH_LIB_H */

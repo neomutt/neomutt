@@ -51,8 +51,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "sasl.h"
-#include "connaccount.h"
-#include "connection.h"
+#include "lib.h"
 #include "options.h"
 
 /**

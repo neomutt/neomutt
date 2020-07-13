@@ -1,0 +1,70 @@
+/**
+ * @file
+ * Config used by libpop
+ *
+ * @authors
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ *
+ * @copyright
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * @page pop_config Config used by libpop
+ *
+ * Config used by libpop
+ */
+
+#include "config.h"
+#include <stddef.h>
+#include <config/lib.h>
+#include <stdbool.h>
+#include "private.h"
+
+// clang-format off
+bool          C_PopAuthTryAll;          ///< Config: (pop) Try all available authentication methods
+struct Slist *C_PopAuthenticators;      ///< Config: (pop) List of allowed authentication methods
+short         C_PopCheckinterval;       ///< Config: (pop) Interval between checks for new mail
+unsigned char C_PopDelete;              ///< Config: (pop) After downloading POP messages, delete them on the server
+char *        C_PopHost;                ///< Config: (pop) Url of the POP server
+bool          C_PopLast;                ///< Config: (pop) Use the 'LAST' command to fetch new mail
+char *        C_PopOauthRefreshCommand; ///< Config: (pop) External command to generate OAUTH refresh token
+char *        C_PopPass;                ///< Config: (pop) Password of the POP server
+unsigned char C_PopReconnect;           ///< Config: (pop) Reconnect to the server is the connection is lost
+char *        C_PopUser;                ///< Config: (pop) Username of the POP server
+// clang-format on
+
+// clang-format off
+struct ConfigDef PopVars[] = {
+  { "pop_auth_try_all",          DT_BOOL,                           &C_PopAuthTryAll,          true },
+  { "pop_authenticators",        DT_SLIST|SLIST_SEP_COLON,          &C_PopAuthenticators,      0 },
+  { "pop_checkinterval",         DT_NUMBER|DT_NOT_NEGATIVE,         &C_PopCheckinterval,       60 },
+  { "pop_delete",                DT_QUAD,                           &C_PopDelete,              MUTT_ASKNO },
+  { "pop_host",                  DT_STRING,                         &C_PopHost,                0 },
+  { "pop_last",                  DT_BOOL,                           &C_PopLast,                false },
+  { "pop_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, &C_PopOauthRefreshCommand, 0 },
+  { "pop_pass",                  DT_STRING|DT_SENSITIVE,            &C_PopPass,                0 },
+  { "pop_reconnect",             DT_QUAD,                           &C_PopReconnect,           MUTT_ASKYES },
+  { "pop_user",                  DT_STRING|DT_SENSITIVE,            &C_PopUser,                0 },
+  { NULL, 0, NULL, 0, 0, NULL },
+};
+// clang-format on
+
+/**
+ * config_init_pop - Register pop config variables
+ */
+bool config_init_pop(struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, PopVars, 0);
+}

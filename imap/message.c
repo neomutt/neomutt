@@ -52,6 +52,7 @@
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
+#include "autocrypt/lib.h"
 #include "bcache/lib.h"
 #include "imap/lib.h"
 #ifdef ENABLE_NLS
@@ -62,10 +63,6 @@
 #endif
 
 struct BodyCache;
-
-/* These Config Variables are only used in imap/message.c */
-char *C_ImapHeaders; ///< Config: (imap) Additional email headers to download when getting index
-long C_ImapFetchChunkSize; ///< Config: (imap) Download headers in blocks of this size
 
 /**
  * imap_edata_free - free ImapHeader structure

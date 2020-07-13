@@ -33,9 +33,12 @@
 #include <stdbool.h>
 #include <string.h>
 #include "private.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "lib.h"
 #include "pattern.h"
+#include "imap/lib.h"
 
 // fwd decl, mutually recursive: check_pattern_list, check_pattern
 static int check_pattern_list(const struct PatternList *patterns);

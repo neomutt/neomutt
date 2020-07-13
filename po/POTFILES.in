@@ -9,6 +9,7 @@ alias/gui.c
 alias/reverse.c
 autocrypt/acct_menu.c
 autocrypt/autocrypt.c
+autocrypt/config.c
 autocrypt/db.c
 autocrypt/gpgme.c
 autocrypt/schema.c
@@ -27,6 +28,7 @@ config/address.c
 config/bool.c
 config/dump.c
 config/enum.c
+config/helpers.c
 config/long.c
 config/mbtable.c
 config/number.c
@@ -38,9 +40,9 @@ config/slist.c
 config/sort.c
 config/string.c
 config/subset.c
+conn/config.c
 conn/connaccount.c
 conn/getdomain.c
-conn/globals.c
 conn/gnutls.c
 conn/gui.c
 conn/openssl.c
@@ -87,10 +89,12 @@ gui/mutt_window.c
 gui/reflow.c
 gui/terminal.c
 handler.c
+hcache/config.c
 hcache/hcache.c
 hcache/serialize.c
 hdrline.c
 help.c
+history/config.c
 history/history.c
 hook.c
 icommands.c
@@ -104,6 +108,7 @@ imap/auth_plain.c
 imap/auth_sasl.c
 imap/browse.c
 imap/command.c
+imap/config.c
 imap/imap.c
 imap/message.c
 imap/search.c
@@ -113,11 +118,13 @@ index.c
 init.c
 keymap.c
 mailcap.c
+maildir/config.c
 maildir/maildir.c
 maildir/mh.c
 maildir/shared.c
 maillist.c
 main.c
+mbox/config.c
 mbox/mbox.c
 menu.c
 monitor.c
@@ -162,6 +169,7 @@ mutt_socket.c
 mutt_thread.c
 mx.c
 myvar.c
+ncrypt/config.c
 ncrypt/crypt.c
 ncrypt/cryptglue.c
 ncrypt/crypt_gpgme.c
@@ -180,8 +188,10 @@ ncrypt/pgppacket.c
 ncrypt/smime.c
 nntp/browse.c
 nntp/complete.c
+nntp/config.c
 nntp/newsrc.c
 nntp/nntp.c
+notmuch/config.c
 notmuch/db.c
 notmuch/notmuch.c
 opcodes.c
@@ -190,6 +200,7 @@ pager.c
 pattern.c
 pgpewrap.c
 pop/auth.c
+pop/config.c
 pop/lib.c
 pop/pop.c
 postpone.c
@@ -208,8 +219,12 @@ send/send.c
 send/sendlib.c
 send/sendmail.c
 send/smtp.c
-sendlib.c
-sidebar.c
+sidebar/commands.c
+sidebar/config.c
+sidebar/functions.c
+sidebar/observer.c
+sidebar/sidebar.c
+sidebar/wdata.c
 sort.c
 state.c
 status.c

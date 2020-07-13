@@ -27,6 +27,7 @@
  *
  * | File              | Description              |
  * | :---------------- | :----------------------- |
+ * | maildir/config.c  | @subpage maildir_config  |
  * | maildir/maildir.c | @subpage maildir_maildir |
  * | maildir/mh.c      | @subpage maildir_mh      |
  * | maildir/shared.c  | @subpage maildir_shared  |
@@ -41,18 +42,10 @@
 #include "mx.h"
 #include "hcache/lib.h"
 
+struct ConfigSet;
 struct Email;
 
-/* These Config Variables are only used in maildir/maildir.c */
-extern bool  C_MaildirCheckCur;
-
-/* These Config Variables are only used in maildir/mh.c */
-extern bool  C_CheckNew;
-extern bool  C_MaildirHeaderCacheVerify;
-extern bool  C_MhPurge;
-extern char *C_MhSeqFlagged;
-extern char *C_MhSeqReplied;
-extern char *C_MhSeqUnseen;
+extern bool C_MaildirTrash;
 
 extern struct MxOps MxMaildirOps;
 extern struct MxOps MxMhOps;
@@ -67,5 +60,7 @@ struct Email *maildir_parse_stream     (enum MailboxType type, FILE *fp, const c
 bool          maildir_update_flags     (struct Mailbox *m, struct Email *e_old, struct Email *e_new);
 int           mh_check_empty           (const char *path);
 int           mh_sync_mailbox_message  (struct Mailbox *m, int msgno, header_cache_t *hc);
+
+bool config_init_maildir(struct ConfigSet *cs);
 
 #endif /* MUTT_MAILDIR_LIB_H */

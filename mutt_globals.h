@@ -77,14 +77,8 @@ WHERE SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
 
 WHERE enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
 
-#ifdef USE_AUTOCRYPT
-WHERE char *AutocryptSignAs;     ///< Autocrypt Key id to sign as
-WHERE char *AutocryptDefaultKey; ///< Autocrypt default key id (used for postponing messages)
-#endif
-
 /* All the variables below are backing for config items */
 
-WHERE struct Address *C_EnvelopeFromAddress; ///< Config: Manually set the sender for outgoing messages
 WHERE struct Address *C_From;                ///< Config: Default 'From' address to use, if isn't otherwise set
 
 WHERE bool C_AbortBackspace;                 ///< Config: Hitting backspace against an empty prompt aborts the prompt
@@ -93,31 +87,17 @@ WHERE char *C_AliasFile;                     ///< Config: Save new aliases to th
 WHERE char *C_Attribution;                   ///< Config: Message to start a reply, "On DATE, PERSON wrote:"
 WHERE char *C_AttributionLocale;             ///< Config: Locale for dates in the attribution message
 WHERE char *C_AttachFormat;                  ///< Config: printf-like format string for the attachment menu
-#ifdef USE_AUTOCRYPT
-WHERE char *C_AutocryptAcctFormat;           ///< Config: Format of the autocrypt account menu
-WHERE char *C_AutocryptDir;                  ///< Config: Location of autocrypt files, including the GPG keyring and SQLite database
-#endif
 WHERE char *C_ConfigCharset;                 ///< Config: Character set that the config files are in
-WHERE char *C_CryptProtectedHeadersSubject;  ///< Config: Use this as the subject for encrypted emails
 WHERE char *C_DateFormat;                    ///< Config: strftime format string for the `%d` expando
 WHERE char *C_Editor;                        ///< Config: External command to use as an email editor
 WHERE char *C_ExternalSearchCommand;         ///< Config: External search command
 WHERE char *C_Hostname;                      ///< Config: Fully-qualified domain name of this machine
 WHERE char *C_IndexFormat;                   ///< Config: printf-like format string for the index menu (emails)
 
-#ifdef USE_IMAP
-WHERE char *C_ImapUser;                      ///< Config: (imap) Username for the IMAP server
-#endif
 WHERE char *C_Mbox;                          ///< Config: Folder that receives read emails (see Move)
 WHERE struct Slist *C_MailcapPath;           ///< Config: Colon-separated list of mailcap files
 WHERE char *C_Folder;                        ///< Config: Base folder for a set of mailboxes
-#ifdef USE_HCACHE
-WHERE char *C_HeaderCache;                   ///< Config: (hcache) Directory/file for the header cache database
-#endif /* USE_HCACHE */
 
-#ifdef USE_NNTP
-WHERE char *C_NewsServer;                    ///< Config: (nntp) Url of the news server
-#endif
 WHERE char *C_Record;                        ///< Config: Folder to save 'sent' messages
 WHERE char *C_Pager;                         ///< Config: External command for viewing messages, or 'builtin' to use NeoMutt's
 WHERE char *C_PagerFormat;                   ///< Config: printf-like format string for the pager's status bar
@@ -138,24 +118,6 @@ WHERE short C_SleepTime;                     ///< Config: Time to pause after ce
 WHERE short C_Timeout;                       ///< Config: Time to wait for user input in menus
 WHERE short C_Wrap;                          ///< Config: Width to wrap text in the pager
 
-#ifdef USE_IMAP
-WHERE short C_ImapKeepalive;                 ///< Config: (imap) Time to wait before polling an open IMAP connection
-WHERE short C_ImapPollTimeout;               ///< Config: (imap) Maximum time to wait for a server response
-#endif
-
-WHERE char *C_PgpDefaultKey;                 ///< Config: Default key to use for PGP operations
-WHERE char *C_PgpSignAs;                     ///< Config: Use this alternative key for signing messages
-WHERE char *C_PgpEntryFormat;                ///< Config: printf-like format string for the PGP key selection menu
-
-WHERE char *C_SmimeDefaultKey;               ///< Config: Default key for SMIME operations
-WHERE char *C_SmimeSignAs;                   ///< Config: Use this alternative key for signing messages
-WHERE char *C_SmimeEncryptWith;              ///< Config: Algorithm for encryption
-
-#ifdef USE_NOTMUCH
-WHERE int C_NmQueryWindowDuration;           ///< Config: (notmuch) Time duration of the current search window
-WHERE char *C_NmQueryWindowCurrentSearch;    ///< Config: (notmuch) Current search parameters
-#endif
-
 /* These variables are backing for config items */
 WHERE struct Regex *C_Mask;                  ///< Config: Only display files/dirs matching this regex in the browser
 WHERE struct Regex *C_QuoteRegex;            ///< Config: Regex to match quoted text in a reply
@@ -169,29 +131,17 @@ WHERE unsigned char C_ForwardAttachments;    ///< Config: Forward attachments wh
 WHERE unsigned char C_MimeForward;           ///< Config: Forward a message as a 'message/RFC822' MIME part
 WHERE unsigned char C_Print;                 ///< Config: Confirm before printing a message
 WHERE unsigned char C_Quit;                  ///< Config: Prompt before exiting NeoMutt
-#ifdef USE_SSL
-WHERE unsigned char C_SslStarttls;           ///< Config: (ssl) Use STARTTLS on servers advertising the capability
-#endif
-#ifdef USE_NNTP
-WHERE unsigned char C_PostModerated;         ///< Config: (nntp) Allow posting to moderated newsgroups
-WHERE unsigned char C_FollowupToPoster;      ///< Config: (nntp) Reply to the poster if 'poster' is in the 'Followup-To' header
-#endif
 
 WHERE bool C_ArrowCursor;                    ///< Config: Use an arrow '->' instead of highlighting in the index
 WHERE char *C_ArrowString;                   ///< Config: Use an custom string for arrow_cursor
 WHERE bool C_AsciiChars;                     ///< Config: Use plain ASCII characters, when drawing email threads
 WHERE bool C_Askbcc;                         ///< Config: Ask the user for the blind-carbon-copy recipients
 WHERE bool C_Askcc;                          ///< Config: Ask the user for the carbon-copy recipients
-#ifdef USE_AUTOCRYPT
-WHERE bool C_Autocrypt;                      ///< Config: Enables the Autocrypt feature
-WHERE bool C_AutocryptReply;                 ///< Config: Replying to an autocrypt email automatically enables autocrypt in the reply
-#endif
 WHERE bool C_Autoedit;                       ///< Config: Skip the initial compose menu and edit the email
 WHERE bool C_AutoTag;                        ///< Config: Automatically apply actions to all tagged messages
 WHERE bool C_Beep;                           ///< Config: Make a noise when an error occurs
 WHERE bool C_BeepNew;                        ///< Config: Make a noise when new mail arrives
 WHERE bool C_BrailleFriendly;                ///< Config: Move the cursor to the beginning of the line
-WHERE bool C_CheckMboxSize;                  ///< Config: (mbox,mmdf) Use mailbox size as an indicator of new mail
 WHERE bool C_Confirmappend;                  ///< Config: Confirm before appending emails to a mailbox
 WHERE bool C_Confirmcreate;                  ///< Config: Confirm before creating a new mailbox
 WHERE bool C_DeleteUntag;                    ///< Config: Untag messages when they are marked for deletion
@@ -201,30 +151,8 @@ WHERE bool C_ForwardDecode;                  ///< Config: Decode the message whe
 WHERE bool C_ForwardQuote;                   ///< Config: Automatically quote a forwarded message using #C_IndentString
 WHERE bool C_Header;                         ///< Config: Include the message headers in the reply email (Weed applies)
 WHERE bool C_Help;                           ///< Config: Display a help line with common key bindings
-#ifdef USE_IMAP
-WHERE bool C_ImapCheckSubscribed;            ///< Config: (imap) When opening a mailbox, ask the server for a list of subscribed folders
-WHERE bool C_ImapCondstore;                  ///< Config: (imap) Enable the CONDSTORE extension
-WHERE bool C_ImapListSubscribed;             ///< Config: (imap) When browsing a mailbox, only display subscribed folders
-WHERE bool C_ImapPassive;                    ///< Config: (imap) Reuse an existing IMAP connection to check for new mail
-WHERE bool C_ImapPeek;                       ///< Config: (imap) Don't mark messages as read when fetching them from the server
-WHERE bool C_ImapQresync;                    ///< Config: (imap) Enable the QRESYNC extension
-#endif
-#ifdef USE_SSL
-#ifndef USE_SSL_GNUTLS
-WHERE bool C_SslUsesystemcerts;              ///< Config: (ssl) Use CA certificates in the system-wide store
-WHERE bool C_SslUseSslv2;                    ///< Config: (ssl) INSECURE: Use SSLv2 for authentication
-#endif /* USE_SSL_GNUTLS */
-WHERE bool C_SslForceTls;                    ///< Config: (ssl) Require TLS encryption for all connections
-#if defined(USE_SSL_OPENSSL) && defined(HAVE_SSL_PARTIAL_CHAIN)
-WHERE bool C_SslVerifyPartialChains;         ///< Config: (ssl) Allow verification using partial certificate chains
-#endif /* USE_SSL_OPENSSL */
-#endif /* defined(USE_SSL) */
 WHERE bool C_MailCheckRecent;                ///< Config: Notify the user about new mail since the last time the mailbox was opened
-WHERE bool C_MaildirTrash;                   ///< Config: Use the maildir 'trashed' flag, rather than deleting
 WHERE bool C_Markers;                        ///< Config: Display a '+' at the beginning of wrapped lines in the pager
-#if defined(USE_IMAP) || defined(USE_POP)
-WHERE bool C_MessageCacheClean;              ///< Config: (imap/pop) Clean out obsolete entries from the message cache
-#endif
 WHERE bool C_ReadOnly;                       ///< Config: Open folders in read-only mode
 WHERE bool C_Resolve;                        ///< Config: Move to the next email whenever a command modifies an email
 WHERE bool C_ResumeDraftFiles;               ///< Config: Process draft files like postponed messages
@@ -243,34 +171,5 @@ WHERE bool C_UseDomain;                      ///< Config: Qualify local addresse
 WHERE bool C_WaitKey;                        ///< Config: Prompt to press a key after running external commands
 WHERE bool C_WrapSearch;                     ///< Config: Wrap around when the search hits the end
 WHERE bool C_WriteBcc;                       ///< Config: Write out the 'Bcc' field when preparing to send a mail
-
-#ifdef CRYPT_BACKEND_GPGME
-WHERE bool C_CryptUsePka;                    ///< Config: Use GPGME to use PKA (lookup PGP keys using DNS)
-#endif
-
-/* PGP options */
-
-WHERE bool C_CryptConfirmhook;               ///< Config: Prompt the user to confirm keys before use
-WHERE bool C_CryptOpportunisticEncrypt;      ///< Config: Enable encryption when the recipient's key is available
-WHERE bool C_CryptOpportunisticEncryptStrongKeys; ///< Config: Enable encryption only when strong a key is available
-WHERE bool C_CryptProtectedHeadersRead;      ///< Config: Display protected headers (Memory Hole) in the pager
-WHERE bool C_CryptProtectedHeadersSave;      ///< Config: Save the cleartext Subject with the headers
-WHERE bool C_CryptProtectedHeadersWrite;     ///< Config: Generate protected header (Memory Hole) for signed and encrypted emails
-WHERE bool C_SmimeIsDefault;                 ///< Config: Use SMIME rather than PGP by default
-WHERE bool C_PgpIgnoreSubkeys;               ///< Config: Only use the principal PGP key
-WHERE bool C_PgpLongIds;                     ///< Config: Display long PGP key IDs to the user
-WHERE bool C_PgpShowUnusable;                ///< Config: Show non-usable keys in the key selection
-WHERE bool C_PgpAutoinline;                  ///< Config: Use old-style inline PGP messages (not recommended)
-
-/* news options */
-
-#ifdef USE_NNTP
-WHERE bool C_SaveUnsubscribed;               ///< Config: (nntp) Save a list of unsubscribed newsgroups to the 'newsrc'
-WHERE bool C_XCommentTo;                     ///< Config: (nntp) Add 'X-Comment-To' header that contains article author
-#endif
-
-#ifdef USE_NOTMUCH
-WHERE bool C_VirtualSpoolfile;               ///< Config: (notmuch) Use the first virtual mailbox as a spool file
-#endif
 
 #endif /* MUTT_GLOBALS_H */

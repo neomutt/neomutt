@@ -26,9 +26,10 @@
  *
  * Mbox local mailbox type
  *
- * | File        | Description        |
- * | :---------- | :----------------- |
- * | mbox/mbox.c | @subpage mbox_mbox |
+ * | File          | Description          |
+ * | :------------ | :------------------- |
+ * | mbox/config.c | @subpage mbox_config |
+ * | mbox/mbox.c   | @subpage mbox_mbox   |
  */
 
 #ifndef MUTT_MBOX_LIB_H
@@ -40,6 +41,7 @@
 #include "core/lib.h"
 #include "mx.h"
 
+struct ConfigSet;
 struct stat;
 
 /**
@@ -54,6 +56,8 @@ struct MboxAccountData
   bool append : 1; ///< mailbox is opened in append mode
 };
 
+extern bool C_CheckMboxSize;
+
 extern struct MxOps MxMboxOps;
 extern struct MxOps MxMmdfOps;
 
@@ -63,5 +67,7 @@ int              mbox_check(struct Mailbox *m, struct stat *sb, bool check_stats
 enum MailboxType mbox_path_probe(const char *path, const struct stat *st);
 void             mbox_reset_atime(struct Mailbox *m, struct stat *st);
 bool             mbox_test_new_folder(const char *path);
+
+bool config_init_mbox(struct ConfigSet *cs);
 
 #endif /* MUTT_MBOX_LIB_H */

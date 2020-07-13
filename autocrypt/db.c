@@ -34,7 +34,6 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "mutt_globals.h"
 #include "autocrypt/lib.h"
 
 /* Prepared statements */

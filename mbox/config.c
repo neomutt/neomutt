@@ -1,6 +1,6 @@
 /**
  * @file
- * Definitions of config variables
+ * Config used by libmbox
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -20,11 +20,32 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_CONFIG_H
-#define MUTT_MUTT_CONFIG_H
+/**
+ * @page mbox_config Config used by libmbox
+ *
+ * Config used by libmbox
+ */
 
-#include "config/lib.h"
+#include "config.h"
+#include <stddef.h>
+#include <config/lib.h>
+#include <stdbool.h>
 
-extern struct ConfigDef MuttVars[];
+// clang-format off
+bool C_CheckMboxSize; ///< Config: (mbox,mmdf) Use mailbox size as an indicator of new mail
+// clang-format on
 
-#endif /* MUTT_MUTT_CONFIG_H */
+// clang-format off
+struct ConfigDef MboxVars[] = {
+  { "check_mbox_size", DT_BOOL, &C_CheckMboxSize, false },
+  { NULL, 0, NULL, 0, 0, NULL },
+};
+// clang-format on
+
+/**
+ * config_init_mbox - Register mbox config variables
+ */
+bool config_init_mbox(struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, MboxVars, 0);
+}

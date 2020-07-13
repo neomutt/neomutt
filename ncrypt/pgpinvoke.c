@@ -34,13 +34,13 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "gui/lib.h"
 #include "pgpinvoke.h"
 #include "lib.h"
 #include "format_flags.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "pgpkey.h"
@@ -48,21 +48,6 @@
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"
 #endif
-
-/* These Config Variables are only used in ncrypt/pgpinvoke.c */
-char *C_PgpClearsignCommand; ///< Config: (pgp) External command to inline-sign a message
-char *C_PgpDecodeCommand; ///< Config: (pgp) External command to decode a PGP attachment
-char *C_PgpDecryptCommand; ///< Config: (pgp) External command to decrypt a PGP message
-char *C_PgpEncryptOnlyCommand; ///< Config: (pgp) External command to encrypt, but not sign a message
-char *C_PgpEncryptSignCommand; ///< Config: (pgp) External command to encrypt and sign a message
-char *C_PgpExportCommand; ///< Config: (pgp) External command to export a public key from the user's keyring
-char *C_PgpGetkeysCommand; ///< Config: (pgp) External command to download a key for an email address
-char *C_PgpImportCommand; ///< Config: (pgp) External command to import a key into the user's keyring
-char *C_PgpListPubringCommand; ///< Config: (pgp) External command to list the public keys in a user's keyring
-char *C_PgpListSecringCommand; ///< Config: (pgp) External command to list the private keys in a user's keyring
-char *C_PgpSignCommand; ///< Config: (pgp) External command to create a detached PGP signature
-char *C_PgpVerifyCommand; ///< Config: (pgp) External command to verify PGP signatures
-char *C_PgpVerifyKeyCommand; ///< Config: (pgp) External command to verify key information
 
 /**
  * struct PgpCommandContext - Data for a PGP command

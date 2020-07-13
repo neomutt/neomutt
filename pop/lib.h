@@ -25,11 +25,12 @@
  *
  * POP network mailbox
  *
- * | File           | Description       |
- * | :------------- | :---------------- |
- * | pop/pop_auth.c | @subpage pop_auth |
- * | pop/pop.c      | @subpage pop_pop  |
- * | pop/pop_lib.c  | @subpage pop_lib  |
+ * | File          | Description         |
+ * | :------------ | :------------------ |
+ * | pop/auth.c    | @subpage pop_auth   |
+ * | pop/config.c  | @subpage pop_config |
+ * | pop/lib.c     | @subpage pop_lib    |
+ * | pop/pop.c     | @subpage pop_pop    |
  */
 
 #ifndef MUTT_POP_LIB_H
@@ -39,27 +40,14 @@
 #include "core/lib.h"
 #include "mx.h"
 
+struct ConfigSet;
 struct stat;
-
-/* These Config Variables are only used in pop/pop.c */
-extern short         C_PopCheckinterval;
-extern unsigned char C_PopDelete;
-extern char *        C_PopHost;
-extern bool          C_PopLast;
-extern char *        C_PopOauthRefreshCommand;
-extern char *        C_PopPass;
-extern char *        C_PopUser;
-
-/* These Config Variables are only used in pop/pop_auth.c */
-extern struct Slist *C_PopAuthenticators;
-extern bool  C_PopAuthTryAll;
-
-/* These Config Variables are only used in pop/pop_lib.c */
-extern unsigned char C_PopReconnect;
 
 extern struct MxOps MxPopOps;
 
 void pop_fetch_mail(void);
 enum MailboxType pop_path_probe(const char *path, const struct stat *st);
+
+bool config_init_pop(struct ConfigSet *cs);
 
 #endif /* MUTT_POP_LIB_H */

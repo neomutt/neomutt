@@ -46,22 +46,14 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "gui/lib.h"
-#include "connaccount.h"
-#include "connection.h"
-#include "globals.h"
+#include "lib.h"
 #include "mutt_globals.h"
 #include "options.h"
-#include "socket.h"
 #ifdef HAVE_LIBIDN
 #include "address/lib.h"
 #endif
 #ifdef HAVE_GETADDRINFO
 #include <stdbool.h>
-#endif
-
-/* These Config Variables are only used in conn/conn_raw.c */
-#ifdef HAVE_GETADDRINFO
-bool C_UseIpv6; ///< Config: Lookup IPv6 addresses when making connections
 #endif
 
 /**

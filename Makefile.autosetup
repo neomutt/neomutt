@@ -122,8 +122,9 @@ $(PWD)/alias:
 # libautocrypt
 @if USE_AUTOCRYPT
 LIBAUTOCRYPT=	libautocrypt.a
-LIBAUTOCRYPTOBJS=autocrypt/autocrypt.o autocrypt/acct_menu.o autocrypt/db.o \
-		 autocrypt/gpgme.o autocrypt/schema.o
+LIBAUTOCRYPTOBJS=autocrypt/autocrypt.o autocrypt/acct_menu.o \
+		 autocrypt/config.o autocrypt/db.o autocrypt/gpgme.o \
+		 autocrypt/schema.o
 CLEANFILES+=	$(LIBAUTOCRYPT) $(LIBAUTOCRYPTOBJS)
 ALLOBJS+=	$(LIBAUTOCRYPTOBJS)
 
@@ -203,7 +204,7 @@ $(PWD)/config:
 ###############################################################################
 # libconn
 LIBCONN=	libconn.a
-LIBCONNOBJS=	conn/connaccount.o conn/getdomain.o conn/globals.o conn/raw.o \
+LIBCONNOBJS=	conn/config.o conn/connaccount.o conn/getdomain.o conn/raw.o \
 		conn/sasl_plain.o conn/socket.o conn/tunnel.o
 @if HAVE_SASL
 LIBCONNOBJS+=	conn/sasl.o
@@ -307,7 +308,7 @@ $(PWD)/gui:
 # libhcache
 @if USE_HCACHE
 LIBHCACHE=	libhcache.a
-LIBHCACHEOBJS=	hcache/hcache.o hcache/serialize.o
+LIBHCACHEOBJS=	hcache/config.o hcache/hcache.o hcache/serialize.o
 CLEANFILES+=	$(LIBHCACHE) $(LIBHCACHEOBJS)
 ALLOBJS+=	$(LIBHCACHEOBJS)
 
@@ -322,7 +323,7 @@ $(PWD)/hcache:
 ###############################################################################
 # libhistory
 LIBHISTORY=	libhistory.a
-LIBHISTORYOBJS=	history/history.o
+LIBHISTORYOBJS=	history/config.o history/history.o
 CLEANFILES+=	$(LIBHISTORY) $(LIBHISTORYOBJS)
 ALLOBJS+=	$(LIBHISTORYOBJS)
 
@@ -335,10 +336,9 @@ $(PWD)/history:
 ###############################################################################
 # libimap
 LIBIMAP=	libimap.a
-LIBIMAPOBJS=	imap/auth.o \
-		imap/auth_login.o imap/auth_oauth.o imap/auth_plain.o imap/browse.o \
-		imap/command.o imap/imap.o imap/message.o imap/search.o \
-		imap/utf7.o imap/util.o
+LIBIMAPOBJS=	imap/auth.o imap/auth_login.o imap/auth_oauth.o \
+		imap/auth_plain.o imap/browse.o imap/command.o imap/config.o \
+		imap/imap.o imap/message.o imap/search.o imap/utf7.o imap/util.o
 @if USE_GSS
 LIBIMAPOBJS+=	imap/auth_gss.o
 @endif
@@ -359,7 +359,7 @@ $(PWD)/imap:
 ###############################################################################
 # libmaildir
 LIBMAILDIR=	libmaildir.a
-LIBMAILDIROBJS=	maildir/maildir.o maildir/mh.o maildir/shared.o
+LIBMAILDIROBJS=	maildir/config.o maildir/maildir.o maildir/mh.o maildir/shared.o
 CLEANFILES+=	$(LIBMAILDIR) $(LIBMAILDIROBJS)
 ALLOBJS+=	$(LIBMAILDIROBJS)
 
@@ -372,7 +372,7 @@ $(PWD)/maildir:
 ###############################################################################
 # libmbox
 LIBMBOX=	libmbox.a
-LIBMBOXOBJS=	mbox/mbox.o
+LIBMBOXOBJS=	mbox/config.o mbox/mbox.o
 CLEANFILES+=	$(LIBMBOX) $(LIBMBOXOBJS)
 ALLOBJS+=	$(LIBMBOXOBJS)
 
@@ -403,7 +403,8 @@ $(PWD)/mutt:
 ###############################################################################
 # libncrypt
 LIBNCRYPT=	libncrypt.a
-LIBNCRYPTOBJS=	ncrypt/crypt.o ncrypt/cryptglue.o ncrypt/crypt_mod.o
+LIBNCRYPTOBJS=	ncrypt/config.o ncrypt/crypt.o ncrypt/cryptglue.o \
+		ncrypt/crypt_mod.o
 @if HAVE_GPGME
 LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/crypt_mod_pgp_gpgme.o \
 		ncrypt/crypt_mod_smime_gpgme.o
@@ -428,7 +429,8 @@ $(PWD)/ncrypt:
 ###############################################################################
 # libnntp
 LIBNNTP=	libnntp.a
-LIBNNTPOBJS=	nntp/browse.o nntp/complete.o nntp/newsrc.o nntp/nntp.o
+LIBNNTPOBJS=	nntp/browse.o nntp/config.o nntp/complete.o nntp/newsrc.o \
+		nntp/nntp.o
 CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
 ALLOBJS+=	$(LIBNNTPOBJS)
 
@@ -442,7 +444,7 @@ $(PWD)/nntp:
 # libnotmuch
 @if USE_NOTMUCH
 LIBNOTMUCH=	libnotmuch.a
-LIBNOTMUCHOBJS=	notmuch/notmuch.o notmuch/db.o
+LIBNOTMUCHOBJS=	notmuch/config.o notmuch/db.o notmuch/notmuch.o
 CLEANFILES+=	$(LIBNOTMUCH) $(LIBNOTMUCHOBJS)
 ALLOBJS+=	$(LIBNOTMUCHOBJS)
 
@@ -456,7 +458,7 @@ $(PWD)/notmuch:
 ###############################################################################
 # libpop
 LIBPOP=		libpop.a
-LIBPOPOBJS=	pop/pop.o pop/auth.o pop/lib.o
+LIBPOPOBJS=	pop/auth.o pop/config.o pop/lib.o pop/pop.o
 CLEANFILES+=	$(LIBPOP) $(LIBPOPOBJS)
 ALLOBJS+=	$(LIBPOPOBJS)
 
@@ -483,8 +485,8 @@ $(PWD)/send:
 # libsidebar
 @if USE_SIDEBAR
 LIBSIDEBAR=	libsidebar.a
-LIBSIDEBAROBJS=	sidebar/sidebar.o sidebar/commands.o sidebar/functions.o \
-		sidebar/observer.o sidebar/wdata.o
+LIBSIDEBAROBJS=	sidebar/config.o sidebar/sidebar.o sidebar/commands.o \
+		sidebar/functions.o sidebar/observer.o sidebar/wdata.o
 CLEANFILES+=	$(LIBSIDEBAR) $(LIBSIDEBAROBJS)
 ALLOBJS+=	$(LIBSIDEBAROBJS)
 

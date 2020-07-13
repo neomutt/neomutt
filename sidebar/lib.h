@@ -22,6 +22,21 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page sidebar SIDEBAR: Display the mailboxes in a side panel
+ *
+ * Display the mailboxes in a side panel
+ *
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | sidebar/commands.c  | @subpage sidebar_commands  |
+ * | sidebar/config.c    | @subpage sidebar_config    |
+ * | sidebar/functions.c | @subpage sidebar_functions |
+ * | sidebar/observer.c  | @subpage sidebar_observers |
+ * | sidebar/sidebar.c   | @subpage sidebar_sidebar   |
+ * | sidebar/wdata.c     | @subpage sidebar_wdata     |
+ */
+
 #ifndef MUTT_SIDEBAR_LIB_H
 #define MUTT_SIDEBAR_LIB_H
 
@@ -31,24 +46,9 @@
 #include "gui/lib.h"
 #include "mutt_commands.h"
 
+struct ConfigSet;
 struct Mailbox;
 struct MuttWindow;
-
-/* These Config Variables are only used in sidebar.c */
-extern short C_SidebarComponentDepth;
-extern char *C_SidebarDelimChars;
-extern char *C_SidebarDividerChar;
-extern bool  C_SidebarFolderIndent;
-extern char *C_SidebarFormat;
-extern char *C_SidebarIndentString;
-extern bool  C_SidebarNewMailOnly;
-extern bool  C_SidebarNonEmptyMailboxOnly;
-extern bool  C_SidebarNextNewWrap;
-extern bool  C_SidebarOnRight;
-extern bool  C_SidebarShortPath;
-extern short C_SidebarSortMethod;
-extern bool  C_SidebarVisible;
-extern short C_SidebarWidth;
 
 void sb_init    (void);
 void sb_shutdown(void);
@@ -72,5 +72,11 @@ enum CommandResult sb_parse_whitelist  (struct Buffer *buf, struct Buffer *s, in
 void sb_notify_mailbox  (struct MuttWindow *win, struct Mailbox *m, enum SidebarNotification sbn);
 void sb_draw            (struct MuttWindow *win);
 void sb_set_open_mailbox(struct MuttWindow *win, struct Mailbox *m);
+
+#ifdef USE_SIDEBAR
+bool config_init_sidebar(struct ConfigSet *cs);
+#else
+static inline bool config_init_sidebar(struct ConfigSet *cs) { return true; }
+#endif
 
 #endif /* MUTT_SIDEBAR_LIB_H */

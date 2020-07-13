@@ -43,6 +43,7 @@
 #include "mx.h"
 #include "options.h"
 #include "autocrypt/lib.h"
+#include "hcache/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 

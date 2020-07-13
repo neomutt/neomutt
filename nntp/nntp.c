@@ -73,14 +73,6 @@
 
 struct stat;
 
-/* These Config Variables are only used in nntp/nntp.c */
-char *C_NntpAuthenticators; ///< Config: (nntp) Allowed authentication methods
-short C_NntpContext; ///< Config: (nntp) Maximum number of articles to list (0 for all articles)
-bool C_NntpListgroup; ///< Config: (nntp) Check all articles when opening a newsgroup
-bool C_NntpLoadDescription; ///< Config: (nntp) Load descriptions for newsgroups when adding to the list
-short C_NntpPoll; ///< Config: (nntp) Interval between checks for new posts
-bool C_ShowNewNews; ///< Config: (nntp) Check for new newsgroups when entering the browser
-
 struct NntpAccountData *CurrentNewsSrv;
 
 const char *OverviewFmt = "Subject:\0"

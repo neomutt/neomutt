@@ -81,7 +81,6 @@
 #endif
 
 /* These Config Variables are only used in commands.c */
-unsigned char C_CryptVerifySig; ///< Config: Verify PGP or SMIME signatures
 char *C_DisplayFilter; ///< Config: External command to pre-process an email before display
 bool C_PipeDecode; ///< Config: Decode the message when piping it
 char *C_PipeSep;   ///< Config: Separator to add between multiple piped messages

@@ -28,7 +28,11 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <config/lib.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include "mutt/lib.h"
+#include "init.h"
 
 // clang-format off
 unsigned char C_AbortNoattach;                    ///< Config: Abort sending the email if attachments are missing
@@ -100,5 +104,126 @@ bool          C_UseEnvelopeFrom;                  ///< Config: Set the envelope 
 bool          C_UseFrom;                          ///< Config: Set the 'From' header for outgoing mail
 bool          C_UserAgent;                        ///< Config: Add a 'User-Agent' head to outgoing mail
 short         C_WrapHeaders;                      ///< Config: Width to wrap headers in outgoing messages
-// clang-format off
+// clang-format on
 
+/**
+ * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator()
+ */
+int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                          intptr_t value, struct Buffer *err)
+{
+  const int min_length = 78; // Recommendations from RFC5233
+  const int max_length = 998;
+
+  if ((value >= min_length) && (value <= max_length))
+    return CSR_SUCCESS;
+
+  // L10N: This applies to the "$wrap_headers" config variable.
+  mutt_buffer_printf(err, _("Option %s must be between %d and %d inclusive"),
+                     cdef->name, min_length, max_length);
+  return CSR_ERR_INVALID;
+}
+
+// clang-format off
+struct ConfigDef SendVars[] = {
+  { "abort_noattach",              DT_QUAD,                           &C_AbortNoattach,             MUTT_NO },
+  { "abort_noattach_regex",        DT_REGEX,                          &C_AbortNoattachRegex,        IP "\\<(attach|attached|attachments?)\\>" },
+  { "abort_nosubject",             DT_QUAD,                           &C_AbortNosubject,            MUTT_ASKYES },
+  { "abort_unmodified",            DT_QUAD,                           &C_AbortUnmodified,           MUTT_YES },
+  { "allow_8bit",                  DT_BOOL,                           &C_Allow8bit,                 true },
+  { "ask_follow_up",               DT_BOOL,                           &C_AskFollowUp,               false },
+#ifdef USE_NNTP
+  { "ask_x_comment_to",            DT_BOOL,                           &C_AskXCommentTo,             false },
+#endif
+  { "attach_charset",              DT_STRING,                         &C_AttachCharset,             0, 0, charset_validator },
+  { "bounce_delivered",            DT_BOOL,                           &C_BounceDelivered,           true },
+  { "content_type",                DT_STRING,                         &C_ContentType,               IP "text/plain" },
+  { "crypt_autoencrypt",           DT_BOOL,                           &C_CryptAutoencrypt,          false },
+  { "crypt_autopgp",               DT_BOOL,                           &C_CryptAutopgp,              true },
+  { "crypt_autosign",              DT_BOOL,                           &C_CryptAutosign,             false },
+  { "crypt_autosmime",             DT_BOOL,                           &C_CryptAutosmime,            true },
+  { "crypt_replyencrypt",          DT_BOOL,                           &C_CryptReplyencrypt,         true },
+  { "crypt_replysign",             DT_BOOL,                           &C_CryptReplysign,            false },
+  { "crypt_replysignencrypted",    DT_BOOL,                           &C_CryptReplysignencrypted,   false },
+  { "dsn_notify",                  DT_STRING,                         &C_DsnNotify,                 0 },
+  { "dsn_return",                  DT_STRING,                         &C_DsnReturn,                 0 },
+  { "empty_subject",               DT_STRING,                         &C_EmptySubject,              IP "Re: your mail" },
+  { "encode_from",                 DT_BOOL,                           &C_EncodeFrom,                false },
+  { "fast_reply",                  DT_BOOL,                           &C_FastReply,                 false },
+  { "fcc_attach",                  DT_QUAD,                           &C_FccAttach,                 MUTT_YES },
+  { "fcc_before_send",             DT_BOOL,                           &C_FccBeforeSend,             false },
+  { "fcc_clear",                   DT_BOOL,                           &C_FccClear,                  false },
+  { "followup_to",                 DT_BOOL,                           &C_FollowupTo,                true },
+  { "forward_attribution_intro",   DT_STRING,                         &C_ForwardAttributionIntro,   IP "----- Forwarded message from %f -----" },
+  { "forward_attribution_trailer", DT_STRING,                         &C_ForwardAttributionTrailer, IP "----- End forwarded message -----" },
+  { "forward_decrypt",             DT_BOOL,                           &C_ForwardDecrypt,            true },
+  { "forward_edit",                DT_QUAD,                           &C_ForwardEdit,               MUTT_YES },
+  { "forward_format",              DT_STRING|DT_NOT_EMPTY,            &C_ForwardFormat,             IP "[%a: %s]" },
+  { "forward_references",          DT_BOOL,                           &C_ForwardReferences,         false },
+  { "hdrs",                        DT_BOOL,                           &C_Hdrs,                      true },
+  { "hidden_host",                 DT_BOOL,                           &C_HiddenHost,                false },
+  { "honor_followup_to",           DT_QUAD,                           &C_HonorFollowupTo,           MUTT_YES },
+  { "ignore_list_reply_to",        DT_BOOL,                           &C_IgnoreListReplyTo,         false },
+  { "include",                     DT_QUAD,                           &C_Include,                   MUTT_ASKYES },
+#ifdef USE_NNTP
+  { "inews",                       DT_STRING|DT_COMMAND,              &C_Inews,                     0 },
+#endif
+  { "metoo",                       DT_BOOL,                           &C_Metoo,                     false },
+  { "mime_forward_decode",         DT_BOOL,                           &C_MimeForwardDecode,         false },
+#ifdef USE_NNTP
+  { "mime_subject",                DT_BOOL,                           &C_MimeSubject,               true },
+#endif
+  { "mime_type_query_command",     DT_STRING|DT_COMMAND,              &C_MimeTypeQueryCommand,      0 },
+  { "mime_type_query_first",       DT_BOOL,                           &C_MimeTypeQueryFirst,        false },
+  { "nm_record",                   DT_BOOL,                           &C_NmRecord,                  false },
+  { "pgp_replyinline",             DT_BOOL,                           &C_PgpReplyinline,            false },
+  { "post_indent_string",          DT_STRING,                         &C_PostIndentString,          0 },
+  { "postpone_encrypt",            DT_BOOL,                           &C_PostponeEncrypt,           false },
+  { "postpone_encrypt_as",         DT_STRING,                         &C_PostponeEncryptAs,         0 },
+  { "recall",                      DT_QUAD,                           &C_Recall,                    MUTT_ASKYES },
+  { "reply_self",                  DT_BOOL,                           &C_ReplySelf,                 false },
+  { "reply_to",                    DT_QUAD,                           &C_ReplyTo,                   MUTT_ASKYES },
+  { "reply_with_xorig",            DT_BOOL,                           &C_ReplyWithXorig,            false },
+  { "reverse_name",                DT_BOOL|R_INDEX|R_PAGER,           &C_ReverseName,               false },
+  { "reverse_realname",            DT_BOOL|R_INDEX|R_PAGER,           &C_ReverseRealname,           true },
+  { "sendmail",                    DT_STRING|DT_COMMAND,              &C_Sendmail,                  IP SENDMAIL " -oem -oi" },
+  { "sendmail_wait",               DT_NUMBER,                         &C_SendmailWait,              0 },
+  { "sig_dashes",                  DT_BOOL,                           &C_SigDashes,                 true },
+  { "sig_on_top",                  DT_BOOL,                           &C_SigOnTop,                  false },
+  { "signature",                   DT_PATH|DT_PATH_FILE,              &C_Signature,                 IP "~/.signature" },
+#ifdef USE_SMTP
+  { "smtp_authenticators",         DT_SLIST|SLIST_SEP_COLON,          &C_SmtpAuthenticators,        0 },
+  { "smtp_oauth_refresh_command",  DT_STRING|DT_COMMAND|DT_SENSITIVE, &C_SmtpOauthRefreshCommand,   0 },
+  { "smtp_pass",                   DT_STRING|DT_SENSITIVE,            &C_SmtpPass,                  0 },
+  { "smtp_user",                   DT_STRING|DT_SENSITIVE,            &C_SmtpUser,                  0 },
+  { "smtp_url",                    DT_STRING|DT_SENSITIVE,            &C_SmtpUrl,                   0 },
+#endif
+  { "use_8bitmime",                DT_BOOL,                           &C_Use8bitmime,               false },
+  { "use_envelope_from",           DT_BOOL,                           &C_UseEnvelopeFrom,           false },
+  { "use_from",                    DT_BOOL,                           &C_UseFrom,                   true },
+  { "user_agent",                  DT_BOOL,                           &C_UserAgent,                 false },
+  { "wrap_headers",                DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER, &C_WrapHeaders,               78, 0, wrapheaders_validator },
+
+  { "abort_noattach_regexp",  DT_SYNONYM, NULL, IP "abort_noattach_regex",     },
+  { "attach_keyword",         DT_SYNONYM, NULL, IP "abort_noattach_regex",     },
+  { "envelope_from",          DT_SYNONYM, NULL, IP "use_envelope_from",        },
+  { "forw_decrypt",           DT_SYNONYM, NULL, IP "forward_decrypt",          },
+  { "forw_format",            DT_SYNONYM, NULL, IP "forward_format",           },
+  { "pgp_autoencrypt",        DT_SYNONYM, NULL, IP "crypt_autoencrypt",        },
+  { "pgp_autosign",           DT_SYNONYM, NULL, IP "crypt_autosign",           },
+  { "pgp_auto_traditional",   DT_SYNONYM, NULL, IP "pgp_replyinline",          },
+  { "pgp_replyencrypt",       DT_SYNONYM, NULL, IP "crypt_replyencrypt",       },
+  { "pgp_replysign",          DT_SYNONYM, NULL, IP "crypt_replysign",          },
+  { "pgp_replysignencrypted", DT_SYNONYM, NULL, IP "crypt_replysignencrypted", },
+  { "post_indent_str",        DT_SYNONYM, NULL, IP "post_indent_string",       },
+  { NULL, 0, NULL, 0, 0, NULL },
+};
+// clang-format on
+
+/**
+ * config_init_send - Register send config variables
+ */
+bool config_init_send(struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, SendVars, 0);
+}
