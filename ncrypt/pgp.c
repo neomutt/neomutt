@@ -511,6 +511,7 @@ int pgp_class_application_handler(struct Body *b, struct State *state)
     size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ");
     if (plen != 0)
     {
+      needpass = false;
       clearsign = false;
       could_not_decrypt = false;
       decrypt_okay_rc = 0;
@@ -522,11 +523,9 @@ int pgp_class_application_handler(struct Body *b, struct State *state)
       else if (mutt_str_startswith(buf + plen, "SIGNED MESSAGE-----\n"))
       {
         clearsign = true;
-        needpass = 0;
       }
       else if (mutt_str_startswith(buf + plen, "PUBLIC KEY BLOCK-----\n"))
       {
-        needpass = 0;
         pgp_keyblock = true;
       }
       else

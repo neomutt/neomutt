@@ -2431,6 +2431,8 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
   bool clearsign = false;
   long bytes;
   LOFF_T last_pos;
+  LOFF_T block_begin;
+  LOFF_T block_end;
   char buf[8192] = { 0 };
   FILE *fp_out = NULL;
 
@@ -2441,6 +2443,7 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
   bool have_any_sigs = false;
 
   char body_charset[256] = { 0 }; /* Only used for clearsigned messages. */
+  char *gpgcharset = NULL;
 
   mutt_debug(LL_DEBUG2, "Entering handler\n");
 
@@ -2457,17 +2460,27 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
 
   for (bytes = b->length; bytes > 0;)
   {
+    // record before the fgets in case it is a BEGIN block
+    block_begin = last_pos;
+
     if (!fgets(buf, sizeof(buf), state->fp_in))
       break;
 
     LOFF_T offset = ftello(state->fp_in);
+    if (offset < 0)
+    {
+      mutt_debug(LL_DEBUG1, "ftello() failed on fd %d\n", fileno(state->fp_in));
+      offset = 0;
+    }
     bytes -= (offset - last_pos); /* don't rely on mutt_str_len(buf) */
     last_pos = offset;
 
     size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ");
     if (plen != 0)
     {
+      needpass = 0;
       clearsign = false;
+      pgp_keyblock = false;
 
       if (MESSAGE(buf + plen))
       {
@@ -2476,11 +2489,9 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
       else if (SIGNED_MESSAGE(buf + plen))
       {
         clearsign = true;
-        needpass = 0;
       }
       else if (PUBLIC_KEY_BLOCK(buf + plen))
       {
-        needpass = 0;
         pgp_keyblock = true;
       }
       else
@@ -2492,10 +2503,54 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
         continue;
       }
 
+      /* Find the end of armored block. */
+      while ((bytes > 0) && (fgets(buf, sizeof(buf) - 1, state->fp_in) != NULL))
+      {
+        offset = ftello(state->fp_in);
+        if (offset < 0)
+        {
+          mutt_debug(LL_DEBUG1, "ftello() failed on fd %d\n", fileno(state->fp_in));
+          offset = 0;
+        }
+        bytes -= (offset - last_pos); /* don't rely on mutt_strlen(buf) */
+        last_pos = offset;
+
+        if (needpass && mutt_str_equal("-----END PGP MESSAGE-----\n", buf))
+        {
+          break;
+        }
+
+        if (!needpass && (mutt_str_equal("-----END PGP SIGNATURE-----\n", buf) ||
+                          mutt_str_equal("-----END PGP PUBLIC KEY BLOCK-----\n", buf)))
+        {
+          break;
+        }
+
+        // remember optional Charset: armor header as defined by rfc4880
+        if (mutt_strn_equal("Charset: ", buf, 9))
+        {
+          size_t l = 0;
+          FREE(&gpgcharset);
+          gpgcharset = mutt_str_dup(buf + 9);
+          if ((l = mutt_str_len(gpgcharset)) > 0 && gpgcharset[l - 1] == '\n')
+            gpgcharset[l - 1] = 0;
+          if (!mutt_ch_check_charset(gpgcharset, 0))
+            mutt_str_replace(&gpgcharset, "UTF-8");
+        }
+      }
+      block_end = ftello(state->fp_in);
+      if (block_end < 0)
+      {
+        mutt_debug(LL_DEBUG1, "ftello() failed on fd %d\n", fileno(state->fp_in));
+        block_end = 0;
+      }
+
       have_any_sigs = (have_any_sigs || (clearsign && (state->flags & STATE_VERIFY)));
 
       /* Copy PGP material to an data container */
-      armored_data = file_to_data_object(state->fp_in, b->offset, b->length);
+      armored_data = file_to_data_object(state->fp_in, block_begin, block_end - block_begin);
+      fseeko(state->fp_in, block_end, 0);
+
       /* Invoke PGP if needed */
       if (pgp_keyblock)
       {
@@ -2603,9 +2658,10 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
       else if (fp_out)
       {
         int c;
+        char *expected_charset = gpgcharset && *gpgcharset ? gpgcharset : "utf-8";
         rewind(fp_out);
-        struct FgetConv *fc = mutt_ch_fgetconv_open(fp_out, "utf-8", cc_charset(),
-                                                    MUTT_ICONV_NO_FLAGS);
+        struct FgetConv *fc = mutt_ch_fgetconv_open(fp_out, expected_charset,
+                                                    cc_charset(), MUTT_ICONV_HOOK_FROM);
         while ((c = mutt_ch_fgetconv(fc)) != EOF)
         {
           state_putc(state, c);
@@ -2626,6 +2682,7 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
           state_attach_puts(state, _("[-- END PGP SIGNED MESSAGE --]\n"));
       }
 
+      // Multiple PGP blocks can exist, so clean these up in each loop
       gpgme_data_release(armored_data);
       mutt_file_fclose(&fp_out);
     }
@@ -2638,6 +2695,7 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
       state_puts(state, buf);
     }
   }
+  FREE(&gpgcharset);
 
   b->goodsig = (maybe_goodsig && have_any_sigs);
 
