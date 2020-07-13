@@ -178,7 +178,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_STRING:
     {
       const char *value = lua_tostring(l, -1);
-      size_t val_size = lua_strlen(l, -1);
+      size_t val_size = lua_rawlen(l, -1);
       struct Buffer value_buf = mutt_buffer_make(val_size);
       mutt_buffer_strcpy_n(&value_buf, value, val_size);
       if (DTYPE(he->type) == DT_PATH)
