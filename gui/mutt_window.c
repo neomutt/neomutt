@@ -46,6 +46,29 @@ struct MuttWindow *MuttHelpWindow = NULL;    ///< Help Window
 struct MuttWindow *MuttMessageWindow = NULL; ///< Message Window
 
 /**
+ * window_was_visible - Was the Window visible?
+ * @param win Window
+ * @retval true If the Window was visible
+ *
+ * Using the `WindowState old`, check if a Window used to be visible.
+ * For a Window to be visible, *it* must have been visible and it's parent and
+ * grandparent, etc.
+ */
+static bool window_was_visible(struct MuttWindow *win)
+{
+  if (!win)
+    return false;
+
+  for (; win; win = win->parent)
+  {
+    if (!win->old.visible)
+      return false;
+  }
+
+  return true;
+}
+
+/**
  * window_notify - Notify observers of changes to a Window
  * @param win Window
  */
@@ -58,8 +81,10 @@ static void window_notify(struct MuttWindow *win)
   const struct WindowState *new = &win->state;
   WindowNotifyFlags flags = WN_NO_FLAGS;
 
-  if (new->visible != old->visible)
-    flags |= new->visible ? WN_VISIBLE : WN_HIDDEN;
+  const bool was_visible = window_was_visible(win);
+  const bool is_visible = mutt_window_is_visible(win);
+  if (was_visible != is_visible)
+    flags |= is_visible ? WN_VISIBLE : WN_HIDDEN;
 
   if ((new->row_offset != old->row_offset) || (new->col_offset != old->col_offset))
     flags |= WN_MOVED;
@@ -79,7 +104,6 @@ static void window_notify(struct MuttWindow *win)
 
   struct EventWindow ev_w = { win, flags };
   notify_send(win->notify, NT_WINDOW, NT_WINDOW_STATE, &ev_w);
-  win->old = win->state;
 }
 
 /**
@@ -98,10 +122,11 @@ void window_notify_all(struct MuttWindow *win)
   {
     window_notify_all(np);
   }
+  win->old = win->state;
 }
 
 /**
- * window_set_visible - Set a Window (and its children) visible or hidden
+ * window_set_visible - Set a Window visible or hidden
  * @param win     Window
  * @param visible If true, make Window visible, otherwise hidden
  */
@@ -111,12 +136,6 @@ void window_set_visible(struct MuttWindow *win, bool visible)
     win = RootWindow;
 
   win->state.visible = visible;
-
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH(np, &win->children, entries)
-  {
-    window_set_visible(np, visible);
-  }
 }
 
 /**

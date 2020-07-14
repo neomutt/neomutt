@@ -261,6 +261,7 @@
                                                                                \
   /* gui */                                                                    \
   NEOMUTT_TEST_ITEM(test_window_reflow)                                        \
+  NEOMUTT_TEST_ITEM(test_window_visible)                                       \
                                                                                \
   /* hash */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_hash_delete)                                     \

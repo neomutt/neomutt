@@ -224,7 +224,8 @@ GROUP_OBJS	= test/group/mutt_group_match.o \
 		  test/group/mutt_grouplist_remove_regex.o \
 		  test/group/mutt_pattern_group.o
 
-GUI_OBJS	= test/gui/reflow.o
+GUI_OBJS	= test/gui/reflow.o \
+		  test/gui/visible.o
 
 HASH_OBJS	= test/hash/mutt_hash_delete.o \
 		  test/hash/mutt_hash_find.o \

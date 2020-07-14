@@ -4093,12 +4093,10 @@ static struct MuttWindow *create_panel_pager(struct MuttWindow *parent, bool sta
   struct MuttWindow *win_pager =
       mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  win_pager->state.visible = false;
 
   struct MuttWindow *win_pbar =
       mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  win_pbar->state.visible = false;
 
   if (status_on_top)
   {
