@@ -541,7 +541,7 @@ int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid)
   char key[16];
 
   sprintf(key, "/%u", uid);
-  return mutt_hcache_delete_header(mdata->hcache, key, mutt_str_len(key));
+  return mutt_hcache_delete_record(mdata->hcache, key, mutt_str_len(key));
 }
 
 /**
@@ -577,7 +577,7 @@ int imap_hcache_clear_uid_seqset(struct ImapMboxData *mdata)
   if (!mdata->hcache)
     return -1;
 
-  return mutt_hcache_delete_header(mdata->hcache, "/UIDSEQSET", 10);
+  return mutt_hcache_delete_record(mdata->hcache, "/UIDSEQSET", 10);
 }
 
 /**

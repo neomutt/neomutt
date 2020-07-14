@@ -753,8 +753,8 @@ void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc)
           continue;
 
         snprintf(buf, sizeof(buf), "%u", current);
-        mutt_debug(LL_DEBUG2, "mutt_hcache_delete_header %s\n", buf);
-        mutt_hcache_delete_header(hc, buf, strlen(buf));
+        mutt_debug(LL_DEBUG2, "mutt_hcache_delete_record %s\n", buf);
+        mutt_hcache_delete_record(hc, buf, strlen(buf));
       }
     }
     mutt_hcache_free_raw(hc, &hdata);

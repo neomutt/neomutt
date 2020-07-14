@@ -1306,8 +1306,8 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
 #ifdef USE_HCACHE
         if (fc.hc)
         {
-          mutt_debug(LL_DEBUG2, "mutt_hcache_delete_header %s\n", buf);
-          mutt_hcache_delete_header(fc.hc, buf, strlen(buf));
+          mutt_debug(LL_DEBUG2, "mutt_hcache_delete_record %s\n", buf);
+          mutt_hcache_delete_record(fc.hc, buf, strlen(buf));
         }
 #endif
       }

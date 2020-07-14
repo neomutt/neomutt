@@ -964,7 +964,7 @@ static int pop_mbox_sync(struct Mailbox *m)
         {
           mutt_bcache_del(adata->bcache, cache_id(edata->uid));
 #ifdef USE_HCACHE
-          mutt_hcache_delete_header(hc, edata->uid, strlen(edata->uid));
+          mutt_hcache_delete_record(hc, edata->uid, strlen(edata->uid));
 #endif
         }
       }

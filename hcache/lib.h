@@ -171,14 +171,14 @@ void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen, 
 void mutt_hcache_free_raw(header_cache_t *hc, void **data);
 
 /**
- * mutt_hcache_delete_header - delete a key / data pair
+ * mutt_hcache_delete_record - delete a key / data pair
  * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
-int mutt_hcache_delete_header(header_cache_t *hc, const char *key, size_t keylen);
+int mutt_hcache_delete_record(header_cache_t *hc, const char *key, size_t keylen);
 
 #ifdef USE_HCACHE
 bool config_init_hcache(struct ConfigSet *cs);

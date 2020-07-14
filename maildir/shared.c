@@ -1358,7 +1358,7 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc)
           key = e->path + 3;
           keylen = maildir_hcache_keylen(key);
         }
-        mutt_hcache_delete_header(hc, key, keylen);
+        mutt_hcache_delete_record(hc, key, keylen);
       }
 #endif
       unlink(path);

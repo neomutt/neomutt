@@ -597,9 +597,9 @@ int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
 }
 
 /**
- * mutt_hcache_delete_header - Multiplexor for StoreOps::delete_header
+ * mutt_hcache_delete_record - Multiplexor for StoreOps::delete_record
  */
-int mutt_hcache_delete_header(header_cache_t *hc, const char *key, size_t keylen)
+int mutt_hcache_delete_record(header_cache_t *hc, const char *key, size_t keylen)
 {
   const struct StoreOps *ops = hcache_get_ops();
   if (!hc)
