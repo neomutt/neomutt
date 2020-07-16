@@ -973,6 +973,7 @@ struct Menu *mutt_menu_new(enum MenuType type)
   menu->redraw = REDRAW_FULL;
   menu->color = default_color;
   menu->search = generic_search;
+  menu->custom_search = false;
 
   return menu;
 }
@@ -1491,7 +1492,9 @@ int mutt_menu_loop(struct Menu *menu)
       case OP_SEARCH_REVERSE:
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
-        if (menu->search && !menu->dialog) /* Searching dialogs won't work */
+        if (menu->custom_search)
+          return i;
+        else if (menu->search && !menu->dialog) /* Searching dialogs won't work */
         {
           menu->oldcurrent = menu->current;
           menu->current = search(menu, i);
