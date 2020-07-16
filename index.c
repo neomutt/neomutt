@@ -63,7 +63,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"
-#include "pattern.h"
 #include "progress.h"
 #include "protos.h"
 #include "recvattach.h"
@@ -71,6 +70,7 @@
 #include "sort.h"
 #include "status.h"
 #include "ncrypt/lib.h"
+#include "pattern/lib.h"
 #include "send/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"

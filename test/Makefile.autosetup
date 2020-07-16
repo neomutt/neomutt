@@ -380,7 +380,7 @@ PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_tilde.o \
 		  test/path/mutt_path_to_absolute.o
 
-PATTERN_OBJS	= pattern.o \
+PATTERN_OBJS	= pattern/pattern.o \
 		  test/pattern/comp.o \
 		  test/pattern/dummy.o \
 		  test/pattern/extract.o

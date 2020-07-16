@@ -46,8 +46,8 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
-#include "pattern.h"
 #include "protos.h"
+#include "pattern/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
 #endif

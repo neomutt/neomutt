@@ -54,10 +54,10 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "pattern.h"
 #include "progress.h"
 #include "sort.h"
 #include "bcache/lib.h"
+#include "pattern/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

@@ -59,7 +59,8 @@
 
 static void parse_part(FILE *fp, struct Body *b, int *counter);
 static struct Body *rfc822_parse_message(FILE *fp, struct Body *parent, int *counter);
-static struct Body *parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest, int *counter);
+static struct Body *parse_multipart(FILE *fp, const char *boundary,
+                                    LOFF_T end_off, bool digest, int *counter);
 
 /**
  * mutt_auto_subscribe - Check if user is subscribed to mailing list
@@ -1405,7 +1406,7 @@ static void parse_part(FILE *fp, struct Body *b, int *counter)
 
       fseeko(fp, b->offset, SEEK_SET);
       b->parts = parse_multipart(fp, bound, b->offset + b->length,
-                                  mutt_istr_equal("digest", b->subtype), counter);
+                                 mutt_istr_equal("digest", b->subtype), counter);
       break;
 
     case TYPE_MESSAGE:
@@ -1446,7 +1447,7 @@ bail:
  * @retval ptr New Body containing parsed structure
  */
 static struct Body *parse_multipart(FILE *fp, const char *boundary,
-                                     LOFF_T end_off, bool digest, int *counter)
+                                    LOFF_T end_off, bool digest, int *counter)
 {
   if (!fp)
     return NULL;

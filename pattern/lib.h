@@ -21,8 +21,23 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_PATTERN_H
-#define MUTT_PATTERN_H
+/**
+ * @page pattern PATTERN: Match patterns to emails
+ *
+ * Match patterns to emails
+ *
+ * | File                 | Description                 |
+ * | :------------------- | :-------------------------- |
+ * | pattern/compile.c    | @subpage pattern_compile    |
+ * | pattern/config.c     | @subpage pattern_config     |
+ * | pattern/dlgpattern.c | @subpage pattern_dlgpattern |
+ * | pattern/exec.c       | @subpage pattern_exec       |
+ * | pattern/flags.c      | @subpage pattern_flags      |
+ * | pattern/pattern.c    | @subpage pattern_pattern    |
+ */
+
+#ifndef MUTT_PATTERN_LIB_H
+#define MUTT_PATTERN_LIB_H
 
 #include "config.h"
 #include <stdbool.h>
@@ -30,6 +45,7 @@
 #include "mutt/lib.h"
 #include "mutt.h"
 
+struct ConfigSet;
 struct Email;
 struct Envelope;
 struct Mailbox;
@@ -166,4 +182,6 @@ int mutt_search_command(int cur, int op);
 
 bool mutt_limit_current_thread(struct Email *e);
 
-#endif /* MUTT_PATTERN_H */
+bool config_init_pattern(struct ConfigSet *cs);
+
+#endif /* MUTT_PATTERN_LIB_H */

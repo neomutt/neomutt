@@ -42,7 +42,7 @@
 #include "mutt_curses.h"
 #include "mutt_globals.h"
 #include "options.h"
-#include "pattern.h"
+#include "pattern/lib.h"
 #ifdef USE_SLANG_CURSES
 #include <assert.h>
 #endif

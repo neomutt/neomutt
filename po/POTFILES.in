@@ -197,7 +197,12 @@ notmuch/notmuch.c
 opcodes.c
 opcodes.h
 pager.c
-pattern.c
+pattern/compile.c
+pattern/config.c
+pattern/dlgpattern.c
+pattern/exec.c
+pattern/flags.c
+pattern/pattern.c
 pgpewrap.c
 pop/auth.c
 pop/config.c

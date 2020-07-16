@@ -90,7 +90,6 @@ WHERE char *C_AttachFormat;                  ///< Config: printf-like format str
 WHERE char *C_ConfigCharset;                 ///< Config: Character set that the config files are in
 WHERE char *C_DateFormat;                    ///< Config: strftime format string for the `%d` expando
 WHERE char *C_Editor;                        ///< Config: External command to use as an email editor
-WHERE char *C_ExternalSearchCommand;         ///< Config: External search command
 WHERE char *C_Hostname;                      ///< Config: Fully-qualified domain name of this machine
 WHERE char *C_IndexFormat;                   ///< Config: printf-like format string for the index menu (emails)
 
@@ -101,7 +100,6 @@ WHERE char *C_Folder;                        ///< Config: Base folder for a set 
 WHERE char *C_Record;                        ///< Config: Folder to save 'sent' messages
 WHERE char *C_Pager;                         ///< Config: External command for viewing messages, or 'builtin' to use NeoMutt's
 WHERE char *C_PagerFormat;                   ///< Config: printf-like format string for the pager's status bar
-WHERE char *C_PatternFormat;                 ///< Config: printf-like format string for the pattern completion menu
 WHERE char *C_Postponed;                     ///< Config: Folder to store postponed messages
 WHERE char *C_IndentString;                  ///< Config: String used to indent 'reply' text
 WHERE char *C_PrintCommand;                  ///< Config: External command to print a message

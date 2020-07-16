@@ -47,9 +47,9 @@
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "pattern.h"
 #include "protos.h"
 #include "history/lib.h"
+#include "pattern/lib.h"
 
 /**
  * enum EnterRedrawFlags - redraw flags for mutt_enter_string_full()

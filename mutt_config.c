@@ -55,7 +55,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "pager.h"
-#include "pattern.h"
 #include "progress.h"
 #include "recvattach.h"
 #include "recvcmd.h"
@@ -67,6 +66,7 @@
 #include "bcache/lib.h"
 #include "maildir/lib.h"
 #include "ncrypt/lib.h"
+#include "pattern/lib.h"
 
 #ifndef ISPELL
 #define ISPELL "ispell"
@@ -127,7 +127,6 @@ struct ConfigDef MainVars[] = {
   { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, &C_DuplicateThreads, true, 0, pager_validator },
   { "edit_headers", DT_BOOL, &C_EditHeaders, false },
   { "editor", DT_STRING|DT_NOT_EMPTY|DT_COMMAND, &C_Editor, IP "vi" },
-  { "external_search_command", DT_STRING|DT_COMMAND, &C_ExternalSearchCommand, 0 },
   { "flag_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_FlagChars, IP "*!DdrONon- " },
   { "flag_safe", DT_BOOL, &C_FlagSafe, false },
   { "folder", DT_STRING|DT_MAILBOX, &C_Folder, IP "~/Mail" },
@@ -195,7 +194,6 @@ struct ConfigDef MainVars[] = {
   { "pager_format", DT_STRING|R_PAGER, &C_PagerFormat, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
   { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER|R_REFLOW, &C_PagerIndexLines, 0 },
   { "pager_stop", DT_BOOL, &C_PagerStop, false },
-  { "pattern_format", DT_STRING, &C_PatternFormat, IP "%2n %-15e  %d" },
   { "pipe_decode", DT_BOOL, &C_PipeDecode, false },
   { "pipe_decode_weed", DT_BOOL, &C_PipeDecodeWeed, true },
   { "pipe_sep", DT_STRING, &C_PipeSep, IP "\n" },
@@ -259,7 +257,6 @@ struct ConfigDef MainVars[] = {
   { "strict_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, &C_StrictThreads, false, 0, pager_validator },
   { "suspend", DT_BOOL, &C_Suspend, true },
   { "text_flowed", DT_BOOL, &C_TextFlowed, false },
-  { "thorough_search", DT_BOOL, &C_ThoroughSearch, true },
   { "thread_received", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, &C_ThreadReceived, false, 0, pager_validator },
   { "tilde", DT_BOOL|R_PAGER, &C_Tilde, false },
   { "time_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_TimeInc, 0 },

@@ -61,12 +61,12 @@
 #include "mutt_parse.h"
 #include "muttlib.h"
 #include "options.h"
-#include "pattern.h"
 #include "protos.h"
 #include "recvattach.h"
 #include "rfc3676.h"
 #include "sort.h"
 #include "ncrypt/lib.h"
+#include "pattern/lib.h"
 #ifdef USE_NNTP
 #include "mx.h"
 #include "nntp/lib.h"
@@ -1636,7 +1636,8 @@ static int save_fcc(struct Email *e, struct Buffer *fcc,
   if ((flags & SEND_BATCH) && !mutt_buffer_is_empty(fcc) &&
       (imap_path_probe(mutt_b2s(fcc), NULL) == MUTT_IMAP))
   {
-    mutt_error(_("Warning: Fcc to an IMAP mailbox is not supported in batch mode"));
+    mutt_error(
+        _("Warning: Fcc to an IMAP mailbox is not supported in batch mode"));
     /* L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
        To make it clearer that the message doesn't mean NeoMutt is aborting
        sending the mail too.

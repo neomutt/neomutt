@@ -48,8 +48,8 @@
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "pattern.h"
 #include "ncrypt/lib.h"
+#include "pattern/lib.h"
 #ifdef USE_COMP_MBOX
 #include "compmbox/lib.h"
 #endif

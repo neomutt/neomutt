@@ -61,6 +61,13 @@ extern const char AddressSpecials[];
 
 #define address_error(num) AddressErrors[num]
 
+/**
+ * typedef addr_predicate_t - Test an Address for some condition
+ * @param a Address to test
+ * @retval bool True if Address matches the test
+ */
+typedef bool (*addr_predicate_t)(const struct Address *a);
+
 /* Utility functions that don't use struct Address or struct AddressList */
 void mutt_addr_cat        (char *buf, size_t buflen, const char *value, const char *specials);
 bool mutt_addr_valid_msgid(const char *msgid);
