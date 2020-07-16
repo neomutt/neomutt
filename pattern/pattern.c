@@ -366,12 +366,13 @@ bail:
 
 /**
  * mutt_search_command - Perform a search
- * @param cur Index number of current email
- * @param op  Operation to perform, e.g. OP_SEARCH_NEXT
+ * @param mailbox Mailbox to search through
+ * @param cur     Index number of current email
+ * @param op      Operation to perform, e.g. OP_SEARCH_NEXT
  * @retval >= 0 Index of matching email
  * @retval -1 No match, or error
  */
-int mutt_search_command(int cur, int op)
+int mutt_search_command(struct Mailbox *mailbox, int cur, int op)
 {
   struct Progress progress;
 
@@ -429,11 +430,10 @@ int mutt_search_command(int cur, int op)
 
   if (OptSearchInvalid)
   {
-    for (int i = 0; i < Context->mailbox->msg_count; i++)
-      Context->mailbox->emails[i]->searched = false;
+    for (int i = 0; i < mailbox->msg_count; i++)
+      mailbox->emails[i]->searched = false;
 #ifdef USE_IMAP
-    if ((Context->mailbox->type == MUTT_IMAP) &&
-        (!imap_search(Context->mailbox, SearchPattern)))
+    if ((mailbox->type == MUTT_IMAP) && (!imap_search(mailbox, SearchPattern)))
       return -1;
 #endif
     OptSearchInvalid = false;
@@ -443,14 +443,13 @@ int mutt_search_command(int cur, int op)
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
-  mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_READ,
-                     Context->mailbox->vcount);
+  mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_READ, mailbox->vcount);
 
-  for (int i = cur + incr, j = 0; j != Context->mailbox->vcount; j++)
+  for (int i = cur + incr, j = 0; j != mailbox->vcount; j++)
   {
     const char *msg = NULL;
     mutt_progress_update(&progress, j, -1);
-    if (i > Context->mailbox->vcount - 1)
+    if (i > mailbox->vcount - 1)
     {
       i = 0;
       if (C_WrapSearch)
@@ -463,7 +462,7 @@ int mutt_search_command(int cur, int op)
     }
     else if (i < 0)
     {
-      i = Context->mailbox->vcount - 1;
+      i = mailbox->vcount - 1;
       if (C_WrapSearch)
         msg = _("Search wrapped to bottom");
       else
@@ -473,7 +472,7 @@ int mutt_search_command(int cur, int op)
       }
     }
 
-    struct Email *e = mutt_get_virt_email(Context->mailbox, i);
+    struct Email *e = mutt_get_virt_email(mailbox, i);
     if (e->searched)
     {
       /* if we've already evaluated this message, use the cached value */
@@ -489,8 +488,8 @@ int mutt_search_command(int cur, int op)
     {
       /* remember that we've already searched this message */
       e->searched = true;
-      e->matched = mutt_pattern_exec(SLIST_FIRST(SearchPattern), MUTT_MATCH_FULL_ADDRESS,
-                                     Context->mailbox, e, NULL);
+      e->matched = mutt_pattern_exec(SLIST_FIRST(SearchPattern),
+                                     MUTT_MATCH_FULL_ADDRESS, mailbox, e, NULL);
       if (e->matched > 0)
       {
         mutt_clear_error();
