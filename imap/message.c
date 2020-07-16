@@ -1895,7 +1895,6 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   /* Sam's weird courier server returns an OK response even when FETCH
    * fails. Thanks Sam. */
   bool fetched = false;
-  int output_progress;
 
   struct ImapAccountData *adata = imap_adata_get(m);
 
@@ -1916,7 +1915,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   /* This function is called in a few places after endwin()
    * e.g. mutt_pipe_message(). */
-  output_progress = !isendwin() && m->verbose;
+  bool output_progress = !isendwin() && m->verbose;
   if (output_progress)
     mutt_message(_("Fetching message..."));
 

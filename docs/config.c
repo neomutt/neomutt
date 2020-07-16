@@ -3518,14 +3518,6 @@
 ** Match detection may be overridden by the $$smileys regular expression.
 */
 
-{ "toggle_quoted_show_levels", DT_NUMBER, 0 },
-/*
-** .pp
-** Quoted text may be filtered out using the \fC<toggle-quoted>\fP command.
-** If set to a number greater than 0, then the \fC<toggle-quoted>\fP
-** command will only filter out quote levels above this number.
-*/
-
 { "read_inc", DT_NUMBER, 10 },
 /*
 ** .pp
@@ -4526,14 +4518,6 @@
 ** if you are the only one who can read the file.
 */
 
-{ "smtp_user", DT_STRING, 0 },
-/*
-** .pp
-** The username for the SMTP server.
-** .pp
-** This variable defaults to your user name on the local machine.
-*/
-
 { "smtp_url", DT_STRING, 0 },
 /*
 ** .pp
@@ -4548,6 +4532,14 @@
 ** variable.
 ** .pp
 ** Also see $$write_bcc.
+*/
+
+{ "smtp_user", DT_STRING, 0 },
+/*
+** .pp
+** The username for the SMTP server.
+** .pp
+** This variable defaults to your user name on the local machine.
 */
 #endif
 
@@ -5056,6 +5048,14 @@
 ** .dt 6 .dd L .dd Indicates the mail was sent to a mailing-list you subscribe to.
 ** .dt 7 .dd R .dd Your address appears in the "Reply-To:" header field but none of the above applies.
 ** .de
+*/
+
+{ "toggle_quoted_show_levels", DT_NUMBER, 0 },
+/*
+** .pp
+** Quoted text may be filtered out using the \fC<toggle-quoted>\fP command.
+** If set to a number greater than 0, then the \fC<toggle-quoted>\fP
+** command will only filter out quote levels above this number.
 */
 
 { "trash", DT_MAILBOX, 0 },

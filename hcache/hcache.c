@@ -237,8 +237,6 @@ static bool create_hcache_dir(const char *path)
  * @param path   Base directory, from $header_cache
  * @param folder Mailbox name (including protocol)
  * @param namer  Callback to generate database filename - Implements ::hcache_namer_t
- * @retval ptr Full pathname to the database (to be generated)
- *             (path must be freed by the caller)
  *
  * Generate the pathname for the hcache database, it will be of the form:
  *     BASE/FOLDER/NAME

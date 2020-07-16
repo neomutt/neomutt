@@ -47,7 +47,7 @@ typedef uint16_t SendFlags;             ///< Flags for mutt_send_message(), e.g.
 #define SEND_KEY              (1 << 6)  ///< Mail a PGP public key
 #define SEND_RESEND           (1 << 7)  ///< Reply using the current email as a template
 #define SEND_POSTPONED_FCC    (1 << 8)  ///< Used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present
-#define SEND_NO_FREE_HEADER   (1 << 9) ///< Used by the -E flag
+#define SEND_NO_FREE_HEADER   (1 << 9)  ///< Used by the -E flag
 #define SEND_DRAFT_FILE       (1 << 10) ///< Used by the -H flag
 #define SEND_TO_SENDER        (1 << 11) ///< Compose new email to sender
 #define SEND_GROUP_CHAT_REPLY (1 << 12) ///< Reply to all recipients preserving To/Cc

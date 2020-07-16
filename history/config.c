@@ -50,7 +50,7 @@ struct ConfigDef HistoryVars[] = {
 // clang-format on
 
 /**
- * init_history - Register history config variables
+ * config_init_history - Register history config variables
  */
 bool config_init_history(struct ConfigSet *cs)
 {

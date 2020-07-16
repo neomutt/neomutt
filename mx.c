@@ -1685,7 +1685,7 @@ struct Mailbox *mx_path_resolve(const char *path)
 }
 
 /**
- * mx_mbox_find_by_name - Find a Mailbox with given name under an Account
+ * mx_mbox_find_by_name_ac - Find a Mailbox with given name under an Account
  * @param a    Account to search
  * @param name Name to find
  * @retval ptr Mailbox

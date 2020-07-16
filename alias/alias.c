@@ -93,7 +93,6 @@ static void write_safe_address(FILE *fp, char *s)
  * expand_aliases_r - Expand aliases, recursively
  * @param[in]  al   Address List
  * @param[out] expn Alias List
- * @retval ptr Address List with aliases expanded
  *
  * ListHead expn is used as temporary storage for already-expanded aliases.
  */
