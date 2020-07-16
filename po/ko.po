@@ -381,7 +381,7 @@ msgstr ""
 #. L10N: During autocrypt account creation, if selecting an existing key fails
 #. for some reason, we prompt to see if they want to create a key instead.
 #: autocrypt/gpgme.c:296
-msgid "Create a new gpg key for this account, instead?"
+msgid "Create a new GPG key for this account, instead?"
 msgstr ""
 
 #. L10N: The autocrypt database keeps track of schema version numbers.
@@ -7113,12 +7113,12 @@ msgstr ""
 #: version.c:112
 #, fuzzy
 msgid ""
-"Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-2020 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2016 Michael R. Elkins 외.\n"
+"Copyright (C) 1996-2020 Michael R. Elkins 외.\n"
 "NeoMutt은 어떠한 책임도 지지 않습니다; 자세한 사항은 'neomutt -vv'를 확인하시기\n"
 "바랍니다. NeoMutt은 공개 소프트웨어이며, 일정 사항만 지킨다면 여러분께서 자유\n"
 "로이 재배포할 수 있습니다. 자세한 사항은 'neomutt -vv'로 확인하시기 바랍니다.\n"

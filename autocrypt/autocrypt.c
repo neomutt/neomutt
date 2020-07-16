@@ -559,20 +559,43 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
   struct Buffer *keylist_buf = NULL;
 
   if (!C_Autocrypt || mutt_autocrypt_init(false) || !e)
+  {
+    if (keylist)
+    {
+      /* L10N: Error displayed if the user tries to force sending an Autocrypt
+         email when the engine is not available.  */
+      mutt_message(_("Autocrypt is not available"));
+    }
     return AUTOCRYPT_REC_OFF;
+  }
 
   struct Address *from = TAILQ_FIRST(&e->env->from);
   if (!from || TAILQ_NEXT(from, entries))
+  {
+    if (keylist)
+      mutt_message(_("Autocrypt is not available"));
     return AUTOCRYPT_REC_OFF;
+  }
 
   if (e->security & APPLICATION_SMIME)
+  {
+    if (keylist)
+      mutt_message(_("Autocrypt is not available"));
     return AUTOCRYPT_REC_OFF;
+  }
 
-  if (mutt_autocrypt_db_account_get(from, &account) <= 0)
+  if ((mutt_autocrypt_db_account_get(from, &account) <= 0) || !account->enabled)
+  {
+    if (keylist)
+    {
+      /* L10N: Error displayed if the user tries to force sending an Autocrypt
+         email when the account does not exist or is not enabled.
+         %s is the From email address used to look up the Autocrypt account.
+      */
+      mutt_message(_("Autocrypt is not enabled for %s"), NONULL(from->mailbox));
+    }
     goto cleanup;
-
-  if (!account->enabled)
-    goto cleanup;
+  }
 
   keylist_buf = mutt_buffer_pool_get();
   mutt_buffer_addstr(keylist_buf, account->keyid);

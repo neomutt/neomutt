@@ -65,6 +65,11 @@ enum ContentDisposition
   DISP_NONE,      ///< No preferred disposition
 };
 
+/* Some limits to mitigate stack overflow and denial of service attacks */
+#define MUTT_MIME_MAX_DEPTH  50
+#define MUTT_MIME_MAX_PARTS  5000
+
+
 /* MIME encoding/decoding global vars */
 
 extern const int IndexHex[128];
@@ -78,7 +83,8 @@ extern const char MimeSpecials[];
   (((body)->type == TYPE_MULTIPART) ||                                         \
    (((body)->type == TYPE_MESSAGE) && ((body)->subtype) &&                     \
     ((strcasecmp((body)->subtype, "rfc822") == 0) ||                           \
-     (strcasecmp((body)->subtype, "news") == 0))))
+     (strcasecmp((body)->subtype, "news") == 0) ||                             \
+     (strcasecmp((body)->subtype, "global") == 0))))
 
 #define TYPE(body)                                                             \
   ((body->type == TYPE_OTHER) && body->xtype ? body->xtype : BodyTypes[(body->type)])

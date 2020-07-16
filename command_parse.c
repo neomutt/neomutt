@@ -1025,8 +1025,7 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
     FREE(&n->data);
   }
 
-  n->data = buf->data;
-  mutt_buffer_init(buf);
+  n->data = mutt_buffer_strdup(buf);
 
   return MUTT_CMD_SUCCESS;
 }

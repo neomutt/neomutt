@@ -1354,6 +1354,41 @@ static const struct PatternFlags *lookup_tag(char tag)
 }
 
 /**
+ * lookup_op - Lookup the Pattern Flags for an op
+ * @param op Operation, e.g. #MUTT_PAT_SENDER
+ * @retval ptr PatternFlags
+ */
+static const struct PatternFlags *lookup_op(int op)
+{
+  for (int i = 0; Flags[i].tag; i++)
+    if (Flags[i].op == op)
+      return (&Flags[i]);
+  return NULL;
+}
+
+/**
+ * print_crypt_pattern_op_error - Print an error for a disabled crypto pattern
+ * @param op Operation, e.g. #MUTT_PAT_CRYPT_SIGN
+ */
+static void print_crypt_pattern_op_error(int op)
+{
+  const struct PatternFlags *entry = lookup_op(op);
+  if (entry)
+  {
+    /* L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
+       was invoked when NeoMutt was compiled without crypto support.
+       %c is the pattern character, i.e. "g".  */
+    mutt_error(_("Pattern operator '~%c' is disabled."), entry->tag);
+  }
+  else
+  {
+    /* L10N: An unknown pattern operator was somehow invoked.
+       This shouldn't be possible unless there is a bug.  */
+    mutt_error(_("error: unknown op %d (report this error)."), op);
+  }
+}
+
+/**
  * find_matching_paren - Find the matching parenthesis
  * @param s string to search
  * @retval ptr
@@ -1451,6 +1486,12 @@ struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, str
   char *p = NULL;
   char *buf = NULL;
   struct Buffer ps;
+
+  if (!s || !*s)
+  {
+    mutt_str_copy(err->data, _("empty pattern"), err->dsize);
+    return NULL;
+  }
 
   mutt_buffer_init(&ps);
   ps.dptr = (char *) s;
@@ -2346,19 +2387,31 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (e->collapsed && e->num_hidden > 1);
     case MUTT_PAT_CRYPT_SIGN:
       if (!WithCrypto)
-        break;
+      {
+        print_crypt_pattern_op_error(pat->op);
+        return 0;
+      }
       return pat->pat_not ^ ((e->security & SEC_SIGN) ? 1 : 0);
     case MUTT_PAT_CRYPT_VERIFIED:
       if (!WithCrypto)
-        break;
+      {
+        print_crypt_pattern_op_error(pat->op);
+        return 0;
+      }
       return pat->pat_not ^ ((e->security & SEC_GOODSIGN) ? 1 : 0);
     case MUTT_PAT_CRYPT_ENCRYPT:
       if (!WithCrypto)
-        break;
+      {
+        print_crypt_pattern_op_error(pat->op);
+        return 0;
+      }
       return pat->pat_not ^ ((e->security & SEC_ENCRYPT) ? 1 : 0);
     case MUTT_PAT_PGP_KEY:
       if (!(WithCrypto & APPLICATION_PGP))
-        break;
+      {
+        print_crypt_pattern_op_error(pat->op);
+        return 0;
+      }
       return pat->pat_not ^ ((e->security & PGP_KEY) == PGP_KEY);
     case MUTT_PAT_XLABEL:
       if (!e->env)
@@ -2401,7 +2454,7 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
 #endif
   }
   mutt_error(_("error: unknown op %d (report this error)"), pat->op);
-  return -1;
+  return 0;
 }
 
 /**

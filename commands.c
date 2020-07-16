@@ -63,6 +63,7 @@
 #include "mx.h"
 #include "options.h"
 #include "pager.h"
+#include "progress.h"
 #include "protos.h"
 #include "sort.h"
 #include "ncrypt/lib.h"
@@ -1039,6 +1040,9 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   int app = 0;
   int rc = -1;
   const char *prompt = NULL;
+  const char *progress_msg = NULL;
+  struct Progress progress;
+  int tagged_progress_count = 0;
   struct stat st;
   struct EmailNode *en = STAILQ_FIRST(el);
   bool single = !STAILQ_NEXT(en, entries);
@@ -1132,7 +1136,12 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   mutt_file_resolve_symlink(buf);
   struct Mailbox *m_save = mx_path_resolve(mutt_b2s(buf));
   bool old_append = m_save->append;
-  struct Context *ctx_save = mx_mbox_open(m_save, MUTT_NEWFOLDER);
+  OpenMailboxFlags mbox_flags = MUTT_NEWFOLDER;
+  /* Display a tagged message progress counter, rather than (for
+   * IMAP) a per-message progress counter */
+  if (!single)
+    mbox_flags |= MUTT_QUIET;
+  struct Context *ctx_save = mx_mbox_open(m_save, mbox_flags);
   if (!ctx_save)
   {
     mailbox_free(&m_save);
@@ -1180,12 +1189,25 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   {
     rc = 0;
 
+    // L10N: Progress meter message when saving tagged messages
+    progress_msg = delete_original ? _("Saving tagged messages...") :
+                                     // L10N: Progress meter message when copying tagged messages
+                       _("Copying tagged messages...");
+
+    int msg_count = 0;
+    STAILQ_FOREACH(en, el, entries)
+    {
+      msg_count++;
+    }
+    mutt_progress_init(&progress, progress_msg, MUTT_PROGRESS_WRITE, msg_count);
+
 #ifdef USE_NOTMUCH
     if (m->type == MUTT_NOTMUCH)
       nm_db_longrun_init(m, true);
 #endif
     STAILQ_FOREACH(en, el, entries)
     {
+      mutt_progress_update(&progress, ++tagged_progress_count, -1);
       mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
       rc = mutt_save_message_ctx(en->email, delete_original, decode, decrypt,
                                  ctx_save->mailbox);

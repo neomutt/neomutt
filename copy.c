@@ -56,7 +56,8 @@
 #endif
 
 static int address_header_decode(char **h);
-static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, char *date);
+static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out,
+                              const char *quoted_date);
 
 /**
  * mutt_copy_hdr - Copy header from one file to another
@@ -579,8 +580,12 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
       if (ch == '\n')
         dellines++;
     }
+    /* 3 and 89 come from the added header of three lines in
+     * copy_delete_attach().  89 is the size of the header(including
+     * the newlines, tabs, and a single digit length), not including
+     * the date length. */
     dellines -= 3;
-    *length -= b->length - (84 + datelen);
+    *length -= b->length - (89 + datelen);
     /* Count the number of digits exceeding the first one to write the size */
     for (long l = 10; b->length >= l; l *= 10)
       (*length)++;
@@ -630,24 +635,23 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     else if (e->attach_del && (chflags & CH_UPDATE_LEN))
     {
       int new_lines;
+      int rc_attach_del = -1;
       LOFF_T new_length = body->length;
-      char date[128];
+      struct Buffer *quoted_date = NULL;
 
-      mutt_date_make_date(date, sizeof(date));
-      int dlen = mutt_str_len(date);
-      if (dlen == 0)
-        return -1;
-
-      date[5] = '\"';
-      date[dlen - 1] = '\"';
+      quoted_date = mutt_buffer_pool_get();
+      mutt_buffer_addch(quoted_date, '"');
+      mutt_date_make_date(quoted_date);
+      mutt_buffer_addch(quoted_date, '"');
 
       /* Count the number of lines and bytes to be deleted */
       fseeko(fp_in, body->offset, SEEK_SET);
-      new_lines = e->lines - count_delete_lines(fp_in, body, &new_length, dlen);
+      new_lines = e->lines - count_delete_lines(fp_in, body, &new_length,
+                                                mutt_buffer_len(quoted_date));
 
       /* Copy the headers */
       if (mutt_copy_header(fp_in, e, fp_out, chflags | CH_NOLEN | CH_NONEWLINE, NULL, wraplen))
-        return -1;
+        goto attach_del_cleanup;
       fprintf(fp_out, "Content-Length: " OFF_T_FMT "\n", new_length);
       if (new_lines <= 0)
         new_lines = 0;
@@ -656,14 +660,16 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
 
       putc('\n', fp_out);
       if (ferror(fp_out) || feof(fp_out))
-        return -1;
+        goto attach_del_cleanup;
       new_offset = ftello(fp_out);
 
       /* Copy the body */
       if (fseeko(fp_in, body->offset, SEEK_SET) < 0)
-        return -1;
-      if (copy_delete_attach(body, fp_in, fp_out, date))
-        return -1;
+        goto attach_del_cleanup;
+      if (copy_delete_attach(body, fp_in, fp_out, mutt_b2s(quoted_date)))
+        goto attach_del_cleanup;
+
+      mutt_buffer_pool_release(&quoted_date);
 
       LOFF_T fail = ((ftello(fp_out) - new_offset) - new_length);
       if (fail)
@@ -691,7 +697,11 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
         mutt_body_free(&body->parts);
       }
 
-      return 0;
+      rc_attach_del = 0;
+
+    attach_del_cleanup:
+      mutt_buffer_pool_release(&quoted_date);
+      return rc_attach_del;
     }
 
     if (mutt_copy_header(fp_in, e, fp_out, chflags,
@@ -901,10 +911,10 @@ int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email 
 
 /**
  * copy_delete_attach - Copy a message, deleting marked attachments
- * @param b     Email Body
- * @param fp_in  FILE pointer to read from
- * @param fp_out FILE pointer to write to
- * @param date  Date stamp
+ * @param b           Email Body
+ * @param fp_in       FILE pointer to read from
+ * @param fp_out      FILE pointer to write to
+ * @param quoted_date Date stamp
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -912,7 +922,7 @@ int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email 
  * any attachments which are marked for deletion.
  * Nothing is changed in the original message -- this is left to the caller.
  */
-static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, char *date)
+static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, const char *quoted_date)
 {
   struct Body *part = NULL;
 
@@ -926,12 +936,13 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, char *d
 
       if (part->deleted)
       {
+        /* If this is modified, count_delete_lines() needs to be changed too */
         fprintf(
             fp_out,
             "Content-Type: message/external-body; access-type=x-mutt-deleted;\n"
             "\texpiration=%s; length=" OFF_T_FMT "\n"
             "\n",
-            date + 5, part->length);
+            quoted_date, part->length);
         if (ferror(fp_out))
           return -1;
 
@@ -944,7 +955,7 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, char *d
       }
       else
       {
-        if (copy_delete_attach(part, fp_in, fp_out, date))
+        if (copy_delete_attach(part, fp_in, fp_out, quoted_date))
           return -1;
       }
     }

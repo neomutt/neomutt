@@ -618,9 +618,9 @@ const struct Binding OpEditor[] = { /* map: editor */
   { "eol",                   OP_EDITOR_EOL,                  "\005" },          // <Ctrl-E>
   { "forward-char",          OP_EDITOR_FORWARD_CHAR,         "\006" },          // <Ctrl-F>
   { "forward-word",          OP_EDITOR_FORWARD_WORD,         "\033f" },         // <Alt-f>
-  { "history-down",          OP_EDITOR_HISTORY_DOWN,         NULL },
+  { "history-down",          OP_EDITOR_HISTORY_DOWN,         "\016" },          // <Ctrl-N>
   { "history-search",        OP_EDITOR_HISTORY_SEARCH,       "\022" },          // <Ctrl-R>
-  { "history-up",            OP_EDITOR_HISTORY_UP,           NULL },
+  { "history-up",            OP_EDITOR_HISTORY_UP,           "\020" },          // <Ctrl-P>
   { "kill-eol",              OP_EDITOR_KILL_EOL,             "\013" },          // <Ctrl-K>
   { "kill-eow",              OP_EDITOR_KILL_EOW,             "\033d" },         // <Alt-d>
   { "kill-line",             OP_EDITOR_KILL_LINE,            "\025" },          // <Ctrl-U>

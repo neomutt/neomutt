@@ -53,6 +53,7 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
+#include "pager.h"
 #include "rfc3676.h"
 #include "state.h"
 #include "ncrypt/lib.h"
@@ -599,11 +600,18 @@ static int autoview_handler(struct Body *a, struct State *s)
 
     if (s->prefix)
     {
+      /* Remove ansi and formatting from autoview output in replies only.  The
+       * user may want to see the formatting in the pager, but it shouldn't be
+       * in their quoted reply text too.  */
+      struct Buffer *stripped = mutt_buffer_pool_get();
       while (fgets(buf, sizeof(buf), fp_out))
       {
+        mutt_buffer_strip_formatting(stripped, buf, false);
         state_puts(s, s->prefix);
-        state_puts(s, buf);
+        state_puts(s, mutt_b2s(stripped));
       }
+      mutt_buffer_pool_release(&stripped);
+
       /* check for data on stderr */
       if (fgets(buf, sizeof(buf), fp_err))
       {
@@ -1595,10 +1603,10 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
   int oflags = s->flags;
 
-  if (recurse_level >= 100)
+  if (recurse_level >= MUTT_MIME_MAX_DEPTH)
   {
     mutt_debug(LL_DEBUG1, "recurse level too deep. giving up.\n");
-    return -1;
+    return 1;
   }
   recurse_level++;
 

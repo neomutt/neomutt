@@ -27,15 +27,18 @@
 
 void test_mutt_date_make_date(void)
 {
-  // char *mutt_date_make_date(char *buf, size_t buflen);
+  // void mutt_date_make_date(struct Buffer *buf);
 
   {
-    TEST_CHECK(!mutt_date_make_date(NULL, 10));
+    mutt_date_make_date(NULL);
+    TEST_CHECK_(1, "mutt_date_make_date(NULL)");
   }
 
   {
-    char buf[64] = { 0 };
-    TEST_CHECK(mutt_date_make_date(buf, sizeof(buf)) == buf);
+    struct Buffer buf = mutt_buffer_make(32);
+    mutt_date_make_date(&buf);
+    TEST_CHECK(mutt_buffer_len(&buf) != 0);
     TEST_MSG("%s", buf);
+    mutt_buffer_dealloc(&buf);
   }
 }

@@ -93,7 +93,7 @@ size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen)
   unsigned char *begin = (unsigned char *) out;
   const unsigned char *inu = (const unsigned char *) in;
 
-  while ((inlen >= 3) && (outlen > 10))
+  while ((inlen >= 3) && (outlen > 4))
   {
     *out++ = B64Chars[inu[0] >> 2];
     *out++ = B64Chars[((inu[0] << 4) & 0x30) | (inu[1] >> 4)];

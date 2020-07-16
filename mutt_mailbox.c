@@ -390,7 +390,7 @@ void mutt_mailbox_cleanup(const char *path, struct stat *st)
       ts[0].tv_nsec = UTIME_OMIT;
       ts[1].tv_sec = 0;
       ts[1].tv_nsec = UTIME_NOW;
-      utimensat(0, buf, ts, 0);
+      utimensat(AT_FDCWD, buf, ts, 0);
 #else
       ut.actime = st->st_atime;
       ut.modtime = mutt_date_epoch();
@@ -404,7 +404,7 @@ void mutt_mailbox_cleanup(const char *path, struct stat *st)
       ts[0].tv_nsec = UTIME_NOW;
       ts[1].tv_sec = 0;
       ts[1].tv_nsec = UTIME_NOW;
-      utimensat(0, buf, ts, 0);
+      utimensat(AT_FDCWD, buf, ts, 0);
 #else
       utime(path, NULL);
 #endif

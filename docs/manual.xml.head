@@ -181,7 +181,7 @@ vim: ts=2 sw=2 sts=2 expandtab:
     <sect1 id="copyright">
       <title>Copyright</title>
       <para>
-        NeoMutt is Copyright © 1996-2019 Michael R. Elkins
+        NeoMutt is Copyright © 1996-2020 Michael R. Elkins
         <email>me@neomutt.org</email> and others.
       </para>
       <para>
@@ -2940,11 +2940,11 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <emphasis>&lt;id&gt;</emphasis> ]
           </para>
           <para>
-            <quote>E</quote> selects encryption, <quote>S</quote> selects
-            signing and <quote>S&lt;id&gt;</quote> selects signing with the
-            given key, setting <link linkend="pgp-sign-as">$pgp_sign_as</link>
-            for the duration of the message composition session. The selection
-            can later be changed in the compose menu.
+            <quote>E</quote> selects encryption, <quote>S</quote> selects signing
+            and <quote>S&lt;id&gt;</quote> selects signing with the given key,
+            setting <link linkend="pgp-sign-as">$pgp_sign_as</link> for the
+            duration of the message composition session. The selection can later
+            be changed in the compose menu.
           </para>
         </sect3>
 
@@ -4455,6 +4455,37 @@ unbind index g
 bind index gg first-entry
 </screen>
 
+      </sect2>
+
+      <sect2 id="stty">
+        <title>Terminal Keybindings</title>
+        <para>
+          Some key bindings are controlled by the terminal, and so by
+          default can't be bound inside NeoMutt.  These may include
+          <literal>^C</literal>, <literal>^\</literal>, <literal>^Q</literal>,
+          <literal>^S</literal>, <literal>^Z</literal>, and on BSD/Mac
+          <literal>^Y</literal>.  These terminal settings can be viewed and
+          changed using the <literal>stty</literal> program.
+        </para>
+        <para>
+          <quote><literal>stty -a</literal></quote> will list the bound
+          characters (not all of them affect NeoMutt), and what actions they
+          take when pressed.  For example,
+          you may see <quote><literal>intr = ^C</literal></quote> in its
+          output.  This means typing <literal>^C</literal> will send an
+          interrupt signal.  <quote><literal>quit = ^\</literal></quote>
+          means typing <literal>^\</literal> (commonly also
+          <literal>^4</literal>) will send a quit signal.
+        </para>
+        <para>
+          To unbind a key from an action, you invoke <quote>stty action
+          undef</quote>.  For example, <quote><literal>stty quit
+          undef</literal></quote> will unbind <literal>^\</literal> (and
+          <literal>^4</literal>) from sending the quit signal.  Once unbound
+          (e.g, by placing that line in your .bashrc, or in a NeoMutt wrapper
+          script/function) you can use the key sequence in your NeoMutt
+          bindings.
+        </para>
       </sect2>
     </sect1>
 
@@ -17360,7 +17391,7 @@ bind index D purge-message
           your muttrc.  The first time NeoMutt is run after that, you will be
           prompted to create
           <link linkend="autocrypt-dir">$autocrypt_dir</link>.  NeoMutt will then
-          automatically create an sqlite3 database and gpg keyring in that
+          automatically create an sqlite3 database and GPG keyring in that
           directory.  Note since these files should be considered private,
           NeoMutt will create this directory with mode
           <literal>700</literal>.  If you create the directory manually,
@@ -17633,7 +17664,7 @@ bind index D purge-message
           </listitem>
           <listitem>
             <para>
-              When NeoMutt creates an account from a gpg key, it exports the
+              When NeoMutt creates an account from a GPG key, it exports the
               public key, base64 encodes it, and stores that value in the
               sqlite3 database.  The value is then used in the Autocrypt
               header added to outgoing emails.  The ECC keys NeoMutt creates

@@ -293,7 +293,7 @@ int mutt_autocrypt_gpgme_select_or_create_key(struct Address *addr, struct Buffe
 
       /* L10N: During autocrypt account creation, if selecting an existing key fails
          for some reason, we prompt to see if they want to create a key instead.  */
-      if (mutt_yesorno(_("Create a new gpg key for this account, instead?"), MUTT_YES) == MUTT_NO)
+      if (mutt_yesorno(_("Create a new GPG key for this account, instead?"), MUTT_YES) == MUTT_NO)
         break;
       /* fallthrough */
 

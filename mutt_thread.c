@@ -1218,7 +1218,6 @@ void mutt_set_vnum(struct Context *ctx)
       m->v2r[m->vcount] = i;
       m->vcount++;
       ctx->vsize += e->content->length + e->content->offset - e->content->hdr_offset + padding;
-      e->num_hidden = mutt_get_hidden(ctx, e);
     }
   }
 }
@@ -1240,7 +1239,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *e_cur, MuttThreadFla
   int min_unread_msgno = INT_MAX, min_unread = e_cur->vnum;
 #define CHECK_LIMIT (!ctx->pattern || e_cur->limited)
 
-  if (((C_Sort & SORT_MASK) != SORT_THREADS) && !(flag & MUTT_THREAD_GET_HIDDEN))
+  if ((C_Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error(_("Threading is not enabled"));
     return e_cur->vnum;
@@ -1296,11 +1295,12 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *e_cur, MuttThreadFla
   {
     /* return value depends on action requested */
     if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
+    {
+      e_cur->num_hidden = num_hidden;
       return final;
+    }
     if (flag & MUTT_THREAD_UNREAD)
       return (old_mail && new_mail) ? new_mail : (old_mail ? old_mail : new_mail);
-    if (flag & MUTT_THREAD_GET_HIDDEN)
-      return num_hidden;
     if (flag & MUTT_THREAD_NEXT_UNREAD)
       return min_unread;
     if (flag & MUTT_THREAD_FLAGGED)
@@ -1384,13 +1384,46 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *e_cur, MuttThreadFla
     }
   }
 
+  /* re-traverse the thread and store num_hidden in all headers, with or
+   * without a virtual index.  this will allow ~v to match all collapsed
+   * messages when switching sort order to non-threaded.  */
+  if (flag & MUTT_THREAD_COLLAPSE)
+  {
+    thread = top;
+    while (true)
+    {
+      e_cur = thread->message;
+      if (e_cur)
+        e_cur->num_hidden = num_hidden + 1;
+
+      if (thread->child)
+        thread = thread->child;
+      else if (thread->next)
+        thread = thread->next;
+      else
+      {
+        bool done = false;
+        while (!thread->next)
+        {
+          thread = thread->parent;
+          if (thread == top)
+          {
+            done = true;
+            break;
+          }
+        }
+        if (done)
+          break;
+        thread = thread->next;
+      }
+    }
+  }
+
   /* return value depends on action requested */
   if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
     return final;
   if (flag & MUTT_THREAD_UNREAD)
     return (old_mail && new_mail) ? new_mail : (old_mail ? old_mail : new_mail);
-  if (flag & MUTT_THREAD_GET_HIDDEN)
-    return num_hidden + 1;
   if (flag & MUTT_THREAD_NEXT_UNREAD)
     return min_unread;
   if (flag & MUTT_THREAD_FLAGGED)

@@ -109,6 +109,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
    * the message.  */
   if ((sb.st_size != 0) && (truncate(mutt_b2s(fname), sb.st_size - 1) == -1))
   {
+    rc = -1;
     mutt_error(_("could not truncate temporary mail folder: %s"), strerror(errno));
     goto bail;
   }
@@ -126,8 +127,22 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     }
   }
 
+  /* re-stat after the truncate, to avoid false "modified" bugs */
+  rc = stat(mutt_b2s(fname), &sb);
+  if (rc == -1)
+  {
+    mutt_error(_("Can't stat %s: %s"), mutt_b2s(fname), strerror(errno));
+    goto bail;
+  }
+
   /* Do not reuse the stat sb here as it is outdated. */
   time_t mtime = mutt_file_decrease_mtime(mutt_b2s(fname), NULL);
+  if (mtime == (time_t) -1)
+  {
+    rc = -1;
+    mutt_perror(mutt_b2s(fname));
+    goto bail;
+  }
 
   mutt_edit_file(NONULL(C_Editor), mutt_b2s(fname));
 
@@ -210,6 +225,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
 
   if (!msg)
   {
+    rc = -1;
     mutt_error(_("Can't append to folder: %s"), strerror(errno));
     mx_mbox_close(&ctx_app);
     goto bail;

@@ -1310,7 +1310,6 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
   FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tempfile), "w");
   if (fp_tmp)
   {
-    char date[128];
     CopyHeaderFlags chflags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
 
     const bool c_bounce_delivered = cs_subset_bool(sub, "bounce_delivered");
@@ -1318,8 +1317,13 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
       chflags |= CH_WEED_DELIVERED;
 
     fseeko(fp, e->offset, SEEK_SET);
-    fprintf(fp_tmp, "Resent-From: %s", resent_from);
-    fprintf(fp_tmp, "\nResent-%s", mutt_date_make_date(date, sizeof(date)));
+    fprintf(fp_tmp, "Resent-From: %s\n", resent_from);
+
+    struct Buffer *date = mutt_buffer_pool_get();
+    mutt_date_make_date(date);
+    fprintf(fp_tmp, "Resent-Date: %s\n", mutt_b2s(date));
+    mutt_buffer_pool_release(&date);
+
     char *msgid_str = gen_msgid(sub);
     fprintf(fp_tmp, "Resent-Message-ID: %s\n", msgid_str);
     FREE(&msgid_str);
@@ -1507,7 +1511,6 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
   int rc = -1;
   bool need_mailbox_cleanup = false;
   struct stat st;
-  char buf[128];
   MsgOpenFlags onm_flags;
 
   if (post)
@@ -1581,11 +1584,6 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
 
   if ((ctx_fcc->mailbox->type == MUTT_MMDF) || (ctx_fcc->mailbox->type == MUTT_MBOX))
     fprintf(msg->fp, "Status: RO\n");
-
-  /* mutt_rfc822_write_header() only writes out a Date: header with
-   * mode == 0, i.e. _not_ postponement; so write out one ourself */
-  if (post)
-    fprintf(msg->fp, "%s", mutt_date_make_date(buf, sizeof(buf)));
 
   /* (postponement) if the mail is to be signed or encrypted, save this info */
   if (((WithCrypto & APPLICATION_PGP) != 0) && post && (e->security & APPLICATION_PGP))

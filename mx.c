@@ -600,6 +600,13 @@ static int trash_append(struct Mailbox *m)
  * @note The flag retvals come from a call to a backend sync function
  *
  * @note Context will be freed after it's closed
+ *
+ * @note It's very important to ensure the mailbox is properly closed before
+ *       free'ing the context.  For selected mailboxes, IMAP will cache the
+ *       context inside connection->adata until imap_close_mailbox() removes
+ *       it.  Readonly, dontwrite, and append mailboxes are guaranteed to call
+ *       mx_fastclose_mailbox(), so for most of NeoMutt's code you won't see
+ *       return value checks for temporary contexts.
  */
 int mx_mbox_close(struct Context **ptr)
 {

@@ -577,7 +577,12 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
   char buf[1024];
 
   if (((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC)) && !privacy)
-    fputs(mutt_date_make_date(buf, sizeof(buf)), fp);
+  {
+    struct Buffer *date = mutt_buffer_pool_get();
+    mutt_date_make_date(date);
+    fprintf(fp, "Date: %s\n", mutt_b2s(date));
+    mutt_buffer_pool_release(&date);
+  }
 
   /* UseFrom is not consulted here so that we can still write a From:
    * field if the user sets it with the 'my_hdr' command */
@@ -698,7 +703,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
       write_userhdrs(fp, &env->userhdrs, privacy, sub);
 
   if ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC) ||
-      (mode == MUTT_WRITE_HEADER_POSTPONE))
+      (mode == MUTT_WRITE_HEADER_POSTPONE) || (mode == MUTT_WRITE_HEADER_MIME))
   {
     if (!STAILQ_EMPTY(&env->references))
     {

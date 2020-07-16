@@ -725,11 +725,12 @@
 /*
 ** .pp
 ** When set, NeoMutt will display protected headers ("Memory Hole") in the pager,
+** When set, NeoMutt will display protected headers in the pager,
 ** and will update the index and header cache with revised headers.
 ** .pp
 ** Protected headers are stored inside the encrypted or signed part of an
 ** an email, to prevent disclosure or tampering.
-** For more information see https://github.com/autocrypt/memoryhole.
+** For more information see https://github.com/autocrypt/protected-headers
 ** Currently NeoMutt only supports the Subject header.
 ** .pp
 ** Encrypted messages using protected headers often substitute the exposed
@@ -766,7 +767,7 @@
 ** (Crypto only)
 */
 
-{ "crypt_protected_headers_subject", DT_STRING, "Encrypted subject" },
+{ "crypt_protected_headers_subject", DT_STRING, "..." },
 /*
 ** .pp
 ** When $$crypt_protected_headers_write is set, and the message is marked
@@ -781,12 +782,12 @@
 { "crypt_protected_headers_write", DT_BOOL, false },
 /*
 ** .pp
-** When set, NeoMutt will generate protected headers ("Memory Hole") for
-** signed and encrypted emails.
+** When set, NeoMutt will generate protected headers for signed and encrypted
+** emails.
 ** .pp
 ** Protected headers are stored inside the encrypted or signed part of an
 ** an email, to prevent disclosure or tampering.
-** For more information see https://github.com/autocrypt/memoryhole.
+** For more information see https://github.com/autocrypt/protected-headers
 ** .pp
 ** Currently NeoMutt only supports the Subject header.
 ** (Crypto only)
@@ -1725,10 +1726,11 @@
 { "imap_fetch_chunk_size", DT_LONG, 0 },
 /*
 ** .pp
-** When set to a value greater than 0, new headers will be downloaded
-** in sets of this size.  If you have a very large mailbox, this might
-** prevent a timeout and disconnect when opening the mailbox, by sending
-** a FETCH per set of this size instead of a single FETCH for all new
+** When set to a value greater than 0, new headers will be
+** downloaded in groups of this many headers per request.  If you
+** have a very large mailbox, this might prevent a timeout and
+** disconnect when opening the mailbox, by sending a FETCH per set
+** of this many headers, instead of a single FETCH for all new
 ** headers.
 */
 
@@ -4077,7 +4079,7 @@
 { "sidebar_sort_method", DT_SORT, SORT_ORDER },
 /*
 ** .pp
-** Specifies how to sort entries in the file browser.  By default, the
+** Specifies how to sort mailbox entries in the sidebar.  By default, the
 ** entries are sorted alphabetically.  Valid values:
 ** .il
 ** .dd alpha (alphabetically)
@@ -4091,7 +4093,7 @@
 ** .ie
 ** .pp
 ** You may optionally use the "reverse-" prefix to specify reverse sorting
-** order (example: "\fCset sort_browser=reverse-date\fP").
+** order (example: "\fCset sidebar_sort_method=reverse-alpha\fP").
 */
 
 { "sidebar_visible", DT_BOOL, false },

@@ -690,15 +690,17 @@ static int tls_check_certificate(struct Connection *conn)
 /**
  * tls_get_client_cert - Get the client certificate for a TLS connection
  * @param conn Connection to a server
+ *
+ * @note This function grabs the CN out of the client cert but appears to do
+ *       nothing with it.  It does contain a call to mutt_account_getuser().
  */
 static void tls_get_client_cert(struct Connection *conn)
 {
   struct TlsSockData *data = conn->sockdata;
   gnutls_x509_crt_t clientcrt;
-  char *dn = NULL;
   char *cn = NULL;
-  char *cnend = NULL;
-  size_t dnlen;
+  size_t cnlen = 0;
+  int rc;
 
   /* get our cert CN if we have one */
   const gnutls_datum_t *crtdata = gnutls_certificate_get_ours(data->state);
@@ -710,38 +712,33 @@ static void tls_get_client_cert(struct Connection *conn)
     mutt_debug(LL_DEBUG1, "Failed to init gnutls crt\n");
     return;
   }
+
   if (gnutls_x509_crt_import(clientcrt, crtdata, GNUTLS_X509_FMT_DER) < 0)
   {
     mutt_debug(LL_DEBUG1, "Failed to import gnutls client crt\n");
-    goto err_crt;
+    goto err;
   }
-  /* get length of DN */
-  dnlen = 0;
-  gnutls_x509_crt_get_dn(clientcrt, NULL, &dnlen);
-  dn = mutt_mem_calloc(1, dnlen);
 
-  gnutls_x509_crt_get_dn(clientcrt, dn, &dnlen);
-  mutt_debug(LL_DEBUG2, "client certificate DN: %s\n", dn);
-
-  /* extract CN to use as external user name */
-  cn = strstr(dn, "CN=");
-  if (!cn)
+  /* get length of CN, then grab it. */
+  rc = gnutls_x509_crt_get_dn_by_oid(clientcrt, GNUTLS_OID_X520_COMMON_NAME, 0,
+                                     0, NULL, &cnlen);
+  if (((rc >= 0) || (rc == GNUTLS_E_SHORT_MEMORY_BUFFER)) && (cnlen > 0))
   {
-    mutt_debug(LL_DEBUG1, "no CN found in DN\n");
-    goto err_dn;
+    cn = mutt_mem_calloc(1, cnlen);
+    if (gnutls_x509_crt_get_dn_by_oid(clientcrt, GNUTLS_OID_X520_COMMON_NAME, 0,
+                                      0, cn, &cnlen) < 0)
+    {
+      goto err;
+    }
+    mutt_debug(LL_DEBUG2, "client certificate CN: %s\n", cn);
+
+    /* if we are using a client cert, SASL may expect an external auth name */
+    if (mutt_account_getuser(&conn->account) < 0)
+      mutt_debug(LL_DEBUG1, "Couldn't get user info\n");
   }
 
-  cnend = strstr(dn, ",EMAIL=");
-  if (cnend)
-    *cnend = '\0';
-
-  /* if we are using a client cert, SASL may expect an external auth name */
-  if (mutt_account_getuser(&conn->account) < 0)
-    mutt_debug(LL_DEBUG1, "Couldn't get user info\n");
-
-err_dn:
-  FREE(&dn);
-err_crt:
+err:
+  FREE(&cn);
   gnutls_x509_crt_deinit(clientcrt);
 }
 
@@ -904,7 +901,7 @@ static int tls_negotiate(struct Connection *conn)
   err = gnutls_init(&data->state, GNUTLS_CLIENT);
   if (err)
   {
-    mutt_error("gnutls_handshake: %s", gnutls_strerror(err));
+    mutt_error("gnutls_init: %s", gnutls_strerror(err));
     goto fail;
   }
 
@@ -927,16 +924,13 @@ static int tls_negotiate(struct Connection *conn)
     gnutls_dh_set_prime_bits(data->state, C_SslMinDhPrimeBits);
   }
 
-  /* gnutls_set_cred (data->state, GNUTLS_ANON, NULL); */
-
   gnutls_credentials_set(data->state, GNUTLS_CRD_CERTIFICATE, data->xcred);
 
-  err = gnutls_handshake(data->state);
-
-  while (err == GNUTLS_E_AGAIN)
+  do
   {
     err = gnutls_handshake(data->state);
-  }
+  } while ((err == GNUTLS_E_AGAIN) || (err == GNUTLS_E_INTERRUPTED));
+
   if (err < 0)
   {
     if (err == GNUTLS_E_FATAL_ALERT_RECEIVED)
