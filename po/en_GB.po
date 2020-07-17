@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-06-26\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-07-17 13:50+0100\n"
+"POT-Creation-Date: 2020-07-17 13:24+0100\n"
 "PO-Revision-Date: 2017-04-17 17:06+0100\n"
 "Last-Translator: Richard Russon <rich@flatcap.org>\n"
 "Language-Team: none\n"
@@ -293,9 +293,8 @@ msgstr "Autocrypt account creation aborted"
 #. email when the engine is not available.
 #: autocrypt/autocrypt.c:567 autocrypt/autocrypt.c:576
 #: autocrypt/autocrypt.c:583
-#, fuzzy
 msgid "Autocrypt is not available"
-msgstr "Parent message is not available"
+msgstr "Autocrypt is not available"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the account does not exist or is not enabled.
@@ -304,7 +303,7 @@ msgstr "Parent message is not available"
 #: autocrypt/autocrypt.c:595
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr ""
+msgstr "Autocrypt is not enabled for %s"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
@@ -898,15 +897,13 @@ msgstr "Copying to %s..."
 
 #. L10N: Progress meter message when saving tagged messages
 #: commands.c:1193
-#, fuzzy
 msgid "Saving tagged messages..."
-msgstr "Print tagged messages?"
+msgstr "Saving tagged messages..."
 
 #. L10N: Progress meter message when copying tagged messages
 #: commands.c:1195
-#, fuzzy
 msgid "Copying tagged messages..."
-msgstr "Copying %d message to %s..."
+msgstr "Copying tagged messages..."
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1297
@@ -3058,9 +3055,8 @@ msgstr "Improperly formatted entry for type %s in \"%s\" line %d"
 #. unset mailcap_path
 #.
 #: mailcap.c:488
-#, fuzzy
 msgid "Neither mailcap_path nor MAILCAPS specified"
-msgstr "No mailcap path specified"
+msgstr "Neither mailcap_path nor MAILCAPS specified"
 
 #: mailcap.c:512
 #, c-format
@@ -6110,14 +6106,14 @@ msgstr "missing parameter"
 #. L10N: Pattern completion menu title
 #: pattern/dlgpattern.c:138
 msgid "Patterns"
-msgstr ""
+msgstr "Patterns"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
 #: pattern/dlgpattern.c:159
 msgid "EXPR"
-msgstr ""
+msgstr "EXPR"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a numeric range.
@@ -6125,7 +6121,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:167
 msgid "RANGE"
-msgstr ""
+msgstr "RANGE"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a date range
@@ -6133,7 +6129,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:174
 msgid "DATERANGE"
-msgstr ""
+msgstr "DATERANGE"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a query
@@ -6141,7 +6137,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:181
 msgid "QUERY"
-msgstr ""
+msgstr "QUERY"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a nested pattern.
@@ -6149,19 +6145,19 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:199
 msgid "PATTERN"
-msgstr ""
+msgstr "PATTERN"
 
 #: pattern/dlgpattern.c:207
 msgid "messages in threads containing messages matching PATTERN"
-msgstr ""
+msgstr "messages in threads containing messages matching PATTERN"
 
 #: pattern/dlgpattern.c:216
 msgid "messages whose immediate parent matches PATTERN"
-msgstr ""
+msgstr "messages whose immediate parent matches PATTERN"
 
 #: pattern/dlgpattern.c:225
 msgid "messages having an immediate child matching PATTERN"
-msgstr ""
+msgstr "messages having an immediate child matching PATTERN"
 
 #. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
 #. was invoked when NeoMutt was compiled without crypto support.
@@ -6169,7 +6165,7 @@ msgstr ""
 #: pattern/exec.c:86
 #, c-format
 msgid "Pattern operator '~%c' is disabled"
-msgstr ""
+msgstr "Pattern operator '~%c' is disabled"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
@@ -6196,266 +6192,243 @@ msgstr "error: server custom search only supported with IMAP"
 
 #. L10N: Pattern Completion Menu description for ~A
 #: pattern/flags.c:44
-#, fuzzy
 msgid "all messages"
-msgstr "sort messages"
+msgstr "all messages"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:47
 msgid "messages whose body matches EXPR"
-msgstr ""
+msgstr "messages whose body matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:50
 msgid "messages whose body or headers match EXPR"
-msgstr ""
+msgstr "messages whose body or headers match EXPR"
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:53
 msgid "messages whose CC header matches EXPR"
-msgstr ""
+msgstr "messages whose CC header matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:56
 msgid "messages whose recipient matches EXPR"
-msgstr ""
+msgstr "messages whose recipient matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:59
 msgid "messages sent in DATERANGE"
-msgstr ""
+msgstr "messages sent in DATERANGE"
 
 #. L10N: Pattern Completion Menu description for ~D
 #: pattern/flags.c:62
-#, fuzzy
 msgid "deleted messages"
-msgstr "No undeleted messages"
+msgstr "deleted messages"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
 msgid "messages whose Sender header matches EXPR"
-msgstr ""
+msgstr "messages whose Sender header matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:68
-#, fuzzy
 msgid "expired messages"
-msgstr "No unread messages"
+msgstr "expired messages"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:71
 msgid "messages whose From header matches EXPR"
-msgstr ""
+msgstr "messages whose From header matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:74
-#, fuzzy
 msgid "flagged messages"
-msgstr "No tagged messages"
+msgstr "flagged messages"
 
 #. L10N: Pattern Completion Menu description for ~g
 #: pattern/flags.c:77
-#, fuzzy
 msgid "cryptographically signed messages"
-msgstr "recall a postponed message"
+msgstr "cryptographically signed messages"
 
 #. L10N: Pattern Completion Menu description for ~G
 #: pattern/flags.c:80
-#, fuzzy
 msgid "cryptographically encrypted messages"
-msgstr "Can't decrypt encrypted message"
+msgstr "cryptographically encrypted messages"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:83
 msgid "messages whose header matches EXPR"
-msgstr ""
+msgstr "messages whose header matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:86
 msgid "messages whose spam tag matches EXPR"
-msgstr ""
+msgstr "messages whose spam tag matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:89
-#, fuzzy
 msgid "messages whose Message-ID matches EXPR"
-msgstr "get message with Message-Id"
+msgstr "messages whose Message-ID matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:92
 msgid "messages whose Message-ID is included in the results returned from an external search program"
-msgstr ""
+msgstr "messages whose Message-ID is included in the results returned from an external search program"
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:95
-#, fuzzy
 msgid "messages which contain PGP key"
-msgstr "message hotkey"
+msgstr "messages which contain PGP key"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:98
 msgid "messages addressed to known mailing lists"
-msgstr ""
+msgstr "messages addressed to known mailing lists"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:101
 msgid "messages whose From/Sender/To/CC matches EXPR"
-msgstr ""
+msgstr "messages whose From/Sender/To/CC matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:104
 msgid "messages whose number is in RANGE"
-msgstr ""
+msgstr "messages whose number is in RANGE"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:107
 msgid "messages with a Content-Type matching EXPR"
-msgstr ""
+msgstr "messages with a Content-Type matching EXPR"
 
 #. L10N: Pattern Completion Menu description for ~n
 #: pattern/flags.c:110
 msgid "messages whose score is in RANGE"
-msgstr ""
+msgstr "messages whose score is in RANGE"
 
 #. L10N: Pattern Completion Menu description for ~N
 #: pattern/flags.c:113
-#, fuzzy
 msgid "new messages"
-msgstr "No new messages"
+msgstr "new messages"
 
 #. L10N: Pattern Completion Menu description for ~O
 #: pattern/flags.c:116
-#, fuzzy
 msgid "old messages"
-msgstr "sort messages"
+msgstr "old messages"
 
 #. L10N: Pattern Completion Menu description for ~p
 #: pattern/flags.c:119
 msgid "messages addressed to you"
-msgstr ""
+msgstr "messages addressed to you"
 
 #. L10N: Pattern Completion Menu description for ~P
 #: pattern/flags.c:122
-#, fuzzy
 msgid "messages from you"
-msgstr "message hotkey"
+msgstr "messages from you"
 
 #. L10N: Pattern Completion Menu description for ~Q
 #: pattern/flags.c:125
 msgid "messages which have been replied to"
-msgstr ""
+msgstr "messages which have been replied to"
 
 #. L10N: Pattern Completion Menu description for ~r
 #: pattern/flags.c:128
 msgid "messages received in DATERANGE"
-msgstr ""
+msgstr "messages received in DATERANGE"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:131
-#, fuzzy
 msgid "already read messages"
-msgstr "No unread messages"
+msgstr "already read messages"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:134
 msgid "messages whose Subject header matches EXPR"
-msgstr ""
+msgstr "messages whose Subject header matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:137
-#, fuzzy
 msgid "superseded messages"
-msgstr "No unread messages"
+msgstr "superseded messages"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:140
 msgid "messages whose To header matches EXPR"
-msgstr ""
+msgstr "messages whose To header matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:143
-#, fuzzy
 msgid "tagged messages"
-msgstr "No tagged messages"
+msgstr "tagged messages"
 
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:146
-#, fuzzy
 msgid "messages addressed to subscribed mailing lists"
-msgstr "reply to specified mailing list"
+msgstr "messages addressed to subscribed mailing lists"
 
 #. L10N: Pattern Completion Menu description for ~U
 #: pattern/flags.c:149
-#, fuzzy
 msgid "unread messages"
-msgstr "No unread messages"
+msgstr "unread messages"
 
 #. L10N: Pattern Completion Menu description for ~v
 #: pattern/flags.c:152
-#, fuzzy
 msgid "messages in collapsed threads"
-msgstr "No more messages in the thread"
+msgstr "messages in collapsed threads"
 
 #. L10N: Pattern Completion Menu description for ~V
 #: pattern/flags.c:155
-#, fuzzy
 msgid "cryptographically verified messages"
-msgstr "toggle view of read messages"
+msgstr "cryptographically verified messages"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:159
-#, fuzzy
 msgid "newsgroups matching EXPR"
-msgstr "No newsgroups match the mask"
+msgstr "newsgroups matching EXPR"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:163
 msgid "messages whose References header matches EXPR"
-msgstr ""
+msgstr "messages whose References header matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:166
-#, fuzzy
 msgid "messages with RANGE attachments"
-msgstr "show MIME attachments"
+msgstr "messages with RANGE attachments"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:169
 msgid "messages whose X-Label header matches EXPR"
-msgstr ""
+msgstr "messages whose X-Label header matches EXPR"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:172
 msgid "messages whose tags match EXPR"
-msgstr ""
+msgstr "messages whose tags match EXPR"
 
 #. L10N: Pattern Completion Menu description for ~z
 #: pattern/flags.c:175
 msgid "messages whose size is in RANGE"
-msgstr ""
+msgstr "messages whose size is in RANGE"
 
 #. L10N: Pattern Completion Menu description for ~=
 #: pattern/flags.c:178
-#, fuzzy
 msgid "duplicated messages"
-msgstr "No undeleted messages"
+msgstr "duplicated messages"
 
 #. L10N: Pattern Completion Menu description for ~$
 #: pattern/flags.c:181
-#, fuzzy
 msgid "unreferenced messages"
-msgstr "No unread messages"
+msgstr "unreferenced messages"
 
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:184
-#, fuzzy
 msgid "broken threads"
-msgstr "No more threads"
+msgstr "broken threads"
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:187
 msgid "IMAP custom server-side search for STRING"
-msgstr ""
+msgstr "IMAP custom server-side search for STRING"
 
 #: pattern/pattern.c:253 pattern/pattern.c:409
 msgid "Compiling search pattern..."
@@ -6883,9 +6856,8 @@ msgid "Preparing forwarded message..."
 msgstr "Preparing forwarded message..."
 
 #: send/send.c:1640
-#, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "Fcc to an IMAP mailbox is not supported in batch mode"
+msgstr "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 
 #. L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
 #. To make it clearer that the message doesn't mean NeoMutt is aborting
@@ -6895,7 +6867,7 @@ msgstr "Fcc to an IMAP mailbox is not supported in batch mode"
 #: send/send.c:1646
 #, c-format
 msgid "Skipping Fcc to %s"
-msgstr ""
+msgstr "Skipping Fcc to %s"
 
 #: send/send.c:1686 send/send.c:1696 send/send.c:1722
 msgid "Save attachments in Fcc?"
