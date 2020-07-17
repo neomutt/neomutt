@@ -578,6 +578,9 @@ struct ConfigDef MainVars[] = {
   { "sort_re", DT_BOOL|R_INDEX|R_RESORT|R_RESORT_INIT, &C_SortRe, true, 0, pager_validator,
     "Sort method for the sidebar"
   },
+  { "sort_th", DT_SORT|DT_SORT_AUX|R_INDEX|R_RESORT|R_RESORT_SUB, &C_SortTh, SORT_DATE, 0, NULL,
+    "Sort for subthread"
+  },
   { "spam_separator", DT_STRING, &C_SpamSeparator, IP ",", 0, NULL,
     "Separator for multiple spam headers"
   },
