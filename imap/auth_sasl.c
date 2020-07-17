@@ -123,6 +123,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
     return IMAP_AUTH_UNAVAIL;
   }
 
+  // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
   mutt_message(_("Authenticating (%s)..."), mech);
 
   bufsize = MAX((olen * 2), 1024);
@@ -254,7 +255,8 @@ bail:
     return IMAP_AUTH_UNAVAIL;
   }
 
-  mutt_error(_("SASL authentication failed"));
+  // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
+  mutt_error(_("%s authentication failed"), "SASL ");
 
   return IMAP_AUTH_FAILURE;
 }

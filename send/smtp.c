@@ -446,7 +446,10 @@ static int smtp_auth_sasl(struct SmtpAccountData *adata, const char *mechlist)
   }
 
   if (!OptNoCurses)
+  {
+    // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
     mutt_message(_("Authenticating (%s)..."), mech);
+  }
 
   bufsize = MAX((len * 2), 1024);
   buf = mutt_mem_malloc(bufsize);
@@ -527,6 +530,7 @@ fail:
  */
 static int smtp_auth_oauth(struct SmtpAccountData *adata)
 {
+  // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
   mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
 
   /* We get the access token from the smtp_oauth_refresh_command */
@@ -588,7 +592,8 @@ static int smtp_auth_plain(struct SmtpAccountData *adata)
   return 0;
 
 error:
-  mutt_error(_("SASL authentication failed"));
+  // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
+  mutt_error(_("%s authentication failed"), "SASL");
   return -1;
 }
 
@@ -652,7 +657,8 @@ static int smtp_auth(struct SmtpAccountData *adata)
 
   if (r == SMTP_AUTH_FAIL)
   {
-    mutt_error(_("SASL authentication failed"));
+    // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
+    mutt_error(_("%s authentication failed"), "SASL");
   }
   else if (r == SMTP_AUTH_UNAVAIL)
   {

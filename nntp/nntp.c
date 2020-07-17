@@ -602,6 +602,7 @@ static int nntp_auth(struct NntpAccountData *adata)
       /* AUTHINFO USER authentication */
       if (strcmp(method, "USER") == 0)
       {
+        // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
         mutt_message(_("Authenticating (%s)..."), method);
         snprintf(buf, sizeof(buf), "AUTHINFO USER %s\r\n", conn->account.user);
         if ((mutt_socket_send(conn, buf) < 0) ||
@@ -667,6 +668,7 @@ static int nntp_auth(struct NntpAccountData *adata)
           continue;
         }
 
+        // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
         mutt_message(_("Authenticating (%s)..."), method);
         snprintf(buf, sizeof(buf), "AUTHINFO SASL %s", method);
 
@@ -761,6 +763,7 @@ static int nntp_auth(struct NntpAccountData *adata)
 #endif /* USE_SASL */
       }
 
+      // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
       mutt_error(_("%s authentication failed"), method);
       break;
     }

@@ -55,6 +55,7 @@ enum ImapAuthRes imap_auth_anon(struct ImapAccountData *adata, const char *metho
   if (adata->conn->account.user[0] != '\0')
     return IMAP_AUTH_UNAVAIL;
 
+  // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
   mutt_message(_("Authenticating (%s)..."), "anonymous");
 
   imap_cmd_start(adata, "AUTHENTICATE ANONYMOUS");
@@ -87,6 +88,7 @@ enum ImapAuthRes imap_auth_anon(struct ImapAccountData *adata, const char *metho
     return IMAP_AUTH_SUCCESS;
 
 bail:
-  mutt_error(_("Anonymous authentication failed"));
+  // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
+  mutt_error(_("%s authentication failed"), "anonymous");
   return IMAP_AUTH_FAILURE;
 }

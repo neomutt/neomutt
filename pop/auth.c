@@ -96,6 +96,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
    * sasl_client_start() may in fact return SASL_OK in this case.  */
   unsigned int client_start = olen;
 
+  // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
   mutt_message(_("Authenticating (%s)..."), "SASL");
 
   size_t bufsize = MAX((olen * 2), 1024);
@@ -193,7 +194,8 @@ bail:
   }
 
   FREE(&buf);
-  mutt_error(_("SASL authentication failed"));
+  // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
+  mutt_error(_("%s authentication failed"), "SASL");
 
   return POP_A_FAILURE;
 }
@@ -242,6 +244,7 @@ static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *m
     return POP_A_UNAVAIL;
   }
 
+  // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
   mutt_message(_("Authenticating (%s)..."), "APOP");
 
   /* Compute the authentication hash to send to the server */
@@ -262,7 +265,8 @@ static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *m
       return POP_A_SOCKET;
   }
 
-  mutt_error(_("APOP authentication failed"));
+  // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
+  mutt_error(_("%s authentication failed"), "APOP");
 
   return POP_A_FAILURE;
 }
@@ -339,6 +343,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
   if (!method && !C_PopOauthRefreshCommand)
     return POP_A_UNAVAIL;
 
+  // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
   mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
 
   char *oauthbearer = mutt_account_getoauthbearer(&adata->conn->account);
