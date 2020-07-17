@@ -61,6 +61,7 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
   if (!method && !C_ImapOauthRefreshCommand)
     return IMAP_AUTH_UNAVAIL;
 
+  // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
   mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
 
   /* We get the access token from the imap_oauth_refresh_command */
@@ -93,6 +94,7 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
     return IMAP_AUTH_SUCCESS;
   }
 
-  mutt_error(_("OAUTHBEARER authentication failed"));
+  // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
+  mutt_error(_("%s authentication failed"), "OAUTHBEARER");
   return IMAP_AUTH_FAILURE;
 }

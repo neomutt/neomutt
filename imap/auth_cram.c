@@ -104,6 +104,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
   if (!(adata->capabilities & IMAP_CAP_AUTH_CRAM_MD5))
     return IMAP_AUTH_UNAVAIL;
 
+  // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
   mutt_message(_("Authenticating (%s)..."), "CRAM-MD5");
 
   /* get auth info */
@@ -177,6 +178,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
     return IMAP_AUTH_SUCCESS;
 
 bail:
-  mutt_error(_("CRAM-MD5 authentication failed"));
+  // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
+  mutt_error(_("%s authentication failed"), "CRAM-MD5");
   return IMAP_AUTH_FAILURE;
 }
