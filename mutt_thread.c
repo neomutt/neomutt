@@ -621,6 +621,43 @@ void mutt_clear_threads(struct Context *ctx)
 }
 
 /**
+ * compare_subthreads - Sorting function for sub email threads
+ * @param a First thread to compare
+ * @param b Second thread to compare
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+static int compare_subthreads(const void *a, const void *b)
+{
+  static sort_t sort_func = NULL;
+  int ret, r;
+
+  if (a && b)
+  {
+    ret = (*sort_func)(&(*((struct MuttThread const *const *) a))->sort_key,
+                        &(*((struct MuttThread const *const *) b))->sort_key);
+
+    if (C_SortTh & SORT_REVERSE)
+      r = -1;
+    else
+      r = 1;
+
+    if (-1 == SORT_CODE(1))
+      r = -1 * r;
+
+    return ret * r;
+  }
+  /* a hack to let us reset sort_func even though we can't
+   * have extra arguments because of qsort */
+  else
+  {
+    sort_func = mutt_get_sort_func(C_SortTh & SORT_MASK);
+    return sort_func ? 1 : 0;
+  }
+}
+
+/**
  * compare_threads - Sorting function for email threads
  * @param a First thread to compare
  * @param b Second thread to compare
@@ -664,6 +701,9 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
    * in reverse order so they're forwards */
   C_Sort ^= SORT_REVERSE;
   if (compare_threads(NULL, NULL) == 0)
+    return thread;
+
+  if (compare_subthreads(NULL, NULL) == 0)
     return thread;
 
   top = thread;
@@ -713,7 +753,10 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
           array[i] = thread;
         }
 
-        qsort((void *) array, i, sizeof(struct MuttThread *), *compare_threads);
+        if (array[0]->parent)
+          qsort((void *) array, i, sizeof(struct MuttThread *), *compare_subthreads);
+        else
+          qsort((void *) array, i, sizeof(struct MuttThread *), *compare_threads);
 
         /* attach them back together.  make thread the last sibling. */
         thread = array[0];

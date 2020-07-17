@@ -57,5 +57,6 @@ const char *mutt_get_name(const struct Address *a);
 /* These variables are backing for config items */
 WHERE short C_Sort;    ///< Config: Sort method for the index
 WHERE short C_SortAux; ///< Config: Secondary sort method for the index
+WHERE short C_SortTh;  ///< Config: Sort for subthread
 
 #endif /* MUTT_SORT_H */
