@@ -559,37 +559,8 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   mutt_make_help(buf, sizeof(buf), _("Help"), MENU_SMIME, OP_HELP);
   strcat(helpstr, buf);
 
-  struct MuttWindow *dlg =
-      mutt_window_new(WT_DLG_SMIME, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *index =
-      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *ibar =
-      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-
-  if (C_StatusOnTop)
-  {
-    mutt_window_add_child(dlg, ibar);
-    mutt_window_add_child(dlg, index);
-  }
-  else
-  {
-    mutt_window_add_child(dlg, index);
-    mutt_window_add_child(dlg, ibar);
-  }
-
-  dialog_push(dlg);
-
-  /* Create the menu */
   menu = mutt_menu_new(MENU_SMIME);
-
-  menu->pagelen = index->state.rows;
-  menu->win_index = index;
-  menu->win_ibar = ibar;
+  struct MuttWindow *dlg = dialog_create_simple_index(menu);
 
   menu->max = table_index;
   menu->make_entry = smime_make_entry;
@@ -646,9 +617,8 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
 
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
+  dialog_destroy_simple_index(&dlg);
   FREE(&table);
-  dialog_pop();
-  mutt_window_free(&dlg);
 
   return selected_key;
 }
