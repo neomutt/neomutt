@@ -27,7 +27,11 @@
  */
 
 #include "config.h"
+#include <stddef.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "debug/lib.h"
 #include "lib.h"
 #include "mutt_menu.h"
@@ -118,3 +122,93 @@ void dialog_pop(void)
 #endif
 }
 
+/**
+ * dialog_config_observer - Listen for config changes affecting a Dialog - Implements ::observer_t
+ */
+static int dialog_config_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+
+  struct EventConfig *ec = nc->event_data;
+  struct MuttWindow *dlg = nc->global_data;
+
+  if (!mutt_str_equal(ec->name, "status_on_top"))
+    return 0;
+
+  struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
+
+  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  if ((c_status_on_top && (win_first->type == WT_INDEX)) ||
+      (!c_status_on_top && (win_first->type != WT_INDEX)))
+  {
+    // Swap the Index and the IndexBar Windows
+    TAILQ_REMOVE(&dlg->children, win_first, entries);
+    TAILQ_INSERT_TAIL(&dlg->children, win_first, entries);
+  }
+
+  mutt_window_reflow(dlg);
+  return 0;
+}
+
+/**
+ * dialog_create_simple_index - Create a simple index Dialog
+ * @param menu Menu to use
+ * @retval ptr New Dialog Window
+ */
+struct MuttWindow *dialog_create_simple_index(struct Menu *menu)
+{
+  if (!menu)
+    return NULL;
+
+  struct MuttWindow *dlg =
+      mutt_window_new(WT_DLG_ALIAS, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+
+  struct MuttWindow *index =
+      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+
+  struct MuttWindow *ibar =
+      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+
+  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  if (c_status_on_top)
+  {
+    mutt_window_add_child(dlg, ibar);
+    mutt_window_add_child(dlg, index);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, ibar);
+  }
+
+  menu->pagelen = index->state.rows;
+  menu->win_index = index;
+  menu->win_ibar = ibar;
+
+  notify_observer_add(NeoMutt->notify, dialog_config_observer, dlg);
+  dialog_push(dlg);
+
+  return dlg;
+}
+
+/**
+ * dialog_destroy_simple_index - Destroy a simple index Dialog
+ * @param ptr Dialog Window to destroy
+ */
+void dialog_destroy_simple_index(struct MuttWindow **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct MuttWindow *dlg = *ptr;
+
+  dialog_pop();
+  notify_observer_remove(NeoMutt->notify, dialog_config_observer, dlg);
+  mutt_window_free(ptr);
+}
