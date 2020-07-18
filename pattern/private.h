@@ -84,7 +84,6 @@ enum RangeType
   RANGE_K_INVALID, ///< Range is invalid
 };
 
-// clang-format off
 /* The regexes in a modern format */
 #define RANGE_NUM_RX      "([[:digit:]]+|0x[[:xdigit:]]+)[MmKk]?"
 #define RANGE_REL_SLOT_RX "[[:blank:]]*([.^$]|-?" RANGE_NUM_RX ")?[[:blank:]]*"
@@ -107,7 +106,6 @@ enum RangeType
 #define RANGE_DOLLAR '$'
 #define RANGE_LT     '<'
 #define RANGE_GT     '>'
-// clang-format on
 
 /**
  * enum RangeSide - Which side of the range

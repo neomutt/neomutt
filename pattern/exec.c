@@ -980,4 +980,3 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
   mutt_error(_("error: unknown op %d (report this error)"), pat->op);
   return 0;
 }
-

@@ -120,8 +120,10 @@ void test_window_visible(void)
     // clang-format on
   };
 
-  struct MuttWindow *parent = mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
-  struct MuttWindow *child = mutt_window_new(WT_DLG_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 60, 20);
+  struct MuttWindow *parent =
+      mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
+  struct MuttWindow *child = mutt_window_new(WT_DLG_INDEX, MUTT_WIN_ORIENT_VERTICAL,
+                                             MUTT_WIN_SIZE_FIXED, 60, 20);
 
   TEST_CHECK(parent != NULL);
   TEST_CHECK(child != NULL);
@@ -134,15 +136,16 @@ void test_window_visible(void)
 
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    parent->old.visible   = tests[i].parent_before;
+    parent->old.visible = tests[i].parent_before;
     parent->state.visible = tests[i].parent_after;
-    child->old.visible    = tests[i].child_before;
-    child->state.visible  = tests[i].child_after;
+    child->old.visible = tests[i].child_before;
+    child->state.visible = tests[i].child_after;
 
     results.parent_received = TE_NONE;
     results.child_received = TE_NONE;
 
-    TEST_CASE_("%ld: P%d->%d, C%d->%d", i, tests[i].parent_before, tests[i].parent_after, tests[i].child_before, tests[i].child_after);
+    TEST_CASE_("%ld: P%d->%d, C%d->%d", i, tests[i].parent_before,
+               tests[i].parent_after, tests[i].child_before, tests[i].child_after);
     mutt_window_reflow(parent);
 
     if (!TEST_CHECK(tests[i].parent_expected == results.parent_received))

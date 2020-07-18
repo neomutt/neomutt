@@ -47,6 +47,7 @@
 #include "mutt_globals.h"
 #include "mutt_menu.h"
 
+// clang-format off
 typedef uint16_t ParseDateRangeFlags; ///< Flags for parse_date_range(), e.g. #MUTT_PDR_MINUS
 #define MUTT_PDR_NO_FLAGS       0  ///< No flags are set
 #define MUTT_PDR_MINUS    (1 << 0) ///< Pattern contains a range
@@ -55,6 +56,7 @@ typedef uint16_t ParseDateRangeFlags; ///< Flags for parse_date_range(), e.g. #M
 #define MUTT_PDR_ABSOLUTE (1 << 3) ///< Absolute pattern range
 #define MUTT_PDR_DONE     (1 << 4) ///< Pattern parse successfully
 #define MUTT_PDR_ERROR    (1 << 8) ///< Invalid pattern
+// clang-format on
 
 #define MUTT_PDR_ERRORDONE (MUTT_PDR_ERROR | MUTT_PDR_DONE)
 
@@ -1328,4 +1330,3 @@ cleanup:
   mutt_pattern_free(&curlist);
   return NULL;
 }
-

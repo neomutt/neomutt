@@ -287,7 +287,6 @@ static int pattern_config_observer(struct NotifyCallback *nc)
   return 0;
 }
 
-
 /**
  * mutt_ask_pattern - Show menu to select a Pattern
  * @param buf    Buffer for the selected Pattern

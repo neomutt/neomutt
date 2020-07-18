@@ -189,7 +189,6 @@ const struct PatternFlags Flags[] = {
 };
 // clang-format on
 
-
 /**
  * lookup_tag - Lookup a pattern modifier
  * @param tag Letter, e.g. 'b' for pattern '~b'
