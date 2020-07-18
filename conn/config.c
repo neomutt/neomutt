@@ -68,54 +68,100 @@ bool          C_UseIpv6;                ///< Config: Lookup IPv6 addresses when 
 #endif
 // clang-format on
 
-// clang-format off
 struct ConfigDef ConnVars[] = {
+  // clang-format off
 #ifdef USE_SSL
-  { "certificate_file",          DT_PATH|DT_PATH_FILE,      &C_CertificateFile,        IP "~/.mutt_certificates" },
+  { "certificate_file", DT_PATH|DT_PATH_FILE, &C_CertificateFile, IP "~/.mutt_certificates", 0, NULL,
+    "File containing trusted certificates"
+  },
 #endif
-  { "connect_timeout",           DT_NUMBER,                 &C_ConnectTimeout,         30 },
+  { "connect_timeout", DT_NUMBER, &C_ConnectTimeout, 30, 0, NULL,
+    "Timeout for making network connections (-1 to wait indefinitely)"
+  },
 #ifdef USE_SSL_OPENSSL
-  { "entropy_file",              DT_PATH|DT_PATH_FILE,      &C_EntropyFile,            0 },
+  { "entropy_file", DT_PATH|DT_PATH_FILE, &C_EntropyFile, 0, 0, NULL,
+    "(ssl) File/device containing random data to initialise SSL"
+  },
 #endif
-  { "preconnect",                DT_STRING,                 &C_Preconnect,             0 },
+  { "preconnect", DT_STRING, &C_Preconnect, 0, 0, NULL,
+    "(socket) External command to run prior to opening a socket"
+  },
 #ifdef USE_SSL
 #ifdef USE_SSL_GNUTLS
-  { "ssl_ca_certificates_file",  DT_PATH|DT_PATH_FILE,      &C_SslCaCertificatesFile,  0 },
+  { "ssl_ca_certificates_file", DT_PATH|DT_PATH_FILE, &C_SslCaCertificatesFile, 0, 0, NULL,
+    "File containing trusted CA certificates"
+  },
 #endif
-  { "ssl_ciphers",               DT_STRING,                 &C_SslCiphers,             0 },
-  { "ssl_client_cert",           DT_PATH|DT_PATH_FILE,      &C_SslClientCert,          0 },
-  { "ssl_force_tls",             DT_BOOL,                   &C_SslForceTls,            false },
+  { "ssl_ciphers", DT_STRING, &C_SslCiphers, 0, 0, NULL,
+    "Ciphers to use when using SSL"
+  },
+  { "ssl_client_cert", DT_PATH|DT_PATH_FILE, &C_SslClientCert, 0, 0, NULL,
+    "File containing client certificates"
+  },
+  { "ssl_force_tls", DT_BOOL, &C_SslForceTls, false, 0, NULL,
+    "(ssl) Require TLS encryption for all connections"
+  },
 #ifdef USE_SSL_GNUTLS
-  { "ssl_min_dh_prime_bits",     DT_NUMBER|DT_NOT_NEGATIVE, &C_SslMinDhPrimeBits,      0 },
+  { "ssl_min_dh_prime_bits", DT_NUMBER|DT_NOT_NEGATIVE, &C_SslMinDhPrimeBits, 0, 0, NULL,
+    "Minimum keysize for Diffie-Hellman key exchange"
+  },
 #endif
-  { "ssl_starttls",              DT_QUAD,                   &C_SslStarttls,            MUTT_YES },
+  { "ssl_starttls", DT_QUAD, &C_SslStarttls, MUTT_YES, 0, NULL,
+    "(ssl) Use STARTTLS on servers advertising the capability"
+  },
 #ifdef USE_SSL_OPENSSL
-  { "ssl_use_sslv2",             DT_BOOL,                   &C_SslUseSslv2,            false },
+  { "ssl_use_sslv2", DT_BOOL, &C_SslUseSslv2, false, 0, NULL,
+    "(ssl) INSECURE: Use SSLv2 for authentication"
+  },
 #endif
-  { "ssl_use_sslv3",             DT_BOOL,                   &C_SslUseSslv3,            false },
-  { "ssl_use_tlsv1",             DT_BOOL,                   &C_SslUseTlsv1,            false },
-  { "ssl_use_tlsv1_1",           DT_BOOL,                   &C_SslUseTlsv11,           false },
-  { "ssl_use_tlsv1_2",           DT_BOOL,                   &C_SslUseTlsv12,           true },
-  { "ssl_use_tlsv1_3",           DT_BOOL,                   &C_SslUseTlsv13,           true },
+  { "ssl_use_sslv3", DT_BOOL, &C_SslUseSslv3, false, 0, NULL,
+    "(ssl) INSECURE: Use SSLv3 for authentication"
+  },
+  { "ssl_use_tlsv1", DT_BOOL, &C_SslUseTlsv1, false, 0, NULL,
+    "(ssl) Use TLSv1 for authentication"
+  },
+  { "ssl_use_tlsv1_1", DT_BOOL, &C_SslUseTlsv11, false, 0, NULL,
+    "(ssl) Use TLSv1.1 for authentication"
+  },
+  { "ssl_use_tlsv1_2", DT_BOOL, &C_SslUseTlsv12, true, 0, NULL,
+    "(ssl) Use TLSv1.2 for authentication"
+  },
+  { "ssl_use_tlsv1_3", DT_BOOL, &C_SslUseTlsv13, true, 0, NULL,
+    "(ssl) Use TLSv1.3 for authentication"
+  },
 #ifdef USE_SSL_OPENSSL
-  { "ssl_usesystemcerts",        DT_BOOL,                   &C_SslUsesystemcerts,      true },
+  { "ssl_usesystemcerts", DT_BOOL, &C_SslUsesystemcerts, true, 0, NULL,
+    "(ssl) Use CA certificates in the system-wide store"
+  },
 #endif
-  { "ssl_verify_dates",          DT_BOOL,                   &C_SslVerifyDates,         true },
-  { "ssl_verify_host",           DT_BOOL,                   &C_SslVerifyHost,          true },
+  { "ssl_verify_dates", DT_BOOL, &C_SslVerifyDates, true, 0, NULL,
+    "(ssl) Verify the dates on the server certificate"
+  },
+  { "ssl_verify_host", DT_BOOL, &C_SslVerifyHost, true, 0, NULL,
+    "(ssl) Verify the server's hostname against the certificate"
+  },
 #ifdef USE_SSL_OPENSSL
 #ifdef HAVE_SSL_PARTIAL_CHAIN
-  { "ssl_verify_partial_chains", DT_BOOL,                   &C_SslVerifyPartialChains, false },
+  { "ssl_verify_partial_chains", DT_BOOL, &C_SslVerifyPartialChains, false, 0, NULL,
+    "(ssl) Allow verification using partial certificate chains"
+  },
 #endif
 #endif
 #endif
-  { "tunnel",                    DT_STRING|DT_COMMAND,      &C_Tunnel,                 0 },
-  { "tunnel_is_secure",          DT_BOOL,                   &C_TunnelIsSecure,         true },
+  { "tunnel", DT_STRING|DT_COMMAND, &C_Tunnel, 0, 0, NULL,
+    "Shell command to establish a tunnel"
+  },
+  { "tunnel_is_secure", DT_BOOL, &C_TunnelIsSecure, true, 0, NULL,
+    "Assume a tunneled connection is secure"
+  },
 #ifdef HAVE_GETADDRINFO
-  { "use_ipv6",                  DT_BOOL,                   &C_UseIpv6,                true },
+  { "use_ipv6", DT_BOOL, &C_UseIpv6, true, 0, NULL,
+    "Lookup IPv6 addresses when making connections"
+  },
 #endif
-  { NULL, 0, NULL, 0, 0, NULL },
+  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * config_init_conn - Register conn config variables

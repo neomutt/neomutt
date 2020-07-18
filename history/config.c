@@ -39,15 +39,23 @@ bool  C_HistoryRemoveDups;  ///< Config: Remove duplicate entries from the histo
 short C_SaveHistory;        ///< Config: Number of history entries to save per category
 // clang-format on
 
-// clang-format off
 struct ConfigDef HistoryVars[] = {
-  { "history",             DT_NUMBER|DT_NOT_NEGATIVE, &C_History,           10 },
-  { "history_file",        DT_PATH|DT_PATH_FILE,      &C_HistoryFile,       IP "~/.mutthistory" },
-  { "history_remove_dups", DT_BOOL,                   &C_HistoryRemoveDups, false },
-  { "save_history",        DT_NUMBER|DT_NOT_NEGATIVE, &C_SaveHistory,       0 },
-  { NULL, 0, NULL, 0, 0, NULL },
+  // clang-format off
+  { "history", DT_NUMBER|DT_NOT_NEGATIVE, &C_History, 10, 0, NULL,
+    "Number of history entries to keep in memory per category"
+  },
+  { "history_file", DT_PATH|DT_PATH_FILE, &C_HistoryFile, IP "~/.mutthistory", 0, NULL,
+    "File to save history in"
+  },
+  { "history_remove_dups", DT_BOOL, &C_HistoryRemoveDups, false, 0, NULL,
+    "Remove duplicate entries from the history"
+  },
+  { "save_history", DT_NUMBER|DT_NOT_NEGATIVE, &C_SaveHistory, 0, 0, NULL,
+    "Number of history entries to save per category"
+  },
+  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * config_init_history - Register history config variables

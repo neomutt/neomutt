@@ -76,6 +76,8 @@ struct ConfigDef
    * @retval #CSR_ERR_INVALID Failure
    */
   int (*validator)(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+
+  const char *docs; ///< One-liner description
 };
 
 /**

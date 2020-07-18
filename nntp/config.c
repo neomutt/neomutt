@@ -55,30 +55,68 @@ bool          C_ShowOnlyUnread;      ///< Config: (nntp) Only show subscribed ne
 bool          C_XCommentTo;          ///< Config: (nntp) Add 'X-Comment-To' header that contains article author
 // clang-format on
 
-// clang-format off
 struct ConfigDef NntpVars[] = {
-  { "catchup_newsgroup",     DT_QUAD,                                &C_CatchupNewsgroup,    MUTT_ASKYES },
-  { "followup_to_poster",    DT_QUAD,                                &C_FollowupToPoster,    MUTT_ASKYES },
-  { "group_index_format",    DT_STRING|DT_NOT_EMPTY|R_INDEX|R_PAGER, &C_GroupIndexFormat,    IP "%4C %M%N %5s  %-45.45f %d" },
-  { "newsgroups_charset",    DT_STRING,                              &C_NewsgroupsCharset,   IP "utf-8", 0, charset_validator },
-  { "newsrc",                DT_PATH|DT_PATH_FILE,                   &C_Newsrc,              IP "~/.newsrc" },
-  { "news_cache_dir",        DT_PATH|DT_PATH_DIR,                    &C_NewsCacheDir,        IP "~/.neomutt" },
-  { "news_server",           DT_STRING,                              &C_NewsServer,          0 },
-  { "nntp_authenticators",   DT_STRING,                              &C_NntpAuthenticators,  0 },
-  { "nntp_context",          DT_NUMBER|DT_NOT_NEGATIVE,              &C_NntpContext,         1000 },
-  { "nntp_listgroup",        DT_BOOL,                                &C_NntpListgroup,       true },
-  { "nntp_load_description", DT_BOOL,                                &C_NntpLoadDescription, true },
-  { "nntp_pass",             DT_STRING|DT_SENSITIVE,                 &C_NntpPass,            0 },
-  { "nntp_poll",             DT_NUMBER|DT_NOT_NEGATIVE,              &C_NntpPoll,            60 },
-  { "nntp_user",             DT_STRING|DT_SENSITIVE,                 &C_NntpUser,            0 },
-  { "post_moderated",        DT_QUAD,                                &C_PostModerated,       MUTT_ASKYES },
-  { "save_unsubscribed",     DT_BOOL,                                &C_SaveUnsubscribed,    false },
-  { "show_new_news",         DT_BOOL,                                &C_ShowNewNews,         true },
-  { "show_only_unread",      DT_BOOL,                                &C_ShowOnlyUnread,      false },
-  { "x_comment_to",          DT_BOOL,                                &C_XCommentTo,          false },
-  { NULL, 0, NULL, 0, 0, NULL },
+  // clang-format off
+  { "catchup_newsgroup", DT_QUAD, &C_CatchupNewsgroup, MUTT_ASKYES, 0, NULL,
+    "(nntp) Mark all articles as read when leaving a newsgroup"
+  },
+  { "followup_to_poster", DT_QUAD, &C_FollowupToPoster, MUTT_ASKYES, 0, NULL,
+    "(nntp) Reply to the poster if 'poster' is in the 'Followup-To' header"
+  },
+  { "group_index_format", DT_STRING|DT_NOT_EMPTY|R_INDEX|R_PAGER, &C_GroupIndexFormat, IP "%4C %M%N %5s  %-45.45f %d", 0, NULL,
+    "(nntp) printf-like format string for the browser's display of newsgroups"
+  },
+  { "newsgroups_charset", DT_STRING, &C_NewsgroupsCharset, IP "utf-8", 0, charset_validator,
+    "(nntp) Character set of newsgroups' descriptions"
+  },
+  { "newsrc", DT_PATH|DT_PATH_FILE, &C_Newsrc, IP "~/.newsrc", 0, NULL,
+    "(nntp) File containing list of subscribed newsgroups"
+  },
+  { "news_cache_dir", DT_PATH|DT_PATH_DIR, &C_NewsCacheDir, IP "~/.neomutt", 0, NULL,
+    "(nntp) Directory for cached news articles"
+  },
+  { "news_server", DT_STRING, &C_NewsServer, 0, 0, NULL,
+    "(nntp) Url of the news server"
+  },
+  { "nntp_authenticators", DT_STRING, &C_NntpAuthenticators, 0, 0, NULL,
+    "(nntp) Allowed authentication methods"
+  },
+  { "nntp_context", DT_NUMBER|DT_NOT_NEGATIVE, &C_NntpContext, 1000, 0, NULL,
+    "(nntp) Maximum number of articles to list (0 for all articles)"
+  },
+  { "nntp_listgroup", DT_BOOL, &C_NntpListgroup, true, 0, NULL,
+    "(nntp) Check all articles when opening a newsgroup"
+  },
+  { "nntp_load_description", DT_BOOL, &C_NntpLoadDescription, true, 0, NULL,
+    "(nntp) Load descriptions for newsgroups when adding to the list"
+  },
+  { "nntp_pass", DT_STRING|DT_SENSITIVE, &C_NntpPass, 0, 0, NULL,
+    "(nntp) Password for the news server"
+  },
+  { "nntp_poll", DT_NUMBER|DT_NOT_NEGATIVE, &C_NntpPoll, 60, 0, NULL,
+    "(nntp) Interval between checks for new posts"
+  },
+  { "nntp_user", DT_STRING|DT_SENSITIVE, &C_NntpUser, 0, 0, NULL,
+    "(nntp) Username for the news server"
+  },
+  { "post_moderated", DT_QUAD, &C_PostModerated, MUTT_ASKYES, 0, NULL,
+    "(nntp) Allow posting to moderated newsgroups"
+  },
+  { "save_unsubscribed", DT_BOOL, &C_SaveUnsubscribed, false, 0, NULL,
+    "(nntp) Save a list of unsubscribed newsgroups to the 'newsrc'"
+  },
+  { "show_new_news", DT_BOOL, &C_ShowNewNews, true, 0, NULL,
+    "(nntp) Check for new newsgroups when entering the browser"
+  },
+  { "show_only_unread", DT_BOOL, &C_ShowOnlyUnread, false, 0, NULL,
+    "(nntp) Only show subscribed newsgroups with unread articles"
+  },
+  { "x_comment_to", DT_BOOL, &C_XCommentTo, false, 0, NULL,
+    "(nntp) Add 'X-Comment-To' header that contains article author"
+  },
+  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * config_init_nntp - Register nntp config variables
