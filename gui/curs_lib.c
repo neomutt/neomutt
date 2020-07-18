@@ -48,6 +48,7 @@
 #include "curs_lib.h"
 #include "browser.h"
 #include "color.h"
+#include "dialog.h"
 #include "enter_state.h"
 #include "keymap.h"
 #include "mutt_curses.h"
