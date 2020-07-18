@@ -794,7 +794,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
     collapse_all(Context, menu, 0);
 
 #ifdef USE_SIDEBAR
-  struct MuttWindow *dlg = mutt_window_dialog(menu->win_index);
+  struct MuttWindow *dlg = dialog_find(menu->win_index);
   struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
   sb_set_open_mailbox(win_sidebar, Context ? Context->mailbox : NULL);
 #endif

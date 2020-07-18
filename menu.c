@@ -396,7 +396,7 @@ void menu_redraw_status(struct Menu *menu)
 void menu_redraw_sidebar(struct Menu *menu)
 {
   menu->redraw &= ~REDRAW_SIDEBAR;
-  struct MuttWindow *dlg = mutt_window_dialog(menu->win_index);
+  struct MuttWindow *dlg = dialog_find(menu->win_index);
   struct MuttWindow *sidebar = mutt_window_find(dlg, WT_SIDEBAR);
   sb_draw(sidebar);
 }

@@ -33,13 +33,13 @@
 #include "mutt_menu.h"
 
 /**
- * mutt_window_dialog - Find the parent Dialog of a Window
+ * dialog_find - Find the parent Dialog of a Window
  * @param win Window
  * @retval ptr Dialog
  *
  * Dialog Windows will be owned by a MuttWindow of type #WT_ALL_DIALOGS.
  */
-struct MuttWindow *mutt_window_dialog(struct MuttWindow *win)
+struct MuttWindow *dialog_find(struct MuttWindow *win)
 {
   for (; win && win->parent; win = win->parent)
   {

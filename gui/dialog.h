@@ -25,8 +25,8 @@
 
 struct MuttWindow;
 
-struct MuttWindow *mutt_window_dialog(struct MuttWindow *win);
-void dialog_pop(void);
-void dialog_push(struct MuttWindow *dlg);
+struct MuttWindow *dialog_find(struct MuttWindow *win);
+void               dialog_pop(void);
+void               dialog_push(struct MuttWindow *dlg);
 
 #endif /* MUTT_GUI_DIALOG_H */
