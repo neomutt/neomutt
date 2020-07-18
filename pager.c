@@ -2283,7 +2283,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   }
   window_set_visible(rd.extra->win_pager->parent, true);
   rd.extra->win_pager->size = MUTT_WIN_SIZE_MAXIMISE;
-  mutt_window_reflow(mutt_window_dialog(rd.extra->win_pager));
+  mutt_window_reflow(dialog_find(rd.extra->win_pager));
 
   /* Initialize variables */
 
@@ -3538,7 +3538,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_SIDEBAR_PREV_NEW:
       {
         struct MuttWindow *win_sidebar =
-            mutt_window_find(mutt_window_dialog(rd.extra->win_pager), WT_SIDEBAR);
+            mutt_window_find(dialog_find(rd.extra->win_pager), WT_SIDEBAR);
         if (!win_sidebar)
           break;
         sb_change_mailbox(win_sidebar, ch);
@@ -3547,7 +3547,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
         bool_str_toggle(NeoMutt->sub, "sidebar_visible", NULL);
-        mutt_window_reflow(mutt_window_dialog(rd.extra->win_pager));
+        mutt_window_reflow(dialog_find(rd.extra->win_pager));
         break;
 #endif
 
@@ -3604,7 +3604,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     window_set_visible(rd.extra->win_index->parent, true);
   }
   window_set_visible(rd.extra->win_pager->parent, false);
-  mutt_window_reflow(mutt_window_dialog(rd.extra->win_pager));
+  mutt_window_reflow(dialog_find(rd.extra->win_pager));
 
   return (rc != -1) ? rc : 0;
 }

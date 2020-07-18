@@ -4788,36 +4788,8 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   mutt_make_help(buf, sizeof(buf), _("Help"), menu_to_use, OP_HELP);
   strcat(helpstr, buf);
 
-  struct MuttWindow *dlg =
-      mutt_window_new(WT_DLG_CRYPT_GPGME, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *index =
-      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *ibar =
-      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-
-  if (C_StatusOnTop)
-  {
-    mutt_window_add_child(dlg, ibar);
-    mutt_window_add_child(dlg, index);
-  }
-  else
-  {
-    mutt_window_add_child(dlg, index);
-    mutt_window_add_child(dlg, ibar);
-  }
-
-  dialog_push(dlg);
-
   struct Menu *menu = mutt_menu_new(menu_to_use);
-
-  menu->pagelen = index->state.rows;
-  menu->win_index = index;
-  menu->win_ibar = ibar;
+  struct MuttWindow *dlg = dialog_create_simple_index(menu);
 
   menu->max = i;
   menu->make_entry = crypt_make_entry;
@@ -4951,9 +4923,8 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
 
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
+  dialog_destroy_simple_index(&dlg);
   FREE(&key_table);
-  dialog_pop();
-  mutt_window_free(&dlg);
 
   return k;
 }

@@ -29,6 +29,7 @@
  * | :------------------ | :------------------------- |
  * | gui/color.c         | @subpage gui_color         |
  * | gui/curs_lib.c      | @subpage gui_curs_lib      |
+ * | gui/dialog.c        | @subpage gui_dialog        |
  * | gui/mutt_curses.c   | @subpage gui_curses        |
  * | gui/mutt_window.c   | @subpage gui_window        |
  * | gui/reflow.c        | @subpage gui_reflow        |
@@ -41,6 +42,7 @@
 // IWYU pragma: begin_exports
 #include "color.h"
 #include "curs_lib.h"
+#include "dialog.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
 #include "reflow.h"

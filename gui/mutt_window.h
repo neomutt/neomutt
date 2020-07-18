@@ -215,12 +215,8 @@ bool mutt_window_is_visible(struct MuttWindow *win);
 
 void               mutt_winlist_free (struct MuttWindowList *head);
 struct MuttWindow *mutt_window_find  (struct MuttWindow *root, enum WindowType type);
-struct MuttWindow *mutt_window_dialog(struct MuttWindow *win);
 void               window_notify_all (struct MuttWindow *win);
 void               window_set_visible(struct MuttWindow *win, bool visible);
-
-void dialog_pop(void);
-void dialog_push(struct MuttWindow *dlg);
 
 void window_redraw(struct MuttWindow *win);
 

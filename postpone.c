@@ -223,36 +223,8 @@ static struct Email *select_msg(struct Context *ctx)
   bool done = false;
   char helpstr[1024];
 
-  struct MuttWindow *dlg =
-      mutt_window_new(WT_DLG_POSTPONE, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *index =
-      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *ibar =
-      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-
-  if (C_StatusOnTop)
-  {
-    mutt_window_add_child(dlg, ibar);
-    mutt_window_add_child(dlg, index);
-  }
-  else
-  {
-    mutt_window_add_child(dlg, index);
-    mutt_window_add_child(dlg, ibar);
-  }
-
-  dialog_push(dlg);
-
   struct Menu *menu = mutt_menu_new(MENU_POSTPONE);
-
-  menu->pagelen = index->state.rows;
-  menu->win_index = index;
-  menu->win_ibar = ibar;
+  struct MuttWindow *dlg = dialog_create_simple_index(menu);
 
   menu->make_entry = post_make_entry;
   menu->max = ctx->mailbox->msg_count;
@@ -308,8 +280,7 @@ static struct Email *select_msg(struct Context *ctx)
   C_Sort = orig_sort;
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
-  dialog_pop();
-  mutt_window_free(&dlg);
+  dialog_destroy_simple_index(&dlg);
 
   return (r > -1) ? ctx->mailbox->emails[r] : NULL;
 }

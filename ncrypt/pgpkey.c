@@ -670,36 +670,8 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   mutt_make_help(buf, sizeof(buf), _("Help"), MENU_PGP, OP_HELP);
   strcat(helpstr, buf);
 
-  struct MuttWindow *dlg =
-      mutt_window_new(WT_DLG_PGP, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *index =
-      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *ibar =
-      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-
-  if (C_StatusOnTop)
-  {
-    mutt_window_add_child(dlg, ibar);
-    mutt_window_add_child(dlg, index);
-  }
-  else
-  {
-    mutt_window_add_child(dlg, index);
-    mutt_window_add_child(dlg, ibar);
-  }
-
-  dialog_push(dlg);
-
   menu = mutt_menu_new(MENU_PGP);
-
-  menu->pagelen = index->state.rows;
-  menu->win_index = index;
-  menu->win_ibar = ibar;
+  struct MuttWindow *dlg = dialog_create_simple_index(menu);
 
   menu->max = i;
   menu->make_entry = pgp_make_entry;
@@ -838,9 +810,8 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
+  dialog_destroy_simple_index(&dlg);
   FREE(&key_table);
-  dialog_pop();
-  mutt_window_free(&dlg);
 
   return kp;
 }

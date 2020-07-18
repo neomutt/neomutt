@@ -1084,7 +1084,7 @@ static void compose_custom_redraw(struct Menu *menu)
   if (menu->redraw & REDRAW_FLOW)
   {
     rd->win_envelope->req_rows = calc_envelope(rd);
-    mutt_window_reflow(mutt_window_dialog(rd->win_envelope));
+    mutt_window_reflow(dialog_find(rd->win_envelope));
   }
 
   if (menu->redraw & REDRAW_FULL)
