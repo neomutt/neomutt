@@ -265,38 +265,11 @@ void mutt_autocrypt_account_menu(void)
   if (mutt_autocrypt_init(false))
     return;
 
-  struct MuttWindow *dlg =
-      mutt_window_new(WT_DLG_AUTOCRYPT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *index =
-      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *ibar =
-      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-
-  if (C_StatusOnTop)
-  {
-    mutt_window_add_child(dlg, ibar);
-    mutt_window_add_child(dlg, index);
-  }
-  else
-  {
-    mutt_window_add_child(dlg, index);
-    mutt_window_add_child(dlg, ibar);
-  }
-
-  dialog_push(dlg);
-
   struct Menu *menu = create_menu();
   if (!menu)
     return;
 
-  menu->pagelen = index->state.rows;
-  menu->win_index = index;
-  menu->win_ibar = ibar;
+  struct MuttWindow *dlg = dialog_create_simple_index(menu);
 
   bool done = false;
   while (!done)
@@ -312,10 +285,9 @@ void mutt_autocrypt_account_menu(void)
           break;
 
         menu_free(&menu);
+        dialog_destroy_simple_index(&dlg);
         menu = create_menu();
-        menu->pagelen = index->state.rows;
-        menu->win_index = index;
-        menu->win_ibar = ibar;
+        dlg = dialog_create_simple_index(menu);
         break;
 
       case OP_AUTOCRYPT_DELETE_ACCT:
@@ -334,10 +306,9 @@ void mutt_autocrypt_account_menu(void)
         if (!mutt_autocrypt_db_account_delete(entry->account))
         {
           menu_free(&menu);
+          dialog_destroy_simple_index(&dlg);
           menu = create_menu();
-          menu->pagelen = index->state.rows;
-          menu->win_index = index;
-          menu->win_ibar = ibar;
+          dlg = dialog_create_simple_index(menu);
         }
         break;
       }
@@ -367,6 +338,5 @@ void mutt_autocrypt_account_menu(void)
   }
 
   menu_free(&menu);
-  dialog_pop();
-  mutt_window_free(&dlg);
+  dialog_destroy_simple_index(&dlg);
 }
