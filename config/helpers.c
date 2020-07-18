@@ -74,7 +74,7 @@ bool cs_subset_bool(const struct ConfigSubset *sub, const char *name)
 
   assert(DTYPE(he->type) == DT_BOOL);
 
-  intptr_t value = cs_subset_he_native_get(sub, he, false);
+  intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   assert(value != INT_MIN);
 
   return (bool) value;
@@ -95,7 +95,7 @@ long cs_subset_long(const struct ConfigSubset *sub, const char *name)
 
   assert(DTYPE(he->type) == DT_LONG);
 
-  intptr_t value = cs_subset_he_native_get(sub, he, 0);
+  intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   assert(value != INT_MIN);
 
   return (long) value;
@@ -116,7 +116,7 @@ short cs_subset_number(const struct ConfigSubset *sub, const char *name)
 
   assert(DTYPE(he->type) == DT_NUMBER);
 
-  intptr_t value = cs_subset_he_native_get(sub, he, 0);
+  intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   assert(value != INT_MIN);
 
   return (short) value;
