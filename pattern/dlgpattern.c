@@ -258,36 +258,6 @@ static void free_pattern_menu(struct Menu **ptr)
 }
 
 /**
- * pattern_config_observer - Listen for config changes affecting the Pattern menu - Implements ::observer_t
- */
-static int pattern_config_observer(struct NotifyCallback *nc)
-{
-  if (!nc->event_data || !nc->global_data)
-    return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
-
-  struct EventConfig *ec = nc->event_data;
-  struct MuttWindow *dlg = nc->global_data;
-
-  if (!mutt_str_equal(ec->name, "status_on_top"))
-    return 0;
-
-  struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
-
-  if ((C_StatusOnTop && (win_first->type == WT_INDEX)) ||
-      (!C_StatusOnTop && (win_first->type != WT_INDEX)))
-  {
-    // Swap the Index and the IndexBar Windows
-    TAILQ_REMOVE(&dlg->children, win_first, entries);
-    TAILQ_INSERT_TAIL(&dlg->children, win_first, entries);
-  }
-
-  mutt_window_reflow(dlg);
-  return 0;
-}
-
-/**
  * mutt_ask_pattern - Show menu to select a Pattern
  * @param buf    Buffer for the selected Pattern
  * @param buflen Length of buffer
@@ -295,37 +265,8 @@ static int pattern_config_observer(struct NotifyCallback *nc)
  */
 bool mutt_ask_pattern(char *buf, size_t buflen)
 {
-  struct MuttWindow *dlg =
-      mutt_window_new(WT_DLG_PATTERN, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *index =
-      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *ibar =
-      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-
-  if (C_StatusOnTop)
-  {
-    mutt_window_add_child(dlg, ibar);
-    mutt_window_add_child(dlg, index);
-  }
-  else
-  {
-    mutt_window_add_child(dlg, index);
-    mutt_window_add_child(dlg, ibar);
-  }
-
-  notify_observer_add(NeoMutt->notify, pattern_config_observer, dlg);
-  dialog_push(dlg);
-
   struct Menu *menu = create_pattern_menu();
-
-  menu->pagelen = index->state.rows;
-  menu->win_index = index;
-  menu->win_ibar = ibar;
+  struct MuttWindow *dlg = dialog_create_simple_index(menu);
 
   bool rc = false;
   bool done = false;
@@ -349,8 +290,6 @@ bool mutt_ask_pattern(char *buf, size_t buflen)
   }
 
   free_pattern_menu(&menu);
-  dialog_pop();
-  notify_observer_remove(NeoMutt->notify, pattern_config_observer, dlg);
-  mutt_window_free(&dlg);
+  dialog_destroy_simple_index(&dlg);
   return rc;
 }
