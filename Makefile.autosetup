@@ -416,7 +416,7 @@ LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/gnupgparse.o \
 		ncrypt/pgpmicalg.o ncrypt/pgppacket.o
 @endif
 @if HAVE_SMIME
-LIBNCRYPTOBJS+=	ncrypt/crypt_mod_smime_classic.o ncrypt/smime.o
+LIBNCRYPTOBJS+=	ncrypt/crypt_mod_smime_classic.o ncrypt/dlgsmime.o ncrypt/smime.o
 @endif
 CLEANFILES+=	$(LIBNCRYPT) $(LIBNCRYPTOBJS)
 ALLOBJS+=	$(LIBNCRYPTOBJS)

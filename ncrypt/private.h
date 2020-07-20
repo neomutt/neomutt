@@ -100,4 +100,6 @@ extern char *          C_SmimeVerifyOpaqueCommand;
 extern bool            C_PgpAutoDecode;
 extern unsigned char   C_CryptVerifySig;
 
+struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query);
+
 #endif /* MUTT_NCRYPT_PRIVATE_H */

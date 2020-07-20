@@ -84,6 +84,7 @@ flags.c
 functions.c
 gui/color.c
 gui/curs_lib.c
+gui/dialog.c
 gui/mutt_curses.c
 gui/mutt_window.c
 gui/reflow.c
@@ -178,6 +179,7 @@ ncrypt/crypt_mod_pgp_classic.c
 ncrypt/crypt_mod_pgp_gpgme.c
 ncrypt/crypt_mod_smime_classic.c
 ncrypt/crypt_mod_smime_gpgme.c
+ncrypt/dlgsmime.c
 ncrypt/gnupgparse.c
 ncrypt/pgp.c
 ncrypt/pgpinvoke.c
