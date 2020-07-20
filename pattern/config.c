@@ -32,9 +32,9 @@
 #include <stdbool.h>
 
 // clang-format off
-char *C_ExternalSearchCommand; ///< Config: External search command
-char *C_PatternFormat;         ///< Config: printf-like format string for the pattern completion menu
-bool  C_ThoroughSearch;        ///< Config: Decode headers and messages before searching them
+char *C_ExternalSearchCommand = NULL; ///< Config: External search command
+char *C_PatternFormat = NULL;         ///< Config: printf-like format string for the pattern completion menu
+bool  C_ThoroughSearch;               ///< Config: Decode headers and messages before searching them
 // clang-format on
 
 // clang-format off

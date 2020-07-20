@@ -33,10 +33,10 @@
 #include "mutt/lib.h"
 
 // clang-format off
-short C_History;           ///< Config: Number of history entries to keep in memory per category
-char *C_HistoryFile;       ///< Config: File to save history in
-bool  C_HistoryRemoveDups; ///< Config: Remove duplicate entries from the history
-short C_SaveHistory;       ///< Config: Number of history entries to save per category
+short C_History;            ///< Config: Number of history entries to keep in memory per category
+char *C_HistoryFile = NULL; ///< Config: File to save history in
+bool  C_HistoryRemoveDups;  ///< Config: Remove duplicate entries from the history
+short C_SaveHistory;        ///< Config: Number of history entries to save per category
 // clang-format on
 
 // clang-format off
