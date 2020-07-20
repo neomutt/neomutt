@@ -4769,7 +4769,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   strcat(helpstr, buf);
 
   struct Menu *menu = mutt_menu_new(menu_to_use);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_CRYPT_GPGME);
 
   menu->max = i;
   menu->make_entry = crypt_make_entry;

@@ -560,7 +560,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   strcat(helpstr, buf);
 
   menu = mutt_menu_new(MENU_SMIME);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_SMIME);
 
   menu->max = table_index;
   menu->make_entry = smime_make_entry;

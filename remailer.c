@@ -608,7 +608,7 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
   mix_screen_coordinates(win, type2_list, &coords, chain, 0);
 
   menu = mutt_menu_new(MENU_MIX);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_REMAILER);
 
   menu->max = ttll;
   menu->make_entry = mix_make_entry;

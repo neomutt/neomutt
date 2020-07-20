@@ -187,7 +187,7 @@ static void alias_menu(char *buf, size_t buflen, struct AliasMenuData *mdata)
   char helpstr[1024];
 
   struct Menu *menu = mutt_menu_new(MENU_ALIAS);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_ALIAS);
 
   menu->make_entry = alias_make_entry;
   menu->tag = alias_tag;

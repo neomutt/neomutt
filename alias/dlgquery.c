@@ -314,7 +314,7 @@ static void query_menu(char *buf, size_t buflen, struct AliasList *all, bool ret
   snprintf(title, sizeof(title), _("Query '%s'"), buf);
 
   menu = mutt_menu_new(MENU_QUERY);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_QUERY);
 
   menu->make_entry = query_make_entry;
   menu->search = query_search;

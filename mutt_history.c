@@ -102,7 +102,7 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
   snprintf(title, sizeof(title), _("History '%s'"), buf);
 
   struct Menu *menu = mutt_menu_new(MENU_GENERIC);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_HISTORY);
 
   menu->make_entry = history_make_entry;
   menu->title = title;

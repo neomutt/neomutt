@@ -1552,7 +1552,7 @@ void mutt_view_attachments(struct Email *e)
     return;
 
   struct Menu *menu = mutt_menu_new(MENU_ATTACH);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_ATTACH);
 
   menu->title = _("Attachments");
   menu->make_entry = attach_make_entry;

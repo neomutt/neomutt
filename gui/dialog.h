@@ -26,7 +26,7 @@
 struct Menu;
 struct MuttWindow;
 
-struct MuttWindow *dialog_create_simple_index(struct Menu *menu);
+struct MuttWindow *dialog_create_simple_index(struct Menu *menu, enum WindowType type);
 void               dialog_destroy_simple_index(struct MuttWindow **ptr);
 struct MuttWindow *dialog_find(struct MuttWindow *win);
 void               dialog_pop(void);

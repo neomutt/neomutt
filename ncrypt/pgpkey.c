@@ -671,7 +671,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   strcat(helpstr, buf);
 
   menu = mutt_menu_new(MENU_PGP);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_PGP);
 
   menu->max = i;
   menu->make_entry = pgp_make_entry;

@@ -266,7 +266,7 @@ static void free_pattern_menu(struct Menu **ptr)
 bool mutt_ask_pattern(char *buf, size_t buflen)
 {
   struct Menu *menu = create_pattern_menu();
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_PATTERN);
 
   bool rc = false;
   bool done = false;
