@@ -31,6 +31,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/lib.h"
@@ -58,6 +59,7 @@
 #include "opcodes.h"
 #include "options.h"
 #include "recvcmd.h"
+#include "rfc3676.h"
 #include "state.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
@@ -493,6 +495,69 @@ static bool has_a_message(struct Body *body)
 }
 
 /**
+ * save_attachment_flowed_helper - Helper for unstuffing attachments
+ * @param fp    Attachment to work on
+ * @param b     Body of email
+ * @param path  Path to save the attachment
+ * @param flags Flags, e.g. #MUTT_SAVE_APPEND
+ * @param e     Email
+ * @retval  0 Success
+ * @retval -1 Failure
+ *
+ * This is a proxy between the mutt_save_attachment_list() calls and
+ * mutt_save_attachment().  It (currently) exists solely to unstuff
+ * format=flowed text attachments.
+ *
+ * Direct modification of mutt_save_attachment() wasn't easily possible
+ * because:
+ * 1) other callers of mutt_save_attachment() should not have unstuffing
+ *    performed, such as replying/forwarding attachments.
+ * 2) the attachment saving can append to a file, making the
+ *    unstuffing inside difficult with current functions.
+ * 3) we can't unstuff before-hand because decoding hasn't occurred.
+ *
+ * So, I apologize for this horrific proxy, but it was the most
+ * straightforward method.
+ */
+static int save_attachment_flowed_helper(FILE *fp, struct Body *b, const char *path,
+                                         enum SaveAttach flags, struct Email *e)
+{
+  int rc = -1;
+
+  if (mutt_rfc3676_is_format_flowed(b))
+  {
+    struct Body b_fake = { 0 };
+
+    struct Buffer *tempfile = mutt_buffer_pool_get();
+    mutt_buffer_mktemp(tempfile);
+
+    /* Pass MUTT_SAVE_NO_FLAGS to force mutt_file_fopen("w") */
+    rc = mutt_save_attachment(fp, b, mutt_b2s(tempfile), MUTT_SAVE_NO_FLAGS, e);
+    if (rc != 0)
+      goto cleanup;
+
+    mutt_rfc3676_space_unstuff_attachment(b, mutt_b2s(tempfile));
+
+    /* Now "really" save it.  Send mode does this without touching anything,
+     * so force send-mode. */
+    memset(&b_fake, 0, sizeof(struct Body));
+    b_fake.filename = tempfile->data;
+    rc = mutt_save_attachment(NULL, &b_fake, path, flags, e);
+
+    mutt_file_unlink(mutt_b2s(tempfile));
+
+  cleanup:
+    mutt_buffer_pool_release(&tempfile);
+  }
+  else
+  {
+    rc = mutt_save_attachment(fp, b, path, flags, e);
+  }
+
+  return rc;
+}
+
+/**
  * query_save_attachment - Ask the user if we should save the attachment
  * @param[in]  fp        File handle to the attachment (OPTIONAL)
  * @param[in]  body      Attachment
@@ -569,8 +634,8 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     }
 
     mutt_message(_("Saving..."));
-    if (mutt_save_attachment(fp, body, mutt_b2s(tfile), opt,
-                             (e || !is_message) ? e : body->email) == 0)
+    if (save_attachment_flowed_helper(fp, body, mutt_b2s(tfile), opt,
+                                      (e || !is_message) ? e : body->email) == 0)
     {
       mutt_message(_("Attachment saved"));
       rc = 0;
@@ -629,8 +694,8 @@ static int save_without_prompting(FILE *fp, struct Body *body, struct Email *e)
       goto cleanup;
   }
 
-  rc = mutt_save_attachment(fp, body, mutt_b2s(tfile), opt,
-                            (e || !is_message) ? e : body->email);
+  rc = save_attachment_flowed_helper(fp, body, mutt_b2s(tfile), opt,
+                                     (e || !is_message) ? e : body->email);
 
 cleanup:
   mutt_buffer_pool_release(&buf);
@@ -685,7 +750,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           mutt_buffer_expand_path(buf);
           if (mutt_check_overwrite(top->filename, mutt_b2s(buf), tfile, &opt, NULL))
             goto cleanup;
-          rc = mutt_save_attachment(fp, top, mutt_b2s(tfile), opt, e);
+          rc = save_attachment_flowed_helper(fp, top, mutt_b2s(tfile), opt, e);
           if ((rc == 0) && C_AttachSep && (fp_out = fopen(mutt_b2s(tfile), "a")))
           {
             fprintf(fp_out, "%s", C_AttachSep);
@@ -694,7 +759,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         }
         else
         {
-          rc = mutt_save_attachment(fp, top, mutt_b2s(tfile), MUTT_SAVE_APPEND, e);
+          rc = save_attachment_flowed_helper(fp, top, mutt_b2s(tfile), MUTT_SAVE_APPEND, e);
           if ((rc == 0) && C_AttachSep && (fp_out = fopen(mutt_b2s(tfile), "a")))
           {
             fprintf(fp_out, "%s", C_AttachSep);
@@ -810,26 +875,85 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
   if (!state || !state->fp_out)
     return;
 
+  FILE *fp_in = NULL;
+  FILE *fp_unstuff = NULL;
+  bool is_flowed = false, unlink_unstuff = false;
+  struct Buffer *unstuff_tempfile = NULL;
+
+  if (mutt_rfc3676_is_format_flowed(b))
+  {
+    is_flowed = true;
+    unstuff_tempfile = mutt_buffer_pool_get();
+    mutt_buffer_mktemp(unstuff_tempfile);
+  }
+
   if (fp)
   {
     state->fp_in = fp;
-    mutt_decode_attachment(b, state);
-    if (C_AttachSep)
-      state_puts(state, C_AttachSep);
+
+    if (is_flowed)
+    {
+      fp_unstuff = mutt_file_fopen(mutt_b2s(unstuff_tempfile), "w");
+      if (fp_unstuff == NULL)
+      {
+        mutt_perror("mutt_file_fopen");
+        goto bail;
+      }
+      unlink_unstuff = true;
+
+      FILE *filter_fp = state->fp_out;
+      state->fp_out = fp_unstuff;
+      mutt_decode_attachment(b, state);
+      mutt_file_fclose(&fp_unstuff);
+      state->fp_out = filter_fp;
+
+      fp_unstuff = mutt_file_fopen(mutt_b2s(unstuff_tempfile), "r");
+      if (fp_unstuff == NULL)
+      {
+        mutt_perror("mutt_file_fopen");
+        goto bail;
+      }
+      mutt_file_copy_stream(fp_unstuff, filter_fp);
+      mutt_file_fclose(&fp_unstuff);
+    }
+    else
+      mutt_decode_attachment(b, state);
   }
   else
   {
-    FILE *fp_in = fopen(b->filename, "r");
+    const char *infile = NULL;
+
+    if (is_flowed)
+    {
+      if (mutt_save_attachment(fp, b, mutt_b2s(unstuff_tempfile), 0, NULL) == -1)
+        goto bail;
+      unlink_unstuff = true;
+      mutt_rfc3676_space_unstuff_attachment(b, mutt_b2s(unstuff_tempfile));
+      infile = mutt_b2s(unstuff_tempfile);
+    }
+    else
+      infile = b->filename;
+
+    fp_in = fopen(infile, "r");
     if (!fp_in)
     {
       mutt_perror("fopen");
-      return;
+      goto bail;
     }
     mutt_file_copy_stream(fp_in, state->fp_out);
     mutt_file_fclose(&fp_in);
-    if (C_AttachSep)
-      state_puts(state, C_AttachSep);
   }
+
+  if (C_AttachSep)
+    state_puts(state, C_AttachSep);
+
+bail:
+  mutt_file_fclose(&fp_unstuff);
+  mutt_file_fclose(&fp_in);
+
+  if (unlink_unstuff)
+    mutt_file_unlink(mutt_b2s(unstuff_tempfile));
+  mutt_buffer_pool_release(&unstuff_tempfile);
 }
 
 /**
