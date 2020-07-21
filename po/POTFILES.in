@@ -96,6 +96,7 @@ hcache/serialize.c
 hdrline.c
 help.c
 history/config.c
+history/dlghistory.c
 history/history.c
 hook.c
 icommands.c
