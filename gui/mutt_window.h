@@ -138,6 +138,8 @@ struct MuttWindow
    * recalc - Recalculate the Window data
    * @param win Window
    * @param all Forcibly recalculate all data
+   * @retval  0 Success
+   * @retval -1 Error
    */
   int (*recalc)(struct MuttWindow *win, bool all);
 
@@ -145,6 +147,8 @@ struct MuttWindow
    * repaint - Repaint the Window
    * @param win Window
    * @param all Forcibly repaint the entire Window
+   * @retval  0 Success
+   * @retval -1 Error
    */
   int (*repaint)(struct MuttWindow *win, bool all);
 };
