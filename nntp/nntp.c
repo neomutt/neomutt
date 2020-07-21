@@ -95,7 +95,7 @@ struct FetchCtx
   bool restore;
   unsigned char *messages;
   struct Progress progress;
-  header_cache_t *hc;
+  struct HeaderCache *hc;
 };
 
 /**
@@ -2614,7 +2614,7 @@ static int nntp_mbox_sync(struct Mailbox *m)
 
 #ifdef USE_HCACHE
   mdata->last_cached = 0;
-  header_cache_t *hc = nntp_hcache_open(mdata);
+  struct HeaderCache *hc = nntp_hcache_open(mdata);
 #endif
 
   for (int i = 0; i < m->msg_count; i++)

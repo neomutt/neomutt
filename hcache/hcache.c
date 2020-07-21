@@ -86,7 +86,7 @@ static size_t header_size(void)
  * This function transforms an Email into a binary string so that it can be
  * saved to a database.
  */
-static void *dump(header_cache_t *hc, const struct Email *e, int *off, uint32_t uidvalidity)
+static void *dump(struct HeaderCache *hc, const struct Email *e, int *off, uint32_t uidvalidity)
 {
   struct Email e_dump;
   bool convert = !CharsetIsUtf8;
@@ -316,13 +316,13 @@ static char *get_foldername(const char *folder)
 /**
  * mutt_hcache_open - Multiplexor for StoreOps::open
  */
-header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
+struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 {
   const struct StoreOps *ops = hcache_get_ops();
   if (!ops)
     return NULL;
 
-  header_cache_t *hc = mutt_mem_calloc(1, sizeof(header_cache_t));
+  struct HeaderCache *hc = mutt_mem_calloc(1, sizeof(struct HeaderCache));
 
   /* Calculate the current hcache version from dynamic configuration */
   if (hcachever == 0x0)
@@ -413,7 +413,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
 /**
  * mutt_hcache_close - Multiplexor for StoreOps::close
  */
-void mutt_hcache_close(header_cache_t *hc)
+void mutt_hcache_close(struct HeaderCache *hc)
 {
   const struct StoreOps *ops = hcache_get_ops();
   if (!hc || !ops)
@@ -432,7 +432,7 @@ void mutt_hcache_close(header_cache_t *hc)
 /**
  * mutt_hcache_fetch - Multiplexor for StoreOps::fetch
  */
-struct HCacheEntry mutt_hcache_fetch(header_cache_t *hc, const char *key,
+struct HCacheEntry mutt_hcache_fetch(struct HeaderCache *hc, const char *key,
                                      size_t keylen, uint32_t uidvalidity)
 {
   struct RealKey *rk = realkey(key, keylen);
@@ -480,7 +480,7 @@ end:
 
 /**
  * mutt_hcache_fetch_raw - Fetch a message's header from the cache
- * @param[in]  hc     Pointer to the header_cache_t structure got by mutt_hcache_open()
+ * @param[in]  hc     Pointer to the struct HeaderCache structure got by mutt_hcache_open()
  * @param[in]  key    Message identification string
  * @param[in]  keylen Length of the string pointed to by key
  * @param[out] dlen   Length of the fetched data
@@ -490,7 +490,8 @@ end:
  * @note This function does not perform any check on the validity of the data found.
  * @note The returned data must be free with mutt_hcache_free_raw().
  */
-void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen, size_t *dlen)
+void *mutt_hcache_fetch_raw(struct HeaderCache *hc, const char *key,
+                            size_t keylen, size_t *dlen)
 {
   const struct StoreOps *ops = hcache_get_ops();
 
@@ -507,7 +508,7 @@ void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen, 
 /**
  * mutt_hcache_free - Multiplexor for StoreOps::free
  */
-void mutt_hcache_free_raw(header_cache_t *hc, void **data)
+void mutt_hcache_free_raw(struct HeaderCache *hc, void **data)
 {
   const struct StoreOps *ops = hcache_get_ops();
 
@@ -520,7 +521,7 @@ void mutt_hcache_free_raw(header_cache_t *hc, void **data)
 /**
  * mutt_hcache_store - Multiplexor for StoreOps::store
  */
-int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
+int mutt_hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
                       struct Email *e, uint32_t uidvalidity)
 {
   if (!hc)
@@ -569,7 +570,7 @@ int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
 
 /**
  * mutt_hcache_store_raw - store a key / data pair
- * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open()
+ * @param hc     Pointer to the struct HeaderCache structure got by mutt_hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @param data   Payload to associate with key
@@ -577,8 +578,8 @@ int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
-int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
-                          void *data, size_t dlen)
+int mutt_hcache_store_raw(struct HeaderCache *hc, const char *key,
+                          size_t keylen, void *data, size_t dlen)
 {
   const struct StoreOps *ops = hcache_get_ops();
 
@@ -597,7 +598,7 @@ int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
 /**
  * mutt_hcache_delete_record - Multiplexor for StoreOps::delete_record
  */
-int mutt_hcache_delete_record(header_cache_t *hc, const char *key, size_t keylen)
+int mutt_hcache_delete_record(struct HeaderCache *hc, const char *key, size_t keylen)
 {
   const struct StoreOps *ops = hcache_get_ops();
   if (!hc)

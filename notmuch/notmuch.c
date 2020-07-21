@@ -78,7 +78,7 @@ const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
  * @param m Mailbox
  * @retval ptr Header cache handle
  */
-static header_cache_t *nm_hcache_open(struct Mailbox *m)
+static struct HeaderCache *nm_hcache_open(struct Mailbox *m)
 {
 #ifdef USE_HCACHE
   return mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
@@ -91,7 +91,7 @@ static header_cache_t *nm_hcache_open(struct Mailbox *m)
  * nm_hcache_close - Close the header cache
  * @param h Header cache handle
  */
-static void nm_hcache_close(header_cache_t *h)
+static void nm_hcache_close(struct HeaderCache *h)
 {
 #ifdef USE_HCACHE
   mutt_hcache_close(h);
@@ -895,7 +895,7 @@ static struct Email *get_mutt_email(struct Mailbox *m, notmuch_message_t *msg)
  * @param msg   Notmuch message
  * @param dedup De-duplicate results
  */
-static void append_message(header_cache_t *h, struct Mailbox *m,
+static void append_message(struct HeaderCache *h, struct Mailbox *m,
                            notmuch_query_t *q, notmuch_message_t *msg, bool dedup)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
@@ -1005,7 +1005,7 @@ done:
  *
  * Careful, this calls itself recursively to make sure we get everything.
  */
-static void append_replies(header_cache_t *h, struct Mailbox *m,
+static void append_replies(struct HeaderCache *h, struct Mailbox *m,
                            notmuch_query_t *q, notmuch_message_t *top, bool dedup)
 {
   notmuch_messages_t *msgs = NULL;
@@ -1032,7 +1032,7 @@ static void append_replies(header_cache_t *h, struct Mailbox *m,
  * add each top level reply in the thread, and then add each reply to the top
  * level replies
  */
-static void append_thread(header_cache_t *h, struct Mailbox *m,
+static void append_thread(struct HeaderCache *h, struct Mailbox *m,
                           notmuch_query_t *q, notmuch_thread_t *thread, bool dedup)
 {
   notmuch_messages_t *msgs = NULL;
@@ -1097,7 +1097,7 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
   if (!msgs)
     return false;
 
-  header_cache_t *h = nm_hcache_open(m);
+  struct HeaderCache *h = nm_hcache_open(m);
 
   for (; notmuch_messages_valid(msgs) && ((limit == 0) || (m->msg_count < limit));
        notmuch_messages_move_to_next(msgs))
@@ -1164,7 +1164,7 @@ static bool read_threads_query(struct Mailbox *m, notmuch_query_t *q, bool dedup
   if (!threads)
     return false;
 
-  header_cache_t *h = nm_hcache_open(m);
+  struct HeaderCache *h = nm_hcache_open(m);
 
   for (; notmuch_threads_valid(threads) && ((limit == 0) || (m->msg_count < limit));
        notmuch_threads_move_to_next(threads))
@@ -2241,7 +2241,7 @@ static int nm_mbox_check(struct Mailbox *m)
     goto done;
 #endif
 
-  header_cache_t *h = nm_hcache_open(m);
+  struct HeaderCache *h = nm_hcache_open(m);
 
   for (int i = 0; notmuch_messages_valid(msgs) && ((limit == 0) || (i < limit));
        notmuch_messages_move_to_next(msgs), i++)
@@ -2345,7 +2345,7 @@ static int nm_mbox_sync(struct Mailbox *m)
     mutt_progress_init(&progress, msg, MUTT_PROGRESS_WRITE, m->msg_count);
   }
 
-  header_cache_t *h = nm_hcache_open(m);
+  struct HeaderCache *h = nm_hcache_open(m);
 
   for (int i = 0; i < m->msg_count; i++)
   {
