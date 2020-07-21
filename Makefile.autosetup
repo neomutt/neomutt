@@ -407,7 +407,7 @@ LIBNCRYPT=	libncrypt.a
 LIBNCRYPTOBJS=	ncrypt/config.o ncrypt/crypt.o ncrypt/cryptglue.o \
 		ncrypt/crypt_mod.o
 @if HAVE_GPGME
-LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/crypt_mod_pgp_gpgme.o \
+LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlggpgme.o ncrypt/crypt_mod_pgp_gpgme.o \
 		ncrypt/crypt_mod_smime_gpgme.o
 @endif
 @if HAVE_PGP

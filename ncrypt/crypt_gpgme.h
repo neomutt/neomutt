@@ -26,12 +26,57 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <gpgme.h>
+#include "lib.h"
 
 struct AddressList;
 struct Body;
 struct Email;
 struct Mailbox;
 struct State;
+
+/* We work based on user IDs, getting from a user ID to the key is
+ * check and does not need any memory (GPGME uses reference counting). */
+/**
+ * struct CryptKeyInfo - A stored PGP key
+ */
+struct CryptKeyInfo
+{
+  struct CryptKeyInfo *next;
+  gpgme_key_t kobj;
+  int idx;                   ///< and the user ID at this index
+  const char *uid;           ///< and for convenience point to this user ID
+  KeyFlags flags;            ///< global and per uid flags (for convenience)
+  gpgme_validity_t validity; ///< uid validity (cached for convenience)
+};
+
+/**
+ * enum KeyInfo - PGP Key info
+ */
+enum KeyInfo
+{
+  KIP_NAME = 0,    ///< PGP Key field: Name
+  KIP_AKA,         ///< PGP Key field: aka (Also Known As)
+  KIP_VALID_FROM,  ///< PGP Key field: Valid From date
+  KIP_VALID_TO,    ///< PGP Key field: Valid To date
+  KIP_KEY_TYPE,    ///< PGP Key field: Key Type
+  KIP_KEY_USAGE,   ///< PGP Key field: Key Usage
+  KIP_FINGERPRINT, ///< PGP Key field: Fingerprint
+  KIP_SERIAL_NO,   ///< PGP Key field: Serial number
+  KIP_ISSUED_BY,   ///< PGP Key field: Issued By
+  KIP_SUBKEY,      ///< PGP Key field: Subkey
+  KIP_MAX,
+};
+
+/**
+ * enum KeyCap - PGP/SMIME Key Capabilities
+ */
+enum KeyCap
+{
+  KEY_CAP_CAN_ENCRYPT, ///< Key can be used for encryption
+  KEY_CAP_CAN_SIGN,    ///< Key can be used for signing
+  KEY_CAP_CAN_CERTIFY, ///< Key can be used to certify
+};
 
 void         pgp_gpgme_set_sender(const char *sender);
 
@@ -56,5 +101,14 @@ int          smime_gpgme_send_menu(struct Email *e);
 struct Body *smime_gpgme_sign_message(struct Body *a, const struct AddressList *from);
 int          smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
 int          smime_gpgme_verify_sender(struct Mailbox *m, struct Email *e);
+
+bool crypt_id_is_strong(struct CryptKeyInfo *key);
+int digit(const char *s);
+const char *crypt_fpr_or_lkeyid(struct CryptKeyInfo *k);
+unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap);
+gpgme_ctx_t create_gpgme_context(bool for_smime);
+const char *crypt_keyid(struct CryptKeyInfo *k);
+int crypt_id_is_valid(struct CryptKeyInfo *key);
+struct CryptKeyInfo *crypt_copy_key(struct CryptKeyInfo *key);
 
 #endif /* MUTT_NCRYPT_CRYPT_GPGME_H */
