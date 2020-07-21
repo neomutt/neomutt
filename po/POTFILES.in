@@ -7,10 +7,10 @@ alias/dlgalias.c
 alias/dlgquery.c
 alias/gui.c
 alias/reverse.c
-autocrypt/acct_menu.c
 autocrypt/autocrypt.c
 autocrypt/config.c
 autocrypt/db.c
+autocrypt/dlgautocrypt.c
 autocrypt/gpgme.c
 autocrypt/schema.c
 bcache/bcache.c
