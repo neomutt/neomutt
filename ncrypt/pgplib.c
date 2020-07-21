@@ -98,20 +98,6 @@ bool pgp_cansign(unsigned char type)
 }
 
 /**
- * pgp_get_abilities - Get the capabilities of an algorithm
- * @param type Algorithm ID
- * @retval num Capabilities
- *
- * The abilities are OR'd together
- * - 1 If signing is possible
- * - 2 If encryption is possible
- */
-short pgp_get_abilities(unsigned char type)
-{
-  return (pgp_canencrypt(type) << 1) | pgp_cansign(type);
-}
-
-/**
  * pgp_uid_free - Free a PGP UID
  * @param[out] upp PGP UID to free
  */
@@ -240,13 +226,4 @@ void pgp_key_free(struct PgpKeyInfo **kpp)
   }
 
   *kpp = NULL;
-}
-
-/**
- * pgp_keyinfo_new - Create a new PgpKeyInfo
- * @retval ptr New PgpKeyInfo
- */
-struct PgpKeyInfo *pgp_keyinfo_new(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct PgpKeyInfo));
 }

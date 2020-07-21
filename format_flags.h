@@ -58,9 +58,9 @@ typedef uint8_t MuttFormatFlags;         ///< Flags for mutt_expando_format(), e
  * |:--------|:-----------
  * | \%t     | Title
  */
-typedef const char *(format_t)(char *buf, size_t buflen, size_t col, int cols,
-                               char op, const char *src, const char *prec,
-                               const char *if_str, const char *else_str,
-                               intptr_t data, MuttFormatFlags flags);
+typedef const char *(*format_t)(char *buf, size_t buflen, size_t col, int cols,
+                                char op, const char *src, const char *prec,
+                                const char *if_str, const char *else_str,
+                                intptr_t data, MuttFormatFlags flags);
 
 #endif /* MUTT_FORMAT_FLAGS_H */

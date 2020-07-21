@@ -187,7 +187,6 @@ extern struct MuttWindow *MuttMessageWindow;
 
 // Functions that deal with the Window
 void               mutt_window_add_child          (struct MuttWindow *parent, struct MuttWindow *child);
-void               mutt_window_copy_size          (const struct MuttWindow *win_src, struct MuttWindow *win_dst);
 void               mutt_window_free               (struct MuttWindow **ptr);
 void               mutt_window_free_all           (void);
 void               mutt_window_get_coords         (struct MuttWindow *win, int *col, int *row);

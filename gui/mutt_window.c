@@ -78,7 +78,7 @@ static void window_notify(struct MuttWindow *win)
     return;
 
   const struct WindowState *old = &win->old;
-  const struct WindowState *new = &win->state;
+  const struct WindowState *state = &win->state;
   WindowNotifyFlags flags = WN_NO_FLAGS;
 
   const bool was_visible = window_was_visible(win);
@@ -86,17 +86,17 @@ static void window_notify(struct MuttWindow *win)
   if (was_visible != is_visible)
     flags |= is_visible ? WN_VISIBLE : WN_HIDDEN;
 
-  if ((new->row_offset != old->row_offset) || (new->col_offset != old->col_offset))
+  if ((state->row_offset != old->row_offset) || (state->col_offset != old->col_offset))
     flags |= WN_MOVED;
 
-  if (new->rows > old->rows)
+  if (state->rows > old->rows)
     flags |= WN_TALLER;
-  else if (new->rows < old->rows)
+  else if (state->rows < old->rows)
     flags |= WN_SHORTER;
 
-  if (new->cols > old->cols)
+  if (state->cols > old->cols)
     flags |= WN_WIDER;
-  else if (new->cols < old->cols)
+  else if (state->cols < old->cols)
     flags |= WN_NARROWER;
 
   if (flags == WN_NO_FLAGS)
@@ -423,22 +423,6 @@ int mutt_window_mvprintw(struct MuttWindow *win, int col, int row, const char *f
   va_end(ap);
 
   return rc;
-}
-
-/**
- * mutt_window_copy_size - Copy the size of one Window to another
- * @param win_src Window to copy
- * @param win_dst Window to resize
- */
-void mutt_window_copy_size(const struct MuttWindow *win_src, struct MuttWindow *win_dst)
-{
-  if (!win_src || !win_dst)
-    return;
-
-  win_dst->state.rows = win_src->state.rows;
-  win_dst->state.cols = win_src->state.cols;
-  win_dst->state.row_offset = win_src->state.row_offset;
-  win_dst->state.col_offset = win_src->state.col_offset;
 }
 
 /**

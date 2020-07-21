@@ -789,7 +789,8 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
 
     if (is_flowed)
     {
-      if (mutt_save_attachment(fp, b, mutt_b2s(unstuff_tempfile), MUTT_SAVE_NO_FLAGS, NULL) == -1)
+      if (mutt_save_attachment(fp, b, mutt_b2s(unstuff_tempfile),
+                               MUTT_SAVE_NO_FLAGS, NULL) == -1)
         goto bail;
       unlink_unstuff = true;
       mutt_rfc3676_space_unstuff_attachment(b, mutt_b2s(unstuff_tempfile));
