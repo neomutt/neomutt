@@ -411,7 +411,7 @@ LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/crypt_mod_pgp_gpgme.o \
 		ncrypt/crypt_mod_smime_gpgme.o
 @endif
 @if HAVE_PGP
-LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/gnupgparse.o \
+LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/dlgpgp.o ncrypt/gnupgparse.o \
 		ncrypt/pgp.o ncrypt/pgpinvoke.o ncrypt/pgpkey.o ncrypt/pgplib.o \
 		ncrypt/pgpmicalg.o ncrypt/pgppacket.o
 @endif

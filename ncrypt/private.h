@@ -101,5 +101,6 @@ extern bool            C_PgpAutoDecode;
 extern unsigned char   C_CryptVerifySig;
 
 struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query);
+struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address *p, const char *s);
 
 #endif /* MUTT_NCRYPT_PRIVATE_H */

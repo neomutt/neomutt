@@ -179,6 +179,7 @@ ncrypt/crypt_mod_pgp_classic.c
 ncrypt/crypt_mod_pgp_gpgme.c
 ncrypt/crypt_mod_smime_classic.c
 ncrypt/crypt_mod_smime_gpgme.c
+ncrypt/dlgpgp.c
 ncrypt/dlgsmime.c
 ncrypt/gnupgparse.c
 ncrypt/pgp.c

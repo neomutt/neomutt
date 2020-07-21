@@ -28,6 +28,8 @@
 #include "lib.h"
 
 struct Address;
+struct PgpKeyInfo;
+struct PgpUid;
 
 /**
  * enum PgpRing - PGP ring type
@@ -43,5 +45,9 @@ struct Body *pgp_class_make_key_attachment(void);
 struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities, enum PgpRing keyring);
 struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities, enum PgpRing keyring, bool oppenc_mode);
 struct PgpKeyInfo *pgp_getkeybystr(const char *p, KeyFlags abilities, enum PgpRing keyring);
+struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key);
+bool               pgp_key_is_valid(struct PgpKeyInfo *k);
+bool               pgp_id_is_valid(struct PgpUid *uid);
+bool               pgp_id_is_strong(struct PgpUid *uid);
 
 #endif /* MUTT_NCRYPT_PGPKEY_H */
