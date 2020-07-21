@@ -216,26 +216,6 @@ static void redraw_if_needed(gpgme_ctx_t ctx)
 }
 
 /**
- * digit - Is the character a number
- * @param s Only the first character of this string is tested
- * @retval true when s points to a digit
- */
-static int digit(const char *s)
-{
-  return (*s >= '0' && *s <= '9');
-}
-
-/**
- * digit_or_letter - Is the character a number or letter
- * @param s Only the first character of this string is tested
- * @retval true when s points to a digit or letter
- */
-static int digit_or_letter(const char *s)
-{
-  return digit(s) || (*s >= 'A' && *s <= 'Z') || (*s >= 'a' && *s <= 'z');
-}
-
-/**
  * print_utf8 - Write a UTF-8 string to a file
  * @param fp  File to write to
  * @param buf Buffer to read from
@@ -297,9 +277,9 @@ static const char *parse_version_number(const char *s, int *number)
 {
   int val = 0;
 
-  if ((*s == '0') && digit(s + 1))
+  if ((*s == '0') && isdigit(s[1]))
     return NULL; /* Leading zeros are not allowed.  */
-  for (; digit(s); s++)
+  for (; isdigit(s[0]); s++)
   {
     val *= 10;
     val += *s - '0';
@@ -4080,7 +4060,7 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
   }
   else if (*userid == '(')
     fputs(_("[Can't display this user ID (unknown encoding)]"), fp);
-  else if (!digit_or_letter(userid))
+  else if (!isalnum(userid[0]))
     fputs(_("[Can't display this user ID (invalid encoding)]"), fp);
   else
   {
