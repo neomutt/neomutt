@@ -7,10 +7,10 @@ alias/dlgalias.c
 alias/dlgquery.c
 alias/gui.c
 alias/reverse.c
-autocrypt/acct_menu.c
 autocrypt/autocrypt.c
 autocrypt/config.c
 autocrypt/db.c
+autocrypt/dlgautocrypt.c
 autocrypt/gpgme.c
 autocrypt/schema.c
 bcache/bcache.c
@@ -84,6 +84,7 @@ flags.c
 functions.c
 gui/color.c
 gui/curs_lib.c
+gui/dialog.c
 gui/mutt_curses.c
 gui/mutt_window.c
 gui/reflow.c
@@ -95,6 +96,7 @@ hcache/serialize.c
 hdrline.c
 help.c
 history/config.c
+history/dlghistory.c
 history/history.c
 hook.c
 icommands.c
@@ -178,6 +180,9 @@ ncrypt/crypt_mod_pgp_classic.c
 ncrypt/crypt_mod_pgp_gpgme.c
 ncrypt/crypt_mod_smime_classic.c
 ncrypt/crypt_mod_smime_gpgme.c
+ncrypt/dlggpgme.c
+ncrypt/dlgpgp.c
+ncrypt/dlgsmime.c
 ncrypt/gnupgparse.c
 ncrypt/pgp.c
 ncrypt/pgpinvoke.c

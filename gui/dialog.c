@@ -156,15 +156,16 @@ static int dialog_config_observer(struct NotifyCallback *nc)
 /**
  * dialog_create_simple_index - Create a simple index Dialog
  * @param menu Menu to use
+ * @param type Dialog type, e.g. #WT_DLG_ALIAS
  * @retval ptr New Dialog Window
  */
-struct MuttWindow *dialog_create_simple_index(struct Menu *menu)
+struct MuttWindow *dialog_create_simple_index(struct Menu *menu, enum WindowType type)
 {
   if (!menu)
     return NULL;
 
   struct MuttWindow *dlg =
-      mutt_window_new(WT_DLG_ALIAS, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(type, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
   struct MuttWindow *index =

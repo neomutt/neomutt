@@ -1340,7 +1340,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   mutt_buffer_reset(file);
 
   menu = mutt_menu_new(MENU_FOLDER);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_BROWSER);
 
   menu->make_entry = folder_make_entry;
   menu->search = select_file_search;

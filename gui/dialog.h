@@ -23,10 +23,11 @@
 #ifndef MUTT_GUI_DIALOG_H
 #define MUTT_GUI_DIALOG_H
 
-struct Menu;
-struct MuttWindow;
+#include "mutt_window.h"
 
-struct MuttWindow *dialog_create_simple_index(struct Menu *menu);
+struct Menu;
+
+struct MuttWindow *dialog_create_simple_index(struct Menu *menu, enum WindowType type);
 void               dialog_destroy_simple_index(struct MuttWindow **ptr);
 struct MuttWindow *dialog_find(struct MuttWindow *win);
 void               dialog_pop(void);

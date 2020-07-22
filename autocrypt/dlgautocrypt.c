@@ -269,7 +269,7 @@ void mutt_autocrypt_account_menu(void)
   if (!menu)
     return;
 
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_AUTOCRYPT);
 
   bool done = false;
   while (!done)
@@ -287,7 +287,7 @@ void mutt_autocrypt_account_menu(void)
         menu_free(&menu);
         dialog_destroy_simple_index(&dlg);
         menu = create_menu();
-        dlg = dialog_create_simple_index(menu);
+        dlg = dialog_create_simple_index(menu, WT_DLG_AUTOCRYPT);
         break;
 
       case OP_AUTOCRYPT_DELETE_ACCT:
@@ -308,7 +308,7 @@ void mutt_autocrypt_account_menu(void)
           menu_free(&menu);
           dialog_destroy_simple_index(&dlg);
           menu = create_menu();
-          dlg = dialog_create_simple_index(menu);
+          dlg = dialog_create_simple_index(menu, WT_DLG_AUTOCRYPT);
         }
         break;
       }

@@ -58,7 +58,7 @@
 int dlg_verify_cert(const char *title, struct ListHead *list, bool allow_always, bool allow_skip)
 {
   struct Menu *menu = mutt_menu_new(MENU_GENERIC);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_CERTIFICATE);
 
   mutt_menu_push_current(menu);
 

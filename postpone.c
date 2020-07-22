@@ -224,7 +224,7 @@ static struct Email *select_msg(struct Context *ctx)
   char helpstr[1024];
 
   struct Menu *menu = mutt_menu_new(MENU_POSTPONE);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu);
+  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_POSTPONE);
 
   menu->make_entry = post_make_entry;
   menu->max = ctx->mailbox->msg_count;
