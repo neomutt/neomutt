@@ -704,7 +704,7 @@ static void nntp_hcache_namer(const char *path, struct Buffer *dest)
  * @retval ptr  Header cache
  * @retval NULL Error
  */
-header_cache_t *nntp_hcache_open(struct NntpMboxData *mdata)
+struct HeaderCache *nntp_hcache_open(struct NntpMboxData *mdata)
 {
   struct Url url = { 0 };
   char file[PATH_MAX];
@@ -726,7 +726,7 @@ header_cache_t *nntp_hcache_open(struct NntpMboxData *mdata)
  * @param mdata NNTP Mailbox data
  * @param hc    Header cache
  */
-void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc)
+void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
 {
   if (!hc)
     return;
@@ -1129,7 +1129,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
     {
       while ((entry = readdir(dp)))
       {
-        header_cache_t *hc = NULL;
+        struct HeaderCache *hc = NULL;
         void *hdata = NULL;
         char *group = entry->d_name;
 

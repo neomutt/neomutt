@@ -23,6 +23,7 @@
 #ifndef MUTT_NCRYPT_GNUPGPARSE_H
 #define MUTT_NCRYPT_GNUPGPARSE_H
 
+#include "lib.h"
 #include "pgpkey.h"
 
 struct ListHead;

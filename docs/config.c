@@ -337,14 +337,14 @@
 ** .pp
 ** When \fIset\fP, enables autocrypt, which provides
 ** passive encryption protection with keys exchanged via headers.
-** See ``$autocryptdoc'' for more details.
+** See "$autocryptdoc" for more details.
 ** (Autocrypt only)
 */
 
 { "autocrypt_acct_format", DT_STRING, "%4n %-30a %20p %10s" },
 /*
 ** .pp
-** This variable describes the format of the ``autocrypt account'' menu.
+** This variable describes the format of the "autocrypt account" menu.
 ** The following \fCprintf(3)\fP-style sequences are understood
 ** .dl
 ** .dt %a  .dd email address
@@ -361,7 +361,7 @@
 /*
 ** .pp
 ** This variable sets where autocrypt files are stored, including the GPG
-** keyring and SQLite database.  See ``$autocryptdoc'' for more details.
+** keyring and SQLite database.  See "$autocryptdoc" for more details.
 ** (Autocrypt only)
 */
 
@@ -1293,10 +1293,10 @@
 /*
 ** .pp
 ** When forwarding inline (i.e. $$mime_forward \fIunset\fP or
-** answered with ``no'' and $$forward_decode \fIset\fP), attachments
+** answered with "no" and $$forward_decode \fIset\fP), attachments
 ** which cannot be decoded in a reasonable manner will be attached
 ** to the newly composed message if this quadoption is \fIset\fP or
-** answered with ``yes''.
+** answered with "yes".
 */
 
 { "forward_attribution_intro", DT_STRING, "----- Forwarded message from %f -----" },
@@ -2019,7 +2019,7 @@
 ** .dt %zs .dd Message status flags
 ** .dt %zt .dd Message tag flags
 ** .dt %@name@ .dd insert and evaluate format-string from the matching
-**                 ``$index-format-hook'' command
+**                 "$index-format-hook" command
 ** .dt %{fmt} .dd the date and time of the message is converted to sender's
 **                time zone, and "fmt" is expanded by the library function
 **                \fCstrftime(3)\fP; a leading bang disables locales
@@ -2039,8 +2039,8 @@
 ** format can be modified based on how old a message is.  See the section on
 ** "Conditional Dates" for an explanation and examples
 ** .pp
-** Note that for mbox/mmdf, ``%l'' applies to the unprocessed message, and
-** for maildir/mh, the value comes from the ``Lines:'' header field when
+** Note that for mbox/mmdf, "%l" applies to the unprocessed message, and
+** for maildir/mh, the value comes from the "Lines:" header field when
 ** present (the meaning is normally the same). Thus the value depends on
 ** the encodings used in the different parts of the message and has little
 ** meaning in practice.
@@ -2054,7 +2054,7 @@
 ** rightward text.
 ** .pp
 ** Note that these expandos are supported in
-** ``$save-hook'', ``$fcc-hook'' and ``$fcc-save-hook'', too.
+** "$save-hook", "$fcc-hook" and "$fcc-save-hook", too.
 */
 
 #ifdef USE_NNTP
@@ -2139,7 +2139,7 @@
 ** .pp
 ** This variable specifies which files to consult when attempting to
 ** display MIME bodies not directly supported by NeoMutt.  The default value
-** is generated during startup: see the ``$mailcap'' section of the manual.
+** is generated during startup: see the "$mailcap" section of the manual.
 ** .pp
 ** $$mailcap_path is overridden by the environment variable \fC$$$MAILCAPS\fP.
 ** .pp
@@ -2750,7 +2750,7 @@
 { "pattern_format", DT_STRING, "%2n %-15e  %d" },
 /*
 ** .pp
-** This variable describes the format of the ``pattern completion'' menu. The
+** This variable describes the format of the "pattern completion" menu. The
 ** following \fCprintf(3)\fP-style sequences are understood:
 ** .dl
 ** .dt %d  .dd pattern description
@@ -5330,18 +5330,18 @@
 { "write_bcc", DT_BOOL, false },
 /*
 ** .pp
-** Controls whether NeoMutt writes out the ``Bcc:'' header when
+** Controls whether NeoMutt writes out the "Bcc:" header when
 ** preparing messages to be sent.  Some MTAs, such as Exim and
-** Courier, do not strip the ``Bcc:'' header; so it is advisable to
+** Courier, do not strip the "Bcc:" header; so it is advisable to
 ** leave this unset unless you have a particular need for the header
 ** to be in the sent message.
 ** .pp
 ** If NeoMutt is set to deliver directly via SMTP(see $$smtp_url),
-** this option does nothing: NeoMutt will never write out the ``Bcc:''
+** this option does nothing: NeoMutt will never write out the "Bcc:"
 ** header in this case.
 ** .pp
 ** Note this option only affects the sending of messages.  Fcc'ed
-** copies of a message will always contain the ``Bcc:'' header if
+** copies of a message will always contain the "Bcc:" header if
 ** one exists.
 */
 

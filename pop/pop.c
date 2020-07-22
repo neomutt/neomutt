@@ -348,7 +348,7 @@ static void pop_hcache_namer(const char *path, struct Buffer *dest)
  * @param path  Path to the mailbox
  * @retval ptr Header cache
  */
-static header_cache_t *pop_hcache_open(struct PopAccountData *adata, const char *path)
+static struct HeaderCache *pop_hcache_open(struct PopAccountData *adata, const char *path)
 {
   if (!adata || !adata->conn)
     return mutt_hcache_open(C_HeaderCache, path, NULL);
@@ -380,7 +380,7 @@ static int pop_fetch_headers(struct Mailbox *m)
   struct Progress progress;
 
 #ifdef USE_HCACHE
-  header_cache_t *hc = pop_hcache_open(adata, mailbox_path(m));
+  struct HeaderCache *hc = pop_hcache_open(adata, mailbox_path(m));
 #endif
 
   adata->check_time = mutt_date_epoch();
@@ -926,7 +926,7 @@ static int pop_mbox_sync(struct Mailbox *m)
   struct PopAccountData *adata = pop_adata_get(m);
   struct Progress progress;
 #ifdef USE_HCACHE
-  header_cache_t *hc = NULL;
+  struct HeaderCache *hc = NULL;
 #endif
 
   adata->check_time = 0;
@@ -1210,7 +1210,7 @@ static int pop_msg_save_hcache(struct Mailbox *m, struct Email *e)
 #ifdef USE_HCACHE
   struct PopAccountData *adata = pop_adata_get(m);
   struct PopEmailData *edata = e->edata;
-  header_cache_t *hc = pop_hcache_open(adata, mailbox_path(m));
+  struct HeaderCache *hc = pop_hcache_open(adata, mailbox_path(m));
   rc = mutt_hcache_store(hc, edata->uid, strlen(edata->uid), e, 0);
   mutt_hcache_close(hc);
 #endif

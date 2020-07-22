@@ -34,11 +34,7 @@ struct Buffer;
 /* These Config Variables are only used in browser.c */
 extern bool  C_BrowserAbbreviateMailboxes;
 extern char *C_FolderFormat;
-extern char *C_GroupIndexFormat;
-extern char *C_NewsgroupsCharset;
-extern bool  C_ShowOnlyUnread;
 extern short C_SortBrowser;
-extern char *C_VfolderFormat;
 
 typedef uint8_t SelectFileFlags;  ///< Flags for mutt_select_file(), e.g. #MUTT_SEL_MAILBOX
 #define MUTT_SEL_NO_FLAGS      0  ///< No flags are set

@@ -677,7 +677,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
   bool sort = false;
 
 #ifdef USE_HCACHE
-  header_cache_t *hc = mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
+  struct HeaderCache *hc = mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
 #endif
 
   for (p = *md, count = 0; p; p = p->next, count++)
@@ -1333,7 +1333,7 @@ struct Email *maildir_parse_message(enum MailboxType type, const char *fname,
  * @retval  0 Success
  * @retval -1 Error
  */
-int mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc)
+int mh_sync_mailbox_message(struct Mailbox *m, int msgno, struct HeaderCache *hc)
 {
   if (!m || !m->emails || (msgno >= m->msg_count))
     return -1;
@@ -1701,7 +1701,7 @@ int mh_mbox_sync(struct Mailbox *m)
     return -1;
 
   int i, j;
-  header_cache_t *hc = NULL;
+  struct HeaderCache *hc = NULL;
   struct Progress progress;
   int check;
 
@@ -1797,7 +1797,7 @@ int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
 #ifdef USE_HCACHE
-  header_cache_t *hc = mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
+  struct HeaderCache *hc = mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
   rc = mutt_hcache_store(hc, e->path, strlen(e->path), e, 0);
   mutt_hcache_close(hc);
 #endif

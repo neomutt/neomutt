@@ -63,7 +63,6 @@ struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent);
 
 bool pgp_canencrypt(unsigned char type);
 bool pgp_cansign(unsigned char type);
-short pgp_get_abilities(unsigned char type);
 
 void pgp_key_free(struct PgpKeyInfo **kpp);
 

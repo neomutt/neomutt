@@ -92,14 +92,14 @@ static void *store_rocksdb_open(const char *path)
 /**
  * store_rocksdb_fetch - Implements StoreOps::fetch()
  */
-static void *store_rocksdb_fetch(void *store, const char *key, size_t keylen, size_t *dlen)
+static void *store_rocksdb_fetch(void *store, const char *key, size_t klen, size_t *vlen)
 {
   if (!store)
     return NULL;
 
   struct RocksDB_Ctx *ctx = store;
 
-  void *rv = rocksdb_get(ctx->db, ctx->read_options, key, keylen, dlen, &ctx->err);
+  void *rv = rocksdb_get(ctx->db, ctx->read_options, key, klen, vlen, &ctx->err);
   if (ctx->err)
   {
     rocksdb_free(ctx->err);
@@ -121,15 +121,15 @@ static void store_rocksdb_free(void *store, void **ptr)
 /**
  * store_rocksdb_store - Implements StoreOps::store()
  */
-static int store_rocksdb_store(void *store, const char *key, size_t keylen,
-                               void *data, size_t dlen)
+static int store_rocksdb_store(void *store, const char *key, size_t klen,
+                               void *value, size_t vlen)
 {
   if (!store)
     return -1;
 
   struct RocksDB_Ctx *ctx = store;
 
-  rocksdb_put(ctx->db, ctx->write_options, key, keylen, data, dlen, &ctx->err);
+  rocksdb_put(ctx->db, ctx->write_options, key, klen, value, vlen, &ctx->err);
   if (ctx->err)
   {
     rocksdb_free(ctx->err);
@@ -143,14 +143,14 @@ static int store_rocksdb_store(void *store, const char *key, size_t keylen,
 /**
  * store_rocksdb_delete_record - Implements StoreOps::delete_record()
  */
-static int store_rocksdb_delete_record(void *store, const char *key, size_t keylen)
+static int store_rocksdb_delete_record(void *store, const char *key, size_t klen)
 {
   if (!store)
     return -1;
 
   struct RocksDB_Ctx *ctx = store;
 
-  rocksdb_delete(ctx->db, ctx->write_options, key, keylen, &ctx->err);
+  rocksdb_delete(ctx->db, ctx->write_options, key, klen, &ctx->err);
   if (ctx->err)
   {
     rocksdb_free(ctx->err);

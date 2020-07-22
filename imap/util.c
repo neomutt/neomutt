@@ -442,7 +442,7 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
   if (mdata->hcache)
     return;
 
-  header_cache_t *hc = NULL;
+  struct HeaderCache *hc = NULL;
   struct Buffer *mbox = mutt_buffer_pool_get();
   struct Buffer *cachepath = mutt_buffer_pool_get();
 

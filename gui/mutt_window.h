@@ -138,6 +138,8 @@ struct MuttWindow
    * recalc - Recalculate the Window data
    * @param win Window
    * @param all Forcibly recalculate all data
+   * @retval  0 Success
+   * @retval -1 Error
    */
   int (*recalc)(struct MuttWindow *win, bool all);
 
@@ -145,6 +147,8 @@ struct MuttWindow
    * repaint - Repaint the Window
    * @param win Window
    * @param all Forcibly repaint the entire Window
+   * @retval  0 Success
+   * @retval -1 Error
    */
   int (*repaint)(struct MuttWindow *win, bool all);
 };
@@ -187,7 +191,6 @@ extern struct MuttWindow *MuttMessageWindow;
 
 // Functions that deal with the Window
 void               mutt_window_add_child          (struct MuttWindow *parent, struct MuttWindow *child);
-void               mutt_window_copy_size          (const struct MuttWindow *win_src, struct MuttWindow *win_dst);
 void               mutt_window_free               (struct MuttWindow **ptr);
 void               mutt_window_free_all           (void);
 void               mutt_window_get_coords         (struct MuttWindow *win, int *col, int *row);

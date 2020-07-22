@@ -239,7 +239,7 @@ struct ImapMboxData
   unsigned int max_msn;        ///< the largest MSN fetched so far
   struct BodyCache *bcache;
 
-  header_cache_t *hcache;
+  struct HeaderCache *hcache;
 };
 
 /**

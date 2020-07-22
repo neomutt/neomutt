@@ -669,7 +669,7 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
 #ifdef USE_HCACHE
-  header_cache_t *hc = mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
+  struct HeaderCache *hc = mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
   char *key = e->path + 3;
   int keylen = maildir_hcache_keylen(key);
   rc = mutt_hcache_store(hc, key, keylen, e, 0);

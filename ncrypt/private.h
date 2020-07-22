@@ -26,6 +26,11 @@
 #include "config.h"
 #include <stdbool.h>
 
+struct Address;
+struct CryptKeyInfo;
+struct PgpKeyInfo;
+struct SmimeKey;
+
 extern bool            C_CryptUsePka;
 extern bool            C_CryptConfirmhook;
 extern bool            C_CryptOpportunisticEncrypt;
