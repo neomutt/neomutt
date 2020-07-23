@@ -45,6 +45,7 @@
 #include "gui/lib.h"
 #include "crypt_gpgme.h"
 #include "format_flags.h"
+#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"

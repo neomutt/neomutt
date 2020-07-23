@@ -46,6 +46,7 @@
 #include "format_flags.h"
 #include "handler.h"
 #include "hdrline.h"
+#include "helpbar.h"
 #include "hook.h"
 #include "init.h"
 #include "keymap.h"

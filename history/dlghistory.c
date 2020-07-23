@@ -34,6 +34,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "format_flags.h"
+#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_menu.h"
 #include "muttlib.h"

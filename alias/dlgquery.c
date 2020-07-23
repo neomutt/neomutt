@@ -43,6 +43,7 @@
 #include "alias.h"
 #include "format_flags.h"
 #include "gui.h"
+#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"

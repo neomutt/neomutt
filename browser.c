@@ -48,6 +48,7 @@
 #include "browser.h"
 #include "context.h"
 #include "format_flags.h"
+#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_attach.h"
 #include "mutt_globals.h"

@@ -114,7 +114,6 @@ enum MessageType
 #define MUTT_SPAM   1
 #define MUTT_NOSPAM 2
 
-char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu, const struct Mapping *items);
 void reset_value(const char *name);
 
 #endif /* MUTT_MUTT_H */

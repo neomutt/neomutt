@@ -36,6 +36,7 @@
 #include "address/lib.h"
 #include "gui/lib.h"
 #include "format_flags.h"
+#include "helpbar.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "muttlib.h"

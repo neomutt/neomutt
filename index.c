@@ -49,6 +49,7 @@
 #include "context.h"
 #include "format_flags.h"
 #include "hdrline.h"
+#include "helpbar.h"
 #include "hook.h"
 #include "init.h"
 #include "keymap.h"
