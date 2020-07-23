@@ -2363,6 +2363,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   pager_menu->custom_redraw = pager_custom_redraw;
   pager_menu->redraw_data = &rd;
   mutt_menu_push_current(pager_menu);
+  window_set_focus(extra->win_pager);
 
   while (ch != -1)
   {
@@ -3131,6 +3132,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         old_PagerIndexLines = C_PagerIndexLines;
 
         mutt_enter_command();
+        window_set_focus(rd.extra->win_pager);
         pager_menu->redraw = REDRAW_FULL;
 
         if (OptNeedResort)

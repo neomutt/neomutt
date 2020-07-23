@@ -174,6 +174,9 @@ void mutt_window_free(struct MuttWindow **ptr)
 
   struct MuttWindow *win = *ptr;
 
+  if (win->parent && (win->parent->focus == win))
+    win->parent->focus = NULL;
+
   struct EventWindow ev_w = { win, WN_NO_FLAGS };
   notify_send(win->notify, NT_WINDOW, NT_WINDOW_DELETE, &ev_w);
 
@@ -753,4 +756,42 @@ void window_redraw(struct MuttWindow *win, bool force)
 
   window_recalc(win);
   window_repaint(win, force);
+}
+
+/**
+ * window_set_focus - Set the Window focus
+ * @param win Window to focus
+ */
+void window_set_focus(struct MuttWindow *win)
+{
+  if (!win)
+    return;
+
+  struct MuttWindow *parent = win->parent;
+  struct MuttWindow *child = win;
+
+  // Set the chain of focus, all the way to the root
+  for (; parent; child = parent, parent = parent->parent)
+    parent->focus = child;
+
+  // Find the most focussed Window
+  while (win && win->focus)
+    win = win->focus;
+
+  struct EventWindow ev_w = { win, WN_NO_FLAGS };
+  notify_send(win->notify, NT_WINDOW, NT_WINDOW_FOCUS, &ev_w);
+}
+
+/**
+ * window_get_focus - Get the currently focussed Window
+ * @retval ptr Window with focus
+ */
+struct MuttWindow *window_get_focus(void)
+{
+  struct MuttWindow *win = RootWindow;
+
+  while (win && win->focus)
+    win = win->focus;
+
+  return win;
 }

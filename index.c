@@ -2615,6 +2615,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
         op = mutt_display_message(win_index, win_ibar, win_pager, win_pbar,
                                   Context->mailbox, cur.e);
+        window_set_focus(win_index);
         if (op < 0)
         {
           OptNeedResort = false;
@@ -3405,6 +3406,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
       case OP_ENTER_COMMAND:
         mutt_enter_command();
+        window_set_focus(win_index);
         if (Context)
           mutt_check_rescore(Context->mailbox);
         break;
@@ -4061,10 +4063,12 @@ static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool sta
   struct MuttWindow *panel_index =
       mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  parent->focus = panel_index;
 
   struct MuttWindow *win_index =
       mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  panel_index->focus = win_index;
 
   struct MuttWindow *win_ibar =
       mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
@@ -4100,6 +4104,7 @@ static struct MuttWindow *create_panel_pager(struct MuttWindow *parent, bool sta
   struct MuttWindow *win_pager =
       mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  panel_pager->focus = win_pager;
 
   struct MuttWindow *win_pbar =
       mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
