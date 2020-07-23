@@ -4470,8 +4470,8 @@ msgid "Select  "
 msgstr "Selecciona  "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
-msgstr "Comprova la clau  "
+msgid "Check key"
+msgstr "Comprova la clau"
 
 # Darrere va el patró corresponent.  ivb
 #: ncrypt/crypt_gpgme.c:4832

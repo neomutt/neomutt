@@ -216,30 +216,52 @@ static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
 static const char *Function_not_permitted_in_attach_message_mode =
     N_("Function not permitted in attach-message mode");
 
+// clang-format off
+/// Help Bar for the Pager's Help Page
 static const struct Mapping PagerHelp[] = {
-  { N_("Exit"), OP_EXIT },
-  { N_("PrevPg"), OP_PREV_PAGE },
-  { N_("NextPg"), OP_NEXT_PAGE },
-  { NULL, 0 },
+  { N_("Exit"),          OP_EXIT },
+  { N_("PrevPg"),        OP_PREV_PAGE },
+  { N_("NextPg"),        OP_NEXT_PAGE },
+  { N_("Help"),          OP_HELP },
+  { NULL,                0 },
 };
 
-static const struct Mapping PagerHelpExtra[] = {
+/// Help Bar for the Help Page itself
+static const struct Mapping PagerHelpHelp[] = {
+  { N_("Exit"),          OP_EXIT },
+  { N_("PrevPg"),        OP_PREV_PAGE },
+  { N_("NextPg"),        OP_NEXT_PAGE },
+  { NULL,                0 },
+};
+
+/// Help Bar for the Pager of a normal Mailbox
+static const struct Mapping PagerNormalHelp[] = {
+  { N_("Exit"),          OP_EXIT },
+  { N_("PrevPg"),        OP_PREV_PAGE },
+  { N_("NextPg"),        OP_NEXT_PAGE },
   { N_("View Attachm."), OP_VIEW_ATTACHMENTS },
-  { N_("Del"), OP_DELETE },
-  { N_("Reply"), OP_REPLY },
-  { N_("Next"), OP_MAIN_NEXT_UNDELETED },
-  { NULL, 0 },
+  { N_("Del"),           OP_DELETE },
+  { N_("Reply"),         OP_REPLY },
+  { N_("Next"),          OP_MAIN_NEXT_UNDELETED },
+  { N_("Help"),          OP_HELP },
+  { NULL,                0 },
 };
 
 #ifdef USE_NNTP
-static struct Mapping PagerNewsHelpExtra[] = {
-  { N_("Post"), OP_POST },
-  { N_("Followup"), OP_FOLLOWUP },
-  { N_("Del"), OP_DELETE },
-  { N_("Next"), OP_MAIN_NEXT_UNDELETED },
-  { NULL, 0 },
+/// Help Bar for the Pager of an NNTP Mailbox
+static struct Mapping PagerNewsHelp[] = {
+  { N_("Exit"),          OP_EXIT },
+  { N_("PrevPg"),        OP_PREV_PAGE },
+  { N_("NextPg"),        OP_NEXT_PAGE },
+  { N_("Post"),          OP_POST },
+  { N_("Followup"),      OP_FOLLOWUP },
+  { N_("Del"),           OP_DELETE },
+  { N_("Next"),          OP_MAIN_NEXT_UNDELETED },
+  { N_("Help"),          OP_HELP },
+  { NULL,                0 },
 };
 #endif
+// clang-format on
 
 #define IS_HEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDRDEFAULT)
 
@@ -2236,6 +2258,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   bool first = true;
   int searchctx = 0;
   bool wrapped = false;
+  char helpstr[1024] = { 0 };
 
   struct Menu *pager_menu = NULL;
   int old_PagerIndexLines; /* some people want to resize it while inside the pager */
@@ -2304,27 +2327,26 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     (rd.line_info[i].syntax)[0].last = -1;
   }
 
-  struct Buffer helpstr = mutt_buffer_make(0);
-  mutt_compile_help(buf, sizeof(buf), MENU_PAGER, PagerHelp);
-  mutt_buffer_strcpy(&helpstr, buf);
   if (IsEmail(extra))
   {
-    mutt_compile_help(buf, sizeof(buf), MENU_PAGER,
+    // Viewing a Mailbox
 #ifdef USE_NNTP
-                      (Context && (Context->mailbox->type == MUTT_NNTP)) ?
-                          PagerNewsHelpExtra :
+    if (Context && (Context->mailbox->type == MUTT_NNTP))
+      mutt_compile_help(helpstr, sizeof(helpstr), MENU_PAGER, PagerNewsHelp);
+    else
 #endif
-                          PagerHelpExtra);
-    mutt_buffer_addch(&helpstr, ' ');
-    mutt_buffer_addstr(&helpstr, buf);
+      mutt_compile_help(helpstr, sizeof(helpstr), MENU_PAGER, PagerNormalHelp);
   }
-  if (!InHelp)
+  else
   {
-    mutt_make_help(buf, sizeof(buf), _("Help"), MENU_PAGER, OP_HELP);
-    mutt_buffer_addch(&helpstr, ' ');
-    mutt_buffer_addstr(&helpstr, buf);
+    // Viewing Help
+    if (InHelp)
+      mutt_compile_help(helpstr, sizeof(helpstr), MENU_PAGER, PagerHelpHelp);
+    else
+      mutt_compile_help(helpstr, sizeof(helpstr), MENU_PAGER, PagerHelp);
   }
-  rd.helpstr = mutt_b2s(&helpstr);
+
+  rd.helpstr = helpstr;
 
   pager_menu = mutt_menu_new(MENU_PAGER);
   pager_menu->pagelen = extra->win_pager->state.rows;
@@ -3592,8 +3614,6 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   mutt_menu_pop_current(pager_menu);
   mutt_menu_free(&pager_menu);
   mutt_menu_free(&rd.menu);
-
-  mutt_buffer_dealloc(&helpstr);
 
   if (rd.extra->win_index)
   {

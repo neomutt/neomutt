@@ -4351,8 +4351,8 @@ msgid "Select  "
 msgstr "選擇    "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
-msgstr "檢查鑰匙   "
+msgid "Check key"
+msgstr "檢查鑰匙 "
 
 #: ncrypt/crypt_gpgme.c:4832
 #, fuzzy

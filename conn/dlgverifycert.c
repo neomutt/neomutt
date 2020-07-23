@@ -40,6 +40,16 @@
 #include "protos.h"
 
 #ifdef USE_SSL
+static const struct Mapping VerifyHelp[] = {
+  // clang-format off
+  { N_("Exit"), OP_EXIT },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
+  // clang-format on
+};
+#endif
+
+#ifdef USE_SSL
 /**
  * dlg_verify_cert - Ask the user to validate the certificate
  * @param title        Menu title
@@ -109,13 +119,8 @@ int dlg_verify_cert(const char *title, struct ListHead *list, bool allow_always,
     }
   }
 
-  char buf[128] = { 0 };
   char helpstr[1024] = { 0 };
-  mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_GENERIC, OP_EXIT);
-  mutt_str_cat(helpstr, sizeof(helpstr), buf);
-  mutt_make_help(buf, sizeof(buf), _("Help"), MENU_GENERIC, OP_HELP);
-  mutt_str_cat(helpstr, sizeof(helpstr), buf);
-  menu->help = helpstr;
+  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_GENERIC, VerifyHelp);
 
   bool old_ime = OptIgnoreMacroEvents;
   OptIgnoreMacroEvents = true;

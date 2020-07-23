@@ -4281,8 +4281,8 @@ msgid "Select  "
 msgstr "Вибір  "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
-msgstr "Перевірка ключа  "
+msgid "Check key"
+msgstr "Перевірка ключа"
 
 #: ncrypt/crypt_gpgme.c:4832
 msgid "PGP and S/MIME keys matching"

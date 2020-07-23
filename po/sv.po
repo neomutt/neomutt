@@ -4324,7 +4324,7 @@ msgid "Select  "
 msgstr "Välj  "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
+msgid "Check key"
 msgstr "Kontrollera nyckel "
 
 #: ncrypt/crypt_gpgme.c:4832

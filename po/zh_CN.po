@@ -4230,8 +4230,8 @@ msgid "Select  "
 msgstr "选择  "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
-msgstr "检查密钥  "
+msgid "Check key"
+msgstr "检查密钥"
 
 #: ncrypt/crypt_gpgme.c:4832
 msgid "PGP and S/MIME keys matching"

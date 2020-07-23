@@ -4347,8 +4347,8 @@ msgid "Select  "
 msgstr "Választ  "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
-msgstr "Kulcs ellenőrzése  "
+msgid "Check key"
+msgstr "Kulcs ellenőrzése"
 
 #: ncrypt/crypt_gpgme.c:4832
 #, fuzzy

@@ -4324,8 +4324,8 @@ msgid "Select  "
 msgstr "Aukeratu  "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
-msgstr "Gakoa egiaztatu  "
+msgid "Check key"
+msgstr "Gakoa egiaztatu"
 
 #: ncrypt/crypt_gpgme.c:4832
 msgid "PGP and S/MIME keys matching"

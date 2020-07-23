@@ -4329,8 +4329,8 @@ msgid "Select  "
 msgstr "선택  "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
-msgstr "열쇠 확인  "
+msgid "Check key"
+msgstr "열쇠 확인"
 
 #: ncrypt/crypt_gpgme.c:4832
 #, fuzzy

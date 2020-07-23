@@ -47,6 +47,16 @@
 #include "pgplib.h"
 #include "protos.h"
 
+static const struct Mapping PgpHelp[] = {
+  // clang-format off
+  { N_("Exit"),      OP_EXIT },
+  { N_("Select"),    OP_GENERIC_SELECT_ENTRY },
+  { N_("Check key"), OP_VERIFY_KEY },
+  { N_("Help"),      OP_HELP },
+  { NULL, 0 },
+  // clang-format on
+};
+
 /**
  * struct PgpEntry - An entry in a PGP key menu
  */
@@ -523,14 +533,7 @@ struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address *p, co
   qsort(key_table, i, sizeof(struct PgpUid *), f);
 
   helpstr[0] = '\0';
-  mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_PGP, OP_EXIT);
-  strcat(helpstr, buf);
-  mutt_make_help(buf, sizeof(buf), _("Select  "), MENU_PGP, OP_GENERIC_SELECT_ENTRY);
-  strcat(helpstr, buf);
-  mutt_make_help(buf, sizeof(buf), _("Check key  "), MENU_PGP, OP_VERIFY_KEY);
-  strcat(helpstr, buf);
-  mutt_make_help(buf, sizeof(buf), _("Help"), MENU_PGP, OP_HELP);
-  strcat(helpstr, buf);
+  mutt_compile_help(helpstr, sizeof(helpstr), MENU_PGP, PgpHelp);
 
   menu = mutt_menu_new(MENU_PGP);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_PGP);

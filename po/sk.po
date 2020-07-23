@@ -4309,8 +4309,8 @@ msgid "Select  "
 msgstr "Označiť  "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
-msgstr "Skontrolovať kľúč  "
+msgid "Check key"
+msgstr "Skontrolovať kľúč"
 
 #: ncrypt/crypt_gpgme.c:4832
 msgid "PGP and S/MIME keys matching"

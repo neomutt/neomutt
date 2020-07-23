@@ -4282,7 +4282,7 @@ msgid "Select  "
 msgstr "Выбрать "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
+msgid "Check key"
 msgstr "Тест ключа "
 
 #: ncrypt/crypt_gpgme.c:4832

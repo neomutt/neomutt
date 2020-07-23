@@ -4252,8 +4252,8 @@ msgid "Select  "
 msgstr "選択  "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
-msgstr "鍵検査  "
+msgid "Check key"
+msgstr "鍵検査"
 
 #: ncrypt/crypt_gpgme.c:4832
 msgid "PGP and S/MIME keys matching"

@@ -4252,8 +4252,8 @@ msgid "Select  "
 msgstr "Udvælg  "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
-msgstr "Undersøg nøgle  "
+msgid "Check key"
+msgstr "Undersøg nøgle"
 
 #: ncrypt/crypt_gpgme.c:4832
 msgid "PGP and S/MIME keys matching"

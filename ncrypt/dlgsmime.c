@@ -41,6 +41,15 @@
 #include "smime.h"
 #include "ncrypt/lib.h"
 
+static const struct Mapping SmimeHelp[] = {
+  // clang-format off
+  { N_("Exit"),   OP_EXIT },
+  { N_("Select"), OP_GENERIC_SELECT_ENTRY },
+  { N_("Help"),   OP_HELP },
+  { NULL, 0 },
+  // clang-format on
+};
+
 /**
  * smime_key_flags - Turn SMIME key flags into a string
  * @param flags Flags, see #KeyFlags
@@ -172,12 +181,7 @@ struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
 
   /* Make Helpstring */
   helpstr[0] = '\0';
-  mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_SMIME, OP_EXIT);
-  strcat(helpstr, buf);
-  mutt_make_help(buf, sizeof(buf), _("Select  "), MENU_SMIME, OP_GENERIC_SELECT_ENTRY);
-  strcat(helpstr, buf);
-  mutt_make_help(buf, sizeof(buf), _("Help"), MENU_SMIME, OP_HELP);
-  strcat(helpstr, buf);
+  mutt_compile_help(helpstr, sizeof(helpstr), MENU_SMIME, SmimeHelp);
 
   menu = mutt_menu_new(MENU_SMIME);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_SMIME);

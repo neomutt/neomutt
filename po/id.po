@@ -4305,8 +4305,8 @@ msgid "Select  "
 msgstr "Pilih  "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
-msgstr "Cek key  "
+msgid "Check key"
+msgstr "Cek key"
 
 #: ncrypt/crypt_gpgme.c:4832
 msgid "PGP and S/MIME keys matching"

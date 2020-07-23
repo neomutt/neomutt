@@ -4388,8 +4388,8 @@ msgid "Select  "
 msgstr "Roghnaigh  "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
-msgstr "Seiceáil eochair  "
+msgid "Check key"
+msgstr "Seiceáil eochair"
 
 #: ncrypt/crypt_gpgme.c:4832
 msgid "PGP and S/MIME keys matching"

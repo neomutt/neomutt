@@ -58,6 +58,16 @@
 #include <libintl.h>
 #endif
 
+static const struct Mapping GpgmeHelp[] = {
+  // clang-format off
+  { N_("Exit"),      OP_EXIT },
+  { N_("Select"),    OP_GENERIC_SELECT_ENTRY },
+  { N_("Check key"), OP_VERIFY_KEY },
+  { N_("Help"),      OP_HELP },
+  { NULL, 0 },
+  // clang-format on
+};
+
 /**
  * struct CryptEntry - An entry in the Select-Key menu
  */
@@ -1247,14 +1257,7 @@ struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys, struct Address 
     menu_to_use = MENU_KEY_SELECT_SMIME;
 
   helpstr[0] = '\0';
-  mutt_make_help(buf, sizeof(buf), _("Exit  "), menu_to_use, OP_EXIT);
-  strcat(helpstr, buf);
-  mutt_make_help(buf, sizeof(buf), _("Select  "), menu_to_use, OP_GENERIC_SELECT_ENTRY);
-  strcat(helpstr, buf);
-  mutt_make_help(buf, sizeof(buf), _("Check key  "), menu_to_use, OP_VERIFY_KEY);
-  strcat(helpstr, buf);
-  mutt_make_help(buf, sizeof(buf), _("Help"), menu_to_use, OP_HELP);
-  strcat(helpstr, buf);
+  mutt_compile_help(helpstr, sizeof(helpstr), menu_to_use, GpgmeHelp);
 
   struct Menu *menu = mutt_menu_new(menu_to_use);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_CRYPT_GPGME);

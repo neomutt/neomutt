@@ -4352,7 +4352,7 @@ msgid "Select  "
 msgstr "Διαλέξτε "
 
 #: ncrypt/crypt_gpgme.c:4786 ncrypt/pgpkey.c:668
-msgid "Check key  "
+msgid "Check key"
 msgstr "Ελέγξτε κλειδί "
 
 #: ncrypt/crypt_gpgme.c:4832
