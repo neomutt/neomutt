@@ -3785,6 +3785,7 @@
 ** to save attachments to files named like:
 ** .ts
 ** =?iso-8859-1?Q?file=5F=E4=5F991116=2Ezip?=
+** =?utf-8?Q?z=C4=99ta.png?=
 ** .te
 ** .pp
 ** When this variable is \fIset\fP interactively, the change won't be
@@ -3792,7 +3793,7 @@
 ** .pp
 ** Note that this use of RFC2047's encoding is explicitly
 ** prohibited by the standard, but nevertheless encountered in the
-** wild.
+** wild and produced by, e.g., Outlook.
 ** .pp
 ** Also note that setting this parameter will \fInot\fP have the effect
 ** that NeoMutt \fIgenerates\fP this kind of encoding.  Instead, NeoMutt will
