@@ -42,9 +42,9 @@ config/string.c
 config/subset.c
 conn/config.c
 conn/connaccount.c
+conn/dlgverifycert.c
 conn/getdomain.c
 conn/gnutls.c
-conn/gui.c
 conn/openssl.c
 conn/raw.c
 conn/sasl.c

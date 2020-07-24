@@ -210,7 +210,7 @@ LIBCONNOBJS=	conn/config.o conn/connaccount.o conn/getdomain.o conn/raw.o \
 LIBCONNOBJS+=	conn/sasl.o
 @endif
 @if USE_SSL
-LIBCONNOBJS+=	conn/gui.o
+LIBCONNOBJS+=	conn/dlgverifycert.o
 @endif
 @if USE_SSL_GNUTLS
 LIBCONNOBJS+=	conn/gnutls.o
