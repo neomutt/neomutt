@@ -1079,7 +1079,6 @@ void sb_draw(struct MuttWindow *win)
     return;
   }
 
-  draw_sidebar(wdata, win, num_rows, num_cols, wdata->divider_width);
   mutt_window_move(win, col, row);
 }
 
