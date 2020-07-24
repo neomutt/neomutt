@@ -44,7 +44,6 @@
 #include "alias.h"
 #include "format_flags.h"
 #include "gui.h"
-#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_menu.h"
@@ -191,15 +190,15 @@ static void alias_menu(char *buf, size_t buflen, struct AliasMenuData *mdata)
 
   int t = -1;
   bool done = false;
-  char helpstr[1024];
 
   struct Menu *menu = mutt_menu_new(MENU_ALIAS);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_ALIAS);
+  dlg->help_data = AliasHelp;
+  dlg->help_menu = MENU_ALIAS;
 
   menu->make_entry = alias_make_entry;
   menu->tag = alias_tag;
   menu->title = _("Aliases");
-  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ALIAS, AliasHelp);
   menu->max = mdata->num_views;
   menu->mdata = mdata;
 

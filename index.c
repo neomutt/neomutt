@@ -49,7 +49,6 @@
 #include "context.h"
 #include "format_flags.h"
 #include "hdrline.h"
-#include "helpbar.h"
 #include "hook.h"
 #include "init.h"
 #include "keymap.h"
@@ -1179,7 +1178,7 @@ static void index_custom_redraw(struct Menu *menu)
  */
 int mutt_index_menu(struct MuttWindow *dlg)
 {
-  char buf[PATH_MAX], helpstr[1024];
+  char buf[PATH_MAX];
   int op = OP_NULL;
   bool done = false; /* controls when to exit the "event" loop */
   bool tag = false;  /* has the tag-prefix command been pressed? */
@@ -1196,6 +1195,14 @@ int mutt_index_menu(struct MuttWindow *dlg)
   struct MuttWindow *win_pager = mutt_window_find(dlg, WT_PAGER);
   struct MuttWindow *win_pbar = mutt_window_find(dlg, WT_PAGER_BAR);
 
+#ifdef USE_NNTP
+  if (Context && Context->mailbox && (Context->mailbox->type == MUTT_NNTP))
+    dlg->help_data = IndexNewsHelp;
+  else
+#endif
+    dlg->help_data = IndexHelp;
+  dlg->help_menu = MENU_MAIN;
+
   struct Menu *menu = mutt_menu_new(MENU_MAIN);
   menu->pagelen = win_index->state.rows;
   menu->win_index = win_index;
@@ -1204,13 +1211,6 @@ int mutt_index_menu(struct MuttWindow *dlg)
   menu->make_entry = index_make_entry;
   menu->color = index_color;
   menu->current = ci_first_message(Context);
-  menu->help = mutt_compile_help(
-      helpstr, sizeof(helpstr), MENU_MAIN,
-#ifdef USE_NNTP
-      (Context && Context->mailbox && (Context->mailbox->type == MUTT_NNTP)) ?
-          IndexNewsHelp :
-#endif
-          IndexHelp);
   menu->custom_redraw = index_custom_redraw;
   mutt_menu_push_current(menu);
   mutt_window_reflow(NULL);
@@ -1376,6 +1376,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
     else
     {
       index_custom_redraw(menu);
+      window_redraw(RootWindow, true);
 
       /* give visual indication that the next command is a tag- command */
       if (tag)
@@ -2569,7 +2570,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           change_folder_string(menu, folderbuf->data, folderbuf->dsize,
                                &oldcount, &cur, &pager_return, read_only);
         }
-        menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MAIN, IndexNewsHelp);
+        dlg->help_data = IndexNewsHelp;
 
       changefoldercleanup2:
         mutt_buffer_pool_release(&folderbuf);

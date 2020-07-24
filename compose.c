@@ -51,7 +51,6 @@
 #include "commands.h"
 #include "context.h"
 #include "format_flags.h"
-#include "helpbar.h"
 #include "hook.h"
 #include "index.h"
 #include "init.h"
@@ -1318,7 +1317,6 @@ static int mutt_dlg_compose_observer(struct NotifyCallback *nc)
  */
 int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, int flags)
 {
-  char helpstr[1024]; // This isn't copied by the help bar
   char buf[PATH_MAX];
   int rc = -1;
   bool loop = true;
@@ -1381,6 +1379,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
   notify_observer_add(NeoMutt->notify, mutt_dlg_compose_observer, dlg);
   dialog_push(dlg);
 
+#ifdef USE_NNTP
+  if (news)
+    dlg->help_data = ComposeNewsHelp;
+  else
+#endif
+    dlg->help_data = ComposeHelp;
+  dlg->help_menu = MENU_COMPOSE;
+
   envelope->req_rows = calc_envelope(rd);
   mutt_window_reflow(dlg);
 
@@ -1392,12 +1398,6 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
   menu->make_entry = snd_make_entry;
   menu->tag = attach_tag;
-#ifdef USE_NNTP
-  if (news)
-    menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_COMPOSE, ComposeNewsHelp);
-  else
-#endif
-    menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_COMPOSE, ComposeHelp);
   menu->custom_redraw = compose_custom_redraw;
   menu->redraw_data = rd;
   mutt_menu_push_current(menu);

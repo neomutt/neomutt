@@ -33,7 +33,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
-#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
@@ -161,7 +160,6 @@ struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   int table_index = 0;
   struct SmimeKey *key = NULL;
   struct SmimeKey *selected_key = NULL;
-  char helpstr[1024];
   char buf[1024];
   char title[256];
   struct Menu *menu = NULL;
@@ -181,16 +179,13 @@ struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
 
   snprintf(title, sizeof(title), _("S/MIME certificates matching \"%s\""), query);
 
-  /* Make Helpstring */
-  helpstr[0] = '\0';
-  mutt_compile_help(helpstr, sizeof(helpstr), MENU_SMIME, SmimeHelp);
-
   menu = mutt_menu_new(MENU_SMIME);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_SMIME);
+  dlg->help_data = SmimeHelp;
+  dlg->help_menu = MENU_SMIME;
 
   menu->max = table_index;
   menu->make_entry = smime_make_entry;
-  menu->help = helpstr;
   menu->mdata = table;
   menu->title = title;
   mutt_menu_push_current(menu);

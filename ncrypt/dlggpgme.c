@@ -45,7 +45,6 @@
 #include "gui/lib.h"
 #include "crypt_gpgme.h"
 #include "format_flags.h"
-#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
@@ -1200,7 +1199,7 @@ struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys, struct Address 
   int keymax;
   int i;
   bool done = false;
-  char helpstr[1024], buf[1024];
+  char buf[1024];
   struct CryptKeyInfo *k = NULL;
   int (*f)(const void *, const void *);
   enum MenuType menu_to_use = MENU_GENERIC;
@@ -1258,15 +1257,13 @@ struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys, struct Address 
   else if (app & APPLICATION_SMIME)
     menu_to_use = MENU_KEY_SELECT_SMIME;
 
-  helpstr[0] = '\0';
-  mutt_compile_help(helpstr, sizeof(helpstr), menu_to_use, GpgmeHelp);
-
   struct Menu *menu = mutt_menu_new(menu_to_use);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_CRYPT_GPGME);
+  dlg->help_data = GpgmeHelp;
+  dlg->help_menu = menu_to_use;
 
   menu->max = i;
   menu->make_entry = crypt_make_entry;
-  menu->help = helpstr;
   menu->mdata = key_table;
   mutt_menu_push_current(menu);
 

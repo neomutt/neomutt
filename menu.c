@@ -355,13 +355,7 @@ void menu_redraw_full(struct Menu *menu)
   mutt_window_move_abs(0, 0);
   mutt_window_clrtobot();
 
-  if (C_Help)
-  {
-    mutt_curses_set_color(MT_COLOR_STATUS);
-    mutt_window_move(HelpBarWindow, 0, 0);
-    mutt_paddstr(HelpBarWindow->state.cols, menu->help);
-    mutt_curses_set_color(MT_COLOR_NORMAL);
-  }
+  window_redraw(RootWindow, true);
   menu->pagelen = menu->win_index->state.rows;
 
   mutt_show_error();
@@ -1520,6 +1514,7 @@ int mutt_menu_loop(struct Menu *menu)
       case OP_ENTER_COMMAND:
         mutt_enter_command();
         window_set_focus(menu->win_index);
+        window_redraw(RootWindow, false);
         break;
 
       case OP_TAG:

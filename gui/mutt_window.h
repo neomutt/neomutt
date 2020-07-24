@@ -131,6 +131,8 @@ struct MuttWindow
   struct Notify *notify;             ///< Notifications system
 
   struct MuttWindow *focus;          ///< Focussed Window
+  int help_menu;                     ///< Menu for key bindings, e.g. #MENU_PAGER
+  const struct Mapping *help_data;   ///< Data for the Help Bar
 
   enum WindowType type;              ///< Window type, e.g. #WT_SIDEBAR
   void *wdata;                       ///< Private data
@@ -186,6 +188,7 @@ struct EventWindow
   WindowNotifyFlags flags; ///< Attributes of Window that changed
 };
 
+extern struct MuttWindow *RootWindow;
 extern struct MuttWindow *AllDialogsWindow;
 extern struct MuttWindow *HelpBarWindow;
 extern struct MuttWindow *MessageWindow;

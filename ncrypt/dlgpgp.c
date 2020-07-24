@@ -36,7 +36,6 @@
 #include "address/lib.h"
 #include "gui/lib.h"
 #include "format_flags.h"
-#include "helpbar.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
@@ -473,7 +472,7 @@ struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address *p, co
   struct Menu *menu = NULL;
   int i;
   bool done = false;
-  char helpstr[1024], buf[1024], tmpbuf[256];
+  char buf[1024], tmpbuf[256];
   char cmd[1024];
   struct PgpKeyInfo *kp = NULL;
   struct PgpUid *a = NULL;
@@ -534,15 +533,13 @@ struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address *p, co
   }
   qsort(key_table, i, sizeof(struct PgpUid *), f);
 
-  helpstr[0] = '\0';
-  mutt_compile_help(helpstr, sizeof(helpstr), MENU_PGP, PgpHelp);
-
   menu = mutt_menu_new(MENU_PGP);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_PGP);
+  dlg->help_data = PgpHelp;
+  dlg->help_menu = MENU_PGP;
 
   menu->max = i;
   menu->make_entry = pgp_make_entry;
-  menu->help = helpstr;
   menu->mdata = key_table;
   mutt_menu_push_current(menu);
 

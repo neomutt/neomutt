@@ -43,7 +43,6 @@
 #include "alias.h"
 #include "format_flags.h"
 #include "gui.h"
-#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
@@ -319,13 +318,13 @@ static void query_menu(char *buf, size_t buflen, struct AliasList *all, bool ret
 
   menu = mutt_menu_new(MENU_QUERY);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_QUERY);
+  dlg->help_data = QueryHelp;
+  dlg->help_menu = MENU_QUERY;
 
   menu->make_entry = query_make_entry;
   menu->search = query_search;
   menu->tag = query_tag;
   menu->title = title;
-  char helpstr[1024];
-  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
   menu->max = mdata->num_views;
   menu->mdata = mdata;
   mutt_menu_push_current(menu);

@@ -37,7 +37,6 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "format_flags.h"
-#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_menu.h"
@@ -181,8 +180,6 @@ static struct Menu *create_menu(void)
   /* menu->tag = account_tag; */
   // L10N: Autocrypt Account Management Menu title
   menu->title = _("Autocrypt Accounts");
-  char *helpstr = mutt_mem_malloc(256);
-  menu->help = mutt_compile_help(helpstr, 256, MENU_AUTOCRYPT_ACCT, AutocryptAcctHelp);
 
   struct AccountEntry *entries =
       mutt_mem_calloc(num_accounts, sizeof(struct AccountEntry));
@@ -224,7 +221,6 @@ static void menu_free(struct Menu **menu)
   FREE(&(*menu)->mdata);
 
   mutt_menu_pop_current(*menu);
-  FREE(&(*menu)->help);
   mutt_menu_free(menu);
 }
 
@@ -274,6 +270,8 @@ void mutt_autocrypt_account_menu(void)
     return;
 
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_AUTOCRYPT);
+  dlg->help_data = AutocryptAcctHelp;
+  dlg->help_menu = MENU_AUTOCRYPT_ACCT;
 
   bool done = false;
   while (!done)
@@ -292,6 +290,8 @@ void mutt_autocrypt_account_menu(void)
         dialog_destroy_simple_index(&dlg);
         menu = create_menu();
         dlg = dialog_create_simple_index(menu, WT_DLG_AUTOCRYPT);
+        dlg->help_data = AutocryptAcctHelp;
+        dlg->help_menu = MENU_AUTOCRYPT_ACCT;
         break;
 
       case OP_AUTOCRYPT_DELETE_ACCT:
@@ -313,6 +313,8 @@ void mutt_autocrypt_account_menu(void)
           dialog_destroy_simple_index(&dlg);
           menu = create_menu();
           dlg = dialog_create_simple_index(menu, WT_DLG_AUTOCRYPT);
+          dlg->help_data = AutocryptAcctHelp;
+          dlg->help_menu = MENU_AUTOCRYPT_ACCT;
         }
         break;
       }

@@ -44,7 +44,6 @@
 #include "format_flags.h"
 #include "handler.h"
 #include "hdrline.h"
-#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
@@ -225,16 +224,16 @@ static struct Email *select_msg(struct Context *ctx)
 {
   int r = -1;
   bool done = false;
-  char helpstr[1024];
 
   struct Menu *menu = mutt_menu_new(MENU_POSTPONE);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_POSTPONE);
+  dlg->help_data = PostponeHelp;
+  dlg->help_menu = MENU_POSTPONE;
 
   menu->make_entry = post_make_entry;
   menu->max = ctx->mailbox->msg_count;
   menu->title = _("Postponed Messages");
   menu->mdata = ctx;
-  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_POSTPONE, PostponeHelp);
   mutt_menu_push_current(menu);
 
   /* The postponed mailbox is setup to have sorting disabled, but the global
