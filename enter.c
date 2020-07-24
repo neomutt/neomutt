@@ -179,7 +179,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
                            CompletionFlags flags, bool multiple, char ***files,
                            int *numfiles, struct EnterState *state)
 {
-  int width = MuttMessageWindow->state.cols - col - 1;
+  int width = MessageWindow->state.cols - col - 1;
   enum EnterRedrawFlags redraw = ENTER_REDRAW_NONE;
   bool pass = (flags & MUTT_PASS);
   bool first = true;
@@ -239,7 +239,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             state->wbuf, state->lastchar,
             mutt_mb_wcswidth(state->wbuf, state->curpos) - (width / 2));
       }
-      mutt_window_move(MuttMessageWindow, col, 0);
+      mutt_window_move(MessageWindow, col, 0);
       int w = 0;
       for (size_t i = state->begin; i < state->lastchar; i++)
       {
@@ -248,8 +248,8 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
           break;
         my_addwch(state->wbuf[i]);
       }
-      mutt_window_clrtoeol(MuttMessageWindow);
-      mutt_window_move(MuttMessageWindow,
+      mutt_window_clrtoeol(MessageWindow);
+      mutt_window_move(MessageWindow,
                        col + mutt_mb_wcswidth(state->wbuf + state->begin,
                                               state->curpos - state->begin),
                        0);

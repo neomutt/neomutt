@@ -1623,7 +1623,7 @@ void mutt_what_key(void)
 {
   int ch;
 
-  mutt_window_mvprintw(MuttMessageWindow, 0, 0, _("Enter keys (%s to abort): "),
+  mutt_window_mvprintw(MessageWindow, 0, 0, _("Enter keys (%s to abort): "),
                        km_keyname(AbortKey));
   do
   {

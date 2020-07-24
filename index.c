@@ -1374,8 +1374,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
       /* give visual indication that the next command is a tag- command */
       if (tag)
       {
-        mutt_window_mvaddstr(MuttMessageWindow, 0, 0, "tag-");
-        mutt_window_clrtoeol(MuttMessageWindow);
+        mutt_window_mvaddstr(MessageWindow, 0, 0, "tag-");
+        mutt_window_clrtoeol(MessageWindow);
       }
 
       if (menu->current < menu->max)
@@ -1412,7 +1412,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       {
         mutt_timeout_hook();
         if (tag)
-          mutt_window_clearline(MuttMessageWindow, 0);
+          mutt_window_clearline(MessageWindow, 0);
         continue;
       }
 
@@ -1427,7 +1427,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (tag)
         {
           tag = false;
-          mutt_window_clearline(MuttMessageWindow, 0);
+          mutt_window_clearline(MessageWindow, 0);
           continue;
         }
 
@@ -2476,7 +2476,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
         if (mutt_buffer_is_empty(folderbuf))
         {
-          mutt_window_clearline(MuttMessageWindow, 0);
+          mutt_window_clearline(MessageWindow, 0);
           goto changefoldercleanup;
         }
 
@@ -2548,7 +2548,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
         if (mutt_buffer_is_empty(folderbuf))
         {
-          mutt_window_clearline(MuttMessageWindow, 0);
+          mutt_window_clearline(MessageWindow, 0);
           goto changefoldercleanup2;
         }
 

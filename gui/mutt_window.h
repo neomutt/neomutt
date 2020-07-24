@@ -185,9 +185,9 @@ struct EventWindow
   WindowNotifyFlags flags; ///< Attributes of Window that changed
 };
 
-extern struct MuttWindow *MuttDialogWindow;
-extern struct MuttWindow *MuttHelpWindow;
-extern struct MuttWindow *MuttMessageWindow;
+extern struct MuttWindow *AllDialogsWindow;
+extern struct MuttWindow *HelpBarWindow;
+extern struct MuttWindow *MessageWindow;
 
 // Functions that deal with the Window
 void               mutt_window_add_child          (struct MuttWindow *parent, struct MuttWindow *child);

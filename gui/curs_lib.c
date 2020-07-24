@@ -272,12 +272,12 @@ int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, Completion
       clearok(stdscr, true);
       mutt_menu_current_redraw();
     }
-    mutt_window_clearline(MuttMessageWindow, 0);
+    mutt_window_clearline(MessageWindow, 0);
     mutt_curses_set_color(MT_COLOR_PROMPT);
     mutt_window_addstr(field);
     mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_refresh();
-    mutt_window_get_coords(MuttMessageWindow, &col, NULL);
+    mutt_window_get_coords(MessageWindow, &col, NULL);
     ret = mutt_enter_string_full(buf->data, buf->dsize, col, complete, multiple,
                                  files, numfiles, es);
   } while (ret == 1);
@@ -287,7 +287,7 @@ int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, Completion
   else
     mutt_buffer_reset(buf);
 
-  mutt_window_clearline(MuttMessageWindow, 0);
+  mutt_window_clearline(MessageWindow, 0);
   mutt_enter_state_free(&es);
 
   return ret;
@@ -419,13 +419,13 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
         clearok(stdscr, true);
         mutt_menu_current_redraw();
       }
-      if (MuttMessageWindow->state.cols)
+      if (MessageWindow->state.cols)
       {
-        prompt_lines = (msg_wid + answer_string_wid + MuttMessageWindow->state.cols - 1) /
-                       MuttMessageWindow->state.cols;
+        prompt_lines = (msg_wid + answer_string_wid + MessageWindow->state.cols - 1) /
+                       MessageWindow->state.cols;
         prompt_lines = MAX(1, MIN(3, prompt_lines));
       }
-      if (prompt_lines != MuttMessageWindow->state.rows)
+      if (prompt_lines != MessageWindow->state.rows)
       {
         mutt_window_reflow_message_rows(prompt_lines);
         mutt_menu_current_redraw();
@@ -433,15 +433,15 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 
       /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
       trunc_msg_len = mutt_wstr_trunc(
-          msg, (size_t) 4 * prompt_lines * MuttMessageWindow->state.cols,
-          ((size_t) prompt_lines * MuttMessageWindow->state.cols) - answer_string_wid, NULL);
+          msg, (size_t) 4 * prompt_lines * MessageWindow->state.cols,
+          ((size_t) prompt_lines * MessageWindow->state.cols) - answer_string_wid, NULL);
 
-      mutt_window_move(MuttMessageWindow, 0, 0);
+      mutt_window_move(MessageWindow, 0, 0);
       mutt_curses_set_color(MT_COLOR_PROMPT);
       mutt_window_addnstr(msg, trunc_msg_len);
       mutt_window_addstr(answer_string);
       mutt_curses_set_color(MT_COLOR_NORMAL);
-      mutt_window_clrtoeol(MuttMessageWindow);
+      mutt_window_clrtoeol(MessageWindow);
     }
 
     mutt_refresh();
@@ -483,9 +483,9 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   if (reno_ok)
     regfree(&reno);
 
-  if (MuttMessageWindow->state.rows == 1)
+  if (MessageWindow->state.rows == 1)
   {
-    mutt_window_clearline(MuttMessageWindow, 0);
+    mutt_window_clearline(MessageWindow, 0);
   }
   else
   {
@@ -523,7 +523,7 @@ enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
 
     default:
       opt = mutt_yesorno(prompt, (opt == MUTT_ASKYES) ? MUTT_YES : MUTT_NO);
-      mutt_window_clearline(MuttMessageWindow, 0);
+      mutt_window_clearline(MessageWindow, 0);
       return opt;
   }
 
@@ -559,9 +559,9 @@ void mutt_show_error(void)
     return;
 
   mutt_curses_set_color(OptMsgErr ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
-  mutt_window_mvaddstr(MuttMessageWindow, 0, 0, ErrorBuf);
+  mutt_window_mvaddstr(MessageWindow, 0, 0, ErrorBuf);
   mutt_curses_set_color(MT_COLOR_NORMAL);
-  mutt_window_clrtoeol(MuttMessageWindow);
+  mutt_window_clrtoeol(MessageWindow);
 }
 
 /**
@@ -770,12 +770,12 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
   struct KeyEvent ch;
 
   mutt_curses_set_color(MT_COLOR_PROMPT);
-  mutt_window_mvaddstr(MuttMessageWindow, 0, 0, prompt);
+  mutt_window_mvaddstr(MessageWindow, 0, 0, prompt);
   mutt_window_addstr(_(" ('?' for list): "));
   mutt_curses_set_color(MT_COLOR_NORMAL);
   if (!mutt_buffer_is_empty(fname))
     mutt_window_addstr(mutt_b2s(fname));
-  mutt_window_clrtoeol(MuttMessageWindow);
+  mutt_window_clrtoeol(MessageWindow);
   mutt_refresh();
 
   do
@@ -784,7 +784,7 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
   } while (ch.ch == -2);
   if (ch.ch < 0)
   {
-    mutt_window_clearline(MuttMessageWindow, 0);
+    mutt_window_clearline(MessageWindow, 0);
     return -1;
   }
   else if (ch.ch == '?')
@@ -950,7 +950,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         clearok(stdscr, true);
         mutt_menu_current_redraw();
       }
-      if (MuttMessageWindow->state.cols)
+      if (MessageWindow->state.cols)
       {
         int width = mutt_strwidth(prompt) + 2; // + '?' + space
         /* If we're going to colour the options,
@@ -958,17 +958,17 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         if (opt_cols)
           width -= 2 * mutt_str_len(letters);
 
-        prompt_lines = (width + MuttMessageWindow->state.cols - 1) /
-                       MuttMessageWindow->state.cols;
+        prompt_lines =
+            (width + MessageWindow->state.cols - 1) / MessageWindow->state.cols;
         prompt_lines = MAX(1, MIN(3, prompt_lines));
       }
-      if (prompt_lines != MuttMessageWindow->state.rows)
+      if (prompt_lines != MessageWindow->state.rows)
       {
         mutt_window_reflow_message_rows(prompt_lines);
         mutt_menu_current_redraw();
       }
 
-      mutt_window_move(MuttMessageWindow, 0, 0);
+      mutt_window_move(MessageWindow, 0, 0);
 
       if ((Colors->defs[MT_COLOR_OPTIONS] != 0) &&
           (Colors->defs[MT_COLOR_OPTIONS] != Colors->defs[MT_COLOR_PROMPT]))
@@ -1002,7 +1002,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
       mutt_curses_set_color(MT_COLOR_NORMAL);
 
       mutt_window_addch(' ');
-      mutt_window_clrtoeol(MuttMessageWindow);
+      mutt_window_clrtoeol(MessageWindow);
     }
 
     mutt_refresh();
@@ -1035,9 +1035,9 @@ int mutt_multi_choice(const char *prompt, const char *letters)
     }
     mutt_beep(false);
   }
-  if (MuttMessageWindow->state.rows == 1)
+  if (MessageWindow->state.rows == 1)
   {
-    mutt_window_clearline(MuttMessageWindow, 0);
+    mutt_window_clearline(MessageWindow, 0);
   }
   else
   {

@@ -973,7 +973,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
 #ifdef USE_SIDEBAR
         if (show || rename)
         {
-          struct MuttWindow *dlg = TAILQ_LAST(&MuttDialogWindow->children, MuttWindowList);
+          struct MuttWindow *dlg = TAILQ_LAST(&AllDialogsWindow->children, MuttWindowList);
           struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
           if (win_sidebar)
             sb_notify_mailbox(win_sidebar, m_old, show ? SBN_CREATED : SBN_RENAMED);
@@ -1003,7 +1003,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     }
 
 #ifdef USE_SIDEBAR
-    struct MuttWindow *dlg = TAILQ_LAST(&MuttDialogWindow->children, MuttWindowList);
+    struct MuttWindow *dlg = TAILQ_LAST(&AllDialogsWindow->children, MuttWindowList);
     struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
     if (win_sidebar)
       sb_notify_mailbox(win_sidebar, m, SBN_CREATED);
@@ -1965,7 +1965,7 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
       }
 
 #ifdef USE_SIDEBAR
-      struct MuttWindow *dlg = TAILQ_LAST(&MuttDialogWindow->children, MuttWindowList);
+      struct MuttWindow *dlg = TAILQ_LAST(&AllDialogsWindow->children, MuttWindowList);
       struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
       if (win_sidebar)
         sb_notify_mailbox(win_sidebar, np->mailbox, SBN_DELETED);

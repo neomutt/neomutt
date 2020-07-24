@@ -118,7 +118,7 @@ void mutt_clear_error(void)
 
   ErrorBufMessage = false;
   if (!OptNoCurses)
-    mutt_window_clearline(MuttMessageWindow, 0);
+    mutt_window_clearline(MessageWindow, 0);
 }
 
 /**
@@ -167,7 +167,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
     error_pause();
 
   mutt_simple_format(ErrorBuf, sizeof(ErrorBuf), 0,
-                     MuttMessageWindow ? MuttMessageWindow->state.cols : sizeof(ErrorBuf),
+                     MessageWindow ? MessageWindow->state.cols : sizeof(ErrorBuf),
                      JUSTIFY_LEFT, 0, buf, sizeof(buf), false);
   ErrorBufMessage = true;
 
@@ -187,9 +187,9 @@ int log_disp_curses(time_t stamp, const char *file, int line,
         break;
     }
 
-    mutt_window_mvaddstr(MuttMessageWindow, 0, 0, ErrorBuf);
+    mutt_window_mvaddstr(MessageWindow, 0, 0, ErrorBuf);
     mutt_curses_set_color(MT_COLOR_NORMAL);
-    mutt_window_clrtoeol(MuttMessageWindow);
+    mutt_window_clrtoeol(MessageWindow);
     mutt_refresh();
   }
 

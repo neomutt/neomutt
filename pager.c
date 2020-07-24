@@ -2005,8 +2005,8 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     if (C_Help)
     {
       mutt_curses_set_color(MT_COLOR_STATUS);
-      mutt_window_move(MuttHelpWindow, 0, 0);
-      mutt_paddstr(MuttHelpWindow->state.cols, rd->helpstr);
+      mutt_window_move(HelpBarWindow, 0, 0);
+      mutt_paddstr(HelpBarWindow->state.cols, rd->helpstr);
       mutt_curses_set_color(MT_COLOR_NORMAL);
     }
 

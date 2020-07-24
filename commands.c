@@ -469,9 +469,9 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   snprintf(scratch, sizeof(scratch),
            ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count), buf);
 
-  if (mutt_strwidth(scratch) > (MuttMessageWindow->state.cols - EXTRA_SPACE))
+  if (mutt_strwidth(scratch) > (MessageWindow->state.cols - EXTRA_SPACE))
   {
-    mutt_simple_format(prompt, sizeof(prompt), 0, MuttMessageWindow->state.cols - EXTRA_SPACE,
+    mutt_simple_format(prompt, sizeof(prompt), 0, MessageWindow->state.cols - EXTRA_SPACE,
                        JUSTIFY_LEFT, 0, scratch, sizeof(scratch), false);
     mutt_str_cat(prompt, sizeof(prompt), "...?");
   }
@@ -481,12 +481,12 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   if (query_quadoption(C_Bounce, prompt) != MUTT_YES)
   {
     mutt_addrlist_clear(&al);
-    mutt_window_clearline(MuttMessageWindow, 0);
+    mutt_window_clearline(MessageWindow, 0);
     mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
     return;
   }
 
-  mutt_window_clearline(MuttMessageWindow, 0);
+  mutt_window_clearline(MessageWindow, 0);
 
   struct Message *msg = NULL;
   STAILQ_FOREACH(en, el, entries)
@@ -854,7 +854,7 @@ void mutt_shell_escape(void)
   if (buf[0] == '\0')
     return;
 
-  mutt_window_clearline(MuttMessageWindow, 0);
+  mutt_window_clearline(MessageWindow, 0);
   mutt_endwin();
   fflush(stdout);
   int rc = mutt_system(buf);

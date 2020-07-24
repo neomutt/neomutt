@@ -40,10 +40,10 @@
 #include "options.h"
 #include "reflow.h"
 
-struct MuttWindow *RootWindow = NULL;        ///< Parent of all Windows
-struct MuttWindow *MuttDialogWindow = NULL;  ///< Parent of all Dialogs
-struct MuttWindow *MuttHelpWindow = NULL;    ///< Help Window
-struct MuttWindow *MuttMessageWindow = NULL; ///< Message Window
+struct MuttWindow *RootWindow = NULL;       ///< Parent of all Windows
+struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs
+struct MuttWindow *HelpBarWindow = NULL;    ///< Help Bar Window, "?:Help", etc
+struct MuttWindow *MessageWindow = NULL;    ///< Message Window, ":set", etc
 
 /**
  * window_was_visible - Was the Window visible?
@@ -269,7 +269,7 @@ static int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
 
   if (mutt_str_equal(ec->name, "help"))
   {
-    MuttHelpWindow->state.visible = C_Help;
+    HelpBarWindow->state.visible = C_Help;
     goto reflow;
   }
 
@@ -303,9 +303,9 @@ void mutt_window_free_all(void)
 {
   if (NeoMutt)
     notify_observer_remove(NeoMutt->notify, mutt_dlg_rootwin_observer, RootWindow);
-  MuttDialogWindow = NULL;
-  MuttHelpWindow = NULL;
-  MuttMessageWindow = NULL;
+  AllDialogsWindow = NULL;
+  HelpBarWindow = NULL;
+  MessageWindow = NULL;
   mutt_window_free(&RootWindow);
 }
 
@@ -344,29 +344,29 @@ void mutt_window_init(void)
       mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
   notify_set_parent(RootWindow->notify, NeoMutt->notify);
 
-  MuttHelpWindow = mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                                   MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  MuttHelpWindow->state.visible = C_Help;
+  HelpBarWindow = mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                                  MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  HelpBarWindow->state.visible = C_Help;
 
-  MuttDialogWindow = mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL,
+  AllDialogsWindow = mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL,
                                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
                                      MUTT_WIN_SIZE_UNLIMITED);
 
-  MuttMessageWindow = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL,
-                                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  MessageWindow = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL,
+                                  MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
   if (C_StatusOnTop)
   {
-    mutt_window_add_child(RootWindow, MuttDialogWindow);
-    mutt_window_add_child(RootWindow, MuttHelpWindow);
+    mutt_window_add_child(RootWindow, AllDialogsWindow);
+    mutt_window_add_child(RootWindow, HelpBarWindow);
   }
   else
   {
-    mutt_window_add_child(RootWindow, MuttHelpWindow);
-    mutt_window_add_child(RootWindow, MuttDialogWindow);
+    mutt_window_add_child(RootWindow, HelpBarWindow);
+    mutt_window_add_child(RootWindow, AllDialogsWindow);
   }
 
-  mutt_window_add_child(RootWindow, MuttMessageWindow);
+  mutt_window_add_child(RootWindow, MessageWindow);
   notify_observer_add(NeoMutt->notify, mutt_dlg_rootwin_observer, RootWindow);
 }
 
@@ -457,8 +457,8 @@ void mutt_window_reflow(struct MuttWindow *win)
  */
 void mutt_window_reflow_message_rows(int mw_rows)
 {
-  MuttMessageWindow->req_rows = mw_rows;
-  mutt_window_reflow(MuttMessageWindow->parent);
+  MessageWindow->req_rows = mw_rows;
+  mutt_window_reflow(MessageWindow->parent);
 
   /* We don't also set REDRAW_FLOW because this function only
    * changes rows and is a temporary adjustment. */

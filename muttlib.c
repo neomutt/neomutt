@@ -1433,7 +1433,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     }
   }
 
-  mutt_window_clearline(MuttMessageWindow, 0);
+  mutt_window_clearline(MessageWindow, 0);
   return ret;
 }
 
