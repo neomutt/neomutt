@@ -137,20 +137,18 @@ struct MuttWindow
   /**
    * recalc - Recalculate the Window data
    * @param win Window
-   * @param all Forcibly recalculate all data
    * @retval  0 Success
    * @retval -1 Error
    */
-  int (*recalc)(struct MuttWindow *win, bool all);
+  int (*recalc)(struct MuttWindow *win);
 
   /**
    * repaint - Repaint the Window
    * @param win Window
-   * @param all Forcibly repaint the entire Window
    * @retval  0 Success
    * @retval -1 Error
    */
-  int (*repaint)(struct MuttWindow *win, bool all);
+  int (*repaint)(struct MuttWindow *win);
 };
 
 typedef uint8_t WindowNotifyFlags; ///< Changes to a MuttWindow
@@ -221,6 +219,6 @@ struct MuttWindow *mutt_window_find  (struct MuttWindow *root, enum WindowType t
 void               window_notify_all (struct MuttWindow *win);
 void               window_set_visible(struct MuttWindow *win, bool visible);
 
-void window_redraw(struct MuttWindow *win);
+void window_redraw(struct MuttWindow *win, bool force);
 
 #endif /* MUTT_MUTT_WINDOW_H */

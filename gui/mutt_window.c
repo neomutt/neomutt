@@ -702,8 +702,11 @@ void window_recalc(struct MuttWindow *win)
   if (!win)
     return;
 
-  if (win->recalc)
-    win->recalc(win, false);
+  if (win->recalc && (win->actions & WA_RECALC))
+  {
+    win->recalc(win);
+    win->actions &= ~WA_RECALC;
+  }
 
   struct MuttWindow *np = NULL;
   TAILQ_FOREACH(np, &win->children, entries)
@@ -714,28 +717,33 @@ void window_recalc(struct MuttWindow *win)
 
 /**
  * window_repaint - Repaint a tree of Windows
- * @param win Window to start at
+ * @param win   Window to start at
+ * @param force Repaint everything
  */
-void window_repaint(struct MuttWindow *win)
+void window_repaint(struct MuttWindow *win, bool force)
 {
   if (!win)
     return;
 
-  if (win->repaint)
-    win->repaint(win, false);
+  if (win->repaint && (force || (win->actions & WA_REPAINT)))
+  {
+    win->repaint(win);
+    win->actions &= ~WA_REPAINT;
+  }
 
   struct MuttWindow *np = NULL;
   TAILQ_FOREACH(np, &win->children, entries)
   {
-    window_repaint(np);
+    window_repaint(np, force);
   }
 }
 
 /**
  * window_redraw - Reflow, recalc and repaint a tree of Windows
- * @param win Window to start at
+ * @param win   Window to start at
+ * @param force Repaint everything
  */
-void window_redraw(struct MuttWindow *win)
+void window_redraw(struct MuttWindow *win, bool force)
 {
   if (!win)
     return;
@@ -744,5 +752,5 @@ void window_redraw(struct MuttWindow *win)
   window_notify_all(win);
 
   window_recalc(win);
-  window_repaint(win);
+  window_repaint(win, force);
 }
