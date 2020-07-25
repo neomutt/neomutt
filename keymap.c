@@ -1336,6 +1336,13 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
     for (int i = 0; i < num_menus; i++)
     {
       km_bindkey(key, menu[i], OP_NULL); /* the 'unbind' command */
+      bindings = km_get_table(menu[i]);
+      if (bindings)
+      {
+        int op = get_op(OpGeneric, buf->data, mutt_str_len(buf->data));
+        struct EventBinding ev_bind = { menu[i], key, op };
+        notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_DELETED, &ev_bind);
+      }
     }
   }
   else
@@ -1347,9 +1354,14 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
       if ((menu[i] != MENU_PAGER) && (menu[i] != MENU_EDITOR) && (menu[i] != MENU_GENERIC))
       {
         rc = try_bind(key, menu[i], buf->data, OpGeneric, err);
-        if (rc == 0)
+        if (rc == MUTT_CMD_SUCCESS)
+        {
+          int op = get_op(OpGeneric, buf->data, mutt_str_len(buf->data));
+          struct EventBinding ev_bind = { menu[i], key, op };
+          notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_NEW, &ev_bind);
           continue;
-        if (rc == -2)
+        }
+        if (rc == MUTT_CMD_WARNING)
           break;
       }
 
@@ -1359,6 +1371,13 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
       if (bindings)
       {
         rc = try_bind(key, menu[i], buf->data, bindings, err);
+        if (rc == MUTT_CMD_SUCCESS)
+        {
+          int op = get_op(bindings, buf->data, mutt_str_len(buf->data));
+          struct EventBinding ev_bind = { menu[i], key, op };
+          notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_NEW, &ev_bind);
+          continue;
+        }
       }
     }
   }
@@ -1505,9 +1524,18 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
         km_bindkey("?", i, OP_HELP);
         km_bindkey("q", i, OP_EXIT);
       }
+      struct EventBinding ev_bind = { i, NULL, OP_NULL };
+      notify_send(NeoMutt->notify, NT_BINDING,
+                  (data & MUTT_UNMACRO) ? NT_MACRO_DELETE_ALL : NT_BINDING_DELETE_ALL,
+                  &ev_bind);
     }
     else
+    {
       km_bindkey(key, i, OP_NULL);
+      struct EventBinding ev_bind = { i, key, OP_NULL };
+      notify_send(NeoMutt->notify, NT_BINDING,
+                  (data & MUTT_UNMACRO) ? NT_MACRO_DELETED : NT_BINDING_DELETED, &ev_bind);
+    }
   }
 
   return MUTT_CMD_SUCCESS;
@@ -1524,7 +1552,6 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
   enum MenuType menu[sizeof(Menus) / sizeof(struct Mapping) - 1];
   int num_menus = 0;
   enum CommandResult rc = MUTT_CMD_ERROR;
-  char *seq = NULL;
 
   char *key = parse_keymap(menu, s, mutt_array_size(menu), &num_menus, err, false);
   if (!key)
@@ -1540,7 +1567,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
   {
     if (MoreArgs(s))
     {
-      seq = mutt_str_dup(buf->data);
+      char *seq = mutt_str_dup(buf->data);
       mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
 
       if (MoreArgs(s))
@@ -1552,6 +1579,12 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
         for (int i = 0; i < num_menus; i++)
         {
           rc = km_bind(key, menu[i], OP_MACRO, seq, buf->data);
+          if (rc == MUTT_CMD_SUCCESS)
+          {
+            struct EventBinding ev_bind = { menu[i], key, OP_MACRO };
+            notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_NEW, &ev_bind);
+            continue;
+          }
         }
       }
 
@@ -1562,6 +1595,12 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
       for (int i = 0; i < num_menus; i++)
       {
         rc = km_bind(key, menu[i], OP_MACRO, buf->data, NULL);
+        if (rc == MUTT_CMD_SUCCESS)
+        {
+          struct EventBinding ev_bind = { menu[i], key, OP_MACRO };
+          notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_NEW, &ev_bind);
+          continue;
+        }
       }
     }
   }
