@@ -64,12 +64,15 @@
 #include "imap/lib.h"
 #endif
 
+/// Help Bar for the Postponed email selection dialog
 static const struct Mapping PostponeHelp[] = {
-  { N_("Exit"), OP_EXIT },
-  { N_("Del"), OP_DELETE },
+  // clang-format off
+  { N_("Exit"),  OP_EXIT },
+  { N_("Del"),   OP_DELETE },
   { N_("Undel"), OP_UNDELETE },
-  { N_("Help"), OP_HELP },
+  { N_("Help"),  OP_HELP },
   { NULL, 0 },
+  // clang-format on
 };
 
 static short PostCount = 0;

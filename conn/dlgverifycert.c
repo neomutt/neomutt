@@ -41,6 +41,7 @@
 #include "protos.h"
 
 #ifdef USE_SSL
+/// Help Bar for the Certificate Verification dialog
 static const struct Mapping VerifyHelp[] = {
   // clang-format off
   { N_("Exit"), OP_EXIT },

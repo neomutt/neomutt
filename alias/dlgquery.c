@@ -56,14 +56,17 @@
 char *C_QueryCommand; ///< Config: External command to query and external address book
 char *C_QueryFormat; ///< Config: printf-like format string for the query menu (address book)
 
+/// Help Bar for the Address Query dialog
 static const struct Mapping QueryHelp[] = {
-  { N_("Exit"), OP_EXIT },
-  { N_("Mail"), OP_MAIL },
-  { N_("New Query"), OP_QUERY },
+  // clang-format off
+  { N_("Exit"),       OP_EXIT },
+  { N_("Mail"),       OP_MAIL },
+  { N_("New Query"),  OP_QUERY },
   { N_("Make Alias"), OP_CREATE_ALIAS },
-  { N_("Search"), OP_SEARCH },
-  { N_("Help"), OP_HELP },
+  { N_("Search"),     OP_SEARCH },
+  { N_("Help"),       OP_HELP },
   { NULL, 0 },
+  // clang-format on
 };
 
 /**

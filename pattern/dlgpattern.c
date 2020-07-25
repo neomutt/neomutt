@@ -57,11 +57,14 @@ struct PatternEntry
   const char *descr; ///< Description of pattern
 };
 
+/// Help Bar for the Pattern selection dialog
 static const struct Mapping PatternHelp[] = {
-  { N_("Exit"), OP_EXIT },
+  // clang-format off
+  { N_("Exit"),   OP_EXIT },
   { N_("Select"), OP_GENERIC_SELECT_ENTRY },
-  { N_("Help"), OP_HELP },
+  { N_("Help"),   OP_HELP },
   { NULL, 0 },
+  // clang-format on
 };
 
 /**

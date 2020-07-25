@@ -72,10 +72,16 @@ struct Coord
   short c; ///< column
 };
 
+/// Help Bar for the Mixmaster dialog
 static const struct Mapping RemailerHelp[] = {
-  { N_("Append"), OP_MIX_APPEND }, { N_("Insert"), OP_MIX_INSERT },
-  { N_("Delete"), OP_MIX_DELETE }, { N_("Abort"), OP_EXIT },
-  { N_("OK"), OP_MIX_USE },        { NULL, 0 },
+  // clang-format off
+  { N_("Append"), OP_MIX_APPEND },
+  { N_("Insert"), OP_MIX_INSERT },
+  { N_("Delete"), OP_MIX_DELETE },
+  { N_("Abort"),  OP_EXIT },
+  { N_("OK"),     OP_MIX_USE },
+  { NULL, 0 },
+  // clang-format on
 };
 
 /**

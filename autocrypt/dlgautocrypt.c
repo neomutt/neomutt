@@ -56,14 +56,16 @@ struct AccountEntry
   struct Address *addr;
 };
 
+/// Help Bar for the Autocrypt Account selection dialog
 static const struct Mapping AutocryptAcctHelp[] = {
-  { N_("Exit"), OP_EXIT },
+  // clang-format off
+  { N_("Exit"),       OP_EXIT },
   /* L10N: Autocrypt Account Menu Help line:
      create new account */
-  { N_("Create"), OP_AUTOCRYPT_CREATE_ACCT },
+  { N_("Create"),     OP_AUTOCRYPT_CREATE_ACCT },
   /* L10N: Autocrypt Account Menu Help line:
      delete account */
-  { N_("Delete"), OP_AUTOCRYPT_DELETE_ACCT },
+  { N_("Delete"),     OP_AUTOCRYPT_DELETE_ACCT },
   /* L10N: Autocrypt Account Menu Help line:
      toggle an account active/inactive
      The words here are abbreviated to keep the help line compact.
@@ -75,9 +77,10 @@ static const struct Mapping AutocryptAcctHelp[] = {
      The words here are abbreviated to keep the help line compact.
      It currently has the content:
      q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help */
-  { N_("Prf Encr"), OP_AUTOCRYPT_TOGGLE_PREFER },
-  { N_("Help"), OP_HELP },
+  { N_("Prf Encr"),   OP_AUTOCRYPT_TOGGLE_PREFER },
+  { N_("Help"),       OP_HELP },
   { NULL, 0 }
+  // clang-format on
 };
 
 /**

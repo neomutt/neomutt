@@ -48,6 +48,7 @@
 #include "pgplib.h"
 #include "protos.h"
 
+/// Help Bar for the PGP key selection dialog
 static const struct Mapping PgpHelp[] = {
   // clang-format off
   { N_("Exit"),      OP_EXIT },

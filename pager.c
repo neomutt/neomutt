@@ -217,26 +217,30 @@ static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
 static const char *Function_not_permitted_in_attach_message_mode =
     N_("Function not permitted in attach-message mode");
 
-// clang-format off
 /// Help Bar for the Pager's Help Page
 static const struct Mapping PagerHelp[] = {
+  // clang-format off
   { N_("Exit"),          OP_EXIT },
   { N_("PrevPg"),        OP_PREV_PAGE },
   { N_("NextPg"),        OP_NEXT_PAGE },
   { N_("Help"),          OP_HELP },
-  { NULL,                0 },
+  { NULL, 0 },
+  // clang-format on
 };
 
 /// Help Bar for the Help Page itself
 static const struct Mapping PagerHelpHelp[] = {
+  // clang-format off
   { N_("Exit"),          OP_EXIT },
   { N_("PrevPg"),        OP_PREV_PAGE },
   { N_("NextPg"),        OP_NEXT_PAGE },
-  { NULL,                0 },
+  { NULL, 0 },
+  // clang-format on
 };
 
 /// Help Bar for the Pager of a normal Mailbox
 static const struct Mapping PagerNormalHelp[] = {
+  // clang-format off
   { N_("Exit"),          OP_EXIT },
   { N_("PrevPg"),        OP_PREV_PAGE },
   { N_("NextPg"),        OP_NEXT_PAGE },
@@ -245,12 +249,14 @@ static const struct Mapping PagerNormalHelp[] = {
   { N_("Reply"),         OP_REPLY },
   { N_("Next"),          OP_MAIN_NEXT_UNDELETED },
   { N_("Help"),          OP_HELP },
-  { NULL,                0 },
+  { NULL, 0 },
+  // clang-format on
 };
 
 #ifdef USE_NNTP
 /// Help Bar for the Pager of an NNTP Mailbox
-static struct Mapping PagerNewsHelp[] = {
+static const struct Mapping PagerNewsHelp[] = {
+  // clang-format off
   { N_("Exit"),          OP_EXIT },
   { N_("PrevPg"),        OP_PREV_PAGE },
   { N_("NextPg"),        OP_NEXT_PAGE },
@@ -259,10 +265,10 @@ static struct Mapping PagerNewsHelp[] = {
   { N_("Del"),           OP_DELETE },
   { N_("Next"),          OP_MAIN_NEXT_UNDELETED },
   { N_("Help"),          OP_HELP },
-  { NULL,                0 },
+  { NULL, 0 },
+  // clang-format on
 };
 #endif
-// clang-format on
 
 #define IS_HEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDRDEFAULT)
 

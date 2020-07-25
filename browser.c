@@ -71,25 +71,31 @@ bool C_BrowserAbbreviateMailboxes; ///< Config: Abbreviate mailboxes using '~' a
 char *C_FolderFormat; ///< Config: printf-like format string for the browser's display of folders
 short C_SortBrowser; ///< Config: Sort method for the browser
 
+/// Help Bar for the File/Dir/Mailbox browser dialog
 static const struct Mapping FolderHelp[] = {
-  { N_("Exit"), OP_EXIT },
+  // clang-format off
+  { N_("Exit"),  OP_EXIT },
   { N_("Chdir"), OP_CHANGE_DIRECTORY },
-  { N_("Goto"), OP_BROWSER_GOTO_FOLDER },
-  { N_("Mask"), OP_ENTER_MASK },
-  { N_("Help"), OP_HELP },
+  { N_("Goto"),  OP_BROWSER_GOTO_FOLDER },
+  { N_("Mask"),  OP_ENTER_MASK },
+  { N_("Help"),  OP_HELP },
   { NULL, 0 },
+  // clang-format on
 };
 
 #ifdef USE_NNTP
-static struct Mapping FolderNewsHelp[] = {
-  { N_("Exit"), OP_EXIT },
-  { N_("List"), OP_TOGGLE_MAILBOXES },
-  { N_("Subscribe"), OP_BROWSER_SUBSCRIBE },
+/// Help Bar for the NNTP Mailbox browser dialog
+static const struct Mapping FolderNewsHelp[] = {
+  // clang-format off
+  { N_("Exit"),        OP_EXIT },
+  { N_("List"),        OP_TOGGLE_MAILBOXES },
+  { N_("Subscribe"),   OP_BROWSER_SUBSCRIBE },
   { N_("Unsubscribe"), OP_BROWSER_UNSUBSCRIBE },
-  { N_("Catchup"), OP_CATCHUP },
-  { N_("Mask"), OP_ENTER_MASK },
-  { N_("Help"), OP_HELP },
+  { N_("Catchup"),     OP_CATCHUP },
+  { N_("Mask"),        OP_ENTER_MASK },
+  { N_("Help"),        OP_HELP },
   { NULL, 0 },
+  // clang-format on
 };
 #endif
 

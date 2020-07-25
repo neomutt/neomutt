@@ -59,6 +59,7 @@
 #include <libintl.h>
 #endif
 
+/// Help Bar for the GPGME key selection dialog
 static const struct Mapping GpgmeHelp[] = {
   // clang-format off
   { N_("Exit"),      OP_EXIT },

@@ -107,29 +107,35 @@ char *C_MarkMacroPrefix; ///< Config: Prefix for macros using '<mark-message>'
 bool C_UncollapseJump; ///< Config: When opening a thread, jump to the next unread message
 bool C_UncollapseNew; ///< Config: Open collapsed threads when new mail arrives
 
+/// Help Bar for the Index dialog
 static const struct Mapping IndexHelp[] = {
-  { N_("Quit"), OP_QUIT },
-  { N_("Del"), OP_DELETE },
+  // clang-format off
+  { N_("Quit"),  OP_QUIT },
+  { N_("Del"),   OP_DELETE },
   { N_("Undel"), OP_UNDELETE },
-  { N_("Save"), OP_SAVE },
-  { N_("Mail"), OP_MAIL },
+  { N_("Save"),  OP_SAVE },
+  { N_("Mail"),  OP_MAIL },
   { N_("Reply"), OP_REPLY },
   { N_("Group"), OP_GROUP_REPLY },
-  { N_("Help"), OP_HELP },
+  { N_("Help"),  OP_HELP },
   { NULL, 0 },
+  // clang-format on
 };
 
 #ifdef USE_NNTP
-struct Mapping IndexNewsHelp[] = {
-  { N_("Quit"), OP_QUIT },
-  { N_("Del"), OP_DELETE },
-  { N_("Undel"), OP_UNDELETE },
-  { N_("Save"), OP_SAVE },
-  { N_("Post"), OP_POST },
+/// Help Bar for the News Index dialog
+static const struct Mapping IndexNewsHelp[] = {
+  // clang-format off
+  { N_("Quit"),     OP_QUIT },
+  { N_("Del"),      OP_DELETE },
+  { N_("Undel"),    OP_UNDELETE },
+  { N_("Save"),     OP_SAVE },
+  { N_("Post"),     OP_POST },
   { N_("Followup"), OP_FOLLOWUP },
-  { N_("Catchup"), OP_CATCHUP },
-  { N_("Help"), OP_HELP },
+  { N_("Catchup"),  OP_CATCHUP },
+  { N_("Help"),     OP_HELP },
   { NULL, 0 },
+  // clang-format on
 };
 #endif
 

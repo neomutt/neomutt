@@ -55,10 +55,16 @@
 char *C_AliasFormat; ///< Config: printf-like format string for the alias menu
 short C_SortAlias;   ///< Config: Sort method for the alias menu
 
+/// Help Bar for the Alias dialog (address book)
 static const struct Mapping AliasHelp[] = {
-  { N_("Exit"), OP_EXIT },      { N_("Del"), OP_DELETE },
-  { N_("Undel"), OP_UNDELETE }, { N_("Select"), OP_GENERIC_SELECT_ENTRY },
-  { N_("Help"), OP_HELP },      { NULL, 0 },
+  // clang-format off
+  { N_("Exit"),   OP_EXIT },
+  { N_("Del"),    OP_DELETE },
+  { N_("Undel"),  OP_UNDELETE },
+  { N_("Select"), OP_GENERIC_SELECT_ENTRY },
+  { N_("Help"),   OP_HELP },
+  { NULL, 0 },
+  // clang-format on
 };
 
 /**

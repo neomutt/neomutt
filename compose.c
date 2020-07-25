@@ -213,31 +213,37 @@ static const char *const Prompts[] = {
 #endif
 };
 
+/// Help Bar for the Compose dialog
 static const struct Mapping ComposeHelp[] = {
-  { N_("Send"), OP_COMPOSE_SEND_MESSAGE },
-  { N_("Abort"), OP_EXIT },
+  // clang-format off
+  { N_("Send"),        OP_COMPOSE_SEND_MESSAGE },
+  { N_("Abort"),       OP_EXIT },
   /* L10N: compose menu help line entry */
-  { N_("To"), OP_COMPOSE_EDIT_TO },
+  { N_("To"),          OP_COMPOSE_EDIT_TO },
   /* L10N: compose menu help line entry */
-  { N_("CC"), OP_COMPOSE_EDIT_CC },
+  { N_("CC"),          OP_COMPOSE_EDIT_CC },
   /* L10N: compose menu help line entry */
-  { N_("Subj"), OP_COMPOSE_EDIT_SUBJECT },
+  { N_("Subj"),        OP_COMPOSE_EDIT_SUBJECT },
   { N_("Attach file"), OP_COMPOSE_ATTACH_FILE },
-  { N_("Descrip"), OP_COMPOSE_EDIT_DESCRIPTION },
-  { N_("Help"), OP_HELP },
+  { N_("Descrip"),     OP_COMPOSE_EDIT_DESCRIPTION },
+  { N_("Help"),        OP_HELP },
   { NULL, 0 },
+  // clang-format on
 };
 
 #ifdef USE_NNTP
-static struct Mapping ComposeNewsHelp[] = {
-  { N_("Send"), OP_COMPOSE_SEND_MESSAGE },
-  { N_("Abort"), OP_EXIT },
-  { N_("Newsgroups"), OP_COMPOSE_EDIT_NEWSGROUPS },
-  { N_("Subj"), OP_COMPOSE_EDIT_SUBJECT },
+/// Help Bar for the News Compose dialog
+static const struct Mapping ComposeNewsHelp[] = {
+  // clang-format off
+  { N_("Send"),        OP_COMPOSE_SEND_MESSAGE },
+  { N_("Abort"),       OP_EXIT },
+  { N_("Newsgroups"),  OP_COMPOSE_EDIT_NEWSGROUPS },
+  { N_("Subj"),        OP_COMPOSE_EDIT_SUBJECT },
   { N_("Attach file"), OP_COMPOSE_ATTACH_FILE },
-  { N_("Descrip"), OP_COMPOSE_EDIT_DESCRIPTION },
-  { N_("Help"), OP_HELP },
+  { N_("Descrip"),     OP_COMPOSE_EDIT_DESCRIPTION },
+  { N_("Help"),        OP_HELP },
   { NULL, 0 },
+  // clang-format on
 };
 #endif
 

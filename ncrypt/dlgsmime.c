@@ -42,6 +42,7 @@
 #include "smime.h"
 #include "ncrypt/lib.h"
 
+/// Help Bar for the Smime key selection dialog
 static const struct Mapping SmimeHelp[] = {
   // clang-format off
   { N_("Exit"),   OP_EXIT },

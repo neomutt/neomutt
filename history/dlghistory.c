@@ -41,12 +41,15 @@
 #include "opcodes.h"
 #include "history/lib.h"
 
+/// Help Bar for the History Selection dialog
 static const struct Mapping HistoryHelp[] = {
-  { N_("Exit"), OP_EXIT },
+  // clang-format off
+  { N_("Exit"),   OP_EXIT },
   { N_("Select"), OP_GENERIC_SELECT_ENTRY },
   { N_("Search"), OP_SEARCH },
-  { N_("Help"), OP_HELP },
+  { N_("Help"),   OP_HELP },
   { NULL, 0 },
+  // clang-format on
 };
 
 /**
