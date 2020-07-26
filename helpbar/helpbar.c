@@ -29,6 +29,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdio.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -99,6 +100,9 @@ struct MuttWindow *helpbar_create(void)
       mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   win->state.visible = cs_subset_bool(NeoMutt->sub, "help");
+
+  win->wdata = helpbar_wdata_new();
+  win->wdata_free = helpbar_wdata_free;
 
   return win;
 }

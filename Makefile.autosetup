@@ -324,7 +324,7 @@ $(PWD)/hcache:
 ###############################################################################
 # libhelpbar
 LIBHELPBAR=	libhelpbar.a
-LIBHELPBAROBJS=	helpbar/config.o helpbar/helpbar.o
+LIBHELPBAROBJS=	helpbar/config.o helpbar/helpbar.o helpbar/wdata.o
 CLEANFILES+=	$(LIBHELPBAR) $(LIBHELPBAROBJS)
 ALLOBJS+=	$(LIBHELPBAROBJS)
 
