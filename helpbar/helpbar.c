@@ -1,6 +1,6 @@
 /**
  * @file
- * Help bar
+ * Help Bar
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page helpbar Help bar
+ * @page helpbar_helpbar Help Bar
  *
- * Help bar
+ * Help Bar
  */
 
 #include "config.h"

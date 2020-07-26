@@ -1,6 +1,7 @@
 /**
  * @file
- * Help bar
+ * Help Bar
+ * Convenience wrapper for the Help Bar headers
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -20,8 +21,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_HELPBAR_H
-#define MUTT_HELPBAR_H
+/**
+ * @page helpbar Convenience wrapper for the Help Bar headers
+ *
+ * Convenience wrapper for the Help Bar headers
+ */
+
+#ifndef MUTT_HELPBAR_LIB_H
+#define MUTT_HELPBAR_LIB_H
 
 #include <stddef.h>
 #include "keymap.h"
@@ -30,4 +37,4 @@ struct Mapping;
 
 char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu, const struct Mapping *items);
 
-#endif /* MUTT_HELPBAR_H */
+#endif /* MUTT_HELPBAR_LIB_H */
