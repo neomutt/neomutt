@@ -115,7 +115,7 @@ static bool send(struct Notify *source, struct Notify *current,
   {
     struct Observer *o = np->observer;
 
-    struct NotifyCallback nc = { event_type, event_subtype, event_data, o->global_data };
+    struct NotifyCallback nc = { current, event_type, event_subtype, event_data, o->global_data };
     o->callback(&nc);
   }
 
