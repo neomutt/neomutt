@@ -33,6 +33,7 @@ struct Buffer;
 struct Email;
 struct EnterState;
 struct Envelope;
+struct Keymap;
 struct Mailbox;
 struct Message;
 struct Pager;
@@ -212,14 +213,18 @@ void mutt_resize_screen(void)
 {
 }
 
-char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu,
-                        const struct Mapping *items)
-{
-  return NULL;
-}
-
 void mutt_menu_push_current(struct Menu *menu)
 {
+}
+
+int km_expand_key(char *s, size_t len, struct Keymap *map)
+{
+  return 0;
+}
+
+struct Keymap *km_find_func(enum MenuType menu, int func)
+{
+  return NULL;
 }
 
 struct EnterState *mutt_enter_state_new(void)

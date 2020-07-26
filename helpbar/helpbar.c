@@ -30,7 +30,9 @@
 #include <stddef.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "gui/lib.h"
 #include "keymap.h"
+#include "mutt_globals.h"
 
 /**
  * make_help - Create one entry for the help bar
@@ -84,4 +86,18 @@ char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu,
     buflen -= len;
   }
   return buf;
+}
+
+/**
+ * helpbar_create - Create the Help Bar Window
+ * @retval ptr New Window
+ */
+struct MuttWindow *helpbar_create(void)
+{
+  struct MuttWindow *win =
+      mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  win->state.visible = C_Help;
+
+  return win;
 }

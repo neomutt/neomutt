@@ -30,11 +30,6 @@
 #ifndef MUTT_HELPBAR_LIB_H
 #define MUTT_HELPBAR_LIB_H
 
-#include <stddef.h>
-#include "keymap.h"
-
-struct Mapping;
-
-char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu, const struct Mapping *items);
+struct MuttWindow *helpbar_create(void);
 
 #endif /* MUTT_HELPBAR_LIB_H */

@@ -39,6 +39,7 @@
 #include "mutt_menu.h"
 #include "options.h"
 #include "reflow.h"
+#include "helpbar/lib.h"
 
 struct MuttWindow *RootWindow = NULL;       ///< Parent of all Windows
 struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs
@@ -347,9 +348,7 @@ void mutt_window_init(void)
       mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
   notify_set_parent(RootWindow->notify, NeoMutt->notify);
 
-  HelpBarWindow = mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                                  MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  HelpBarWindow->state.visible = C_Help;
+  HelpBarWindow = helpbar_create();
 
   AllDialogsWindow = mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL,
                                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
