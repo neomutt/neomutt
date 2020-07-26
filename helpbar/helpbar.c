@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -43,10 +44,11 @@
  * @param txt    Text part, e.g. "delete"
  * @param menu   Current Menu, e.g. #MENU_PAGER
  * @param op     Operation, e.g. OP_DELETE
+ * @retval true If the keybinding exists
  *
  * This will return something like: "d:delete"
  */
-void make_help(char *buf, size_t buflen, const char *txt, enum MenuType menu, int op)
+static bool make_help(char *buf, size_t buflen, const char *txt, enum MenuType menu, int op)
 {
   char tmp[128];
 
@@ -54,40 +56,105 @@ void make_help(char *buf, size_t buflen, const char *txt, enum MenuType menu, in
       km_expand_key(tmp, sizeof(tmp), km_find_func(MENU_GENERIC, op)))
   {
     snprintf(buf, buflen, "%s:%s", tmp, txt);
+    return true;
   }
-  else
-  {
-    buf[0] = '\0';
-  }
+
+  buf[0] = '\0';
+  return false;
 }
 
 /**
- * mutt_compile_help - Create the text for the help menu
+ * compile_help - Create the text for the help menu
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
  * @param menu   Current Menu, e.g. #MENU_PAGER
  * @param items  Map of functions to display in the help bar
  * @retval ptr Buffer containing result
  */
-char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu,
-                        const struct Mapping *items)
+static char *compile_help(char *buf, size_t buflen, enum MenuType menu,
+                          const struct Mapping *items)
 {
   char *pbuf = buf;
 
-  for (int i = 0; items[i].name && buflen > 2; i++)
+  for (int i = 0; items[i].name && (buflen > 2); i++)
   {
-    if (i)
-    {
-      *pbuf++ = ' ';
-      *pbuf++ = ' ';
-      buflen -= 2;
-    }
-    make_help(pbuf, buflen, _(items[i].name), menu, items[i].value);
+    if (!make_help(pbuf, buflen, _(items[i].name), menu, items[i].value))
+      continue;
+
     const size_t len = mutt_str_len(pbuf);
     pbuf += len;
     buflen -= len;
+
+    *pbuf++ = ' ';
+    *pbuf++ = ' ';
+    buflen -= 2;
   }
   return buf;
+}
+
+/**
+ * helpbar_recalc - Recalculate the display of the Help Bar
+ * @param win Help Bar Window
+ *
+ * The Help Bar isn't drawn, yet.
+ */
+static int helpbar_recalc(struct MuttWindow *win)
+{
+  if (!win)
+    return -1;
+
+  struct MuttWindow *win_focus = window_get_focus();
+  if (!win_focus)
+    return 0;
+
+  // Ascend the Window tree until we find help_data
+  while (win_focus && !win_focus->help_data)
+    win_focus = win_focus->parent;
+
+  if (!win_focus)
+    return 0;
+
+  struct HelpbarWindowData *wdata = helpbar_wdata_get(win);
+  if (!wdata)
+    return 0;
+
+  mutt_debug(LL_NOTIFY, "recalc\n");
+
+  char helpstr[1024] = { 0 };
+  compile_help(helpstr, sizeof(helpstr), win_focus->help_menu, win_focus->help_data);
+
+  wdata->help_menu = win_focus->help_menu;
+  wdata->help_data = win_focus->help_data;
+  mutt_str_replace(&wdata->help_str, helpstr);
+  win->actions |= WA_REPAINT;
+
+  return 0;
+}
+
+/**
+ * helpbar_repaint - Redraw the Help Bar
+ * @param win Help Bar Window
+ *
+ * The Help Bar is drawn from the data cached in the HelpbarWindowData.
+ * No calculation is performed.
+ */
+static int helpbar_repaint(struct MuttWindow *win)
+{
+  if (!mutt_window_is_visible(win))
+    return 0;
+
+  struct HelpbarWindowData *wdata = helpbar_wdata_get(win);
+  if (!wdata)
+    return 0;
+
+  mutt_debug(LL_NOTIFY, "repaint\n");
+
+  mutt_curses_set_color(MT_COLOR_STATUS);
+  mutt_window_move(win, 0, 0);
+  mutt_paddstr(win->state.cols, wdata->help_str);
+  mutt_curses_set_color(MT_COLOR_NORMAL);
+
+  return 0;
 }
 
 /**
@@ -100,6 +167,9 @@ struct MuttWindow *helpbar_create(void)
       mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
   win->state.visible = cs_subset_bool(NeoMutt->sub, "help");
+
+  win->recalc = helpbar_recalc;
+  win->repaint = helpbar_repaint;
 
   win->wdata = helpbar_wdata_new();
   win->wdata_free = helpbar_wdata_free;

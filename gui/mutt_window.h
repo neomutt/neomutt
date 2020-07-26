@@ -190,7 +190,6 @@ struct EventWindow
 
 extern struct MuttWindow *RootWindow;
 extern struct MuttWindow *AllDialogsWindow;
-extern struct MuttWindow *HelpBarWindow;
 extern struct MuttWindow *MessageWindow;
 
 // Functions that deal with the Window

@@ -43,7 +43,6 @@
 
 struct MuttWindow *RootWindow = NULL;       ///< Parent of all Windows
 struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs
-struct MuttWindow *HelpBarWindow = NULL;    ///< Help Bar Window, "?:Help", etc
 struct MuttWindow *MessageWindow = NULL;    ///< Message Window, ":set", etc
 
 /**
@@ -271,12 +270,6 @@ static int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
   struct EventConfig *ec = nc->event_data;
   struct MuttWindow *root_win = nc->global_data;
 
-  if (mutt_str_equal(ec->name, "help"))
-  {
-    HelpBarWindow->state.visible = cs_subset_bool(NeoMutt->sub, "help");
-    goto reflow;
-  }
-
   if (mutt_str_equal(ec->name, "status_on_top"))
   {
     struct MuttWindow *first = TAILQ_FIRST(&root_win->children);
@@ -295,7 +288,6 @@ static int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
     }
   }
 
-reflow:
   mutt_window_reflow(root_win);
   return 0;
 }
@@ -308,7 +300,6 @@ void mutt_window_free_all(void)
   if (NeoMutt)
     notify_observer_remove(NeoMutt->notify, mutt_dlg_rootwin_observer, RootWindow);
   AllDialogsWindow = NULL;
-  HelpBarWindow = NULL;
   MessageWindow = NULL;
   mutt_window_free(&RootWindow);
 }
@@ -348,7 +339,7 @@ void mutt_window_init(void)
       mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
   notify_set_parent(RootWindow->notify, NeoMutt->notify);
 
-  HelpBarWindow = helpbar_create();
+  struct MuttWindow *win_helpbar = helpbar_create();
 
   AllDialogsWindow = mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL,
                                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
@@ -360,11 +351,11 @@ void mutt_window_init(void)
   if (C_StatusOnTop)
   {
     mutt_window_add_child(RootWindow, AllDialogsWindow);
-    mutt_window_add_child(RootWindow, HelpBarWindow);
+    mutt_window_add_child(RootWindow, win_helpbar);
   }
   else
   {
-    mutt_window_add_child(RootWindow, HelpBarWindow);
+    mutt_window_add_child(RootWindow, win_helpbar);
     mutt_window_add_child(RootWindow, AllDialogsWindow);
   }
 
