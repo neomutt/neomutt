@@ -140,7 +140,6 @@ struct ConfigDef MainVars[] = {
   { "gecos_mask", DT_REGEX, &C_GecosMask, IP "^[^,]*" },
   { "header", DT_BOOL, &C_Header, false },
   { "header_color_partial", DT_BOOL|R_PAGER_FLOW, &C_HeaderColorPartial, false },
-  { "help", DT_BOOL|R_REFLOW, &C_Help, true },
   { "hidden_tags", DT_SLIST|SLIST_SEP_COMMA, &C_HiddenTags, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted" },
   { "hide_limited", DT_BOOL|R_TREE|R_INDEX, &C_HideLimited, false },
   { "hide_missing", DT_BOOL|R_TREE|R_INDEX, &C_HideMissing, true },

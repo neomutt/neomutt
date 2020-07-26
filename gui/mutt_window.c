@@ -273,7 +273,7 @@ static int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
 
   if (mutt_str_equal(ec->name, "help"))
   {
-    HelpBarWindow->state.visible = C_Help;
+    HelpBarWindow->state.visible = cs_subset_bool(NeoMutt->sub, "help");
     goto reflow;
   }
 

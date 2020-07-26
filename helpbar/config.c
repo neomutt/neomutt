@@ -1,7 +1,6 @@
 /**
  * @file
- * Help Bar
- * Convenience wrapper for the Help Bar headers
+ * Config used by Help Bar
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -22,20 +21,27 @@
  */
 
 /**
- * @page helpbar Convenience wrapper for the Help Bar headers
+ * @page helpbar_config Config used by Help Bar
  *
- * Convenience wrapper for the Help Bar headers
+ * Config used by Help Bar
  */
 
-#ifndef MUTT_HELPBAR_LIB_H
-#define MUTT_HELPBAR_LIB_H
-
+#include "config.h"
+#include <stddef.h>
 #include <stdbool.h>
+#include "config/lib.h"
 
-struct ConfigSet;
+// clang-format off
+struct ConfigDef HelpbarVars[] = {
+  { "help", DT_BOOL|R_REFLOW, NULL, true },
+  { NULL, 0, NULL, 0, 0, NULL },
+};
+// clang-format on
 
-struct MuttWindow *helpbar_create(void);
-
-bool config_init_helpbar(struct ConfigSet *cs);
-
-#endif /* MUTT_HELPBAR_LIB_H */
+/**
+ * config_init_helpbar - Register helpbar config variables
+ */
+bool config_init_helpbar(struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, HelpbarVars, DT_NO_VARIABLE);
+}
