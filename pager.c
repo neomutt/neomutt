@@ -49,7 +49,6 @@
 #include "context.h"
 #include "format_flags.h"
 #include "hdrline.h"
-#include "helpbar.h"
 #include "hook.h"
 #include "index.h"
 #include "init.h"
@@ -193,7 +192,6 @@ struct PagerRedrawData
   PagerFlags search_flag;
   bool search_back;
   const char *banner;
-  const char *helpstr;
   char *searchbuf;
   struct Line *line_info;
   FILE *fp;
@@ -2008,14 +2006,6 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     rd->indicator = rd->indexlen / 3;
 
-    if (C_Help)
-    {
-      mutt_curses_set_color(MT_COLOR_STATUS);
-      mutt_window_move(HelpBarWindow, 0, 0);
-      mutt_paddstr(HelpBarWindow->state.cols, rd->helpstr);
-      mutt_curses_set_color(MT_COLOR_NORMAL);
-    }
-
     if (Resize)
     {
       rd->search_compiled = Resize->search_compiled;
@@ -2265,7 +2255,6 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   bool first = true;
   int searchctx = 0;
   bool wrapped = false;
-  char helpstr[1024] = { 0 };
 
   struct Menu *pager_menu = NULL;
   int old_PagerIndexLines; /* some people want to resize it while inside the pager */
@@ -2334,27 +2323,6 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     (rd.line_info[i].syntax)[0].last = -1;
   }
 
-  if (IsEmail(extra))
-  {
-    // Viewing a Mailbox
-#ifdef USE_NNTP
-    if (Context && (Context->mailbox->type == MUTT_NNTP))
-      mutt_compile_help(helpstr, sizeof(helpstr), MENU_PAGER, PagerNewsHelp);
-    else
-#endif
-      mutt_compile_help(helpstr, sizeof(helpstr), MENU_PAGER, PagerNormalHelp);
-  }
-  else
-  {
-    // Viewing Help
-    if (InHelp)
-      mutt_compile_help(helpstr, sizeof(helpstr), MENU_PAGER, PagerHelpHelp);
-    else
-      mutt_compile_help(helpstr, sizeof(helpstr), MENU_PAGER, PagerHelp);
-  }
-
-  rd.helpstr = helpstr;
-
   pager_menu = mutt_menu_new(MENU_PAGER);
   pager_menu->pagelen = extra->win_pager->state.rows;
   pager_menu->win_index = extra->win_pager;
@@ -2364,11 +2332,33 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   pager_menu->redraw_data = &rd;
   mutt_menu_push_current(pager_menu);
 
+  if (IsEmail(extra))
+  {
+    // Viewing a Mailbox
+#ifdef USE_NNTP
+    if (Context && (Context->mailbox->type == MUTT_NNTP))
+      extra->win_pager->help_data = PagerNewsHelp;
+    else
+#endif
+      extra->win_pager->help_data = PagerNormalHelp;
+  }
+  else
+  {
+    // Viewing Help
+    if (InHelp)
+      extra->win_pager->help_data = PagerHelpHelp;
+    else
+      extra->win_pager->help_data = PagerHelp;
+  }
+  extra->win_pager->help_menu = MENU_PAGER;
+  window_set_focus(extra->win_pager);
+
   while (ch != -1)
   {
     mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
     pager_custom_redraw(pager_menu);
+    window_redraw(RootWindow, true);
 
     if (C_BrailleFriendly)
     {
@@ -3131,6 +3121,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         old_PagerIndexLines = C_PagerIndexLines;
 
         mutt_enter_command();
+        window_set_focus(rd.extra->win_pager);
         pager_menu->redraw = REDRAW_FULL;
 
         if (OptNeedResort)

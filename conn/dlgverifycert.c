@@ -32,7 +32,6 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
-#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_menu.h"
@@ -71,6 +70,8 @@ int dlg_verify_cert(const char *title, struct ListHead *list, bool allow_always,
 {
   struct Menu *menu = mutt_menu_new(MENU_GENERIC);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_CERTIFICATE);
+  dlg->help_data = VerifyHelp;
+  dlg->help_menu = MENU_GENERIC;
 
   mutt_menu_push_current(menu);
 
@@ -120,9 +121,6 @@ int dlg_verify_cert(const char *title, struct ListHead *list, bool allow_always,
       menu->keys = _("ro");
     }
   }
-
-  char helpstr[1024] = { 0 };
-  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_GENERIC, VerifyHelp);
 
   bool old_ime = OptIgnoreMacroEvents;
   OptIgnoreMacroEvents = true;

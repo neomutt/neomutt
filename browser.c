@@ -48,7 +48,6 @@
 #include "browser.h"
 #include "context.h"
 #include "format_flags.h"
-#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_attach.h"
 #include "mutt_globals.h"
@@ -1159,7 +1158,6 @@ void mutt_browser_select_dir(const char *f)
 void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                              char ***files, int *numfiles)
 {
-  char helpstr[1024];
   char title[256];
   struct BrowserState state = { 0 };
   struct Menu *menu = NULL;
@@ -1349,17 +1347,20 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   menu = mutt_menu_new(MENU_FOLDER);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_BROWSER);
 
+#ifdef USE_NNTP
+  if (OptNews)
+    dlg->help_data = FolderNewsHelp;
+  else
+#endif
+    dlg->help_data = FolderHelp;
+  dlg->help_menu = MENU_FOLDER;
+
   menu->make_entry = folder_make_entry;
   menu->search = select_file_search;
   menu->title = title;
   if (multiple)
     menu->tag = file_tag;
 
-  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_FOLDER,
-#ifdef USE_NNTP
-                                 OptNews ? FolderNewsHelp :
-#endif
-                                           FolderHelp);
   mutt_menu_push_current(menu);
 
   if (mailbox)

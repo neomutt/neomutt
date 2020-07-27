@@ -130,6 +130,10 @@ struct MuttWindow
 
   struct Notify *notify;             ///< Notifications system
 
+  struct MuttWindow *focus;          ///< Focussed Window
+  int help_menu;                     ///< Menu for key bindings, e.g. #MENU_PAGER
+  const struct Mapping *help_data;   ///< Data for the Help Bar
+
   enum WindowType type;              ///< Window type, e.g. #WT_SIDEBAR
   void *wdata;                       ///< Private data
   void (*wdata_free)(struct MuttWindow *win, void **ptr); ///< Callback function to free private data
@@ -172,6 +176,7 @@ enum NotifyWindow
   NT_WINDOW_DELETE,  ///< Window is about to be deleted
   NT_WINDOW_STATE,   ///< Window state has changed, e.g. #WN_VISIBLE
   NT_WINDOW_DIALOG,  ///< A new Dialog Window has been created, e.g. #WT_DLG_INDEX
+  NT_WINDOW_FOCUS,   ///< Window focus has changed
 };
 
 /**
@@ -183,8 +188,8 @@ struct EventWindow
   WindowNotifyFlags flags; ///< Attributes of Window that changed
 };
 
+extern struct MuttWindow *RootWindow;
 extern struct MuttWindow *AllDialogsWindow;
-extern struct MuttWindow *HelpBarWindow;
 extern struct MuttWindow *MessageWindow;
 
 // Functions that deal with the Window
@@ -218,6 +223,8 @@ void               mutt_winlist_free (struct MuttWindowList *head);
 struct MuttWindow *mutt_window_find  (struct MuttWindow *root, enum WindowType type);
 void               window_notify_all (struct MuttWindow *win);
 void               window_set_visible(struct MuttWindow *win, bool visible);
+void               window_set_focus  (struct MuttWindow *win);
+struct MuttWindow *window_get_focus  (void);
 
 void window_redraw(struct MuttWindow *win, bool force);
 

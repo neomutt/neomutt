@@ -150,7 +150,6 @@ WHERE bool C_FlagSafe;                       ///< Config: Protect flagged messag
 WHERE bool C_ForwardDecode;                  ///< Config: Decode the message when forwarding it
 WHERE bool C_ForwardQuote;                   ///< Config: Automatically quote a forwarded message using #C_IndentString
 WHERE bool C_Header;                         ///< Config: Include the message headers in the reply email (Weed applies)
-WHERE bool C_Help;                           ///< Config: Display a help line with common key bindings
 WHERE bool C_MailCheckRecent;                ///< Config: Notify the user about new mail since the last time the mailbox was opened
 WHERE bool C_Markers;                        ///< Config: Display a '+' at the beginning of wrapped lines in the pager
 WHERE bool C_PipeDecodeWeed;                 ///< Config: Control whether to weed headers when piping an email

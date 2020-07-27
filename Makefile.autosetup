@@ -66,7 +66,7 @@ NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	browser.o commands.o command_parse.o \
 		complete.o compose.o conststrings.o context.o copy.o \
 		editmsg.o enriched.o enter.o flags.o functions.o git_ver.o \
-		handler.o hdrline.o help.o helpbar.o hook.o icommands.o index.o init.o \
+		handler.o hdrline.o help.o hook.o icommands.o index.o init.o \
 		keymap.o mailcap.o maillist.o main.o menu.o muttlib.o mutt_account.o \
 		mutt_attach.o mutt_body.o mutt_commands.o mutt_config.o \
 		mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
@@ -322,6 +322,19 @@ $(PWD)/hcache:
 @endif
 
 ###############################################################################
+# libhelpbar
+LIBHELPBAR=	libhelpbar.a
+LIBHELPBAROBJS=	helpbar/config.o helpbar/helpbar.o helpbar/wdata.o
+CLEANFILES+=	$(LIBHELPBAR) $(LIBHELPBAROBJS)
+ALLOBJS+=	$(LIBHELPBAROBJS)
+
+$(LIBHELPBAR): $(PWD)/helpbar $(LIBHELPBAROBJS)
+	$(AR) cr $@ $(LIBHELPBAROBJS)
+	$(RANLIB) $@
+$(PWD)/helpbar:
+	$(MKDIR_P) $(PWD)/helpbar
+
+###############################################################################
 # libhistory
 LIBHISTORY=	libhistory.a
 LIBHISTORYOBJS=	history/config.o history/dlghistory.o history/history.o
@@ -575,7 +588,7 @@ $(ALLOBJS):
 # The order of these libraries depends on their dependencies.
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBAUTOCRYPT) $(LIBPOP) $(LIBNNTP) $(LIBCOMPMBOX) \
-		$(LIBSTORE) $(LIBPATTERN) $(LIBGUI) $(LIBDEBUG) $(LIBMBOX) \
+		$(LIBSTORE) $(LIBPATTERN) $(LIBGUI) $(LIBHELPBAR) $(LIBDEBUG) $(LIBMBOX) \
 		$(LIBNOTMUCH) $(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) \
 		$(LIBHCACHE)  $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) \
 		$(LIBHISTORY) $(LIBALIAS) $(LIBSEND) $(LIBCORE) $(LIBCONFIG) \

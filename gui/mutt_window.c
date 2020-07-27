@@ -37,13 +37,29 @@
 #include "mutt_curses.h"
 #include "mutt_globals.h"
 #include "mutt_menu.h"
+#include "opcodes.h"
 #include "options.h"
 #include "reflow.h"
+#include "helpbar/lib.h"
 
 struct MuttWindow *RootWindow = NULL;       ///< Parent of all Windows
 struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs
-struct MuttWindow *HelpBarWindow = NULL;    ///< Help Bar Window, "?:Help", etc
 struct MuttWindow *MessageWindow = NULL;    ///< Message Window, ":set", etc
+
+/// Help Bar for the Command Line Editor
+static const struct Mapping EditorHelp[] = {
+  // clang-format off
+  { N_("Complete"),    OP_EDITOR_COMPLETE },
+  { N_("Hist Up"),     OP_EDITOR_HISTORY_UP },
+  { N_("Hist Down"),   OP_EDITOR_HISTORY_DOWN },
+  { N_("Hist Search"), OP_EDITOR_HISTORY_SEARCH },
+  { N_("Begin Line"),  OP_EDITOR_BOL },
+  { N_("End Line"),    OP_EDITOR_EOL },
+  { N_("Kill Line"),   OP_EDITOR_KILL_LINE },
+  { N_("Kill Word"),   OP_EDITOR_KILL_WORD },
+  { NULL, 0 },
+  // clang-format off
+};
 
 /**
  * window_was_visible - Was the Window visible?
@@ -174,6 +190,9 @@ void mutt_window_free(struct MuttWindow **ptr)
 
   struct MuttWindow *win = *ptr;
 
+  if (win->parent && (win->parent->focus == win))
+    win->parent->focus = NULL;
+
   struct EventWindow ev_w = { win, WN_NO_FLAGS };
   notify_send(win->notify, NT_WINDOW, NT_WINDOW_DELETE, &ev_w);
 
@@ -267,12 +286,6 @@ static int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
   struct EventConfig *ec = nc->event_data;
   struct MuttWindow *root_win = nc->global_data;
 
-  if (mutt_str_equal(ec->name, "help"))
-  {
-    HelpBarWindow->state.visible = C_Help;
-    goto reflow;
-  }
-
   if (mutt_str_equal(ec->name, "status_on_top"))
   {
     struct MuttWindow *first = TAILQ_FIRST(&root_win->children);
@@ -291,7 +304,6 @@ static int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
     }
   }
 
-reflow:
   mutt_window_reflow(root_win);
   return 0;
 }
@@ -304,7 +316,6 @@ void mutt_window_free_all(void)
   if (NeoMutt)
     notify_observer_remove(NeoMutt->notify, mutt_dlg_rootwin_observer, RootWindow);
   AllDialogsWindow = NULL;
-  HelpBarWindow = NULL;
   MessageWindow = NULL;
   mutt_window_free(&RootWindow);
 }
@@ -344,9 +355,7 @@ void mutt_window_init(void)
       mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
   notify_set_parent(RootWindow->notify, NeoMutt->notify);
 
-  HelpBarWindow = mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                                  MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  HelpBarWindow->state.visible = C_Help;
+  struct MuttWindow *win_helpbar = helpbar_create();
 
   AllDialogsWindow = mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL,
                                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
@@ -354,15 +363,17 @@ void mutt_window_init(void)
 
   MessageWindow = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL,
                                   MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  MessageWindow->help_data = EditorHelp;
+  MessageWindow->help_menu = MENU_EDITOR;
 
   if (C_StatusOnTop)
   {
     mutt_window_add_child(RootWindow, AllDialogsWindow);
-    mutt_window_add_child(RootWindow, HelpBarWindow);
+    mutt_window_add_child(RootWindow, win_helpbar);
   }
   else
   {
-    mutt_window_add_child(RootWindow, HelpBarWindow);
+    mutt_window_add_child(RootWindow, win_helpbar);
     mutt_window_add_child(RootWindow, AllDialogsWindow);
   }
 
@@ -753,4 +764,42 @@ void window_redraw(struct MuttWindow *win, bool force)
 
   window_recalc(win);
   window_repaint(win, force);
+}
+
+/**
+ * window_set_focus - Set the Window focus
+ * @param win Window to focus
+ */
+void window_set_focus(struct MuttWindow *win)
+{
+  if (!win)
+    return;
+
+  struct MuttWindow *parent = win->parent;
+  struct MuttWindow *child = win;
+
+  // Set the chain of focus, all the way to the root
+  for (; parent; child = parent, parent = parent->parent)
+    parent->focus = child;
+
+  // Find the most focussed Window
+  while (win && win->focus)
+    win = win->focus;
+
+  struct EventWindow ev_w = { win, WN_NO_FLAGS };
+  notify_send(win->notify, NT_WINDOW, NT_WINDOW_FOCUS, &ev_w);
+}
+
+/**
+ * window_get_focus - Get the currently focussed Window
+ * @retval ptr Window with focus
+ */
+struct MuttWindow *window_get_focus(void)
+{
+  struct MuttWindow *win = RootWindow;
+
+  while (win && win->focus)
+    win = win->focus;
+
+  return win;
 }

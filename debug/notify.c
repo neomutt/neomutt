@@ -251,7 +251,7 @@ static void notify_dump_mailbox(struct NotifyCallback *nc)
   mutt_debug(LL_DEBUG1, "\tMailbox: %s %s\n", get_mailbox_event(nc->event_subtype), path);
 }
 
-static void notify_dump_window(struct NotifyCallback *nc)
+static void notify_dump_window_state(struct NotifyCallback *nc)
 {
   struct EventWindow *ev_w = nc->event_data;
   const struct MuttWindow *win = ev_w->win;
@@ -281,6 +281,36 @@ static void notify_dump_window(struct NotifyCallback *nc)
     mutt_buffer_add_printf(&buf, "wider [%d->%d] ", win->old.cols, win->state.cols);
   if (flags & WN_NARROWER)
     mutt_buffer_add_printf(&buf, "narrower [%d->%d] ", win->old.cols, win->state.cols);
+
+  mutt_debug(LL_DEBUG1, "\tWindow: %s\n", mutt_b2s(&buf));
+
+  mutt_buffer_dealloc(&buf);
+}
+
+static void notify_dump_window_focus(struct NotifyCallback *nc)
+{
+  struct EventWindow *ev_w = nc->event_data;
+  struct MuttWindow *win = ev_w->win;
+
+  struct Buffer buf = mutt_buffer_make(128);
+
+  mutt_buffer_addstr(&buf, "Focus: ");
+
+  if (win)
+  {
+    struct MuttWindow *dlg = dialog_find(win);
+    if (dlg && (dlg != win))
+      mutt_buffer_add_printf(&buf, "%s:", win_name(dlg));
+
+    mutt_buffer_add_printf(&buf, "%s ", win_name(win));
+
+    mutt_buffer_add_printf(&buf, "(C%d,R%d) [%dx%d]", win->state.col_offset,
+                           win->state.row_offset, win->state.cols, win->state.rows);
+  }
+  else
+  {
+    mutt_buffer_addstr(&buf, "NONE");
+  }
 
   mutt_debug(LL_DEBUG1, "\tWindow: %s\n", mutt_b2s(&buf));
 
@@ -318,7 +348,10 @@ int debug_notify_observer(struct NotifyCallback *nc)
       notify_dump_mailbox(nc);
       break;
     case NT_WINDOW:
-      notify_dump_window(nc);
+      if (nc->event_subtype == NT_WINDOW_STATE)
+        notify_dump_window_state(nc);
+      else if (nc->event_subtype == NT_WINDOW_FOCUS)
+        notify_dump_window_focus(nc);
       break;
     default:
       mutt_debug(LL_DEBUG1, "\tEvent Type: %d\n", nc->event_type);

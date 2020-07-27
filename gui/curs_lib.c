@@ -700,6 +700,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
   struct MuttWindow *pager =
       mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->focus = pager;
 
   struct MuttWindow *pbar =
       mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,

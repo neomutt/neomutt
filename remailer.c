@@ -41,7 +41,6 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "format_flags.h"
-#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_menu.h"
@@ -584,7 +583,6 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
   struct Coord *coords = NULL;
 
   struct Menu *menu = NULL;
-  char helpstr[1024];
   bool loop = true;
 
   char *t = NULL;
@@ -616,13 +614,14 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
 
   menu = mutt_menu_new(MENU_MIX);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_REMAILER);
+  dlg->help_data = RemailerHelp;
+  dlg->help_menu = MENU_MIX;
 
   menu->max = ttll;
   menu->make_entry = mix_make_entry;
   menu->tag = NULL;
   menu->title = _("Select a remailer chain");
   menu->mdata = type2_list;
-  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MIX, RemailerHelp);
   menu->pagelen = MIX_VOFFSET - 1;
   mutt_menu_push_current(menu);
 

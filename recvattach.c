@@ -46,7 +46,6 @@
 #include "format_flags.h"
 #include "handler.h"
 #include "hdrline.h"
-#include "helpbar.h"
 #include "hook.h"
 #include "init.h"
 #include "keymap.h"
@@ -1545,7 +1544,6 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
  */
 void mutt_view_attachments(struct Email *e)
 {
-  char helpstr[1024];
   int op = OP_NULL;
 
   struct Mailbox *m = Context ? Context->mailbox : NULL;
@@ -1561,11 +1559,12 @@ void mutt_view_attachments(struct Email *e)
 
   struct Menu *menu = mutt_menu_new(MENU_ATTACH);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_ATTACH);
+  dlg->help_data = AttachHelp;
+  dlg->help_menu = MENU_ATTACH;
 
   menu->title = _("Attachments");
   menu->make_entry = attach_make_entry;
   menu->tag = attach_tag;
-  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ATTACH, AttachHelp);
   mutt_menu_push_current(menu);
 
   struct AttachCtx *actx = mutt_actx_new();
@@ -1577,6 +1576,7 @@ void mutt_view_attachments(struct Email *e)
   {
     if (op == OP_NULL)
       op = mutt_menu_loop(menu);
+    window_redraw(dlg, true);
     if (!Context)
       return;
     switch (op)

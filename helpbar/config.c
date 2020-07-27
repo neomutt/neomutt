@@ -1,6 +1,6 @@
 /**
  * @file
- * Help bar
+ * Config used by Help Bar
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -20,14 +20,28 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_HELPBAR_H
-#define MUTT_HELPBAR_H
+/**
+ * @page helpbar_config Config used by Help Bar
+ *
+ * Config used by Help Bar
+ */
 
+#include "config.h"
 #include <stddef.h>
-#include "keymap.h"
+#include <stdbool.h>
+#include "config/lib.h"
 
-struct Mapping;
+// clang-format off
+struct ConfigDef HelpbarVars[] = {
+  { "help", DT_BOOL|R_REFLOW, NULL, true },
+  { NULL, 0, NULL, 0, 0, NULL },
+};
+// clang-format on
 
-char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu, const struct Mapping *items);
-
-#endif /* MUTT_HELPBAR_H */
+/**
+ * config_init_helpbar - Register helpbar config variables
+ */
+bool config_init_helpbar(struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, HelpbarVars, DT_NO_VARIABLE);
+}

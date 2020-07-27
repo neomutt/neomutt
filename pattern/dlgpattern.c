@@ -39,7 +39,6 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "format_flags.h"
-#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_menu.h"
@@ -140,9 +139,6 @@ static struct Menu *create_pattern_menu(void)
 
   // L10N: Pattern completion menu title
   menu->title = _("Patterns");
-  char *helpstr = mutt_mem_malloc(256);
-  menu->help = mutt_compile_help(helpstr, 256, MENU_GENERIC, PatternHelp);
-
   menu->mdata = entries = mutt_mem_calloc(num_entries, sizeof(struct PatternEntry));
   menu->max = num_entries;
 
@@ -257,7 +253,6 @@ static void free_pattern_menu(struct Menu **ptr)
   }
   FREE(&menu->mdata);
 
-  FREE(&menu->help);
   mutt_menu_free(ptr);
 }
 
@@ -271,6 +266,8 @@ bool mutt_ask_pattern(char *buf, size_t buflen)
 {
   struct Menu *menu = create_pattern_menu();
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_PATTERN);
+  dlg->help_data = PatternHelp;
+  dlg->help_menu = MENU_GENERIC;
 
   bool rc = false;
   bool done = false;

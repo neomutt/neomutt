@@ -82,6 +82,8 @@ void dialog_push(struct MuttWindow *dlg)
   dlg->state.visible = true;
   dlg->parent = AllDialogsWindow;
   mutt_window_reflow(AllDialogsWindow);
+  window_set_focus(dlg);
+
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
 #endif
@@ -116,6 +118,7 @@ void dialog_pop(void)
     last->state.visible = true;
     mutt_window_reflow(AllDialogsWindow);
   }
+  window_set_focus(last);
   mutt_menu_set_current_redraw(REDRAW_FULL);
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
@@ -171,6 +174,7 @@ struct MuttWindow *dialog_create_simple_index(struct Menu *menu, enum WindowType
   struct MuttWindow *index =
       mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->focus = index;
 
   struct MuttWindow *ibar =
       mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,

@@ -34,7 +34,6 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "format_flags.h"
-#include "helpbar.h"
 #include "keymap.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
@@ -97,17 +96,17 @@ static void history_make_entry(char *buf, size_t buflen, struct Menu *menu, int 
 void history_menu(char *buf, size_t buflen, char **matches, int match_count)
 {
   bool done = false;
-  char helpstr[1024];
   char title[256];
 
   snprintf(title, sizeof(title), _("History '%s'"), buf);
 
   struct Menu *menu = mutt_menu_new(MENU_GENERIC);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_HISTORY);
+  dlg->help_data = HistoryHelp;
+  dlg->help_menu = MENU_GENERIC;
 
   menu->make_entry = history_make_entry;
   menu->title = title;
-  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_GENERIC, HistoryHelp);
   mutt_menu_push_current(menu);
 
   menu->max = match_count;
