@@ -178,7 +178,7 @@ int mutt_which_case(const char *s);
 int mutt_is_list_recipient(bool all_addr, struct Envelope *e);
 int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *e);
 int mutt_pattern_func(int op, char *prompt);
-int mutt_search_command(int cur, int op);
+int mutt_search_command(struct Mailbox *mailbox, int cur, int op);
 
 bool mutt_limit_current_thread(struct Email *e);
 

@@ -1932,7 +1932,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_SEARCH:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
-        menu->current = mutt_search_command(menu->current, op);
+        menu->current = mutt_search_command(Context->mailbox, menu->current, op);
         if (menu->current == -1)
           menu->current = menu->oldcurrent;
         else

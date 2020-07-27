@@ -58,6 +58,7 @@
 #include "sort.h"
 #include "state.h"
 #include "ncrypt/lib.h"
+#include "pattern/lib.h"
 #include "send/lib.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
@@ -234,6 +235,7 @@ static struct Email *select_msg(struct Context *ctx)
   menu->max = ctx->mailbox->msg_count;
   menu->title = _("Postponed Messages");
   menu->mdata = ctx;
+  menu->custom_search = true;
   mutt_menu_push_current(menu);
 
   /* The postponed mailbox is setup to have sorting disabled, but the global
@@ -267,6 +269,18 @@ static struct Email *select_msg(struct Context *ctx)
         }
         else
           menu->redraw |= REDRAW_CURRENT;
+        break;
+
+      // All search operations must exist to show the menu
+      case OP_SEARCH_REVERSE:
+      case OP_SEARCH_NEXT:
+      case OP_SEARCH_OPPOSITE:
+      case OP_SEARCH:
+        menu->current = mutt_search_command(ctx->mailbox, menu->current, op);
+        if (menu->current == -1)
+          menu->current = menu->oldcurrent;
+        else
+          menu->redraw = REDRAW_MOTION;
         break;
 
       case OP_GENERIC_SELECT_ENTRY:
