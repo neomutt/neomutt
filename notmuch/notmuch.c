@@ -239,10 +239,12 @@ void nm_edata_free(void **ptr)
     return;
 
   struct NmEmailData *edata = *ptr;
+
   mutt_debug(LL_DEBUG2, "nm: freeing email %p\n", (void *) edata);
   FREE(&edata->folder);
   FREE(&edata->oldpath);
   FREE(&edata->virtual_id);
+
   FREE(ptr);
 }
 
@@ -253,6 +255,20 @@ void nm_edata_free(void **ptr)
 struct NmEmailData *nm_edata_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct NmEmailData));
+}
+
+/**
+ * nm_edata_get - Get the Notmuch Email data
+ * @param e Email
+ * @retval ptr  Success
+ * @retval NULL Error
+ */
+struct NmEmailData *nm_edata_get(struct Email *e)
+{
+  if (!e)
+    return NULL;
+
+  return e->nm_edata;
 }
 
 /**
@@ -311,7 +327,11 @@ static int init_mailbox(struct Mailbox *m)
  */
 static char *email_get_id(struct Email *e)
 {
-  return (e && e->edata) ? ((struct NmEmailData *) e->edata)->virtual_id : NULL;
+  struct NmEmailData *edata = nm_edata_get(e);
+  if (!edata)
+    return NULL;
+
+  return edata->virtual_id;
 }
 
 /**
@@ -617,7 +637,7 @@ err:
  */
 static int update_email_tags(struct Email *e, notmuch_message_t *msg)
 {
-  struct NmEmailData *edata = e->edata;
+  struct NmEmailData *edata = nm_edata_get(e);
   char *new_tags = NULL;
   char *old_tags = NULL;
 
@@ -667,7 +687,7 @@ static int update_email_tags(struct Email *e, notmuch_message_t *msg)
  */
 static int update_message_path(struct Email *e, const char *path)
 {
-  struct NmEmailData *edata = e->edata;
+  struct NmEmailData *edata = nm_edata_get(e);
 
   mutt_debug(LL_DEBUG2, "nm: path update requested path=%s, (%s)\n", path, edata->virtual_id);
 
@@ -751,19 +771,18 @@ static char *nm2mutt_message_id(const char *id)
  */
 static int init_email(struct Email *e, const char *path, notmuch_message_t *msg)
 {
-  if (e->edata)
+  if (nm_edata_get(e))
     return 0;
 
   struct NmEmailData *edata = nm_edata_new();
-  e->edata = edata;
-  e->edata_free = nm_edata_free;
+  e->nm_edata = edata;
 
   /* Notmuch ensures that message Id exists (if not notmuch Notmuch will
    * generate an ID), so it's more safe than use neomutt Email->env->id */
   const char *id = notmuch_message_get_message_id(msg);
   edata->virtual_id = mutt_str_dup(id);
 
-  mutt_debug(LL_DEBUG2, "nm: [e=%p, edata=%p] (%s)\n", (void *) e, (void *) e->edata, id);
+  mutt_debug(LL_DEBUG2, "nm: [e=%p, edata=%p] (%s)\n", (void *) e, (void *) edata, id);
 
   char *nm_msg_id = nm2mutt_message_id(id);
   if (!e->env->message_id)
@@ -982,8 +1001,7 @@ static void append_message(struct HeaderCache *h, struct Mailbox *m,
   if (newpath)
   {
     /* remember that file has been moved -- nm_mbox_sync() will update the DB */
-    struct NmEmailData *edata = e->edata;
-
+    struct NmEmailData *edata = nm_edata_get(e);
     if (edata)
     {
       mutt_debug(LL_DEBUG1, "nm: remember obsolete path: %s\n", path);
@@ -1620,7 +1638,11 @@ static unsigned int count_query(notmuch_database_t *db, const char *qstr, int li
  */
 char *nm_email_get_folder(struct Email *e)
 {
-  return (e && e->edata) ? ((struct NmEmailData *) e->edata)->folder : NULL;
+  struct NmEmailData *edata = nm_edata_get(e);
+  if (!edata)
+    return NULL;
+
+  return edata->folder;
 }
 
 /**
@@ -1887,7 +1909,7 @@ int nm_update_filename(struct Mailbox *m, const char *old_file,
   if (!mdata || !new_file)
     return -1;
 
-  if (!old_file && e && e->edata)
+  if (!old_file && nm_edata_get(e))
   {
     email_get_fullpath(e, buf, sizeof(buf));
     old_file = buf;
@@ -2354,7 +2376,7 @@ static int nm_mbox_sync(struct Mailbox *m)
     if (!e)
       break;
 
-    struct NmEmailData *edata = e->edata;
+    struct NmEmailData *edata = nm_edata_get(e);
 
     if (m->verbose)
       mutt_progress_update(&progress, i, -1);

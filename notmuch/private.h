@@ -122,6 +122,7 @@ void                  nm_adata_free(void **ptr);
 struct NmAccountData *nm_adata_get (struct Mailbox *m);
 struct NmAccountData *nm_adata_new (void);
 void                  nm_edata_free(void **ptr);
+struct NmEmailData *  nm_edata_get (struct Email *e);
 struct NmEmailData *  nm_edata_new (void);
 void                  nm_mdata_free(void **ptr);
 struct NmMboxData *   nm_mdata_get (struct Mailbox *m);

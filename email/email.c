@@ -34,6 +34,8 @@
 #include "envelope.h"
 #include "tags.h"
 
+void nm_edata_free(void **ptr);
+
 /**
  * email_free - Free an Email
  * @param[out] ptr Email to free
@@ -50,11 +52,13 @@ void email_free(struct Email **ptr)
 
   mutt_env_free(&e->env);
   mutt_body_free(&e->content);
-  FREE(&e->maildir_flags);
   FREE(&e->tree);
   FREE(&e->path);
 #ifdef MIXMASTER
   mutt_list_free(&e->chain);
+#endif
+#ifdef USE_NOTMUCH
+  nm_edata_free(&e->nm_edata);
 #endif
   driver_tags_free(&e->tags);
 

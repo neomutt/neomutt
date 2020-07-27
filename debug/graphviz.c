@@ -54,7 +54,7 @@
 // #define GV_HIDE_CONFIG
 // #define GV_HIDE_MDATA
 
-static void dot_email(FILE *fp, const struct Email *e, struct ListHead *links);
+static void dot_email(FILE *fp, struct Email *e, struct ListHead *links);
 static void dot_envelope(FILE *fp, const struct Envelope *env, struct ListHead *links);
 
 const char *get_content_type(enum ContentType type)
@@ -1283,7 +1283,7 @@ static void dot_envelope(FILE *fp, const struct Envelope *env, struct ListHead *
   mutt_buffer_dealloc(&buf);
 }
 
-static void dot_email(FILE *fp, const struct Email *e, struct ListHead *links)
+static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
 {
   struct Buffer buf = mutt_buffer_make(256);
   char arr[256];
@@ -1349,7 +1349,8 @@ static void dot_email(FILE *fp, const struct Email *e, struct ListHead *links)
   dot_type_number(fp, "score", e->score);
   dot_type_number(fp, "attach_total", e->attach_total);
 
-  dot_type_string(fp, "maildir_flags", e->maildir_flags, false);
+  struct MaildirEmailData *edata = maildir_edata_get(e);
+  dot_type_string(fp, "maildir_flags", edata->maildir_flags, false);
 
   if (e->date_sent != 0)
   {
@@ -1399,7 +1400,7 @@ static void dot_email(FILE *fp, const struct Email *e, struct ListHead *links)
   mutt_buffer_dealloc(&buf);
 }
 
-void dump_graphviz_email(const struct Email *e)
+void dump_graphviz_email(struct Email *e)
 {
   char name[256] = { 0 };
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);

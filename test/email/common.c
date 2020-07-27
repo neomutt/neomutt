@@ -32,3 +32,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
 {
   return -1;
 }
+
+void nm_edata_free(void **ptr)
+{
+}

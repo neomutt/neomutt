@@ -171,18 +171,22 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
 {
   *dest = '\0';
 
+  struct MaildirEmailData *edata = maildir_edata_get(e);
+  if (!edata)
+    return;
+
   /* The maildir specification requires that all files in the cur
    * subdirectory have the :unique string appended, regardless of whether
    * or not there are any flags.  If .old is set, we know that this message
    * will end up in the cur directory, so we include it in the following
    * test even though there is no associated flag.  */
 
-  if (e && (e->flagged || e->replied || e->read || e->deleted || e->old || e->maildir_flags))
+  if (e->flagged || e->replied || e->read || e->deleted || e->old || edata->maildir_flags)
   {
     char tmp[1024];
     snprintf(tmp, sizeof(tmp), "%s%s%s%s%s", e->flagged ? "F" : "", e->replied ? "R" : "",
-             e->read ? "S" : "", e->deleted ? "T" : "", NONULL(e->maildir_flags));
-    if (e->maildir_flags)
+             e->read ? "S" : "", e->deleted ? "T" : "", NONULL(edata->maildir_flags));
+    if (edata->maildir_flags)
       qsort(tmp, strlen(tmp), 1, ch_compare);
     snprintf(dest, destlen, ":2,%s", tmp);
   }

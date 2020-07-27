@@ -100,9 +100,11 @@ struct Email
   struct ListHead chain;       ///< Mixmaster chain
 #endif
 
-  struct TagList tags;         ///< For drivers that support server tagging
+#ifdef USE_NOTMUCH
+  void *nm_edata;              ///< Notmuch private data
+#endif
 
-  char *maildir_flags;         ///< Unknown maildir flags
+  struct TagList tags;         ///< For drivers that support server tagging
 
   void *edata;                    ///< Driver-specific data
   void (*edata_free)(void **ptr); ///< Driver-specific data free function
