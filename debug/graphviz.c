@@ -43,6 +43,7 @@
 #include "notmuch/private.h"
 #include "pop/private.h"
 #include "compmbox/lib.h"
+#include "maildir/lib.h"
 #include "mbox/lib.h"
 #include "nntp/lib.h"
 #include "notmuch/lib.h"

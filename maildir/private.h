@@ -103,9 +103,6 @@ int             mh_msg_save_hcache (struct Mailbox *m, struct Email *e);
 
 /* Maildir/MH shared functions */
 void                    maildir_canon_filename (struct Buffer *dest, const char *src);
-void                    maildir_edata_free     (void **ptr);
-struct MaildirEmailData *maildir_edata_get     (struct Email *e);
-struct MaildirEmailData *maildir_edata_new     (void);
 void                    maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Progress *progress);
 size_t                  maildir_hcache_keylen  (const char *fn);
 struct MaildirMboxData *maildir_mdata_get      (struct Mailbox *m);

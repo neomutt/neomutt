@@ -63,4 +63,8 @@ int           mh_sync_mailbox_message  (struct Mailbox *m, int msgno, struct Hea
 
 bool config_init_maildir(struct ConfigSet *cs);
 
+void                     maildir_edata_free(void **ptr);
+struct MaildirEmailData *maildir_edata_get (struct Email *e);
+struct MaildirEmailData *maildir_edata_new (void);
+
 #endif /* MUTT_MAILDIR_LIB_H */
