@@ -1916,6 +1916,63 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
 }
 
 /**
+ * is_text_plain - is a Body a text/plain MIME part?
+ * @param b Body to check
+ * @retval true if it's text/plain
+ * @retval false if it's not
+ */
+static bool is_text_plain(const struct Body *b)
+{
+  return (b->type == TYPE_TEXT) && mutt_istr_equal(b->subtype, "plain");
+}
+
+/**
+ * abort_for_missing_attachments - Should we abort sending because of missing attachments?
+ * @param b Body
+ * @param sub Config Subset
+ * @retval Abort because of missing attachments
+ */
+static bool abort_for_missing_attachments(const struct Body *b, struct ConfigSubset *sub)
+{
+  const enum QuadOption c_abort_noattach = cs_subset_quad(sub, "abort_noattach");
+
+  if (c_abort_noattach == MUTT_NO)
+    return false;
+
+  if (b->next)
+    return false;
+
+  bool has_keyword = false;
+
+  /* search text/plain parts, whether they are main or alternative parts */
+  if (is_text_plain(b))
+  {
+    has_keyword |= search_attach_keyword(b->filename, sub);
+  }
+  else
+  {
+    for (b = b->parts; b; b = b->next)
+    {
+      if (is_text_plain(b))
+      {
+        has_keyword |= search_attach_keyword(b->filename, sub);
+      }
+    }
+  }
+
+  if (!has_keyword)
+    return false;
+
+  if (c_abort_noattach == MUTT_YES)
+  {
+    mutt_error(_("Message contains text matching \"$abort_noattach_regex\". Not sending."));
+    return true;
+  }
+
+  return query_quadoption(c_abort_noattach, _("No attachments, cancel sending?")) != MUTT_NO;
+}
+
+/**
  * mutt_send_message - Send an email
  * @param flags    Send mode, see #SendFlags
  * @param e_templ  Template to use for new message
@@ -2256,8 +2313,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!(flags & (SEND_KEY | SEND_POSTPONED | SEND_RESEND | SEND_DRAFT_FILE)))
   {
     const bool c_text_flowed = cs_subset_bool(sub, "text_flowed");
-    if (c_text_flowed && (e_templ->content->type == TYPE_TEXT) &&
-        mutt_istr_equal(e_templ->content->subtype, "plain"))
+    if (c_text_flowed && is_text_plain(e_templ->content))
     {
       mutt_param_set(&e_templ->content->parameter, "format", "flowed");
     }
@@ -2600,22 +2656,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   }
 #endif
 
-  const enum QuadOption c_abort_noattach =
-      cs_subset_quad(sub, "abort_noattach");
-
-  if (!(flags & SEND_BATCH) && (c_abort_noattach != MUTT_NO) &&
-      !e_templ->content->next && (e_templ->content->type == TYPE_TEXT) &&
-      mutt_istr_equal(e_templ->content->subtype, "plain") &&
-      search_attach_keyword(e_templ->content->filename, sub) &&
-      (query_quadoption(c_abort_noattach,
-                        _("No attachments, cancel sending?")) != MUTT_NO))
+  if (!(flags & SEND_BATCH) && abort_for_missing_attachments(e_templ->content, sub))
   {
-    /* if the abort is automatic, print an error message */
-    if (c_abort_noattach == MUTT_YES)
-    {
-      mutt_error(_("Message contains text matching "
-                   "\"$abort_noattach_regex\". Not sending."));
-    }
     goto main_loop;
   }
 

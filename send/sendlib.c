@@ -478,6 +478,8 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
 
   if (b && !fname)
     fname = b->filename;
+  if (!fname)
+    return NULL;
 
   if (stat(fname, &sb) == -1)
   {
