@@ -430,7 +430,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   {
     /* RFC5322 mandates a From: header,
      * so warn before bouncing messages without one */
-    if (!TAILQ_EMPTY(&en->email->env->from))
+    if (TAILQ_EMPTY(&en->email->env->from))
       mutt_error(_("Warning: message contains no From: header"));
 
     msg_count++;
