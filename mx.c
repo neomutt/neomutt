@@ -258,6 +258,42 @@ static int mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
+ * mx_mbox_ac_link - Link a Mailbox to an existing or new Account
+ * @param m Mailbox to link
+ * @retval true Success
+ * @retval false Failure
+ */
+bool mx_mbox_ac_link(struct Mailbox *m)
+{
+  if (!m)
+    return false;
+
+  if (m->account)
+    return true;
+
+  struct Account *a = mx_ac_find(m);
+  const bool new_account = !a;
+  if (new_account)
+  {
+    a = account_new(NULL, NeoMutt->sub);
+    a->type = m->type;
+  }
+  if (mx_ac_add(a, m) < 0)
+  {
+    if (new_account)
+    {
+      FREE(&a);
+    }
+    return false;
+  }
+  if (new_account)
+  {
+    neomutt_account_add(NeoMutt, a);
+  }
+  return true;
+}
+
+/**
  * mx_mbox_open - Open a mailbox and parse it
  * @param m     Mailbox to open
  * @param flags Flags, see #OpenMailboxFlags
@@ -287,26 +323,10 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   const bool newly_linked_account = !m->account;
   if (newly_linked_account)
   {
-    struct Account *a = mx_ac_find(m);
-    bool new_account = false;
-    if (!a)
-    {
-      a = account_new(NULL, NeoMutt->sub);
-      a->type = m->type;
-      new_account = true;
-    }
-    if (mx_ac_add(a, m) < 0)
+    if (!mx_mbox_ac_link(m))
     {
       ctx_free(&ctx);
-      if (new_account)
-      {
-        FREE(&a);
-      }
       return NULL;
-    }
-    if (new_account)
-    {
-      neomutt_account_add(NeoMutt, a);
     }
   }
 
