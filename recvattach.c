@@ -375,7 +375,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
     case 's':
     {
       size_t l;
-      if (flags & MUTT_FORMAT_STAT_FILE)
+      if (aptr->content->filename && (flags & MUTT_FORMAT_STAT_FILE))
       {
         struct stat st;
         stat(aptr->content->filename, &st);
