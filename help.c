@@ -320,8 +320,7 @@ static void dump_menu(FILE *fp, enum MenuType menu, int wraplen)
   const struct Binding *b = NULL;
   char buf[128];
 
-  /* browse through the keymap table */
-  for (map = Keymaps[menu]; map; map = map->next)
+  STAILQ_FOREACH(map, &Keymaps[menu], entries)
   {
     if (map->op != OP_NULL)
     {
@@ -346,15 +345,18 @@ static void dump_menu(FILE *fp, enum MenuType menu, int wraplen)
 
 /**
  * is_bound - Does a function have a keybinding?
- * @param map Keymap to examine
- * @param op  Operation, e.g. OP_DELETE
+ * @param km_list Keymap to examine
+ * @param op      Operation, e.g. OP_DELETE
  * @retval true If a key is bound to that operation
  */
-static bool is_bound(struct Keymap *map, int op)
+static bool is_bound(struct KeymapList *km_list, int op)
 {
-  for (; map; map = map->next)
+  struct Keymap *map = NULL;
+  STAILQ_FOREACH(map, km_list, entries)
+  {
     if (map->op == op)
       return true;
+  }
   return false;
 }
 
@@ -362,16 +364,16 @@ static bool is_bound(struct Keymap *map, int op)
  * dump_unbound - Write out all the operations with no key bindings
  * @param fp      File to write to
  * @param funcs   All the bindings for the current menu
- * @param map     First key map to consider
+ * @param km_list First key map to consider
  * @param aux     Second key map to consider
  * @param wraplen Width to wrap to
  */
 static void dump_unbound(FILE *fp, const struct Binding *funcs,
-                         struct Keymap *map, struct Keymap *aux, int wraplen)
+                         struct KeymapList *km_list, struct KeymapList *aux, int wraplen)
 {
   for (int i = 0; funcs[i].name; i++)
   {
-    if (!is_bound(map, funcs[i].op) && (!aux || !is_bound(aux, funcs[i].op)))
+    if (!is_bound(km_list, funcs[i].op) && (!aux || !is_bound(aux, funcs[i].op)))
       format_line(fp, 0, funcs[i].name, "", _(OpStrings[funcs[i].op][1]), wraplen);
   }
 }
@@ -413,9 +415,9 @@ void mutt_help(enum MenuType menu, int wraplen)
 
     fprintf(fp, "\n%s\n\n", _("Unbound functions:"));
     if (funcs)
-      dump_unbound(fp, funcs, Keymaps[menu], NULL, wraplen);
+      dump_unbound(fp, funcs, &Keymaps[menu], NULL, wraplen);
     if (menu != MENU_PAGER)
-      dump_unbound(fp, OpGeneric, Keymaps[MENU_GENERIC], Keymaps[menu], wraplen);
+      dump_unbound(fp, OpGeneric, &Keymaps[MENU_GENERIC], &Keymaps[menu], wraplen);
 
     mutt_file_fclose(&fp);
 
