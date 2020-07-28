@@ -18133,7 +18133,8 @@ neomutt -a image.jpg *.png -- address1 address2
               <entry>
                 Query a configuration <literal>variable</literal> and print its
                 value to stdout (after the config has been read and any
-                commands executed)
+                commands executed).  Adding <literal>-O</literal> will display
+                one-liner documentation.
               </entry>
             </row>
             <row>

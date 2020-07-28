@@ -199,6 +199,7 @@ static void usage(void)
          "  -p            Resume a prior postponed message, if any\n"
          "  -Q <variable> Query a configuration variable and print its value to stdout\n"
          "                (after the config has been read and any commands executed)\n"
+         "                Add -O for one-liner documentation\n"
          "  -R            Open mailbox in read-only mode\n"
          "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)\n"
          "  -v            Print the NeoMutt version and compile-time definitions and exit\n"
@@ -716,7 +717,7 @@ int main(int argc, char *argv[], char *envp[])
 
   if (!STAILQ_EMPTY(&queries))
   {
-    rc = mutt_query_variables(&queries);
+    rc = mutt_query_variables(&queries, one_liner);
     goto main_curses;
   }
 
