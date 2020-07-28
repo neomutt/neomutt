@@ -1181,17 +1181,25 @@ static int imap_mbox_check_stats(struct Mailbox *m, int flags)
 int imap_path_status(const char *path, bool queue)
 {
   struct Mailbox *m = mx_mbox_find2(path);
-  if (m)
-    return imap_mailbox_status(m, queue);
 
-  // FIXME(sileht): Is that case possible ?
-  struct ImapAccountData *adata = NULL;
-  struct ImapMboxData *mdata = NULL;
+  const bool is_temp = !m;
+  if (is_temp)
+  {
+    m = mx_path_resolve(path);
+    if (!mx_mbox_ac_link(m))
+    {
+      mailbox_free(&m);
+      return 0;
+    }
+  }
 
-  if (imap_adata_find(path, &adata, &mdata) < 0)
-    return -1;
-  int rc = imap_status(adata, mdata, queue);
-  imap_mdata_free((void *) &mdata);
+  int rc = imap_mailbox_status(m, queue);
+
+  if (is_temp)
+  {
+    mx_ac_remove(m);
+  }
+
   return rc;
 }
 
