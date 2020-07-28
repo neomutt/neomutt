@@ -185,12 +185,10 @@ static void dump_macro(struct Buffer *buf, struct Mapping *menu, struct Keymap *
 static bool dump_menu(struct Buffer *buf, struct Mapping *menu, bool bind)
 {
   bool empty = true;
-  struct Keymap *map = NULL, *next = NULL;
+  struct Keymap *map = NULL;
 
-  for (map = Keymaps[menu->value]; map; map = next)
+  STAILQ_FOREACH(map, &Keymaps[menu->value], entries)
   {
-    next = map->next;
-
     if (bind && (map->op != OP_MACRO))
     {
       empty = false;

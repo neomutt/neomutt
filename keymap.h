@@ -46,14 +46,16 @@ void init_extended_keys(void);
  */
 struct Keymap
 {
-  char *macro;         ///< macro expansion (op == OP_MACRO)
-  char *desc;          ///< description of a macro for the help menu
-  struct Keymap *next; ///< next key in map
-  short op;            ///< operation to perform
-  short eq;            ///< number of leading keys equal to next entry
-  short len;           ///< length of key sequence (unit: sizeof (keycode_t))
-  keycode_t *keys;     ///< key sequence
+  char *macro;                  ///< macro expansion (op == OP_MACRO)
+  char *desc;                   ///< description of a macro for the help menu
+  short op;                     ///< operation to perform
+  short eq;                     ///< number of leading keys equal to next entry
+  short len;                    ///< length of key sequence (unit: sizeof (keycode_t))
+  keycode_t *keys;              ///< key sequence
+  STAILQ_ENTRY(Keymap) entries; ///< next key in map
 };
+
+STAILQ_HEAD(KeymapList, Keymap);
 
 /**
  * struct KeyEvent - An event such as a keypress
@@ -105,7 +107,7 @@ int mutt_abort_key_config_observer(struct NotifyCallback *nc);
 enum CommandResult km_bind(char *s, enum MenuType menu, int op, char *macro, char *desc);
 int km_dokey(enum MenuType menu);
 
-extern struct Keymap *Keymaps[]; ///< Array of Keymap keybindings, one for each Menu
+extern struct KeymapList Keymaps[]; ///< Array of Keymap keybindings, one for each Menu
 
 extern int LastKey; ///< Last real key pressed, recorded by dokey()
 extern keycode_t AbortKey; ///< key to abort edits etc, normally Ctrl-G
