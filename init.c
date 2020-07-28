@@ -1067,11 +1067,12 @@ enum CommandResult mutt_parse_rc_line(const char *line, struct Buffer *err)
 
 /**
  * mutt_query_variables - Implement the -Q command line flag
- * @param queries List of query strings
+ * @param queries   List of query strings
+ * @param show_docs If true, show one-liner docs for the config item
  * @retval 0 Success, all queries exist
  * @retval 1 Error
  */
-int mutt_query_variables(struct ListHead *queries)
+int mutt_query_variables(struct ListHead *queries, bool show_docs)
 {
   struct Buffer value = mutt_buffer_make(256);
   struct Buffer tmp = mutt_buffer_make(256);
@@ -1107,7 +1108,7 @@ int mutt_query_variables(struct ListHead *queries)
       mutt_buffer_strcpy(&value, tmp.data);
     }
 
-    dump_config_neo(NeoMutt->sub->cs, he, &value, NULL, CS_DUMP_NO_FLAGS, stdout);
+    dump_config_neo(NeoMutt->sub->cs, he, &value, NULL, show_docs ? CS_DUMP_SHOW_DOCS : CS_DUMP_NO_FLAGS, stdout);
   }
 
   mutt_buffer_dealloc(&value);

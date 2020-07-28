@@ -37,14 +37,20 @@ char *C_PatternFormat = NULL;         ///< Config: printf-like format string for
 bool  C_ThoroughSearch;               ///< Config: Decode headers and messages before searching them
 // clang-format on
 
-// clang-format off
 struct ConfigDef PatternVars[] = {
-  { "external_search_command", DT_STRING|DT_COMMAND, &C_ExternalSearchCommand, 0 },
-  { "pattern_format", DT_STRING, &C_PatternFormat, IP "%2n %-15e  %d" },
-  { "thorough_search", DT_BOOL, &C_ThoroughSearch, true },
-  { NULL, 0, NULL, 0, 0, NULL },
+  // clang-format off
+  { "external_search_command", DT_STRING|DT_COMMAND, &C_ExternalSearchCommand, 0, 0, NULL,
+    "External search command"
+  },
+  { "pattern_format", DT_STRING, &C_PatternFormat, IP "%2n %-15e  %d", 0, NULL,
+    "printf-like format string for the pattern completion menu"
+  },
+  { "thorough_search", DT_BOOL, &C_ThoroughSearch, true, 0, NULL,
+    "Decode headers and messages before searching them"
+  },
+  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * config_init_pattern - Register pattern config variables

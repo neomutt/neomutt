@@ -42,6 +42,7 @@ typedef uint16_t ConfigDumpFlags;         ///< Flags for dump_config(), e.g. #CS
 #define CS_DUMP_SHOW_DISABLED   (1 << 6)  ///< Show disabled config items, too
 #define CS_DUMP_SHOW_SYNONYMS   (1 << 7)  ///< Show synonyms and the config items they're linked to
 #define CS_DUMP_SHOW_DEPRECATED (1 << 8)  ///< Show config items that aren't used any more
+#define CS_DUMP_SHOW_DOCS       (1 << 9)  ///< Show one-liner documentation for the config item
 
 void              dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, ConfigDumpFlags flags, FILE *fp);
 bool              dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp);

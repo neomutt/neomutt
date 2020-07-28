@@ -31,12 +31,14 @@
 #include <stdbool.h>
 #include "config/lib.h"
 
-// clang-format off
 struct ConfigDef HelpbarVars[] = {
-  { "help", DT_BOOL|R_REFLOW, NULL, true },
-  { NULL, 0, NULL, 0, 0, NULL },
+  // clang-format off
+  { "help", DT_BOOL|R_REFLOW, NULL, true, 0, NULL,
+    "Display a help line with common key bindings"
+  },
+  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * config_init_helpbar - Register helpbar config variables

@@ -45,21 +45,41 @@ unsigned char C_PopReconnect;           ///< Config: (pop) Reconnect to the serv
 char *        C_PopUser;                ///< Config: (pop) Username of the POP server
 // clang-format on
 
-// clang-format off
 struct ConfigDef PopVars[] = {
-  { "pop_auth_try_all",          DT_BOOL,                           &C_PopAuthTryAll,          true },
-  { "pop_authenticators",        DT_SLIST|SLIST_SEP_COLON,          &C_PopAuthenticators,      0 },
-  { "pop_checkinterval",         DT_NUMBER|DT_NOT_NEGATIVE,         &C_PopCheckinterval,       60 },
-  { "pop_delete",                DT_QUAD,                           &C_PopDelete,              MUTT_ASKNO },
-  { "pop_host",                  DT_STRING,                         &C_PopHost,                0 },
-  { "pop_last",                  DT_BOOL,                           &C_PopLast,                false },
-  { "pop_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, &C_PopOauthRefreshCommand, 0 },
-  { "pop_pass",                  DT_STRING|DT_SENSITIVE,            &C_PopPass,                0 },
-  { "pop_reconnect",             DT_QUAD,                           &C_PopReconnect,           MUTT_ASKYES },
-  { "pop_user",                  DT_STRING|DT_SENSITIVE,            &C_PopUser,                0 },
-  { NULL, 0, NULL, 0, 0, NULL },
+  // clang-format off
+  { "pop_auth_try_all", DT_BOOL, &C_PopAuthTryAll, true, 0, NULL,
+    "(pop) Try all available authentication methods"
+  },
+  { "pop_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_PopAuthenticators, 0, 0, NULL,
+    "(pop) List of allowed authentication methods"
+  },
+  { "pop_checkinterval", DT_NUMBER|DT_NOT_NEGATIVE, &C_PopCheckinterval, 60, 0, NULL,
+    "(pop) Interval between checks for new mail"
+  },
+  { "pop_delete", DT_QUAD, &C_PopDelete, MUTT_ASKNO, 0, NULL,
+    "(pop) After downloading POP messages, delete them on the server"
+  },
+  { "pop_host", DT_STRING, &C_PopHost, 0, 0, NULL,
+    "(pop) Url of the POP server"
+  },
+  { "pop_last", DT_BOOL, &C_PopLast, false, 0, NULL,
+    "(pop) Use the 'LAST' command to fetch new mail"
+  },
+  { "pop_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, &C_PopOauthRefreshCommand, 0, 0, NULL,
+    "(pop) External command to generate OAUTH refresh token"
+  },
+  { "pop_pass", DT_STRING|DT_SENSITIVE, &C_PopPass, 0, 0, NULL,
+    "(pop) Password of the POP server"
+  },
+  { "pop_reconnect", DT_QUAD, &C_PopReconnect, MUTT_ASKYES, 0, NULL,
+    "(pop) Reconnect to the server is the connection is lost"
+  },
+  { "pop_user", DT_STRING|DT_SENSITIVE, &C_PopUser, 0, 0, NULL,
+    "(pop) Username of the POP server"
+  },
+  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * config_init_pop - Register pop config variables

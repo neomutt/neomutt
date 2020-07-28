@@ -18004,6 +18004,12 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
+              <entry>-D -O</entry>
+              <entry>
+                Like <emphasis role="bold">-D</emphasis>, but show one-liner documentation
+              </entry>
+            </row>
+            <row>
               <entry>-D -S</entry>
               <entry>
                 Like <emphasis role="bold">-D</emphasis>, but hide the value of
@@ -18127,7 +18133,8 @@ neomutt -a image.jpg *.png -- address1 address2
               <entry>
                 Query a configuration <literal>variable</literal> and print its
                 value to stdout (after the config has been read and any
-                commands executed)
+                commands executed).  Adding <literal>-O</literal> will display
+                one-liner documentation.
               </entry>
             </row>
             <row>

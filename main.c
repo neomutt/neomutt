@@ -179,6 +179,7 @@ static void usage(void)
          "  -b <address>  Specify a blind carbon copy (Bcc) recipient\n"
          "  -c <address>  Specify a carbon copy (Cc) recipient\n"
          "  -D            Dump all config variables as 'name=value' pairs to stdout\n"
+         "  -D -O         Like -D, but show one-liner documentation\n"
          "  -D -S         Like -D, but hide the value of sensitive variables\n"
          "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
          "                The level can range from 1-5 and affects verbosity\n"
@@ -198,6 +199,7 @@ static void usage(void)
          "  -p            Resume a prior postponed message, if any\n"
          "  -Q <variable> Query a configuration variable and print its value to stdout\n"
          "                (after the config has been read and any commands executed)\n"
+         "                Add -O for one-liner documentation\n"
          "  -R            Open mailbox in read-only mode\n"
          "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)\n"
          "  -v            Print the NeoMutt version and compile-time definitions and exit\n"
@@ -383,6 +385,7 @@ int main(int argc, char *argv[], char *envp[])
   int i;
   bool explicit_folder = false;
   bool dump_variables = false;
+  bool one_liner = false;
   bool hide_sensitive = false;
   bool batch_mode = false;
   bool edit_infile = false;
@@ -434,7 +437,7 @@ int main(int argc, char *argv[], char *envp[])
     }
 
     /* USE_NNTP 'g:G' */
-    i = getopt(argc, argv, "+A:a:Bb:F:f:c:Dd:l:Ee:g:GH:i:hm:npQ:RSs:TvxyzZ");
+    i = getopt(argc, argv, "+A:a:Bb:F:f:c:Dd:l:Ee:g:GH:i:hm:nOpQ:RSs:TvxyzZ");
     if (i != EOF)
     {
       switch (i)
@@ -495,6 +498,9 @@ int main(int argc, char *argv[], char *envp[])
           break;
         case 'n':
           flags |= MUTT_CLI_NOSYSRC;
+          break;
+        case 'O':
+          one_liner = true;
           break;
         case 'p':
           sendflags |= SEND_POSTPONED;
@@ -711,13 +717,18 @@ int main(int argc, char *argv[], char *envp[])
 
   if (!STAILQ_EMPTY(&queries))
   {
-    rc = mutt_query_variables(&queries);
+    rc = mutt_query_variables(&queries, one_liner);
     goto main_curses;
   }
 
   if (dump_variables)
   {
-    dump_config(cs, hide_sensitive ? CS_DUMP_HIDE_SENSITIVE : CS_DUMP_NO_FLAGS, stdout);
+    ConfigDumpFlags cdflags = CS_DUMP_NO_FLAGS;
+    if (hide_sensitive)
+      cdflags |= CS_DUMP_HIDE_SENSITIVE;
+    if (one_liner)
+      cdflags |= CS_DUMP_SHOW_DOCS;
+    dump_config(cs, cdflags, stdout);
     goto main_ok; // TEST18: neomutt -D
   }
 

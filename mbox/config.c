@@ -35,12 +35,14 @@
 bool C_CheckMboxSize; ///< Config: (mbox,mmdf) Use mailbox size as an indicator of new mail
 // clang-format on
 
-// clang-format off
 struct ConfigDef MboxVars[] = {
-  { "check_mbox_size", DT_BOOL, &C_CheckMboxSize, false },
-  { NULL, 0, NULL, 0, 0, NULL },
+  // clang-format off
+  { "check_mbox_size", DT_BOOL, &C_CheckMboxSize, false, 0, NULL,
+    "(mbox,mmdf) Use mailbox size as an indicator of new mail"
+  },
+  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * config_init_mbox - Register mbox config variables

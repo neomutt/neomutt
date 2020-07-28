@@ -58,34 +58,76 @@ bool          C_ImapServernoise;         ///< Config: (imap) Display server warn
 char *        C_ImapUser;                ///< Config: (imap) Username for the IMAP server
 // clang-format on
 
-// clang-format off
 struct ConfigDef ImapVars[] = {
-  { "imap_check_subscribed",      DT_BOOL,                           &C_ImapCheckSubscribed,     false },
-  { "imap_condstore",             DT_BOOL,                           &C_ImapCondstore,           false },
+  // clang-format off
+  { "imap_check_subscribed", DT_BOOL, &C_ImapCheckSubscribed, false, 0, NULL,
+    "(imap) When opening a mailbox, ask the server for a list of subscribed folders"
+  },
+  { "imap_condstore", DT_BOOL, &C_ImapCondstore, false, 0, NULL,
+    "(imap) Enable the CONDSTORE extension"
+  },
 #ifdef USE_ZLIB
-  { "imap_deflate",               DT_BOOL,                           &C_ImapDeflate,             true },
+  { "imap_deflate", DT_BOOL, &C_ImapDeflate, true, 0, NULL,
+    "(imap) Compress network traffic"
+  },
 #endif
-  { "imap_authenticators",        DT_SLIST|SLIST_SEP_COLON,          &C_ImapAuthenticators,      0 },
-  { "imap_delim_chars",           DT_STRING,                         &C_ImapDelimChars,          IP "/." },
-  { "imap_fetch_chunk_size",      DT_LONG|DT_NOT_NEGATIVE,           &C_ImapFetchChunkSize,      0 },
-  { "imap_headers",               DT_STRING|R_INDEX,                 &C_ImapHeaders,             0 },
-  { "imap_idle",                  DT_BOOL,                           &C_ImapIdle,                false },
-  { "imap_login",                 DT_STRING|DT_SENSITIVE,            &C_ImapLogin,               0 },
-  { "imap_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, &C_ImapOauthRefreshCommand, 0 },
-  { "imap_pass",                  DT_STRING|DT_SENSITIVE,            &C_ImapPass,                0 },
-  { "imap_pipeline_depth",        DT_NUMBER|DT_NOT_NEGATIVE,         &C_ImapPipelineDepth,       15 },
-  { "imap_rfc5161",               DT_BOOL,                           &C_ImapRfc5161,             true },
-  { "imap_servernoise",           DT_BOOL,                           &C_ImapServernoise,         true },
-  { "imap_keepalive",             DT_NUMBER|DT_NOT_NEGATIVE,         &C_ImapKeepalive,           300 },
-  { "imap_list_subscribed",       DT_BOOL,                           &C_ImapListSubscribed,      false },
-  { "imap_passive",               DT_BOOL,                           &C_ImapPassive,             true },
-  { "imap_peek",                  DT_BOOL,                           &C_ImapPeek,                true },
-  { "imap_poll_timeout",          DT_NUMBER|DT_NOT_NEGATIVE,         &C_ImapPollTimeout,         15 },
-  { "imap_qresync",               DT_BOOL,                           &C_ImapQresync,             false },
-  { "imap_user",                  DT_STRING|DT_SENSITIVE,            &C_ImapUser,                0 },
-  { NULL, 0, NULL, 0, 0, NULL },
+  { "imap_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_ImapAuthenticators, 0, 0, NULL,
+    "(imap) List of allowed IMAP authentication methods"
+  },
+  { "imap_delim_chars", DT_STRING, &C_ImapDelimChars, IP "/.", 0, NULL,
+    "(imap) Characters that denote separators in IMAP folders"
+  },
+  { "imap_fetch_chunk_size", DT_LONG|DT_NOT_NEGATIVE, &C_ImapFetchChunkSize, 0, 0, NULL,
+    "(imap) Download headers in blocks of this size"
+  },
+  { "imap_headers", DT_STRING|R_INDEX, &C_ImapHeaders, 0, 0, NULL,
+    "(imap) Additional email headers to download when getting index"
+  },
+  { "imap_idle", DT_BOOL, &C_ImapIdle, false, 0, NULL,
+    "(imap) Use the IMAP IDLE extension to check for new mail"
+  },
+  { "imap_login", DT_STRING|DT_SENSITIVE, &C_ImapLogin, 0, 0, NULL,
+    "(imap) Login name for the IMAP server (defaults to #C_ImapUser)"
+  },
+  { "imap_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, &C_ImapOauthRefreshCommand, 0, 0, NULL,
+    "(imap) External command to generate OAUTH refresh token"
+  },
+  { "imap_pass", DT_STRING|DT_SENSITIVE, &C_ImapPass, 0, 0, NULL,
+    "(imap) Password for the IMAP server"
+  },
+  { "imap_pipeline_depth", DT_NUMBER|DT_NOT_NEGATIVE, &C_ImapPipelineDepth, 15, 0, NULL,
+    "(imap) Number of IMAP commands that may be queued up"
+  },
+  { "imap_rfc5161", DT_BOOL, &C_ImapRfc5161, true, 0, NULL,
+    "(imap) Use the IMAP ENABLE extension to select capabilities"
+  },
+  { "imap_servernoise", DT_BOOL, &C_ImapServernoise, true, 0, NULL,
+    "(imap) Display server warnings as error messages"
+  },
+  { "imap_keepalive", DT_NUMBER|DT_NOT_NEGATIVE, &C_ImapKeepalive, 300, 0, NULL,
+    "(imap) Time to wait before polling an open IMAP connection"
+  },
+  { "imap_list_subscribed", DT_BOOL, &C_ImapListSubscribed, false, 0, NULL,
+    "(imap) When browsing a mailbox, only display subscribed folders"
+  },
+  { "imap_passive", DT_BOOL, &C_ImapPassive, true, 0, NULL,
+    "(imap) Reuse an existing IMAP connection to check for new mail"
+  },
+  { "imap_peek", DT_BOOL, &C_ImapPeek, true, 0, NULL,
+    "(imap) Don't mark messages as read when fetching them from the server"
+  },
+  { "imap_poll_timeout", DT_NUMBER|DT_NOT_NEGATIVE, &C_ImapPollTimeout, 15, 0, NULL,
+    "(imap) Maximum time to wait for a server response"
+  },
+  { "imap_qresync", DT_BOOL, &C_ImapQresync, false, 0, NULL,
+    "(imap) Enable the QRESYNC extension"
+  },
+  { "imap_user", DT_STRING|DT_SENSITIVE, &C_ImapUser, 0, 0, NULL,
+    "(imap) Username for the IMAP server"
+  },
+  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * config_init_imap - Register imap config variables

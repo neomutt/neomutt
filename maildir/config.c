@@ -42,18 +42,32 @@ char *C_MhSeqReplied;    ///< Config: MH sequence to tag replied messages
 char *C_MhSeqUnseen;     ///< Config: MH sequence for unseen messages
 // clang-format on
 
-// clang-format off
 struct ConfigDef MaildirVars[] = {
-  { "check_new",         DT_BOOL,   &C_CheckNew,        true },
-  { "maildir_check_cur", DT_BOOL,   &C_MaildirCheckCur, false },
-  { "maildir_trash",     DT_BOOL,   &C_MaildirTrash,    false },
-  { "mh_purge",          DT_BOOL,   &C_MhPurge,         false },
-  { "mh_seq_flagged",    DT_STRING, &C_MhSeqFlagged,    IP "flagged" },
-  { "mh_seq_replied",    DT_STRING, &C_MhSeqReplied,    IP "replied" },
-  { "mh_seq_unseen",     DT_STRING, &C_MhSeqUnseen,     IP "unseen" },
-  { NULL, 0, NULL, 0, 0, NULL },
+  // clang-format off
+  { "check_new", DT_BOOL, &C_CheckNew, true, 0, NULL,
+    "(maildir,mh) Check for new mail while the mailbox is open"
+  },
+  { "maildir_check_cur", DT_BOOL, &C_MaildirCheckCur, false, 0, NULL,
+    "Check both 'new' and 'cur' directories for new mail"
+  },
+  { "maildir_trash", DT_BOOL, &C_MaildirTrash, false, 0, NULL,
+    "Use the maildir 'trashed' flag, rather than deleting"
+  },
+  { "mh_purge", DT_BOOL, &C_MhPurge, false, 0, NULL,
+    "Really delete files in MH mailboxes"
+  },
+  { "mh_seq_flagged", DT_STRING, &C_MhSeqFlagged, IP "flagged", 0, NULL,
+    "MH sequence for flagged message"
+  },
+  { "mh_seq_replied", DT_STRING, &C_MhSeqReplied, IP "replied", 0, NULL,
+    "MH sequence to tag replied messages"
+  },
+  { "mh_seq_unseen", DT_STRING, &C_MhSeqUnseen, IP "unseen", 0, NULL,
+    "MH sequence for unseen messages"
+  },
+  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * config_init_maildir - Register maildir config variables
