@@ -113,7 +113,9 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *v
 
   if ((flags & CS_DUMP_ONLY_CHANGED) &&
       (!initial || mutt_str_equal(value->data, initial->data)))
+  {
     return;
+  }
 
   if (he->type == DT_SYNONYM)
   {
@@ -121,6 +123,12 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *v
     const char *syn = (const char *) cdef->initial;
     fprintf(fp, "# synonym: %s -> %s\n", name, syn);
     return;
+  }
+
+  if (flags & CS_DUMP_SHOW_DOCS)
+  {
+    const struct ConfigDef *cdef = he->data;
+    fprintf(fp, "# %s\n", cdef->docs);
   }
 
   bool show_name = !(flags & CS_DUMP_HIDE_NAME);
@@ -143,6 +151,9 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *v
     if (cst)
       fprintf(fp, "# %s %s %s\n", cst->name, name, value->data);
   }
+
+  if (flags & CS_DUMP_SHOW_DOCS)
+    fprintf(fp, "\n");
 }
 
 /**

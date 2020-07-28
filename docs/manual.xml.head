@@ -18004,6 +18004,12 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
+              <entry>-D -O</entry>
+              <entry>
+                Like <emphasis role="bold">-D</emphasis>, but show one-liner documentation
+              </entry>
+            </row>
+            <row>
               <entry>-D -S</entry>
               <entry>
                 Like <emphasis role="bold">-D</emphasis>, but hide the value of
