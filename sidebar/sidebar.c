@@ -239,13 +239,11 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
 
   if (optional)
   {
-    mutt_expando_format(buf, buflen, col, C_SidebarWidth, if_str,
-                        sidebar_format_str, IP sbe, flags);
+    mutt_expando_format(buf, buflen, col, cols, if_str, sidebar_format_str, data, flags);
   }
   else if (flags & MUTT_FORMAT_OPTIONAL)
   {
-    mutt_expando_format(buf, buflen, col, C_SidebarWidth, else_str,
-                        sidebar_format_str, IP sbe, flags);
+    mutt_expando_format(buf, buflen, col, cols, else_str, sidebar_format_str, data, flags);
   }
 
   /* We return the format string, unchanged */
@@ -807,126 +805,40 @@ static int calc_path_depth(const char *mbox, const char *delims, const char **la
 }
 
 /**
- * draw_sidebar - Write out a list of mailboxes, in a panel
- * @param wdata     Sidebar data
- * @param win       Window to draw on
- * @param num_rows  Height of the Sidebar
- * @param num_cols  Width of the Sidebar
- * @param div_width Width in screen characters taken by the divider
+ * calc_divider - Decide what actions are required for the divider
+ * @param wdata   Sidebar data
+ * @param ascii   true, if `$ascii_chars` is set
+ * @param div_str Divider string, `$sidebar_divider_char`
+ * @retval num Action required, e.g. #WA_REPAINT
  *
- * Display a list of mailboxes in a panel on the left.  What's displayed will
- * depend on our index markers: TopMailbox, OpnMailbox, HilMailbox, BotMailbox.
- * On the first run they'll be NULL, so we display the top of NeoMutt's list.
- *
- * * TopMailbox - first visible mailbox
- * * BotMailbox - last  visible mailbox
- * * OpnMailbox - mailbox shown in NeoMutt's Index Panel
- * * HilMailbox - Unselected mailbox (the paging follows this)
- *
- * The entries are formatted using "sidebar_format" and may be abbreviated:
- * "sidebar_short_path", indented: "sidebar_folder_indent",
- * "sidebar_indent_string" and sorted: "sidebar_sort_method".  Finally, they're
- * trimmed to fit the available space.
+ * If the divider changes width, then Window will need to be reflowed.
  */
-static void draw_sidebar(struct SidebarWindowData *wdata, struct MuttWindow *win,
-                         int num_rows, int num_cols, int div_width)
+WindowActionFlags calc_divider(struct SidebarWindowData *wdata, bool ascii, const char *div_str)
 {
-  if (wdata->top_index < 0)
-    return;
-
-  int w = MIN(num_cols, (C_SidebarWidth - div_width));
-
-  int row = 0;
-  struct SbEntry **sbep = NULL;
-  ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->top_index)
+  // Calculate the width of the delimiter in screen cells
+  int width = mutt_strwidth(C_SidebarDividerChar);
+  if (width < 1) // Bad character or empty
   {
-    if (row >= num_rows)
-      break;
-
-    if ((*sbep)->is_hidden)
-      continue;
-
-    struct SbEntry *entry = (*sbep);
-    struct Mailbox *m = entry->mailbox;
-
-    const int entryidx = ARRAY_FOREACH_IDX;
-    if (entryidx == wdata->opn_index)
+    width = 1;
+  }
+  else if (ascii)
+  {
+    for (int i = 0; i < width; i++)
     {
-      if ((Colors->defs[MT_COLOR_SIDEBAR_INDICATOR] != 0))
-        mutt_curses_set_color(MT_COLOR_SIDEBAR_INDICATOR);
-      else
-        mutt_curses_set_color(MT_COLOR_INDICATOR);
+      if (div_str[i] & ~0x7F) // high-bit is set
+      {
+        width = 1;
+        break;
+      }
     }
-    else if (entryidx == wdata->hil_index)
-      mutt_curses_set_color(MT_COLOR_SIDEBAR_HIGHLIGHT);
-    else if (m->has_new)
-      mutt_curses_set_color(MT_COLOR_SIDEBAR_NEW);
-    else if (m->msg_unread > 0)
-      mutt_curses_set_color(MT_COLOR_SIDEBAR_UNREAD);
-    else if (m->msg_flagged > 0)
-      mutt_curses_set_color(MT_COLOR_SIDEBAR_FLAGGED);
-    else if ((Colors->defs[MT_COLOR_SIDEBAR_SPOOLFILE] != 0) &&
-             mutt_str_equal(mailbox_path(m), C_Spoolfile))
-    {
-      mutt_curses_set_color(MT_COLOR_SIDEBAR_SPOOLFILE);
-    }
-    else
-    {
-      if (Colors->defs[MT_COLOR_SIDEBAR_ORDINARY] != 0)
-        mutt_curses_set_color(MT_COLOR_SIDEBAR_ORDINARY);
-      else
-        mutt_curses_set_color(MT_COLOR_NORMAL);
-    }
-
-    int col = 0;
-    if (C_SidebarOnRight)
-      col = div_width;
-
-    mutt_window_move(win, col, row);
-    if (Context && Context->mailbox && (Context->mailbox->realpath[0] != '\0') &&
-        mutt_str_equal(m->realpath, Context->mailbox->realpath))
-    {
-      m->msg_unread = Context->mailbox->msg_unread;
-      m->msg_count = Context->mailbox->msg_count;
-      m->msg_flagged = Context->mailbox->msg_flagged;
-    }
-
-    const char *path = mailbox_path(m);
-
-    // Try to abbreviate the full path
-    const char *abbr = abbrev_folder(path, C_Folder, m->type);
-    if (!abbr)
-      abbr = abbrev_url(path, m->type);
-    const char *short_path = abbr ? abbr : path;
-
-    /* Compute the depth */
-    const char *last_part = abbr;
-    entry->depth = calc_path_depth(abbr, C_SidebarDelimChars, &last_part);
-
-    const bool short_path_is_abbr = (short_path == abbr);
-    if (C_SidebarShortPath)
-    {
-      short_path = last_part;
-    }
-
-    // Don't indent if we were unable to create an abbreviation.
-    // Otherwise, the full path will be indent, and it looks unusual.
-    if (C_SidebarFolderIndent && short_path_is_abbr)
-    {
-      if (C_SidebarComponentDepth > 0)
-        entry->depth -= C_SidebarComponentDepth;
-    }
-    else if (!C_SidebarFolderIndent)
-      entry->depth = 0;
-
-    mutt_str_copy(entry->box, short_path, sizeof(entry->box));
-    char str[256];
-    make_sidebar_entry(str, sizeof(str), w, entry);
-    mutt_window_printf("%s", str);
-    row++;
   }
 
-  fill_empty_space(win, row, num_rows - row, div_width, w);
+  WindowActionFlags action = WA_REPAINT;
+  if (width != wdata->divider_width)
+    action = WA_REFLOW;
+
+  wdata->divider_width = width;
+  return action;
 }
 
 /**
@@ -1051,6 +963,173 @@ void sb_notify_mailbox(struct MuttWindow *win, struct Mailbox *m, enum SidebarNo
 }
 
 /**
+ * sb_recalc - Recalculate the Sidebar display - Implements MuttWindow::recalc()
+ */
+int sb_recalc(struct MuttWindow *win)
+{
+  if (!mutt_window_is_visible(win))
+    return 0;
+
+  struct SidebarWindowData *wdata = sb_wdata_get(win);
+
+  if (ARRAY_EMPTY(&wdata->entries))
+  {
+    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+    struct MailboxNode *np = NULL;
+    STAILQ_FOREACH(np, &ml, entries)
+    {
+      if (!(np->mailbox->flags & MB_HIDDEN))
+        sb_notify_mailbox(win, np->mailbox, SBN_CREATED);
+    }
+    neomutt_mailboxlist_clear(&ml);
+  }
+
+  calc_divider(wdata, C_AsciiChars, C_SidebarDividerChar);
+
+  if (!prepare_sidebar(wdata, win->state.rows))
+    return 0;
+
+  int num_rows = win->state.rows;
+  int num_cols = win->state.cols;
+
+  if (ARRAY_EMPTY(&wdata->entries) || (num_rows <= 0))
+    return 0;
+
+  if (wdata->top_index < 0)
+    return 0;
+
+  int w = MIN(num_cols, (C_SidebarWidth - wdata->divider_width));
+  int row = 0;
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->top_index)
+  {
+    if (row >= num_rows)
+      break;
+
+    if ((*sbep)->is_hidden)
+      continue;
+
+    struct SbEntry *entry = (*sbep);
+    struct Mailbox *m = entry->mailbox;
+
+    const int entryidx = ARRAY_FOREACH_IDX;
+    if (entryidx == wdata->opn_index)
+    {
+      if ((Colors->defs[MT_COLOR_SIDEBAR_INDICATOR] != 0))
+        entry->color = (MT_COLOR_SIDEBAR_INDICATOR);
+      else
+        entry->color = MT_COLOR_INDICATOR;
+    }
+    else if (entryidx == wdata->hil_index)
+      entry->color = MT_COLOR_SIDEBAR_HIGHLIGHT;
+    else if (m->has_new)
+      entry->color = MT_COLOR_SIDEBAR_NEW;
+    else if (m->msg_unread > 0)
+      entry->color = MT_COLOR_SIDEBAR_UNREAD;
+    else if (m->msg_flagged > 0)
+      entry->color = MT_COLOR_SIDEBAR_FLAGGED;
+    else if ((Colors->defs[MT_COLOR_SIDEBAR_SPOOLFILE] != 0) &&
+             mutt_str_equal(mailbox_path(m), C_Spoolfile))
+    {
+      entry->color = MT_COLOR_SIDEBAR_SPOOLFILE;
+    }
+    else
+    {
+      if (Colors->defs[MT_COLOR_SIDEBAR_ORDINARY] != 0)
+        entry->color = MT_COLOR_SIDEBAR_ORDINARY;
+      else
+        entry->color = MT_COLOR_NORMAL;
+    }
+
+    if (Context && Context->mailbox && (Context->mailbox->realpath[0] != '\0') &&
+        mutt_str_equal(m->realpath, Context->mailbox->realpath))
+    {
+      m->msg_unread = Context->mailbox->msg_unread;
+      m->msg_count = Context->mailbox->msg_count;
+      m->msg_flagged = Context->mailbox->msg_flagged;
+    }
+
+    const char *path = mailbox_path(m);
+
+    // Try to abbreviate the full path
+    const char *abbr = abbrev_folder(path, C_Folder, m->type);
+    if (!abbr)
+      abbr = abbrev_url(path, m->type);
+    const char *short_path = abbr ? abbr : path;
+
+    /* Compute the depth */
+    const char *last_part = abbr;
+    entry->depth = calc_path_depth(abbr, C_SidebarDelimChars, &last_part);
+
+    const bool short_path_is_abbr = (short_path == abbr);
+    if (C_SidebarShortPath)
+    {
+      short_path = last_part;
+    }
+
+    // Don't indent if we were unable to create an abbreviation.
+    // Otherwise, the full path will be indent, and it looks unusual.
+    if (C_SidebarFolderIndent && short_path_is_abbr)
+    {
+      if (C_SidebarComponentDepth > 0)
+        entry->depth -= C_SidebarComponentDepth;
+    }
+    else if (!C_SidebarFolderIndent)
+      entry->depth = 0;
+
+    mutt_str_copy(entry->box, short_path, sizeof(entry->box));
+    make_sidebar_entry(entry->display, sizeof(entry->display), w, entry);
+    row++;
+  }
+
+  return 0;
+}
+
+/**
+ * sb_repaint - Repaint the Sidebar display - Implements MuttWindow::repaint()
+ */
+int sb_repaint(struct MuttWindow *win)
+{
+  if (!mutt_window_is_visible(win))
+    return 0;
+
+  struct SidebarWindowData *wdata = sb_wdata_get(win);
+
+  if (wdata->top_index < 0)
+    return 0;
+
+  int row = 0;
+  int num_rows = win->state.rows;
+  int num_cols = win->state.cols;
+
+  int col = 0;
+  if (C_SidebarOnRight)
+    col = wdata->divider_width;
+
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->top_index)
+  {
+    if (row >= num_rows)
+      break;
+
+    if ((*sbep)->is_hidden)
+      continue;
+
+    struct SbEntry *entry = (*sbep);
+    mutt_window_move(win, col, row);
+    mutt_curses_set_color(entry->color);
+    mutt_window_printf("%s", entry->display);
+    mutt_refresh();
+    row++;
+  }
+
+  int w = MIN(num_cols, (C_SidebarWidth - wdata->divider_width));
+  fill_empty_space(win, row, num_rows - row, wdata->divider_width, w);
+  return 0;
+}
+
+/**
  * sb_draw - Completely redraw the sidebar
  * @param win Window to draw on
  *
@@ -1062,13 +1141,7 @@ void sb_draw(struct MuttWindow *win)
   if (!C_SidebarVisible || !win)
     return;
 
-  if (!mutt_window_is_visible(win))
-    return;
-
   struct SidebarWindowData *wdata = sb_wdata_get(win);
-
-  int col = 0, row = 0;
-  mutt_window_get_coords(win, &col, &row);
 
   int num_rows = win->state.rows;
   int num_cols = win->state.cols;
@@ -1088,15 +1161,8 @@ void sb_draw(struct MuttWindow *win)
     neomutt_mailboxlist_clear(&ml);
   }
 
-  if (prepare_sidebar(wdata, num_rows))
-    draw_sidebar(wdata, win, num_rows, num_cols, wdata->divider_width);
-  else
-  {
-    fill_empty_space(win, 0, num_rows, wdata->divider_width, num_cols - wdata->divider_width);
-    return;
-  }
-
-  mutt_window_move(win, col, row);
+  sb_recalc(win);
+  sb_repaint(win);
 }
 
 /**

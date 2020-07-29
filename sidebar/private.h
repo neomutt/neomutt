@@ -35,6 +35,7 @@ extern struct ListHead SidebarWhitelist;
 struct SbEntry
 {
   char box[256];           ///< Mailbox path (possibly abbreviated)
+  char display[256];       ///< XXX
   int depth;               ///< Indentation depth
   struct Mailbox *mailbox; ///< Mailbox this represents
   bool is_hidden;          ///< Don't show, e.g. $sidebar_new_mail_only
@@ -88,6 +89,7 @@ extern short C_SidebarWidth;
 void sb_win_init        (struct MuttWindow *dlg);
 void sb_win_shutdown    (struct MuttWindow *dlg);
 bool select_next        (struct SidebarWindowData *wdata);
+WindowActionFlags calc_divider(struct SidebarWindowData *wdata, bool ascii, const char *div_str);
 
 // observer.c
 int sb_insertion_observer(struct NotifyCallback *nc);
@@ -95,7 +97,7 @@ int sb_observer(struct NotifyCallback *nc);
 
 // wdata.c
 void                      sb_wdata_free(struct MuttWindow *win, void **ptr);
-struct SidebarWindowData *sb_wdata_new(void);
 struct SidebarWindowData *sb_wdata_get(struct MuttWindow *win);
+struct SidebarWindowData *sb_wdata_new(void);
 
 #endif /* MUTT_SIDEBAR_PRIVATE_H */
