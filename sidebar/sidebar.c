@@ -842,6 +842,44 @@ WindowActionFlags calc_divider(struct SidebarWindowData *wdata, bool ascii, cons
 }
 
 /**
+ * calc_color - Calculate the colour of a Sidebar row
+ * @param m         Mailbox
+ * @param current   true, if this is the current Mailbox
+ * @param highlight true, if this Mailbox has the highlight on it
+ * @retval num ColorId, e.g. #MT_COLOR_SIDEBAR_NEW
+ */
+static enum ColorId calc_color(const struct Mailbox *m, bool current, bool highlight)
+{
+  if (current)
+  {
+    if ((Colors->defs[MT_COLOR_SIDEBAR_INDICATOR] != 0))
+      return MT_COLOR_SIDEBAR_INDICATOR;
+    return MT_COLOR_INDICATOR;
+  }
+
+  if (highlight)
+    return MT_COLOR_SIDEBAR_HIGHLIGHT;
+
+  if (m->has_new)
+    return MT_COLOR_SIDEBAR_NEW;
+  if (m->msg_unread > 0)
+    return MT_COLOR_SIDEBAR_UNREAD;
+  if (m->msg_flagged > 0)
+    return MT_COLOR_SIDEBAR_FLAGGED;
+
+  if ((Colors->defs[MT_COLOR_SIDEBAR_SPOOLFILE] != 0) &&
+      mutt_str_equal(mailbox_path(m), C_Spoolfile))
+  {
+    return MT_COLOR_SIDEBAR_SPOOLFILE;
+  }
+
+  if (Colors->defs[MT_COLOR_SIDEBAR_ORDINARY] != 0)
+    return MT_COLOR_SIDEBAR_ORDINARY;
+
+  return MT_COLOR_NORMAL;
+}
+
+/**
  * sb_get_highlight - Get the Mailbox that's highlighted in the sidebar
  * @param win Sidebar Window
  * @retval ptr Mailbox
@@ -1014,33 +1052,8 @@ int sb_recalc(struct MuttWindow *win)
     struct Mailbox *m = entry->mailbox;
 
     const int entryidx = ARRAY_FOREACH_IDX;
-    if (entryidx == wdata->opn_index)
-    {
-      if ((Colors->defs[MT_COLOR_SIDEBAR_INDICATOR] != 0))
-        entry->color = (MT_COLOR_SIDEBAR_INDICATOR);
-      else
-        entry->color = MT_COLOR_INDICATOR;
-    }
-    else if (entryidx == wdata->hil_index)
-      entry->color = MT_COLOR_SIDEBAR_HIGHLIGHT;
-    else if (m->has_new)
-      entry->color = MT_COLOR_SIDEBAR_NEW;
-    else if (m->msg_unread > 0)
-      entry->color = MT_COLOR_SIDEBAR_UNREAD;
-    else if (m->msg_flagged > 0)
-      entry->color = MT_COLOR_SIDEBAR_FLAGGED;
-    else if ((Colors->defs[MT_COLOR_SIDEBAR_SPOOLFILE] != 0) &&
-             mutt_str_equal(mailbox_path(m), C_Spoolfile))
-    {
-      entry->color = MT_COLOR_SIDEBAR_SPOOLFILE;
-    }
-    else
-    {
-      if (Colors->defs[MT_COLOR_SIDEBAR_ORDINARY] != 0)
-        entry->color = MT_COLOR_SIDEBAR_ORDINARY;
-      else
-        entry->color = MT_COLOR_NORMAL;
-    }
+    entry->color =
+        calc_color(m, (entryidx == wdata->opn_index), (entryidx == wdata->hil_index));
 
     if (Context && Context->mailbox && (Context->mailbox->realpath[0] != '\0') &&
         mutt_str_equal(m->realpath, Context->mailbox->realpath))
