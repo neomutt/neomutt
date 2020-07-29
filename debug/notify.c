@@ -40,144 +40,6 @@
 extern const struct Mapping ColorFields[];
 extern const struct Mapping ComposeColorFields[];
 
-static const char *get_event_type(enum NotifyType type)
-{
-  switch (type)
-  {
-    case NT_ACCOUNT:
-      return "account";
-    case NT_ALIAS:
-      return "alias";
-    case NT_ALTERN:
-      return "altern";
-    case NT_ATTACH:
-      return "attach";
-    case NT_BINDING:
-      return "binding";
-    case NT_COLOR:
-      return "color";
-    case NT_COMMAND:
-      return "command";
-    case NT_CONFIG:
-      return "config";
-    case NT_MVIEW:
-      return "mailboxview";
-    case NT_EMAIL:
-      return "email";
-    case NT_ENVELOPE:
-      return "envelope";
-    case NT_GLOBAL:
-      return "global";
-    case NT_HEADER:
-      return "header";
-    case NT_INDEX:
-      return "index";
-    case NT_MAILBOX:
-      return "mailbox";
-    case NT_MENU:
-      return "menu";
-    case NT_PAGER:
-      return "pager";
-    case NT_SCORE:
-      return "score";
-    case NT_SUBJRX:
-      return "subjrx";
-    case NT_WINDOW:
-      return "window";
-    default:
-      return "UNKNOWN";
-  }
-}
-
-const char *get_mailbox_type(enum MailboxType type)
-{
-  switch (type)
-  {
-    case MUTT_COMPRESSED:
-      return "compressed";
-    case MUTT_IMAP:
-      return "imap";
-    case MUTT_MAILDIR:
-      return "maildir";
-    case MUTT_MBOX:
-      return "mbox";
-    case MUTT_MH:
-      return "mh";
-    case MUTT_MMDF:
-      return "mmdf";
-    case MUTT_NNTP:
-      return "nntp";
-    case MUTT_NOTMUCH:
-      return "notmuch";
-    case MUTT_POP:
-      return "pop";
-    default:
-      return "UNKNOWN";
-  }
-}
-
-static const char *get_global_event(int id)
-{
-  switch (id)
-  {
-    case NT_GLOBAL_SHUTDOWN:
-      return "shutdown";
-    case NT_GLOBAL_STARTUP:
-      return "startup";
-    case NT_GLOBAL_TIMEOUT:
-      return "timeout";
-    default:
-      return "UNKNOWN";
-  }
-}
-
-static const char *get_config_type(int id)
-{
-  switch (id)
-  {
-    case NT_CONFIG_SET:
-      return "set";
-    case NT_CONFIG_RESET:
-      return "reset";
-    default:
-      return "UNKNOWN";
-  }
-}
-
-static const char *get_mailbox_event(int id)
-{
-  switch (id)
-  {
-    case NT_MAILBOX_ADD:
-      return "add";
-    case NT_MAILBOX_DELETE:
-      return "delete";
-    case NT_MAILBOX_INVALID:
-      return "invalid";
-    case NT_MAILBOX_RESORT:
-      return "resort";
-    case NT_MAILBOX_UPDATE:
-      return "update";
-    case NT_MAILBOX_UNTAG:
-      return "untag";
-    default:
-      return "UNKNOWN";
-  }
-}
-
-static const char *get_mview(int id)
-{
-  switch (id)
-  {
-    case NT_MVIEW_DELETE:
-      return "delete";
-    case NT_MVIEW_ADD:
-      return "add";
-    default:
-      return "UNKNOWN";
-  }
-}
-
 static void notify_dump_account(struct NotifyCallback *nc)
 {
   struct EventAccount *ev_a = nc->event_data;
@@ -233,7 +95,7 @@ static void notify_dump_config(struct NotifyCallback *nc)
   struct Buffer value = buf_make(128);
   cs_he_string_get(ev_c->sub->cs, ev_c->he, &value);
   mutt_debug(LL_DEBUG1, "    Config: %s %s = %s\n",
-             get_config_type(nc->event_subtype), ev_c->name, buf_string(&value));
+             get_notify_config(nc->event_subtype), ev_c->name, buf_string(&value));
   buf_dealloc(&value);
 }
 
@@ -245,7 +107,8 @@ static void notify_dump_mview(struct NotifyCallback *nc)
   if (ev_m->mv && ev_m->mv->mailbox)
     path = mailbox_path(ev_m->mv->mailbox);
 
-  mutt_debug(LL_DEBUG1, "    MailboxView: %s %s\n", get_mview(nc->event_subtype), path);
+  mutt_debug(LL_DEBUG1, "    MailboxView: %s %s\n",
+             get_notify_mview(nc->event_subtype), path);
 }
 
 static void notify_dump_email(struct NotifyCallback *nc)
@@ -261,7 +124,7 @@ static void notify_dump_email(struct NotifyCallback *nc)
 
 static void notify_dump_global(struct NotifyCallback *nc)
 {
-  mutt_debug(LL_DEBUG1, "    Global: %s\n", get_global_event(nc->event_subtype));
+  mutt_debug(LL_DEBUG1, "    Global: %s\n", get_notify_global(nc->event_subtype));
 }
 
 static void notify_dump_mailbox(struct NotifyCallback *nc)
@@ -270,7 +133,7 @@ static void notify_dump_mailbox(struct NotifyCallback *nc)
 
   struct Mailbox *m = ev_m->mailbox;
   const char *path = m ? mailbox_path(m) : "";
-  mutt_debug(LL_DEBUG1, "    Mailbox: %s %s\n", get_mailbox_event(nc->event_subtype), path);
+  mutt_debug(LL_DEBUG1, "    Mailbox: %s %s\n", get_notify_mailbox(nc->event_subtype), path);
 }
 
 static void notify_dump_window_state(struct NotifyCallback *nc)
@@ -340,7 +203,8 @@ static void notify_dump_window_focus(struct NotifyCallback *nc)
 
 int debug_all_observer(struct NotifyCallback *nc)
 {
-  mutt_debug(LL_DEBUG1, "\033[1;31mNotification:\033[0m %s\n", get_event_type(nc->event_type));
+  mutt_debug(LL_DEBUG1, "\033[1;31mNotification:\033[0m %s\n",
+             get_notify_type(nc->event_type));
 
   switch (nc->event_type)
   {
