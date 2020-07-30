@@ -64,8 +64,7 @@
 #define INS_SORT_THRESHOLD 6
 
 /**
- * maildir_edata_free - Free data attached to the Email
- * @param[out] ptr Maildir data
+ * maildir_edata_free - Free the private Email data - Implements Email::edata_free()
  */
 void maildir_edata_free(void **ptr)
 {
@@ -101,8 +100,7 @@ struct MaildirEmailData *maildir_edata_get(struct Email *e)
 }
 
 /**
- * maildir_mdata_free - Free data attached to the Mailbox
- * @param[out] ptr Maildir data
+ * maildir_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
  */
 static void maildir_mdata_free(void **ptr)
 {

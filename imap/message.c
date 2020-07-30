@@ -65,8 +65,7 @@
 struct BodyCache;
 
 /**
- * imap_edata_free - free ImapHeader structure
- * @param[out] ptr Private Email data
+ * imap_edata_free - Free the private Email data - Implements Email::edata_free()
  */
 void imap_edata_free(void **ptr)
 {

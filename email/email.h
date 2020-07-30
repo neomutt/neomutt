@@ -107,7 +107,13 @@ struct Email
   struct TagList tags;         ///< For drivers that support server tagging
 
   void *edata;                    ///< Driver-specific data
-  void (*edata_free)(void **ptr); ///< Driver-specific data free function
+
+  /**
+   * edata_free - Free the private data attached to the Email
+   * @param ptr Private data to be freed
+   */
+  void (*edata_free)(void **ptr);
+
   struct Notify *notify;          ///< Notifications handler
 };
 

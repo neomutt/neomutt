@@ -115,8 +115,7 @@ static enum NmQueryType string_to_query_type(const char *str)
 }
 
 /**
- * nm_adata_free - Release and clear storage in an NmAccountData structure
- * @param[out] ptr Nm Account data
+ * nm_adata_free - Free the private Account data - Implements Account::adata_free()
  */
 void nm_adata_free(void **ptr)
 {
@@ -163,8 +162,7 @@ struct NmAccountData *nm_adata_get(struct Mailbox *m)
 }
 
 /**
- * nm_mdata_free - Free data attached to the Mailbox
- * @param[out] ptr Notmuch data
+ * nm_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
  *
  * The NmMboxData struct stores global Notmuch data, such as the connection to
  * the database.  This function will close the database, free the resources and
@@ -1924,7 +1922,7 @@ int nm_update_filename(struct Mailbox *m, const char *old_file,
 }
 
 /**
- * nm_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::check_stats()
+ * nm_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
 static int nm_mbox_check_stats(struct Mailbox *m, int flags)
 {

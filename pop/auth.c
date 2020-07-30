@@ -45,10 +45,7 @@
 
 #ifdef USE_SASL
 /**
- * pop_auth_sasl - POP SASL authenticator
- * @param adata  POP Account data
- * @param method Authentication method
- * @retval num Result, e.g. #POP_A_SUCCESS
+ * pop_auth_sasl - POP SASL authenticator - Implements PopAuth::authenticate()
  */
 static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *method)
 {
@@ -220,10 +217,7 @@ void pop_apop_timestamp(struct PopAccountData *adata, char *buf)
 }
 
 /**
- * pop_auth_apop - APOP authenticator
- * @param adata  POP Account data
- * @param method Authentication method
- * @retval num Result, e.g. #POP_A_SUCCESS
+ * pop_auth_apop - APOP authenticator - Implements PopAuth::authenticate()
  */
 static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *method)
 {
@@ -272,10 +266,7 @@ static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *m
 }
 
 /**
- * pop_auth_user - USER authenticator
- * @param adata  POP Account data
- * @param method Authentication method
- * @retval num Result, e.g. #POP_A_SUCCESS
+ * pop_auth_user - USER authenticator - Implements PopAuth::authenticate()
  */
 static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *method)
 {
@@ -332,10 +323,7 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
 }
 
 /**
- * pop_auth_oauth - Authenticate a POP connection using OAUTHBEARER
- * @param adata  POP Account data
- * @param method Name of this authentication method (UNUSED)
- * @retval num Result, e.g. #POP_A_SUCCESS
+ * pop_auth_oauth - Authenticate a POP connection using OAUTHBEARER - Implements PopAuth::authenticate()
  */
 static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *method)
 {

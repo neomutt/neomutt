@@ -42,9 +42,7 @@ struct HelpbarWindowData *helpbar_wdata_new(void)
 }
 
 /**
- * helpbar_wdata_free - Free Helpbar Window data
- * @param win Helpbar Window
- * @param ptr Window data to free
+ * helpbar_wdata_free - Free Helpbar Window data - Implements MuttWindow::wdata_free()
  */
 void helpbar_wdata_free(struct MuttWindow *win, void **ptr)
 {

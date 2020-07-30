@@ -87,8 +87,7 @@ static const char *cache_id(const char *id)
 }
 
 /**
- * pop_adata_free - Free data attached to the Mailbox
- * @param[out] ptr POP data
+ * pop_adata_free - Free the private Account data - Implements Account::adata_free()
  *
  * The PopAccountData struct stores global POP data, such as the connection to
  * the database.  This function will close the database, free the resources and
@@ -114,8 +113,7 @@ static struct PopAccountData *pop_adata_new(void)
 }
 
 /**
- * pop_edata_free - Free data attached to an Email
- * @param[out] ptr Email data
+ * pop_edata_free - Free the private Email data - Implements Email::edata_free()
  *
  * Each email has an attached PopEmailData, which contains things like the tags
  * (labels).

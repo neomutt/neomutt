@@ -70,8 +70,7 @@ struct MUpdate
 };
 
 /**
- * mbox_adata_free - Free data attached to the Mailbox
- * @param[out] ptr Private mailbox data
+ * mbox_adata_free - Free the private Account data - Implements Account::adata_free()
  */
 static void mbox_adata_free(void **ptr)
 {

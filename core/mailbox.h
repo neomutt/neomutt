@@ -134,7 +134,12 @@ struct Mailbox
   int flags;                          ///< e.g. #MB_NORMAL
 
   void *mdata;                        ///< Driver specific data
-  void (*mdata_free)(void **ptr);     ///< Driver-specific data free function
+
+  /**
+   * mdata_free - Free the private data attached to the Mailbox
+   * @param ptr Private data to be freed
+   */
+  void (*mdata_free)(void **ptr);
 
   struct Notify *notify;              ///< Notifications handler
 };

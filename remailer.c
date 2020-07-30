@@ -515,10 +515,6 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
 
 /**
  * mix_make_entry - Format a menu item for the mixmaster chain list - Implements Menu::make_entry()
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
  */
 static void mix_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {

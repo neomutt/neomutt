@@ -42,9 +42,7 @@ struct SidebarWindowData *sb_wdata_new(void)
 }
 
 /**
- * sb_wdata_free - Free Sidebar Window data
- * @param win Sidebar Window
- * @param ptr Window data to free
+ * sb_wdata_free - Free Sidebar Window data - Implements MuttWindow::wdata_free()
  */
 void sb_wdata_free(struct MuttWindow *win, void **ptr)
 {
