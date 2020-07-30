@@ -47,6 +47,7 @@ extern const struct Mapping SortSidebarMethods[];
  */
 enum SortType
 {
+  SORT_DUMMY	=  0, ///< Don't use any sort mechanism
   SORT_DATE     =  1, ///< Sort by the date the email was sent
   SORT_SIZE     =  2, ///< Sort by the size of the email
   SORT_ALPHA    =  3, ///< Required by makedoc.c
