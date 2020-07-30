@@ -8283,6 +8283,13 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 </entry>
               </row>
               <row>
+                <entry>~w <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
+                <entry>
+                  newsgroups matching EXPR
+                </entry>
+              </row>
+              <row>
                 <entry>~x <emphasis>EXPR</emphasis></entry>
                 <entry></entry>
                 <entry>
