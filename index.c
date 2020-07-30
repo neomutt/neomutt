@@ -1265,10 +1265,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
       /* check for new mail in the mailbox.  If nonzero, then something has
        * changed about the file (either we got new mail or the file was
        * modified underneath us.) */
+      int check = mx_mbox_check(Context->mailbox);
 
       set_current_email(&cur, mutt_get_virt_email(Context->mailbox, menu->current));
 
-      int check = mx_mbox_check(Context->mailbox);
       if (check < 0)
       {
         if (!Context->mailbox || (mutt_buffer_is_empty(&Context->mailbox->pathbuf)))
