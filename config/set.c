@@ -73,8 +73,6 @@ static void destroy(int type, void *obj, intptr_t data)
   else
   {
     struct ConfigDef *cdef = obj;
-    if (!cdef)
-      return; // LCOV_EXCL_LINE
 
     cst = cs_get_type_def(cs, type);
     if (cst && cst->destroy)
