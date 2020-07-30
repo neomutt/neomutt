@@ -1110,7 +1110,9 @@ static void dot_body(FILE *fp, const struct Body *b, struct ListHead *links, boo
   ADD_BOOL(deleted);
   ADD_BOOL(force_charset);
   ADD_BOOL(goodsig);
+#ifdef USE_AUTOCRYPT
   ADD_BOOL(is_autocrypt);
+#endif
   ADD_BOOL(noconv);
   ADD_BOOL(tagged);
   ADD_BOOL(unlink);
