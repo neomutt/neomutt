@@ -60,8 +60,7 @@
 #endif
 
 /**
- * imap_adata_free - Release and clear storage in an ImapAccountData structure
- * @param[out] ptr Imap Account data
+ * imap_adata_free - Free the private Account data - Implements Account::adata_free()
  */
 void imap_adata_free(void **ptr)
 {
@@ -222,8 +221,7 @@ void imap_mdata_cache_reset(struct ImapMboxData *mdata)
 }
 
 /**
- * imap_mdata_free - Release and clear storage in an ImapMboxData structure
- * @param[out] ptr Imap Mailbox data
+ * imap_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
  */
 void imap_mdata_free(void **ptr)
 {

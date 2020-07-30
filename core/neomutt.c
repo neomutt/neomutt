@@ -37,7 +37,7 @@
 struct NeoMutt *NeoMutt; ///< Global NeoMutt object
 
 /**
- * neomutt_new - Create the master NeoMutt object
+ * neomutt_new - Create the main NeoMutt object
  * @param cs Config Set
  * @retval ptr New NeoMutt
  */

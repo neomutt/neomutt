@@ -95,7 +95,9 @@ hcache/hcache.c
 hcache/serialize.c
 hdrline.c
 help.c
-helpbar.c
+helpbar/config.c
+helpbar/helpbar.c
+helpbar/wdata.c
 history/config.c
 history/dlghistory.c
 history/history.c

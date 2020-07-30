@@ -233,7 +233,7 @@ bool log_file_running(void)
 }
 
 /**
- * log_disp_file - Save a log line to a file
+ * log_disp_file - Save a log line to a file - Implements ::log_dispatcher_t
  * @param stamp    Unix time (optional)
  * @param file     Source file (UNUSED)
  * @param line     Source line (UNUSED)

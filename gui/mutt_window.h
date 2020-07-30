@@ -136,7 +136,13 @@ struct MuttWindow
 
   enum WindowType type;              ///< Window type, e.g. #WT_SIDEBAR
   void *wdata;                       ///< Private data
-  void (*wdata_free)(struct MuttWindow *win, void **ptr); ///< Callback function to free private data
+
+  /**
+   * wdata_free - Free the private data attached to the MuttWindow
+   * @param win Window
+   * @param ptr Window data to free
+   */
+  void (*wdata_free)(struct MuttWindow *win, void **ptr);
 
   /**
    * recalc - Recalculate the Window data

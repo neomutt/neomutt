@@ -110,8 +110,7 @@ struct ChildCtx
 };
 
 /**
- * nntp_adata_free - Free data attached to the Mailbox
- * @param[out] ptr NNTP data
+ * nntp_adata_free - Free the private Account data - Implements Account::adata_free()
  *
  * The NntpAccountData struct stores global NNTP data, such as the connection to
  * the database.  This function will close the database, free the resources and
@@ -176,8 +175,7 @@ struct NntpAccountData *nntp_adata_get(struct Mailbox *m)
 #endif
 
 /**
- * nntp_mdata_free - Free NntpMboxData, used to destroy hash elements
- * @param[out] ptr NNTP data
+ * nntp_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
  */
 void nntp_mdata_free(void **ptr)
 {
@@ -194,8 +192,7 @@ void nntp_mdata_free(void **ptr)
 }
 
 /**
- * nntp_edata_free - Free data attached to an Email
- * @param[out] ptr Email data
+ * nntp_edata_free - Free the private Email data - Implements Email::edata_free()
  */
 static void nntp_edata_free(void **ptr)
 {

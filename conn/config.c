@@ -69,7 +69,7 @@ bool          C_UseIpv6;                ///< Config: Lookup IPv6 addresses when 
 // clang-format on
 
 struct ConfigDef ConnVars[] = {
-  // clang-format off
+// clang-format off
 #ifdef USE_SSL
   { "certificate_file", DT_PATH|DT_PATH_FILE, &C_CertificateFile, IP "~/.mutt_certificates", 0, NULL,
     "File containing trusted certificates"

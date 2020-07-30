@@ -25,6 +25,12 @@
  * @page helpbar Convenience wrapper for the Help Bar headers
  *
  * Convenience wrapper for the Help Bar headers
+ *
+ * | File              | Description              |
+ * | :---------------- | :----------------------- |
+ * | helpbar/config.c  | @subpage helpbar_config  |
+ * | helpbar/helpbar.c | @subpage helpbar_helpbar |
+ * | helpbar/wdata.c   | @subpage helpbar_wdata   |
  */
 
 #ifndef MUTT_HELPBAR_LIB_H

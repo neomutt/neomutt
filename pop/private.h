@@ -115,9 +115,9 @@ struct PopAuth
 {
   /**
    * authenticate - Authenticate a POP connection
-   * @param adata Pop Account data
-   * @param method Use this named method, or any available method if NULL
-   * @retval #ImapAuthRes Result, e.g. #IMAP_AUTH_SUCCESS
+   * @param adata  POP Account data
+   * @param method Name of this authentication method (UNUSED)
+   * @retval num Result, e.g. #POP_A_SUCCESS
    */
   enum PopAuthRes (*authenticate)(struct PopAccountData *adata, const char *method);
 
