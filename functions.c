@@ -85,10 +85,10 @@ const struct Binding OpGeneric[] = { /* map: generic */
   { "refresh",         OP_REDRAW,               "\014" },                       // <Ctrl-L>
   { "search",          OP_SEARCH,               "/" },
   { "search-next",     OP_SEARCH_NEXT,          "n" },
-  { "search-opposite", OP_SEARCH_OPPOSITE,      NULL },
+  { "search-opposite", OP_SEARCH_OPPOSITE,      NULL },                         // <Enter>
   { "search-reverse",  OP_SEARCH_REVERSE,       "\033/" },                      // <Alt-/>
-  { "select-entry",    OP_GENERIC_SELECT_ENTRY, "\n" },
-  { "select-entry",    OP_GENERIC_SELECT_ENTRY, "\r" },
+  { "select-entry",    OP_GENERIC_SELECT_ENTRY, "\n" },                         // <Enter>
+  { "select-entry",    OP_GENERIC_SELECT_ENTRY, "\r" },                         // <Return>
   { "shell-escape",    OP_SHELL_ESCAPE,         "!" },
   { "tag-entry",       OP_TAG,                  "t" },
   { "tag-prefix",      OP_TAG_PREFIX,           ";" },
@@ -136,7 +136,7 @@ const struct Binding OpMain[] = { /* map: index */
   { "delete-thread",             OP_DELETE_THREAD,                  "\004" },   // <Ctrl-D>
   { "display-address",           OP_DISPLAY_ADDRESS,                "@" },
   { "display-message",           OP_DISPLAY_MESSAGE,                "\n" },     // <Enter>
-  { "display-message",           OP_DISPLAY_MESSAGE,                "\r" },
+  { "display-message",           OP_DISPLAY_MESSAGE,                "\r" },     // <Return>
   { "display-toggle-weed",       OP_DISPLAY_HEADERS,                "h" },
   { "edit",                      OP_EDIT_RAW_MESSAGE,               NULL },
   { "edit-label",                OP_EDIT_LABEL,                     "Y" },
@@ -181,7 +181,7 @@ const struct Binding OpMain[] = { /* map: index */
   { "modify-tags",               OP_MAIN_MODIFY_TAGS,               NULL },
   { "modify-tags-then-hide",     OP_MAIN_MODIFY_TAGS_THEN_HIDE,     NULL },
   { "next-new",                  OP_MAIN_NEXT_NEW,                  NULL },
-  { "next-new-then-unread",      OP_MAIN_NEXT_NEW_THEN_UNREAD,      "\t" },
+  { "next-new-then-unread",      OP_MAIN_NEXT_NEW_THEN_UNREAD,      "\t" },     // <Tab>
   { "next-subthread",            OP_MAIN_NEXT_SUBTHREAD,            "\033n" },  // <Alt-n>
   { "next-thread",               OP_MAIN_NEXT_THREAD,               "\016" },   // <Ctrl-N>
   { "next-undeleted",            OP_MAIN_NEXT_UNDELETED,            "j" },
@@ -331,9 +331,9 @@ const struct Binding OpPager[] = { /* map: pager */
   { "modify-tags-then-hide",     OP_MAIN_MODIFY_TAGS_THEN_HIDE,   NULL },
   { "next-entry",                OP_NEXT_ENTRY,                   "J" },
   { "next-line",                 OP_NEXT_LINE,                    "\n" },       // <Enter>
-  { "next-line",                 OP_NEXT_LINE,                    "\r" },
+  { "next-line",                 OP_NEXT_LINE,                    "\r" },       // <Return>
   { "next-new",                  OP_MAIN_NEXT_NEW,                NULL },
-  { "next-new-then-unread",      OP_MAIN_NEXT_NEW_THEN_UNREAD,    "\t" },
+  { "next-new-then-unread",      OP_MAIN_NEXT_NEW_THEN_UNREAD,    "\t" },       // <Tab>
   { "next-page",                 OP_NEXT_PAGE,                    " " },
   { "next-subthread",            OP_MAIN_NEXT_SUBTHREAD,          "\033n" },    // <Alt-n>
   { "next-thread",               OP_MAIN_NEXT_THREAD,             "\016" },     // <Ctrl-N>
@@ -444,7 +444,7 @@ const struct Binding OpAttach[] = { /* map: attachment */
   { "save-entry",            OP_SAVE,                        "s" },
   { "undelete-entry",        OP_UNDELETE,                    "u" },
   { "view-attach",           OP_VIEW_ATTACH,                 "\n" },            // <Enter>
-  { "view-attach",           OP_VIEW_ATTACH,                 "\r" },
+  { "view-attach",           OP_VIEW_ATTACH,                 "\r" },            // <Return>
   { "view-mailcap",          OP_ATTACH_VIEW_MAILCAP,         "m" },
   { "view-text",             OP_ATTACH_VIEW_TEXT,            "T" },
   { NULL,                    0,                              NULL },
@@ -515,7 +515,7 @@ const struct Binding OpCompose[] = { /* map: compose */
   { "toggle-unlink",         OP_COMPOSE_TOGGLE_UNLINK,       "u" },
   { "update-encoding",       OP_COMPOSE_UPDATE_ENCODING,     "U" },
   { "view-attach",           OP_VIEW_ATTACH,                 "\n" },            // <Enter>
-  { "view-attach",           OP_VIEW_ATTACH,                 "\r" },
+  { "view-attach",           OP_VIEW_ATTACH,                 "\r" },            // <Return>
   { "write-fcc",             OP_COMPOSE_WRITE_MESSAGE,       "w" },
   { NULL,                    0,                              NULL },
 };
@@ -572,7 +572,7 @@ const struct Binding OpBrowser[] = { /* map: browser */
 #ifdef USE_NNTP
   { "subscribe-pattern",     OP_SUBSCRIBE_PATTERN,           NULL },
 #endif
-  { "toggle-mailboxes",      OP_TOGGLE_MAILBOXES,            "\t" },
+  { "toggle-mailboxes",      OP_TOGGLE_MAILBOXES,            "\t" },            // <Tab>
 #ifdef USE_IMAP
   { "toggle-subscribed",     OP_BROWSER_TOGGLE_LSUB,         "T" },
 #endif
