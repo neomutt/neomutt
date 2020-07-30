@@ -703,8 +703,8 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
   if (compare_threads(NULL, NULL) == 0)
     return thread;
 
-  if (compare_subthreads(NULL, NULL) == 0)
-    return thread;
+  if ((compare_subthreads(NULL, NULL) == 0) && (C_SortTh != SORT_DUMMY))
+	  return thread;
 
   top = thread;
 
@@ -753,7 +753,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
           array[i] = thread;
         }
 
-        if (array[0]->parent)
+        if ((array[0]->parent) && (C_SortTh != SORT_DUMMY))
           qsort((void *) array, i, sizeof(struct MuttThread *), *compare_subthreads);
         else
           qsort((void *) array, i, sizeof(struct MuttThread *), *compare_threads);
