@@ -1934,7 +1934,8 @@ static bool is_text_plain(const struct Body *b)
  */
 static bool abort_for_missing_attachments(const struct Body *b, struct ConfigSubset *sub)
 {
-  const enum QuadOption c_abort_noattach = cs_subset_quad(sub, "abort_noattach");
+  const enum QuadOption c_abort_noattach =
+      cs_subset_quad(sub, "abort_noattach");
 
   if (c_abort_noattach == MUTT_NO)
     return false;
@@ -1965,11 +1966,13 @@ static bool abort_for_missing_attachments(const struct Body *b, struct ConfigSub
 
   if (c_abort_noattach == MUTT_YES)
   {
-    mutt_error(_("Message contains text matching \"$abort_noattach_regex\". Not sending."));
+    mutt_error(_("Message contains text matching \"$abort_noattach_regex\". "
+                 "Not sending."));
     return true;
   }
 
-  return query_quadoption(c_abort_noattach, _("No attachments, cancel sending?")) != MUTT_NO;
+  return query_quadoption(c_abort_noattach,
+                          _("No attachments, cancel sending?")) != MUTT_NO;
 }
 
 /**
