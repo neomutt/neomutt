@@ -485,7 +485,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         else if (commentlen != 0)
         {
           struct Address *last = TAILQ_LAST(al, AddressList);
-          if (last && !last->personal)
+          if (last && !last->personal && last->mailbox)
           {
             terminate_buffer(comment, commentlen);
             last->personal = mutt_str_dup(comment);
@@ -594,7 +594,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
   else if (commentlen != 0)
   {
     struct Address *last = TAILQ_LAST(al, AddressList);
-    if (last && !last->personal)
+    if (last && !last->personal && last->mailbox)
     {
       terminate_buffer(comment, commentlen);
       last->personal = mutt_str_dup(comment);
@@ -1027,6 +1027,9 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
   if (!buf || (buflen == 0) || !addr)
     return 0;
 
+  if (!addr->personal && !addr->mailbox)
+    return 0;
+
   size_t len;
   char *pbuf = buf;
   char *pc = NULL;
@@ -1205,9 +1208,11 @@ size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *l
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    mutt_addr_write(addr, sizeof(addr), a, true);
-    mutt_list_insert_tail(list, strdup(addr));
-    count++;
+    if (mutt_addr_write(addr, sizeof(addr), a, true) != 0)
+    {
+      mutt_list_insert_tail(list, strdup(addr));
+      count++;
+    }
   }
 
   return count;
@@ -1215,25 +1220,27 @@ size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *l
 
 /**
  * mutt_addrlist_write_file - Wrapper for mutt_write_address()
- * @param al      Address list
- * @param fp      File to write to
- * @param linelen Line length to use
- * @param display True if these addresses will be displayed to the user
+ * @param al        Address list
+ * @param fp        File to write to
+ * @param start_col Starting column in the output line
+ * @param display   True if these addresses will be displayed to the user
  *
  * So we can handle very large recipient lists without needing a huge temporary
  * buffer in memory
  */
-void mutt_addrlist_write_file(const struct AddressList *al, FILE *fp, int linelen, bool display)
+void mutt_addrlist_write_file(const struct AddressList *al, FILE *fp, int start_col, bool display)
 {
   char buf[1024];
   int count = 0;
+  int linelen = start_col;
 
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
     buf[0] = '\0';
-    mutt_addr_write(buf, sizeof(buf), a, display);
-    size_t len = mutt_str_len(buf);
+    size_t len = mutt_addr_write(buf, sizeof(buf), a, display);
+    if (len == 0)
+      continue;
     if (count && (linelen + len > 74))
     {
       fputs("\n\t", fp);
