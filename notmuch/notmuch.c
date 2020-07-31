@@ -2418,6 +2418,22 @@ static int nm_mbox_sync(struct Mailbox *m)
     mutt_buffer_strcpy(&m->pathbuf, edata->folder);
     m->type = edata->type;
     rc = mh_sync_mailbox_message(m, i, h);
+
+    // Syncing file failed, query notmuch for new filepath.
+    if (rc)
+    {
+      notmuch_database_t *db = nm_db_get(m, true);
+      if (db)
+      {
+        notmuch_message_t *msg = get_nm_message(db, e);
+
+        sync_email_path_with_nm(e, msg);
+
+        rc = mh_sync_mailbox_message(m, i, h);
+      }
+      nm_db_release(m);
+    }
+
     mutt_buffer_strcpy(&m->pathbuf, url);
     m->type = MUTT_NOTMUCH;
 
