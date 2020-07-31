@@ -110,4 +110,21 @@ void test_mutt_addrlist_parse(void)
     int parsed = mutt_addrlist_parse(&alist, "\\");
     TEST_CHECK(parsed == 0);
   }
+  
+  {
+    struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
+    int parsed = mutt_addrlist_parse(&alist, "empty-group:; (some comment)");
+    TEST_CHECK(parsed == 0);
+    const struct Address *a = TAILQ_FIRST(&alist);
+    TEST_CHECK(a->personal== NULL);
+    TEST_CHECK_STR_EQ("empty-group", a->mailbox);
+    TEST_CHECK(a->group == true);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK(a->personal == NULL);
+    TEST_CHECK(a->mailbox == NULL);
+    TEST_CHECK(a->group == false);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK(a == NULL);
+    mutt_addrlist_clear(&alist);
+  }
 }
