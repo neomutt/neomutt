@@ -194,6 +194,4 @@ int          mutt_gpgme_select_secret_key (struct Buffer *keyid);
 const char  *mutt_gpgme_print_version(void);
 #endif
 
-bool config_init_ncrypt(struct ConfigSet *cs);
-
 #endif /* MUTT_NCRYPT_LIB_H */

@@ -90,12 +90,10 @@
 #define MUTT_AUTOCRYPT_LIB_H
 
 #include <stdbool.h>
-struct ConfigSet;
-
-#ifdef USE_AUTOCRYPT
 #include <sqlite3.h>
 #include <stdio.h>
 
+struct ConfigSet;
 struct Email;
 struct Envelope;
 
@@ -179,10 +177,5 @@ int               mutt_autocrypt_set_sign_as_default_key (struct Email *e);
 enum AutocryptRec mutt_autocrypt_ui_recommendation       (struct Email *e, char **keylist);
 int               mutt_autocrypt_write_autocrypt_header  (struct Envelope *env, FILE *fp);
 int               mutt_autocrypt_write_gossip_headers    (struct Envelope *env, FILE *fp);
-
-bool config_init_autocrypt(struct ConfigSet *cs);
-#else
-static inline bool config_init_autocrypt(struct ConfigSet *cs) { return true; }
-#endif
 
 #endif /* MUTT_AUTOCRYPT_LIB_H */

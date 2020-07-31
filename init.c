@@ -61,20 +61,10 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#include "autocrypt/lib.h"
 #include "compress/lib.h"
 #include "hcache/lib.h"
-#include "helpbar/lib.h"
 #include "history/lib.h"
-#include "imap/lib.h"
-#include "maildir/lib.h"
-#include "mbox/lib.h"
-#include "ncrypt/lib.h"
-#include "nntp/lib.h"
 #include "notmuch/lib.h"
-#include "pattern/lib.h"
-#include "pop/lib.h"
-#include "send/lib.h"
 #include "store/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
@@ -1544,63 +1534,6 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
     }
   }
   return 0;
-}
-
-/**
- * init_config - Initialise the config system
- * @param size Size for Config Hash Table
- * @retval ptr New Config Set
- */
-struct ConfigSet *init_config(size_t size)
-{
-  typedef bool (*config_init_t)(struct ConfigSet * cs);
-
-  static config_init_t config_list[] = {
-    config_init_main,
-    config_init_autocrypt,
-    config_init_conn,
-    config_init_hcache,
-    config_init_helpbar,
-    config_init_history,
-    config_init_imap,
-    config_init_maildir,
-    config_init_mbox,
-    config_init_ncrypt,
-    config_init_nntp,
-    config_init_notmuch,
-    config_init_pattern,
-    config_init_pop,
-    config_init_send,
-    config_init_sidebar,
-    NULL,
-  };
-
-  struct ConfigSet *cs = cs_new(size);
-
-  // Define the config types
-  address_init(cs);
-  bool_init(cs);
-  enum_init(cs);
-  long_init(cs);
-  mbtable_init(cs);
-  number_init(cs);
-  path_init(cs);
-  quad_init(cs);
-  regex_init(cs);
-  slist_init(cs);
-  sort_init(cs);
-  string_init(cs);
-
-  for (size_t i = 0; config_list[i]; i++)
-  {
-    if (!config_list[i](cs))
-    {
-      cs_free(&cs);
-      return NULL;
-    }
-  }
-
-  return cs;
 }
 
 /**

@@ -48,6 +48,4 @@ extern struct MxOps MxPopOps;
 void pop_fetch_mail(void);
 enum MailboxType pop_path_probe(const char *path, const struct stat *st);
 
-bool config_init_pop(struct ConfigSet *cs);
-
 #endif /* MUTT_POP_LIB_H */

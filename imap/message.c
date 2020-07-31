@@ -52,7 +52,6 @@
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
-#include "autocrypt/lib.h"
 #include "bcache/lib.h"
 #include "imap/lib.h"
 #ifdef ENABLE_NLS
@@ -60,6 +59,9 @@
 #endif
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
+#endif
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/lib.h"
 #endif
 
 struct BodyCache;

@@ -64,7 +64,6 @@
 #include "sort.h"
 #include "status.h"
 #include "bcache/lib.h"
-#include "pattern/lib.h"
 
 #ifndef ISPELL
 #define ISPELL "ispell"
@@ -693,4 +692,66 @@ struct ConfigDef MainVars[] = {
 bool config_init_main(struct ConfigSet *cs)
 {
   return cs_register_variables(cs, MainVars, 0);
+}
+
+/**
+ * init_config - Initialise the config system
+ * @param size Size for Config Hash Table
+ * @retval ptr New Config Set
+ */
+struct ConfigSet *init_config(size_t size)
+{
+  struct ConfigSet *cs = cs_new(size);
+
+  // Define the config types
+  address_init(cs);
+  bool_init(cs);
+  enum_init(cs);
+  long_init(cs);
+  mbtable_init(cs);
+  number_init(cs);
+  path_init(cs);
+  quad_init(cs);
+  regex_init(cs);
+  slist_init(cs);
+  sort_init(cs);
+  string_init(cs);
+
+#define CONFIG_INIT(NAME)                                                      \
+  bool config_init_##NAME(struct ConfigSet *cs);                               \
+  config_init_##NAME(cs)
+
+  // Define the config variables
+  CONFIG_INIT(main);
+#ifdef USE_AUTOCRYPT
+  CONFIG_INIT(autocrypt);
+#endif
+  CONFIG_INIT(conn);
+#ifdef USE_HCACHE
+  CONFIG_INIT(hcache);
+#endif
+  CONFIG_INIT(helpbar);
+  CONFIG_INIT(history);
+#ifdef USE_IMAP
+  CONFIG_INIT(imap);
+#endif
+  CONFIG_INIT(maildir);
+  CONFIG_INIT(mbox);
+  CONFIG_INIT(ncrypt);
+#ifdef USE_NNTP
+  CONFIG_INIT(nntp);
+#endif
+#ifdef USE_NOTMUCH
+  CONFIG_INIT(notmuch);
+#endif
+  CONFIG_INIT(pattern);
+#ifdef USE_POP
+  CONFIG_INIT(pop);
+#endif
+  CONFIG_INIT(send);
+#ifdef USE_SIDEBAR
+  CONFIG_INIT(sidebar);
+#endif
+
+  return cs;
 }

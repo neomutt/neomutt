@@ -51,6 +51,4 @@
 
 struct ConfigSet;
 
-bool config_init_send(struct ConfigSet *cs);
-
 #endif /* MUTT_SEND_LIB_H */

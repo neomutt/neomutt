@@ -178,10 +178,4 @@ void mutt_hcache_free_raw(struct HeaderCache *hc, void **data);
  */
 int mutt_hcache_delete_record(struct HeaderCache *hc, const char *key, size_t keylen);
 
-#ifdef USE_HCACHE
-bool config_init_hcache(struct ConfigSet *cs);
-#else
-static inline bool config_init_hcache(struct ConfigSet *cs) { return true; }
-#endif
-
 #endif /* MUTT_HCACHE_LIB_H */

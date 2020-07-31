@@ -68,6 +68,4 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st);
 void             mbox_reset_atime(struct Mailbox *m, struct stat *st);
 bool             mbox_test_new_folder(const char *path);
 
-bool config_init_mbox(struct ConfigSet *cs);
-
 #endif /* MUTT_MBOX_LIB_H */

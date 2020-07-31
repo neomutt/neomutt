@@ -64,9 +64,11 @@
 #include "muttlib.h"
 #include "options.h"
 #include "state.h"
-#include "autocrypt/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/lib.h"
+#endif
 
 // clang-format off
 /* Values used for comparing addresses. */

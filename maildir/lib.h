@@ -61,8 +61,6 @@ bool          maildir_update_flags     (struct Mailbox *m, struct Email *e_old, 
 int           mh_check_empty           (const char *path);
 int           mh_sync_mailbox_message  (struct Mailbox *m, int msgno, struct HeaderCache *hc);
 
-bool config_init_maildir(struct ConfigSet *cs);
-
 void                     maildir_edata_free(void **ptr);
 struct MaildirEmailData *maildir_edata_get (struct Email *e);
 struct MaildirEmailData *maildir_edata_new (void);

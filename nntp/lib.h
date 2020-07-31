@@ -176,6 +176,4 @@ enum MailboxType nntp_path_probe(const char *path, const struct stat *st);
 const char *group_index_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, intptr_t data, MuttFormatFlags flags);
 int nntp_complete(char *buf, size_t buflen);
 
-bool config_init_nntp(struct ConfigSet *cs);
-
 #endif /* MUTT_NNTP_LIB_H */

@@ -73,10 +73,4 @@ void sb_notify_mailbox  (struct MuttWindow *win, struct Mailbox *m, enum Sidebar
 void sb_draw            (struct MuttWindow *win);
 void sb_set_open_mailbox(struct MuttWindow *win, struct Mailbox *m);
 
-#ifdef USE_SIDEBAR
-bool config_init_sidebar(struct ConfigSet *cs);
-#else
-static inline bool config_init_sidebar(struct ConfigSet *cs) { return true; }
-#endif
-
 #endif /* MUTT_SIDEBAR_LIB_H */
