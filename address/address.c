@@ -1027,6 +1027,9 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
   if (!buf || (buflen == 0) || !addr)
     return 0;
 
+  if (!addr->personal && !addr->mailbox)
+    return 0;
+
   size_t len;
   char *pbuf = buf;
   char *pc = NULL;
@@ -1205,9 +1208,11 @@ size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *l
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    mutt_addr_write(addr, sizeof(addr), a, true);
-    mutt_list_insert_tail(list, strdup(addr));
-    count++;
+    if (mutt_addr_write(addr, sizeof(addr), a, true) != 0)
+    {
+      mutt_list_insert_tail(list, strdup(addr));
+      count++;
+    }
   }
 
   return count;
