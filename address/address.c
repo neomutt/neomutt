@@ -485,7 +485,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         else if (commentlen != 0)
         {
           struct Address *last = TAILQ_LAST(al, AddressList);
-          if (last && !last->personal)
+          if (last && !last->personal && last->mailbox)
           {
             terminate_buffer(comment, commentlen);
             last->personal = mutt_str_dup(comment);
@@ -594,7 +594,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
   else if (commentlen != 0)
   {
     struct Address *last = TAILQ_LAST(al, AddressList);
-    if (last && !last->personal)
+    if (last && !last->personal && last->mailbox)
     {
       terminate_buffer(comment, commentlen);
       last->personal = mutt_str_dup(comment);
