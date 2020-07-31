@@ -1360,7 +1360,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
     else
     {
       index_custom_redraw(menu);
-      window_redraw(RootWindow, true);
+      window_redraw(RootWindow, false);
 
       /* give visual indication that the next command is a tag- command */
       if (tag)

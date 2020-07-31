@@ -110,17 +110,17 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
 
   switch (op)
   {
-    case 'B':
     case 'D':
-    {
-      char indented[256];
-      size_t offset = add_indent(indented, sizeof(indented), sbe);
-      snprintf(indented + offset, sizeof(indented) - offset, "%s",
-               ((op == 'D') && sbe->mailbox->name) ? sbe->mailbox->name : sbe->box);
+      if (sbe->mailbox->name)
+      {
+        mutt_format_s(buf, buflen, prec, sbe->mailbox->name);
+        break;
+      }
+      /* fallthrough */
 
-      mutt_format_s(buf, buflen, prec, indented);
+    case 'B':
+      mutt_format_s(buf, buflen, prec, sbe->box);
       break;
-    }
 
     case 'd':
       if (!optional)
@@ -805,43 +805,6 @@ static int calc_path_depth(const char *mbox, const char *delims, const char **la
 }
 
 /**
- * calc_divider - Decide what actions are required for the divider
- * @param wdata   Sidebar data
- * @param ascii   true, if `$ascii_chars` is set
- * @param div_str Divider string, `$sidebar_divider_char`
- * @retval num Action required, e.g. #WA_REPAINT
- *
- * If the divider changes width, then Window will need to be reflowed.
- */
-WindowActionFlags calc_divider(struct SidebarWindowData *wdata, bool ascii, const char *div_str)
-{
-  // Calculate the width of the delimiter in screen cells
-  int width = mutt_strwidth(C_SidebarDividerChar);
-  if (width < 1) // Bad character or empty
-  {
-    width = 1;
-  }
-  else if (ascii)
-  {
-    for (int i = 0; i < width; i++)
-    {
-      if (div_str[i] & ~0x7F) // high-bit is set
-      {
-        width = 1;
-        break;
-      }
-    }
-  }
-
-  WindowActionFlags action = WA_REPAINT;
-  if (width != wdata->divider_width)
-    action = WA_REFLOW;
-
-  wdata->divider_width = width;
-  return action;
-}
-
-/**
  * calc_color - Calculate the colour of a Sidebar row
  * @param m         Mailbox
  * @param current   true, if this is the current Mailbox
@@ -1091,8 +1054,13 @@ int sb_recalc(struct MuttWindow *win)
     else if (!C_SidebarFolderIndent)
       entry->depth = 0;
 
-    mutt_str_copy(entry->box, short_path, sizeof(entry->box));
-    make_sidebar_entry(entry->display, sizeof(entry->display), w, entry);
+    size_t blen = sizeof(entry->box);
+    size_t ilen = add_indent(entry->box, blen, entry);
+    if (ilen < blen)
+    {
+      mutt_str_copy(entry->box + ilen, short_path, blen - ilen);
+      make_sidebar_entry(entry->display, sizeof(entry->display), w, entry);
+    }
     row++;
   }
 
@@ -1139,6 +1107,8 @@ int sb_repaint(struct MuttWindow *win)
 
   int w = MIN(num_cols, (C_SidebarWidth - wdata->divider_width));
   fill_empty_space(win, row, num_rows - row, wdata->divider_width, w);
+  draw_divider(wdata, win, num_rows, num_cols);
+
   return 0;
 }
 
@@ -1151,15 +1121,10 @@ int sb_repaint(struct MuttWindow *win)
  */
 void sb_draw(struct MuttWindow *win)
 {
-  if (!C_SidebarVisible || !win)
+  if (!mutt_window_is_visible(win))
     return;
 
   struct SidebarWindowData *wdata = sb_wdata_get(win);
-
-  int num_rows = win->state.rows;
-  int num_cols = win->state.cols;
-
-  draw_divider(wdata, win, num_rows, num_cols);
 
   if (ARRAY_EMPTY(&wdata->entries))
   {
@@ -1179,69 +1144,12 @@ void sb_draw(struct MuttWindow *win)
 }
 
 /**
- * sb_win_init - Initialise and insert the Sidebar Window
- * @param dlg Index Dialog
- */
-void sb_win_init(struct MuttWindow *dlg)
-{
-  dlg->orient = MUTT_WIN_ORIENT_HORIZONTAL;
-
-  struct MuttWindow *index_panel = TAILQ_FIRST(&dlg->children);
-  mutt_window_remove_child(dlg, index_panel);
-
-  struct MuttWindow *pager_panel = TAILQ_FIRST(&dlg->children);
-  mutt_window_remove_child(dlg, pager_panel);
-
-  struct MuttWindow *cont_right =
-      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  dlg->focus = cont_right;
-
-  mutt_window_add_child(cont_right, index_panel);
-  mutt_window_add_child(cont_right, pager_panel);
-  cont_right->focus = index_panel;
-
-  struct MuttWindow *win_sidebar =
-      mutt_window_new(WT_SIDEBAR, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                      C_SidebarWidth, MUTT_WIN_SIZE_UNLIMITED);
-  win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
-  win_sidebar->wdata = sb_wdata_new();
-  win_sidebar->wdata_free = sb_wdata_free;
-
-  if (C_SidebarOnRight)
-  {
-    mutt_window_add_child(dlg, cont_right);
-    mutt_window_add_child(dlg, win_sidebar);
-  }
-  else
-  {
-    mutt_window_add_child(dlg, win_sidebar);
-    mutt_window_add_child(dlg, cont_right);
-  }
-
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, sb_observer, win_sidebar);
-}
-
-/**
- * sb_win_shutdown - Clean up the Sidebar's observers
- * @param dlg Dialog Window
- */
-void sb_win_shutdown(struct MuttWindow *dlg)
-{
-  struct MuttWindow *win = mutt_window_find(dlg, WT_SIDEBAR);
-  if (!win)
-    return;
-
-  notify_observer_remove(NeoMutt->notify, sb_observer, win);
-}
-
-/**
  * sb_init - Set up the Sidebar
  */
 void sb_init(void)
 {
   // Listen for dialog creation events
-  notify_observer_add(NeoMutt->notify, NT_WINDOW, sb_insertion_observer, NULL);
+  notify_observer_add(AllDialogsWindow->notify, NT_WINDOW, sb_insertion_observer, NULL);
 }
 
 /**
@@ -1249,7 +1157,7 @@ void sb_init(void)
  */
 void sb_shutdown(void)
 {
-  if (NeoMutt)
-    notify_observer_remove(NeoMutt->notify, sb_insertion_observer, NULL);
+  if (AllDialogsWindow)
+    notify_observer_remove(AllDialogsWindow->notify, sb_insertion_observer, NULL);
   mutt_list_free(&SidebarWhitelist);
 }
