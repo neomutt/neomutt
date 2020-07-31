@@ -45,7 +45,6 @@
 #include "context.h"
 #include "format_flags.h"
 #include "mutt_globals.h"
-#include "mutt_menu.h"
 #include "muttlib.h"
 
 struct ListHead SidebarWhitelist = STAILQ_HEAD_INITIALIZER(SidebarWhitelist); ///< List of mailboxes to always display in the sidebar
@@ -959,8 +958,6 @@ void sb_notify_mailbox(struct MuttWindow *win, struct Mailbox *m, enum SidebarNo
   }
 
   // otherwise, we just need to redraw
-
-  mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 }
 
 /**
@@ -1110,37 +1107,6 @@ int sb_repaint(struct MuttWindow *win)
   draw_divider(wdata, win, num_rows, num_cols);
 
   return 0;
-}
-
-/**
- * sb_draw - Completely redraw the sidebar
- * @param win Window to draw on
- *
- * Completely refresh the sidebar region.  First draw the divider; then, for
- * each Mailbox, call make_sidebar_entry; finally blank out any remaining space.
- */
-void sb_draw(struct MuttWindow *win)
-{
-  if (!mutt_window_is_visible(win))
-    return;
-
-  struct SidebarWindowData *wdata = sb_wdata_get(win);
-
-  if (ARRAY_EMPTY(&wdata->entries))
-  {
-    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-    struct MailboxNode *np = NULL;
-    STAILQ_FOREACH(np, &ml, entries)
-    {
-      if (!(np->mailbox->flags & MB_HIDDEN))
-        sb_notify_mailbox(win, np->mailbox, SBN_CREATED);
-    }
-    neomutt_mailboxlist_clear(&ml);
-  }
-
-  sb_recalc(win);
-  sb_repaint(win);
 }
 
 /**

@@ -86,6 +86,8 @@ extern short C_SidebarWidth;
 // sidebar.c
 bool select_next        (struct SidebarWindowData *wdata);
 WindowActionFlags calc_divider(struct SidebarWindowData *wdata, bool ascii, const char *div_str);
+int sb_recalc(struct MuttWindow *win);
+int sb_repaint(struct MuttWindow *win);
 
 // observer.c
 int sb_insertion_observer(struct NotifyCallback *nc);

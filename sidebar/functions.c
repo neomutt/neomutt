@@ -32,11 +32,9 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "lib.h"
-#include "mutt_menu.h"
 #include "opcodes.h"
-
-struct MuttWindow;
 
 /**
  * select_next - Selects the next unhidden mailbox
@@ -63,7 +61,7 @@ bool select_next(struct SidebarWindowData *wdata)
 
 /**
  * next_new - Return the next mailbox with new messages
- * @param wdata SidebarWindowData struct
+ * @param wdata Sidebar data
  * @param begin Starting index for searching
  * @param end   Ending index for searching
  * @retval sbe  Pointer to the first entry with new messages
@@ -133,7 +131,7 @@ static bool select_prev(struct SidebarWindowData *wdata)
 
 /**
  * prev_new - Return the previous mailbox with new messages
- * @param wdata SidebarWindowData struct
+ * @param wdata Sidebar data
  * @param begin Starting index for searching
  * @param end   Ending index for searching
  * @retval sbe  Pointer to the first entry with new messages
@@ -240,8 +238,8 @@ static bool select_first(struct SidebarWindowData *wdata)
 
 /**
  * select_last - Selects the last unhidden mailbox
- * @retval true  Success
- * @retval false Failure
+ * @param wdata Sidebar data
+ * @retval bool true if the selection changed
  */
 static bool select_last(struct SidebarWindowData *wdata)
 {
@@ -311,5 +309,5 @@ void sb_change_mailbox(struct MuttWindow *win, int op)
     default:
       return;
   }
-  mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
+  win->actions |= WA_RECALC;
 }

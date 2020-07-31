@@ -1104,11 +1104,6 @@ static void index_custom_redraw(struct Menu *menu)
     mutt_show_error();
   }
 
-#ifdef USE_SIDEBAR
-  if (menu->redraw & REDRAW_SIDEBAR)
-    menu_redraw_sidebar(menu);
-#endif
-
   struct Mailbox *m = Context ? Context->mailbox : NULL;
   if (m && m->emails && !(menu->current >= m->vcount))
   {

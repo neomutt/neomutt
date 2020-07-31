@@ -80,6 +80,7 @@ WindowActionFlags calc_divider(struct SidebarWindowData *wdata, bool ascii, cons
 /**
  * sb_win_init - Initialise and insert the Sidebar Window
  * @param dlg Index Dialog
+ * @retval ptr Sidebar Window
  */
 static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
 {
@@ -106,6 +107,9 @@ static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
   win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
   win_sidebar->wdata = sb_wdata_new();
   win_sidebar->wdata_free = sb_wdata_free;
+
+  win_sidebar->recalc = sb_recalc;
+  win_sidebar->repaint = sb_repaint;
 
   if (C_SidebarOnRight)
   {
