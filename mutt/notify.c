@@ -67,7 +67,7 @@ void notify_free(struct Notify **ptr)
   struct Notify *notify = *ptr;
   // NOTIFY observers
 
-  notify_observer_remove(notify, NULL, NULL);
+  notify_observer_remove_all(notify);
 
   FREE(ptr);
 }
@@ -179,30 +179,43 @@ bool notify_observer_add(struct Notify *notify, observer_t callback, void *globa
  * @param callback    Function to call on a matching event, see ::observer_t
  * @param global_data Private data to match specific callback
  * @retval true If successful
- *
- * If callback is NULL, all the observers will be removed.
  */
 bool notify_observer_remove(struct Notify *notify, observer_t callback, void *global_data)
 {
-  if (!notify)
+  if (!notify || !callback)
     return false;
 
-  bool result = false;
   struct ObserverNode *np = NULL;
   struct ObserverNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &notify->observers, entries, tmp)
   {
-    if (!callback || ((np->observer->callback == callback) &&
-                      (np->observer->global_data == global_data)))
+    if ((np->observer->callback == callback) && (np->observer->global_data == global_data))
     {
       STAILQ_REMOVE(&notify->observers, np, ObserverNode, entries);
       FREE(&np->observer);
       FREE(&np);
-      result = true;
-      if (callback)
-        break;
+      return true;
     }
   }
 
-  return result;
+  return false;
+}
+
+/**
+ * notify_observer_remove_all - Remove all the observers from an object
+ * @param notify Notification handler
+ */
+void notify_observer_remove_all(struct Notify *notify)
+{
+  if (!notify)
+    return;
+
+  struct ObserverNode *np = NULL;
+  struct ObserverNode *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, &notify->observers, entries, tmp)
+  {
+    STAILQ_REMOVE(&notify->observers, np, ObserverNode, entries);
+    FREE(&np->observer);
+    FREE(&np);
+  }
 }
