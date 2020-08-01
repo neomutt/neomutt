@@ -27,5 +27,5 @@
 
 void test_notify_observer_add(void)
 {
-  // bool notify_observer_add(struct Notify *notify, observer_t callback, void *global_data);
+  // bool notify_observer_add(struct Notify *notify, NotifyType type, observer_t callback, void *global_data);
 }

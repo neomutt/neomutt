@@ -203,7 +203,7 @@ void test_config_synonym(void)
 
   TEST_MSG("Expected error\n");
 
-  notify_observer_add(NeoMutt->notify, log_observer, 0);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 
   set_list(cs);
 

@@ -63,7 +63,7 @@ void test_config_account(void)
 
   set_list(cs);
 
-  notify_observer_add(NeoMutt->notify, log_observer, 0);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 
   const char *account = "damaged";
   const char *parent = "Pineapple";

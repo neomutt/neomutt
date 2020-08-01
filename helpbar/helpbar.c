@@ -286,6 +286,7 @@ struct MuttWindow *helpbar_create(void)
   win->wdata = helpbar_wdata_new();
   win->wdata_free = helpbar_wdata_free;
 
-  notify_observer_add(NeoMutt->notify, helpbar_observer, win);
+  notify_observer_add(NeoMutt->notify, NT_BINDING | NT_COLOR | NT_CONFIG | NT_WINDOW,
+                      helpbar_observer, win);
   return win;
 }

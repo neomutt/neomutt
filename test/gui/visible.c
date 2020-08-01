@@ -132,7 +132,7 @@ void test_window_visible(void)
 
   struct NotifyCatcher results;
 
-  notify_observer_add(parent->notify, visible_observer, &results);
+  notify_observer_add(parent->notify, NT_WINDOW, visible_observer, &results);
 
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {

@@ -30,6 +30,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "notify.h"
+#include "logging.h"
 #include "memory.h"
 #include "queue.h"
 
@@ -105,10 +106,17 @@ void notify_set_parent(struct Notify *notify, struct Notify *parent)
  *       any dead list entries after we've finished.
  */
 static bool send(struct Notify *source, struct Notify *current,
-                 enum NotifyType event_type, int event_subtype, void *event_data)
+                 NotifyType event_type, int event_subtype, void *event_data)
 {
   if (!source || !current)
     return false;
+
+  // Disallow NT_ALL, or multiple flags set
+  if ((event_type == NT_ALL) || ((event_type & (event_type - 1)) != 0))
+  {
+    mutt_debug(LL_DEBUG3, "event_type = %d\n", event_type);
+    return false;
+  }
 
   // mutt_debug(LL_NOTIFY, "send: %d, %ld\n", event_type, event_data);
   struct ObserverNode *np = NULL;
@@ -116,6 +124,10 @@ static bool send(struct Notify *source, struct Notify *current,
   {
     struct Observer *o = np->observer;
     if (!o)
+      continue;
+
+    // Observer is expecting a different type
+    if ((o->type != NT_ALL) && !(o->type & event_type))
       continue;
 
     struct NotifyCallback nc = { current, event_type, event_subtype, event_data, o->global_data };
@@ -149,8 +161,7 @@ static bool send(struct Notify *source, struct Notify *current,
  *
  * See send() for more details.
  */
-bool notify_send(struct Notify *notify, enum NotifyType event_type,
-                 int event_subtype, void *event_data)
+bool notify_send(struct Notify *notify, NotifyType event_type, int event_subtype, void *event_data)
 {
   return send(notify, notify, event_type, event_subtype, event_data);
 }
@@ -158,6 +169,7 @@ bool notify_send(struct Notify *notify, enum NotifyType event_type,
 /**
  * notify_observer_add - Add an observer to an object
  * @param notify      Notification handler
+ * @param type        Notification type to observe, e.g. #NT_WINDOW
  * @param callback    Function to call on a matching event, see ::observer_t
  * @param global_data Private data associated with the observer
  * @retval true If successful
@@ -165,7 +177,8 @@ bool notify_send(struct Notify *notify, enum NotifyType event_type,
  * New observers are added to the front of the list, giving them higher
  * priority than existing observers.
  */
-bool notify_observer_add(struct Notify *notify, observer_t callback, void *global_data)
+bool notify_observer_add(struct Notify *notify, NotifyType type,
+                         observer_t callback, void *global_data)
 {
   if (!notify || !callback)
     return false;
@@ -181,6 +194,7 @@ bool notify_observer_add(struct Notify *notify, observer_t callback, void *globa
   }
 
   struct Observer *o = mutt_mem_calloc(1, sizeof(*o));
+  o->type = type;
   o->callback = callback;
   o->global_data = global_data;
 

@@ -717,7 +717,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
     mutt_window_add_child(dlg, pbar);
   }
 
-  notify_observer_add(NeoMutt->notify, mutt_dlg_dopager_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlg_dopager_observer, dlg);
   dialog_push(dlg);
 
   info->win_ibar = NULL;

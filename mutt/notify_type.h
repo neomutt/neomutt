@@ -23,24 +23,20 @@
 #ifndef MUTT_LIB_NOTIFY_TYPE_H
 #define MUTT_LIB_NOTIFY_TYPE_H
 
-/**
- * enum NotifyType - Notification Types
- *
- * Each type lists the associated Event object
- */
-enum NotifyType
-{
-  NT_ACCOUNT, ///< Account has changed,         #NotifyAccount, #EventAccount
-  NT_COLOR,   ///< Colour has changed,          #ColorId,       #EventColor
-  NT_COMMAND, ///< A Command has been executed, #Command
-  NT_CONFIG,  ///< Config has changed,          #NotifyConfig,  #EventConfig
-  NT_CONTEXT, ///< Context has changed,         #NotifyContext, #EventContext
-  NT_EMAIL,   ///< Email has changed,           #NotifyEmail,   #EventEmail
-  NT_GLOBAL,  ///< Not object-related,          #NotifyGlobal
-  NT_MAILBOX, ///< Mailbox has changed,         #NotifyMailbox, #EventMailbox
-  NT_WINDOW,  ///< MuttWindow has changed,      #NotifyWindow,  #EventWindow
-  NT_ALIAS,   ///< Alias has changed,           #NotifyAlias,   #EventAlias
-  NT_BINDING, ///< Key binding has changed,     #NotifyBinding, #EventBinding
-};
+#include <stdint.h>
+
+typedef uint16_t NotifyType;   ///< Notification Types - Each type lists the associated Event object
+#define NT_ALL             0   ///< Register for all notifications
+#define NT_ACCOUNT  (1 <<  0)  ///< Account has changed,         #NotifyAccount, #EventAccount
+#define NT_ALIAS    (1 <<  1)  ///< Alias has changed,           #NotifyAlias,   #EventAlias
+#define NT_BINDING  (1 <<  2)  ///< Key binding has changed,     #NotifyBinding, #EventBinding
+#define NT_COLOR    (1 <<  3)  ///< Colour has changed,          #ColorId,       #EventColor
+#define NT_COMMAND  (1 <<  4)  ///< A Command has been executed, #Command
+#define NT_CONFIG   (1 <<  5)  ///< Config has changed,          #NotifyConfig,  #EventConfig
+#define NT_CONTEXT  (1 <<  6)  ///< Context has changed,         #NotifyContext, #EventContext
+#define NT_EMAIL    (1 <<  7)  ///< Email has changed,           #NotifyEmail,   #EventEmail
+#define NT_GLOBAL   (1 <<  8)  ///< Not object-related,          #NotifyGlobal
+#define NT_MAILBOX  (1 <<  9)  ///< Mailbox has changed,         #NotifyMailbox, #EventMailbox
+#define NT_WINDOW   (1 << 10)  ///< MuttWindow has changed,      #NotifyWindow,  #EventWindow
 
 #endif /* MUTT_LIB_NOTIFY_TYPE_H */

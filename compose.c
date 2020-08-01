@@ -1376,7 +1376,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
     mutt_window_add_child(dlg, ebar);
   }
 
-  notify_observer_add(NeoMutt->notify, mutt_dlg_compose_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlg_compose_observer, dlg);
   dialog_push(dlg);
 
 #ifdef USE_NNTP

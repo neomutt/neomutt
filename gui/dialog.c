@@ -196,7 +196,7 @@ struct MuttWindow *dialog_create_simple_index(struct Menu *menu, enum WindowType
   menu->win_index = index;
   menu->win_ibar = ibar;
 
-  notify_observer_add(NeoMutt->notify, dialog_config_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, dialog_config_observer, dlg);
   dialog_push(dlg);
 
   return dlg;

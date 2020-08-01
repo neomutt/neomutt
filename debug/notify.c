@@ -39,7 +39,7 @@
 extern const struct Mapping Fields[];
 extern const struct Mapping ComposeFields[];
 
-static const char *get_event_type(enum NotifyType type)
+static const char *get_event_type(NotifyType type)
 {
   switch (type)
   {

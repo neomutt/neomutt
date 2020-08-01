@@ -762,7 +762,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   /* If the `folder-hook` were to call `unmailboxes`, then the Mailbox (`m`)
    * could be deleted, leaving `m` dangling. */
   // TODO: Refactor this function to avoid the need for an observer
-  notify_observer_add(m->notify, mailbox_index_observer, &m);
+  notify_observer_add(m->notify, NT_MAILBOX, mailbox_index_observer, &m);
   char *dup_path = mutt_str_dup(mailbox_path(m));
 
   mutt_folder_hook(mailbox_path(m), m ? m->name : NULL);
@@ -4134,7 +4134,7 @@ struct MuttWindow *index_pager_init(void)
   struct MuttWindow *dlg =
       mutt_window_new(WT_DLG_INDEX, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  notify_observer_add(NeoMutt->notify, mutt_dlgindex_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlgindex_observer, dlg);
 
   mutt_window_add_child(dlg, create_panel_index(dlg, C_StatusOnTop));
   mutt_window_add_child(dlg, create_panel_pager(dlg, C_StatusOnTop));
