@@ -670,7 +670,7 @@ void test_config_enum(void)
   if (!cs_register_variables(cs, Vars, 0))
     return;
 
-  notify_observer_add(NeoMutt->notify, log_observer, 0);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 
   set_list(cs);
 

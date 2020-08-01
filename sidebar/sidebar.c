@@ -1123,7 +1123,7 @@ void sb_win_init(struct MuttWindow *dlg)
     mutt_window_add_child(dlg, cont_right);
   }
 
-  notify_observer_add(NeoMutt->notify, sb_observer, win_sidebar);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, sb_observer, win_sidebar);
 }
 
 /**
@@ -1151,7 +1151,7 @@ void sb_init(void)
   // - Functions
 
   // Listen for dialog creation events
-  notify_observer_add(NeoMutt->notify, sb_insertion_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_WINDOW, sb_insertion_observer, NULL);
 }
 
 /**

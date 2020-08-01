@@ -914,7 +914,7 @@ bool slist_test_separator(struct ConfigDef Vars[], struct Buffer *err)
   if (!cs_register_variables(cs, Vars, 0))
     return false;
 
-  notify_observer_add(NeoMutt->notify, log_observer, 0);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 
   set_list(cs);
 
@@ -959,7 +959,7 @@ void test_config_slist(void)
     return;
   dont_fail = false;
 
-  notify_observer_add(NeoMutt->notify, log_observer, 0);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 
   TEST_CHECK(test_native_set(cs, &err));
   TEST_CHECK(test_native_get(cs, &err));
