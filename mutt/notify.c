@@ -158,6 +158,7 @@ bool notify_send(struct Notify *notify, enum NotifyType event_type,
 /**
  * notify_observer_add - Add an observer to an object
  * @param notify      Notification handler
+ * @param type        Notification type to observe, e.g. #NT_WINDOW
  * @param callback    Function to call on a matching event, see ::observer_t
  * @param global_data Private data associated with the observer
  * @retval true If successful
@@ -165,7 +166,8 @@ bool notify_send(struct Notify *notify, enum NotifyType event_type,
  * New observers are added to the front of the list, giving them higher
  * priority than existing observers.
  */
-bool notify_observer_add(struct Notify *notify, observer_t callback, void *global_data)
+bool notify_observer_add(struct Notify *notify, enum NotifyType type,
+                         observer_t callback, void *global_data)
 {
   if (!notify || !callback)
     return false;

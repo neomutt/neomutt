@@ -30,6 +30,7 @@
  */
 enum NotifyType
 {
+  NT_ALL = 0, ///< Register for all notifications
   NT_ACCOUNT, ///< Account has changed,         #NotifyAccount, #EventAccount
   NT_COLOR,   ///< Colour has changed,          #ColorId,       #EventColor
   NT_COMMAND, ///< A Command has been executed, #Command

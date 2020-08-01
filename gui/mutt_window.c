@@ -378,7 +378,7 @@ void mutt_window_init(void)
   }
 
   mutt_window_add_child(RootWindow, MessageWindow);
-  notify_observer_add(NeoMutt->notify, mutt_dlg_rootwin_observer, RootWindow);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlg_rootwin_observer, RootWindow);
 }
 
 /**

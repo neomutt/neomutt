@@ -634,7 +634,7 @@ void test_config_mbtable(void)
     return;
   dont_fail = false;
 
-  notify_observer_add(NeoMutt->notify, log_observer, 0);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 
   set_list(cs);
 

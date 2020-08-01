@@ -202,7 +202,7 @@ static void alias_menu(char *buf, size_t buflen, struct AliasMenuData *mdata)
   menu->max = mdata->num_views;
   menu->mdata = mdata;
 
-  notify_observer_add(NeoMutt->notify, alias_data_observer, menu);
+  notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_data_observer, menu);
   mutt_menu_push_current(menu);
 
   if ((C_SortAlias & SORT_MASK) != SORT_ORDER)
