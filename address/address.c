@@ -1222,7 +1222,7 @@ size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *l
  * mutt_addrlist_write_file - Wrapper for mutt_write_address()
  * @param al      Address list
  * @param fp      File to write to
- * @param linelen Line length to use
+ * @param linelen Starting column in the output line
  * @param display True if these addresses will be displayed to the user
  *
  * So we can handle very large recipient lists without needing a huge temporary
