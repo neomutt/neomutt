@@ -29,7 +29,6 @@
 #include "format_flags.h"
 
 struct Address;
-struct Context;
 struct Email;
 struct Mailbox;
 
@@ -44,7 +43,6 @@ extern struct MbTable *C_ToChars;
  */
 struct HdrFormatInfo
 {
-  struct Context *ctx;
   struct Mailbox *mailbox;
   int msg_in_pager;
   struct Email *email;

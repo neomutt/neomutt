@@ -2165,8 +2165,8 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     struct HdrFormatInfo hfi;
     char pager_progress_str[65]; /* Lots of space for translations */
 
-    hfi.ctx = Context;
     hfi.mailbox = Context ? Context->mailbox : NULL;
+    hfi.msg_in_pager = Context ? Context->msg_in_pager : -1;
     hfi.pager_progress = pager_progress_str;
 
     if (rd->last_pos < rd->sb.st_size - 1)
