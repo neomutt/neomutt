@@ -201,17 +201,17 @@ static bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
 
 /**
  * check_acl - Check the ACLs for a function
- * @param ctx Mailbox
+ * @param m   Mailbox
  * @param acl ACL, see #AclFlags
  * @param msg Error message for failure
  * @retval bool true if the function is permitted
  */
-static bool check_acl(struct Context *ctx, AclFlags acl, const char *msg)
+static bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return false;
 
-  if (!(ctx->mailbox->rights & acl))
+  if (!(m->rights & acl))
   {
     /* L10N: %s is one of the CHECK_ACL entries below. */
     mutt_error(_("%s: Operation not permitted by ACL"), msg);
@@ -1737,7 +1737,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         /* L10N: Due to the implementation details we do not know whether we
             delete zero, 1, 12, ... messages. So in English we use
             "messages". Your language might have other means to express this.  */
-        if (!check_acl(Context, MUTT_ACL_DELETE, _("Can't delete messages")))
+        if (!check_acl(Context->mailbox, MUTT_ACL_DELETE, _("Can't delete messages")))
           break;
 
         mutt_pattern_func(MUTT_DELETE, _("Delete messages matching: "));
@@ -1981,7 +1981,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         /* L10N: Due to the implementation details we do not know whether we
             undelete zero, 1, 12, ... messages. So in English we use
             "messages". Your language might have other means to express this. */
-        if (!check_acl(Context, MUTT_ACL_DELETE, _("Can't undelete messages")))
+        if (!check_acl(Context->mailbox, MUTT_ACL_DELETE, _("Can't undelete messages")))
           break;
 
         if (mutt_pattern_func(MUTT_UNDELETE,
@@ -2633,7 +2633,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
-        if (!check_acl(Context, MUTT_ACL_WRITE, _("Can't break thread")))
+        if (!check_acl(Context->mailbox, MUTT_ACL_WRITE, _("Can't break thread")))
           break;
         if (!cur.e)
           break;
@@ -2673,7 +2673,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
-        if (!check_acl(Context, MUTT_ACL_WRITE, _("Can't link threads")))
+        if (!check_acl(Context->mailbox, MUTT_ACL_WRITE, _("Can't link threads")))
           break;
         if (!cur.e)
           break;
@@ -2986,7 +2986,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
-        if (!check_acl(Context, MUTT_ACL_WRITE, _("Can't flag message")))
+        if (!check_acl(Context->mailbox, MUTT_ACL_WRITE, _("Can't flag message")))
           break;
 
         struct Mailbox *m = Context->mailbox;
@@ -3031,7 +3031,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
-        if (!check_acl(Context, MUTT_ACL_SEEN, _("Can't toggle new")))
+        if (!check_acl(Context->mailbox, MUTT_ACL_SEEN, _("Can't toggle new")))
           break;
 
         struct Mailbox *m = Context->mailbox;
@@ -3279,7 +3279,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
-        if (!check_acl(Context, MUTT_ACL_DELETE, _("Can't delete message")))
+        if (!check_acl(Context->mailbox, MUTT_ACL_DELETE, _("Can't delete message")))
           break;
 
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3330,7 +3330,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         /* L10N: Due to the implementation details we do not know whether we
            delete zero, 1, 12, ... messages. So in English we use
            "messages". Your language might have other means to express this. */
-        if (!check_acl(Context, MUTT_ACL_DELETE, _("Can't delete messages")))
+        if (!check_acl(Context->mailbox, MUTT_ACL_DELETE, _("Can't delete messages")))
           break;
         if (!cur.e)
           break;
@@ -3401,7 +3401,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           if (!prereq(Context, menu, CHECK_READONLY))
             break;
           /* L10N: CHECK_ACL */
-          if (!check_acl(Context, MUTT_ACL_INSERT, _("Can't edit message")))
+          if (!check_acl(Context->mailbox, MUTT_ACL_INSERT, _("Can't edit message")))
             break;
           edit = true;
         }
@@ -3625,7 +3625,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         /* L10N: Due to the implementation details we do not know whether we
            mark zero, 1, 12, ... messages as read. So in English we use
            "messages". Your language might have other means to express this. */
-        if (!check_acl(Context, MUTT_ACL_SEEN, _("Can't mark messages as read")))
+        if (!check_acl(Context->mailbox, MUTT_ACL_SEEN, _("Can't mark messages as read")))
           break;
 
         int rc = mutt_thread_set_flag(cur.e, MUTT_READ, true, (op != OP_MAIN_READ_THREAD));
@@ -3816,7 +3816,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
-        if (!check_acl(Context, MUTT_ACL_DELETE, _("Can't undelete message")))
+        if (!check_acl(Context->mailbox, MUTT_ACL_DELETE, _("Can't undelete message")))
           break;
 
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3854,7 +3854,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         /* L10N: Due to the implementation details we do not know whether we
             undelete zero, 1, 12, ... messages. So in English we use
             "messages". Your language might have other means to express this. */
-        if (!check_acl(Context, MUTT_ACL_DELETE, _("Can't undelete messages")))
+        if (!check_acl(Context->mailbox, MUTT_ACL_DELETE, _("Can't undelete messages")))
           break;
 
         int rc = mutt_thread_set_flag(cur.e, MUTT_DELETE, false, (op != OP_UNDELETE_THREAD));
