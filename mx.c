@@ -329,7 +329,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     }
   }
 
-  ctx->msg_not_read_yet = -1;
+  ctx->msg_in_pager = -1;
   ctx->collapsed = false;
 
   m->verbose = !(flags & MUTT_QUIET);

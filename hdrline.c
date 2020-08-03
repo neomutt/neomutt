@@ -463,7 +463,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   size_t colorlen;
 
   struct Email *e = hfi->email;
-  struct Context *ctx = hfi->ctx;
+  size_t msg_in_pager = hfi->msg_in_pager;
   struct Mailbox *m = hfi->mailbox;
 
   if (!e || !e->env)
@@ -1074,7 +1074,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_IMPORTANT);
       else if (e->replied)
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_REPLIED);
-      else if (e->read && (ctx && (ctx->msg_not_read_yet != e->msgno)))
+      else if (e->read && (msg_in_pager != e->msgno))
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_SEMPTY);
       else if (e->old)
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD);
@@ -1232,7 +1232,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_NEW_THREAD);
         else if (threads && thread_is_old(e))
           ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD_THREAD);
-        else if (e->read && (ctx && (ctx->msg_not_read_yet != e->msgno)))
+        else if (e->read && (msg_in_pager != e->msgno))
         {
           if (e->replied)
             ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_REPLIED);
@@ -1298,7 +1298,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         first = get_nth_wchar(C_FlagChars, FLAG_CHAR_NEW_THREAD);
       else if (threads && thread_is_old(e))
         first = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD_THREAD);
-      else if (e->read && (ctx && (ctx->msg_not_read_yet != e->msgno)))
+      else if (e->read && (msg_in_pager != e->msgno))
       {
         if (e->replied)
           first = get_nth_wchar(C_FlagChars, FLAG_CHAR_REPLIED);
@@ -1395,20 +1395,20 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
  * @param buflen Buffer length
  * @param cols   Number of screen columns (OPTIONAL)
  * @param s      printf-line format string
- * @param ctx    Mailbox Context
  * @param m      Mailbox
+ * @param inpgr  Message shown in the pager
  * @param e      Email
  * @param flags  Flags, see #MuttFormatFlags
  */
 void mutt_make_string_flags(char *buf, size_t buflen, int cols, const char *s,
-                            struct Context *ctx, struct Mailbox *m,
-                            struct Email *e, MuttFormatFlags flags)
+                            struct Mailbox *m, int inpgr, struct Email *e,
+                            MuttFormatFlags flags)
 {
   struct HdrFormatInfo hfi;
 
   hfi.email = e;
-  hfi.ctx = ctx;
   hfi.mailbox = m;
+  hfi.msg_in_pager = inpgr;
   hfi.pager_progress = 0;
 
   mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (intptr_t) &hfi, flags);

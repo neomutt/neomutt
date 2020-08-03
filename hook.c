@@ -635,7 +635,8 @@ static int addr_hook(char *path, size_t pathlen, HookFlags type,
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.pat_not)
       {
-        mutt_make_string_flags(path, pathlen, 0, hook->command, ctx, m, e, MUTT_FORMAT_PLAIN);
+        mutt_make_string_flags(path, pathlen, 0, hook->command, m,
+                               ctx ? ctx->msg_in_pager : -1, e, MUTT_FORMAT_PLAIN);
         return 0;
       }
     }

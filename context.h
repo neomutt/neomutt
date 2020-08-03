@@ -41,7 +41,7 @@ struct Context
   char *pattern;                     ///< Limit pattern string
   struct PatternList *limit_pattern; ///< Compiled limit pattern
   struct ThreadsContext *threads;    ///< Threads context
-  int msg_not_read_yet;              ///< Which msg "new" in pager, -1 if none
+  int msg_in_pager;                  ///< Message currently shown in the pager
 
   struct Menu *menu;                 ///< Needed for pattern compilation
 

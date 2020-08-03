@@ -2308,7 +2308,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
   if (Context && IsEmail(extra) && !extra->email->read)
   {
-    Context->msg_not_read_yet = extra->email->msgno;
+    Context->msg_in_pager = extra->email->msgno;
     mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, true);
   }
 
@@ -3399,7 +3399,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         else if (!first)
           mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, true);
         first = false;
-        Context->msg_not_read_yet = -1;
+        Context->msg_in_pager = -1;
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (C_Resolve)
         {
@@ -3581,7 +3581,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   if (IsEmail(extra))
   {
     if (Context)
-      Context->msg_not_read_yet = -1;
+      Context->msg_in_pager = -1;
     switch (rc)
     {
       case -1:
