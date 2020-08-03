@@ -1237,8 +1237,9 @@ void mutt_addrlist_write_file(const struct AddressList *al, FILE *fp, int linele
   TAILQ_FOREACH(a, al, entries)
   {
     buf[0] = '\0';
-    mutt_addr_write(buf, sizeof(buf), a, display);
-    size_t len = mutt_str_len(buf);
+    size_t len = mutt_addr_write(buf, sizeof(buf), a, display);
+    if (len == 0)
+      continue;
     if (count && (linelen + len > 74))
     {
       fputs("\n\t", fp);
