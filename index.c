@@ -419,7 +419,7 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
   struct Email *e_cur = mutt_get_virt_email(ctx->mailbox, menu->current);
 
   menu->current = -1;
-  mutt_sort_headers(ctx, false);
+  mutt_sort_headers(ctx->mailbox, ctx->threads, false, &ctx->vsize);
   /* Restore the current message */
 
   for (int i = 0; i < ctx->mailbox->vcount; i++)
@@ -466,7 +466,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
    * require the threading information.
    *
    * If the mailbox was reopened, need to rethread from scratch. */
-  mutt_sort_headers(ctx, (check == MUTT_REOPENED));
+  mutt_sort_headers(ctx->mailbox, ctx->threads, (check == MUTT_REOPENED), &ctx->vsize);
 
   if (lmt)
   {
@@ -493,7 +493,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
       }
     }
     /* Need a second sort to set virtual numbers and redraw the tree */
-    mutt_sort_headers(ctx, false);
+    mutt_sort_headers(ctx->mailbox, ctx->threads, false, &ctx->vsize);
   }
 
   /* uncollapse threads with new mail */
@@ -565,7 +565,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
   }
 
   /* if the mailbox was reopened, need to rethread from scratch */
-  mutt_sort_headers(ctx, (check == MUTT_REOPENED));
+  mutt_sort_headers(ctx->mailbox, ctx->threads, (check == MUTT_REOPENED), &ctx->vsize);
 }
 
 /**
@@ -1560,7 +1560,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
             if (rc == 0)
             {
               e = Context->mailbox->emails[Context->mailbox->msg_count - 1];
-              mutt_sort_headers(Context, false);
+              mutt_sort_headers(Context->mailbox, Context->threads, false,
+                                &Context->vsize);
               menu->current = e->vnum;
               menu->redraw = REDRAW_FULL;
             }
@@ -1630,7 +1631,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
           if (rc < 0)
             Context->mailbox->verbose = false;
-          mutt_sort_headers(Context, (op == OP_RECONSTRUCT_THREAD));
+          mutt_sort_headers(Context->mailbox, Context->threads,
+                            (op == OP_RECONSTRUCT_THREAD), &Context->vsize);
           Context->mailbox->verbose = verbose;
 
           /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
@@ -2645,7 +2647,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           {
             mutt_break_thread(cur.e);
-            mutt_sort_headers(Context, true);
+            mutt_sort_headers(Context->mailbox, Context->threads, true, &Context->vsize);
             menu->current = cur.e->vnum;
           }
 
@@ -2689,7 +2691,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
           if (mutt_link_threads(cur.e, &el, Context->mailbox))
           {
-            mutt_sort_headers(Context, true);
+            mutt_sort_headers(Context->mailbox, Context->threads, true, &Context->vsize);
             menu->current = cur.e->vnum;
 
             Context->mailbox->changed = true;

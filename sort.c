@@ -358,16 +358,18 @@ sort_t mutt_get_sort_func(enum SortType method)
 
 /**
  * mutt_sort_headers - Sort emails by their headers
- * @param ctx  Mailbox
+ * @param m       Mailbox
+ * @param threads Threads context
  * @param init If true, rebuild the thread
+ * @param[out] vsize Size in bytes of the messages in view
  */
-void mutt_sort_headers(struct Context *ctx, bool init)
+void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
+                       bool init, off_t *vsize)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->emails || !ctx->mailbox->emails[0])
+  if (!m || !m->emails[0])
     return;
 
   sort_t sortfunc = NULL;
-  struct Mailbox *m = ctx->mailbox;
 
   OptNeedResort = false;
 
@@ -377,8 +379,8 @@ void mutt_sort_headers(struct Context *ctx, bool init)
      * deleted all the messages.  the virtual message numbers are not updated
      * in that routine, so we must make sure to zero the vcount member.  */
     m->vcount = 0;
-    ctx->vsize = 0;
-    mutt_clear_threads(ctx->threads);
+    mutt_clear_threads(threads);
+    *vsize = 0;
     return; /* nothing to do! */
   }
 
@@ -404,7 +406,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   }
 
   if (init)
-    mutt_clear_threads(ctx->threads);
+    mutt_clear_threads(threads);
 
   if ((C_Sort & SORT_MASK) == SORT_THREADS)
   {
@@ -415,11 +417,11 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     {
       int i = C_Sort;
       C_Sort = C_SortAux;
-      mutt_sort_subthreads(ctx->threads, true);
+      mutt_sort_subthreads(threads, true);
       C_Sort = i;
       OptSortSubthreads = false;
     }
-    mutt_sort_threads(ctx->threads, init);
+    mutt_sort_threads(threads, init);
   }
   else if (!(sortfunc = mutt_get_sort_func(C_Sort & SORT_MASK)) ||
            !(AuxSort = mutt_get_sort_func(C_SortAux & SORT_MASK)))
@@ -452,10 +454,12 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   /* re-collapse threads marked as collapsed */
   if ((C_Sort & SORT_MASK) == SORT_THREADS)
   {
-    mutt_thread_collapse_collapsed(ctx->threads);
-    ctx->vsize = mutt_set_vnum(ctx->mailbox);
+    mutt_thread_collapse_collapsed(threads);
+    *vsize = mutt_set_vnum(m);
   }
 
   if (m->verbose)
     mutt_clear_error();
+
+  return;
 }
