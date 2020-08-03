@@ -329,21 +329,21 @@ static int ci_previous_undeleted(struct Mailbox *m, int msgno)
 
 /**
  * ci_first_message - Get index of first new message
- * @param ctx Context
+ * @param m Mailbox
  * @retval num Index of first new message
  *
  * Return the index of the first new message, or failing that, the first
  * unread message.
  */
-static int ci_first_message(struct Context *ctx)
+static int ci_first_message(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox || (ctx->mailbox->msg_count == 0))
+  if (!m || (m->msg_count == 0))
     return 0;
 
   int old = -1;
-  for (int i = 0; i < ctx->mailbox->vcount; i++)
+  for (int i = 0; i < m->vcount; i++)
   {
-    struct Email *e = mutt_get_virt_email(ctx->mailbox, i);
+    struct Email *e = mutt_get_virt_email(m, i);
     if (!e)
       continue;
     if (!e->read && !e->deleted)
@@ -367,7 +367,7 @@ static int ci_first_message(struct Context *ctx)
   }
   else
   {
-    return ctx->mailbox->vcount ? ctx->mailbox->vcount - 1 : 0;
+    return m->vcount ? m->vcount - 1 : 0;
   }
 
   return 0;
@@ -438,7 +438,7 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
     menu->current = mutt_parent_message(e_cur, false);
 
   if (menu->current < 0)
-    menu->current = ci_first_message(ctx);
+    menu->current = ci_first_message(ctx->mailbox);
 
   menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 }
@@ -642,7 +642,7 @@ static void update_index(struct Menu *menu, struct Context *ctx, int check,
   }
 
   if (menu->current < 0)
-    menu->current = ci_first_message(Context);
+    menu->current = ci_first_message(Context->mailbox);
 }
 
 /**
@@ -762,7 +762,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   Context = mx_mbox_open(m, flags);
   if (Context)
   {
-    menu->current = ci_first_message(Context);
+    menu->current = ci_first_message(Context->mailbox);
 #ifdef USE_INOTIFY
     mutt_monitor_add(NULL);
 #endif
@@ -1186,7 +1186,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
   menu->make_entry = index_make_entry;
   menu->color = index_color;
-  menu->current = ci_first_message(Context);
+  menu->current = ci_first_message(Context->mailbox);
   menu->custom_redraw = index_custom_redraw;
   mutt_menu_push_current(menu);
   mutt_window_reflow(NULL);
@@ -2092,7 +2092,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           if ((menu->current < 0) || (Context && Context->mailbox &&
                                       (menu->current >= Context->mailbox->vcount)))
           {
-            menu->current = ci_first_message(Context);
+            menu->current = ci_first_message(Context->mailbox);
           }
         }
 
