@@ -1,6 +1,6 @@
 /**
  * @file
- * GPGME select key dialog
+ * GPGME key selection dialog
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page crypt_dlggpgme GPGME select key dialog
+ * @page crypt_dlggpgme GPGME key selection dialog
  *
- * GPGME select key dialog
+ * GPGME key selection dialog
  */
 
 #include "config.h"

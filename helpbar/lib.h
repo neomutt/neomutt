@@ -22,9 +22,9 @@
  */
 
 /**
- * @page helpbar Convenience wrapper for the Help Bar headers
+ * @page helpbar HELPBAR: One-liner Help
  *
- * Convenience wrapper for the Help Bar headers
+ * One-liner Help
  *
  * | File              | Description              |
  * | :---------------- | :----------------------- |
