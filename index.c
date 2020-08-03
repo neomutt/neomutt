@@ -283,19 +283,19 @@ static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
 
 /**
  * ci_next_undeleted - Find the next undeleted email
- * @param ctx   Context
+ * @param m     Mailbox
  * @param msgno Message number to start at
  * @retval >=0 Message number of next undeleted email
  * @retval  -1 No more undeleted messages
  */
-static int ci_next_undeleted(struct Context *ctx, int msgno)
+static int ci_next_undeleted(struct Mailbox *m, int msgno)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
 
-  for (int i = msgno + 1; i < ctx->mailbox->vcount; i++)
+  for (int i = msgno + 1; i < m->vcount; i++)
   {
-    struct Email *e = mutt_get_virt_email(ctx->mailbox, i);
+    struct Email *e = mutt_get_virt_email(m, i);
     if (!e)
       continue;
     if (!e->deleted)
@@ -2060,7 +2060,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             if (!cur.e)
               break;
             if (cur.e->deleted)
-              newidx = ci_next_undeleted(Context, menu->current);
+              newidx = ci_next_undeleted(Context->mailbox, menu->current);
             if (newidx < 0)
               newidx = ci_previous_undeleted(Context, menu->current);
             if (newidx >= 0)
@@ -2295,7 +2295,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           }
           if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(Context, menu->current);
+            menu->current = ci_next_undeleted(Context->mailbox, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -2739,7 +2739,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             mutt_message(_("You are on the last message"));
           break;
         }
-        menu->current = ci_next_undeleted(Context, menu->current);
+        menu->current = ci_next_undeleted(Context->mailbox, menu->current);
         if (menu->current == -1)
         {
           menu->current = menu->oldcurrent;
@@ -2845,7 +2845,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             menu->redraw |= REDRAW_INDEX;
           else if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(Context, menu->current);
+            menu->current = ci_next_undeleted(Context->mailbox, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3010,7 +3010,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           mutt_set_flag(m, cur.e, MUTT_FLAG, !cur.e->flagged);
           if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(Context, menu->current);
+            menu->current = ci_next_undeleted(Context->mailbox, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3063,7 +3063,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
           if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(Context, menu->current);
+            menu->current = ci_next_undeleted(Context->mailbox, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3177,7 +3177,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             menu->redraw |= REDRAW_INDEX;
           else if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(Context, menu->current);
+            menu->current = ci_next_undeleted(Context->mailbox, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3299,7 +3299,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(Context, menu->current);
+            menu->current = ci_next_undeleted(Context->mailbox, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3350,7 +3350,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           mutt_thread_set_flag(cur.e, MUTT_TAG, false, subthread);
         if (C_Resolve)
         {
-          menu->current = ci_next_undeleted(Context, menu->current);
+          menu->current = ci_next_undeleted(Context->mailbox, menu->current);
           if (menu->current == -1)
             menu->current = menu->oldcurrent;
         }
