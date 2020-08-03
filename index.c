@@ -306,19 +306,19 @@ static int ci_next_undeleted(struct Mailbox *m, int msgno)
 
 /**
  * ci_previous_undeleted - Find the previous undeleted email
- * @param ctx   Context
+ * @param m     Mailbox
  * @param msgno Message number to start at
  * @retval >=0 Message number of next undeleted email
  * @retval  -1 No more undeleted messages
  */
-static int ci_previous_undeleted(struct Context *ctx, int msgno)
+static int ci_previous_undeleted(struct Mailbox *m, int msgno)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
 
   for (int i = msgno - 1; i >= 0; i--)
   {
-    struct Email *e = mutt_get_virt_email(ctx->mailbox, i);
+    struct Email *e = mutt_get_virt_email(m, i);
     if (!e)
       continue;
     if (!e->deleted)
@@ -2062,7 +2062,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             if (cur.e->deleted)
               newidx = ci_next_undeleted(Context->mailbox, menu->current);
             if (newidx < 0)
-              newidx = ci_previous_undeleted(Context, menu->current);
+              newidx = ci_previous_undeleted(Context->mailbox, menu->current);
             if (newidx >= 0)
               e = mutt_get_virt_email(Context->mailbox, newidx);
           }
@@ -2782,7 +2782,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           mutt_message(_("You are on the first message"));
           break;
         }
-        menu->current = ci_previous_undeleted(Context, menu->current);
+        menu->current = ci_previous_undeleted(Context->mailbox, menu->current);
         if (menu->current == -1)
         {
           menu->current = menu->oldcurrent;
