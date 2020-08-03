@@ -102,7 +102,7 @@ int    mutt_addrlist_to_intl     (struct AddressList *al, char **err);
 int    mutt_addrlist_to_local    (struct AddressList *al);
 bool   mutt_addrlist_uses_unicode(const struct AddressList *al);
 size_t mutt_addrlist_write       (const struct AddressList *al, char *buf, size_t buflen, bool display);
-void   mutt_addrlist_write_file  (const struct AddressList *addr, FILE *fp, int linelen, bool display);
+void   mutt_addrlist_write_file  (const struct AddressList *addr, FILE *fp, int start_col, bool display);
 size_t mutt_addrlist_write_list  (const struct AddressList *al, struct ListHead *list);
 
 #endif /* MUTT_EMAIL_ADDRESS_H */
