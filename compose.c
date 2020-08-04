@@ -1622,13 +1622,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         {
           update_idx(menu, actx, ap);
           menu->redraw |= REDRAW_INDEX;
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         }
         else
           FREE(&ap);
 
         menu->redraw |= REDRAW_STATUS;
-
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
       }
 
@@ -1861,6 +1860,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         }
 
         bool error = false;
+        bool added_attachment = false;
         if (numfiles > 1)
         {
           mutt_message(ngettext("Attaching selected file...",
@@ -1873,7 +1873,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           ap->unowned = true;
           ap->body = mutt_make_file_attach(att, NeoMutt->sub);
           if (ap->body)
+          {
+            added_attachment = true;
             update_idx(menu, actx, ap);
+          }
           else
           {
             error = true;
@@ -1888,7 +1891,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_clear_error();
 
         menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+        if (added_attachment)
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
       }
 
@@ -2001,6 +2005,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           break;
         }
 
+        bool added_attachment = false;
         for (int i = 0; i < Context->mailbox->msg_count; i++)
         {
           if (!Context->mailbox->emails[i])
@@ -2012,7 +2017,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           ap->body = mutt_make_message_attach(
               Context->mailbox, Context->mailbox->emails[i], true, NeoMutt->sub);
           if (ap->body)
+          {
+            added_attachment = true;
             update_idx(menu, actx, ap);
+          }
           else
           {
             mutt_error(_("Unable to attach"));
@@ -2030,7 +2038,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         /* Restore old $sort and $sort_aux */
         C_Sort = old_sort;
         C_SortAux = old_sort_aux;
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+        if (added_attachment)
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
       }
 
