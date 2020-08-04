@@ -41,6 +41,8 @@ void mutt_curses_set_attr(int attr)
 {
 #ifdef HAVE_BKGDSET
   bkgdset(attr | ' ');
+#else
+  attrset(attr);
 #endif
 }
 
