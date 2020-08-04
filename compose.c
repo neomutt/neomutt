@@ -2476,6 +2476,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         break;
 
       case OP_COMPOSE_PGP_MENU:
+      {
+        const SecurityFlags old_flags = e->security;
         if (!(WithCrypto & APPLICATION_PGP))
           break;
         if (!crypt_has_module_backend(APPLICATION_PGP))
@@ -2500,15 +2502,21 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         }
         e->security = crypt_pgp_send_menu(e);
         update_crypt_info(rd);
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-        redraw_env = true;
+        if (old_flags != e->security)
+        {
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          redraw_env = true;
+        }
         break;
+      }
 
       case OP_FORGET_PASSPHRASE:
         crypt_forget_passphrase();
         break;
 
       case OP_COMPOSE_SMIME_MENU:
+      {
+        const SecurityFlags old_flags = e->security;
         if (!(WithCrypto & APPLICATION_SMIME))
           break;
         if (!crypt_has_module_backend(APPLICATION_SMIME))
@@ -2534,9 +2542,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         }
         e->security = crypt_smime_send_menu(e);
         update_crypt_info(rd);
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-        redraw_env = true;
+        if (old_flags != e->security)
+        {
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          redraw_env = true;
+        }
         break;
+      }
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:
@@ -2549,6 +2561,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
 #ifdef USE_AUTOCRYPT
       case OP_COMPOSE_AUTOCRYPT_MENU:
+      {
+        const SecurityFlags old_flags = e->security;
         if (!C_Autocrypt)
           break;
 
@@ -2569,9 +2583,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         }
         autocrypt_compose_menu(e);
         update_crypt_info(rd);
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-        redraw_env = true;
+        if (old_flags != e->security)
+        {
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          redraw_env = true;
+        }
         break;
+      }
 #endif
     }
   }
