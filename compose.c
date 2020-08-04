@@ -2285,8 +2285,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
           if (CUR_ATTACH->body->stamp >= st.st_mtime)
             mutt_stamp_attachment(CUR_ATTACH->body);
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         }
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_NEW_MIME:
@@ -2360,8 +2360,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         {
           mutt_update_encoding(CUR_ATTACH->body, NeoMutt->sub);
           menu->redraw = REDRAW_FULL;
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         }
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 
       case OP_VIEW_ATTACH:
