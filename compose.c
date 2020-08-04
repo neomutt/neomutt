@@ -1539,10 +1539,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           buf[0] = '\0';
         if (mutt_get_field(Prompts[HDR_SUBJECT], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
-          mutt_str_replace(&e->env->subject, buf);
-          redraw_env = true;
+          if (!mutt_str_equal(e->env->subject, buf))
+          {
+            mutt_str_replace(&e->env->subject, buf);
+            redraw_env = true;
+            mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          }
         }
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_EDIT_REPLY_TO:
@@ -1557,12 +1560,15 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         mutt_buffer_copy(&fname, fcc);
         if (mutt_buffer_get_field(Prompts[HDR_FCC], &fname, MUTT_FILE | MUTT_CLEAR) == 0)
         {
-          mutt_buffer_copy(fcc, &fname);
-          mutt_buffer_pretty_mailbox(fcc);
-          fcc_set = true;
-          redraw_env = true;
+          if (!mutt_str_equal(fcc->data, fname.data))
+          {
+            mutt_buffer_copy(fcc, &fname);
+            mutt_buffer_pretty_mailbox(fcc);
+            fcc_set = true;
+            redraw_env = true;
+            mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          }
         }
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_EDIT_MESSAGE:
