@@ -922,13 +922,16 @@ static void draw_envelope(struct ComposeRedrawData *rd)
  * edit_address_list - Let the user edit the address list
  * @param[in]     field Field to edit, e.g. #HDR_FROM
  * @param[in,out] al    AddressList to edit
+ * @retval bool true if the address list was changed
  */
-static void edit_address_list(int field, struct AddressList *al)
+static bool edit_address_list(int field, struct AddressList *al)
 {
   char buf[8192] = { 0 }; /* needs to be large for alias expansion */
+  char old_list[8192] = { 0 };
 
   mutt_addrlist_to_local(al);
   mutt_addrlist_write(al, buf, sizeof(buf), false);
+  mutt_str_copy(old_list, buf, sizeof(buf));
   if (mutt_get_field(_(Prompts[field]), buf, sizeof(buf), MUTT_ALIAS) == 0)
   {
     mutt_addrlist_clear(al);
@@ -943,6 +946,8 @@ static void edit_address_list(int field, struct AddressList *al)
     mutt_refresh();
     FREE(&err);
   }
+
+  return !mutt_str_equal(buf, old_list);
 }
 
 /**
