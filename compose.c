@@ -2081,31 +2081,42 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         /* header names should not be translated */
         if (mutt_get_field("Description: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
-          mutt_str_replace(&CUR_ATTACH->body->description, buf);
-          menu->redraw |= REDRAW_CURRENT;
+          if (!mutt_str_equal(CUR_ATTACH->body->description, buf))
+          {
+            mutt_str_replace(&CUR_ATTACH->body->description, buf);
+            menu->redraw |= REDRAW_CURRENT;
+            mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          }
         }
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_UPDATE_ENCODING:
+      {
         CHECK_COUNT;
+        bool encoding_updated = false;
         if (menu->tagprefix)
         {
           struct Body *top = NULL;
           for (top = e->body; top; top = top->next)
           {
             if (top->tagged)
+            {
+              encoding_updated = true;
               mutt_update_encoding(top, NeoMutt->sub);
+            }
           }
           menu->redraw = REDRAW_FULL;
         }
         else
         {
           mutt_update_encoding(CUR_ATTACH->body, NeoMutt->sub);
+          encoding_updated = true;
           menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
         }
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+        if (encoding_updated)
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_TOGGLE_DISPOSITION:
         /* toggle the content-disposition between inline/attachment */
@@ -2117,14 +2128,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
       case OP_EDIT_TYPE:
         CHECK_COUNT;
         {
-          mutt_edit_content_type(NULL, CUR_ATTACH->body, NULL);
-
-          /* this may have been a change to text/something */
-          mutt_update_encoding(CUR_ATTACH->body, NeoMutt->sub);
-
-          menu->redraw |= REDRAW_CURRENT;
+          if (mutt_edit_content_type(NULL, CUR_ATTACH->body, NULL))
+          {
+            /* this may have been a change to text/something */
+            mutt_update_encoding(CUR_ATTACH->body, NeoMutt->sub);
+            menu->redraw |= REDRAW_CURRENT;
+            mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          }
         }
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_EDIT_LANGUAGE:
@@ -2134,13 +2145,16 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_str_copy(buf, CUR_ATTACH->body->language, sizeof(buf));
         if (mutt_get_field("Content-Language: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
-          CUR_ATTACH->body->language = mutt_str_dup(buf);
-          menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
+          if (!mutt_str_equal(CUR_ATTACH->body->language, buf))
+          {
+            CUR_ATTACH->body->language = mutt_str_dup(buf);
+            menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
+            mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          }
           mutt_clear_error();
         }
         else
           mutt_warning(_("Empty 'Content-Language'"));
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_EDIT_ENCODING:
@@ -2153,14 +2167,17 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           int enc = mutt_check_encoding(buf);
           if ((enc != ENC_OTHER) && (enc != ENC_UUENCODED))
           {
-            CUR_ATTACH->body->encoding = enc;
-            menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
-            mutt_clear_error();
+            if (enc != CUR_ATTACH->body->encoding)
+            {
+              CUR_ATTACH->body->encoding = enc;
+              menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
+              mutt_clear_error();
+              mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+            }
           }
           else
             mutt_error(_("Invalid encoding"));
         }
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_SEND_MESSAGE:
