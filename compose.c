@@ -1435,10 +1435,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
     switch (op)
     {
       case OP_COMPOSE_EDIT_FROM:
-        edit_address_list(HDR_FROM, &e->env->from);
-        update_crypt_info(rd);
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-        redraw_env = true;
+        if (edit_address_list(HDR_FROM, &e->env->from))
+        {
+          update_crypt_info(rd);
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          redraw_env = true;
+        }
         break;
 
       case OP_COMPOSE_EDIT_TO:
@@ -1447,10 +1449,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (news)
           break;
 #endif
-        edit_address_list(HDR_TO, &e->env->to);
-        update_crypt_info(rd);
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-        redraw_env = true;
+        if (edit_address_list(HDR_TO, &e->env->to))
+        {
+          update_crypt_info(rd);
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          redraw_env = true;
+        }
         break;
       }
 
@@ -1460,10 +1464,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (news)
           break;
 #endif
-        edit_address_list(HDR_BCC, &e->env->bcc);
-        update_crypt_info(rd);
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-        redraw_env = true;
+        if (edit_address_list(HDR_BCC, &e->env->bcc))
+        {
+          update_crypt_info(rd);
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          redraw_env = true;
+        }
         break;
       }
 
@@ -1473,10 +1479,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         if (news)
           break;
 #endif
-        edit_address_list(HDR_CC, &e->env->cc);
-        update_crypt_info(rd);
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-        redraw_env = true;
+        if (edit_address_list(HDR_CC, &e->env->cc))
+        {
+          update_crypt_info(rd);
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          redraw_env = true;
+        }
         break;
       }
 
@@ -1538,9 +1546,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         break;
 
       case OP_COMPOSE_EDIT_REPLY_TO:
-        edit_address_list(HDR_REPLYTO, &e->env->reply_to);
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-        redraw_env = true;
+        if (edit_address_list(HDR_REPLYTO, &e->env->reply_to))
+        {
+          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          redraw_env = true;
+        }
         break;
 
       case OP_COMPOSE_EDIT_FCC:
