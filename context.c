@@ -38,6 +38,7 @@
 #include "mx.h"
 #include "score.h"
 #include "sort.h"
+#include "imap/lib.h"
 #include "maildir/lib.h"
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
@@ -279,6 +280,10 @@ void ctx_update_tables(struct Context *ctx, bool committing)
       if (m->id_hash && m->emails[i]->env->message_id)
         mutt_hash_delete(m->id_hash, m->emails[i]->env->message_id, m->emails[i]);
       mutt_label_hash_remove(m, m->emails[i]);
+
+      if (m->type == MUTT_IMAP)
+        imap_notify_delete_email(m, m->emails[i]);
+
       email_free(&m->emails[i]);
     }
   }
