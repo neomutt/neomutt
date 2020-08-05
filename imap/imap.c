@@ -44,6 +44,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "msn.h"
 #include "auth.h"
 #include "commands.h"
 #include "hook.h"
@@ -633,15 +634,7 @@ void imap_notify_delete_email(struct Mailbox *m, struct Email *e)
   if (!mdata || !edata)
     return;
 
-  int msn = edata->msn;
-  if ((msn < 1) || (msn > mdata->max_msn))
-  {
-    mutt_debug(LL_DEBUG3, "MSN %d out of range (max %d)\n", msn, mdata->max_msn);
-    return;
-  }
-
-  mutt_debug(LL_DEBUG3, "Clearing msn_index: value = %p, email = %p\n", mdata->msn_index[msn - 1], e);
-  mdata->msn_index[msn - 1] = NULL;
+  imap_msn_invalidate(mdata->msn, edata->msn - 1);
   edata->msn = 0;
 }
 

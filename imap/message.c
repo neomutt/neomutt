@@ -30,7 +30,6 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -54,6 +53,7 @@
 #include "protos.h"
 #include "bcache/lib.h"
 #include "imap/lib.h"
+#include "msn.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -530,50 +530,11 @@ static bool query_abort_header_download(struct ImapAccountData *adata)
 }
 
 /**
- * alloc_msn_index - Create lookup table of MSN to Header
- * @param adata Imap Account data
- * @param msn_count Number of MSNs in use
- *
- * Mapping from Message Sequence Number to Header
- */
-static void alloc_msn_index(struct ImapAccountData *adata, size_t msn_count)
-{
-  struct ImapMboxData *mdata = adata->mailbox->mdata;
-  size_t new_size;
-
-  if (msn_count <= mdata->msn_index_size)
-    return;
-
-  /* This is a conservative check to protect against a malicious imap
-   * server.  Most likely size_t is bigger than an unsigned int, but
-   * if msn_count is this big, we have a serious problem. */
-  if (msn_count >= (UINT_MAX / sizeof(struct Email *)))
-  {
-    mutt_error(_("Out of memory"));
-    mutt_exit(1);
-  }
-
-  /* Add a little padding, like mx_allloc_memory() */
-  new_size = msn_count + 25;
-
-  if (!mdata->msn_index)
-    mdata->msn_index = mutt_mem_calloc(new_size, sizeof(struct Email *));
-  else
-  {
-    mutt_mem_realloc(&mdata->msn_index, sizeof(struct Email *) * new_size);
-    memset(mdata->msn_index + mdata->msn_index_size, 0,
-           sizeof(struct Email *) * (new_size - mdata->msn_index_size));
-  }
-
-  mdata->msn_index_size = new_size;
-}
-
-/**
  * imap_alloc_uid_hash - Create a Hash Table for the UIDs
  * @param adata Imap Account data
  * @param msn_count Number of MSNs in use
  *
- * This function is run after imap_alloc_msn_index, so we skip the
+ * This function is run after imap_imap_msn_reserve, so we skip the
  * malicious msn_count size check.
  */
 static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_count)
@@ -627,7 +588,7 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccount
 
   for (msn = msn_begin; msn <= (msn_end + 1); msn++)
   {
-    if (msn_count < max_headers_per_fetch && msn <= msn_end && !mdata->msn_index[msn - 1])
+    if (msn_count < max_headers_per_fetch && msn <= msn_end && !imap_msn_get(mdata->msn, msn - 1))
     {
       msn_count++;
 
@@ -786,7 +747,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
         continue;
       }
 
-      if (mdata->msn_index[h.edata->msn - 1])
+      if (imap_msn_get(mdata->msn, h.edata->msn - 1))
       {
         mutt_debug(LL_DEBUG2, "skipping hcache FETCH for duplicate message %d\n",
                    h.edata->msn);
@@ -797,8 +758,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
       m->emails[idx] = e;
       if (e)
       {
-        mdata->max_msn = MAX(mdata->max_msn, h.edata->msn);
-        mdata->msn_index[h.edata->msn - 1] = e;
+        imap_msn_set(mdata->msn, h.edata->msn - 1, e);
         mutt_hash_int_insert(mdata->uid_hash, h.edata->uid, e);
 
         e->index = idx;
@@ -885,14 +845,12 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
   {
     /* The seqset may contain more headers than the fetch request, so
      * we need to watch and reallocate the context and msn_index */
-    if (msn > mdata->msn_index_size)
-      alloc_msn_index(adata, msn);
+    imap_msn_reserve(&mdata->msn, msn);
 
     struct Email *e = imap_hcache_get(mdata, uid);
     if (e)
     {
-      mdata->max_msn = MAX(mdata->max_msn, msn);
-      mdata->msn_index[msn - 1] = e;
+      imap_msn_set(mdata->msn, msn - 1, e);
 
       if (m->msg_count >= m->email_max)
         mx_alloc_memory(m);
@@ -984,14 +942,14 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
     if (!isdigit((unsigned char) *fetch_buf) || (mutt_str_atoui(fetch_buf, &header_msn) < 0))
       continue;
 
-    if ((header_msn < 1) || (header_msn > msn_end) || !mdata->msn_index[header_msn - 1])
+    if ((header_msn < 1) || (header_msn > msn_end) || !imap_msn_get(mdata->msn, header_msn - 1))
     {
       mutt_debug(LL_DEBUG1, "skipping CONDSTORE flag update for unknown message number %u\n",
                  header_msn);
       continue;
     }
 
-    imap_hcache_put(mdata, mdata->msn_index[header_msn - 1]);
+    imap_hcache_put(mdata, imap_msn_get(mdata->msn, header_msn - 1));
   }
 
   /* The IMAP flag setting as part of cmd_parse_fetch() ends up
@@ -1172,7 +1130,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         }
 
         /* May receive FLAGS updates in a separate untagged response */
-        if (mdata->msn_index[h.edata->msn - 1])
+        if (imap_msn_get(mdata->msn, h.edata->msn - 1))
         {
           mutt_debug(LL_DEBUG2, "skipping FETCH response for duplicate message %d\n",
                      h.edata->msn);
@@ -1182,8 +1140,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         struct Email *e = email_new();
         m->emails[idx] = e;
 
-        mdata->max_msn = MAX(mdata->max_msn, h.edata->msn);
-        mdata->msn_index[h.edata->msn - 1] = e;
+        imap_msn_set(mdata->msn, h.edata->msn - 1, e);
         mutt_hash_int_insert(mdata->uid_hash, h.edata->uid, e);
 
         e->index = idx;
@@ -1239,7 +1196,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
       msn_end = mdata->new_mail_count;
       while (msn_end > m->email_max)
         mx_alloc_memory(m);
-      alloc_msn_index(adata, msn_end);
+      imap_msn_reserve(&mdata->msn, msn_end);
       mdata->reopen &= ~IMAP_NEWMAIL_PENDING;
       mdata->new_mail_count = 0;
     }
@@ -1310,7 +1267,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   /* make sure context has room to hold the mailbox */
   while (msn_end > m->email_max)
     mx_alloc_memory(m);
-  alloc_msn_index(adata, msn_end);
+  imap_msn_reserve(&mdata->msn, msn_end);
   imap_alloc_uid_hash(adata, msn_end);
 
   oldmsgcount = m->msg_count;
@@ -1393,7 +1350,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
     /* Look for the first empty MSN and start there */
     while (msn_begin <= msn_end)
     {
-      if (!mdata->msn_index[msn_begin - 1])
+      if (!imap_msn_get(mdata->msn, msn_begin - 1))
         break;
       msn_begin++;
     }
