@@ -137,6 +137,10 @@ static void reset_tilde(struct ConfigSet *cs)
 void mutt_exit(int code)
 {
   mutt_endwin();
+#ifdef HAVE_LIBUNWIND
+  if (code != 0)
+    show_backtrace();
+#endif
   exit(code);
 }
 
