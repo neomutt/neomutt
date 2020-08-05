@@ -1107,8 +1107,8 @@ static void index_custom_redraw(struct Menu *menu)
     menu_redraw_sidebar(menu);
 #endif
 
-  if (Context && Context->mailbox && Context->mailbox->emails &&
-      !(menu->current >= Context->mailbox->vcount))
+  struct Mailbox *m = Context ? Context->mailbox : NULL;
+  if (m && m->emails && !(menu->current >= m->vcount))
   {
     menu_check_recenter(menu);
 
@@ -1126,7 +1126,7 @@ static void index_custom_redraw(struct Menu *menu)
   if (menu->redraw & REDRAW_STATUS)
   {
     char buf[1024];
-    menu_status_line(buf, sizeof(buf), menu, NONULL(C_StatusFormat));
+    menu_status_line(buf, sizeof(buf), menu, m, NONULL(C_StatusFormat));
     mutt_window_move(menu->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
@@ -1134,9 +1134,9 @@ static void index_custom_redraw(struct Menu *menu)
     menu->redraw &= ~REDRAW_STATUS;
     if (C_TsEnabled && TsSupported)
     {
-      menu_status_line(buf, sizeof(buf), menu, NONULL(C_TsStatusFormat));
+      menu_status_line(buf, sizeof(buf), menu, m, NONULL(C_TsStatusFormat));
       mutt_ts_status(buf);
-      menu_status_line(buf, sizeof(buf), menu, NONULL(C_TsIconFormat));
+      menu_status_line(buf, sizeof(buf), menu, m, NONULL(C_TsIconFormat));
       mutt_ts_icon(buf);
     }
   }
@@ -1277,7 +1277,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
               if (C_NewMailCommand)
               {
                 char cmd[1024];
-                menu_status_line(cmd, sizeof(cmd), menu, NONULL(C_NewMailCommand));
+                menu_status_line(cmd, sizeof(cmd), menu, Context->mailbox,
+                                 NONULL(C_NewMailCommand));
                 if (mutt_system(cmd) != 0)
                   mutt_error(_("Error running \"%s\""), cmd);
               }
@@ -1312,14 +1313,15 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
     if (!attach_msg)
     {
+      struct Mailbox *m = Context ? Context->mailbox : NULL;
       /* check for new mail in the incoming folders */
       oldcount = newcount;
-      newcount = mutt_mailbox_check(Context ? Context->mailbox : NULL, 0);
+      newcount = mutt_mailbox_check(m, 0);
       if (newcount != oldcount)
         menu->redraw |= REDRAW_STATUS;
       if (do_mailbox_notify)
       {
-        if (mutt_mailbox_notify(Context ? Context->mailbox : NULL))
+        if (mutt_mailbox_notify(m))
         {
           menu->redraw |= REDRAW_STATUS;
           if (C_BeepNew)
@@ -1327,7 +1329,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           if (C_NewMailCommand)
           {
             char cmd[1024];
-            menu_status_line(cmd, sizeof(cmd), menu, NONULL(C_NewMailCommand));
+            menu_status_line(cmd, sizeof(cmd), menu, m, NONULL(C_NewMailCommand));
             if (mutt_system(cmd) != 0)
               mutt_error(_("Error running \"%s\""), cmd);
           }
