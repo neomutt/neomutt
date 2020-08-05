@@ -621,6 +621,32 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 }
 
 /**
+ * imap_notify_delete_email - Inform IMAP that an Email has been deleted
+ * @param m Mailbox
+ * @param e Email
+ */
+void imap_notify_delete_email(struct Mailbox *m, struct Email *e)
+{
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  struct ImapEmailData *edata = imap_edata_get(e);
+
+  if (!mdata || !edata)
+    return;
+
+  int msn = edata->msn;
+  if ((msn < 1) || (msn > mdata->max_msn))
+  {
+    mutt_debug(LL_DEBUG3, "MSN %d out of range (max %d)\n", msn, mdata->max_msn);
+    return;
+  }
+
+  mutt_debug(LL_DEBUG3, "Clearing msn_index: value = %p, email = %p\n",
+             mdata->msn_index[msn - 1], e);
+  mdata->msn_index[msn - 1] = NULL;
+  edata->msn = 0;
+}
+
+/**
  * imap_expunge_mailbox - Purge messages from the server
  * @param m Mailbox
  *
