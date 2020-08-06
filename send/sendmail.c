@@ -58,6 +58,8 @@
 
 SIG_ATOMIC_VOLATILE_T SigAlrm; ///< true after SIGALRM is received
 
+ARRAY_HEAD(SendmailArgs, const char *);
+
 /**
  * alarm_handler - Async notification of an alarm signal
  * @param sig Signal, (SIGALRM)
@@ -80,8 +82,8 @@ static void alarm_handler(int sig)
  * @retval  0 Success
  * @retval >0 Failure, return code from sendmail
  */
-static int send_msg(const char *path, const char **args, const char *msg,
-                    char **tempfile, int wait_time)
+static int send_msg(const char *path, struct SendmailArgs *args,
+                    const char *msg, char **tempfile, int wait_time)
 {
   sigset_t set;
   int st;
@@ -160,7 +162,7 @@ static int send_msg(const char *path, const char **args, const char *msg,
 
       /* execvpe is a glibc extension */
       /* execvpe (path, args, mutt_envlist_getlist()); */
-      execvp(path, (char **) args);
+      execvp(path, (char **) args->entries);
       _exit(S_ERR);
     }
     else if (pid == -1)
@@ -240,64 +242,33 @@ static int send_msg(const char *path, const char **args, const char *msg,
 
 /**
  * add_args_one - Add an Address to a dynamic array
- * @param[out] args    Array to add to
- * @param[out] argslen Number of entries in array
- * @param[out] argsmax Allocated size of the array
+ * @param[in, out] args    Array to add to
  * @param[in]  addr    Address to add
- * @retval ptr Updated array
  */
-static const char **add_args_one(const char **args, size_t *argslen,
-                                 size_t *argsmax, const struct Address *addr)
+static void add_args_one(struct SendmailArgs *args, const struct Address *addr)
 {
   /* weed out group mailboxes, since those are for display only */
   if (addr->mailbox && !addr->group)
   {
-    if (*argslen == *argsmax)
-      mutt_mem_realloc(&args, (*argsmax += 5) * sizeof(char *));
-    args[(*argslen)++] = addr->mailbox;
+    ARRAY_ADD(args, addr->mailbox);
   }
-  return args;
 }
 
 /**
  * add_args - Add a list of Addresses to a dynamic array
- * @param[out] args    Array to add to
- * @param[out] argslen Number of entries in array
- * @param[out] argsmax Allocated size of the array
+ * @param[in, out] args    Array to add to
  * @param[in]  al      Addresses to add
- * @retval ptr Updated array
  */
-static const char **add_args(const char **args, size_t *argslen,
-                             size_t *argsmax, struct AddressList *al)
+static void add_args(struct SendmailArgs *args, struct AddressList *al)
 {
   if (!al)
-    return args;
+    return;
 
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    args = add_args_one(args, argslen, argsmax, a);
+    add_args_one(args, a);
   }
-  return args;
-}
-
-/**
- * add_option - Add a string to a dynamic array
- * @param[out] args    Array to add to
- * @param[out] argslen Number of entries in array
- * @param[out] argsmax Allocated size of the array
- * @param[in]  s       string to add
- * @retval ptr Updated array
- *
- * @note The array may be realloc()'d
- */
-static const char **add_option(const char **args, size_t *argslen,
-                               size_t *argsmax, const char *s)
-{
-  if (*argslen == *argsmax)
-    mutt_mem_realloc(&args, (*argsmax += 5) * sizeof(char *));
-  args[(*argslen)++] = s;
-  return args;
 }
 
 /**
@@ -317,9 +288,8 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
                          const char *msg, bool eightbit, struct ConfigSubset *sub)
 {
   char *ps = NULL, *path = NULL, *s = NULL, *childout = NULL;
-  const char **args = NULL;
-  size_t argslen = 0, argsmax = 0;
-  char **extra_args = NULL;
+  struct SendmailArgs args = ARRAY_HEAD_INITIALIZER;
+  struct SendmailArgs extra_args = ARRAY_HEAD_INITIALIZER;
   int i;
 
 #ifdef USE_NNTP
@@ -357,14 +327,11 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
   i = 0;
   while ((ps = strtok(ps, " ")))
   {
-    if (argslen == argsmax)
-      mutt_mem_realloc(&args, sizeof(char *) * (argsmax += 5));
-
     if (i)
     {
       if (mutt_str_equal(ps, "--"))
         break;
-      args[argslen++] = ps;
+      ARRAY_ADD(&args, ps);
     }
     else
     {
@@ -374,7 +341,7 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
         ps++;
       else
         ps = path;
-      args[argslen++] = ps;
+      ARRAY_ADD(&args, ps);
     }
     ps = NULL;
     i++;
@@ -384,26 +351,20 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
   if (!OptNewsSend)
   {
 #endif
-    size_t extra_argslen = 0;
     /* If $sendmail contained a "--", we save the recipients to append to
      * args after other possible options added below. */
     if (ps)
     {
       ps = NULL;
-      size_t extra_argsmax = 0;
       while ((ps = strtok(ps, " ")))
       {
-        if (extra_argslen == extra_argsmax)
-          mutt_mem_realloc(&extra_args, sizeof(char *) * (extra_argsmax += 5));
-
-        extra_args[extra_argslen++] = ps;
-        ps = NULL;
+        ARRAY_ADD(&extra_args, ps);
       }
     }
 
     const bool c_use_8bitmime = cs_subset_bool(sub, "use_8bitmime");
     if (eightbit && c_use_8bitmime)
-      args = add_option(args, &argslen, &argsmax, "-B8BITMIME");
+      ARRAY_ADD(&args, "-B8BITMIME");
 
     const bool c_use_envelope_from = cs_subset_bool(sub, "use_envelope_from");
     if (c_use_envelope_from)
@@ -412,43 +373,41 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
           cs_subset_address(sub, "envelope_from_address");
       if (c_envelope_from_address)
       {
-        args = add_option(args, &argslen, &argsmax, "-f");
-        args = add_args_one(args, &argslen, &argsmax, c_envelope_from_address);
+        ARRAY_ADD(&args, "-f");
+        add_args_one(&args, c_envelope_from_address);
       }
       else if (!TAILQ_EMPTY(from) && !TAILQ_NEXT(TAILQ_FIRST(from), entries))
       {
-        args = add_option(args, &argslen, &argsmax, "-f");
-        args = add_args(args, &argslen, &argsmax, from);
+        ARRAY_ADD(&args, "-f");
+        add_args(&args, from);
       }
     }
 
     const char *c_dsn_notify = cs_subset_string(sub, "dsn_notify");
     if (c_dsn_notify)
     {
-      args = add_option(args, &argslen, &argsmax, "-N");
-      args = add_option(args, &argslen, &argsmax, c_dsn_notify);
+      ARRAY_ADD(&args, "-N");
+      ARRAY_ADD(&args, c_dsn_notify);
     }
 
     const char *c_dsn_return = cs_subset_string(sub, "dsn_return");
     if (c_dsn_return)
     {
-      args = add_option(args, &argslen, &argsmax, "-R");
-      args = add_option(args, &argslen, &argsmax, c_dsn_return);
+      ARRAY_ADD(&args, "-R");
+      ARRAY_ADD(&args, c_dsn_return);
     }
-    args = add_option(args, &argslen, &argsmax, "--");
-    for (i = 0; i < extra_argslen; i++)
-      args = add_option(args, &argslen, &argsmax, extra_args[i]);
-    args = add_args(args, &argslen, &argsmax, to);
-    args = add_args(args, &argslen, &argsmax, cc);
-    args = add_args(args, &argslen, &argsmax, bcc);
+    ARRAY_ADD(&args, "--");
+    const char **e = NULL;
+    ARRAY_FOREACH(e, &extra_args)
+    ARRAY_ADD(&args, *e);
+    add_args(&args, to);
+    add_args(&args, cc);
+    add_args(&args, bcc);
 #ifdef USE_NNTP
   }
 #endif
 
-  if (argslen == argsmax)
-    mutt_mem_realloc(&args, sizeof(char *) * (++argsmax));
-
-  args[argslen++] = NULL;
+  ARRAY_ADD(&args, NULL);
 
   /* Some user's $sendmail command uses gpg for password decryption,
    * and is set up to prompt using ncurses pinentry.  If we
@@ -458,7 +417,7 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
     mutt_need_hard_redraw();
 
   const short c_sendmail_wait = cs_subset_number(sub, "sendmail_wait");
-  i = send_msg(path, args, msg, OptNoCurses ? NULL : &childout, c_sendmail_wait);
+  i = send_msg(path, &args, msg, OptNoCurses ? NULL : &childout, c_sendmail_wait);
   if (i != (EX_OK & 0xff))
   {
     if (i != S_BKG)
@@ -483,8 +442,8 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
   FREE(&childout);
   FREE(&path);
   FREE(&s);
-  FREE(&args);
-  FREE(&extra_args);
+  ARRAY_FREE(&args);
+  ARRAY_FREE(&extra_args);
 
   if (i == (EX_OK & 0xff))
     i = 0;
