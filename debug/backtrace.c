@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "lib.h"
+#include "muttlib.h"
 
 /**
  * show_backtrace - Log the program's call stack
@@ -42,7 +43,8 @@ void show_backtrace(void)
   unw_word_t ip, sp;
   char buf[256];
 
-  printf("\nBacktrace\n");
+  printf("\n%s\n", mutt_make_version());
+  printf("Backtrace\n");
   mutt_debug(LL_DEBUG1, "\nBacktrace\n");
   unw_getcontext(&uc);
   unw_init_local(&cursor, &uc);
