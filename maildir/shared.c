@@ -48,6 +48,8 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
+#include "hcache/lib.h"
+#include "maildir/lib.h"
 #include "copy.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
@@ -55,8 +57,6 @@
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#include "hcache/lib.h"
-#include "maildir/lib.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif

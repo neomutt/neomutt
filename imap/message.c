@@ -45,6 +45,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "message.h"
+#include "bcache/lib.h"
+#include "imap/lib.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
@@ -52,8 +54,6 @@
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
-#include "bcache/lib.h"
-#include "imap/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

@@ -36,17 +36,17 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "lib.h"
+#include "compmbox/lib.h"
+#include "maildir/lib.h"
+#include "mbox/lib.h"
+#include "nntp/lib.h"
+#include "notmuch/lib.h"
 #include "context.h"
 #include "imap/private.h"
 #include "maildir/private.h"
 #include "mutt_globals.h"
 #include "notmuch/private.h"
 #include "pop/private.h"
-#include "compmbox/lib.h"
-#include "maildir/lib.h"
-#include "mbox/lib.h"
-#include "nntp/lib.h"
-#include "notmuch/lib.h"
 
 // #define GV_HIDE_CONTEXT
 #define GV_HIDE_CONTEXT_CONTENTS

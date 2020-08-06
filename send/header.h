@@ -23,9 +23,9 @@
 #ifndef MUTT_SEND_HEADER_H
 #define MUTT_SEND_HEADER_H
 
-#include "copy.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include "copy.h"
 
 struct Body;
 struct ConfigSubset;

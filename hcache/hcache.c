@@ -46,11 +46,11 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "lib.h"
+#include "compress/lib.h"
+#include "store/lib.h"
 #include "hcache/hcversion.h"
 #include "muttlib.h"
 #include "serialize.h"
-#include "compress/lib.h"
-#include "store/lib.h"
 
 #if !(defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) ||           \
       defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_ROCKSDB) ||     \

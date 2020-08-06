@@ -32,16 +32,16 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "context.h"
+#include "imap/lib.h"
+#include "maildir/lib.h"
+#include "ncrypt/lib.h"
+#include "pattern/lib.h"
 #include "mutt_globals.h"
 #include "mutt_header.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "score.h"
 #include "sort.h"
-#include "imap/lib.h"
-#include "maildir/lib.h"
-#include "ncrypt/lib.h"
-#include "pattern/lib.h"
 
 /**
  * ctx_free - Free a Context

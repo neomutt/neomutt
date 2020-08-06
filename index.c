@@ -45,6 +45,9 @@
 #include "mutt.h"
 #include "debug/lib.h"
 #include "index.h"
+#include "ncrypt/lib.h"
+#include "pattern/lib.h"
+#include "send/lib.h"
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
@@ -69,9 +72,6 @@
 #include "score.h"
 #include "sort.h"
 #include "status.h"
-#include "ncrypt/lib.h"
-#include "pattern/lib.h"
-#include "send/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
 #endif

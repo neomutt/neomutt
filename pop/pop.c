@@ -44,6 +44,8 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "bcache/lib.h"
+#include "ncrypt/lib.h"
 #include "context.h"
 #include "hook.h"
 #include "mutt_account.h"
@@ -54,8 +56,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "progress.h"
-#include "bcache/lib.h"
-#include "ncrypt/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

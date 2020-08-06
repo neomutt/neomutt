@@ -33,13 +33,13 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
+#include "ncrypt/lib.h"
 #include "keymap.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "opcodes.h"
 #include "protos.h"
 #include "smime.h"
-#include "ncrypt/lib.h"
 
 /// Help Bar for the Smime key selection dialog
 static const struct Mapping SmimeHelp[] = {

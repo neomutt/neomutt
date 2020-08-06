@@ -56,6 +56,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "crypt_gpgme.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "crypt.h"
 #include "handler.h"
 #include "hook.h"
@@ -64,8 +66,6 @@
 #include "muttlib.h"
 #include "options.h"
 #include "state.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif

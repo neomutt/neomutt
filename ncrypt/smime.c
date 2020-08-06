@@ -46,6 +46,8 @@
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "copy.h"
 #include "crypt.h"
 #include "cryptglue.h"
@@ -54,8 +56,6 @@
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "state.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 #include "smime.h"
 #endif

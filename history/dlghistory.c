@@ -33,12 +33,12 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "history/lib.h"
 #include "format_flags.h"
 #include "keymap.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "history/lib.h"
 
 /// Help Bar for the History Selection dialog
 static const struct Mapping HistoryHelp[] = {

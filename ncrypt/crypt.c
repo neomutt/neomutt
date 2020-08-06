@@ -47,6 +47,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "crypt.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "copy.h"
 #include "cryptglue.h"
 #include "handler.h"
@@ -55,8 +57,6 @@
 #include "muttlib.h"
 #include "options.h"
 #include "state.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif

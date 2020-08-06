@@ -43,6 +43,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "command_parse.h"
+#include "imap/lib.h"
 #include "context.h"
 #include "init.h"
 #include "keymap.h"
@@ -57,7 +58,6 @@
 #include "myvar.h"
 #include "options.h"
 #include "version.h"
-#include "imap/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
 #endif

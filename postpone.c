@@ -40,6 +40,9 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "ncrypt/lib.h"
+#include "pattern/lib.h"
+#include "send/lib.h"
 #include "context.h"
 #include "format_flags.h"
 #include "handler.h"
@@ -57,9 +60,6 @@
 #include "rfc3676.h"
 #include "sort.h"
 #include "state.h"
-#include "ncrypt/lib.h"
-#include "pattern/lib.h"
-#include "send/lib.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif

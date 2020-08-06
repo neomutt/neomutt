@@ -44,6 +44,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "bcache/lib.h"
+#include "pattern/lib.h"
 #include "auth.h"
 #include "commands.h"
 #include "hook.h"
@@ -56,8 +58,6 @@
 #include "mx.h"
 #include "progress.h"
 #include "sort.h"
-#include "bcache/lib.h"
-#include "pattern/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

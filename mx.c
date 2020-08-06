@@ -45,6 +45,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "mx.h"
+#include "maildir/lib.h"
+#include "mbox/lib.h"
 #include "context.h"
 #include "copy.h"
 #include "hook.h"
@@ -58,8 +60,6 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#include "maildir/lib.h"
-#include "mbox/lib.h"
 #ifdef USE_COMP_MBOX
 #include "compmbox/lib.h"
 #endif

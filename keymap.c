@@ -37,6 +37,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "keymap.h"
+#include "ncrypt/lib.h"
 #include "functions.h"
 #include "init.h"
 #include "mutt_commands.h"
@@ -44,7 +45,6 @@
 #include "mutt_logging.h"
 #include "opcodes.h"
 #include "options.h"
-#include "ncrypt/lib.h"
 #ifndef USE_SLANG_CURSES
 #include <strings.h>
 #endif

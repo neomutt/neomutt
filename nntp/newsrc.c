@@ -46,6 +46,7 @@
 #include "conn/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "bcache/lib.h"
 #include "format_flags.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
@@ -54,7 +55,6 @@
 #include "muttlib.h"
 #include "protos.h"
 #include "sort.h"
-#include "bcache/lib.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif

@@ -25,8 +25,8 @@
 #include "acutest.h"
 #include <stdbool.h>
 #include "mutt/lib.h"
-#include "test_common.h"
 #include "store/lib.h"
+#include "test_common.h"
 
 bool test_store_setup(char *buf, size_t buflen)
 {

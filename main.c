@@ -54,6 +54,8 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "debug/lib.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
@@ -73,8 +75,6 @@
 #include "options.h"
 #include "protos.h"
 #include "version.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

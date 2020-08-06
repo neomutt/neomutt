@@ -43,6 +43,8 @@
 #include "alias/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "copy.h"
 #include "handler.h"
 #include "maillist.h"
@@ -50,8 +52,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "state.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 
 /**
  * patmatch - Compare a string to a Pattern

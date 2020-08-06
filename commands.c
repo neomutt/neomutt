@@ -45,6 +45,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "commands.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "context.h"
 #include "copy.h"
 #include "format_flags.h"
@@ -66,8 +68,6 @@
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif

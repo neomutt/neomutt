@@ -40,12 +40,12 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "mutt_header.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "index.h"
 #include "muttlib.h"
 #include "options.h"
 #include "protos.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 
 /**
  * label_ref_dec - Decrease the refcount of a label

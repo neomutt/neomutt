@@ -48,6 +48,7 @@
 #include "mutt.h"
 #include "pgpkey.h"
 #include "lib.h"
+#include "send/lib.h"
 #include "crypt.h"
 #include "format_flags.h"
 #include "gnupgparse.h"
@@ -61,7 +62,6 @@
 #include "pager.h"
 #include "pgpinvoke.h"
 #include "protos.h"
-#include "send/lib.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"
 #include "pgplib.h"

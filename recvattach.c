@@ -41,6 +41,9 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "recvattach.h"
+#include "ncrypt/lib.h"
+#include "nntp/lib.h"
+#include "send/lib.h"
 #include "commands.h"
 #include "context.h"
 #include "format_flags.h"
@@ -60,9 +63,6 @@
 #include "recvcmd.h"
 #include "rfc3676.h"
 #include "state.h"
-#include "ncrypt/lib.h"
-#include "nntp/lib.h"
-#include "send/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

@@ -38,14 +38,14 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
-#include "mutt_globals.h"
-#include "muttlib.h"
-#include "mx.h"
-#include "options.h"
 #include "autocrypt/lib.h"
 #include "hcache/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
+#include "mutt_globals.h"
+#include "muttlib.h"
+#include "mx.h"
+#include "options.h"
 
 /**
  * autocrypt_dir_init - Initialise an Autocrypt directory

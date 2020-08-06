@@ -40,6 +40,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "send/lib.h"
 #include "format_flags.h"
 #include "keymap.h"
 #include "mutt_globals.h"
@@ -49,7 +50,6 @@
 #include "options.h"
 #include "protos.h"
 #include "recvattach.h"
-#include "send/lib.h"
 #ifdef MIXMASTER
 #include "remailer.h"
 #endif

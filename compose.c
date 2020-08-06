@@ -47,6 +47,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "compose.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
@@ -68,8 +70,6 @@
 #include "recvattach.h"
 #include "rfc3676.h"
 #include "sort.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

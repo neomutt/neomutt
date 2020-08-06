@@ -45,11 +45,11 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "maildir/lib.h"
 #include "monitor.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "maildir/lib.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif

@@ -49,14 +49,14 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
+#include "bcache/lib.h"
+#include "imap/lib.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "options.h"
-#include "bcache/lib.h"
-#include "imap/lib.h"
 #ifdef USE_HCACHE
-#include "message.h"
 #include "hcache/lib.h"
+#include "message.h"
 #endif
 
 /**

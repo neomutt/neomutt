@@ -24,9 +24,9 @@
 #ifndef MUTT_RECVATTACH_H
 #define MUTT_RECVATTACH_H
 
-#include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include "format_flags.h"
 

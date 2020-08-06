@@ -39,17 +39,17 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "copy.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "context.h"
 #include "handler.h"
 #include "hdrline.h"
 #include "mutt_globals.h"
 #include "mx.h"
 #include "state.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef USE_NOTMUCH
-#include "muttlib.h"
 #include "notmuch/lib.h"
+#include "muttlib.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>

@@ -59,14 +59,14 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "hcache/lib.h"
+#include "maildir/lib.h"
 #include "index.h"
 #include "mutt_globals.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
-#include "hcache/lib.h"
-#include "maildir/lib.h"
 
 struct stat;
 

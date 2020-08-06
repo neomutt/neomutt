@@ -24,9 +24,9 @@
 #ifndef MUTT_NCRYPT_CRYPT_GPGME_H
 #define MUTT_NCRYPT_CRYPT_GPGME_H
 
+#include <gpgme.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <gpgme.h>
 #include "lib.h"
 
 struct AddressList;

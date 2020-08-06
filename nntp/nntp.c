@@ -47,6 +47,9 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "bcache/lib.h"
+#include "hcache/lib.h"
+#include "ncrypt/lib.h"
 #include "hook.h"
 #include "init.h"
 #include "mutt_globals.h"
@@ -57,9 +60,6 @@
 #include "mx.h"
 #include "progress.h"
 #include "sort.h"
-#include "bcache/lib.h"
-#include "hcache/lib.h"
-#include "ncrypt/lib.h"
 #ifdef USE_HCACHE
 #include "protos.h"
 #endif

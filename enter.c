@@ -37,6 +37,8 @@
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "history/lib.h"
+#include "pattern/lib.h"
 #include "browser.h"
 #include "context.h"
 #include "enter_state.h"
@@ -48,8 +50,6 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "protos.h"
-#include "history/lib.h"
-#include "pattern/lib.h"
 
 /**
  * enum EnterRedrawFlags - redraw flags for mutt_enter_string_full()

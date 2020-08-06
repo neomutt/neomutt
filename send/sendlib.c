@@ -46,6 +46,7 @@
 #include "mutt.h"
 #include "sendlib.h"
 #include "lib.h"
+#include "ncrypt/lib.h"
 #include "context.h"
 #include "copy.h"
 #include "handler.h"
@@ -56,7 +57,6 @@
 #include "mx.h"
 #include "options.h"
 #include "state.h"
-#include "ncrypt/lib.h"
 
 /**
  * struct ContentState - Info about the body of an email

@@ -25,8 +25,8 @@
 #include "acutest.h"
 #include <limits.h>
 #include "mutt/lib.h"
-#include "common.h"
 #include "store/lib.h"
+#include "common.h"
 
 #define DB_NAME "rocksdb"
 

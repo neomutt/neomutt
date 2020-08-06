@@ -39,11 +39,11 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "imap/lib.h"
 #include "browser.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "imap/lib.h"
 
 /**
  * add_folder - Format and add an IMAP folder to the browser

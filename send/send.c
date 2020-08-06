@@ -46,6 +46,8 @@
 #include "mutt.h"
 #include "send.h"
 #include "lib.h"
+#include "ncrypt/lib.h"
+#include "pattern/lib.h"
 #include "compose.h"
 #include "context.h"
 #include "copy.h"
@@ -65,11 +67,9 @@
 #include "recvattach.h"
 #include "rfc3676.h"
 #include "sort.h"
-#include "ncrypt/lib.h"
-#include "pattern/lib.h"
 #ifdef USE_NNTP
-#include "mx.h"
 #include "nntp/lib.h"
+#include "mx.h"
 #endif
 #ifdef MIXMASTER
 #include "remailer.h"

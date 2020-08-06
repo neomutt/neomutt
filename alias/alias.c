@@ -46,11 +46,11 @@
 #include "mutt.h"
 #include "alias.h"
 #include "lib.h"
+#include "send/lib.h"
 #include "maillist.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "reverse.h"
-#include "send/lib.h"
 
 struct AliasList Aliases = TAILQ_HEAD_INITIALIZER(Aliases); ///< List of all the user's email aliases
 

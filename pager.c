@@ -45,6 +45,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "pager.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "commands.h"
 #include "context.h"
 #include "format_flags.h"
@@ -67,8 +69,6 @@
 #include "recvattach.h"
 #include "recvcmd.h"
 #include "status.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
 #endif

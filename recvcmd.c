@@ -40,6 +40,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "recvcmd.h"
+#include "send/lib.h"
 #include "context.h"
 #include "copy.h"
 #include "handler.h"
@@ -52,7 +53,6 @@
 #include "options.h"
 #include "protos.h"
 #include "state.h"
-#include "send/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
