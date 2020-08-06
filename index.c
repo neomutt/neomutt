@@ -3916,7 +3916,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         if (!cur.e)
           break;
-        mutt_view_attachments(cur.e);
+        dlg_select_attachment(cur.e);
         if (cur.e->attach_del)
           Context->mailbox->changed = true;
         menu->redraw = REDRAW_FULL;
@@ -3954,7 +3954,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
 #ifdef USE_AUTOCRYPT
       case OP_AUTOCRYPT_ACCT_MENU:
-        mutt_autocrypt_account_menu();
+        dlg_select_autocrypt_account();
         break;
 #endif
 

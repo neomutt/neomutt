@@ -460,13 +460,14 @@ static void pgp_make_entry(char *buf, size_t buflen, struct Menu *menu, int line
 }
 
 /**
- * pgp_select_key - Let the user select a key to use
+ * dlg_select_pgp_key - Let the user select a key to use
  * @param keys List of PGP keys
  * @param p    Address to match
  * @param s    String to match
  * @retval ptr Selected PGP key
  */
-struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address *p, const char *s)
+struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
+                                      struct Address *p, const char *s)
 {
   struct PgpUid **key_table = NULL;
   struct Menu *menu = NULL;

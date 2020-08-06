@@ -175,12 +175,12 @@ static int alias_data_observer(struct NotifyCallback *nc)
 }
 
 /**
- * alias_menu - Display a menu of Aliases
+ * dlg_select_alias - Display a menu of Aliases
  * @param buf    Buffer for expanded aliases
  * @param buflen Length of buffer
  * @param mdata  Menu data holding Aliases
  */
-static void alias_menu(char *buf, size_t buflen, struct AliasMenuData *mdata)
+static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mdata)
 {
   if (mdata->num_views == 0)
   {
@@ -342,7 +342,7 @@ int alias_complete(char *buf, size_t buflen)
   menu_data_sort(mdata);
 
   bestname[0] = '\0';
-  alias_menu(bestname, sizeof(bestname), mdata);
+  dlg_select_alias(bestname, sizeof(bestname), mdata);
   if (bestname[0] != '\0')
     mutt_str_copy(buf, bestname, buflen);
 

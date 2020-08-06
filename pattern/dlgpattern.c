@@ -253,12 +253,12 @@ static void free_pattern_menu(struct Menu **ptr)
 }
 
 /**
- * mutt_ask_pattern - Show menu to select a Pattern
+ * dlg_select_pattern - Show menu to select a Pattern
  * @param buf    Buffer for the selected Pattern
  * @param buflen Length of buffer
  * @retval bool true, if a selection was made
  */
-bool mutt_ask_pattern(char *buf, size_t buflen)
+bool dlg_select_pattern(char *buf, size_t buflen)
 {
   struct Menu *menu = create_pattern_menu();
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_PATTERN);

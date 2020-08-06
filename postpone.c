@@ -217,11 +217,11 @@ static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int lin
 }
 
 /**
- * select_msg - Create a Menu to select a postponed message
+ * dlg_select_postponed_email - Create a Menu to select a postponed message
  * @param ctx Context
  * @retval ptr Email
  */
-static struct Email *select_msg(struct Context *ctx)
+static struct Email *dlg_select_postponed_email(struct Context *ctx)
 {
   int r = -1;
   bool done = false;
@@ -366,7 +366,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     /* only one message, so just use that one. */
     e = ctx_post->mailbox->emails[0];
   }
-  else if (!(e = select_msg(ctx_post)))
+  else if (!(e = dlg_select_postponed_email(ctx_post)))
   {
     if (ctx_post == ctx)
       ctx_post = NULL;

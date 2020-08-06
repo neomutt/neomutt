@@ -565,7 +565,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   const bool allow_always =
       (C_CertificateFile && !savedcert &&
        !(certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID | CERTERR_REVOKED)));
-  int rc = dlg_verify_cert(title, &list, allow_always, false);
+  int rc = dlg_verify_certificate(title, &list, allow_always, false);
   if (rc == 3) // Accept always
   {
     bool saved = false;

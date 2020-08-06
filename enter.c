@@ -598,7 +598,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             size_t i = state->curpos;
             if (i && (state->wbuf[i - 1] == '~'))
             {
-              if (mutt_ask_pattern(buf, buflen))
+              if (dlg_select_pattern(buf, buflen))
                 replace_part(state, i - 1, buf);
               rc = 1;
               goto bye;

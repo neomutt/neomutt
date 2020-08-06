@@ -3474,7 +3474,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           break;
         }
         CHECK_MODE(IsEmail(extra));
-        mutt_view_attachments(extra->email);
+        dlg_select_attachment(extra->email);
         if (Context && extra->email->attach_del)
           Context->mailbox->changed = true;
         pager_menu->redraw = REDRAW_FULL;

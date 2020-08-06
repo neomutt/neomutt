@@ -1183,7 +1183,7 @@ static void crypt_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
 }
 
 /**
- * crypt_select_key - Get the user to select a key
+ * dlg_select_gpgme_key - Get the user to select a key
  * @param[in]  keys         List of keys to select from
  * @param[in]  p            Address to match
  * @param[in]  s            Real name to display
@@ -1193,8 +1193,9 @@ static void crypt_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
  *
  * Display a menu to select a key from the array of keys.
  */
-struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys, struct Address *p,
-                                      const char *s, unsigned int app, int *forced_valid)
+struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
+                                          struct Address *p, const char *s,
+                                          unsigned int app, int *forced_valid)
 {
   int keymax;
   int i;

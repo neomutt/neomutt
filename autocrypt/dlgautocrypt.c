@@ -255,9 +255,9 @@ static void toggle_prefer_encrypt(struct AccountEntry *entry)
 }
 
 /**
- * mutt_autocrypt_account_menu - Display the Autocrypt account Menu
+ * dlg_select_autocrypt_account - Display the Autocrypt account Menu
  */
-void mutt_autocrypt_account_menu(void)
+void dlg_select_autocrypt_account(void)
 {
   if (!C_Autocrypt)
     return;

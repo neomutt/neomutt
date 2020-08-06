@@ -1538,10 +1538,10 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 }
 
 /**
- * mutt_view_attachments - Show the attachments in a Menu
+ * dlg_select_attachment - Show the attachments in a Menu
  * @param e Email
  */
-void mutt_view_attachments(struct Email *e)
+void dlg_select_attachment(struct Email *e)
 {
   int op = OP_NULL;
 

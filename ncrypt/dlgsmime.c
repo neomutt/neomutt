@@ -148,12 +148,12 @@ static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
 }
 
 /**
- * smime_select_key - Get the user to select a key
+ * dlg_select_smime_key - Get the user to select a key
  * @param keys  List of keys to select from
  * @param query String to match
  * @retval ptr Key selected by user
  */
-struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
+struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, char *query)
 {
   struct SmimeKey **table = NULL;
   int table_size = 0;

@@ -2495,7 +2495,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:
-        mix_make_chain(rd->win_envelope, &e->chain, rd->win_envelope->state.cols);
+        dlg_select_mixmaster_chain(rd->win_envelope, &e->chain,
+                                   rd->win_envelope->state.cols);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         redraw_env = true;
         break;
