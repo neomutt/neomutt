@@ -24,6 +24,17 @@
  * @page functions Definitions of user functions
  *
  * Definitions of user functions
+ *
+ * This file contains the structures needed to parse "bind" commands, as well
+ * as the default bindings for each menu.
+ *
+ * Notes:
+ *
+ * - If you need to bind a control char, use the octal value because the `\cX`
+ *   construct does not work at this level.
+ *
+ * - The magic "map:" comments define how the map will be called in the manual.
+ *   Lines starting with "**" will be included in the manual.
  */
 
 #include "config.h"
@@ -34,19 +45,6 @@
 #include "keymap.h"
 #include "opcodes.h"
 #endif
-
-/*
- * This file contains the structures needed to parse "bind" commands, as
- * well as the default bindings for each menu.
- *
- * Notes:
- *
- * - If you need to bind a control char, use the octal value because the \cX
- * construct does not work at this level.
- *
- * - The magic "map:" comments define how the map will be called in the
- * manual. Lines starting with "**" will be included in the manual.
- */
 
 // clang-format off
 /**

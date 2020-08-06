@@ -1599,7 +1599,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
         m->append = true;
         mutt_save_message_ctx(e, true, false, false, m);
         m->append = save_append;
-        /* TODO: why the check for h->env?  Is this possible? */
+        /* TODO: why the check for e->env?  Is this possible? */
         if (e->env)
           e->env->changed = 0;
       }
