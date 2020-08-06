@@ -47,6 +47,8 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
     {
       if ((IS_SPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
           ((ch == '#') && !(flags & MUTT_TOKEN_COMMENT)) ||
+          ((ch == '+') && (flags & MUTT_TOKEN_PLUS)) ||
+          ((ch == '-') && (flags & MUTT_TOKEN_MINUS)) ||
           ((ch == '=') && (flags & MUTT_TOKEN_EQUAL)) ||
           ((ch == '?') && (flags & MUTT_TOKEN_QUESTION)) ||
           ((ch == ';') && !(flags & MUTT_TOKEN_SEMICOLON)) ||
@@ -122,7 +124,6 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
     {
       FILE *fp = NULL;
       pid_t pid;
-      int line = 0;
 
       pc = tok->dptr;
       do
@@ -168,7 +169,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
 
       /* read line */
       struct Buffer expn = mutt_buffer_make(0);
-      expn.data = mutt_file_read_line(NULL, &expn.dsize, fp, &line, 0);
+      expn.data = mutt_file_read_line(NULL, &expn.dsize, fp, NULL, 0);
       mutt_file_fclose(&fp);
       filter_wait(pid);
 
@@ -222,7 +223,8 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       else
       {
         for (pc = tok->dptr; isalnum((unsigned char) *pc) || (pc[0] == '_'); pc++)
-          ;
+          ; // do nothing
+
         var = mutt_strn_dup(tok->dptr, pc - tok->dptr);
         tok->dptr = pc;
       }
@@ -230,7 +232,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       {
         struct Buffer result;
         mutt_buffer_init(&result);
-        int rc = cs_str_string_get(NeoMutt->sub->cs, var, &result);
+        int rc = cs_subset_str_string_get(NeoMutt->sub, var, &result);
 
         if (CSR_RESULT(rc) == CSR_SUCCESS)
         {
