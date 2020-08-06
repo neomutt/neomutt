@@ -313,9 +313,9 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
  */
 static void make_entry(char *buf, size_t buflen, struct Menu *menu, int i)
 {
-  if (menu->dialog)
+  if (!ARRAY_EMPTY(&menu->dialog))
   {
-    mutt_str_copy(buf, NONULL(menu->dialog[i]), buflen);
+    mutt_str_copy(buf, NONULL(*ARRAY_GET(&menu->dialog, i)), buflen);
     menu->current = -1; /* hide menubar */
   }
   else
@@ -436,7 +436,7 @@ void menu_redraw_motion(struct Menu *menu)
 {
   char buf[1024];
 
-  if (menu->dialog)
+  if (!ARRAY_EMPTY(&menu->dialog))
   {
     menu->redraw &= ~REDRAW_MOTION;
     return;
@@ -522,7 +522,7 @@ void menu_redraw_current(struct Menu *menu)
  */
 static void menu_redraw_prompt(struct Menu *menu)
 {
-  if (!menu || !menu->dialog)
+  if (!menu || ARRAY_EMPTY(&menu->dialog))
     return;
 
   if (OptMsgErr)
@@ -701,7 +701,7 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
 
       menu->redraw = REDRAW_INDEX;
     }
-    else if ((menu->current != (neg ? 0 : menu->max - 1)) && !menu->dialog)
+    else if ((menu->current != (neg ? 0 : menu->max - 1)) && ARRAY_EMPTY(&menu->dialog))
     {
       menu->current += jumplen;
       menu->redraw = REDRAW_MOTION;
@@ -969,13 +969,12 @@ void mutt_menu_free(struct Menu **ptr)
     return;
 
   struct Menu *m = *ptr;
-  if (m->dialog)
+  char **line = NULL;
+  ARRAY_FOREACH(line, &m->dialog)
   {
-    for (int i = 0; i < m->max; i++)
-      FREE(&m->dialog[i]);
-
-    FREE(&m->dialog);
+    FREE(line);
   }
+  ARRAY_FREE(&m->dialog);
 
   FREE(ptr);
 }
@@ -987,12 +986,8 @@ void mutt_menu_free(struct Menu **ptr)
  */
 void mutt_menu_add_dialog_row(struct Menu *menu, const char *row)
 {
-  if (menu->dsize <= menu->max)
-  {
-    menu->dsize += 10;
-    mutt_mem_realloc(&menu->dialog, menu->dsize * sizeof(char *));
-  }
-  menu->dialog[menu->max++] = mutt_str_dup(row);
+  ARRAY_SET(&menu->dialog, menu->max, mutt_str_dup(row));
+  menu->max++;
 }
 
 /**
@@ -1288,7 +1283,7 @@ int menu_redraw(struct Menu *menu)
     return OP_REDRAW;
   }
 
-  if (!menu->dialog)
+  if (ARRAY_EMPTY(&menu->dialog))
     menu_check_recenter(menu);
 
   if (menu->redraw & REDRAW_STATUS)
@@ -1300,7 +1295,7 @@ int menu_redraw(struct Menu *menu)
   else if (menu->redraw == REDRAW_CURRENT)
     menu_redraw_current(menu);
 
-  if (menu->dialog)
+  if (!ARRAY_EMPTY(&menu->dialog))
     menu_redraw_prompt(menu);
 
   return OP_NULL;
@@ -1359,7 +1354,7 @@ int mutt_menu_loop(struct Menu *menu)
     mutt_refresh();
 
     /* try to catch dialog keys before ops */
-    if (menu->dialog && (menu_dialog_dokey(menu, &i) == 0))
+    if (!ARRAY_EMPTY(&menu->dialog) && (menu_dialog_dokey(menu, &i) == 0))
       return i;
 
     i = km_dokey(menu->type);
@@ -1408,11 +1403,11 @@ int mutt_menu_loop(struct Menu *menu)
       continue;
     }
 
-    if (!menu->dialog)
+    if (ARRAY_EMPTY(&menu->dialog))
       mutt_clear_error();
 
     /* Convert menubar movement to scrolling */
-    if (menu->dialog)
+    if (!ARRAY_EMPTY(&menu->dialog))
       i = menu_dialog_translate_op(i);
 
     switch (i)
@@ -1471,7 +1466,7 @@ int mutt_menu_loop(struct Menu *menu)
       case OP_SEARCH_OPPOSITE:
         if (menu->custom_search)
           return i;
-        else if (menu->search && !menu->dialog) /* Searching dialogs won't work */
+        else if (menu->search && ARRAY_EMPTY(&menu->dialog)) /* Searching dialogs won't work */
         {
           menu->oldcurrent = menu->current;
           menu->current = search(menu, i);
@@ -1485,7 +1480,7 @@ int mutt_menu_loop(struct Menu *menu)
         break;
 
       case OP_JUMP:
-        if (menu->dialog)
+        if (!ARRAY_EMPTY(&menu->dialog))
           mutt_error(_("Jumping is not implemented for dialogs"));
         else
           menu_jump(menu);
@@ -1498,7 +1493,7 @@ int mutt_menu_loop(struct Menu *menu)
         break;
 
       case OP_TAG:
-        if (menu->tag && !menu->dialog)
+        if (menu->tag && ARRAY_EMPTY(&menu->dialog))
         {
           if (menu->tagprefix && !C_AutoTag)
           {
