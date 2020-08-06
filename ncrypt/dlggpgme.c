@@ -828,7 +828,6 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
  */
 static void verify_key(struct CryptKeyInfo *key)
 {
-  char cmd[1024];
   const char *s = NULL;
   gpgme_ctx_t listctx = NULL;
   gpgme_error_t err;
@@ -880,8 +879,9 @@ leave:
   gpgme_release(listctx);
   mutt_file_fclose(&fp);
   mutt_clear_error();
-  snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"), crypt_keyid(key));
-  mutt_do_pager(cmd, mutt_b2s(&tempfile), MUTT_PAGER_NO_FLAGS, NULL);
+  char title[1024];
+  snprintf(title, sizeof(title), _("Key ID: 0x%s"), crypt_keyid(key));
+  mutt_do_pager(title, mutt_b2s(&tempfile), MUTT_PAGER_NO_FLAGS, NULL);
 
 cleanup:
   mutt_buffer_dealloc(&tempfile);

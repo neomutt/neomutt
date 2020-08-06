@@ -473,7 +473,6 @@ struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address *p, co
   int i;
   bool done = false;
   char buf[1024], tmpbuf[256];
-  char cmd[1024];
   struct PgpKeyInfo *kp = NULL;
   struct PgpUid *a = NULL;
   struct Buffer *tempfile = NULL;
@@ -596,9 +595,10 @@ struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address *p, co
         mutt_file_fclose(&fp_tmp);
         mutt_file_fclose(&fp_null);
         mutt_clear_error();
-        snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"),
+        char title[1024];
+        snprintf(title, sizeof(title), _("Key ID: 0x%s"),
                  pgp_keyid(pgp_principal_key(key_table[menu->current]->parent)));
-        mutt_do_pager(cmd, mutt_b2s(tempfile), MUTT_PAGER_NO_FLAGS, NULL);
+        mutt_do_pager(title, mutt_b2s(tempfile), MUTT_PAGER_NO_FLAGS, NULL);
         mutt_buffer_pool_release(&tempfile);
         menu->redraw = REDRAW_FULL;
         break;
