@@ -35,71 +35,20 @@
 
 struct Email;
 
+/**
+ * struct MSN - A cache to map IMAP MSNs to Emails
+ */
 struct MSN
 {
-  struct Email **cache;
-  size_t         size;
-  size_t         capacity;
+  struct Email **cache;      ///< Email cache as a linear array indexed by MSN
+  size_t         highest;    ///< Highest occupied slot number
+  size_t         capacity;   ///< Number of allocated slots
 };
 
-size_t imap_msn_count(const struct MSN *msn)
-{
-  return msn ? msn->size : 0;
-}
-
-struct Email *imap_msn_get(const struct MSN *msn, size_t idx)
-{
-  if (!msn || idx > msn->size)
-    return NULL;
-
-  return msn->cache[idx];
-}
-
-void imap_msn_set(struct MSN *msn, size_t idx, struct Email *e)
-{
-  if (!msn || idx > msn->capacity)
-    return;
-  msn->cache[idx] = e;
-  msn->size = MAX(msn->size, idx + 1);
-}
-
-size_t imap_msn_shrink(struct MSN *msn, size_t num)
-{
-  if (!msn || num == 0)
-    return 0;
-
-  size_t shrinked = 0;
-  for (; msn->size && num; msn->size--, num--, shrinked++)
-  {
-    imap_msn_invalidate(msn, msn->size - 1);
-  }
-
-  return shrinked;
-}
-
-void imap_msn_invalidate(struct MSN *msn, size_t num)
-{
-  if (!msn || num > msn->size)
-    return;
-
-  msn->cache[num] = NULL;
-}
-
-void imap_msn_free(struct MSN **msn)
-{
-  if (!msn)
-    return;
-
-  FREE(&(*msn)->cache);
-  FREE(msn);
-}
-
 /**
- * imap_msn_reserve - Create lookup table of MSN to Header
- * @param mdata Imap Mailbox data
- * @param num Number of MSNs in use
- *
- * Mapping from Message Sequence Number to Header
+ * imap_msn_reserve - Create / reallocate the cache
+ * @param msn MSN structure
+ * @param num Number of MSNs to make room for
  */
 void imap_msn_reserve(struct MSN **msnp, size_t num)
 {
@@ -136,3 +85,88 @@ void imap_msn_reserve(struct MSN **msnp, size_t num)
 
   msn->capacity = num;
 }
+
+/**
+ * imap_msn_free - Free the cache
+ * @param msn MSN structure
+ */
+void imap_msn_free(struct MSN **msn)
+{
+  if (!msn)
+    return;
+
+  FREE(&(*msn)->cache);
+  FREE(msn);
+}
+
+/**
+ * imap_msn_highest - Return the highest MSN in use
+ * @param msn MSN structure
+ * @retval num The highest MSN in use
+ */
+size_t imap_msn_highest(const struct MSN *msn)
+{
+  return msn ? msn->highest : 0;
+}
+
+/**
+ * imap_msn_get - Return the Email associated with an msn
+ * @param msn MSN structure
+ * @param idx Index to retrieve
+ * @retval ptr Pointer to Email or NULL
+ */
+struct Email *imap_msn_get(const struct MSN *msn, size_t idx)
+{
+  if (!msn || idx > msn->highest)
+    return NULL;
+
+  return msn->cache[idx];
+}
+
+/**
+ * imap_msn_set - Cache an Email into a given position
+ * @param msn MSN structure
+ * @param idx Index in the cache
+ * @param e   Email to cache
+ */
+void imap_msn_set(struct MSN *msn, size_t idx, struct Email *e)
+{
+  if (!msn || idx > msn->capacity)
+    return;
+  msn->cache[idx] = e;
+  msn->highest = MAX(msn->highest, idx + 1);
+}
+
+/**
+ * imap_msn_shrink - Remove a number of entries from the end of the cache
+ * @param msn MSN structure
+ * @param num Number of entries to remove
+ * @retval num Number of entries actually removed
+ */
+size_t imap_msn_shrink(struct MSN *msn, size_t num)
+{
+  if (!msn || num == 0)
+    return 0;
+
+  size_t shrinked = 0;
+  for (; msn->highest && num; msn->highest--, num--, shrinked++)
+  {
+    imap_msn_remove(msn, msn->highest - 1);
+  }
+
+  return shrinked;
+}
+
+/**
+ * imap_msn_remove - Remove an entry from the cache
+ * @param msn MSN structure
+ * @param idx Index to invalidate
+ */
+void imap_msn_remove(struct MSN *msn, size_t idx)
+{
+  if (!msn || idx > msn->highest)
+    return;
+
+  msn->cache[idx] = NULL;
+}
+

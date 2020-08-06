@@ -371,7 +371,7 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *buf, struct ImapMboxData
   int first = 1, state = 0;
   unsigned int cur_uid = 0, last_uid = 0;
   unsigned int range_begin = 0, range_end = 0;
-  const size_t max_msn = imap_msn_count(mdata->msn);
+  const size_t max_msn = imap_msn_highest(mdata->msn);
 
   for (unsigned int msn = 1; msn <= max_msn + 1; msn++)
   {

@@ -634,7 +634,7 @@ void imap_notify_delete_email(struct Mailbox *m, struct Email *e)
   if (!mdata || !edata)
     return;
 
-  imap_msn_invalidate(mdata->msn, edata->msn - 1);
+  imap_msn_remove(mdata->msn, edata->msn - 1);
   edata->msn = 0;
 }
 

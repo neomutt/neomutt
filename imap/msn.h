@@ -29,12 +29,12 @@
 struct MSN;
 struct Email;
 
-void          imap_msn_reserve   (struct MSN **msn, size_t num);
-void          imap_msn_free      (struct MSN **msn);
-size_t        imap_msn_count     (const struct MSN *msn);
-struct Email *imap_msn_get       (const struct MSN *msn, size_t idx);
-void          imap_msn_set       (struct MSN *msn, size_t idx, struct Email *e);
-size_t        imap_msn_shrink    (struct MSN *msn, size_t num);
-void          imap_msn_invalidate(struct MSN *msn, size_t num);
+void          imap_msn_reserve(struct MSN **msn, size_t num);
+void          imap_msn_free   (struct MSN **msn);
+size_t        imap_msn_highest(const struct MSN *msn);
+struct Email *imap_msn_get    (const struct MSN *msn, size_t idx);
+void          imap_msn_set    (struct MSN *msn, size_t idx, struct Email *e);
+size_t        imap_msn_shrink (struct MSN *msn, size_t num);
+void          imap_msn_remove (struct MSN *msn, size_t idx);
 
 #endif /* !MUTT_IMAP_MSN_H */

@@ -261,7 +261,7 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
 
   struct ImapMboxData *mdata = adata->mailbox->mdata;
 
-  if ((mutt_str_atoui(s, &exp_msn) < 0) || (exp_msn < 1) || (exp_msn > imap_msn_count(mdata->msn)))
+  if ((mutt_str_atoui(s, &exp_msn) < 0) || (exp_msn < 1) || (exp_msn > imap_msn_highest(mdata->msn)))
     return;
 
   e = imap_msn_get(mdata->msn, exp_msn - 1);
@@ -275,7 +275,7 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
   }
 
   /* decrement seqno of those above. */
-  const size_t max_msn = imap_msn_count(mdata->msn);
+  const size_t max_msn = imap_msn_highest(mdata->msn);
   for (unsigned int cur = exp_msn; cur < max_msn; cur++)
   {
     e = imap_msn_get(mdata->msn, cur);
@@ -344,7 +344,7 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
     e->index = INT_MAX;
     imap_edata_get(e)->msn = 0;
 
-    if ((exp_msn < 1) || (exp_msn > imap_msn_count(mdata->msn)))
+    if ((exp_msn < 1) || (exp_msn > imap_msn_highest(mdata->msn)))
     {
       mutt_debug(LL_DEBUG1, "VANISHED: msn for UID %u is incorrect\n", uid);
       continue;
@@ -355,12 +355,12 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
       continue;
     }
 
-    imap_msn_invalidate(mdata->msn, exp_msn - 1);
+    imap_msn_remove(mdata->msn, exp_msn - 1);
 
     if (!earlier)
     {
       /* decrement seqno of those above. */
-      const size_t max_msn = imap_msn_count(mdata->msn);
+      const size_t max_msn = imap_msn_highest(mdata->msn);
       for (unsigned int cur = exp_msn; cur < max_msn; cur++)
       {
         e = imap_msn_get(mdata->msn, cur);
@@ -408,7 +408,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
     return;
   }
 
-  if ((msn < 1) || (msn > imap_msn_count(mdata->msn)))
+  if ((msn < 1) || (msn > imap_msn_highest(mdata->msn)))
   {
     mutt_debug(LL_DEBUG3, "Skipping FETCH response - MSN %u out of range\n", msn);
     return;
@@ -959,7 +959,7 @@ static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
   struct ImapMboxData *mdata = adata->mailbox->mdata;
 
   /* new mail arrived */
-  if (count < imap_msn_count(mdata->msn))
+  if (count < imap_msn_highest(mdata->msn))
   {
     /* Notes 6.0.3 has a tendency to report fewer messages exist than
      * it should. */
@@ -967,7 +967,7 @@ static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
   }
   /* at least the InterChange server sends EXISTS messages freely,
    * even when there is no new mail */
-  else if (count == imap_msn_count(mdata->msn))
+  else if (count == imap_msn_highest(mdata->msn))
     mutt_debug(LL_DEBUG3, "superfluous EXISTS message\n");
   else
   {
@@ -1346,7 +1346,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
     // Then add new emails to it
     if (mdata->reopen & IMAP_NEWMAIL_PENDING)
     {
-      const size_t max_msn = imap_msn_count(mdata->msn);
+      const size_t max_msn = imap_msn_highest(mdata->msn);
       if (mdata->new_mail_count > max_msn)
       {
         if (!(mdata->reopen & IMAP_EXPUNGE_PENDING))
