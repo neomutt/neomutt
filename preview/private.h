@@ -2,6 +2,7 @@
 
 struct NotifyCallback;
 struct MuttWindow;
+struct Mailbox;
 
 /* observers.c */
 
@@ -21,9 +22,13 @@ void preview_draw(struct MuttWindow* win);
 
 struct PreviewWindowData
 {
+  struct Mailbox *mailbox;
   struct Email *current_email;
 };
 
 struct PreviewWindowData    *preview_wdata_new(void);
 struct PreviewWindowData    *preview_wdata_get(struct MuttWindow *win);
 void                        preview_wdata_free(struct MuttWindow *win, void **ptr);
+
+/*  functions.c */
+void compute_mail_preview(struct PreviewWindowData *data);

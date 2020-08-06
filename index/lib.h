@@ -47,6 +47,7 @@ struct MuttWindow;
 struct IndexEvent
 {
   struct Email *current_email;
+  struct Mailbox *mailbox;
 };
 
 enum NotifyIndex

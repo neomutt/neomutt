@@ -652,7 +652,7 @@ int mutt_file_sanitize_regex(struct Buffer *dest, const char *src)
 
 /**
  * mutt_file_read_line - Read a line from a file
- * @param[out] line     Buffer allocated on the head (optional)
+ * @param[out] line     Buffer allocated on the heap (optional)
  * @param[in]  size     Length of buffer
  * @param[in]  fp       File to read
  * @param[out] line_num Current line number (optional)
@@ -942,7 +942,7 @@ FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
   if (fd == -1)
     return NULL;
 
-  FILE *fp = fdopen(fd, "w+");
+  FILE *fp = fdopen(fd, "rw+");
 
   if ((unlink(name) != 0) && (errno != ENOENT))
   {
