@@ -291,8 +291,8 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     char buf[1024];
     struct HdrFormatInfo hfi;
 
-    hfi.ctx = Context;
     hfi.mailbox = m;
+    hfi.msg_in_pager = Context ? Context->msg_in_pager : -1;
     hfi.pager_progress = ExtPagerProgress;
     hfi.email = e;
     mutt_make_string_info(buf, sizeof(buf), win_index->state.cols,

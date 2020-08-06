@@ -56,6 +56,7 @@
 #include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "mutt_parse.h"
+#include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "opcodes.h"
@@ -264,8 +265,8 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
             C_MessageFormat && aptr->body->email)
         {
           char s[128];
-          mutt_make_string_flags(s, sizeof(s), cols, C_MessageFormat, NULL,
-                                 NULL, aptr->body->email,
+          mutt_make_string_flags(s, sizeof(s), cols, C_MessageFormat, NULL, -1,
+                                 aptr->body->email,
                                  MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_ARROWCURSOR);
           if (*s)
           {

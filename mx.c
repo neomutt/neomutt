@@ -305,8 +305,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   if (!m)
     return NULL;
 
-  struct Context *ctx = ctx_new();
-  ctx->mailbox = m;
+  struct Context *ctx = ctx_new(m);
 
   struct EventContext ev_ctx = { ctx };
   notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_OPEN, &ev_ctx);
@@ -330,7 +329,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     }
   }
 
-  ctx->msg_not_read_yet = -1;
+  ctx->msg_in_pager = -1;
   ctx->collapsed = false;
 
   m->verbose = !(flags & MUTT_QUIET);
@@ -417,7 +416,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     if (rc == -2)
     {
       mutt_error(_("Reading from %s interrupted..."), mailbox_path(m));
-      mutt_sort_headers(ctx, true);
+      mutt_sort_headers(ctx->mailbox, ctx->threads, true, &ctx->vsize);
     }
   }
   else

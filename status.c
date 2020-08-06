@@ -63,6 +63,12 @@ static char *get_sort_str(char *buf, size_t buflen, enum SortType method)
   return buf;
 }
 
+struct MenuStatusLineData
+{
+  struct Menu *menu;
+  struct Mailbox *m;
+};
+
 /**
  * status_format_str - Create the status bar string - Implements ::format_t
  *
@@ -98,36 +104,39 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 {
   char fmt[128], tmp[128];
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
-  struct Menu *menu = (struct Menu *) data;
+  struct Menu *menu = ((struct MenuStatusLineData *) data)->menu;
+  struct Mailbox *m = ((struct MenuStatusLineData *) data)->m;
 
   *buf = '\0';
   switch (op)
   {
     case 'b':
+    {
+      const int num = mutt_mailbox_check(m, 0);
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt,
-                 mutt_mailbox_check(Context ? Context->mailbox : NULL, 0));
+        snprintf(buf, buflen, fmt, num);
       }
-      else if (mutt_mailbox_check(Context ? Context->mailbox : NULL, 0) == 0)
+      else if (num == 0)
         optional = false;
       break;
+    }
 
     case 'd':
+    {
+      const int num = m ? m->msg_deleted : 0;
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt,
-                 (Context && Context->mailbox) ? Context->mailbox->msg_deleted : 0);
+        snprintf(buf, buflen, fmt, num);
       }
-      else if (!Context || !Context->mailbox || (Context->mailbox->msg_deleted == 0))
+      else if (num == 0)
         optional = false;
       break;
+    }
 
     case 'D':
-    {
-      struct Mailbox *m = Context ? Context->mailbox : NULL;
       // If there's a descriptive name, use it. Otherwise, fall-through
       if (m && m->name)
       {
@@ -136,12 +145,8 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, tmp);
         break;
       }
-    }
     /* fallthrough */
     case 'f':
-    {
-      struct Mailbox *m = Context ? Context->mailbox : NULL;
-
 #ifdef USE_COMP_MBOX
       if (m && m->compress_info && (m->realpath[0] != '\0'))
       {
@@ -165,17 +170,18 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, tmp);
       break;
-    }
     case 'F':
+    {
+      const int num = m ? m->msg_flagged : 0;
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt,
-                 (Context && Context->mailbox) ? Context->mailbox->msg_flagged : 0);
+        snprintf(buf, buflen, fmt, num);
       }
-      else if (!Context || !Context->mailbox || (Context->mailbox->msg_flagged == 0))
+      else if (num == 0)
         optional = false;
       break;
+    }
 
     case 'h':
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
@@ -183,16 +189,18 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       break;
 
     case 'l':
+    {
+      const off_t num = m ? m->size : 0;
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        mutt_str_pretty_size(tmp, sizeof(tmp),
-                             (Context && Context->mailbox) ? Context->mailbox->size : 0);
+        mutt_str_pretty_size(tmp, sizeof(tmp), num);
         snprintf(buf, buflen, fmt, tmp);
       }
-      else if (!Context || !Context->mailbox || !Context->mailbox->size)
+      else if (num == 0)
         optional = false;
       break;
+    }
 
     case 'L':
       if (!optional)
@@ -201,60 +209,62 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         mutt_str_pretty_size(tmp, sizeof(tmp), Context ? Context->vsize : 0);
         snprintf(buf, buflen, fmt, tmp);
       }
-      else if (!Context || !Context->pattern)
+      else if (!ctx_has_limit(Context))
         optional = false;
       break;
 
     case 'm':
+    {
+      const int num = m ? m->msg_count : 0;
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt,
-                 (Context && Context->mailbox) ? Context->mailbox->msg_count : 0);
+        snprintf(buf, buflen, fmt, num);
       }
-      else if (!Context || !Context->mailbox || (Context->mailbox->msg_count == 0))
+      else if (num == 0)
         optional = false;
       break;
+    }
 
     case 'M':
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt,
-                 (Context && Context->mailbox) ? Context->mailbox->vcount : 0);
+        snprintf(buf, buflen, fmt, m ? m->vcount : 0);
       }
-      else if (!Context || !Context->pattern)
+      else if (!ctx_has_limit(Context))
         optional = false;
       break;
 
     case 'n':
+    {
+      const int num = m ? m->msg_new : 0;
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt,
-                 (Context && Context->mailbox) ? Context->mailbox->msg_new : 0);
+        snprintf(buf, buflen, fmt, num);
       }
-      else if (!Context || !Context->mailbox || (Context->mailbox->msg_new == 0))
+      else if (num)
         optional = false;
       break;
+    }
 
     case 'o':
+    {
+      const int num = m ? (m->msg_unread - m->msg_new) : 0;
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt,
-                 (Context && Context->mailbox) ?
-                     (Context->mailbox->msg_unread - Context->mailbox->msg_new) :
-                     0);
+        snprintf(buf, buflen, fmt, num);
       }
-      else if (!Context || !Context->mailbox ||
-               ((Context->mailbox->msg_unread - Context->mailbox->msg_new) == 0))
+      else if (num == 0)
         optional = false;
       break;
+    }
 
     case 'p':
     {
-      int count = mutt_num_postponed(Context ? Context->mailbox : NULL, false);
+      const int count = mutt_num_postponed(m, false);
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -293,17 +303,16 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     {
       size_t i = 0;
 
-      if (Context && Context->mailbox)
+      if (m)
       {
-        i = OptAttachMsg ?
-                3 :
-                ((Context->mailbox->readonly || Context->mailbox->dontwrite) ?
-                     2 :
-                     (Context->mailbox->changed ||
-                      /* deleted doesn't necessarily mean changed in IMAP */
-                      (Context->mailbox->type != MUTT_IMAP && Context->mailbox->msg_deleted)) ?
-                     1 :
-                     0);
+        i = OptAttachMsg ? 3 :
+                           ((m->readonly || m->dontwrite) ?
+                                2 :
+                                (m->changed ||
+                                 /* deleted doesn't necessarily mean changed in IMAP */
+                                 (m->type != MUTT_IMAP && m->msg_deleted)) ?
+                                1 :
+                                0);
       }
 
       if (!C_StatusChars || !C_StatusChars->len)
@@ -317,10 +326,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
     case 'R':
     {
-      int read = (Context && Context->mailbox) ?
-                     (Context->mailbox->msg_count - Context->mailbox->msg_unread) :
-                     0;
-
+      const int read = m ? (m->msg_count - m->msg_unread) : 0;
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -342,24 +348,25 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       break;
 
     case 't':
+    {
+      const int num = m ? m->msg_tagged : 0;
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt,
-                 (Context && Context->mailbox) ? Context->mailbox->msg_tagged : 0);
+        snprintf(buf, buflen, fmt, num);
       }
-      else if (!Context || !Context->mailbox || (Context->mailbox->msg_tagged == 0))
+      else if (num == 0)
         optional = false;
       break;
+    }
 
     case 'u':
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt,
-                 (Context && Context->mailbox) ? Context->mailbox->msg_unread : 0);
+        snprintf(buf, buflen, fmt, m ? m->msg_unread : 0);
       }
-      else if (!Context || !Context->mailbox || (Context->mailbox->msg_unread == 0))
+      else if (!m || (m->msg_unread == 0))
         optional = false;
       break;
 
@@ -371,9 +378,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, (Context && Context->pattern) ? Context->pattern : "");
+        snprintf(buf, buflen, fmt, ctx_has_limit(Context) ? Context->pattern : "");
       }
-      else if (!Context || !Context->pattern)
+      else if (!ctx_has_limit(Context))
         optional = false;
       break;
 
@@ -405,10 +412,13 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
  * @param[out] buf      Buffer in which to save string
  * @param[in]  buflen   Buffer length
  * @param[in]  menu     Current menu
+ * @param[in]  m        Current Mailbox
  * @param[in]  p        Format string
  */
-void menu_status_line(char *buf, size_t buflen, struct Menu *menu, const char *p)
+void menu_status_line(char *buf, size_t buflen, struct Menu *menu,
+                      struct Mailbox *m, const char *p)
 {
-  mutt_expando_format(buf, buflen, 0, menu ? menu->win_ibar->state.cols : buflen,
-                      p, status_format_str, (intptr_t) menu, MUTT_FORMAT_NO_FLAGS);
+  struct MenuStatusLineData data = { .menu = menu, .m = m };
+  mutt_expando_format(buf, buflen, 0, menu ? menu->win_ibar->state.cols : buflen, p,
+                      status_format_str, (intptr_t) &data, MUTT_FORMAT_NO_FLAGS);
 }
