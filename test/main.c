@@ -66,6 +66,9 @@
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_write)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_write_list)                             \
                                                                                \
+  /* array */                                                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_array_api)                                       \
+                                                                               \
   /* attach */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_attach)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_body)                                   \

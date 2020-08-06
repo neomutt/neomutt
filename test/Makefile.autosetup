@@ -32,6 +32,8 @@ ADDRESS_OBJS	= test/address/mutt_addr_cat.o \
 		  test/address/mutt_addrlist_write.o \
 		  test/address/mutt_addrlist_write_list.o
 
+ARRAY_OBJS	= test/array/mutt_array_api.o
+
 ATTACH_OBJS	= test/attach/mutt_actx_add_attach.o \
 		  test/attach/mutt_actx_add_body.o \
 		  test/attach/mutt_actx_add_fp.o \
@@ -555,6 +557,7 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/attach \
 TEST_OBJS	= test/main.o test/common.o \
 		  $(ACCOUNT_OBJS) \
 		  $(ADDRESS_OBJS) \
+		  $(ARRAY_OBJS) \
 		  $(ATTACH_OBJS) \
 		  $(BASE64_OBJS) \
 		  $(BODY_OBJS) \

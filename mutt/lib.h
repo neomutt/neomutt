@@ -27,6 +27,7 @@
  *
  * | File             | Description        |
  * | :--------------- | :----------------- |
+ * | mutt/array.h     | @subpage array     |
  * | mutt/base64.c    | @subpage base64    |
  * | mutt/buffer.c    | @subpage buffer    |
  * | mutt/charset.c   | @subpage charset   |
@@ -61,6 +62,7 @@
 #define MUTT_MUTT_LIB_H
 
 // IWYU pragma: begin_exports
+#include "array.h"
 #include "base64.h"
 #include "buffer.h"
 #include "charset.h"
