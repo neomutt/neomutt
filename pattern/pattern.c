@@ -209,7 +209,7 @@ bool mutt_limit_current_thread(struct Email *e)
 
     if (top_of_thread(e) == me)
     {
-      struct Body *body = e->content;
+      struct Body *body = e->body;
 
       e->vnum = m->vcount;
       e->limited = true;
@@ -298,7 +298,7 @@ int mutt_pattern_func(int op, char *prompt)
         e->limited = true;
         m->v2r[m->vcount] = i;
         m->vcount++;
-        struct Body *b = e->content;
+        struct Body *b = e->body;
         Context->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
     }

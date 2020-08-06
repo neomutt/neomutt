@@ -677,8 +677,8 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   e_new->offset = e->offset;
   /* enable header weeding for resent messages */
   e_new->env = mutt_rfc822_read_header(fp, e_new, true, resend);
-  e_new->content->length = e->content->length;
-  mutt_parse_part(fp, e_new->content);
+  e_new->body->length = e->body->length;
+  mutt_parse_part(fp, e_new->body);
 
   /* If resending a message, don't keep message_id or mail_followup_to.
    * Otherwise, we are resuming a postponed message, and want to keep those
@@ -692,20 +692,20 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   /* decrypt pgp/mime encoded messages */
 
   if (((WithCrypto & APPLICATION_PGP) != 0) &&
-      (sec_type = mutt_is_multipart_encrypted(e_new->content)))
+      (sec_type = mutt_is_multipart_encrypted(e_new->body)))
   {
     e_new->security |= sec_type;
     if (!crypt_valid_passphrase(sec_type))
       goto bail;
 
     mutt_message(_("Decrypting message..."));
-    if ((crypt_pgp_decrypt_mime(fp, &fp_body, e_new->content, &b) == -1) || !b)
+    if ((crypt_pgp_decrypt_mime(fp, &fp_body, e_new->body, &b) == -1) || !b)
     {
       goto bail;
     }
 
-    mutt_body_free(&e_new->content);
-    e_new->content = b;
+    mutt_body_free(&e_new->body);
+    e_new->body = b;
 
     if (b->mime_headers)
     {
@@ -718,11 +718,11 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
 
   /* remove a potential multipart/signed layer - useful when
    * resending messages */
-  if ((WithCrypto != 0) && mutt_is_multipart_signed(e_new->content))
+  if ((WithCrypto != 0) && mutt_is_multipart_signed(e_new->body))
   {
     e_new->security |= SEC_SIGN;
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        mutt_istr_equal(mutt_param_get(&e_new->content->parameter, "protocol"),
+        mutt_istr_equal(mutt_param_get(&e_new->body->parameter, "protocol"),
                         "application/pgp-signature"))
     {
       e_new->security |= APPLICATION_PGP;
@@ -731,14 +731,14 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
       e_new->security |= APPLICATION_SMIME;
 
     /* destroy the signature */
-    mutt_body_free(&e_new->content->parts->next);
-    e_new->content = mutt_remove_multipart(e_new->content);
+    mutt_body_free(&e_new->body->parts->next);
+    e_new->body = mutt_remove_multipart(e_new->body);
 
-    if (e_new->content->mime_headers)
+    if (e_new->body->mime_headers)
     {
       mutt_env_free(&protected_headers);
-      protected_headers = e_new->content->mime_headers;
-      e_new->content->mime_headers = NULL;
+      protected_headers = e_new->body->mime_headers;
+      e_new->body->mime_headers = NULL;
     }
   }
 
@@ -748,15 +748,15 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
    * XXX - we don't handle multipart/alternative in any
    * smart way when sending messages.  However, one may
    * consider this a feature.  */
-  if (e_new->content->type == TYPE_MULTIPART)
-    e_new->content = mutt_remove_multipart(e_new->content);
+  if (e_new->body->type == TYPE_MULTIPART)
+    e_new->body = mutt_remove_multipart(e_new->body);
 
   s.fp_in = fp_body;
 
   struct Buffer *file = mutt_buffer_pool_get();
 
   /* create temporary files for all attachments */
-  for (b = e_new->content; b; b = b->next)
+  for (b = e_new->body; b; b = b->next)
   {
     /* what follows is roughly a receive-mode variant of
      * mutt_get_tmp_attachment () from muttlib.c */
@@ -814,7 +814,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
         goto bail;
       }
 
-      if ((b == e_new->content) && !protected_headers)
+      if ((b == e_new->body) && !protected_headers)
       {
         protected_headers = b->mime_headers;
         b->mime_headers = NULL;
@@ -859,7 +859,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
 
     mutt_body_free(&b->parts);
     if (b->email)
-      b->email->content = NULL; /* avoid dangling pointer */
+      b->email->body = NULL; /* avoid dangling pointer */
   }
 
   if (C_CryptProtectedHeadersRead && protected_headers && protected_headers->subject &&
@@ -872,7 +872,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   /* Fix encryption flags. */
 
   /* No inline if multipart. */
-  if ((WithCrypto != 0) && (e_new->security & SEC_INLINE) && e_new->content->next)
+  if ((WithCrypto != 0) && (e_new->security & SEC_INLINE) && e_new->body->next)
     e_new->security &= ~SEC_INLINE;
 
   /* Do we even support multiple mechanisms? */
@@ -903,7 +903,7 @@ bail:
   if (rc == -1)
   {
     mutt_env_free(&e_new->env);
-    mutt_body_free(&e_new->content);
+    mutt_body_free(&e_new->body);
   }
 
   return rc;

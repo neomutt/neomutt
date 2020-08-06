@@ -103,7 +103,7 @@ static int compare_size(const void *a, const void *b)
 {
   struct Email const *const *pa = (struct Email const *const *) a;
   struct Email const *const *pb = (struct Email const *const *) b;
-  int result = (*pa)->content->length - (*pb)->content->length;
+  int result = (*pa)->body->length - (*pb)->body->length;
   result = perform_auxsort(result, a, b);
   return SORT_CODE(result);
 }

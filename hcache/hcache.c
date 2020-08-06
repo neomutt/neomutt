@@ -128,7 +128,7 @@ static void *dump(struct HeaderCache *hc, const struct Email *e, int *off, uint3
   *off += sizeof(struct Email);
 
   d = serial_dump_envelope(e_dump.env, d, off, convert);
-  d = serial_dump_body(e_dump.content, d, off, convert);
+  d = serial_dump_body(e_dump.body, d, off, convert);
 
   return d;
 }
@@ -164,8 +164,8 @@ static struct Email *restore(const unsigned char *d)
   e->env = mutt_env_new();
   serial_restore_envelope(e->env, d, &off, convert);
 
-  e->content = mutt_body_new();
-  serial_restore_body(e->content, d, &off, convert);
+  e->body = mutt_body_new();
+  serial_restore_body(e->body, d, &off, convert);
 
   return e;
 }

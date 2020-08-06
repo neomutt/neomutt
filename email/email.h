@@ -88,7 +88,7 @@ struct Email
   int vnum;                    ///< Virtual message number
   int score;                   ///< Message score
   struct Envelope *env;        ///< Envelope information
-  struct Body *content;        ///< List of MIME parts
+  struct Body *body;        ///< List of MIME parts
   char *path;                  ///< Path of Email (for local Mailboxes)
 
   char *tree;                  ///< Character string to print thread tree

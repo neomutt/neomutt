@@ -410,8 +410,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
                ((e->env->changed & MUTT_ENV_CHANGED_SUBJECT) ? CH_UPDATE_SUBJECT : 0);
   }
 
-  if (mutt_copy_hdr(fp_in, fp_out, e->offset, e->content->offset, chflags,
-                    prefix, wraplen) == -1)
+  if (mutt_copy_hdr(fp_in, fp_out, e->offset, e->body->offset, chflags, prefix, wraplen) == -1)
     return -1;
 
   if (chflags & CH_TXTPLAIN)
@@ -471,8 +470,8 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
 
   if (chflags & CH_UPDATE_LEN && ((chflags & CH_NOLEN) == 0))
   {
-    fprintf(fp_out, "Content-Length: " OFF_T_FMT "\n", e->content->length);
-    if ((e->lines != 0) || (e->content->length == 0))
+    fprintf(fp_out, "Content-Length: " OFF_T_FMT "\n", e->body->length);
+    if ((e->lines != 0) || (e->body->length == 0))
       fprintf(fp_out, "Lines: %d\n", e->lines);
   }
 
@@ -612,7 +611,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
 int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
                          CopyMessageFlags cmflags, CopyHeaderFlags chflags, int wraplen)
 {
-  struct Body *body = e->content;
+  struct Body *body = e->body;
   char prefix[128];
   LOFF_T new_offset = -1;
   int rc = 0;
@@ -746,17 +745,17 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     FILE *fp = NULL;
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (cmflags & MUTT_CM_DECODE_PGP) &&
-        (e->security & APPLICATION_PGP) && (e->content->type == TYPE_MULTIPART))
+        (e->security & APPLICATION_PGP) && (e->body->type == TYPE_MULTIPART))
     {
-      if (crypt_pgp_decrypt_mime(fp_in, &fp, e->content, &cur))
+      if (crypt_pgp_decrypt_mime(fp_in, &fp, e->body, &cur))
         return -1;
       fputs("MIME-Version: 1.0\n", fp_out);
     }
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (cmflags & MUTT_CM_DECODE_SMIME) &&
-        (e->security & APPLICATION_SMIME) && (e->content->type == TYPE_APPLICATION))
+        (e->security & APPLICATION_SMIME) && (e->body->type == TYPE_APPLICATION))
     {
-      if (crypt_smime_decrypt_mime(fp_in, &fp, e->content, &cur))
+      if (crypt_smime_decrypt_mime(fp_in, &fp, e->body, &cur))
         return -1;
     }
 
@@ -834,7 +833,7 @@ int mutt_copy_message(FILE *fp_out, struct Mailbox *m, struct Email *e,
   struct Message *msg = mx_msg_open(m, e->msgno);
   if (!msg)
     return -1;
-  if (!e->content)
+  if (!e->body)
     return -1;
   int rc = mutt_copy_message_fp(fp_out, msg->fp, e, cmflags, chflags, wraplen);
   if ((rc == 0) && (ferror(fp_out) || feof(fp_out)))

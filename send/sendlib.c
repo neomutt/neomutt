@@ -809,7 +809,7 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   }
   a->length = sb.st_size;
   mutt_body_free(&a->parts);
-  a->email->content = NULL;
+  a->email->body = NULL;
 
 cleanup:
   if (fp_in && (fp_in != fp))
@@ -989,21 +989,21 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
   }
   else if ((WithCrypto != 0) && c_forward_decrypt && (e->security & SEC_ENCRYPT))
   {
-    if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(e->content))
+    if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(e->body))
     {
       chflags |= CH_MIME | CH_NONEWLINE;
       cmflags = MUTT_CM_DECODE_PGP;
       pgp &= ~PGP_ENCRYPT;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             ((mutt_is_application_pgp(e->content) & PGP_ENCRYPT) == PGP_ENCRYPT))
+             ((mutt_is_application_pgp(e->body) & PGP_ENCRYPT) == PGP_ENCRYPT))
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
       cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
       pgp &= ~PGP_ENCRYPT;
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-             ((mutt_is_application_smime(e->content) & SMIME_ENCRYPT) == SMIME_ENCRYPT))
+             ((mutt_is_application_smime(e->body) & SMIME_ENCRYPT) == SMIME_ENCRYPT))
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
       cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
@@ -1023,7 +1023,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
   if (WithCrypto)
     body->email->security = pgp;
   mutt_update_encoding(body, sub);
-  body->parts = body->email->content;
+  body->parts = body->email->body;
 
   mutt_file_fclose(&fp);
 
@@ -1333,7 +1333,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
     mutt_addrlist_write_file(to, fp_tmp, 11, false);
     mutt_copy_header(fp, e, fp_tmp, chflags, NULL, 0);
     fputc('\n', fp_tmp);
-    mutt_file_copy_bytes(fp, fp_tmp, e->content->length);
+    mutt_file_copy_bytes(fp, fp_tmp, e->body->length);
     if (mutt_file_fclose(&fp_tmp) != 0)
     {
       mutt_perror(mutt_b2s(tempfile));
@@ -1345,13 +1345,13 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
     if (c_smtp_url)
     {
       rc = mutt_smtp_send(env_from, to, NULL, NULL, mutt_b2s(tempfile),
-                          (e->content->encoding == ENC_8BIT), sub);
+                          (e->body->encoding == ENC_8BIT), sub);
     }
     else
 #endif
     {
       rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, mutt_b2s(tempfile),
-                                (e->content->encoding == ENC_8BIT), sub);
+                                (e->body->encoding == ENC_8BIT), sub);
     }
   }
 
@@ -1516,7 +1516,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
   MsgOpenFlags onm_flags;
 
   if (post)
-    set_noconv_flags(e->content, true);
+    set_noconv_flags(e->body, true);
 
 #ifdef RECORD_FOLDER_HOOK
   mutt_folder_hook(path, NULL);
@@ -1567,7 +1567,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
   /* post == 1 => postpone message.
    * post == 0 => Normal mode.  */
   mutt_rfc822_write_header(
-      msg->fp, e->env, e->content,
+      msg->fp, e->env, e->body,
       post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_FCC, false,
       c_crypt_protected_headers_read && mutt_should_hide_protected_subject(e), sub);
 
@@ -1661,7 +1661,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
 
   if (fp_tmp)
   {
-    mutt_write_mime_body(e->content, fp_tmp, sub);
+    mutt_write_mime_body(e->body, fp_tmp, sub);
 
     /* make sure the last line ends with a newline.  Emacs doesn't ensure this
      * will happen, and it can cause problems parsing the mailbox later.  */
@@ -1708,7 +1708,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
   else
   {
     fputc('\n', msg->fp); /* finish off the header */
-    rc = mutt_write_mime_body(e->content, msg->fp, sub);
+    rc = mutt_write_mime_body(e->body, msg->fp, sub);
   }
 
   if (mx_msg_commit(ctx_fcc->mailbox, msg) != 0)
@@ -1722,7 +1722,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     mutt_mailbox_cleanup(path, &st);
 
   if (post)
-    set_noconv_flags(e->content, false);
+    set_noconv_flags(e->body, false);
 
 done:
   if (m_fcc)

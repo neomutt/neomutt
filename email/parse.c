@@ -647,30 +647,30 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
           if (mutt_istr_equal(line + 1 + plen, "type"))
           {
             if (e)
-              mutt_parse_content_type(p, e->content);
+              mutt_parse_content_type(p, e->body);
             matched = true;
           }
           else if (mutt_istr_equal(line + 1 + plen, "language"))
           {
             if (e)
-              parse_content_language(p, e->content);
+              parse_content_language(p, e->body);
             matched = true;
           }
           else if (mutt_istr_equal(line + 1 + plen, "transfer-encoding"))
           {
             if (e)
-              e->content->encoding = mutt_check_encoding(p);
+              e->body->encoding = mutt_check_encoding(p);
             matched = true;
           }
           else if (mutt_istr_equal(line + 1 + plen, "length"))
           {
             if (e)
             {
-              int rc = mutt_str_atol(p, (long *) &e->content->length);
-              if ((rc < 0) || (e->content->length < 0))
-                e->content->length = -1;
-              if (e->content->length > CONTENT_TOO_BIG)
-                e->content->length = CONTENT_TOO_BIG;
+              int rc = mutt_str_atol(p, (long *) &e->body->length);
+              if ((rc < 0) || (e->body->length < 0))
+                e->body->length = -1;
+              if (e->body->length > CONTENT_TOO_BIG)
+                e->body->length = CONTENT_TOO_BIG;
             }
             matched = true;
           }
@@ -678,15 +678,15 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
           {
             if (e)
             {
-              mutt_str_replace(&e->content->description, p);
-              rfc2047_decode(&e->content->description);
+              mutt_str_replace(&e->body->description, p);
+              rfc2047_decode(&e->body->description);
             }
             matched = true;
           }
           else if (mutt_istr_equal(line + 1 + plen, "disposition"))
           {
             if (e)
-              parse_content_disposition(p, e->content);
+              parse_content_disposition(p, e->body);
             matched = true;
           }
         }
@@ -1122,18 +1122,18 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
 
   if (e)
   {
-    if (!e->content)
+    if (!e->body)
     {
-      e->content = mutt_body_new();
+      e->body = mutt_body_new();
 
       /* set the defaults from RFC1521 */
-      e->content->type = TYPE_TEXT;
-      e->content->subtype = mutt_str_dup("plain");
-      e->content->encoding = ENC_7BIT;
-      e->content->length = -1;
+      e->body->type = TYPE_TEXT;
+      e->body->subtype = mutt_str_dup("plain");
+      e->body->encoding = ENC_7BIT;
+      e->body->length = -1;
 
       /* RFC2183 says this is arbitrary */
-      e->content->disposition = DISP_INLINE;
+      e->body->disposition = DISP_INLINE;
     }
   }
 
@@ -1214,8 +1214,8 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
 
   if (e)
   {
-    e->content->hdr_offset = e->offset;
-    e->content->offset = ftello(fp);
+    e->body->hdr_offset = e->offset;
+    e->body->offset = ftello(fp);
 
     rfc2047_decode_envelope(env);
 
@@ -1565,7 +1565,7 @@ static struct Body *rfc822_parse_message(FILE *fp, struct Body *parent, int *cou
   parent->email = email_new();
   parent->email->offset = ftello(fp);
   parent->email->env = mutt_rfc822_read_header(fp, parent->email, false, false);
-  struct Body *msg = parent->email->content;
+  struct Body *msg = parent->email->body;
 
   /* ignore the length given in the content-length since it could be wrong
    * and we already have the info to calculate the correct length */

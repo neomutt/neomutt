@@ -324,7 +324,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
         if (body2)
         {
           body2->description = mutt_str_dup(p);
-          for (parts = e->content; parts->next; parts = parts->next)
+          for (parts = e->body; parts->next; parts = parts->next)
             ; // do nothing
 
           parts->next = body2;

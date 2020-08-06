@@ -582,7 +582,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
         ctx->mailbox->v2r[ctx->mailbox->vcount] = i;
         e->limited = true;
         ctx->mailbox->vcount++;
-        struct Body *b = e->content;
+        struct Body *b = e->body;
         ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
     }
@@ -2743,7 +2743,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         if (!cur.e)
           break;
-        mutt_edit_content_type(cur.e, cur.e->content, NULL);
+        mutt_edit_content_type(cur.e, cur.e->body, NULL);
         /* if we were in the pager, redisplay the message */
         if (in_pager)
         {

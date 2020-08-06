@@ -2793,7 +2793,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   /* fix content length */
   fseek(msg->fp, 0, SEEK_END);
-  e->content->length = ftell(msg->fp) - e->content->offset;
+  e->body->length = ftell(msg->fp) - e->body->offset;
 
   /* this is called in neomutt before the open which fetches the message,
    * which is probably wrong, but we just call it again here to handle
@@ -2805,7 +2805,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
    * full headers aren't parsed with overview, so the information wasn't
    * available then */
   if (WithCrypto)
-    e->security = crypt_query(e->content);
+    e->security = crypt_query(e->body);
 
   rewind(msg->fp);
   mutt_clear_error();

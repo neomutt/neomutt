@@ -270,9 +270,9 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
       if (loc < 0)
         return -1;
 
-      if ((e->content->length > 0) && (e->lines > 0))
+      if ((e->body->length > 0) && (e->lines > 0))
       {
-        tmploc = loc + e->content->length;
+        tmploc = loc + e->body->length;
 
         if ((tmploc > 0) && (tmploc < m->size))
         {
@@ -281,16 +281,16 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
           {
             if (fseeko(adata->fp, loc, SEEK_SET) != 0)
               mutt_debug(LL_DEBUG1, "#2 fseek() failed\n");
-            e->content->length = -1;
+            e->body->length = -1;
           }
         }
         else
-          e->content->length = -1;
+          e->body->length = -1;
       }
       else
-        e->content->length = -1;
+        e->body->length = -1;
 
-      if (e->content->length < 0)
+      if (e->body->length < 0)
       {
         lines = -1;
         do
@@ -304,7 +304,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
         } while (!mutt_str_equal(buf, MMDF_SEP));
 
         e->lines = lines;
-        e->content->length = loc - e->content->offset;
+        e->body->length = loc - e->body->offset;
       }
 
       if (TAILQ_EMPTY(&e->env->return_path) && return_path[0])
@@ -392,11 +392,11 @@ static int mbox_parse_mailbox(struct Mailbox *m)
       if (count > 0)
       {
         struct Email *e = m->emails[m->msg_count - 1];
-        if (e->content->length < 0)
+        if (e->body->length < 0)
         {
-          e->content->length = loc - e->content->offset - 1;
-          if (e->content->length < 0)
-            e->content->length = 0;
+          e->body->length = loc - e->body->offset - 1;
+          if (e->body->length < 0)
+            e->body->length = 0;
         }
         if (!e->lines)
           e->lines = lines ? lines - 1 : 0;
@@ -424,7 +424,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
       /* if we know how long this message is, either just skip over the body,
        * or if we don't know how many lines there are, count them now (this will
        * save time by not having to search for the next message marker).  */
-      if (e_cur->content->length > 0)
+      if (e_cur->body->length > 0)
       {
         LOFF_T tmploc;
 
@@ -432,9 +432,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 
         /* The test below avoids a potential integer overflow if the
          * content-length is huge (thus necessarily invalid).  */
-        tmploc = (e_cur->content->length < m->size) ?
-                     (loc + e_cur->content->length + 1) :
-                     -1;
+        tmploc = (e_cur->body->length < m->size) ? (loc + e_cur->body->length + 1) : -1;
 
         if ((tmploc > 0) && (tmploc < m->size))
         {
@@ -444,30 +442,30 @@ static int mbox_parse_mailbox(struct Mailbox *m)
               !fgets(buf, sizeof(buf), adata->fp) || !mutt_str_startswith(buf, "From "))
           {
             mutt_debug(LL_DEBUG1, "bad content-length in message %d (cl=" OFF_T_FMT ")\n",
-                       e_cur->index, e_cur->content->length);
+                       e_cur->index, e_cur->body->length);
             mutt_debug(LL_DEBUG1, "\tLINE: %s", buf);
             /* nope, return the previous position */
             if ((loc < 0) || (fseeko(adata->fp, loc, SEEK_SET) != 0))
             {
               mutt_debug(LL_DEBUG1, "#1 fseek() failed\n");
             }
-            e_cur->content->length = -1;
+            e_cur->body->length = -1;
           }
         }
         else if (tmploc != m->size)
         {
           /* content-length would put us past the end of the file, so it
            * must be wrong */
-          e_cur->content->length = -1;
+          e_cur->body->length = -1;
         }
 
-        if (e_cur->content->length != -1)
+        if (e_cur->body->length != -1)
         {
           /* good content-length.  check to see if we know how many lines
            * are in this message.  */
           if (e_cur->lines == 0)
           {
-            int cl = e_cur->content->length;
+            int cl = e_cur->body->length;
 
             /* count the number of lines in this message */
             if ((loc < 0) || (fseeko(adata->fp, loc, SEEK_SET) != 0))
@@ -510,11 +508,11 @@ static int mbox_parse_mailbox(struct Mailbox *m)
   if (count > 0)
   {
     struct Email *e = m->emails[m->msg_count - 1];
-    if (e->content->length < 0)
+    if (e->body->length < 0)
     {
-      e->content->length = ftello(adata->fp) - e->content->offset - 1;
-      if (e->content->length < 0)
-        e->content->length = 0;
+      e->body->length = ftello(adata->fp) - e->body->offset - 1;
+      if (e->body->length < 0)
+        e->body->length = 0;
     }
 
     if (!e->lines)
@@ -1285,9 +1283,9 @@ static int mbox_mbox_sync(struct Mailbox *m)
 
     old_offset[i - first].valid = true;
     old_offset[i - first].hdr = m->emails[i]->offset;
-    old_offset[i - first].body = m->emails[i]->content->offset;
+    old_offset[i - first].body = m->emails[i]->body->offset;
     old_offset[i - first].lines = m->emails[i]->lines;
-    old_offset[i - first].length = m->emails[i]->content->length;
+    old_offset[i - first].length = m->emails[i]->body->length;
 
     if (!m->emails[i]->deleted)
     {
@@ -1319,8 +1317,8 @@ static int mbox_mbox_sync(struct Mailbox *m)
        * message, and the offset of the body.  If this is a multipart message,
        * we just flush the in memory cache so that the message will be reparsed
        * if the user accesses it later.  */
-      new_offset[i - first].body = ftello(fp) - m->emails[i]->content->length + offset;
-      mutt_body_free(&m->emails[i]->content->parts);
+      new_offset[i - first].body = ftello(fp) - m->emails[i]->body->length + offset;
+      mutt_body_free(&m->emails[i]->body->parts);
 
       switch (m->type)
       {
@@ -1457,8 +1455,8 @@ static int mbox_mbox_sync(struct Mailbox *m)
     if (!m->emails[i]->deleted)
     {
       m->emails[i]->offset = new_offset[i - first].hdr;
-      m->emails[i]->content->hdr_offset = new_offset[i - first].hdr;
-      m->emails[i]->content->offset = new_offset[i - first].body;
+      m->emails[i]->body->hdr_offset = new_offset[i - first].hdr;
+      m->emails[i]->body->offset = new_offset[i - first].body;
       m->emails[i]->index = j++;
     }
   }
@@ -1490,10 +1488,10 @@ bail: /* Come here in case of disaster */
     for (i = first; (i < m->msg_count) && old_offset[i - first].valid; i++)
     {
       m->emails[i]->offset = old_offset[i - first].hdr;
-      m->emails[i]->content->hdr_offset = old_offset[i - first].hdr;
-      m->emails[i]->content->offset = old_offset[i - first].body;
+      m->emails[i]->body->hdr_offset = old_offset[i - first].hdr;
+      m->emails[i]->body->offset = old_offset[i - first].body;
       m->emails[i]->lines = old_offset[i - first].lines;
-      m->emails[i]->content->length = old_offset[i - first].length;
+      m->emails[i]->body->length = old_offset[i - first].length;
     }
   }
 

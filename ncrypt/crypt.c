@@ -183,7 +183,8 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   if (((WithCrypto & APPLICATION_PGP) != 0) && !(security & SEC_AUTOCRYPT) &&
       ((security & PGP_INLINE) == PGP_INLINE))
   {
-    if ((e->content->type != TYPE_TEXT) || !mutt_istr_equal(e->content->subtype, "plain"))
+    if ((e->body->type != TYPE_TEXT) ||
+        !mutt_istr_equal(e->body->subtype, "plain"))
     {
       if (query_quadoption(C_PgpMimeAuto,
                            _("Inline PGP can't be used with attachments.  "
@@ -194,7 +195,8 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
         return -1;
       }
     }
-    else if (mutt_istr_equal("flowed", mutt_param_get(&e->content->parameter, "format")))
+    else if (mutt_istr_equal("flowed",
+                             mutt_param_get(&e->body->parameter, "format")))
     {
       if ((query_quadoption(C_PgpMimeAuto,
                             _("Inline PGP can't be used with format=flowed.  "
@@ -213,10 +215,10 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
         mutt_endwin();
         puts(_("Invoking PGP..."));
       }
-      pbody = crypt_pgp_traditional_encryptsign(e->content, security, keylist);
+      pbody = crypt_pgp_traditional_encryptsign(e->body, security, keylist);
       if (pbody)
       {
-        e->content = pbody;
+        e->body = pbody;
         return 0;
       }
 
@@ -237,9 +239,9 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
     mutt_endwin();
 
   if (WithCrypto & APPLICATION_SMIME)
-    tmp_smime_pbody = e->content;
+    tmp_smime_pbody = e->body;
   if (WithCrypto & APPLICATION_PGP)
-    tmp_pgp_pbody = e->content;
+    tmp_pgp_pbody = e->body;
 
 #ifdef CRYPT_BACKEND_GPGME
   if (sign && C_CryptUsePka)
@@ -279,18 +281,18 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
      * mutt_env_to_intl() will need to be added here too. */
     mutt_prepare_envelope(protected_headers, 0, NeoMutt->sub);
 
-    mutt_env_free(&e->content->mime_headers);
-    e->content->mime_headers = protected_headers;
+    mutt_env_free(&e->body->mime_headers);
+    e->body->mime_headers = protected_headers;
     /* Optional part of the draft RFC, but required by Enigmail */
-    mutt_param_set(&e->content->parameter, "protected-headers", "v1");
+    mutt_param_set(&e->body->parameter, "protected-headers", "v1");
   }
   else
   {
-    mutt_param_delete(&e->content->parameter, "protected-headers");
+    mutt_param_delete(&e->body->parameter, "protected-headers");
   }
 
 #ifdef USE_AUTOCRYPT
-  /* A note about e->content->mime_headers.  If postpone or send
+  /* A note about e->body->mime_headers.  If postpone or send
    * fails, the mime_headers is cleared out before returning to the
    * compose menu.  So despite the "robustness" code above and in the
    * gen_gossip_list function below, mime_headers will not be set when
@@ -311,7 +313,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   {
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (security & APPLICATION_SMIME))
     {
-      tmp_pbody = crypt_smime_sign_message(e->content, &e->env->from);
+      tmp_pbody = crypt_smime_sign_message(e->body, &e->env->from);
       if (!tmp_pbody)
         goto bail;
       pbody = tmp_pbody;
@@ -321,7 +323,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
     if (((WithCrypto & APPLICATION_PGP) != 0) && (security & APPLICATION_PGP) &&
         (!(security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) || C_PgpRetainableSigs))
     {
-      tmp_pbody = crypt_pgp_sign_message(e->content, &e->env->from);
+      tmp_pbody = crypt_pgp_sign_message(e->body, &e->env->from);
       if (!tmp_pbody)
         goto bail;
 
@@ -348,12 +350,12 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
         goto bail;
       }
       /* free tmp_body if messages was signed AND encrypted ... */
-      if ((tmp_smime_pbody != e->content) && (tmp_smime_pbody != tmp_pbody))
+      if ((tmp_smime_pbody != e->body) && (tmp_smime_pbody != tmp_pbody))
       {
-        /* detach and don't delete e->content,
+        /* detach and don't delete e->body,
          * which tmp_smime_pbody->parts after signing. */
         tmp_smime_pbody->parts = tmp_smime_pbody->parts->next;
-        e->content->next = NULL;
+        e->body->next = NULL;
         mutt_body_free(&tmp_smime_pbody);
       }
       pbody = tmp_pbody;
@@ -387,12 +389,12 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
 
   if (pbody)
   {
-    e->content = pbody;
+    e->body = pbody;
     return 0;
   }
 
 bail:
-  mutt_env_free(&e->content->mime_headers);
+  mutt_env_free(&e->body->mime_headers);
   return -1;
 }
 

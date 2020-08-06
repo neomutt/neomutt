@@ -564,7 +564,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       else
       {
-        mutt_str_pretty_size(tmp, sizeof(tmp), e->content->length);
+        mutt_str_pretty_size(tmp, sizeof(tmp), e->body->length);
       }
       mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);

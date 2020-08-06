@@ -406,7 +406,7 @@ bool mutt_rfc3676_is_format_flowed(struct Body *b)
  *   - lines starting with a space
  *   - lines starting with 'From '
  *
- * Care is taken to preserve the e->content->filename, as
+ * Care is taken to preserve the e->body->filename, as
  * mutt -i -E can directly edit a passed in filename.
  */
 static void rfc3676_space_stuff(const char *filename, bool unstuff)
@@ -478,11 +478,11 @@ bail:
  */
 void mutt_rfc3676_space_stuff(struct Email *e)
 {
-  if (!e || !e->content || !e->content->filename)
+  if (!e || !e->body || !e->body->filename)
     return;
 
-  if (mutt_rfc3676_is_format_flowed(e->content))
-    rfc3676_space_stuff(e->content->filename, false);
+  if (mutt_rfc3676_is_format_flowed(e->body))
+    rfc3676_space_stuff(e->body->filename, false);
 }
 
 /**
@@ -491,11 +491,11 @@ void mutt_rfc3676_space_stuff(struct Email *e)
  */
 void mutt_rfc3676_space_unstuff(struct Email *e)
 {
-  if (!e || !e->content || !e->content->filename)
+  if (!e || !e->body || !e->body->filename)
     return;
 
-  if (mutt_rfc3676_is_format_flowed(e->content))
-    rfc3676_space_stuff(e->content->filename, true);
+  if (mutt_rfc3676_is_format_flowed(e->body))
+    rfc3676_space_stuff(e->body->filename, true);
 }
 
 /**

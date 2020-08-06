@@ -1217,7 +1217,7 @@ void mutt_set_vnum(struct Context *ctx)
       e->vnum = m->vcount;
       m->v2r[m->vcount] = i;
       m->vcount++;
-      ctx->vsize += e->content->length + e->content->offset - e->content->hdr_offset + padding;
+      ctx->vsize += e->body->length + e->body->offset - e->body->hdr_offset + padding;
     }
   }
 }

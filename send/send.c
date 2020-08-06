@@ -522,12 +522,12 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
   actx->email = e;
   actx->fp_root = msg->fp;
 
-  mutt_generate_recvattach_list(actx, actx->email, actx->email->content,
+  mutt_generate_recvattach_list(actx, actx->email, actx->email->body,
                                 actx->fp_root, -1, 0, 0);
 
   for (i = 0; i < actx->idxlen; i++)
   {
-    body = actx->idx[i]->content;
+    body = actx->idx[i]->body;
     if ((body->type != TYPE_MULTIPART) && !mutt_can_decode(body) &&
         !((body->type == TYPE_APPLICATION) &&
           (mutt_istr_equal(body->subtype, "pgp-signature") ||
@@ -1118,7 +1118,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
         query_quadoption(c_mime_forward, _("Forward as attachment?"));
     if (ans == MUTT_YES)
     {
-      struct Body *last = e->content;
+      struct Body *last = e->body;
 
       mutt_message(_("Preparing forwarded message..."));
 
@@ -1137,7 +1137,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
         else
         {
           last = tmp;
-          e->content = tmp;
+          e->body = tmp;
         }
       }
     }
@@ -1152,7 +1152,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
           cs_subset_quad(sub, "forward_attachments");
       if (c_forward_decode && (c_forward_attachments != MUTT_NO))
       {
-        last = &e->content;
+        last = &e->body;
         while (*last)
           last = &((*last)->next);
       }
@@ -1181,8 +1181,8 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
       return -1;
     }
 
-    b->next = e->content;
-    e->content = b;
+    b->next = e->body;
+    e->body = b;
   }
 
   mutt_clear_error();
@@ -1375,12 +1375,12 @@ static int invoke_mta(struct Email *e, struct ConfigSubset *sub)
     cs_subset_str_native_set(sub, "write_bcc", false, NULL);
 #endif
 #ifdef MIXMASTER
-  mutt_rfc822_write_header(fp_tmp, e->env, e->content, MUTT_WRITE_HEADER_NORMAL,
+  mutt_rfc822_write_header(fp_tmp, e->env, e->body, MUTT_WRITE_HEADER_NORMAL,
                            !STAILQ_EMPTY(&e->chain),
                            mutt_should_hide_protected_subject(e), sub);
 #endif
 #ifndef MIXMASTER
-  mutt_rfc822_write_header(fp_tmp, e->env, e->content, MUTT_WRITE_HEADER_NORMAL,
+  mutt_rfc822_write_header(fp_tmp, e->env, e->body, MUTT_WRITE_HEADER_NORMAL,
                            false, mutt_should_hide_protected_subject(e), sub);
 #endif
 #ifdef USE_SMTP
@@ -1390,7 +1390,7 @@ static int invoke_mta(struct Email *e, struct ConfigSubset *sub)
 
   fputc('\n', fp_tmp); /* tie off the header. */
 
-  if ((mutt_write_mime_body(e->content, fp_tmp, sub) == -1))
+  if ((mutt_write_mime_body(e->body, fp_tmp, sub) == -1))
     goto cleanup;
 
   if (mutt_file_fclose(&fp_tmp) != 0)
@@ -1417,14 +1417,14 @@ static int invoke_mta(struct Email *e, struct ConfigSubset *sub)
   if (c_smtp_url)
   {
     rc = mutt_smtp_send(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                        mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT), sub);
+                        mutt_b2s(tempfile), (e->body->encoding == ENC_8BIT), sub);
     goto cleanup;
   }
 #endif
 
 sendmail:
   rc = mutt_invoke_sendmail(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                            mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT), sub);
+                            mutt_b2s(tempfile), (e->body->encoding == ENC_8BIT), sub);
 cleanup:
   if (fp_tmp)
   {
@@ -1652,7 +1652,7 @@ static int save_fcc(struct Email *e, struct Buffer *fcc,
   if (mutt_buffer_is_empty(fcc) || mutt_str_equal("/dev/null", mutt_b2s(fcc)))
     return rc;
 
-  struct Body *tmpbody = e->content;
+  struct Body *tmpbody = e->body;
   struct Body *save_sig = NULL;
   struct Body *save_parts = NULL;
 
@@ -1666,16 +1666,16 @@ static int save_fcc(struct Email *e, struct Buffer *fcc,
     if ((WithCrypto != 0) &&
         (e->security & (SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT)) && c_fcc_clear)
     {
-      e->content = clear_content;
+      e->body = clear_content;
       e->security &= ~(SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT);
-      mutt_env_free(&e->content->mime_headers);
+      mutt_env_free(&e->body->mime_headers);
     }
 
     const enum QuadOption c_fcc_attach = cs_subset_quad(sub, "fcc_attach");
 
     /* check to see if the user wants copies of all attachments */
     bool save_atts = true;
-    if (e->content->type == TYPE_MULTIPART)
+    if (e->body->type == TYPE_MULTIPART)
     {
       /* In batch mode, save attachments if the quadoption is yes or ask-yes */
       if (flags & SEND_BATCH)
@@ -1689,8 +1689,8 @@ static int save_fcc(struct Email *e, struct Buffer *fcc,
     if (!save_atts)
     {
       if ((WithCrypto != 0) && (e->security & (SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT)) &&
-          (mutt_str_equal(e->content->subtype, "encrypted") ||
-           mutt_str_equal(e->content->subtype, "signed")))
+          (mutt_str_equal(e->body->subtype, "encrypted") ||
+           mutt_str_equal(e->body->subtype, "signed")))
       {
         if ((clear_content->type == TYPE_MULTIPART) &&
             (query_quadoption(c_fcc_attach, _("Save attachments in Fcc?")) == MUTT_NO))
@@ -1698,35 +1698,35 @@ static int save_fcc(struct Email *e, struct Buffer *fcc,
           if (!(e->security & SEC_ENCRYPT) && (e->security & SEC_SIGN))
           {
             /* save initial signature and attachments */
-            save_sig = e->content->parts->next;
+            save_sig = e->body->parts->next;
             save_parts = clear_content->parts->next;
           }
 
           /* this means writing only the main part */
-          e->content = clear_content->parts;
+          e->body = clear_content->parts;
 
           if (mutt_protect(e, pgpkeylist, false) == -1)
           {
             /* we can't do much about it at this point, so
            * fallback to saving the whole thing to fcc */
-            e->content = tmpbody;
+            e->body = tmpbody;
             save_sig = NULL;
             goto full_fcc;
           }
 
-          save_content = e->content;
+          save_content = e->body;
         }
       }
       else
       {
         if (query_quadoption(c_fcc_attach, _("Save attachments in Fcc?")) == MUTT_NO)
-          e->content = e->content->parts;
+          e->body = e->body->parts;
       }
     }
   }
 
 full_fcc:
-  if (e->content)
+  if (e->body)
   {
     /* update received time so that when storing to a mbox-style folder
      * the From_ line contains the current time instead of when the
@@ -1773,7 +1773,7 @@ full_fcc:
 
   if (!c_fcc_before_send)
   {
-    e->content = tmpbody;
+    e->body = tmpbody;
 
     if ((WithCrypto != 0) && save_sig)
     {
@@ -1786,8 +1786,8 @@ full_fcc:
       mutt_body_free(&save_content);
 
       /* restore old signature and attachments */
-      e->content->parts->next = save_sig;
-      e->content->parts->parts->next = save_parts;
+      e->body->parts->next = save_sig;
+      e->body->parts->parts->next = save_parts;
     }
     else if ((WithCrypto != 0) && save_content)
     {
@@ -1823,10 +1823,10 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
     return -1;
   }
 
-  if (e_post->content->next)
-    e_post->content = mutt_make_multipart(e_post->content);
+  if (e_post->body->next)
+    e_post->body = mutt_make_multipart(e_post->body);
 
-  mutt_encode_descriptions(e_post->content, true, sub);
+  mutt_encode_descriptions(e_post->body, true, sub);
 
   const bool c_postpone_encrypt = cs_subset_bool(sub, "postpone_encrypt");
   if ((WithCrypto != 0) && c_postpone_encrypt &&
@@ -1855,8 +1855,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
     {
       if (mutt_autocrypt_set_sign_as_default_key(e_post))
       {
-        e_post->content = mutt_remove_multipart(e_post->content);
-        decode_descriptions(e_post->content);
+        e_post->body = mutt_remove_multipart(e_post->body);
+        decode_descriptions(e_post->body);
         mutt_error(_("Error encrypting message. Check your crypt settings."));
         return -1;
       }
@@ -1867,19 +1867,19 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
     if (encrypt_as)
     {
       pgpkeylist = mutt_str_dup(encrypt_as);
-      clear_content = e_post->content;
+      clear_content = e_post->body;
       if (mutt_protect(e_post, pgpkeylist, true) == -1)
       {
         FREE(&pgpkeylist);
-        e_post->content = mutt_remove_multipart(e_post->content);
-        decode_descriptions(e_post->content);
+        e_post->body = mutt_remove_multipart(e_post->body);
+        decode_descriptions(e_post->body);
         mutt_error(_("Error encrypting message. Check your crypt settings."));
         return -1;
       }
 
       FREE(&pgpkeylist);
 
-      mutt_encode_descriptions(e_post->content, false, sub);
+      mutt_encode_descriptions(e_post->body, false, sub);
     }
   }
 
@@ -1897,12 +1897,12 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
   {
     if (clear_content)
     {
-      mutt_body_free(&e_post->content);
-      e_post->content = clear_content;
+      mutt_body_free(&e_post->body);
+      e_post->body = clear_content;
     }
-    mutt_env_free(&e_post->content->mime_headers); /* protected headers */
-    e_post->content = mutt_remove_multipart(e_post->content);
-    decode_descriptions(e_post->content);
+    mutt_env_free(&e_post->body->mime_headers); /* protected headers */
+    e_post->body = mutt_remove_multipart(e_post->body);
+    decode_descriptions(e_post->body);
     mutt_unprepare_envelope(e_post->env);
     return -1;
   }
@@ -2092,10 +2092,10 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     if (flags & (SEND_POSTPONED | SEND_RESEND))
     {
-      fp_tmp = mutt_file_fopen(e_templ->content->filename, "a+");
+      fp_tmp = mutt_file_fopen(e_templ->body->filename, "a+");
       if (!fp_tmp)
       {
-        mutt_perror(e_templ->content->filename);
+        mutt_perror(e_templ->body->filename);
         goto cleanup;
       }
     }
@@ -2120,39 +2120,39 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if (!(flags & SEND_DRAFT_FILE))
     {
       pbody = mutt_body_new();
-      pbody->next = e_templ->content; /* don't kill command-line attachments */
-      e_templ->content = pbody;
+      pbody->next = e_templ->body; /* don't kill command-line attachments */
+      e_templ->body = pbody;
 
       const char *c_content_type = cs_subset_string(sub, "content_type");
       ctype = mutt_str_dup(c_content_type);
       if (!ctype)
         ctype = mutt_str_dup("text/plain");
-      mutt_parse_content_type(ctype, e_templ->content);
+      mutt_parse_content_type(ctype, e_templ->body);
       FREE(&ctype);
-      e_templ->content->unlink = true;
-      e_templ->content->use_disp = false;
-      e_templ->content->disposition = DISP_INLINE;
+      e_templ->body->unlink = true;
+      e_templ->body->use_disp = false;
+      e_templ->body->disposition = DISP_INLINE;
 
       if (tempfile)
       {
         fp_tmp = mutt_file_fopen(tempfile, "a+");
-        e_templ->content->filename = mutt_str_dup(tempfile);
+        e_templ->body->filename = mutt_str_dup(tempfile);
       }
       else
       {
         mutt_mktemp(buf, sizeof(buf));
         fp_tmp = mutt_file_fopen(buf, "w+");
-        e_templ->content->filename = mutt_str_dup(buf);
+        e_templ->body->filename = mutt_str_dup(buf);
       }
     }
     else
-      fp_tmp = mutt_file_fopen(e_templ->content->filename, "a+");
+      fp_tmp = mutt_file_fopen(e_templ->body->filename, "a+");
 
     if (!fp_tmp)
     {
       mutt_debug(LL_DEBUG1, "can't create tempfile %s (errno=%d)\n",
-                 e_templ->content->filename, errno);
-      mutt_perror(e_templ->content->filename);
+                 e_templ->body->filename, errno);
+      mutt_perror(e_templ->body->filename);
       goto cleanup;
     }
   }
@@ -2316,9 +2316,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!(flags & (SEND_KEY | SEND_POSTPONED | SEND_RESEND | SEND_DRAFT_FILE)))
   {
     const bool c_text_flowed = cs_subset_bool(sub, "text_flowed");
-    if (c_text_flowed && is_text_plain(e_templ->content))
+    if (c_text_flowed && is_text_plain(e_templ->body))
     {
-      mutt_param_set(&e_templ->content->parameter, "format", "flowed");
+      mutt_param_set(&e_templ->body->parameter, "format", "flowed");
     }
   }
 
@@ -2343,14 +2343,14 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!(flags & SEND_BATCH))
   {
     struct stat st;
-    time_t mtime = mutt_file_decrease_mtime(e_templ->content->filename, NULL);
+    time_t mtime = mutt_file_decrease_mtime(e_templ->body->filename, NULL);
     if (mtime == (time_t) -1)
     {
-      mutt_perror(e_templ->content->filename);
+      mutt_perror(e_templ->body->filename);
       goto cleanup;
     }
 
-    mutt_update_encoding(e_templ->content, sub);
+    mutt_update_encoding(e_templ->body, sub);
 
     const bool c_edit_headers = cs_subset_bool(sub, "edit_headers");
     const bool c_autoedit = cs_subset_bool(sub, "autoedit");
@@ -2369,27 +2369,27 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
          (query_quadoption(c_forward_edit, _("Edit forwarded message?")) == MUTT_YES)))
     {
       /* If the this isn't a text message, look for a mailcap edit command */
-      if (mutt_needs_mailcap(e_templ->content))
+      if (mutt_needs_mailcap(e_templ->body))
       {
-        if (!mutt_edit_attachment(e_templ->content))
+        if (!mutt_edit_attachment(e_templ->body))
           goto cleanup;
       }
       else if (c_edit_headers)
       {
         mutt_env_to_local(e_templ->env);
-        mutt_edit_headers(c_editor, e_templ->content->filename, e_templ, &fcc);
+        mutt_edit_headers(c_editor, e_templ->body->filename, e_templ, &fcc);
         mutt_env_to_intl(e_templ->env, NULL, NULL);
       }
       else
       {
-        mutt_edit_file(c_editor, e_templ->content->filename);
-        if (stat(e_templ->content->filename, &st) == 0)
+        mutt_edit_file(c_editor, e_templ->body->filename);
+        if (stat(e_templ->body->filename, &st) == 0)
         {
           if (mtime != st.st_mtime)
-            fix_end_of_file(e_templ->content->filename);
+            fix_end_of_file(e_templ->body->filename);
         }
         else
-          mutt_perror(e_templ->content->filename);
+          mutt_perror(e_templ->body->filename);
       }
 
       mutt_message_hook(NULL, e_templ, MUTT_SEND2_HOOK);
@@ -2397,13 +2397,13 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     if (!(flags & (SEND_POSTPONED | SEND_FORWARD | SEND_KEY | SEND_RESEND | SEND_DRAFT_FILE)))
     {
-      if (stat(e_templ->content->filename, &st) == 0)
+      if (stat(e_templ->body->filename, &st) == 0)
       {
         const enum QuadOption c_abort_unmodified =
             cs_subset_quad(sub, "abort_unmodified");
 
         /* if the file was not modified, bail out now */
-        if ((mtime == st.st_mtime) && !e_templ->content->next &&
+        if ((mtime == st.st_mtime) && !e_templ->body->next &&
             (query_quadoption(c_abort_unmodified,
                               _("Abort unmodified message?")) == MUTT_YES))
         {
@@ -2412,7 +2412,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         }
       }
       else
-        mutt_perror(e_templ->content->filename);
+        mutt_perror(e_templ->body->filename);
     }
   }
 
@@ -2578,7 +2578,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   mutt_rfc3676_space_stuff(e_templ);
 
-  mutt_update_encoding(e_templ->content, sub);
+  mutt_update_encoding(e_templ->body, sub);
 
   if (!(flags & SEND_BATCH))
   {
@@ -2659,19 +2659,19 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   }
 #endif
 
-  if (!(flags & SEND_BATCH) && abort_for_missing_attachments(e_templ->content, sub))
+  if (!(flags & SEND_BATCH) && abort_for_missing_attachments(e_templ->body, sub))
   {
     goto main_loop;
   }
 
-  if (e_templ->content->next)
-    e_templ->content = mutt_make_multipart(e_templ->content);
+  if (e_templ->body->next)
+    e_templ->body = mutt_make_multipart(e_templ->body);
 
   /* Ok, we need to do it this way instead of handling all fcc stuff in
    * one place in order to avoid going to main_loop with encoded "env"
    * in case of error.  Ugh.  */
 
-  mutt_encode_descriptions(e_templ->content, true, sub);
+  mutt_encode_descriptions(e_templ->body, true, sub);
 
   /* Make sure that clear_content and free_clear_content are
    * properly initialized -- we may visit this particular place in
@@ -2686,22 +2686,22 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if (e_templ->security & (SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT))
     {
       /* save the decrypted attachments */
-      clear_content = e_templ->content;
+      clear_content = e_templ->body;
 
       if ((crypt_get_keys(e_templ, &pgpkeylist, 0) == -1) ||
           (mutt_protect(e_templ, pgpkeylist, false) == -1))
       {
-        e_templ->content = mutt_remove_multipart(e_templ->content);
+        e_templ->body = mutt_remove_multipart(e_templ->body);
 
         FREE(&pgpkeylist);
 
-        decode_descriptions(e_templ->content);
+        decode_descriptions(e_templ->body);
         goto main_loop;
       }
-      mutt_encode_descriptions(e_templ->content, false, sub);
+      mutt_encode_descriptions(e_templ->body, false, sub);
     }
 
-    /* at this point, e_templ->content is one of the following three things:
+    /* at this point, e_templ->body is one of the following three things:
      * - multipart/signed.     In this case, clear_content is a child
      * - multipart/encrypted.  In this case, clear_content exists independently
      * - application/pgp.      In this case, clear_content exists independently
@@ -2709,8 +2709,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     /* This is ugly -- lack of "reporting back" from mutt_protect(). */
 
-    if (clear_content && (e_templ->content != clear_content) &&
-        (e_templ->content->parts != clear_content))
+    if (clear_content && (e_templ->body != clear_content) &&
+        (e_templ->body->parts != clear_content))
       free_clear_content = true;
   }
 
@@ -2731,24 +2731,24 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       if (!WithCrypto)
         ; // do nothing
       else if ((e_templ->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) ||
-               ((e_templ->security & SEC_SIGN) && (e_templ->content->type == TYPE_APPLICATION)))
+               ((e_templ->security & SEC_SIGN) && (e_templ->body->type == TYPE_APPLICATION)))
       {
-        if (e_templ->content != clear_content)
+        if (e_templ->body != clear_content)
         {
-          mutt_body_free(&e_templ->content); /* destroy PGP data */
-          e_templ->content = clear_content;  /* restore clear text. */
+          mutt_body_free(&e_templ->body); /* destroy PGP data */
+          e_templ->body = clear_content;  /* restore clear text. */
         }
       }
-      else if ((e_templ->security & SEC_SIGN) && (e_templ->content->type == TYPE_MULTIPART))
+      else if ((e_templ->security & SEC_SIGN) && (e_templ->body->type == TYPE_MULTIPART))
       {
-        mutt_body_free(&e_templ->content->parts->next); /* destroy sig */
-        e_templ->content = mutt_remove_multipart(e_templ->content);
+        mutt_body_free(&e_templ->body->parts->next); /* destroy sig */
+        e_templ->body = mutt_remove_multipart(e_templ->body);
       }
 
       FREE(&pgpkeylist);
-      mutt_env_free(&e_templ->content->mime_headers); /* protected headers */
-      e_templ->content = mutt_remove_multipart(e_templ->content);
-      decode_descriptions(e_templ->content);
+      mutt_env_free(&e_templ->body->mime_headers); /* protected headers */
+      e_templ->body = mutt_remove_multipart(e_templ->body);
+      decode_descriptions(e_templ->body);
       mutt_unprepare_envelope(e_templ->env);
       FREE(&finalpath);
       goto main_loop;
