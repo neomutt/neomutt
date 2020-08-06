@@ -568,7 +568,7 @@ int main(int argc, char *argv[], char *envp[])
   NeoMutt = neomutt_new(cs);
 
 #ifdef USE_DEBUG_NOTIFY
-  notify_observer_add(NeoMutt->notify, debug_notify_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_ALL, debug_notify_observer, NULL);
 #endif
 
   if (!get_user_info(cs))
@@ -807,13 +807,13 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST22: neomutt -B
   }
 
-  notify_observer_add(NeoMutt->notify, mutt_hist_observer, NULL);
-  notify_observer_add(NeoMutt->notify, mutt_log_observer, NULL);
-  notify_observer_add(NeoMutt->notify, mutt_menu_config_observer, NULL);
-  notify_observer_add(NeoMutt->notify, mutt_reply_observer, NULL);
-  notify_observer_add(NeoMutt->notify, mutt_abort_key_config_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_hist_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_log_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_menu_config_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_reply_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_abort_key_config_observer, NULL);
   if (Colors)
-    notify_observer_add(Colors->notify, mutt_menu_color_observer, NULL);
+    notify_observer_add(Colors->notify, NT_CONFIG, mutt_menu_color_observer, NULL);
 
   if (sendflags & SEND_POSTPONED)
   {

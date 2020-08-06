@@ -67,7 +67,7 @@ void notify_free(struct Notify **ptr)
   struct Notify *notify = *ptr;
   // NOTIFY observers
 
-  notify_observer_remove(notify, NULL, NULL);
+  notify_observer_remove_all(notify);
 
   FREE(ptr);
 }
@@ -100,6 +100,9 @@ void notify_set_parent(struct Notify *notify, struct Notify *parent)
  * the handler tree.  For example a "new email" notification would be sent to
  * the Mailbox that owns it, the Account (owning the Mailbox) and finally the
  * NeoMutt object.
+ *
+ * @note If Observers call `notify_observer_remove()`, then we garbage-collect
+ *       any dead list entries after we've finished.
  */
 static bool send(struct Notify *source, struct Notify *current,
                  enum NotifyType event_type, int event_subtype, void *event_data)
@@ -109,11 +112,11 @@ static bool send(struct Notify *source, struct Notify *current,
 
   // mutt_debug(LL_NOTIFY, "send: %d, %ld\n", event_type, event_data);
   struct ObserverNode *np = NULL;
-  struct ObserverNode *tmp = NULL;
-  // We use the `_SAFE` version in case an event causes an observer to be deleted
-  STAILQ_FOREACH_SAFE(np, &current->observers, entries, tmp)
+  STAILQ_FOREACH(np, &current->observers, entries)
   {
     struct Observer *o = np->observer;
+    if (!o)
+      continue;
 
     struct NotifyCallback nc = { current, event_type, event_subtype, event_data, o->global_data };
     o->callback(&nc);
@@ -121,6 +124,18 @@ static bool send(struct Notify *source, struct Notify *current,
 
   if (current->parent)
     return send(source, current->parent, event_type, event_subtype, event_data);
+
+  // Garbage collection time
+  struct ObserverNode *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, &current->observers, entries, tmp)
+  {
+    if (np->observer)
+      continue;
+
+    STAILQ_REMOVE(&current->observers, np, ObserverNode, entries);
+    FREE(&np);
+  }
+
   return true;
 }
 
@@ -143,6 +158,7 @@ bool notify_send(struct Notify *notify, enum NotifyType event_type,
 /**
  * notify_observer_add - Add an observer to an object
  * @param notify      Notification handler
+ * @param type        Notification type to observe, e.g. #NT_WINDOW
  * @param callback    Function to call on a matching event, see ::observer_t
  * @param global_data Private data associated with the observer
  * @retval true If successful
@@ -150,7 +166,8 @@ bool notify_send(struct Notify *notify, enum NotifyType event_type,
  * New observers are added to the front of the list, giving them higher
  * priority than existing observers.
  */
-bool notify_observer_add(struct Notify *notify, observer_t callback, void *global_data)
+bool notify_observer_add(struct Notify *notify, enum NotifyType type,
+                         observer_t callback, void *global_data)
 {
   if (!notify || !callback)
     return false;
@@ -158,6 +175,9 @@ bool notify_observer_add(struct Notify *notify, observer_t callback, void *globa
   struct ObserverNode *np = NULL;
   STAILQ_FOREACH(np, &notify->observers, entries)
   {
+    if (!np->observer)
+      continue;
+
     if (np->observer->callback == callback)
       return true;
   }
@@ -180,29 +200,46 @@ bool notify_observer_add(struct Notify *notify, observer_t callback, void *globa
  * @param global_data Private data to match specific callback
  * @retval true If successful
  *
- * If callback is NULL, all the observers will be removed.
+ * @note This function frees the Observer, but doesn't free the ObserverNode.
+ *       If `send()` is present higher up the call stack,
+ *       removing multiple entries from the list will cause it to crash.
  */
 bool notify_observer_remove(struct Notify *notify, observer_t callback, void *global_data)
 {
-  if (!notify)
+  if (!notify || !callback)
     return false;
 
-  bool result = false;
+  struct ObserverNode *np = NULL;
+  STAILQ_FOREACH(np, &notify->observers, entries)
+  {
+    if (!np->observer)
+      continue;
+
+    if ((np->observer->callback == callback) && (np->observer->global_data == global_data))
+    {
+      FREE(&np->observer);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * notify_observer_remove_all - Remove all the observers from an object
+ * @param notify Notification handler
+ */
+void notify_observer_remove_all(struct Notify *notify)
+{
+  if (!notify)
+    return;
+
   struct ObserverNode *np = NULL;
   struct ObserverNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &notify->observers, entries, tmp)
   {
-    if (!callback || ((np->observer->callback == callback) &&
-                      (np->observer->global_data == global_data)))
-    {
-      STAILQ_REMOVE(&notify->observers, np, ObserverNode, entries);
-      FREE(&np->observer);
-      FREE(&np);
-      result = true;
-      if (callback)
-        break;
-    }
+    STAILQ_REMOVE(&notify->observers, np, ObserverNode, entries);
+    FREE(&np->observer);
+    FREE(&np);
   }
-
-  return result;
 }

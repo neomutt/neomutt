@@ -58,6 +58,7 @@ typedef int (*observer_t)(struct NotifyCallback *nc);
  */
 struct Observer
 {
+  enum NotifyType type;  ///< Notification type to observe, e.g. #NT_WINDOW
   observer_t callback;   ///< Callback function for events
   void *global_data;     ///< Private data to pass to callback
 };

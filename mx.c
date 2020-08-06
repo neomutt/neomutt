@@ -312,7 +312,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_OPEN, &ev_ctx);
 
   // If the Mailbox is closed, Context->mailbox must be set to NULL
-  notify_observer_add(m->notify, ctx_mailbox_observer, ctx);
+  notify_observer_add(m->notify, NT_MAILBOX, ctx_mailbox_observer, ctx);
 
   if ((m->type == MUTT_UNKNOWN) && (flags & (MUTT_NEWFOLDER | MUTT_APPEND)))
   {

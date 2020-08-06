@@ -37,8 +37,6 @@
 #include "gui/lib.h"
 #include "keymap.h"
 
-static int helpbar_observer(struct NotifyCallback *nc);
-
 /**
  * make_help - Create one entry for the help bar
  * @param buf    Buffer for the result
@@ -160,71 +158,82 @@ static int helpbar_repaint(struct MuttWindow *win)
 }
 
 /**
- * helpbar_binding_event - Key binding has changed
- * @param nc Notification
+ * helpbar_binding_observer - Key binding has changed - Implements ::observer_t
  */
-static void helpbar_binding_event(struct NotifyCallback *nc)
+static int helpbar_binding_observer(struct NotifyCallback *nc)
 {
+  if ((nc->event_type != NT_BINDING) || !nc->event_data || !nc->global_data)
+    return -1;
+
   if (nc->event_subtype >= NT_MACRO_NEW)
-    return;
+    return 0;
 
   struct MuttWindow *win_helpbar = nc->global_data;
   struct HelpbarWindowData *wdata = helpbar_wdata_get(win_helpbar);
   if (!wdata)
-    return;
+    return 0;
 
   struct EventBinding *eb = nc->event_data;
   if (wdata->help_menu != eb->menu)
-    return;
+    return 0;
 
   mutt_debug(LL_NOTIFY, "binding");
   win_helpbar->actions |= WA_RECALC;
+  return 0;
 }
 
 /**
- * helpbar_color_event - Color has changed
- * @param nc Notification
+ * helpbar_color_observer - Color has changed - Implements ::observer_t
  */
-static void helpbar_color_event(struct NotifyCallback *nc)
+static int helpbar_color_observer(struct NotifyCallback *nc)
 {
+  if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
+    return -1;
+
   if (nc->event_subtype != MT_COLOR_STATUS)
-    return;
+    return 0;
 
   struct MuttWindow *win_helpbar = nc->global_data;
 
   mutt_debug(LL_NOTIFY, "color\n");
   win_helpbar->actions |= WA_REPAINT;
+  return 0;
 }
 
 /**
- * helpbar_config_event - Config has changed
- * @param nc Notification
+ * helpbar_config_observer - Config has changed - Implements ::observer_t
  */
-static void helpbar_config_event(struct NotifyCallback *nc)
+static int helpbar_config_observer(struct NotifyCallback *nc)
 {
+  if ((nc->event_type != NT_CONFIG) || !nc->event_data || !nc->global_data)
+    return -1;
+
   struct EventConfig *ec = nc->event_data;
   if (!mutt_str_equal(ec->name, "help"))
-    return;
+    return 0;
 
   struct MuttWindow *win_helpbar = nc->global_data;
   win_helpbar->state.visible = cs_subset_bool(NeoMutt->sub, "help");
 
   mutt_debug(LL_NOTIFY, "config\n");
   win_helpbar->parent->actions |= WA_REFLOW;
+  return 0;
 }
 
 /**
- * helpbar_window_event - Window has changed
- * @param nc Notification
+ * helpbar_window_observer - Window has changed - Implements ::observer_t
  */
-static void helpbar_window_event(struct NotifyCallback *nc)
+static int helpbar_window_observer(struct NotifyCallback *nc)
 {
+  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+    return -1;
+
   struct MuttWindow *win_helpbar = nc->global_data;
 
   if (nc->event_subtype == NT_WINDOW_FOCUS)
   {
     if (!mutt_window_is_visible(win_helpbar))
-      return;
+      return 0;
 
     mutt_debug(LL_NOTIFY, "focus\n");
     win_helpbar->actions |= WA_RECALC;
@@ -233,39 +242,14 @@ static void helpbar_window_event(struct NotifyCallback *nc)
   {
     struct EventWindow *ew = nc->event_data;
     if (ew->win != win_helpbar)
-      return;
+      return 0;
 
     mutt_debug(LL_NOTIFY, "delete\n");
-    notify_observer_remove(nc->current, helpbar_observer, win_helpbar);
+    notify_observer_remove(nc->current, helpbar_binding_observer, win_helpbar);
+    notify_observer_remove(nc->current, helpbar_color_observer, win_helpbar);
+    notify_observer_remove(nc->current, helpbar_config_observer, win_helpbar);
+    notify_observer_remove(nc->current, helpbar_window_observer, win_helpbar);
   }
-}
-
-/**
- * helpbar_observer - Listen for events affecting the Help Bar Window - Implements ::observer_t
- */
-static int helpbar_observer(struct NotifyCallback *nc)
-{
-  if (!nc->event_data || !nc->global_data)
-    return -1;
-
-  switch (nc->event_type)
-  {
-    case NT_BINDING:
-      helpbar_binding_event(nc);
-      break;
-    case NT_COLOR:
-      helpbar_color_event(nc);
-      break;
-    case NT_CONFIG:
-      helpbar_config_event(nc);
-      break;
-    case NT_WINDOW:
-      helpbar_window_event(nc);
-      break;
-    default:
-      break;
-  }
-
   return 0;
 }
 
@@ -286,6 +270,9 @@ struct MuttWindow *helpbar_create(void)
   win->wdata = helpbar_wdata_new();
   win->wdata_free = helpbar_wdata_free;
 
-  notify_observer_add(NeoMutt->notify, helpbar_observer, win);
+  notify_observer_add(NeoMutt->notify, NT_BINDING, helpbar_binding_observer, win);
+  notify_observer_add(NeoMutt->notify, NT_COLOR, helpbar_color_observer, win);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, helpbar_config_observer, win);
+  notify_observer_add(NeoMutt->notify, NT_WINDOW, helpbar_window_observer, win);
   return win;
 }
