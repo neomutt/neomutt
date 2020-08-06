@@ -21,7 +21,7 @@
  */
 
 /**
- * @page core_thread Create/manipulate threading in emails
+ * @page mutt_thread Create/manipulate threading in emails
  *
  * Create/manipulate threading in emails
  */
