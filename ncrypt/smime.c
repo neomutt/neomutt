@@ -46,6 +46,8 @@
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "copy.h"
 #include "crypt.h"
 #include "cryptglue.h"
@@ -54,8 +56,6 @@
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "state.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 #include "smime.h"
 #endif
@@ -636,7 +636,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
     }
     else
     {
-      return_key = smime_copy_key(smime_select_key(matches, mailbox));
+      return_key = smime_copy_key(dlg_select_smime_key(matches, mailbox));
     }
 
     smime_key_free(&matches);
@@ -684,7 +684,7 @@ static struct SmimeKey *smime_get_key_by_str(char *str, KeyFlags abilities, bool
 
   if (matches)
   {
-    return_key = smime_copy_key(smime_select_key(matches, str));
+    return_key = smime_copy_key(dlg_select_smime_key(matches, str));
     smime_key_free(&matches);
   }
 

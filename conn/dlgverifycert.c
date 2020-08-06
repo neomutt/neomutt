@@ -52,7 +52,7 @@ static const struct Mapping VerifyHelp[] = {
 
 #ifdef USE_SSL
 /**
- * dlg_verify_cert - Ask the user to validate the certificate
+ * dlg_verify_certificate - Ask the user to validate the certificate
  * @param title        Menu title
  * @param list         Certificate text to display
  * @param allow_always If true, allow the user to always accept the certificate
@@ -66,7 +66,8 @@ static const struct Mapping VerifyHelp[] = {
  * The options are given in the order: Reject, Once, Always, Skip.
  * The retval represents the chosen option.
  */
-int dlg_verify_cert(const char *title, struct ListHead *list, bool allow_always, bool allow_skip)
+int dlg_verify_certificate(const char *title, struct ListHead *list,
+                           bool allow_always, bool allow_skip)
 {
   struct Menu *menu = mutt_menu_new(MENU_GENERIC);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_CERTIFICATE);

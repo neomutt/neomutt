@@ -40,6 +40,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "recvcmd.h"
+#include "send/lib.h"
 #include "context.h"
 #include "copy.h"
 #include "handler.h"
@@ -52,7 +53,6 @@
 #include "options.h"
 #include "protos.h"
 #include "state.h"
-#include "send/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -97,9 +97,9 @@ static bool check_all_msg(struct AttachCtx *actx, struct Body *cur, bool err)
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
-      if (actx->idx[i]->content->tagged)
+      if (actx->idx[i]->body->tagged)
       {
-        if (!check_msg(actx->idx[i]->content, err))
+        if (!check_msg(actx->idx[i]->body, err))
           return false;
       }
     }
@@ -119,7 +119,7 @@ static bool check_can_decode(struct AttachCtx *actx, struct Body *cur)
     return mutt_can_decode(cur);
 
   for (short i = 0; i < actx->idxlen; i++)
-    if (actx->idx[i]->content->tagged && !mutt_can_decode(actx->idx[i]->content))
+    if (actx->idx[i]->body->tagged && !mutt_can_decode(actx->idx[i]->body))
       return false;
 
   return true;
@@ -134,7 +134,7 @@ static short count_tagged(struct AttachCtx *actx)
 {
   short count = 0;
   for (short i = 0; i < actx->idxlen; i++)
-    if (actx->idx[i]->content->tagged)
+    if (actx->idx[i]->body->tagged)
       count++;
 
   return count;
@@ -152,7 +152,7 @@ static short count_tagged_children(struct AttachCtx *actx, short i)
   short count = 0;
 
   while ((++i < actx->idxlen) && (level < actx->idx[i]->level))
-    if (actx->idx[i]->content->tagged)
+    if (actx->idx[i]->body->tagged)
       count++;
 
   return count;
@@ -196,9 +196,9 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
-      if (actx->idx[i]->content->tagged)
+      if (actx->idx[i]->body->tagged)
       {
-        if (TAILQ_EMPTY(&actx->idx[i]->content->email->env->from))
+        if (TAILQ_EMPTY(&actx->idx[i]->body->email->env->from))
         {
           mutt_error(_("Warning: message contains no From: header"));
           mutt_clear_error();
@@ -266,9 +266,9 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
-      if (actx->idx[i]->content->tagged)
+      if (actx->idx[i]->body->tagged)
       {
-        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->content->email,
+        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->body->email,
                                 &al, NeoMutt->sub))
         {
           ret = 1;
@@ -303,10 +303,10 @@ void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
-      if (actx->idx[i]->content->tagged)
+      if (actx->idx[i]->body->tagged)
       {
         mutt_resend_message(actx->idx[i]->fp, Context,
-                            actx->idx[i]->content->email, NeoMutt->sub);
+                            actx->idx[i]->body->email, NeoMutt->sub);
       }
     }
   }
@@ -325,12 +325,12 @@ static struct AttachPtr *find_common_parent(struct AttachCtx *actx, short nattac
   short nchildren;
 
   for (i = 0; i < actx->idxlen; i++)
-    if (actx->idx[i]->content->tagged)
+    if (actx->idx[i]->body->tagged)
       break;
 
   while (--i >= 0)
   {
-    if (mutt_is_message_type(actx->idx[i]->content->type, actx->idx[i]->content->subtype))
+    if (mutt_is_message_type(actx->idx[i]->body->type, actx->idx[i]->body->subtype))
     {
       nchildren = count_tagged_children(actx, i);
       if (nchildren == nattach)
@@ -359,7 +359,7 @@ static int is_parent(short i, struct AttachCtx *actx, struct Body *cur)
 
   while ((++i < actx->idxlen) && (actx->idx[i]->level > level))
   {
-    if (actx->idx[i]->content == cur)
+    if (actx->idx[i]->body == cur)
       return true;
   }
 
@@ -382,13 +382,12 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, s
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
-      if (mutt_is_message_type(actx->idx[i]->content->type,
-                               actx->idx[i]->content->subtype) &&
+      if (mutt_is_message_type(actx->idx[i]->body->type, actx->idx[i]->body->subtype) &&
           is_parent(i, actx, cur))
       {
         parent = actx->idx[i];
       }
-      if (actx->idx[i]->content == cur)
+      if (actx->idx[i]->body == cur)
         break;
     }
   }
@@ -446,9 +445,9 @@ static struct Body **copy_problematic_attachments(struct Body **last,
 {
   for (short i = 0; i < actx->idxlen; i++)
   {
-    if (actx->idx[i]->content->tagged && (force || !mutt_can_decode(actx->idx[i]->content)))
+    if (actx->idx[i]->body->tagged && (force || !mutt_can_decode(actx->idx[i]->body)))
     {
-      if (mutt_body_copy(actx->idx[i]->fp, last, actx->idx[i]->content) == -1)
+      if (mutt_body_copy(actx->idx[i]->fp, last, actx->idx[i]->body) == -1)
         return NULL; /* XXXXX - may lead to crashes */
       last = &((*last)->next);
     }
@@ -483,7 +482,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   struct AttachPtr *parent = find_parent(actx, cur, nattach);
   if (parent)
   {
-    e_parent = parent->content->email;
+    e_parent = parent->body->email;
     fp_parent = parent->fp;
   }
   else
@@ -562,7 +561,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   st.fp_out = fp_tmp;
 
   /* where do we append new MIME parts? */
-  struct Body **last = &e_tmp->content;
+  struct Body **last = &e_tmp->body;
 
   if (cur)
   {
@@ -588,10 +587,10 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
     {
       for (int i = 0; i < actx->idxlen; i++)
       {
-        if (actx->idx[i]->content->tagged && mutt_can_decode(actx->idx[i]->content))
+        if (actx->idx[i]->body->tagged && mutt_can_decode(actx->idx[i]->body))
         {
           st.fp_in = actx->idx[i]->fp;
-          mutt_body_handler(actx->idx[i]->content, &st);
+          mutt_body_handler(actx->idx[i]->body, &st);
           state_putc(&st, '\n');
         }
       }
@@ -657,9 +656,9 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
-      if (actx->idx[i]->content->tagged)
+      if (actx->idx[i]->body->tagged)
       {
-        e_cur = actx->idx[i]->content->email;
+        e_cur = actx->idx[i]->body->email;
         break;
       }
     }
@@ -711,13 +710,13 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
     {
       for (short i = 0; i < actx->idxlen; i++)
       {
-        if (actx->idx[i]->content->tagged)
+        if (actx->idx[i]->body->tagged)
         {
-          mutt_forward_intro(Context->mailbox, actx->idx[i]->content->email,
+          mutt_forward_intro(Context->mailbox, actx->idx[i]->body->email,
                              fp_tmp, NeoMutt->sub);
           mutt_copy_message_fp(fp_tmp, actx->idx[i]->fp,
-                               actx->idx[i]->content->email, cmflags, chflags, 0);
-          mutt_forward_trailer(Context->mailbox, actx->idx[i]->content->email,
+                               actx->idx[i]->body->email, cmflags, chflags, 0);
+          mutt_forward_trailer(Context->mailbox, actx->idx[i]->body->email,
                                fp_tmp, NeoMutt->sub);
         }
       }
@@ -726,16 +725,16 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
   }
   else if (ans == MUTT_YES) /* do MIME encapsulation - we don't need to do much here */
   {
-    last = &e_tmp->content;
+    last = &e_tmp->body;
     if (cur)
       mutt_body_copy(fp, last, cur);
     else
     {
       for (short i = 0; i < actx->idxlen; i++)
       {
-        if (actx->idx[i]->content->tagged)
+        if (actx->idx[i]->body->tagged)
         {
-          mutt_body_copy(actx->idx[i]->fp, last, actx->idx[i]->content);
+          mutt_body_copy(actx->idx[i]->fp, last, actx->idx[i]->body);
           last = &((*last)->next);
         }
       }
@@ -805,9 +804,9 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
-      if (actx->idx[i]->content->tagged)
+      if (actx->idx[i]->body->tagged)
       {
-        e = actx->idx[i]->content->email;
+        e = actx->idx[i]->body->email;
         curenv = e->env;
         break;
       }
@@ -846,8 +845,8 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
     {
       for (short i = 0; i < actx->idxlen; i++)
       {
-        if (actx->idx[i]->content->tagged &&
-            (mutt_fetch_recips(env, actx->idx[i]->content->email->env, flags,
+        if (actx->idx[i]->body->tagged &&
+            (mutt_fetch_recips(env, actx->idx[i]->body->email->env, flags,
                                NeoMutt->sub) == -1))
         {
           return -1;
@@ -871,9 +870,9 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
-      if (actx->idx[i]->content->tagged)
+      if (actx->idx[i]->body->tagged)
       {
-        mutt_add_to_reference_headers(env, actx->idx[i]->content->email->env,
+        mutt_add_to_reference_headers(env, actx->idx[i]->body->email->env,
                                       NeoMutt->sub);
       }
     }
@@ -943,7 +942,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     parent = find_parent(actx, e_cur, nattach);
     if (parent)
     {
-      e_parent = parent->content->email;
+      e_parent = parent->body->email;
       fp_parent = parent->fp;
     }
     else
@@ -992,8 +991,8 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     {
       for (short i = 0; i < actx->idxlen; i++)
       {
-        if (actx->idx[i]->content->tagged)
-          attach_include_reply(actx->idx[i]->fp, fp_tmp, actx->idx[i]->content->email);
+        if (actx->idx[i]->body->tagged)
+          attach_include_reply(actx->idx[i]->fp, fp_tmp, actx->idx[i]->body->email);
       }
     }
   }
@@ -1033,16 +1032,16 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
         state_putc(&st, '\n');
       }
       else
-        mutt_body_copy(fp, &e_tmp->content, e_cur);
+        mutt_body_copy(fp, &e_tmp->body, e_cur);
     }
     else
     {
       for (short i = 0; i < actx->idxlen; i++)
       {
-        if (actx->idx[i]->content->tagged && mutt_can_decode(actx->idx[i]->content))
+        if (actx->idx[i]->body->tagged && mutt_can_decode(actx->idx[i]->body))
         {
           st.fp_in = actx->idx[i]->fp;
-          mutt_body_handler(actx->idx[i]->content, &st);
+          mutt_body_handler(actx->idx[i]->body, &st);
           state_putc(&st, '\n');
         }
       }
@@ -1050,8 +1049,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
     mutt_make_post_indent(Context->mailbox, e_parent, fp_tmp, NeoMutt->sub);
 
-    if (mime_reply_any && !e_cur &&
-        !copy_problematic_attachments(&e_tmp->content, actx, false))
+    if (mime_reply_any && !e_cur && !copy_problematic_attachments(&e_tmp->body, actx, false))
     {
       goto cleanup;
     }
@@ -1111,8 +1109,8 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
   {
     for (int i = 0; i < actx->idxlen; i++)
     {
-      if (actx->idx[i]->content->tagged &&
-          (mutt_fetch_recips(e_tmp->env, actx->idx[i]->content->email->env,
+      if (actx->idx[i]->body->tagged &&
+          (mutt_fetch_recips(e_tmp->env, actx->idx[i]->body->email->env,
                              SEND_TO_SENDER, NeoMutt->sub) == -1))
       {
         email_free(&e_tmp);

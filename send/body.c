@@ -33,9 +33,9 @@
 #include "email/lib.h"
 #include "body.h"
 #include "lib.h"
+#include "ncrypt/lib.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
-#include "ncrypt/lib.h"
 
 /**
  * struct B64Context - Cursor for the Base64 conversion

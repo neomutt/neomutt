@@ -38,14 +38,14 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
-#include "mutt_globals.h"
-#include "muttlib.h"
-#include "mx.h"
-#include "options.h"
 #include "autocrypt/lib.h"
 #include "hcache/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
+#include "mutt_globals.h"
+#include "muttlib.h"
+#include "mx.h"
+#include "options.h"
 
 /**
  * autocrypt_dir_init - Initialise an Autocrypt directory
@@ -262,7 +262,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
   if (mutt_autocrypt_init(false))
     return -1;
 
-  if (!e || !e->content || !env)
+  if (!e || !e->body || !env)
     return 0;
 
   /* 1.1 spec says to skip emails with more than one From header */
@@ -271,7 +271,8 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
     return 0;
 
   /* 1.1 spec also says to skip multipart/report emails */
-  if ((e->content->type == TYPE_MULTIPART) && mutt_istr_equal(e->content->subtype, "report"))
+  if ((e->body->type == TYPE_MULTIPART) &&
+      mutt_istr_equal(e->body->subtype, "report"))
   {
     return 0;
   }
@@ -814,9 +815,9 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
   if (!C_Autocrypt || mutt_autocrypt_init(false) || !e)
     return -1;
 
-  struct Envelope *mime_headers = e->content->mime_headers;
+  struct Envelope *mime_headers = e->body->mime_headers;
   if (!mime_headers)
-    mime_headers = e->content->mime_headers = mutt_env_new();
+    mime_headers = e->body->mime_headers = mutt_env_new();
   mutt_autocrypthdr_free(&mime_headers->autocrypt_gossip);
 
   struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);

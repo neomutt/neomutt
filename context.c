@@ -32,16 +32,16 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "context.h"
+#include "imap/lib.h"
+#include "maildir/lib.h"
+#include "ncrypt/lib.h"
+#include "pattern/lib.h"
 #include "mutt_globals.h"
 #include "mutt_header.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "score.h"
 #include "sort.h"
-#include "imap/lib.h"
-#include "maildir/lib.h"
-#include "ncrypt/lib.h"
-#include "pattern/lib.h"
 
 /**
  * ctx_free - Free a Context
@@ -135,7 +135,7 @@ void ctx_update(struct Context *ctx)
     if (WithCrypto)
     {
       /* NOTE: this _must_ be done before the check for mailcap! */
-      e->security = crypt_query(e->content);
+      e->security = crypt_query(e->body);
     }
 
     if (ctx->pattern)
@@ -236,7 +236,7 @@ void ctx_update_tables(struct Context *ctx, bool committing)
       {
         m->v2r[m->vcount] = j;
         m->emails[j]->vnum = m->vcount++;
-        struct Body *b = m->emails[j]->content;
+        struct Body *b = m->emails[j]->body;
         ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
 

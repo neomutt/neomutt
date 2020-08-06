@@ -37,6 +37,8 @@
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "history/lib.h"
+#include "pattern/lib.h"
 #include "browser.h"
 #include "context.h"
 #include "enter_state.h"
@@ -48,8 +50,6 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "protos.h"
-#include "history/lib.h"
-#include "pattern/lib.h"
 
 /**
  * enum EnterRedrawFlags - redraw flags for mutt_enter_string_full()
@@ -598,7 +598,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             size_t i = state->curpos;
             if (i && (state->wbuf[i - 1] == '~'))
             {
-              if (mutt_ask_pattern(buf, buflen))
+              if (dlg_select_pattern(buf, buflen))
                 replace_part(state, i - 1, buf);
               rc = 1;
               goto bye;

@@ -54,11 +54,11 @@ IncludeCategories:
 
   # All backend library headers
   - Regex:      '".*/lib\.h"'
-    Priority:   10
+    Priority:   5
 
   # All other NeoMutt headers
   - Regex:      '".*"'
-    Priority:   5
+    Priority:   10
 
 AlignAfterOpenBracket:            true
 AlignEscapedNewlinesLeft:         false

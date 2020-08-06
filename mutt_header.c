@@ -40,12 +40,12 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "mutt_header.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "index.h"
 #include "muttlib.h"
 #include "options.h"
 #include "protos.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 
 /**
  * label_ref_dec - Decrease the refcount of a label
@@ -324,7 +324,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
         if (body2)
         {
           body2->description = mutt_str_dup(p);
-          for (parts = e->content; parts->next; parts = parts->next)
+          for (parts = e->body; parts->next; parts = parts->next)
             ; // do nothing
 
           parts->next = body2;

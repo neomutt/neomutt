@@ -40,6 +40,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "send/lib.h"
 #include "format_flags.h"
 #include "keymap.h"
 #include "mutt_globals.h"
@@ -49,7 +50,6 @@
 #include "options.h"
 #include "protos.h"
 #include "recvattach.h"
-#include "send/lib.h"
 #ifdef MIXMASTER
 #include "remailer.h"
 #endif
@@ -563,14 +563,14 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 }
 
 /**
- * mix_make_chain - Create a Mixmaster chain
+ * dlg_select_mixmaster_chain - Create a Mixmaster chain
  * @param win       Window
  * @param chainhead List of chain links
  * @param cols      Number of screen columns
  *
  * Ask the user to select Mixmaster hosts to create a chain.
  */
-void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols)
+void dlg_select_mixmaster_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols)
 {
   int c_cur = 0, c_old = 0;
   bool c_redraw = true;

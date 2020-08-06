@@ -49,6 +49,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "send/lib.h"
 #include "crypt.h"
 #include "cryptglue.h"
 #include "handler.h"
@@ -60,7 +61,6 @@
 #include "pgpkey.h"
 #include "pgpmicalg.h"
 #include "state.h"
-#include "send/lib.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"
 #include "pgplib.h"

@@ -48,6 +48,8 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
+#include "hcache/lib.h"
+#include "maildir/lib.h"
 #include "copy.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
@@ -55,8 +57,6 @@
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#include "hcache/lib.h"
-#include "maildir/lib.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif
@@ -1089,8 +1089,8 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
 
   bool restore = true;
 
-  long old_body_offset = e->content->offset;
-  long old_body_length = e->content->length;
+  long old_body_offset = e->body->offset;
+  long old_body_length = e->body->length;
   long old_hdr_lines = e->lines;
 
   struct Message *dest = mx_msg_open_new(m, e, MUTT_MSG_NO_FLAGS);
@@ -1145,12 +1145,12 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
 
   if ((rc == -1) && restore)
   {
-    e->content->offset = old_body_offset;
-    e->content->length = old_body_length;
+    e->body->offset = old_body_offset;
+    e->body->length = old_body_length;
     e->lines = old_hdr_lines;
   }
 
-  mutt_body_free(&e->content->parts);
+  mutt_body_free(&e->body->parts);
   return rc;
 }
 
@@ -1333,7 +1333,7 @@ struct Email *maildir_parse_stream(enum MailboxType type, FILE *fp,
     e->received = e->date_sent;
 
   /* always update the length since we have fresh information available. */
-  e->content->length = st.st_size - e->content->offset;
+  e->body->length = st.st_size - e->body->offset;
 
   e->index = -1;
 

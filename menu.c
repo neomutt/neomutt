@@ -37,6 +37,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "pattern/lib.h"
 #include "commands.h"
 #include "context.h"
 #include "keymap.h"
@@ -47,7 +48,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "pattern/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
 #endif

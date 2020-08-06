@@ -43,6 +43,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
+#include "ncrypt/lib.h"
 #include "crypt_gpgme.h"
 #include "format_flags.h"
 #include "keymap.h"
@@ -53,7 +54,6 @@
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
-#include "ncrypt/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -828,7 +828,6 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
  */
 static void verify_key(struct CryptKeyInfo *key)
 {
-  char cmd[1024];
   const char *s = NULL;
   gpgme_ctx_t listctx = NULL;
   gpgme_error_t err;
@@ -880,8 +879,9 @@ leave:
   gpgme_release(listctx);
   mutt_file_fclose(&fp);
   mutt_clear_error();
-  snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"), crypt_keyid(key));
-  mutt_do_pager(cmd, mutt_b2s(&tempfile), MUTT_PAGER_NO_FLAGS, NULL);
+  char title[1024];
+  snprintf(title, sizeof(title), _("Key ID: 0x%s"), crypt_keyid(key));
+  mutt_do_pager(title, mutt_b2s(&tempfile), MUTT_PAGER_NO_FLAGS, NULL);
 
 cleanup:
   mutt_buffer_dealloc(&tempfile);
@@ -1183,7 +1183,7 @@ static void crypt_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
 }
 
 /**
- * crypt_select_key - Get the user to select a key
+ * dlg_select_gpgme_key - Get the user to select a key
  * @param[in]  keys         List of keys to select from
  * @param[in]  p            Address to match
  * @param[in]  s            Real name to display
@@ -1193,8 +1193,9 @@ static void crypt_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
  *
  * Display a menu to select a key from the array of keys.
  */
-struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys, struct Address *p,
-                                      const char *s, unsigned int app, int *forced_valid)
+struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
+                                          struct Address *p, const char *s,
+                                          unsigned int app, int *forced_valid)
 {
   int keymax;
   int i;

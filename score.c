@@ -35,6 +35,7 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "score.h"
+#include "pattern/lib.h"
 #include "init.h"
 #include "keymap.h"
 #include "mutt_commands.h"
@@ -43,7 +44,6 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#include "pattern/lib.h"
 
 /* These Config Variables are only used in score.c */
 short C_ScoreThresholdDelete; ///< Config: Messages with a lower score will be automatically deleted

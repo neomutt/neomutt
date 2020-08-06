@@ -43,6 +43,8 @@
 #include "alias/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "copy.h"
 #include "handler.h"
 #include "maillist.h"
@@ -50,8 +52,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "state.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 
 /**
  * patmatch - Compare a string to a Pattern
@@ -164,7 +164,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
       }
 
       fseeko(msg->fp, e->offset, SEEK_SET);
-      mutt_body_handler(e->content, &s);
+      mutt_body_handler(e->body, &s);
     }
 
 #ifdef USE_FMEMOPEN
@@ -205,13 +205,13 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
     if (pat->op != MUTT_PAT_BODY)
     {
       fseeko(fp, e->offset, SEEK_SET);
-      len = e->content->offset - e->offset;
+      len = e->body->offset - e->offset;
     }
     if (pat->op != MUTT_PAT_HEADER)
     {
       if (pat->op == MUTT_PAT_BODY)
-        fseeko(fp, e->content->offset, SEEK_SET);
-      len += e->content->length;
+        fseeko(fp, e->body->offset, SEEK_SET);
+      len += e->body->length;
     }
   }
 
@@ -549,7 +549,7 @@ static bool match_mime_content_type(const struct Pattern *pat,
                                     struct Mailbox *m, struct Email *e)
 {
   mutt_parse_mime_message(m, e);
-  return match_content_type(pat, e->content);
+  return match_content_type(pat, e->body);
 }
 
 /**
@@ -628,7 +628,7 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
       return 0;
     }
 
-    mutt_rfc822_write_header(fp, e->env, e->content, MUTT_WRITE_HEADER_POSTPONE,
+    mutt_rfc822_write_header(fp, e->env, e->body, MUTT_WRITE_HEADER_POSTPONE,
                              false, false, NeoMutt->sub);
     fflush(fp);
     fseek(fp, 0, 0);
@@ -653,10 +653,10 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
 
   if ((pat->op == MUTT_PAT_BODY) || (pat->op == MUTT_PAT_WHOLE_MSG))
   {
-    fp = mutt_file_fopen(e->content->filename, "r");
+    fp = mutt_file_fopen(e->body->filename, "r");
     if (!fp)
     {
-      mutt_perror(e->content->filename);
+      mutt_perror(e->body->filename);
       return 0;
     }
 
@@ -744,7 +744,7 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_WHOLE_MSG:
       if (pat->sendmode)
       {
-        if (!e->content || !e->content->filename)
+        if (!e->body || !e->body->filename)
           return 0;
         return pat->pat_not ^ msg_search_sendmode(e, pat);
       }
@@ -808,9 +808,8 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (e->score >= pat->min &&
                              (pat->max == MUTT_MAXRANGE || e->score <= pat->max));
     case MUTT_PAT_SIZE:
-      return pat->pat_not ^
-             (e->content->length >= pat->min &&
-              (pat->max == MUTT_MAXRANGE || e->content->length <= pat->max));
+      return pat->pat_not ^ (e->body->length >= pat->min &&
+                             (pat->max == MUTT_MAXRANGE || e->body->length <= pat->max));
     case MUTT_PAT_REFERENCE:
       if (!e->env)
         return 0;

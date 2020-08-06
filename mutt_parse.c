@@ -32,8 +32,8 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "mutt_parse.h"
-#include "mx.h"
 #include "ncrypt/lib.h"
+#include "mx.h"
 
 struct ListHead AttachAllow = STAILQ_HEAD_INITIALIZER(AttachAllow); ///< List of attachment types to be counted
 struct ListHead AttachExclude = STAILQ_HEAD_INITIALIZER(AttachExclude); ///< List of attachment types to be ignored
@@ -49,19 +49,19 @@ void mutt_parse_mime_message(struct Mailbox *m, struct Email *e)
 {
   do
   {
-    if ((e->content->type != TYPE_MESSAGE) && (e->content->type != TYPE_MULTIPART))
+    if ((e->body->type != TYPE_MESSAGE) && (e->body->type != TYPE_MULTIPART))
       break; /* nothing to do */
 
-    if (e->content->parts)
+    if (e->body->parts)
       break; /* The message was parsed earlier. */
 
     struct Message *msg = mx_msg_open(m, e->msgno);
     if (msg)
     {
-      mutt_parse_part(msg->fp, e->content);
+      mutt_parse_part(msg->fp, e->body);
 
       if (WithCrypto)
-        e->security = crypt_query(e->content);
+        e->security = crypt_query(e->body);
 
       mx_msg_close(m, &msg);
     }
@@ -209,7 +209,7 @@ int mutt_count_body_parts(struct Mailbox *m, struct Email *e)
   if (e->attach_valid)
     return e->attach_total;
 
-  if (e->content->parts)
+  if (e->body->parts)
     keep_parts = true;
   else
     mutt_parse_mime_message(m, e);
@@ -217,7 +217,7 @@ int mutt_count_body_parts(struct Mailbox *m, struct Email *e)
   if (!STAILQ_EMPTY(&AttachAllow) || !STAILQ_EMPTY(&AttachExclude) ||
       !STAILQ_EMPTY(&InlineAllow) || !STAILQ_EMPTY(&InlineExclude))
   {
-    e->attach_total = count_body_parts(e->content);
+    e->attach_total = count_body_parts(e->body);
   }
   else
     e->attach_total = 0;
@@ -225,7 +225,7 @@ int mutt_count_body_parts(struct Mailbox *m, struct Email *e)
   e->attach_valid = true;
 
   if (!keep_parts)
-    mutt_body_free(&e->content->parts);
+    mutt_body_free(&e->body->parts);
 
   return e->attach_total;
 }

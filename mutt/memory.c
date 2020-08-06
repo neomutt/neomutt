@@ -42,7 +42,7 @@
  * @param size  Size of blocks
  * @retval ptr Memory on the heap
  *
- * @note This function will never return NULL.
+ * @note On error, this function will never return NULL.
  *       It will print an error and exit the program.
  *
  * The caller should call mutt_mem_free() to release the memory
@@ -82,7 +82,7 @@ void mutt_mem_free(void *ptr)
  * @param size Size of block to allocate
  * @retval ptr Memory on the heap
  *
- * @note This function will never return NULL.
+ * @note On error, this function will never return NULL.
  *       It will print an error and exit the program.
  *
  * The caller should call mutt_mem_free() to release the memory
@@ -106,7 +106,7 @@ void *mutt_mem_malloc(size_t size)
  * @param ptr Memory block to resize
  * @param size New size
  *
- * @note This function will never return NULL.
+ * @note On error, this function will never return NULL.
  *       It will print an error and exit the program.
  *
  * If the new size is zero, the block will be freed.

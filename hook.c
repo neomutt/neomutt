@@ -39,6 +39,8 @@
 #include "alias/lib.h"
 #include "mutt.h"
 #include "hook.h"
+#include "ncrypt/lib.h"
+#include "pattern/lib.h"
 #include "context.h"
 #include "format_flags.h"
 #include "hdrline.h"
@@ -48,8 +50,6 @@
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "ncrypt/lib.h"
-#include "pattern/lib.h"
 #ifdef USE_COMP_MBOX
 #include "compmbox/lib.h"
 #endif

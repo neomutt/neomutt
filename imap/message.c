@@ -45,6 +45,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "message.h"
+#include "bcache/lib.h"
+#include "imap/lib.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
@@ -52,8 +54,6 @@
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
-#include "bcache/lib.h"
-#include "imap/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -1213,8 +1213,8 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         /* NOTE: if Date: header is missing, mutt_rfc822_read_header depends
          *   on h.received being set */
         e->env = mutt_rfc822_read_header(fp, e, false, false);
-        /* content built as a side-effect of mutt_rfc822_read_header */
-        e->content->length = h.content_length;
+        /* body built as a side-effect of mutt_rfc822_read_header */
+        e->body->length = h.content_length;
         mailbox_size_add(m, e);
 
 #ifdef USE_HCACHE
@@ -2054,14 +2054,14 @@ parsemsg:
     fgets(buf, sizeof(buf), msg->fp);
   }
 
-  e->content->length = ftell(msg->fp) - e->content->offset;
+  e->body->length = ftell(msg->fp) - e->body->offset;
 
   mutt_clear_error();
   rewind(msg->fp);
   imap_edata_get(e)->parsed = true;
 
   /* retry message parse if cached message is empty */
-  if (!retried && ((e->lines == 0) || (e->content->length == 0)))
+  if (!retried && ((e->lines == 0) || (e->body->length == 0)))
   {
     imap_cache_del(m, e);
     retried = true;

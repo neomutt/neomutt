@@ -24,8 +24,8 @@
 #define MUTT_SCORE_H
 
 #include <stdbool.h>
-#include "mutt_commands.h"
 #include <stdint.h>
+#include "mutt_commands.h"
 
 struct Buffer;
 struct Email;

@@ -33,9 +33,9 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "mutt_body.h"
+#include "send/lib.h"
 #include "mutt_attach.h"
 #include "muttlib.h"
-#include "send/lib.h"
 
 /**
  * mutt_body_copy - Create a send-mode duplicate from a receive-mode body

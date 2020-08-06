@@ -50,13 +50,13 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "muttlib.h"
+#include "ncrypt/lib.h"
 #include "format_flags.h"
 #include "hook.h"
 #include "init.h"
 #include "mutt_globals.h"
 #include "mx.h"
 #include "protos.h"
-#include "ncrypt/lib.h"
 #if defined(HAVE_SYSCALL_H)
 #include <syscall.h>
 #elif defined(HAVE_SYS_SYSCALL_H)

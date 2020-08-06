@@ -33,12 +33,12 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "history/lib.h"
 #include "format_flags.h"
 #include "keymap.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "history/lib.h"
 
 /// Help Bar for the History Selection dialog
 static const struct Mapping HistoryHelp[] = {
@@ -87,13 +87,13 @@ static void history_make_entry(char *buf, size_t buflen, struct Menu *menu, int 
 }
 
 /**
- * history_menu - Select an item from a history list
+ * dlg_select_history - Select an item from a history list
  * @param[in]  buf         Buffer in which to save string
  * @param[in]  buflen      Buffer length
  * @param[out] matches     Items to choose from
  * @param[in]  match_count Number of items
  */
-void history_menu(char *buf, size_t buflen, char **matches, int match_count)
+void dlg_select_history(char *buf, size_t buflen, char **matches, int match_count)
 {
   bool done = false;
   char title[256];

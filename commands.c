@@ -45,6 +45,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "commands.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "context.h"
 #include "copy.h"
 #include "format_flags.h"
@@ -66,8 +68,6 @@
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif
@@ -132,26 +132,26 @@ static void process_protected_headers(struct Email *e)
     if (!(e->security & SEC_GOODSIGN))
       return;
 
-    if (mutt_is_multipart_signed(e->content) && e->content->parts)
+    if (mutt_is_multipart_signed(e->body) && e->body->parts)
     {
-      prot_headers = e->content->parts->mime_headers;
+      prot_headers = e->body->parts->mime_headers;
     }
-    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(e->content))
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(e->body))
     {
-      prot_headers = e->content->mime_headers;
+      prot_headers = e->body->mime_headers;
     }
   }
   if (!prot_headers && (e->security & SEC_ENCRYPT))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        (mutt_is_valid_multipart_pgp_encrypted(e->content) ||
-         mutt_is_malformed_multipart_pgp_encrypted(e->content)))
+        (mutt_is_valid_multipart_pgp_encrypted(e->body) ||
+         mutt_is_malformed_multipart_pgp_encrypted(e->body)))
     {
-      prot_headers = e->content->mime_headers;
+      prot_headers = e->body->mime_headers;
     }
-    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(e->content))
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(e->body))
     {
-      prot_headers = e->content->mime_headers;
+      prot_headers = e->body->mime_headers;
     }
   }
 
@@ -329,7 +329,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
   {
     /* update crypto information for this message */
     e->security &= ~(SEC_GOODSIGN | SEC_BADSIGN);
-    e->security |= crypt_query(e->content);
+    e->security |= crypt_query(e->body);
 
     /* Remove color cache for this message, in case there
      * are color patterns for both ~g and ~V */
@@ -949,18 +949,18 @@ static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
 
   if ((WithCrypto != 0) && !decode && decrypt && (e->security & SEC_ENCRYPT))
   {
-    if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(e->content))
+    if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(e->body))
     {
       *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
       *cmflags = MUTT_CM_DECODE_PGP;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             mutt_is_application_pgp(e->content) & SEC_ENCRYPT)
+             mutt_is_application_pgp(e->body) & SEC_ENCRYPT)
     {
       decode = 1;
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-             mutt_is_application_smime(e->content) & SEC_ENCRYPT)
+             mutt_is_application_smime(e->body) & SEC_ENCRYPT)
     {
       *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
       *cmflags = MUTT_CM_DECODE_SMIME;
@@ -1354,7 +1354,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   if (!mutt_is_message_type(b->type, b->subtype) && b->email)
   {
     structure_changed = true;
-    b->email->content = NULL;
+    b->email->body = NULL;
     email_free(&b->email);
   }
 
@@ -1366,7 +1366,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 
   if ((WithCrypto != 0) && e)
   {
-    if (e->content == b)
+    if (e->body == b)
       e->security = SEC_NO_FLAGS;
 
     e->security |= crypt_query(b);
@@ -1391,9 +1391,9 @@ static bool check_traditional_pgp(struct Email *e, MuttRedrawFlags *redraw)
   struct Message *msg = mx_msg_open(Context->mailbox, e->msgno);
   if (!msg)
     return 0;
-  if (crypt_pgp_check_traditional(msg->fp, e->content, false))
+  if (crypt_pgp_check_traditional(msg->fp, e->body, false))
   {
-    e->security = crypt_query(e->content);
+    e->security = crypt_query(e->body);
     *redraw |= REDRAW_FULL;
     rc = true;
   }

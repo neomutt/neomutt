@@ -46,6 +46,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "browser.h"
+#include "send/lib.h"
 #include "context.h"
 #include "format_flags.h"
 #include "keymap.h"
@@ -57,7 +58,6 @@
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
-#include "send/lib.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif

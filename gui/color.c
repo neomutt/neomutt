@@ -36,13 +36,13 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "color.h"
+#include "pattern/lib.h"
 #include "context.h"
 #include "init.h"
 #include "mutt_commands.h"
 #include "mutt_curses.h"
 #include "mutt_globals.h"
 #include "options.h"
-#include "pattern/lib.h"
 #ifdef USE_SLANG_CURSES
 #include <assert.h>
 #endif

@@ -43,6 +43,7 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "handler.h"
+#include "ncrypt/lib.h"
 #include "copy.h"
 #include "enriched.h"
 #include "keymap.h"
@@ -56,7 +57,6 @@
 #include "pager.h"
 #include "rfc3676.h"
 #include "state.h"
-#include "ncrypt/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

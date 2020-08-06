@@ -36,17 +36,17 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "lib.h"
+#include "compmbox/lib.h"
+#include "maildir/lib.h"
+#include "mbox/lib.h"
+#include "nntp/lib.h"
+#include "notmuch/lib.h"
 #include "context.h"
 #include "imap/private.h"
 #include "maildir/private.h"
 #include "mutt_globals.h"
 #include "notmuch/private.h"
 #include "pop/private.h"
-#include "compmbox/lib.h"
-#include "maildir/lib.h"
-#include "mbox/lib.h"
-#include "nntp/lib.h"
-#include "notmuch/lib.h"
 
 // #define GV_HIDE_CONTEXT
 #define GV_HIDE_CONTEXT_CONTENTS
@@ -1069,7 +1069,7 @@ static void dot_attach_ptr(FILE *fp, struct AttachPtr *aptr, struct ListHead *li
 
   dot_object_footer(fp);
 
-  dot_add_link(links, aptr->content, aptr, "AttachPtr->content", true, NULL);
+  dot_add_link(links, aptr->body, aptr, "AttachPtr->body", true, NULL);
 
   mutt_buffer_dealloc(&buf);
 }
@@ -1373,10 +1373,10 @@ static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
 
   dot_object_footer(fp);
 
-  if (e->content)
+  if (e->body)
   {
-    dot_body(fp, e->content, links, true);
-    dot_add_link(links, e, e->content, "Email->content", false, NULL);
+    dot_body(fp, e->body, links, true);
+    dot_add_link(links, e, e->body, "Email->body", false, NULL);
   }
 
   if (e->env)

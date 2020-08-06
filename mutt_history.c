@@ -48,7 +48,7 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
     if (match_count == 1)
       mutt_str_copy(buf, matches[0], buflen);
     else
-      history_menu(buf, buflen, matches, match_count);
+      dlg_select_history(buf, buflen, matches, match_count);
   }
   FREE(&matches);
 }

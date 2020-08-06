@@ -24,8 +24,8 @@
 #include "config.h"
 #include "acutest.h"
 #include "mutt/lib.h"
-#include "common.h"
 #include "compress/lib.h"
+#include "common.h"
 
 #define MIN_COMP_LEVEL 1 ///< Minimum compression level for zlib
 #define MAX_COMP_LEVEL 9 ///< Maximum compression level for zlib

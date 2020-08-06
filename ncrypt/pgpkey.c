@@ -48,6 +48,7 @@
 #include "mutt.h"
 #include "pgpkey.h"
 #include "lib.h"
+#include "send/lib.h"
 #include "crypt.h"
 #include "format_flags.h"
 #include "gnupgparse.h"
@@ -61,7 +62,6 @@
 #include "pager.h"
 #include "pgpinvoke.h"
 #include "protos.h"
-#include "send/lib.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"
 #include "pgplib.h"
@@ -472,7 +472,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
     else
     {
       /* Else: Ask the user.  */
-      k = pgp_select_key(matches, a, NULL);
+      k = dlg_select_pgp_key(matches, a, NULL);
       if (k)
         pgp_remove_key(&matches, k);
     }
@@ -522,7 +522,7 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
       continue;
 
     /* This shouldn't happen, but keys without any addresses aren't selectable
-     * in pgp_select_key().  */
+     * in dlg_select_pgp_key().  */
     if (!k->address)
       continue;
 
@@ -564,7 +564,7 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
 
   if (matches)
   {
-    k = pgp_select_key(matches, NULL, p);
+    k = dlg_select_pgp_key(matches, NULL, p);
     if (k)
       pgp_remove_key(&matches, k);
     pgp_key_free(&matches);

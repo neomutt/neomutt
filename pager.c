@@ -45,6 +45,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "pager.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "commands.h"
 #include "context.h"
 #include "format_flags.h"
@@ -67,8 +69,6 @@
 #include "recvattach.h"
 #include "recvcmd.h"
 #include "status.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
 #endif
@@ -3474,7 +3474,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           break;
         }
         CHECK_MODE(IsEmail(extra));
-        mutt_view_attachments(extra->email);
+        dlg_select_attachment(extra->email);
         if (Context && extra->email->attach_del)
           Context->mailbox->changed = true;
         pager_menu->redraw = REDRAW_FULL;

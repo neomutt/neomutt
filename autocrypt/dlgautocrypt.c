@@ -36,13 +36,13 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "autocrypt/lib.h"
 #include "format_flags.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "autocrypt/lib.h"
 
 /**
  * struct AccountEntry - An entry in the Autocrypt account Menu
@@ -255,9 +255,9 @@ static void toggle_prefer_encrypt(struct AccountEntry *entry)
 }
 
 /**
- * mutt_autocrypt_account_menu - Display the Autocrypt account Menu
+ * dlg_select_autocrypt_account - Display the Autocrypt account Menu
  */
-void mutt_autocrypt_account_menu(void)
+void dlg_select_autocrypt_account(void)
 {
   if (!C_Autocrypt)
     return;

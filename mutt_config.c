@@ -37,6 +37,7 @@
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
+#include "bcache/lib.h"
 #include "browser.h"
 #include "commands.h"
 #include "compose.h"
@@ -63,7 +64,6 @@
 #include "score.h"
 #include "sort.h"
 #include "status.h"
-#include "bcache/lib.h"
 
 #ifndef ISPELL
 #define ISPELL "ispell"

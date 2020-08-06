@@ -167,7 +167,7 @@ extern bool  C_AutocryptReply;
 extern char *C_AutocryptAcctFormat;
 extern char *C_AutocryptDir;
 
-void              mutt_autocrypt_account_menu            (void);
+void              dlg_select_autocrypt_account            (void);
 void              mutt_autocrypt_cleanup                 (void);
 int               mutt_autocrypt_generate_gossip_list    (struct Email *e);
 int               mutt_autocrypt_init                    (bool can_create);

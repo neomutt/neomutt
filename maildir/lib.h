@@ -39,8 +39,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "core/lib.h"
-#include "mx.h"
 #include "hcache/lib.h"
+#include "mx.h"
 
 struct ConfigSet;
 struct Email;

@@ -46,7 +46,7 @@ WHERE bool OptNews;                ///< (pseudo) used to change reader mode
 WHERE bool OptNewsSend;            ///< (pseudo) used to change behavior when posting
 #endif
 WHERE bool OptNoCurses;            ///< (pseudo) when sending in batch mode
-WHERE bool OptPgpCheckTrust;       ///< (pseudo) used by pgp_select_key()
+WHERE bool OptPgpCheckTrust;       ///< (pseudo) used by dlg_select_pgp_key()
 WHERE bool OptRedrawTree;          ///< (pseudo) redraw the thread tree
 WHERE bool OptResortInit;          ///< (pseudo) used to force the next resort to be from scratch
 WHERE bool OptSearchInvalid;       ///< (pseudo) used to invalidate the search pattern

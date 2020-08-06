@@ -107,8 +107,8 @@ void mutt_actx_entries_free(struct AttachCtx *actx)
 
   for (int i = 0; i < actx->idxlen; i++)
   {
-    if (actx->idx[i]->content)
-      actx->idx[i]->content->aptr = NULL;
+    if (actx->idx[i]->body)
+      actx->idx[i]->body->aptr = NULL;
     FREE(&actx->idx[i]->tree);
     FREE(&actx->idx[i]);
   }

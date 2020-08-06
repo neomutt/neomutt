@@ -40,6 +40,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "send/lib.h"
 #include "alias.h"
 #include "format_flags.h"
 #include "gui.h"
@@ -49,7 +50,6 @@
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "send/lib.h"
 
 /* These Config Variables are only used in dlgquery.c */
 char *C_QueryCommand; ///< Config: External command to query and external address book
@@ -295,13 +295,13 @@ static int query_run(char *s, bool verbose, struct AliasList *al)
 }
 
 /**
- * query_menu - Get the user to enter an Address Query
+ * dlg_select_query - Get the user to enter an Address Query
  * @param buf    Buffer for the query
  * @param buflen Length of buffer
  * @param all    Alias List
  * @param retbuf If true, populate the results
  */
-static void query_menu(char *buf, size_t buflen, struct AliasList *all, bool retbuf)
+static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bool retbuf)
 {
   struct AliasMenuData *mdata = menu_data_new();
   struct Alias *np = NULL;
@@ -542,7 +542,7 @@ int query_complete(char *buf, size_t buflen)
   }
 
   /* multiple results, choose from query menu */
-  query_menu(buf, buflen, &al, true);
+  dlg_select_query(buf, buflen, &al, true);
   aliaslist_free(&al);
   return 0;
 }
@@ -570,6 +570,6 @@ void query_index(void)
   if (TAILQ_EMPTY(&al))
     return;
 
-  query_menu(buf, sizeof(buf), &al, false);
+  dlg_select_query(buf, sizeof(buf), &al, false);
   aliaslist_free(&al);
 }

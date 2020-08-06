@@ -56,6 +56,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "crypt_gpgme.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "crypt.h"
 #include "handler.h"
 #include "hook.h"
@@ -64,8 +66,6 @@
 #include "muttlib.h"
 #include "options.h"
 #include "state.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
@@ -3632,7 +3632,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     else
     {
       /* Else: Ask the user.  */
-      k = crypt_select_key(matches, a, NULL, app, forced_valid);
+      k = dlg_select_gpgme_key(matches, a, NULL, app, forced_valid);
     }
 
     crypt_key_free(&matches);
@@ -3704,7 +3704,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
 
   if (matches)
   {
-    k = crypt_select_key(matches, NULL, p, app, forced_valid);
+    k = dlg_select_gpgme_key(matches, NULL, p, app, forced_valid);
     crypt_key_free(&matches);
     return k;
   }
@@ -4002,7 +4002,7 @@ int mutt_gpgme_select_secret_key(struct Buffer *keyid)
     goto cleanup;
   }
 
-  choice = crypt_select_key(results, NULL, "*", APPLICATION_PGP, &junk);
+  choice = dlg_select_gpgme_key(results, NULL, "*", APPLICATION_PGP, &junk);
   if (!(choice && choice->kobj && choice->kobj->subkeys && choice->kobj->subkeys->fpr))
     goto cleanup;
   mutt_buffer_strcpy(keyid, choice->kobj->subkeys->fpr);

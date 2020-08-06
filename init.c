@@ -48,6 +48,11 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "init.h"
+#include "compress/lib.h"
+#include "hcache/lib.h"
+#include "history/lib.h"
+#include "notmuch/lib.h"
+#include "store/lib.h"
 #include "command_parse.h"
 #include "context.h"
 #include "functions.h"
@@ -61,11 +66,6 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#include "compress/lib.h"
-#include "hcache/lib.h"
-#include "history/lib.h"
-#include "notmuch/lib.h"
-#include "store/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
 #endif

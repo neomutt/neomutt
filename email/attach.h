@@ -33,14 +33,14 @@ struct Body;
  */
 struct AttachPtr
 {
-  struct Body *content; ///< Attachment
+  struct Body *body;    ///< Attachment
   FILE *fp;             ///< Used in the recvattach menu
   int parent_type;      ///< Type of parent attachment, e.g. #TYPE_MULTIPART
   char *tree;           ///< Tree characters to display
   int level;            ///< Nesting depth of attachment
   int num;              ///< Attachment index number
   bool unowned : 1;     ///< Don't unlink on detach
-  bool decrypted : 1;   ///< Not part of message as stored in the email->content
+  bool decrypted : 1;   ///< Not part of message as stored in the email->body
 };
 
 /**

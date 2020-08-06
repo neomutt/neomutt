@@ -44,6 +44,8 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "bcache/lib.h"
+#include "ncrypt/lib.h"
 #include "context.h"
 #include "hook.h"
 #include "mutt_account.h"
@@ -54,8 +56,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "progress.h"
-#include "bcache/lib.h"
-#include "ncrypt/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -217,11 +217,11 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
     {
       rewind(fp);
       e->env = mutt_rfc822_read_header(fp, e, false, false);
-      e->content->length = length - e->content->offset + 1;
+      e->body->length = length - e->body->offset + 1;
       rewind(fp);
       while (!feof(fp))
       {
-        e->content->length--;
+        e->body->length--;
         fgets(buf, sizeof(buf), fp);
       }
       break;
@@ -1093,7 +1093,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     }
 
     mutt_progress_init(&progress, _("Fetching message..."), MUTT_PROGRESS_NET,
-                       e->content->length + e->content->offset - 1);
+                       e->body->length + e->body->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
     msg->fp = mutt_bcache_put(adata->bcache, cache_id(edata->uid));
@@ -1173,11 +1173,11 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     fgets(buf, sizeof(buf), msg->fp);
   }
 
-  e->content->length = ftello(msg->fp) - e->content->offset;
+  e->body->length = ftello(msg->fp) - e->body->offset;
 
   /* This needs to be done in case this is a multipart message */
   if (!WithCrypto)
-    e->security = crypt_query(e->content);
+    e->security = crypt_query(e->body);
 
   mutt_clear_error();
   rewind(msg->fp);

@@ -54,6 +54,8 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "debug/lib.h"
+#include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
@@ -73,8 +75,6 @@
 #include "options.h"
 #include "protos.h"
 #include "version.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -954,7 +954,7 @@ int main(int argc, char *argv[], char *envp[])
 
       /* Parse the draft_file into the full Email/Body structure.
        * Set SEND_DRAFT_FILE so mutt_send_message doesn't overwrite
-       * our e->content.  */
+       * our e->body.  */
       if (draft_file)
       {
         struct Envelope *opts_env = e->env;
@@ -966,7 +966,7 @@ int main(int argc, char *argv[], char *envp[])
          * mutt_prepare_template() can parse the message in fp_in.  */
         struct Email *e_tmp = email_new();
         e_tmp->offset = 0;
-        e_tmp->content = mutt_body_new();
+        e_tmp->body = mutt_body_new();
         if (fstat(fileno(fp_in), &st) != 0)
         {
           mutt_perror(draft_file);
@@ -974,7 +974,7 @@ int main(int argc, char *argv[], char *envp[])
           email_free(&e_tmp);
           goto main_curses; // TEST31: can't test
         }
-        e_tmp->content->length = st.st_size;
+        e_tmp->body->length = st.st_size;
 
         if (mutt_prepare_template(fp_in, NULL, e, e_tmp, false) < 0)
         {
@@ -1023,7 +1023,7 @@ int main(int argc, char *argv[], char *envp[])
 
     if (!STAILQ_EMPTY(&attach))
     {
-      struct Body *b = e->content;
+      struct Body *b = e->body;
 
       while (b && b->next)
         b = b->next;
@@ -1039,7 +1039,7 @@ int main(int argc, char *argv[], char *envp[])
         else
         {
           b = mutt_make_file_attach(np->data, NeoMutt->sub);
-          e->content = b;
+          e->body = b;
         }
         if (!b)
         {
@@ -1061,7 +1061,7 @@ int main(int argc, char *argv[], char *envp[])
     if (edit_infile)
     {
       if (include_file)
-        e->content->unlink = false;
+        e->body->unlink = false;
       else if (draft_file)
       {
         if (truncate(mutt_b2s(&expanded_infile), 0) == -1)
@@ -1082,21 +1082,21 @@ int main(int argc, char *argv[], char *envp[])
          * have been done.  */
         if (rv < 0)
         {
-          if (e->content->next)
-            e->content = mutt_make_multipart(e->content);
-          mutt_encode_descriptions(e->content, true, NeoMutt->sub);
+          if (e->body->next)
+            e->body = mutt_make_multipart(e->body);
+          mutt_encode_descriptions(e->body, true, NeoMutt->sub);
           mutt_prepare_envelope(e->env, false, NeoMutt->sub);
           mutt_env_to_intl(e->env, NULL, NULL);
         }
 
         mutt_rfc822_write_header(
-            fp_out, e->env, e->content, MUTT_WRITE_HEADER_POSTPONE, false,
+            fp_out, e->env, e->body, MUTT_WRITE_HEADER_POSTPONE, false,
             C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e),
             NeoMutt->sub);
         if (C_ResumeEditedDraftFiles)
           fprintf(fp_out, "X-Mutt-Resume-Draft: 1\n");
         fputc('\n', fp_out);
-        if ((mutt_write_mime_body(e->content, fp_out, NeoMutt->sub) == -1))
+        if ((mutt_write_mime_body(e->body, fp_out, NeoMutt->sub) == -1))
         {
           mutt_file_fclose(&fp_out);
           email_free(&e);

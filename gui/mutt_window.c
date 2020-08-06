@@ -34,13 +34,13 @@
 #include "core/lib.h"
 #include "debug/lib.h"
 #include "mutt_window.h"
+#include "helpbar/lib.h"
 #include "mutt_curses.h"
 #include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "opcodes.h"
 #include "options.h"
 #include "reflow.h"
-#include "helpbar/lib.h"
 
 struct MuttWindow *RootWindow = NULL;       ///< Parent of all Windows
 struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs

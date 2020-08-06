@@ -45,6 +45,9 @@
 #include "mutt.h"
 #include "debug/lib.h"
 #include "index.h"
+#include "ncrypt/lib.h"
+#include "pattern/lib.h"
+#include "send/lib.h"
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
@@ -69,9 +72,6 @@
 #include "score.h"
 #include "sort.h"
 #include "status.h"
-#include "ncrypt/lib.h"
-#include "pattern/lib.h"
-#include "send/lib.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
 #endif
@@ -582,7 +582,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
         ctx->mailbox->v2r[ctx->mailbox->vcount] = i;
         e->limited = true;
         ctx->mailbox->vcount++;
-        struct Body *b = e->content;
+        struct Body *b = e->body;
         ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
     }
@@ -2743,7 +2743,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         if (!cur.e)
           break;
-        mutt_edit_content_type(cur.e, cur.e->content, NULL);
+        mutt_edit_content_type(cur.e, cur.e->body, NULL);
         /* if we were in the pager, redisplay the message */
         if (in_pager)
         {
@@ -3916,7 +3916,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         if (!cur.e)
           break;
-        mutt_view_attachments(cur.e);
+        dlg_select_attachment(cur.e);
         if (cur.e->attach_del)
           Context->mailbox->changed = true;
         menu->redraw = REDRAW_FULL;
@@ -3954,7 +3954,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
 #ifdef USE_AUTOCRYPT
       case OP_AUTOCRYPT_ACCT_MENU:
-        mutt_autocrypt_account_menu();
+        dlg_select_autocrypt_account();
         break;
 #endif
 
