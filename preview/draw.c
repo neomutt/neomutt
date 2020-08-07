@@ -24,4 +24,5 @@ void preview_draw(struct MuttWindow *win)
   mutt_window_mvprintw(win, 5, 5, "Selected mail id: %s, from: %s, subject: %s",
                        em->env->message_id, from ? from->mailbox : "unknown",
                        em->env->subject);
+  mutt_window_mvprintw(win, 5, 8, "%s", data->preview_data);
 }

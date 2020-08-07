@@ -24,6 +24,7 @@ struct PreviewWindowData
 {
   struct Mailbox *mailbox;
   struct Email *current_email;
+  char preview_data[1024];
 };
 
 struct PreviewWindowData    *preview_wdata_new(void);
