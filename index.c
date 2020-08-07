@@ -454,10 +454,12 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
   struct Email **save_new = NULL;
   const bool lmt = ctx_has_limit(ctx);
 
+  int num_new = MAX(0, ctx->mailbox->msg_count - oldcount);
+
   /* save the list of new messages */
-  if ((check != MUTT_REOPENED) && oldcount && (lmt || C_UncollapseNew))
+  if ((check != MUTT_REOPENED) && (oldcount > 0) && (lmt || C_UncollapseNew) && (num_new > 0))
   {
-    save_new = mutt_mem_malloc(sizeof(struct Email *) * (ctx->mailbox->msg_count - oldcount));
+    save_new = mutt_mem_malloc(num_new * sizeof(struct Email *));
     for (int i = oldcount; i < ctx->mailbox->msg_count; i++)
       save_new[i - oldcount] = ctx->mailbox->emails[i];
   }
@@ -474,7 +476,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
     {
       struct Email *e = NULL;
 
-      if ((check != MUTT_REOPENED) && oldcount)
+      if ((check != MUTT_REOPENED) && (oldcount > 0) && (num_new > 0))
         e = save_new[i - oldcount];
       else
         e = ctx->mailbox->emails[i];
@@ -505,9 +507,9 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
       mutt_thread_collapse(ctx->threads, ctx->collapsed);
       mutt_set_vnum(ctx->mailbox);
     }
-    else if (oldcount)
+    else if (oldcount > 0)
     {
-      for (int j = 0; j < (ctx->mailbox->msg_count - oldcount); j++)
+      for (int j = 0; j < num_new; j++)
       {
         if (save_new[j]->visible)
         {
