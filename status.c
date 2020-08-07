@@ -244,7 +244,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, num);
       }
-      else if (num)
+      else if (num == 0)
         optional = false;
       break;
     }
@@ -396,12 +396,12 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
   if (optional)
   {
     mutt_expando_format(buf, buflen, col, cols, if_str, status_format_str,
-                        (intptr_t) menu, MUTT_FORMAT_NO_FLAGS);
+                        (intptr_t) data, MUTT_FORMAT_NO_FLAGS);
   }
   else if (flags & MUTT_FORMAT_OPTIONAL)
   {
     mutt_expando_format(buf, buflen, col, cols, else_str, status_format_str,
-                        (intptr_t) menu, MUTT_FORMAT_NO_FLAGS);
+                        (intptr_t) data, MUTT_FORMAT_NO_FLAGS);
   }
 
   return src;
