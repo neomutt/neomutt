@@ -1579,6 +1579,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_rfc3676_space_stuff(e);
           mutt_update_encoding(e->body, NeoMutt->sub);
           menu->redraw = REDRAW_FULL;
+          /* Unconditional hook since editor was invoked */
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           break;
         }
@@ -1609,6 +1610,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         }
 
         menu->redraw = REDRAW_FULL;
+        /* Unconditional hook since editor was invoked */
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 
@@ -2213,6 +2215,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         mutt_edit_file(NONULL(C_Editor), CUR_ATTACH->body->filename);
         mutt_update_encoding(CUR_ATTACH->body, NeoMutt->sub);
         menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
+        /* Unconditional hook since editor was invoked */
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 
