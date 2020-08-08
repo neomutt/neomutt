@@ -1188,7 +1188,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
   menu->make_entry = index_make_entry;
   menu->color = index_color;
-  menu->current = ci_first_message(Context->mailbox);
+  menu->current = Context ? ci_first_message(Context->mailbox) : 0;
   menu->custom_redraw = index_custom_redraw;
   mutt_menu_push_current(menu);
   mutt_window_reflow(NULL);
