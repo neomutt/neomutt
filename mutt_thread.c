@@ -1600,7 +1600,7 @@ void mutt_thread_collapse_collapsed(struct ThreadsContext *tctx)
 }
 
 /**
- * mutt_thread_coll_set - toggle collapse
+ * mutt_thread_collapse - toggle collapse
  * @param tctx Threading context
  * @param collapse Collapse / uncollapse
  */

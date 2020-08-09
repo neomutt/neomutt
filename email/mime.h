@@ -88,6 +88,7 @@ extern const char MimeSpecials[];
 
 #define TYPE(body)                                                             \
   ((body->type == TYPE_OTHER) && body->xtype ? body->xtype : BodyTypes[(body->type)])
+
 #define ENCODING(x) BodyEncodings[(x)]
 
 #endif /* MUTT_EMAIL_MIME_H */

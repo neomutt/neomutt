@@ -63,6 +63,9 @@ static char *get_sort_str(char *buf, size_t buflen, enum SortType method)
   return buf;
 }
 
+/**
+ * struct MenuStatusLineData - Data for creating a Menu line
+ */
 struct MenuStatusLineData
 {
   struct Menu *menu;

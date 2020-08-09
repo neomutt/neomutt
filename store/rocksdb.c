@@ -37,9 +37,9 @@
 #include "lib.h"
 
 /**
- * struct RocksDB_Ctx - Berkeley DB context
+ * struct RocksDbCtx - Berkeley DB context
  */
-struct RocksDB_Ctx
+struct RocksDbCtx
 {
   rocksdb_t *db;
   rocksdb_options_t *options;
@@ -56,7 +56,7 @@ static void *store_rocksdb_open(const char *path)
   if (!path)
     return NULL;
 
-  struct RocksDB_Ctx *ctx = mutt_mem_malloc(sizeof(struct RocksDB_Ctx));
+  struct RocksDbCtx *ctx = mutt_mem_malloc(sizeof(struct RocksDbCtx));
 
   /* RocksDB store errors in form of strings */
   ctx->err = NULL;
@@ -97,7 +97,7 @@ static void *store_rocksdb_fetch(void *store, const char *key, size_t klen, size
   if (!store)
     return NULL;
 
-  struct RocksDB_Ctx *ctx = store;
+  struct RocksDbCtx *ctx = store;
 
   void *rv = rocksdb_get(ctx->db, ctx->read_options, key, klen, vlen, &ctx->err);
   if (ctx->err)
@@ -127,7 +127,7 @@ static int store_rocksdb_store(void *store, const char *key, size_t klen,
   if (!store)
     return -1;
 
-  struct RocksDB_Ctx *ctx = store;
+  struct RocksDbCtx *ctx = store;
 
   rocksdb_put(ctx->db, ctx->write_options, key, klen, value, vlen, &ctx->err);
   if (ctx->err)
@@ -148,7 +148,7 @@ static int store_rocksdb_delete_record(void *store, const char *key, size_t klen
   if (!store)
     return -1;
 
-  struct RocksDB_Ctx *ctx = store;
+  struct RocksDbCtx *ctx = store;
 
   rocksdb_delete(ctx->db, ctx->write_options, key, klen, &ctx->err);
   if (ctx->err)
@@ -169,7 +169,7 @@ static void store_rocksdb_close(void **ptr)
   if (!ptr || !*ptr)
     return;
 
-  struct RocksDB_Ctx *ctx = *ptr;
+  struct RocksDbCtx *ctx = *ptr;
 
   /* close database and free resources */
   rocksdb_close(ctx->db);
