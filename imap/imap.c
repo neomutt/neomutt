@@ -1264,19 +1264,6 @@ int imap_subscribe(char *path, bool subscribe)
   if (imap_adata_find(path, &adata, &mdata) < 0)
     return -1;
 
-  if (C_ImapCheckSubscribed)
-  {
-    char mbox[1024];
-    mutt_buffer_init(&err);
-    err.dsize = 256;
-    err.data = mutt_mem_malloc(err.dsize);
-    size_t len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
-    imap_quote_string(mbox + len, sizeof(mbox) - len, path, true);
-    if (mutt_parse_rc_line(mbox, &err))
-      mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", err.data);
-    FREE(&err.data);
-  }
-
   if (subscribe)
     mutt_message(_("Subscribing to %s..."), mdata->name);
   else
@@ -1288,6 +1275,19 @@ int imap_subscribe(char *path, bool subscribe)
   {
     imap_mdata_free((void *) &mdata);
     return -1;
+  }
+
+  if (C_ImapCheckSubscribed)
+  {
+    char mbox[1024];
+    mutt_buffer_init(&err);
+    err.dsize = 256;
+    err.data = mutt_mem_malloc(err.dsize);
+    size_t len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
+    imap_quote_string(mbox + len, sizeof(mbox) - len, path, true);
+    if (mutt_parse_rc_line(mbox, &err))
+      mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", err.data);
+    FREE(&err.data);
   }
 
   if (subscribe)
