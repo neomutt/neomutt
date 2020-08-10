@@ -362,16 +362,19 @@ static void update_entries_visibility(struct SidebarWindowData *wdata)
   /* Take the fast path if there is no need to test visibilities */
   if (!new_only && !non_empty_only)
   {
-    for (int i = 0; i < wdata->entry_count; i++)
+    struct SbEntry **sbep = NULL;
+    ARRAY_FOREACH(sbep, &wdata->entries)
     {
-      wdata->entries[i]->is_hidden = false;
+      (*sbep)->is_hidden = false;
     }
     return;
   }
 
-  for (int i = 0; i < wdata->entry_count; i++)
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH(sbep, &wdata->entries)
   {
-    sbe = wdata->entries[i];
+    int i = ARRAY_FOREACH_IDX;
+    sbe = *sbep;
 
     sbe->is_hidden = false;
 
@@ -413,22 +416,26 @@ static void unsort_entries(struct SidebarWindowData *wdata)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
-    if (i >= wdata->entry_count)
+    if (i >= ARRAY_SIZE(&wdata->entries))
       break;
 
-    int j = i;
-    while ((j < wdata->entry_count) && (wdata->entries[j]->mailbox != np->mailbox))
-      j++;
-    if (j < wdata->entry_count)
+    struct SbEntry **sbep = NULL;
+    ARRAY_FOREACH(sbep, &wdata->entries)
     {
-      if (j != i)
+      if ((*sbep)->mailbox == np->mailbox)
       {
-        struct SbEntry *tmp = wdata->entries[i];
-        wdata->entries[i] = wdata->entries[j];
-        wdata->entries[j] = tmp;
+        if (i != ARRAY_FOREACH_IDX)
+        {
+          struct SbEntry *tmp = *ARRAY_GET(&wdata->entries, i);
+          *ARRAY_GET(&wdata->entries, i) = *sbep;
+          *sbep = tmp;
+        }
+
+        break;
       }
-      i++;
     }
+
+    i++;
   }
   neomutt_mailboxlist_clear(&ml);
 }
@@ -448,7 +455,8 @@ static void sort_entries(struct SidebarWindowData *wdata)
 
   /* These are the only sort methods we understand */
   if ((ssm == SORT_COUNT) || (ssm == SORT_UNREAD) || (ssm == SORT_FLAGGED) || (ssm == SORT_PATH))
-    qsort(wdata->entries, wdata->entry_count, sizeof(*wdata->entries), cb_qsort_sbe);
+    qsort(wdata->entries.entries, ARRAY_SIZE(&wdata->entries),
+          ARRAY_ELEM_SIZE(&wdata->entries), cb_qsort_sbe);
   else if ((ssm == SORT_ORDER) && (C_SidebarSortMethod != wdata->previous_sort))
     unsort_entries(wdata);
 }
@@ -468,26 +476,30 @@ static void sort_entries(struct SidebarWindowData *wdata)
  */
 static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
 {
-  if ((wdata->entry_count == 0) || (page_size <= 0))
+  if (ARRAY_EMPTY(&wdata->entries) || (page_size <= 0))
     return false;
 
   const struct SbEntry *opn_entry =
-      (wdata->opn_index >= 0) ? wdata->entries[wdata->opn_index] : NULL;
+      (wdata->opn_index >= 0) ? *ARRAY_GET(&wdata->entries, wdata->opn_index) : NULL;
   const struct SbEntry *hil_entry =
-      (wdata->hil_index >= 0) ? wdata->entries[wdata->hil_index] : NULL;
+      (wdata->hil_index >= 0) ? *ARRAY_GET(&wdata->entries, wdata->hil_index) : NULL;
 
   update_entries_visibility(wdata);
   sort_entries(wdata);
 
-  for (int i = 0; i < wdata->entry_count; i++)
+  if (opn_entry || hil_entry)
   {
-    if (opn_entry == wdata->entries[i])
-      wdata->opn_index = i;
-    if (hil_entry == wdata->entries[i])
-      wdata->hil_index = i;
+    struct SbEntry **sbep = NULL;
+    ARRAY_FOREACH(sbep, &wdata->entries)
+    {
+      if (opn_entry == *sbep)
+        wdata->opn_index = ARRAY_FOREACH_IDX;
+      if (hil_entry == *sbep)
+        wdata->hil_index = ARRAY_FOREACH_IDX;
+    }
   }
 
-  if ((wdata->hil_index < 0) || wdata->entries[wdata->hil_index]->is_hidden ||
+  if ((wdata->hil_index < 0) || hil_entry->is_hidden ||
       (C_SidebarSortMethod != wdata->previous_sort))
   {
     if (wdata->opn_index >= 0)
@@ -496,9 +508,8 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
     {
       wdata->hil_index = 0;
       /* Note is_hidden will only be set when C_SidebarNewMailOnly */
-      if (wdata->entries[wdata->hil_index]->is_hidden)
-        if (!select_next(wdata))
-          wdata->hil_index = -1;
+      if ((*ARRAY_GET(&wdata->entries, 0))->is_hidden && !select_next(wdata))
+        wdata->hil_index = -1;
     }
   }
 
@@ -517,9 +528,9 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
       while (page_entries < page_size)
       {
         wdata->bot_index++;
-        if (wdata->bot_index >= wdata->entry_count)
+        if (wdata->bot_index >= ARRAY_SIZE(&wdata->entries))
           break;
-        if (!wdata->entries[wdata->bot_index]->is_hidden)
+        if (!(*ARRAY_GET(&wdata->entries, wdata->bot_index))->is_hidden)
           page_entries++;
       }
     }
@@ -531,8 +542,8 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
     wdata->bot_index = wdata->top_index + page_size - 1;
   }
 
-  if (wdata->bot_index > (wdata->entry_count - 1))
-    wdata->bot_index = wdata->entry_count - 1;
+  if (wdata->bot_index > (ARRAY_SIZE(&wdata->entries) - 1))
+    wdata->bot_index = ARRAY_SIZE(&wdata->entries) - 1;
 
   wdata->previous_sort = C_SidebarSortMethod;
 
@@ -820,21 +831,25 @@ static int calc_path_depth(const char *mbox, const char *delims, const char **la
 static void draw_sidebar(struct SidebarWindowData *wdata, struct MuttWindow *win,
                          int num_rows, int num_cols, int div_width)
 {
-  struct SbEntry *entry = NULL;
-  struct Mailbox *m = NULL;
   if (wdata->top_index < 0)
     return;
 
   int w = MIN(num_cols, (C_SidebarWidth - div_width));
-  int row = 0;
-  for (int entryidx = wdata->top_index;
-       (entryidx < wdata->entry_count) && (row < num_rows); entryidx++)
-  {
-    entry = wdata->entries[entryidx];
-    if (entry->is_hidden)
-      continue;
-    m = entry->mailbox;
 
+  int row = 0;
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->top_index)
+  {
+    if (row >= num_rows)
+      break;
+
+    if ((*sbep)->is_hidden)
+      continue;
+
+    struct SbEntry *entry = (*sbep);
+    struct Mailbox *m = entry->mailbox;
+
+    const int entryidx = ARRAY_FOREACH_IDX;
     if (entryidx == wdata->opn_index)
     {
       if ((Colors->defs[MT_COLOR_SIDEBAR_INDICATOR] != 0))
@@ -925,10 +940,10 @@ struct Mailbox *sb_get_highlight(struct MuttWindow *win)
     return NULL;
 
   struct SidebarWindowData *wdata = sb_wdata_get(win);
-  if ((wdata->entry_count == 0) || (wdata->hil_index < 0))
+  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
     return NULL;
 
-  return wdata->entries[wdata->hil_index]->mailbox;
+  return (*ARRAY_GET(&wdata->entries, wdata->hil_index))->mailbox;
 }
 
 /**
@@ -948,12 +963,12 @@ void sb_set_open_mailbox(struct MuttWindow *win, struct Mailbox *m)
   if (!m)
     return;
 
-  for (int entry = 0; entry < wdata->entry_count; entry++)
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH(sbep, &wdata->entries)
   {
-    if (mutt_str_equal(wdata->entries[entry]->mailbox->realpath, m->realpath))
+    if (mutt_str_equal((*sbep)->mailbox->realpath, m->realpath))
     {
-      wdata->opn_index = entry;
-      wdata->hil_index = entry;
+      wdata->opn_index = wdata->hil_index = ARRAY_FOREACH_IDX;
       break;
     }
   }
@@ -983,50 +998,51 @@ void sb_notify_mailbox(struct MuttWindow *win, struct Mailbox *m, enum SidebarNo
 
   if (sbn == SBN_CREATED)
   {
-    if (wdata->entry_count >= wdata->entry_max)
-    {
-      wdata->entry_max += 10;
-      mutt_mem_realloc(&wdata->entries, wdata->entry_max * sizeof(struct SbEntry *));
-    }
-    wdata->entries[wdata->entry_count] = mutt_mem_calloc(1, sizeof(struct SbEntry));
-    wdata->entries[wdata->entry_count]->mailbox = m;
+    struct SbEntry *entry = mutt_mem_calloc(1, sizeof(struct SbEntry));
+    entry->mailbox = m;
 
     if (wdata->top_index < 0)
-      wdata->top_index = wdata->entry_count;
+      wdata->top_index = ARRAY_SIZE(&wdata->entries);
     if (wdata->bot_index < 0)
-      wdata->bot_index = wdata->entry_count;
+      wdata->bot_index = ARRAY_SIZE(&wdata->entries);
     if ((wdata->opn_index < 0) && Context &&
         mutt_str_equal(m->realpath, Context->mailbox->realpath))
     {
-      wdata->opn_index = wdata->entry_count;
+      wdata->opn_index = ARRAY_SIZE(&wdata->entries);
     }
 
-    wdata->entry_count++;
+    ARRAY_ADD(&wdata->entries, entry);
   }
   else if (sbn == SBN_DELETED)
   {
-    int del_index;
-    for (del_index = 0; del_index < wdata->entry_count; del_index++)
-      if (wdata->entries[del_index]->mailbox == m)
+    struct SbEntry **sbep = NULL, **to_del = NULL;
+    ARRAY_FOREACH(sbep, &wdata->entries)
+    {
+      if ((*sbep)->mailbox == m)
+      {
+        to_del = sbep;
         break;
-    if (del_index == wdata->entry_count)
-      return;
-    FREE(&wdata->entries[del_index]);
-    wdata->entry_count--;
+      }
+    }
 
-    if ((wdata->top_index > del_index) || (wdata->top_index == wdata->entry_count))
+    if (!to_del)
+      return;
+
+    int del_index = ARRAY_IDX(&wdata->entries, to_del);
+
+    if ((wdata->top_index > del_index) || (wdata->top_index == ARRAY_SIZE(&wdata->entries)))
       wdata->top_index--;
     if (wdata->opn_index == del_index)
       wdata->opn_index = -1;
     else if (wdata->opn_index > del_index)
       wdata->opn_index--;
-    if ((wdata->hil_index > del_index) || (wdata->hil_index == wdata->entry_count))
+    if ((wdata->hil_index > del_index) || (wdata->hil_index == ARRAY_SIZE(&wdata->entries)))
       wdata->hil_index--;
-    if ((wdata->bot_index > del_index) || (wdata->bot_index == wdata->entry_count))
+    if ((wdata->bot_index > del_index) || (wdata->bot_index == ARRAY_SIZE(&wdata->entries)))
       wdata->bot_index--;
 
-    for (; del_index < wdata->entry_count; del_index++)
-      wdata->entries[del_index] = wdata->entries[del_index + 1];
+    FREE(to_del);
+    ARRAY_REMOVE(&wdata->entries, to_del);
   }
 
   // otherwise, we just need to redraw
@@ -1059,7 +1075,7 @@ void sb_draw(struct MuttWindow *win)
 
   draw_divider(wdata, win, num_rows, num_cols);
 
-  if (!wdata->entries)
+  if (ARRAY_EMPTY(&wdata->entries))
   {
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
     neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
