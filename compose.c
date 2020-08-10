@@ -1492,10 +1492,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
       case OP_COMPOSE_EDIT_NEWSGROUPS:
         if (!news)
           break;
-        if (e->env->newsgroups)
-          mutt_str_copy(buf, e->env->newsgroups, sizeof(buf));
-        else
-          buf[0] = '\0';
+        mutt_str_copy(buf, e->env->newsgroups, sizeof(buf));
         if (mutt_get_field(Prompts[HDR_NEWSGROUPS], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           mutt_str_replace(&e->env->newsgroups, buf);
@@ -1506,10 +1503,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
       case OP_COMPOSE_EDIT_FOLLOWUP_TO:
         if (!news)
           break;
-        if (e->env->followup_to)
-          mutt_str_copy(buf, e->env->followup_to, sizeof(buf));
-        else
-          buf[0] = '\0';
+        mutt_str_copy(buf, e->env->followup_to, sizeof(buf));
         if (mutt_get_field(Prompts[HDR_FOLLOWUPTO], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           mutt_str_replace(&e->env->followup_to, buf);
@@ -1520,10 +1514,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
       case OP_COMPOSE_EDIT_X_COMMENT_TO:
         if (!(news && C_XCommentTo))
           break;
-        if (e->env->x_comment_to)
-          mutt_str_copy(buf, e->env->x_comment_to, sizeof(buf));
-        else
-          buf[0] = '\0';
+        mutt_str_copy(buf, e->env->x_comment_to, sizeof(buf));
         if (mutt_get_field(Prompts[HDR_XCOMMENTTO], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           mutt_str_replace(&e->env->x_comment_to, buf);
@@ -1533,10 +1524,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 #endif
 
       case OP_COMPOSE_EDIT_SUBJECT:
-        if (e->env->subject)
-          mutt_str_copy(buf, e->env->subject, sizeof(buf));
-        else
-          buf[0] = '\0';
+        mutt_str_copy(buf, e->env->subject, sizeof(buf));
         if (mutt_get_field(Prompts[HDR_SUBJECT], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           if (!mutt_str_equal(e->env->subject, buf))
@@ -2078,8 +2066,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
       case OP_COMPOSE_EDIT_DESCRIPTION:
         CHECK_COUNT;
-        mutt_str_copy(buf, CUR_ATTACH->body->description ? CUR_ATTACH->body->description : "",
-                      sizeof(buf));
+        mutt_str_copy(buf, CUR_ATTACH->body->description, sizeof(buf));
         /* header names should not be translated */
         if (mutt_get_field("Description: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
@@ -2142,9 +2129,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
       case OP_COMPOSE_EDIT_LANGUAGE:
         CHECK_COUNT;
-        buf[0] = '\0'; /* clear buffer first */
-        if (CUR_ATTACH->body->language)
-          mutt_str_copy(buf, CUR_ATTACH->body->language, sizeof(buf));
+        mutt_str_copy(buf, CUR_ATTACH->body->language, sizeof(buf));
         if (mutt_get_field("Content-Language: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
         {
           if (!mutt_str_equal(CUR_ATTACH->body->language, buf))
