@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include "sort.h"
+#include "mutt/array.h"
 
 struct Alias;
 
@@ -40,19 +41,7 @@ struct AliasView
   struct Alias *alias; ///< Alias
 };
 
-/**
- * AliasMenuData - GUI data required to maintain the Menu
- */
-struct AliasMenuData
-{
-  struct AliasView **av; ///< An AliasView for each Alias
-  int num_views;         ///< Number of AliasViews used
-  int max_views;         ///< Size of AliasView array
-};
-
-void                  menu_data_clear(struct AliasMenuData *mdata);
-void                  menu_data_free (struct AliasMenuData **ptr);
-struct AliasMenuData *menu_data_new  (void);
+ARRAY_HEAD(AliasMenuData, struct AliasView);
 
 int  menu_data_alias_add   (struct AliasMenuData *mdata, struct Alias *alias);
 int  menu_data_alias_delete(struct AliasMenuData *mdata, struct Alias *alias);

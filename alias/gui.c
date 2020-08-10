@@ -49,8 +49,8 @@
  */
 int alias_sort_name(const void *a, const void *b)
 {
-  const struct AliasView *av_a = *(struct AliasView const *const *) a;
-  const struct AliasView *av_b = *(struct AliasView const *const *) b;
+  const struct AliasView *av_a = a;
+  const struct AliasView *av_b = b;
 
   int r = mutt_str_coll(av_a->alias->name, av_b->alias->name);
 
@@ -67,10 +67,8 @@ int alias_sort_name(const void *a, const void *b)
  */
 int alias_sort_address(const void *a, const void *b)
 {
-  const struct AddressList *al_a =
-      &(*(struct AliasView const *const *) a)->alias->addr;
-  const struct AddressList *al_b =
-      &(*(struct AliasView const *const *) b)->alias->addr;
+  const struct AddressList *al_a = &((struct AliasView const *) a)->alias->addr;
+  const struct AddressList *al_b = &((struct AliasView const *) b)->alias->addr;
 
   int r;
   if (al_a == al_b)
@@ -105,8 +103,8 @@ int alias_sort_address(const void *a, const void *b)
  */
 int alias_sort_unsort(const void *a, const void *b)
 {
-  const struct AliasView *av_a = *(struct AliasView const *const *) a;
-  const struct AliasView *av_b = *(struct AliasView const *const *) b;
+  const struct AliasView *av_a = a;
+  const struct AliasView *av_b = b;
 
   int r = (av_a->orig_seq - av_b->orig_seq);
 
@@ -124,20 +122,7 @@ static void alias_view_free(struct AliasView **ptr)
   if (!ptr || !*ptr)
     return;
 
-  // struct AliasView *av = *ptr;
-
   FREE(ptr);
-}
-
-/**
- * alias_view_new - Create a new AliasView
- * @retval ptr Newly allocated AliasView
- *
- * A GUI wrapper around an Alias
- */
-static struct AliasView *alias_view_new(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct AliasView));
 }
 
 /**
@@ -146,7 +131,7 @@ static struct AliasView *alias_view_new(void)
  */
 sort_t alias_get_sort_function(short sort)
 {
-  switch ((C_SortAlias & SORT_MASK))
+  switch ((sort & SORT_MASK))
   {
     case SORT_ALIAS:
       return alias_sort_name;
@@ -170,10 +155,12 @@ void menu_data_clear(struct AliasMenuData *mdata)
   if (!mdata)
     return;
 
-  for (int i = 0; i < mdata->num_views; i++)
-    alias_view_free(&mdata->av[i]);
-
-  mdata->num_views = 0;
+  struct AliasView *avp = NULL;
+  ARRAY_FOREACH(avp, mdata)
+  {
+    alias_view_free(&avp);
+  }
+  ARRAY_SHRINK(mdata, ARRAY_SIZE(mdata));
 }
 
 /**
@@ -186,11 +173,8 @@ void menu_data_free(struct AliasMenuData **ptr)
     return;
 
   struct AliasMenuData *mdata = *ptr;
-
-  for (int i = 0; i < mdata->num_views; i++)
-    alias_view_free(&mdata->av[i]);
-
-  FREE(&mdata->av);
+  menu_data_clear(mdata);
+  ARRAY_FREE(mdata);
   FREE(ptr);
 }
 
@@ -218,26 +202,15 @@ int menu_data_alias_add(struct AliasMenuData *mdata, struct Alias *alias)
   if (!mdata || !alias)
     return -1;
 
-  static int config_index = 0;
-  const int chunk_size = 256;
-
-  if (mdata->num_views >= mdata->max_views)
-  {
-    mdata->max_views += chunk_size;
-    mutt_mem_realloc(&mdata->av, mdata->max_views * sizeof(struct AliasView *));
-
-    memset(&mdata->av[mdata->max_views - chunk_size], 0,
-           chunk_size * sizeof(struct AliasView *));
-  }
-
-  struct AliasView *av = alias_view_new();
-  av->alias = alias;
-  av->orig_seq = config_index++;
-
-  mdata->av[mdata->num_views] = av;
-  mdata->num_views++;
-
-  return mdata->num_views;
+  struct AliasView av = {
+    .num = 0,
+    .orig_seq = ARRAY_SIZE(mdata),
+    .is_tagged = false,
+    .is_deleted = false,
+    .alias = alias,
+  };
+  ARRAY_ADD(mdata, av);
+  return ARRAY_SIZE(mdata);
 }
 
 /**
@@ -252,24 +225,17 @@ int menu_data_alias_delete(struct AliasMenuData *mdata, struct Alias *alias)
   if (!mdata || !alias)
     return -1;
 
-  for (int i = 0; i < mdata->num_views; i++)
+  struct AliasView *avp = NULL;
+  ARRAY_FOREACH(avp, mdata)
   {
-    if (mdata->av[i]->alias != alias)
+    if (avp->alias != alias)
       continue;
 
-    alias_view_free(&mdata->av[i]);
-
-    int move = mdata->num_views - i - 1;
-    if (move == 0)
-      break;
-
-    memmove(&mdata->av[i], &mdata->av[i + 1], move * sizeof(struct AliasView *));
-    mdata->av[mdata->num_views - 1] = NULL;
+    ARRAY_REMOVE(mdata, avp);
     break;
   }
 
-  mdata->num_views--;
-  return mdata->num_views;
+  return ARRAY_SIZE(mdata);
 }
 
 /**
@@ -278,10 +244,12 @@ int menu_data_alias_delete(struct AliasMenuData *mdata, struct Alias *alias)
  */
 void menu_data_sort(struct AliasMenuData *mdata)
 {
-  qsort(mdata->av, mdata->num_views, sizeof(struct AliasView *),
-        alias_get_sort_function(C_SortAlias));
+  ARRAY_SORT(mdata, alias_get_sort_function(C_SortAlias));
 
-  // Reset the index numbers
-  for (int i = 0; i < mdata->num_views; i++)
-    mdata->av[i]->num = i;
+  struct AliasView *avp = NULL;
+  int i = 0;
+  ARRAY_FOREACH(avp, mdata)
+  {
+    avp->num = i++;
+  }
 }
