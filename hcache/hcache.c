@@ -262,6 +262,7 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
   {
     /* An existing file or a non-existing path not ending with a slash */
     mutt_encode_path(hcpath, path);
+    create_hcache_dir(mutt_b2s(hcpath));
     return;
   }
 
