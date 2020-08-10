@@ -908,6 +908,25 @@ bail:
 }
 
 /**
+ * notify_sidebar - Notify the sidebar that a mailbox has changed
+ * @param m Mailbox that has changed
+ * @param e Event that has happened
+ */
+static void notify_sidebar(struct Mailbox *m, enum SidebarNotification e)
+{
+  struct MuttWindow *dlg = NULL;
+  TAILQ_FOREACH(dlg, &AllDialogsWindow->children, entries)
+  {
+    struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
+    if (win_sidebar)
+    {
+      sb_notify_mailbox(win_sidebar, m, e);
+      break;
+    }
+  }
+}
+
+/**
  * parse_mailboxes - Parse the 'mailboxes' command - Implements Command::parse()
  *
  * This is also used by 'virtual-mailboxes'.
@@ -973,10 +992,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
 #ifdef USE_SIDEBAR
         if (show || rename)
         {
-          struct MuttWindow *dlg = TAILQ_LAST(&AllDialogsWindow->children, MuttWindowList);
-          struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
-          if (win_sidebar)
-            sb_notify_mailbox(win_sidebar, m_old, show ? SBN_CREATED : SBN_RENAMED);
+          notify_sidebar(m_old, show ? SBN_CREATED : SBN_RENAMED);
         }
 #endif
         mailbox_free(&m);
@@ -1003,10 +1019,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     }
 
 #ifdef USE_SIDEBAR
-    struct MuttWindow *dlg = TAILQ_LAST(&AllDialogsWindow->children, MuttWindowList);
-    struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
-    if (win_sidebar)
-      sb_notify_mailbox(win_sidebar, m, SBN_CREATED);
+    notify_sidebar(m, SBN_CREATED);
 #endif
 #ifdef USE_INOTIFY
     mutt_monitor_add(m);
@@ -1965,10 +1978,7 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
       }
 
 #ifdef USE_SIDEBAR
-      struct MuttWindow *dlg = TAILQ_LAST(&AllDialogsWindow->children, MuttWindowList);
-      struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
-      if (win_sidebar)
-        sb_notify_mailbox(win_sidebar, np->mailbox, SBN_DELETED);
+      notify_sidebar(np->mailbox, SBN_DELETED);
 #endif
 #ifdef USE_INOTIFY
       mutt_monitor_remove(np->mailbox);
