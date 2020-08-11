@@ -59,6 +59,30 @@ static int address_header_decode(char **h);
 static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out,
                               const char *quoted_date);
 
+ARRAY_HEAD(Headers, char *);
+
+/**
+ * add_one_header - Add a header to a Headers array
+ * @param headers Headers array
+ * @param pos     Position to insert new header
+ * @param value   Text to insert
+ *
+ * If a header already exists in that position, the new text will be
+ * concatenated on the old.
+ */
+static void add_one_header(struct Headers *headers, size_t pos, char *value)
+{
+  char **old = ARRAY_GET(headers, pos);
+  if (old && *old)
+  {
+    char *new_value = NULL;
+    mutt_str_asprintf(&new_value, "%s%s", *old, value);
+    FREE(&value);
+    value = new_value;
+  }
+  ARRAY_SET(headers, pos, value);
+}
+
 /**
  * mutt_copy_hdr - Copy header from one file to another
  * @param fp_in     FILE pointer to read from
@@ -83,12 +107,11 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
   bool ignore = false;
   char buf[1024]; /* should be long enough to get most fields in one pass */
   char *nl = NULL;
-  char **headers = NULL;
+  struct Headers headers = ARRAY_HEAD_INITIALIZER;
   int hdr_count;
   int x;
   char *this_one = NULL;
   size_t this_one_len = 0;
-  int error;
 
   if (off_start < 0)
     return -1;
@@ -160,7 +183,6 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
 
   hdr_count = 1;
   x = 0;
-  error = false;
 
   /* We are going to read and collect the headers in an array
    * so we are able to do re-ordering.
@@ -177,7 +199,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
 
   mutt_debug(LL_DEBUG1, "WEED is %sset\n", (chflags & CH_WEED) ? "" : "not ");
 
-  headers = mutt_mem_calloc(hdr_count, sizeof(char *));
+  ARRAY_RESERVE(&headers, hdr_count);
 
   /* Read all the headers into the array */
   while (ftello(fp_in) < off_end)
@@ -209,17 +231,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
           }
         }
 
-        if (!headers[x])
-          headers[x] = this_one;
-        else
-        {
-          int hlen = mutt_str_len(headers[x]);
-
-          mutt_mem_realloc(&headers[x], hlen + this_one_len + sizeof(char));
-          strcat(headers[x] + hlen, this_one);
-          FREE(&this_one);
-        }
-
+        add_one_header(&headers, x, this_one);
         this_one = NULL;
       }
 
@@ -331,24 +343,16 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       this_one_len = mutt_str_len(this_one);
     }
 
-    if (!headers[x])
-      headers[x] = this_one;
-    else
-    {
-      int hlen = mutt_str_len(headers[x]);
-
-      mutt_mem_realloc(&headers[x], hlen + this_one_len + sizeof(char));
-      strcat(headers[x] + hlen, this_one);
-      FREE(&this_one);
-    }
-
+    add_one_header(&headers, x, this_one);
     this_one = NULL;
   }
 
   /* Now output the headers in order */
-  for (x = 0; x < hdr_count; x++)
+  bool error = false;
+  char **hp = NULL;
+  ARRAY_FOREACH(hp, &headers)
   {
-    if (headers[x])
+    if (!error && hp && *hp)
     {
       /* We couldn't do the prefixing when reading because RFC2047
        * decoding may have concatenated lines.  */
@@ -357,29 +361,23 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         const char *pre = (chflags & CH_PREFIX) ? prefix : NULL;
         wraplen = mutt_window_wrap_cols(wraplen, C_Wrap);
 
-        if (mutt_write_one_header(fp_out, 0, headers[x], pre, wraplen, chflags,
-                                  NeoMutt->sub) == -1)
+        if (mutt_write_one_header(fp_out, 0, *hp, pre, wraplen, chflags, NeoMutt->sub) == -1)
         {
           error = true;
-          break;
         }
       }
       else
       {
-        if (fputs(headers[x], fp_out) == EOF)
+        if (fputs(*hp, fp_out) == EOF)
         {
           error = true;
-          break;
         }
       }
     }
-  }
 
-  /* Free in a separate loop to be sure that all headers are freed
-   * in case of error. */
-  for (x = 0; x < hdr_count; x++)
-    FREE(&headers[x]);
-  FREE(&headers);
+    FREE(hp);
+  }
+  ARRAY_FREE(&headers);
 
   if (error)
     return -1;
