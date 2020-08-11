@@ -59,9 +59,8 @@ msgid "Personal name: "
 msgstr "Vlastní jméno: "
 
 #: alias/alias.c:461
-#, fuzzy
 msgid "Comment: "
-msgstr "X-Comment-To: "
+msgstr "Komentář: "
 
 #: alias/alias.c:469 alias/alias.c:473
 msgid "Accept?"
@@ -238,9 +237,8 @@ msgstr "Vytvoření autocrypt účtu přerušeno"
 #. email when the engine is not available.
 #: autocrypt/autocrypt.c:568 autocrypt/autocrypt.c:577
 #: autocrypt/autocrypt.c:584
-#, fuzzy
 msgid "Autocrypt is not available"
-msgstr "Rodičovská zpráva není dostupná"
+msgstr "Autocrypt není dostupný"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the account does not exist or is not enabled.
@@ -249,7 +247,7 @@ msgstr "Rodičovská zpráva není dostupná"
 #: autocrypt/autocrypt.c:596
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr ""
+msgstr "Autocrpt není zapnutý pro %s"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
@@ -924,15 +922,13 @@ msgstr "Kopíruji do %s…"
 
 #. L10N: Progress meter message when saving tagged messages
 #: commands.c:1195
-#, fuzzy
 msgid "Saving tagged messages..."
-msgstr "Vytisknout označené zprávy?"
+msgstr "Ukládám označené zprávy…"
 
 #. L10N: Progress meter message when copying tagged messages
 #: commands.c:1197
-#, fuzzy
 msgid "Copying tagged messages..."
-msgstr "Kopíruji zprávu (%d) do %s…"
+msgstr "Kopíruji označené zprávy…"
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1299
@@ -1249,9 +1245,9 @@ msgstr "Změna v příloze [#%d]. Změnit kódování pro %s?"
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "(+%d další)"
+msgstr[1] "(+%d další)"
+msgstr[2] "(+%d dalších)"
 
 #: compose.c:916
 msgid "-- Attachments"
@@ -1299,7 +1295,7 @@ msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "Připojuji zvolený soubor…"
 msgstr[1] "Připojuji zvolené soubory…"
-msgstr[2] "Připojuji zvolené soubory…"
+msgstr[2] "Připojuji zvolených souborů…"
 
 #: compose.c:1859
 #, c-format
@@ -1435,14 +1431,14 @@ msgid "Invalid boolean value: %ld"
 msgstr "Chybná boolean hodnota: %ld"
 
 #: config/enum.c:57
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid enum value: %s"
 msgstr "Neplatná hodnota výčtu: %s"
 
 #: config/enum.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid enum value: %ld"
-msgstr "Neplatná hodnota výčtu: %s"
+msgstr "Neplatná hodnota výčtu: %ld"
 
 #: config/long.c:49 config/number.c:49 config/path.c:94 config/path.c:167
 #: config/sort.c:145 config/string.c:73 config/string.c:151
@@ -1507,7 +1503,7 @@ msgstr "Proměnná „%s“ není známa."
 #: config/set.c:929 config/set.c:1015
 #, c-format
 msgid "Type '%s' doesn't support operation '%s'"
-msgstr ""
+msgstr "Typ '%s' nepodporuje operaci '%s'"
 
 #: config/sort.c:192
 #, c-format
@@ -1859,9 +1855,9 @@ msgstr "Tunel do %s vrátil chybu %d (%s)"
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Vypočítaná délka nebyla správná o %ld bajt"
+msgstr[1] "Vypočítaná délka nebyla správná o %ld bajty"
+msgstr[2] "Vypočítaná délka nebyla správná o %ld bajtů"
 
 #: copy.c:764
 msgid "No decryption engine available for message"
@@ -1978,36 +1974,35 @@ msgstr " („?“ pro seznam): "
 
 #: gui/mutt_window.c:52
 msgid "Complete"
-msgstr ""
+msgstr "Doplnit"
 
 #: gui/mutt_window.c:53
 msgid "Hist Up"
-msgstr ""
+msgstr "Předchozí položka historie"
 
 #: gui/mutt_window.c:54
 msgid "Hist Down"
-msgstr ""
+msgstr "Následující položka historie"
 
 #: gui/mutt_window.c:55
-#, fuzzy
 msgid "Hist Search"
-msgstr "Hledat"
+msgstr "Hledat v historii příkazů"
 
 #: gui/mutt_window.c:56
 msgid "Begin Line"
-msgstr ""
+msgstr "Začátek řádky"
 
 #: gui/mutt_window.c:57
 msgid "End Line"
-msgstr ""
+msgstr "Konec řádky"
 
 #: gui/mutt_window.c:58
 msgid "Kill Line"
-msgstr ""
+msgstr "Odstranit řádku"
 
 #: gui/mutt_window.c:59
 msgid "Kill Word"
-msgstr ""
+msgstr "Odstranit slovo"
 
 #: handler.c:103
 #, c-format
@@ -2072,13 +2067,13 @@ msgid_plural ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
 msgstr[0] ""
-"[-- Tato příloha typu „%s/%s“ (o velikosti v bajtech: %s) byla smazána --]\n"
+"[-- Tato příloha typu „%s/%s“ (o velikosti: %s bajt) byla smazána --]\n"
 "[-- %s --]\n"
 msgstr[1] ""
-"[-- Tato příloha typu „%s/%s“ (o velikosti v bajtech: %s) byla smazána --]\n"
+"[-- Tato příloha typu „%s/%s“ (o velikosti: %s bajty) byla smazána --]\n"
 "[-- %s --]\n"
 msgstr[2] ""
-"[-- Tato příloha typu „%s/%s“ (o velikosti v bajtech: %s) byla smazána --]\n"
+"[-- Tato příloha typu „%s/%s“ (o velikosti: %s bajtů) byla smazána --]\n"
 "[-- %s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
@@ -2099,9 +2094,9 @@ msgstr[2] ""
 #, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr[0] "[-- Tato příloha typu „%s/%s“ (o velikosti v bajtech: %s) byla smazána --]\n"
-msgstr[1] "[-- Tato příloha typu „%s/%s“ (o velikosti v bajtech: %s) byla smazána --]\n"
-msgstr[2] "[-- Tato příloha typu „%s/%s“ (o velikosti v bajtech: %s) byla smazána --]\n"
+msgstr[0] "[-- Tato příloha typu „%s/%s“ (o velikosti: %s bajt) byla smazána --]\n"
+msgstr[1] "[-- Tato příloha typu „%s/%s“ (o velikosti: %s bajty) byla smazána --]\n"
+msgstr[2] "[-- Tato příloha typu „%s/%s“ (o velikosti: %s bajtů) byla smazána --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2406,9 +2401,9 @@ msgid "Mailbox %s@%s closed"
 msgstr "Schránka %s@%s uzavřena"
 
 #: imap/command.c:1172
-#, fuzzy, c-format
+#, c-format
 msgid "IMAP command failed: %s"
-msgstr "Kompresní příkaz selhal: %s"
+msgstr "Příkaz protokolu IMAP selhal: %s"
 
 #: imap/command.c:1271 imap/command.c:1386
 #, c-format
@@ -2473,7 +2468,7 @@ msgstr "Příkaz EXPUNGE se nezdařil."
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "Označuji %d zprávu ke smazání…"
-msgstr[1] "Označuji %d zpráv ke smazání…"
+msgstr[1] "Označuji %d zprávy ke smazání…"
 msgstr[2] "Označuji %d zpráv ke smazání…"
 
 # Označuji %d zprávu ke smazání…
@@ -2483,7 +2478,7 @@ msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Ukládám změněnou zprávu… [%d/%d]"
 msgstr[1] "Ukládám změněné zprávy… [%d/%d]"
-msgstr[2] "Ukládám změněné zprávy… [%d/%d]"
+msgstr[2] "Ukládám změněných zpráv… [%d/%d]"
 
 #: imap/imap.c:1651
 msgid "Error saving flags. Close anyway?"
@@ -2942,7 +2937,7 @@ msgstr "Zprávu nelze upravit"
 msgid "%d label changed"
 msgid_plural "%d labels changed"
 msgstr[0] "%d štítek změněn"
-msgstr[1] "%d štítků změněno"
+msgstr[1] "%d štítky změněny"
 msgstr[2] "%d štítků změněno"
 
 #. L10N: This is displayed when editing an x-label, but no messages
@@ -3029,9 +3024,9 @@ msgid "Invalid value for option %s: %s"
 msgstr "Neplatná hodnota přepínače %s: „%s“"
 
 #: init.c:1623
-#, c-format
+#, fuzzy, c-format
 msgid "Set option %s before setting %s"
-msgstr ""
+msgstr "Nastavit konfiguraci %s před nastavením %s"
 
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
@@ -3039,7 +3034,7 @@ msgstr ""
 #: init.c:1640 send/config.c:50
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
-msgstr "Hodnota %s musí být v rozmezí %d a %d"
+msgstr "Volba %s musí být v rozmezí %d a %d"
 
 #: init.c:1658
 #, c-format
@@ -3130,9 +3125,8 @@ msgstr "Nesprávně formátovaná položka pro typ %s v „%s“ na řádku %d"
 #. unset mailcap_path
 #.
 #: mailcap.c:488
-#, fuzzy
 msgid "Neither mailcap_path nor MAILCAPS specified"
-msgstr "Cesta k mailcapu není zadána."
+msgstr "Cesta mailcap_path ani proměnná MAILCAPS není zadána"
 
 #: mailcap.c:512
 #, c-format
@@ -3206,7 +3200,6 @@ msgstr ""
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
 #: main.c:176
-#, fuzzy
 msgid ""
 "options:\n"
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
@@ -3259,7 +3252,7 @@ msgstr ""
 "  -b <adresa>   Určuje adresu pro utajenou kopii (BCC)\n"
 "  -c <adresa>   Určuje adresu pro kopii (CC)\n"
 "  -D            Na standardní výstup vypíše hodnoty všech proměnných\n"
-"  -D -O         Like -D, but show one-liner documentation\n"
+"  -D -O         Podobné jako -D, navíc ukáže jednořádkovou dokumentaci\n"
 "  -D -S         Podobné jako -D, navíc schová hodnoty citlivých proměnných\n"
 "  -d <úroveň>   Ladicí informace zapisuje do „~/.neomuttdebug0“\n"
 "                Hodnota 1-5 ovlivnňuje úroveň podrobnosti\n"
@@ -3680,9 +3673,9 @@ msgstr "Nelze zapsat %s"
 #: mx.c:557
 msgid "message not deleted"
 msgid_plural "messages not deleted"
-msgstr[0] "zprávy nesmazány"
+msgstr[0] "zpráva nesmazána"
 msgstr[1] "zprávy nesmazány"
-msgstr[2] "zprávy nesmazány"
+msgstr[2] "zpráv nesmazáno"
 
 #: mx.c:603
 msgid "Can't open trash folder"
@@ -3698,17 +3691,17 @@ msgstr "Označit všechny články za přečtené?"
 #, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
-msgstr[0] "Přesunout %d přečtených zpráv do %s?"
-msgstr[1] "Přesunout %d přečtených zpráv do %s?"
+msgstr[0] "Přesunout %d přečtenou zprávu do %s?"
+msgstr[1] "Přesunout %d přečtené zprávy do %s?"
 msgstr[2] "Přesunout %d přečtených zpráv do %s?"
 
 #: mx.c:728 mx.c:975
 #, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
-msgstr[0] "Zahodit smazané zprávy (%d)?"
+msgstr[0] "Zahodit smazanou zprávu (%d)?"
 msgstr[1] "Zahodit smazané zprávy (%d)?"
-msgstr[2] "Zahodit smazané zprávy (%d)?"
+msgstr[2] "Zahodit smazaných zpráv (%d)?"
 
 #: mx.c:751
 #, c-format
@@ -3748,9 +3741,9 @@ msgid "Mailbox checkpointed"
 msgstr "Do schránky byla vložena kontrolní značka"
 
 #: mx.c:1379
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open %s: it is a pipe"
-msgstr "Soubor se zprávou nelze otevřít: %s"
+msgstr "Nelze otevřít %s: soubor je typu pipe"
 
 #: ncrypt/crypt.c:80
 #, c-format
@@ -6181,14 +6174,14 @@ msgstr "chybí parametr"
 #. L10N: Pattern completion menu title
 #: pattern/dlgpattern.c:137
 msgid "Patterns"
-msgstr ""
+msgstr "Vzory"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
 #: pattern/dlgpattern.c:155
 msgid "EXPR"
-msgstr ""
+msgstr "VÝRAZ"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a numeric range.
@@ -6196,7 +6189,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:163
 msgid "RANGE"
-msgstr ""
+msgstr "ROZSAH"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a date range
@@ -6204,7 +6197,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:170
 msgid "DATERANGE"
-msgstr ""
+msgstr "INTERVAL DATUMU"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a query
@@ -6212,7 +6205,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:177
 msgid "QUERY"
-msgstr ""
+msgstr "DOTAZ"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a nested pattern.
@@ -6220,19 +6213,19 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:195
 msgid "PATTERN"
-msgstr ""
+msgstr "VZOR"
 
 #: pattern/dlgpattern.c:203
 msgid "messages in threads containing messages matching PATTERN"
-msgstr ""
+msgstr "zprávy ve vláknech odpovídající VZOR"
 
 #: pattern/dlgpattern.c:212
 msgid "messages whose immediate parent matches PATTERN"
-msgstr ""
+msgstr "zprávy jejichž přímo nadřízená zpráva odpovídá VZORU"
 
 #: pattern/dlgpattern.c:221
 msgid "messages having an immediate child matching PATTERN"
-msgstr ""
+msgstr "zprávy mající přímo podřízenou zprávu odpovídající VZORU"
 
 #. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
 #. was invoked when NeoMutt was compiled without crypto support.
@@ -6240,7 +6233,7 @@ msgstr ""
 #: pattern/exec.c:86
 #, c-format
 msgid "Pattern operator '~%c' is disabled"
-msgstr ""
+msgstr "Operátor vzoru'~%c' není dostupný"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
@@ -6267,266 +6260,249 @@ msgstr "chyba: vyhledávání na straně serveru je podporováno pouze s IMAP"
 
 #. L10N: Pattern Completion Menu description for ~A
 #: pattern/flags.c:44
-#, fuzzy
 msgid "all messages"
-msgstr "seřadit zprávy"
+msgstr "všechny zprávy"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:47
 msgid "messages whose body matches EXPR"
-msgstr ""
+msgstr "zprávy jejichž tělo odpovídají VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:50
 msgid "messages whose body or headers match EXPR"
-msgstr ""
+msgstr "zprávy jejichž tělo nebo hlavičky odpovídají VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:53
 msgid "messages whose CC header matches EXPR"
-msgstr ""
+msgstr "zprávy jejichž halvička CC odpovídají VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:56
 msgid "messages whose recipient matches EXPR"
-msgstr ""
+msgstr "zprávy jejichž příjemnce odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:59
 msgid "messages sent in DATERANGE"
-msgstr ""
+msgstr "zprávy odeslané v INTERVALU DATUMU"
 
 #. L10N: Pattern Completion Menu description for ~D
 #: pattern/flags.c:62
-#, fuzzy
 msgid "deleted messages"
-msgstr "Nejsou žádné obnovené zprávy"
+msgstr "odstraněné zprávy"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
 msgid "messages whose Sender header matches EXPR"
-msgstr ""
+msgstr "zprávy jejichž hlavička Odesilatel odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:68
 #, fuzzy
 msgid "expired messages"
-msgstr "Žádné nepřečtené zprávy"
+msgstr "zprávy jejichž platnost vypršela"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:71
 msgid "messages whose From header matches EXPR"
-msgstr ""
+msgstr "zprávy jejichž hlavička Od odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:74
-#, fuzzy
 msgid "flagged messages"
-msgstr "Žádné zprávy nejsou označeny"
+msgstr "zprávy s příznakem"
 
 #. L10N: Pattern Completion Menu description for ~g
 #: pattern/flags.c:77
-#, fuzzy
 msgid "cryptographically signed messages"
-msgstr "vrátit se k odložené zprávě"
+msgstr "kryptograficky podepsané zprávy"
 
 #. L10N: Pattern Completion Menu description for ~G
 #: pattern/flags.c:80
-#, fuzzy
 msgid "cryptographically encrypted messages"
-msgstr "Nemohu dešifrovat zašifrovanou zprávu"
+msgstr "kryptograficky zašifrované zprávy"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:83
 msgid "messages whose header matches EXPR"
-msgstr ""
+msgstr "zprávy jejichž jakákoliv hlavička odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:86
 msgid "messages whose spam tag matches EXPR"
-msgstr ""
+msgstr "zprávy označené jako spam odpovídající VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:89
-#, fuzzy
 msgid "messages whose Message-ID matches EXPR"
-msgstr "získat zprávu s Message-Id"
+msgstr "zprávy jejichž hlavička Message-ID odpovídající VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:92
 msgid "messages whose Message-ID is included in the results returned from an external search program"
-msgstr ""
+msgstr "zprávy jejichž hlavička Message-ID je součástí výsledku navráceného externím programem pro hledání"
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:95
-#, fuzzy
 msgid "messages which contain PGP key"
-msgstr "horká klávesa pro značku zprávy"
+msgstr "zprávy obsahující PGP klíč"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:98
 msgid "messages addressed to known mailing lists"
-msgstr ""
+msgstr "zprávy adresované na známou poštovní konferenci"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:101
 msgid "messages whose From/Sender/To/CC matches EXPR"
-msgstr ""
+msgstr "zprávy jejichž hlavičky Od/Odesilatel/Komu/Kopie odpovídají VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:104
 msgid "messages whose number is in RANGE"
-msgstr ""
+msgstr "zprávy jejichž pořadí je v ROZSAHU"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:107
 msgid "messages with a Content-Type matching EXPR"
-msgstr ""
+msgstr "zprávy s Content-Type odpovídající VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~n
 #: pattern/flags.c:110
 msgid "messages whose score is in RANGE"
-msgstr ""
+msgstr "Zprávy jejichž skóre je v ROZSAHU"
 
 #. L10N: Pattern Completion Menu description for ~N
 #: pattern/flags.c:113
-#, fuzzy
 msgid "new messages"
-msgstr "Žádné nové zprávy"
+msgstr "nové zprávy"
 
 #. L10N: Pattern Completion Menu description for ~O
 #: pattern/flags.c:116
-#, fuzzy
 msgid "old messages"
-msgstr "seřadit zprávy"
+msgstr "staré zprávy"
 
 #. L10N: Pattern Completion Menu description for ~p
 #: pattern/flags.c:119
 msgid "messages addressed to you"
-msgstr ""
+msgstr "zprávy adresované vám"
 
 #. L10N: Pattern Completion Menu description for ~P
 #: pattern/flags.c:122
-#, fuzzy
 msgid "messages from you"
-msgstr "horká klávesa pro značku zprávy"
+msgstr "zprávyt od vás"
 
 #. L10N: Pattern Completion Menu description for ~Q
 #: pattern/flags.c:125
 msgid "messages which have been replied to"
-msgstr ""
+msgstr "zprávy na něž bylo odpovězeno"
 
 #. L10N: Pattern Completion Menu description for ~r
 #: pattern/flags.c:128
 msgid "messages received in DATERANGE"
-msgstr ""
+msgstr "zprávy přijaté v INTERVALU DATUMU"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:131
-#, fuzzy
 msgid "already read messages"
-msgstr "Žádné nepřečtené zprávy"
+msgstr "již přečtené zprávy"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:134
 msgid "messages whose Subject header matches EXPR"
-msgstr ""
+msgstr "zprávy jejichž hlavička Předmět odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:137
 #, fuzzy
 msgid "superseded messages"
-msgstr "Žádné nepřečtené zprávy"
+msgstr "nahrazené zprávy"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:140
 msgid "messages whose To header matches EXPR"
-msgstr ""
+msgstr "zprávy jejichž hlavička Komu odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:143
-#, fuzzy
 msgid "tagged messages"
-msgstr "Žádné zprávy nejsou označeny"
+msgstr "označené zprávy"
 
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:146
-#, fuzzy
 msgid "messages addressed to subscribed mailing lists"
-msgstr "odepsat na specifikovanou poštovní konferenci"
+msgstr "zpráva adresovaná poštovní korespondenci již odebíráte"
 
 #. L10N: Pattern Completion Menu description for ~U
 #: pattern/flags.c:149
-#, fuzzy
 msgid "unread messages"
-msgstr "Žádné nepřečtené zprávy"
+msgstr "nepřečtené zprávy"
 
 #. L10N: Pattern Completion Menu description for ~v
 #: pattern/flags.c:152
-#, fuzzy
 msgid "messages in collapsed threads"
-msgstr "Žádné nové zprávy v tomto vlákně"
+msgstr "zprávy v zavinotém vlákně"
 
 #. L10N: Pattern Completion Menu description for ~V
 #: pattern/flags.c:155
-#, fuzzy
 msgid "cryptographically verified messages"
-msgstr "přepnout zobrazování přečtených zpráv"
+msgstr "zprávy s kryptograficky ověřeným podpisem"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:159
-#, fuzzy
 msgid "newsgroups matching EXPR"
-msgstr "Masce nevyhovují žádné diskusní skupiny"
+msgstr "diskusní skupiny odpovídající VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:163
+#, fuzzy
 msgid "messages whose References header matches EXPR"
-msgstr ""
+msgstr "zprávy jejichž hlavička References odpovídá Výrazu"
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:166
-#, fuzzy
 msgid "messages with RANGE attachments"
-msgstr "zobrazit MIME přílohy"
+msgstr "zprávy s počtem příloh v ROZSAHU"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:169
 msgid "messages whose X-Label header matches EXPR"
-msgstr ""
+msgstr "zprávy jejichž hlavička X-Label odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:172
+#, fuzzy
 msgid "messages whose tags match EXPR"
-msgstr ""
+msgstr "zprávy jejichž označení odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~z
 #: pattern/flags.c:175
 msgid "messages whose size is in RANGE"
-msgstr ""
+msgstr "zprávy jejichž velikost je v ROZSAHU"
 
 #. L10N: Pattern Completion Menu description for ~=
 #: pattern/flags.c:178
-#, fuzzy
 msgid "duplicated messages"
-msgstr "Nejsou žádné obnovené zprávy"
+msgstr "duplicitní zprávy"
 
 #. L10N: Pattern Completion Menu description for ~$
 #: pattern/flags.c:181
 #, fuzzy
 msgid "unreferenced messages"
-msgstr "Žádné nepřečtené zprávy"
+msgstr "zprávy jež jsou odpovědí na zprávu, která není dostupná"
 
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:184
 #, fuzzy
 msgid "broken threads"
-msgstr "Nejsou další vlákna"
+msgstr "rozbitá vlákna"
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:187
 msgid "IMAP custom server-side search for STRING"
-msgstr ""
+msgstr "hledání ŘETĚZCE na straně IMAP serveru"
 
 #: pattern/pattern.c:253 pattern/pattern.c:412
 msgid "Compiling search pattern..."
@@ -6596,7 +6572,7 @@ msgstr "Končím spojení s POP serverem…"
 
 #: pop/lib.c:624
 msgid "Verifying message indexes..."
-msgstr "Ukládám indexy zpráv…"
+msgstr "Ověřuji indexy zpráv…"
 
 #: pop/lib.c:647
 msgid "Connection lost. Reconnect to POP server?"
@@ -6612,7 +6588,7 @@ msgstr "Nelze zapsat hlavičku do dočasného souboru"
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
 msgstr[0] "%d zpráva byla ztracena. Zkuste schránku znovu otevřít."
-msgstr[1] "%d zpráv bylo ztraceno. Zkuste schránku znovu otevřít."
+msgstr[1] "%d zprávy byly ztraceny. Zkuste schránku znovu otevřít."
 msgstr[2] "%d zpráv bylo ztraceno. Zkuste schránku znovu otevřít."
 
 #: pop/pop.c:565
@@ -6636,9 +6612,9 @@ msgstr "Odstranit zprávy ze serveru?"
 #, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
-msgstr[0] "Načítám nové zprávy (počet bajtů: %d)…"
-msgstr[1] "Načítám nové zprávy (počet bajtů: %d)…"
-msgstr[2] "Načítám nové zprávy (počet bajtů: %d)…"
+msgstr[0] "Načítám nové zprávy (%d bajt)…"
+msgstr[1] "Načítám nové zprávy (%d bajty)…"
+msgstr[2] "Načítám nové zprávy (%d bajtů)…"
 
 #: pop/pop.c:700
 msgid "Error while writing mailbox"
@@ -6737,9 +6713,9 @@ msgstr "Neví se, jak vytisknout přílohy typu %s"
 #, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
-msgstr[0] "Vytisknout %d označené přílohy?"
+msgstr[0] "Vytisknout %d označou přílohu?"
 msgstr[1] "Vytisknout %d označené přílohy?"
-msgstr[2] "Vytisknout %d označené přílohy?"
+msgstr[2] "Vytisknout %d označených příloh?"
 
 #: recvattach.c:1178
 #, c-format
@@ -6961,9 +6937,8 @@ msgid "Preparing forwarded message..."
 msgstr "Připravuji přeposílanou zprávu…"
 
 #: send/send.c:1640
-#, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "Kopie do souboru v IMAP složce nelze provést v dávkovém režimu"
+msgstr "Varování: Kopie do souboru v IMAP složce nelze provést v dávkovém režimu"
 
 #. L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
 #. To make it clearer that the message doesn't mean NeoMutt is aborting
@@ -6973,7 +6948,7 @@ msgstr "Kopie do souboru v IMAP složce nelze provést v dávkovém režimu"
 #: send/send.c:1646
 #, c-format
 msgid "Skipping Fcc to %s"
-msgstr ""
+msgstr "Vynechat uložení do souboru: %s"
 
 #: send/send.c:1686 send/send.c:1696 send/send.c:1722
 msgid "Save attachments in Fcc?"
@@ -7021,7 +6996,6 @@ msgid "Recall postponed message?"
 msgstr "Vrátit se k odloženým zprávám?"
 
 #: send/send.c:2287
-#, fuzzy
 msgid "Refusing to send an empty email"
 msgstr "Odmítám poslat prázdnou zprávu"
 
