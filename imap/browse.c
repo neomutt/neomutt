@@ -64,16 +64,10 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   char relpath[PATH_MAX];
   struct ConnAccount cac = { { 0 } };
   char mailbox[1024];
+  struct FolderFile ff = { 0 };
 
   if (imap_parse_path(state->folder, &cac, mailbox, sizeof(mailbox)))
     return;
-
-  if (state->entrylen + 1 == state->entrymax)
-  {
-    mutt_mem_realloc(&state->entry, sizeof(struct FolderFile) * (state->entrymax += 256));
-    memset(state->entry + state->entrylen, 0,
-           (sizeof(struct FolderFile) * (state->entrymax - state->entrylen)));
-  }
 
   /* render superiors as unix-standard ".." */
   if (isparent)
@@ -93,7 +87,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   }
 
   imap_qualify_path(tmp, sizeof(tmp), &cac, folder);
-  (state->entry)[state->entrylen].name = mutt_str_dup(tmp);
+  ff.name = mutt_str_dup(tmp);
 
   /* mark desc with delim in browser if it can have subfolders */
   if (!isparent && !noinferiors && (strlen(relpath) < sizeof(relpath) - 1))
@@ -102,15 +96,15 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
     relpath[strlen(relpath)] = delim;
   }
 
-  (state->entry)[state->entrylen].desc = mutt_str_dup(relpath);
+  ff.desc = mutt_str_dup(relpath);
+  ff.imap = true;
 
-  (state->entry)[state->entrylen].imap = true;
   /* delimiter at the root is useless. */
   if (folder[0] == '\0')
     delim = '\0';
-  (state->entry)[state->entrylen].delim = delim;
-  (state->entry)[state->entrylen].selectable = !noselect;
-  (state->entry)[state->entrylen].inferiors = !noinferiors;
+  ff.delim = delim;
+  ff.selectable = !noselect;
+  ff.inferiors = !noinferiors;
 
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
   neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
@@ -123,14 +117,14 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
 
   if (np)
   {
-    (state->entry)[state->entrylen].has_mailbox = true;
-    (state->entry)[state->entrylen].has_new_mail = np->mailbox->has_new;
-    (state->entry)[state->entrylen].msg_count = np->mailbox->msg_count;
-    (state->entry)[state->entrylen].msg_unread = np->mailbox->msg_unread;
+    ff.has_mailbox = true;
+    ff.has_new_mail = np->mailbox->has_new;
+    ff.msg_count = np->mailbox->msg_count;
+    ff.msg_unread = np->mailbox->msg_unread;
   }
   neomutt_mailboxlist_clear(&ml);
 
-  (state->entrylen)++;
+  ARRAY_ADD(&state->entry, ff);
 }
 
 /**
@@ -355,7 +349,7 @@ int imap_browse(const char *path, struct BrowserState *state)
   if (browse_add_list_result(adata, buf, state, false))
     goto fail;
 
-  if (state->entrylen == 0)
+  if (ARRAY_EMPTY(&state->entry))
   {
     mutt_error(_("No such folder"));
     goto fail;
