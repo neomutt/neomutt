@@ -514,7 +514,8 @@ $(PWD)/send:
 @if USE_SIDEBAR
 LIBSIDEBAR=	libsidebar.a
 LIBSIDEBAROBJS=	sidebar/config.o sidebar/sidebar.o sidebar/commands.o \
-		sidebar/functions.o sidebar/observer.o sidebar/wdata.o
+		sidebar/functions.o sidebar/observer.o sidebar/wdata.o \
+		sidebar/window.o
 CLEANFILES+=	$(LIBSIDEBAR) $(LIBSIDEBAROBJS)
 ALLOBJS+=	$(LIBSIDEBAROBJS)
 

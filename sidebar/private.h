@@ -87,10 +87,7 @@ extern short C_SidebarWidth;
 
 // sidebar.c
 bool select_next        (struct SidebarWindowData *wdata);
-WindowActionFlags calc_divider(struct SidebarWindowData *wdata, bool ascii, const char *div_str);
 void sb_notify_mailbox  (struct SidebarWindowData *wdata, struct Mailbox *m);
-int sb_recalc(struct MuttWindow *win);
-int sb_repaint(struct MuttWindow *win);
 
 // observer.c
 int sb_insertion_observer(struct NotifyCallback *nc);
@@ -100,5 +97,10 @@ void sb_win_add_observers(struct MuttWindow *win);
 void                      sb_wdata_free(struct MuttWindow *win, void **ptr);
 struct SidebarWindowData *sb_wdata_get(struct MuttWindow *win);
 struct SidebarWindowData *sb_wdata_new(void);
+
+// window.c
+WindowActionFlags calc_divider(struct SidebarWindowData *wdata, bool ascii, const char *div_str);
+int sb_recalc(struct MuttWindow *win);
+int sb_repaint(struct MuttWindow *win);
 
 #endif /* MUTT_SIDEBAR_PRIVATE_H */

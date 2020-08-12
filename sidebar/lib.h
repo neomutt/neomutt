@@ -35,6 +35,7 @@
  * | sidebar/observer.c  | @subpage sidebar_observers |
  * | sidebar/sidebar.c   | @subpage sidebar_sidebar   |
  * | sidebar/wdata.c     | @subpage sidebar_wdata     |
+ * | sidebar/window.c    | @subpage sidebar_window    |
  */
 
 #ifndef MUTT_SIDEBAR_LIB_H
