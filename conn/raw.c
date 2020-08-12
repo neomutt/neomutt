@@ -68,6 +68,8 @@ static int socket_connect(int fd, struct sockaddr *sa)
   int sa_size;
   int save_errno;
   sigset_t set;
+  struct sigaction oldalrm = { 0 };
+  struct sigaction act = { 0 };
 
   if (sa->sa_family == AF_INET)
     sa_size = sizeof(struct sockaddr_in);
@@ -81,9 +83,21 @@ static int socket_connect(int fd, struct sockaddr *sa)
     return -1;
   }
 
+  /* Batch mode does not call mutt_signal_init(), so ensure the alarm
+   * interrupts the connect call */
   const short c_socket_timeout = cs_subset_number(NeoMutt->sub, "socket_timeout");
   if (c_socket_timeout > 0)
+  {
+    sigemptyset(&act.sa_mask);
+    act.sa_handler = mutt_sig_empty_handler;
+#ifdef SA_INTERRUPT
+    act.sa_flags = SA_INTERRUPT;
+#else
+    act.sa_flags = 0;
+#endif
+    sigaction(SIGALRM, &act, &oldalrm);
     alarm(c_socket_timeout);
+  }
 
   mutt_sig_allow_interrupt(true);
 
@@ -116,7 +130,10 @@ static int socket_connect(int fd, struct sockaddr *sa)
   }
 
   if (c_socket_timeout > 0)
+  {
     alarm(0);
+    sigaction(SIGALRM, &oldalrm, NULL);
+  }
   mutt_sig_allow_interrupt(false);
   sigprocmask(SIG_UNBLOCK, &set, NULL);
 
