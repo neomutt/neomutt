@@ -777,11 +777,9 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   if (((C_Sort & SORT_MASK) == SORT_THREADS) && C_CollapseAll)
     collapse_all(Context, menu, 0);
 
-#ifdef USE_SIDEBAR
   struct MuttWindow *dlg = dialog_find(menu->win_index);
-  struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
-  sb_set_open_mailbox(win_sidebar, Context ? Context->mailbox : NULL);
-#endif
+  struct EventMailbox em = { Context ? Context->mailbox : NULL };
+  notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
 
   mutt_clear_error();
   mutt_mailbox_check(Context ? Context->mailbox : NULL, MUTT_MAILBOX_CHECK_FORCE); /* force the mailbox check after we have changed the folder */
@@ -1878,8 +1876,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
           oldcount = (Context && Context->mailbox) ? Context->mailbox->msg_count : 0;
 
-          mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
-          notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_SHUTDOWN, NULL);
+          struct EventMailbox em = { Context ? Context->mailbox : NULL };
+          notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
 
           if (!Context || ((check = mx_mbox_close(&Context)) == 0))
             done = true;

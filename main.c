@@ -78,9 +78,6 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif
@@ -1226,10 +1223,10 @@ int main(int argc, char *argv[], char *envp[])
     {
       struct MuttWindow *dlg = index_pager_init();
       dialog_push(dlg);
-#ifdef USE_SIDEBAR
-      struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
-      sb_set_open_mailbox(win_sidebar, Context ? Context->mailbox : NULL);
-#endif
+
+      struct EventMailbox em = { Context->mailbox };
+      notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
+
       mutt_index_menu(dlg);
       dialog_pop();
       index_pager_shutdown(dlg);

@@ -146,7 +146,7 @@ static void sb_init_data(struct MuttWindow *win)
   STAILQ_FOREACH(np, &ml, entries)
   {
     if (!(np->mailbox->flags & MB_HIDDEN))
-      sb_notify_mailbox(win, np->mailbox, SBN_CREATED);
+      sb_notify_mailbox(wdata, np->mailbox);
   }
   neomutt_mailboxlist_clear(&ml);
 }
@@ -308,6 +308,27 @@ static int sb_mailbox_observer(struct NotifyCallback *nc)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
+
+  if (nc->event_subtype == NT_MAILBOX_SWITCH)
+  {
+    struct SidebarWindowData *wdata = sb_wdata_get(win);
+    struct EventMailbox *em = nc->event_data;
+
+    wdata->opn_index = -1;
+
+    if (em->mailbox)
+    {
+      struct SbEntry **sbep = NULL;
+      ARRAY_FOREACH(sbep, &wdata->entries)
+      {
+        if (mutt_str_equal((*sbep)->mailbox->realpath, em->mailbox->realpath))
+        {
+          wdata->opn_index = wdata->hil_index = ARRAY_FOREACH_IDX;
+          break;
+        }
+      }
+    }
+  }
 
   mutt_debug(LL_NOTIFY, "mailbox\n");
   win->actions |= WA_RECALC;

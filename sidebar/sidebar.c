@@ -859,105 +859,32 @@ struct Mailbox *sb_get_highlight(struct MuttWindow *win)
 }
 
 /**
- * sb_set_open_mailbox - Set the 'open' Mailbox
- * @param win Sidebar Window
- * @param m   Mailbox
- *
- * Search through the list of mailboxes.
- * If a Mailbox has a matching path, set OpnMailbox to it.
- */
-void sb_set_open_mailbox(struct MuttWindow *win, struct Mailbox *m)
-{
-  struct SidebarWindowData *wdata = sb_wdata_get(win);
-
-  wdata->opn_index = -1;
-
-  if (!m)
-    return;
-
-  struct SbEntry **sbep = NULL;
-  ARRAY_FOREACH(sbep, &wdata->entries)
-  {
-    if (mutt_str_equal((*sbep)->mailbox->realpath, m->realpath))
-    {
-      wdata->opn_index = wdata->hil_index = ARRAY_FOREACH_IDX;
-      break;
-    }
-  }
-}
-
-/**
  * sb_notify_mailbox - The state of a Mailbox is about to change
- * @param win Sidebar Window
- * @param m   Folder
- * @param sbn What happened to the mailbox
- *
- * We receive a notification:
- * - After a new Mailbox has been created
- * - Before a Mailbox is deleted
- * - After an existing Mailbox is renamed
- *
- * Before a deletion, check that our pointers won't be invalidated.
+ * @param wdata Sidebar data
+ * @param m     Mailbox
  */
-void sb_notify_mailbox(struct MuttWindow *win, struct Mailbox *m, enum SidebarNotification sbn)
+void sb_notify_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
 {
   if (!m)
     return;
 
-  struct SidebarWindowData *wdata = sb_wdata_get(win);
   /* Any new/deleted mailboxes will cause a refresh.  As long as
    * they're valid, our pointers will be updated in prepare_sidebar() */
 
-  if (sbn == SBN_CREATED)
+  struct SbEntry *entry = mutt_mem_calloc(1, sizeof(struct SbEntry));
+  entry->mailbox = m;
+
+  if (wdata->top_index < 0)
+    wdata->top_index = ARRAY_SIZE(&wdata->entries);
+  if (wdata->bot_index < 0)
+    wdata->bot_index = ARRAY_SIZE(&wdata->entries);
+  if ((wdata->opn_index < 0) && Context &&
+      mutt_str_equal(m->realpath, Context->mailbox->realpath))
   {
-    struct SbEntry *entry = mutt_mem_calloc(1, sizeof(struct SbEntry));
-    entry->mailbox = m;
-
-    if (wdata->top_index < 0)
-      wdata->top_index = ARRAY_SIZE(&wdata->entries);
-    if (wdata->bot_index < 0)
-      wdata->bot_index = ARRAY_SIZE(&wdata->entries);
-    if ((wdata->opn_index < 0) && Context &&
-        mutt_str_equal(m->realpath, Context->mailbox->realpath))
-    {
-      wdata->opn_index = ARRAY_SIZE(&wdata->entries);
-    }
-
-    ARRAY_ADD(&wdata->entries, entry);
-  }
-  else if (sbn == SBN_DELETED)
-  {
-    struct SbEntry **sbep = NULL, **to_del = NULL;
-    ARRAY_FOREACH(sbep, &wdata->entries)
-    {
-      if ((*sbep)->mailbox == m)
-      {
-        to_del = sbep;
-        break;
-      }
-    }
-
-    if (!to_del)
-      return;
-
-    int del_index = ARRAY_IDX(&wdata->entries, to_del);
-
-    if ((wdata->top_index > del_index) || (wdata->top_index == ARRAY_SIZE(&wdata->entries)))
-      wdata->top_index--;
-    if (wdata->opn_index == del_index)
-      wdata->opn_index = -1;
-    else if (wdata->opn_index > del_index)
-      wdata->opn_index--;
-    if ((wdata->hil_index > del_index) || (wdata->hil_index == ARRAY_SIZE(&wdata->entries)))
-      wdata->hil_index--;
-    if ((wdata->bot_index > del_index) || (wdata->bot_index == ARRAY_SIZE(&wdata->entries)))
-      wdata->bot_index--;
-
-    FREE(to_del);
-    ARRAY_REMOVE(&wdata->entries, to_del);
+    wdata->opn_index = ARRAY_SIZE(&wdata->entries);
   }
 
-  // otherwise, we just need to redraw
+  ARRAY_ADD(&wdata->entries, entry);
 }
 
 /**
@@ -978,7 +905,7 @@ int sb_recalc(struct MuttWindow *win)
     STAILQ_FOREACH(np, &ml, entries)
     {
       if (!(np->mailbox->flags & MB_HIDDEN))
-        sb_notify_mailbox(win, np->mailbox, SBN_CREATED);
+        sb_notify_mailbox(wdata, np->mailbox);
     }
     neomutt_mailboxlist_clear(&ml);
   }

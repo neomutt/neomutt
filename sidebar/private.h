@@ -27,6 +27,8 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 
+struct Mailbox;
+
 extern struct ListHead SidebarWhitelist;
 
 /**
@@ -86,6 +88,7 @@ extern short C_SidebarWidth;
 // sidebar.c
 bool select_next        (struct SidebarWindowData *wdata);
 WindowActionFlags calc_divider(struct SidebarWindowData *wdata, bool ascii, const char *div_str);
+void sb_notify_mailbox  (struct SidebarWindowData *wdata, struct Mailbox *m);
 int sb_recalc(struct MuttWindow *win);
 int sb_repaint(struct MuttWindow *win);
 
