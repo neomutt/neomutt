@@ -584,7 +584,7 @@ msgstr "Error: imposible construir ruta de '%s'"
 #: command_parse.c:465
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
-msgstr ""
+msgstr "Error: lectura cíclica del archivo de configuración '%s'"
 
 #: command_parse.c:503
 #, c-format
@@ -757,7 +757,7 @@ msgstr "Firma PGP NO pudo ser verificada"
 #: mutt_attach.c:295 pager.c:2478 send/sendlib.c:1056
 #, c-format
 msgid "Error running \"%s\""
-msgstr "¡Error al ejecutar \"%s\""
+msgstr "Error al ejecutar \"%s\""
 
 #: commands.c:397
 msgid "Command: "
@@ -1225,8 +1225,8 @@ msgstr "Adjunto #%d modificado. ¿Rehacer codificación para %s?"
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(+%d más)"
+msgstr[1] "(+%d más)"
 
 #: compose.c:916
 msgid "-- Attachments"
@@ -1384,7 +1384,7 @@ msgstr "Mensaje escrito"
 
 #: compose.c:2436
 msgid "No PGP backend configured"
-msgstr ""
+msgstr "Sin configuración PGP"
 
 #: compose.c:2443 compose.c:2512
 msgid "S/MIME already selected. Clear and continue?"
@@ -1392,7 +1392,7 @@ msgstr "S/MIME ya ha sido seleccionado. ¿Limpiar y continuar?"
 
 #: compose.c:2469
 msgid "No S/MIME backend configured"
-msgstr ""
+msgstr "Sin configuración S/MIME"
 
 #: compose.c:2477
 msgid "PGP already selected. Clear and continue?"
@@ -3482,11 +3482,11 @@ msgstr "La entrada \"compose\" en el archivo Mailcap requiere %%s"
 
 #: mutt_attach.c:171
 msgid "Failure to open file to parse headers"
-msgstr "Error al abrir el archivo para leer cabeceras"
+msgstr "Error al abrir el archivo para leer encabezados"
 
 #: mutt_attach.c:205
 msgid "Failure to open file to strip headers"
-msgstr "Error al abrir el archivo para quitar las cabeceras"
+msgstr "Error al abrir el archivo para quitar las encabezados"
 
 #: mutt_attach.c:215
 msgid "Failure to rename file"
@@ -6807,16 +6807,16 @@ msgstr "Ya tiene el último elemento de la cadena seleccionado"
 
 #: remailer.c:799
 msgid "Mixmaster doesn't accept Cc or Bcc headers"
-msgstr "Mixmaster no acepta cabeceras Cc or Bcc"
+msgstr "Mixmaster no acepta campos Cc or Bcc"
 
 #: remailer.c:824
 msgid "Please set the hostname variable to a proper value when using mixmaster"
-msgstr "¡Por favor ajuste la variable hostname a un valor correcto si usa mixmaster"
+msgstr "Por favor ajuste la variable hostname a un valor correcto si usa mixmaster"
 
 #: remailer.c:867
 #, c-format
 msgid "Error sending message, child exited %d.\n"
-msgstr "Error al enviar mensaje, proceso hijo finalizó %d.\n"
+msgstr "Error al enviar mensaje, el proceso hijo finalizó %d.\n"
 
 #: remailer.c:871
 msgid "Error sending message"
@@ -7152,7 +7152,6 @@ msgstr ""
 "o mande un email a: <neomutt-devel@neomutt.org>\n"
 
 #: version.c:112
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2020 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
