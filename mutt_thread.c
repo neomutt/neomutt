@@ -178,6 +178,9 @@ static void linearize_tree(struct ThreadsContext *tctx)
  */
 static void calculate_visibility(struct MuttThread *tree, int *max_depth)
 {
+  if (!tree)
+    return;
+
   struct MuttThread *tmp = NULL;
   struct MuttThread *orig_tree = tree;
   int hide_top_missing = C_HideTopMissing && !C_HideMissing;

@@ -1312,6 +1312,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
         OptSearchInvalid = true;
       }
     }
+    else if (Context)
+    {
+      set_current_email(&cur, mutt_get_virt_email(Context->mailbox, menu->current));
+    }
 
     if (!attach_msg)
     {
