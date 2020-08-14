@@ -164,7 +164,7 @@ struct ConfigDef ConnVars[] = {
 };
 
 /**
- * config_init_conn - Register conn config variables
+ * config_init_conn - Register conn config variables - Implements ::module_init_config_t
  */
 bool config_init_conn(struct ConfigSet *cs)
 {

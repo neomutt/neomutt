@@ -104,7 +104,7 @@ struct ConfigDef NotmuchVars[] = {
 };
 
 /**
- * config_init_notmuch - Register notmuch config variables
+ * config_init_notmuch - Register notmuch config variables - Implements ::module_init_config_t
  */
 bool config_init_notmuch(struct ConfigSet *cs)
 {

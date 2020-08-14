@@ -53,7 +53,7 @@ struct ConfigDef PatternVars[] = {
 };
 
 /**
- * config_init_pattern - Register pattern config variables
+ * config_init_pattern - Register pattern config variables - Implements ::module_init_config_t
  */
 bool config_init_pattern(struct ConfigSet *cs)
 {

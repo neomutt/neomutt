@@ -287,7 +287,7 @@ struct ConfigDef SendVars[] = {
 };
 
 /**
- * config_init_send - Register send config variables
+ * config_init_send - Register send config variables - Implements ::module_init_config_t
  */
 bool config_init_send(struct ConfigSet *cs)
 {

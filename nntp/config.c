@@ -119,7 +119,7 @@ struct ConfigDef NntpVars[] = {
 };
 
 /**
- * config_init_nntp - Register nntp config variables
+ * config_init_nntp - Register nntp config variables - Implements ::module_init_config_t
  */
 bool config_init_nntp(struct ConfigSet *cs)
 {

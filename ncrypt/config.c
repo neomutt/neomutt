@@ -346,7 +346,7 @@ struct ConfigDef NcryptVars[] = {
 };
 
 /**
- * config_init_ncrypt - Register ncrypt config variables
+ * config_init_ncrypt - Register ncrypt config variables - Implements ::module_init_config_t
  */
 bool config_init_ncrypt(struct ConfigSet *cs)
 {

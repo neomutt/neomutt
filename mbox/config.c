@@ -45,7 +45,7 @@ struct ConfigDef MboxVars[] = {
 };
 
 /**
- * config_init_mbox - Register mbox config variables
+ * config_init_mbox - Register mbox config variables - Implements ::module_init_config_t
  */
 bool config_init_mbox(struct ConfigSet *cs)
 {

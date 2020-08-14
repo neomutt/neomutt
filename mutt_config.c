@@ -687,7 +687,7 @@ struct ConfigDef MainVars[] = {
 };
 
 /**
- * config_init_main - Register main config variables
+ * config_init_main - Register main config variables - Implements ::module_init_config_t
  */
 bool config_init_main(struct ConfigSet *cs)
 {

@@ -97,7 +97,7 @@ struct ConfigDef SidebarVars[] = {
 };
 
 /**
- * config_init_sidebar - Register sidebar config variables
+ * config_init_sidebar - Register sidebar config variables - Implements ::module_init_config_t
  */
 bool config_init_sidebar(struct ConfigSet *cs)
 {

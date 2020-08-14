@@ -49,6 +49,13 @@ int multipart_validator  (const struct ConfigSet *cs, const struct ConfigDef *cd
 int pager_validator      (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 int reply_validator      (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 
+/**
+ * module_init_config_t - Prototype for a config definition function
+ * @param cs Config items
+ * @retval bool true if all the config variables were registered
+ */
+typedef bool (*module_init_config_t)(struct ConfigSet *cs);
+
 struct ConfigSet *    init_config            (size_t size);
 int                   mutt_command_complete  (char *buf, size_t buflen, int pos, int numtabs);
 const struct Command *mutt_command_get       (const char *s);

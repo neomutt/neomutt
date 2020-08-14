@@ -41,7 +41,7 @@ struct ConfigDef HelpbarVars[] = {
 };
 
 /**
- * config_init_helpbar - Register helpbar config variables
+ * config_init_helpbar - Register helpbar config variables - Implements ::module_init_config_t
  */
 bool config_init_helpbar(struct ConfigSet *cs)
 {
