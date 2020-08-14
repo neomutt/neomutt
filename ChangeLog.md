@@ -1,4 +1,4 @@
-2020-08-07  Richard Russon  <rich@flatcap.org>
+2020-08-14  Richard Russon  <rich@flatcap.org>
 * Security
   - Add mitigation against DoS from thousands of parts
 * Features
@@ -18,10 +18,18 @@
   - Fix sidebar drawing in presence of indentation + named mailboxes
   - Fix retrieval of drafts when "postponed" is not in the mailboxes list
   - Do not add comments to address group terminators
+  - Fix alias sorting for degenerate addresses
+  - Fix attaching emails
+  - Create directories for nonexistent file hcache case
+  - Avoid creating mailboxes for failed subscribes
+  - Fix crash if rejecting cert
 * Changed Config
   - Add `$copy_decode_weed`, `$pipe_decode_weed`, `$print_decode_weed`
   - Change default of `$crypt_protected_headers_subject` to "..."
   - Add default keybindings to history-up/down
+* Translations
+  - 100% Czech
+  - 100% Spanish
 * Build
   - Allow building against Lua 5.4
   - Fix when sqlite3.h is missing
@@ -53,6 +61,9 @@
   - Remove ansi formatting from autoview generated quoted replies
   - Change postpone mode to write Date header too
   - Unstuff `format=flowed`
+
+2020-08-07  Richard Russon  <rich@flatcap.org>
+* Devel Release - see 2020-08-14
 
 2020-06-26  Richard Russon  <rich@flatcap.org>
 * Bug Fixes
