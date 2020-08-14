@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2020-08-07\n"
+"Project-Id-Version: neomutt-2020-08-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-08-07 14:57+0100\n"
+"POT-Creation-Date: 2020-08-14 12:54+0100\n"
 "PO-Revision-Date: 2017-02-22 21:14+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -572,7 +572,7 @@ msgstr "Neniu dosiero kongruas kun la dosieromasko"
 
 #: command_parse.c:93 command_parse.c:220 command_parse.c:228
 #: command_parse.c:676 command_parse.c:698 command_parse.c:843
-#: command_parse.c:1437 command_parse.c:1495 gui/color.c:731 gui/color.c:866
+#: command_parse.c:1450 command_parse.c:1508 gui/color.c:731 gui/color.c:866
 #: gui/color.c:1060 gui/color.c:1089 gui/color.c:1113 gui/color.c:1182
 #: gui/color.c:1205 hook.c:110 hook.c:124 hook.c:369 hook.c:385 keymap.c:1267
 #: score.c:111
@@ -638,7 +638,7 @@ msgstr "redakti priskribon de parto"
 msgid "attachments: invalid disposition"
 msgstr "attachments: nevalida dispozicio"
 
-#: command_parse.c:722 command_parse.c:1699 command_parse.c:2105
+#: command_parse.c:722 command_parse.c:1712 command_parse.c:2115
 #: gui/color.c:1214 gui/color.c:1320 hook.c:131 hook.c:392 keymap.c:1199
 #: keymap.c:1372 keymap.c:1518 keymap.c:1590 mutt_lua.c:483 score.c:119
 #, c-format
@@ -660,67 +660,67 @@ msgstr "%s-grupo: averto: malbona IDN '%s'"
 msgid "Error: %s"
 msgstr ""
 
-#: command_parse.c:1031
+#: command_parse.c:1044
 msgid "invalid header field"
 msgstr "nevalida ĉaplinio"
 
-#: command_parse.c:1279 command_parse.c:1381
+#: command_parse.c:1292 command_parse.c:1394
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: nekonata variablo"
 
-#: command_parse.c:1474
+#: command_parse.c:1487
 #, c-format
 msgid "%s is unset"
 msgstr "%s estas malŝaltita"
 
-#: command_parse.c:1519 mutt_lua.c:478
+#: command_parse.c:1532 mutt_lua.c:478
 #, c-format
 msgid "source: error at %s"
 msgstr "source: eraro ĉe %s"
 
-#: command_parse.c:1527
+#: command_parse.c:1540
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced"
 msgstr "Ne eblis presi mesaĝojn"
 
-#: command_parse.c:1550
+#: command_parse.c:1563
 msgid "spam: no matching pattern"
 msgstr "spam: neniu ŝablono kongruas"
 
-#: command_parse.c:1552
+#: command_parse.c:1565
 msgid "nospam: no matching pattern"
 msgstr "nospam: neniu ŝablono kongruas"
 
-#: command_parse.c:1708 imap/imap.c:1294
+#: command_parse.c:1721 imap/imap.c:1294
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Abonas %s"
 
-#: command_parse.c:1712
+#: command_parse.c:1725
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Abonas %s"
 
-#: command_parse.c:1720 command_parse.c:2126
+#: command_parse.c:1733 command_parse.c:2136
 #, fuzzy
 msgid "No folder specified"
 msgstr "Temlinio ne specifita."
 
-#: command_parse.c:1839
+#: command_parse.c:1852
 msgid "unattachments: no disposition"
 msgstr "unattachments: mankas dispozicio"
 
-#: command_parse.c:1877
+#: command_parse.c:1890
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: nevalida dispozicio"
 
-#: command_parse.c:2114 imap/imap.c:1296
+#: command_parse.c:2124 imap/imap.c:1296
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Malabonis %s"
 
-#: command_parse.c:2118
+#: command_parse.c:2128
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Malabonis %s"
@@ -767,7 +767,7 @@ msgid "PGP signature could NOT be verified"
 msgstr "PGP-subskribo NE povis esti kontrolita"
 
 #: commands.c:387 compmbox/compress.c:320 compose.c:2397 gui/curs_lib.c:363
-#: gui/curs_lib.c:741 index.c:1285 index.c:1336 mutt_attach.c:162
+#: gui/curs_lib.c:741 index.c:1285 index.c:1340 mutt_attach.c:162
 #: mutt_attach.c:295 pager.c:2478 send/sendlib.c:1056
 #, c-format
 msgid "Error running \"%s\""
@@ -1935,8 +1935,8 @@ msgstr "Ne eblas aldoni al dosierujo: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "Plurparta mesaĝo ne havas limparametron"
 
-#: flags.c:381 index.c:2648 index.c:2688 index.c:3209 index.c:3245
-#: mutt_thread.c:1123 mutt_thread.c:1189 mutt_thread.c:1274
+#: flags.c:381 index.c:2652 index.c:2692 index.c:3213 index.c:3249
+#: mutt_thread.c:1126 mutt_thread.c:1192 mutt_thread.c:1277
 msgid "Threading is not enabled"
 msgstr "Fadenoj ne estas ŝaltitaj"
 
@@ -2468,12 +2468,12 @@ msgstr "Ne eblis negoci TLS-konekton"
 msgid "Encrypted connection unavailable"
 msgstr "Ĉifrata konekto ne disponeblas"
 
-#: imap/imap.c:1281
+#: imap/imap.c:1268
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonas %s..."
 
-#: imap/imap.c:1283
+#: imap/imap.c:1270
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Malabonas %s..."
@@ -2569,7 +2569,7 @@ msgstr "Prenas mesaĝoĉapojn..."
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Ne eblas preni ĉapojn de ĉi tiu versio de IMAP-servilo"
 
-#: imap/message.c:1107 index.c:1602 nntp/nntp.c:1325 pop/pop.c:419
+#: imap/message.c:1107 index.c:1606 nntp/nntp.c:1325 pop/pop.c:419
 msgid "Fetching message headers..."
 msgstr "Prenas mesaĝoĉapojn..."
 
@@ -2629,7 +2629,7 @@ msgstr ""
 msgid "Followup"
 msgstr "Ĉu respondi grupe al %s%s?"
 
-#: index.c:168 index.c:1423
+#: index.c:168 index.c:1427
 msgid "No mailbox is open"
 msgstr "Neniu poŝtfako estas malfermita"
 
@@ -2688,60 +2688,60 @@ msgstr "Nova mesaĝo en ĉi tiu poŝtfako"
 msgid "Mailbox was externally modified"
 msgstr "Poŝtfako estis modifita de ekstere"
 
-#: index.c:1430
+#: index.c:1434
 msgid "No tagged messages"
 msgstr "Mankas markitaj mesaĝoj"
 
-#: index.c:1434 index.c:1702 menu.c:1412
+#: index.c:1438 index.c:1706 menu.c:1412
 msgid "Nothing to do"
 msgstr "Nenio farenda"
 
-#: index.c:1524
+#: index.c:1528
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Donu keyID: "
 
-#: index.c:1535
+#: index.c:1539
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index.c:1558
+#: index.c:1562
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "Radika mesaĝo ne estas videbla en ĉi tiu limigita rigardo"
 
-#: index.c:1562
+#: index.c:1566
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Forviŝas mesaĝojn de la servilo..."
 
-#: index.c:1573 nntp/nntp.c:2766
+#: index.c:1577 nntp/nntp.c:2766
 #, c-format
 msgid "Article %s not found on the server"
 msgstr ""
 
-#: index.c:1598
+#: index.c:1602
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: index.c:1678
+#: index.c:1682
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "forviŝi ĉiujn mesaĝojn en fadeno"
 
-#: index.c:1699
+#: index.c:1703
 msgid "Jump to message: "
 msgstr "Salti al mesaĝo: "
 
-#: index.c:1705
+#: index.c:1709
 msgid "Argument must be a message number"
 msgstr "Argumento devas esti mesaĝnumero"
 
-#: index.c:1707
+#: index.c:1711
 msgid "Invalid message number"
 msgstr "Nevalida mesaĝnumero"
 
-#: index.c:1709
+#: index.c:1713
 msgid "That message is not visible"
 msgstr "Tiu mesaĝo ne estas videbla"
 
@@ -2749,38 +2749,38 @@ msgstr "Tiu mesaĝo ne estas videbla"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1746 index.c:3339 pager.c:3084
+#: index.c:1750 index.c:3343 pager.c:3084
 #, fuzzy
 msgid "Can't delete messages"
 msgstr "Ne eblas forviŝi mesaĝon"
 
-#: index.c:1749
+#: index.c:1753
 msgid "Delete messages matching: "
 msgstr "Forviŝi mesaĝojn laŭ la ŝablono: "
 
-#: index.c:1793
+#: index.c:1797
 msgid "No limit pattern is in effect"
 msgstr "Nenia ŝablono estas aktiva"
 
 #. L10N: ask for a limit to apply
-#: index.c:1798
+#: index.c:1802
 #, c-format
 msgid "Limit: %s"
 msgstr "Ŝablono: %s"
 
-#: index.c:1833
+#: index.c:1837
 msgid "Limit to messages matching: "
 msgstr "Limigi al mesaĝoj laŭ la ŝablono: "
 
-#: index.c:1864
+#: index.c:1868
 msgid "To view all messages, limit to \"all\""
 msgstr "Por vidi ĉiujn mesaĝojn, limigu al \"all\""
 
-#: index.c:1876 pager.c:2532
+#: index.c:1880 pager.c:2532
 msgid "Quit NeoMutt?"
 msgstr "Ĉu eliri el NeoMutt?"
 
-#: index.c:1979
+#: index.c:1983
 msgid "Tag messages matching: "
 msgstr "Marki mesaĝojn laŭ la ŝablono: "
 
@@ -2788,196 +2788,196 @@ msgstr "Marki mesaĝojn laŭ la ŝablono: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1990 index.c:3863 pager.c:3437
+#: index.c:1994 index.c:3867 pager.c:3437
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "Ne eblas malforviŝi mesaĝon"
 
-#: index.c:1994
+#: index.c:1998
 msgid "Undelete messages matching: "
 msgstr "Malforviŝi mesaĝojn laŭ la ŝablono: "
 
-#: index.c:2003
+#: index.c:2007
 msgid "Untag messages matching: "
 msgstr "Malmarki mesaĝojn laŭ la ŝablono: "
 
-#: index.c:2043
+#: index.c:2047
 msgid "Logged out of IMAP servers"
 msgstr "Elsalutis el IMAP-serviloj"
 
-#: index.c:2157
+#: index.c:2161
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Mankas temlinio; eliras"
 
-#: index.c:2177
+#: index.c:2181
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index.c:2186
+#: index.c:2190
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: index.c:2218 mx.c:1314 mx.c:1334
+#: index.c:2222 mx.c:1314 mx.c:1334
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "SMTP-servilo ne akceptas rajtiĝon"
 
-#: index.c:2234
+#: index.c:2238
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "Mankas temlinio; eliras"
 
-#: index.c:2244
+#: index.c:2248
 msgid "Update tags..."
 msgstr ""
 
-#: index.c:2284
+#: index.c:2288
 msgid "Failed to modify tags, aborting"
 msgstr ""
 
-#: index.c:2332
+#: index.c:2336
 #, fuzzy
 msgid "No query, aborting"
 msgstr "Mankas temlinio; eliras"
 
-#: index.c:2361 index.c:2381
+#: index.c:2365 index.c:2385
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index.c:2366 index.c:2386
+#: index.c:2370 index.c:2390
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: index.c:2419
+#: index.c:2423
 msgid "No mailboxes have new mail"
 msgstr "Neniu poŝtfako havas novan poŝton."
 
-#: index.c:2441
+#: index.c:2445
 msgid "Open mailbox in read-only mode"
 msgstr "Malfermi poŝtfakon nurlege"
 
-#: index.c:2446
+#: index.c:2450
 msgid "Open mailbox"
 msgstr "Malfermi poŝtfakon"
 
-#: index.c:2506
+#: index.c:2510
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Malfermi poŝtfakon nurlege"
 
-#: index.c:2511
+#: index.c:2515
 msgid "Open newsgroup"
 msgstr ""
 
-#: index.c:2626
+#: index.c:2630
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Eliri el NeoMutt sen skribi?"
 
 #. L10N: CHECK_ACL
-#: index.c:2642
+#: index.c:2646
 #, fuzzy
 msgid "Can't break thread"
 msgstr "Ne eblas ligi fadenojn"
 
-#: index.c:2659
+#: index.c:2663
 msgid "Thread broken"
 msgstr "Fadeno rompiĝis"
 
-#: index.c:2672
+#: index.c:2676
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Ne eblas rompi fadenon; mesaĝo ne estas parto de fadeno"
 
 #. L10N: CHECK_ACL
-#: index.c:2682
+#: index.c:2686
 msgid "Can't link threads"
 msgstr "Ne eblas ligi fadenojn"
 
-#: index.c:2690
+#: index.c:2694
 msgid "No Message-ID: header available to link thread"
 msgstr "Neniu 'Message-ID:'-ĉapaĵo disponeblas por ligi fadenon"
 
-#: index.c:2702
+#: index.c:2706
 msgid "Threads linked"
 msgstr "Fadenoj ligitaj"
 
-#: index.c:2705
+#: index.c:2709
 msgid "No thread linked"
 msgstr "Neniu fadeno ligita"
 
-#: index.c:2745 index.c:2770
+#: index.c:2749 index.c:2774
 msgid "You are on the last message"
 msgstr "Vi estas ĉe la lasta mesaĝo"
 
-#: index.c:2753 index.c:2796
+#: index.c:2757 index.c:2800
 msgid "No undeleted messages"
 msgstr "Malestas malforviŝitaj mesaĝoj"
 
-#: index.c:2788 index.c:2813
+#: index.c:2792 index.c:2817
 msgid "You are on the first message"
 msgstr "Vi estas ĉe la unua mesaĝo"
 
-#: index.c:2954
+#: index.c:2958
 msgid "No new messages in this limited view"
 msgstr "Malestas novaj mesaĝoj en ĉi tiu limigita rigardo"
 
-#: index.c:2956
+#: index.c:2960
 msgid "No new messages"
 msgstr "Malestas novaj mesaĝoj"
 
-#: index.c:2961
+#: index.c:2965
 msgid "No unread messages in this limited view"
 msgstr "Malestas nelegitaj mesaĝoj en ĉi tiu limigita rigardo"
 
-#: index.c:2963
+#: index.c:2967
 msgid "No unread messages"
 msgstr "Malestas nelegitaj mesaĝoj"
 
-#: index.c:2973 menu.c:1203 pager.c:2663 pattern/pattern.c:458
+#: index.c:2977 menu.c:1203 pager.c:2663 pattern/pattern.c:458
 msgid "Search wrapped to top"
 msgstr "Serĉo rekomencis ĉe la komenco"
 
-#: index.c:2978 pager.c:2688 pattern/pattern.c:469
+#: index.c:2982 pager.c:2688 pattern/pattern.c:469
 msgid "Search wrapped to bottom"
 msgstr "Serĉo rekomencis ĉe la fino"
 
 #. L10N: CHECK_ACL
-#: index.c:2995
+#: index.c:2999
 msgid "Can't flag message"
 msgstr "Ne eblas flagi mesaĝon"
 
 #. L10N: CHECK_ACL
-#: index.c:3040 pager.c:3396
+#: index.c:3044 pager.c:3396
 msgid "Can't toggle new"
 msgstr "Ne eblas (mal)ŝalti \"nova\""
 
-#: index.c:3134
+#: index.c:3138
 msgid "No more threads"
 msgstr "Ne restas fadenoj"
 
-#: index.c:3136
+#: index.c:3140
 msgid "You are on the first thread"
 msgstr "Vi estas ĉe la unua fadeno"
 
-#: index.c:3230
+#: index.c:3234
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "Fadeno enhavas nelegitajn mesaĝojn"
 
 #. L10N: CHECK_ACL
-#: index.c:3288 pager.c:3040
+#: index.c:3292 pager.c:3040
 msgid "Can't delete message"
 msgstr "Ne eblas forviŝi mesaĝon"
 
 #. L10N: CHECK_ACL
-#: index.c:3410
+#: index.c:3414
 msgid "Can't edit message"
 msgstr "Ne eblas redakti mesaĝon"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index.c:3499 pager.c:3514
+#: index.c:3503 pager.c:3514
 #, fuzzy, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -2987,7 +2987,7 @@ msgstr[1] "%d etikedoj ŝanĝiĝis"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index.c:3507 pager.c:3518
+#: index.c:3511 pager.c:3518
 msgid "No labels changed"
 msgstr "Neniu etikedo ŝanĝiĝis"
 
@@ -2995,7 +2995,7 @@ msgstr "Neniu etikedo ŝanĝiĝis"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:3634
+#: index.c:3638
 #, fuzzy
 msgid "Can't mark messages as read"
 msgstr "Ne eblas marki mesaĝo(j)n kiel legita(j)n"
@@ -3003,40 +3003,40 @@ msgstr "Ne eblas marki mesaĝo(j)n kiel legita(j)n"
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index.c:3673
+#: index.c:3677
 msgid "Enter macro stroke: "
 msgstr "Tajpu makroan klavon: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index.c:3681
+#: index.c:3685
 msgid "message hotkey"
 msgstr "fulmklavo por mesaĝo"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index.c:3686
+#: index.c:3690
 #, c-format
 msgid "Message bound to %s"
 msgstr "Mesaĝo ligiĝis al %s"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index.c:3695
+#: index.c:3699
 msgid "No message ID to macro"
 msgstr "Mesaĝa ID mankas en indekso"
 
-#: index.c:3747 pager.c:3243 recvattach.c:1787
+#: index.c:3751 pager.c:3243 recvattach.c:1787
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: index.c:3750 pager.c:3203 pager.c:3215 pager.c:3246
+#: index.c:3754 pager.c:3203 pager.c:3215 pager.c:3246
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index.c:3825 pager.c:3416
+#: index.c:3829 pager.c:3416
 msgid "Can't undelete message"
 msgstr "Ne eblas malforviŝi mesaĝon"
 
@@ -3593,15 +3593,15 @@ msgstr "Nova mesaĝo en "
 msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL ne disponeblas."
 
-#: mutt_thread.c:1210
+#: mutt_thread.c:1213
 msgid "Parent message is not available"
 msgstr "Patra mesaĝo ne estas havebla"
 
-#: mutt_thread.c:1216
+#: mutt_thread.c:1219
 msgid "Root message is not visible in this limited view"
 msgstr "Radika mesaĝo ne estas videbla en ĉi tiu limigita rigardo"
 
-#: mutt_thread.c:1218
+#: mutt_thread.c:1221
 msgid "Parent message is not visible in this limited view"
 msgstr "Patra mesaĝo ne estas videbla en ĉi tiu limigita rigardo"
 
@@ -6129,13 +6129,13 @@ msgstr "Sekva"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager.c:2182 status.c:289
+#: pager.c:2182 status.c:292
 msgid "all"
 msgstr ""
 
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager.c:2184 status.c:287
+#: pager.c:2184 status.c:290
 msgid "end"
 msgstr ""
 
@@ -7237,7 +7237,7 @@ msgstr "Ordigas poŝtfakon..."
 msgid "Could not find sorting function [report this bug]"
 msgstr "Ne eblis trovi ordigfunkcion (Raportu ĉi tiun cimon.)"
 
-#: status.c:168
+#: status.c:171
 msgid "(no mailbox)"
 msgstr "(mankas poŝtfako)"
 

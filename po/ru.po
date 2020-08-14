@@ -12,9 +12,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2020-08-07\n"
+"Project-Id-Version: neomutt-2020-08-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-08-07 14:57+0100\n"
+"POT-Creation-Date: 2020-08-14 12:54+0100\n"
 "PO-Revision-Date: 2019-05-10 19:58+0300\n"
 "Last-Translator: Valeri Sergeev\n"
 "Language-Team: \n"
@@ -567,7 +567,7 @@ msgstr "Нет файлов, удовлетворяющих данной мас�
 
 #: command_parse.c:93 command_parse.c:220 command_parse.c:228
 #: command_parse.c:676 command_parse.c:698 command_parse.c:843
-#: command_parse.c:1437 command_parse.c:1495 gui/color.c:731 gui/color.c:866
+#: command_parse.c:1450 command_parse.c:1508 gui/color.c:731 gui/color.c:866
 #: gui/color.c:1060 gui/color.c:1089 gui/color.c:1113 gui/color.c:1182
 #: gui/color.c:1205 hook.c:110 hook.c:124 hook.c:369 hook.c:385 keymap.c:1267
 #: score.c:111
@@ -634,7 +634,7 @@ msgstr "изменить описание вложения"
 msgid "attachments: invalid disposition"
 msgstr "attachments: неверное значение параметра disposition"
 
-#: command_parse.c:722 command_parse.c:1699 command_parse.c:2105
+#: command_parse.c:722 command_parse.c:1712 command_parse.c:2115
 #: gui/color.c:1214 gui/color.c:1320 hook.c:131 hook.c:392 keymap.c:1199
 #: keymap.c:1372 keymap.c:1518 keymap.c:1590 mutt_lua.c:483 score.c:119
 #, c-format
@@ -656,67 +656,67 @@ msgstr "%sgroup: предупреждение: некорректный IDN \"%s
 msgid "Error: %s"
 msgstr ""
 
-#: command_parse.c:1031
+#: command_parse.c:1044
 msgid "invalid header field"
 msgstr "недопустимое поле в заголовке"
 
-#: command_parse.c:1279 command_parse.c:1381
+#: command_parse.c:1292 command_parse.c:1394
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: неизвестная переменная"
 
-#: command_parse.c:1474
+#: command_parse.c:1487
 #, c-format
 msgid "%s is unset"
 msgstr "%s: значение не определено"
 
-#: command_parse.c:1519 mutt_lua.c:478
+#: command_parse.c:1532 mutt_lua.c:478
 #, c-format
 msgid "source: error at %s"
 msgstr "source: ошибка в %s"
 
-#: command_parse.c:1527
+#: command_parse.c:1540
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced"
 msgstr "Не удалось напечатать сообщения"
 
-#: command_parse.c:1550
+#: command_parse.c:1563
 msgid "spam: no matching pattern"
 msgstr "спам: образец не найден"
 
-#: command_parse.c:1552
+#: command_parse.c:1565
 msgid "nospam: no matching pattern"
 msgstr "не спам: образец не найден"
 
-#: command_parse.c:1708 imap/imap.c:1294
+#: command_parse.c:1721 imap/imap.c:1294
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Подключено к %s"
 
-#: command_parse.c:1712
+#: command_parse.c:1725
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Подключено к %s"
 
-#: command_parse.c:1720 command_parse.c:2126
+#: command_parse.c:1733 command_parse.c:2136
 #, fuzzy
 msgid "No folder specified"
 msgstr "Тема сообщения не указана."
 
-#: command_parse.c:1839
+#: command_parse.c:1852
 msgid "unattachments: no disposition"
 msgstr "unattachments: отсутствует параметр disposition"
 
-#: command_parse.c:1877
+#: command_parse.c:1890
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: неверное значение параметра disposition"
 
-#: command_parse.c:2114 imap/imap.c:1296
+#: command_parse.c:2124 imap/imap.c:1296
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Отключено от %s"
 
-#: command_parse.c:2118
+#: command_parse.c:2128
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Отключено от %s"
@@ -763,7 +763,7 @@ msgid "PGP signature could NOT be verified"
 msgstr "PGP-подпись проверить НЕ удалось"
 
 #: commands.c:387 compmbox/compress.c:320 compose.c:2397 gui/curs_lib.c:363
-#: gui/curs_lib.c:741 index.c:1285 index.c:1336 mutt_attach.c:162
+#: gui/curs_lib.c:741 index.c:1285 index.c:1340 mutt_attach.c:162
 #: mutt_attach.c:295 pager.c:2478 send/sendlib.c:1056
 #, c-format
 msgid "Error running \"%s\""
@@ -1932,8 +1932,8 @@ msgstr "Не удалось дозаписать почтовый ящик: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "Составное сообщение требует наличия параметра boundary"
 
-#: flags.c:381 index.c:2648 index.c:2688 index.c:3209 index.c:3245
-#: mutt_thread.c:1123 mutt_thread.c:1189 mutt_thread.c:1274
+#: flags.c:381 index.c:2652 index.c:2692 index.c:3213 index.c:3249
+#: mutt_thread.c:1126 mutt_thread.c:1192 mutt_thread.c:1277
 msgid "Threading is not enabled"
 msgstr "Группировка по дискуссиям не включена"
 
@@ -2471,12 +2471,12 @@ msgstr "Не удалось установить TLS-соединение"
 msgid "Encrypted connection unavailable"
 msgstr "Зашифрованное соединение не доступно"
 
-#: imap/imap.c:1281
+#: imap/imap.c:1268
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Подключение к %s..."
 
-#: imap/imap.c:1283
+#: imap/imap.c:1270
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Отключение от %s..."
@@ -2575,7 +2575,7 @@ msgstr "Получение заголовков сообщений..."
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Получение списка заголовков не поддерживается этим IMAP-сервером"
 
-#: imap/message.c:1107 index.c:1602 nntp/nntp.c:1325 pop/pop.c:419
+#: imap/message.c:1107 index.c:1606 nntp/nntp.c:1325 pop/pop.c:419
 msgid "Fetching message headers..."
 msgstr "Получение заголовков сообщений..."
 
@@ -2636,7 +2636,7 @@ msgstr ""
 msgid "Followup"
 msgstr "Отвечать по %s%s?"
 
-#: index.c:168 index.c:1423
+#: index.c:168 index.c:1427
 msgid "No mailbox is open"
 msgstr "Нет открытого почтового ящика"
 
@@ -2695,60 +2695,60 @@ msgstr "Новая почта в этом ящике"
 msgid "Mailbox was externally modified"
 msgstr "Ящик был изменен внешней программой"
 
-#: index.c:1430
+#: index.c:1434
 msgid "No tagged messages"
 msgstr "Нет отмеченных сообщений"
 
-#: index.c:1434 index.c:1702 menu.c:1412
+#: index.c:1438 index.c:1706 menu.c:1412
 msgid "Nothing to do"
 msgstr "Нет помеченных сообщений"
 
-#: index.c:1524
+#: index.c:1528
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Введите идентификатор ключа: "
 
-#: index.c:1535
+#: index.c:1539
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index.c:1558
+#: index.c:1562
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "Корневое сообщение не видимо при просмотре с ограничением"
 
-#: index.c:1562
+#: index.c:1566
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Удаление сообщений с сервера..."
 
-#: index.c:1573 nntp/nntp.c:2766
+#: index.c:1577 nntp/nntp.c:2766
 #, c-format
 msgid "Article %s not found on the server"
 msgstr ""
 
-#: index.c:1598
+#: index.c:1602
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: index.c:1678
+#: index.c:1682
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "удалить все сообщения в дискуссии"
 
-#: index.c:1699
+#: index.c:1703
 msgid "Jump to message: "
 msgstr "Перейти к сообщению: "
 
-#: index.c:1705
+#: index.c:1709
 msgid "Argument must be a message number"
 msgstr "Аргумент должен быть номером сообщения"
 
-#: index.c:1707
+#: index.c:1711
 msgid "Invalid message number"
 msgstr "Неверный номер сообщения"
 
-#: index.c:1709
+#: index.c:1713
 msgid "That message is not visible"
 msgstr "Это сообщение невидимо"
 
@@ -2756,38 +2756,38 @@ msgstr "Это сообщение невидимо"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1746 index.c:3339 pager.c:3084
+#: index.c:1750 index.c:3343 pager.c:3084
 #, fuzzy
 msgid "Can't delete messages"
 msgstr "Не удалось удалить сообщение"
 
-#: index.c:1749
+#: index.c:1753
 msgid "Delete messages matching: "
 msgstr "Удалить сообщения по образцу: "
 
-#: index.c:1793
+#: index.c:1797
 msgid "No limit pattern is in effect"
 msgstr "Шаблон ограничения списка отсутствует"
 
 #. L10N: ask for a limit to apply
-#: index.c:1798
+#: index.c:1802
 #, c-format
 msgid "Limit: %s"
 msgstr "Шаблон ограничения: %s"
 
-#: index.c:1833
+#: index.c:1837
 msgid "Limit to messages matching: "
 msgstr "Ограничиться сообщениями, соответствующими: "
 
-#: index.c:1864
+#: index.c:1868
 msgid "To view all messages, limit to \"all\""
 msgstr "Используйте \"all\" для просмотра всех сообщений"
 
-#: index.c:1876 pager.c:2532
+#: index.c:1880 pager.c:2532
 msgid "Quit NeoMutt?"
 msgstr "Выйти из NeoMutt?"
 
-#: index.c:1979
+#: index.c:1983
 msgid "Tag messages matching: "
 msgstr "Пометить сообщения по образцу: "
 
@@ -2795,196 +2795,196 @@ msgstr "Пометить сообщения по образцу: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1990 index.c:3863 pager.c:3437
+#: index.c:1994 index.c:3867 pager.c:3437
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "Не удалось восстановить сообщение"
 
-#: index.c:1994
+#: index.c:1998
 msgid "Undelete messages matching: "
 msgstr "Восстановить сообщения по образцу: "
 
-#: index.c:2003
+#: index.c:2007
 msgid "Untag messages matching: "
 msgstr "Снять пометку с сообщений по образцу: "
 
-#: index.c:2043
+#: index.c:2047
 msgid "Logged out of IMAP servers"
 msgstr "Соединения с IMAP-серверами отключены"
 
-#: index.c:2157
+#: index.c:2161
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Нет темы письма, отказ"
 
-#: index.c:2177
+#: index.c:2181
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index.c:2186
+#: index.c:2190
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: index.c:2218 mx.c:1314 mx.c:1334
+#: index.c:2222 mx.c:1314 mx.c:1334
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "SMTP сервер не поддерживает аутентификацию"
 
-#: index.c:2234
+#: index.c:2238
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "Нет темы письма, отказ"
 
-#: index.c:2244
+#: index.c:2248
 msgid "Update tags..."
 msgstr ""
 
-#: index.c:2284
+#: index.c:2288
 msgid "Failed to modify tags, aborting"
 msgstr ""
 
-#: index.c:2332
+#: index.c:2336
 #, fuzzy
 msgid "No query, aborting"
 msgstr "Нет темы письма, отказ"
 
-#: index.c:2361 index.c:2381
+#: index.c:2365 index.c:2385
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index.c:2366 index.c:2386
+#: index.c:2370 index.c:2390
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: index.c:2419
+#: index.c:2423
 msgid "No mailboxes have new mail"
 msgstr "Нет почтовых ящиков с новой почтой"
 
-#: index.c:2441
+#: index.c:2445
 msgid "Open mailbox in read-only mode"
 msgstr "Открыть почтовый ящик только для чтения"
 
-#: index.c:2446
+#: index.c:2450
 msgid "Open mailbox"
 msgstr "Открыть почтовый ящик"
 
-#: index.c:2506
+#: index.c:2510
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Открыть почтовый ящик только для чтения"
 
-#: index.c:2511
+#: index.c:2515
 msgid "Open newsgroup"
 msgstr ""
 
-#: index.c:2626
+#: index.c:2630
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Выйти из NeoMutt без сохранения изменений?"
 
 #. L10N: CHECK_ACL
-#: index.c:2642
+#: index.c:2646
 #, fuzzy
 msgid "Can't break thread"
 msgstr "Не удалось соединить дискуссии"
 
-#: index.c:2659
+#: index.c:2663
 msgid "Thread broken"
 msgstr "Дискуссия разделена"
 
-#: index.c:2672
+#: index.c:2676
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Дискуссия не может быть разделена, сообщение не является частью дискуссии"
 
 #. L10N: CHECK_ACL
-#: index.c:2682
+#: index.c:2686
 msgid "Can't link threads"
 msgstr "Не удалось соединить дискуссии"
 
-#: index.c:2690
+#: index.c:2694
 msgid "No Message-ID: header available to link thread"
 msgstr "Отсутствует заголовок Message-ID: для соединения дискуссии"
 
-#: index.c:2702
+#: index.c:2706
 msgid "Threads linked"
 msgstr "Дискуссии соединены"
 
-#: index.c:2705
+#: index.c:2709
 msgid "No thread linked"
 msgstr "Дискуссии не соединены"
 
-#: index.c:2745 index.c:2770
+#: index.c:2749 index.c:2774
 msgid "You are on the last message"
 msgstr "Это последнее сообщение"
 
-#: index.c:2753 index.c:2796
+#: index.c:2757 index.c:2800
 msgid "No undeleted messages"
 msgstr "Нет восстановленных сообщений"
 
-#: index.c:2788 index.c:2813
+#: index.c:2792 index.c:2817
 msgid "You are on the first message"
 msgstr "Это первое сообщение"
 
-#: index.c:2954
+#: index.c:2958
 msgid "No new messages in this limited view"
 msgstr "Нет новых сообщений при просмотре с ограничением"
 
-#: index.c:2956
+#: index.c:2960
 msgid "No new messages"
 msgstr "Нет новых сообщений"
 
-#: index.c:2961
+#: index.c:2965
 msgid "No unread messages in this limited view"
 msgstr "Нет непрочитанных сообщений при просмотре с ограничением"
 
-#: index.c:2963
+#: index.c:2967
 msgid "No unread messages"
 msgstr "Нет непрочитанных сообщений"
 
-#: index.c:2973 menu.c:1203 pager.c:2663 pattern/pattern.c:458
+#: index.c:2977 menu.c:1203 pager.c:2663 pattern/pattern.c:458
 msgid "Search wrapped to top"
 msgstr "Достигнут конец; продолжаем поиск с начала"
 
-#: index.c:2978 pager.c:2688 pattern/pattern.c:469
+#: index.c:2982 pager.c:2688 pattern/pattern.c:469
 msgid "Search wrapped to bottom"
 msgstr "Достигнуто начало; продолжаем поиск с конца"
 
 #. L10N: CHECK_ACL
-#: index.c:2995
+#: index.c:2999
 msgid "Can't flag message"
 msgstr "Не удалось переключить флаг сообщения"
 
 #. L10N: CHECK_ACL
-#: index.c:3040 pager.c:3396
+#: index.c:3044 pager.c:3396
 msgid "Can't toggle new"
 msgstr "Не удалось переключить флаг \"новое\""
 
-#: index.c:3134
+#: index.c:3138
 msgid "No more threads"
 msgstr "Нет больше дискуссий"
 
-#: index.c:3136
+#: index.c:3140
 msgid "You are on the first thread"
 msgstr "Это первая дискуссия"
 
-#: index.c:3230
+#: index.c:3234
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "В дискуссии присутствуют непрочитанные сообщения"
 
 #. L10N: CHECK_ACL
-#: index.c:3288 pager.c:3040
+#: index.c:3292 pager.c:3040
 msgid "Can't delete message"
 msgstr "Не удалось удалить сообщение"
 
 #. L10N: CHECK_ACL
-#: index.c:3410
+#: index.c:3414
 msgid "Can't edit message"
 msgstr "Не удалось отредактировать сообщение"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index.c:3499 pager.c:3514
+#: index.c:3503 pager.c:3514
 #, fuzzy, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -2995,7 +2995,7 @@ msgstr[2] "Метки были изменены: %d"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index.c:3507 pager.c:3518
+#: index.c:3511 pager.c:3518
 msgid "No labels changed"
 msgstr "Ни одна метка не была изменена"
 
@@ -3003,7 +3003,7 @@ msgstr "Ни одна метка не была изменена"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:3634
+#: index.c:3638
 #, fuzzy
 msgid "Can't mark messages as read"
 msgstr "Не удалось пометить сообщения как прочитанные"
@@ -3011,40 +3011,40 @@ msgstr "Не удалось пометить сообщения как проч�
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index.c:3673
+#: index.c:3677
 msgid "Enter macro stroke: "
 msgstr "Введите макрос сообщения: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index.c:3681
+#: index.c:3685
 msgid "message hotkey"
 msgstr "макрос сообщения"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index.c:3686
+#: index.c:3690
 #, c-format
 msgid "Message bound to %s"
 msgstr "Сообщение связяно с %s"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index.c:3695
+#: index.c:3699
 msgid "No message ID to macro"
 msgstr "Нет Message-ID для создания макроса"
 
-#: index.c:3747 pager.c:3243 recvattach.c:1787
+#: index.c:3751 pager.c:3243 recvattach.c:1787
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: index.c:3750 pager.c:3203 pager.c:3215 pager.c:3246
+#: index.c:3754 pager.c:3203 pager.c:3215 pager.c:3246
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index.c:3825 pager.c:3416
+#: index.c:3829 pager.c:3416
 msgid "Can't undelete message"
 msgstr "Не удалось восстановить сообщение"
 
@@ -3602,15 +3602,15 @@ msgstr "Новая почта в "
 msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL-протокол недоступен."
 
-#: mutt_thread.c:1210
+#: mutt_thread.c:1213
 msgid "Parent message is not available"
 msgstr "Родительское сообщение недоступно"
 
-#: mutt_thread.c:1216
+#: mutt_thread.c:1219
 msgid "Root message is not visible in this limited view"
 msgstr "Корневое сообщение не видимо при просмотре с ограничением"
 
-#: mutt_thread.c:1218
+#: mutt_thread.c:1221
 msgid "Parent message is not visible in this limited view"
 msgstr "Родительское сообщение не видимо при просмотре с ограничением"
 
@@ -6142,13 +6142,13 @@ msgstr "Следующий"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager.c:2182 status.c:289
+#: pager.c:2182 status.c:292
 msgid "all"
 msgstr ""
 
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager.c:2184 status.c:287
+#: pager.c:2184 status.c:290
 msgid "end"
 msgstr ""
 
@@ -7249,7 +7249,7 @@ msgstr "Почтовый ящик сортируется..."
 msgid "Could not find sorting function [report this bug]"
 msgstr "Не удалось найти функцию сортировки (сообщите об этой ошибке)"
 
-#: status.c:168
+#: status.c:171
 msgid "(no mailbox)"
 msgstr "(нет почтового ящика)"
 
