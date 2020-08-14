@@ -65,6 +65,8 @@ struct Mailbox *sb_get_highlight(struct MuttWindow *win)
  */
 void sb_notify_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
 {
+  static int seq_unsorted = 1;
+
   if (!m)
     return;
 
@@ -73,6 +75,7 @@ void sb_notify_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
 
   struct SbEntry *entry = mutt_mem_calloc(1, sizeof(struct SbEntry));
   entry->mailbox = m;
+  entry->seq_unsorted = seq_unsorted++;
 
   if (wdata->top_index < 0)
     wdata->top_index = ARRAY_SIZE(&wdata->entries);

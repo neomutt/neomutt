@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "gui/lib.h"
 
 struct Mailbox;
@@ -42,6 +43,7 @@ struct SbEntry
   struct Mailbox *mailbox; ///< Mailbox this represents
   bool is_hidden;          ///< Don't show, e.g. $sidebar_new_mail_only
   enum ColorId color;      ///< Colour to use
+  int seq_unsorted;        ///< Sequence number of unsorted Mailbox list
 };
 
 /**
@@ -92,6 +94,9 @@ void sb_notify_mailbox  (struct SidebarWindowData *wdata, struct Mailbox *m);
 // observer.c
 int sb_insertion_observer(struct NotifyCallback *nc);
 void sb_win_add_observers(struct MuttWindow *win);
+
+// sort.c
+void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort);
 
 // wdata.c
 void                      sb_wdata_free(struct MuttWindow *win, void **ptr);

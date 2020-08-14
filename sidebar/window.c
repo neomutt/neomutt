@@ -33,7 +33,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -457,118 +456,6 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width, struct SbEnt
 }
 
 /**
- * cb_qsort_sbe - qsort callback to sort SbEntry's
- * @param a First  SbEntry to compare
- * @param b Second SbEntry to compare
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- */
-static int cb_qsort_sbe(const void *a, const void *b)
-{
-  const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
-  const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
-  const struct Mailbox *m1 = sbe1->mailbox;
-  const struct Mailbox *m2 = sbe2->mailbox;
-
-  int rc = 0;
-
-  switch ((C_SidebarSortMethod & SORT_MASK))
-  {
-    case SORT_COUNT:
-      if (m2->msg_count == m1->msg_count)
-        rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
-      else
-        rc = (m2->msg_count - m1->msg_count);
-      break;
-    case SORT_UNREAD:
-      if (m2->msg_unread == m1->msg_unread)
-        rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
-      else
-        rc = (m2->msg_unread - m1->msg_unread);
-      break;
-    case SORT_DESC:
-      rc = mutt_str_cmp(m1->name, m2->name);
-      break;
-    case SORT_FLAGGED:
-      if (m2->msg_flagged == m1->msg_flagged)
-        rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
-      else
-        rc = (m2->msg_flagged - m1->msg_flagged);
-      break;
-    case SORT_PATH:
-    {
-      rc = mutt_inbox_cmp(mailbox_path(m1), mailbox_path(m2));
-      if (rc == 0)
-        rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
-      break;
-    }
-  }
-
-  if (C_SidebarSortMethod & SORT_REVERSE)
-    rc = -rc;
-
-  return rc;
-}
-
-/**
- * unsort_entries - Restore wdata->entries array order to match Mailbox list order
- */
-static void unsort_entries(struct SidebarWindowData *wdata)
-{
-  int i = 0;
-
-  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &ml, entries)
-  {
-    if (i >= ARRAY_SIZE(&wdata->entries))
-      break;
-
-    struct SbEntry **sbep = NULL;
-    ARRAY_FOREACH(sbep, &wdata->entries)
-    {
-      if ((*sbep)->mailbox == np->mailbox)
-      {
-        if (i != ARRAY_FOREACH_IDX)
-        {
-          struct SbEntry *tmp = *ARRAY_GET(&wdata->entries, i);
-          *ARRAY_GET(&wdata->entries, i) = *sbep;
-          *sbep = tmp;
-        }
-
-        break;
-      }
-    }
-
-    i++;
-  }
-  neomutt_mailboxlist_clear(&ml);
-}
-
-/**
- * sort_entries - Sort wdata->entries array
- *
- * Sort the wdata->entries array according to the current sort config
- * option "sidebar_sort_method". This calls qsort to do the work which calls our
- * callback function "cb_qsort_sbe".
- *
- * Once sorted, the prev/next links will be reconstructed.
- */
-static void sort_entries(struct SidebarWindowData *wdata)
-{
-  enum SortType ssm = (C_SidebarSortMethod & SORT_MASK);
-
-  /* These are the only sort methods we understand */
-  if ((ssm == SORT_COUNT) || (ssm == SORT_UNREAD) || (ssm == SORT_FLAGGED) || (ssm == SORT_PATH))
-    qsort(wdata->entries.entries, ARRAY_SIZE(&wdata->entries),
-          ARRAY_ELEM_SIZE(&wdata->entries), cb_qsort_sbe);
-  else if ((ssm == SORT_ORDER) && (C_SidebarSortMethod != wdata->previous_sort))
-    unsort_entries(wdata);
-}
-
-/**
  * update_entries_visibility - Should a SbEntry be displayed in the sidebar?
  *
  * For each SbEntry in the entries array, check whether we should display it.
@@ -655,7 +542,7 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
       (wdata->hil_index >= 0) ? *ARRAY_GET(&wdata->entries, wdata->hil_index) : NULL;
 
   update_entries_visibility(wdata);
-  sort_entries(wdata);
+  sb_sort_entries(wdata, C_SidebarSortMethod);
 
   if (opn_entry || hil_entry)
   {
