@@ -30,7 +30,6 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
-#include "private.h"
 
 // clang-format off
 short C_SidebarComponentDepth;      ///< Config: (sidebar) Strip leading path components from sidebar folders

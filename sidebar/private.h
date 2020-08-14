@@ -24,9 +24,8 @@
 #define MUTT_SIDEBAR_SIDEBAR_PRIVATE_H
 
 #include <stdbool.h>
+#include "mutt/lib.h"
 #include "gui/lib.h"
-
-struct NotifyCallback;
 
 extern struct ListHead SidebarWhitelist;
 

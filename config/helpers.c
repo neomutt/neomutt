@@ -210,6 +210,27 @@ const struct Slist *cs_subset_slist(const struct ConfigSubset *sub, const char *
 }
 
 /**
+ * cs_subset_sort - Get a sort config item by name
+ * @param sub   Config Subset
+ * @param name  Name of config item
+ * @retval num Sort
+ */
+short cs_subset_sort(const struct ConfigSubset *sub, const char *name)
+{
+  assert(sub && name);
+
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+  assert(he);
+
+  assert(DTYPE(he->type) == DT_SORT);
+
+  intptr_t value = cs_subset_he_native_get(sub, he, NULL);
+  assert(value != INT_MIN);
+
+  return (short) value;
+}
+
+/**
  * cs_subset_string - Get a string config item by name
  * @param sub   Config Subset
  * @param name  Name of config item

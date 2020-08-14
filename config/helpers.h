@@ -35,6 +35,7 @@ const char *          cs_subset_path   (const struct ConfigSubset *sub, const ch
 enum QuadOption       cs_subset_quad   (const struct ConfigSubset *sub, const char *name);
 const struct Regex *  cs_subset_regex  (const struct ConfigSubset *sub, const char *name);
 const struct Slist *  cs_subset_slist  (const struct ConfigSubset *sub, const char *name);
+short                 cs_subset_sort   (const struct ConfigSubset *sub, const char *name);
 const char *          cs_subset_string (const struct ConfigSubset *sub, const char *name);
 
 #endif /* MUTT_CONFIG_HELPERS_H */
