@@ -298,12 +298,6 @@ int mutt_log_start(void)
 
 /**
  * level_validator - Validate the "debug_level" config variable - Implements ConfigDef::validator()
- * @param cs    Config items
- * @param cdef  Config definition
- * @param value Native value
- * @param err   Message for the user
- * @retval #CSR_SUCCESS     Success
- * @retval #CSR_ERR_INVALID Failure
  */
 int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)

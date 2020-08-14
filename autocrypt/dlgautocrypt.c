@@ -149,10 +149,6 @@ static const char *account_format_str(char *dest, size_t destlen, size_t col, in
 
 /**
  * account_make_entry - Create a line for the Autocrypt account menu - Implements Menu::make_entry()
- * @param buf    Buffer to save the string
- * @param buflen Length of the buffer
- * @param menu   Menu to use
- * @param num    Line in the Menu
  */
 static void account_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {

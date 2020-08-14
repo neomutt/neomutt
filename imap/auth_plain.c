@@ -37,9 +37,6 @@
 
 /**
  * imap_auth_plain - SASL PLAIN support - Implements ImapAuth::authenticate()
- * @param adata Imap Account data
- * @param method Name of this authentication method
- * @retval #ImapAuthRes Result, e.g. #IMAP_AUTH_SUCCESS
  */
 enum ImapAuthRes imap_auth_plain(struct ImapAccountData *adata, const char *method)
 {

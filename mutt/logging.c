@@ -234,15 +234,6 @@ bool log_file_running(void)
 
 /**
  * log_disp_file - Save a log line to a file - Implements ::log_dispatcher_t
- * @param stamp    Unix time (optional)
- * @param file     Source file (UNUSED)
- * @param line     Source line (UNUSED)
- * @param function Source function
- * @param level    Logging level, e.g. #LL_WARNING
- * @param ...      Format string and parameters, like printf()
- * @retval -1 Error
- * @retval  0 Success, filtered
- * @retval >0 Success, number of characters written
  *
  * This log dispatcher saves a line of text to a file.  The format is:
  * * `[TIMESTAMP]<LEVEL> FUNCTION() FORMATTED-MESSAGE`

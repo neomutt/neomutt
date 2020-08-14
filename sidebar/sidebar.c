@@ -916,6 +916,7 @@ static void draw_sidebar(struct SidebarWindowData *wdata, struct MuttWindow *win
 
 /**
  * sb_get_highlight - Get the Mailbox that's highlighted in the sidebar
+ * @param win Sidebar Window
  * @retval ptr Mailbox
  */
 struct Mailbox *sb_get_highlight(struct MuttWindow *win)
@@ -1144,12 +1145,6 @@ void sb_win_shutdown(struct MuttWindow *dlg)
  */
 void sb_init(void)
 {
-  // Soon this will initialise the Sidebar's:
-  // - Colours
-  // - Commands
-  // - Config
-  // - Functions
-
   // Listen for dialog creation events
   notify_observer_add(NeoMutt->notify, NT_WINDOW, sb_insertion_observer, NULL);
 }

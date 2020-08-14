@@ -2130,7 +2130,7 @@ static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
 /**
  * imap_mbox_check - Check for new mail - Implements MxOps::mbox_check()
- * @param m           Mailbox
+ * @param m Mailbox
  * @retval >0 Success, e.g. #MUTT_REOPENED
  * @retval -1 Failure
  */

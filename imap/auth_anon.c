@@ -36,11 +36,8 @@
 
 /**
  * imap_auth_anon - Authenticate anonymously - Implements ImapAuth::authenticate()
- * @param adata Imap Account data
- * @param method Name of this authentication method
- * @retval #ImapAuthRes Result, e.g. #IMAP_AUTH_SUCCESS
  *
- * this is basically a stripped-down version of the cram-md5 method.
+ * This is basically a stripped-down version of the cram-md5 method.
  */
 enum ImapAuthRes imap_auth_anon(struct ImapAccountData *adata, const char *method)
 {

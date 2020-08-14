@@ -556,7 +556,7 @@ cmoa_fail1:
 
 /**
  * comp_mbox_check - Check for new mail - Implements MxOps::mbox_check()
- * @param m          Mailbox
+ * @param m Mailbox
  * @retval 0              Mailbox OK
  * @retval #MUTT_REOPENED The mailbox was closed and reopened
  * @retval -1             Mailbox bad

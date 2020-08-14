@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SIDEBAR_SIDEBAR_PRIVATE_H
-#define MUTT_SIDEBAR_SIDEBAR_PRIVATE_H
+#ifndef MUTT_SIDEBAR_PRIVATE_H
+#define MUTT_SIDEBAR_PRIVATE_H
 
 #include <stdbool.h>
 #include "mutt/lib.h"
@@ -56,16 +56,16 @@ enum DivType
  */
 struct SidebarWindowData
 {
-  struct SbEntry **entries; ///< Items to display in the sidebar
-  int entry_count;          ///< Number of items in entries
-  int entry_max;            ///< Size of the entries array
+  struct SbEntry **entries;  ///< Items to display in the sidebar
+  int entry_count;           ///< Number of items in entries
+  int entry_max;             ///< Size of the entries array
 
-  int top_index; ///< First mailbox visible in sidebar
-  int opn_index; ///< Current (open) mailbox
-  int hil_index; ///< Highlighted mailbox
-  int bot_index; ///< Last mailbox visible in sidebar
+  int top_index;             ///< First mailbox visible in sidebar
+  int opn_index;             ///< Current (open) mailbox
+  int hil_index;             ///< Highlighted mailbox
+  int bot_index;             ///< Last mailbox visible in sidebar
 
-  short previous_sort; ///< sidebar_sort_method
+  short previous_sort;       ///< Old `$sidebar_sort_method`
 
   short divider_width;       ///< Width of the divider in screen columns
   enum DivType divider_type; ///< Type of divider, e.g. #SB_DIV_UTF8
@@ -100,4 +100,4 @@ void                      sb_wdata_free(struct MuttWindow *win, void **ptr);
 struct SidebarWindowData *sb_wdata_new(void);
 struct SidebarWindowData *sb_wdata_get(struct MuttWindow *win);
 
-#endif /* MUTT_SIDEBAR_SIDEBAR_PRIVATE_H */
+#endif /* MUTT_SIDEBAR_PRIVATE_H */

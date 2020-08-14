@@ -42,7 +42,7 @@ bool  C_SidebarNewMailOnly;         ///< Config: (sidebar) Only show folders wit
 bool  C_SidebarNextNewWrap;         ///< Config: (sidebar) Wrap around when searching for the next mailbox with new mail
 bool  C_SidebarNonEmptyMailboxOnly; ///< Config: (sidebar) Only show folders with a non-zero number of mail
 bool  C_SidebarOnRight;             ///< Config: (sidebar) Display the sidebar on the right
-bool  C_SidebarShortPath;           ///< Config: (sidebar) Abbreviate the paths using the #C_Folder variable
+bool  C_SidebarShortPath;           ///< Config: (sidebar) Abbreviate the paths using the `$folder` variable
 short C_SidebarSortMethod;          ///< Config: (sidebar) Method to sort the sidebar
 bool  C_SidebarVisible;             ///< Config: (sidebar) Show the sidebar
 short C_SidebarWidth;               ///< Config: (sidebar) Width of the sidebar

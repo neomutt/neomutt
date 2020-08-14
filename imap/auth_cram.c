@@ -90,9 +90,6 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
 
 /**
  * imap_auth_cram_md5 - Authenticate using CRAM-MD5 - Implements ImapAuth::authenticate()
- * @param adata Imap Account data
- * @param method Name of this authentication method
- * @retval #ImapAuthRes Result, e.g. #IMAP_AUTH_SUCCESS
  */
 enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *method)
 {

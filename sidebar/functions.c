@@ -38,8 +38,8 @@ struct MuttWindow;
 
 /**
  * select_next - Selects the next unhidden mailbox
- * @retval true  Success
- * @retval false Failure
+ * @param wdata Sidebar data
+ * @retval bool true if the selection changed
  */
 bool select_next(struct SidebarWindowData *wdata)
 {
@@ -61,8 +61,8 @@ bool select_next(struct SidebarWindowData *wdata)
 
 /**
  * select_next_new - Selects the next new mailbox
- * @retval true  Success
- * @retval false Failure
+ * @param wdata Sidebar data
+ * @retval bool true if the selection changed
  *
  * Search down the list of mail folders for one containing new mail.
  */
@@ -94,8 +94,8 @@ static bool select_next_new(struct SidebarWindowData *wdata)
 
 /**
  * select_prev - Selects the previous unhidden mailbox
- * @retval true  Success
- * @retval false Failure
+ * @param wdata Sidebar data
+ * @retval bool true if the selection changed
  */
 static bool select_prev(struct SidebarWindowData *wdata)
 {
@@ -117,8 +117,8 @@ static bool select_prev(struct SidebarWindowData *wdata)
 
 /**
  * select_prev_new - Selects the previous new mailbox
- * @retval true  Success
- * @retval false Failure
+ * @param wdata Sidebar data
+ * @retval bool true if the selection changed
  *
  * Search up the list of mail folders for one containing new mail.
  */
@@ -150,8 +150,8 @@ static bool select_prev_new(struct SidebarWindowData *wdata)
 
 /**
  * select_page_down - Selects the first entry in the next page of mailboxes
- * @retval true  Success
- * @retval false Failure
+ * @param wdata Sidebar data
+ * @retval bool true if the selection changed
  */
 static bool select_page_down(struct SidebarWindowData *wdata)
 {
@@ -171,8 +171,8 @@ static bool select_page_down(struct SidebarWindowData *wdata)
 
 /**
  * select_page_up - Selects the last entry in the previous page of mailboxes
- * @retval true  Success
- * @retval false Failure
+ * @param wdata Sidebar data
+ * @retval bool true if the selection changed
  */
 static bool select_page_up(struct SidebarWindowData *wdata)
 {
@@ -192,8 +192,8 @@ static bool select_page_up(struct SidebarWindowData *wdata)
 
 /**
  * select_first - Selects the first unhidden mailbox
- * @retval true  Success
- * @retval false Failure
+ * @param wdata Sidebar data
+ * @retval bool true if the selection changed
  */
 static bool select_first(struct SidebarWindowData *wdata)
 {
