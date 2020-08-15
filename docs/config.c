@@ -1981,7 +1981,7 @@
 ** .dt %J .dd Message tags (if present, tree unfolded, and != parent's tags)
 ** .dt %K .dd The list to which the letter was sent (if any; otherwise: empty)
 ** .dt %L .dd If an address in the "To:" or "Cc:" header field matches an address
-**            Defined by the users "$subscribe" command, this displays
+**            Defined by the user's "$subscribe" command, this displays
 **            "To <list-name>", otherwise the same as %F
 ** .dt %l .dd number of lines in the unprocessed message (may not work with
 **            maildir, mh, and IMAP folders)

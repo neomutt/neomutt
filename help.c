@@ -1,6 +1,6 @@
 /**
  * @file
- * Generate the help-line and help-page and GUI display them
+ * Generate the help-page and GUI display them
  *
  * @authors
  * Copyright (C) 1996-2000,2009 Michael R. Elkins <me@mutt.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page help Generate the help-line and help-page and GUI display them
+ * @page help Generate the help-page and GUI display them
  *
- * Generate the help-line and help-page and GUI display them
+ * Generate and help-page and GUI display them
  */
 
 #include "config.h"
