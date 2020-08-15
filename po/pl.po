@@ -49,9 +49,8 @@ msgid "Personal name: "
 msgstr "Nazwisko: "
 
 #: alias/alias.c:461
-#, fuzzy
 msgid "Comment: "
-msgstr "Wprowadź polecenie: "
+msgstr "Komentarz: "
 
 #: alias/alias.c:469 alias/alias.c:473
 msgid "Accept?"
@@ -180,28 +179,28 @@ msgstr "Nie można utworzyć %s: %s"
 #. with this message.
 #: autocrypt/autocrypt.c:160
 msgid "Create an initial autocrypt account?"
-msgstr ""
+msgstr "Utworzyć początkowe konto autocrypt?"
 
 #. L10N: Autocrypt is asking for the email address to use for the
 #. autocrypt account.  This will generate a key and add a record
 #. to the database for use in autocrypt operations.
 #: autocrypt/autocrypt.c:182
 msgid "Autocrypt account address: "
-msgstr ""
+msgstr "Adres konta autocrypt: "
 
 #. L10N: Autocrypt prompts for an account email address, and requires
 #. a single address.  This is shown if they entered something invalid,
 #. nothing, or more than one address for some reason.
 #: autocrypt/autocrypt.c:191
 msgid "Please enter a single email address"
-msgstr ""
+msgstr "Wprowadź tylko jeden adres e-mail"
 
 #. L10N: When creating an autocrypt account, this message will be displayed
 #. if there is already an account in the database with the email address
 #. they just entered.
 #: autocrypt/autocrypt.c:206
 msgid "That email address already has an autocrypt account"
-msgstr ""
+msgstr "Ten adres e-mail już ma konto autocrypt"
 
 #. L10N: Autocrypt has a setting "prefer-encrypt".
 #. When the recommendation algorithm returns "available" and BOTH sender and
@@ -211,26 +210,25 @@ msgstr ""
 #. will be required to enable encryption manually.
 #: autocrypt/autocrypt.c:219
 msgid "Prefer encryption?"
-msgstr "Czy szyfrować?"
+msgstr "Preferować szyfrowanie?"
 
 #. L10N: Message displayed after an autocrypt account is successfully created.
 #: autocrypt/autocrypt.c:230
 msgid "Autocrypt account creation succeeded"
-msgstr ""
+msgstr "Tworzenie konta autocrypt powiodło się"
 
 #. L10N: Error message displayed if creating an autocrypt account failed
 #. or was aborted by the user.
 #: autocrypt/autocrypt.c:234
 msgid "Autocrypt account creation aborted"
-msgstr ""
+msgstr "Tworzenie konta autocrypt anulowane"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the engine is not available.
 #: autocrypt/autocrypt.c:568 autocrypt/autocrypt.c:577
 #: autocrypt/autocrypt.c:584
-#, fuzzy
 msgid "Autocrypt is not available"
-msgstr "Pierwszy list tego wątku nie jest dostępny"
+msgstr "Autocrypt niedostępny"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the account does not exist or is not enabled.
@@ -239,7 +237,7 @@ msgstr "Pierwszy list tego wątku nie jest dostępny"
 #: autocrypt/autocrypt.c:596
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr ""
+msgstr "Autocrypt nie włączony dla %s"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
@@ -247,11 +245,11 @@ msgstr ""
 #: autocrypt/autocrypt.c:621 autocrypt/autocrypt.c:650
 #, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr "Brak (poprawnych) kluczy cyfrowania dla %s"
+msgstr "Brak (poprawnych) kluczy autocrypt dla %s"
 
 #: autocrypt/autocrypt.c:912
 msgid "Scan a mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Przeskanować skrzynkę pod kątem nagłówków autocrypt?"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:916
@@ -265,7 +263,7 @@ msgstr "Skanuj skrzynkę pocztową"
 #. and I don't want them to accidentally ctrl-g and abort it.
 #: autocrypt/autocrypt.c:934
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Przeskanować kolejną skrzynkę pod kątem nagłówków autocrypt?"
 
 #. L10N: s is the path to the database.
 #. For some reason sqlite3 failed to open that database file.
@@ -295,7 +293,7 @@ msgstr "Usuń"
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
 #: autocrypt/dlgautocrypt.c:73
 msgid "Tgl Active"
-msgstr ""
+msgstr "Przełącz"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -304,37 +302,37 @@ msgstr ""
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
 #: autocrypt/dlgautocrypt.c:79
 msgid "Prf Encr"
-msgstr ""
+msgstr "Pref Szyfr"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account has prefer-encrypt set
 #: autocrypt/dlgautocrypt.c:121
 msgid "prefer encrypt"
-msgstr ""
+msgstr "preferuje szyfrowanie"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account has prefer-encrypt unset;
 #. thus encryption will need to be manually enabled.
 #: autocrypt/dlgautocrypt.c:128
 msgid "manual encrypt"
-msgstr ""
+msgstr "ręczne szyfrowanie"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account is enabled/active
 #: autocrypt/dlgautocrypt.c:136
 msgid "active"
-msgstr ""
+msgstr "włączone"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account is disabled/inactive
 #: autocrypt/dlgautocrypt.c:142
 msgid "inactive"
-msgstr ""
+msgstr "wyłączone"
 
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/dlgautocrypt.c:182
 msgid "Autocrypt Accounts"
-msgstr ""
+msgstr "Konta autocrypt"
 
 #. L10N: This error message is displayed if a database update of an
 #. account record fails for some odd reason.
@@ -346,25 +344,25 @@ msgstr "Błąd aktualizacji konta"
 #: autocrypt/dlgautocrypt.c:306
 #, c-format
 msgid "Really delete account \"%s\"?"
-msgstr "Naprawdę usunąć skrzynkę \"%s\"?"
+msgstr "Naprawdę usunąć konto \"%s\"?"
 
 #: autocrypt/gpgme.c:55 ncrypt/crypt_gpgme.c:583
 #, c-format
 msgid "error creating GPGME context: %s"
-msgstr "Błąd tworzenia kontekstu GPGME: %s"
+msgstr "błąd tworzenia kontekstu GPGME: %s"
 
 #. L10N: Message displayed just before a GPG key is generated for a created
 #. autocrypt account.
 #: autocrypt/gpgme.c:173
 msgid "Generating autocrypt key..."
-msgstr ""
+msgstr "Generowanie klucza autocrypt..."
 
 #. L10N: GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #: autocrypt/gpgme.c:183 autocrypt/gpgme.c:202
 #, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "Błąd tworzenia klucza szyfrowania: %s"
+msgstr "Błąd tworzenia klucza autocrypt: %s"
 
 #. L10N: After selecting a key for an autocrypt account,
 #. this is displayed if the key was revoked/expired/disabled/invalid
@@ -373,26 +371,26 @@ msgstr "Błąd tworzenia klucza szyfrowania: %s"
 #: autocrypt/gpgme.c:249
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr ""
+msgstr "Klucz %s nieużywalny do autocrypt"
 
 #. L10N: During autocrypt account creation, this prompt asks the
 #. user whether they want to create a new GPG key for the account,
 #. or select an existing account from the keyring.
 #: autocrypt/gpgme.c:281
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr ""
+msgstr "(s)tworzyć nowy, czy (w)ybrać istniejący klucz GPG?"
 
 #. L10N: The letters corresponding to the
 #. "(c)reate new, or (s)elect existing GPG key?" prompt.
 #: autocrypt/gpgme.c:284
 msgid "cs"
-msgstr ""
+msgstr "sw"
 
 #. L10N: During autocrypt account creation, if selecting an existing key fails
 #. for some reason, we prompt to see if they want to create a key instead.
 #: autocrypt/gpgme.c:296
 msgid "Create a new GPG key for this account, instead?"
-msgstr ""
+msgstr "Stworzyć nowy klucz GPG dla tego konta?"
 
 #. L10N: The autocrypt database keeps track of schema version numbers.
 #. This error occurs if the version number is too high.
@@ -400,7 +398,7 @@ msgstr ""
 #. database was upgraded by a future version.
 #: autocrypt/schema.c:124
 msgid "Autocrypt database version is too new"
-msgstr ""
+msgstr "Zbyt nowa wersja bazy danych autocrypt"
 
 #: bcache/bcache.c:212
 #, c-format
@@ -911,15 +909,13 @@ msgstr "Kopiowanie do %s..."
 
 #. L10N: Progress meter message when saving tagged messages
 #: commands.c:1195
-#, fuzzy
 msgid "Saving tagged messages..."
-msgstr "Wydrukować zaznaczone listy?"
+msgstr "Zapisywanie zaznaczonych wiadomości..."
 
 #. L10N: Progress meter message when copying tagged messages
 #: commands.c:1197
-#, fuzzy
 msgid "Copying tagged messages..."
-msgstr "Kopiowanie %d listu do %s..."
+msgstr "Kopiowanie zaznaczonych wiadomości..."
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1299
@@ -1433,7 +1429,7 @@ msgstr "Niewłaściwa wartość opcji %s: %ld"
 #: config/sort.c:145 config/string.c:73 config/string.c:151
 #, c-format
 msgid "Option %s may not be empty"
-msgstr ""
+msgstr "Opcja %s nie może być pusta"
 
 #: config/long.c:56 config/long.c:152 config/long.c:188
 #, fuzzy, c-format
@@ -1443,24 +1439,24 @@ msgstr "Niewłaściwy miesiąc: %s"
 #: config/long.c:62 config/long.c:114 config/long.c:159 config/long.c:195
 #: config/number.c:68 config/number.c:127 config/number.c:178
 #: config/number.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be negative"
-msgstr "Funkcja %s nie może zostać ustawiona w trybie załączania"
+msgstr "Opcja %s nie może być ujemna"
 
 #: config/number.c:56 config/number.c:165 config/number.c:204
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid number: %s"
-msgstr "%s: błędna liczba: %s"
+msgstr "Błędna liczba: %s"
 
 #: config/number.c:62 config/number.c:172 config/number.c:211
 #, c-format
 msgid "Number is too big: %s"
-msgstr ""
+msgstr "Liczba za duża: %s"
 
 #: config/number.c:121
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid number: %ld"
-msgstr "%s: błędna liczba: %s"
+msgstr "Błędna liczba: %ld"
 
 #: config/quad.c:73
 #, fuzzy, c-format
@@ -1475,7 +1471,7 @@ msgstr "Niewłaściwa wartość opcji %s: %ld"
 #: config/set.c:109
 #, c-format
 msgid "No such variable: %s"
-msgstr ""
+msgstr "Nieznana zmienna: %s"
 
 #: config/set.c:141 config/set.c:857
 #, fuzzy, c-format
@@ -1484,15 +1480,15 @@ msgstr "Błąd: wartość '%s' jest błędna dla -d"
 
 #: config/set.c:417 config/set.c:483 config/set.c:544 config/set.c:623
 #: config/set.c:692 config/set.c:771 config/set.c:960 config/set.c:1046
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown variable '%s'"
-msgstr "%s: nieznana zmienna"
+msgstr "Nieznana zmienna '%s'"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:929 config/set.c:1015
 #, c-format
 msgid "Type '%s' doesn't support operation '%s'"
-msgstr ""
+msgstr "Typ '%s' nie ma operacji '%s'"
 
 #: config/sort.c:192
 #, fuzzy, c-format
@@ -1525,16 +1521,16 @@ msgstr "Brak zdefiniowanej komendy odświeżania OAUTH"
 
 #: conn/connaccount.c:182
 msgid "Unable to run refresh command"
-msgstr ""
+msgstr "Nie udało się wykonać komendy odświeżania"
 
 #: conn/connaccount.c:193
 msgid "Command returned empty string"
-msgstr ""
+msgstr "Komenda nic nie zwóciła"
 
 #: conn/connaccount.c:200
 #, c-format
 msgid "OAUTH token is too big: %ld"
-msgstr ""
+msgstr "Token OAUTH za duży: %ld"
 
 #: conn/dlgverifycert.c:91
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
@@ -1974,9 +1970,8 @@ msgid "Hist Down"
 msgstr ""
 
 #: gui/mutt_window.c:55
-#, fuzzy
 msgid "Hist Search"
-msgstr "Szukaj"
+msgstr ""
 
 #: gui/mutt_window.c:56
 msgid "Begin Line"
@@ -2391,9 +2386,9 @@ msgid "Mailbox %s@%s closed"
 msgstr "Skrzynka %s@%s została zamknięta"
 
 #: imap/command.c:1172
-#, fuzzy, c-format
+#, c-format
 msgid "IMAP command failed: %s"
-msgstr "Kompresja nie powiodła się: %s"
+msgstr "Polecenie IMAP nie powiodło się: %s"
 
 #: imap/command.c:1271 imap/command.c:1386
 #, c-format
@@ -2407,7 +2402,7 @@ msgstr "Zbyt stara wersja serwera IMAP. Praca z tym serwerem nie jest możliwa."
 #: imap/imap.c:433
 #, c-format
 msgid "CREATE failed: %s"
-msgstr ""
+msgstr "CREATE nie powiodło się: %s"
 
 #: imap/imap.c:553
 #, c-format
@@ -3085,9 +3080,9 @@ msgid "%s: no such function"
 msgstr "%s: brak takiej funkcji"
 
 #: keymap.c:1680
-#, fuzzy, c-format
+#, c-format
 msgid "Enter keys (%s to abort): "
-msgstr "Wprowadź klucze (^G aby przerwać): "
+msgstr "Naciśnij klawisze (%s aby przerwać): "
 
 #: keymap.c:1687
 #, c-format
@@ -3113,9 +3108,8 @@ msgstr "Błędnie sformatowane pole dla typu %s w \"%s\" linii %d"
 #. unset mailcap_path
 #.
 #: mailcap.c:488
-#, fuzzy
 msgid "Neither mailcap_path nor MAILCAPS specified"
-msgstr "Brak ścieżki do pliku specjalnego 'mailcap'"
+msgstr "Ani mailcap_path ani MAILCAPS nie jest ustawione"
 
 #: mailcap.c:512
 #, c-format
@@ -3673,9 +3667,9 @@ msgid "Mailbox checkpointed"
 msgstr "Zmiany w skrzynce naniesiono"
 
 #: mx.c:1379
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open %s: it is a pipe"
-msgstr "Nie można otworzyć pliku listu: %s"
+msgstr "Nie można otworzyć %s: jest FIFO"
 
 #: ncrypt/crypt.c:80
 #, c-format
@@ -5926,22 +5920,20 @@ msgid "view the key's user id"
 msgstr "obejrzyj identyfikator użytkownika klucza"
 
 #: opcodes.h:306
-#, fuzzy
 msgid "move the highlight to the first mailbox"
-msgstr "przenieś zaznaczone do następnej skrzynki"
+msgstr "zaznacz pierwszą skrzynkę"
 
 #: opcodes.h:307
-#, fuzzy
 msgid "move the highlight to the last mailbox"
-msgstr "przenieś zaznaczone do następnej skrzynki"
+msgstr "zaznacz ostatnią skrzynkę"
 
 #: opcodes.h:308
 msgid "move the highlight to next mailbox"
-msgstr "przenieś zaznaczone do następnej skrzynki"
+msgstr "zaznacz następną skrzynkę"
 
 #: opcodes.h:309
 msgid "move the highlight to next mailbox with new mail"
-msgstr "przenieś zaznaczenie do następnej skrzynki zawierającą nowe listy"
+msgstr "zaznacz nastepną skrzynję z nowymi listami"
 
 #: opcodes.h:310
 msgid "open highlighted mailbox"
@@ -5953,19 +5945,19 @@ msgstr "przewiń pasek boczny o jedną stronę"
 
 #: opcodes.h:312
 msgid "scroll the sidebar up 1 page"
-msgstr "przewiń pasek boczny w górę o 1 stronę"
+msgstr "cofnij pasek boczny o 1 stronę"
 
 #: opcodes.h:313
 msgid "move the highlight to previous mailbox"
-msgstr "przenieś zaznaczone do poprzedniej skrzynki"
+msgstr "zaznacz poprzednią skrzynkę"
 
 #: opcodes.h:314
 msgid "move the highlight to previous mailbox with new mail"
-msgstr "przenieś zaznaczone do poprzedniej skrzynki z nowymi listami"
+msgstr "zaznacz poprzednią skrzynję z nowymi listami"
 
 #: opcodes.h:315
 msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "przełącz pomiędzy skrzynkami pocztowymi a wirtualnymi skrzynkami pocztowymi"
+msgstr "przełącz pomiędzy skrzynkami i wirtualnymi skrzynkami"
 
 #: opcodes.h:316
 msgid "make the sidebar (in)visible"
@@ -5981,7 +5973,7 @@ msgstr "pusta operacja"
 
 #: pager.c:213
 msgid "Not available in this menu"
-msgstr "Nie ma takiego polecenia w tym menu"
+msgstr "Niedostępne w tym menu"
 
 #: pager.c:222 pager.c:233 pager.c:243 pager.c:259
 msgid "PrevPg"
@@ -6194,9 +6186,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~A
 #: pattern/flags.c:44
-#, fuzzy
 msgid "all messages"
-msgstr "uszereguj listy"
+msgstr "wszystkie wiadomości"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:47
@@ -6225,9 +6216,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~D
 #: pattern/flags.c:62
-#, fuzzy
 msgid "deleted messages"
-msgstr "Brak odtworzonych listów"
+msgstr "usunięte wiadomości"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
@@ -6236,9 +6226,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:68
-#, fuzzy
 msgid "expired messages"
-msgstr "Brak nieprzeczytanych listów"
+msgstr "przeterminowane wiadomości"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:71
@@ -6247,21 +6236,18 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:74
-#, fuzzy
 msgid "flagged messages"
-msgstr "Brak zaznaczonych listów"
+msgstr "oflagowane wiadomości"
 
 #. L10N: Pattern Completion Menu description for ~g
 #: pattern/flags.c:77
-#, fuzzy
 msgid "cryptographically signed messages"
-msgstr "wywołaj odłożony list"
+msgstr "wiadomości podpisane kryptograficznie"
 
 #. L10N: Pattern Completion Menu description for ~G
 #: pattern/flags.c:80
-#, fuzzy
 msgid "cryptographically encrypted messages"
-msgstr "Nie można odszyfrować zaszyfrowanego listu"
+msgstr "wiadomości saszyfrowane kryptograficznie"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:83
@@ -6275,9 +6261,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:89
-#, fuzzy
 msgid "messages whose Message-ID matches EXPR"
-msgstr "pobierz listy z Message-Id"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:92
@@ -6286,9 +6271,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:95
-#, fuzzy
 msgid "messages which contain PGP key"
-msgstr "hotkey listu"
+msgstr "wiadomości zawierające klucz PGP"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:98
@@ -6317,31 +6301,28 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~N
 #: pattern/flags.c:113
-#, fuzzy
 msgid "new messages"
-msgstr "Brak nowych listów"
+msgstr "nowe wiadomości"
 
 #. L10N: Pattern Completion Menu description for ~O
 #: pattern/flags.c:116
-#, fuzzy
 msgid "old messages"
-msgstr "uszereguj listy"
+msgstr "stare wiadomości"
 
 #. L10N: Pattern Completion Menu description for ~p
 #: pattern/flags.c:119
 msgid "messages addressed to you"
-msgstr ""
+msgstr "wiadomości zaadresowane do ciebie"
 
 #. L10N: Pattern Completion Menu description for ~P
 #: pattern/flags.c:122
-#, fuzzy
 msgid "messages from you"
-msgstr "hotkey listu"
+msgstr "wiadomości od ciebie"
 
 #. L10N: Pattern Completion Menu description for ~Q
 #: pattern/flags.c:125
 msgid "messages which have been replied to"
-msgstr ""
+msgstr "wiadomości odpowiedziane na"
 
 #. L10N: Pattern Completion Menu description for ~r
 #: pattern/flags.c:128
@@ -6350,9 +6331,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:131
-#, fuzzy
 msgid "already read messages"
-msgstr "Brak nieprzeczytanych listów"
+msgstr "wiadomości już przeczytane"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:134
@@ -6361,9 +6341,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:137
-#, fuzzy
 msgid "superseded messages"
-msgstr "Brak nieprzeczytanych listów"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:140
@@ -6372,39 +6351,33 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:143
-#, fuzzy
 msgid "tagged messages"
-msgstr "Brak zaznaczonych listów"
+msgstr "oznaczone wiadomości"
 
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:146
-#, fuzzy
 msgid "messages addressed to subscribed mailing lists"
-msgstr "opowiedz na wskazaną listę pocztową"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~U
 #: pattern/flags.c:149
-#, fuzzy
 msgid "unread messages"
-msgstr "Brak nieprzeczytanych listów"
+msgstr "nieprzeczytane wiadomości"
 
 #. L10N: Pattern Completion Menu description for ~v
 #: pattern/flags.c:152
-#, fuzzy
 msgid "messages in collapsed threads"
-msgstr "Nie ma więcej wiadomości w wątku"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~V
 #: pattern/flags.c:155
-#, fuzzy
 msgid "cryptographically verified messages"
-msgstr "przełącz widok przeczytanych wiadomości"
+msgstr "wiadomości zweryfikowane kryptograficznie"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:159
-#, fuzzy
 msgid "newsgroups matching EXPR"
-msgstr "Żadna grupa dyskusyjna nie pasuje do wzorca"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:163
@@ -6413,9 +6386,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:166
-#, fuzzy
 msgid "messages with RANGE attachments"
-msgstr "pokaż załączniki MIME"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:169
@@ -6434,21 +6406,18 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~=
 #: pattern/flags.c:178
-#, fuzzy
 msgid "duplicated messages"
-msgstr "Brak odtworzonych listów"
+msgstr "podwojone wiadomości"
 
 #. L10N: Pattern Completion Menu description for ~$
 #: pattern/flags.c:181
-#, fuzzy
 msgid "unreferenced messages"
-msgstr "Brak nieprzeczytanych listów"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:184
-#, fuzzy
 msgid "broken threads"
-msgstr "Nie ma więcej wątków"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:187
@@ -6887,9 +6856,8 @@ msgid "Preparing forwarded message..."
 msgstr "Przygotowywanie listu do przesłania dalej..."
 
 #: send/send.c:1640
-#, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "Fcc to skrzynki typu IMAP nie jest obsługiwanie w lini poleceń"
+msgstr "Uwaga: Fcc do skrzynki IMAP nieobsługiwane w trybie masowym"
 
 #. L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
 #. To make it clearer that the message doesn't mean NeoMutt is aborting
@@ -6911,14 +6879,14 @@ msgstr "Zapisać załącznik w Fcc?"
 #. (s)kip aborts saving.
 #: send/send.c:1744
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
-msgstr ""
+msgstr "Fcc nie udało się. (s)próbować jeszcze raz, (g)dzie indziej, czy (p)ominąć?"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
 #: send/send.c:1748
 msgid "rms"
-msgstr ""
+msgstr "sgp"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
@@ -6928,11 +6896,11 @@ msgstr "Skrzynka Fcc"
 
 #: send/send.c:1822
 msgid "Can't postpone.  $postponed is unset"
-msgstr ""
+msgstr "Nie można spostponować.  $postponed nie jest ustawione"
 
 #: send/send.c:1860 send/send.c:1876
 msgid "Error encrypting message. Check your crypt settings."
-msgstr ""
+msgstr "Błąd podczas szyfrowania wiadomości. Zweryfikuj ustawienia szyfrowania."
 
 #: send/send.c:1969
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
@@ -6948,7 +6916,7 @@ msgstr "Wywołać odłożony list?"
 
 #: send/send.c:2287
 msgid "Refusing to send an empty email"
-msgstr ""
+msgstr "Odmawiam wysłania pustej wiadomości"
 
 #: send/send.c:2288
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
