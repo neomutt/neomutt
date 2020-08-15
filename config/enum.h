@@ -35,6 +35,4 @@ struct EnumDef
   struct Mapping *lookup;
 };
 
-void enum_init(struct ConfigSet *cs);
-
 #endif /* MUTT_CONFIG_ENUM_H */

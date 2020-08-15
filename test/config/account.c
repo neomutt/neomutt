@@ -57,7 +57,7 @@ void test_config_account(void)
   NeoMutt = neomutt_new(cs);
   int rc = 0;
 
-  number_init(cs);
+  cs_register_type(cs, &cst_number);
   if (!TEST_CHECK(cs_register_variables(cs, Vars, 0)))
     return;
 

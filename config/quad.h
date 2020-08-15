@@ -42,8 +42,6 @@ enum QuadOption
   MUTT_ASKYES,     ///< Ask the user, defaulting to 'Yes'
 };
 
-void quad_init(struct ConfigSet *cs);
-
 int quad_he_toggle (struct ConfigSubset *sub, struct HashElem *he, struct Buffer *err);
 int quad_str_toggle(struct ConfigSubset *sub, const char *name,    struct Buffer *err);
 

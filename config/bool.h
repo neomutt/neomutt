@@ -30,8 +30,6 @@ struct HashElem;
 
 extern const char *BoolValues[];
 
-void bool_init(struct ConfigSet *cs);
-
 int bool_he_toggle (struct ConfigSubset *sub, struct HashElem *he, struct Buffer *err);
 int bool_str_toggle(struct ConfigSubset *sub, const char *name,    struct Buffer *err);
 

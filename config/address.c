@@ -230,26 +230,6 @@ static int address_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * address_init - Register the Address config type
- * @param cs Config items
- */
-void address_init(struct ConfigSet *cs)
-{
-  const struct ConfigSetType cst_address = {
-    "address",
-    address_string_set,
-    address_string_get,
-    address_native_set,
-    address_native_get,
-    NULL, // string_plus_equals
-    NULL, // string_minus_equals
-    address_reset,
-    address_destroy,
-  };
-  cs_register_type(cs, DT_ADDRESS, &cst_address);
-}
-
-/**
  * address_new - Create an Address from a string
  * @param addr Email address to parse
  * @retval ptr New Address object
@@ -275,3 +255,19 @@ void address_free(struct Address **addr)
   FREE(&(*addr)->mailbox);
   FREE(addr);
 }
+
+/**
+ * cst_address - Config type representing an Email Addresss
+ */
+const struct ConfigSetType cst_address = {
+  DT_ADDRESS,
+  "address",
+  address_string_set,
+  address_string_get,
+  address_native_set,
+  address_native_get,
+  NULL, // string_plus_equals
+  NULL, // string_minus_equals
+  address_reset,
+  address_destroy,
+};

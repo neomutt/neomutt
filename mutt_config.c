@@ -69,6 +69,14 @@
 #define ISPELL "ispell"
 #endif
 
+#define CONFIG_INIT_TYPE(CS, NAME)                                             \
+  extern const struct ConfigSetType cst_##NAME;                                \
+  cs_register_type(CS, &cst_##NAME)
+
+#define CONFIG_INIT_VARS(CS, NAME)                                             \
+  bool config_init_##NAME(struct ConfigSet *cs);                               \
+  config_init_##NAME(CS)
+
 /* These options are deprecated */
 char *C_Escape = NULL;
 bool C_IgnoreLinearWhiteSpace = false;
@@ -695,6 +703,67 @@ bool config_init_main(struct ConfigSet *cs)
 }
 
 /**
+ * init_types - Create the config types
+ * @param cs Config items
+ *
+ * Define the config types, e.g. #DT_STRING.
+ */
+static void init_types(struct ConfigSet *cs)
+{
+  CONFIG_INIT_TYPE(cs, address);
+  CONFIG_INIT_TYPE(cs, bool);
+  CONFIG_INIT_TYPE(cs, enum);
+  CONFIG_INIT_TYPE(cs, long);
+  CONFIG_INIT_TYPE(cs, mbtable);
+  CONFIG_INIT_TYPE(cs, number);
+  CONFIG_INIT_TYPE(cs, path);
+  CONFIG_INIT_TYPE(cs, quad);
+  CONFIG_INIT_TYPE(cs, regex);
+  CONFIG_INIT_TYPE(cs, slist);
+  CONFIG_INIT_TYPE(cs, sort);
+  CONFIG_INIT_TYPE(cs, string);
+}
+
+/**
+ * init_variables - Define the config variables
+ * @param cs Config items
+ */
+static void init_variables(struct ConfigSet *cs)
+{
+  // Define the config variables
+  CONFIG_INIT_VARS(cs, main);
+#ifdef USE_AUTOCRYPT
+  CONFIG_INIT_VARS(cs, autocrypt);
+#endif
+  CONFIG_INIT_VARS(cs, conn);
+#ifdef USE_HCACHE
+  CONFIG_INIT_VARS(cs, hcache);
+#endif
+  CONFIG_INIT_VARS(cs, helpbar);
+  CONFIG_INIT_VARS(cs, history);
+#ifdef USE_IMAP
+  CONFIG_INIT_VARS(cs, imap);
+#endif
+  CONFIG_INIT_VARS(cs, maildir);
+  CONFIG_INIT_VARS(cs, mbox);
+  CONFIG_INIT_VARS(cs, ncrypt);
+#ifdef USE_NNTP
+  CONFIG_INIT_VARS(cs, nntp);
+#endif
+#ifdef USE_NOTMUCH
+  CONFIG_INIT_VARS(cs, notmuch);
+#endif
+  CONFIG_INIT_VARS(cs, pattern);
+#ifdef USE_POP
+  CONFIG_INIT_VARS(cs, pop);
+#endif
+  CONFIG_INIT_VARS(cs, send);
+#ifdef USE_SIDEBAR
+  CONFIG_INIT_VARS(cs, sidebar);
+#endif
+}
+
+/**
  * init_config - Initialise the config system
  * @param size Size for Config Hash Table
  * @retval ptr New Config Set
@@ -703,55 +772,8 @@ struct ConfigSet *init_config(size_t size)
 {
   struct ConfigSet *cs = cs_new(size);
 
-  // Define the config types
-  address_init(cs);
-  bool_init(cs);
-  enum_init(cs);
-  long_init(cs);
-  mbtable_init(cs);
-  number_init(cs);
-  path_init(cs);
-  quad_init(cs);
-  regex_init(cs);
-  slist_init(cs);
-  sort_init(cs);
-  string_init(cs);
-
-#define CONFIG_INIT(NAME)                                                      \
-  bool config_init_##NAME(struct ConfigSet *cs);                               \
-  config_init_##NAME(cs)
-
-  // Define the config variables
-  CONFIG_INIT(main);
-#ifdef USE_AUTOCRYPT
-  CONFIG_INIT(autocrypt);
-#endif
-  CONFIG_INIT(conn);
-#ifdef USE_HCACHE
-  CONFIG_INIT(hcache);
-#endif
-  CONFIG_INIT(helpbar);
-  CONFIG_INIT(history);
-#ifdef USE_IMAP
-  CONFIG_INIT(imap);
-#endif
-  CONFIG_INIT(maildir);
-  CONFIG_INIT(mbox);
-  CONFIG_INIT(ncrypt);
-#ifdef USE_NNTP
-  CONFIG_INIT(nntp);
-#endif
-#ifdef USE_NOTMUCH
-  CONFIG_INIT(notmuch);
-#endif
-  CONFIG_INIT(pattern);
-#ifdef USE_POP
-  CONFIG_INIT(pop);
-#endif
-  CONFIG_INIT(send);
-#ifdef USE_SIDEBAR
-  CONFIG_INIT(sidebar);
-#endif
+  init_types(cs);
+  init_variables(cs);
 
   return cs;
 }

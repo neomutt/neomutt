@@ -178,26 +178,6 @@ static int quad_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * quad_init - Register the Quad-option config type
- * @param cs Config items
- */
-void quad_init(struct ConfigSet *cs)
-{
-  const struct ConfigSetType cst_quad = {
-    "quad",
-    quad_string_set,
-    quad_string_get,
-    quad_native_set,
-    quad_native_get,
-    NULL, // string_plus_equals
-    NULL, // string_minus_equals
-    quad_reset,
-    NULL, // destroy
-  };
-  cs_register_type(cs, DT_QUAD, &cst_quad);
-}
-
-/**
  * quad_toggle - Toggle (invert) the value of a quad option
  * @param opt Value to toggle
  *
@@ -256,3 +236,20 @@ int quad_str_toggle(struct ConfigSubset *sub, const char *name, struct Buffer *e
 
   return quad_he_toggle(sub, he, err);
 }
+
+/**
+ * cst_quad - Config type representing a quad-option
+ */
+const struct ConfigSetType cst_quad = {
+  DT_QUAD,
+  "quad",
+  quad_string_set,
+  quad_string_get,
+  quad_native_set,
+  quad_native_get,
+  NULL, // string_plus_equals
+  NULL, // string_minus_equals
+  quad_reset,
+  NULL, // destroy
+};
+

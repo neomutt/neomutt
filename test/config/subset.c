@@ -53,7 +53,7 @@ void test_config_subset(void)
   int rc;
 
   struct ConfigSet *cs = cs_new(30);
-  number_init(cs);
+  cs_register_type(cs, &cst_number);
   if (!cs_register_variables(cs, Vars, 0))
     return;
 

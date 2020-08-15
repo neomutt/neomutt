@@ -275,26 +275,6 @@ static int mbtable_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * mbtable_init - Register the MbTable config type
- * @param cs Config items
- */
-void mbtable_init(struct ConfigSet *cs)
-{
-  const struct ConfigSetType cst_mbtable = {
-    "mbtable",
-    mbtable_string_set,
-    mbtable_string_get,
-    mbtable_native_set,
-    mbtable_native_get,
-    NULL, // string_plus_equals
-    NULL, // string_minus_equals
-    mbtable_reset,
-    mbtable_destroy,
-  };
-  cs_register_type(cs, DT_MBTABLE, &cst_mbtable);
-}
-
-/**
  * mbtable_free - Free an MbTable object
  * @param[out] table MbTable to free
  */
@@ -308,3 +288,19 @@ void mbtable_free(struct MbTable **table)
   FREE(&(*table)->segmented_str);
   FREE(table);
 }
+
+/**
+ * cst_mbtable - Config type representing a multi-byte table
+ */
+const struct ConfigSetType cst_mbtable = {
+  DT_MBTABLE,
+  "mbtable",
+  mbtable_string_set,
+  mbtable_string_get,
+  mbtable_native_set,
+  mbtable_native_get,
+  NULL, // string_plus_equals
+  NULL, // string_minus_equals
+  mbtable_reset,
+  mbtable_destroy,
+};

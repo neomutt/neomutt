@@ -807,7 +807,7 @@ void test_config_long(void)
   struct ConfigSet *cs = cs_new(30);
   NeoMutt = neomutt_new(cs);
 
-  long_init(cs);
+  cs_register_type(cs, &cst_long);
   dont_fail = true;
   if (!cs_register_variables(cs, Vars, 0))
     return;

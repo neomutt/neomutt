@@ -37,7 +37,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-#include "path.h"
 #include "set.h"
 #include "types.h"
 
@@ -242,21 +241,17 @@ static int path_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * path_init - Register the Path config type
- * @param cs Config items
+ * cst_path - Config type representing a path
  */
-void path_init(struct ConfigSet *cs)
-{
-  const struct ConfigSetType cst_path = {
-    "path",
-    path_string_set,
-    path_string_get,
-    path_native_set,
-    path_native_get,
-    NULL, // string_plus_equals
-    NULL, // string_minus_equals
-    path_reset,
-    path_destroy,
-  };
-  cs_register_type(cs, DT_PATH, &cst_path);
-}
+const struct ConfigSetType cst_path = {
+  DT_PATH,
+  "path",
+  path_string_set,
+  path_string_get,
+  path_native_set,
+  path_native_get,
+  NULL, // string_plus_equals
+  NULL, // string_minus_equals
+  path_reset,
+  path_destroy,
+};

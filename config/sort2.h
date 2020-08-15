@@ -86,6 +86,4 @@ enum SortType
 #define SORT_REVERSE  (1 << 8)      ///< Reverse the order of the sort
 #define SORT_LAST     (1 << 9)      ///< Sort thread by last-X, e.g. received date
 
-void sort_init(struct ConfigSet *cs);
-
 #endif /* MUTT_CONFIG_SORT_H */

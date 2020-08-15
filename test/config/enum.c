@@ -666,7 +666,7 @@ void test_config_enum(void)
   struct ConfigSet *cs = cs_new(30);
   NeoMutt = neomutt_new(cs);
 
-  enum_init(cs);
+  cs_register_type(cs, &cst_enum);
   if (!cs_register_variables(cs, Vars, 0))
     return;
 

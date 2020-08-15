@@ -34,7 +34,6 @@
 #include <limits.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-#include "number.h"
 #include "set.h"
 #include "types.h"
 
@@ -252,21 +251,17 @@ static int number_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * number_init - Register the Number config type
- * @param cs Config items
+ * cst_number - Config type representing a number
  */
-void number_init(struct ConfigSet *cs)
-{
-  const struct ConfigSetType cst_number = {
-    "number",
-    number_string_set,
-    number_string_get,
-    number_native_set,
-    number_native_get,
-    number_string_plus_equals,
-    number_string_minus_equals,
-    number_reset,
-    NULL, // destroy
-  };
-  cs_register_type(cs, DT_NUMBER, &cst_number);
-}
+const struct ConfigSetType cst_number = {
+  DT_NUMBER,
+  "number",
+  number_string_set,
+  number_string_get,
+  number_native_set,
+  number_native_get,
+  number_string_plus_equals,
+  number_string_minus_equals,
+  number_reset,
+  NULL, // destroy
+};

@@ -184,21 +184,17 @@ static int enum_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * enum_init - Register the Enumeration config type
- * @param cs Config items
+ * cst_enum - Config type representing an enumeration
  */
-void enum_init(struct ConfigSet *cs)
-{
-  const struct ConfigSetType cst_enum = {
-    "enum",
-    enum_string_set,
-    enum_string_get,
-    enum_native_set,
-    enum_native_get,
-    NULL, // string_plus_equals
-    NULL, // string_minus_equals
-    enum_reset,
-    NULL, // destroy
-  };
-  cs_register_type(cs, DT_ENUM, &cst_enum);
-}
+const struct ConfigSetType cst_enum = {
+  DT_ENUM,
+  "enum",
+  enum_string_set,
+  enum_string_get,
+  enum_native_set,
+  enum_native_get,
+  NULL, // string_plus_equals
+  NULL, // string_minus_equals
+  enum_reset,
+  NULL, // destroy
+};

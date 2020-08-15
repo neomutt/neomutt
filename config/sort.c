@@ -363,21 +363,17 @@ static int sort_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * sort_init - Register the Sort config type
- * @param cs Config items
+ * cst_sort - Config type representing a sort option
  */
-void sort_init(struct ConfigSet *cs)
-{
-  const struct ConfigSetType cst_sort = {
-    "sort",
-    sort_string_set,
-    sort_string_get,
-    sort_native_set,
-    sort_native_get,
-    NULL, // string_plus_equals
-    NULL, // string_minus_equals
-    sort_reset,
-    NULL, // destroy
-  };
-  cs_register_type(cs, DT_SORT, &cst_sort);
-}
+const struct ConfigSetType cst_sort = {
+  DT_SORT,
+  "sort",
+  sort_string_set,
+  sort_string_get,
+  sort_native_set,
+  sort_native_get,
+  NULL, // string_plus_equals
+  NULL, // string_minus_equals
+  sort_reset,
+  NULL, // destroy
+};

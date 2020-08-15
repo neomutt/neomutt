@@ -889,7 +889,7 @@ void test_config_number(void)
   struct ConfigSet *cs = cs_new(30);
   NeoMutt = neomutt_new(cs);
 
-  number_init(cs);
+  cs_register_type(cs, &cst_number);
   dont_fail = true;
   if (!cs_register_variables(cs, Vars, 0))
     return;

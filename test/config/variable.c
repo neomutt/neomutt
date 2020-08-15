@@ -54,8 +54,8 @@ void test_config_variable(void)
   if (!TEST_CHECK(cs != NULL))
     return;
 
-  number_init(cs);
-  string_init(cs);
+  cs_register_type(cs, &cst_number);
+  cs_register_type(cs, &cst_string);
 
   if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_VARIABLE)))
     return;

@@ -688,7 +688,7 @@ void test_config_regex(void)
   struct ConfigSet *cs = cs_new(30);
   NeoMutt = neomutt_new(cs);
 
-  regex_init(cs);
+  cs_register_type(cs, &cst_regex);
   dont_fail = true;
   if (!cs_register_variables(cs, Vars, 0))
     return;

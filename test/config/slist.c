@@ -910,7 +910,7 @@ bool slist_test_separator(struct ConfigDef Vars[], struct Buffer *err)
   struct ConfigSet *cs = cs_new(30);
   NeoMutt = neomutt_new(cs);
 
-  slist_init(cs);
+  cs_register_type(cs, &cst_slist);
   if (!cs_register_variables(cs, Vars, 0))
     return false;
 
@@ -953,7 +953,7 @@ void test_config_slist(void)
   struct ConfigSet *cs = cs_new(30);
   NeoMutt = neomutt_new(cs);
 
-  slist_init(cs);
+  cs_register_type(cs, &cst_slist);
   dont_fail = true;
   if (!cs_register_variables(cs, VarsOther, 0))
     return;

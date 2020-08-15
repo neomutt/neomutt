@@ -36,7 +36,6 @@
 #include <limits.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-#include "slist.h"
 #include "set.h"
 #include "types.h"
 
@@ -232,21 +231,17 @@ static int slist_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * slist_init - Register the Slist config type
- * @param cs Config items
+ * cst_slist - Config type representing a list of strings
  */
-void slist_init(struct ConfigSet *cs)
-{
-  const struct ConfigSetType cst_slist = {
-    "slist",
-    slist_string_set,
-    slist_string_get,
-    slist_native_set,
-    slist_native_get,
-    NULL, // string_plus_equals
-    NULL, // string_minus_equals
-    slist_reset,
-    slist_destroy,
-  };
-  cs_register_type(cs, DT_SLIST, &cst_slist);
-}
+const struct ConfigSetType cst_slist = {
+  DT_SLIST,
+  "slist",
+  slist_string_set,
+  slist_string_get,
+  slist_native_set,
+  slist_native_get,
+  NULL, // string_plus_equals
+  NULL, // string_minus_equals
+  slist_reset,
+  slist_destroy,
+};

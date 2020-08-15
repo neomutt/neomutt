@@ -92,7 +92,7 @@ void dummy_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef
 bool degenerate_tests(struct ConfigSet *cs)
 {
   const struct ConfigSetType cst_dummy = {
-    "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
+    DT_NUMBER, "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
   };
 
   struct HashElem *he = cs_get_elem(cs, "Banana");
@@ -100,9 +100,9 @@ bool degenerate_tests(struct ConfigSet *cs)
   cs_free(NULL);
   TEST_CHECK_(1, "cs_free(NULL)");
 
-  if (!TEST_CHECK(cs_register_type(NULL, DT_NUMBER, &cst_dummy) == false))
+  if (!TEST_CHECK(cs_register_type(NULL, &cst_dummy) == false))
     return false;
-  if (!TEST_CHECK(cs_register_type(cs, DT_NUMBER, NULL) == false))
+  if (!TEST_CHECK(cs_register_type(cs, NULL) == false))
     return false;
   if (!TEST_CHECK(cs_register_variables(cs, NULL, 0) == false))
     return false;
@@ -263,10 +263,10 @@ void test_config_set(void)
   NeoMutt = neomutt_new(cs);
 
   const struct ConfigSetType cst_dummy = {
-    "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
+    DT_STRING, "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
   };
 
-  if (TEST_CHECK(!cs_register_type(cs, DT_STRING, &cst_dummy)))
+  if (TEST_CHECK(!cs_register_type(cs, &cst_dummy)))
   {
     TEST_MSG("Expected error\n");
   }
@@ -277,12 +277,19 @@ void test_config_set(void)
   }
 
   const struct ConfigSetType cst_dummy2 = {
-    "dummy2",           dummy_string_set, dummy_string_get,
-    dummy_native_set,   dummy_native_get, dummy_plus_equals,
-    dummy_minus_equals, dummy_reset,      dummy_destroy,
+    25,
+    "dummy2",
+    dummy_string_set,
+    dummy_string_get,
+    dummy_native_set,
+    dummy_native_get,
+    dummy_plus_equals,
+    dummy_minus_equals,
+    dummy_reset,
+    dummy_destroy,
   };
 
-  if (TEST_CHECK(!cs_register_type(cs, 25, &cst_dummy2)))
+  if (TEST_CHECK(!cs_register_type(cs, &cst_dummy2)))
   {
     TEST_MSG("Expected error\n");
   }
@@ -292,8 +299,8 @@ void test_config_set(void)
     return;
   }
 
-  bool_init(cs);
-  bool_init(cs); /* second one should fail */
+  cs_register_type(cs, &cst_bool);
+  cs_register_type(cs, &cst_bool); /* second one should fail */
 
   if (TEST_CHECK(!cs_register_variables(cs, Vars, 0)))
   {

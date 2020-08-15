@@ -176,26 +176,6 @@ static int bool_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * bool_init - Register the Bool config type
- * @param cs Config items
- */
-void bool_init(struct ConfigSet *cs)
-{
-  const struct ConfigSetType cst_bool = {
-    "boolean",
-    bool_string_set,
-    bool_string_get,
-    bool_native_set,
-    bool_native_get,
-    NULL, // string_plus_equals
-    NULL, // string_minus_equals
-    bool_reset,
-    NULL, // destroy
-  };
-  cs_register_type(cs, DT_BOOL, &cst_bool);
-}
-
-/**
  * bool_he_toggle - Toggle the value of a bool
  * @param sub Config Subset
  * @param he  HashElem representing config item
@@ -236,3 +216,19 @@ int bool_str_toggle(struct ConfigSubset *sub, const char *name, struct Buffer *e
 
   return bool_he_toggle(sub, he, err);
 }
+
+/**
+ * cst_bool - Config type representing an boolean
+ */
+const struct ConfigSetType cst_bool = {
+  DT_BOOL,
+  "boolean",
+  bool_string_set,
+  bool_string_get,
+  bool_native_set,
+  bool_native_get,
+  NULL, // string_plus_equals
+  NULL, // string_minus_equals
+  bool_reset,
+  NULL, // destroy
+};

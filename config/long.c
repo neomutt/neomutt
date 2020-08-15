@@ -34,7 +34,6 @@
 #include <limits.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-#include "long.h"
 #include "set.h"
 #include "types.h"
 
@@ -233,21 +232,17 @@ static int long_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * long_init - Register the Long config type
- * @param cs Config items
+ * cst_long - Config type representing a long
  */
-void long_init(struct ConfigSet *cs)
-{
-  const struct ConfigSetType cst_long = {
-    "long",
-    long_string_set,
-    long_string_get,
-    long_native_set,
-    long_native_get,
-    long_string_plus_equals,
-    long_string_minus_equals,
-    long_reset,
-    NULL, // destroy
-  };
-  cs_register_type(cs, DT_LONG, &cst_long);
-}
+const struct ConfigSetType cst_long = {
+  DT_LONG,
+  "long",
+  long_string_set,
+  long_string_get,
+  long_native_set,
+  long_native_get,
+  long_string_plus_equals,
+  long_string_minus_equals,
+  long_reset,
+  NULL, // destroy
+};

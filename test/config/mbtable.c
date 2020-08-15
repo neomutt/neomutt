@@ -628,7 +628,7 @@ void test_config_mbtable(void)
   struct ConfigSet *cs = cs_new(30);
   NeoMutt = neomutt_new(cs);
 
-  mbtable_init(cs);
+  cs_register_type(cs, &cst_mbtable);
   dont_fail = true;
   if (!cs_register_variables(cs, Vars, 0))
     return;

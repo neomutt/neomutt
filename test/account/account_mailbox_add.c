@@ -24,6 +24,7 @@
 #include "config.h"
 #include "acutest.h"
 #include "mutt/lib.h"
+#include "config/common.h"
 #include "config/lib.h"
 #include "core/lib.h"
 
@@ -46,7 +47,7 @@ void test_account_mailbox_add(void)
 
   {
     struct ConfigSet *cs = cs_new(30);
-    number_init(cs);
+    cs_register_type(cs, &cst_number);
     TEST_CHECK(cs_register_variables(cs, Vars, 0));
 
     NeoMutt = neomutt_new(cs);
@@ -66,7 +67,7 @@ void test_account_mailbox_add(void)
 
   {
     struct ConfigSet *cs = cs_new(30);
-    number_init(cs);
+    cs_register_type(cs, &cst_number);
     TEST_CHECK(cs_register_variables(cs, Vars, 0));
 
     NeoMutt = neomutt_new(cs);

@@ -35,7 +35,7 @@
 #include "types.h"
 
 struct ConfigSetType RegisteredTypes[18] = {
-  { NULL, NULL, NULL, NULL, NULL, NULL, NULL },
+  { 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL },
 };
 
 /**
@@ -252,11 +252,10 @@ const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned
 /**
  * cs_register_type - Register a type of config item
  * @param cs   Config items
- * @param type Object type, e.g. #DT_BOOL
  * @param cst  Structure defining the type
  * @retval bool True, if type was registered successfully
  */
-bool cs_register_type(struct ConfigSet *cs, unsigned int type, const struct ConfigSetType *cst)
+bool cs_register_type(struct ConfigSet *cs, const struct ConfigSetType *cst)
 {
   if (!cs || !cst)
     return false;
@@ -267,13 +266,13 @@ bool cs_register_type(struct ConfigSet *cs, unsigned int type, const struct Conf
     return false;
   }
 
-  if (type >= mutt_array_size(cs->types))
+  if (cst->type >= mutt_array_size(cs->types))
     return false;
 
-  if (cs->types[type].name)
+  if (cs->types[cst->type].name)
     return false; /* already registered */
 
-  cs->types[type] = *cst;
+  cs->types[cst->type] = *cst;
   return true;
 }
 

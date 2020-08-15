@@ -100,7 +100,7 @@ void test_config_initial(void)
   struct ConfigSet *cs = cs_new(30);
   NeoMutt = neomutt_new(cs);
 
-  string_init(cs);
+  cs_register_type(cs, &cst_string);
   if (!cs_register_variables(cs, Vars, 0))
     return;
 

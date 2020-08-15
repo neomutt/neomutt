@@ -36,7 +36,6 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "set.h"
-#include "string3.h" // IWYU pragma: keep
 #include "types.h"
 
 /**
@@ -220,21 +219,17 @@ static int string_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * string_init - Register the String config type
- * @param cs Config items
+ * cst_string - Config type representing a string
  */
-void string_init(struct ConfigSet *cs)
-{
-  const struct ConfigSetType cst_string = {
-    "string",
-    string_string_set,
-    string_string_get,
-    string_native_set,
-    string_native_get,
-    NULL, // string_plus_equals
-    NULL, // string_minus_equals
-    string_reset,
-    string_destroy,
-  };
-  cs_register_type(cs, DT_STRING, &cst_string);
-}
+const struct ConfigSetType cst_string = {
+  DT_STRING,
+  "string",
+  string_string_set,
+  string_string_get,
+  string_native_set,
+  string_native_get,
+  NULL, // string_plus_equals
+  NULL, // string_minus_equals
+  string_reset,
+  string_destroy,
+};

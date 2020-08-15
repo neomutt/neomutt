@@ -35,6 +35,19 @@ struct NotifyCallback;
 extern const char *line;
 extern bool dont_fail;
 
+extern const struct ConfigSetType cst_address;
+extern const struct ConfigSetType cst_bool;
+extern const struct ConfigSetType cst_enum;
+extern const struct ConfigSetType cst_long;
+extern const struct ConfigSetType cst_mbtable;
+extern const struct ConfigSetType cst_number;
+extern const struct ConfigSetType cst_path;
+extern const struct ConfigSetType cst_quad;
+extern const struct ConfigSetType cst_regex;
+extern const struct ConfigSetType cst_slist;
+extern const struct ConfigSetType cst_sort;
+extern const struct ConfigSetType cst_string;
+
 int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *result);
 int validator_warn   (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *result);
 int validator_fail   (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *result);

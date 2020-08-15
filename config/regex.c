@@ -296,21 +296,17 @@ static int regex_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * regex_init - Register the Regex config type
- * @param cs Config items
+ * cst_regex - Config type representing a regular expression
  */
-void regex_init(struct ConfigSet *cs)
-{
-  const struct ConfigSetType cst_regex = {
-    "regex",
-    regex_string_set,
-    regex_string_get,
-    regex_native_set,
-    regex_native_get,
-    NULL, // string_plus_equals
-    NULL, // string_minus_equals
-    regex_reset,
-    regex_destroy,
-  };
-  cs_register_type(cs, DT_REGEX, &cst_regex);
-}
+const struct ConfigSetType cst_regex = {
+  DT_REGEX,
+  "regex",
+  regex_string_set,
+  regex_string_get,
+  regex_native_set,
+  regex_native_get,
+  NULL, // string_plus_equals
+  NULL, // string_minus_equals
+  regex_reset,
+  regex_destroy,
+};

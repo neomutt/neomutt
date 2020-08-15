@@ -182,18 +182,18 @@ struct ConfigSet *create_sample_data(void)
   if (!cs)
     return NULL;
 
-  address_init(cs);
-  bool_init(cs);
-  enum_init(cs);
-  long_init(cs);
-  mbtable_init(cs);
-  number_init(cs);
-  path_init(cs);
-  quad_init(cs);
-  path_init(cs);
-  regex_init(cs);
-  sort_init(cs);
-  string_init(cs);
+  cs_register_type(cs, &cst_address);
+  cs_register_type(cs, &cst_bool);
+  cs_register_type(cs, &cst_enum);
+  cs_register_type(cs, &cst_long);
+  cs_register_type(cs, &cst_mbtable);
+  cs_register_type(cs, &cst_number);
+  cs_register_type(cs, &cst_path);
+  cs_register_type(cs, &cst_quad);
+  cs_register_type(cs, &cst_path);
+  cs_register_type(cs, &cst_regex);
+  cs_register_type(cs, &cst_sort);
+  cs_register_type(cs, &cst_string);
 
   if (!cs_register_variables(cs, Vars, 0))
     return NULL;

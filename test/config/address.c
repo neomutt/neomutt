@@ -612,7 +612,7 @@ void test_config_address(void)
   struct ConfigSet *cs = cs_new(30);
   NeoMutt = neomutt_new(cs);
 
-  address_init(cs);
+  cs_register_type(cs, &cst_address);
   dont_fail = true;
   if (!cs_register_variables(cs, Vars, 0))
     return;

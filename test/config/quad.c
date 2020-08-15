@@ -717,8 +717,8 @@ void test_config_quad(void)
   struct ConfigSet *cs = cs_new(30);
   NeoMutt = neomutt_new(cs);
 
-  bool_init(cs);
-  quad_init(cs);
+  cs_register_type(cs, &cst_bool);
+  cs_register_type(cs, &cst_quad);
   dont_fail = true;
   if (!cs_register_variables(cs, Vars, 0))
     return;
