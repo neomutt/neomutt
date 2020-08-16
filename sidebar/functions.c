@@ -80,12 +80,13 @@ static struct SbEntry **next_new(struct SidebarWindowData *wdata, size_t begin, 
 
 /**
  * select_next_new - Selects the next new mailbox
- * @param wdata Sidebar data
+ * @param wdata         Sidebar data
+ * @param next_new_wrap Wrap around when searching for the next mailbox with new mail
  * @retval bool true if the selection changed
  *
  * Search down the list of mail folders for one containing new mail.
  */
-static bool select_next_new(struct SidebarWindowData *wdata)
+static bool select_next_new(struct SidebarWindowData *wdata, bool next_new_wrap)
 {
   const size_t max_entries = ARRAY_SIZE(&wdata->entries);
 
@@ -94,7 +95,7 @@ static bool select_next_new(struct SidebarWindowData *wdata)
 
   struct SbEntry **sbep = NULL;
   if ((sbep = next_new(wdata, wdata->hil_index + 1, max_entries)) ||
-      (C_SidebarNextNewWrap && (sbep = next_new(wdata, 0, wdata->hil_index))))
+      (next_new_wrap && (sbep = next_new(wdata, 0, wdata->hil_index))))
   {
     wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
     return true;
@@ -151,12 +152,13 @@ static struct SbEntry **prev_new(struct SidebarWindowData *wdata, size_t begin, 
 
 /**
  * select_prev_new - Selects the previous new mailbox
- * @param wdata Sidebar data
+ * @param wdata         Sidebar data
+ * @param next_new_wrap Wrap around when searching for the next mailbox with new mail
  * @retval bool true if the selection changed
  *
  * Search up the list of mail folders for one containing new mail.
  */
-static bool select_prev_new(struct SidebarWindowData *wdata)
+static bool select_prev_new(struct SidebarWindowData *wdata, bool next_new_wrap)
 {
   const size_t max_entries = ARRAY_SIZE(&wdata->entries);
 
@@ -165,7 +167,7 @@ static bool select_prev_new(struct SidebarWindowData *wdata)
 
   struct SbEntry **sbep = NULL;
   if ((sbep = prev_new(wdata, 0, wdata->hil_index)) ||
-      (C_SidebarNextNewWrap && (sbep = prev_new(wdata, wdata->hil_index + 1, max_entries))))
+      (next_new_wrap && (sbep = prev_new(wdata, wdata->hil_index + 1, max_entries))))
   {
     wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
     return true;
@@ -262,7 +264,7 @@ static bool select_last(struct SidebarWindowData *wdata)
  */
 void sb_change_mailbox(struct MuttWindow *win, int op)
 {
-  if (!C_SidebarVisible)
+  if (!mutt_window_is_visible(win))
     return;
 
   struct SidebarWindowData *wdata = sb_wdata_get(win);
@@ -272,42 +274,36 @@ void sb_change_mailbox(struct MuttWindow *win, int op)
   if (wdata->hil_index < 0) /* It'll get reset on the next draw */
     return;
 
+  bool changed = false;
   switch (op)
   {
     case OP_SIDEBAR_FIRST:
-      if (!select_first(wdata))
-        return;
+      changed = select_first(wdata);
       break;
     case OP_SIDEBAR_LAST:
-      if (!select_last(wdata))
-        return;
+      changed = select_last(wdata);
       break;
     case OP_SIDEBAR_NEXT:
-      if (!select_next(wdata))
-        return;
+      changed = select_next(wdata);
       break;
     case OP_SIDEBAR_NEXT_NEW:
-      if (!select_next_new(wdata))
-        return;
+      changed = select_next_new(wdata, C_SidebarNextNewWrap);
       break;
     case OP_SIDEBAR_PAGE_DOWN:
-      if (!select_page_down(wdata))
-        return;
+      changed = select_page_down(wdata);
       break;
     case OP_SIDEBAR_PAGE_UP:
-      if (!select_page_up(wdata))
-        return;
+      changed = select_page_up(wdata);
       break;
     case OP_SIDEBAR_PREV:
-      if (!select_prev(wdata))
-        return;
+      changed = select_prev(wdata);
       break;
     case OP_SIDEBAR_PREV_NEW:
-      if (!select_prev_new(wdata))
-        return;
+      changed = select_prev_new(wdata, C_SidebarNextNewWrap);
       break;
     default:
       return;
   }
-  win->actions |= WA_RECALC;
+  if (changed)
+    win->actions |= WA_RECALC;
 }
