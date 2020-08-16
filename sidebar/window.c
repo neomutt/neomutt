@@ -630,8 +630,6 @@ int sb_recalc(struct MuttWindow *win)
     neomutt_mailboxlist_clear(&ml);
   }
 
-  calc_divider(wdata, C_AsciiChars, C_SidebarDividerChar);
-
   if (!prepare_sidebar(wdata, win->state.rows))
     return 0;
 
@@ -644,7 +642,7 @@ int sb_recalc(struct MuttWindow *win)
   if (wdata->top_index < 0)
     return 0;
 
-  int w = MIN(num_cols, (C_SidebarWidth - wdata->divider_width));
+  int width = num_cols - wdata->divider_width;
   int row = 0;
   struct SbEntry **sbep = NULL;
   ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->top_index)
@@ -703,11 +701,12 @@ int sb_recalc(struct MuttWindow *win)
     if (ilen < blen)
     {
       mutt_str_copy(entry->box + ilen, short_path, blen - ilen);
-      make_sidebar_entry(entry->display, sizeof(entry->display), w, entry);
+      make_sidebar_entry(entry->display, sizeof(entry->display), width, entry);
     }
     row++;
   }
 
+  win->actions |= WA_REPAINT;
   return 0;
 }
 
@@ -730,62 +729,20 @@ int sb_recalc(struct MuttWindow *win)
 static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
                         int num_rows, int num_cols)
 {
-  if ((num_rows < 1) || (num_cols < 1))
+  if ((num_rows < 1) || (num_cols < 1) || (wdata->divider_width > num_cols))
     return 0;
 
-  enum DivType altchar = SB_DIV_UTF8;
-
-  /* Calculate the width of the delimiter in screen cells */
-  wdata->divider_width = mutt_strwidth(C_SidebarDividerChar);
-  if (wdata->divider_width < 0)
-  {
-    wdata->divider_width = 1; /* Bad character */
-  }
-  else if (wdata->divider_width == 0)
-  {
-    if (C_SidebarDividerChar)
-      return 0; /* User has set empty string */
-
-    wdata->divider_width = 1; /* Unset variable */
-  }
-  else
-  {
-    altchar = SB_DIV_USER; /* User config */
-  }
-
-  if (C_AsciiChars && (altchar != SB_DIV_ASCII))
-  {
-    /* $ascii_chars overrides Unicode divider chars */
-    if (altchar == SB_DIV_UTF8)
-    {
-      altchar = SB_DIV_ASCII;
-    }
-    else if (C_SidebarDividerChar)
-    {
-      for (int i = 0; i < wdata->divider_width; i++)
-      {
-        if (C_SidebarDividerChar[i] & ~0x7F) /* high-bit is set */
-        {
-          altchar = SB_DIV_ASCII;
-          wdata->divider_width = 1;
-          break;
-        }
-      }
-    }
-  }
-
-  if (wdata->divider_width > num_cols)
-    return 0;
+  const int width = wdata->divider_width;
 
   mutt_curses_set_color(MT_COLOR_SIDEBAR_DIVIDER);
 
-  int col = C_SidebarOnRight ? 0 : (C_SidebarWidth - wdata->divider_width);
+  const int col = C_SidebarOnRight ? 0 : (num_cols - width);
 
   for (int i = 0; i < num_rows; i++)
   {
     mutt_window_move(win, col, i);
 
-    switch (altchar)
+    switch (wdata->divider_type)
     {
       case SB_DIV_USER:
         mutt_window_addstr(NONULL(C_SidebarDividerChar));
@@ -799,7 +756,7 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
     }
   }
 
-  return wdata->divider_width;
+  return width;
 }
 
 /**
@@ -867,8 +824,8 @@ int sb_repaint(struct MuttWindow *win)
     row++;
   }
 
-  int w = MIN(num_cols, (C_SidebarWidth - wdata->divider_width));
-  fill_empty_space(win, row, num_rows - row, wdata->divider_width, w);
+  fill_empty_space(win, row, num_rows - row, wdata->divider_width,
+                   num_cols - wdata->divider_width);
   draw_divider(wdata, win, num_rows, num_cols);
 
   return 0;

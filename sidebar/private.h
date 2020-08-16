@@ -69,6 +69,7 @@ struct SidebarWindowData
   int bot_index;             ///< Last mailbox visible in sidebar
 
   short previous_sort;       ///< Old `$sidebar_sort_method`
+  enum DivType divider_type; ///< Type of divider to use, e.g. #SB_DIV_ASCII
   short divider_width;       ///< Width of the divider in screen columns
 };
 
@@ -104,7 +105,6 @@ struct SidebarWindowData *sb_wdata_get(struct MuttWindow *win);
 struct SidebarWindowData *sb_wdata_new(void);
 
 // window.c
-WindowActionFlags calc_divider(struct SidebarWindowData *wdata, bool ascii, const char *div_str);
 int sb_recalc(struct MuttWindow *win);
 int sb_repaint(struct MuttWindow *win);
 

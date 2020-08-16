@@ -43,38 +43,52 @@ void sb_win_remove_observers(struct MuttWindow *win);
 /**
  * calc_divider - Decide what actions are required for the divider
  * @param wdata   Sidebar data
- * @param ascii   true, if `$ascii_chars` is set
- * @param div_str Divider string, `$sidebar_divider_char`
- * @retval num Action required, e.g. #WA_REPAINT
+ * @retval bool true, if the width has changed
  *
  * If the divider changes width, then Window will need to be reflowed.
  */
-WindowActionFlags calc_divider(struct SidebarWindowData *wdata, bool ascii, const char *div_str)
+static bool calc_divider(struct SidebarWindowData *wdata)
 {
+  enum DivType type = SB_DIV_USER;
+
   // Calculate the width of the delimiter in screen cells
   int width = mutt_strwidth(C_SidebarDividerChar);
-  if (width < 1) // Bad character or empty
+
+  if (C_AsciiChars)
   {
-    width = 1;
-  }
-  else if (ascii)
-  {
-    for (int i = 0; i < width; i++)
+    if (width < 1) // empty or bad
     {
-      if (div_str[i] & ~0x7F) // high-bit is set
+      type = SB_DIV_ASCII;
+      width = 1;
+    }
+    else
+    {
+      for (size_t i = 0; i < width; i++)
       {
-        width = 1;
-        break;
+        if (C_SidebarDividerChar[i] & ~0x7F) // high-bit is set
+        {
+          type = SB_DIV_ASCII;
+          width = 1;
+          break;
+        }
       }
     }
   }
+  else
+  {
+    if (width < 1) // empty or bad
+    {
+      type = SB_DIV_UTF8;
+      width = 1;
+    }
+  }
 
-  WindowActionFlags action = WA_REPAINT;
-  if (width != wdata->divider_width)
-    action = WA_REFLOW;
+  const bool changed = (width != wdata->divider_width);
 
+  wdata->divider_type = type;
   wdata->divider_width = width;
-  return action;
+
+  return changed;
 }
 
 /**
@@ -107,6 +121,8 @@ static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
   win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
   win_sidebar->wdata = sb_wdata_new();
   win_sidebar->wdata_free = sb_wdata_free;
+
+  calc_divider(win_sidebar->wdata);
 
   win_sidebar->recalc = sb_recalc;
   win_sidebar->repaint = sb_repaint;
@@ -286,7 +302,7 @@ static int sb_config_observer(struct NotifyCallback *nc)
       mutt_str_equal(ec->name, "sidebar_divider_char"))
   {
     struct SidebarWindowData *wdata = sb_wdata_get(win);
-    WindowActionFlags action = calc_divider(wdata, C_AsciiChars, C_SidebarDividerChar);
+    WindowActionFlags action = calc_divider(wdata);
     if (action == WA_REFLOW)
       win->parent->actions |= WA_REFLOW;
     else
