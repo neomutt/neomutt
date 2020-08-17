@@ -227,9 +227,8 @@ msgstr "Autocryt paskyros kūrimas nutrauktas"
 #. email when the engine is not available.
 #: autocrypt/autocrypt.c:568 autocrypt/autocrypt.c:577
 #: autocrypt/autocrypt.c:584
-#, fuzzy
 msgid "Autocrypt is not available"
-msgstr "Nėra prieinamo tėvinio laiško"
+msgstr "Autocypt neprieinamas"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the account does not exist or is not enabled.
@@ -238,7 +237,7 @@ msgstr "Nėra prieinamo tėvinio laiško"
 #: autocrypt/autocrypt.c:596
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr ""
+msgstr "Autocrypt neįjungtas adresui %s"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
@@ -910,15 +909,13 @@ msgstr "Kopijuoju į %s..."
 
 #. L10N: Progress meter message when saving tagged messages
 #: commands.c:1195
-#, fuzzy
 msgid "Saving tagged messages..."
-msgstr "Spausdinti pažymėtus laiškus?"
+msgstr "Saugau pažymėtus laiškus..."
 
 #. L10N: Progress meter message when copying tagged messages
 #: commands.c:1197
-#, fuzzy
 msgid "Copying tagged messages..."
-msgstr "Kopijuoju %d laišką į %s..."
+msgstr "Kopijuoju pažymėtus laiškus..."
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1299
@@ -3111,9 +3108,8 @@ msgstr "Blogai suformuotas tipo %s įrašas \"%s\" %d eilutėje"
 #. unset mailcap_path
 #.
 #: mailcap.c:488
-#, fuzzy
 msgid "Neither mailcap_path nor MAILCAPS specified"
-msgstr "Nenurodytas mailcap kelias!"
+msgstr "Nenurodytas nei mailcap_path nei MAILCAPS"
 
 #: mailcap.c:512
 #, c-format
@@ -6943,9 +6939,8 @@ msgid "Preparing forwarded message..."
 msgstr "Paruošiu persiunčiamą laišką..."
 
 #: send/send.c:1640
-#, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "Fcc į IMAP dėžutę nepalaikoma automatiniame režime"
+msgstr "Įspėjimas: Fcc į IMAP dėžutę nepalaikoma automatiniame režime"
 
 #. L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
 #. To make it clearer that the message doesn't mean NeoMutt is aborting
@@ -6955,7 +6950,7 @@ msgstr "Fcc į IMAP dėžutę nepalaikoma automatiniame režime"
 #: send/send.c:1646
 #, c-format
 msgid "Skipping Fcc to %s"
-msgstr ""
+msgstr "Praleidžiu Fcc į %s"
 
 #: send/send.c:1686 send/send.c:1696 send/send.c:1722
 msgid "Save attachments in Fcc?"
