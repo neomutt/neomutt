@@ -35,7 +35,6 @@ struct Mailbox;
 struct MuttWindow;
 
 /* These Config Variables are only used in commands.c */
-extern unsigned char C_CryptVerifySig; /* verify PGP signatures */
 extern char *        C_DisplayFilter;
 extern bool          C_PipeDecode;
 extern char *        C_PipeSep;

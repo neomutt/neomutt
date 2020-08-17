@@ -31,6 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "lib.h"
 
 // clang-format off
 short         C_ConnectTimeout;         ///< Config: Timeout for making network connections (-1 to wait indefinitely)

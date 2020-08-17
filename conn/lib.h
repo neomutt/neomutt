@@ -71,5 +71,6 @@ int mutt_ssl_starttls(struct Connection *conn);
 #endif
 
 int getdnsdomainname(struct Buffer *domain);
+bool config_init_conn(struct ConfigSet *cs);
 
 #endif /* MUTT_CONN_LIB_H */

@@ -31,8 +31,6 @@
 #include "gui/lib.h"
 #include "lib.h"
 
-extern struct MuttWindow *RootWindow;
-
 static const char *win_size(const struct MuttWindow *win)
 {
   if (!win)

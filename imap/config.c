@@ -30,6 +30,7 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
+#include "lib.h"
 #include "init.h"
 
 // clang-format off

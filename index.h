@@ -37,7 +37,6 @@ struct NotifyCallback;
 extern bool  C_ChangeFolderNext;
 extern bool  C_CollapseAll;
 extern char *C_MarkMacroPrefix;
-extern bool  C_PgpAutoDecode;
 extern bool  C_UncollapseJump;
 extern bool  C_UncollapseNew;
 

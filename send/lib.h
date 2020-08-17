@@ -51,6 +51,4 @@
 #include "smtp.h"
 // IWYU pragma: end_exports
 
-struct ConfigSet;
-
 #endif /* MUTT_SEND_LIB_H */

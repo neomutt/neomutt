@@ -32,6 +32,7 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
+#include "multipart.h"
 #include "sendlib.h"
 
 /**

@@ -697,7 +697,7 @@ struct ConfigDef MainVars[] = {
 /**
  * config_init_main - Register main config variables - Implements ::module_init_config_t
  */
-bool config_init_main(struct ConfigSet *cs)
+static bool config_init_main(struct ConfigSet *cs)
 {
   return cs_register_variables(cs, MainVars, 0);
 }
@@ -731,7 +731,7 @@ static void init_types(struct ConfigSet *cs)
 static void init_variables(struct ConfigSet *cs)
 {
   // Define the config variables
-  CONFIG_INIT_VARS(cs, main);
+  config_init_main(cs);
 #ifdef USE_AUTOCRYPT
   CONFIG_INIT_VARS(cs, autocrypt);
 #endif

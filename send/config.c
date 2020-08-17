@@ -32,13 +32,16 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
+#include "lib.h"
 #include "init.h"
+
+bool config_init_send(struct ConfigSet *cs);
 
 /**
  * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator()
  */
-int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                          intptr_t value, struct Buffer *err)
+static int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                                 intptr_t value, struct Buffer *err)
 {
   const int min_length = 78; // Recommendations from RFC5233
   const int max_length = 998;

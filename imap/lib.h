@@ -92,6 +92,9 @@ int imap_browse(const char *path, struct BrowserState *state);
 int imap_mailbox_create(const char *folder);
 int imap_mailbox_rename(const char *path);
 
+/* config.c */
+bool config_init_imap(struct ConfigSet *cs);
+
 /* message.c */
 int imap_copy_messages(struct Mailbox *m, struct EmailList *el, const char *dest, bool delete_original);
 

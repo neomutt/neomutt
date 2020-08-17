@@ -30,6 +30,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "config/lib.h"
+#include "lib.h"
 
 struct ConfigDef HelpbarVars[] = {
   // clang-format off

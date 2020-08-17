@@ -31,6 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 #include "private.h"
+#include "lib.h"
 
 // clang-format off
 bool          C_PopAuthTryAll;          ///< Config: (pop) Try all available authentication methods

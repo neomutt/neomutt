@@ -33,6 +33,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "mutt/lib.h"
+#include "helpers.h"
 #include "quad.h"
 #include "subset.h"
 #include "types.h"

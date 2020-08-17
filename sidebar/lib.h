@@ -70,5 +70,6 @@ enum CommandResult sb_parse_whitelist  (struct Buffer *buf, struct Buffer *s, in
 void sb_notify_mailbox  (struct MuttWindow *win, struct Mailbox *m, enum SidebarNotification sbn);
 void sb_draw            (struct MuttWindow *win);
 void sb_set_open_mailbox(struct MuttWindow *win, struct Mailbox *m);
+bool config_init_sidebar(struct ConfigSet *cs);
 
 #endif /* MUTT_SIDEBAR_LIB_H */

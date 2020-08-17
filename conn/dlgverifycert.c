@@ -38,6 +38,7 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
+#include "ssl.h"
 
 #ifdef USE_SSL
 /// Help Bar for the Certificate Verification dialog

@@ -36,9 +36,7 @@ extern const char *  C_Preconnect;
 extern const char *  C_SslCaCertificatesFile;
 extern const char *  C_SslCiphers;
 extern const char *  C_SslClientCert;
-extern bool          C_SslForceTls;
 extern short         C_SslMinDhPrimeBits;
-extern unsigned char C_SslStarttls;
 extern bool          C_SslUseSslv2;
 extern bool          C_SslUseSslv3;
 extern bool          C_SslUseTlsv11;
@@ -49,7 +47,6 @@ extern bool          C_SslUsesystemcerts;
 extern bool          C_SslVerifyDates;
 extern bool          C_SslVerifyHost;
 extern bool          C_SslVerifyPartialChains;
-extern const char *  C_Tunnel;
 extern bool          C_TunnelIsSecure;
 extern bool          C_UseIpv6;
 

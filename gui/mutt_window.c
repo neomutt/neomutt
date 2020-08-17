@@ -708,7 +708,7 @@ struct MuttWindow *mutt_window_find(struct MuttWindow *root, enum WindowType typ
  * window_recalc - Recalculate a tree of Windows
  * @param win Window to start at
  */
-void window_recalc(struct MuttWindow *win)
+static void window_recalc(struct MuttWindow *win)
 {
   if (!win)
     return;
@@ -731,7 +731,7 @@ void window_recalc(struct MuttWindow *win)
  * @param win   Window to start at
  * @param force Repaint everything
  */
-void window_repaint(struct MuttWindow *win, bool force)
+static void window_repaint(struct MuttWindow *win, bool force)
 {
   if (!win)
     return;

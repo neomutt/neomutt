@@ -30,6 +30,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"

@@ -44,12 +44,7 @@ enum NntpStatus
   NNTP_BYE,      ///< Disconnected from server
 };
 
-extern unsigned char C_CatchupNewsgroup;
-extern unsigned char C_FollowupToPoster;
-extern char *        C_GroupIndexFormat;
 extern char *        C_NewsCacheDir;
-extern char *        C_NewsServer;
-extern char *        C_NewsgroupsCharset;
 extern char *        C_Newsrc;
 extern char *        C_NntpAuthenticators;
 extern short         C_NntpContext;
@@ -58,11 +53,8 @@ extern bool          C_NntpLoadDescription;
 extern char *        C_NntpPass;
 extern short         C_NntpPoll;
 extern char *        C_NntpUser;
-extern unsigned char C_PostModerated;
 extern bool          C_SaveUnsubscribed;
 extern bool          C_ShowNewNews;
-extern bool          C_ShowOnlyUnread;
-extern bool          C_XCommentTo;
 
 void                    nntp_acache_free       (struct NntpMboxData *mdata);
 int                     nntp_active_save_cache (struct NntpAccountData *adata);

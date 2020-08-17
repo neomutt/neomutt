@@ -65,4 +65,6 @@ void                     maildir_edata_free(void **ptr);
 struct MaildirEmailData *maildir_edata_get (struct Email *e);
 struct MaildirEmailData *maildir_edata_new (void);
 
+bool config_init_maildir(struct ConfigSet *cs);
+
 #endif /* MUTT_MAILDIR_LIB_H */

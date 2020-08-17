@@ -31,6 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "lib.h"
 #include "init.h"
 
 // clang-format off

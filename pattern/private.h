@@ -125,7 +125,6 @@ extern const struct PatternFlags Flags[];
 
 extern char *C_ExternalSearchCommand;
 extern char *C_PatternFormat;
-extern bool  C_ThoroughSearch;
 
 const struct PatternFlags *lookup_op(int op);
 const struct PatternFlags *lookup_tag(char tag);

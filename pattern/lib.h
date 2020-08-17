@@ -181,5 +181,6 @@ int mutt_pattern_func(int op, char *prompt);
 int mutt_search_command(struct Mailbox *mailbox, int cur, int op);
 
 bool mutt_limit_current_thread(struct Email *e);
+bool config_init_pattern(struct ConfigSet *cs);
 
 #endif /* MUTT_PATTERN_LIB_H */

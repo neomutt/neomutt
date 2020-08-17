@@ -31,7 +31,10 @@
 #include <config/lib.h>
 #include <stdbool.h>
 #include "private.h"
+#include "lib.h"
 #include "init.h"
+
+bool config_init_ncrypt(struct ConfigSet *cs);
 
 // clang-format off
 #ifdef CRYPT_BACKEND_GPGME
