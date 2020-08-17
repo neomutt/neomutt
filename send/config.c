@@ -32,6 +32,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
+#include "conn/lib.h"
 #include "lib.h"
 #include "init.h"
 
@@ -53,6 +54,33 @@ static int wrapheaders_validator(const struct ConfigSet *cs, const struct Config
   mutt_buffer_printf(err, _("Option %s must be between %d and %d inclusive"),
                      cdef->name, min_length, max_length);
   return CSR_ERR_INVALID;
+}
+
+/**
+ * smtp_auth_validator - Validate the "smtp_authenticators" config variable - Implements ConfigDef::validator()
+ */
+static int smtp_auth_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                               intptr_t value, struct Buffer *err)
+{
+  const struct Slist *smtp_auth_methods = (const struct Slist *) value;
+  if (!smtp_auth_methods || (smtp_auth_methods->count == 0))
+    return CSR_SUCCESS;
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &smtp_auth_methods->head, entries)
+  {
+    if (smtp_auth_is_valid(np->data))
+      continue;
+#ifdef USE_SASL
+    if (sasl_auth_validator(np->data))
+      continue;
+#endif
+    mutt_buffer_printf(err, _("Option %s: %s is not a valid authenticator"),
+                       cdef->name, np->data);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
 }
 
 struct ConfigDef SendVars[] = {
@@ -241,7 +269,7 @@ struct ConfigDef SendVars[] = {
     "File containing a signature to append to all mail"
   },
 #ifdef USE_SMTP
-  { "smtp_authenticators", DT_SLIST|SLIST_SEP_COLON, NULL, 0, 0, NULL,
+  { "smtp_authenticators", DT_SLIST|SLIST_SEP_COLON, NULL, 0, 0, smtp_auth_validator,
     "(smtp) List of allowed authentication methods"
   },
   { "smtp_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, NULL, 0, 0, NULL,
