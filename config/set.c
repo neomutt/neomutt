@@ -220,7 +220,7 @@ struct HashElem *cs_get_elem(const struct ConfigSet *cs, const char *name)
   if (!he)
     return NULL;
 
-  if (he->type != DT_SYNONYM)
+  if (DTYPE(he->type) != DT_SYNONYM)
     return he;
 
   const struct ConfigDef *cdef = he->data;
