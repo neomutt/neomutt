@@ -137,6 +137,7 @@ extern unsigned char C_PopReconnect;
 extern char *        C_PopUser;
 
 /* pop_auth.c */
+bool pop_auth_is_valid(const char *authenticator);
 int pop_authenticate(struct PopAccountData *adata);
 void pop_apop_timestamp(struct PopAccountData *adata, char *buf);
 

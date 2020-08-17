@@ -377,13 +377,40 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
   return POP_A_FAILURE;
 }
 
+/**
+ * pop_authenticators - Accepted authentication methods
+ */
 static const struct PopAuth pop_authenticators[] = {
+  // clang-format off
   { pop_auth_oauth, "oauthbearer" },
 #ifdef USE_SASL
   { pop_auth_sasl, NULL },
 #endif
-  { pop_auth_apop, "apop" },         { pop_auth_user, "user" }, { NULL, NULL },
+  { pop_auth_apop, "apop" },
+  { pop_auth_user, "user" },
+  { NULL, NULL },
+  // clang-format on
 };
+
+/**
+ * pop_auth_is_valid - Check if string is a valid pop authentication method
+ * @param authenticator Authenticator string to check
+ * @retval bool True if argument is a valid auth method
+ *
+ * Validate whether an input string is an accepted pop authentication method as
+ * defined by #pop_authenticators.
+ */
+bool pop_auth_is_valid(const char *authenticator)
+{
+  for (size_t i = 0; i < mutt_array_size(pop_authenticators); i++)
+  {
+    const struct PopAuth *auth = &pop_authenticators[i];
+    if (auth->method && mutt_istr_equal(auth->method, authenticator))
+      return true;
+  }
+
+  return false;
+}
 
 /**
  * pop_authenticate - Authenticate with a POP server
@@ -406,7 +433,7 @@ int pop_authenticate(struct PopAccountData *adata)
     return -3;
   }
 
-  if (C_PopAuthenticators)
+  if (C_PopAuthenticators && (C_PopAuthenticators->count > 0))
   {
     /* Try user-specified list of authentication methods */
     struct ListNode *np = NULL;
