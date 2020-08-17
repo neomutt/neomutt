@@ -55,7 +55,9 @@ struct ImapAuth
  * imap_authenticators - Accepted authentication methods
  */
 static const struct ImapAuth imap_authenticators[] = {
-  { imap_auth_oauth, "oauthbearer" }, { imap_auth_plain, "plain" },
+  // clang-format off
+  { imap_auth_oauth, "oauthbearer" },
+  { imap_auth_plain, "plain" },
 #ifdef USE_SASL
   { imap_auth_sasl, NULL },
 #else
@@ -69,7 +71,28 @@ static const struct ImapAuth imap_authenticators[] = {
   { imap_auth_cram_md5, "cram-md5" },
 #endif
   { imap_auth_login, "login" },
+  // clang-format on
 };
+
+/**
+ * imap_auth_is_valid - Check if string is a valid imap authentication method
+ * @param authenticator Authenticator string to check
+ * @retval bool True if argument is a valid auth method
+ *
+ * Validate whether an input string is an accepted imap authentication method as
+ * defined by #imap_authenticators.
+ */
+bool imap_auth_is_valid(const char *authenticator)
+{
+  for (size_t i = 0; i < mutt_array_size(imap_authenticators); i++)
+  {
+    const struct ImapAuth *auth = &imap_authenticators[i];
+    if (auth->method && mutt_istr_equal(auth->method, authenticator))
+      return true;
+  }
+
+  return false;
+}
 
 /**
  * imap_authenticate - Authenticate to an IMAP server

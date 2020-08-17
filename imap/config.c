@@ -30,7 +30,9 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
+#include "conn/lib.h"
 #include "lib.h"
+#include "auth.h"
 #include "init.h"
 
 // clang-format off
@@ -59,6 +61,33 @@ bool          C_ImapServernoise;         ///< Config: (imap) Display server warn
 char *        C_ImapUser;                ///< Config: (imap) Username for the IMAP server
 // clang-format on
 
+/**
+ * imap_auth_validator - Validate the "imap_authenticators" config variable - Implements ConfigDef::validator()
+ */
+static int imap_auth_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                               intptr_t value, struct Buffer *err)
+{
+  const struct Slist *imap_auth_methods = (const struct Slist *) value;
+  if (!imap_auth_methods || (imap_auth_methods->count == 0))
+    return CSR_SUCCESS;
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &imap_auth_methods->head, entries)
+  {
+    if (imap_auth_is_valid(np->data))
+      continue;
+#ifdef USE_SASL
+    if (sasl_auth_validator(np->data))
+      continue;
+#endif
+    mutt_buffer_printf(err, _("Option %s: %s is not a valid authenticator"),
+                       cdef->name, np->data);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}
+
 struct ConfigDef ImapVars[] = {
   // clang-format off
   { "imap_check_subscribed", DT_BOOL, &C_ImapCheckSubscribed, false, 0, NULL,
@@ -72,7 +101,7 @@ struct ConfigDef ImapVars[] = {
     "(imap) Compress network traffic"
   },
 #endif
-  { "imap_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_ImapAuthenticators, 0, 0, NULL,
+  { "imap_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_ImapAuthenticators, 0, 0, imap_auth_validator,
     "(imap) List of allowed IMAP authentication methods"
   },
   { "imap_delim_chars", DT_STRING, &C_ImapDelimChars, IP "/.", 0, NULL,
