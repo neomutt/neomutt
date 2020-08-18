@@ -9,9 +9,10 @@
 #define PREVIEW_CONFIG_PREFIX "devel_preview_"
 
 // clang-format off
-bool *C_PreviewEnabled;   ///< Config: (preview) Enable the preview window
-short C_PreviewHeight; ///< Config: (preview) Height of the preview window
-short C_PreviewLines;  ///< Config: (preview) Number of extracted lines to display in the preview window
+bool *C_PreviewEnabled;         ///< Config: (preview) Enable the preview window
+short C_PreviewHeight;       ///< Config: (preview) Height of the preview window
+short C_PreviewLines;        ///< Config: (preview) Number of extracted lines to display in the preview window
+char* C_PreviewDividerCharH; ///< Config: (preview) Char to write between the preview window and the others (horizontal)
 // clang-format on
 
 struct ConfigDef PreviewVars[] = {
@@ -24,6 +25,9 @@ struct ConfigDef PreviewVars[] = {
   },
   { PREVIEW_CONFIG_PREFIX "lines", DT_NUMBER|DT_NOT_NEGATIVE|R_PREVIEW, &C_PreviewLines, 3, 0, NULL,
     "(preview) Number of lines to preview"
+  },
+  { PREVIEW_CONFIG_PREFIX "divider_horizontal", DT_STRING|R_PREVIEW, &C_PreviewDividerCharH, 0, 0, NULL,
+    "(preview) Character to draw between the preview, the index and the sidebar (horizontal)"
   },
   { NULL, 0, NULL, 0, 0, NULL, NULL },
   // clang-format on

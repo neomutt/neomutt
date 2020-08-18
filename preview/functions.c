@@ -70,6 +70,13 @@ void compute_mail_preview(struct PreviewWindowData *data)
 {
   struct Mailbox *m = data->mailbox;
   struct Email *e = data->current_email;
+
+  if (!e)
+  {
+    mutt_debug(LL_DEBUG1, "preview: no mail selected");
+    return;
+  }
+
   mutt_parse_mime_message(m, e);
   struct Message *msg = mx_msg_open(m, e->msgno);
 
