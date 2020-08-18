@@ -81,7 +81,7 @@ void preview_win_init(struct MuttWindow *dlg)
       mutt_window_new(WT_PREVIEW, MUTT_WIN_ORIENT_HORIZONTAL,
                       MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED, 5);
   {
-    preview_window->state.visible = true; // XXX: Config
+    preview_window->state.visible = C_PreviewEnabled && C_PreviewHeight > 0;
     preview_window->wdata = preview_wdata_new();
     preview_window->wdata_free = preview_wdata_free;
     preview_window->recalc = preview_recalc;

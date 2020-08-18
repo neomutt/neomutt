@@ -1464,6 +1464,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
  * @param dest Buffer for the result
  * @param src  String to strip
  * @param strip_markers Remove
+ * @param reset Reset the buffer before starting
  *
  * Removes ANSI and backspace formatting, and optionally markers.
  * This is separated out so that it can be used both by the pager
@@ -1472,11 +1473,15 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
  * This logic is pulled from the pager fill_buffer() function, for use
  * in stripping reply-quoted autoview output of ansi sequences.
  */
-void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers)
+void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src,
+                                  bool reset, bool strip_markers)
 {
   const char *s = src;
 
-  mutt_buffer_reset(dest);
+  if (reset)
+  {
+    mutt_buffer_reset(dest);
+  }
 
   if (!s)
     return;
@@ -1549,7 +1554,7 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
 
     mutt_buffer_init(&stripped);
     mutt_buffer_alloc(&stripped, *blen);
-    mutt_buffer_strip_formatting(&stripped, (const char *) *buf, 1);
+    mutt_buffer_strip_formatting(&stripped, (const char *) *buf, true, true);
     /* This should be a noop, because *fmt should be NULL */
     FREE(fmt);
     *fmt = (unsigned char *) stripped.data;

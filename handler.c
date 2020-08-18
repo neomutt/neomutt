@@ -600,7 +600,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       struct Buffer *stripped = mutt_buffer_pool_get();
       while (fgets(buf, sizeof(buf), fp_out))
       {
-        mutt_buffer_strip_formatting(stripped, buf, false);
+        mutt_buffer_strip_formatting(stripped, buf, true, false);
         state_puts(s, s->prefix);
         state_puts(s, mutt_buffer_string(stripped));
       }

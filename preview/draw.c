@@ -1,14 +1,19 @@
 #include "config.h"
 #include "private.h"
 
+#include "mutt/buffer.h"
 #include "mutt/logging.h"
 #include "mutt/queue.h"
 #include "email/lib.h"
 #include "gui/lib.h"
+#include "gui/mutt_window.h"
 
 void preview_draw(struct MuttWindow *win)
 {
-  if (!win || !win->state.visible)
+  if (!C_PreviewEnabled || !win)
+    return;
+
+  if (!mutt_window_is_visible(win))
     return;
 
   struct PreviewWindowData *data = preview_wdata_get(win);
@@ -24,5 +29,7 @@ void preview_draw(struct MuttWindow *win)
   mutt_window_mvprintw(win, 5, 5, "Selected mail id: %s, from: %s, subject: %s",
                        em->env->message_id, from ? from->mailbox : "unknown",
                        em->env->subject);
-  mutt_window_mvprintw(win, 5, 8, "%s", data->preview_data);
+
+  mutt_window_mvprintw(win, 5, 8, "%.*s", mutt_buffer_len(&data->buffer),
+                       mutt_buffer_string(&data->buffer));
 }

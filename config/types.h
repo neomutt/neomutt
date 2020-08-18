@@ -72,6 +72,7 @@ typedef uint32_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
 #define R_REFLOW          (1 << 24) ///< Reflow window layout and full redraw
 #define R_SIDEBAR         (1 << 25) ///< Redraw the sidebar
 #define R_MENU            (1 << 26) ///< Redraw all menus
+#define R_PREVIEW         (1 << 27) ///< Redraw the preview window
 
 #define R_REDRAW_MASK  0x07FE0000   ///< Mask for the Redraw Flags
 

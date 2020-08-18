@@ -1,5 +1,9 @@
 #pragma once
 
+#include <stdbool.h>
+
+#include "mutt/buffer.h"
+
 struct NotifyCallback;
 struct MuttWindow;
 struct Mailbox;
@@ -18,13 +22,17 @@ void preview_win_shutdown   (struct MuttWindow *dlg);
 /* draw.c */
 void preview_draw(struct MuttWindow* win);
 
-/* wdata.c */
+/*  config.c */
+extern bool *C_PreviewEnabled;
+extern short C_PreviewHeight;
+extern short C_PreviewLines;
 
+/* wdata.c */
 struct PreviewWindowData
 {
   struct Mailbox *mailbox;
   struct Email *current_email;
-  char preview_data[1024];
+  struct Buffer buffer;
 };
 
 struct PreviewWindowData    *preview_wdata_new(void);

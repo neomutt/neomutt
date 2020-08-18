@@ -1,8 +1,10 @@
+#include "mutt/buffer.h"
 #include "mutt/file.h"
 #include "mutt/memory.h"
 #include "handler.h"
 #include "mutt_parse.h"
 #include "mx.h"
+#include "pager/lib.h"
 #include "preview/private.h"
 #include "recvattach.h"
 #include "state.h"
@@ -25,38 +27,43 @@ static struct Body *find_first_decodable_body(struct AttachCtx *actx)
   return NULL;
 }
 
-static size_t filter_and_add(char *dest, size_t dest_available, const char *source)
+static void filter_and_add(struct Buffer *buffer, char *source)
 {
-  if (!dest || dest_available == 0 || !source)
-  {
-    return 0;
-  }
-
-  char *initial_dest = dest;
-  char *max_dest = dest + dest_available;
-
-  size_t char_to_copy = dest_available;
-  while (char_to_copy && dest < max_dest && *source != '\0')
+  while (*source)
   {
     char sc = *source;
     // XXX: how to handle locale here? Do we have a global conf one?
     // Also no idea how non roman alphabet should be handled…
     if (isspace(sc))
     {
-      *dest++ = ' ';
-      --char_to_copy;
+      mutt_buffer_addch(buffer, ' ');
       ++source;
-      // trim all spaces
       while (isspace(*source))
         ++source;
       continue;
     }
 
-    *dest++ = *source++;
-    --char_to_copy;
-  }
+    int idx = 0;
+    while (source[idx] != '\0' && !isspace(source[idx]))
+    {
+      ++idx;
+    }
 
-  return dest - initial_dest;
+    bool add_space = false;
+    if (source[idx] != '\0')
+    {
+      source[idx] = '\0';
+      add_space = true;
+    }
+
+    mutt_buffer_strip_formatting(buffer, source, false, true);
+    if (add_space)
+    {
+      source[idx] = ' ';
+    }
+
+    source += idx;
+  }
 }
 
 void compute_mail_preview(struct PreviewWindowData *data)
@@ -66,7 +73,7 @@ void compute_mail_preview(struct PreviewWindowData *data)
   mutt_parse_mime_message(m, e);
   struct Message *msg = mx_msg_open(m, e->msgno);
 
-  data->preview_data[0] = '\0';
+  mutt_buffer_reset(&data->buffer);
 
   if (!msg)
   {
@@ -86,6 +93,7 @@ void compute_mail_preview(struct PreviewWindowData *data)
   mutt_generate_recvattach_list(actx, actx->email, actx->email->body,
                                 actx->fp_root, -1, 0, 0);
 
+  char *line = NULL;
   struct Body *body = find_first_decodable_body(actx);
   if (!body)
   {
@@ -96,24 +104,15 @@ void compute_mail_preview(struct PreviewWindowData *data)
 
   rewind(s.fp_out);
 
-  size_t sz_dest = sizeof(data->preview_data);
-
-  size_t added = 0;
-  size_t sz_line = sz_dest;
-  char *line = mutt_mem_malloc(sz_line);
-  for (int i = 0; i < 3; ++i)
+  size_t sz_line = 1024;
+  line = mutt_mem_malloc(sz_line);
+  for (int i = 0; i < C_PreviewLines; ++i)
   {
     line = mutt_file_read_line(line, &sz_line, s.fp_out, NULL, 0);
     if (!line)
       break;
 
-    size_t char_added = filter_and_add(data->preview_data + added, sz_dest - added, line);
-    added += char_added;
-
-    if (added == sz_line)
-    {
-      break;
-    }
+    filter_and_add(&data->buffer, line);
   }
 
 cleanup:
