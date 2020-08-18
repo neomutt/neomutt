@@ -92,6 +92,9 @@
 /// Maximum number of rows to use for the To:, Cc:, Bcc: fields
 #define MAX_ADDR_ROWS 5
 
+/// Maximum number of rows to use for the Headers: field
+#define MAX_USER_HDR_ROWS 5
+
 /* These Config Variables are only used in compose.c */
 char *C_ComposeFormat; ///< Config: printf-like format string for the Compose panel's status bar
 char *C_Ispell; ///< Config: External command to perform spell-checking
@@ -165,11 +168,12 @@ enum HeaderField
   HDR_FOLLOWUPTO, ///< "Followup-To:" field
   HDR_XCOMMENTTO, ///< "X-Comment-To:" field
 #endif
-  HDR_ATTACH_TITLE, ///< The "-- Attachments" line
+  HDR_CUSTOM_HEADERS, ///< "Headers:" field
+  HDR_ATTACH_TITLE,   ///< The "-- Attachments" line
 };
 
-int HeaderPadding[HDR_ATTACH_TITLE] = { 0 };
-int MaxHeaderWidth = 0;
+static int HeaderPadding[HDR_ATTACH_TITLE] = { 0 };
+static int MaxHeaderWidth = 0;
 
 static const char *const Prompts[] = {
   /* L10N: Compose menu field.  May not want to translate. */
@@ -210,6 +214,7 @@ static const char *const Prompts[] = {
   /* L10N: Compose menu field.  May not want to translate. */
   N_("X-Comment-To: "),
 #endif
+  N_("Headers: "),
 };
 
 /// Help Bar for the Compose dialog
@@ -403,6 +408,22 @@ static void draw_header(struct MuttWindow *win, int row, enum HeaderField field)
 }
 
 /**
+ * draw_header_content - Draw content on a separate line aligned to header prompt
+ * @param win     Window to draw on
+ * @param row     Row to draw at
+ * @param field   Field to display, e.g. #HDR_FROM
+ * @param content Text to display
+ *
+ * Content will be truncated if it is wider than the window.
+ */
+static void draw_header_content(struct MuttWindow *win, int row,
+                                enum HeaderField field, const char *content)
+{
+  mutt_window_move(win, HeaderPadding[field], row);
+  mutt_paddstr(win->state.cols - HeaderPadding[field], content);
+}
+
+/**
  * calc_address - Calculate how many rows an AddressList will need
  * @param[in]  al    Address List
  * @param[out] slist String list
@@ -473,6 +494,24 @@ static int calc_security(struct Email *e, short *rows)
 }
 
 /**
+ * calc_user_hdrs - Calculate how many rows are needed for user headers
+ * @param hdrs Header List
+ * @retval num Rows needed, limited to #MAX_USER_HDR_ROWS
+ */
+static int calc_user_hdrs(const struct ListHead *hdrs)
+{
+  int rows = 0; /* Don't print at all if no custom headers*/
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, hdrs, entries)
+  {
+    if (rows == MAX_USER_HDR_ROWS)
+      break;
+    rows++;
+  }
+  return rows;
+}
+
+/**
  * calc_envelope - Calculate how many rows the envelope will need
  * @param rd Email and other compose data
  * @retval num Rows needed
@@ -503,6 +542,7 @@ static int calc_envelope(struct ComposeRedrawData *rd)
     rows += calc_address(&env->bcc, &rd->bcc_list, cols, &rd->bcc_rows);
   }
   rows += calc_security(e, &rd->sec_rows);
+  rows += calc_user_hdrs(&env->userhdrs);
 
   return rows;
 }
@@ -863,6 +903,47 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 }
 
 /**
+ * draw_envelope_user_hdrs - Write custom user headers to the compose window
+ * @param rd  Email and other compose data
+ * @param row Window row to start drawing from
+ */
+static int draw_envelope_user_hdrs(const struct ComposeRedrawData *rd, int row)
+{
+  const char *overflow_text = "...";
+  int rows_used = 0;
+
+  struct ListNode *first = STAILQ_FIRST(&rd->email->env->userhdrs);
+  if (!first)
+    return rows_used;
+
+  /* Draw first entry on same line as prompt */
+  draw_header(rd->win_envelope, row, HDR_CUSTOM_HEADERS);
+  mutt_paddstr(rd->win_envelope->state.cols -
+                   (HeaderPadding[HDR_CUSTOM_HEADERS] +
+                    mutt_strwidth(_(Prompts[HDR_CUSTOM_HEADERS]))),
+               first->data);
+  rows_used++;
+
+  /* Draw any following entries on their own line */
+  struct ListNode *np = STAILQ_NEXT(first, entries);
+  if (!np)
+    return rows_used;
+
+  STAILQ_FOREACH_FROM(np, &rd->email->env->userhdrs, entries)
+  {
+    if ((rows_used == (MAX_USER_HDR_ROWS - 1)) && STAILQ_NEXT(np, entries))
+    {
+      draw_header_content(rd->win_envelope, row + rows_used, HDR_CUSTOM_HEADERS, overflow_text);
+      rows_used++;
+      break;
+    }
+    draw_header_content(rd->win_envelope, row + rows_used, HDR_CUSTOM_HEADERS, np->data);
+    rows_used++;
+  }
+  return rows_used;
+}
+
+/**
  * draw_envelope - Write the email headers to the compose window
  * @param rd  Email and other compose data
  */
@@ -911,6 +992,7 @@ static void draw_envelope(struct ComposeRedrawData *rd)
 #ifdef MIXMASTER
   redraw_mix_line(&e->chain, rd, row++);
 #endif
+  row += draw_envelope_user_hdrs(rd, row);
 
   mutt_curses_set_color(MT_COLOR_STATUS);
   mutt_window_mvaddstr(rd->win_abar, 0, 0, _("-- Attachments"));
