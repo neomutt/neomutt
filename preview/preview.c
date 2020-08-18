@@ -78,8 +78,8 @@ void preview_win_init(struct MuttWindow *dlg)
   mutt_window_remove_child(index_container, bar);
 
   struct MuttWindow *preview_window =
-      mutt_window_new(WT_PREVIEW, MUTT_WIN_ORIENT_HORIZONTAL,
-                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED, 5);
+      mutt_window_new(WT_PREVIEW, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
+                      MUTT_WIN_SIZE_UNLIMITED, C_PreviewHeight);
   {
     preview_window->state.visible = C_PreviewEnabled && C_PreviewHeight > 0;
     preview_window->wdata = preview_wdata_new();
@@ -91,7 +91,7 @@ void preview_win_init(struct MuttWindow *dlg)
   mutt_window_add_child(index_container, preview_window);
   mutt_window_add_child(index_container, bar);
 
-  { // notification registrering
+  { // notification registering
     notify_observer_add(NeoMutt->notify, NT_WINDOW, preview_neomutt_observer, preview_window);
     notify_observer_add(dlg->notify, NT_USER_INDEX, preview_dialog_observer, preview_window);
   }

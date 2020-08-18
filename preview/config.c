@@ -19,7 +19,7 @@ struct ConfigDef PreviewVars[] = {
   { PREVIEW_CONFIG_PREFIX "enabled", DT_BOOL|R_PREVIEW, &C_PreviewEnabled, false, 0, NULL,
     "(preview) Enable the preview window"
   },
-  { PREVIEW_CONFIG_PREFIX "height", DT_NUMBER|DT_NOT_NEGATIVE|R_PREVIEW, &C_PreviewHeight, 10, 0, NULL,
+  { PREVIEW_CONFIG_PREFIX "height", DT_NUMBER|DT_NOT_NEGATIVE|R_PREVIEW, &C_PreviewHeight, 25, 0, NULL,
     "(preview) Height of the preview window"
   },
   { PREVIEW_CONFIG_PREFIX "lines", DT_NUMBER|DT_NOT_NEGATIVE|R_PREVIEW, &C_PreviewLines, 3, 0, NULL,
