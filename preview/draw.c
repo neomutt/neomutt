@@ -30,7 +30,7 @@ static void draw_divider(struct PreviewWindowData *data, struct MuttWindow *win,
     return;
   }
 
-  mutt_window_move(win, 0, 0);
+  mutt_window_move(win, *col_offset, *row_offset);
 
   const chtype ch_default_separator = C_AsciiChars ? '-' : ACS_HLINE;
   bool use_default_separator = !valid_sep(C_PreviewDividerCharH);
@@ -43,7 +43,7 @@ static void draw_divider(struct PreviewWindowData *data, struct MuttWindow *win,
 
   mutt_curses_set_color(MT_COLOR_PREVIEW_DIVIDER);
 
-  for (int i = 0; i < *max_cols; i += sep_size)
+  for (int i = *col_offset; i < *max_cols; i += sep_size)
   {
     if (use_default_separator)
     {
@@ -55,9 +55,9 @@ static void draw_divider(struct PreviewWindowData *data, struct MuttWindow *win,
     }
   }
 
-  for (int i = 1; i < *max_rows; ++i)
+  for (int i = *row_offset + 1; i < *max_rows; ++i)
   {
-    mutt_window_move(win, 0, i);
+    mutt_window_move(win, *col_offset, i);
     mutt_window_clrtoeol(win);
   }
 
