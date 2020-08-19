@@ -94,6 +94,7 @@ void preview_win_init(struct MuttWindow *dlg)
   { // notification registering
     notify_observer_add(NeoMutt->notify, NT_WINDOW, preview_neomutt_observer, preview_window);
     notify_observer_add(dlg->notify, NT_USER_INDEX, preview_dialog_observer, preview_window);
+    notify_observer_add(NeoMutt->notify, NT_CONFIG, preview_config_observer, preview_window);
   }
 
   debug_window_tree(dlg, 0);

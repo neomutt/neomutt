@@ -2,6 +2,8 @@
 
 #include "mutt/notify_type.h"
 #include "mutt/observer.h"
+#include "mutt/string2.h"
+#include "config/subset.h"
 #include "gui/mutt_window.h"
 #include "index.h"
 
@@ -69,6 +71,43 @@ int preview_insertion_observer(struct NotifyCallback *nc)
     preview_win_init(ew->win);
   else if (ew->flags & WN_HIDDEN)
     preview_win_shutdown(ew->win);
+
+  return 0;
+}
+
+/**
+ * preview_config_observer - Config has changed - Implements ::observer_t
+ */
+int preview_config_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_CONFIG) || !nc->event_data || !nc->global_data)
+    return -1;
+
+  if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
+    return 0;
+
+  struct EventConfig *ec = nc->event_data;
+
+  if (!mutt_str_startswith(ec->name, PREVIEW_CONFIG_PREFIX) &&
+      !mutt_str_equal(ec->name, "ascii_chars"))
+  {
+    return 0;
+  }
+
+  mutt_debug(LL_NOTIFY, "config: %s\n", ec->name);
+
+  struct MuttWindow *win = nc->global_data;
+
+  if (mutt_str_equal(ec->name, PREVIEW_CONFIG_PREFIX "visible"))
+  {
+    window_set_visible(win, C_PreviewEnabled);
+  }
+  else if (mutt_str_equal(ec->name, PREVIEW_CONFIG_PREFIX "height"))
+  {
+    win->req_rows = C_PreviewHeight;
+  }
+
+  win->parent->actions |= WA_REFLOW;
 
   return 0;
 }

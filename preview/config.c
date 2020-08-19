@@ -6,8 +6,6 @@
 
 #include "private.h"
 
-#define PREVIEW_CONFIG_PREFIX "devel_preview_"
-
 // clang-format off
 bool *C_PreviewEnabled;         ///< Config: (preview) Enable the preview window
 short C_PreviewHeight;       ///< Config: (preview) Height of the preview window
