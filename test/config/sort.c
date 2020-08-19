@@ -52,30 +52,49 @@ static short VarRaspberry;
 static short VarStrawberry;
 
 // clang-format off
+/**
+ * Test Lookup Table, used by everything
+ */
+const struct Mapping SortTestMethods[] = {
+  { "date",          SORT_DATE },
+  { "date-received", SORT_RECEIVED },
+  { "date-sent",     SORT_DATE },
+  { "from",          SORT_FROM },
+  { "label",         SORT_LABEL },
+  { "mailbox-order", SORT_ORDER },
+  { "score",         SORT_SCORE },
+  { "size",          SORT_SIZE },
+  { "spam",          SORT_SPAM },
+  { "subject",       SORT_SUBJECT },
+  { "threads",       SORT_THREADS },
+  { "to",            SORT_TO },
+  { NULL,            0 },
+};
+
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_SORT,                 &VarApple,      1,  0, NULL              }, /* test_initial_values */
-  { "Banana",     DT_SORT,                 &VarBanana,     2,  0, NULL              },
-  { "Cherry",     DT_SORT,                 &VarCherry,     1,  0, NULL              },
-  { "Damson",     DT_SORT|DT_SORT_INDEX,   &VarDamson,     1,  0, NULL              }, /* test_string_set */
-  { "Elderberry", DT_SORT|DT_SORT_ALIAS,   &VarElderberry, 11, 0, NULL              },
-  { "Fig",        DT_SORT|DT_SORT_BROWSER, &VarFig,        1,  0, NULL              },
-  { "Guava",      DT_SORT|DT_SORT_KEYS,    &VarGuava,      1,  0, NULL              },
-  { "Hawthorn",   DT_SORT|DT_SORT_AUX,     &VarHawthorn,   1,  0, NULL              },
-  { "Ilama",      DT_SORT|DT_SORT_SIDEBAR, &VarIlama,      17, 0, NULL              },
-  { "Jackfruit",  DT_SORT,                 &VarJackfruit,  1,  0, NULL              }, /* test_string_get */
-  { "Kumquat",    DT_SORT,                 &VarKumquat,    1,  0, NULL              }, /* test_native_set */
-  { "Lemon",      DT_SORT,                 &VarLemon,      1,  0, NULL              }, /* test_native_get */
-  { "Mango",      DT_SORT,                 &VarMango,      1,  0, NULL              }, /* test_reset */
-  { "Nectarine",  DT_SORT,                 &VarNectarine,  1,  0, validator_fail    },
-  { "Olive",      DT_SORT,                 &VarOlive,      1,  0, validator_succeed }, /* test_validator */
-  { "Papaya",     DT_SORT,                 &VarPapaya,     1,  0, validator_warn    },
-  { "Quince",     DT_SORT,                 &VarQuince,     1,  0, validator_fail    },
-  { "Strawberry", DT_SORT,                 &VarStrawberry, 1,  0, NULL              }, /* test_inherit */
+  { "Apple",      DT_SORT,                 &VarApple,      1,  IP SortTestMethods, NULL              }, /* test_initial_values */
+  { "Banana",     DT_SORT,                 &VarBanana,     2,  IP SortTestMethods, NULL              },
+  { "Cherry",     DT_SORT,                 &VarCherry,     1,  IP SortTestMethods, NULL              },
+  { "Damson",     DT_SORT,                 &VarDamson,     1,  IP SortTestMethods, NULL              }, /* test_string_set */
+  { "Elderberry", DT_SORT,                 &VarElderberry, 11, IP SortTestMethods, NULL              },
+  { "Fig",        DT_SORT,                 &VarFig,        1,  IP SortTestMethods, NULL              },
+  { "Guava",      DT_SORT,                 &VarGuava,      1,  IP SortTestMethods, NULL              },
+  { "Hawthorn",   DT_SORT,                 &VarHawthorn,   1,  IP SortTestMethods, NULL              },
+  { "Ilama",      DT_SORT,                 &VarIlama,      17, IP SortTestMethods, NULL              },
+  { "Jackfruit",  DT_SORT,                 &VarJackfruit,  1,  IP SortTestMethods, NULL              }, /* test_string_get */
+  { "Kumquat",    DT_SORT,                 &VarKumquat,    1,  IP SortTestMethods, NULL              }, /* test_native_set */
+  { "Lemon",      DT_SORT,                 &VarLemon,      1,  IP SortTestMethods, NULL              }, /* test_native_get */
+  { "Mango",      DT_SORT,                 &VarMango,      1,  IP SortTestMethods, NULL              }, /* test_reset */
+  { "Nectarine",  DT_SORT,                 &VarNectarine,  1,  IP SortTestMethods, validator_fail    },
+  { "Olive",      DT_SORT,                 &VarOlive,      1,  IP SortTestMethods, validator_succeed }, /* test_validator */
+  { "Papaya",     DT_SORT,                 &VarPapaya,     1,  IP SortTestMethods, validator_warn    },
+  { "Quince",     DT_SORT,                 &VarQuince,     1,  IP SortTestMethods, validator_fail    },
+  { "Strawberry", DT_SORT,                 &VarStrawberry, 1,  IP SortTestMethods, NULL              }, /* test_inherit */
   { NULL },
 };
 
 static struct ConfigDef Vars2[] = {
-  { "Raspberry", DT_SORT|DT_SORT_AUX|DT_SORT_ALIAS, &VarRaspberry, 1, 0, NULL }, /* test_sort_type */
+  { "Raspberry", DT_SORT, &VarRaspberry, 1, 0, NULL }, /* test_sort_type */
   { NULL },
 };
 // clang-format on
@@ -86,11 +105,6 @@ const char *name_list[] = {
 
 short *var_list[] = {
   &VarDamson, &VarElderberry, &VarFig, &VarGuava, &VarHawthorn, &VarIlama,
-};
-
-const struct Mapping *sort_maps[] = {
-  SortMethods,    SortAliasMethods, SortBrowserMethods,
-  SortKeyMethods, SortAuxMethods,   SortSidebarMethods,
 };
 
 static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
@@ -176,7 +190,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  TEST_MSG("Cherry = %s\n", mutt_map_get_name(VarCherry, SortMethods));
+  TEST_MSG("Cherry = %s\n", mutt_map_get_name(VarCherry, SortTestMethods));
   TEST_MSG("Cherry's initial value is %s\n", value.data);
 
   FREE(&value.data);
@@ -194,7 +208,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
 
     *var = -1;
 
-    const struct Mapping *map = sort_maps[i];
+    const struct Mapping *map = SortTestMethods;
 
     int rc;
     for (int j = 0; map[j].name; j++)
@@ -338,7 +352,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 
     *var = -1;
 
-    const struct Mapping *map = sort_maps[i];
+    const struct Mapping *map = SortTestMethods;
 
     for (int j = 0; map[j].name; j++)
     {

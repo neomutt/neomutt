@@ -32,6 +32,25 @@
 #include <stdbool.h>
 #include "lib.h"
 
+/**
+ * SortSidebarMethods - Sort methods for the sidebar
+ */
+const struct Mapping SortSidebarMethods[] = {
+  // clang-format off
+  { "alpha",         SORT_PATH },
+  { "count",         SORT_COUNT },
+  { "desc",          SORT_DESC },
+  { "flagged",       SORT_FLAGGED },
+  { "mailbox-order", SORT_ORDER },
+  { "name",          SORT_PATH },
+  { "new",           SORT_UNREAD },
+  { "path",          SORT_PATH },
+  { "unread",        SORT_UNREAD },
+  { "unsorted",      SORT_ORDER },
+  { NULL,            0 },
+  // clang-format on
+};
+
 // clang-format off
 short C_SidebarComponentDepth;      ///< Config: (sidebar) Strip leading path components from sidebar folders
 char *C_SidebarDelimChars;          ///< Config: (sidebar) Characters that separate nested folders
@@ -84,7 +103,7 @@ struct ConfigDef SidebarVars[] = {
   { "sidebar_short_path", DT_BOOL|R_SIDEBAR, &C_SidebarShortPath, false, 0, NULL,
     "(sidebar) Abbreviate the paths using the #C_Folder variable"
   },
-  { "sidebar_sort_method", DT_SORT|DT_SORT_SIDEBAR|R_SIDEBAR, &C_SidebarSortMethod, SORT_ORDER, 0, NULL,
+  { "sidebar_sort_method", DT_SORT|R_SIDEBAR, &C_SidebarSortMethod, SORT_ORDER, IP SortSidebarMethods, NULL,
     "(sidebar) Method to sort the sidebar"
   },
   { "sidebar_visible", DT_BOOL|R_REFLOW, &C_SidebarVisible, false, 0, NULL,

@@ -252,4 +252,3 @@ const struct ConfigSetType cst_quad = {
   quad_reset,
   NULL, // destroy
 };
-

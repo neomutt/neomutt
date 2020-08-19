@@ -38,98 +38,8 @@
 #include "sort2.h"
 #include "types.h"
 
-// clang-format off
-/**
- * SortAliasMethods - Sort methods for email aliases
- */
-const struct Mapping SortAliasMethods[] = {
-  { "address",  SORT_ADDRESS },
-  { "alias",    SORT_ALIAS },
-  { "unsorted", SORT_ORDER },
-  { NULL,       0 },
-};
-
-/**
- * SortAuxMethods - Sort methods for '$sort_aux' for the index
- */
-const struct Mapping SortAuxMethods[] = {
-  { "date",          SORT_DATE },
-  { "date-received", SORT_RECEIVED },
-  { "date-sent",     SORT_DATE },
-  { "from",          SORT_FROM },
-  { "label",         SORT_LABEL },
-  { "mailbox-order", SORT_ORDER },
-  { "score",         SORT_SCORE },
-  { "size",          SORT_SIZE },
-  { "spam",          SORT_SPAM },
-  { "subject",       SORT_SUBJECT },
-  { "threads",       SORT_DATE },
-  { "to",            SORT_TO },
-  { NULL,            0 },
-};
-
-/**
- * SortBrowserMethods - Sort methods for the folder/dir browser
- */
-const struct Mapping SortBrowserMethods[] = {
-  { "alpha",    SORT_SUBJECT },
-  { "count",    SORT_COUNT },
-  { "date",     SORT_DATE },
-  { "desc",     SORT_DESC },
-  { "new",      SORT_UNREAD },
-  { "unread",   SORT_UNREAD },
-  { "size",     SORT_SIZE },
-  { "unsorted", SORT_ORDER },
-  { NULL,       0 },
-};
-
-/**
- * SortKeyMethods - Sort methods for encryption keys
- */
-const struct Mapping SortKeyMethods[] = {
-  { "address", SORT_ADDRESS },
-  { "date",    SORT_DATE },
-  { "keyid",   SORT_KEYID },
-  { "trust",   SORT_TRUST },
-  { NULL,      0 },
-};
-
-/**
- * SortMethods - Sort methods for '$sort' for the index
- */
-const struct Mapping SortMethods[] = {
-  { "date",          SORT_DATE },
-  { "date-received", SORT_RECEIVED },
-  { "date-sent",     SORT_DATE },
-  { "from",          SORT_FROM },
-  { "label",         SORT_LABEL },
-  { "mailbox-order", SORT_ORDER },
-  { "score",         SORT_SCORE },
-  { "size",          SORT_SIZE },
-  { "spam",          SORT_SPAM },
-  { "subject",       SORT_SUBJECT },
-  { "threads",       SORT_THREADS },
-  { "to",            SORT_TO },
-  { NULL,            0 },
-};
-
-/**
- * SortSidebarMethods - Sort methods for the sidebar
- */
-const struct Mapping SortSidebarMethods[] = {
-  { "alpha",         SORT_PATH },
-  { "count",         SORT_COUNT },
-  { "desc",          SORT_DESC },
-  { "flagged",       SORT_FLAGGED },
-  { "mailbox-order", SORT_ORDER },
-  { "name",          SORT_PATH },
-  { "new",           SORT_UNREAD },
-  { "path",          SORT_PATH },
-  { "unread",        SORT_UNREAD },
-  { "unsorted",      SORT_ORDER },
-  { NULL,            0 },
-};
-// clang-format on
+#define PREFIX_REVERSE "reverse-"
+#define PREFIX_LAST "last-"
 
 /**
  * sort_string_set - Set a Sort by string - Implements ConfigSetType::string_set()
@@ -147,45 +57,28 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   }
 
   size_t plen = 0;
-  plen = mutt_str_startswith(value, "reverse-");
-  if (plen != 0)
+
+  if (cdef->type | DT_SORT_REVERSE)
   {
-    flags |= SORT_REVERSE;
-    value += plen;
+    plen = mutt_str_startswith(value, PREFIX_REVERSE);
+    if (plen != 0)
+    {
+      flags |= SORT_REVERSE;
+      value += plen;
+    }
   }
 
-  plen = mutt_str_startswith(value, "last-");
-  if (plen != 0)
+  if (cdef->type | DT_SORT_LAST)
   {
-    flags |= SORT_LAST;
-    value += plen;
+    plen = mutt_str_startswith(value, PREFIX_LAST);
+    if (plen != 0)
+    {
+      flags |= SORT_LAST;
+      value += plen;
+    }
   }
 
-  switch (cdef->type & DT_SUBTYPE_MASK)
-  {
-    case DT_SORT_INDEX:
-      id = mutt_map_get_value(value, SortMethods);
-      break;
-    case DT_SORT_ALIAS:
-      id = mutt_map_get_value(value, SortAliasMethods);
-      break;
-    case DT_SORT_AUX:
-      id = mutt_map_get_value(value, SortAuxMethods);
-      break;
-    case DT_SORT_BROWSER:
-      id = mutt_map_get_value(value, SortBrowserMethods);
-      break;
-    case DT_SORT_KEYS:
-      id = mutt_map_get_value(value, SortKeyMethods);
-      break;
-    case DT_SORT_SIDEBAR:
-      id = mutt_map_get_value(value, SortSidebarMethods);
-      break;
-    default:
-      mutt_debug(LL_DEBUG1, "Invalid sort type: %u\n", cdef->type & DT_SUBTYPE_MASK);
-      return CSR_ERR_CODE;
-      break;
-  }
+  id = mutt_map_get_value(value, (struct Mapping *) cdef->data);
 
   if (id < 0)
   {
@@ -232,39 +125,15 @@ static int sort_string_get(const struct ConfigSet *cs, void *var,
     sort = (int) cdef->initial;
 
   if (sort & SORT_REVERSE)
-    mutt_buffer_addstr(result, "reverse-");
+    mutt_buffer_addstr(result, PREFIX_REVERSE);
   if (sort & SORT_LAST)
-    mutt_buffer_addstr(result, "last-");
+    mutt_buffer_addstr(result, PREFIX_LAST);
 
   sort &= SORT_MASK;
 
   const char *str = NULL;
 
-  switch (cdef->type & DT_SUBTYPE_MASK)
-  {
-    case DT_SORT_INDEX:
-      str = mutt_map_get_name(sort, SortMethods);
-      break;
-    case DT_SORT_ALIAS:
-      str = mutt_map_get_name(sort, SortAliasMethods);
-      break;
-    case DT_SORT_AUX:
-      str = mutt_map_get_name(sort, SortAuxMethods);
-      break;
-    case DT_SORT_BROWSER:
-      str = mutt_map_get_name(sort, SortBrowserMethods);
-      break;
-    case DT_SORT_KEYS:
-      str = mutt_map_get_name(sort, SortKeyMethods);
-      break;
-    case DT_SORT_SIDEBAR:
-      str = mutt_map_get_name(sort, SortSidebarMethods);
-      break;
-    default:
-      mutt_debug(LL_DEBUG1, "Invalid sort type: %u\n", cdef->type & DT_SUBTYPE_MASK);
-      return CSR_ERR_CODE;
-      break;
-  }
+  str = mutt_map_get_name(sort, (struct Mapping *) cdef->data);
 
   if (!str)
   {
@@ -285,31 +154,7 @@ static int sort_native_set(const struct ConfigSet *cs, void *var,
 {
   const char *str = NULL;
 
-  switch (cdef->type & DT_SUBTYPE_MASK)
-  {
-    case DT_SORT_INDEX:
-      str = mutt_map_get_name((value & SORT_MASK), SortMethods);
-      break;
-    case DT_SORT_ALIAS:
-      str = mutt_map_get_name((value & SORT_MASK), SortAliasMethods);
-      break;
-    case DT_SORT_AUX:
-      str = mutt_map_get_name((value & SORT_MASK), SortAuxMethods);
-      break;
-    case DT_SORT_BROWSER:
-      str = mutt_map_get_name((value & SORT_MASK), SortBrowserMethods);
-      break;
-    case DT_SORT_KEYS:
-      str = mutt_map_get_name((value & SORT_MASK), SortKeyMethods);
-      break;
-    case DT_SORT_SIDEBAR:
-      str = mutt_map_get_name((value & SORT_MASK), SortSidebarMethods);
-      break;
-    default:
-      mutt_debug(LL_DEBUG1, "Invalid sort type: %u\n", cdef->type & DT_SUBTYPE_MASK);
-      return CSR_ERR_CODE;
-      break;
-  }
+  str = mutt_map_get_name((value & SORT_MASK), (struct Mapping *) cdef->data);
 
   if (!str)
   {

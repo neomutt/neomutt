@@ -81,6 +81,77 @@
 char *C_Escape = NULL;
 bool C_IgnoreLinearWhiteSpace = false;
 
+/**
+ * SortAuxMethods - Sort methods for '$sort_aux' for the index
+ */
+const struct Mapping SortAuxMethods[] = {
+  // clang-format off
+  { "date",          SORT_DATE },
+  { "date-received", SORT_RECEIVED },
+  { "date-sent",     SORT_DATE },
+  { "from",          SORT_FROM },
+  { "label",         SORT_LABEL },
+  { "mailbox-order", SORT_ORDER },
+  { "score",         SORT_SCORE },
+  { "size",          SORT_SIZE },
+  { "spam",          SORT_SPAM },
+  { "subject",       SORT_SUBJECT },
+  { "threads",       SORT_DATE },
+  { "to",            SORT_TO },
+  { NULL,            0 },
+  // clang-format on
+};
+
+/**
+ * SortMethods - Sort methods for '$sort' for the index
+ */
+const struct Mapping SortMethods[] = {
+  // clang-format off
+  { "date",          SORT_DATE },
+  { "date-received", SORT_RECEIVED },
+  { "date-sent",     SORT_DATE },
+  { "from",          SORT_FROM },
+  { "label",         SORT_LABEL },
+  { "mailbox-order", SORT_ORDER },
+  { "score",         SORT_SCORE },
+  { "size",          SORT_SIZE },
+  { "spam",          SORT_SPAM },
+  { "subject",       SORT_SUBJECT },
+  { "threads",       SORT_THREADS },
+  { "to",            SORT_TO },
+  { NULL,            0 },
+  // clang-format on
+};
+
+/**
+ * SortAliasMethods - Sort methods for email aliases
+ */
+const struct Mapping SortAliasMethods[] = {
+  // clang-format off
+  { "address",  SORT_ADDRESS },
+  { "alias",    SORT_ALIAS },
+  { "unsorted", SORT_ORDER },
+  { NULL,       0 },
+  // clang-format on
+};
+
+/**
+ * SortBrowserMethods - Sort methods for the folder/dir browser
+ */
+const struct Mapping SortBrowserMethods[] = {
+  // clang-format off
+  { "alpha",    SORT_SUBJECT },
+  { "count",    SORT_COUNT },
+  { "date",     SORT_DATE },
+  { "desc",     SORT_DESC },
+  { "new",      SORT_UNREAD },
+  { "unread",   SORT_UNREAD },
+  { "size",     SORT_SIZE },
+  { "unsorted", SORT_ORDER },
+  { NULL,       0 },
+  // clang-format on
+};
+
 struct ConfigDef MainVars[] = {
   // clang-format off
   { "abort_backspace", DT_BOOL, &C_AbortBackspace, true, 0, NULL,
@@ -570,16 +641,16 @@ struct ConfigDef MainVars[] = {
   { "smileys", DT_REGEX|R_PAGER, &C_Smileys, IP "(>From )|(:[-^]?[][)(><}{|/DP])", 0, NULL,
     "Regex to match smileys to prevent mistakes when quoting text"
   },
-  { "sort", DT_SORT|R_INDEX|R_RESORT, &C_Sort, SORT_DATE, 0, pager_validator,
+  { "sort", DT_SORT|R_INDEX|R_RESORT|DT_SORT_REVERSE, &C_Sort, SORT_DATE, IP SortMethods, pager_validator,
     "Sort method for the index"
   },
-  { "sort_alias", DT_SORT|DT_SORT_ALIAS, &C_SortAlias, SORT_ALIAS, 0, NULL,
+  { "sort_alias", DT_SORT, &C_SortAlias, SORT_ALIAS, IP SortAliasMethods, NULL,
     "Sort method for the alias menu"
   },
-  { "sort_aux", DT_SORT|DT_SORT_AUX|R_INDEX|R_RESORT|R_RESORT_SUB, &C_SortAux, SORT_DATE, 0, NULL,
+  { "sort_aux", DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST|R_INDEX|R_RESORT|R_RESORT_SUB, &C_SortAux, SORT_DATE, IP SortAuxMethods, NULL,
     "Secondary sort method for the index"
   },
-  { "sort_browser", DT_SORT|DT_SORT_BROWSER, &C_SortBrowser, SORT_ALPHA, 0, NULL,
+  { "sort_browser", DT_SORT|DT_SORT_REVERSE, &C_SortBrowser, SORT_ALPHA, IP SortBrowserMethods, NULL,
     "Sort method for the browser"
   },
   { "sort_re", DT_BOOL|R_INDEX|R_RESORT|R_RESORT_INIT, &C_SortRe, true, 0, pager_validator,

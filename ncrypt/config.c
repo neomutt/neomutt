@@ -37,6 +37,18 @@
 bool config_init_ncrypt(struct ConfigSet *cs);
 
 // clang-format off
+
+/**
+ * SortKeyMethods - Sort methods for encryption keys
+ */
+const struct Mapping SortKeyMethods[] = {
+  { "address", SORT_ADDRESS },
+  { "date",    SORT_DATE },
+  { "keyid",   SORT_KEYID },
+  { "trust",   SORT_TRUST },
+  { NULL,      0 },
+};
+
 #ifdef CRYPT_BACKEND_GPGME
 bool            C_CryptUsePka;                         ///< Config: Use GPGME to use PKA (lookup PGP keys using DNS)
 #endif
@@ -230,7 +242,7 @@ struct ConfigDef NcryptVars[] = {
     "(pgp) External command to create a detached PGP signature"
   },
 #endif
-  { "pgp_sort_keys", DT_SORT|DT_SORT_KEYS, &C_PgpSortKeys, SORT_ADDRESS, 0, NULL,
+  { "pgp_sort_keys", DT_SORT|DT_SORT_REVERSE, &C_PgpSortKeys, SORT_ADDRESS, IP SortKeyMethods, NULL,
     "Sort order for PGP keys"
   },
   { "pgp_strict_enc", DT_BOOL, &C_PgpStrictEnc, true, 0, NULL,

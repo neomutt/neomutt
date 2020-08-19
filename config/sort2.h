@@ -35,12 +35,8 @@ extern const struct Mapping SortMethods[];
 extern const struct Mapping SortSidebarMethods[];
 
 /* ... DT_SORT */
-#define DT_SORT_INDEX   0x000 ///< Sort id for #SortMethods
-#define DT_SORT_ALIAS   0x040 ///< Sort id for #SortAliasMethods
-#define DT_SORT_BROWSER 0x080 ///< Sort id for #SortBrowserMethods
-#define DT_SORT_KEYS    0x100 ///< Sort id for #SortKeyMethods
-#define DT_SORT_AUX     0x200 ///< Sort id for #SortAuxMethods
-#define DT_SORT_SIDEBAR 0x400 ///< Sort id for #SortSidebarMethods
+#define DT_SORT_LAST    0x0800 ///< Sort flag for -last prefix
+#define DT_SORT_REVERSE 0x1000 ///< Sort flag for -reverse prefix
 
 /**
  * enum SortType - Methods for sorting
