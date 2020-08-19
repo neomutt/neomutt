@@ -342,6 +342,7 @@ bool test_dump_config(void)
     TEST_CHECK(dump_config(cs, CS_DUMP_NO_FLAGS, fp));
     TEST_CHECK(dump_config(cs, CS_DUMP_ONLY_CHANGED | CS_DUMP_HIDE_SENSITIVE, fp));
     TEST_CHECK(dump_config(cs, CS_DUMP_HIDE_VALUE | CS_DUMP_SHOW_DEFAULTS, fp));
+    TEST_CHECK(dump_config(cs, CS_DUMP_SHOW_DOCS, fp));
 
     struct ConfigSet *cs_bad = cs_new(30);
     TEST_CHECK(dump_config(cs_bad, CS_DUMP_NO_FLAGS, fp));

@@ -57,8 +57,8 @@ static short VarStrawberry;
  */
 const struct Mapping SortTestMethods[] = {
   { "date",          SORT_DATE },
-  { "date-received", SORT_RECEIVED },
   { "date-sent",     SORT_DATE },
+  { "date-received", SORT_RECEIVED },
   { "from",          SORT_FROM },
   { "label",         SORT_LABEL },
   { "mailbox-order", SORT_ORDER },

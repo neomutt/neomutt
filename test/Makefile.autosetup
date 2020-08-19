@@ -109,6 +109,7 @@ CONFIG_OBJS	= test/config/account.o \
 		  test/config/common.o \
 		  test/config/dump.o \
 		  test/config/enum.o \
+		  test/config/helpers.o \
 		  test/config/initial.o \
 		  test/config/long.o \
 		  test/config/mbtable.o \

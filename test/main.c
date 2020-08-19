@@ -138,6 +138,7 @@
   NEOMUTT_TEST_ITEM(test_config_bool)                                          \
   NEOMUTT_TEST_ITEM(test_config_dump)                                          \
   NEOMUTT_TEST_ITEM(test_config_enum)                                          \
+  NEOMUTT_TEST_ITEM(test_config_helpers)                                       \
   NEOMUTT_TEST_ITEM(test_config_initial)                                       \
   NEOMUTT_TEST_ITEM(test_config_long)                                          \
   NEOMUTT_TEST_ITEM(test_config_mbtable)                                       \
