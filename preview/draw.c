@@ -73,27 +73,57 @@ void preview_draw(struct MuttWindow *win)
   if (!mutt_window_is_visible(win))
     return;
 
-  struct PreviewWindowData *data = preview_wdata_get(win);
+  struct PreviewWindowData *wdata = preview_wdata_get(win);
 
   int col = 0, row = 0;
   int num_rows = win->state.rows;
   int num_cols = win->state.cols;
 
-  draw_divider(data, win, &row, &num_rows, &col, &num_cols);
+  draw_divider(wdata, win, &row, &num_rows, &col, &num_cols);
 
-  if (data->current_email == NULL)
+  if (wdata->current_email == NULL)
   {
     mutt_window_mvprintw(win, col, row, _("No email selected"));
     return;
   }
 
-  struct Email *em = data->current_email;
-
+  struct Email *em = wdata->current_email;
   struct Address *from = TAILQ_FIRST(&em->env->from);
-  mutt_window_mvprintw(win, 5, 5, "Selected mail id: %s, from: %s, subject: %s",
-                       em->env->message_id, from ? from->mailbox : "unknown",
-                       em->env->subject);
 
-  mutt_window_mvprintw(win, 5, 8, "%.*s", mutt_buffer_len(&data->buffer),
-                       mutt_buffer_string(&data->buffer));
+  struct Buffer disp_buff;
+  mutt_buffer_init(&disp_buff);
+
+  col += 1; // offset col of 1, it is prettier.
+
+#define display(fmt, ...)                                                             \
+  do                                                                                  \
+  {                                                                                   \
+    mutt_buffer_reset(&disp_buff);                                                    \
+    mutt_buffer_printf(&disp_buff, _(fmt), __VA_ARGS__);                              \
+    int max_byte = mutt_wstr_trunc(mutt_buffer_string(&disp_buff), mutt_buffer_len(&disp_buff), \
+                                   num_cols - col, NULL);                             \
+    mutt_window_mvprintw(win, col, row, "%.*s", max_byte, mutt_buffer_string(&disp_buff));      \
+    ++row;                                                                            \
+  } while (0)
+
+  display("Mail from: %s <%s>", from ? from->personal : _("unknown"),
+          from ? from->mailbox : _("unknown"));
+  display("Subject: %s", em->env->subject);
+  ++row;
+
+  {
+    const int max_line_size = num_cols - col;
+    const char *data = mutt_buffer_string(&wdata->buffer);
+    int data_size = mutt_buffer_len(&wdata->buffer);
+
+    while (data_size && row < num_rows)
+    {
+      int max_byte = mutt_wstr_trunc(data, data_size, max_line_size, NULL);
+      mutt_window_mvprintw(win, col, row, "%.*s", max_byte, data);
+      data += max_byte;
+      data_size -= max_byte;
+      ++row;
+    }
+  }
+  mutt_buffer_dealloc(&disp_buff);
 }
