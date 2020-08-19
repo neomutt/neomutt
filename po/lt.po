@@ -1959,36 +1959,35 @@ msgstr " ('?' parodo sąrašą): "
 
 #: gui/mutt_window.c:52
 msgid "Complete"
-msgstr ""
+msgstr "Užbaigti"
 
 #: gui/mutt_window.c:53
 msgid "Hist Up"
-msgstr ""
+msgstr "Ist. aukštyn"
 
 #: gui/mutt_window.c:54
 msgid "Hist Down"
-msgstr ""
+msgstr "Ist. žemyn"
 
 #: gui/mutt_window.c:55
-#, fuzzy
 msgid "Hist Search"
-msgstr "Ieškoti"
+msgstr "Ist. paieška"
 
 #: gui/mutt_window.c:56
 msgid "Begin Line"
-msgstr ""
+msgstr "Eil. pradžia"
 
 #: gui/mutt_window.c:57
 msgid "End Line"
-msgstr ""
+msgstr "Eil. pabaiga"
 
 #: gui/mutt_window.c:58
 msgid "Kill Line"
-msgstr ""
+msgstr "Trint eilutę"
 
 #: gui/mutt_window.c:59
 msgid "Kill Word"
-msgstr ""
+msgstr "Trint žodį"
 
 #: handler.c:103
 #, c-format
