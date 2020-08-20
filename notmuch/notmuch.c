@@ -1261,11 +1261,10 @@ static void sync_email_path_with_nm(struct Email *e, notmuch_message_t *msg)
  * update_tags - Update the tags on a message
  * @param msg  Notmuch message
  * @param tags String of tags (space separated)
- * @param e    Email
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int update_tags(notmuch_message_t *msg, const char *tags, struct Email *e)
+static int update_tags(notmuch_message_t *msg, const char *tags)
 {
   char *buf = mutt_str_dup(tags);
   if (!buf)
@@ -1318,11 +1317,6 @@ static int update_tags(notmuch_message_t *msg, const char *tags, struct Email *e
   }
 
   notmuch_message_thaw(msg);
-
-  // Synchronize tags with maildir and update filepath if necessary.
-  notmuch_message_tags_to_maildir_flags(msg);
-  sync_email_path_with_nm(e, msg);
-
   FREE(&buf);
   return 0;
 }
@@ -1602,7 +1596,7 @@ static int rename_filename(struct Mailbox *m, const char *old_file,
     update_email_tags(e, msg);
 
     char *tags = driver_tags_get(&e->tags);
-    update_tags(msg, tags, e);
+    update_tags(msg, tags);
     FREE(&tags);
   }
 
@@ -2076,11 +2070,11 @@ int nm_record_message(struct Mailbox *m, char *path, struct Email *e)
     if (e)
     {
       char *tags = driver_tags_get(&e->tags);
-      update_tags(msg, tags, e);
+      update_tags(msg, tags);
       FREE(&tags);
     }
     if (C_NmRecordTags)
-      update_tags(msg, C_NmRecordTags, e);
+      update_tags(msg, C_NmRecordTags);
   }
 
   rc = 0;
@@ -2571,7 +2565,7 @@ static int nm_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 
   mutt_debug(LL_DEBUG1, "nm: tags modify: '%s'\n", buf);
 
-  update_tags(msg, buf, e);
+  update_tags(msg, buf);
   update_email_flags(m, e, buf);
   update_email_tags(e, msg);
   mutt_set_header_color(m, e);
