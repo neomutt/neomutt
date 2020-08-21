@@ -97,7 +97,7 @@ void compute_mail_preview(struct PreviewWindowData *data)
   }
 
   struct State s = { 0 };
-  s.flags |= MUTT_DISPLAY | MUTT_VERIFY | MUTT_WEED | MUTT_CHARCONV;
+  s.flags |= MUTT_VERIFY | MUTT_WEED | MUTT_CHARCONV;
   s.fp_in = msg->fp;
   s.fp_out = mutt_file_mkstemp();
 
