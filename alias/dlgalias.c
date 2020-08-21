@@ -199,6 +199,20 @@ static int alias_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * alias_color_observer - Listen for color configuration changes and refresh the menu - Implements ::observer_t
+ */
+static int alias_color_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
+    return -1;
+
+  struct Menu *menu = nc->global_data;
+  menu->redraw = REDRAW_FULL;
+
+  return 0;
+}
+
+/**
  * dlg_select_alias - Display a menu of Aliases
  * @param buf    Buffer for expanded aliases
  * @param buflen Length of buffer
@@ -228,6 +242,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
 
   notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, mdata);
+  notify_observer_add(NeoMutt->notify, NT_COLOR, alias_color_observer, menu);
 
   mutt_menu_push_current(menu);
 
@@ -336,6 +351,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
 
   notify_observer_remove(NeoMutt->notify, alias_alias_observer, menu);
   notify_observer_remove(NeoMutt->notify, alias_config_observer, mdata);
+  notify_observer_remove(NeoMutt->notify, alias_color_observer, menu);
 
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
