@@ -57,11 +57,13 @@ short C_SortAlias;   ///< Config: Sort method for the alias menu
 /// Help Bar for the Alias dialog (address book)
 static const struct Mapping AliasHelp[] = {
   // clang-format off
-  { N_("Exit"),   OP_EXIT },
-  { N_("Del"),    OP_DELETE },
-  { N_("Undel"),  OP_UNDELETE },
-  { N_("Select"), OP_GENERIC_SELECT_ENTRY },
-  { N_("Help"),   OP_HELP },
+  { N_("Exit"),     OP_EXIT },
+  { N_("Del"),      OP_DELETE },
+  { N_("Undel"),    OP_UNDELETE },
+  { N_("Sort"),     OP_SORT },
+  { N_("Rev-Sort"), OP_SORT_REVERSE },
+  { N_("Select"),   OP_GENERIC_SELECT_ENTRY },
+  { N_("Help"),     OP_HELP },
   { NULL, 0 },
   // clang-format on
 };
@@ -191,8 +193,7 @@ static int alias_config_observer(struct NotifyCallback *nc)
 
   struct AliasMenuData *mdata = nc->global_data;
 
-  qsort(mdata->av, mdata->num_views, sizeof(struct AliasView *),
-        ((C_SortAlias & SORT_MASK) == SORT_ADDRESS) ? alias_sort_address : alias_sort_name);
+  menu_data_sort(mdata);
 
   return 0;
 }
@@ -264,6 +265,49 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
           }
         }
         break;
+      case OP_SORT:
+      case OP_SORT_REVERSE:
+      {
+        int sort = C_SortAlias;
+        bool resort = true;
+        bool reverse = (op == OP_SORT_REVERSE);
+
+        switch (mutt_multi_choice(
+            reverse ?
+                /* L10N: The highlighted letters must match the "Sort" options */
+                _("Rev-Sort (a)lias, a(d)dress or (u)nsorted?") :
+                /* L10N: The highlighted letters must match the "Rev-Sort" options */
+                _("Sort (a)lias, a(d)dress or (u)nsorted?"),
+            /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
+            _("adu")))
+        {
+          case -1: /* abort */
+            resort = false;
+            break;
+
+          case 1: /* (a)lias */
+            sort = SORT_ALIAS;
+            break;
+
+          case 2: /* a(d)dress */
+            sort = SORT_ADDRESS;
+            break;
+
+          case 3: /* (u)nsorted */
+            sort = SORT_ORDER;
+            break;
+        }
+
+        if (resort)
+        {
+          sort |= reverse ? SORT_REVERSE : 0;
+
+          cs_subset_str_native_set(NeoMutt->sub, "sort_alias", sort, NULL);
+          menu->redraw = REDRAW_FULL;
+        }
+
+        break;
+      }
       case OP_GENERIC_SELECT_ENTRY:
         t = menu->current;
         if (t >= mdata->num_views)
