@@ -54,6 +54,7 @@ static void draw_divider(struct PreviewWindowData *data, struct MuttWindow *win,
       mutt_window_addstr(C_PreviewDividerCharH);
     }
   }
+  mutt_curses_set_color(MT_COLOR_NORMAL);
 
   for (int i = *row_offset + 1; i < *max_rows; ++i)
   {
