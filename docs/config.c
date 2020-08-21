@@ -4179,6 +4179,32 @@
 */
 #endif
 
+#ifdef USE_DEVEL_PREVIEW
+  { "devel_preview_enabled", DT_BOOL, false},
+/*
+** .pp
+** If \fIset\fP, it will enable the preview window.
+*/
+  { "devel_preview_height", DT_NUMBER,  15},
+/*
+** .pp
+** This variable indicates the height of the preview window in number of lines.
+*/
+  { "devel_preview_lines", DT_NUMBER, 3},
+/*
+** .pp
+** This variable controls how many lines from the selected email are to be
+** displayed.
+*/
+  { "devel_preview_divider_horizontal", DT_STRING, ""},
+/*
+** .pp
+** This specifies the characters to be draw between the index and the preview
+** window (when visible). ASCII and Unicode line-drawing characters are
+** supported.
+*/
+#endif
+
 { "sig_dashes", DT_BOOL, true },
 /*
 ** .pp
