@@ -2,6 +2,7 @@
 #include <string.h>
 #include "private.h"
 #include "mutt/logging.h"
+#include "mutt/notify_type.h"
 #include "mutt/queue.h"
 #include "core/neomutt.h"
 #include "gui/mutt_window.h"
@@ -95,6 +96,7 @@ void preview_win_init(struct MuttWindow *dlg)
     notify_observer_add(NeoMutt->notify, NT_WINDOW, preview_neomutt_observer, preview_window);
     notify_observer_add(dlg->notify, NT_USER_INDEX, preview_dialog_observer, preview_window);
     notify_observer_add(NeoMutt->notify, NT_CONFIG, preview_config_observer, preview_window);
+    notify_observer_add(NeoMutt->notify, NT_COLOR, preview_color_observer, preview_window);
   }
 
   debug_window_tree(dlg, 0);

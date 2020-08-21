@@ -16,6 +16,7 @@ struct Mailbox;
 int preview_insertion_observer(struct NotifyCallback *nc);
 int preview_neomutt_observer(struct NotifyCallback *nc);
 int preview_config_observer(struct NotifyCallback *nc);
+int preview_color_observer(struct NotifyCallback *nc);
 int preview_dialog_observer(struct NotifyCallback *nc);
 
 /* preview.c */

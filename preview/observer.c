@@ -4,6 +4,7 @@
 #include "mutt/observer.h"
 #include "mutt/string2.h"
 #include "config/subset.h"
+#include "gui/color.h"
 #include "gui/mutt_window.h"
 #include "index.h"
 
@@ -72,6 +73,28 @@ int preview_insertion_observer(struct NotifyCallback *nc)
   else if (ew->flags & WN_HIDDEN)
     preview_win_shutdown(ew->win);
 
+  return 0;
+}
+
+/**
+ * preview_color_observer - Color config has changed - Implements ::observer_t
+ */
+int preview_color_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
+    return -1;
+
+  struct MuttWindow *win = nc->global_data;
+  switch ((enum ColorId) nc->event_data)
+  {
+    default:
+      return 0;
+    case MT_COLOR_PREVIEW_TEXT:
+    case MT_COLOR_PREVIEW_DIVIDER:
+      break;
+  }
+
+  win->parent->actions |= WA_REPAINT;
   return 0;
 }
 
