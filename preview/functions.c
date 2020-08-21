@@ -29,18 +29,36 @@ static struct Body *find_first_decodable_body(struct AttachCtx *actx)
 
 static void filter_and_add(struct Buffer *buffer, char *source)
 {
+  // XXX: how to handle locale here? Do we have a global conf one?
+  // Also no idea how non roman alphabet should be handled…
+  //
+  { // ignore empty lines
+    while (isspace(*source))
+      ++source;
+    if (*source == '\0')
+    {
+      return;
+    }
+  }
+
+  // we have a previous line
+  if (mutt_buffer_len(buffer) != 0)
+  {
+    mutt_buffer_addch(buffer, ' ');
+  }
+
+  // remove control sequence + coalesce multiple spaces
   while (*source)
   {
-    char sc = *source;
-    // XXX: how to handle locale here? Do we have a global conf one?
-    // Also no idea how non roman alphabet should be handled…
-    if (isspace(sc))
+    if (isspace(*source))
     {
-      mutt_buffer_addch(buffer, ' ');
-      ++source;
       while (isspace(*source))
         ++source;
-      continue;
+      // we add a space only if we have stuff following.
+      if (*source)
+      {
+        mutt_buffer_addch(buffer, ' ');
+      }
     }
 
     int idx = 0;
@@ -48,20 +66,10 @@ static void filter_and_add(struct Buffer *buffer, char *source)
     {
       ++idx;
     }
-
-    bool add_space = false;
-    if (source[idx] != '\0')
-    {
-      source[idx] = '\0';
-      add_space = true;
-    }
-
+    char tmp = source[idx];
+    source[idx] = '\0';
     mutt_buffer_strip_formatting(buffer, source, false, true);
-    if (add_space)
-    {
-      source[idx] = ' ';
-    }
-
+    source[idx] = tmp;
     source += idx;
   }
 }
