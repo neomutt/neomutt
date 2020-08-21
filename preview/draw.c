@@ -63,7 +63,6 @@ static void draw_divider(struct PreviewWindowData *data, struct MuttWindow *win,
   }
 
   *row_offset += 1;
-  *max_rows -= 1;
 }
 
 void preview_draw(struct MuttWindow *win)
@@ -112,6 +111,9 @@ void preview_draw(struct MuttWindow *win)
           from ? from->mailbox : _("unknown"));
   display("Subject: %s", em->env->subject);
   ++row;
+
+  // We don't want the preview to be to close to the bottom (status bar)
+  --num_rows;
 
   {
     const int max_line_size = num_cols - col;
