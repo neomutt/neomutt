@@ -16216,7 +16216,7 @@ bind index &gt; vfolder-window-forward
               <row>
                 <entry><literal>devel_preview_height</literal></entry>
                 <entry>number</entry>
-                <entry>25</entry>
+                <entry>15</entry>
                 <entry>Height of the windows in number of lines.</entry>
               </row>
               <row>
@@ -16235,6 +16235,55 @@ bind index &gt; vfolder-window-forward
             </tbody>
           </tgroup>
         </table>
+      </sect2>
+      <sect2 id="preview-colors">
+        <title>Colors</title>
+        <table id="table-preview-colors">
+          <title>Preview Colors</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Name</entry>
+                <entry>Default Color</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><literal>devel_preview_text</literal></entry>
+                <entry>default</entry>
+                <entry>Color of the email's text</entry>
+              </row>
+              <row>
+                <entry><literal>devel_preview_divider</literal></entry>
+                <entry>default</entry>
+                <entry>Color of the divider</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect2>
+
+      <sect2 id="preview-neomuttrc">
+        <title>neomuttrc</title>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the preview feature.</emphasis>
+
+<emphasis role="comment"># Preview window is enabled</emphasis>
+set devel_preview_enabled = true
+
+<emphasis role="comment"># White text on a red background</emphasis>
+color devel_preview_text white red
+
+<emphasis role="comment"># We want at most 4 lines from the email displayed on at most 15 lines on the screen</emphasis>
+set devel_preview_lines = 4
+set devel_preview_height = 15
+
+<emphasis role="comment"># Let the default divider</emphasis>
+set devel_preview_divider_horizontal = ""
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+</screen>
       </sect2>
     </sect1>
 
