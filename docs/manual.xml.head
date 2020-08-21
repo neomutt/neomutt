@@ -16153,6 +16153,91 @@ bind index &gt; vfolder-window-forward
       </sect2>
     </sect1>
 
+    <sect1 id="preview">
+      <title>Preview window feature (DEVELOPMENT)</title>
+      <subtitle>Show an outline of the selected mail</subtitle>
+
+
+      <sect2 id="preview-enable">
+        <title>Preview support</title>
+        <para>
+          This is a feature still in development that is disabled by default. If
+          you want to enable it, you need to build a neomutt version with the
+          preview enabled.
+          <literallayout>
+            <literal>./configure […] --devel-preview</literal>
+          </literallayout>
+        </para>
+        <para>
+          Do not forget to enable it in your neomuttrc.
+        </para>
+      </sect2>
+
+      <sect2 id="preview-support">
+        <title>Support</title>
+        <para>
+          <emphasis role="bold">Since:</emphasis> This is a feature still in
+          development.
+        </para>
+        <para>
+          <emphasis role="bold">Dependencies:</emphasis> None
+        </para>
+      </sect2>
+
+      <sect2 id="preview-intro">
+        <title>Introduction</title>
+        <para>
+          The <quote>preview</quote> feature shows a window below the Index to
+          display an outline of the selected email.
+        </para>
+      </sect2>
+
+      <sect2 id="preview-variables">
+        <title>Variables</title>
+
+        <table id="table-preview-variables">
+          <title>Preview Variables</title>
+          <tgroup cols="4">
+            <thead>
+              <row>
+                <entry>Name</entry>
+                <entry>Type</entry>
+                <entry>Default</entry>
+                <entry>Note</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><literal>devel_preview_enabled</literal></entry>
+                <entry>boolean</entry>
+                <entry><literal>false</literal></entry>
+                <entry></entry>
+              </row>
+              <row>
+                <entry><literal>devel_preview_height</literal></entry>
+                <entry>number</entry>
+                <entry>25</entry>
+                <entry>Height of the windows in number of lines.</entry>
+              </row>
+              <row>
+                <entry><literal>devel_preview_lines</literal></entry>
+                <entry>number</entry>
+                <entry>3</entry>
+                <entry>Number of lines from the email to display</entry>
+              </row>
+              <row>
+                <entry><literal>devel_preview_divider_horizontal</literal></entry>
+                <entry>string</entry>
+                <entry>(empty)</entry>
+                <entry>Characters to use to mark the separation between the
+                index and the preview window</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect2>
+    </sect1>
+
     <sect1 id="progress">
       <title>Progress Bar Feature</title>
       <subtitle>Show a visual progress bar on slow operations</subtitle>
