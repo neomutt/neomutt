@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2020-08-14\n"
+"Project-Id-Version: neomutt-2020-08-21\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-08-14 12:54+0100\n"
+"POT-Creation-Date: 2020-08-21 14:18+0100\n"
 "PO-Revision-Date: 2017-02-22 20:12+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -88,9 +88,9 @@ msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Waarschuwing: Ongeldige IDN '%s' in alias '%s'"
 
 #: alias/dlgalias.c:60 alias/dlgquery.c:61 autocrypt/dlgautocrypt.c:61
-#: browser.c:76 browser.c:89 conn/dlgverifycert.c:46 history/dlghistory.c:46
-#: ncrypt/dlggpgme.c:64 ncrypt/dlgpgp.c:53 ncrypt/dlgsmime.c:47 pager.c:221
-#: pager.c:232 pager.c:242 pager.c:258 pattern/dlgpattern.c:62 postpone.c:70
+#: browser.c:76 browser.c:89 conn/dlgverifycert.c:47 history/dlghistory.c:46
+#: ncrypt/dlggpgme.c:64 ncrypt/dlgpgp.c:53 ncrypt/dlgsmime.c:48 pager.c:221
+#: pager.c:232 pager.c:242 pager.c:258 pattern/dlgpattern.c:63 postpone.c:70
 #: recvattach.c:96
 msgid "Exit"
 msgstr "Afsluiten"
@@ -105,15 +105,15 @@ msgid "Undel"
 msgstr "Herstel"
 
 #: alias/dlgalias.c:63 history/dlghistory.c:47 ncrypt/dlggpgme.c:65
-#: ncrypt/dlgpgp.c:54 ncrypt/dlgsmime.c:48 pattern/dlgpattern.c:63
+#: ncrypt/dlgpgp.c:54 ncrypt/dlgsmime.c:49 pattern/dlgpattern.c:64
 msgid "Select"
 msgstr "Selecteren"
 
 #: alias/dlgalias.c:64 alias/dlgquery.c:66 autocrypt/dlgautocrypt.c:80
 #: browser.c:80 browser.c:95 compose.c:228 compose.c:243
-#: conn/dlgverifycert.c:47 history/dlghistory.c:49 index.c:117 index.c:133
-#: ncrypt/dlggpgme.c:67 ncrypt/dlgpgp.c:56 ncrypt/dlgsmime.c:49 pager.c:224
-#: pager.c:249 pager.c:265 pattern/dlgpattern.c:64 postpone.c:73
+#: conn/dlgverifycert.c:48 history/dlghistory.c:49 index.c:117 index.c:133
+#: ncrypt/dlggpgme.c:67 ncrypt/dlgpgp.c:56 ncrypt/dlgsmime.c:50 pager.c:224
+#: pager.c:249 pager.c:265 pattern/dlgpattern.c:65 postpone.c:73
 #: recvattach.c:100
 msgid "Help"
 msgstr "Hulp"
@@ -335,19 +335,19 @@ msgid "inactive"
 msgstr ""
 
 #. L10N: Autocrypt Account Management Menu title
-#: autocrypt/dlgautocrypt.c:182
+#: autocrypt/dlgautocrypt.c:178
 msgid "Autocrypt Accounts"
 msgstr ""
 
 #. L10N: This error message is displayed if a database update of an
 #. account record fails for some odd reason.
-#: autocrypt/dlgautocrypt.c:239 autocrypt/dlgautocrypt.c:253
+#: autocrypt/dlgautocrypt.c:235 autocrypt/dlgautocrypt.c:249
 #, fuzzy
 msgid "Error updating account record"
 msgstr "Er is een fout opgetreden tijdens het analyseren van de map"
 
 #. L10N: Confirmation message when deleting an autocrypt account
-#: autocrypt/dlgautocrypt.c:306
+#: autocrypt/dlgautocrypt.c:302
 #, fuzzy, c-format
 msgid "Really delete account \"%s\"?"
 msgstr "Postvak \"%s\" echt verwijderen?"
@@ -1468,35 +1468,35 @@ msgstr "Fout: score: ongeldig getal"
 msgid "Invalid enum value: %ld"
 msgstr "Ongeldige waarde voor optie %s: %ld"
 
-#: config/long.c:49 config/number.c:49 config/path.c:94 config/path.c:167
-#: config/sort.c:145 config/string.c:73 config/string.c:151
+#: config/long.c:48 config/number.c:48 config/path.c:93 config/path.c:166
+#: config/sort.c:145 config/string.c:72 config/string.c:150
 #, c-format
 msgid "Option %s may not be empty"
 msgstr ""
 
-#: config/long.c:56 config/long.c:152 config/long.c:188
+#: config/long.c:55 config/long.c:151 config/long.c:187
 #, fuzzy, c-format
 msgid "Invalid long: %s"
 msgstr "Ongeldige maand: %s"
 
-#: config/long.c:62 config/long.c:114 config/long.c:159 config/long.c:195
-#: config/number.c:68 config/number.c:127 config/number.c:178
-#: config/number.c:217
+#: config/long.c:61 config/long.c:113 config/long.c:158 config/long.c:194
+#: config/number.c:67 config/number.c:126 config/number.c:177
+#: config/number.c:216
 #, fuzzy, c-format
 msgid "Option %s may not be negative"
 msgstr "Optie %s kan niet ingesteld worden in 'attach-message' modus"
 
-#: config/number.c:56 config/number.c:165 config/number.c:204
+#: config/number.c:55 config/number.c:164 config/number.c:203
 #, fuzzy, c-format
 msgid "Invalid number: %s"
 msgstr "Fout: score: ongeldig getal"
 
-#: config/number.c:62 config/number.c:172 config/number.c:211
+#: config/number.c:61 config/number.c:171 config/number.c:210
 #, c-format
 msgid "Number is too big: %s"
 msgstr ""
 
-#: config/number.c:121
+#: config/number.c:120
 #, fuzzy, c-format
 msgid "Invalid number: %ld"
 msgstr "Fout: score: ongeldig getal"
@@ -1516,19 +1516,19 @@ msgstr "Ongeldige waarde voor optie %s: %ld"
 msgid "No such variable: %s"
 msgstr ""
 
-#: config/set.c:141 config/set.c:857
+#: config/set.c:141 config/set.c:856
 #, fuzzy, c-format
 msgid "Variable '%s' has an invalid type %d"
 msgstr "Fout: waarde '%s' is een ongeldig voor optie '-d'"
 
-#: config/set.c:417 config/set.c:483 config/set.c:544 config/set.c:623
-#: config/set.c:692 config/set.c:771 config/set.c:960 config/set.c:1046
+#: config/set.c:416 config/set.c:482 config/set.c:543 config/set.c:622
+#: config/set.c:691 config/set.c:770 config/set.c:959 config/set.c:1045
 #, fuzzy, c-format
 msgid "Unknown variable '%s'"
 msgstr "%s: onbekende variable"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
-#: config/set.c:929 config/set.c:1015
+#: config/set.c:928 config/set.c:1014
 #, c-format
 msgid "Type '%s' doesn't support operation '%s'"
 msgstr ""
@@ -1576,47 +1576,47 @@ msgstr ""
 msgid "OAUTH token is too big: %ld"
 msgstr ""
 
-#: conn/dlgverifycert.c:91
+#: conn/dlgverifycert.c:92
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(w)eigeren, (e)enmalig toelaten, (a)ltijd toelaten, (s)kip"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlgverifycert.c:95
+#: conn/dlgverifycert.c:96
 msgid "roas"
 msgstr "weas"
 
-#: conn/dlgverifycert.c:99
+#: conn/dlgverifycert.c:100
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(w)eigeren, (e)enmalig toelaten, (a)ltijd toelaten"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlgverifycert.c:103
+#: conn/dlgverifycert.c:104
 msgid "roa"
 msgstr "wea"
 
-#: conn/dlgverifycert.c:110
+#: conn/dlgverifycert.c:111
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(w)eigeren, (e)enmalig toelaten, (s)kip"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlgverifycert.c:114
+#: conn/dlgverifycert.c:115
 msgid "ros"
 msgstr "wes"
 
-#: conn/dlgverifycert.c:118
+#: conn/dlgverifycert.c:119
 msgid "(r)eject, accept (o)nce"
 msgstr "(w)eigeren, (e)enmalig toelaten"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlgverifycert.c:122
+#: conn/dlgverifycert.c:123
 msgid "ro"
 msgstr "we"
 
@@ -2358,30 +2358,30 @@ msgid "No authenticators available or wrong credentials"
 msgstr "Geen aanmeldmogelijkheden of verkeerde logingegevens"
 
 #. L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:59 imap/auth_cram.c:108 imap/auth_gss.c:168
-#: imap/auth_oauth.c:65 imap/auth_sasl.c:127 nntp/nntp.c:603 nntp/nntp.c:669
+#: imap/auth_anon.c:56 imap/auth_cram.c:105 imap/auth_gss.c:165
+#: imap/auth_oauth.c:62 imap/auth_sasl.c:124 nntp/nntp.c:603 nntp/nntp.c:669
 #: pop/auth.c:97 pop/auth.c:242 pop/auth.c:335 send/smtp.c:451 send/smtp.c:534
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Authenticeren (%s)..."
 
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:92 imap/auth_cram.c:182 imap/auth_gss.c:347
-#: imap/auth_oauth.c:98 imap/auth_sasl.c:259 nntp/nntp.c:764 pop/auth.c:195
+#: imap/auth_anon.c:89 imap/auth_cram.c:179 imap/auth_gss.c:344
+#: imap/auth_oauth.c:95 imap/auth_sasl.c:256 nntp/nntp.c:764 pop/auth.c:195
 #: pop/auth.c:263 send/smtp.c:596 send/smtp.c:661
 #, fuzzy, c-format
 msgid "%s authentication failed"
 msgstr "%s authenticatie is mislukt"
 
-#: imap/auth_login.c:51
+#: imap/auth_login.c:48
 msgid "LOGIN disabled on this server"
 msgstr "LOGIN is uitgeschakeld op deze server"
 
-#: imap/auth_login.c:60 imap/auth_plain.c:56 pop/auth.c:279
+#: imap/auth_login.c:57 imap/auth_plain.c:53 pop/auth.c:279
 msgid "Logging in..."
 msgstr "Aanmelden..."
 
-#: imap/auth_login.c:78 imap/auth_plain.c:96 pop/auth.c:320
+#: imap/auth_login.c:75 imap/auth_plain.c:93 pop/auth.c:320
 msgid "Login failed"
 msgstr "Aanmelden is mislukt.."
 
@@ -3078,7 +3078,7 @@ msgstr ""
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
-#: init.c:1640 send/config.c:50
+#: init.c:1640 send/config.c:53
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr ""
@@ -3201,7 +3201,7 @@ msgid "md_commit_message(): unable to set time on file"
 msgstr "md_commit_message(): Kan geen tijd op bestand zetten"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2366
+#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2381
 #, c-format
 msgid "Writing %s..."
 msgstr "Bezig met het schrijven van %s..."
@@ -3466,17 +3466,17 @@ msgstr "Logging op niveau %d voor bestand '%s'"
 msgid "Error: converting path to absolute"
 msgstr "Fout: omzetten pad naar aboluut"
 
-#: mutt/random.c:57
+#: mutt/random.c:58
 #, c-format
 msgid "mutt_randbuf buflen=%zu"
 msgstr ""
 
-#: mutt/random.c:82
+#: mutt/random.c:83
 #, c-format
 msgid "open /dev/urandom: %s"
 msgstr ""
 
-#: mutt/random.c:89
+#: mutt/random.c:90
 #, c-format
 msgid "read /dev/urandom: %s"
 msgstr ""
@@ -3572,7 +3572,7 @@ msgstr "Fout bij schrijven"
 msgid "I don't know how to print that"
 msgstr "Ik weet niet hoe dit afgedrukt moet worden"
 
-#: mutt_logging.c:313
+#: mutt_logging.c:307
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "Ongeldige waarde voor optie %s: %ld"
@@ -4476,7 +4476,7 @@ msgstr "%s \"%s\""
 msgid "This key can't be used: expired/disabled/revoked"
 msgstr "Deze sleutel is onbruikbaar: verlopen/ingetrokken"
 
-#: ncrypt/dlggpgme.c:1335 ncrypt/dlgpgp.c:634 ncrypt/dlgsmime.c:209
+#: ncrypt/dlggpgme.c:1335 ncrypt/dlgpgp.c:634 ncrypt/dlgsmime.c:210
 #, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
 msgstr "Dit ID is verlopen/uitgeschakeld/ingetrokken. Wilt U deze sleutel gebruiken?"
@@ -4491,7 +4491,7 @@ msgstr "Dit ID is niet geldig. Wilt U deze sleutel gebruiken?"
 msgid "ID is only marginally valid. Do you really want to use the key?"
 msgstr "Dit ID is slechts marginaal geldig. Wilt U deze sleutel gebruiken?"
 
-#: ncrypt/dlggpgme.c:1356 ncrypt/dlgpgp.c:642 ncrypt/dlgsmime.c:213
+#: ncrypt/dlggpgme.c:1356 ncrypt/dlgpgp.c:642 ncrypt/dlgsmime.c:214
 #, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "Dit ID heeft een ongedefinieerde geldigheid. Wilt U deze sleutel gebruiken?"
@@ -4519,7 +4519,7 @@ msgstr "Kan /dev/null niet openen"
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:96
+#: ncrypt/dlgsmime.c:97
 msgid "Expired   "
 msgstr "Verlopen    "
 
@@ -4528,7 +4528,7 @@ msgstr "Verlopen    "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:104
+#: ncrypt/dlgsmime.c:105
 msgid "Invalid   "
 msgstr "Ongeldig    "
 
@@ -4537,7 +4537,7 @@ msgstr "Ongeldig    "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:112
+#: ncrypt/dlgsmime.c:113
 msgid "Revoked   "
 msgstr "Herroepen    "
 
@@ -4546,7 +4546,7 @@ msgstr "Herroepen    "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:120
+#: ncrypt/dlgsmime.c:121
 msgid "Trusted   "
 msgstr "Vertrouwd    "
 
@@ -4555,7 +4555,7 @@ msgstr "Vertrouwd    "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:128
+#: ncrypt/dlgsmime.c:129
 msgid "Unverified"
 msgstr "Niet geverifieerd"
 
@@ -4564,7 +4564,7 @@ msgstr "Niet geverifieerd"
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:136
+#: ncrypt/dlgsmime.c:137
 msgid "Verified  "
 msgstr "Geverifieerd   "
 
@@ -4573,16 +4573,16 @@ msgstr "Geverifieerd   "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:144
+#: ncrypt/dlgsmime.c:145
 msgid "Unknown   "
 msgstr "Onbekend    "
 
-#: ncrypt/dlgsmime.c:180
+#: ncrypt/dlgsmime.c:181
 #, c-format
 msgid "S/MIME certificates matching \"%s\""
 msgstr "S/MIME certficiaten voor \"%s\""
 
-#: ncrypt/dlgsmime.c:217
+#: ncrypt/dlgsmime.c:218
 #, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "Dit ID wordt niet vertrouwd. Wilt U deze sleutel gebruiken?"
@@ -4998,7 +4998,7 @@ msgstr "Ongekende reden"
 msgid "failed to parse notmuch query type: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:206 notmuch/notmuch.c:1940
+#: notmuch/notmuch.c:206 notmuch/notmuch.c:1955
 #, fuzzy, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "Kan 'notmuch url' niet verwerken: %s"
@@ -5017,17 +5017,22 @@ msgstr "Kan 'notmuch' limiet niet verwerken: %s"
 msgid "Reading messages..."
 msgstr "Berichten inladen..."
 
-#: notmuch/notmuch.c:1703
+#: notmuch/notmuch.c:1718
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "Geen nieuwe berichten in deze beperkte weergave"
 
-#: notmuch/notmuch.c:1953
+#: notmuch/notmuch.c:1968
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "Kan 'notmuch' limiet niet verwerken: %s"
 
-#: notmuch/notmuch.c:2482
+#: notmuch/notmuch.c:2456
+#, c-format
+msgid "Unable to sync %d messages due to external mailbox modification"
+msgstr ""
+
+#: notmuch/notmuch.c:2521
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "Kan niet schrijven in de virtuele map"
@@ -6258,14 +6263,14 @@ msgid "missing parameter"
 msgstr "Te weinig parameters"
 
 #. L10N: Pattern completion menu title
-#: pattern/dlgpattern.c:137
+#: pattern/dlgpattern.c:138
 msgid "Patterns"
 msgstr ""
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
-#: pattern/dlgpattern.c:155
+#: pattern/dlgpattern.c:156
 msgid "EXPR"
 msgstr ""
 
@@ -6273,7 +6278,7 @@ msgstr ""
 #. Pattern Completion Menu argument type: a numeric range.
 #. Used by ~m, ~n, ~X, ~z.
 #.
-#: pattern/dlgpattern.c:163
+#: pattern/dlgpattern.c:164
 msgid "RANGE"
 msgstr ""
 
@@ -6281,7 +6286,7 @@ msgstr ""
 #. Pattern Completion Menu argument type: a date range
 #. Used by ~d, ~r.
 #.
-#: pattern/dlgpattern.c:170
+#: pattern/dlgpattern.c:171
 msgid "DATERANGE"
 msgstr ""
 
@@ -6289,7 +6294,7 @@ msgstr ""
 #. Pattern Completion Menu argument type: a query
 #. Used by ~I.
 #.
-#: pattern/dlgpattern.c:177
+#: pattern/dlgpattern.c:178
 msgid "QUERY"
 msgstr ""
 
@@ -6297,19 +6302,19 @@ msgstr ""
 #. Pattern Completion Menu argument type: a nested pattern.
 #. Used by ~(), ~<(), ~>().
 #.
-#: pattern/dlgpattern.c:195
+#: pattern/dlgpattern.c:196
 msgid "PATTERN"
 msgstr ""
 
-#: pattern/dlgpattern.c:203
+#: pattern/dlgpattern.c:204
 msgid "messages in threads containing messages matching PATTERN"
 msgstr ""
 
-#: pattern/dlgpattern.c:212
+#: pattern/dlgpattern.c:213
 msgid "messages whose immediate parent matches PATTERN"
 msgstr ""
 
-#: pattern/dlgpattern.c:221
+#: pattern/dlgpattern.c:222
 msgid "messages having an immediate child matching PATTERN"
 msgstr ""
 
