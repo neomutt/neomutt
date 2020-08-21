@@ -19,9 +19,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2020-08-14\n"
+"Project-Id-Version: neomutt-2020-08-21\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-08-14 12:54+0100\n"
+"POT-Creation-Date: 2020-08-21 14:18+0100\n"
 "PO-Revision-Date: 2020-04-20 15:18+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -97,9 +97,9 @@ msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Pozor: Neplatné IDN „%s“ v přezdívce „%s“"
 
 #: alias/dlgalias.c:60 alias/dlgquery.c:61 autocrypt/dlgautocrypt.c:61
-#: browser.c:76 browser.c:89 conn/dlgverifycert.c:46 history/dlghistory.c:46
-#: ncrypt/dlggpgme.c:64 ncrypt/dlgpgp.c:53 ncrypt/dlgsmime.c:47 pager.c:221
-#: pager.c:232 pager.c:242 pager.c:258 pattern/dlgpattern.c:62 postpone.c:70
+#: browser.c:76 browser.c:89 conn/dlgverifycert.c:47 history/dlghistory.c:46
+#: ncrypt/dlggpgme.c:64 ncrypt/dlgpgp.c:53 ncrypt/dlgsmime.c:48 pager.c:221
+#: pager.c:232 pager.c:242 pager.c:258 pattern/dlgpattern.c:63 postpone.c:70
 #: recvattach.c:96
 msgid "Exit"
 msgstr "Konec"
@@ -114,15 +114,15 @@ msgid "Undel"
 msgstr "Obnovit"
 
 #: alias/dlgalias.c:63 history/dlghistory.c:47 ncrypt/dlggpgme.c:65
-#: ncrypt/dlgpgp.c:54 ncrypt/dlgsmime.c:48 pattern/dlgpattern.c:63
+#: ncrypt/dlgpgp.c:54 ncrypt/dlgsmime.c:49 pattern/dlgpattern.c:64
 msgid "Select"
 msgstr "Volba"
 
 #: alias/dlgalias.c:64 alias/dlgquery.c:66 autocrypt/dlgautocrypt.c:80
 #: browser.c:80 browser.c:95 compose.c:228 compose.c:243
-#: conn/dlgverifycert.c:47 history/dlghistory.c:49 index.c:117 index.c:133
-#: ncrypt/dlggpgme.c:67 ncrypt/dlgpgp.c:56 ncrypt/dlgsmime.c:49 pager.c:224
-#: pager.c:249 pager.c:265 pattern/dlgpattern.c:64 postpone.c:73
+#: conn/dlgverifycert.c:48 history/dlghistory.c:49 index.c:117 index.c:133
+#: ncrypt/dlggpgme.c:67 ncrypt/dlgpgp.c:56 ncrypt/dlgsmime.c:50 pager.c:224
+#: pager.c:249 pager.c:265 pattern/dlgpattern.c:65 postpone.c:73
 #: recvattach.c:100
 msgid "Help"
 msgstr "Nápověda"
@@ -340,18 +340,18 @@ msgid "inactive"
 msgstr "neaktivní"
 
 #. L10N: Autocrypt Account Management Menu title
-#: autocrypt/dlgautocrypt.c:182
+#: autocrypt/dlgautocrypt.c:178
 msgid "Autocrypt Accounts"
 msgstr "Účty autocrypt"
 
 #. L10N: This error message is displayed if a database update of an
 #. account record fails for some odd reason.
-#: autocrypt/dlgautocrypt.c:239 autocrypt/dlgautocrypt.c:253
+#: autocrypt/dlgautocrypt.c:235 autocrypt/dlgautocrypt.c:249
 msgid "Error updating account record"
 msgstr "Chyba při změně nastavení účtu"
 
 #. L10N: Confirmation message when deleting an autocrypt account
-#: autocrypt/dlgautocrypt.c:306
+#: autocrypt/dlgautocrypt.c:302
 #, c-format
 msgid "Really delete account \"%s\"?"
 msgstr "Skutečně chcete smazat účet „%s“?"
@@ -1440,35 +1440,35 @@ msgstr "Neplatná hodnota výčtu: %s"
 msgid "Invalid enum value: %ld"
 msgstr "Neplatná hodnota výčtu: %ld"
 
-#: config/long.c:49 config/number.c:49 config/path.c:94 config/path.c:167
-#: config/sort.c:145 config/string.c:73 config/string.c:151
+#: config/long.c:48 config/number.c:48 config/path.c:93 config/path.c:166
+#: config/sort.c:145 config/string.c:72 config/string.c:150
 #, c-format
 msgid "Option %s may not be empty"
 msgstr "Volba %s nemůže být prázdná"
 
-#: config/long.c:56 config/long.c:152 config/long.c:188
+#: config/long.c:55 config/long.c:151 config/long.c:187
 #, c-format
 msgid "Invalid long: %s"
 msgstr "Neplatné číslo: %s"
 
-#: config/long.c:62 config/long.c:114 config/long.c:159 config/long.c:195
-#: config/number.c:68 config/number.c:127 config/number.c:178
-#: config/number.c:217
+#: config/long.c:61 config/long.c:113 config/long.c:158 config/long.c:194
+#: config/number.c:67 config/number.c:126 config/number.c:177
+#: config/number.c:216
 #, c-format
 msgid "Option %s may not be negative"
 msgstr "Volba %s nemůže být záporná"
 
-#: config/number.c:56 config/number.c:165 config/number.c:204
+#: config/number.c:55 config/number.c:164 config/number.c:203
 #, c-format
 msgid "Invalid number: %s"
 msgstr "Neplatné číslo: %s"
 
-#: config/number.c:62 config/number.c:172 config/number.c:211
+#: config/number.c:61 config/number.c:171 config/number.c:210
 #, c-format
 msgid "Number is too big: %s"
 msgstr "Číslo je příliš vysoké: %s"
 
-#: config/number.c:121
+#: config/number.c:120
 #, c-format
 msgid "Invalid number: %ld"
 msgstr "Neplatné číslo: %ld"
@@ -1488,19 +1488,19 @@ msgstr "Neplatná hodnota přepínače: %ld"
 msgid "No such variable: %s"
 msgstr "Proměnná „%s“ není definována"
 
-#: config/set.c:141 config/set.c:857
+#: config/set.c:141 config/set.c:856
 #, c-format
 msgid "Variable '%s' has an invalid type %d"
 msgstr "Proměnná „%s“ nemůže být typu %d"
 
-#: config/set.c:417 config/set.c:483 config/set.c:544 config/set.c:623
-#: config/set.c:692 config/set.c:771 config/set.c:960 config/set.c:1046
+#: config/set.c:416 config/set.c:482 config/set.c:543 config/set.c:622
+#: config/set.c:691 config/set.c:770 config/set.c:959 config/set.c:1045
 #, c-format
 msgid "Unknown variable '%s'"
 msgstr "Proměnná „%s“ není známa."
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
-#: config/set.c:929 config/set.c:1015
+#: config/set.c:928 config/set.c:1014
 #, c-format
 msgid "Type '%s' doesn't support operation '%s'"
 msgstr "Typ '%s' nepodporuje operaci '%s'"
@@ -1547,47 +1547,47 @@ msgstr "Příkaz vrátil prázdný řetězec"
 msgid "OAUTH token is too big: %ld"
 msgstr "OAUTH token je příliš dlouhý: %ld"
 
-#: conn/dlgverifycert.c:91
+#: conn/dlgverifycert.c:92
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(o)dmítnout, akceptovat pouze (t)eď, akceptovat (v)ždy, pře(s)kočit"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlgverifycert.c:95
+#: conn/dlgverifycert.c:96
 msgid "roas"
 msgstr "otvs"
 
-#: conn/dlgverifycert.c:99
+#: conn/dlgverifycert.c:100
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(o)dmítnout, akceptovat pouze (t)eď, akceptovat (v)ždy "
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlgverifycert.c:103
+#: conn/dlgverifycert.c:104
 msgid "roa"
 msgstr "otv"
 
-#: conn/dlgverifycert.c:110
+#: conn/dlgverifycert.c:111
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(o)dmítnout, akceptovat pouze (t)eď, pře(s)kočit"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlgverifycert.c:114
+#: conn/dlgverifycert.c:115
 msgid "ros"
 msgstr "ots"
 
-#: conn/dlgverifycert.c:118
+#: conn/dlgverifycert.c:119
 msgid "(r)eject, accept (o)nce"
 msgstr "(o)dmítnout, akceptovat pouze (t)eď "
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlgverifycert.c:122
+#: conn/dlgverifycert.c:123
 msgid "ro"
 msgstr "ot"
 
@@ -2325,30 +2325,30 @@ msgid "No authenticators available or wrong credentials"
 msgstr "Nejsou k dispozici žádné autentizační metody nebo byly zadány neplatné přihlašovací údaje"
 
 #. L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:59 imap/auth_cram.c:108 imap/auth_gss.c:168
-#: imap/auth_oauth.c:65 imap/auth_sasl.c:127 nntp/nntp.c:603 nntp/nntp.c:669
+#: imap/auth_anon.c:56 imap/auth_cram.c:105 imap/auth_gss.c:165
+#: imap/auth_oauth.c:62 imap/auth_sasl.c:124 nntp/nntp.c:603 nntp/nntp.c:669
 #: pop/auth.c:97 pop/auth.c:242 pop/auth.c:335 send/smtp.c:451 send/smtp.c:534
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Přihlašuji (%s)…"
 
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:92 imap/auth_cram.c:182 imap/auth_gss.c:347
-#: imap/auth_oauth.c:98 imap/auth_sasl.c:259 nntp/nntp.c:764 pop/auth.c:195
+#: imap/auth_anon.c:89 imap/auth_cram.c:179 imap/auth_gss.c:344
+#: imap/auth_oauth.c:95 imap/auth_sasl.c:256 nntp/nntp.c:764 pop/auth.c:195
 #: pop/auth.c:263 send/smtp.c:596 send/smtp.c:661
 #, c-format
 msgid "%s authentication failed"
 msgstr "%s ověření se nezdařilo"
 
-#: imap/auth_login.c:51
+#: imap/auth_login.c:48
 msgid "LOGIN disabled on this server"
 msgstr "LOGIN autentizace je na tomto serveru zakázána"
 
-#: imap/auth_login.c:60 imap/auth_plain.c:56 pop/auth.c:279
+#: imap/auth_login.c:57 imap/auth_plain.c:53 pop/auth.c:279
 msgid "Logging in..."
 msgstr "Probíhá přihlašování…"
 
-#: imap/auth_login.c:78 imap/auth_plain.c:96 pop/auth.c:320
+#: imap/auth_login.c:75 imap/auth_plain.c:93 pop/auth.c:320
 msgid "Login failed"
 msgstr "Přihlášení se nezdařilo"
 
@@ -3031,7 +3031,7 @@ msgstr "Nastavit konfiguraci %s před nastavením %s"
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
-#: init.c:1640 send/config.c:50
+#: init.c:1640 send/config.c:53
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "Volba %s musí být v rozmezí %d a %d"
@@ -3152,7 +3152,7 @@ msgid "md_commit_message(): unable to set time on file"
 msgstr "md_commit_message(): nelze nastavit čas na souboru"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2366
+#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2381
 #, c-format
 msgid "Writing %s..."
 msgstr "Ukládám %s…"
@@ -3473,17 +3473,17 @@ msgstr "Úroveň ladění je %d do souboru „%s“"
 msgid "Error: converting path to absolute"
 msgstr "Chyba při konverzi cesty na absolutní"
 
-#: mutt/random.c:57
+#: mutt/random.c:58
 #, c-format
 msgid "mutt_randbuf buflen=%zu"
 msgstr "mutt_randbuf buflen=%zu"
 
-#: mutt/random.c:82
+#: mutt/random.c:83
 #, c-format
 msgid "open /dev/urandom: %s"
 msgstr "otevření /dev/urandom: %s"
 
-#: mutt/random.c:89
+#: mutt/random.c:90
 #, c-format
 msgid "read /dev/urandom: %s"
 msgstr "čtení /dev/urandom: %s"
@@ -3579,7 +3579,7 @@ msgstr "Chyba při zápisu"
 msgid "I don't know how to print that"
 msgstr "Nevím, jak mám toto vytisknout"
 
-#: mutt_logging.c:313
+#: mutt_logging.c:307
 #, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "Neplatná hodnota přepínače %s: „%ld“"
@@ -4466,7 +4466,7 @@ msgstr "%s „%s“"
 msgid "This key can't be used: expired/disabled/revoked"
 msgstr "Klíč nelze použít: vypršela jeho platnost, nebo byl zakázán či odvolán"
 
-#: ncrypt/dlggpgme.c:1335 ncrypt/dlgpgp.c:634 ncrypt/dlgsmime.c:209
+#: ncrypt/dlggpgme.c:1335 ncrypt/dlgpgp.c:634 ncrypt/dlgsmime.c:210
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
 msgstr "Tomuto ID vypršela platnost, nebo bylo zakázáno či odvoláno. Opravdu chcete tento klíč použít?"
 
@@ -4478,7 +4478,7 @@ msgstr "Toto ID není platné. Opravdu chcete tento klíč použít?"
 msgid "ID is only marginally valid. Do you really want to use the key?"
 msgstr "Důvěryhodnost tohoto ID je pouze částečná. Opravdu chcete tento klíč použít?"
 
-#: ncrypt/dlggpgme.c:1356 ncrypt/dlgpgp.c:642 ncrypt/dlgsmime.c:213
+#: ncrypt/dlggpgme.c:1356 ncrypt/dlgpgp.c:642 ncrypt/dlgsmime.c:214
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "ID nemá definovanou důvěryhodnost. Opravdu chcete tento klíč použít?"
 
@@ -4505,7 +4505,7 @@ msgstr "Nelze otevřít /dev/null"
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:96
+#: ncrypt/dlgsmime.c:97
 msgid "Expired   "
 msgstr "Platnost vypršela   "
 
@@ -4514,7 +4514,7 @@ msgstr "Platnost vypršela   "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:104
+#: ncrypt/dlgsmime.c:105
 msgid "Invalid   "
 msgstr "Neplatný   "
 
@@ -4523,7 +4523,7 @@ msgstr "Neplatný   "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:112
+#: ncrypt/dlgsmime.c:113
 msgid "Revoked   "
 msgstr "Odvolaný   "
 
@@ -4532,7 +4532,7 @@ msgstr "Odvolaný   "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:120
+#: ncrypt/dlgsmime.c:121
 msgid "Trusted   "
 msgstr "Důvěryhodný   "
 
@@ -4541,7 +4541,7 @@ msgstr "Důvěryhodný   "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:128
+#: ncrypt/dlgsmime.c:129
 msgid "Unverified"
 msgstr "Neověřený   "
 
@@ -4550,7 +4550,7 @@ msgstr "Neověřený   "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:136
+#: ncrypt/dlgsmime.c:137
 msgid "Verified  "
 msgstr "Ověřený   "
 
@@ -4559,16 +4559,16 @@ msgstr "Ověřený   "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:144
+#: ncrypt/dlgsmime.c:145
 msgid "Unknown   "
 msgstr "Neznámý   "
 
-#: ncrypt/dlgsmime.c:180
+#: ncrypt/dlgsmime.c:181
 #, c-format
 msgid "S/MIME certificates matching \"%s\""
 msgstr "S/MIME klíče vyhovující „%s“"
 
-#: ncrypt/dlgsmime.c:217
+#: ncrypt/dlgsmime.c:218
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "ID není důvěryhodné. Opravdu chcete tento klíč použít?"
 
@@ -4958,7 +4958,7 @@ msgstr "neznámá chyba"
 msgid "failed to parse notmuch query type: %s"
 msgstr "Rozebrání dotazu pro notmuch se nezdařilo: %s"
 
-#: notmuch/notmuch.c:206 notmuch/notmuch.c:1940
+#: notmuch/notmuch.c:206 notmuch/notmuch.c:1955
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "rozebrání URL pro notmuch se nezdařilo: %s"
@@ -4976,16 +4976,21 @@ msgstr "rozebrání limitu pro notmuch se nezdařilo: %s"
 msgid "Reading messages..."
 msgstr "Načítám zprávy…"
 
-#: notmuch/notmuch.c:1703
+#: notmuch/notmuch.c:1718
 msgid "No more messages in the thread"
 msgstr "Žádné nové zprávy v tomto vlákně"
 
-#: notmuch/notmuch.c:1953
+#: notmuch/notmuch.c:1968
 #, c-format
 msgid "failed to parse limit: %s"
 msgstr "rozebrání limitu pro notmuch se nezdařilo: %s"
 
-#: notmuch/notmuch.c:2482
+#: notmuch/notmuch.c:2456
+#, c-format
+msgid "Unable to sync %d messages due to external mailbox modification"
+msgstr ""
+
+#: notmuch/notmuch.c:2521
 msgid "Can't write to virtual folder"
 msgstr "Nelze zapsat do virtuální složky"
 
@@ -6172,14 +6177,14 @@ msgid "missing parameter"
 msgstr "chybí parametr"
 
 #. L10N: Pattern completion menu title
-#: pattern/dlgpattern.c:137
+#: pattern/dlgpattern.c:138
 msgid "Patterns"
 msgstr "Vzory"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
-#: pattern/dlgpattern.c:155
+#: pattern/dlgpattern.c:156
 msgid "EXPR"
 msgstr "VÝRAZ"
 
@@ -6187,7 +6192,7 @@ msgstr "VÝRAZ"
 #. Pattern Completion Menu argument type: a numeric range.
 #. Used by ~m, ~n, ~X, ~z.
 #.
-#: pattern/dlgpattern.c:163
+#: pattern/dlgpattern.c:164
 msgid "RANGE"
 msgstr "ROZSAH"
 
@@ -6195,7 +6200,7 @@ msgstr "ROZSAH"
 #. Pattern Completion Menu argument type: a date range
 #. Used by ~d, ~r.
 #.
-#: pattern/dlgpattern.c:170
+#: pattern/dlgpattern.c:171
 msgid "DATERANGE"
 msgstr "INTERVAL DATUMU"
 
@@ -6203,7 +6208,7 @@ msgstr "INTERVAL DATUMU"
 #. Pattern Completion Menu argument type: a query
 #. Used by ~I.
 #.
-#: pattern/dlgpattern.c:177
+#: pattern/dlgpattern.c:178
 msgid "QUERY"
 msgstr "DOTAZ"
 
@@ -6211,19 +6216,19 @@ msgstr "DOTAZ"
 #. Pattern Completion Menu argument type: a nested pattern.
 #. Used by ~(), ~<(), ~>().
 #.
-#: pattern/dlgpattern.c:195
+#: pattern/dlgpattern.c:196
 msgid "PATTERN"
 msgstr "VZOR"
 
-#: pattern/dlgpattern.c:203
+#: pattern/dlgpattern.c:204
 msgid "messages in threads containing messages matching PATTERN"
 msgstr "zprávy ve vláknech odpovídající VZOR"
 
-#: pattern/dlgpattern.c:212
+#: pattern/dlgpattern.c:213
 msgid "messages whose immediate parent matches PATTERN"
 msgstr "zprávy jejichž přímo nadřízená zpráva odpovídá VZORU"
 
-#: pattern/dlgpattern.c:221
+#: pattern/dlgpattern.c:222
 msgid "messages having an immediate child matching PATTERN"
 msgstr "zprávy mající přímo podřízenou zprávu odpovídající VZORU"
 

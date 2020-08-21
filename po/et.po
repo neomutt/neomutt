@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2020-08-14\n"
+"Project-Id-Version: neomutt-2020-08-21\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-08-14 12:54+0100\n"
+"POT-Creation-Date: 2020-08-21 14:18+0100\n"
 "PO-Revision-Date: 2002-12-09 17:19+02:00\n"
 "Last-Translator: Toomas Soome <tsoome@muhv.pri.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -89,9 +89,9 @@ msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr ""
 
 #: alias/dlgalias.c:60 alias/dlgquery.c:61 autocrypt/dlgautocrypt.c:61
-#: browser.c:76 browser.c:89 conn/dlgverifycert.c:46 history/dlghistory.c:46
-#: ncrypt/dlggpgme.c:64 ncrypt/dlgpgp.c:53 ncrypt/dlgsmime.c:47 pager.c:221
-#: pager.c:232 pager.c:242 pager.c:258 pattern/dlgpattern.c:62 postpone.c:70
+#: browser.c:76 browser.c:89 conn/dlgverifycert.c:47 history/dlghistory.c:46
+#: ncrypt/dlggpgme.c:64 ncrypt/dlgpgp.c:53 ncrypt/dlgsmime.c:48 pager.c:221
+#: pager.c:232 pager.c:242 pager.c:258 pattern/dlgpattern.c:63 postpone.c:70
 #: recvattach.c:96
 msgid "Exit"
 msgstr "Välju"
@@ -106,15 +106,15 @@ msgid "Undel"
 msgstr "Taasta"
 
 #: alias/dlgalias.c:63 history/dlghistory.c:47 ncrypt/dlggpgme.c:65
-#: ncrypt/dlgpgp.c:54 ncrypt/dlgsmime.c:48 pattern/dlgpattern.c:63
+#: ncrypt/dlgpgp.c:54 ncrypt/dlgsmime.c:49 pattern/dlgpattern.c:64
 msgid "Select"
 msgstr "Vali"
 
 #: alias/dlgalias.c:64 alias/dlgquery.c:66 autocrypt/dlgautocrypt.c:80
 #: browser.c:80 browser.c:95 compose.c:228 compose.c:243
-#: conn/dlgverifycert.c:47 history/dlghistory.c:49 index.c:117 index.c:133
-#: ncrypt/dlggpgme.c:67 ncrypt/dlgpgp.c:56 ncrypt/dlgsmime.c:49 pager.c:224
-#: pager.c:249 pager.c:265 pattern/dlgpattern.c:64 postpone.c:73
+#: conn/dlgverifycert.c:48 history/dlghistory.c:49 index.c:117 index.c:133
+#: ncrypt/dlggpgme.c:67 ncrypt/dlgpgp.c:56 ncrypt/dlgsmime.c:50 pager.c:224
+#: pager.c:249 pager.c:265 pattern/dlgpattern.c:65 postpone.c:73
 #: recvattach.c:100
 msgid "Help"
 msgstr "Appi"
@@ -336,19 +336,19 @@ msgid "inactive"
 msgstr ""
 
 #. L10N: Autocrypt Account Management Menu title
-#: autocrypt/dlgautocrypt.c:182
+#: autocrypt/dlgautocrypt.c:178
 msgid "Autocrypt Accounts"
 msgstr ""
 
 #. L10N: This error message is displayed if a database update of an
 #. account record fails for some odd reason.
-#: autocrypt/dlgautocrypt.c:239 autocrypt/dlgautocrypt.c:253
+#: autocrypt/dlgautocrypt.c:235 autocrypt/dlgautocrypt.c:249
 #, fuzzy
 msgid "Error updating account record"
 msgstr "Viga kataloogi skaneerimisel"
 
 #. L10N: Confirmation message when deleting an autocrypt account
-#: autocrypt/dlgautocrypt.c:306
+#: autocrypt/dlgautocrypt.c:302
 #, fuzzy, c-format
 msgid "Really delete account \"%s\"?"
 msgstr "Kas tõesti kustutada postkast \"%s\"?"
@@ -1481,35 +1481,35 @@ msgstr "%d: vigane teate number.\n"
 msgid "Invalid enum value: %ld"
 msgstr "Vigane kuupäev: %s"
 
-#: config/long.c:49 config/number.c:49 config/path.c:94 config/path.c:167
-#: config/sort.c:145 config/string.c:73 config/string.c:151
+#: config/long.c:48 config/number.c:48 config/path.c:93 config/path.c:166
+#: config/sort.c:145 config/string.c:72 config/string.c:150
 #, c-format
 msgid "Option %s may not be empty"
 msgstr ""
 
-#: config/long.c:56 config/long.c:152 config/long.c:188
+#: config/long.c:55 config/long.c:151 config/long.c:187
 #, fuzzy, c-format
 msgid "Invalid long: %s"
 msgstr "Vigane kuu: %s"
 
-#: config/long.c:62 config/long.c:114 config/long.c:159 config/long.c:195
-#: config/number.c:68 config/number.c:127 config/number.c:178
-#: config/number.c:217
+#: config/long.c:61 config/long.c:113 config/long.c:158 config/long.c:194
+#: config/number.c:67 config/number.c:126 config/number.c:177
+#: config/number.c:216
 #, fuzzy, c-format
 msgid "Option %s may not be negative"
 msgstr "Funktsioon ei ole teate lisamise moodis lubatud."
 
-#: config/number.c:56 config/number.c:165 config/number.c:204
+#: config/number.c:55 config/number.c:164 config/number.c:203
 #, fuzzy, c-format
 msgid "Invalid number: %s"
 msgstr "%d: vigane teate number.\n"
 
-#: config/number.c:62 config/number.c:172 config/number.c:211
+#: config/number.c:61 config/number.c:171 config/number.c:210
 #, c-format
 msgid "Number is too big: %s"
 msgstr ""
 
-#: config/number.c:121
+#: config/number.c:120
 #, fuzzy, c-format
 msgid "Invalid number: %ld"
 msgstr "%d: vigane teate number.\n"
@@ -1529,19 +1529,19 @@ msgstr "Vigane kuupäev: %s"
 msgid "No such variable: %s"
 msgstr ""
 
-#: config/set.c:141 config/set.c:857
+#: config/set.c:141 config/set.c:856
 #, c-format
 msgid "Variable '%s' has an invalid type %d"
 msgstr ""
 
-#: config/set.c:417 config/set.c:483 config/set.c:544 config/set.c:623
-#: config/set.c:692 config/set.c:771 config/set.c:960 config/set.c:1046
+#: config/set.c:416 config/set.c:482 config/set.c:543 config/set.c:622
+#: config/set.c:691 config/set.c:770 config/set.c:959 config/set.c:1045
 #, fuzzy, c-format
 msgid "Unknown variable '%s'"
 msgstr "%s: tundmatu muutuja"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
-#: config/set.c:929 config/set.c:1015
+#: config/set.c:928 config/set.c:1014
 #, c-format
 msgid "Type '%s' doesn't support operation '%s'"
 msgstr ""
@@ -1589,7 +1589,7 @@ msgstr ""
 msgid "OAUTH token is too big: %ld"
 msgstr ""
 
-#: conn/dlgverifycert.c:91
+#: conn/dlgverifycert.c:92
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(k)eeldu, (n)õustu korra, nõustu (a)alati"
@@ -1597,23 +1597,23 @@ msgstr "(k)eeldu, (n)õustu korra, nõustu (a)alati"
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlgverifycert.c:95
+#: conn/dlgverifycert.c:96
 #, fuzzy
 msgid "roas"
 msgstr "kna"
 
-#: conn/dlgverifycert.c:99
+#: conn/dlgverifycert.c:100
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(k)eeldu, (n)õustu korra, nõustu (a)alati"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlgverifycert.c:103
+#: conn/dlgverifycert.c:104
 msgid "roa"
 msgstr "kna"
 
-#: conn/dlgverifycert.c:110
+#: conn/dlgverifycert.c:111
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(k)eeldu, (n)õustu korra"
@@ -1621,19 +1621,19 @@ msgstr "(k)eeldu, (n)õustu korra"
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlgverifycert.c:114
+#: conn/dlgverifycert.c:115
 #, fuzzy
 msgid "ros"
 msgstr "kn"
 
-#: conn/dlgverifycert.c:118
+#: conn/dlgverifycert.c:119
 msgid "(r)eject, accept (o)nce"
 msgstr "(k)eeldu, (n)õustu korra"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlgverifycert.c:122
+#: conn/dlgverifycert.c:123
 msgid "ro"
 msgstr "kn"
 
@@ -2383,30 +2383,30 @@ msgid "No authenticators available or wrong credentials"
 msgstr "Autentikaatoreid pole"
 
 #. L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:59 imap/auth_cram.c:108 imap/auth_gss.c:168
-#: imap/auth_oauth.c:65 imap/auth_sasl.c:127 nntp/nntp.c:603 nntp/nntp.c:669
+#: imap/auth_anon.c:56 imap/auth_cram.c:105 imap/auth_gss.c:165
+#: imap/auth_oauth.c:62 imap/auth_sasl.c:124 nntp/nntp.c:603 nntp/nntp.c:669
 #: pop/auth.c:97 pop/auth.c:242 pop/auth.c:335 send/smtp.c:451 send/smtp.c:534
 #, fuzzy, c-format
 msgid "Authenticating (%s)..."
 msgstr "Autentimine (APOP)..."
 
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:92 imap/auth_cram.c:182 imap/auth_gss.c:347
-#: imap/auth_oauth.c:98 imap/auth_sasl.c:259 nntp/nntp.c:764 pop/auth.c:195
+#: imap/auth_anon.c:89 imap/auth_cram.c:179 imap/auth_gss.c:344
+#: imap/auth_oauth.c:95 imap/auth_sasl.c:256 nntp/nntp.c:764 pop/auth.c:195
 #: pop/auth.c:263 send/smtp.c:596 send/smtp.c:661
 #, fuzzy, c-format
 msgid "%s authentication failed"
 msgstr "SASL autentimine ebaõnnestus"
 
-#: imap/auth_login.c:51
+#: imap/auth_login.c:48
 msgid "LOGIN disabled on this server"
 msgstr "LOGIN on sellel serveril blokeeritud"
 
-#: imap/auth_login.c:60 imap/auth_plain.c:56 pop/auth.c:279
+#: imap/auth_login.c:57 imap/auth_plain.c:53 pop/auth.c:279
 msgid "Logging in..."
 msgstr "Meldin..."
 
-#: imap/auth_login.c:78 imap/auth_plain.c:96 pop/auth.c:320
+#: imap/auth_login.c:75 imap/auth_plain.c:93 pop/auth.c:320
 msgid "Login failed"
 msgstr "Meldimine ebaõnnestus"
 
@@ -3123,7 +3123,7 @@ msgstr ""
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
-#: init.c:1640 send/config.c:50
+#: init.c:1640 send/config.c:53
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr ""
@@ -3247,7 +3247,7 @@ msgid "md_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): ei õnnestu seada faili aegu"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2366
+#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2381
 #, c-format
 msgid "Writing %s..."
 msgstr "Kirjutan %s..."
@@ -3512,17 +3512,17 @@ msgstr "Silumise tase %d.\n"
 msgid "Error: converting path to absolute"
 msgstr "Viga serveriga ühenduse loomisel: %s"
 
-#: mutt/random.c:57
+#: mutt/random.c:58
 #, c-format
 msgid "mutt_randbuf buflen=%zu"
 msgstr ""
 
-#: mutt/random.c:82
+#: mutt/random.c:83
 #, c-format
 msgid "open /dev/urandom: %s"
 msgstr ""
 
-#: mutt/random.c:89
+#: mutt/random.c:90
 #, c-format
 msgid "read /dev/urandom: %s"
 msgstr ""
@@ -3619,7 +3619,7 @@ msgstr "Viga kirjutamisel"
 msgid "I don't know how to print that"
 msgstr "Ma ei tea, kuidas seda trükkida"
 
-#: mutt_logging.c:313
+#: mutt_logging.c:307
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "Vigane kuupäev: %s"
@@ -4550,7 +4550,7 @@ msgstr ""
 msgid "This key can't be used: expired/disabled/revoked"
 msgstr "Seda võtit ei saa kasutada: aegunud/blokeeritud/tühistatud"
 
-#: ncrypt/dlggpgme.c:1335 ncrypt/dlgpgp.c:634 ncrypt/dlgsmime.c:209
+#: ncrypt/dlggpgme.c:1335 ncrypt/dlgpgp.c:634 ncrypt/dlgsmime.c:210
 #, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
 msgstr "ID on aegunud/blokeeritud/tühistatud. Kas te soovite seda võtit tõesti kasutada?"
@@ -4565,7 +4565,7 @@ msgstr "ID ei ole kehtiv. Kas te soovite seda võtit tõesti kasutada?"
 msgid "ID is only marginally valid. Do you really want to use the key?"
 msgstr "ID on ainult osaliselt kehtiv. Kas te soovite seda võtit tõesti kasutada?"
 
-#: ncrypt/dlggpgme.c:1356 ncrypt/dlgpgp.c:642 ncrypt/dlgsmime.c:213
+#: ncrypt/dlggpgme.c:1356 ncrypt/dlgpgp.c:642 ncrypt/dlgsmime.c:214
 #, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "ID kehtivuse väärtus ei ole defineeritud. Kas te soovite seda võtit tõesti kasutada?"
@@ -4594,7 +4594,7 @@ msgstr "/dev/null ei saa avada"
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:96
+#: ncrypt/dlgsmime.c:97
 msgid "Expired   "
 msgstr "Aegunud   "
 
@@ -4603,7 +4603,7 @@ msgstr "Aegunud   "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:104
+#: ncrypt/dlgsmime.c:105
 msgid "Invalid   "
 msgstr "Vigane    "
 
@@ -4612,7 +4612,7 @@ msgstr "Vigane    "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:112
+#: ncrypt/dlgsmime.c:113
 msgid "Revoked   "
 msgstr "Tühistatud "
 
@@ -4621,7 +4621,7 @@ msgstr "Tühistatud "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:120
+#: ncrypt/dlgsmime.c:121
 msgid "Trusted   "
 msgstr "Usaldatud "
 
@@ -4630,7 +4630,7 @@ msgstr "Usaldatud "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:128
+#: ncrypt/dlgsmime.c:129
 msgid "Unverified"
 msgstr "Kontrollimata"
 
@@ -4639,7 +4639,7 @@ msgstr "Kontrollimata"
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:136
+#: ncrypt/dlgsmime.c:137
 msgid "Verified  "
 msgstr "Kontrollitud "
 
@@ -4648,16 +4648,16 @@ msgstr "Kontrollitud "
 #. has the same length as the other translations.
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
-#: ncrypt/dlgsmime.c:144
+#: ncrypt/dlgsmime.c:145
 msgid "Unknown   "
 msgstr "Tundmatu  "
 
-#: ncrypt/dlgsmime.c:180
+#: ncrypt/dlgsmime.c:181
 #, c-format
 msgid "S/MIME certificates matching \"%s\""
 msgstr "S/MIME sertifikaadid, mis sisaldavad \"%s\""
 
-#: ncrypt/dlgsmime.c:217
+#: ncrypt/dlgsmime.c:218
 #, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "ID ei ole kehtiv. Kas te soovite seda võtit tõesti kasutada?"
@@ -5071,7 +5071,7 @@ msgstr "tundmatu viga"
 msgid "failed to parse notmuch query type: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:206 notmuch/notmuch.c:1940
+#: notmuch/notmuch.c:206 notmuch/notmuch.c:1955
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr ""
@@ -5090,17 +5090,22 @@ msgstr ""
 msgid "Reading messages..."
 msgstr "Saadan teadet..."
 
-#: notmuch/notmuch.c:1703
+#: notmuch/notmuch.c:1718
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "Vanem teade ei ole selles piiratud vaates nähtav"
 
-#: notmuch/notmuch.c:1953
+#: notmuch/notmuch.c:1968
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "%s ei õnnestu lisada"
 
-#: notmuch/notmuch.c:2482
+#: notmuch/notmuch.c:2456
+#, c-format
+msgid "Unable to sync %d messages due to external mailbox modification"
+msgstr ""
+
+#: notmuch/notmuch.c:2521
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "Kausta ei saa lisada: %s"
@@ -6352,14 +6357,14 @@ msgid "missing parameter"
 msgstr "parameeter puudub"
 
 #. L10N: Pattern completion menu title
-#: pattern/dlgpattern.c:137
+#: pattern/dlgpattern.c:138
 msgid "Patterns"
 msgstr ""
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
-#: pattern/dlgpattern.c:155
+#: pattern/dlgpattern.c:156
 msgid "EXPR"
 msgstr ""
 
@@ -6367,7 +6372,7 @@ msgstr ""
 #. Pattern Completion Menu argument type: a numeric range.
 #. Used by ~m, ~n, ~X, ~z.
 #.
-#: pattern/dlgpattern.c:163
+#: pattern/dlgpattern.c:164
 msgid "RANGE"
 msgstr ""
 
@@ -6375,7 +6380,7 @@ msgstr ""
 #. Pattern Completion Menu argument type: a date range
 #. Used by ~d, ~r.
 #.
-#: pattern/dlgpattern.c:170
+#: pattern/dlgpattern.c:171
 msgid "DATERANGE"
 msgstr ""
 
@@ -6383,7 +6388,7 @@ msgstr ""
 #. Pattern Completion Menu argument type: a query
 #. Used by ~I.
 #.
-#: pattern/dlgpattern.c:177
+#: pattern/dlgpattern.c:178
 msgid "QUERY"
 msgstr ""
 
@@ -6391,19 +6396,19 @@ msgstr ""
 #. Pattern Completion Menu argument type: a nested pattern.
 #. Used by ~(), ~<(), ~>().
 #.
-#: pattern/dlgpattern.c:195
+#: pattern/dlgpattern.c:196
 msgid "PATTERN"
 msgstr ""
 
-#: pattern/dlgpattern.c:203
+#: pattern/dlgpattern.c:204
 msgid "messages in threads containing messages matching PATTERN"
 msgstr ""
 
-#: pattern/dlgpattern.c:212
+#: pattern/dlgpattern.c:213
 msgid "messages whose immediate parent matches PATTERN"
 msgstr ""
 
-#: pattern/dlgpattern.c:221
+#: pattern/dlgpattern.c:222
 msgid "messages having an immediate child matching PATTERN"
 msgstr ""
 
