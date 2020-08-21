@@ -138,6 +138,7 @@ const struct Mapping Fields[] = {
 #ifdef USE_DEVEL_PREVIEW
   // Preview
   { "devel_preview_divider", MT_COLOR_PREVIEW_DIVIDER},
+  { "devel_preview_text", MT_COLOR_PREVIEW_TEXT},
 #endif
   // < Preview
   { "signature",         MT_COLOR_SIGNATURE },

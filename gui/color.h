@@ -98,6 +98,7 @@ enum ColorId
   MT_COLOR_WARNING,                  ///< Warning messages
   // preview
   MT_COLOR_PREVIEW_DIVIDER,          ///< Preview window divider color
+  MT_COLOR_PREVIEW_TEXT,             ///< Preview text color
   /* please no non-MT_COLOR_INDEX objects after this point */
   MT_COLOR_INDEX,                    ///< Index: default colour (takes a pattern)
   MT_COLOR_INDEX_AUTHOR,             ///< Index: author field (takes a pattern)

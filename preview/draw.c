@@ -96,6 +96,7 @@ void preview_draw(struct MuttWindow *win)
 
   col += 1; // offset col of 1, it is prettier.
 
+  mutt_curses_set_color(MT_COLOR_PREVIEW_TEXT);
 #define display(fmt, ...)                                                             \
   do                                                                                  \
   {                                                                                   \
@@ -127,4 +128,5 @@ void preview_draw(struct MuttWindow *win)
     }
   }
   mutt_buffer_dealloc(&disp_buff);
+  mutt_curses_set_color(MT_COLOR_NORMAL);
 }
