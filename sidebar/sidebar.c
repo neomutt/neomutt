@@ -113,12 +113,16 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
     case 'B':
     case 'D':
     {
-      char indented[256];
-      size_t offset = add_indent(indented, sizeof(indented), sbe);
-      snprintf(indented + offset, sizeof(indented) - offset, "%s",
-               ((op == 'D') && sbe->mailbox->name) ? sbe->mailbox->name : sbe->box);
+      if((op == 'D') && sbe->mailbox->name)
+        mutt_format_s(buf, buflen, prec, sbe->mailbox->name);
+      else
+      {
+        char indented[256];
+        size_t offset = add_indent(indented, sizeof(indented), sbe);
+        snprintf(indented + offset, sizeof(indented) - offset, "%s", sbe->box);
 
-      mutt_format_s(buf, buflen, prec, indented);
+        mutt_format_s(buf, buflen, prec, indented);
+      }
       break;
     }
 
