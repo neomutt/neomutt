@@ -129,6 +129,8 @@ options {
   debug-notify=0            => "DEBUG: Enable Notifications dump"
   debug-parse-test=0        => "DEBUG: Enable 'neomutt -T' for config testing"
   debug-window=0            => "DEBUG: Enable windows dump"
+# Developement
+  devel-preview             => "Enable the preview window (DEVEL)"
 }
 ###############################################################################
 
@@ -140,7 +142,7 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     asan autocrypt bdb coverage debug-backtrace debug-email debug-graphviz debug-notify
-    debug-parse-test debug-window doc everything fmemopen full-doc gdbm gnutls
+    debug-parse-test debug-window devel-preview doc everything fmemopen full-doc gdbm gnutls
     gpgme gss homespool idn idn2 include-path-in-cflags inotify kyotocabinet
     lmdb locales-fix lua lz4 mixmaster nls notmuch pcre2 pgp pkgconf qdbm
     rocksdb sasl smime sqlite ssl testing tdb tokyocabinet zlib zstd
@@ -402,6 +404,12 @@ switch [opt-val with-lock fcntl] {
 ###############################################################################
 # Locales fix
 if {[get-define want-locales-fix]} {define LOCALES_HACK}
+
+###############################################################################
+# DEVEL
+
+# Preview window
+if {[get-define want-devel-preview]} {define USE_DEVEL_PREVIEW}
 
 ###############################################################################
 # Documentation

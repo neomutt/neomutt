@@ -577,6 +577,7 @@ $(PWD)/sidebar:
 
 ###############################################################################
 # libpreview
+@if USE_DEVEL_PREVIEW
 LIBPREVIEW=	libpreview.a
 LIBPREVIEWOBJS=	preview/preview.o preview/commands.o preview/functions.o \
 		preview/observer.o preview/wdata.o preview/draw.o preview/config.o
@@ -588,6 +589,7 @@ $(LIBPREVIEW): $(PWD)/preview $(LIBPREVIEWOBJS)
 	$(RANLIB) $@
 $(PWD)/preview:
 	$(MKDIR_P) $(PWD)/preview
+@endif
 
 ###############################################################################
 # libstore
