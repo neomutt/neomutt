@@ -1,3 +1,15 @@
+2020-08-21  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - fix maildir flag generation
+  - fix query notmuch if file is missing
+  - notmuch: don't abort sync on error
+  - fix type checking for send config variables
+* Changed Config
+  - `$sidebar_format` - Use `%D` rather than `%B` for named mailboxes
+* Translations
+  - 96% Lithuanian
+  - 90% Polish
+
 2020-08-14  Richard Russon  <rich@flatcap.org>
 * Security
   - Add mitigation against DoS from thousands of parts
