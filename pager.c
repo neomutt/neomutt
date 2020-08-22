@@ -2061,9 +2061,6 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     }
 
     pager_menu->redraw |= REDRAW_BODY | REDRAW_INDEX | REDRAW_STATUS;
-#ifdef USE_SIDEBAR
-    pager_menu->redraw |= REDRAW_SIDEBAR;
-#endif
     mutt_show_error();
   }
 
@@ -2107,13 +2104,6 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       }
     }
   }
-
-#ifdef USE_SIDEBAR
-  if (pager_menu->redraw & REDRAW_SIDEBAR)
-  {
-    menu_redraw_sidebar(pager_menu);
-  }
-#endif
 
   if ((pager_menu->redraw & REDRAW_BODY) || (rd->topline != rd->oldtopline))
   {

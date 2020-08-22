@@ -49,9 +49,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
 
 /* These Config Variables are only used in menu.c */
 short C_MenuContext; ///< Config: Number of lines of overlap when changing pages in the index
@@ -362,9 +359,6 @@ void menu_redraw_full(struct Menu *menu)
   mutt_show_error();
 
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
-#ifdef USE_SIDEBAR
-  menu->redraw |= REDRAW_SIDEBAR;
-#endif
 }
 
 /**
@@ -382,20 +376,6 @@ void menu_redraw_status(struct Menu *menu)
   mutt_curses_set_color(MT_COLOR_NORMAL);
   menu->redraw &= ~REDRAW_STATUS;
 }
-
-#ifdef USE_SIDEBAR
-/**
- * menu_redraw_sidebar - Force the redraw of the sidebar
- * @param menu Current Menu
- */
-void menu_redraw_sidebar(struct Menu *menu)
-{
-  menu->redraw &= ~REDRAW_SIDEBAR;
-  struct MuttWindow *dlg = dialog_find(menu->win_index);
-  struct MuttWindow *sidebar = mutt_window_find(dlg, WT_SIDEBAR);
-  sb_draw(sidebar);
-}
-#endif
 
 /**
  * menu_redraw_index - Force the redraw of the index
@@ -1313,10 +1293,6 @@ int menu_redraw(struct Menu *menu)
 
   if (menu->redraw & REDRAW_STATUS)
     menu_redraw_status(menu);
-#ifdef USE_SIDEBAR
-  if (menu->redraw & REDRAW_SIDEBAR)
-    menu_redraw_sidebar(menu);
-#endif
   if (menu->redraw & REDRAW_INDEX)
     menu_redraw_index(menu);
   else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNC))
@@ -1670,10 +1646,6 @@ int mutt_menu_config_observer(struct NotifyCallback *nc)
 
   if (flags & R_REFLOW)
     mutt_window_reflow(NULL);
-#ifdef USE_SIDEBAR
-  if (flags & R_SIDEBAR)
-    mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
-#endif
   if (flags & R_MENU)
     mutt_menu_set_current_redraw_full();
 

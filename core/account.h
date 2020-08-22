@@ -61,6 +61,7 @@ enum NotifyAccount
 {
   NT_ACCOUNT_ADD = 1, ///< A new Account has been created
   NT_ACCOUNT_REMOVE,  ///< An Account is about to be destroyed
+  NT_ACCOUNT_CHANGED, ///< An Account has changed
 };
 
 /**

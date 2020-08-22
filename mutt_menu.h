@@ -45,9 +45,6 @@ typedef uint16_t MuttRedrawFlags;      ///< Flags, e.g. #REDRAW_INDEX
 #define REDRAW_FULL           (1 << 5) ///< Redraw everything
 #define REDRAW_BODY           (1 << 6) ///< Redraw the pager
 #define REDRAW_FLOW           (1 << 7) ///< Used by pager to reflow text
-#ifdef USE_SIDEBAR
-#define REDRAW_SIDEBAR        (1 << 8) ///< Redraw the sidebar
-#endif
 
 /**
  * struct Menu - GUI selectable list of items
@@ -145,9 +142,6 @@ void         menu_redraw_current(struct Menu *menu);
 void         menu_redraw_full(struct Menu *menu);
 void         menu_redraw_index(struct Menu *menu);
 void         menu_redraw_motion(struct Menu *menu);
-#ifdef USE_SIDEBAR
-void         menu_redraw_sidebar(struct Menu *menu);
-#endif
 void         menu_redraw_status(struct Menu *menu);
 int          menu_redraw(struct Menu *menu);
 void         menu_top_page(struct Menu *menu);

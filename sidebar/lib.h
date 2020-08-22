@@ -35,6 +35,7 @@
  * | sidebar/observer.c  | @subpage sidebar_observers |
  * | sidebar/sidebar.c   | @subpage sidebar_sidebar   |
  * | sidebar/wdata.c     | @subpage sidebar_wdata     |
+ * | sidebar/window.c    | @subpage sidebar_window    |
  */
 
 #ifndef MUTT_SIDEBAR_LIB_H
@@ -45,21 +46,11 @@
 #include "mutt_commands.h"
 
 struct Buffer;
-struct Mailbox;
+struct ConfigSet;
 struct MuttWindow;
 
 void sb_init    (void);
 void sb_shutdown(void);
-
-/**
- * enum SidebarNotification - what happened to a mailbox
- */
-enum SidebarNotification
-{
-  SBN_CREATED, ///< A new mailbox was created
-  SBN_DELETED, ///< An existing mailbox is about to be deleted
-  SBN_RENAMED  ///< An existing mailbox was renamed
-};
 
 void            sb_change_mailbox(struct MuttWindow *win, int op);
 struct Mailbox *sb_get_highlight (struct MuttWindow *win);
@@ -67,9 +58,6 @@ struct Mailbox *sb_get_highlight (struct MuttWindow *win);
 enum CommandResult sb_parse_unwhitelist(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult sb_parse_whitelist  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
-void sb_notify_mailbox  (struct MuttWindow *win, struct Mailbox *m, enum SidebarNotification sbn);
-void sb_draw            (struct MuttWindow *win);
-void sb_set_open_mailbox(struct MuttWindow *win, struct Mailbox *m);
 bool config_init_sidebar(struct ConfigSet *cs);
 
 #endif /* MUTT_SIDEBAR_LIB_H */

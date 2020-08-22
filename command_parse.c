@@ -58,9 +58,6 @@
 #include "myvar.h"
 #include "options.h"
 #include "version.h"
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -908,25 +905,6 @@ bail:
 }
 
 /**
- * notify_sidebar - Notify the sidebar that a mailbox has changed
- * @param m Mailbox that has changed
- * @param e Event that has happened
- */
-static void notify_sidebar(struct Mailbox *m, enum SidebarNotification e)
-{
-  struct MuttWindow *dlg = NULL;
-  TAILQ_FOREACH(dlg, &AllDialogsWindow->children, entries)
-  {
-    struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
-    if (win_sidebar)
-    {
-      sb_notify_mailbox(win_sidebar, m, e);
-      break;
-    }
-  }
-}
-
-/**
  * parse_mailboxes - Parse the 'mailboxes' command - Implements Command::parse()
  *
  * This is also used by 'virtual-mailboxes'.
@@ -989,12 +967,6 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
           mutt_str_replace(&m_old->name, m->name);
         }
 
-#ifdef USE_SIDEBAR
-        if (show || rename)
-        {
-          notify_sidebar(m_old, show ? SBN_CREATED : SBN_RENAMED);
-        }
-#endif
         mailbox_free(&m);
         continue;
       }
@@ -1018,9 +990,6 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       neomutt_account_add(NeoMutt, a);
     }
 
-#ifdef USE_SIDEBAR
-    notify_sidebar(m, SBN_CREATED);
-#endif
 #ifdef USE_INOTIFY
     mutt_monitor_add(m);
 #endif
@@ -1977,9 +1946,6 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
         continue;
       }
 
-#ifdef USE_SIDEBAR
-      notify_sidebar(np->mailbox, SBN_DELETED);
-#endif
 #ifdef USE_INOTIFY
       mutt_monitor_remove(np->mailbox);
 #endif

@@ -38,7 +38,9 @@
  */
 struct SidebarWindowData *sb_wdata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct SidebarWindowData));
+  struct SidebarWindowData *wdata = mutt_mem_calloc(1, sizeof(struct SidebarWindowData));
+  ARRAY_INIT(&wdata->entries);
+  return wdata;
 }
 
 /**
@@ -51,10 +53,12 @@ void sb_wdata_free(struct MuttWindow *win, void **ptr)
 
   struct SidebarWindowData *wdata = *ptr;
 
-  for (size_t i = 0; i < wdata->entry_count; i++)
-    FREE(&wdata->entries[i]);
-
-  FREE(&wdata->entries);
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH(sbep, &wdata->entries)
+  {
+    FREE(sbep);
+  }
+  ARRAY_FREE(&wdata->entries);
 
   FREE(ptr);
 }
