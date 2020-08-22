@@ -1412,6 +1412,7 @@ enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
   char **envp = mutt_envlist_getlist();
 
   bool query = false;
+  bool prefix = false;
   bool unset = (data == MUTT_SET_UNSET);
 
   if (!MoreArgs(s))
@@ -1423,11 +1424,39 @@ enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
   if (*s->dptr == '?')
   {
     query = true;
+    prefix = true;
+
+    if (unset)
+    {
+      mutt_buffer_printf(err, "ERR03 can't query a variable with the '%s' command", "unsetenv");
+      return MUTT_CMD_WARNING;
+    }
+
     s->dptr++;
   }
 
   /* get variable name */
-  mutt_extract_token(buf, s, MUTT_TOKEN_EQUAL);
+  mutt_extract_token(buf, s, MUTT_TOKEN_EQUAL | MUTT_TOKEN_QUESTION);
+
+  if (*s->dptr == '?')
+  {
+    if (unset)
+    {
+      mutt_buffer_printf(
+          err, "ERR03 can't query a variable with the 'unsetenv' command");
+      return MUTT_CMD_WARNING;
+    }
+
+    if (prefix)
+    {
+      mutt_buffer_printf(err,
+                         "ERR02 can't use a prefix when querying a variable");
+      return MUTT_CMD_WARNING;
+    }
+
+    query = true;
+    s->dptr++;
+  }
 
   if (query)
   {
