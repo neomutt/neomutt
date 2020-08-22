@@ -54,6 +54,7 @@ struct Slist *slist_dup(const struct Slist *list);
 struct Slist *slist_empty(struct Slist **list);
 void          slist_free(struct Slist **list);
 bool          slist_is_member(const struct Slist *list, const char *str);
+struct Slist *slist_new(int flags);
 struct Slist *slist_parse(const char *str, int flags);
 struct Slist *slist_remove_string(struct Slist *list, const char *str);
 

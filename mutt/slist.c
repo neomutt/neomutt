@@ -35,6 +35,20 @@
 #include "string2.h"
 
 /**
+ * slist_new - Create a new string list
+ * @param flags Flag to set, e.g. #SLIST_SEP_COMMA
+ * @retval ptr New string list
+ */
+struct Slist *slist_new(int flags)
+{
+  struct Slist *list = mutt_mem_calloc(1, sizeof(*list));
+  list->flags = flags;
+  STAILQ_INIT(&list->head);
+
+  return list;
+}
+
+/**
  * slist_add_list - Add a list to another list
  * @param list String list to add to
  * @param add  String list to add
@@ -107,16 +121,14 @@ struct Slist *slist_dup(const struct Slist *list)
   if (!list)
     return NULL;
 
-  struct Slist *l = mutt_mem_calloc(1, sizeof(*l));
-  l->flags = list->flags;
-  STAILQ_INIT(&l->head);
+  struct Slist *list_new = slist_new(list->flags);
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &list->head, entries)
   {
-    mutt_list_insert_tail(&l->head, mutt_str_dup(np->data));
+    mutt_list_insert_tail(&list_new->head, mutt_str_dup(np->data));
   }
-  return l;
+  return list_new;
 }
 
 /**
