@@ -50,10 +50,8 @@ static struct Slist *VarNectarine;
 static struct Slist *VarOlive;
 static struct Slist *VarPapaya;
 static struct Slist *VarQuince;
-#if 0
 static struct Slist *VarRaspberry;
 static struct Slist *VarStrawberry;
-#endif
 
 // clang-format off
 static struct ConfigDef VarsColon[] = {
@@ -101,6 +99,8 @@ static struct ConfigDef VarsOther[] = {
   { "Olive",      DT_SLIST|SLIST_SEP_COLON, &VarOlive,      IP "olive",               0, validator_warn    },
   { "Papaya",     DT_SLIST|SLIST_SEP_COLON, &VarPapaya,     IP "papaya",              0, validator_fail    },
   { "Quince",     DT_SLIST|SLIST_SEP_COLON, &VarQuince,     0,                        0, NULL              }, /* test_inherit */
+  { "Raspberry",  DT_SLIST|SLIST_SEP_COLON, &VarRaspberry,  0,                        0, NULL              }, /* test_plus_equals */
+  { "Strawberry", DT_SLIST|SLIST_SEP_COLON, &VarStrawberry, 0,                        0, NULL              }, /* test_minus_equals */
   { NULL },
 };
 // clang-format on
@@ -646,6 +646,158 @@ static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
+static bool test_plus_equals(struct ConfigSet *cs, struct Buffer *err)
+{
+  log_line(__func__);
+  const char *name = "Raspberry";
+
+  static char *PlusTests[][3] = {
+    // clang-format off
+    // Initial,        Plus,     Result
+    { "",              "",       ""                   }, // Add nothing to various lists
+    { "one",           "",       "one"                },
+    { "one:two",       "",       "one:two"            },
+    { "one:two:three", "",       "one:two:three"      },
+
+    { "",              "nine",   "nine"               }, // Add an item to various lists
+    { "one",           "nine",   "one:nine"           },
+    { "one:two",       "nine",   "one:two:nine"       },
+    { "one:two:three", "nine",   "one:two:three:nine" },
+
+    { "one:two:three", "one",   "one:two:three"       }, // Add a duplicate to various positions
+    { "one:two:three", "two",   "one:two:three"       },
+    { "one:two:three", "three", "one:two:three"       },
+    // clang-format on
+  };
+
+  int rc;
+  for (size_t i = 0; i < mutt_array_size(PlusTests); i++)
+  {
+    mutt_buffer_reset(err);
+    rc = cs_str_string_set(cs, name, PlusTests[i][0], err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Set failed: %s\n", err->data);
+      return false;
+    }
+
+    rc = cs_str_string_plus_equals(cs, name, PlusTests[i][1], err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("PlusEquals failed: %s\n", err->data);
+      return false;
+    }
+
+    rc = cs_str_string_get(cs, name, err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Get failed: %s\n", err->data);
+      return false;
+    }
+
+    if (!TEST_CHECK(mutt_str_equal(PlusTests[i][2], mutt_b2s(err))))
+    {
+      TEST_MSG("Expected: %s\n", PlusTests[i][2]);
+      TEST_MSG("Actual  : %s\n", mutt_b2s(err));
+      return false;
+    }
+  }
+
+  // Test a failing validator
+  VarsOther[8].validator = validator_fail; // "Raspberry"
+  mutt_buffer_reset(err);
+  rc = cs_str_string_plus_equals(cs, name, "nine", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", err->data);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err->data);
+    return false;
+  }
+
+  return true;
+}
+
+static bool test_minus_equals(struct ConfigSet *cs, struct Buffer *err)
+{
+  log_line(__func__);
+  const char *name = "Strawberry";
+
+  static char *MinusTests[][3] = {
+    // clang-format off
+    // Initial,        Plus,    Result
+    { "",              "",      ""              }, // Remove nothing from various lists
+    { "one",           "",      "one"           },
+    { "one:two",       "",      "one:two"       },
+    { "one:two:three", "",      "one:two:three" },
+
+    { "",              "",      ""              }, // Remove an item from various lists
+    { "one",           "one",   ""              },
+    { "one:two",       "one",   "two"           },
+    { "one:two",       "two",   "one"           },
+    { "one:two:three", "one",   "two:three"     },
+    { "one:two:three", "two",   "one:three"     },
+    { "one:two:three", "three", "one:two"       },
+
+    { "",              "nine",  ""              }, // Remove a non-existent item from various lists
+    { "one",           "nine",  "one"           },
+    { "one:two",       "nine",  "one:two"       },
+    { "one:two:three", "nine",  "one:two:three" },
+    // clang-format on
+  };
+
+  int rc;
+  for (size_t i = 0; i < mutt_array_size(MinusTests); i++)
+  {
+    mutt_buffer_reset(err);
+    rc = cs_str_string_set(cs, name, MinusTests[i][0], err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Set failed: %s\n", err->data);
+      return false;
+    }
+
+    rc = cs_str_string_minus_equals(cs, name, MinusTests[i][1], err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("MinusEquals failed: %s\n", err->data);
+      return false;
+    }
+
+    rc = cs_str_string_get(cs, name, err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Get failed: %s\n", err->data);
+      return false;
+    }
+
+    if (!TEST_CHECK(mutt_str_equal(MinusTests[i][2], mutt_b2s(err))))
+    {
+      TEST_MSG("Expected: %s\n", MinusTests[i][2]);
+      TEST_MSG("Actual  : %s\n", mutt_b2s(err));
+      return false;
+    }
+  }
+
+  // Test a failing validator
+  VarsOther[9].validator = validator_fail; // "Strawberry"
+  mutt_buffer_reset(err);
+  rc = cs_str_string_minus_equals(cs, name, "two", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", err->data);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err->data);
+    return false;
+  }
+
+  return true;
+}
+
 static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
@@ -963,6 +1115,8 @@ void test_config_slist(void)
 
   TEST_CHECK(test_native_set(cs, &err));
   TEST_CHECK(test_native_get(cs, &err));
+  TEST_CHECK(test_plus_equals(cs, &err));
+  TEST_CHECK(test_minus_equals(cs, &err));
   TEST_CHECK(test_reset(cs, &err));
   TEST_CHECK(test_validator(cs, &err));
   TEST_CHECK(test_inherit(cs, &err));
