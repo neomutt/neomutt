@@ -35,6 +35,7 @@
 #include "gui.h"
 #include "lib.h"
 #include "alias.h"
+#include "sort.h"
 
 #define RSORT(num) ((C_SortAlias & SORT_REVERSE) ? -num : num)
 
@@ -100,6 +101,19 @@ int alias_sort_address(const void *a, const void *b)
 }
 
 /**
+ * alias_sort_unsort - Compare two Aliases by their original configuration position - Implements ::sort_t
+ */
+int alias_sort_unsort(const void *a, const void *b)
+{
+  const struct AliasView *av_a = *(struct AliasView const *const *) a;
+  const struct AliasView *av_b = *(struct AliasView const *const *) b;
+
+  int r = (av_a->orig_seq - av_b->orig_seq);
+
+  return RSORT(r);
+}
+
+/**
  * alias_view_free - Free an AliasView
  * @param[out] ptr AliasView to free
  *
@@ -124,6 +138,25 @@ static void alias_view_free(struct AliasView **ptr)
 static struct AliasView *alias_view_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct AliasView));
+}
+
+/**
+ * alias_get_sort_function - Sorting function decision logic
+ * @param sort Sort method, e.g. #SORT_ALIAS
+ */
+sort_t alias_get_sort_function(short sort)
+{
+  switch ((C_SortAlias & SORT_MASK))
+  {
+    case SORT_ALIAS:
+      return alias_sort_name;
+    case SORT_ADDRESS:
+      return alias_sort_address;
+    case SORT_ORDER:
+      return alias_sort_unsort;
+    default:
+      return alias_sort_name;
+  }
 }
 
 /**
@@ -185,6 +218,7 @@ int menu_data_alias_add(struct AliasMenuData *mdata, struct Alias *alias)
   if (!mdata || !alias)
     return -1;
 
+  static int config_index = 0;
   const int chunk_size = 256;
 
   if (mdata->num_views >= mdata->max_views)
@@ -198,6 +232,7 @@ int menu_data_alias_add(struct AliasMenuData *mdata, struct Alias *alias)
 
   struct AliasView *av = alias_view_new();
   av->alias = alias;
+  av->orig_seq = config_index++;
 
   mdata->av[mdata->num_views] = av;
   mdata->num_views++;
@@ -243,12 +278,10 @@ int menu_data_alias_delete(struct AliasMenuData *mdata, struct Alias *alias)
  */
 void menu_data_sort(struct AliasMenuData *mdata)
 {
-  if ((C_SortAlias & SORT_MASK) != SORT_ORDER)
-  {
-    qsort(mdata->av, mdata->num_views, sizeof(struct AliasView *),
-          ((C_SortAlias & SORT_MASK) == SORT_ADDRESS) ? alias_sort_address : alias_sort_name);
-  }
+  qsort(mdata->av, mdata->num_views, sizeof(struct AliasView *),
+        alias_get_sort_function(C_SortAlias));
 
+  // Reset the index numbers
   for (int i = 0; i < mdata->num_views; i++)
     mdata->av[i]->num = i;
 }

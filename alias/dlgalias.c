@@ -246,11 +246,8 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
 
   mutt_menu_push_current(menu);
 
-  if ((C_SortAlias & SORT_MASK) != SORT_ORDER)
-  {
-    qsort(mdata->av, mdata->num_views, sizeof(struct AliasView *),
-          ((C_SortAlias & SORT_MASK) == SORT_ADDRESS) ? alias_sort_address : alias_sort_name);
-  }
+  qsort(mdata->av, mdata->num_views, sizeof(struct AliasView *),
+        alias_get_sort_function(C_SortAlias));
 
   for (int i = 0; i < menu->max; i++)
     mdata->av[i]->num = i;
