@@ -633,7 +633,10 @@ int sb_recalc(struct MuttWindow *win)
   }
 
   if (!prepare_sidebar(wdata, win->state.rows))
+  {
+    win->actions |= WA_REPAINT;
     return 0;
+  }
 
   int num_rows = win->state.rows;
   int num_cols = win->state.cols;
@@ -793,32 +796,32 @@ int sb_repaint(struct MuttWindow *win)
 
   struct SidebarWindowData *wdata = sb_wdata_get(win);
 
-  if (wdata->top_index < 0)
-    return 0;
-
   int row = 0;
   int num_rows = win->state.rows;
   int num_cols = win->state.cols;
 
-  int col = 0;
-  if (C_SidebarOnRight)
-    col = wdata->divider_width;
-
-  struct SbEntry **sbep = NULL;
-  ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->top_index)
+  if (wdata->top_index >= 0)
   {
-    if (row >= num_rows)
-      break;
+    int col = 0;
+    if (C_SidebarOnRight)
+      col = wdata->divider_width;
 
-    if ((*sbep)->is_hidden)
-      continue;
+    struct SbEntry **sbep = NULL;
+    ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->top_index)
+    {
+      if (row >= num_rows)
+        break;
 
-    struct SbEntry *entry = (*sbep);
-    mutt_window_move(win, col, row);
-    mutt_curses_set_color(entry->color);
-    mutt_window_printf("%s", entry->display);
-    mutt_refresh();
-    row++;
+      if ((*sbep)->is_hidden)
+        continue;
+
+      struct SbEntry *entry = (*sbep);
+      mutt_window_move(win, col, row);
+      mutt_curses_set_color(entry->color);
+      mutt_window_printf("%s", entry->display);
+      mutt_refresh();
+      row++;
+    }
   }
 
   fill_empty_space(win, row, num_rows - row, wdata->divider_width,

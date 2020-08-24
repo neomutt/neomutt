@@ -1979,14 +1979,10 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
       mutt_monitor_remove(np->mailbox);
 #endif
       if (Context && (Context->mailbox == np->mailbox))
-      {
-        np->mailbox->flags |= MB_HIDDEN;
-      }
-      else
-      {
-        account_mailbox_remove(np->mailbox->account, np->mailbox);
-        mailbox_free(&np->mailbox);
-      }
+        ctx_free(&Context);
+
+      account_mailbox_remove(np->mailbox->account, np->mailbox);
+      mailbox_free(&np->mailbox);
     }
     neomutt_mailboxlist_clear(&ml);
   }

@@ -3389,6 +3389,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         window_set_focus(win_index);
         if (Context)
           mutt_check_rescore(Context->mailbox);
+        menu->redraw = REDRAW_FULL;
         break;
 
       case OP_EDIT_OR_VIEW_RAW_MESSAGE:
