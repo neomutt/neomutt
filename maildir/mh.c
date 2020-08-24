@@ -742,7 +742,7 @@ static int mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
  *
  * Open a new (temporary) message in an MH folder.
  */
-static int mh_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
+static int mh_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
   if (!m || !msg)
     return -1;

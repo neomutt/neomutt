@@ -1588,7 +1588,7 @@ static int mbox_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 /**
  * mbox_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  */
-static int mbox_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
+static int mbox_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
   if (!m)
     return -1;

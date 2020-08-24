@@ -740,7 +740,7 @@ static int comp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 /**
  * comp_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  */
-static int comp_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
+static int comp_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
   if (!m || !m->compress_info)
     return -1;

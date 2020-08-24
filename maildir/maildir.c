@@ -590,7 +590,7 @@ static int maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
  * @note This uses _almost_ the maildir file name format,
  * but with a {cur,new} prefix.
  */
-int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
+int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
   if (!m)
     return -1;
@@ -602,12 +602,10 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e
 
   if (e)
   {
-    bool deleted = e->deleted;
-    e->deleted = false;
-
-    maildir_gen_flags(suffix, sizeof(suffix), e);
-
-    e->deleted = deleted;
+    struct Email tmp = *e;
+    tmp.deleted = false;
+    tmp.edata = NULL;
+    maildir_gen_flags(suffix, sizeof(suffix), &tmp);
   }
   else
     *suffix = '\0';

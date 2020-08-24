@@ -195,7 +195,7 @@ struct MxOps
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*msg_open_new)    (struct Mailbox *m, struct Message *msg, struct Email *e);
+  int (*msg_open_new)    (struct Mailbox *m, struct Message *msg, const struct Email *e);
 
   /**
    * msg_commit - Save changes to an email
@@ -298,7 +298,7 @@ struct Context *mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
 int             mx_mbox_sync       (struct Mailbox *m);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
 int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
-struct Message *mx_msg_open_new    (struct Mailbox *m, struct Email *e, MsgOpenFlags flags);
+struct Message *mx_msg_open_new    (struct Mailbox *m, const struct Email *e, MsgOpenFlags flags);
 struct Message *mx_msg_open        (struct Mailbox *m, int msgno);
 int             mx_msg_padding_size(struct Mailbox *m);
 int             mx_save_hcache     (struct Mailbox *m, struct Email *e);

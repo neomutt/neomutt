@@ -1069,7 +1069,7 @@ int mx_mbox_sync(struct Mailbox *m)
  * @param flags Flags, see #MsgOpenFlags
  * @retval ptr New Message
  */
-struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, MsgOpenFlags flags)
+struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpenFlags flags)
 {
   if (!m)
     return NULL;
