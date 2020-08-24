@@ -2196,7 +2196,7 @@ static int imap_mbox_close(struct Mailbox *m)
 /**
  * imap_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  */
-static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
+static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
   int rc = -1;
 
