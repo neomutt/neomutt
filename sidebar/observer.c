@@ -176,6 +176,14 @@ static int sb_account_observer(struct NotifyCallback *nc)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
+  struct SidebarWindowData *wdata = sb_wdata_get(win);
+  struct EventAccount *ea = nc->event_data;
+
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &ea->account->mailboxes, entries)
+  {
+    sb_add_mailbox(wdata, np->mailbox);
+  }
 
   mutt_debug(LL_NOTIFY, "account\n");
   win->actions |= WA_RECALC;
