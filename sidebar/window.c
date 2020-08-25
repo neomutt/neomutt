@@ -627,7 +627,7 @@ int sb_recalc(struct MuttWindow *win)
     STAILQ_FOREACH(np, &ml, entries)
     {
       if (!(np->mailbox->flags & MB_HIDDEN))
-        sb_notify_mailbox(wdata, np->mailbox);
+        sb_add_mailbox(wdata, np->mailbox);
     }
     neomutt_mailboxlist_clear(&ml);
   }
