@@ -1069,7 +1069,7 @@ set sidebar_indent_string="  "          <emphasis role="comment"># Indent with t
 
 <screen>
 set sidebar_new_mail_only               <emphasis role="comment"># Only mailboxes with new/flagged email</emphasis>
-sidebar_whitelist fruit fruit/apple     <emphasis role="comment"># Always display these two mailboxes</emphasis>
+sidebar_whitelist +fruit +fruit/apple   <emphasis role="comment"># Always display these two mailboxes</emphasis>
 </screen>
 
           </sect4>

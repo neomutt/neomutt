@@ -288,9 +288,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       size_t ilen = sizeof(indented);
       size_t off = add_indent(indented, ilen, sbe);
       snprintf(indented + off, ilen - off, "%s",
-               ((op == 'D') && sbe->mailbox->name)
-               ? sbe->mailbox->name
-               : sbe->box);
+               ((op == 'D') && sbe->mailbox->name) ? sbe->mailbox->name : sbe->box);
       mutt_format_s(buf, buflen, prec, indented);
       break;
     }

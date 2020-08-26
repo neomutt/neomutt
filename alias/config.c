@@ -38,8 +38,8 @@ const struct Mapping SortAliasMethods[] = {
   { "address",  SORT_ADDRESS },
   { "alias",    SORT_ALIAS },
   { "unsorted", SORT_ORDER },
-  // clang-format on
   { NULL,       0 },
+  // clang-format on
 };
 
 char *C_AliasFile;   ///< Config: Save new aliases to this file

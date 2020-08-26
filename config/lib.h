@@ -64,4 +64,11 @@
 #include "types.h"
 // IWYU pragma: end_exports
 
+/**
+ * module_init_config_t - Prototype for a config definition function
+ * @param cs Config items
+ * @retval bool true if all the config variables were registered
+ */
+typedef bool (*module_init_config_t)(struct ConfigSet *cs);
+
 #endif /* MUTT_CONFIG_LIB_H */

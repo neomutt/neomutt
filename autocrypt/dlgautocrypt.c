@@ -93,9 +93,9 @@ static const struct Mapping AutocryptAcctHelp[] = {
  * | \%p     | Prefer-encrypt flag
  * | \%s     | Status flag (active/inactive)
  */
-static const char *account_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                      char op, const char *src, const char *fmt,
-                                      const char *ifstring, const char *elsestring,
+static const char *account_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                      char op, const char *src, const char *prec,
+                                      const char *if_str, const char *else_str,
                                       intptr_t data, MuttFormatFlags flags)
 {
   struct AccountEntry *entry = (struct AccountEntry *) data;
@@ -104,28 +104,28 @@ static const char *account_format_str(char *dest, size_t destlen, size_t col, in
   switch (op)
   {
     case 'a':
-      mutt_format_s(dest, destlen, fmt, entry->addr->mailbox);
+      mutt_format_s(buf, buflen, prec, entry->addr->mailbox);
       break;
     case 'k':
-      mutt_format_s(dest, destlen, fmt, entry->account->keyid);
+      mutt_format_s(buf, buflen, prec, entry->account->keyid);
       break;
     case 'n':
-      snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-      snprintf(dest, destlen, tmp, entry->num);
+      snprintf(tmp, sizeof(tmp), "%%%sd", prec);
+      snprintf(buf, buflen, tmp, entry->num);
       break;
     case 'p':
       if (entry->account->prefer_encrypt)
       {
         /* L10N: Autocrypt Account menu.
            flag that an account has prefer-encrypt set */
-        mutt_format_s(dest, destlen, fmt, _("prefer encrypt"));
+        mutt_format_s(buf, buflen, prec, _("prefer encrypt"));
       }
       else
       {
         /* L10N: Autocrypt Account menu.
            flag that an account has prefer-encrypt unset;
            thus encryption will need to be manually enabled.  */
-        mutt_format_s(dest, destlen, fmt, _("manual encrypt"));
+        mutt_format_s(buf, buflen, prec, _("manual encrypt"));
       }
       break;
     case 's':
@@ -133,13 +133,13 @@ static const char *account_format_str(char *dest, size_t destlen, size_t col, in
       {
         /* L10N: Autocrypt Account menu.
            flag that an account is enabled/active */
-        mutt_format_s(dest, destlen, fmt, _("active"));
+        mutt_format_s(buf, buflen, prec, _("active"));
       }
       else
       {
         /* L10N: Autocrypt Account menu.
            flag that an account is disabled/inactive */
-        mutt_format_s(dest, destlen, fmt, _("inactive"));
+        mutt_format_s(buf, buflen, prec, _("inactive"));
       }
       break;
   }

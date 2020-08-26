@@ -47,11 +47,6 @@
 #endif
 
 /**
- * typedef char_cmp - Pointer to a function taking two characters and returning bool
- */
-typedef bool (*char_cmp)(char, char);
-
-/**
  * struct SysExits - Lookup table of error messages
  */
 struct SysExits
