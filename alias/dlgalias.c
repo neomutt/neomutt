@@ -57,11 +57,13 @@ short C_SortAlias;   ///< Config: Sort method for the alias menu
 /// Help Bar for the Alias dialog (address book)
 static const struct Mapping AliasHelp[] = {
   // clang-format off
-  { N_("Exit"),   OP_EXIT },
-  { N_("Del"),    OP_DELETE },
-  { N_("Undel"),  OP_UNDELETE },
-  { N_("Select"), OP_GENERIC_SELECT_ENTRY },
-  { N_("Help"),   OP_HELP },
+  { N_("Exit"),     OP_EXIT },
+  { N_("Del"),      OP_DELETE },
+  { N_("Undel"),    OP_UNDELETE },
+  { N_("Sort"),     OP_SORT },
+  { N_("Rev-Sort"), OP_SORT_REVERSE },
+  { N_("Select"),   OP_GENERIC_SELECT_ENTRY },
+  { N_("Help"),     OP_HELP },
   { NULL, 0 },
   // clang-format on
 };
@@ -145,9 +147,9 @@ static int alias_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * alias_data_observer - Listen for data changes affecting the Alias menu - Implements ::observer_t
+ * alias_alias_observer - Listen for data changes affecting the Alias menu - Implements ::observer_t
  */
-static int alias_data_observer(struct NotifyCallback *nc)
+static int alias_alias_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;
@@ -171,6 +173,42 @@ static int alias_data_observer(struct NotifyCallback *nc)
 
   menu->max = mdata->num_views;
   menu->redraw = REDRAW_FULL;
+  return 0;
+}
+
+/**
+ * alias_config_observer - Listen for `sort_alias` configuration changes and reorders alias list - Implements ::observer_t
+ */
+static int alias_config_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data)
+    return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+
+  struct EventConfig *ec = nc->event_data;
+
+  if (!mutt_str_equal(ec->name, "sort_alias"))
+    return 0;
+
+  struct AliasMenuData *mdata = nc->global_data;
+
+  menu_data_sort(mdata);
+
+  return 0;
+}
+
+/**
+ * alias_color_observer - Listen for color configuration changes and refresh the menu - Implements ::observer_t
+ */
+static int alias_color_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
+    return -1;
+
+  struct Menu *menu = nc->global_data;
+  menu->redraw = REDRAW_FULL;
+
   return 0;
 }
 
@@ -202,14 +240,14 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
   menu->max = mdata->num_views;
   menu->mdata = mdata;
 
-  notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_data_observer, menu);
+  notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, mdata);
+  notify_observer_add(NeoMutt->notify, NT_COLOR, alias_color_observer, menu);
+
   mutt_menu_push_current(menu);
 
-  if ((C_SortAlias & SORT_MASK) != SORT_ORDER)
-  {
-    qsort(mdata->av, mdata->num_views, sizeof(struct AliasView *),
-          ((C_SortAlias & SORT_MASK) == SORT_ADDRESS) ? alias_sort_address : alias_sort_name);
-  }
+  qsort(mdata->av, mdata->num_views, sizeof(struct AliasView *),
+        alias_get_sort_function(C_SortAlias));
 
   for (int i = 0; i < menu->max; i++)
     mdata->av[i]->num = i;
@@ -239,6 +277,49 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
           }
         }
         break;
+      case OP_SORT:
+      case OP_SORT_REVERSE:
+      {
+        int sort = C_SortAlias;
+        bool resort = true;
+        bool reverse = (op == OP_SORT_REVERSE);
+
+        switch (mutt_multi_choice(
+            reverse ?
+                /* L10N: The highlighted letters must match the "Sort" options */
+                _("Rev-Sort (a)lias, a(d)dress or (u)nsorted?") :
+                /* L10N: The highlighted letters must match the "Rev-Sort" options */
+                _("Sort (a)lias, a(d)dress or (u)nsorted?"),
+            /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
+            _("adu")))
+        {
+          case -1: /* abort */
+            resort = false;
+            break;
+
+          case 1: /* (a)lias */
+            sort = SORT_ALIAS;
+            break;
+
+          case 2: /* a(d)dress */
+            sort = SORT_ADDRESS;
+            break;
+
+          case 3: /* (u)nsorted */
+            sort = SORT_ORDER;
+            break;
+        }
+
+        if (resort)
+        {
+          sort |= reverse ? SORT_REVERSE : 0;
+
+          cs_subset_str_native_set(NeoMutt->sub, "sort_alias", sort, NULL);
+          menu->redraw = REDRAW_FULL;
+        }
+
+        break;
+      }
       case OP_GENERIC_SELECT_ENTRY:
         t = menu->current;
         if (t >= mdata->num_views)
@@ -265,7 +346,10 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
     mutt_addrlist_write(&mdata->av[t]->alias->addr, buf, buflen, true);
   }
 
-  notify_observer_remove(NeoMutt->notify, alias_data_observer, menu);
+  notify_observer_remove(NeoMutt->notify, alias_alias_observer, menu);
+  notify_observer_remove(NeoMutt->notify, alias_config_observer, mdata);
+  notify_observer_remove(NeoMutt->notify, alias_color_observer, menu);
+
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
   dialog_destroy_simple_index(&dlg);
