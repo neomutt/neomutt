@@ -281,17 +281,19 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
 
   switch (op)
   {
-    case 'D':
-      if (sbe->mailbox->name)
-      {
-        mutt_format_s(buf, buflen, prec, sbe->mailbox->name);
-        break;
-      }
-      /* fallthrough */
-
     case 'B':
-      mutt_format_s(buf, buflen, prec, sbe->box);
+    case 'D':
+    {
+      char indented[256] = { 0 };
+      size_t ilen = sizeof(indented);
+      size_t off = add_indent(indented, ilen, sbe);
+      snprintf(indented + off, ilen - off, "%s",
+               ((op == 'D') && sbe->mailbox->name)
+               ? sbe->mailbox->name
+               : sbe->box);
+      mutt_format_s(buf, buflen, prec, indented);
       break;
+    }
 
     case 'd':
       if (!optional)
@@ -696,13 +698,8 @@ int sb_recalc(struct MuttWindow *win)
     else if (!C_SidebarFolderIndent)
       entry->depth = 0;
 
-    size_t blen = sizeof(entry->box);
-    size_t ilen = add_indent(entry->box, blen, entry);
-    if (ilen < blen)
-    {
-      mutt_str_copy(entry->box + ilen, short_path, blen - ilen);
-      make_sidebar_entry(entry->display, sizeof(entry->display), width, entry);
-    }
+    mutt_str_copy(entry->box, short_path, sizeof(entry->box));
+    make_sidebar_entry(entry->display, sizeof(entry->display), width, entry);
     row++;
   }
 
