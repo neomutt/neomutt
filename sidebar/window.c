@@ -475,17 +475,6 @@ static void update_entries_visibility(struct SidebarWindowData *wdata)
   const bool non_empty_only = C_SidebarNonEmptyMailboxOnly;
   struct SbEntry *sbe = NULL;
 
-  /* Take the fast path if there is no need to test visibilities */
-  if (!new_only && !non_empty_only)
-  {
-    struct SbEntry **sbep = NULL;
-    ARRAY_FOREACH(sbep, &wdata->entries)
-    {
-      (*sbep)->is_hidden = false;
-    }
-    return;
-  }
-
   struct SbEntry **sbep = NULL;
   ARRAY_FOREACH(sbep, &wdata->entries)
   {
@@ -493,6 +482,12 @@ static void update_entries_visibility(struct SidebarWindowData *wdata)
     sbe = *sbep;
 
     sbe->is_hidden = false;
+
+    if (sbe->mailbox->flags & MB_HIDDEN)
+    {
+      sbe->is_hidden = true;
+      continue;
+    }
 
     if (Context && mutt_str_equal(sbe->mailbox->realpath, Context->mailbox->realpath))
     {
@@ -538,27 +533,28 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
   if (ARRAY_EMPTY(&wdata->entries) || (page_size <= 0))
     return false;
 
-  const struct SbEntry *opn_entry =
-      (wdata->opn_index >= 0) ? *ARRAY_GET(&wdata->entries, wdata->opn_index) : NULL;
-  const struct SbEntry *hil_entry =
-      (wdata->hil_index >= 0) ? *ARRAY_GET(&wdata->entries, wdata->hil_index) : NULL;
+  struct SbEntry **sbep = NULL;
+
+  sbep = (wdata->opn_index >= 0) ? ARRAY_GET(&wdata->entries, wdata->opn_index) : NULL;
+  const struct SbEntry *opn_entry = sbep ? *sbep : NULL;
+  sbep = (wdata->hil_index >= 0) ? ARRAY_GET(&wdata->entries, wdata->hil_index) : NULL;
+  const struct SbEntry *hil_entry = sbep ? *sbep : NULL;
 
   update_entries_visibility(wdata);
   sb_sort_entries(wdata, C_SidebarSortMethod);
 
   if (opn_entry || hil_entry)
   {
-    struct SbEntry **sbep = NULL;
     ARRAY_FOREACH(sbep, &wdata->entries)
     {
-      if (opn_entry == *sbep)
+      if ((opn_entry == *sbep) && ((*sbep)->mailbox->flags != MB_HIDDEN))
         wdata->opn_index = ARRAY_FOREACH_IDX;
-      if (hil_entry == *sbep)
+      if ((hil_entry == *sbep) && ((*sbep)->mailbox->flags != MB_HIDDEN))
         wdata->hil_index = ARRAY_FOREACH_IDX;
     }
   }
 
-  if ((wdata->hil_index < 0) || hil_entry->is_hidden ||
+  if ((wdata->hil_index < 0) || (hil_entry && hil_entry->is_hidden) ||
       (C_SidebarSortMethod != wdata->previous_sort))
   {
     if (wdata->opn_index >= 0)

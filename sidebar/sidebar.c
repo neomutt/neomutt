@@ -52,10 +52,14 @@ struct Mailbox *sb_get_highlight(struct MuttWindow *win)
     return NULL;
 
   struct SidebarWindowData *wdata = sb_wdata_get(win);
-  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
+  if (wdata->hil_index < 0)
     return NULL;
 
-  return (*ARRAY_GET(&wdata->entries, wdata->hil_index))->mailbox;
+  struct SbEntry **sbep = ARRAY_GET(&wdata->entries, wdata->hil_index);
+  if (!sbep)
+    return NULL;
+
+  return (*sbep)->mailbox;
 }
 
 /**
@@ -114,7 +118,7 @@ void sb_remove_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
         // Open item was deleted
         wdata->opn_index = -1;
       }
-      else if (wdata->opn_index > ARRAY_FOREACH_IDX)
+      else if ((wdata->opn_index > 0) && (wdata->opn_index > ARRAY_FOREACH_IDX))
       {
         // Open item is still visible, so adjust the index
         wdata->opn_index--;
@@ -137,7 +141,7 @@ void sb_remove_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
               wdata->hil_index = -1;
         }
       }
-      else if (wdata->hil_index > ARRAY_FOREACH_IDX)
+      else if ((wdata->hil_index > 0) && (wdata->hil_index > ARRAY_FOREACH_IDX))
       {
         // Highlighted item is still visible, so adjust the index
         wdata->hil_index--;
