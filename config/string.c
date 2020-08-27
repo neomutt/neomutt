@@ -187,6 +187,44 @@ static intptr_t string_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * string_string_plus_equals - Concat String to a string - Implements ConfigSetType::string_plus_equals
+ */
+static int string_string_plus_equals(const struct ConfigSet *cs, void *var,
+                                     const struct ConfigDef *cdef,
+                                     const char *value, struct Buffer *err)
+{
+  /* Skip if the value is missing or empty string*/
+  if (!value || (value && (value[0] == '\0')))
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  int rc = CSR_SUCCESS;
+
+  char *str = NULL;
+  const char **var_str = (const char **) var;
+
+  if (*var_str)
+    mutt_str_asprintf(&str, "%s%s", *var_str, value);
+  else
+    str = mutt_str_dup(value);
+
+  if (cdef->validator)
+  {
+    rc = cdef->validator(cs, cdef, (intptr_t) str, err);
+
+    if (CSR_RESULT(rc) != CSR_SUCCESS)
+    {
+      FREE(&str);
+      return rc | CSR_INV_VALIDATOR;
+    }
+  }
+
+  string_destroy(cs, var, cdef);
+  *var_str = str;
+
+  return rc;
+}
+
+/**
  * string_reset - Reset a String to its initial value - Implements ConfigSetType::reset()
  */
 static int string_reset(const struct ConfigSet *cs, void *var,
@@ -228,7 +266,7 @@ const struct ConfigSetType cst_string = {
   string_string_get,
   string_native_set,
   string_native_get,
-  NULL, // string_plus_equals
+  string_string_plus_equals,
   NULL, // string_minus_equals
   string_reset,
   string_destroy,

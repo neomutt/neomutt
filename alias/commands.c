@@ -90,7 +90,6 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     goto bail;
   }
 
-
   /* check to see if an alias with this name already exists */
   TAILQ_FOREACH(tmp, &Aliases, entries)
   {

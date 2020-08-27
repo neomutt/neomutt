@@ -6827,13 +6827,14 @@ set spam_separator=", "
           consist of any number of printable characters and must be enclosed in
           quotes if they contain spaces or tabs. You may also use the escape
           sequences <quote>\n</quote> and <quote>\t</quote> for newline and
-          tab, respectively. <emphasis>quadoption</emphasis> variables are
-          used to control whether or not to be prompted for certain actions, or
-          to specify a default action. A value of <emphasis>yes</emphasis>
-          will cause the action to be carried out automatically as if you had
-          answered yes to the question. Similarly, a value of
-          <emphasis>no</emphasis> will cause the action to be carried out as if
-          you had answered <quote>no.</quote> A value of
+          tab, respectively. Content of a <emphasis>string</emphasis> variable
+          can be extended using <emphasis>+=</emphasis>.
+          <emphasis>quadoption</emphasis> variables are used to control whether
+          or not to be prompted for certain actions, or to specify a default action.
+          A value of <emphasis>yes</emphasis> will cause the action to be carried
+          out automatically as if you had answered yes to the question. Similarly,
+          a value of <emphasis>no</emphasis> will cause the action to be carried
+          out as if you had answered <quote>no.</quote> A value of
           <emphasis>ask-yes</emphasis> will cause a prompt with a default
           answer of <quote>yes</quote> and <emphasis>ask-no</emphasis> will
           provide a default answer of <quote>no.</quote>
