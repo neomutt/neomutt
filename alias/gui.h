@@ -43,6 +43,9 @@ struct AliasView
 
 ARRAY_HEAD(AliasMenuData, struct AliasView);
 
+int alias_config_observer(struct NotifyCallback *nc);
+int alias_color_observer (struct NotifyCallback *nc);
+
 int  menu_data_alias_add   (struct AliasMenuData *mdata, struct Alias *alias);
 int  menu_data_alias_delete(struct AliasMenuData *mdata, struct Alias *alias);
 void menu_data_sort        (struct AliasMenuData *mdata);

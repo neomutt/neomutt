@@ -62,6 +62,8 @@ static const struct Mapping QueryHelp[] = {
   { N_("Mail"),       OP_MAIL },
   { N_("New Query"),  OP_QUERY },
   { N_("Make Alias"), OP_CREATE_ALIAS },
+  { N_("Sort"),       OP_SORT },
+  { N_("Rev-Sort"),   OP_SORT_REVERSE },
   { N_("Search"),     OP_SEARCH },
   { N_("Help"),       OP_HELP },
   { NULL, 0 },
@@ -329,6 +331,9 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
   menu->mdata = &mdata;
   mutt_menu_push_current(menu);
 
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, &mdata);
+  notify_observer_add(NeoMutt->notify, NT_COLOR, alias_color_observer, menu);
+
   int done = 0;
   while (done == 0)
   {
@@ -444,6 +449,49 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
         break;
       }
 
+      case OP_SORT:
+      case OP_SORT_REVERSE:
+      {
+        int sort = C_SortAlias;
+        bool resort = true;
+        bool reverse = (op == OP_SORT_REVERSE);
+
+        switch (mutt_multi_choice(
+            reverse ?
+                /* L10N: The highlighted letters must match the "Sort" options */
+                _("Rev-Sort (a)lias, a(d)dress or (u)nsorted?") :
+                /* L10N: The highlighted letters must match the "Rev-Sort" options */
+                _("Sort (a)lias, a(d)dress or (u)nsorted?"),
+            /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
+            _("adu")))
+        {
+          case -1: /* abort */
+            resort = false;
+            break;
+
+          case 1: /* (a)lias */
+            sort = SORT_ALIAS;
+            break;
+
+          case 2: /* a(d)dress */
+            sort = SORT_ADDRESS;
+            break;
+
+          case 3: /* (u)nsorted */
+            sort = SORT_ORDER;
+            break;
+        }
+
+        if (resort)
+        {
+          sort |= reverse ? SORT_REVERSE : 0;
+
+          cs_subset_str_native_set(NeoMutt->sub, "sort_alias", sort, NULL);
+          menu->redraw = REDRAW_FULL;
+        }
+
+        break;
+      }
       case OP_EXIT:
         done = 1;
         break;
@@ -502,6 +550,9 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
       }
     }
   }
+
+  notify_observer_remove(NeoMutt->notify, alias_config_observer, &mdata);
+  notify_observer_remove(NeoMutt->notify, alias_color_observer, menu);
 
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);

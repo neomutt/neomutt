@@ -599,6 +599,8 @@ const struct Binding OpQuery[] = { /* map: query */
   { "mail",                  OP_MAIL,                        "m" },
   { "query",                 OP_QUERY,                       "Q" },
   { "query-append",          OP_QUERY_APPEND,                "A" },
+  { "sort",                  OP_SORT,                        "o" },
+  { "sort-reverse",          OP_SORT_REVERSE,                "O" },
   { NULL,                    0,                              NULL },
 };
 
