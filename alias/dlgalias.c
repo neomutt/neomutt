@@ -177,42 +177,6 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 }
 
 /**
- * alias_config_observer - Listen for `sort_alias` configuration changes and reorders alias list - Implements ::observer_t
- */
-static int alias_config_observer(struct NotifyCallback *nc)
-{
-  if (!nc->event_data)
-    return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
-
-  struct EventConfig *ec = nc->event_data;
-
-  if (!mutt_str_equal(ec->name, "sort_alias"))
-    return 0;
-
-  struct AliasMenuData *mdata = nc->global_data;
-
-  menu_data_sort(mdata);
-
-  return 0;
-}
-
-/**
- * alias_color_observer - Listen for color configuration changes and refresh the menu - Implements ::observer_t
- */
-static int alias_color_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
-    return -1;
-
-  struct Menu *menu = nc->global_data;
-  menu->redraw = REDRAW_FULL;
-
-  return 0;
-}
-
-/**
  * dlg_select_alias - Display a menu of Aliases
  * @param buf    Buffer for expanded aliases
  * @param buflen Length of buffer

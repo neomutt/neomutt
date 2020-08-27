@@ -35,6 +35,7 @@
 #include "gui.h"
 #include "lib.h"
 #include "alias.h"
+#include "mutt_menu.h"
 #include "sort.h"
 
 #define RSORT(num) ((C_SortAlias & SORT_REVERSE) ? -num : num)
@@ -109,6 +110,42 @@ int alias_sort_unsort(const void *a, const void *b)
   int r = (av_a->orig_seq - av_b->orig_seq);
 
   return RSORT(r);
+}
+
+/**
+ * alias_config_observer - Listen for `sort_alias` configuration changes and reorders menu items accordingly
+ */
+int alias_config_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data)
+    return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+
+  struct EventConfig *ec = nc->event_data;
+
+  if (!mutt_str_equal(ec->name, "sort_alias"))
+    return 0;
+
+  struct AliasMenuData *mdata = nc->global_data;
+
+  menu_data_sort(mdata);
+
+  return 0;
+}
+
+/**
+ * alias_color_observer - Listen for color configuration changes and refreshes the menu
+ */
+int alias_color_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
+    return -1;
+
+  struct Menu *menu = nc->global_data;
+  menu->redraw = REDRAW_FULL;
+
+  return 0;
 }
 
 /**
