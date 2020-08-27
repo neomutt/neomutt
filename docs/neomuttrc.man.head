@@ -714,7 +714,8 @@ the string list.
 String \fIvariable\fPs consist of any number of printable characters and must
 be enclosed in quotes if they contain spaces or tabs. You may also use the
 escape sequences \(lq\fB\(rsn\fP\(rq and \(lq\fB\(rst\fP\(rq for newline and
-tab, respectively.
+tab, respectively. Content of a string \fIvariable\fPs can be extended using
+"\fB+=\fP"
 .IP
 Quadoption \fIvariable\fPs are used to control whether or not to be prompted
 for certain actions, or to specify a default action. A \fIvalue\fP of \fByes\fP

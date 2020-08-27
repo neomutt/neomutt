@@ -50,6 +50,7 @@ static char *VarPapaya;
 static char *VarQuince;
 static char *VarRaspberry;
 static char *VarStrawberry;
+static char *VarTangerine;
 
 // clang-format off
 static struct ConfigDef Vars[] = {
@@ -72,6 +73,7 @@ static struct ConfigDef Vars[] = {
   { "Quince",     DT_STRING,              &VarQuince,     IP "quince",     0, validator_warn    },
   { "Raspberry",  DT_STRING,              &VarRaspberry,  IP "raspberry",  0, validator_fail    },
   { "Strawberry", DT_STRING,              &VarStrawberry, 0,               0, NULL              }, /* test_inherit */
+  { "Tangerine",  DT_STRING,              &VarTangerine,  0,               0, NULL              }, /* test_plus_equals */
   { NULL },
 };
 // clang-format on
@@ -392,6 +394,63 @@ static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
+static bool test_string_plus_equals(struct ConfigSet *cs, struct Buffer *err)
+{
+  log_line(__func__);
+
+  const char *name = "Tangerine";
+  static char *PlusTests[][3] = {
+    // clang-format off
+    // Initial,        Plus,     Result
+    { "",              "",       ""                   }, // Add nothing to various lists
+    { "one",           "",       "one"                },
+    { "one two",       "",       "one two"            },
+    { "one two three", "",       "one two three"      },
+
+    { "",              "nine",   "nine"               }, // Add an item to various lists
+    { "one",           " nine",   "one nine"           },
+    { "one two",       " nine",   "one two nine"       },
+    { "one two three", " nine",   "one two three nine" },
+    // clang-format on
+  };
+
+  int rc;
+  for (unsigned int i = 0; i < mutt_array_size(PlusTests); i++)
+  {
+    mutt_buffer_reset(err);
+    rc = cs_str_string_set(cs, name, PlusTests[i][0], err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Set failed: %s\n", err->data);
+      return false;
+    }
+
+    rc = cs_str_string_plus_equals(cs, name, PlusTests[i][1], err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("PlusEquals failed: %s\n", err->data);
+      return false;
+    }
+
+    rc = cs_str_string_get(cs, name, err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Get failed: %s\n", err->data);
+      return false;
+    }
+
+    if (!TEST_CHECK(mutt_str_equal(PlusTests[i][2], mutt_b2s(err))))
+    {
+      TEST_MSG("Expected: %s\n", PlusTests[i][2]);
+      TEST_MSG("Actual  : %s\n", mutt_b2s(err));
+      return false;
+    }
+  }
+
+  log_line(__func__);
+  return true;
+}
+
 static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
@@ -546,6 +605,20 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   }
   TEST_MSG("Native: %s = %s\n", name, VarRaspberry);
 
+  name = "Olive";
+  mutt_buffer_reset(err);
+  rc = cs_str_string_plus_equals(cs, name, "hello", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", err->data);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err->data);
+    return false;
+  }
+  TEST_MSG("String: %s = %s\n", name, VarOlive);
+
   log_line(__func__);
   return true;
 }
@@ -654,6 +727,7 @@ void test_config_string(void)
   TEST_CHECK(test_string_get(cs, &err));
   TEST_CHECK(test_native_set(cs, &err));
   TEST_CHECK(test_native_get(cs, &err));
+  TEST_CHECK(test_string_plus_equals(cs, &err));
   TEST_CHECK(test_reset(cs, &err));
   TEST_CHECK(test_validator(cs, &err));
   TEST_CHECK(test_inherit(cs, &err));
