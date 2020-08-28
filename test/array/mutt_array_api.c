@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <math.h>
 #include "mutt/array.h"
 
 struct Dummy
@@ -47,7 +48,7 @@ static void test_get_one(struct Dummies *d, size_t idx)
     TEST_MSG("Actual  : %d", elem->i);
   }
 
-  if (!TEST_CHECK(elem->d == (double) idx))
+  if (!TEST_CHECK(fabs(elem->d - idx) < 0.0001))
   {
     TEST_MSG("Expected: %lf", idx);
     TEST_MSG("Actual  : %lf", elem->d);
