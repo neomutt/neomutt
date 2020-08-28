@@ -232,6 +232,9 @@ struct ConfigDef MainVars[] = {
   { "compose_format", DT_STRING|R_MENU, &C_ComposeFormat, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-", 0, NULL,
     "printf-like format string for the Compose panel's status bar"
   },
+  { "compose_show_user_headers", DT_BOOL, &C_ComposeShowUserHeaders, true, 0, NULL,
+    "Controls whether or not user-defined headers are shown in the compose envelope"
+  },
   { "config_charset", DT_STRING, &C_ConfigCharset, 0, 0, charset_validator,
     "Character set that the config files are in"
   },

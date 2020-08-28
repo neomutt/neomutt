@@ -567,6 +567,13 @@
 ** information on how to set $$compose_format.
 */
 
+{ "compose_show_user_headers", DT_BOOL, true },
+/*
+** .pp
+** When \fIset\fP, Neomutt will display user-defined headers (set via $my_hdr
+** or from editing with edit-headers).
+*/
+
 { "config_charset", DT_STRING, 0 },
 /*
 ** .pp
