@@ -99,6 +99,7 @@
 char *C_ComposeFormat; ///< Config: printf-like format string for the Compose panel's status bar
 char *C_Ispell; ///< Config: External command to perform spell-checking
 unsigned char C_Postpone; ///< Config: Save messages to the #C_Postponed folder
+bool C_ComposeShowUserHeaders; ///< Config: Whether to display user-defined headers
 
 static const char *There_are_no_attachments = N_("There are no attachments");
 
@@ -494,7 +495,7 @@ static int calc_security(struct Email *e, short *rows)
 }
 
 /**
- * calc_user_hdrs - Calculate how many rows are needed for user headers
+ * calc_user_hdrs - Calculate how many rows are needed for user-defined headers
  * @param hdrs Header List
  * @retval num Rows needed, limited to #MAX_USER_HDR_ROWS
  */
@@ -542,7 +543,8 @@ static int calc_envelope(struct ComposeRedrawData *rd)
     rows += calc_address(&env->bcc, &rd->bcc_list, cols, &rd->bcc_rows);
   }
   rows += calc_security(e, &rd->sec_rows);
-  rows += calc_user_hdrs(&env->userhdrs);
+  if (C_ComposeShowUserHeaders)
+    rows += calc_user_hdrs(&env->userhdrs);
 
   return rows;
 }
@@ -903,7 +905,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 }
 
 /**
- * draw_envelope_user_hdrs - Write custom user headers to the compose window
+ * draw_envelope_user_hdrs - Write user-defined headers to the compose window
  * @param rd  Email and other compose data
  * @param row Window row to start drawing from
  */
@@ -992,7 +994,8 @@ static void draw_envelope(struct ComposeRedrawData *rd)
 #ifdef MIXMASTER
   redraw_mix_line(&e->chain, rd, row++);
 #endif
-  row += draw_envelope_user_hdrs(rd, row);
+  if (C_ComposeShowUserHeaders)
+    row += draw_envelope_user_hdrs(rd, row);
 
   mutt_curses_set_color(MT_COLOR_STATUS);
   mutt_window_mvaddstr(rd->win_abar, 0, 0, _("-- Attachments"));
