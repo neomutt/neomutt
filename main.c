@@ -1224,7 +1224,7 @@ int main(int argc, char *argv[], char *envp[])
       struct MuttWindow *dlg = index_pager_init();
       dialog_push(dlg);
 
-      struct EventMailbox em = { Context->mailbox };
+      struct EventMailbox em = { Context ? Context->mailbox : NULL };
       notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
 
       mutt_index_menu(dlg);
