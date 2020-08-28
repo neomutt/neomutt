@@ -1936,6 +1936,44 @@ enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
+ * do_unmailboxes - Remove a Mailbox from the Sidebar/notifications
+ * @param m Mailbox to `unmailboxes`
+ */
+static void do_unmailboxes(struct Mailbox *m)
+{
+#ifdef USE_INOTIFY
+  mutt_monitor_remove(m);
+#endif
+  m->flags = MB_HIDDEN;
+  if (Context && (Context->mailbox == m))
+  {
+    struct EventMailbox em = { NULL };
+    notify_send(NeoMutt->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
+  }
+  else
+  {
+    account_mailbox_remove(m->account, m);
+    mailbox_free(&m);
+  }
+}
+
+/**
+ * do_unmailboxes_star - Remove all Mailboxes from the Sidebar/notifications
+ */
+static void do_unmailboxes_star(void)
+{
+  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+  struct MailboxNode *np = NULL;
+  struct MailboxNode *nptmp = NULL;
+  STAILQ_FOREACH_SAFE(np, &ml, entries, nptmp)
+  {
+    do_unmailboxes(np->mailbox);
+  }
+  neomutt_mailboxlist_clear(&ml);
+}
+
+/**
  * parse_unmailboxes - Parse the 'unmailboxes' command - Implements Command::parse()
  *
  * This is also used by 'unvirtual-mailboxes'
@@ -1943,54 +1981,28 @@ enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
 enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
 {
-  bool tmp_valid = false;
-  bool clear_all = false;
-
-  while (!clear_all && MoreArgs(s))
+  while (MoreArgs(s))
   {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     if (mutt_str_equal(buf->data, "*"))
     {
-      clear_all = true;
-      tmp_valid = false;
-    }
-    else
-    {
-      mutt_buffer_expand_path(buf);
-      tmp_valid = true;
+      do_unmailboxes_star();
+      return MUTT_CMD_SUCCESS;
     }
 
-    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-    struct MailboxNode *np = NULL;
-    struct MailboxNode *nptmp = NULL;
-    STAILQ_FOREACH_SAFE(np, &ml, entries, nptmp)
-    {
-      /* Compare against path or desc? Ensure 'buf' is valid */
-      if (!clear_all && tmp_valid &&
-          !mutt_istr_equal(mutt_b2s(buf), mailbox_path(np->mailbox)) &&
-          !mutt_istr_equal(mutt_b2s(buf), np->mailbox->name))
-      {
-        continue;
-      }
+    mutt_buffer_expand_path(buf);
 
-#ifdef USE_INOTIFY
-      mutt_monitor_remove(np->mailbox);
-#endif
-      np->mailbox->flags = MB_HIDDEN;
-      if (Context && (Context->mailbox == np->mailbox))
+    struct Account *a = NULL;
+    TAILQ_FOREACH(a, &NeoMutt->accounts, entries)
+    {
+      struct Mailbox *m = mx_mbox_find(a, mutt_b2s(buf));
+      if (m)
       {
-        struct EventMailbox em = { NULL };
-        notify_send(NeoMutt->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
-      }
-      else
-      {
-        account_mailbox_remove(np->mailbox->account, np->mailbox);
-        mailbox_free(&np->mailbox);
+        do_unmailboxes(m);
+        break;
       }
     }
-    neomutt_mailboxlist_clear(&ml);
   }
   return MUTT_CMD_SUCCESS;
 }
