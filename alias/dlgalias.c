@@ -50,10 +50,6 @@
 #include "muttlib.h"
 #include "opcodes.h"
 
-/* These Config Variables are only used in dlgalias.c */
-char *C_AliasFormat; ///< Config: printf-like format string for the alias menu
-short C_SortAlias;   ///< Config: Sort method for the alias menu
-
 /// Help Bar for the Alias dialog (address book)
 static const struct Mapping AliasHelp[] = {
   // clang-format off

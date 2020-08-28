@@ -51,10 +51,6 @@
 #include "muttlib.h"
 #include "opcodes.h"
 
-/* These Config Variables are only used in dlgquery.c */
-char *C_QueryCommand; ///< Config: External command to query and external address book
-char *C_QueryFormat; ///< Config: printf-like format string for the query menu (address book)
-
 /// Help Bar for the Address Query dialog
 static const struct Mapping QueryHelp[] = {
   // clang-format off
