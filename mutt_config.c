@@ -124,18 +124,6 @@ const struct Mapping SortMethods[] = {
 };
 
 /**
- * SortAliasMethods - Sort methods for email aliases
- */
-const struct Mapping SortAliasMethods[] = {
-  // clang-format off
-  { "address",  SORT_ADDRESS },
-  { "alias",    SORT_ALIAS },
-  { "unsorted", SORT_ORDER },
-  { NULL,       0 },
-  // clang-format on
-};
-
-/**
  * SortBrowserMethods - Sort methods for the folder/dir browser
  */
 const struct Mapping SortBrowserMethods[] = {
@@ -159,12 +147,6 @@ struct ConfigDef MainVars[] = {
   },
   { "abort_key", DT_STRING|DT_NOT_EMPTY, &C_AbortKey, IP "\007", 0, NULL,
     "String representation of key to abort prompts"
-  },
-  { "alias_file", DT_PATH|DT_PATH_FILE, &C_AliasFile, IP "~/.neomuttrc", 0, NULL,
-    "Save new aliases to this file"
-  },
-  { "alias_format", DT_STRING|DT_NOT_EMPTY, &C_AliasFormat, IP "%3n %f%t %-15a %-56r | %c", 0, NULL,
-    "printf-like format string for the alias menu"
   },
   { "allow_ansi", DT_BOOL, &C_AllowAnsi, false, 0, NULL,
     "Allow ANSI colour codes in rich text messages"
@@ -530,12 +512,6 @@ struct ConfigDef MainVars[] = {
   { "prompt_after", DT_BOOL, &C_PromptAfter, true, 0, NULL,
     "Pause after running an external pager"
   },
-  { "query_command", DT_STRING|DT_COMMAND, &C_QueryCommand, 0, 0, NULL,
-    "External command to query and external address book"
-  },
-  { "query_format", DT_STRING|DT_NOT_EMPTY, &C_QueryFormat, IP "%3c %t %-25.25n %-25.25a | %e", 0, NULL,
-    "printf-like format string for the query menu (address book)"
-  },
   { "quit", DT_QUAD, &C_Quit, MUTT_YES, 0, NULL,
     "Prompt before exiting NeoMutt"
   },
@@ -643,9 +619,6 @@ struct ConfigDef MainVars[] = {
   },
   { "sort", DT_SORT|R_INDEX|R_RESORT|DT_SORT_REVERSE, &C_Sort, SORT_DATE, IP SortMethods, pager_validator,
     "Sort method for the index"
-  },
-  { "sort_alias", DT_SORT, &C_SortAlias, SORT_ALIAS, IP SortAliasMethods, NULL,
-    "Sort method for the alias menu"
   },
   { "sort_aux", DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST|R_INDEX|R_RESORT|R_RESORT_SUB, &C_SortAux, SORT_DATE, IP SortAuxMethods, NULL,
     "Secondary sort method for the index"
@@ -803,6 +776,7 @@ static void init_variables(struct ConfigSet *cs)
 {
   // Define the config variables
   config_init_main(cs);
+  CONFIG_INIT_VARS(cs, alias);
 #ifdef USE_AUTOCRYPT
   CONFIG_INIT_VARS(cs, autocrypt);
 #endif

@@ -29,6 +29,7 @@
  * | :------------------ | :------------------------- |
  * | alias/alias.c       | @subpage alias_alias       |
  * | alias/commands.c    | @subpage alias_commands    |
+ * | alias/config.c      | @subpage alias_config      |
  * | alias/dlgalias.c    | @subpage alias_dlgalias    |
  * | alias/dlgquery.c    | @subpage alias_dlgquery    |
  * | alias/gui.c         | @subpage alias_gui         |
@@ -46,7 +47,10 @@
 struct Address;
 struct AddressList;
 struct Buffer;
+struct ConfigSet;
 struct Envelope;
+
+extern char *C_AliasFile;
 
 /* These Config Variables are only used in dlgalias.c */
 extern char *C_AliasFormat;
@@ -78,5 +82,7 @@ int  query_complete(char *buf, size_t buflen);
 void query_index   (void);
 
 struct Address *alias_reverse_lookup(const struct Address *addr);
+
+bool config_init_alias(struct ConfigSet *cs);
 
 #endif /* MUTT_ALIAS_LIB_H */
