@@ -85,14 +85,14 @@ struct FolderFile
 #endif
 };
 
+ARRAY_HEAD(BrowserStateEntry, struct FolderFile);
+
 /**
  * struct BrowserState - State of the file/mailbox browser
  */
 struct BrowserState
 {
-  struct FolderFile *entry;
-  size_t entrylen; ///< number of real entries
-  unsigned int entrymax; ///< max entry
+  struct BrowserStateEntry entry;
 #ifdef USE_IMAP
   bool imap_browse;
   char *folder;

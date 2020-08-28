@@ -42,6 +42,7 @@
  * | imap/config.c     | @subpage imap_config     |
  * | imap/imap.c       | @subpage imap_imap       |
  * | imap/message.c    | @subpage imap_message    |
+ * | imap/msn.c        | @subpage imap_msn        |
  * | imap/search.c     | @subpage imap_search     |
  * | imap/utf7.c       | @subpage imap_utf7       |
  * | imap/util.c       | @subpage imap_util       |

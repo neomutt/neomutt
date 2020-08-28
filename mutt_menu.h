@@ -63,12 +63,11 @@ struct Menu
   struct MuttWindow *win_index;
   struct MuttWindow *win_ibar;
 
-  /* Setting dialog != NULL overrides normal menu behavior.
+  /* Setting a non-empty dialog overrides normal menu behavior.
    * In dialog mode menubar is hidden and prompt keys are checked before
    * normal menu movement keys. This can cause problems with scrolling, if
    * prompt keys override movement keys.  */
-  char **dialog;          ///< Dialog lines themselves
-  int dsize;              ///< Number of allocated dialog lines
+  ARRAY_HEAD(,char*) dialog; ///< Dialog lines themselves
   char *prompt;           ///< Prompt for user, similar to mutt_multi_choice
   char *keys;             ///< Keys used in the prompt
 

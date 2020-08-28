@@ -51,6 +51,7 @@
 #include "hook.h"
 #include "init.h"
 #include "message.h"
+#include "msn.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
@@ -633,16 +634,7 @@ void imap_notify_delete_email(struct Mailbox *m, struct Email *e)
   if (!mdata || !edata)
     return;
 
-  int msn = edata->msn;
-  if ((msn < 1) || (msn > mdata->max_msn))
-  {
-    mutt_debug(LL_DEBUG3, "MSN %d out of range (max %d)\n", msn, mdata->max_msn);
-    return;
-  }
-
-  mutt_debug(LL_DEBUG3, "Clearing msn_index: value = %p, email = %p\n",
-             mdata->msn_index[msn - 1], e);
-  mdata->msn_index[msn - 1] = NULL;
+  imap_msn_remove(&mdata->msn, edata->msn - 1);
   edata->msn = 0;
 }
 

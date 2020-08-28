@@ -51,6 +51,7 @@
 #include "gui/lib.h"
 #include "bcache/lib.h"
 #include "imap/lib.h"
+#include "msn.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "options.h"
@@ -214,9 +215,7 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
 void imap_mdata_cache_reset(struct ImapMboxData *mdata)
 {
   mutt_hash_free(&mdata->uid_hash);
-  FREE(&mdata->msn_index);
-  mdata->msn_index_size = 0;
-  mdata->max_msn = 0;
+  imap_msn_free(&mdata->msn);
   mutt_bcache_close(&mdata->bcache);
 }
 
@@ -372,13 +371,14 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *buf, struct ImapMboxData
   int first = 1, state = 0;
   unsigned int cur_uid = 0, last_uid = 0;
   unsigned int range_begin = 0, range_end = 0;
+  const size_t max_msn = imap_msn_highest(&mdata->msn);
 
-  for (unsigned int msn = 1; msn <= mdata->max_msn + 1; msn++)
+  for (unsigned int msn = 1; msn <= max_msn + 1; msn++)
   {
     bool match = false;
-    if (msn <= mdata->max_msn)
+    if (msn <= max_msn)
     {
-      struct Email *e_cur = mdata->msn_index[msn - 1];
+      struct Email *e_cur = imap_msn_get(&mdata->msn, msn - 1);
       cur_uid = e_cur ? imap_edata_get(e_cur)->uid : 0;
       if (!state || (cur_uid && ((cur_uid - 1) == last_uid)))
         match = true;

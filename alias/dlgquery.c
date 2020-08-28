@@ -101,7 +101,7 @@ static bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
 static int query_search(struct Menu *menu, regex_t *rx, int line)
 {
   struct AliasMenuData *mdata = menu->mdata;
-  struct AliasView *av = mdata->av[line];
+  struct AliasView *av = ARRAY_GET(mdata, line);
   struct Alias *alias = av->alias;
 
   if (alias->name && (regexec(rx, alias->name, 0, NULL, 0) == 0))
@@ -202,7 +202,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
 static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
   struct AliasMenuData *mdata = menu->mdata;
-  struct AliasView *av = mdata->av[line];
+  struct AliasView *av = ARRAY_GET(mdata, line);
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(C_QueryFormat),
                       query_format_str, IP av, MUTT_FORMAT_ARROWCURSOR);
@@ -214,7 +214,7 @@ static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
 static int query_tag(struct Menu *menu, int sel, int act)
 {
   struct AliasMenuData *mdata = menu->mdata;
-  struct AliasView *av = mdata->av[sel];
+  struct AliasView *av = ARRAY_GET(mdata, sel);
 
   bool ot = av->is_tagged;
 
@@ -303,13 +303,13 @@ static int query_run(char *s, bool verbose, struct AliasList *al)
  */
 static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bool retbuf)
 {
-  struct AliasMenuData *mdata = menu_data_new();
+  struct AliasMenuData mdata = ARRAY_HEAD_INITIALIZER;
   struct Alias *np = NULL;
   TAILQ_FOREACH(np, all, entries)
   {
-    menu_data_alias_add(mdata, np);
+    menu_data_alias_add(&mdata, np);
   }
-  menu_data_sort(mdata);
+  menu_data_sort(&mdata);
 
   struct Menu *menu = NULL;
   char title[256];
@@ -325,8 +325,8 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
   menu->search = query_search;
   menu->tag = query_tag;
   menu->title = title;
-  menu->max = mdata->num_views;
-  menu->mdata = mdata;
+  menu->max = ARRAY_SIZE(&mdata);
+  menu->mdata = &mdata;
   mutt_menu_push_current(menu);
 
   int done = 0;
@@ -346,7 +346,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
 
         if (op == OP_QUERY)
         {
-          menu_data_clear(mdata);
+          ARRAY_FREE(&mdata);
           aliaslist_free(all);
         }
 
@@ -361,12 +361,12 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
         struct Alias *tmp = NULL;
         TAILQ_FOREACH_SAFE(np, &al, entries, tmp)
         {
-          menu_data_alias_add(mdata, np);
+          menu_data_alias_add(&mdata, np);
           TAILQ_REMOVE(&al, np, entries);
           TAILQ_INSERT_TAIL(all, np, entries); // Transfer
         }
-        menu_data_sort(mdata);
-        menu->max = mdata->num_views;
+        menu_data_sort(&mdata);
+        menu->max = ARRAY_SIZE(&mdata);
         break;
       }
 
@@ -375,12 +375,13 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
         {
           struct AddressList naddr = TAILQ_HEAD_INITIALIZER(naddr);
 
-          for (int i = 0; i < menu->max; i++)
+          struct AliasView *avp = NULL;
+          ARRAY_FOREACH(avp, &mdata)
           {
-            if (mdata->av[i]->is_tagged)
+            if (avp->is_tagged)
             {
               struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-              if (alias_to_addrlist(&al, mdata->av[i]->alias))
+              if (alias_to_addrlist(&al, avp->alias))
               {
                 mutt_addrlist_copy(&naddr, &al, false);
                 mutt_addrlist_clear(&al);
@@ -394,7 +395,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
         else
         {
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (alias_to_addrlist(&al, mdata->av[menu->current]->alias))
+          if (alias_to_addrlist(&al, ARRAY_GET(&mdata, menu->current)->alias))
           {
             alias_create(&al);
             mutt_addrlist_clear(&al);
@@ -415,12 +416,13 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
         e->env = mutt_env_new();
         if (menu->tagprefix)
         {
-          for (int i = 0; i < menu->max; i++)
+          struct AliasView *avp = NULL;
+          ARRAY_FOREACH(avp, &mdata)
           {
-            if (mdata->av[i]->is_tagged)
+            if (avp->is_tagged)
             {
               struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-              if (alias_to_addrlist(&al, mdata->av[i]->alias))
+              if (alias_to_addrlist(&al, avp->alias))
               {
                 mutt_addrlist_copy(&e->env->to, &al, false);
                 mutt_addrlist_clear(&al);
@@ -431,7 +433,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
         else
         {
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (alias_to_addrlist(&al, mdata->av[menu->current]->alias))
+          if (alias_to_addrlist(&al, ARRAY_GET(&mdata, menu->current)->alias))
           {
             mutt_addrlist_copy(&e->env->to, &al, false);
             mutt_addrlist_clear(&al);
@@ -457,15 +459,16 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
     memset(buf, 0, buflen);
 
     /* check for tagged entries */
-    for (int i = 0; i < menu->max; i++)
+    struct AliasView *avp = NULL;
+    ARRAY_FOREACH(avp, &mdata)
     {
-      if (!mdata->av[i]->is_tagged)
+      if (!avp->is_tagged)
         continue;
 
       if (curpos == 0)
       {
         struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-        if (alias_to_addrlist(&al, mdata->av[i]->alias))
+        if (alias_to_addrlist(&al, avp->alias))
         {
           mutt_addrlist_to_local(&al);
           tagged = true;
@@ -477,7 +480,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
       else if (curpos + 2 < buflen)
       {
         struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-        if (alias_to_addrlist(&al, mdata->av[i]->alias))
+        if (alias_to_addrlist(&al, avp->alias))
         {
           mutt_addrlist_to_local(&al);
           strcat(buf, ", ");
@@ -491,7 +494,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
     if (!tagged)
     {
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-      if (alias_to_addrlist(&al, mdata->av[menu->current]->alias))
+      if (alias_to_addrlist(&al, ARRAY_GET(&mdata, menu->current)->alias))
       {
         mutt_addrlist_to_local(&al);
         mutt_addrlist_write(&al, buf, buflen, false);
@@ -503,7 +506,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
   dialog_destroy_simple_index(&dlg);
-  menu_data_free(&mdata);
+  ARRAY_FREE(&mdata);
 }
 
 /**

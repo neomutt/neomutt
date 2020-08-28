@@ -39,6 +39,7 @@ struct ConnAccount;
 struct Email;
 struct Mailbox;
 struct Message;
+struct MSN;
 struct Progress;
 
 #define IMAP_PORT     143  ///< Default port for IMAP
@@ -234,9 +235,7 @@ struct ImapMboxData
 
   // Cached data used only when the mailbox is opened
   struct HashTable *uid_hash;
-  struct Email **msn_index;   ///< look up headers by (MSN-1)
-  size_t msn_index_size;       ///< allocation size
-  unsigned int max_msn;        ///< the largest MSN fetched so far
+  ARRAY_HEAD(MSN, struct Email *) msn; ///< look up headers by (MSN-1)
   struct BodyCache *bcache;
 
   struct HeaderCache *hcache;

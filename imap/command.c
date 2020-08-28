@@ -45,6 +45,7 @@
 #include "conn/lib.h"
 #include "init.h"
 #include "message.h"
+#include "msn.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
@@ -260,10 +261,13 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
 
   struct ImapMboxData *mdata = adata->mailbox->mdata;
 
-  if ((mutt_str_atoui(s, &exp_msn) < 0) || (exp_msn < 1) || (exp_msn > mdata->max_msn))
+  if ((mutt_str_atoui(s, &exp_msn) < 0) || (exp_msn < 1) ||
+      (exp_msn > imap_msn_highest(&mdata->msn)))
+  {
     return;
+  }
 
-  e = mdata->msn_index[exp_msn - 1];
+  e = imap_msn_get(&mdata->msn, exp_msn - 1);
   if (e)
   {
     /* imap_expunge_mailbox() will rewrite e->index.
@@ -274,16 +278,15 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
   }
 
   /* decrement seqno of those above. */
-  for (unsigned int cur = exp_msn; cur < mdata->max_msn; cur++)
+  const size_t max_msn = imap_msn_highest(&mdata->msn);
+  for (unsigned int cur = exp_msn; cur < max_msn; cur++)
   {
-    e = mdata->msn_index[cur];
+    e = imap_msn_get(&mdata->msn, cur);
     if (e)
       imap_edata_get(e)->msn--;
-    mdata->msn_index[cur - 1] = e;
+    imap_msn_set(&mdata->msn, cur - 1, e);
   }
-
-  mdata->msn_index[mdata->max_msn - 1] = NULL;
-  mdata->max_msn--;
+  imap_msn_shrink(&mdata->msn, 1);
 
   mdata->reopen |= IMAP_EXPUNGE_PENDING;
 }
@@ -344,32 +347,32 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
     e->index = INT_MAX;
     imap_edata_get(e)->msn = 0;
 
-    if ((exp_msn < 1) || (exp_msn > mdata->max_msn))
+    if ((exp_msn < 1) || (exp_msn > imap_msn_highest(&mdata->msn)))
     {
       mutt_debug(LL_DEBUG1, "VANISHED: msn for UID %u is incorrect\n", uid);
       continue;
     }
-    if (mdata->msn_index[exp_msn - 1] != e)
+    if (imap_msn_get(&mdata->msn, exp_msn - 1) != e)
     {
       mutt_debug(LL_DEBUG1, "VANISHED: msn_index for UID %u is incorrect\n", uid);
       continue;
     }
 
-    mdata->msn_index[exp_msn - 1] = NULL;
+    imap_msn_remove(&mdata->msn, exp_msn - 1);
 
     if (!earlier)
     {
       /* decrement seqno of those above. */
-      for (unsigned int cur = exp_msn; cur < mdata->max_msn; cur++)
+      const size_t max_msn = imap_msn_highest(&mdata->msn);
+      for (unsigned int cur = exp_msn; cur < max_msn; cur++)
       {
-        e = mdata->msn_index[cur];
+        e = imap_msn_get(&mdata->msn, cur);
         if (e)
           imap_edata_get(e)->msn--;
-        mdata->msn_index[cur - 1] = e;
+        imap_msn_set(&mdata->msn, cur - 1, e);
       }
 
-      mdata->msn_index[mdata->max_msn - 1] = NULL;
-      mdata->max_msn--;
+      imap_msn_shrink(&mdata->msn, 1);
     }
   }
 
@@ -408,13 +411,13 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
     return;
   }
 
-  if ((msn < 1) || (msn > mdata->max_msn))
+  if ((msn < 1) || (msn > imap_msn_highest(&mdata->msn)))
   {
     mutt_debug(LL_DEBUG3, "Skipping FETCH response - MSN %u out of range\n", msn);
     return;
   }
 
-  e = mdata->msn_index[msn - 1];
+  e = imap_msn_get(&mdata->msn, msn - 1);
   if (!e || !e->active)
   {
     mutt_debug(LL_DEBUG3, "Skipping FETCH response - MSN %u not in msn_index\n", msn);
@@ -951,7 +954,7 @@ static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
   struct ImapMboxData *mdata = adata->mailbox->mdata;
 
   /* new mail arrived */
-  if (count < mdata->max_msn)
+  if (count < imap_msn_highest(&mdata->msn))
   {
     /* Notes 6.0.3 has a tendency to report fewer messages exist than
      * it should. */
@@ -959,7 +962,7 @@ static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
   }
   /* at least the InterChange server sends EXISTS messages freely,
    * even when there is no new mail */
-  else if (count == mdata->max_msn)
+  else if (count == imap_msn_highest(&mdata->msn))
     mutt_debug(LL_DEBUG3, "superfluous EXISTS message\n");
   else
   {
@@ -1336,14 +1339,18 @@ void imap_cmd_finish(struct ImapAccountData *adata)
     }
 
     // Then add new emails to it
-    if (mdata->reopen & IMAP_NEWMAIL_PENDING && (mdata->new_mail_count > mdata->max_msn))
+    if (mdata->reopen & IMAP_NEWMAIL_PENDING)
     {
-      if (!(mdata->reopen & IMAP_EXPUNGE_PENDING))
-        mdata->check_status |= IMAP_NEWMAIL_PENDING;
+      const size_t max_msn = imap_msn_highest(&mdata->msn);
+      if (mdata->new_mail_count > max_msn)
+      {
+        if (!(mdata->reopen & IMAP_EXPUNGE_PENDING))
+          mdata->check_status |= IMAP_NEWMAIL_PENDING;
 
-      mutt_debug(LL_DEBUG2, "Fetching new mails from %d to %d\n",
-                 mdata->max_msn + 1, mdata->new_mail_count);
-      imap_read_headers(adata->mailbox, mdata->max_msn + 1, mdata->new_mail_count, false);
+        mutt_debug(LL_DEBUG2, "Fetching new mails from %d to %d\n", max_msn + 1,
+                   mdata->new_mail_count);
+        imap_read_headers(adata->mailbox, max_msn + 1, mdata->new_mail_count, false);
+      }
     }
 
     // And to finish inform about MUTT_REOPEN if needed
