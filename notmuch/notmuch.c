@@ -2452,8 +2452,13 @@ static int nm_mbox_sync(struct Mailbox *m)
   }
 
   if (mh_sync_errors > 0)
+  {
     mutt_error(
-        _("Unable to sync %d messages due to external mailbox modification"), mh_sync_errors);
+        ngettext(
+            "Unable to sync %d message due to external mailbox modification",
+            "Unable to sync %d messages due to external mailbox modification", mh_sync_errors),
+        mh_sync_errors);
+  }
 
   mutt_buffer_strcpy(&m->pathbuf, url);
   m->type = MUTT_NOTMUCH;

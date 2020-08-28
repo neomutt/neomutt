@@ -1088,7 +1088,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 
     if (prefix && (data != MUTT_SET_SET))
     {
-      mutt_buffer_printf(err, "ERR22 can't use 'inv', 'no', '&' or '?' with the '%s' command",
+      mutt_buffer_printf(err, _("Can't use 'inv', 'no', '&' or '?' with the '%s' command"),
                          set_commands[data]);
       return MUTT_CMD_WARNING;
     }
@@ -1122,7 +1122,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
         }
         else
         {
-          mutt_buffer_printf(err, "ERR01 unknown variable: %s", buf->data);
+          mutt_buffer_printf(err, _("%s: unknown variable"), buf->data);
           return MUTT_CMD_ERROR;
         }
       }
@@ -1135,13 +1135,13 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       if (prefix)
       {
         mutt_buffer_printf(err,
-                           "ERR02 can't use a prefix when querying a variable");
+                           _("Can't use a prefix when querying a variable"));
         return MUTT_CMD_WARNING;
       }
 
       if (reset || unset || inv)
       {
-        mutt_buffer_printf(err, "ERR03 can't query a variable with the '%s' command",
+        mutt_buffer_printf(err, _("Can't query a variable with the '%s' command"),
                            set_commands[data]);
         return MUTT_CMD_WARNING;
       }
@@ -1153,14 +1153,15 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     {
       if (prefix)
       {
-        mutt_buffer_printf(err, "ERR04 can't use prefix when incrementing or "
-                                "decrementing a variable");
+        mutt_buffer_printf(
+            err,
+            _("Can't use prefix when incrementing or decrementing a variable"));
         return MUTT_CMD_WARNING;
       }
 
       if (reset || unset || inv)
       {
-        mutt_buffer_printf(err, "ERR05 can't set a variable with the '%s' command",
+        mutt_buffer_printf(err, _("Can't set a variable with the '%s' command"),
                            set_commands[data]);
         return MUTT_CMD_WARNING;
       }
@@ -1180,14 +1181,13 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     {
       if (prefix)
       {
-        mutt_buffer_printf(err,
-                           "ERR04 can't use prefix when setting a variable");
+        mutt_buffer_printf(err, _("Can't use prefix when setting a variable"));
         return MUTT_CMD_WARNING;
       }
 
       if (reset || unset || inv)
       {
-        mutt_buffer_printf(err, "ERR05 can't set a variable with the '%s' command",
+        mutt_buffer_printf(err, _("Can't set a variable with the '%s' command"),
                            set_commands[data]);
         return MUTT_CMD_WARNING;
       }
@@ -1200,12 +1200,12 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     {
       if (data == MUTT_SET_SET)
       {
-        mutt_buffer_printf(err, "ERR06 prefixes 'no' and 'inv' may only be "
-                                "used with bool/quad variables");
+        mutt_buffer_printf(err, _("Prefixes 'no' and 'inv' may only be used "
+                                  "with bool/quad variables"));
       }
       else
       {
-        mutt_buffer_printf(err, "ERR07 command '%s' can only be used with bool/quad variables",
+        mutt_buffer_printf(err, _("Command '%s' can only be used with bool/quad variables"),
                            set_commands[data]);
       }
       return MUTT_CMD_WARNING;
@@ -1428,7 +1428,7 @@ enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
     if (unset)
     {
-      mutt_buffer_printf(err, "ERR03 can't query a variable with the '%s' command", "unsetenv");
+      mutt_buffer_printf(err, _("Can't query a variable with the '%s' command"), "unsetenv");
       return MUTT_CMD_WARNING;
     }
 
@@ -1442,15 +1442,13 @@ enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
   {
     if (unset)
     {
-      mutt_buffer_printf(
-          err, "ERR03 can't query a variable with the 'unsetenv' command");
+      mutt_buffer_printf(err, _("Can't query a variable with the '%s' command"), "unsetenv");
       return MUTT_CMD_WARNING;
     }
 
     if (prefix)
     {
-      mutt_buffer_printf(err,
-                         "ERR02 can't use a prefix when querying a variable");
+      mutt_buffer_printf(err, _("Can't use a prefix when querying a variable"));
       return MUTT_CMD_WARNING;
     }
 
