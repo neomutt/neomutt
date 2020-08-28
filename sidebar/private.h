@@ -89,8 +89,13 @@ extern bool  C_SidebarVisible;
 extern short C_SidebarWidth;
 
 // sidebar.c
-bool select_next        (struct SidebarWindowData *wdata);
-void sb_notify_mailbox  (struct SidebarWindowData *wdata, struct Mailbox *m);
+void sb_add_mailbox        (struct SidebarWindowData *wdata, struct Mailbox *m);
+void sb_remove_mailbox     (struct SidebarWindowData *wdata, struct Mailbox *m);
+void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m);
+
+// functions.c
+bool select_next(struct SidebarWindowData *wdata);
+bool select_prev(struct SidebarWindowData *wdata);
 
 // observer.c
 int sb_insertion_observer(struct NotifyCallback *nc);

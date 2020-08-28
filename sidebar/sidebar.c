@@ -52,18 +52,25 @@ struct Mailbox *sb_get_highlight(struct MuttWindow *win)
     return NULL;
 
   struct SidebarWindowData *wdata = sb_wdata_get(win);
-  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
+  if (wdata->hil_index < 0)
     return NULL;
 
-  return (*ARRAY_GET(&wdata->entries, wdata->hil_index))->mailbox;
+  struct SbEntry **sbep = ARRAY_GET(&wdata->entries, wdata->hil_index);
+  if (!sbep)
+    return NULL;
+
+  return (*sbep)->mailbox;
 }
 
 /**
- * sb_notify_mailbox - The state of a Mailbox is about to change
+ * sb_add_mailbox - Add a Mailbox to the Sidebar
  * @param wdata Sidebar data
- * @param m     Mailbox
+ * @param m     Mailbox to add
+ *
+ * The Sidebar will be re-sorted, and the indices updated, when sb_recalc() is
+ * called.
  */
-void sb_notify_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
+void sb_add_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
 {
   static int seq_unsorted = 1;
 
@@ -88,6 +95,85 @@ void sb_notify_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
   }
 
   ARRAY_ADD(&wdata->entries, entry);
+}
+
+/**
+ * sb_remove_mailbox - Remove a Mailbox from the Sidebar
+ * @param wdata Sidebar data
+ * @param m     Mailbox to remove
+ */
+void sb_remove_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
+{
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH(sbep, &wdata->entries)
+  {
+    if (mutt_str_equal((*sbep)->mailbox->realpath, m->realpath))
+    {
+      struct SbEntry *sbe_remove = *sbep;
+      ARRAY_REMOVE(&wdata->entries, sbep);
+      FREE(&sbe_remove);
+
+      if (wdata->opn_index == ARRAY_FOREACH_IDX)
+      {
+        // Open item was deleted
+        wdata->opn_index = -1;
+      }
+      else if ((wdata->opn_index > 0) && (wdata->opn_index > ARRAY_FOREACH_IDX))
+      {
+        // Open item is still visible, so adjust the index
+        wdata->opn_index--;
+      }
+
+      if (wdata->hil_index == ARRAY_FOREACH_IDX)
+      {
+        // If possible, keep the highlight where it is
+        struct SbEntry **sbep_cur = ARRAY_GET(&wdata->entries, ARRAY_FOREACH_IDX);
+        if (!sbep_cur)
+        {
+          // The last entry was deleted, so backtrack
+          select_prev(wdata);
+        }
+        else if ((*sbep)->is_hidden)
+        {
+          // Find the next unhidden entry, or the previous
+          if (!select_next(wdata))
+            if (!select_prev(wdata))
+              wdata->hil_index = -1;
+        }
+      }
+      else if ((wdata->hil_index > 0) && (wdata->hil_index > ARRAY_FOREACH_IDX))
+      {
+        // Highlighted item is still visible, so adjust the index
+        wdata->hil_index--;
+      }
+      break;
+    }
+  }
+}
+
+/**
+ * sb_set_current_mailbox - Set the current Mailbox
+ * @param wdata Sidebar data
+ * @param m     Mailbox
+ */
+void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
+{
+  wdata->opn_index = -1;
+
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH(sbep, &wdata->entries)
+  {
+    if (m)
+    {
+      if (mutt_str_equal((*sbep)->mailbox->realpath, m->realpath))
+      {
+        wdata->opn_index = ARRAY_FOREACH_IDX;
+        wdata->hil_index = ARRAY_FOREACH_IDX;
+        break;
+      }
+    }
+    (*sbep)->is_hidden = ((*sbep)->mailbox->flags & MB_HIDDEN);
+  }
 }
 
 /**

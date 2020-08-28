@@ -1876,11 +1876,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
           oldcount = (Context && Context->mailbox) ? Context->mailbox->msg_count : 0;
 
-          struct EventMailbox em = { Context ? Context->mailbox : NULL };
-          notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
-
           if (!Context || ((check = mx_mbox_close(&Context)) == 0))
+          {
             done = true;
+          }
           else
           {
             if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED))
@@ -3389,6 +3388,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         window_set_focus(win_index);
         if (Context)
           mutt_check_rescore(Context->mailbox);
+        menu->redraw = REDRAW_FULL;
         break;
 
       case OP_EDIT_OR_VIEW_RAW_MESSAGE:

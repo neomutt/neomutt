@@ -109,7 +109,7 @@ static bool select_next_new(struct SidebarWindowData *wdata, bool next_new_wrap)
  * @param wdata Sidebar data
  * @retval bool true if the selection changed
  */
-static bool select_prev(struct SidebarWindowData *wdata)
+bool select_prev(struct SidebarWindowData *wdata)
 {
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
     return false;
