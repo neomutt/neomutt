@@ -24,7 +24,7 @@
  */
 
 /**
- * @page compose GUI editor for an email's headers
+ * @page compose_compose GUI editor for an email's headers
  *
  * GUI editor for an email's headers
  */
@@ -37,6 +37,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -46,7 +47,7 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "compose.h"
+#include "lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 #include "browser.h"
@@ -94,12 +95,6 @@
 
 /// Maximum number of rows to use for the Headers: field
 #define MAX_USER_HDR_ROWS 5
-
-/* These Config Variables are only used in compose.c */
-char *C_ComposeFormat; ///< Config: printf-like format string for the Compose panel's status bar
-char *C_Ispell; ///< Config: External command to perform spell-checking
-unsigned char C_Postpone; ///< Config: Save messages to the #C_Postponed folder
-bool C_ComposeShowUserHeaders; ///< Config: Whether to display user-defined headers
 
 static const char *There_are_no_attachments = N_("There are no attachments");
 
