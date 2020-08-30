@@ -64,7 +64,7 @@ default:	all
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	browser.o commands.o command_parse.o \
-		complete.o compose.o conststrings.o context.o copy.o \
+		complete.o conststrings.o context.o copy.o \
 		editmsg.o enriched.o enter.o flags.o functions.o git_ver.o \
 		handler.o hdrline.o help.o hook.o icommands.o index.o init.o \
 		keymap.o mailcap.o maillist.o main.o menu.o muttlib.o mutt_account.o \
@@ -160,6 +160,19 @@ $(LIBCOMPMBOX): $(PWD)/compmbox $(LIBCOMPMBOXOBJS)
 	$(RANLIB) $@
 $(PWD)/compmbox:
 	$(MKDIR_P) $(PWD)/compmbox
+
+###############################################################################
+# libcompose
+LIBCOMPOSE=	libcompose.a
+LIBCOMPOSEOBJS=	compose/config.o compose/compose.o
+CLEANFILES+=	$(LIBCOMPOSE) $(LIBCOMPOSEOBJS)
+ALLOBJS+=	$(LIBCOMPOSEOBJS)
+
+$(LIBCOMPOSE): $(PWD)/compose $(LIBCOMPOSEOBJS)
+	$(AR) cr $@ $(LIBCOMPOSEOBJS)
+	$(RANLIB) $@
+$(PWD)/compose:
+	$(MKDIR_P) $(PWD)/compose
 
 ###############################################################################
 # libcompress
@@ -593,7 +606,7 @@ MUTTLIBS+=	$(LIBAUTOCRYPT) $(LIBPOP) $(LIBNNTP) $(LIBCOMPMBOX) \
 		$(LIBSTORE) $(LIBPATTERN) $(LIBGUI) $(LIBHELPBAR) $(LIBDEBUG) $(LIBMBOX) \
 		$(LIBNOTMUCH) $(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) \
 		$(LIBHCACHE)  $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) \
-		$(LIBHISTORY) $(LIBALIAS) $(LIBSEND) $(LIBCORE) $(LIBCONFIG) \
+		$(LIBHISTORY) $(LIBALIAS) $(LIBSEND) $(LIBCOMPOSE) $(LIBCORE) $(LIBCONFIG) \
 		$(LIBEMAIL) $(LIBADDRESS) $(LIBMUTT)
 
 # neomutt

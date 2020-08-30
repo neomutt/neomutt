@@ -38,9 +38,9 @@
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "bcache/lib.h"
+#include "compose/lib.h"
 #include "browser.h"
 #include "commands.h"
-#include "compose.h"
 #include "handler.h"
 #include "hdrline.h"
 #include "hook.h"
@@ -64,10 +64,6 @@
 #include "score.h"
 #include "sort.h"
 #include "status.h"
-
-#ifndef ISPELL
-#define ISPELL "ispell"
-#endif
 
 #define CONFIG_INIT_TYPE(CS, NAME)                                             \
   extern const struct ConfigSetType cst_##NAME;                                \
@@ -229,12 +225,6 @@ struct ConfigDef MainVars[] = {
   { "collapse_unread", DT_BOOL, &C_CollapseUnread, true, 0, NULL,
     "Prevent the collapse of threads with unread emails"
   },
-  { "compose_format", DT_STRING|R_MENU, &C_ComposeFormat, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-", 0, NULL,
-    "printf-like format string for the Compose panel's status bar"
-  },
-  { "compose_show_user_headers", DT_BOOL, &C_ComposeShowUserHeaders, true, 0, NULL,
-    "Controls whether or not user-defined headers are shown in the compose envelope"
-  },
   { "config_charset", DT_STRING, &C_ConfigCharset, 0, 0, charset_validator,
     "Character set that the config files are in"
   },
@@ -243,9 +233,6 @@ struct ConfigDef MainVars[] = {
   },
   { "confirmcreate", DT_BOOL, &C_Confirmcreate, true, 0, NULL,
     "Confirm before creating a new mailbox"
-  },
-  { "copy", DT_QUAD, &C_Copy, MUTT_YES, 0, NULL,
-    "Save outgoing emails to $record"
   },
   { "copy_decode_weed", DT_BOOL, &C_CopyDecodeWeed, false, 0, NULL,
     "Controls whether to weed headers when copying or saving emails"
@@ -279,9 +266,6 @@ struct ConfigDef MainVars[] = {
   },
   { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, &C_DuplicateThreads, true, 0, pager_validator,
     "Highlight messages with duplicated message IDs"
-  },
-  { "edit_headers", DT_BOOL, &C_EditHeaders, false, 0, NULL,
-    "Let the user edit the email headers whilst editing an email"
   },
   { "editor", DT_STRING|DT_NOT_EMPTY|DT_COMMAND, &C_Editor, IP "vi", 0, NULL,
     "External command to use as an email editor"
@@ -371,9 +355,6 @@ struct ConfigDef MainVars[] = {
   },
   { "index_format", DT_STRING|DT_NOT_EMPTY|R_INDEX|R_PAGER, &C_IndexFormat, IP "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s", 0, NULL,
     "printf-like format string for the index menu (emails)"
-  },
-  { "ispell", DT_STRING|DT_COMMAND, &C_Ispell, IP ISPELL, 0, NULL,
-    "External command to perform spell-checking"
   },
   { "keep_flagged", DT_BOOL, &C_KeepFlagged, false, 0, NULL,
     "Don't move flagged messages from #C_Spoolfile to #C_Mbox"
@@ -487,9 +468,6 @@ struct ConfigDef MainVars[] = {
   },
   { "pipe_split", DT_BOOL, &C_PipeSplit, false, 0, NULL,
     "Run the pipe command on each message separately"
-  },
-  { "postpone", DT_QUAD, &C_Postpone, MUTT_ASKYES, 0, NULL,
-    "Save messages to the #C_Postponed folder"
   },
   { "postponed", DT_STRING|DT_MAILBOX|R_INDEX, &C_Postponed, IP "~/postponed", 0, NULL,
     "Folder to store postponed messages"
@@ -783,6 +761,7 @@ static void init_variables(struct ConfigSet *cs)
 #ifdef USE_AUTOCRYPT
   CONFIG_INIT_VARS(cs, autocrypt);
 #endif
+  CONFIG_INIT_VARS(cs, compose);
   CONFIG_INIT_VARS(cs, conn);
 #ifdef USE_HCACHE
   CONFIG_INIT_VARS(cs, hcache);

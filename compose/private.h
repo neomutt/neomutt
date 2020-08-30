@@ -3,7 +3,7 @@
  * GUI editor for an email's headers
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,21 +20,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMPOSE_H
-#define MUTT_COMPOSE_H
+#ifndef MUTT_COMPOSE_PRIVATE_H
+#define MUTT_COMPOSE_PRIVATE_H
 
-struct Buffer;
-struct Email;
-
-/* These Config Variables are only used in compose.c */
-extern char *C_ComposeFormat;
-extern char *C_Ispell;
+extern char *        C_ComposeFormat;
+extern bool          C_ComposeShowUserHeaders;
+extern unsigned char C_Copy;
+extern bool          C_EditHeaders;
+extern char *        C_Ispell;
 extern unsigned char C_Postpone;
-extern bool C_ComposeShowUserHeaders;
 
-/* flags for mutt_compose_menu() */
-#define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
-
-int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, int flags);
-
-#endif /* MUTT_COMPOSE_H */
+#endif /* MUTT_COMPOSE_PRIVATE_H */
