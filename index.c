@@ -575,9 +575,8 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
  */
 struct CurrentEmail
 {
-  struct Email *e;  ///< The current Email
-  time_t received;  ///< From Email.received
-  char *message_id; ///< From Email.Envelope.message_id
+  struct Email *e; ///< Current email
+  size_t sequence; ///< Sequence of the current email
 };
 
 /**
@@ -589,8 +588,7 @@ struct CurrentEmail
  */
 static bool is_current_email(const struct CurrentEmail *cur, const struct Email *e)
 {
-  return (e->received == cur->received) &&
-         mutt_str_equal(e->env->message_id, cur->message_id);
+  return cur->sequence == e->sequence;
 }
 
 /**
@@ -600,11 +598,8 @@ static bool is_current_email(const struct CurrentEmail *cur, const struct Email 
  */
 static void set_current_email(struct CurrentEmail *cur, struct Email *e)
 {
-  *cur = (struct CurrentEmail){
-    .e = e,
-    .received = e ? e->received : 0,
-    .message_id = mutt_str_replace(&cur->message_id, e ? e->env->message_id : NULL),
-  };
+  cur->e = e;
+  cur->sequence = e ? e->sequence : 0;
 }
 
 /**
@@ -626,6 +621,7 @@ static void update_index(struct Menu *menu, struct Context *ctx, int check,
   else
     update_index_unthreaded(ctx, check, oldcount);
 
+  const int old_current = menu->current;
   menu->current = -1;
   if (oldcount)
   {
@@ -644,7 +640,9 @@ static void update_index(struct Menu *menu, struct Context *ctx, int check,
   }
 
   if (menu->current < 0)
-    menu->current = ci_first_message(Context->mailbox);
+    menu->current = (old_current < ctx->mailbox->vcount) ?
+                        old_current :
+                        ci_first_message(Context->mailbox);
 }
 
 /**
@@ -660,8 +658,7 @@ static void update_index(struct Menu *menu, struct Context *ctx, int check,
 void mutt_update_index(struct Menu *menu, struct Context *ctx, int check,
                        int oldcount, const struct Email *cur_email)
 {
-  struct CurrentEmail se = { .received = cur_email->received,
-                             .message_id = cur_email->env->message_id };
+  struct CurrentEmail se = { .e = NULL, .sequence = cur_email->sequence };
   update_index(menu, ctx, check, oldcount, &se);
 }
 
@@ -3960,7 +3957,6 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
-  FREE(&cur.message_id);
   return close;
 }
 
