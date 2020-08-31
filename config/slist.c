@@ -120,21 +120,7 @@ static int slist_string_get(const struct ConfigSet *cs, void *var,
     if (!list)
       return (CSR_SUCCESS | CSR_SUC_EMPTY); /* empty string */
 
-    struct ListNode *np = NULL;
-    STAILQ_FOREACH(np, &list->head, entries)
-    {
-      mutt_buffer_addstr(result, np->data);
-      if (STAILQ_NEXT(np, entries))
-      {
-        int sep = (cdef->type & SLIST_SEP_MASK);
-        if (sep == SLIST_SEP_COMMA)
-          mutt_buffer_addch(result, ',');
-        else if (sep == SLIST_SEP_COLON)
-          mutt_buffer_addch(result, ':');
-        else
-          mutt_buffer_addch(result, ' ');
-      }
-    }
+    slist_to_buffer(list, result);
   }
   else
   {

@@ -442,7 +442,8 @@ SLIST_OBJS	= test/slist/slist_add_list.o \
 		  test/slist/slist_free.o \
 		  test/slist/slist_is_member.o \
 		  test/slist/slist_parse.o \
-		  test/slist/slist_remove_string.o
+		  test/slist/slist_remove_string.o \
+		  test/slist/slist_to_buffer.o
 
 @if HAVE_BDB || HAVE_GDBM || HAVE_KC || HAVE_LMDB || HAVE_QDBM || HAVE_ROCKSDB || HAVE_TDB || HAVE_TC
 STORE_OBJS	+= test/store/common.o test/store/store.o

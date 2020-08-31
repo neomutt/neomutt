@@ -27,6 +27,8 @@
 #include <stdbool.h>
 #include "list.h"
 
+struct Buffer;
+
 #define SLIST_SEP_SPACE (1 << 13)
 #define SLIST_SEP_COMMA (1 << 14)
 #define SLIST_SEP_COLON (1 << 15)
@@ -57,5 +59,6 @@ bool          slist_is_member(const struct Slist *list, const char *str);
 struct Slist *slist_new(int flags);
 struct Slist *slist_parse(const char *str, int flags);
 struct Slist *slist_remove_string(struct Slist *list, const char *str);
+int           slist_to_buffer(const struct Slist *list, struct Buffer *buf);
 
 #endif /* MUTT_LIB_SLIST_H */

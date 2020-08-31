@@ -29,6 +29,7 @@
 #include "config.h"
 #include <stddef.h>
 #include "slist.h"
+#include "buffer.h"
 #include "list.h"
 #include "memory.h"
 #include "queue.h"
@@ -128,6 +129,7 @@ struct Slist *slist_dup(const struct Slist *list)
   {
     mutt_list_insert_tail(&list_new->head, mutt_str_dup(np->data));
   }
+  list_new->count = list->count;
   return list_new;
 }
 
@@ -271,4 +273,34 @@ struct Slist *slist_remove_string(struct Slist *list, const char *str)
     prev = np;
   }
   return list;
+}
+
+/**
+ * slist_to_string - Export an Slist to a Buffer
+ * @param list   List to export
+ * @param buf    Buffer for the results
+ * @retval num Number of strings written to Buffer
+ */
+int slist_to_buffer(const struct Slist *list, struct Buffer *buf)
+{
+  if (!list || !buf || (list->count == 0))
+    return 0;
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &list->head, entries)
+  {
+    mutt_buffer_addstr(buf, np->data);
+    if (STAILQ_NEXT(np, entries))
+    {
+      const int sep = (list->flags & SLIST_SEP_MASK);
+      if (sep == SLIST_SEP_COMMA)
+        mutt_buffer_addch(buf, ',');
+      else if (sep == SLIST_SEP_COLON)
+        mutt_buffer_addch(buf, ':');
+      else
+        mutt_buffer_addch(buf, ' ');
+    }
+  }
+
+  return list->count;
 }

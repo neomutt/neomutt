@@ -492,6 +492,7 @@
   NEOMUTT_TEST_ITEM(test_slist_is_member)                                      \
   NEOMUTT_TEST_ITEM(test_slist_parse)                                          \
   NEOMUTT_TEST_ITEM(test_slist_remove_string)                                  \
+  NEOMUTT_TEST_ITEM(test_slist_to_buffer)                                      \
                                                                                \
   /* string */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_istr_equal)                                      \
