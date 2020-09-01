@@ -63,6 +63,7 @@ static struct ConfigDef ComposeVars[] = {
   { "postpone", DT_QUAD, &C_Postpone, MUTT_ASKYES, 0, NULL,
     "Save messages to the #C_Postponed folder"
   },
+  { NULL, 0, NULL, 0, 0, NULL, NULL }
   // clang-format on
 };
 
