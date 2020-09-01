@@ -569,12 +569,12 @@ msgstr "Klaida bandant žiūrėti bylą"
 #: browser.c:2089
 #, c-format
 msgid "Subscribe pattern: "
-msgstr "Užsakymo pattern'as: "
+msgstr "Užsakymo šablonas: "
 
 #: browser.c:2091
 #, c-format
 msgid "Unsubscribe pattern: "
-msgstr "Atsisakymo pattern'as: "
+msgstr "Atsisakymo šablonas: "
 
 #: browser.c:2112
 msgid "No newsgroups match the mask"
@@ -2764,7 +2764,7 @@ msgstr "Ištrinti laiškus, tenkinančius: "
 
 #: index.c:1790
 msgid "No limit pattern is in effect"
-msgstr "Joks ribojimo pattern'as nėra naudojamas"
+msgstr "Joks ribojimo šablonas nėra naudojamas"
 
 #. L10N: ask for a limit to apply
 #: index.c:1795
@@ -5599,7 +5599,7 @@ msgstr "sutraukti/išskleisti esamą giją"
 
 #: opcodes.h:175
 msgid "delete messages matching a pattern"
-msgstr "ištrinti laiškus, tenkinančius pattern'ą"
+msgstr "ištrinti laiškus, tenkinančius šabloną"
 
 #: opcodes.h:176
 msgid "retrieve mail from POP server"
@@ -5615,7 +5615,7 @@ msgstr "atsijungti nuo visų IMAP serverių"
 
 #: opcodes.h:179
 msgid "show only messages matching a pattern"
-msgstr "rodyti tik laiškus, tenkinančius pattern'ą"
+msgstr "rodyti tik laiškus, tenkinančius šabloną"
 
 #: opcodes.h:180
 msgid "link tagged message to the current one"
@@ -5707,7 +5707,7 @@ msgstr "uždėti būsenos flagą laiškui"
 
 #: opcodes.h:202
 msgid "show currently active limit pattern"
-msgstr "parodyti dabar aktyvų ribojimo pattern'ą"
+msgstr "parodyti dabar aktyvų ribojimo šabloną"
 
 #: opcodes.h:203
 msgid "save changes to mailbox"
@@ -5715,15 +5715,15 @@ msgstr "išsaugoti dėžutės pakeitimus"
 
 #: opcodes.h:204
 msgid "tag messages matching a pattern"
-msgstr "pažymėti laiškus, tenkinančius pattern'ą"
+msgstr "pažymėti laiškus, tenkinančius šabloną"
 
 #: opcodes.h:205
 msgid "undelete messages matching a pattern"
-msgstr "sugrąžinti laiškus, tenkinančius pattern'ą"
+msgstr "sugrąžinti laiškus, tenkinančius šabloną"
 
 #: opcodes.h:206
 msgid "untag messages matching a pattern"
-msgstr "atžymėti laiškus, tenkinančius pattern'ą"
+msgstr "atžymėti laiškus, tenkinančius šabloną"
 
 #: opcodes.h:207
 msgid "create a hotkey macro for the current message"
@@ -5855,7 +5855,7 @@ msgstr "ieškoti reguliarios išraiškos atgal"
 
 #: opcodes.h:239
 msgid "toggle search pattern coloring"
-msgstr "perjungti paieškos pattern'o spalvojimą"
+msgstr "perjungti paieškos šablono spalvojimą"
 
 #: opcodes.h:240
 msgid "invoke a command in a subshell"
@@ -6196,12 +6196,12 @@ msgstr "Nėra konteksto"
 
 #: pattern/compile.c:1076 pattern/compile.c:1313
 msgid "empty pattern"
-msgstr "tuščias pattern'as"
+msgstr "tuščias šablonas"
 
 #: pattern/compile.c:1106 pattern/compile.c:1307
 #, c-format
 msgid "error in pattern at: %s"
-msgstr "klaida pattern'e: %s"
+msgstr "klaida šablone: %s"
 
 #: pattern/compile.c:1139
 #, c-format
@@ -6556,7 +6556,7 @@ msgstr "IMAP serverio paieška pagal IŠRAIŠKĄ"
 
 #: pattern/pattern.c:253 pattern/pattern.c:412
 msgid "Compiling search pattern..."
-msgstr "Kompiliuoju paieškos pattern'ą..."
+msgstr "Kompiliuoju paieškos šabloną..."
 
 #: pattern/pattern.c:277
 msgid "Executing command on matching messages..."
