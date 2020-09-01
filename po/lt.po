@@ -105,11 +105,11 @@ msgstr "Grąžint"
 
 #: alias/dlgalias.c:63 alias/dlgquery.c:65
 msgid "Sort"
-msgstr ""
+msgstr "Rikiuot"
 
 #: alias/dlgalias.c:64 alias/dlgquery.c:66
 msgid "Rev-Sort"
-msgstr ""
+msgstr "Rik.atv."
 
 #: alias/dlgalias.c:65 history/dlghistory.c:47 ncrypt/dlggpgme.c:65
 #: ncrypt/dlgpgp.c:54 ncrypt/dlgsmime.c:49 pattern/dlgpattern.c:64
@@ -136,17 +136,17 @@ msgstr "Aliasai"
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/dlgalias.c:258 alias/dlgquery.c:462
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "Atvirkščiai rikiuoti pagal (a)liasą, a(d)resą ar neriki(u)ti?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/dlgalias.c:260 alias/dlgquery.c:464
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "Rikiuoti pagal (a)liasą, a(d)resą ar neriki(u)oti?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/dlgalias.c:262 alias/dlgquery.c:466
 msgid "adu"
-msgstr ""
+msgstr "adu"
 
 #: alias/dlgquery.c:62 index.c:114
 msgid "Mail"
@@ -677,7 +677,7 @@ msgstr "blogas antraštės laukas"
 #: command_parse.c:1091
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
-msgstr ""
+msgstr "Negalima naudoti 'inv', 'no', '&' ar '?' su komanda '%s'"
 
 #: command_parse.c:1125 command_parse.c:1261 command_parse.c:1363
 #, c-format
@@ -686,34 +686,34 @@ msgstr "%s: nežinomas kintamasis"
 
 #: command_parse.c:1138 command_parse.c:1451
 msgid "Can't use a prefix when querying a variable"
-msgstr ""
+msgstr "Negalima naudoti prefikso peržiūrint kintamojo reikšmę"
 
 #: command_parse.c:1144 command_parse.c:1431 command_parse.c:1445
 #, c-format
 msgid "Can't query a variable with the '%s' command"
-msgstr ""
+msgstr "Negalima pamatyti kintamojo reikšmės su '%s' komanda"
 
 #: command_parse.c:1158
 msgid "Can't use prefix when incrementing or decrementing a variable"
-msgstr ""
+msgstr "Negalima naudoti prefikso didinant/mažinant kintamojo reikšmę"
 
 #: command_parse.c:1164 command_parse.c:1190
 #, c-format
 msgid "Can't set a variable with the '%s' command"
-msgstr ""
+msgstr "Negalima nustatyti kintamojo reikšmės su komanda '%s'"
 
 #: command_parse.c:1184
 msgid "Can't use prefix when setting a variable"
-msgstr ""
+msgstr "Negalima naudoti prefikso nustatant kintamojo reikšmę"
 
 #: command_parse.c:1203
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
-msgstr ""
+msgstr "Prefiksai 'no' bei 'inv' naudotini tik su loginiais kintamaisiais"
 
 #: command_parse.c:1208
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
-msgstr ""
+msgstr "Komanda '%s' naudotina tik su loginiais kintamaisiais"
 
 #: command_parse.c:1483
 #, c-format
@@ -1134,7 +1134,7 @@ msgstr "X-Komentuoti: "
 
 #: compose.c:217
 msgid "Headers: "
-msgstr ""
+msgstr "Antraštės: "
 
 #: compose.c:223 compose.c:242
 msgid "Send"
@@ -5037,9 +5037,9 @@ msgstr "nepavyko išanalizuoti ribojimo: %s"
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Nepavyko išsaugoti %d laiško nes pašto dėžutė buvo pakeista išoriškai"
+msgstr[1] "Nepavyko išsaugoti %d laiškų nes pašto dėžutė buvo pakeista išoriškai"
+msgstr[2] "Nepavyko išsaugoti %d laiškų nes pašto dėžutė buvo pakeista išoriškai"
 
 #: notmuch/notmuch.c:2526
 msgid "Can't write to virtual folder"
@@ -6230,14 +6230,14 @@ msgstr "trūksta parametro"
 #. L10N: Pattern completion menu title
 #: pattern/dlgpattern.c:138
 msgid "Patterns"
-msgstr ""
+msgstr "Šablonai"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
 #: pattern/dlgpattern.c:156
 msgid "EXPR"
-msgstr ""
+msgstr "IŠRAIŠKA"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a numeric range.
@@ -6245,7 +6245,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:164
 msgid "RANGE"
-msgstr ""
+msgstr "INTERVALAS"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a date range
@@ -6253,7 +6253,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:171
 msgid "DATERANGE"
-msgstr ""
+msgstr "DATŲ-INTERVALAS"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a query
@@ -6261,7 +6261,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:178
 msgid "QUERY"
-msgstr ""
+msgstr "UŽKLAUSA"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a nested pattern.
@@ -6269,19 +6269,19 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:196
 msgid "PATTERN"
-msgstr ""
+msgstr "ŠABLONAS"
 
 #: pattern/dlgpattern.c:204
 msgid "messages in threads containing messages matching PATTERN"
-msgstr ""
+msgstr "laiškai gijose turinčiose laiškų atitinkančių ŠABLONĄ"
 
 #: pattern/dlgpattern.c:213
 msgid "messages whose immediate parent matches PATTERN"
-msgstr ""
+msgstr "laiškai kurių tėvinis laiškas atitinka ŠABLONĄ"
 
 #: pattern/dlgpattern.c:222
 msgid "messages having an immediate child matching PATTERN"
-msgstr ""
+msgstr "laiškai kurių tiesioginiai atsakymai atitinka ŠABLONĄ"
 
 #. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
 #. was invoked when NeoMutt was compiled without crypto support.
@@ -6289,7 +6289,7 @@ msgstr ""
 #: pattern/exec.c:86
 #, c-format
 msgid "Pattern operator '~%c' is disabled"
-msgstr ""
+msgstr "Šablono operatorius '~%c' yra išjungtas"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
@@ -6316,266 +6316,243 @@ msgstr "klaida: serverio paieška palaikoma tik su IMAP"
 
 #. L10N: Pattern Completion Menu description for ~A
 #: pattern/flags.c:44
-#, fuzzy
 msgid "all messages"
-msgstr "rikiuoti laiškus"
+msgstr "visi laiškai"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:47
 msgid "messages whose body matches EXPR"
-msgstr ""
+msgstr "laiškai kurių tekstas atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:50
 msgid "messages whose body or headers match EXPR"
-msgstr ""
+msgstr "laiškai kurių tekstas arba antraštės atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:53
 msgid "messages whose CC header matches EXPR"
-msgstr ""
+msgstr "laiškai kurių Cc antraštė atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:56
 msgid "messages whose recipient matches EXPR"
-msgstr ""
+msgstr "laiškai kurių gavėjas atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:59
 msgid "messages sent in DATERANGE"
-msgstr ""
+msgstr "laiškai išsiųsti DATŲ-INTERVALE"
 
 #. L10N: Pattern Completion Menu description for ~D
 #: pattern/flags.c:62
-#, fuzzy
 msgid "deleted messages"
-msgstr "Nėra ištrintų laiškų"
+msgstr "ištrinti laiškai"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
 msgid "messages whose Sender header matches EXPR"
-msgstr ""
+msgstr "laiškai kurių Sender antraštė atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:68
-#, fuzzy
 msgid "expired messages"
-msgstr "Nėra neskaitytų laiškų"
+msgstr "pasenę laiškai"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:71
 msgid "messages whose From header matches EXPR"
-msgstr ""
+msgstr "laiškai kurių From antraštė atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:74
-#, fuzzy
 msgid "flagged messages"
-msgstr "Nėra pažymėtų laiškų"
+msgstr "vėliavėle pažymėti laiškai"
 
 #. L10N: Pattern Completion Menu description for ~g
 #: pattern/flags.c:77
-#, fuzzy
 msgid "cryptographically signed messages"
-msgstr "tęsti atidėtą laišką"
+msgstr "kriptografiškai pasirašyti laiškai"
 
 #. L10N: Pattern Completion Menu description for ~G
 #: pattern/flags.c:80
-#, fuzzy
 msgid "cryptographically encrypted messages"
-msgstr "Negaliu iššifruoti užšifruoti laiško"
+msgstr "užšifruoti laiškai"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:83
 msgid "messages whose header matches EXPR"
-msgstr ""
+msgstr "laiškai kurių antraštė atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:86
 msgid "messages whose spam tag matches EXPR"
-msgstr ""
+msgstr "laiškai kurių šlamšto etiketė atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:89
-#, fuzzy
 msgid "messages whose Message-ID matches EXPR"
-msgstr "gauti laišką pagal ID"
+msgstr "laiškai kurių Message-ID atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:92
 msgid "messages whose Message-ID is included in the results returned from an external search program"
-msgstr ""
+msgstr "laiškai kurių Message-ID yra tarp išorinės paieškos programos gražintų rezultatų"
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:95
-#, fuzzy
 msgid "messages which contain PGP key"
-msgstr "šokti į pažymėtą laišką"
+msgstr "laiškai turintys PGP raktą"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:98
 msgid "messages addressed to known mailing lists"
-msgstr ""
+msgstr "laiškai išsiųsti į konferenciją"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:101
 msgid "messages whose From/Sender/To/CC matches EXPR"
-msgstr ""
+msgstr "laiškai kurių From/Sender/To/Cc atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:104
 msgid "messages whose number is in RANGE"
-msgstr ""
+msgstr "laiškai kurių eilės numeris yra INTERVALE"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:107
 msgid "messages with a Content-Type matching EXPR"
-msgstr ""
+msgstr "laiškai kurių Content-Type antraštė atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~n
 #: pattern/flags.c:110
 msgid "messages whose score is in RANGE"
-msgstr ""
+msgstr "laiškai kurių balai yra INTERVALE"
 
 #. L10N: Pattern Completion Menu description for ~N
 #: pattern/flags.c:113
-#, fuzzy
 msgid "new messages"
-msgstr "Nėra naujų laiškų"
+msgstr "nauji laiškai"
 
 #. L10N: Pattern Completion Menu description for ~O
 #: pattern/flags.c:116
-#, fuzzy
 msgid "old messages"
-msgstr "rikiuoti laiškus"
+msgstr "seni laiškai"
 
 #. L10N: Pattern Completion Menu description for ~p
 #: pattern/flags.c:119
 msgid "messages addressed to you"
-msgstr ""
+msgstr "laiškai adresuoti tau"
 
 #. L10N: Pattern Completion Menu description for ~P
 #: pattern/flags.c:122
-#, fuzzy
 msgid "messages from you"
-msgstr "šokti į pažymėtą laišką"
+msgstr "tavo siųsti laiškai"
 
 #. L10N: Pattern Completion Menu description for ~Q
 #: pattern/flags.c:125
 msgid "messages which have been replied to"
-msgstr ""
+msgstr "laiškai į kuriuos buvo atsakyta"
 
 #. L10N: Pattern Completion Menu description for ~r
 #: pattern/flags.c:128
 msgid "messages received in DATERANGE"
-msgstr ""
+msgstr "laiškai gauti DATŲ-INTERVALE"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:131
-#, fuzzy
 msgid "already read messages"
-msgstr "Nėra neskaitytų laiškų"
+msgstr "skaityti laiškai"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:134
 msgid "messages whose Subject header matches EXPR"
-msgstr ""
+msgstr "laiškai kurių Subject antraštė atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:137
-#, fuzzy
 msgid "superseded messages"
-msgstr "Nėra neskaitytų laiškų"
+msgstr "atnaujinti laiškai"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:140
 msgid "messages whose To header matches EXPR"
-msgstr ""
+msgstr "laiškai kurių To antraštė atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:143
-#, fuzzy
 msgid "tagged messages"
-msgstr "Nėra pažymėtų laiškų"
+msgstr "pažymėti laiškų"
 
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:146
-#, fuzzy
 msgid "messages addressed to subscribed mailing lists"
-msgstr "atsakyti nurodytai konferencijai"
+msgstr "laiškai išsiųsti į užsiprenumeruotą konferenciją"
 
 #. L10N: Pattern Completion Menu description for ~U
 #: pattern/flags.c:149
-#, fuzzy
 msgid "unread messages"
-msgstr "Nėra neskaitytų laiškų"
+msgstr "neskaityti laiškai"
 
 #. L10N: Pattern Completion Menu description for ~v
 #: pattern/flags.c:152
-#, fuzzy
 msgid "messages in collapsed threads"
-msgstr "Gijoje daugiau nėra laiškų"
+msgstr "laiškai sutrauktose gijose"
 
 #. L10N: Pattern Completion Menu description for ~V
 #: pattern/flags.c:155
-#, fuzzy
 msgid "cryptographically verified messages"
-msgstr "rodyti arba slėpti skaitytus laiškus"
+msgstr "kriptografiškai patikrinti laiškai"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:159
-#, fuzzy
 msgid "newsgroups matching EXPR"
-msgstr "Nė viena naujienų grupė neatitinka kaukės"
+msgstr "naujienų grupės atitinkančios IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:163
 msgid "messages whose References header matches EXPR"
-msgstr ""
+msgstr "laiškai kurių References antraštė atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:166
-#, fuzzy
 msgid "messages with RANGE attachments"
-msgstr "rodyti MIME priedus"
+msgstr "laiškai su INTERVALE esančiu priedų skaičiumi"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:169
 msgid "messages whose X-Label header matches EXPR"
-msgstr ""
+msgstr "laiškai kurių X-Label antraštė atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:172
 msgid "messages whose tags match EXPR"
-msgstr ""
+msgstr "laiškai kurių etiketės atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~z
 #: pattern/flags.c:175
 msgid "messages whose size is in RANGE"
-msgstr ""
+msgstr "laiškai kurių dydis yra INTERVALE"
 
 #. L10N: Pattern Completion Menu description for ~=
 #: pattern/flags.c:178
-#, fuzzy
 msgid "duplicated messages"
-msgstr "Nėra ištrintų laiškų"
+msgstr "dubliuoti laiškai"
 
 #. L10N: Pattern Completion Menu description for ~$
 #: pattern/flags.c:181
-#, fuzzy
 msgid "unreferenced messages"
-msgstr "Nėra neskaitytų laiškų"
+msgstr "laiškai be atsakymų"
 
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:184
-#, fuzzy
 msgid "broken threads"
-msgstr "Daugiau gijų nėra"
+msgstr "sulaužytos gijos"
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:187
 msgid "IMAP custom server-side search for STRING"
-msgstr ""
+msgstr "IMAP serverio paieška pagal IŠRAIŠKĄ"
 
 #: pattern/pattern.c:253 pattern/pattern.c:412
 msgid "Compiling search pattern..."
