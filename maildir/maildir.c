@@ -48,7 +48,6 @@
 #include "maildir/lib.h"
 #include "monitor.h"
 #include "mutt_globals.h"
-#include "muttlib.h"
 #include "mx.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"

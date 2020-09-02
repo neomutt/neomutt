@@ -39,11 +39,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "core/lib.h"
-#include "hcache/lib.h"
 #include "mx.h"
 
 struct ConfigSet;
 struct Email;
+struct HeaderCache;
 
 extern bool C_MaildirTrash;
 

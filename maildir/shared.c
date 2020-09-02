@@ -52,7 +52,6 @@
 #include "maildir/lib.h"
 #include "copy.h"
 #include "mutt_globals.h"
-#include "muttlib.h"
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"

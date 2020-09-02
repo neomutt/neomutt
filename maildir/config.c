@@ -34,13 +34,16 @@
 #include "lib.h"
 
 // clang-format off
-bool  C_CheckNew;        ///< Config: (maildir,mh) Check for new mail while the mailbox is open
-bool  C_MaildirCheckCur; ///< Config: Check both 'new' and 'cur' directories for new mail
-bool  C_MaildirTrash;    ///< Config: Use the maildir 'trashed' flag, rather than deleting
-bool  C_MhPurge;         ///< Config: Really delete files in MH mailboxes
-char *C_MhSeqFlagged;    ///< Config: MH sequence for flagged message
-char *C_MhSeqReplied;    ///< Config: MH sequence to tag replied messages
-char *C_MhSeqUnseen;     ///< Config: MH sequence for unseen messages
+bool  C_CheckNew;                 ///< Config: (maildir,mh) Check for new mail while the mailbox is open
+bool  C_MaildirCheckCur;          ///< Config: Check both 'new' and 'cur' directories for new mail
+#ifdef USE_HCACHE
+bool  C_MaildirHeaderCacheVerify; ///< Config: (hcache) Check for maildir changes when opening mailbox
+#endif
+bool  C_MaildirTrash;             ///< Config: Use the maildir 'trashed' flag, rather than deleting
+bool  C_MhPurge;                  ///< Config: Really delete files in MH mailboxes
+char *C_MhSeqFlagged;             ///< Config: MH sequence for flagged message
+char *C_MhSeqReplied;             ///< Config: MH sequence to tag replied messages
+char *C_MhSeqUnseen;              ///< Config: MH sequence for unseen messages
 // clang-format on
 
 struct ConfigDef MaildirVars[] = {
@@ -51,6 +54,11 @@ struct ConfigDef MaildirVars[] = {
   { "maildir_check_cur", DT_BOOL, &C_MaildirCheckCur, false, 0, NULL,
     "Check both 'new' and 'cur' directories for new mail"
   },
+#ifdef USE_HCACHE
+  { "maildir_header_cache_verify", DT_BOOL, &C_MaildirHeaderCacheVerify, true, 0, NULL,
+    "Check for maildir changes when opening mailbox"
+  },
+#endif
   { "maildir_trash", DT_BOOL, &C_MaildirTrash, false, 0, NULL,
     "Use the maildir 'trashed' flag, rather than deleting"
   },

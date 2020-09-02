@@ -43,7 +43,6 @@ char *C_HeaderCacheBackend;        ///< Config: (hcache) Header cache backend to
 short C_HeaderCacheCompressLevel;  ///< Config: (hcache) Level of compression for method
 char *C_HeaderCacheCompressMethod; ///< Config: (hcache) Enable generic hcache database compression
 #endif
-bool  C_MaildirHeaderCacheVerify;  ///< Config: (hcache) Check for maildir changes when opening mailbox
 // clang-format on
 
 bool C_HeaderCacheCompress = false;
@@ -136,9 +135,6 @@ struct ConfigDef HcacheVars[] = {
   },
   { "header_cache_compress_method", DT_STRING, &C_HeaderCacheCompressMethod, 0, 0, compress_method_validator,
     "(hcache) Enable generic hcache database compression"
-  },
-  { "maildir_header_cache_verify", DT_BOOL, &C_MaildirHeaderCacheVerify, true, 0, NULL,
-    "(hcache) Check for maildir changes when opening mailbox"
   },
 #endif
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)

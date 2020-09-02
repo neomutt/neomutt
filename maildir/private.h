@@ -82,6 +82,7 @@ struct MhSequences
 
 extern bool  C_CheckNew;
 extern bool  C_MaildirCheckCur;
+extern bool  C_MaildirHeaderCacheVerify;
 extern bool  C_MhPurge;
 extern char *C_MhSeqFlagged;
 extern char *C_MhSeqReplied;
