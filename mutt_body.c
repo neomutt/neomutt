@@ -21,7 +21,7 @@
  */
 
 /**
- * @page mutt_body Representation of the body of an email
+ * @page neo_mutt_body Representation of the body of an email
  *
  * Representation of the body of an email
  */

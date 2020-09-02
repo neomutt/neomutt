@@ -21,7 +21,7 @@
  */
 
 /**
- * @page notify Notification API
+ * @page mutt_notify Notification API
  *
  * Notification API
  */

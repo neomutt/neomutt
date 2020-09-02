@@ -24,7 +24,7 @@
  */
 
 /**
- * @page main Command line processing
+ * @page neo_main Command line processing
  *
  * Command line processing
  */

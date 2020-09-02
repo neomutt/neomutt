@@ -21,7 +21,7 @@
  */
 
 /**
- * @page wcscasecmp For systems lacking wcscasecmp()
+ * @page neo_wcscasecmp For systems lacking wcscasecmp()
  *
  * For systems lacking wcscasecmp()
  */

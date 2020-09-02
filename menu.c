@@ -21,7 +21,7 @@
  */
 
 /**
- * @page menu GUI present the user with a selectable list
+ * @page neo_menu GUI present the user with a selectable list
  *
  * GUI present the user with a selectable list
  */

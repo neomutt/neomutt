@@ -22,7 +22,7 @@
  */
 
 /**
- * @page helpbar HELPBAR: One-liner Help
+ * @page lib_helpbar HELPBAR: One-liner Help
  *
  * One-liner Help
  *

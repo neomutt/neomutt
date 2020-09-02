@@ -22,7 +22,7 @@
  */
 
 /**
- * @page postpone Save/restore and GUI list postponed emails
+ * @page neo_postpone Save/restore and GUI list postponed emails
  *
  * Save/restore and GUI list postponed emails
  */

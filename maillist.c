@@ -21,7 +21,7 @@
  */
 
 /**
- * @page maillist Handle mailing lists
+ * @page neo_maillist Handle mailing lists
  *
  * Handle mailing lists
  */

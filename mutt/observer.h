@@ -21,7 +21,7 @@
  */
 
 /**
- * @page observer Observer of notifications
+ * @page mutt_observer Observer of notifications
  *
  * Observer of notifications
  */

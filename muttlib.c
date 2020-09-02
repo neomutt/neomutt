@@ -23,7 +23,7 @@
  */
 
 /**
- * @page muttlib Some miscellaneous functions
+ * @page neo_muttlib Some miscellaneous functions
  *
  * Some miscellaneous functions
  */

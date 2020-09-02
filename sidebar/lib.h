@@ -23,7 +23,7 @@
  */
 
 /**
- * @page sidebar SIDEBAR: Display the mailboxes in a side panel
+ * @page lib_sidebar SIDEBAR: Display the mailboxes in a side panel
  *
  * Display the mailboxes in a side panel
  *
@@ -34,6 +34,7 @@
  * | sidebar/functions.c | @subpage sidebar_functions |
  * | sidebar/observer.c  | @subpage sidebar_observers |
  * | sidebar/sidebar.c   | @subpage sidebar_sidebar   |
+ * | sidebar/sort.c      | @subpage sidebar_sort      |
  * | sidebar/wdata.c     | @subpage sidebar_wdata     |
  * | sidebar/window.c    | @subpage sidebar_window    |
  */

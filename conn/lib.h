@@ -21,7 +21,7 @@
  */
 
 /**
- * @page conn CONN: Network connections and their encryption
+ * @page lib_conn CONN: Network connections and their encryption
  *
  * Manage external connections.
  *

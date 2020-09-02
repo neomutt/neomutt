@@ -22,7 +22,7 @@
  */
 
 /**
- * @page init Config/command parsing
+ * @page neo_init Config/command parsing
  *
  * Config/command parsing
  */

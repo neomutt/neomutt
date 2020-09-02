@@ -22,7 +22,7 @@
  */
 
 /**
- * @page mutt_config Definitions of config variables
+ * @page neo_mutt_config Definitions of config variables
  *
  * Definitions of config variables
  */

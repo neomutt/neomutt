@@ -21,7 +21,7 @@
  */
 
 /**
- * @page mbyte Multi-byte String manipulation functions
+ * @page mutt_mbyte Multi-byte String manipulation functions
  *
  * Some commonly-used multi-byte string manipulation routines.
  */

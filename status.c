@@ -21,7 +21,7 @@
  */
 
 /**
- * @page status GUI display a user-configurable status line
+ * @page neo_status GUI display a user-configurable status line
  *
  * GUI display a user-configurable status line
  */

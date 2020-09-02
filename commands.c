@@ -23,7 +23,7 @@
  */
 
 /**
- * @page commands Manage where the email is piped to external commands
+ * @page neo_commands Manage where the email is piped to external commands
  *
  * Manage where the email is piped to external commands
  */

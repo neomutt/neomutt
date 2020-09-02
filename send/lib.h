@@ -21,7 +21,7 @@
  */
 
 /**
- * @page send SEND: Shared code for sending Emails
+ * @page lib_send SEND: Shared code for sending Emails
 
  * Shared code for sending Emails
  *

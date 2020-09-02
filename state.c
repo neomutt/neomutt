@@ -21,7 +21,7 @@
  */
 
 /**
- * @page state Keep track when processing files
+ * @page neo_state Keep track when processing files
  *
  * Keep track when processing files
  */

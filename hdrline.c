@@ -24,7 +24,7 @@
  */
 
 /**
- * @page hdrline String processing routines to generate the mail index
+ * @page neo_hdrline String processing routines to generate the mail index
  *
  * String processing routines to generate the mail index
  */

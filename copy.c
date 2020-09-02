@@ -22,7 +22,7 @@
  */
 
 /**
- * @page copy Duplicate the structure of an entire email
+ * @page neo_copy Duplicate the structure of an entire email
  *
  * Duplicate the structure of an entire email
  */

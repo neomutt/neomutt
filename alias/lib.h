@@ -21,7 +21,7 @@
  */
 
 /**
- * @page alias ALIAS: Email Aliases
+ * @page lib_alias ALIAS: Email Aliases
  *
  * Email Aliases
  *

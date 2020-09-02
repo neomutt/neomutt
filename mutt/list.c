@@ -22,7 +22,7 @@
  */
 
 /**
- * @page list Singly-linked list type
+ * @page mutt_list Singly-linked list type
  *
  * Singly-linked list of strings.
  */

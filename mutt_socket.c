@@ -21,7 +21,7 @@
  */
 
 /**
- * @page mutt_socket NeoMutt connections
+ * @page neo_mutt_socket NeoMutt connections
  *
  * NeoMutt connections
  */

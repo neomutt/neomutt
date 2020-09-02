@@ -22,7 +22,7 @@
  */
 
 /**
- * @page resize GUI handle the resizing of the screen
+ * @page neo_resize GUI handle the resizing of the screen
  *
  * GUI handle the resizing of the screen
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page enriched Rich text handler
+ * @page neo_enriched Rich text handler
  *
  * Rich text handler
  */

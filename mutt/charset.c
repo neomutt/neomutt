@@ -21,7 +21,7 @@
  */
 
 /**
- * @page charset Conversion between different character encodings
+ * @page mutt_charset Conversion between different character encodings
  *
  * Conversion between different character encodings
  */

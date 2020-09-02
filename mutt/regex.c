@@ -22,7 +22,7 @@
  */
 
 /**
- * @page regex Manage regular expressions
+ * @page mutt_regex Manage regular expressions
  *
  * Manage regular expressions.
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page score Routines for adding user scores to emails
+ * @page neo_score Routines for adding user scores to emails
  *
  * Routines for adding user scores to emails
  */

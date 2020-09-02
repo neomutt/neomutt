@@ -21,7 +21,7 @@
  */
 
 /**
- * @page browser GUI component for displaying/selecting items from a list
+ * @page neo_browser GUI component for displaying/selecting items from a list
  *
  * GUI component for displaying/selecting items from a list
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page pool A global pool of Buffers
+ * @page mutt_pool A global pool of Buffers
  *
  * A shared pool of Buffers to save lots of allocs/frees.
  */

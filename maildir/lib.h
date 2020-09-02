@@ -21,7 +21,7 @@
  */
 
 /**
- * @page maildir MAILDIR: Local mailbox type
+ * @page lib_maildir MAILDIR: Local mailbox type
  *
  * Maildir local mailbox type
  *

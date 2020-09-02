@@ -21,7 +21,7 @@
  */
 
 /**
- * @page path Path manipulation functions
+ * @page mutt_path Path manipulation functions
  *
  * Path manipulation functions
  */

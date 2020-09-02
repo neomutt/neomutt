@@ -22,7 +22,7 @@
  */
 
 /**
- * @page command_parse Functions to parse commands in a config file
+ * @page neo_command_parse Functions to parse commands in a config file
  *
  * Functions to parse commands in a config file
  */

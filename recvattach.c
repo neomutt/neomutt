@@ -22,7 +22,7 @@
  */
 
 /**
- * @page recvattach Routines for managing attachments
+ * @page neo_recvattach Routines for managing attachments
  *
  * Routines for managing attachments
  */

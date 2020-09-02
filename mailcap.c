@@ -21,7 +21,7 @@
  */
 
 /**
- * @page mailcap RFC1524 Mailcap routines
+ * @page neo_mailcap RFC1524 Mailcap routines
  *
  * RFC1524 defines a format for the Multimedia Mail Configuration, which is the
  * standard mailcap file format under Unix which specifies what external

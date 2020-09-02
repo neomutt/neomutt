@@ -21,7 +21,7 @@
  */
 
 /**
- * @page handler Decide how to display email content
+ * @page neo_handler Decide how to display email content
  *
  * Decide how to display email content
  */

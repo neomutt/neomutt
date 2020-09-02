@@ -22,7 +22,7 @@
  */
 
 /**
- * @page mutt_commands Definitions of NeoMutt commands
+ * @page neo_mutt_commands Definitions of NeoMutt commands
  *
  * Definitions of NeoMutt commands
  */

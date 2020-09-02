@@ -23,7 +23,7 @@
  */
 
 /**
- * @page imap IMAP: Network Mailbox
+ * @page lib_imap IMAP: Network Mailbox
  *
  * IMAP network mailbox
  *

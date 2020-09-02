@@ -21,7 +21,7 @@
  */
 
 /**
- * @page mutt_header Manipulate an email's header
+ * @page neo_mutt_header Manipulate an email's header
  *
  * Manipulate an email's header
  */

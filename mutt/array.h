@@ -21,7 +21,7 @@
  */
 
 /**
- * @page array Linear array API
+ * @page mutt_array Linear array API
  *
  * API to store contiguous elements.
  */

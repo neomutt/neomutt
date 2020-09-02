@@ -21,7 +21,7 @@
  */
 
 /**
- * @page editmsg Prepare an email to be edited
+ * @page neo_editmsg Prepare an email to be edited
  *
  * Prepare an email to be edited
  */

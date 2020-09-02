@@ -21,7 +21,7 @@
  */
 
 /**
- * @page random Random number/string functions
+ * @page mutt_random Random number/string functions
  *
  * Random number/string functions
  */

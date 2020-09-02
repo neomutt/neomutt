@@ -22,7 +22,7 @@
  */
 
 /**
- * @page pattern PATTERN: Match patterns to emails
+ * @page lib_pattern PATTERN: Match patterns to emails
  *
  * Match patterns to emails
  *

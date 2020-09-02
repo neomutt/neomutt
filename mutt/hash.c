@@ -22,7 +22,7 @@
  */
 
 /**
- * @page hash Hash Table data structure
+ * @page mutt_hash Hash Table data structure
  *
  * Hash Table data structure.
  */

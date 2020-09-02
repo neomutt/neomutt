@@ -25,7 +25,7 @@
  */
 
 /**
- * @page hcache HCACHE: Header cache API
+ * @page lib_hcache HCACHE: Header cache API
  *
  * The Header Cache saves data from email headers to a local store in order to
  * speed up network mailboxes.

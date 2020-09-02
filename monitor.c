@@ -21,7 +21,7 @@
  */
 
 /**
- * @page monitor Monitor files for changes
+ * @page neo_monitor Monitor files for changes
  *
  * Monitor files for changes
  */

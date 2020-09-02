@@ -21,7 +21,7 @@
  */
 
 /**
- * @page exit Leave the program NOW
+ * @page mutt_exit Leave the program NOW
  *
  * The default behaviour on a critical error is to notify the user, then stop.
  */

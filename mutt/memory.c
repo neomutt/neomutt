@@ -21,7 +21,7 @@
  */
 
 /**
- * @page memory Memory management wrappers
+ * @page mutt_memory Memory management wrappers
  *
  * "Safe" memory management routines.
  *

@@ -21,6 +21,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page lib_bcache BCACHE: Body Caching - local copies of email bodies
+ *
+ * Body Caching - local copies of email bodies
+ *
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | bcache/bcache.c     | @subpage bcache_bcache     |
+ */
+
 #ifndef MUTT_BCACHE_LIB_H
 #define MUTT_BCACHE_LIB_H
 

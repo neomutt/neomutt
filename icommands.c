@@ -23,7 +23,7 @@
  */
 
 /**
- * @page icommands Information commands
+ * @page neo_icommands Information commands
  *
  * Information commands
  */

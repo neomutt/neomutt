@@ -20,7 +20,7 @@
  */
 
 /**
- * @page mailbox Mailbox helper functions
+ * @page neo_mutt_mailbox Mailbox helper functions
  *
  * Mailbox helper functions
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page date Time and date handling routines
+ * @page mutt_date Time and date handling routines
  *
  * Some commonly used time and date functions.
  */

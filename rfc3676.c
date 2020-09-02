@@ -24,7 +24,7 @@
  */
 
 /**
- * @page rfc3676 RFC3676 Format Flowed routines
+ * @page neo_rfc3676 RFC3676 Format Flowed routines
  *
  * RFC3676 Format Flowed routines
  */

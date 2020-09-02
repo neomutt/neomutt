@@ -22,7 +22,7 @@
  */
 
 /**
- * @page mapping Map between a string and a constant
+ * @page mutt_mapping Map between a string and a constant
  *
  * Map a string to a constant and vice versa.
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page envlist Private copy of the environment variables
+ * @page mutt_envlist Private copy of the environment variables
  *
  * Private copy of the environment variables
  */

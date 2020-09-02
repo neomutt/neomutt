@@ -24,7 +24,7 @@
  */
 
 /**
- * @page mx Mailbox multiplexor
+ * @page neo_mx Mailbox multiplexor
  *
  * Mailbox multiplexor
  */

@@ -23,7 +23,7 @@
  */
 
 /**
- * @page base64 Conversion to/from base64 encoding
+ * @page mutt_base64 Conversion to/from base64 encoding
  *
  * Convert between binary data and base64 text, according to RFC2045.
  *

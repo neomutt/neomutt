@@ -21,7 +21,7 @@
  */
 
 /**
- * @page pager GUI display a file/email/help in a viewport with paging
+ * @page neo_pager GUI display a file/email/help in a viewport with paging
  *
  * GUI display a file/email/help in a viewport with paging
  */

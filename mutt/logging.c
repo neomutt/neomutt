@@ -21,7 +21,7 @@
  */
 
 /**
- * @page logging Logging Dispatcher
+ * @page mutt_logging Logging Dispatcher
  *
  * Logging Dispatcher
  */

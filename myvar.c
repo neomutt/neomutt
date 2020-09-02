@@ -21,7 +21,7 @@
  */
 
 /**
- * @page myvar Handling of personal config ('my' variables)
+ * @page neo_myvar Handling of personal config ('my' variables)
  *
  * Handling of personal config ('my' variables)
  */

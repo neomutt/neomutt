@@ -22,7 +22,7 @@
  */
 
 /**
- * @page mutt_attach Handling of email attachments
+ * @page neo_mutt_attach Handling of email attachments
  *
  * Handling of email attachments
  */

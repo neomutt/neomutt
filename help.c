@@ -21,7 +21,7 @@
  */
 
 /**
- * @page help Generate the help-page and GUI display it
+ * @page neo_help Generate the help-page and GUI display it
  *
  * Generate and help-page and GUI display it
  */

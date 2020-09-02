@@ -22,7 +22,7 @@
  */
 
 /**
- * @page recvcmd Send/reply with an attachment
+ * @page neo_recvcmd Send/reply with an attachment
  *
  * Send/reply with an attachment
  */

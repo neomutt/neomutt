@@ -21,7 +21,7 @@
  */
 
 /**
- * @page index2 GUI manage the main index (list of emails)
+ * @page neo_index GUI manage the main index (list of emails)
  *
  * GUI manage the main index (list of emails)
  */

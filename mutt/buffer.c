@@ -22,7 +22,7 @@
  */
 
 /**
- * @page buffer General purpose object for storing and parsing strings
+ * @page mutt_buffer General purpose object for storing and parsing strings
  *
  * The Buffer object make parsing and manipulating strings easier.
  */

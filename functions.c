@@ -21,7 +21,7 @@
  */
 
 /**
- * @page functions Definitions of user functions
+ * @page neo_functions Definitions of user functions
  *
  * Definitions of user functions
  *

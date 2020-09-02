@@ -22,7 +22,7 @@
  */
 
 /**
- * @page mbox MBOX: Local mailbox type
+ * @page lib_mbox MBOX: Local mailbox type
  *
  * Mbox local mailbox type
  *

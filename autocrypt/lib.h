@@ -21,7 +21,7 @@
  */
 
 /**
- * @page autocrypt AUTOCRYPT: End-to-end encryption
+ * @page lib_autocrypt AUTOCRYPT: End-to-end encryption
  *
  * This is an implementation of Autocrypt Level 1.1. https://autocrypt.org/
  *

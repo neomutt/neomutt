@@ -21,7 +21,7 @@
  */
 
 /**
- * @page mutt_account ConnAccount object used by POP and IMAP
+ * @page neo_mutt_account ConnAccount object used by POP and IMAP
  *
  * ConnAccount object used by POP and IMAP
  */

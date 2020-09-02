@@ -21,7 +21,7 @@
  */
 
 /**
- * @page mutt_logging NeoMutt Logging
+ * @page neo_mutt_logging NeoMutt Logging
  *
  * NeoMutt Logging
  */

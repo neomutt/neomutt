@@ -22,7 +22,7 @@
  */
 
 /**
- * @page mutt_lua Integrated Lua scripting
+ * @page neo_mutt_lua Integrated Lua scripting
  *
  * Integrated Lua scripting
  */

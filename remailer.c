@@ -22,7 +22,7 @@
  */
 
 /**
- * @page remailer Support of Mixmaster anonymous remailer
+ * @page neo_remailer Support of Mixmaster anonymous remailer
  *
  * Support of Mixmaster anonymous remailer
  */

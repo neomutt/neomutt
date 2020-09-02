@@ -21,7 +21,7 @@
  */
 
 /**
- * @page history HISTORY: Read/write command history from/to a file
+ * @page lib_history HISTORY: Read/write command history from/to a file
  *
  * Read/write command history from/to a file
  *

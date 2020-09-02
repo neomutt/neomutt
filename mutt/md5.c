@@ -22,7 +22,7 @@
  */
 
 /**
- * @page md5 Calculate the MD5 checksum of a buffer
+ * @page mutt_md5 Calculate the MD5 checksum of a buffer
  *
  * Calculate the MD5 cryptographic hash of a string, according to RFC1321.
  */

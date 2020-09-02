@@ -21,7 +21,7 @@
  */
 
 /**
- * @page filter Pass files through external commands (filters)
+ * @page mutt_filter Pass files through external commands (filters)
  *
  * Pass files through external commands (filters)
  */

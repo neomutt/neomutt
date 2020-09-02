@@ -22,7 +22,7 @@
  */
 
 /**
- * @page hook Parse and execute user-defined hooks
+ * @page neo_hook Parse and execute user-defined hooks
  *
  * Parse and execute user-defined hooks
  */

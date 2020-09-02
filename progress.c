@@ -22,7 +22,7 @@
  */
 
 /**
- * @page progress Progress bar
+ * @page neo_progress Progress bar
  *
  * Progress bar
  */

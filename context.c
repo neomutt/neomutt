@@ -21,7 +21,7 @@
  */
 
 /**
- * @page ctx The "currently-open" mailbox
+ * @page neo_ctx The "currently-open" mailbox
  *
  * The "currently-open" mailbox
  */

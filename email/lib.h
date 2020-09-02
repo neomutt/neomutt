@@ -21,7 +21,7 @@
  */
 
 /**
- * @page email EMAIL: Structs that make up an email
+ * @page lib_email EMAIL: Structs that make up an email
  *
  * Structs that make up an email
  *

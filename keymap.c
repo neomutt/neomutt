@@ -21,7 +21,7 @@
  */
 
 /**
- * @page keymap Manage keymappings
+ * @page neo_keymap Manage keymappings
  *
  * Manage keymappings
  */

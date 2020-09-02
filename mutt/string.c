@@ -22,7 +22,7 @@
  */
 
 /**
- * @page string String manipulation functions
+ * @page mutt_string String manipulation functions
  *
  * Lots of commonly-used string manipulation routines.
  */

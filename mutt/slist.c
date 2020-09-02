@@ -21,7 +21,7 @@
  */
 
 /**
- * @page slist A separated list of strings
+ * @page mutt_slist A separated list of strings
  *
  * A separated list of strings
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page prex Manage precompiled / predefined regular expressions
+ * @page mutt_prex Manage precompiled / predefined regular expressions
  *
  * Manage precompiled / predefined regular expressions.
  */

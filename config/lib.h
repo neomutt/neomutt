@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config CONFIG: Flexible handling of config items
+ * @page lib_config CONFIG: Flexible handling of config items
  *
  * User configurable variables.
  *

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page mutt_signal Signal handling
+ * @page neo_mutt_signal Signal handling
  *
  * Signal handling
  */

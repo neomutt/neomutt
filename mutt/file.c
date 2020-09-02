@@ -21,7 +21,7 @@
  */
 
 /**
- * @page file File management functions
+ * @page mutt_file File management functions
  *
  * Commonly used file/dir management routines.
  */

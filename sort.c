@@ -22,7 +22,7 @@
  */
 
 /**
- * @page sort Assorted sorting methods
+ * @page neo_sort Assorted sorting methods
  *
  * Assorted sorting methods
  */

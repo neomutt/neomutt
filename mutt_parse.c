@@ -21,7 +21,7 @@
  */
 
 /**
- * @page mutt_parse Miscellaneous email parsing routines
+ * @page neo_mutt_parse Miscellaneous email parsing routines
  *
  * Miscellaneous email parsing routines
  */

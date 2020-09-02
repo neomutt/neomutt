@@ -22,7 +22,7 @@
  */
 
 /**
- * @page enter GUI ask the user to enter a string
+ * @page neo_enter GUI ask the user to enter a string
  *
  * GUI ask the user to enter a string
  */
