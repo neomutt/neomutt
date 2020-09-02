@@ -96,6 +96,8 @@ struct Email
 
   short attach_total;          ///< Number of qualifying attachments in message, if attach_valid
 
+  size_t sequence;             ///< Sequence number assigned on creation
+
 #ifdef MIXMASTER
   struct ListHead chain;       ///< Mixmaster chain
 #endif
@@ -106,7 +108,7 @@ struct Email
 
   struct TagList tags;         ///< For drivers that support server tagging
 
-  void *edata;                    ///< Driver-specific data
+  void *edata;                 ///< Driver-specific data
 
   /**
    * edata_free - Free the private data attached to the Email
@@ -114,7 +116,7 @@ struct Email
    */
   void (*edata_free)(void **ptr);
 
-  struct Notify *notify;          ///< Notifications handler
+  struct Notify *notify;       ///< Notifications handler
 };
 
 /**

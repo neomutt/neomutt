@@ -118,6 +118,7 @@ static void *dump(struct HeaderCache *hc, const struct Email *e, int *off, uint3
   e_dump.path = NULL;
   e_dump.tree = NULL;
   e_dump.thread = NULL;
+  e_dump.sequence = 0;
   STAILQ_INIT(&e_dump.tags);
 #ifdef MIXMASTER
   STAILQ_INIT(&e_dump.chain);
@@ -153,8 +154,10 @@ static struct Email *restore(const unsigned char *d)
   /* skip crc */
   off += sizeof(unsigned int);
 
+  size_t sequence = e->sequence;
   memcpy(e, d + off, sizeof(struct Email));
   off += sizeof(struct Email);
+  e->sequence = sequence;
 
   STAILQ_INIT(&e->tags);
 #ifdef MIXMASTER
