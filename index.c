@@ -1225,21 +1225,17 @@ int mutt_index_menu(struct MuttWindow *dlg)
       OptRedrawTree = false;
     }
 
-    if (Context)
-      Context->menu = menu;
-
-    if (Context && Context->mailbox && !attach_msg)
+    if (Context && Context->mailbox)
     {
+      Context->menu = menu;
       /* check for new mail in the mailbox.  If nonzero, then something has
        * changed about the file (either we got new mail or the file was
        * modified underneath us.) */
       int check = mx_mbox_check(Context->mailbox);
 
-      set_current_email(&cur, mutt_get_virt_email(Context->mailbox, menu->current));
-
       if (check < 0)
       {
-        if (!Context->mailbox || (mutt_buffer_is_empty(&Context->mailbox->pathbuf)))
+        if (mutt_buffer_is_empty(&Context->mailbox->pathbuf))
         {
           /* fatal error occurred */
           ctx_free(&Context);
@@ -1279,32 +1275,26 @@ int mutt_index_menu(struct MuttWindow *dlg)
           }
         }
         else if (check == MUTT_FLAGS)
+        {
           mutt_message(_("Mailbox was externally modified"));
+        }
 
         /* avoid the message being overwritten by mailbox */
         do_mailbox_notify = false;
 
-        if (Context && Context->mailbox)
-        {
-          bool verbose = Context->mailbox->verbose;
-          Context->mailbox->verbose = false;
-          update_index(menu, Context, check, oldcount, &cur);
-          Context->mailbox->verbose = verbose;
-          menu->max = Context->mailbox->vcount;
-        }
-        else
-        {
-          menu->max = 0;
-        }
-
+        bool verbose = Context->mailbox->verbose;
+        Context->mailbox->verbose = false;
+        update_index(menu, Context, check, oldcount, &cur);
+        Context->mailbox->verbose = verbose;
+        menu->max = Context->mailbox->vcount;
         menu->redraw = REDRAW_FULL;
-
         OptSearchInvalid = true;
       }
-    }
-    else if (Context)
-    {
-      set_current_email(&cur, mutt_get_virt_email(Context->mailbox, menu->current));
+
+      if (Context)
+      {
+        set_current_email(&cur, mutt_get_virt_email(Context->mailbox, menu->current));
+      }
     }
 
     if (!attach_msg)
