@@ -453,6 +453,7 @@ static void dot_config(FILE *fp, const char *name, int type,
       ; // do nothing
 
     dot_type_number(fp, "count", i);
+    FREE(&list);
   }
 
   dot_object_footer(fp);
