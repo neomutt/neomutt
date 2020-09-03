@@ -33,21 +33,8 @@
 #include "mutt_commands.h"
 
 struct Buffer;
-struct ConfigDef;
 struct ConfigSet;
 struct ListHead;
-
-int charset_validator    (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
-#ifdef USE_HCACHE_COMPRESSION
-int compress_method_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
-int compress_level_validator (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
-#endif
-#ifdef USE_HCACHE
-int hcache_validator     (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
-#endif
-int multipart_validator  (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
-int pager_validator      (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
-int reply_validator      (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 
 struct ConfigSet *    init_config            (size_t size);
 int                   mutt_command_complete  (char *buf, size_t buflen, int pos, int numtabs);

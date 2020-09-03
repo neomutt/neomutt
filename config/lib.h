@@ -29,6 +29,7 @@
  * | :------------------ | :------------------------- |
  * | config/address.c    | @subpage config_address    |
  * | config/bool.c       | @subpage config_bool       |
+ * | config/charset.c    | @subpage config_charset    |
  * | config/dump.c       | @subpage config_dump       |
  * | config/enum.c       | @subpage config_enum       |
  * | config/helpers.c    | @subpage config_helpers    |
@@ -51,6 +52,7 @@
 // IWYU pragma: begin_exports
 #include "address.h"
 #include "bool.h"
+#include "charset.h"
 #include "dump.h"
 #include "enum.h"
 #include "helpers.h"

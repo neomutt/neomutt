@@ -136,6 +136,57 @@ const struct Mapping SortBrowserMethods[] = {
   // clang-format on
 };
 
+/**
+ * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ConfigDef::validator()
+ */
+int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                        intptr_t value, struct Buffer *err)
+{
+  if (value == 0)
+    return CSR_SUCCESS;
+
+  const char *str = (const char *) value;
+
+  if (mutt_str_equal(str, "inline") || mutt_str_equal(str, "info"))
+    return CSR_SUCCESS;
+
+  mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
+  return CSR_ERR_INVALID;
+}
+
+/**
+ * pager_validator - Check for config variables that can't be set from the pager - Implements ConfigDef::validator()
+ */
+int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                    intptr_t value, struct Buffer *err)
+{
+  if (CurrentMenu == MENU_PAGER)
+  {
+    mutt_buffer_printf(err, _("Option %s may not be set or reset from the pager"),
+                       cdef->name);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}
+
+/**
+ * reply_validator - Validate the "reply_regex" config variable - Implements ConfigDef::validator()
+ */
+int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                    intptr_t value, struct Buffer *err)
+{
+  if (pager_validator(cs, cdef, value, err) != CSR_SUCCESS)
+    return CSR_ERR_INVALID;
+
+  if (!OptAttachMsg)
+    return CSR_SUCCESS;
+
+  mutt_buffer_printf(err, _("Option %s may not be set when in attach-message mode"),
+                     cdef->name);
+  return CSR_ERR_INVALID;
+}
+
 struct ConfigDef MainVars[] = {
   // clang-format off
   { "abort_backspace", DT_BOOL, &C_AbortBackspace, true, 0, NULL,
@@ -213,7 +264,7 @@ struct ConfigDef MainVars[] = {
   { "change_folder_next", DT_BOOL, &C_ChangeFolderNext, false, 0, NULL,
     "Suggest the next folder, rather than the first when using '<change-folder>'"
   },
-  { "charset", DT_STRING|DT_NOT_EMPTY, &C_Charset, 0, 0, charset_validator,
+  { "charset", DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, &C_Charset, 0, 0, charset_validator,
     "Default character set for displaying text on screen"
   },
   { "collapse_all", DT_BOOL, &C_CollapseAll, false, 0, NULL,
@@ -562,7 +613,7 @@ struct ConfigDef MainVars[] = {
   { "search_context", DT_NUMBER|DT_NOT_NEGATIVE, &C_SearchContext, 0, 0, NULL,
     "Context to display around search matches"
   },
-  { "send_charset", DT_STRING, &C_SendCharset, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
+  { "send_charset", DT_STRING|DT_CHARSET_STRICT, &C_SendCharset, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
     "Character sets for outgoing mail"
   },
   { "shell", DT_STRING|DT_COMMAND, &C_Shell, IP "/bin/sh", 0, NULL,
