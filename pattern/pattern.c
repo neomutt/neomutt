@@ -34,12 +34,14 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/gui.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
 #include "context.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
+#include "mutt_menu.h"
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
@@ -493,6 +495,157 @@ int mutt_search_command(struct Mailbox *mailbox, int cur, int op)
       e->matched = mutt_pattern_exec(SLIST_FIRST(SearchPattern),
                                      MUTT_MATCH_FULL_ADDRESS, mailbox, e, NULL);
       if (e->matched > 0)
+      {
+        mutt_clear_error();
+        if (msg && *msg)
+          mutt_message(msg);
+        return i;
+      }
+    }
+
+    if (SigInt)
+    {
+      mutt_error(_("Search interrupted"));
+      SigInt = 0;
+      return -1;
+    }
+
+    i += incr;
+  }
+
+  mutt_error(_("Not found"));
+  return -1;
+}
+
+/**
+ * mutt_search_command - Perform a search
+ * @param menu Menu to search through
+ * @param cur  Index number of current alias
+ * @param op   Operation to perform, e.g. OP_SEARCH_NEXT
+ * @retval >=0 Index of matching alias
+ * @retval -1 No match, or error
+ */
+int mutt_search_alias_command(struct Menu *menu, int cur, int op)
+{
+  struct Progress progress;
+
+  struct AliasMenuData *mdata = (struct AliasMenuData *) menu->mdata;
+
+  if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
+  {
+    char buf[256];
+    mutt_str_copy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
+    if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
+                            _("Search for: ") :
+                            _("Reverse search for: "),
+                        buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN) != 0) ||
+        (buf[0] == '\0'))
+    {
+      return -1;
+    }
+
+    if ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT))
+      OptSearchReverse = false;
+    else
+      OptSearchReverse = true;
+
+    /* compare the *expanded* version of the search pattern in case
+     * $simple_search has changed while we were searching */
+    struct Buffer *tmp = mutt_buffer_pool_get();
+    mutt_buffer_strcpy(tmp, buf);
+    mutt_check_simple(tmp, NONULL(C_SimpleSearch));
+
+    if (!SearchPattern || !mutt_str_equal(mutt_b2s(tmp), LastSearchExpn))
+    {
+      struct Buffer err;
+      mutt_buffer_init(&err);
+      OptSearchInvalid = true;
+      mutt_str_copy(LastSearch, buf, sizeof(LastSearch));
+      mutt_str_copy(LastSearchExpn, mutt_b2s(tmp), sizeof(LastSearchExpn));
+      mutt_message(_("Compiling search pattern..."));
+      mutt_pattern_free(&SearchPattern);
+      err.dsize = 256;
+      err.data = mutt_mem_malloc(err.dsize);
+      SearchPattern = mutt_pattern_comp(tmp->data, MUTT_PC_FULL_MSG, &err);
+      if (!SearchPattern)
+      {
+        mutt_buffer_pool_release(&tmp);
+        mutt_error("%s", err.data);
+        FREE(&err.data);
+        LastSearch[0] = '\0';
+        LastSearchExpn[0] = '\0';
+        return -1;
+      }
+      FREE(&err.data);
+      mutt_clear_error();
+    }
+
+    mutt_buffer_pool_release(&tmp);
+  }
+
+  if (OptSearchInvalid)
+  {
+    struct AliasView *av = NULL;
+    ARRAY_FOREACH(av, mdata)
+    {
+      av->is_searched = false;
+    }
+
+    OptSearchInvalid = false;
+  }
+
+  int incr = OptSearchReverse ? -1 : 1;
+  if (op == OP_SEARCH_OPPOSITE)
+    incr = -incr;
+
+  mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_READ, ARRAY_SIZE(mdata));
+
+  for (int i = cur + incr, j = 0; j != ARRAY_SIZE(mdata); j++)
+  {
+    const char *msg = NULL;
+    mutt_progress_update(&progress, j, -1);
+    if (i > ARRAY_SIZE(mdata) - 1)
+    {
+      i = 0;
+      if (C_WrapSearch)
+        msg = _("Search wrapped to top");
+      else
+      {
+        mutt_message(_("Search hit bottom without finding match"));
+        return -1;
+      }
+    }
+    else if (i < 0)
+    {
+      i = ARRAY_SIZE(mdata) - 1;
+      if (C_WrapSearch)
+        msg = _("Search wrapped to bottom");
+      else
+      {
+        mutt_message(_("Search hit top without finding match"));
+        return -1;
+      }
+    }
+
+    struct AliasView *av = ARRAY_GET(mdata, i);
+    if (av->is_searched)
+    {
+      /* if we've already evaluated this message, use the cached value */
+      if (av->is_matched)
+      {
+        mutt_clear_error();
+        if (msg && *msg)
+          mutt_message(msg);
+        return i;
+      }
+    }
+    else
+    {
+      /* remember that we've already searched this message */
+      av->is_searched = true;
+      av->is_matched = mutt_pattern_alias_exec(SLIST_FIRST(SearchPattern),
+                                               MUTT_MATCH_FULL_ADDRESS, av, NULL);
+      if (av->is_matched > 0)
       {
         mutt_clear_error();
         if (msg && *msg)

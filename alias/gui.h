@@ -34,11 +34,13 @@ struct Alias;
  */
 struct AliasView
 {
-  int num;             ///< Index number in list
-  int orig_seq;        ///< Sequence in alias config file
-  bool is_tagged;      ///< Is it tagged?
-  bool is_deleted;     ///< Is it deleted?
-  struct Alias *alias; ///< Alias
+  int num;              ///< Index number in list
+  int orig_seq;         ///< Sequence in alias config file
+  bool is_searched : 1; ///< Alias has been searched
+  bool is_matched  : 1; ///< Search matches this Alias
+  bool is_tagged   : 1; ///< Is it tagged?
+  bool is_deleted  : 1; ///< Is it deleted?
+  struct Alias *alias;  ///< Alias
 };
 
 ARRAY_HEAD(AliasMenuData, struct AliasView);
