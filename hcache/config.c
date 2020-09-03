@@ -28,10 +28,12 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <config/lib.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "lib.h"
+#include "compress/lib.h"
+#include "store/lib.h"
 #include "init.h"
 
 // clang-format off
@@ -48,6 +50,77 @@ bool C_HeaderCacheCompress = false;
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
 long C_HeaderCachePagesize = 0;
 #endif
+
+/**
+ * hcache_validator - Validate the "header_cache_backend" config variable - Implements ConfigDef::validator()
+ */
+int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                     intptr_t value, struct Buffer *err)
+{
+  if (value == 0)
+    return CSR_SUCCESS;
+
+  const char *str = (const char *) value;
+
+  if (store_is_valid_backend(str))
+    return CSR_SUCCESS;
+
+  mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
+  return CSR_ERR_INVALID;
+}
+
+#ifdef USE_HCACHE_COMPRESSION
+/**
+ * compress_method_validator - Validate the "header_cache_compress_method" config variable - Implements ConfigDef::validator()
+ */
+int compress_method_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                              intptr_t value, struct Buffer *err)
+{
+  if (value == 0)
+    return CSR_SUCCESS;
+
+  const char *str = (const char *) value;
+
+  if (compress_get_ops(str))
+    return CSR_SUCCESS;
+
+  mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
+  return CSR_ERR_INVALID;
+}
+
+/**
+ * compress_level_validator - Validate the "header_cache_compress_level" config variable - Implements ConfigDef::validator()
+ */
+int compress_level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                             intptr_t value, struct Buffer *err)
+{
+  if (!C_HeaderCacheCompressMethod)
+  {
+    mutt_buffer_printf(err, _("Set option %s before setting %s"),
+                       "header_cache_compress_method", cdef->name);
+    return CSR_ERR_INVALID;
+  }
+
+  const struct ComprOps *cops = compress_get_ops(C_HeaderCacheCompressMethod);
+  if (!cops)
+  {
+    mutt_buffer_printf(err, _("Invalid value for option %s: %s"),
+                       "header_cache_compress_method", C_HeaderCacheCompressMethod);
+    return CSR_ERR_INVALID;
+  }
+
+  if ((value < cops->min_level) || (value > cops->max_level))
+  {
+    // L10N: This applies to the "$header_cache_compress_level" config variable.
+    //       It shows the minimum and maximum values, e.g. 'between 1 and 22'
+    mutt_buffer_printf(err, _("Option %s must be between %d and %d inclusive"),
+                       cdef->name, cops->min_level, cops->max_level);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}
+#endif /* USE_HCACHE_COMPRESSION */
 
 struct ConfigDef HcacheVars[] = {
   // clang-format off
