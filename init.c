@@ -1076,6 +1076,14 @@ int mutt_query_variables(struct ListHead *queries, bool show_docs)
     struct HashElem *he = cs_subset_lookup(NeoMutt->sub, np->data);
     if (!he)
     {
+      mutt_warning(_("No such variable: %s"), np->data);
+      rc = 1;
+      continue;
+    }
+
+    if (he->type & DT_DEPRECATED)
+    {
+      mutt_warning(_("Config variable '%s' is deprecated"), np->data);
       rc = 1;
       continue;
     }
