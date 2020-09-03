@@ -58,3 +58,21 @@ void maildir_entry_free(struct MdEmail **ptr)
 
   FREE(ptr);
 }
+
+/**
+ * maildirarray_clear - Free a Maildir array
+ * @param[out] mda Maildir array to free
+ */
+void maildirarray_clear(struct MdEmailArray *mda)
+{
+  if (!mda)
+    return;
+
+  struct MdEmail **mdp = NULL;
+  ARRAY_FOREACH(mdp, mda)
+  {
+    maildir_entry_free(mdp);
+  }
+
+  ARRAY_FREE(mda);
+}

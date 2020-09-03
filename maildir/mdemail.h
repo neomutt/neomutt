@@ -24,7 +24,6 @@
 #define MUTT_MAILDIR_MDEMAIL_H
 
 #include <stdbool.h>
-#include <sys/types.h>
 #include "mutt/lib.h"
 
 /**
@@ -35,11 +34,11 @@ struct MdEmail
   struct Email *email;
   char *canon_fname;
   bool header_parsed : 1;
-  ino_t inode;
-  struct MdEmail *next;
 };
+ARRAY_HEAD(MdEmailArray, struct MdEmail *);
 
 void            maildir_entry_free(struct MdEmail **ptr);
 struct MdEmail *maildir_entry_new(void);
+void            maildirarray_clear(struct MdEmailArray *mda);
 
 #endif /* MUTT_MAILDIR_MDEMAIL_H */

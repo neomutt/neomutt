@@ -42,6 +42,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "core/lib.h"
+#include "edata.h"
 #include "mx.h"
 
 struct ConfigSet;

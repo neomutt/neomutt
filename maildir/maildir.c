@@ -485,16 +485,15 @@ void maildir_update_mtime(struct Mailbox *m)
 /**
  * maildir_parse_dir - Read a Maildir mailbox
  * @param[in]  m        Mailbox
- * @param[out] last     Last Maildir
+ * @param[out] mda      Array for results
  * @param[in]  subdir   Subdirectory, e.g. 'new'
- * @param[out] count    Counter for the progress bar
  * @param[in]  progress Progress bar
  * @retval  0 Success
  * @retval -1 Error
  * @retval -2 Aborted
  */
-int maildir_parse_dir(struct Mailbox *m, struct MdEmail ***last,
-                      const char *subdir, int *count, struct Progress *progress)
+int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
+                      const char *subdir, struct Progress *progress)
 {
   struct dirent *de = NULL;
   int rc = 0;
@@ -529,21 +528,15 @@ int maildir_parse_dir(struct Mailbox *m, struct MdEmail ***last,
     e->old = is_old;
     maildir_parse_flags(e, de->d_name);
 
-    if (count)
-    {
-      (*count)++;
-      if (m->verbose && progress)
-        mutt_progress_update(progress, *count, -1);
-    }
+    if (m->verbose && progress)
+      mutt_progress_update(progress, ARRAY_SIZE(mda) + 1, -1);
 
     mutt_buffer_printf(buf, "%s/%s", subdir, de->d_name);
     e->path = mutt_buffer_strdup(buf);
 
     entry = maildir_entry_new();
     entry->email = e;
-    entry->inode = de->d_ino;
-    **last = entry;
-    *last = &entry->next;
+    ARRAY_ADD(mda, entry);
   }
 
   closedir(dirp);
@@ -575,46 +568,31 @@ size_t maildir_hcache_keylen(const char *fn)
 
 /**
  * maildir_delayed_parsing - This function does the second parsing pass
- * @param[in]  m  Mailbox
- * @param[out] md Maildir to parse
+ * @param[in]  m   Mailbox
+ * @param[out] mda Maildir array to parse
  * @param[in]  progress Progress bar
  */
-void maildir_delayed_parsing(struct Mailbox *m, struct MdEmail **md, struct Progress *progress)
+void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
+                             struct Progress *progress)
 {
-  struct MdEmail *p = NULL, *last = NULL;
   char fn[PATH_MAX];
-  int count;
-  bool sort = false;
 
 #ifdef USE_HCACHE
   struct HeaderCache *hc = mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
 #endif
 
-  for (p = *md, count = 0; p; p = p->next, count++)
+  struct MdEmail *md = NULL;
+  struct MdEmail **mdp = NULL;
+  ARRAY_FOREACH(mdp, mda)
   {
-    if (!(p && p->email && !p->header_parsed))
-    {
-      last = p;
+    md = *mdp;
+    if (!md || !md->email || md->header_parsed)
       continue;
-    }
 
     if (m->verbose && progress)
-      mutt_progress_update(progress, count, -1);
+      mutt_progress_update(progress, ARRAY_FOREACH_IDX, -1);
 
-    if (!sort)
-    {
-      mutt_debug(LL_DEBUG3, "maildir: need to sort %s by inode\n", mailbox_path(m));
-      p = maildir_sort(p, (size_t) -1, md_cmp_inode);
-      if (last)
-        last->next = p;
-      else
-        *md = p;
-      sort = true;
-      p = skip_duplicates(p, &last);
-      snprintf(fn, sizeof(fn), "%s/%s", mailbox_path(m), p->email->path);
-    }
-
-    snprintf(fn, sizeof(fn), "%s/%s", mailbox_path(m), p->email->path);
+    snprintf(fn, sizeof(fn), "%s/%s", mailbox_path(m), md->email->path);
 
 #ifdef USE_HCACHE
     struct stat lastchanged = { 0 };
@@ -624,7 +602,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct MdEmail **md, struct Prog
       rc = stat(fn, &lastchanged);
     }
 
-    const char *key = p->email->path + 3;
+    const char *key = md->email->path + 3;
     size_t keylen = maildir_hcache_keylen(key);
     struct HCacheEntry hce = mutt_hcache_fetch(hc, key, keylen, 0);
 
@@ -632,28 +610,27 @@ void maildir_delayed_parsing(struct Mailbox *m, struct MdEmail **md, struct Prog
     {
       hce.email->edata = maildir_edata_new();
       hce.email->edata_free = maildir_edata_free;
-      hce.email->old = p->email->old;
-      hce.email->path = mutt_str_dup(p->email->path);
-      email_free(&p->email);
-      p->email = hce.email;
-      maildir_parse_flags(p->email, fn);
+      hce.email->old = md->email->old;
+      hce.email->path = mutt_str_dup(md->email->path);
+      email_free(&md->email);
+      md->email = hce.email;
+      maildir_parse_flags(md->email, fn);
     }
     else
 #endif
     {
-      if (maildir_parse_message(m->type, fn, p->email->old, p->email))
+      if (maildir_parse_message(m->type, fn, md->email->old, md->email))
       {
-        p->header_parsed = true;
+        md->header_parsed = true;
 #ifdef USE_HCACHE
-        key = p->email->path + 3;
+        key = md->email->path + 3;
         keylen = maildir_hcache_keylen(key);
-        mutt_hcache_store(hc, key, keylen, p->email, 0);
+        mutt_hcache_store(hc, key, keylen, md->email, 0);
 #endif
       }
       else
-        email_free(&p->email);
+        email_free(&md->email);
     }
-    last = p;
   }
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
@@ -672,8 +649,6 @@ int maildir_read_dir(struct Mailbox *m, const char *subdir)
   if (!m)
     return -1;
 
-  struct MdEmail *md = NULL;
-  struct MdEmail **last = NULL;
   struct Progress progress;
 
   if (m->verbose)
@@ -691,23 +666,19 @@ int maildir_read_dir(struct Mailbox *m, const char *subdir)
     m->mdata_free = maildir_mdata_free;
   }
 
-  mh_update_mtime(m);
-
-  md = NULL;
-  last = &md;
-  int count = 0;
-  if (maildir_parse_dir(m, &last, subdir, &count, &progress) < 0)
+  struct MdEmailArray mda = ARRAY_HEAD_INITIALIZER;
+  if (maildir_parse_dir(m, &mda, subdir, &progress) < 0)
     return -1;
 
   if (m->verbose)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, count);
+    mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, ARRAY_SIZE(&mda));
   }
-  maildir_delayed_parsing(m, &md, &progress);
+  maildir_delayed_parsing(m, &mda, &progress);
 
-  maildir_move_to_mailbox(m, &md);
+  maildir_move_to_mailbox(m, &mda);
 
   if (!mdata->mh_umask)
     mdata->mh_umask = mh_umask(m);
@@ -1199,10 +1170,6 @@ int maildir_mbox_check(struct Mailbox *m)
   bool occult = false;        /* messages were removed from the mailbox */
   int num_new = 0;            /* number of new messages added to the mailbox */
   bool flags_changed = false; /* message flags were changed in the mailbox */
-  struct MdEmail *md = NULL;  /* list of messages in the mailbox */
-  struct MdEmail **last = NULL;
-  struct MdEmail *p = NULL;
-  int count = 0;
   struct HashTable *fnames = NULL; /* hash table for quickly looking up the base filename
                                  for a maildir message */
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
@@ -1256,23 +1223,25 @@ int maildir_mbox_check(struct Mailbox *m)
 
   /* do a fast scan of just the filenames in
    * the subdirectories that have changed.  */
-  md = NULL;
-  last = &md;
+  struct MdEmailArray mda = ARRAY_HEAD_INITIALIZER;
   if (changed & MMC_NEW_DIR)
-    maildir_parse_dir(m, &last, "new", &count, NULL);
+    maildir_parse_dir(m, &mda, "new", NULL);
   if (changed & MMC_CUR_DIR)
-    maildir_parse_dir(m, &last, "cur", &count, NULL);
+    maildir_parse_dir(m, &mda, "cur", NULL);
 
   /* we create a hash table keyed off the canonical (sans flags) filename
    * of each message we scanned.  This is used in the loop over the
    * existing messages below to do some correlation.  */
-  fnames = mutt_hash_new(count, MUTT_HASH_NO_FLAGS);
+  fnames = mutt_hash_new(ARRAY_SIZE(&mda), MUTT_HASH_NO_FLAGS);
 
-  for (p = md; p; p = p->next)
+  struct MdEmail *md = NULL;
+  struct MdEmail **mdp = NULL;
+  ARRAY_FOREACH(mdp, &mda)
   {
-    maildir_canon_filename(buf, p->email->path);
-    p->canon_fname = mutt_buffer_strdup(buf);
-    mutt_hash_insert(fnames, p->canon_fname, p);
+    md = *mdp;
+    maildir_canon_filename(buf, md->email->path);
+    md->canon_fname = mutt_buffer_strdup(buf);
+    mutt_hash_insert(fnames, md->canon_fname, md);
   }
 
   /* check for modifications and adjust flags */
@@ -1284,35 +1253,35 @@ int maildir_mbox_check(struct Mailbox *m)
 
     e->active = false;
     maildir_canon_filename(buf, e->path);
-    p = mutt_hash_find(fnames, mutt_b2s(buf));
-    if (p && p->email)
+    md = mutt_hash_find(fnames, mutt_b2s(buf));
+    if (md && md->email)
     {
       /* message already exists, merge flags */
       e->active = true;
 
       /* check to see if the message has moved to a different
        * subdirectory.  If so, update the associated filename.  */
-      if (!mutt_str_equal(e->path, p->email->path))
-        mutt_str_replace(&e->path, p->email->path);
+      if (!mutt_str_equal(e->path, md->email->path))
+        mutt_str_replace(&e->path, md->email->path);
 
       /* if the user hasn't modified the flags on this message, update
        * the flags we just detected.  */
       if (!e->changed)
-        if (maildir_update_flags(m, e, p->email))
+        if (maildir_update_flags(m, e, md->email))
           flags_changed = true;
 
       if (e->deleted == e->trash)
       {
-        if (e->deleted != p->email->deleted)
+        if (e->deleted != md->email->deleted)
         {
-          e->deleted = p->email->deleted;
+          e->deleted = md->email->deleted;
           flags_changed = true;
         }
       }
-      e->trash = p->email->trash;
+      e->trash = md->email->trash;
 
       /* this is a duplicate of an existing email, so remove it */
-      email_free(&p->email);
+      email_free(&md->email);
     }
     /* This message was not in the list of messages we just scanned.
      * Check to see if we have enough information to know if the
@@ -1344,10 +1313,10 @@ int maildir_mbox_check(struct Mailbox *m)
     mailbox_changed(m, NT_MAILBOX_RESORT);
 
   /* do any delayed parsing we need to do. */
-  maildir_delayed_parsing(m, &md, NULL);
+  maildir_delayed_parsing(m, &mda, NULL);
 
   /* Incorporate new messages */
-  num_new = maildir_move_to_mailbox(m, &md);
+  num_new = maildir_move_to_mailbox(m, &mda);
   if (num_new > 0)
   {
     mailbox_changed(m, NT_MAILBOX_INVALID);
@@ -1356,6 +1325,7 @@ int maildir_mbox_check(struct Mailbox *m)
 
   mutt_buffer_pool_release(&buf);
 
+  ARRAY_FREE(&mda);
   if (occult)
     return MUTT_REOPENED;
   if (num_new > 0)
