@@ -40,6 +40,8 @@
 #include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/alias.h"
+#include "alias/gui.h"
 #include "alias/lib.h"
 #include "mutt.h"
 #include "lib.h"
@@ -273,6 +275,27 @@ static bool perform_and(struct PatternList *pat, PatternExecFlags flags,
 }
 
 /**
+ * perform_alias_and - Perform a logical AND on a set of Patterns
+ * @param pat   Patterns to test
+ * @param flags Optional flags, e.g. #MUTT_MATCH_FULL_ADDRESS
+ * @param av    AliasView
+ * @param cache Cached Patterns
+ * @retval true If ALL of the Patterns evaluate to true
+ */
+static bool perform_alias_and(struct PatternList *pat, PatternExecFlags flags,
+                              struct AliasView *av, struct PatternCache *cache)
+{
+  struct Pattern *p = NULL;
+
+  SLIST_FOREACH(p, pat, entries)
+  {
+    if (mutt_pattern_alias_exec(p, flags, av, cache) <= 0)
+      return false;
+  }
+  return true;
+}
+
+/**
  * perform_or - Perform a logical OR on a set of Patterns
  * @param pat   Patterns to test
  * @param flags Optional flags, e.g. #MUTT_MATCH_FULL_ADDRESS
@@ -289,6 +312,27 @@ static int perform_or(struct PatternList *pat, PatternExecFlags flags,
   SLIST_FOREACH(p, pat, entries)
   {
     if (mutt_pattern_exec(p, flags, m, e, cache) > 0)
+      return true;
+  }
+  return false;
+}
+
+/**
+ * perform_alias_or - Perform a logical OR on a set of Patterns
+ * @param pat   Patterns to test
+ * @param flags Optional flags, e.g. #MUTT_MATCH_FULL_ADDRESS
+ * @param av    AliasView
+ * @param cache Cached Patterns
+ * @retval true If ONE (or more) of the Patterns evaluates to true
+ */
+static int perform_alias_or(struct PatternList *pat, PatternExecFlags flags,
+                            struct AliasView *av, struct PatternCache *cache)
+{
+  struct Pattern *p = NULL;
+
+  SLIST_FOREACH(p, pat, entries)
+  {
+    if (mutt_pattern_alias_exec(p, flags, av, cache) > 0)
       return true;
   }
   return false;
@@ -977,5 +1021,46 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
 #endif
   }
   mutt_error(_("error: unknown op %d (report this error)"), pat->op);
+  return 0;
+}
+
+/**
+ * mutt_pattern_alias_exec - Match a pattern against an alias
+ * @param pat   Pattern to match
+ * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
+ * @param av    AliasView
+ * @param cache Cache for common Patterns
+ * @retval  1 Success, pattern matched
+ * @retval  0 Pattern did not match
+ * @retval -1 Error
+ *
+ * flags: MUTT_MATCH_FULL_ADDRESS - match both personal and machine address
+ * cache: For repeated matches against the same Alias, passing in non-NULL will
+ *        store some of the cacheable pattern matches in this structure.
+ */
+int mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
+                            struct AliasView *av, struct PatternCache *cache)
+{
+  switch (pat->op)
+  {
+    case MUTT_PAT_FROM: /* alias */
+      if (!av->alias)
+        return 0;
+      return pat->pat_not ^ (av->alias->name && patmatch(pat, av->alias->name));
+    case MUTT_PAT_CC: /* comment */
+      if (!av->alias)
+        return 0;
+      return pat->pat_not ^ (av->alias->comment && patmatch(pat, av->alias->comment));
+    case MUTT_PAT_TO: /* alias address list */
+      if (!av->alias)
+        return 0;
+      return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
+                                           1, &av->alias->addr);
+    case MUTT_PAT_AND:
+      return pat->pat_not ^ (perform_alias_and(pat->child, flags, av, cache) > 0);
+    case MUTT_PAT_OR:
+      return pat->pat_not ^ (perform_alias_or(pat->child, flags, av, cache) > 0);
+  }
+
   return 0;
 }

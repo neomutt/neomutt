@@ -41,6 +41,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "pattern/lib.h"
 #include "alias.h"
 #include "format_flags.h"
 #include "gui.h"
@@ -195,6 +196,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
   dlg->help_menu = MENU_ALIAS;
 
   menu->make_entry = alias_make_entry;
+  menu->custom_search = true;
   menu->tag = alias_tag;
   menu->title = _("Aliases");
   menu->max = ARRAY_SIZE(mdata);
@@ -284,6 +286,17 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
 
         break;
       }
+      case OP_SEARCH_REVERSE:
+      case OP_SEARCH_NEXT:
+      case OP_SEARCH_OPPOSITE:
+      case OP_SEARCH:
+        menu->current = mutt_search_alias_command(menu, menu->current, op);
+        if (menu->current == -1)
+          menu->current = menu->oldcurrent;
+        else
+          menu->redraw |= REDRAW_MOTION;
+        break;
+
       case OP_GENERIC_SELECT_ENTRY:
         t = menu->current;
         if (t >= ARRAY_SIZE(mdata))

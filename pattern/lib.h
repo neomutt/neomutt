@@ -45,10 +45,12 @@
 #include "mutt/lib.h"
 #include "mutt.h"
 
+struct AliasView;
 struct ConfigSet;
 struct Email;
 struct Envelope;
 struct Mailbox;
+struct Menu;
 
 /* These Config Variables are only used in pattern.c */
 extern bool C_ThoroughSearch;
@@ -167,8 +169,11 @@ enum PatternType
   MUTT_PAT_MAX,
 };
 
-int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
-                      struct Mailbox *m, struct Email *e, struct PatternCache *cache);
+int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags, struct Mailbox *m,
+                      struct Email *e, struct PatternCache *cache);
+int mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
+                            struct AliasView *av, struct PatternCache *cache);
+
 struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, struct Buffer *err);
 void mutt_check_simple(struct Buffer *s, const char *simple);
 void mutt_pattern_free(struct PatternList **pat);
@@ -179,6 +184,7 @@ int mutt_is_list_recipient(bool all_addr, struct Envelope *e);
 int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *e);
 int mutt_pattern_func(int op, char *prompt);
 int mutt_search_command(struct Mailbox *mailbox, int cur, int op);
+int mutt_search_alias_command(struct Menu *menu, int cur, int op);
 
 bool mutt_limit_current_thread(struct Email *e);
 bool config_init_pattern(struct ConfigSet *cs);

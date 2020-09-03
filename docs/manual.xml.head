@@ -7890,7 +7890,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
           (<literal>limit</literal>, <literal>tag-pattern</literal>,
           <literal>delete-pattern</literal>, etc.).
           <xref linkend="tab-patterns" /> shows several ways to select
-          messages.
+          messages while <xref linkend="tab-patterns-alias" /> shows ways of selecting aliases.
         </para>
 
         <table id="tab-patterns">
@@ -8394,6 +8394,46 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
             </tbody>
           </tgroup>
         </table>
+
+        <table id="tab-patterns-alias">
+          <title>Alias pattern modifiers</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Pattern modifier</entry>
+                <entry>Notes</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>~c <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
+                <entry>
+                  aliases which contain <emphasis>EXPR</emphasis> in the
+                  alias comment
+                </entry>
+              </row>
+              <row>
+                <entry>~f <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
+                <entry>
+                  aliases which contain <emphasis>EXPR</emphasis> in the
+                  alias name (<emphasis>From</emphasis> part of alias)
+                </entry>
+              </row>
+              <row>
+                <entry>~t <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
+                <entry>
+                  aliases which contain <emphasis>EXPR</emphasis> in the
+                  alias address (<emphasis>To</emphasis> part of alias)
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
         <para>
           Where <emphasis>EXPR</emphasis> is a
           <link linkend="regex">regular expression</link>, and
