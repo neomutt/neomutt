@@ -50,7 +50,6 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
                                intptr_t data, struct Buffer *err)
 {
   struct Alias *tmp = NULL;
-  char *estr = NULL;
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
   enum NotifyAlias event;
 
@@ -60,20 +59,48 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_WARNING;
   }
 
+  /* name */
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-
+  mutt_debug(LL_DEBUG5, "First token is '%s'\n", buf->data);
   if (parse_grouplist(&gl, buf, s, err) == -1)
+  {
     return MUTT_CMD_ERROR;
+  }
+  char *name = mutt_str_dup(buf->data);
+
+  /* address list */
+  mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
+  mutt_debug(LL_DEBUG5, "Second token is '%s'\n", buf->data);
+  struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+  int parsed = mutt_addrlist_parse2(&al, buf->data);
+  if (parsed == 0)
+  {
+    mutt_buffer_printf(err, _("Warning: Bad address '%s' in alias '%s'"), buf->data, name);
+    FREE(&name);
+    goto bail;
+  }
+
+  /* IDN */
+  char *estr = NULL;
+  if (mutt_addrlist_to_intl(&al, &estr))
+  {
+    mutt_buffer_printf(err, _("Warning: Bad IDN '%s' in alias '%s'"), estr, name);
+    FREE(&name);
+    FREE(&estr);
+    goto bail;
+  }
+
 
   /* check to see if an alias with this name already exists */
   TAILQ_FOREACH(tmp, &Aliases, entries)
   {
-    if (mutt_istr_equal(tmp->name, buf->data))
+    if (mutt_istr_equal(tmp->name, name))
       break;
   }
 
   if (tmp)
   {
+    FREE(&name);
     alias_reverse_delete(tmp);
     /* override the previous value */
     mutt_addrlist_clear(&tmp->addr);
@@ -84,22 +111,11 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   {
     /* create a new alias */
     tmp = alias_new();
-    tmp->name = mutt_str_dup(buf->data);
+    tmp->name = name;
     TAILQ_INSERT_TAIL(&Aliases, tmp, entries);
     event = NT_ALIAS_NEW;
   }
-
-  mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
-  mutt_debug(LL_DEBUG5, "Second token is '%s'\n", buf->data);
-
-  mutt_addrlist_parse2(&tmp->addr, buf->data);
-
-  if (mutt_addrlist_to_intl(&tmp->addr, &estr))
-  {
-    mutt_buffer_printf(err, _("Warning: Bad IDN '%s' in alias '%s'"), estr, tmp->name);
-    FREE(&estr);
-    goto bail;
-  }
+  tmp->addr = al;
 
   mutt_grouplist_add_addrlist(&gl, &tmp->addr);
 
