@@ -525,9 +525,8 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
  * update_index_unthreaded - Update the index (if unthreaded)
  * @param ctx      Mailbox
  * @param check    Flags, e.g. #MUTT_REOPENED
- * @param oldcount How many items are currently in the index
  */
-static void update_index_unthreaded(struct Context *ctx, int check, int oldcount)
+static void update_index_unthreaded(struct Context *ctx, int check)
 {
   /* We are in a limited view. Check if the new message(s) satisfy
    * the limit criteria. If they do, set their virtual msgno so that
@@ -535,14 +534,9 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
   if (ctx_has_limit(ctx))
   {
     int padding = mx_msg_padding_size(ctx->mailbox);
-    for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->mailbox->msg_count; i++)
+    ctx->mailbox->vcount = ctx->vsize = 0;
+    for (int i = 0; i < ctx->mailbox->msg_count; i++)
     {
-      if (i == 0)
-      {
-        ctx->mailbox->vcount = 0;
-        ctx->vsize = 0;
-      }
-
       struct Email *e = ctx->mailbox->emails[i];
       if (!e)
         break;
@@ -617,7 +611,7 @@ static void update_index(struct Menu *menu, struct Context *ctx, int check,
   if ((C_Sort & SORT_MASK) == SORT_THREADS)
     update_index_threaded(ctx, check, oldcount);
   else
-    update_index_unthreaded(ctx, check, oldcount);
+    update_index_unthreaded(ctx, check);
 
   const int old_current = menu->current;
   menu->current = -1;
