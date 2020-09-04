@@ -228,14 +228,22 @@ struct Slist *slist_parse(const char *str, int flags)
     if (p[0] == sep)
     {
       p[0] = '\0';
+      if (slist_is_member(list, start))
+      {
+        start = p + 1;
+        continue;
+      }
       mutt_list_insert_tail(&list->head, mutt_str_dup(start));
       list->count++;
       start = p + 1;
     }
   }
 
-  mutt_list_insert_tail(&list->head, mutt_str_dup(start));
-  list->count++;
+  if (!slist_is_member(list, start))
+  {
+    mutt_list_insert_tail(&list->head, mutt_str_dup(start));
+    list->count++;
+  }
 
   FREE(&src);
   return list;
