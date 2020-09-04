@@ -472,15 +472,13 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
 
   if (lmt)
   {
-    for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->mailbox->msg_count; i++)
+    /* Because threading changes the order in ctx->mailbox->emails, we don't
+     * know which emails are new. Hence, we need to re-apply the limit to the
+     * whole set.
+     */
+    for (int i = 0; i < ctx->mailbox->msg_count; i++)
     {
-      struct Email *e = NULL;
-
-      if ((check != MUTT_REOPENED) && (oldcount > 0) && (num_new > 0))
-        e = save_new[i - oldcount];
-      else
-        e = ctx->mailbox->emails[i];
-
+      struct Email *e = ctx->mailbox->emails[i];
       if (mutt_pattern_exec(SLIST_FIRST(ctx->limit_pattern),
                             MUTT_MATCH_FULL_ADDRESS, ctx->mailbox, e, NULL))
       {
