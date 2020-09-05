@@ -207,28 +207,25 @@ static void recode_buf(struct Buffer *buf)
  * check_alias_name - Sanity-check an alias name
  * @param s       Alias to check
  * @param dest    Buffer for the result
- * @param destlen Length of buffer
  * @retval  0 Success
  * @retval -1 Error
  *
  * Only characters which are non-special to both the RFC822 and the neomutt
  * configuration parser are permitted.
  */
-static int check_alias_name(const char *s, char *dest, size_t destlen)
+static int check_alias_name(const char *s, struct Buffer *dest)
 {
   wchar_t wc = 0;
   mbstate_t mbstate = { 0 };
   size_t l;
   int rc = 0;
-  bool dry = !dest || !destlen;
+  bool dry = !dest; // Dry run
 
   if (!dry)
-    destlen--;
-  for (; s && *s && (dry || destlen) && (l = mbrtowc(&wc, s, MB_CUR_MAX, &mbstate)) != 0;
-       s += l, destlen -= l)
+    buf_reset(dest);
+  for (; s && *s && (l = mbrtowc(&wc, s, MB_CUR_MAX, &mbstate)) != 0; s += l)
   {
     bool bad = (l == ICONV_ILLEGAL_SEQ) || (l == ICONV_BUF_TOO_SMALL); /* conversion error */
-    bad = bad || (!dry && l > destlen); /* too few room for mb char */
     if (l == 1)
       bad = bad || (!strchr("-_+=.", *s) && !iswalnum(wc));
     else
@@ -239,17 +236,15 @@ static int check_alias_name(const char *s, char *dest, size_t destlen)
         return -1;
       if (l == ICONV_ILLEGAL_SEQ)
         memset(&mbstate, 0, sizeof(mbstate_t));
-      *dest++ = '_';
+      buf_addch(dest, '_');
       rc = -1;
     }
     else if (!dry)
     {
-      memcpy(dest, s, l);
-      dest += l;
+      buf_addstr_n(dest, s, l);
     }
   }
-  if (!dry)
-    *dest = '\0';
+
   return rc;
 }
 
@@ -394,7 +389,7 @@ void alias_create(struct AddressList *al, const struct ConfigSubset *sub)
   }
 
   /* Don't suggest a bad alias name in the event of a strange local part. */
-  check_alias_name(buf_string(tmp), buf->data, buf->dsize);
+  check_alias_name(buf_string(tmp), buf);
 
 retry_name:
   /* L10N: prompt to add a new alias */
@@ -411,7 +406,7 @@ retry_name:
     goto done;
   }
 
-  if (check_alias_name(buf_string(buf), fixed->data, fixed->dsize))
+  if (check_alias_name(buf_string(buf), fixed))
   {
     switch (query_yesorno(_("Warning: This alias name may not work.  Fix it?"), MUTT_YES))
     {
@@ -557,7 +552,7 @@ retry_name:
       fputc('\n', fp_alias);
   }
 
-  if (check_alias_name(alias->name, NULL, 0))
+  if (check_alias_name(alias->name, NULL))
     mutt_file_quote_filename(alias->name, buf->data, buf->dsize);
   else
     buf_strcpy(buf, alias->name);
