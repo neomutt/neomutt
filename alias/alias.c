@@ -553,7 +553,7 @@ retry_name:
   }
 
   if (check_alias_name(alias->name, NULL))
-    mutt_file_quote_filename(alias->name, buf->data, buf->dsize);
+    buf_quote_filename(buf, alias->name, true);
   else
     buf_strcpy(buf, alias->name);
 

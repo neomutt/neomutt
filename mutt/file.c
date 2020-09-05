@@ -922,54 +922,6 @@ bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, ReadLi
 }
 
 /**
- * mutt_file_quote_filename - Quote a filename to survive the shell's quoting rules
- * @param filename String to convert
- * @param buf      Buffer for the result
- * @param buflen   Length of buffer
- * @retval num Bytes written to the buffer
- *
- * From the Unix programming FAQ by way of Liviu.
- */
-size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen)
-{
-  if (!buf)
-    return 0;
-
-  if (!filename)
-  {
-    *buf = '\0';
-    return 0;
-  }
-
-  size_t j = 0;
-
-  /* leave some space for the trailing characters. */
-  buflen -= 6;
-
-  buf[j++] = '\'';
-
-  for (size_t i = 0; (j < buflen) && filename[i]; i++)
-  {
-    if ((filename[i] == '\'') || (filename[i] == '`'))
-    {
-      buf[j++] = '\'';
-      buf[j++] = '\\';
-      buf[j++] = filename[i];
-      buf[j++] = '\'';
-    }
-    else
-    {
-      buf[j++] = filename[i];
-    }
-  }
-
-  buf[j++] = '\'';
-  buf[j] = '\0';
-
-  return j;
-}
-
-/**
  * buf_quote_filename - Quote a filename to survive the shell's quoting rules
  * @param buf       Buffer for the result
  * @param filename  String to convert

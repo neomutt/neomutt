@@ -307,7 +307,6 @@ FILE_OBJS	= test/file/common.o \
 		  test/file/mutt_file_map_lines.o \
 		  test/file/mutt_file_mkdir.o \
 		  test/file/mutt_file_open.o \
-		  test/file/mutt_file_quote_filename.o \
 		  test/file/mutt_file_read_keyword.o \
 		  test/file/mutt_file_read_line.o \
 		  test/file/mutt_file_rename.o \

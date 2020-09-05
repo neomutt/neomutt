@@ -343,7 +343,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_file_map_lines)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_file_mkdir)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_file_open)                                       \
-  NEOMUTT_TEST_ITEM(test_mutt_file_quote_filename)                             \
   NEOMUTT_TEST_ITEM(test_mutt_file_read_keyword)                               \
   NEOMUTT_TEST_ITEM(test_mutt_file_read_line)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_file_rename)                                     \
