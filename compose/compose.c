@@ -1360,9 +1360,9 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
 }
 
 /**
- * mutt_dlg_compose_observer - Listen for config changes affecting the Compose menu - Implements ::observer_t
+ * compose_config_observer - Listen for config changes affecting the Compose menu - Implements ::observer_t
  */
-static int mutt_dlg_compose_observer(struct NotifyCallback *nc)
+static int compose_config_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;
@@ -1461,7 +1461,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
     mutt_window_add_child(dlg, ebar);
   }
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlg_compose_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, compose_config_observer, dlg);
   dialog_push(dlg);
 
 #ifdef USE_NNTP
@@ -2675,7 +2675,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
   dialog_pop();
-  notify_observer_remove(NeoMutt->notify, mutt_dlg_compose_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, compose_config_observer, dlg);
   mutt_window_free(&dlg);
 
   if (actx->idxlen)
