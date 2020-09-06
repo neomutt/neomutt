@@ -157,4 +157,9 @@ size_t        email_size      (const struct Email *e);
 int  emaillist_add_email(struct EmailList *el, struct Email *e);
 void emaillist_clear    (struct EmailList *el);
 
+struct ListNode *header_add   (struct ListHead *hdrlist, const char *header);
+struct ListNode *header_find  (const struct ListHead *hdrlist, const char *header);
+struct ListNode *header_set   (struct ListHead *hdrlist, const char *header);
+struct ListNode *header_update(struct ListNode *hdrnode, const char *header);
+
 #endif /* MUTT_EMAIL_EMAIL_H */

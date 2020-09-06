@@ -147,6 +147,10 @@ DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 EMAIL_OBJS	= test/email/common.o \
 		  test/email/email_cmp_strict.o \
 		  test/email/email_free.o \
+		  test/email/email_header_add.o \
+		  test/email/email_header_find.o \
+		  test/email/email_header_set.o \
+		  test/email/email_header_update.o \
 		  test/email/email_new.o \
 		  test/email/email_size.o \
 		  test/email/emaillist_add_email.o \
