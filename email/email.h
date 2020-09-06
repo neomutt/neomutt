@@ -149,6 +149,26 @@ struct EventEmail
   struct Email **emails;
 };
 
+/**
+ * enum NotifyHeader - Types of Header Event
+ *
+ * Observers on #NT_HEADER will be passed an #EventHeader
+ */
+enum NotifyHeader
+{
+  NT_HEADER_ADD = 1, ///< A new header has been added
+  NT_HEADER_CHANGE,  ///< An existing header has been changed
+  NT_HEADER_REMOVE,  ///< A header is about to be removed
+};
+
+/**
+ * struct EventHeader - An event that happened to a header
+ */
+struct EventHeader
+{
+  char *header; ///< The contents of the header
+};
+
 bool          email_cmp_strict(const struct Email *e1, const struct Email *e2);
 void          email_free      (struct Email **ptr);
 struct Email *email_new       (void);
