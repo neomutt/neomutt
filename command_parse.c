@@ -1003,9 +1003,6 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
 enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
                                 intptr_t data, struct Buffer *err)
 {
-  struct ListNode *n = NULL;
-  size_t keylen;
-
   mutt_extract_token(buf, s, MUTT_TOKEN_SPACE | MUTT_TOKEN_QUOTE);
   char *p = strpbrk(buf->data, ": \t");
   if (!p || (*p != ':'))
@@ -1013,29 +1010,17 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_strcpy(err, _("invalid header field"));
     return MUTT_CMD_WARNING;
   }
-  keylen = p - buf->data + 1;
 
-  STAILQ_FOREACH(n, &UserHeader, entries)
-  {
-    /* see if there is already a field by this name */
-    if (mutt_istrn_equal(buf->data, n->data, keylen))
-    {
-      break;
-    }
-  }
+  struct ListNode *n = header_find(&UserHeader, buf->data);
 
-  if (!n)
+  if (n)
   {
-    /* not found, allocate memory for a new node and add it to the list */
-    n = mutt_list_insert_tail(&UserHeader, NULL);
+    header_update(n, buf->data);
   }
   else
   {
-    /* found, free the existing data */
-    FREE(&n->data);
+    header_add(&UserHeader, buf->data);
   }
-
-  n->data = mutt_buffer_strdup(buf);
 
   return MUTT_CMD_SUCCESS;
 }
