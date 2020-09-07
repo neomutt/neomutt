@@ -429,7 +429,7 @@ size_t mutt_buffer_concatn_path(struct Buffer *buf, const char *dir,
  *
  * @note Caller must free the returned string
  */
-char *mutt_buffer_strdup(struct Buffer *buf)
+char *mutt_buffer_strdup(const struct Buffer *buf)
 {
   if (!buf)
     return NULL;

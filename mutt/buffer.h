@@ -50,7 +50,7 @@ bool           mutt_buffer_is_empty     (const struct Buffer *buf);
 size_t         mutt_buffer_len          (const struct Buffer *buf);
 struct Buffer  mutt_buffer_make         (size_t size);
 void           mutt_buffer_reset        (struct Buffer *buf);
-char *         mutt_buffer_strdup       (struct Buffer *buf);
+char *         mutt_buffer_strdup       (const struct Buffer *buf);
 
 // Functions that APPEND to a Buffer
 size_t         mutt_buffer_addch        (struct Buffer *buf, char c);
