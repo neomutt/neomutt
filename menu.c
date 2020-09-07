@@ -1561,24 +1561,24 @@ int mutt_menu_color_observer(struct NotifyCallback *nc)
   if (nc->event_type != NT_CONFIG)
     return 0;
 
-  int s = nc->event_subtype;
+  struct EventColor *ev_c = nc->event_data;
 
-  bool simple = (s == MT_COLOR_INDEX_COLLAPSED) || (s == MT_COLOR_INDEX_DATE) ||
-                (s == MT_COLOR_INDEX_LABEL) || (s == MT_COLOR_INDEX_NUMBER) ||
-                (s == MT_COLOR_INDEX_SIZE) || (s == MT_COLOR_INDEX_TAGS);
-  bool lists = (s == MT_COLOR_ATTACH_HEADERS) || (s == MT_COLOR_BODY) ||
-               (s == MT_COLOR_HEADER) || (s == MT_COLOR_INDEX) ||
-               (s == MT_COLOR_INDEX_AUTHOR) || (s == MT_COLOR_INDEX_FLAGS) ||
-               (s == MT_COLOR_INDEX_SUBJECT) || (s == MT_COLOR_INDEX_TAG);
+  int c = ev_c->color;
+
+  bool simple = (c == MT_COLOR_INDEX_COLLAPSED) || (c == MT_COLOR_INDEX_DATE) ||
+                (c == MT_COLOR_INDEX_LABEL) || (c == MT_COLOR_INDEX_NUMBER) ||
+                (c == MT_COLOR_INDEX_SIZE) || (c == MT_COLOR_INDEX_TAGS);
+  bool lists = (c == MT_COLOR_ATTACH_HEADERS) || (c == MT_COLOR_BODY) ||
+               (c == MT_COLOR_HEADER) || (c == MT_COLOR_INDEX) ||
+               (c == MT_COLOR_INDEX_AUTHOR) || (c == MT_COLOR_INDEX_FLAGS) ||
+               (c == MT_COLOR_INDEX_SUBJECT) || (c == MT_COLOR_INDEX_TAG);
 
   // The changes aren't relevant to the index menu
   if (!simple && !lists)
     return 0;
 
-  struct EventColor *ec = nc->event_data;
-
   // Colour deleted from a list
-  if (!ec->set && lists && Context && Context->mailbox)
+  if ((nc->event_subtype == NT_COLOR_RESET) && lists && Context && Context->mailbox)
   {
     struct Mailbox *m = Context->mailbox;
     // Force re-caching of index colors

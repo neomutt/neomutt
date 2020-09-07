@@ -188,10 +188,12 @@ static int helpbar_binding_observer(struct NotifyCallback *nc)
  */
 static int helpbar_color_observer(struct NotifyCallback *nc)
 {
+  struct EventColor *ev_c = nc->event_data;
+
   if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
     return -1;
 
-  if (nc->event_subtype != MT_COLOR_STATUS)
+  if (ev_c->color != MT_COLOR_STATUS)
     return 0;
 
   struct MuttWindow *win_helpbar = nc->global_data;
