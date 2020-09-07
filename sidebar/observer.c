@@ -198,9 +198,10 @@ static int sb_color_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
     return -1;
 
+  struct EventColor *ev_c = nc->event_data;
   struct MuttWindow *win = nc->global_data;
 
-  enum ColorId color = nc->event_subtype;
+  enum ColorId color = ev_c->color;
 
   switch (color)
   {

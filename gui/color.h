@@ -152,12 +152,24 @@ struct Colors
 /**
  * struct EventColor - An Event that happened to a Colour
  *
- * Observers will be passed a type of #NT_COLOR and a subtype which
- * describes the colour that changed, e.g. #MT_COLOR_SIDEBAR_HIGHLIGHT.
+ * Observers will be passed a type of #NT_COLOR and a subtype of 
+ * #NT_COLOR_SET or #NT_COLOR_RESET with a struct which
+ * describes the colour, e.g. #MT_COLOR_SIDEBAR_HIGHLIGHT.
  */
 struct EventColor
 {
-  bool set; ///< True if a colour has been set/added, false if reset/deleted
+  enum ColorId color;
+};
+
+/**
+ * enum NotifyColor - Types of Color Event
+ *
+ * Observers of #NT_COLOR will be passed an #EventColor.
+ */
+enum NotifyColor
+{
+  NT_COLOR_SET = 1, ///< A new Color has been set
+  NT_COLOR_RESET,   ///< Color has been reset/removed
 };
 
 int  mutt_color_alloc  (struct Colors *c, uint32_t fg,      uint32_t bg);

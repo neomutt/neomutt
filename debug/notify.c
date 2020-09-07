@@ -175,23 +175,24 @@ static void notify_dump_color(struct NotifyCallback *nc)
   const char *color = NULL;
   const char *scope = "";
 
-  if (nc->event_subtype == MT_COLOR_MAX)
+  if (ev_c->color == MT_COLOR_MAX)
     color = "ALL";
 
   if (!color)
-    color = mutt_map_get_name(nc->event_subtype, Fields);
+    color = mutt_map_get_name(ev_c->color, Fields);
 
   if (!color)
   {
-    color = mutt_map_get_name(nc->event_subtype, ComposeFields);
+    color = mutt_map_get_name(ev_c->color, ComposeFields);
     scope = "compose ";
   }
 
   if (!color)
     color = "UNKNOWN";
 
-  mutt_debug(LL_DEBUG1, "\tColor: %s %s%s (%d)\n", ev_c->set ? "set" : "reset",
-             scope, color, nc->event_subtype);
+  mutt_debug(LL_DEBUG1, "\tColor: %s %s%s (%d)\n",
+             (nc->event_subtype == NT_COLOR_SET) ? "set" : "reset", scope,
+             color, ev_c->color);
 }
 
 static void notify_dump_command(struct NotifyCallback *nc)
