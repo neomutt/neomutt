@@ -73,6 +73,7 @@ extern bool  C_ImapPassive;
 extern bool  C_ImapPeek;
 
 /* imap.c */
+void imap_init(void);
 int imap_access(const char *path);
 int imap_check_mailbox(struct Mailbox *m, bool force);
 int imap_delete_mailbox(struct Mailbox *m, char *path);

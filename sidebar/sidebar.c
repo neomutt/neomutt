@@ -41,6 +41,13 @@
 
 struct ListHead SidebarWhitelist = STAILQ_HEAD_INITIALIZER(SidebarWhitelist); ///< List of mailboxes to always display in the sidebar
 
+const struct Command sb_commands[] = {
+  // clang-format off
+  { "sidebar_whitelist",   sb_parse_whitelist,     0 },
+  { "unsidebar_whitelist", sb_parse_unwhitelist,   0 },
+  // clang-format on
+};
+
 /**
  * sb_get_highlight - Get the Mailbox that's highlighted in the sidebar
  * @param win Sidebar Window
@@ -181,6 +188,8 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
  */
 void sb_init(void)
 {
+  COMMANDS_REGISTER(sb_commands);
+
   // Listen for dialog creation events
   notify_observer_add(AllDialogsWindow->notify, NT_WINDOW, sb_insertion_observer, NULL);
 }

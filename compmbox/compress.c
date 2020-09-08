@@ -44,12 +44,29 @@
 #include "lib.h"
 #include "format_flags.h"
 #include "hook.h"
+#include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
 
 struct Email;
+
+const struct Command comp_commands[] = {
+  // clang-format off
+  { "append-hook", mutt_parse_hook, MUTT_APPEND_HOOK },
+  { "close-hook",  mutt_parse_hook, MUTT_CLOSE_HOOK },
+  { "open-hook",   mutt_parse_hook, MUTT_OPEN_HOOK },
+  // clang-format on
+};
+
+/**
+ * mutt_comp_init - Setup feature commands
+ */
+void mutt_comp_init(void)
+{
+  COMMANDS_REGISTER(comp_commands);
+}
 
 /**
  * lock_realpath - Try to lock the ctx->realpath
