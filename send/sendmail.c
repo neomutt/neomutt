@@ -399,7 +399,9 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
     ARRAY_ADD(&args, "--");
     const char **e = NULL;
     ARRAY_FOREACH(e, &extra_args)
-    ARRAY_ADD(&args, *e);
+    {
+      ARRAY_ADD(&args, *e);
+    }
     add_args(&args, to);
     add_args(&args, cc);
     add_args(&args, bcc);

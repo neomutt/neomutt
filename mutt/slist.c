@@ -284,9 +284,9 @@ struct Slist *slist_remove_string(struct Slist *list, const char *str)
 }
 
 /**
- * slist_to_string - Export an Slist to a Buffer
- * @param list   List to export
- * @param buf    Buffer for the results
+ * slist_to_buffer - Export an Slist to a Buffer
+ * @param list List to export
+ * @param buf  Buffer for the results
  * @retval num Number of strings written to Buffer
  */
 int slist_to_buffer(const struct Slist *list, struct Buffer *buf)

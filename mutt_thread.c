@@ -461,7 +461,7 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
     }
 
     env = cur->message->env;
-    if (env->real_subj && ((env->real_subj != env->subject) || (!C_SortRe)))
+    if (env->real_subj && ((env->real_subj != env->subject) || !C_SortRe))
     {
       struct ListNode *np = NULL;
       STAILQ_FOREACH(np, subjects, entries)
