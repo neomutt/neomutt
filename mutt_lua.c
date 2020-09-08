@@ -52,6 +52,13 @@
 #include "muttlib.h"
 #include "myvar.h"
 
+const struct Command lua_commands[] = {
+  // clang-format off
+  { "lua",        mutt_lua_parse,       0 },
+  { "lua-source", mutt_lua_source_file, 0 },
+  // clang-format on
+};
+
 /**
  * handle_panic - Handle a panic in the Lua interpreter
  * @param l Lua State
@@ -437,6 +444,14 @@ static bool lua_init(lua_State **l)
   luaopen_mutt(*l);
 
   return true;
+}
+
+/**
+ * mutt_lua_init - Setup feature commands
+ */
+void mutt_lua_init(void)
+{
+  COMMANDS_REGISTER(lua_commands);
 }
 
 /**

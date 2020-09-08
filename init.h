@@ -38,8 +38,6 @@ struct ListHead;
 
 struct ConfigSet *    init_config            (size_t size);
 int                   mutt_command_complete  (char *buf, size_t buflen, int pos, int numtabs);
-const struct Command *mutt_command_get       (const char *s);
-void                  mutt_commands_apply    (void *data, void (*application)(void *, const struct Command *));
 int                   mutt_extract_token     (struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
 HookFlags             mutt_get_hook_type     (const char *name);
 int                   mutt_init              (struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);

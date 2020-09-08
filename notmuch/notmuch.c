@@ -61,7 +61,9 @@
 #include "lib.h"
 #include "hcache/lib.h"
 #include "maildir/lib.h"
+#include "command_parse.h"
 #include "index.h"
+#include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "mutt_thread.h"
 #include "mx.h"
@@ -70,8 +72,22 @@
 
 struct stat;
 
+const struct Command nm_commands[] = {
+  // clang-format off
+  { "unvirtual-mailboxes", parse_unmailboxes, 0 },
+  { "virtual-mailboxes",   parse_mailboxes,   MUTT_NAMED },
+  // clang-format on
+};
 const char NmUrlProtocol[] = "notmuch://";
 const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
+
+/**
+ * nm_init - Setup feature commands
+ */
+void nm_init(void)
+{
+  COMMANDS_REGISTER(nm_commands);
+}
 
 /**
  * nm_hcache_open - Open a header cache

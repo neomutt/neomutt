@@ -59,6 +59,9 @@
 #include "keymap.h"
 #include "mutt_commands.h"
 #include "mutt_globals.h"
+#ifdef USE_LUA
+#include "mutt_lua.h"
+#endif
 #include "mutt_menu.h"
 #include "mutt_parse.h"
 #include "muttlib.h"
@@ -68,6 +71,12 @@
 #include "sort.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
+#endif
+#ifdef USE_COMP_MBOX
+#include "compmbox/lib.h"
+#endif
+#ifdef USE_IMAP
+#include "imap/lib.h"
 #endif
 
 /* Initial string that starts completion. No telling how much the user has
@@ -375,35 +384,6 @@ static bool get_hostname(struct ConfigSet *cs)
 }
 
 /**
- * mutt_command_get - Get a Command by its name
- * @param s Command string to lookup
- * @retval ptr  Success, Command
- * @retval NULL Error, no such command
- */
-const struct Command *mutt_command_get(const char *s)
-{
-  for (int i = 0; Commands[i].name; i++)
-    if (mutt_str_equal(s, Commands[i].name))
-      return &Commands[i];
-  return NULL;
-}
-
-#ifdef USE_LUA
-/**
- * mutt_commands_apply - Run a callback function on every Command
- * @param data        Data to pass to the callback function
- * @param application Callback function
- *
- * This is used by Lua to expose all of NeoMutt's Commands.
- */
-void mutt_commands_apply(void *data, void (*application)(void *, const struct Command *))
-{
-  for (int i = 0; Commands[i].name; i++)
-    application(data, &Commands[i]);
-}
-#endif
-
-/**
  * mutt_extract_token - Extract one token from a string
  * @param dest  Buffer for the result
  * @param tok   Buffer containing tokens
@@ -703,6 +683,7 @@ void mutt_opts_free(void)
   mutt_keys_free();
 
   mutt_regexlist_free(&NoSpamList);
+  mutt_commands_free();
 }
 
 /**
@@ -713,12 +694,13 @@ void mutt_opts_free(void)
  */
 HookFlags mutt_get_hook_type(const char *name)
 {
-  for (const struct Command *c = Commands; c->name; c++)
+  struct Command *c = NULL;
+  for (size_t i = 0, size = mutt_commands_array(&c); i < size; i++)
   {
-    if (((c->parse == mutt_parse_hook) || (c->parse == mutt_parse_idxfmt_hook)) &&
-        mutt_istr_equal(c->name, name))
+    if (((c[i].parse == mutt_parse_hook) || (c[i].parse == mutt_parse_idxfmt_hook)) &&
+        mutt_istr_equal(c[i].name, name))
     {
-      return c->data;
+      return c[i].data;
     }
   }
   return MUTT_HOOK_NO_FLAGS;
@@ -741,12 +723,25 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 
   mutt_grouplist_init();
   alias_init();
+  mutt_commands_init();
+#ifdef USE_COMP_MBOX
+  mutt_comp_init();
+#endif
+#ifdef USE_IMAP
+  imap_init();
+#endif
+#ifdef USE_LUA
+  mutt_lua_init();
+#endif
   TagTransforms = mutt_hash_new(64, MUTT_HASH_STRCASECMP);
   TagFormats = mutt_hash_new(64, MUTT_HASH_NO_FLAGS);
 
   mutt_menu_init();
 #ifdef USE_SIDEBAR
   sb_init();
+#endif
+#ifdef USE_NOTMUCH
+  nm_init();
 #endif
 
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a", // Escape
@@ -989,7 +984,6 @@ enum CommandResult mutt_parse_rc_buffer(struct Buffer *line,
   if (mutt_buffer_len(line) == 0)
     return 0;
 
-  int i;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
   mutt_buffer_reset(err);
@@ -1008,20 +1002,24 @@ enum CommandResult mutt_parse_rc_buffer(struct Buffer *line,
       continue;
     }
     mutt_extract_token(token, line, MUTT_TOKEN_NO_FLAGS);
-    for (i = 0; Commands[i].name; i++)
+
+    struct Command *cmd = NULL;
+    size_t size = mutt_commands_array(&cmd);
+    size_t i;
+    for (i = 0; i < size; i++)
     {
-      if (mutt_str_equal(token->data, Commands[i].name))
+      if (mutt_str_equal(token->data, cmd[i].name))
       {
-        rc = Commands[i].parse(token, line, Commands[i].data, err);
+        rc = cmd[i].parse(token, line, cmd[i].data, err);
         if (rc != MUTT_CMD_SUCCESS)
         {              /* -1 Error, +1 Finish */
           goto finish; /* Propagate return code */
         }
-        notify_send(NeoMutt->notify, NT_COMMAND, i, (void *) &Commands[i]);
+        notify_send(NeoMutt->notify, NT_COMMAND, i, (void *) cmd);
         break; /* Continue with next command */
       }
     }
-    if (!Commands[i].name)
+    if (i == size)
     {
       mutt_buffer_printf(err, _("%s: unknown command"), NONULL(token->data));
       rc = MUTT_CMD_ERROR;
@@ -1128,7 +1126,6 @@ int mutt_query_variables(struct ListHead *queries, bool show_docs)
 int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
 {
   char *pt = buf;
-  int num;
   int spaces; /* keep track of the number of leading spaces on the line */
   struct MyVar *myv = NULL;
 
@@ -1148,8 +1145,10 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
       mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
-      for (num = 0; Commands[num].name; num++)
-        candidate(UserTyped, Commands[num].name, Completed, sizeof(Completed));
+
+      struct Command *c = NULL;
+      for (size_t num = 0, size = mutt_commands_array(&c); num < size; num++)
+        candidate(UserTyped, c[num].name, Completed, sizeof(Completed));
       matches_ensure_morespace(NumMatched);
       Matches[NumMatched++] = UserTyped;
 
@@ -1184,7 +1183,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     /* loop through all the possible prefixes (no, inv, ...) */
     if (mutt_str_startswith(buf, "set"))
     {
-      for (num = 0; prefixes[num]; num++)
+      for (int num = 0; prefixes[num]; num++)
       {
         if (mutt_str_startswith(pt, prefixes[num]))
         {
@@ -1259,13 +1258,13 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
       mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
-      for (num = 0; menu[num].name; num++)
+      for (int num = 0; menu[num].name; num++)
         candidate(UserTyped, menu[num].name, Completed, sizeof(Completed));
       /* try the generic menu */
       if ((Completed[0] == '\0') && (CurrentMenu != MENU_PAGER))
       {
         menu = OpGeneric;
-        for (num = 0; menu[num].name; num++)
+        for (int num = 0; menu[num].name; num++)
           candidate(UserTyped, menu[num].name, Completed, sizeof(Completed));
       }
       matches_ensure_morespace(NumMatched);

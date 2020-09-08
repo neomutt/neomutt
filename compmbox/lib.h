@@ -56,6 +56,7 @@ struct CompressInfo
   FILE *fp_lock;                 ///< fp used for locking
 };
 
+void mutt_comp_init(void);
 bool mutt_comp_can_append(struct Mailbox *m);
 bool mutt_comp_can_read(const char *path);
 int  mutt_comp_valid_command(const char *cmd);
