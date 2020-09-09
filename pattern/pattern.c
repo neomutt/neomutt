@@ -518,7 +518,7 @@ int mutt_search_command(struct Mailbox *mailbox, int cur, int op)
 }
 
 /**
- * mutt_search_command - Perform a search
+ * mutt_search_alias_command - Perform a search
  * @param menu Menu to search through
  * @param cur  Index number of current alias
  * @param op   Operation to perform, e.g. OP_SEARCH_NEXT
@@ -553,7 +553,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
      * $simple_search has changed while we were searching */
     struct Buffer *tmp = mutt_buffer_pool_get();
     mutt_buffer_strcpy(tmp, buf);
-    mutt_check_simple(tmp, NONULL(C_SimpleSearch));
+    mutt_check_simple(tmp, "~f %s | ~t %s | ~c %s");
 
     if (!SearchPattern || !mutt_str_equal(mutt_b2s(tmp), LastSearchExpn))
     {

@@ -339,7 +339,7 @@ static int perform_alias_or(struct PatternList *pat, PatternExecFlags flags,
 }
 
 /**
- * match_addrlist - Match a Pattern against and Address list
+ * match_addrlist - Match a Pattern against an Address list
  * @param pat            Pattern to find
  * @param match_personal If true, also match the pattern against the real name
  * @param n              Number of Addresses supplied
