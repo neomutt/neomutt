@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-08-21\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-08-29 03:03+0100\n"
+"POT-Creation-Date: 2020-09-10 11:39+0100\n"
 "PO-Revision-Date: 2018-05-31 13:50+0000\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: neomutt-j <neomutt-j-users@lists.osdn.me>\n"
@@ -37,7 +37,7 @@ msgstr "警告: この別名は正常に動作しないかもしれない。修�
 msgid "Address: "
 msgstr "アドレス: "
 
-#: alias/alias.c:442 commands.c:459 compose.c:1027 conn/raw.c:146
+#: alias/alias.c:442 commands.c:459 compose/compose.c:1025 conn/raw.c:146
 #: conn/raw.c:203 recvcmd.c:232 send/send.c:182
 #, c-format
 msgid "Bad IDN: '%s'"
@@ -78,16 +78,21 @@ msgstr "別名を追加した。"
 msgid "Error seeking in alias file"
 msgstr "別名ファイルの末端検出エラー"
 
-#: alias/commands.c:59
+#: alias/commands.c:58
 msgid "alias: no address"
 msgstr "alias (別名): アドレスがない"
 
-#: alias/commands.c:99
+#: alias/commands.c:78
+#, fuzzy, c-format
+msgid "Warning: Bad address '%s' in alias '%s'"
+msgstr "警告: 不正な IDN '%s' がエイリアス '%s' 中にある。"
+
+#: alias/commands.c:87
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "警告: 不正な IDN '%s' がエイリアス '%s' 中にある。"
 
-#: alias/dlgalias.c:60 alias/dlgquery.c:61 autocrypt/dlgautocrypt.c:61
+#: alias/dlgalias.c:57 alias/dlgquery.c:58 autocrypt/dlgautocrypt.c:61
 #: browser.c:76 browser.c:89 conn/dlgverifycert.c:47 history/dlghistory.c:46
 #: ncrypt/dlggpgme.c:64 ncrypt/dlgpgp.c:53 ncrypt/dlgsmime.c:48 pager.c:221
 #: pager.c:232 pager.c:242 pager.c:258 pattern/dlgpattern.c:63 postpone.c:70
@@ -95,30 +100,30 @@ msgstr "警告: 不正な IDN '%s' がエイリアス '%s' 中にある。"
 msgid "Exit"
 msgstr "戻る"
 
-#: alias/dlgalias.c:61 index.c:111 index.c:127 pager.c:246 pager.c:263
+#: alias/dlgalias.c:58 index.c:111 index.c:127 pager.c:246 pager.c:263
 #: postpone.c:71
 msgid "Del"
 msgstr "削除"
 
-#: alias/dlgalias.c:62 index.c:112 index.c:128 postpone.c:72
+#: alias/dlgalias.c:59 index.c:112 index.c:128 postpone.c:72
 msgid "Undel"
 msgstr "削除を取り消し"
 
-#: alias/dlgalias.c:63 alias/dlgquery.c:65
+#: alias/dlgalias.c:60 alias/dlgquery.c:62
 msgid "Sort"
 msgstr ""
 
-#: alias/dlgalias.c:64 alias/dlgquery.c:66
+#: alias/dlgalias.c:61 alias/dlgquery.c:63
 msgid "Rev-Sort"
 msgstr ""
 
-#: alias/dlgalias.c:65 history/dlghistory.c:47 ncrypt/dlggpgme.c:65
+#: alias/dlgalias.c:62 history/dlghistory.c:47 ncrypt/dlggpgme.c:65
 #: ncrypt/dlgpgp.c:54 ncrypt/dlgsmime.c:49 pattern/dlgpattern.c:64
 msgid "Select"
 msgstr "選択"
 
-#: alias/dlgalias.c:66 alias/dlgquery.c:68 autocrypt/dlgautocrypt.c:80
-#: browser.c:80 browser.c:95 compose.c:233 compose.c:248
+#: alias/dlgalias.c:63 alias/dlgquery.c:65 autocrypt/dlgautocrypt.c:80
+#: browser.c:80 browser.c:95 compose/compose.c:229 compose/compose.c:244
 #: conn/dlgverifycert.c:48 history/dlghistory.c:49 index.c:117 index.c:133
 #: ncrypt/dlggpgme.c:67 ncrypt/dlgpgp.c:56 ncrypt/dlgsmime.c:50 pager.c:224
 #: pager.c:249 pager.c:265 pattern/dlgpattern.c:65 postpone.c:73
@@ -126,59 +131,59 @@ msgstr "選択"
 msgid "Help"
 msgstr "ヘルプ"
 
-#: alias/dlgalias.c:189
+#: alias/dlgalias.c:186
 msgid "You have no aliases"
 msgstr "別名がない"
 
-#: alias/dlgalias.c:203
+#: alias/dlgalias.c:201
 msgid "Aliases"
 msgstr "別名"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: alias/dlgalias.c:258 alias/dlgquery.c:462
+#: alias/dlgalias.c:256 alias/dlgquery.c:460
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr ""
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: alias/dlgalias.c:260 alias/dlgquery.c:464
+#: alias/dlgalias.c:258 alias/dlgquery.c:462
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: alias/dlgalias.c:262 alias/dlgquery.c:466
+#: alias/dlgalias.c:260 alias/dlgquery.c:464
 msgid "adu"
 msgstr ""
 
-#: alias/dlgquery.c:62 index.c:114
+#: alias/dlgquery.c:59 index.c:114
 msgid "Mail"
 msgstr "メール"
 
-#: alias/dlgquery.c:63
+#: alias/dlgquery.c:60
 msgid "New Query"
 msgstr "新規問い合わせ"
 
-#: alias/dlgquery.c:64
+#: alias/dlgquery.c:61
 msgid "Make Alias"
 msgstr "別名作成"
 
-#: alias/dlgquery.c:67 history/dlghistory.c:48
+#: alias/dlgquery.c:64 history/dlghistory.c:48
 msgid "Search"
 msgstr "検索"
 
-#: alias/dlgquery.c:257
+#: alias/dlgquery.c:254
 msgid "Waiting for response..."
 msgstr "応答待ち..."
 
-#: alias/dlgquery.c:319 alias/dlgquery.c:364
+#: alias/dlgquery.c:316 alias/dlgquery.c:362
 #, c-format
 msgid "Query '%s'"
 msgstr "問い合わせ '%s'"
 
-#: alias/dlgquery.c:346 alias/dlgquery.c:616
+#: alias/dlgquery.c:344 alias/dlgquery.c:626
 msgid "Query: "
 msgstr "問い合わせ: "
 
-#: alias/dlgquery.c:573 alias/dlgquery.c:611
+#: alias/dlgquery.c:583 alias/dlgquery.c:621
 msgid "Query command not defined"
 msgstr "問い合わせコマンドは定義されていない。"
 
@@ -192,7 +197,7 @@ msgstr "%s が存在しない。作成?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:78 bcache/bcache.c:220 hcache/hcache.c:225 main.c:800
+#: autocrypt/autocrypt.c:78 bcache/bcache.c:220 hcache/hcache.c:228 main.c:800
 #: nntp/newsrc.c:1093
 #, c-format
 msgid "Can't create %s: %s"
@@ -818,9 +823,9 @@ msgstr "PGP 署名の検証に成功した。"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP 署名は検証できなかった。"
 
-#: commands.c:387 compmbox/compress.c:320 compose.c:2514 gui/curs_lib.c:363
-#: gui/curs_lib.c:741 index.c:1278 index.c:1333 mutt_attach.c:162
-#: mutt_attach.c:295 pager.c:2468 send/sendlib.c:1056
+#: commands.c:387 compmbox/compress.c:320 compose/compose.c:2512
+#: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1263 index.c:1312
+#: mutt_attach.c:162 mutt_attach.c:295 pager.c:2468 send/sendlib.c:1056
 #, c-format
 msgid "Error running \"%s\""
 msgstr "\"%s\" 実行エラー"
@@ -1073,52 +1078,52 @@ msgstr "%s に圧縮追加中..."
 msgid "Error. Preserving temporary file: %s"
 msgstr "エラー。一時ファイル %s は保管"
 
-#: compose.c:103
+#: compose/compose.c:99
 msgid "There are no attachments"
 msgstr "添付ファイルがない。"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:180
+#: compose/compose.c:176
 msgid "From: "
 msgstr "From: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:182 send/send.c:245
+#: compose/compose.c:178 send/send.c:245
 msgid "To: "
 msgstr "To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:184 send/send.c:249
+#: compose/compose.c:180 send/send.c:249
 msgid "Cc: "
 msgstr "Cc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:186 send/send.c:253
+#: compose/compose.c:182 send/send.c:253
 msgid "Bcc: "
 msgstr "Bcc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:188 send/send.c:290
+#: compose/compose.c:184 send/send.c:290
 msgid "Subject: "
 msgstr "Subject: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:190
+#: compose/compose.c:186
 msgid "Reply-To: "
 msgstr "Reply-To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:192
+#: compose/compose.c:188
 msgid "Fcc: "
 msgstr "Fcc: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
-#: compose.c:195
+#: compose/compose.c:191
 msgid "Mix: "
 msgstr "Mix: "
 
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
-#: compose.c:198
+#: compose/compose.c:194
 msgid "Security: "
 msgstr "暗号と署名: "
 
@@ -1127,82 +1132,82 @@ msgstr "暗号と署名: "
 #. other compose menu fields.  However, if possible, it should not be longer
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
-#: compose.c:204 ncrypt/crypt_gpgme.c:4240 ncrypt/pgp.c:1964
+#: compose/compose.c:200 ncrypt/crypt_gpgme.c:4240 ncrypt/pgp.c:1964
 #: ncrypt/smime.c:2153
 msgid "Sign as: "
 msgstr "署名に使う鍵: "
 
 #. L10N: The compose menu autocrypt line
-#: compose.c:207
+#: compose/compose.c:203
 msgid "Autocrypt: "
 msgstr "Autocrypt: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:211
+#: compose/compose.c:207
 msgid "Newsgroups: "
 msgstr "ニュースグループ: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:213
+#: compose/compose.c:209
 #, fuzzy
 msgid "Followup-To: "
 msgstr "%s%s へのフォローアップ?"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:215
+#: compose/compose.c:211
 #, fuzzy
 msgid "X-Comment-To: "
 msgstr "Reply-To フィールドを編集"
 
-#: compose.c:217
+#: compose/compose.c:213
 msgid "Headers: "
 msgstr ""
 
-#: compose.c:223 compose.c:242
+#: compose/compose.c:219 compose/compose.c:238
 msgid "Send"
 msgstr "送信"
 
-#: compose.c:224 compose.c:243 remailer.c:80
+#: compose/compose.c:220 compose/compose.c:239 remailer.c:80
 msgid "Abort"
 msgstr "中止"
 
 #. L10N: compose menu help line entry
-#: compose.c:226
+#: compose/compose.c:222
 msgid "To"
 msgstr "宛先"
 
 #. L10N: compose menu help line entry
-#: compose.c:228
+#: compose/compose.c:224
 msgid "CC"
 msgstr "CC"
 
 #. L10N: compose menu help line entry
-#: compose.c:230 compose.c:245
+#: compose/compose.c:226 compose/compose.c:241
 msgid "Subj"
 msgstr "件名"
 
-#: compose.c:231 compose.c:246 compose.c:1918
+#: compose/compose.c:227 compose/compose.c:242 compose/compose.c:1916
 msgid "Attach file"
 msgstr "ファイル添付"
 
-#: compose.c:232 compose.c:247
+#: compose/compose.c:228 compose/compose.c:243
 msgid "Descrip"
 msgstr "内容説明"
 
-#: compose.c:244
+#: compose/compose.c:240
 #, fuzzy
 msgid "Newsgroups"
 msgstr "題名が指定されていない。"
 
 #. L10N: Autocrypt recommendation flag: off.
 #. * This is displayed when Autocrypt is turned off.
-#: compose.c:258 compose.c:641
+#: compose/compose.c:254 compose/compose.c:638
 msgid "Off"
 msgstr "機能オフ"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
-#: compose.c:261
+#: compose/compose.c:257
 msgid "No"
 msgstr "暗号化不可"
 
@@ -1210,7 +1215,7 @@ msgstr "暗号化不可"
 #. * This is displayed when Autocrypt believes encryption should not be used.
 #. * This might occur if one of the recipient Autocrypt Keys has not been
 #. * used recently, or if the only key available is a Gossip Header key.
-#: compose.c:266
+#: compose/compose.c:262
 msgid "Discouraged"
 msgstr "暗号化非推奨"
 
@@ -1218,14 +1223,14 @@ msgstr "暗号化非推奨"
 #. * This is displayed when Autocrypt believes encryption is possible, but
 #. * leaves enabling it up to the sender.  Probably because "prefer encrypt"
 #. * is not set in both the sender and recipient keys.
-#: compose.c:271
+#: compose/compose.c:267
 msgid "Available"
 msgstr "選択可能"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
-#: compose.c:275
+#: compose/compose.c:271
 msgid "Yes"
 msgstr "暗号化する"
 
@@ -1233,64 +1238,64 @@ msgstr "暗号化する"
 #. (e)ncrypt enables encryption via autocrypt.
 #. (c)lear sets cleartext.
 #. (a)utomatic defers to the recommendation.
-#: compose.c:355
+#: compose/compose.c:351
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
 msgstr "Autocrypt: e:暗号化, c:なし, a:自動選択 "
 
 #. L10N: The letter corresponding to the compose menu autocrypt prompt
 #. (e)ncrypt, (c)lear, (a)utomatic
-#: compose.c:361
+#: compose/compose.c:357
 msgid "eca"
 msgstr "eca"
 
-#: compose.c:569
+#: compose/compose.c:566
 msgid "Sign, Encrypt"
 msgstr "署名 + 暗号化"
 
-#: compose.c:574 compose.c:636
+#: compose/compose.c:571 compose/compose.c:633
 msgid "Encrypt"
 msgstr "暗号化"
 
-#: compose.c:579
+#: compose/compose.c:576
 msgid "Sign"
 msgstr "署名"
 
-#: compose.c:585
+#: compose/compose.c:582
 msgid "None"
 msgstr "なし"
 
-#: compose.c:595
+#: compose/compose.c:592
 msgid " (inline PGP)"
 msgstr " (インライン PGP)"
 
-#: compose.c:597
+#: compose/compose.c:594
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: compose.c:600
+#: compose/compose.c:597
 msgid " (S/MIME)"
 msgstr " (S/MIME)"
 
-#: compose.c:604
+#: compose/compose.c:601
 msgid " (OppEnc mode)"
 msgstr " (日和見暗号)"
 
-#: compose.c:612 compose.c:619
+#: compose/compose.c:609 compose/compose.c:616
 msgid "<default>"
 msgstr "<既定値>"
 
-#: compose.c:625
+#: compose/compose.c:622
 msgid "Encrypt with: "
 msgstr "  暗号化方式: "
 
 #. L10N: The autocrypt compose menu Recommendation field.
 #. Displays the output of the recommendation engine
 #. (Off, No, Discouraged, Available, Yes)
-#: compose.c:647
+#: compose/compose.c:644
 msgid "Recommendation: "
 msgstr "暗号推奨: "
 
-#: compose.c:709
+#: compose/compose.c:706
 msgid "<no chain defined>"
 msgstr ""
 
@@ -1298,7 +1303,7 @@ msgstr ""
 #. doesn't stat.  %d is the attachment number and %s is the attachment
 #. filename.  The filename is located last to avoid a long path hiding
 #. the error message.
-#: compose.c:760
+#: compose/compose.c:757
 #, c-format
 msgid "Attachment #%d no longer exists: %s"
 msgstr "添付ファイル #%d はもはや存在しない: %s"
@@ -1307,191 +1312,192 @@ msgstr "添付ファイル #%d はもはや存在しない: %s"
 #. is modified behind the scenes.  %d is the attachment number and %s is
 #. the attachment filename.  The filename is located last to avoid a long
 #. path hiding the prompt question.
-#: compose.c:777
+#: compose/compose.c:774
 #, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "添付ファイル #%d は変更された。エンコード更新? (%s)"
 
-#: compose.c:837
+#: compose/compose.c:834
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
 msgstr[0] ""
 
-#: compose.c:998
+#: compose/compose.c:996
 msgid "-- Attachments"
 msgstr "-- 添付ファイル"
 
-#: compose.c:1049
+#: compose/compose.c:1047
 msgid "You may not delete the only attachment"
 msgstr "唯一の添付ファイルを削除してはいけない。"
 
-#: compose.c:1666 send/send.c:2630
+#: compose/compose.c:1664 send/send.c:2630
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "'%s' 中に不正な IDN: '%s'"
 
-#: compose.c:1709
+#: compose/compose.c:1707
 #, fuzzy
 msgid "Attachment is already at top"
 msgstr "添付ファイルを保存した。"
 
-#: compose.c:1714 compose.c:1730
+#: compose/compose.c:1712 compose/compose.c:1728
 #, fuzzy
 msgid "The fundamental part can't be moved"
 msgstr "現在の添付ファイルは変換されない。"
 
-#: compose.c:1725
+#: compose/compose.c:1723
 #, fuzzy
 msgid "Attachment is already at bottom"
 msgstr "添付ファイルはコマンドを通してある。"
 
-#: compose.c:1743
+#: compose/compose.c:1741
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr ""
 
-#: compose.c:1824
+#: compose/compose.c:1822
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr ""
 
-#: compose.c:1837
+#: compose/compose.c:1835
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr ""
 
-#: compose.c:1839
+#: compose/compose.c:1837
 #, fuzzy
 msgid "Not sending this message"
 msgstr "メッセージ送信エラー。"
 
-#: compose.c:1938
+#: compose/compose.c:1936
 #, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "選択されたファイルを添付中..."
 
-#: compose.c:1955
+#: compose/compose.c:1953
 #, c-format
 msgid "Unable to attach %s"
 msgstr "%s は添付できない"
 
-#: compose.c:1977
+#: compose/compose.c:1975
 msgid "Open mailbox to attach message from"
 msgstr "中のメッセージを添付するためにメールボックスをオープン"
 
-#: compose.c:1987
+#: compose/compose.c:1985
 msgid "Open newsgroup to attach message from"
 msgstr "中のメッセージを添付するためにニュースグループをオープン"
 
-#: compose.c:2041 main.c:1219
+#: compose/compose.c:2039 main.c:1219
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "メールボックス %s がオープンできない"
 
-#: compose.c:2050
+#: compose/compose.c:2048
 msgid "No messages in that folder"
 msgstr "そのフォルダにはメッセージがない。"
 
-#: compose.c:2060
+#: compose/compose.c:2058
 msgid "Tag the messages you want to attach"
 msgstr "添付したいメッセージにタグを付けよ"
 
-#: compose.c:2098
+#: compose/compose.c:2096
 msgid "Unable to attach"
 msgstr "添付できない"
 
-#: compose.c:2136
+#: compose/compose.c:2134
 msgid "Recoding only affects text attachments"
 msgstr "コード変換はテキスト型添付ファイルにのみ有効。"
 
-#: compose.c:2141
+#: compose/compose.c:2139
 msgid "The current attachment won't be converted"
 msgstr "現在の添付ファイルは変換されない。"
 
-#: compose.c:2143
+#: compose/compose.c:2141
 msgid "The current attachment will be converted"
 msgstr "現在の添付ファイルは変換される。"
 
-#: compose.c:2226
+#: compose/compose.c:2224
 msgid "Empty 'Content-Language'"
 msgstr ""
 
-#: compose.c:2248
+#: compose/compose.c:2246
 msgid "Invalid encoding"
 msgstr "不正なエンコード法。"
 
-#: compose.c:2269
+#: compose/compose.c:2267
 msgid "Save a copy of this message?"
 msgstr "このメッセージのコピーを保存?"
 
 # OP_COMPOSE_RENAME_ATTACHMENT つまり名前を変えるとき
-#: compose.c:2323
+#: compose/compose.c:2321
 msgid "Send attachment with name: "
 msgstr "添付ファイルを別の名前で送る: "
 
-#: compose.c:2338
+#: compose/compose.c:2336
 msgid "Rename to: "
 msgstr "リネーム (移動) 先: "
 
 # system call の stat() を「属性調査」と訳している
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose.c:2345 editmsg.c:101 editmsg.c:134 editmsg.c:152 send/sendlib.c:486
+#: compose/compose.c:2343 editmsg.c:101 editmsg.c:134 editmsg.c:152
+#: send/sendlib.c:486
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "%s を属性調査できない: %s"
 
-#: compose.c:2365
+#: compose/compose.c:2363
 msgid "New file: "
 msgstr "新規ファイル: "
 
-#: compose.c:2383
+#: compose/compose.c:2381
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type は base/sub という形式にすること"
 
-#: compose.c:2390
+#: compose/compose.c:2388
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "%s は不明な Content-Type"
 
-#: compose.c:2398
+#: compose/compose.c:2396
 #, c-format
 msgid "Can't create file %s"
 msgstr "ファイル %s を作成できない"
 
-#: compose.c:2407
+#: compose/compose.c:2405
 msgid "What we have here is a failure to make an attachment"
 msgstr "つまり添付ファイルの作成に失敗したということだ"
 
-#: compose.c:2471
+#: compose/compose.c:2469
 #, fuzzy
 msgid "Save (postpone) draft message?"
 msgstr "書きかけのメッセージを呼び出す?"
 
-#: compose.c:2531
+#: compose/compose.c:2529
 msgid "Write message to mailbox"
 msgstr "メッセージをメールボックスに書き込む"
 
-#: compose.c:2534
+#: compose/compose.c:2532
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "メッセージを %s に書き込み中..."
 
-#: compose.c:2542
+#: compose/compose.c:2540
 msgid "Message written"
 msgstr "メッセージは書き込まれた。"
 
-#: compose.c:2555
+#: compose/compose.c:2553
 msgid "No PGP backend configured"
 msgstr "PGP バックエンドが設定されていない"
 
-#: compose.c:2562 compose.c:2643
+#: compose/compose.c:2560 compose/compose.c:2641
 msgid "S/MIME already selected. Clear and continue?"
 msgstr "S/MIME が既に選択されている。解除して継続?"
 
-#: compose.c:2594
+#: compose/compose.c:2592
 msgid "No S/MIME backend configured"
 msgstr "S/MIME バックエンドが設定されていない"
 
-#: compose.c:2602
+#: compose/compose.c:2600
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP が既に選択されている。解除して継続?"
 
@@ -1504,6 +1510,16 @@ msgstr "%s は不正な相対月日"
 #, fuzzy, c-format
 msgid "Invalid boolean value: %ld"
 msgstr "%s は不正な相対月日"
+
+#: config/charset.c:50
+msgid "'charset' must contain exactly one character set name"
+msgstr "'charset'はただ1つの文字セットでなければならない"
+
+#: config/charset.c:66 hcache/config.c:68 hcache/config.c:87
+#: hcache/config.c:107 mutt_config.c:153
+#, fuzzy, c-format
+msgid "Invalid value for option %s: %s"
+msgstr "変数 %s には不正な値: \"%s\""
 
 #: config/enum.c:57
 #, fuzzy, c-format
@@ -1558,7 +1574,7 @@ msgstr "%s は不正な相対月日"
 msgid "Invalid quad value: %ld"
 msgstr "変数 %s には不正な値: \"%s\""
 
-#: config/set.c:109
+#: config/set.c:109 init.c:1079
 #, c-format
 msgid "No such variable: %s"
 msgstr ""
@@ -1981,7 +1997,7 @@ msgstr "フォルダに追加できない: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "マルチパートのメッセージだが boundary パラメータがない"
 
-#: flags.c:378 index.c:2644 index.c:2684 index.c:3205 index.c:3241
+#: flags.c:378 index.c:2623 index.c:2663 index.c:3184 index.c:3220
 #: mutt_thread.c:1126 mutt_thread.c:1192 mutt_thread.c:1277
 msgid "Threading is not enabled"
 msgstr "スレッド表示が有効になっていない。"
@@ -2298,6 +2314,19 @@ msgstr "[-- 添付ファイル --]\n"
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s 形式は未サポート --]\n"
 
+#: hcache/config.c:99
+#, c-format
+msgid "Set option %s before setting %s"
+msgstr ""
+
+#. L10N: This applies to the "$header_cache_compress_level" config variable.
+#. It shows the minimum and maximum values, e.g. 'between 1 and 22'
+#. L10N: This applies to the "$wrap_headers" config variable.
+#: hcache/config.c:116 send/config.c:53
+#, c-format
+msgid "Option %s must be between %d and %d inclusive"
+msgstr ""
+
 #: help.c:340
 msgid "ERROR: please report this bug"
 msgstr "エラー: このバグをレポートせよ"
@@ -2341,7 +2370,7 @@ msgstr "不正な履歴ファイル形式 (%d 行目)"
 #: ncrypt/smime.c:1129 ncrypt/smime.c:1137 ncrypt/smime.c:1334
 #: ncrypt/smime.c:1727 ncrypt/smime.c:1805 ncrypt/smime.c:1812
 #: ncrypt/smime.c:1915 ncrypt/smime.c:2039 ncrypt/smime.c:2055 nntp/nntp.c:1393
-#: nntp/nntp.c:2233 pattern/exec.c:140 pop/pop.c:175
+#: nntp/nntp.c:2233 pattern/exec.c:142 pop/pop.c:175
 msgid "Can't create temporary file"
 msgstr "一時ファイルを作成できない"
 
@@ -2611,7 +2640,7 @@ msgstr "メッセージヘッダ取得中..."
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "このバージョンの IMAP サーバからはへッダを取得できない。"
 
-#: imap/message.c:1067 index.c:1599 nntp/nntp.c:1325 pop/pop.c:419
+#: imap/message.c:1067 index.c:1578 nntp/nntp.c:1325 pop/pop.c:419
 msgid "Fetching message headers..."
 msgstr "メッセージヘッダ取得中..."
 
@@ -2631,6 +2660,11 @@ msgstr "メッセージ取得中..."
 #: imap/message.c:1931 pop/pop.c:1091
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "メッセージ索引が不正。メールボックスを再オープンしてみること。"
+
+#: imap/msn.c:48 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
+#: mutt/string.c:1079 mx.c:1238
+msgid "Out of memory"
+msgstr "メモリ不足"
 
 #: imap/search.c:157
 #, c-format
@@ -2671,7 +2705,7 @@ msgstr "投稿"
 msgid "Followup"
 msgstr "%s%s へのフォローアップ?"
 
-#: index.c:168 index.c:1420
+#: index.c:168 index.c:1399
 msgid "No mailbox is open"
 msgstr "開いているメールボックスがない。"
 
@@ -2709,82 +2743,82 @@ msgstr "フォルダ脱出時にフォルダへの変更が書き込まれる。
 msgid "Changes to folder will not be written"
 msgstr "フォルダへの変更は書き込まれない。"
 
-#: index.c:806
+#: index.c:795
 msgid "Failed to create query, aborting"
 msgstr "クエリの作成に失敗. 中止する."
 
-#: index.c:853 muttlib.c:1390 mx.c:220 mx.c:371
+#: index.c:842 muttlib.c:1390 mx.c:220 mx.c:371
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s はメールボックスではない"
 
 # 「不正な可能性あり」だと重大なことのように思えてしまうので変更した。
-#: index.c:1260
+#: index.c:1245
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "メールボックスが外部から変更された。フラグが正確でないかもしれない。"
 
-#: index.c:1269 pager.c:2417
+#: index.c:1254 pager.c:2417
 msgid "New mail in this mailbox"
 msgstr "このメールボックスに新着メール。"
 
-#: index.c:1285
+#: index.c:1271
 msgid "Mailbox was externally modified"
 msgstr "メールボックスが外部から変更された。"
 
-#: index.c:1427
+#: index.c:1406
 msgid "No tagged messages"
 msgstr "タグ付きメッセージがない。"
 
-#: index.c:1431 index.c:1699 menu.c:1376
+#: index.c:1410 index.c:1678 menu.c:1376
 msgid "Nothing to do"
 msgstr "何もしない。"
 
-#: index.c:1521
+#: index.c:1500
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "鍵ID入力: "
 
-#: index.c:1532
+#: index.c:1511
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index.c:1555
+#: index.c:1534
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "ルートメッセージはこの制限された表示範囲では不可視。"
 
-#: index.c:1559
+#: index.c:1538
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "サーバからメッセージを削除中..."
 
-#: index.c:1570 nntp/nntp.c:2766
+#: index.c:1549 nntp/nntp.c:2766
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "記事 %s はこのサーバ上で見つからなかった"
 
-#: index.c:1595
+#: index.c:1574
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Message-Idがないので操作を実行できない."
 
-#: index.c:1675
+#: index.c:1654
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "スレッドのメッセージをすべて削除"
 
-#: index.c:1696
+#: index.c:1675
 msgid "Jump to message: "
 msgstr "メッセージ番号を指定: "
 
-#: index.c:1702
+#: index.c:1681
 msgid "Argument must be a message number"
 msgstr "引数はメッセージ番号でなければならない。"
 
-#: index.c:1704
+#: index.c:1683
 msgid "Invalid message number"
 msgstr "不正なメッセージ番号。"
 
-#: index.c:1706
+#: index.c:1685
 msgid "That message is not visible"
 msgstr "そのメッセージは可視ではない。"
 
@@ -2792,38 +2826,38 @@ msgstr "そのメッセージは可視ではない。"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1743 index.c:3335 pager.c:3074
+#: index.c:1722 index.c:3314 pager.c:3074
 #, fuzzy
 msgid "Can't delete messages"
 msgstr "メッセージを削除できない"
 
-#: index.c:1746
+#: index.c:1725
 msgid "Delete messages matching: "
 msgstr "メッセージを削除するためのパターン: "
 
-#: index.c:1790
+#: index.c:1769
 msgid "No limit pattern is in effect"
 msgstr "現在有効な制限パターンはない。"
 
 #. L10N: ask for a limit to apply
-#: index.c:1795
+#: index.c:1774
 #, c-format
 msgid "Limit: %s"
 msgstr "制限パターン: %s"
 
-#: index.c:1830
+#: index.c:1809
 msgid "Limit to messages matching: "
 msgstr "メッセージの表示を制限するパターン: "
 
-#: index.c:1861
+#: index.c:1840
 msgid "To view all messages, limit to \"all\""
 msgstr "メッセージをすべて見るには制限を \"all\" にする。"
 
-#: index.c:1873 pager.c:2522
+#: index.c:1852 pager.c:2522
 msgid "Quit NeoMutt?"
 msgstr "NeoMutt を中止?"
 
-#: index.c:1975
+#: index.c:1954
 msgid "Tag messages matching: "
 msgstr "メッセージにタグを付けるためのパターン: "
 
@@ -2831,195 +2865,196 @@ msgstr "メッセージにタグを付けるためのパターン: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1986 index.c:3860 pager.c:3427
+#: index.c:1965 index.c:3839 pager.c:3427
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "メッセージの削除状態を解除できない"
 
-#: index.c:1990
+#: index.c:1969
 msgid "Undelete messages matching: "
 msgstr "メッセージの削除を解除するためのパターン: "
 
-#: index.c:1999
+#: index.c:1978
 msgid "Untag messages matching: "
 msgstr "メッセージのタグを外すためのパターン: "
 
-#: index.c:2039
+#: index.c:2018
 msgid "Logged out of IMAP servers"
 msgstr "IMAP サーバからログアウトした。"
 
-#: index.c:2153
+#: index.c:2132
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "無題で中止する。"
 
-#: index.c:2173
+#: index.c:2152
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index.c:2182
+#: index.c:2161
 msgid "Failed to read thread, aborting"
 msgstr "スレッドの読み込みに失敗. 中止する."
 
-#: index.c:2214 mx.c:1314 mx.c:1334
+#: index.c:2193 mx.c:1314 mx.c:1334
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "SMTP サーバがユーザ認証をサポートしていない"
 
-#: index.c:2230
+#: index.c:2209
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "無題で中止する。"
 
-#: index.c:2240
+#: index.c:2219
 msgid "Update tags..."
 msgstr "タグを更新中..."
 
-#: index.c:2280
+#: index.c:2259
 msgid "Failed to modify tags, aborting"
 msgstr "タグの変更に失敗した. 中止する."
 
-#: index.c:2328
+#: index.c:2307
 #, fuzzy
 msgid "No query, aborting"
 msgstr "無題で中止する。"
 
-#: index.c:2357 index.c:2377
+#: index.c:2336 index.c:2356
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index.c:2362 index.c:2382
+#: index.c:2341 index.c:2361
 msgid "No notmuch vfolder currently loaded"
 msgstr "notmuchのバーチャルフォルダを読み込んでいない"
 
-#: index.c:2415
+#: index.c:2394
 msgid "No mailboxes have new mail"
 msgstr "新着メールのあるメールボックスはない"
 
-#: index.c:2437
+#: index.c:2416
 msgid "Open mailbox in read-only mode"
 msgstr "読み出し専用モードでメールボックスをオープン"
 
-#: index.c:2442
+#: index.c:2421
 msgid "Open mailbox"
 msgstr "メールボックスをオープン"
 
-#: index.c:2502
+#: index.c:2481
 msgid "Open newsgroup in read-only mode"
 msgstr "読み出し専用モードでニュースグループをオープン"
 
-#: index.c:2507
+#: index.c:2486
 msgid "Open newsgroup"
 msgstr "ニュースグループを開く"
 
-#: index.c:2622
+#: index.c:2601
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "保存しないで NeoMutt を抜ける?"
 
 #. L10N: CHECK_ACL
-#: index.c:2638
+#: index.c:2617
 #, fuzzy
 msgid "Can't break thread"
 msgstr "スレッドをつなげられない"
 
-#: index.c:2655
+#: index.c:2634
 msgid "Thread broken"
 msgstr "スレッドが外された"
 
-#: index.c:2668
+#: index.c:2647
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "スレッドを外せない。メッセージがスレッドの一部ではない"
 
 #. L10N: CHECK_ACL
-#: index.c:2678
+#: index.c:2657
 msgid "Can't link threads"
 msgstr "スレッドをつなげられない"
 
-#: index.c:2686
+#: index.c:2665
 msgid "No Message-ID: header available to link thread"
 msgstr "Message-ID ヘッダが利用できないのでスレッドをつなげられない"
 
-#: index.c:2698
+#: index.c:2677
 msgid "Threads linked"
 msgstr "スレッドがつながった"
 
-#: index.c:2701
+#: index.c:2680
 msgid "No thread linked"
 msgstr "スレッドはつながらなかった"
 
-#: index.c:2741 index.c:2766
+#: index.c:2720 index.c:2745
 msgid "You are on the last message"
 msgstr "すでに最後のメッセージ。"
 
-#: index.c:2749 index.c:2792
+#: index.c:2728 index.c:2771
 msgid "No undeleted messages"
 msgstr "未削除メッセージがない。"
 
-#: index.c:2784 index.c:2809
+#: index.c:2763 index.c:2788
 msgid "You are on the first message"
 msgstr "すでに最初のメッセージ。"
 
-#: index.c:2950
+#: index.c:2929
 msgid "No new messages in this limited view"
 msgstr "この制限された表示範囲には新着メッセージがない。"
 
-#: index.c:2952
+#: index.c:2931
 msgid "No new messages"
 msgstr "新着メッセージがない。"
 
-#: index.c:2957
+#: index.c:2936
 msgid "No unread messages in this limited view"
 msgstr "この制限された表示範囲には未読メッセージがない。"
 
-#: index.c:2959
+#: index.c:2938
 msgid "No unread messages"
 msgstr "未読メッセージがない。"
 
-#: index.c:2969 menu.c:1171 pager.c:2653 pattern/pattern.c:458
+#: index.c:2948 menu.c:1171 pager.c:2653 pattern/pattern.c:460
+#: pattern/pattern.c:611
 msgid "Search wrapped to top"
 msgstr "検索は一番上に戻った。"
 
-#: index.c:2974 pager.c:2678 pattern/pattern.c:469
+#: index.c:2953 pager.c:2678 pattern/pattern.c:471 pattern/pattern.c:622
 msgid "Search wrapped to bottom"
 msgstr "検索は一番下に戻った。"
 
 #. L10N: CHECK_ACL
-#: index.c:2991
+#: index.c:2970
 msgid "Can't flag message"
 msgstr "メッセージにフラグを設定できない"
 
 #. L10N: CHECK_ACL
-#: index.c:3036 pager.c:3386
+#: index.c:3015 pager.c:3386
 msgid "Can't toggle new"
 msgstr "新着フラグを切替できない"
 
-#: index.c:3130
+#: index.c:3109
 msgid "No more threads"
 msgstr "もうスレッドがない。"
 
-#: index.c:3132
+#: index.c:3111
 msgid "You are on the first thread"
 msgstr "すでに最初のスレッド。"
 
-#: index.c:3226
+#: index.c:3205
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "スレッド中に未読メッセージがある。"
 
 #. L10N: CHECK_ACL
-#: index.c:3284 pager.c:3030
+#: index.c:3263 pager.c:3030
 msgid "Can't delete message"
 msgstr "メッセージを削除できない"
 
 #. L10N: CHECK_ACL
-#: index.c:3407
+#: index.c:3386
 msgid "Can't edit message"
 msgstr "メッセージを編集できない"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index.c:3496 pager.c:3504
+#: index.c:3475 pager.c:3504
 #, fuzzy, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -3028,7 +3063,7 @@ msgstr[0] "%d 個のラベルが変更された。"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index.c:3504 pager.c:3508
+#: index.c:3483 pager.c:3508
 msgid "No labels changed"
 msgstr "ラベルは変更されなかった。"
 
@@ -3036,7 +3071,7 @@ msgstr "ラベルは変更されなかった。"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:3631
+#: index.c:3610
 #, fuzzy
 msgid "Can't mark messages as read"
 msgstr "メッセージを既読にマークできない"
@@ -3045,40 +3080,40 @@ msgstr "メッセージを既読にマークできない"
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index.c:3670
+#: index.c:3649
 msgid "Enter macro stroke: "
 msgstr "マクロ名を入力: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index.c:3678
+#: index.c:3657
 msgid "message hotkey"
 msgstr "(mark-message キー)"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index.c:3683
+#: index.c:3662
 #, c-format
 msgid "Message bound to %s"
 msgstr "メッセージは %s に割り当てられた。"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index.c:3692
+#: index.c:3671
 msgid "No message ID to macro"
 msgstr "マクロ化するための Message-ID がない。"
 
-#: index.c:3744 pager.c:3233 recvattach.c:1787
+#: index.c:3723 pager.c:3233 recvattach.c:1787
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: index.c:3747 pager.c:3193 pager.c:3205 pager.c:3236
+#: index.c:3726 pager.c:3193 pager.c:3205 pager.c:3236
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "このニュースグループはモデレートであり、投稿は許可されていない。続ける?"
 
 #. L10N: CHECK_ACL
-#: index.c:3822 pager.c:3406
+#: index.c:3801 pager.c:3406
 msgid "Can't undelete message"
 msgstr "メッセージの削除状態を解除できない"
 
@@ -3101,37 +3136,10 @@ msgstr "uname() でノード名を識別できない"
 msgid "%s: unknown command"
 msgstr "%s: 不明なコマンド"
 
-#: init.c:1553
-msgid "'charset' must contain exactly one character set name"
-msgstr "'charset'はただ1つの文字セットでなければならない"
-
-#: init.c:1569 init.c:1593 init.c:1612 init.c:1631 init.c:1680
-#, fuzzy, c-format
-msgid "Invalid value for option %s: %s"
-msgstr "変数 %s には不正な値: \"%s\""
-
-#: init.c:1623
+#: init.c:1086
 #, c-format
-msgid "Set option %s before setting %s"
+msgid "Config variable '%s' is deprecated"
 msgstr ""
-
-#. L10N: This applies to the "$header_cache_compress_level" config variable.
-#. It shows the minimum and maximum values, e.g. 'between 1 and 22'
-#. L10N: This applies to the "$wrap_headers" config variable.
-#: init.c:1640 send/config.c:53
-#, c-format
-msgid "Option %s must be between %d and %d inclusive"
-msgstr ""
-
-#: init.c:1658
-#, c-format
-msgid "Option %s may not be set or reset from the pager"
-msgstr "オプション %s はセットできない, もしくはpagerによりリセットされた"
-
-#: init.c:1696
-#, fuzzy, c-format
-msgid "Option %s may not be set when in attach-message mode"
-msgstr "この機能はメッセージ添付モードでは許可されていない。"
 
 #: keymap.c:430
 #, c-format
@@ -3440,15 +3448,16 @@ msgstr "すでに最後のエントリ。"
 msgid "You are on the first entry"
 msgstr "すでに最初のエントリ。"
 
-#: menu.c:1135 pager.c:2701 pattern/pattern.c:386
+#: menu.c:1135 pager.c:2701 pattern/pattern.c:388 pattern/pattern.c:539
 msgid "Search for: "
 msgstr "検索パターン: "
 
-#: menu.c:1136 pager.c:2702 pattern/pattern.c:387
+#: menu.c:1136 pager.c:2702 pattern/pattern.c:389 pattern/pattern.c:540
 msgid "Reverse search for: "
 msgstr "逆順検索パターン: "
 
-#: menu.c:1189 pager.c:2650 pager.c:2675 pager.c:2809 pattern/pattern.c:514
+#: menu.c:1189 pager.c:2650 pager.c:2675 pager.c:2809 pattern/pattern.c:516
+#: pattern/pattern.c:667
 msgid "Not found"
 msgstr "見つからなかった。"
 
@@ -3500,11 +3509,6 @@ msgstr "レベル %d でデバッグ中。\n"
 #, fuzzy, c-format
 msgid "Logging at level %d to file '%s'"
 msgstr "レベル %d でデバッグ中。\n"
-
-#: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1084
-#: mx.c:1238
-msgid "Out of memory"
-msgstr "メモリ不足"
 
 #: mutt/path.c:423
 #, fuzzy
@@ -3617,6 +3621,16 @@ msgstr "書き込み失敗"
 #: mutt_attach.c:1235
 msgid "I don't know how to print that"
 msgstr "どのように印刷するか不明"
+
+#: mutt_config.c:165
+#, c-format
+msgid "Option %s may not be set or reset from the pager"
+msgstr "オプション %s はセットできない, もしくはpagerによりリセットされた"
+
+#: mutt_config.c:185
+#, fuzzy, c-format
+msgid "Option %s may not be set when in attach-message mode"
+msgstr "この機能はメッセージ添付モードでは許可されていない。"
 
 #: mutt_logging.c:307
 #, fuzzy, c-format
@@ -6331,34 +6345,34 @@ msgstr ""
 #. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
 #. was invoked when NeoMutt was compiled without crypto support.
 #. %c is the pattern character, i.e. "g".
-#: pattern/exec.c:86
+#: pattern/exec.c:88
 #, c-format
 msgid "Pattern operator '~%c' is disabled"
 msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:92 pattern/exec.c:979
+#: pattern/exec.c:94 pattern/exec.c:1023
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "エラー: 不明な op %d (このエラーを報告せよ)。"
 
-#: pattern/exec.c:133
+#: pattern/exec.c:135
 #, fuzzy
 msgid "Error opening 'memory stream'"
 msgstr "メールボックスオープン時エラー"
 
-#: pattern/exec.c:179
+#: pattern/exec.c:181
 #, fuzzy
 msgid "Error re-opening 'memory stream'"
 msgstr "メールボックスオープン時エラー"
 
-#: pattern/exec.c:189
+#: pattern/exec.c:191
 #, fuzzy
 msgid "Error opening /dev/null"
 msgstr "/dev/null をオープンできない"
 
-#: pattern/exec.c:772 pattern/exec.c:775
+#: pattern/exec.c:816 pattern/exec.c:819
 msgid "error: server custom search only supported with IMAP"
 msgstr "エラー: サーバカスタム検索はIMAPのみで有効"
 
@@ -6625,31 +6639,31 @@ msgstr "もうスレッドがない。"
 msgid "IMAP custom server-side search for STRING"
 msgstr ""
 
-#: pattern/pattern.c:253 pattern/pattern.c:412
+#: pattern/pattern.c:255 pattern/pattern.c:414 pattern/pattern.c:565
 msgid "Compiling search pattern..."
 msgstr "検索パターンをコンパイル中..."
 
-#: pattern/pattern.c:277
+#: pattern/pattern.c:279
 msgid "Executing command on matching messages..."
 msgstr "メッセージパターン検索のためにコマンド実行中..."
 
-#: pattern/pattern.c:347
+#: pattern/pattern.c:349
 msgid "No messages matched criteria"
 msgstr "パターンに一致するメッセージがなかった。"
 
-#: pattern/pattern.c:448
+#: pattern/pattern.c:450 pattern/pattern.c:601
 msgid "Searching..."
 msgstr "検索中..."
 
-#: pattern/pattern.c:461
+#: pattern/pattern.c:463 pattern/pattern.c:614
 msgid "Search hit bottom without finding match"
 msgstr "一番下まで、何も検索に一致しなかった。"
 
-#: pattern/pattern.c:472
+#: pattern/pattern.c:474 pattern/pattern.c:625
 msgid "Search hit top without finding match"
 msgstr "一番上まで、何も検索に一致しなかった。"
 
-#: pattern/pattern.c:506
+#: pattern/pattern.c:508 pattern/pattern.c:659
 msgid "Search interrupted"
 msgstr "検索が中断された。"
 

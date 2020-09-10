@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-08-21\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-08-29 03:03+0100\n"
+"POT-Creation-Date: 2020-09-10 11:39+0100\n"
 "PO-Revision-Date: 2017-04-17 17:06+0100\n"
 "Last-Translator: Richard Russon <rich@flatcap.org>\n"
 "Language-Team: none\n"
@@ -36,7 +36,7 @@ msgstr "Warning: This alias name may not work.  Fix it?"
 msgid "Address: "
 msgstr "Address: "
 
-#: alias/alias.c:442 commands.c:459 compose.c:1027 conn/raw.c:146
+#: alias/alias.c:442 commands.c:459 compose/compose.c:1025 conn/raw.c:146
 #: conn/raw.c:203 recvcmd.c:232 send/send.c:182
 #, c-format
 msgid "Bad IDN: '%s'"
@@ -75,16 +75,21 @@ msgstr "Alias added"
 msgid "Error seeking in alias file"
 msgstr "Error seeking in alias file"
 
-#: alias/commands.c:59
+#: alias/commands.c:58
 msgid "alias: no address"
 msgstr "alias: no address"
 
-#: alias/commands.c:99
+#: alias/commands.c:78
+#, c-format
+msgid "Warning: Bad address '%s' in alias '%s'"
+msgstr "Warning: Bad address '%s' in alias '%s'"
+
+#: alias/commands.c:87
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Warning: Bad IDN '%s' in alias '%s'"
 
-#: alias/dlgalias.c:60 alias/dlgquery.c:61 autocrypt/dlgautocrypt.c:61
+#: alias/dlgalias.c:57 alias/dlgquery.c:58 autocrypt/dlgautocrypt.c:61
 #: browser.c:76 browser.c:89 conn/dlgverifycert.c:47 history/dlghistory.c:46
 #: ncrypt/dlggpgme.c:64 ncrypt/dlgpgp.c:53 ncrypt/dlgsmime.c:48 pager.c:221
 #: pager.c:232 pager.c:242 pager.c:258 pattern/dlgpattern.c:63 postpone.c:70
@@ -92,30 +97,30 @@ msgstr "Warning: Bad IDN '%s' in alias '%s'"
 msgid "Exit"
 msgstr "Exit"
 
-#: alias/dlgalias.c:61 index.c:111 index.c:127 pager.c:246 pager.c:263
+#: alias/dlgalias.c:58 index.c:111 index.c:127 pager.c:246 pager.c:263
 #: postpone.c:71
 msgid "Del"
 msgstr "Del"
 
-#: alias/dlgalias.c:62 index.c:112 index.c:128 postpone.c:72
+#: alias/dlgalias.c:59 index.c:112 index.c:128 postpone.c:72
 msgid "Undel"
 msgstr "Undel"
 
-#: alias/dlgalias.c:63 alias/dlgquery.c:65
+#: alias/dlgalias.c:60 alias/dlgquery.c:62
 msgid "Sort"
 msgstr "Sort"
 
-#: alias/dlgalias.c:64 alias/dlgquery.c:66
+#: alias/dlgalias.c:61 alias/dlgquery.c:63
 msgid "Rev-Sort"
 msgstr "Rev-Sort"
 
-#: alias/dlgalias.c:65 history/dlghistory.c:47 ncrypt/dlggpgme.c:65
+#: alias/dlgalias.c:62 history/dlghistory.c:47 ncrypt/dlggpgme.c:65
 #: ncrypt/dlgpgp.c:54 ncrypt/dlgsmime.c:49 pattern/dlgpattern.c:64
 msgid "Select"
 msgstr "Select"
 
-#: alias/dlgalias.c:66 alias/dlgquery.c:68 autocrypt/dlgautocrypt.c:80
-#: browser.c:80 browser.c:95 compose.c:233 compose.c:248
+#: alias/dlgalias.c:63 alias/dlgquery.c:65 autocrypt/dlgautocrypt.c:80
+#: browser.c:80 browser.c:95 compose/compose.c:229 compose/compose.c:244
 #: conn/dlgverifycert.c:48 history/dlghistory.c:49 index.c:117 index.c:133
 #: ncrypt/dlggpgme.c:67 ncrypt/dlgpgp.c:56 ncrypt/dlgsmime.c:50 pager.c:224
 #: pager.c:249 pager.c:265 pattern/dlgpattern.c:65 postpone.c:73
@@ -123,59 +128,59 @@ msgstr "Select"
 msgid "Help"
 msgstr "Help"
 
-#: alias/dlgalias.c:189
+#: alias/dlgalias.c:186
 msgid "You have no aliases"
 msgstr "You have no aliases"
 
-#: alias/dlgalias.c:203
+#: alias/dlgalias.c:201
 msgid "Aliases"
 msgstr "Aliases"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: alias/dlgalias.c:258 alias/dlgquery.c:462
+#: alias/dlgalias.c:256 alias/dlgquery.c:460
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: alias/dlgalias.c:260 alias/dlgquery.c:464
+#: alias/dlgalias.c:258 alias/dlgquery.c:462
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr "Sort (a)lias, a(d)dress or (u)nsorted?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: alias/dlgalias.c:262 alias/dlgquery.c:466
+#: alias/dlgalias.c:260 alias/dlgquery.c:464
 msgid "adu"
 msgstr "adu"
 
-#: alias/dlgquery.c:62 index.c:114
+#: alias/dlgquery.c:59 index.c:114
 msgid "Mail"
 msgstr "Mail"
 
-#: alias/dlgquery.c:63
+#: alias/dlgquery.c:60
 msgid "New Query"
 msgstr "New Query"
 
-#: alias/dlgquery.c:64
+#: alias/dlgquery.c:61
 msgid "Make Alias"
 msgstr "Make Alias"
 
-#: alias/dlgquery.c:67 history/dlghistory.c:48
+#: alias/dlgquery.c:64 history/dlghistory.c:48
 msgid "Search"
 msgstr "Search"
 
-#: alias/dlgquery.c:257
+#: alias/dlgquery.c:254
 msgid "Waiting for response..."
 msgstr "Waiting for response..."
 
-#: alias/dlgquery.c:319 alias/dlgquery.c:364
+#: alias/dlgquery.c:316 alias/dlgquery.c:362
 #, c-format
 msgid "Query '%s'"
 msgstr "Query '%s'"
 
-#: alias/dlgquery.c:346 alias/dlgquery.c:616
+#: alias/dlgquery.c:344 alias/dlgquery.c:626
 msgid "Query: "
 msgstr "Query: "
 
-#: alias/dlgquery.c:573 alias/dlgquery.c:611
+#: alias/dlgquery.c:583 alias/dlgquery.c:621
 msgid "Query command not defined"
 msgstr "Query command not defined"
 
@@ -189,7 +194,7 @@ msgstr "%s does not exist. Create it?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:78 bcache/bcache.c:220 hcache/hcache.c:225 main.c:800
+#: autocrypt/autocrypt.c:78 bcache/bcache.c:220 hcache/hcache.c:228 main.c:800
 #: nntp/newsrc.c:1093
 #, c-format
 msgid "Can't create %s: %s"
@@ -808,9 +813,9 @@ msgstr "PGP signature successfully verified"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP signature could NOT be verified"
 
-#: commands.c:387 compmbox/compress.c:320 compose.c:2514 gui/curs_lib.c:363
-#: gui/curs_lib.c:741 index.c:1278 index.c:1333 mutt_attach.c:162
-#: mutt_attach.c:295 pager.c:2468 send/sendlib.c:1056
+#: commands.c:387 compmbox/compress.c:320 compose/compose.c:2512
+#: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1263 index.c:1312
+#: mutt_attach.c:162 mutt_attach.c:295 pager.c:2468 send/sendlib.c:1056
 #, c-format
 msgid "Error running \"%s\""
 msgstr "Error running \"%s\""
@@ -1045,52 +1050,52 @@ msgstr "Compressed-appending to %s..."
 msgid "Error. Preserving temporary file: %s"
 msgstr "Error. Preserving temporary file: %s"
 
-#: compose.c:103
+#: compose/compose.c:99
 msgid "There are no attachments"
 msgstr "There are no attachments"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:180
+#: compose/compose.c:176
 msgid "From: "
 msgstr "From: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:182 send/send.c:245
+#: compose/compose.c:178 send/send.c:245
 msgid "To: "
 msgstr "To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:184 send/send.c:249
+#: compose/compose.c:180 send/send.c:249
 msgid "Cc: "
 msgstr "Cc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:186 send/send.c:253
+#: compose/compose.c:182 send/send.c:253
 msgid "Bcc: "
 msgstr "Bcc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:188 send/send.c:290
+#: compose/compose.c:184 send/send.c:290
 msgid "Subject: "
 msgstr "Subject: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:190
+#: compose/compose.c:186
 msgid "Reply-To: "
 msgstr "Reply-To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:192
+#: compose/compose.c:188
 msgid "Fcc: "
 msgstr "Fcc: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
-#: compose.c:195
+#: compose/compose.c:191
 msgid "Mix: "
 msgstr "Mix: "
 
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
-#: compose.c:198
+#: compose/compose.c:194
 msgid "Security: "
 msgstr "Security: "
 
@@ -1099,79 +1104,79 @@ msgstr "Security: "
 #. other compose menu fields.  However, if possible, it should not be longer
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
-#: compose.c:204 ncrypt/crypt_gpgme.c:4240 ncrypt/pgp.c:1964
+#: compose/compose.c:200 ncrypt/crypt_gpgme.c:4240 ncrypt/pgp.c:1964
 #: ncrypt/smime.c:2153
 msgid "Sign as: "
 msgstr "Sign as: "
 
 #. L10N: The compose menu autocrypt line
-#: compose.c:207
+#: compose/compose.c:203
 msgid "Autocrypt: "
 msgstr "Autocrypt: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:211
+#: compose/compose.c:207
 msgid "Newsgroups: "
 msgstr "Newsgroups: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:213
+#: compose/compose.c:209
 msgid "Followup-To: "
 msgstr "Followup-To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:215
+#: compose/compose.c:211
 msgid "X-Comment-To: "
 msgstr "X-Comment-To: "
 
-#: compose.c:217
+#: compose/compose.c:213
 msgid "Headers: "
 msgstr "Headers: "
 
-#: compose.c:223 compose.c:242
+#: compose/compose.c:219 compose/compose.c:238
 msgid "Send"
 msgstr "Send"
 
-#: compose.c:224 compose.c:243 remailer.c:80
+#: compose/compose.c:220 compose/compose.c:239 remailer.c:80
 msgid "Abort"
 msgstr "Abort"
 
 #. L10N: compose menu help line entry
-#: compose.c:226
+#: compose/compose.c:222
 msgid "To"
 msgstr "To"
 
 #. L10N: compose menu help line entry
-#: compose.c:228
+#: compose/compose.c:224
 msgid "CC"
 msgstr "CC"
 
 #. L10N: compose menu help line entry
-#: compose.c:230 compose.c:245
+#: compose/compose.c:226 compose/compose.c:241
 msgid "Subj"
 msgstr "Subj"
 
-#: compose.c:231 compose.c:246 compose.c:1918
+#: compose/compose.c:227 compose/compose.c:242 compose/compose.c:1916
 msgid "Attach file"
 msgstr "Attach file"
 
-#: compose.c:232 compose.c:247
+#: compose/compose.c:228 compose/compose.c:243
 msgid "Descrip"
 msgstr "Descrip"
 
-#: compose.c:244
+#: compose/compose.c:240
 msgid "Newsgroups"
 msgstr "Newsgroups"
 
 #. L10N: Autocrypt recommendation flag: off.
 #. * This is displayed when Autocrypt is turned off.
-#: compose.c:258 compose.c:641
+#: compose/compose.c:254 compose/compose.c:638
 msgid "Off"
 msgstr "Off"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
-#: compose.c:261
+#: compose/compose.c:257
 msgid "No"
 msgstr "No"
 
@@ -1179,7 +1184,7 @@ msgstr "No"
 #. * This is displayed when Autocrypt believes encryption should not be used.
 #. * This might occur if one of the recipient Autocrypt Keys has not been
 #. * used recently, or if the only key available is a Gossip Header key.
-#: compose.c:266
+#: compose/compose.c:262
 msgid "Discouraged"
 msgstr "Discouraged"
 
@@ -1187,14 +1192,14 @@ msgstr "Discouraged"
 #. * This is displayed when Autocrypt believes encryption is possible, but
 #. * leaves enabling it up to the sender.  Probably because "prefer encrypt"
 #. * is not set in both the sender and recipient keys.
-#: compose.c:271
+#: compose/compose.c:267
 msgid "Available"
 msgstr "Available"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
-#: compose.c:275
+#: compose/compose.c:271
 msgid "Yes"
 msgstr "Yes"
 
@@ -1202,64 +1207,64 @@ msgstr "Yes"
 #. (e)ncrypt enables encryption via autocrypt.
 #. (c)lear sets cleartext.
 #. (a)utomatic defers to the recommendation.
-#: compose.c:355
+#: compose/compose.c:351
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
 msgstr "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
 
 #. L10N: The letter corresponding to the compose menu autocrypt prompt
 #. (e)ncrypt, (c)lear, (a)utomatic
-#: compose.c:361
+#: compose/compose.c:357
 msgid "eca"
 msgstr "eca"
 
-#: compose.c:569
+#: compose/compose.c:566
 msgid "Sign, Encrypt"
 msgstr "Sign, Encrypt"
 
-#: compose.c:574 compose.c:636
+#: compose/compose.c:571 compose/compose.c:633
 msgid "Encrypt"
 msgstr "Encrypt"
 
-#: compose.c:579
+#: compose/compose.c:576
 msgid "Sign"
 msgstr "Sign"
 
-#: compose.c:585
+#: compose/compose.c:582
 msgid "None"
 msgstr "None"
 
-#: compose.c:595
+#: compose/compose.c:592
 msgid " (inline PGP)"
 msgstr " (inline PGP)"
 
-#: compose.c:597
+#: compose/compose.c:594
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: compose.c:600
+#: compose/compose.c:597
 msgid " (S/MIME)"
 msgstr " (S/MIME)"
 
-#: compose.c:604
+#: compose/compose.c:601
 msgid " (OppEnc mode)"
 msgstr " (OppEnc mode)"
 
-#: compose.c:612 compose.c:619
+#: compose/compose.c:609 compose/compose.c:616
 msgid "<default>"
 msgstr "<default>"
 
-#: compose.c:625
+#: compose/compose.c:622
 msgid "Encrypt with: "
 msgstr "Encrypt with: "
 
 #. L10N: The autocrypt compose menu Recommendation field.
 #. Displays the output of the recommendation engine
 #. (Off, No, Discouraged, Available, Yes)
-#: compose.c:647
+#: compose/compose.c:644
 msgid "Recommendation: "
 msgstr "Recommendation: "
 
-#: compose.c:709
+#: compose/compose.c:706
 msgid "<no chain defined>"
 msgstr "<no chain defined>"
 
@@ -1267,7 +1272,7 @@ msgstr "<no chain defined>"
 #. doesn't stat.  %d is the attachment number and %s is the attachment
 #. filename.  The filename is located last to avoid a long path hiding
 #. the error message.
-#: compose.c:760
+#: compose/compose.c:757
 #, c-format
 msgid "Attachment #%d no longer exists: %s"
 msgstr "Attachment #%d no longer exists: %s"
@@ -1276,185 +1281,186 @@ msgstr "Attachment #%d no longer exists: %s"
 #. is modified behind the scenes.  %d is the attachment number and %s is
 #. the attachment filename.  The filename is located last to avoid a long
 #. path hiding the prompt question.
-#: compose.c:777
+#: compose/compose.c:774
 #, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "Attachment #%d modified. Update encoding for %s?"
 
-#: compose.c:837
+#: compose/compose.c:834
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
 msgstr[0] "(+%d more)"
 msgstr[1] "(+%d more)"
 
-#: compose.c:998
+#: compose/compose.c:996
 msgid "-- Attachments"
 msgstr "-- Attachments"
 
-#: compose.c:1049
+#: compose/compose.c:1047
 msgid "You may not delete the only attachment"
 msgstr "You may not delete the only attachment"
 
-#: compose.c:1666 send/send.c:2630
+#: compose/compose.c:1664 send/send.c:2630
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Bad IDN in '%s': '%s'"
 
-#: compose.c:1709
+#: compose/compose.c:1707
 msgid "Attachment is already at top"
 msgstr "Attachment is already at top"
 
-#: compose.c:1714 compose.c:1730
+#: compose/compose.c:1712 compose/compose.c:1728
 msgid "The fundamental part can't be moved"
 msgstr "The fundamental part can't be moved"
 
-#: compose.c:1725
+#: compose/compose.c:1723
 msgid "Attachment is already at bottom"
 msgstr "Attachment is already at bottom"
 
-#: compose.c:1743
+#: compose/compose.c:1741
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Grouping 'alternatives' requires at least 2 tagged messages"
 
-#: compose.c:1824
+#: compose/compose.c:1822
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "Grouping 'multilingual' requires at least 2 tagged messages"
 
-#: compose.c:1837
+#: compose/compose.c:1835
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "Not all parts have 'Content-Language' set, continue?"
 
-#: compose.c:1839
+#: compose/compose.c:1837
 msgid "Not sending this message"
 msgstr "Not sending this message"
 
-#: compose.c:1938
+#: compose/compose.c:1936
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "Attaching selected file..."
 msgstr[1] "Attaching selected files..."
 
-#: compose.c:1955
+#: compose/compose.c:1953
 #, c-format
 msgid "Unable to attach %s"
 msgstr "Unable to attach %s"
 
-#: compose.c:1977
+#: compose/compose.c:1975
 msgid "Open mailbox to attach message from"
 msgstr "Open mailbox to attach message from"
 
-#: compose.c:1987
+#: compose/compose.c:1985
 msgid "Open newsgroup to attach message from"
 msgstr "Open newsgroup to attach message from"
 
-#: compose.c:2041 main.c:1219
+#: compose/compose.c:2039 main.c:1219
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Unable to open mailbox %s"
 
-#: compose.c:2050
+#: compose/compose.c:2048
 msgid "No messages in that folder"
 msgstr "No messages in that folder"
 
-#: compose.c:2060
+#: compose/compose.c:2058
 msgid "Tag the messages you want to attach"
 msgstr "Tag the messages you want to attach"
 
-#: compose.c:2098
+#: compose/compose.c:2096
 msgid "Unable to attach"
 msgstr "Unable to attach"
 
-#: compose.c:2136
+#: compose/compose.c:2134
 msgid "Recoding only affects text attachments"
 msgstr "Recoding only affects text attachments"
 
-#: compose.c:2141
+#: compose/compose.c:2139
 msgid "The current attachment won't be converted"
 msgstr "The current attachment won't be converted"
 
-#: compose.c:2143
+#: compose/compose.c:2141
 msgid "The current attachment will be converted"
 msgstr "The current attachment will be converted"
 
-#: compose.c:2226
+#: compose/compose.c:2224
 msgid "Empty 'Content-Language'"
 msgstr "Empty 'Content-Language'"
 
-#: compose.c:2248
+#: compose/compose.c:2246
 msgid "Invalid encoding"
 msgstr "Invalid encoding"
 
-#: compose.c:2269
+#: compose/compose.c:2267
 msgid "Save a copy of this message?"
 msgstr "Save a copy of this message?"
 
-#: compose.c:2323
+#: compose/compose.c:2321
 msgid "Send attachment with name: "
 msgstr "Send attachment with name: "
 
-#: compose.c:2338
+#: compose/compose.c:2336
 msgid "Rename to: "
 msgstr "Rename to: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose.c:2345 editmsg.c:101 editmsg.c:134 editmsg.c:152 send/sendlib.c:486
+#: compose/compose.c:2343 editmsg.c:101 editmsg.c:134 editmsg.c:152
+#: send/sendlib.c:486
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Can't stat %s: %s"
 
-#: compose.c:2365
+#: compose/compose.c:2363
 msgid "New file: "
 msgstr "New file: "
 
-#: compose.c:2383
+#: compose/compose.c:2381
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type is of the form base/sub"
 
-#: compose.c:2390
+#: compose/compose.c:2388
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Unknown Content-Type %s"
 
-#: compose.c:2398
+#: compose/compose.c:2396
 #, c-format
 msgid "Can't create file %s"
 msgstr "Can't create file %s"
 
-#: compose.c:2407
+#: compose/compose.c:2405
 msgid "What we have here is a failure to make an attachment"
 msgstr "What we have here is a failure to make an attachment"
 
-#: compose.c:2471
+#: compose/compose.c:2469
 msgid "Save (postpone) draft message?"
 msgstr "Save (postpone) draft message?"
 
-#: compose.c:2531
+#: compose/compose.c:2529
 msgid "Write message to mailbox"
 msgstr "Write message to mailbox"
 
-#: compose.c:2534
+#: compose/compose.c:2532
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Writing message to %s ..."
 
-#: compose.c:2542
+#: compose/compose.c:2540
 msgid "Message written"
 msgstr "Message written"
 
-#: compose.c:2555
+#: compose/compose.c:2553
 msgid "No PGP backend configured"
 msgstr "No PGP backend configured"
 
-#: compose.c:2562 compose.c:2643
+#: compose/compose.c:2560 compose/compose.c:2641
 msgid "S/MIME already selected. Clear and continue?"
 msgstr "S/MIME already selected. Clear and continue?"
 
-#: compose.c:2594
+#: compose/compose.c:2592
 msgid "No S/MIME backend configured"
 msgstr "No S/MIME backend configured"
 
-#: compose.c:2602
+#: compose/compose.c:2600
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP already selected. Clear and continue?"
 
@@ -1467,6 +1473,16 @@ msgstr "Invalid boolean value: %s"
 #, c-format
 msgid "Invalid boolean value: %ld"
 msgstr "Invalid boolean value: %ld"
+
+#: config/charset.c:50
+msgid "'charset' must contain exactly one character set name"
+msgstr "'charset' must contain exactly one character set name"
+
+#: config/charset.c:66 hcache/config.c:68 hcache/config.c:87
+#: hcache/config.c:107 mutt_config.c:153
+#, c-format
+msgid "Invalid value for option %s: %s"
+msgstr "Invalid value for option %s: %s"
 
 #: config/enum.c:57
 #, c-format
@@ -1521,7 +1537,7 @@ msgstr "Invalid quad value: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Invalid quad value: %ld"
 
-#: config/set.c:109
+#: config/set.c:109 init.c:1079
 #, c-format
 msgid "No such variable: %s"
 msgstr "No such variable: %s"
@@ -1942,7 +1958,7 @@ msgstr "Can't append to folder: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "multipart message has no boundary parameter"
 
-#: flags.c:378 index.c:2644 index.c:2684 index.c:3205 index.c:3241
+#: flags.c:378 index.c:2623 index.c:2663 index.c:3184 index.c:3220
 #: mutt_thread.c:1126 mutt_thread.c:1192 mutt_thread.c:1277
 msgid "Threading is not enabled"
 msgstr "Threading is not enabled"
@@ -2255,6 +2271,19 @@ msgstr "[-- This is an attachment --]\n"
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s is unsupported --]\n"
 
+#: hcache/config.c:99
+#, c-format
+msgid "Set option %s before setting %s"
+msgstr "Set option %s before setting %s"
+
+#. L10N: This applies to the "$header_cache_compress_level" config variable.
+#. It shows the minimum and maximum values, e.g. 'between 1 and 22'
+#. L10N: This applies to the "$wrap_headers" config variable.
+#: hcache/config.c:116 send/config.c:53
+#, c-format
+msgid "Option %s must be between %d and %d inclusive"
+msgstr "Option %s must be between %d and %d inclusive"
+
 #: help.c:340
 msgid "ERROR: please report this bug"
 msgstr "ERROR: please report this bug"
@@ -2298,7 +2327,7 @@ msgstr "Bad history file format (line %d)"
 #: ncrypt/smime.c:1129 ncrypt/smime.c:1137 ncrypt/smime.c:1334
 #: ncrypt/smime.c:1727 ncrypt/smime.c:1805 ncrypt/smime.c:1812
 #: ncrypt/smime.c:1915 ncrypt/smime.c:2039 ncrypt/smime.c:2055 nntp/nntp.c:1393
-#: nntp/nntp.c:2233 pattern/exec.c:140 pop/pop.c:175
+#: nntp/nntp.c:2233 pattern/exec.c:142 pop/pop.c:175
 msgid "Can't create temporary file"
 msgstr "Can't create temporary file"
 
@@ -2561,7 +2590,7 @@ msgstr "Fetching flag updates..."
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Unable to fetch headers from this IMAP server version"
 
-#: imap/message.c:1067 index.c:1599 nntp/nntp.c:1325 pop/pop.c:419
+#: imap/message.c:1067 index.c:1578 nntp/nntp.c:1325 pop/pop.c:419
 msgid "Fetching message headers..."
 msgstr "Fetching message headers..."
 
@@ -2581,6 +2610,11 @@ msgstr "Fetching message..."
 #: imap/message.c:1931 pop/pop.c:1091
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "The message index is incorrect. Try reopening the mailbox."
+
+#: imap/msn.c:48 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
+#: mutt/string.c:1079 mx.c:1238
+msgid "Out of memory"
+msgstr "Out of memory"
 
 #: imap/search.c:157
 #, c-format
@@ -2620,7 +2654,7 @@ msgstr "Post"
 msgid "Followup"
 msgstr "Followup"
 
-#: index.c:168 index.c:1420
+#: index.c:168 index.c:1399
 msgid "No mailbox is open"
 msgstr "No mailbox is open"
 
@@ -2658,78 +2692,78 @@ msgstr "Changes to folder will be written on folder exit"
 msgid "Changes to folder will not be written"
 msgstr "Changes to folder will not be written"
 
-#: index.c:806
+#: index.c:795
 msgid "Failed to create query, aborting"
 msgstr "Failed to create query, aborting"
 
-#: index.c:853 muttlib.c:1390 mx.c:220 mx.c:371
+#: index.c:842 muttlib.c:1390 mx.c:220 mx.c:371
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s is not a mailbox"
 
-#: index.c:1260
+#: index.c:1245
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Mailbox was externally modified.  Flags may be wrong."
 
-#: index.c:1269 pager.c:2417
+#: index.c:1254 pager.c:2417
 msgid "New mail in this mailbox"
 msgstr "New mail in this mailbox"
 
-#: index.c:1285
+#: index.c:1271
 msgid "Mailbox was externally modified"
 msgstr "Mailbox was externally modified"
 
-#: index.c:1427
+#: index.c:1406
 msgid "No tagged messages"
 msgstr "No tagged messages"
 
-#: index.c:1431 index.c:1699 menu.c:1376
+#: index.c:1410 index.c:1678 menu.c:1376
 msgid "Nothing to do"
 msgstr "Nothing to do"
 
-#: index.c:1521
+#: index.c:1500
 msgid "Enter Message-Id: "
 msgstr "Enter Message-Id: "
 
-#: index.c:1532
+#: index.c:1511
 msgid "Article has no parent reference"
 msgstr "Article has no parent reference"
 
-#: index.c:1555
+#: index.c:1534
 msgid "Message is not visible in limited view"
 msgstr "Message is not visible in limited view"
 
-#: index.c:1559
+#: index.c:1538
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Fetching %s from server..."
 
-#: index.c:1570 nntp/nntp.c:2766
+#: index.c:1549 nntp/nntp.c:2766
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Article %s not found on the server"
 
-#: index.c:1595
+#: index.c:1574
 msgid "No Message-Id. Unable to perform operation."
 msgstr "No Message-Id. Unable to perform operation."
 
-#: index.c:1675
+#: index.c:1654
 msgid "No deleted messages found in the thread"
 msgstr "No deleted messages found in the thread"
 
-#: index.c:1696
+#: index.c:1675
 msgid "Jump to message: "
 msgstr "Jump to message: "
 
-#: index.c:1702
+#: index.c:1681
 msgid "Argument must be a message number"
 msgstr "Argument must be a message number"
 
-#: index.c:1704
+#: index.c:1683
 msgid "Invalid message number"
 msgstr "Invalid message number"
 
-#: index.c:1706
+#: index.c:1685
 msgid "That message is not visible"
 msgstr "That message is not visible"
 
@@ -2737,37 +2771,37 @@ msgstr "That message is not visible"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1743 index.c:3335 pager.c:3074
+#: index.c:1722 index.c:3314 pager.c:3074
 msgid "Can't delete messages"
 msgstr "Can't delete messages"
 
-#: index.c:1746
+#: index.c:1725
 msgid "Delete messages matching: "
 msgstr "Delete messages matching: "
 
-#: index.c:1790
+#: index.c:1769
 msgid "No limit pattern is in effect"
 msgstr "No limit pattern is in effect"
 
 #. L10N: ask for a limit to apply
-#: index.c:1795
+#: index.c:1774
 #, c-format
 msgid "Limit: %s"
 msgstr "Limit: %s"
 
-#: index.c:1830
+#: index.c:1809
 msgid "Limit to messages matching: "
 msgstr "Limit to messages matching: "
 
-#: index.c:1861
+#: index.c:1840
 msgid "To view all messages, limit to \"all\""
 msgstr "To view all messages, limit to \"all\""
 
-#: index.c:1873 pager.c:2522
+#: index.c:1852 pager.c:2522
 msgid "Quit NeoMutt?"
 msgstr "Quit NeoMutt?"
 
-#: index.c:1975
+#: index.c:1954
 msgid "Tag messages matching: "
 msgstr "Tag messages matching: "
 
@@ -2775,187 +2809,188 @@ msgstr "Tag messages matching: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1986 index.c:3860 pager.c:3427
+#: index.c:1965 index.c:3839 pager.c:3427
 msgid "Can't undelete messages"
 msgstr "Can't undelete messages"
 
-#: index.c:1990
+#: index.c:1969
 msgid "Undelete messages matching: "
 msgstr "Undelete messages matching: "
 
-#: index.c:1999
+#: index.c:1978
 msgid "Untag messages matching: "
 msgstr "Untag messages matching: "
 
-#: index.c:2039
+#: index.c:2018
 msgid "Logged out of IMAP servers"
 msgstr "Logged out of IMAP servers"
 
-#: index.c:2153
+#: index.c:2132
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "No virtual folder and no Message-Id, aborting"
 
-#: index.c:2173
+#: index.c:2152
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "failed to find message in notmuch database. try running 'notmuch new'."
 
-#: index.c:2182
+#: index.c:2161
 msgid "Failed to read thread, aborting"
 msgstr "Failed to read thread, aborting"
 
-#: index.c:2214 mx.c:1314 mx.c:1334
+#: index.c:2193 mx.c:1314 mx.c:1334
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Folder doesn't support tagging, aborting"
 
-#: index.c:2230
+#: index.c:2209
 msgid "No tag specified, aborting"
 msgstr "No tag specified, aborting"
 
-#: index.c:2240
+#: index.c:2219
 msgid "Update tags..."
 msgstr "Update tags..."
 
-#: index.c:2280
+#: index.c:2259
 msgid "Failed to modify tags, aborting"
 msgstr "Failed to modify tags, aborting"
 
-#: index.c:2328
+#: index.c:2307
 msgid "No query, aborting"
 msgstr "No query, aborting"
 
-#: index.c:2357 index.c:2377
+#: index.c:2336 index.c:2356
 msgid "Windowed queries disabled"
 msgstr "Windowed queries disabled"
 
-#: index.c:2362 index.c:2382
+#: index.c:2341 index.c:2361
 msgid "No notmuch vfolder currently loaded"
 msgstr "No notmuch vfolder currently loaded"
 
-#: index.c:2415
+#: index.c:2394
 msgid "No mailboxes have new mail"
 msgstr "No mailboxes have new mail"
 
-#: index.c:2437
+#: index.c:2416
 msgid "Open mailbox in read-only mode"
 msgstr "Open mailbox in read-only mode"
 
-#: index.c:2442
+#: index.c:2421
 msgid "Open mailbox"
 msgstr "Open mailbox"
 
-#: index.c:2502
+#: index.c:2481
 msgid "Open newsgroup in read-only mode"
 msgstr "Open newsgroup in read-only mode"
 
-#: index.c:2507
+#: index.c:2486
 msgid "Open newsgroup"
 msgstr "Open newsgroup"
 
-#: index.c:2622
+#: index.c:2601
 msgid "Exit NeoMutt without saving?"
 msgstr "Exit NeoMutt without saving?"
 
 #. L10N: CHECK_ACL
-#: index.c:2638
+#: index.c:2617
 msgid "Can't break thread"
 msgstr "Can't break thread"
 
-#: index.c:2655
+#: index.c:2634
 msgid "Thread broken"
 msgstr "Thread broken"
 
-#: index.c:2668
+#: index.c:2647
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Thread can't be broken, message is not part of a thread"
 
 #. L10N: CHECK_ACL
-#: index.c:2678
+#: index.c:2657
 msgid "Can't link threads"
 msgstr "Can't link threads"
 
-#: index.c:2686
+#: index.c:2665
 msgid "No Message-ID: header available to link thread"
 msgstr "No Message-ID: header available to link thread"
 
-#: index.c:2698
+#: index.c:2677
 msgid "Threads linked"
 msgstr "Threads linked"
 
-#: index.c:2701
+#: index.c:2680
 msgid "No thread linked"
 msgstr "No thread linked"
 
-#: index.c:2741 index.c:2766
+#: index.c:2720 index.c:2745
 msgid "You are on the last message"
 msgstr "You are on the last message"
 
-#: index.c:2749 index.c:2792
+#: index.c:2728 index.c:2771
 msgid "No undeleted messages"
 msgstr "No undeleted messages"
 
-#: index.c:2784 index.c:2809
+#: index.c:2763 index.c:2788
 msgid "You are on the first message"
 msgstr "You are on the first message"
 
-#: index.c:2950
+#: index.c:2929
 msgid "No new messages in this limited view"
 msgstr "No new messages in this limited view"
 
-#: index.c:2952
+#: index.c:2931
 msgid "No new messages"
 msgstr "No new messages"
 
-#: index.c:2957
+#: index.c:2936
 msgid "No unread messages in this limited view"
 msgstr "No unread messages in this limited view"
 
-#: index.c:2959
+#: index.c:2938
 msgid "No unread messages"
 msgstr "No unread messages"
 
-#: index.c:2969 menu.c:1171 pager.c:2653 pattern/pattern.c:458
+#: index.c:2948 menu.c:1171 pager.c:2653 pattern/pattern.c:460
+#: pattern/pattern.c:611
 msgid "Search wrapped to top"
 msgstr "Search wrapped to top"
 
-#: index.c:2974 pager.c:2678 pattern/pattern.c:469
+#: index.c:2953 pager.c:2678 pattern/pattern.c:471 pattern/pattern.c:622
 msgid "Search wrapped to bottom"
 msgstr "Search wrapped to bottom"
 
 #. L10N: CHECK_ACL
-#: index.c:2991
+#: index.c:2970
 msgid "Can't flag message"
 msgstr "Can't flag message"
 
 #. L10N: CHECK_ACL
-#: index.c:3036 pager.c:3386
+#: index.c:3015 pager.c:3386
 msgid "Can't toggle new"
 msgstr "Can't toggle new"
 
-#: index.c:3130
+#: index.c:3109
 msgid "No more threads"
 msgstr "No more threads"
 
-#: index.c:3132
+#: index.c:3111
 msgid "You are on the first thread"
 msgstr "You are on the first thread"
 
-#: index.c:3226
+#: index.c:3205
 msgid "Thread contains unread or flagged messages"
 msgstr "Thread contains unread or flagged messages"
 
 #. L10N: CHECK_ACL
-#: index.c:3284 pager.c:3030
+#: index.c:3263 pager.c:3030
 msgid "Can't delete message"
 msgstr "Can't delete message"
 
 #. L10N: CHECK_ACL
-#: index.c:3407
+#: index.c:3386
 msgid "Can't edit message"
 msgstr "Can't edit message"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index.c:3496 pager.c:3504
+#: index.c:3475 pager.c:3504
 #, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -2965,7 +3000,7 @@ msgstr[1] "%d labels changed"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index.c:3504 pager.c:3508
+#: index.c:3483 pager.c:3508
 msgid "No labels changed"
 msgstr "No labels changed"
 
@@ -2973,47 +3008,47 @@ msgstr "No labels changed"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:3631
+#: index.c:3610
 msgid "Can't mark messages as read"
 msgstr "Can't mark messages as read"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index.c:3670
+#: index.c:3649
 msgid "Enter macro stroke: "
 msgstr "Enter macro stroke: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index.c:3678
+#: index.c:3657
 msgid "message hotkey"
 msgstr "message hotkey"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index.c:3683
+#: index.c:3662
 #, c-format
 msgid "Message bound to %s"
 msgstr "Message bound to %s"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index.c:3692
+#: index.c:3671
 msgid "No message ID to macro"
 msgstr "No message ID to macro"
 
-#: index.c:3744 pager.c:3233 recvattach.c:1787
+#: index.c:3723 pager.c:3233 recvattach.c:1787
 msgid "Reply by mail as poster prefers?"
 msgstr "Reply by mail as poster prefers?"
 
-#: index.c:3747 pager.c:3193 pager.c:3205 pager.c:3236
+#: index.c:3726 pager.c:3193 pager.c:3205 pager.c:3236
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Posting to this group not allowed, may be moderated. Continue?"
 
 #. L10N: CHECK_ACL
-#: index.c:3822 pager.c:3406
+#: index.c:3801 pager.c:3406
 msgid "Can't undelete message"
 msgstr "Can't undelete message"
 
@@ -3036,37 +3071,10 @@ msgstr "unable to determine nodename via uname()"
 msgid "%s: unknown command"
 msgstr "%s: unknown command"
 
-#: init.c:1553
-msgid "'charset' must contain exactly one character set name"
-msgstr "'charset' must contain exactly one character set name"
-
-#: init.c:1569 init.c:1593 init.c:1612 init.c:1631 init.c:1680
+#: init.c:1086
 #, c-format
-msgid "Invalid value for option %s: %s"
-msgstr "Invalid value for option %s: %s"
-
-#: init.c:1623
-#, c-format
-msgid "Set option %s before setting %s"
-msgstr "Set option %s before setting %s"
-
-#. L10N: This applies to the "$header_cache_compress_level" config variable.
-#. It shows the minimum and maximum values, e.g. 'between 1 and 22'
-#. L10N: This applies to the "$wrap_headers" config variable.
-#: init.c:1640 send/config.c:53
-#, c-format
-msgid "Option %s must be between %d and %d inclusive"
-msgstr "Option %s must be between %d and %d inclusive"
-
-#: init.c:1658
-#, c-format
-msgid "Option %s may not be set or reset from the pager"
-msgstr "Option %s may not be set or reset from the pager"
-
-#: init.c:1696
-#, c-format
-msgid "Option %s may not be set when in attach-message mode"
-msgstr "Option %s may not be set when in attach-message mode"
+msgid "Config variable '%s' is deprecated"
+msgstr "Config variable '%s' is deprecated"
 
 #: keymap.c:430
 #, c-format
@@ -3431,15 +3439,16 @@ msgstr "You are on the last entry"
 msgid "You are on the first entry"
 msgstr "You are on the first entry"
 
-#: menu.c:1135 pager.c:2701 pattern/pattern.c:386
+#: menu.c:1135 pager.c:2701 pattern/pattern.c:388 pattern/pattern.c:539
 msgid "Search for: "
 msgstr "Search for: "
 
-#: menu.c:1136 pager.c:2702 pattern/pattern.c:387
+#: menu.c:1136 pager.c:2702 pattern/pattern.c:389 pattern/pattern.c:540
 msgid "Reverse search for: "
 msgstr "Reverse search for: "
 
-#: menu.c:1189 pager.c:2650 pager.c:2675 pager.c:2809 pattern/pattern.c:514
+#: menu.c:1189 pager.c:2650 pager.c:2675 pager.c:2809 pattern/pattern.c:516
+#: pattern/pattern.c:667
 msgid "Not found"
 msgstr "Not found"
 
@@ -3491,11 +3500,6 @@ msgstr "Debugging at level %d to file '%s'"
 #, c-format
 msgid "Logging at level %d to file '%s'"
 msgstr "Logging at level %d to file '%s'"
-
-#: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1084
-#: mx.c:1238
-msgid "Out of memory"
-msgstr "Out of memory"
 
 #: mutt/path.c:423
 msgid "Error: converting path to absolute"
@@ -3606,6 +3610,16 @@ msgstr "Write fault"
 #: mutt_attach.c:1235
 msgid "I don't know how to print that"
 msgstr "I don't know how to print that"
+
+#: mutt_config.c:165
+#, c-format
+msgid "Option %s may not be set or reset from the pager"
+msgstr "Option %s may not be set or reset from the pager"
+
+#: mutt_config.c:185
+#, c-format
+msgid "Option %s may not be set when in attach-message mode"
+msgstr "Option %s may not be set when in attach-message mode"
 
 #: mutt_logging.c:307
 #, c-format
@@ -6261,31 +6275,31 @@ msgstr "messages having an immediate child matching PATTERN"
 #. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
 #. was invoked when NeoMutt was compiled without crypto support.
 #. %c is the pattern character, i.e. "g".
-#: pattern/exec.c:86
+#: pattern/exec.c:88
 #, c-format
 msgid "Pattern operator '~%c' is disabled"
 msgstr "Pattern operator '~%c' is disabled"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:92 pattern/exec.c:979
+#: pattern/exec.c:94 pattern/exec.c:1023
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "error: unknown op %d (report this error)"
 
-#: pattern/exec.c:133
+#: pattern/exec.c:135
 msgid "Error opening 'memory stream'"
 msgstr "Error opening 'memory stream'"
 
-#: pattern/exec.c:179
+#: pattern/exec.c:181
 msgid "Error re-opening 'memory stream'"
 msgstr "Error re-opening 'memory stream'"
 
-#: pattern/exec.c:189
+#: pattern/exec.c:191
 msgid "Error opening /dev/null"
 msgstr "Error opening /dev/null"
 
-#: pattern/exec.c:772 pattern/exec.c:775
+#: pattern/exec.c:816 pattern/exec.c:819
 msgid "error: server custom search only supported with IMAP"
 msgstr "error: server custom search only supported with IMAP"
 
@@ -6529,31 +6543,31 @@ msgstr "broken threads"
 msgid "IMAP custom server-side search for STRING"
 msgstr "IMAP custom server-side search for STRING"
 
-#: pattern/pattern.c:253 pattern/pattern.c:412
+#: pattern/pattern.c:255 pattern/pattern.c:414 pattern/pattern.c:565
 msgid "Compiling search pattern..."
 msgstr "Compiling search pattern..."
 
-#: pattern/pattern.c:277
+#: pattern/pattern.c:279
 msgid "Executing command on matching messages..."
 msgstr "Executing command on matching messages..."
 
-#: pattern/pattern.c:347
+#: pattern/pattern.c:349
 msgid "No messages matched criteria"
 msgstr "No messages matched criteria"
 
-#: pattern/pattern.c:448
+#: pattern/pattern.c:450 pattern/pattern.c:601
 msgid "Searching..."
 msgstr "Searching..."
 
-#: pattern/pattern.c:461
+#: pattern/pattern.c:463 pattern/pattern.c:614
 msgid "Search hit bottom without finding match"
 msgstr "Search hit bottom without finding match"
 
-#: pattern/pattern.c:472
+#: pattern/pattern.c:474 pattern/pattern.c:625
 msgid "Search hit top without finding match"
 msgstr "Search hit top without finding match"
 
-#: pattern/pattern.c:506
+#: pattern/pattern.c:508 pattern/pattern.c:659
 msgid "Search interrupted"
 msgstr "Search interrupted"
 

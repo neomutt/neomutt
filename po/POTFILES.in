@@ -3,6 +3,7 @@ address/group.c
 address/idna.c
 alias/alias.c
 alias/commands.c
+alias/config.c
 alias/dlgalias.c
 alias/dlgquery.c
 alias/gui.c
@@ -19,13 +20,15 @@ commands.c
 command_parse.c
 complete.c
 compmbox/compress.c
-compose.c
+compose/compose.c
+compose/config.c
 compress/compress.c
 compress/lz4.c
 compress/zlib.c
 compress/zstd.c
 config/address.c
 config/bool.c
+config/charset.c
 config/dump.c
 config/enum.c
 config/helpers.c
@@ -116,6 +119,7 @@ imap/command.c
 imap/config.c
 imap/imap.c
 imap/message.c
+imap/msn.c
 imap/search.c
 imap/utf7.c
 imap/util.c
@@ -237,7 +241,9 @@ sidebar/config.c
 sidebar/functions.c
 sidebar/observer.c
 sidebar/sidebar.c
+sidebar/sort.c
 sidebar/wdata.c
+sidebar/window.c
 sort.c
 state.c
 status.c
