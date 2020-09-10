@@ -224,6 +224,109 @@ bool mutt_limit_current_thread(struct Email *e)
 }
 
 /**
+ * mutt_pattern_alias_func - Perform some Pattern matching for Alias
+ * @param op        Operation to perform, e.g. #MUTT_LIMIT
+ * @param prompt    Prompt to show the user
+ * @param menu_name Name of the current menu, e.g. Aliases, Query
+ * @param mdata     Menu data holding Aliases
+ * @param m         Current menu
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
+int mutt_pattern_alias_func(int op, char *prompt, char *menu_name,
+                            struct AliasMenuData *mdata, struct Menu *m)
+{
+  int rc = -1;
+  struct Progress progress;
+  struct Buffer *buf = mutt_buffer_pool_get();
+
+  mutt_buffer_strcpy(buf, mdata->str);
+  if (prompt)
+  {
+    if ((mutt_buffer_get_field(prompt, buf, MUTT_PATTERN | MUTT_CLEAR) != 0) ||
+        mutt_buffer_is_empty(buf))
+    {
+      mutt_buffer_pool_release(&buf);
+      return -1;
+    }
+  }
+
+  mutt_message(_("Compiling search pattern..."));
+
+  bool match_all = false;
+  struct PatternList *pat = NULL;
+  char *simple = mutt_buffer_strdup(buf);
+  if (simple)
+  {
+    mutt_check_simple(buf, MUTT_ALIAS_SIMPLESEARCH);
+    const char *pbuf = buf->data;
+    while (*pbuf == ' ')
+      pbuf++;
+    match_all = mutt_str_equal(pbuf, "~A");
+
+    struct Buffer err = mutt_buffer_make(0);
+    pat = mutt_pattern_comp(buf->data, MUTT_PC_FULL_MSG, &err);
+    if (!pat)
+    {
+      mutt_error("%s", mutt_b2s(&err));
+      mutt_buffer_dealloc(&err);
+      goto bail;
+    }
+  }
+  else
+  {
+    match_all = true;
+  }
+
+  mutt_progress_init(&progress, _("Executing command on matching messages..."),
+                     MUTT_PROGRESS_READ, ARRAY_SIZE(&mdata->ava));
+
+  int vcounter = 0;
+  struct AliasView *avp = NULL;
+  ARRAY_FOREACH(avp, &mdata->ava)
+  {
+    mutt_progress_update(&progress, ARRAY_FOREACH_IDX, -1);
+
+    if (match_all ||
+        mutt_pattern_alias_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, avp, NULL))
+    {
+      avp->is_visible = true;
+      vcounter++;
+    }
+    else
+    {
+      avp->is_visible = false;
+    }
+  }
+
+  mutt_str_replace(&mdata->str, simple);
+
+  if (m)
+  {
+    m->max = vcounter;
+    m->current = 0;
+
+    FREE(&m->title);
+
+    if (match_all)
+      m->title = menu_create_alias_title(menu_name, NULL);
+    else
+      m->title = menu_create_alias_title(menu_name, simple);
+  }
+
+  mutt_clear_error();
+
+  rc = 0;
+
+bail:
+  mutt_buffer_pool_release(&buf);
+  FREE(&simple);
+  mutt_pattern_free(&pat);
+
+  return rc;
+}
+
+/**
  * mutt_pattern_func - Perform some Pattern matching
  * @param op     Operation to perform, e.g. #MUTT_LIMIT
  * @param prompt Prompt to show the user
@@ -529,7 +632,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
 {
   struct Progress progress;
 
-  struct AliasMenuData *mdata = (struct AliasMenuData *) menu->mdata;
+  struct AliasViewArray *ava = &((struct AliasMenuData *) menu->mdata)->ava;
 
   if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
@@ -553,7 +656,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
      * $simple_search has changed while we were searching */
     struct Buffer *tmp = mutt_buffer_pool_get();
     mutt_buffer_strcpy(tmp, buf);
-    mutt_check_simple(tmp, "~f %s | ~t %s | ~c %s");
+    mutt_check_simple(tmp, MUTT_ALIAS_SIMPLESEARCH);
 
     if (!SearchPattern || !mutt_str_equal(mutt_b2s(tmp), LastSearchExpn))
     {
@@ -586,7 +689,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
   if (OptSearchInvalid)
   {
     struct AliasView *av = NULL;
-    ARRAY_FOREACH(av, mdata)
+    ARRAY_FOREACH(av, ava)
     {
       av->is_searched = false;
     }
@@ -598,13 +701,13 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
-  mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_READ, ARRAY_SIZE(mdata));
+  mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_READ, ARRAY_SIZE(ava));
 
-  for (int i = cur + incr, j = 0; j != ARRAY_SIZE(mdata); j++)
+  for (int i = cur + incr, j = 0; j != ARRAY_SIZE(ava); j++)
   {
     const char *msg = NULL;
     mutt_progress_update(&progress, j, -1);
-    if (i > ARRAY_SIZE(mdata) - 1)
+    if (i > ARRAY_SIZE(ava) - 1)
     {
       i = 0;
       if (C_WrapSearch)
@@ -617,7 +720,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
     }
     else if (i < 0)
     {
-      i = ARRAY_SIZE(mdata) - 1;
+      i = ARRAY_SIZE(ava) - 1;
       if (C_WrapSearch)
         msg = _("Search wrapped to bottom");
       else
@@ -627,7 +730,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
       }
     }
 
-    struct AliasView *av = ARRAY_GET(mdata, i);
+    struct AliasView *av = ARRAY_GET(ava, i);
     if (av->is_searched)
     {
       /* if we've already evaluated this message, use the cached value */

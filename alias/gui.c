@@ -41,17 +41,20 @@
 #define RSORT(num) ((C_SortAlias & SORT_REVERSE) ? -num : num)
 
 /**
- * alias_sort_name - Compare two Aliases by their short names
- * @param a First  Alias to compare
- * @param b Second Alias to compare
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * alias_sort_name - Compare two Aliases by their short names - Implements ::sort_t
+ *
+ * @note Non-visible Aliases are sorted to the end
  */
 int alias_sort_name(const void *a, const void *b)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
+
+  if (av_a->is_visible != av_b->is_visible)
+    return av_a->is_visible ? -1 : 1;
+
+  if (!av_a->is_visible)
+    return 0;
 
   int r = mutt_str_coll(av_a->alias->name, av_b->alias->name);
 
@@ -59,17 +62,23 @@ int alias_sort_name(const void *a, const void *b)
 }
 
 /**
- * alias_sort_address - Compare two Aliases by their Addresses
- * @param a First  Alias to compare
- * @param b Second Alias to compare
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * alias_sort_address - Compare two Aliases by their Addresses - Implements ::sort_t
+ *
+ * @note Non-visible Aliases are sorted to the end
  */
 int alias_sort_address(const void *a, const void *b)
 {
-  const struct AddressList *al_a = &((struct AliasView const *) a)->alias->addr;
-  const struct AddressList *al_b = &((struct AliasView const *) b)->alias->addr;
+  const struct AliasView *av_a = a;
+  const struct AliasView *av_b = b;
+
+  const struct AddressList *al_a = &av_a->alias->addr;
+  const struct AddressList *al_b = &av_b->alias->addr;
+
+  if (av_a->is_visible != av_b->is_visible)
+    return av_a->is_visible ? -1 : 1;
+
+  if (!av_a->is_visible)
+    return 0;
 
   int r;
   if (al_a == al_b)
@@ -101,11 +110,19 @@ int alias_sort_address(const void *a, const void *b)
 
 /**
  * alias_sort_unsort - Compare two Aliases by their original configuration position - Implements ::sort_t
+ *
+ * @note Non-visible Aliases are sorted to the end
  */
 int alias_sort_unsort(const void *a, const void *b)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
+
+  if (av_a->is_visible != av_b->is_visible)
+    return av_a->is_visible ? -1 : 1;
+
+  if (!av_a->is_visible)
+    return 0;
 
   int r = (av_a->orig_seq - av_b->orig_seq);
 
@@ -129,7 +146,7 @@ int alias_config_observer(struct NotifyCallback *nc)
 
   struct AliasMenuData *mdata = nc->global_data;
 
-  menu_data_sort(mdata);
+  alias_array_sort(&mdata->ava);
 
   return 0;
 }
@@ -168,80 +185,115 @@ sort_t alias_get_sort_function(short sort)
 }
 
 /**
- * menu_data_new - Create a new AliasMenuData
- * @retval ptr Newly allocated AliasMenuData
- *
- * All the GUI data required to maintain the Menu.
- */
-struct AliasMenuData *menu_data_new(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct AliasMenuData));
-}
-
-/**
- * menu_data_alias_add - Add an Alias to the AliasMenuData
- * @param mdata Menu data holding Aliases
+ * alias_array_alias_add - Add an Alias to the AliasViewArray
+ * @param ava Array of Aliases
  * @param alias Alias to add
  *
  * @note The Alias is wrapped in an AliasView
- * @note Call menu_data_sort() to sort and reindex the AliasMenuData
+ * @note Call alias_array_sort() to sort and reindex the AliasViewArray
  */
-int menu_data_alias_add(struct AliasMenuData *mdata, struct Alias *alias)
+int alias_array_alias_add(struct AliasViewArray *ava, struct Alias *alias)
 {
-  if (!mdata || !alias)
+  if (!ava || !alias)
     return -1;
 
   struct AliasView av = {
     .num = 0,
-    .orig_seq = ARRAY_SIZE(mdata),
+    .orig_seq = ARRAY_SIZE(ava),
     .is_tagged = false,
     .is_deleted = false,
+    .is_visible = true,
     .alias = alias,
   };
-  ARRAY_ADD(mdata, av);
-  return ARRAY_SIZE(mdata);
+  ARRAY_ADD(ava, av);
+  return ARRAY_SIZE(ava);
 }
 
 /**
- * menu_data_alias_delete - Delete an Alias from the AliasMenuData
- * @param mdata Menu data holding Aliases
+ * alias_array_alias_delete - Delete an Alias from the AliasViewArray
+ * @param ava    Array of Aliases
  * @param alias Alias to remove
  *
- * @note Call menu_data_sort() to sort and reindex the AliasMenuData
+ * @note Call alias_array_sort() to sort and reindex the AliasViewArray
  */
-int menu_data_alias_delete(struct AliasMenuData *mdata, struct Alias *alias)
+int alias_array_alias_delete(struct AliasViewArray *ava, struct Alias *alias)
 {
-  if (!mdata || !alias)
+  if (!ava || !alias)
     return -1;
 
   struct AliasView *avp = NULL;
-  ARRAY_FOREACH(avp, mdata)
+  ARRAY_FOREACH(avp, ava)
   {
     if (avp->alias != alias)
       continue;
 
-    ARRAY_REMOVE(mdata, avp);
+    ARRAY_REMOVE(ava, avp);
     break;
   }
 
-  return ARRAY_SIZE(mdata);
+  return ARRAY_SIZE(ava);
 }
 
 /**
- * menu_data_sort - Sort and reindex an AliasMenuData
- * @param mdata Menu data holding Aliases
+ * alias_array_sort - Sort and reindex an AliasViewArray
+ * @param ava Array of Aliases
  */
-void menu_data_sort(struct AliasMenuData *mdata)
+void alias_array_sort(struct AliasViewArray *ava)
 {
-  if (!mdata || ARRAY_EMPTY(mdata))
+  if (!ava || ARRAY_EMPTY(ava))
     return;
 
-  ARRAY_SORT(mdata, alias_get_sort_function(C_SortAlias));
+  ARRAY_SORT(ava, alias_get_sort_function(C_SortAlias));
 
   struct AliasView *avp = NULL;
   int i = 0;
-  ARRAY_FOREACH(avp, mdata)
+  ARRAY_FOREACH(avp, ava)
   {
     avp->num = i++;
+  }
+}
+
+/**
+ * alias_array_count_visible - Count number of visible Aliases
+ * @param ava Array of Aliases
+ */
+int alias_array_count_visible(struct AliasViewArray *ava)
+{
+  int count = 0;
+
+  struct AliasView *avp = NULL;
+  ARRAY_FOREACH(avp, ava)
+  {
+    if (avp->is_visible)
+      count++;
+  }
+
+  return count;
+}
+
+/**
+ * menu_create_alias_title - Create a title string for the Menu
+ * @param menu_name Menu name
+ * @param limit     Limit being applied
+ *
+ * @note Caller must free the returned string
+ */
+char *menu_create_alias_title(char *menu_name, char *limit)
+{
+  if (limit)
+  {
+    char *tmp_str = NULL;
+    char *new_title = NULL;
+
+    mutt_str_asprintf(&tmp_str, _("Limit: %s"), limit);
+    mutt_str_asprintf(&new_title, "%s - %s", menu_name, tmp_str);
+
+    FREE(&tmp_str);
+
+    return new_title;
+  }
+  else
+  {
+    return strdup(menu_name);
   }
 }
