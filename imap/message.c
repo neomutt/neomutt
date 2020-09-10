@@ -762,7 +762,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
         imap_msn_set(&mdata->msn, h.edata->msn - 1, e);
         mutt_hash_int_insert(mdata->uid_hash, h.edata->uid, e);
 
-        e->index = idx;
+        e->index = h.edata->uid;
         /* messages which have not been expunged are ACTIVE (borrowed from mh
          * folders) */
         e->active = true;
@@ -860,7 +860,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
       e->edata = edata;
       e->edata_free = imap_edata_free;
 
-      e->index = m->msg_count;
+      e->index = uid;
       e->active = true;
       e->changed = false;
       edata->read = e->read;
@@ -1145,7 +1145,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         imap_msn_set(&mdata->msn, h.edata->msn - 1, e);
         mutt_hash_int_insert(mdata->uid_hash, h.edata->uid, e);
 
-        e->index = idx;
+        e->index = h.edata->uid;
         /* messages which have not been expunged are ACTIVE (borrowed from mh
          * folders) */
         e->active = true;

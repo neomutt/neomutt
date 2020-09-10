@@ -682,7 +682,6 @@ void imap_expunge_mailbox(struct Mailbox *m)
     }
     else
     {
-      e->index = i;
       /* NeoMutt has several places where it turns off e->active as a
        * hack.  For example to avoid FLAG updates, or to exclude from
        * imap_exec_msgset.
