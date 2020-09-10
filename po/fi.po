@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-08-21\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-09-10 11:39+0100\n"
+"POT-Creation-Date: 2020-09-10 13:17+0100\n"
 "PO-Revision-Date: 2018-09-19 03:36+0200\n"
 "Last-Translator: Flammie A Pirinen <flammie@iki.fi>\n"
 "Language-Team: Finnish\n"
@@ -3212,11 +3212,12 @@ msgstr "md_commit_message(): tiedoston ajan asetus ei onnistunut"
 msgid "Writing %s..."
 msgstr "Kirjoitetaan kohdetta %s..."
 
-msgid ""
-"usage:"
-msgstr ""
-"käyttö:"
+#. L10N: Try to limit to 80 columns
+#: main.c:153
+msgid "usage:"
+msgstr "käyttö:"
 
+#: main.c:154
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
@@ -3226,6 +3227,7 @@ msgstr ""
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 
+#: main.c:157
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
@@ -3233,71 +3235,60 @@ msgstr ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < viesti"
 
-msgid ""
-"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
-msgstr ""
-"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
+#: main.c:159
+msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
+msgstr "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
+#: main.c:160
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -B"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -B"
+#: main.c:161
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -B"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
+#: main.c:162
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
+#: main.c:163
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -G"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -G"
+#: main.c:164
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -G"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
+#: main.c:165
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -p"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -p"
+#: main.c:166
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -p"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
+#: main.c:167
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -Z"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -Z"
+#: main.c:168
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
+#: main.c:169
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 
-msgid ""
-"  neomutt -v[v]\n"
-msgstr ""
-"  neomutt -v[v]\n"
+#: main.c:170
+msgid "  neomutt -v[v]\n"
+msgstr "  neomutt -v[v]\n"
 
-msgid ""
-"options:"
-msgstr ""
-"asetukset:"
+#. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
+#: main.c:173
+msgid "options:"
+msgstr "asetukset:"
 
+#: main.c:174
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
@@ -3305,11 +3296,11 @@ msgstr ""
 "  --            Erikoismerkintä johon neomutt lopettaa valitsinten jäsennyksen\n"
 "                seuraavat valitsimet käsitellään osoitteina viivoista huolimatta"
 
-msgid ""
-"  -A <alias>    Print an expanded version of the given alias to stdout and exit"
-msgstr ""
-"  -A <alias>    Näytä aliaksen laajennettu versio ja lopeta"
+#: main.c:176
+msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
+msgstr "  -A <alias>    Näytä aliaksen laajennettu versio ja lopeta"
 
+#: main.c:177
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
@@ -3317,35 +3308,31 @@ msgstr ""
 "  -a <file>     Liitä yksi tai useampia tiedostoja (pitää olla viimeinen valitsin)\n"
 "                osoitteita voi lisätä merkinnän -- jälkeen"
 
-msgid ""
-"  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr ""
-"  -B            Eräajotila (ei käynnistä ncurses-käyttöliittymää)"
+#: main.c:179
+msgid "  -B            Run in batch mode (do not start the ncurses UI)"
+msgstr "  -B            Eräajotila (ei käynnistä ncurses-käyttöliittymää)"
 
-msgid ""
-"  -b <address>  Specify a blind carbon copy (Bcc) recipient"
-msgstr ""
-"  -b <address>  Lisää piilokopion (Bcc) osoite"
+#: main.c:180
+msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
+msgstr "  -b <address>  Lisää piilokopion (Bcc) osoite"
 
-msgid ""
-"  -c <address>  Specify a carbon copy (Cc) recipient"
-msgstr ""
-"  -c <address>  Lisää kopion (Cc) osoitet"
+#: main.c:181
+msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
+msgstr "  -c <address>  Lisää kopion (Cc) osoitet"
 
-msgid ""
-"  -D            Dump all config variables as 'name=value' pairs to stdout"
-msgstr ""
-"  -D            Dumppaa kaikki asetukset nimi=arvo-pareina vakiotulosteeseen"
+#: main.c:182
+msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
+msgstr "  -D            Dumppaa kaikki asetukset nimi=arvo-pareina vakiotulosteeseen"
 
-msgid ""
-"  -D -O         Like -D, but show one-liner documentation"
+#: main.c:183
+msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr ""
 
-msgid ""
-"  -D -S         Like -D, but hide the value of sensitive variables"
-msgstr ""
-"  -D -S         Kuten -D mutta ilman arkoja tietoja"
+#: main.c:184
+msgid "  -D -S         Like -D, but hide the value of sensitive variables"
+msgstr "  -D -S         Kuten -D mutta ilman arkoja tietoja"
 
+#: main.c:185
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
@@ -3353,56 +3340,47 @@ msgstr ""
 "  -d <level>    Tallenna loki tasolta (oletuksena tiedostoon \"~/.neomuttdeubg0\")\n"
 "                taso on 0-5 ja vaikuttaa sisällön määrään"
 
-msgid ""
-"  -E            Edit draft (-H) or include (-i) file during message composition"
-msgstr ""
-"  -E            Muokkaa luonnosta (-H) tai sisällytä (-i) tiedosto viestin tekoon"
+#: main.c:187
+msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
+msgstr "  -E            Muokkaa luonnosta (-H) tai sisällytä (-i) tiedosto viestin tekoon"
 
-msgid ""
-"  -e <command>  Specify a command to be run after reading the config files"
-msgstr ""
-"  -e <command>  Komento joka suoritetaan asetusten luvun jälkeen"
+#: main.c:188
+msgid "  -e <command>  Specify a command to be run after reading the config files"
+msgstr "  -e <command>  Komento joka suoritetaan asetusten luvun jälkeen"
 
-msgid ""
-"  -F <config>   Specify an alternative initialization file to read"
-msgstr ""
-"  -F <config>   Anna vaihtoehtoinen asetustiedosto"
+#: main.c:189
+msgid "  -F <config>   Specify an alternative initialization file to read"
+msgstr "  -F <config>   Anna vaihtoehtoinen asetustiedosto"
 
-msgid ""
-"  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
-msgstr ""
-"  -f <mailbox>  Valitse avattava postilaatikko (joka on määritelty mailboxes-asetuksella)"
+#: main.c:190
+msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
+msgstr "  -f <mailbox>  Valitse avattava postilaatikko (joka on määritelty mailboxes-asetuksella)"
 
-msgid ""
-"  -G            Start NeoMutt with a listing of subscribed newsgroups"
-msgstr ""
-"  -G            Aloita neomutt uutisryhmälistauksesta"
+#: main.c:191
+msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
+msgstr "  -G            Aloita neomutt uutisryhmälistauksesta"
 
-msgid ""
-"  -g <server>   Like -G, but start at specified news server"
-msgstr ""
-"  -g <server>   Kuten -G, mutta valitulla palvelimella"
+#: main.c:192
+msgid "  -g <server>   Like -G, but start at specified news server"
+msgstr "  -g <server>   Kuten -G, mutta valitulla palvelimella"
 
-msgid ""
-"  -H <draft>    Specify a draft file with header and body for message composing"
-msgstr ""
-"  -H <draft>    Määritä luonnostiedosto jossa on otsakkeet viestin luomista varten"
+#: main.c:193
+msgid "  -H <draft>    Specify a draft file with header and body for message composing"
+msgstr "  -H <draft>    Määritä luonnostiedosto jossa on otsakkeet viestin luomista varten"
 
-msgid ""
-"  -h            Print this help message and exit"
-msgstr ""
-"  -h            Näytä tämä ohje ja poistu"
+#: main.c:194
+msgid "  -h            Print this help message and exit"
+msgstr "  -h            Näytä tämä ohje ja poistu"
 
-msgid ""
-"  -i <include>  Specify an include file to be embedded in the body of a message"
-msgstr ""
-"  -i <include>  Määritä tiedosto joka sisällytetään viestin sisältäöön"
+#: main.c:195
+msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
+msgstr "  -i <include>  Määritä tiedosto joka sisällytetään viestin sisältäöön"
 
-msgid ""
-"  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
-msgstr ""
-"  -l <file>     Määritä vianjäljityslokitiedosto (oletus \"~/.neomuttdebug0\")"
+#: main.c:196
+msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
+msgstr "  -l <file>     Määritä vianjäljityslokitiedosto (oletus \"~/.neomuttdebug0\")"
 
+#: main.c:197
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
@@ -3410,16 +3388,15 @@ msgstr ""
 "  -m <type>     Määritä formaatti uusille luoduille kansioille\n"
 "                vaihtoehtoja ovat MH, MMDF, Maildir or mbox (merkkitasost välittämättä)"
 
-msgid ""
-"  -n            Do not read the system-wide configuration file"
-msgstr ""
-"  -n            Älä lue järjestelmäasetustiedostoa"
+#: main.c:199
+msgid "  -n            Do not read the system-wide configuration file"
+msgstr "  -n            Älä lue järjestelmäasetustiedostoa"
 
-msgid ""
-"  -p            Resume a prior postponed message, if any"
-msgstr ""
-"  -p            Jatka lykättyjä viestejä jos olemassa"
+#: main.c:200
+msgid "  -p            Resume a prior postponed message, if any"
+msgstr "  -p            Jatka lykättyjä viestejä jos olemassa"
 
+#: main.c:201
 #, fuzzy
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
@@ -3429,31 +3406,27 @@ msgstr ""
 "  -Q <variable> Hae asetuksia ja näytä niiden sisältöä\n"
 "                (asetusten lukemisen ja suorittamisen jälkeen)"
 
-msgid ""
-"  -R            Open mailbox in read-only mode"
-msgstr ""
-"  -R            Avaa postilaatikko kirjoitussuojattuna"
+#: main.c:204
+msgid "  -R            Open mailbox in read-only mode"
+msgstr "  -R            Avaa postilaatikko kirjoitussuojattuna"
 
-msgid ""
-"  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
-msgstr ""
-"  -s <subject>  Anna aiheotsikko (käytä lainausmerkkejä jos otsikossa on välejä)"
+#: main.c:205
+msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
+msgstr "  -s <subject>  Anna aiheotsikko (käytä lainausmerkkejä jos otsikossa on välejä)"
 
-msgid ""
-"  -v            Print the NeoMutt version and compile-time definitions and exit"
-msgstr ""
-"  -v            Näytä neomuttin version ja käännösasetukset ja lopeta"
+#: main.c:206
+msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
+msgstr "  -v            Näytä neomuttin version ja käännösasetukset ja lopeta"
 
-msgid ""
-"  -vv           Print the NeoMutt license and copyright information and exit"
-msgstr ""
-"  -vv           Näytä neomuttin lisenssitiedot ja poistu"
+#: main.c:207
+msgid "  -vv           Print the NeoMutt license and copyright information and exit"
+msgstr "  -vv           Näytä neomuttin lisenssitiedot ja poistu"
 
-msgid ""
-"  -y            Start NeoMutt with a listing of all defined mailboxes"
-msgstr ""
-"  -y            Käynnistä neomutt kaikkien postilaatikoiden listalla"
+#: main.c:208
+msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
+msgstr "  -y            Käynnistä neomutt kaikkien postilaatikoiden listalla"
 
+#: main.c:209
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
@@ -3461,13 +3434,13 @@ msgstr ""
 "  -Z            Avaa ensimmäinen uusi viesti tai lopeta välittömästi\n"
 "                palautusarvolla 1 jos viestejä ei ole"
 
+#: main.c:211
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 "  -z            Avaa ensimmäinen tai määritelty (-f) postilaatikko tahi\n"
 "                lopeta välittömästi palautusarvolla 1"
-
 
 #: main.c:239
 msgid "Error initializing terminal"

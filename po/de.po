@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-08-21\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-09-10 11:39+0100\n"
+"POT-Creation-Date: 2020-09-10 13:17+0100\n"
 "PO-Revision-Date: 2019-10-31 06:24+0100\n"
 "Last-Translator: André Berger <andre.berger@web.de>\n"
 "Language-Team: none\n"
@@ -3199,11 +3199,12 @@ msgstr "md_commit_message(): kann Dateizeitstempel nicht setzen"
 msgid "Writing %s..."
 msgstr "Schreibe %s..."
 
-msgid ""
-"usage:"
-msgstr ""
-"Benutzung:"
+#. L10N: Try to limit to 80 columns
+#: main.c:153
+msgid "usage:"
+msgstr "Benutzung:"
 
+#: main.c:154
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
@@ -3213,6 +3214,7 @@ msgstr ""
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 
+#: main.c:157
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
@@ -3220,71 +3222,60 @@ msgstr ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 
-msgid ""
-"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
-msgstr ""
-"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
+#: main.c:159
+msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
+msgstr "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
+#: main.c:160
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -B"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -B"
+#: main.c:161
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -B"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
+#: main.c:162
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
+#: main.c:163
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -G"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -G"
+#: main.c:164
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -G"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
+#: main.c:165
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -p"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -p"
+#: main.c:166
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -p"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
+#: main.c:167
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -Z"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -Z"
+#: main.c:168
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
-msgstr ""
-"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
+#: main.c:169
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 
-msgid ""
-"  neomutt -v[v]\n"
-msgstr ""
-"  neomutt -v[v]\n"
+#: main.c:170
+msgid "  neomutt -v[v]\n"
+msgstr "  neomutt -v[v]\n"
 
-msgid ""
-"options:"
-msgstr ""
-"Optionen:"
+#. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
+#: main.c:173
+msgid "options:"
+msgstr "Optionen:"
 
+#: main.c:174
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
@@ -3292,11 +3283,11 @@ msgstr ""
 "  --            Spezielles Argument, das NeoMutt anzeigt, nachfolgende Argumente\n"
 "                grundsätzlich als Empfängeradressen zu interpretieren"
 
-msgid ""
-"  -A <alias>    Print an expanded version of the given alias to stdout and exit"
-msgstr ""
-"  -A <alias>    Zeige Wert des Kurznamens auf der Standardausgabe (stdout) und beende"
+#: main.c:176
+msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
+msgstr "  -A <alias>    Zeige Wert des Kurznamens auf der Standardausgabe (stdout) und beende"
 
+#: main.c:177
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
@@ -3304,35 +3295,31 @@ msgstr ""
 "  -a <file>     Hänge eine/mehrere Dateien der Nachricht an (Option muss zuletzt\n"
 "                notiert und mittels '--' von Empfängeradressen separiert werden)"
 
-msgid ""
-"  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr ""
-"  -B            Benutze den Batch-Modus (startet ohne ncurses Oberfläche)"
+#: main.c:179
+msgid "  -B            Run in batch mode (do not start the ncurses UI)"
+msgstr "  -B            Benutze den Batch-Modus (startet ohne ncurses Oberfläche)"
 
-msgid ""
-"  -b <address>  Specify a blind carbon copy (Bcc) recipient"
-msgstr ""
-"  -b <address>  Verwende Adresse für unsichtbare Kopie (Bcc:) an Empfänger"
+#: main.c:180
+msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
+msgstr "  -b <address>  Verwende Adresse für unsichtbare Kopie (Bcc:) an Empfänger"
 
-msgid ""
-"  -c <address>  Specify a carbon copy (Cc) recipient"
-msgstr ""
-"  -c <address>  Verwende Adresse für Kopie (Cc:) an Empfänger"
+#: main.c:181
+msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
+msgstr "  -c <address>  Verwende Adresse für Kopie (Cc:) an Empfänger"
 
-msgid ""
-"  -D            Dump all config variables as 'name=value' pairs to stdout"
-msgstr ""
-"  -D            Gib alle Variablen als 'Name=Wert' Paare nach stdout aus"
+#: main.c:182
+msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
+msgstr "  -D            Gib alle Variablen als 'Name=Wert' Paare nach stdout aus"
 
-msgid ""
-"  -D -O         Like -D, but show one-liner documentation"
+#: main.c:183
+msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr ""
 
-msgid ""
-"  -D -S         Like -D, but hide the value of sensitive variables"
-msgstr ""
-"  -D -S         Wie -D, jedoch mit verstecktem Wert bei sensiblen Variablen"
+#: main.c:184
+msgid "  -D -S         Like -D, but hide the value of sensitive variables"
+msgstr "  -D -S         Wie -D, jedoch mit verstecktem Wert bei sensiblen Variablen"
 
+#: main.c:185
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
@@ -3340,57 +3327,49 @@ msgstr ""
 "  -d <level>    Schreibe Informationen zur Fehlersuche in Log-Datei (Vorgabe ist\n"
 "                \"~/.neomuttdebug0\"), wobei Level 1-5 die Protokollart bestimmt"
 
-msgid ""
-"  -E            Edit draft (-H) or include (-i) file during message composition"
+#: main.c:187
+msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr ""
 "  -E            Editiere die als Vorlage (-H) oder zur Inklusion (-i) angegebene\n"
 "                Datei während der E-Mail Erstellung"
 
-msgid ""
-"  -e <command>  Specify a command to be run after reading the config files"
-msgstr ""
-"  -e <command>  Führe Kommando (nach Auswertung aller Konfigurationsdateien) aus"
+#: main.c:188
+msgid "  -e <command>  Specify a command to be run after reading the config files"
+msgstr "  -e <command>  Führe Kommando (nach Auswertung aller Konfigurationsdateien) aus"
 
-msgid ""
-"  -F <config>   Specify an alternative initialization file to read"
-msgstr ""
-"  -F <config>   Benutze angegebene Datei für alternative Konfiguration"
+#: main.c:189
+msgid "  -F <config>   Specify an alternative initialization file to read"
+msgstr "  -F <config>   Benutze angegebene Datei für alternative Konfiguration"
 
-msgid ""
-"  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
-msgstr ""
-"  -f <mailbox>  Lade angegebene Mailbox (definiert mittels 'mailboxes' Kommando)"
+#: main.c:190
+msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
+msgstr "  -f <mailbox>  Lade angegebene Mailbox (definiert mittels 'mailboxes' Kommando)"
 
-msgid ""
-"  -G            Start NeoMutt with a listing of subscribed newsgroups"
-msgstr ""
-"  -G            Starte NeoMutt mit einer Auflistung aller abonnierten Newsgroups"
+#: main.c:191
+msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
+msgstr "  -G            Starte NeoMutt mit einer Auflistung aller abonnierten Newsgroups"
 
-msgid ""
-"  -g <server>   Like -G, but start at specified news server"
-msgstr ""
-"  -g <server>   Wie -G, jedoch starte mit angegebenen Newsserver"
+#: main.c:192
+msgid "  -g <server>   Like -G, but start at specified news server"
+msgstr "  -g <server>   Wie -G, jedoch starte mit angegebenen Newsserver"
 
-msgid ""
-"  -H <draft>    Specify a draft file with header and body for message composing"
-msgstr ""
-"  -H <draft>    Verwende Vorlage (mit Header und Body) für die E-Mail Erstellung"
+#: main.c:193
+msgid "  -H <draft>    Specify a draft file with header and body for message composing"
+msgstr "  -H <draft>    Verwende Vorlage (mit Header und Body) für die E-Mail Erstellung"
 
-msgid ""
-"  -h            Print this help message and exit"
-msgstr ""
-"  -h            Diese Hilfe anzeigen und beenden"
+#: main.c:194
+msgid "  -h            Print this help message and exit"
+msgstr "  -h            Diese Hilfe anzeigen und beenden"
 
-msgid ""
-"  -i <include>  Specify an include file to be embedded in the body of a message"
-msgstr ""
-"  -i <include>  Verwende Datei zur Einbettung in den Text einer E-Mail Nachricht"
+#: main.c:195
+msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
+msgstr "  -i <include>  Verwende Datei zur Einbettung in den Text einer E-Mail Nachricht"
 
-msgid ""
-"  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
-msgstr ""
-"  -l <file>     Benutze Datei für Log-Ausgabe (Vorgabe ist \"~/.neomuttdebug0\")"
+#: main.c:196
+msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
+msgstr "  -l <file>     Benutze Datei für Log-Ausgabe (Vorgabe ist \"~/.neomuttdebug0\")"
 
+#: main.c:197
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
@@ -3398,16 +3377,15 @@ msgstr ""
 "  -m <type>     Benutze Typ (MH, MMDF, Maildir oder mbox) als Standardformat für\n"
 "                neu anzulegende Mailboxen (Groß-/Kleinschreibung ist irrelevant)"
 
-msgid ""
-"  -n            Do not read the system-wide configuration file"
-msgstr ""
-"  -n            Übergehe Auswertung von systemweiter Konfigurationsdatei"
+#: main.c:199
+msgid "  -n            Do not read the system-wide configuration file"
+msgstr "  -n            Übergehe Auswertung von systemweiter Konfigurationsdatei"
 
-msgid ""
-"  -p            Resume a prior postponed message, if any"
-msgstr ""
-"  -p            Setze bei zuvor zurückgestellter Nachricht fort, falls vorhanden"
+#: main.c:200
+msgid "  -p            Resume a prior postponed message, if any"
+msgstr "  -p            Setze bei zuvor zurückgestellter Nachricht fort, falls vorhanden"
 
+#: main.c:201
 #, fuzzy
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
@@ -3417,32 +3395,29 @@ msgstr ""
 "  -Q <variable> Suche Konfigurationsvariable und gib deren Definition auf stdout\n"
 "                aus (nach Auswertung aller Konfigurationsdateien und -kommandos)"
 
-msgid ""
-"  -R            Open mailbox in read-only mode"
-msgstr ""
-"  -R            Öffne Mailbox im Lese-Modus"
+#: main.c:204
+msgid "  -R            Open mailbox in read-only mode"
+msgstr "  -R            Öffne Mailbox im Lese-Modus"
 
-msgid ""
-"  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
+#: main.c:205
+msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
 msgstr ""
 "  -s <subject>  Nutze Betreff für die E-Mail Erstellung (erfordert umschließende\n"
 "                Anführungszeichen, sofern Leerzeichen enthalten sind)"
 
-msgid ""
-"  -v            Print the NeoMutt version and compile-time definitions and exit"
-msgstr ""
-"  -v            Zeige NeoMutt Version, Einstellungen für Kompilierung und beende"
+#: main.c:206
+msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
+msgstr "  -v            Zeige NeoMutt Version, Einstellungen für Kompilierung und beende"
 
-msgid ""
-"  -vv           Print the NeoMutt license and copyright information and exit"
-msgstr ""
-"  -vv           Zeige NeoMutt Lizenz, Copyright Informationen und beende"
+#: main.c:207
+msgid "  -vv           Print the NeoMutt license and copyright information and exit"
+msgstr "  -vv           Zeige NeoMutt Lizenz, Copyright Informationen und beende"
 
-msgid ""
-"  -y            Start NeoMutt with a listing of all defined mailboxes"
-msgstr ""
-"  -y            Starte NeoMutt mit einer Auflistung aller definierten Mailboxen"
+#: main.c:208
+msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
+msgstr "  -y            Starte NeoMutt mit einer Auflistung aller definierten Mailboxen"
 
+#: main.c:209
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
@@ -3450,13 +3425,13 @@ msgstr ""
 "  -Z            Öffne die erste Mailbox mit neuer Nachricht oder beende umgehend\n"
 "                mit Rückgabewert 1, sofern keine gefunden wurde"
 
+#: main.c:211
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 "  -z            Öffne die erste oder angegebene (-f) Mailbox, sofern Nachrichten\n"
 "                enthalten sind, anderenfalls beende umgehend mit Rückgabewert 1"
-
 
 #: main.c:239
 msgid "Error initializing terminal"

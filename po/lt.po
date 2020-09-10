@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-08-21\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-09-10 11:39+0100\n"
+"POT-Creation-Date: 2020-09-10 13:17+0100\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Marius Gedminas <marius@gedmin.as>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -3205,11 +3205,12 @@ msgstr "md_commit_message(): nepavyko nustatyti bylos laiko"
 msgid "Writing %s..."
 msgstr "Rašau %s..."
 
-msgid ""
-"usage:"
-msgstr ""
-"usage:"
+#. L10N: Try to limit to 80 columns
+#: main.c:153
+msgid "usage:"
+msgstr "usage:"
 
+#: main.c:154
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
@@ -3219,6 +3220,7 @@ msgstr ""
 "          [-b <adresas>] [-c <adresas>] [-s <tema>] [-a <priedas> [...] --]\n"
 "          <adresas> [...]"
 
+#: main.c:157
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
@@ -3226,71 +3228,60 @@ msgstr ""
 "  neomutt [-nx] [-e <komanda>] [-F <konf>] [-b <adresas>] [-c <adresas>]\n"
 "          [-s <tema>] [-a <priedas> [...] --] <adresas> [...] < žinutė"
 
-msgid ""
-"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
-msgstr ""
-"  neomutt [-nRy] [-e <komanda>] [-F <konf>] [-f <dėžutė>] [-m <tipas>]"
+#: main.c:159
+msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
+msgstr "  neomutt [-nRy] [-e <komanda>] [-F <konf>] [-f <dėžutė>] [-m <tipas>]"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
-msgstr ""
-"  neomutt [-n] [-e <komanda>] [-F <konf>] -A <aliasas>"
+#: main.c:160
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
+msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -A <aliasas>"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -B"
-msgstr ""
-"  neomutt [-n] [-e <komanda>] [-F <konf>] -B"
+#: main.c:161
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
+msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -B"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
-msgstr ""
-"  neomutt [-n] [-e <komanda>] [-F <konf>] -D [-S] [-O]"
+#: main.c:162
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
+msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -D [-S] [-O]"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
-msgstr ""
-"  neomutt [-n] [-e <komanda>] [-F <konf>] -d <lygis> -l <byla>"
+#: main.c:163
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
+msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -d <lygis> -l <byla>"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -G"
-msgstr ""
-"  neomutt [-n] [-e <komanda>] [-F <konf>] -G"
+#: main.c:164
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
+msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -G"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
-msgstr ""
-"  neomutt [-n] [-e <komanda>] [-F <konf>] -g <serveris>"
+#: main.c:165
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
+msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -g <serveris>"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -p"
-msgstr ""
-"  neomutt [-n] [-e <komanda>] [-F <konf>] -p"
+#: main.c:166
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
+msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -p"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
-msgstr ""
-"  neomutt [-n] [-e <komanda>] [-F <konf>] -Q <kintamasis> [-O]"
+#: main.c:167
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
+msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -Q <kintamasis> [-O]"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -Z"
-msgstr ""
-"  neomutt [-n] [-e <komanda>] [-F <konf>] -Z"
+#: main.c:168
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
+msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -Z"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
-msgstr ""
-"  neomutt [-n] [-e <komanda>] [-F <konf>] -z [-f <dėžutė>]"
+#: main.c:169
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
+msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -z [-f <dėžutė>]"
 
-msgid ""
-"  neomutt -v[v]\n"
-msgstr ""
-"  neomutt -v[v]\n"
+#: main.c:170
+msgid "  neomutt -v[v]\n"
+msgstr "  neomutt -v[v]\n"
 
-msgid ""
-"options:"
-msgstr ""
-"parametrai:"
+#. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
+#: main.c:173
+msgid "options:"
+msgstr "parametrai:"
 
+#: main.c:174
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
@@ -3298,11 +3289,11 @@ msgstr ""
 "  --            Specialus argumentas po kurio NeoMutt nebeieško parametrų ir\n"
 "                priima visus argumentus kaip adresus net jei jie prasideda '-'"
 
-msgid ""
-"  -A <alias>    Print an expanded version of the given alias to stdout and exit"
-msgstr ""
-"  -A <aliasas>  Išvesti aliaso reikšmę ir išeiti"
+#: main.c:176
+msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
+msgstr "  -A <aliasas>  Išvesti aliaso reikšmę ir išeiti"
 
+#: main.c:177
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
@@ -3310,36 +3301,31 @@ msgstr ""
 "  -a <priedas>  Prikabinti vieną ar daugiau bylų prie laiško (turi būti\n"
 "                paskutinis parametras).  Gavėjus nurodykite po '--'"
 
-msgid ""
-"  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr ""
-"  -B            Veikti automatiniame režime (be ncurses sąsajos)"
+#: main.c:179
+msgid "  -B            Run in batch mode (do not start the ncurses UI)"
+msgstr "  -B            Veikti automatiniame režime (be ncurses sąsajos)"
 
-msgid ""
-"  -b <address>  Specify a blind carbon copy (Bcc) recipient"
-msgstr ""
-"  -b <adresas>  Nurodyti slaptos kopijos (Bcc) gavėją"
+#: main.c:180
+msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
+msgstr "  -b <adresas>  Nurodyti slaptos kopijos (Bcc) gavėją"
 
-msgid ""
-"  -c <address>  Specify a carbon copy (Cc) recipient"
-msgstr ""
-"  -c <adresas>  Nurodyti kopijos (Cc) gavėją"
+#: main.c:181
+msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
+msgstr "  -c <adresas>  Nurodyti kopijos (Cc) gavėją"
 
-msgid ""
-"  -D            Dump all config variables as 'name=value' pairs to stdout"
-msgstr ""
-"  -D            Spausdinti visus kintamuosius 'vardas=reikšmė' poromis"
+#: main.c:182
+msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
+msgstr "  -D            Spausdinti visus kintamuosius 'vardas=reikšmė' poromis"
 
-msgid ""
-"  -D -O         Like -D, but show one-liner documentation"
-msgstr ""
-"  -D -O         Kaip -D, bet rodyti trumpą aprašymą"
+#: main.c:183
+msgid "  -D -O         Like -D, but show one-liner documentation"
+msgstr "  -D -O         Kaip -D, bet rodyti trumpą aprašymą"
 
-msgid ""
-"  -D -S         Like -D, but hide the value of sensitive variables"
-msgstr ""
-"  -D -S         Kaip -D, bet slėpti slaptažodžius"
+#: main.c:184
+msgid "  -D -S         Like -D, but hide the value of sensitive variables"
+msgstr "  -D -S         Kaip -D, bet slėpti slaptažodžius"
 
+#: main.c:185
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
@@ -3347,57 +3333,49 @@ msgstr ""
 "  -d <lygis>    Rašyti informacinius pranešimus į bylą (\"~/.neomuttdebug0\"\n"
 "                pagal nutylėjimą).  Lygis gali būti nuo 1 iki 5"
 
-msgid ""
-"  -E            Edit draft (-H) or include (-i) file during message composition"
+#: main.c:187
+msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr ""
 "  -E            Redaguoti juodraštį (-H) ar įtraukiamą (-i) bylą prieš siunčiant\n"
 "                laišką"
 
-msgid ""
-"  -e <command>  Specify a command to be run after reading the config files"
-msgstr ""
-"  -e <komanda>  Vykdyti komandą perskaičius konfigūracijos failus"
+#: main.c:188
+msgid "  -e <command>  Specify a command to be run after reading the config files"
+msgstr "  -e <komanda>  Vykdyti komandą perskaičius konfigūracijos failus"
 
-msgid ""
-"  -F <config>   Specify an alternative initialization file to read"
-msgstr ""
-"  -F <konf>     Naudoti alternatyvią konfigūracijos bylą"
+#: main.c:189
+msgid "  -F <config>   Specify an alternative initialization file to read"
+msgstr "  -F <konf>     Naudoti alternatyvią konfigūracijos bylą"
 
-msgid ""
-"  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
-msgstr ""
-"  -f <dėžutė>   Atidaryti nurodytą pašto dėžutę (apibrėžtą 'mailboxes' komanda)"
+#: main.c:190
+msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
+msgstr "  -f <dėžutė>   Atidaryti nurodytą pašto dėžutę (apibrėžtą 'mailboxes' komanda)"
 
-msgid ""
-"  -G            Start NeoMutt with a listing of subscribed newsgroups"
-msgstr ""
-"  -G            Pradėti NeoMutt rodant sąrašą prenumeruotų naujienų grupių"
+#: main.c:191
+msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
+msgstr "  -G            Pradėti NeoMutt rodant sąrašą prenumeruotų naujienų grupių"
 
-msgid ""
-"  -g <server>   Like -G, but start at specified news server"
-msgstr ""
-"  -g <serveris> Kaip -G, bet naudoti nurodytą naujienų serverį"
+#: main.c:192
+msgid "  -g <server>   Like -G, but start at specified news server"
+msgstr "  -g <serveris> Kaip -G, bet naudoti nurodytą naujienų serverį"
 
-msgid ""
-"  -H <draft>    Specify a draft file with header and body for message composing"
-msgstr ""
-"  -H <juodr>    Nurodyti juodraščio bylą su antraštėmis ir tekstu naujam laiškui"
+#: main.c:193
+msgid "  -H <draft>    Specify a draft file with header and body for message composing"
+msgstr "  -H <juodr>    Nurodyti juodraščio bylą su antraštėmis ir tekstu naujam laiškui"
 
-msgid ""
-"  -h            Print this help message and exit"
-msgstr ""
-"  -h            Rodyti šią žinutę ir išeiti"
+#: main.c:194
+msgid "  -h            Print this help message and exit"
+msgstr "  -h            Rodyti šią žinutę ir išeiti"
 
-msgid ""
-"  -i <include>  Specify an include file to be embedded in the body of a message"
-msgstr ""
-"  -i <įtraukti> Nurodyti bylą, įtraukiamą į naujos žinutės tekstą"
+#: main.c:195
+msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
+msgstr "  -i <įtraukti> Nurodyti bylą, įtraukiamą į naujos žinutės tekstą"
 
-msgid ""
-"  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
-msgstr ""
-"  -l <byla>     Nurodyti žurnalo bylą (\"~/.neomuttdebug0\" pagal nutylėjimą)"
+#: main.c:196
+msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
+msgstr "  -l <byla>     Nurodyti žurnalo bylą (\"~/.neomuttdebug0\" pagal nutylėjimą)"
 
+#: main.c:197
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
@@ -3406,16 +3384,15 @@ msgstr ""
 "                Tipas gali būti MH, MMDF, Maildir arba mbox (raidžių dydis\n"
 "                nesvarbus)"
 
-msgid ""
-"  -n            Do not read the system-wide configuration file"
-msgstr ""
-"  -n            Neskaityti sisteminės konfigūracijos bylos"
+#: main.c:199
+msgid "  -n            Do not read the system-wide configuration file"
+msgstr "  -n            Neskaityti sisteminės konfigūracijos bylos"
 
-msgid ""
-"  -p            Resume a prior postponed message, if any"
-msgstr ""
-"  -p            Pratęsti atidėtą laišką, jei tokių yra"
+#: main.c:200
+msgid "  -p            Resume a prior postponed message, if any"
+msgstr "  -p            Pratęsti atidėtą laišką, jei tokių yra"
 
+#: main.c:201
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
@@ -3425,31 +3402,27 @@ msgstr ""
 "                (perskaičius konfigūracijos bylą ir įvykdžius komandas)\n"
 "                Pridėkite -O trumpam aprašymui"
 
-msgid ""
-"  -R            Open mailbox in read-only mode"
-msgstr ""
-"  -R            Atidaryti pašto dėžutę tik skaitymui"
+#: main.c:204
+msgid "  -R            Open mailbox in read-only mode"
+msgstr "  -R            Atidaryti pašto dėžutę tik skaitymui"
 
-msgid ""
-"  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
-msgstr ""
-"  -s <tema>     Nurodyti laiško temą (naudokite kabutes, jei temoje yra tarpų)"
+#: main.c:205
+msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
+msgstr "  -s <tema>     Nurodyti laiško temą (naudokite kabutes, jei temoje yra tarpų)"
 
-msgid ""
-"  -v            Print the NeoMutt version and compile-time definitions and exit"
-msgstr ""
-"  -v            Spausdinti NeoMutt versijos numerį ir kompiliavimo parinktis"
+#: main.c:206
+msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
+msgstr "  -v            Spausdinti NeoMutt versijos numerį ir kompiliavimo parinktis"
 
-msgid ""
-"  -vv           Print the NeoMutt license and copyright information and exit"
-msgstr ""
-"  -vv           Spausdinti NeoMutt licenciją ir autorinių teisių informaciją"
+#: main.c:207
+msgid "  -vv           Print the NeoMutt license and copyright information and exit"
+msgstr "  -vv           Spausdinti NeoMutt licenciją ir autorinių teisių informaciją"
 
-msgid ""
-"  -y            Start NeoMutt with a listing of all defined mailboxes"
-msgstr ""
-"  -y            Pradėti NeoMutt rodant sąrašą visų apibrėžtų pašto dėžučių"
+#: main.c:208
+msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
+msgstr "  -y            Pradėti NeoMutt rodant sąrašą visų apibrėžtų pašto dėžučių"
 
+#: main.c:209
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
@@ -3457,13 +3430,13 @@ msgstr ""
 "  -Z            Atidaryti pirmą pašto dėžutę su naujais laiškais arba iškart\n"
 "                išeiti su klaidos kodu 1 jei tokios nėra"
 
+#: main.c:211
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 "  -z            Atidaryti pirmą arba nurodytą (-f) pašto dėžutę jei joje yra\n"
 "                laiškų arba iškart išeiti su klaidos kodu 1"
-
 
 #: main.c:239
 msgid "Error initializing terminal"

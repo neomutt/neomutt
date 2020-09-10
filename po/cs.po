@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-08-21\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-09-10 11:39+0100\n"
+"POT-Creation-Date: 2020-09-10 13:17+0100\n"
 "PO-Revision-Date: 2020-04-20 15:18+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -3223,9 +3223,12 @@ msgstr "md_commit_message(): nelze nastavit čas na souboru"
 msgid "Writing %s..."
 msgstr "Ukládám %s…"
 
+#. L10N: Try to limit to 80 columns
+#: main.c:153
 msgid "usage:"
 msgstr "Použití:"
 
+#: main.c:154
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
@@ -3235,6 +3238,7 @@ msgstr ""
 "          [-b <adresa>] [-c <adresa>] [-s <věc>] [-a <soubor> [...] --]\n"
 "          <adresa> [...]"
 
+#: main.c:157
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
@@ -3242,71 +3246,60 @@ msgstr ""
 "  neomutt [-nx] [-e <příkaz>] [-F <konfigurace>] [-b <adresa>] [-c <adresa>]\n"
 "          [-s <věc>] [-a <soubor> [...] --] <adresa> [...] < zpráva"
 
-msgid ""
-"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
-msgstr ""
-"  neomutt [-nRy] [-e <příkaz>] [-F <konfigurace>] [-f <schránka>] [-m <typ>]"
+#: main.c:159
+msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
+msgstr "  neomutt [-nRy] [-e <příkaz>] [-F <konfigurace>] [-f <schránka>] [-m <typ>]"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
-msgstr ""
-"  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -A <alias>"
+#: main.c:160
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
+msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -A <alias>"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -B"
-msgstr ""
-"  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -B"
+#: main.c:161
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
+msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -B"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
-msgstr ""
-"  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -D [-S] [-O]"
+#: main.c:162
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
+msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -D [-S] [-O]"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
-msgstr ""
-"  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -d <úroveň> -l <soubor>"
+#: main.c:163
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
+msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -d <úroveň> -l <soubor>"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -G"
-msgstr ""
-"  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -G"
+#: main.c:164
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
+msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -G"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
-msgstr ""
-"  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -g <server>"
+#: main.c:165
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
+msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -g <server>"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -p"
-msgstr ""
-"  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -p"
+#: main.c:166
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
+msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -p"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
-msgstr ""
-"  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -Q <proměnná> [-O]"
+#: main.c:167
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
+msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -Q <proměnná> [-O]"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -Z"
-msgstr ""
-"  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -Z"
+#: main.c:168
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
+msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -Z"
 
-msgid ""
-"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
-msgstr ""
-"  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -z [-f <schránka>]"
+#: main.c:169
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
+msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -z [-f <schránka>]"
 
-msgid ""
-"  neomutt -v[v]\n"
-msgstr ""
-"  neomutt -v[v]\n"
+#: main.c:170
+msgid "  neomutt -v[v]\n"
+msgstr "  neomutt -v[v]\n"
 
-msgid ""
-"options:"
-msgstr ""
-"Přepínače:"
+#. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
+#: main.c:173
+msgid "options:"
+msgstr "Přepínače:"
 
+#: main.c:174
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
@@ -3314,11 +3307,11 @@ msgstr ""
 "  --            Speciální přepínač, který způsobí, že NeoMutt nebude zbývající parametry\n"
 "                pokládat za přepínače, ale za adresy, i když budou začínat pomlčkou"
 
-msgid ""
-"  -A <alias>    Print an expanded version of the given alias to stdout and exit"
-msgstr ""
-"  -A <alias>    Vypíše expandovaný alias na standardní výstup a skončí"
+#: main.c:176
+msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
+msgstr "  -A <alias>    Vypíše expandovaný alias na standardní výstup a skončí"
 
+#: main.c:177
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
@@ -3326,36 +3319,31 @@ msgstr ""
 "  -a <soubor>   Připojí ke zprávě soubor(y), musí to být poslední přepínač.\n"
 "                Další adresy lze přidat až za přepínač „--“"
 
-msgid ""
-"  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr ""
-"  -B            Dávkový režim (nespustí se uživatelské rozhraní)"
+#: main.c:179
+msgid "  -B            Run in batch mode (do not start the ncurses UI)"
+msgstr "  -B            Dávkový režim (nespustí se uživatelské rozhraní)"
 
-msgid ""
-"  -b <address>  Specify a blind carbon copy (Bcc) recipient"
-msgstr ""
-"  -b <adresa>   Určuje adresu pro utajenou kopii (BCC)"
+#: main.c:180
+msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
+msgstr "  -b <adresa>   Určuje adresu pro utajenou kopii (BCC)"
 
-msgid ""
-"  -c <address>  Specify a carbon copy (Cc) recipient"
-msgstr ""
-"  -c <adresa>   Určuje adresu pro kopii (CC)"
+#: main.c:181
+msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
+msgstr "  -c <adresa>   Určuje adresu pro kopii (CC)"
 
-msgid ""
-"  -D            Dump all config variables as 'name=value' pairs to stdout"
-msgstr ""
-"  -D            Na standardní výstup vypíše hodnoty všech proměnných"
+#: main.c:182
+msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
+msgstr "  -D            Na standardní výstup vypíše hodnoty všech proměnných"
 
-msgid ""
-"  -D -O         Like -D, but show one-liner documentation"
-msgstr ""
-"  -D -O         Podobné jako -D, navíc ukáže jednořádkovou dokumentaci"
+#: main.c:183
+msgid "  -D -O         Like -D, but show one-liner documentation"
+msgstr "  -D -O         Podobné jako -D, navíc ukáže jednořádkovou dokumentaci"
 
-msgid ""
-"  -D -S         Like -D, but hide the value of sensitive variables"
-msgstr ""
-"  -D -S         Podobné jako -D, navíc schová hodnoty citlivých proměnných"
+#: main.c:184
+msgid "  -D -S         Like -D, but hide the value of sensitive variables"
+msgstr "  -D -S         Podobné jako -D, navíc schová hodnoty citlivých proměnných"
 
+#: main.c:185
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
@@ -3363,56 +3351,47 @@ msgstr ""
 "  -d <úroveň>   Ladicí informace zapisuje do „~/.neomuttdebug0“\n"
 "                Hodnota 1-5 ovlivnňuje úroveň podrobnosti"
 
-msgid ""
-"  -E            Edit draft (-H) or include (-i) file during message composition"
-msgstr ""
-"  -E            Upraví koncept (-H) nebo vloží (-i) soubor do těla zprávy"
+#: main.c:187
+msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
+msgstr "  -E            Upraví koncept (-H) nebo vloží (-i) soubor do těla zprávy"
 
-msgid ""
-"  -e <command>  Specify a command to be run after reading the config files"
-msgstr ""
-"  -e <příkaz>   Příkaz bude vykonán po inicializaci a načtení konfigurace"
+#: main.c:188
+msgid "  -e <command>  Specify a command to be run after reading the config files"
+msgstr "  -e <příkaz>   Příkaz bude vykonán po inicializaci a načtení konfigurace"
 
-msgid ""
-"  -F <config>   Specify an alternative initialization file to read"
-msgstr ""
-"  -F <soubor>   Alternativní soubor s konfigurací (místo „neomuttrc“)"
+#: main.c:189
+msgid "  -F <config>   Specify an alternative initialization file to read"
+msgstr "  -F <soubor>   Alternativní soubor s konfigurací (místo „neomuttrc“)"
 
-msgid ""
-"  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
-msgstr ""
-"  -f <soubor>   Načte z této schránky (definované v „mailboxes“)"
+#: main.c:190
+msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
+msgstr "  -f <soubor>   Načte z této schránky (definované v „mailboxes“)"
 
-msgid ""
-"  -G            Start NeoMutt with a listing of subscribed newsgroups"
-msgstr ""
-"  -G            Nabídne výběr diskusních skupin (NNTP)"
+#: main.c:191
+msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
+msgstr "  -G            Nabídne výběr diskusních skupin (NNTP)"
 
-msgid ""
-"  -g <server>   Like -G, but start at specified news server"
-msgstr ""
-"  -g <server>   Jako -G, a určí server diskusních skupin (NNTP)"
+#: main.c:192
+msgid "  -g <server>   Like -G, but start at specified news server"
+msgstr "  -g <server>   Jako -G, a určí server diskusních skupin (NNTP)"
 
-msgid ""
-"  -H <draft>    Specify a draft file with header and body for message composing"
-msgstr ""
-"  -H <soubor>   Ze souboru s konceptem budou načteny hlavičky a tělo zprávy"
+#: main.c:193
+msgid "  -H <draft>    Specify a draft file with header and body for message composing"
+msgstr "  -H <soubor>   Ze souboru s konceptem budou načteny hlavičky a tělo zprávy"
 
-msgid ""
-"  -h            Print this help message and exit"
-msgstr ""
-"  -h            Vypíše tuto nápovědu a skončí"
+#: main.c:194
+msgid "  -h            Print this help message and exit"
+msgstr "  -h            Vypíše tuto nápovědu a skončí"
 
-msgid ""
-"  -i <include>  Specify an include file to be embedded in the body of a message"
-msgstr ""
-"  -i <soubor>   Tento soubor bude vložen do těla zprávy"
+#: main.c:195
+msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
+msgstr "  -i <soubor>   Tento soubor bude vložen do těla zprávy"
 
-msgid ""
-"  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
-msgstr ""
-"  -l <soubor>   Určí soubor pro ukládání ladicích informací (výchozí „~/.neomuttdebug0“)"
+#: main.c:196
+msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
+msgstr "  -l <soubor>   Určí soubor pro ukládání ladicích informací (výchozí „~/.neomuttdebug0“)"
 
+#: main.c:197
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
@@ -3420,16 +3399,15 @@ msgstr ""
 "  -m <typ>      Určí výchozí typ schránky pro nově vytvářené složky\n"
 "                Typy: MH, MMDF, Maildir nebo mbox (velikost písmen nerozhoduje)"
 
-msgid ""
-"  -n            Do not read the system-wide configuration file"
-msgstr ""
-"  -n            NeoMutt nebude číst systémový konfigurační soubor"
+#: main.c:199
+msgid "  -n            Do not read the system-wide configuration file"
+msgstr "  -n            NeoMutt nebude číst systémový konfigurační soubor"
 
-msgid ""
-"  -p            Resume a prior postponed message, if any"
-msgstr ""
-"  -p            Vrátí se k odložené rozepsané zprávě, pokud existuje"
+#: main.c:200
+msgid "  -p            Resume a prior postponed message, if any"
+msgstr "  -p            Vrátí se k odložené rozepsané zprávě, pokud existuje"
 
+#: main.c:201
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
@@ -3438,31 +3416,27 @@ msgstr ""
 "  -Q <proměnná> Dotáže se na konfigurační proměnnou a vypíše její hodnotu na\n"
 "                standardní výstup (po načtení konfigurace a provedení příkazů)"
 
-msgid ""
-"  -R            Open mailbox in read-only mode"
-msgstr ""
-"  -R            Otevře schránku pouze pro čtení"
+#: main.c:204
+msgid "  -R            Open mailbox in read-only mode"
+msgstr "  -R            Otevře schránku pouze pro čtení"
 
-msgid ""
-"  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
-msgstr ""
-"  -s <věc>      Specifikuje věc (pokud obsahuje mezery, musí být v uvozovkách)"
+#: main.c:205
+msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
+msgstr "  -s <věc>      Specifikuje věc (pokud obsahuje mezery, musí být v uvozovkách)"
 
-msgid ""
-"  -v            Print the NeoMutt version and compile-time definitions and exit"
-msgstr ""
-"  -v            Zobrazí verzi NeoMuttu a parametry zadané při překladu a skončí"
+#: main.c:206
+msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
+msgstr "  -v            Zobrazí verzi NeoMuttu a parametry zadané při překladu a skončí"
 
-msgid ""
-"  -vv           Print the NeoMutt license and copyright information and exit"
-msgstr ""
-"  -vv           Zobrazí licenci NeoMuttu a oprávnění k použití a skončí"
+#: main.c:207
+msgid "  -vv           Print the NeoMutt license and copyright information and exit"
+msgstr "  -vv           Zobrazí licenci NeoMuttu a oprávnění k použití a skončí"
 
-msgid ""
-"  -y            Start NeoMutt with a listing of all defined mailboxes"
-msgstr ""
-"  -y            Nabídne k vybrání schránku uvedenou v seznamu „mailboxes“"
+#: main.c:208
+msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
+msgstr "  -y            Nabídne k vybrání schránku uvedenou v seznamu „mailboxes“"
 
+#: main.c:209
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
@@ -3470,13 +3444,13 @@ msgstr ""
 "  -Z            Otevře první složku s novou poštou; pokud není žádná nová nalezena,\n"
 "                ihned skončí s kódem 1"
 
+#: main.c:211
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 "  -z            Otevře buď první složku nebo zadanou pomocí „-f“ s novou poštou;\n"
 "                pokud není žádná nová nalezena, ihned skončí s kódem 1"
-
 
 #: main.c:239
 msgid "Error initializing terminal"

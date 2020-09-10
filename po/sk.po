@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-08-21\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-09-10 11:39+0100\n"
+"POT-Creation-Date: 2020-09-10 13:17+0100\n"
 "PO-Revision-Date: 2016-11-23 21:20+0100\n"
 "Last-Translator: František Hájik <ferko.hajik@gmail.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -3294,6 +3294,217 @@ msgstr ""
 msgid "Writing %s..."
 msgstr "Zapisujem %s..."
 
+#. L10N: Try to limit to 80 columns
+#: main.c:153
+msgid "usage:"
+msgstr ""
+
+#: main.c:154
+msgid ""
+"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
+"          <address> [...]"
+msgstr ""
+
+#: main.c:157
+msgid ""
+"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
+msgstr ""
+
+#: main.c:159
+msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
+msgstr ""
+
+#: main.c:160
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
+msgstr ""
+
+#: main.c:161
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
+msgstr ""
+
+#: main.c:162
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
+msgstr ""
+
+#: main.c:163
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
+msgstr ""
+
+#: main.c:164
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
+msgstr ""
+
+#: main.c:165
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
+msgstr ""
+
+#: main.c:166
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
+msgstr ""
+
+#: main.c:167
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
+msgstr ""
+
+#: main.c:168
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
+msgstr ""
+
+#: main.c:169
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
+msgstr ""
+
+#: main.c:170
+msgid "  neomutt -v[v]\n"
+msgstr ""
+
+#. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
+#: main.c:173
+#, fuzzy
+msgid "options:"
+msgstr "Nastavenia kompilácie:"
+
+#: main.c:174
+msgid ""
+"  --            Special argument forces NeoMutt to stop option parsing and treat\n"
+"                remaining arguments as addresses even if they start with a dash"
+msgstr ""
+
+#: main.c:176
+msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
+msgstr ""
+
+#: main.c:177
+msgid ""
+"  -a <file>     Attach one or more files to a message (must be the last option)\n"
+"                Add any addresses after the '--' argument"
+msgstr ""
+
+#: main.c:179
+msgid "  -B            Run in batch mode (do not start the ncurses UI)"
+msgstr ""
+
+#: main.c:180
+msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
+msgstr ""
+
+#: main.c:181
+msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
+msgstr ""
+
+#: main.c:182
+msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
+msgstr ""
+
+#: main.c:183
+msgid "  -D -O         Like -D, but show one-liner documentation"
+msgstr ""
+
+#: main.c:184
+msgid "  -D -S         Like -D, but hide the value of sensitive variables"
+msgstr ""
+
+#: main.c:185
+msgid ""
+"  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
+"                The level can range from 1-5 and affects verbosity"
+msgstr ""
+
+#: main.c:187
+msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
+msgstr ""
+
+#: main.c:188
+msgid "  -e <command>  Specify a command to be run after reading the config files"
+msgstr ""
+
+#: main.c:189
+msgid "  -F <config>   Specify an alternative initialization file to read"
+msgstr ""
+
+#: main.c:190
+msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
+msgstr ""
+
+#: main.c:191
+msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
+msgstr ""
+
+#: main.c:192
+msgid "  -g <server>   Like -G, but start at specified news server"
+msgstr ""
+
+#: main.c:193
+msgid "  -H <draft>    Specify a draft file with header and body for message composing"
+msgstr ""
+
+#: main.c:194
+msgid "  -h            Print this help message and exit"
+msgstr ""
+
+#: main.c:195
+msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
+msgstr ""
+
+#: main.c:196
+msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
+msgstr ""
+
+#: main.c:197
+msgid ""
+"  -m <type>     Specify a default mailbox format type for newly created folders\n"
+"                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
+msgstr ""
+
+#: main.c:199
+msgid "  -n            Do not read the system-wide configuration file"
+msgstr ""
+
+#: main.c:200
+msgid "  -p            Resume a prior postponed message, if any"
+msgstr ""
+
+#: main.c:201
+msgid ""
+"  -Q <variable> Query a configuration variable and print its value to stdout\n"
+"                (after the config has been read and any commands executed)\n"
+"                Add -O for one-liner documentation"
+msgstr ""
+
+#: main.c:204
+#, fuzzy
+msgid "  -R            Open mailbox in read-only mode"
+msgstr "Otvor schránku iba na čítanie."
+
+#: main.c:205
+msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
+msgstr ""
+
+#: main.c:206
+msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
+msgstr ""
+
+#: main.c:207
+msgid "  -vv           Print the NeoMutt license and copyright information and exit"
+msgstr ""
+
+#: main.c:208
+msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
+msgstr ""
+
+#: main.c:209
+msgid ""
+"  -Z            Open the first mailbox with new message or exit immediately with\n"
+"                exit code 1 if none is found in all defined mailboxes"
+msgstr ""
+
+#: main.c:211
+msgid ""
+"  -z            Open the first or specified (-f) mailbox if it holds any message\n"
+"                or exit immediately with exit code 1 otherwise"
+msgstr ""
 
 #: main.c:239
 msgid "Error initializing terminal"
