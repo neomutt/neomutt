@@ -3356,7 +3356,6 @@ msgstr "maildir_commit_message(): ní féidir an t-am a shocrú ar chomhad"
 msgid "Writing %s..."
 msgstr "%s á scríobh..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

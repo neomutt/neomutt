@@ -3272,7 +3272,6 @@ msgstr "md_commit_message(): Kan geen tijd op bestand zetten"
 msgid "Writing %s..."
 msgstr "Bezig met het schrijven van %s..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

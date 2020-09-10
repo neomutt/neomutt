@@ -3289,7 +3289,6 @@ msgstr "maildir_commit_message(): tidak dapat mengeset waktu pada file"
 msgid "Writing %s..."
 msgstr "Menulis %s..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

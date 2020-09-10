@@ -3304,7 +3304,6 @@ msgstr "maildir_commit_message(): fitxategian ezin da data ezarri"
 msgid "Writing %s..."
 msgstr "%s idazten..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

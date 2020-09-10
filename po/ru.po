@@ -3278,7 +3278,6 @@ msgstr "_maildir_commit_message(): не удалось установить вр
 msgid "Writing %s..."
 msgstr "Пишется %s..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

@@ -3270,7 +3270,6 @@ msgstr "_maildir_commit_message(): ne eblas ŝanĝi tempon de dosiero"
 msgid "Writing %s..."
 msgstr "Skribiĝas %s..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

@@ -3323,7 +3323,6 @@ msgstr "maildir_commit_message(): грешка при поставянето н�
 msgid "Writing %s..."
 msgstr "Запис на %s..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

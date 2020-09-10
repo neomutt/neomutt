@@ -3185,7 +3185,259 @@ msgstr "md_commit_message()：无法给文件设置时间"
 msgid "Writing %s..."
 msgstr "正在写入 %s..."
 
-QWQ
+msgid ""
+"usage:"
+msgstr ""
+"用法："
+
+msgid ""
+"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
+"          <address> [...]"
+msgstr ""
+"  neomutt [-Enx] [-e <命令>] [-F <配置>] [-H <草稿>] [-i <文件>]\n"
+"          [-b <地址>] [-c <地址>] [-s <主题>] [-a <文件> [...] --]\n"
+"          <地址> [...]"
+
+msgid ""
+"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
+msgstr ""
+"  neomutt [-nx] [-e <命令>] [-F <配置>] [-b <地址>] [-c <地址>]\n"
+"          [-s <主题>] [-a <文件> [...] --] <地址> [...] < 信件"
+
+msgid ""
+"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
+msgstr ""
+"  neomutt [-nRy] [-e <命令>] [-F <配置>] [-f <信箱>] [-m <类型>]"
+
+msgid ""
+"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
+msgstr ""
+"  neomutt [-n] [-e <命令>] [-F <配置>] -A <别名>"
+
+msgid ""
+"  neomutt [-n] [-e <command>] [-F <config>] -B"
+msgstr ""
+"  neomutt [-n] [-e <命令>] [-F <配置>] -B"
+
+msgid ""
+"  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
+msgstr ""
+"  neomutt [-n] [-e <命令>] [-F <配置>] -D [-S] [-O]"
+
+msgid ""
+"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
+msgstr ""
+"  neomutt [-n] [-e <命令>] [-F <配置>] -d <级别> -l <文件>"
+
+msgid ""
+"  neomutt [-n] [-e <command>] [-F <config>] -G"
+msgstr ""
+"  neomutt [-n] [-e <命令>] [-F <配置>] -G"
+
+msgid ""
+"  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
+msgstr ""
+"  neomutt [-n] [-e <命令>] [-F <配置>] -g <服务器>"
+
+msgid ""
+"  neomutt [-n] [-e <command>] [-F <config>] -p"
+msgstr ""
+"  neomutt [-n] [-e <命令>] [-F <配置>] -p"
+
+msgid ""
+"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
+msgstr ""
+"  neomutt [-n] [-e <命令>] [-F <配置>] -Q <变量> [-O]"
+
+msgid ""
+"  neomutt [-n] [-e <command>] [-F <config>] -Z"
+msgstr ""
+"  neomutt [-n] [-e <命令>] [-F <配置>] -Z"
+
+msgid ""
+"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
+msgstr ""
+"  neomutt [-n] [-e <命令>] [-F <配置>] -z [-f <信箱>]"
+
+msgid ""
+"  neomutt -v[v]\n"
+msgstr ""
+"  neomutt -v[v]\n"
+
+msgid ""
+"options:"
+msgstr ""
+"选项："
+
+msgid ""
+"  --            Special argument forces NeoMutt to stop option parsing and treat\n"
+"                remaining arguments as addresses even if they start with a dash"
+msgstr ""
+"  --            特殊参数使 NeoMutt 停止选项解析并将剩余参数当作地址，\n"
+"                即使它们以短划线开头"
+
+msgid ""
+"  -A <alias>    Print an expanded version of the given alias to stdout and exit"
+msgstr ""
+"  -A <别名>     扩展给出的别名并退出"
+
+msgid ""
+"  -a <file>     Attach one or more files to a message (must be the last option)\n"
+"                Add any addresses after the '--' argument"
+msgstr ""
+"  -a <文件>     给信件添加一个或多个附件（必须是最后一个参数）\n"
+"                在 '--' 参数后添加地址"
+
+msgid ""
+"  -B            Run in batch mode (do not start the ncurses UI)"
+msgstr ""
+"  -B            以批处理模式运行（不启动 ncurses 用户界面）"
+
+msgid ""
+"  -b <address>  Specify a blind carbon copy (Bcc) recipient"
+msgstr ""
+"  -b <地址>     指定一个密送(BCC)收件人"
+
+msgid ""
+"  -c <address>  Specify a carbon copy (Cc) recipient"
+msgstr ""
+"  -c <地址>     指定一个抄送(CC)收件人"
+
+msgid ""
+"  -D            Dump all config variables as 'name=value' pairs to stdout"
+msgstr ""
+"  -D            以 '键=值' 对的格式显示所有配置变量"
+
+msgid ""
+"  -D -O         Like -D, but show one-liner documentation"
+msgstr ""
+
+msgid ""
+"  -D -S         Like -D, but hide the value of sensitive variables"
+msgstr ""
+"  -D -S         类似 -D，但隐藏敏感变量的值"
+
+msgid ""
+"  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
+"                The level can range from 1-5 and affects verbosity"
+msgstr ""
+"  -d <级别>     将调试输出记录到一个文件（默认 \"~/.neomuttdebug0\"）\n"
+"                级别的范围为1-5并影响复杂度"
+
+msgid ""
+"  -E            Edit draft (-H) or include (-i) file during message composition"
+msgstr ""
+"  -E            撰写信件时编辑草稿 (-H) 或包含文件 (-i)"
+
+msgid ""
+"  -e <command>  Specify a command to be run after reading the config files"
+msgstr ""
+"  -e <命令>     指定初始化后要执行的命令"
+
+msgid ""
+"  -F <config>   Specify an alternative initialization file to read"
+msgstr ""
+"  -F <配置>     指定替代的初始化文件"
+
+msgid ""
+"  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
+msgstr ""
+"  -f <信箱>     指定要读取的信箱"
+
+msgid ""
+"  -G            Start NeoMutt with a listing of subscribed newsgroups"
+msgstr ""
+"  -G            以已订阅新闻组列表开始 NeoMutt"
+
+msgid ""
+"  -g <server>   Like -G, but start at specified news server"
+msgstr ""
+"  -g <服务器>   类似 -G，但从指定的新闻服务器开始"
+
+msgid ""
+"  -H <draft>    Specify a draft file with header and body for message composing"
+msgstr ""
+"  -H <草稿>     指定草稿文件以读取信件头和正文"
+
+msgid ""
+"  -h            Print this help message and exit"
+msgstr ""
+"  -h            显示此帮助消息并退出"
+
+msgid ""
+"  -i <include>  Specify an include file to be embedded in the body of a message"
+msgstr ""
+"  -i <文件>     指定要嵌入正文的文件"
+
+msgid ""
+"  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
+msgstr ""
+"  -l <文件>     指定调试输出的文件（默认 \"~/.neomuttdebug0\"）"
+
+msgid ""
+"  -m <type>     Specify a default mailbox format type for newly created folders\n"
+"                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
+msgstr ""
+"  -m <类型>     指定新创建信箱默认使用的信箱类型\n"
+"                类型可以是 MH, MMDF, Maildir 或 mbox（大小写不敏感）"
+
+msgid ""
+"  -n            Do not read the system-wide configuration file"
+msgstr ""
+"  -n            不读取系统范围的配置文件"
+
+msgid ""
+"  -p            Resume a prior postponed message, if any"
+msgstr ""
+"  -p            继续一个之前延迟寄送的信件，如果有"
+
+#, fuzzy
+msgid ""
+"  -Q <variable> Query a configuration variable and print its value to stdout\n"
+"                (after the config has been read and any commands executed)\n"
+"                Add -O for one-liner documentation"
+msgstr ""
+"  -Q <变量>     查询一个配置变量（在读取配置和执行命令后）"
+
+msgid ""
+"  -R            Open mailbox in read-only mode"
+msgstr ""
+"  -R            以只读模式打开信箱"
+
+msgid ""
+"  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
+msgstr ""
+"  -s <主题>     指定一个主题（如果有空格的话必须使用引号引起来）"
+
+msgid ""
+"  -v            Print the NeoMutt version and compile-time definitions and exit"
+msgstr ""
+"  -v            显示 NeoMutt 版本和编译时定义并退出"
+
+msgid ""
+"  -vv           Print the NeoMutt license and copyright information and exit"
+msgstr ""
+"  -vv           显示 NeoMutt 协议和版权信息并退出"
+
+msgid ""
+"  -y            Start NeoMutt with a listing of all defined mailboxes"
+msgstr ""
+"  -y            以已定义信箱列表开始 NeoMutt"
+
+msgid ""
+"  -Z            Open the first mailbox with new message or exit immediately with\n"
+"                exit code 1 if none is found in all defined mailboxes"
+msgstr ""
+"  -Z            打开第一个有新信件的信箱，如果一个也没有的话立即退出并返回 1"
+
+msgid ""
+"  -z            Open the first or specified (-f) mailbox if it holds any message\n"
+"                or exit immediately with exit code 1 otherwise"
+msgstr ""
+"  -z            打开非空的第一个或 (-f) 指定的信箱否则立即退出并返回 1"
+
 
 #: main.c:239
 msgid "Error initializing terminal"

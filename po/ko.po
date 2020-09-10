@@ -3302,7 +3302,6 @@ msgstr "maildir_commit_message(): 파일 시간을 설정할 수 없음"
 msgid "Writing %s..."
 msgstr "%s 쓰는 중..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

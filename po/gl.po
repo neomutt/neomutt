@@ -3333,7 +3333,6 @@ msgstr ""
 msgid "Writing %s..."
 msgstr "Escribindo %s..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

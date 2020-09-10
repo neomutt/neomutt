@@ -3272,7 +3272,6 @@ msgstr "maildir_commit_message(): dosya tarihi ayarlanamıyor"
 msgid "Writing %s..."
 msgstr "%s yazılıyor..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

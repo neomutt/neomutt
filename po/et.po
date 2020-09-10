@@ -3318,7 +3318,6 @@ msgstr "maildir_commit_message(): ei õnnestu seada faili aegu"
 msgid "Writing %s..."
 msgstr "Kirjutan %s..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

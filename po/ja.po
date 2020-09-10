@@ -3254,7 +3254,6 @@ msgstr "_maildir_commit_message(): ファイルに時刻を設定できない"
 msgid "Writing %s..."
 msgstr "%s 書き込み中..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

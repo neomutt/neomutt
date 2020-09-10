@@ -3263,7 +3263,6 @@ msgstr "_maildir_commit_message(): kan ikke sætte tidsstempel på fil"
 msgid "Writing %s..."
 msgstr "Skriver %s ..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

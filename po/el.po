@@ -3322,7 +3322,6 @@ msgstr "maildir_commit_message(): αδυναμία ορισμού χρόνου �
 msgid "Writing %s..."
 msgstr "Εγγραφή %s..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

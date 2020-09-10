@@ -3320,7 +3320,6 @@ msgstr "maildir_commit_message (): a fájlidő beállítása nem sikerült"
 msgid "Writing %s..."
 msgstr "%s írása..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

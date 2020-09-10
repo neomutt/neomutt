@@ -3206,7 +3206,6 @@ msgstr "md_commit_message(): nie można nadać plikowi daty"
 msgid "Writing %s..."
 msgstr "Zapisywanie %s..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

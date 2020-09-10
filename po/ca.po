@@ -3403,7 +3403,6 @@ msgstr "_maildir_commit_message(): No s’ha pogut canviar la data del fitxer."
 msgid "Writing %s..."
 msgstr "S’està escrivint «%s»…"
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"

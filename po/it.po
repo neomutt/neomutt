@@ -3298,7 +3298,6 @@ msgstr "maildir_commit_message():·impossibile impostare l'orario del file"
 msgid "Writing %s..."
 msgstr "Scrittura di %s..."
 
-QWQ
 
 #: main.c:239
 msgid "Error initializing terminal"
