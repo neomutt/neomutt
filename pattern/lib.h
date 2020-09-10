@@ -40,17 +40,21 @@
 #define MUTT_PATTERN_LIB_H
 
 #include "config.h"
+#include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "mutt.h"
 
+struct AliasMenuData;
 struct AliasView;
 struct ConfigSet;
 struct Email;
 struct Envelope;
 struct Mailbox;
 struct Menu;
+
+#define MUTT_ALIAS_SIMPLESEARCH "~f %s | ~t %s | ~c %s"
 
 /* These Config Variables are only used in pattern.c */
 extern bool C_ThoroughSearch;
@@ -183,6 +187,8 @@ int mutt_which_case(const char *s);
 int mutt_is_list_recipient(bool all_addr, struct Envelope *e);
 int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *e);
 int mutt_pattern_func(int op, char *prompt);
+int mutt_pattern_alias_func(int op, char *prompt, char *title, struct AliasMenuData *mdata,
+                            struct Menu *m);
 int mutt_search_command(struct Mailbox *mailbox, int cur, int op);
 int mutt_search_alias_command(struct Menu *menu, int cur, int op);
 

@@ -40,17 +40,31 @@ struct AliasView
   bool is_matched  : 1; ///< Search matches this Alias
   bool is_tagged   : 1; ///< Is it tagged?
   bool is_deleted  : 1; ///< Is it deleted?
+  bool is_visible  : 1; ///< Is visible?
   struct Alias *alias;  ///< Alias
 };
 
-ARRAY_HEAD(AliasMenuData, struct AliasView);
+ARRAY_HEAD(AliasViewArray, struct AliasView);
+
+/**
+ *  AliasMenuData - AliasView array wrapper with Pattern information
+ */
+struct AliasMenuData
+{
+  char *str;                 ///< String representing the limit being used
+  struct Pattern *pat;       ///< Pattern object
+  struct AliasViewArray ava; ///< Array of AliasView
+};
 
 int alias_config_observer(struct NotifyCallback *nc);
 int alias_color_observer (struct NotifyCallback *nc);
 
-int  menu_data_alias_add   (struct AliasMenuData *mdata, struct Alias *alias);
-int  menu_data_alias_delete(struct AliasMenuData *mdata, struct Alias *alias);
-void menu_data_sort        (struct AliasMenuData *mdata);
+int  alias_array_alias_add    (struct AliasViewArray *ava, struct Alias *alias);
+int  alias_array_alias_delete (struct AliasViewArray *ava, struct Alias *alias);
+void alias_array_sort         (struct AliasViewArray *ava);
+int  alias_array_count_visible(struct AliasViewArray *ava);
+
+char *menu_create_alias_title(char *menu_name, char *limit);
 
 sort_t alias_get_sort_function(short sort);
 
