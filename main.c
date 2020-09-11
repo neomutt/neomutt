@@ -81,6 +81,9 @@
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif
+#ifdef USE_POP
+#include "pop/lib.h"
+#endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
 #endif
@@ -786,6 +789,9 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef USE_IMAP
     /* we're not connected yet - skip mail folder creation */
     skip |= (imap_path_probe(mutt_b2s(fpath), NULL) == MUTT_IMAP);
+#endif
+#ifdef USE_POP
+    skip |= (pop_path_probe(mutt_b2s(fpath), NULL) == MUTT_POP);
 #endif
 #ifdef USE_NNTP
     skip |= (nntp_path_probe(mutt_b2s(fpath), NULL) == MUTT_NNTP);
