@@ -1237,7 +1237,6 @@ struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, str
 
         if (entry->eat_arg)
         {
-          int rc_eat = 0;
           if (ps.dptr[0] == '\0')
           {
             mutt_buffer_printf(err, "%s", _("missing parameter"));
@@ -1246,26 +1245,27 @@ struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, str
           switch (entry->eat_arg)
           {
             case EAT_REGEX:
-              rc_eat = eat_regex(pat, flags, &ps, err);
+              if (!eat_regex(pat, flags, &ps, err))
+                goto cleanup;
               break;
             case EAT_DATE:
-              rc_eat = eat_date(pat, flags, &ps, err);
+              if (!eat_date(pat, flags, &ps, err))
+                goto cleanup;
               break;
             case EAT_RANGE:
-              rc_eat = eat_range(pat, flags, &ps, err);
+              if (!eat_range(pat, flags, &ps, err))
+                goto cleanup;
               break;
             case EAT_MESSAGE_RANGE:
-              rc_eat = eat_message_range(pat, flags, &ps, err);
+              if (!eat_message_range(pat, flags, &ps, err))
+                goto cleanup;
               break;
             case EAT_QUERY:
-              rc_eat = eat_query(pat, flags, &ps, err);
+              if (!eat_query(pat, flags, &ps, err))
+                goto cleanup;
               break;
             default:
               break;
-          }
-          if (rc_eat == -1)
-          {
-            goto cleanup;
           }
         }
         implicit = true;
