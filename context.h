@@ -74,7 +74,6 @@ void            ctx_free            (struct Context **ptr);
 int             ctx_mailbox_observer(struct NotifyCallback *nc);
 struct Context *ctx_new             (struct Mailbox *m);
 void            ctx_update          (struct Context *ctx);
-void            ctx_update_tables   (struct Context *ctx, bool committing);
 bool            ctx_has_limit       (const struct Context *ctx);
 
 bool message_is_tagged (struct Context *ctx, struct Email *e);

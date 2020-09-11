@@ -199,11 +199,10 @@ void ctx_update(struct Context *ctx)
 }
 
 /**
- * ctx_update_tables - Update a Context structure's internal tables
+ * update_tables - Update a Context structure's internal tables
  * @param ctx        Mailbox
- * @param committing Commit the changes?
  */
-void ctx_update_tables(struct Context *ctx, bool committing)
+static void update_tables(struct Context *ctx)
 {
   if (!ctx || !ctx->mailbox)
     return;
@@ -227,8 +226,7 @@ void ctx_update_tables(struct Context *ctx, bool committing)
     if (!m->emails[i])
       break;
     if (!m->emails[i]->quasi_deleted &&
-        ((committing && (!m->emails[i]->deleted || ((m->type == MUTT_MAILDIR) && C_MaildirTrash))) ||
-         (!committing && m->emails[i]->active)))
+        (!m->emails[i]->deleted || ((m->type == MUTT_MAILDIR) && C_MaildirTrash)))
     {
       if (i != j)
       {
@@ -244,15 +242,10 @@ void ctx_update_tables(struct Context *ctx, bool committing)
         ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
 
-      if (committing)
-      {
-        m->emails[j]->changed = false;
-        m->emails[j]->env->changed = false;
-      }
-      else if (m->emails[j]->changed)
-        m->changed = true;
+      m->emails[j]->changed = false;
+      m->emails[j]->env->changed = false;
 
-      if (!committing || ((m->type == MUTT_MAILDIR) && C_MaildirTrash))
+      if ((m->type == MUTT_MAILDIR) && C_MaildirTrash)
       {
         if (m->emails[j]->deleted)
           m->msg_deleted++;
@@ -318,7 +311,7 @@ int ctx_mailbox_observer(struct NotifyCallback *nc)
       ctx_update(ctx);
       break;
     case NT_MAILBOX_UPDATE:
-      ctx_update_tables(ctx, true);
+      update_tables(ctx);
       break;
     case NT_MAILBOX_RESORT:
       mutt_sort_headers(ctx->mailbox, ctx->threads, true, &ctx->vsize);
