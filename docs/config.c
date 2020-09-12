@@ -4574,7 +4574,8 @@
 ** set to the keyid (the hash-value that OpenSSL generates) to work properly.
 ** .pp
 ** It will be used for encryption (see $$postpone_encrypt and
-** $$smime_self_encrypt).
+** $$smime_self_encrypt). If GPGME is enabled, this is the key id displayed
+** by gpgsm.
 ** .pp
 ** It will be used for decryption unless $$smime_decrypt_use_default_key
 ** is \fIunset\fP.
