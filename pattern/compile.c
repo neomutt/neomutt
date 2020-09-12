@@ -1073,7 +1073,7 @@ struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, str
 
   if (!s || !*s)
   {
-    mutt_str_copy(err->data, _("empty pattern"), err->dsize);
+    mutt_buffer_strcpy(err, _("empty pattern"));
     return NULL;
   }
 
