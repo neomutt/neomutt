@@ -2019,9 +2019,7 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
     {
       if (mutt_istrn_equal(buf->data, np->data, l) && (np->data[l] == ':'))
       {
-        STAILQ_REMOVE(&UserHeader, np, ListNode, entries);
-        FREE(&np->data);
-        FREE(&np);
+        header_free(&UserHeader, np);
       }
     }
   } while (MoreArgs(s));
