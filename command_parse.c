@@ -2007,6 +2007,12 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf->data))
     {
+      /* Clear all headers, send a notification for each header */
+      STAILQ_FOREACH(np, &UserHeader, entries)
+      {
+        struct EventHeader event = { np->data };
+        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_REMOVE, &event);
+      }
       mutt_list_free(&UserHeader);
       continue;
     }
@@ -2019,6 +2025,9 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
     {
       if (mutt_istrn_equal(buf->data, np->data, l) && (np->data[l] == ':'))
       {
+        struct EventHeader event = { np->data };
+        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_REMOVE, &event);
+
         header_free(&UserHeader, np);
       }
     }
