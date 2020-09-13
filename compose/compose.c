@@ -1411,7 +1411,12 @@ static int compose_header_observer(struct NotifyCallback *nc)
   }
   if (nc->event_subtype == NT_HEADER_REMOVE)
   {
-    /* TODO */
+    struct ListNode *removed = header_find(&env->userhdrs, event->header);
+    if (removed)
+    {
+      header_free(&env->userhdrs, removed);
+      mutt_window_reflow(dlg);
+    }
     return 0;
   }
 
