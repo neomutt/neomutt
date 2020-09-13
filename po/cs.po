@@ -92,9 +92,9 @@ msgid "alias: no address"
 msgstr "přezdívka: žádná adresa"
 
 #: alias/commands.c:78
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: Bad address '%s' in alias '%s'"
-msgstr "Pozor: Neplatné IDN „%s“ v přezdívce „%s“"
+msgstr "Pozor: Neplatná adresa „%s“ v přezdívce „%s“"
 
 #: alias/commands.c:87
 #, c-format
@@ -631,7 +631,7 @@ msgstr "Chyba v %s na řádku %d: %s"
 #: command_parse.c:511
 #, c-format
 msgid "Warning in %s, line %d: %s"
-msgstr "Varování v %s na řádku %d: %s"
+msgstr "Pozor v %s na řádku %d: %s"
 
 #: command_parse.c:536
 #, c-format
@@ -1758,7 +1758,7 @@ msgstr "Certifikát uložen"
 
 #: conn/gnutls.c:599 conn/openssl.c:957
 msgid "Warning: Couldn't save certificate"
-msgstr "Varování: Certifikát nelze uložit"
+msgstr "Pozor: Certifikát nelze uložit"
 
 #: conn/gnutls.c:792 conn/gnutls.c:834
 msgid "All available protocols for TLS/SSL connection disabled"
@@ -1773,7 +1773,7 @@ msgstr "Explicitní výběr šifrovacích algoritmů pomocí $ssl_ciphers není 
 #. * the correct certificate if it supports multiple hosts.
 #: conn/gnutls.c:914 conn/openssl.c:1138
 msgid "Warning: unable to set TLS SNI host name"
-msgstr "Varování: nepodařilo se nastavit TLS SNI jméno stroje"
+msgstr "Pozor: nepodařilo se nastavit TLS SNI jméno stroje"
 
 #: conn/gnutls.c:959
 #, c-format
@@ -1854,7 +1854,7 @@ msgstr "Nelze vytvořit kontext SSL"
 
 #: conn/openssl.c:1247
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr "Varování: chyba při zapínání ssl_verify_partial_chains"
+msgstr "Pozor: chyba při zapínání ssl_verify_partial_chains"
 
 #: conn/raw.c:154 conn/raw.c:211
 #, c-format
@@ -2302,7 +2302,7 @@ msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- Typ „%s/%s“ není podporován --]\n"
 
 #: hcache/config.c:99
-#, fuzzy, c-format
+#, c-format
 msgid "Set option %s before setting %s"
 msgstr "Nastavit konfiguraci %s před nastavením %s"
 
@@ -3096,7 +3096,7 @@ msgstr "Chyba %s na příkazovém řádku"
 #: init.c:215
 #, c-format
 msgid "Warning in command line: %s"
-msgstr "Varování %s na příkazovém řádku"
+msgstr "Pozor %s na příkazovém řádku"
 
 #: init.c:324
 msgid "unable to determine nodename via uname()"
@@ -4008,7 +4008,7 @@ msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
 "\n"
 msgstr ""
-"[-- Varování: Podpisy typu %s/%s nelze ověřit. --]\n"
+"[-- Pozor: Podpisy typu %s/%s nelze ověřit. --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1223
@@ -4024,7 +4024,7 @@ msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
 msgstr ""
-"[-- Varování: Nemohu nalézt žádný podpis. --]\n"
+"[-- Pozor: Nemohu nalézt žádný podpis. --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1239
@@ -6489,7 +6489,6 @@ msgstr "zprávy jejichž hlavička Odesilatel odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:68
-#, fuzzy
 msgid "expired messages"
 msgstr "zprávy jejichž platnost vypršela"
 
@@ -6605,7 +6604,6 @@ msgstr "zprávy jejichž hlavička Předmět odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:137
-#, fuzzy
 msgid "superseded messages"
 msgstr "nahrazené zprávy"
 
@@ -6646,7 +6644,6 @@ msgstr "diskusní skupiny odpovídající VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:163
-#, fuzzy
 msgid "messages whose References header matches EXPR"
 msgstr "zprávy jejichž hlavička References odpovídá Výrazu"
 
@@ -6662,7 +6659,6 @@ msgstr "zprávy jejichž hlavička X-Label odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:172
-#, fuzzy
 msgid "messages whose tags match EXPR"
 msgstr "zprávy jejichž označení odpovídá VÝRAZU"
 
@@ -6678,13 +6674,11 @@ msgstr "duplicitní zprávy"
 
 #. L10N: Pattern Completion Menu description for ~$
 #: pattern/flags.c:181
-#, fuzzy
 msgid "unreferenced messages"
 msgstr "zprávy jež jsou odpovědí na zprávu, která není dostupná"
 
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:184
-#, fuzzy
 msgid "broken threads"
 msgstr "rozbitá vlákna"
 
@@ -6874,7 +6868,7 @@ msgstr[2] "%d příloh uloženo"
 #: recvattach.c:846
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
-msgstr "VAROVÁNÍ! Takto přepíšete %s. Pokračovat?"
+msgstr "POZOR! Takto přepíšete %s. Pokračovat?"
 
 #: recvattach.c:864
 msgid "Attachment filtered"
@@ -7127,7 +7121,7 @@ msgstr "Připravuji přeposílanou zprávu…"
 
 #: send/send.c:1640
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "Varování: Kopie do souboru v IMAP složce nelze provést v dávkovém režimu"
+msgstr "Pozor: Kopie do souboru v IMAP složce nelze provést v dávkovém režimu"
 
 #. L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
 #. To make it clearer that the message doesn't mean NeoMutt is aborting
