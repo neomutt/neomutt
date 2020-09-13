@@ -188,6 +188,7 @@
   NEOMUTT_TEST_ITEM(test_email_header_add)                                     \
   NEOMUTT_TEST_ITEM(test_email_header_update)                                  \
   NEOMUTT_TEST_ITEM(test_email_header_set)                                     \
+  NEOMUTT_TEST_ITEM(test_email_header_free)                                    \
                                                                                \
   /* envelope */                                                               \
   NEOMUTT_TEST_ITEM(test_mutt_env_cmp_strict)                                  \

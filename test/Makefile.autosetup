@@ -149,6 +149,7 @@ EMAIL_OBJS	= test/email/common.o \
 		  test/email/email_free.o \
 		  test/email/email_header_add.o \
 		  test/email/email_header_find.o \
+		  test/email/email_header_free.o \
 		  test/email/email_header_set.o \
 		  test/email/email_header_update.o \
 		  test/email/email_new.o \

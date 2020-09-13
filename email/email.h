@@ -179,6 +179,7 @@ void emaillist_clear    (struct EmailList *el);
 
 struct ListNode *header_add   (struct ListHead *hdrlist, const char *header);
 struct ListNode *header_find  (const struct ListHead *hdrlist, const char *header);
+void             header_free  (struct ListHead *hdrlist, struct ListNode *target);
 struct ListNode *header_set   (struct ListHead *hdrlist, const char *header);
 struct ListNode *header_update(struct ListNode *hdrnode, const char *header);
 
