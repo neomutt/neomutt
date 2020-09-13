@@ -120,11 +120,11 @@ msgstr "Obnovit"
 
 #: alias/dlgalias.c:60 alias/dlgquery.c:62
 msgid "Sort"
-msgstr ""
+msgstr "Řadit"
 
 #: alias/dlgalias.c:61 alias/dlgquery.c:63
 msgid "Rev-Sort"
-msgstr ""
+msgstr "Řadit obráceně"
 
 #: alias/dlgalias.c:62 history/dlghistory.c:47 ncrypt/dlggpgme.c:65
 #: ncrypt/dlgpgp.c:54 ncrypt/dlgsmime.c:49 pattern/dlgpattern.c:64
@@ -151,17 +151,17 @@ msgstr "Přezdívky"
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/dlgalias.c:256 alias/dlgquery.c:460
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "Obrácené řazení přezdívk(a), a(d)resa, (n)eřadit"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/dlgalias.c:258 alias/dlgquery.c:462
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "Řazení přezdívk(a), a(d)resa, (n)eřadit"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/dlgalias.c:260 alias/dlgquery.c:464
 msgid "adu"
-msgstr ""
+msgstr "adn"
 
 #: alias/dlgquery.c:59 index.c:114
 msgid "Mail"
@@ -694,43 +694,43 @@ msgstr "neplatná hlavička"
 #: command_parse.c:1091
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
-msgstr ""
+msgstr "Nelze použít „inv“ „no“, „&“ nebo „?“ s příkazem '%s'"
 
 #: command_parse.c:1125 command_parse.c:1261 command_parse.c:1363
 #, c-format
 msgid "%s: unknown variable"
-msgstr "Proměnná %s není známa."
+msgstr "Proměnná %s není známa"
 
 #: command_parse.c:1138 command_parse.c:1451
 msgid "Can't use a prefix when querying a variable"
-msgstr ""
+msgstr "Nelze použít prefix při dotazování proměnné"
 
 #: command_parse.c:1144 command_parse.c:1431 command_parse.c:1445
 #, c-format
 msgid "Can't query a variable with the '%s' command"
-msgstr ""
+msgstr "Nelze se dotázat na proměnnou príkazem '%s'"
 
 #: command_parse.c:1158
 msgid "Can't use prefix when incrementing or decrementing a variable"
-msgstr ""
+msgstr "Nelze použít prefix při navyšování nebo snižováním proměnné"
 
 #: command_parse.c:1164 command_parse.c:1190
 #, c-format
 msgid "Can't set a variable with the '%s' command"
-msgstr ""
+msgstr "Nelze nastavit proměnnou příkazem '%s'"
 
 #: command_parse.c:1184
 msgid "Can't use prefix when setting a variable"
-msgstr ""
+msgstr "Nelze použít prefix při nastavování proměnné"
 
 #: command_parse.c:1203
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
-msgstr ""
+msgstr "Prefixy „no“ a „inv“ mohou být použity pouze s proměnnými typu boolean/přepínač"
 
 #: command_parse.c:1208
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
-msgstr ""
+msgstr "Příkaz '%s' lze použít pouze s proměnnými typu boolean/přepínač"
 
 #: command_parse.c:1483
 #, c-format
@@ -1152,7 +1152,7 @@ msgstr "X-Comment-To: "
 
 #: compose/compose.c:213
 msgid "Headers: "
-msgstr ""
+msgstr "Hlavičky: "
 
 #: compose/compose.c:219 compose/compose.c:238
 msgid "Send"
@@ -1923,7 +1923,7 @@ msgstr "Připojuji se k „%s“…"
 #: conn/tunnel.c:149 conn/tunnel.c:174
 #, c-format
 msgid "Tunnel error talking to %s: %s"
-msgstr "Chyba při komunikaci tunelem s %s (%s)"
+msgstr "Chyba při komunikaci tunelem s %s: %s"
 
 #: conn/tunnel.c:219
 #, c-format
@@ -3110,7 +3110,7 @@ msgstr "Příkaz %s není znám."
 #: init.c:1086
 #, c-format
 msgid "Config variable '%s' is deprecated"
-msgstr ""
+msgstr "Konfigurační proměnná '%s' je zastaralá"
 
 #: keymap.c:430
 #, c-format
@@ -4038,18 +4038,18 @@ msgstr ""
 #: ncrypt/crypt_gpgme.c:592
 #, c-format
 msgid "error enabling CMS protocol: %s"
-msgstr "chybě při zapínání CMS protokolu: %s"
+msgstr "chyba při zapínání CMS protokolu: %s"
 
 #: ncrypt/crypt_gpgme.c:615
 #, c-format
 msgid "error creating GPGME data object: %s"
-msgstr "chybě při vytváření GPGME datového objektu: %s"
+msgstr "chyba při vytváření GPGME datového objektu: %s"
 
 #: ncrypt/crypt_gpgme.c:716 ncrypt/crypt_gpgme.c:743 ncrypt/crypt_gpgme.c:1908
 #: ncrypt/crypt_gpgme.c:2668
 #, c-format
 msgid "error allocating data object: %s"
-msgstr "chybě při alokování datového objektu: %s"
+msgstr "chyba při alokování datového objektu: %s"
 
 #: ncrypt/crypt_gpgme.c:765
 #, c-format
@@ -4088,7 +4088,7 @@ msgstr "chyba při nastavování tajného klíče „%s“: %s"
 #: ncrypt/crypt_gpgme.c:1088
 #, c-format
 msgid "error setting PKA signature notation: %s"
-msgstr "chyba při nastavování PKA podpisové poznámky: %s"
+msgstr "chyba při nastavování PKA podpisového zápisu: %s"
 
 #: ncrypt/crypt_gpgme.c:1163
 #, c-format
@@ -6289,7 +6289,7 @@ msgstr "Za citovaným textem již nenásleduje žádný běžný text"
 #: pattern/compile.c:87 pattern/compile.c:164 pattern/compile.c:951
 #, c-format
 msgid "Error in expression: %s"
-msgstr "Výraz %s je chybný."
+msgstr "Chyba ve výrazu: %s"
 
 #: pattern/compile.c:93 pattern/compile.c:169 pattern/compile.c:957
 msgid "Empty expression"
@@ -6429,7 +6429,7 @@ msgstr "Operátor vzoru'~%c' není dostupný"
 #: pattern/exec.c:94 pattern/exec.c:1023
 #, c-format
 msgid "error: unknown op %d (report this error)"
-msgstr "chyba: neznámý operand %d (ohlaste tuto chybu)"
+msgstr "chyba: neznámý operátor %d (ohlaste tuto chybu)"
 
 #: pattern/exec.c:135
 msgid "Error opening 'memory stream'"
