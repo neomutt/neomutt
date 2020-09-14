@@ -82,9 +82,9 @@ msgid "alias: no address"
 msgstr "alias: nėra adreso"
 
 #: alias/commands.c:78
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: Bad address '%s' in alias '%s'"
-msgstr "Įspėjimas: blogas IDN '%s' aliase '%s'"
+msgstr "Įspėjimas: blogas adresas '%s' aliase '%s'"
 
 #: alias/commands.c:87
 #, c-format
@@ -3092,7 +3092,7 @@ msgstr "%s: nežinoma komanda"
 #: init.c:1086
 #, c-format
 msgid "Config variable '%s' is deprecated"
-msgstr ""
+msgstr "Konfigūracijos kintamasis '%s' yra nebenaudotinas"
 
 #: keymap.c:430
 #, c-format
@@ -3208,7 +3208,7 @@ msgstr "Rašau %s..."
 #. L10N: Try to limit to 80 columns
 #: main.c:153
 msgid "usage:"
-msgstr "usage:"
+msgstr "naudojimas:"
 
 #: main.c:154
 msgid ""
