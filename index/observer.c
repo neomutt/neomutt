@@ -137,7 +137,12 @@ static int config_status_on_top(struct MuttWindow *dlg)
   if ((c_status_on_top && (first == win_index)) || (!c_status_on_top && (first != win_index)))
   {
     // Swap the Index and the Index Bar Windows
+    struct MuttWindow *last = TAILQ_LAST(&parent->children, MuttWindowList);
+
     TAILQ_REMOVE(&parent->children, first, entries);
+    TAILQ_REMOVE(&parent->children, last, entries);
+
+    TAILQ_INSERT_HEAD(&parent->children, last, entries);
     TAILQ_INSERT_TAIL(&parent->children, first, entries);
   }
 
