@@ -788,6 +788,9 @@ void window_set_focus(struct MuttWindow *win)
 
   struct EventWindow ev_w = { win, WN_NO_FLAGS };
   notify_send(win->notify, NT_WINDOW, NT_WINDOW_FOCUS, &ev_w);
+#ifdef USE_DEBUG_WINDOW
+  debug_win_dump();
+#endif
 }
 
 /**
