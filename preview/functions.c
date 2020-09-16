@@ -81,7 +81,7 @@ void compute_mail_preview(struct PreviewWindowData *data)
 
   if (!e)
   {
-    mutt_debug(LL_DEBUG1, "preview: no mail selected");
+    mutt_debug(LL_DEBUG1, "preview: no mail selected\n");
     return;
   }
 
@@ -92,7 +92,7 @@ void compute_mail_preview(struct PreviewWindowData *data)
 
   if (!msg)
   {
-    mutt_debug(LL_DEBUG1, "preview: could not open mail");
+    mutt_debug(LL_DEBUG1, "preview: could not open mail\n");
     return;
   }
 
