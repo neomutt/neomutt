@@ -2463,6 +2463,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   }
   extra->win_pager->help_menu = MENU_PAGER;
   window_set_focus(extra->win_pager);
+  window_redraw(RootWindow, true);
 
   while (ch != -1)
   {
