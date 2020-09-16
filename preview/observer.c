@@ -6,7 +6,9 @@
 #include "config/subset.h"
 #include "gui/color.h"
 #include "gui/mutt_window.h"
+#include "gui/reflow.h"
 #include "index.h"
+#include "pager.h"
 
 static void handle_selection_change(struct NotifyCallback *nc)
 {
@@ -43,13 +45,43 @@ int preview_neomutt_observer(struct NotifyCallback *nc)
 int preview_dialog_observer(struct NotifyCallback *nc)
 {
   struct MuttWindow *win = nc->global_data;
-  win->actions |= WA_RECALC;
+  // struct PreviewWindowData *preview_data = preview_wdata_get(win);
 
   switch (nc->event_type)
   {
     default:
       return 0;
+    case NT_WINDOW:
+    {
+      struct EventWindow *focused_window = nc->event_data;
+      if (nc->event_subtype == NT_WINDOW_FOCUS &&
+          focused_window->win->type == WT_PAGER && mutt_window_is_visible(win))
+      {
+        win->state.visible = false;
+        win->parent->actions |= WA_REFLOW | WA_REPAINT;
+        win->actions |= WA_REFLOW | WA_REPAINT;
+        focused_window->win->parent->actions |= WA_REFLOW | WA_REPAINT;
+        focused_window->win->actions |= WA_REFLOW | WA_REPAINT;
+      }
+      else if (nc->event_subtype == NT_WINDOW_STATE &&
+               focused_window->win->type == WT_PAGER && !mutt_window_is_visible(win))
+      {
+        mutt_debug(LL_DEBUG1, "preview: pager update, is_visible: %d\n",
+                   mutt_window_is_visible(focused_window->win));
+        win->state.visible = !mutt_window_is_visible(focused_window->win);
+        win->actions |= WA_RECALC | WA_REFLOW;
+        win->parent->actions |= WA_REFLOW;
+      }
+      window_reflow(focused_window->win);
+
+      /* mutt_debug(LL_DEBUG1, "preview: preview_dialog_observer: %d\n", nc->event_type); */
+      /* mutt_debug(LL_DEBUG1, "preview: preview_dialog_observer: subtype: %d\n", nc->event_subtype); */
+      /* mutt_debug(LL_DEBUG1, "preview: preview_dialog_observer: window type: %d\n", */
+      /*            focused_window->win->type); */
+      break;
+    }
     case NT_USER_INDEX:
+      win->actions |= WA_RECALC;
       handle_selection_change(nc);
       break;
   }
