@@ -71,6 +71,13 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
   if (!account || !C_MessageCachedir || !bcache)
     return -1;
 
+  struct stat sb;
+  if (!((stat(C_MessageCachedir, &sb) == 0) && S_ISDIR(sb.st_mode)))
+  {
+    mutt_error(_("Cache disabled, $message_cachedir isn't a directory: %s"), C_MessageCachedir);
+    return -1;
+  }
+
   /* make up a Url we can turn into a string */
   mutt_account_tourl(account, &url);
   /* mutt_account_tourl() just sets up some pointers;
