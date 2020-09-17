@@ -3850,12 +3850,12 @@ msgstr "spam: Hi ha més referències cap enrere que subexpressions definides."
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "S’ha rebut el senyal %d (%s)…  Eixint.\n"
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "S’ha rebut el senyal %d…  Eixint.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7454,7 +7454,7 @@ msgstr "Per favor, establiu un valor adequat per a «hostname» quan empreu Mixm
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Error en enviar el missatge, el procés fill ha eixit amb codi %d.\n"
 
 #: remailer.c:871

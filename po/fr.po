@@ -3836,13 +3836,13 @@ msgstr "Pas assez de sous-expressions pour la chaîne de format"
 # , c-format
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Signal %d (%s) ... On quitte.\n"
 
 # , c-format
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Signal %d ... On quitte.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7351,7 +7351,7 @@ msgstr "Donnez une valeur correcte à hostname quand vous utilisez le mixmaster 
 # , c-format
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Erreur en envoyant le message, fils terminé avec le code %d.\n"
 
 #: remailer.c:871

@@ -3787,12 +3787,12 @@ msgstr ""
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Fuarthas comhartha %d (%s) ...  Ag scor.\n"
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Fuarthas comhartha %d ...  Ag scor.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7347,7 +7347,7 @@ msgstr "Socraigh an athróg óstainm go cuí le do thoil le linn úsáid \"mixma
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Earráid agus teachtaireacht á seoladh, scoir an macphróiseas le stádas %d.\n"
 
 #: remailer.c:871

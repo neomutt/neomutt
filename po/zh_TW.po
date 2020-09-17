@@ -3740,12 +3740,12 @@ msgstr ""
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "捕抓到 signal %d (%s) … 正在離開.\n"
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "捕抓到 signal %d … 正在離開.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7324,7 +7324,7 @@ msgstr "使用 mixmaster 時請先設定好 hostname 變數"
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "寄送訊息時出現錯誤，子程序結束 %d。\n"
 
 #: remailer.c:871

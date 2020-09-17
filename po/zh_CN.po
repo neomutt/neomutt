@@ -3627,12 +3627,12 @@ msgstr "没有足够的子表达式来对应模板"
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "捕捉到信号 %d (%s) ...  正在退出。\n"
 
 #: mutt/signal.c:74
 #, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "捕捉到信号 %d ...  正在退出。\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7006,7 +7006,7 @@ msgstr "使用 mixmaster 时请给 hostname(主机名) 变量设置合适的值"
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "发送信件出错，子进程已退出 %d。\n"
 
 #: remailer.c:871

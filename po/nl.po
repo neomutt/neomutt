@@ -3703,12 +3703,12 @@ msgstr "Niet genoeg subexpressies voor sjabloon"
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Signaal %d (%s) ontvangen ... Afsluiten."
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Signaal %d ontvangen ... Afsluiten.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7197,7 +7197,7 @@ msgstr "De hostname variable moet ingesteld zijn voor mixmaster gebruik"
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Externe fout %d opgetreden tijdens versturen van bericht.\n"
 
 #: remailer.c:871

@@ -3733,12 +3733,12 @@ msgstr ""
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "%d (%s) 신호 발견... 종료함.\n"
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "%d 신호 발견... 종료함.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7273,7 +7273,7 @@ msgstr "mixmaster를 사용하기 위한 적당한 호스트 변수를 사용하
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "메일 보내는 중 오류 %d.\n"
 
 #: remailer.c:871

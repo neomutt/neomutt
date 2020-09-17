@@ -3656,12 +3656,12 @@ msgstr "Nepakanka pogrupių šablonui"
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Sugavau signalą %d (%s) ...  Išeinu.\n"
 
 #: mutt/signal.c:74
 #, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Sugavau signalą %d ...  Išeinu.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7034,7 +7034,7 @@ msgstr "Teisingai nustatyk hostname kintamąjį, kai naudoji mixmaster'į"
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Klaida siunčiant laišką, klaidos kodas %d.\n"
 
 #: remailer.c:871

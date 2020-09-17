@@ -3729,12 +3729,12 @@ msgstr ""
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Zachytený signál %d (%s) ... Končím.\n"
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Zachytený signál %d ... Končím.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7284,7 +7284,7 @@ msgstr ""
 
 #: remailer.c:867
 #, fuzzy, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Chyba pri posielaní správy, dcérsky proces vrátil %d (%s).\n"
 
 #: remailer.c:871

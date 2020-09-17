@@ -3686,12 +3686,12 @@ msgstr "テンプレートに括弧が足りない"
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "シグナル %d (%s) を受け取った。終了。\n"
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "シグナル %d を受け取った。終了。\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7136,7 +7136,7 @@ msgstr "mixmaster を使う時には、hostname 変数に適切な値を設定�
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "メッセージ送信エラー、子プロセスが %d で終了。\n"
 
 #: remailer.c:871

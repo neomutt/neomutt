@@ -3749,12 +3749,12 @@ msgstr ""
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Sain signaali %d (%s) ...  Väljun.\n"
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Sain signaali %d ...  Väljun.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7296,7 +7296,7 @@ msgstr "Mixmaster kasutamisel omistage palun hostname muutujale korrektne väär
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Viga teate saatmisel, alamprotsess lõpetas koodiga %d.\n"
 
 #: remailer.c:871

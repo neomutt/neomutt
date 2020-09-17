@@ -3736,12 +3736,12 @@ msgstr "Inte tillräckligt med deluttryck för spam-mall"
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Fångade signal %d (%s) ...  Avslutar.\n"
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Fångade signal %d ...  Avslutar.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7263,7 +7263,7 @@ msgstr "Var vänlig och sätt \"hostname\"-variabeln till ett passande värde vi
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Fel vid sändning av meddelande, barn returnerade %d.\n"
 
 #: remailer.c:871

@@ -3670,12 +3670,12 @@ msgstr "Na šablonu není dost podvýrazů"
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Zachycen signál %d (%s)… Končím.\n"
 
 #: mutt/signal.c:74
 #, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Zachycen signál %d… Končím.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7049,7 +7049,7 @@ msgstr "Pokud používáte mixmaster, je třeba správně nastavit proměnnou �
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Chyba při zasílání zprávy, potomek ukončen %d.\n"
 
 #: remailer.c:871

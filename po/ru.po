@@ -3710,12 +3710,12 @@ msgstr "Не достаточно подвыражений для шаблона
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Получен сигнал %d (%s) ...  Завершение работы.\n"
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Получен сигнал %d ...  Завершение работы.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7195,7 +7195,7 @@ msgstr "Установите значение переменной hostname дл
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Сообщение отправить не удалось, процесс-потомок вернул %d.\n"
 
 #: remailer.c:871

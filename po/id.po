@@ -3721,12 +3721,12 @@ msgstr "Subekspresi untuk template spam kurang"
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Sinyal %d (%s) tertangkap... Keluar.\n"
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Sinyal %d tertangkap... Keluar.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7233,7 +7233,7 @@ msgstr "Mohon variabel hostname diisi dengan benar jika menggunakan mixmaster"
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Error mengirimkan surat, proses keluar dengan kode %d.\n"
 
 #: remailer.c:871

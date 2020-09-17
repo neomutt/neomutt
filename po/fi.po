@@ -3660,12 +3660,12 @@ msgstr "Ei tarpeeksi ali-ilmaisuja mallinetta varten"
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Signaali %d (%s)... lopetetaan.\n"
 
 #: mutt/signal.c:74
 #, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Signaali %d... lopetetaan.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7059,7 +7059,7 @@ msgstr "Verkkonimimuuttujan pitää olla toimiva mixmasteria varten"
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Virhe viestin lähetyksessä, lapsiprosessi palautti arvon %d.\n"
 
 #: remailer.c:871

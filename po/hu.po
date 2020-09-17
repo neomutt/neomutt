@@ -3751,12 +3751,12 @@ msgstr ""
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "%d (%s) jelzést kaptam...  Kilépek.\n"
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "%d jelzést kaptam...  Kilépek.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7293,7 +7293,7 @@ msgstr "Kérlek állítsd be a hostname változót a megfelelő értékre, ha mi
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Hiba a levél elküldésekor, a gyermek folyamat kilépett: %d.\n"
 
 #: remailer.c:871

@@ -3636,12 +3636,12 @@ msgstr "Zbyt mało podwyrażeń dla wzorca"
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Otrzymano sygnał %d (%s) ... Koniec pracy.\n"
 
 #: mutt/signal.c:74
 #, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Otrzymano sygnał %d ... Koniec pracy.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -7014,7 +7014,7 @@ msgstr "Ustaw poprawną wartość hostname jeśli chcesz używać mixmastera"
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Błąd podczas wysyłania listu, proces potomny zwrócił %d.\n"
 
 #: remailer.c:871
