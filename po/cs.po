@@ -5170,9 +5170,9 @@ msgstr "rozebrání limitu pro notmuch se nezdařilo: %s"
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Nelze synchronizovat %d zprávu z důvodu úpravy schránky z vnější"
+msgstr[1] "Nelze synchronizovat %d zprávy z důvodu úpravy schránky z vnější"
+msgstr[2] "Nelze synchronizovat %d zpráv z důvodu úpravy schránky z vnější"
 
 #: notmuch/notmuch.c:2526
 msgid "Can't write to virtual folder"
