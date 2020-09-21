@@ -47,7 +47,7 @@
  *       { "test1_name", test1_func_ptr },
  *       { "test2_name", test2_func_ptr },
  *       ...
- *       { 0 }
+ *       { NULL, NULL }     // zeroed record marking the end of the list
  *   };
  *
  * The list specifies names of each test (must be unique) and pointer to
@@ -56,6 +56,8 @@
  * with this prototype:
  *
  *   void test_func(void);
+ *
+ * Note the list has to be ended with a zeroed record.
  */
 #define TEST_LIST               const struct test_ test_list_[]
 
@@ -228,10 +230,10 @@
  * generating any printf-like message, this is for dumping raw block of a
  * memory in a hexadecimal form:
  *
- * TEST_CHECK(size_produced == size_expected &&
- *            memcmp(addr_produced, addr_expected, size_produced) == 0);
- * TEST_DUMP("Expected:", addr_expected, size_expected);
- * TEST_DUMP("Produced:", addr_produced, size_produced);
+ *   TEST_CHECK(size_produced == size_expected &&
+ *              memcmp(addr_produced, addr_expected, size_produced) == 0);
+ *   TEST_DUMP("Expected:", addr_expected, size_expected);
+ *   TEST_DUMP("Produced:", addr_produced, size_produced);
  */
 #define TEST_DUMP(title, addr, size)    test_dump_(title, addr, size)
 
@@ -241,6 +243,27 @@
 #ifndef TEST_DUMP_MAXSIZE
     #define TEST_DUMP_MAXSIZE   1024
 #endif
+
+
+/* Common test initialiation/clean-up
+ *
+ * In some test suites, it may be needed to perform some sort of the same
+ * initialization and/or clean-up in all the tests.
+ *
+ * Such test suites may use macros TEST_INIT and/or TEST_FINI prior including
+ * this header. The expansion of the macro is then used as a body of helper
+ * function called just before executing every single (TEST_INIT) or just after
+ * it ends (TEST_FINI).
+ *
+ * Examples of various ways how to use the macro TEST_INIT:
+ *
+ *   #define TEST_INIT      my_init_func();
+ *   #define TEST_INIT      my_init_func()      // Works even without the semicolon
+ *   #define TEST_INIT      setlocale(LC_ALL, NULL);
+ *   #define TEST_INIT      { setlocale(LC_ALL, NULL); my_init_func(); }
+ *
+ * TEST_FINI is to be used in the same way.
+ */
 
 
 /**********************
@@ -373,6 +396,20 @@ static int test_timer_ = 0;
 
 static int test_abort_has_jmp_buf_ = 0;
 static jmp_buf test_abort_jmp_buf_;
+
+
+static void
+test_cleanup_(void)
+{
+    free((void*) test_details_);
+}
+
+static void
+test_exit_(int exit_code)
+{
+    test_cleanup_();
+    exit(exit_code);
+}
 
 #if defined ACUTEST_WIN_
     typedef LARGE_INTEGER test_timer_type_;
@@ -930,9 +967,12 @@ static void
 test_init_(const char *test_name)
 {
 #ifdef TEST_INIT
-  TEST_INIT
-  ; /* Allow for a single unterminated function call */
+    TEST_INIT
+    ; /* Allow for a single unterminated function call */
 #endif
+
+    /* Suppress any warnings about unused variable. */
+    (void) test_name;
 }
 
 /* This is called after each test */
@@ -940,15 +980,20 @@ static void
 test_fini_(const char *test_name)
 {
 #ifdef TEST_FINI
-  TEST_FINI
-  ; /* Allow for a single unterminated function call */
+    TEST_FINI
+    ; /* Allow for a single unterminated function call */
 #endif
+
+    /* Suppress any warnings about unused variable. */
+    (void) test_name;
 }
 
 /* Call directly the given test unit function. */
 static int
 test_do_run_(const struct test_* test, int index)
 {
+    int status = -1;
+
     test_was_aborted_ = 0;
     test_current_unit_ = test;
     test_current_index_ = index;
@@ -1008,10 +1053,7 @@ aborted:
             test_finish_test_line_(0);
         }
 
-        test_fini_(test->name);
-        test_case_(NULL);
-        test_current_unit_ = NULL;
-        return (test_current_failures_ == 0) ? 0 : -1;
+        status = (test_current_failures_ == 0) ? 0 : -1;
 
 #ifdef __cplusplus
     } catch(std::exception& e) {
@@ -1025,8 +1067,6 @@ aborted:
             test_print_in_color_(TEST_COLOR_RED_INTENSIVE_, "FAILED: ");
             printf("C++ exception.\n\n");
         }
-
-        return -1;
     } catch(...) {
         test_check_(0, NULL, 0, "Threw an exception");
 
@@ -1035,10 +1075,14 @@ aborted:
             test_print_in_color_(TEST_COLOR_RED_INTENSIVE_, "FAILED: ");
             printf("C++ exception.\n\n");
         }
-
-        return -1;
     }
 #endif
+
+    test_fini_(test->name);
+    test_case_(NULL);
+    test_current_unit_ = NULL;
+
+    return status;
 }
 
 /* Trigger the unit test. If possible (and not suppressed) it starts a child
@@ -1073,7 +1117,7 @@ test_run_(const struct test_* test, int index, int master_index)
             /* Child: Do the test. */
             test_worker_ = 1;
             failed = (test_do_run_(test, index) != 0);
-            exit(failed ? 1 : 0);
+            test_exit_(failed ? 1 : 0);
         } else {
             /* Parent: Wait until child terminates and analyze its exit code. */
             waitpid(pid, &exit_code, 0);
@@ -1422,7 +1466,7 @@ test_cmdline_callback_(int id, const char* arg)
             } else {
                 fprintf(stderr, "%s: Unrecognized argument '%s' for option --exec.\n", test_argv0_, arg);
                 fprintf(stderr, "Try '%s --help' for more information.\n", test_argv0_);
-                exit(2);
+                test_exit_(2);
             }
             break;
 
@@ -1441,7 +1485,7 @@ test_cmdline_callback_(int id, const char* arg)
             } else {
                 fprintf(stderr, "%s: Unrecognized argument '%s' for option --time.\n", test_argv0_, arg);
                 fprintf(stderr, "Try '%s --help' for more information.\n", test_argv0_);
-                exit(2);
+                test_exit_(2);
             }
 #endif
             break;
@@ -1456,7 +1500,8 @@ test_cmdline_callback_(int id, const char* arg)
 
         case 'l':
             test_list_names_();
-            exit(0);
+            test_exit_(0);
+            break;
 
         case 'v':
             test_verbose_level_ = (arg != NULL ? atoi(arg) : test_verbose_level_+1);
@@ -1476,7 +1521,7 @@ test_cmdline_callback_(int id, const char* arg)
             } else {
                 fprintf(stderr, "%s: Unrecognized argument '%s' for option --color.\n", test_argv0_, arg);
                 fprintf(stderr, "Try '%s --help' for more information.\n", test_argv0_);
-                exit(2);
+                test_exit_(2);
             }
             break;
 
@@ -1486,7 +1531,8 @@ test_cmdline_callback_(int id, const char* arg)
 
         case 'h':
             test_help_();
-            exit(0);
+            test_exit_(0);
+            break;
 
         case 'w':
             test_worker_ = 1;
@@ -1496,7 +1542,7 @@ test_cmdline_callback_(int id, const char* arg)
             test_xml_output_ = fopen(arg, "w");
             if (!test_xml_output_) {
                 fprintf(stderr, "Unable to open '%s': %s\n", arg, strerror(errno));
-                exit(2);
+                test_exit_(2);
             }
             break;
 
@@ -1504,24 +1550,27 @@ test_cmdline_callback_(int id, const char* arg)
             if(test_lookup_(arg) == 0) {
                 fprintf(stderr, "%s: Unrecognized unit test '%s'\n", test_argv0_, arg);
                 fprintf(stderr, "Try '%s --list' for list of unit tests.\n", test_argv0_);
-                exit(2);
+                test_exit_(2);
             }
             break;
 
         case TEST_CMDLINE_OPTID_UNKNOWN_:
             fprintf(stderr, "Unrecognized command line option '%s'.\n", arg);
             fprintf(stderr, "Try '%s --help' for more information.\n", test_argv0_);
-            exit(2);
+            test_exit_(2);
+            break;
 
         case TEST_CMDLINE_OPTID_MISSINGARG_:
             fprintf(stderr, "The command line option '%s' requires an argument.\n", arg);
             fprintf(stderr, "Try '%s --help' for more information.\n", test_argv0_);
-            exit(2);
+            test_exit_(2);
+            break;
 
         case TEST_CMDLINE_OPTID_BOGUSARG_:
             fprintf(stderr, "The command line option '%s' does not expect an argument.\n", arg);
             fprintf(stderr, "Try '%s --help' for more information.\n", test_argv0_);
-            exit(2);
+            test_exit_(2);
+            break;
     }
 
     return 0;
@@ -1604,7 +1653,7 @@ main(int argc, char** argv)
     test_details_ = (struct test_detail_*)calloc(test_list_size_, sizeof(struct test_detail_));
     if(test_details_ == NULL) {
         fprintf(stderr, "Out of memory.\n");
-        exit(2);
+        test_exit_(2);
     }
 
     /* Parse options */
@@ -1723,7 +1772,7 @@ main(int argc, char** argv)
         fclose(test_xml_output_);
     }
 
-    free((void*) test_details_);
+    test_cleanup_();
 
     return (test_stat_failed_units_ == 0) ? 0 : 1;
 }
