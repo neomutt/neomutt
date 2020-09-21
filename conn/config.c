@@ -61,7 +61,7 @@ static struct ConfigDef ConnVars[] = {
   { "ssl_client_cert", DT_PATH|DT_PATH_FILE, 0, 0, NULL,
     "File containing client certificates"
   },
-  { "ssl_force_tls", DT_BOOL, false, 0, NULL,
+  { "ssl_force_tls", DT_BOOL, true, 0, NULL,
     "(ssl) Require TLS encryption for all connections"
   },
 #ifdef USE_SSL_GNUTLS
