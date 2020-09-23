@@ -1473,7 +1473,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
               /* special case "" needs no delimiter */
               struct Url *url = url_parse(ff->name);
-              if (url->path && (ff->delim != '\0'))
+              if (url && url->path && (ff->delim != '\0'))
               {
                 mutt_buffer_addch(&LastDir, ff->delim);
               }
