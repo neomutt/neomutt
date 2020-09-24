@@ -58,7 +58,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 
   size_t plen = 0;
 
-  if (cdef->type | DT_SORT_REVERSE)
+  if (cdef->type & DT_SORT_REVERSE)
   {
     plen = mutt_str_startswith(value, PREFIX_REVERSE);
     if (plen != 0)
@@ -68,7 +68,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
     }
   }
 
-  if (cdef->type | DT_SORT_LAST)
+  if (cdef->type & DT_SORT_LAST)
   {
     plen = mutt_str_startswith(value, PREFIX_LAST);
     if (plen != 0)

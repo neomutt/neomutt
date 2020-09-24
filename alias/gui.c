@@ -149,20 +149,6 @@ int alias_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * alias_view_free - Free an AliasView
- * @param[out] ptr AliasView to free
- *
- * @note The actual Alias isn't owned by the AliasView, so it isn't freed.
- */
-static void alias_view_free(struct AliasView **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  FREE(ptr);
-}
-
-/**
  * alias_get_sort_function - Sorting function decision logic
  * @param sort Sort method, e.g. #SORT_ALIAS
  */
@@ -179,40 +165,6 @@ sort_t alias_get_sort_function(short sort)
     default:
       return alias_sort_name;
   }
-}
-
-/**
- * menu_data_clear - Empty an AliasMenuData
- * @param mdata  Menu data holding Aliases
- *
- * Free the AliasViews but not the Aliases.
- */
-void menu_data_clear(struct AliasMenuData *mdata)
-{
-  if (!mdata)
-    return;
-
-  struct AliasView *avp = NULL;
-  ARRAY_FOREACH(avp, mdata)
-  {
-    alias_view_free(&avp);
-  }
-  ARRAY_SHRINK(mdata, ARRAY_SIZE(mdata));
-}
-
-/**
- * menu_data_free - Free an AliasMenuData
- * @param[out] ptr AliasMenuData to free
- */
-void menu_data_free(struct AliasMenuData **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct AliasMenuData *mdata = *ptr;
-  menu_data_clear(mdata);
-  ARRAY_FREE(mdata);
-  FREE(ptr);
 }
 
 /**
@@ -281,6 +233,9 @@ int menu_data_alias_delete(struct AliasMenuData *mdata, struct Alias *alias)
  */
 void menu_data_sort(struct AliasMenuData *mdata)
 {
+  if (!mdata || ARRAY_EMPTY(mdata))
+    return;
+
   ARRAY_SORT(mdata, alias_get_sort_function(C_SortAlias));
 
   struct AliasView *avp = NULL;

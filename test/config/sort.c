@@ -72,24 +72,24 @@ const struct Mapping SortTestMethods[] = {
 };
 
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_SORT,                 &VarApple,      1,  IP SortTestMethods, NULL              }, /* test_initial_values */
-  { "Banana",     DT_SORT,                 &VarBanana,     2,  IP SortTestMethods, NULL              },
-  { "Cherry",     DT_SORT,                 &VarCherry,     1,  IP SortTestMethods, NULL              },
-  { "Damson",     DT_SORT,                 &VarDamson,     1,  IP SortTestMethods, NULL              }, /* test_string_set */
-  { "Elderberry", DT_SORT,                 &VarElderberry, 11, IP SortTestMethods, NULL              },
-  { "Fig",        DT_SORT,                 &VarFig,        1,  IP SortTestMethods, NULL              },
-  { "Guava",      DT_SORT,                 &VarGuava,      1,  IP SortTestMethods, NULL              },
-  { "Hawthorn",   DT_SORT,                 &VarHawthorn,   1,  IP SortTestMethods, NULL              },
-  { "Ilama",      DT_SORT,                 &VarIlama,      17, IP SortTestMethods, NULL              },
-  { "Jackfruit",  DT_SORT,                 &VarJackfruit,  1,  IP SortTestMethods, NULL              }, /* test_string_get */
-  { "Kumquat",    DT_SORT,                 &VarKumquat,    1,  IP SortTestMethods, NULL              }, /* test_native_set */
-  { "Lemon",      DT_SORT,                 &VarLemon,      1,  IP SortTestMethods, NULL              }, /* test_native_get */
-  { "Mango",      DT_SORT,                 &VarMango,      1,  IP SortTestMethods, NULL              }, /* test_reset */
-  { "Nectarine",  DT_SORT,                 &VarNectarine,  1,  IP SortTestMethods, validator_fail    },
-  { "Olive",      DT_SORT,                 &VarOlive,      1,  IP SortTestMethods, validator_succeed }, /* test_validator */
-  { "Papaya",     DT_SORT,                 &VarPapaya,     1,  IP SortTestMethods, validator_warn    },
-  { "Quince",     DT_SORT,                 &VarQuince,     1,  IP SortTestMethods, validator_fail    },
-  { "Strawberry", DT_SORT,                 &VarStrawberry, 1,  IP SortTestMethods, NULL              }, /* test_inherit */
+  { "Apple",      DT_SORT,                              &VarApple,      1,  IP SortTestMethods, NULL              }, /* test_initial_values */
+  { "Banana",     DT_SORT,                              &VarBanana,     2,  IP SortTestMethods, NULL              },
+  { "Cherry",     DT_SORT,                              &VarCherry,     1,  IP SortTestMethods, NULL              },
+  { "Damson",     DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST, &VarDamson,     1,  IP SortTestMethods, NULL              }, /* test_string_set */
+  { "Elderberry", DT_SORT,                              &VarElderberry, 11, IP SortTestMethods, NULL              },
+  { "Fig",        DT_SORT,                              &VarFig,        1,  IP SortTestMethods, NULL              },
+  { "Guava",      DT_SORT,                              &VarGuava,      1,  IP SortTestMethods, NULL              },
+  { "Hawthorn",   DT_SORT,                              &VarHawthorn,   1,  IP SortTestMethods, NULL              },
+  { "Ilama",      DT_SORT,                              &VarIlama,      17, IP SortTestMethods, NULL              },
+  { "Jackfruit",  DT_SORT,                              &VarJackfruit,  1,  IP SortTestMethods, NULL              }, /* test_string_get */
+  { "Kumquat",    DT_SORT,                              &VarKumquat,    1,  IP SortTestMethods, NULL              }, /* test_native_set */
+  { "Lemon",      DT_SORT,                              &VarLemon,      1,  IP SortTestMethods, NULL              }, /* test_native_get */
+  { "Mango",      DT_SORT,                              &VarMango,      1,  IP SortTestMethods, NULL              }, /* test_reset */
+  { "Nectarine",  DT_SORT,                              &VarNectarine,  1,  IP SortTestMethods, validator_fail    },
+  { "Olive",      DT_SORT,                              &VarOlive,      1,  IP SortTestMethods, validator_succeed }, /* test_validator */
+  { "Papaya",     DT_SORT,                              &VarPapaya,     1,  IP SortTestMethods, validator_warn    },
+  { "Quince",     DT_SORT,                              &VarQuince,     1,  IP SortTestMethods, validator_fail    },
+  { "Strawberry", DT_SORT,                              &VarStrawberry, 1,  IP SortTestMethods, NULL              }, /* test_inherit */
   { NULL },
 };
 
