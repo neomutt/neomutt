@@ -54,7 +54,7 @@ struct ConfigDef AliasVars[] = {
     "Save new aliases to this file"
   },
   { "alias_format", DT_STRING|DT_NOT_EMPTY, &C_AliasFormat, IP "%3n %f%t %-15a %-56r | %c", 0, NULL,
-	"printf-like format string for the alias menu"
+    "printf-like format string for the alias menu"
   },
   { "sort_alias", DT_SORT, &C_SortAlias, SORT_ALIAS, IP SortAliasMethods, NULL,
     "Sort method for the alias menu"

@@ -824,7 +824,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   if (mutt_str_equal(buf->data, "*"))
   {
     colors_clear(c);
-    struct EventColor ec = { MT_COLOR_MAX }; 
+    struct EventColor ec = { MT_COLOR_MAX };
     notify_send(c->notify, NT_COLOR, NT_COLOR_RESET, &ec);
     return MUTT_CMD_SUCCESS;
   }
