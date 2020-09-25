@@ -56,9 +56,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2020-08-21\n"
+"Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-09-10 13:17+0100\n"
+"POT-Creation-Date: 2020-09-25 11:47+0100\n"
 "PO-Revision-Date: 2019-05-15 01:16-0400\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -240,14 +240,14 @@ msgstr "No s’ha definit cap ordre de consulta"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:71 main.c:796
+#: autocrypt/autocrypt.c:71 main.c:802
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "«%s» no existeix.  Voleu crear-lo?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:78 bcache/bcache.c:220 hcache/hcache.c:228 main.c:800
+#: autocrypt/autocrypt.c:78 bcache/bcache.c:227 hcache/hcache.c:228 main.c:806
 #: nntp/newsrc.c:1093
 #, c-format
 msgid "Can't create %s: %s"
@@ -481,7 +481,12 @@ msgstr "Voleu en canvi crear una nova clau PGP per a aquest compte?"
 msgid "Autocrypt database version is too new"
 msgstr "La versió de la base de dades d’Autocrypt és massa nova"
 
-#: bcache/bcache.c:212
+#: bcache/bcache.c:77
+#, fuzzy, c-format
+msgid "Cache disabled, $message_cachedir isn't a directory: %s"
+msgstr "«%s» no és un directori"
+
+#: bcache/bcache.c:219
 #, fuzzy, c-format
 msgid "Message cache isn't a directory: %s"
 msgstr "«%s» no és un directori"
@@ -720,7 +725,7 @@ msgstr "attachments: La disposició no és vàlida."
 # ivb  També apareix com a error aïllat.
 #: command_parse.c:719 command_parse.c:1708 command_parse.c:2122
 #: gui/color.c:1214 gui/color.c:1320 hook.c:131 hook.c:392 keymap.c:1199
-#: keymap.c:1372 keymap.c:1518 keymap.c:1590 mutt_lua.c:483 score.c:119
+#: keymap.c:1372 keymap.c:1518 keymap.c:1590 mutt_lua.c:498 score.c:119
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: Sobren arguments."
@@ -794,7 +799,7 @@ msgstr ""
 msgid "%s is unset"
 msgstr "«%s» no està activada."
 
-#: command_parse.c:1528 mutt_lua.c:478
+#: command_parse.c:1528 mutt_lua.c:493
 #, c-format
 msgid "source: error at %s"
 msgstr "source: Error a «%s»."
@@ -812,7 +817,7 @@ msgstr "spam: No s’ha indicat el patró de concordança."
 msgid "nospam: no matching pattern"
 msgstr "nospam: No s’ha indicat el patró de concordança."
 
-#: command_parse.c:1717 imap/imap.c:1286
+#: command_parse.c:1717 imap/imap.c:1301
 #, c-format
 msgid "Subscribed to %s"
 msgstr "S’ha subscrit a «%s»."
@@ -836,7 +841,7 @@ msgstr "unattachments: No s’ha indicat la disposició."
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: La disposició no és vàlida."
 
-#: command_parse.c:2131 imap/imap.c:1288
+#: command_parse.c:2131 imap/imap.c:1303
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "S’ha dessubscrit de «%s»."
@@ -887,7 +892,7 @@ msgstr "S’ha pogut verificar amb èxit la signatura PGP"
 msgid "PGP signature could NOT be verified"
 msgstr "NO s’ha pogut verificar la signatura PGP"
 
-#: commands.c:387 compmbox/compress.c:320 compose/compose.c:2512
+#: commands.c:387 compmbox/compress.c:337 compose/compose.c:2512
 #: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1263 index.c:1312
 #: mutt_attach.c:162 mutt_attach.c:295 pager.c:2468 send/sendlib.c:1056
 #, c-format
@@ -1104,54 +1109,54 @@ msgstr "S’ha canviat el joc de caràcters a %s; es farà conversió"
 msgid "Character set changed to %s; converting"
 msgstr "S’ha canviat el joc de caràcters a %s; no es farà conversió"
 
-#: compmbox/compress.c:354 compmbox/compress.c:498
+#: compmbox/compress.c:371 compmbox/compress.c:515
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "No es pot afegir sense definir «append-hook» o «close-hook»: %s"
 
-#: compmbox/compress.c:443 compmbox/compress.c:510 compmbox/compress.c:588
-#: compmbox/compress.c:626 mbox/mbox.c:1205
+#: compmbox/compress.c:460 compmbox/compress.c:527 compmbox/compress.c:605
+#: compmbox/compress.c:643 mbox/mbox.c:1205
 msgid "Unable to lock mailbox"
 msgstr "No s’ha pogut blocar la bústia."
 
-#: compmbox/compress.c:447 compmbox/compress.c:517 compmbox/compress.c:592
+#: compmbox/compress.c:464 compmbox/compress.c:534 compmbox/compress.c:609
 #, c-format
 msgid "Decompressing %s"
 msgstr "S’està descomprimint «%s»…"
 
-#: compmbox/compress.c:456
+#: compmbox/compress.c:473
 msgid "Can't identify the contents of the compressed file"
 msgstr "No s’ha pogut identificar el contingut del fitxer comprimit."
 
-#: compmbox/compress.c:463 compmbox/compress.c:538
+#: compmbox/compress.c:480 compmbox/compress.c:555
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "No s’han pogut trobar les operacions per al tipus de bústia %d."
 
-#: compmbox/compress.c:520
+#: compmbox/compress.c:537
 #, c-format
 msgid "Compress command failed: %s"
 msgstr "L’ordre de compressió ha fallat: %s"
 
-#: compmbox/compress.c:531
+#: compmbox/compress.c:548
 msgid "Unsupported mailbox type for appending"
 msgstr "No es poden afegir missatges a les bústies d’aquest tipus"
 
-#: compmbox/compress.c:616
+#: compmbox/compress.c:633
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "No es pot sincronitzar un fitxer comprimit sense definir «close-hook»."
 
-#: compmbox/compress.c:638 compmbox/compress.c:690
+#: compmbox/compress.c:655 compmbox/compress.c:707
 #, c-format
 msgid "Compressing %s"
 msgstr "S’està comprimint «%s»…"
 
-#: compmbox/compress.c:685
+#: compmbox/compress.c:702
 #, c-format
 msgid "Compressed-appending to %s..."
 msgstr "S’està afegint comprimit a «%s»…"
 
-#: compmbox/compress.c:697 editmsg.c:262
+#: compmbox/compress.c:714 editmsg.c:262
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Error.  Es manté el fitxer temporal: %s"
@@ -1479,7 +1484,7 @@ msgstr "Bústia a obrir per a adjuntar-ne missatges"
 msgid "Open newsgroup to attach message from"
 msgstr "Bústia a obrir per a adjuntar-ne missatges"
 
-#: compose/compose.c:2039 main.c:1219
+#: compose/compose.c:2039 main.c:1225
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "No s’ha pogut obrir la bústia «%s»."
@@ -1669,7 +1674,7 @@ msgstr "La data relativa no és vàlida: %s"
 msgid "Invalid quad value: %ld"
 msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
 
-#: config/set.c:109 init.c:1079
+#: config/set.c:109 init.c:1077
 #, c-format
 msgid "No such variable: %s"
 msgstr ""
@@ -2644,103 +2649,103 @@ msgstr "L’ordre de compressió ha fallat: %s"
 msgid "Connection to %s timed out"
 msgstr "La connexió amb «%s» ha expirat."
 
-#: imap/imap.c:85
+#: imap/imap.c:101
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "Aquest servidor IMAP és antic. NeoMutt no pot funcionar amb ell."
 
-#: imap/imap.c:434
+#: imap/imap.c:450
 #, c-format
 msgid "CREATE failed: %s"
 msgstr "L’ordre «CREATE» ha fallat: %s"
 
-#: imap/imap.c:554
+#: imap/imap.c:570
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "S’està tancant la connexió amb «%s»…"
 
-#: imap/imap.c:747 nntp/nntp.c:1883 pop/lib.c:341 send/smtp.c:705
+#: imap/imap.c:762 nntp/nntp.c:1883 pop/lib.c:341 send/smtp.c:705
 msgid "Secure connection with TLS?"
 msgstr "Voleu protegir la connexió emprant TLS?"
 
-#: imap/imap.c:763 nntp/nntp.c:1906 pop/lib.c:362 send/smtp.c:722
+#: imap/imap.c:778 nntp/nntp.c:1906 pop/lib.c:362 send/smtp.c:722
 msgid "Could not negotiate TLS connection"
 msgstr "No s’ha pogut negociar la connexió TLS."
 
-#: imap/imap.c:778 imap/imap.c:794 pop/lib.c:379
+#: imap/imap.c:793 imap/imap.c:809 pop/lib.c:379
 msgid "Encrypted connection unavailable"
 msgstr "No s’ha pogut establir una connexió xifrada."
 
-#: imap/imap.c:1260
+#: imap/imap.c:1275
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "S’està subscrivint a «%s»…"
 
-#: imap/imap.c:1262
+#: imap/imap.c:1277
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "S’està dessubscrivint de «%s»…"
 
-#: imap/imap.c:1438 imap/message.c:1647
+#: imap/imap.c:1453 imap/message.c:1647
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "S’estan copiant %d missatges a «%s»…"
 msgstr[1] "S’estan copiant %d missatges a «%s»…"
 
-#: imap/imap.c:1455 imap/imap.c:2113 imap/message.c:1686 muttlib.c:1405
+#: imap/imap.c:1470 imap/imap.c:2128 imap/message.c:1686 muttlib.c:1405
 #, c-format
 msgid "Create %s?"
 msgstr "Voleu crear «%s»?"
 
-#: imap/imap.c:1528
+#: imap/imap.c:1543
 msgid "Expunge failed"
 msgstr "No s’han pogut eliminar els missatges."
 
-#: imap/imap.c:1546
+#: imap/imap.c:1561
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "S’estan marcant %d missatges com a esborrats…"
 msgstr[1] "S’estan marcant %d missatges com a esborrats…"
 
-#: imap/imap.c:1586
+#: imap/imap.c:1601
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "S’estan desant els missatges canviats… [%d/%d]"
 msgstr[1] "S’estan desant els missatges canviats… [%d/%d]"
 
-#: imap/imap.c:1643
+#: imap/imap.c:1658
 msgid "Error saving flags. Close anyway?"
 msgstr "Error en desar els senyaladors.  Voleu tancar igualment?"
 
-#: imap/imap.c:1650
+#: imap/imap.c:1665
 msgid "Error saving flags"
 msgstr "Error en desar els senyaladors."
 
-#: imap/imap.c:1676
+#: imap/imap.c:1691
 msgid "Expunging messages from server..."
 msgstr "S’estan eliminant missatges del servidor…"
 
-#: imap/imap.c:1682
+#: imap/imap.c:1697
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: Ha fallat «EXPUNGE»."
 
-#: imap/imap.c:1917 nntp/nntp.c:2481
+#: imap/imap.c:1932 nntp/nntp.c:2481
 #, c-format
 msgid "Selecting %s..."
 msgstr "S’està seleccionant la bústia «%s»…"
 
-#: imap/imap.c:2080
+#: imap/imap.c:2095
 msgid "Error opening mailbox"
 msgstr "Error en obrir la bústia."
 
-#: imap/imap.c:2228
+#: imap/imap.c:2243
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "El servidor SMTP no admet autenticació."
 
-#: imap/imap.c:2272
+#: imap/imap.c:2287
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "No vàlid    "
@@ -3262,26 +3267,26 @@ msgstr ""
 msgid "Can't undelete message"
 msgstr "No es pot restaurar el missatge"
 
-#: init.c:213
+#: init.c:222
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Error a la línia d’ordres: %s"
 
-#: init.c:215
+#: init.c:224
 #, fuzzy, c-format
 msgid "Warning in command line: %s"
 msgstr "Error a la línia d’ordres: %s"
 
-#: init.c:324
+#: init.c:333
 msgid "unable to determine nodename via uname()"
 msgstr "No s’ha pogut determinar el nom de l’estació amb uname()."
 
-#: init.c:1026
+#: init.c:1024
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: L’ordre no és coneguda."
 
-#: init.c:1086
+#: init.c:1084
 #, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr ""
@@ -3398,184 +3403,184 @@ msgid "md_commit_message(): unable to set time on file"
 msgstr "_maildir_commit_message(): No s’ha pogut canviar la data del fitxer."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2381
+#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2397
 #, c-format
 msgid "Writing %s..."
 msgstr "S’està escrivint «%s»…"
 
 #. L10N: Try to limit to 80 columns
-#: main.c:153
+#: main.c:156
 msgid "usage:"
 msgstr ""
 
-#: main.c:154
+#: main.c:157
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
 
-#: main.c:157
+#: main.c:160
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
 
-#: main.c:159
+#: main.c:162
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 msgstr ""
 
-#: main.c:160
+#: main.c:163
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 msgstr ""
 
-#: main.c:161
+#: main.c:164
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
 msgstr ""
 
-#: main.c:162
+#: main.c:165
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 msgstr ""
 
-#: main.c:163
+#: main.c:166
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr ""
 
-#: main.c:164
+#: main.c:167
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
 msgstr ""
 
-#: main.c:165
+#: main.c:168
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 msgstr ""
 
-#: main.c:166
+#: main.c:169
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
 msgstr ""
 
-#: main.c:167
+#: main.c:170
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 msgstr ""
 
-#: main.c:168
+#: main.c:171
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 msgstr ""
 
-#: main.c:169
+#: main.c:172
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 msgstr ""
 
-#: main.c:170
+#: main.c:173
 msgid "  neomutt -v[v]\n"
 msgstr ""
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:173
+#: main.c:176
 #, fuzzy
 msgid "options:"
 msgstr "Opcions de compilació:"
 
-#: main.c:174
+#: main.c:177
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
 msgstr ""
 
-#: main.c:176
+#: main.c:179
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
 msgstr ""
 
-#: main.c:177
+#: main.c:180
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
 msgstr ""
 
-#: main.c:179
+#: main.c:182
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr ""
 
-#: main.c:180
+#: main.c:183
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr ""
 
-#: main.c:181
+#: main.c:184
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
 msgstr ""
 
-#: main.c:182
+#: main.c:185
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
 msgstr ""
 
-#: main.c:183
+#: main.c:186
 msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr ""
 
-#: main.c:184
+#: main.c:187
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 msgstr ""
 
-#: main.c:185
+#: main.c:188
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
 msgstr ""
 
-#: main.c:187
+#: main.c:190
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr ""
 
-#: main.c:188
+#: main.c:191
 msgid "  -e <command>  Specify a command to be run after reading the config files"
 msgstr ""
 
-#: main.c:189
+#: main.c:192
 msgid "  -F <config>   Specify an alternative initialization file to read"
 msgstr ""
 
-#: main.c:190
+#: main.c:193
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
 msgstr ""
 
-#: main.c:191
+#: main.c:194
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 msgstr ""
 
-#: main.c:192
+#: main.c:195
 msgid "  -g <server>   Like -G, but start at specified news server"
 msgstr ""
 
-#: main.c:193
+#: main.c:196
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 msgstr ""
 
-#: main.c:194
+#: main.c:197
 msgid "  -h            Print this help message and exit"
 msgstr ""
 
-#: main.c:195
+#: main.c:198
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
 msgstr ""
 
-#: main.c:196
+#: main.c:199
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
 msgstr ""
 
-#: main.c:197
+#: main.c:200
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
 msgstr ""
 
-#: main.c:199
+#: main.c:202
 msgid "  -n            Do not read the system-wide configuration file"
 msgstr ""
 
-#: main.c:200
+#: main.c:203
 msgid "  -p            Resume a prior postponed message, if any"
 msgstr ""
 
-#: main.c:201
+#: main.c:204
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
@@ -3583,88 +3588,88 @@ msgid ""
 msgstr ""
 
 # És una pregunta.  -- ivb
-#: main.c:204
+#: main.c:207
 #, fuzzy
 msgid "  -R            Open mailbox in read-only mode"
 msgstr "Obri en mode de només lectura la bústia"
 
-#: main.c:205
+#: main.c:208
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
 msgstr ""
 
-#: main.c:206
+#: main.c:209
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
 msgstr ""
 
-#: main.c:207
+#: main.c:210
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
 msgstr ""
 
-#: main.c:208
+#: main.c:211
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
 msgstr ""
 
-#: main.c:209
+#: main.c:212
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
 msgstr ""
 
-#: main.c:211
+#: main.c:214
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 
-#: main.c:239
+#: main.c:242
 msgid "Error initializing terminal"
 msgstr "Error en inicialitzar el terminal"
 
-#: main.c:314
+#: main.c:317
 msgid "unable to determine username"
 msgstr "No s’ha pogut determinar el nom de l’usuari."
 
-#: main.c:320
+#: main.c:323
 msgid "unable to determine home directory"
 msgstr "No s’ha pogut determinar el directori de l’usuari."
 
-#: main.c:602
+#: main.c:605
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Error: L’argument de l’opció «-d» no és vàlid: %s"
 
 # Es refereix a l’esquema d’URL.  ivb
-#: main.c:855
+#: main.c:861
 msgid "Failed to parse mailto: link"
 msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:»."
 
-#: main.c:867 send/send.c:2620 send/send.c:2624
+#: main.c:873 send/send.c:2620 send/send.c:2624
 msgid "No recipients specified"
 msgstr "No s’ha indicat cap destinatari"
 
-#: main.c:894
+#: main.c:900
 msgid "Can't use -E flag with stdin"
 msgstr "No es pot emprar l’opció «-E» amb l’entrada estàndard."
 
-#: main.c:978
+#: main.c:984
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "No s’ha pogut obrir el fitxer missatge: %s"
 
-#: main.c:1043 mutt_header.c:335
+#: main.c:1049 mutt_header.c:335
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: No s’ha pogut adjuntar el fitxer."
 
-#: main.c:1127
+#: main.c:1133
 msgid "No mailbox with new mail"
 msgstr "No hi ha cap bústia amb correu nou"
 
-#: main.c:1151
+#: main.c:1157
 msgid "No incoming mailboxes defined"
 msgstr "No s’ha definit cap bústia d’entrada"
 
-#: main.c:1201
+#: main.c:1207
 msgid "Mailbox is empty"
 msgstr "La bústia és buida"
 
@@ -3850,12 +3855,12 @@ msgstr "spam: Hi ha més referències cap enrere que subexpressions definides."
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "S’ha rebut el senyal %d (%s)…  Eixint.\n"
 
 #: mutt/signal.c:74
 #, fuzzy, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "S’ha rebut el senyal %d…  Eixint.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -3950,11 +3955,11 @@ msgstr "No es permet aquesta funció al mode d’adjuntar missatges."
 msgid "Invalid value for option %s: %ld"
 msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
 
-#: mutt_lua.c:429
+#: mutt_lua.c:436
 msgid "Error: Couldn't load the lua interpreter"
 msgstr ""
 
-#: mutt_lua.c:491
+#: mutt_lua.c:506
 #, fuzzy, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "No s’ha pogut blocar «%s».\n"
@@ -5428,44 +5433,44 @@ msgstr ""
 msgid "unknown reason"
 msgstr "Error desconegut"
 
-#: notmuch/notmuch.c:113
+#: notmuch/notmuch.c:129
 #, c-format
 msgid "failed to parse notmuch query type: %s"
 msgstr ""
 
 # Es refereix a l’esquema d’URL.  ivb
-#: notmuch/notmuch.c:206 notmuch/notmuch.c:1955
+#: notmuch/notmuch.c:222 notmuch/notmuch.c:1971
 #, fuzzy, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:».\n"
 
-#: notmuch/notmuch.c:456
+#: notmuch/notmuch.c:472
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)"
 msgstr ""
 
 # Es refereix a l’esquema d’URL.  ivb
-#: notmuch/notmuch.c:516
+#: notmuch/notmuch.c:532
 #, fuzzy, c-format
 msgid "failed to parse notmuch limit: %s"
 msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:».\n"
 
-#: notmuch/notmuch.c:862
+#: notmuch/notmuch.c:878
 #, fuzzy
 msgid "Reading messages..."
 msgstr "S’està enviant el missatge…"
 
-#: notmuch/notmuch.c:1718
+#: notmuch/notmuch.c:1734
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "No hi ha cap missatge nou en aquesta vista limitada"
 
 # Es refereix a l’esquema d’URL.  ivb
-#: notmuch/notmuch.c:1968
+#: notmuch/notmuch.c:1984
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:».\n"
 
-#: notmuch/notmuch.c:2458
+#: notmuch/notmuch.c:2474
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
@@ -5473,7 +5478,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 # Condició d’error.  ivb
-#: notmuch/notmuch.c:2526
+#: notmuch/notmuch.c:2542
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "No s’ha pogut obrir la carpeta paperera"
@@ -6722,7 +6727,7 @@ msgstr "%c: El modificador de patró no és vàlid."
 msgid "%c: not supported in this mode"
 msgstr "%c: No es permet en aquest mode."
 
-#: pattern/compile.c:1243
+#: pattern/compile.c:1242
 msgid "missing parameter"
 msgstr "Manca un paràmetre."
 
@@ -7454,7 +7459,7 @@ msgstr "Per favor, establiu un valor adequat per a «hostname» quan empreu Mixm
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Error en enviar el missatge, el procés fill ha eixit amb codi %d.\n"
 
 #: remailer.c:871
@@ -7685,12 +7690,12 @@ msgstr "$sendmail ha d’estar establerta per a poder enviar correu"
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  Error en enviar el missatge, el procés fill ha exit amb codi %d (%s).
-#: send/sendmail.c:426
+#: send/sendmail.c:428
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Error en enviament, el fill isqué amb codi %d (%s)"
 
-#: send/sendmail.c:433
+#: send/sendmail.c:435
 msgid "Output of the delivery process"
 msgstr "Eixida del procés de repartiment"
 

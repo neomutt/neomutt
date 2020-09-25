@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2020-08-21\n"
+"Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-09-10 13:17+0100\n"
+"POT-Creation-Date: 2020-09-25 11:47+0100\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Marius Gedminas <marius@gedmin.as>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -82,9 +82,9 @@ msgid "alias: no address"
 msgstr "alias: nėra adreso"
 
 #: alias/commands.c:78
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: Bad address '%s' in alias '%s'"
-msgstr "Įspėjimas: blogas IDN '%s' aliase '%s'"
+msgstr "Įspėjimas: blogas adresas '%s' aliase '%s'"
 
 #: alias/commands.c:87
 #, c-format
@@ -189,14 +189,14 @@ msgstr "Užklausos komanda nenurodyta"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:71 main.c:796
+#: autocrypt/autocrypt.c:71 main.c:802
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s neegzistuoja. Sukurti ją?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:78 bcache/bcache.c:220 hcache/hcache.c:228 main.c:800
+#: autocrypt/autocrypt.c:78 bcache/bcache.c:227 hcache/hcache.c:228 main.c:806
 #: nntp/newsrc.c:1093
 #, c-format
 msgid "Can't create %s: %s"
@@ -428,7 +428,12 @@ msgstr "Sukurti naują GPG raktą šiai paskyrai?"
 msgid "Autocrypt database version is too new"
 msgstr "Autocrypt duomenų bazės versija per nauja"
 
-#: bcache/bcache.c:212
+#: bcache/bcache.c:77
+#, fuzzy, c-format
+msgid "Cache disabled, $message_cachedir isn't a directory: %s"
+msgstr "Pranešimų talpykla nėra katalogas: %s"
+
+#: bcache/bcache.c:219
 #, c-format
 msgid "Message cache isn't a directory: %s"
 msgstr "Pranešimų talpykla nėra katalogas: %s"
@@ -655,7 +660,7 @@ msgstr "attachments: neteisinga dispozicija"
 
 #: command_parse.c:719 command_parse.c:1708 command_parse.c:2122
 #: gui/color.c:1214 gui/color.c:1320 hook.c:131 hook.c:392 keymap.c:1199
-#: keymap.c:1372 keymap.c:1518 keymap.c:1590 mutt_lua.c:483 score.c:119
+#: keymap.c:1372 keymap.c:1518 keymap.c:1590 mutt_lua.c:498 score.c:119
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: per daug argumentų"
@@ -725,7 +730,7 @@ msgstr "Komanda '%s' naudotina tik su loginiais kintamaisiais"
 msgid "%s is unset"
 msgstr "%s yra išjungtas"
 
-#: command_parse.c:1528 mutt_lua.c:478
+#: command_parse.c:1528 mutt_lua.c:493
 #, c-format
 msgid "source: error at %s"
 msgstr "source: klaida %s"
@@ -743,7 +748,7 @@ msgstr "spam: trūksta šablono"
 msgid "nospam: no matching pattern"
 msgstr "nospam: trūksta šablono"
 
-#: command_parse.c:1717 imap/imap.c:1286
+#: command_parse.c:1717 imap/imap.c:1301
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Užsakiau %s"
@@ -765,7 +770,7 @@ msgstr "unattachments: trūksta dispozicijos"
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: neteisinga dispozicija"
 
-#: command_parse.c:2131 imap/imap.c:1288
+#: command_parse.c:2131 imap/imap.c:1303
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Atsisakiau %s"
@@ -816,7 +821,7 @@ msgstr "PGP parašas patikrintas sėkmingai"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP parašas NEGALI būti patikrintas"
 
-#: commands.c:387 compmbox/compress.c:320 compose/compose.c:2512
+#: commands.c:387 compmbox/compress.c:337 compose/compose.c:2512
 #: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1263 index.c:1312
 #: mutt_attach.c:162 mutt_attach.c:295 pager.c:2468 send/sendlib.c:1056
 #, c-format
@@ -1006,54 +1011,54 @@ msgstr "Koduotė pakeista į %s neperkoduojant"
 msgid "Character set changed to %s; converting"
 msgstr "Koduotė pakeista į %s perkoduojant"
 
-#: compmbox/compress.c:354 compmbox/compress.c:498
+#: compmbox/compress.c:371 compmbox/compress.c:515
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Negaliu papildyti be append-hoook ar close-hook: %s"
 
-#: compmbox/compress.c:443 compmbox/compress.c:510 compmbox/compress.c:588
-#: compmbox/compress.c:626 mbox/mbox.c:1205
+#: compmbox/compress.c:460 compmbox/compress.c:527 compmbox/compress.c:605
+#: compmbox/compress.c:643 mbox/mbox.c:1205
 msgid "Unable to lock mailbox"
 msgstr "Negaliu užrakinti dėžutės"
 
-#: compmbox/compress.c:447 compmbox/compress.c:517 compmbox/compress.c:592
+#: compmbox/compress.c:464 compmbox/compress.c:534 compmbox/compress.c:609
 #, c-format
 msgid "Decompressing %s"
 msgstr "Išskleidžiu %s"
 
-#: compmbox/compress.c:456
+#: compmbox/compress.c:473
 msgid "Can't identify the contents of the compressed file"
 msgstr "Negaliu identifikuoti suspaustos bylos turinio"
 
-#: compmbox/compress.c:463 compmbox/compress.c:538
+#: compmbox/compress.c:480 compmbox/compress.c:555
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "Negaliu rasti pašto dėžutės operacijų pašto dėžutės tipui %d"
 
-#: compmbox/compress.c:520
+#: compmbox/compress.c:537
 #, c-format
 msgid "Compress command failed: %s"
 msgstr "Suspaudimo komanda nepavyko: %s"
 
-#: compmbox/compress.c:531
+#: compmbox/compress.c:548
 msgid "Unsupported mailbox type for appending"
 msgstr "Papildymui nepalaikomas pašto dėžutės tipas"
 
-#: compmbox/compress.c:616
+#: compmbox/compress.c:633
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "Negaliu išsaugoti suspaustos bylos be close-hook"
 
-#: compmbox/compress.c:638 compmbox/compress.c:690
+#: compmbox/compress.c:655 compmbox/compress.c:707
 #, c-format
 msgid "Compressing %s"
 msgstr "Suspaudžiu %s"
 
-#: compmbox/compress.c:685
+#: compmbox/compress.c:702
 #, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Papildau suspaustą %s..."
 
-#: compmbox/compress.c:697 editmsg.c:262
+#: compmbox/compress.c:714 editmsg.c:262
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Klaida. Išsaugau laikiną bylą: %s"
@@ -1363,7 +1368,7 @@ msgstr "Atidaryti dėžutę, iš kurios prisegti laišką"
 msgid "Open newsgroup to attach message from"
 msgstr "Atidaryti naujienų grupę, iš kurios prisegti laišką"
 
-#: compose/compose.c:2039 main.c:1219
+#: compose/compose.c:2039 main.c:1225
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Negaliu atidaryti dėžutės %s"
@@ -1547,7 +1552,7 @@ msgstr "Bloga parametro reikšmė: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Bloga parametro reikšmė: %ld"
 
-#: config/set.c:109 init.c:1079
+#: config/set.c:109 init.c:1077
 #, c-format
 msgid "No such variable: %s"
 msgstr "Nėra tokio kintamojo: %s"
@@ -2486,43 +2491,43 @@ msgstr "IMAP komanda nepavyko: %s"
 msgid "Connection to %s timed out"
 msgstr "Prisijungimui prie %s pasibaigė laikas"
 
-#: imap/imap.c:85
+#: imap/imap.c:101
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "Šis IMAP serveris yra senoviškas. NeoMutt su juo neveikia."
 
-#: imap/imap.c:434
+#: imap/imap.c:450
 #, c-format
 msgid "CREATE failed: %s"
 msgstr "CREATE komanda nepavyko: %s"
 
-#: imap/imap.c:554
+#: imap/imap.c:570
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Uždarau jungtį su %s..."
 
-#: imap/imap.c:747 nntp/nntp.c:1883 pop/lib.c:341 send/smtp.c:705
+#: imap/imap.c:762 nntp/nntp.c:1883 pop/lib.c:341 send/smtp.c:705
 msgid "Secure connection with TLS?"
 msgstr "Apsaugoti jungtį su TLS?"
 
-#: imap/imap.c:763 nntp/nntp.c:1906 pop/lib.c:362 send/smtp.c:722
+#: imap/imap.c:778 nntp/nntp.c:1906 pop/lib.c:362 send/smtp.c:722
 msgid "Could not negotiate TLS connection"
 msgstr "Nepavyko sukurti TLS jungties"
 
-#: imap/imap.c:778 imap/imap.c:794 pop/lib.c:379
+#: imap/imap.c:793 imap/imap.c:809 pop/lib.c:379
 msgid "Encrypted connection unavailable"
 msgstr "Šifruota jungtis negalima"
 
-#: imap/imap.c:1260
+#: imap/imap.c:1275
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Užsakau %s..."
 
-#: imap/imap.c:1262
+#: imap/imap.c:1277
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Atsisakau %s..."
 
-#: imap/imap.c:1438 imap/message.c:1647
+#: imap/imap.c:1453 imap/message.c:1647
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
@@ -2530,16 +2535,16 @@ msgstr[0] "Kopijuoju %d laišką į %s..."
 msgstr[1] "Kopijuoju %d laiškus į %s..."
 msgstr[2] "Kopijuoju %d laiškų į %s..."
 
-#: imap/imap.c:1455 imap/imap.c:2113 imap/message.c:1686 muttlib.c:1405
+#: imap/imap.c:1470 imap/imap.c:2128 imap/message.c:1686 muttlib.c:1405
 #, c-format
 msgid "Create %s?"
 msgstr "Sukurti %s?"
 
-#: imap/imap.c:1528
+#: imap/imap.c:1543
 msgid "Expunge failed"
 msgstr "Ištrynimas nepavyko"
 
-#: imap/imap.c:1546
+#: imap/imap.c:1561
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
@@ -2547,7 +2552,7 @@ msgstr[0] "Pažymiu %d laišką ištrinu..."
 msgstr[1] "Pažymiu %d laiškus ištrintais..."
 msgstr[2] "Pažymiu %d laiškų ištrintais..."
 
-#: imap/imap.c:1586
+#: imap/imap.c:1601
 #, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
@@ -2555,36 +2560,36 @@ msgstr[0] "Išsaugau pasikeitusį laišką... [%d/%d]"
 msgstr[1] "Išsaugau pasikeitusius laiškus... [%d/%d]"
 msgstr[2] "Išsaugau pasikeitusius laiškus... [%d/%d]"
 
-#: imap/imap.c:1643
+#: imap/imap.c:1658
 msgid "Error saving flags. Close anyway?"
 msgstr "Nepavyko išsaugoti vėliavėlių.  Vis tiek uždaryti?"
 
-#: imap/imap.c:1650
+#: imap/imap.c:1665
 msgid "Error saving flags"
 msgstr "Klaida išsaugant vėliavėles"
 
-#: imap/imap.c:1676
+#: imap/imap.c:1691
 msgid "Expunging messages from server..."
 msgstr "Ištuštinu laiškus iš serverio..."
 
-#: imap/imap.c:1682
+#: imap/imap.c:1697
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE komanda nepavyko"
 
-#: imap/imap.c:1917 nntp/nntp.c:2481
+#: imap/imap.c:1932 nntp/nntp.c:2481
 #, c-format
 msgid "Selecting %s..."
 msgstr "Parenku %s..."
 
-#: imap/imap.c:2080
+#: imap/imap.c:2095
 msgid "Error opening mailbox"
 msgstr "Klaida atidarant pašto dėžutę"
 
-#: imap/imap.c:2228
+#: imap/imap.c:2243
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP serveris nepalaiko savadarbių vėliavėlių"
 
-#: imap/imap.c:2272
+#: imap/imap.c:2287
 msgid "Invalid IMAP flags"
 msgstr "Blogos IMAP vėliavėlės"
 
@@ -3070,29 +3075,29 @@ msgstr "Siuntimas į šią grupę neleidžiamas, gali būti moderuotas. Tęsti?"
 msgid "Can't undelete message"
 msgstr "Negaliu atstatyti ištrinto laiško"
 
-#: init.c:213
+#: init.c:222
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Klaida komandinėje eilutėje: %s"
 
-#: init.c:215
+#: init.c:224
 #, c-format
 msgid "Warning in command line: %s"
 msgstr "Įspėjimas komandinėje eilutėje: %s"
 
-#: init.c:324
+#: init.c:333
 msgid "unable to determine nodename via uname()"
 msgstr "negaliu nustatyti kompiuterio vardo per uname()"
 
-#: init.c:1026
+#: init.c:1024
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: nežinoma komanda"
 
-#: init.c:1086
+#: init.c:1084
 #, c-format
 msgid "Config variable '%s' is deprecated"
-msgstr ""
+msgstr "Konfigūracijos kintamasis '%s' yra nebenaudotinas"
 
 #: keymap.c:430
 #, c-format
@@ -3200,17 +3205,17 @@ msgid "md_commit_message(): unable to set time on file"
 msgstr "md_commit_message(): nepavyko nustatyti bylos laiko"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2381
+#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2397
 #, c-format
 msgid "Writing %s..."
 msgstr "Rašau %s..."
 
 #. L10N: Try to limit to 80 columns
-#: main.c:153
+#: main.c:156
 msgid "usage:"
-msgstr "usage:"
+msgstr "naudojimas:"
 
-#: main.c:154
+#: main.c:157
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
@@ -3220,7 +3225,7 @@ msgstr ""
 "          [-b <adresas>] [-c <adresas>] [-s <tema>] [-a <priedas> [...] --]\n"
 "          <adresas> [...]"
 
-#: main.c:157
+#: main.c:160
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
@@ -3228,60 +3233,60 @@ msgstr ""
 "  neomutt [-nx] [-e <komanda>] [-F <konf>] [-b <adresas>] [-c <adresas>]\n"
 "          [-s <tema>] [-a <priedas> [...] --] <adresas> [...] < žinutė"
 
-#: main.c:159
+#: main.c:162
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 msgstr "  neomutt [-nRy] [-e <komanda>] [-F <konf>] [-f <dėžutė>] [-m <tipas>]"
 
-#: main.c:160
+#: main.c:163
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -A <aliasas>"
 
-#: main.c:161
+#: main.c:164
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
 msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -B"
 
-#: main.c:162
+#: main.c:165
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -D [-S] [-O]"
 
-#: main.c:163
+#: main.c:166
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -d <lygis> -l <byla>"
 
-#: main.c:164
+#: main.c:167
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
 msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -G"
 
-#: main.c:165
+#: main.c:168
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -g <serveris>"
 
-#: main.c:166
+#: main.c:169
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
 msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -p"
 
-#: main.c:167
+#: main.c:170
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -Q <kintamasis> [-O]"
 
-#: main.c:168
+#: main.c:171
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -Z"
 
-#: main.c:169
+#: main.c:172
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 msgstr "  neomutt [-n] [-e <komanda>] [-F <konf>] -z [-f <dėžutė>]"
 
-#: main.c:170
+#: main.c:173
 msgid "  neomutt -v[v]\n"
 msgstr "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:173
+#: main.c:176
 msgid "options:"
 msgstr "parametrai:"
 
-#: main.c:174
+#: main.c:177
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
@@ -3289,11 +3294,11 @@ msgstr ""
 "  --            Specialus argumentas po kurio NeoMutt nebeieško parametrų ir\n"
 "                priima visus argumentus kaip adresus net jei jie prasideda '-'"
 
-#: main.c:176
+#: main.c:179
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
 msgstr "  -A <aliasas>  Išvesti aliaso reikšmę ir išeiti"
 
-#: main.c:177
+#: main.c:180
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
@@ -3301,31 +3306,31 @@ msgstr ""
 "  -a <priedas>  Prikabinti vieną ar daugiau bylų prie laiško (turi būti\n"
 "                paskutinis parametras).  Gavėjus nurodykite po '--'"
 
-#: main.c:179
+#: main.c:182
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr "  -B            Veikti automatiniame režime (be ncurses sąsajos)"
 
-#: main.c:180
+#: main.c:183
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <adresas>  Nurodyti slaptos kopijos (Bcc) gavėją"
 
-#: main.c:181
+#: main.c:184
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
 msgstr "  -c <adresas>  Nurodyti kopijos (Cc) gavėją"
 
-#: main.c:182
+#: main.c:185
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
 msgstr "  -D            Spausdinti visus kintamuosius 'vardas=reikšmė' poromis"
 
-#: main.c:183
+#: main.c:186
 msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr "  -D -O         Kaip -D, bet rodyti trumpą aprašymą"
 
-#: main.c:184
+#: main.c:187
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 msgstr "  -D -S         Kaip -D, bet slėpti slaptažodžius"
 
-#: main.c:185
+#: main.c:188
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
@@ -3333,49 +3338,49 @@ msgstr ""
 "  -d <lygis>    Rašyti informacinius pranešimus į bylą (\"~/.neomuttdebug0\"\n"
 "                pagal nutylėjimą).  Lygis gali būti nuo 1 iki 5"
 
-#: main.c:187
+#: main.c:190
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr ""
 "  -E            Redaguoti juodraštį (-H) ar įtraukiamą (-i) bylą prieš siunčiant\n"
 "                laišką"
 
-#: main.c:188
+#: main.c:191
 msgid "  -e <command>  Specify a command to be run after reading the config files"
 msgstr "  -e <komanda>  Vykdyti komandą perskaičius konfigūracijos failus"
 
-#: main.c:189
+#: main.c:192
 msgid "  -F <config>   Specify an alternative initialization file to read"
 msgstr "  -F <konf>     Naudoti alternatyvią konfigūracijos bylą"
 
-#: main.c:190
+#: main.c:193
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
 msgstr "  -f <dėžutė>   Atidaryti nurodytą pašto dėžutę (apibrėžtą 'mailboxes' komanda)"
 
-#: main.c:191
+#: main.c:194
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 msgstr "  -G            Pradėti NeoMutt rodant sąrašą prenumeruotų naujienų grupių"
 
-#: main.c:192
+#: main.c:195
 msgid "  -g <server>   Like -G, but start at specified news server"
 msgstr "  -g <serveris> Kaip -G, bet naudoti nurodytą naujienų serverį"
 
-#: main.c:193
+#: main.c:196
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 msgstr "  -H <juodr>    Nurodyti juodraščio bylą su antraštėmis ir tekstu naujam laiškui"
 
-#: main.c:194
+#: main.c:197
 msgid "  -h            Print this help message and exit"
 msgstr "  -h            Rodyti šią žinutę ir išeiti"
 
-#: main.c:195
+#: main.c:198
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
 msgstr "  -i <įtraukti> Nurodyti bylą, įtraukiamą į naujos žinutės tekstą"
 
-#: main.c:196
+#: main.c:199
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
 msgstr "  -l <byla>     Nurodyti žurnalo bylą (\"~/.neomuttdebug0\" pagal nutylėjimą)"
 
-#: main.c:197
+#: main.c:200
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
@@ -3384,15 +3389,15 @@ msgstr ""
 "                Tipas gali būti MH, MMDF, Maildir arba mbox (raidžių dydis\n"
 "                nesvarbus)"
 
-#: main.c:199
+#: main.c:202
 msgid "  -n            Do not read the system-wide configuration file"
 msgstr "  -n            Neskaityti sisteminės konfigūracijos bylos"
 
-#: main.c:200
+#: main.c:203
 msgid "  -p            Resume a prior postponed message, if any"
 msgstr "  -p            Pratęsti atidėtą laišką, jei tokių yra"
 
-#: main.c:201
+#: main.c:204
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
@@ -3402,27 +3407,27 @@ msgstr ""
 "                (perskaičius konfigūracijos bylą ir įvykdžius komandas)\n"
 "                Pridėkite -O trumpam aprašymui"
 
-#: main.c:204
+#: main.c:207
 msgid "  -R            Open mailbox in read-only mode"
 msgstr "  -R            Atidaryti pašto dėžutę tik skaitymui"
 
-#: main.c:205
+#: main.c:208
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
 msgstr "  -s <tema>     Nurodyti laiško temą (naudokite kabutes, jei temoje yra tarpų)"
 
-#: main.c:206
+#: main.c:209
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
 msgstr "  -v            Spausdinti NeoMutt versijos numerį ir kompiliavimo parinktis"
 
-#: main.c:207
+#: main.c:210
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
 msgstr "  -vv           Spausdinti NeoMutt licenciją ir autorinių teisių informaciją"
 
-#: main.c:208
+#: main.c:211
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
 msgstr "  -y            Pradėti NeoMutt rodant sąrašą visų apibrėžtų pašto dėžučių"
 
-#: main.c:209
+#: main.c:212
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
@@ -3430,7 +3435,7 @@ msgstr ""
 "  -Z            Atidaryti pirmą pašto dėžutę su naujais laiškais arba iškart\n"
 "                išeiti su klaidos kodu 1 jei tokios nėra"
 
-#: main.c:211
+#: main.c:214
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
@@ -3438,54 +3443,54 @@ msgstr ""
 "  -z            Atidaryti pirmą arba nurodytą (-f) pašto dėžutę jei joje yra\n"
 "                laiškų arba iškart išeiti su klaidos kodu 1"
 
-#: main.c:239
+#: main.c:242
 msgid "Error initializing terminal"
 msgstr "Klaida inicializuojant terminalą"
 
-#: main.c:314
+#: main.c:317
 msgid "unable to determine username"
 msgstr "negaliu nustatyti vartotojo vardo"
 
-#: main.c:320
+#: main.c:323
 msgid "unable to determine home directory"
 msgstr "negaliu nustatyti namų katalogo"
 
-#: main.c:602
+#: main.c:605
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Klaida: -d reikšmė '%s' yra netinkama"
 
-#: main.c:855
+#: main.c:861
 msgid "Failed to parse mailto: link"
 msgstr "Nepavyko išanalizuoti mailto: nuorodos"
 
-#: main.c:867 send/send.c:2620 send/send.c:2624
+#: main.c:873 send/send.c:2620 send/send.c:2624
 msgid "No recipients specified"
 msgstr "Nenurodyti jokie gavėjai"
 
-#: main.c:894
+#: main.c:900
 msgid "Can't use -E flag with stdin"
 msgstr "Negalima naudoti -E rakto su standartine įvestimi"
 
-#: main.c:978
+#: main.c:984
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "Nepavyko išanalizuoti laiško šablono: %s"
 
-#: main.c:1043 mutt_header.c:335
+#: main.c:1049 mutt_header.c:335
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: negalėjau prisegti bylos"
 
-#: main.c:1127
+#: main.c:1133
 msgid "No mailbox with new mail"
 msgstr "Nėra dėžutės su nauju paštu"
 
-#: main.c:1151
+#: main.c:1157
 msgid "No incoming mailboxes defined"
 msgstr "Neapibrėžta nė viena paštą gaunanti dėžutė"
 
-#: main.c:1201
+#: main.c:1207
 msgid "Mailbox is empty"
 msgstr "Dėžutė yra tuščia"
 
@@ -3656,12 +3661,12 @@ msgstr "Nepakanka pogrupių šablonui"
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, c-format
-msgid "Caught signal %d (%s) ...  Exiting.\n"
+msgid "Caught signal %d (%s) ...  Exiting\n"
 msgstr "Sugavau signalą %d (%s) ...  Išeinu.\n"
 
 #: mutt/signal.c:74
 #, c-format
-msgid "Caught signal %d ...  Exiting.\n"
+msgid "Caught signal %d ...  Exiting\n"
 msgstr "Sugavau signalą %d ...  Išeinu.\n"
 
 #: mutt_attach.c:143 mutt_attach.c:277
@@ -3751,11 +3756,11 @@ msgstr "Negalima įjungti parametro %s laiško prisegimo režime"
 msgid "Invalid value for option %s: %ld"
 msgstr "Bloga parametro %s reikšmė: %ld"
 
-#: mutt_lua.c:429
+#: mutt_lua.c:436
 msgid "Error: Couldn't load the lua interpreter"
 msgstr "Klaida: nepavyko įkelti lua interpretatoriaus"
 
-#: mutt_lua.c:491
+#: mutt_lua.c:506
 #, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "Nepavyko įvykdyti lua bylos: %s"
@@ -5120,39 +5125,39 @@ msgstr "Nepavyko atidaryti notmuch duomenų bazės: %s: %s"
 msgid "unknown reason"
 msgstr "nežinoma priežastis"
 
-#: notmuch/notmuch.c:113
+#: notmuch/notmuch.c:129
 #, c-format
 msgid "failed to parse notmuch query type: %s"
 msgstr "nepavyko išanalizuoti notmuch užklausos tipo: %s"
 
-#: notmuch/notmuch.c:206 notmuch/notmuch.c:1955
+#: notmuch/notmuch.c:222 notmuch/notmuch.c:1971
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "nepavyko išanalizuoti notmuch url: %s"
 
-#: notmuch/notmuch.c:456
+#: notmuch/notmuch.c:472
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)"
 msgstr "Bloga nm_query_window_timebase reikšmė (geros reikšmės: hour, day, week, month arba year)"
 
-#: notmuch/notmuch.c:516
+#: notmuch/notmuch.c:532
 #, c-format
 msgid "failed to parse notmuch limit: %s"
 msgstr "nepavyko išanalizuoti notmuch ribojimo: %s"
 
-#: notmuch/notmuch.c:862
+#: notmuch/notmuch.c:878
 msgid "Reading messages..."
 msgstr "Skaitau laiškus..."
 
-#: notmuch/notmuch.c:1718
+#: notmuch/notmuch.c:1734
 msgid "No more messages in the thread"
 msgstr "Gijoje daugiau nėra laiškų"
 
-#: notmuch/notmuch.c:1968
+#: notmuch/notmuch.c:1984
 #, c-format
 msgid "failed to parse limit: %s"
 msgstr "nepavyko išanalizuoti ribojimo: %s"
 
-#: notmuch/notmuch.c:2458
+#: notmuch/notmuch.c:2474
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
@@ -5160,7 +5165,7 @@ msgstr[0] "Nepavyko išsaugoti %d laiško nes pašto dėžutė buvo pakeista iš
 msgstr[1] "Nepavyko išsaugoti %d laiškų nes pašto dėžutė buvo pakeista išoriškai"
 msgstr[2] "Nepavyko išsaugoti %d laiškų nes pašto dėžutė buvo pakeista išoriškai"
 
-#: notmuch/notmuch.c:2526
+#: notmuch/notmuch.c:2542
 msgid "Can't write to virtual folder"
 msgstr "Negaliu rašyti į virtualų aplanką"
 
@@ -6342,7 +6347,7 @@ msgstr "%c: blogas šablono modifikatorius"
 msgid "%c: not supported in this mode"
 msgstr "%c: nepalaikomas šiame režime"
 
-#: pattern/compile.c:1243
+#: pattern/compile.c:1242
 msgid "missing parameter"
 msgstr "trūksta parametro"
 
@@ -7034,7 +7039,7 @@ msgstr "Teisingai nustatyk hostname kintamąjį, kai naudoji mixmaster'į"
 
 #: remailer.c:867
 #, c-format
-msgid "Error sending message, child exited %d.\n"
+msgid "Error sending message, child exited %d\n"
 msgstr "Klaida siunčiant laišką, klaidos kodas %d.\n"
 
 #: remailer.c:871
@@ -7250,12 +7255,12 @@ msgstr "Blogas IDN %s bandant paruošti Resent-From: antraštę"
 msgid "$sendmail must be set in order to send mail"
 msgstr "$sendmail turi būti nurodytas norint siųsti laiškus"
 
-#: send/sendmail.c:426
+#: send/sendmail.c:428
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Klaida siunčiant laišką, klaidos kodas %d (%s)"
 
-#: send/sendmail.c:433
+#: send/sendmail.c:435
 msgid "Output of the delivery process"
 msgstr "Pristatymo proceso išvestis"
 
