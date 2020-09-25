@@ -19,9 +19,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2020-08-21\n"
+"Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-09-10 13:17+0100\n"
+"POT-Creation-Date: 2020-09-25 11:47+0100\n"
 "PO-Revision-Date: 2020-04-20 15:18+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -199,14 +199,14 @@ msgstr "Příkaz pro dotazy není definován"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:71 main.c:796
+#: autocrypt/autocrypt.c:71 main.c:802
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s neexistuje. Mám ho vytvořit?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:78 bcache/bcache.c:220 hcache/hcache.c:228 main.c:800
+#: autocrypt/autocrypt.c:78 bcache/bcache.c:227 hcache/hcache.c:228 main.c:806
 #: nntp/newsrc.c:1093
 #, c-format
 msgid "Can't create %s: %s"
@@ -438,7 +438,12 @@ msgstr "Vytvořt nový GPG klíč pro tento účet?"
 msgid "Autocrypt database version is too new"
 msgstr "Verze databáze autocrypt je příliš nová"
 
-#: bcache/bcache.c:212
+#: bcache/bcache.c:77
+#, fuzzy, c-format
+msgid "Cache disabled, $message_cachedir isn't a directory: %s"
+msgstr "Cache se zprávami %s není adresářem"
+
+#: bcache/bcache.c:219
 #, c-format
 msgid "Message cache isn't a directory: %s"
 msgstr "Cache se zprávami %s není adresářem"
@@ -665,7 +670,7 @@ msgstr "přílohy: neplatná dispozice"
 
 #: command_parse.c:719 command_parse.c:1708 command_parse.c:2122
 #: gui/color.c:1214 gui/color.c:1320 hook.c:131 hook.c:392 keymap.c:1199
-#: keymap.c:1372 keymap.c:1518 keymap.c:1590 mutt_lua.c:483 score.c:119
+#: keymap.c:1372 keymap.c:1518 keymap.c:1590 mutt_lua.c:498 score.c:119
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: příliš mnoho argumentů"
@@ -737,7 +742,7 @@ msgstr "Příkaz '%s' lze použít pouze s proměnnými typu boolean/přepínač
 msgid "%s is unset"
 msgstr "%s není nastaveno"
 
-#: command_parse.c:1528 mutt_lua.c:478
+#: command_parse.c:1528 mutt_lua.c:493
 #, c-format
 msgid "source: error at %s"
 msgstr "source: chyba na %s"
@@ -755,7 +760,7 @@ msgstr "spam: vzoru nic nevyhovuje"
 msgid "nospam: no matching pattern"
 msgstr "nospam: vzoru nic nevyhovuje"
 
-#: command_parse.c:1717 imap/imap.c:1286
+#: command_parse.c:1717 imap/imap.c:1301
 #, c-format
 msgid "Subscribed to %s"
 msgstr "%s přihlášeno"
@@ -777,7 +782,7 @@ msgstr "nepřílohy: chybí dispozice"
 msgid "unattachments: invalid disposition"
 msgstr "nepřílohy: neplatná dispozice"
 
-#: command_parse.c:2131 imap/imap.c:1288
+#: command_parse.c:2131 imap/imap.c:1303
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s odhlášeno"
@@ -828,7 +833,7 @@ msgstr "PGP podpis byl úspěšně ověřen"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP podpis NELZE ověřit"
 
-#: commands.c:387 compmbox/compress.c:320 compose/compose.c:2512
+#: commands.c:387 compmbox/compress.c:337 compose/compose.c:2512
 #: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1263 index.c:1312
 #: mutt_attach.c:162 mutt_attach.c:295 pager.c:2468 send/sendlib.c:1056
 #, c-format
@@ -1019,54 +1024,54 @@ msgstr "Znaková sada změněna na %s; nepřevádím"
 msgid "Character set changed to %s; converting"
 msgstr "Znaková sada změněna na %s; převádím"
 
-#: compmbox/compress.c:354 compmbox/compress.c:498
+#: compmbox/compress.c:371 compmbox/compress.c:515
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Bez háčku append-hook nebo close-hook nelze připojit: %s"
 
-#: compmbox/compress.c:443 compmbox/compress.c:510 compmbox/compress.c:588
-#: compmbox/compress.c:626 mbox/mbox.c:1205
+#: compmbox/compress.c:460 compmbox/compress.c:527 compmbox/compress.c:605
+#: compmbox/compress.c:643 mbox/mbox.c:1205
 msgid "Unable to lock mailbox"
 msgstr "Schránku nelze zamknout"
 
-#: compmbox/compress.c:447 compmbox/compress.c:517 compmbox/compress.c:592
+#: compmbox/compress.c:464 compmbox/compress.c:534 compmbox/compress.c:609
 #, c-format
 msgid "Decompressing %s"
 msgstr "Dekomprimuje se %s"
 
-#: compmbox/compress.c:456
+#: compmbox/compress.c:473
 msgid "Can't identify the contents of the compressed file"
 msgstr "Obsah komprimovaného souboru nelze určit"
 
-#: compmbox/compress.c:463 compmbox/compress.c:538
+#: compmbox/compress.c:480 compmbox/compress.c:555
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "Pro schránku typu %d nelze nalézt ovladač"
 
-#: compmbox/compress.c:520
+#: compmbox/compress.c:537
 #, c-format
 msgid "Compress command failed: %s"
 msgstr "Kompresní příkaz selhal: %s"
 
-#: compmbox/compress.c:531
+#: compmbox/compress.c:548
 msgid "Unsupported mailbox type for appending"
 msgstr "U tohoto druhu schránky není připojování podporováno"
 
-#: compmbox/compress.c:616
+#: compmbox/compress.c:633
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "Bez háčku close-hook nelze komprimovaný soubor synchronizovat"
 
-#: compmbox/compress.c:638 compmbox/compress.c:690
+#: compmbox/compress.c:655 compmbox/compress.c:707
 #, c-format
 msgid "Compressing %s"
 msgstr "Komprimuje se %s"
 
-#: compmbox/compress.c:685
+#: compmbox/compress.c:702
 #, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Komprimuje se a připojuje k %s…"
 
-#: compmbox/compress.c:697 editmsg.c:262
+#: compmbox/compress.c:714 editmsg.c:262
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Chyba. Zachovávám dočasný soubor %s."
@@ -1378,7 +1383,7 @@ msgstr "Otevřít schránku, z níž se připojí zpráva"
 msgid "Open newsgroup to attach message from"
 msgstr "Otevřít diskusní skupinu, z níž se připojí zpráva"
 
-#: compose/compose.c:2039 main.c:1219
+#: compose/compose.c:2039 main.c:1225
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Schránku %s nelze otevřít"
@@ -1562,7 +1567,7 @@ msgstr "Neplatná hodnota přepínače: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Neplatná hodnota přepínače: %ld"
 
-#: config/set.c:109 init.c:1079
+#: config/set.c:109 init.c:1077
 #, c-format
 msgid "No such variable: %s"
 msgstr "Proměnná „%s“ není definována"
@@ -2502,43 +2507,43 @@ msgstr "Příkaz protokolu IMAP selhal: %s"
 msgid "Connection to %s timed out"
 msgstr "Vypršel časový limit spojení k %s"
 
-#: imap/imap.c:85
+#: imap/imap.c:101
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "Tento IMAP server je zastaralý. NeoMutt s ním nebude fungovat."
 
-#: imap/imap.c:434
+#: imap/imap.c:450
 #, c-format
 msgid "CREATE failed: %s"
 msgstr "Příkaz CREATE selhal: %s"
 
-#: imap/imap.c:554
+#: imap/imap.c:570
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Končím spojení s %s…"
 
-#: imap/imap.c:747 nntp/nntp.c:1883 pop/lib.c:341 send/smtp.c:705
+#: imap/imap.c:762 nntp/nntp.c:1883 pop/lib.c:341 send/smtp.c:705
 msgid "Secure connection with TLS?"
 msgstr "Bezpečné spojení přes TLS?"
 
-#: imap/imap.c:763 nntp/nntp.c:1906 pop/lib.c:362 send/smtp.c:722
+#: imap/imap.c:778 nntp/nntp.c:1906 pop/lib.c:362 send/smtp.c:722
 msgid "Could not negotiate TLS connection"
 msgstr "Nelze navázat TLS spojení"
 
-#: imap/imap.c:778 imap/imap.c:794 pop/lib.c:379
+#: imap/imap.c:793 imap/imap.c:809 pop/lib.c:379
 msgid "Encrypted connection unavailable"
 msgstr "Šifrované spojení není k dispozici"
 
-#: imap/imap.c:1260
+#: imap/imap.c:1275
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Přihlašuji %s…"
 
-#: imap/imap.c:1262
+#: imap/imap.c:1277
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Odhlašuji %s…"
 
-#: imap/imap.c:1438 imap/message.c:1647
+#: imap/imap.c:1453 imap/message.c:1647
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
@@ -2546,16 +2551,16 @@ msgstr[0] "Kopíruji zprávu (%d) do %s…"
 msgstr[1] "Kopíruji zprávy (%d) do %s…"
 msgstr[2] "Kopíruji zprávy (%d) do %s…"
 
-#: imap/imap.c:1455 imap/imap.c:2113 imap/message.c:1686 muttlib.c:1405
+#: imap/imap.c:1470 imap/imap.c:2128 imap/message.c:1686 muttlib.c:1405
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvořit %s?"
 
-#: imap/imap.c:1528
+#: imap/imap.c:1543
 msgid "Expunge failed"
 msgstr "Příkaz EXPUNGE se nezdařil."
 
-#: imap/imap.c:1546
+#: imap/imap.c:1561
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
@@ -2564,7 +2569,7 @@ msgstr[1] "Označuji %d zprávy ke smazání…"
 msgstr[2] "Označuji %d zpráv ke smazání…"
 
 # Označuji %d zprávu ke smazání…
-#: imap/imap.c:1586
+#: imap/imap.c:1601
 #, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
@@ -2572,36 +2577,36 @@ msgstr[0] "Ukládám změněnou zprávu… [%d/%d]"
 msgstr[1] "Ukládám změněné zprávy… [%d/%d]"
 msgstr[2] "Ukládám změněných zpráv… [%d/%d]"
 
-#: imap/imap.c:1643
+#: imap/imap.c:1658
 msgid "Error saving flags. Close anyway?"
 msgstr "Došlo k chybě při ukládání příznaků. Přesto uzavřít?"
 
-#: imap/imap.c:1650
+#: imap/imap.c:1665
 msgid "Error saving flags"
 msgstr "Chyba při ukládání příznaků"
 
-#: imap/imap.c:1676
+#: imap/imap.c:1691
 msgid "Expunging messages from server..."
 msgstr "Odstraňuji zprávy ze serveru…"
 
-#: imap/imap.c:1682
+#: imap/imap.c:1697
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "při volání imap_sync_mailbox: EXPUNGE selhalo"
 
-#: imap/imap.c:1917 nntp/nntp.c:2481
+#: imap/imap.c:1932 nntp/nntp.c:2481
 #, c-format
 msgid "Selecting %s..."
 msgstr "Volím %s…"
 
-#: imap/imap.c:2080
+#: imap/imap.c:2095
 msgid "Error opening mailbox"
 msgstr "Chyba při otevírání schránky"
 
-#: imap/imap.c:2228
+#: imap/imap.c:2243
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP server nepodporuje vlastní příznaky"
 
-#: imap/imap.c:2272
+#: imap/imap.c:2287
 msgid "Invalid IMAP flags"
 msgstr "Neplatné IMAP příznaky"
 
@@ -3088,26 +3093,26 @@ msgstr "Publikování do této skupiny není povoleno, může být moderována. 
 msgid "Can't undelete message"
 msgstr "Zprávu nelze obnovit"
 
-#: init.c:213
+#: init.c:222
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Chyba %s na příkazovém řádku"
 
-#: init.c:215
+#: init.c:224
 #, c-format
 msgid "Warning in command line: %s"
 msgstr "Pozor %s na příkazovém řádku"
 
-#: init.c:324
+#: init.c:333
 msgid "unable to determine nodename via uname()"
 msgstr "název stroje nelze určit pomocí volání uname()"
 
-#: init.c:1026
+#: init.c:1024
 #, c-format
 msgid "%s: unknown command"
 msgstr "Příkaz %s není znám."
 
-#: init.c:1086
+#: init.c:1084
 #, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr "Konfigurační proměnná '%s' je zastaralá"
@@ -3218,17 +3223,17 @@ msgid "md_commit_message(): unable to set time on file"
 msgstr "md_commit_message(): nelze nastavit čas na souboru"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2381
+#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2397
 #, c-format
 msgid "Writing %s..."
 msgstr "Ukládám %s…"
 
 #. L10N: Try to limit to 80 columns
-#: main.c:153
+#: main.c:156
 msgid "usage:"
 msgstr "Použití:"
 
-#: main.c:154
+#: main.c:157
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
@@ -3238,7 +3243,7 @@ msgstr ""
 "          [-b <adresa>] [-c <adresa>] [-s <věc>] [-a <soubor> [...] --]\n"
 "          <adresa> [...]"
 
-#: main.c:157
+#: main.c:160
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
@@ -3246,60 +3251,60 @@ msgstr ""
 "  neomutt [-nx] [-e <příkaz>] [-F <konfigurace>] [-b <adresa>] [-c <adresa>]\n"
 "          [-s <věc>] [-a <soubor> [...] --] <adresa> [...] < zpráva"
 
-#: main.c:159
+#: main.c:162
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 msgstr "  neomutt [-nRy] [-e <příkaz>] [-F <konfigurace>] [-f <schránka>] [-m <typ>]"
 
-#: main.c:160
+#: main.c:163
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -A <alias>"
 
-#: main.c:161
+#: main.c:164
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
 msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -B"
 
-#: main.c:162
+#: main.c:165
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -D [-S] [-O]"
 
-#: main.c:163
+#: main.c:166
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -d <úroveň> -l <soubor>"
 
-#: main.c:164
+#: main.c:167
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
 msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -G"
 
-#: main.c:165
+#: main.c:168
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -g <server>"
 
-#: main.c:166
+#: main.c:169
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
 msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -p"
 
-#: main.c:167
+#: main.c:170
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -Q <proměnná> [-O]"
 
-#: main.c:168
+#: main.c:171
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -Z"
 
-#: main.c:169
+#: main.c:172
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 msgstr "  neomutt [-n] [-e <příkaz>] [-F <konfigurace>] -z [-f <schránka>]"
 
-#: main.c:170
+#: main.c:173
 msgid "  neomutt -v[v]\n"
 msgstr "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:173
+#: main.c:176
 msgid "options:"
 msgstr "Přepínače:"
 
-#: main.c:174
+#: main.c:177
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
@@ -3307,11 +3312,11 @@ msgstr ""
 "  --            Speciální přepínač, který způsobí, že NeoMutt nebude zbývající parametry\n"
 "                pokládat za přepínače, ale za adresy, i když budou začínat pomlčkou"
 
-#: main.c:176
+#: main.c:179
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
 msgstr "  -A <alias>    Vypíše expandovaný alias na standardní výstup a skončí"
 
-#: main.c:177
+#: main.c:180
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
@@ -3319,31 +3324,31 @@ msgstr ""
 "  -a <soubor>   Připojí ke zprávě soubor(y), musí to být poslední přepínač.\n"
 "                Další adresy lze přidat až za přepínač „--“"
 
-#: main.c:179
+#: main.c:182
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr "  -B            Dávkový režim (nespustí se uživatelské rozhraní)"
 
-#: main.c:180
+#: main.c:183
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <adresa>   Určuje adresu pro utajenou kopii (BCC)"
 
-#: main.c:181
+#: main.c:184
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
 msgstr "  -c <adresa>   Určuje adresu pro kopii (CC)"
 
-#: main.c:182
+#: main.c:185
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
 msgstr "  -D            Na standardní výstup vypíše hodnoty všech proměnných"
 
-#: main.c:183
+#: main.c:186
 msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr "  -D -O         Podobné jako -D, navíc ukáže jednořádkovou dokumentaci"
 
-#: main.c:184
+#: main.c:187
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 msgstr "  -D -S         Podobné jako -D, navíc schová hodnoty citlivých proměnných"
 
-#: main.c:185
+#: main.c:188
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
@@ -3351,47 +3356,47 @@ msgstr ""
 "  -d <úroveň>   Ladicí informace zapisuje do „~/.neomuttdebug0“\n"
 "                Hodnota 1-5 ovlivnňuje úroveň podrobnosti"
 
-#: main.c:187
+#: main.c:190
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr "  -E            Upraví koncept (-H) nebo vloží (-i) soubor do těla zprávy"
 
-#: main.c:188
+#: main.c:191
 msgid "  -e <command>  Specify a command to be run after reading the config files"
 msgstr "  -e <příkaz>   Příkaz bude vykonán po inicializaci a načtení konfigurace"
 
-#: main.c:189
+#: main.c:192
 msgid "  -F <config>   Specify an alternative initialization file to read"
 msgstr "  -F <soubor>   Alternativní soubor s konfigurací (místo „neomuttrc“)"
 
-#: main.c:190
+#: main.c:193
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
 msgstr "  -f <soubor>   Načte z této schránky (definované v „mailboxes“)"
 
-#: main.c:191
+#: main.c:194
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 msgstr "  -G            Nabídne výběr diskusních skupin (NNTP)"
 
-#: main.c:192
+#: main.c:195
 msgid "  -g <server>   Like -G, but start at specified news server"
 msgstr "  -g <server>   Jako -G, a určí server diskusních skupin (NNTP)"
 
-#: main.c:193
+#: main.c:196
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 msgstr "  -H <soubor>   Ze souboru s konceptem budou načteny hlavičky a tělo zprávy"
 
-#: main.c:194
+#: main.c:197
 msgid "  -h            Print this help message and exit"
 msgstr "  -h            Vypíše tuto nápovědu a skončí"
 
-#: main.c:195
+#: main.c:198
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
 msgstr "  -i <soubor>   Tento soubor bude vložen do těla zprávy"
 
-#: main.c:196
+#: main.c:199
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
 msgstr "  -l <soubor>   Určí soubor pro ukládání ladicích informací (výchozí „~/.neomuttdebug0“)"
 
-#: main.c:197
+#: main.c:200
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
@@ -3399,15 +3404,15 @@ msgstr ""
 "  -m <typ>      Určí výchozí typ schránky pro nově vytvářené složky\n"
 "                Typy: MH, MMDF, Maildir nebo mbox (velikost písmen nerozhoduje)"
 
-#: main.c:199
+#: main.c:202
 msgid "  -n            Do not read the system-wide configuration file"
 msgstr "  -n            NeoMutt nebude číst systémový konfigurační soubor"
 
-#: main.c:200
+#: main.c:203
 msgid "  -p            Resume a prior postponed message, if any"
 msgstr "  -p            Vrátí se k odložené rozepsané zprávě, pokud existuje"
 
-#: main.c:201
+#: main.c:204
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
@@ -3416,27 +3421,27 @@ msgstr ""
 "  -Q <proměnná> Dotáže se na konfigurační proměnnou a vypíše její hodnotu na\n"
 "                standardní výstup (po načtení konfigurace a provedení příkazů)"
 
-#: main.c:204
+#: main.c:207
 msgid "  -R            Open mailbox in read-only mode"
 msgstr "  -R            Otevře schránku pouze pro čtení"
 
-#: main.c:205
+#: main.c:208
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
 msgstr "  -s <věc>      Specifikuje věc (pokud obsahuje mezery, musí být v uvozovkách)"
 
-#: main.c:206
+#: main.c:209
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
 msgstr "  -v            Zobrazí verzi NeoMuttu a parametry zadané při překladu a skončí"
 
-#: main.c:207
+#: main.c:210
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
 msgstr "  -vv           Zobrazí licenci NeoMuttu a oprávnění k použití a skončí"
 
-#: main.c:208
+#: main.c:211
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
 msgstr "  -y            Nabídne k vybrání schránku uvedenou v seznamu „mailboxes“"
 
-#: main.c:209
+#: main.c:212
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
@@ -3444,7 +3449,7 @@ msgstr ""
 "  -Z            Otevře první složku s novou poštou; pokud není žádná nová nalezena,\n"
 "                ihned skončí s kódem 1"
 
-#: main.c:211
+#: main.c:214
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
@@ -3452,54 +3457,54 @@ msgstr ""
 "  -z            Otevře buď první složku nebo zadanou pomocí „-f“ s novou poštou;\n"
 "                pokud není žádná nová nalezena, ihned skončí s kódem 1"
 
-#: main.c:239
+#: main.c:242
 msgid "Error initializing terminal"
 msgstr "Chyba při inicializaci terminálu"
 
-#: main.c:314
+#: main.c:317
 msgid "unable to determine username"
 msgstr "uživatelské jméno nelze určit"
 
-#: main.c:320
+#: main.c:323
 msgid "unable to determine home directory"
 msgstr "domovský adresář nelze určit"
 
-#: main.c:602
+#: main.c:605
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Chyba: pro -d je „%s“ neplatná hodnota"
 
-#: main.c:855
+#: main.c:861
 msgid "Failed to parse mailto: link"
 msgstr "Rozebrání odkazu mailto: se nezdařilo"
 
-#: main.c:867 send/send.c:2620 send/send.c:2624
+#: main.c:873 send/send.c:2620 send/send.c:2624
 msgid "No recipients specified"
 msgstr "Nejsou specifikováni žádní příjemci"
 
-#: main.c:894
+#: main.c:900
 msgid "Can't use -E flag with stdin"
 msgstr "Přepínač -E nelze se standardním vstupem použít"
 
-#: main.c:978
+#: main.c:984
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "Soubor se šablonou zprávy nelze rozebrat: %s"
 
-#: main.c:1043 mutt_header.c:335
+#: main.c:1049 mutt_header.c:335
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "soubor %s nelze připojit"
 
-#: main.c:1127
+#: main.c:1133
 msgid "No mailbox with new mail"
 msgstr "V žádné schránce není nová pošta"
 
-#: main.c:1151
+#: main.c:1157
 msgid "No incoming mailboxes defined"
 msgstr "Není definována žádná schránka přijímající novou poštu"
 
-#: main.c:1201
+#: main.c:1207
 msgid "Mailbox is empty"
 msgstr "Schránka je prázdná"
 
@@ -3765,11 +3770,11 @@ msgstr "Volba %s nemůže být nastavena v režimu přikládání zpráv."
 msgid "Invalid value for option %s: %ld"
 msgstr "Neplatná hodnota přepínače %s: „%ld“"
 
-#: mutt_lua.c:429
+#: mutt_lua.c:436
 msgid "Error: Couldn't load the lua interpreter"
 msgstr "Chyba: nelze zavést interpret jazyka lua"
 
-#: mutt_lua.c:491
+#: mutt_lua.c:506
 #, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "Nelze vložit lua zdroj: %s"
@@ -5134,39 +5139,39 @@ msgstr "Nelze otevřít notmuch databázi: %s: %s"
 msgid "unknown reason"
 msgstr "neznámá chyba"
 
-#: notmuch/notmuch.c:113
+#: notmuch/notmuch.c:129
 #, c-format
 msgid "failed to parse notmuch query type: %s"
 msgstr "Rozebrání dotazu pro notmuch se nezdařilo: %s"
 
-#: notmuch/notmuch.c:206 notmuch/notmuch.c:1955
+#: notmuch/notmuch.c:222 notmuch/notmuch.c:1971
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "rozebrání URL pro notmuch se nezdařilo: %s"
 
-#: notmuch/notmuch.c:456
+#: notmuch/notmuch.c:472
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)"
 msgstr "Neplatná hodnota nm_query_window_timebase (platné hodnoty jsou: hodina, den, týden, měsíc nebo rok)"
 
-#: notmuch/notmuch.c:516
+#: notmuch/notmuch.c:532
 #, c-format
 msgid "failed to parse notmuch limit: %s"
 msgstr "rozebrání limitu pro notmuch se nezdařilo: %s"
 
-#: notmuch/notmuch.c:862
+#: notmuch/notmuch.c:878
 msgid "Reading messages..."
 msgstr "Načítám zprávy…"
 
-#: notmuch/notmuch.c:1718
+#: notmuch/notmuch.c:1734
 msgid "No more messages in the thread"
 msgstr "Žádné nové zprávy v tomto vlákně"
 
-#: notmuch/notmuch.c:1968
+#: notmuch/notmuch.c:1984
 #, c-format
 msgid "failed to parse limit: %s"
 msgstr "rozebrání limitu pro notmuch se nezdařilo: %s"
 
-#: notmuch/notmuch.c:2458
+#: notmuch/notmuch.c:2474
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
@@ -5174,7 +5179,7 @@ msgstr[0] "Nelze synchronizovat %d zprávu z důvodu úpravy schránky z vnějš
 msgstr[1] "Nelze synchronizovat %d zprávy z důvodu úpravy schránky z vnější"
 msgstr[2] "Nelze synchronizovat %d zpráv z důvodu úpravy schránky z vnější"
 
-#: notmuch/notmuch.c:2526
+#: notmuch/notmuch.c:2542
 msgid "Can't write to virtual folder"
 msgstr "Nelze zapsat do virtuální složky"
 
@@ -6356,7 +6361,7 @@ msgstr "%c: neplatný modifikátor vzoru"
 msgid "%c: not supported in this mode"
 msgstr "V tomto režimu není %c podporováno"
 
-#: pattern/compile.c:1243
+#: pattern/compile.c:1242
 msgid "missing parameter"
 msgstr "chybí parametr"
 
@@ -7265,12 +7270,12 @@ msgstr "Chybné IDN %s při generování „resent-from“ (odesláno z)"
 msgid "$sendmail must be set in order to send mail"
 msgstr "Aby bylo možné odesílat e-maily, je třeba nastavit $sendmail"
 
-#: send/sendmail.c:426
+#: send/sendmail.c:428
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Chyba při zasílání zprávy, potomek ukončen %d (%s)"
 
-#: send/sendmail.c:433
+#: send/sendmail.c:435
 msgid "Output of the delivery process"
 msgstr "Výstup doručovacího programu"
 
