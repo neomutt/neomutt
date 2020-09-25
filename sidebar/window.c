@@ -750,6 +750,7 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
     }
   }
 
+  mutt_curses_set_color(MT_COLOR_NORMAL);
   return width;
 }
 
