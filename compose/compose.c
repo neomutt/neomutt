@@ -1360,9 +1360,9 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
 }
 
 /**
- * mutt_dlg_compose_observer - Listen for config changes affecting the Compose menu - Implements ::observer_t
+ * compose_config_observer - Listen for config changes affecting the Compose menu - Implements ::observer_t
  */
-static int mutt_dlg_compose_observer(struct NotifyCallback *nc)
+static int compose_config_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;
@@ -1388,6 +1388,39 @@ static int mutt_dlg_compose_observer(struct NotifyCallback *nc)
 
   mutt_window_reflow(dlg);
   return 0;
+}
+
+/**
+ * compose_header_observer - Listen for header changes - Implements ::observer_t
+ */
+static int compose_header_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_HEADER) || !nc->event_data || !nc->global_data)
+    return -1;
+
+  const struct EventHeader *event = nc->event_data;
+  struct ComposeRedrawData *rd = nc->global_data;
+  struct Envelope *env = rd->email->env;
+  struct MuttWindow *dlg = rd->win_envelope->parent;
+
+  if ((nc->event_subtype == NT_HEADER_ADD) || (nc->event_subtype == NT_HEADER_CHANGE))
+  {
+    header_set(&env->userhdrs, event->header);
+    mutt_window_reflow(dlg);
+    return 0;
+  }
+  if (nc->event_subtype == NT_HEADER_REMOVE)
+  {
+    struct ListNode *removed = header_find(&env->userhdrs, event->header);
+    if (removed)
+    {
+      header_free(&env->userhdrs, removed);
+      mutt_window_reflow(dlg);
+    }
+    return 0;
+  }
+
+  return -1;
 }
 
 /**
@@ -1461,7 +1494,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
     mutt_window_add_child(dlg, ebar);
   }
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlg_compose_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, compose_config_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_HEADER, compose_header_observer, rd);
   dialog_push(dlg);
 
 #ifdef USE_NNTP
@@ -2675,7 +2709,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
   dialog_pop();
-  notify_observer_remove(NeoMutt->notify, mutt_dlg_compose_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, compose_config_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, compose_header_observer, rd);
   mutt_window_free(&dlg);
 
   if (actx->idxlen)

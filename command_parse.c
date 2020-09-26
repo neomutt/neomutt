@@ -1003,9 +1003,6 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
 enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
                                 intptr_t data, struct Buffer *err)
 {
-  struct ListNode *n = NULL;
-  size_t keylen;
-
   mutt_extract_token(buf, s, MUTT_TOKEN_SPACE | MUTT_TOKEN_QUOTE);
   char *p = strpbrk(buf->data, ": \t");
   if (!p || (*p != ':'))
@@ -1013,29 +1010,20 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_strcpy(err, _("invalid header field"));
     return MUTT_CMD_WARNING;
   }
-  keylen = p - buf->data + 1;
 
-  STAILQ_FOREACH(n, &UserHeader, entries)
-  {
-    /* see if there is already a field by this name */
-    if (mutt_istrn_equal(buf->data, n->data, keylen))
-    {
-      break;
-    }
-  }
+  struct EventHeader event = { buf->data };
+  struct ListNode *n = header_find(&UserHeader, buf->data);
 
-  if (!n)
+  if (n)
   {
-    /* not found, allocate memory for a new node and add it to the list */
-    n = mutt_list_insert_tail(&UserHeader, NULL);
+    header_update(n, buf->data);
+    notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_CHANGE, &event);
   }
   else
   {
-    /* found, free the existing data */
-    FREE(&n->data);
+    header_add(&UserHeader, buf->data);
+    notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_ADD, &event);
   }
-
-  n->data = mutt_buffer_strdup(buf);
 
   return MUTT_CMD_SUCCESS;
 }
@@ -2019,6 +2007,12 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf->data))
     {
+      /* Clear all headers, send a notification for each header */
+      STAILQ_FOREACH(np, &UserHeader, entries)
+      {
+        struct EventHeader event = { np->data };
+        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_REMOVE, &event);
+      }
       mutt_list_free(&UserHeader);
       continue;
     }
@@ -2031,9 +2025,10 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
     {
       if (mutt_istrn_equal(buf->data, np->data, l) && (np->data[l] == ':'))
       {
-        STAILQ_REMOVE(&UserHeader, np, ListNode, entries);
-        FREE(&np->data);
-        FREE(&np);
+        struct EventHeader event = { np->data };
+        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_REMOVE, &event);
+
+        header_free(&UserHeader, np);
       }
     }
   } while (MoreArgs(s));

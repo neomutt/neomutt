@@ -38,6 +38,7 @@ enum NotifyType
   NT_CONTEXT, ///< Context has changed,         #NotifyContext, #EventContext
   NT_EMAIL,   ///< Email has changed,           #NotifyEmail,   #EventEmail
   NT_GLOBAL,  ///< Not object-related,          #NotifyGlobal
+  NT_HEADER,  ///< A header has changed,        #NotifyHeader   #EventHeader
   NT_MAILBOX, ///< Mailbox has changed,         #NotifyMailbox, #EventMailbox
   NT_WINDOW,  ///< MuttWindow has changed,      #NotifyWindow,  #EventWindow
   NT_ALIAS,   ///< Alias has changed,           #NotifyAlias,   #EventAlias
