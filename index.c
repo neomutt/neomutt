@@ -2156,7 +2156,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         }
         oldcount = Context->mailbox->msg_count;
         struct Email *e_oldcur = mutt_get_virt_email(Context->mailbox, menu->current);
-        if (nm_read_entire_thread(Context->mailbox, cur.e) < 0)
+        if (nm_read_entire_thread(Context->mailbox, e_oldcur) < 0)
         {
           mutt_message(_("Failed to read thread, aborting"));
           break;
