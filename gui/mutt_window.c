@@ -236,16 +236,6 @@ void mutt_window_clearline(struct MuttWindow *win, int row)
 }
 
 /**
- * mutt_window_clrtobot - Clear to the bottom of the Window
- *
- * @note Assumes the cursor has already been positioned within the Window.
- */
-void mutt_window_clrtobot(void)
-{
-  clrtobot();
-}
-
-/**
  * mutt_window_clrtoeol - Clear to the end of the line
  * @param win Window
  *
@@ -806,3 +796,19 @@ struct MuttWindow *window_get_focus(void)
 
   return win;
 }
+
+/**
+ * mutt_window_clear - Clear a Window
+ * @param win Window
+ *
+ * If the Window isn't visible, it won't be cleared.
+ */
+void mutt_window_clear(struct MuttWindow *win)
+{
+  if (!mutt_window_is_visible(win))
+    return;
+
+  for (int i = 0; i < win->state.rows; i++)
+    mutt_window_clearline(win, i);
+}
+

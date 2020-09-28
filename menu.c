@@ -347,9 +347,7 @@ static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
 void menu_redraw_full(struct Menu *menu)
 {
   mutt_curses_set_color(MT_COLOR_NORMAL);
-  /* clear() doesn't optimize screen redraws */
-  mutt_window_move_abs(0, 0);
-  mutt_window_clrtobot();
+  mutt_window_clear(menu->win_index);
 
   window_redraw(RootWindow, true);
   menu->pagelen = menu->win_index->state.rows;
@@ -1042,8 +1040,7 @@ void mutt_menu_pop_current(struct Menu *menu)
      * the normal menu system state.  */
     if (OptMenuPopClearScreen)
     {
-      mutt_window_move_abs(0, 0);
-      mutt_window_clrtobot();
+      mutt_window_clear(RootWindow);
     }
   }
 }

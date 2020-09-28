@@ -1992,9 +1992,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
   if (pager_menu->redraw & REDRAW_FULL)
   {
     mutt_curses_set_color(MT_COLOR_NORMAL);
-    /* clear() doesn't optimize screen redraws */
-    mutt_window_move_abs(0, 0);
-    mutt_window_clrtobot();
+    mutt_window_clear(rd->extra->win_pager);
 
     if (IsEmail(rd->extra) && Context && Context->mailbox &&
         ((Context->mailbox->vcount + 1) < C_PagerIndexLines))
