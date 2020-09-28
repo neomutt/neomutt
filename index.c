@@ -1855,6 +1855,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
           oldcount = (Context && Context->mailbox) ? Context->mailbox->msg_count : 0;
 
+          mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
+          notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_SHUTDOWN, NULL);
+
           if (!Context || ((check = mx_mbox_close(&Context)) == 0))
           {
             done = true;
