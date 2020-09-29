@@ -429,14 +429,14 @@ msgid "Autocrypt database version is too new"
 msgstr "Autocrypt duomenų bazės versija per nauja"
 
 #: bcache/bcache.c:77
-#, fuzzy, c-format
+#, c-format
 msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Pranešimų talpykla nėra katalogas: %s"
+msgstr "Podėlis išjungtas, $message_cachedir nėra katalogas: %s"
 
 #: bcache/bcache.c:219
 #, c-format
 msgid "Message cache isn't a directory: %s"
-msgstr "Pranešimų talpykla nėra katalogas: %s"
+msgstr "Pranešimų podėlis nėra katalogas: %s"
 
 #: browser.c:77
 msgid "Chdir"
