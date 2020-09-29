@@ -1,19 +1,10 @@
-SAMPLES=	colors.default colors.linux gpg.rc mairix_filter.pl Mush.rc Pine.rc \
-		sample.mailcap sample.neomuttrc sample.neomuttrc-starter \
-		sample.neomuttrc-tlr smime.rc smime_keys_test.pl Tin.rc
-
-CONTRIB_DIRS=	colorschemes hcache-bench keybase logo lua vim-keys
+CONTRIB_DIRS=	colorschemes hcache-bench keybase logo lua samples vim-keys
 
 all-contrib:
 clean-contrib:
 
 install-contrib:
 	$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/samples
-	for f in $(SAMPLES); do \
-		sed -e 's!/usr/libexec!$(libexecdir)!g' $(SRCDIR)/contrib/$$f > $(SRCDIR)/contrib/$$f.tmp; \
-		$(INSTALL) -m 644 $(SRCDIR)/contrib/$$f.tmp $(DESTDIR)$(docdir)/samples/$$f || exit 1; \
-		rm -f -- $(SRCDIR)/contrib/$$f.tmp; \
-	done
 	for d in $(CONTRIB_DIRS); do \
 		echo "Creating directory $(DESTDIR)$(docdir)/$$d"; \
 		$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/$$d || exit 1; \
@@ -25,9 +16,6 @@ install-contrib:
 	chmod +x $(DESTDIR)$(docdir)/keybase/*.sh
 
 uninstall-contrib:
-	for f in $(SAMPLES); do \
-		$(RM) $(DESTDIR)$(docdir)/samples/$$f; \
-	done
 	for d in $(CONTRIB_DIRS); do \
 		$(RM) $(DESTDIR)$(docdir)/$$d; \
 	done
