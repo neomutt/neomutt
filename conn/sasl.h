@@ -26,8 +26,11 @@
 #define MUTT_CONN_SASL_H
 
 #include <sasl/sasl.h>
+#include <stdbool.h>
 
 struct Connection;
+
+bool sasl_auth_validator(const char *authenticator);
 
 int  mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn);
 void mutt_sasl_done      (void);

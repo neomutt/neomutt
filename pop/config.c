@@ -46,12 +46,39 @@ unsigned char C_PopReconnect;           ///< Config: (pop) Reconnect to the serv
 char *        C_PopUser;                ///< Config: (pop) Username of the POP server
 // clang-format on
 
+/**
+ * pop_auth_validator - Validate the "pop_authenticators" config variable - Implements ConfigDef::validator()
+ */
+static int pop_auth_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                              intptr_t value, struct Buffer *err)
+{
+  const struct Slist *pop_auth_methods = (const struct Slist *) value;
+  if (!pop_auth_methods || (pop_auth_methods->count == 0))
+    return CSR_SUCCESS;
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &pop_auth_methods->head, entries)
+  {
+    if (pop_auth_is_valid(np->data))
+      continue;
+#ifdef USE_SASL
+    if (sasl_auth_validator(np->data))
+      continue;
+#endif
+    mutt_buffer_printf(err, _("Option %s: %s is not a valid authenticator"),
+                       cdef->name, np->data);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}
+
 struct ConfigDef PopVars[] = {
   // clang-format off
   { "pop_auth_try_all", DT_BOOL, &C_PopAuthTryAll, true, 0, NULL,
     "(pop) Try all available authentication methods"
   },
-  { "pop_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_PopAuthenticators, 0, 0, NULL,
+  { "pop_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_PopAuthenticators, 0, 0, pop_auth_validator,
     "(pop) List of allowed authentication methods"
   },
   { "pop_checkinterval", DT_NUMBER|DT_NOT_NEGATIVE, &C_PopCheckinterval, 60, 0, NULL,

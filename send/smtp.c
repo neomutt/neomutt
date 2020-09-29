@@ -100,6 +100,23 @@ struct SmtpAccountData
 };
 
 /**
+ * struct SmtpAuth - SMTP authentication multiplexor
+ */
+struct SmtpAuth
+{
+  /**
+   * authenticate - Authenticate an SMTP connection
+   * @param adata Smtp Account data
+   * @param method Use this named method, or any available method if NULL
+   * @retval int Result, e.g. #SMTP_AUTH_SUCCESS
+   */
+  int (*authenticate)(struct SmtpAccountData *adata, const char *method);
+
+  const char *method; ///< Name of authentication method supported, NULL means variable.
+      ///< If this is not null, authenticate may ignore the second parameter.
+};
+
+/**
  * valid_smtp_code - Is the is a valid SMTP return code?
  * @param[in]  buf String to check
  * @param[in]  buflen Length of string
@@ -526,9 +543,10 @@ fail:
 /**
  * smtp_auth_oauth - Authenticate an SMTP connection using OAUTHBEARER
  * @param adata SMTP Account data
+ * @param method   Authentication method to use
  * @retval num Result, e.g. #SMTP_AUTH_SUCCESS
  */
-static int smtp_auth_oauth(struct SmtpAccountData *adata)
+static int smtp_auth_oauth(struct SmtpAccountData *adata, const char *method)
 {
   // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
   mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
@@ -557,10 +575,11 @@ static int smtp_auth_oauth(struct SmtpAccountData *adata)
 /**
  * smtp_auth_plain - Authenticate using plain text
  * @param adata SMTP Account data
+ * @param method   Authentication method to use
  * @retval  0 Success
  * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
  */
-static int smtp_auth_plain(struct SmtpAccountData *adata)
+static int smtp_auth_plain(struct SmtpAccountData *adata, const char *method)
 {
   char buf[1024];
 
@@ -598,52 +617,75 @@ error:
 }
 
 /**
- * smtp_auth - Authenticate to an SMTP server
+ * smtp_authenticators - Accepted authentication methods
+ */
+static const struct SmtpAuth smtp_authenticators[] = {
+  { smtp_auth_oauth, "oauthbearer" },
+  { smtp_auth_plain, "plain" },
+#ifdef USE_SASL
+  { smtp_auth_sasl, NULL },
+#endif
+};
+
+/**
+ * smtp_auth_is_valid - Check if string is a valid smtp authentication method
+ * @param authenticator Authenticator string to check
+ * @retval bool True if argument is a valid auth method
+ *
+ * Validate whether an input string is an accepted smtp authentication method as
+ * defined by #smtp_authenticators.
+ */
+bool smtp_auth_is_valid(const char *authenticator)
+{
+  for (size_t i = 0; i < mutt_array_size(smtp_authenticators); i++)
+  {
+    const struct SmtpAuth *auth = &smtp_authenticators[i];
+    if (auth->method && mutt_istr_equal(auth->method, authenticator))
+      return true;
+  }
+
+  return false;
+}
+
+/**
+ * smtp_authenticate - Authenticate to an SMTP server
  * @param adata SMTP Account data
  * @retval  0 Success
  * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
  */
-static int smtp_auth(struct SmtpAccountData *adata)
+static int smtp_authenticate(struct SmtpAccountData *adata)
 {
   int r = SMTP_AUTH_UNAVAIL;
 
   const struct Slist *c_smtp_authenticators =
       cs_subset_slist(adata->sub, "smtp_authenticators");
-  if (c_smtp_authenticators)
+  if (c_smtp_authenticators && (c_smtp_authenticators->count > 0))
   {
+    mutt_debug(LL_DEBUG2, "Trying user-defined smtp_authenticators\n");
+
+    /* Try user-specified list of authentication methods */
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &c_smtp_authenticators->head, entries)
     {
       mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
 
-      if (strcmp(np->data, "oauthbearer") == 0)
+      for (size_t i = 0; i < mutt_array_size(smtp_authenticators); i++)
       {
-        r = smtp_auth_oauth(adata);
+        const struct SmtpAuth *auth = &smtp_authenticators[i];
+        if (!auth->method || mutt_istr_equal(auth->method, np->data))
+        {
+          r = auth->authenticate(adata, np->data);
+          if (r == SMTP_AUTH_SUCCESS)
+            return r;
+        }
       }
-      else if (strcmp(np->data, "plain") == 0)
-      {
-        r = smtp_auth_plain(adata);
-      }
-      else
-      {
-#ifdef USE_SASL
-        r = smtp_auth_sasl(adata, np->data);
-#else
-        mutt_error(_("SMTP authentication method %s requires SASL"), np->data);
-        continue;
-#endif
-      }
-
-      if ((r == SMTP_AUTH_FAIL) && (c_smtp_authenticators->count > 1))
-      {
-        mutt_error(_("%s authentication failed, trying next method"), np->data);
-      }
-      else if (r != SMTP_AUTH_UNAVAIL)
-        break;
     }
   }
   else
   {
+    /* Fall back to default: any authenticator */
+    mutt_debug(LL_DEBUG2, "Falling back to smtp_auth_sasl, if using sasl.\n");
+
 #ifdef USE_SASL
     r = smtp_auth_sasl(adata, adata->auth_mechs);
 #else
@@ -738,7 +780,7 @@ static int smtp_open(struct SmtpAccountData *adata, bool esmtp)
       return -1;
     }
 
-    return smtp_auth(adata);
+    return smtp_authenticate(adata);
   }
 
   return 0;

@@ -40,6 +40,8 @@ enum ImapAuthRes
   IMAP_AUTH_UNAVAIL,     ///< Authentication method not permitted
 };
 
+bool imap_auth_is_valid(const char *authenticator);
+
 /* external authenticator prototypes */
 enum ImapAuthRes imap_auth_plain(struct ImapAccountData *adata, const char *method);
 #ifndef USE_SASL

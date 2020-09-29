@@ -31,6 +31,7 @@
 struct AddressList;
 struct ConfigSubset;
 
+bool smtp_auth_is_valid(const char *authenticator);
 int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
                    const struct AddressList *cc, const struct AddressList *bcc,
                    const char *msgfile, bool eightbit, struct ConfigSubset *sub);
