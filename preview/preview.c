@@ -40,32 +40,14 @@ static struct MuttWindow *find_index_container(struct MuttWindow *root)
   return TAILQ_FIRST(&container->children); // Index container is the first
 }
 
-static void debug_window_tree(struct MuttWindow *node, int indent)
-{
-  char *s_indent = malloc(4 * indent + 1);
-  memset(s_indent, ' ', 4 * indent);
-  s_indent[4 * indent] = 0;
-  {
-    struct MuttWindow *win;
-    TAILQ_FOREACH(win, &node->children, entries)
-    {
-      mutt_message("%sWindow: %d\n", s_indent, win->type);
-      debug_window_tree(win, indent + 1);
-    }
-  }
-  free(s_indent);
-}
-
 static int preview_recalc(struct MuttWindow *win)
 {
-  mutt_debug(LL_DEBUG1, "PREVIEW RECALC\n");
   win->actions |= WA_REPAINT;
   return -1;
 }
 
 static int preview_repaint(struct MuttWindow *win)
 {
-  mutt_debug(LL_DEBUG1, "PREVIEW REPAINT\n");
   preview_draw(win);
   return -1;
 }
@@ -98,8 +80,6 @@ void preview_win_init(struct MuttWindow *dlg)
     notify_observer_add(NeoMutt->notify, NT_CONFIG, preview_config_observer, preview_window);
     notify_observer_add(NeoMutt->notify, NT_COLOR, preview_color_observer, preview_window);
   }
-
-  debug_window_tree(dlg, 0);
 }
 
 void preview_win_shutdown(struct MuttWindow *dlg)
