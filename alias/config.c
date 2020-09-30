@@ -42,11 +42,11 @@ const struct Mapping SortAliasMethods[] = {
   // clang-format on
 };
 
-char *C_AliasFile;   ///< Config: Save new aliases to this file
-char *C_AliasFormat; ///< Config: printf-like format string for the alias menu
-char *C_QueryCommand; ///< Config: External command to query and external address book
-char *C_QueryFormat; ///< Config: printf-like format string for the query menu (address book)
-short C_SortAlias; ///< Config: Sort method for the alias menu
+char *C_AliasFile = NULL; ///< Config: Save new aliases to this file
+char *C_AliasFormat = NULL; ///< Config: printf-like format string for the alias menu
+char *C_QueryCommand = NULL; ///< Config: External command to query and external address book
+char *C_QueryFormat = NULL; ///< Config: printf-like format string for the query menu (address book)
+short C_SortAlias = 0; ///< Config: Sort method for the alias menu
 
 struct ConfigDef AliasVars[] = {
   // clang-format off
