@@ -104,6 +104,12 @@ void preview_win_init(struct MuttWindow *dlg)
 
 void preview_win_shutdown(struct MuttWindow *dlg)
 {
+  struct MuttWindow *preview_window = mutt_window_find(dlg, WT_PREVIEW);
+
+  notify_observer_remove(NeoMutt->notify, preview_color_observer, preview_window);
+  notify_observer_remove(NeoMutt->notify, preview_config_observer, preview_window);
+  notify_observer_remove(dlg->notify, preview_dialog_observer, preview_window);
+  notify_observer_remove(NeoMutt->notify, preview_neomutt_observer, preview_window);
 }
 
 void preview_init(void)
