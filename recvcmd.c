@@ -926,6 +926,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   struct Email *e_tmp = NULL;
   FILE *fp_tmp = NULL;
   struct Buffer *tmpbody = NULL;
+  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
 
   char prefix[128];
 
@@ -1057,7 +1058,6 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
   mutt_file_fclose(&fp_tmp);
 
-  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, e_parent ? e_parent : (e_cur ? e_cur->email : NULL));
   if (mutt_send_message(flags, e_tmp, mutt_b2s(tmpbody), NULL, &el, NeoMutt->sub) == 0)
   {
