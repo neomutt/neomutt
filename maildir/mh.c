@@ -506,9 +506,9 @@ void mh_update_maildir(struct Maildir *md, struct MhSequences *mhs)
       continue;
     MhSeqFlags flags = mhs_check(mhs, i);
 
-    md->email->read = (flags & MH_SEQ_UNSEEN) ? false : true;
-    md->email->flagged = (flags & MH_SEQ_FLAGGED) ? true : false;
-    md->email->replied = (flags & MH_SEQ_REPLIED) ? true : false;
+    md->email->read = !(flags & MH_SEQ_UNSEEN);
+    md->email->flagged = (flags & MH_SEQ_FLAGGED);
+    md->email->replied = (flags & MH_SEQ_REPLIED);
   }
 }
 

@@ -3,7 +3,7 @@
   - Compose: display user-defined headers
   - Address Book / Query: live sorting
   - Address Book / Query: patterns for searching
-  - Config: Add '+=' and '-=' operators for String Lists 
+  - Config: Add '+=' and '-=' operators for String Lists
   - Config: Add '+=' operator for Strings
   - Allow postfix query ':setenv NAME?' for env vars
 * Bug Fixes

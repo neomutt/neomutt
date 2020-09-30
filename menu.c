@@ -1302,7 +1302,7 @@ int menu_redraw(struct Menu *menu)
 int mutt_menu_loop(struct Menu *menu)
 {
   static int last_position = -1;
-  int i = OP_NULL;
+  int op = OP_NULL;
 
   if (menu->max && menu->is_mailbox_list)
   {
@@ -1315,8 +1315,8 @@ int mutt_menu_loop(struct Menu *menu)
   while (true)
   {
     /* Clear the tag prefix unless we just started it.  Don't clear
-     * the prefix on a timeout (i==-2), but do clear on an abort (i==-1) */
-    if (menu->tagprefix && (i != OP_TAG_PREFIX) && (i != OP_TAG_PREFIX_COND) && (i != -2))
+     * the prefix on a timeout (op==-2), but do clear on an abort (op==-1) */
+    if (menu->tagprefix && (op != OP_TAG_PREFIX) && (op != OP_TAG_PREFIX_COND) && (op != -2))
       menu->tagprefix = false;
 
     mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
@@ -1347,11 +1347,11 @@ int mutt_menu_loop(struct Menu *menu)
     mutt_refresh();
 
     /* try to catch dialog keys before ops */
-    if (!ARRAY_EMPTY(&menu->dialog) && (menu_dialog_dokey(menu, &i) == 0))
-      return i;
+    if (!ARRAY_EMPTY(&menu->dialog) && (menu_dialog_dokey(menu, &op) == 0))
+      return op;
 
-    i = km_dokey(menu->type);
-    if ((i == OP_TAG_PREFIX) || (i == OP_TAG_PREFIX_COND))
+    op = km_dokey(menu->type);
+    if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
     {
       if (menu->tagprefix)
       {
@@ -1365,16 +1365,16 @@ int mutt_menu_loop(struct Menu *menu)
         menu->tagprefix = true;
         continue;
       }
-      else if (i == OP_TAG_PREFIX)
+      else if (op == OP_TAG_PREFIX)
       {
         mutt_error(_("No tagged entries"));
-        i = -1;
+        op = -1;
       }
       else /* None tagged, OP_TAG_PREFIX_COND */
       {
         mutt_flush_macro_to_endcond();
         mutt_message(_("Nothing to do"));
-        i = -1;
+        op = -1;
       }
     }
     else if (menu->tagged && C_AutoTag)
@@ -1389,7 +1389,7 @@ int mutt_menu_loop(struct Menu *menu)
       clearok(stdscr, true); /* force complete redraw */
     }
 
-    if (i < 0)
+    if (op < 0)
     {
       if (menu->tagprefix)
         mutt_window_clearline(MessageWindow, 0);
@@ -1401,9 +1401,9 @@ int mutt_menu_loop(struct Menu *menu)
 
     /* Convert menubar movement to scrolling */
     if (!ARRAY_EMPTY(&menu->dialog))
-      i = menu_dialog_translate_op(i);
+      op = menu_dialog_translate_op(op);
 
-    switch (i)
+    switch (op)
     {
       case OP_NEXT_ENTRY:
         menu_next_entry(menu);
@@ -1458,11 +1458,11 @@ int mutt_menu_loop(struct Menu *menu)
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
         if (menu->custom_search)
-          return i;
+          return op;
         else if (menu->search && ARRAY_EMPTY(&menu->dialog)) /* Searching dialogs won't work */
         {
           menu->oldcurrent = menu->current;
-          menu->current = search(menu, i);
+          menu->current = search(menu, op);
           if (menu->current != -1)
             menu->redraw = REDRAW_MOTION;
           else
@@ -1490,7 +1490,7 @@ int mutt_menu_loop(struct Menu *menu)
         {
           if (menu->tagprefix && !C_AutoTag)
           {
-            for (i = 0; i < menu->max; i++)
+            for (int i = 0; i < menu->max; i++)
               menu->tagged += menu->tag(menu, i, 0);
             menu->redraw |= REDRAW_INDEX;
           }
@@ -1545,7 +1545,7 @@ int mutt_menu_loop(struct Menu *menu)
       default:
         if (menu->is_mailbox_list)
           last_position = menu->current;
-        return i;
+        return op;
     }
   }
   /* not reached */
