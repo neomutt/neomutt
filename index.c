@@ -731,8 +731,9 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   // TODO: Refactor this function to avoid the need for an observer
   notify_observer_add(m->notify, NT_MAILBOX, mailbox_index_observer, &m);
   char *dup_path = mutt_str_dup(mailbox_path(m));
+  char *dup_name = mutt_str_dup(m->name);
 
-  mutt_folder_hook(mailbox_path(m), m ? m->name : NULL);
+  mutt_folder_hook(dup_path, dup_name);
   if (m)
   {
     /* `m` is still valid, but we won't need the observer again before the end
@@ -745,6 +746,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
     m = mx_path_resolve(dup_path);
   }
   FREE(&dup_path);
+  FREE(&dup_name);
 
   if (!m)
     return;
