@@ -42,27 +42,21 @@ const struct Mapping SortAliasMethods[] = {
   // clang-format on
 };
 
-char *C_AliasFile = NULL; ///< Config: Save new aliases to this file
-char *C_AliasFormat = NULL; ///< Config: printf-like format string for the alias menu
-char *C_QueryCommand = NULL; ///< Config: External command to query and external address book
-char *C_QueryFormat = NULL; ///< Config: printf-like format string for the query menu (address book)
-short C_SortAlias = 0; ///< Config: Sort method for the alias menu
-
 struct ConfigDef AliasVars[] = {
   // clang-format off
-  { "alias_file", DT_PATH|DT_PATH_FILE, &C_AliasFile, IP "~/.neomuttrc", 0, NULL,
+  { "alias_file", DT_PATH|DT_PATH_FILE, NULL, IP "~/.neomuttrc", 0, NULL,
     "Save new aliases to this file"
   },
-  { "alias_format", DT_STRING|DT_NOT_EMPTY, &C_AliasFormat, IP "%3n %f%t %-15a %-56r | %c", 0, NULL,
+  { "alias_format", DT_STRING|DT_NOT_EMPTY, NULL, IP "%3n %f%t %-15a %-56r | %c", 0, NULL,
     "printf-like format string for the alias menu"
   },
-  { "sort_alias", DT_SORT|DT_SORT_REVERSE, &C_SortAlias, SORT_ALIAS, IP SortAliasMethods, NULL,
+  { "sort_alias", DT_SORT|DT_SORT_REVERSE, NULL, SORT_ALIAS, IP SortAliasMethods, NULL,
     "Sort method for the alias menu"
   },
-  { "query_command", DT_STRING|DT_COMMAND, &C_QueryCommand, 0, 0, NULL,
+  { "query_command", DT_STRING|DT_COMMAND, NULL, 0, 0, NULL,
     "External command to query and external address book"
   },
-  { "query_format", DT_STRING|DT_NOT_EMPTY, &C_QueryFormat, IP "%3c %t %-25.25n %-25.25a | %e", 0, NULL,
+  { "query_format", DT_STRING|DT_NOT_EMPTY, NULL, IP "%3c %t %-25.25n %-25.25a | %e", 0, NULL,
     "printf-like format string for the query menu (address book)"
   },
   { NULL, 0, NULL, 0, 0, NULL, NULL },
@@ -74,5 +68,5 @@ struct ConfigDef AliasVars[] = {
  */
 bool config_init_alias(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, AliasVars, 0);
+  return cs_register_variables(cs, AliasVars, DT_NO_VARIABLE);
 }

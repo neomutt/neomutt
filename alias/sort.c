@@ -153,13 +153,15 @@ static sort_t alias_get_sort_function(short sort)
 /**
  * alias_array_sort - Sort and reindex an AliasViewArray
  * @param ava Array of Aliases
+ * @param sub Config items
  */
-void alias_array_sort(struct AliasViewArray *ava)
+void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub)
 {
   if (!ava || ARRAY_EMPTY(ava))
     return;
 
-  ARRAY_SORT(ava, alias_get_sort_function(C_SortAlias));
+  sort_alias = cs_subset_sort(sub, "sort_alias");
+  ARRAY_SORT(ava, alias_get_sort_function(sort_alias));
 
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, ava)

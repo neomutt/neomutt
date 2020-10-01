@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include "sort.h"
+#include "core/neomutt.h"
 #include "mutt/array.h"
 
 struct Alias;
@@ -54,6 +55,7 @@ struct AliasMenuData
   char *str;                 ///< String representing the limit being used
   struct Pattern *pat;       ///< Pattern object
   struct AliasViewArray ava; ///< Array of AliasView
+  struct ConfigSubset *sub;  ///< Config items
 };
 
 int alias_config_observer(struct NotifyCallback *nc);
@@ -61,7 +63,6 @@ int alias_color_observer (struct NotifyCallback *nc);
 
 int  alias_array_alias_add    (struct AliasViewArray *ava, struct Alias *alias);
 int  alias_array_alias_delete (struct AliasViewArray *ava, struct Alias *alias);
-void alias_array_sort         (struct AliasViewArray *ava);
 int  alias_array_count_visible(struct AliasViewArray *ava);
 
 char *menu_create_alias_title(char *menu_name, char *limit);

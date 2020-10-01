@@ -3017,7 +3017,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           al = mutt_get_address(extra->body->email->env, NULL);
         else
           al = mutt_get_address(extra->email->env, NULL);
-        alias_create(al);
+        alias_create(al, NeoMutt->sub);
         break;
 
       case OP_PURGE_MESSAGE:

@@ -121,10 +121,13 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
  */
 static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
+  const struct AliasMenuData *mdata = (struct AliasMenuData *) menu->mdata;
   const struct AliasViewArray *ava = &((struct AliasMenuData *) menu->mdata)->ava;
   const struct AliasView *av = ARRAY_GET(ava, line);
 
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(C_AliasFormat),
+  const char *alias_format = cs_subset_string(mdata->sub, "alias_format");
+
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(alias_format),
                       alias_format_str, IP av, MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -174,7 +177,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
       menu->current--;
   }
 
-  alias_array_sort(&mdata->ava);
+  alias_array_sort(&mdata->ava, mdata->sub);
 
   menu->max = alias_array_count_visible(&mdata->ava);
   menu->redraw = REDRAW_FULL;
@@ -217,7 +220,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
 
   mutt_menu_push_current(menu);
 
-  alias_array_sort(&mdata->ava);
+  alias_array_sort(&mdata->ava, mdata->sub);
 
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata->ava)
@@ -255,7 +258,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
       case OP_SORT:
       case OP_SORT_REVERSE:
       {
-        int sort = C_SortAlias;
+        int sort = cs_subset_sort(mdata->sub, "sort_alias");
         bool resort = true;
         bool reverse = (op == OP_SORT_REVERSE);
 
@@ -289,7 +292,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
         {
           sort |= reverse ? SORT_REVERSE : 0;
 
-          cs_subset_str_native_set(NeoMutt->sub, "sort_alias", sort, NULL);
+          cs_subset_str_native_set(mdata->sub, "sort_alias", sort, NULL);
           menu->redraw = REDRAW_FULL;
         }
 
@@ -312,7 +315,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
                                              _("Aliases"), mdata, menu);
         if (result == 0)
         {
-          alias_array_sort(&mdata->ava);
+          alias_array_sort(&mdata->ava, mdata->sub);
           menu->redraw = REDRAW_FULL;
         }
 
@@ -361,6 +364,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
  * alias_complete - alias completion routine
  * @param buf    Partial Alias to complete
  * @param buflen Length of buffer
+ * @param sub    Config items
  * @retval 1 Success
  * @retval 0 Error
  *
@@ -368,12 +372,12 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
  * from the alias list as much as possible. if given empty search string
  * or found nothing, present all aliases
  */
-int alias_complete(char *buf, size_t buflen)
+int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
 {
   struct Alias *np = NULL;
   char bestname[8192] = { 0 };
 
-  struct AliasMenuData mdata = { NULL, NULL, ARRAY_HEAD_INITIALIZER };
+  struct AliasMenuData mdata = { NULL, NULL, ARRAY_HEAD_INITIALIZER, sub };
   mdata.str = mutt_str_dup(buf);
 
   if (buf[0] != '\0')
@@ -439,7 +443,7 @@ int alias_complete(char *buf, size_t buflen)
     mutt_pattern_alias_func(MUTT_LIMIT, NULL, _("Aliases"), &mdata, NULL);
   }
 
-  alias_array_sort(&mdata.ava);
+  alias_array_sort(&mdata.ava, mdata.sub);
 
   bestname[0] = '\0';
   dlg_select_alias(bestname, sizeof(bestname), &mdata);
