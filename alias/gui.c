@@ -55,7 +55,7 @@ int alias_config_observer(struct NotifyCallback *nc)
 
   struct AliasMenuData *mdata = nc->global_data;
 
-  alias_array_sort(&mdata->ava);
+  alias_array_sort(&mdata->ava, mdata->sub);
 
   return 0;
 }

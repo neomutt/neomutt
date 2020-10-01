@@ -3248,7 +3248,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         struct AddressList *al = NULL;
         if (cur.e && cur.e->env)
           al = mutt_get_address(cur.e->env, NULL);
-        alias_create(al);
+        alias_create(al, NeoMutt->sub);
         menu->redraw |= REDRAW_CURRENT;
         break;
       }
@@ -3256,7 +3256,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_QUERY:
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
-        query_index();
+        query_index(NeoMutt->sub);
         break;
 
       case OP_PURGE_MESSAGE:

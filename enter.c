@@ -34,6 +34,7 @@
 #include <wchar.h>
 #include <wctype.h>
 #include "mutt/lib.h"
+#include "core/neomutt.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
@@ -564,7 +565,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
               ; // do nothing
 
             mutt_mb_wcstombs(buf, buflen, state->wbuf + i, state->curpos - i);
-            int rc2 = alias_complete(buf, buflen);
+            int rc2 = alias_complete(buf, buflen, NeoMutt->sub);
             replace_part(state, i, buf);
             if (rc2 != 1)
             {
@@ -636,7 +637,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             }
 
             mutt_mb_wcstombs(buf, buflen, state->wbuf + i, state->curpos - i);
-            query_complete(buf, buflen);
+            query_complete(buf, buflen, NeoMutt->sub);
             replace_part(state, i, buf);
 
             rc = 1;
