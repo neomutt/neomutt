@@ -1214,7 +1214,7 @@ if {[get-define want-asan]} {
     user-error "Unable to compile with -fsanitize=address"
   }
   msg-result "yes"
-  define-append CFLAGS -fsanitize=address
+  define-append CFLAGS -fsanitize=address -O0 -fno-omit-frame-pointer -fno-common
   define-append LDFLAGS -fsanitize=address
 }
 
