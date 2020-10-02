@@ -77,6 +77,7 @@ static void add_one_header(struct Headers *headers, size_t pos, char *value)
   {
     char *new_value = NULL;
     mutt_str_asprintf(&new_value, "%s%s", *old, value);
+    FREE(old);
     FREE(&value);
     value = new_value;
   }
