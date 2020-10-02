@@ -62,6 +62,8 @@ void ctx_free(struct Context **ptr)
 
   mutt_thread_ctx_free(&ctx->threads);
   notify_free(&ctx->notify);
+  FREE(&ctx->pattern);
+  mutt_pattern_free(&ctx->limit_pattern);
 
   FREE(ptr);
 }
