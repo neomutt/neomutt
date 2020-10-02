@@ -443,7 +443,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
           {
             mutt_debug(LL_DEBUG1, "bad content-length in message %d (cl=" OFF_T_FMT ")\n",
                        e_cur->index, e_cur->body->length);
-            mutt_debug(LL_DEBUG1, "\tLINE: %s", buf);
+            mutt_debug(LL_DEBUG1, "    LINE: %s", buf);
             /* nope, return the previous position */
             if ((loc < 0) || (fseeko(adata->fp, loc, SEEK_SET) != 0))
             {
@@ -1374,7 +1374,7 @@ static int mbox_mbox_sync(struct Mailbox *m)
       ((m->type == MUTT_MMDF) && !mutt_str_equal(MMDF_SEP, buf)))
   {
     mutt_debug(LL_DEBUG1, "message not in expected position\n");
-    mutt_debug(LL_DEBUG1, "\tLINE: %s\n", buf);
+    mutt_debug(LL_DEBUG1, "    LINE: %s\n", buf);
     i = -1;
   }
   else

@@ -137,7 +137,7 @@ int mutt_compose_attachment(struct Body *a)
         mutt_buffer_strcpy(cmd, entry->composecommand);
 
       mailcap_expand_filename(entry->nametemplate, a->filename, newfile);
-      mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, mutt_b2s(newfile));
+      mutt_debug(LL_DEBUG1, "oldfile: %s     newfile: %s\n", a->filename, mutt_b2s(newfile));
       if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
       {
         if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
@@ -271,7 +271,7 @@ int mutt_edit_attachment(struct Body *a)
     {
       mutt_buffer_strcpy(cmd, entry->editcommand);
       mailcap_expand_filename(entry->nametemplate, a->filename, newfile);
-      mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, mutt_b2s(newfile));
+      mutt_debug(LL_DEBUG1, "oldfile: %s     newfile: %s\n", a->filename, mutt_b2s(newfile));
       if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
       {
         if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)

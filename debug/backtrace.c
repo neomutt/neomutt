@@ -55,8 +55,8 @@ void show_backtrace(void)
     unw_get_proc_name(&cursor, buf, sizeof(buf), &ip);
     if (buf[0] == '_')
       break;
-    printf("\t%s() ip = %lx, sp = %lx\n", buf, (long) ip, (long) sp);
-    mutt_debug(LL_DEBUG1, "\t%s() ip = %lx, sp = %lx\n", buf, (long) ip, (long) sp);
+    printf("    %s() ip = %lx, sp = %lx\n", buf, (long) ip, (long) sp);
+    mutt_debug(LL_DEBUG1, "    %s() ip = %lx, sp = %lx\n", buf, (long) ip, (long) sp);
   }
   printf("\n");
 }

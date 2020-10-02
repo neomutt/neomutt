@@ -164,8 +164,8 @@ static void notify_dump_account(struct NotifyCallback *nc)
   struct EventAccount *ev_a = nc->event_data;
   struct Account *a = ev_a->account;
 
-  mutt_debug(LL_DEBUG1, "\tAccount: %p (%s) %s\n", a, get_mailbox_type(a->type),
-             NONULL(a->name));
+  mutt_debug(LL_DEBUG1, "    Account: %p (%s) %s\n", a,
+             get_mailbox_type(a->type), NONULL(a->name));
 }
 
 static void notify_dump_color(struct NotifyCallback *nc)
@@ -190,7 +190,7 @@ static void notify_dump_color(struct NotifyCallback *nc)
   if (!color)
     color = "UNKNOWN";
 
-  mutt_debug(LL_DEBUG1, "\tColor: %s %s%s (%d)\n",
+  mutt_debug(LL_DEBUG1, "    Color: %s %s%s (%d)\n",
              (nc->event_subtype == NT_COLOR_SET) ? "set" : "reset", scope,
              color, ev_c->color);
 }
@@ -200,9 +200,9 @@ static void notify_dump_command(struct NotifyCallback *nc)
   struct Command *cmd = nc->event_data;
 
   if (cmd->data < 4096)
-    mutt_debug(LL_DEBUG1, "\tCommand: %s, data: %ld\n", cmd->name, cmd->data);
+    mutt_debug(LL_DEBUG1, "    Command: %s, data: %ld\n", cmd->name, cmd->data);
   else
-    mutt_debug(LL_DEBUG1, "\tCommand: %s, data: %p\n", cmd->name, (void *) cmd->data);
+    mutt_debug(LL_DEBUG1, "    Command: %s, data: %p\n", cmd->name, (void *) cmd->data);
 }
 
 static void notify_dump_config(struct NotifyCallback *nc)
@@ -211,7 +211,7 @@ static void notify_dump_config(struct NotifyCallback *nc)
 
   struct Buffer value = mutt_buffer_make(128);
   cs_he_string_get(ev_c->sub->cs, ev_c->he, &value);
-  mutt_debug(LL_DEBUG1, "\tConfig: %s %s = %s\n",
+  mutt_debug(LL_DEBUG1, "    Config: %s %s = %s\n",
              get_config_type(nc->event_subtype), ev_c->name, mutt_b2s(&value));
   mutt_buffer_dealloc(&value);
 }
@@ -224,23 +224,23 @@ static void notify_dump_context(struct NotifyCallback *nc)
   if (ev_c->context && ev_c->context->mailbox)
     path = mailbox_path(ev_c->context->mailbox);
 
-  mutt_debug(LL_DEBUG1, "\tContext: %s %s\n", get_context(nc->event_subtype), path);
+  mutt_debug(LL_DEBUG1, "    Context: %s %s\n", get_context(nc->event_subtype), path);
 }
 
 static void notify_dump_email(struct NotifyCallback *nc)
 {
   struct EventEmail *ev_e = nc->event_data;
 
-  mutt_debug(LL_DEBUG1, "\tEmail: %d\n", ev_e->num_emails);
+  mutt_debug(LL_DEBUG1, "    Email: %d\n", ev_e->num_emails);
   for (size_t i = 0; i < ev_e->num_emails; i++)
   {
-    mutt_debug(LL_DEBUG1, "\t\t: %p\n", ev_e->emails[i]);
+    mutt_debug(LL_DEBUG1, "        : %p\n", ev_e->emails[i]);
   }
 }
 
 static void notify_dump_global(struct NotifyCallback *nc)
 {
-  mutt_debug(LL_DEBUG1, "\tGlobal: %s\n", get_global_event(nc->event_subtype));
+  mutt_debug(LL_DEBUG1, "    Global: %s\n", get_global_event(nc->event_subtype));
 }
 
 static void notify_dump_mailbox(struct NotifyCallback *nc)
@@ -249,7 +249,7 @@ static void notify_dump_mailbox(struct NotifyCallback *nc)
 
   struct Mailbox *m = ev_m->mailbox;
   const char *path = m ? mailbox_path(m) : "";
-  mutt_debug(LL_DEBUG1, "\tMailbox: %s %s\n", get_mailbox_event(nc->event_subtype), path);
+  mutt_debug(LL_DEBUG1, "    Mailbox: %s %s\n", get_mailbox_event(nc->event_subtype), path);
 }
 
 static void notify_dump_window_state(struct NotifyCallback *nc)
@@ -283,7 +283,7 @@ static void notify_dump_window_state(struct NotifyCallback *nc)
   if (flags & WN_NARROWER)
     mutt_buffer_add_printf(&buf, "narrower [%d->%d] ", win->old.cols, win->state.cols);
 
-  mutt_debug(LL_DEBUG1, "\tWindow: %s\n", mutt_b2s(&buf));
+  mutt_debug(LL_DEBUG1, "    Window: %s\n", mutt_b2s(&buf));
 
   mutt_buffer_dealloc(&buf);
 }
@@ -313,7 +313,7 @@ static void notify_dump_window_focus(struct NotifyCallback *nc)
     mutt_buffer_addstr(&buf, "NONE");
   }
 
-  mutt_debug(LL_DEBUG1, "\tWindow: %s\n", mutt_b2s(&buf));
+  mutt_debug(LL_DEBUG1, "    Window: %s\n", mutt_b2s(&buf));
 
   mutt_buffer_dealloc(&buf);
 }
@@ -355,13 +355,13 @@ int debug_notify_observer(struct NotifyCallback *nc)
         notify_dump_window_focus(nc);
       break;
     default:
-      mutt_debug(LL_DEBUG1, "\tEvent Type: %d\n", nc->event_type);
-      mutt_debug(LL_DEBUG1, "\tEvent Sub-type: %d\n", nc->event_subtype);
-      mutt_debug(LL_DEBUG1, "\tEvent Data: %p\n", nc->event_data);
+      mutt_debug(LL_DEBUG1, "    Event Type: %d\n", nc->event_type);
+      mutt_debug(LL_DEBUG1, "    Event Sub-type: %d\n", nc->event_subtype);
+      mutt_debug(LL_DEBUG1, "    Event Data: %p\n", nc->event_data);
       break;
   }
 
-  mutt_debug(LL_DEBUG1, "\tGlobal Data: %p\n", nc->global_data);
+  mutt_debug(LL_DEBUG1, "    Global Data: %p\n", nc->global_data);
 
   return 0;
 }

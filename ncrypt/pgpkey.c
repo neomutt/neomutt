@@ -534,7 +534,7 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
         (pl && mutt_istr_equal(pl, pgp_long_keyid(k))) ||
         (ps && mutt_istr_equal(ps, pgp_short_keyid(k))))
     {
-      mutt_debug(LL_DEBUG5, "\t\tmatch #1\n");
+      mutt_debug(LL_DEBUG5, "        match #1\n");
       match = true;
     }
     else
@@ -545,7 +545,7 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
                    pgp_long_keyid(k), NONULL(a->addr));
         if (mutt_istr_find(a->addr, p))
         {
-          mutt_debug(LL_DEBUG5, "\t\tmatch #2\n");
+          mutt_debug(LL_DEBUG5, "        match #2\n");
           match = true;
           break;
         }

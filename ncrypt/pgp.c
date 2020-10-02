@@ -361,14 +361,14 @@ static int pgp_check_decryption_okay(FILE *fp_in)
       if (!inside_decrypt)
       {
         mutt_debug(LL_DEBUG2,
-                   "\tPLAINTEXT encountered outside of DECRYPTION\n");
+                   "    PLAINTEXT encountered outside of DECRYPTION\n");
         rc = -2;
         break;
       }
     }
     else if (mutt_str_startswith(s, "DECRYPTION_FAILED"))
     {
-      mutt_debug(LL_DEBUG2, "\tDECRYPTION_FAILED encountered.  Failure\n");
+      mutt_debug(LL_DEBUG2, "    DECRYPTION_FAILED encountered.  Failure\n");
       rc = -3;
       break;
     }
@@ -376,7 +376,7 @@ static int pgp_check_decryption_okay(FILE *fp_in)
     {
       /* Don't break out because we still have to check for
        * PLAINTEXT outside of the decryption boundaries. */
-      mutt_debug(LL_DEBUG2, "\tDECRYPTION_OKAY encountered\n");
+      mutt_debug(LL_DEBUG2, "    DECRYPTION_OKAY encountered\n");
       rc = 0;
     }
   }
