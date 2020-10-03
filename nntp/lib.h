@@ -155,7 +155,7 @@ struct NntpMboxData
   struct BodyCache *bcache;
 };
 
-struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool leave_lock);
+struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server, bool leave_lock);
 struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpAccountData *adata, char *group);
 struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, char *group);
 struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m, struct NntpAccountData *adata, char *group);

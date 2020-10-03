@@ -1005,7 +1005,7 @@ static const char *nntp_get_field(enum ConnAccountField field, void *gf_data)
  * system has broken mtimes, this might mean the file is reloaded every time,
  * which we'd have to fix.
  */
-struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool leave_lock)
+struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server, bool leave_lock)
 {
   char file[PATH_MAX];
   int rc;
