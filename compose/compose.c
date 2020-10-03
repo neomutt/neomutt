@@ -334,7 +334,11 @@ static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line
 {
   struct AttachCtx *actx = menu->mdata;
 
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(C_AttachFormat),
+  const struct ComposeRedrawData *rd = (const struct ComposeRedrawData *) menu->redraw_data;
+  const struct ConfigSubset *sub = rd->sub;
+
+  const char *c_attach_format = cs_subset_string(sub, "attach_format");
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(c_attach_format),
                       attach_format_str, (intptr_t)(actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
@@ -343,8 +347,9 @@ static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line
 /**
  * autocrypt_compose_menu - Autocrypt compose settings
  * @param e Email
+ * @param sub ConfigSubset
  */
-static void autocrypt_compose_menu(struct Email *e)
+static void autocrypt_compose_menu(struct Email *e, const struct ConfigSubset *sub)
 {
   /* L10N: The compose menu autocrypt prompt.
      (e)ncrypt enables encryption via autocrypt.
@@ -370,10 +375,14 @@ static void autocrypt_compose_menu(struct Email *e)
       e->security |= SEC_AUTOCRYPT_OVERRIDE;
       break;
     case 3:
+    {
       e->security &= ~SEC_AUTOCRYPT_OVERRIDE;
-      if (C_CryptOpportunisticEncrypt)
+      const bool c_crypt_opportunistic_encrypt =
+          cs_subset_bool(sub, "crypt_opportunistic_encrypt");
+      if (c_crypt_opportunistic_encrypt)
         e->security |= SEC_OPPENCRYPT;
       break;
+    }
   }
 }
 #endif
@@ -472,9 +481,10 @@ static int calc_address(struct AddressList *al, struct ListHead *slist,
  * calc_security - Calculate how many rows the security info will need
  * @param e    Email
  * @param rows Rows needed
+ * @param sub  ConfigSubset
  * @retval num Rows needed
  */
-static int calc_security(struct Email *e, short *rows)
+static int calc_security(struct Email *e, short *rows, const struct ConfigSubset *sub)
 {
   if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
     *rows = 0; // Neither PGP nor SMIME are built into NeoMutt
@@ -484,7 +494,8 @@ static int calc_security(struct Email *e, short *rows)
     *rows = 1; // Just 'Security:'
 
 #ifdef USE_AUTOCRYPT
-  if (C_Autocrypt)
+  const bool c_autocrypt = cs_subset_bool(sub, "autocrypt");
+  if (c_autocrypt)
     *rows += 1;
 #endif
 
@@ -529,7 +540,8 @@ static int calc_envelope(struct ComposeRedrawData *rd)
   if (OptNewsSend)
   {
     rows += 2; // 'Newsgroups:' and 'Followup-To:'
-    if (C_XCommentTo)
+    const bool c_x_comment_to = cs_subset_bool(rd->sub, "x_comment_to");
+    if (c_x_comment_to)
       rows++;
   }
   else
@@ -539,8 +551,10 @@ static int calc_envelope(struct ComposeRedrawData *rd)
     rows += calc_address(&env->cc, &rd->cc_list, cols, &rd->cc_rows);
     rows += calc_address(&env->bcc, &rd->bcc_list, cols, &rd->bcc_rows);
   }
-  rows += calc_security(e, &rd->sec_rows);
-  if (C_ComposeShowUserHeaders)
+  rows += calc_security(e, &rd->sec_rows, rd->sub);
+  const bool c_compose_show_user_headers =
+      cs_subset_bool(rd->sub, "compose_show_user_headers");
+  if (c_compose_show_user_headers)
     rows += calc_user_hdrs(&env->userhdrs);
 
   return rows;
@@ -599,7 +613,9 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
       mutt_window_addstr(_(" (S/MIME)"));
   }
 
-  if (C_CryptOpportunisticEncrypt && (e->security & SEC_OPPENCRYPT))
+  const bool c_crypt_opportunistic_encrypt =
+      cs_subset_bool(rd->sub, "crypt_opportunistic_encrypt");
+  if (c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT))
     mutt_window_addstr(_(" (OppEnc mode)"));
 
   mutt_window_clrtoeol(rd->win_envelope);
@@ -608,25 +624,30 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
       (e->security & APPLICATION_PGP) && (e->security & SEC_SIGN))
   {
     draw_header(rd->win_envelope, row++, HDR_CRYPTINFO);
-    mutt_window_printf("%s", C_PgpSignAs ? C_PgpSignAs : _("<default>"));
+    const char *c_pgp_sign_as = cs_subset_string(rd->sub, "pgp_sign_as");
+    mutt_window_printf("%s", c_pgp_sign_as ? c_pgp_sign_as : _("<default>"));
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) &&
       (e->security & APPLICATION_SMIME) && (e->security & SEC_SIGN))
   {
     draw_header(rd->win_envelope, row++, HDR_CRYPTINFO);
-    mutt_window_printf("%s", C_SmimeSignAs ? C_SmimeSignAs : _("<default>"));
+    const char *c_smime_sign_as = cs_subset_string(rd->sub, "pgp_sign_as");
+    mutt_window_printf("%s", c_smime_sign_as ? c_smime_sign_as : _("<default>"));
   }
 
+  const char *c_smime_encrypt_with =
+      cs_subset_string(rd->sub, "smime_encrypt_with");
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME) &&
-      (e->security & SEC_ENCRYPT) && C_SmimeEncryptWith)
+      (e->security & SEC_ENCRYPT) && c_smime_encrypt_with)
   {
     draw_floating(rd->win_envelope, 40, row - 1, _("Encrypt with: "));
-    mutt_window_printf("%s", NONULL(C_SmimeEncryptWith));
+    mutt_window_printf("%s", NONULL(c_smime_encrypt_with));
   }
 
 #ifdef USE_AUTOCRYPT
-  if (C_Autocrypt)
+  const bool c_autocrypt = cs_subset_bool(rd->sub, "autocrypt");
+  if (c_autocrypt)
   {
     draw_header(rd->win_envelope, row, HDR_AUTOCRYPT);
     if (e->security & SEC_AUTOCRYPT)
@@ -660,11 +681,14 @@ static void update_crypt_info(struct ComposeRedrawData *rd)
 {
   struct Email *e = rd->email;
 
-  if (C_CryptOpportunisticEncrypt)
+  const bool c_crypt_opportunistic_encrypt =
+      cs_subset_bool(rd->sub, "crypt_opportunistic_encrypt");
+  if (c_crypt_opportunistic_encrypt)
     crypt_opportunistic_encrypt(e);
 
 #ifdef USE_AUTOCRYPT
-  if (C_Autocrypt)
+  const bool c_autocrypt = cs_subset_bool(rd->sub, "autocrypt");
+  if (c_autocrypt)
   {
     rd->autocrypt_rec = mutt_autocrypt_ui_recommendation(e, NULL);
 
@@ -964,7 +988,8 @@ static void draw_envelope(struct ComposeRedrawData *rd)
     draw_header(rd->win_envelope, row++, HDR_FOLLOWUPTO);
     mutt_paddstr(cols, NONULL(e->env->followup_to));
 
-    if (C_XCommentTo)
+    const bool c_x_comment_to = cs_subset_bool(rd->sub, "x_comment_to");
+    if (c_x_comment_to)
     {
       draw_header(rd->win_envelope, row++, HDR_XCOMMENTTO);
       mutt_paddstr(cols, NONULL(e->env->x_comment_to));
@@ -992,7 +1017,9 @@ static void draw_envelope(struct ComposeRedrawData *rd)
 #ifdef MIXMASTER
   redraw_mix_line(&e->chain, rd, row++);
 #endif
-  if (C_ComposeShowUserHeaders)
+  const bool c_compose_show_user_headers =
+      cs_subset_bool(rd->sub, "compose_show_user_headers");
+  if (c_compose_show_user_headers)
     row += draw_envelope_user_hdrs(rd, row);
 
   mutt_curses_set_color(MT_COLOR_STATUS);
@@ -1193,8 +1220,9 @@ static void compose_custom_redraw(struct Menu *menu)
   if (menu->redraw & REDRAW_STATUS)
   {
     char buf[1024];
+    const char *c_compose_format = cs_subset_string(rd->sub, "compose_format");
     compose_status_line(buf, sizeof(buf), 0, menu->win_ibar->state.cols, menu,
-                        NONULL(C_ComposeFormat));
+                        NONULL(c_compose_format));
     mutt_window_move(menu->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
@@ -1386,7 +1414,8 @@ static int compose_config_observer(struct NotifyCallback *nc)
 
   TAILQ_REMOVE(&dlg->children, win_ebar, entries);
 
-  if (C_StatusOnTop)
+  const bool c_status_on_top = cs_subset_bool(ec->sub, "status_on_top");
+  if (c_status_on_top)
     TAILQ_INSERT_HEAD(&dlg->children, win_ebar, entries);
   else
     TAILQ_INSERT_TAIL(&dlg->children, win_ebar, entries);
@@ -1487,7 +1516,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
   rd->win_abar = abar;
   rd->sub = sub;
 
-  if (C_StatusOnTop)
+  const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");
+  if (c_status_on_top)
   {
     mutt_window_add_child(dlg, ebar);
     mutt_window_add_child(dlg, envelope);
@@ -1634,7 +1664,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         break;
 
       case OP_COMPOSE_EDIT_X_COMMENT_TO:
-        if (!(news && C_XCommentTo))
+      {
+        const bool c_x_comment_to = cs_subset_bool(sub, "x_comment_to");
+        if (!(news && c_x_comment_to))
           break;
         mutt_str_copy(buf, e->env->x_comment_to, sizeof(buf));
         if (mutt_get_field(Prompts[HDR_XCOMMENTTO], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
@@ -1643,6 +1675,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           redraw_env = true;
         }
         break;
+      }
 #endif
 
       case OP_COMPOSE_EDIT_SUBJECT:
@@ -1682,10 +1715,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         break;
 
       case OP_COMPOSE_EDIT_MESSAGE:
-        if (!C_EditHeaders)
+      {
+        const bool c_edit_headers = cs_subset_bool(sub, "edit_headers");
+        if (!c_edit_headers)
         {
           mutt_rfc3676_space_unstuff(e);
-          mutt_edit_file(C_Editor, e->body->filename);
+          const char *c_editor = cs_subset_string(sub, "editor");
+          mutt_edit_file(c_editor, e->body->filename);
           mutt_rfc3676_space_stuff(e);
           mutt_update_encoding(e->body, sub);
           menu->redraw = REDRAW_FULL;
@@ -1693,14 +1729,17 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           break;
         }
+      }
         /* fallthrough */
 
       case OP_COMPOSE_EDIT_HEADERS:
+      {
         mutt_rfc3676_space_unstuff(e);
         const char *tag = NULL;
         char *err = NULL;
         mutt_env_to_local(e->env);
-        mutt_edit_headers(NONULL(C_Editor), e->body->filename, e, fcc);
+        const char *c_editor = cs_subset_string(sub, "editor");
+        mutt_edit_headers(NONULL(c_editor), e->body->filename, e, fcc);
         if (mutt_env_to_intl(e->env, &tag, &err))
         {
           mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
@@ -1723,6 +1762,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         /* Unconditional hook since editor was invoked */
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_ATTACH_KEY:
       {
@@ -2020,7 +2060,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         OptNews = false;
         if (Context && (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE))
         {
-          CurrentNewsSrv = nntp_select_server(Context->mailbox, C_NewsServer, false);
+          const char *c_news_server = cs_subset_string(sub, "news_server");
+          CurrentNewsSrv = nntp_select_server(Context->mailbox, c_news_server, false);
           if (!CurrentNewsSrv)
             break;
 
@@ -2092,8 +2133,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
 
         struct Context *ctx_cur = Context; /* remember current folder and sort methods */
-        int old_sort = C_Sort; /* `$sort`, SortAux could be changed in mutt_index_menu() */
-        int old_sort_aux = C_SortAux;
+        const enum SortType old_sort = cs_subset_sort(sub, "sort"); /* `$sort`, `$sort_aux` could be changed in mutt_index_menu() */
+        const enum SortType old_sort_aux = cs_subset_sort(sub, "sort_aux");
 
         Context = ctx;
         OptAttachMsg = true;
@@ -2111,8 +2152,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           /* go back to the folder we started from */
           Context = ctx_cur;
           /* Restore old $sort and $sort_aux */
-          C_Sort = old_sort;
-          C_SortAux = old_sort_aux;
+          cs_subset_str_native_set(sub, "sort", old_sort, NULL);
+          cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
           break;
         }
@@ -2148,8 +2189,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         /* go back to the folder we started from */
         Context = ctx_cur;
         /* Restore old $sort and $sort_aux */
-        C_Sort = old_sort;
-        C_SortAux = old_sort_aux;
+        cs_subset_str_native_set(sub, "sort", old_sort, NULL);
+        cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
         if (added_attachment)
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -2305,8 +2346,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
         if (!fcc_set && !mutt_buffer_is_empty(fcc))
         {
+          const enum QuadOption c_copy = cs_subset_quad(sub, "copy");
           enum QuadOption ans =
-              query_quadoption(C_Copy, _("Save a copy of this message?"));
+              query_quadoption(c_copy, _("Save a copy of this message?"));
           if (ans == MUTT_ABORT)
             break;
           else if (ans == MUTT_NO)
@@ -2318,13 +2360,16 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         break;
 
       case OP_COMPOSE_EDIT_FILE:
+      {
         CHECK_COUNT;
-        mutt_edit_file(NONULL(C_Editor), CUR_ATTACH->body->filename);
+        const char *c_editor = cs_subset_string(sub, "editor");
+        mutt_edit_file(NONULL(c_editor), CUR_ATTACH->body->filename);
         mutt_update_encoding(CUR_ATTACH->body, sub);
         menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
         /* Unconditional hook since editor was invoked */
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_TOGGLE_UNLINK:
         CHECK_COUNT;
@@ -2507,8 +2552,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
       case OP_EXIT:
       {
+        const enum QuadOption c_postpone = cs_subset_quad(sub, "postpone");
         enum QuadOption ans =
-            query_quadoption(C_Postpone, _("Save (postpone) draft message?"));
+            query_quadoption(c_postpone, _("Save (postpone) draft message?"));
         if (ans == MUTT_NO)
         {
           for (int i = 0; i < actx->idxlen; i++)
@@ -2548,8 +2594,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         break;
 
       case OP_COMPOSE_ISPELL:
+      {
         endwin();
-        snprintf(buf, sizeof(buf), "%s -x %s", NONULL(C_Ispell), e->body->filename);
+        const char *c_ispell = cs_subset_string(sub, "ispell");
+        snprintf(buf, sizeof(buf), "%s -x %s", NONULL(c_ispell), e->body->filename);
         if (mutt_system(buf) == -1)
           mutt_error(_("Error running \"%s\""), buf);
         else
@@ -2558,6 +2606,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           menu->redraw |= REDRAW_STATUS;
         }
         break;
+      }
 
       case OP_COMPOSE_WRITE_MESSAGE:
         mutt_buffer_reset(&fname);
@@ -2672,7 +2721,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
       case OP_COMPOSE_AUTOCRYPT_MENU:
       {
         const SecurityFlags old_flags = e->security;
-        if (!C_Autocrypt)
+        const bool c_autocrypt = cs_subset_bool(sub, "autocrypt");
+        if (!c_autocrypt)
           break;
 
         if ((WithCrypto & APPLICATION_SMIME) && (e->security & APPLICATION_SMIME))
@@ -2690,7 +2740,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           e->security |= APPLICATION_PGP;
           update_crypt_info(rd);
         }
-        autocrypt_compose_menu(e);
+        autocrypt_compose_menu(e, sub);
         update_crypt_info(rd);
         if (old_flags != e->security)
         {
@@ -2709,7 +2759,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
   /* This is a fail-safe to make sure the bit isn't somehow turned
    * on.  The user could have disabled the option after setting SEC_AUTOCRYPT,
    * or perhaps resuming or replying to an autocrypt message.  */
-  if (!C_Autocrypt)
+  const bool c_autocrypt = cs_subset_bool(sub, "autocrypt");
+  if (!c_autocrypt)
     e->security &= ~SEC_AUTOCRYPT;
 #endif
 
