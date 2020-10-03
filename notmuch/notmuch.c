@@ -2160,9 +2160,6 @@ done:
  */
 static struct Account *nm_ac_find(struct Account *a, const char *path)
 {
-  if (!a || (a->type != MUTT_NOTMUCH) || !path)
-    return NULL;
-
   return a;
 }
 
@@ -2171,9 +2168,6 @@ static struct Account *nm_ac_find(struct Account *a, const char *path)
  */
 static int nm_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || (m->type != MUTT_NOTMUCH))
-    return -1;
-
   if (a->adata)
     return 0;
 
@@ -2242,9 +2236,6 @@ static int nm_mbox_open(struct Mailbox *m)
  */
 static int nm_mbox_check(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   struct NmMboxData *mdata = nm_mdata_get(m);
   time_t mtime = 0;
   if (!mdata || (nm_db_get_mtime(m, &mtime) != 0))
@@ -2376,9 +2367,6 @@ done:
  */
 static int nm_mbox_sync(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)
     return -1;
@@ -2509,9 +2497,6 @@ static int nm_mbox_close(struct Mailbox *m)
  */
 static int nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!m || !m->emails || (msgno >= m->msg_count) || !msg)
-    return -1;
-
   struct Email *e = m->emails[msgno];
   if (!e)
     return -1;
@@ -2548,8 +2533,6 @@ static int nm_msg_commit(struct Mailbox *m, struct Message *msg)
  */
 static int nm_msg_close(struct Mailbox *m, struct Message *msg)
 {
-  if (!msg)
-    return -1;
   mutt_file_fclose(&(msg->fp));
   return 0;
 }
@@ -2570,11 +2553,11 @@ static int nm_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t b
  */
 static int nm_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 {
-  if (!m)
-    return -1;
+  if (*buf == '\0')
+    return 0; /* no tag change, so nothing to do */
 
   struct NmMboxData *mdata = nm_mdata_get(m);
-  if (!buf || (*buf == '\0') || !mdata)
+  if (!mdata)
     return -1;
 
   notmuch_database_t *db = NULL;
@@ -2609,7 +2592,7 @@ done:
  */
 enum MailboxType nm_path_probe(const char *path, const struct stat *st)
 {
-  if (!path || !mutt_istr_startswith(path, NmUrlProtocol))
+  if (!mutt_istr_startswith(path, NmUrlProtocol))
     return MUTT_UNKNOWN;
 
   return MUTT_NOTMUCH;
@@ -2620,9 +2603,6 @@ enum MailboxType nm_path_probe(const char *path, const struct stat *st)
  */
 static int nm_path_canon(char *buf, size_t buflen)
 {
-  if (!buf)
-    return -1;
-
   return 0;
 }
 

@@ -305,9 +305,6 @@ static int maildir_mbox_open(struct Mailbox *m)
  */
 static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
-  if (!m)
-    return -1;
-
   if (!(flags & (MUTT_APPEND | MUTT_APPENDNEW | MUTT_NEWFOLDER)))
   {
     return 0;
@@ -369,9 +366,6 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  */
 int maildir_mbox_check(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   struct stat st_new;         /* status of the "new" subdirectory */
   struct stat st_cur;         /* status of the "cur" subdirectory */
   int changed = MMC_NO_DIRS;  /* which subdirectories have changed */
@@ -549,9 +543,6 @@ int maildir_mbox_check(struct Mailbox *m)
  */
 static int maildir_mbox_check_stats(struct Mailbox *m, int flags)
 {
-  if (!m)
-    return -1;
-
   bool check_stats = flags;
   bool check_new = true;
 
@@ -577,8 +568,6 @@ static int maildir_mbox_check_stats(struct Mailbox *m, int flags)
  */
 static int maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!m)
-    return -1;
   return maildir_mh_open_message(m, msg, msgno, true);
 }
 
@@ -592,9 +581,6 @@ static int maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
  */
 int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
-  if (!m)
-    return -1;
-
   int fd;
   char path[PATH_MAX];
   char suffix[16];
@@ -660,9 +646,6 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Em
  */
 static int maildir_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (!m)
-    return -1;
-
   return md_commit_message(m, msg, NULL);
 }
 
@@ -687,9 +670,6 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
  */
 static enum MailboxType maildir_path_probe(const char *path, const struct stat *st)
 {
-  if (!path)
-    return MUTT_UNKNOWN;
-
   if (!st || !S_ISDIR(st->st_mode))
     return MUTT_UNKNOWN;
 
