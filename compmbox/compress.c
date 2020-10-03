@@ -423,8 +423,6 @@ static struct Account *comp_ac_find(struct Account *a, const char *path)
  */
 static int comp_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || (m->type != MUTT_COMPRESSED))
-    return -1;
   return 0;
 }
 
@@ -438,9 +436,6 @@ static int comp_ac_add(struct Account *a, struct Mailbox *m)
  */
 static int comp_mbox_open(struct Mailbox *m)
 {
-  if (!m || (m->type != MUTT_COMPRESSED))
-    return -1;
-
   struct CompressInfo *ci = set_compress_info(m);
   if (!ci)
     return -1;
@@ -501,9 +496,6 @@ cmo_fail:
  */
 static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
-  if (!m)
-    return -1;
-
   /* If this succeeds, we know there's an open-hook */
   struct CompressInfo *ci = set_compress_info(m);
   if (!ci)
@@ -587,7 +579,7 @@ cmoa_fail1:
  */
 static int comp_mbox_check(struct Mailbox *m)
 {
-  if (!m || !m->compress_info)
+  if (!m->compress_info)
     return -1;
 
   struct CompressInfo *ci = m->compress_info;
@@ -623,7 +615,7 @@ static int comp_mbox_check(struct Mailbox *m)
  */
 static int comp_mbox_sync(struct Mailbox *m)
 {
-  if (!m || !m->compress_info)
+  if (!m->compress_info)
     return -1;
 
   struct CompressInfo *ci = m->compress_info;
@@ -675,7 +667,7 @@ sync_cleanup:
  */
 static int comp_mbox_close(struct Mailbox *m)
 {
-  if (!m || !m->compress_info)
+  if (!m->compress_info)
     return -1;
 
   struct CompressInfo *ci = m->compress_info;
@@ -741,7 +733,7 @@ static int comp_mbox_close(struct Mailbox *m)
  */
 static int comp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!m || !m->compress_info)
+  if (!m->compress_info)
     return -1;
 
   struct CompressInfo *ci = m->compress_info;
@@ -759,7 +751,7 @@ static int comp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
  */
 static int comp_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
-  if (!m || !m->compress_info)
+  if (!m->compress_info)
     return -1;
 
   struct CompressInfo *ci = m->compress_info;
@@ -777,7 +769,7 @@ static int comp_msg_open_new(struct Mailbox *m, struct Message *msg, const struc
  */
 static int comp_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (!m || !m->compress_info)
+  if (!m->compress_info)
     return -1;
 
   struct CompressInfo *ci = m->compress_info;
@@ -795,7 +787,7 @@ static int comp_msg_commit(struct Mailbox *m, struct Message *msg)
  */
 static int comp_msg_close(struct Mailbox *m, struct Message *msg)
 {
-  if (!m || !m->compress_info)
+  if (!m->compress_info)
     return -1;
 
   struct CompressInfo *ci = m->compress_info;
@@ -813,7 +805,7 @@ static int comp_msg_close(struct Mailbox *m, struct Message *msg)
  */
 static int comp_msg_padding_size(struct Mailbox *m)
 {
-  if (!m || !m->compress_info)
+  if (!m->compress_info)
     return 0;
 
   struct CompressInfo *ci = m->compress_info;
@@ -830,7 +822,7 @@ static int comp_msg_padding_size(struct Mailbox *m)
  */
 static int comp_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
-  if (!m || !m->compress_info)
+  if (!m->compress_info)
     return 0;
 
   struct CompressInfo *ci = m->compress_info;
@@ -847,7 +839,7 @@ static int comp_msg_save_hcache(struct Mailbox *m, struct Email *e)
  */
 static int comp_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
-  if (!m || !m->compress_info)
+  if (!m->compress_info)
     return 0;
 
   struct CompressInfo *ci = m->compress_info;
@@ -864,7 +856,7 @@ static int comp_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
  */
 static int comp_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 {
-  if (!m || !m->compress_info)
+  if (!m->compress_info)
     return 0;
 
   struct CompressInfo *ci = m->compress_info;
@@ -881,9 +873,6 @@ static int comp_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
  */
 static enum MailboxType comp_path_probe(const char *path, const struct stat *st)
 {
-  if (!path)
-    return MUTT_UNKNOWN;
-
   if (!st || !S_ISREG(st->st_mode))
     return MUTT_UNKNOWN;
 
@@ -898,9 +887,6 @@ static enum MailboxType comp_path_probe(const char *path, const struct stat *st)
  */
 static int comp_path_canon(char *buf, size_t buflen)
 {
-  if (!buf)
-    return -1;
-
   mutt_path_canon(buf, buflen, HomeDir, false);
   return 0;
 }
@@ -910,9 +896,6 @@ static int comp_path_canon(char *buf, size_t buflen)
  */
 static int comp_path_pretty(char *buf, size_t buflen, const char *folder)
 {
-  if (!buf)
-    return -1;
-
   if (mutt_path_abbr_folder(buf, buflen, folder))
     return 0;
 
@@ -927,9 +910,6 @@ static int comp_path_pretty(char *buf, size_t buflen, const char *folder)
  */
 static int comp_path_parent(char *buf, size_t buflen)
 {
-  if (!buf)
-    return -1;
-
   if (mutt_path_parent(buf, buflen))
     return 0;
 

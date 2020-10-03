@@ -1157,10 +1157,8 @@ int mx_mbox_check(struct Mailbox *m)
  */
 struct Message *mx_msg_open(struct Mailbox *m, int msgno)
 {
-  if (!m)
+  if (!m || !m->emails || (msgno < 0) || (msgno >= m->msg_count))
     return NULL;
-
-  struct Message *msg = NULL;
 
   if (!m->mx_ops || !m->mx_ops->msg_open)
   {
@@ -1168,7 +1166,7 @@ struct Message *mx_msg_open(struct Mailbox *m, int msgno)
     return NULL;
   }
 
-  msg = mutt_mem_calloc(1, sizeof(struct Message));
+  struct Message *msg = mutt_mem_calloc(1, sizeof(struct Message));
   if (m->mx_ops->msg_open(m, msg, msgno) < 0)
     FREE(&msg);
 
@@ -1184,7 +1182,7 @@ struct Message *mx_msg_open(struct Mailbox *m, int msgno)
  */
 int mx_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (!m || !m->mx_ops || !m->mx_ops->msg_commit)
+  if (!m || !m->mx_ops || !m->mx_ops->msg_commit || !msg)
     return -1;
 
   if (!(msg->write && m->append))
@@ -1305,7 +1303,7 @@ int mx_check_empty(const char *path)
  */
 int mx_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
-  if (!m)
+  if (!m || !buf)
     return -1;
 
   if (m->mx_ops->tags_edit)
@@ -1325,7 +1323,7 @@ int mx_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
  */
 int mx_tags_commit(struct Mailbox *m, struct Email *e, char *tags)
 {
-  if (!m)
+  if (!m || !e || !tags)
     return -1;
 
   if (m->mx_ops->tags_commit)
@@ -1527,6 +1525,9 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
  */
 int mx_path_pretty(char *buf, size_t buflen, const char *folder)
 {
+  if (!buf)
+    return -1;
+
   enum MailboxType type = mx_path_probe(buf);
   const struct MxOps *ops = mx_get_ops(type);
   if (!ops)
@@ -1582,7 +1583,7 @@ int mx_msg_padding_size(struct Mailbox *m)
  */
 struct Account *mx_ac_find(struct Mailbox *m)
 {
-  if (!m || !m->mx_ops)
+  if (!m || !m->mx_ops || !m->realpath)
     return NULL;
 
   struct Account *np = NULL;
@@ -1833,7 +1834,7 @@ int mx_mbox_check_stats(struct Mailbox *m, int flags)
  */
 int mx_save_hcache(struct Mailbox *m, struct Email *e)
 {
-  if (!m->mx_ops || !m->mx_ops->msg_save_hcache)
+  if (!m || !m->mx_ops || !m->mx_ops->msg_save_hcache || !e)
     return 0;
 
   return m->mx_ops->msg_save_hcache(m, e);

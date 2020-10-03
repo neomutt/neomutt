@@ -1839,9 +1839,6 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
  */
 int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!m || !msg)
-    return -1;
-
   struct Envelope *newenv = NULL;
   char buf[1024];
   char *pc = NULL;

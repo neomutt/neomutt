@@ -1718,9 +1718,6 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
  */
 static struct Account *imap_ac_find(struct Account *a, const char *path)
 {
-  if (!a || (a->type != MUTT_IMAP) || !path)
-    return NULL;
-
   struct Url *url = url_parse(path);
   if (!url)
     return NULL;
@@ -1742,9 +1739,6 @@ static struct Account *imap_ac_find(struct Account *a, const char *path)
  */
 static int imap_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || (m->type != MUTT_IMAP))
-    return -1;
-
   struct ImapAccountData *adata = a->adata;
 
   if (!adata)
@@ -1908,7 +1902,7 @@ int imap_login(struct ImapAccountData *adata)
  */
 static int imap_mbox_open(struct Mailbox *m)
 {
-  if (!m || !m->account || !m->mdata)
+  if (!m->account || !m->mdata)
     return -1;
 
   char buf[PATH_MAX];
@@ -2110,7 +2104,7 @@ fail:
  */
 static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
-  if (!m || !m->account)
+  if (!m->account)
     return -1;
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
@@ -2143,9 +2137,6 @@ static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  */
 static int imap_mbox_check(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   imap_allow_reopen(m);
   int rc = imap_check_mailbox(m, false);
   /* NOTE - ctx might have been changed at this point. In particular,
@@ -2160,9 +2151,6 @@ static int imap_mbox_check(struct Mailbox *m)
  */
 static int imap_mbox_close(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
@@ -2317,9 +2305,6 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
  */
 static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 {
-  if (!m)
-    return -1;
-
   char uid[11];
 
   struct ImapAccountData *adata = imap_adata_get(m);
@@ -2384,9 +2369,6 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
  */
 enum MailboxType imap_path_probe(const char *path, const struct stat *st)
 {
-  if (!path)
-    return MUTT_UNKNOWN;
-
   if (mutt_istr_startswith(path, "imap://"))
     return MUTT_IMAP;
 
@@ -2401,9 +2383,6 @@ enum MailboxType imap_path_probe(const char *path, const struct stat *st)
  */
 int imap_path_canon(char *buf, size_t buflen)
 {
-  if (!buf)
-    return -1;
-
   struct Url *url = url_parse(buf);
   if (!url)
     return 0;
@@ -2439,7 +2418,7 @@ int imap_expand_path(struct Buffer *buf)
  */
 static int imap_path_pretty(char *buf, size_t buflen, const char *folder)
 {
-  if (!buf || !folder)
+  if (!folder)
     return -1;
 
   imap_pretty_mailbox(buf, buflen, folder);

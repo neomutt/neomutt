@@ -2375,27 +2375,6 @@ int nntp_compare_order(const void *a, const void *b)
  */
 static struct Account *nntp_ac_find(struct Account *a, const char *path)
 {
-#if 0
-  if (!a || (a->type != MUTT_NNTP) || !path)
-    return NULL;
-
-  struct Url url = { 0 };
-  char tmp[PATH_MAX];
-  mutt_str_copy(tmp, path, sizeof(tmp));
-  url_parse(&url, tmp);
-
-  struct ImapAccountData *adata = a->data;
-  struct ConnAccount *cac = &adata->conn_account;
-
-  if (!mutt_istr_equal(url.host, cac->host))
-    return NULL;
-
-  if (!mutt_istr_equal(url.user, cac->user))
-    return NULL;
-
-  // if (mutt_str_equal(path, a->mailbox->realpath))
-  //   return a;
-#endif
   return a;
 }
 
@@ -2404,8 +2383,6 @@ static struct Account *nntp_ac_find(struct Account *a, const char *path)
  */
 static int nntp_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || (m->type != MUTT_NNTP))
-    return -1;
   return 0;
 }
 
@@ -2414,7 +2391,7 @@ static int nntp_ac_add(struct Account *a, struct Mailbox *m)
  */
 static int nntp_mbox_open(struct Mailbox *m)
 {
-  if (!m || !m->account)
+  if (!m->account)
     return -1;
 
   char buf[8192];
@@ -2577,9 +2554,6 @@ static int nntp_mbox_open(struct Mailbox *m)
  */
 static int nntp_mbox_check(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   int rc = check_mailbox(m);
   if (rc == 0)
   {
@@ -2597,9 +2571,6 @@ static int nntp_mbox_check(struct Mailbox *m)
  */
 static int nntp_mbox_sync(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   struct NntpMboxData *mdata = m->mdata;
   int rc;
 
@@ -2661,9 +2632,6 @@ static int nntp_mbox_sync(struct Mailbox *m)
  */
 static int nntp_mbox_close(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   struct NntpMboxData *mdata = m->mdata;
   struct NntpMboxData *tmp_mdata = NULL;
   if (!mdata)
@@ -2686,9 +2654,6 @@ static int nntp_mbox_close(struct Mailbox *m)
  */
 static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!m || !m->emails || (msgno >= m->msg_count) || !msg)
-    return -1;
-
   struct NntpMboxData *mdata = m->mdata;
   struct Email *e = m->emails[msgno];
   if (!e)
@@ -2827,9 +2792,6 @@ static int nntp_msg_close(struct Mailbox *m, struct Message *msg)
  */
 enum MailboxType nntp_path_probe(const char *path, const struct stat *st)
 {
-  if (!path)
-    return MUTT_UNKNOWN;
-
   if (mutt_istr_startswith(path, "news://"))
     return MUTT_NNTP;
 
@@ -2844,9 +2806,6 @@ enum MailboxType nntp_path_probe(const char *path, const struct stat *st)
  */
 static int nntp_path_canon(char *buf, size_t buflen)
 {
-  if (!buf)
-    return -1;
-
   return 0;
 }
 

@@ -864,8 +864,6 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
  */
 static struct Account *mbox_ac_find(struct Account *a, const char *path)
 {
-  if (!a || !path)
-    return NULL;
   if ((a->type != MUTT_MBOX) && (a->type != MUTT_MMDF))
     return NULL;
 
@@ -884,10 +882,6 @@ static struct Account *mbox_ac_find(struct Account *a, const char *path)
  */
 static int mbox_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m)
-    return -1;
-  if ((m->type != MUTT_MBOX) && (m->type != MUTT_MMDF))
-    return -1;
   return 0;
 }
 
@@ -975,9 +969,6 @@ static int mbox_mbox_open(struct Mailbox *m)
  */
 static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
-  if (!m)
-    return -1;
-
   if (init_mailbox(m) != 0)
     return -1;
 
@@ -1029,9 +1020,6 @@ static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  */
 static int mbox_mbox_check(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
     return -1;
@@ -1155,9 +1143,6 @@ static int mbox_mbox_check(struct Mailbox *m)
  */
 static int mbox_mbox_sync(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
     return -1;
@@ -1528,9 +1513,6 @@ fatal:
  */
 static int mbox_mbox_close(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
     return -1;
@@ -1571,9 +1553,6 @@ static int mbox_mbox_close(struct Mailbox *m)
  */
 static int mbox_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!m)
-    return -1;
-
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
     return -1;
@@ -1590,9 +1569,6 @@ static int mbox_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
  */
 static int mbox_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
-  if (!m)
-    return -1;
-
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
     return -1;
@@ -1606,9 +1582,6 @@ static int mbox_msg_open_new(struct Mailbox *m, struct Message *msg, const struc
  */
 static int mbox_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (!msg)
-    return -1;
-
   if (fputc('\n', msg->fp) == EOF)
     return -1;
 
@@ -1626,9 +1599,6 @@ static int mbox_msg_commit(struct Mailbox *m, struct Message *msg)
  */
 static int mbox_msg_close(struct Mailbox *m, struct Message *msg)
 {
-  if (!msg)
-    return -1;
-
   if (msg->write)
     msg->fp = NULL;
   else
@@ -1652,7 +1622,7 @@ static int mbox_msg_padding_size(struct Mailbox *m)
  */
 enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
 {
-  if (!path || !st)
+  if (!st)
     return MUTT_UNKNOWN;
 
   if (S_ISDIR(st->st_mode))
@@ -1715,9 +1685,6 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
  */
 static int mbox_path_canon(char *buf, size_t buflen)
 {
-  if (!buf)
-    return -1;
-
   mutt_path_canon(buf, buflen, HomeDir, false);
   return 0;
 }
@@ -1727,9 +1694,6 @@ static int mbox_path_canon(char *buf, size_t buflen)
  */
 static int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
 {
-  if (!buf)
-    return -1;
-
   if (mutt_path_abbr_folder(buf, buflen, folder))
     return 0;
 
@@ -1744,9 +1708,6 @@ static int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
  */
 static int mbox_path_parent(char *buf, size_t buflen)
 {
-  if (!buf)
-    return -1;
-
   if (mutt_path_parent(buf, buflen))
     return 0;
 

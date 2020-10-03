@@ -740,9 +740,6 @@ fail:
  */
 static struct Account *pop_ac_find(struct Account *a, const char *path)
 {
-  if (!a || (a->type != MUTT_POP) || !path)
-    return NULL;
-
   struct Url *url = url_parse(path);
   if (!url)
     return NULL;
@@ -764,9 +761,6 @@ static struct Account *pop_ac_find(struct Account *a, const char *path)
  */
 static int pop_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || (m->type != MUTT_POP))
-    return -1;
-
   if (a->adata)
     return 0;
 
@@ -798,7 +792,7 @@ static int pop_ac_add(struct Account *a, struct Mailbox *m)
  */
 static int pop_mbox_open(struct Mailbox *m)
 {
-  if (!m || !m->account)
+  if (!m->account)
     return -1;
 
   char buf[PATH_MAX];
@@ -875,9 +869,6 @@ static int pop_mbox_open(struct Mailbox *m)
  */
 static int pop_mbox_check(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   struct PopAccountData *adata = pop_adata_get(m);
 
   if ((adata->check_time + C_PopCheckinterval) > mutt_date_epoch())
@@ -916,9 +907,6 @@ static int pop_mbox_check(struct Mailbox *m)
  */
 static int pop_mbox_sync(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   int i, j, rc = 0;
   char buf[1024];
   struct PopAccountData *adata = pop_adata_get(m);
@@ -1006,9 +994,6 @@ static int pop_mbox_sync(struct Mailbox *m)
  */
 static int pop_mbox_close(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   struct PopAccountData *adata = pop_adata_get(m);
   if (!adata)
     return 0;
@@ -1036,9 +1021,6 @@ static int pop_mbox_close(struct Mailbox *m)
  */
 static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!m)
-    return -1;
-
   char buf[1024];
   struct Progress progress;
   struct PopAccountData *adata = pop_adata_get(m);
@@ -1221,9 +1203,6 @@ static int pop_msg_save_hcache(struct Mailbox *m, struct Email *e)
  */
 enum MailboxType pop_path_probe(const char *path, const struct stat *st)
 {
-  if (!path)
-    return MUTT_UNKNOWN;
-
   if (mutt_istr_startswith(path, "pop://"))
     return MUTT_POP;
 
@@ -1238,9 +1217,6 @@ enum MailboxType pop_path_probe(const char *path, const struct stat *st)
  */
 static int pop_path_canon(char *buf, size_t buflen)
 {
-  if (!buf)
-    return -1;
-
   return 0;
 }
 

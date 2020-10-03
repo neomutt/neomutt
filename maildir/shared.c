@@ -1667,9 +1667,6 @@ int mh_check_empty(const char *path)
  */
 struct Account *maildir_ac_find(struct Account *a, const char *path)
 {
-  if (!a || !path)
-    return NULL;
-
   return a;
 }
 
@@ -1678,8 +1675,6 @@ struct Account *maildir_ac_find(struct Account *a, const char *path)
  */
 int maildir_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || ((m->type != MUTT_MAILDIR) && (m->type != MUTT_MH)))
-    return -1;
   return 0;
 }
 
@@ -1688,9 +1683,6 @@ int maildir_ac_add(struct Account *a, struct Mailbox *m)
  */
 int maildir_path_canon(char *buf, size_t buflen)
 {
-  if (!buf)
-    return -1;
-
   mutt_path_canon(buf, buflen, HomeDir, true);
   return 0;
 }
@@ -1700,9 +1692,6 @@ int maildir_path_canon(char *buf, size_t buflen)
  */
 int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
 {
-  if (!buf)
-    return -1;
-
   if (mutt_path_abbr_folder(buf, buflen, folder))
     return 0;
 
@@ -1717,9 +1706,6 @@ int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
  */
 int maildir_path_parent(char *buf, size_t buflen)
 {
-  if (!buf)
-    return -1;
-
   if (mutt_path_parent(buf, buflen))
     return 0;
 
@@ -1743,9 +1729,6 @@ int maildir_path_parent(char *buf, size_t buflen)
  */
 int mh_mbox_sync(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   int i, j;
   struct HeaderCache *hc = NULL;
   struct Progress progress;

@@ -554,9 +554,6 @@ static int mh_mbox_open(struct Mailbox *m)
  */
 static int mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
-  if (!m)
-    return -1;
-
   if (!(flags & (MUTT_APPENDNEW | MUTT_NEWFOLDER)))
     return 0;
 
@@ -592,9 +589,6 @@ static int mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  */
 int mh_mbox_check(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
-
   char buf[PATH_MAX];
   struct stat st, st_cur;
   bool modified = false, occult = false, flags_changed = false;
@@ -732,8 +726,6 @@ int mh_mbox_check(struct Mailbox *m)
  */
 static int mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!m)
-    return -1;
   return maildir_mh_open_message(m, msg, msgno, false);
 }
 
@@ -744,8 +736,6 @@ static int mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
  */
 static int mh_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
-  if (!m || !msg)
-    return -1;
   return mh_mkstemp(m, &msg->fp, &msg->path);
 }
 
@@ -754,9 +744,6 @@ static int mh_msg_open_new(struct Mailbox *m, struct Message *msg, const struct 
  */
 static int mh_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (!m)
-    return -1;
-
   return mh_commit_msg(m, msg, NULL, true);
 }
 
@@ -765,9 +752,6 @@ static int mh_msg_commit(struct Mailbox *m, struct Message *msg)
  */
 static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
 {
-  if (!path)
-    return MUTT_UNKNOWN;
-
   if (!st || !S_ISDIR(st->st_mode))
     return MUTT_UNKNOWN;
 
