@@ -314,7 +314,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
   struct Menu *menu = NULL;
   char title[256];
 
-  snprintf(title, sizeof(title), _("Query '%s'"), buf);
+  snprintf(title, sizeof(title), "%s%s", _("Query: "), buf);
 
   menu = mutt_menu_new(MENU_QUERY);
   struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_QUERY);
@@ -360,7 +360,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all, bo
         if (TAILQ_EMPTY(&al))
           break;
 
-        snprintf(title, sizeof(title), _("Query '%s'"), buf);
+        snprintf(title, sizeof(title), "%s%s", _("Query: "), buf);
 
         struct Alias *tmp = NULL;
         TAILQ_FOREACH_SAFE(np, &al, entries, tmp)
