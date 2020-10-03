@@ -2505,7 +2505,7 @@ msgstr "Prisijungimui prie %s pasibaigė laikas"
 #: imap/config.c:83 pop/config.c:68 send/config.c:78
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
-msgstr ""
+msgstr "Parametras %s: %s nėra tinkamas autentikatorius"
 
 #: imap/imap.c:101
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
