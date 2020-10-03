@@ -1265,7 +1265,7 @@ const char *crypt_get_fingerprint_or_id(const char *p, const char **pphint,
   size_t hexdigits;
 
   /* User input may be partial name, fingerprint or short or long key ID,
-   * independent of C_PgpLongIds.
+   * independent of `$pgp_long_ids`.
    * Fingerprint without spaces is 40 hex digits (SHA-1) or 32 hex digits (MD5).
    * Strip leading "0x" for key ID detection and prepare pl and ps to indicate
    * if an ID was found and to simplify logic in the key loop's inner

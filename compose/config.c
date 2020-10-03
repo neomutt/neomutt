@@ -61,7 +61,7 @@ static struct ConfigDef ComposeVars[] = {
     "Save outgoing emails to $record"
   },
   { "postpone", DT_QUAD, &C_Postpone, MUTT_ASKYES, 0, NULL,
-    "Save messages to the #C_Postponed folder"
+    "Save messages to the `$postponed` folder"
   },
   { NULL, 0, NULL, 0, 0, NULL, NULL }
   // clang-format on

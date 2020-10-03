@@ -1166,7 +1166,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   bool mailbox = (flags & MUTT_SEL_MAILBOX);
 
   /* Keeps in memory the directory we were in when hitting '='
-   * to go directly to $folder (#C_Folder) */
+   * to go directly to $folder (`$folder`) */
   char goto_swapper[PATH_MAX] = { 0 };
 
   mailbox = mailbox && folder;
@@ -1910,7 +1910,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             {
               if (!mutt_str_equal(mutt_b2s(&LastDir), C_Folder))
               {
-                /* Stores into goto_swapper LastDir, and swaps to C_Folder */
+                /* Stores into goto_swapper LastDir, and swaps to `$folder` */
                 mutt_str_copy(goto_swapper, mutt_b2s(&LastDir), sizeof(goto_swapper));
                 mutt_buffer_copy(&LastDirBackup, &LastDir);
                 mutt_buffer_strcpy(&LastDir, C_Folder);

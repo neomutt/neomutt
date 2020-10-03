@@ -228,7 +228,7 @@ static bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg)
  * @param toggle toggle collapsed state
  *
  * This function is called by the OP_MAIN_COLLAPSE_ALL command and on folder
- * enter if the #C_CollapseAll option is set. In the first case, the @a toggle
+ * enter if the `$collapse_all` option is set. In the first case, the @a toggle
  * parameter is 1 to actually toggle collapsed/uncollapsed state on all
  * threads. In the second case, the @a toggle parameter is 0, actually turning
  * this function into a one-way collapse.
@@ -357,9 +357,9 @@ static int ci_first_message(struct Mailbox *m)
   if (old != -1)
     return old;
 
-  /* If C_Sort is reverse and not threaded, the latest message is first.
-   * If C_Sort is threaded, the latest message is first if exactly one
-   * of C_Sort and C_SortAux are reverse.  */
+  /* If `$sort` is reverse and not threaded, the latest message is first.
+   * If `$sort` is threaded, the latest message is first if exactly one
+   * of `$sort` and `$sort_aux` are reverse.  */
   if (((C_Sort & SORT_REVERSE) && ((C_Sort & SORT_MASK) != SORT_THREADS)) ||
       (((C_Sort & SORT_MASK) == SORT_THREADS) && ((C_Sort ^ C_SortAux) & SORT_REVERSE)))
   {

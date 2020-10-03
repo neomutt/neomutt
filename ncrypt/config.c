@@ -75,10 +75,10 @@ bool            C_CryptTimestamp;                      ///< Config: Add a timest
 unsigned char   C_PgpEncryptSelf;
 unsigned char   C_PgpMimeAuto;                         ///< Config: Prompt the user to use MIME if inline PGP fails
 bool            C_PgpRetainableSigs;                   ///< Config: Create nested multipart/signed or encrypted messages
-bool            C_PgpSelfEncrypt;                      ///< Config: Encrypted messages will also be encrypted to C_PgpDefaultKey too
+bool            C_PgpSelfEncrypt;                      ///< Config: Encrypted messages will also be encrypted to `$pgp_default_key` too
 bool            C_PgpStrictEnc;                        ///< Config: Encode PGP signed messages with quoted-printable (don't unset)
 unsigned char   C_SmimeEncryptSelf;
-bool            C_SmimeSelfEncrypt;                    ///< Config: Encrypted messages will also be encrypt to C_SmimeDefaultKey too
+bool            C_SmimeSelfEncrypt;                    ///< Config: Encrypted messages will also be encrypt to `$smime_default_key` too
 #ifdef CRYPT_BACKEND_GPGME
 bool            C_CryptUseGpgme;                       ///< Config: Use GPGME crypto backend
 #endif

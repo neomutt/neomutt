@@ -958,7 +958,7 @@ static int check_protected_header_marker(const char *p)
  * @param[out] pmatch Regex sub-matches
  * @retval true Line is quoted
  *
- * Checks if line matches the #C_QuoteRegex and doesn't match #C_Smileys.
+ * Checks if line matches the `$quote_regex` and doesn't match `$smileys`.
  * This is used by the pager for calling classify_quote.
  */
 int mutt_is_quote_line(char *line, regmatch_t *pmatch)

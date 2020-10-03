@@ -39,9 +39,9 @@ extern short C_NetInc;
  */
 enum ProgressType
 {
-  MUTT_PROGRESS_READ,  ///< Progress tracks elements, according to C_ReadInc
-  MUTT_PROGRESS_WRITE, ///< Progress tracks elements, according to C_WriteInc
-  MUTT_PROGRESS_NET    ///< Progress tracks bytes, according to C_NetInc
+  MUTT_PROGRESS_READ,  ///< Progress tracks elements, according to `$read_inc`
+  MUTT_PROGRESS_WRITE, ///< Progress tracks elements, according to `$write_inc`
+  MUTT_PROGRESS_NET    ///< Progress tracks bytes, according to `$net_inc`
 };
 
 /**

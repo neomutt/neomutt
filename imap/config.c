@@ -48,7 +48,7 @@ char *        C_ImapHeaders;             ///< Config: (imap) Additional email he
 bool          C_ImapIdle;                ///< Config: (imap) Use the IMAP IDLE extension to check for new mail
 short         C_ImapKeepalive;           ///< Config: (imap) Time to wait before polling an open IMAP connection
 bool          C_ImapListSubscribed;      ///< Config: (imap) When browsing a mailbox, only display subscribed folders
-char *        C_ImapLogin;               ///< Config: (imap) Login name for the IMAP server (defaults to #C_ImapUser)
+char *        C_ImapLogin;               ///< Config: (imap) Login name for the IMAP server (defaults to `$imap_user`)
 char *        C_ImapOauthRefreshCommand; ///< Config: (imap) External command to generate OAUTH refresh token
 char *        C_ImapPass;                ///< Config: (imap) Password for the IMAP server
 bool          C_ImapPassive;             ///< Config: (imap) Reuse an existing IMAP connection to check for new mail
@@ -117,7 +117,7 @@ struct ConfigDef ImapVars[] = {
     "(imap) Use the IMAP IDLE extension to check for new mail"
   },
   { "imap_login", DT_STRING|DT_SENSITIVE, &C_ImapLogin, 0, 0, NULL,
-    "(imap) Login name for the IMAP server (defaults to #C_ImapUser)"
+    "(imap) Login name for the IMAP server (defaults to `$imap_user`)"
   },
   { "imap_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, &C_ImapOauthRefreshCommand, 0, 0, NULL,
     "(imap) External command to generate OAUTH refresh token"

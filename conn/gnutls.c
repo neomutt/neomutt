@@ -224,7 +224,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
 }
 
 /**
- * tls_compare_certificates - Compare certificates against #C_CertificateFile
+ * tls_compare_certificates - Compare certificates against `$certificate_file`
  * @param peercert Certificate
  * @retval 1 Certificate matches file
  * @retval 0 Error, or no match

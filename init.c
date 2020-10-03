@@ -348,7 +348,7 @@ static bool get_hostname(struct ConfigSet *cs)
   {
     /* now get FQDN.  Use configured domain first, DNS next, then uname */
 #ifdef DOMAIN
-    /* we have a compile-time domain name, use that for C_Hostname */
+    /* we have a compile-time domain name, use that for `$hostname` */
     C_Hostname = mutt_mem_malloc(mutt_str_len(DOMAIN) + mutt_str_len(ShortHostname) + 2);
     sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), DOMAIN);
 #else

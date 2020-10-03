@@ -101,7 +101,7 @@ struct ConfigDef SidebarVars[] = {
     "(sidebar) Display the sidebar on the right"
   },
   { "sidebar_short_path", DT_BOOL, &C_SidebarShortPath, false, 0, NULL,
-    "(sidebar) Abbreviate the paths using the #C_Folder variable"
+    "(sidebar) Abbreviate the paths using the `$folder` variable"
   },
   { "sidebar_sort_method", DT_SORT, &C_SidebarSortMethod, SORT_ORDER, IP SortSidebarMethods, NULL,
     "(sidebar) Method to sort the sidebar"

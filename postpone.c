@@ -110,7 +110,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
   if (!C_Postponed)
     return 0;
 
-  // We currently are in the C_Postponed mailbox so just pick the current status
+  // We currently are in the `$postponed` mailbox so just pick the current status
   if (m && mutt_str_equal(C_Postponed, m->realpath))
   {
     PostCount = m->msg_count - m->msg_deleted;
@@ -239,7 +239,7 @@ static struct Email *dlg_select_postponed_email(struct Context *ctx)
   mutt_menu_push_current(menu);
 
   /* The postponed mailbox is setup to have sorting disabled, but the global
-   * C_Sort variable may indicate something different.   Sorting has to be
+   * `$sort` variable may indicate something different.   Sorting has to be
    * disabled while the postpone menu is being displayed. */
   const short orig_sort = C_Sort;
   C_Sort = SORT_ORDER;

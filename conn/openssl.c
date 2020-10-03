@@ -108,7 +108,7 @@ struct SslSockData
  * loaded into the trusted store.  This function filters out expired certs.
  *
  * Previously the code used this form:
- *     SSL_CTX_load_verify_locations (ssldata->ctx, #C_CertificateFile, NULL);
+ *     SSL_CTX_load_verify_locations (ssldata->ctx, `$certificate_file`, NULL);
  */
 static int ssl_load_certificates(SSL_CTX *ctx)
 {

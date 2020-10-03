@@ -68,7 +68,7 @@ enum SortType
   SORT_MAX,
 };
 
-/* C_Sort and C_SortAux are shorts, and are a composite of a constant sort
+/* `$sort` and `$sort_aux` are shorts, and are a composite of a constant sort
  * operation number and a set of compounded bitflags.
  *
  * Everything below SORT_MASK is a constant. There's room for SORT_MASK

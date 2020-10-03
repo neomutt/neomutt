@@ -802,14 +802,14 @@ void imap_error(const char *where, const char *msg)
 
 /**
  * imap_fix_path - Fix up the imap path
- * @param delim     Delimiter specified by the server, '\0' for C_ImapDelimChars
+ * @param delim     Delimiter specified by the server, '\0' for `$imap_delim_chars`
  * @param mailbox   Mailbox path
  * @param path      Buffer for the result
  * @param plen      Length of buffer
  * @retval ptr      Fixed-up path
  *
  * @note if delim is '\0', the first character in mailbox matching any of the
- * characters in C_ImapDelimChars is used as a delimiter.
+ * characters in `$imap_delim_chars` is used as a delimiter.
  *
  * This is necessary because the rest of neomutt assumes a hierarchy delimiter of
  * '/', which is not necessarily true in IMAP.  Additionally, the filesystem

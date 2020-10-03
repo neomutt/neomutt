@@ -669,7 +669,7 @@ int km_dokey(enum MenuType menu)
   {
     int i = (C_Timeout > 0) ? C_Timeout : 60;
 #ifdef USE_IMAP
-    /* keepalive may need to run more frequently than C_Timeout allows */
+    /* keepalive may need to run more frequently than `$timeout` allows */
     if (C_ImapKeepalive)
     {
       if (C_ImapKeepalive >= i)
@@ -861,7 +861,7 @@ static const char *km_keyname(int c)
 /**
  * mutt_init_abort_key - Parse the abort_key config string
  *
- * Parse the string into C_AbortKey and put the keycode into AbortKey.
+ * Parse the string into `$abort_key` and put the keycode into AbortKey.
  */
 void mutt_init_abort_key(void)
 {

@@ -37,9 +37,9 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt_thread.h"
-#include "mx.h"     // mx_padding_size
-#include "protos.h" // mutt_set_flag
-#include "sort.h"   // C_Sort, sort_t
+#include "mx.h"
+#include "protos.h"
+#include "sort.h"
 
 /* These Config Variables are only used in mutt_thread.c */
 bool C_CollapseFlagged; ///< Config: Prevent the collapse of threads with flagged emails
@@ -880,7 +880,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   struct MuttThread top = { 0 };
   struct ListNode *ref = NULL;
 
-  /* Set C_Sort to the secondary method to support the set sort_aux=reverse-*
+  /* Set `$sort` to the secondary method to support the set sort_aux=reverse-*
    * settings.  The sorting functions just look at the value of SORT_REVERSE */
   oldsort = C_Sort;
   C_Sort = C_SortAux;

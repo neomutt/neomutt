@@ -134,10 +134,10 @@ int mutt_idna_to_ascii_lz(const char *input, char **output, int flags)
  * @retval ptr  Newly allocated local email address
  * @retval NULL Error in conversion
  *
- * If #C_IdnDecode is set, then the domain will be converted from Punycode.
+ * If `$idn_decode` is set, then the domain will be converted from Punycode.
  * For example, "xn--ls8h.la" becomes the emoji domain: ":poop:.la"
  * Then the user and domain are changed from 'utf-8' to the encoding in
- * #C_Charset.
+ * `$charset`.
  *
  * If the flag #MI_MAY_BE_IRREVERSIBLE is NOT given, then the results will be
  * checked to make sure that the transformation is "undo-able".
@@ -255,8 +255,8 @@ cleanup:
  * @retval ptr  Newly allocated Punycode email address
  * @retval NULL Error in conversion
  *
- * The user and domain are assumed to be encoded according to #C_Charset.
- * They are converted to 'utf-8'.  If #C_IdnEncode is set, then the domain
+ * The user and domain are assumed to be encoded according to `$charset`.
+ * They are converted to 'utf-8'.  If `$idn_encode` is set, then the domain
  * will be converted to Punycode.  For example, the emoji domain:
  * ":poop:.la" becomes "xn--ls8h.la"
  *

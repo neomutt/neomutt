@@ -355,7 +355,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
  * @retval ptr Result buffer on success
  *
  * Extract the real name from /etc/passwd's GECOS field.  When set, honor the
- * regular expression in #C_GecosMask, otherwise assume that the GECOS field is a
+ * regular expression in `$gecos_mask`, otherwise assume that the GECOS field is a
  * comma-separated list.
  * Replace "&" by a capitalized version of the user's login name.
  */
@@ -1411,7 +1411,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
         mutt_buffer_pool_release(&tmp);
       }
 
-      /* user confirmed with MUTT_YES or set C_Confirmcreate */
+      /* user confirmed with MUTT_YES or set `$confirmcreate` */
       if (ret == 0)
       {
         /* create dir recursively */

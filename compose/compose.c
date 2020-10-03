@@ -2084,7 +2084,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         }
 
         struct Context *ctx_cur = Context; /* remember current folder and sort methods */
-        int old_sort = C_Sort; /* C_Sort, SortAux could be changed in mutt_index_menu() */
+        int old_sort = C_Sort; /* `$sort`, SortAux could be changed in mutt_index_menu() */
         int old_sort_aux = C_SortAux;
 
         Context = ctx;

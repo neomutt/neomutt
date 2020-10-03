@@ -409,7 +409,7 @@ void menu_redraw_index(struct Menu *menu)
           do_color = false;
       }
       else if (C_ArrowCursor)
-        /* Print space chars to match the screen width of C_ArrowString */
+        /* Print space chars to match the screen width of `$arrow_string` */
         mutt_window_printf("%*s", mutt_strwidth(C_ArrowString) + 1, "");
 
       print_enriched_string(i, attr, (unsigned char *) buf, do_color);
@@ -449,7 +449,7 @@ void menu_redraw_motion(struct Menu *menu)
   if (C_ArrowCursor)
   {
     /* clear the arrow */
-    /* Print space chars to match the screen width of C_ArrowString */
+    /* Print space chars to match the screen width of `$arrow_string` */
     mutt_window_printf("%*s", mutt_strwidth(C_ArrowString) + 1, "");
 
     if (menu->redraw & REDRAW_MOTION_RESYNC)

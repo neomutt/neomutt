@@ -29,7 +29,7 @@ struct ConfigSet;
  * struct MbTable - multibyte character table
  *
  * Allows for direct access to the individual multibyte characters in a string.
- * This is used for the #C_FlagChars, #C_FromChars, #C_StatusChars and #C_ToChars
+ * This is used for the `$flag_chars`, `$from_chars`, `$status_chars` and `$to_chars`
  * option types.
  */
 struct MbTable

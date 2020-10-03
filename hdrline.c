@@ -64,7 +64,7 @@ struct MbTable *C_FromChars; ///< Config: User-configurable index flags: to addr
 struct MbTable *C_ToChars; ///< Config: Indicator characters for the 'To' field in the index
 
 /**
- * enum FlagChars - Index into the #C_FlagChars variable ($flag_chars)
+ * enum FlagChars - Index into the `$flag_chars` variable ($flag_chars)
  */
 enum FlagChars
 {
@@ -82,7 +82,7 @@ enum FlagChars
 };
 
 /**
- * enum CryptChars - Index into the #C_CryptChars variable ($crypt_chars)
+ * enum CryptChars - Index into the `$crypt_chars` variable ($crypt_chars)
  */
 enum CryptChars
 {

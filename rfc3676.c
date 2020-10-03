@@ -89,7 +89,7 @@ static int get_quote_level(const char *line)
  */
 static int space_quotes(struct State *s)
 {
-  /* Allow quote spacing in the pager even for C_TextFlowed,
+  /* Allow quote spacing in the pager even for `$text_flowed`,
    * but obviously not when replying.  */
   if (C_TextFlowed && (s->flags & MUTT_REPLYING))
     return 0;
@@ -472,7 +472,7 @@ bail:
  * mutt_rfc3676_space_stuff - Perform RFC3676 space stuffing on an Email
  * @param e Email
  *
- * @note We don't check the option C_TextFlowed because we want to stuff based
+ * @note We don't check the option `$text_flowed` because we want to stuff based
  *       the actual content type.  The option only decides whether to *set*
  *       format=flowed on new messages.
  */

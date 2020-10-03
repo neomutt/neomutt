@@ -25,7 +25,7 @@
  *
  * Read/write command history from/to a file.
  *
- * This history ring grows from 0..#C_History, with last marking the
+ * This history ring grows from 0..`$history`, with last marking the
  * where new entries go:
  * ```
  *         0        the oldest entry in the ring
@@ -35,7 +35,7 @@
  *  last-> x        NULL  (this will be overwritten next)
  *         x+1      NULL
  *         ...
- *         #C_History  NULL
+ *         `$history`  NULL
  * ```
  * Once the array fills up, it is used as a ring.  last points where a new
  * entry will go.  Older entries are "up", and wrap around:
@@ -47,11 +47,11 @@
  *  last-> y        entry (this will be overwritten next)
  *         y+1      the oldest entry in the ring
  *         ...
- *         #C_History  entry
+ *         `$history`  entry
  * ```
  * When $history_remove_dups is set, duplicate entries are scanned and removed
  * each time a new entry is added.  In order to preserve the history ring size,
- * entries 0..last are compacted up.  Entries last+1..#C_History are
+ * entries 0..last are compacted up.  Entries last+1..`$history` are
  * compacted down:
  * ```
  *         0        entry
@@ -64,7 +64,7 @@
  *         ...
  *                  the oldest entry in the ring
  *                  next oldest entry
- *         #C_History  entry
+ *         `$history`  entry
  * ```
  */
 
@@ -370,7 +370,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
   while (source > h->last)
     h->hist[source--] = NULL;
 
-  /* Remove dups from last+1 .. C_History compacting down. */
+  /* Remove dups from last+1 .. `$history` compacting down. */
   source = C_History;
   dest = C_History;
   while (source > old_last)
@@ -429,7 +429,7 @@ void mutt_hist_free(void)
     if (!h->hist)
       continue;
 
-    /* The array has (C_History+1) elements */
+    /* The array has (`$history`+1) elements */
     for (int i = 0; i <= C_History; i++)
     {
       FREE(&h->hist[i]);
@@ -563,7 +563,7 @@ void mutt_hist_reset_state(enum HistoryClass hclass)
 /**
  * mutt_hist_read_file - Read the History from a file
  *
- * The file #C_HistoryFile is read and parsed into separate History ring buffers.
+ * The file `$history_file` is read and parsed into separate History ring buffers.
  */
 void mutt_hist_read_file(void)
 {

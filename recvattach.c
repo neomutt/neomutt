@@ -466,7 +466,7 @@ int attach_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * prepend_savedir - Add #C_AttachSaveDir to the beginning of a path
+ * prepend_savedir - Add `$attach_save_dir` to the beginning of a path
  * @param buf Buffer for the result
  */
 static void prepend_savedir(struct Buffer *buf)

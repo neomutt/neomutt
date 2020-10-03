@@ -53,7 +53,7 @@ typedef uint32_t CopyHeaderFlags;   ///< Flags for mutt_copy_header(), e.g. #CH_
 #define CH_DECODE         (1 << 2)  ///< Do RFC2047 header decoding
 #define CH_XMIT           (1 << 3)  ///< Transmitting this message? (Ignore Lines: and Content-Length:)
 #define CH_FROM           (1 << 4)  ///< Retain the "From " message separator?
-#define CH_PREFIX         (1 << 5)  ///< Quote header using #C_IndentString string?
+#define CH_PREFIX         (1 << 5)  ///< Quote header using `$indent_string` string?
 #define CH_NOSTATUS       (1 << 6)  ///< Suppress the status and x-status fields
 #define CH_REORDER        (1 << 7)  ///< Re-order output of headers (specified by 'hdr_order')
 #define CH_NONEWLINE      (1 << 8)  ///< Don't output terminating newline after the header

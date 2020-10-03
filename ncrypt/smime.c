@@ -727,7 +727,7 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool
  * @param mailbox Email address
  *
  * This sets the '*ToUse' variables for an upcoming decryption, where the
- * required key is different from #C_SmimeDefaultKey.
+ * required key is different from `$smime_default_key`.
  */
 static void getkeys(char *mailbox)
 {

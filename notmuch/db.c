@@ -46,7 +46,7 @@
  * @param m Mailbox
  * @retval ptr Filename
  *
- * @note The return value is a pointer into the #C_NmDefaultUrl global variable.
+ * @note The return value is a pointer into the `$nm_default_url` global variable.
  *       If that variable changes, the result will be invalid.
  *       It must not be freed.
  */

@@ -295,7 +295,7 @@ static struct NmMboxData *nm_get_default_data(void)
   // path to DB + query + url "decoration"
   char url[PATH_MAX + 1024 + 32];
 
-  // Try to use C_NmDefaultUrl or C_Folder.
+  // Try to use `$nm_default_url` or `$folder`.
   // If neither are set, it is impossible to create a Notmuch URL.
   if (C_NmDefaultUrl)
     snprintf(url, sizeof(url), "%s", C_NmDefaultUrl);

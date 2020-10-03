@@ -1172,7 +1172,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
         /* if spam tag already exists, figure out how to amend it */
         if ((!mutt_buffer_is_empty(&env->spam)) && (*buf != '\0'))
         {
-          /* If C_SpamSeparator defined, append with separator */
+          /* If `$spam_separator` defined, append with separator */
           if (C_SpamSeparator)
           {
             mutt_buffer_addstr(&env->spam, C_SpamSeparator);

@@ -80,9 +80,9 @@
 #endif
 
 /* These Config Variables are only used in mx.c */
-bool C_KeepFlagged; ///< Config: Don't move flagged messages from #C_Spoolfile to #C_Mbox
+bool C_KeepFlagged; ///< Config: Don't move flagged messages from `$spoolfile` to `$mbox`
 unsigned char C_MboxType; ///< Config: Default type for creating new mailboxes
-unsigned char C_Move; ///< Config: Move emails from #C_Spoolfile to #C_Mbox when read
+unsigned char C_Move; ///< Config: Move emails from `$spoolfile` to `$mbox` when read
 char *C_Trash;        ///< Config: Folder to put deleted emails
 
 // clang-format off

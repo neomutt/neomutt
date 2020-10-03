@@ -218,7 +218,7 @@ struct ConfigDef SendVars[] = {
     "External command to determine the MIME type of an attachment"
   },
   { "mime_type_query_first", DT_BOOL, NULL, false, 0, NULL,
-    "Run the #C_MimeTypeQueryCommand before the mime.types lookup"
+    "Run the `$mime_type_query_command` before the mime.types lookup"
   },
   { "nm_record", DT_BOOL, NULL, false, 0, NULL,
     "(notmuch) If the 'record' mailbox (sent mail) should be indexed"
