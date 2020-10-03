@@ -126,6 +126,8 @@ struct ComposeRedrawData
   struct MuttWindow *win_abar;     ///< Attachments label
   struct MuttWindow *win_attach;   ///< List of Attachments
   struct MuttWindow *win_cbar;     ///< Compose bar
+
+  struct ConfigSubset *sub; ///< Inherited config items
 };
 
 #define CHECK_COUNT                                                            \
@@ -731,10 +733,11 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
 /**
  * check_attachments - Check if any attachments have changed or been deleted
  * @param actx Attachment context
+ * @param sub  ConfigSubset
  * @retval  0 Success
  * @retval -1 Error
  */
-static int check_attachments(struct AttachCtx *actx)
+static int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
 {
   int rc = -1;
   struct stat st;
@@ -776,7 +779,7 @@ static int check_attachments(struct AttachCtx *actx)
 
       enum QuadOption ans = mutt_yesorno(mutt_b2s(msg), MUTT_YES);
       if (ans == MUTT_YES)
-        mutt_update_encoding(actx->idx[i]->body, NeoMutt->sub);
+        mutt_update_encoding(actx->idx[i]->body, sub);
       else if (ans == MUTT_ABORT)
         goto cleanup;
     }
@@ -1255,13 +1258,15 @@ static unsigned long cum_attachs_size(struct Menu *menu)
   struct AttachPtr **idx = actx->idx;
   struct Content *info = NULL;
   struct Body *b = NULL;
+  struct ComposeRedrawData *rd = (struct ComposeRedrawData *) menu->redraw_data;
+  struct ConfigSubset *sub = rd->sub;
 
   for (unsigned short i = 0; i < actx->idxlen; i++)
   {
     b = idx[i]->body;
 
     if (!b->content)
-      b->content = mutt_get_content_info(b->filename, b, NeoMutt->sub);
+      b->content = mutt_get_content_info(b->filename, b, sub);
 
     info = b->content;
     if (info)
@@ -1429,11 +1434,13 @@ static int compose_header_observer(struct NotifyCallback *nc)
  * @param fcc    Buffer to save FCC
  * @param e_cur  Current message
  * @param flags  Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
+ * @param sub    ConfigSubset
  * @retval  1 Message should be postponed
  * @retval  0 Normal exit
  * @retval -1 Abort message
  */
-int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, int flags)
+int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
+                      int flags, struct ConfigSubset *sub)
 {
   char buf[PATH_MAX];
   int rc = -1;
@@ -1478,6 +1485,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
   rd->win_cbar = ebar;
   rd->win_attach = attach;
   rd->win_abar = abar;
+  rd->sub = sub;
 
   if (C_StatusOnTop)
   {
@@ -1679,7 +1687,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_rfc3676_space_unstuff(e);
           mutt_edit_file(C_Editor, e->body->filename);
           mutt_rfc3676_space_stuff(e);
-          mutt_update_encoding(e->body, NeoMutt->sub);
+          mutt_update_encoding(e->body, sub);
           menu->redraw = REDRAW_FULL;
           /* Unconditional hook since editor was invoked */
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -1702,7 +1710,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         redraw_env = true;
 
         mutt_rfc3676_space_stuff(e);
-        mutt_update_encoding(e->body, NeoMutt->sub);
+        mutt_update_encoding(e->body, sub);
 
         /* attachments may have been added */
         if (actx->idxlen && actx->idx[actx->idxlen - 1]->body->next)
@@ -1975,7 +1983,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           char *att = files[i];
           struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
           ap->unowned = true;
-          ap->body = mutt_make_file_attach(att, NeoMutt->sub);
+          ap->body = mutt_make_file_attach(att, sub);
           if (ap->body)
           {
             added_attachment = true;
@@ -2118,8 +2126,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
             continue;
 
           struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-          ap->body = mutt_make_message_attach(
-              Context->mailbox, Context->mailbox->emails[i], true, NeoMutt->sub);
+          ap->body = mutt_make_message_attach(Context->mailbox,
+                                              Context->mailbox->emails[i], true, sub);
           if (ap->body)
           {
             added_attachment = true;
@@ -2205,14 +2213,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
             if (top->tagged)
             {
               encoding_updated = true;
-              mutt_update_encoding(top, NeoMutt->sub);
+              mutt_update_encoding(top, sub);
             }
           }
           menu->redraw = REDRAW_FULL;
         }
         else
         {
-          mutt_update_encoding(CUR_ATTACH->body, NeoMutt->sub);
+          mutt_update_encoding(CUR_ATTACH->body, sub);
           encoding_updated = true;
           menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
         }
@@ -2234,7 +2242,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           if (mutt_edit_content_type(NULL, CUR_ATTACH->body, NULL))
           {
             /* this may have been a change to text/something */
-            mutt_update_encoding(CUR_ATTACH->body, NeoMutt->sub);
+            mutt_update_encoding(CUR_ATTACH->body, sub);
             menu->redraw |= REDRAW_CURRENT;
             mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           }
@@ -2284,7 +2292,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
       case OP_COMPOSE_SEND_MESSAGE:
         /* Note: We don't invoke send2-hook here, since we want to leave
          * users an opportunity to change settings from the ":" prompt.  */
-        if (check_attachments(actx) != 0)
+        if (check_attachments(actx, sub) != 0)
         {
           menu->redraw = REDRAW_FULL;
           break;
@@ -2312,7 +2320,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
       case OP_COMPOSE_EDIT_FILE:
         CHECK_COUNT;
         mutt_edit_file(NONULL(C_Editor), CUR_ATTACH->body->filename);
-        mutt_update_encoding(CUR_ATTACH->body, NeoMutt->sub);
+        mutt_update_encoding(CUR_ATTACH->body, sub);
         menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
         /* Unconditional hook since editor was invoked */
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2433,7 +2441,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         }
         mutt_file_fclose(&fp);
 
-        ap->body = mutt_make_file_attach(mutt_b2s(&fname), NeoMutt->sub);
+        ap->body = mutt_make_file_attach(mutt_b2s(&fname), sub);
         if (!ap->body)
         {
           mutt_error(_("What we have here is a failure to make an attachment"));
@@ -2449,7 +2457,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
         if (mutt_compose_attachment(CUR_ATTACH->body))
         {
-          mutt_update_encoding(CUR_ATTACH->body, NeoMutt->sub);
+          mutt_update_encoding(CUR_ATTACH->body, sub);
           menu->redraw = REDRAW_FULL;
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2460,7 +2468,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         CHECK_COUNT;
         if (mutt_edit_attachment(CUR_ATTACH->body))
         {
-          mutt_update_encoding(CUR_ATTACH->body, NeoMutt->sub);
+          mutt_update_encoding(CUR_ATTACH->body, sub);
           menu->redraw = REDRAW_FULL;
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         }
@@ -2529,7 +2537,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         /* fallthrough */
 
       case OP_COMPOSE_POSTPONE_MESSAGE:
-        if (check_attachments(actx) != 0)
+        if (check_attachments(actx, sub) != 0)
         {
           menu->redraw = REDRAW_FULL;
           break;
@@ -2546,7 +2554,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           mutt_error(_("Error running \"%s\""), buf);
         else
         {
-          mutt_update_encoding(e->body, NeoMutt->sub);
+          mutt_update_encoding(e->body, sub);
           menu->redraw |= REDRAW_STATUS;
         }
         break;
@@ -2569,8 +2577,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
           if (e->body->next)
             e->body = mutt_make_multipart(e->body);
 
-          if (mutt_write_fcc(mutt_b2s(&fname), e, NULL, false, NULL, NULL,
-                             NeoMutt->sub) == 0)
+          if (mutt_write_fcc(mutt_b2s(&fname), e, NULL, false, NULL, NULL, sub) == 0)
             mutt_message(_("Message written"));
 
           e->body = mutt_remove_multipart(e->body);
