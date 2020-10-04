@@ -74,6 +74,535 @@ static struct HashTable *IdxFmtHooks = NULL;
 static HookFlags current_hook_type = MUTT_HOOK_NO_FLAGS;
 
 /**
+ * mutt_parse_hook_pattern - Parse the 'hook' family of commands - Implements Command::parse()
+ *
+ * This is used by 'message-hook', 'reply-hook', 'send-hook', 'send2-hook',
+ * 'fcc-hook', 'fcc-save-hook', 'save-hook'
+ */
+enum CommandResult mutt_parse_hook_pattern(struct Buffer *buf, struct Buffer *s,
+                                           intptr_t data, struct Buffer *err)
+{
+  struct Hook *hook = NULL;
+  int rc = MUTT_CMD_ERROR;
+  bool pat_not = false;
+  regex_t *rx = NULL;
+  struct PatternList *pat = NULL;
+
+  struct Buffer *cmd = mutt_buffer_pool_get();
+  struct Buffer *pattern = mutt_buffer_pool_get();
+
+  mutt_debug(LL_DEBUG1, "SKOM: we're here 141\n");
+
+  if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
+  {
+    if (*s->dptr == '!')
+    {
+      s->dptr++;
+      SKIPWS(s->dptr);
+      pat_not = true;
+    }
+
+    mutt_extract_token(pattern, s, MUTT_TOKEN_NO_FLAGS);
+
+    if (!MoreArgs(s))
+    {
+      mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
+      rc = MUTT_CMD_WARNING;
+      goto cleanup;
+    }
+  }
+
+  mutt_extract_token(cmd, s,
+                     (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_REPLY_HOOK)) ?
+                         MUTT_TOKEN_SPACE :
+                         MUTT_TOKEN_NO_FLAGS);
+
+  if (mutt_buffer_is_empty(cmd))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
+  }
+
+  if (MoreArgs(s))
+  {
+    mutt_buffer_printf(err, _("%s: too many arguments"), buf->data);
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
+  }
+
+  const char *const c_default_hook =
+      cs_subset_string(NeoMutt->sub, "default_hook");
+  if (c_default_hook && (~data & MUTT_GLOBAL_HOOK) &&
+      (!WithCrypto || !(data & MUTT_CRYPT_HOOK)))
+  {
+    /* At this stage remain only message-hooks, reply-hooks, send-hooks,
+     * send2-hooks, save-hooks, and fcc-hooks: All those allowing full
+     * patterns. If given a simple regex, we expand $default_hook.  */
+    mutt_check_simple(pattern, c_default_hook);
+  }
+
+  if (data & (MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
+    mutt_buffer_expand_path(cmd);
+
+  /* check to make sure that a matching hook doesn't already exist */
+  TAILQ_FOREACH(hook, &Hooks, entries)
+  {
+    if ((hook->type == data) && (hook->regex.pat_not == pat_not) &&
+        mutt_str_equal(mutt_buffer_string(pattern), hook->regex.pattern))
+    {
+      if (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK))
+      {
+        /* these hooks allow multiple commands with the same
+         * pattern, so if we've already seen this pattern/command pair, just
+         * ignore it instead of creating a duplicate */
+        if (mutt_str_equal(hook->command, mutt_buffer_string(cmd)))
+        {
+          rc = MUTT_CMD_SUCCESS;
+          goto cleanup;
+        }
+      }
+      else
+      {
+        /* other hooks only allow one command per pattern, so update the
+         * entry with the new command.  this currently does not change the
+         * order of execution of the hooks, which i think is desirable since
+         * a common action to perform is to change the default (.) entry
+         * based upon some other information. */
+        FREE(&hook->command);
+        hook->command = mutt_buffer_strdup(cmd);
+        rc = MUTT_CMD_SUCCESS;
+        goto cleanup;
+      }
+    }
+  }
+
+  if (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_SAVE_HOOK |
+              MUTT_FCC_HOOK | MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK))
+  {
+    PatternCompFlags comp_flags;
+
+    if (data & (MUTT_SEND2_HOOK))
+      comp_flags = MUTT_PC_SEND_MODE_SEARCH;
+    else if (data & (MUTT_SEND_HOOK | MUTT_FCC_HOOK))
+      comp_flags = MUTT_PC_NO_FLAGS;
+    else
+      comp_flags = MUTT_PC_FULL_MSG;
+
+    pat = mutt_pattern_comp(NULL, NULL, mutt_buffer_string(pattern), comp_flags, err);
+    if (!pat)
+      goto cleanup;
+  }
+  // I think this won't ever happen
+  else if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
+  {
+    /* Hooks not allowing full patterns: Check syntax of regex */
+    rx = mutt_mem_malloc(sizeof(regex_t));
+    int rc2 = REG_COMP(rx, NONULL(mutt_buffer_string(pattern)),
+                       ((data & MUTT_CRYPT_HOOK) ? REG_ICASE : 0));
+    if (rc2 != 0)
+    {
+      regerror(rc2, rx, err->data, err->dsize);
+      FREE(&rx);
+      goto cleanup;
+    }
+  }
+
+  hook = mutt_mem_calloc(1, sizeof(struct Hook));
+  hook->type = data;
+  hook->command = mutt_buffer_strdup(cmd);
+  hook->pattern = pat;
+  hook->regex.pattern = mutt_buffer_strdup(pattern);
+  hook->regex.regex = rx;
+  hook->regex.pat_not = pat_not;
+  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  rc = MUTT_CMD_SUCCESS;
+
+cleanup:
+  mutt_buffer_pool_release(&cmd);
+  mutt_buffer_pool_release(&pattern);
+  return rc;
+}
+
+/**
+ * mutt_parse_hook_regex - Parse the 'hook' family of commands - Implements Command::parse()
+ *
+ * This is used by 'account-hook', 'append-hook' and many more.
+ */
+enum CommandResult mutt_parse_hook_regex(struct Buffer *buf, struct Buffer *s,
+                                         intptr_t data, struct Buffer *err)
+{
+  struct Hook *hook = NULL;
+  int rc = MUTT_CMD_ERROR;
+  bool pat_not = false;
+  regex_t *rx = NULL;
+  struct PatternList *pat = NULL;
+
+  struct Buffer *cmd = mutt_buffer_pool_get();
+  struct Buffer *pattern = mutt_buffer_pool_get();
+
+  mutt_debug(LL_DEBUG1, "SKOM: we're here 159l\n");
+
+  if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
+  {
+    if (*s->dptr == '!')
+    {
+      s->dptr++;
+      SKIPWS(s->dptr);
+      pat_not = true;
+    }
+
+    mutt_extract_token(pattern, s, MUTT_TOKEN_NO_FLAGS);
+
+    if (!MoreArgs(s))
+    {
+      mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
+      rc = MUTT_CMD_WARNING;
+      goto cleanup;
+    }
+  }
+
+  mutt_extract_token(
+      cmd, s, (data & (MUTT_FOLDER_HOOK | MUTT_ACCOUNT_HOOK)) ? MUTT_TOKEN_SPACE : MUTT_TOKEN_NO_FLAGS);
+
+  if (mutt_buffer_is_empty(cmd))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
+  }
+
+  if (MoreArgs(s))
+  {
+    mutt_buffer_printf(err, _("%s: too many arguments"), buf->data);
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
+  }
+
+  const char *const c_default_hook =
+      cs_subset_string(NeoMutt->sub, "default_hook");
+  if (data & (MUTT_FOLDER_HOOK | MUTT_MBOX_HOOK))
+  {
+    /* Accidentally using the ^ mailbox shortcut in the .neomuttrc is a
+     * common mistake */
+    if ((pattern->data[0] == '^') && !CurrentFolder)
+    {
+      mutt_buffer_strcpy(err, _("current mailbox shortcut '^' is unset"));
+      goto cleanup;
+    }
+
+    struct Buffer *tmp = mutt_buffer_pool_get();
+    mutt_buffer_copy(tmp, pattern);
+    mutt_buffer_expand_path_regex(tmp, true);
+
+    /* Check for other mailbox shortcuts that expand to the empty string.
+     * This is likely a mistake too */
+    if (mutt_buffer_is_empty(tmp) && !mutt_buffer_is_empty(pattern))
+    {
+      mutt_buffer_strcpy(err, _("mailbox shortcut expanded to empty regex"));
+      mutt_buffer_pool_release(&tmp);
+      goto cleanup;
+    }
+
+    mutt_buffer_copy(pattern, tmp);
+    mutt_buffer_pool_release(&tmp);
+  }
+#ifdef USE_COMP_MBOX
+  else if (data & (MUTT_APPEND_HOOK | MUTT_OPEN_HOOK | MUTT_CLOSE_HOOK))
+  {
+    if (mutt_comp_valid_command(mutt_buffer_string(cmd)) == 0)
+    {
+      mutt_buffer_strcpy(err, _("badly formatted command string"));
+      goto cleanup;
+    }
+  }
+#endif
+  else if (c_default_hook && (~data & MUTT_GLOBAL_HOOK) &&
+           !(data & (MUTT_ACCOUNT_HOOK)) && (!WithCrypto || !(data & MUTT_CRYPT_HOOK)))
+  {
+    /* At this stage remain only message-hooks, reply-hooks, send-hooks,
+     * send2-hooks, save-hooks, and fcc-hooks: All those allowing full
+     * patterns. If given a simple regex, we expand $default_hook.  */
+    mutt_check_simple(pattern, c_default_hook);
+  }
+
+  if (data & (MUTT_MBOX_HOOK))
+    mutt_buffer_expand_path(cmd);
+
+  /* check to make sure that a matching hook doesn't already exist */
+  TAILQ_FOREACH(hook, &Hooks, entries)
+  {
+    if ((hook->type == data) && (hook->regex.pat_not == pat_not) &&
+        mutt_str_equal(mutt_buffer_string(pattern), hook->regex.pattern))
+    {
+      if (data & (MUTT_FOLDER_HOOK | MUTT_ACCOUNT_HOOK | MUTT_CRYPT_HOOK))
+      {
+        /* these hooks allow multiple commands with the same
+         * pattern, so if we've already seen this pattern/command pair, just
+         * ignore it instead of creating a duplicate */
+        if (mutt_str_equal(hook->command, mutt_buffer_string(cmd)))
+        {
+          rc = MUTT_CMD_SUCCESS;
+          goto cleanup;
+        }
+      }
+      else
+      {
+        /* other hooks only allow one command per pattern, so update the
+         * entry with the new command.  this currently does not change the
+         * order of execution of the hooks, which i think is desirable since
+         * a common action to perform is to change the default (.) entry
+         * based upon some other information. */
+        FREE(&hook->command);
+        hook->command = mutt_buffer_strdup(cmd);
+        rc = MUTT_CMD_SUCCESS;
+        goto cleanup;
+      }
+    }
+  }
+
+  if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
+  {
+    /* Hooks not allowing full patterns: Check syntax of regex */
+    rx = mutt_mem_malloc(sizeof(regex_t));
+    int rc2 = REG_COMP(rx, NONULL(mutt_buffer_string(pattern)),
+                       ((data & MUTT_CRYPT_HOOK) ? REG_ICASE : 0));
+    if (rc2 != 0)
+    {
+      regerror(rc2, rx, err->data, err->dsize);
+      FREE(&rx);
+      goto cleanup;
+    }
+  }
+
+  hook = mutt_mem_calloc(1, sizeof(struct Hook));
+  hook->type = data;
+  hook->command = mutt_buffer_strdup(cmd);
+  hook->pattern = pat;
+  hook->regex.pattern = mutt_buffer_strdup(pattern);
+  hook->regex.regex = rx;
+  hook->regex.pat_not = pat_not;
+  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  rc = MUTT_CMD_SUCCESS;
+
+cleanup:
+  mutt_buffer_pool_release(&cmd);
+  mutt_buffer_pool_release(&pattern);
+  return rc;
+}
+
+/**
+ * mutt_parse_hook_command - Parse the 'hook' family of commands - Implements Command::parse()
+ *
+ * This is used by 'account-hook', 'append-hook' and many more.
+ */
+enum CommandResult mutt_parse_hook_command(struct Buffer *buf, struct Buffer *s,
+                                           intptr_t data, struct Buffer *err)
+{
+  struct Hook *hook = NULL;
+  int rc = MUTT_CMD_ERROR;
+  bool pat_not = false;
+  regex_t *rx = NULL;
+  struct PatternList *pat = NULL;
+
+  struct Buffer *cmd = mutt_buffer_pool_get();
+  struct Buffer *pattern = mutt_buffer_pool_get();
+
+  mutt_debug(LL_DEBUG1, "SKOM: we're here 195\n");
+
+  if (mutt_buffer_is_empty(cmd))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
+  }
+
+  if (MoreArgs(s))
+  {
+    mutt_buffer_printf(err, _("%s: too many arguments"), buf->data);
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
+  }
+
+  const char *const c_default_hook =
+      cs_subset_string(NeoMutt->sub, "default_hook");
+  if (c_default_hook && (~data & MUTT_GLOBAL_HOOK) &&
+      !(data & (MUTT_CHARSET_HOOK | MUTT_ICONV_HOOK | MUTT_ACCOUNT_HOOK)) &&
+      (!WithCrypto || !(data & MUTT_CRYPT_HOOK)))
+  {
+    /* At this stage remain only message-hooks, reply-hooks, send-hooks,
+     * send2-hooks, save-hooks, and fcc-hooks: All those allowing full
+     * patterns. If given a simple regex, we expand $default_hook.  */
+    mutt_check_simple(pattern, c_default_hook);
+  }
+
+  /* check to make sure that a matching hook doesn't already exist */
+  TAILQ_FOREACH(hook, &Hooks, entries)
+  {
+    if (data & MUTT_GLOBAL_HOOK)
+    {
+      /* Ignore duplicate global hooks */
+      if (mutt_str_equal(hook->command, mutt_buffer_string(cmd)))
+      {
+        rc = MUTT_CMD_SUCCESS;
+        goto cleanup;
+      }
+    }
+    else if ((hook->type == data) && (hook->regex.pat_not == pat_not) &&
+             mutt_str_equal(mutt_buffer_string(pattern), hook->regex.pattern))
+    {
+      if (data & (MUTT_TIMEOUT_HOOK | MUTT_STARTUP_HOOK | MUTT_SHUTDOWN_HOOK))
+      {
+        /* these hooks allow multiple commands with the same
+         * pattern, so if we've already seen this pattern/command pair, just
+         * ignore it instead of creating a duplicate */
+        if (mutt_str_equal(hook->command, mutt_buffer_string(cmd)))
+        {
+          rc = MUTT_CMD_SUCCESS;
+          goto cleanup;
+        }
+      }
+      else
+      {
+        /* other hooks only allow one command per pattern, so update the
+         * entry with the new command.  this currently does not change the
+         * order of execution of the hooks, which i think is desirable since
+         * a common action to perform is to change the default (.) entry
+         * based upon some other information. */
+        FREE(&hook->command);
+        hook->command = mutt_buffer_strdup(cmd);
+        rc = MUTT_CMD_SUCCESS;
+        goto cleanup;
+      }
+    }
+  }
+
+  hook = mutt_mem_calloc(1, sizeof(struct Hook));
+  hook->type = data;
+  hook->command = mutt_buffer_strdup(cmd);
+  hook->pattern = pat;
+  hook->regex.pattern = mutt_buffer_strdup(pattern);
+  hook->regex.regex = rx;
+  hook->regex.pat_not = pat_not;
+  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  rc = MUTT_CMD_SUCCESS;
+
+cleanup:
+  mutt_buffer_pool_release(&cmd);
+  mutt_buffer_pool_release(&pattern);
+  return rc;
+}
+
+/**
+ * mutt_parse_hook_charset - Parse the 'hook' family of commands - Implements Command::parse()
+ *
+ * This is used by 'charset-hook', 'iconv-hook'
+ */
+enum CommandResult mutt_parse_hook_charset(struct Buffer *buf, struct Buffer *s,
+                                           intptr_t data, struct Buffer *err)
+{
+  struct Hook *hook = NULL;
+  int rc = MUTT_CMD_ERROR;
+  bool pat_not = false;
+  regex_t *rx = NULL;
+  struct PatternList *pat = NULL;
+
+  struct Buffer *cmd = mutt_buffer_pool_get();
+  struct Buffer *pattern = mutt_buffer_pool_get();
+
+  mutt_debug(LL_DEBUG1, "SKOM: we're here 195\n");
+
+  if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
+  {
+    if (*s->dptr == '!')
+    {
+      s->dptr++;
+      SKIPWS(s->dptr);
+      pat_not = true;
+    }
+
+    mutt_extract_token(pattern, s, MUTT_TOKEN_NO_FLAGS);
+
+    if (!MoreArgs(s))
+    {
+      mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
+      rc = MUTT_CMD_WARNING;
+      goto cleanup;
+    }
+  }
+
+  if (mutt_buffer_is_empty(cmd))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
+  }
+
+  if (MoreArgs(s))
+  {
+    mutt_buffer_printf(err, _("%s: too many arguments"), buf->data);
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
+  }
+
+  /* check to make sure that a matching hook doesn't already exist */
+  TAILQ_FOREACH(hook, &Hooks, entries)
+  {
+    if ((hook->type == data) && (hook->regex.pat_not == pat_not) &&
+        mutt_str_equal(mutt_buffer_string(pattern), hook->regex.pattern))
+    {
+      /* other hooks only allow one command per pattern, so update the
+       * entry with the new command.  this currently does not change the
+       * order of execution of the hooks, which i think is desirable since
+       * a common action to perform is to change the default (.) entry
+       * based upon some other information. */
+      FREE(&hook->command);
+      hook->command = mutt_buffer_strdup(cmd);
+      rc = MUTT_CMD_SUCCESS;
+      goto cleanup;
+    }
+  }
+
+  if (data & (MUTT_CHARSET_HOOK | MUTT_ICONV_HOOK))
+  {
+    /* These are managed separately by the charset code */
+    enum LookupType type = (data & MUTT_CHARSET_HOOK) ? MUTT_LOOKUP_CHARSET : MUTT_LOOKUP_ICONV;
+    if (mutt_ch_lookup_add(type, mutt_buffer_string(pattern), mutt_buffer_string(cmd), err))
+      rc = MUTT_CMD_SUCCESS;
+    goto cleanup;
+  }
+  // TODO: we should be able to remove this block
+  else if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
+  {
+    /* Hooks not allowing full patterns: Check syntax of regex */
+    rx = mutt_mem_malloc(sizeof(regex_t));
+    int rc2 = REG_COMP(rx, NONULL(mutt_buffer_string(pattern)),
+                       ((data & MUTT_CRYPT_HOOK) ? REG_ICASE : 0));
+    if (rc2 != 0)
+    {
+      regerror(rc2, rx, err->data, err->dsize);
+      FREE(&rx);
+      goto cleanup;
+    }
+  }
+
+  hook = mutt_mem_calloc(1, sizeof(struct Hook));
+  hook->type = data;
+  hook->command = mutt_buffer_strdup(cmd);
+  hook->pattern = pat;
+  hook->regex.pattern = mutt_buffer_strdup(pattern);
+  hook->regex.regex = rx;
+  hook->regex.pat_not = pat_not;
+  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  rc = MUTT_CMD_SUCCESS;
+
+cleanup:
+  mutt_buffer_pool_release(&cmd);
+  mutt_buffer_pool_release(&pattern);
+  return rc;
+}
+
+/**
  * mutt_parse_hook - Parse the 'hook' family of commands - Implements Command::parse() - @ingroup command_parse
  *
  * This is used by 'account-hook', 'append-hook' and many more.
@@ -91,6 +620,8 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
 
   struct Buffer *cmd = mutt_buffer_pool_get();
   struct Buffer *pattern = mutt_buffer_pool_get();
+
+  mutt_debug(LL_DEBUG1, "SKOM: we're here 195\n");
 
   if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
   {
