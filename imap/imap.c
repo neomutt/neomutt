@@ -2437,6 +2437,19 @@ static int imap_path_parent(char *buf, size_t buflen)
   return 0;
 }
 
+/**
+ * imap_path_is_empty - Is the mailbox empty - Implements MxOps::path_is_empty()
+ */
+static int imap_path_is_empty(const char *path)
+{
+  int rc = imap_path_status(path, false);
+  if (rc < 0)
+    return -1;
+  if (rc == 0)
+    return 1;
+  return 0;
+}
+
 // clang-format off
 /**
  * MxImapOps - IMAP Mailbox - Implements ::MxOps
@@ -2465,5 +2478,6 @@ struct MxOps MxImapOps = {
   .path_canon       = imap_path_canon,
   .path_pretty      = imap_path_pretty,
   .path_parent      = imap_path_parent,
+  .path_is_empty    = imap_path_is_empty,
 };
 // clang-format on

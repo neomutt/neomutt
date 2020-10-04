@@ -1256,39 +1256,23 @@ void mx_alloc_memory(struct Mailbox *m)
 }
 
 /**
- * mx_check_empty - Is the mailbox empty
+ * mx_path_is_empty - Is the mailbox empty
  * @param path Mailbox to check
  * @retval 1 Mailbox is empty
  * @retval 0 Mailbox contains mail
  * @retval -1 Error
  */
-int mx_check_empty(const char *path)
+int mx_path_is_empty(const char *path)
 {
-  switch (mx_path_probe(path))
-  {
-    case MUTT_MBOX:
-    case MUTT_MMDF:
-      return mutt_file_check_empty(path);
-    case MUTT_MH:
-      return mh_check_empty(path);
-    case MUTT_MAILDIR:
-      return maildir_check_empty(path);
-#ifdef USE_IMAP
-    case MUTT_IMAP:
-    {
-      int rc = imap_path_status(path, false);
-      if (rc < 0)
-        return -1;
-      if (rc == 0)
-        return 1;
-      return 0;
-    }
-#endif
-    default:
-      errno = EINVAL;
-      return -1;
-  }
-  /* not reached */
+  if (!path || (*path == '\0'))
+    return -1;
+
+  enum MailboxType type = mx_path_probe(path);
+  const struct MxOps *ops = mx_get_ops(type);
+  if (!ops || !ops->path_is_empty)
+    return -1;
+
+  return ops->path_is_empty(path);
 }
 
 /**

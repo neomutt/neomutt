@@ -1266,5 +1266,6 @@ struct MxOps MxPopOps = {
   .path_canon       = pop_path_canon,
   .path_pretty      = pop_path_pretty,
   .path_parent      = pop_path_parent,
+  .path_is_empty    = NULL,
 };
 // clang-format on

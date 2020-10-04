@@ -2652,5 +2652,6 @@ struct MxOps MxNotmuchOps = {
   .path_canon       = nm_path_canon,
   .path_pretty      = nm_path_pretty,
   .path_parent      = nm_path_parent,
+  .path_is_empty    = NULL,
 };
 // clang-format on

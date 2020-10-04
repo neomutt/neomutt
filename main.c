@@ -1198,7 +1198,7 @@ int main(int argc, char *argv[], char *envp[])
     if (flags & MUTT_CLI_IGNORE)
     {
       /* check to see if there are any messages in the folder */
-      switch (mx_check_empty(mutt_b2s(&folder)))
+      switch (mx_path_is_empty(mutt_b2s(&folder)))
       {
         case -1:
           mutt_perror(mutt_b2s(&folder));

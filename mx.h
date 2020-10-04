@@ -359,6 +359,18 @@ struct MxOps
    * - @a buf is not NULL
    */
   int (*path_parent)     (char *buf, size_t buflen);
+
+  /**
+   * path_is_empty - Is the Mailbox empty?
+   * @param path Mailbox to check
+   * @retval 1 Mailbox is empty
+   * @retval 0 Mailbox contains mail
+   * @retval -1 Error
+   *
+   * **Contract**
+   * - @a path is not NULL and not empty
+   */
+  int (*path_is_empty)     (const char *path);
 };
 
 /* Wrappers for the Mailbox API, see MxOps */
@@ -392,7 +404,7 @@ int             mx_ac_remove   (struct Mailbox *m);
 
 int                 mx_access           (const char *path, int flags);
 void                mx_alloc_memory     (struct Mailbox *m);
-int                 mx_check_empty      (const char *path);
+int                 mx_path_is_empty    (const char *path);
 void                mx_fastclose_mailbox(struct Mailbox *m);
 const struct MxOps *mx_get_ops          (enum MailboxType type);
 bool                mx_tags_is_supported(struct Mailbox *m);
