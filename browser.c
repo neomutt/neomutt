@@ -1158,7 +1158,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                              char ***files, int *numfiles)
 {
   char title[256];
-  struct BrowserState state = { 0 };
+  struct BrowserState state = { {0} };
   struct Menu *menu = NULL;
   bool kill_prefix = false;
   bool multiple = (flags & MUTT_SEL_MULTI);
