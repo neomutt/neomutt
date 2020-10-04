@@ -370,7 +370,7 @@ set prefix [opt-val with-sysroot][get-define prefix]
 # Everything
 if {[get-define want-everything]} {
   foreach opt {bdb gdbm gpgme kyotocabinet lmdb lua lz4 notmuch pgp rocksdb
-               qdbm smime tokyocabinet tdb zlib zstd} {
+               qdbm sasl smime ssl tokyocabinet tdb zlib zstd} {
     define want-$opt
     append conf_options "--$opt "
   }
