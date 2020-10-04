@@ -1721,6 +1721,14 @@ static int mbox_path_parent(char *buf, size_t buflen)
 }
 
 /**
+ * mbox_path_is_empty - Is the mailbox empty - Implements MxOps::path_is_empty()
+ */
+static int mbox_path_is_empty(const char *path)
+{
+  return mutt_file_check_empty(path);
+}
+
+/**
  * mmdf_msg_commit - Save changes to an email - Implements MxOps::msg_commit()
  */
 static int mmdf_msg_commit(struct Mailbox *m, struct Message *msg)
@@ -1827,6 +1835,7 @@ struct MxOps MxMboxOps = {
   .path_canon       = mbox_path_canon,
   .path_pretty      = mbox_path_pretty,
   .path_parent      = mbox_path_parent,
+  .path_is_empty    = mbox_path_is_empty,
 };
 
 /**
@@ -1856,5 +1865,6 @@ struct MxOps MxMmdfOps = {
   .path_canon       = mbox_path_canon,
   .path_pretty      = mbox_path_pretty,
   .path_parent      = mbox_path_parent,
+  .path_is_empty    = mbox_path_is_empty,
 };
 // clang-format on

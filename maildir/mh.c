@@ -815,5 +815,6 @@ struct MxOps MxMhOps = {
   .path_canon       = maildir_path_canon,
   .path_pretty      = maildir_path_pretty,
   .path_parent      = maildir_path_parent,
+  .path_is_empty    = mh_check_empty,
 };
 // clang-format on
