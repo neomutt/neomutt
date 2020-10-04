@@ -217,7 +217,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
 
   mutt_menu_push_current(menu);
 
-  ARRAY_SORT(&mdata->ava, alias_get_sort_function(C_SortAlias));
+  alias_array_sort(&mdata->ava);
 
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata->ava)

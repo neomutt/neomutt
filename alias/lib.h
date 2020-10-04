@@ -34,6 +34,7 @@
  * | alias/dlgquery.c    | @subpage alias_dlgquery    |
  * | alias/gui.c         | @subpage alias_gui         |
  * | alias/reverse.c     | @subpage alias_reverse     |
+ * | alias/sort.c        | @subpage alias_sort        |
  */
 
 #ifndef MUTT_ALIAS_LIB_H
@@ -46,6 +47,7 @@
 
 struct Address;
 struct AddressList;
+struct AliasViewArray;
 struct Buffer;
 struct ConfigSet;
 struct Envelope;
@@ -84,5 +86,7 @@ void query_index   (void);
 struct Address *alias_reverse_lookup(const struct Address *addr);
 
 bool config_init_alias(struct ConfigSet *cs);
+
+void alias_array_sort(struct AliasViewArray *ava);
 
 #endif /* MUTT_ALIAS_LIB_H */

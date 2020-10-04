@@ -66,10 +66,4 @@ int  alias_array_count_visible(struct AliasViewArray *ava);
 
 char *menu_create_alias_title(char *menu_name, char *limit);
 
-sort_t alias_get_sort_function(short sort);
-
-int alias_sort_address(const void *a, const void *b);
-int alias_sort_name   (const void *a, const void *b);
-int alias_sort_unsort (const void *a, const void *b);
-
 #endif /* MUTT_ALIAS_GUI_H */

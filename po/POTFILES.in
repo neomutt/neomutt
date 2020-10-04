@@ -8,6 +8,7 @@ alias/dlgalias.c
 alias/dlgquery.c
 alias/gui.c
 alias/reverse.c
+alias/sort.c
 autocrypt/autocrypt.c
 autocrypt/config.c
 autocrypt/db.c
