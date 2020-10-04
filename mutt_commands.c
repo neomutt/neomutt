@@ -81,7 +81,7 @@ static const struct Command mutt_commands[] = {
   { "my_hdr",              parse_my_hdr,           0 },
   { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
   { "nospam",              parse_spam_list,        MUTT_NOSPAM },
-  { "pgp-hook",            mutt_parse_hook,        MUTT_CRYPT_HOOK },
+  { "pgp-hook",            mutt_parse_hook_regex,  MUTT_CRYPT_HOOK | MUTT_COMMAND_DEPRECATED },
   { "push",                mutt_parse_push,        0 },
   { "reply-hook",          mutt_parse_hook_pattern,        MUTT_REPLY_HOOK },
   { "reset",               parse_set,              MUTT_SET_RESET },
