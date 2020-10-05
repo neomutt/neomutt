@@ -693,16 +693,11 @@ void mutt_opts_free(void)
  */
 HookFlags mutt_get_hook_type(const char *name)
 {
-  struct Command *c = NULL;
-  for (size_t i = 0, size = mutt_commands_array(&c); i < size; i++)
-  {
-    if (((c[i].parse == mutt_parse_hook) || (c[i].parse == mutt_parse_idxfmt_hook)) &&
-        mutt_istr_equal(c[i].name, name))
-    {
-      return c[i].data;
-    }
-  }
-  return MUTT_HOOK_NO_FLAGS;
+  struct Command *cmd = mutt_command_get(name);
+  if (cmd->data)
+    return cmd->data;
+  else
+    return MUTT_HOOK_NO_FLAGS;
 }
 
 /**
