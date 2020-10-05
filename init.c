@@ -694,7 +694,7 @@ void mutt_opts_free(void)
 HookFlags mutt_get_hook_type(const char *name)
 {
   struct Command *cmd = mutt_command_get(name);
-  if (cmd->data)
+  if (cmd)
     return cmd->data;
   else
     return MUTT_HOOK_NO_FLAGS;
