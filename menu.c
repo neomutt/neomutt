@@ -1313,8 +1313,11 @@ int mutt_menu_loop(struct Menu *menu)
   {
     /* Clear the tag prefix unless we just started it.  Don't clear
      * the prefix on a timeout (op==-2), but do clear on an abort (op==-1) */
-    if (menu->tagprefix && (op != OP_TAG_PREFIX) && (op != OP_TAG_PREFIX_COND) && (op != -2))
+    if (menu->tagprefix && (op != OP_TAG_PREFIX) &&
+        (op != OP_TAG_PREFIX_COND) && (op != -2))
+    {
       menu->tagprefix = false;
+    }
 
     mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
