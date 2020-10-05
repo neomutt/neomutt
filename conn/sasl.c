@@ -100,9 +100,27 @@ struct SaslSockData
  * sasl_authenticators - Authenticaion methods supported by Cyrus SASL
  */
 static const char *const sasl_authenticators[] = {
-  "ANONYMOUS", "CRAM-MD5",   "DIGEST-MD5",  "EXTERNAL", "G2",
-  "GSSAPI",    "GSS-SPNEGO", "KERBEROS_V4", "LOGIN",    "NTLM",
-  "OTP",       "PASSDSS",    "PLAIN",       "SCRAM",    "SRP"
+  "ANONYMOUS",
+  "CRAM-MD5",
+  "DIGEST-MD5",
+  "EXTERNAL",
+  "GS2-IAKERB",
+  "GS2-KRB5",
+  "GSS-SPNEGO",
+  "GSSAPI",
+  "LOGIN",
+  "NTLM",
+  "OTP-MD4",
+  "OTP-MD5",
+  "OTP-SHA1",
+  "PASSDSS-3DES-1",
+  "PLAIN",
+  "SCRAM-SHA-1",
+  "SCRAM-SHA-224",
+  "SCRAM-SHA-256",
+  "SCRAM-SHA-384",
+  "SCRAM-SHA-512",
+  "SRP",
 };
 
 /* arbitrary. SASL will probably use a smaller buffer anyway. OTOH it's
