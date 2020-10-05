@@ -107,8 +107,9 @@ $(PWD)/address:
 ###############################################################################
 # libalias
 LIBALIAS=	libalias.a
-LIBALIASOBJS=	alias/alias.o alias/commands.o alias/config.o alias/dlgalias.o \
-		alias/dlgquery.o alias/gui.o alias/reverse.o alias/sort.o
+LIBALIASOBJS=	alias/alias.o alias/array.o alias/commands.o alias/config.o \
+		alias/dlgalias.o alias/dlgquery.o alias/gui.o alias/reverse.o \
+		alias/sort.o
 CLEANFILES+=	$(LIBALIAS) $(LIBALIASOBJS)
 ALLOBJS+=	$(LIBALIASOBJS)
 

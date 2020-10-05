@@ -28,6 +28,7 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | alias/alias.c       | @subpage alias_alias       |
+ * | alias/array.c       | @subpage alias_array       |
  * | alias/commands.c    | @subpage alias_commands    |
  * | alias/config.c      | @subpage alias_config      |
  * | alias/dlgalias.c    | @subpage alias_dlgalias    |
@@ -53,16 +54,6 @@ struct AliasViewArray;
 struct Buffer;
 struct ConfigSet;
 struct Envelope;
-
-extern char *C_AliasFile;
-
-/* These Config Variables are only used in dlgalias.c */
-extern char *C_AliasFormat;
-extern short C_SortAlias;
-
-/* These Config Variables are only used in dlgquery.c */
-extern char *C_QueryCommand;
-extern char *C_QueryFormat;
 
 extern struct HashTable *ReverseAliases;
 
