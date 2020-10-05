@@ -652,9 +652,7 @@ void aliaslist_free(struct AliasList *al)
  */
 void alias_init(void)
 {
-  /* reverse alias keys need to be strdup'ed because of idna conversions */
-  ReverseAliases = mutt_hash_new(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS |
-                                           MUTT_HASH_ALLOW_DUPS);
+  alias_reverse_init();
 }
 
 /**
@@ -668,5 +666,5 @@ void alias_shutdown(void)
     alias_reverse_delete(np);
   }
   aliaslist_free(&Aliases);
-  mutt_hash_free(&ReverseAliases);
+  alias_reverse_shutdown();
 }

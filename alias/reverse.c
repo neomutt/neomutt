@@ -34,7 +34,25 @@
 #include "lib.h"
 #include "alias.h"
 
-struct HashTable *ReverseAliases; ///< Hash Table of aliases (email address -> alias)
+static struct HashTable *ReverseAliases; ///< Hash Table of aliases (email address -> alias)
+
+/**
+ * alias_reverse_init - Set up the Reverse Alias Hash Table
+ */
+void alias_reverse_init(void)
+{
+  /* reverse alias keys need to be strdup'ed because of idna conversions */
+  ReverseAliases = mutt_hash_new(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS |
+                                           MUTT_HASH_ALLOW_DUPS);
+}
+
+/**
+ * alias_reverse_shutdown - Clear up the Reverse Alias Hash Table
+ */
+void alias_reverse_shutdown(void)
+{
+  mutt_hash_free(&ReverseAliases);
+}
 
 /**
  * alias_reverse_add - Add an email address lookup for an Alias

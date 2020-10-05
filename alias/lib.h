@@ -55,8 +55,6 @@ struct Buffer;
 struct ConfigSet;
 struct Envelope;
 
-extern struct HashTable *ReverseAliases;
-
 void alias_init    (void);
 void alias_shutdown(void);
 

@@ -25,7 +25,9 @@
 
 struct Alias;
 
-void alias_reverse_add   (struct Alias *alias);
-void alias_reverse_delete(struct Alias *alias);
+void alias_reverse_init    (void);
+void alias_reverse_add     (struct Alias *alias);
+void alias_reverse_delete  (struct Alias *alias);
+void alias_reverse_shutdown(void);
 
 #endif /* MUTT_ALIAS_REVERSE_H */
