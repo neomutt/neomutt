@@ -24,6 +24,7 @@
 #define MUTT_MAILDIR_MDEMAIL_H
 
 #include <stdbool.h>
+#include <sys/types.h>
 #include "mutt/lib.h"
 
 /**
