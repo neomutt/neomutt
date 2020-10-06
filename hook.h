@@ -74,5 +74,7 @@ enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, intpt
 void  mutt_select_fcc(struct Buffer *path, struct Email *e);
 void  mutt_startup_shutdown_hook(HookFlags type);
 void  mutt_timeout_hook(void);
+const char *get_hook_cmd_by_flag(HookFlags flag);
+HookFlags get_hook_flag_by_cmd(const char *name);
 
 #endif /* MUTT_HOOK_H */

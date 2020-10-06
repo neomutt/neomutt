@@ -110,18 +110,64 @@ void hook_init(void)
 }
 
 /**
+ * get_hook_cmd_by_flag - Find a hook by name
+ * @param flag Hook type to find, e.g. #MUTT_FOLDER_HOOK
+ * @retval ptr Hook name
+ */
+const char *get_hook_cmd_by_flag(HookFlags flag)
+{
+  const struct Command *hc = &hook_commands[0];
+  while (hc)
+  {
+    if (!hc->name)
+      return MUTT_HOOK_NO_FLAGS;
+
+    if (flag == hc->data)
+      return hc->name;
+    else
+      hc++;
+  }
+
+  return NULL;
+}
+
+/**
+ * get_hook_flag_by_cmd - Find a hook by name
+ * @param name Name to find
+ * @retval num                 Hook ID, e.g. #MUTT_FOLDER_HOOK
+ * @retval #MUTT_HOOK_NO_FLAGS Error, no matching hook
+ */
+HookFlags get_hook_flag_by_cmd(const char *name)
+{
+  const struct Command *hc = &hook_commands[0];
+  while (hc)
+  {
+    if (!hc->name)
+      return MUTT_HOOK_NO_FLAGS;
+
+    if (mutt_str_equal(name, hc->name))
+    {
+      return hc->data;
+    }
+    else
+      hc++;
+  }
+
+  return MUTT_HOOK_NO_FLAGS;
+}
+
+/**
  * dump_hooks - Dump hooks to a buffer
  * @param buf  Output buffer
- * @param map  Hooks
+ * @param h    Hook to dump
  */
 static void dump_hooks(struct Buffer *buf, struct Hook *h)
 {
   struct Buffer tmp = mutt_buffer_make(0);
   escape_string(&tmp, h->command);
 
-  mutt_buffer_add_printf(buf, "%d %s%s \"%s\"\n", h->type,
+  mutt_buffer_add_printf(buf, "%s %s%s \"%s\"\n", get_hook_cmd_by_flag(h->type),
                          h->regex.pat_not ? "!" : "", h->regex.pattern, tmp.data);
-
   mutt_buffer_dealloc(&tmp);
 }
 
@@ -627,7 +673,7 @@ enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
     }
     else
     {
-      HookFlags type = mutt_get_hook_type(buf->data);
+      HookFlags type = get_hook_flag_by_cmd(buf->data);
 
       if (type == MUTT_HOOK_NO_FLAGS)
       {
@@ -890,9 +936,7 @@ static void list_hook(struct ListHead *matches, const char *match, HookFlags hoo
   TAILQ_FOREACH(tmp, &Hooks, entries)
   {
     if ((tmp->type & hook) && mutt_regex_match(&tmp->regex, match))
-    {
-      mutt_list_insert_tail(matches, mutt_str_dup(tmp->command));
-    }
+      mutt_list_insert_tail(matches, (char *) get_hook_cmd_by_flag(tmp->type));
   }
 }
 
