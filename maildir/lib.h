@@ -28,7 +28,10 @@
  * | File              | Description              |
  * | :---------------- | :----------------------- |
  * | maildir/config.c  | @subpage maildir_config  |
+ * | maildir/edata.c   | @subpage maildir_edata   |
  * | maildir/maildir.c | @subpage maildir_maildir |
+ * | maildir/mdata.c   | @subpage maildir_mdata   |
+ * | maildir/mdemail.c | @subpage maildir_mdemail |
  * | maildir/mh.c      | @subpage maildir_mh      |
  * | maildir/shared.c  | @subpage maildir_shared  |
  */
@@ -60,10 +63,6 @@ struct Email *maildir_parse_stream     (enum MailboxType type, FILE *fp, const c
 bool          maildir_update_flags     (struct Mailbox *m, struct Email *e_old, struct Email *e_new);
 int           mh_check_empty           (const char *path);
 int           mh_sync_mailbox_message  (struct Mailbox *m, int msgno, struct HeaderCache *hc);
-
-void                     maildir_edata_free(void **ptr);
-struct MaildirEmailData *maildir_edata_get (struct Email *e);
-struct MaildirEmailData *maildir_edata_new (void);
 
 bool config_init_maildir(struct ConfigSet *cs);
 

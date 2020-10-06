@@ -389,7 +389,9 @@ $(PWD)/imap:
 ###############################################################################
 # libmaildir
 LIBMAILDIR=	libmaildir.a
-LIBMAILDIROBJS=	maildir/config.o maildir/maildir.o maildir/mh.o maildir/shared.o
+LIBMAILDIROBJS=	maildir/config.o maildir/edata.o maildir/maildir.o \
+		maildir/mdata.o maildir/mdemail.o maildir/mh.o \
+		maildir/sequence.o maildir/shared.o
 CLEANFILES+=	$(LIBMAILDIR) $(LIBMAILDIROBJS)
 ALLOBJS+=	$(LIBMAILDIROBJS)
 

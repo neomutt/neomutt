@@ -63,6 +63,7 @@
 #include "maildir/lib.h"
 #include "command_parse.h"
 #include "index.h"
+#include "maildir/edata.h"
 #include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "mutt_thread.h"
