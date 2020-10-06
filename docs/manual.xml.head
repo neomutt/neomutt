@@ -2647,7 +2647,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <tbody>
               <row>
                 <entry>m</entry>
-                <entry><literal>&lt;compose&gt;</literal></entry>
+                <entry><literal>&lt;mail&gt;</literal></entry>
                 <entry>compose a new message</entry>
               </row>
               <row>
