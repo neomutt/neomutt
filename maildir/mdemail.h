@@ -27,18 +27,18 @@
 #include "mutt/lib.h"
 
 /**
- * struct Maildir - A Maildir mailbox
+ * struct MdEmail - A Maildir Email helper
  */
-struct Maildir
+struct MdEmail
 {
   struct Email *email;
   char *canon_fname;
   bool header_parsed : 1;
   ino_t inode;
-  struct Maildir *next;
+  struct MdEmail *next;
 };
 
-void            maildir_entry_free(struct Maildir **ptr);
-struct Maildir *maildir_entry_new(void);
+void            maildir_entry_free(struct MdEmail **ptr);
+struct MdEmail *maildir_entry_new(void);
 
 #endif /* MUTT_MAILDIR_MDEMAIL_H */

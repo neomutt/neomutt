@@ -46,13 +46,13 @@
 #include "mutt_globals.h"
 
 /**
- * mhs_alloc - Allocate more memory for sequences
+ * mh_seq_alloc - Allocate more memory for sequences
  * @param mhs Existing sequences
  * @param i   Number required
  *
  * @note Memory is allocated in blocks of 128.
  */
-static void mhs_alloc(struct MhSequences *mhs, int i)
+static void mh_seq_alloc(struct MhSequences *mhs, int i)
 {
   if ((i <= mhs->max) && mhs->flags)
     return;
@@ -67,21 +67,21 @@ static void mhs_alloc(struct MhSequences *mhs, int i)
 }
 
 /**
- * mhs_sequences_free - Free some sequences
+ * mh_seq_free - Free some sequences
  * @param mhs Sequences to free
  */
-void mhs_sequences_free(struct MhSequences *mhs)
+void mh_seq_free(struct MhSequences *mhs)
 {
   FREE(&mhs->flags);
 }
 
 /**
- * mhs_check - Get the flags for a given sequence
+ * mh_seq_check - Get the flags for a given sequence
  * @param mhs Sequences
  * @param i   Index number required
  * @retval num Flags, see #MhSeqFlags
  */
-MhSeqFlags mhs_check(struct MhSequences *mhs, int i)
+MhSeqFlags mh_seq_check(struct MhSequences *mhs, int i)
 {
   if (!mhs->flags || (i > mhs->max))
     return 0;
@@ -89,28 +89,28 @@ MhSeqFlags mhs_check(struct MhSequences *mhs, int i)
 }
 
 /**
- * mhs_set - Set a flag for a given sequence
+ * mh_seq_set - Set a flag for a given sequence
  * @param mhs Sequences
  * @param i   Index number
  * @param f   Flags, see #MhSeqFlags
  * @retval num Resulting flags, see #MhSeqFlags
  */
-MhSeqFlags mhs_set(struct MhSequences *mhs, int i, MhSeqFlags f)
+MhSeqFlags mh_seq_set(struct MhSequences *mhs, int i, MhSeqFlags f)
 {
-  mhs_alloc(mhs, i);
+  mh_seq_alloc(mhs, i);
   mhs->flags[i] |= f;
   return mhs->flags[i];
 }
 
 /**
- * mh_sequences_add_one - Update the flags for one sequence
+ * mh_seq_add_one - Update the flags for one sequence
  * @param m       Mailbox
  * @param n       Sequence number to update
  * @param unseen  Update the unseen sequence
  * @param flagged Update the flagged sequence
  * @param replied Update the replied sequence
  */
-void mh_sequences_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, bool replied)
+void mh_seq_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, bool replied)
 {
   bool unseen_done = false;
   bool flagged_done = false;
@@ -179,14 +179,13 @@ void mh_sequences_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, b
 }
 
 /**
- * mhs_write_one_sequence - Write a flag sequence to a file
+ * mh_seq_write_one - Write a flag sequence to a file
  * @param fp  File to write to
  * @param mhs Sequence list
  * @param f   Flag, see #MhSeqFlags
  * @param tag string tag, e.g. "unseen"
  */
-static void mhs_write_one_sequence(FILE *fp, struct MhSequences *mhs,
-                                   MhSeqFlags f, const char *tag)
+static void mh_seq_write_one(FILE *fp, struct MhSequences *mhs, MhSeqFlags f, const char *tag)
 {
   fprintf(fp, "%s:", tag);
 
@@ -195,7 +194,7 @@ static void mhs_write_one_sequence(FILE *fp, struct MhSequences *mhs,
 
   for (int i = 0; i <= mhs->max; i++)
   {
-    if ((mhs_check(mhs, i) & f))
+    if ((mh_seq_check(mhs, i) & f))
     {
       if (first < 0)
         first = i;
@@ -226,13 +225,13 @@ static void mhs_write_one_sequence(FILE *fp, struct MhSequences *mhs,
 }
 
 /**
- * mh_update_sequences - Update sequence numbers
+ * mh_seq_update - Update sequence numbers
  * @param m Mailbox
  *
  * XXX we don't currently remove deleted messages from sequences we don't know.
  * Should we?
  */
-void mh_update_sequences(struct Mailbox *m)
+void mh_seq_update(struct Mailbox *m)
 {
   char sequences[PATH_MAX];
   char *tmpfname = NULL;
@@ -302,30 +301,30 @@ void mh_update_sequences(struct Mailbox *m)
 
     if (!e->read)
     {
-      mhs_set(&mhs, seq_num, MH_SEQ_UNSEEN);
+      mh_seq_set(&mhs, seq_num, MH_SEQ_UNSEEN);
       unseen++;
     }
     if (e->flagged)
     {
-      mhs_set(&mhs, seq_num, MH_SEQ_FLAGGED);
+      mh_seq_set(&mhs, seq_num, MH_SEQ_FLAGGED);
       flagged++;
     }
     if (e->replied)
     {
-      mhs_set(&mhs, seq_num, MH_SEQ_REPLIED);
+      mh_seq_set(&mhs, seq_num, MH_SEQ_REPLIED);
       replied++;
     }
   }
 
   /* write out the new sequences */
   if (unseen)
-    mhs_write_one_sequence(fp_new, &mhs, MH_SEQ_UNSEEN, NONULL(C_MhSeqUnseen));
+    mh_seq_write_one(fp_new, &mhs, MH_SEQ_UNSEEN, NONULL(C_MhSeqUnseen));
   if (flagged)
-    mhs_write_one_sequence(fp_new, &mhs, MH_SEQ_FLAGGED, NONULL(C_MhSeqFlagged));
+    mh_seq_write_one(fp_new, &mhs, MH_SEQ_FLAGGED, NONULL(C_MhSeqFlagged));
   if (replied)
-    mhs_write_one_sequence(fp_new, &mhs, MH_SEQ_REPLIED, NONULL(C_MhSeqReplied));
+    mh_seq_write_one(fp_new, &mhs, MH_SEQ_REPLIED, NONULL(C_MhSeqReplied));
 
-  mhs_sequences_free(&mhs);
+  mh_seq_free(&mhs);
 
   /* try to commit the changes - no guarantee here */
   mutt_file_fclose(&fp_new);
@@ -341,14 +340,14 @@ void mh_update_sequences(struct Mailbox *m)
 }
 
 /**
- * mh_read_token - Parse a number, or number range
+ * mh_seq_read_token - Parse a number, or number range
  * @param t     String to parse
  * @param first First number
  * @param last  Last number (if a range, first number if not)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int mh_read_token(char *t, int *first, int *last)
+static int mh_seq_read_token(char *t, int *first, int *last)
 {
   char *p = strchr(t, '-');
   if (p)
@@ -367,13 +366,13 @@ static int mh_read_token(char *t, int *first, int *last)
 }
 
 /**
- * mh_read_sequences - Read a set of MH sequences
+ * mh_seq_read - Read a set of MH sequences
  * @param mhs  Existing sequences
  * @param path File to read from
  * @retval  0 Success
  * @retval -1 Error
  */
-int mh_read_sequences(struct MhSequences *mhs, const char *path)
+int mh_seq_read(struct MhSequences *mhs, const char *path)
 {
   char *buf = NULL;
   size_t sz = 0;
@@ -405,14 +404,14 @@ int mh_read_sequences(struct MhSequences *mhs, const char *path)
 
     while ((t = strtok(NULL, " \t:")))
     {
-      if (mh_read_token(t, &first, &last) < 0)
+      if (mh_seq_read_token(t, &first, &last) < 0)
       {
-        mhs_sequences_free(mhs);
+        mh_seq_free(mhs);
         rc = -1;
         goto out;
       }
       for (; first <= last; first++)
-        mhs_set(mhs, first, flags);
+        mh_seq_set(mhs, first, flags);
     }
   }
 
@@ -425,13 +424,13 @@ out:
 }
 
 /**
- * mh_sequences_changed - Has the mailbox changed
+ * mh_seq_changed - Has the mailbox changed
  * @param m Mailbox
  * @retval 1 mh_sequences last modification time is more recent than the last visit to this mailbox
  * @retval 0 modification time is older
  * @retval -1 Error
  */
-int mh_sequences_changed(struct Mailbox *m)
+int mh_seq_changed(struct Mailbox *m)
 {
   char path[PATH_MAX];
   struct stat sb;

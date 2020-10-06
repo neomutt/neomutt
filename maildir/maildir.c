@@ -202,7 +202,7 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
 }
 
 /**
- * md_commit_message - Commit a message to a maildir folder
+ * maildir_commit_message - Commit a message to a maildir folder
  * @param m   Mailbox
  * @param msg Message to commit
  * @param e   Email
@@ -225,7 +225,7 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
  *
  * See also maildir_msg_open_new().
  */
-int md_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
+int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
   char subdir[4];
   char suffix[16];
@@ -279,7 +279,8 @@ int md_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
         } while ((rc_utime == -1) && (errno == EINTR));
         if (rc_utime == -1)
         {
-          mutt_perror(_("md_commit_message(): unable to set time on file"));
+          mutt_perror(
+              _("maildir_commit_message(): unable to set time on file"));
           rc = -1;
           goto cleanup;
         }
@@ -445,13 +446,13 @@ void maildir_update_mtime(struct Mailbox *m)
  * @retval -1 Error
  * @retval -2 Aborted
  */
-int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
+int maildir_parse_dir(struct Mailbox *m, struct MdEmail ***last,
                       const char *subdir, int *count, struct Progress *progress)
 {
   struct dirent *de = NULL;
   int rc = 0;
   bool is_old = false;
-  struct Maildir *entry = NULL;
+  struct MdEmail *entry = NULL;
   struct Email *e = NULL;
 
   struct Buffer *buf = mutt_buffer_pool_get();
@@ -545,9 +546,9 @@ size_t maildir_hcache_keylen(const char *fn)
  * @param[out] md Maildir to parse
  * @param[in]  progress Progress bar
  */
-void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Progress *progress)
+void maildir_delayed_parsing(struct Mailbox *m, struct MdEmail **md, struct Progress *progress)
 {
-  struct Maildir *p = NULL, *last = NULL;
+  struct MdEmail *p = NULL, *last = NULL;
   char fn[PATH_MAX];
   int count;
   bool sort = false;
@@ -675,7 +676,7 @@ void maildir_canon_filename(struct Buffer *dest, const char *src)
 }
 
 /**
- * md_open_find_message - Find a message in a maildir folder
+ * maildir_open_find_message_dir - Find a message in a maildir folder
  * @param[in]  folder    Base folder
  * @param[in]  unique    Unique part of filename
  * @param[in]  subfolder Subfolder to search, e.g. 'cur'
@@ -686,8 +687,8 @@ void maildir_canon_filename(struct Buffer *dest, const char *src)
  * has moved under our feet.  Note that this code is rather expensive, but
  * then again, it's called rarely.
  */
-static FILE *md_open_find_message(const char *folder, const char *unique,
-                                  const char *subfolder, char **newname)
+static FILE *maildir_open_find_message_dir(const char *folder, const char *unique,
+                                           const char *subfolder, char **newname)
 {
   struct Buffer *dir = mutt_buffer_pool_get();
   struct Buffer *tunique = mutt_buffer_pool_get();
@@ -878,8 +879,8 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
   struct Buffer *unique = mutt_buffer_pool_get();
   maildir_canon_filename(unique, msg);
 
-  FILE *fp = md_open_find_message(folder, mutt_b2s(unique),
-                                  (new_hits > cur_hits) ? "new" : "cur", newname);
+  FILE *fp = maildir_open_find_message_dir(
+      folder, mutt_b2s(unique), (new_hits > cur_hits) ? "new" : "cur", newname);
   if (fp || (errno != ENOENT))
   {
     if ((new_hits < UINT_MAX) && (cur_hits < UINT_MAX))
@@ -890,8 +891,8 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
 
     goto cleanup;
   }
-  fp = md_open_find_message(folder, mutt_b2s(unique),
-                            (new_hits > cur_hits) ? "cur" : "new", newname);
+  fp = maildir_open_find_message_dir(folder, mutt_b2s(unique),
+                                     (new_hits > cur_hits) ? "cur" : "new", newname);
   if (fp || (errno != ENOENT))
   {
     if ((new_hits < UINT_MAX) && (cur_hits < UINT_MAX))
@@ -1052,9 +1053,9 @@ int maildir_mbox_check(struct Mailbox *m)
   bool occult = false;        /* messages were removed from the mailbox */
   int num_new = 0;            /* number of new messages added to the mailbox */
   bool flags_changed = false; /* message flags were changed in the mailbox */
-  struct Maildir *md = NULL;  /* list of messages in the mailbox */
-  struct Maildir **last = NULL;
-  struct Maildir *p = NULL;
+  struct MdEmail *md = NULL;  /* list of messages in the mailbox */
+  struct MdEmail **last = NULL;
+  struct MdEmail *p = NULL;
   int count = 0;
   struct HashTable *fnames = NULL; /* hash table for quickly looking up the base filename
                                  for a maildir message */
@@ -1326,7 +1327,7 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Em
  */
 static int maildir_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  return md_commit_message(m, msg, NULL);
+  return maildir_commit_message(m, msg, NULL);
 }
 
 /**

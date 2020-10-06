@@ -45,12 +45,11 @@ struct MhSequences
   MhSeqFlags *flags; ///< Flags for each email
 };
 
-int        mh_read_sequences     (struct MhSequences *mhs, const char *path);
-void       mh_sequences_add_one  (struct Mailbox *m, int n, bool unseen, bool flagged, bool replied);
-int        mh_sequences_changed  (struct Mailbox *m);
-
-void       mh_update_sequences   (struct Mailbox *m);
-MhSeqFlags mhs_check             (struct MhSequences *mhs, int i);
-void       mhs_sequences_free    (struct MhSequences *mhs);
+int        mh_seq_read   (struct MhSequences *mhs, const char *path);
+void       mh_seq_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, bool replied);
+int        mh_seq_changed(struct Mailbox *m);
+void       mh_seq_update (struct Mailbox *m);
+MhSeqFlags mh_seq_check  (struct MhSequences *mhs, int i);
+void       mh_seq_free   (struct MhSequences *mhs);
 
 #endif /* MUTT_MAILDIR_SEQUENCE_H */

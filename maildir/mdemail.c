@@ -38,21 +38,21 @@
  * maildir_entry_new - Create a new Maildir entry
  * @retval ptr New Maildir entry
  */
-struct Maildir *maildir_entry_new(void)
+struct MdEmail *maildir_entry_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct Maildir));
+  return mutt_mem_calloc(1, sizeof(struct MdEmail));
 }
 
 /**
  * maildir_entry_free - Free a Maildir object
  * @param[out] ptr Maildir to free
  */
-void maildir_entry_free(struct Maildir **ptr)
+void maildir_entry_free(struct MdEmail **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct Maildir *md = *ptr;
+  struct MdEmail *md = *ptr;
   FREE(&md->canon_fname);
   email_free(&md->email);
 

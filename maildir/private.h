@@ -34,7 +34,7 @@ struct Account;
 struct Buffer;
 struct Email;
 struct Mailbox;
-struct Maildir;
+struct MdEmail;
 struct Message;
 struct Progress;
 
@@ -61,26 +61,26 @@ int             mh_msg_save_hcache (struct Mailbox *m, struct Email *e);
 
 /* Maildir/MH shared functions */
 void                    maildir_canon_filename (struct Buffer *dest, const char *src);
-void                    maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Progress *progress);
-void                    maildir_free           (struct Maildir **md);
+void                    maildir_delayed_parsing(struct Mailbox *m, struct MdEmail **md, struct Progress *progress);
+void                    maildir_free           (struct MdEmail **md);
 size_t                  maildir_hcache_keylen  (const char *fn);
 int                     maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool is_maildir);
-int                     maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **ptr);
-int                     maildir_parse_dir      (struct Mailbox *m, struct Maildir ***last, const char *subdir, int *count, struct Progress *progress);
+int                     maildir_move_to_mailbox(struct Mailbox *m, struct MdEmail **ptr);
+int                     maildir_parse_dir      (struct Mailbox *m, struct MdEmail ***last, const char *subdir, int *count, struct Progress *progress);
 void                    maildir_update_mtime   (struct Mailbox *m);
-struct Maildir *        maildir_sort           (struct Maildir *list, size_t len, int (*cmp)(struct Maildir *, struct Maildir *));
-int                     md_cmp_inode           (struct Maildir *a, struct Maildir *b);
-int                     md_cmp_path            (struct Maildir *a, struct Maildir *b);
-int                     md_commit_message      (struct Mailbox *m, struct Message *msg, struct Email *e);
+struct MdEmail *        maildir_sort           (struct MdEmail *list, size_t len, int (*cmp)(struct MdEmail *, struct MdEmail *));
+int                     md_cmp_inode           (struct MdEmail *a, struct MdEmail *b);
+int                     mh_cmp_path            (struct MdEmail *a, struct MdEmail *b);
+int                     maildir_commit_message (struct Mailbox *m, struct Message *msg, struct Email *e);
 int                     mh_commit_msg          (struct Mailbox *m, struct Message *msg, struct Email *e, bool updseq);
 int                     mh_mkstemp             (struct Mailbox *m, FILE **fp, char **tgt);
 int                     mh_read_dir            (struct Mailbox *m, const char *subdir);
-MhSeqFlags              mhs_set                (struct MhSequences *mhs, int i, MhSeqFlags f);
-void                    mh_sort_natural        (struct Mailbox *m, struct Maildir **md);
+MhSeqFlags              mh_seq_set             (struct MhSequences *mhs, int i, MhSeqFlags f);
+void                    mh_sort_natural        (struct Mailbox *m, struct MdEmail **md);
 mode_t                  mh_umask               (struct Mailbox *m);
-void                    mh_update_maildir      (struct Maildir *md, struct MhSequences *mhs);
+void                    mh_update_maildir      (struct MdEmail *md, struct MhSequences *mhs);
 bool                    mh_valid_message       (const char *s);
-struct Maildir *        skip_duplicates        (struct Maildir *p, struct Maildir **last);
+struct MdEmail *        skip_duplicates        (struct MdEmail *p, struct MdEmail **last);
 
 int mh_sync_message(struct Mailbox *m, int msgno);
 int maildir_sync_message(struct Mailbox *m, int msgno);

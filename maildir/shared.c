@@ -90,12 +90,12 @@ mode_t mh_umask(struct Mailbox *m)
  * maildir_free - Free a Maildir list
  * @param[out] md Maildir list to free
  */
-void maildir_free(struct Maildir **md)
+void maildir_free(struct MdEmail **md)
 {
   if (!md || !*md)
     return;
 
-  struct Maildir *p = NULL, *q = NULL;
+  struct MdEmail *p = NULL, *q = NULL;
 
   for (p = *md; p; p = q)
   {
@@ -111,12 +111,12 @@ void maildir_free(struct Maildir **md)
  * @retval num Number of new emails
  * @retval 0   Error
  */
-int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **ptr)
+int maildir_move_to_mailbox(struct Mailbox *m, struct MdEmail **ptr)
 {
   if (!m)
     return 0;
 
-  struct Maildir *md = *ptr;
+  struct MdEmail *md = *ptr;
   int oldmsgcount = m->msg_count;
 
   for (; md; md = md->next)
@@ -156,7 +156,7 @@ int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **ptr)
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int md_cmp_inode(struct Maildir *a, struct Maildir *b)
+int md_cmp_inode(struct MdEmail *a, struct MdEmail *b)
 {
   return a->inode - b->inode;
 }
@@ -168,11 +168,11 @@ int md_cmp_inode(struct Maildir *a, struct Maildir *b)
  * @param cmp     Comparison function for sorting
  * @retval ptr Merged Maildir
  */
-static struct Maildir *maildir_merge_lists(struct Maildir *left, struct Maildir *right,
-                                           int (*cmp)(struct Maildir *, struct Maildir *))
+static struct MdEmail *maildir_merge_lists(struct MdEmail *left, struct MdEmail *right,
+                                           int (*cmp)(struct MdEmail *, struct MdEmail *))
 {
-  struct Maildir *head = NULL;
-  struct Maildir *tail = NULL;
+  struct MdEmail *head = NULL;
+  struct MdEmail *tail = NULL;
 
   if (left && right)
   {
@@ -229,12 +229,12 @@ static struct Maildir *maildir_merge_lists(struct Maildir *left, struct Maildir 
  * @param cmp     Comparison function for sorting
  * @retval ptr Sort Maildir list
  */
-static struct Maildir *maildir_ins_sort(struct Maildir *list,
-                                        int (*cmp)(struct Maildir *, struct Maildir *))
+static struct MdEmail *maildir_ins_sort(struct MdEmail *list,
+                                        int (*cmp)(struct MdEmail *, struct MdEmail *))
 {
-  struct Maildir *tmp = NULL, *last = NULL, *back = NULL;
+  struct MdEmail *tmp = NULL, *last = NULL, *back = NULL;
 
-  struct Maildir *ret = list;
+  struct MdEmail *ret = list;
   list = list->next;
   ret->next = NULL;
 
@@ -264,11 +264,11 @@ static struct Maildir *maildir_ins_sort(struct Maildir *list,
  * @param cmp     Comparison function for sorting
  * @retval ptr Sort Maildir list
  */
-struct Maildir *maildir_sort(struct Maildir *list, size_t len,
-                             int (*cmp)(struct Maildir *, struct Maildir *))
+struct MdEmail *maildir_sort(struct MdEmail *list, size_t len,
+                             int (*cmp)(struct MdEmail *, struct MdEmail *))
 {
-  struct Maildir *left = list;
-  struct Maildir *right = list;
+  struct MdEmail *left = list;
+  struct MdEmail *right = list;
   size_t c = 0;
 
   if (!list || !list->next)
@@ -303,12 +303,12 @@ struct Maildir *maildir_sort(struct Maildir *list, size_t len,
  *
  * Currently only defined for MH where files are numbered.
  */
-void mh_sort_natural(struct Mailbox *m, struct Maildir **md)
+void mh_sort_natural(struct Mailbox *m, struct MdEmail **md)
 {
   if (!m || !md || !*md || (m->type != MUTT_MH) || (C_Sort != SORT_ORDER))
     return;
   mutt_debug(LL_DEBUG3, "maildir: sorting %s into natural order\n", mailbox_path(m));
-  *md = maildir_sort(*md, (size_t) -1, md_cmp_path);
+  *md = maildir_sort(*md, (size_t) -1, mh_cmp_path);
 }
 
 /**
@@ -317,7 +317,7 @@ void mh_sort_natural(struct Mailbox *m, struct Maildir **md)
  * @param[out] last Previous Maildir
  * @retval ptr Next Maildir
  */
-struct Maildir *skip_duplicates(struct Maildir *p, struct Maildir **last)
+struct MdEmail *skip_duplicates(struct MdEmail *p, struct MdEmail **last)
 {
   /* Skip ahead to the next non-duplicate message.
    *
