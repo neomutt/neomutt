@@ -39,15 +39,18 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "hook.h"
 #include "attach/lib.h"
 #include "ncrypt/lib.h"
+#include "pager/lib.h"
 #include "pattern/lib.h"
 #include "context.h"
 #include "format_flags.h"
 #include "hdrline.h"
 #include "init.h"
+#include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -72,6 +75,137 @@ static struct HookList Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 
 static struct HashTable *IdxFmtHooks = NULL;
 static HookFlags current_hook_type = MUTT_HOOK_NO_FLAGS;
+
+const struct Command hook_commands[] = {
+  // clang-format off
+  { "account-hook",        mutt_parse_hook,        MUTT_ACCOUNT_HOOK },
+  { "charset-hook",        mutt_parse_hook,        MUTT_CHARSET_HOOK },
+  { "crypt-hook",          mutt_parse_hook,        MUTT_CRYPT_HOOK },
+  { "fcc-hook",            mutt_parse_hook,        MUTT_FCC_HOOK },
+  { "fcc-save-hook",       mutt_parse_hook,        MUTT_FCC_HOOK | MUTT_SAVE_HOOK },
+  { "folder-hook",         mutt_parse_hook,        MUTT_FOLDER_HOOK },
+  { "hooks",               mutt_parse_hooks,       0 },
+  { "iconv-hook",          mutt_parse_hook,        MUTT_ICONV_HOOK },
+  { "index-format-hook",   mutt_parse_idxfmt_hook, 0 },
+  { "mbox-hook",           mutt_parse_hook,        MUTT_MBOX_HOOK },
+  { "message-hook",        mutt_parse_hook,        MUTT_MESSAGE_HOOK },
+  { "pgp-hook",            mutt_parse_hook,        MUTT_CRYPT_HOOK },
+  { "reply-hook",          mutt_parse_hook,        MUTT_REPLY_HOOK },
+  { "save-hook",           mutt_parse_hook,        MUTT_SAVE_HOOK },
+  { "send-hook",           mutt_parse_hook,        MUTT_SEND_HOOK },
+  { "send2-hook",          mutt_parse_hook,        MUTT_SEND2_HOOK },
+  { "shutdown-hook",       mutt_parse_hook,        MUTT_SHUTDOWN_HOOK | MUTT_GLOBAL_HOOK },
+  { "startup-hook",        mutt_parse_hook,        MUTT_STARTUP_HOOK | MUTT_GLOBAL_HOOK },
+  { "timeout-hook",        mutt_parse_hook,        MUTT_TIMEOUT_HOOK | MUTT_GLOBAL_HOOK },
+  { "unhook",              mutt_parse_unhook,      0 },
+  // clang-format on
+};
+
+/**
+ * hook_init - Set up hooks
+ */
+void hook_init(void)
+{
+  COMMANDS_REGISTER(hook_commands);
+}
+
+/**
+ * dump_hooks - Dump hooks to a buffer
+ * @param buf  Output buffer
+ * @param map  Hooks
+ */
+static void dump_hooks(struct Buffer *buf, struct Hook *h)
+{
+  struct Buffer tmp = mutt_buffer_make(0);
+  escape_string(&tmp, h->command);
+
+  mutt_buffer_add_printf(buf, "%d %s%s \"%s\"\n", h->type,
+                         h->regex.pat_not ? "!" : "", h->regex.pattern, tmp.data);
+
+  mutt_buffer_dealloc(&tmp);
+}
+
+/**
+ * mutt_parse_hooks - Parse 'hooks' commands - Implements Command::parse()
+ */
+enum CommandResult mutt_parse_hooks(struct Buffer *buf, struct Buffer *s,
+                                    intptr_t data, struct Buffer *err)
+{
+  int rc = MUTT_CMD_SUCCESS;
+
+  FILE *fp_out = NULL;
+  char tempfile[PATH_MAX];
+  bool dump_all = false;
+
+  struct Hook *h = NULL;
+  struct Command *cmd = NULL;
+
+  if (!MoreArgs(s))
+    dump_all = true;
+  else
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+  if (mutt_istr_equal(buf->data, "all"))
+    dump_all = true;
+
+  if (MoreArgs(s))
+    return MUTT_CMD_ERROR;
+
+  struct Buffer filebuf = mutt_buffer_make(4096);
+
+  TAILQ_FOREACH(h, &Hooks, entries)
+  {
+    cmd = mutt_command_get(buf->data);
+    if (!cmd && !dump_all)
+    {
+      mutt_buffer_printf(err, _("%s: unknown hook type"), buf->data);
+      return MUTT_CMD_ERROR;
+    }
+
+    if (dump_all || (h->type == cmd->data))
+      dump_hooks(&filebuf, h);
+  }
+
+  if (mutt_buffer_is_empty(&filebuf))
+  {
+    mutt_buffer_printf(err, _("%s: no hooks for this hook type"),
+                       dump_all ? "all" : buf->data);
+    mutt_buffer_dealloc(&filebuf);
+    return MUTT_CMD_ERROR;
+  }
+
+  mutt_mktemp(tempfile, sizeof(tempfile));
+  fp_out = mutt_file_fopen(tempfile, "w");
+  if (!fp_out)
+  {
+    // L10N: '%s' is the file name of the temporary file
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
+    mutt_buffer_dealloc(&filebuf);
+    return MUTT_CMD_ERROR;
+  }
+  fputs(filebuf.data, fp_out);
+
+  mutt_file_fclose(&fp_out);
+  mutt_buffer_dealloc(&filebuf);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = tempfile;
+
+  pview.banner = "hooks";
+  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.mode = PAGER_MODE_OTHER;
+
+  if (mutt_do_pager(&pview, NULL) == -1)
+  {
+    // L10N: '%s' is the file name of the temporary file
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
+    return MUTT_CMD_ERROR;
+  }
+
+  return rc;
+}
 
 /**
  * mutt_parse_hook - Parse the 'hook' family of commands - Implements Command::parse() - @ingroup command_parse

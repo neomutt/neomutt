@@ -58,6 +58,7 @@ typedef uint32_t HookFlags;          ///< Flags for mutt_parse_hook(), e.g. #MUT
 #define MUTT_SHUTDOWN_HOOK (1 << 18) ///< shutdown-hook: run when leaving NeoMutt
 #define MUTT_GLOBAL_HOOK   (1 << 19) ///< Hooks which don't take a regex
 
+void  hook_init(void);
 void  mutt_account_hook(const char *url);
 void  mutt_crypt_hook(struct ListHead *list, struct Address *addr);
 void  mutt_default_save(char *path, size_t pathlen, struct Email *e);
@@ -68,6 +69,7 @@ const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *
 void  mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type);
 enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_hooks(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 void  mutt_select_fcc(struct Buffer *path, struct Email *e);
 void  mutt_startup_shutdown_hook(HookFlags type);
