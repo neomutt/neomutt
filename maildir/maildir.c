@@ -347,39 +347,13 @@ int maildir_rewrite_message(struct Mailbox *m, int msgno)
     snprintf(oldpath, sizeof(oldpath), "%s/%s", mailbox_path(m), e->path);
     mutt_str_copy(partpath, e->path, sizeof(partpath));
 
-    if (m->type == MUTT_MAILDIR)
-      rc = maildir_commit_message(m, dest, e);
-    else
-      rc = mh_commit_msg(m, dest, e, false);
-
+    rc = maildir_commit_message(m, dest, e);
     mx_msg_close(m, &dest);
 
     if (rc == 0)
     {
       unlink(oldpath);
       restore = false;
-    }
-
-    /* Try to move the new message to the old place.
-     * (MH only.)
-     *
-     * This is important when we are just updating flags.
-     *
-     * Note that there is a race condition against programs which
-     * use the first free slot instead of the maximum message
-     * number.  NeoMutt does _not_ behave like this.
-     *
-     * Anyway, if this fails, the message is in the folder, so
-     * all what happens is that a concurrently running neomutt will
-     * lose flag modifications.  */
-
-    if ((m->type == MUTT_MH) && (rc == 0))
-    {
-      char newpath[PATH_MAX];
-      snprintf(newpath, sizeof(newpath), "%s/%s", mailbox_path(m), e->path);
-      rc = mutt_file_safe_rename(newpath, oldpath);
-      if (rc == 0)
-        mutt_str_replace(&e->path, partpath);
     }
   }
   else
@@ -499,21 +473,10 @@ void maildir_update_mtime(struct Mailbox *m)
   struct stat st;
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
-  if (m->type == MUTT_MAILDIR)
-  {
-    snprintf(buf, sizeof(buf), "%s/%s", mailbox_path(m), "cur");
-    if (stat(buf, &st) == 0)
-      mutt_file_get_stat_timespec(&mdata->mtime_cur, &st, MUTT_STAT_MTIME);
-    snprintf(buf, sizeof(buf), "%s/%s", mailbox_path(m), "new");
-  }
-  else
-  {
-    snprintf(buf, sizeof(buf), "%s/.mh_sequences", mailbox_path(m));
-    if (stat(buf, &st) == 0)
-      mutt_file_get_stat_timespec(&mdata->mtime_cur, &st, MUTT_STAT_MTIME);
-
-    mutt_str_copy(buf, mailbox_path(m), sizeof(buf));
-  }
+  snprintf(buf, sizeof(buf), "%s/%s", mailbox_path(m), "cur");
+  if (stat(buf, &st) == 0)
+    mutt_file_get_stat_timespec(&mdata->mtime_cur, &st, MUTT_STAT_MTIME);
+  snprintf(buf, sizeof(buf), "%s/%s", mailbox_path(m), "new");
 
   if (stat(buf, &st) == 0)
     mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
@@ -541,13 +504,8 @@ int maildir_parse_dir(struct Mailbox *m, struct MdEmail ***last,
 
   struct Buffer *buf = mutt_buffer_pool_get();
 
-  if (subdir)
-  {
-    mutt_buffer_printf(buf, "%s/%s", mailbox_path(m), subdir);
-    is_old = C_MarkOld ? mutt_str_equal("cur", subdir) : false;
-  }
-  else
-    mutt_buffer_strcpy(buf, mailbox_path(m));
+  mutt_buffer_printf(buf, "%s/%s", mailbox_path(m), subdir);
+  is_old = C_MarkOld ? mutt_str_equal("cur", subdir) : false;
 
   DIR *dirp = opendir(mutt_b2s(buf));
   if (!dirp)
@@ -558,11 +516,8 @@ int maildir_parse_dir(struct Mailbox *m, struct MdEmail ***last,
 
   while (((de = readdir(dirp))) && (SigInt != 1))
   {
-    if (((m->type == MUTT_MH) && !mh_valid_message(de->d_name)) ||
-        ((m->type == MUTT_MAILDIR) && (*de->d_name == '.')))
-    {
+    if (*de->d_name == '.')
       continue;
-    }
 
     /* FOO - really ignore the return value? */
     mutt_debug(LL_DEBUG2, "queueing %s\n", de->d_name);
@@ -572,8 +527,7 @@ int maildir_parse_dir(struct Mailbox *m, struct MdEmail ***last,
     e->edata_free = maildir_edata_free;
 
     e->old = is_old;
-    if (m->type == MUTT_MAILDIR)
-      maildir_parse_flags(e, de->d_name);
+    maildir_parse_flags(e, de->d_name);
 
     if (count)
     {
@@ -582,13 +536,8 @@ int maildir_parse_dir(struct Mailbox *m, struct MdEmail ***last,
         mutt_progress_update(progress, *count, -1);
     }
 
-    if (subdir)
-    {
-      mutt_buffer_printf(buf, "%s/%s", subdir, de->d_name);
-      e->path = mutt_buffer_strdup(buf);
-    }
-    else
-      e->path = mutt_str_dup(de->d_name);
+    mutt_buffer_printf(buf, "%s/%s", subdir, de->d_name);
+    e->path = mutt_buffer_strdup(buf);
 
     entry = maildir_entry_new();
     entry->email = e;
@@ -675,18 +624,8 @@ void maildir_delayed_parsing(struct Mailbox *m, struct MdEmail **md, struct Prog
       rc = stat(fn, &lastchanged);
     }
 
-    const char *key = NULL;
-    size_t keylen = 0;
-    if (m->type == MUTT_MH)
-    {
-      key = p->email->path;
-      keylen = strlen(key);
-    }
-    else
-    {
-      key = p->email->path + 3;
-      keylen = maildir_hcache_keylen(key);
-    }
+    const char *key = p->email->path + 3;
+    size_t keylen = maildir_hcache_keylen(key);
     struct HCacheEntry hce = mutt_hcache_fetch(hc, key, keylen, 0);
 
     if (hce.email && (rc == 0) && (lastchanged.st_mtime <= hce.uidvalidity))
@@ -697,8 +636,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct MdEmail **md, struct Prog
       hce.email->path = mutt_str_dup(p->email->path);
       email_free(&p->email);
       p->email = hce.email;
-      if (m->type == MUTT_MAILDIR)
-        maildir_parse_flags(p->email, fn);
+      maildir_parse_flags(p->email, fn);
     }
     else
 #endif
@@ -707,16 +645,8 @@ void maildir_delayed_parsing(struct Mailbox *m, struct MdEmail **md, struct Prog
       {
         p->header_parsed = true;
 #ifdef USE_HCACHE
-        if (m->type == MUTT_MH)
-        {
-          key = p->email->path;
-          keylen = strlen(key);
-        }
-        else
-        {
-          key = p->email->path + 3;
-          keylen = maildir_hcache_keylen(key);
-        }
+        key = p->email->path + 3;
+        keylen = maildir_hcache_keylen(key);
         mutt_hcache_store(hc, key, keylen, p->email, 0);
 #endif
       }
@@ -728,15 +658,12 @@ void maildir_delayed_parsing(struct Mailbox *m, struct MdEmail **md, struct Prog
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
 #endif
-
-  mh_sort_natural(m, md);
 }
 
 /**
  * maildir_read_dir - Read a Maildir style mailbox
  * @param m      Mailbox
- * @param subdir NULL for MH mailboxes,
- *               otherwise the subdir of the maildir mailbox to read from
+ * @param subdir Subdir of the maildir mailbox to read from
  * @retval  0 Success
  * @retval -1 Failure
  */
@@ -746,7 +673,6 @@ int maildir_read_dir(struct Mailbox *m, const char *subdir)
     return -1;
 
   struct MdEmail *md = NULL;
-  struct MhSequences mhs = { 0 };
   struct MdEmail **last = NULL;
   struct Progress progress;
 
@@ -770,7 +696,7 @@ int maildir_read_dir(struct Mailbox *m, const char *subdir)
   md = NULL;
   last = &md;
   int count = 0;
-  if (mh_parse_dir(m, &last, subdir, &count, &progress) < 0)
+  if (maildir_parse_dir(m, &last, subdir, &count, &progress) < 0)
     return -1;
 
   if (m->verbose)
@@ -779,18 +705,7 @@ int maildir_read_dir(struct Mailbox *m, const char *subdir)
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
     mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, count);
   }
-  mh_delayed_parsing(m, &md, &progress);
-
-  if (m->type == MUTT_MH)
-  {
-    if (mh_seq_read(&mhs, mailbox_path(m)) < 0)
-    {
-      maildir_free(&md);
-      return -1;
-    }
-    mh_update_maildir(md, &mhs);
-    mh_seq_free(&mhs);
-  }
+  maildir_delayed_parsing(m, &md, &progress);
 
   maildir_move_to_mailbox(m, &md);
 
@@ -1027,82 +942,36 @@ struct Email *maildir_parse_message(enum MailboxType type, const char *fname,
  */
 int maildir_sync_mailbox_message(struct Mailbox *m, int msgno, struct HeaderCache *hc)
 {
-  if (!m || !m->emails || (msgno >= m->msg_count))
-    return -1;
-
   struct Email *e = m->emails[msgno];
   if (!e)
     return -1;
 
-  if (e->deleted && ((m->type != MUTT_MAILDIR) || !C_MaildirTrash))
+  if (e->deleted && !C_MaildirTrash)
   {
     char path[PATH_MAX];
     snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
-    if ((m->type == MUTT_MAILDIR) || (C_MhPurge && (m->type == MUTT_MH)))
-    {
 #ifdef USE_HCACHE
-      if (hc)
-      {
-        const char *key = NULL;
-        size_t keylen;
-        if (m->type == MUTT_MH)
-        {
-          key = e->path;
-          keylen = strlen(key);
-        }
-        else
-        {
-          key = e->path + 3;
-          keylen = maildir_hcache_keylen(key);
-        }
-        mutt_hcache_delete_record(hc, key, keylen);
-      }
-#endif
-      unlink(path);
-    }
-    else if (m->type == MUTT_MH)
+    if (hc)
     {
-      /* MH just moves files out of the way when you delete them */
-      if (*e->path != ',')
-      {
-        char tmp[PATH_MAX];
-        snprintf(tmp, sizeof(tmp), "%s/,%s", mailbox_path(m), e->path);
-        unlink(tmp);
-        rename(path, tmp);
-      }
+      const char *key = e->path + 3;
+      size_t keylen = maildir_hcache_keylen(key);
+      mutt_hcache_delete_record(hc, key, keylen);
     }
+#endif
+    unlink(path);
   }
   else if (e->changed || e->attach_del ||
-           ((m->type == MUTT_MAILDIR) && (C_MaildirTrash || e->trash) &&
-            (e->deleted != e->trash)))
+           ((C_MaildirTrash || e->trash) && (e->deleted != e->trash)))
   {
-    if (m->type == MUTT_MAILDIR)
-    {
-      if (maildir_sync_message(m, msgno) == -1)
-        return -1;
-    }
-    else
-    {
-      if (mh_sync_message(m, msgno) == -1)
-        return -1;
-    }
+    if (maildir_sync_message(m, msgno) == -1)
+      return -1;
   }
 
 #ifdef USE_HCACHE
   if (hc && e->changed)
   {
-    const char *key = NULL;
-    size_t keylen;
-    if (m->type == MUTT_MH)
-    {
-      key = e->path;
-      keylen = strlen(key);
-    }
-    else
-    {
-      key = e->path + 3;
-      keylen = maildir_hcache_keylen(key);
-    }
+    const char *key = e->path + 3;
+    size_t keylen = maildir_hcache_keylen(key);
     mutt_hcache_store(hc, key, keylen, e, 0);
   }
 #endif
@@ -1162,15 +1031,11 @@ cleanup:
  * @param m     Mailbox
  * @param msg   Message to open
  * @param msgno Index number
- * @param is_maildir true, if a Maildir
  * @retval  0 Success
  * @retval -1 Failure
  */
-int maildir_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool is_maildir)
+int maildir_open_message(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!m || !m->emails || (msgno >= m->msg_count))
-    return -1;
-
   struct Email *e = m->emails[msgno];
   if (!e)
     return -1;
@@ -1180,7 +1045,7 @@ int maildir_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool
   snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
 
   msg->fp = fopen(path, "r");
-  if (!msg->fp && (errno == ENOENT) && is_maildir)
+  if (!msg->fp && (errno == ENOENT))
     msg->fp = maildir_open_find_message(mailbox_path(m), e->path, NULL);
 
   if (!msg->fp)
@@ -1536,24 +1401,17 @@ static int maildir_mbox_check_stats(struct Mailbox *m, int flags)
  */
 int maildir_mbox_sync(struct Mailbox *m)
 {
-  int i, j;
-  struct HeaderCache *hc = NULL;
-  struct Progress progress;
-  int check;
-
-  if (m->type == MUTT_MH)
-    check = mh_mbox_check(m);
-  else
-    check = maildir_mbox_check(m);
-
+  int check = maildir_mbox_check(m);
   if (check < 0)
     return check;
 
+  struct HeaderCache *hc = NULL;
 #ifdef USE_HCACHE
-  if ((m->type == MUTT_MAILDIR) || (m->type == MUTT_MH))
+  if (m->type == MUTT_MAILDIR)
     hc = mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
 #endif
 
+  struct Progress progress;
   if (m->verbose)
   {
     char msg[PATH_MAX];
@@ -1561,7 +1419,7 @@ int maildir_mbox_sync(struct Mailbox *m)
     mutt_progress_init(&progress, msg, MUTT_PROGRESS_WRITE, m->msg_count);
   }
 
-  for (i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
     if (m->verbose)
       mutt_progress_update(&progress, i, -1);
@@ -1571,12 +1429,9 @@ int maildir_mbox_sync(struct Mailbox *m)
   }
 
 #ifdef USE_HCACHE
-  if ((m->type == MUTT_MAILDIR) || (m->type == MUTT_MH))
+  if (m->type == MUTT_MAILDIR)
     mutt_hcache_close(hc);
 #endif
-
-  if (m->type == MUTT_MH)
-    mh_seq_update(m);
 
   /* XXX race condition? */
 
@@ -1586,13 +1441,13 @@ int maildir_mbox_sync(struct Mailbox *m)
 
   if (m->msg_deleted)
   {
-    for (i = 0, j = 0; i < m->msg_count; i++)
+    for (int i = 0, j = 0; i < m->msg_count; i++)
     {
       struct Email *e = m->emails[i];
       if (!e)
         break;
 
-      if (!e->deleted || ((m->type == MUTT_MAILDIR) && C_MaildirTrash))
+      if (!e->deleted || C_MaildirTrash)
         e->index = j++;
     }
   }
@@ -1601,7 +1456,7 @@ int maildir_mbox_sync(struct Mailbox *m)
 
 err:
 #ifdef USE_HCACHE
-  if ((m->type == MUTT_MAILDIR) || (m->type == MUTT_MH))
+  if (m->type == MUTT_MAILDIR)
     mutt_hcache_close(hc);
 #endif
   return -1;
@@ -1621,7 +1476,7 @@ int maildir_mbox_close(struct Mailbox *m)
  */
 static int maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  return maildir_open_message(m, msg, msgno, true);
+  return maildir_open_message(m, msg, msgno);
 }
 
 /**
