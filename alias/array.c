@@ -101,4 +101,3 @@ int alias_array_count_visible(struct AliasViewArray *ava)
 
   return count;
 }
-
