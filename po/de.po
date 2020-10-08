@@ -6439,9 +6439,8 @@ msgstr "Fehler: Benutzerdefinierte serverseitige Suche wird nur bei IMAP unterst
 
 #. L10N: Pattern Completion Menu description for ~A
 #: pattern/flags.c:44
-#, fuzzy
 msgid "all messages"
-msgstr "Sortiere Nachrichten"
+msgstr "alle Nachrichten"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:47
@@ -6470,9 +6469,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~D
 #: pattern/flags.c:62
-#, fuzzy
 msgid "deleted messages"
-msgstr "Keine ungelöschten Nachrichten"
+msgstr "gelöschte Nachrichten"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
@@ -6492,9 +6490,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:74
-#, fuzzy
 msgid "flagged messages"
-msgstr "Keine markierten Nachrichten"
+msgstr "markierte Nachrichten"
 
 #. L10N: Pattern Completion Menu description for ~g
 #: pattern/flags.c:77
@@ -6504,9 +6501,8 @@ msgstr "Bearbeite eine zuvor zurückgestellte Nachricht"
 
 #. L10N: Pattern Completion Menu description for ~G
 #: pattern/flags.c:80
-#, fuzzy
 msgid "cryptographically encrypted messages"
-msgstr "Kann verschlüsselte Nachricht nicht entschlüsseln"
+msgstr "verschlüsselte Nachrichten"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:83
@@ -6562,15 +6558,13 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~N
 #: pattern/flags.c:113
-#, fuzzy
 msgid "new messages"
-msgstr "Keine neuen Nachrichten"
+msgstr "neu Nachrichten"
 
 #. L10N: Pattern Completion Menu description for ~O
 #: pattern/flags.c:116
-#, fuzzy
 msgid "old messages"
-msgstr "Sortiere Nachrichten"
+msgstr "alte Nachrichten"
 
 #. L10N: Pattern Completion Menu description for ~p
 #: pattern/flags.c:119
@@ -6595,9 +6589,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:131
-#, fuzzy
 msgid "already read messages"
-msgstr "Keine ungelesenen Nachrichten"
+msgstr "gelesene Nachrichten"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:134
@@ -6617,9 +6610,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:143
-#, fuzzy
 msgid "tagged messages"
-msgstr "Keine markierten Nachrichten"
+msgstr "markierte Nachrichten"
 
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:146
@@ -6631,7 +6623,7 @@ msgstr "Antworte an Mailingliste"
 #: pattern/flags.c:149
 #, fuzzy
 msgid "unread messages"
-msgstr "Keine ungelesenen Nachrichten"
+msgstr "ungelesenen Nachrichten"
 
 #. L10N: Pattern Completion Menu description for ~v
 #: pattern/flags.c:152
@@ -6679,9 +6671,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~=
 #: pattern/flags.c:178
-#, fuzzy
 msgid "duplicated messages"
-msgstr "Keine ungelöschten Nachrichten"
+msgstr "doppelte Nachrichten"
 
 #. L10N: Pattern Completion Menu description for ~$
 #: pattern/flags.c:181
