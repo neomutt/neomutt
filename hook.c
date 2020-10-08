@@ -54,6 +54,7 @@
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "pattern/pattern.c" // well I need quote_simple but this seems weird
 #ifdef USE_COMP_MBOX
 #include "compmbox/lib.h"
 #endif
@@ -163,12 +164,34 @@ HookFlags get_hook_flag_by_cmd(const char *name)
  */
 static void dump_hooks(struct Buffer *buf, struct Hook *h)
 {
-  struct Buffer tmp = mutt_buffer_make(0);
-  escape_string(&tmp, h->command);
+  struct Buffer pat = mutt_buffer_make(0);
+  struct Buffer *cmd = mutt_buffer_pool_get();
+  quote_simple(h->command, cmd);
+  escape_string(&pat, h->regex.pattern);
 
-  mutt_buffer_add_printf(buf, "%s %s%s \"%s\"\n", get_hook_cmd_by_flag(h->type),
-                         h->regex.pat_not ? "!" : "", h->regex.pattern, tmp.data);
-  mutt_buffer_dealloc(&tmp);
+  // TODO: I need to proper escape some strings. e.g. regex with spaces etc…
+  // TODO: negative regex mustn't be quoted otherwise ! would be expanded to spoolfile
+  // TODO: quote or escape string?
+  // TODO: there might be missing printfs for some hook types or edge cases
+  if (h->regex.regex) //REGEX
+  {
+    mutt_buffer_add_printf(buf, "%s\t%s%s %s\n", get_hook_cmd_by_flag(h->type),
+                           h->regex.pat_not ? "!" : "",
+                           h->regex.pattern ? "" : "", mutt_buffer_string(cmd));
+  }
+  else if (pat.data) //PATTERN
+  {
+    mutt_buffer_add_printf(buf, "%s\t\"%s\" %s\n", get_hook_cmd_by_flag(h->type),
+                           pat.data, mutt_buffer_string(cmd));
+  }
+  else // only command
+  {
+    mutt_buffer_add_printf(buf, "%s\t%s\n", get_hook_cmd_by_flag(h->type),
+                           mutt_buffer_string(cmd));
+  }
+
+  mutt_buffer_pool_release(&cmd);
+  mutt_buffer_dealloc(&pat);
 }
 
 /**
@@ -189,16 +212,18 @@ enum CommandResult mutt_parse_hooks(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
     dump_all = true;
   else
+  {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-
-  if (mutt_istr_equal(buf->data, "all"))
-    dump_all = true;
+    if (mutt_istr_equal(buf->data, "all"))
+      dump_all = true;
+  }
 
   if (MoreArgs(s))
     return MUTT_CMD_ERROR;
 
   struct Buffer filebuf = mutt_buffer_make(4096);
 
+  int last = 0;
   TAILQ_FOREACH(h, &Hooks, entries)
   {
     cmd = mutt_command_get(buf->data);
@@ -209,7 +234,16 @@ enum CommandResult mutt_parse_hooks(struct Buffer *buf, struct Buffer *s,
     }
 
     if (dump_all || (h->type == cmd->data))
+    {
+      if (last != h->type) //newline between hook types and leading comments
+      {
+        if (last != 0)
+          mutt_buffer_add_printf(&filebuf, "\n");
+        mutt_buffer_add_printf(&filebuf, "# %ss\n", get_hook_cmd_by_flag(h->type));
+        last = h->type;
+      }
       dump_hooks(&filebuf, h);
+    }
   }
 
   if (mutt_buffer_is_empty(&filebuf))
