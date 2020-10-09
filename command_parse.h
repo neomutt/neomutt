@@ -67,6 +67,8 @@ enum CommandResult parse_unsubscribe     (struct Buffer *buf, struct Buffer *s, 
 enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 #endif
 
+enum CommandResult parse_prompt_user(struct Buffer *buf, struct Buffer *s,intptr_t data, struct Buffer *err);
+
 int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s, struct Buffer *err);
 void clear_source_stack(void);
 int source_rc(const char *rcfile_path, struct Buffer *err);

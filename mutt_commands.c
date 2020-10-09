@@ -86,6 +86,7 @@ const struct Command mutt_commands[] = {
   { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
   { "nospam",              parse_spam_list,        MUTT_NOSPAM },
   { "pgp-hook",            mutt_parse_hook,        MUTT_CRYPT_HOOK },
+	{ "prompt_user",				 parse_prompt_user,			 0 },
   { "push",                mutt_parse_push,        0 },
   { "reply-hook",          mutt_parse_hook,        MUTT_REPLY_HOOK },
   { "reset",               parse_set,              MUTT_SET_RESET },

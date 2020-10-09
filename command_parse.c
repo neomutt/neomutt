@@ -2140,6 +2140,32 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
 }
 #endif
 
+enum CommandResult parse_prompt_user(struct Buffer *buf, struct Buffer *s,
+                                             intptr_t data, struct Buffer *err)
+{
+ struct HashElem *he = NULL;
+ char input[1024]={0};
+
+ if(MoreArgs(s))	mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+ if(MoreArgs(s))	mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+ if(MoreArgs(s)) {
+	 mutt_debug(LL_DEBUG1,"More tokens than needed (max 2)");
+	 return MUTT_CMD_ERROR;
+ }
+
+ mutt_get_field("",input,sizeof(input),MUTT_COMP_NO_FLAGS); 
+
+ he = cs_subset_lookup(NeoMutt->sub, input);
+
+ if(he!=NULL)
+  cs_subset_he_string_set(NeoMutt->sub,he,input,err);
+ else
+  myvar_set(he->data,input); 
+
+ return MUTT_CMD_SUCCESS;
+}
+
 /**
  * clear_source_stack - Free memory from the stack used for the souce command
  */
