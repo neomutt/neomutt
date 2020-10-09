@@ -111,7 +111,6 @@ extern char *C_HeaderCache;
 extern char *C_HeaderCacheBackend;
 extern short C_HeaderCacheCompressLevel;
 extern char *C_HeaderCacheCompressMethod;
-extern bool  C_MaildirHeaderCacheVerify;
 
 /**
  * mutt_hcache_open - open the connection to the header cache
