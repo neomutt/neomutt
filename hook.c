@@ -164,34 +164,47 @@ HookFlags get_hook_flag_by_cmd(const char *name)
  */
 static void dump_hooks(struct Buffer *buf, struct Hook *h)
 {
-  struct Buffer pat = mutt_buffer_make(0);
   struct Buffer *cmd = mutt_buffer_pool_get();
   quote_simple(h->command, cmd);
-  escape_string(&pat, h->regex.pattern);
 
-  // TODO: I need to proper escape some strings. e.g. regex with spaces etc…
-  // TODO: negative regex mustn't be quoted otherwise ! would be expanded to spoolfile
-  // TODO: quote or escape string?
   // TODO: there might be missing printfs for some hook types or edge cases
-  if (h->regex.regex) //REGEX
+  // TODO: not displaying charset-hook
+  // TODO: not displaying iconv-hook
+  // TODO: not displaying index-format-hook
+  // TODO: append-hook is missing hook command name
+  // TODO: close-hook is missing hook command name
+  // TODO: open-hook is missing hook command name
+
+  //print hook-type (1)
+  mutt_buffer_add_printf(buf, "%-14s", get_hook_cmd_by_flag(h->type));
+
+  //print regex pattern (2)
+  if (h->type & (MUTT_ACCOUNT_HOOK | MUTT_FOLDER_HOOK | MUTT_CRYPT_HOOK |
+                 MUTT_MBOX_HOOK | MUTT_APPEND_HOOK | MUTT_CLOSE_HOOK | MUTT_OPEN_HOOK |
+                 MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK |
+                 MUTT_FCC_HOOK | MUTT_FCC_HOOK | MUTT_SAVE_HOOK | MUTT_SAVE_HOOK))
   {
-    mutt_buffer_add_printf(buf, "%s\t%s%s %s\n", get_hook_cmd_by_flag(h->type),
-                           h->regex.pat_not ? "!" : "",
-                           h->regex.pattern ? "" : "", mutt_buffer_string(cmd));
+    struct Buffer *pat = mutt_buffer_pool_get();
+    quote_simple(h->regex.pattern, pat);
+    mutt_buffer_add_printf(buf, "%s%-80s\t", h->regex.pat_not ? "!" : "",
+                           mutt_buffer_string(pat));
+    mutt_buffer_pool_release(&pat);
   }
-  else if (pat.data) //PATTERN
+
+  //print mailbox (3)
+  if (h->type & (MUTT_FCC_HOOK | MUTT_SAVE_HOOK | MUTT_MBOX_HOOK))
+    mutt_buffer_add_printf(buf, "%s", mutt_path_escape(mutt_buffer_string(cmd)));
+  //print command-only for global hooks (2)
+  else if (h->type & (MUTT_GLOBAL_HOOK | MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK | MUTT_SEND_HOOK |
+                      MUTT_SEND2_HOOK | MUTT_ACCOUNT_HOOK | MUTT_FOLDER_HOOK | MUTT_APPEND_HOOK |
+                      MUTT_CLOSE_HOOK | MUTT_OPEN_HOOK | MUTT_CRYPT_HOOK))
   {
-    mutt_buffer_add_printf(buf, "%s\t\"%s\" %s\n", get_hook_cmd_by_flag(h->type),
-                           pat.data, mutt_buffer_string(cmd));
+    mutt_buffer_add_printf(buf, "%s", mutt_buffer_string(cmd));
   }
-  else // only command
-  {
-    mutt_buffer_add_printf(buf, "%s\t%s\n", get_hook_cmd_by_flag(h->type),
-                           mutt_buffer_string(cmd));
-  }
+
+  mutt_buffer_add_printf(buf, "\n");
 
   mutt_buffer_pool_release(&cmd);
-  mutt_buffer_dealloc(&pat);
 }
 
 /**
