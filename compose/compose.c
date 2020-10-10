@@ -2152,8 +2152,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           /* go back to the folder we started from */
           Context = ctx_cur;
           /* Restore old $sort and $sort_aux */
-          cs_subset_str_native_set(sub, "sort", old_sort, NULL);
-          cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
+          if (old_sort != cs_subset_sort(sub, "sort"))
+            cs_subset_str_native_set(sub, "sort", old_sort, NULL);
+          if (old_sort_aux != cs_subset_sort(sub, "sort_aux"))
+            cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
           break;
         }
@@ -2189,8 +2191,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         /* go back to the folder we started from */
         Context = ctx_cur;
         /* Restore old $sort and $sort_aux */
-        cs_subset_str_native_set(sub, "sort", old_sort, NULL);
-        cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
+        if (old_sort != cs_subset_sort(sub, "sort"))
+          cs_subset_str_native_set(sub, "sort", old_sort, NULL);
+        if (old_sort_aux != cs_subset_sort(sub, "sort_aux"))
+          cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
         if (added_attachment)
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
