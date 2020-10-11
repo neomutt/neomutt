@@ -91,20 +91,25 @@
  */
 static void append_signature(FILE *fp, struct ConfigSubset *sub)
 {
-  FILE *fp_tmp = NULL;
-  pid_t pid;
-
   const char *c_signature = cs_subset_path(sub, "signature");
-  if (c_signature && (fp_tmp = mutt_open_read(c_signature, &pid)))
+  if (!c_signature)
+    return;
+
+  pid_t pid = 0;
+  FILE *fp_tmp = mutt_open_read(c_signature, &pid);
+  if (!fp_tmp)
   {
-    const bool c_sig_dashes = cs_subset_bool(sub, "sig_dashes");
-    if (c_sig_dashes)
-      fputs("\n-- \n", fp);
-    mutt_file_copy_stream(fp_tmp, fp);
-    mutt_file_fclose(&fp_tmp);
-    if (pid != -1)
-      filter_wait(pid);
+    mutt_perror(c_signature);
+    return;
   }
+
+  const bool c_sig_dashes = cs_subset_bool(sub, "sig_dashes");
+  if (c_sig_dashes)
+    fputs("\n-- \n", fp);
+  mutt_file_copy_stream(fp_tmp, fp);
+  mutt_file_fclose(&fp_tmp);
+  if (pid != -1)
+    filter_wait(pid);
 }
 
 /**
