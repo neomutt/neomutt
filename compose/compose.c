@@ -976,6 +976,7 @@ static void draw_envelope(struct ComposeRedrawData *rd)
   const char *fcc = mutt_b2s(rd->fcc);
   const int cols = rd->win_envelope->state.cols - MaxHeaderWidth;
 
+  mutt_window_clear(rd->win_envelope);
   int row = draw_envelope_addr(HDR_FROM, &e->env->from, rd->win_envelope, 0, 1);
 
 #ifdef USE_NNTP
