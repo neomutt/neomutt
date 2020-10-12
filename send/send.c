@@ -2585,8 +2585,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   main_loop:
 
     mutt_buffer_pretty_mailbox(&fcc);
-    i = mutt_compose_menu(e_templ, &fcc, e_cur,
-                          ((flags & SEND_NO_FREE_HEADER) ? MUTT_COMPOSE_NOFREEHEADER : 0));
+    i = mutt_compose_menu(
+        e_templ, &fcc, e_cur,
+        ((flags & SEND_NO_FREE_HEADER) ? MUTT_COMPOSE_NOFREEHEADER : 0), sub);
     if (i == -1)
     {
 /* abort */
