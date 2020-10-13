@@ -83,6 +83,8 @@ struct FolderFile
 #ifdef USE_NNTP
   struct NntpMboxData *nd;
 #endif
+
+  int gen;
 };
 
 ARRAY_HEAD(BrowserStateEntry, struct FolderFile);

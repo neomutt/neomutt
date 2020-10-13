@@ -168,6 +168,23 @@ static int browser_compare_subject(const void *a, const void *b)
 }
 
 /**
+ * browser_compare_order - Compare the order of creation of two browser entries
+ * @param a First browser entry
+ * @param b Second browser entry
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ * @note This only affects browsing mailboxes and is a no-op for folders.
+ */
+static int browser_compare_order(const void *a, const void *b)
+{
+  const struct FolderFile *pa = (const struct FolderFile *) a;
+  const struct FolderFile *pb = (const struct FolderFile *) b;
+
+  return ((C_SortBrowser & SORT_REVERSE) ? -1 : 1) * (pa->gen - pb->gen);
+}
+
+/**
  * browser_compare_desc - Compare the descriptions of two browser entries
  * @param a First browser entry
  * @param b Second browser entry
@@ -304,8 +321,10 @@ static int browser_compare(const void *a, const void *b)
     case SORT_UNREAD:
       return browser_compare_count_new(a, b);
     case SORT_SUBJECT:
-    default:
       return browser_compare_subject(a, b);
+    default:
+    case SORT_ORDER:
+      return browser_compare_order(a, b);
   }
 }
 
@@ -320,9 +339,6 @@ static void browser_sort(struct BrowserState *state)
 {
   switch (C_SortBrowser & SORT_MASK)
   {
-    /* Also called "I don't care"-sort-method. */
-    case SORT_ORDER:
-      return;
 #ifdef USE_NNTP
     case SORT_SIZE:
     case SORT_DATE:
@@ -660,6 +676,7 @@ static void add_folder(struct Menu *menu, struct BrowserState *state,
   if (m)
   {
     ff.has_mailbox = true;
+    ff.gen = m->gen;
     ff.has_new_mail = m->has_new;
     ff.msg_count = m->msg_count;
     ff.msg_unread = m->msg_unread;
@@ -1872,7 +1889,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
           case 7: /* do(n)'t sort */
             sort = SORT_ORDER;
-            resort = false;
             break;
         }
         if (resort)
