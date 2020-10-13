@@ -41,6 +41,8 @@
  */
 struct Mailbox *mailbox_new(void)
 {
+  static int gen = 0;
+
   struct Mailbox *m = mutt_mem_calloc(1, sizeof(struct Mailbox));
 
   mutt_buffer_init(&m->pathbuf);
@@ -49,6 +51,7 @@ struct Mailbox *mailbox_new(void)
   m->email_max = 25;
   m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
   m->v2r = mutt_mem_calloc(m->email_max, sizeof(int));
+  m->gen = gen++;
 
   return m;
 }

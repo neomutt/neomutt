@@ -139,6 +139,19 @@ static int sb_sort_unread(const void *a, const void *b)
 }
 
 /**
+ * sb_sort_order - Sort Sidebar entries by order of creation - Implements ::sort_t
+ */
+static int sb_sort_order(const void *a, const void *b)
+{
+  const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
+  const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
+  const struct Mailbox *m1 = sbe1->mailbox;
+  const struct Mailbox *m2 = sbe2->mailbox;
+
+  return (sb_sort_reverse ? -1 : 1) * (m1->gen - m2->gen);
+}
+
+/**
  * sb_sort_unsorted - Sort Sidebar entries into their original order - Implements ::sort_t
  */
 static int sb_sort_unsorted(const void *a, const void *b)
@@ -183,6 +196,7 @@ void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort)
       fn = sb_sort_unread;
       break;
     case SORT_ORDER:
+      fn = sb_sort_order;
     default:
       break;
   }
