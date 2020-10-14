@@ -113,7 +113,7 @@ static const char *abbrev_folder(const char *mbox, const char *folder, enum Mail
     flen--;
 
   size_t mlen = mutt_str_len(mbox);
-  if (mlen <= flen)
+  if (mlen < flen)
     return NULL;
 
   if (!mutt_strn_equal(folder, mbox, flen))
@@ -123,7 +123,21 @@ static const char *abbrev_folder(const char *mbox, const char *folder, enum Mail
   if (!strchr(C_SidebarDelimChars, mbox[flen]))
     return NULL;
 
-  return mbox + flen + 1;
+  if (mlen > flen)
+  {
+    return mbox + flen + 1;
+  }
+
+  // mbox and folder are equal, use the chunk after the last delimiter
+  while (mlen--)
+  {
+    if (strchr(C_SidebarDelimChars, mbox[mlen]))
+    {
+      return mbox + mlen + 1;
+    }
+  }
+
+  return NULL;
 }
 
 /**
