@@ -83,16 +83,17 @@ bool C_IgnoreLinearWhiteSpace = false;
 const struct Mapping SortAuxMethods[] = {
   // clang-format off
   { "date",          SORT_DATE },
-  { "date-received", SORT_RECEIVED },
   { "date-sent",     SORT_DATE },
+  { "threads",       SORT_DATE },
+  { "date-received", SORT_RECEIVED },
   { "from",          SORT_FROM },
   { "label",         SORT_LABEL },
+  { "unsorted",      SORT_ORDER },
   { "mailbox-order", SORT_ORDER },
   { "score",         SORT_SCORE },
   { "size",          SORT_SIZE },
   { "spam",          SORT_SPAM },
   { "subject",       SORT_SUBJECT },
-  { "threads",       SORT_DATE },
   { "to",            SORT_TO },
   { NULL,            0 },
   // clang-format on
@@ -104,10 +105,11 @@ const struct Mapping SortAuxMethods[] = {
 const struct Mapping SortMethods[] = {
   // clang-format off
   { "date",          SORT_DATE },
-  { "date-received", SORT_RECEIVED },
   { "date-sent",     SORT_DATE },
+  { "date-received", SORT_RECEIVED },
   { "from",          SORT_FROM },
   { "label",         SORT_LABEL },
+  { "unsorted",      SORT_ORDER },
   { "mailbox-order", SORT_ORDER },
   { "score",         SORT_SCORE },
   { "size",          SORT_SIZE },

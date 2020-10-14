@@ -57,10 +57,11 @@ static struct Mapping MboxTypeMap[] = {
  */
 const struct Mapping SortMangoMethods[] = {
   { "date",          SORT_DATE },
-  { "date-received", SORT_RECEIVED },
   { "date-sent",     SORT_DATE },
+  { "date-received", SORT_RECEIVED },
   { "from",          SORT_FROM },
   { "label",         SORT_LABEL },
+  { "unsorted",      SORT_ORDER },
   { "mailbox-order", SORT_ORDER },
   { "score",         SORT_SCORE },
   { "size",          SORT_SIZE },
