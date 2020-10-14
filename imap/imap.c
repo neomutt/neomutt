@@ -66,7 +66,7 @@
 
 struct stat;
 
-const struct Command imap_commands[] = {
+static const struct Command imap_commands[] = {
   // clang-format off
   { "subscribe-to",     parse_subscribe_to,     0 },
   { "unsubscribe-from", parse_unsubscribe_from, 0 },

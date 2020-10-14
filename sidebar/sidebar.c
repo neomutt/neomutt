@@ -41,7 +41,7 @@
 
 struct ListHead SidebarWhitelist = STAILQ_HEAD_INITIALIZER(SidebarWhitelist); ///< List of mailboxes to always display in the sidebar
 
-const struct Command sb_commands[] = {
+static const struct Command sb_commands[] = {
   // clang-format off
   { "sidebar_whitelist",   sb_parse_whitelist,     0 },
   { "unsidebar_whitelist", sb_parse_unwhitelist,   0 },

@@ -52,7 +52,7 @@
 #include "muttlib.h"
 #include "myvar.h"
 
-const struct Command lua_commands[] = {
+static const struct Command lua_commands[] = {
   // clang-format off
   { "lua",        mutt_lua_parse,       0 },
   { "lua-source", mutt_lua_source_file, 0 },

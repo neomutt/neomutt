@@ -52,7 +52,7 @@
 
 struct Email;
 
-const struct Command comp_commands[] = {
+static const struct Command comp_commands[] = {
   // clang-format off
   { "append-hook", mutt_parse_hook, MUTT_APPEND_HOOK },
   { "close-hook",  mutt_parse_hook, MUTT_CLOSE_HOOK },

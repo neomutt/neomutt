@@ -142,7 +142,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   {
     char *buf2 = buf + ret;
     int len = sizeof(buf) - ret;
-    char *p = strerror(errno);
+    const char *p = strerror(errno);
     if (!p)
       p = _("unknown error");
 

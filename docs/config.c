@@ -4610,7 +4610,7 @@
 ** You may optionally use the "reverse-" prefix to specify reverse sorting
 ** order.
 ** .pp
-** The "date-sent" value is a synonim for "date". The "mailbox-order" value is
+** The "date-sent" value is a synonym for "date". The "mailbox-order" value is
 ** a synonym for "unsorted".
 ** .pp
 ** Example:

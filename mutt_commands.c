@@ -46,7 +46,7 @@
 #include "sidebar/lib.h"
 #endif
 
-const struct Command mutt_commands[] = {
+static const struct Command mutt_commands[] = {
   // clang-format off
   { "account-hook",        mutt_parse_hook,        MUTT_ACCOUNT_HOOK },
   { "alias",               parse_alias,            0 },

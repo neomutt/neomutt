@@ -148,12 +148,7 @@ static void destroy_state(struct BrowserState *state)
 }
 
 /**
- * browser_compare_subject - Compare the subject of two browser entries
- * @param a First browser entry
- * @param b Second browser entry
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * browser_compare_subject - Compare the subject of two browser entries - Implements ::sort_t
  */
 static int browser_compare_subject(const void *a, const void *b)
 {
@@ -168,12 +163,8 @@ static int browser_compare_subject(const void *a, const void *b)
 }
 
 /**
- * browser_compare_order - Compare the order of creation of two browser entries
- * @param a First browser entry
- * @param b Second browser entry
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * browser_compare_order - Compare the order of creation of two browser entries - Implements ::sort_t
+ *
  * @note This only affects browsing mailboxes and is a no-op for folders.
  */
 static int browser_compare_order(const void *a, const void *b)
@@ -185,12 +176,7 @@ static int browser_compare_order(const void *a, const void *b)
 }
 
 /**
- * browser_compare_desc - Compare the descriptions of two browser entries
- * @param a First browser entry
- * @param b Second browser entry
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * browser_compare_desc - Compare the descriptions of two browser entries - Implements ::sort_t
  */
 static int browser_compare_desc(const void *a, const void *b)
 {
@@ -203,12 +189,7 @@ static int browser_compare_desc(const void *a, const void *b)
 }
 
 /**
- * browser_compare_date - Compare the date of two browser entries
- * @param a First browser entry
- * @param b Second browser entry
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * browser_compare_date - Compare the date of two browser entries - Implements ::sort_t
  */
 static int browser_compare_date(const void *a, const void *b)
 {
@@ -221,12 +202,7 @@ static int browser_compare_date(const void *a, const void *b)
 }
 
 /**
- * browser_compare_size - Compare the size of two browser entries
- * @param a First browser entry
- * @param b Second browser entry
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * browser_compare_size - Compare the size of two browser entries - Implements ::sort_t
  */
 static int browser_compare_size(const void *a, const void *b)
 {
@@ -239,12 +215,7 @@ static int browser_compare_size(const void *a, const void *b)
 }
 
 /**
- * browser_compare_count - Compare the message count of two browser entries
- * @param a First browser entry
- * @param b Second browser entry
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * browser_compare_count - Compare the message count of two browser entries - Implements ::sort_t
  */
 static int browser_compare_count(const void *a, const void *b)
 {
@@ -263,12 +234,7 @@ static int browser_compare_count(const void *a, const void *b)
 }
 
 /**
- * browser_compare_count_new - Compare the new count of two browser entries
- * @param a First browser entry
- * @param b Second browser entry
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * browser_compare_count_new - Compare the new count of two browser entries - Implements ::sort_t
  */
 static int browser_compare_count_new(const void *a, const void *b)
 {
@@ -287,12 +253,7 @@ static int browser_compare_count_new(const void *a, const void *b)
 }
 
 /**
- * browser_compare - Sort the items in the browser
- * @param a First item
- * @param b Second item
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * browser_compare - Sort the items in the browser - Implements ::sort_t
  *
  * Wild compare function that calls the others. It's useful because it provides
  * a way to tell "../" is always on the top of the list, independently of the
