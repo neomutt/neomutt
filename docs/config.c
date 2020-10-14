@@ -4126,18 +4126,18 @@
 ** Specifies how to sort mailbox entries in the sidebar.  By default, the
 ** entries are sorted alphabetically.  Valid values:
 ** .il
-** .dd alpha (alphabetically)
+** .dd path (alphabetically)
 ** .dd count (all message count)
 ** .dd flagged (flagged message count)
-** .dd name (alphabetically)
 ** .dd new (unread message count)
-** .dd path (alphabetically)
 ** .dd unread (unread message count)
 ** .dd unsorted
 ** .ie
 ** .pp
 ** You may optionally use the "reverse-" prefix to specify reverse sorting
 ** order (example: "\fCset sidebar_sort_method=reverse-alpha\fP").
+** .pp
+** The "alpha" and "name" values are synonyms for "path".
 */
 
 { "sidebar_visible", DT_BOOL, false },
@@ -4595,20 +4595,23 @@
 ** Specifies how to sort messages in the "index" menu.  Valid values
 ** are:
 ** .il
-** .dd date or date-sent
+** .dd date
 ** .dd date-received
 ** .dd from
-** .dd mailbox-order (unsorted)
 ** .dd score
 ** .dd size
 ** .dd spam
 ** .dd subject
 ** .dd threads
 ** .dd to
+** .dd unsorted
 ** .ie
 ** .pp
 ** You may optionally use the "reverse-" prefix to specify reverse sorting
 ** order.
+** .pp
+** The "date-sent" value is a synonim for "date". The "mailbox-order" value is
+** a synonym for "unsorted".
 ** .pp
 ** Example:
 ** .ts
@@ -4640,7 +4643,7 @@
 ** When sorting by threads, this variable controls how threads are sorted
 ** in relation to other threads, and how the branches of the thread trees
 ** are sorted.  This can be set to any value that $$sort can, except
-** "threads" (in that case, NeoMutt will just use "date-sent").  You can also
+** "threads" (in that case, NeoMutt will just use "date").  You can also
 ** specify the "last-" prefix in addition to the "reverse-" prefix, but "last-"
 ** must come after "reverse-".  The "last-" prefix causes messages to be
 ** sorted against its siblings by which has the last descendant, using
@@ -4675,6 +4678,8 @@
 ** .pp
 ** You may optionally use the "reverse-" prefix to specify reverse sorting
 ** order (example: "\fCset sort_browser=reverse-date\fP").
+** .pp
+** The "unread" value is a synonym for "new".
 */
 
 { "sort_re", DT_BOOL, true },

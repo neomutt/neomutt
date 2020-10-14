@@ -142,6 +142,8 @@ struct Mailbox
   void (*mdata_free)(void **ptr);
 
   struct Notify *notify;              ///< Notifications handler
+
+  int gen;                            ///< Generation number, for sorting
 };
 
 /**

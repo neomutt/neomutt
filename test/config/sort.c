@@ -61,6 +61,7 @@ const struct Mapping SortTestMethods[] = {
   { "date-received", SORT_RECEIVED },
   { "from",          SORT_FROM },
   { "label",         SORT_LABEL },
+  { "unsorted",      SORT_ORDER },
   { "mailbox-order", SORT_ORDER },
   { "score",         SORT_SCORE },
   { "size",          SORT_SIZE },

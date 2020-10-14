@@ -28,7 +28,6 @@
 struct ConfigSet;
 
 extern const struct Mapping SortAliasMethods[];
-extern const struct Mapping SortAuxMethods[];
 extern const struct Mapping SortBrowserMethods[];
 extern const struct Mapping SortKeyMethods[];
 extern const struct Mapping SortMethods[];
