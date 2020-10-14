@@ -2,6 +2,7 @@ address/address.c
 address/group.c
 address/idna.c
 alias/alias.c
+alias/array.c
 alias/commands.c
 alias/config.c
 alias/dlgalias.c
@@ -129,8 +130,12 @@ init.c
 keymap.c
 mailcap.c
 maildir/config.c
+maildir/edata.c
 maildir/maildir.c
+maildir/mdata.c
+maildir/mdemail.c
 maildir/mh.c
+maildir/sequence.c
 maildir/shared.c
 maillist.c
 main.c
