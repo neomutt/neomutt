@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-10-03 13:19+0100\n"
+"POT-Creation-Date: 2020-10-16 13:46+0100\n"
 "PO-Revision-Date: 2018-09-19 03:36+0200\n"
 "Last-Translator: Flammie A Pirinen <flammie@iki.fi>\n"
 "Language-Team: Finnish\n"
@@ -28,59 +28,59 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. L10N: prompt to add a new alias
-#: alias/alias.c:390
+#: alias/alias.c:391
 msgid "Alias as: "
 msgstr "Aliakseksi: "
 
-#: alias/alias.c:399
+#: alias/alias.c:400
 msgid "You already have an alias defined with that name"
 msgstr "Tällä nimellä on jo alias"
 
-#: alias/alias.c:405
+#: alias/alias.c:406
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Varoitus: Tämä alias ei ehkä toimi, korjataanko?"
 
-#: alias/alias.c:430
+#: alias/alias.c:431
 msgid "Address: "
 msgstr "Osoite: "
 
-#: alias/alias.c:442 commands.c:459 compose/compose.c:1025 conn/raw.c:146
-#: conn/raw.c:203 recvcmd.c:232 send/send.c:182
+#: alias/alias.c:443 commands.c:459 compose/compose.c:1055 conn/raw.c:146
+#: conn/raw.c:203 recvcmd.c:232 send/send.c:187
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Viallinen IDN: %s"
 
-#: alias/alias.c:453
+#: alias/alias.c:454
 msgid "Personal name: "
 msgstr "Henkilönnimi: "
 
-#: alias/alias.c:461
+#: alias/alias.c:462
 #, fuzzy
 msgid "Comment: "
 msgstr "X-Comment-To: "
 
-#: alias/alias.c:469 alias/alias.c:473
+#: alias/alias.c:470 alias/alias.c:474
 msgid "Accept?"
 msgstr "Hyväksytäänkö?"
 
-#: alias/alias.c:485 recvattach.c:602 recvattach.c:624 recvattach.c:638
+#: alias/alias.c:488 recvattach.c:602 recvattach.c:624 recvattach.c:638
 #: recvattach.c:653 recvattach.c:752
 msgid "Save to file: "
 msgstr "Tallenna tiedostoon: "
 
-#: alias/alias.c:504
+#: alias/alias.c:507
 msgid "Error reading alias file"
 msgstr "Virhe luettaessa aliastiedostoa"
 
-#: alias/alias.c:528
+#: alias/alias.c:531
 msgid "Trouble adding alias"
 msgstr "Virhe lisättäessä aliasta"
 
-#: alias/alias.c:530
+#: alias/alias.c:533
 msgid "Alias added"
 msgstr "Alias lisätty"
 
-#: alias/alias.c:535
+#: alias/alias.c:538
 msgid "Error seeking in alias file"
 msgstr "Virhe haettaessa aliastiedostosta"
 
@@ -129,7 +129,7 @@ msgid "Select"
 msgstr "Valitse"
 
 #: alias/dlgalias.c:63 alias/dlgquery.c:65 autocrypt/dlgautocrypt.c:80
-#: browser.c:80 browser.c:95 compose/compose.c:229 compose/compose.c:244
+#: browser.c:80 browser.c:95 compose/compose.c:230 compose/compose.c:245
 #: conn/dlgverifycert.c:48 history/dlghistory.c:49 index.c:117 index.c:133
 #: ncrypt/dlggpgme.c:67 ncrypt/dlgpgp.c:56 ncrypt/dlgsmime.c:50 pager.c:224
 #: pager.c:249 pager.c:265 pattern/dlgpattern.c:65 postpone.c:73
@@ -137,31 +137,31 @@ msgstr "Valitse"
 msgid "Help"
 msgstr "Ohje"
 
-#: alias/dlgalias.c:166 alias/dlgalias.c:212 alias/dlgalias.c:312
-#: alias/dlgalias.c:439
+#: alias/dlgalias.c:169 alias/dlgalias.c:215 alias/dlgalias.c:315
+#: alias/dlgalias.c:443
 msgid "Aliases"
 msgstr "Aliakset"
 
-#: alias/dlgalias.c:195
+#: alias/dlgalias.c:198
 msgid "You have no aliases"
 msgstr "Aliaksia ei ole"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: alias/dlgalias.c:265 alias/dlgquery.c:461
+#: alias/dlgalias.c:268 alias/dlgquery.c:471
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr ""
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: alias/dlgalias.c:267 alias/dlgquery.c:463
+#: alias/dlgalias.c:270 alias/dlgquery.c:473
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: alias/dlgalias.c:269 alias/dlgquery.c:465
+#: alias/dlgalias.c:272 alias/dlgquery.c:475
 msgid "adu"
 msgstr ""
 
-#: alias/dlgalias.c:311 alias/dlgquery.c:509 index.c:1811
+#: alias/dlgalias.c:314 alias/dlgquery.c:519 index.c:1812
 msgid "Limit to messages matching: "
 msgstr "Rajoita viestit täsmäämään: "
 
@@ -181,26 +181,26 @@ msgstr "Tee alias"
 msgid "Search"
 msgstr "Haku"
 
-#: alias/dlgquery.c:254
+#: alias/dlgquery.c:260
 msgid "Waiting for response..."
 msgstr "Odotetaan vastausta..."
 
-#: alias/dlgquery.c:317 alias/dlgquery.c:345 alias/dlgquery.c:363
-#: alias/dlgquery.c:641
+#: alias/dlgquery.c:325 alias/dlgquery.c:355 alias/dlgquery.c:373
+#: alias/dlgquery.c:655
 msgid "Query: "
 msgstr "Haku: "
 
-#: alias/dlgquery.c:509
+#: alias/dlgquery.c:519
 #, fuzzy
 msgid "Query"
 msgstr "Haku: "
 
-#: alias/dlgquery.c:598 alias/dlgquery.c:636
+#: alias/dlgquery.c:610 alias/dlgquery.c:650
 msgid "Query command not defined"
 msgstr "Hakukomentoa ei ole määritelty"
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:288 index.c:1776
+#: alias/gui.c:91 index.c:1777
 #, c-format
 msgid "Limit: %s"
 msgstr "Rajoite: %s"
@@ -490,128 +490,128 @@ msgstr "Poista tilaus"
 msgid "Catchup"
 msgstr "Ota kiinni"
 
-#: browser.c:758 browser.c:1532 browser.c:1763
+#: browser.c:736 browser.c:1510 browser.c:1741
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s ei ole hakemisto"
 
-#: browser.c:1028
+#: browser.c:1006
 #, c-format
 msgid "Subscribed newsgroups"
 msgstr "Tilatut uutisryhmät"
 
-#: browser.c:1031
+#: browser.c:1009
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr "Uutisryhmät palvelimella [%s]"
 
-#: browser.c:1041
+#: browser.c:1019
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Postilaatikot [%d]"
 
-#: browser.c:1053
+#: browser.c:1031
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Tilattu [%s], Tiedostomaski: %s"
 
-#: browser.c:1059
+#: browser.c:1037
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Hakemisto [%s], Tiedostomaski: %s"
 
-#: browser.c:1118
+#: browser.c:1096
 msgid "Can't attach a directory"
 msgstr "Ei voida liittää hakemistoa"
 
-#: browser.c:1396 browser.c:1820 browser.c:1968
+#: browser.c:1374 browser.c:1798 browser.c:1945
 msgid "No files match the file mask"
 msgstr "Ei tiedostoja jotka täsmäävät maskiin"
 
-#: browser.c:1603
+#: browser.c:1581
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Luonti toimii vain IMAP-postille"
 
-#: browser.c:1625
+#: browser.c:1603
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Uudellennimeys toimii vain IMAP-laatikoille"
 
-#: browser.c:1644
+#: browser.c:1622
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Poisto toimii vain IMAP-laatikoille"
 
-#: browser.c:1654
+#: browser.c:1632
 #, fuzzy
 msgid "Can't delete currently selected mailbox"
 msgstr "näytä nykyisen valitun tiedoston nimi"
 
-#: browser.c:1658
+#: browser.c:1636
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Poistetaanko %s?"
 
-#: browser.c:1668
+#: browser.c:1646
 msgid "Mailbox deleted"
 msgstr "Laatikko poistettu"
 
-#: browser.c:1672
+#: browser.c:1650
 msgid "Mailbox deletion failed"
 msgstr "Laatikon poisto ei onnistunut"
 
-#: browser.c:1675
+#: browser.c:1653
 msgid "Mailbox not deleted"
 msgstr "Laatikkoa ei poistettu"
 
-#: browser.c:1702
+#: browser.c:1680
 msgid "Chdir to: "
 msgstr "Vaihda hakemistoa: "
 
-#: browser.c:1752 browser.c:1814
+#: browser.c:1730 browser.c:1792
 msgid "Error scanning directory"
 msgstr "Virhe skannatessa hakemistoa"
 
-#: browser.c:1774
+#: browser.c:1752
 msgid "File Mask: "
 msgstr "Tiedostomaski: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1837
+#: browser.c:1815
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Järjestele (p)äivän, (a)akkosten, (k)oon, ku(v)auksen, uusien (m)äärän mukaan laskevasti, vai ei lai(n)kaan?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1840
+#: browser.c:1818
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Järjestele (p)äivän, (a)akkosten, (k)oon, ku(v)auksen, uusien (m)äärän mukaan, vai ei lai(n)kaan?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1843
+#: browser.c:1821
 msgid "dazecwn"
 msgstr "pakvmun"
 
-#: browser.c:1957
+#: browser.c:1934
 msgid "New file name: "
 msgstr "Uusi tiedostonimi: "
 
-#: browser.c:1984
+#: browser.c:1961
 msgid "Can't view a directory"
 msgstr "Ei voida näyttää tiedostoa"
 
-#: browser.c:2000
+#: browser.c:1977
 msgid "Error trying to view file"
 msgstr "Virhe tiedostoa näytettäessä"
 
-#: browser.c:2089
+#: browser.c:2066
 #, c-format
 msgid "Subscribe pattern: "
 msgstr "Tilauskuvio: "
 
-#: browser.c:2091
+#: browser.c:2068
 #, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Tilauksen poistokuvio: "
 
-#: browser.c:2112
+#: browser.c:2089
 msgid "No newsgroups match the mask"
 msgstr "Ei uutisryhmiä jotka täsmäävät maskiin"
 
@@ -809,7 +809,7 @@ msgstr "Kansion %s tilausta ei voitu poistaa"
 msgid "Verify signature?"
 msgstr "Tarkistetaanko allekirjoitus"
 
-#: commands.c:268 mbox/mbox.c:1233
+#: commands.c:268 mbox/mbox.c:1218
 msgid "Could not create temporary file"
 msgstr "Ei voitu kirjoittaa väliaikaistiedostoon"
 
@@ -845,8 +845,8 @@ msgstr "PGP-allekirjoitus vahvistettu"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP-allekirjoitusta ei voitu vahvistaa"
 
-#: commands.c:387 compmbox/compress.c:337 compose/compose.c:2546
-#: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1265 index.c:1314
+#: commands.c:387 compmbox/compress.c:337 compose/compose.c:2606
+#: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1266 index.c:1315
 #: mutt_attach.c:162 mutt_attach.c:295 pager.c:2466 send/sendlib.c:1056
 #, c-format
 msgid "Error running \"%s\""
@@ -1033,104 +1033,104 @@ msgstr "Merkistöksi asetettiin %s; ei konvertoida."
 msgid "Character set changed to %s; converting"
 msgstr "Merkistöksi asetettiin %s; konvertoidaan."
 
-#: compmbox/compress.c:371 compmbox/compress.c:515
+#: compmbox/compress.c:371 compmbox/compress.c:507
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Ei voi lisätä ilman append- tai close-hookkia: %s"
 
-#: compmbox/compress.c:460 compmbox/compress.c:527 compmbox/compress.c:605
-#: compmbox/compress.c:643 mbox/mbox.c:1205
+#: compmbox/compress.c:455 compmbox/compress.c:519 compmbox/compress.c:597
+#: compmbox/compress.c:635 mbox/mbox.c:1190
 msgid "Unable to lock mailbox"
 msgstr "Ei voitu lukita postilaatikkoa."
 
-#: compmbox/compress.c:464 compmbox/compress.c:534 compmbox/compress.c:609
+#: compmbox/compress.c:459 compmbox/compress.c:526 compmbox/compress.c:601
 #, c-format
 msgid "Decompressing %s"
 msgstr "Puretaan %s"
 
-#: compmbox/compress.c:473
+#: compmbox/compress.c:468
 msgid "Can't identify the contents of the compressed file"
 msgstr "Ei voida tunnistaa pakatun tiedoston sisältöä"
 
-#: compmbox/compress.c:480 compmbox/compress.c:555
+#: compmbox/compress.c:475 compmbox/compress.c:547
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "Postilaatokkotoimintoja tyypille %d ei löydy"
 
-#: compmbox/compress.c:537
+#: compmbox/compress.c:529
 #, c-format
 msgid "Compress command failed: %s"
 msgstr "Pakkaus epäonnistui: %s"
 
-#: compmbox/compress.c:548
+#: compmbox/compress.c:540
 msgid "Unsupported mailbox type for appending"
 msgstr "Postilaatikkotyyppiä ei tueta lisäyksessä"
 
-#: compmbox/compress.c:633
+#: compmbox/compress.c:625
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "Ei voida synkata pakattua tiedostoa ilman close-hookkia"
 
-#: compmbox/compress.c:655 compmbox/compress.c:707
+#: compmbox/compress.c:647 compmbox/compress.c:699
 #, c-format
 msgid "Compressing %s"
 msgstr "Pakataan kohdetta %s"
 
-#: compmbox/compress.c:702
+#: compmbox/compress.c:694
 #, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Pakattu lisäys kohteeseen %s..."
 
-#: compmbox/compress.c:714 editmsg.c:262
+#: compmbox/compress.c:706 editmsg.c:262
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Virhe. Varattaessa väliaikaistiedostoa: %s"
 
-#: compose/compose.c:99
+#: compose/compose.c:98
 msgid "There are no attachments"
 msgstr "Ei liitteitä"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:176
+#: compose/compose.c:177
 msgid "From: "
 msgstr "From: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:178 send/send.c:245
+#: compose/compose.c:179 send/send.c:250
 msgid "To: "
 msgstr "To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:180 send/send.c:249
+#: compose/compose.c:181 send/send.c:254
 msgid "Cc: "
 msgstr "Cc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:182 send/send.c:253
+#: compose/compose.c:183 send/send.c:258
 msgid "Bcc: "
 msgstr "Bcc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:184 send/send.c:290
+#: compose/compose.c:185 send/send.c:295
 msgid "Subject: "
 msgstr "Subjet: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:186
+#: compose/compose.c:187
 msgid "Reply-To: "
 msgstr "Reply-To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:188
+#: compose/compose.c:189
 msgid "Fcc: "
 msgstr "Fcc: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
-#: compose/compose.c:191
+#: compose/compose.c:192
 msgid "Mix: "
 msgstr "Mix: "
 
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
-#: compose/compose.c:194
+#: compose/compose.c:195
 msgid "Security: "
 msgstr "Security: "
 
@@ -1139,79 +1139,79 @@ msgstr "Security: "
 #. other compose menu fields.  However, if possible, it should not be longer
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
-#: compose/compose.c:200 ncrypt/crypt_gpgme.c:4240 ncrypt/pgp.c:1964
+#: compose/compose.c:201 ncrypt/crypt_gpgme.c:4240 ncrypt/pgp.c:1964
 #: ncrypt/smime.c:2153
 msgid "Sign as: "
 msgstr "Sign as: "
 
 #. L10N: The compose menu autocrypt line
-#: compose/compose.c:203
+#: compose/compose.c:204
 msgid "Autocrypt: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:207
+#: compose/compose.c:208
 msgid "Newsgroups: "
 msgstr "Newsgroups: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:209
+#: compose/compose.c:210
 msgid "Followup-To: "
 msgstr "Followup-To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:211
+#: compose/compose.c:212
 msgid "X-Comment-To: "
 msgstr "X-Comment-To: "
 
-#: compose/compose.c:213
+#: compose/compose.c:214
 msgid "Headers: "
 msgstr ""
 
-#: compose/compose.c:219 compose/compose.c:238
+#: compose/compose.c:220 compose/compose.c:239
 msgid "Send"
 msgstr "Lähetä"
 
-#: compose/compose.c:220 compose/compose.c:239 remailer.c:80
+#: compose/compose.c:221 compose/compose.c:240 remailer.c:80
 msgid "Abort"
 msgstr "Peru"
 
 #. L10N: compose menu help line entry
-#: compose/compose.c:222
+#: compose/compose.c:223
 msgid "To"
 msgstr "Vastaanottaja"
 
 #. L10N: compose menu help line entry
-#: compose/compose.c:224
+#: compose/compose.c:225
 msgid "CC"
 msgstr "Kopio"
 
 #. L10N: compose menu help line entry
-#: compose/compose.c:226 compose/compose.c:241
+#: compose/compose.c:227 compose/compose.c:242
 msgid "Subj"
 msgstr "Aihe"
 
-#: compose/compose.c:227 compose/compose.c:242 compose/compose.c:1950
+#: compose/compose.c:228 compose/compose.c:243 compose/compose.c:1998
 msgid "Attach file"
 msgstr "Liitä tiedosto"
 
-#: compose/compose.c:228 compose/compose.c:243
+#: compose/compose.c:229 compose/compose.c:244
 msgid "Descrip"
 msgstr "Kuvaus"
 
-#: compose/compose.c:240
+#: compose/compose.c:241
 msgid "Newsgroups"
 msgstr "Uutisryhmät"
 
 #. L10N: Autocrypt recommendation flag: off.
 #. * This is displayed when Autocrypt is turned off.
-#: compose/compose.c:254 compose/compose.c:638
+#: compose/compose.c:255 compose/compose.c:660
 msgid "Off"
 msgstr ""
 
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
-#: compose/compose.c:257
+#: compose/compose.c:258
 #, fuzzy
 msgid "No"
 msgstr "Ei mitään"
@@ -1220,7 +1220,7 @@ msgstr "Ei mitään"
 #. * This is displayed when Autocrypt believes encryption should not be used.
 #. * This might occur if one of the recipient Autocrypt Keys has not been
 #. * used recently, or if the only key available is a Gossip Header key.
-#: compose/compose.c:262
+#: compose/compose.c:263
 msgid "Discouraged"
 msgstr ""
 
@@ -1228,14 +1228,14 @@ msgstr ""
 #. * This is displayed when Autocrypt believes encryption is possible, but
 #. * leaves enabling it up to the sender.  Probably because "prefer encrypt"
 #. * is not set in both the sender and recipient keys.
-#: compose/compose.c:267
+#: compose/compose.c:268
 msgid "Available"
 msgstr ""
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
-#: compose/compose.c:271
+#: compose/compose.c:272
 #, fuzzy
 msgid "Yes"
 msgstr "kyllä"
@@ -1244,65 +1244,65 @@ msgstr "kyllä"
 #. (e)ncrypt enables encryption via autocrypt.
 #. (c)lear sets cleartext.
 #. (a)utomatic defers to the recommendation.
-#: compose/compose.c:351
+#: compose/compose.c:357
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
 msgstr ""
 
 #. L10N: The letter corresponding to the compose menu autocrypt prompt
 #. (e)ncrypt, (c)lear, (a)utomatic
-#: compose/compose.c:357
+#: compose/compose.c:363
 msgid "eca"
 msgstr ""
 
-#: compose/compose.c:566
+#: compose/compose.c:581
 msgid "Sign, Encrypt"
 msgstr "Allekirjoita, salaa"
 
-#: compose/compose.c:571 compose/compose.c:633
+#: compose/compose.c:586 compose/compose.c:655
 msgid "Encrypt"
 msgstr "Salaa"
 
-#: compose/compose.c:576
+#: compose/compose.c:591
 msgid "Sign"
 msgstr "Allekirjoita"
 
-#: compose/compose.c:582
+#: compose/compose.c:597
 msgid "None"
 msgstr "Ei mitään"
 
-#: compose/compose.c:592
+#: compose/compose.c:607
 msgid " (inline PGP)"
 msgstr " (sisäll. PGP)"
 
-#: compose/compose.c:594
+#: compose/compose.c:609
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: compose/compose.c:597
+#: compose/compose.c:612
 msgid " (S/MIME)"
 msgstr " (S/MIME)"
 
-#: compose/compose.c:601
+#: compose/compose.c:618
 msgid " (OppEnc mode)"
 msgstr " (OppEnc-moodi)"
 
-#: compose/compose.c:609 compose/compose.c:616
+#: compose/compose.c:627 compose/compose.c:635
 msgid "<default>"
 msgstr "<oletus>"
 
-#: compose/compose.c:622
+#: compose/compose.c:643
 msgid "Encrypt with: "
 msgstr "Salaa käyttäen: "
 
 #. L10N: The autocrypt compose menu Recommendation field.
 #. Displays the output of the recommendation engine
 #. (Off, No, Discouraged, Available, Yes)
-#: compose/compose.c:644
+#: compose/compose.c:666
 #, fuzzy
 msgid "Recommendation: "
 msgstr "X-Comment-To: "
 
-#: compose/compose.c:706
+#: compose/compose.c:731
 msgid "<no chain defined>"
 msgstr "<ei ketjuja määritelty>"
 
@@ -1310,7 +1310,7 @@ msgstr "<ei ketjuja määritelty>"
 #. doesn't stat.  %d is the attachment number and %s is the attachment
 #. filename.  The filename is located last to avoid a long path hiding
 #. the error message.
-#: compose/compose.c:757
+#: compose/compose.c:783
 #, fuzzy, c-format
 msgid "Attachment #%d no longer exists: %s"
 msgstr "%s [#%d] on kadonnut"
@@ -1319,187 +1319,187 @@ msgstr "%s [#%d] on kadonnut"
 #. is modified behind the scenes.  %d is the attachment number and %s is
 #. the attachment filename.  The filename is located last to avoid a long
 #. path hiding the prompt question.
-#: compose/compose.c:774
+#: compose/compose.c:800
 #, fuzzy, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "%s [#%d] on muokattu, päivitetäänkö koodaus?"
 
-#: compose/compose.c:834
+#: compose/compose.c:860
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: compose/compose.c:996
+#: compose/compose.c:1026
 msgid "-- Attachments"
 msgstr "-- Liitteet"
 
-#: compose/compose.c:1047
+#: compose/compose.c:1077
 msgid "You may not delete the only attachment"
 msgstr "Ainoaa liitettä ei voi poistaa"
 
-#: compose/compose.c:1698 send/send.c:2630
+#: compose/compose.c:1745 send/send.c:2636
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Virheellinen IDN %s: %s"
 
-#: compose/compose.c:1741
+#: compose/compose.c:1789
 msgid "Attachment is already at top"
 msgstr "Liite on jo ensimmäisenä"
 
-#: compose/compose.c:1746 compose/compose.c:1762
+#: compose/compose.c:1794 compose/compose.c:1810
 msgid "The fundamental part can't be moved"
 msgstr "Kekseistä osaa ei voida siirtää"
 
-#: compose/compose.c:1757
+#: compose/compose.c:1805
 msgid "Attachment is already at bottom"
 msgstr "Liite on jo viimeisenä"
 
-#: compose/compose.c:1775
+#: compose/compose.c:1823
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Vaihtoehtojen ryhmittely vaatii vähintään 2 merkittyä viestiä"
 
-#: compose/compose.c:1856
+#: compose/compose.c:1904
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "Monikielinen ryhmittely vaatii vähintään 2 merkittyä viestiä"
 
-#: compose/compose.c:1869
+#: compose/compose.c:1917
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "Kaikissa osissa ei ole 'Content-Language'-ostaketta, jatketaanko joka tapauksessa?"
 
-#: compose/compose.c:1871
+#: compose/compose.c:1919
 msgid "Not sending this message"
 msgstr "Ei lähetetä tätä viestiä"
 
-#: compose/compose.c:1970
+#: compose/compose.c:2018
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "Liitetään valittua tiedostoa..."
 msgstr[1] "Liitetään valittuja tiedostoja..."
 
-#: compose/compose.c:1987
+#: compose/compose.c:2035
 #, c-format
 msgid "Unable to attach %s"
 msgstr "Ei voida liittää kohdetta %s"
 
-#: compose/compose.c:2009
+#: compose/compose.c:2057
 msgid "Open mailbox to attach message from"
 msgstr "Avaa postilaatikko josta liitetään viesti"
 
-#: compose/compose.c:2019
+#: compose/compose.c:2068
 msgid "Open newsgroup to attach message from"
 msgstr "Avaa uutisryhmä josta liitetään viesti"
 
-#: compose/compose.c:2073 main.c:1225
+#: compose/compose.c:2122 main.c:1225
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Ei voitu avata postilaatikkoa %s"
 
-#: compose/compose.c:2082
+#: compose/compose.c:2131
 msgid "No messages in that folder"
 msgstr "Ei viestejä tässä kansiossa"
 
-#: compose/compose.c:2092
+#: compose/compose.c:2141
 msgid "Tag the messages you want to attach"
 msgstr "Tägää viestit jotka haluat liittää"
 
-#: compose/compose.c:2130
+#: compose/compose.c:2181
 msgid "Unable to attach"
 msgstr "Ei voida liittää"
 
-#: compose/compose.c:2168
+#: compose/compose.c:2221
 msgid "Recoding only affects text attachments"
 msgstr "Uudelleenkoodaus vaikuttaa vain tekstiliitteisiin"
 
-#: compose/compose.c:2173
+#: compose/compose.c:2226
 msgid "The current attachment won't be converted"
 msgstr "Tätä liitettä ei konvertoida"
 
-#: compose/compose.c:2175
+#: compose/compose.c:2228
 msgid "The current attachment will be converted"
 msgstr "Tämä liite konvertoidaan"
 
-#: compose/compose.c:2258
+#: compose/compose.c:2311
 msgid "Empty 'Content-Language'"
 msgstr "Tyhjä 'Content-Language'"
 
-#: compose/compose.c:2280
+#: compose/compose.c:2333
 msgid "Invalid encoding"
 msgstr "Virheellinen koodaus"
 
-#: compose/compose.c:2301
+#: compose/compose.c:2355
 msgid "Save a copy of this message?"
 msgstr "Tallennetaanko viestin kopio?"
 
-#: compose/compose.c:2355
+#: compose/compose.c:2412
 msgid "Send attachment with name: "
 msgstr "Lähetä liite nimellä: "
 
-#: compose/compose.c:2370
+#: compose/compose.c:2427
 msgid "Rename to: "
 msgstr "Uudelleennimeä:"
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/compose.c:2377 editmsg.c:101 editmsg.c:134 editmsg.c:152
+#: compose/compose.c:2434 editmsg.c:101 editmsg.c:134 editmsg.c:152
 #: send/sendlib.c:486
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "stat ei onnistunut %s: %s"
 
-#: compose/compose.c:2397
+#: compose/compose.c:2454
 msgid "New file: "
 msgstr "Uusi tiedosto: "
 
-#: compose/compose.c:2415
+#: compose/compose.c:2472
 msgid "Content-Type is of the form base/sub"
 msgstr "Sisältötyypin muoto on perusosa/aliosa"
 
-#: compose/compose.c:2422
+#: compose/compose.c:2479
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Tuntematon sisältötyyppi %s"
 
-#: compose/compose.c:2430
+#: compose/compose.c:2487
 #, c-format
 msgid "Can't create file %s"
 msgstr "Tiedostoa ei voitu luoda %s"
 
-#: compose/compose.c:2439
+#: compose/compose.c:2496
 msgid "What we have here is a failure to make an attachment"
 msgstr "Tässä on epäonnistunut yritys liitteen tuottamisessa"
 
-#: compose/compose.c:2503
+#: compose/compose.c:2561
 #, fuzzy
 msgid "Save (postpone) draft message?"
 msgstr "Palautetaanko lykätty viesti?"
 
-#: compose/compose.c:2563
+#: compose/compose.c:2624
 msgid "Write message to mailbox"
 msgstr "Kirjoita viesti postilaatikkoon"
 
-#: compose/compose.c:2566
+#: compose/compose.c:2627
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Kirjoitetaan viestiä kohteesee %s..."
 
-#: compose/compose.c:2574
+#: compose/compose.c:2634
 msgid "Message written"
 msgstr "Viesti kirjoitettu"
 
-#: compose/compose.c:2587
+#: compose/compose.c:2647
 msgid "No PGP backend configured"
 msgstr "PGP-sovellusta ei ole asetettu"
 
-#: compose/compose.c:2594 compose/compose.c:2675
+#: compose/compose.c:2654 compose/compose.c:2736
 msgid "S/MIME already selected. Clear and continue?"
 msgstr "S/MIME on jo valittu, poistetaanko ja jatketaan?"
 
-#: compose/compose.c:2626
+#: compose/compose.c:2686
 msgid "No S/MIME backend configured"
 msgstr "S/MIME-sovellusta ei ole asetettu"
 
-#: compose/compose.c:2634
+#: compose/compose.c:2694
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP on jo valittu, poistetaanko ja jatketaan?"
 
@@ -1517,8 +1517,8 @@ msgstr "Virheellinen suhteellinen päiväys: %s"
 msgid "'charset' must contain exactly one character set name"
 msgstr ""
 
-#: config/charset.c:66 hcache/config.c:68 hcache/config.c:87
-#: hcache/config.c:107 mutt_config.c:153
+#: config/charset.c:66 hcache/config.c:67 hcache/config.c:86
+#: hcache/config.c:106 mutt_config.c:155
 #, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Väärä arvo asetukselle %s: %s"
@@ -1900,23 +1900,23 @@ msgstr "Virhe kohteen %s kanssa keskustellessa (%s)"
 msgid "Connection to %s has been aborted"
 msgstr "Yhteys kohteeseen %s on peruttu"
 
-#: conn/sasl.c:615
+#: conn/sasl.c:618
 msgid "Unknown SASL profile"
 msgstr "Tuntematon SASL-profiili"
 
-#: conn/sasl.c:648
+#: conn/sasl.c:651
 msgid "Error allocating SASL connection"
 msgstr "Virhe SASL-yhteyden allokoinnissa"
 
-#: conn/sasl.c:658
+#: conn/sasl.c:661
 msgid "Error setting SASL security properties"
 msgstr "Virhe SASL-turvallisuusasetusten määrittämisessä"
 
-#: conn/sasl.c:669
+#: conn/sasl.c:672
 msgid "Error setting SASL external security strength"
 msgstr "Virhe ulkoisen SASL-turvallisuusvahvuuden määrittämisessä"
 
-#: conn/sasl.c:679
+#: conn/sasl.c:682
 msgid "Error setting SASL external user name"
 msgstr "Virhe ulkoisen SASL-käyttäjänimen asetuksessa"
 
@@ -1997,7 +1997,7 @@ msgstr "Ei voitu avata kansiota: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "multipart-viestillä ei ole rajoitinmerkkiparametriä"
 
-#: flags.c:378 index.c:2628 index.c:2668 index.c:3189 index.c:3225
+#: flags.c:378 index.c:2629 index.c:2669 index.c:3190 index.c:3226
 #: mutt_thread.c:1126 mutt_thread.c:1192 mutt_thread.c:1277
 msgid "Threading is not enabled"
 msgstr "Ketjutus ei ole päällä"
@@ -2310,7 +2310,7 @@ msgstr "[-- Tämä on liite --]\n"
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s ei ole tuettu --]\n"
 
-#: hcache/config.c:99
+#: hcache/config.c:98
 #, c-format
 msgid "Set option %s before setting %s"
 msgstr ""
@@ -2318,7 +2318,7 @@ msgstr ""
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
-#: hcache/config.c:116 send/config.c:54
+#: hcache/config.c:115 send/config.c:54
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr ""
@@ -2428,7 +2428,7 @@ msgstr "Ei autentikoijia tai huonot tiedot"
 #. L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:56 imap/auth_cram.c:105 imap/auth_gss.c:165
 #: imap/auth_oauth.c:62 imap/auth_sasl.c:124 nntp/nntp.c:603 nntp/nntp.c:669
-#: pop/auth.c:97 pop/auth.c:242 pop/auth.c:335 send/smtp.c:468 send/smtp.c:552
+#: pop/auth.c:97 pop/auth.c:242 pop/auth.c:335 send/smtp.c:468 send/smtp.c:554
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Autentikoidaan (%s)..."
@@ -2436,7 +2436,7 @@ msgstr "Autentikoidaan (%s)..."
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:89 imap/auth_cram.c:179 imap/auth_gss.c:344
 #: imap/auth_oauth.c:95 imap/auth_sasl.c:256 nntp/nntp.c:764 pop/auth.c:195
-#: pop/auth.c:263 send/smtp.c:615 send/smtp.c:703
+#: pop/auth.c:263 send/smtp.c:619 send/smtp.c:693 send/smtp.c:782
 #, c-format
 msgid "%s authentication failed"
 msgstr "%s-autentikointi epäonnistui"
@@ -2462,37 +2462,39 @@ msgstr "%s ei ole toimiva IMAP-polku"
 msgid "Getting folder list..."
 msgstr "Haetaan kansiolistaa..."
 
-#: imap/browse.c:354
+#. L10N: (%s) is the name / path of the folder we were trying to browse
+#: imap/browse.c:355
+#, c-format
 msgid "No such folder: %s"
 msgstr "Kansiota ei ole: %s"
 
-#: imap/browse.c:401
+#: imap/browse.c:402
 msgid "Create mailbox: "
 msgstr "Luo postilaatikko: "
 
-#: imap/browse.c:406 imap/browse.c:458
+#: imap/browse.c:407 imap/browse.c:459
 msgid "Mailbox must have a name"
 msgstr "Postilaatikolla pitää olla nimi"
 
-#: imap/browse.c:414
+#: imap/browse.c:415
 msgid "Mailbox created"
 msgstr "Postilaatikko luotu"
 
-#: imap/browse.c:446
+#: imap/browse.c:447
 msgid "Can't rename root folder"
 msgstr "Juurikansiota ei voi uudelleennimetä"
 
-#: imap/browse.c:450
+#: imap/browse.c:451
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Uudelleennimeä postilaatikko %s:"
 
-#: imap/browse.c:466
+#: imap/browse.c:467
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Uudelleennimeys epäonnistui: %s"
 
-#: imap/browse.c:470
+#: imap/browse.c:471
 msgid "Mailbox renamed"
 msgstr "Postilaatikko uudelleennimetty"
 
@@ -2530,11 +2532,11 @@ msgstr "CREATE epäonnistui: %s"
 msgid "Closing connection to %s..."
 msgstr "Suljetaan yhteyttä %s..."
 
-#: imap/imap.c:762 nntp/nntp.c:1883 pop/lib.c:341 send/smtp.c:747
+#: imap/imap.c:762 nntp/nntp.c:1883 pop/lib.c:341 send/smtp.c:826
 msgid "Secure connection with TLS?"
 msgstr "Salataanko yhteys TLS:llä?"
 
-#: imap/imap.c:778 nntp/nntp.c:1906 pop/lib.c:362 send/smtp.c:764
+#: imap/imap.c:778 nntp/nntp.c:1906 pop/lib.c:362 send/smtp.c:843
 msgid "Could not negotiate TLS connection"
 msgstr "Ei voitu neuvotella TLS-yhteyttä"
 
@@ -2559,7 +2561,7 @@ msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Kopioidaan %d viestiä kansioon %s..."
 msgstr[1] "Kopioidaan %d viestejä kansioon %s..."
 
-#: imap/imap.c:1470 imap/imap.c:2128 imap/message.c:1686 muttlib.c:1405
+#: imap/imap.c:1470 imap/imap.c:2122 imap/message.c:1686 muttlib.c:1405
 #, c-format
 msgid "Create %s?"
 msgstr "Luodaanko %s?"
@@ -2598,20 +2600,20 @@ msgstr "Poistetaan viestejä palvelimelta..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE epäonnistui"
 
-#: imap/imap.c:1932 nntp/nntp.c:2481
+#: imap/imap.c:1926 nntp/nntp.c:2458
 #, c-format
 msgid "Selecting %s..."
 msgstr "Valitaan %s..."
 
-#: imap/imap.c:2095
+#: imap/imap.c:2089
 msgid "Error opening mailbox"
 msgstr "Virhe avattaessa postilaatikkoa"
 
-#: imap/imap.c:2243
+#: imap/imap.c:2231
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP-palvelin ei tue omia merkintöjä"
 
-#: imap/imap.c:2287
+#: imap/imap.c:2275
 msgid "Invalid IMAP flags"
 msgstr "Vialliset IMAP-merkinnät  "
 
@@ -2634,7 +2636,7 @@ msgstr "Haetaan uusia merkintöjä..."
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Ei voida hakea otsakkeita tämän IMAP-version palvelimelta"
 
-#: imap/message.c:1067 index.c:1580 nntp/nntp.c:1325 pop/pop.c:419
+#: imap/message.c:1067 index.c:1581 nntp/nntp.c:1325 pop/pop.c:419
 msgid "Fetching message headers..."
 msgstr "Haetaan viestien otsakkeita..."
 
@@ -2647,16 +2649,16 @@ msgstr "Ladataan viestiä verkkoon..."
 msgid "Copying message %d to %s..."
 msgstr "Kopioidaan viestiä %d kohteeseen %s..."
 
-#: imap/message.c:1880 imap/message.c:1944 nntp/nntp.c:2731 pop/pop.c:1095
+#: imap/message.c:1877 imap/message.c:1941 nntp/nntp.c:2696 pop/pop.c:1077
 msgid "Fetching message..."
 msgstr "Haetaan viestejä..."
 
-#: imap/message.c:1931 pop/pop.c:1091
+#: imap/message.c:1928 pop/pop.c:1073
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Viesti-indeksi on pielessä, joten kannattaa avata postilaatikko uudelleen"
 
 #: imap/msn.c:48 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
-#: mutt/string.c:1079 mx.c:1238
+#: mutt/string.c:1079 mx.c:1236
 msgid "Out of memory"
 msgstr "muisti loppui"
 
@@ -2698,7 +2700,7 @@ msgstr "Viesti"
 msgid "Followup"
 msgstr "Vastine"
 
-#: index.c:168 index.c:1401
+#: index.c:168 index.c:1402
 msgid "No mailbox is open"
 msgstr "Ei postilaatikoita auki"
 
@@ -2736,78 +2738,78 @@ msgstr "Muutokset kansioon tallennetaan poistuttaessa"
 msgid "Changes to folder will not be written"
 msgstr "Muutoksia kansioon ei tallenneta"
 
-#: index.c:797
+#: index.c:798
 msgid "Failed to create query, aborting"
 msgstr "Haun luonti epäonnistui joten peruutetaan"
 
-#: index.c:844 muttlib.c:1390 mx.c:220 mx.c:371
+#: index.c:845 muttlib.c:1390 mx.c:220 mx.c:371
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s ei ole postilaatikko"
 
-#: index.c:1247
+#: index.c:1248
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Postilaatikkoa on muokattu muualla, joten liput voivat olla pielessä."
 
-#: index.c:1256 pager.c:2415
+#: index.c:1257 pager.c:2415
 msgid "New mail in this mailbox"
 msgstr "Uusi viesti postilaatikossa"
 
-#: index.c:1273
+#: index.c:1274
 msgid "Mailbox was externally modified"
 msgstr "Postilaatikkoa on muokattu muualla"
 
-#: index.c:1408
+#: index.c:1409
 msgid "No tagged messages"
 msgstr "Ei merkittyjä viestejä"
 
-#: index.c:1412 index.c:1680 menu.c:1373
+#: index.c:1413 index.c:1681 menu.c:1376
 msgid "Nothing to do"
 msgstr "Ei mitään tehtävissä"
 
-#: index.c:1502
+#: index.c:1503
 msgid "Enter Message-Id: "
 msgstr "Anna viesti-ID: "
 
-#: index.c:1513
+#: index.c:1514
 msgid "Article has no parent reference"
 msgstr "Artikkelilla ei ole viitettä vanhempaan"
 
-#: index.c:1536
+#: index.c:1537
 msgid "Message is not visible in limited view"
 msgstr "Juuriviesti ei ole näkyvissä tässä rajatussa näkymässä"
 
-#: index.c:1540
+#: index.c:1541
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Haetaan %s palvelimelta..."
 
-#: index.c:1551 nntp/nntp.c:2766
+#: index.c:1552 nntp/nntp.c:2731
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Artikkelia %s ei ole palvelimella"
 
-#: index.c:1576
+#: index.c:1577
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Ei Viesti-Id:tä, joten ei voida suorittaa."
 
-#: index.c:1656
+#: index.c:1657
 msgid "No deleted messages found in the thread"
 msgstr "Tässä ketjussa ei ole poistettuja viestejä"
 
-#: index.c:1677
+#: index.c:1678
 msgid "Jump to message: "
 msgstr "Siirry viestiin: "
 
-#: index.c:1683
+#: index.c:1684
 msgid "Argument must be a message number"
 msgstr "Argumentin pitää olla viestinnumero"
 
-#: index.c:1685
+#: index.c:1686
 msgid "Invalid message number"
 msgstr "Viestinnumero ei kelpaa"
 
-#: index.c:1687
+#: index.c:1688
 msgid "That message is not visible"
 msgstr "Se viesti ei ole näkyvissä"
 
@@ -2815,27 +2817,27 @@ msgstr "Se viesti ei ole näkyvissä"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1724 index.c:3319 pager.c:3072
+#: index.c:1725 index.c:3320 pager.c:3072
 msgid "Can't delete messages"
 msgstr "Ei voitu poistaa viestejä"
 
-#: index.c:1727
+#: index.c:1728
 msgid "Delete messages matching: "
 msgstr "Poista täsmäävät viestit: "
 
-#: index.c:1771
+#: index.c:1772
 msgid "No limit pattern is in effect"
 msgstr "Ei rajoittavaa kuviota"
 
-#: index.c:1842
+#: index.c:1843
 msgid "To view all messages, limit to \"all\""
 msgstr "Kaikkiin viesteihin täsmää rajoite \"all\""
 
-#: index.c:1854 pager.c:2520
+#: index.c:1855 pager.c:2520
 msgid "Quit NeoMutt?"
 msgstr "Lopetetaanko neomutt?"
 
-#: index.c:1959
+#: index.c:1960
 msgid "Tag messages matching: "
 msgstr "Merkitse täsmäävät viestit: "
 
@@ -2843,189 +2845,189 @@ msgstr "Merkitse täsmäävät viestit: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1970 index.c:3844 pager.c:3425
+#: index.c:1971 index.c:3845 pager.c:3425
 msgid "Can't undelete messages"
 msgstr "Ei voitu perua viestien poistoa"
 
-#: index.c:1974
+#: index.c:1975
 msgid "Undelete messages matching: "
 msgstr "Peru täsmäävien viestien poisto: "
 
-#: index.c:1983
+#: index.c:1984
 msgid "Untag messages matching: "
 msgstr "Peru täsmäävien viestien merkintä: "
 
-#: index.c:2023
+#: index.c:2024
 msgid "Logged out of IMAP servers"
 msgstr "Kirjauduttiin ulos IMAP-palvelimelta"
 
-#: index.c:2137
+#: index.c:2138
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Ei virtuaalikansiota, joten peruttiin"
 
-#: index.c:2157
+#: index.c:2158
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index.c:2166
+#: index.c:2167
 msgid "Failed to read thread, aborting"
 msgstr "Ei voitu lukea ketjua joten peruttiin"
 
-#: index.c:2198 mx.c:1314 mx.c:1334
+#: index.c:2199 mx.c:1296 mx.c:1316
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Kansiosta puuttuu merkintätuki, joten peruutetaan"
 
-#: index.c:2214
+#: index.c:2215
 msgid "No tag specified, aborting"
 msgstr "Ei merkintää, joten peruttiin"
 
-#: index.c:2224
+#: index.c:2225
 msgid "Update tags..."
 msgstr "Päivitetään merkinnät..."
 
-#: index.c:2264
+#: index.c:2265
 msgid "Failed to modify tags, aborting"
 msgstr "Merkintöjen muokkaaminen epäonnistui joten peruutetaan"
 
-#: index.c:2312
+#: index.c:2313
 msgid "No query, aborting"
 msgstr "Ei hakua, joten peruttiin"
 
-#: index.c:2341 index.c:2361
+#: index.c:2342 index.c:2362
 msgid "Windowed queries disabled"
 msgstr "Ikkunoidut haut poissa köytöstä"
 
-#: index.c:2346 index.c:2366
+#: index.c:2347 index.c:2367
 msgid "No notmuch vfolder currently loaded"
 msgstr "Notmuch-vkansiota ei ole ladattuna"
 
-#: index.c:2399
+#: index.c:2400
 msgid "No mailboxes have new mail"
 msgstr "Ei uusia viestejä postilaatikoissa"
 
-#: index.c:2421
+#: index.c:2422
 msgid "Open mailbox in read-only mode"
 msgstr "Avaa postilaatikko kirjoitussuojattuna"
 
-#: index.c:2426
+#: index.c:2427
 msgid "Open mailbox"
 msgstr "Avaa postilaatikko"
 
-#: index.c:2486
+#: index.c:2487
 msgid "Open newsgroup in read-only mode"
 msgstr "Avaa uutosryhmä kirjoitussuojattuna"
 
-#: index.c:2491
+#: index.c:2492
 msgid "Open newsgroup"
 msgstr "Avoin uutisryhmä"
 
-#: index.c:2606
+#: index.c:2607
 msgid "Exit NeoMutt without saving?"
 msgstr "Poistutaanko neomuttista tallentamatta?"
 
 #. L10N: CHECK_ACL
-#: index.c:2622
+#: index.c:2623
 msgid "Can't break thread"
 msgstr "Ei voitu katkaista ketjuja"
 
-#: index.c:2639
+#: index.c:2640
 msgid "Thread broken"
 msgstr "Ketju rikki"
 
-#: index.c:2652
+#: index.c:2653
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Ketjua ei voi rikkoa, kun viesti ei ole osa ketjua"
 
 #. L10N: CHECK_ACL
-#: index.c:2662
+#: index.c:2663
 msgid "Can't link threads"
 msgstr "Ei voitu yhdistää ketjuja"
 
-#: index.c:2670
+#: index.c:2671
 msgid "No Message-ID: header available to link thread"
 msgstr "Ei Viesti-ID-otsaketta ketjun yhdistämiseksi"
 
-#: index.c:2682
+#: index.c:2683
 msgid "Threads linked"
 msgstr "Ketjut linkitetty"
 
-#: index.c:2685
+#: index.c:2686
 msgid "No thread linked"
 msgstr "Ei ketjuja linkitetty"
 
-#: index.c:2725 index.c:2750
+#: index.c:2726 index.c:2751
 msgid "You are on the last message"
 msgstr "Viimeisessä viestissä"
 
-#: index.c:2733 index.c:2776
+#: index.c:2734 index.c:2777
 msgid "No undeleted messages"
 msgstr "Ei poistetusta palautettuja viestejä"
 
-#: index.c:2768 index.c:2793
+#: index.c:2769 index.c:2794
 msgid "You are on the first message"
 msgstr "Ensimmäisessä viestissä"
 
-#: index.c:2934
+#: index.c:2935
 msgid "No new messages in this limited view"
 msgstr "Ei uusia viestejä tässä rajallisessa näkymässä"
 
-#: index.c:2936
+#: index.c:2937
 msgid "No new messages"
 msgstr "Ei uusia viestejä"
 
-#: index.c:2941
+#: index.c:2942
 msgid "No unread messages in this limited view"
 msgstr "Ei lukemattomia viestejä tässä rajallisessa näkymässä"
 
-#: index.c:2943
+#: index.c:2944
 msgid "No unread messages"
 msgstr "Ei lukemattomia viestejä"
 
-#: index.c:2953 menu.c:1168 pager.c:2651 pattern/pattern.c:563
+#: index.c:2954 menu.c:1168 pager.c:2651 pattern/pattern.c:563
 #: pattern/pattern.c:714
 msgid "Search wrapped to top"
 msgstr "Haku jatkoi ylhäältä"
 
-#: index.c:2958 pager.c:2676 pattern/pattern.c:574 pattern/pattern.c:725
+#: index.c:2959 pager.c:2676 pattern/pattern.c:574 pattern/pattern.c:725
 msgid "Search wrapped to bottom"
 msgstr "Haku jatkoi alhaalta"
 
 #. L10N: CHECK_ACL
-#: index.c:2975
+#: index.c:2976
 msgid "Can't flag message"
 msgstr "Ei voitu merkitä viestejä"
 
 #. L10N: CHECK_ACL
-#: index.c:3020 pager.c:3384
+#: index.c:3021 pager.c:3384
 msgid "Can't toggle new"
 msgstr "Ei voitu vaihtaa uudeksi"
 
-#: index.c:3114
+#: index.c:3115
 msgid "No more threads"
 msgstr "Ei enää ketjuja"
 
-#: index.c:3116
+#: index.c:3117
 msgid "You are on the first thread"
 msgstr "Ensimmäisessä ketjussa"
 
-#: index.c:3210
+#: index.c:3211
 msgid "Thread contains unread or flagged messages"
 msgstr "Ketjussa on lukemattomia viestejä"
 
 #. L10N: CHECK_ACL
-#: index.c:3268 pager.c:3028
+#: index.c:3269 pager.c:3028
 msgid "Can't delete message"
 msgstr "Ei voitu poistaa viestejä"
 
 #. L10N: CHECK_ACL
-#: index.c:3391
+#: index.c:3392
 msgid "Can't edit message"
 msgstr "Ei voitu muokata viestiä"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index.c:3480 pager.c:3502
+#: index.c:3481 pager.c:3502
 #, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -3035,7 +3037,7 @@ msgstr[1] "%d merkintää muutettu."
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index.c:3488 pager.c:3506
+#: index.c:3489 pager.c:3506
 msgid "No labels changed"
 msgstr "Ei muuttuneita merkintöjä"
 
@@ -3043,47 +3045,47 @@ msgstr "Ei muuttuneita merkintöjä"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:3615
+#: index.c:3616
 msgid "Can't mark messages as read"
 msgstr "Ei voitu merkitä viestejä lukemattomiksi"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index.c:3654
+#: index.c:3655
 msgid "Enter macro stroke: "
 msgstr "Makronäppäimet: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index.c:3662
+#: index.c:3663
 msgid "message hotkey"
 msgstr "viestin pikanäppäin"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index.c:3667
+#: index.c:3668
 #, c-format
 msgid "Message bound to %s"
 msgstr "Viesti yhdistetty makroon %s."
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index.c:3676
+#: index.c:3677
 msgid "No message ID to macro"
 msgstr "Ei viesti-ID:tä makrolle"
 
-#: index.c:3728 pager.c:3231 recvattach.c:1787
+#: index.c:3729 pager.c:3231 recvattach.c:1787
 msgid "Reply by mail as poster prefers?"
 msgstr "Vastataanko postitse kuten lähettäjä pyytää?"
 
-#: index.c:3731 pager.c:3191 pager.c:3203 pager.c:3234
+#: index.c:3732 pager.c:3191 pager.c:3203 pager.c:3234
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Vastaaminen ryhmään ei ole sallittu, ehkä se on moderoitu, jatketaanko?"
 
 #. L10N: CHECK_ACL
-#: index.c:3806 pager.c:3404
+#: index.c:3807 pager.c:3404
 msgid "Can't undelete message"
 msgstr "Ei voitu perua viestin poistoa"
 
@@ -3199,27 +3201,29 @@ msgstr "Mailcap-polkua ei ole määritelty"
 msgid "mailcap entry for type %s not found"
 msgstr "Mailcap-tietue tyypille %s puuttuu"
 
-#: maildir/shared.c:833
+# not sure if user needs to know flush v. write? There's no good translation
+#: maildir/maildir.c:237 maildir/mh.c:301
+msgid "Could not flush message to disk"
+msgstr "Ei voitu kirjoittaa viestiä levylle"
+
+#: maildir/maildir.c:284
+msgid "maildir_commit_message(): unable to set time on file"
+msgstr "maildir_commit_message(): tiedoston ajan asetus ei onnistunut"
+
+#: maildir/maildir.c:657 maildir/mh.c:695
 #, c-format
 msgid "Scanning %s..."
 msgstr "Skannataan kohdetta %s..."
 
-#: maildir/shared.c:856 mbox/mbox.c:217 mbox/mbox.c:382 mx.c:384
+#: maildir/maildir.c:676 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
+#: mx.c:384
 #, c-format
 msgid "Reading %s..."
 msgstr "Luetaan kohdetta %s..."
 
-# not sure if user needs to know flush v. write? There's no good translation
-#: maildir/shared.c:899 maildir/shared.c:994
-msgid "Could not flush message to disk"
-msgstr "Ei voitu kirjoittaa viestiä levylle"
-
-#: maildir/shared.c:1040
-msgid "maildir_commit_message(): unable to set time on file"
-msgstr "maildir_commit_message(): tiedoston ajan asetus ei onnistunut"
-
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2397
+#: maildir/maildir.c:1388 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
+#: notmuch/notmuch.c:2386
 #, c-format
 msgid "Writing %s..."
 msgstr "Kirjoitetaan kohdetta %s..."
@@ -3475,7 +3479,7 @@ msgstr "Virhe: arvo %s ei ole salittu valitsimelle -d"
 msgid "Failed to parse mailto: link"
 msgstr "Virhe mailto:-linkin jäsennyksessä"
 
-#: main.c:873 send/send.c:2620 send/send.c:2624
+#: main.c:873 send/send.c:2626 send/send.c:2630
 msgid "No recipients specified"
 msgstr "Ei vastaanottajia"
 
@@ -3509,37 +3513,37 @@ msgstr "Postilaatikko on tyhjä"
 msgid "Mailbox is corrupt"
 msgstr "Postilaatikko on rikki"
 
-#: mbox/mbox.c:1010
+#: mbox/mbox.c:1001
 #, c-format
 msgid "Couldn't lock %s"
 msgstr "Ei voitu lukita kohdetta %s"
 
-#: mbox/mbox.c:1149
+#: mbox/mbox.c:1137
 msgid "Mailbox was corrupted"
 msgstr "Postilaatikko oli rikki"
 
-#: mbox/mbox.c:1196 mbox/mbox.c:1446
+#: mbox/mbox.c:1181 mbox/mbox.c:1431
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Kriittinen virhe, ei voitu uudelleenavata postilaatikkoa."
 
-#: mbox/mbox.c:1251
+#: mbox/mbox.c:1236
 msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr "sync: mbox muuttui, mutta viestit eivät (lähetä vikailmoitus)"
 
-#: mbox/mbox.c:1392
+#: mbox/mbox.c:1377
 msgid "Committing changes..."
 msgstr "Toteutetaan muutoksia..."
 
-#: mbox/mbox.c:1425
+#: mbox/mbox.c:1410
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Kirjoitus epäonnistui.  Osittainen tallennus postilaatikossa %s"
 
-#: mbox/mbox.c:1508
+#: mbox/mbox.c:1493
 msgid "Could not reopen mailbox"
 msgstr "Ei voitu uudelleenavata postilaatikkoa"
 
-#: mbox/mbox.c:1617 mbox/mbox.c:1772
+#: mbox/mbox.c:1590 mbox/mbox.c:1741
 msgid "Can't write message"
 msgstr "Ei voitu kirjoittaa viestiä"
 
@@ -3552,7 +3556,7 @@ msgid "Invalid index number"
 msgstr "Virheellinen indeksi"
 
 #: menu.c:615 menu.c:641 menu.c:714 menu.c:780 menu.c:798 menu.c:813 menu.c:828
-#: menu.c:843 menu.c:860 menu.c:877 menu.c:1507
+#: menu.c:843 menu.c:860 menu.c:877 menu.c:1510
 msgid "No entries"
 msgstr "Ei tietueita"
 
@@ -3593,19 +3597,19 @@ msgstr "Hae takaperin: "
 msgid "Not found"
 msgstr "Ei löytynyt"
 
-#: menu.c:1367
+#: menu.c:1370
 msgid "No tagged entries"
 msgstr "Ei merkittyjä tietueita"
 
-#: menu.c:1469
+#: menu.c:1472
 msgid "Search is not implemented for this menu"
 msgstr "Hakua ei ole toteutettu tälle valikolle"
 
-#: menu.c:1474
+#: menu.c:1477
 msgid "Jumping is not implemented for dialogs"
 msgstr "Siirtymistä ei ole toteutettu dialogeille"
 
-#: menu.c:1510
+#: menu.c:1513
 msgid "Tagging is not supported"
 msgstr "Merkitsemistä ei tueta"
 
@@ -3752,12 +3756,12 @@ msgstr "Kirjoittamisvirhe"
 msgid "I don't know how to print that"
 msgstr "Tätä ei voi tulostaa"
 
-#: mutt_config.c:165
+#: mutt_config.c:167
 #, c-format
 msgid "Option %s may not be set or reset from the pager"
 msgstr "Asetusta %s ei voi asettaa tai poistaa sivuttimesta"
 
-#: mutt_config.c:185
+#: mutt_config.c:187
 #, c-format
 msgid "Option %s may not be set when in attach-message mode"
 msgstr "Asetusta %s ei voi asettaa liittämistilassa"
@@ -3920,7 +3924,7 @@ msgstr "Postilaatikko on merkitty kirjoitussuojatuksi. %s"
 msgid "Mailbox checkpointed"
 msgstr "Postilaatikon tila on tallennettu"
 
-#: mx.c:1379
+#: mx.c:1361
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Ei voitu avata viestitiedostoa: %s"
@@ -3968,7 +3972,7 @@ msgstr "Kutsutaan PGP:tä..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Viestiä ei voi lähettää sisällytettynä, käytetäänkö sittenkin PGP/MIMEä?"
 
-#: ncrypt/crypt.c:230 send/send.c:2598
+#: ncrypt/crypt.c:230 send/send.c:2604
 msgid "Mail not sent"
 msgstr "Viestiä ei lähetetty"
 
@@ -5049,7 +5053,7 @@ msgstr "Palvelin katkaisi yhteyden"
 msgid "Server doesn't support reader mode"
 msgstr "Palvelin ei tue luintilaa"
 
-#: nntp/nntp.c:572 pop/auth.c:519 send/smtp.c:707
+#: nntp/nntp.c:572 pop/auth.c:519 send/smtp.c:786
 msgid "No authenticators available"
 msgstr "Ei autentikoijia"
 
@@ -5062,7 +5066,7 @@ msgstr "Yhteys kohteeseen %s on katkaistu, yhdistetäänkö uudelleen?"
 msgid "Fetching list of articles..."
 msgstr "Haetaan artikkeliluetteloa..."
 
-#: nntp/nntp.c:1545 nntp/nntp.c:2134 pop/pop.c:605 pop/pop.c:895
+#: nntp/nntp.c:1545 nntp/nntp.c:2134 pop/pop.c:605 pop/pop.c:886
 msgid "Checking for new messages..."
 msgstr "Haetaan uusia viestejä..."
 
@@ -5105,17 +5109,17 @@ msgstr "Tarkastetaan uusia ryhmiä..."
 msgid "Unable to find child articles because server does not support XPAT command"
 msgstr "Jälkeläisartikkeleja ei voi löytää koska palvelin ei tue XPAT-komentoa"
 
-#: nntp/nntp.c:2432
+#: nntp/nntp.c:2409
 #, c-format
 msgid "%s is an invalid newsgroup specification"
 msgstr "%s ei ole toimiva uutisryhmämääritelmä"
 
-#: nntp/nntp.c:2471
+#: nntp/nntp.c:2448
 #, c-format
 msgid "Newsgroup %s not found on the server"
 msgstr "Uutisryhmää %s ei ole palvelimella"
 
-#: nntp/nntp.c:2493
+#: nntp/nntp.c:2470
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
 msgstr "Uutisryhmä %s on poistettu palvelimelta"
@@ -5134,46 +5138,46 @@ msgstr "Ei voitu avata notmuch-tietokantaa: %s: %s"
 msgid "unknown reason"
 msgstr "tuntematon syy"
 
-#: notmuch/notmuch.c:129
+#: notmuch/notmuch.c:130
 #, c-format
 msgid "failed to parse notmuch query type: %s"
 msgstr "ei voitu jäsentää notmuch-haun tyyppiä: %s"
 
-#: notmuch/notmuch.c:222 notmuch/notmuch.c:1971
+#: notmuch/notmuch.c:223 notmuch/notmuch.c:1972
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "Nomuch-URIn jäsennys ei onnistunut: %s"
 
-#: notmuch/notmuch.c:472
+#: notmuch/notmuch.c:473
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)"
 msgstr "Viallinen nm_query_window_timebase-arvo (sallittuja ovat: hour, day, week, month or year)"
 
-#: notmuch/notmuch.c:532
+#: notmuch/notmuch.c:533
 #, c-format
 msgid "failed to parse notmuch limit: %s"
 msgstr "notmuch-rajan jäsennys ei onnistunut: %s"
 
-#: notmuch/notmuch.c:878
+#: notmuch/notmuch.c:879
 msgid "Reading messages..."
 msgstr "Luetaan viestejä..."
 
-#: notmuch/notmuch.c:1734
+#: notmuch/notmuch.c:1735
 msgid "No more messages in the thread"
 msgstr "Ei ylempiä viestejä ketjussa"
 
-#: notmuch/notmuch.c:1984
+#: notmuch/notmuch.c:1985
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "notmuch-rajan jäsennys ei onnistunut: %s"
 
-#: notmuch/notmuch.c:2474
+#: notmuch/notmuch.c:2463
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 msgstr[1] ""
 
-#: notmuch/notmuch.c:2542
+#: notmuch/notmuch.c:2528
 msgid "Can't write to virtual folder"
 msgstr "Ei voida kirjoittaa virtuaalikansioon"
 
@@ -6806,7 +6810,7 @@ msgstr[1] "%d viestiä on hävinyt, yritä avata postilaatikkoa uudelleen."
 msgid "POP host is not defined"
 msgstr "POP-palvelin on määrittelemättä"
 
-#: pop/pop.c:587 pop/pop.c:780 pop/pop.c:810
+#: pop/pop.c:587 pop/pop.c:774 pop/pop.c:804
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s ei ole toimiva POP-polku"
@@ -6839,15 +6843,15 @@ msgid_plural "%s [%d of %d messages read]"
 msgstr[0] "%s [%d/%d viesti luettu]"
 msgstr[1] "%s [%d/%d viestiä luettu]"
 
-#: pop/pop.c:861
+#: pop/pop.c:855
 msgid "Fetching list of messages..."
 msgstr "Haetaan viestiluetteloa..."
 
-#: pop/pop.c:944
+#: pop/pop.c:932
 msgid "Marking messages deleted..."
 msgstr "Merkitään viestejä poistetuiksi..."
 
-#: pop/pop.c:1135
+#: pop/pop.c:1117
 msgid "Can't write message to temporary file"
 msgstr "Ei voitu kirjoittaa väliaikaistiedostoon"
 
@@ -7001,7 +7005,7 @@ msgstr "Ei voitu luoda kohdetta %s"
 msgid "Can't find any tagged messages"
 msgstr "Ei löytynyt merkittyjä viestejä"
 
-#: recvcmd.c:859 send/send.c:1048
+#: recvcmd.c:859 send/send.c:1053
 msgid "No mailing lists found"
 msgstr "Ei löytynyt postituslistoja"
 
@@ -7092,11 +7096,11 @@ msgstr "Ei rajamerkkiparametriä. (ilmoita ohjelmistovirheestä)"
 msgid "%s no longer exists"
 msgstr "%s ei ole enää olemassa"
 
-#: send/send.c:292
+#: send/send.c:297
 msgid "No subject, abort?"
 msgstr "Ei aihetta, perutaanko?"
 
-#: send/send.c:294
+#: send/send.c:299
 msgid "No subject, aborting"
 msgstr "Ei aihetta, joten peruttiin"
 
@@ -7106,44 +7110,44 @@ msgstr "Ei aihetta, joten peruttiin"
 #. Text/plain parts and the like will already be included in the
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
-#: send/send.c:549
+#: send/send.c:554
 #, fuzzy
 msgid "Forward attachments?"
 msgstr "Lähetetäänkö edelleen liitteenä?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:747
+#: send/send.c:752
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Vastataanko osoitteeseen %s%s?"
 
-#: send/send.c:794
+#: send/send.c:799
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Vastineetko osoitteeseen %s%s?"
 
-#: send/send.c:1092
+#: send/send.c:1097
 msgid "Include message in reply?"
 msgstr "Sisällytetäänkö viesti vastaukseen?"
 
-#: send/send.c:1098
+#: send/send.c:1103
 msgid "Including quoted message..."
 msgstr "Sisällytetään lainattua viestiä..."
 
-#: send/send.c:1104
+#: send/send.c:1109
 msgid "Could not include all requested messages"
 msgstr "Ei voitu sisällyttää kaikkia pyydettyjä viestejä"
 
-#: send/send.c:1118
+#: send/send.c:1123
 msgid "Forward as attachment?"
 msgstr "Lähetetäänkö edelleen liitteenä?"
 
-#: send/send.c:1123
+#: send/send.c:1128
 msgid "Preparing forwarded message..."
 msgstr "Valmistellaan edelleenlähetettävää viestiä..."
 
-#: send/send.c:1640
+#: send/send.c:1645
 #, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "%c: ei tuettu tässä tilassa"
@@ -7153,12 +7157,12 @@ msgstr "%c: ei tuettu tässä tilassa"
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1646
+#: send/send.c:1651
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr ""
 
-#: send/send.c:1686 send/send.c:1696 send/send.c:1722
+#: send/send.c:1691 send/send.c:1701 send/send.c:1727
 msgid "Save attachments in Fcc?"
 msgstr "Tallennetaanko liitteet FCC-kansioon myös?"
 
@@ -7166,105 +7170,105 @@ msgstr "Tallennetaanko liitteet FCC-kansioon myös?"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1744
+#: send/send.c:1749
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1748
+#: send/send.c:1753
 msgid "rms"
 msgstr ""
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1754
+#: send/send.c:1759
 #, fuzzy
 msgid "Fcc mailbox"
 msgstr "Avaa postilaatikko"
 
-#: send/send.c:1822
+#: send/send.c:1827
 msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
-#: send/send.c:1860 send/send.c:1876
+#: send/send.c:1865 send/send.c:1881
 msgid "Error encrypting message. Check your crypt settings."
 msgstr ""
 
-#: send/send.c:1969
+#: send/send.c:1974
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "Viesti täsmää hakuun \"$abort_noattach_regex\", joten sitä ei lähetetä."
 
-#: send/send.c:1975
+#: send/send.c:1980
 msgid "No attachments, cancel sending?"
 msgstr "Ei liitteitä, perutaanko lähetys?"
 
-#: send/send.c:2034
+#: send/send.c:2039
 msgid "Recall postponed message?"
 msgstr "Palautetaanko lykätty viesti?"
 
-#: send/send.c:2287
+#: send/send.c:2292
 msgid "Refusing to send an empty email"
 msgstr ""
 
-#: send/send.c:2288
+#: send/send.c:2293
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
 msgstr ""
 
-#: send/send.c:2369
+#: send/send.c:2374
 msgid "Edit forwarded message?"
 msgstr "Muokataanko edelleenlähetettävää viestiä?"
 
-#: send/send.c:2408
+#: send/send.c:2413
 msgid "Abort unmodified message?"
 msgstr "Perutaanko muokkaamaton viesti?"
 
-#: send/send.c:2410
+#: send/send.c:2415
 msgid "Aborted unmodified message"
 msgstr "Muokkaamaton viesti peruttu"
 
-#: send/send.c:2554
+#: send/send.c:2559
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Crypto-backend on asettamatta, joten turvallisuusasetukset on pois käytöstä."
 
-#: send/send.c:2595
+#: send/send.c:2601
 msgid "Article not posted"
 msgstr "Artikkelia ei postattu"
 
-#: send/send.c:2605
+#: send/send.c:2611
 msgid "Message postponed"
 msgstr "Viesti lykätty"
 
-#: send/send.c:2641
+#: send/send.c:2647
 msgid "No subject, abort sending?"
 msgstr "Ei aihetta, perutaanko lähetys?"
 
-#: send/send.c:2645 send/send.c:2651
+#: send/send.c:2651 send/send.c:2657
 msgid "No subject specified"
 msgstr "Ei aihetta"
 
-#: send/send.c:2657
+#: send/send.c:2663
 msgid "No newsgroup specified"
 msgstr "Ei uutisryhmiä"
 
-#: send/send.c:2718 send/smtp.c:250
+#: send/send.c:2724 send/smtp.c:250
 msgid "Sending message..."
 msgstr "Lähetetään viestiä..."
 
-#: send/send.c:2758
+#: send/send.c:2764
 msgid "Could not send the message"
 msgstr "Ei voitu lähettää viestiä"
 
-#: send/send.c:2768
+#: send/send.c:2774
 msgid "Sending in background"
 msgstr "Lähetetää taustalla"
 
-#: send/send.c:2769
+#: send/send.c:2775
 msgid "Article posted"
 msgstr "Artikkeli postattu"
 
-#: send/send.c:2770
+#: send/send.c:2776
 msgid "Mail sent"
 msgstr "Viesti lähetetty"
 
@@ -7315,27 +7319,27 @@ msgstr "SMTP-sessio epäonnistui: ei voitu avata kohdetta %s"
 msgid "Invalid SMTP URL: %s"
 msgstr "Viallinen SMTP-URL: %s"
 
-#: send/smtp.c:692
+#: send/smtp.c:771
 msgid "SMTP authentication requires SASL"
 msgstr "SMTP-autentikaatio vaatii SASLia"
 
-#: send/smtp.c:779
+#: send/smtp.c:858
 msgid "SMTP server does not support authentication"
 msgstr "SMTP-palvelin ei tue autentikointia"
 
-#: send/smtp.c:827
+#: send/smtp.c:906
 msgid "No from address given"
 msgstr "Ei lähettäjäosoitetta"
 
-#: send/smtp.c:894
+#: send/smtp.c:973
 msgid "SMTP session failed: read error"
 msgstr "SMTP-sessio epäonnistui: lukuvirhe"
 
-#: send/smtp.c:896
+#: send/smtp.c:975
 msgid "SMTP session failed: write error"
 msgstr "SMTP-sessio epäonnistui: kirjoitusvirhe"
 
-#: send/smtp.c:898
+#: send/smtp.c:977
 msgid "Invalid server response"
 msgstr "Viallinen palvelinvastaus"
 
