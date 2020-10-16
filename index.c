@@ -479,8 +479,8 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
     for (int i = 0; i < ctx->mailbox->msg_count; i++)
     {
       struct Email *e = ctx->mailbox->emails[i];
-      if (mutt_pattern_exec(SLIST_FIRST(ctx->limit_pattern),
-                            MUTT_MATCH_FULL_ADDRESS, ctx->mailbox, e, NULL))
+      if ((e->vnum != -1) || mutt_pattern_exec(SLIST_FIRST(ctx->limit_pattern), MUTT_MATCH_FULL_ADDRESS,
+                                               ctx->mailbox, e, NULL))
       {
         /* vnum will get properly set by mutt_set_vnum(), which
          * is called by mutt_sort_headers() just below. */
@@ -489,6 +489,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
       }
       else
       {
+        e->vnum = -1;
         e->visible = false;
       }
     }
