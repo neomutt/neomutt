@@ -156,29 +156,30 @@ static int mutt_poll_fd_remove(int fd)
  */
 static int monitor_init(void)
 {
+  if (INotifyFd != -1)
+    return 0;
+
+#ifdef HAVE_INOTIFY_INIT1
+  INotifyFd = inotify_init1(IN_NONBLOCK | IN_CLOEXEC);
   if (INotifyFd == -1)
   {
-#ifdef HAVE_INOTIFY_INIT1
-    INotifyFd = inotify_init1(IN_NONBLOCK | IN_CLOEXEC);
-    if (INotifyFd == -1)
-    {
-      mutt_debug(LL_DEBUG2, "inotify_init1 failed, errno=%d %s\n", errno, strerror(errno));
-      return -1;
-    }
-#else
-    INotifyFd = inotify_init();
-    if (INotifyFd == -1)
-    {
-      mutt_debug(LL_DEBUG2, "monitor: inotify_init failed, errno=%d %s\n",
-                 errno, strerror(errno));
-      return -1;
-    }
-    fcntl(INotifyFd, F_SETFL, O_NONBLOCK);
-    fcntl(INotifyFd, F_SETFD, FD_CLOEXEC);
-#endif
-    mutt_poll_fd_add(0, POLLIN);
-    mutt_poll_fd_add(INotifyFd, POLLIN);
+    mutt_debug(LL_DEBUG2, "inotify_init1 failed, errno=%d %s\n", errno, strerror(errno));
+    return -1;
   }
+#else
+  INotifyFd = inotify_init();
+  if (INotifyFd == -1)
+  {
+    mutt_debug(LL_DEBUG2, "monitor: inotify_init failed, errno=%d %s\n", errno,
+               strerror(errno));
+    return -1;
+  }
+  fcntl(INotifyFd, F_SETFL, O_NONBLOCK);
+  fcntl(INotifyFd, F_SETFD, FD_CLOEXEC);
+#endif
+  mutt_poll_fd_add(0, POLLIN);
+  mutt_poll_fd_add(INotifyFd, POLLIN);
+
   return 0;
 }
 
