@@ -3688,7 +3688,7 @@ set crypt_use_gpgme
         configurability can make it difficult when just getting started.  A few
         sample neomuttrc files come with NeoMutt, under
         <literal>doc/neomutt/samples/</literal>.  Among them,
-        <ulink url="https://github.com/neomutt/neomutt/blob/master/contrib/sample.neomuttrc-starter">sample.neomuttrc-starter</ulink>
+        <ulink url="https://github.com/neomutt/neomutt/blob/master/contrib/samples/sample.neomuttrc-starter">sample.neomuttrc-starter</ulink>
         is a basic example config with a few suggested settings and pointers to
         useful programs.
       </para>

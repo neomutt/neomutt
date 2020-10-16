@@ -112,6 +112,7 @@ int maildir_move_to_mailbox(struct Mailbox *m, struct MdEmailArray *mda)
   maildirarray_clear(mda);
   return num;
 }
+
 /**
  * maildir_update_flags - Update the mailbox flags
  * @param m     Mailbox

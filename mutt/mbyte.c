@@ -292,7 +292,7 @@ void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
  * @param[in]  buf      String to convert
  * @retval num First character after the result
  */
-size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
+size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char *buf)
 {
   if (!pwbuf || !pwbuflen || !buf)
     return 0;

@@ -46,7 +46,7 @@ bool   mutt_mb_get_initials(const char *name, char *buf, size_t buflen);
 bool   mutt_mb_is_display_corrupting_utf8(wchar_t wc);
 bool   mutt_mb_is_lower(const char *s);
 bool   mutt_mb_is_shell_char(wchar_t ch);
-size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf);
+size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char *buf);
 void   mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen);
 int    mutt_mb_wcswidth(const wchar_t *s, size_t n);
 int    mutt_mb_wcwidth(wchar_t wc);

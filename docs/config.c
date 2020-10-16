@@ -4704,9 +4704,9 @@
 ** mutt uses to thread messages by subject.  With $$sort_re \fIset\fP, mutt will
 ** only attach a message as the child of another message by subject if
 ** the subject of the child message starts with a substring matching the
-** setting of $$reply_regexp.  With $$sort_re \fIunset\fP, mutt will attach
+** setting of $$reply_regex.  With $$sort_re \fIunset\fP, mutt will attach
 ** the message whether or not this is the case, as long as the
-** non-$$reply_regexp parts of both messages are identical.
+** non-$$reply_regex parts of both messages are identical.
 */
 
 { "spam_separator", DT_STRING, "," },

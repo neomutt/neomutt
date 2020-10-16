@@ -501,7 +501,6 @@ int mh_parse_dir(struct Mailbox *m, struct MdEmailArray *mda, struct Progress *p
 {
   struct dirent *de = NULL;
   int rc = 0;
-  bool is_old = false;
   struct MdEmail *entry = NULL;
   struct Email *e = NULL;
 
@@ -526,8 +525,6 @@ int mh_parse_dir(struct Mailbox *m, struct MdEmailArray *mda, struct Progress *p
     e = email_new();
     e->edata = maildir_edata_new();
     e->edata_free = maildir_edata_free;
-
-    e->old = is_old;
 
     if (m->verbose && progress)
       mutt_progress_update(progress, ARRAY_SIZE(mda) + 1, -1);
