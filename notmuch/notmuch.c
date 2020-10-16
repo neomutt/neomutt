@@ -1676,6 +1676,29 @@ char *nm_email_get_folder(struct Email *e)
 }
 
 /**
+ * nm_email_get_folder_rel_db - Get the folder for a Email from the same level as the notmuch database
+ * @param m Mailbox containing Email
+ * @param e Email
+ * @retval ptr  Folder containing email from the same level as the notmuch db
+ * @retval NULL Error
+ *
+ * Instead of returning a path like /var/mail/account/Inbox, this returns
+ * account/Inbox. If wanting the full path, use nm_email_get_folder().
+ */
+char *nm_email_get_folder_rel_db(struct Mailbox *m, struct Email *e)
+{
+  char *full_folder = nm_email_get_folder(e);
+  if (!full_folder)
+    return NULL;
+
+  const char *db_path = nm_db_get_filename(m);
+  if (!db_path)
+    return NULL;
+
+  return full_folder + strlen(db_path);
+}
+
+/**
  * nm_read_entire_thread - Get the entire thread of an email
  * @param m Mailbox
  * @param e   Email
