@@ -2560,8 +2560,8 @@ msgid "Getting folder list..."
 msgstr "Liosta fillteán á fháil..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Níl a leithéid d'fhillteán ann"
+msgid "No such folder: %s"
+msgstr "Níl a leithéid d'fhillteán ann: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

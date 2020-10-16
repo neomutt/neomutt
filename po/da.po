@@ -2496,8 +2496,8 @@ msgid "Getting folder list..."
 msgstr "Henter liste over brevbakker ..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Brevbakken findes ikke"
+msgid "No such folder: %s"
+msgstr "Brevbakken findes ikke: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

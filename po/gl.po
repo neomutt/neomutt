@@ -2536,7 +2536,7 @@ msgstr "Recollendo lista de carpetas..."
 
 #: imap/browse.c:354
 #, fuzzy
-msgid "No such folder"
+msgid "No such folder: %s"
 msgstr "%s: non hai tal color"
 
 #: imap/browse.c:401

@@ -2524,7 +2524,7 @@ msgstr "拿取目錄表中…"
 
 #: imap/browse.c:354
 #, fuzzy
-msgid "No such folder"
+msgid "No such folder: %s"
 msgstr "%s：沒有這種顏色"
 
 #: imap/browse.c:401

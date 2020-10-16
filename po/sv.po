@@ -2519,8 +2519,8 @@ msgid "Getting folder list..."
 msgstr "Hämtar folderlista..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Ingen sådan folder"
+msgid "No such folder: %s"
+msgstr "Ingen sådan folder: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

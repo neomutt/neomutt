@@ -351,7 +351,8 @@ int imap_browse(const char *path, struct BrowserState *state)
 
   if (ARRAY_EMPTY(&state->entry))
   {
-    mutt_error(_("No such folder"));
+    // L10N: (%s) is the name / path of the folder we were trying to browse
+    mutt_error(_("No such folder: %s"), path);
     goto fail;
   }
 

@@ -2440,8 +2440,8 @@ msgid "Getting folder list..."
 msgstr "Getting folder list..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "No such folder"
+msgid "No such folder: %s"
+msgstr "No such folder: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

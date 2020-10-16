@@ -2442,8 +2442,8 @@ msgid "Getting folder list..."
 msgstr "正在获取文件夹列表..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "无此文件夹"
+msgid "No such folder: %s"
+msgstr "无此文件夹: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

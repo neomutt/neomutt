@@ -2529,8 +2529,8 @@ msgid "Getting folder list..."
 msgstr "Laen kaustade nimekirja..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Sellist värvi ei ole"
+msgid "No such folder: %s"
+msgstr "Sellist värvi ei ole: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

@@ -2519,8 +2519,8 @@ msgid "Getting folder list..."
 msgstr "Karpeta zerrenda eskuratzen..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Ez da karpeta aurkitu"
+msgid "No such folder: %s"
+msgstr "Ez da karpeta aurkitu: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "
