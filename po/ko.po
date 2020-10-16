@@ -2518,8 +2518,8 @@ msgid "Getting folder list..."
 msgstr "폴더 목록 받는 중..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "폴더 없음"
+msgid "No such folder: %s"
+msgstr "폴더 없음: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

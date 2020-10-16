@@ -2531,8 +2531,8 @@ msgid "Getting folder list..."
 msgstr "Postafiókok listájának letöltése..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Nincs ilyen postafiók"
+msgid "No such folder: %s"
+msgstr "Nincs ilyen postafiók: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

@@ -2507,8 +2507,8 @@ msgid "Getting folder list..."
 msgstr "Отримання переліку скриньок..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Такої скриньки немає"
+msgid "No such folder: %s"
+msgstr "Такої скриньки немає: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

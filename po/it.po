@@ -2513,8 +2513,8 @@ msgid "Getting folder list..."
 msgstr "Scarico la lista dei folder..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Folder inesistente"
+msgid "No such folder: %s"
+msgstr "Folder inesistente: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

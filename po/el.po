@@ -2534,8 +2534,8 @@ msgid "Getting folder list..."
 msgstr "Λήψη λίστας φακέλων..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Δεν υπάρχει τέτοιος φάκελος"
+msgid "No such folder: %s"
+msgstr "Δεν υπάρχει τέτοιος φάκελος: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

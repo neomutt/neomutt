@@ -2454,8 +2454,8 @@ msgid "Getting folder list..."
 msgstr "Gaunu aplankų sąrašą..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Nėra tokio aplanko"
+msgid "No such folder: %s"
+msgstr "Nėra tokio aplanko: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

@@ -2447,8 +2447,8 @@ msgid "Getting folder list..."
 msgstr "Obtendo lista de pastas..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Esta pasta não existe"
+msgid "No such folder: %s"
+msgstr "Esta pasta não existe: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

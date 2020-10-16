@@ -2463,8 +2463,8 @@ msgid "Getting folder list..."
 msgstr "Haetaan kansiolistaa..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Kansiota ei ole"
+msgid "No such folder: %s"
+msgstr "Kansiota ei ole: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

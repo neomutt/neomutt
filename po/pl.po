@@ -2456,8 +2456,8 @@ msgid "Getting folder list..."
 msgstr "Pobieranie listy skrzynek..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Brak skrzynki"
+msgid "No such folder: %s"
+msgstr "Brak skrzynki: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

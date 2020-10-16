@@ -2504,8 +2504,8 @@ msgid "Getting folder list..."
 msgstr "Postvakkenlijst wordt opgehaald..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Niet-bestaand postvak"
+msgid "No such folder: %s"
+msgstr "Niet-bestaand postvak: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

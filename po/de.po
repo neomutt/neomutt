@@ -2452,8 +2452,8 @@ msgid "Getting folder list..."
 msgstr "Hole Liste der Ordner..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Ordner existiert nicht"
+msgid "No such folder: %s"
+msgstr "Ordner existiert nicht: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

@@ -2508,8 +2508,8 @@ msgid "Getting folder list..."
 msgstr "Mengambil daftar kotak surat..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Tidak ada folder itu"
+msgid "No such folder: %s"
+msgstr "Tidak ada folder itu: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

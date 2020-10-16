@@ -2510,7 +2510,7 @@ msgstr ""
 
 #: imap/browse.c:354
 #, fuzzy
-msgid "No such folder"
+msgid "No such folder: %s"
 msgstr "%s: nenájdená farba"
 
 #: imap/browse.c:401

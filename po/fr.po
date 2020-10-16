@@ -2608,8 +2608,8 @@ msgstr "Récupération de la liste des dossiers..."
 
 # , c-format
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Ce dossier n'existe pas"
+msgid "No such folder: %s"
+msgstr "Ce dossier n'existe pas: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

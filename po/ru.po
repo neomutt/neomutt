@@ -2504,8 +2504,8 @@ msgid "Getting folder list..."
 msgstr "Получение списка почтовых ящиков..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Нет такого почтового ящика"
+msgid "No such folder: %s"
+msgstr "Нет такого почтового ящика: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

@@ -2498,8 +2498,8 @@ msgid "Getting folder list..."
 msgstr "Dizin listesi alınıyor..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Böyle bir dizin yok"
+msgid "No such folder: %s"
+msgstr "Böyle bir dizin yok: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "

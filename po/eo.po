@@ -2502,8 +2502,8 @@ msgid "Getting folder list..."
 msgstr "Prenas liston de poŝtfakoj..."
 
 #: imap/browse.c:354
-msgid "No such folder"
-msgstr "Poŝtfako ne ekzistas"
+msgid "No such folder: %s"
+msgstr "Poŝtfako ne ekzistas: %s"
 
 #: imap/browse.c:401
 msgid "Create mailbox: "
