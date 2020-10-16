@@ -106,7 +106,7 @@ struct SmtpAuth
 {
   /**
    * authenticate - Authenticate an SMTP connection
-   * @param adata Smtp Account data
+   * @param adata  Smtp Account data
    * @param method Use this named method, or any available method if NULL
    * @retval int Result, e.g. #SMTP_AUTH_SUCCESS
    */
@@ -542,12 +542,14 @@ fail:
 
 /**
  * smtp_auth_oauth - Authenticate an SMTP connection using OAUTHBEARER
- * @param adata SMTP Account data
- * @param method   Authentication method to use
+ * @param adata   SMTP Account data
+ * @param method  Authentication method (not used)
  * @retval num Result, e.g. #SMTP_AUTH_SUCCESS
  */
 static int smtp_auth_oauth(struct SmtpAccountData *adata, const char *method)
 {
+  (void) method; // This is OAUTHBEARER
+
   // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
   mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
 
@@ -575,12 +577,14 @@ static int smtp_auth_oauth(struct SmtpAccountData *adata, const char *method)
 /**
  * smtp_auth_plain - Authenticate using plain text
  * @param adata SMTP Account data
- * @param method   Authentication method to use
+ * @param method     Authentication method (not used)
  * @retval  0 Success
  * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
  */
 static int smtp_auth_plain(struct SmtpAccountData *adata, const char *method)
 {
+  (void) method; // This is PLAIN
+
   char buf[1024];
 
   /* Get username and password. Bail out of any can't be retrieved. */
@@ -617,11 +621,86 @@ error:
 }
 
 /**
+ * smtp_auth_login - Authenticate using plain text
+ * @param adata  SMTP Account data
+ * @param method Authentication method (not used)
+ * @retval  0 Success
+ * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
+ */
+static int smtp_auth_login(struct SmtpAccountData *adata, const char *method)
+{
+  (void) method; // This is LOGIN
+
+  char b64[1024] = { 0 };
+  char buf[1024] = { 0 };
+
+  /* Get username and password. Bail out of any can't be retrieved. */
+  if ((mutt_account_getuser(&adata->conn->account) < 0) ||
+      (mutt_account_getpass(&adata->conn->account) < 0))
+  {
+    goto error;
+  }
+
+  /* Send the AUTH LOGIN request. */
+  if (mutt_socket_send(adata->conn, "AUTH LOGIN\r\n") < 0)
+  {
+    goto error;
+  }
+
+  /* Read the 334 VXNlcm5hbWU6 challenge ("Username:" base64-encoded) */
+  mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_FULL);
+  if (!mutt_str_equal(buf, "334 VXNlcm5hbWU6"))
+  {
+    goto error;
+  }
+
+  /* Send the username */
+  size_t len = snprintf(buf, sizeof(buf), "%s", adata->conn->account.user);
+  mutt_b64_encode(buf, len, b64, sizeof(b64));
+  snprintf(buf, sizeof(buf), "%s\r\n", b64);
+  if (mutt_socket_send(adata->conn, buf) < 0)
+  {
+    goto error;
+  }
+
+  /* Read the 334 UGFzc3dvcmQ6 challenge ("Password:" base64-encoded) */
+  mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_FULL);
+  if (!mutt_str_equal(buf, "334 UGFzc3dvcmQ6"))
+  {
+    goto error;
+  }
+
+  /* Send the password */
+  len = snprintf(buf, sizeof(buf), "%s", adata->conn->account.pass);
+  mutt_b64_encode(buf, len, b64, sizeof(b64));
+  snprintf(buf, sizeof(buf), "%s\r\n", b64);
+  if (mutt_socket_send(adata->conn, buf) < 0)
+  {
+    goto error;
+  }
+
+  /* Check the final response */
+  if (smtp_get_resp(adata) < 0)
+  {
+    goto error;
+  }
+
+  /* If we got here, auth was successful. */
+  return 0;
+
+error:
+  // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
+  mutt_error(_("%s authentication failed"), "LOGIN");
+  return -1;
+}
+
+/**
  * smtp_authenticators - Accepted authentication methods
  */
 static const struct SmtpAuth smtp_authenticators[] = {
   { smtp_auth_oauth, "oauthbearer" },
   { smtp_auth_plain, "plain" },
+  { smtp_auth_login, "login" },
 #ifdef USE_SASL
   { smtp_auth_sasl, NULL },
 #endif
