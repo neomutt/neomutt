@@ -3281,8 +3281,8 @@ msgstr "Не удалось сохранить сообщение на диск�
 
 #: maildir/shared.c:1040
 #, fuzzy
-msgid "md_commit_message(): unable to set time on file"
-msgstr "_maildir_commit_message(): не удалось установить время файла"
+msgid "maildir_commit_message(): unable to set time on file"
+msgstr "maildir_commit_message(): не удалось установить время файла"
 
 #. L10N: Displayed before/as a mailbox is being synced
 #: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2397

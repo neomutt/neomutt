@@ -3275,8 +3275,8 @@ msgstr "Bericht kon niet naar schijf worden geschreven"
 
 #: maildir/shared.c:1040
 #, fuzzy
-msgid "md_commit_message(): unable to set time on file"
-msgstr "md_commit_message(): Kan geen tijd op bestand zetten"
+msgid "maildir_commit_message(): unable to set time on file"
+msgstr "maildir_commit_message(): Kan geen tijd op bestand zetten"
 
 #. L10N: Displayed before/as a mailbox is being synced
 #: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2397

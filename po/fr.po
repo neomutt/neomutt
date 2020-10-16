@@ -3396,8 +3396,8 @@ msgstr "Impossible de recopier le message physiquement sur le disque (flush)"
 
 #: maildir/shared.c:1040
 #, fuzzy
-msgid "md_commit_message(): unable to set time on file"
-msgstr "_maildir_commit_message() : impossible de fixer l'heure du fichier"
+msgid "maildir_commit_message(): unable to set time on file"
+msgstr "maildir_commit_message() : impossible de fixer l'heure du fichier"
 
 # , c-format
 #. L10N: Displayed before/as a mailbox is being synced

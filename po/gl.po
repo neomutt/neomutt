@@ -3336,7 +3336,7 @@ msgid "Could not flush message to disk"
 msgstr "Non foi posible envia-la mensaxe."
 
 #: maildir/shared.c:1040
-msgid "md_commit_message(): unable to set time on file"
+msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
 #. L10N: Displayed before/as a mailbox is being synced

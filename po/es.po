@@ -3192,8 +3192,8 @@ msgid "Could not flush message to disk"
 msgstr "No se pudo escribir al disco"
 
 #: maildir/shared.c:1040
-msgid "md_commit_message(): unable to set time on file"
-msgstr "md_commit_message(): incapaz de establecer el tiempo en el archivo"
+msgid "maildir_commit_message(): unable to set time on file"
+msgstr "maildir_commit_message(): incapaz de establecer el tiempo en el archivo"
 
 #. L10N: Displayed before/as a mailbox is being synced
 #: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2397

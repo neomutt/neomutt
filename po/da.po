@@ -3266,8 +3266,8 @@ msgstr "Kunne ikke gemme brev på disken"
 
 #: maildir/shared.c:1040
 #, fuzzy
-msgid "md_commit_message(): unable to set time on file"
-msgstr "_maildir_commit_message(): kan ikke sætte tidsstempel på fil"
+msgid "maildir_commit_message(): unable to set time on file"
+msgstr "maildir_commit_message(): kan ikke sætte tidsstempel på fil"
 
 #. L10N: Displayed before/as a mailbox is being synced
 #: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2397

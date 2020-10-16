@@ -3209,8 +3209,8 @@ msgid "Could not flush message to disk"
 msgstr "Nie można skopiować wiadomości na dysk"
 
 #: maildir/shared.c:1040
-msgid "md_commit_message(): unable to set time on file"
-msgstr "md_commit_message(): nie można nadać plikowi daty"
+msgid "maildir_commit_message(): unable to set time on file"
+msgstr "maildir_commit_message(): nie można nadać plikowi daty"
 
 #. L10N: Displayed before/as a mailbox is being synced
 #: maildir/shared.c:1770 mbox/mbox.c:1273 mx.c:491 notmuch/notmuch.c:2397

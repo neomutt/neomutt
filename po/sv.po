@@ -3307,7 +3307,7 @@ msgstr "Kunde inte skicka meddelandet."
 
 #: maildir/shared.c:1040
 #, fuzzy
-msgid "md_commit_message(): unable to set time on file"
+msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): kunde inte sätta tid på fil"
 
 #. L10N: Displayed before/as a mailbox is being synced

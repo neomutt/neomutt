@@ -3305,7 +3305,7 @@ msgstr "메일을 보낼 수 없음."
 
 #: maildir/shared.c:1040
 #, fuzzy
-msgid "md_commit_message(): unable to set time on file"
+msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): 파일 시간을 설정할 수 없음"
 
 #. L10N: Displayed before/as a mailbox is being synced
