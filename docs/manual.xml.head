@@ -1499,6 +1499,11 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
           </listitem>
           <listitem>
             <para>
+              mailboxes
+            </para>
+          </listitem>
+          <listitem>
+            <para>
               filenames
             </para>
           </listitem>
