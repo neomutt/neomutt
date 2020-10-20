@@ -576,7 +576,8 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
 {
   char buf[1024];
 
-  if (((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC)) && !privacy)
+  if (((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC) ||
+      (mode == MUTT_WRITE_HEADER_POSTPONE)) && !privacy)
   {
     struct Buffer *date = mutt_buffer_pool_get();
     mutt_date_make_date(date);
