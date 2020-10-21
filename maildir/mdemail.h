@@ -24,6 +24,7 @@
 #define MUTT_MAILDIR_MDEMAIL_H
 
 #include <stdbool.h>
+#include <sys/types.h>
 #include "mutt/lib.h"
 
 /**
@@ -34,6 +35,7 @@ struct MdEmail
   struct Email *email;
   char *canon_fname;
   bool header_parsed : 1;
+  ino_t inode;
 };
 ARRAY_HEAD(MdEmailArray, struct MdEmail *);
 
