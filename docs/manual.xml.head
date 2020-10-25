@@ -1507,6 +1507,12 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </tgroup>
         </table>
         <para>
+          <literal>^G</literal> is the generic <quote>abort</quote> key
+          in NeoMutt.  In addition to the line editor, it can also be used
+          to abort prompts.  Generally, typing <literal>^G</literal> at a
+          confirmation prompt or line editor should abort the entire action.
+        </para>
+        <para>
           You can remap the <emphasis>editor</emphasis> functions using the
           <link linkend="bind"><command>bind</command></link> command. For
           example, to make the &lt;Delete&gt; key delete the character in front
