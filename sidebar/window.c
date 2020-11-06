@@ -701,7 +701,7 @@ int sb_recalc(struct MuttWindow *win)
 
     // Don't indent if we were unable to create an abbreviation.
     // Otherwise, the full path will be indent, and it looks unusual.
-    if (C_SidebarFolderIndent && short_path_is_abbr)
+    if (C_SidebarFolderIndent && !short_path_is_abbr)
     {
       if (C_SidebarComponentDepth > 0)
         entry->depth -= C_SidebarComponentDepth;
