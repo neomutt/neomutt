@@ -693,7 +693,7 @@ int sb_recalc(struct MuttWindow *win)
     const char *last_part = abbr;
     entry->depth = calc_path_depth(abbr, C_SidebarDelimChars, &last_part);
 
-    const bool short_path_is_abbr = (short_path == abbr);
+    const bool short_path_is_abbr = (short_path != path);
     if (C_SidebarShortPath)
     {
       short_path = last_part;
@@ -701,7 +701,7 @@ int sb_recalc(struct MuttWindow *win)
 
     // Don't indent if we were unable to create an abbreviation.
     // Otherwise, the full path will be indent, and it looks unusual.
-    if (C_SidebarFolderIndent && short_path_is_abbr)
+    if (C_SidebarFolderIndent && !short_path_is_abbr)
     {
       if (C_SidebarComponentDepth > 0)
         entry->depth -= C_SidebarComponentDepth;
