@@ -24,6 +24,26 @@
  * @page imap_utf7 UTF-7 Manipulation
  *
  * Convert strings to/from utf7/utf8
+ *
+ * Modified UTF-7 is described in RFC 3501 section 5.1.3.
+ * Regular UTF-7 is decribed in RFC 2152.
+ *
+ * In modified UTF-7:
+ *   - printable ascii 0x20-0x25 and 0x27-0x7e represents itself.
+ *   - "&" (0x26) is represented by the two-octet sequence "&-"
+ *   - other values use the UTF-16 representation of the code point
+ *     and encode it using a modified version of BASE64.
+ *   - BASE64 mode is enabled by "&" and disabled by "-".
+ *
+ * Note that UTF-16:
+ *   - Represents U+0000-U+D7FF and U+E000-U+FFFF directly as the binary
+ *     2-byte value.
+ *   - Reserves U+D800-U+DFFF (so they aren't valid code points.)
+ *   - Values above U+FFFF need to be encoded using a surrogate pair of
+ *     two 16-bit values:
+ *       - subtract 0x10000 from the code point
+ *       - take the top 10 bits and add 0xd800 to get the first (high) pair.
+ *       - take the bottom 10 bits and add 0xdc00 for the second (low) pair.
  */
 
 #include "config.h"
@@ -88,6 +108,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
 
   char *buf = mutt_mem_malloc(u7len + u7len / 8 + 1);
   char *p = buf;
+  int pair1 = 0;
 
   for (; u7len; u7++, u7len--)
   {
@@ -132,10 +153,43 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
           }
           else
           {
-            *p++ = 0xe0 | (ch >> 12);
-            *p++ = 0x80 | ((ch >> 6) & 0x3f);
-            *p++ = 0x80 | (ch & 0x3f);
+            /* High surrogate pair */
+            if ((ch & ~0x3ff) == 0xd800)
+            {
+              if (pair1)
+                goto bail;
+              pair1 = ch;
+            }
+            else
+            {
+              /* Low surrogate pair */
+              if ((ch & ~0x3ff) == 0xdc00)
+              {
+                if (!pair1)
+                  goto bail;
+
+                ch = ((pair1 - 0xd800) << 10) + (ch - 0xdc00) + 0x10000;
+                pair1 = 0;
+              }
+              if (pair1)
+                goto bail;
+
+              if (ch < 0x10000)
+              {
+                *p++ = 0xe0 | (ch >> 12);
+                *p++ = 0x80 | ((ch >> 6) & 0x3f);
+                *p++ = 0x80 | (ch & 0x3f);
+              }
+              else
+              {
+                *p++ = 0xf0 | (ch >> 18);
+                *p++ = 0x80 | ((ch >> 12) & 0x3f);
+                *p++ = 0x80 | ((ch >> 6) & 0x3f);
+                *p++ = 0x80 | (ch & 0x3f);
+              }
+            }
           }
+
           ch = (b << (16 + k)) & 0xffff;
           k += 10;
         }
@@ -187,7 +241,7 @@ bail:
  * @retval ptr  UTF-7 data
  * @retval NULL Error
  *
- * Unicode characters above U+FFFF are replaced by U+FFFE.
+ * Unicode characters above U+FFFF converted to a UTF-16 surrogate pair.
  *
  * @note The result is null-terminated.
  * @note The caller must free() the returned data.
@@ -266,8 +320,26 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
         b = 0;
         k = 10;
       }
+
+      // For code points >= 0x10000 we need to use a UTF-16 surrogate pair
       if (ch & ~0xffff)
-        ch = 0xfffe;
+      {
+        ch -= 0x10000;
+        int pair1 = 0xd800 + (ch >> 10);
+        int pair2 = 0xdc00 + (ch & 0x3ff);
+
+        /* Output the high surrogate */
+        *p++ = B64Chars[b | pair1 >> k];
+        k -= 6;
+        for (; k >= 0; k -= 6)
+          *p++ = B64Chars[(pair1 >> k) & 0x3f];
+        b = (pair1 << (-k)) & 0x3f;
+        k += 16;
+
+        /* The low surrogate will be output just below */
+        ch = pair2;
+      }
+
       *p++ = B64Chars[b | ch >> k];
       k -= 6;
       for (; k >= 0; k -= 6)
