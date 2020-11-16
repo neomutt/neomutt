@@ -286,7 +286,7 @@ msgstr "Autocrypt není dostupný"
 #: autocrypt/autocrypt.c:596
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr "Autocrpt není zapnutý pro %s"
+msgstr "Autocrypt není zapnutý pro %s"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
@@ -439,7 +439,7 @@ msgstr "ne"
 #. for some reason, we prompt to see if they want to create a key instead.
 #: autocrypt/gpgme.c:296
 msgid "Create a new GPG key for this account, instead?"
-msgstr "Vytvořt nový GPG klíč pro tento účet?"
+msgstr "Vytvořit nový GPG klíč pro tento účet?"
 
 #. L10N: The autocrypt database keeps track of schema version numbers.
 #. This error occurs if the version number is too high.
@@ -450,9 +450,9 @@ msgid "Autocrypt database version is too new"
 msgstr "Verze databáze autocrypt je příliš nová"
 
 #: bcache/bcache.c:77
-#, fuzzy, c-format
+#, c-format
 msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Cache se zprávami %s není adresářem"
+msgstr "Cache vypnuta, $message_cachedir není adresářem: %s"
 
 #: bcache/bcache.c:219
 #, c-format
@@ -710,7 +710,7 @@ msgstr "neplatná hlavička"
 #: command_parse.c:1079
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
-msgstr "Nelze použít „inv“ „no“, „&“ nebo „?“ s příkazem '%s'"
+msgstr "Nelze použít „inv“ „no“, „&“ nebo „?“ s příkazem „%s“"
 
 #: command_parse.c:1113 command_parse.c:1249 command_parse.c:1351
 #, c-format
@@ -724,7 +724,7 @@ msgstr "Nelze použít prefix při dotazování proměnné"
 #: command_parse.c:1132 command_parse.c:1419 command_parse.c:1433
 #, c-format
 msgid "Can't query a variable with the '%s' command"
-msgstr "Nelze se dotázat na proměnnou príkazem '%s'"
+msgstr "Nelze se dotázat na proměnnou příkazem „%s“"
 
 #: command_parse.c:1146
 msgid "Can't use prefix when incrementing or decrementing a variable"
@@ -733,7 +733,7 @@ msgstr "Nelze použít prefix při navyšování nebo snižováním proměnné"
 #: command_parse.c:1152 command_parse.c:1178
 #, c-format
 msgid "Can't set a variable with the '%s' command"
-msgstr "Nelze nastavit proměnnou příkazem '%s'"
+msgstr "Nelze nastavit proměnnou příkazem „%s“"
 
 #: command_parse.c:1172
 msgid "Can't use prefix when setting a variable"
@@ -746,7 +746,7 @@ msgstr "Prefixy „no“ a „inv“ mohou být použity pouze s proměnnými ty
 #: command_parse.c:1196
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
-msgstr "Příkaz '%s' lze použít pouze s proměnnými typu boolean/přepínač"
+msgstr "Příkaz „%s“ lze použít pouze s proměnnými typu boolean/přepínač"
 
 #: command_parse.c:1471
 #, c-format
@@ -1119,7 +1119,7 @@ msgstr "Předmět: "
 #. L10N: Compose menu field.  May not want to translate.
 #: compose/compose.c:187
 msgid "Reply-To: "
-msgstr "Opověd na: "
+msgstr "Odpověď na: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose/compose.c:189
@@ -1598,7 +1598,7 @@ msgstr "Proměnná „%s“ není známa."
 #: config/set.c:928 config/set.c:1014
 #, c-format
 msgid "Type '%s' doesn't support operation '%s'"
-msgstr "Typ '%s' nepodporuje operaci '%s'"
+msgstr "Typ „%s“ nepodporuje operaci „%s“"
 
 #: config/sort.c:85
 #, c-format
@@ -2270,7 +2270,7 @@ msgstr "Jedna nebo více část této zprávy nemohly být zobrazeny."
 
 #: handler.c:1327
 msgid "Unable to open 'memory stream'"
-msgstr "'memory stream' nelze otevřít"
+msgstr "„memory stream“ nelze otevřít"
 
 #: handler.c:1337
 msgid "Unable to open temporary file"
@@ -2278,7 +2278,7 @@ msgstr "Dočasný soubor nelze otevřít"
 
 #: handler.c:1386
 msgid "failed to re-open 'memory stream'"
-msgstr "chyba pří opakovaném otevření 'memory stream'u"
+msgstr "chyba pří opakovaném otevření „memory stream“u"
 
 #: handler.c:1669
 msgid "Error: multipart/signed has no protocol"
@@ -2523,7 +2523,7 @@ msgstr "Vypršel časový limit spojení k %s"
 #: imap/config.c:83 pop/config.c:68 send/config.c:78
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
-msgstr ""
+msgstr "Volba %s: %s není platný autentikátor"
 
 #: imap/imap.c:101
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
@@ -2751,7 +2751,7 @@ msgstr "Změny obsahu složky nebudou uloženy"
 
 #: index.c:798
 msgid "Failed to create query, aborting"
-msgstr "Nezdařílo se vytvořit dotaz, zrušeno"
+msgstr "Nezdařilo se vytvořit dotaz, zrušeno"
 
 #: index.c:845 muttlib.c:1390 mx.c:220 mx.c:371
 #, c-format
@@ -2878,7 +2878,7 @@ msgstr "Virtuální složka ani Message-Id nejsou specifikovány, zrušeno"
 
 #: index.c:2158
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
-msgstr "nelze nalézt zpravá v databází notmuch. Zkuste spustit „notmuch new“."
+msgstr "nelze nalézt zprávu v databází notmuch. Zkuste spustit „notmuch new“."
 
 #: index.c:2167
 msgid "Failed to read thread, aborting"
@@ -3123,12 +3123,12 @@ msgstr "Příkaz %s není znám."
 #: init.c:1084
 #, c-format
 msgid "Config variable '%s' is deprecated"
-msgstr "Konfigurační proměnná '%s' je zastaralá"
+msgstr "Konfigurační proměnná „%s“ je zastaralá"
 
 #: keymap.c:430
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr "Zkratka „%s“ překryje „%s“. Nejdříve zkuste: 'bind %s %s noop' https://neomutt.org/guide/configuration.html#bind-warnings"
+msgstr "Zkratka „%s“ překryje „%s“. Nejdříve zkuste: „bind %s %s noop“ https://neomutt.org/guide/configuration.html#bind-warnings"
 
 #: keymap.c:796
 msgid "Macro loop detected"
@@ -3141,7 +3141,7 @@ msgstr "Klávesová zkratka pro přerušení není nastavena, pokračuji s vých
 #: keymap.c:879
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
-msgstr "Zadaná klávesová zkraktka pro přerušení (%s) bude zkrácena na první klávesu"
+msgstr "Zadaná klávesová zkratka pro přerušení (%s) bude zkrácena na první klávesu"
 
 #: keymap.c:1147 keymap.c:1182
 msgid "Key is not bound"
@@ -3364,7 +3364,7 @@ msgid ""
 "                The level can range from 1-5 and affects verbosity"
 msgstr ""
 "  -d <úroveň>   Ladicí informace zapisuje do „~/.neomuttdebug0“\n"
-"                Hodnota 1-5 ovlivnňuje úroveň podrobnosti"
+"                Hodnota 1-5 ovlivňuje úroveň podrobnosti"
 
 #: main.c:190
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
@@ -5118,7 +5118,7 @@ msgstr "Hledám nové zprávy v diskusních skupinách…"
 
 #: nntp/nntp.c:2327
 msgid "Unable to find child articles because server does not support XPAT command"
-msgstr "Nepodařilo se nalézt poďřízený článek, protože server nepodporuje příkaz XPAT"
+msgstr "Nepodařilo se nalézt podřízený článek, protože server nepodporuje příkaz XPAT"
 
 #: nntp/nntp.c:2409
 #, c-format
@@ -5207,7 +5207,7 @@ msgstr "smazat aktuální účet"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
-msgstr "přepnout stávající účet mezi aktivni/neaktivní"
+msgstr "přepnout stávající účet mezi aktivní/neaktivní"
 
 #: opcodes.h:36
 msgid "toggle the current account prefer-encrypt flag"
@@ -5255,7 +5255,7 @@ msgstr "zobrazit jméno zvoleného souboru"
 
 #: opcodes.h:52
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "přepnout zobrazení všech/přihlášených schránkek (IMAP)"
+msgstr "přepnout zobrazení všech/přihlášených schránek (IMAP)"
 
 #: opcodes.h:53
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
@@ -5835,7 +5835,7 @@ msgstr "přeskočit na předchozí nepřečtenou zprávu"
 
 #: opcodes.h:197
 msgid "delete from NeoMutt, don't touch on disk"
-msgstr "schovat z NeoMuttu, nezpisovat na disk"
+msgstr "smazat z NeoMuttu, nezapisovat na disk"
 
 #: opcodes.h:198
 msgid "mark the current subthread as read"
@@ -6322,7 +6322,7 @@ msgstr "Provádím příkaz pro hledání: %s ..."
 #: pattern/compile.c:307 pattern/compile.c:322
 #, c-format
 msgid "Invalid day of month: %s"
-msgstr "Neplatný den v měsící: %s"
+msgstr "Neplatný den v měsíci: %s"
 
 #: pattern/compile.c:312 pattern/compile.c:336
 #, c-format
@@ -6421,7 +6421,7 @@ msgstr "VZOR"
 
 #: pattern/dlgpattern.c:204
 msgid "messages in threads containing messages matching PATTERN"
-msgstr "zprávy ve vláknech odpovídající VZOR"
+msgstr "zprávy ve vláknech odpovídající VZORU"
 
 #: pattern/dlgpattern.c:213
 msgid "messages whose immediate parent matches PATTERN"
@@ -6437,7 +6437,7 @@ msgstr "zprávy mající přímo podřízenou zprávu odpovídající VZORU"
 #: pattern/exec.c:88
 #, c-format
 msgid "Pattern operator '~%c' is disabled"
-msgstr "Operátor vzoru'~%c' není dostupný"
+msgstr "Operátor vzoru „~%c“ není dostupný"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
@@ -6448,11 +6448,11 @@ msgstr "chyba: neznámý operátor %d (ohlaste tuto chybu)"
 
 #: pattern/exec.c:135
 msgid "Error opening 'memory stream'"
-msgstr "Chyba při otevírání 'memory stream'u"
+msgstr "Chyba při otevírání „memory stream“u"
 
 #: pattern/exec.c:181
 msgid "Error re-opening 'memory stream'"
-msgstr "Chyba při opětovném otevírání 'memory stream'"
+msgstr "Chyba při opětovném otevírání „memory stream“"
 
 #: pattern/exec.c:191
 msgid "Error opening /dev/null"
@@ -6470,7 +6470,7 @@ msgstr "všechny zprávy"
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:47
 msgid "messages whose body matches EXPR"
-msgstr "zprávy jejichž tělo odpovídají VÝRAZU"
+msgstr "zprávy jejichž tělo odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:50
@@ -6480,12 +6480,12 @@ msgstr "zprávy jejichž tělo nebo hlavičky odpovídají VÝRAZU"
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:53
 msgid "messages whose CC header matches EXPR"
-msgstr "zprávy jejichž halvička CC odpovídají VÝRAZU"
+msgstr "zprávy jejichž hlavička CC odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:56
 msgid "messages whose recipient matches EXPR"
-msgstr "zprávy jejichž příjemnce odpovídá VÝRAZU"
+msgstr "zprávy jejichž příjemce odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:59
@@ -6495,12 +6495,12 @@ msgstr "zprávy odeslané v INTERVALU DATUMU"
 #. L10N: Pattern Completion Menu description for ~D
 #: pattern/flags.c:62
 msgid "deleted messages"
-msgstr "odstraněné zprávy"
+msgstr "smazané zprávy"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
 msgid "messages whose Sender header matches EXPR"
-msgstr "zprávy jejichž hlavička Odesilatel odpovídá VÝRAZU"
+msgstr "zprávy jejichž hlavička Odesilatel (Sender) odpovídá VÝRAZU"
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:68
@@ -6595,7 +6595,7 @@ msgstr "zprávy adresované vám"
 #. L10N: Pattern Completion Menu description for ~P
 #: pattern/flags.c:122
 msgid "messages from you"
-msgstr "zprávyt od vás"
+msgstr "zprávy od vás"
 
 #. L10N: Pattern Completion Menu description for ~Q
 #: pattern/flags.c:125
@@ -6645,7 +6645,7 @@ msgstr "nepřečtené zprávy"
 #. L10N: Pattern Completion Menu description for ~v
 #: pattern/flags.c:152
 msgid "messages in collapsed threads"
-msgstr "zprávy v zavinotém vlákně"
+msgstr "zprávy v zavinutém vlákně"
 
 #. L10N: Pattern Completion Menu description for ~V
 #: pattern/flags.c:155
@@ -6912,7 +6912,7 @@ msgstr "Neví se, jak vytisknout přílohy typu %s"
 #, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
-msgstr[0] "Vytisknout %d označou přílohu?"
+msgstr[0] "Vytisknout %d označenou přílohu?"
 msgstr[1] "Vytisknout %d označené přílohy?"
 msgstr[2] "Vytisknout %d označených příloh?"
 
@@ -7216,7 +7216,7 @@ msgstr "Nezměněná zpráva byla zahozena"
 
 #: send/send.c:2559
 msgid "No crypto backend configured.  Disabling message security setting."
-msgstr "Neni nakonfigurováno s podporou šifrování. Vypínám nastavení bezpečnosti."
+msgstr "Není nakonfigurováno s podporou šifrování. Vypínám nastavení bezpečnosti."
 
 #: send/send.c:2601
 msgid "Article not posted"
@@ -7404,7 +7404,7 @@ msgstr ""
 
 #: version.c:511
 msgid "Default options:"
-msgstr "Výchzí volby:"
+msgstr "Výchozí volby:"
 
 #: version.c:514
 msgid "Compile options:"
