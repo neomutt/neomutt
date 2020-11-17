@@ -761,7 +761,7 @@ int imap_open_connection(struct ImapAccountData *adata)
       else if ((ans = query_quadoption(C_SslStarttls,
                                        _("Secure connection with TLS?"))) == MUTT_ABORT)
       {
-        goto err_close_conn;
+        goto bail;
       }
       if (ans == MUTT_YES)
       {
@@ -776,7 +776,7 @@ int imap_open_connection(struct ImapAccountData *adata)
           if (mutt_ssl_starttls(adata->conn))
           {
             mutt_error(_("Could not negotiate TLS connection"));
-            goto err_close_conn;
+            goto bail;
           }
           else
           {
@@ -791,7 +791,7 @@ int imap_open_connection(struct ImapAccountData *adata)
     if (C_SslForceTls && (adata->conn->ssf == 0))
     {
       mutt_error(_("Encrypted connection unavailable"));
-      goto err_close_conn;
+      goto bail;
     }
 #endif
   }
@@ -807,7 +807,7 @@ int imap_open_connection(struct ImapAccountData *adata)
     if ((adata->conn->ssf == 0) && C_SslForceTls)
     {
       mutt_error(_("Encrypted connection unavailable"));
-      goto err_close_conn;
+      goto bail;
     }
 #endif
 
@@ -824,11 +824,8 @@ int imap_open_connection(struct ImapAccountData *adata)
 
   return 0;
 
-#ifdef USE_SSL
-err_close_conn:
-  imap_close_connection(adata);
-#endif
 bail:
+  imap_close_connection(adata);
   FREE(&adata->capstr);
   return -1;
 }
