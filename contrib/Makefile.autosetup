@@ -4,7 +4,6 @@ all-contrib:
 clean-contrib:
 
 install-contrib:
-	$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/samples
 	for d in $(CONTRIB_DIRS); do \
 		echo "Creating directory $(DESTDIR)$(docdir)/$$d"; \
 		$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/$$d || exit 1; \
@@ -19,7 +18,6 @@ uninstall-contrib:
 	for d in $(CONTRIB_DIRS); do \
 		$(RM) $(DESTDIR)$(docdir)/$$d; \
 	done
-	-rmdir $(DESTDIR)$(docdir)/samples
 	-rmdir $(DESTDIR)$(docdir)
 
 # vim: set ts=8 noexpandtab:
