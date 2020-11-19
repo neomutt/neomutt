@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-10-16 13:46+0100\n"
+"POT-Creation-Date: 2020-11-19 10:42+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Adán Somoza\n"
 "Language-Team: \n"
@@ -760,7 +760,7 @@ msgstr "spam: sin patrón coincidente"
 msgid "nospam: no matching pattern"
 msgstr "no spam: sin patrón coincidente"
 
-#: command_parse.c:1705 imap/imap.c:1301
+#: command_parse.c:1705 imap/imap.c:1298
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Inscrito a %s"
@@ -782,7 +782,7 @@ msgstr "Desadjuntar: sin disposición"
 msgid "unattachments: invalid disposition"
 msgstr "Desadjuntar: disposición errónea"
 
-#: command_parse.c:2126 imap/imap.c:1303
+#: command_parse.c:2126 imap/imap.c:1300
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Inscripción a %s cancelada"
@@ -2524,76 +2524,76 @@ msgstr "No se pudo negociar una conexión TLS"
 msgid "Encrypted connection unavailable"
 msgstr "Conexión cifrada no disponible"
 
-#: imap/imap.c:1275
+#: imap/imap.c:1272
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Suscribiendo a %s..."
 
-#: imap/imap.c:1277
+#: imap/imap.c:1274
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Anulando la inscripción a %s..."
 
-#: imap/imap.c:1453 imap/message.c:1647
+#: imap/imap.c:1450 imap/message.c:1647
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Copiando el mensaje %d a %s..."
 msgstr[1] "Copiando los mensajes %d a %s..."
 
-#: imap/imap.c:1470 imap/imap.c:2122 imap/message.c:1686 muttlib.c:1405
+#: imap/imap.c:1467 imap/imap.c:2119 imap/message.c:1686 muttlib.c:1405
 #, c-format
 msgid "Create %s?"
 msgstr "¿Crear %s?"
 
-#: imap/imap.c:1543
+#: imap/imap.c:1540
 msgid "Expunge failed"
 msgstr "Error al borrar"
 
-#: imap/imap.c:1561
+#: imap/imap.c:1558
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "Marcando el mensaje %d como borrado..."
 msgstr[1] "Marcando los mensajes %d como borrados..."
 
-#: imap/imap.c:1601
+#: imap/imap.c:1598
 #, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Guardando el mensaje modificado... [%d/%d]"
 msgstr[1] "Guardando los mensajes modificados... [%d/%d]"
 
-#: imap/imap.c:1658
+#: imap/imap.c:1655
 msgid "Error saving flags. Close anyway?"
 msgstr "Error al guardar las marcas. ¿Cerrar de todos modos?"
 
-#: imap/imap.c:1665
+#: imap/imap.c:1662
 msgid "Error saving flags"
 msgstr "Fallo al guardar marcas"
 
-#: imap/imap.c:1691
+#: imap/imap.c:1688
 msgid "Expunging messages from server..."
 msgstr "Eliminando mensajes del servidor..."
 
-#: imap/imap.c:1697
+#: imap/imap.c:1694
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: fallo al BORRAR"
 
-#: imap/imap.c:1926 nntp/nntp.c:2458
+#: imap/imap.c:1923 nntp/nntp.c:2458
 #, c-format
 msgid "Selecting %s..."
 msgstr "Seleccionando %s..."
 
-#: imap/imap.c:2089
+#: imap/imap.c:2086
 msgid "Error opening mailbox"
 msgstr "¡Error al abrir el buzón!"
 
-#: imap/imap.c:2231
+#: imap/imap.c:2228
 msgid "IMAP server doesn't support custom flags"
 msgstr "El servidor IMAP no soporta marcas personalizadas"
 
-#: imap/imap.c:2275
+#: imap/imap.c:2272
 msgid "Invalid IMAP flags"
 msgstr "Marcas IMAP erróneas"
 
@@ -3187,20 +3187,20 @@ msgstr "No se pudo escribir al disco"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): incapaz de establecer el tiempo en el archivo"
 
-#: maildir/maildir.c:657 maildir/mh.c:695
+#: maildir/maildir.c:671 maildir/mh.c:695
 #, c-format
 msgid "Scanning %s..."
 msgstr "Escaneando %s..."
 
-#: maildir/maildir.c:676 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
+#: maildir/maildir.c:690 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
 #: mx.c:384
 #, c-format
 msgid "Reading %s..."
 msgstr "Leyendo %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1388 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
-#: notmuch/notmuch.c:2386
+#: maildir/maildir.c:1402 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
+#: notmuch/notmuch.c:2409
 #, c-format
 msgid "Writing %s..."
 msgstr "Escribiendo %s..."
@@ -5141,7 +5141,7 @@ msgstr "Razón desconocida"
 msgid "failed to parse notmuch query type: %s"
 msgstr "fallo al interpretar tipo de petición notmuch: %s"
 
-#: notmuch/notmuch.c:223 notmuch/notmuch.c:1972
+#: notmuch/notmuch.c:223 notmuch/notmuch.c:1995
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "fallo al interpretar url nontmuch: %s"
@@ -5159,23 +5159,23 @@ msgstr "fallo al interpretar límite notmuch: %s"
 msgid "Reading messages..."
 msgstr "Leyendo mensajes..."
 
-#: notmuch/notmuch.c:1735
+#: notmuch/notmuch.c:1758
 msgid "No more messages in the thread"
 msgstr "No hay más mensajes en el hilo"
 
-#: notmuch/notmuch.c:1985
+#: notmuch/notmuch.c:2008
 #, c-format
 msgid "failed to parse limit: %s"
 msgstr "fallo al interpretar límite: %s"
 
-#: notmuch/notmuch.c:2463
+#: notmuch/notmuch.c:2486
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 msgstr[1] ""
 
-#: notmuch/notmuch.c:2528
+#: notmuch/notmuch.c:2551
 msgid "Can't write to virtual folder"
 msgstr "No se pudo escribir en la carpeta virtual"
 

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-10-16 13:46+0100\n"
+"POT-Creation-Date: 2020-11-19 10:42+0000\n"
 "PO-Revision-Date: 2005-02-01 00:01GMT+2\n"
 "Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -782,7 +782,7 @@ msgstr "spam: δεν υπάρχει μοντέλο που να ταιριάζε�
 msgid "nospam: no matching pattern"
 msgstr "nospam: δεν υπάρχει μοντέλο που να ταιριάζει"
 
-#: command_parse.c:1705 imap/imap.c:1301
+#: command_parse.c:1705 imap/imap.c:1298
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "Εγγραφή στο %s..."
@@ -806,7 +806,7 @@ msgstr "επεξεργασία της περιγραφής της προσάρτ
 msgid "unattachments: invalid disposition"
 msgstr ""
 
-#: command_parse.c:2126 imap/imap.c:1303
+#: command_parse.c:2126 imap/imap.c:1300
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "Διαγραφή στο %s..."
@@ -2618,77 +2618,77 @@ msgstr "Αδυναμία διαπραγμάτευσης σύνδεσης TLS"
 msgid "Encrypted connection unavailable"
 msgstr ""
 
-#: imap/imap.c:1275
+#: imap/imap.c:1272
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Εγγραφή στο %s..."
 
-#: imap/imap.c:1277
+#: imap/imap.c:1274
 #, fuzzy, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Διαγραφή στο %s..."
 
-#: imap/imap.c:1453 imap/message.c:1647
+#: imap/imap.c:1450 imap/message.c:1647
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Αντιγραφή %d μηνυμάτων στο %s..."
 msgstr[1] "Αντιγραφή %d μηνυμάτων στο %s..."
 
-#: imap/imap.c:1470 imap/imap.c:2122 imap/message.c:1686 muttlib.c:1405
+#: imap/imap.c:1467 imap/imap.c:2119 imap/message.c:1686 muttlib.c:1405
 #, c-format
 msgid "Create %s?"
 msgstr "Δημιουργία του %s;"
 
-#: imap/imap.c:1543
+#: imap/imap.c:1540
 msgid "Expunge failed"
 msgstr "Διαγραφή απέτυχε"
 
-#: imap/imap.c:1561
+#: imap/imap.c:1558
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "Σημείωση %d διαγραφέντων μηνυμάτων..."
 msgstr[1] "Σημείωση %d διαγραφέντων μηνυμάτων..."
 
-#: imap/imap.c:1601
+#: imap/imap.c:1598
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Αποθήκευση σημαιών κατάστασης μηνύματος... [%d/%d]"
 msgstr[1] "Αποθήκευση σημαιών κατάστασης μηνύματος... [%d/%d]"
 
-#: imap/imap.c:1658
+#: imap/imap.c:1655
 msgid "Error saving flags. Close anyway?"
 msgstr ""
 
-#: imap/imap.c:1665
+#: imap/imap.c:1662
 #, fuzzy
 msgid "Error saving flags"
 msgstr "Σφάλμα κατά την ανάλυση της διεύθυνσης!"
 
-#: imap/imap.c:1691
+#: imap/imap.c:1688
 msgid "Expunging messages from server..."
 msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
 
-#: imap/imap.c:1697
+#: imap/imap.c:1694
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE απέτυχε"
 
-#: imap/imap.c:1926 nntp/nntp.c:2458
+#: imap/imap.c:1923 nntp/nntp.c:2458
 #, c-format
 msgid "Selecting %s..."
 msgstr "Επιλογή %s..."
 
-#: imap/imap.c:2089
+#: imap/imap.c:2086
 msgid "Error opening mailbox"
 msgstr "Σφάλμα κατά  το άνοιγμα του γραμματοκιβωτίου"
 
-#: imap/imap.c:2231
+#: imap/imap.c:2228
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2275
+#: imap/imap.c:2272
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Μη έγκυρο   "
@@ -3320,20 +3320,20 @@ msgstr "Αδυναμία αποστολής του μηνύματος."
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): αδυναμία ορισμού χρόνου στο αρχείο"
 
-#: maildir/maildir.c:657 maildir/mh.c:695
+#: maildir/maildir.c:671 maildir/mh.c:695
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "Επιλογή %s..."
 
-#: maildir/maildir.c:676 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
+#: maildir/maildir.c:690 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
 #: mx.c:384
 #, c-format
 msgid "Reading %s..."
 msgstr "Ανάγνωση %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1388 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
-#: notmuch/notmuch.c:2386
+#: maildir/maildir.c:1402 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
+#: notmuch/notmuch.c:2409
 #, c-format
 msgid "Writing %s..."
 msgstr "Εγγραφή %s..."
@@ -5314,7 +5314,7 @@ msgstr "άγνωστο σφάλμα"
 msgid "failed to parse notmuch query type: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:223 notmuch/notmuch.c:1972
+#: notmuch/notmuch.c:223 notmuch/notmuch.c:1995
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr ""
@@ -5333,24 +5333,24 @@ msgstr ""
 msgid "Reading messages..."
 msgstr "Αποστολή μηνύματος..."
 
-#: notmuch/notmuch.c:1735
+#: notmuch/notmuch.c:1758
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "Το τρέχον μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
 
-#: notmuch/notmuch.c:1985
+#: notmuch/notmuch.c:2008
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "Αδυναμία προσάρτησης του %s"
 
-#: notmuch/notmuch.c:2463
+#: notmuch/notmuch.c:2486
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 msgstr[1] ""
 
-#: notmuch/notmuch.c:2528
+#: notmuch/notmuch.c:2551
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "Αδυναμία πρόσθεσης στο φάκελο: %s"

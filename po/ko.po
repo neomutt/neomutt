@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-10-16 13:46+0100\n"
+"POT-Creation-Date: 2020-11-19 10:42+0000\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -781,7 +781,7 @@ msgstr "패턴과 일치하는 메일에 태그 붙임"
 msgid "nospam: no matching pattern"
 msgstr "패턴과 일치하는 메일의 태그 해제"
 
-#: command_parse.c:1705 imap/imap.c:1301
+#: command_parse.c:1705 imap/imap.c:1298
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "%s에 가입 중..."
@@ -805,7 +805,7 @@ msgstr "첨부물 설명 편집"
 msgid "unattachments: invalid disposition"
 msgstr ""
 
-#: command_parse.c:2126 imap/imap.c:1303
+#: command_parse.c:2126 imap/imap.c:1300
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s에서 가입 탈퇴 중..."
@@ -2602,74 +2602,74 @@ msgstr "TLS 연결 할수 없음"
 msgid "Encrypted connection unavailable"
 msgstr ""
 
-#: imap/imap.c:1275
+#: imap/imap.c:1272
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s에 가입 중..."
 
-#: imap/imap.c:1277
+#: imap/imap.c:1274
 #, fuzzy, c-format
 msgid "Unsubscribing from %s..."
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: imap/imap.c:1453 imap/message.c:1647
+#: imap/imap.c:1450 imap/message.c:1647
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d개의 메세지를 %s로 복사 중..."
 
-#: imap/imap.c:1470 imap/imap.c:2122 imap/message.c:1686 muttlib.c:1405
+#: imap/imap.c:1467 imap/imap.c:2119 imap/message.c:1686 muttlib.c:1405
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
 
-#: imap/imap.c:1543
+#: imap/imap.c:1540
 msgid "Expunge failed"
 msgstr "삭제 실패"
 
-#: imap/imap.c:1561
+#: imap/imap.c:1558
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "%d개의 메일을 삭제 표시함..."
 
-#: imap/imap.c:1601
+#: imap/imap.c:1598
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "메세지 상태 플래그 저장... [%d/%d]"
 
-#: imap/imap.c:1658
+#: imap/imap.c:1655
 msgid "Error saving flags. Close anyway?"
 msgstr ""
 
-#: imap/imap.c:1665
+#: imap/imap.c:1662
 #, fuzzy
 msgid "Error saving flags"
 msgstr "주소 분석 중 오류!"
 
-#: imap/imap.c:1691
+#: imap/imap.c:1688
 msgid "Expunging messages from server..."
 msgstr "서버에서 메세지 삭제 중..."
 
-#: imap/imap.c:1697
+#: imap/imap.c:1694
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: 삭제 실패"
 
-#: imap/imap.c:1926 nntp/nntp.c:2458
+#: imap/imap.c:1923 nntp/nntp.c:2458
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s 선택 중..."
 
-#: imap/imap.c:2089
+#: imap/imap.c:2086
 msgid "Error opening mailbox"
 msgstr "메일함 여는중 오류"
 
-#: imap/imap.c:2231
+#: imap/imap.c:2228
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2275
+#: imap/imap.c:2272
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "무효   "
@@ -3300,20 +3300,20 @@ msgstr "메일을 보낼 수 없음."
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): 파일 시간을 설정할 수 없음"
 
-#: maildir/maildir.c:657 maildir/mh.c:695
+#: maildir/maildir.c:671 maildir/mh.c:695
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "%s 선택 중..."
 
-#: maildir/maildir.c:676 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
+#: maildir/maildir.c:690 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
 #: mx.c:384
 #, c-format
 msgid "Reading %s..."
 msgstr "%s 읽는 중..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1388 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
-#: notmuch/notmuch.c:2386
+#: maildir/maildir.c:1402 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
+#: notmuch/notmuch.c:2409
 #, c-format
 msgid "Writing %s..."
 msgstr "%s 쓰는 중..."
@@ -5295,7 +5295,7 @@ msgstr "알 수 없는 오류"
 msgid "failed to parse notmuch query type: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:223 notmuch/notmuch.c:1972
+#: notmuch/notmuch.c:223 notmuch/notmuch.c:1995
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr ""
@@ -5314,23 +5314,23 @@ msgstr ""
 msgid "Reading messages..."
 msgstr "메일 보내는 중..."
 
-#: notmuch/notmuch.c:1735
+#: notmuch/notmuch.c:1758
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임"
 
-#: notmuch/notmuch.c:1985
+#: notmuch/notmuch.c:2008
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "%s를 첨부할 수 없음"
 
-#: notmuch/notmuch.c:2463
+#: notmuch/notmuch.c:2486
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 
-#: notmuch/notmuch.c:2528
+#: notmuch/notmuch.c:2551
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "폴더에 첨가할 수 없음: %s"

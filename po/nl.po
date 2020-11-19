@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-10-16 13:46+0100\n"
+"POT-Creation-Date: 2020-11-19 10:42+0000\n"
 "PO-Revision-Date: 2017-02-22 20:12+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -774,7 +774,7 @@ msgstr "spam: geen overeenkomstig patroon"
 msgid "nospam: no matching pattern"
 msgstr "nospam: geen overeenkomstig patroon"
 
-#: command_parse.c:1705 imap/imap.c:1301
+#: command_parse.c:1705 imap/imap.c:1298
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Geabonneerd op %s"
@@ -797,7 +797,7 @@ msgstr "unattachments: geen dispositie"
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: ongeldige dispositie"
 
-#: command_parse.c:2126 imap/imap.c:1303
+#: command_parse.c:2126 imap/imap.c:1300
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Abonnement op %s opgezegd"
@@ -2586,77 +2586,77 @@ msgstr "Kon TLS connectie niet onderhandelen"
 msgid "Encrypted connection unavailable"
 msgstr "Versleutelde verbinding niet beschikbaar"
 
-#: imap/imap.c:1275
+#: imap/imap.c:1272
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Aanmelden voor %s..."
 
-#: imap/imap.c:1277
+#: imap/imap.c:1274
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Abonnement opzeggen op %s..."
 
-#: imap/imap.c:1453 imap/message.c:1647
+#: imap/imap.c:1450 imap/message.c:1647
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Een bericht word gekopieerd naar %s..."
 msgstr[1] "%d berichten worden gekopieerd naar %s..."
 
-#: imap/imap.c:1470 imap/imap.c:2122 imap/message.c:1686 muttlib.c:1405
+#: imap/imap.c:1467 imap/imap.c:2119 imap/message.c:1686 muttlib.c:1405
 #, c-format
 msgid "Create %s?"
 msgstr "%s aanmaken?"
 
-#: imap/imap.c:1543
+#: imap/imap.c:1540
 msgid "Expunge failed"
 msgstr "Verwijderen is mislukt"
 
-#: imap/imap.c:1561
+#: imap/imap.c:1558
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "Een bericht is gemarkeerd voor verwijdering..."
 msgstr[1] "%d berichten zijn gemarkeerd voor verwijdering..."
 
-#: imap/imap.c:1601
+#: imap/imap.c:1598
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Gewijzigd bericht word opgeslaan...[%d/%d]"
 msgstr[1] "Gewijzigde berichten worden opgeslagen... [%d/%d]"
 
-#: imap/imap.c:1658
+#: imap/imap.c:1655
 msgid "Error saving flags. Close anyway?"
 msgstr "Fout bij opslaan markeringen. Toch afsluiten?"
 
-#: imap/imap.c:1665
+#: imap/imap.c:1662
 msgid "Error saving flags"
 msgstr "Fout bij opslaan markeringen."
 
-#: imap/imap.c:1691
+#: imap/imap.c:1688
 msgid "Expunging messages from server..."
 msgstr "Berichten op de server worden gewist..."
 
-#: imap/imap.c:1697
+#: imap/imap.c:1694
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE is mislukt"
 
-#: imap/imap.c:1926 nntp/nntp.c:2458
+#: imap/imap.c:1923 nntp/nntp.c:2458
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s wordt uitgekozen..."
 
-#: imap/imap.c:2089
+#: imap/imap.c:2086
 msgid "Error opening mailbox"
 msgstr "Er is een fout opgetreden tijdens openen van het postvak"
 
-#: imap/imap.c:2231
+#: imap/imap.c:2228
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP server ondersteund geen zelfgemaakte markeringen"
 
-#: imap/imap.c:2275
+#: imap/imap.c:2272
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Ongeldige IMAP markering"
@@ -3270,20 +3270,20 @@ msgstr "Bericht kon niet naar schijf worden geschreven"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): Kan geen tijd op bestand zetten"
 
-#: maildir/maildir.c:657 maildir/mh.c:695
+#: maildir/maildir.c:671 maildir/mh.c:695
 #, c-format
 msgid "Scanning %s..."
 msgstr "%s wordt geanalyseerd..."
 
-#: maildir/maildir.c:676 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
+#: maildir/maildir.c:690 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
 #: mx.c:384
 #, c-format
 msgid "Reading %s..."
 msgstr "Bezig met het lezen van %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1388 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
-#: notmuch/notmuch.c:2386
+#: maildir/maildir.c:1402 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
+#: notmuch/notmuch.c:2409
 #, c-format
 msgid "Writing %s..."
 msgstr "Bezig met het schrijven van %s..."
@@ -5235,7 +5235,7 @@ msgstr "Ongekende reden"
 msgid "failed to parse notmuch query type: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:223 notmuch/notmuch.c:1972
+#: notmuch/notmuch.c:223 notmuch/notmuch.c:1995
 #, fuzzy, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "Kan 'notmuch url' niet verwerken: %s"
@@ -5254,24 +5254,24 @@ msgstr "Kan 'notmuch' limiet niet verwerken: %s"
 msgid "Reading messages..."
 msgstr "Berichten inladen..."
 
-#: notmuch/notmuch.c:1735
+#: notmuch/notmuch.c:1758
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "Geen nieuwe berichten in deze beperkte weergave"
 
-#: notmuch/notmuch.c:1985
+#: notmuch/notmuch.c:2008
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "Kan 'notmuch' limiet niet verwerken: %s"
 
-#: notmuch/notmuch.c:2463
+#: notmuch/notmuch.c:2486
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 msgstr[1] ""
 
-#: notmuch/notmuch.c:2528
+#: notmuch/notmuch.c:2551
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "Kan niet schrijven in de virtuele map"

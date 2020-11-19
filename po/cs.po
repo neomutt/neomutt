@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-10-16 13:46+0100\n"
+"POT-Creation-Date: 2020-11-19 10:42+0000\n"
 "PO-Revision-Date: 2020-04-20 15:18+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -771,7 +771,7 @@ msgstr "spam: vzoru nic nevyhovuje"
 msgid "nospam: no matching pattern"
 msgstr "nospam: vzoru nic nevyhovuje"
 
-#: command_parse.c:1705 imap/imap.c:1301
+#: command_parse.c:1705 imap/imap.c:1298
 #, c-format
 msgid "Subscribed to %s"
 msgstr "%s přihlášeno"
@@ -793,7 +793,7 @@ msgstr "nepřílohy: chybí dispozice"
 msgid "unattachments: invalid disposition"
 msgstr "nepřílohy: neplatná dispozice"
 
-#: command_parse.c:2126 imap/imap.c:1303
+#: command_parse.c:2126 imap/imap.c:1300
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s odhlášeno"
@@ -2551,17 +2551,17 @@ msgstr "Nelze navázat TLS spojení"
 msgid "Encrypted connection unavailable"
 msgstr "Šifrované spojení není k dispozici"
 
-#: imap/imap.c:1275
+#: imap/imap.c:1272
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Přihlašuji %s…"
 
-#: imap/imap.c:1277
+#: imap/imap.c:1274
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Odhlašuji %s…"
 
-#: imap/imap.c:1453 imap/message.c:1647
+#: imap/imap.c:1450 imap/message.c:1647
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
@@ -2569,16 +2569,16 @@ msgstr[0] "Kopíruji zprávu (%d) do %s…"
 msgstr[1] "Kopíruji zprávy (%d) do %s…"
 msgstr[2] "Kopíruji zprávy (%d) do %s…"
 
-#: imap/imap.c:1470 imap/imap.c:2122 imap/message.c:1686 muttlib.c:1405
+#: imap/imap.c:1467 imap/imap.c:2119 imap/message.c:1686 muttlib.c:1405
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvořit %s?"
 
-#: imap/imap.c:1543
+#: imap/imap.c:1540
 msgid "Expunge failed"
 msgstr "Příkaz EXPUNGE se nezdařil."
 
-#: imap/imap.c:1561
+#: imap/imap.c:1558
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
@@ -2587,7 +2587,7 @@ msgstr[1] "Označuji %d zprávy ke smazání…"
 msgstr[2] "Označuji %d zpráv ke smazání…"
 
 # Označuji %d zprávu ke smazání…
-#: imap/imap.c:1601
+#: imap/imap.c:1598
 #, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
@@ -2595,36 +2595,36 @@ msgstr[0] "Ukládám změněnou zprávu… [%d/%d]"
 msgstr[1] "Ukládám změněné zprávy… [%d/%d]"
 msgstr[2] "Ukládám změněných zpráv… [%d/%d]"
 
-#: imap/imap.c:1658
+#: imap/imap.c:1655
 msgid "Error saving flags. Close anyway?"
 msgstr "Došlo k chybě při ukládání příznaků. Přesto uzavřít?"
 
-#: imap/imap.c:1665
+#: imap/imap.c:1662
 msgid "Error saving flags"
 msgstr "Chyba při ukládání příznaků"
 
-#: imap/imap.c:1691
+#: imap/imap.c:1688
 msgid "Expunging messages from server..."
 msgstr "Odstraňuji zprávy ze serveru…"
 
-#: imap/imap.c:1697
+#: imap/imap.c:1694
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "při volání imap_sync_mailbox: EXPUNGE selhalo"
 
-#: imap/imap.c:1926 nntp/nntp.c:2458
+#: imap/imap.c:1923 nntp/nntp.c:2458
 #, c-format
 msgid "Selecting %s..."
 msgstr "Volím %s…"
 
-#: imap/imap.c:2089
+#: imap/imap.c:2086
 msgid "Error opening mailbox"
 msgstr "Chyba při otevírání schránky"
 
-#: imap/imap.c:2231
+#: imap/imap.c:2228
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP server nepodporuje vlastní příznaky"
 
-#: imap/imap.c:2275
+#: imap/imap.c:2272
 msgid "Invalid IMAP flags"
 msgstr "Neplatné IMAP příznaky"
 
@@ -3220,20 +3220,20 @@ msgstr "Zprávu nebylo možné bezpečně uložit (flush) na disk"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): nelze nastavit čas na souboru"
 
-#: maildir/maildir.c:657 maildir/mh.c:695
+#: maildir/maildir.c:671 maildir/mh.c:695
 #, c-format
 msgid "Scanning %s..."
 msgstr "Prohledávám %s…"
 
-#: maildir/maildir.c:676 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
+#: maildir/maildir.c:690 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
 #: mx.c:384
 #, c-format
 msgid "Reading %s..."
 msgstr "Čtu %s…"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1388 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
-#: notmuch/notmuch.c:2386
+#: maildir/maildir.c:1402 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
+#: notmuch/notmuch.c:2409
 #, c-format
 msgid "Writing %s..."
 msgstr "Ukládám %s…"
@@ -5154,7 +5154,7 @@ msgstr "neznámá chyba"
 msgid "failed to parse notmuch query type: %s"
 msgstr "Rozebrání dotazu pro notmuch se nezdařilo: %s"
 
-#: notmuch/notmuch.c:223 notmuch/notmuch.c:1972
+#: notmuch/notmuch.c:223 notmuch/notmuch.c:1995
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "rozebrání URL pro notmuch se nezdařilo: %s"
@@ -5172,16 +5172,16 @@ msgstr "rozebrání limitu pro notmuch se nezdařilo: %s"
 msgid "Reading messages..."
 msgstr "Načítám zprávy…"
 
-#: notmuch/notmuch.c:1735
+#: notmuch/notmuch.c:1758
 msgid "No more messages in the thread"
 msgstr "Žádné nové zprávy v tomto vlákně"
 
-#: notmuch/notmuch.c:1985
+#: notmuch/notmuch.c:2008
 #, c-format
 msgid "failed to parse limit: %s"
 msgstr "rozebrání limitu pro notmuch se nezdařilo: %s"
 
-#: notmuch/notmuch.c:2463
+#: notmuch/notmuch.c:2486
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
@@ -5189,7 +5189,7 @@ msgstr[0] "Nelze synchronizovat %d zprávu z důvodu úpravy schránky z vnějš
 msgstr[1] "Nelze synchronizovat %d zprávy z důvodu úpravy schránky z vnější"
 msgstr[2] "Nelze synchronizovat %d zpráv z důvodu úpravy schránky z vnější"
 
-#: notmuch/notmuch.c:2528
+#: notmuch/notmuch.c:2551
 msgid "Can't write to virtual folder"
 msgstr "Nelze zapsat do virtuální složky"
 

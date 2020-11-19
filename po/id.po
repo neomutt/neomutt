@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-10-16 13:46+0100\n"
+"POT-Creation-Date: 2020-11-19 10:42+0000\n"
 "PO-Revision-Date: 2007-11-07 10:39+1100\n"
 "Last-Translator: Ronny Haryanto <ronny@haryan.to>\n"
 "Language-Team: Indonesian <web@linux.or.id>\n"
@@ -775,7 +775,7 @@ msgstr "spam: tidak ada pola yg cocok"
 msgid "nospam: no matching pattern"
 msgstr "nospam: tidak ada pola yg cocok"
 
-#: command_parse.c:1705 imap/imap.c:1301
+#: command_parse.c:1705 imap/imap.c:1298
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Berlangganan ke %s..."
@@ -798,7 +798,7 @@ msgstr "bukan lampiran: tidak ada disposisi"
 msgid "unattachments: invalid disposition"
 msgstr "bukan lampiran: disposisi tidak benar"
 
-#: command_parse.c:2126 imap/imap.c:1303
+#: command_parse.c:2126 imap/imap.c:1300
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Berhenti langganan dari %s"
@@ -2591,74 +2591,74 @@ msgstr "Tidak dapat negosiasi hubungan TLS"
 msgid "Encrypted connection unavailable"
 msgstr "Hubungan terenkripsi tidak tersedia"
 
-#: imap/imap.c:1275
+#: imap/imap.c:1272
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Berlangganan ke %s..."
 
-#: imap/imap.c:1277
+#: imap/imap.c:1274
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Berhenti langganan dari %s..."
 
-#: imap/imap.c:1453 imap/message.c:1647
+#: imap/imap.c:1450 imap/message.c:1647
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Menyalin %d surat ke %s..."
 
-#: imap/imap.c:1470 imap/imap.c:2122 imap/message.c:1686 muttlib.c:1405
+#: imap/imap.c:1467 imap/imap.c:2119 imap/message.c:1686 muttlib.c:1405
 #, c-format
 msgid "Create %s?"
 msgstr "Buat %s?"
 
-#: imap/imap.c:1543
+#: imap/imap.c:1540
 msgid "Expunge failed"
 msgstr "Penghapusan gagal"
 
-#: imap/imap.c:1561
+#: imap/imap.c:1558
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "Menandai %d surat-surat \"dihapus\"..."
 
-#: imap/imap.c:1601
+#: imap/imap.c:1598
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Menyimpan surat2 yg berubah... [%d/%d]"
 
-#: imap/imap.c:1658
+#: imap/imap.c:1655
 msgid "Error saving flags. Close anyway?"
 msgstr "Gagal menyimpan flags. Tetap mau ditutup aja?"
 
-#: imap/imap.c:1665
+#: imap/imap.c:1662
 msgid "Error saving flags"
 msgstr "Gagal menyimpan flags"
 
-#: imap/imap.c:1691
+#: imap/imap.c:1688
 msgid "Expunging messages from server..."
 msgstr "Menghapus surat-surat di server..."
 
-#: imap/imap.c:1697
+#: imap/imap.c:1694
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE (hapus) gagal"
 
-#: imap/imap.c:1926 nntp/nntp.c:2458
+#: imap/imap.c:1923 nntp/nntp.c:2458
 #, c-format
 msgid "Selecting %s..."
 msgstr "Memilih %s..."
 
-#: imap/imap.c:2089
+#: imap/imap.c:2086
 msgid "Error opening mailbox"
 msgstr "Error saat membuka kotak surat"
 
-#: imap/imap.c:2231
+#: imap/imap.c:2228
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "Server SMTP tidak mendukung authentikasi"
 
-#: imap/imap.c:2275
+#: imap/imap.c:2272
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Tdk valid "
@@ -3287,20 +3287,20 @@ msgstr "Tidak bisa mengirim surat."
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): tidak dapat mengeset waktu pada file"
 
-#: maildir/maildir.c:657 maildir/mh.c:695
+#: maildir/maildir.c:671 maildir/mh.c:695
 #, c-format
 msgid "Scanning %s..."
 msgstr "Memindai %s..."
 
-#: maildir/maildir.c:676 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
+#: maildir/maildir.c:690 maildir/mh.c:716 mbox/mbox.c:217 mbox/mbox.c:382
 #: mx.c:384
 #, c-format
 msgid "Reading %s..."
 msgstr "Membaca %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1388 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
-#: notmuch/notmuch.c:2386
+#: maildir/maildir.c:1402 maildir/mh.c:1067 mbox/mbox.c:1258 mx.c:491
+#: notmuch/notmuch.c:2409
 #, c-format
 msgid "Writing %s..."
 msgstr "Menulis %s..."
@@ -5264,7 +5264,7 @@ msgstr "eh..eh.. napa nih?"
 msgid "failed to parse notmuch query type: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:223 notmuch/notmuch.c:1972
+#: notmuch/notmuch.c:223 notmuch/notmuch.c:1995
 #, fuzzy, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "SASL gagal membaca alamat IP lokal"
@@ -5283,23 +5283,23 @@ msgstr "SASL gagal membaca alamat IP lokal"
 msgid "Reading messages..."
 msgstr "Mengirim surat..."
 
-#: notmuch/notmuch.c:1735
+#: notmuch/notmuch.c:1758
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini"
 
-#: notmuch/notmuch.c:1985
+#: notmuch/notmuch.c:2008
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "SASL gagal membaca alamat IP lokal"
 
-#: notmuch/notmuch.c:2463
+#: notmuch/notmuch.c:2486
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 
-#: notmuch/notmuch.c:2528
+#: notmuch/notmuch.c:2551
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "Tidak bisa menambah ke kotak surat: %s"
