@@ -1,3 +1,40 @@
+2020-11-20  Richard Russon  <rich@flatcap.org>
+* Security
+  - imap: close connection on all failures
+* Features
+  - alias: add <limit> function to Alias/Query dialogs
+  - config: add validators for {imap,smtp,pop}_authenticators
+  - config: warn when signature file is missing or not readable
+  - smtp: support for native SMTP LOGIN auth mech
+  - notmuch: show originating folder in index
+* Bug Fixes
+  - sidebar: prevent the divider colour bleeding out
+  - sidebar: fix <sidebar-{next,prev}-new>
+  - notmuch: fix <entire-thread> query for current email
+  - restore shutdown-hook functionality
+  - crash in reply-to
+  - user-after-free in folder-hook
+  - fix some leaks
+  - fix application of limits to modified mailboxes
+  - write Date header when postponing
+* Translations
+  - 100% Lithuanian
+  - 100% Czech
+  - 70% Turkish
+* Docs
+  - Document that $sort_alias affects the query menu 
+* Build
+  - improve ASAN flags 
+  - add SASL and S/MIME to --everything
+  - fix contrib (un)install
+* Code
+  - my_hdr compose screen notifications
+  - add contracts to the MXAPI
+  - maildir refactoring
+  - further reduce the use of global variables
+* Upstream
+  - Add $count_alternatives to count attachments inside alternatives
+
 2020-09-25  Richard Russon  <rich@flatcap.org>
 * Features
   - Compose: display user-defined headers

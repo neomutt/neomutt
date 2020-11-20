@@ -27,6 +27,7 @@ Here's a list of everyone who's helped NeoMutt:
 [Benjamin Mako Hill](https://github.com/makoshark "makoshark"),
 [Bernard Pratz](https://github.com/guyzmo "guyzmo"),
 [Bertram Scharpf](https://github.com/bertramscharpf "bertramscharpf"),
+[Björn Ketelaars](https://github.com/bket "bket"),
 Bletchley Park,
 [Bo Yu](https://github.com/yuzibo "yuzibo"),
 [Bryan Bennett](https://github.com/bbenne10 "bbenne10"),
