@@ -382,7 +382,6 @@ int imap_mailbox_create(const char *path)
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
   char name[1024];
-  short n;
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
   {
@@ -391,12 +390,11 @@ int imap_mailbox_create(const char *path)
   }
 
   /* append a delimiter if necessary */
-  mutt_str_copy(name, mdata->real_name, sizeof(name));
-  n = mutt_str_len(name);
+  const size_t n = mutt_str_copy(name, mdata->real_name, sizeof(name));
   if (n && (n < sizeof(name) - 1) && (name[n - 1] != adata->delim))
   {
-    name[n++] = adata->delim;
-    name[n] = '\0';
+    name[n] = adata->delim;
+    name[n + 1] = '\0';
   }
 
   if (mutt_get_field(_("Create mailbox: "), name, sizeof(name), MUTT_FILE) < 0)
