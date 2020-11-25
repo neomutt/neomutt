@@ -482,7 +482,7 @@ retry_name:
   alias_reverse_add(alias);
   TAILQ_INSERT_TAIL(&Aliases, alias, entries);
 
-  const char *alias_file = cs_subset_string(sub, "alias_file");
+  const char *alias_file = cs_subset_path(sub, "alias_file");
   mutt_str_copy(buf, NONULL(alias_file), sizeof(buf));
 
   if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) != 0)
