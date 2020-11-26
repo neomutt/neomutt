@@ -271,9 +271,8 @@ msgstr "Создание учётной записи autocrypt прервано"
 #. email when the engine is not available.
 #: autocrypt/autocrypt.c:568 autocrypt/autocrypt.c:577
 #: autocrypt/autocrypt.c:584
-#, fuzzy
 msgid "Autocrypt is not available"
-msgstr "Родительское сообщение недоступно"
+msgstr "Автоматическое шифрование недоступно"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the account does not exist or is not enabled.
@@ -282,7 +281,7 @@ msgstr "Родительское сообщение недоступно"
 #: autocrypt/autocrypt.c:596
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr ""
+msgstr "Автоматическое шифрование недоступно для %s"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
