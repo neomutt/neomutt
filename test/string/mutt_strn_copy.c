@@ -27,7 +27,7 @@
 
 void test_mutt_strn_copy(void)
 {
-  // char *mutt_strn_copy(char *dest, const char *begin, const char *end, size_t dsize);
+  // char *mutt_strn_copy(char *dest, const char *begin, const char *end, size_t size);
 
   // clang-format off
   const char *str = "apple banana\0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";

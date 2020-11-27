@@ -522,16 +522,16 @@ char *mutt_str_lower(char *s)
  * @param dest   Buffer for the result
  * @param src    Start of the string to copy
  * @param len    Length of the string to copy
- * @param dsize  Destination buffer size
+ * @param size  Destination buffer size
  * @retval ptr Destination buffer
  */
-char *mutt_strn_copy(char *dest, const char *src, size_t len, size_t dsize)
+char *mutt_strn_copy(char *dest, const char *src, size_t len, size_t size)
 {
-  if (!src || !dest || (len == 0) || (dsize == 0))
+  if (!src || !dest || (len == 0) || (size == 0))
     return dest;
 
-  if (len > (dsize - 1))
-    len = dsize - 1;
+  if (len > (size - 1))
+    len = size - 1;
   memcpy(dest, src, len);
   dest[len] = '\0';
   return dest;
@@ -710,12 +710,12 @@ void mutt_str_remove_trailing_ws(char *s)
  * mutt_str_copy - Copy a string into a buffer (guaranteeing NUL-termination)
  * @param dest  Buffer for the result
  * @param src   String to copy
- * @param dsize Destination buffer size
+ * @param size Destination buffer size
  * @retval num Destination string length
  */
-size_t mutt_str_copy(char *dest, const char *src, size_t dsize)
+size_t mutt_str_copy(char *dest, const char *src, size_t size)
 {
-  if (!dest || (dsize == 0))
+  if (!dest || (size == 0))
     return 0;
   if (!src)
   {
@@ -724,7 +724,7 @@ size_t mutt_str_copy(char *dest, const char *src, size_t dsize)
   }
 
   char *dest0 = dest;
-  while ((--dsize > 0) && (*src != '\0'))
+  while ((--size > 0) && (*src != '\0'))
     *dest++ = *src++;
 
   *dest = '\0';

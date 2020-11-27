@@ -27,7 +27,7 @@
 
 void test_mutt_str_copy(void)
 {
-  // size_t mutt_str_copy(char *dest, const char *src, size_t dsize);
+  // size_t mutt_str_copy(char *dest, const char *src, size_t size);
 
   {
     TEST_CHECK(mutt_str_copy(NULL, "apple", 10) == 0);
