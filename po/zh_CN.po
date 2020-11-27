@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-11-19 10:42+0000\n"
+"POT-Creation-Date: 2020-11-27 12:56+0000\n"
 "PO-Revision-Date: 2020-06-15 02:23-0700\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -2447,33 +2447,33 @@ msgstr "正在获取文件夹列表..."
 msgid "No such folder: %s"
 msgstr "无此文件夹: %s"
 
-#: imap/browse.c:402
+#: imap/browse.c:400
 msgid "Create mailbox: "
 msgstr "创建信箱："
 
-#: imap/browse.c:407 imap/browse.c:459
+#: imap/browse.c:405 imap/browse.c:457
 msgid "Mailbox must have a name"
 msgstr "信箱必须有名字"
 
-#: imap/browse.c:415
+#: imap/browse.c:413
 msgid "Mailbox created"
 msgstr "信箱已创建"
 
-#: imap/browse.c:447
+#: imap/browse.c:445
 msgid "Can't rename root folder"
 msgstr "无法重命名根文件夹"
 
-#: imap/browse.c:451
+#: imap/browse.c:449
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "重命名信箱 %s 为："
 
-#: imap/browse.c:467
+#: imap/browse.c:465
 #, c-format
 msgid "Rename failed: %s"
 msgstr "重命名失败：%s"
 
-#: imap/browse.c:471
+#: imap/browse.c:469
 msgid "Mailbox renamed"
 msgstr "信箱已重命名"
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-11-19 10:42+0000\n"
+"POT-Creation-Date: 2020-11-27 12:56+0000\n"
 "PO-Revision-Date: 2017-02-22 21:14+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -2507,33 +2507,33 @@ msgstr "Prenas liston de poŝtfakoj..."
 msgid "No such folder: %s"
 msgstr "Poŝtfako ne ekzistas: %s"
 
-#: imap/browse.c:402
+#: imap/browse.c:400
 msgid "Create mailbox: "
 msgstr "Krei poŝtfakon: "
 
-#: imap/browse.c:407 imap/browse.c:459
+#: imap/browse.c:405 imap/browse.c:457
 msgid "Mailbox must have a name"
 msgstr "Poŝtfako devas havi nomon"
 
-#: imap/browse.c:415
+#: imap/browse.c:413
 msgid "Mailbox created"
 msgstr "Poŝtfako kreita"
 
-#: imap/browse.c:447
+#: imap/browse.c:445
 msgid "Can't rename root folder"
 msgstr "Ne eblas renomi radikan poŝtujon"
 
-#: imap/browse.c:451
+#: imap/browse.c:449
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Renomi poŝtfakon %s al: "
 
-#: imap/browse.c:467
+#: imap/browse.c:465
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Renomado malsukcesis: %s"
 
-#: imap/browse.c:471
+#: imap/browse.c:469
 msgid "Mailbox renamed"
 msgstr "Poŝtfako renomita"
 

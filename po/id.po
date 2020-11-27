@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-11-19 10:42+0000\n"
+"POT-Creation-Date: 2020-11-27 12:56+0000\n"
 "PO-Revision-Date: 2007-11-07 10:39+1100\n"
 "Last-Translator: Ronny Haryanto <ronny@haryan.to>\n"
 "Language-Team: Indonesian <web@linux.or.id>\n"
@@ -2513,34 +2513,34 @@ msgstr "Mengambil daftar kotak surat..."
 msgid "No such folder: %s"
 msgstr "Tidak ada folder itu: %s"
 
-#: imap/browse.c:402
+#: imap/browse.c:400
 msgid "Create mailbox: "
 msgstr "Membuat kotak surat: "
 
-#: imap/browse.c:407 imap/browse.c:459
+#: imap/browse.c:405 imap/browse.c:457
 msgid "Mailbox must have a name"
 msgstr "Kotak surat harus punya nama"
 
-#: imap/browse.c:415
+#: imap/browse.c:413
 msgid "Mailbox created"
 msgstr "Kotak surat telah dibuat"
 
-#: imap/browse.c:447
+#: imap/browse.c:445
 #, fuzzy
 msgid "Can't rename root folder"
 msgstr "Tidak bisa menghapus kotak surat utama"
 
-#: imap/browse.c:451
+#: imap/browse.c:449
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Ganti nama kotak surat %s ke: "
 
-#: imap/browse.c:467
+#: imap/browse.c:465
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Penggantian nama gagal: %s"
 
-#: imap/browse.c:471
+#: imap/browse.c:469
 msgid "Mailbox renamed"
 msgstr "Kotak surat telah diganti namanya"
 

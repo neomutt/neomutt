@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-11-19 10:42+0000\n"
+"POT-Creation-Date: 2020-11-27 12:56+0000\n"
 "PO-Revision-Date: 2019-05-10 19:58+0300\n"
 "Last-Translator: Valeri Sergeev\n"
 "Language-Team: \n"
@@ -271,9 +271,8 @@ msgstr "Создание учётной записи autocrypt прервано"
 #. email when the engine is not available.
 #: autocrypt/autocrypt.c:568 autocrypt/autocrypt.c:577
 #: autocrypt/autocrypt.c:584
-#, fuzzy
 msgid "Autocrypt is not available"
-msgstr "Родительское сообщение недоступно"
+msgstr "Автоматическое шифрование недоступно"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the account does not exist or is not enabled.
@@ -282,7 +281,7 @@ msgstr "Родительское сообщение недоступно"
 #: autocrypt/autocrypt.c:596
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr ""
+msgstr "Автоматическое шифрование недоступно для %s"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
@@ -2509,33 +2508,33 @@ msgstr "Получение списка почтовых ящиков..."
 msgid "No such folder: %s"
 msgstr "Нет такого почтового ящика: %s"
 
-#: imap/browse.c:402
+#: imap/browse.c:400
 msgid "Create mailbox: "
 msgstr "Создать почтовый ящик: "
 
-#: imap/browse.c:407 imap/browse.c:459
+#: imap/browse.c:405 imap/browse.c:457
 msgid "Mailbox must have a name"
 msgstr "Почтовый ящик должен иметь имя"
 
-#: imap/browse.c:415
+#: imap/browse.c:413
 msgid "Mailbox created"
 msgstr "Почтовый ящик создан"
 
-#: imap/browse.c:447
+#: imap/browse.c:445
 msgid "Can't rename root folder"
 msgstr "Невозможно переименовать корневой почтовый ящик"
 
-#: imap/browse.c:451
+#: imap/browse.c:449
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Переименовать почтовый ящик %s в: "
 
-#: imap/browse.c:467
+#: imap/browse.c:465
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Не удалось переименовать: %s"
 
-#: imap/browse.c:471
+#: imap/browse.c:469
 msgid "Mailbox renamed"
 msgstr "Почтовый ящик переименован"
 

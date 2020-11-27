@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-11-19 10:42+0000\n"
+"POT-Creation-Date: 2020-11-27 12:56+0000\n"
 "PO-Revision-Date: 2016-11-09 22:45+0000\n"
 "Last-Translator: Velko Hristov <hristov@informatik.hu-berlin.de>\n"
 "Language-Team: none\n"
@@ -2540,34 +2540,34 @@ msgstr "Запитване за списъка от пощенски кутии.
 msgid "No such folder: %s"
 msgstr "Няма такава папка: %s"
 
-#: imap/browse.c:402
+#: imap/browse.c:400
 msgid "Create mailbox: "
 msgstr "Създаване на пощенска кутия: "
 
-#: imap/browse.c:407 imap/browse.c:459
+#: imap/browse.c:405 imap/browse.c:457
 msgid "Mailbox must have a name"
 msgstr "Пощенската кутия трябва да има име"
 
-#: imap/browse.c:415
+#: imap/browse.c:413
 msgid "Mailbox created"
 msgstr "Пощенската кутия е създадена"
 
-#: imap/browse.c:447
+#: imap/browse.c:445
 #, fuzzy
 msgid "Can't rename root folder"
 msgstr "Филтърът не може да бъде създаден"
 
-#: imap/browse.c:451
+#: imap/browse.c:449
 #, fuzzy, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Създаване на пощенска кутия: "
 
-#: imap/browse.c:467
+#: imap/browse.c:465
 #, fuzzy, c-format
 msgid "Rename failed: %s"
 msgstr "Неуспешен SSL: %s"
 
-#: imap/browse.c:471
+#: imap/browse.c:469
 #, fuzzy
 msgid "Mailbox renamed"
 msgstr "Пощенската кутия е създадена"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-11-19 10:42+0000\n"
+"POT-Creation-Date: 2020-11-27 12:56+0000\n"
 "PO-Revision-Date: 2016-11-23 21:20+0100\n"
 "Last-Translator: František Hájik <ferko.hajik@gmail.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -2514,36 +2514,36 @@ msgstr ""
 msgid "No such folder: %s"
 msgstr "%s: nenájdená farba"
 
-#: imap/browse.c:402
+#: imap/browse.c:400
 #, fuzzy
 msgid "Create mailbox: "
 msgstr "Otvor schránku"
 
-#: imap/browse.c:407 imap/browse.c:459
+#: imap/browse.c:405 imap/browse.c:457
 msgid "Mailbox must have a name"
 msgstr "Schránka musí mať názov"
 
-#: imap/browse.c:415
+#: imap/browse.c:413
 #, fuzzy
 msgid "Mailbox created"
 msgstr "Bola zistená slučka v makre"
 
-#: imap/browse.c:447
+#: imap/browse.c:445
 #, fuzzy
 msgid "Can't rename root folder"
 msgstr "Nemožno vytvoriť filter."
 
-#: imap/browse.c:451
+#: imap/browse.c:449
 #, fuzzy, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Otvor schránku"
 
-#: imap/browse.c:467
+#: imap/browse.c:465
 #, fuzzy, c-format
 msgid "Rename failed: %s"
 msgstr "Prihlasovanie zlyhalo."
 
-#: imap/browse.c:471
+#: imap/browse.c:469
 #, fuzzy
 msgid "Mailbox renamed"
 msgstr "Bola zistená slučka v makre"
