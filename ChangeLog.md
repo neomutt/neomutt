@@ -1,4 +1,12 @@
 2020-11-20  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - Fix crash when saving an alias
+* Translations
+  - 70% Russian
+* Code
+  - Remove redundant function call
+
+2020-11-20  Richard Russon  <rich@flatcap.org>
 * Security
   - imap: close connection on all failures
 * Features
