@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-11-19 10:42+0000\n"
+"POT-Creation-Date: 2020-11-27 12:56+0000\n"
 "PO-Revision-Date: 2006-10-16 14:22-0500\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <ga@li.org>\n"
@@ -2565,34 +2565,34 @@ msgstr "Liosta fillteán á fháil..."
 msgid "No such folder: %s"
 msgstr "Níl a leithéid d'fhillteán ann: %s"
 
-#: imap/browse.c:402
+#: imap/browse.c:400
 msgid "Create mailbox: "
 msgstr "Cruthaigh bosca poist: "
 
-#: imap/browse.c:407 imap/browse.c:459
+#: imap/browse.c:405 imap/browse.c:457
 msgid "Mailbox must have a name"
 msgstr "Ní foláir ainm a thabhairt ar an mbosca"
 
-#: imap/browse.c:415
+#: imap/browse.c:413
 msgid "Mailbox created"
 msgstr "Cruthaíodh bosca poist"
 
-#: imap/browse.c:447
+#: imap/browse.c:445
 #, fuzzy
 msgid "Can't rename root folder"
 msgstr "Ní féidir an scagaire a chruthú"
 
-#: imap/browse.c:451
+#: imap/browse.c:449
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Athainmnigh bosca poist %s go: "
 
-#: imap/browse.c:467
+#: imap/browse.c:465
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Theip ar athainmniú: %s"
 
-#: imap/browse.c:471
+#: imap/browse.c:469
 msgid "Mailbox renamed"
 msgstr "Athainmníodh an bosca poist"
 

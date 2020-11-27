@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-11-19 10:42+0000\n"
+"POT-Creation-Date: 2020-11-27 12:56+0000\n"
 "PO-Revision-Date: 2002-12-09 17:19+02:00\n"
 "Last-Translator: Toomas Soome <tsoome@muhv.pri.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -2534,34 +2534,34 @@ msgstr "Laen kaustade nimekirja..."
 msgid "No such folder: %s"
 msgstr "Sellist värvi ei ole: %s"
 
-#: imap/browse.c:402
+#: imap/browse.c:400
 msgid "Create mailbox: "
 msgstr "Loon postkasti: "
 
-#: imap/browse.c:407 imap/browse.c:459
+#: imap/browse.c:405 imap/browse.c:457
 msgid "Mailbox must have a name"
 msgstr "Postkastil peab olema nimi"
 
-#: imap/browse.c:415
+#: imap/browse.c:413
 msgid "Mailbox created"
 msgstr "Postkast on loodud"
 
-#: imap/browse.c:447
+#: imap/browse.c:445
 #, fuzzy
 msgid "Can't rename root folder"
 msgstr "Filtri loomine ebaõnnestus"
 
-#: imap/browse.c:451
+#: imap/browse.c:449
 #, fuzzy, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Loon postkasti: "
 
-#: imap/browse.c:467
+#: imap/browse.c:465
 #, fuzzy, c-format
 msgid "Rename failed: %s"
 msgstr "SSL ebaõnnestus: %s"
 
-#: imap/browse.c:471
+#: imap/browse.c:469
 #, fuzzy
 msgid "Mailbox renamed"
 msgstr "Postkast on loodud"

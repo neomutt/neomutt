@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2020-09-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2020-11-19 10:42+0000\n"
+"POT-Creation-Date: 2020-11-27 12:56+0000\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -2528,34 +2528,34 @@ msgstr "拿取目錄表中…"
 msgid "No such folder: %s"
 msgstr "%s：沒有這種顏色"
 
-#: imap/browse.c:402
+#: imap/browse.c:400
 msgid "Create mailbox: "
 msgstr "製作信箱："
 
-#: imap/browse.c:407 imap/browse.c:459
+#: imap/browse.c:405 imap/browse.c:457
 msgid "Mailbox must have a name"
 msgstr "信箱一定要有名字"
 
-#: imap/browse.c:415
+#: imap/browse.c:413
 msgid "Mailbox created"
 msgstr "已完成建立郵箱"
 
-#: imap/browse.c:447
+#: imap/browse.c:445
 #, fuzzy
 msgid "Can't rename root folder"
 msgstr "無法建立過濾器"
 
-#: imap/browse.c:451
+#: imap/browse.c:449
 #, fuzzy, c-format
 msgid "Rename mailbox %s to: "
 msgstr "製作信箱："
 
-#: imap/browse.c:467
+#: imap/browse.c:465
 #, fuzzy, c-format
 msgid "Rename failed: %s"
 msgstr "登入失敗： %s"
 
-#: imap/browse.c:471
+#: imap/browse.c:469
 #, fuzzy
 msgid "Mailbox renamed"
 msgstr "已完成製造郵箱"
