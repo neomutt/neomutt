@@ -2175,7 +2175,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
           if (e_oldcur->collapsed || Context->collapsed)
           {
-            menu->current = mutt_uncollapse_thread(cur.e);
+            menu->current = mutt_uncollapse_thread(e_oldcur);
             mutt_set_vnum(Context->mailbox);
           }
         }
