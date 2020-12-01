@@ -1801,8 +1801,9 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
     mx_mbox_close(&ctx);
     m->peekonly = old_peek;
   }
-  if (m->msg_new == 0)
-    m->has_new = false;
+
+  if (m->msg_new == 0 && m->has_new)
+    return 1;
 
   return m->msg_new;
 }
