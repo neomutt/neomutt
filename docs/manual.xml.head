@@ -11459,6 +11459,8 @@ attachments  +I text/plain
 <emphasis role="comment"># course. These are off by default! The MIME elements contained</emphasis>
 <emphasis role="comment"># within a message/* or multipart/* are still examined, even if the</emphasis>
 <emphasis role="comment"># containers themselves don't qualify.</emphasis>
+<emphasis role="comment"># Recursion into multipart/alternatives containers is controlled by the</emphasis>
+<emphasis role="comment"># $count_alternatives setting.</emphasis>
 
 <emphasis role="comment">#attachments  +A message/.* multipart/.*</emphasis>
 <emphasis role="comment">#attachments  +I message/.* multipart/.*</emphasis>
