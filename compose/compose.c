@@ -2002,12 +2002,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         mutt_buffer_reset(&fname);
         if ((mutt_buffer_enter_fname_full(prompt, &fname, false, true, &files,
                                           &numfiles, MUTT_SEL_MULTI) == -1) ||
-            mutt_buffer_is_empty(&fname))
+            (mutt_buffer_is_empty(&fname) && numfiles == 0))
         {
-          for (int i = 0; i < numfiles; i++)
-            FREE(&files[i]);
-
-          FREE(&files);
           break;
         }
 
@@ -2037,8 +2033,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           }
           FREE(&files[i]);
         }
-
         FREE(&files);
+
         if (!error)
           mutt_clear_error();
 
