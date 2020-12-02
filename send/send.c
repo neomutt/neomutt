@@ -833,7 +833,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in,
       if (flags & SEND_GROUP_REPLY)
         mutt_addrlist_copy(&out->cc, &in->to, true);
       else
-        mutt_addrlist_copy(&out->to, &in->cc, true);
+        mutt_addrlist_copy(&out->to, &in->to, true);
       mutt_addrlist_copy(&out->cc, &in->cc, true);
     }
   }
