@@ -741,11 +741,10 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
      * of the function. */
     notify_observer_remove(m->notify, mailbox_index_observer, &m);
   }
-  else
-  {
-    // Recreate the Mailbox (probably because a hook has done `unmailboxes *`)
-    m = mx_path_resolve(dup_path);
-  }
+
+  // Recreate the Mailbox as the folder-hook might have invoked `mailboxes`
+  // and/or `unmailboxes`.
+  m = mx_path_resolve(dup_path);
   FREE(&dup_path);
   FREE(&dup_name);
 
