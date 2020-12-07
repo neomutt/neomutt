@@ -160,7 +160,7 @@ static int sb_sort_unsorted(const void *a, const void *b)
   const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
 
   // This sort method isn't affected by the reverse flag
-  return (sbe1->seq_unsorted - sbe2->seq_unsorted);
+  return (sbe1->mailbox->gen - sbe2->mailbox->gen);
 }
 
 /**
