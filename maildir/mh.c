@@ -844,11 +844,11 @@ int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * mh_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
+ * mh_ac_owns_path - Check whether an Account own a Mailbox path - Implements MxOps::ac_owns_path()
  */
-struct Account *mh_ac_find(struct Account *a, const char *path)
+bool mh_ac_owns_path(struct Account *a, const char *path)
 {
-  return a;
+  return true;
 }
 
 /**
@@ -1246,7 +1246,7 @@ struct MxOps MxMhOps = {
   .type            = MUTT_MH,
   .name             = "mh",
   .is_local         = true,
-  .ac_find          = mh_ac_find,
+  .ac_owns_path     = mh_ac_owns_path,
   .ac_add           = mh_ac_add,
   .mbox_open        = mh_mbox_open,
   .mbox_open_append = mh_mbox_open_append,

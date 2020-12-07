@@ -736,24 +736,21 @@ fail:
 }
 
 /**
- * pop_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
+ * pop_ac_owns_path - Check whether an Account owns a Mailbox path - Implements MxOps::ac_owns_path()
  */
-static struct Account *pop_ac_find(struct Account *a, const char *path)
+static bool pop_ac_owns_path(struct Account *a, const char *path)
 {
   struct Url *url = url_parse(path);
   if (!url)
-    return NULL;
+    return false;
 
   struct PopAccountData *adata = a->adata;
   struct ConnAccount *cac = &adata->conn->account;
 
-  if (!mutt_istr_equal(url->host, cac->host) || !mutt_istr_equal(url->user, cac->user))
-  {
-    a = NULL;
-  }
-
+  const bool ret = mutt_istr_equal(url->host, cac->host) &&
+                   mutt_istr_equal(url->user, cac->user);
   url_free(&url);
-  return a;
+  return ret;
 }
 
 /**
@@ -1246,7 +1243,7 @@ struct MxOps MxPopOps = {
   .type            = MUTT_POP,
   .name             = "pop",
   .is_local         = false,
-  .ac_find          = pop_ac_find,
+  .ac_owns_path     = pop_ac_owns_path,
   .ac_add           = pop_ac_add,
   .mbox_open        = pop_mbox_open,
   .mbox_open_append = NULL,
