@@ -2473,6 +2473,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       SigWinch = 0;
       mutt_resize_screen();
       clearok(stdscr, true); /* force complete redraw */
+      mutt_window_clearline(MessageWindow, 0);
 
       if (flags & MUTT_PAGER_RETWINCH)
       {

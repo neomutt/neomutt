@@ -1367,6 +1367,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         /* force a real complete redraw.  clrtobot() doesn't seem to be able
          * to handle every case without this.  */
         clearok(stdscr, true);
+        mutt_window_clearline(MessageWindow, 0);
         continue;
       }
 
