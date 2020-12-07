@@ -1576,7 +1576,7 @@ struct Account *mx_ac_find(struct Mailbox *m)
     if (np->type != m->type)
       continue;
 
-    if (m->mx_ops->ac_find(np, m->realpath))
+    if (m->mx_ops->ac_owns_path(np, m->realpath))
       return np;
   }
 

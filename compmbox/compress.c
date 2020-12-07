@@ -411,11 +411,11 @@ int mutt_comp_valid_command(const char *cmd)
 }
 
 /**
- * comp_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
+ * comp_ac_owns_path - Check whether an Account owns a Mailbox path - Implements MxOps::ac_owns_path()
  */
-static struct Account *comp_ac_find(struct Account *a, const char *path)
+static bool comp_ac_owns_path(struct Account *a, const char *path)
 {
-  return NULL;
+  return false;
 }
 
 /**
@@ -933,7 +933,7 @@ struct MxOps MxCompOps = {
   .type            = MUTT_COMPRESSED,
   .name             = "compressed",
   .is_local         = true,
-  .ac_find          = comp_ac_find,
+  .ac_owns_path     = comp_ac_owns_path,
   .ac_add           = comp_ac_add,
   .mbox_open        = comp_mbox_open,
   .mbox_open_append = comp_mbox_open_append,

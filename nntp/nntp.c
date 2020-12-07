@@ -2371,11 +2371,11 @@ int nntp_compare_order(const void *a, const void *b)
 }
 
 /**
- * nntp_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
+ * nntp_ac_owns_path - Check whether an Account owns a Mailbox path - Implements MxOps::ac_owns_path()
  */
-static struct Account *nntp_ac_find(struct Account *a, const char *path)
+static bool nntp_ac_owns_path(struct Account *a, const char *path)
 {
-  return a;
+  return true;
 }
 
 /**
@@ -2835,7 +2835,7 @@ struct MxOps MxNntpOps = {
   .type            = MUTT_NNTP,
   .name             = "nntp",
   .is_local         = false,
-  .ac_find          = nntp_ac_find,
+  .ac_owns_path     = nntp_ac_owns_path,
   .ac_add           = nntp_ac_add,
   .mbox_open        = nntp_mbox_open,
   .mbox_open_append = NULL,

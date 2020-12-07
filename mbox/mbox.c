@@ -860,21 +860,18 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
 }
 
 /**
- * mbox_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
+ * mbox_ac_owns_path - Check whether an Account owns a Mailbox path - Implements MxOps::ac_owns_path()
  */
-static struct Account *mbox_ac_find(struct Account *a, const char *path)
+static bool mbox_ac_owns_path(struct Account *a, const char *path)
 {
   if ((a->type != MUTT_MBOX) && (a->type != MUTT_MMDF))
-    return NULL;
+    return false;
 
   struct MailboxNode *np = STAILQ_FIRST(&a->mailboxes);
   if (!np)
-    return NULL;
+    return false;
 
-  if (!mutt_str_equal(mailbox_path(np->mailbox), path))
-    return NULL;
-
-  return a;
+  return mutt_str_equal(mailbox_path(np->mailbox), path);
 }
 
 /**
@@ -1816,7 +1813,7 @@ struct MxOps MxMboxOps = {
   .type            = MUTT_MBOX,
   .name             = "mbox",
   .is_local         = true,
-  .ac_find          = mbox_ac_find,
+  .ac_owns_path     = mbox_ac_owns_path,
   .ac_add           = mbox_ac_add,
   .mbox_open        = mbox_mbox_open,
   .mbox_open_append = mbox_mbox_open_append,
@@ -1846,7 +1843,7 @@ struct MxOps MxMmdfOps = {
   .type            = MUTT_MMDF,
   .name             = "mmdf",
   .is_local         = true,
-  .ac_find          = mbox_ac_find,
+  .ac_owns_path     = mbox_ac_owns_path,
   .ac_add           = mbox_ac_add,
   .mbox_open        = mbox_mbox_open,
   .mbox_open_append = mbox_mbox_open_append,

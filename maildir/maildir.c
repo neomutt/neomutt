@@ -1084,11 +1084,11 @@ int maildir_check_empty(const char *path)
 }
 
 /**
- * maildir_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
+ * maildir_ac_owns_path - Check whether an Account own a Mailbox path - Implements MxOps::ac_owns_path()
  */
-struct Account *maildir_ac_find(struct Account *a, const char *path)
+bool maildir_ac_owns_path(struct Account *a, const char *path)
 {
-  return a;
+  return true;
 }
 
 /**
@@ -1633,7 +1633,7 @@ struct MxOps MxMaildirOps = {
   .type            = MUTT_MAILDIR,
   .name             = "maildir",
   .is_local         = true,
-  .ac_find          = maildir_ac_find,
+  .ac_owns_path     = maildir_ac_owns_path,
   .ac_add           = maildir_ac_add,
   .mbox_open        = maildir_mbox_open,
   .mbox_open_append = maildir_mbox_open_append,

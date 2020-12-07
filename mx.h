@@ -108,17 +108,17 @@ struct MxOps
   bool is_local;          ///< True, if Mailbox type has local files/dirs
 
   /**
-   * ac_find - Find an Account that matches a Mailbox path
-   * @param a    Account to search
-   * @param path Path to search for
-   * @retval  0 Success
-   * @retval -1 Error
+   * ac_owns_path - Check whether an Account owns a Mailbox path
+   * @param a    Account
+   * @param path Mailbox Path
+   * @retval true  Account handles path
+   * @retval false Account does not handle path
    *
    * **Contract**
    * - @a a    is not NULL
    * - @a path is not NULL
    */
-  struct Account *(*ac_find)  (struct Account *a, const char *path);
+  bool (*ac_owns_path) (struct Account *a, const char *path);
 
   /**
    * ac_add - Add a Mailbox to an Account
