@@ -959,6 +959,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
         if (show)
         {
           m_old->flags = MB_NORMAL;
+          m_old->gen = mailbox_gen();
         }
 
         const bool rename = (data & MUTT_NAMED) && !mutt_str_equal(m_old->name, m->name);
@@ -1931,6 +1932,7 @@ static void do_unmailboxes(struct Mailbox *m)
   mutt_monitor_remove(m);
 #endif
   m->flags = MB_HIDDEN;
+  m->gen = -1;
   if (Context && (Context->mailbox == m))
   {
     struct EventMailbox em = { NULL };
