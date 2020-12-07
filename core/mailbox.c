@@ -36,13 +36,20 @@
 #include "neomutt.h"
 
 /**
+ * mailbox_gen - Get the next generation number
+ */
+int mailbox_gen(void)
+{
+  static int gen = 0;
+  return gen++;
+}
+
+/**
  * mailbox_new - Create a new Mailbox
  * @retval ptr New Mailbox
  */
 struct Mailbox *mailbox_new(void)
 {
-  static int gen = 0;
-
   struct Mailbox *m = mutt_mem_calloc(1, sizeof(struct Mailbox));
 
   mutt_buffer_init(&m->pathbuf);
@@ -51,7 +58,7 @@ struct Mailbox *mailbox_new(void)
   m->email_max = 25;
   m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
   m->v2r = mutt_mem_calloc(m->email_max, sizeof(int));
-  m->gen = gen++;
+  m->gen = mailbox_gen();
 
   return m;
 }
