@@ -1102,14 +1102,14 @@ bool maildir_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * maildir_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  */
-static int maildir_mbox_open(struct Mailbox *m)
+static enum MxOpenReturns maildir_mbox_open(struct Mailbox *m)
 {
   /* maildir looks sort of like MH, except that there are two subdirectories
    * of the main folder path from which to read messages */
   if ((maildir_read_dir(m, "new") == -1) || (maildir_read_dir(m, "cur") == -1))
-    return -1;
+    return MX_OPEN_ERROR;
 
-  return 0;
+  return MX_OPEN_OK;
 }
 
 /**

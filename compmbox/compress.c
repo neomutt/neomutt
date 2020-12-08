@@ -434,13 +434,11 @@ static bool comp_ac_add(struct Account *a, struct Mailbox *m)
  * Then determine the type of the mailbox so we can delegate the handling of
  * messages.
  */
-static int comp_mbox_open(struct Mailbox *m)
+static enum MxOpenReturns comp_mbox_open(struct Mailbox *m)
 {
   struct CompressInfo *ci = set_compress_info(m);
   if (!ci)
-    return -1;
-
-  int rc;
+    return MX_OPEN_ERROR;
 
   /* If there's no close-hook, or the file isn't writable */
   if (!ci->cmd_close || (access(mailbox_path(m), W_OK) != 0))
@@ -456,7 +454,7 @@ static int comp_mbox_open(struct Mailbox *m)
     goto cmo_fail;
   }
 
-  rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
+  int rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
   if (rc == 0)
     goto cmo_fail;
 
@@ -483,7 +481,7 @@ cmo_fail:
   /* remove the partial uncompressed file */
   remove(mailbox_path(m));
   compress_info_free(m);
-  return -1;
+  return MX_OPEN_ERROR;
 }
 
 /**

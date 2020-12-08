@@ -2386,10 +2386,10 @@ static bool nntp_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * nntp_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  */
-static int nntp_mbox_open(struct Mailbox *m)
+static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
 {
   if (!m->account)
-    return -1;
+    return MX_OPEN_ERROR;
 
   char buf[8192];
   char server[1024];
@@ -2404,7 +2404,7 @@ static int nntp_mbox_open(struct Mailbox *m)
   {
     url_free(&url);
     mutt_error(_("%s is an invalid newsgroup specification"), mailbox_path(m));
-    return -1;
+    return MX_OPEN_ERROR;
   }
 
   group = url->path;
@@ -2426,7 +2426,7 @@ static int nntp_mbox_open(struct Mailbox *m)
   if (!adata)
   {
     url_free(&url);
-    return -1;
+    return MX_OPEN_ERROR;
   }
   CurrentNewsSrv = adata;
 
@@ -2444,7 +2444,7 @@ static int nntp_mbox_open(struct Mailbox *m)
     nntp_newsrc_close(adata);
     mutt_error(_("Newsgroup %s not found on the server"), group);
     url_free(&url);
-    return -1;
+    return MX_OPEN_ERROR;
   }
 
   m->rights &= ~MUTT_ACL_INSERT; // Clear the flag
@@ -2458,7 +2458,7 @@ static int nntp_mbox_open(struct Mailbox *m)
   if (nntp_query(mdata, buf, sizeof(buf)) < 0)
   {
     nntp_newsrc_close(adata);
-    return -1;
+    return MX_OPEN_ERROR;
   }
 
   /* newsgroup not found, remove it */
@@ -2486,7 +2486,7 @@ static int nntp_mbox_open(struct Mailbox *m)
     {
       nntp_newsrc_close(adata);
       mutt_error("GROUP: %s", buf);
-      return -1;
+      return MX_OPEN_ERROR;
     }
     mdata->first_message = first;
     mdata->last_message = last;
@@ -2498,7 +2498,7 @@ static int nntp_mbox_open(struct Mailbox *m)
       if (get_description(mdata, NULL, NULL) < 0)
       {
         nntp_newsrc_close(adata);
-        return -1;
+        return MX_OPEN_ERROR;
       }
       if (mdata->desc)
         nntp_active_save_cache(adata);
@@ -2535,10 +2535,10 @@ static int nntp_mbox_open(struct Mailbox *m)
   mutt_hcache_close(hc);
 #endif
   if (rc < 0)
-    return -1;
+    return MX_OPEN_ERROR;
   mdata->last_loaded = mdata->last_message;
   adata->newsrc_modified = false;
-  return 0;
+  return MX_OPEN_OK;
 }
 
 /**

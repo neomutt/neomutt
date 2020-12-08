@@ -675,13 +675,13 @@ void mh_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda, struct Prog
 /**
  * mh_read_dir - Read an MH mailbox
  * @param m Mailbox
- * @retval  0 Success
- * @retval -1 Failure
+ * @retval true Success
+ * @retval false Error
  */
-int mh_read_dir(struct Mailbox *m)
+static bool mh_read_dir(struct Mailbox *m)
 {
   if (!m)
-    return -1;
+    return false;
 
   struct MhSequences mhs = { 0 };
   struct Progress progress;
@@ -705,7 +705,7 @@ int mh_read_dir(struct Mailbox *m)
 
   struct MdEmailArray mda = ARRAY_HEAD_INITIALIZER;
   if (mh_parse_dir(m, &mda, &progress) < 0)
-    return -1;
+    return false;
 
   if (m->verbose)
   {
@@ -718,7 +718,7 @@ int mh_read_dir(struct Mailbox *m)
   if (mh_seq_read(&mhs, mailbox_path(m)) < 0)
   {
     maildirarray_clear(&mda);
-    return -1;
+    return false;
   }
   mh_update_maildir(&mda, &mhs);
   mh_seq_free(&mhs);
@@ -728,7 +728,7 @@ int mh_read_dir(struct Mailbox *m)
   if (!mdata->mh_umask)
     mdata->mh_umask = mh_umask(m);
 
-  return 0;
+  return true;
 }
 
 /**
@@ -859,9 +859,9 @@ bool mh_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * mh_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  */
-static int mh_mbox_open(struct Mailbox *m)
+static enum MxOpenReturns mh_mbox_open(struct Mailbox *m)
 {
-  return mh_read_dir(m);
+  return mh_read_dir(m) ? MX_OPEN_OK : MX_OPEN_ERROR;
 }
 
 /**

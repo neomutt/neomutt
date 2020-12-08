@@ -2205,34 +2205,34 @@ static bool nm_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * nm_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  */
-static int nm_mbox_open(struct Mailbox *m)
+static enum MxOpenReturns nm_mbox_open(struct Mailbox *m)
 {
   if (init_mailbox(m) != 0)
-    return -1;
+    return MX_OPEN_ERROR;
 
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)
-    return -1;
+    return MX_OPEN_ERROR;
 
   mutt_debug(LL_DEBUG1, "nm: reading messages...[current count=%d]\n", m->msg_count);
 
   progress_reset(m);
 
-  int rc = -1;
+  enum MxOpenReturns rc = MX_OPEN_ERROR;
 
   notmuch_query_t *q = get_query(m, false);
   if (q)
   {
-    rc = 0;
+    rc = MX_OPEN_OK;
     switch (mdata->query_type)
     {
       case NM_QUERY_TYPE_MESGS:
         if (!read_mesgs_query(m, q, false))
-          rc = -2;
+          rc = MX_OPEN_ABORT;
         break;
       case NM_QUERY_TYPE_THREADS:
         if (!read_threads_query(m, q, false, get_limit(mdata)))
-          rc = -2;
+          rc = MX_OPEN_ABORT;
         break;
     }
     notmuch_query_destroy(q);

@@ -1893,10 +1893,10 @@ int imap_login(struct ImapAccountData *adata)
 /**
  * imap_mbox_open - Open a mailbox - Implements MxOps::mbox_open()
  */
-static int imap_mbox_open(struct Mailbox *m)
+static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
 {
   if (!m->account || !m->mdata)
-    return -1;
+    return MX_OPEN_ERROR;
 
   char buf[PATH_MAX];
   int count = 0;
@@ -2084,12 +2084,12 @@ static int imap_mbox_open(struct Mailbox *m)
   }
 
   mutt_debug(LL_DEBUG2, "msg_count is %d\n", m->msg_count);
-  return 0;
+  return MX_OPEN_OK;
 
 fail:
   if (adata->state == IMAP_SELECTED)
     adata->state = IMAP_AUTHENTICATED;
-  return -1;
+  return MX_OPEN_ERROR;
 }
 
 /**

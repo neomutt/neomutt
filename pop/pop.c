@@ -787,10 +787,10 @@ static bool pop_ac_add(struct Account *a, struct Mailbox *m)
  *
  * Fetch only headers
  */
-static int pop_mbox_open(struct Mailbox *m)
+static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
 {
   if (!m->account)
-    return -1;
+    return MX_OPEN_ERROR;
 
   char buf[PATH_MAX];
   struct ConnAccount cac = { { 0 } };
@@ -799,7 +799,7 @@ static int pop_mbox_open(struct Mailbox *m)
   if (pop_parse_path(mailbox_path(m), &cac))
   {
     mutt_error(_("%s is an invalid POP path"), mailbox_path(m));
-    return -1;
+    return MX_OPEN_ERROR;
   }
 
   mutt_account_tourl(&cac, &url);
@@ -823,14 +823,14 @@ static int pop_mbox_open(struct Mailbox *m)
     adata->conn = mutt_conn_new(&cac);
     conn = adata->conn;
     if (!conn)
-      return -1;
+      return MX_OPEN_ERROR;
   }
 
   if (conn->fd < 0)
     mutt_account_hook(m->realpath);
 
   if (pop_open_connection(adata) < 0)
-    return -1;
+    return MX_OPEN_ERROR;
 
   adata->bcache = mutt_bcache_open(&cac, NULL);
 
@@ -845,7 +845,7 @@ static int pop_mbox_open(struct Mailbox *m)
   while (true)
   {
     if (pop_reconnect(m) < 0)
-      return -1;
+      return MX_OPEN_ERROR;
 
     m->size = adata->size;
 
@@ -854,10 +854,10 @@ static int pop_mbox_open(struct Mailbox *m)
     const int rc = pop_fetch_headers(m);
 
     if (rc >= 0)
-      return 0;
+      return MX_OPEN_OK;
 
     if (rc < -1)
-      return -1;
+      return MX_OPEN_ERROR;
   }
 }
 

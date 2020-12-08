@@ -398,12 +398,12 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   m->msg_tagged = 0;
   m->vcount = 0;
 
-  int rc = m->mx_ops->mbox_open(ctx->mailbox);
+  enum MxOpenReturns rc = m->mx_ops->mbox_open(ctx->mailbox);
   m->opened++;
-  if (rc == 0)
+  if (rc == MX_OPEN_OK)
     ctx_update(ctx);
 
-  if ((rc == 0) || (rc == -2))
+  if ((rc == MX_OPEN_OK) || (rc == MX_OPEN_ABORT))
   {
     if ((flags & MUTT_NOSORT) == 0)
     {
@@ -414,7 +414,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     }
     if (m->verbose)
       mutt_clear_error();
-    if (rc == -2)
+    if (rc == MX_OPEN_ABORT)
     {
       mutt_error(_("Reading from %s interrupted..."), mailbox_path(m));
       mutt_sort_headers(ctx->mailbox, ctx->threads, true, &ctx->vsize);
