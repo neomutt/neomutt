@@ -974,7 +974,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       }
     }
 
-    if (mx_ac_add(a, m) < 0)
+    if (!mx_ac_add(a, m))
     {
       //error
       mailbox_free(&m);

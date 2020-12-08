@@ -2190,16 +2190,16 @@ static bool nm_ac_owns_path(struct Account *a, const char *path)
 /**
  * nm_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-static int nm_ac_add(struct Account *a, struct Mailbox *m)
+static bool nm_ac_add(struct Account *a, struct Mailbox *m)
 {
   if (a->adata)
-    return 0;
+    return true;
 
   struct NmAccountData *adata = nm_adata_new();
   a->adata = adata;
   a->adata_free = nm_adata_free;
 
-  return 0;
+  return true;
 }
 
 /**

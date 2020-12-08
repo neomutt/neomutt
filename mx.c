@@ -279,7 +279,7 @@ bool mx_mbox_ac_link(struct Mailbox *m)
     a = account_new(NULL, NeoMutt->sub);
     a->type = m->type;
   }
-  if (mx_ac_add(a, m) < 0)
+  if (!mx_ac_add(a, m))
   {
     if (new_account)
     {
@@ -1767,16 +1767,12 @@ struct Mailbox *mx_resolve(const char *path_or_name)
 /**
  * mx_ac_add - Add a Mailbox to an Account - Wrapper for MxOps::ac_add()
  */
-int mx_ac_add(struct Account *a, struct Mailbox *m)
+bool mx_ac_add(struct Account *a, struct Mailbox *m)
 {
   if (!a || !m || !m->mx_ops || !m->mx_ops->ac_add)
-    return -1;
+    return false;
 
-  if (m->mx_ops->ac_add(a, m) < 0)
-    return -1;
-
-  account_mailbox_add(a, m);
-  return 0;
+  return m->mx_ops->ac_add(a, m) && account_mailbox_add(a, m);
 }
 
 /**

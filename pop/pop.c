@@ -756,10 +756,10 @@ static bool pop_ac_owns_path(struct Account *a, const char *path)
 /**
  * pop_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-static int pop_ac_add(struct Account *a, struct Mailbox *m)
+static bool pop_ac_add(struct Account *a, struct Mailbox *m)
 {
   if (a->adata)
-    return 0;
+    return true;
 
   struct ConnAccount cac = { { 0 } };
   struct PopAccountData *adata = pop_adata_new();
@@ -769,17 +769,17 @@ static int pop_ac_add(struct Account *a, struct Mailbox *m)
   if (pop_parse_path(mailbox_path(m), &cac))
   {
     mutt_error(_("%s is an invalid POP path"), mailbox_path(m));
-    return -1;
+    return false;
   }
 
   adata->conn = mutt_conn_new(&cac);
   if (!adata->conn)
   {
     pop_adata_free((void **) &adata);
-    return -1;
+    return false;
   }
 
-  return 0;
+  return true;
 }
 
 /**

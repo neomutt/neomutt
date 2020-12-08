@@ -851,9 +851,9 @@ bool mh_ac_owns_path(struct Account *a, const char *path)
 /**
  * mh_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-int mh_ac_add(struct Account *a, struct Mailbox *m)
+bool mh_ac_add(struct Account *a, struct Mailbox *m)
 {
-  return 0;
+  return true;
 }
 
 /**

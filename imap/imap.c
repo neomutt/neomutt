@@ -1734,7 +1734,7 @@ static bool imap_ac_owns_path(struct Account *a, const char *path)
 /**
  * imap_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-static int imap_ac_add(struct Account *a, struct Mailbox *m)
+static bool imap_ac_add(struct Account *a, struct Mailbox *m)
 {
   struct ImapAccountData *adata = a->adata;
 
@@ -1744,14 +1744,14 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
     char mailbox[PATH_MAX];
 
     if (imap_parse_path(mailbox_path(m), &cac, mailbox, sizeof(mailbox)) < 0)
-      return -1;
+      return false;
 
     adata = imap_adata_new(a);
     adata->conn = mutt_conn_new(&cac);
     if (!adata->conn)
     {
       imap_adata_free((void **) &adata);
-      return -1;
+      return false;
     }
 
     mutt_account_hook(m->realpath);
@@ -1759,7 +1759,7 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
     if (imap_login(adata) < 0)
     {
       imap_adata_free((void **) &adata);
-      return -1;
+      return false;
     }
 
     a->adata = adata;
@@ -1781,7 +1781,7 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
     m->mdata_free = imap_mdata_free;
     url_free(&url);
   }
-  return 0;
+  return true;
 }
 
 /**

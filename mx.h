@@ -124,14 +124,14 @@ struct MxOps
    * ac_add - Add a Mailbox to an Account
    * @param a Account to add to
    * @param m Mailbox to add
-   * @retval  0 Success
-   * @retval -1 Error
+   * @retval  true  Success
+   * @retval  false Error
    *
    * **Contract**
    * - @a a is not NULL
    * - @a m is not NULL
    */
-  int             (*ac_add)   (struct Account *a, struct Mailbox *m);
+  bool (*ac_add) (struct Account *a, struct Mailbox *m);
 
   /**
    * mbox_open - Open a Mailbox
@@ -399,7 +399,7 @@ struct Account *mx_ac_find     (struct Mailbox *m);
 struct Mailbox *mx_mbox_find   (struct Account *a, const char *path);
 struct Mailbox *mx_mbox_find2  (const char *path);
 bool            mx_mbox_ac_link(struct Mailbox *m);
-int             mx_ac_add      (struct Account *a, struct Mailbox *m);
+bool            mx_ac_add      (struct Account *a, struct Mailbox *m);
 int             mx_ac_remove   (struct Mailbox *m);
 
 int                 mx_access           (const char *path, int flags);

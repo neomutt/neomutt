@@ -2381,9 +2381,9 @@ static bool nntp_ac_owns_path(struct Account *a, const char *path)
 /**
  * nntp_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-static int nntp_ac_add(struct Account *a, struct Mailbox *m)
+static bool nntp_ac_add(struct Account *a, struct Mailbox *m)
 {
-  return 0;
+  return true;
 }
 
 /**

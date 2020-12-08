@@ -421,9 +421,9 @@ static bool comp_ac_owns_path(struct Account *a, const char *path)
 /**
  * comp_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-static int comp_ac_add(struct Account *a, struct Mailbox *m)
+static bool comp_ac_add(struct Account *a, struct Mailbox *m)
 {
-  return 0;
+  return true;
 }
 
 /**
