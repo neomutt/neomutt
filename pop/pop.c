@@ -864,19 +864,19 @@ static int pop_mbox_open(struct Mailbox *m)
 /**
  * pop_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  */
-static int pop_mbox_check(struct Mailbox *m)
+static enum MxCheckReturns pop_mbox_check(struct Mailbox *m)
 {
   struct PopAccountData *adata = pop_adata_get(m);
 
   if ((adata->check_time + C_PopCheckinterval) > mutt_date_epoch())
-    return 0;
+    return MX_CHECK_NO_CHANGE;
 
   pop_logout(m);
 
   mutt_socket_close(adata->conn);
 
   if (pop_open_connection(adata) < 0)
-    return -1;
+    return MX_CHECK_ERROR;
 
   m->size = adata->size;
 
@@ -889,12 +889,12 @@ static int pop_mbox_check(struct Mailbox *m)
     mailbox_changed(m, NT_MAILBOX_INVALID);
 
   if (rc < 0)
-    return -1;
+    return MX_CHECK_ERROR;
 
   if (rc > 0)
-    return MUTT_NEW_MAIL;
+    return MX_CHECK_NEW_MAIL;
 
-  return 0;
+  return MX_CHECK_NO_CHANGE;
 }
 
 /**
@@ -902,7 +902,7 @@ static int pop_mbox_check(struct Mailbox *m)
  *
  * Update POP mailbox, delete messages from server
  */
-static int pop_mbox_sync(struct Mailbox *m)
+static enum MxCheckReturns pop_mbox_sync(struct Mailbox *m)
 {
   int i, j, rc = 0;
   char buf[1024];
@@ -924,7 +924,7 @@ static int pop_mbox_sync(struct Mailbox *m)
   while (true)
   {
     if (pop_reconnect(m) < 0)
-      return -1;
+      return MX_CHECK_ERROR;
 
     mutt_progress_init(&progress, _("Marking messages deleted..."),
                        MUTT_PROGRESS_WRITE, num_deleted);
@@ -975,13 +975,13 @@ static int pop_mbox_sync(struct Mailbox *m)
       adata->clear_cache = true;
       pop_clear_cache(adata);
       adata->status = POP_DISCONNECTED;
-      return 0;
+      return MX_CHECK_NO_CHANGE;
     }
 
     if (rc == -2)
     {
       mutt_error("%s", adata->err_msg);
-      return -1;
+      return MX_CHECK_ERROR;
     }
   }
 }

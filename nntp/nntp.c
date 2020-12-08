@@ -1521,30 +1521,27 @@ static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
 /**
  * check_mailbox - Check current newsgroup for new articles
  * @param m Mailbox
- * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
- * @retval #MUTT_NEW_MAIL New articles found
- * @retval  0             No change
- * @retval -1             Lost connection
+ * @retval enum #MxCheckReturns
  *
  * Leave newsrc locked
  */
-static int check_mailbox(struct Mailbox *m)
+static enum MxCheckReturns check_mailbox(struct Mailbox *m)
 {
   if (!m)
-    return -1;
+    return MX_CHECK_ERROR;
 
   struct NntpMboxData *mdata = m->mdata;
   struct NntpAccountData *adata = mdata->adata;
   time_t now = mutt_date_epoch();
-  int rc = 0;
+  enum MxCheckReturns rc = MX_CHECK_NO_CHANGE;
   void *hc = NULL;
 
   if (adata->check_time + C_NntpPoll > now)
-    return 0;
+    return MX_CHECK_NO_CHANGE;
 
   mutt_message(_("Checking for new messages..."));
   if (nntp_newsrc_parse(adata) < 0)
-    return -1;
+    return MX_CHECK_ERROR;
 
   adata->check_time = now;
   int rc2 = nntp_group_poll(mdata, false);
@@ -1570,7 +1567,7 @@ static int check_mailbox(struct Mailbox *m)
       if (C_NntpContext && (mdata->last_message - mdata->last_loaded > C_NntpContext))
         mdata->last_loaded = mdata->last_message - C_NntpContext;
     }
-    rc = MUTT_REOPENED;
+    rc = MX_CHECK_REOPENED;
   }
 
   /* .newsrc has been externally modified */
@@ -1687,11 +1684,11 @@ static int check_mailbox(struct Mailbox *m)
 #endif
 
     adata->newsrc_modified = false;
-    rc = MUTT_REOPENED;
+    rc = MX_CHECK_REOPENED;
   }
 
   /* some headers were removed, context must be updated */
-  if (rc == MUTT_REOPENED)
+  if (rc == MX_CHECK_REOPENED)
     mailbox_changed(m, NT_MAILBOX_INVALID);
 
   /* fetch headers of new articles */
@@ -1716,14 +1713,14 @@ static int check_mailbox(struct Mailbox *m)
         mailbox_changed(m, NT_MAILBOX_INVALID);
       mdata->last_loaded = mdata->last_message;
     }
-    if ((rc == 0) && (m->msg_count > oldmsgcount))
-      rc = MUTT_NEW_MAIL;
+    if ((rc == MX_CHECK_NO_CHANGE) && (m->msg_count > oldmsgcount))
+      rc = MX_CHECK_NEW_MAIL;
   }
 
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
 #endif
-  if (rc)
+  if (rc != MX_CHECK_NO_CHANGE)
     nntp_newsrc_close(adata);
   mutt_clear_error();
   return rc;
@@ -2547,15 +2544,12 @@ static int nntp_mbox_open(struct Mailbox *m)
 /**
  * nntp_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param m          Mailbox
- * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
- * @retval #MUTT_NEW_MAIL New articles found
- * @retval  0             No change
- * @retval -1             Lost connection
+ * @retval enum #MxCheckReturns
  */
-static int nntp_mbox_check(struct Mailbox *m)
+static enum MxCheckReturns nntp_mbox_check(struct Mailbox *m)
 {
-  int rc = check_mailbox(m);
-  if (rc == 0)
+  enum MxCheckReturns rc = check_mailbox(m);
+  if (rc == MX_CHECK_NO_CHANGE)
   {
     struct NntpMboxData *mdata = m->mdata;
     struct NntpAccountData *adata = mdata->adata;
@@ -2569,16 +2563,15 @@ static int nntp_mbox_check(struct Mailbox *m)
  *
  * @note May also return values from check_mailbox()
  */
-static int nntp_mbox_sync(struct Mailbox *m)
+static enum MxCheckReturns nntp_mbox_sync(struct Mailbox *m)
 {
   struct NntpMboxData *mdata = m->mdata;
-  int rc;
 
   /* check for new articles */
   mdata->adata->check_time = 0;
-  rc = check_mailbox(m);
-  if (rc)
-    return rc;
+  enum MxCheckReturns check = check_mailbox(m);
+  if (check != MX_CHECK_NO_CHANGE)
+    return check;
 
 #ifdef USE_HCACHE
   mdata->last_cached = 0;
@@ -2623,7 +2616,7 @@ static int nntp_mbox_sync(struct Mailbox *m)
   nntp_newsrc_gen_entries(m);
   nntp_newsrc_update(mdata->adata);
   nntp_newsrc_close(mdata->adata);
-  return 0;
+  return MX_CHECK_NO_CHANGE;
 }
 
 /**

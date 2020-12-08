@@ -1086,15 +1086,12 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
  * imap_check_mailbox - use the NOOP or IDLE command to poll for new mail
  * @param m     Mailbox
  * @param force Don't wait
- * @retval #MUTT_REOPENED  mailbox has been externally modified
- * @retval #MUTT_NEW_MAIL  new mail has arrived
- * @retval 0               no change
- * @retval -1              error
+ * return enum MxCheckReturns
  */
-int imap_check_mailbox(struct Mailbox *m, bool force)
+enum MxCheckReturns imap_check_mailbox(struct Mailbox *m, bool force)
 {
   if (!m || !m->account)
-    return -1;
+    return MX_CHECK_ERROR;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -1108,7 +1105,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
       ((adata->state != IMAP_IDLE) || (mutt_date_epoch() >= adata->lastread + C_ImapKeepalive)))
   {
     if (imap_cmd_idle(adata) < 0)
-      return -1;
+      return MX_CHECK_ERROR;
   }
   if (adata->state == IMAP_IDLE)
   {
@@ -1117,7 +1114,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
       if (imap_cmd_step(adata) != IMAP_RES_CONTINUE)
       {
         mutt_debug(LL_DEBUG1, "Error reading IDLE response\n");
-        return -1;
+        return MX_CHECK_ERROR;
       }
     }
     if (rc < 0)
@@ -1131,23 +1128,26 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
                  (mutt_date_epoch() >= adata->lastread + C_Timeout))) &&
       (imap_exec(adata, "NOOP", IMAP_CMD_POLL) != IMAP_EXEC_SUCCESS))
   {
-    return -1;
+    return MX_CHECK_ERROR;
   }
 
   /* We call this even when we haven't run NOOP in case we have pending
    * changes to process, since we can reopen here. */
   imap_cmd_finish(adata);
 
+  enum MxCheckReturns check = MX_CHECK_NO_CHANGE;
   if (mdata->check_status & IMAP_EXPUNGE_PENDING)
-    rc = MUTT_REOPENED;
+    check = MX_CHECK_REOPENED;
   else if (mdata->check_status & IMAP_NEWMAIL_PENDING)
-    rc = MUTT_NEW_MAIL;
+    check = MX_CHECK_NEW_MAIL;
   else if (mdata->check_status & IMAP_FLAGS_PENDING)
-    rc = MUTT_FLAGS;
+    check = MX_CHECK_FLAGS;
+  else if (rc < 0)
+    check = MX_CHECK_ERROR;
 
   mdata->check_status = IMAP_OPEN_NO_FLAGS;
 
-  return rc;
+  return check;
 }
 
 /**
@@ -1499,14 +1499,11 @@ out:
  * @param m       Mailbox
  * @param expunge if true do expunge
  * @param close   if true we move imap state to CLOSE
- * @retval #MUTT_REOPENED  mailbox has been externally modified
- * @retval #MUTT_NEW_MAIL  new mail has arrived
- * @retval  0 Success
- * @retval -1 Error
+ * @retval enum #MxCheckReturns
  *
  * @note The flag retvals come from a call to imap_check_mailbox()
  */
-int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
+enum MxCheckReturns imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 {
   if (!m)
     return -1;
@@ -1514,7 +1511,6 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   struct Email **emails = NULL;
   int oldsort;
   int rc;
-  int check;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -1529,8 +1525,8 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
    * to be changed. */
   imap_allow_reopen(m);
 
-  check = imap_check_mailbox(m, false);
-  if (check < 0)
+  enum MxCheckReturns check = imap_check_mailbox(m, false);
+  if (check == MX_CHECK_ERROR)
     return check;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */
@@ -2129,13 +2125,13 @@ static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 /**
  * imap_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param m Mailbox
- * @retval >0 Success, e.g. #MUTT_REOPENED
+ * @retval >0 Success, e.g. #MX_CHECK_REOPENED
  * @retval -1 Failure
  */
-static int imap_mbox_check(struct Mailbox *m)
+static enum MxCheckReturns imap_mbox_check(struct Mailbox *m)
 {
   imap_allow_reopen(m);
-  int rc = imap_check_mailbox(m, false);
+  enum MxCheckReturns rc = imap_check_mailbox(m, false);
   /* NOTE - ctx might have been changed at this point. In particular,
    * m could be NULL. Beware. */
   imap_disallow_reopen(m);

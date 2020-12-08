@@ -902,7 +902,7 @@ static int mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  *
  * Don't change this code unless you _really_ understand what happens.
  */
-int mh_mbox_check(struct Mailbox *m)
+enum MxCheckReturns mh_mbox_check(struct Mailbox *m)
 {
   char buf[PATH_MAX];
   struct stat st, st_cur;
@@ -913,11 +913,11 @@ int mh_mbox_check(struct Mailbox *m)
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
   if (!C_CheckNew)
-    return 0;
+    return MX_CHECK_NO_CHANGE;
 
   mutt_str_copy(buf, mailbox_path(m), sizeof(buf));
   if (stat(buf, &st) == -1)
-    return -1;
+    return MX_CHECK_ERROR;
 
   /* create .mh_sequences when there isn't one. */
   snprintf(buf, sizeof(buf), "%s/.mh_sequences", mailbox_path(m));
@@ -946,7 +946,7 @@ int mh_mbox_check(struct Mailbox *m)
   }
 
   if (!modified)
-    return 0;
+    return MX_CHECK_NO_CHANGE;
 
     /* Update the modification times on the mailbox.
      *
@@ -970,7 +970,7 @@ int mh_mbox_check(struct Mailbox *m)
   mh_delayed_parsing(m, &mda, NULL);
 
   if (mh_seq_read(&mhs, mailbox_path(m)) < 0)
-    return -1;
+    return MX_CHECK_ERROR;
   mh_update_maildir(&mda, &mhs);
   mh_seq_free(&mhs);
 
@@ -1028,27 +1028,27 @@ int mh_mbox_check(struct Mailbox *m)
 
   ARRAY_FREE(&mda);
   if (occult)
-    return MUTT_REOPENED;
+    return MX_CHECK_REOPENED;
   if (num_new > 0)
-    return MUTT_NEW_MAIL;
+    return MX_CHECK_NEW_MAIL;
   if (flags_changed)
-    return MUTT_FLAGS;
-  return 0;
+    return MX_CHECK_FLAGS;
+  return MX_CHECK_NO_CHANGE;
 }
 
 /**
  * mh_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
- * @retval #MUTT_REOPENED  mailbox has been externally modified
- * @retval #MUTT_NEW_MAIL  new mail has arrived
+ * @retval #MX_CHECK_REOPENED  mailbox has been externally modified
+ * @retval #MX_CHECK_NEW_MAIL  new mail has arrived
  * @retval  0 Success
  * @retval -1 Error
  *
  * @note The flag retvals come from a call to a backend sync function
  */
-int mh_mbox_sync(struct Mailbox *m)
+enum MxCheckReturns mh_mbox_sync(struct Mailbox *m)
 {
-  int check = mh_mbox_check(m);
-  if (check < 0)
+  enum MxCheckReturns check = mh_mbox_check(m);
+  if (check == MX_CHECK_ERROR)
     return check;
 
   struct HeaderCache *hc = NULL;
@@ -1107,7 +1107,7 @@ err:
   if (m->type == MUTT_MH)
     mutt_hcache_close(hc);
 #endif
-  return -1;
+  return MX_CHECK_ERROR;
 }
 
 /**

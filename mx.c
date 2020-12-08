@@ -477,14 +477,13 @@ void mx_fastclose_mailbox(struct Mailbox *m)
 
 /**
  * sync_mailbox - save changes to disk
- * @param m          Mailbox
- * @retval  0 Success
- * @retval -1 Failure
+ * @param m Mailbox
+ * @retval enum #MxCheckReturns
  */
-static int sync_mailbox(struct Mailbox *m)
+static enum MxCheckReturns sync_mailbox(struct Mailbox *m)
 {
   if (!m || !m->mx_ops || !m->mx_ops->mbox_sync)
-    return -1;
+    return MX_CHECK_ERROR;
 
   if (m->verbose)
   {
@@ -492,11 +491,11 @@ static int sync_mailbox(struct Mailbox *m)
     mutt_message(_("Writing %s..."), mailbox_path(m));
   }
 
-  int rc = m->mx_ops->mbox_sync(m);
-  if (rc != 0)
+  enum MxCheckReturns rc = m->mx_ops->mbox_sync(m);
+  if (rc != MX_CHECK_NO_CHANGE)
   {
     mutt_debug(LL_DEBUG2, "mbox_sync returned: %d\n", rc);
-    if ((rc < 0) && m->verbose)
+    if ((rc == MX_CHECK_ERROR) && m->verbose)
     {
       /* L10N: Displayed if a mailbox sync fails */
       mutt_error(_("Unable to write %s"), mailbox_path(m));
@@ -612,8 +611,8 @@ static int trash_append(struct Mailbox *m)
 /**
  * mx_mbox_close - Save changes and close mailbox
  * @param[out] ptr Mailbox
- * @retval #MUTT_REOPENED  mailbox has been externally modified
- * @retval #MUTT_NEW_MAIL  new mail has arrived
+ * @retval #MX_CHECK_REOPENED  mailbox has been externally modified
+ * @retval #MX_CHECK_NEW_MAIL  new mail has arrived
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -929,19 +928,16 @@ cleanup:
 /**
  * mx_mbox_sync - Save changes to mailbox
  * @param[in]  m          Mailbox
- * @retval #MUTT_REOPENED  mailbox has been externally modified
- * @retval #MUTT_NEW_MAIL  new mail has arrived
- * @retval  0 Success
- * @retval -1 Error
+ * @retval enum #MxCheckReturns
  *
  * @note The flag retvals come from a call to a backend sync function
  */
-int mx_mbox_sync(struct Mailbox *m)
+enum MxCheckReturns mx_mbox_sync(struct Mailbox *m)
 {
   if (!m)
-    return -1;
+    return MX_CHECK_ERROR;
 
-  int rc;
+  enum MxCheckReturns rc = MX_CHECK_NO_CHANGE;
   int purge = 1;
   int msgcount, deleted;
 
@@ -954,19 +950,19 @@ int mx_mbox_sync(struct Mailbox *m)
       mutt_str_copy(tmp, _("Use 'toggle-write' to re-enable write"), sizeof(tmp));
 
     mutt_error(_("Mailbox is marked unwritable. %s"), tmp);
-    return -1;
+    return MX_CHECK_ERROR;
   }
   else if (m->readonly)
   {
     mutt_error(_("Mailbox is read-only"));
-    return -1;
+    return MX_CHECK_ERROR;
   }
 
   if (!m->changed && (m->msg_deleted == 0))
   {
     if (m->verbose)
       mutt_message(_("Mailbox is unchanged"));
-    return 0;
+    return MX_CHECK_NO_CHANGE;
   }
 
   if (m->msg_deleted != 0)
@@ -978,11 +974,11 @@ int mx_mbox_sync(struct Mailbox *m)
              m->msg_deleted);
     purge = query_quadoption(C_Delete, buf);
     if (purge == MUTT_ABORT)
-      return -1;
+      return MX_CHECK_ERROR;
     if (purge == MUTT_NO)
     {
       if (!m->changed)
-        return 0; /* nothing to do! */
+        return MX_CHECK_NO_CHANGE; /* nothing to do! */
       /* let IMAP servers hold on to D flags */
       if (m->type != MUTT_IMAP)
       {
@@ -1009,7 +1005,7 @@ int mx_mbox_sync(struct Mailbox *m)
   if (purge && (m->msg_deleted != 0) && (m != m_trash))
   {
     if (trash_append(m) != 0)
-      return -1;
+      return MX_CHECK_NO_CHANGE;
   }
 
 #ifdef USE_IMAP
@@ -1018,7 +1014,7 @@ int mx_mbox_sync(struct Mailbox *m)
   else
 #endif
     rc = sync_mailbox(m);
-  if (rc >= 0)
+  if (rc != MX_CHECK_ERROR)
   {
 #ifdef USE_IMAP
     if ((m->type == MUTT_IMAP) && !purge)
@@ -1041,7 +1037,7 @@ int mx_mbox_sync(struct Mailbox *m)
     {
       unlink(mailbox_path(m));
       mx_fastclose_mailbox(m);
-      return 0;
+      return MX_CHECK_NO_CHANGE;
     }
 
     /* if we haven't deleted any messages, we don't need to resort */
@@ -1134,18 +1130,18 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
 /**
  * mx_mbox_check - Check for new mail - Wrapper for MxOps::mbox_check()
  * @param m          Mailbox
- * @retval >0 Success, e.g. #MUTT_NEW_MAIL
- * @retval  0 Success, no change
- * @retval -1 Failure
+ * @retval enum #MxCheckReturns
  */
-int mx_mbox_check(struct Mailbox *m)
+enum MxCheckReturns mx_mbox_check(struct Mailbox *m)
 {
   if (!m || !m->mx_ops)
-    return -1;
+    return MX_CHECK_ERROR;
 
-  int rc = m->mx_ops->mbox_check(m);
-  if ((rc == MUTT_NEW_MAIL) || (rc == MUTT_REOPENED))
+  enum MxCheckReturns rc = m->mx_ops->mbox_check(m);
+  if ((rc == MX_CHECK_NEW_MAIL) || (rc == MX_CHECK_REOPENED))
+  {
     mailbox_changed(m, NT_MAILBOX_INVALID);
+  }
 
   return rc;
 }
