@@ -3770,7 +3770,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
       }
 
       case OP_SHELL_ESCAPE:
-        mutt_shell_escape();
+        if (mutt_shell_escape() && Context && Context->mailbox)
+        {
+          mutt_mailbox_check(Context->mailbox, MUTT_MAILBOX_CHECK_FORCE);
+        }
         break;
 
       case OP_TAG_THREAD:
