@@ -1445,11 +1445,11 @@ err:
 
 /**
  * maildir_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
- * @retval 0 Always
+ * @retval MX_CHECK_NO_CHANGE  Always
  */
-int maildir_mbox_close(struct Mailbox *m)
+enum MxCheckReturns maildir_mbox_close(struct Mailbox *m)
 {
-  return 0;
+  return MX_CHECK_NO_CHANGE;
 }
 
 /**

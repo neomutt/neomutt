@@ -659,10 +659,10 @@ sync_cleanup:
  * If the mailbox has been changed then re-compress the tmp file.
  * Then delete the tmp file.
  */
-static int comp_mbox_close(struct Mailbox *m)
+static enum MxCheckReturns comp_mbox_close(struct Mailbox *m)
 {
   if (!m->compress_info)
-    return -1;
+    return MX_CHECK_ERROR;
 
   struct CompressInfo *ci = m->compress_info;
 
@@ -670,7 +670,7 @@ static int comp_mbox_close(struct Mailbox *m)
   if (!ops)
   {
     compress_info_free(m);
-    return -1;
+    return MX_CHECK_ERROR;
   }
 
   ops->mbox_close(m);
@@ -719,7 +719,7 @@ static int comp_mbox_close(struct Mailbox *m)
 
   compress_info_free(m);
 
-  return 0;
+  return MX_CHECK_NO_CHANGE;
 }
 
 /**

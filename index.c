@@ -710,8 +710,8 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
       new_last_folder = mutt_str_dup(mailbox_path(m_ctx));
     *oldcount = m_ctx->msg_count;
 
-    int check = mx_mbox_close(&Context);
-    if (check != 0)
+    const enum MxCheckReturns check = mx_mbox_close(&Context);
+    if (check != MX_CHECK_NO_CHANGE)
     {
 #ifdef USE_INOTIFY
       if (monitor_remove_rc == 0)
@@ -1860,14 +1860,13 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
         if (query_quadoption(C_Quit, _("Quit NeoMutt?")) == MUTT_YES)
         {
-          int check;
-
-          oldcount = ctx_mailbox(Context) ? Context->mailbox->msg_count : 0;
+          oldcount = (Context && Context->mailbox) ? Context->mailbox->msg_count : 0;
 
           mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
           notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_SHUTDOWN, NULL);
 
-          if (!Context || ((check = mx_mbox_close(&Context)) == 0))
+          enum MxCheckReturns check = MX_CHECK_NO_CHANGE;
+          if (!Context || ((check = mx_mbox_close(&Context)) == MX_CHECK_NO_CHANGE))
           {
             done = true;
           }
@@ -2018,8 +2017,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_MAIN_IMAP_LOGOUT_ALL:
         if (ctx_mailbox(Context) && (Context->mailbox->type == MUTT_IMAP))
         {
-          int check = mx_mbox_close(&Context);
-          if (check != 0)
+          const enum MxCheckReturns check = mx_mbox_close(&Context);
+          if (check != MX_CHECK_NO_CHANGE)
           {
             if ((check == MX_CHECK_NEW_MAIL) || (check == MX_CHECK_REOPENED))
             {

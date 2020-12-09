@@ -2147,14 +2147,14 @@ static enum MxCheckReturns imap_mbox_check(struct Mailbox *m)
 /**
  * imap_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  */
-static int imap_mbox_close(struct Mailbox *m)
+static enum MxCheckReturns imap_mbox_close(struct Mailbox *m)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
   /* Check to see if the mailbox is actually open */
   if (!adata || !mdata)
-    return 0;
+    return MX_CHECK_NO_CHANGE;
 
   /* imap_mbox_open_append() borrows the struct ImapAccountData temporarily,
    * just for the connection.
@@ -2183,7 +2183,7 @@ static int imap_mbox_close(struct Mailbox *m)
     imap_mdata_cache_reset(m->mdata);
   }
 
-  return 0;
+  return MX_CHECK_NO_CHANGE;
 }
 
 /**

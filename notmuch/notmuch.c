@@ -2512,9 +2512,9 @@ static enum MxCheckReturns nm_mbox_sync(struct Mailbox *m)
  *
  * Nothing to do.
  */
-static int nm_mbox_close(struct Mailbox *m)
+static enum MxCheckReturns nm_mbox_close(struct Mailbox *m)
 {
-  return 0;
+  return MX_CHECK_NO_CHANGE;
 }
 
 /**

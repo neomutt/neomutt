@@ -989,11 +989,11 @@ static enum MxCheckReturns pop_mbox_sync(struct Mailbox *m)
 /**
  * pop_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  */
-static int pop_mbox_close(struct Mailbox *m)
+static enum MxCheckReturns pop_mbox_close(struct Mailbox *m)
 {
   struct PopAccountData *adata = pop_adata_get(m);
   if (!adata)
-    return 0;
+    return MX_CHECK_NO_CHANGE;
 
   pop_logout(m);
 
@@ -1010,7 +1010,7 @@ static int pop_mbox_close(struct Mailbox *m)
 
   mutt_bcache_close(&adata->bcache);
 
-  return 0;
+  return MX_CHECK_NO_CHANGE;
 }
 
 /**

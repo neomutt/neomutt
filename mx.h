@@ -66,7 +66,7 @@ typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open_new(), e.g. #MUTT_
 #define MUTT_SET_DRAFT    (1 << 1) ///< set the message draft flag
 
 /**
- * enum MxCheckReturns - Return values from mx_mbox_check() and mx_mbox_sync()
+ * enum MxCheckReturns - Return values from mx_mbox_check(), mx_mbox_sync(), and mx_mbox_close()
  */
 enum MxCheckReturns
 {
@@ -212,13 +212,12 @@ struct MxOps
   /**
    * mbox_close - Close a Mailbox
    * @param m Mailbox to close
-   * @retval  0 Success
-   * @retval -1 Failure
+   * @retval enum #MxCheckReturns
    *
    * **Contract**
    * - @a m is not NULL
    */
-  int (*mbox_close)      (struct Mailbox *m);
+  enum MxCheckReturns (*mbox_close)(struct Mailbox *m);
 
   /**
    * msg_open - Open an email message in a Mailbox
@@ -391,9 +390,9 @@ struct MxOps
 };
 
 /* Wrappers for the Mailbox API, see MxOps */
-enum MxCheckReturns mx_mbox_check  (struct Mailbox *m);
+enum MxCheckReturns      mx_mbox_check      (struct Mailbox *m);
 enum MxCheckStatsReturns mx_mbox_check_stats(struct Mailbox *m, uint8_t flags);
-int             mx_mbox_close      (struct Context **ptr);
+enum MxCheckReturns      mx_mbox_close      (struct Context **ptr);
 struct Context *mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
 enum MxCheckReturns mx_mbox_sync       (struct Mailbox *m);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);

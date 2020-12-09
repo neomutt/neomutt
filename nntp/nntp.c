@@ -2623,23 +2623,23 @@ static enum MxCheckReturns nntp_mbox_sync(struct Mailbox *m)
  * nntp_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  * @retval 0 Always
  */
-static int nntp_mbox_close(struct Mailbox *m)
+static enum MxCheckReturns nntp_mbox_close(struct Mailbox *m)
 {
   struct NntpMboxData *mdata = m->mdata;
   struct NntpMboxData *tmp_mdata = NULL;
   if (!mdata)
-    return 0;
+    return MX_CHECK_NO_CHANGE;
 
   mdata->unread = m->msg_unread;
 
   nntp_acache_free(mdata);
   if (!mdata->adata || !mdata->adata->groups_hash || !mdata->group)
-    return 0;
+    return MX_CHECK_NO_CHANGE;
 
   tmp_mdata = mutt_hash_find(mdata->adata->groups_hash, mdata->group);
   if (!tmp_mdata || (tmp_mdata != mdata))
     nntp_mdata_free((void **) &mdata);
-  return 0;
+  return MX_CHECK_NO_CHANGE;
 }
 
 /**

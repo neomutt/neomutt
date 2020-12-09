@@ -1503,14 +1503,14 @@ fatal:
 /**
  * mbox_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  */
-static int mbox_mbox_close(struct Mailbox *m)
+static enum MxCheckReturns mbox_mbox_close(struct Mailbox *m)
 {
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
-    return -1;
+    return MX_CHECK_ERROR;
 
   if (!adata->fp)
-    return 0;
+    return MX_CHECK_NO_CHANGE;
 
   if (adata->append)
   {
@@ -1537,7 +1537,7 @@ static int mbox_mbox_close(struct Mailbox *m)
 #endif
   }
 
-  return 0;
+  return MX_CHECK_NO_CHANGE;
 }
 
 /**
