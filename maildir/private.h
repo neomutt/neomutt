@@ -46,7 +46,7 @@ extern char *C_MhSeqReplied;
 extern char *C_MhSeqUnseen;
 
 int    maildir_move_to_mailbox(struct Mailbox *m, struct MdEmailArray *mda);
-int    mh_mkstemp             (struct Mailbox *m, FILE **fp, char **tgt);
+bool   mh_mkstemp             (struct Mailbox *m, FILE **fp, char **tgt);
 mode_t mh_umask               (struct Mailbox *m);
 
 #endif /* MUTT_MAILDIR_PRIVATE_H */

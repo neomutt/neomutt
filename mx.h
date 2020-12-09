@@ -130,7 +130,7 @@ struct MxOps
    * - @a a    is not NULL
    * - @a path is not NULL
    */
-  bool (*ac_owns_path) (struct Account *a, const char *path);
+  bool (*ac_owns_path)(struct Account *a, const char *path);
 
   /**
    * ac_add - Add a Mailbox to an Account
@@ -143,7 +143,7 @@ struct MxOps
    * - @a a is not NULL
    * - @a m is not NULL
    */
-  bool (*ac_add) (struct Account *a, struct Mailbox *m);
+  bool (*ac_add)(struct Account *a, struct Mailbox *m);
 
   /**
    * mbox_open - Open a Mailbox
@@ -153,7 +153,7 @@ struct MxOps
    * **Contract**
    * - @a m is not NULL
    */
-  enum MxOpenReturns (*mbox_open)       (struct Mailbox *m);
+  enum MxOpenReturns (*mbox_open)(struct Mailbox *m);
 
   /**
    * mbox_open_append - Open a Mailbox for appending
@@ -175,7 +175,7 @@ struct MxOps
    * **Contract**
    * - @a m is not NULL
    */
-  enum MxStatus (*mbox_check) (struct Mailbox *m);
+  enum MxStatus (*mbox_check)(struct Mailbox *m);
 
   /**
    * mbox_check_stats - Check the Mailbox statistics
@@ -213,29 +213,29 @@ struct MxOps
    * @param m     Mailbox
    * @param msg   Message to open
    * @param msgno Index of message to open
-   * @retval  0 Success
-   * @retval -1 Error
+   * @retval true Success
+   * @retval false Error
    *
    * **Contract**
    * - @a m   is not NULL
    * - @a msg is not NULL
    * - 0 <= @a msgno < msg->msg_count
    */
-  int (*msg_open)        (struct Mailbox *m, struct Message *msg, int msgno);
+  bool (*msg_open)(struct Mailbox *m, struct Message *msg, int msgno);
 
   /**
    * msg_open_new - Open a new message in a Mailbox
    * @param m   Mailbox
    * @param msg Message to open
    * @param e   Email
-   * @retval  0 Success
-   * @retval -1 Failure
+   * @retval true Success
+   * @retval false Failure
    *
    * **Contract**
    * - @a m   is not NULL
    * - @a msg is not NULL
    */
-  int (*msg_open_new)    (struct Mailbox *m, struct Message *msg, const struct Email *e);
+  bool (*msg_open_new)(struct Mailbox *m, struct Message *msg, const struct Email *e);
 
   /**
    * msg_commit - Save changes to an email

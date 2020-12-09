@@ -1016,7 +1016,7 @@ static enum MxStatus pop_mbox_close(struct Mailbox *m)
 /**
  * pop_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
-static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
   char buf[1024];
   struct Progress progress;
@@ -1024,13 +1024,13 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   struct Email *e = m->emails[msgno];
   struct PopEmailData *edata = pop_edata_get(e);
   bool bcache = true;
-  int rc = -1;
+  bool success = false;
   struct Buffer *path = NULL;
 
   /* see if we already have the message in body cache */
   msg->fp = mutt_bcache_get(adata->bcache, cache_id(edata->uid));
   if (msg->fp)
-    return 0;
+    return true;
 
   /* see if we already have the message in our cache in
    * case $message_cachedir is unset */
@@ -1043,10 +1043,10 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       /* yes, so just return a pointer to the message */
       msg->fp = fopen(cache->path, "r");
       if (msg->fp)
-        return 0;
+        return true;
 
       mutt_perror(cache->path);
-      return -1;
+      return false;
     }
     else
     {
@@ -1161,11 +1161,11 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   mutt_clear_error();
   rewind(msg->fp);
 
-  rc = 0;
+  success = true;
 
 cleanup:
   mutt_buffer_pool_release(&path);
-  return rc;
+  return success;
 }
 
 /**

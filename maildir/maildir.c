@@ -1012,38 +1012,6 @@ cleanup:
 }
 
 /**
- * maildir_open_message - Open a Maildir message
- * @param m     Mailbox
- * @param msg   Message to open
- * @param msgno Index number
- * @retval  0 Success
- * @retval -1 Failure
- */
-int maildir_open_message(struct Mailbox *m, struct Message *msg, int msgno)
-{
-  struct Email *e = m->emails[msgno];
-  if (!e)
-    return -1;
-
-  char path[PATH_MAX];
-
-  snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
-
-  msg->fp = fopen(path, "r");
-  if (!msg->fp && (errno == ENOENT))
-    msg->fp = maildir_open_find_message(mailbox_path(m), e->path, NULL);
-
-  if (!msg->fp)
-  {
-    mutt_perror(path);
-    mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d)\n", path, strerror(errno), errno);
-    return -1;
-  }
-
-  return 0;
-}
-
-/**
  * maildir_check_empty - Is the mailbox empty
  * @param path Mailbox to check
  * @retval 1 Mailbox is empty
@@ -1455,9 +1423,28 @@ enum MxStatus maildir_mbox_close(struct Mailbox *m)
 /**
  * maildir_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
-static int maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  return maildir_open_message(m, msg, msgno);
+  struct Email *e = m->emails[msgno];
+  if (!e)
+    return false;
+
+  char path[PATH_MAX];
+
+  snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
+
+  msg->fp = fopen(path, "r");
+  if (!msg->fp && (errno == ENOENT))
+    msg->fp = maildir_open_find_message(mailbox_path(m), e->path, NULL);
+
+  if (!msg->fp)
+  {
+    mutt_perror(path);
+    mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d)\n", path, strerror(errno), errno);
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -1468,7 +1455,7 @@ static int maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
  * @note This uses _almost_ the maildir file name format,
  * but with a {cur,new} prefix.
  */
-int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
+bool maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
   int fd;
   char path[PATH_MAX];
@@ -1506,7 +1493,7 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Em
       {
         umask(omask);
         mutt_perror(path);
-        return -1;
+        return false;
       }
     }
     else
@@ -1524,10 +1511,10 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Em
     FREE(&msg->path);
     close(fd);
     unlink(path);
-    return -1;
+    return false;
   }
 
-  return 0;
+  return true;
 }
 
 /**

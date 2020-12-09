@@ -67,10 +67,10 @@
  * @param[in]  m   Mailbox to create the file in
  * @param[out] fp  File handle
  * @param[out] tgt File name
- * @retval  0 Success
- * @retval -1 Failure
+ * @retval true Success
+ * @retval false Failure
  */
-int mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
+bool mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
 {
   int fd;
   char path[PATH_MAX];
@@ -87,7 +87,7 @@ int mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
       {
         mutt_perror(path);
         umask(omask);
-        return -1;
+        return false;
       }
     }
     else
@@ -104,10 +104,10 @@ int mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
     FREE(tgt);
     close(fd);
     unlink(path);
-    return -1;
+    return false;
   }
 
-  return 0;
+  return true;
 }
 
 /**
@@ -791,38 +791,6 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno, struct HeaderCache *hc
 }
 
 /**
- * mh_open_message - Open an MH message
- * @param m          Mailbox
- * @param msg        Message to open
- * @param msgno      Index number
- * @retval  0 Success
- * @retval -1 Failure
- */
-int mh_open_message(struct Mailbox *m, struct Message *msg, int msgno)
-{
-  if (!m || !m->emails || (msgno >= m->msg_count))
-    return -1;
-
-  struct Email *e = m->emails[msgno];
-  if (!e)
-    return -1;
-
-  char path[PATH_MAX];
-
-  snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
-
-  msg->fp = fopen(path, "r");
-  if (!msg->fp)
-  {
-    mutt_perror(path);
-    mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d)\n", path, strerror(errno), errno);
-    return -1;
-  }
-
-  return 0;
-}
-
-/**
  * mh_msg_save_hcache - Save message to the header cache - Implements MxOps::msg_save_hcache()
  */
 int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
@@ -923,7 +891,7 @@ enum MxStatus mh_mbox_check(struct Mailbox *m)
     char *tmp = NULL;
     FILE *fp = NULL;
 
-    if (mh_mkstemp(m, &fp, &tmp) == 0)
+    if (mh_mkstemp(m, &fp, &tmp))
     {
       mutt_file_fclose(&fp);
       if (mutt_file_safe_rename(tmp, buf) == -1)
@@ -1118,9 +1086,28 @@ enum MxStatus mh_mbox_close(struct Mailbox *m)
 /**
  * mh_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
-static int mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  return mh_open_message(m, msg, msgno);
+  if (!m || !m->emails || (msgno >= m->msg_count))
+    return false;
+
+  struct Email *e = m->emails[msgno];
+  if (!e)
+    return false;
+
+  char path[PATH_MAX];
+
+  snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
+
+  msg->fp = fopen(path, "r");
+  if (!msg->fp)
+  {
+    mutt_perror(path);
+    mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d)\n", path, strerror(errno), errno);
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -1128,7 +1115,7 @@ static int mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
  *
  * Open a new (temporary) message in an MH folder.
  */
-static int mh_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
+static bool mh_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
   return mh_mkstemp(m, &msg->fp, &msg->path);
 }

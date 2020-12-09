@@ -1543,30 +1543,30 @@ static enum MxStatus mbox_mbox_close(struct Mailbox *m)
 /**
  * mbox_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
-static int mbox_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool mbox_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
-    return -1;
+    return false;
 
   msg->fp = mutt_file_fopen(mailbox_path(m), "r");
   if (!msg->fp)
-    return -1;
+    return false;
 
-  return 0;
+  return true;
 }
 
 /**
  * mbox_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  */
-static int mbox_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
+static bool mbox_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
-    return -1;
+    return false;
 
   msg->fp = adata->fp;
-  return 0;
+  return true;
 }
 
 /**

@@ -1093,7 +1093,7 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
   if (msg->received == 0)
     msg->received = mutt_date_epoch();
 
-  if (m->mx_ops->msg_open_new(m, msg, e) == 0)
+  if (m->mx_ops->msg_open_new(m, msg, e))
   {
     if (m->type == MUTT_MMDF)
       fputs(MMDF_SEP, msg->fp);
@@ -1162,7 +1162,7 @@ struct Message *mx_msg_open(struct Mailbox *m, int msgno)
   }
 
   struct Message *msg = mutt_mem_calloc(1, sizeof(struct Message));
-  if (m->mx_ops->msg_open(m, msg, msgno) < 0)
+  if (!m->mx_ops->msg_open(m, msg, msgno))
     FREE(&msg);
 
   return msg;

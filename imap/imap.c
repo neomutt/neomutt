@@ -2189,9 +2189,9 @@ static enum MxStatus imap_mbox_close(struct Mailbox *m)
 /**
  * imap_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  */
-static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
+static bool imap_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
-  int rc = -1;
+  bool success = false;
 
   struct Buffer *tmp = mutt_buffer_pool_get();
   mutt_buffer_mktemp(tmp);
@@ -2204,11 +2204,11 @@ static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, const struc
   }
 
   msg->path = mutt_buffer_strdup(tmp);
-  rc = 0;
+  success = true;
 
 cleanup:
   mutt_buffer_pool_release(&tmp);
-  return rc;
+  return success;
 }
 
 /**

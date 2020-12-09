@@ -2645,12 +2645,12 @@ static enum MxStatus nntp_mbox_close(struct Mailbox *m)
 /**
  * nntp_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
-static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
   struct NntpMboxData *mdata = m->mdata;
   struct Email *e = m->emails[msgno];
   if (!e)
-    return -1;
+    return false;
 
   char article[16];
 
@@ -2662,7 +2662,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     {
       msg->fp = mutt_file_fopen(acache->path, "r");
       if (msg->fp)
-        return 0;
+        return true;
     }
     /* clear previous entry */
     else
@@ -2676,14 +2676,14 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   if (msg->fp)
   {
     if (nntp_edata_get(e)->parsed)
-      return 0;
+      return true;
   }
   else
   {
     char buf[PATH_MAX];
     /* don't try to fetch article from removed newsgroup */
     if (mdata->deleted)
-      return -1;
+      return false;
 
     /* create new cache file */
     const char *fetch_msg = _("Fetching message...");
@@ -2700,7 +2700,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
         mutt_perror(acache->path);
         unlink(acache->path);
         FREE(&acache->path);
-        return -1;
+        return false;
       }
     }
 
@@ -2727,7 +2727,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
         else
           mutt_error("ARTICLE: %s", buf);
       }
-      return -1;
+      return false;
     }
 
     if (!acache->path)
@@ -2767,7 +2767,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   rewind(msg->fp);
   mutt_clear_error();
-  return 0;
+  return true;
 }
 
 /**

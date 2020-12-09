@@ -2520,11 +2520,11 @@ static enum MxStatus nm_mbox_close(struct Mailbox *m)
 /**
  * nm_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
-static int nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
   struct Email *e = m->emails[msgno];
   if (!e)
-    return -1;
+    return false;
 
   char path[PATH_MAX];
   char *folder = nm_email_get_folder(e);
@@ -2537,10 +2537,7 @@ static int nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     msg->fp = maildir_open_find_message(folder, e->path, NULL);
   }
 
-  if (!msg->fp)
-    return -1;
-
-  return 0;
+  return msg->fp != NULL;
 }
 
 /**

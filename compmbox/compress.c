@@ -725,16 +725,16 @@ static enum MxStatus comp_mbox_close(struct Mailbox *m)
 /**
  * comp_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
-static int comp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool comp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
   if (!m->compress_info)
-    return -1;
+    return false;
 
   struct CompressInfo *ci = m->compress_info;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
-    return -1;
+    return false;
 
   /* Delegate */
   return ops->msg_open(m, msg, msgno);
@@ -743,16 +743,16 @@ static int comp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 /**
  * comp_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  */
-static int comp_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
+static bool comp_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
   if (!m->compress_info)
-    return -1;
+    return false;
 
   struct CompressInfo *ci = m->compress_info;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
-    return -1;
+    return false;
 
   /* Delegate */
   return ops->msg_open_new(m, msg, e);

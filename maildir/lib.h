@@ -56,7 +56,7 @@ extern struct MxOps MxMhOps;
 
 int           maildir_check_empty      (const char *path);
 void          maildir_gen_flags        (char *dest, size_t destlen, struct Email *e);
-int           maildir_msg_open_new     (struct Mailbox *m, struct Message *msg, const struct Email *e);
+bool          maildir_msg_open_new     (struct Mailbox *m, struct Message *msg, const struct Email *e);
 FILE *        maildir_open_find_message(const char *folder, const char *msg, char **newname);
 void          maildir_parse_flags      (struct Email *e, const char *path);
 struct Email *maildir_parse_message    (enum MailboxType type, const char *fname, bool is_old, struct Email *e);
