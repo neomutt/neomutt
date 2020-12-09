@@ -1128,7 +1128,7 @@ int main(int argc, char *argv[], char *envp[])
       bool passive = C_ImapPassive;
       C_ImapPassive = false;
 #endif
-      if (mutt_mailbox_check(Context ? Context->mailbox : NULL, 0) == 0)
+      if (mutt_mailbox_check(ctx_mailbox(Context), 0) == 0)
       {
         mutt_message(_("No mailbox with new mail"));
         goto main_curses; // TEST37: neomutt -Z (no new mail)

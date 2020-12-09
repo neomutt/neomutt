@@ -1515,9 +1515,9 @@ int mutt_menu_loop(struct Menu *menu)
         break;
 
       case OP_SHELL_ESCAPE:
-        if (mutt_shell_escape() && Context && Context->mailbox)
+        if (mutt_shell_escape())
         {
-          mutt_mailbox_check(Context->mailbox, MUTT_MAILBOX_CHECK_FORCE);
+          mutt_mailbox_check(ctx_mailbox(Context), MUTT_MAILBOX_CHECK_FORCE);
         }
         break;
 

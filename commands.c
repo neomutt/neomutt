@@ -1434,6 +1434,6 @@ bool mutt_check_traditional_pgp(struct EmailList *el, MuttRedrawFlags *redraw)
  */
 void mutt_check_stats(void)
 {
-  if (Context && Context->mailbox)
-    mutt_mailbox_check(Context->mailbox, MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
+  mutt_mailbox_check(ctx_mailbox(Context),
+                     MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
 }
