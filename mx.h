@@ -79,17 +79,6 @@ enum MxCheckReturns
 };
 
 /**
- * enum MxCheckStatsReturns - Return values from mx_mbox_check_stats()
- * @note This is a subset of MxCheckReturns.
- */
-enum MxCheckStatsReturns
-{
-  MX_CHECK_STATS_ERROR = -1, ///< An error occurred
-  MX_CHECK_STATS_NO_CHANGE,  ///< No changes
-  MX_CHECK_STATS_NEW_MAIL,   ///< New mail received in Mailbox
-};
-
-/**
  * enum MxOpenReturns - Return values for mbox_open()
  */
 enum MxOpenReturns
@@ -192,12 +181,12 @@ struct MxOps
    * mbox_check_stats - Check the Mailbox statistics
    * @param m     Mailbox to check
    * @param flags Function flags
-   * @retval enum #MxCheckStatsReturns
+   * @retval enum #MxCheckReturns
    *
    * **Contract**
    * - @a m is not NULL
    */
-  enum MxCheckStatsReturns (*mbox_check_stats)(struct Mailbox *m, uint8_t flags);
+  enum MxCheckReturns (*mbox_check_stats)(struct Mailbox *m, uint8_t flags);
 
   /**
    * mbox_sync - Save changes to the Mailbox
@@ -390,11 +379,11 @@ struct MxOps
 };
 
 /* Wrappers for the Mailbox API, see MxOps */
-enum MxCheckReturns      mx_mbox_check      (struct Mailbox *m);
-enum MxCheckStatsReturns mx_mbox_check_stats(struct Mailbox *m, uint8_t flags);
-enum MxCheckReturns      mx_mbox_close      (struct Context **ptr);
+enum MxCheckReturns mx_mbox_check  (struct Mailbox *m);
+enum MxCheckReturns mx_mbox_check_stats(struct Mailbox *m, uint8_t flags);
+enum MxCheckReturns mx_mbox_close  (struct Context **ptr);
 struct Context *mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
-enum MxCheckReturns mx_mbox_sync       (struct Mailbox *m);
+enum MxCheckReturns mx_mbox_sync   (struct Mailbox *m);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
 int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
 struct Message *mx_msg_open_new    (struct Mailbox *m, const struct Email *e, MsgOpenFlags flags);

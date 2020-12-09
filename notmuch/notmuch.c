@@ -1979,13 +1979,13 @@ int nm_update_filename(struct Mailbox *m, const char *old_file,
 /**
  * nm_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static enum MxCheckStatsReturns nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+static enum MxCheckReturns nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   struct UrlQuery *item = NULL;
   struct Url *url = NULL;
   char *db_filename = NULL, *db_query = NULL;
   notmuch_database_t *db = NULL;
-  enum MxCheckStatsReturns rc = MX_CHECK_STATS_ERROR;
+  enum MxCheckReturns rc = MX_CHECK_ERROR;
   int limit = C_NmDbLimit;
   mutt_debug(LL_DEBUG1, "nm: count\n");
 
@@ -2052,7 +2052,7 @@ static enum MxCheckStatsReturns nm_mbox_check_stats(struct Mailbox *m, uint8_t f
   m->msg_flagged = count_query(db, qstr, limit);
   FREE(&qstr);
 
-  rc = (m->msg_new > 0) ? MX_CHECK_STATS_NEW_MAIL : MX_CHECK_STATS_NO_CHANGE;
+  rc = (m->msg_new > 0) ? MX_CHECK_NEW_MAIL : MX_CHECK_NO_CHANGE;
 done:
   if (db)
   {
