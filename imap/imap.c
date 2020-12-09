@@ -1086,12 +1086,12 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
  * imap_check_mailbox - use the NOOP or IDLE command to poll for new mail
  * @param m     Mailbox
  * @param force Don't wait
- * return enum MxCheckReturns
+ * return enum MxStatus
  */
-enum MxCheckReturns imap_check_mailbox(struct Mailbox *m, bool force)
+enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
 {
   if (!m || !m->account)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -1105,7 +1105,7 @@ enum MxCheckReturns imap_check_mailbox(struct Mailbox *m, bool force)
       ((adata->state != IMAP_IDLE) || (mutt_date_epoch() >= adata->lastread + C_ImapKeepalive)))
   {
     if (imap_cmd_idle(adata) < 0)
-      return MX_CHECK_ERROR;
+      return MX_STATUS_ERROR;
   }
   if (adata->state == IMAP_IDLE)
   {
@@ -1114,7 +1114,7 @@ enum MxCheckReturns imap_check_mailbox(struct Mailbox *m, bool force)
       if (imap_cmd_step(adata) != IMAP_RES_CONTINUE)
       {
         mutt_debug(LL_DEBUG1, "Error reading IDLE response\n");
-        return MX_CHECK_ERROR;
+        return MX_STATUS_ERROR;
       }
     }
     if (rc < 0)
@@ -1128,22 +1128,22 @@ enum MxCheckReturns imap_check_mailbox(struct Mailbox *m, bool force)
                  (mutt_date_epoch() >= adata->lastread + C_Timeout))) &&
       (imap_exec(adata, "NOOP", IMAP_CMD_POLL) != IMAP_EXEC_SUCCESS))
   {
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
   }
 
   /* We call this even when we haven't run NOOP in case we have pending
    * changes to process, since we can reopen here. */
   imap_cmd_finish(adata);
 
-  enum MxCheckReturns check = MX_CHECK_NO_CHANGE;
+  enum MxStatus check = MX_STATUS_OK;
   if (mdata->check_status & IMAP_EXPUNGE_PENDING)
-    check = MX_CHECK_REOPENED;
+    check = MX_STATUS_REOPENED;
   else if (mdata->check_status & IMAP_NEWMAIL_PENDING)
-    check = MX_CHECK_NEW_MAIL;
+    check = MX_STATUS_NEW_MAIL;
   else if (mdata->check_status & IMAP_FLAGS_PENDING)
-    check = MX_CHECK_FLAGS;
+    check = MX_STATUS_FLAGS;
   else if (rc < 0)
-    check = MX_CHECK_ERROR;
+    check = MX_STATUS_ERROR;
 
   mdata->check_status = IMAP_OPEN_NO_FLAGS;
 
@@ -1200,14 +1200,14 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
 /**
  * imap_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static enum MxCheckReturns imap_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+static enum MxStatus imap_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   const int new_msgs = imap_mailbox_status(m, true);
   if (new_msgs == -1)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
   if (new_msgs == 0)
-    return MX_CHECK_NO_CHANGE;
-  return MX_CHECK_NEW_MAIL;
+    return MX_STATUS_OK;
+  return MX_STATUS_NEW_MAIL;
 }
 
 /**
@@ -1504,11 +1504,11 @@ out:
  * @param m       Mailbox
  * @param expunge if true do expunge
  * @param close   if true we move imap state to CLOSE
- * @retval enum #MxCheckReturns
+ * @retval enum #MxStatus
  *
  * @note The flag retvals come from a call to imap_check_mailbox()
  */
-enum MxCheckReturns imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
+enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 {
   if (!m)
     return -1;
@@ -1530,8 +1530,8 @@ enum MxCheckReturns imap_sync_mailbox(struct Mailbox *m, bool expunge, bool clos
    * to be changed. */
   imap_allow_reopen(m);
 
-  enum MxCheckReturns check = imap_check_mailbox(m, false);
-  if (check == MX_CHECK_ERROR)
+  enum MxStatus check = imap_check_mailbox(m, false);
+  if (check == MX_STATUS_ERROR)
     return check;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */
@@ -2130,13 +2130,13 @@ static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 /**
  * imap_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param m Mailbox
- * @retval >0 Success, e.g. #MX_CHECK_REOPENED
+ * @retval >0 Success, e.g. #MX_STATUS_REOPENED
  * @retval -1 Failure
  */
-static enum MxCheckReturns imap_mbox_check(struct Mailbox *m)
+static enum MxStatus imap_mbox_check(struct Mailbox *m)
 {
   imap_allow_reopen(m);
-  enum MxCheckReturns rc = imap_check_mailbox(m, false);
+  enum MxStatus rc = imap_check_mailbox(m, false);
   /* NOTE - ctx might have been changed at this point. In particular,
    * m could be NULL. Beware. */
   imap_disallow_reopen(m);
@@ -2147,14 +2147,14 @@ static enum MxCheckReturns imap_mbox_check(struct Mailbox *m)
 /**
  * imap_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  */
-static enum MxCheckReturns imap_mbox_close(struct Mailbox *m)
+static enum MxStatus imap_mbox_close(struct Mailbox *m)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
   /* Check to see if the mailbox is actually open */
   if (!adata || !mdata)
-    return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_OK;
 
   /* imap_mbox_open_append() borrows the struct ImapAccountData temporarily,
    * just for the connection.
@@ -2183,7 +2183,7 @@ static enum MxCheckReturns imap_mbox_close(struct Mailbox *m)
     imap_mdata_cache_reset(m->mdata);
   }
 
-  return MX_CHECK_NO_CHANGE;
+  return MX_STATUS_OK;
 }
 
 /**

@@ -182,7 +182,7 @@ int mh_check_empty(const char *path)
 /**
  * mh_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static enum MxCheckReturns mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+static enum MxStatus mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   struct MhSequences mhs = { 0 };
   DIR *dirp = NULL;
@@ -192,17 +192,17 @@ static enum MxCheckReturns mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
    * since the last m visit, there is no "new mail" */
   if (C_MailCheckRecent && (mh_seq_changed(m) <= 0))
   {
-    return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_OK;
   }
 
   if (mh_seq_read(&mhs, mailbox_path(m)) < 0)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   m->msg_count = 0;
   m->msg_unread = 0;
   m->msg_flagged = 0;
 
-  enum MxCheckReturns rc = MX_CHECK_NO_CHANGE;
+  enum MxStatus rc = MX_STATUS_OK;
   bool check_new = true;
   for (int i = mhs.max; i > 0; i--)
   {
@@ -218,7 +218,7 @@ static enum MxCheckReturns mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
         if (!C_MailCheckRecent || (mh_already_notified(m, i) == 0))
         {
           m->has_new = true;
-          rc = MX_CHECK_NEW_MAIL;
+          rc = MX_STATUS_NEW_MAIL;
         }
         /* Because we are traversing from high to low, we can stop
          * checking for new mail after the first unseen message.
@@ -898,7 +898,7 @@ static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  *
  * Don't change this code unless you _really_ understand what happens.
  */
-enum MxCheckReturns mh_mbox_check(struct Mailbox *m)
+enum MxStatus mh_mbox_check(struct Mailbox *m)
 {
   char buf[PATH_MAX];
   struct stat st, st_cur;
@@ -909,11 +909,11 @@ enum MxCheckReturns mh_mbox_check(struct Mailbox *m)
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
   if (!C_CheckNew)
-    return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_OK;
 
   mutt_str_copy(buf, mailbox_path(m), sizeof(buf));
   if (stat(buf, &st) == -1)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   /* create .mh_sequences when there isn't one. */
   snprintf(buf, sizeof(buf), "%s/.mh_sequences", mailbox_path(m));
@@ -942,7 +942,7 @@ enum MxCheckReturns mh_mbox_check(struct Mailbox *m)
   }
 
   if (!modified)
-    return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_OK;
 
     /* Update the modification times on the mailbox.
      *
@@ -966,7 +966,7 @@ enum MxCheckReturns mh_mbox_check(struct Mailbox *m)
   mh_delayed_parsing(m, &mda, NULL);
 
   if (mh_seq_read(&mhs, mailbox_path(m)) < 0)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
   mh_update_maildir(&mda, &mhs);
   mh_seq_free(&mhs);
 
@@ -1024,27 +1024,27 @@ enum MxCheckReturns mh_mbox_check(struct Mailbox *m)
 
   ARRAY_FREE(&mda);
   if (occult)
-    return MX_CHECK_REOPENED;
+    return MX_STATUS_REOPENED;
   if (num_new > 0)
-    return MX_CHECK_NEW_MAIL;
+    return MX_STATUS_NEW_MAIL;
   if (flags_changed)
-    return MX_CHECK_FLAGS;
-  return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_FLAGS;
+  return MX_STATUS_OK;
 }
 
 /**
  * mh_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
- * @retval #MX_CHECK_REOPENED  mailbox has been externally modified
- * @retval #MX_CHECK_NEW_MAIL  new mail has arrived
+ * @retval #MX_STATUS_REOPENED  mailbox has been externally modified
+ * @retval #MX_STATUS_NEW_MAIL  new mail has arrived
  * @retval  0 Success
  * @retval -1 Error
  *
  * @note The flag retvals come from a call to a backend sync function
  */
-enum MxCheckReturns mh_mbox_sync(struct Mailbox *m)
+enum MxStatus mh_mbox_sync(struct Mailbox *m)
 {
-  enum MxCheckReturns check = mh_mbox_check(m);
-  if (check == MX_CHECK_ERROR)
+  enum MxStatus check = mh_mbox_check(m);
+  if (check == MX_STATUS_ERROR)
     return check;
 
   struct HeaderCache *hc = NULL;
@@ -1103,16 +1103,16 @@ err:
   if (m->type == MUTT_MH)
     mutt_hcache_close(hc);
 #endif
-  return MX_CHECK_ERROR;
+  return MX_STATUS_ERROR;
 }
 
 /**
  * mh_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
- * @retval MX_CHECK_NO_CHANGE Always
+ * @retval MX_STATUS_OK Always
  */
-enum MxCheckReturns mh_mbox_close(struct Mailbox *m)
+enum MxStatus mh_mbox_close(struct Mailbox *m)
 {
-  return MX_CHECK_NO_CHANGE;
+  return MX_STATUS_OK;
 }
 
 /**

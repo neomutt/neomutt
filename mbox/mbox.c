@@ -527,7 +527,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
 /**
  * reopen_mailbox - Close and reopen a mailbox
  * @param m          Mailbox
- * @retval >0 Success, e.g. #MX_CHECK_REOPENED, #MX_CHECK_NEW_MAIL
+ * @retval >0 Success, e.g. #MX_STATUS_REOPENED, #MX_STATUS_NEW_MAIL
  * @retval -1 Error
  */
 static int reopen_mailbox(struct Mailbox *m)
@@ -699,7 +699,7 @@ static int reopen_mailbox(struct Mailbox *m)
   mailbox_changed(m, NT_MAILBOX_UPDATE);
   m->verbose = true;
 
-  return (m->changed || msg_mod) ? MX_CHECK_REOPENED : MX_CHECK_NEW_MAIL;
+  return (m->changed || msg_mod) ? MX_STATUS_REOPENED : MX_STATUS_NEW_MAIL;
 }
 
 /**
@@ -1005,20 +1005,20 @@ static bool mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 /**
  * mbox_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param[in]  m Mailbox
- * @retval #MX_CHECK_REOPENED  Mailbox has been reopened
- * @retval #MX_CHECK_NEW_MAIL  New mail has arrived
- * @retval #MX_CHECK_LOCKED    Couldn't lock the file
+ * @retval #MX_STATUS_REOPENED  Mailbox has been reopened
+ * @retval #MX_STATUS_NEW_MAIL  New mail has arrived
+ * @retval #MX_STATUS_LOCKED    Couldn't lock the file
  */
-static enum MxCheckReturns mbox_mbox_check(struct Mailbox *m)
+static enum MxStatus mbox_mbox_check(struct Mailbox *m)
 {
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   if (!adata->fp)
   {
     if (mbox_mbox_open(m) != MX_OPEN_OK)
-      return MX_CHECK_ERROR;
+      return MX_STATUS_ERROR;
     mailbox_changed(m, NT_MAILBOX_INVALID);
   }
 
@@ -1031,14 +1031,14 @@ static enum MxCheckReturns mbox_mbox_check(struct Mailbox *m)
     if ((mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->mtime) == 0) &&
         (st.st_size == m->size))
     {
-      return MX_CHECK_NO_CHANGE;
+      return MX_STATUS_OK;
     }
 
     if (st.st_size == m->size)
     {
       /* the file was touched, but it is still the same length, so just exit */
       mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
-      return MX_CHECK_NO_CHANGE;
+      return MX_STATUS_OK;
     }
 
     if (st.st_size > m->size)
@@ -1053,7 +1053,7 @@ static enum MxCheckReturns mbox_mbox_check(struct Mailbox *m)
           /* we couldn't lock the mailbox, but nothing serious happened:
            * probably the new mail arrived: no reason to wait till we can
            * parse it: we'll get it on the next pass */
-          return MX_CHECK_LOCKED;
+          return MX_STATUS_LOCKED;
         }
         unlock = 1;
       }
@@ -1091,7 +1091,7 @@ static enum MxCheckReturns mbox_mbox_check(struct Mailbox *m)
             mutt_sig_unblock();
           }
 
-          return MX_CHECK_NEW_MAIL; /* signal that new mail arrived */
+          return MX_STATUS_NEW_MAIL; /* signal that new mail arrived */
         }
         else
           modified = true;
@@ -1116,7 +1116,7 @@ static enum MxCheckReturns mbox_mbox_check(struct Mailbox *m)
         mbox_unlock_mailbox(m);
         mutt_sig_unblock();
       }
-      return MX_CHECK_REOPENED;
+      return MX_STATUS_REOPENED;
     }
   }
 
@@ -1126,17 +1126,17 @@ static enum MxCheckReturns mbox_mbox_check(struct Mailbox *m)
   mx_fastclose_mailbox(m);
   mutt_sig_unblock();
   mutt_error(_("Mailbox was corrupted"));
-  return MX_CHECK_ERROR;
+  return MX_STATUS_ERROR;
 }
 
 /**
  * mbox_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
  */
-static enum MxCheckReturns mbox_mbox_sync(struct Mailbox *m)
+static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 {
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   struct Buffer *tempfile = NULL;
   char buf[32];
@@ -1151,7 +1151,7 @@ static enum MxCheckReturns mbox_mbox_sync(struct Mailbox *m)
   struct MUpdate *old_offset = NULL;
   FILE *fp = NULL;
   struct Progress progress;
-  enum MxCheckReturns rc = MX_CHECK_ERROR;
+  enum MxStatus rc = MX_STATUS_ERROR;
 
   /* sort message by their position in the mailbox on disk */
   if (C_Sort != SORT_ORDER)
@@ -1183,8 +1183,8 @@ static enum MxCheckReturns mbox_mbox_sync(struct Mailbox *m)
   }
 
   /* Check to make sure that the file hasn't changed on disk */
-  enum MxCheckReturns check = mbox_mbox_check(m);
-  if ((check == MX_CHECK_NEW_MAIL) || (check == MX_CHECK_REOPENED))
+  enum MxStatus check = mbox_mbox_check(m);
+  if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
   {
     /* new mail arrived, or mailbox reopened */
     rc = check;
@@ -1503,14 +1503,14 @@ fatal:
 /**
  * mbox_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  */
-static enum MxCheckReturns mbox_mbox_close(struct Mailbox *m)
+static enum MxStatus mbox_mbox_close(struct Mailbox *m)
 {
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   if (!adata->fp)
-    return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_OK;
 
   if (adata->append)
   {
@@ -1537,7 +1537,7 @@ static enum MxCheckReturns mbox_mbox_close(struct Mailbox *m)
 #endif
   }
 
-  return MX_CHECK_NO_CHANGE;
+  return MX_STATUS_OK;
 }
 
 /**
@@ -1750,11 +1750,11 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
 /**
  * mbox_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static enum MxCheckReturns mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   struct stat sb = { 0 };
   if (stat(mailbox_path(m), &sb) != 0)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   bool new_or_changed;
 
@@ -1795,7 +1795,9 @@ static enum MxCheckReturns mbox_mbox_check_stats(struct Mailbox *m, uint8_t flag
     m->peekonly = old_peek;
   }
 
-  return (m->has_new || m->msg_new) ? MX_CHECK_NEW_MAIL : MX_CHECK_NO_CHANGE;
+  if (m->has_new || m->msg_new)
+    return MX_STATUS_NEW_MAIL;
+  return MX_STATUS_OK;
 }
 
 // clang-format off

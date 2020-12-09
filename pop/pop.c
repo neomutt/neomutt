@@ -864,19 +864,19 @@ static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
 /**
  * pop_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  */
-static enum MxCheckReturns pop_mbox_check(struct Mailbox *m)
+static enum MxStatus pop_mbox_check(struct Mailbox *m)
 {
   struct PopAccountData *adata = pop_adata_get(m);
 
   if ((adata->check_time + C_PopCheckinterval) > mutt_date_epoch())
-    return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_OK;
 
   pop_logout(m);
 
   mutt_socket_close(adata->conn);
 
   if (pop_open_connection(adata) < 0)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   m->size = adata->size;
 
@@ -889,12 +889,12 @@ static enum MxCheckReturns pop_mbox_check(struct Mailbox *m)
     mailbox_changed(m, NT_MAILBOX_INVALID);
 
   if (rc < 0)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   if (rc > 0)
-    return MX_CHECK_NEW_MAIL;
+    return MX_STATUS_NEW_MAIL;
 
-  return MX_CHECK_NO_CHANGE;
+  return MX_STATUS_OK;
 }
 
 /**
@@ -902,7 +902,7 @@ static enum MxCheckReturns pop_mbox_check(struct Mailbox *m)
  *
  * Update POP mailbox, delete messages from server
  */
-static enum MxCheckReturns pop_mbox_sync(struct Mailbox *m)
+static enum MxStatus pop_mbox_sync(struct Mailbox *m)
 {
   int i, j, rc = 0;
   char buf[1024];
@@ -924,7 +924,7 @@ static enum MxCheckReturns pop_mbox_sync(struct Mailbox *m)
   while (true)
   {
     if (pop_reconnect(m) < 0)
-      return MX_CHECK_ERROR;
+      return MX_STATUS_ERROR;
 
     mutt_progress_init(&progress, _("Marking messages deleted..."),
                        MUTT_PROGRESS_WRITE, num_deleted);
@@ -975,13 +975,13 @@ static enum MxCheckReturns pop_mbox_sync(struct Mailbox *m)
       adata->clear_cache = true;
       pop_clear_cache(adata);
       adata->status = POP_DISCONNECTED;
-      return MX_CHECK_NO_CHANGE;
+      return MX_STATUS_OK;
     }
 
     if (rc == -2)
     {
       mutt_error("%s", adata->err_msg);
-      return MX_CHECK_ERROR;
+      return MX_STATUS_ERROR;
     }
   }
 }
@@ -989,11 +989,11 @@ static enum MxCheckReturns pop_mbox_sync(struct Mailbox *m)
 /**
  * pop_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  */
-static enum MxCheckReturns pop_mbox_close(struct Mailbox *m)
+static enum MxStatus pop_mbox_close(struct Mailbox *m)
 {
   struct PopAccountData *adata = pop_adata_get(m);
   if (!adata)
-    return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_OK;
 
   pop_logout(m);
 
@@ -1010,7 +1010,7 @@ static enum MxCheckReturns pop_mbox_close(struct Mailbox *m)
 
   mutt_bcache_close(&adata->bcache);
 
-  return MX_CHECK_NO_CHANGE;
+  return MX_STATUS_OK;
 }
 
 /**

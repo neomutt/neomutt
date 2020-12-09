@@ -63,7 +63,7 @@ extern struct MxOps MxMmdfOps;
 
 #define MMDF_SEP "\001\001\001\001\n"
 
-enum MxCheckReturns mbox_check(struct Mailbox *m, struct stat *sb, bool check_stats);
+enum MxStatus    mbox_check(struct Mailbox *m, struct stat *sb, bool check_stats);
 enum MailboxType mbox_path_probe(const char *path, const struct stat *st);
 void             mbox_reset_atime(struct Mailbox *m, struct stat *st);
 bool             mbox_test_new_folder(const char *path);

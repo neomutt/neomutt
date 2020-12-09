@@ -564,39 +564,39 @@ cmoa_fail1:
 /**
  * comp_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param m Mailbox
- * @retval enum #MxCheckReturns
+ * @retval enum #MxStatus
  *
  * If the compressed file changes in size but the mailbox hasn't been changed
  * in NeoMutt, then we can close and reopen the mailbox.
  *
  * If the mailbox has been changed in NeoMutt, warn the user.
  */
-static enum MxCheckReturns comp_mbox_check(struct Mailbox *m)
+static enum MxStatus comp_mbox_check(struct Mailbox *m)
 {
   if (!m->compress_info)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   struct CompressInfo *ci = m->compress_info;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   int size = mutt_file_get_size(m->realpath);
   if (size == ci->size)
-    return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_OK;
 
   if (!lock_realpath(m, false))
   {
     mutt_error(_("Unable to lock mailbox"));
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
   }
 
   int rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
   store_size(m);
   unlock_realpath(m);
   if (rc == 0)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   return ops->mbox_check(m);
 }
@@ -607,45 +607,45 @@ static enum MxCheckReturns comp_mbox_check(struct Mailbox *m)
  * Changes in NeoMutt only affect the tmp file.
  * Calling comp_mbox_sync() will commit them to the compressed file.
  */
-static enum MxCheckReturns comp_mbox_sync(struct Mailbox *m)
+static enum MxStatus comp_mbox_sync(struct Mailbox *m)
 {
   if (!m->compress_info)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   struct CompressInfo *ci = m->compress_info;
 
   if (!ci->cmd_close)
   {
     mutt_error(_("Can't sync a compressed file without a close-hook"));
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
   }
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   if (!lock_realpath(m, true))
   {
     mutt_error(_("Unable to lock mailbox"));
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
   }
 
-  enum MxCheckReturns check = comp_mbox_check(m);
-  if (check != MX_CHECK_NO_CHANGE)
+  enum MxStatus check = comp_mbox_check(m);
+  if (check != MX_STATUS_OK)
     goto sync_cleanup;
 
   check = ops->mbox_sync(m);
-  if (check != MX_CHECK_NO_CHANGE)
+  if (check != MX_STATUS_OK)
     goto sync_cleanup;
 
   int rc = execute_command(m, ci->cmd_close, _("Compressing %s"));
   if (rc == 0)
   {
-    check = MX_CHECK_ERROR;
+    check = MX_STATUS_ERROR;
     goto sync_cleanup;
   }
 
-  check = MX_CHECK_NO_CHANGE;
+  check = MX_STATUS_OK;
 
 sync_cleanup:
   store_size(m);
@@ -659,10 +659,10 @@ sync_cleanup:
  * If the mailbox has been changed then re-compress the tmp file.
  * Then delete the tmp file.
  */
-static enum MxCheckReturns comp_mbox_close(struct Mailbox *m)
+static enum MxStatus comp_mbox_close(struct Mailbox *m)
 {
   if (!m->compress_info)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   struct CompressInfo *ci = m->compress_info;
 
@@ -670,7 +670,7 @@ static enum MxCheckReturns comp_mbox_close(struct Mailbox *m)
   if (!ops)
   {
     compress_info_free(m);
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
   }
 
   ops->mbox_close(m);
@@ -719,7 +719,7 @@ static enum MxCheckReturns comp_mbox_close(struct Mailbox *m)
 
   compress_info_free(m);
 
-  return MX_CHECK_NO_CHANGE;
+  return MX_STATUS_OK;
 }
 
 /**

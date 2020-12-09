@@ -68,14 +68,14 @@ typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open_new(), e.g. #MUTT_
 /**
  * enum MxCheckReturns - Return values from mx_mbox_check(), mx_mbox_sync(), and mx_mbox_close()
  */
-enum MxCheckReturns
+enum MxStatus
 {
-  MX_CHECK_ERROR = -1, ///< An error occurred
-  MX_CHECK_NO_CHANGE,  ///< No changes
-  MX_CHECK_NEW_MAIL,   ///< New mail received in Mailbox
-  MX_CHECK_LOCKED,     ///< Couldn't lock the Mailbox
-  MX_CHECK_REOPENED,   ///< Mailbox was reopened
-  MX_CHECK_FLAGS,      ///< Nondestructive flags change (IMAP)
+  MX_STATUS_ERROR = -1, ///< An error occurred
+  MX_STATUS_OK,         ///< No changes
+  MX_STATUS_NEW_MAIL,   ///< New mail received in Mailbox
+  MX_STATUS_LOCKED,     ///< Couldn't lock the Mailbox
+  MX_STATUS_REOPENED,   ///< Mailbox was reopened
+  MX_STATUS_FLAGS,      ///< Nondestructive flags change (IMAP)
 };
 
 /**
@@ -170,43 +170,43 @@ struct MxOps
   /**
    * mbox_check - Check for new mail
    * @param m Mailbox
-   * @retval enum #MxCheckReturns
+   * @retval enum #MxStatus
    *
    * **Contract**
    * - @a m is not NULL
    */
-  enum MxCheckReturns (*mbox_check) (struct Mailbox *m);
+  enum MxStatus (*mbox_check) (struct Mailbox *m);
 
   /**
    * mbox_check_stats - Check the Mailbox statistics
    * @param m     Mailbox to check
    * @param flags Function flags
-   * @retval enum #MxCheckReturns
+   * @retval enum #MxStatus
    *
    * **Contract**
    * - @a m is not NULL
    */
-  enum MxCheckReturns (*mbox_check_stats)(struct Mailbox *m, uint8_t flags);
+  enum MxStatus (*mbox_check_stats)(struct Mailbox *m, uint8_t flags);
 
   /**
    * mbox_sync - Save changes to the Mailbox
    * @param m Mailbox to sync
-   * @retval enum #MxCheckReturns
+   * @retval enum #MxStatus
    *
    * **Contract**
    * - @a m is not NULL
    */
-  enum MxCheckReturns (*mbox_sync)(struct Mailbox *m);
+  enum MxStatus (*mbox_sync)(struct Mailbox *m);
 
   /**
    * mbox_close - Close a Mailbox
    * @param m Mailbox to close
-   * @retval enum #MxCheckReturns
+   * @retval enum #MxStatus
    *
    * **Contract**
    * - @a m is not NULL
    */
-  enum MxCheckReturns (*mbox_close)(struct Mailbox *m);
+  enum MxStatus (*mbox_close)(struct Mailbox *m);
 
   /**
    * msg_open - Open an email message in a Mailbox
@@ -379,11 +379,11 @@ struct MxOps
 };
 
 /* Wrappers for the Mailbox API, see MxOps */
-enum MxCheckReturns mx_mbox_check  (struct Mailbox *m);
-enum MxCheckReturns mx_mbox_check_stats(struct Mailbox *m, uint8_t flags);
-enum MxCheckReturns mx_mbox_close  (struct Context **ptr);
+enum MxStatus   mx_mbox_check      (struct Mailbox *m);
+enum MxStatus   mx_mbox_check_stats(struct Mailbox *m, uint8_t flags);
+enum MxStatus   mx_mbox_close      (struct Context **ptr);
 struct Context *mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
-enum MxCheckReturns mx_mbox_sync   (struct Mailbox *m);
+enum MxStatus   mx_mbox_sync       (struct Mailbox *m);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
 int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
 struct Message *mx_msg_open_new    (struct Mailbox *m, const struct Email *e, MsgOpenFlags flags);

@@ -311,10 +311,10 @@ static void hardclose(struct Context **pctx)
 {
   /* messages might have been marked for deletion.
    * try once more on reopen before giving up. */
-  enum MxCheckReturns rc = mx_mbox_close(pctx);
-  if (rc != MX_CHECK_ERROR && rc != MX_CHECK_NO_CHANGE)
+  enum MxStatus rc = mx_mbox_close(pctx);
+  if (rc != MX_STATUS_ERROR && rc != MX_STATUS_OK)
     rc = mx_mbox_close(pctx);
-  if (rc != MX_CHECK_NO_CHANGE)
+  if (rc != MX_STATUS_OK)
     mx_fastclose_mailbox((*pctx)->mailbox);
 }
 

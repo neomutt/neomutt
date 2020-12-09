@@ -1979,13 +1979,13 @@ int nm_update_filename(struct Mailbox *m, const char *old_file,
 /**
  * nm_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static enum MxCheckReturns nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   struct UrlQuery *item = NULL;
   struct Url *url = NULL;
   char *db_filename = NULL, *db_query = NULL;
   notmuch_database_t *db = NULL;
-  enum MxCheckReturns rc = MX_CHECK_ERROR;
+  enum MxStatus rc = MX_STATUS_ERROR;
   int limit = C_NmDbLimit;
   mutt_debug(LL_DEBUG1, "nm: count\n");
 
@@ -2052,7 +2052,7 @@ static enum MxCheckReturns nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   m->msg_flagged = count_query(db, qstr, limit);
   FREE(&qstr);
 
-  rc = (m->msg_new > 0) ? MX_CHECK_NEW_MAIL : MX_CHECK_NO_CHANGE;
+  rc = (m->msg_new > 0) ? MX_STATUS_NEW_MAIL : MX_STATUS_OK;
 done:
   if (db)
   {
@@ -2252,14 +2252,14 @@ static enum MxOpenReturns nm_mbox_open(struct Mailbox *m)
 /**
  * nm_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param m Mailbox
- * @retval enum #MxCheckReturns
+ * @retval enum #MxStatus
  */
-static enum MxCheckReturns nm_mbox_check(struct Mailbox *m)
+static enum MxStatus nm_mbox_check(struct Mailbox *m)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
   time_t mtime = 0;
   if (!mdata || (nm_db_get_mtime(m, &mtime) != 0))
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
   int new_flags = 0;
   bool occult = false;
@@ -2268,7 +2268,7 @@ static enum MxCheckReturns nm_mbox_check(struct Mailbox *m)
   {
     mutt_debug(LL_DEBUG2, "nm: check unnecessary (db=%lu mailbox=%lu)\n", mtime,
                m->mtime.tv_sec);
-    return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_OK;
   }
 
   mutt_debug(LL_DEBUG1, "nm: checking (db=%lu mailbox=%lu)\n", mtime, m->mtime.tv_sec);
@@ -2297,7 +2297,7 @@ static enum MxCheckReturns nm_mbox_check(struct Mailbox *m)
   // TODO: Analyze impact of removing this version guard.
 #if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
   if (!msgs)
-    return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_OK;
 #elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
   if (!msgs)
     goto done;
@@ -2378,24 +2378,24 @@ done:
              m->msg_count, new_flags, occult);
 
   if (occult)
-    return MX_CHECK_REOPENED;
+    return MX_STATUS_REOPENED;
   if (m->msg_count > mdata->oldmsgcount)
-    return MX_CHECK_NEW_MAIL;
+    return MX_STATUS_NEW_MAIL;
   if (new_flags)
-    return MX_CHECK_FLAGS;
-  return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_FLAGS;
+  return MX_STATUS_OK;
 }
 
 /**
  * nm_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
  */
-static enum MxCheckReturns nm_mbox_sync(struct Mailbox *m)
+static enum MxStatus nm_mbox_sync(struct Mailbox *m)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
 
-  enum MxCheckReturns rc = MX_CHECK_NO_CHANGE;
+  enum MxStatus rc = MX_STATUS_OK;
   struct Progress progress;
   char *url = mutt_str_dup(mailbox_path(m));
   bool changed = false;
@@ -2462,7 +2462,7 @@ static enum MxCheckReturns nm_mbox_sync(struct Mailbox *m)
     if (!ok)
     {
       mh_sync_errors += 1;
-      rc = MX_CHECK_ERROR;
+      rc = MX_STATUS_ERROR;
       continue;
     }
 
@@ -2512,9 +2512,9 @@ static enum MxCheckReturns nm_mbox_sync(struct Mailbox *m)
  *
  * Nothing to do.
  */
-static enum MxCheckReturns nm_mbox_close(struct Mailbox *m)
+static enum MxStatus nm_mbox_close(struct Mailbox *m)
 {
-  return MX_CHECK_NO_CHANGE;
+  return MX_STATUS_OK;
 }
 
 /**

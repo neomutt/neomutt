@@ -1176,7 +1176,7 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  * already knew about.  We don't treat either subdirectory differently, as mail
  * could be copied directly into the cur directory from another agent.
  */
-enum MxCheckReturns maildir_mbox_check(struct Mailbox *m)
+enum MxStatus maildir_mbox_check(struct Mailbox *m)
 {
   struct stat st_new;         /* status of the "new" subdirectory */
   struct stat st_cur;         /* status of the "cur" subdirectory */
@@ -1190,21 +1190,21 @@ enum MxCheckReturns maildir_mbox_check(struct Mailbox *m)
 
   /* XXX seems like this check belongs in mx_mbox_check() rather than here.  */
   if (!C_CheckNew)
-    return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_OK;
 
   struct Buffer *buf = mutt_buffer_pool_get();
   mutt_buffer_printf(buf, "%s/new", mailbox_path(m));
   if (stat(mutt_buffer_string(buf), &st_new) == -1)
   {
     mutt_buffer_pool_release(&buf);
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
   }
 
   mutt_buffer_printf(buf, "%s/cur", mailbox_path(m));
   if (stat(mutt_buffer_string(buf), &st_cur) == -1)
   {
     mutt_buffer_pool_release(&buf);
-    return MX_CHECK_ERROR;
+    return MX_STATUS_ERROR;
   }
 
   /* determine which subdirectories need to be scanned */
@@ -1216,7 +1216,7 @@ enum MxCheckReturns maildir_mbox_check(struct Mailbox *m)
   if (changed == MMC_NO_DIRS)
   {
     mutt_buffer_pool_release(&buf);
-    return MX_CHECK_NO_CHANGE; /* nothing to do */
+    return MX_STATUS_OK; /* nothing to do */
   }
 
   /* Update the modification times on the mailbox.
@@ -1341,18 +1341,18 @@ enum MxCheckReturns maildir_mbox_check(struct Mailbox *m)
 
   ARRAY_FREE(&mda);
   if (occult)
-    return MX_CHECK_REOPENED;
+    return MX_STATUS_REOPENED;
   if (num_new > 0)
-    return MX_CHECK_NEW_MAIL;
+    return MX_STATUS_NEW_MAIL;
   if (flags_changed)
-    return MX_CHECK_FLAGS;
-  return MX_CHECK_NO_CHANGE;
+    return MX_STATUS_FLAGS;
+  return MX_STATUS_OK;
 }
 
 /**
  * maildir_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static enum MxCheckReturns maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+static enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   bool check_stats = flags;
   bool check_new = true;
@@ -1371,19 +1371,19 @@ static enum MxCheckReturns maildir_mbox_check_stats(struct Mailbox *m, uint8_t f
   if (check_new || check_stats)
     maildir_check_dir(m, "cur", check_new, check_stats);
 
-  return m->msg_new ? MX_CHECK_NEW_MAIL : MX_CHECK_NO_CHANGE;
+  return m->msg_new ? MX_STATUS_NEW_MAIL : MX_STATUS_OK;
 }
 
 /**
  * maildir_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
- * @retval enum #MxCheckReturns
+ * @retval enum #MxStatus
  *
  * @note The flag retvals come from a call to a backend sync function
  */
-enum MxCheckReturns maildir_mbox_sync(struct Mailbox *m)
+enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 {
-  enum MxCheckReturns check = maildir_mbox_check(m);
-  if (check == MX_CHECK_ERROR)
+  enum MxStatus check = maildir_mbox_check(m);
+  if (check == MX_STATUS_ERROR)
     return check;
 
   struct HeaderCache *hc = NULL;
@@ -1440,16 +1440,16 @@ err:
   if (m->type == MUTT_MAILDIR)
     mutt_hcache_close(hc);
 #endif
-  return MX_CHECK_ERROR;
+  return MX_STATUS_ERROR;
 }
 
 /**
  * maildir_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
- * @retval MX_CHECK_NO_CHANGE  Always
+ * @retval MX_STATUS_OK Always
  */
-enum MxCheckReturns maildir_mbox_close(struct Mailbox *m)
+enum MxStatus maildir_mbox_close(struct Mailbox *m)
 {
-  return MX_CHECK_NO_CHANGE;
+  return MX_STATUS_OK;
 }
 
 /**
