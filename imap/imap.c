@@ -1200,9 +1200,14 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
 /**
  * imap_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static int imap_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+static enum MxCheckStatsReturns imap_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
-  return imap_mailbox_status(m, true);
+  const int new_msgs = imap_mailbox_status(m, true);
+  if (new_msgs == -1)
+    return MX_CHECK_STATS_ERROR;
+  if (new_msgs == 0)
+    return MX_CHECK_STATS_NO_CHANGE;
+  return MX_CHECK_STATS_NEW_MAIL;
 }
 
 /**

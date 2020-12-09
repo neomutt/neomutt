@@ -108,7 +108,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       case MUTT_MAILDIR:
       case MUTT_MH:
       case MUTT_NOTMUCH:
-        if ((mx_mbox_check_stats(m_check, check_stats) != MX_CHECK_ERROR) &&
+        if ((mx_mbox_check_stats(m_check, check_stats) != MX_CHECK_STATS_ERROR) &&
             m_check->has_new)
         {
           MailboxCount++;

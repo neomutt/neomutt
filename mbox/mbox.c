@@ -1750,11 +1750,11 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
 /**
  * mbox_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static int mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+static enum MxCheckStatsReturns mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   struct stat sb = { 0 };
   if (stat(mailbox_path(m), &sb) != 0)
-    return -1;
+    return MX_CHECK_STATS_ERROR;
 
   bool new_or_changed;
 
@@ -1795,10 +1795,7 @@ static int mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
     m->peekonly = old_peek;
   }
 
-  if (m->msg_new == 0 && m->has_new)
-    return 1;
-
-  return m->msg_new;
+  return (m->has_new || m->msg_new) ? MX_CHECK_STATS_NEW_MAIL : MX_CHECK_STATS_NO_CHANGE;
 }
 
 // clang-format off

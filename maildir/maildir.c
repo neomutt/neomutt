@@ -1352,7 +1352,7 @@ enum MxCheckReturns maildir_mbox_check(struct Mailbox *m)
 /**
  * maildir_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static int maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+static enum MxCheckStatsReturns maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   bool check_stats = flags;
   bool check_new = true;
@@ -1371,7 +1371,7 @@ static int maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   if (check_new || check_stats)
     maildir_check_dir(m, "cur", check_new, check_stats);
 
-  return m->msg_new;
+  return m->msg_new ? MX_CHECK_STATS_NEW_MAIL : MX_CHECK_STATS_NO_CHANGE;
 }
 
 /**

@@ -182,11 +182,9 @@ int mh_check_empty(const char *path)
 /**
  * mh_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static int mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+static enum MxCheckStatsReturns mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   struct MhSequences mhs = { 0 };
-  bool check_new = true;
-  int rc = -1;
   DIR *dirp = NULL;
   struct dirent *de = NULL;
 
@@ -194,20 +192,18 @@ static int mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
    * since the last m visit, there is no "new mail" */
   if (C_MailCheckRecent && (mh_seq_changed(m) <= 0))
   {
-    rc = 0;
-    check_new = false;
+    return MX_CHECK_STATS_NO_CHANGE;
   }
 
-  if (!check_new)
-    return 0;
-
   if (mh_seq_read(&mhs, mailbox_path(m)) < 0)
-    return -1;
+    return MX_CHECK_STATS_ERROR;
 
   m->msg_count = 0;
   m->msg_unread = 0;
   m->msg_flagged = 0;
 
+  enum MxCheckStatsReturns rc = MX_CHECK_STATS_NO_CHANGE;
+  bool check_new = true;
   for (int i = mhs.max; i > 0; i--)
   {
     if ((mh_seq_check(&mhs, i) & MH_SEQ_FLAGGED))
@@ -222,7 +218,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
         if (!C_MailCheckRecent || (mh_already_notified(m, i) == 0))
         {
           m->has_new = true;
-          rc = 1;
+          rc = MX_CHECK_STATS_NEW_MAIL;
         }
         /* Because we are traversing from high to low, we can stop
          * checking for new mail after the first unseen message.
