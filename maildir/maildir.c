@@ -1115,18 +1115,18 @@ static enum MxOpenReturns maildir_mbox_open(struct Mailbox *m)
 /**
  * maildir_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append()
  */
-static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
+static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   if (!(flags & (MUTT_APPEND | MUTT_APPENDNEW | MUTT_NEWFOLDER)))
   {
-    return 0;
+    return true;
   }
 
   errno = 0;
   if ((mutt_file_mkdir(mailbox_path(m), S_IRWXU) != 0) && (errno != EEXIST))
   {
     mutt_perror(mailbox_path(m));
-    return -1;
+    return false;
   }
 
   char tmp[PATH_MAX];
@@ -1136,7 +1136,7 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   {
     mutt_perror(tmp);
     rmdir(mailbox_path(m));
-    return -1;
+    return false;
   }
 
   snprintf(tmp, sizeof(tmp), "%s/new", mailbox_path(m));
@@ -1147,7 +1147,7 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     snprintf(tmp, sizeof(tmp), "%s/cur", mailbox_path(m));
     rmdir(tmp);
     rmdir(mailbox_path(m));
-    return -1;
+    return false;
   }
 
   snprintf(tmp, sizeof(tmp), "%s/tmp", mailbox_path(m));
@@ -1160,10 +1160,10 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     snprintf(tmp, sizeof(tmp), "%s/new", mailbox_path(m));
     rmdir(tmp);
     rmdir(mailbox_path(m));
-    return -1;
+    return false;
   }
 
-  return 0;
+  return true;
 }
 
 /**

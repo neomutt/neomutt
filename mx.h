@@ -159,13 +159,13 @@ struct MxOps
    * mbox_open_append - Open a Mailbox for appending
    * @param m     Mailbox to open
    * @param flags Flags, see #OpenMailboxFlags
-   * @retval  0 Success
-   * @retval -1 Failure
+   * @retval true Success
+   * @retval false Failure
    *
    * **Contract**
    * - @a m is not NULL
    */
-  int (*mbox_open_append)(struct Mailbox *m, OpenMailboxFlags flags);
+  bool (*mbox_open_append)(struct Mailbox *m, OpenMailboxFlags flags);
 
   /**
    * mbox_check - Check for new mail

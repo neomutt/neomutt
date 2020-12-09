@@ -195,13 +195,13 @@ int mx_access(const char *path, int flags)
  * mx_open_mailbox_append - Open a mailbox for appending
  * @param m     Mailbox
  * @param flags Flags, see #OpenMailboxFlags
- * @retval  0 Success
- * @retval -1 Failure
+ * @retval true Success
+ * @retval false Failure
  */
-static int mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
+static bool mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   if (!m)
-    return -1;
+    return false;
 
   struct stat sb;
 
@@ -219,7 +219,7 @@ static int mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
       else
       {
         mutt_error(_("%s is not a mailbox"), mailbox_path(m));
-        return -1;
+        return false;
       }
     }
 
@@ -240,20 +240,20 @@ static int mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
         else
         {
           mutt_perror(mailbox_path(m));
-          return -1;
+          return false;
         }
       }
       else
-        return -1;
+        return false;
     }
 
     m->mx_ops = mx_get_ops(m->type);
   }
 
   if (!m->mx_ops || !m->mx_ops->mbox_open_append)
-    return -1;
+    return false;
 
-  int rc = m->mx_ops->mbox_open_append(m, flags);
+  const bool rc = m->mx_ops->mbox_open_append(m, flags);
   m->opened++;
   return rc;
 }
@@ -340,7 +340,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
 
   if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
   {
-    if (mx_open_mailbox_append(ctx->mailbox, flags) != 0)
+    if (!mx_open_mailbox_append(ctx->mailbox, flags))
     {
       goto error;
     }

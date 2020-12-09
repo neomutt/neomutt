@@ -492,12 +492,12 @@ cmo_fail:
  * To append to a compressed mailbox we need an append-hook (or both open- and
  * close-hooks).
  */
-static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
+static bool comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   /* If this succeeds, we know there's an open-hook */
   struct CompressInfo *ci = set_compress_info(m);
   if (!ci)
-    return -1;
+    return false;
 
   /* To append we need an append-hook or a close-hook */
   if (!ci->cmd_append && !ci->cmd_close)
@@ -546,10 +546,10 @@ static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     goto cmoa_fail2;
   }
 
-  if (ci->child_ops->mbox_open_append(m, flags) != 0)
+  if (!ci->child_ops->mbox_open_append(m, flags))
     goto cmoa_fail2;
 
-  return 0;
+  return true;
 
 cmoa_fail2:
   /* remove the partial uncompressed file */
@@ -558,7 +558,7 @@ cmoa_fail1:
   /* Free the compress_info to prevent close from trying to recompress */
   compress_info_free(m);
 
-  return -1;
+  return false;
 }
 
 /**

@@ -960,14 +960,14 @@ static enum MxOpenReturns mbox_mbox_open(struct Mailbox *m)
 /**
  * mbox_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append()
  */
-static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
+static bool mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   if (init_mailbox(m) != 0)
-    return -1;
+    return false;
 
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
-    return -1;
+    return false;
 
   if (!adata->fp)
   {
@@ -977,7 +977,7 @@ static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     {
       mutt_perror(mailbox_path(m));
       FREE(&tmp_path);
-      return -1;
+      return false;
     }
     FREE(&tmp_path);
 
@@ -986,20 +986,20 @@ static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     if (!adata->fp)
     {
       mutt_perror(mailbox_path(m));
-      return -1;
+      return false;
     }
 
     if (mbox_lock_mailbox(m, true, true) != false)
     {
       mutt_error(_("Couldn't lock %s"), mailbox_path(m));
       mutt_file_fclose(&adata->fp);
-      return -1;
+      return false;
     }
   }
 
   fseek(adata->fp, 0, SEEK_END);
 
-  return 0;
+  return true;
 }
 
 /**

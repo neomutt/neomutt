@@ -867,15 +867,15 @@ static enum MxOpenReturns mh_mbox_open(struct Mailbox *m)
 /**
  * mh_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append()
  */
-static int mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
+static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   if (!(flags & (MUTT_APPENDNEW | MUTT_NEWFOLDER)))
-    return 0;
+    return true;
 
   if (mutt_file_mkdir(mailbox_path(m), S_IRWXU))
   {
     mutt_perror(mailbox_path(m));
-    return -1;
+    return false;
   }
 
   char tmp[PATH_MAX];
@@ -885,11 +885,11 @@ static int mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   {
     mutt_perror(tmp);
     rmdir(mailbox_path(m));
-    return -1;
+    return false;
   }
   close(i);
 
-  return 0;
+  return true;
 }
 
 /**

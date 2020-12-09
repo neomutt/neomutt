@@ -2095,10 +2095,10 @@ fail:
 /**
  * imap_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append()
  */
-static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
+static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   if (!m->account)
-    return -1;
+    return false;
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
    * ctx is brand new and mostly empty */
@@ -2107,19 +2107,19 @@ static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
   int rc = imap_mailbox_status(m, false);
   if (rc >= 0)
-    return 0;
+    return true;
   if (rc == -1)
-    return -1;
+    return false;
 
   char buf[PATH_MAX + 64];
   snprintf(buf, sizeof(buf), _("Create %s?"), mdata->name);
   if (C_Confirmcreate && (mutt_yesorno(buf, MUTT_YES) != MUTT_YES))
-    return -1;
+    return false;
 
   if (imap_create_mailbox(adata, mdata->name) < 0)
-    return -1;
+    return false;
 
-  return 0;
+  return true;
 }
 
 /**
