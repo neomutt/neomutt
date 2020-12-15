@@ -833,13 +833,42 @@ test_dump_(const char* title, const void* addr, size_t size)
     }
 }
 
+/* This is called just before each test */
+static void
+test_init_(const char *test_name)
+{
+#ifdef TEST_INIT
+    TEST_INIT
+    ; /* Allow for a single unterminated function call */
+#endif
+
+    /* Suppress any warnings about unused variable. */
+    (void) test_name;
+}
+
+/* This is called after each test */
+static void
+test_fini_(const char *test_name)
+{
+#ifdef TEST_FINI
+    TEST_FINI
+    ; /* Allow for a single unterminated function call */
+#endif
+
+    /* Suppress any warnings about unused variable. */
+    (void) test_name;
+}
+
 void
 test_abort_(void)
 {
-    if(test_abort_has_jmp_buf_)
+    if(test_abort_has_jmp_buf_) {
         longjmp(test_abort_jmp_buf_, 1);
-    else
+    } else {
+        if(test_current_unit_ != NULL)
+            test_fini_(test_current_unit_->name);
         abort();
+    }
 }
 
 static void
@@ -960,32 +989,6 @@ test_error_(const char* fmt, ...)
     if(test_verbose_level_ >= 3) {
         printf("\n");
     }
-}
-
-/* This is called just before each test */
-static void
-test_init_(const char *test_name)
-{
-#ifdef TEST_INIT
-    TEST_INIT
-    ; /* Allow for a single unterminated function call */
-#endif
-
-    /* Suppress any warnings about unused variable. */
-    (void) test_name;
-}
-
-/* This is called after each test */
-static void
-test_fini_(const char *test_name)
-{
-#ifdef TEST_FINI
-    TEST_FINI
-    ; /* Allow for a single unterminated function call */
-#endif
-
-    /* Suppress any warnings about unused variable. */
-    (void) test_name;
 }
 
 /* Call directly the given test unit function. */
