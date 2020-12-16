@@ -7,6 +7,7 @@
  * Copyright (C) 1999-2007 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -1124,17 +1125,18 @@ int main(int argc, char *argv[], char *envp[])
   {
     if (flags & MUTT_CLI_MAILBOX)
     {
+      struct Mailbox *m = ctx_mailbox(Context);
 #ifdef USE_IMAP
       bool passive = C_ImapPassive;
       C_ImapPassive = false;
 #endif
-      if (mutt_mailbox_check(ctx_mailbox(Context), 0) == 0)
+      if (mutt_mailbox_check(m, 0) == 0)
       {
         mutt_message(_("No mailbox with new mail"));
         goto main_curses; // TEST37: neomutt -Z (no new mail)
       }
       mutt_buffer_reset(&folder);
-      mutt_mailbox_next(Context ? Context->mailbox : NULL, &folder);
+      mutt_mailbox_next(m, &folder);
 #ifdef USE_IMAP
       C_ImapPassive = passive;
 #endif

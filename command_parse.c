@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -109,10 +110,10 @@ static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer
  */
 static void attachments_clean(void)
 {
-  if (!Context || !Context->mailbox)
+  struct Mailbox *m = ctx_mailbox(Context);
+  if (!m)
     return;
 
-  struct Mailbox *m = Context->mailbox;
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
@@ -190,10 +191,10 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
  */
 static void clear_subject_mods(void)
 {
-  if (!Context || !Context->mailbox)
+  struct Mailbox *m = ctx_mailbox(Context);
+  if (!m)
     return;
 
-  struct Mailbox *m = Context->mailbox;
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
@@ -367,10 +368,10 @@ static int print_attach_list(struct ListHead *h, const char op, const char *name
  */
 static void alternates_clean(void)
 {
-  if (!Context || !Context->mailbox)
+  struct Mailbox *m = ctx_mailbox(Context);
+  if (!m)
     return;
 
-  struct Mailbox *m = Context->mailbox;
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];

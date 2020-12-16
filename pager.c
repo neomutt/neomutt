@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2002,2007,2010,2012-2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -1984,6 +1985,7 @@ void mutt_clear_pager_position(void)
 static void pager_custom_redraw(struct Menu *pager_menu)
 {
   struct PagerRedrawData *rd = pager_menu->redraw_data;
+  struct Mailbox *m = ctx_mailbox(Context);
   char buf[1024];
 
   if (!rd)
@@ -1994,10 +1996,9 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_window_clear(rd->extra->win_pager);
 
-    if (IsEmail(rd->extra) && Context && Context->mailbox &&
-        ((Context->mailbox->vcount + 1) < C_PagerIndexLines))
+    if (IsEmail(rd->extra) && m && ((m->vcount + 1) < C_PagerIndexLines))
     {
-      rd->indexlen = Context->mailbox->vcount + 1;
+      rd->indexlen = m->vcount + 1;
     }
     else
       rd->indexlen = C_PagerIndexLines;
@@ -2038,7 +2039,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
         rd->menu = mutt_menu_new(MENU_MAIN);
         rd->menu->make_entry = index_make_entry;
         rd->menu->color = index_color;
-        rd->menu->max = Context ? Context->mailbox->vcount : 0;
+        rd->menu->max = Context ? m->vcount : 0;
         rd->menu->current = rd->extra->email->vnum;
         rd->menu->win_index = rd->extra->win_index;
         rd->menu->win_ibar = rd->extra->win_ibar;
@@ -2148,7 +2149,6 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     pager_menu->redraw |= REDRAW_STATUS; /* need to update the % seen */
   }
 
-  struct Mailbox *m = Context ? Context->mailbox : NULL;
   if (pager_menu->redraw & REDRAW_STATUS)
   {
     struct HdrFormatInfo hfi;
@@ -2251,7 +2251,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   char *followup_to = NULL;
 #endif
 
-  struct Mailbox *m = Context ? Context->mailbox : NULL;
+  struct Mailbox *m = ctx_mailbox(Context);
 
   if (!(flags & MUTT_SHOWCOLOR))
     flags |= MUTT_SHOWFLAT;

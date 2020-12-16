@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2007,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -737,8 +738,9 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       goto ed_out;
     }
 
-    if (Context && Context->mailbox)
-      mutt_mailbox_check(Context->mailbox, 0);
+    struct Mailbox *m = ctx_mailbox(Context);
+    if (m)
+      mutt_mailbox_check(m, 0);
 
     dp = opendir(d);
     if (!dp)
@@ -782,11 +784,10 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
           break;
       }
 
-      if (np && Context && Context->mailbox &&
-          mutt_str_equal(np->mailbox->realpath, Context->mailbox->realpath))
+      if (np && m && mutt_str_equal(np->mailbox->realpath, m->realpath))
       {
-        np->mailbox->msg_count = Context->mailbox->msg_count;
-        np->mailbox->msg_unread = Context->mailbox->msg_unread;
+        np->mailbox->msg_count = m->msg_count;
+        np->mailbox->msg_unread = m->msg_unread;
       }
       add_folder(menu, state, de->d_name, NULL, &s, np ? np->mailbox : NULL, NULL);
     }
@@ -839,7 +840,10 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       return -1;
     mailbox = mutt_buffer_pool_get();
     md = mutt_buffer_pool_get();
-    mutt_mailbox_check(ctx_mailbox(Context), 0);
+
+    struct Mailbox *m = ctx_mailbox(Context);
+
+    mutt_mailbox_check(m, 0);
 
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
     neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
@@ -849,11 +853,10 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       if (!np->mailbox)
         continue;
 
-      if (Context && Context->mailbox &&
-          mutt_str_equal(np->mailbox->realpath, Context->mailbox->realpath))
+      if (m && mutt_str_equal(np->mailbox->realpath, m->realpath))
       {
-        np->mailbox->msg_count = Context->mailbox->msg_count;
-        np->mailbox->msg_unread = Context->mailbox->msg_unread;
+        np->mailbox->msg_count = m->msg_count;
+        np->mailbox->msg_unread = m->msg_unread;
       }
 
       mutt_buffer_strcpy(mailbox, mailbox_path(np->mailbox));
