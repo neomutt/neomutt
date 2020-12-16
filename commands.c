@@ -840,19 +840,25 @@ int mutt_select_sort(bool reverse)
 
 /**
  * mutt_shell_escape - invoke a command in a subshell
+ * @retval true A command was invoked (no matter what its result)
+ * @retval false No command was invoked
  */
-void mutt_shell_escape(void)
+bool mutt_shell_escape(void)
 {
   char buf[1024];
 
   buf[0] = '\0';
   if (mutt_get_field(_("Shell command: "), buf, sizeof(buf), MUTT_CMD) != 0)
-    return;
+  {
+    return false;
+  }
 
   if ((buf[0] == '\0') && C_Shell)
     mutt_str_copy(buf, C_Shell, sizeof(buf));
   if (buf[0] == '\0')
-    return;
+  {
+    return false;
+  }
 
   mutt_window_clearline(MessageWindow, 0);
   mutt_endwin();
@@ -863,7 +869,8 @@ void mutt_shell_escape(void)
 
   if ((rc != 0) || C_WaitKey)
     mutt_any_key_to_continue(NULL);
-  mutt_mailbox_check(Context->mailbox, MUTT_MAILBOX_CHECK_FORCE);
+
+  return true;
 }
 
 /**
@@ -1427,5 +1434,6 @@ bool mutt_check_traditional_pgp(struct EmailList *el, MuttRedrawFlags *redraw)
  */
 void mutt_check_stats(void)
 {
-  mutt_mailbox_check(Context->mailbox, MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
+  mutt_mailbox_check(ctx_mailbox(Context),
+                     MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
 }

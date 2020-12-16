@@ -773,7 +773,8 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
 
   mutt_clear_error();
-  mutt_mailbox_check(Context ? Context->mailbox : NULL, MUTT_MAILBOX_CHECK_FORCE); /* force the mailbox check after we have changed the folder */
+  /* force the mailbox check after we have changed the folder */
+  mutt_mailbox_check(ctx_mailbox(Context), MUTT_MAILBOX_CHECK_FORCE);
   menu->redraw = REDRAW_FULL;
   OptSearchInvalid = true;
 }
@@ -1180,7 +1181,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
   if (!attach_msg)
   {
     /* force the mailbox check after we enter the folder */
-    mutt_mailbox_check(Context ? Context->mailbox : NULL, MUTT_MAILBOX_CHECK_FORCE);
+    mutt_mailbox_check(ctx_mailbox(Context), MUTT_MAILBOX_CHECK_FORCE);
   }
 #ifdef USE_INOTIFY
   mutt_monitor_add(NULL);
@@ -3770,7 +3771,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
       }
 
       case OP_SHELL_ESCAPE:
-        mutt_shell_escape();
+        if (mutt_shell_escape())
+        {
+          mutt_mailbox_check(ctx_mailbox(Context), MUTT_MAILBOX_CHECK_FORCE);
+        }
         break;
 
       case OP_TAG_THREAD:

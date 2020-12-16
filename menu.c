@@ -43,6 +43,7 @@
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
+#include "mutt_mailbox.h"
 #include "mutt_menu.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
@@ -1514,7 +1515,10 @@ int mutt_menu_loop(struct Menu *menu)
         break;
 
       case OP_SHELL_ESCAPE:
-        mutt_shell_escape();
+        if (mutt_shell_escape())
+        {
+          mutt_mailbox_check(ctx_mailbox(Context), MUTT_MAILBOX_CHECK_FORCE);
+        }
         break;
 
       case OP_WHAT_KEY:

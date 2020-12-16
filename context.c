@@ -418,3 +418,14 @@ bool ctx_has_limit(const struct Context *ctx)
 {
   return ctx && ctx->pattern;
 }
+
+/**
+ * ctx_mailbox - wrapper to get the mailbox in a Context, or NULL
+ * @param ctx Context
+ * @retval ptr The mailbox in the Context
+ * @retval NULL Context is NULL or doesn't have a mailbox
+ */
+struct Mailbox *ctx_mailbox(struct Context *ctx)
+{
+  return Context ? Context->mailbox : NULL;
+}

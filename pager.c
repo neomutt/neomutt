@@ -3360,7 +3360,10 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       }
 
       case OP_SHELL_ESCAPE:
-        mutt_shell_escape();
+        if (mutt_shell_escape())
+        {
+          mutt_mailbox_check(ctx_mailbox(Context), MUTT_MAILBOX_CHECK_FORCE);
+        }
         break;
 
       case OP_TAG:

@@ -75,6 +75,7 @@ int             ctx_mailbox_observer(struct NotifyCallback *nc);
 struct Context *ctx_new             (struct Mailbox *m);
 void            ctx_update          (struct Context *ctx);
 bool            ctx_has_limit       (const struct Context *ctx);
+struct Mailbox* ctx_mailbox         (struct Context *ctx);
 
 bool message_is_tagged (struct Context *ctx, struct Email *e);
 struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum);

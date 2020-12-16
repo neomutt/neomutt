@@ -839,7 +839,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       return -1;
     mailbox = mutt_buffer_pool_get();
     md = mutt_buffer_pool_get();
-    mutt_mailbox_check(Context ? Context->mailbox : NULL, 0);
+    mutt_mailbox_check(ctx_mailbox(Context), 0);
 
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
     neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
@@ -1017,7 +1017,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     {
       menu->is_mailbox_list = true;
       snprintf(title, titlelen, _("Mailboxes [%d]"),
-               mutt_mailbox_check(Context ? Context->mailbox : NULL, 0));
+               mutt_mailbox_check(ctx_mailbox(Context), 0));
     }
     else
     {
