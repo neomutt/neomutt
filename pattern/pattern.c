@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2000,2006-2007,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -185,14 +186,13 @@ static struct MuttThread *top_of_thread(struct Email *e)
  */
 bool mutt_limit_current_thread(struct Email *e)
 {
-  if (!e || !Context || !Context->mailbox)
+  struct Mailbox *m = ctx_mailbox(Context);
+  if (!e || !m)
     return false;
 
   struct MuttThread *me = top_of_thread(e);
   if (!me)
     return false;
-
-  struct Mailbox *m = Context->mailbox;
 
   m->vcount = 0;
   Context->vsize = 0;
@@ -335,14 +335,14 @@ bail:
  */
 int mutt_pattern_func(int op, char *prompt)
 {
-  if (!Context || !Context->mailbox)
+  struct Mailbox *m = ctx_mailbox(Context);
+  if (!m)
     return -1;
 
   struct Buffer err;
   int rc = -1;
   struct Progress progress;
   struct Buffer *buf = mutt_buffer_pool_get();
-  struct Mailbox *m = Context->mailbox;
 
   mutt_buffer_strcpy(buf, NONULL(Context->pattern));
   if (prompt || (op != MUTT_LIMIT))
@@ -417,7 +417,7 @@ int mutt_pattern_func(int op, char *prompt)
   {
     for (int i = 0; i < m->vcount; i++)
     {
-      struct Email *e = mutt_get_virt_email(Context->mailbox, i);
+      struct Email *e = mutt_get_virt_email(m, i);
       if (!e)
         continue;
       mutt_progress_update(&progress, i, -1);

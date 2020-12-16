@@ -7,6 +7,7 @@
  * Copyright (C) 2004 Thomer M. Gil <mutt@thomer.com>
  * Copyright (C) 2015-2020 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2016-2017 Kevin J. McCarthy <kevin@8t8.us>
+ * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -288,8 +289,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   if (!m)
     return src;
 
-  bool c = Context && Context->mailbox &&
-           mutt_str_equal(Context->mailbox->realpath, m->realpath);
+  struct Mailbox *m_ctx = ctx_mailbox(Context);
+
+  bool c = m_ctx && mutt_str_equal(m_ctx->realpath, m->realpath);
 
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -311,9 +313,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, c ? Context->mailbox->msg_deleted : 0);
+        snprintf(buf, buflen, fmt, c ? m_ctx->msg_deleted : 0);
       }
-      else if ((c && (Context->mailbox->msg_deleted == 0)) || !c)
+      else if ((c && (m_ctx->msg_deleted == 0)) || !c)
         optional = false;
       break;
 
@@ -331,9 +333,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, c ? Context->mailbox->vcount : m->msg_count);
+        snprintf(buf, buflen, fmt, c ? m_ctx->vcount : m->msg_count);
       }
-      else if ((c && (Context->mailbox->vcount == m->msg_count)) || !c)
+      else if ((c && (m_ctx->vcount == m->msg_count)) || !c)
         optional = false;
       break;
 
@@ -363,7 +365,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, m->msg_unread - m->msg_new);
       }
-      else if ((c && (Context->mailbox->msg_unread - Context->mailbox->msg_new) == 0) || !c)
+      else if ((c && (m_ctx->msg_unread - m_ctx->msg_new) == 0) || !c)
         optional = false;
       break;
 
@@ -373,7 +375,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, m->msg_count - m->msg_unread);
       }
-      else if ((c && (Context->mailbox->msg_count - Context->mailbox->msg_unread) == 0) || !c)
+      else if ((c && (m_ctx->msg_count - m_ctx->msg_unread) == 0) || !c)
         optional = false;
       break;
 
@@ -391,9 +393,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, c ? Context->mailbox->msg_tagged : 0);
+        snprintf(buf, buflen, fmt, c ? m_ctx->msg_tagged : 0);
       }
-      else if ((c && (Context->mailbox->msg_tagged == 0)) || !c)
+      else if ((c && (m_ctx->msg_tagged == 0)) || !c)
         optional = false;
       break;
 
@@ -403,7 +405,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, m->msg_new);
       }
-      else if ((c && (Context->mailbox->msg_new) == 0) || !c)
+      else if ((c && (m_ctx->msg_new) == 0) || !c)
         optional = false;
       break;
 
@@ -668,17 +670,18 @@ int sb_recalc(struct MuttWindow *win)
 
     struct SbEntry *entry = (*sbep);
     struct Mailbox *m = entry->mailbox;
+    struct Mailbox *m_ctx = ctx_mailbox(Context);
 
     const int entryidx = ARRAY_FOREACH_IDX;
     entry->color =
         calc_color(m, (entryidx == wdata->opn_index), (entryidx == wdata->hil_index));
 
-    if (Context && Context->mailbox && (Context->mailbox->realpath[0] != '\0') &&
-        mutt_str_equal(m->realpath, Context->mailbox->realpath))
+    if (m_ctx && (m_ctx->realpath[0] != '\0') &&
+        mutt_str_equal(m->realpath, m_ctx->realpath))
     {
-      m->msg_unread = Context->mailbox->msg_unread;
-      m->msg_count = Context->mailbox->msg_count;
-      m->msg_flagged = Context->mailbox->msg_flagged;
+      m->msg_unread = m_ctx->msg_unread;
+      m->msg_count = m_ctx->msg_count;
+      m->msg_flagged = m_ctx->msg_flagged;
     }
 
     const char *path = mailbox_path(m);

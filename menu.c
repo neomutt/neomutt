@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2002,2012 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -1582,9 +1583,9 @@ int mutt_menu_color_observer(struct NotifyCallback *nc)
     return 0;
 
   // Colour deleted from a list
-  if ((nc->event_subtype == NT_COLOR_RESET) && lists && Context && Context->mailbox)
+  struct Mailbox *m = ctx_mailbox(Context);
+  if ((nc->event_subtype == NT_COLOR_RESET) && lists && m)
   {
-    struct Mailbox *m = Context->mailbox;
     // Force re-caching of index colors
     for (int i = 0; i < m->msg_count; i++)
     {

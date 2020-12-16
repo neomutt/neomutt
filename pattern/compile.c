@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -174,13 +175,15 @@ static bool eat_query(struct Pattern *pat, int flags, struct Buffer *s, struct B
   mutt_buffer_init(&cmd_buf);
   mutt_buffer_addstr(&cmd_buf, C_ExternalSearchCommand);
   mutt_buffer_addch(&cmd_buf, ' ');
-  if (!Context || !Context->mailbox)
+
+  struct Mailbox *m = ctx_mailbox(Context);
+  if (!m)
   {
     mutt_buffer_addch(&cmd_buf, '/');
   }
   else
   {
-    char *escaped_folder = mutt_path_escape(mailbox_path(Context->mailbox));
+    char *escaped_folder = mutt_path_escape(mailbox_path(m));
     mutt_debug(LL_DEBUG2, "escaped folder path: %s\n", escaped_folder);
     mutt_buffer_addch(&cmd_buf, '\'');
     mutt_buffer_addstr(&cmd_buf, escaped_folder);
