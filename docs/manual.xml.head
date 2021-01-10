@@ -11170,9 +11170,9 @@ alternative_order text/enriched text/plain text application/postscript image/*
             <para>
               In the Compose menu, attach the two (or more) alternatives as
               usual. For example, attach "invitation.html" and then "invitation.txt".
-              (You can reorder them using the <literal>&lt;move-up&gt;</literal> (-)
-              and <literal>&lt;move-down&gt;</literal> (+) bindings, and edit the
-              descriptions).
+              (You can reorder them using the <literal>&lt;move-up&gt;</literal> (-),
+              <literal>&lt;move-down&gt;</literal> (+) and <literal>&lt;move-top&gt;</literal>
+              (_) bindings, and edit the descriptions).
             </para>
           </listitem>
           <listitem>
