@@ -499,6 +499,7 @@ const struct Binding OpCompose[] = { /* map: compose */
 #endif
   { "move-down",             OP_COMPOSE_MOVE_DOWN,           "+" },
   { "move-up",               OP_COMPOSE_MOVE_UP,             "-" },
+  { "move-top",              OP_COMPOSE_MOVE_TOP,            "_" },
   { "new-mime",              OP_COMPOSE_NEW_MIME,            "n" },
   { "pgp-menu",              OP_COMPOSE_PGP_MENU,            "p" },
   { "pipe-entry",            OP_PIPE,                        "|" },

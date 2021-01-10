@@ -82,6 +82,7 @@
   _fmt(OP_COMPOSE_ISPELL,                 N_("run ispell on the message")) \
   _fmt(OP_COMPOSE_MOVE_DOWN,              N_("move an attachment down in the attachment list")) \
   _fmt(OP_COMPOSE_MOVE_UP,                N_("move an attachment up in the attachment list")) \
+  _fmt(OP_COMPOSE_MOVE_TOP,               N_("move an attachment to the top of the attachment list")) \
   _fmt(OP_COMPOSE_NEW_MIME,               N_("compose new attachment using mailcap entry")) \
   _fmt(OP_COMPOSE_POSTPONE_MESSAGE,       N_("save this message to send later")) \
   _fmt(OP_COMPOSE_RENAME_ATTACHMENT,      N_("send attachment with a different name")) \

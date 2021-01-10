@@ -1853,6 +1853,17 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         menu->current++;
         break;
 
+      case OP_COMPOSE_MOVE_TOP:
+        if (menu->current == 0)
+        {
+          mutt_error(_("Attachment is already at top"));
+          break;
+        }
+        compose_attach_move_top(e, actx->idx, menu->current);
+        menu->redraw |= REDRAW_INDEX;
+        menu->current = 0;
+        break;
+
       case OP_COMPOSE_GROUP_ALTS:
       {
         if (menu->tagged < 2)
