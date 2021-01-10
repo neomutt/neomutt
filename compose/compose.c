@@ -1825,10 +1825,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
         if (menu->current == 1)
         {
-          mutt_error(_("The fundamental part can't be moved"));
-          break;
+          compose_attach_move_top(e, actx->idx, menu->current);
         }
-        compose_attach_swap(e->body, actx->idx, menu->current - 1);
+        else
+        {
+          compose_attach_swap(e->body, actx->idx, menu->current - 1);
+        }
         menu->redraw |= REDRAW_INDEX;
         menu->current--;
         break;
@@ -1841,10 +1843,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
         if (menu->current == 0)
         {
-          mutt_error(_("The fundamental part can't be moved"));
-          break;
+          compose_attach_move_top(e, actx->idx, menu->current + 1);
         }
-        compose_attach_swap(e->body, actx->idx, menu->current);
+        else
+        {
+          compose_attach_swap(e->body, actx->idx, menu->current);
+        }
         menu->redraw |= REDRAW_INDEX;
         menu->current++;
         break;
