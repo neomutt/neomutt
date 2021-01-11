@@ -169,21 +169,25 @@ if {1} {
 ###############################################################################
 # Paths
 define BINDIR           [get-define bindir]
+define LIBDIR           [get-define libdir]
 define MUTTLOCALEDIR    [get-define datadir]/locale
 define PKGDATADIR       [get-define datadir]/neomutt
 define PKGDOCDIR        [opt-val docdir [get-define datadir]/doc/neomutt]
 define SYSCONFDIR       [get-define sysconfdir]
 ###############################################################################
 
+set libdir_name [file tail [get-define libdir]]
+
 ###############################################################################
 # Helper functions
 if {1} {
   # Check for a header file and a function in a library
   proc check-inc-and-lib {name prefix header fun lib} {
-    cc-with [list -cflags -I$prefix/include -libs -L$prefix/lib] {
+    global libdir_name
+    cc-with [list -cflags -I$prefix/include -libs -L$prefix/$libdir_name] {
       if {[cc-check-includes $header] && [cc-check-function-in-lib $fun $lib]} {
         define-append CFLAGS  -I$prefix/include
-        define-append LDFLAGS -L$prefix/lib
+        define-append LDFLAGS -L$prefix/$libdir_name
         define-feature $name
       }
     }
@@ -587,6 +591,7 @@ if {[get-define want-lua]} {
     set lua_versions { 5.4 5.3 5.2 } ;# Will be checked in order
 
     apply {{lua_prefix lua_versions} {
+      global libdir_name
       foreach ver $lua_versions {
         lassign [split $ver .] maj min
 
@@ -595,13 +600,13 @@ if {[get-define want-lua]} {
           if {[file exists $lua_prefix/include$lua_suffix/lua.h]} {
             msg-result "yes"
             set libs [list lua-${maj}.${min} lua${maj}.${min} lua]
-            cc-with [list -libs "-L$lua_prefix/lib"] {
+            cc-with [list -libs "-L$lua_prefix/$libdir_name"] {
               if {![cc-check-function-in-lib luaL_openlibs $libs]} {
                 continue
               }
             }
             define-append CFLAGS -I$lua_prefix/include$lua_suffix
-            define-append LDFLAGS -L$lua_prefix/lib
+            define-append LDFLAGS -L$lua_prefix/$libdir_name
             define USE_LUA
             return
           }
@@ -685,7 +690,7 @@ switch [opt-val with-ui ncurses] {
     define-append CFLAGS -DNCURSES_WIDECHAR
     set ncurses_prefix [opt-val with-ncurses $prefix]
 
-    cc-with [list -libs -L$ncurses_prefix/lib] {
+    cc-with [list -libs -L$ncurses_prefix/$libdir_name] {
 
       set tinfo_libs   {tinfow tinfo}
       set ncurses_libs {ncursesw ncurses curses}
@@ -794,7 +799,7 @@ if {[get-define want-ssl] && ![get-define want-gnutls]} {
   } else {
     set ssl_prefix [opt-val with-ssl $prefix]
     set ssl_cflags -I$ssl_prefix/include
-    set ssl_ldflags -L$ssl_prefix/lib
+    set ssl_ldflags -L$ssl_prefix/$libdir_name
     cc-with [list -libs $ssl_ldflags -cflags $ssl_cflags] {
       if {![cc-check-includes openssl/bio.h openssl/err.h openssl/ssl.h] ||
           ![cc-check-function-in-lib X509_STORE_CTX_new crypto] ||
@@ -821,12 +826,12 @@ if {[get-define want-ssl] && ![get-define want-gnutls]} {
     pkgconf true gnutls
   } else {
     set gnutls_prefix [opt-val with-gnutls $prefix]
-    cc-with [list -cflags -I$gnutls_prefix/include -libs -L$gnutls_prefix/lib] {
+    cc-with [list -cflags -I$gnutls_prefix/include -libs -L$gnutls_prefix/$libdir_name] {
       if {![cc-check-function-in-lib gnutls_check_version gnutls]} {
         user-error "Unable to find GnuTLS"
       }
       define-append CFLAGS -I$gnutls_prefix/include
-      define-append LDFLAGS -L$gnutls_prefix/lib
+      define-append LDFLAGS -L$gnutls_prefix/$libdir_name
     }
   }
   cc-check-function-in-lib gnutls_priority_set_direct gnutls
@@ -862,10 +867,10 @@ if {[get-define want-idn]} {
     find-idn1-includes
   } else {
     set idn_prefix [opt-val with-idn $prefix]
-    cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/lib] {
+    cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/$libdir_name] {
       find-idn1-includes
       define-append CFLAGS -I$idn_prefix/include
-      define-append LDFLAGS -L$idn_prefix/lib
+      define-append LDFLAGS -L$idn_prefix/$libdir_name
     }
   }
   if {![cc-check-function-in-lib stringprep_check_version idn]} {
@@ -887,10 +892,10 @@ if {[get-define want-idn]} {
     find-idn2-includes
   } else {
     set idn_prefix [opt-val with-idn2 $prefix]
-    cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/lib] {
+    cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/$libdir_name] {
       find-idn2-includes
       define-append CFLAGS -I$idn_prefix/include
-      define-append LDFLAGS -L$idn_prefix/lib
+      define-append LDFLAGS -L$idn_prefix/$libdir_name
     }
   }
   if {![cc-check-function-in-lib idn2_to_ascii_8z     idn2] ||
@@ -934,7 +939,7 @@ if {[get-define want-bdb]} {
 
   foreach maj $bdb_majors min $bdb_minors ver $bdb_exploded {
     set ver_inc_dir $bdb_prefix/include/$ver
-    set ver_lib_dir $bdb_prefix/lib/$ver
+    set ver_lib_dir $bdb_prefix/$libdir_name/$ver
     set ver_inc_file $ver_inc_dir/db.h
     set ver_lib_file  db-$maj.$min
 
@@ -1255,6 +1260,7 @@ set auto_rep {
   ENABLE_*
   HAVE_*
   HOMESPOOL
+  LIBDIR
   LOCALES_HACK
   MAILPATH
   MAKEDOC_FULL
