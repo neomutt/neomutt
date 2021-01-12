@@ -152,7 +152,7 @@ static int setup_paths(struct Mailbox *m)
   /* Setup the right paths */
   mutt_str_replace(&m->realpath, mailbox_path(m));
 
-  /* We will uncompress to /tmp */
+  /* We will uncompress to TMPDIR */
   struct Buffer *buf = mutt_buffer_pool_get();
   mutt_buffer_mktemp(buf);
   mutt_buffer_copy(&m->pathbuf, buf);

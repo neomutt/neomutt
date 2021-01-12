@@ -702,7 +702,7 @@ struct ConfigDef MainVars[] = {
   { "timeout", DT_NUMBER|DT_NOT_NEGATIVE, &C_Timeout, 600, 0, NULL,
     "Time to wait for user input in menus"
   },
-  { "tmpdir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, &C_Tmpdir, IP "/tmp", 0, NULL,
+  { "tmpdir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, &C_Tmpdir, IP TMPDIR, 0, NULL,
     "Directory for temporary files"
   },
   { "toggle_quoted_show_levels", DT_NUMBER|DT_NOT_NEGATIVE, &C_ToggleQuotedShowLevels, 0, 0, NULL,
