@@ -110,6 +110,7 @@ options {
   with-zstd:path            => "Location of Zstandard"
 # System
   with-sysroot:path         => "Target system root"
+  with-tmpdir:=/tmp         => "location of the tmp directory"
 # Misc
   include-path-in-cflags=1  => "Remove include paths from CFLAGS in the output of neomutt -v"
 # Testing
@@ -173,6 +174,7 @@ define MUTTLOCALEDIR    [get-define datadir]/locale
 define PKGDATADIR       [get-define datadir]/neomutt
 define PKGDOCDIR        [opt-val docdir [get-define datadir]/doc/neomutt]
 define SYSCONFDIR       [get-define sysconfdir]
+define TMPDIR           [opt-val with-tmpdir /tmp]
 ###############################################################################
 
 ###############################################################################
@@ -1268,6 +1270,7 @@ set auto_rep {
   SUN_ATTACHMENT
   SYSCONFDIR
   TEST_CASE_MAXSIZE
+  TMPDIR
   USE_*
   VPATH
   WORDS_BIGENDIAN

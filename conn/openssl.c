@@ -557,7 +557,7 @@ static int ssl_init(void)
     add_entropy(mutt_str_getenv("EGDSOCKET"));
     mutt_buffer_printf(path, "%s/.entropy", NONULL(HomeDir));
     add_entropy(mutt_b2s(path));
-    add_entropy("/tmp/entropy");
+    add_entropy(TMPDIR "/entropy");
 #endif
 
     /* shuffle $RANDFILE (or ~/.rnd if unset) */

@@ -29,7 +29,7 @@ void test_mutt_file_mkstemp_full(void)
 {
   // FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func);
 
-  C_Tmpdir = "/tmp";
+  C_Tmpdir = TMPDIR;
 
   {
     FILE *fp = NULL;
