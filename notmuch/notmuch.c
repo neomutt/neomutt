@@ -2381,9 +2381,10 @@ done:
   mutt_debug(LL_DEBUG1, "nm: ... check done [count=%d, new_flags=%d, occult=%d]\n",
              m->msg_count, new_flags, occult);
 
-  return occult ? MUTT_REOPENED :
-                  (m->msg_count > mdata->oldmsgcount) ? MUTT_NEW_MAIL :
-                                                        new_flags ? MUTT_FLAGS : 0;
+  return occult                              ? MUTT_REOPENED :
+         (m->msg_count > mdata->oldmsgcount) ? MUTT_NEW_MAIL :
+         new_flags                           ? MUTT_FLAGS :
+                                               0;
 }
 
 /**

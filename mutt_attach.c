@@ -346,19 +346,15 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
           (n = mutt_lookup_mime_type(&tmp, b->description)) != TYPE_OTHER)
       {
         snprintf(type, len, "%s/%s",
-                 (n == TYPE_AUDIO) ?
-                     "audio" :
-                     (n == TYPE_APPLICATION) ?
-                     "application" :
-                     (n == TYPE_IMAGE) ?
-                     "image" :
-                     (n == TYPE_MESSAGE) ?
-                     "message" :
-                     (n == TYPE_MODEL) ?
-                     "model" :
-                     (n == TYPE_MULTIPART) ?
-                     "multipart" :
-                     (n == TYPE_TEXT) ? "text" : (n == TYPE_VIDEO) ? "video" : "other",
+                 (n == TYPE_AUDIO)       ? "audio" :
+                 (n == TYPE_APPLICATION) ? "application" :
+                 (n == TYPE_IMAGE)       ? "image" :
+                 (n == TYPE_MESSAGE)     ? "message" :
+                 (n == TYPE_MODEL)       ? "model" :
+                 (n == TYPE_MULTIPART)   ? "multipart" :
+                 (n == TYPE_TEXT)        ? "text" :
+                 (n == TYPE_VIDEO)       ? "video" :
+                                           "other",
                  tmp.subtype);
         mutt_debug(LL_DEBUG1, "\"%s\" -> %s\n", b->filename, type);
       }

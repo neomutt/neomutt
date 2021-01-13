@@ -436,19 +436,19 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                  S_ISDIR(folder->ff->mode) ? 'd' : (S_ISLNK(folder->ff->mode) ? 'l' : '-'),
                  ((folder->ff->mode & S_IRUSR) != 0) ? 'r' : '-',
                  ((folder->ff->mode & S_IWUSR) != 0) ? 'w' : '-',
-                 ((folder->ff->mode & S_ISUID) != 0) ?
-                     's' :
-                     ((folder->ff->mode & S_IXUSR) != 0) ? 'x' : '-',
+                 ((folder->ff->mode & S_ISUID) != 0) ? 's' :
+                 ((folder->ff->mode & S_IXUSR) != 0) ? 'x' :
+                                                       '-',
                  ((folder->ff->mode & S_IRGRP) != 0) ? 'r' : '-',
                  ((folder->ff->mode & S_IWGRP) != 0) ? 'w' : '-',
-                 ((folder->ff->mode & S_ISGID) != 0) ?
-                     's' :
-                     ((folder->ff->mode & S_IXGRP) != 0) ? 'x' : '-',
+                 ((folder->ff->mode & S_ISGID) != 0) ? 's' :
+                 ((folder->ff->mode & S_IXGRP) != 0) ? 'x' :
+                                                       '-',
                  ((folder->ff->mode & S_IROTH) != 0) ? 'r' : '-',
                  ((folder->ff->mode & S_IWOTH) != 0) ? 'w' : '-',
-                 ((folder->ff->mode & S_ISVTX) != 0) ?
-                     't' :
-                     ((folder->ff->mode & S_IXOTH) != 0) ? 'x' : '-');
+                 ((folder->ff->mode & S_ISVTX) != 0) ? 't' :
+                 ((folder->ff->mode & S_IXOTH) != 0) ? 'x' :
+                                                       '-');
         mutt_format_s(buf, buflen, prec, permission);
       }
 #ifdef USE_IMAP

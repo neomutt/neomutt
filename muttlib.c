@@ -1595,7 +1595,9 @@ int mutt_inbox_cmp(const char *a, const char *b)
   /* fast-track in case the paths have been mutt_pretty_mailbox'ified */
   if ((a[0] == '+') && (b[0] == '+'))
   {
-    return mutt_istr_equal(a + 1, "inbox") ? -1 : mutt_istr_equal(b + 1, "inbox") ? 1 : 0;
+    return mutt_istr_equal(a + 1, "inbox") ? -1 :
+           mutt_istr_equal(b + 1, "inbox") ? 1 :
+                                             0;
   }
 
   const char *a_end = strrchr(a, '/');

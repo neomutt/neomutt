@@ -129,7 +129,9 @@ static int count_body_parts(struct Body *body)
 
     mutt_debug(LL_DEBUG5, "desc=\"%s\"; fn=\"%s\", type=\"%d/%s\"\n",
                bp->description ? bp->description : ("none"),
-               bp->filename ? bp->filename : bp->d_filename ? bp->d_filename : "(none)",
+               bp->filename   ? bp->filename :
+               bp->d_filename ? bp->d_filename :
+                                "(none)",
                bp->type, bp->subtype ? bp->subtype : "*");
 
     if (bp->type == TYPE_MESSAGE)

@@ -1237,7 +1237,8 @@ static int multipart_handler(struct Body *a, struct State *s)
         /* L10N: %s is the attachment description, filename or form_name. */
         state_printf(s, _("[-- Attachment #%d: %s --]\n"), count,
                      p->description ? p->description :
-                                      p->filename ? p->filename : p->form_name);
+                     p->filename    ? p->filename :
+                                      p->form_name);
       }
       else
         state_printf(s, _("[-- Attachment #%d --]\n"), count);
