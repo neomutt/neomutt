@@ -68,6 +68,7 @@ struct AttachCtx
 };
 
 void              mutt_actx_add_attach  (struct AttachCtx *actx, struct AttachPtr *attach);
+void              mutt_actx_ins_attach  (struct AttachCtx *actx, struct AttachPtr *attach, short aidx);
 void              mutt_actx_add_body    (struct AttachCtx *actx, struct Body *new_body);
 void              mutt_actx_add_fp      (struct AttachCtx *actx, FILE *fp_new);
 void              mutt_actx_free        (struct AttachCtx **ptr);

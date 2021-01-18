@@ -712,6 +712,26 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
 }
 
 /**
+ * insert_idx - Insert a new attachment into the message at specified index position
+ * @param menu Current menu
+ * @param actx Attachment context
+ * @param ap   Attachment to add
+ * @param aidx Index position to insert attachment
+ */
+static void insert_idx(struct Menu *menu, struct AttachCtx *actx,
+                       struct AttachPtr *ap, short aidx)
+{
+  if (aidx > 0 && ap->level == actx->idx[aidx - 1]->level)
+    actx->idx[aidx - 1]->body->next = ap->body;
+  if (aidx < actx->idxlen && ap->level == actx->idx[aidx]->level)
+    ap->body->next = actx->idx[aidx]->body;
+  ap->body->aptr = ap;
+  mutt_actx_ins_attach(actx, ap, aidx);
+  update_menu(actx, menu, false);
+  menu->current = aidx;
+}
+
+/**
  * mutt_compose_menu - Allow the user to edit the message envelope
  * @param e      Email to fill
  * @param fcc    Buffer to save FCC
@@ -1035,6 +1055,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         struct Body *alts = NULL;
         /* group tagged message into a multipart/alternative */
         struct Body *bptr = e->body;
+        int gidx = 0;
+        int glastidx = 0;
+        int glevel = 0;
         for (int i = 0; bptr;)
         {
           if (bptr->tagged)
@@ -1062,30 +1085,49 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
               bptr = bptr->next;
               alts = alts->next;
               alts->next = NULL;
+              // make grouped attachments consecutive
+              if (i > glastidx + 1)
+              {
+                struct AttachPtr *saved = actx->idx[i];
+                int saved_num = actx->idx[i]->num;
+                for (int j = i; j > glastidx + 1; j--)
+                {
+                  actx->idx[j]->num += 1;
+                  actx->idx[j] = actx->idx[j - 1];
+                }
+                actx->idx[glastidx + 1] = saved;
+                actx->idx[glastidx + 1]->num = saved_num;
+                if (actx->idxlen - 1 > i)
+                  actx->idx[i]->body->next = actx->idx[i + 1]->body;
+                else
+                  actx->idx[i]->body->next = NULL;
+              }
+              glastidx++;
             }
             else
             {
+              gidx = i;
+              glastidx = i;
+              glevel = actx->idx[i]->level;
               group->parts = bptr;
               alts = bptr;
               bptr = bptr->next;
               alts->next = NULL;
             }
 
-            for (int j = i; j < actx->idxlen - 1; j++)
-            {
-              actx->idx[j] = actx->idx[j + 1];
-              actx->idx[j + 1] = NULL; /* for debug reason */
-            }
-            actx->idxlen--;
+            actx->idx[glastidx]->level = glevel + 1;
           }
           else
           {
             bptr = bptr->next;
-            i++;
           }
+          i++;
         }
 
-        group->next = NULL;
+        if (actx->idxlen - 1 > glastidx)
+          group->next = actx->idx[glastidx + 1]->body;
+        else
+          group->next = NULL;
         mutt_generate_boundary(&group->parameter);
 
         /* if no group desc yet, make one up */
@@ -1094,7 +1136,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
         struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         gptr->body = group;
-        update_idx(menu, actx, gptr);
+        gptr->level = glevel;
+        insert_idx(menu, actx, gptr, gidx);
+
+        /* update e->body pointer */
+        e->body = actx->idx[0]->body;
+
+        menu->current = gidx;
         menu_queue_redraw(menu, MENU_REDRAW_INDEX);
         break;
       }
