@@ -2670,6 +2670,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     goto main_loop;
   }
 
+  // TODO insert generate_multipart_alternative() call here
+
   if (e_templ->body->next)
     e_templ->body = mutt_make_multipart(e_templ->body);
 
