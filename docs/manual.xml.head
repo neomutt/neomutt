@@ -9048,11 +9048,14 @@ Limit to messages matching: ~d 19950120-19951031
         save messages to a mailing list to a separate folder, or to delete all
         messages with a given subject. To tag all messages matching a pattern,
         use the <literal>&lt;tag-pattern&gt;</literal> function, which is bound
-        to <quote>shift-T</quote> by default. Or you can select individual
-        messages by hand using the <literal>&lt;tag-message&gt;</literal>
-        function, which is bound to <quote>t</quote> by default. See
-        <link linkend="patterns">patterns</link> for NeoMutt's pattern matching
-        syntax.
+        to <quote>shift-T</quote> by default. Patterns are completable in the 
+        editor menu. Invoke the <literal>&lt;complete&gt;</literal> function
+        (by default bound to <quote>Tab</quote>) after typing <quote>~</quote> 
+        to get a selectable list. Or you can select individual messages by hand 
+        using the <literal>&lt;tag-message&gt;</literal> function, which is 
+        bound to <quote>t</quote> by default. 
+        See <link linkend="patterns">patterns</link> for NeoMutt's pattern 
+        matching syntax.
       </para>
       <para>
         Once you have tagged the desired messages, you can use the
