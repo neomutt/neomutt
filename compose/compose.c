@@ -989,7 +989,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         char *err = NULL;
         mutt_env_to_local(e->env);
         const char *const c_editor = cs_subset_string(sub, "editor");
-        mutt_edit_headers(NONULL(c_editor), e->body->filename, e, fcc);
+        if (e->body->type == TYPE_MULTIPART)
+          mutt_edit_headers(NONULL(c_editor), e->body->parts->filename, e, fcc);
+        else
+          mutt_edit_headers(NONULL(c_editor), e->body->filename, e, fcc);
         if (mutt_env_to_intl(e->env, &tag, &err))
         {
           mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
