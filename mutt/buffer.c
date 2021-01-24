@@ -65,6 +65,7 @@ struct Buffer mutt_buffer_make(size_t size)
   {
     buf.dptr = buf.data = mutt_mem_calloc(1, size);
     buf.dsize = size;
+    *(buf.dptr) = '\0';
   }
   return buf;
 }
@@ -82,6 +83,7 @@ void mutt_buffer_reset(struct Buffer *buf)
     return;
   memset(buf->data, 0, buf->dsize);
   buf->dptr = buf->data;
+  *(buf->dptr) = '\0';
 }
 
 /**
@@ -264,27 +266,48 @@ bool mutt_buffer_is_empty(const struct Buffer *buf)
  */
 void mutt_buffer_alloc(struct Buffer *buf, size_t new_size)
 {
+
+  // no buffer - no work
   if (!buf)
   {
     return;
   }
 
+  // size must be positive
+  if (new_size <= 0)
+  {
+    return;
+  }
+
+  // if there is no data, then we allocate new data and return
+  if (!buf->data) 
+  {
+    buf->data    = mutt_mem_calloc(1, new_size);
+    buf->dptr    = buf->data;
+    buf->dsize   = new_size;
+    *(buf->dptr) = '\0';
+    return;
+  }
+
+  // if data pointer is screwed then we fix set by setting it to data beginning
   if (!buf->dptr)
   {
     buf->dptr = buf->data;
   }
 
-  if ((new_size > buf->dsize) || !buf->data)
-  {
-    size_t offset = (buf->dptr && buf->data) ? buf->dptr - buf->data : 0;
-
-    buf->dsize = new_size;
-    mutt_mem_realloc(&buf->data, buf->dsize);
-    buf->dptr = buf->data + offset;
-    /* This ensures an initially NULL buf->data is now properly terminated. */
-    if (buf->dptr)
-      *buf->dptr = '\0';
+  // ok, we have data, we can't shrink it
+  if (buf->dsize >= new_size) {
+    return;
   }
+
+  // now, some real work to do
+  size_t offset = buf->dptr - buf->data;
+  mutt_mem_realloc(&buf->data, buf->dsize);
+  buf->dsize = new_size;
+  buf->dptr = buf->data + offset;
+  /* This ensures an initially NULL buf->data is now properly terminated. */
+  *(buf->dptr) = '\0';
+  
 }
 
 /**
