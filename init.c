@@ -400,6 +400,12 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
   char qc = '\0'; /* quote char */
   char *pc = NULL;
 
+  /* Some callers used to rely on the (bad) assumption that dest->data would be
+   * non-NULL after calling this function.  Perhaps I've missed a few cases, or
+   * a future caller might make the same mistake.  */
+  if (!dest->data)
+    mutt_buffer_alloc(dest, 256);
+
   mutt_buffer_reset(dest);
 
   SKIPWS(tok->dptr);
