@@ -314,15 +314,25 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       {
         struct ListNode *np = NULL;
         x = 0;
+        int match = -1;
+        size_t match_len = 0, hdr_order_len;
+
         STAILQ_FOREACH(np, &HeaderOrderList, entries)
         {
-          ++x;
-          if (mutt_istr_startswith(buf, np->data))
+          x++;
+          hdr_order_len = mutt_str_len(np->data);
+          if (mutt_strn_equal(buf, np->data, hdr_order_len))
           {
+            if ((match == -1) || (hdr_order_len > match_len))
+            {
+              match = x;
+              match_len = hdr_order_len;
+            }
             mutt_debug(LL_DEBUG2, "Reorder: %s matches %s", np->data, buf);
-            break;
           }
         }
+        if (match != -1)
+          x = match;
       }
 
       ignore = false;

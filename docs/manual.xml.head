@@ -5585,6 +5585,12 @@ uncolor status *
           not affected by this, NeoMutt tries to implement standards compliant
           folding.)
         </para>
+        <para>
+          Despite not being a real header, NeoMutt will also display an mbox
+          &quot;From_&quot; line in the pager along with other headers.  This
+          line can be manipulated with <command>ignore/unignore</command> and
+          <command>hdr_order/unhdr_order</command> commands.
+        </para>
       </sect2>
 
       <sect2 id="ignore">
@@ -5645,6 +5651,12 @@ unignore posted-to:
 </screen>
 
         </example>
+        <para>
+          The above example will show &quot;From:&quot; headers as well as mbox
+          &quot;From_&quot; lines.  To hide the latter, instead use
+          &quot;<literal>unignore from: date subject to cc</literal>&quot; on
+          the second line.
+        </para>
       </sect2>
 
       <sect2 id="hdr-order">
