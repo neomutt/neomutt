@@ -169,7 +169,7 @@ static char *get_flags(struct ListHead *hflags, char *s)
  * @param[out] flags   Buffer for server command
  * @param[in]  flsize  Length of buffer
  */
-static void set_flag(struct Mailbox *m, AclFlags aclflag, int flag,
+static void set_flag(struct Mailbox *m, AclFlags aclflag, bool flag,
                      const char *str, char *flags, size_t flsize)
 {
   if (m->rights & aclflag)
@@ -190,8 +190,8 @@ static void set_flag(struct Mailbox *m, AclFlags aclflag, int flag,
  * @note Headers must be in #SORT_ORDER. See imap_exec_msgset() for args.
  * Pos is an opaque pointer a la strtok(). It should be 0 at first call.
  */
-static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
-                        bool changed, bool invert, int *pos)
+static int make_msg_set(struct Mailbox *m, struct Buffer *buf,
+                        enum MessageType flag, bool changed, bool invert, int *pos)
 {
   int count = 0;             /* number of messages in message set */
   unsigned int setstart = 0; /* start of current message range */
@@ -243,6 +243,8 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
         case MUTT_TRASH:
           if (e->deleted && !e->purge)
             match = true;
+          break;
+        default:
           break;
       }
     }
@@ -315,7 +317,8 @@ static bool compare_flags_for_copy(struct Email *e)
  * @retval >=0 Success, number of messages
  * @retval  -1 Failure
  */
-static int sync_helper(struct Mailbox *m, AclFlags right, int flag, const char *name)
+static int sync_helper(struct Mailbox *m, AclFlags right, enum MessageType flag,
+                       const char *name)
 {
   int count = 0;
   int rc;
@@ -909,7 +912,7 @@ static int compare_uid(const void *a, const void *b)
  * (must be flushed with imap_exec)
  */
 int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
-                     int flag, bool changed, bool invert)
+                     enum MessageType flag, bool changed, bool invert)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   if (!adata || (adata->mailbox != m))
@@ -1038,10 +1041,10 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
    * explicitly revoke all system flags (if we have permission) */
   if (*flags == '\0')
   {
-    set_flag(m, MUTT_ACL_SEEN, 1, "\\Seen ", flags, sizeof(flags));
-    set_flag(m, MUTT_ACL_WRITE, 1, "Old ", flags, sizeof(flags));
-    set_flag(m, MUTT_ACL_WRITE, 1, "\\Flagged ", flags, sizeof(flags));
-    set_flag(m, MUTT_ACL_WRITE, 1, "\\Answered ", flags, sizeof(flags));
+    set_flag(m, MUTT_ACL_SEEN, true, "\\Seen ", flags, sizeof(flags));
+    set_flag(m, MUTT_ACL_WRITE, true, "Old ", flags, sizeof(flags));
+    set_flag(m, MUTT_ACL_WRITE, true, "\\Flagged ", flags, sizeof(flags));
+    set_flag(m, MUTT_ACL_WRITE, true, "\\Answered ", flags, sizeof(flags));
     set_flag(m, MUTT_ACL_DELETE, !imap_edata_get(e)->deleted, "\\Deleted ",
              flags, sizeof(flags));
 
