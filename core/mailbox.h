@@ -131,7 +131,7 @@ struct Mailbox
   struct Account *account;            ///< Account that owns this Mailbox
   int opened;                         ///< Number of times mailbox is opened
 
-  int flags;                          ///< e.g. #MB_NORMAL
+  uint8_t flags;                      ///< e.g. #MB_NORMAL
 
   void *mdata;                        ///< Driver specific data
 
