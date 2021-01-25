@@ -178,11 +178,11 @@ int          crypt_pgp_encrypted_handler(struct Body *a, struct State *s);
 void         crypt_pgp_extract_key_from_attachment(FILE *fp, struct Body *top);
 void         crypt_pgp_invoke_getkeys(struct Address *addr);
 struct Body *crypt_pgp_make_key_attachment(void);
-int          crypt_pgp_send_menu(struct Email *e);
+SecurityFlags crypt_pgp_send_menu(struct Email *e);
 int          crypt_smime_application_handler(struct Body *m, struct State *s);
 int          crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
 void         crypt_smime_getkeys(struct Envelope *env);
-int          crypt_smime_send_menu(struct Email *e);
+SecurityFlags crypt_smime_send_menu(struct Email *e);
 int          crypt_smime_verify_sender(struct Mailbox *m, struct Email *e);
 
 /* crypt_mod.c */

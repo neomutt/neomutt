@@ -4149,7 +4149,7 @@ void smime_gpgme_init(void)
  * @param is_smime True if an SMIME message
  * @retval num Flags, e.g. #APPLICATION_SMIME | #SEC_ENCRYPT
  */
-static int gpgme_send_menu(struct Email *e, bool is_smime)
+static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
 {
   struct CryptKeyInfo *p = NULL;
   const char *prompt = NULL;
@@ -4310,7 +4310,7 @@ static int gpgme_send_menu(struct Email *e, bool is_smime)
 /**
  * pgp_gpgme_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int pgp_gpgme_send_menu(struct Email *e)
+SecurityFlags pgp_gpgme_send_menu(struct Email *e)
 {
   return gpgme_send_menu(e, false);
 }
@@ -4318,7 +4318,7 @@ int pgp_gpgme_send_menu(struct Email *e)
 /**
  * smime_gpgme_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int smime_gpgme_send_menu(struct Email *e)
+SecurityFlags smime_gpgme_send_menu(struct Email *e)
 {
   return gpgme_send_menu(e, true);
 }

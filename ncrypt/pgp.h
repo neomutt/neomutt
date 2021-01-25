@@ -27,6 +27,7 @@
 #define MUTT_NCRYPT_PGP_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include "lib.h"
 
@@ -61,6 +62,6 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
 struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign, const struct AddressList *from);
 struct Body *pgp_class_sign_message(struct Body *a, const struct AddressList *from);
 
-int pgp_class_send_menu(struct Email *e);
+SecurityFlags pgp_class_send_menu(struct Email *e);
 
 #endif /* MUTT_NCRYPT_PGP_H */

@@ -2097,7 +2097,7 @@ int smime_class_application_handler(struct Body *m, struct State *s)
 /**
  * smime_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int smime_class_send_menu(struct Email *e)
+SecurityFlags smime_class_send_menu(struct Email *e)
 {
   struct SmimeKey *key = NULL;
   const char *prompt = NULL;

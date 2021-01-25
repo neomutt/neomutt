@@ -1836,7 +1836,7 @@ cleanup:
 /**
  * pgp_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int pgp_class_send_menu(struct Email *e)
+SecurityFlags pgp_class_send_menu(struct Email *e)
 {
   struct PgpKeyInfo *p = NULL;
   const char *prompt = NULL;
