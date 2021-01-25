@@ -1469,7 +1469,7 @@ static int compose_header_observer(struct NotifyCallback *nc)
  * @retval -1 Abort message
  */
 int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
-                      int flags, struct ConfigSubset *sub)
+                      uint8_t flags, struct ConfigSubset *sub)
 {
   char buf[PATH_MAX];
   int rc = -1;
