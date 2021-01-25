@@ -29,15 +29,15 @@
 
 void test_url_tostring(void)
 {
-  // int url_tostring(struct Url *u, char *dest, size_t len, int flags);
+  // int url_tostring(struct Url *url, char *dest, size_t len, uint8_t flags);
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(url_tostring(NULL, buf, sizeof(buf), 0) != 0);
+    TEST_CHECK(url_tostring(NULL, buf, sizeof(buf), U_NO_FLAGS) != 0);
   }
 
   {
     struct Url url = { 0 };
-    TEST_CHECK(url_tostring(&url, NULL, 10, 0) != 0);
+    TEST_CHECK(url_tostring(&url, NULL, 10, U_NO_FLAGS) != 0);
   }
 }

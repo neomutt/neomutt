@@ -414,7 +414,7 @@ static int complete_hosts(char *buf, size_t buflen)
     /* FIXME: how to handle multiple users on the same host? */
     url.user = NULL;
     url.path = NULL;
-    url_tostring(&url, urlstr, sizeof(urlstr), 0);
+    url_tostring(&url, urlstr, sizeof(urlstr), U_NO_FLAGS);
     if (mutt_strn_equal(buf, urlstr, matchlen))
     {
       if (rc)
@@ -2386,7 +2386,7 @@ int imap_path_canon(char *buf, size_t buflen)
 
   imap_fix_path('\0', url->path, tmp, sizeof(tmp));
   url->path = tmp;
-  url_tostring(url, tmp2, sizeof(tmp2), 0);
+  url_tostring(url, tmp2, sizeof(tmp2), U_NO_FLAGS);
   mutt_str_copy(buf, tmp2, buflen);
   url_free(&url);
 

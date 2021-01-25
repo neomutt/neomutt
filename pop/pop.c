@@ -804,7 +804,7 @@ static int pop_mbox_open(struct Mailbox *m)
 
   mutt_account_tourl(&cac, &url);
   url.path = NULL;
-  url_tostring(&url, buf, sizeof(buf), 0);
+  url_tostring(&url, buf, sizeof(buf), U_NO_FLAGS);
 
   mutt_buffer_strcpy(&m->pathbuf, buf);
   mutt_str_replace(&m->realpath, mailbox_path(m));

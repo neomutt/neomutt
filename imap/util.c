@@ -775,7 +775,7 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
 fallback:
   mutt_account_tourl(&cac_target, &url);
   url.path = target_mailbox;
-  url_tostring(&url, path, pathlen, 0);
+  url_tostring(&url, path, pathlen, U_NO_FLAGS);
 }
 
 /**
@@ -956,7 +956,7 @@ void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *cac, char *
   struct Url url = { 0 };
   mutt_account_tourl(cac, &url);
   url.path = path;
-  url_tostring(&url, buf, buflen, 0);
+  url_tostring(&url, buf, buflen, U_NO_FLAGS);
 }
 
 /**
