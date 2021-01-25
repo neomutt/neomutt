@@ -173,7 +173,7 @@ static bool test_slist_parse(struct Buffer *err)
     "apple::banana",
   };
 
-  unsigned int flags = SLIST_SEP_COLON | SLIST_ALLOW_EMPTY;
+  uint32_t flags = SLIST_SEP_COLON | SLIST_ALLOW_EMPTY;
   slist_flags(flags, err);
   TEST_MSG("Flags: %s", mutt_b2s(err));
   TEST_MSG("\n");
@@ -230,7 +230,7 @@ static bool test_slist_remove_string(struct Buffer *err)
   {
     mutt_buffer_reset(err);
 
-    unsigned int flags = SLIST_SEP_COLON | SLIST_ALLOW_EMPTY;
+    uint32_t flags = SLIST_SEP_COLON | SLIST_ALLOW_EMPTY;
     struct Slist *list = slist_parse("apple:banana::cherry", flags);
     slist_dump(list, err);
 
@@ -270,7 +270,7 @@ static bool test_slist_is_member(struct Buffer *err)
 
     TEST_CHECK(slist_is_member(NULL, "apple") == false);
 
-    unsigned int flags = SLIST_SEP_COLON | SLIST_ALLOW_EMPTY;
+    uint32_t flags = SLIST_SEP_COLON | SLIST_ALLOW_EMPTY;
     struct Slist *list = slist_parse("apple:banana::cherry", flags);
     slist_dump(list, err);
 
@@ -297,7 +297,7 @@ static bool test_slist_add_list(struct Buffer *err)
 {
   mutt_buffer_reset(err);
 
-  unsigned int flags = SLIST_SEP_COLON | SLIST_ALLOW_EMPTY;
+  uint32_t flags = SLIST_SEP_COLON | SLIST_ALLOW_EMPTY;
 
   struct Slist *list1 = slist_parse("apple:banana::cherry", flags);
   slist_dump(list1, err);

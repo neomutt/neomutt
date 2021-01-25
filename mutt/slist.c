@@ -40,7 +40,7 @@
  * @param flags Flag to set, e.g. #SLIST_SEP_COMMA
  * @retval ptr New string list
  */
-struct Slist *slist_new(int flags)
+struct Slist *slist_new(uint32_t flags)
 {
   struct Slist *list = mutt_mem_calloc(1, sizeof(*list));
   list->flags = flags;
@@ -197,7 +197,7 @@ bool slist_is_member(const struct Slist *list, const char *str)
  * @param flags Flags, e.g. #SLIST_ALLOW_EMPTY
  * @retval ptr New Slist object
  */
-struct Slist *slist_parse(const char *str, int flags)
+struct Slist *slist_parse(const char *str, uint32_t flags)
 {
   char *src = mutt_str_dup(str);
   if (!src && !(flags & SLIST_ALLOW_EMPTY))
