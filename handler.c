@@ -683,7 +683,7 @@ static int text_plain_handler(struct Body *b, struct State *s)
   char *buf = NULL;
   size_t sz = 0;
 
-  while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, 0)))
+  while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, MUTT_RL_NO_FLAGS)))
   {
     if (!mutt_str_equal(buf, "-- ") && C_TextFlowed)
     {

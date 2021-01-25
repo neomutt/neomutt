@@ -255,7 +255,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
   if (fp)
   {
     size_t buflen;
-    while (!found && (buf = mutt_file_read_line(buf, &buflen, fp, &line, MUTT_CONT)))
+    while (!found && (buf = mutt_file_read_line(buf, &buflen, fp, &line, MUTT_RL_CONT)))
     {
       /* ignore comments */
       if (*buf == '#')

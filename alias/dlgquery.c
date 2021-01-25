@@ -261,8 +261,8 @@ static int query_run(char *s, bool verbose, struct AliasList *al,
 
   /* The query protocol first reads one NL-terminated line. If an error
    * occurs, this is assumed to be an error message. Otherwise it's ignored. */
-  msg = mutt_file_read_line(msg, &msglen, fp, NULL, 0);
-  while ((buf = mutt_file_read_line(buf, &buflen, fp, NULL, 0)))
+  msg = mutt_file_read_line(msg, &msglen, fp, NULL, MUTT_RL_NO_FLAGS);
+  while ((buf = mutt_file_read_line(buf, &buflen, fp, NULL, MUTT_RL_NO_FLAGS)))
   {
     p = strtok(buf, "\t\n");
     if (p)

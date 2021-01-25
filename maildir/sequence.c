@@ -138,7 +138,7 @@ void mh_seq_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, bool re
   FILE *fp_old = fopen(sequences, "r");
   if (fp_old)
   {
-    while ((buf = mutt_file_read_line(buf, &sz, fp_old, NULL, 0)))
+    while ((buf = mutt_file_read_line(buf, &sz, fp_old, NULL, MUTT_RL_NO_FLAGS)))
     {
       if (unseen && mutt_strn_equal(buf, seq_unseen, mutt_str_len(seq_unseen)))
       {
@@ -267,7 +267,7 @@ void mh_seq_update(struct Mailbox *m)
   FILE *fp_old = fopen(sequences, "r");
   if (fp_old)
   {
-    while ((buf = mutt_file_read_line(buf, &s, fp_old, NULL, 0)))
+    while ((buf = mutt_file_read_line(buf, &s, fp_old, NULL, MUTT_RL_NO_FLAGS)))
     {
       if (mutt_str_startswith(buf, seq_unseen) || mutt_str_startswith(buf, seq_flagged) ||
           mutt_str_startswith(buf, seq_replied))
@@ -387,7 +387,7 @@ int mh_seq_read(struct MhSequences *mhs, const char *path)
   if (!fp)
     return 0; /* yes, ask callers to silently ignore the error */
 
-  while ((buf = mutt_file_read_line(buf, &sz, fp, NULL, 0)))
+  while ((buf = mutt_file_read_line(buf, &sz, fp, NULL, MUTT_RL_NO_FLAGS)))
   {
     char *t = strtok(buf, " \t:");
     if (!t)

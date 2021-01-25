@@ -1061,7 +1061,7 @@ static void run_mime_type_query(struct Body *att, struct ConfigSubset *sub)
   }
   mutt_buffer_pool_release(&cmd);
 
-  buf = mutt_file_read_line(buf, &buflen, fp, NULL, 0);
+  buf = mutt_file_read_line(buf, &buflen, fp, NULL, MUTT_RL_NO_FLAGS);
   if (buf)
   {
     if (strchr(buf, '/'))

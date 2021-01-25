@@ -204,7 +204,7 @@ static bool eat_query(struct Pattern *pat, int flags, struct Buffer *s, struct B
     return false;
   }
 
-  mutt_file_map_lines(add_query_msgid, &pat->p.multi_cases, fp, 0);
+  mutt_file_map_lines(add_query_msgid, &pat->p.multi_cases, fp, MUTT_RL_NO_FLAGS);
   mutt_file_fclose(&fp);
   filter_wait(pid);
   FREE(&cmd_buf.data);

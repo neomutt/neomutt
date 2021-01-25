@@ -479,7 +479,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   token = mutt_buffer_pool_get();
   linebuf = mutt_buffer_pool_get();
 
-  while ((line = mutt_file_read_line(line, &linelen, fp, &lineno, MUTT_CONT)) != NULL)
+  while ((line = mutt_file_read_line(line, &linelen, fp, &lineno, MUTT_RL_CONT)) != NULL)
   {
     const bool conv = C_ConfigCharset && C_Charset;
     if (conv)

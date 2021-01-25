@@ -1446,7 +1446,7 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
     if (offset != *last_pos)
       fseeko(fp, offset, SEEK_SET);
 
-    *buf = (unsigned char *) mutt_file_read_line((char *) *buf, blen, fp, NULL, MUTT_EOL);
+    *buf = (unsigned char *) mutt_file_read_line((char *) *buf, blen, fp, NULL, MUTT_RL_EOL);
     if (!*buf)
     {
       fmt[0] = NULL;

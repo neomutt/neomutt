@@ -25,6 +25,7 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <sys/types.h>
 
@@ -34,8 +35,10 @@ extern char *C_Tmpdir;
 extern const char filename_safe_chars[];
 
 /* Flags for mutt_file_read_line() */
-#define MUTT_CONT (1 << 0) ///< \-continuation
-#define MUTT_EOL  (1 << 1) ///< don't strip `\n` / `\r\n`
+typedef uint8_t ReadLineFlags;             ///< Flags for mutt_file_read_line(), e.g. #MUTT_RL_CONT
+#define MUTT_RL_NO_FLAGS        0  ///< No flags are set
+#define MUTT_RL_CONT      (1 << 0) ///< \-continuation
+#define MUTT_RL_EOL       (1 << 1) ///< don't strip `\n` / `\r\n`
 
 #ifdef HAVE_STRUCT_TIMESPEC
 struct timespec;
@@ -98,16 +101,16 @@ FILE *      mutt_file_fopen(const char *path, const char *mode);
 int         mutt_file_fsync_close(FILE **fp);
 long        mutt_file_get_size(const char *path);
 void        mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type);
-bool        mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, int flags);
+bool        mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, ReadLineFlags flags);
 int         mutt_file_lock(int fd, bool excl, bool timeout);
-bool        mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, int flags);
+bool        mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, ReadLineFlags flags);
 int         mutt_file_mkdir(const char *path, mode_t mode);
 FILE *      mutt_file_mkstemp_full(const char *file, int line, const char *func);
 #define     mutt_file_mkstemp() mutt_file_mkstemp_full(__FILE__, __LINE__, __func__)
-int         mutt_file_open(const char *path, int flags);
+int         mutt_file_open(const char *path, uint32_t flags);
 size_t      mutt_file_quote_filename(const char *filename, char *buf, size_t buflen);
 char *      mutt_file_read_keyword(const char *file, char *buf, size_t buflen);
-char *      mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int flags);
+char *      mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, ReadLineFlags flags);
 int         mutt_file_rename(const char *oldfile, const char *newfile);
 int         mutt_file_rmtree(const char *path);
 int         mutt_file_safe_rename(const char *src, const char *target);

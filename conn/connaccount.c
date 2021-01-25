@@ -184,7 +184,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac)
   }
 
   size_t token_size = 0;
-  char *token = mutt_file_read_line(NULL, &token_size, fp, NULL, 0);
+  char *token = mutt_file_read_line(NULL, &token_size, fp, NULL, MUTT_RL_NO_FLAGS);
   mutt_file_fclose(&fp);
   filter_wait(pid);
 

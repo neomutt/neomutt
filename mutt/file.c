@@ -519,7 +519,7 @@ int mutt_file_rmtree(const char *path)
  * @retval >0 Success, file handle
  * @retval -1 Error
  */
-int mutt_file_open(const char *path, int flags)
+int mutt_file_open(const char *path, uint32_t flags)
 {
   if (!path)
     return -1;
@@ -592,15 +592,14 @@ FILE *mutt_file_fopen(const char *path, const char *mode)
 
   if (mode[0] == 'w')
   {
-    int fd;
-    int flags = O_CREAT | O_EXCL | O_NOFOLLOW;
+    uint32_t flags = O_CREAT | O_EXCL | O_NOFOLLOW;
 
     if (mode[1] == '+')
       flags |= O_RDWR;
     else
       flags |= O_WRONLY;
 
-    fd = mutt_file_open(path, flags);
+    int fd = mutt_file_open(path, flags);
     if (fd < 0)
       return NULL;
 
@@ -656,7 +655,7 @@ int mutt_file_sanitize_regex(struct Buffer *dest, const char *src)
  * @param[in]  size     Length of buffer
  * @param[in]  fp       File to read
  * @param[out] line_num Current line number (optional)
- * @param[in]  flags    Flags, e.g. #MUTT_CONT
+ * @param[in]  flags    Flags, e.g. #MUTT_RL_CONT
  * @retval ptr          The allocated string
  *
  * Read a line from "fp" into the dynamically allocated "line", increasing
@@ -664,7 +663,7 @@ int mutt_file_sanitize_regex(struct Buffer *dest, const char *src)
  * with "\", this char and the linefeed is removed, and the next line is read
  * too.
  */
-char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int flags)
+char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, ReadLineFlags flags)
 {
   if (!size || !fp)
     return NULL;
@@ -690,12 +689,12 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int
     {
       if (line_num)
         (*line_num)++;
-      if (flags & MUTT_EOL)
+      if (flags & MUTT_RL_EOL)
         return line;
       *ch = '\0';
       if ((ch > line) && (*(ch - 1) == '\r'))
         *--ch = '\0';
-      if (!(flags & MUTT_CONT) || (ch == line) || (*(ch - 1) != '\\'))
+      if (!(flags & MUTT_RL_CONT) || (ch == line) || (*(ch - 1) != '\\'))
         return line;
       offset = ch - line - 1;
     }
@@ -744,7 +743,7 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int
  * }
  * ```
  */
-bool mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, int flags)
+bool mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, ReadLineFlags flags)
 {
   if (!iter)
     return false;
@@ -764,7 +763,7 @@ bool mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, int flags)
  * @param flags     Same as mutt_file_read_line()
  * @retval          true if all data mapped, false if "func" returns false
  */
-bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, int flags)
+bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, ReadLineFlags flags)
 {
   if (!func || !fp)
     return false;
