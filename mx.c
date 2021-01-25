@@ -1799,7 +1799,7 @@ int mx_ac_remove(struct Mailbox *m)
 /**
  * mx_mbox_check_stats - Check the statistics for a mailbox - Wrapper for MxOps::mbox_check_stats()
  */
-int mx_mbox_check_stats(struct Mailbox *m, int flags)
+int mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   if (!m)
     return -1;

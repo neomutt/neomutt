@@ -1352,7 +1352,7 @@ int maildir_mbox_check(struct Mailbox *m)
 /**
  * maildir_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static int maildir_mbox_check_stats(struct Mailbox *m, int flags)
+static int maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   bool check_stats = flags;
   bool check_new = true;

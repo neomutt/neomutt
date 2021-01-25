@@ -1197,7 +1197,7 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
 /**
  * imap_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static int imap_mbox_check_stats(struct Mailbox *m, int flags)
+static int imap_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   return imap_mailbox_status(m, true);
 }

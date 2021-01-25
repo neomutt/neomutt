@@ -1755,7 +1755,7 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
 /**
  * mbox_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
+static int mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   struct stat sb = { 0 };
   if (stat(mailbox_path(m), &sb) != 0)
@@ -1791,7 +1791,8 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
   if (m->newly_created && ((sb.st_ctime != sb.st_mtime) || (sb.st_ctime != sb.st_atime)))
     m->newly_created = false;
 
-  if (flags && mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->stats_last_checked) > 0)
+  if ((flags != 0) && mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME,
+                                                      &m->stats_last_checked) > 0)
   {
     bool old_peek = m->peekonly;
     struct Context *ctx = mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
