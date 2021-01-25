@@ -1365,7 +1365,7 @@ bool mutt_addr_to_local(struct Address *a)
     return false;
   }
 
-  char *local_mailbox = mutt_idna_intl_to_local(user, domain, 0);
+  char *local_mailbox = mutt_idna_intl_to_local(user, domain, MI_NO_FLAGS);
   FREE(&user);
   FREE(&domain);
 

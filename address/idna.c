@@ -113,7 +113,7 @@ static bool check_idn(char *domain)
  *
  * @note The caller must free output
  */
-int mutt_idna_to_ascii_lz(const char *input, char **output, int flags)
+int mutt_idna_to_ascii_lz(const char *input, char **output, uint8_t flags)
 {
   if (!input || !output)
     return 1;
@@ -144,7 +144,7 @@ int mutt_idna_to_ascii_lz(const char *input, char **output, int flags)
  *
  * @note The caller must free the returned string.
  */
-char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
+char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flags)
 {
   char *mailbox = NULL;
   char *reversed_user = NULL, *reversed_domain = NULL;
