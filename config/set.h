@@ -61,7 +61,7 @@ struct HashElem;
 struct ConfigDef
 {
   const char   *name;      ///< User-visible name
-  unsigned int  type;      ///< Variable type, e.g. #DT_STRING
+  uint32_t      type;      ///< Variable type, e.g. #DT_STRING
   void         *var;       ///< Pointer to the global variable
   intptr_t      initial;   ///< Initial value
   intptr_t      data;      ///< Extra variable data
@@ -239,7 +239,7 @@ struct HashElem *           cs_get_elem    (const struct ConfigSet *cs, const ch
 const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned int type);
 
 bool             cs_register_type     (struct ConfigSet *cs, const struct ConfigSetType *cst);
-bool             cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], int flags);
+bool             cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], uint32_t flags);
 struct HashElem *cs_inherit_variable  (const struct ConfigSet *cs, struct HashElem *parent, const char *name);
 void             cs_uninherit_variable(const struct ConfigSet *cs, const char *name);
 
