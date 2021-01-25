@@ -77,7 +77,8 @@ enum EatRangeError
 /**
  * eat_regex - Parse a regex - Implements ::eat_arg_t
  */
-static bool eat_regex(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
+static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
+                      struct Buffer *s, struct Buffer *err)
 {
   struct Buffer buf;
 
@@ -145,7 +146,8 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
 /**
  * eat_query - Parse a query for an external search program - Implements ::eat_arg_t
  */
-static bool eat_query(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
+static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
+                      struct Buffer *s, struct Buffer *err)
 {
   struct Buffer cmd_buf;
   struct Buffer tok_buf;
@@ -615,7 +617,8 @@ bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err)
 /**
  * eat_range - Parse a number range - Implements ::eat_arg_t
  */
-static bool eat_range(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
+static bool eat_range(struct Pattern *pat, PatternCompFlags flags,
+                      struct Buffer *s, struct Buffer *err)
 {
   char *tmp = NULL;
   bool do_exclusive = false;
@@ -899,8 +902,8 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
 /**
  * eat_message_range - Parse a range of message numbers - Implements ::eat_arg_t
  */
-static bool eat_message_range(struct Pattern *pat, int flags, struct Buffer *s,
-                              struct Buffer *err)
+static bool eat_message_range(struct Pattern *pat, PatternCompFlags flags,
+                              struct Buffer *s, struct Buffer *err)
 {
   bool skip_quote = false;
 
@@ -943,7 +946,8 @@ static bool eat_message_range(struct Pattern *pat, int flags, struct Buffer *s,
 /**
  * eat_date - Parse a date pattern - Implements ::eat_arg_t
  */
-static bool eat_date(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
+static bool eat_date(struct Pattern *pat, PatternCompFlags flags,
+                     struct Buffer *s, struct Buffer *err)
 {
   struct Buffer *tmp = mutt_buffer_pool_get();
   bool rc = false;

@@ -78,7 +78,8 @@ struct RangeRegex range_regexes[] = {
  * @param err   Buffer for error messages
  * @retval true If the pattern was read successfully
  */
-bool (*eat_arg_t)(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err);
+bool (*eat_arg_t)(struct Pattern *pat, PatternCompFlags flags, struct Buffer *s,
+                  struct Buffer *err);
 
 static struct PatternList *SearchPattern = NULL; ///< current search pattern
 static char LastSearch[256] = { 0 };             ///< last pattern searched for
