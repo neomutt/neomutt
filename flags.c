@@ -51,7 +51,8 @@
  * @param bf       true: set the flag; false: clear the flag
  * @param upd_mbox true: update the Mailbox
  */
-void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_mbox)
+void mutt_set_flag_update(struct Mailbox *m, struct Email *e,
+                          enum MessageType flag, bool bf, bool upd_mbox)
 {
   if (!m || !e)
     return;
@@ -323,6 +324,9 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
           m->msg_tagged--;
       }
       break;
+
+    default:
+      break;
   }
 
   if (update)
@@ -347,7 +351,8 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
  * @param flag Flag to set, e.g. #MUTT_DELETE
  * @param bf   true: set the flag; false: clear the flag
  */
-void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el, int flag, bool bf)
+void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el,
+                          enum MessageType flag, bool bf)
 {
   if (!m || !el || STAILQ_EMPTY(el))
     return;
@@ -368,7 +373,7 @@ void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el, int flag, boo
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_thread_set_flag(struct Email *e, int flag, bool bf, bool subthread)
+int mutt_thread_set_flag(struct Email *e, enum MessageType flag, bool bf, bool subthread)
 {
   struct MuttThread *start = NULL;
   struct MuttThread *cur = e->thread;
@@ -431,7 +436,7 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
   if (!m || !el || STAILQ_EMPTY(el))
     return -1;
 
-  int flag;
+  enum MessageType flag = MUTT_NONE;
   struct KeyEvent event;
 
   mutt_window_mvprintw(MessageWindow, 0, 0,
