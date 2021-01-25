@@ -778,16 +778,16 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'e':
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, mutt_messages_in_thread(m, e, 1));
+      snprintf(buf, buflen, fmt, mutt_messages_in_thread(m, e, MIT_POSITION));
       break;
 
     case 'E':
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, mutt_messages_in_thread(m, e, 0));
+        snprintf(buf, buflen, fmt, mutt_messages_in_thread(m, e, MIT_NUM_MESSAGES));
       }
-      else if (mutt_messages_in_thread(m, e, 0) <= 1)
+      else if (mutt_messages_in_thread(m, e, MIT_NUM_MESSAGES) <= 1)
         optional = false;
       break;
 

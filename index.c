@@ -753,7 +753,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   if (!m)
     return;
 
-  const int flags = read_only ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS;
+  const OpenMailboxFlags flags = read_only ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS;
   Context = mx_mbox_open(m, flags);
   if (Context)
   {
@@ -1694,7 +1694,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           struct Email *e = Context->mailbox->emails[msg_num - 1];
 
-          if (mutt_messages_in_thread(Context->mailbox, e, 1) > 1)
+          if (mutt_messages_in_thread(Context->mailbox, e, MIT_POSITION) > 1)
           {
             mutt_uncollapse_thread(e);
             mutt_set_vnum(Context->mailbox);
