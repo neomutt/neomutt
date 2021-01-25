@@ -27,6 +27,7 @@
 #include <stddef.h>
 #include <regex.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include "queue.h"
 
 struct Buffer;
@@ -114,11 +115,11 @@ struct Replace
 };
 STAILQ_HEAD(ReplaceList, Replace);
 
-struct Regex *mutt_regex_compile(const char *str, int flags);
-struct Regex *mutt_regex_new(const char *str, int flags, struct Buffer *err);
+struct Regex *mutt_regex_compile(const char *str, uint16_t flags);
+struct Regex *mutt_regex_new(const char *str, uint32_t flags, struct Buffer *err);
 void          mutt_regex_free(struct Regex **r);
 
-int               mutt_regexlist_add   (struct RegexList *rl, const char *str, int flags, struct Buffer *err);
+int               mutt_regexlist_add   (struct RegexList *rl, const char *str, uint16_t flags, struct Buffer *err);
 void              mutt_regexlist_free  (struct RegexList *rl);
 bool              mutt_regexlist_match (struct RegexList *rl, const char *str);
 struct RegexNode *mutt_regexlist_new   (void);

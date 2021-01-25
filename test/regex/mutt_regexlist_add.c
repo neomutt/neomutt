@@ -27,7 +27,7 @@
 
 void test_mutt_regexlist_add(void)
 {
-  // int mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct Buffer *err);
+  // int mutt_regexlist_add(struct RegexList *rl, const char *str, uint16_t flags, struct Buffer *err);
 
   {
     struct Buffer buf = mutt_buffer_make(0);

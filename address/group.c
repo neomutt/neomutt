@@ -201,7 +201,7 @@ static void group_add_addrlist(struct Group *g, const struct AddressList *al)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int group_add_regex(struct Group *g, const char *s, int flags, struct Buffer *err)
+static int group_add_regex(struct Group *g, const char *s, uint16_t flags, struct Buffer *err)
 {
   return mutt_regexlist_add(&g->rs, s, flags, err);
 }
@@ -273,7 +273,8 @@ int mutt_grouplist_remove_addrlist(struct GroupList *gl, struct AddressList *al)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_grouplist_add_regex(struct GroupList *gl, const char *s, int flags, struct Buffer *err)
+int mutt_grouplist_add_regex(struct GroupList *gl, const char *s,
+                             uint16_t flags, struct Buffer *err)
 {
   if (!gl || !s)
     return -1;

@@ -2010,7 +2010,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       rd->search_compiled = Resize->search_compiled;
       if (rd->search_compiled)
       {
-        int flags = mutt_mb_is_lower(rd->searchbuf) ? REG_ICASE : 0;
+        uint16_t flags = mutt_mb_is_lower(rd->searchbuf) ? REG_ICASE : 0;
         const int err = REG_COMP(&rd->search_re, rd->searchbuf, REG_NEWLINE | flags);
         if (err == 0)
         {
@@ -2740,7 +2740,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           }
         }
 
-        int rflags = mutt_mb_is_lower(searchbuf) ? REG_ICASE : 0;
+        uint16_t rflags = mutt_mb_is_lower(searchbuf) ? REG_ICASE : 0;
         int err = REG_COMP(&rd.search_re, searchbuf, REG_NEWLINE | rflags);
         if (err != 0)
         {

@@ -27,7 +27,7 @@
 
 void test_mutt_regex_new(void)
 {
-  // struct Regex *mutt_regex_new(const char *str, int flags, struct Buffer *err);
+  // struct Regex *mutt_regex_new(const char *str, uint32_t flags, struct Buffer *err);
 
   {
     struct Buffer buf = mutt_buffer_make(0);
