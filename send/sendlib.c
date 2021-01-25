@@ -231,7 +231,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
   char bufi[256], bufu[512], bufo[4 * sizeof(bufi)];
   size_t ret;
 
-  const iconv_t cd1 = mutt_ch_iconv_open("utf-8", fromcode, 0);
+  const iconv_t cd1 = mutt_ch_iconv_open("utf-8", fromcode, MUTT_ICONV_NO_FLAGS);
   if (cd1 == (iconv_t)(-1))
     return -1;
 
@@ -243,7 +243,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
   for (int i = 0; i < ncodes; i++)
   {
     if (!mutt_istr_equal(tocodes[i], "utf-8"))
-      cd[i] = mutt_ch_iconv_open(tocodes[i], "utf-8", 0);
+      cd[i] = mutt_ch_iconv_open(tocodes[i], "utf-8", MUTT_ICONV_NO_FLAGS);
     else
     {
       /* Special case for conversion to UTF-8 */

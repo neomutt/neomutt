@@ -1721,7 +1721,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
       send_charset = "utf-8";
 
     /* fromcode is assumed to be correct: we set flags to 0 */
-    fc = mutt_ch_fgetconv_open(fp_body, from_charset, "utf-8", 0);
+    fc = mutt_ch_fgetconv_open(fp_body, from_charset, "utf-8", MUTT_ICONV_NO_FLAGS);
     while ((c = mutt_ch_fgetconv(fc)) != EOF)
       fputc(c, fp_pgp_in);
 

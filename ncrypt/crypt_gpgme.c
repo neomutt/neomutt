@@ -2986,7 +2986,8 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       {
         int c;
         rewind(fp_out);
-        struct FgetConv *fc = mutt_ch_fgetconv_open(fp_out, "utf-8", C_Charset, 0);
+        struct FgetConv *fc =
+            mutt_ch_fgetconv_open(fp_out, "utf-8", C_Charset, MUTT_ICONV_NO_FLAGS);
         while ((c = mutt_ch_fgetconv(fc)) != EOF)
         {
           state_putc(s, c);

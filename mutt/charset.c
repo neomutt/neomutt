@@ -327,7 +327,7 @@ int mutt_ch_convert_nonmime_string(char **ps)
     char *fromcode = mutt_mem_malloc(n + 1);
     mutt_str_copy(fromcode, c, n + 1);
     char *s = mutt_strn_dup(u, ulen);
-    int m = mutt_ch_convert_string(&s, fromcode, C_Charset, 0);
+    int m = mutt_ch_convert_string(&s, fromcode, C_Charset, MUTT_ICONV_NO_FLAGS);
     FREE(&fromcode);
     FREE(&s);
     if (m == 0)
@@ -562,7 +562,7 @@ const char *mutt_ch_charset_lookup(const char *chs)
  * @note The top-well-named MUTT_ICONV_HOOK_FROM acts on charset-hooks,
  * not at all on iconv-hooks.
  */
-iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags)
+iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t flags)
 {
   char tocode1[128];
   char fromcode1[128];
@@ -720,7 +720,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
     return -1;
 
   int rc = 0;
-  iconv_t cd = mutt_ch_iconv_open(to, from, 0);
+  iconv_t cd = mutt_ch_iconv_open(to, from, MUTT_ICONV_NO_FLAGS);
   if (cd == (iconv_t) -1)
     return -1;
 
@@ -751,7 +751,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
  * Parameter flags is given as-is to mutt_ch_iconv_open().
  * See there for its meaning and usage policy.
  */
-int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags)
+int mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t flags)
 {
   if (!ps)
     return -1;
@@ -835,7 +835,7 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
     }
   }
 
-  iconv_t cd = mutt_ch_iconv_open(cs, cs, 0);
+  iconv_t cd = mutt_ch_iconv_open(cs, cs, MUTT_ICONV_NO_FLAGS);
   if (cd != (iconv_t)(-1))
   {
     iconv_close(cd);
@@ -855,7 +855,7 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
  *
  * Parameter flags is given as-is to mutt_ch_iconv_open().
  */
-struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, int flags)
+struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, uint8_t flags)
 {
   struct FgetConv *fc = NULL;
   iconv_t cd = (iconv_t) -1;
@@ -1056,7 +1056,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, const char *u,
     t[n] = '\0';
 
     char *s = mutt_strn_dup(u, ulen);
-    const int rc = d ? mutt_ch_convert_string(&s, fromcode, t, 0) :
+    const int rc = d ? mutt_ch_convert_string(&s, fromcode, t, MUTT_ICONV_NO_FLAGS) :
                        mutt_ch_check(s, ulen, fromcode, t);
     if (rc)
     {

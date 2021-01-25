@@ -361,12 +361,12 @@ int mutt_write_mime_body(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   if ((a->type == TYPE_TEXT) && (!a->noconv))
   {
     char send_charset[128];
-    fc = mutt_ch_fgetconv_open(
-        fp_in, a->charset,
-        mutt_body_get_charset(a, send_charset, sizeof(send_charset)), 0);
+    fc = mutt_ch_fgetconv_open(fp_in, a->charset,
+                               mutt_body_get_charset(a, send_charset, sizeof(send_charset)),
+                               MUTT_ICONV_NO_FLAGS);
   }
   else
-    fc = mutt_ch_fgetconv_open(fp_in, 0, 0, 0);
+    fc = mutt_ch_fgetconv_open(fp_in, 0, 0, MUTT_ICONV_NO_FLAGS);
 
   mutt_sig_allow_interrupt(true);
   if (a->encoding == ENC_QUOTED_PRINTABLE)

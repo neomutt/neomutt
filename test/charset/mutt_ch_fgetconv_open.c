@@ -27,25 +27,26 @@
 
 void test_mutt_ch_fgetconv_open(void)
 {
-  // struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, int flags);
+  // struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, uint8_t flags);
 
   {
     struct FgetConv *conv = NULL;
-    TEST_CHECK((conv = mutt_ch_fgetconv_open(NULL, "apple", "banana", 0)) != NULL);
+    TEST_CHECK((conv = mutt_ch_fgetconv_open(NULL, "apple", "banana",
+                                             MUTT_ICONV_NO_FLAGS)) != NULL);
     mutt_ch_fgetconv_close(&conv);
   }
 
   {
     FILE fp = { 0 };
     struct FgetConv *conv = NULL;
-    TEST_CHECK((conv = mutt_ch_fgetconv_open(&fp, NULL, "banana", 0)) != NULL);
+    TEST_CHECK((conv = mutt_ch_fgetconv_open(&fp, NULL, "banana", MUTT_ICONV_NO_FLAGS)) != NULL);
     mutt_ch_fgetconv_close(&conv);
   }
 
   {
     FILE fp = { 0 };
     struct FgetConv *conv = NULL;
-    TEST_CHECK((conv = mutt_ch_fgetconv_open(&fp, "apple", NULL, 0)) != NULL);
+    TEST_CHECK((conv = mutt_ch_fgetconv_open(&fp, "apple", NULL, MUTT_ICONV_NO_FLAGS)) != NULL);
     mutt_ch_fgetconv_close(&conv);
   }
 }

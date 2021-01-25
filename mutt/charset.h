@@ -25,6 +25,7 @@
 
 #include <iconv.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <wchar.h>
 
@@ -69,6 +70,7 @@ enum LookupType
   MUTT_LOOKUP_ICONV,   ///< Character set conversion
 };
 
+#define MUTT_ICONV_NO_FLAGS  0 ///< No flags are set
 #define MUTT_ICONV_HOOK_FROM 1 ///< apply charset-hooks to fromcode
 
 void             mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name);
@@ -78,16 +80,16 @@ bool             mutt_ch_check_charset(const char *cs, bool strict);
 char *           mutt_ch_choose(const char *fromcode, const char *charsets, const char *u, size_t ulen, char **d, size_t *dlen);
 bool             mutt_ch_chscmp(const char *cs1, const char *cs2);
 int              mutt_ch_convert_nonmime_string(char **ps);
-int              mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags);
+int              mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t flags);
 int              mutt_ch_fgetconv(struct FgetConv *fc);
 void             mutt_ch_fgetconv_close(struct FgetConv **fc);
-struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, int flags);
+struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, uint8_t flags);
 char *           mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc);
 char *           mutt_ch_get_default_charset(void);
 char *           mutt_ch_get_langinfo_charset(void);
 size_t           mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, const char **inrepls, const char *outrepl, int *iconverrno);
 const char *     mutt_ch_iconv_lookup(const char *chs);
-iconv_t          mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags);
+iconv_t          mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t flags);
 bool             mutt_ch_lookup_add(enum LookupType type, const char *pat, const char *replace, struct Buffer *err);
 void             mutt_ch_lookup_remove(void);
 void             mutt_ch_set_charset(const char *charset);

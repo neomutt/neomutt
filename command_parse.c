@@ -487,7 +487,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
       currentline = mutt_str_dup(line);
       if (!currentline)
         continue;
-      mutt_ch_convert_string(&currentline, C_ConfigCharset, C_Charset, 0);
+      mutt_ch_convert_string(&currentline, C_ConfigCharset, C_Charset, MUTT_ICONV_NO_FLAGS);
     }
     else
       currentline = line;
