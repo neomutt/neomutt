@@ -81,7 +81,7 @@ void mutt_buffer_reset(struct Buffer *buf)
   if (!buf || !buf->data || (buf->dsize == 0))
     return;
   memset(buf->data, 0, buf->dsize);
-  buf->dptr = buf->data;
+  mutt_buffer_seek(buf, 0);
 }
 
 /**
@@ -183,7 +183,7 @@ void mutt_buffer_fix_dptr(struct Buffer *buf)
   if (!buf)
     return;
 
-  buf->dptr = buf->data;
+  mutt_buffer_seek(buf, 0);
 
   if (buf->data && (buf->dsize > 0))
   {
@@ -271,7 +271,7 @@ void mutt_buffer_alloc(struct Buffer *buf, size_t new_size)
 
   if (!buf->dptr)
   {
-    buf->dptr = buf->data;
+    mutt_buffer_seek(buf, 0);
   }
 
   if ((new_size > buf->dsize) || !buf->data)
@@ -280,7 +280,7 @@ void mutt_buffer_alloc(struct Buffer *buf, size_t new_size)
 
     buf->dsize = new_size;
     mutt_mem_realloc(&buf->data, buf->dsize);
-    buf->dptr = buf->data + offset;
+    mutt_buffer_seek(buf, offset);
     /* This ensures an initially NULL buf->data is now properly terminated. */
     if (buf->dptr)
       *buf->dptr = '\0';
@@ -453,3 +453,20 @@ size_t mutt_buffer_copy(struct Buffer *dst, const struct Buffer *src)
 
   return mutt_buffer_addstr_n(dst, src->data, mutt_buffer_len(src));
 }
+
+
+/** 
+ * mutt_buffer_seek - set current read/write position to offset from beginning
+ * @param buf    Buffer to use
+ * @param offset Distance from the beginning
+ *
+ * This is used for cases where the buffer is read from
+ * A value is placed in the buffer, and then b->dptr is set back to the
+ * beginning as a read marker instead of write marker.
+ */
+void mutt_buffer_seek (struct Buffer *buf, size_t offset)
+{
+  if (buf)
+    buf->dptr = buf->data + offset;
+}
+

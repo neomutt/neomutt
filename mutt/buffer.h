@@ -51,6 +51,7 @@ size_t         mutt_buffer_len          (const struct Buffer *buf);
 struct Buffer  mutt_buffer_make         (size_t size);
 void           mutt_buffer_reset        (struct Buffer *buf);
 char *         mutt_buffer_strdup       (const struct Buffer *buf);
+void           mutt_buffer_seek         (struct Buffer *buf, size_t offset);
 
 // Functions that APPEND to a Buffer
 size_t         mutt_buffer_addch        (struct Buffer *buf, char c);

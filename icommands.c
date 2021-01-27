@@ -85,7 +85,7 @@ enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *er
   struct Buffer *token = mutt_buffer_pool_get();
   struct Buffer expn = mutt_buffer_make(0);
   mutt_buffer_addstr(&expn, line);
-  expn.dptr = expn.data;
+  mutt_buffer_seek(&expn, 0);
 
   mutt_buffer_reset(err);
 
