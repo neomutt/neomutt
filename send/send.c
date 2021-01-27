@@ -1807,7 +1807,7 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
            mutt_str_equal(e->body->subtype, "signed")))
       {
         if ((clear_content->type == TYPE_MULTIPART) &&
-            (query_quadoption(c_fcc_attach, _("Save attachments in Fcc?")) == MUTT_NO))
+            (query_quadoption(c_fcc_attach, _("Save attachments in Fcc?")) != MUTT_YES))
         {
           if (!(e->security & SEC_ENCRYPT) && (e->security & SEC_SIGN))
           {
@@ -1833,7 +1833,7 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
       }
       else
       {
-        if (query_quadoption(c_fcc_attach, _("Save attachments in Fcc?")) == MUTT_NO)
+        if (query_quadoption(c_fcc_attach, _("Save attachments in Fcc?")) != MUTT_YES)
           e->body = e->body->parts;
       }
     }
