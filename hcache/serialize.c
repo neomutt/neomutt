@@ -351,7 +351,7 @@ void serial_restore_buffer(struct Buffer *buf, const unsigned char *d, int *off,
 
   serial_restore_char(&buf->data, d, off, convert);
   serial_restore_int(&offset, d, off);
-  buf->dptr = buf->data + offset;
+  mutt_buffer_seek(buf, offset);
   serial_restore_int(&used, d, off);
   buf->dsize = used;
 }

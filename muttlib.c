@@ -822,7 +822,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       mutt_buffer_addstr(&srcbuf, srccopy);
       /* note: we are resetting dptr and *reading* from the buffer, so we don't
        * want to use mutt_buffer_reset(). */
-      srcbuf.dptr = srcbuf.data;
+      mutt_buffer_seek(&srcbuf, 0);
       struct Buffer word = mutt_buffer_make(0);
       struct Buffer cmd = mutt_buffer_make(0);
 

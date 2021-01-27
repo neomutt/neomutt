@@ -190,7 +190,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
           mutt_buffer_copy(copy, &expn);
           mutt_buffer_addstr(copy, tok->dptr);
           mutt_buffer_copy(tok, copy);
-          tok->dptr = tok->data;
+          mutt_buffer_seek(tok, 0);
           mutt_buffer_pool_release(&copy);
         }
         FREE(&expn.data);
