@@ -978,9 +978,8 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
   CopyHeaderFlags chflags = CH_XMIT;
   cmflags = MUTT_CM_NO_FLAGS;
 
-  const bool c_forward_decode = cs_subset_bool(sub, "forward_decode");
   /* If we are attaching a message, ignore `$mime_forward_decode` */
-  if (!attach_msg && c_forward_decode)
+  if (!attach_msg && c_mime_forward_decode)
   {
     chflags |= CH_MIME | CH_TXTPLAIN;
     cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
