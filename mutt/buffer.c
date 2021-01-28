@@ -454,7 +454,6 @@ size_t mutt_buffer_copy(struct Buffer *dst, const struct Buffer *src)
   return mutt_buffer_addstr_n(dst, src->data, mutt_buffer_len(src));
 }
 
-
 /** 
  * mutt_buffer_seek - set current read/write position to offset from beginning
  * @param buf    Buffer to use
@@ -464,9 +463,8 @@ size_t mutt_buffer_copy(struct Buffer *dst, const struct Buffer *src)
  * A value is placed in the buffer, and then b->dptr is set back to the
  * beginning as a read marker instead of write marker.
  */
-void mutt_buffer_seek (struct Buffer *buf, size_t offset)
+void mutt_buffer_seek(struct Buffer *buf, size_t offset)
 {
   if (buf)
     buf->dptr = buf->data + offset;
 }
-
