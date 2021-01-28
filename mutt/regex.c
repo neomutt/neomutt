@@ -30,6 +30,7 @@
 #include "config.h"
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,7 +50,7 @@
  * @retval ptr New Regex object
  * @retval NULL Error
  */
-struct Regex *mutt_regex_compile(const char *str, int flags)
+struct Regex *mutt_regex_compile(const char *str, uint16_t flags)
 {
   if (!str || (*str == '\0'))
     return NULL;
@@ -70,12 +71,12 @@ struct Regex *mutt_regex_compile(const char *str, int flags)
  * @retval ptr New Regex object
  * @retval NULL Error
  */
-struct Regex *mutt_regex_new(const char *str, int flags, struct Buffer *err)
+struct Regex *mutt_regex_new(const char *str, uint32_t flags, struct Buffer *err)
 {
   if (!str || (*str == '\0'))
     return NULL;
 
-  int rflags = 0;
+  uint16_t rflags = 0;
   struct Regex *reg = mutt_mem_calloc(1, sizeof(struct Regex));
 
   reg->regex = mutt_mem_calloc(1, sizeof(regex_t));
@@ -128,7 +129,8 @@ void mutt_regex_free(struct Regex **r)
  * @retval 0  Success, Regex compiled and added to the list
  * @retval -1 Error, see message in 'err'
  */
-int mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct Buffer *err)
+int mutt_regexlist_add(struct RegexList *rl, const char *str, uint16_t flags,
+                       struct Buffer *err)
 {
   if (!rl || !str || (*str == '\0'))
     return 0;

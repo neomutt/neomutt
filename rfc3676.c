@@ -332,7 +332,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
   mutt_debug(LL_DEBUG3, "f=f: DelSp: %s\n", delsp ? "yes" : "no");
 
-  while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, 0)))
+  while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, MUTT_RL_NO_FLAGS)))
   {
     const size_t buf_len = mutt_str_len(buf);
     const unsigned int newql = get_quote_level(buf);
@@ -426,7 +426,7 @@ static void rfc3676_space_stuff(const char *filename, bool unstuff)
   if (!fp_out)
     goto bail;
 
-  while ((buf = mutt_file_read_line(buf, &blen, fp_in, NULL, 0)) != NULL)
+  while ((buf = mutt_file_read_line(buf, &blen, fp_in, NULL, MUTT_RL_NO_FLAGS)) != NULL)
   {
     if (unstuff)
     {

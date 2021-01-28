@@ -166,7 +166,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   if (!WithCrypto)
     return -1;
 
-  int security = e->security;
+  SecurityFlags security = e->security;
   int sign = security & (SEC_AUTOCRYPT | SEC_SIGN);
   if (postpone)
   {

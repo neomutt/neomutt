@@ -1747,7 +1747,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
       fflush(fp_smime_err);
       rewind(fp_smime_err);
 
-      line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, 0);
+      line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, MUTT_RL_NO_FLAGS);
       if (linelen && mutt_istr_equal(line, "verification successful"))
         badsig = 0;
 
@@ -1993,7 +1993,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
 
     rewind(fp_smime_err);
 
-    line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, 0);
+    line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, MUTT_RL_NO_FLAGS);
     if (linelen && mutt_istr_equal(line, "verification successful"))
       m->goodsig = true;
     FREE(&line);
@@ -2097,7 +2097,7 @@ int smime_class_application_handler(struct Body *m, struct State *s)
 /**
  * smime_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int smime_class_send_menu(struct Email *e)
+SecurityFlags smime_class_send_menu(struct Email *e)
 {
   struct SmimeKey *key = NULL;
   const char *prompt = NULL;

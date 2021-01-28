@@ -77,7 +77,7 @@ static void regex_destroy(const struct ConfigSet *cs, void *var, const struct Co
  * @retval ptr New Regex object
  * @retval NULL Error
  */
-struct Regex *regex_new(const char *str, int flags, struct Buffer *err)
+struct Regex *regex_new(const char *str, uint32_t flags, struct Buffer *err)
 {
   if (!str)
     return NULL;
@@ -219,7 +219,7 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
 
   if (orig && orig->pattern)
   {
-    const int flags = orig->pat_not ? DT_REGEX_ALLOW_NOT : 0;
+    const uint32_t flags = orig->pat_not ? DT_REGEX_ALLOW_NOT : 0;
     r = regex_new(orig->pattern, flags, err);
     if (!r)
       rc = CSR_ERR_INVALID;

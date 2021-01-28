@@ -1002,7 +1002,7 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
     }
     else
     {
-      int flags = 0;
+      uint16_t flags = 0;
       if (sensitive)
         flags = mutt_mb_is_lower(s) ? REG_ICASE : 0;
       else

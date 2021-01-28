@@ -560,7 +560,7 @@ void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *cac)
 
   mutt_account_tourl(cac, &url);
   url.path = mutt_str_dup(buf);
-  url_tostring(&url, buf, buflen, 0);
+  url_tostring(&url, buf, buflen, U_NO_FLAGS);
   FREE(&url.path);
 }
 

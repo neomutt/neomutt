@@ -48,7 +48,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
                            const char *value, struct Buffer *err)
 {
   intptr_t id = -1;
-  int flags = 0;
+  uint16_t flags = 0;
 
   if (!value || (value[0] == '\0'))
   {

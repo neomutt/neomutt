@@ -25,6 +25,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include "list.h"
 
 struct Buffer;
@@ -46,7 +47,7 @@ struct Slist
 {
   struct ListHead head;
   size_t count;
-  unsigned int flags;
+  uint32_t flags;
 };
 
 struct Slist *slist_add_list(struct Slist *list, const struct Slist *add);
@@ -56,8 +57,8 @@ struct Slist *slist_dup(const struct Slist *list);
 struct Slist *slist_empty(struct Slist **list);
 void          slist_free(struct Slist **list);
 bool          slist_is_member(const struct Slist *list, const char *str);
-struct Slist *slist_new(int flags);
-struct Slist *slist_parse(const char *str, int flags);
+struct Slist *slist_new(uint32_t flags);
+struct Slist *slist_parse(const char *str, uint32_t flags);
 struct Slist *slist_remove_string(struct Slist *list, const char *str);
 int           slist_to_buffer(const struct Slist *list, struct Buffer *buf);
 

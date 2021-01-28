@@ -190,7 +190,7 @@ static void recode_buf(char *buf, size_t buflen)
   char *s = mutt_str_dup(buf);
   if (!s)
     return;
-  if (mutt_ch_convert_string(&s, C_Charset, C_ConfigCharset, 0) == 0)
+  if (mutt_ch_convert_string(&s, C_Charset, C_ConfigCharset, MUTT_ICONV_NO_FLAGS) == 0)
     mutt_str_copy(buf, s, buflen);
   FREE(&s);
 }

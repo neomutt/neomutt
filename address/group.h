@@ -26,6 +26,7 @@
 #define MUTT_GROUP_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include "mutt/lib.h"
 #include "address.h"
 
@@ -54,7 +55,7 @@ STAILQ_HEAD(GroupList, GroupNode);
 
 void mutt_grouplist_add            (struct GroupList *gl, struct Group *group);
 void mutt_grouplist_add_addrlist   (struct GroupList *gl, struct AddressList *a);
-int  mutt_grouplist_add_regex      (struct GroupList *gl, const char *s, int flags, struct Buffer *err);
+int  mutt_grouplist_add_regex      (struct GroupList *gl, const char *s, uint16_t flags, struct Buffer *err);
 void mutt_grouplist_clear          (struct GroupList *gl);
 void mutt_grouplist_destroy        (struct GroupList *gl);
 void mutt_grouplist_free           (void);

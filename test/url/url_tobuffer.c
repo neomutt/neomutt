@@ -29,15 +29,15 @@
 
 void test_url_tobuffer(void)
 {
-  // int url_tobuffer(struct Url *u, struct Buffer *buf, int flags);
+  // int url_tobuffer(struct Url *url, struct Buffer *buf, uint8_t flags);
 
   {
     struct Buffer buf = mutt_buffer_make(0);
-    TEST_CHECK(url_tobuffer(NULL, &buf, 0) != 0);
+    TEST_CHECK(url_tobuffer(NULL, &buf, U_NO_FLAGS) != 0);
   }
 
   {
     struct Url url = { 0 };
-    TEST_CHECK(url_tobuffer(&url, NULL, 0) != 0);
+    TEST_CHECK(url_tobuffer(&url, NULL, U_NO_FLAGS) != 0);
   }
 }

@@ -694,7 +694,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   url.path[strlen(url.path) - 1] = '\0';
   if (mutt_str_equal(url.user, C_ImapUser))
     url.user = NULL;
-  url_tostring(&url, buf + 11, sizeof(buf) - 11, 0);
+  url_tostring(&url, buf + 11, sizeof(buf) - 11, U_NO_FLAGS);
   mutt_str_cat(buf, sizeof(buf), "\"");
   mutt_buffer_init(&err);
   err.dsize = 256;

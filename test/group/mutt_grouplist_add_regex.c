@@ -28,7 +28,7 @@
 
 void test_mutt_grouplist_add_regex(void)
 {
-  // int mutt_grouplist_add_regex(struct GroupList *head, const char *s, int flags, struct Buffer *err);
+  // int mutt_grouplist_add_regex(struct GroupList *gl, const char *s, uint16_t flags, struct Buffer *err);
 
   {
     struct Buffer err = mutt_buffer_make(0);

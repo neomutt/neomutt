@@ -1160,7 +1160,7 @@ static int search(struct Menu *menu, int op)
 
   if (search_buf)
   {
-    int flags = mutt_mb_is_lower(search_buf) ? REG_ICASE : 0;
+    uint16_t flags = mutt_mb_is_lower(search_buf) ? REG_ICASE : 0;
     rc = REG_COMP(&re, search_buf, REG_NOSUB | flags);
   }
 

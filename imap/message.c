@@ -647,7 +647,7 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccount
  * made.
  */
 static void set_changed_flag(struct Mailbox *m, struct Email *e, int local_changes,
-                             bool *server_changes, int flag_name,
+                             bool *server_changes, enum MessageType flag_name,
                              bool old_hd_flag, bool new_hd_flag, bool h_flag)
 {
   /* If there are local_changes, we only want to note if the server

@@ -1979,7 +1979,7 @@ int nm_update_filename(struct Mailbox *m, const char *old_file,
 /**
  * nm_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static int nm_mbox_check_stats(struct Mailbox *m, int flags)
+static int nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   struct UrlQuery *item = NULL;
   struct Url *url = NULL;

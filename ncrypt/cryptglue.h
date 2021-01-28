@@ -25,6 +25,7 @@
 #define MUTT_NCRYPT_CRYPTGLUE_H
 
 #include <stdbool.h>
+#include "lib.h"
 
 struct AddressList;
 struct Body;
@@ -36,7 +37,7 @@ char *       crypt_pgp_find_keys(struct AddressList *al, bool oppenc_mode);
 void         crypt_pgp_invoke_import(const char *fname);
 void         crypt_pgp_set_sender(const char *sender);
 struct Body *crypt_pgp_sign_message(struct Body *a, const struct AddressList *from);
-struct Body *crypt_pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist);
+struct Body *crypt_pgp_traditional_encryptsign(struct Body *a, SecurityFlags flags, char *keylist);
 bool         crypt_pgp_valid_passphrase(void);
 int          crypt_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf);
 void         crypt_pgp_void_passphrase(void);

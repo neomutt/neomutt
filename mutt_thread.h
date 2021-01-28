@@ -79,6 +79,12 @@ typedef uint8_t MuttThreadFlags;         ///< Flags, e.g. #MUTT_THREAD_COLLAPSE
 #define MUTT_THREAD_NEXT_UNREAD (1 << 3) ///< Find the next unread email
 #define MUTT_THREAD_FLAGGED     (1 << 4) ///< Count flagged emails in a thread
 
+enum MessageInThread
+{
+  MIT_NUM_MESSAGES, // How many messages are in the thread
+  MIT_POSITION,     // Our position in the thread
+};
+
 int mutt_traverse_thread(struct Email *e, MuttThreadFlags flag);
 #define mutt_collapse_thread(e)         mutt_traverse_thread(e, MUTT_THREAD_COLLAPSE)
 #define mutt_uncollapse_thread(e)       mutt_traverse_thread(e, MUTT_THREAD_UNCOLLAPSE)
@@ -102,7 +108,7 @@ void                   mutt_clear_threads     (struct ThreadsContext *tctx);
 void                   mutt_draw_tree         (struct ThreadsContext *tctx);
 bool                   mutt_link_threads      (struct Email *parent, struct EmailList *children, struct Mailbox *m);
 struct HashTable *     mutt_make_id_hash      (struct Mailbox *m);
-int                    mutt_messages_in_thread(struct Mailbox *m, struct Email *e, int flag);
+int                    mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInThread mit);
 int                    mutt_parent_message    (struct Email *e, bool find_root);
 off_t                  mutt_set_vnum          (struct Mailbox *m);
 void                   mutt_sort_subthreads   (struct ThreadsContext *tctx, bool init);

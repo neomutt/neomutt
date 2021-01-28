@@ -210,7 +210,7 @@ static void shrink_histfile(void)
       dup_hashes[hclass] = mutt_hash_new(MAX(10, C_SaveHistory * 2), MUTT_HASH_STRDUP_KEYS);
 
   line = 0;
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, 0)))
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NO_FLAGS)))
   {
     if ((sscanf(linebuf, "%d:%n", &hclass, &read) < 1) || (read == 0) ||
         (*(p = linebuf + strlen(linebuf) - 1) != '|') || (hclass < 0))
@@ -252,7 +252,7 @@ static void shrink_histfile(void)
     }
     rewind(fp);
     line = 0;
-    while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, 0)))
+    while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NO_FLAGS)))
     {
       if ((sscanf(linebuf, "%d:%n", &hclass, &read) < 1) || (read == 0) ||
           (*(p = linebuf + strlen(linebuf) - 1) != '|') || (hclass < 0))
@@ -309,7 +309,7 @@ static void save_history(enum HistoryClass hclass, const char *str)
     return;
 
   tmp = mutt_str_dup(str);
-  mutt_ch_convert_string(&tmp, C_Charset, "utf-8", 0);
+  mutt_ch_convert_string(&tmp, C_Charset, "utf-8", MUTT_ICONV_NO_FLAGS);
 
   /* Format of a history item (1 line): "<histclass>:<string>|".
    * We add a '|' in order to avoid lines ending with '\'. */
@@ -578,7 +578,7 @@ void mutt_hist_read_file(void)
   if (!fp)
     return;
 
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, 0)))
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NO_FLAGS)))
   {
     read = 0;
     if ((sscanf(linebuf, "%d:%n", &hclass, &read) < 1) || (read == 0) ||
@@ -594,7 +594,7 @@ void mutt_hist_read_file(void)
     p = mutt_str_dup(linebuf + read);
     if (p)
     {
-      mutt_ch_convert_string(&p, "utf-8", C_Charset, 0);
+      mutt_ch_convert_string(&p, "utf-8", C_Charset, MUTT_ICONV_NO_FLAGS);
       mutt_hist_add(hclass, p, false);
       FREE(&p);
     }

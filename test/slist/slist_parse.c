@@ -27,5 +27,5 @@
 
 void test_slist_parse(void)
 {
-  // struct Slist *slist_parse(const char *str, int flags);
+  // struct Slist *slist_parse(const char *str, uint32_t flags);
 }

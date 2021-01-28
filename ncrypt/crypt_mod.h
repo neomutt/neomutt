@@ -135,7 +135,7 @@ struct CryptModuleSpecs
    * @param e Email
    * @retval num Flags, e.g. #APPLICATION_PGP | #SEC_ENCRYPT
    */
-  int (*send_menu)(struct Email *e);
+  SecurityFlags (*send_menu)(struct Email *e);
 
   /**
    * set_sender - Set the sender of the email

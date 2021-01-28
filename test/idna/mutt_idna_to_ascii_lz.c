@@ -28,7 +28,7 @@
 
 void test_mutt_idna_to_ascii_lz(void)
 {
-  // int mutt_idna_to_ascii_lz(const char *input, char **output, int flags);
+  // int mutt_idna_to_ascii_lz(const char *input, char **output, uint8_t flags);
 
 #ifdef HAVE_LIBIDN
   {

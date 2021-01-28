@@ -32,6 +32,7 @@
 #include <time.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "mutt.h"
 #include "hcache/lib.h"
 
 struct Account;
@@ -281,7 +282,7 @@ extern char *        C_ImapUser;
 int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox);
 int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char *newname);
 int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
-                     int flag, bool changed, bool invert);
+                     enum MessageType flag, bool changed, bool invert);
 int imap_open_connection(struct ImapAccountData *adata);
 void imap_close_connection(struct ImapAccountData *adata);
 int imap_read_literal(FILE *fp, struct ImapAccountData *adata, unsigned long bytes, struct Progress *pbar);
