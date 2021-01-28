@@ -2376,14 +2376,6 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     else
       OldEmail = NULL;
 
-    ch = km_dokey(MENU_PAGER);
-    if (ch >= 0)
-    {
-      mutt_clear_error();
-      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[ch][0], ch);
-    }
-    mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-
     bool do_new_mail = false;
 
     if (m && !OptAttachMsg)
@@ -2500,6 +2492,14 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       }
       continue;
     }
+
+    ch = km_dokey(MENU_PAGER);
+    if (ch >= 0)
+    {
+      mutt_clear_error();
+      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[ch][0], ch);
+    }
+    mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
     if (ch < 0)
     {
