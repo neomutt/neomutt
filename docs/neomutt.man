@@ -83,7 +83,7 @@ neomutt \- The NeoMutt Mail User Agent (MUA)
 .OP \-n
 .OP \-e command
 .OP \-F config
-.BR \-D " [" \-S ]
+.BR \-D " [" \-S ] " [" \-O ]
 .YS
 .
 .SY neomutt
@@ -119,7 +119,7 @@ neomutt \- The NeoMutt Mail User Agent (MUA)
 .OP \-n
 .OP \-e command
 .OP \-F config
-.BI \-Q " variable"
+.BI \-Q " variable [" \-O ]
 .YS
 .
 .SY neomutt
@@ -197,6 +197,10 @@ Specify a carbon copy (Cc) recipient
 Dump all configuration variables as
 .RB \(aq name = value \(aq
 pairs to stdout
+.
+.TP
+.BI \-D\ \-O
+Like \fB\-D\fP, but show one-liner documentation
 .
 .TP
 .BI \-D\ \-S
@@ -280,7 +284,8 @@ Resume a prior postponed message, if any
 .TP
 .BI \-Q " variable"
 Query a configuration \fIvariable\fP and print its value to stdout (after the
-config has been read and any commands executed)
+config has been read and any commands executed).
+Add -O for one-liner documentation.
 .
 .TP
 .BI \-R
