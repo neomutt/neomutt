@@ -238,9 +238,13 @@ Start NeoMutt with a listing of subscribed newsgroups
 .BI \-g " server"
 Like \fB\-G\fP, but start at specified news \fIserver\fP
 .
-.TP
 .BI \-H " draft"
-Specify a \fIdraft\fP file with header and body for message composing
+Specify a \fIdraft\fP file which contains header and body to use to send a
+message.
+If \fIdraft\fP is \*(lq\fB\-\fP\*(rq, then data is read from stdin.
+The draft file is expected to contain just an RFC822 email \(em headers and a body.
+Although it is not an mbox file, if an mbox "\fBFrom\~\fP" line is present,
+it will be silently discarded.
 .
 .TP
 .BI \-h
