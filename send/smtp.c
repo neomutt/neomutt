@@ -457,7 +457,7 @@ static int smtp_auth_sasl(struct SmtpAccountData *adata, const char *mechlist)
 
   if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
-    mutt_debug(LL_DEBUG2, "%s unavailable\n", mech);
+    mutt_debug(LL_DEBUG2, "%s unavailable\n", NONULL(mech));
     sasl_dispose(&saslconn);
     return SMTP_AUTH_UNAVAIL;
   }
