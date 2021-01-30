@@ -1046,18 +1046,23 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   if (!el || STAILQ_EMPTY(el))
     return -1;
 
+  int rc = -1;
+  int app = 0;
+  int tagged_progress_count = 0;
+  unsigned int msg_count = 0;
+
+  struct Buffer *buf = mutt_buffer_pool_get();
   struct Progress progress;
   struct stat st;
-  struct Buffer *buf = mutt_buffer_pool_get();
-  struct EmailNode *en = STAILQ_FIRST(el);
+  struct EmailNode *en = NULL;
+
+  STAILQ_FOREACH(en, el, entries)
+  {
+    msg_count++;
+  }
+  en = STAILQ_FIRST(el);
 
   bool is_passphrase_needed = false;
-  bool is_single_message = !STAILQ_NEXT(en, entries);
-
-  int app = 0;
-  int rc = -1;
-  int tagged_progress_count = 0;
-
   const char *prompt = NULL;
   const char *progress_msg = NULL;
 
@@ -1065,27 +1070,27 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   {
     case TRANSFORM_NONE:
       if (delete_original)
-        prompt = is_single_message ? _("Save to mailbox") : _("Save tagged to mailbox");
+        prompt = (msg_count > 1) ? _("Save tagged to mailbox") : _("Save to mailbox");
       else
-        prompt = is_single_message ? _("Copy to mailbox") : _("Copy tagged to mailbox");
+        prompt = (msg_count > 1) ? _("Copy tagged to mailbox") : _("Copy to mailbox");
       break;
 
     case TRANSFORM_DECRYPT:
       if (delete_original)
-        prompt = is_single_message ? _("Decrypt-save to mailbox") :
-                                     _("Decrypt-save tagged to mailbox");
+        prompt = (msg_count > 1) ? _("Decrypt-save tagged to mailbox") :
+                                   _("Decrypt-save to mailbox");
       else
-        prompt = is_single_message ? _("Decrypt-copy to mailbox") :
-                                     _("Decrypt-copy tagged to mailbox");
+        prompt = (msg_count > 1) ? _("Decrypt-copy tagged to mailbox") :
+                                   _("Decrypt-copy to mailbox");
       break;
 
     case TRANSFORM_DECODE:
       if (delete_original)
-        prompt = is_single_message ? _("Decode-save to mailbox") :
-                                     _("Decode-save tagged to mailbox");
+        prompt = (msg_count > 1) ? _("Decode-save tagged to mailbox") :
+                                   _("Decode-save to mailbox");
       else
-        prompt = is_single_message ? _("Decode-copy to mailbox") :
-                                     _("Decode-copy tagged to mailbox");
+        prompt = (msg_count > 1) ? _("Decode-copy tagged to mailbox") :
+                                   _("Decode-copy to mailbox");
       break;
   }
 
@@ -1160,7 +1165,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   OpenMailboxFlags mbox_flags = MUTT_NEWFOLDER;
   /* Display a tagged message progress counter, rather than (for
    * IMAP) a per-message progress counter */
-  if (!is_single_message)
+  if (msg_count > 1)
     mbox_flags |= MUTT_QUIET;
   struct Context *ctx_save = mx_mbox_open(m_save, mbox_flags);
   if (!ctx_save)
@@ -1182,7 +1187,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   if (m_comp && (m_comp->msg_count == 0))
     m_comp = NULL;
 #endif
-  if (is_single_message)
+  if (msg_count == 1)
   {
     if (mutt_save_message_ctx(en->email, delete_original, transform_opt,
                               ctx_save->mailbox))
@@ -1215,11 +1220,6 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
                        // L10N: Progress meter message when copying tagged messages
                        _("Copying tagged messages...");
 
-    int msg_count = 0;
-    STAILQ_FOREACH(en, el, entries)
-    {
-      msg_count++;
-    }
     mutt_progress_init(&progress, progress_msg, MUTT_PROGRESS_WRITE, msg_count);
 
 #ifdef USE_NOTMUCH
