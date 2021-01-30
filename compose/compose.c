@@ -1128,6 +1128,36 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           break;
         }
 
+        /* All tagged attachments must be at top level and can't have children */
+        bool taggedtoplevel = true;
+        bool taggednochildren = true;
+        for (int i = 0; i < actx->idxlen; i++)
+        {
+          if (actx->idx[i]->body->tagged)
+          {
+            if (actx->idx[i]->level > 0)
+            {
+              taggedtoplevel = false;
+              break;
+            }
+            if (actx->idx[i]->body->type == TYPE_MULTIPART)
+            {
+              taggednochildren = false;
+              break;
+            }
+          }
+        }
+        if (!taggedtoplevel)
+        {
+          mutt_error(_("Attachments to be grouped must be at top level"));
+          break;
+        }
+        if (!taggednochildren)
+        {
+          mutt_error(_("Attachments to be grouped can not be multipart"));
+          break;
+        }
+
         struct Body *group = mutt_body_new();
         group->type = TYPE_MULTIPART;
         group->subtype = mutt_str_dup("alternative");
