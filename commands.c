@@ -1132,7 +1132,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 
   if (is_passphrase_needed && transform_opt && !crypt_valid_passphrase(security_flags))
   {
-    goto cleanup;
+    rc = -1;
+    goto errcleanup;
   }
 
   mutt_message(_("Copying to %s..."), mutt_buffer_string(buf));
@@ -1141,7 +1142,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   enum MailboxType mailbox_type = imap_path_probe(mutt_buffer_string(buf), NULL);
   if ((m->type == MUTT_IMAP) && (transform_opt == TRANSFORM_NONE) && (mailbox_type == MUTT_IMAP))
   {
-    switch (imap_copy_messages(m, el, mutt_buffer_string(buf), save_opt))
+    rc = imap_copy_messages(m, el, mutt_buffer_string(buf), save_opt);
+    switch (rc)
     {
       /* success */
       case 0:
@@ -1153,7 +1155,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
         break;
       /* fatal error, abort */
       case -1:
-        goto cleanup;
+        goto errcleanup;
     }
   }
 #endif
@@ -1169,8 +1171,9 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   struct Context *ctx_save = mx_mbox_open(m_save, mbox_flags);
   if (!ctx_save)
   {
+    rc = -1;
     mailbox_free(&m_save);
-    goto cleanup;
+    goto errcleanup;
   }
   m_save->append = true;
 
@@ -1188,11 +1191,12 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
   if (msg_count == 1)
   {
-    if (mutt_save_message_ctx(en->email, save_opt, transform_opt, ctx_save->mailbox))
+    rc = mutt_save_message_ctx(en->email, save_opt, transform_opt, ctx_save->mailbox);
+    if (rc != 0)
     {
       mx_mbox_close(&ctx_save);
       m_save->append = old_append;
-      goto cleanup;
+      goto errcleanup;
     }
 #ifdef USE_COMP_MBOX
     if (m_comp)
@@ -1255,7 +1259,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     {
       mx_mbox_close(&ctx_save);
       m_save->append = old_append;
-      goto cleanup;
+      goto errcleanup;
     }
   }
 
@@ -1270,6 +1274,38 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 
   mutt_clear_error();
   rc = 0;
+
+errcleanup:
+  if (rc != 0)
+  {
+    switch (save_opt)
+    {
+      case SAVE_MOVE:
+        if (msg_count > 1)
+        {
+          // L10N: Message when an index tagged save operation fails for some reason
+          mutt_error(_("Error saving tagged messages"));
+        }
+        else
+        {
+          // L10N: Message when an index/pager save operation fails for some reason
+          mutt_error(_("Error saving message"));
+        }
+        break;
+      case SAVE_COPY:
+        if (msg_count > 1)
+        {
+          // L10N: Message when an index tagged copy operation fails for some reason
+          mutt_error(_("Error copying tagged messages"));
+        }
+        else
+        {
+          // L10N: Message when an index/pager copy operation fails for some reason
+          mutt_error(_("Error copying message"));
+        }
+        break;
+    }
+  }
 
 cleanup:
   mutt_buffer_pool_release(&buf);
