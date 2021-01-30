@@ -1047,11 +1047,11 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     return -1;
 
   int rc = -1;
-  int app = 0;
   int tagged_progress_count = 0;
   unsigned int msg_count = 0;
 
   struct Buffer *buf = mutt_buffer_pool_get();
+  SecurityFlags security_flags = SEC_NO_FLAGS;
   struct Progress progress;
   struct stat st;
   struct EmailNode *en = NULL;
@@ -1096,8 +1096,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 
   if (WithCrypto)
   {
-    is_passphrase_needed = (en->email->security & SEC_ENCRYPT);
-    app = en->email->security;
+    security_flags = en->email->security;
+    is_passphrase_needed = security_flags & SEC_ENCRYPT;
   }
 
   mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
@@ -1131,7 +1131,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   if (mutt_save_confirm(mutt_buffer_string(buf), &st) != 0)
     goto cleanup;
 
-  if (is_passphrase_needed && transform_opt && !crypt_valid_passphrase(app))
+  if (is_passphrase_needed && transform_opt && !crypt_valid_passphrase(security_flags))
   {
     goto cleanup;
   }
