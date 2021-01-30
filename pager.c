@@ -3383,10 +3383,13 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         const bool delete_original =
             (ch == OP_SAVE) || (ch == OP_DECODE_SAVE) || (ch == OP_DECRYPT_SAVE);
-        const bool decode = (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY);
-        const bool decrypt = (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY);
 
-        if ((mutt_save_message(Context->mailbox, &el, delete_original, decode, decrypt) == 0) &&
+        enum MessageTransformOpt transform_opt =
+            ((ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY)) ? TRANSFORM_DECODE :
+            ((ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY)) ? TRANSFORM_DECRYPT :
+                                                                   TRANSFORM_NONE;
+
+        if ((mutt_save_message(Context->mailbox, &el, delete_original, transform_opt) == 0) &&
             delete_original)
         {
           if (C_Resolve)

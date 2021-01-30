@@ -2824,10 +2824,13 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
         const bool delete_original =
             (op == OP_SAVE) || (op == OP_DECODE_SAVE) || (op == OP_DECRYPT_SAVE);
-        const bool decode = (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY);
-        const bool decrypt = (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY);
 
-        if ((mutt_save_message(Context->mailbox, &el, delete_original, decode, decrypt) == 0) &&
+        enum MessageTransformOpt transform_opt =
+            ((op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY)) ? TRANSFORM_DECODE :
+            ((op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY)) ? TRANSFORM_DECRYPT :
+                                                                   TRANSFORM_NONE;
+
+        if ((mutt_save_message(Context->mailbox, &el, delete_original, transform_opt) == 0) &&
             delete_original)
         {
           menu->redraw |= REDRAW_STATUS;

@@ -43,6 +43,16 @@ extern bool          C_PrintDecode;
 extern bool          C_PrintSplit;
 extern bool          C_PromptAfter;
 
+/**
+ * enum MessageTransformOpt - Message transformation option
+ */
+enum MessageTransformOpt
+{
+  TRANSFORM_NONE = 0,   ///< No transformation
+  TRANSFORM_DECRYPT,    ///< Decrypt message
+  TRANSFORM_DECODE,     ///< Decode message
+};
+
 void ci_bounce_message(struct Mailbox *m, struct EmailList *el);
 void mutt_check_stats(void);
 bool mutt_check_traditional_pgp(struct EmailList *el, MuttRedrawFlags *redraw);
@@ -53,8 +63,8 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp);
 void mutt_enter_command(void);
 void mutt_pipe_message(struct Mailbox *m, struct EmailList *el);
 void mutt_print_message(struct Mailbox *m, struct EmailList *el);
-int  mutt_save_message_ctx(struct Email *e, bool delete_original, bool decode, bool decrypt, struct Mailbox *m);
-int  mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete_original, bool decode, bool decrypt);
+int  mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete_original, enum MessageTransformOpt transform_opt);
+int  mutt_save_message_ctx(struct Email *e, bool delete_original, enum MessageTransformOpt transform_opt, struct Mailbox *m);
 int  mutt_select_sort(bool reverse);
 bool mutt_shell_escape(void);
 
