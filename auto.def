@@ -26,6 +26,7 @@ set subdirs {po docs contrib}
 ###############################################################################
 # Add any user options here
 options {
+  build-type:=release       => "Select build type: release or debug"
 # Curses / S-Lang
   with-ui:=ncurses          => "Select ncurses or slang for the UI"
   with-ncurses:path         => "Location of ncurses"
@@ -1178,6 +1179,26 @@ if {[get-define want-gss]} {
 }
 
 ###############################################################################
+# BUILD TYPE
+# - debug:   Disables optimizations (-O0), enables debug information(-g).
+# - release: Enables optimizations(-O2) and disables debug information.
+switch [opt-val build-type release] {
+
+  debug {
+    define-append CFLAGS -O0 -ggdb
+  }
+
+  release {
+    define-append CFLAGS -DNDEBUG
+  }
+
+  default {
+    user-error "Invalid value for --build-type=[opt-val build-type] \
+      select release or debug"
+  }
+}
+
+###############################################################################
 # DEBUG options
 
 # Backtrace support with libunwind
@@ -1222,7 +1243,7 @@ if {[get-define want-asan]} {
     user-error "Unable to compile with -fsanitize=address"
   }
   msg-result "yes"
-  define-append CFLAGS -fsanitize=address -O0 -fno-omit-frame-pointer -fno-common
+  define-append CFLAGS -fsanitize=address -fno-omit-frame-pointer -fno-common
   define-append LDFLAGS -fsanitize=address
 }
 
@@ -1333,6 +1354,7 @@ make-template .clang_complete.in
 user-notice "Summary of build options:
 
   Version:               [get-define PACKAGE_VERSION]
+  Build Type             [opt-val    build-type]
   Host OS:               [get-define host_os]
   Install prefix:        [get-define prefix]
   Compiler:              [get-define CC]
