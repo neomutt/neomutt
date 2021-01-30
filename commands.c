@@ -1046,53 +1046,60 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   if (!el || STAILQ_EMPTY(el))
     return -1;
 
-  bool need_passphrase = false;
+  struct Progress progress;
+  struct stat st;
+  struct Buffer *buf = mutt_buffer_pool_get();
+  struct EmailNode *en = STAILQ_FIRST(el);
+
+  bool is_passphrase_needed = false;
+  bool is_single_message = !STAILQ_NEXT(en, entries);
+
   int app = 0;
   int rc = -1;
+  int tagged_progress_count = 0;
+
   const char *prompt = NULL;
   const char *progress_msg = NULL;
-  struct Progress progress;
-  int tagged_progress_count = 0;
-  struct stat st;
-  struct EmailNode *en = STAILQ_FIRST(el);
-  bool single = !STAILQ_NEXT(en, entries);
-
-  struct Buffer *buf = mutt_buffer_pool_get();
 
   switch (transform_opt)
   {
     case TRANSFORM_NONE:
       if (delete_original)
-        prompt = single ? _("Save to mailbox") : _("Save tagged to mailbox");
+        prompt = is_single_message ? _("Save to mailbox") : _("Save tagged to mailbox");
       else
-        prompt = single ? _("Copy to mailbox") : _("Copy tagged to mailbox");
+        prompt = is_single_message ? _("Copy to mailbox") : _("Copy tagged to mailbox");
       break;
 
     case TRANSFORM_DECRYPT:
       if (delete_original)
-        prompt = single ? _("Decrypt-save to mailbox") : _("Decrypt-save tagged to mailbox");
+        prompt = is_single_message ? _("Decrypt-save to mailbox") :
+                                     _("Decrypt-save tagged to mailbox");
       else
-        prompt = single ? _("Decrypt-copy to mailbox") : _("Decrypt-copy tagged to mailbox");
+        prompt = is_single_message ? _("Decrypt-copy to mailbox") :
+                                     _("Decrypt-copy tagged to mailbox");
       break;
 
     case TRANSFORM_DECODE:
       if (delete_original)
-        prompt = single ? _("Decode-save to mailbox") : _("Decode-save tagged to mailbox");
+        prompt = is_single_message ? _("Decode-save to mailbox") :
+                                     _("Decode-save tagged to mailbox");
       else
-        prompt = single ? _("Decode-copy to mailbox") : _("Decode-copy tagged to mailbox");
+        prompt = is_single_message ? _("Decode-copy to mailbox") :
+                                     _("Decode-copy tagged to mailbox");
       break;
   }
 
   if (WithCrypto)
   {
-    need_passphrase = (en->email->security & SEC_ENCRYPT);
+    is_passphrase_needed = (en->email->security & SEC_ENCRYPT);
     app = en->email->security;
   }
+
   mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
   mutt_default_save(buf->data, buf->dsize, en->email);
   mutt_buffer_fix_dptr(buf);
-
   mutt_buffer_pretty_mailbox(buf);
+
   if (mutt_buffer_enter_fname(prompt, buf, false) == -1)
     goto cleanup;
 
@@ -1119,8 +1126,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   if (mutt_save_confirm(mutt_buffer_string(buf), &st) != 0)
     goto cleanup;
 
-  if ((WithCrypto != 0) && need_passphrase &&
-      (transform_opt != TRANSFORM_NONE) && !crypt_valid_passphrase(app))
+  if (is_passphrase_needed && transform_opt && !crypt_valid_passphrase(app))
   {
     goto cleanup;
   }
@@ -1154,7 +1160,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   OpenMailboxFlags mbox_flags = MUTT_NEWFOLDER;
   /* Display a tagged message progress counter, rather than (for
    * IMAP) a per-message progress counter */
-  if (!single)
+  if (!is_single_message)
     mbox_flags |= MUTT_QUIET;
   struct Context *ctx_save = mx_mbox_open(m_save, mbox_flags);
   if (!ctx_save)
@@ -1176,7 +1182,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   if (m_comp && (m_comp->msg_count == 0))
     m_comp = NULL;
 #endif
-  if (single)
+  if (is_single_message)
   {
     if (mutt_save_message_ctx(en->email, delete_original, transform_opt,
                               ctx_save->mailbox))
@@ -1203,10 +1209,10 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   else
   {
     rc = 0;
-
-    // L10N: Progress meter message when saving tagged messages
-    progress_msg = delete_original ? _("Saving tagged messages...") :
-                                     // L10N: Progress meter message when copying tagged messages
+    progress_msg = delete_original ?
+                       // L10N: Progress meter message when saving tagged messages
+                       _("Saving tagged messages...") :
+                       // L10N: Progress meter message when copying tagged messages
                        _("Copying tagged messages...");
 
     int msg_count = 0;
