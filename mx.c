@@ -47,6 +47,7 @@
 #include "mx.h"
 #include "maildir/lib.h"
 #include "mbox/lib.h"
+#include "commands.h"
 #include "context.h"
 #include "copy.h"
 #include "hook.h"
@@ -774,7 +775,7 @@ int mx_mbox_close(struct Context **ptr)
           e->tagged = false;
       }
 
-      i = imap_copy_messages(ctx->mailbox, &el, mutt_buffer_string(mbox), true);
+      i = imap_copy_messages(ctx->mailbox, &el, mutt_buffer_string(mbox), SAVE_MOVE);
       emaillist_clear(&el);
     }
 

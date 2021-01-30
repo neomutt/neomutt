@@ -1553,15 +1553,16 @@ fail:
 
 /**
  * imap_copy_messages - Server COPY messages to another folder
- * @param m      Mailbox
- * @param el     List of Emails to copy
- * @param dest   Destination folder
- * @param delete_original Delete the original?
+ * @param m        Mailbox
+ * @param el       List of Emails to copy
+ * @param dest     Destination folder
+ * @param save_opt Copy or move, e.g. #SAVE_MOVE
  * @retval -1 Error
  * @retval  0 Success
  * @retval  1 Non-fatal error - try fetch/append
  */
-int imap_copy_messages(struct Mailbox *m, struct EmailList *el, const char *dest, bool delete_original)
+int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
+                       const char *dest, enum MessageSaveOpt save_opt)
 {
   if (!m || !el || !dest)
     return -1;
@@ -1706,7 +1707,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, const char *dest
   }
 
   /* cleanup */
-  if (delete_original)
+  if (save_opt == SAVE_MOVE)
   {
     STAILQ_FOREACH(en, el, entries)
     {

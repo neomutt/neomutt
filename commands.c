@@ -997,14 +997,13 @@ static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_o
 /**
  * mutt_save_message_ctx - Save a message to a given mailbox
  * @param e                Email
- * @param delete_original  If true, delete the original
- * @param decode           If true, decode the message
- * @param decrypt          If true, decrypt the message
+ * @param save_opt         Copy or move, e.g. #SAVE_MOVE
+ * @param transform_opt    Transformation, e.g. #TRANSFORM_DECRYPT
  * @param m                Mailbox to save to
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_message_ctx(struct Email *e, bool delete_original,
+int mutt_save_message_ctx(struct Email *e, enum MessageSaveOpt save_opt,
                           enum MessageTransformOpt transform_opt, struct Mailbox *m)
 {
   CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
@@ -1020,7 +1019,7 @@ int mutt_save_message_ctx(struct Email *e, bool delete_original,
   if (rc != 0)
     return rc;
 
-  if (delete_original)
+  if (save_opt == SAVE_MOVE)
   {
     mutt_set_flag(Context->mailbox, e, MUTT_DELETE, true);
     mutt_set_flag(Context->mailbox, e, MUTT_PURGE, true);
@@ -1035,13 +1034,13 @@ int mutt_save_message_ctx(struct Email *e, bool delete_original,
  * mutt_save_message - Save an email
  * @param m                Mailbox
  * @param el               List of Emails to save
- * @param delete_original  If true, delete the original (save)
+ * @param save_opt         Copy or move, e.g. #SAVE_MOVE
  * @param transform_opt    Transformation, e.g. #TRANSFORM_DECRYPT
  * @retval  0 Copy/save was successful
  * @retval -1 Error/abort
  */
 int mutt_save_message(struct Mailbox *m, struct EmailList *el,
-                      bool delete_original, enum MessageTransformOpt transform_opt)
+                      enum MessageSaveOpt save_opt, enum MessageTransformOpt transform_opt)
 {
   if (!el || STAILQ_EMPTY(el))
     return -1;
@@ -1069,14 +1068,14 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   switch (transform_opt)
   {
     case TRANSFORM_NONE:
-      if (delete_original)
+      if (save_opt == SAVE_MOVE)
         prompt = (msg_count > 1) ? _("Save tagged to mailbox") : _("Save to mailbox");
       else
         prompt = (msg_count > 1) ? _("Copy tagged to mailbox") : _("Copy to mailbox");
       break;
 
     case TRANSFORM_DECRYPT:
-      if (delete_original)
+      if (save_opt == SAVE_MOVE)
         prompt = (msg_count > 1) ? _("Decrypt-save tagged to mailbox") :
                                    _("Decrypt-save to mailbox");
       else
@@ -1085,7 +1084,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
       break;
 
     case TRANSFORM_DECODE:
-      if (delete_original)
+      if (save_opt == SAVE_MOVE)
         prompt = (msg_count > 1) ? _("Decode-save tagged to mailbox") :
                                    _("Decode-save to mailbox");
       else
@@ -1142,7 +1141,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   enum MailboxType mailbox_type = imap_path_probe(mutt_buffer_string(buf), NULL);
   if ((m->type == MUTT_IMAP) && (transform_opt == TRANSFORM_NONE) && (mailbox_type == MUTT_IMAP))
   {
-    switch (imap_copy_messages(m, el, mutt_buffer_string(buf), delete_original))
+    switch (imap_copy_messages(m, el, mutt_buffer_string(buf), save_opt))
     {
       /* success */
       case 0:
@@ -1189,8 +1188,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
   if (msg_count == 1)
   {
-    if (mutt_save_message_ctx(en->email, delete_original, transform_opt,
-                              ctx_save->mailbox))
+    if (mutt_save_message_ctx(en->email, save_opt, transform_opt, ctx_save->mailbox))
     {
       mx_mbox_close(&ctx_save);
       m_save->append = old_append;
@@ -1214,7 +1212,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   else
   {
     rc = 0;
-    progress_msg = delete_original ?
+    progress_msg = (save_opt == SAVE_MOVE) ?
                        // L10N: Progress meter message when saving tagged messages
                        _("Saving tagged messages...") :
                        // L10N: Progress meter message when copying tagged messages
@@ -1230,8 +1228,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     {
       mutt_progress_update(&progress, ++tagged_progress_count, -1);
       mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-      rc = mutt_save_message_ctx(en->email, delete_original, transform_opt,
-                                 ctx_save->mailbox);
+      rc = mutt_save_message_ctx(en->email, save_opt, transform_opt, ctx_save->mailbox);
       if (rc != 0)
         break;
 #ifdef USE_COMP_MBOX

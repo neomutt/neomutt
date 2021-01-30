@@ -57,6 +57,7 @@
 #include <sys/types.h>
 #include "core/lib.h"
 #include "mx.h"
+#include "commands.h"
 
 struct BrowserState;
 struct Buffer;
@@ -98,7 +99,7 @@ int imap_mailbox_rename(const char *path);
 bool config_init_imap(struct ConfigSet *cs);
 
 /* message.c */
-int imap_copy_messages(struct Mailbox *m, struct EmailList *el, const char *dest, bool delete_original);
+int imap_copy_messages(struct Mailbox *m, struct EmailList *el, const char *dest, enum MessageSaveOpt save_opt);
 
 /* socket.c */
 void imap_logout_all(void);
