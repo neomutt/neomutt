@@ -515,6 +515,20 @@ static int delete_attachment(struct AttachCtx *actx, int x)
     return -1;
   }
 
+  if (idx[rindex]->parent_type == TYPE_MULTIPART)
+  {
+    mutt_error(_("You may not delete children of a multipart attachment"));
+    idx[rindex]->body->tagged = false;
+    return -1;
+  }
+
+  if (idx[rindex]->body->type == TYPE_MULTIPART)
+  {
+    mutt_error(_("You may not delete a multipart attachment"));
+    idx[rindex]->body->tagged = false;
+    return -1;
+  }
+
   for (int y = 0; y < actx->idxlen; y++)
   {
     if (idx[y]->body->next == idx[rindex]->body)
@@ -1262,6 +1276,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             }
 
             actx->idx[glastidx]->level = glevel + 1;
+            actx->idx[glastidx]->parent_type = TYPE_MULTIPART;
           }
         }
 
