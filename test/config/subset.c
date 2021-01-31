@@ -139,11 +139,11 @@ void test_config_subset(void)
   expected = "142";
   rc = cs_subset_he_string_get(NeoMutt->sub, he, &err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS) ||
-      !TEST_CHECK(strcmp(mutt_b2s(&err), expected) == 0))
+      !TEST_CHECK(strcmp(mutt_buffer_string(&err), expected) == 0))
   {
     TEST_MSG("cs_subset_he_string_get failed\n");
     TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual  : %s", mutt_b2s(&err));
+    TEST_MSG("Actual  : %s", mutt_buffer_string(&err));
     return;
   }
 
@@ -159,11 +159,11 @@ void test_config_subset(void)
   expected = "142";
   rc = cs_subset_str_string_get(NeoMutt->sub, name, &err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS) ||
-      !TEST_CHECK(strcmp(mutt_b2s(&err), expected) == 0))
+      !TEST_CHECK(strcmp(mutt_buffer_string(&err), expected) == 0))
   {
     TEST_MSG("cs_subset_str_string_get failed\n");
     TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual  : %s", mutt_b2s(&err));
+    TEST_MSG("Actual  : %s", mutt_buffer_string(&err));
     return;
   }
 

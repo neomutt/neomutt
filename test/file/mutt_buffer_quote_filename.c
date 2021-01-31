@@ -51,11 +51,11 @@ void test_mutt_buffer_quote_filename(void)
   {
     TEST_CASE(tests[i].first);
     mutt_buffer_quote_filename(&result, tests[i].first, (i % 2));
-    if (!TEST_CHECK(mutt_str_equal(mutt_b2s(&result), tests[i].second)))
+    if (!TEST_CHECK(mutt_str_equal(mutt_buffer_string(&result), tests[i].second)))
     {
       TEST_MSG("Original: %s", tests[i].first);
       TEST_MSG("Expected: %s", tests[i].second);
-      TEST_MSG("Actual:   %s", mutt_b2s(&result));
+      TEST_MSG("Actual:   %s", mutt_buffer_string(&result));
     }
   }
 

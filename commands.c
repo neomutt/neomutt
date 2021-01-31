@@ -262,7 +262,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
   FILE *fp_filter_out = NULL;
   tempfile = mutt_buffer_pool_get();
   mutt_buffer_mktemp(tempfile);
-  FILE *fp_out = mutt_file_fopen(mutt_b2s(tempfile), "w");
+  FILE *fp_out = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
   if (!fp_out)
   {
     mutt_error(_("Could not create temporary file"));
@@ -279,7 +279,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     {
       mutt_error(_("Can't create display filter"));
       mutt_file_fclose(&fp_filter_out);
-      unlink(mutt_b2s(tempfile));
+      unlink(mutt_buffer_string(tempfile));
       goto cleanup;
     }
   }
@@ -316,7 +316,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
       filter_wait(filterpid);
       mutt_file_fclose(&fp_filter_out);
     }
-    mutt_file_unlink(mutt_b2s(tempfile));
+    mutt_file_unlink(mutt_buffer_string(tempfile));
     goto cleanup;
   }
 
@@ -374,18 +374,18 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     info.win_index = win_index;
     info.win_pbar = win_pbar;
     info.win_pager = win_pager;
-    rc = mutt_pager(NULL, mutt_b2s(tempfile), MUTT_PAGER_MESSAGE, &info);
+    rc = mutt_pager(NULL, mutt_buffer_string(tempfile), MUTT_PAGER_MESSAGE, &info);
   }
   else
   {
     mutt_endwin();
 
     struct Buffer *cmd = mutt_buffer_pool_get();
-    mutt_buffer_printf(cmd, "%s %s", NONULL(C_Pager), mutt_b2s(tempfile));
-    int r = mutt_system(mutt_b2s(cmd));
+    mutt_buffer_printf(cmd, "%s %s", NONULL(C_Pager), mutt_buffer_string(tempfile));
+    int r = mutt_system(mutt_buffer_string(cmd));
     if (r == -1)
-      mutt_error(_("Error running \"%s\""), mutt_b2s(cmd));
-    unlink(mutt_b2s(tempfile));
+      mutt_error(_("Error running \"%s\""), mutt_buffer_string(cmd));
+    unlink(mutt_buffer_string(tempfile));
     mutt_buffer_pool_release(&cmd);
 
     if (!OptNoCurses)
@@ -717,7 +717,7 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
     goto cleanup;
 
   mutt_buffer_expand_path(buf);
-  pipe_message(m, el, mutt_b2s(buf), C_PipeDecode, false, C_PipeSplit, C_PipeSep);
+  pipe_message(m, el, mutt_buffer_string(buf), C_PipeDecode, false, C_PipeSplit, C_PipeSep);
 
 cleanup:
   mutt_buffer_pool_release(&buf);
@@ -1102,15 +1102,15 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
    * Leitner <leitner@prz.fu-berlin.de> */
   if (mutt_buffer_len(&LastSaveFolder) == 0)
     mutt_buffer_alloc(&LastSaveFolder, PATH_MAX);
-  if (mutt_str_equal(mutt_b2s(buf), "."))
+  if (mutt_str_equal(mutt_buffer_string(buf), "."))
     mutt_buffer_copy(buf, &LastSaveFolder);
   else
-    mutt_buffer_strcpy(&LastSaveFolder, mutt_b2s(buf));
+    mutt_buffer_strcpy(&LastSaveFolder, mutt_buffer_string(buf));
 
   mutt_buffer_expand_path(buf);
 
   /* check to make sure that this file is really the one the user wants */
-  if (mutt_save_confirm(mutt_b2s(buf), &st) != 0)
+  if (mutt_save_confirm(mutt_buffer_string(buf), &st) != 0)
     goto cleanup;
 
   if ((WithCrypto != 0) && need_passphrase && (decode || decrypt) &&
@@ -1119,13 +1119,13 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     goto cleanup;
   }
 
-  mutt_message(_("Copying to %s..."), mutt_b2s(buf));
+  mutt_message(_("Copying to %s..."), mutt_buffer_string(buf));
 
 #ifdef USE_IMAP
   if ((m->type == MUTT_IMAP) && !(decode || decrypt) &&
-      (imap_path_probe(mutt_b2s(buf), NULL) == MUTT_IMAP))
+      (imap_path_probe(mutt_buffer_string(buf), NULL) == MUTT_IMAP))
   {
-    switch (imap_copy_messages(m, el, mutt_b2s(buf), delete_original))
+    switch (imap_copy_messages(m, el, mutt_buffer_string(buf), delete_original))
     {
       /* success */
       case 0:
@@ -1143,7 +1143,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
 
   mutt_file_resolve_symlink(buf);
-  struct Mailbox *m_save = mx_path_resolve(mutt_b2s(buf));
+  struct Mailbox *m_save = mx_path_resolve(mutt_buffer_string(buf));
   bool old_append = m_save->append;
   OpenMailboxFlags mbox_flags = MUTT_NEWFOLDER;
   /* Display a tagged message progress counter, rather than (for
@@ -1257,7 +1257,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   m_save->append = old_append;
 
   if (need_mailbox_cleanup)
-    mutt_mailbox_cleanup(mutt_b2s(buf), &st);
+    mutt_mailbox_cleanup(mutt_buffer_string(buf), &st);
 
   mutt_clear_error();
   rc = 0;

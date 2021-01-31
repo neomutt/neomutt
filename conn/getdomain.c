@@ -98,7 +98,7 @@ int getdnsdomainname(struct Buffer *domain)
   {
     mutt_buffer_strcpy(domain, ++p);
     rc = 0;
-    mutt_debug(LL_DEBUG1, "Hostname: %s\n", mutt_b2s(domain));
+    mutt_debug(LL_DEBUG1, "Hostname: %s\n", mutt_buffer_string(domain));
     freeaddrinfo(h);
   }
 #endif /* HAVE_GETADDRINFO || defined HAVE_GETADDRINFO_A */

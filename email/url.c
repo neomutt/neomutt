@@ -424,7 +424,7 @@ int url_tostring(struct Url *url, char *dest, size_t len, uint8_t flags)
 
   int retval = url_tobuffer(url, dest_buf, flags);
   if (retval == 0)
-    mutt_str_copy(dest, mutt_b2s(dest_buf), len);
+    mutt_str_copy(dest, mutt_buffer_string(dest_buf), len);
 
   mutt_buffer_pool_release(&dest_buf);
 

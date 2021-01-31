@@ -568,7 +568,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
         }
         tempfile = mutt_buffer_pool_get();
         mutt_buffer_mktemp(tempfile);
-        FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tempfile), "w");
+        FILE *fp_tmp = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
         if (!fp_tmp)
         {
           mutt_perror(_("Can't create temporary file"));
@@ -587,7 +587,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
         if (pid == -1)
         {
           mutt_perror(_("Can't create filter"));
-          unlink(mutt_b2s(tempfile));
+          unlink(mutt_buffer_string(tempfile));
           mutt_file_fclose(&fp_tmp);
           mutt_file_fclose(&fp_null);
         }
@@ -599,7 +599,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
         char title[1024];
         snprintf(title, sizeof(title), _("Key ID: 0x%s"),
                  pgp_keyid(pgp_principal_key(key_table[menu->current]->parent)));
-        mutt_do_pager(title, mutt_b2s(tempfile), MUTT_PAGER_NO_FLAGS, NULL);
+        mutt_do_pager(title, mutt_buffer_string(tempfile), MUTT_PAGER_NO_FLAGS, NULL);
         mutt_buffer_pool_release(&tempfile);
         menu->redraw = REDRAW_FULL;
         break;

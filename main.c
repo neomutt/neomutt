@@ -789,21 +789,21 @@ int main(int argc, char *argv[], char *envp[])
     bool skip = false;
 #ifdef USE_IMAP
     /* we're not connected yet - skip mail folder creation */
-    skip |= (imap_path_probe(mutt_b2s(fpath), NULL) == MUTT_IMAP);
+    skip |= (imap_path_probe(mutt_buffer_string(fpath), NULL) == MUTT_IMAP);
 #endif
 #ifdef USE_POP
-    skip |= (pop_path_probe(mutt_b2s(fpath), NULL) == MUTT_POP);
+    skip |= (pop_path_probe(mutt_buffer_string(fpath), NULL) == MUTT_POP);
 #endif
 #ifdef USE_NNTP
-    skip |= (nntp_path_probe(mutt_b2s(fpath), NULL) == MUTT_NNTP);
+    skip |= (nntp_path_probe(mutt_buffer_string(fpath), NULL) == MUTT_NNTP);
 #endif
-    if (!skip && (stat(mutt_b2s(fpath), &sb) == -1) && (errno == ENOENT))
+    if (!skip && (stat(mutt_buffer_string(fpath), &sb) == -1) && (errno == ENOENT))
     {
       char msg2[256];
       snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), C_Folder);
       if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
-        if ((mkdir(mutt_b2s(fpath), 0700) == -1) && (errno != EEXIST))
+        if ((mkdir(mutt_buffer_string(fpath), 0700) == -1) && (errno != EEXIST))
           mutt_error(_("Can't create %s: %s"), C_Folder, strerror(errno)); // TEST21: neomutt -n -F /dev/null (and ~/Mail doesn't exist)
       }
     }
@@ -908,10 +908,10 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_buffer_strcpy(&expanded_infile, infile);
           mutt_buffer_expand_path(&expanded_infile);
-          fp_in = fopen(mutt_b2s(&expanded_infile), "r");
+          fp_in = fopen(mutt_buffer_string(&expanded_infile), "r");
           if (!fp_in)
           {
-            mutt_perror(mutt_b2s(&expanded_infile));
+            mutt_perror(mutt_buffer_string(&expanded_infile));
             email_free(&e);
             goto main_curses; // TEST28: neomutt -E -H missing
           }
@@ -925,11 +925,11 @@ int main(int argc, char *argv[], char *envp[])
       {
         mutt_buffer_mktemp(&tempfile);
 
-        fp_out = mutt_file_fopen(mutt_b2s(&tempfile), "w");
+        fp_out = mutt_file_fopen(mutt_buffer_string(&tempfile), "w");
         if (!fp_out)
         {
           mutt_file_fclose(&fp_in);
-          mutt_perror(mutt_b2s(&tempfile));
+          mutt_perror(mutt_buffer_string(&tempfile));
           email_free(&e);
           goto main_curses; // TEST29: neomutt -H existing-file (where tmpdir=/path/to/FILE blocking tmpdir)
         }
@@ -943,10 +943,10 @@ int main(int argc, char *argv[], char *envp[])
           fputs(bodytext, fp_out);
         mutt_file_fclose(&fp_out);
 
-        fp_in = fopen(mutt_b2s(&tempfile), "r");
+        fp_in = fopen(mutt_buffer_string(&tempfile), "r");
         if (!fp_in)
         {
-          mutt_perror(mutt_b2s(&tempfile));
+          mutt_perror(mutt_buffer_string(&tempfile));
           email_free(&e);
           goto main_curses; // TEST30: can't test
         }
@@ -1015,10 +1015,10 @@ int main(int argc, char *argv[], char *envp[])
       /* Editing the include_file: pass it directly in.
        * Note that SEND_NO_FREE_HEADER is set above so it isn't unlinked.  */
       else if (edit_infile)
-        bodyfile = mutt_b2s(&expanded_infile);
+        bodyfile = mutt_buffer_string(&expanded_infile);
       // For bodytext and unedited include_file: use the tempfile.
       else
-        bodyfile = mutt_b2s(&tempfile);
+        bodyfile = mutt_buffer_string(&tempfile);
 
       mutt_file_fclose(&fp_in);
     }
@@ -1068,16 +1068,16 @@ int main(int argc, char *argv[], char *envp[])
         e->body->unlink = false;
       else if (draft_file)
       {
-        if (truncate(mutt_b2s(&expanded_infile), 0) == -1)
+        if (truncate(mutt_buffer_string(&expanded_infile), 0) == -1)
         {
-          mutt_perror(mutt_b2s(&expanded_infile));
+          mutt_perror(mutt_buffer_string(&expanded_infile));
           email_free(&e);
           goto main_curses; // TEST33: neomutt -H read-only -s test john@example.com -E
         }
-        fp_out = mutt_file_fopen(mutt_b2s(&expanded_infile), "a");
+        fp_out = mutt_file_fopen(mutt_buffer_string(&expanded_infile), "a");
         if (!fp_out)
         {
-          mutt_perror(mutt_b2s(&expanded_infile));
+          mutt_perror(mutt_buffer_string(&expanded_infile));
           email_free(&e);
           goto main_curses; // TEST34: can't test
         }
@@ -1114,7 +1114,7 @@ int main(int argc, char *argv[], char *envp[])
 
     /* !edit_infile && draft_file will leave the tempfile around */
     if (!mutt_buffer_is_empty(&tempfile))
-      unlink(mutt_b2s(&tempfile));
+      unlink(mutt_buffer_string(&tempfile));
 
     mutt_window_free_all();
 
@@ -1194,16 +1194,16 @@ int main(int argc, char *argv[], char *envp[])
 #endif
       mutt_buffer_expand_path(&folder);
 
-    mutt_str_replace(&CurrentFolder, mutt_b2s(&folder));
-    mutt_str_replace(&LastFolder, mutt_b2s(&folder));
+    mutt_str_replace(&CurrentFolder, mutt_buffer_string(&folder));
+    mutt_str_replace(&LastFolder, mutt_buffer_string(&folder));
 
     if (flags & MUTT_CLI_IGNORE)
     {
       /* check to see if there are any messages in the folder */
-      switch (mx_path_is_empty(mutt_b2s(&folder)))
+      switch (mx_path_is_empty(mutt_buffer_string(&folder)))
       {
         case -1:
-          mutt_perror(mutt_b2s(&folder));
+          mutt_perror(mutt_buffer_string(&folder));
           goto main_curses; // TEST41: neomutt -z -f missing
         case 1:
           mutt_error(_("Mailbox is empty"));
@@ -1211,12 +1211,12 @@ int main(int argc, char *argv[], char *envp[])
       }
     }
 
-    mutt_folder_hook(mutt_b2s(&folder), NULL);
+    mutt_folder_hook(mutt_buffer_string(&folder), NULL);
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, NULL);
 
     repeat_error = true;
-    struct Mailbox *m = mx_resolve(mutt_b2s(&folder));
+    struct Mailbox *m = mx_resolve(mutt_buffer_string(&folder));
     Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || C_ReadOnly) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS);
     if (!Context)
     {
@@ -1224,7 +1224,7 @@ int main(int argc, char *argv[], char *envp[])
         account_mailbox_remove(m->account, m);
 
       mailbox_free(&m);
-      mutt_error(_("Unable to open mailbox %s"), mutt_b2s(&folder));
+      mutt_error(_("Unable to open mailbox %s"), mutt_buffer_string(&folder));
       repeat_error = false;
     }
     if (Context || !explicit_folder)

@@ -37,9 +37,6 @@ struct Buffer
   size_t dsize; ///< Length of data
 };
 
-/* Convert a buffer to a const char * "string" */
-#define mutt_b2s(buf) ((buf)->data ? (const char *) (buf)->data : "")
-
 #define MoreArgs(buf) (*(buf)->dptr && (*(buf)->dptr != ';') && (*(buf)->dptr != '#'))
 
 void           mutt_buffer_alloc        (struct Buffer *buf, size_t size);
@@ -67,5 +64,22 @@ int            mutt_buffer_printf       (struct Buffer *buf, const char *fmt, ..
 size_t         mutt_buffer_strcpy       (struct Buffer *buf, const char *s);
 size_t         mutt_buffer_strcpy_n     (struct Buffer *buf, const char *s, size_t len);
 size_t         mutt_buffer_substrcpy    (struct Buffer *buf, const char *beg, const char *end);
+
+/**
+ * mutt_buffer_string - Convert a buffer to a const char * "string"
+ * @param buf Buffer to that is to be converted
+ * @retval ptr String inside the Buffer
+ *
+ * This method exposes Buffer's underlying data field
+ *
+ * @note Returns an empty string if Buffer isn't initialised
+ */
+static inline const char *mutt_buffer_string(const struct Buffer *buf)
+{
+  if (!buf || !buf->data)
+    return "";
+
+  return buf->data;
+}
 
 #endif /* MUTT_LIB_BUFFER_H */

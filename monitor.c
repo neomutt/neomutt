@@ -366,7 +366,7 @@ static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailb
   if (fmt)
   {
     mutt_buffer_printf(&info->path_buf, fmt, info->path);
-    info->path = mutt_b2s(&info->path_buf);
+    info->path = mutt_buffer_string(&info->path_buf);
   }
   if (stat(info->path, &sb) != 0)
     return RESOLVE_RES_FAIL_STAT;

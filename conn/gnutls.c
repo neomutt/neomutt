@@ -793,11 +793,11 @@ static int tls_set_priority(struct TlsSockData *data)
     goto cleanup;
   }
 
-  int err = gnutls_priority_set_direct(data->state, mutt_b2s(priority), NULL);
+  int err = gnutls_priority_set_direct(data->state, mutt_buffer_string(priority), NULL);
   if (err < 0)
   {
-    mutt_error("gnutls_priority_set_direct(%s): %s", mutt_b2s(priority),
-               gnutls_strerror(err));
+    mutt_error("gnutls_priority_set_direct(%s): %s",
+               mutt_buffer_string(priority), gnutls_strerror(err));
     goto cleanup;
   }
 

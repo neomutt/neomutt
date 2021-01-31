@@ -122,7 +122,8 @@ static struct BodyCache *msg_cache_open(struct Mailbox *m)
   struct Buffer *mailbox = mutt_buffer_pool_get();
   imap_cachepath(adata->delim, mdata->name, mailbox);
 
-  struct BodyCache *bc = mutt_bcache_open(&adata->conn->account, mutt_b2s(mailbox));
+  struct BodyCache *bc =
+      mutt_bcache_open(&adata->conn->account, mutt_buffer_string(mailbox));
   mutt_buffer_pool_release(&mailbox);
 
   return bc;
@@ -1038,11 +1039,11 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
   if (adata->capabilities & IMAP_CAP_IMAP4REV1)
   {
-    mutt_str_asprintf(&hdrreq, "BODY.PEEK[HEADER.FIELDS (%s)]", mutt_b2s(hdr_list));
+    mutt_str_asprintf(&hdrreq, "BODY.PEEK[HEADER.FIELDS (%s)]", mutt_buffer_string(hdr_list));
   }
   else if (adata->capabilities & IMAP_CAP_IMAP4)
   {
-    mutt_str_asprintf(&hdrreq, "RFC822.HEADER.LINES (%s)", mutt_b2s(hdr_list));
+    mutt_str_asprintf(&hdrreq, "RFC822.HEADER.LINES (%s)", mutt_buffer_string(hdr_list));
   }
   else
   { /* Unable to fetch headers for lower versions */
@@ -1056,13 +1057,13 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
    * as they come in. */
   tempfile = mutt_buffer_pool_get();
   mutt_buffer_mktemp(tempfile);
-  fp = mutt_file_fopen(mutt_b2s(tempfile), "w+");
+  fp = mutt_file_fopen(mutt_buffer_string(tempfile), "w+");
   if (!fp)
   {
-    mutt_error(_("Could not create temporary file %s"), mutt_b2s(tempfile));
+    mutt_error(_("Could not create temporary file %s"), mutt_buffer_string(tempfile));
     goto bail;
   }
-  unlink(mutt_b2s(tempfile));
+  unlink(mutt_buffer_string(tempfile));
   mutt_buffer_pool_release(&tempfile);
 
   if (m->verbose)
@@ -1088,7 +1089,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   {
     char *cmd = NULL;
     mutt_str_asprintf(&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
-                      mutt_b2s(buf), hdrreq);
+                      mutt_buffer_string(buf), hdrreq);
     imap_cmd_start(adata, cmd);
     FREE(&cmd);
 
@@ -1884,8 +1885,8 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   {
     struct Buffer *path = mutt_buffer_pool_get();
     mutt_buffer_mktemp(path);
-    msg->fp = mutt_file_fopen(mutt_b2s(path), "w+");
-    unlink(mutt_b2s(path));
+    msg->fp = mutt_file_fopen(mutt_buffer_string(path), "w+");
+    unlink(mutt_buffer_string(path));
     mutt_buffer_pool_release(&path);
 
     if (!msg->fp)

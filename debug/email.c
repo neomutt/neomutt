@@ -60,7 +60,7 @@ void dump_list_head(const struct ListHead *list, const char *name)
     mutt_buffer_addstr(&buf, np->data);
   }
 
-  mutt_debug(LL_DEBUG1, "\t%s: %s\n", name, mutt_b2s(&buf));
+  mutt_debug(LL_DEBUG1, "\t%s: %s\n", name, mutt_buffer_string(&buf));
   mutt_buffer_dealloc(&buf);
 }
 
@@ -78,7 +78,7 @@ void dump_envelope(const struct Envelope *env)
   ADD_FLAG(MUTT_ENV_CHANGED_SUBJECT);
 #undef ADD_FLAG
   mutt_debug(LL_DEBUG1, "\tchanged: %s\n",
-             mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf));
+             mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf));
 
 #define ADDR_LIST(AL) dump_addr_list(arr, sizeof(arr), &env->AL, #AL)
   ADDR_LIST(return_path);
@@ -117,7 +117,7 @@ void dump_envelope(const struct Envelope *env)
   dump_list_head(&env->userhdrs, "userhdrs");
 
   if (!mutt_buffer_is_empty(&env->spam))
-    mutt_debug(LL_DEBUG1, "\tspam: %s\n", mutt_b2s(&env->spam));
+    mutt_debug(LL_DEBUG1, "\tspam: %s\n", mutt_buffer_string(&env->spam));
 
 #ifdef USE_AUTOCRYPT
   if (env->autocrypt)
@@ -167,7 +167,7 @@ void dump_email(const struct Email *e)
   ADD_FLAG(visible);
 #undef ADD_FLAG
   mutt_debug(LL_DEBUG1, "\tFlags: %s\n",
-             mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf));
+             mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf));
 
 #define ADD_FLAG(F) add_flag(&buf, (e->security & F), #F)
   mutt_buffer_reset(&buf);
@@ -187,7 +187,7 @@ void dump_email(const struct Email *e)
   ADD_FLAG(PGP_TRADITIONAL_CHECKED);
 #undef ADD_FLAG
   mutt_debug(LL_DEBUG1, "\tSecurity: %s\n",
-             mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf));
+             mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf));
 
   mutt_date_make_tls(arr, sizeof(arr), e->date_sent);
   mutt_debug(LL_DEBUG1, "\tSent: %s (%c%02u%02u)\n", arr,
@@ -259,7 +259,7 @@ void dump_body(const struct Body *body)
   ADD_FLAG(warnsig);
 #undef ADD_FLAG
   mutt_debug(LL_DEBUG1, "\tFlags: %s\n",
-             mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf));
+             mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf));
 
 #define OPT_STRING(S)                                                          \
   if (body->S)                                                                 \

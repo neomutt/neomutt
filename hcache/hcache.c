@@ -265,7 +265,7 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
   {
     /* An existing file or a non-existing path not ending with a slash */
     mutt_encode_path(hcpath, path);
-    create_hcache_dir(mutt_b2s(hcpath));
+    create_hcache_dir(mutt_buffer_string(hcpath));
     return;
   }
 
@@ -274,7 +274,7 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
   if (namer)
   {
     namer(folder, hcfile);
-    mutt_buffer_concat_path(hcpath, path, mutt_b2s(hcfile));
+    mutt_buffer_concat_path(hcpath, path, mutt_buffer_string(hcfile));
   }
   else
   {
@@ -286,15 +286,15 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
 #else
     mutt_buffer_printf(name, "%s|%s", hcache_get_ops()->name, folder);
 #endif
-    mutt_md5(mutt_b2s(name), m);
+    mutt_md5(mutt_buffer_string(name), m);
     mutt_buffer_reset(name);
     mutt_md5_toascii(m, name->data);
-    mutt_buffer_printf(hcpath, "%s%s%s", path, slash ? "" : "/", mutt_b2s(name));
+    mutt_buffer_printf(hcpath, "%s%s%s", path, slash ? "" : "/", mutt_buffer_string(name));
     mutt_buffer_pool_release(&name);
   }
 
-  mutt_encode_path(hcpath, mutt_b2s(hcpath));
-  create_hcache_dir(mutt_b2s(hcpath));
+  mutt_encode_path(hcpath, mutt_buffer_string(hcpath));
+  create_hcache_dir(mutt_buffer_string(hcpath));
   mutt_buffer_pool_release(&hcfile);
 }
 
@@ -392,13 +392,13 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
   struct Buffer *hcpath = mutt_buffer_pool_get();
   hcache_per_folder(hcpath, path, hc->folder, namer);
 
-  hc->ctx = ops->open(mutt_b2s(hcpath));
+  hc->ctx = ops->open(mutt_buffer_string(hcpath));
   if (!hc->ctx)
   {
     /* remove a possibly incompatible version */
-    if (unlink(mutt_b2s(hcpath)) == 0)
+    if (unlink(mutt_buffer_string(hcpath)) == 0)
     {
-      hc->ctx = ops->open(mutt_b2s(hcpath));
+      hc->ctx = ops->open(mutt_buffer_string(hcpath));
       if (!hc->ctx)
       {
         FREE(&hc->folder);
@@ -501,7 +501,7 @@ void *mutt_hcache_fetch_raw(struct HeaderCache *hc, const char *key,
 
   struct Buffer path = mutt_buffer_make(1024);
   keylen = mutt_buffer_printf(&path, "%s%.*s", hc->folder, (int) keylen, key);
-  void *blob = ops->fetch(hc->ctx, mutt_b2s(&path), keylen, dlen);
+  void *blob = ops->fetch(hc->ctx, mutt_buffer_string(&path), keylen, dlen);
   mutt_buffer_dealloc(&path);
   return blob;
 }
@@ -590,7 +590,7 @@ int mutt_hcache_store_raw(struct HeaderCache *hc, const char *key,
   struct Buffer path = mutt_buffer_make(1024);
 
   keylen = mutt_buffer_printf(&path, "%s%.*s", hc->folder, (int) keylen, key);
-  int rc = ops->store(hc->ctx, mutt_b2s(&path), keylen, data, dlen);
+  int rc = ops->store(hc->ctx, mutt_buffer_string(&path), keylen, data, dlen);
   mutt_buffer_dealloc(&path);
 
   return rc;
@@ -609,7 +609,7 @@ int mutt_hcache_delete_record(struct HeaderCache *hc, const char *key, size_t ke
 
   keylen = mutt_buffer_printf(&path, "%s%s", hc->folder, key);
 
-  int rc = ops->delete_record(hc->ctx, mutt_b2s(&path), keylen);
+  int rc = ops->delete_record(hc->ctx, mutt_buffer_string(&path), keylen);
   mutt_buffer_dealloc(&path);
   return rc;
 }

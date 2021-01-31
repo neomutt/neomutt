@@ -43,7 +43,7 @@ void test_mutt_buffer_concatn_path(void)
     size_t len = mutt_buffer_concatn_path(&buf, dir, 9, file, 4);
 
     TEST_CHECK(len == 14);
-    TEST_CHECK(mutt_str_equal(mutt_b2s(&buf), result));
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), result));
 
     mutt_buffer_dealloc(&buf);
   }

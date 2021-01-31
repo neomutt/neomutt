@@ -311,7 +311,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
 
           mutt_buffer_strcpy(path, aptr->body->filename);
           mutt_buffer_pretty_mailbox(path);
-          mutt_format_s(buf, buflen, prec, mutt_b2s(path));
+          mutt_format_s(buf, buflen, prec, mutt_buffer_string(path));
           mutt_buffer_pool_release(&path);
         }
         else
@@ -484,7 +484,7 @@ static void prepend_savedir(struct Buffer *buf)
   else
     mutt_buffer_addstr(tmp, "./");
 
-  mutt_buffer_addstr(tmp, mutt_b2s(buf));
+  mutt_buffer_addstr(tmp, mutt_buffer_string(buf));
   mutt_buffer_copy(buf, tmp);
   mutt_buffer_pool_release(&tmp);
 }
@@ -539,11 +539,11 @@ static int save_attachment_flowed_helper(FILE *fp, struct Body *b, const char *p
     mutt_buffer_mktemp(tempfile);
 
     /* Pass MUTT_SAVE_NO_FLAGS to force mutt_file_fopen("w") */
-    rc = mutt_save_attachment(fp, b, mutt_b2s(tempfile), MUTT_SAVE_NO_FLAGS, e);
+    rc = mutt_save_attachment(fp, b, mutt_buffer_string(tempfile), MUTT_SAVE_NO_FLAGS, e);
     if (rc != 0)
       goto cleanup;
 
-    mutt_rfc3676_space_unstuff_attachment(b, mutt_b2s(tempfile));
+    mutt_rfc3676_space_unstuff_attachment(b, mutt_buffer_string(tempfile));
 
     /* Now "really" save it.  Send mode does this without touching anything,
      * so force send-mode. */
@@ -551,7 +551,7 @@ static int save_attachment_flowed_helper(FILE *fp, struct Body *b, const char *p
     b_fake.filename = tempfile->data;
     rc = mutt_save_attachment(NULL, &b_fake, path, flags, e);
 
-    mutt_file_unlink(mutt_b2s(tempfile));
+    mutt_file_unlink(mutt_buffer_string(tempfile));
 
   cleanup:
     mutt_buffer_pool_release(&tempfile);
@@ -618,7 +618,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
       struct stat st;
 
       /* check to make sure that this file is really the one the user wants */
-      rc = mutt_save_confirm(mutt_b2s(buf), &st);
+      rc = mutt_save_confirm(mutt_buffer_string(buf), &st);
       if (rc == 1)
       {
         prompt = _("Save to file: ");
@@ -630,7 +630,8 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     }
     else
     {
-      rc = mutt_check_overwrite(body->filename, mutt_b2s(buf), tfile, &opt, directory);
+      rc = mutt_check_overwrite(body->filename, mutt_buffer_string(buf), tfile,
+                                &opt, directory);
       if (rc == -1)
         goto cleanup;
       else if (rc == 1)
@@ -641,7 +642,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     }
 
     mutt_message(_("Saving..."));
-    if (save_attachment_flowed_helper(fp, body, mutt_b2s(tfile), opt,
+    if (save_attachment_flowed_helper(fp, body, mutt_buffer_string(tfile), opt,
                                       (e || !is_message) ? e : body->email) == 0)
     {
       mutt_message(_("Attachment saved"));
@@ -696,12 +697,12 @@ static int save_without_prompting(FILE *fp, struct Body *body, struct Email *e)
   }
   else
   {
-    rc = mutt_check_overwrite(body->filename, mutt_b2s(buf), tfile, &opt, NULL);
+    rc = mutt_check_overwrite(body->filename, mutt_buffer_string(buf), tfile, &opt, NULL);
     if (rc == -1) // abort or cancel
       goto cleanup;
   }
 
-  rc = save_attachment_flowed_helper(fp, body, mutt_b2s(tfile), opt,
+  rc = save_attachment_flowed_helper(fp, body, mutt_buffer_string(tfile), opt,
                                      (e || !is_message) ? e : body->email);
 
 cleanup:
@@ -755,10 +756,10 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
             goto cleanup;
           }
           mutt_buffer_expand_path(buf);
-          if (mutt_check_overwrite(top->filename, mutt_b2s(buf), tfile, &opt, NULL))
+          if (mutt_check_overwrite(top->filename, mutt_buffer_string(buf), tfile, &opt, NULL))
             goto cleanup;
-          rc = save_attachment_flowed_helper(fp, top, mutt_b2s(tfile), opt, e);
-          if ((rc == 0) && C_AttachSep && (fp_out = fopen(mutt_b2s(tfile), "a")))
+          rc = save_attachment_flowed_helper(fp, top, mutt_buffer_string(tfile), opt, e);
+          if ((rc == 0) && C_AttachSep && (fp_out = fopen(mutt_buffer_string(tfile), "a")))
           {
             fprintf(fp_out, "%s", C_AttachSep);
             mutt_file_fclose(&fp_out);
@@ -766,8 +767,9 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         }
         else
         {
-          rc = save_attachment_flowed_helper(fp, top, mutt_b2s(tfile), MUTT_SAVE_APPEND, e);
-          if ((rc == 0) && C_AttachSep && (fp_out = fopen(mutt_b2s(tfile), "a")))
+          rc = save_attachment_flowed_helper(fp, top, mutt_buffer_string(tfile),
+                                             MUTT_SAVE_APPEND, e);
+          if ((rc == 0) && C_AttachSep && (fp_out = fopen(mutt_buffer_string(tfile), "a")))
           {
             fprintf(fp_out, "%s", C_AttachSep);
             mutt_file_fclose(&fp_out);
@@ -900,7 +902,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
 
     if (is_flowed)
     {
-      fp_unstuff = mutt_file_fopen(mutt_b2s(unstuff_tempfile), "w");
+      fp_unstuff = mutt_file_fopen(mutt_buffer_string(unstuff_tempfile), "w");
       if (fp_unstuff == NULL)
       {
         mutt_perror("mutt_file_fopen");
@@ -914,7 +916,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
       mutt_file_fclose(&fp_unstuff);
       state->fp_out = filter_fp;
 
-      fp_unstuff = mutt_file_fopen(mutt_b2s(unstuff_tempfile), "r");
+      fp_unstuff = mutt_file_fopen(mutt_buffer_string(unstuff_tempfile), "r");
       if (fp_unstuff == NULL)
       {
         mutt_perror("mutt_file_fopen");
@@ -932,11 +934,11 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
 
     if (is_flowed)
     {
-      if (mutt_save_attachment(fp, b, mutt_b2s(unstuff_tempfile), 0, NULL) == -1)
+      if (mutt_save_attachment(fp, b, mutt_buffer_string(unstuff_tempfile), 0, NULL) == -1)
         goto bail;
       unlink_unstuff = true;
-      mutt_rfc3676_space_unstuff_attachment(b, mutt_b2s(unstuff_tempfile));
-      infile = mutt_b2s(unstuff_tempfile);
+      mutt_rfc3676_space_unstuff_attachment(b, mutt_buffer_string(unstuff_tempfile));
+      infile = mutt_buffer_string(unstuff_tempfile);
     }
     else
       infile = b->filename;
@@ -959,7 +961,7 @@ bail:
   mutt_file_fclose(&fp_in);
 
   if (unlink_unstuff)
-    mutt_file_unlink(mutt_b2s(unstuff_tempfile));
+    mutt_file_unlink(mutt_buffer_string(unstuff_tempfile));
   mutt_buffer_pool_release(&unstuff_tempfile);
 }
 
@@ -1031,14 +1033,14 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   if (!filter && !C_AttachSplit)
   {
     mutt_endwin();
-    pid_t pid = filter_create(mutt_b2s(buf), &state.fp_out, NULL, NULL);
-    pipe_attachment_list(mutt_b2s(buf), actx, fp, tag, top, filter, &state);
+    pid_t pid = filter_create(mutt_buffer_string(buf), &state.fp_out, NULL, NULL);
+    pipe_attachment_list(mutt_buffer_string(buf), actx, fp, tag, top, filter, &state);
     mutt_file_fclose(&state.fp_out);
     if ((filter_wait(pid) != 0) || C_WaitKey)
       mutt_any_key_to_continue(NULL);
   }
   else
-    pipe_attachment_list(mutt_b2s(buf), actx, fp, tag, top, filter, &state);
+    pipe_attachment_list(mutt_buffer_string(buf), actx, fp, tag, top, filter, &state);
 
 cleanup:
   mutt_buffer_pool_release(&buf);
@@ -1121,7 +1123,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           struct Buffer *newfile = mutt_buffer_pool_get();
 
           mutt_buffer_mktemp(newfile);
-          if (mutt_decode_save_attachment(fp, top, mutt_b2s(newfile),
+          if (mutt_decode_save_attachment(fp, top, mutt_buffer_string(newfile),
                                           MUTT_PRINTING, MUTT_SAVE_NO_FLAGS) == 0)
           {
             if (!state->fp_out)
@@ -1131,7 +1133,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
               return;
             }
 
-            fp_in = fopen(mutt_b2s(newfile), "r");
+            fp_in = fopen(mutt_buffer_string(newfile), "r");
             if (fp_in)
             {
               mutt_file_copy_stream(fp_in, state->fp_out);
@@ -1140,7 +1142,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                 state_puts(state, C_AttachSep);
             }
           }
-          mutt_file_unlink(mutt_b2s(newfile));
+          mutt_file_unlink(mutt_buffer_string(newfile));
           mutt_buffer_pool_release(&newfile);
         }
       }

@@ -1368,7 +1368,7 @@ static int invoke_mta(struct Email *e, struct ConfigSubset *sub)
   /* Write out the message in MIME form. */
   tempfile = mutt_buffer_pool_get();
   mutt_buffer_mktemp(tempfile);
-  FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tempfile), "w");
+  FILE *fp_tmp = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
   if (!fp_tmp)
     goto cleanup;
 
@@ -1400,15 +1400,15 @@ static int invoke_mta(struct Email *e, struct ConfigSubset *sub)
 
   if (mutt_file_fclose(&fp_tmp) != 0)
   {
-    mutt_perror(mutt_b2s(tempfile));
-    unlink(mutt_b2s(tempfile));
+    mutt_perror(mutt_buffer_string(tempfile));
+    unlink(mutt_buffer_string(tempfile));
     goto cleanup;
   }
 
 #ifdef MIXMASTER
   if (!STAILQ_EMPTY(&e->chain))
   {
-    rc = mix_send_message(&e->chain, mutt_b2s(tempfile));
+    rc = mix_send_message(&e->chain, mutt_buffer_string(tempfile));
     goto cleanup;
   }
 #endif
@@ -1422,19 +1422,21 @@ static int invoke_mta(struct Email *e, struct ConfigSubset *sub)
   if (c_smtp_url)
   {
     rc = mutt_smtp_send(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                        mutt_b2s(tempfile), (e->body->encoding == ENC_8BIT), sub);
+                        mutt_buffer_string(tempfile),
+                        (e->body->encoding == ENC_8BIT), sub);
     goto cleanup;
   }
 #endif
 
 sendmail:
-  rc = mutt_invoke_sendmail(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                            mutt_b2s(tempfile), (e->body->encoding == ENC_8BIT), sub);
+  rc = mutt_invoke_sendmail(&e->env->from, &e->env->to, &e->env->cc,
+                            &e->env->bcc, mutt_buffer_string(tempfile),
+                            (e->body->encoding == ENC_8BIT), sub);
 cleanup:
   if (fp_tmp)
   {
     mutt_file_fclose(&fp_tmp);
-    unlink(mutt_b2s(tempfile));
+    unlink(mutt_buffer_string(tempfile));
   }
   mutt_buffer_pool_release(&tempfile);
   return rc;
@@ -1639,7 +1641,7 @@ static int save_fcc(struct Email *e, struct Buffer *fcc,
 
 #ifdef USE_IMAP
   if ((flags & SEND_BATCH) && !mutt_buffer_is_empty(fcc) &&
-      (imap_path_probe(mutt_b2s(fcc), NULL) == MUTT_IMAP))
+      (imap_path_probe(mutt_buffer_string(fcc), NULL) == MUTT_IMAP))
   {
     mutt_error(
         _("Warning: Fcc to an IMAP mailbox is not supported in batch mode"));
@@ -1648,13 +1650,13 @@ static int save_fcc(struct Email *e, struct Buffer *fcc,
        sending the mail too.
        %s is the full mailbox URL, including imap(s)://
     */
-    mutt_error(_("Skipping Fcc to %s"), mutt_b2s(fcc));
+    mutt_error(_("Skipping Fcc to %s"), mutt_buffer_string(fcc));
     mutt_buffer_reset(fcc);
     return rc;
   }
 #endif
 
-  if (mutt_buffer_is_empty(fcc) || mutt_str_equal("/dev/null", mutt_b2s(fcc)))
+  if (mutt_buffer_is_empty(fcc) || mutt_str_equal("/dev/null", mutt_buffer_string(fcc)))
     return rc;
 
   struct Body *tmpbody = e->body;
@@ -1737,7 +1739,8 @@ full_fcc:
      * the From_ line contains the current time instead of when the
      * message was first postponed.  */
     e->received = mutt_date_epoch();
-    rc = mutt_write_multiple_fcc(mutt_b2s(fcc), e, NULL, false, NULL, finalpath, sub);
+    rc = mutt_write_multiple_fcc(mutt_buffer_string(fcc), e, NULL, false, NULL,
+                                 finalpath, sub);
     while (rc && !(flags & SEND_BATCH))
     {
       mutt_clear_error();
@@ -1765,7 +1768,8 @@ full_fcc:
           /* fall through */
 
         case 1: /* (r)etry */
-          rc = mutt_write_multiple_fcc(mutt_b2s(fcc), e, NULL, false, NULL, finalpath, sub);
+          rc = mutt_write_multiple_fcc(mutt_buffer_string(fcc), e, NULL, false,
+                                       NULL, finalpath, sub);
           break;
 
         case -1: /* abort */
@@ -2606,7 +2610,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
     else if (i == 1)
     {
-      if (postpone_message(e_templ, e_cur, mutt_b2s(&fcc), flags, sub) != 0)
+      if (postpone_message(e_templ, e_cur, mutt_buffer_string(&fcc), flags, sub) != 0)
         goto main_loop;
       mutt_message(_("Message postponed"));
       rc = 1;

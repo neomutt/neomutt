@@ -111,7 +111,7 @@ static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *ne
     basename = path;
   }
 
-  mutt_buffer_printf(newdir, "%s/%s", mutt_b2s(&parent), ".muttXXXXXX");
+  mutt_buffer_printf(newdir, "%s/%s", mutt_buffer_string(&parent), ".muttXXXXXX");
   if (!mkdtemp(newdir->data))
   {
     mutt_debug(LL_DEBUG1, "mkdtemp() failed\n");
@@ -323,7 +323,7 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
 
     mutt_buffer_addch(&abs_oldpath, '/');
     mutt_buffer_addstr(&abs_oldpath, oldpath);
-    if (symlink(mutt_b2s(&abs_oldpath), newpath) == -1)
+    if (symlink(mutt_buffer_string(&abs_oldpath), newpath) == -1)
     {
       mutt_buffer_dealloc(&abs_oldpath);
       return -1;
@@ -493,16 +493,16 @@ int mutt_file_rmtree(const char *path)
     mutt_buffer_printf(&cur, "%s/%s", path, de->d_name);
     /* XXX make nonrecursive version */
 
-    if (stat(mutt_b2s(&cur), &statbuf) == -1)
+    if (stat(mutt_buffer_string(&cur), &statbuf) == -1)
     {
       rc = 1;
       continue;
     }
 
     if (S_ISDIR(statbuf.st_mode))
-      rc |= mutt_file_rmtree(mutt_b2s(&cur));
+      rc |= mutt_file_rmtree(mutt_buffer_string(&cur));
     else
-      rc |= unlink(mutt_b2s(&cur));
+      rc |= unlink(mutt_buffer_string(&cur));
   }
   closedir(dirp);
 
@@ -540,16 +540,17 @@ int mutt_file_open(const char *path, uint32_t flags)
       goto cleanup;
     }
 
-    fd = open(mutt_b2s(&safe_file), flags, 0600);
+    fd = open(mutt_buffer_string(&safe_file), flags, 0600);
     if (fd < 0)
     {
-      rmdir(mutt_b2s(&safe_dir));
+      rmdir(mutt_buffer_string(&safe_dir));
       goto cleanup;
     }
 
     /* NFS and I believe cygwin do not handle movement of open files well */
     close(fd);
-    if (put_file_in_place(path, mutt_b2s(&safe_file), mutt_b2s(&safe_dir)) == -1)
+    if (put_file_in_place(path, mutt_buffer_string(&safe_file),
+                          mutt_buffer_string(&safe_dir)) == -1)
     {
       fd = -1;
       goto cleanup;
@@ -1433,7 +1434,7 @@ void mutt_buffer_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, con
   struct Buffer tmp = mutt_buffer_make(PATH_MAX);
 
   mutt_buffer_quote_filename(&tmp, src, true);
-  mutt_file_expand_fmt(dest, fmt, mutt_b2s(&tmp));
+  mutt_file_expand_fmt(dest, fmt, mutt_buffer_string(&tmp));
   mutt_buffer_dealloc(&tmp);
 }
 
@@ -1616,11 +1617,11 @@ int mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type,
 void mutt_file_resolve_symlink(struct Buffer *buf)
 {
   struct stat st;
-  int rc = lstat(mutt_b2s(buf), &st);
+  int rc = lstat(mutt_buffer_string(buf), &st);
   if ((rc != -1) && S_ISLNK(st.st_mode))
   {
     char path[PATH_MAX];
-    if (realpath(mutt_b2s(buf), path))
+    if (realpath(mutt_buffer_string(buf), path))
     {
       mutt_buffer_strcpy(buf, path);
     }

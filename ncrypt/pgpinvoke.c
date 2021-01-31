@@ -397,7 +397,7 @@ void pgp_class_invoke_import(const char *fname)
   struct Buffer *buf_fname = mutt_buffer_pool_get();
 
   mutt_buffer_quote_filename(buf_fname, fname, true);
-  cctx.fname = mutt_b2s(buf_fname);
+  cctx.fname = mutt_buffer_string(buf_fname);
   if (C_PgpSignAs)
     cctx.signas = C_PgpSignAs;
   else
@@ -436,7 +436,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 
   addr->personal = personal;
 
-  cctx.ids = mutt_b2s(buf);
+  cctx.ids = mutt_buffer_string(buf);
 
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, C_PgpGetkeysCommand);
 
@@ -528,13 +528,13 @@ pid_t pgp_invoke_list_keys(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_er
   STAILQ_FOREACH(np, hints, entries)
   {
     mutt_buffer_quote_filename(quoted, (char *) np->data, true);
-    mutt_buffer_addstr(uids, mutt_b2s(quoted));
+    mutt_buffer_addstr(uids, mutt_buffer_string(quoted));
     if (STAILQ_NEXT(np, entries))
       mutt_buffer_addch(uids, ' ');
   }
 
-  pid_t rc = pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in,
-                        fd_pgp_out, fd_pgp_err, 0, NULL, NULL, mutt_b2s(uids),
+  pid_t rc = pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
+                        fd_pgp_err, 0, NULL, NULL, mutt_buffer_string(uids),
                         (keyring == PGP_SECRING) ? C_PgpListSecringCommand :
                                                    C_PgpListPubringCommand);
 

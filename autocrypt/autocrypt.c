@@ -69,7 +69,7 @@ static int autocrypt_dir_init(bool can_create)
      for some reason (e.g. autocrypt, header cache, bcache), but it
      doesn't exist.  The prompt is asking whether to create the directory */
   mutt_buffer_printf(prompt, _("%s does not exist. Create it?"), C_AutocryptDir);
-  if (mutt_yesorno(mutt_b2s(prompt), MUTT_YES) == MUTT_YES)
+  if (mutt_yesorno(mutt_buffer_string(prompt), MUTT_YES) == MUTT_YES)
   {
     if (mutt_file_mkdir(C_AutocryptDir, S_IRWXU) < 0)
     {
@@ -219,8 +219,11 @@ int mutt_autocrypt_account_init(bool prompt)
   if (mutt_yesorno(_("Prefer encryption?"), MUTT_NO) == MUTT_YES)
     prefer_encrypt = true;
 
-  if (mutt_autocrypt_db_account_insert(addr, mutt_b2s(keyid), mutt_b2s(keydata), prefer_encrypt))
+  if (mutt_autocrypt_db_account_insert(addr, mutt_buffer_string(keyid),
+                                       mutt_buffer_string(keydata), prefer_encrypt))
+  {
     goto cleanup;
+  }
 
   rc = 0;
 
@@ -359,7 +362,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
     keyid = mutt_buffer_pool_get();
     if (mutt_autocrypt_gpgme_import_key(peer->keydata, keyid))
       goto cleanup;
-    mutt_str_replace(&peer->keyid, mutt_b2s(keyid));
+    mutt_str_replace(&peer->keyid, mutt_buffer_string(keyid));
   }
 
   if (insert_db && mutt_autocrypt_db_peer_insert(from, peer))
@@ -498,7 +501,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
     {
       if (mutt_autocrypt_gpgme_import_key(peer->gossip_keydata, keyid))
         goto cleanup;
-      mutt_str_replace(&peer->gossip_keyid, mutt_b2s(keyid));
+      mutt_str_replace(&peer->gossip_keyid, mutt_buffer_string(keyid));
     }
 
     if (insert_db && mutt_autocrypt_db_peer_insert(peer_addr, peer))
@@ -666,7 +669,7 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
     rc = AUTOCRYPT_REC_AVAILABLE;
 
   if (keylist)
-    mutt_str_replace(keylist, mutt_b2s(keylist_buf));
+    mutt_str_replace(keylist, mutt_buffer_string(keylist_buf));
 
 cleanup:
   mutt_autocrypt_db_account_free(&account);
@@ -917,7 +920,7 @@ void mutt_autocrypt_scan_mailboxes(void)
         (!mutt_buffer_is_empty(folderbuf)))
     {
       mutt_buffer_expand_path_regex(folderbuf, false);
-      struct Mailbox *m = mx_path_resolve(mutt_b2s(folderbuf));
+      struct Mailbox *m = mx_path_resolve(mutt_buffer_string(folderbuf));
       /* NOTE: I am purposely *not* executing folder hooks here,
        * as they can do all sorts of things like push into the getch() buffer.
        * Authentication should be in account-hooks. */

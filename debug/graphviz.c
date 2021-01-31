@@ -594,14 +594,14 @@ static void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 
   if ((m->type == MUTT_IMAP) || (m->type == MUTT_POP))
   {
-    dot_path_imap(buf, sizeof(buf), mutt_b2s(&m->pathbuf));
+    dot_path_imap(buf, sizeof(buf), mutt_buffer_string(&m->pathbuf));
     dot_type_string(fp, "pathbuf", buf, true);
     dot_path_imap(buf, sizeof(buf), m->realpath);
     dot_type_string(fp, "realpath", buf, true);
   }
   else
   {
-    dot_path_fs(buf, sizeof(buf), mutt_b2s(&m->pathbuf));
+    dot_path_fs(buf, sizeof(buf), mutt_buffer_string(&m->pathbuf));
     dot_type_string(fp, "pathbuf", buf, true);
     dot_path_fs(buf, sizeof(buf), m->realpath);
     dot_type_string(fp, "realpath", buf, true);
@@ -966,7 +966,7 @@ void dump_graphviz(const char *title)
   dot_ptr_name(obj1, sizeof(obj1), NeoMutt);
   dot_ptr_name(obj2, sizeof(obj2), NeoMutt->sub);
   mutt_buffer_printf(&buf, "{ rank=same %s %s }", obj1, obj2);
-  mutt_list_insert_tail(&links, mutt_str_dup(mutt_b2s(&buf)));
+  mutt_list_insert_tail(&links, mutt_str_dup(mutt_buffer_string(&buf)));
   mutt_buffer_dealloc(&buf);
 #endif
 #endif
@@ -1124,7 +1124,8 @@ static void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link
   ADD_BOOL(use_disp);
   ADD_BOOL(warnsig);
 #undef ADD_BOOL
-  dot_type_string(fp, "bools", mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf), true);
+  dot_type_string(fp, "bools",
+                  mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf), true);
 
   dot_type_number(fp, "attach_count", b->attach_count);
   dot_type_number(fp, "hdr_offset", b->hdr_offset);
@@ -1216,7 +1217,7 @@ static void dot_list_head(FILE *fp, const char *name, const struct ListHead *lis
     mutt_buffer_addstr(&buf, np->data);
   }
 
-  dot_type_string(fp, name, mutt_b2s(&buf), false);
+  dot_type_string(fp, name, mutt_buffer_string(&buf), false);
 }
 
 static void dot_addr_list(FILE *fp, const char *name,
@@ -1246,7 +1247,7 @@ static void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links)
   ADD_FLAG(MUTT_ENV_CHANGED_SUBJECT);
 #undef ADD_BOOL
   dot_type_string(fp, "changed",
-                  mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf), true);
+                  mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf), true);
 
 #define ADDR_LIST(AL) dot_addr_list(fp, #AL, &env->AL, links)
   ADDR_LIST(return_path);
@@ -1268,7 +1269,7 @@ static void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links)
   dot_type_string(fp, "newsgroups", env->newsgroups, false);
   dot_type_string(fp, "organization", env->organization, false);
   dot_type_string(fp, "real_subj", env->real_subj, false);
-  dot_type_string(fp, "spam", mutt_b2s(&env->spam), false);
+  dot_type_string(fp, "spam", mutt_buffer_string(&env->spam), false);
   dot_type_string(fp, "subject", env->subject, false);
   dot_type_string(fp, "supersedes", env->supersedes, false);
   dot_type_string(fp, "xref", env->xref, false);
@@ -1327,7 +1328,8 @@ static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
   ADD_BOOL(trash);
   ADD_BOOL(visible);
 #undef ADD_BOOL
-  dot_type_string(fp, "bools", mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf), true);
+  dot_type_string(fp, "bools",
+                  mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf), true);
 
   mutt_buffer_reset(&buf);
 #define ADD_BOOL(F) add_flag(&buf, (e->security & F), #F)
@@ -1347,7 +1349,7 @@ static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
   ADD_BOOL(PGP_TRADITIONAL_CHECKED);
 #undef ADD_BOOL
   dot_type_string(fp, "security",
-                  mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_b2s(&buf), true);
+                  mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf), true);
 
   dot_type_number(fp, "num_hidden", e->num_hidden);
   dot_type_number(fp, "offset", e->offset);

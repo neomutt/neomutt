@@ -63,13 +63,13 @@ void test_mutt_buffer_concat_path(void)
         mutt_buffer_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
-          TEST_CHECK(strcmp(mutt_b2s(&buf), concat_test[i][2]) == 0);
+          TEST_CHECK(strcmp(mutt_buffer_string(&buf), concat_test[i][2]) == 0);
         }
         else
         {
-          if (!TEST_CHECK(strlen(mutt_b2s(&buf)) == 0))
+          if (!TEST_CHECK(strlen(mutt_buffer_string(&buf)) == 0))
           {
-            TEST_MSG("len = %ld", strlen(mutt_b2s(&buf)));
+            TEST_MSG("len = %ld", strlen(mutt_buffer_string(&buf)));
           }
         }
         mutt_buffer_dealloc(&buf);
@@ -82,11 +82,11 @@ void test_mutt_buffer_concat_path(void)
         mutt_buffer_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
-          TEST_CHECK(strcmp(mutt_b2s(&buf), concat_test[i][2]) == 0);
+          TEST_CHECK(strcmp(mutt_buffer_string(&buf), concat_test[i][2]) == 0);
         }
         else
         {
-          TEST_CHECK(strcmp(mutt_b2s(&buf), str) == 0);
+          TEST_CHECK(strcmp(mutt_buffer_string(&buf), str) == 0);
         }
         mutt_buffer_dealloc(&buf);
       }

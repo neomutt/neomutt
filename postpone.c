@@ -151,7 +151,8 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     struct Buffer *buf = mutt_buffer_pool_get();
 
     mutt_buffer_printf(buf, "%s/new", C_Postponed);
-    if ((access(mutt_b2s(buf), F_OK) == 0) && (stat(mutt_b2s(buf), &st) == -1))
+    if ((access(mutt_buffer_string(buf), F_OK) == 0) &&
+        (stat(mutt_buffer_string(buf), &st) == -1))
     {
       PostCount = 0;
       LastModify = 0;
@@ -618,7 +619,7 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
                                       smime_cryptalg, &errmsg);
 
     if ((CSR_RESULT(rc) != CSR_SUCCESS) && !mutt_buffer_is_empty(&errmsg))
-      mutt_error("%s", mutt_b2s(&errmsg));
+      mutt_error("%s", mutt_buffer_string(&errmsg));
 
     mutt_buffer_dealloc(&errmsg);
   }
@@ -794,7 +795,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
     }
 
     mutt_adv_mktemp(file);
-    s.fp_out = mutt_file_fopen(mutt_b2s(file), "w");
+    s.fp_out = mutt_file_fopen(mutt_buffer_string(file), "w");
     if (!s.fp_out)
       goto bail;
 
@@ -852,7 +853,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
     if (mutt_file_fclose(&s.fp_out) != 0)
       goto bail;
 
-    mutt_str_replace(&b->filename, mutt_b2s(file));
+    mutt_str_replace(&b->filename, mutt_buffer_string(file));
     b->unlink = true;
 
     mutt_stamp_attachment(b);

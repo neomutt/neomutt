@@ -836,7 +836,7 @@ static void verify_key(struct CryptKeyInfo *key)
 
   struct Buffer tempfile = mutt_buffer_make(PATH_MAX);
   mutt_buffer_mktemp(&tempfile);
-  FILE *fp = mutt_file_fopen(mutt_b2s(&tempfile), "w");
+  FILE *fp = mutt_file_fopen(mutt_buffer_string(&tempfile), "w");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -881,7 +881,7 @@ leave:
   mutt_clear_error();
   char title[1024];
   snprintf(title, sizeof(title), _("Key ID: 0x%s"), crypt_keyid(key));
-  mutt_do_pager(title, mutt_b2s(&tempfile), MUTT_PAGER_NO_FLAGS, NULL);
+  mutt_do_pager(title, mutt_buffer_string(&tempfile), MUTT_PAGER_NO_FLAGS, NULL);
 
 cleanup:
   mutt_buffer_dealloc(&tempfile);

@@ -399,10 +399,10 @@ void mutt_help(enum MenuType menu, int wraplen)
 
   do
   {
-    fp = mutt_file_fopen(mutt_b2s(&t), "w");
+    fp = mutt_file_fopen(mutt_buffer_string(&t), "w");
     if (!fp)
     {
-      mutt_perror(mutt_b2s(&t));
+      mutt_perror(mutt_buffer_string(&t));
       goto cleanup;
     }
 
@@ -422,7 +422,7 @@ void mutt_help(enum MenuType menu, int wraplen)
     mutt_file_fclose(&fp);
 
     snprintf(buf, sizeof(buf), _("Help for %s"), desc);
-  } while (mutt_do_pager(buf, mutt_b2s(&t),
+  } while (mutt_do_pager(buf, mutt_buffer_string(&t),
                          MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER | MUTT_PAGER_NSKIP | MUTT_PAGER_NOWRAP,
                          NULL) == OP_REFORMAT_WINCH);
 

@@ -93,7 +93,7 @@ void debug_win_dump(void)
   mutt_debug(LL_DEBUG1, "\n");
   struct Buffer buf = mutt_buffer_make(1024);
   win_serialise(RootWindow, &buf);
-  mutt_debug(LL_DEBUG1, "%s\n", mutt_b2s(&buf));
+  mutt_debug(LL_DEBUG1, "%s\n", mutt_buffer_string(&buf));
   mutt_buffer_dealloc(&buf);
   win_focus = NULL;
 }

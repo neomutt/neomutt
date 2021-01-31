@@ -263,12 +263,12 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
     case 'f':
       /* Compressed file */
       mutt_buffer_quote_filename(quoted, m->realpath, false);
-      snprintf(buf, buflen, "%s", mutt_b2s(quoted));
+      snprintf(buf, buflen, "%s", mutt_buffer_string(quoted));
       break;
     case 't':
       /* Plaintext, temporary file */
       mutt_buffer_quote_filename(quoted, mailbox_path(m), false);
-      snprintf(buf, buflen, "%s", mutt_b2s(quoted));
+      snprintf(buf, buflen, "%s", mutt_buffer_string(quoted));
       break;
   }
 

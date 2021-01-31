@@ -439,10 +439,10 @@ static bool test_string_plus_equals(struct ConfigSet *cs, struct Buffer *err)
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_equal(PlusTests[i][2], mutt_b2s(err))))
+    if (!TEST_CHECK(mutt_str_equal(PlusTests[i][2], mutt_buffer_string(err))))
     {
       TEST_MSG("Expected: %s\n", PlusTests[i][2]);
-      TEST_MSG("Actual  : %s\n", mutt_b2s(err));
+      TEST_MSG("Actual  : %s\n", mutt_buffer_string(err));
       return false;
     }
   }

@@ -454,7 +454,7 @@ size_t mutt_buffer_copy(struct Buffer *dst, const struct Buffer *src)
   return mutt_buffer_addstr_n(dst, src->data, mutt_buffer_len(src));
 }
 
-/** 
+/**
  * mutt_buffer_seek - set current read/write position to offset from beginning
  * @param buf    Buffer to use
  * @param offset Distance from the beginning

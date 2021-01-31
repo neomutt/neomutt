@@ -556,7 +556,7 @@ static int ssl_init(void)
 #ifdef HAVE_RAND_EGD
     add_entropy(mutt_str_getenv("EGDSOCKET"));
     mutt_buffer_printf(path, "%s/.entropy", NONULL(HomeDir));
-    add_entropy(mutt_b2s(path));
+    add_entropy(mutt_buffer_string(path));
     add_entropy(TMPDIR "/entropy");
 #endif
 

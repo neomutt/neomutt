@@ -211,8 +211,8 @@ static void notify_dump_config(struct NotifyCallback *nc)
 
   struct Buffer value = mutt_buffer_make(128);
   cs_he_string_get(ev_c->sub->cs, ev_c->he, &value);
-  mutt_debug(LL_DEBUG1, "    Config: %s %s = %s\n",
-             get_config_type(nc->event_subtype), ev_c->name, mutt_b2s(&value));
+  mutt_debug(LL_DEBUG1, "    Config: %s %s = %s\n", get_config_type(nc->event_subtype),
+             ev_c->name, mutt_buffer_string(&value));
   mutt_buffer_dealloc(&value);
 }
 
@@ -283,7 +283,7 @@ static void notify_dump_window_state(struct NotifyCallback *nc)
   if (flags & WN_NARROWER)
     mutt_buffer_add_printf(&buf, "narrower [%d->%d] ", win->old.cols, win->state.cols);
 
-  mutt_debug(LL_DEBUG1, "    Window: %s\n", mutt_b2s(&buf));
+  mutt_debug(LL_DEBUG1, "    Window: %s\n", mutt_buffer_string(&buf));
 
   mutt_buffer_dealloc(&buf);
 }
@@ -313,7 +313,7 @@ static void notify_dump_window_focus(struct NotifyCallback *nc)
     mutt_buffer_addstr(&buf, "NONE");
   }
 
-  mutt_debug(LL_DEBUG1, "    Window: %s\n", mutt_b2s(&buf));
+  mutt_debug(LL_DEBUG1, "    Window: %s\n", mutt_buffer_string(&buf));
 
   mutt_buffer_dealloc(&buf);
 }

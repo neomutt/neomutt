@@ -198,7 +198,8 @@ static struct Remailer **mix_type2_list(size_t *l)
   struct Buffer *cmd = mutt_buffer_pool_get();
   mutt_buffer_printf(cmd, "%s -T", C_Mixmaster);
 
-  pid_t mm_pid = filter_create_fd(mutt_b2s(cmd), NULL, &fp, NULL, fd_null, -1, fd_null);
+  pid_t mm_pid =
+      filter_create_fd(mutt_buffer_string(cmd), NULL, &fp, NULL, fd_null, -1, fd_null);
   if (mm_pid == -1)
   {
     mutt_buffer_pool_release(&cmd);
@@ -855,7 +856,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   {
     mutt_buffer_addstr(cmd, (i != 0) ? "," : " -l ");
     mutt_buffer_quote_filename(cd_quoted, (char *) np->data, true);
-    mutt_buffer_addstr(cmd, mutt_b2s(cd_quoted));
+    mutt_buffer_addstr(cmd, mutt_buffer_string(cd_quoted));
     i = 1;
   }
 

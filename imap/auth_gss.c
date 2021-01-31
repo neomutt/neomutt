@@ -184,7 +184,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
   mutt_b64_buffer_encode(buf1, send_token.value, send_token.length);
   gss_release_buffer(&min_stat, &send_token);
   mutt_buffer_addstr(buf1, "\r\n");
-  mutt_socket_send(adata->conn, mutt_b2s(buf1));
+  mutt_socket_send(adata->conn, mutt_buffer_string(buf1));
 
   while (maj_stat == GSS_S_CONTINUE_NEEDED)
   {
@@ -227,7 +227,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
     mutt_b64_buffer_encode(buf1, send_token.value, send_token.length);
     gss_release_buffer(&min_stat, &send_token);
     mutt_buffer_addstr(buf1, "\r\n");
-    mutt_socket_send(adata->conn, mutt_b2s(buf1));
+    mutt_socket_send(adata->conn, mutt_buffer_string(buf1));
   }
 
   gss_release_name(&min_stat, &target_name);
@@ -300,7 +300,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
   mutt_b64_buffer_encode(buf1, send_token.value, send_token.length);
   mutt_debug(LL_DEBUG2, "Requesting authorisation as %s\n", adata->conn->account.user);
   mutt_buffer_addstr(buf1, "\r\n");
-  mutt_socket_send(adata->conn, mutt_b2s(buf1));
+  mutt_socket_send(adata->conn, mutt_buffer_string(buf1));
 
   /* Joy of victory or agony of defeat? */
   do

@@ -53,11 +53,11 @@ static void *store_kyotocabinet_open(const char *path)
 
   mutt_buffer_printf(&kcdbpath, "%s#type=kct#opts=l#rcomp=lex", path);
 
-  if (!kcdbopen(db, mutt_b2s(&kcdbpath), KCOWRITER | KCOCREATE))
+  if (!kcdbopen(db, mutt_buffer_string(&kcdbpath), KCOWRITER | KCOCREATE))
   {
     int ecode = kcdbecode(db);
     mutt_debug(LL_DEBUG2, "kcdbopen failed for %s: %s (ecode %d)\n",
-               mutt_b2s(&kcdbpath), kcdbemsg(db), ecode);
+               mutt_buffer_string(&kcdbpath), kcdbemsg(db), ecode);
     kcdbdel(db);
     db = NULL;
   }
