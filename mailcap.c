@@ -75,7 +75,7 @@ int mailcap_expand_command(struct Body *a, const char *filename,
   struct Buffer *param = NULL;
   struct Buffer *type2 = NULL;
 
-  const char *cptr = mutt_b2s(command);
+  const char *cptr = mutt_buffer_string(command);
   while (*cptr)
   {
     if (*cptr == '\\')
@@ -104,10 +104,10 @@ int mailcap_expand_command(struct Body *a, const char *filename,
         /* In send mode, use the current charset, since the message hasn't
          * been converted yet.   If noconv is set, then we assume the
          * charset parameter has the correct value instead. */
-        if (mutt_istr_equal(mutt_b2s(param), "charset") && a->charset && !a->noconv)
+        if (mutt_istr_equal(mutt_buffer_string(param), "charset") && a->charset && !a->noconv)
           pvalue2 = a->charset;
         else
-          pvalue2 = mutt_param_get(&a->parameter, mutt_b2s(param));
+          pvalue2 = mutt_param_get(&a->parameter, mutt_buffer_string(param));
 
         /* Now copy the parameter value into param buffer */
         if (C_MailcapSanitize)
@@ -115,13 +115,13 @@ int mailcap_expand_command(struct Body *a, const char *filename,
         else
           mutt_buffer_strcpy(param, NONULL(pvalue2));
 
-        mutt_buffer_quote_filename(quoted, mutt_b2s(param), true);
-        mutt_buffer_addstr(buf, mutt_b2s(quoted));
+        mutt_buffer_quote_filename(quoted, mutt_buffer_string(param), true);
+        mutt_buffer_addstr(buf, mutt_buffer_string(quoted));
       }
       else if ((*cptr == 's') && filename)
       {
         mutt_buffer_quote_filename(quoted, filename, true);
-        mutt_buffer_addstr(buf, mutt_b2s(quoted));
+        mutt_buffer_addstr(buf, mutt_buffer_string(quoted));
         needspipe = false;
       }
       else if (*cptr == 't')
@@ -134,8 +134,8 @@ int mailcap_expand_command(struct Body *a, const char *filename,
           else
             mutt_buffer_strcpy(type2, type);
         }
-        mutt_buffer_quote_filename(quoted, mutt_b2s(type2), true);
-        mutt_buffer_addstr(buf, mutt_b2s(quoted));
+        mutt_buffer_quote_filename(quoted, mutt_buffer_string(type2), true);
+        mutt_buffer_addstr(buf, mutt_buffer_string(quoted));
       }
 
       if (*cptr)
@@ -357,8 +357,8 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
               mutt_buffer_sanitize_filename(afilename, NONULL(a->filename), true);
             else
               mutt_buffer_strcpy(afilename, NONULL(a->filename));
-            mailcap_expand_command(a, mutt_b2s(afilename), type, command);
-            if (mutt_system(mutt_b2s(command)))
+            mailcap_expand_command(a, mutt_buffer_string(afilename), type, command);
+            if (mutt_system(mutt_buffer_string(command)))
             {
               /* a non-zero exit code means test failed */
               found = false;
@@ -500,8 +500,8 @@ bool mailcap_lookup(struct Body *a, char *type, size_t typelen,
     mutt_buffer_strcpy(path, np->data);
     mutt_buffer_expand_path(path);
 
-    mutt_debug(LL_DEBUG2, "Checking mailcap file: %s\n", mutt_b2s(path));
-    found = rfc1524_mailcap_parse(a, mutt_b2s(path), type, entry, opt);
+    mutt_debug(LL_DEBUG2, "Checking mailcap file: %s\n", mutt_buffer_string(path));
+    found = rfc1524_mailcap_parse(a, mutt_buffer_string(path), type, entry, opt);
     if (found)
       break;
   }
@@ -617,7 +617,8 @@ void mailcap_expand_filename(const char *nametemplate, const char *oldfile,
         mutt_buffer_strcpy_n(left, nametemplate, i);
       if (!rmatch)
         mutt_buffer_strcpy(right, nametemplate + i + 2);
-      mutt_buffer_printf(newfile, "%s%s%s", mutt_b2s(left), oldfile, mutt_b2s(right));
+      mutt_buffer_printf(newfile, "%s%s%s", mutt_buffer_string(left), oldfile,
+                         mutt_buffer_string(right));
 
       mutt_buffer_pool_release(&left);
       mutt_buffer_pool_release(&right);

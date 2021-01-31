@@ -112,9 +112,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -140,9 +140,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -174,9 +174,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -214,9 +214,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -256,9 +256,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -293,9 +293,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -328,9 +328,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -375,9 +375,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -410,9 +410,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -442,9 +442,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -483,9 +483,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -521,9 +521,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -559,9 +559,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -600,9 +600,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -641,9 +641,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -682,9 +682,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -723,9 +723,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -756,9 +756,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -784,9 +784,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -818,9 +818,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -858,9 +858,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -900,9 +900,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -937,9 +937,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -972,9 +972,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -1019,9 +1019,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -1054,9 +1054,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -1086,9 +1086,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -1127,9 +1127,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -1165,9 +1165,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -1203,9 +1203,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -1244,9 +1244,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -1285,9 +1285,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -1326,9 +1326,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -1367,9 +1367,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);
@@ -1452,9 +1452,9 @@ void test_window_reflow(void)
 
     struct Buffer buf = mutt_buffer_make(1024);
     win_serialise(root, &buf);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), expected) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), expected) == 0);
     TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", mutt_b2s(&buf));
+    TEST_MSG("Got      %s\n", mutt_buffer_string(&buf));
 
     mutt_buffer_dealloc(&buf);
     mutt_window_free(&root);

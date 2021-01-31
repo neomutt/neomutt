@@ -358,9 +358,9 @@ void mutt_edit_file(const char *editor, const char *file)
 
   mutt_endwin();
   mutt_buffer_file_expand_fmt_quote(cmd, editor, file);
-  if (mutt_system(mutt_b2s(cmd)) != 0)
+  if (mutt_system(mutt_buffer_string(cmd)) != 0)
   {
-    mutt_error(_("Error running \"%s\""), mutt_b2s(cmd));
+    mutt_error(_("Error running \"%s\""), mutt_buffer_string(cmd));
   }
   /* the terminal may have been resized while the editor owned it */
   mutt_resize_screen();
@@ -736,9 +736,9 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
 
     mutt_endwin();
     mutt_buffer_file_expand_fmt_quote(cmd, C_Pager, tempfile);
-    if (mutt_system(mutt_b2s(cmd)) == -1)
+    if (mutt_system(mutt_buffer_string(cmd)) == -1)
     {
-      mutt_error(_("Error running \"%s\""), mutt_b2s(cmd));
+      mutt_error(_("Error running \"%s\""), mutt_buffer_string(cmd));
       rc = -1;
     }
     else
@@ -776,7 +776,7 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
   mutt_window_addstr(_(" ('?' for list): "));
   mutt_curses_set_color(MT_COLOR_NORMAL);
   if (!mutt_buffer_is_empty(fname))
-    mutt_window_addstr(mutt_b2s(fname));
+    mutt_window_addstr(mutt_buffer_string(fname));
   mutt_window_clrtoeol(MessageWindow);
   mutt_refresh();
 

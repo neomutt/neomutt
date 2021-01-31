@@ -247,10 +247,10 @@ static int query_run(char *s, bool verbose, struct AliasList *al,
   const char *query_command = cs_subset_string(sub, "query_command");
   mutt_buffer_file_expand_fmt_quote(cmd, query_command, s);
 
-  pid_t pid = filter_create(mutt_b2s(cmd), NULL, &fp, NULL);
+  pid_t pid = filter_create(mutt_buffer_string(cmd), NULL, &fp, NULL);
   if (pid < 0)
   {
-    mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", mutt_b2s(cmd));
+    mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", mutt_buffer_string(cmd));
     mutt_buffer_pool_release(&cmd);
     return -1;
   }

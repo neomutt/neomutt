@@ -46,7 +46,7 @@ void test_mutt_buffer_strcpy(void)
     TEST_CASE("Empty");
     struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_strcpy(&buf, "");
-    TEST_CHECK(strcmp(mutt_b2s(&buf), "") == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), "") == 0);
     mutt_buffer_dealloc(&buf);
   }
 
@@ -55,7 +55,7 @@ void test_mutt_buffer_strcpy(void)
     const char *str = "test";
     struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_strcpy(&buf, str);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), str) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), str) == 0);
     mutt_buffer_dealloc(&buf);
   }
 
@@ -66,7 +66,7 @@ void test_mutt_buffer_strcpy(void)
     struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     mutt_buffer_strcpy(&buf, "");
-    TEST_CHECK(strcmp(mutt_b2s(&buf), "") == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), "") == 0);
     mutt_buffer_dealloc(&buf);
   }
 
@@ -76,7 +76,7 @@ void test_mutt_buffer_strcpy(void)
     struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     mutt_buffer_strcpy(&buf, str);
-    TEST_CHECK(strcmp(mutt_b2s(&buf), str) == 0);
+    TEST_CHECK(strcmp(mutt_buffer_string(&buf), str) == 0);
     mutt_buffer_dealloc(&buf);
   }
 }

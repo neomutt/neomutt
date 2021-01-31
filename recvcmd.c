@@ -497,10 +497,10 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
   tmpbody = mutt_buffer_pool_get();
   mutt_buffer_mktemp(tmpbody);
-  FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tmpbody), "w");
+  FILE *fp_tmp = mutt_file_fopen(mutt_buffer_string(tmpbody), "w");
   if (!fp_tmp)
   {
-    mutt_error(_("Can't open temporary file %s"), mutt_b2s(tmpbody));
+    mutt_error(_("Can't open temporary file %s"), mutt_buffer_string(tmpbody));
     email_free(&e_tmp);
     goto bail;
   }
@@ -608,7 +608,8 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   /* now that we have the template, send it. */
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, e_parent);
-  mutt_send_message(SEND_NO_FLAGS, e_tmp, mutt_b2s(tmpbody), NULL, &el, NeoMutt->sub);
+  mutt_send_message(SEND_NO_FLAGS, e_tmp, mutt_buffer_string(tmpbody), NULL,
+                    &el, NeoMutt->sub);
   emaillist_clear(&el);
   mutt_buffer_pool_release(&tmpbody);
   return;
@@ -617,7 +618,7 @@ bail:
   if (fp_tmp)
   {
     mutt_file_fclose(&fp_tmp);
-    mutt_file_unlink(mutt_b2s(tmpbody));
+    mutt_file_unlink(mutt_buffer_string(tmpbody));
   }
   mutt_buffer_pool_release(&tmpbody);
 
@@ -676,10 +677,10 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
     /* no MIME encapsulation */
 
     mutt_buffer_mktemp(tmpbody);
-    fp_tmp = mutt_file_fopen(mutt_b2s(tmpbody), "w");
+    fp_tmp = mutt_file_fopen(mutt_buffer_string(tmpbody), "w");
     if (!fp_tmp)
     {
-      mutt_error(_("Can't create %s"), mutt_b2s(tmpbody));
+      mutt_error(_("Can't create %s"), mutt_buffer_string(tmpbody));
       goto cleanup;
     }
 
@@ -745,7 +746,8 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, e_cur);
-  mutt_send_message(flags, e_tmp, mutt_buffer_is_empty(tmpbody) ? NULL : mutt_b2s(tmpbody),
+  mutt_send_message(flags, e_tmp,
+                    mutt_buffer_is_empty(tmpbody) ? NULL : mutt_buffer_string(tmpbody),
                     NULL, &el, NeoMutt->sub);
   emaillist_clear(&el);
   e_tmp = NULL; /* mutt_send_message frees this */
@@ -977,10 +979,10 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
   tmpbody = mutt_buffer_pool_get();
   mutt_buffer_mktemp(tmpbody);
-  fp_tmp = mutt_file_fopen(mutt_b2s(tmpbody), "w");
+  fp_tmp = mutt_file_fopen(mutt_buffer_string(tmpbody), "w");
   if (!fp_tmp)
   {
-    mutt_error(_("Can't create %s"), mutt_b2s(tmpbody));
+    mutt_error(_("Can't create %s"), mutt_buffer_string(tmpbody));
     goto cleanup;
   }
 
@@ -1059,7 +1061,8 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   mutt_file_fclose(&fp_tmp);
 
   emaillist_add_email(&el, e_parent ? e_parent : (e_cur ? e_cur->email : NULL));
-  if (mutt_send_message(flags, e_tmp, mutt_b2s(tmpbody), NULL, &el, NeoMutt->sub) == 0)
+  if (mutt_send_message(flags, e_tmp, mutt_buffer_string(tmpbody), NULL, &el,
+                        NeoMutt->sub) == 0)
   {
     mutt_set_flag(Context->mailbox, e, MUTT_REPLIED, true);
   }
@@ -1069,7 +1072,7 @@ cleanup:
   if (fp_tmp)
   {
     mutt_file_fclose(&fp_tmp);
-    mutt_file_unlink(mutt_b2s(tmpbody));
+    mutt_file_unlink(mutt_buffer_string(tmpbody));
   }
   mutt_buffer_pool_release(&tmpbody);
   email_free(&e_tmp);

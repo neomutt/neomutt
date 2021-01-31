@@ -151,7 +151,7 @@ static void slist_dump(const struct Slist *list, struct Buffer *buf)
     if (STAILQ_NEXT(np, entries))
       mutt_buffer_addstr(buf, ",");
   }
-  TEST_MSG("%s\n", mutt_b2s(buf));
+  TEST_MSG("%s\n", mutt_buffer_string(buf));
   mutt_buffer_reset(buf);
 }
 
@@ -175,7 +175,7 @@ static bool test_slist_parse(struct Buffer *err)
 
   uint32_t flags = SLIST_SEP_COLON | SLIST_ALLOW_EMPTY;
   slist_flags(flags, err);
-  TEST_MSG("Flags: %s", mutt_b2s(err));
+  TEST_MSG("Flags: %s", mutt_buffer_string(err));
   TEST_MSG("\n");
   mutt_buffer_reset(err);
 
@@ -374,7 +374,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
   static const char *values[] = { "apple", "banana", "cherry", NULL };
 
   slist_flags(VarApple->flags, err);
-  TEST_MSG("Apple, %ld items, %s flags\n", VarApple->count, mutt_b2s(err));
+  TEST_MSG("Apple, %ld items, %s flags\n", VarApple->count, mutt_buffer_string(err));
   mutt_buffer_reset(err);
   if (VarApple->count != 1)
   {
@@ -392,7 +392,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
   }
 
   slist_flags(VarBanana->flags, err);
-  TEST_MSG("Banana, %ld items, %s flags\n", VarBanana->count, mutt_b2s(err));
+  TEST_MSG("Banana, %ld items, %s flags\n", VarBanana->count, mutt_buffer_string(err));
   mutt_buffer_reset(err);
   if (VarBanana->count != 2)
   {
@@ -410,7 +410,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
   }
 
   slist_flags(VarCherry->flags, err);
-  TEST_MSG("Cherry, %ld items, %s flags\n", VarCherry->count, mutt_b2s(err));
+  TEST_MSG("Cherry, %ld items, %s flags\n", VarCherry->count, mutt_buffer_string(err));
   mutt_buffer_reset(err);
   if (VarCherry->count != 3)
   {
@@ -612,7 +612,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(strcmp(mutt_b2s(err), init) == 0))
+  if (!TEST_CHECK(strcmp(mutt_buffer_string(err), init) == 0))
     return false;
 
   mutt_buffer_reset(err);
@@ -695,10 +695,10 @@ static bool test_plus_equals(struct ConfigSet *cs, struct Buffer *err)
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_equal(PlusTests[i][2], mutt_b2s(err))))
+    if (!TEST_CHECK(mutt_str_equal(PlusTests[i][2], mutt_buffer_string(err))))
     {
       TEST_MSG("Expected: %s\n", PlusTests[i][2]);
-      TEST_MSG("Actual  : %s\n", mutt_b2s(err));
+      TEST_MSG("Actual  : %s\n", mutt_buffer_string(err));
       return false;
     }
   }
@@ -773,10 +773,10 @@ static bool test_minus_equals(struct ConfigSet *cs, struct Buffer *err)
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_equal(MinusTests[i][2], mutt_b2s(err))))
+    if (!TEST_CHECK(mutt_str_equal(MinusTests[i][2], mutt_buffer_string(err))))
     {
       TEST_MSG("Expected: %s\n", MinusTests[i][2]);
-      TEST_MSG("Actual  : %s\n", mutt_b2s(err));
+      TEST_MSG("Actual  : %s\n", mutt_buffer_string(err));
       return false;
     }
   }

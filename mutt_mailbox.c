@@ -254,7 +254,8 @@ bool mutt_mailbox_list(void)
       np->mailbox->notified = true;
       MailboxNotify--;
     }
-    pos += strlen(strncat(mailboxlist + pos, mutt_b2s(path), sizeof(mailboxlist) - 1 - pos));
+    pos += strlen(strncat(mailboxlist + pos, mutt_buffer_string(path),
+                          sizeof(mailboxlist) - 1 - pos));
     first = 0;
   }
   neomutt_mailboxlist_clear(&ml);
@@ -330,7 +331,7 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
           neomutt_mailboxlist_clear(&ml);
           return m_result;
         }
-        if (mutt_str_equal(mutt_b2s(s), mailbox_path(np->mailbox)))
+        if (mutt_str_equal(mutt_buffer_string(s), mailbox_path(np->mailbox)))
           found = true;
       }
       neomutt_mailboxlist_clear(&ml);

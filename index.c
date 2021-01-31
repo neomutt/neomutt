@@ -2444,7 +2444,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           goto changefoldercleanup;
 
         /* Selected directory is okay, let's save it. */
-        mutt_browser_select_dir(mutt_b2s(folderbuf));
+        mutt_browser_select_dir(mutt_buffer_string(folderbuf));
 
         if (mutt_buffer_is_empty(folderbuf))
         {
@@ -2452,7 +2452,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           goto changefoldercleanup;
         }
 
-        struct Mailbox *m = mx_mbox_find2(mutt_b2s(folderbuf));
+        struct Mailbox *m = mx_mbox_find2(mutt_buffer_string(folderbuf));
         if (m)
         {
           change_folder_mailbox(menu, m, &oldcount, &cur, read_only);
@@ -2516,7 +2516,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           goto changefoldercleanup2;
 
         /* Selected directory is okay, let's save it. */
-        mutt_browser_select_dir(mutt_b2s(folderbuf));
+        mutt_browser_select_dir(mutt_buffer_string(folderbuf));
 
         if (mutt_buffer_is_empty(folderbuf))
         {
@@ -2524,7 +2524,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           goto changefoldercleanup2;
         }
 
-        struct Mailbox *m = mx_mbox_find2(mutt_b2s(folderbuf));
+        struct Mailbox *m = mx_mbox_find2(mutt_buffer_string(folderbuf));
         if (m)
         {
           change_folder_mailbox(menu, m, &oldcount, &cur, read_only);

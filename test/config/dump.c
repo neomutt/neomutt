@@ -127,7 +127,7 @@ bool test_pretty_var(void)
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_equal("\"apple\"", mutt_b2s(&buf))))
+    if (!TEST_CHECK(mutt_str_equal("\"apple\"", mutt_buffer_string(&buf))))
     {
       mutt_buffer_dealloc(&buf);
       return false;
@@ -165,7 +165,7 @@ bool test_escape_string(void)
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_equal(mutt_b2s(&buf), after)))
+    if (!TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), after)))
     {
       mutt_buffer_dealloc(&buf);
       return false;

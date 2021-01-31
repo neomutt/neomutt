@@ -145,7 +145,7 @@ static struct Menu *create_pattern_menu(void)
     entries[i].num = i + 1;
 
     mutt_buffer_printf(entrybuf, "~%c", (char) Flags[i].tag);
-    entries[i].tag = mutt_str_dup(mutt_b2s(entrybuf));
+    entries[i].tag = mutt_str_dup(mutt_buffer_string(entrybuf));
 
     switch (Flags[i].eat_arg)
     {
@@ -180,7 +180,7 @@ static struct Menu *create_pattern_menu(void)
       default:
         break;
     }
-    entries[i].expr = mutt_str_dup(mutt_b2s(entrybuf));
+    entries[i].expr = mutt_str_dup(mutt_buffer_string(entrybuf));
     entries[i].descr = mutt_str_dup(_(Flags[i].desc));
 
     i++;
@@ -198,7 +198,7 @@ static struct Menu *create_pattern_menu(void)
   entries[i].num = i + 1;
   entries[i].tag = mutt_str_dup("~()");
   mutt_buffer_printf(entrybuf, "~(%s)", patternstr);
-  entries[i].expr = mutt_str_dup(mutt_b2s(entrybuf));
+  entries[i].expr = mutt_str_dup(mutt_buffer_string(entrybuf));
   // L10N: Pattern Completion Menu description for ~()
   entries[i].descr = mutt_str_dup(
       _("messages in threads containing messages matching PATTERN"));
@@ -207,7 +207,7 @@ static struct Menu *create_pattern_menu(void)
   entries[i].num = i + 1;
   entries[i].tag = mutt_str_dup("~<()");
   mutt_buffer_printf(entrybuf, "~<(%s)", patternstr);
-  entries[i].expr = mutt_str_dup(mutt_b2s(entrybuf));
+  entries[i].expr = mutt_str_dup(mutt_buffer_string(entrybuf));
   // L10N: Pattern Completion Menu description for ~<()
   entries[i].descr =
       mutt_str_dup(_("messages whose immediate parent matches PATTERN"));
@@ -216,7 +216,7 @@ static struct Menu *create_pattern_menu(void)
   entries[i].num = i + 1;
   entries[i].tag = mutt_str_dup("~>()");
   mutt_buffer_printf(entrybuf, "~>(%s)", patternstr);
-  entries[i].expr = mutt_str_dup(mutt_b2s(entrybuf));
+  entries[i].expr = mutt_str_dup(mutt_buffer_string(entrybuf));
   // L10N: Pattern Completion Menu description for ~>()
   entries[i].descr =
       mutt_str_dup(_("messages having an immediate child matching PATTERN"));

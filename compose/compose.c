@@ -780,7 +780,8 @@ static int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
          doesn't stat.  %d is the attachment number and %s is the attachment
          filename.  The filename is located last to avoid a long path hiding
          the error message.  */
-      mutt_error(_("Attachment #%d no longer exists: %s"), i + 1, mutt_b2s(pretty));
+      mutt_error(_("Attachment #%d no longer exists: %s"), i + 1,
+                 mutt_buffer_string(pretty));
       goto cleanup;
     }
 
@@ -798,9 +799,9 @@ static int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
          the attachment filename.  The filename is located last to avoid a long
          path hiding the prompt question.  */
       mutt_buffer_printf(msg, _("Attachment #%d modified. Update encoding for %s?"),
-                         i + 1, mutt_b2s(pretty));
+                         i + 1, mutt_buffer_string(pretty));
 
-      enum QuadOption ans = mutt_yesorno(mutt_b2s(msg), MUTT_YES);
+      enum QuadOption ans = mutt_yesorno(mutt_buffer_string(msg), MUTT_YES);
       if (ans == MUTT_YES)
         mutt_update_encoding(actx->idx[i]->body, sub);
       else if (ans == MUTT_ABORT)
@@ -973,7 +974,7 @@ static int draw_envelope_user_hdrs(const struct ComposeRedrawData *rd, int row)
 static void draw_envelope(struct ComposeRedrawData *rd)
 {
   struct Email *e = rd->email;
-  const char *fcc = mutt_b2s(rd->fcc);
+  const char *fcc = mutt_buffer_string(rd->fcc);
   const int cols = rd->win_envelope->state.cols - MaxHeaderWidth;
 
   mutt_window_clear(rd->win_envelope);
@@ -2094,32 +2095,32 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 #endif
           mutt_buffer_expand_path(&fname);
 #ifdef USE_IMAP
-        if (imap_path_probe(mutt_b2s(&fname), NULL) != MUTT_IMAP)
+        if (imap_path_probe(mutt_buffer_string(&fname), NULL) != MUTT_IMAP)
 #endif
 #ifdef USE_POP
-          if (pop_path_probe(mutt_b2s(&fname), NULL) != MUTT_POP)
+          if (pop_path_probe(mutt_buffer_string(&fname), NULL) != MUTT_POP)
 #endif
 #ifdef USE_NNTP
-            if (!OptNews && (nntp_path_probe(mutt_b2s(&fname), NULL) != MUTT_NNTP))
+            if (!OptNews && (nntp_path_probe(mutt_buffer_string(&fname), NULL) != MUTT_NNTP))
 #endif
-              if (mx_path_probe(mutt_b2s(&fname)) != MUTT_NOTMUCH)
+              if (mx_path_probe(mutt_buffer_string(&fname)) != MUTT_NOTMUCH)
               {
                 /* check to make sure the file exists and is readable */
-                if (access(mutt_b2s(&fname), R_OK) == -1)
+                if (access(mutt_buffer_string(&fname), R_OK) == -1)
                 {
-                  mutt_perror(mutt_b2s(&fname));
+                  mutt_perror(mutt_buffer_string(&fname));
                   break;
                 }
               }
 
         menu->redraw = REDRAW_FULL;
 
-        struct Mailbox *m = mx_path_resolve(mutt_b2s(&fname));
+        struct Mailbox *m = mx_path_resolve(mutt_buffer_string(&fname));
         bool old_readonly = m->readonly;
         struct Context *ctx = mx_mbox_open(m, MUTT_READONLY);
         if (!ctx)
         {
-          mutt_error(_("Unable to open mailbox %s"), mutt_b2s(&fname));
+          mutt_error(_("Unable to open mailbox %s"), mutt_buffer_string(&fname));
           mx_fastclose_mailbox(m);
           m = NULL;
           break;
@@ -2414,7 +2415,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         {
           /* As opposed to RENAME_FILE, we don't check buf[0] because it's
            * valid to set an empty string here, to erase what was set */
-          mutt_str_replace(&CUR_ATTACH->body->d_filename, mutt_b2s(&fname));
+          mutt_str_replace(&CUR_ATTACH->body->d_filename, mutt_buffer_string(&fname));
           menu->redraw |= REDRAW_CURRENT;
         }
         break;
@@ -2431,15 +2432,15 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           if (stat(CUR_ATTACH->body->filename, &st) == -1)
           {
             /* L10N: "stat" is a system call. Do "man 2 stat" for more information. */
-            mutt_error(_("Can't stat %s: %s"), mutt_b2s(&fname), strerror(errno));
+            mutt_error(_("Can't stat %s: %s"), mutt_buffer_string(&fname), strerror(errno));
             break;
           }
 
           mutt_buffer_expand_path(&fname);
-          if (mutt_file_rename(CUR_ATTACH->body->filename, mutt_b2s(&fname)))
+          if (mutt_file_rename(CUR_ATTACH->body->filename, mutt_buffer_string(&fname)))
             break;
 
-          mutt_str_replace(&CUR_ATTACH->body->filename, mutt_b2s(&fname));
+          mutt_str_replace(&CUR_ATTACH->body->filename, mutt_buffer_string(&fname));
           menu->redraw |= REDRAW_CURRENT;
 
           if (CUR_ATTACH->body->stamp >= st.st_mtime)
@@ -2481,16 +2482,16 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
         struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         /* Touch the file */
-        FILE *fp = mutt_file_fopen(mutt_b2s(&fname), "w");
+        FILE *fp = mutt_file_fopen(mutt_buffer_string(&fname), "w");
         if (!fp)
         {
-          mutt_error(_("Can't create file %s"), mutt_b2s(&fname));
+          mutt_error(_("Can't create file %s"), mutt_buffer_string(&fname));
           FREE(&ap);
           continue;
         }
         mutt_file_fclose(&fp);
 
-        ap->body = mutt_make_file_attach(mutt_b2s(&fname), sub);
+        ap->body = mutt_make_file_attach(mutt_buffer_string(&fname), sub);
         if (!ap->body)
         {
           mutt_error(_("What we have here is a failure to make an attachment"));
@@ -2624,13 +2625,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname, true) != -1) &&
             !mutt_buffer_is_empty(&fname))
         {
-          mutt_message(_("Writing message to %s ..."), mutt_b2s(&fname));
+          mutt_message(_("Writing message to %s ..."), mutt_buffer_string(&fname));
           mutt_buffer_expand_path(&fname);
 
           if (e->body->next)
             e->body = mutt_make_multipart(e->body);
 
-          if (mutt_write_fcc(mutt_b2s(&fname), e, NULL, false, NULL, NULL, sub) == 0)
+          if (mutt_write_fcc(mutt_buffer_string(&fname), e, NULL, false, NULL, NULL, sub) == 0)
             mutt_message(_("Message written"));
 
           e->body = mutt_remove_multipart(e->body);

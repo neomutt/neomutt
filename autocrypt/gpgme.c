@@ -187,10 +187,10 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   if (!keyresult->fpr)
     goto cleanup;
   mutt_buffer_strcpy(keyid, keyresult->fpr);
-  mutt_debug(LL_DEBUG1, "Generated key with id %s\n", mutt_b2s(keyid));
+  mutt_debug(LL_DEBUG1, "Generated key with id %s\n", mutt_buffer_string(keyid));
 
   /* Get gpgme_key_t to create the secondary key and export keydata */
-  err = gpgme_get_key(ctx, mutt_b2s(keyid), &primary_key, 0);
+  err = gpgme_get_key(ctx, mutt_buffer_string(keyid), &primary_key, 0);
   if (err)
     goto cleanup;
 
@@ -206,7 +206,7 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   /* get keydata */
   if (export_keydata(ctx, primary_key, keydata))
     goto cleanup;
-  mutt_debug(LL_DEBUG1, "key has keydata *%s*\n", mutt_b2s(keydata));
+  mutt_debug(LL_DEBUG1, "key has keydata *%s*\n", mutt_buffer_string(keydata));
 
   rc = 0;
 
@@ -236,7 +236,7 @@ int mutt_autocrypt_gpgme_select_key(struct Buffer *keyid, struct Buffer *keydata
   if (create_gpgme_context(&ctx))
     goto cleanup;
 
-  if (gpgme_get_key(ctx, mutt_b2s(keyid), &key, 0))
+  if (gpgme_get_key(ctx, mutt_buffer_string(keyid), &key, 0))
     goto cleanup;
 
   if (key->revoked || key->expired || key->disabled || key->invalid ||
@@ -246,7 +246,7 @@ int mutt_autocrypt_gpgme_select_key(struct Buffer *keyid, struct Buffer *keydata
        this is displayed if the key was revoked/expired/disabled/invalid
        or can't be used for both signing and encryption.
        %s is the key fingerprint.  */
-    mutt_error(_("The key %s is not usable for autocrypt"), mutt_b2s(keyid));
+    mutt_error(_("The key %s is not usable for autocrypt"), mutt_buffer_string(keyid));
     goto cleanup;
   }
 
@@ -324,8 +324,11 @@ int mutt_autocrypt_gpgme_import_key(const char *keydata, struct Buffer *keyid)
   if (!mutt_b64_buffer_decode(raw_keydata, keydata))
     goto cleanup;
 
-  if (gpgme_data_new_from_mem(&dh, mutt_b2s(raw_keydata), mutt_buffer_len(raw_keydata), 0))
+  if (gpgme_data_new_from_mem(&dh, mutt_buffer_string(raw_keydata),
+                              mutt_buffer_len(raw_keydata), 0))
+  {
     goto cleanup;
+  }
 
   if (gpgme_op_import(ctx, dh))
     goto cleanup;

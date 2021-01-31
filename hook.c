@@ -162,7 +162,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
 #ifdef USE_COMP_MBOX
   else if (data & (MUTT_APPEND_HOOK | MUTT_OPEN_HOOK | MUTT_CLOSE_HOOK))
   {
-    if (mutt_comp_valid_command(mutt_b2s(cmd)) == 0)
+    if (mutt_comp_valid_command(mutt_buffer_string(cmd)) == 0)
     {
       mutt_buffer_strcpy(err, _("badly formatted command string"));
       goto cleanup;
@@ -190,14 +190,14 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     if (data & MUTT_GLOBAL_HOOK)
     {
       /* Ignore duplicate global hooks */
-      if (mutt_str_equal(hook->command, mutt_b2s(cmd)))
+      if (mutt_str_equal(hook->command, mutt_buffer_string(cmd)))
       {
         rc = MUTT_CMD_SUCCESS;
         goto cleanup;
       }
     }
     else if ((hook->type == data) && (hook->regex.pat_not == pat_not) &&
-             mutt_str_equal(mutt_b2s(pattern), hook->regex.pattern))
+             mutt_str_equal(mutt_buffer_string(pattern), hook->regex.pattern))
     {
       if (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_MESSAGE_HOOK |
                   MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK | MUTT_CRYPT_HOOK |
@@ -206,7 +206,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
         /* these hooks allow multiple commands with the same
          * pattern, so if we've already seen this pattern/command pair, just
          * ignore it instead of creating a duplicate */
-        if (mutt_str_equal(hook->command, mutt_b2s(cmd)))
+        if (mutt_str_equal(hook->command, mutt_buffer_string(cmd)))
         {
           rc = MUTT_CMD_SUCCESS;
           goto cleanup;
@@ -231,7 +231,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   {
     /* These are managed separately by the charset code */
     enum LookupType type = (data & MUTT_CHARSET_HOOK) ? MUTT_LOOKUP_CHARSET : MUTT_LOOKUP_ICONV;
-    if (mutt_ch_lookup_add(type, mutt_b2s(pattern), mutt_b2s(cmd), err))
+    if (mutt_ch_lookup_add(type, mutt_buffer_string(pattern), mutt_buffer_string(cmd), err))
       rc = MUTT_CMD_SUCCESS;
     goto cleanup;
   }
@@ -247,7 +247,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     else
       comp_flags = MUTT_PC_FULL_MSG;
 
-    pat = mutt_pattern_comp(mutt_b2s(pattern), comp_flags, err);
+    pat = mutt_pattern_comp(mutt_buffer_string(pattern), comp_flags, err);
     if (!pat)
       goto cleanup;
   }
@@ -255,7 +255,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   {
     /* Hooks not allowing full patterns: Check syntax of regex */
     rx = mutt_mem_malloc(sizeof(regex_t));
-    int rc2 = REG_COMP(rx, NONULL(mutt_b2s(pattern)),
+    int rc2 = REG_COMP(rx, NONULL(mutt_buffer_string(pattern)),
                        ((data & MUTT_CRYPT_HOOK) ? REG_ICASE : 0));
     if (rc2 != 0)
     {
@@ -370,7 +370,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
     goto out;
   }
   mutt_extract_token(name, s, MUTT_TOKEN_NO_FLAGS);
-  struct HookList *hl = mutt_hash_find(IdxFmtHooks, mutt_b2s(name));
+  struct HookList *hl = mutt_hash_find(IdxFmtHooks, mutt_buffer_string(name));
 
   if (*s->dptr == '!')
   {
@@ -403,9 +403,9 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
     TAILQ_FOREACH(hook, hl, entries)
     {
       if ((hook->regex.pat_not == pat_not) &&
-          mutt_str_equal(mutt_b2s(pattern), hook->regex.pattern))
+          mutt_str_equal(mutt_buffer_string(pattern), hook->regex.pattern))
       {
-        mutt_str_replace(&hook->command, mutt_b2s(fmtstring));
+        mutt_str_replace(&hook->command, mutt_buffer_string(fmtstring));
         rc = MUTT_CMD_SUCCESS;
         goto out;
       }
@@ -417,7 +417,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
    * used for date ranges, and they need to be evaluated relative to "now", not
    * the hook compilation time.  */
   struct PatternList *pat = mutt_pattern_comp(
-      mutt_b2s(pattern), MUTT_PC_FULL_MSG | MUTT_PC_PATTERN_DYNAMIC, err);
+      mutt_buffer_string(pattern), MUTT_PC_FULL_MSG | MUTT_PC_PATTERN_DYNAMIC, err);
   if (!pat)
     goto out;
 
@@ -433,7 +433,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
   {
     hl = mutt_mem_calloc(1, sizeof(*hl));
     TAILQ_INIT(hl);
-    mutt_hash_insert(IdxFmtHooks, mutt_b2s(name), hl);
+    mutt_hash_insert(IdxFmtHooks, mutt_buffer_string(name), hl);
   }
 
   TAILQ_INSERT_TAIL(hl, hook, entries);
@@ -531,7 +531,7 @@ void mutt_folder_hook(const char *path, const char *desc)
       mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
       if (mutt_parse_rc_line(hook->command, err) == MUTT_CMD_ERROR)
       {
-        mutt_error("%s", mutt_b2s(err));
+        mutt_error("%s", mutt_buffer_string(err));
         break;
       }
     }
@@ -590,7 +590,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
       {
         if (mutt_parse_rc_line(hook->command, err) == MUTT_CMD_ERROR)
         {
-          mutt_error("%s", mutt_b2s(err));
+          mutt_error("%s", mutt_buffer_string(err));
           current_hook_type = MUTT_HOOK_NO_FLAGS;
           mutt_buffer_pool_release(&err);
 
@@ -679,7 +679,7 @@ void mutt_default_save(char *path, size_t pathlen, struct Email *e)
   {
     struct Buffer *tmp = mutt_buffer_pool_get();
     mutt_safe_path(tmp, addr);
-    snprintf(path, pathlen, "=%s", mutt_b2s(tmp));
+    snprintf(path, pathlen, "=%s", mutt_buffer_string(tmp));
     mutt_buffer_pool_release(&tmp);
   }
 }
@@ -703,9 +703,9 @@ void mutt_select_fcc(struct Buffer *path, struct Email *e)
       const struct Address *addr = to ? to : (cc ? cc : bcc);
       struct Buffer *buf = mutt_buffer_pool_get();
       mutt_safe_path(buf, addr);
-      mutt_buffer_concat_path(path, NONULL(C_Folder), mutt_b2s(buf));
+      mutt_buffer_concat_path(path, NONULL(C_Folder), mutt_buffer_string(buf));
       mutt_buffer_pool_release(&buf);
-      if (!C_ForceName && (mx_access(mutt_b2s(path), W_OK) != 0))
+      if (!C_ForceName && (mx_access(mutt_buffer_string(path), W_OK) != 0))
         mutt_buffer_strcpy(path, C_Record);
     }
     else
@@ -777,7 +777,7 @@ void mutt_account_hook(const char *url)
 
       if (mutt_parse_rc_line(hook->command, err) == MUTT_CMD_ERROR)
       {
-        mutt_error("%s", mutt_b2s(err));
+        mutt_error("%s", mutt_buffer_string(err));
         mutt_buffer_pool_release(&err);
 
         inhook = false;

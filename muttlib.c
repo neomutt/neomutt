@@ -98,10 +98,10 @@ void mutt_adv_mktemp(struct Buffer *buf)
     struct Buffer *prefix = mutt_buffer_pool_get();
     mutt_buffer_strcpy(prefix, buf->data);
     mutt_file_sanitize_filename(prefix->data, true);
-    mutt_buffer_printf(buf, "%s/%s", NONULL(C_Tmpdir), mutt_b2s(prefix));
+    mutt_buffer_printf(buf, "%s/%s", NONULL(C_Tmpdir), mutt_buffer_string(prefix));
 
     struct stat sb;
-    if ((lstat(mutt_b2s(buf), &sb) == -1) && (errno == ENOENT))
+    if ((lstat(mutt_buffer_string(buf), &sb) == -1) && (errno == ENOENT))
       goto out;
 
     char *suffix = strchr(prefix->data, '.');
@@ -151,7 +151,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
   do
   {
     recurse = false;
-    s = mutt_b2s(buf);
+    s = mutt_buffer_string(buf);
 
     switch (*s)
     {
@@ -291,13 +291,13 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
       }
     }
 
-    if (regex && *(mutt_b2s(p)) && !recurse)
+    if (regex && *(mutt_buffer_string(p)) && !recurse)
     {
-      mutt_file_sanitize_regex(q, mutt_b2s(p));
-      mutt_buffer_printf(tmp, "%s%s", mutt_b2s(q), tail);
+      mutt_file_sanitize_regex(q, mutt_buffer_string(p));
+      mutt_buffer_printf(tmp, "%s%s", mutt_buffer_string(q), tail);
     }
     else
-      mutt_buffer_printf(tmp, "%s%s", mutt_b2s(p), tail);
+      mutt_buffer_printf(tmp, "%s%s", mutt_buffer_string(p), tail);
 
     mutt_buffer_copy(buf, tmp);
   } while (recurse);
@@ -309,7 +309,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
 #ifdef USE_IMAP
   /* Rewrite IMAP path in canonical form - aids in string comparisons of
    * folders. May possibly fail, in which case buf should be the same. */
-  if (imap_path_probe(mutt_b2s(buf), NULL) == MUTT_IMAP)
+  if (imap_path_probe(mutt_buffer_string(buf), NULL) == MUTT_IMAP)
     imap_expand_path(buf);
 #endif
 }
@@ -340,7 +340,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 
   mutt_buffer_addstr(tmp, NONULL(buf));
   mutt_buffer_expand_path_regex(tmp, regex);
-  mutt_str_copy(buf, mutt_b2s(tmp), buflen);
+  mutt_str_copy(buf, mutt_buffer_string(tmp), buflen);
 
   mutt_buffer_pool_release(&tmp);
 
@@ -471,11 +471,12 @@ void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
                      NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
                      (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
 
-  mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\"\n", src, line, mutt_b2s(buf));
-  if (unlink(mutt_b2s(buf)) && (errno != ENOENT))
+  mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\"\n", src, line,
+             mutt_buffer_string(buf));
+  if (unlink(mutt_buffer_string(buf)) && (errno != ENOENT))
   {
     mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src,
-               line, mutt_b2s(buf), strerror(errno), errno);
+               line, mutt_buffer_string(buf), strerror(errno), errno);
   }
 }
 
@@ -623,9 +624,9 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
   struct stat st;
 
   mutt_buffer_strcpy(fname, path);
-  if (access(mutt_b2s(fname), F_OK) != 0)
+  if (access(mutt_buffer_string(fname), F_OK) != 0)
     return 0;
-  if (stat(mutt_b2s(fname), &st) != 0)
+  if (stat(mutt_buffer_string(fname), &st) != 0)
     return -1;
   if (S_ISDIR(st.st_mode))
   {
@@ -639,7 +640,7 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
               (_("File is a directory, save under it: (y)es, (n)o, (a)ll?"), _("yna")))
       {
         case 3: /* all */
-          mutt_str_replace(directory, mutt_b2s(fname));
+          mutt_str_replace(directory, mutt_buffer_string(fname));
           break;
         case 1: /* yes */
           FREE(directory);
@@ -665,11 +666,11 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
       mutt_buffer_pool_release(&tmp);
       return (-1);
     }
-    mutt_buffer_concat_path(fname, path, mutt_b2s(tmp));
+    mutt_buffer_concat_path(fname, path, mutt_buffer_string(tmp));
     mutt_buffer_pool_release(&tmp);
   }
 
-  if ((*opt == MUTT_SAVE_NO_FLAGS) && (access(mutt_b2s(fname), F_OK) == 0))
+  if ((*opt == MUTT_SAVE_NO_FLAGS) && (access(mutt_buffer_string(fname), F_OK) == 0))
   {
     switch (
         mutt_multi_choice(_("File exists, (o)verwrite, (a)ppend, or (c)ancel?"),
@@ -1366,7 +1367,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     {
       struct Buffer *tmp = mutt_buffer_pool_get();
       mutt_buffer_printf(tmp, _("Append messages to %s?"), s);
-      enum QuadOption ans = mutt_yesorno(mutt_b2s(tmp), MUTT_YES);
+      enum QuadOption ans = mutt_yesorno(mutt_buffer_string(tmp), MUTT_YES);
       if (ans == MUTT_NO)
         ret = 1;
       else if (ans == MUTT_ABORT)
@@ -1403,7 +1404,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
       {
         struct Buffer *tmp = mutt_buffer_pool_get();
         mutt_buffer_printf(tmp, _("Create %s?"), s);
-        enum QuadOption ans = mutt_yesorno(mutt_b2s(tmp), MUTT_YES);
+        enum QuadOption ans = mutt_yesorno(mutt_buffer_string(tmp), MUTT_YES);
         if (ans == MUTT_NO)
           ret = 1;
         else if (ans == MUTT_ABORT)
@@ -1509,7 +1510,7 @@ int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf)
     if (mutt_buffer_printf(buf, "%s/%s/neomuttrc", token, PACKAGE) < 0)
       continue;
     mutt_buffer_expand_path(buf);
-    if (access(mutt_b2s(buf), F_OK) == 0)
+    if (access(mutt_buffer_string(buf), F_OK) == 0)
     {
       rc = 1;
       break;
@@ -1518,7 +1519,7 @@ int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf)
     if (mutt_buffer_printf(buf, "%s/%s/Muttrc", token, PACKAGE) < 0)
       continue;
     mutt_buffer_expand_path(buf);
-    if (access(mutt_b2s(buf), F_OK) == 0)
+    if (access(mutt_buffer_string(buf), F_OK) == 0)
     {
       rc = 1;
       break;

@@ -176,10 +176,10 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
 
   struct Buffer *path = mutt_buffer_pool_get();
   mutt_buffer_mktemp(path);
-  FILE *fp_out = mutt_file_fopen(mutt_b2s(path), "w");
+  FILE *fp_out = mutt_file_fopen(mutt_buffer_string(path), "w");
   if (!fp_out)
   {
-    mutt_perror(mutt_b2s(path));
+    mutt_perror(mutt_buffer_string(path));
     goto cleanup;
   }
 
@@ -202,26 +202,26 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   mutt_file_fclose(&fp_in);
   mutt_file_fclose(&fp_out);
 
-  if (stat(mutt_b2s(path), &st) == -1)
+  if (stat(mutt_buffer_string(path), &st) == -1)
   {
-    mutt_perror(mutt_b2s(path));
+    mutt_perror(mutt_buffer_string(path));
     goto cleanup;
   }
 
-  mtime = mutt_file_decrease_mtime(mutt_b2s(path), &st);
+  mtime = mutt_file_decrease_mtime(mutt_buffer_string(path), &st);
   if (mtime == (time_t) -1)
   {
-    mutt_perror(mutt_b2s(path));
+    mutt_perror(mutt_buffer_string(path));
     goto cleanup;
   }
 
-  mutt_edit_file(editor, mutt_b2s(path));
-  stat(mutt_b2s(path), &st);
+  mutt_edit_file(editor, mutt_buffer_string(path));
+  stat(mutt_buffer_string(path), &st);
   if (mtime == st.st_mtime)
   {
     mutt_debug(LL_DEBUG1, "temp file was not modified\n");
     /* the file has not changed! */
-    mutt_file_unlink(mutt_b2s(path));
+    mutt_file_unlink(mutt_buffer_string(path));
     goto cleanup;
   }
 
@@ -229,10 +229,10 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   mutt_list_free(&e->env->userhdrs);
 
   /* Read the temp file back in */
-  fp_in = fopen(mutt_b2s(path), "r");
+  fp_in = fopen(mutt_buffer_string(path), "r");
   if (!fp_in)
   {
-    mutt_perror(mutt_b2s(path));
+    mutt_perror(mutt_buffer_string(path));
     goto cleanup;
   }
 
@@ -250,7 +250,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
     fwrite(buf, 1, i, fp_out);
   mutt_file_fclose(&fp_out);
   mutt_file_fclose(&fp_in);
-  mutt_file_unlink(mutt_b2s(path));
+  mutt_file_unlink(mutt_buffer_string(path));
 
   /* in case the user modifies/removes the In-Reply-To header with
    * $edit_headers set, we remove References: as they're likely invalid;
@@ -320,7 +320,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
         p = mutt_str_skip_email_wsp(p);
 
         mutt_buffer_expand_path(path);
-        body2 = mutt_make_file_attach(mutt_b2s(path), NeoMutt->sub);
+        body2 = mutt_make_file_attach(mutt_buffer_string(path), NeoMutt->sub);
         if (body2)
         {
           body2->description = mutt_str_dup(p);
@@ -332,7 +332,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
         else
         {
           mutt_buffer_pretty_mailbox(path);
-          mutt_error(_("%s: unable to attach file"), mutt_b2s(path));
+          mutt_error(_("%s: unable to attach file"), mutt_buffer_string(path));
         }
       }
       keep = false;

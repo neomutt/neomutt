@@ -112,7 +112,7 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
 {
   bool do_simple = true;
 
-  for (const char *p = mutt_b2s(buf); p && (p[0] != '\0'); p++)
+  for (const char *p = mutt_buffer_string(buf); p && (p[0] != '\0'); p++)
   {
     if ((p[0] == '\\') && (p[1] != '\0'))
       p++;
@@ -129,32 +129,33 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if (mutt_istr_equal("all", mutt_b2s(buf)) || mutt_str_equal("^", mutt_b2s(buf)) ||
-        mutt_str_equal(".", mutt_b2s(buf))) /* ~A is more efficient */
+    if (mutt_istr_equal("all", mutt_buffer_string(buf)) ||
+        mutt_str_equal("^", mutt_buffer_string(buf)) ||
+        mutt_str_equal(".", mutt_buffer_string(buf))) /* ~A is more efficient */
     {
       mutt_buffer_strcpy(buf, "~A");
     }
-    else if (mutt_istr_equal("del", mutt_b2s(buf)))
+    else if (mutt_istr_equal("del", mutt_buffer_string(buf)))
       mutt_buffer_strcpy(buf, "~D");
-    else if (mutt_istr_equal("flag", mutt_b2s(buf)))
+    else if (mutt_istr_equal("flag", mutt_buffer_string(buf)))
       mutt_buffer_strcpy(buf, "~F");
-    else if (mutt_istr_equal("new", mutt_b2s(buf)))
+    else if (mutt_istr_equal("new", mutt_buffer_string(buf)))
       mutt_buffer_strcpy(buf, "~N");
-    else if (mutt_istr_equal("old", mutt_b2s(buf)))
+    else if (mutt_istr_equal("old", mutt_buffer_string(buf)))
       mutt_buffer_strcpy(buf, "~O");
-    else if (mutt_istr_equal("repl", mutt_b2s(buf)))
+    else if (mutt_istr_equal("repl", mutt_buffer_string(buf)))
       mutt_buffer_strcpy(buf, "~Q");
-    else if (mutt_istr_equal("read", mutt_b2s(buf)))
+    else if (mutt_istr_equal("read", mutt_buffer_string(buf)))
       mutt_buffer_strcpy(buf, "~R");
-    else if (mutt_istr_equal("tag", mutt_b2s(buf)))
+    else if (mutt_istr_equal("tag", mutt_buffer_string(buf)))
       mutt_buffer_strcpy(buf, "~T");
-    else if (mutt_istr_equal("unread", mutt_b2s(buf)))
+    else if (mutt_istr_equal("unread", mutt_buffer_string(buf)))
       mutt_buffer_strcpy(buf, "~U");
     else
     {
       struct Buffer *tmp = mutt_buffer_pool_get();
-      quote_simple(mutt_b2s(buf), tmp);
-      mutt_file_expand_fmt(buf, simple, mutt_b2s(tmp));
+      quote_simple(mutt_buffer_string(buf), tmp);
+      mutt_file_expand_fmt(buf, simple, mutt_buffer_string(tmp));
       mutt_buffer_pool_release(&tmp);
     }
   }
@@ -269,7 +270,7 @@ int mutt_pattern_alias_func(int op, char *prompt, char *menu_name,
     pat = mutt_pattern_comp(buf->data, MUTT_PC_FULL_MSG, &err);
     if (!pat)
     {
-      mutt_error("%s", mutt_b2s(&err));
+      mutt_error("%s", mutt_buffer_string(&err));
       mutt_buffer_dealloc(&err);
       goto bail;
     }
@@ -508,13 +509,13 @@ int mutt_search_command(struct Mailbox *m, int cur, int op)
     mutt_buffer_strcpy(tmp, buf);
     mutt_check_simple(tmp, NONULL(C_SimpleSearch));
 
-    if (!SearchPattern || !mutt_str_equal(mutt_b2s(tmp), LastSearchExpn))
+    if (!SearchPattern || !mutt_str_equal(mutt_buffer_string(tmp), LastSearchExpn))
     {
       struct Buffer err;
       mutt_buffer_init(&err);
       OptSearchInvalid = true;
       mutt_str_copy(LastSearch, buf, sizeof(LastSearch));
-      mutt_str_copy(LastSearchExpn, mutt_b2s(tmp), sizeof(LastSearchExpn));
+      mutt_str_copy(LastSearchExpn, mutt_buffer_string(tmp), sizeof(LastSearchExpn));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;
@@ -659,13 +660,13 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
     mutt_buffer_strcpy(tmp, buf);
     mutt_check_simple(tmp, MUTT_ALIAS_SIMPLESEARCH);
 
-    if (!SearchPattern || !mutt_str_equal(mutt_b2s(tmp), LastSearchExpn))
+    if (!SearchPattern || !mutt_str_equal(mutt_buffer_string(tmp), LastSearchExpn))
     {
       struct Buffer err;
       mutt_buffer_init(&err);
       OptSearchInvalid = true;
       mutt_str_copy(LastSearch, buf, sizeof(LastSearch));
-      mutt_str_copy(LastSearchExpn, mutt_b2s(tmp), sizeof(LastSearchExpn));
+      mutt_str_copy(LastSearchExpn, mutt_buffer_string(tmp), sizeof(LastSearchExpn));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;

@@ -553,16 +553,16 @@ static int autoview_handler(struct Body *a, struct State *s)
     mutt_buffer_strcpy(cmd, entry->command);
 
     /* mailcap_expand_command returns 0 if the file is required */
-    bool piped = mailcap_expand_command(a, mutt_b2s(tempfile), type, cmd);
+    bool piped = mailcap_expand_command(a, mutt_buffer_string(tempfile), type, cmd);
 
     if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach(s);
-      state_printf(s, _("[-- Autoview using %s --]\n"), mutt_b2s(cmd));
-      mutt_message(_("Invoking autoview command: %s"), mutt_b2s(cmd));
+      state_printf(s, _("[-- Autoview using %s --]\n"), mutt_buffer_string(cmd));
+      mutt_message(_("Invoking autoview command: %s"), mutt_buffer_string(cmd));
     }
 
-    fp_in = mutt_file_fopen(mutt_b2s(tempfile), "w+");
+    fp_in = mutt_file_fopen(mutt_buffer_string(tempfile), "w+");
     if (!fp_in)
     {
       mutt_perror("fopen");
@@ -575,15 +575,16 @@ static int autoview_handler(struct Body *a, struct State *s)
 
     if (piped)
     {
-      unlink(mutt_b2s(tempfile));
+      unlink(mutt_buffer_string(tempfile));
       fflush(fp_in);
       rewind(fp_in);
-      pid = filter_create_fd(mutt_b2s(cmd), NULL, &fp_out, &fp_err, fileno(fp_in), -1, -1);
+      pid = filter_create_fd(mutt_buffer_string(cmd), NULL, &fp_out, &fp_err,
+                             fileno(fp_in), -1, -1);
     }
     else
     {
       mutt_file_fclose(&fp_in);
-      pid = filter_create(mutt_b2s(cmd), NULL, &fp_out, &fp_err);
+      pid = filter_create(mutt_buffer_string(cmd), NULL, &fp_out, &fp_err);
     }
 
     if (pid < 0)
@@ -592,7 +593,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       if (s->flags & MUTT_DISPLAY)
       {
         state_mark_attach(s);
-        state_printf(s, _("[-- Can't run %s. --]\n"), mutt_b2s(cmd));
+        state_printf(s, _("[-- Can't run %s. --]\n"), mutt_buffer_string(cmd));
       }
       rc = -1;
       goto bail;
@@ -608,7 +609,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       {
         mutt_buffer_strip_formatting(stripped, buf, false);
         state_puts(s, s->prefix);
-        state_puts(s, mutt_b2s(stripped));
+        state_puts(s, mutt_buffer_string(stripped));
       }
       mutt_buffer_pool_release(&stripped);
 
@@ -618,7 +619,7 @@ static int autoview_handler(struct Body *a, struct State *s)
         if (s->flags & MUTT_DISPLAY)
         {
           state_mark_attach(s);
-          state_printf(s, _("[-- Autoview stderr of %s --]\n"), mutt_b2s(cmd));
+          state_printf(s, _("[-- Autoview stderr of %s --]\n"), mutt_buffer_string(cmd));
         }
 
         state_puts(s, s->prefix);
@@ -639,7 +640,7 @@ static int autoview_handler(struct Body *a, struct State *s)
         if (s->flags & MUTT_DISPLAY)
         {
           state_mark_attach(s);
-          state_printf(s, _("[-- Autoview stderr of %s --]\n"), mutt_b2s(cmd));
+          state_printf(s, _("[-- Autoview stderr of %s --]\n"), mutt_buffer_string(cmd));
         }
 
         state_puts(s, buf);
@@ -655,7 +656,7 @@ static int autoview_handler(struct Body *a, struct State *s)
     if (piped)
       mutt_file_fclose(&fp_in);
     else
-      mutt_file_unlink(mutt_b2s(tempfile));
+      mutt_file_unlink(mutt_buffer_string(tempfile));
 
     if (s->flags & MUTT_DISPLAY)
       mutt_clear_error();
@@ -1149,7 +1150,7 @@ static int multilingual_handler(struct Body *a, struct State *s)
     struct Buffer *langs = mutt_buffer_pool_get();
     cs_subset_str_string_get(NeoMutt->sub, "preferred_languages", langs);
     mutt_debug(LL_DEBUG2, "RFC8255 >> preferred_languages set in config to '%s'\n",
-               mutt_b2s(langs));
+               mutt_buffer_string(langs));
     mutt_buffer_pool_release(&langs);
 
     STAILQ_FOREACH(np, &C_PreferredLanguages->head, entries)
@@ -1332,11 +1333,11 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
 #else
       tempfile = mutt_buffer_pool_get();
       mutt_buffer_mktemp(tempfile);
-      s->fp_out = mutt_file_fopen(mutt_b2s(tempfile), "w");
+      s->fp_out = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
       if (!s->fp_out)
       {
         mutt_error(_("Unable to open temporary file"));
-        mutt_debug(LL_DEBUG1, "Can't open %s\n", mutt_b2s(tempfile));
+        mutt_debug(LL_DEBUG1, "Can't open %s\n", mutt_buffer_string(tempfile));
         mutt_buffer_pool_release(&tempfile);
         return -1;
       }
@@ -1389,8 +1390,8 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
         return -1;
       }
 #else
-      s->fp_in = fopen(mutt_b2s(tempfile), "r");
-      unlink(mutt_b2s(tempfile));
+      s->fp_in = fopen(mutt_buffer_string(tempfile), "r");
+      unlink(mutt_buffer_string(tempfile));
       mutt_buffer_pool_release(&tempfile);
 #endif
       /* restore the prefix */
@@ -1780,7 +1781,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
       }
     }
     state_mark_attach(s);
-    state_printf(s, "%s", mutt_b2s(&msg));
+    state_printf(s, "%s", mutt_buffer_string(&msg));
     mutt_buffer_dealloc(&msg);
   }
 

@@ -219,9 +219,9 @@ static int execute_commands(struct ListHead *p)
   {
     enum CommandResult rc2 = mutt_parse_rc_line(np->data, err);
     if (rc2 == MUTT_CMD_ERROR)
-      mutt_error(_("Error in command line: %s"), mutt_b2s(err));
+      mutt_error(_("Error in command line: %s"), mutt_buffer_string(err));
     else if (rc2 == MUTT_CMD_WARNING)
-      mutt_warning(_("Warning in command line: %s"), mutt_b2s(err));
+      mutt_warning(_("Warning in command line: %s"), mutt_buffer_string(err));
 
     if ((rc2 == MUTT_CMD_ERROR) || (rc2 == MUTT_CMD_WARNING))
     {
@@ -360,7 +360,8 @@ static bool get_hostname(struct ConfigSet *cs)
       {
         C_Hostname =
             mutt_mem_malloc(mutt_buffer_len(domain) + mutt_str_len(ShortHostname) + 2);
-        sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), mutt_b2s(domain));
+        sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname),
+                mutt_buffer_string(domain));
       }
       else
       {
@@ -767,7 +768,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 #else
     mutt_buffer_concat_path(&buf, MAILPATH, NONULL(Username));
 #endif
-    p = mutt_b2s(&buf);
+    p = mutt_buffer_string(&buf);
   }
   cs_str_initial_set(cs, "spoolfile", p, NULL);
   cs_str_reset(cs, "spoolfile", NULL);
@@ -845,7 +846,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
     if (!xdg_cfg_home && HomeDir)
     {
       mutt_buffer_printf(&buf, "%s/.config", HomeDir);
-      xdg_cfg_home = mutt_b2s(&buf);
+      xdg_cfg_home = mutt_buffer_string(&buf);
     }
 
     char *config = find_cfg(HomeDir, xdg_cfg_home);
@@ -886,23 +887,23 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
         break;
 
       mutt_buffer_printf(&buf, "%s/neomuttrc", SYSCONFDIR);
-      if (access(mutt_b2s(&buf), F_OK) == 0)
+      if (access(mutt_buffer_string(&buf), F_OK) == 0)
         break;
 
       mutt_buffer_printf(&buf, "%s/Muttrc", SYSCONFDIR);
-      if (access(mutt_b2s(&buf), F_OK) == 0)
+      if (access(mutt_buffer_string(&buf), F_OK) == 0)
         break;
 
       mutt_buffer_printf(&buf, "%s/neomuttrc", PKGDATADIR);
-      if (access(mutt_b2s(&buf), F_OK) == 0)
+      if (access(mutt_buffer_string(&buf), F_OK) == 0)
         break;
 
       mutt_buffer_printf(&buf, "%s/Muttrc", PKGDATADIR);
     } while (false);
 
-    if (access(mutt_b2s(&buf), F_OK) == 0)
+    if (access(mutt_buffer_string(&buf), F_OK) == 0)
     {
-      if (source_rc(mutt_b2s(&buf), &err) != 0)
+      if (source_rc(mutt_buffer_string(&buf), &err) != 0)
       {
         mutt_error("%s", err.data);
         need_pause = 1; // TEST11: neomutt (error in /etc/neomuttrc)

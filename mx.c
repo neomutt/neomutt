@@ -702,7 +702,8 @@ int mx_mbox_close(struct Context **ptr)
     else
     {
       mutt_buffer_strcpy(mbox, C_Mbox);
-      is_spool = mutt_is_spool(mailbox_path(m)) && !mutt_is_spool(mutt_b2s(mbox));
+      is_spool = mutt_is_spool(mailbox_path(m)) &&
+                 !mutt_is_spool(mutt_buffer_string(mbox));
     }
 
     if (is_spool && !mutt_buffer_is_empty(mbox))
@@ -713,8 +714,8 @@ int mx_mbox_close(struct Context **ptr)
                             moved, the second argument is the target mailbox. */
                          ngettext("Move %d read message to %s?",
                                   "Move %d read messages to %s?", read_msgs),
-                         read_msgs, mutt_b2s(mbox));
-      move_messages = query_quadoption(C_Move, mutt_b2s(buf));
+                         read_msgs, mutt_buffer_string(mbox));
+      move_messages = query_quadoption(C_Move, mutt_buffer_string(buf));
       if (move_messages == MUTT_ABORT)
         goto cleanup;
     }
@@ -728,7 +729,7 @@ int mx_mbox_close(struct Context **ptr)
                        ngettext("Purge %d deleted message?",
                                 "Purge %d deleted messages?", m->msg_deleted),
                        m->msg_deleted);
-    purge = query_quadoption(C_Delete, mutt_b2s(buf));
+    purge = query_quadoption(C_Delete, mutt_buffer_string(buf));
     if (purge == MUTT_ABORT)
       goto cleanup;
   }
@@ -748,13 +749,13 @@ int mx_mbox_close(struct Context **ptr)
   if (move_messages)
   {
     if (m->verbose)
-      mutt_message(_("Moving read messages to %s..."), mutt_b2s(mbox));
+      mutt_message(_("Moving read messages to %s..."), mutt_buffer_string(mbox));
 
 #ifdef USE_IMAP
     /* try to use server-side copy first */
     i = 1;
 
-    if ((m->type == MUTT_IMAP) && (imap_path_probe(mutt_b2s(mbox), NULL) == MUTT_IMAP))
+    if ((m->type == MUTT_IMAP) && (imap_path_probe(mutt_buffer_string(mbox), NULL) == MUTT_IMAP))
     {
       /* add messages for moving, and clear old tags, if any */
       struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -773,7 +774,7 @@ int mx_mbox_close(struct Context **ptr)
           e->tagged = false;
       }
 
-      i = imap_copy_messages(ctx->mailbox, &el, mutt_b2s(mbox), true);
+      i = imap_copy_messages(ctx->mailbox, &el, mutt_buffer_string(mbox), true);
       emaillist_clear(&el);
     }
 
@@ -784,7 +785,7 @@ int mx_mbox_close(struct Context **ptr)
     else /* use regular append-copy mode */
 #endif
     {
-      struct Mailbox *m_read = mx_path_resolve(mutt_b2s(mbox));
+      struct Mailbox *m_read = mx_path_resolve(mutt_buffer_string(mbox));
       struct Context *ctx_read = mx_mbox_open(m_read, MUTT_APPEND);
       if (!ctx_read)
       {

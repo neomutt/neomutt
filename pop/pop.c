@@ -1081,10 +1081,10 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       /* no */
       bcache = false;
       mutt_buffer_mktemp(path);
-      msg->fp = mutt_file_fopen(mutt_b2s(path), "w+");
+      msg->fp = mutt_file_fopen(mutt_buffer_string(path), "w+");
       if (!msg->fp)
       {
-        mutt_perror(mutt_b2s(path));
+        mutt_perror(mutt_buffer_string(path));
         goto cleanup;
       }
     }
@@ -1101,7 +1101,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
      * the file in bcache or from POP's own cache since the next iteration
      * of the loop will re-attempt to put() the message */
     if (!bcache)
-      unlink(mutt_b2s(path));
+      unlink(mutt_buffer_string(path));
 
     if (ret == -2)
     {

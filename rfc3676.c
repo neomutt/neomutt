@@ -422,7 +422,7 @@ static void rfc3676_space_stuff(const char *filename, bool unstuff)
     goto bail;
 
   mutt_buffer_mktemp(tmpfile);
-  fp_out = mutt_file_fopen(mutt_b2s(tmpfile), "w+");
+  fp_out = mutt_file_fopen(mutt_buffer_string(tmpfile), "w+");
   if (!fp_out)
     goto bail;
 
@@ -446,9 +446,9 @@ static void rfc3676_space_stuff(const char *filename, bool unstuff)
   FREE(&buf);
   mutt_file_fclose(&fp_in);
   mutt_file_fclose(&fp_out);
-  mutt_file_set_mtime(filename, mutt_b2s(tmpfile));
+  mutt_file_set_mtime(filename, mutt_buffer_string(tmpfile));
 
-  fp_in = mutt_file_fopen(mutt_b2s(tmpfile), "r");
+  fp_in = mutt_file_fopen(mutt_buffer_string(tmpfile), "r");
   if (!fp_in)
     goto bail;
 
@@ -459,8 +459,8 @@ static void rfc3676_space_stuff(const char *filename, bool unstuff)
   }
 
   mutt_file_copy_stream(fp_in, fp_out);
-  mutt_file_set_mtime(mutt_b2s(tmpfile), filename);
-  unlink(mutt_b2s(tmpfile));
+  mutt_file_set_mtime(mutt_buffer_string(tmpfile), filename);
+  unlink(mutt_buffer_string(tmpfile));
 
 bail:
   mutt_file_fclose(&fp_in);

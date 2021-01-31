@@ -874,7 +874,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (optional)
         optional = !mutt_buffer_is_empty(&e->env->spam);
 
-      mutt_format_s(buf, buflen, prec, mutt_b2s(&e->env->spam));
+      mutt_format_s(buf, buflen, prec, mutt_buffer_string(&e->env->spam));
       break;
 
     case 'i':

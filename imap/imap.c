@@ -494,7 +494,7 @@ int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char
   struct Buffer *buf = mutt_buffer_pool_get();
   mutt_buffer_printf(buf, "RENAME %s %s", oldmbox, newmbox);
 
-  if (imap_exec(adata, mutt_b2s(buf), IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(adata, mutt_buffer_string(buf), IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
     rc = -1;
 
   mutt_buffer_pool_release(&buf);
@@ -2195,10 +2195,10 @@ static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, const struc
   struct Buffer *tmp = mutt_buffer_pool_get();
   mutt_buffer_mktemp(tmp);
 
-  msg->fp = mutt_file_fopen(mutt_b2s(tmp), "w");
+  msg->fp = mutt_file_fopen(mutt_buffer_string(tmp), "w");
   if (!msg->fp)
   {
-    mutt_perror(mutt_b2s(tmp));
+    mutt_perror(mutt_buffer_string(tmp));
     goto cleanup;
   }
 

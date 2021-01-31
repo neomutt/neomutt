@@ -446,13 +446,14 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
 
   imap_cachepath(adata->delim, mdata->name, mbox);
 
-  if (strstr(mutt_b2s(mbox), "/../") || mutt_str_equal(mutt_b2s(mbox), "..") ||
-      mutt_strn_equal(mutt_b2s(mbox), "../", 3))
+  if (strstr(mutt_buffer_string(mbox), "/../") ||
+      mutt_str_equal(mutt_buffer_string(mbox), "..") ||
+      mutt_strn_equal(mutt_buffer_string(mbox), "../", 3))
   {
     goto cleanup;
   }
   size_t len = mutt_buffer_len(mbox);
-  if ((len > 3) && (strcmp(mutt_b2s(mbox) + len - 3, "/..") == 0))
+  if ((len > 3) && (strcmp(mutt_buffer_string(mbox) + len - 3, "/..") == 0))
     goto cleanup;
 
   struct Url url = { 0 };
@@ -460,7 +461,7 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
   url.path = mbox->data;
   url_tobuffer(&url, cachepath, U_PATH);
 
-  hc = mutt_hcache_open(C_HeaderCache, mutt_b2s(cachepath), imap_hcache_namer);
+  hc = mutt_hcache_open(C_HeaderCache, mutt_buffer_string(cachepath), imap_hcache_namer);
 
 cleanup:
   mutt_buffer_pool_release(&mbox);

@@ -676,7 +676,7 @@ enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s, intptr_t data,
     }
   }
 
-  if (chdir(mutt_b2s(buf)) != 0)
+  if (chdir(mutt_buffer_string(buf)) != 0)
   {
     mutt_buffer_printf(err, "cd: %s", strerror(errno));
     return MUTT_CMD_ERROR;
@@ -1291,7 +1291,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
               mutt_buffer_expand_path(&scratch);
             }
             mutt_buffer_reset(buf);
-            mutt_buffer_addstr(buf, mutt_b2s(&scratch));
+            mutt_buffer_addstr(buf, mutt_buffer_string(&scratch));
             mutt_buffer_dealloc(&scratch);
           }
           if (increment)
@@ -1985,7 +1985,7 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
     struct Account *a = NULL;
     TAILQ_FOREACH(a, &NeoMutt->accounts, entries)
     {
-      struct Mailbox *m = mx_mbox_find(a, mutt_b2s(buf));
+      struct Mailbox *m = mx_mbox_find(a, mutt_buffer_string(buf));
       if (m)
       {
         do_unmailboxes(m);

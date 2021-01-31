@@ -103,7 +103,7 @@ static void *store_bdb_open(const char *path)
   ctx->lockfile = mutt_buffer_make(128);
   mutt_buffer_printf(&ctx->lockfile, "%s-lock-hack", path);
 
-  ctx->fd = open(mutt_b2s(&ctx->lockfile), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+  ctx->fd = open(mutt_buffer_string(&ctx->lockfile), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
   if (ctx->fd < 0)
   {
     FREE(&ctx);
@@ -146,7 +146,7 @@ fail_unlock:
   mutt_file_unlock(ctx->fd);
 fail_close:
   close(ctx->fd);
-  unlink(mutt_b2s(&ctx->lockfile));
+  unlink(mutt_buffer_string(&ctx->lockfile));
   mutt_buffer_dealloc(&ctx->lockfile);
   FREE(&ctx);
 
@@ -237,7 +237,7 @@ static void store_bdb_close(void **ptr)
   db->env->close(db->env, 0);
   mutt_file_unlock(db->fd);
   close(db->fd);
-  unlink(mutt_b2s(&db->lockfile));
+  unlink(mutt_buffer_string(&db->lockfile));
   mutt_buffer_dealloc(&db->lockfile);
   FREE(ptr);
 }

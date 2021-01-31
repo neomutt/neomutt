@@ -48,7 +48,7 @@ enum CommandResult sb_parse_whitelist(struct Buffer *buf, struct Buffer *s,
   {
     mutt_extract_token(path, s, MUTT_TOKEN_BACKTICK_VARS);
     mutt_buffer_expand_path(path);
-    add_to_stailq(&SidebarWhitelist, mutt_b2s(path));
+    add_to_stailq(&SidebarWhitelist, mutt_buffer_string(path));
   } while (MoreArgs(s));
   mutt_buffer_pool_release(&path);
 
@@ -67,13 +67,13 @@ enum CommandResult sb_parse_unwhitelist(struct Buffer *buf, struct Buffer *s,
   {
     mutt_extract_token(path, s, MUTT_TOKEN_BACKTICK_VARS);
     /* Check for deletion of entire list */
-    if (mutt_str_equal(mutt_b2s(path), "*"))
+    if (mutt_str_equal(mutt_buffer_string(path), "*"))
     {
       mutt_list_free(&SidebarWhitelist);
       break;
     }
     mutt_buffer_expand_path(path);
-    remove_from_stailq(&SidebarWhitelist, mutt_b2s(path));
+    remove_from_stailq(&SidebarWhitelist, mutt_buffer_string(path));
   } while (MoreArgs(s));
   mutt_buffer_pool_release(&path);
 

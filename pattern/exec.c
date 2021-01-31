@@ -664,10 +664,10 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
   {
     struct Buffer *tempfile = mutt_buffer_pool_get();
     mutt_buffer_mktemp(tempfile);
-    fp = mutt_file_fopen(mutt_b2s(tempfile), "w+");
+    fp = mutt_file_fopen(mutt_buffer_string(tempfile), "w+");
     if (!fp)
     {
-      mutt_perror(mutt_b2s(tempfile));
+      mutt_perror(mutt_buffer_string(tempfile));
       mutt_buffer_pool_release(&tempfile);
       return 0;
     }
@@ -688,7 +688,7 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
 
     FREE(&buf);
     mutt_file_fclose(&fp);
-    unlink(mutt_b2s(tempfile));
+    unlink(mutt_buffer_string(tempfile));
     mutt_buffer_pool_release(&tempfile);
 
     if (match)

@@ -507,7 +507,7 @@ int mh_parse_dir(struct Mailbox *m, struct MdEmailArray *mda, struct Progress *p
   struct Buffer *buf = mutt_buffer_pool_get();
   mutt_buffer_strcpy(buf, mailbox_path(m));
 
-  DIR *dirp = opendir(mutt_b2s(buf));
+  DIR *dirp = opendir(mutt_buffer_string(buf));
   if (!dirp)
   {
     rc = -1;

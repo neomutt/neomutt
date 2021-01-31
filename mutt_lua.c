@@ -127,12 +127,12 @@ static int lua_mutt_call(lua_State *l)
 
   if (cmd->parse(token, &expn, cmd->data, err))
   {
-    luaL_error(l, "NeoMutt error: %s", mutt_b2s(err));
+    luaL_error(l, "NeoMutt error: %s", mutt_buffer_string(err));
     rc = -1;
   }
   else
   {
-    if (!lua_pushstring(l, mutt_b2s(err)))
+    if (!lua_pushstring(l, mutt_buffer_string(err)))
       handle_error(l);
     else
       rc++;
@@ -313,12 +313,12 @@ static int lua_mutt_enter(lua_State *l)
 
   if (mutt_parse_rc_line(buf, err))
   {
-    luaL_error(l, "NeoMutt error: %s", mutt_b2s(err));
+    luaL_error(l, "NeoMutt error: %s", mutt_buffer_string(err));
     rc = -1;
   }
   else
   {
-    if (!lua_pushstring(l, mutt_b2s(err)))
+    if (!lua_pushstring(l, mutt_buffer_string(err)))
       handle_error(l);
     else
       rc++;
