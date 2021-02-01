@@ -1593,6 +1593,12 @@ void dlg_select_attachment(struct Email *e)
         menu->redraw = REDRAW_FULL;
         break;
 
+      case OP_ATTACH_VIEW_PAGER:
+        mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->body, MUTT_VA_PAGER, e,
+                             actx, menu->win_index);
+        menu->redraw = REDRAW_FULL;
+        break;
+
       case OP_DISPLAY_HEADERS:
       case OP_VIEW_ATTACH:
         op = mutt_attach_display_loop(menu, op, e, actx, true);

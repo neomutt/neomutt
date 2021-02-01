@@ -10251,6 +10251,87 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
           See table <xref linkend="tab-attachment-bindings" /> for all
           available functions.
         </para>
+
+        <sect3 id="attach-viewers">
+          <title>Viewing Attachments</title>
+          
+          <para>
+          There are four(!) ways of viewing attachments, so the functions
+          deserve some extra explanation.
+          </para>
+          
+          <variablelist>
+            <varlistentry>
+              <term>
+                <literal>&lt;view-mailcap&gt;</literal>
+                (default keybinding: m)
+              </term>
+              <listitem>
+                <para>
+                  This will use the first matching mailcap entry.
+                </para>
+                <para>
+                  If no matching mailcap entries are found, it will abort with an
+                  error message.
+                </para>
+              </listitem>
+            </varlistentry>
+          
+            <varlistentry>
+              <term>
+                <literal>&lt;view-attach&gt;</literal>
+                (default keybinding: &lt;Enter&gt;)
+              </term>
+              <listitem>
+                <para>
+                  Mutt will display internally supported MIME types (see <xref
+                  linkend="mime-pager"/>) in the pager.  This will respect
+                  <link linkend="auto-view">auto_view</link> settings, to determine
+                  whether to use a <literal>copiousoutput</literal> mailcap entry or
+                  just directly display the attachment.
+                </para>
+                <para>
+                  Other MIME types will use the first matching mailcap entry.
+                </para>
+                <para>
+                  If no matching mailcap entries are found, the attachment will
+                  be displayed in the pager as raw text.
+                </para>
+              </listitem>
+            </varlistentry>
+          
+            <varlistentry>
+              <term>
+                <literal>&lt;view-pager&gt;</literal>
+              </term>
+              <listitem>
+                <para>
+                  Mutt will use the first matching
+                  <literal>copiousoutput</literal> mailcap entry to display the
+                  attachment in the pager (regardless of <link
+                  linkend="auto-view">auto_view</link> settings).
+                </para>
+                <para>
+                  If no matching mailcap entries are found, the attachment will
+                  be displayed in the pager as raw text.
+                </para>
+              </listitem>
+            </varlistentry>
+          
+            <varlistentry>
+              <term>
+                <literal>&lt;view-text&gt;</literal>
+                (default keybinding: T)
+              </term>
+              <listitem>
+                <para>
+                  The attachment will always be displayed in the pager as raw
+                  text.
+                </para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </sect3>
       </sect2>
 
       <sect2 id="compose-menu">

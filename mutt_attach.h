@@ -42,6 +42,7 @@ enum ViewAttachMode
   MUTT_VA_REGULAR = 1, ///< View using default method
   MUTT_VA_MAILCAP,     ///< Force viewing using mailcap entry
   MUTT_VA_AS_TEXT,     ///< Force viewing as text
+  MUTT_VA_PAGER,       ///< View attachment in pager using copiousoutput mailcap
 };
 
 /**

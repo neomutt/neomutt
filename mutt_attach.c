@@ -434,8 +434,9 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   struct Buffer *pagerfile = mutt_buffer_pool_get();
   struct Buffer *cmd = mutt_buffer_pool_get();
 
-  use_mailcap =
-      (mode == MUTT_VA_MAILCAP || (mode == MUTT_VA_REGULAR && mutt_needs_mailcap(a)));
+  use_mailcap = ((mode == MUTT_VA_MAILCAP) ||
+                 ((mode == MUTT_VA_REGULAR) && mutt_needs_mailcap(a)) ||
+                 (mode == MUTT_VA_PAGER));
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
 
   char columns[16];
@@ -445,9 +446,10 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   if (use_mailcap)
   {
     entry = mailcap_entry_new();
-    if (!mailcap_lookup(a, type, sizeof(type), entry, MUTT_MC_NO_FLAGS))
+    enum MailcapLookup mailcap_opt = (mode == MUTT_VA_PAGER) ? MUTT_MC_AUTOVIEW : MUTT_MC_NO_FLAGS;
+    if (!mailcap_lookup(a, type, sizeof(type), entry, mailcap_opt))
     {
-      if (mode == MUTT_VA_REGULAR)
+      if ((mode == MUTT_VA_REGULAR) || (mode == MUTT_VA_PAGER))
       {
         /* fallback to view as text */
         mailcap_entry_free(&entry);
