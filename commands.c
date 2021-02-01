@@ -1050,7 +1050,6 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   unsigned int msg_count = 0;
 
   struct Buffer *buf = mutt_buffer_pool_get();
-  SecurityFlags security_flags = SEC_NO_FLAGS;
   struct Progress progress;
   struct stat st;
   struct EmailNode *en = NULL;
@@ -1061,42 +1060,52 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   }
   en = STAILQ_FIRST(el);
 
-  bool is_passphrase_needed = false;
+  const SecurityFlags security_flags = WithCrypto ? en->email->security : SEC_NO_FLAGS;
+  const bool is_passphrase_needed = security_flags & SEC_ENCRYPT;
+
   const char *prompt = NULL;
   const char *progress_msg = NULL;
 
-  switch (transform_opt)
+  // Set prompt and progress_msg
+  switch (save_opt)
   {
-    case TRANSFORM_NONE:
-      if (save_opt == SAVE_MOVE)
-        prompt = (msg_count > 1) ? _("Save tagged to mailbox") : _("Save to mailbox");
-      else
-        prompt = (msg_count > 1) ? _("Copy tagged to mailbox") : _("Copy to mailbox");
+    case SAVE_COPY:
+      // L10N: Progress meter message when copying tagged messages
+      progress_msg = (msg_count > 1) ? _("Copying tagged messages...") : NULL;
+      switch (transform_opt)
+      {
+        case TRANSFORM_NONE:
+          prompt = (msg_count > 1) ? _("Copy tagged to mailbox") : _("Copy to mailbox");
+          break;
+        case TRANSFORM_DECRYPT:
+          prompt = (msg_count > 1) ? _("Decrypt-copy tagged to mailbox") :
+                                     _("Decrypt-copy to mailbox");
+          break;
+        case TRANSFORM_DECODE:
+          prompt = (msg_count > 1) ? _("Decode-copy tagged to mailbox") :
+                                     _("Decode-copy to mailbox");
+          break;
+      }
       break;
 
-    case TRANSFORM_DECRYPT:
-      if (save_opt == SAVE_MOVE)
-        prompt = (msg_count > 1) ? _("Decrypt-save tagged to mailbox") :
-                                   _("Decrypt-save to mailbox");
-      else
-        prompt = (msg_count > 1) ? _("Decrypt-copy tagged to mailbox") :
-                                   _("Decrypt-copy to mailbox");
+    case SAVE_MOVE:
+      // L10N: Progress meter message when saving tagged messages
+      progress_msg = (msg_count > 1) ? _("Saving tagged messages...") : NULL;
+      switch (transform_opt)
+      {
+        case TRANSFORM_NONE:
+          prompt = (msg_count > 1) ? _("Save tagged to mailbox") : _("Save to mailbox");
+          break;
+        case TRANSFORM_DECRYPT:
+          prompt = (msg_count > 1) ? _("Decrypt-save tagged to mailbox") :
+                                     _("Decrypt-save to mailbox");
+          break;
+        case TRANSFORM_DECODE:
+          prompt = (msg_count > 1) ? _("Decode-save tagged to mailbox") :
+                                     _("Decode-save to mailbox");
+          break;
+      }
       break;
-
-    case TRANSFORM_DECODE:
-      if (save_opt == SAVE_MOVE)
-        prompt = (msg_count > 1) ? _("Decode-save tagged to mailbox") :
-                                   _("Decode-save to mailbox");
-      else
-        prompt = (msg_count > 1) ? _("Decode-copy tagged to mailbox") :
-                                   _("Decode-copy to mailbox");
-      break;
-  }
-
-  if (WithCrypto)
-  {
-    security_flags = en->email->security;
-    is_passphrase_needed = security_flags & SEC_ENCRYPT;
   }
 
   mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
@@ -1216,12 +1225,6 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   else
   {
     rc = 0;
-    progress_msg = (save_opt == SAVE_MOVE) ?
-                       // L10N: Progress meter message when saving tagged messages
-                       _("Saving tagged messages...") :
-                       // L10N: Progress meter message when copying tagged messages
-                       _("Copying tagged messages...");
-
     mutt_progress_init(&progress, progress_msg, MUTT_PROGRESS_WRITE, msg_count);
 
 #ifdef USE_NOTMUCH
