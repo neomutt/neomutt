@@ -444,6 +444,7 @@ const struct Binding OpAttach[] = { /* map: attachment */
   { "view-attach",           OP_VIEW_ATTACH,                 "\n" },            // <Enter>
   { "view-attach",           OP_VIEW_ATTACH,                 "\r" },            // <Return>
   { "view-mailcap",          OP_ATTACH_VIEW_MAILCAP,         "m" },
+  { "view-pager",            OP_ATTACH_VIEW_PAGER,           NULL },
   { "view-text",             OP_ATTACH_VIEW_TEXT,            "T" },
   { NULL,                    0,                              NULL },
 };
