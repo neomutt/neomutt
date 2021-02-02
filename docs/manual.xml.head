@@ -2525,18 +2525,12 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-              <literal>&lt;toggle-quoted&gt;</literal> (default: T)
-              <anchor id="toggle-quoted" />
+              <literal>&lt;skip-headers&gt;</literal> (default: H) 
+              <anchor id="skip-headers"/>
             </term>
             <listitem>
               <para>
-                The pager uses the
-                <link linkend="quote-regex">$quote_regex</link> variable to
-                detect quoted text when displaying the body of the message.
-                This function toggles the display of the quoted material in the
-                message. It is particularly useful when being interested in
-                just the response and there is a large amount of quoted text in
-                the way.
+                This function will skip past the headers of the current message.
               </para>
               <para>
                 The variable
@@ -2575,6 +2569,21 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
               <para>
                 This function will go to the next line of non-quoted text which
                 comes after a line of quoted text in the internal pager.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <literal>&lt;toggle-quoted&gt;</literal><anchor id="toggle-quoted"/>
+              (default: T)
+            </term>
+            <listitem>
+              <para>
+                The pager uses the <link linkend="quote-regex">$quote_regex</link>
+                variable to detect quoted text when displaying the body of the message.
+                This function toggles the display of the quoted material in the message.
+                It is particularly useful when being interested in just the response and
+                there is a large amount of quoted text in the way.
               </para>
             </listitem>
           </varlistentry>

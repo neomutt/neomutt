@@ -2867,6 +2867,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_PAGER_SKIP_QUOTED:
+      {
         if (!rd.has_types)
           break;
 
@@ -2925,6 +2926,47 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         }
         rd.topline = new_topline;
         break;
+      }
+
+      case OP_PAGER_SKIP_HEADERS:
+      {
+        if (!rd.has_types)
+          break;
+
+        int dretval = 0;
+        int new_topline = rd.topline;
+
+        if (!IS_HEADER(rd.line_info[new_topline].type))
+        {
+          /* L10N: Displayed if <skip-headers> is invoked in the pager, but we
+             are already past the headers */
+          mutt_message(_("Already skipped past headers."));
+          break;
+        }
+
+        while (((new_topline < rd.last_line) ||
+                (0 == (dretval = display_line(
+                           rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
+                           &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
+                           &rd.quote_list, &rd.q_level, &rd.force_redraw,
+                           &rd.search_re, rd.extra->win_pager)))) &&
+               IS_HEADER(rd.line_info[new_topline].type))
+        {
+          new_topline++;
+        }
+
+        if (dretval < 0)
+        {
+          /* L10N: Displayed if <skip-headers> is invoked in the pager, but
+             there is no text past the headers.
+             (I don't think this is actually possible in Mutt's code, but
+             display some kind of message in case it somehow occurs.) */
+          mutt_warning(_("No text past headers."));
+          break;
+        }
+        rd.topline = new_topline;
+        break;
+      }
 
       case OP_PAGER_BOTTOM: /* move to the end of the file */
         if (rd.line_info[rd.curline].offset < (rd.sb.st_size - 1))

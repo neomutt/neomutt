@@ -389,6 +389,7 @@ const struct Binding OpPager[] = { /* map: pager */
   { "sidebar-toggle-virtual",    OP_SIDEBAR_TOGGLE_VIRTUAL,       NULL },
   { "sidebar-toggle-visible",    OP_SIDEBAR_TOGGLE_VISIBLE,       NULL },
 #endif
+  { "skip-headers",              OP_PAGER_SKIP_HEADERS,           "H" },
   { "skip-quoted",               OP_PAGER_SKIP_QUOTED,            "S" },
   { "sort-mailbox",              OP_SORT,                         "o" },
   { "sort-reverse",              OP_SORT_REVERSE,                 "O" },
