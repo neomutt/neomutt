@@ -2205,7 +2205,6 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   }
 
   const bool c_resume_draft_files = cs_subset_bool(sub, "resume_draft_files");
-  const char *c_editor = cs_subset_string(sub, "editor");
   if (!(flags & (SEND_POSTPONED | SEND_RESEND)) &&
       !((flags & SEND_DRAFT_FILE) && c_resume_draft_files))
   {
@@ -2300,6 +2299,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
 
     const bool c_sig_on_top = cs_subset_bool(sub, "sig_on_top");
+    const char *c_editor = cs_subset_string(sub, "editor");
     if (c_sig_on_top && !(flags & (SEND_KEY | SEND_BATCH)) && c_editor)
     {
       append_signature(fp_tmp, sub);
@@ -2378,6 +2378,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
          (query_quadoption(c_forward_edit, _("Edit forwarded message?")) == MUTT_YES)))
     {
       /* If the this isn't a text message, look for a mailcap edit command */
+      const char *c_editor = cs_subset_string(sub, "editor");
       if (mutt_needs_mailcap(e_templ->body))
       {
         if (!mutt_edit_attachment(e_templ->body))
