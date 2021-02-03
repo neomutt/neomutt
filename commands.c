@@ -953,43 +953,36 @@ static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_o
   *cmflags = MUTT_CM_NO_FLAGS;
   *chflags = CH_UPDATE_LEN;
 
-  enum MessageTransformOpt transform_opt_local = transform_opt;
+  const bool need_decrypt =
+      (transform_opt == TRANSFORM_DECRYPT) && (e->security & SEC_ENCRYPT);
+  const bool want_pgp = (WithCrypto & APPLICATION_PGP);
+  const bool want_smime = (WithCrypto & APPLICATION_SMIME);
+  const bool is_pgp = mutt_is_application_pgp(e->body) & SEC_ENCRYPT;
+  const bool is_smime = mutt_is_application_smime(e->body) & SEC_ENCRYPT;
 
-  if ((WithCrypto != 0) && (transform_opt == TRANSFORM_DECRYPT) && (e->security & SEC_ENCRYPT))
+  if (need_decrypt && want_pgp && mutt_is_multipart_encrypted(e->body))
   {
-    if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(e->body))
-    {
-      *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
-      *cmflags = MUTT_CM_DECODE_PGP;
-    }
-    else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             mutt_is_application_pgp(e->body) & SEC_ENCRYPT)
-    {
-      transform_opt_local = TRANSFORM_DECODE;
-    }
-    else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-             mutt_is_application_smime(e->body) & SEC_ENCRYPT)
-    {
-      *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
-      *cmflags = MUTT_CM_DECODE_SMIME;
-    }
+    *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
+    *cmflags = MUTT_CM_DECODE_PGP;
   }
-  if (transform_opt == TRANSFORM_DECODE)
+  else if (need_decrypt && want_pgp && is_pgp)
   {
     *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN;
     *cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-
-    /* If decode doesn't kick in for decrypt
-     * then decode RFC2047 headers and respect $weed. */
-    if (transform_opt != transform_opt_local)
+  }
+  else if (need_decrypt && want_smime && is_smime)
+  {
+    *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
+    *cmflags = MUTT_CM_DECODE_SMIME;
+  }
+  else if (transform_opt == TRANSFORM_DECODE)
+  {
+    *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN | CH_DECODE; // then decode RFC2047
+    *cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
+    if (C_CopyDecodeWeed)
     {
-      *chflags |= CH_DECODE;
-
-      if (C_CopyDecodeWeed)
-      {
-        *chflags |= CH_WEED;
-        *cmflags |= MUTT_CM_WEED;
-      }
+      *chflags |= CH_WEED; // and respect $weed
+      *cmflags |= MUTT_CM_WEED;
     }
   }
 }
@@ -1139,7 +1132,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   if (mutt_save_confirm(mutt_buffer_string(buf), &st) != 0)
     goto cleanup;
 
-  if (is_passphrase_needed && transform_opt && !crypt_valid_passphrase(security_flags))
+  if (is_passphrase_needed && (transform_opt != TRANSFORM_NONE) &&
+      !crypt_valid_passphrase(security_flags))
   {
     rc = -1;
     goto errcleanup;
