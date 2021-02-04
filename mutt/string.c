@@ -480,33 +480,33 @@ void mutt_str_append_item(char **str, const char *item, char sep)
 
 /**
  * mutt_str_adjust - Shrink-to-fit a string
- * @param[out] p String to alter
+ * @param[out] ptr String to alter
  *
  * Take a string which is allocated on the heap, find its length and reallocate
  * the memory to be exactly the right size.
  *
  * This function alters the pointer of the caller.
  */
-void mutt_str_adjust(char **p)
+void mutt_str_adjust(char **ptr)
 {
-  if (!p || !*p)
+  if (!ptr || !*ptr)
     return;
-  mutt_mem_realloc(p, strlen(*p) + 1);
+  mutt_mem_realloc(ptr, strlen(*ptr) + 1);
 }
 
 /**
  * mutt_str_lower - Convert all characters in the string to lowercase
- * @param s String to lowercase
+ * @param str String to lowercase
  * @retval ptr Lowercase string
  *
  * The string is transformed in place.
  */
-char *mutt_str_lower(char *s)
+char *mutt_str_lower(char *str)
 {
-  if (!s)
+  if (!str)
     return NULL;
 
-  char *p = s;
+  char *p = str;
 
   while (*p)
   {
@@ -514,7 +514,7 @@ char *mutt_str_lower(char *s)
     p++;
   }
 
-  return s;
+  return str;
 }
 
 /**
@@ -584,43 +584,43 @@ int mutt_istr_cmp(const char *a, const char *b)
 
 /**
  * mutt_strn_equal - Check for equality of two strings (to a maximum), safely
- * @param a First string to compare
- * @param b Second string to compare
- * @param l Maximum number of bytes to compare
- * @retval true First l chars of both strings are equal
- * @retval false First l chars of both strings not equal
+ * @param a   First string to compare
+ * @param b   Second string to compare
+ * @param num Maximum number of bytes to compare
+ * @retval true First num chars of both strings are equal
+ * @retval false First num chars of both strings not equal
  */
-bool mutt_strn_equal(const char *a, const char *b, size_t l)
+bool mutt_strn_equal(const char *a, const char *b, size_t num)
 {
-  return strncmp(NONULL(a), NONULL(b), l) == 0;
+  return strncmp(NONULL(a), NONULL(b), num) == 0;
 }
 
 /**
  * mutt_istrn_cmp - Compare two strings ignoring case (to a maximum), safely
- * @param a First string to compare
- * @param b Second string to compare
- * @param l Maximum number of bytes to compare
+ * @param a   First string to compare
+ * @param b   Second string to compare
+ * @param num Maximum number of bytes to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_istrn_cmp(const char *a, const char *b, size_t l)
+int mutt_istrn_cmp(const char *a, const char *b, size_t num)
 {
-  return strncasecmp(NONULL(a), NONULL(b), l);
+  return strncasecmp(NONULL(a), NONULL(b), num);
 }
 
 /**
  * mutt_istrn_equal - Check for equality of two strings ignoring case (to a maximum), safely
- * @param a First string to compare
- * @param b Second string to compare
- * @param l Maximum number of bytes to compare
+ * @param a   First string to compare
+ * @param b   Second string to compare
+ * @param num Maximum number of bytes to compare
  * @retval -1 a precedes b
- * @retval true First l chars of both strings are equal, ignoring case
- * @retval false First l chars of both strings not equal, ignoring case
+ * @retval true First num chars of both strings are equal, ignoring case
+ * @retval false First num chars of both strings not equal, ignoring case
  */
-bool mutt_istrn_equal(const char *a, const char *b, size_t l)
+bool mutt_istrn_equal(const char *a, const char *b, size_t num)
 {
-  return strncasecmp(NONULL(a), NONULL(b), l) == 0;
+  return strncasecmp(NONULL(a), NONULL(b), num) == 0;
 }
 
 /**
@@ -832,29 +832,29 @@ size_t mutt_str_lws_rlen(const char *s, size_t n)
 
 /**
  * mutt_str_dequote_comment - Un-escape characters in an email address comment
- * @param s String to be un-escaped
+ * @param str String to be un-escaped
  *
  * @note The string is changed in-place
  */
-void mutt_str_dequote_comment(char *s)
+void mutt_str_dequote_comment(char *str)
 {
-  if (!s)
+  if (!str)
     return;
 
-  char *w = s;
+  char *w = str;
 
-  for (; *s; s++)
+  for (; *str; str++)
   {
-    if (*s == '\\')
+    if (*str == '\\')
     {
-      if (!*++s)
+      if (!*++str)
         break; /* error? */
-      *w++ = *s;
+      *w++ = *str;
     }
-    else if (*s != '\"')
+    else if (*str != '\"')
     {
-      if (w != s)
-        *w = *s;
+      if (w != str)
+        *w = *str;
       w++;
     }
   }

@@ -41,7 +41,7 @@
 #define S_ERR 127
 #define S_BKG 126
 
-/* this macro must check for (*c == 0) since isspace(0) has unreliable behavior
+/* this macro must check for (*ch == 0) since isspace(0) has unreliable behavior
  * on some systems */
 #define SKIPWS(ch)                                                             \
   while (*(ch) && isspace((unsigned char) *(ch)))                              \
@@ -53,7 +53,7 @@
 #define terminate_buffer(str, strlen)                                          \
   terminate_string(str, strlen, sizeof(str) - 1)
 
-void        mutt_str_adjust(char **p);
+void        mutt_str_adjust(char **ptr);
 void        mutt_str_append_item(char **str, const char *item, char sep);
 int         mutt_str_asprintf(char **strp, const char *fmt, ...);
 int         mutt_str_atoi(const char *str, int *dst);
@@ -63,14 +63,14 @@ int         mutt_str_atoui(const char *str, unsigned int *dst);
 int         mutt_str_atoul(const char *str, unsigned long *dst);
 int         mutt_str_atoull(const char *str, unsigned long long *dst);
 int         mutt_str_coll(const char *a, const char *b);
-void        mutt_str_dequote_comment(char *s);
+void        mutt_str_dequote_comment(char *str);
 const char *mutt_str_find_word(const char *src);
 const char *mutt_str_getenv(const char *name);
 bool        mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *rstr);
 bool        mutt_str_is_ascii(const char *str, size_t len);
 bool        mutt_str_is_email_wsp(char c);
 size_t      mutt_str_len(const char *a);
-char *      mutt_str_lower(char *s);
+char *      mutt_str_lower(char *str);
 size_t      mutt_str_lws_len(const char *s, size_t n);
 size_t      mutt_str_lws_rlen(const char *s, size_t n);
 const char *mutt_str_next_word(const char *s);
@@ -92,7 +92,7 @@ size_t      mutt_str_startswith(const char *str, const char *prefix);
 char *      mutt_strn_cat(char *dest, size_t l, const char *s, size_t sl);
 char *      mutt_strn_copy(char *dest, const char *src, size_t len, size_t dsize);
 char *      mutt_strn_dup(const char *begin, size_t l);
-bool        mutt_strn_equal(const char *a, const char *b, size_t l);
+bool        mutt_strn_equal(const char *a, const char *b, size_t num);
 const char *mutt_strn_rfind(const char *haystack, size_t haystack_length, const char *needle);
 
 /* case-insensitive flavours */
@@ -103,7 +103,7 @@ int         mutt_istr_remall(char *str, const char *target);
 size_t      mutt_istr_startswith(const char *str, const char *prefix);
 
 /* case-insensitive, length-bound flavours */
-int         mutt_istrn_cmp(const char *a, const char *b, size_t l);
-bool        mutt_istrn_equal(const char *a, const char *b, size_t l);
+int         mutt_istrn_cmp(const char *a, const char *b, size_t num);
+bool        mutt_istrn_equal(const char *a, const char *b, size_t num);
 
 #endif /* MUTT_LIB_STRING_H */
