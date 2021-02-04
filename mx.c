@@ -1337,7 +1337,7 @@ enum MailboxType mx_path_probe(const char *path)
   if (!path)
     return MUTT_UNKNOWN;
 
-  enum MailboxType rc;
+  enum MailboxType rc = MUTT_UNKNOWN;
 
   // First, search the non-local Mailbox types (is_local == false)
   for (const struct MxOps **ops = mx_ops; *ops; ops++)

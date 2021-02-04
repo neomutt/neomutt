@@ -730,7 +730,9 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
   int rc;
 
   if (!C_Pager || mutt_str_equal(C_Pager, "builtin"))
+  {
     rc = mutt_pager(banner, tempfile, do_color, info);
+  }
   else
   {
     struct Buffer *cmd = mutt_buffer_pool_get();

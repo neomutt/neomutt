@@ -483,9 +483,9 @@ void maildir_update_mtime(struct Mailbox *m)
 }
 
 /**
- * md_cmp_inode - Compare two Maildirs by inode number - Implements ::sort_t
+ * maildir_cmp_inode - Compare two Maildirs by inode number - Implements ::sort_t
  */
-static int md_cmp_inode(const void *a, const void *b)
+static int maildir_cmp_inode(const void *a, const void *b)
 {
   const struct MdEmail *ma = *(struct MdEmail **) a;
   const struct MdEmail *mb = *(struct MdEmail **) b;
@@ -559,7 +559,7 @@ int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
     return -2; /* action aborted */
   }
 
-  ARRAY_SORT(mda, md_cmp_inode);
+  ARRAY_SORT(mda, maildir_cmp_inode);
 
 cleanup:
   mutt_buffer_pool_release(&buf);

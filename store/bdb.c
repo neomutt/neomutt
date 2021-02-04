@@ -94,7 +94,7 @@ static void *store_bdb_open(const char *path)
 
   struct stat sb;
   int ret;
-  u_int32_t createflags = DB_CREATE;
+  uint32_t createflags = DB_CREATE;
 
   struct StoreDbCtx *ctx = mutt_mem_malloc(sizeof(struct StoreDbCtx));
 
