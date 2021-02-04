@@ -64,6 +64,7 @@ core/mailbox.c
 core/neomutt.c
 debug/backtrace.c
 debug/common.c
+debug/email.c
 debug/graphviz.c
 debug/notify.c
 debug/parse_test.c
