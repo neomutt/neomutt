@@ -5212,9 +5212,8 @@ msgid "force viewing of attachment using mailcap"
 msgstr "priverstinai rodyti priedą naudojant mailcap įrašą"
 
 #: opcodes.h:45
-#, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "priverstinai rodyti priedą naudojant mailcap įrašą"
+msgstr "priverstinai rodyti priedą naudojant copiousoutput mailcap įrašą"
 
 #: opcodes.h:46
 msgid "view attachment as text"
@@ -5897,9 +5896,8 @@ msgid "skip beyond quoted text"
 msgstr "praleisti cituojamą tekstą"
 
 #: opcodes.h:216
-#, fuzzy
 msgid "skip beyond headers"
-msgstr "praleisti cituojamą tekstą"
+msgstr "praleisti antraštes"
 
 #: opcodes.h:217
 msgid "jump to the top of the message"
@@ -6301,7 +6299,7 @@ msgstr "Nėra daugiau necituojamo teksto už cituojamo"
 #. are already past the headers
 #: pager.c:2943
 msgid "Already skipped past headers"
-msgstr ""
+msgstr "Antraštės jau praleistos"
 
 #. L10N: Displayed if <skip-headers> is invoked in the pager, but
 #. there is no text past the headers.
@@ -6309,7 +6307,7 @@ msgstr ""
 #. display some kind of message in case it somehow occurs.)
 #: pager.c:2964
 msgid "No text past headers"
-msgstr ""
+msgstr "Nėra teksto po antraštėmis"
 
 #: pattern/compile.c:89 pattern/compile.c:167 pattern/compile.c:958
 #, c-format
