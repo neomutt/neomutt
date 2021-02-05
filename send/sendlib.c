@@ -663,7 +663,7 @@ bye:
   /* no mime.types file found */
   if (!found_mimetypes)
   {
-    mutt_error(_("Could not find any mime.types file."));
+    mutt_error(_("Could not find any mime.types file"));
   }
 
   if ((type != TYPE_OTHER) || (*xtype != '\0'))

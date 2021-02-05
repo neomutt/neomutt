@@ -2940,7 +2940,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         {
           /* L10N: Displayed if <skip-headers> is invoked in the pager, but we
              are already past the headers */
-          mutt_message(_("Already skipped past headers."));
+          mutt_message(_("Already skipped past headers"));
           break;
         }
 
@@ -2961,7 +2961,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
              there is no text past the headers.
              (I don't think this is actually possible in Mutt's code, but
              display some kind of message in case it somehow occurs.) */
-          mutt_warning(_("No text past headers."));
+          mutt_warning(_("No text past headers"));
           break;
         }
         rd.topline = new_topline;
