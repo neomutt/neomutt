@@ -70,7 +70,7 @@ extern const char *  C_Tunnel;
 int mutt_ssl_starttls(struct Connection *conn);
 #endif
 
-int getdnsdomainname(struct Buffer *domain);
+int getdnsdomainname(struct Buffer *result);
 bool config_init_conn(struct ConfigSet *cs);
 
 #endif /* MUTT_CONN_LIB_H */
