@@ -79,6 +79,10 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+#ifdef __APPLE__
+# include <string.h>
+# include <xlocale.h>
+#endif
 
 /* These Config Variables are only used in mx.c */
 bool C_KeepFlagged; ///< Config: Don't move flagged messages from `$spoolfile` to `$mbox`
