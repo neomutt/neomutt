@@ -57,6 +57,9 @@
 #ifndef USE_HCACHE
 #define USE_HCACHE
 #endif
+#ifndef USE_HCACHE_COMPRESSION
+#define USE_HCACHE_COMPRESSION
+#endif
 #ifndef HAVE_BDB
 #define HAVE_BDB
 #endif
