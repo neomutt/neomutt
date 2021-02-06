@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-02-05 11:49+0000\n"
+"POT-Creation-Date: 2021-02-06 14:52+0000\n"
 "PO-Revision-Date: 2019-05-10 19:47+0300\n"
 "Last-Translator: Vsevolod Volkov <vvv@mutt.org.ua>\n"
 "Language-Team: \n"
@@ -156,7 +156,7 @@ msgstr ""
 msgid "adu"
 msgstr ""
 
-#: alias/dlgalias.c:314 alias/dlgquery.c:519 index.c:1816
+#: alias/dlgalias.c:314 alias/dlgquery.c:519 index.c:1818
 msgid "Limit to messages matching: "
 msgstr "Обмежитись повідомленнями за шаблоном: "
 
@@ -195,7 +195,7 @@ msgid "Query command not defined"
 msgstr "Команду запиту не визначено"
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:91 index.c:1781
+#: alias/gui.c:91 index.c:1783
 #, c-format
 msgid "Limit: %s"
 msgstr "Обмеження: %s"
@@ -770,7 +770,7 @@ msgstr "спам: зразок не знайдено"
 msgid "nospam: no matching pattern"
 msgstr "не спам: зразок не знайдено"
 
-#: command_parse.c:1707 imap/imap.c:1301
+#: command_parse.c:1707 imap/imap.c:1306
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Підписано на %s..."
@@ -793,7 +793,7 @@ msgstr "unattachments: відсутні йпараметр disposition"
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: неправильний параметр disposition"
 
-#: command_parse.c:2129 imap/imap.c:1303
+#: command_parse.c:2129 imap/imap.c:1308
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Відписано від %s..."
@@ -808,7 +808,7 @@ msgstr "Відписано від %s..."
 msgid "Verify signature?"
 msgstr "Перевірити підпис?"
 
-#: commands.c:268 mbox/mbox.c:1215
+#: commands.c:268 mbox/mbox.c:1209
 msgid "Could not create temporary file"
 msgstr "Не вийшло створити тимчасовий файл"
 
@@ -845,8 +845,8 @@ msgid "PGP signature could NOT be verified"
 msgstr "Перевірити підпис PGP неможливо"
 
 #: commands.c:387 compmbox/compress.c:337 compose/compose.c:2607
-#: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1270 index.c:1319
-#: mutt_attach.c:163 mutt_attach.c:297 pager.c:2458 send/sendlib.c:1057
+#: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1272 index.c:1321
+#: mutt_attach.c:163 mutt_attach.c:297 pager.c:2459 send/sendlib.c:1057
 #, c-format
 msgid "Error running \"%s\""
 msgstr "Помилка виконання \"%s\""
@@ -954,47 +954,23 @@ msgstr "dfrsotuzcpl"
 msgid "Shell command: "
 msgstr "Команда системи: "
 
-#: commands.c:1064
+#. L10N: Progress meter message when copying tagged messages
+#: commands.c:1067
 #, fuzzy
-msgid "Decode-save tagged to mailbox"
-msgstr "Розкодувати і перенести виділені до скриньки"
+msgid "Copying tagged messages..."
+msgstr "Копіювання %d листів до %s..."
 
-#: commands.c:1064
+#: commands.c:1071
 #, fuzzy
-msgid "Decode-save to mailbox"
-msgstr "Розкодувати і перенести до скриньки"
+msgid "Copy tagged to mailbox"
+msgstr "Копіювати виділені до скриньки"
 
-#: commands.c:1066
+#: commands.c:1071
 #, fuzzy
-msgid "Decrypt-save tagged to mailbox"
-msgstr "Розшифрувати і перенести виділені до скриньки"
+msgid "Copy to mailbox"
+msgstr "Копіювати до скриньки"
 
-#: commands.c:1066
-#, fuzzy
-msgid "Decrypt-save to mailbox"
-msgstr "Розшифрувати і перенести до скриньки"
-
-#: commands.c:1068
-#, fuzzy
-msgid "Save tagged to mailbox"
-msgstr "Перенести виділені до скриньки"
-
-#: commands.c:1068
-#, fuzzy
-msgid "Save to mailbox"
-msgstr "Перенести до скриньки"
-
-#: commands.c:1073
-#, fuzzy
-msgid "Decode-copy tagged to mailbox"
-msgstr "Розкодувати і копіювати виділені до скриньки"
-
-#: commands.c:1073
-#, fuzzy
-msgid "Decode-copy to mailbox"
-msgstr "Розкодувати і копіювати до скриньки"
-
-#: commands.c:1075
+#: commands.c:1074
 #, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "Розшифрувати і копіювати виділені до скриньки"
@@ -1004,107 +980,155 @@ msgstr "Розшифрувати і копіювати виділені до с�
 msgid "Decrypt-copy to mailbox"
 msgstr "Розшифрувати і копіювати до скриньки"
 
-#: commands.c:1077
+#: commands.c:1078
 #, fuzzy
-msgid "Copy tagged to mailbox"
-msgstr "Копіювати виділені до скриньки"
+msgid "Decode-copy tagged to mailbox"
+msgstr "Розкодувати і копіювати виділені до скриньки"
 
-#: commands.c:1077
+#: commands.c:1079
 #, fuzzy
-msgid "Copy to mailbox"
-msgstr "Копіювати до скриньки"
-
-#: commands.c:1122
-#, c-format
-msgid "Copying to %s..."
-msgstr "Копіювання до %s..."
+msgid "Decode-copy to mailbox"
+msgstr "Розкодувати і копіювати до скриньки"
 
 #. L10N: Progress meter message when saving tagged messages
-#: commands.c:1202
+#: commands.c:1086
 #, fuzzy
 msgid "Saving tagged messages..."
 msgstr "Друкувати виділені повідомлення?"
 
-#. L10N: Progress meter message when copying tagged messages
-#: commands.c:1204
+#: commands.c:1090
 #, fuzzy
-msgid "Copying tagged messages..."
+msgid "Save tagged to mailbox"
+msgstr "Перенести виділені до скриньки"
+
+#: commands.c:1090
+#, fuzzy
+msgid "Save to mailbox"
+msgstr "Перенести до скриньки"
+
+#: commands.c:1093
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Розшифрувати і перенести виділені до скриньки"
+
+#: commands.c:1094
+#, fuzzy
+msgid "Decrypt-save to mailbox"
+msgstr "Розшифрувати і перенести до скриньки"
+
+#: commands.c:1097
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Розкодувати і перенести виділені до скриньки"
+
+#: commands.c:1098
+#, fuzzy
+msgid "Decode-save to mailbox"
+msgstr "Розкодувати і перенести до скриньки"
+
+#: commands.c:1142
+#, c-format
+msgid "Copying to %s..."
+msgstr "Копіювання до %s..."
+
+#. L10N: Message when an index tagged save operation fails for some reason
+#: commands.c:1284
+#, fuzzy
+msgid "Error saving tagged messages"
+msgstr "Друкувати виділені повідомлення?"
+
+#. L10N: Message when an index/pager save operation fails for some reason
+#: commands.c:1289
+#, fuzzy
+msgid "Error saving message"
+msgstr "Помилка при відправці"
+
+#. L10N: Message when an index tagged copy operation fails for some reason
+#: commands.c:1296
+#, fuzzy
+msgid "Error copying tagged messages"
 msgstr "Копіювання %d листів до %s..."
 
+#. L10N: Message when an index/pager copy operation fails for some reason
+#: commands.c:1301
+#, fuzzy
+msgid "Error copying message"
+msgstr "Помилка при пересилці листа"
+
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
-#: commands.c:1306
+#: commands.c:1348
 #, fuzzy
 msgid "Content type is too long"
 msgstr "Тип даних змінено на %s"
 
-#: commands.c:1333
+#: commands.c:1375
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Перетворити на %s при надсиланні?"
 
-#: commands.c:1344
+#: commands.c:1386
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "Тип даних змінено на %s"
 
-#: commands.c:1349
+#: commands.c:1391
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "Кодування змінено на %s; не перетворюється"
 
-#: commands.c:1350
+#: commands.c:1392
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting"
 msgstr "Кодування змінено на %s; перетворюється"
 
-#: compmbox/compress.c:371 compmbox/compress.c:507
+#: compmbox/compress.c:371 compmbox/compress.c:505
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Неможливо дозаписати без append-hook або close-hook: %s"
 
-#: compmbox/compress.c:455 compmbox/compress.c:519 compmbox/compress.c:597
-#: compmbox/compress.c:635 mbox/mbox.c:1187
+#: compmbox/compress.c:453 compmbox/compress.c:517 compmbox/compress.c:591
+#: compmbox/compress.c:629 mbox/mbox.c:1181
 msgid "Unable to lock mailbox"
 msgstr "Поштова скринька не може бути блокована"
 
-#: compmbox/compress.c:459 compmbox/compress.c:526 compmbox/compress.c:601
+#: compmbox/compress.c:457 compmbox/compress.c:524 compmbox/compress.c:595
 #, c-format
 msgid "Decompressing %s"
 msgstr "Розпакування %s"
 
-#: compmbox/compress.c:468
+#: compmbox/compress.c:466
 msgid "Can't identify the contents of the compressed file"
 msgstr "Не вийшло визначити зміст стислого файла"
 
-#: compmbox/compress.c:475 compmbox/compress.c:547
+#: compmbox/compress.c:473 compmbox/compress.c:545
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "Не вийшло знайти опис для цього типу поштової скриньки %d"
 
-#: compmbox/compress.c:529
+#: compmbox/compress.c:527
 #, c-format
 msgid "Compress command failed: %s"
 msgstr "Помилка команди стиснення: %s"
 
-#: compmbox/compress.c:540
+#: compmbox/compress.c:538
 msgid "Unsupported mailbox type for appending"
 msgstr "Дозапис не підтримується для цього типу поштової скриньки"
 
-#: compmbox/compress.c:625
+#: compmbox/compress.c:619
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "Неможливо синхронізувати стислий файл без close-hook"
 
-#: compmbox/compress.c:647 compmbox/compress.c:699
+#: compmbox/compress.c:641 compmbox/compress.c:693
 #, c-format
 msgid "Compressing %s"
 msgstr "Стиснення %s"
 
-#: compmbox/compress.c:694
+#: compmbox/compress.c:688
 #, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Стиснення і дозаписування %s..."
 
-#: compmbox/compress.c:706 editmsg.c:263
+#: compmbox/compress.c:700 editmsg.c:263
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Помилка. Збереження тимчасового файлу: %s"
@@ -2032,7 +2056,7 @@ msgstr "Неможливо дозаписати до скриньки: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "Багаточастинний лист не має параметру межі"
 
-#: flags.c:383 index.c:2632 index.c:2672 index.c:3193 index.c:3229
+#: flags.c:383 index.c:2639 index.c:2679 index.c:3205 index.c:3241
 #: mutt_thread.c:1126 mutt_thread.c:1192 mutt_thread.c:1277
 msgid "Threading is not enabled"
 msgstr "Формування розмов не ввімкнено"
@@ -2409,7 +2433,7 @@ msgstr "Некоректний формат файлу історії (рядо�
 #: ncrypt/smime.c:1130 ncrypt/smime.c:1138 ncrypt/smime.c:1336
 #: ncrypt/smime.c:1730 ncrypt/smime.c:1808 ncrypt/smime.c:1815
 #: ncrypt/smime.c:1919 ncrypt/smime.c:2043 ncrypt/smime.c:2059 nntp/nntp.c:1393
-#: nntp/nntp.c:2233 pattern/exec.c:142 pop/pop.c:175
+#: nntp/nntp.c:2230 pattern/exec.c:142 pop/pop.c:175
 msgid "Can't create temporary file"
 msgstr "Неможливо створити тимчасовий файл"
 
@@ -2577,11 +2601,11 @@ msgstr "Помилка створення: %s"
 msgid "Closing connection to %s..."
 msgstr "Закриття з’єднання з %s..."
 
-#: imap/imap.c:765 nntp/nntp.c:1883 pop/lib.c:341 send/smtp.c:826
+#: imap/imap.c:765 nntp/nntp.c:1880 pop/lib.c:341 send/smtp.c:826
 msgid "Secure connection with TLS?"
 msgstr "Безпечне з’єднання з TLS?"
 
-#: imap/imap.c:781 nntp/nntp.c:1906 pop/lib.c:362 send/smtp.c:843
+#: imap/imap.c:781 nntp/nntp.c:1903 pop/lib.c:362 send/smtp.c:843
 msgid "Could not negotiate TLS connection"
 msgstr "Не вийшло домовитись про TLS з’єднання"
 
@@ -2589,17 +2613,17 @@ msgstr "Не вийшло домовитись про TLS з’єднання"
 msgid "Encrypted connection unavailable"
 msgstr "Шифроване з’єднання недоступне"
 
-#: imap/imap.c:1275
+#: imap/imap.c:1280
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Підписування на %s..."
 
-#: imap/imap.c:1277
+#: imap/imap.c:1282
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Відписування від %s..."
 
-#: imap/imap.c:1453 imap/message.c:1651
+#: imap/imap.c:1458 imap/message.c:1652
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
@@ -2607,16 +2631,16 @@ msgstr[0] "Копіювання %d листів до %s..."
 msgstr[1] "Копіювання %d листів до %s..."
 msgstr[2] "Копіювання %d листів до %s..."
 
-#: imap/imap.c:1470 imap/imap.c:2119 imap/message.c:1690 muttlib.c:1406
+#: imap/imap.c:1475 imap/imap.c:2120 imap/message.c:1691 muttlib.c:1406
 #, c-format
 msgid "Create %s?"
 msgstr "Створити %s?"
 
-#: imap/imap.c:1543
+#: imap/imap.c:1544
 msgid "Expunge failed"
 msgstr "Помилка видалення"
 
-#: imap/imap.c:1561
+#: imap/imap.c:1562
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
@@ -2624,7 +2648,7 @@ msgstr[0] "Маркування %d повідомлень видаленими..
 msgstr[1] "Маркування %d повідомлень видаленими..."
 msgstr[2] "Маркування %d повідомлень видаленими..."
 
-#: imap/imap.c:1601
+#: imap/imap.c:1602
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
@@ -2632,37 +2656,37 @@ msgstr[0] "Збереження змінених листів... [%d/%d]"
 msgstr[1] "Збереження змінених листів... [%d/%d]"
 msgstr[2] "Збереження змінених листів... [%d/%d]"
 
-#: imap/imap.c:1658
+#: imap/imap.c:1659
 msgid "Error saving flags. Close anyway?"
 msgstr "Помилка збереження атрибутів. Закрити все одно?"
 
-#: imap/imap.c:1665
+#: imap/imap.c:1666
 msgid "Error saving flags"
 msgstr "Помилка збереження атрибутів"
 
-#: imap/imap.c:1691
+#: imap/imap.c:1692
 msgid "Expunging messages from server..."
 msgstr "Видалення повідомлень з серверу..."
 
-#: imap/imap.c:1697
+#: imap/imap.c:1698
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: помилка EXPUNGE"
 
-#: imap/imap.c:1923 nntp/nntp.c:2458
+#: imap/imap.c:1924 nntp/nntp.c:2455
 #, c-format
 msgid "Selecting %s..."
 msgstr "Вибір %s..."
 
-#: imap/imap.c:2086
+#: imap/imap.c:2087
 msgid "Error opening mailbox"
 msgstr "Помилка відкриття поштової скриньки"
 
-#: imap/imap.c:2228
+#: imap/imap.c:2229
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "SMTP-сервер не підтримує аутентифікації"
 
-#: imap/imap.c:2272
+#: imap/imap.c:2273
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Неправ.   "
@@ -2688,7 +2712,7 @@ msgstr "Отримання заголовків листів..."
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "З серверу IMAP цієї версії отримати заголовки неможливо"
 
-#: imap/message.c:1071 index.c:1585 nntp/nntp.c:1325 pop/pop.c:419
+#: imap/message.c:1071 index.c:1587 nntp/nntp.c:1325 pop/pop.c:419
 msgid "Fetching message headers..."
 msgstr "Отримання заголовків листів..."
 
@@ -2696,21 +2720,21 @@ msgstr "Отримання заголовків листів..."
 msgid "Uploading message..."
 msgstr "Відправка листа..."
 
-#: imap/message.c:1657
+#: imap/message.c:1658
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Копіювання %d листів до %s..."
 
-#: imap/message.c:1881 imap/message.c:1945 nntp/nntp.c:2696 pop/pop.c:1074
+#: imap/message.c:1882 imap/message.c:1946 nntp/nntp.c:2689 pop/pop.c:1074
 msgid "Fetching message..."
 msgstr "Отримання листа..."
 
-#: imap/message.c:1932 pop/pop.c:1070
+#: imap/message.c:1933 pop/pop.c:1070
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Некоректний індекс повідомленнь. Спробуйте відкрити скриньку ще раз."
 
 #: imap/msn.c:48 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
-#: mutt/string.c:1079 mx.c:1237
+#: mutt/string.c:1079 mx.c:1231
 msgid "Out of memory"
 msgstr "Не вистачає пам’яті"
 
@@ -2753,7 +2777,7 @@ msgstr ""
 msgid "Followup"
 msgstr "Переслати %s%s?"
 
-#: index.c:169 index.c:1407
+#: index.c:169 index.c:1409
 msgid "No mailbox is open"
 msgstr "Немає відкритої поштової скриньки"
 
@@ -2765,7 +2789,7 @@ msgstr "Жодного повідомлення немає"
 msgid "No visible messages"
 msgstr "Жодного повідомлення не видно"
 
-#: index.c:187 mx.c:960 pager.c:215 recvattach.c:81
+#: index.c:187 mx.c:954 pager.c:215 recvattach.c:81
 msgid "Mailbox is read-only"
 msgstr "Поштова скринька відкрита тільки для читання"
 
@@ -2791,81 +2815,81 @@ msgstr "Зміни у скриньці буде записано по виход
 msgid "Changes to folder will not be written"
 msgstr "Зміни у скриньці не буде записано"
 
-#: index.c:800
+#: index.c:801
 msgid "Failed to create query, aborting"
 msgstr ""
 
-#: index.c:847 muttlib.c:1391 mx.c:220 mx.c:371
+#: index.c:848 muttlib.c:1391 mx.c:221 mx.c:372
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s не є поштовою скринькою"
 
-#: index.c:1252
+#: index.c:1254
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Поштову скриньку змінила зовнішня програма. Атрибути можуть бути змінені."
 
-#: index.c:1261 pager.c:2407
+#: index.c:1263 pager.c:2408
 msgid "New mail in this mailbox"
 msgstr "Нова пошта у цій поштовій скриньці"
 
-#: index.c:1278
+#: index.c:1280
 msgid "Mailbox was externally modified"
 msgstr "Поштову скриньку змінила зовнішня програма"
 
-#: index.c:1414
+#: index.c:1416
 msgid "No tagged messages"
 msgstr "Жодного листа не виділено"
 
-#: index.c:1418 index.c:1685 menu.c:1385
+#: index.c:1420 index.c:1687 menu.c:1385
 msgid "Nothing to do"
 msgstr "Нічого робити"
 
-#: index.c:1507
+#: index.c:1509
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Введіть keyID: "
 
-#: index.c:1518
+#: index.c:1520
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index.c:1541
+#: index.c:1543
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "Кореневий лист не можна побачити при цьому обмеженні"
 
-#: index.c:1545
+#: index.c:1547
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Видалення повідомлень з серверу..."
 
-#: index.c:1556 nntp/nntp.c:2731
+#: index.c:1558 nntp/nntp.c:2724
 #, c-format
 msgid "Article %s not found on the server"
 msgstr ""
 
-#: index.c:1581
+#: index.c:1583
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: index.c:1661
+#: index.c:1663
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "видалити всі листи розмови"
 
-#: index.c:1682
+#: index.c:1684
 msgid "Jump to message: "
 msgstr "Перейти до листа: "
 
-#: index.c:1688
+#: index.c:1690
 msgid "Argument must be a message number"
 msgstr "Аргумент повинен бути номером листа"
 
-#: index.c:1690
+#: index.c:1692
 msgid "Invalid message number"
 msgstr "Невірний номер листа"
 
-#: index.c:1692
+#: index.c:1694
 msgid "That message is not visible"
 msgstr "Цей лист не можна побачити"
 
@@ -2873,28 +2897,28 @@ msgstr "Цей лист не можна побачити"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1729 index.c:3323 pager.c:3115
+#: index.c:1731 index.c:3335 pager.c:3116
 #, fuzzy
 msgid "Can't delete messages"
 msgstr "Неможливо видалити лист"
 
-#: index.c:1732
+#: index.c:1734
 msgid "Delete messages matching: "
 msgstr "Видалити листи за шаблоном: "
 
-#: index.c:1776
+#: index.c:1778
 msgid "No limit pattern is in effect"
 msgstr "Обмеження не встановлено"
 
-#: index.c:1847
+#: index.c:1849
 msgid "To view all messages, limit to \"all\""
 msgstr "Щоб побачити всі повідомлення, встановіть шаблон \"all\""
 
-#: index.c:1859 pager.c:2521
+#: index.c:1861 pager.c:2522
 msgid "Quit NeoMutt?"
 msgstr "Вийти з NeoMutt?"
 
-#: index.c:1964
+#: index.c:1967
 msgid "Tag messages matching: "
 msgstr "Виділити листи за шаблоном: "
 
@@ -2902,197 +2926,197 @@ msgstr "Виділити листи за шаблоном: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1975 index.c:3851 pager.c:3471
+#: index.c:1978 index.c:3863 pager.c:3477
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "Неможливо відновити лист"
 
-#: index.c:1979
+#: index.c:1982
 msgid "Undelete messages matching: "
 msgstr "Відновити листи за шаблоном: "
 
-#: index.c:1988
+#: index.c:1991
 msgid "Untag messages matching: "
 msgstr "Зняти виділення з листів за шаблоном: "
 
-#: index.c:2028
+#: index.c:2033
 msgid "Logged out of IMAP servers"
 msgstr "Закриття з’єднання з сервером IMAP.."
 
-#: index.c:2141
+#: index.c:2148
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Теми немає, відмінено"
 
-#: index.c:2161
+#: index.c:2168
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index.c:2170
+#: index.c:2177
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: index.c:2202 mx.c:1297 mx.c:1317
+#: index.c:2209 mx.c:1291 mx.c:1311
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "SMTP-сервер не підтримує аутентифікації"
 
-#: index.c:2218
+#: index.c:2225
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "Теми немає, відмінено"
 
-#: index.c:2228
+#: index.c:2235
 msgid "Update tags..."
 msgstr ""
 
-#: index.c:2268
+#: index.c:2275
 msgid "Failed to modify tags, aborting"
 msgstr ""
 
-#: index.c:2316
+#: index.c:2323
 #, fuzzy
 msgid "No query, aborting"
 msgstr "Теми немає, відмінено"
 
-#: index.c:2345 index.c:2365
+#: index.c:2352 index.c:2372
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index.c:2350 index.c:2370
+#: index.c:2357 index.c:2377
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: index.c:2403
+#: index.c:2410
 msgid "No mailboxes have new mail"
 msgstr "Немає поштової скриньки з новою поштою."
 
-#: index.c:2425
+#: index.c:2432
 msgid "Open mailbox in read-only mode"
 msgstr "Відкрити скриньку лише для читання"
 
-#: index.c:2430
+#: index.c:2437
 msgid "Open mailbox"
 msgstr "Відкрити скриньку"
 
-#: index.c:2490
+#: index.c:2497
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Відкрити скриньку лише для читання"
 
-#: index.c:2495
+#: index.c:2502
 msgid "Open newsgroup"
 msgstr ""
 
-#: index.c:2610
+#: index.c:2617
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Покинути NeoMutt без збереження змін?"
 
 #. L10N: CHECK_ACL
-#: index.c:2626
+#: index.c:2633
 #, fuzzy
 msgid "Can't break thread"
 msgstr "Неможливо з’єднати розмови"
 
-#: index.c:2643
+#: index.c:2650
 msgid "Thread broken"
 msgstr "Розмову розурвано"
 
-#: index.c:2656
+#: index.c:2663
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Розмовву неможливо розірвати: повідомлення не є частиною розмови"
 
 #. L10N: CHECK_ACL
-#: index.c:2666
+#: index.c:2673
 msgid "Can't link threads"
 msgstr "Неможливо з’єднати розмови"
 
-#: index.c:2674
+#: index.c:2681
 msgid "No Message-ID: header available to link thread"
 msgstr "Відсутній заголовок Message-ID для об’єднання розмов"
 
-#: index.c:2686
+#: index.c:2693
 msgid "Threads linked"
 msgstr "Розмови об’єднано"
 
-#: index.c:2689
+#: index.c:2696
 msgid "No thread linked"
 msgstr "Розмови не об’єднано"
 
-#: index.c:2729 index.c:2754
+#: index.c:2736 index.c:2761
 msgid "You are on the last message"
 msgstr "Це останній лист"
 
-#: index.c:2737 index.c:2780
+#: index.c:2744 index.c:2787
 msgid "No undeleted messages"
 msgstr "Немає відновлених листів"
 
-#: index.c:2772 index.c:2797
+#: index.c:2779 index.c:2804
 msgid "You are on the first message"
 msgstr "Це перший лист"
 
-#: index.c:2938
+#: index.c:2950
 msgid "No new messages in this limited view"
 msgstr "Немає нових листів при цьому перегляді з обмеженням"
 
-#: index.c:2940
+#: index.c:2952
 msgid "No new messages"
 msgstr "Немає нових листів"
 
-#: index.c:2945
+#: index.c:2957
 msgid "No unread messages in this limited view"
 msgstr "Немає нечитаних листів при цьому перегляді з обмеженням"
 
-#: index.c:2947
+#: index.c:2959
 msgid "No unread messages"
 msgstr "Немає нечитаних листів"
 
-#: index.c:2957 menu.c:1177 pager.c:2652 pattern/pattern.c:565
+#: index.c:2969 menu.c:1177 pager.c:2653 pattern/pattern.c:565
 #: pattern/pattern.c:716
 msgid "Search wrapped to top"
 msgstr "Досягнуто кінець. Пошук перенесено на початок"
 
-#: index.c:2962 pager.c:2677 pattern/pattern.c:576 pattern/pattern.c:727
+#: index.c:2974 pager.c:2678 pattern/pattern.c:576 pattern/pattern.c:727
 msgid "Search wrapped to bottom"
 msgstr "Досягнуто початок. Пошук перенесено на кінець"
 
 #. L10N: CHECK_ACL
-#: index.c:2979
+#: index.c:2991
 msgid "Can't flag message"
 msgstr "Неможливо змінити атрибут листа"
 
 #. L10N: CHECK_ACL
-#: index.c:3024 pager.c:3430
+#: index.c:3036 pager.c:3436
 msgid "Can't toggle new"
 msgstr "Неможливо змінити атрибут \"Нове\""
 
-#: index.c:3118
+#: index.c:3130
 msgid "No more threads"
 msgstr "Розмов більше нема"
 
-#: index.c:3120
+#: index.c:3132
 msgid "You are on the first thread"
 msgstr "Це перша розмова"
 
-#: index.c:3214
+#: index.c:3226
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "Розмова має нечитані листи"
 
 #. L10N: CHECK_ACL
-#: index.c:3272 pager.c:3071
+#: index.c:3284 pager.c:3072
 msgid "Can't delete message"
 msgstr "Неможливо видалити лист"
 
 #. L10N: CHECK_ACL
-#: index.c:3395
+#: index.c:3407
 msgid "Can't edit message"
 msgstr "Неможливо редагувати лист"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index.c:3484 pager.c:3548
+#: index.c:3496 pager.c:3554
 #, fuzzy, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -3103,7 +3127,7 @@ msgstr[2] "Позначки було змінено: %d"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index.c:3492 pager.c:3552
+#: index.c:3504 pager.c:3558
 msgid "No labels changed"
 msgstr "Жодної позначки не було змінено"
 
@@ -3111,7 +3135,7 @@ msgstr "Жодної позначки не було змінено"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:3619
+#: index.c:3631
 #, fuzzy
 msgid "Can't mark messages as read"
 msgstr "Неможливо позначити лист(и) прочитаним(и)"
@@ -3119,40 +3143,40 @@ msgstr "Неможливо позначити лист(и) прочитаним(
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index.c:3658
+#: index.c:3670
 msgid "Enter macro stroke: "
 msgstr "Введіть макрос листа: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index.c:3666
+#: index.c:3678
 msgid "message hotkey"
 msgstr "макрос листа"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index.c:3671
+#: index.c:3683
 #, c-format
 msgid "Message bound to %s"
 msgstr "Лист пов’язаний з %s"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index.c:3680
+#: index.c:3692
 msgid "No message ID to macro"
 msgstr "Немає Message-ID для створення макроса"
 
-#: index.c:3732 pager.c:3274 recvattach.c:1795
+#: index.c:3744 pager.c:3275 recvattach.c:1795
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: index.c:3735 pager.c:3234 pager.c:3246 pager.c:3277
+#: index.c:3747 pager.c:3235 pager.c:3247 pager.c:3278
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index.c:3813 pager.c:3450
+#: index.c:3825 pager.c:3456
 msgid "Can't undelete message"
 msgstr "Неможливо відновити лист"
 
@@ -3268,7 +3292,7 @@ msgstr "Шлях до mailcap не вказано"
 msgid "mailcap entry for type %s not found"
 msgstr "запису для типу %s в mailcap не знайдено"
 
-#: maildir/maildir.c:237 maildir/mh.c:301
+#: maildir/maildir.c:237 maildir/mh.c:297
 msgid "Could not flush message to disk"
 msgstr "Не вийшло скинути повідомлення на диск."
 
@@ -3277,20 +3301,20 @@ msgstr "Не вийшло скинути повідомлення на диск.
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): неможливо встановити час для файлу"
 
-#: maildir/maildir.c:671 maildir/mh.c:692
+#: maildir/maildir.c:671 maildir/mh.c:688
 #, c-format
 msgid "Scanning %s..."
 msgstr "Перегляд %s..."
 
-#: maildir/maildir.c:690 maildir/mh.c:713 mbox/mbox.c:217 mbox/mbox.c:382
-#: mx.c:384
+#: maildir/maildir.c:690 maildir/mh.c:709 mbox/mbox.c:215 mbox/mbox.c:378
+#: mx.c:385
 #, c-format
 msgid "Reading %s..."
 msgstr "Читання %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1402 maildir/mh.c:1064 mbox/mbox.c:1255 mx.c:491
-#: notmuch/notmuch.c:2410
+#: maildir/maildir.c:1367 maildir/mh.c:1028 mbox/mbox.c:1250 mx.c:491
+#: notmuch/notmuch.c:2409
 #, c-format
 msgid "Writing %s..."
 msgstr "Запис %s..."
@@ -3558,41 +3582,41 @@ msgstr "Вхідних поштових скриньок не вказано"
 msgid "Mailbox is empty"
 msgstr "Поштова скринька порожня"
 
-#: mbox/mbox.c:260 mbox/mbox.c:321
+#: mbox/mbox.c:258 mbox/mbox.c:319
 msgid "Mailbox is corrupt"
 msgstr "Поштову скриньку пошкоджено"
 
-#: mbox/mbox.c:998
+#: mbox/mbox.c:994
 #, c-format
 msgid "Couldn't lock %s"
 msgstr "Не вийшло заблокувати %s"
 
-#: mbox/mbox.c:1134
+#: mbox/mbox.c:1128
 msgid "Mailbox was corrupted"
 msgstr "Поштову скриньку було пошкоджено"
 
-#: mbox/mbox.c:1178 mbox/mbox.c:1428
+#: mbox/mbox.c:1172 mbox/mbox.c:1423
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Фатальна помилка! Не вийшло відкрити поштову скриньку знову!"
 
-#: mbox/mbox.c:1233
+#: mbox/mbox.c:1228
 msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr "sync: скриньку змінено, але немає змінених листів (повідомте про це)"
 
-#: mbox/mbox.c:1374
+#: mbox/mbox.c:1369
 msgid "Committing changes..."
 msgstr "Внесення змін..."
 
-#: mbox/mbox.c:1407
+#: mbox/mbox.c:1402
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Збій запису! Часткову скриньку збережено у %s"
 
-#: mbox/mbox.c:1490
+#: mbox/mbox.c:1485
 msgid "Could not reopen mailbox"
 msgstr "Не вийшло відкрити поштову скриньку знову"
 
-#: mbox/mbox.c:1587 mbox/mbox.c:1738
+#: mbox/mbox.c:1582 mbox/mbox.c:1733
 msgid "Can't write message"
 msgstr "Неможливо записати лист"
 
@@ -3633,15 +3657,15 @@ msgstr "Це остання позиція"
 msgid "You are on the first entry"
 msgstr "Це перша позиція"
 
-#: menu.c:1141 pager.c:2700 pattern/pattern.c:493 pattern/pattern.c:644
+#: menu.c:1141 pager.c:2701 pattern/pattern.c:493 pattern/pattern.c:644
 msgid "Search for: "
 msgstr "Шукати вираз:"
 
-#: menu.c:1142 pager.c:2701 pattern/pattern.c:494 pattern/pattern.c:645
+#: menu.c:1142 pager.c:2702 pattern/pattern.c:494 pattern/pattern.c:645
 msgid "Reverse search for: "
 msgstr "Зворотній пошук виразу: "
 
-#: menu.c:1195 pager.c:2649 pager.c:2674 pager.c:2808 pattern/pattern.c:621
+#: menu.c:1195 pager.c:2650 pager.c:2675 pager.c:2809 pattern/pattern.c:621
 #: pattern/pattern.c:772
 msgid "Not found"
 msgstr "Не знайдено"
@@ -3830,7 +3854,7 @@ msgstr ""
 msgid "Couldn't source lua source: %s"
 msgstr "Не вийшло заблокувати %s\n"
 
-#: mutt_mailbox.c:228
+#: mutt_mailbox.c:231
 msgid "New mail in "
 msgstr "Нова пошта в "
 
@@ -3895,7 +3919,7 @@ msgstr "Додати листи до %s?"
 msgid "Can't save message to news server"
 msgstr "Неможливо залишити повідомлення на сервері"
 
-#: mx.c:418
+#: mx.c:419
 #, fuzzy, c-format
 msgid "Reading from %s interrupted..."
 msgstr "Пошук перервано."
@@ -3920,13 +3944,13 @@ msgstr[2] "повідомлення не видалені"
 msgid "Can't open trash folder"
 msgstr "Не вдалось відкрити кошик"
 
-#: mx.c:666
+#: mx.c:663
 msgid "Mark all articles read?"
 msgstr ""
 
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
-#: mx.c:715
+#: mx.c:712
 #, fuzzy, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
@@ -3934,7 +3958,7 @@ msgstr[0] "Перенести прочитані листи (кількість:
 msgstr[1] "Перенести прочитані листи (кількість: %d) до %s?"
 msgstr[2] "Перенести прочитані листи (кількість: %d) до %s?"
 
-#: mx.c:729 mx.c:976
+#: mx.c:726 mx.c:970
 #, fuzzy, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
@@ -3942,44 +3966,44 @@ msgstr[0] "Знищити %d видалений листі?"
 msgstr[1] "Знищити %d видалених листів?"
 msgstr[2] "Знищити %d видалених листів?"
 
-#: mx.c:752
+#: mx.c:749
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Перенос прочитаних листів до %s..."
 
-#: mx.c:823 mx.c:967
+#: mx.c:820 mx.c:961
 msgid "Mailbox is unchanged"
 msgstr "Поштову скриньку не змінено"
 
-#: mx.c:883
+#: mx.c:880
 #, c-format
 msgid "%d kept, %d moved, %d deleted"
 msgstr "%d збережено, %d перенесено, %d знищено"
 
-#: mx.c:887 mx.c:1032
+#: mx.c:884 mx.c:1026
 #, c-format
 msgid "%d kept, %d deleted"
 msgstr "%d збережено, %d знищено"
 
-#: mx.c:951
+#: mx.c:945
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Натисніть \"%s\" для зміни можливості запису"
 
-#: mx.c:953
+#: mx.c:947
 msgid "Use 'toggle-write' to re-enable write"
 msgstr "Використовуйте toggle-write для ввімкнення запису"
 
-#: mx.c:955
+#: mx.c:949
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Скриньку помічено незмінюваною. %s"
 
-#: mx.c:1026
+#: mx.c:1020
 msgid "Mailbox checkpointed"
 msgstr "Поштову скриньку перевірено"
 
-#: mx.c:1362
+#: mx.c:1356
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Неможливо відкрити файл повідомлення: %s"
@@ -4859,8 +4883,8 @@ msgstr ""
 "[-- Помилка: не вийшло створити підпроцес PGP --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087 ncrypt/smime.c:1906 postpone.c:814
-#: postpone.c:842
+#: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087 ncrypt/smime.c:1906 postpone.c:822
+#: postpone.c:850
 msgid "Decryption failed"
 msgstr "Помилка розшифровки"
 
@@ -5148,64 +5172,64 @@ msgstr "З’єднання з %s закрито"
 msgid "Fetching list of articles..."
 msgstr "Отримання переліку повідомлень..."
 
-#: nntp/nntp.c:1545 nntp/nntp.c:2134 pop/pop.c:605 pop/pop.c:883
+#: nntp/nntp.c:1542 nntp/nntp.c:2131 pop/pop.c:605 pop/pop.c:883
 msgid "Checking for new messages..."
 msgstr "Перевірка наявності нових повідомлень..."
 
-#: nntp/nntp.c:1857 nntp/nntp.c:1950
+#: nntp/nntp.c:1854 nntp/nntp.c:1947
 #, fuzzy
 msgid "Could not switch to reader mode"
 msgstr "не вдалось записати тимчасову скриньку: %s"
 
-#: nntp/nntp.c:1870
+#: nntp/nntp.c:1867
 #, fuzzy, c-format
 msgid "Connected to %s. %s"
 msgstr "З’єднання з %s..."
 
-#: nntp/nntp.c:1871
+#: nntp/nntp.c:1868
 msgid "Posting is NOT ok"
 msgstr ""
 
-#: nntp/nntp.c:1871
+#: nntp/nntp.c:1868
 #, fuzzy
 msgid "Posting is ok"
 msgstr "Нічого робити"
 
-#: nntp/nntp.c:2004 nntp/nntp.c:2039
+#: nntp/nntp.c:2001 nntp/nntp.c:2036
 #, fuzzy, c-format
 msgid "Can't post article: %s"
 msgstr "Неможливо отримати дані %s: %s"
 
-#: nntp/nntp.c:2060
+#: nntp/nntp.c:2057
 #, fuzzy, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "Видалення повідомлень з серверу..."
 
-#: nntp/nntp.c:2102 nntp/nntp.c:2194
+#: nntp/nntp.c:2099 nntp/nntp.c:2191
 #, fuzzy
 msgid "Loading descriptions..."
 msgstr "Реєстрація..."
 
-#: nntp/nntp.c:2124
+#: nntp/nntp.c:2121
 #, fuzzy
 msgid "Checking for new newsgroups..."
 msgstr "Перевірка наявності нових повідомлень..."
 
-#: nntp/nntp.c:2327
+#: nntp/nntp.c:2324
 msgid "Unable to find child articles because server does not support XPAT command"
 msgstr ""
 
-#: nntp/nntp.c:2409
+#: nntp/nntp.c:2406
 #, fuzzy, c-format
 msgid "%s is an invalid newsgroup specification"
 msgstr "%s - неприпустимий шлях POP"
 
-#: nntp/nntp.c:2448
+#: nntp/nntp.c:2445
 #, c-format
 msgid "Newsgroup %s not found on the server"
 msgstr ""
 
-#: nntp/nntp.c:2470
+#: nntp/nntp.c:2467
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
 msgstr ""
@@ -5267,7 +5291,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: notmuch/notmuch.c:2552
+#: notmuch/notmuch.c:2549
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "Не вдалось відкрити кошик"
@@ -6407,29 +6431,29 @@ msgstr ""
 msgid "end"
 msgstr ""
 
-#: pager.c:2537 pager.c:2573 pager.c:2610 pager.c:2987
+#: pager.c:2538 pager.c:2574 pager.c:2611 pager.c:2988
 msgid "Bottom of message is shown"
 msgstr "Ви бачите кінець листа"
 
-#: pager.c:2550 pager.c:2580 pager.c:2587 pager.c:2598
+#: pager.c:2551 pager.c:2581 pager.c:2588 pager.c:2599
 msgid "Top of message is shown"
 msgstr "Ви бачите початок листа"
 
-#: pager.c:2848
+#: pager.c:2849
 msgid "Help is currently being shown"
 msgstr "Підказку зараз показано"
 
-#: pager.c:2907
+#: pager.c:2908
 msgid "No more quoted text"
 msgstr "Цитованого тексту більш немає"
 
-#: pager.c:2924
+#: pager.c:2925
 msgid "No more unquoted text after quoted text"
 msgstr "Після цитованого тексту нічого немає"
 
 #. L10N: Displayed if <skip-headers> is invoked in the pager, but we
 #. are already past the headers
-#: pager.c:2943
+#: pager.c:2944
 msgid "Already skipped past headers"
 msgstr ""
 
@@ -6437,7 +6461,7 @@ msgstr ""
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager.c:2964
+#: pager.c:2965
 msgid "No text past headers"
 msgstr ""
 
@@ -7013,19 +7037,19 @@ msgstr "Неможливо записати повідомлення до тим
 msgid "Postponed Messages"
 msgstr "Залишені листи"
 
-#: postpone.c:337 postpone.c:361
+#: postpone.c:351 postpone.c:375
 msgid "No postponed messages"
 msgstr "Жодного листа не залишено"
 
-#: postpone.c:529
+#: postpone.c:537
 msgid "Illegal S/MIME header"
 msgstr "Неправильний заголовок S/MIME"
 
-#: postpone.c:561 postpone.c:600 postpone.c:609
+#: postpone.c:569 postpone.c:608 postpone.c:617
 msgid "Illegal crypto header"
 msgstr "Неправильний заголовок шифрування"
 
-#: postpone.c:702 postpone.c:809 postpone.c:837
+#: postpone.c:710 postpone.c:817 postpone.c:845
 msgid "Decrypting message..."
 msgstr "Розшифровка листа..."
 

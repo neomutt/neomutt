@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-02-05 11:49+0000\n"
+"POT-Creation-Date: 2021-02-06 14:52+0000\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -158,7 +158,7 @@ msgstr ""
 msgid "adu"
 msgstr ""
 
-#: alias/dlgalias.c:314 alias/dlgquery.c:519 index.c:1816
+#: alias/dlgalias.c:314 alias/dlgquery.c:519 index.c:1818
 msgid "Limit to messages matching: "
 msgstr "패턴과 일치하는 메일: "
 
@@ -197,7 +197,7 @@ msgid "Query command not defined"
 msgstr "질의 명령이 정의되지 않음"
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:91 index.c:1781
+#: alias/gui.c:91 index.c:1783
 #, c-format
 msgid "Limit: %s"
 msgstr "패턴: %s"
@@ -781,7 +781,7 @@ msgstr "패턴과 일치하는 메일에 태그 붙임"
 msgid "nospam: no matching pattern"
 msgstr "패턴과 일치하는 메일의 태그 해제"
 
-#: command_parse.c:1707 imap/imap.c:1301
+#: command_parse.c:1707 imap/imap.c:1306
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "%s에 가입 중..."
@@ -805,7 +805,7 @@ msgstr "첨부물 설명 편집"
 msgid "unattachments: invalid disposition"
 msgstr ""
 
-#: command_parse.c:2129 imap/imap.c:1303
+#: command_parse.c:2129 imap/imap.c:1308
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s에서 가입 탈퇴 중..."
@@ -820,7 +820,7 @@ msgstr "%s에서 가입 탈퇴 중..."
 msgid "Verify signature?"
 msgstr "서명을 확인할까요?"
 
-#: commands.c:268 mbox/mbox.c:1215
+#: commands.c:268 mbox/mbox.c:1209
 msgid "Could not create temporary file"
 msgstr "임시 파일을 만들 수 없음"
 
@@ -857,8 +857,8 @@ msgid "PGP signature could NOT be verified"
 msgstr "PGP 서명 검증에 실패함"
 
 #: commands.c:387 compmbox/compress.c:337 compose/compose.c:2607
-#: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1270 index.c:1319
-#: mutt_attach.c:163 mutt_attach.c:297 pager.c:2458 send/sendlib.c:1057
+#: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1272 index.c:1321
+#: mutt_attach.c:163 mutt_attach.c:297 pager.c:2459 send/sendlib.c:1057
 #, c-format
 msgid "Error running \"%s\""
 msgstr "\"%s\" 실행 오류"
@@ -959,47 +959,23 @@ msgstr "dfrsotuzc"
 msgid "Shell command: "
 msgstr "쉘 명령어: "
 
-#: commands.c:1064
+#. L10N: Progress meter message when copying tagged messages
+#: commands.c:1067
 #, fuzzy
-msgid "Decode-save tagged to mailbox"
-msgstr "복호화-저장 메일함으로"
+msgid "Copying tagged messages..."
+msgstr "%d개의 메세지를 %s로 복사 중..."
 
-#: commands.c:1064
+#: commands.c:1071
 #, fuzzy
-msgid "Decode-save to mailbox"
-msgstr "복호화-저장 메일함으로"
+msgid "Copy tagged to mailbox"
+msgstr "복사 메일함으로"
 
-#: commands.c:1066
+#: commands.c:1071
 #, fuzzy
-msgid "Decrypt-save tagged to mailbox"
-msgstr "해독-저장 메일함으로"
+msgid "Copy to mailbox"
+msgstr "복사 메일함으로"
 
-#: commands.c:1066
-#, fuzzy
-msgid "Decrypt-save to mailbox"
-msgstr "해독-저장 메일함으로"
-
-#: commands.c:1068
-#, fuzzy
-msgid "Save tagged to mailbox"
-msgstr "저장 메일함으로"
-
-#: commands.c:1068
-#, fuzzy
-msgid "Save to mailbox"
-msgstr "저장 메일함으로"
-
-#: commands.c:1073
-#, fuzzy
-msgid "Decode-copy tagged to mailbox"
-msgstr "복호화-복사 메일함으로"
-
-#: commands.c:1073
-#, fuzzy
-msgid "Decode-copy to mailbox"
-msgstr "복호화-복사 메일함으로"
-
-#: commands.c:1075
+#: commands.c:1074
 #, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "해독-복사 메일함으로"
@@ -1009,107 +985,155 @@ msgstr "해독-복사 메일함으로"
 msgid "Decrypt-copy to mailbox"
 msgstr "해독-복사 메일함으로"
 
-#: commands.c:1077
+#: commands.c:1078
 #, fuzzy
-msgid "Copy tagged to mailbox"
-msgstr "복사 메일함으로"
+msgid "Decode-copy tagged to mailbox"
+msgstr "복호화-복사 메일함으로"
 
-#: commands.c:1077
+#: commands.c:1079
 #, fuzzy
-msgid "Copy to mailbox"
-msgstr "복사 메일함으로"
-
-#: commands.c:1122
-#, c-format
-msgid "Copying to %s..."
-msgstr "%s로 복사..."
+msgid "Decode-copy to mailbox"
+msgstr "복호화-복사 메일함으로"
 
 #. L10N: Progress meter message when saving tagged messages
-#: commands.c:1202
+#: commands.c:1086
 #, fuzzy
 msgid "Saving tagged messages..."
 msgstr "메일을 프린트 할까요?"
 
-#. L10N: Progress meter message when copying tagged messages
-#: commands.c:1204
+#: commands.c:1090
 #, fuzzy
-msgid "Copying tagged messages..."
+msgid "Save tagged to mailbox"
+msgstr "저장 메일함으로"
+
+#: commands.c:1090
+#, fuzzy
+msgid "Save to mailbox"
+msgstr "저장 메일함으로"
+
+#: commands.c:1093
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "해독-저장 메일함으로"
+
+#: commands.c:1094
+#, fuzzy
+msgid "Decrypt-save to mailbox"
+msgstr "해독-저장 메일함으로"
+
+#: commands.c:1097
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "복호화-저장 메일함으로"
+
+#: commands.c:1098
+#, fuzzy
+msgid "Decode-save to mailbox"
+msgstr "복호화-저장 메일함으로"
+
+#: commands.c:1142
+#, c-format
+msgid "Copying to %s..."
+msgstr "%s로 복사..."
+
+#. L10N: Message when an index tagged save operation fails for some reason
+#: commands.c:1284
+#, fuzzy
+msgid "Error saving tagged messages"
+msgstr "메일을 프린트 할까요?"
+
+#. L10N: Message when an index/pager save operation fails for some reason
+#: commands.c:1289
+#, fuzzy
+msgid "Error saving message"
+msgstr "메일 보내는 중 오류"
+
+#. L10N: Message when an index tagged copy operation fails for some reason
+#: commands.c:1296
+#, fuzzy
+msgid "Error copying tagged messages"
 msgstr "%d개의 메세지를 %s로 복사 중..."
 
+#. L10N: Message when an index/pager copy operation fails for some reason
+#: commands.c:1301
+#, fuzzy
+msgid "Error copying message"
+msgstr "메일 바운스중 오류"
+
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
-#: commands.c:1306
+#: commands.c:1348
 #, fuzzy
 msgid "Content type is too long"
 msgstr "%s로 Content-Type이 바뀜"
 
-#: commands.c:1333
+#: commands.c:1375
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "보낼때 %s로 변환할까요?"
 
-#: commands.c:1344
+#: commands.c:1386
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "%s로 Content-Type이 바뀜"
 
-#: commands.c:1349
+#: commands.c:1391
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "문자셋이 %s에서 변환하지 않음로 바뀜"
 
-#: commands.c:1350
+#: commands.c:1392
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting"
 msgstr "문자셋이 %s에서 변환중로 바뀜"
 
-#: compmbox/compress.c:371 compmbox/compress.c:507
+#: compmbox/compress.c:371 compmbox/compress.c:505
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr ""
 
-#: compmbox/compress.c:455 compmbox/compress.c:519 compmbox/compress.c:597
-#: compmbox/compress.c:635 mbox/mbox.c:1187
+#: compmbox/compress.c:453 compmbox/compress.c:517 compmbox/compress.c:591
+#: compmbox/compress.c:629 mbox/mbox.c:1181
 msgid "Unable to lock mailbox"
 msgstr "메일함을 잠글 수 없음"
 
-#: compmbox/compress.c:459 compmbox/compress.c:526 compmbox/compress.c:601
+#: compmbox/compress.c:457 compmbox/compress.c:524 compmbox/compress.c:595
 #, c-format
 msgid "Decompressing %s"
 msgstr ""
 
-#: compmbox/compress.c:468
+#: compmbox/compress.c:466
 msgid "Can't identify the contents of the compressed file"
 msgstr ""
 
-#: compmbox/compress.c:475 compmbox/compress.c:547
+#: compmbox/compress.c:473 compmbox/compress.c:545
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr ""
 
-#: compmbox/compress.c:529
+#: compmbox/compress.c:527
 #, fuzzy, c-format
 msgid "Compress command failed: %s"
 msgstr "초기 접속(preconnect) 명령 실패."
 
-#: compmbox/compress.c:540
+#: compmbox/compress.c:538
 msgid "Unsupported mailbox type for appending"
 msgstr ""
 
-#: compmbox/compress.c:625
+#: compmbox/compress.c:619
 msgid "Can't sync a compressed file without a close-hook"
 msgstr ""
 
-#: compmbox/compress.c:647 compmbox/compress.c:699
+#: compmbox/compress.c:641 compmbox/compress.c:693
 #, fuzzy, c-format
 msgid "Compressing %s"
 msgstr "%s로 복사..."
 
-#: compmbox/compress.c:694
+#: compmbox/compress.c:688
 #, fuzzy, c-format
 msgid "Compressed-appending to %s..."
 msgstr "%s로 복사..."
 
-#: compmbox/compress.c:706 editmsg.c:263
+#: compmbox/compress.c:700 editmsg.c:263
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "임시 파일을 저장하는 중 오류: %s"
@@ -2050,7 +2074,7 @@ msgstr "폴더에 첨가할 수 없음: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "다중 파트 메일에 경계 변수가 없음"
 
-#: flags.c:383 index.c:2632 index.c:2672 index.c:3193 index.c:3229
+#: flags.c:383 index.c:2639 index.c:2679 index.c:3205 index.c:3241
 #: mutt_thread.c:1126 mutt_thread.c:1192 mutt_thread.c:1277
 msgid "Threading is not enabled"
 msgstr "글타래 모드가 아님"
@@ -2420,7 +2444,7 @@ msgstr ""
 #: ncrypt/smime.c:1130 ncrypt/smime.c:1138 ncrypt/smime.c:1336
 #: ncrypt/smime.c:1730 ncrypt/smime.c:1808 ncrypt/smime.c:1815
 #: ncrypt/smime.c:1919 ncrypt/smime.c:2043 ncrypt/smime.c:2059 nntp/nntp.c:1393
-#: nntp/nntp.c:2233 pattern/exec.c:142 pop/pop.c:175
+#: nntp/nntp.c:2230 pattern/exec.c:142 pop/pop.c:175
 msgid "Can't create temporary file"
 msgstr "임시 파일을 만들 수 없음"
 
@@ -2590,11 +2614,11 @@ msgstr "SSL 실패: %s"
 msgid "Closing connection to %s..."
 msgstr "%s와의 연결을 닫는중..."
 
-#: imap/imap.c:765 nntp/nntp.c:1883 pop/lib.c:341 send/smtp.c:826
+#: imap/imap.c:765 nntp/nntp.c:1880 pop/lib.c:341 send/smtp.c:826
 msgid "Secure connection with TLS?"
 msgstr "TLS를 사용하여 연결 할까요?"
 
-#: imap/imap.c:781 nntp/nntp.c:1906 pop/lib.c:362 send/smtp.c:843
+#: imap/imap.c:781 nntp/nntp.c:1903 pop/lib.c:362 send/smtp.c:843
 msgid "Could not negotiate TLS connection"
 msgstr "TLS 연결 할수 없음"
 
@@ -2602,74 +2626,74 @@ msgstr "TLS 연결 할수 없음"
 msgid "Encrypted connection unavailable"
 msgstr ""
 
-#: imap/imap.c:1275
+#: imap/imap.c:1280
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s에 가입 중..."
 
-#: imap/imap.c:1277
+#: imap/imap.c:1282
 #, fuzzy, c-format
 msgid "Unsubscribing from %s..."
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: imap/imap.c:1453 imap/message.c:1651
+#: imap/imap.c:1458 imap/message.c:1652
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d개의 메세지를 %s로 복사 중..."
 
-#: imap/imap.c:1470 imap/imap.c:2119 imap/message.c:1690 muttlib.c:1406
+#: imap/imap.c:1475 imap/imap.c:2120 imap/message.c:1691 muttlib.c:1406
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
 
-#: imap/imap.c:1543
+#: imap/imap.c:1544
 msgid "Expunge failed"
 msgstr "삭제 실패"
 
-#: imap/imap.c:1561
+#: imap/imap.c:1562
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "%d개의 메일을 삭제 표시함..."
 
-#: imap/imap.c:1601
+#: imap/imap.c:1602
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "메세지 상태 플래그 저장... [%d/%d]"
 
-#: imap/imap.c:1658
+#: imap/imap.c:1659
 msgid "Error saving flags. Close anyway?"
 msgstr ""
 
-#: imap/imap.c:1665
+#: imap/imap.c:1666
 #, fuzzy
 msgid "Error saving flags"
 msgstr "주소 분석 중 오류!"
 
-#: imap/imap.c:1691
+#: imap/imap.c:1692
 msgid "Expunging messages from server..."
 msgstr "서버에서 메세지 삭제 중..."
 
-#: imap/imap.c:1697
+#: imap/imap.c:1698
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: 삭제 실패"
 
-#: imap/imap.c:1923 nntp/nntp.c:2458
+#: imap/imap.c:1924 nntp/nntp.c:2455
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s 선택 중..."
 
-#: imap/imap.c:2086
+#: imap/imap.c:2087
 msgid "Error opening mailbox"
 msgstr "메일함 여는중 오류"
 
-#: imap/imap.c:2228
+#: imap/imap.c:2229
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2272
+#: imap/imap.c:2273
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "무효   "
@@ -2696,7 +2720,7 @@ msgstr "메세지 헤더 가져오는 중... [%d/%d]"
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "이 버젼의 IAMP 서버에서 헤더를 가져올 수 없습니다"
 
-#: imap/message.c:1071 index.c:1585 nntp/nntp.c:1325 pop/pop.c:419
+#: imap/message.c:1071 index.c:1587 nntp/nntp.c:1325 pop/pop.c:419
 #, fuzzy
 msgid "Fetching message headers..."
 msgstr "메세지 헤더 가져오는 중... [%d/%d]"
@@ -2706,21 +2730,21 @@ msgstr "메세지 헤더 가져오는 중... [%d/%d]"
 msgid "Uploading message..."
 msgstr "메일을 업로드 하는 중..."
 
-#: imap/message.c:1657
+#: imap/message.c:1658
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "메세지 %d를 %s로 복사 중..."
 
-#: imap/message.c:1881 imap/message.c:1945 nntp/nntp.c:2696 pop/pop.c:1074
+#: imap/message.c:1882 imap/message.c:1946 nntp/nntp.c:2689 pop/pop.c:1074
 msgid "Fetching message..."
 msgstr "메세지 가져오는 중..."
 
-#: imap/message.c:1932 pop/pop.c:1070
+#: imap/message.c:1933 pop/pop.c:1070
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "잘못된 메일 인덱스. 메일함 열기 재시도."
 
 #: imap/msn.c:48 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
-#: mutt/string.c:1079 mx.c:1237
+#: mutt/string.c:1079 mx.c:1231
 msgid "Out of memory"
 msgstr "메모리 부족"
 
@@ -2763,7 +2787,7 @@ msgstr ""
 msgid "Followup"
 msgstr "%s%s에게 댓글?"
 
-#: index.c:169 index.c:1407
+#: index.c:169 index.c:1409
 msgid "No mailbox is open"
 msgstr "열린 메일함이 없음"
 
@@ -2775,7 +2799,7 @@ msgstr "메일이 없음"
 msgid "No visible messages"
 msgstr "메일 없음"
 
-#: index.c:187 mx.c:960 pager.c:215 recvattach.c:81
+#: index.c:187 mx.c:954 pager.c:215 recvattach.c:81
 msgid "Mailbox is read-only"
 msgstr "읽기 전용 메일함"
 
@@ -2801,81 +2825,81 @@ msgstr "변경 사항은 폴더를 닫을때 기록됨"
 msgid "Changes to folder will not be written"
 msgstr "변경 사항을 기록 하지 않음"
 
-#: index.c:800
+#: index.c:801
 msgid "Failed to create query, aborting"
 msgstr ""
 
-#: index.c:847 muttlib.c:1391 mx.c:220 mx.c:371
+#: index.c:848 muttlib.c:1391 mx.c:221 mx.c:372
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s는 메일함이 아님"
 
-#: index.c:1252
+#: index.c:1254
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "외부에서 메일함이 변경됨. 플래그가 틀릴 수 있음"
 
-#: index.c:1261 pager.c:2407
+#: index.c:1263 pager.c:2408
 msgid "New mail in this mailbox"
 msgstr "현재 메일함에 새 메일 도착"
 
-#: index.c:1278
+#: index.c:1280
 msgid "Mailbox was externally modified"
 msgstr "외부에서 메일함이 변경됨"
 
-#: index.c:1414
+#: index.c:1416
 msgid "No tagged messages"
 msgstr "표시된 메일이 없음"
 
-#: index.c:1418 index.c:1685 menu.c:1385
+#: index.c:1420 index.c:1687 menu.c:1385
 msgid "Nothing to do"
 msgstr "아무것도 하지 않음"
 
-#: index.c:1507
+#: index.c:1509
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "keyID 입력: "
 
-#: index.c:1518
+#: index.c:1520
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index.c:1541
+#: index.c:1543
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임"
 
-#: index.c:1545
+#: index.c:1547
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "서버에서 메세지 삭제 중..."
 
-#: index.c:1556 nntp/nntp.c:2731
+#: index.c:1558 nntp/nntp.c:2724
 #, c-format
 msgid "Article %s not found on the server"
 msgstr ""
 
-#: index.c:1581
+#: index.c:1583
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: index.c:1661
+#: index.c:1663
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "글타래의 모든 메일 지우기"
 
-#: index.c:1682
+#: index.c:1684
 msgid "Jump to message: "
 msgstr "이동: "
 
-#: index.c:1688
+#: index.c:1690
 msgid "Argument must be a message number"
 msgstr "메일의 번호만 가능"
 
-#: index.c:1690
+#: index.c:1692
 msgid "Invalid message number"
 msgstr "잘못된 메일 번호"
 
-#: index.c:1692
+#: index.c:1694
 msgid "That message is not visible"
 msgstr "메일이 볼 수 없는 상태임"
 
@@ -2883,28 +2907,28 @@ msgstr "메일이 볼 수 없는 상태임"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1729 index.c:3323 pager.c:3115
+#: index.c:1731 index.c:3335 pager.c:3116
 #, fuzzy
 msgid "Can't delete messages"
 msgstr "삭제 취소된 메일 없음."
 
-#: index.c:1732
+#: index.c:1734
 msgid "Delete messages matching: "
 msgstr "일치하는 메일 삭제: "
 
-#: index.c:1776
+#: index.c:1778
 msgid "No limit pattern is in effect"
 msgstr "제한 패턴이 없음"
 
-#: index.c:1847
+#: index.c:1849
 msgid "To view all messages, limit to \"all\""
 msgstr ""
 
-#: index.c:1859 pager.c:2521
+#: index.c:1861 pager.c:2522
 msgid "Quit NeoMutt?"
 msgstr "NeoMutt을 종료할까요?"
 
-#: index.c:1964
+#: index.c:1967
 msgid "Tag messages matching: "
 msgstr "일치하는 메일에 표시함: "
 
@@ -2912,205 +2936,205 @@ msgstr "일치하는 메일에 표시함: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1975 index.c:3851 pager.c:3471
+#: index.c:1978 index.c:3863 pager.c:3477
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "삭제 취소된 메일 없음."
 
-#: index.c:1979
+#: index.c:1982
 msgid "Undelete messages matching: "
 msgstr "일치하는 메일을 삭제 취소: "
 
-#: index.c:1988
+#: index.c:1991
 msgid "Untag messages matching: "
 msgstr "일치하는 메일을 표시 해제: "
 
-#: index.c:2028
+#: index.c:2033
 #, fuzzy
 msgid "Logged out of IMAP servers"
 msgstr "IMAP 서버 접속 닫는 중.."
 
-#: index.c:2141
+#: index.c:2148
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "제목 없음. 끝냅니다"
 
-#: index.c:2161
+#: index.c:2168
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index.c:2170
+#: index.c:2177
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: index.c:2202 mx.c:1297 mx.c:1317
+#: index.c:2209 mx.c:1291 mx.c:1311
 msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
-#: index.c:2218
+#: index.c:2225
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "제목 없음. 끝냅니다"
 
-#: index.c:2228
+#: index.c:2235
 msgid "Update tags..."
 msgstr ""
 
-#: index.c:2268
+#: index.c:2275
 msgid "Failed to modify tags, aborting"
 msgstr ""
 
-#: index.c:2316
+#: index.c:2323
 #, fuzzy
 msgid "No query, aborting"
 msgstr "제목 없음. 끝냅니다"
 
-#: index.c:2345 index.c:2365
+#: index.c:2352 index.c:2372
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index.c:2350 index.c:2370
+#: index.c:2357 index.c:2377
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: index.c:2403
+#: index.c:2410
 #, fuzzy
 msgid "No mailboxes have new mail"
 msgstr "새 메일이 도착한 메일함 없음."
 
-#: index.c:2425
+#: index.c:2432
 msgid "Open mailbox in read-only mode"
 msgstr "읽기 전용으로 메일함 열기"
 
-#: index.c:2430
+#: index.c:2437
 msgid "Open mailbox"
 msgstr "메일함 열기"
 
-#: index.c:2490
+#: index.c:2497
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "읽기 전용으로 메일함 열기"
 
-#: index.c:2495
+#: index.c:2502
 msgid "Open newsgroup"
 msgstr ""
 
-#: index.c:2610
+#: index.c:2617
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "저장하지 않고 NeoMutt을 끝낼까요?"
 
 #. L10N: CHECK_ACL
-#: index.c:2626
+#: index.c:2633
 #, fuzzy
 msgid "Can't break thread"
 msgstr "필터를 만들 수 없음"
 
-#: index.c:2643
+#: index.c:2650
 msgid "Thread broken"
 msgstr ""
 
-#: index.c:2656
+#: index.c:2663
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index.c:2666
+#: index.c:2673
 msgid "Can't link threads"
 msgstr ""
 
-#: index.c:2674
+#: index.c:2681
 msgid "No Message-ID: header available to link thread"
 msgstr ""
 
-#: index.c:2686
+#: index.c:2693
 msgid "Threads linked"
 msgstr ""
 
-#: index.c:2689
+#: index.c:2696
 msgid "No thread linked"
 msgstr ""
 
-#: index.c:2729 index.c:2754
+#: index.c:2736 index.c:2761
 msgid "You are on the last message"
 msgstr "마지막 메세지입니다"
 
-#: index.c:2737 index.c:2780
+#: index.c:2744 index.c:2787
 msgid "No undeleted messages"
 msgstr "삭제 취소된 메일 없음"
 
-#: index.c:2772 index.c:2797
+#: index.c:2779 index.c:2804
 msgid "You are on the first message"
 msgstr "첫번째 메세지입니다"
 
-#: index.c:2938
+#: index.c:2950
 #, fuzzy
 msgid "No new messages in this limited view"
 msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임"
 
-#: index.c:2940
+#: index.c:2952
 #, fuzzy
 msgid "No new messages"
 msgstr "새 메일 없음"
 
-#: index.c:2945
+#: index.c:2957
 #, fuzzy
 msgid "No unread messages in this limited view"
 msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임"
 
-#: index.c:2947
+#: index.c:2959
 #, fuzzy
 msgid "No unread messages"
 msgstr "읽지 않은 메일 없음"
 
-#: index.c:2957 menu.c:1177 pager.c:2652 pattern/pattern.c:565
+#: index.c:2969 menu.c:1177 pager.c:2653 pattern/pattern.c:565
 #: pattern/pattern.c:716
 msgid "Search wrapped to top"
 msgstr "위부터 다시 검색"
 
-#: index.c:2962 pager.c:2677 pattern/pattern.c:576 pattern/pattern.c:727
+#: index.c:2974 pager.c:2678 pattern/pattern.c:576 pattern/pattern.c:727
 msgid "Search wrapped to bottom"
 msgstr "아래부터 다시 검색"
 
 #. L10N: CHECK_ACL
-#: index.c:2979
+#: index.c:2991
 #, fuzzy
 msgid "Can't flag message"
 msgstr "메일 보기"
 
 #. L10N: CHECK_ACL
-#: index.c:3024 pager.c:3430
+#: index.c:3036 pager.c:3436
 msgid "Can't toggle new"
 msgstr ""
 
-#: index.c:3118
+#: index.c:3130
 msgid "No more threads"
 msgstr "더 이상 글타래 없음"
 
-#: index.c:3120
+#: index.c:3132
 msgid "You are on the first thread"
 msgstr "처음 글타래입니다"
 
-#: index.c:3214
+#: index.c:3226
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "글타래에 읽지 않은 메세지 있음"
 
 #. L10N: CHECK_ACL
-#: index.c:3272 pager.c:3071
+#: index.c:3284 pager.c:3072
 #, fuzzy
 msgid "Can't delete message"
 msgstr "삭제 취소된 메일 없음."
 
 #. L10N: CHECK_ACL
-#: index.c:3395
+#: index.c:3407
 #, fuzzy
 msgid "Can't edit message"
 msgstr "메일을 쓰지 못함"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index.c:3484 pager.c:3548
+#: index.c:3496 pager.c:3554
 #, fuzzy, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -3119,7 +3143,7 @@ msgstr[0] "메일함이 변경되지 않음"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index.c:3492 pager.c:3552
+#: index.c:3504 pager.c:3558
 #, fuzzy
 msgid "No labels changed"
 msgstr "메일함이 변경되지 않음"
@@ -3128,7 +3152,7 @@ msgstr "메일함이 변경되지 않음"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:3619
+#: index.c:3631
 #, fuzzy
 msgid "Can't mark messages as read"
 msgstr "글타래의 부모 메일로 이동"
@@ -3136,14 +3160,14 @@ msgstr "글타래의 부모 메일로 이동"
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index.c:3658
+#: index.c:3670
 #, fuzzy
 msgid "Enter macro stroke: "
 msgstr "keyID 입력: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index.c:3666
+#: index.c:3678
 #, fuzzy
 msgid "message hotkey"
 msgstr "발송 연기됨."
@@ -3151,28 +3175,28 @@ msgstr "발송 연기됨."
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index.c:3671
+#: index.c:3683
 #, fuzzy, c-format
 msgid "Message bound to %s"
 msgstr "메일이 전달됨"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index.c:3680
+#: index.c:3692
 #, fuzzy
 msgid "No message ID to macro"
 msgstr "폴더에 메일이 없음"
 
-#: index.c:3732 pager.c:3274 recvattach.c:1795
+#: index.c:3744 pager.c:3275 recvattach.c:1795
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: index.c:3735 pager.c:3234 pager.c:3246 pager.c:3277
+#: index.c:3747 pager.c:3235 pager.c:3247 pager.c:3278
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index.c:3813 pager.c:3450
+#: index.c:3825 pager.c:3456
 #, fuzzy
 msgid "Can't undelete message"
 msgstr "삭제 취소된 메일 없음."
@@ -3290,7 +3314,7 @@ msgstr "mailcap 패스가 지정되지 않음"
 msgid "mailcap entry for type %s not found"
 msgstr "%s 형식을 mailcap 항목에서 찾을 수 없음"
 
-#: maildir/maildir.c:237 maildir/mh.c:301
+#: maildir/maildir.c:237 maildir/mh.c:297
 #, fuzzy
 msgid "Could not flush message to disk"
 msgstr "메일을 보낼 수 없음."
@@ -3300,20 +3324,20 @@ msgstr "메일을 보낼 수 없음."
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): 파일 시간을 설정할 수 없음"
 
-#: maildir/maildir.c:671 maildir/mh.c:692
+#: maildir/maildir.c:671 maildir/mh.c:688
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "%s 선택 중..."
 
-#: maildir/maildir.c:690 maildir/mh.c:713 mbox/mbox.c:217 mbox/mbox.c:382
-#: mx.c:384
+#: maildir/maildir.c:690 maildir/mh.c:709 mbox/mbox.c:215 mbox/mbox.c:378
+#: mx.c:385
 #, c-format
 msgid "Reading %s..."
 msgstr "%s 읽는 중..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1402 maildir/mh.c:1064 mbox/mbox.c:1255 mx.c:491
-#: notmuch/notmuch.c:2410
+#: maildir/maildir.c:1367 maildir/mh.c:1028 mbox/mbox.c:1250 mx.c:491
+#: notmuch/notmuch.c:2409
 #, c-format
 msgid "Writing %s..."
 msgstr "%s 쓰는 중..."
@@ -3581,41 +3605,41 @@ msgstr "수신 메일함이 정의되지 않음"
 msgid "Mailbox is empty"
 msgstr "메일함이 비었음"
 
-#: mbox/mbox.c:260 mbox/mbox.c:321
+#: mbox/mbox.c:258 mbox/mbox.c:319
 msgid "Mailbox is corrupt"
 msgstr "메일함이 손상됨"
 
-#: mbox/mbox.c:998
+#: mbox/mbox.c:994
 #, c-format
 msgid "Couldn't lock %s"
 msgstr "%s를 잠글 수 없음."
 
-#: mbox/mbox.c:1134
+#: mbox/mbox.c:1128
 msgid "Mailbox was corrupted"
 msgstr "메일함이 손상되었음"
 
-#: mbox/mbox.c:1178 mbox/mbox.c:1428
+#: mbox/mbox.c:1172 mbox/mbox.c:1423
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "치명적 오류! 메일함을 다시 열 수 없음!"
 
-#: mbox/mbox.c:1233
+#: mbox/mbox.c:1228
 msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr "sync: mbox가 수정되었으나, 수정된 메일는 없음 (버그 보고 바람)"
 
-#: mbox/mbox.c:1374
+#: mbox/mbox.c:1369
 msgid "Committing changes..."
 msgstr "수정중..."
 
-#: mbox/mbox.c:1407
+#: mbox/mbox.c:1402
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "쓰기 실패! 메일함의 일부가 %s에 저장되었음"
 
-#: mbox/mbox.c:1490
+#: mbox/mbox.c:1485
 msgid "Could not reopen mailbox"
 msgstr "메일함을 다시 열 수 없음"
 
-#: mbox/mbox.c:1587 mbox/mbox.c:1738
+#: mbox/mbox.c:1582 mbox/mbox.c:1733
 msgid "Can't write message"
 msgstr "메일을 쓰지 못함"
 
@@ -3656,15 +3680,15 @@ msgstr "마지막 항목에 위치하고 있습니다"
 msgid "You are on the first entry"
 msgstr "첫번째 항목에 위치하고 있습니다"
 
-#: menu.c:1141 pager.c:2700 pattern/pattern.c:493 pattern/pattern.c:644
+#: menu.c:1141 pager.c:2701 pattern/pattern.c:493 pattern/pattern.c:644
 msgid "Search for: "
 msgstr "찾아보기: "
 
-#: menu.c:1142 pager.c:2701 pattern/pattern.c:494 pattern/pattern.c:645
+#: menu.c:1142 pager.c:2702 pattern/pattern.c:494 pattern/pattern.c:645
 msgid "Reverse search for: "
 msgstr "반대 방향으로 찾아보기: "
 
-#: menu.c:1195 pager.c:2649 pager.c:2674 pager.c:2808 pattern/pattern.c:621
+#: menu.c:1195 pager.c:2650 pager.c:2675 pager.c:2809 pattern/pattern.c:621
 #: pattern/pattern.c:772
 msgid "Not found"
 msgstr "찾을 수 없음"
@@ -3854,7 +3878,7 @@ msgstr ""
 msgid "Couldn't source lua source: %s"
 msgstr "%s를 잠글 수 없음.\n"
 
-#: mutt_mailbox.c:228
+#: mutt_mailbox.c:231
 msgid "New mail in "
 msgstr "새 메일 도착 "
 
@@ -3921,7 +3945,7 @@ msgstr "%s에 메일을 첨가할까요?"
 msgid "Can't save message to news server"
 msgstr "POP 서버의 메일을 수정할 수 없음"
 
-#: mx.c:418
+#: mx.c:419
 #, fuzzy, c-format
 msgid "Reading from %s interrupted..."
 msgstr "찾는 도중 중단됨."
@@ -3945,62 +3969,62 @@ msgstr[0] "%d개의 메일을 삭제 표시함..."
 msgid "Can't open trash folder"
 msgstr "폴더에 첨가할 수 없음: %s"
 
-#: mx.c:666
+#: mx.c:663
 msgid "Mark all articles read?"
 msgstr ""
 
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
-#: mx.c:715
+#: mx.c:712
 #, fuzzy, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
 msgstr[0] "읽은 메일을 %s로 옮길까요?"
 
-#: mx.c:729 mx.c:976
+#: mx.c:726 mx.c:970
 #, fuzzy, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "삭제 표시된 메일(%d)을 삭제할까요?"
 
-#: mx.c:752
+#: mx.c:749
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "읽은 메일을 %s로 옮기는 중..."
 
-#: mx.c:823 mx.c:967
+#: mx.c:820 mx.c:961
 msgid "Mailbox is unchanged"
 msgstr "메일함이 변경되지 않음"
 
-#: mx.c:883
+#: mx.c:880
 #, c-format
 msgid "%d kept, %d moved, %d deleted"
 msgstr "%d개 보관, %d개 이동, %d개 삭제"
 
-#: mx.c:887 mx.c:1032
+#: mx.c:884 mx.c:1026
 #, c-format
 msgid "%d kept, %d deleted"
 msgstr "%d개 보관, %d개 삭제"
 
-#: mx.c:951
+#: mx.c:945
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " 쓰기 상태 바꾸기; '%s'를 누르세요"
 
-#: mx.c:953
+#: mx.c:947
 msgid "Use 'toggle-write' to re-enable write"
 msgstr "다시 쓰기를 가능하게 하려면 'toggle-write'를 사용하세요"
 
-#: mx.c:955
+#: mx.c:949
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "메일함이 쓰기 불가능으로 표시 되었음. %s"
 
-#: mx.c:1026
+#: mx.c:1020
 msgid "Mailbox checkpointed"
 msgstr "메일함이 표시됨"
 
-#: mx.c:1362
+#: mx.c:1356
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "메세지 파일을 열 수 없음: %s"
@@ -4918,8 +4942,8 @@ msgstr ""
 "[-- Error: PGP 하부 프로세스를 생성할 수 없음 --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087 ncrypt/smime.c:1906 postpone.c:814
-#: postpone.c:842
+#: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087 ncrypt/smime.c:1906 postpone.c:822
+#: postpone.c:850
 msgid "Decryption failed"
 msgstr "해독 실패"
 
@@ -5213,64 +5237,64 @@ msgstr "%s의 접속이 끊어짐"
 msgid "Fetching list of articles..."
 msgstr "메일의 목록을 가져오는 중..."
 
-#: nntp/nntp.c:1545 nntp/nntp.c:2134 pop/pop.c:605 pop/pop.c:883
+#: nntp/nntp.c:1542 nntp/nntp.c:2131 pop/pop.c:605 pop/pop.c:883
 msgid "Checking for new messages..."
 msgstr "새 메일을 확인중..."
 
-#: nntp/nntp.c:1857 nntp/nntp.c:1950
+#: nntp/nntp.c:1854 nntp/nntp.c:1947
 #, fuzzy
 msgid "Could not switch to reader mode"
 msgstr "임시 메일 폴더를 쓸 수 없음: %s"
 
-#: nntp/nntp.c:1870
+#: nntp/nntp.c:1867
 #, fuzzy, c-format
 msgid "Connected to %s. %s"
 msgstr "%s로 연결 중..."
 
-#: nntp/nntp.c:1871
+#: nntp/nntp.c:1868
 msgid "Posting is NOT ok"
 msgstr ""
 
-#: nntp/nntp.c:1871
+#: nntp/nntp.c:1868
 #, fuzzy
 msgid "Posting is ok"
 msgstr "아무것도 하지 않음"
 
-#: nntp/nntp.c:2004 nntp/nntp.c:2039
+#: nntp/nntp.c:2001 nntp/nntp.c:2036
 #, fuzzy, c-format
 msgid "Can't post article: %s"
 msgstr "%s: %s의 상태를 알수 없음."
 
-#: nntp/nntp.c:2060
+#: nntp/nntp.c:2057
 #, fuzzy, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "서버에서 메세지 삭제 중..."
 
-#: nntp/nntp.c:2102 nntp/nntp.c:2194
+#: nntp/nntp.c:2099 nntp/nntp.c:2191
 #, fuzzy
 msgid "Loading descriptions..."
 msgstr "접속 중..."
 
-#: nntp/nntp.c:2124
+#: nntp/nntp.c:2121
 #, fuzzy
 msgid "Checking for new newsgroups..."
 msgstr "새 메일을 확인중..."
 
-#: nntp/nntp.c:2327
+#: nntp/nntp.c:2324
 msgid "Unable to find child articles because server does not support XPAT command"
 msgstr ""
 
-#: nntp/nntp.c:2409
+#: nntp/nntp.c:2406
 #, fuzzy, c-format
 msgid "%s is an invalid newsgroup specification"
 msgstr "%s는 잘못된 POP 패스"
 
-#: nntp/nntp.c:2448
+#: nntp/nntp.c:2445
 #, c-format
 msgid "Newsgroup %s not found on the server"
 msgstr ""
 
-#: nntp/nntp.c:2470
+#: nntp/nntp.c:2467
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
 msgstr ""
@@ -5330,7 +5354,7 @@ msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 
-#: notmuch/notmuch.c:2552
+#: notmuch/notmuch.c:2549
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "폴더에 첨가할 수 없음: %s"
@@ -6491,29 +6515,29 @@ msgstr ""
 msgid "end"
 msgstr ""
 
-#: pager.c:2537 pager.c:2573 pager.c:2610 pager.c:2987
+#: pager.c:2538 pager.c:2574 pager.c:2611 pager.c:2988
 msgid "Bottom of message is shown"
 msgstr "메세지의 끝입니다"
 
-#: pager.c:2550 pager.c:2580 pager.c:2587 pager.c:2598
+#: pager.c:2551 pager.c:2581 pager.c:2588 pager.c:2599
 msgid "Top of message is shown"
 msgstr "메세지의 처음입니다"
 
-#: pager.c:2848
+#: pager.c:2849
 msgid "Help is currently being shown"
 msgstr "현재 도움말을 보고 있습니다"
 
-#: pager.c:2907
+#: pager.c:2908
 msgid "No more quoted text"
 msgstr "더 이상의 인용문 없음"
 
-#: pager.c:2924
+#: pager.c:2925
 msgid "No more unquoted text after quoted text"
 msgstr "인용문 이후에 더 이상의 비 인용문 없음"
 
 #. L10N: Displayed if <skip-headers> is invoked in the pager, but we
 #. are already past the headers
-#: pager.c:2943
+#: pager.c:2944
 msgid "Already skipped past headers"
 msgstr ""
 
@@ -6521,7 +6545,7 @@ msgstr ""
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager.c:2964
+#: pager.c:2965
 msgid "No text past headers"
 msgstr ""
 
@@ -7094,20 +7118,20 @@ msgstr "메일을 임시 파일에 쓸수 없음"
 msgid "Postponed Messages"
 msgstr "발송 연기 됨"
 
-#: postpone.c:337 postpone.c:361
+#: postpone.c:351 postpone.c:375
 msgid "No postponed messages"
 msgstr "발송 연기된 메일 없음"
 
-#: postpone.c:529
+#: postpone.c:537
 msgid "Illegal S/MIME header"
 msgstr "잘못된 S/MIME 헤더"
 
-#: postpone.c:561 postpone.c:600 postpone.c:609
+#: postpone.c:569 postpone.c:608 postpone.c:617
 #, fuzzy
 msgid "Illegal crypto header"
 msgstr "잘못된 PGP 헤더"
 
-#: postpone.c:702 postpone.c:809 postpone.c:837
+#: postpone.c:710 postpone.c:817 postpone.c:845
 #, fuzzy
 msgid "Decrypting message..."
 msgstr "메세지 가져오는 중..."

@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-02-05 11:49+0000\n"
+"POT-Creation-Date: 2021-02-06 14:52+0000\n"
 "PO-Revision-Date: 2019-10-31 06:24+0100\n"
 "Last-Translator: André Berger <andre.berger@web.de>\n"
 "Language-Team: none\n"
@@ -159,7 +159,7 @@ msgstr ""
 msgid "adu"
 msgstr ""
 
-#: alias/dlgalias.c:314 alias/dlgquery.c:519 index.c:1816
+#: alias/dlgalias.c:314 alias/dlgquery.c:519 index.c:1818
 msgid "Limit to messages matching: "
 msgstr "Begrenze auf Nachrichten nach Muster: "
 
@@ -198,7 +198,7 @@ msgid "Query command not defined"
 msgstr "Kein Abfragekommando definiert"
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:91 index.c:1781
+#: alias/gui.c:91 index.c:1783
 #, c-format
 msgid "Limit: %s"
 msgstr "Begrenze: %s"
@@ -765,7 +765,7 @@ msgstr "Spam: kein passendes Muster"
 msgid "nospam: no matching pattern"
 msgstr "nospam: kein passendes Muster"
 
-#: command_parse.c:1707 imap/imap.c:1301
+#: command_parse.c:1707 imap/imap.c:1306
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Abonniere %s"
@@ -787,7 +787,7 @@ msgstr "unattachments: keine Disposition"
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: ungültige disposition"
 
-#: command_parse.c:2129 imap/imap.c:1303
+#: command_parse.c:2129 imap/imap.c:1308
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Abonnement von %s abbestellt"
@@ -802,7 +802,7 @@ msgstr "Konnte Abonnement von %s nicht abbestellen"
 msgid "Verify signature?"
 msgstr "Signatur überprüfen?"
 
-#: commands.c:268 mbox/mbox.c:1215
+#: commands.c:268 mbox/mbox.c:1209
 msgid "Could not create temporary file"
 msgstr "Kann keine Temporärdatei erzeugen"
 
@@ -839,8 +839,8 @@ msgid "PGP signature could NOT be verified"
 msgstr "PGP-Unterschrift konnte NICHT überprüft werden"
 
 #: commands.c:387 compmbox/compress.c:337 compose/compose.c:2607
-#: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1270 index.c:1319
-#: mutt_attach.c:163 mutt_attach.c:297 pager.c:2458 send/sendlib.c:1057
+#: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1272 index.c:1321
+#: mutt_attach.c:163 mutt_attach.c:297 pager.c:2459 send/sendlib.c:1057
 #, c-format
 msgid "Error running \"%s\""
 msgstr "Fehler beim Ausführen von \"%s\""
@@ -935,39 +935,21 @@ msgstr "danbefugwpt"
 msgid "Shell command: "
 msgstr "Shell-Kommando: "
 
-#: commands.c:1064
-msgid "Decode-save tagged to mailbox"
-msgstr "Speichere ausgewählte dekodiert in Mailbox"
+#. L10N: Progress meter message when copying tagged messages
+#: commands.c:1067
+#, fuzzy
+msgid "Copying tagged messages..."
+msgstr "Kopiere %d Nachricht nach %s..."
 
-#: commands.c:1064
-msgid "Decode-save to mailbox"
-msgstr "Speichere dekodiert in Mailbox"
+#: commands.c:1071
+msgid "Copy tagged to mailbox"
+msgstr "Kopiere ausgewählte in Mailbox"
 
-#: commands.c:1066
-msgid "Decrypt-save tagged to mailbox"
-msgstr "Speichere ausgewählte entschlüsselt in Mailbox"
+#: commands.c:1071
+msgid "Copy to mailbox"
+msgstr "Kopiere in Mailbox"
 
-#: commands.c:1066
-msgid "Decrypt-save to mailbox"
-msgstr "Speichere entschlüsselt in Mailbox"
-
-#: commands.c:1068
-msgid "Save tagged to mailbox"
-msgstr "Speichere ausgewählte in Mailbox"
-
-#: commands.c:1068
-msgid "Save to mailbox"
-msgstr "Speichere in Mailbox"
-
-#: commands.c:1073
-msgid "Decode-copy tagged to mailbox"
-msgstr "Kopiere ausgewählte dekodiert in Mailbox"
-
-#: commands.c:1073
-msgid "Decode-copy to mailbox"
-msgstr "Kopiere dekodiert in Mailbox"
-
-#: commands.c:1075
+#: commands.c:1074
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "Kopiere ausgewählte entschlüsselt in Mailbox"
 
@@ -975,104 +957,146 @@ msgstr "Kopiere ausgewählte entschlüsselt in Mailbox"
 msgid "Decrypt-copy to mailbox"
 msgstr "Kopiere entschlüsselt in Mailbox"
 
-#: commands.c:1077
-msgid "Copy tagged to mailbox"
-msgstr "Kopiere ausgewählte in Mailbox"
+#: commands.c:1078
+msgid "Decode-copy tagged to mailbox"
+msgstr "Kopiere ausgewählte dekodiert in Mailbox"
 
-#: commands.c:1077
-msgid "Copy to mailbox"
-msgstr "Kopiere in Mailbox"
-
-#: commands.c:1122
-#, c-format
-msgid "Copying to %s..."
-msgstr "Kopiere nach %s..."
+#: commands.c:1079
+msgid "Decode-copy to mailbox"
+msgstr "Kopiere dekodiert in Mailbox"
 
 #. L10N: Progress meter message when saving tagged messages
-#: commands.c:1202
+#: commands.c:1086
 #, fuzzy
 msgid "Saving tagged messages..."
 msgstr "Ausgewählte Nachrichten drucken?"
 
-#. L10N: Progress meter message when copying tagged messages
-#: commands.c:1204
+#: commands.c:1090
+msgid "Save tagged to mailbox"
+msgstr "Speichere ausgewählte in Mailbox"
+
+#: commands.c:1090
+msgid "Save to mailbox"
+msgstr "Speichere in Mailbox"
+
+#: commands.c:1093
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Speichere ausgewählte entschlüsselt in Mailbox"
+
+#: commands.c:1094
+msgid "Decrypt-save to mailbox"
+msgstr "Speichere entschlüsselt in Mailbox"
+
+#: commands.c:1097
+msgid "Decode-save tagged to mailbox"
+msgstr "Speichere ausgewählte dekodiert in Mailbox"
+
+#: commands.c:1098
+msgid "Decode-save to mailbox"
+msgstr "Speichere dekodiert in Mailbox"
+
+#: commands.c:1142
+#, c-format
+msgid "Copying to %s..."
+msgstr "Kopiere nach %s..."
+
+#. L10N: Message when an index tagged save operation fails for some reason
+#: commands.c:1284
 #, fuzzy
-msgid "Copying tagged messages..."
+msgid "Error saving tagged messages"
+msgstr "Ausgewählte Nachrichten drucken?"
+
+#. L10N: Message when an index/pager save operation fails for some reason
+#: commands.c:1289
+#, fuzzy
+msgid "Error saving message"
+msgstr "Fehler beim Versand der Nachricht"
+
+#. L10N: Message when an index tagged copy operation fails for some reason
+#: commands.c:1296
+#, fuzzy
+msgid "Error copying tagged messages"
 msgstr "Kopiere %d Nachricht nach %s..."
 
+#. L10N: Message when an index/pager copy operation fails for some reason
+#: commands.c:1301
+#, fuzzy
+msgid "Error copying message"
+msgstr "Fehler beim Weiterleiten der Nachricht"
+
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
-#: commands.c:1306
+#: commands.c:1348
 msgid "Content type is too long"
 msgstr "Content-Type ist zu lang"
 
-#: commands.c:1333
+#: commands.c:1375
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Konvertiere beim Senden nach %s?"
 
-#: commands.c:1344
+#: commands.c:1386
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "Content-Type in %s abgeändert"
 
-#: commands.c:1349
+#: commands.c:1391
 #, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "Zeichensatz in %s abgeändert; nicht konvertiert"
 
-#: commands.c:1350
+#: commands.c:1392
 #, c-format
 msgid "Character set changed to %s; converting"
 msgstr "Zeichensatz in %s abgeändert; konvertiert"
 
-#: compmbox/compress.c:371 compmbox/compress.c:507
+#: compmbox/compress.c:371 compmbox/compress.c:505
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Kann nicht ohne append-hook oder close-hook hinzufügen : %s"
 
-#: compmbox/compress.c:455 compmbox/compress.c:519 compmbox/compress.c:597
-#: compmbox/compress.c:635 mbox/mbox.c:1187
+#: compmbox/compress.c:453 compmbox/compress.c:517 compmbox/compress.c:591
+#: compmbox/compress.c:629 mbox/mbox.c:1181
 msgid "Unable to lock mailbox"
 msgstr "Kann Mailbox nicht für exklusiven Zugriff sperren"
 
-#: compmbox/compress.c:459 compmbox/compress.c:526 compmbox/compress.c:601
+#: compmbox/compress.c:457 compmbox/compress.c:524 compmbox/compress.c:595
 #, c-format
 msgid "Decompressing %s"
 msgstr "Dekomprimiere %s"
 
-#: compmbox/compress.c:468
+#: compmbox/compress.c:466
 msgid "Can't identify the contents of the compressed file"
 msgstr "Kann den Inhalt der komprimierten Datei nicht bestimmen"
 
-#: compmbox/compress.c:475 compmbox/compress.c:547
+#: compmbox/compress.c:473 compmbox/compress.c:545
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "Finde keine Mailbox-Operationen (Rückruffunktionen) für Mailbox-Typ %d"
 
-#: compmbox/compress.c:529
+#: compmbox/compress.c:527
 #, c-format
 msgid "Compress command failed: %s"
 msgstr "Kommando zur Komprimierung fehlgeschlagen: %s"
 
-#: compmbox/compress.c:540
+#: compmbox/compress.c:538
 msgid "Unsupported mailbox type for appending"
 msgstr "Bei diesem Mailbox-Typ ist Hinzufügen nicht möglich"
 
-#: compmbox/compress.c:625
+#: compmbox/compress.c:619
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "Kann komprimierte Datei nicht ohne close-hook synchronisieren"
 
-#: compmbox/compress.c:647 compmbox/compress.c:699
+#: compmbox/compress.c:641 compmbox/compress.c:693
 #, c-format
 msgid "Compressing %s"
 msgstr "Komprimiere %s"
 
-#: compmbox/compress.c:694
+#: compmbox/compress.c:688
 #, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Komprimieren-und-Hinzufügen zu %s..."
 
-#: compmbox/compress.c:706 editmsg.c:263
+#: compmbox/compress.c:700 editmsg.c:263
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Fehler. Speichere Temporärdatei: %s"
@@ -1985,7 +2009,7 @@ msgstr "Hinzufügen zu Mailbox %s nicht möglich"
 msgid "multipart message has no boundary parameter"
 msgstr "Mehrteilige Nachricht hat keinen \"boundary\"-Parameter"
 
-#: flags.c:383 index.c:2632 index.c:2672 index.c:3193 index.c:3229
+#: flags.c:383 index.c:2639 index.c:2679 index.c:3205 index.c:3241
 #: mutt_thread.c:1126 mutt_thread.c:1192 mutt_thread.c:1277
 msgid "Threading is not enabled"
 msgstr "Die Darstellung von Diskussionsfäden ist abgeschaltet"
@@ -2355,7 +2379,7 @@ msgstr "Falsches Format der Verlaufdatei (Zeile %d)"
 #: ncrypt/smime.c:1130 ncrypt/smime.c:1138 ncrypt/smime.c:1336
 #: ncrypt/smime.c:1730 ncrypt/smime.c:1808 ncrypt/smime.c:1815
 #: ncrypt/smime.c:1919 ncrypt/smime.c:2043 ncrypt/smime.c:2059 nntp/nntp.c:1393
-#: nntp/nntp.c:2233 pattern/exec.c:142 pop/pop.c:175
+#: nntp/nntp.c:2230 pattern/exec.c:142 pop/pop.c:175
 msgid "Can't create temporary file"
 msgstr "Kann Temporärdatei nicht erzeugen"
 
@@ -2521,11 +2545,11 @@ msgstr "CREATE fehlgeschlagen: %s"
 msgid "Closing connection to %s..."
 msgstr "Beende Verbindung zu %s..."
 
-#: imap/imap.c:765 nntp/nntp.c:1883 pop/lib.c:341 send/smtp.c:826
+#: imap/imap.c:765 nntp/nntp.c:1880 pop/lib.c:341 send/smtp.c:826
 msgid "Secure connection with TLS?"
 msgstr "Sichere Verbindung mittels TLS?"
 
-#: imap/imap.c:781 nntp/nntp.c:1906 pop/lib.c:362 send/smtp.c:843
+#: imap/imap.c:781 nntp/nntp.c:1903 pop/lib.c:362 send/smtp.c:843
 msgid "Could not negotiate TLS connection"
 msgstr "Konnte keine TLS-Verbindung realisieren"
 
@@ -2533,76 +2557,76 @@ msgstr "Konnte keine TLS-Verbindung realisieren"
 msgid "Encrypted connection unavailable"
 msgstr "Verschlüsselte Verbindung nicht verfügbar"
 
-#: imap/imap.c:1275
+#: imap/imap.c:1280
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonniere %s..."
 
-#: imap/imap.c:1277
+#: imap/imap.c:1282
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Bestelle Abonnement von %s ab..."
 
-#: imap/imap.c:1453 imap/message.c:1651
+#: imap/imap.c:1458 imap/message.c:1652
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Kopiere %d Nachricht nach %s..."
 msgstr[1] "Kopiere %d Nachrichten nach %s..."
 
-#: imap/imap.c:1470 imap/imap.c:2119 imap/message.c:1690 muttlib.c:1406
+#: imap/imap.c:1475 imap/imap.c:2120 imap/message.c:1691 muttlib.c:1406
 #, c-format
 msgid "Create %s?"
 msgstr "%s erstellen?"
 
-#: imap/imap.c:1543
+#: imap/imap.c:1544
 msgid "Expunge failed"
 msgstr "Löschen fehlgeschlagen"
 
-#: imap/imap.c:1561
+#: imap/imap.c:1562
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "Markiere %d Nachricht zum Löschen..."
 msgstr[1] "Markiere %d Nachrichten zum Löschen..."
 
-#: imap/imap.c:1601
+#: imap/imap.c:1602
 #, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Speichere veränderte Nachricht... [%d/%d]"
 msgstr[1] "Speichere veränderte Nachrichten... [%d/%d]"
 
-#: imap/imap.c:1658
+#: imap/imap.c:1659
 msgid "Error saving flags. Close anyway?"
 msgstr "Fehler beim Speichern der Statusindikatoren. Trotzdem schließen?"
 
-#: imap/imap.c:1665
+#: imap/imap.c:1666
 msgid "Error saving flags"
 msgstr "Fehler beim Speichern der Statusindikatoren"
 
-#: imap/imap.c:1691
+#: imap/imap.c:1692
 msgid "Expunging messages from server..."
 msgstr "Lösche Nachrichten auf dem Server..."
 
-#: imap/imap.c:1697
+#: imap/imap.c:1698
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE fehlgeschlagen"
 
-#: imap/imap.c:1923 nntp/nntp.c:2458
+#: imap/imap.c:1924 nntp/nntp.c:2455
 #, c-format
 msgid "Selecting %s..."
 msgstr "Wähle %s aus..."
 
-#: imap/imap.c:2086
+#: imap/imap.c:2087
 msgid "Error opening mailbox"
 msgstr "Fehler beim Öffnen der Mailbox"
 
-#: imap/imap.c:2228
+#: imap/imap.c:2229
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP-Server unterstützt keine selbstdefinierten Statusindikatoren"
 
-#: imap/imap.c:2272
+#: imap/imap.c:2273
 msgid "Invalid IMAP flags"
 msgstr "Ungültige IMAP-Statusindikatoren"
 
@@ -2625,7 +2649,7 @@ msgstr "Hole aktualisierte Markierungen..."
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Kann keine Nachrichtenköpfe von dieser Version des IMAP-Servers laden"
 
-#: imap/message.c:1071 index.c:1585 nntp/nntp.c:1325 pop/pop.c:419
+#: imap/message.c:1071 index.c:1587 nntp/nntp.c:1325 pop/pop.c:419
 msgid "Fetching message headers..."
 msgstr "Hole Kopfdaten von Nachricht..."
 
@@ -2633,21 +2657,21 @@ msgstr "Hole Kopfdaten von Nachricht..."
 msgid "Uploading message..."
 msgstr "Lade Nachricht auf den Server..."
 
-#: imap/message.c:1657
+#: imap/message.c:1658
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopiere Nachricht %d nach %s..."
 
-#: imap/message.c:1881 imap/message.c:1945 nntp/nntp.c:2696 pop/pop.c:1074
+#: imap/message.c:1882 imap/message.c:1946 nntp/nntp.c:2689 pop/pop.c:1074
 msgid "Fetching message..."
 msgstr "Hole Nachricht..."
 
-#: imap/message.c:1932 pop/pop.c:1070
+#: imap/message.c:1933 pop/pop.c:1070
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Der Nachrichtenindex ist fehlerhaft. Versuchen Sie, die Mailbox erneut zu öffnen."
 
 #: imap/msn.c:48 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
-#: mutt/string.c:1079 mx.c:1237
+#: mutt/string.c:1079 mx.c:1231
 msgid "Out of memory"
 msgstr "Kein Speicher verfügbar"
 
@@ -2689,7 +2713,7 @@ msgstr "Artikel"
 msgid "Followup"
 msgstr "Antworte an"
 
-#: index.c:169 index.c:1407
+#: index.c:169 index.c:1409
 msgid "No mailbox is open"
 msgstr "Keine Mailbox ist geöffnet"
 
@@ -2701,7 +2725,7 @@ msgstr "Es sind keine Nachrichten vorhanden"
 msgid "No visible messages"
 msgstr "Keine sichtbaren Nachrichten"
 
-#: index.c:187 mx.c:960 pager.c:215 recvattach.c:81
+#: index.c:187 mx.c:954 pager.c:215 recvattach.c:81
 msgid "Mailbox is read-only"
 msgstr "Mailbox ist schreibgeschützt"
 
@@ -2727,78 +2751,78 @@ msgstr "Änderungen an dieser Mailbox werden beim Verlassen geschrieben"
 msgid "Changes to folder will not be written"
 msgstr "Änderungen an dieser Mailbox werden nicht geschrieben"
 
-#: index.c:800
+#: index.c:801
 msgid "Failed to create query, aborting"
 msgstr "Konnte Anfrage nicht erzeugen, breche ab"
 
-#: index.c:847 muttlib.c:1391 mx.c:220 mx.c:371
+#: index.c:848 muttlib.c:1391 mx.c:221 mx.c:372
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s ist keine Mailbox"
 
-#: index.c:1252
+#: index.c:1254
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Mailbox wurde extern verändert. Statusindikatoren nun ggf. inkorrekt."
 
-#: index.c:1261 pager.c:2407
+#: index.c:1263 pager.c:2408
 msgid "New mail in this mailbox"
 msgstr "Neue Nachrichten in dieser Mailbox"
 
-#: index.c:1278
+#: index.c:1280
 msgid "Mailbox was externally modified"
 msgstr "Mailbox wurde extern verändert"
 
-#: index.c:1414
+#: index.c:1416
 msgid "No tagged messages"
 msgstr "Keine markierten Nachrichten"
 
-#: index.c:1418 index.c:1685 menu.c:1385
+#: index.c:1420 index.c:1687 menu.c:1385
 msgid "Nothing to do"
 msgstr "Nichts zu erledigen"
 
-#: index.c:1507
+#: index.c:1509
 msgid "Enter Message-Id: "
 msgstr "Message-ID eingeben: "
 
-#: index.c:1518
+#: index.c:1520
 msgid "Article has no parent reference"
 msgstr "Der Artikel hat keine eigenen Eltern"
 
-#: index.c:1541
+#: index.c:1543
 msgid "Message is not visible in limited view"
 msgstr "Nachricht in dieser begrenzten Ansicht nicht sichtbar"
 
-#: index.c:1545
+#: index.c:1547
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Lade %s vom Server..."
 
-#: index.c:1556 nntp/nntp.c:2731
+#: index.c:1558 nntp/nntp.c:2724
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Artikel %s wurde auf dem Server nicht gefunden"
 
-#: index.c:1581
+#: index.c:1583
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Keine Message-ID. Kann die Operation nicht ausführen."
 
-#: index.c:1661
+#: index.c:1663
 msgid "No deleted messages found in the thread"
 msgstr "Keine gelöschten Nachrichten im Diskussionsfaden vorhanden"
 
-#: index.c:1682
+#: index.c:1684
 msgid "Jump to message: "
 msgstr "Springe zu Nachricht: "
 
-#: index.c:1688
+#: index.c:1690
 msgid "Argument must be a message number"
 msgstr "Argument muss eine Nachrichtennummer sein"
 
-#: index.c:1690
+#: index.c:1692
 msgid "Invalid message number"
 msgstr "Ungültige Nachrichtennummer"
 
-#: index.c:1692
+#: index.c:1694
 msgid "That message is not visible"
 msgstr "Diese Nachricht ist nicht sichtbar"
 
@@ -2806,27 +2830,27 @@ msgstr "Diese Nachricht ist nicht sichtbar"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1729 index.c:3323 pager.c:3115
+#: index.c:1731 index.c:3335 pager.c:3116
 msgid "Can't delete messages"
 msgstr "Kann Nachricht(en) nicht löschen"
 
-#: index.c:1732
+#: index.c:1734
 msgid "Delete messages matching: "
 msgstr "Lösche Nachrichten nach Muster: "
 
-#: index.c:1776
+#: index.c:1778
 msgid "No limit pattern is in effect"
 msgstr "Zur Zeit ist kein Muster zur Begrenzung aktiv"
 
-#: index.c:1847
+#: index.c:1849
 msgid "To view all messages, limit to \"all\""
 msgstr "Um alle Nachrichten zu sehen, begrenze auf \"all\""
 
-#: index.c:1859 pager.c:2521
+#: index.c:1861 pager.c:2522
 msgid "Quit NeoMutt?"
 msgstr "NeoMutt beenden?"
 
-#: index.c:1964
+#: index.c:1967
 msgid "Tag messages matching: "
 msgstr "Markiere Nachrichten nach Muster: "
 
@@ -2834,188 +2858,188 @@ msgstr "Markiere Nachrichten nach Muster: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1975 index.c:3851 pager.c:3471
+#: index.c:1978 index.c:3863 pager.c:3477
 msgid "Can't undelete messages"
 msgstr "Kann Löschmarkierung nicht entfernen"
 
-#: index.c:1979
+#: index.c:1982
 msgid "Undelete messages matching: "
 msgstr "Entferne Löschmarkierung nach Muster: "
 
-#: index.c:1988
+#: index.c:1991
 msgid "Untag messages matching: "
 msgstr "Entferne Markierung nach Muster: "
 
-#: index.c:2028
+#: index.c:2033
 msgid "Logged out of IMAP servers"
 msgstr "Erfolgreich von IMAP-Servern abgemeldet"
 
-#: index.c:2141
+#: index.c:2148
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Keine virtuelle Mailbox und keine Message-Id, breche ab"
 
-#: index.c:2161
+#: index.c:2168
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "Nachricht nicht in der notmuch-Datenbank zu finden; ’notmuch new’ ausführen."
 
-#: index.c:2170
+#: index.c:2177
 msgid "Failed to read thread, aborting"
 msgstr "Kann Diskussionsfaden nicht lesen, breche ab"
 
-#: index.c:2202 mx.c:1297 mx.c:1317
+#: index.c:2209 mx.c:1291 mx.c:1311
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Ordner unterstützt keine Etikettierung, breche ab"
 
-#: index.c:2218
+#: index.c:2225
 msgid "No tag specified, aborting"
 msgstr "Kein Etikett angegeben, breche ab"
 
-#: index.c:2228
+#: index.c:2235
 msgid "Update tags..."
 msgstr "Aktualisiere Etiketten..."
 
-#: index.c:2268
+#: index.c:2275
 msgid "Failed to modify tags, aborting"
 msgstr "Konnte Etiketten nicht verändern, breche ab"
 
-#: index.c:2316
+#: index.c:2323
 msgid "No query, aborting"
 msgstr "Keine Anfrage, breche ab"
 
-#: index.c:2345 index.c:2365
+#: index.c:2352 index.c:2372
 msgid "Windowed queries disabled"
 msgstr "Fragefenster sind ausgeschaltet"
 
-#: index.c:2350 index.c:2370
+#: index.c:2357 index.c:2377
 msgid "No notmuch vfolder currently loaded"
 msgstr "Zurzeit ist kein virtueller Notmuch-Ordner geladen"
 
-#: index.c:2403
+#: index.c:2410
 msgid "No mailboxes have new mail"
 msgstr "Keine Mailbox mit neuen Nachrichten"
 
-#: index.c:2425
+#: index.c:2432
 msgid "Open mailbox in read-only mode"
 msgstr "Öffne Mailbox schreibgeschützt"
 
-#: index.c:2430
+#: index.c:2437
 msgid "Open mailbox"
 msgstr "Öffne Mailbox"
 
-#: index.c:2490
+#: index.c:2497
 msgid "Open newsgroup in read-only mode"
 msgstr "Öffne Newsgroup schreibgeschützt"
 
-#: index.c:2495
+#: index.c:2502
 msgid "Open newsgroup"
 msgstr "Öffne Newsgroup"
 
-#: index.c:2610
+#: index.c:2617
 msgid "Exit NeoMutt without saving?"
 msgstr "NeoMutt verlassen, ohne Änderungen zu speichern?"
 
 #. L10N: CHECK_ACL
-#: index.c:2626
+#: index.c:2633
 msgid "Can't break thread"
 msgstr "Kann Diskussionsfaden nicht zerteilen"
 
-#: index.c:2643
+#: index.c:2650
 msgid "Thread broken"
 msgstr "Diskussionsfaden unterbrochen"
 
-#: index.c:2656
+#: index.c:2663
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Kann Diskussionsfaden nicht abtrennen, da die Nachricht nicht Teil eines Diskussionsfadens ist"
 
 #. L10N: CHECK_ACL
-#: index.c:2666
+#: index.c:2673
 msgid "Can't link threads"
 msgstr "Kann Diskussionsfäden nicht verbinden"
 
-#: index.c:2674
+#: index.c:2681
 msgid "No Message-ID: header available to link thread"
 msgstr "Keine Message-ID zum Aufbau von Diskussionsfäden verfügbar"
 
-#: index.c:2686
+#: index.c:2693
 msgid "Threads linked"
 msgstr "Diskussionsfäden verbunden"
 
-#: index.c:2689
+#: index.c:2696
 msgid "No thread linked"
 msgstr "Kein Diskussionsfaden verbunden"
 
-#: index.c:2729 index.c:2754
+#: index.c:2736 index.c:2761
 msgid "You are on the last message"
 msgstr "Das ist bereits die letzte Nachricht"
 
-#: index.c:2737 index.c:2780
+#: index.c:2744 index.c:2787
 msgid "No undeleted messages"
 msgstr "Keine ungelöschten Nachrichten"
 
-#: index.c:2772 index.c:2797
+#: index.c:2779 index.c:2804
 msgid "You are on the first message"
 msgstr "Das ist bereits die erste Nachricht"
 
-#: index.c:2938
+#: index.c:2950
 msgid "No new messages in this limited view"
 msgstr "Keine neuen Nachrichten in dieser begrenzten Ansicht"
 
-#: index.c:2940
+#: index.c:2952
 msgid "No new messages"
 msgstr "Keine neuen Nachrichten"
 
-#: index.c:2945
+#: index.c:2957
 msgid "No unread messages in this limited view"
 msgstr "Keine ungelesenen Nachrichten in dieser begrenzten Ansicht"
 
-#: index.c:2947
+#: index.c:2959
 msgid "No unread messages"
 msgstr "Keine ungelesenen Nachrichten"
 
-#: index.c:2957 menu.c:1177 pager.c:2652 pattern/pattern.c:565
+#: index.c:2969 menu.c:1177 pager.c:2653 pattern/pattern.c:565
 #: pattern/pattern.c:716
 msgid "Search wrapped to top"
 msgstr "Suche von vorne begonnen"
 
-#: index.c:2962 pager.c:2677 pattern/pattern.c:576 pattern/pattern.c:727
+#: index.c:2974 pager.c:2678 pattern/pattern.c:576 pattern/pattern.c:727
 msgid "Search wrapped to bottom"
 msgstr "Suche von hinten begonnen"
 
 #. L10N: CHECK_ACL
-#: index.c:2979
+#: index.c:2991
 msgid "Can't flag message"
 msgstr "Kann keinen Statusindikator für Nachricht setzen"
 
 #. L10N: CHECK_ACL
-#: index.c:3024 pager.c:3430
+#: index.c:3036 pager.c:3436
 msgid "Can't toggle new"
 msgstr "Kann nicht umschalten zwischen neu/nicht neu"
 
-#: index.c:3118
+#: index.c:3130
 msgid "No more threads"
 msgstr "Keine weiteren Diskussionsfäden"
 
-#: index.c:3120
+#: index.c:3132
 msgid "You are on the first thread"
 msgstr "Der erste Diskussionsfaden wurde bereits aufgerufen"
 
-#: index.c:3214
+#: index.c:3226
 msgid "Thread contains unread or flagged messages"
 msgstr "Diskussionsfaden enthält ungelesene oder mit Statusindikator versehene Nachrichten"
 
 #. L10N: CHECK_ACL
-#: index.c:3272 pager.c:3071
+#: index.c:3284 pager.c:3072
 msgid "Can't delete message"
 msgstr "Kann Nachricht nicht löschen"
 
 #. L10N: CHECK_ACL
-#: index.c:3395
+#: index.c:3407
 msgid "Can't edit message"
 msgstr "Kann Nachricht nicht bearbeiten"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index.c:3484 pager.c:3548
+#: index.c:3496 pager.c:3554
 #, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -3025,7 +3049,7 @@ msgstr[1] "%d Etiketten verändert"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index.c:3492 pager.c:3552
+#: index.c:3504 pager.c:3558
 msgid "No labels changed"
 msgstr "Etiketten unverändert"
 
@@ -3033,47 +3057,47 @@ msgstr "Etiketten unverändert"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:3619
+#: index.c:3631
 msgid "Can't mark messages as read"
 msgstr "Kann Nachricht(en) nicht als gelesen markieren"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index.c:3658
+#: index.c:3670
 msgid "Enter macro stroke: "
 msgstr "Kurztastenkombination für Makro eingeben: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index.c:3666
+#: index.c:3678
 msgid "message hotkey"
 msgstr "Kurztaste für Nachricht"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index.c:3671
+#: index.c:3683
 #, c-format
 msgid "Message bound to %s"
 msgstr "Nachricht wurde an %s gebunden"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index.c:3680
+#: index.c:3692
 msgid "No message ID to macro"
 msgstr "Makro benötigt eine Message-ID"
 
-#: index.c:3732 pager.c:3274 recvattach.c:1795
+#: index.c:3744 pager.c:3275 recvattach.c:1795
 msgid "Reply by mail as poster prefers?"
 msgstr "Gemäß dem Wunsch des Autors per Mail antworten?"
 
-#: index.c:3735 pager.c:3234 pager.c:3246 pager.c:3277
+#: index.c:3747 pager.c:3235 pager.c:3247 pager.c:3278
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Das Veröffentlichen in der Newsgroup ist nicht erlaubt, ggf. wird diese moderiert. Fortfahren?"
 
 #. L10N: CHECK_ACL
-#: index.c:3813 pager.c:3450
+#: index.c:3825 pager.c:3456
 msgid "Can't undelete message"
 msgstr "Kann Löschmarkierung nicht entfernen"
 
@@ -3189,7 +3213,7 @@ msgstr "Kein Mailcap-Pfad definiert"
 msgid "mailcap entry for type %s not found"
 msgstr "Kann keinen Mailcap-Eintrag für %s finden"
 
-#: maildir/maildir.c:237 maildir/mh.c:301
+#: maildir/maildir.c:237 maildir/mh.c:297
 msgid "Could not flush message to disk"
 msgstr "Konnte Nachricht nicht auf Festplatte speichern"
 
@@ -3197,20 +3221,20 @@ msgstr "Konnte Nachricht nicht auf Festplatte speichern"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): kann Dateizeitstempel nicht setzen"
 
-#: maildir/maildir.c:671 maildir/mh.c:692
+#: maildir/maildir.c:671 maildir/mh.c:688
 #, c-format
 msgid "Scanning %s..."
 msgstr "Durchsuche %s..."
 
-#: maildir/maildir.c:690 maildir/mh.c:713 mbox/mbox.c:217 mbox/mbox.c:382
-#: mx.c:384
+#: maildir/maildir.c:690 maildir/mh.c:709 mbox/mbox.c:215 mbox/mbox.c:378
+#: mx.c:385
 #, c-format
 msgid "Reading %s..."
 msgstr "Lese %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1402 maildir/mh.c:1064 mbox/mbox.c:1255 mx.c:491
-#: notmuch/notmuch.c:2410
+#: maildir/maildir.c:1367 maildir/mh.c:1028 mbox/mbox.c:1250 mx.c:491
+#: notmuch/notmuch.c:2409
 #, c-format
 msgid "Writing %s..."
 msgstr "Schreibe %s..."
@@ -3500,41 +3524,41 @@ msgstr "Keine Eingangs-Mailboxen definiert"
 msgid "Mailbox is empty"
 msgstr "Mailbox ist leer"
 
-#: mbox/mbox.c:260 mbox/mbox.c:321
+#: mbox/mbox.c:258 mbox/mbox.c:319
 msgid "Mailbox is corrupt"
 msgstr "Die Mailbox ist beschädigt"
 
-#: mbox/mbox.c:998
+#: mbox/mbox.c:994
 #, c-format
 msgid "Couldn't lock %s"
 msgstr "Konnte %s nicht für exklusiven Zugriff sperren"
 
-#: mbox/mbox.c:1134
+#: mbox/mbox.c:1128
 msgid "Mailbox was corrupted"
 msgstr "Mailbox wurde beschädigt"
 
-#: mbox/mbox.c:1178 mbox/mbox.c:1428
+#: mbox/mbox.c:1172 mbox/mbox.c:1423
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Fataler Fehler, konnte Mailbox nicht erneut öffnen!"
 
-#: mbox/mbox.c:1233
+#: mbox/mbox.c:1228
 msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr "sync: Mailbox verändert, Nachrichten jedoch unverändert (bitte Bug melden)"
 
-#: mbox/mbox.c:1374
+#: mbox/mbox.c:1369
 msgid "Committing changes..."
 msgstr "Speichere Änderungen..."
 
-#: mbox/mbox.c:1407
+#: mbox/mbox.c:1402
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Konnte nicht schreiben! Speichere Teil-Mailbox in %s"
 
-#: mbox/mbox.c:1490
+#: mbox/mbox.c:1485
 msgid "Could not reopen mailbox"
 msgstr "Konnte Mailbox nicht erneut öffnen"
 
-#: mbox/mbox.c:1587 mbox/mbox.c:1738
+#: mbox/mbox.c:1582 mbox/mbox.c:1733
 msgid "Can't write message"
 msgstr "Kann Nachricht nicht schreiben"
 
@@ -3575,15 +3599,15 @@ msgstr "Dies ist der letzte Eintrag"
 msgid "You are on the first entry"
 msgstr "Dies ist der erste Eintrag"
 
-#: menu.c:1141 pager.c:2700 pattern/pattern.c:493 pattern/pattern.c:644
+#: menu.c:1141 pager.c:2701 pattern/pattern.c:493 pattern/pattern.c:644
 msgid "Search for: "
 msgstr "Suche nach: "
 
-#: menu.c:1142 pager.c:2701 pattern/pattern.c:494 pattern/pattern.c:645
+#: menu.c:1142 pager.c:2702 pattern/pattern.c:494 pattern/pattern.c:645
 msgid "Reverse search for: "
 msgstr "Rückwärtssuche nach: "
 
-#: menu.c:1195 pager.c:2649 pager.c:2674 pager.c:2808 pattern/pattern.c:621
+#: menu.c:1195 pager.c:2650 pager.c:2675 pager.c:2809 pattern/pattern.c:621
 #: pattern/pattern.c:772
 msgid "Not found"
 msgstr "Nicht gefunden"
@@ -3771,7 +3795,7 @@ msgstr "Fehler: Kann Lua Interpreter nicht laden"
 msgid "Couldn't source lua source: %s"
 msgstr "Konnte Lua-Datei nicht laden: %s"
 
-#: mutt_mailbox.c:228
+#: mutt_mailbox.c:231
 msgid "New mail in "
 msgstr "Neue Nachrichten in "
 
@@ -3835,7 +3859,7 @@ msgstr "Nachricht %s hinzufügen?"
 msgid "Can't save message to news server"
 msgstr "Kann Nachricht nicht auf dem Server speichern"
 
-#: mx.c:418
+#: mx.c:419
 #, c-format
 msgid "Reading from %s interrupted..."
 msgstr "Lesen von %s unterbrochen..."
@@ -3858,64 +3882,64 @@ msgstr[1] "Nachrichten nicht gelöscht"
 msgid "Can't open trash folder"
 msgstr "Kann Papierkorb nicht öffnen"
 
-#: mx.c:666
+#: mx.c:663
 msgid "Mark all articles read?"
 msgstr "Alle Artikel als gelesen markieren?"
 
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
-#: mx.c:715
+#: mx.c:712
 #, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
 msgstr[0] "%d gelesene Nachricht nach %s verschieben?"
 msgstr[1] "%d gelesene Nachrichten nach %s verschieben?"
 
-#: mx.c:729 mx.c:976
+#: mx.c:726 mx.c:970
 #, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Entferne %d als gelöscht markierte Nachricht?"
 msgstr[1] "Entferne %d als gelöscht markierte Nachrichten?"
 
-#: mx.c:752
+#: mx.c:749
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Verschiebe gelesene Nachrichten nach %s..."
 
-#: mx.c:823 mx.c:967
+#: mx.c:820 mx.c:961
 msgid "Mailbox is unchanged"
 msgstr "Mailbox unverändert"
 
-#: mx.c:883
+#: mx.c:880
 #, c-format
 msgid "%d kept, %d moved, %d deleted"
 msgstr "%d behalten, %d verschoben, %d gelöscht"
 
-#: mx.c:887 mx.c:1032
+#: mx.c:884 mx.c:1026
 #, c-format
 msgid "%d kept, %d deleted"
 msgstr "%d behalten, %d gelöscht"
 
-#: mx.c:951
+#: mx.c:945
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Drücke '%s' zum Umschalten des Schreibmodus"
 
-#: mx.c:953
+#: mx.c:947
 msgid "Use 'toggle-write' to re-enable write"
 msgstr "'toggle-write' reaktiviert den Schreibmodus"
 
-#: mx.c:955
+#: mx.c:949
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Mailbox ist als schreibgeschützt markiert. %s"
 
-#: mx.c:1026
+#: mx.c:1020
 msgid "Mailbox checkpointed"
 msgstr "Checkpoint in der Mailbox gesetzt"
 
-#: mx.c:1362
+#: mx.c:1356
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Kann Nachrichtendatei nicht öffnen: %s"
@@ -4781,8 +4805,8 @@ msgstr ""
 "[-- Fehler: Konnte PGP-Subprozess nicht erzeugen --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087 ncrypt/smime.c:1906 postpone.c:814
-#: postpone.c:842
+#: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087 ncrypt/smime.c:1906 postpone.c:822
+#: postpone.c:850
 msgid "Decryption failed"
 msgstr "Entschlüsselung gescheitert"
 
@@ -5055,60 +5079,60 @@ msgstr "Verbindung zu %s verloren. Erneut verbinden?"
 msgid "Fetching list of articles..."
 msgstr "Hole Liste der Artikel..."
 
-#: nntp/nntp.c:1545 nntp/nntp.c:2134 pop/pop.c:605 pop/pop.c:883
+#: nntp/nntp.c:1542 nntp/nntp.c:2131 pop/pop.c:605 pop/pop.c:883
 msgid "Checking for new messages..."
 msgstr "Prüfe auf neue Nachrichten..."
 
-#: nntp/nntp.c:1857 nntp/nntp.c:1950
+#: nntp/nntp.c:1854 nntp/nntp.c:1947
 msgid "Could not switch to reader mode"
 msgstr "Konnte nicht in den Lesermodus wechseln"
 
-#: nntp/nntp.c:1870
+#: nntp/nntp.c:1867
 #, c-format
 msgid "Connected to %s. %s"
 msgstr "Verbunden mit %s. %s"
 
-#: nntp/nntp.c:1871
+#: nntp/nntp.c:1868
 msgid "Posting is NOT ok"
 msgstr "Veröffentlichung ist NICHT OK"
 
-#: nntp/nntp.c:1871
+#: nntp/nntp.c:1868
 msgid "Posting is ok"
 msgstr "Veröffentlichung ist OK"
 
-#: nntp/nntp.c:2004 nntp/nntp.c:2039
+#: nntp/nntp.c:2001 nntp/nntp.c:2036
 #, c-format
 msgid "Can't post article: %s"
 msgstr "Kann Artikel nicht veröffentlichen: %s"
 
-#: nntp/nntp.c:2060
+#: nntp/nntp.c:2057
 #, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "Lade Liste der Newsgroups von Server %s..."
 
-#: nntp/nntp.c:2102 nntp/nntp.c:2194
+#: nntp/nntp.c:2099 nntp/nntp.c:2191
 msgid "Loading descriptions..."
 msgstr "Lade Beschreibungen..."
 
-#: nntp/nntp.c:2124
+#: nntp/nntp.c:2121
 msgid "Checking for new newsgroups..."
 msgstr "Prüfe auf neue Newsgroups..."
 
-#: nntp/nntp.c:2327
+#: nntp/nntp.c:2324
 msgid "Unable to find child articles because server does not support XPAT command"
 msgstr "Kann keine Folgeartikel finden, weil der Server das XPAT-Kommando nicht unterstützt"
 
-#: nntp/nntp.c:2409
+#: nntp/nntp.c:2406
 #, c-format
 msgid "%s is an invalid newsgroup specification"
 msgstr "%s ist keine gültige Newsgroup-Angabe"
 
-#: nntp/nntp.c:2448
+#: nntp/nntp.c:2445
 #, c-format
 msgid "Newsgroup %s not found on the server"
 msgstr "Newsgroup %s wurde nicht auf dem Server gefunden"
 
-#: nntp/nntp.c:2470
+#: nntp/nntp.c:2467
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
 msgstr "Newsgroup %s wurde vom Server entfernt"
@@ -5166,7 +5190,7 @@ msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 msgstr[1] ""
 
-#: notmuch/notmuch.c:2552
+#: notmuch/notmuch.c:2549
 msgid "Can't write to virtual folder"
 msgstr "Kann nicht in virtuelle Mailbox schreiben"
 
@@ -6270,29 +6294,29 @@ msgstr "Alles"
 msgid "end"
 msgstr "Ende"
 
-#: pager.c:2537 pager.c:2573 pager.c:2610 pager.c:2987
+#: pager.c:2538 pager.c:2574 pager.c:2611 pager.c:2988
 msgid "Bottom of message is shown"
 msgstr "Das Ende der Nachricht wird angezeigt"
 
-#: pager.c:2550 pager.c:2580 pager.c:2587 pager.c:2598
+#: pager.c:2551 pager.c:2581 pager.c:2588 pager.c:2599
 msgid "Top of message is shown"
 msgstr "Der Beginn der Nachricht wird angezeigt"
 
-#: pager.c:2848
+#: pager.c:2849
 msgid "Help is currently being shown"
 msgstr "Hilfe wird bereits angezeigt"
 
-#: pager.c:2907
+#: pager.c:2908
 msgid "No more quoted text"
 msgstr "Kein weiterer zitierter Text"
 
-#: pager.c:2924
+#: pager.c:2925
 msgid "No more unquoted text after quoted text"
 msgstr "Kein weiterer eigener Text nach zitiertem Text"
 
 #. L10N: Displayed if <skip-headers> is invoked in the pager, but we
 #. are already past the headers
-#: pager.c:2943
+#: pager.c:2944
 msgid "Already skipped past headers"
 msgstr ""
 
@@ -6300,7 +6324,7 @@ msgstr ""
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager.c:2964
+#: pager.c:2965
 msgid "No text past headers"
 msgstr ""
 
@@ -6858,19 +6882,19 @@ msgstr "Kann Nachricht nicht in Temporärdatei schreiben"
 msgid "Postponed Messages"
 msgstr "Zurückgestellte Nachrichten"
 
-#: postpone.c:337 postpone.c:361
+#: postpone.c:351 postpone.c:375
 msgid "No postponed messages"
 msgstr "Keine zurückgestellten Nachrichten"
 
-#: postpone.c:529
+#: postpone.c:537
 msgid "Illegal S/MIME header"
 msgstr "Unzulässiger S/MIME-Header"
 
-#: postpone.c:561 postpone.c:600 postpone.c:609
+#: postpone.c:569 postpone.c:608 postpone.c:617
 msgid "Illegal crypto header"
 msgstr "Unzulässiger Krypto-Header"
 
-#: postpone.c:702 postpone.c:809 postpone.c:837
+#: postpone.c:710 postpone.c:817 postpone.c:845
 msgid "Decrypting message..."
 msgstr "Entschlüssle Nachricht..."
 
