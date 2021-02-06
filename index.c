@@ -2822,13 +2822,18 @@ int mutt_index_menu(struct MuttWindow *dlg)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, cur.e, tag);
 
-        const bool delete_original =
-            (op == OP_SAVE) || (op == OP_DECODE_SAVE) || (op == OP_DECRYPT_SAVE);
-        const bool decode = (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY);
-        const bool decrypt = (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY);
+        const enum MessageSaveOpt save_opt =
+            ((op == OP_SAVE) || (op == OP_DECODE_SAVE) || (op == OP_DECRYPT_SAVE)) ?
+                SAVE_MOVE :
+                SAVE_COPY;
 
-        if ((mutt_save_message(Context->mailbox, &el, delete_original, decode, decrypt) == 0) &&
-            delete_original)
+        enum MessageTransformOpt transform_opt =
+            ((op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY)) ? TRANSFORM_DECODE :
+            ((op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY)) ? TRANSFORM_DECRYPT :
+                                                                   TRANSFORM_NONE;
+
+        const int rc = mutt_save_message(Context->mailbox, &el, save_opt, transform_opt);
+        if ((rc == 0) && (save_opt == SAVE_MOVE))
         {
           menu->redraw |= REDRAW_STATUS;
           if (tag)

@@ -3381,13 +3381,18 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
 
-        const bool delete_original =
-            (ch == OP_SAVE) || (ch == OP_DECODE_SAVE) || (ch == OP_DECRYPT_SAVE);
-        const bool decode = (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY);
-        const bool decrypt = (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY);
+        const enum MessageSaveOpt save_opt =
+            ((ch == OP_SAVE) || (ch == OP_DECODE_SAVE) || (ch == OP_DECRYPT_SAVE)) ?
+                SAVE_MOVE :
+                SAVE_COPY;
 
-        if ((mutt_save_message(Context->mailbox, &el, delete_original, decode, decrypt) == 0) &&
-            delete_original)
+        enum MessageTransformOpt transform_opt =
+            ((ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY)) ? TRANSFORM_DECODE :
+            ((ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY)) ? TRANSFORM_DECRYPT :
+                                                                   TRANSFORM_NONE;
+
+        const int rc2 = mutt_save_message(Context->mailbox, &el, save_opt, transform_opt);
+        if ((rc2 == 0) && (save_opt == SAVE_MOVE))
         {
           if (C_Resolve)
           {

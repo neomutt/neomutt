@@ -1604,7 +1604,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
         }
         bool save_append = m->append;
         m->append = true;
-        mutt_save_message_ctx(e, true, false, false, m);
+        mutt_save_message_ctx(e, SAVE_MOVE, TRANSFORM_NONE, m);
         m->append = save_append;
         /* TODO: why the check for e->env?  Is this possible? */
         if (e->env)

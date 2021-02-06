@@ -942,52 +942,47 @@ void mutt_display_address(struct Envelope *env)
 
 /**
  * set_copy_flags - Set the flags for a message copy
- * @param[in]  e       Email
- * @param[in]  decode  If true, decode the message
- * @param[in]  decrypt If true, decrypt the message
- * @param[out] cmflags Flags, see #CopyMessageFlags
- * @param[out] chflags Flags, see #CopyHeaderFlags
+ * @param[in]  e               Email
+ * @param[in]  transform_opt   Transformation, e.g. #TRANSFORM_DECRYPT
+ * @param[out] cmflags         Flags, see #CopyMessageFlags
+ * @param[out] chflags         Flags, see #CopyHeaderFlags
  */
-static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
+static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_opt,
                            CopyMessageFlags *cmflags, CopyHeaderFlags *chflags)
 {
   *cmflags = MUTT_CM_NO_FLAGS;
   *chflags = CH_UPDATE_LEN;
 
-  if ((WithCrypto != 0) && !decode && decrypt && (e->security & SEC_ENCRYPT))
-  {
-    if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(e->body))
-    {
-      *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
-      *cmflags = MUTT_CM_DECODE_PGP;
-    }
-    else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             mutt_is_application_pgp(e->body) & SEC_ENCRYPT)
-    {
-      decode = 1;
-    }
-    else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-             mutt_is_application_smime(e->body) & SEC_ENCRYPT)
-    {
-      *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
-      *cmflags = MUTT_CM_DECODE_SMIME;
-    }
-  }
+  const bool need_decrypt =
+      (transform_opt == TRANSFORM_DECRYPT) && (e->security & SEC_ENCRYPT);
+  const bool want_pgp = (WithCrypto & APPLICATION_PGP);
+  const bool want_smime = (WithCrypto & APPLICATION_SMIME);
+  const bool is_pgp = mutt_is_application_pgp(e->body) & SEC_ENCRYPT;
+  const bool is_smime = mutt_is_application_smime(e->body) & SEC_ENCRYPT;
 
-  if (decode)
+  if (need_decrypt && want_pgp && mutt_is_multipart_encrypted(e->body))
+  {
+    *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
+    *cmflags = MUTT_CM_DECODE_PGP;
+  }
+  else if (need_decrypt && want_pgp && is_pgp)
   {
     *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN;
     *cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-
-    if (!decrypt) /* If decode doesn't kick in for decrypt, */
+  }
+  else if (need_decrypt && want_smime && is_smime)
+  {
+    *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
+    *cmflags = MUTT_CM_DECODE_SMIME;
+  }
+  else if (transform_opt == TRANSFORM_DECODE)
+  {
+    *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN | CH_DECODE; // then decode RFC2047
+    *cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
+    if (C_CopyDecodeWeed)
     {
-      *chflags |= CH_DECODE; /* then decode RFC2047 headers, */
-
-      if (C_CopyDecodeWeed)
-      {
-        *chflags |= CH_WEED; /* and respect $weed. */
-        *cmflags |= MUTT_CM_WEED;
-      }
+      *chflags |= CH_WEED; // and respect $weed
+      *cmflags |= MUTT_CM_WEED;
     }
   }
 }
@@ -995,30 +990,29 @@ static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
 /**
  * mutt_save_message_ctx - Save a message to a given mailbox
  * @param e                Email
- * @param delete_original  If true, delete the original
- * @param decode           If true, decode the message
- * @param decrypt          If true, decrypt the message
+ * @param save_opt         Copy or move, e.g. #SAVE_MOVE
+ * @param transform_opt    Transformation, e.g. #TRANSFORM_DECRYPT
  * @param m                Mailbox to save to
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_message_ctx(struct Email *e, bool delete_original, bool decode,
-                          bool decrypt, struct Mailbox *m)
+int mutt_save_message_ctx(struct Email *e, enum MessageSaveOpt save_opt,
+                          enum MessageTransformOpt transform_opt, struct Mailbox *m)
 {
   CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
   CopyHeaderFlags chflags = CH_NO_FLAGS;
   int rc;
 
-  set_copy_flags(e, decode, decrypt, &cmflags, &chflags);
+  set_copy_flags(e, transform_opt, &cmflags, &chflags);
 
-  if (decode || decrypt)
+  if (transform_opt != TRANSFORM_NONE)
     mutt_parse_mime_message(Context->mailbox, e);
 
   rc = mutt_append_message(m, Context->mailbox, e, cmflags, chflags);
   if (rc != 0)
     return rc;
 
-  if (delete_original)
+  if (save_opt == SAVE_MOVE)
   {
     mutt_set_flag(Context->mailbox, e, MUTT_DELETE, true);
     mutt_set_flag(Context->mailbox, e, MUTT_PURGE, true);
@@ -1033,60 +1027,85 @@ int mutt_save_message_ctx(struct Email *e, bool delete_original, bool decode,
  * mutt_save_message - Save an email
  * @param m                Mailbox
  * @param el               List of Emails to save
- * @param delete_original  If true, delete the original (save)
- * @param decode           If true, decode the message
- * @param decrypt          If true, decrypt the message
+ * @param save_opt         Copy or move, e.g. #SAVE_MOVE
+ * @param transform_opt    Transformation, e.g. #TRANSFORM_DECRYPT
  * @retval  0 Copy/save was successful
  * @retval -1 Error/abort
  */
 int mutt_save_message(struct Mailbox *m, struct EmailList *el,
-                      bool delete_original, bool decode, bool decrypt)
+                      enum MessageSaveOpt save_opt, enum MessageTransformOpt transform_opt)
 {
   if (!el || STAILQ_EMPTY(el))
     return -1;
 
-  bool need_passphrase = false;
-  int app = 0;
   int rc = -1;
-  const char *prompt = NULL;
-  const char *progress_msg = NULL;
-  struct Progress progress;
   int tagged_progress_count = 0;
-  struct stat st;
-  struct EmailNode *en = STAILQ_FIRST(el);
-  bool single = !STAILQ_NEXT(en, entries);
+  unsigned int msg_count = 0;
 
   struct Buffer *buf = mutt_buffer_pool_get();
+  struct Progress progress;
+  struct stat st;
+  struct EmailNode *en = NULL;
 
-  if (delete_original)
+  STAILQ_FOREACH(en, el, entries)
   {
-    if (decode)
-      prompt = single ? _("Decode-save to mailbox") : _("Decode-save tagged to mailbox");
-    else if (decrypt)
-      prompt = single ? _("Decrypt-save to mailbox") : _("Decrypt-save tagged to mailbox");
-    else
-      prompt = single ? _("Save to mailbox") : _("Save tagged to mailbox");
+    msg_count++;
   }
-  else
+  en = STAILQ_FIRST(el);
+
+  const SecurityFlags security_flags = WithCrypto ? en->email->security : SEC_NO_FLAGS;
+  const bool is_passphrase_needed = security_flags & SEC_ENCRYPT;
+
+  const char *prompt = NULL;
+  const char *progress_msg = NULL;
+
+  // Set prompt and progress_msg
+  switch (save_opt)
   {
-    if (decode)
-      prompt = single ? _("Decode-copy to mailbox") : _("Decode-copy tagged to mailbox");
-    else if (decrypt)
-      prompt = single ? _("Decrypt-copy to mailbox") : _("Decrypt-copy tagged to mailbox");
-    else
-      prompt = single ? _("Copy to mailbox") : _("Copy tagged to mailbox");
+    case SAVE_COPY:
+      // L10N: Progress meter message when copying tagged messages
+      progress_msg = (msg_count > 1) ? _("Copying tagged messages...") : NULL;
+      switch (transform_opt)
+      {
+        case TRANSFORM_NONE:
+          prompt = (msg_count > 1) ? _("Copy tagged to mailbox") : _("Copy to mailbox");
+          break;
+        case TRANSFORM_DECRYPT:
+          prompt = (msg_count > 1) ? _("Decrypt-copy tagged to mailbox") :
+                                     _("Decrypt-copy to mailbox");
+          break;
+        case TRANSFORM_DECODE:
+          prompt = (msg_count > 1) ? _("Decode-copy tagged to mailbox") :
+                                     _("Decode-copy to mailbox");
+          break;
+      }
+      break;
+
+    case SAVE_MOVE:
+      // L10N: Progress meter message when saving tagged messages
+      progress_msg = (msg_count > 1) ? _("Saving tagged messages...") : NULL;
+      switch (transform_opt)
+      {
+        case TRANSFORM_NONE:
+          prompt = (msg_count > 1) ? _("Save tagged to mailbox") : _("Save to mailbox");
+          break;
+        case TRANSFORM_DECRYPT:
+          prompt = (msg_count > 1) ? _("Decrypt-save tagged to mailbox") :
+                                     _("Decrypt-save to mailbox");
+          break;
+        case TRANSFORM_DECODE:
+          prompt = (msg_count > 1) ? _("Decode-save tagged to mailbox") :
+                                     _("Decode-save to mailbox");
+          break;
+      }
+      break;
   }
 
-  if (WithCrypto)
-  {
-    need_passphrase = (en->email->security & SEC_ENCRYPT);
-    app = en->email->security;
-  }
   mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
   mutt_default_save(buf->data, buf->dsize, en->email);
   mutt_buffer_fix_dptr(buf);
-
   mutt_buffer_pretty_mailbox(buf);
+
   if (mutt_buffer_enter_fname(prompt, buf, false) == -1)
     goto cleanup;
 
@@ -1113,19 +1132,21 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   if (mutt_save_confirm(mutt_buffer_string(buf), &st) != 0)
     goto cleanup;
 
-  if ((WithCrypto != 0) && need_passphrase && (decode || decrypt) &&
-      !crypt_valid_passphrase(app))
+  if (is_passphrase_needed && (transform_opt != TRANSFORM_NONE) &&
+      !crypt_valid_passphrase(security_flags))
   {
-    goto cleanup;
+    rc = -1;
+    goto errcleanup;
   }
 
   mutt_message(_("Copying to %s..."), mutt_buffer_string(buf));
 
 #ifdef USE_IMAP
-  if ((m->type == MUTT_IMAP) && !(decode || decrypt) &&
-      (imap_path_probe(mutt_buffer_string(buf), NULL) == MUTT_IMAP))
+  enum MailboxType mailbox_type = imap_path_probe(mutt_buffer_string(buf), NULL);
+  if ((m->type == MUTT_IMAP) && (transform_opt == TRANSFORM_NONE) && (mailbox_type == MUTT_IMAP))
   {
-    switch (imap_copy_messages(m, el, mutt_buffer_string(buf), delete_original))
+    rc = imap_copy_messages(m, el, mutt_buffer_string(buf), save_opt);
+    switch (rc)
     {
       /* success */
       case 0:
@@ -1137,7 +1158,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
         break;
       /* fatal error, abort */
       case -1:
-        goto cleanup;
+        goto errcleanup;
     }
   }
 #endif
@@ -1148,13 +1169,14 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   OpenMailboxFlags mbox_flags = MUTT_NEWFOLDER;
   /* Display a tagged message progress counter, rather than (for
    * IMAP) a per-message progress counter */
-  if (!single)
+  if (msg_count > 1)
     mbox_flags |= MUTT_QUIET;
   struct Context *ctx_save = mx_mbox_open(m_save, mbox_flags);
   if (!ctx_save)
   {
+    rc = -1;
     mailbox_free(&m_save);
-    goto cleanup;
+    goto errcleanup;
   }
   m_save->append = true;
 
@@ -1170,14 +1192,14 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   if (m_comp && (m_comp->msg_count == 0))
     m_comp = NULL;
 #endif
-  if (single)
+  if (msg_count == 1)
   {
-    if (mutt_save_message_ctx(en->email, delete_original, decode, decrypt,
-                              ctx_save->mailbox) != 0)
+    rc = mutt_save_message_ctx(en->email, save_opt, transform_opt, ctx_save->mailbox);
+    if (rc != 0)
     {
       mx_mbox_close(&ctx_save);
       m_save->append = old_append;
-      goto cleanup;
+      goto errcleanup;
     }
 #ifdef USE_COMP_MBOX
     if (m_comp)
@@ -1197,17 +1219,6 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   else
   {
     rc = 0;
-
-    // L10N: Progress meter message when saving tagged messages
-    progress_msg = delete_original ? _("Saving tagged messages...") :
-                                     // L10N: Progress meter message when copying tagged messages
-                       _("Copying tagged messages...");
-
-    int msg_count = 0;
-    STAILQ_FOREACH(en, el, entries)
-    {
-      msg_count++;
-    }
     mutt_progress_init(&progress, progress_msg, MUTT_PROGRESS_WRITE, msg_count);
 
 #ifdef USE_NOTMUCH
@@ -1218,8 +1229,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     {
       mutt_progress_update(&progress, ++tagged_progress_count, -1);
       mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-      rc = mutt_save_message_ctx(en->email, delete_original, decode, decrypt,
-                                 ctx_save->mailbox);
+      rc = mutt_save_message_ctx(en->email, save_opt, transform_opt, ctx_save->mailbox);
       if (rc != 0)
         break;
 #ifdef USE_COMP_MBOX
@@ -1246,7 +1256,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     {
       mx_mbox_close(&ctx_save);
       m_save->append = old_append;
-      goto cleanup;
+      goto errcleanup;
     }
   }
 
@@ -1261,6 +1271,38 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 
   mutt_clear_error();
   rc = 0;
+
+errcleanup:
+  if (rc != 0)
+  {
+    switch (save_opt)
+    {
+      case SAVE_MOVE:
+        if (msg_count > 1)
+        {
+          // L10N: Message when an index tagged save operation fails for some reason
+          mutt_error(_("Error saving tagged messages"));
+        }
+        else
+        {
+          // L10N: Message when an index/pager save operation fails for some reason
+          mutt_error(_("Error saving message"));
+        }
+        break;
+      case SAVE_COPY:
+        if (msg_count > 1)
+        {
+          // L10N: Message when an index tagged copy operation fails for some reason
+          mutt_error(_("Error copying tagged messages"));
+        }
+        else
+        {
+          // L10N: Message when an index/pager copy operation fails for some reason
+          mutt_error(_("Error copying message"));
+        }
+        break;
+    }
+  }
 
 cleanup:
   mutt_buffer_pool_release(&buf);
