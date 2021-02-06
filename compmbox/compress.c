@@ -421,9 +421,9 @@ static bool comp_ac_owns_path(struct Account *a, const char *path)
 /**
  * comp_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-static int comp_ac_add(struct Account *a, struct Mailbox *m)
+static bool comp_ac_add(struct Account *a, struct Mailbox *m)
 {
-  return 0;
+  return true;
 }
 
 /**
@@ -434,13 +434,11 @@ static int comp_ac_add(struct Account *a, struct Mailbox *m)
  * Then determine the type of the mailbox so we can delegate the handling of
  * messages.
  */
-static int comp_mbox_open(struct Mailbox *m)
+static enum MxOpenReturns comp_mbox_open(struct Mailbox *m)
 {
   struct CompressInfo *ci = set_compress_info(m);
   if (!ci)
-    return -1;
-
-  int rc;
+    return MX_OPEN_ERROR;
 
   /* If there's no close-hook, or the file isn't writable */
   if (!ci->cmd_close || (access(mailbox_path(m), W_OK) != 0))
@@ -456,7 +454,7 @@ static int comp_mbox_open(struct Mailbox *m)
     goto cmo_fail;
   }
 
-  rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
+  int rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
   if (rc == 0)
     goto cmo_fail;
 
@@ -483,7 +481,7 @@ cmo_fail:
   /* remove the partial uncompressed file */
   remove(mailbox_path(m));
   compress_info_free(m);
-  return -1;
+  return MX_OPEN_ERROR;
 }
 
 /**
@@ -494,12 +492,12 @@ cmo_fail:
  * To append to a compressed mailbox we need an append-hook (or both open- and
  * close-hooks).
  */
-static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
+static bool comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   /* If this succeeds, we know there's an open-hook */
   struct CompressInfo *ci = set_compress_info(m);
   if (!ci)
-    return -1;
+    return false;
 
   /* To append we need an append-hook or a close-hook */
   if (!ci->cmd_append && !ci->cmd_close)
@@ -548,10 +546,10 @@ static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     goto cmoa_fail2;
   }
 
-  if (ci->child_ops->mbox_open_append(m, flags) != 0)
+  if (!ci->child_ops->mbox_open_append(m, flags))
     goto cmoa_fail2;
 
-  return 0;
+  return true;
 
 cmoa_fail2:
   /* remove the partial uncompressed file */
@@ -560,49 +558,45 @@ cmoa_fail1:
   /* Free the compress_info to prevent close from trying to recompress */
   compress_info_free(m);
 
-  return -1;
+  return false;
 }
 
 /**
  * comp_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param m Mailbox
- * @retval 0              Mailbox OK
- * @retval #MUTT_REOPENED The mailbox was closed and reopened
- * @retval -1             Mailbox bad
+ * @retval enum #MxStatus
  *
  * If the compressed file changes in size but the mailbox hasn't been changed
  * in NeoMutt, then we can close and reopen the mailbox.
  *
  * If the mailbox has been changed in NeoMutt, warn the user.
- *
- * The return codes are picked to match mx_mbox_check().
  */
-static int comp_mbox_check(struct Mailbox *m)
+static enum MxStatus comp_mbox_check(struct Mailbox *m)
 {
   if (!m->compress_info)
-    return -1;
+    return MX_STATUS_ERROR;
 
   struct CompressInfo *ci = m->compress_info;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
-    return -1;
+    return MX_STATUS_ERROR;
 
   int size = mutt_file_get_size(m->realpath);
   if (size == ci->size)
-    return 0;
+    return MX_STATUS_OK;
 
   if (!lock_realpath(m, false))
   {
     mutt_error(_("Unable to lock mailbox"));
-    return -1;
+    return MX_STATUS_ERROR;
   }
 
   int rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
   store_size(m);
   unlock_realpath(m);
   if (rc == 0)
-    return -1;
+    return MX_STATUS_ERROR;
 
   return ops->mbox_check(m);
 }
@@ -613,50 +607,50 @@ static int comp_mbox_check(struct Mailbox *m)
  * Changes in NeoMutt only affect the tmp file.
  * Calling comp_mbox_sync() will commit them to the compressed file.
  */
-static int comp_mbox_sync(struct Mailbox *m)
+static enum MxStatus comp_mbox_sync(struct Mailbox *m)
 {
   if (!m->compress_info)
-    return -1;
+    return MX_STATUS_ERROR;
 
   struct CompressInfo *ci = m->compress_info;
 
   if (!ci->cmd_close)
   {
     mutt_error(_("Can't sync a compressed file without a close-hook"));
-    return -1;
+    return MX_STATUS_ERROR;
   }
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
-    return -1;
+    return MX_STATUS_ERROR;
 
   if (!lock_realpath(m, true))
   {
     mutt_error(_("Unable to lock mailbox"));
-    return -1;
+    return MX_STATUS_ERROR;
   }
 
-  int rc = comp_mbox_check(m);
-  if (rc != 0)
+  enum MxStatus check = comp_mbox_check(m);
+  if (check != MX_STATUS_OK)
     goto sync_cleanup;
 
-  rc = ops->mbox_sync(m);
-  if (rc != 0)
+  check = ops->mbox_sync(m);
+  if (check != MX_STATUS_OK)
     goto sync_cleanup;
 
-  rc = execute_command(m, ci->cmd_close, _("Compressing %s"));
+  int rc = execute_command(m, ci->cmd_close, _("Compressing %s"));
   if (rc == 0)
   {
-    rc = -1;
+    check = MX_STATUS_ERROR;
     goto sync_cleanup;
   }
 
-  rc = 0;
+  check = MX_STATUS_OK;
 
 sync_cleanup:
   store_size(m);
   unlock_realpath(m);
-  return rc;
+  return check;
 }
 
 /**
@@ -665,10 +659,10 @@ sync_cleanup:
  * If the mailbox has been changed then re-compress the tmp file.
  * Then delete the tmp file.
  */
-static int comp_mbox_close(struct Mailbox *m)
+static enum MxStatus comp_mbox_close(struct Mailbox *m)
 {
   if (!m->compress_info)
-    return -1;
+    return MX_STATUS_ERROR;
 
   struct CompressInfo *ci = m->compress_info;
 
@@ -676,7 +670,7 @@ static int comp_mbox_close(struct Mailbox *m)
   if (!ops)
   {
     compress_info_free(m);
-    return -1;
+    return MX_STATUS_ERROR;
   }
 
   ops->mbox_close(m);
@@ -725,22 +719,22 @@ static int comp_mbox_close(struct Mailbox *m)
 
   compress_info_free(m);
 
-  return 0;
+  return MX_STATUS_OK;
 }
 
 /**
  * comp_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
-static int comp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool comp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
   if (!m->compress_info)
-    return -1;
+    return false;
 
   struct CompressInfo *ci = m->compress_info;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
-    return -1;
+    return false;
 
   /* Delegate */
   return ops->msg_open(m, msg, msgno);
@@ -749,16 +743,16 @@ static int comp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 /**
  * comp_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  */
-static int comp_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
+static bool comp_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
   if (!m->compress_info)
-    return -1;
+    return false;
 
   struct CompressInfo *ci = m->compress_info;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
-    return -1;
+    return false;
 
   /* Delegate */
   return ops->msg_open_new(m, msg, e);

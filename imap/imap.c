@@ -1086,15 +1086,12 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
  * imap_check_mailbox - use the NOOP or IDLE command to poll for new mail
  * @param m     Mailbox
  * @param force Don't wait
- * @retval #MUTT_REOPENED  mailbox has been externally modified
- * @retval #MUTT_NEW_MAIL  new mail has arrived
- * @retval 0               no change
- * @retval -1              error
+ * return enum MxStatus
  */
-int imap_check_mailbox(struct Mailbox *m, bool force)
+enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
 {
   if (!m || !m->account)
-    return -1;
+    return MX_STATUS_ERROR;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -1108,7 +1105,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
       ((adata->state != IMAP_IDLE) || (mutt_date_epoch() >= adata->lastread + C_ImapKeepalive)))
   {
     if (imap_cmd_idle(adata) < 0)
-      return -1;
+      return MX_STATUS_ERROR;
   }
   if (adata->state == IMAP_IDLE)
   {
@@ -1117,7 +1114,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
       if (imap_cmd_step(adata) != IMAP_RES_CONTINUE)
       {
         mutt_debug(LL_DEBUG1, "Error reading IDLE response\n");
-        return -1;
+        return MX_STATUS_ERROR;
       }
     }
     if (rc < 0)
@@ -1131,23 +1128,26 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
                  (mutt_date_epoch() >= adata->lastread + C_Timeout))) &&
       (imap_exec(adata, "NOOP", IMAP_CMD_POLL) != IMAP_EXEC_SUCCESS))
   {
-    return -1;
+    return MX_STATUS_ERROR;
   }
 
   /* We call this even when we haven't run NOOP in case we have pending
    * changes to process, since we can reopen here. */
   imap_cmd_finish(adata);
 
+  enum MxStatus check = MX_STATUS_OK;
   if (mdata->check_status & IMAP_EXPUNGE_PENDING)
-    rc = MUTT_REOPENED;
+    check = MX_STATUS_REOPENED;
   else if (mdata->check_status & IMAP_NEWMAIL_PENDING)
-    rc = MUTT_NEW_MAIL;
+    check = MX_STATUS_NEW_MAIL;
   else if (mdata->check_status & IMAP_FLAGS_PENDING)
-    rc = MUTT_FLAGS;
+    check = MX_STATUS_FLAGS;
+  else if (rc < 0)
+    check = MX_STATUS_ERROR;
 
   mdata->check_status = IMAP_OPEN_NO_FLAGS;
 
-  return rc;
+  return check;
 }
 
 /**
@@ -1200,9 +1200,14 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
 /**
  * imap_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-static int imap_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+static enum MxStatus imap_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
-  return imap_mailbox_status(m, true);
+  const int new_msgs = imap_mailbox_status(m, true);
+  if (new_msgs == -1)
+    return MX_STATUS_ERROR;
+  if (new_msgs == 0)
+    return MX_STATUS_OK;
+  return MX_STATUS_NEW_MAIL;
 }
 
 /**
@@ -1499,14 +1504,11 @@ out:
  * @param m       Mailbox
  * @param expunge if true do expunge
  * @param close   if true we move imap state to CLOSE
- * @retval #MUTT_REOPENED  mailbox has been externally modified
- * @retval #MUTT_NEW_MAIL  new mail has arrived
- * @retval  0 Success
- * @retval -1 Error
+ * @retval enum #MxStatus
  *
  * @note The flag retvals come from a call to imap_check_mailbox()
  */
-int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
+enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 {
   if (!m)
     return -1;
@@ -1514,7 +1516,6 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   struct Email **emails = NULL;
   int oldsort;
   int rc;
-  int check;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -1529,8 +1530,8 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
    * to be changed. */
   imap_allow_reopen(m);
 
-  check = imap_check_mailbox(m, false);
-  if (check < 0)
+  enum MxStatus check = imap_check_mailbox(m, false);
+  if (check == MX_STATUS_ERROR)
     return check;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */
@@ -1734,7 +1735,7 @@ static bool imap_ac_owns_path(struct Account *a, const char *path)
 /**
  * imap_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-static int imap_ac_add(struct Account *a, struct Mailbox *m)
+static bool imap_ac_add(struct Account *a, struct Mailbox *m)
 {
   struct ImapAccountData *adata = a->adata;
 
@@ -1744,14 +1745,14 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
     char mailbox[PATH_MAX];
 
     if (imap_parse_path(mailbox_path(m), &cac, mailbox, sizeof(mailbox)) < 0)
-      return -1;
+      return false;
 
     adata = imap_adata_new(a);
     adata->conn = mutt_conn_new(&cac);
     if (!adata->conn)
     {
       imap_adata_free((void **) &adata);
-      return -1;
+      return false;
     }
 
     mutt_account_hook(m->realpath);
@@ -1759,7 +1760,7 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
     if (imap_login(adata) < 0)
     {
       imap_adata_free((void **) &adata);
-      return -1;
+      return false;
     }
 
     a->adata = adata;
@@ -1781,7 +1782,7 @@ static int imap_ac_add(struct Account *a, struct Mailbox *m)
     m->mdata_free = imap_mdata_free;
     url_free(&url);
   }
-  return 0;
+  return true;
 }
 
 /**
@@ -1897,10 +1898,10 @@ int imap_login(struct ImapAccountData *adata)
 /**
  * imap_mbox_open - Open a mailbox - Implements MxOps::mbox_open()
  */
-static int imap_mbox_open(struct Mailbox *m)
+static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
 {
   if (!m->account || !m->mdata)
-    return -1;
+    return MX_OPEN_ERROR;
 
   char buf[PATH_MAX];
   int count = 0;
@@ -2088,21 +2089,21 @@ static int imap_mbox_open(struct Mailbox *m)
   }
 
   mutt_debug(LL_DEBUG2, "msg_count is %d\n", m->msg_count);
-  return 0;
+  return MX_OPEN_OK;
 
 fail:
   if (adata->state == IMAP_SELECTED)
     adata->state = IMAP_AUTHENTICATED;
-  return -1;
+  return MX_OPEN_ERROR;
 }
 
 /**
  * imap_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append()
  */
-static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
+static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   if (!m->account)
-    return -1;
+    return false;
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
    * ctx is brand new and mostly empty */
@@ -2111,31 +2112,31 @@ static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
   int rc = imap_mailbox_status(m, false);
   if (rc >= 0)
-    return 0;
+    return true;
   if (rc == -1)
-    return -1;
+    return false;
 
   char buf[PATH_MAX + 64];
   snprintf(buf, sizeof(buf), _("Create %s?"), mdata->name);
   if (C_Confirmcreate && (mutt_yesorno(buf, MUTT_YES) != MUTT_YES))
-    return -1;
+    return false;
 
   if (imap_create_mailbox(adata, mdata->name) < 0)
-    return -1;
+    return false;
 
-  return 0;
+  return true;
 }
 
 /**
  * imap_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param m Mailbox
- * @retval >0 Success, e.g. #MUTT_REOPENED
+ * @retval >0 Success, e.g. #MX_STATUS_REOPENED
  * @retval -1 Failure
  */
-static int imap_mbox_check(struct Mailbox *m)
+static enum MxStatus imap_mbox_check(struct Mailbox *m)
 {
   imap_allow_reopen(m);
-  int rc = imap_check_mailbox(m, false);
+  enum MxStatus rc = imap_check_mailbox(m, false);
   /* NOTE - ctx might have been changed at this point. In particular,
    * m could be NULL. Beware. */
   imap_disallow_reopen(m);
@@ -2146,14 +2147,14 @@ static int imap_mbox_check(struct Mailbox *m)
 /**
  * imap_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  */
-static int imap_mbox_close(struct Mailbox *m)
+static enum MxStatus imap_mbox_close(struct Mailbox *m)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
   /* Check to see if the mailbox is actually open */
   if (!adata || !mdata)
-    return 0;
+    return MX_STATUS_OK;
 
   /* imap_mbox_open_append() borrows the struct ImapAccountData temporarily,
    * just for the connection.
@@ -2182,15 +2183,15 @@ static int imap_mbox_close(struct Mailbox *m)
     imap_mdata_cache_reset(m->mdata);
   }
 
-  return 0;
+  return MX_STATUS_OK;
 }
 
 /**
  * imap_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  */
-static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
+static bool imap_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
-  int rc = -1;
+  bool success = false;
 
   struct Buffer *tmp = mutt_buffer_pool_get();
   mutt_buffer_mktemp(tmp);
@@ -2203,11 +2204,11 @@ static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, const struc
   }
 
   msg->path = mutt_buffer_strdup(tmp);
-  rc = 0;
+  success = true;
 
 cleanup:
   mutt_buffer_pool_release(&tmp);
-  return rc;
+  return success;
 }
 
 /**

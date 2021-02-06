@@ -313,7 +313,7 @@ int imap_cache_del(struct Mailbox *m, struct Email *e);
 int imap_cache_clean(struct Mailbox *m);
 int imap_append_message(struct Mailbox *m, struct Message *msg);
 
-int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno);
+bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno);
 int imap_msg_close(struct Mailbox *m, struct Message *msg);
 int imap_msg_commit(struct Mailbox *m, struct Message *msg);
 int imap_msg_save_hcache(struct Mailbox *m, struct Email *e);

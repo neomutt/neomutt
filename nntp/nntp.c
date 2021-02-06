@@ -1521,30 +1521,27 @@ static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
 /**
  * check_mailbox - Check current newsgroup for new articles
  * @param m Mailbox
- * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
- * @retval #MUTT_NEW_MAIL New articles found
- * @retval  0             No change
- * @retval -1             Lost connection
+ * @retval enum #MxStatus
  *
  * Leave newsrc locked
  */
-static int check_mailbox(struct Mailbox *m)
+static enum MxStatus check_mailbox(struct Mailbox *m)
 {
   if (!m)
-    return -1;
+    return MX_STATUS_ERROR;
 
   struct NntpMboxData *mdata = m->mdata;
   struct NntpAccountData *adata = mdata->adata;
   time_t now = mutt_date_epoch();
-  int rc = 0;
+  enum MxStatus rc = MX_STATUS_OK;
   void *hc = NULL;
 
   if (adata->check_time + C_NntpPoll > now)
-    return 0;
+    return MX_STATUS_OK;
 
   mutt_message(_("Checking for new messages..."));
   if (nntp_newsrc_parse(adata) < 0)
-    return -1;
+    return MX_STATUS_ERROR;
 
   adata->check_time = now;
   int rc2 = nntp_group_poll(mdata, false);
@@ -1570,7 +1567,7 @@ static int check_mailbox(struct Mailbox *m)
       if (C_NntpContext && (mdata->last_message - mdata->last_loaded > C_NntpContext))
         mdata->last_loaded = mdata->last_message - C_NntpContext;
     }
-    rc = MUTT_REOPENED;
+    rc = MX_STATUS_REOPENED;
   }
 
   /* .newsrc has been externally modified */
@@ -1687,11 +1684,11 @@ static int check_mailbox(struct Mailbox *m)
 #endif
 
     adata->newsrc_modified = false;
-    rc = MUTT_REOPENED;
+    rc = MX_STATUS_REOPENED;
   }
 
   /* some headers were removed, context must be updated */
-  if (rc == MUTT_REOPENED)
+  if (rc == MX_STATUS_REOPENED)
     mailbox_changed(m, NT_MAILBOX_INVALID);
 
   /* fetch headers of new articles */
@@ -1716,14 +1713,14 @@ static int check_mailbox(struct Mailbox *m)
         mailbox_changed(m, NT_MAILBOX_INVALID);
       mdata->last_loaded = mdata->last_message;
     }
-    if ((rc == 0) && (m->msg_count > oldmsgcount))
-      rc = MUTT_NEW_MAIL;
+    if ((rc == MX_STATUS_OK) && (m->msg_count > oldmsgcount))
+      rc = MX_STATUS_NEW_MAIL;
   }
 
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
 #endif
-  if (rc)
+  if (rc != MX_STATUS_OK)
     nntp_newsrc_close(adata);
   mutt_clear_error();
   return rc;
@@ -2381,18 +2378,18 @@ static bool nntp_ac_owns_path(struct Account *a, const char *path)
 /**
  * nntp_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-static int nntp_ac_add(struct Account *a, struct Mailbox *m)
+static bool nntp_ac_add(struct Account *a, struct Mailbox *m)
 {
-  return 0;
+  return true;
 }
 
 /**
  * nntp_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  */
-static int nntp_mbox_open(struct Mailbox *m)
+static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
 {
   if (!m->account)
-    return -1;
+    return MX_OPEN_ERROR;
 
   char buf[8192];
   char server[1024];
@@ -2407,7 +2404,7 @@ static int nntp_mbox_open(struct Mailbox *m)
   {
     url_free(&url);
     mutt_error(_("%s is an invalid newsgroup specification"), mailbox_path(m));
-    return -1;
+    return MX_OPEN_ERROR;
   }
 
   group = url->path;
@@ -2429,7 +2426,7 @@ static int nntp_mbox_open(struct Mailbox *m)
   if (!adata)
   {
     url_free(&url);
-    return -1;
+    return MX_OPEN_ERROR;
   }
   CurrentNewsSrv = adata;
 
@@ -2447,7 +2444,7 @@ static int nntp_mbox_open(struct Mailbox *m)
     nntp_newsrc_close(adata);
     mutt_error(_("Newsgroup %s not found on the server"), group);
     url_free(&url);
-    return -1;
+    return MX_OPEN_ERROR;
   }
 
   m->rights &= ~MUTT_ACL_INSERT; // Clear the flag
@@ -2461,7 +2458,7 @@ static int nntp_mbox_open(struct Mailbox *m)
   if (nntp_query(mdata, buf, sizeof(buf)) < 0)
   {
     nntp_newsrc_close(adata);
-    return -1;
+    return MX_OPEN_ERROR;
   }
 
   /* newsgroup not found, remove it */
@@ -2489,7 +2486,7 @@ static int nntp_mbox_open(struct Mailbox *m)
     {
       nntp_newsrc_close(adata);
       mutt_error("GROUP: %s", buf);
-      return -1;
+      return MX_OPEN_ERROR;
     }
     mdata->first_message = first;
     mdata->last_message = last;
@@ -2501,7 +2498,7 @@ static int nntp_mbox_open(struct Mailbox *m)
       if (get_description(mdata, NULL, NULL) < 0)
       {
         nntp_newsrc_close(adata);
-        return -1;
+        return MX_OPEN_ERROR;
       }
       if (mdata->desc)
         nntp_active_save_cache(adata);
@@ -2538,24 +2535,21 @@ static int nntp_mbox_open(struct Mailbox *m)
   mutt_hcache_close(hc);
 #endif
   if (rc < 0)
-    return -1;
+    return MX_OPEN_ERROR;
   mdata->last_loaded = mdata->last_message;
   adata->newsrc_modified = false;
-  return 0;
+  return MX_OPEN_OK;
 }
 
 /**
  * nntp_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param m          Mailbox
- * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
- * @retval #MUTT_NEW_MAIL New articles found
- * @retval  0             No change
- * @retval -1             Lost connection
+ * @retval enum #MxStatus
  */
-static int nntp_mbox_check(struct Mailbox *m)
+static enum MxStatus nntp_mbox_check(struct Mailbox *m)
 {
-  int rc = check_mailbox(m);
-  if (rc == 0)
+  enum MxStatus rc = check_mailbox(m);
+  if (rc == MX_STATUS_OK)
   {
     struct NntpMboxData *mdata = m->mdata;
     struct NntpAccountData *adata = mdata->adata;
@@ -2569,16 +2563,15 @@ static int nntp_mbox_check(struct Mailbox *m)
  *
  * @note May also return values from check_mailbox()
  */
-static int nntp_mbox_sync(struct Mailbox *m)
+static enum MxStatus nntp_mbox_sync(struct Mailbox *m)
 {
   struct NntpMboxData *mdata = m->mdata;
-  int rc;
 
   /* check for new articles */
   mdata->adata->check_time = 0;
-  rc = check_mailbox(m);
-  if (rc)
-    return rc;
+  enum MxStatus check = check_mailbox(m);
+  if (check != MX_STATUS_OK)
+    return check;
 
 #ifdef USE_HCACHE
   mdata->last_cached = 0;
@@ -2623,41 +2616,41 @@ static int nntp_mbox_sync(struct Mailbox *m)
   nntp_newsrc_gen_entries(m);
   nntp_newsrc_update(mdata->adata);
   nntp_newsrc_close(mdata->adata);
-  return 0;
+  return MX_STATUS_OK;
 }
 
 /**
  * nntp_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  * @retval 0 Always
  */
-static int nntp_mbox_close(struct Mailbox *m)
+static enum MxStatus nntp_mbox_close(struct Mailbox *m)
 {
   struct NntpMboxData *mdata = m->mdata;
   struct NntpMboxData *tmp_mdata = NULL;
   if (!mdata)
-    return 0;
+    return MX_STATUS_OK;
 
   mdata->unread = m->msg_unread;
 
   nntp_acache_free(mdata);
   if (!mdata->adata || !mdata->adata->groups_hash || !mdata->group)
-    return 0;
+    return MX_STATUS_OK;
 
   tmp_mdata = mutt_hash_find(mdata->adata->groups_hash, mdata->group);
   if (!tmp_mdata || (tmp_mdata != mdata))
     nntp_mdata_free((void **) &mdata);
-  return 0;
+  return MX_STATUS_OK;
 }
 
 /**
  * nntp_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
-static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
   struct NntpMboxData *mdata = m->mdata;
   struct Email *e = m->emails[msgno];
   if (!e)
-    return -1;
+    return false;
 
   char article[16];
 
@@ -2669,7 +2662,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     {
       msg->fp = mutt_file_fopen(acache->path, "r");
       if (msg->fp)
-        return 0;
+        return true;
     }
     /* clear previous entry */
     else
@@ -2683,14 +2676,14 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   if (msg->fp)
   {
     if (nntp_edata_get(e)->parsed)
-      return 0;
+      return true;
   }
   else
   {
     char buf[PATH_MAX];
     /* don't try to fetch article from removed newsgroup */
     if (mdata->deleted)
-      return -1;
+      return false;
 
     /* create new cache file */
     const char *fetch_msg = _("Fetching message...");
@@ -2707,7 +2700,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
         mutt_perror(acache->path);
         unlink(acache->path);
         FREE(&acache->path);
-        return -1;
+        return false;
       }
     }
 
@@ -2734,7 +2727,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
         else
           mutt_error("ARTICLE: %s", buf);
       }
-      return -1;
+      return false;
     }
 
     if (!acache->path)
@@ -2774,7 +2767,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   rewind(msg->fp);
   mutt_clear_error();
-  return 0;
+  return true;
 }
 
 /**

@@ -1842,7 +1842,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
 /**
  * imap_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
-int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
   struct Envelope *newenv = NULL;
   char buf[1024];
@@ -1861,17 +1861,17 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   struct ImapAccountData *adata = imap_adata_get(m);
 
   if (!adata || (adata->mailbox != m))
-    return -1;
+    return false;
 
   struct Email *e = m->emails[msgno];
   if (!e)
-    return -1;
+    return false;
 
   msg->fp = msg_cache_get(m, e);
   if (msg->fp)
   {
     if (imap_edata_get(e)->parsed)
-      return 0;
+      return true;
     goto parsemsg;
   }
 
@@ -1891,7 +1891,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     mutt_buffer_pool_release(&path);
 
     if (!msg->fp)
-      return -1;
+      return false;
   }
 
   /* mark this header as currently inactive so the command handler won't
@@ -2029,13 +2029,13 @@ parsemsg:
     goto parsemsg;
   }
 
-  return 0;
+  return true;
 
 bail:
   e->active = true;
   mutt_file_fclose(&msg->fp);
   imap_cache_del(m, e);
-  return -1;
+  return false;
 }
 
 /**

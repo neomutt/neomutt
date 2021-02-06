@@ -66,14 +66,26 @@ typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open_new(), e.g. #MUTT_
 #define MUTT_SET_DRAFT    (1 << 1) ///< set the message draft flag
 
 /**
- * enum MxCheckReturns - Return values from mx_mbox_check()
+ * enum MxCheckReturns - Return values from mx_mbox_check(), mx_mbox_sync(), and mx_mbox_close()
  */
-enum MxCheckReturns
+enum MxStatus
 {
-  MUTT_NEW_MAIL = 1, ///< New mail received in Mailbox
-  MUTT_LOCKED,       ///< Couldn't lock the Mailbox
-  MUTT_REOPENED,     ///< Mailbox was reopened
-  MUTT_FLAGS,        ///< Nondestructive flags change (IMAP)
+  MX_STATUS_ERROR = -1, ///< An error occurred
+  MX_STATUS_OK,         ///< No changes
+  MX_STATUS_NEW_MAIL,   ///< New mail received in Mailbox
+  MX_STATUS_LOCKED,     ///< Couldn't lock the Mailbox
+  MX_STATUS_REOPENED,   ///< Mailbox was reopened
+  MX_STATUS_FLAGS,      ///< Nondestructive flags change (IMAP)
+};
+
+/**
+ * enum MxOpenReturns - Return values for mbox_open()
+ */
+enum MxOpenReturns
+{
+  MX_OPEN_OK,           ///< Open succeeded
+  MX_OPEN_ERROR,        ///< Open failed with an error
+  MX_OPEN_ABORT,        ///< Open was aborted
 };
 
 /**
@@ -118,119 +130,112 @@ struct MxOps
    * - @a a    is not NULL
    * - @a path is not NULL
    */
-  bool (*ac_owns_path) (struct Account *a, const char *path);
+  bool (*ac_owns_path)(struct Account *a, const char *path);
 
   /**
    * ac_add - Add a Mailbox to an Account
    * @param a Account to add to
    * @param m Mailbox to add
-   * @retval  0 Success
-   * @retval -1 Error
+   * @retval  true  Success
+   * @retval  false Error
    *
    * **Contract**
    * - @a a is not NULL
    * - @a m is not NULL
    */
-  int             (*ac_add)   (struct Account *a, struct Mailbox *m);
+  bool (*ac_add)(struct Account *a, struct Mailbox *m);
 
   /**
    * mbox_open - Open a Mailbox
    * @param m Mailbox to open
-   * @retval  0 Success
-   * @retval -1 Error
-   * @retval -2 Aborted
+   * @retval enum #MxOpenReturns
    *
    * **Contract**
    * - @a m is not NULL
    */
-  int (*mbox_open)       (struct Mailbox *m);
+  enum MxOpenReturns (*mbox_open)(struct Mailbox *m);
 
   /**
    * mbox_open_append - Open a Mailbox for appending
    * @param m     Mailbox to open
    * @param flags Flags, see #OpenMailboxFlags
-   * @retval  0 Success
-   * @retval -1 Failure
+   * @retval true Success
+   * @retval false Failure
    *
    * **Contract**
    * - @a m is not NULL
    */
-  int (*mbox_open_append)(struct Mailbox *m, OpenMailboxFlags flags);
+  bool (*mbox_open_append)(struct Mailbox *m, OpenMailboxFlags flags);
 
   /**
    * mbox_check - Check for new mail
-   * @param m          Mailbox
-   * @retval >0 Success, e.g. #MUTT_REOPENED
-   * @retval -1 Error
+   * @param m Mailbox
+   * @retval enum #MxStatus
    *
    * **Contract**
    * - @a m is not NULL
    */
-  int (*mbox_check)      (struct Mailbox *m);
+  enum MxStatus (*mbox_check)(struct Mailbox *m);
 
   /**
    * mbox_check_stats - Check the Mailbox statistics
    * @param m     Mailbox to check
    * @param flags Function flags
-   * @retval  0 Success, no new mail
-   * @retval >0 Success, number of new emails
-   * @retval -1 Failure
+   * @retval enum #MxStatus
    *
    * **Contract**
    * - @a m is not NULL
    */
-  int (*mbox_check_stats)(struct Mailbox *m, uint8_t flags);
+  enum MxStatus (*mbox_check_stats)(struct Mailbox *m, uint8_t flags);
 
   /**
    * mbox_sync - Save changes to the Mailbox
-   * @param m          Mailbox to sync
-   * @retval  0 Success
-   * @retval -1 Failure
+   * @param m Mailbox to sync
+   * @retval enum #MxStatus
    *
    * **Contract**
    * - @a m is not NULL
    */
-  int (*mbox_sync)       (struct Mailbox *m);
+  enum MxStatus (*mbox_sync)(struct Mailbox *m);
 
   /**
    * mbox_close - Close a Mailbox
    * @param m Mailbox to close
-   * @retval  0 Success
-   * @retval -1 Failure
+   * @retval enum #MxStatus
    *
    * **Contract**
    * - @a m is not NULL
    */
-  int (*mbox_close)      (struct Mailbox *m);
+  enum MxStatus (*mbox_close)(struct Mailbox *m);
 
   /**
    * msg_open - Open an email message in a Mailbox
    * @param m     Mailbox
    * @param msg   Message to open
    * @param msgno Index of message to open
-   * @retval  0 Success
-   * @retval -1 Error
+   * @retval true Success
+   * @retval false Error
    *
    * **Contract**
    * - @a m   is not NULL
    * - @a msg is not NULL
    * - 0 <= @a msgno < msg->msg_count
    */
-  int (*msg_open)        (struct Mailbox *m, struct Message *msg, int msgno);
+  bool (*msg_open)(struct Mailbox *m, struct Message *msg, int msgno);
 
   /**
    * msg_open_new - Open a new message in a Mailbox
    * @param m   Mailbox
    * @param msg Message to open
    * @param e   Email
-   * @retval  0 Success
-   * @retval -1 Failure
+   * @retval true Success
+   * @retval false Failure
    *
    * **Contract**
    * - @a m   is not NULL
    * - @a msg is not NULL
    */
-  int (*msg_open_new)    (struct Mailbox *m, struct Message *msg, const struct Email *e);
+  bool (*msg_open_new)(struct Mailbox *m, struct Message *msg, const struct Email *e);
 
   /**
    * msg_commit - Save changes to an email
@@ -374,11 +379,11 @@ struct MxOps
 };
 
 /* Wrappers for the Mailbox API, see MxOps */
-int             mx_mbox_check      (struct Mailbox *m);
-int             mx_mbox_check_stats(struct Mailbox *m, uint8_t flags);
-int             mx_mbox_close      (struct Context **ptr);
+enum MxStatus   mx_mbox_check      (struct Mailbox *m);
+enum MxStatus   mx_mbox_check_stats(struct Mailbox *m, uint8_t flags);
+enum MxStatus   mx_mbox_close      (struct Context **ptr);
 struct Context *mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
-int             mx_mbox_sync       (struct Mailbox *m);
+enum MxStatus   mx_mbox_sync       (struct Mailbox *m);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
 int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
 struct Message *mx_msg_open_new    (struct Mailbox *m, const struct Email *e, MsgOpenFlags flags);
@@ -399,7 +404,7 @@ struct Account *mx_ac_find     (struct Mailbox *m);
 struct Mailbox *mx_mbox_find   (struct Account *a, const char *path);
 struct Mailbox *mx_mbox_find2  (const char *path);
 bool            mx_mbox_ac_link(struct Mailbox *m);
-int             mx_ac_add      (struct Account *a, struct Mailbox *m);
+bool            mx_ac_add      (struct Account *a, struct Mailbox *m);
 int             mx_ac_remove   (struct Mailbox *m);
 
 int                 mx_access           (const char *path, int flags);

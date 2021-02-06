@@ -127,7 +127,7 @@ void mh_seq_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, bool re
   size_t sz;
 
   FILE *fp_new = NULL;
-  if (mh_mkstemp(m, &fp_new, &tmpfname) == -1)
+  if (!mh_mkstemp(m, &fp_new, &tmpfname))
     return;
 
   snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(C_MhSeqUnseen));
@@ -255,7 +255,7 @@ void mh_seq_update(struct Mailbox *m)
   snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(C_MhSeqFlagged));
 
   FILE *fp_new = NULL;
-  if (mh_mkstemp(m, &fp_new, &tmpfname) != 0)
+  if (!mh_mkstemp(m, &fp_new, &tmpfname))
   {
     /* error message? */
     return;

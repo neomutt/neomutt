@@ -2382,8 +2382,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     {
       int oldcount = m->msg_count;
       /* check for new mail */
-      int check = mx_mbox_check(m);
-      if (check < 0)
+      enum MxStatus check = mx_mbox_check(m);
+      if (check == MX_STATUS_ERROR)
       {
         if (!m || mutt_buffer_is_empty(&m->pathbuf))
         {
@@ -2393,10 +2393,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           break;
         }
       }
-      else if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED) || (check == MUTT_FLAGS))
+      else if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED) ||
+               (check == MX_STATUS_FLAGS))
       {
         /* notify user of newly arrived mail */
-        if (check == MUTT_NEW_MAIL)
+        if (check == MX_STATUS_NEW_MAIL)
         {
           for (size_t i = oldcount; i < m->msg_count; i++)
           {
@@ -2411,7 +2412,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           }
         }
 
-        if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED))
+        if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
         {
           if (rd.menu && m)
           {

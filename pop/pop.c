@@ -756,10 +756,10 @@ static bool pop_ac_owns_path(struct Account *a, const char *path)
 /**
  * pop_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-static int pop_ac_add(struct Account *a, struct Mailbox *m)
+static bool pop_ac_add(struct Account *a, struct Mailbox *m)
 {
   if (a->adata)
-    return 0;
+    return true;
 
   struct ConnAccount cac = { { 0 } };
   struct PopAccountData *adata = pop_adata_new();
@@ -769,17 +769,17 @@ static int pop_ac_add(struct Account *a, struct Mailbox *m)
   if (pop_parse_path(mailbox_path(m), &cac))
   {
     mutt_error(_("%s is an invalid POP path"), mailbox_path(m));
-    return -1;
+    return false;
   }
 
   adata->conn = mutt_conn_new(&cac);
   if (!adata->conn)
   {
     pop_adata_free((void **) &adata);
-    return -1;
+    return false;
   }
 
-  return 0;
+  return true;
 }
 
 /**
@@ -787,10 +787,10 @@ static int pop_ac_add(struct Account *a, struct Mailbox *m)
  *
  * Fetch only headers
  */
-static int pop_mbox_open(struct Mailbox *m)
+static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
 {
   if (!m->account)
-    return -1;
+    return MX_OPEN_ERROR;
 
   char buf[PATH_MAX];
   struct ConnAccount cac = { { 0 } };
@@ -799,7 +799,7 @@ static int pop_mbox_open(struct Mailbox *m)
   if (pop_parse_path(mailbox_path(m), &cac))
   {
     mutt_error(_("%s is an invalid POP path"), mailbox_path(m));
-    return -1;
+    return MX_OPEN_ERROR;
   }
 
   mutt_account_tourl(&cac, &url);
@@ -823,14 +823,14 @@ static int pop_mbox_open(struct Mailbox *m)
     adata->conn = mutt_conn_new(&cac);
     conn = adata->conn;
     if (!conn)
-      return -1;
+      return MX_OPEN_ERROR;
   }
 
   if (conn->fd < 0)
     mutt_account_hook(m->realpath);
 
   if (pop_open_connection(adata) < 0)
-    return -1;
+    return MX_OPEN_ERROR;
 
   adata->bcache = mutt_bcache_open(&cac, NULL);
 
@@ -845,7 +845,7 @@ static int pop_mbox_open(struct Mailbox *m)
   while (true)
   {
     if (pop_reconnect(m) < 0)
-      return -1;
+      return MX_OPEN_ERROR;
 
     m->size = adata->size;
 
@@ -854,29 +854,29 @@ static int pop_mbox_open(struct Mailbox *m)
     const int rc = pop_fetch_headers(m);
 
     if (rc >= 0)
-      return 0;
+      return MX_OPEN_OK;
 
     if (rc < -1)
-      return -1;
+      return MX_OPEN_ERROR;
   }
 }
 
 /**
  * pop_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  */
-static int pop_mbox_check(struct Mailbox *m)
+static enum MxStatus pop_mbox_check(struct Mailbox *m)
 {
   struct PopAccountData *adata = pop_adata_get(m);
 
   if ((adata->check_time + C_PopCheckinterval) > mutt_date_epoch())
-    return 0;
+    return MX_STATUS_OK;
 
   pop_logout(m);
 
   mutt_socket_close(adata->conn);
 
   if (pop_open_connection(adata) < 0)
-    return -1;
+    return MX_STATUS_ERROR;
 
   m->size = adata->size;
 
@@ -889,12 +889,12 @@ static int pop_mbox_check(struct Mailbox *m)
     mailbox_changed(m, NT_MAILBOX_INVALID);
 
   if (rc < 0)
-    return -1;
+    return MX_STATUS_ERROR;
 
   if (rc > 0)
-    return MUTT_NEW_MAIL;
+    return MX_STATUS_NEW_MAIL;
 
-  return 0;
+  return MX_STATUS_OK;
 }
 
 /**
@@ -902,7 +902,7 @@ static int pop_mbox_check(struct Mailbox *m)
  *
  * Update POP mailbox, delete messages from server
  */
-static int pop_mbox_sync(struct Mailbox *m)
+static enum MxStatus pop_mbox_sync(struct Mailbox *m)
 {
   int i, j, rc = 0;
   char buf[1024];
@@ -924,7 +924,7 @@ static int pop_mbox_sync(struct Mailbox *m)
   while (true)
   {
     if (pop_reconnect(m) < 0)
-      return -1;
+      return MX_STATUS_ERROR;
 
     mutt_progress_init(&progress, _("Marking messages deleted..."),
                        MUTT_PROGRESS_WRITE, num_deleted);
@@ -975,13 +975,13 @@ static int pop_mbox_sync(struct Mailbox *m)
       adata->clear_cache = true;
       pop_clear_cache(adata);
       adata->status = POP_DISCONNECTED;
-      return 0;
+      return MX_STATUS_OK;
     }
 
     if (rc == -2)
     {
       mutt_error("%s", adata->err_msg);
-      return -1;
+      return MX_STATUS_ERROR;
     }
   }
 }
@@ -989,11 +989,11 @@ static int pop_mbox_sync(struct Mailbox *m)
 /**
  * pop_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  */
-static int pop_mbox_close(struct Mailbox *m)
+static enum MxStatus pop_mbox_close(struct Mailbox *m)
 {
   struct PopAccountData *adata = pop_adata_get(m);
   if (!adata)
-    return 0;
+    return MX_STATUS_OK;
 
   pop_logout(m);
 
@@ -1010,13 +1010,13 @@ static int pop_mbox_close(struct Mailbox *m)
 
   mutt_bcache_close(&adata->bcache);
 
-  return 0;
+  return MX_STATUS_OK;
 }
 
 /**
  * pop_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
-static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
   char buf[1024];
   struct Progress progress;
@@ -1024,13 +1024,13 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   struct Email *e = m->emails[msgno];
   struct PopEmailData *edata = pop_edata_get(e);
   bool bcache = true;
-  int rc = -1;
+  bool success = false;
   struct Buffer *path = NULL;
 
   /* see if we already have the message in body cache */
   msg->fp = mutt_bcache_get(adata->bcache, cache_id(edata->uid));
   if (msg->fp)
-    return 0;
+    return true;
 
   /* see if we already have the message in our cache in
    * case $message_cachedir is unset */
@@ -1043,10 +1043,10 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       /* yes, so just return a pointer to the message */
       msg->fp = fopen(cache->path, "r");
       if (msg->fp)
-        return 0;
+        return true;
 
       mutt_perror(cache->path);
-      return -1;
+      return false;
     }
     else
     {
@@ -1161,11 +1161,11 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   mutt_clear_error();
   rewind(msg->fp);
 
-  rc = 0;
+  success = true;
 
 cleanup:
   mutt_buffer_pool_release(&path);
-  return rc;
+  return success;
 }
 
 /**
