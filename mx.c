@@ -80,8 +80,7 @@
 #include <libintl.h>
 #endif
 #ifdef __APPLE__
-# include <string.h>
-# include <xlocale.h>
+#include <xlocale.h>
 #endif
 
 /* These Config Variables are only used in mx.c */
