@@ -654,7 +654,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     struct Pager info = { 0 };
     info.fp = fp;
     info.body = a;
-    info.ctx = Context;
+    info.ctx = Contex2;
     info.actx = actx;
     info.email = e;
 

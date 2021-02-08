@@ -306,7 +306,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
    */
   if (C_Autocrypt && !postpone && (security & SEC_AUTOCRYPT))
   {
-    struct Mailbox *m = ctx_mailbox(Context);
+    struct Mailbox *m = ctx_mailbox(Contex2);
     mutt_autocrypt_generate_gossip_list(m, e);
   }
 #endif
@@ -959,7 +959,7 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
 #ifdef USE_AUTOCRYPT
   if (!oppenc_mode && (e->security & SEC_AUTOCRYPT))
   {
-    struct Mailbox *m = ctx_mailbox(Context);
+    struct Mailbox *m = ctx_mailbox(Contex2);
     if (mutt_autocrypt_ui_recommendation(m, e, keylist) <= AUTOCRYPT_REC_NO)
       return -1;
     return 0;
