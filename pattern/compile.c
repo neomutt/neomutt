@@ -1219,6 +1219,7 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
           FREE(&buf);
           pat->child = tmp2;
           ps.dptr = p + 1; /* restore location */
+          SKIPWS(ps.dptr);
           break;
         }
         if (implicit && pat_or)
@@ -1337,6 +1338,7 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
         all_addr = false;
         is_alias = false;
         ps.dptr = p + 1; /* restore location */
+        SKIPWS(ps.dptr);
         break;
       }
 
