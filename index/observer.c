@@ -52,7 +52,7 @@ static int config_pager_index_lines(struct MuttWindow *dlg)
   {
     const short c_pager_index_lines =
         cs_subset_number(NeoMutt->sub, "pager_index_lines");
-    int vcount = ctx_mailbox(Context) ? Context->mailbox->vcount : 0;
+    int vcount = ctx_mailbox(Contex2) ? Contex2->mailbox->vcount : 0;
     win_index->req_rows = MIN(c_pager_index_lines, vcount);
     win_index->size = MUTT_WIN_SIZE_FIXED;
 
@@ -80,7 +80,7 @@ static int config_pager_index_lines(struct MuttWindow *dlg)
  */
 static int config_reply_regex(struct MuttWindow *dlg)
 {
-  struct Mailbox *m = ctx_mailbox(Context);
+  struct Mailbox *m = ctx_mailbox(Contex2);
   if (!m)
     return 0;
 

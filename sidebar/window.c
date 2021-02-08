@@ -294,7 +294,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   if (!m)
     return src;
 
-  struct Mailbox *m_ctx = ctx_mailbox(Context);
+  struct Mailbox *m_ctx = ctx_mailbox(Contex2);
 
   bool c = m_ctx && mutt_str_equal(m_ctx->realpath, m->realpath);
 
@@ -512,7 +512,7 @@ static void update_entries_visibility(struct SidebarWindowData *wdata)
       continue;
     }
 
-    if (Context && mutt_str_equal(sbe->mailbox->realpath, Context->mailbox->realpath))
+    if (Contex2 && mutt_str_equal(sbe->mailbox->realpath, Contex2->mailbox->realpath))
     {
       /* Spool directories are always visible */
       continue;
@@ -687,7 +687,7 @@ int sb_recalc(struct MuttWindow *win)
 
     struct SbEntry *entry = (*sbep);
     struct Mailbox *m = entry->mailbox;
-    struct Mailbox *m_ctx = ctx_mailbox(Context);
+    struct Mailbox *m_ctx = ctx_mailbox(Contex2);
 
     const int entryidx = ARRAY_FOREACH_IDX;
     entry->color =

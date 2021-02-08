@@ -81,7 +81,7 @@ static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *men
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
 
 #define CHECK_READONLY                                                         \
-  if (!Context || !Context->mailbox || Context->mailbox->readonly)             \
+  if (!Contex2 || !Contex2->mailbox || Contex2->mailbox->readonly)             \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Mailbox_is_read_only));                                       \
@@ -1550,7 +1550,7 @@ void dlg_select_attachment(struct Email *e)
 {
   int op = OP_NULL;
 
-  struct Mailbox *m = Context ? Context->mailbox : NULL;
+  struct Mailbox *m = Contex2 ? Contex2->mailbox : NULL;
 
   /* make sure we have parsed this message */
   mutt_parse_mime_message(m, e);
@@ -1581,7 +1581,7 @@ void dlg_select_attachment(struct Email *e)
     if (op == OP_NULL)
       op = mutt_menu_loop(menu);
     window_redraw(dlg, true);
-    if (!Context)
+    if (!Contex2)
       return;
     switch (op)
     {
@@ -1760,7 +1760,7 @@ void dlg_select_attachment(struct Email *e)
 
       case OP_RESEND:
         CHECK_ATTACH;
-        mutt_attach_resend(CUR_ATTACH->fp, Context, actx,
+        mutt_attach_resend(CUR_ATTACH->fp, Contex2, actx,
                            menu->tagprefix ? NULL : CUR_ATTACH->body);
         menu->redraw = REDRAW_FULL;
         break;

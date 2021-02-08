@@ -628,7 +628,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     else
     {
       mutt_make_string(prefix, sizeof(prefix), wraplen, NONULL(C_IndentString),
-                       Context->mailbox, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+                       Contex2->mailbox, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
     }
   }
 
@@ -692,10 +692,10 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
         body->offset = new_offset;
 
         /* update the total size of the mailbox to reflect this deletion */
-        Context->mailbox->size -= body->length - new_length;
+        Contex2->mailbox->size -= body->length - new_length;
         /* if the message is visible, update the visible size of the mailbox as well.  */
-        if (Context->mailbox->v2r[e->msgno] != -1)
-          Context->vsize -= body->length - new_length;
+        if (Contex2->mailbox->v2r[e->msgno] != -1)
+          Contex2->vsize -= body->length - new_length;
 
         body->length = new_length;
         mutt_body_free(&body->parts);

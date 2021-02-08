@@ -338,10 +338,10 @@ static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailb
     info->type = m->type;
     info->path = m->realpath;
   }
-  else if (ctx_mailbox(Context))
+  else if (ctx_mailbox(Contex2))
   {
-    info->type = Context->mailbox->type;
-    info->path = Context->mailbox->realpath;
+    info->type = Contex2->mailbox->type;
+    info->path = Contex2->mailbox->realpath;
   }
   else
   {
@@ -543,7 +543,7 @@ int mutt_monitor_remove(struct Mailbox *m)
     goto cleanup;
   }
 
-  struct Mailbox *m_ctx = ctx_mailbox(Context);
+  struct Mailbox *m_ctx = ctx_mailbox(Contex2);
   if (m_ctx)
   {
     if (m)
