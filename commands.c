@@ -291,7 +291,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
   {
     char buf[1024] = { 0 };
     mutt_make_string(buf, sizeof(buf), win_index->state.cols, NONULL(C_PagerFormat),
-                     m, Context ? Context->msg_in_pager : -1, e,
+                     m, Contex2 ? Contex2->msg_in_pager : -1, e,
                      MUTT_FORMAT_NO_FLAGS, ExtPagerProgress);
     fputs(buf, fp_out);
     fputs("\n\n", fp_out);
@@ -365,7 +365,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     struct Pager info = { 0 };
     /* Invoke the builtin pager */
     info.email = e;
-    info.ctx = Context;
+    info.ctx = Contex2;
     info.win_ibar = win_ibar;
     info.win_index = win_index;
     info.win_pbar = win_pbar;
@@ -1008,18 +1008,18 @@ int mutt_save_message_ctx(struct Email *e, enum MessageSaveOpt save_opt,
   set_copy_flags(e, transform_opt, &cmflags, &chflags);
 
   if (transform_opt != TRANSFORM_NONE)
-    mutt_parse_mime_message(Context->mailbox, e);
+    mutt_parse_mime_message(Contex2->mailbox, e);
 
-  rc = mutt_append_message(m, Context->mailbox, e, cmflags, chflags);
+  rc = mutt_append_message(m, Contex2->mailbox, e, cmflags, chflags);
   if (rc != 0)
     return rc;
 
   if (save_opt == SAVE_MOVE)
   {
-    mutt_set_flag(Context->mailbox, e, MUTT_DELETE, true);
-    mutt_set_flag(Context->mailbox, e, MUTT_PURGE, true);
+    mutt_set_flag(Contex2->mailbox, e, MUTT_DELETE, true);
+    mutt_set_flag(Contex2->mailbox, e, MUTT_PURGE, true);
     if (C_DeleteUntag)
-      mutt_set_flag(Context->mailbox, e, MUTT_TAG, false);
+      mutt_set_flag(Contex2->mailbox, e, MUTT_TAG, false);
   }
 
   return 0;

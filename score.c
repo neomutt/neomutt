@@ -127,7 +127,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
       break;
   if (!ptr)
   {
-    struct PatternList *pat = mutt_pattern_comp(Context, pattern, MUTT_PC_NO_FLAGS, err);
+    struct PatternList *pat = mutt_pattern_comp(Contex2, pattern, MUTT_PC_NO_FLAGS, err);
     if (!pat)
     {
       FREE(&pattern);

@@ -341,7 +341,7 @@ struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *ke
 #ifdef USE_AUTOCRYPT
   if (e->security & SEC_AUTOCRYPT)
   {
-    struct Mailbox *m = ctx_mailbox(Context);
+    struct Mailbox *m = ctx_mailbox(Contex2);
     if (mutt_autocrypt_set_sign_as_default_key(m, e))
       return NULL;
 

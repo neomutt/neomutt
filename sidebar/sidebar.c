@@ -94,8 +94,8 @@ void sb_add_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
     wdata->top_index = ARRAY_SIZE(&wdata->entries);
   if (wdata->bot_index < 0)
     wdata->bot_index = ARRAY_SIZE(&wdata->entries);
-  if ((wdata->opn_index < 0) && Context &&
-      mutt_str_equal(m->realpath, Context->mailbox->realpath))
+  if ((wdata->opn_index < 0) && Contex2 &&
+      mutt_str_equal(m->realpath, Contex2->mailbox->realpath))
   {
     wdata->opn_index = ARRAY_SIZE(&wdata->entries);
   }

@@ -690,7 +690,7 @@ static void update_crypt_info(struct ComposeRedrawData *rd)
   const bool c_autocrypt = cs_subset_bool(rd->sub, "autocrypt");
   if (c_autocrypt)
   {
-    struct Mailbox *m = ctx_mailbox(Context);
+    struct Mailbox *m = ctx_mailbox(Contex2);
     rd->autocrypt_rec = mutt_autocrypt_ui_recommendation(m, e, NULL);
 
     /* Anything that enables SEC_ENCRYPT or SEC_SIGN, or turns on SMIME
@@ -2066,10 +2066,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
 #ifdef USE_NNTP
         OptNews = false;
-        if (Context && (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE))
+        if (Contex2 && (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE))
         {
           const char *c_news_server = cs_subset_string(sub, "news_server");
-          CurrentNewsSrv = nntp_select_server(Context->mailbox, c_news_server, false);
+          CurrentNewsSrv = nntp_select_server(Contex2->mailbox, c_news_server, false);
           if (!CurrentNewsSrv)
             break;
 
@@ -2078,18 +2078,18 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
 #endif
 
-        if (Context)
+        if (Contex2)
         {
 #ifdef USE_NNTP
-          if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->mailbox->type == MUTT_NNTP))
+          if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Contex2->mailbox->type == MUTT_NNTP))
 #endif
           {
-            mutt_buffer_strcpy(&fname, mailbox_path(Context->mailbox));
+            mutt_buffer_strcpy(&fname, mailbox_path(Contex2->mailbox));
             mutt_buffer_pretty_mailbox(&fname);
           }
         }
 
-        if ((mutt_buffer_enter_fname(prompt, &fname, true, ctx_mailbox(Context),
+        if ((mutt_buffer_enter_fname(prompt, &fname, true, ctx_mailbox(Contex2),
                                      false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1) ||
             mutt_buffer_is_empty(&fname))
         {
@@ -2141,11 +2141,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           break;
         }
 
-        struct Context *ctx_cur = Context; /* remember current folder and sort methods */
+        struct Context *ctx_cur = Contex2; /* remember current folder and sort methods */
         const enum SortType old_sort = cs_subset_sort(sub, "sort"); /* `$sort`, `$sort_aux` could be changed in mutt_index_menu() */
         const enum SortType old_sort_aux = cs_subset_sort(sub, "sort_aux");
 
-        Context = ctx;
+        Contex2 = ctx;
         OptAttachMsg = true;
         mutt_message(_("Tag the messages you want to attach"));
         struct MuttWindow *dlgindex = index_pager_init();
@@ -2156,10 +2156,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         mutt_window_free(&dlgindex);
         OptAttachMsg = false;
 
-        if (!Context)
+        if (!Contex2)
         {
           /* go back to the folder we started from */
-          Context = ctx_cur;
+          Contex2 = ctx_cur;
           /* Restore old $sort and $sort_aux */
           if (old_sort != cs_subset_sort(sub, "sort"))
             cs_subset_str_native_set(sub, "sort", old_sort, NULL);
@@ -2170,16 +2170,16 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
 
         bool added_attachment = false;
-        for (int i = 0; i < Context->mailbox->msg_count; i++)
+        for (int i = 0; i < Contex2->mailbox->msg_count; i++)
         {
-          if (!Context->mailbox->emails[i])
+          if (!Contex2->mailbox->emails[i])
             break;
-          if (!message_is_tagged(Context, Context->mailbox->emails[i]))
+          if (!message_is_tagged(Contex2, Contex2->mailbox->emails[i]))
             continue;
 
           struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-          ap->body = mutt_make_message_attach(Context->mailbox,
-                                              Context->mailbox->emails[i], true, sub);
+          ap->body = mutt_make_message_attach(Contex2->mailbox,
+                                              Contex2->mailbox->emails[i], true, sub);
           if (ap->body)
           {
             added_attachment = true;
@@ -2193,12 +2193,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
         menu->redraw |= REDRAW_FULL;
 
-        Context->mailbox->readonly = old_readonly;
-        mx_fastclose_mailbox(Context->mailbox);
-        ctx_free(&Context);
+        Contex2->mailbox->readonly = old_readonly;
+        mx_fastclose_mailbox(Contex2->mailbox);
+        ctx_free(&Contex2);
 
         /* go back to the folder we started from */
-        Context = ctx_cur;
+        Contex2 = ctx_cur;
         /* Restore old $sort and $sort_aux */
         if (old_sort != cs_subset_sort(sub, "sort"))
           cs_subset_str_native_set(sub, "sort", old_sort, NULL);
@@ -2629,15 +2629,15 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
       case OP_COMPOSE_WRITE_MESSAGE:
         mutt_buffer_reset(&fname);
-        if (Context)
+        if (Contex2)
         {
-          mutt_buffer_strcpy(&fname, mailbox_path(Context->mailbox));
+          mutt_buffer_strcpy(&fname, mailbox_path(Contex2->mailbox));
           mutt_buffer_pretty_mailbox(&fname);
         }
         if (actx->idxlen)
           e->body = actx->idx[0]->body;
         if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname,
-                                     true, ctx_mailbox(Context), false, NULL,
+                                     true, ctx_mailbox(Contex2), false, NULL,
                                      NULL, MUTT_SEL_NO_FLAGS) != -1) &&
             !mutt_buffer_is_empty(&fname))
         {

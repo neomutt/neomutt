@@ -39,7 +39,7 @@
 
 WHERE struct Colors    *Colors; ///< Wrapper around the user's colour settings
 
-WHERE struct Context *Context;
+WHERE struct Context *Contex2;
 
 WHERE bool ErrorBufMessage;            ///< true if the last message was an error
 WHERE char ErrorBuf[256];              ///< Copy of the last error message
