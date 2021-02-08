@@ -247,7 +247,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     else
       comp_flags = MUTT_PC_FULL_MSG;
 
-    pat = mutt_pattern_comp(Context, mutt_buffer_string(pattern), comp_flags, err);
+    pat = mutt_pattern_comp(Contex2, mutt_buffer_string(pattern), comp_flags, err);
     if (!pat)
       goto cleanup;
   }
@@ -417,7 +417,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
    * used for date ranges, and they need to be evaluated relative to "now", not
    * the hook compilation time.  */
   struct PatternList *pat =
-      mutt_pattern_comp(Context, mutt_buffer_string(pattern),
+      mutt_pattern_comp(Contex2, mutt_buffer_string(pattern),
                         MUTT_PC_FULL_MSG | MUTT_PC_PATTERN_DYNAMIC, err);
   if (!pat)
     goto out;
@@ -655,7 +655,7 @@ static int addr_hook(char *path, size_t pathlen, HookFlags type,
 void mutt_default_save(char *path, size_t pathlen, struct Email *e)
 {
   *path = '\0';
-  if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, Context, e) == 0)
+  if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, Contex2, e) == 0)
     return;
 
   struct Envelope *env = e->env;

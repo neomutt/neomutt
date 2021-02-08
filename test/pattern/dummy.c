@@ -56,7 +56,7 @@ bool g_is_subscribed_list = false;
 const char *g_myvar = "hello";
 short AbortKey;
 
-extern struct Context *Context;
+extern struct Context *Contex2;
 
 enum MenuType
 {
@@ -272,5 +272,5 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
  */
 struct Mailbox *ctx_mailbox(struct Context *ctx)
 {
-  return Context ? Context->mailbox : NULL;
+  return Contex2 ? Contex2->mailbox : NULL;
 }
