@@ -1770,7 +1770,7 @@ full_fcc:
         case 2: /* alternate (m)ailbox */
           /* L10N: This is the prompt to enter an "alternate (m)ailbox" when the
              initial Fcc fails.  */
-          rc = mutt_buffer_enter_fname(_("Fcc mailbox"), fcc, true, ctx_mailbox(Context),
+          rc = mutt_buffer_enter_fname(_("Fcc mailbox"), fcc, true, ctx_mailbox(Contex2),
                                        false, NULL, NULL, MUTT_SEL_NO_FLAGS);
           if ((rc == -1) || mutt_buffer_is_empty(fcc))
           {
@@ -1874,7 +1874,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
 #ifdef USE_AUTOCRYPT
     if (e_post->security & SEC_AUTOCRYPT)
     {
-      struct Mailbox *m = ctx_mailbox(Context);
+      struct Mailbox *m = ctx_mailbox(Contex2);
       if (mutt_autocrypt_set_sign_as_default_key(m, e_post))
       {
         e_post->body = mutt_remove_multipart(e_post->body);

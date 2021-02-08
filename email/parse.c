@@ -1249,7 +1249,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
 #ifdef USE_AUTOCRYPT
     if (C_Autocrypt)
     {
-      struct Mailbox *m = ctx_mailbox(Context);
+      struct Mailbox *m = ctx_mailbox(Contex2);
       mutt_autocrypt_process_autocrypt_header(m, e, env);
       /* No sense in taking up memory after the header is processed */
       mutt_autocrypthdr_free(&env->autocrypt);
