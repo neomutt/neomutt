@@ -427,5 +427,5 @@ bool ctx_has_limit(const struct Context *ctx)
  */
 struct Mailbox *ctx_mailbox(struct Context *ctx)
 {
-  return Context ? Context->mailbox : NULL;
+  return ctx ? ctx->mailbox : NULL;
 }
