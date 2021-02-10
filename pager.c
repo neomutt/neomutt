@@ -315,14 +315,29 @@ static inline bool assert_mailbox_writable(struct Mailbox *mailbox)
     break;                                                                     \
   }
 
-#define CHECK_ACL(aclbit, action)                                              \
-  if (!Context || !(Context->mailbox->rights & aclbit))                        \
-  {                                                                            \
-    mutt_flushinp();                                                           \
-    /* L10N: %s is one of the CHECK_ACL entries below. */                      \
-    mutt_error(_("%s: Operation not permitted by ACL"), action);               \
-    break;                                                                     \
+/**
+ * assert_mailbox_permissions - checks that mailbox is has requested acl flags set
+ * @param m      Mailbox to check
+ * @param acl    AclFlags required to be set on a given mailbox
+ * @param action String to augment error message
+ * @retval true  Mailbox has necessary flags set
+ * @retval false Mailbox does not have necessary flags set
+ *
+ * @note On failure, the input will be flushed and an error message displayed
+ */
+static inline bool assert_mailbox_permissions(struct Mailbox *m, AclFlags acl, char *action)
+{
+  assert(m);
+  assert(action);
+  if (m->rights & acl)
+  {
+    return true;
   }
+  mutt_flushinp();
+  /* L10N: %s is one of the CHECK_ACL entries below. */
+  mutt_error(_("%s: Operation not permitted by ACL"), action);
+  return false;
+}
 
 /**
  * check_sig - Check for an email signature
@@ -3082,7 +3097,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (!assert_mailbox_writable(Context->mailbox))
           break;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Can't delete message"));
+        if (!assert_mailbox_permissions(Context->mailbox, MUTT_ACL_DELETE,
+                                        _("Can't delete message")))
+        {
+          break;
+        }
 
         mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, true);
         mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
@@ -3128,7 +3147,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         /* L10N: Due to the implementation details we do not know whether we
            delete zero, 1, 12, ... messages. So in English we use
            "messages". Your language might have other means to express this.  */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Can't delete messages"));
+        if (!assert_mailbox_permissions(Context->mailbox, MUTT_ACL_DELETE,
+                                        _("Can't delete messages")))
+        {
+          break;
+        }
 
         int subthread = (ch == OP_DELETE_SUBTHREAD);
         int r = mutt_thread_set_flag(m, extra->email, MUTT_DELETE, 1, subthread);
@@ -3199,7 +3222,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (!assert_mailbox_writable(Context->mailbox))
           break;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_WRITE, "Can't flag message");
+        if (!assert_mailbox_permissions(Context->mailbox, MUTT_ACL_WRITE, "Can't flag message"))
+          break;
 
         mutt_set_flag(Context->mailbox, extra->email, MUTT_FLAG, !extra->email->flagged);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
@@ -3451,7 +3475,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (!assert_mailbox_writable(Context->mailbox))
           break;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_SEEN, _("Can't toggle new"));
+        if (!assert_mailbox_permissions(Context->mailbox, MUTT_ACL_SEEN, _("Can't toggle new")))
+          break;
 
         if (extra->email->read || extra->email->old)
           mutt_set_flag(Context->mailbox, extra->email, MUTT_NEW, true);
@@ -3472,7 +3497,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (!assert_mailbox_writable(Context->mailbox))
           break;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Can't undelete message"));
+        if (!assert_mailbox_permissions(Context->mailbox, MUTT_ACL_DELETE,
+                                        _("Can't undelete message")))
+        {
+          break;
+        }
 
         mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, false);
         mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, false);
@@ -3494,7 +3523,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         /* L10N: Due to the implementation details we do not know whether we
            undelete zero, 1, 12, ... messages. So in English we use
            "messages". Your language might have other means to express this. */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Can't undelete messages"));
+        if (!assert_mailbox_permissions(Context->mailbox, MUTT_ACL_DELETE,
+                                        _("Can't undelete messages")))
+        {
+          break;
+        }
 
         int r = mutt_thread_set_flag(m, extra->email, MUTT_DELETE, false,
                                      (ch != OP_UNDELETE_THREAD));
