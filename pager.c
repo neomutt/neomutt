@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h> // IWYU pragma: keep
@@ -286,13 +287,25 @@ static const struct Mapping PagerNewsHelp[] = {
     break;                                                                     \
   }
 
-#define CHECK_READONLY                                                         \
-  if (!Context || Context->mailbox->readonly)                                  \
-  {                                                                            \
-    mutt_flushinp();                                                           \
-    mutt_error(_(Mailbox_is_read_only));                                       \
-    break;                                                                     \
+/**
+ * assert_mailbox_writable - checks that mailbox is writable
+ * @param mailbox mailbox to check
+ * @retval true  Mailbox is writable
+ * @retval false Mailbox is not writable
+ *
+ * @note On failure, the input will be flushed and an error message displayed
+ */
+static inline bool assert_mailbox_writable(struct Mailbox *mailbox)
+{
+  assert(mailbox);
+  if (mailbox->readonly)
+  {
+    mutt_flushinp();
+    mutt_error(_(Mailbox_is_read_only));
+    return false;
   }
+  return true;
+}
 
 #define CHECK_ATTACH                                                           \
   if (OptAttachMsg)                                                            \
@@ -3066,7 +3079,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_PURGE_MESSAGE:
       case OP_DELETE:
         CHECK_MODE(IsEmail(extra));
-        CHECK_READONLY;
+        if (!assert_mailbox_writable(Context->mailbox))
+          break;
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_DELETE, _("Can't delete message"));
 
@@ -3086,7 +3100,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_MAIN_CLEAR_FLAG:
       {
         CHECK_MODE(IsEmail(extra));
-        CHECK_READONLY;
+        if (!assert_mailbox_writable(Context->mailbox))
+          break;
 
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
@@ -3107,7 +3122,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_PURGE_THREAD:
       {
         CHECK_MODE(IsEmail(extra));
-        CHECK_READONLY;
+        if (!assert_mailbox_writable(Context->mailbox))
+          break;
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            delete zero, 1, 12, ... messages. So in English we use
@@ -3180,7 +3196,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_FLAG_MESSAGE:
         CHECK_MODE(IsEmail(extra));
-        CHECK_READONLY;
+        if (!assert_mailbox_writable(Context->mailbox))
+          break;
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_WRITE, "Can't flag message");
 
@@ -3431,7 +3448,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_TOGGLE_NEW:
         CHECK_MODE(IsEmail(extra));
-        CHECK_READONLY;
+        if (!assert_mailbox_writable(Context->mailbox))
+          break;
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_SEEN, _("Can't toggle new"));
 
@@ -3451,7 +3469,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_UNDELETE:
         CHECK_MODE(IsEmail(extra));
-        CHECK_READONLY;
+        if (!assert_mailbox_writable(Context->mailbox))
+          break;
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_DELETE, _("Can't undelete message"));
 
@@ -3469,7 +3488,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_UNDELETE_SUBTHREAD:
       {
         CHECK_MODE(IsEmail(extra));
-        CHECK_READONLY;
+        if (!assert_mailbox_writable(Context->mailbox))
+          break;
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            undelete zero, 1, 12, ... messages. So in English we use
