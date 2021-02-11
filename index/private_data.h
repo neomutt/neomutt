@@ -33,7 +33,6 @@ struct MuttWindow;
  */
 struct IndexPrivateData
 {
-  bool done;                     ///< Time to leave the Index
   bool tag;                      ///< tag-prefix has been pressed
   int  oldcount;                 ///< Old count of Emails in the Mailbox
   int  newcount;                 ///< New count of Emails in the Mailbox
