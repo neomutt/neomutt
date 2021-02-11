@@ -362,8 +362,8 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
       }
     }
 
-    const bool c_use_8bitmime = cs_subset_bool(sub, "use_8bitmime");
-    if (eightbit && c_use_8bitmime)
+    const bool c_use_8bit_mime = cs_subset_bool(sub, "use_8bit_mime");
+    if (eightbit && c_use_8bit_mime)
       ARRAY_ADD(&args, "-B8BITMIME");
 
     const bool c_use_envelope_from = cs_subset_bool(sub, "use_envelope_from");

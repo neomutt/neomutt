@@ -1288,8 +1288,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             case MUTT_MMDF:
               if (C_Folder)
                 mutt_buffer_strcpy(&LastDir, C_Folder);
-              else if (C_Spoolfile)
-                mutt_browser_select_dir(C_Spoolfile);
+              else if (C_SpoolFile)
+                mutt_browser_select_dir(C_SpoolFile);
               break;
             default:
               mutt_browser_select_dir(CurrentFolder);

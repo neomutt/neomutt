@@ -1384,15 +1384,15 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
   struct AddressList from_list = TAILQ_HEAD_INITIALIZER(from_list);
   mutt_addrlist_append(&from_list, from);
 
-  /* mutt_default_from() does not use $realname if the real name is not set
+  /* mutt_default_from() does not use $real_name if the real name is not set
    * in $from, so we add it here.  The reason it is not added in
    * mutt_default_from() is that during normal sending, we execute
-   * send-hooks and set the realname last so that it can be changed based
+   * send-hooks and set the real_name last so that it can be changed based
    * upon message criteria.  */
   if (!from->personal)
   {
-    const char *c_realname = cs_subset_string(sub, "realname");
-    from->personal = mutt_str_dup(c_realname);
+    const char *c_real_name = cs_subset_string(sub, "real_name");
+    from->personal = mutt_str_dup(c_real_name);
   }
 
   mutt_addrlist_qualify(&from_list, fqdn);

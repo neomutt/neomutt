@@ -13,10 +13,10 @@ set smime_is_default
 set smime_timeout=300
 
 # Global crypto options -- these affect PGP operations as well.
-set crypt_autosign = yes
-set crypt_replyencrypt = yes
-set crypt_replysign = yes
-set crypt_replysignencrypted = yes
+set crypt_auto_sign = yes
+set crypt_reply_encrypt = yes
+set crypt_reply_sign = yes
+set crypt_reply_sign_encrypted = yes
 set crypt_verify_sig = yes
 
 

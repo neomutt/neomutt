@@ -757,7 +757,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   snprintf(ProtectedHeaderMarker, sizeof(ProtectedHeaderMarker), "\033]8;%lld\a", // Escape
            (long long) mutt_date_epoch());
 
-  /* "$spoolfile" precedence: config file, environment */
+  /* "$spool_file" precedence: config file, environment */
   const char *p = mutt_str_getenv("MAIL");
   if (!p)
     p = mutt_str_getenv("MAILDIR");
@@ -770,8 +770,8 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 #endif
     p = mutt_buffer_string(&buf);
   }
-  cs_str_initial_set(cs, "spoolfile", p, NULL);
-  cs_str_reset(cs, "spoolfile", NULL);
+  cs_str_initial_set(cs, "spool_file", p, NULL);
+  cs_str_reset(cs, "spool_file", NULL);
 
   p = mutt_str_getenv("REPLYTO");
   if (p)
@@ -931,16 +931,16 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   if (!get_hostname(cs))
     goto done;
 
-  if (!C_Realname)
+  if (!C_RealName)
   {
     struct passwd *pw = getpwuid(getuid());
     if (pw)
     {
       char name[256];
-      C_Realname = mutt_str_dup(mutt_gecos_name(name, sizeof(name), pw));
+      C_RealName = mutt_str_dup(mutt_gecos_name(name, sizeof(name), pw));
     }
   }
-  cs_str_initial_set(cs, "realname", C_Realname, NULL);
+  cs_str_initial_set(cs, "real_name", C_RealName, NULL);
 
   if (need_pause && !OptNoCurses)
   {
@@ -955,14 +955,14 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   mutt_hist_read_file();
 
 #ifdef USE_NOTMUCH
-  if (C_VirtualSpoolfile)
+  if (C_VirtualSpoolFile)
   {
     /* Find the first virtual folder and open it */
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
     neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_NOTMUCH);
     struct MailboxNode *mp = STAILQ_FIRST(&ml);
     if (mp)
-      cs_str_string_set(cs, "spoolfile", mailbox_path(mp->mailbox), NULL);
+      cs_str_string_set(cs, "spool_file", mailbox_path(mp->mailbox), NULL);
     neomutt_mailboxlist_clear(&ml);
   }
 #endif

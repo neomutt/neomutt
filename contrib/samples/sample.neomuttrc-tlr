@@ -194,12 +194,12 @@ set   abort_unmodified=no               # Let me send empty messages
 set   alias_file=~/.mutt/aliases        # Where to store aliases
 unset allow_8bit                        # Produce correct MIME
 unset arrow_cursor                      # Use the bar cursor
-set   askcc                             # Ask me about CCs
+set   ask_cc                            # Ask me about CCs
 unset bounce_delivered                  # Don't include Delivered-to with bounces
 # set   charset=iso-8859-1              # The local character set
 set   send_charset="us-ascii:iso-8859-1:iso-8859-15:iso-8859-2:utf-8"
-set   confirmcreate                     # Ask me about creating new files
-unset confirmappend                     # Don't ask me about appending to files
+set   confirm_create                    # Ask me about creating new files
+unset confirm_append                    # Don't ask me about appending to files
 set   delete=yes                        # Don't ask me whether or not I meant to delete messages
 # set   display_filter="tr '\240\204\223\226' ' \"\"-'" # fix some funny characters
 set   edit_headers                      # I want to edit the headers.
@@ -215,18 +215,18 @@ set   forward_decode                    # Decode messages when forwarding.
 set   forward_decrypt                   # Decrypt messages when forwarding.
 set   nohelp                            # No help line.
 set   include=yes                       # Always include a copy when replying.
-set   mark_old                  # Distinguish between seen (but unread) and new messages
+set   mark_old                          # Distinguish between seen (but unread) and new messages
 set   mbox=+mbox                        # The (unused) mbox file.
-unset metoo                             # Remove me from CC headers.
+unset me_too                            # Remove me from CC headers.
 set   mime_forward_rest=ask-no          # Ask me whether or not to create a MIME-encapsulated forward
 set   move=no                           # Don't use mbox
 set   pager_stop                        # Don't fall through to the next message in the pager
 set   pager_index_lines=0               # The pager index is ugly.
-set   crypt_replyencrypt                # Encrypt when replying to encrypted messages.
-set   crypt_replysignencrypted          # Sign when replying to encrypted messages.
+set   crypt_reply_encrypt               # Encrypt when replying to encrypted messages.
+set   crypt_reply_sign_encrypted        # Sign when replying to encrypted messages.
 set   pgp_show_unusable="no"            # Don't display unusable keys.
 set   pgp_sort_keys="keyid"             # Sort keys by key ID
-set   crypt_replysign                   # Sign when replying to signed messages.
+set   crypt_reply_sign                  # Sign when replying to signed messages.
 set   pgp_timeout=3600                  # Forget the PGP passphrase after an hour.
 set   pipe_decode                       # Decode messages I pipe to commands, typically to patch(1).
 set   postponed=~/.mutt/postponed       # Where to put postponed messages
@@ -290,7 +290,7 @@ set wrap=-4                             # Leave a margin in the pager
 # PGP command configuration
 # source ~/.mutt/pgp2.rc
 source ~/.mutt/gpg.rc
-set pgp_getkeys_command=""
+set pgp_get_keys_command=""
 
 # source ~/.mutt/smime.rc
 

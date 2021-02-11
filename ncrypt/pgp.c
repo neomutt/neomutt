@@ -1442,7 +1442,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
       {
         keyid = crypt_hook->data;
         enum QuadOption ans = MUTT_YES;
-        if (!oppenc_mode && C_CryptConfirmhook)
+        if (!oppenc_mode && C_CryptConfirmHook)
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid, p->mailbox);
           ans = mutt_yesorno(buf, MUTT_YES);
@@ -1852,7 +1852,7 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
     return e->security;
 
   /* If autoinline and no crypto options set, then set inline. */
-  if (C_PgpAutoinline &&
+  if (C_PgpAutoInline &&
       !((e->security & APPLICATION_PGP) && (e->security & (SEC_SIGN | SEC_ENCRYPT))))
   {
     e->security |= SEC_INLINE;

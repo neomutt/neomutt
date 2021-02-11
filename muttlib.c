@@ -264,7 +264,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
         }
         else
         {
-          mutt_buffer_strcpy(p, C_Spoolfile);
+          mutt_buffer_strcpy(p, C_SpoolFile);
           tail = s + 1;
         }
         break;
@@ -1363,7 +1363,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   if ((type != MUTT_MAILBOX_ERROR) && (type != MUTT_UNKNOWN) && (mx_access(s, W_OK) == 0))
   {
-    if (C_Confirmappend)
+    if (C_ConfirmAppend)
     {
       struct Buffer *tmp = mutt_buffer_pool_get();
       mutt_buffer_printf(tmp, _("Append messages to %s?"), s);
@@ -1400,7 +1400,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     /* pathname does not exist */
     if (errno == ENOENT)
     {
-      if (C_Confirmcreate)
+      if (C_ConfirmCreate)
       {
         struct Buffer *tmp = mutt_buffer_pool_get();
         mutt_buffer_printf(tmp, _("Create %s?"), s);
@@ -1412,7 +1412,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
         mutt_buffer_pool_release(&tmp);
       }
 
-      /* user confirmed with MUTT_YES or set `$confirmcreate` */
+      /* user confirmed with MUTT_YES or set `$confirm_create` */
       if (ret == 0)
       {
         /* create dir recursively */

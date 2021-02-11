@@ -67,7 +67,7 @@ OpenSSL
 CC'ed
 cc'ed
 expandos
-confirmappend
+confirm_append
 gpgme
 pathname
 unalternates
@@ -229,7 +229,7 @@ NIS
 fIold
 unsubscribed
 keybindings
-spoolfile
+spool_file
 fInot
 unmailboxes
 punct
@@ -303,7 +303,7 @@ subexpression
 pubring
 fBif
 ldap
-noaskbcc
+noask_bcc
 wiki
 unsetting
 subfolders
@@ -317,7 +317,7 @@ gnutls
 Afterwards
 undelete
 upcase
-realname
+real_name
 cumulate
 uncollapse
 fCssh
@@ -330,7 +330,7 @@ Anytown
 fIevery
 GETADDRINFO
 str
-metoo
+me_too
 fIelse
 fInever
 POSIX
@@ -385,7 +385,7 @@ formatter
 gdbm
 fIyou
 filename
-askcc
+ask_cc
 de
 kremvax
 mbox
@@ -463,7 +463,7 @@ bbdb
 rx
 fIun
 SomeoneElse
-autoedit
+auto_edit
 un
 pageup
 PageUp
@@ -497,7 +497,7 @@ aif
 CAfile
 fIenvelope
 aifc
-confirmcreate
+confirm_create
 aiff
 username
 prepended
@@ -507,5 +507,5 @@ expando
 prepends
 login
 cntrl
-askbcc
+ask_bcc
 pagesize

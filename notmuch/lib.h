@@ -51,7 +51,7 @@ extern struct MxOps MxNotmuchOps;
 extern char *C_NmQueryWindowCurrentSearch;
 extern int   C_NmQueryWindowDuration;
 extern char *C_VfolderFormat;
-extern bool  C_VirtualSpoolfile;
+extern bool  C_VirtualSpoolFile;
 
 void  nm_init                    (void);
 void  nm_db_debug_check          (struct Mailbox *m);

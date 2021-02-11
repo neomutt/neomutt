@@ -83,7 +83,7 @@ int mutt_complete(char *buf, size_t buflen)
   if ((*buf == '=') || (*buf == '+') || (*buf == '!'))
   {
     if (*buf == '!')
-      p = NONULL(C_Spoolfile);
+      p = NONULL(C_SpoolFile);
     else
       p = NONULL(C_Folder);
 
@@ -111,7 +111,7 @@ int mutt_complete(char *buf, size_t buflen)
   {
     mutt_buffer_addch(dirpart, *buf);
     if (*buf == '!')
-      mutt_buffer_strcpy(exp_dirpart, NONULL(C_Spoolfile));
+      mutt_buffer_strcpy(exp_dirpart, NONULL(C_SpoolFile));
     else
       mutt_buffer_strcpy(exp_dirpart, NONULL(C_Folder));
     p = strrchr(buf, '/');

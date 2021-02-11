@@ -868,12 +868,12 @@ int main(int argc, char *argv[], char *envp[])
         mutt_addrlist_parse(&e->env->to, argv[i]);
     }
 
-    if (!draft_file && C_Autoedit && TAILQ_EMPTY(&e->env->to) &&
+    if (!draft_file && C_AutoEdit && TAILQ_EMPTY(&e->env->to) &&
         TAILQ_EMPTY(&e->env->cc))
     {
       mutt_error(_("No recipients specified"));
       email_free(&e);
-      goto main_curses; // TEST26: neomutt -s test (with autoedit=yes)
+      goto main_curses; // TEST26: neomutt -s test (with auto_edit=yes)
     }
 
     if (subject)
@@ -1169,14 +1169,14 @@ int main(int argc, char *argv[], char *envp[])
 
     if (mutt_buffer_is_empty(&folder))
     {
-      if (C_Spoolfile)
+      if (C_SpoolFile)
       {
-        // Check if `$spoolfile` corresponds a mailboxes' description.
-        struct Mailbox *m_desc = mailbox_find_name(C_Spoolfile);
+        // Check if `$spool_file` corresponds a mailboxes' description.
+        struct Mailbox *m_desc = mailbox_find_name(C_SpoolFile);
         if (m_desc)
           mutt_buffer_strcpy(&folder, m_desc->realpath);
         else
-          mutt_buffer_strcpy(&folder, C_Spoolfile);
+          mutt_buffer_strcpy(&folder, C_SpoolFile);
       }
       else if (C_Folder)
         mutt_buffer_strcpy(&folder, C_Folder);

@@ -48,7 +48,7 @@ char *C_NmRecordTags;                 ///< Config: (notmuch) Tags to apply to th
 char *C_NmRepliedTag;                 ///< Config: (notmuch) Tag to use for replied messages
 char *C_NmUnreadTag;                  ///< Config: (notmuch) Tag to use for unread messages
 char *C_VfolderFormat;                ///< Config: (notmuch) printf-like format string for the browser's display of virtual folders
-bool  C_VirtualSpoolfile;             ///< Config: (notmuch) Use the first virtual mailbox as a spool file
+bool  C_VirtualSpoolFile;             ///< Config: (notmuch) Use the first virtual mailbox as a spool file
 // clang-format on
 
 struct ConfigDef NotmuchVars[] = {
@@ -95,11 +95,12 @@ struct ConfigDef NotmuchVars[] = {
   { "vfolder_format", DT_STRING|DT_NOT_EMPTY|R_INDEX, &C_VfolderFormat, IP "%2C %?n?%4n/&     ?%4m %f", 0, NULL,
     "(notmuch) printf-like format string for the browser's display of virtual folders"
   },
-  { "virtual_spoolfile", DT_BOOL, &C_VirtualSpoolfile, false, 0, NULL,
+  { "virtual_spool_file", DT_BOOL, &C_VirtualSpoolFile, false, 0, NULL,
     "(notmuch) Use the first virtual mailbox as a spool file"
   },
 
-  { "nm_default_uri", DT_SYNONYM, NULL, IP "nm_default_url" },
+  { "nm_default_uri",    DT_SYNONYM, NULL, IP "nm_default_url"      },
+  { "virtual_spoolfile", DT_SYNONYM, NULL, IP "virtual_spool_file", },
   { NULL, 0, NULL, 0, 0, NULL, NULL },
   // clang-format on
 };

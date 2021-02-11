@@ -52,7 +52,7 @@ const struct Mapping SortKeyMethods[] = {
 #ifdef CRYPT_BACKEND_GPGME
 bool            C_CryptUsePka;                         ///< Config: Use GPGME to use PKA (lookup PGP keys using DNS)
 #endif
-bool            C_CryptConfirmhook;                    ///< Config: Prompt the user to confirm keys before use
+bool            C_CryptConfirmHook;                    ///< Config: Prompt the user to confirm keys before use
 bool            C_CryptOpportunisticEncrypt;           ///< Config: Enable encryption when the recipient's key is available
 bool            C_CryptOpportunisticEncryptStrongKeys; ///< Config: Enable encryption only when strong a key is available
 bool            C_CryptProtectedHeadersRead;           ///< Config: Display protected headers (Memory Hole) in the pager
@@ -62,7 +62,7 @@ bool            C_SmimeIsDefault;                      ///< Config: Use SMIME ra
 bool            C_PgpIgnoreSubkeys;                    ///< Config: Only use the principal PGP key
 bool            C_PgpLongIds;                          ///< Config: Display long PGP key IDs to the user
 bool            C_PgpShowUnusable;                     ///< Config: Show non-usable keys in the key selection
-bool            C_PgpAutoinline;                       ///< Config: Use old-style inline PGP messages (not recommended)
+bool            C_PgpAutoInline;                       ///< Config: Use old-style inline PGP messages (not recommended)
 char *          C_PgpDefaultKey;                       ///< Config: Default key to use for PGP operations
 char *          C_PgpSignAs;                           ///< Config: Use this alternative key for signing messages
 char *          C_PgpEntryFormat;                      ///< Config: printf-like format string for the PGP key selection menu
@@ -88,13 +88,13 @@ struct Regex *  C_PgpDecryptionOkay;                   ///< Config: Text indicat
 struct Regex *  C_PgpGoodSign;                         ///< Config: Text indicating a good signature
 long            C_PgpTimeout;                          ///< Config: Time in seconds to cache a passphrase
 bool            C_PgpUseGpgAgent;                      ///< Config: Use a PGP agent for caching passwords
-char *          C_PgpClearsignCommand;                 ///< Config: (pgp) External command to inline-sign a message
+char *          C_PgpClearSignCommand;                 ///< Config: (pgp) External command to inline-sign a message
 char *          C_PgpDecodeCommand;                    ///< Config: (pgp) External command to decode a PGP attachment
 char *          C_PgpDecryptCommand;                   ///< Config: (pgp) External command to decrypt a PGP message
 char *          C_PgpEncryptOnlyCommand;               ///< Config: (pgp) External command to encrypt, but not sign a message
 char *          C_PgpEncryptSignCommand;               ///< Config: (pgp) External command to encrypt and sign a message
 char *          C_PgpExportCommand;                    ///< Config: (pgp) External command to export a public key from the user's keyring
-char *          C_PgpGetkeysCommand;                   ///< Config: (pgp) External command to download a key for an email address
+char *          C_PgpGetKeysCommand;                   ///< Config: (pgp) External command to download a key for an email address
 char *          C_PgpImportCommand;                    ///< Config: (pgp) External command to import a key into the user's keyring
 char *          C_PgpListPubringCommand;               ///< Config: (pgp) External command to list the public keys in a user's keyring
 char *          C_PgpListSecringCommand;               ///< Config: (pgp) External command to list the private keys in a user's keyring
@@ -125,7 +125,7 @@ unsigned char   C_CryptVerifySig;                      ///< Config: Verify PGP o
 
 struct ConfigDef NcryptVars[] = {
   // clang-format off
-  { "crypt_confirmhook", DT_BOOL, &C_CryptConfirmhook, true, 0, NULL,
+  { "crypt_confirm_hook", DT_BOOL, &C_CryptConfirmHook, true, 0, NULL,
     "Prompt the user to confirm keys before use"
   },
   { "crypt_opportunistic_encrypt", DT_BOOL, &C_CryptOpportunisticEncrypt, false, 0, NULL,
@@ -157,7 +157,7 @@ struct ConfigDef NcryptVars[] = {
   { "envelope_from_address", DT_ADDRESS, &C_EnvelopeFromAddress, 0, 0, NULL,
     "Manually set the sender for outgoing messages"
   },
-  { "pgp_autoinline", DT_BOOL, &C_PgpAutoinline, false, 0, NULL,
+  { "pgp_auto_inline", DT_BOOL, &C_PgpAutoInline, false, 0, NULL,
     "Use old-style inline PGP messages (not recommended)"
   },
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
@@ -167,7 +167,7 @@ struct ConfigDef NcryptVars[] = {
   { "pgp_check_gpg_decrypt_status_fd", DT_BOOL, &C_PgpCheckGpgDecryptStatusFd, true, 0, NULL,
     "File descriptor used for status info"
   },
-  { "pgp_clearsign_command", DT_STRING|DT_COMMAND, &C_PgpClearsignCommand, 0, 0, NULL,
+  { "pgp_clear_sign_command", DT_STRING|DT_COMMAND, &C_PgpClearSignCommand, 0, 0, NULL,
     "(pgp) External command to inline-sign a message"
   },
   { "pgp_decode_command", DT_STRING|DT_COMMAND, &C_PgpDecodeCommand, 0, 0, NULL,
@@ -198,7 +198,7 @@ struct ConfigDef NcryptVars[] = {
   { "pgp_export_command", DT_STRING|DT_COMMAND, &C_PgpExportCommand, 0, 0, NULL,
     "(pgp) External command to export a public key from the user's keyring"
   },
-  { "pgp_getkeys_command", DT_STRING|DT_COMMAND, &C_PgpGetkeysCommand, 0, 0, NULL,
+  { "pgp_get_keys_command", DT_STRING|DT_COMMAND, &C_PgpGetKeysCommand, 0, 0, NULL,
     "(pgp) External command to download a key for an email address"
   },
   { "pgp_good_sign", DT_REGEX, &C_PgpGoodSign, 0, 0, NULL,
@@ -348,10 +348,18 @@ struct ConfigDef NcryptVars[] = {
     "Save the cleartext Subject with the headers"
   },
 
-  { "pgp_create_traditional", DT_SYNONYM, NULL, IP "pgp_autoinline",    },
-  { "pgp_self_encrypt_as",    DT_SYNONYM, NULL, IP "pgp_default_key",   },
-  { "pgp_verify_sig",         DT_SYNONYM, NULL, IP "crypt_verify_sig",  },
-  { "smime_self_encrypt_as",  DT_SYNONYM, NULL, IP "smime_default_key", },
+  { "crypt_confirmhook",      DT_SYNONYM, NULL, IP "crypt_confirm_hook", },
+  { "pgp_autoinline",         DT_SYNONYM, NULL, IP "pgp_auto_inline",    },
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+  { "pgp_clearsign_command",  DT_SYNONYM, NULL, IP "pgp_clear_sign_command",     },
+#endif
+  { "pgp_create_traditional", DT_SYNONYM, NULL, IP "pgp_auto_inline",    },
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+  { "pgp_getkeys_command",    DT_SYNONYM, NULL, IP "pgp_get_keys_command",       },
+#endif
+  { "pgp_self_encrypt_as",    DT_SYNONYM, NULL, IP "pgp_default_key",    },
+  { "pgp_verify_sig",         DT_SYNONYM, NULL, IP "crypt_verify_sig",   },
+  { "smime_self_encrypt_as",  DT_SYNONYM, NULL, IP "smime_default_key",  },
 
   { "pgp_encrypt_self",   DT_DEPRECATED|DT_QUAD, &C_PgpEncryptSelf,   MUTT_NO },
   { "smime_encrypt_self", DT_DEPRECATED|DT_QUAD, &C_SmimeEncryptSelf, MUTT_NO },

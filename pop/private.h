@@ -127,7 +127,7 @@ struct PopAuth
 
 extern bool          C_PopAuthTryAll;
 extern struct Slist *C_PopAuthenticators;
-extern short         C_PopCheckinterval;
+extern short         C_PopCheckInterval;
 extern unsigned char C_PopDelete;
 extern char *        C_PopHost;
 extern bool          C_PopLast;

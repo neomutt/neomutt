@@ -117,25 +117,25 @@ struct ConfigDef SendVars[] = {
   { "content_type", DT_STRING, NULL, IP "text/plain", 0, NULL,
     "Default 'Content-Type' for newly composed messages"
   },
-  { "crypt_autoencrypt", DT_BOOL, NULL, false, 0, NULL,
+  { "crypt_auto_encrypt", DT_BOOL, NULL, false, 0, NULL,
     "Automatically PGP encrypt all outgoing mail"
   },
-  { "crypt_autopgp", DT_BOOL, NULL, true, 0, NULL,
+  { "crypt_auto_pgp", DT_BOOL, NULL, true, 0, NULL,
     "Allow automatic PGP functions"
   },
-  { "crypt_autosign", DT_BOOL, NULL, false, 0, NULL,
+  { "crypt_auto_sign", DT_BOOL, NULL, false, 0, NULL,
     "Automatically PGP sign all outgoing mail"
   },
-  { "crypt_autosmime", DT_BOOL, NULL, true, 0, NULL,
+  { "crypt_auto_smime", DT_BOOL, NULL, true, 0, NULL,
     "Allow automatic SMIME functions"
   },
-  { "crypt_replyencrypt", DT_BOOL, NULL, true, 0, NULL,
+  { "crypt_reply_encrypt", DT_BOOL, NULL, true, 0, NULL,
     "Encrypt replies to encrypted messages"
   },
-  { "crypt_replysign", DT_BOOL, NULL, false, 0, NULL,
+  { "crypt_reply_sign", DT_BOOL, NULL, false, 0, NULL,
     "Sign replies to signed messages"
   },
-  { "crypt_replysignencrypted", DT_BOOL, NULL, false, 0, NULL,
+  { "crypt_reply_sign_encrypted", DT_BOOL, NULL, false, 0, NULL,
     "Sign replies to encrypted messages"
   },
   { "dsn_notify", DT_STRING, NULL, 0, 0, NULL,
@@ -203,7 +203,7 @@ struct ConfigDef SendVars[] = {
     "(nntp) External command to post news articles"
   },
 #endif
-  { "metoo", DT_BOOL, NULL, false, 0, NULL,
+  { "me_too", DT_BOOL, NULL, false, 0, NULL,
     "Remove the user's address from the list of recipients"
   },
   { "mime_forward_decode", DT_BOOL, NULL, false, 0, NULL,
@@ -223,7 +223,7 @@ struct ConfigDef SendVars[] = {
   { "nm_record", DT_BOOL, NULL, false, 0, NULL,
     "(notmuch) If the 'record' mailbox (sent mail) should be indexed"
   },
-  { "pgp_replyinline", DT_BOOL, NULL, false, 0, NULL,
+  { "pgp_reply_inline", DT_BOOL, NULL, false, 0, NULL,
     "Reply using old-style inline PGP messages (not recommended)"
   },
   { "post_indent_string", DT_STRING, NULL, 0, 0, NULL,
@@ -250,7 +250,7 @@ struct ConfigDef SendVars[] = {
   { "reverse_name", DT_BOOL|R_INDEX|R_PAGER, NULL, false, 0, NULL,
     "Set the 'From' from the address the email was sent to"
   },
-  { "reverse_realname", DT_BOOL|R_INDEX|R_PAGER, NULL, true, 0, NULL,
+  { "reverse_real_name", DT_BOOL|R_INDEX|R_PAGER, NULL, true, 0, NULL,
     "Set the 'From' from the full 'To' address the email was sent to"
   },
   { "sendmail", DT_STRING|DT_COMMAND, NULL, IP SENDMAIL " -oem -oi", 0, NULL,
@@ -285,7 +285,7 @@ struct ConfigDef SendVars[] = {
     "(smtp) Url of the SMTP server"
   },
 #endif
-  { "use_8bitmime", DT_BOOL, NULL, false, 0, NULL,
+  { "use_8bit_mime", DT_BOOL, NULL, false, 0, NULL,
     "Use 8-bit messages and ESMTP to send messages"
   },
   { "use_envelope_from", DT_BOOL, NULL, false, 0, NULL,
@@ -303,16 +303,26 @@ struct ConfigDef SendVars[] = {
 
   { "abort_noattach_regexp",  DT_SYNONYM, NULL, IP "abort_noattach_regex",     },
   { "attach_keyword",         DT_SYNONYM, NULL, IP "abort_noattach_regex",     },
+  { "crypt_autoencrypt",      DT_SYNONYM, NULL, IP "crypt_auto_encrypt",       },
+  { "crypt_autopgp",          DT_SYNONYM, NULL, IP "crypt_auto_pgp",           },
+  { "crypt_autosign",         DT_SYNONYM, NULL, IP "crypt_auto_sign",          },
+  { "crypt_autosmime",        DT_SYNONYM, NULL, IP "crypt_auto_smime",         },
+  { "crypt_replyencrypt",     DT_SYNONYM, NULL, IP "crypt_reply_encrypt",      },
+  { "crypt_replysign",        DT_SYNONYM, NULL, IP "crypt_reply_sign",         },
+  { "crypt_replysignencrypted",  DT_SYNONYM, NULL, IP "crypt_reply_sign_encrypted", },
   { "envelope_from",          DT_SYNONYM, NULL, IP "use_envelope_from",        },
   { "forw_decrypt",           DT_SYNONYM, NULL, IP "forward_decrypt",          },
   { "forw_format",            DT_SYNONYM, NULL, IP "forward_format",           },
-  { "pgp_autoencrypt",        DT_SYNONYM, NULL, IP "crypt_autoencrypt",        },
-  { "pgp_autosign",           DT_SYNONYM, NULL, IP "crypt_autosign",           },
-  { "pgp_auto_traditional",   DT_SYNONYM, NULL, IP "pgp_replyinline",          },
-  { "pgp_replyencrypt",       DT_SYNONYM, NULL, IP "crypt_replyencrypt",       },
-  { "pgp_replysign",          DT_SYNONYM, NULL, IP "crypt_replysign",          },
-  { "pgp_replysignencrypted", DT_SYNONYM, NULL, IP "crypt_replysignencrypted", },
+  { "metoo",                  DT_SYNONYM, NULL, IP "me_too",                   },
+  { "pgp_auto_traditional",   DT_SYNONYM, NULL, IP "pgp_reply_inline",         },
+  { "pgp_autoencrypt",        DT_SYNONYM, NULL, IP "crypt_auto_encrypt",       },
+  { "pgp_autosign",           DT_SYNONYM, NULL, IP "crypt_auto_sign",          },
+  { "pgp_replyencrypt",       DT_SYNONYM, NULL, IP "crypt_reply_encrypt",      },
+  { "pgp_replyinline",        DT_SYNONYM, NULL, IP "pgp_reply_inline",         },
+  { "pgp_replysign",          DT_SYNONYM, NULL, IP "crypt_reply_sign",         },
+  { "pgp_replysignencrypted", DT_SYNONYM, NULL, IP "crypt_reply_sign_encrypted", },
   { "post_indent_str",        DT_SYNONYM, NULL, IP "post_indent_string",       },
+  { "use_8bitmime",           DT_SYNONYM, NULL, IP "use_8bit_mime",            },
   { NULL, 0, NULL, 0, 0, NULL, NULL },
   // clang-format on
 };

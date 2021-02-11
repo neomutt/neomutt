@@ -57,7 +57,7 @@ short         C_ImapPipelineDepth;       ///< Config: (imap) Number of IMAP comm
 short         C_ImapPollTimeout;         ///< Config: (imap) Maximum time to wait for a server response
 bool          C_ImapQresync;             ///< Config: (imap) Enable the QRESYNC extension
 bool          C_ImapRfc5161;             ///< Config: (imap) Use the IMAP ENABLE extension to select capabilities
-bool          C_ImapServernoise;         ///< Config: (imap) Display server warnings as error messages
+bool          C_ImapServerNoise;         ///< Config: (imap) Display server warnings as error messages
 char *        C_ImapUser;                ///< Config: (imap) Username for the IMAP server
 // clang-format on
 
@@ -131,7 +131,7 @@ struct ConfigDef ImapVars[] = {
   { "imap_rfc5161", DT_BOOL, &C_ImapRfc5161, true, 0, NULL,
     "(imap) Use the IMAP ENABLE extension to select capabilities"
   },
-  { "imap_servernoise", DT_BOOL, &C_ImapServernoise, true, 0, NULL,
+  { "imap_server_noise", DT_BOOL, &C_ImapServerNoise, true, 0, NULL,
     "(imap) Display server warnings as error messages"
   },
   { "imap_keepalive", DT_NUMBER|DT_NOT_NEGATIVE, &C_ImapKeepalive, 300, 0, NULL,
@@ -155,6 +155,8 @@ struct ConfigDef ImapVars[] = {
   { "imap_user", DT_STRING|DT_SENSITIVE, &C_ImapUser, 0, 0, NULL,
     "(imap) Username for the IMAP server"
   },
+
+  { "imap_servernoise",          DT_SYNONYM, NULL, IP "imap_server_noise",          },
   { NULL, 0, NULL, 0, 0, NULL, NULL },
   // clang-format on
 };

@@ -197,7 +197,7 @@
 * Bug Fixes
   - Avoid opening the same hcache file twice
   - Re-open Mailbox after folder-hook
-  - Fix the matching of the spoolfile Mailbox
+  - Fix the matching of the spool_file Mailbox
   - Fix link-thread to link all tagged emails
 * Changed Config
   - Add $tunnel_is_secure config, defaulting to true
@@ -989,7 +989,7 @@
   - Change maildir and mh check_mailbox to use dynamic sized hash
   - Fix uses of context-\>changed as a counter
   - Make cmd_parse_fetch() more precise about setting reopen/check flags
-  - Enable $reply_self for group-reply, even with $metoo unset
+  - Enable $reply_self for group-reply, even with $me_too unset
 
 2017-09-12  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
@@ -1497,7 +1497,7 @@
   - Use getaddrinfo_a if possible (#420)
 * Bug Fixes
   - handle sigint within socket operations (#411)
-  - Avoid browsing the remote spoolfile by setting MUTT_SELECT_MULTI attach
+  - Avoid browsing the remote spool_file by setting MUTT_SELECT_MULTI attach
   - notmuch: fix crash when completing tags (#395)
   - Fixes missing failure return of notmuch msg open (#401)
   - Fix latest Coverity issues (#387)
@@ -1686,7 +1686,7 @@
   - Improve openssl interactive_check_cert. (closes #3899)
   - Add mutt_array_size macro, change interactive_check_cert() to use it. (see #3899)
   - Return to pager upon aborting a jump operation. (closes #3901)
-  - Change sidebar_spoolfile coloring to be lower precedence.
+  - Change sidebar_spool_file coloring to be lower precedence.
   - Move '@' pattern modifier documentation to the right section.
   - Add setenv/unsetenv commands.
   - Rework OpenSSL certificate verification to support alternative chains. (closes #3903)
@@ -1807,7 +1807,7 @@
   - notmuch: Synchronise tags to flags
 * Bug Fixes
   - updates when pager is open
-  - crash when neither $spoolfile, $folder are set
+  - crash when neither $spool_file, $folder are set
   - forgotten-attachment: fix empty regex expression
   - status-color when pager_index_lines \> 0
   - buffer underrun when no menu item is selected

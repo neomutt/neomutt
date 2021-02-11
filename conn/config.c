@@ -46,7 +46,7 @@ const char *  C_SslClientCert;          ///< Config: (ssl) File containing clien
 bool          C_SslForceTls;            ///< Config: (ssl) Require TLS encryption for all connections
 unsigned char C_SslStarttls;            ///< Config: (ssl) Use STARTTLS on servers advertising the capability
 #ifndef USE_SSL_GNUTLS
-bool          C_SslUsesystemcerts;      ///< Config: (ssl) Use CA certificates in the system-wide store
+bool          C_SslUseSystemCerts;      ///< Config: (ssl) Use CA certificates in the system-wide store
 bool          C_SslUseSslv2;            ///< Config: (ssl) INSECURE: Use SSLv2 for authentication
 #endif
 bool          C_SslUseSslv3;            ///< Config: (ssl) INSECURE: Use SSLv3 for authentication
@@ -131,7 +131,7 @@ struct ConfigDef ConnVars[] = {
     "(ssl) Use TLSv1.3 for authentication"
   },
 #ifdef USE_SSL_OPENSSL
-  { "ssl_usesystemcerts", DT_BOOL, &C_SslUsesystemcerts, true, 0, NULL,
+  { "ssl_use_system_certs", DT_BOOL, &C_SslUseSystemCerts, true, 0, NULL,
     "(ssl) Use CA certificates in the system-wide store"
   },
 #endif
@@ -160,6 +160,8 @@ struct ConfigDef ConnVars[] = {
     "Lookup IPv6 addresses when making connections"
   },
 #endif
+
+  { "ssl_usesystemcerts",        DT_SYNONYM, NULL, IP "ssl_use_system_certs",       },
   { NULL, 0, NULL, 0, 0, NULL, NULL },
   // clang-format on
 };

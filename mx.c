@@ -84,9 +84,9 @@
 #endif
 
 /* These Config Variables are only used in mx.c */
-bool C_KeepFlagged; ///< Config: Don't move flagged messages from `$spoolfile` to `$mbox`
+bool C_KeepFlagged; ///< Config: Don't move flagged messages from `$spool_file` to `$mbox`
 unsigned char C_MboxType; ///< Config: Default type for creating new mailboxes
-unsigned char C_Move; ///< Config: Move emails from `$spoolfile` to `$mbox` when read
+unsigned char C_Move; ///< Config: Move emails from `$spool_file` to `$mbox` when read
 char *C_Trash;        ///< Config: Folder to put deleted emails
 
 // clang-format off
@@ -152,17 +152,17 @@ const struct MxOps *mx_get_ops(enum MailboxType type)
 }
 
 /**
- * mutt_is_spool - Is this the spoolfile?
+ * mutt_is_spool - Is this the spool_file?
  * @param str Name to check
- * @retval true It is the spoolfile
+ * @retval true It is the spool_file
  */
 static bool mutt_is_spool(const char *str)
 {
-  if (mutt_str_equal(str, C_Spoolfile))
+  if (mutt_str_equal(str, C_SpoolFile))
     return true;
 
   struct Url *ua = url_parse(str);
-  struct Url *ub = url_parse(C_Spoolfile);
+  struct Url *ub = url_parse(C_SpoolFile);
 
   const bool is_spool =
       ua && ub && (ua->scheme == ub->scheme) &&
@@ -547,12 +547,12 @@ static int trash_append(struct Mailbox *m)
     return 0; /* nothing to be done */
 
   /* avoid the "append messages" prompt */
-  opt_confappend = C_Confirmappend;
+  opt_confappend = C_ConfirmAppend;
   if (opt_confappend)
-    C_Confirmappend = false;
+    C_ConfirmAppend = false;
   rc = mutt_save_confirm(C_Trash, &st);
   if (opt_confappend)
-    C_Confirmappend = true;
+    C_ConfirmAppend = true;
   if (rc != 0)
   {
     /* L10N: Although we know the precise number of messages, we do not show it to the user.
@@ -1408,7 +1408,7 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
     {
       if (buf[0] == '!')
       {
-        mutt_str_inline_replace(buf, buflen, 1, C_Spoolfile);
+        mutt_str_inline_replace(buf, buflen, 1, C_SpoolFile);
       }
       else if (buf[0] == '-')
       {

@@ -209,10 +209,10 @@ struct ConfigDef MainVars[] = {
   { "ascii_chars", DT_BOOL|R_INDEX|R_PAGER, &C_AsciiChars, false, 0, NULL,
     "Use plain ASCII characters, when drawing email threads"
   },
-  { "askbcc", DT_BOOL, &C_Askbcc, false, 0, NULL,
+  { "ask_bcc", DT_BOOL, &C_AskBcc, false, 0, NULL,
     "Ask the user for the blind-carbon-copy recipients"
   },
-  { "askcc", DT_BOOL, &C_Askcc, false, 0, NULL,
+  { "ask_cc", DT_BOOL, &C_AskCc, false, 0, NULL,
     "Ask the user for the carbon-copy recipients"
   },
   { "assumed_charset", DT_STRING, &C_AssumedCharset, 0, 0, charset_validator,
@@ -245,7 +245,7 @@ struct ConfigDef MainVars[] = {
   { "auto_tag", DT_BOOL, &C_AutoTag, false, 0, NULL,
     "Automatically apply actions to all tagged messages"
   },
-  { "autoedit", DT_BOOL, &C_Autoedit, false, 0, NULL,
+  { "auto_edit", DT_BOOL, &C_AutoEdit, false, 0, NULL,
     "Skip the initial compose menu and edit the email"
   },
   { "beep", DT_BOOL, &C_Beep, true, 0, NULL,
@@ -281,10 +281,10 @@ struct ConfigDef MainVars[] = {
   { "config_charset", DT_STRING, &C_ConfigCharset, 0, 0, charset_validator,
     "Character set that the config files are in"
   },
-  { "confirmappend", DT_BOOL, &C_Confirmappend, true, 0, NULL,
+  { "confirm_append", DT_BOOL, &C_ConfirmAppend, true, 0, NULL,
     "Confirm before appending emails to a mailbox"
   },
-  { "confirmcreate", DT_BOOL, &C_Confirmcreate, true, 0, NULL,
+  { "confirm_create", DT_BOOL, &C_ConfirmCreate, true, 0, NULL,
     "Confirm before creating a new mailbox"
   },
   { "copy_decode_weed", DT_BOOL, &C_CopyDecodeWeed, false, 0, NULL,
@@ -403,7 +403,7 @@ struct ConfigDef MainVars[] = {
   { "include_encrypted", DT_BOOL, &C_IncludeEncrypted, false, 0, NULL,
     "Whether to include encrypted content when replying"
   },
-  { "include_onlyfirst", DT_BOOL, &C_IncludeOnlyfirst, false, 0, NULL,
+  { "include_only_first", DT_BOOL, &C_IncludeOnlyFirst, false, 0, NULL,
     "Only include the first attachment when replying"
   },
   { "indent_string", DT_STRING, &C_IndentString, IP "> ", 0, NULL,
@@ -413,7 +413,7 @@ struct ConfigDef MainVars[] = {
     "printf-like format string for the index menu (emails)"
   },
   { "keep_flagged", DT_BOOL, &C_KeepFlagged, false, 0, NULL,
-    "Don't move flagged messages from `$spoolfile` to `$mbox`"
+    "Don't move flagged messages from `$spool_file` to `$mbox`"
   },
   { "mail_check", DT_NUMBER|DT_NOT_NEGATIVE, &C_MailCheck, 5, 0, NULL,
     "Number of seconds before NeoMutt checks for new mail"
@@ -487,7 +487,7 @@ struct ConfigDef MainVars[] = {
   },
 #endif
   { "move", DT_QUAD, &C_Move, MUTT_NO, 0, NULL,
-    "Move emails from `$spoolfile` to `$mbox` when read"
+    "Move emails from `$spool_file` to `$mbox` when read"
   },
   { "narrow_tree", DT_BOOL|R_TREE|R_INDEX, &C_NarrowTree, false, 0, NULL,
     "Draw a narrower thread tree in the index"
@@ -561,7 +561,7 @@ struct ConfigDef MainVars[] = {
   { "read_only", DT_BOOL, &C_ReadOnly, false, 0, NULL,
     "Open folders in read-only mode"
   },
-  { "realname", DT_STRING|R_INDEX|R_PAGER, &C_Realname, 0, 0, NULL,
+  { "real_name", DT_STRING|R_INDEX|R_PAGER, &C_RealName, 0, 0, NULL,
     "Real name of the user"
   },
   { "record", DT_STRING|DT_MAILBOX, &C_Record, IP "~/sent", 0, NULL,
@@ -669,7 +669,7 @@ struct ConfigDef MainVars[] = {
   { "spam_separator", DT_STRING, &C_SpamSeparator, IP ",", 0, NULL,
     "Separator for multiple spam headers"
   },
-  { "spoolfile", DT_STRING|DT_MAILBOX, &C_Spoolfile, 0, 0, NULL,
+  { "spool_file", DT_STRING|DT_MAILBOX, &C_SpoolFile, 0, 0, NULL,
     "Inbox"
   },
   { "status_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_StatusChars, IP "-*%A", 0, NULL,
@@ -757,19 +757,27 @@ struct ConfigDef MainVars[] = {
   { "escape", DT_DEPRECATED|DT_STRING, &C_Escape, IP "~" },
   { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL, &C_IgnoreLinearWhiteSpace, false },
 
-  { "edit_hdrs",        DT_SYNONYM, NULL, IP "edit_headers",     },
-  { "forw_decode",      DT_SYNONYM, NULL, IP "forward_decode",   },
-  { "forw_quote",       DT_SYNONYM, NULL, IP "forward_quote",    },
-  { "hdr_format",       DT_SYNONYM, NULL, IP "index_format",     },
-  { "indent_str",       DT_SYNONYM, NULL, IP "indent_string",    },
-  { "mime_fwd",         DT_SYNONYM, NULL, IP "mime_forward",     },
-  { "msg_format",       DT_SYNONYM, NULL, IP "message_format",   },
-  { "print_cmd",        DT_SYNONYM, NULL, IP "print_command",    },
-  { "quote_regexp",     DT_SYNONYM, NULL, IP "quote_regex",      },
-  { "reply_regexp",     DT_SYNONYM, NULL, IP "reply_regex",      },
-  { "xterm_icon",       DT_SYNONYM, NULL, IP "ts_icon_format",   },
-  { "xterm_set_titles", DT_SYNONYM, NULL, IP "ts_enabled",       },
-  { "xterm_title",      DT_SYNONYM, NULL, IP "ts_status_format", },
+  { "askbcc",                    DT_SYNONYM, NULL, IP "ask_bcc",                    },
+  { "askcc",                     DT_SYNONYM, NULL, IP "ask_cc",                     },
+  { "autoedit",                  DT_SYNONYM, NULL, IP "auto_edit",                  },
+  { "confirmappend",             DT_SYNONYM, NULL, IP "confirm_append",             },
+  { "confirmcreate",             DT_SYNONYM, NULL, IP "confirm_create",             },
+  { "edit_hdrs",                 DT_SYNONYM, NULL, IP "edit_headers",               },
+  { "forw_decode",               DT_SYNONYM, NULL, IP "forward_decode",             },
+  { "forw_quote",                DT_SYNONYM, NULL, IP "forward_quote",              },
+  { "hdr_format",                DT_SYNONYM, NULL, IP "index_format",               },
+  { "include_onlyfirst",         DT_SYNONYM, NULL, IP "include_only_first",         },
+  { "indent_str",                DT_SYNONYM, NULL, IP "indent_string",              },
+  { "mime_fwd",                  DT_SYNONYM, NULL, IP "mime_forward",               },
+  { "msg_format",                DT_SYNONYM, NULL, IP "message_format",             },
+  { "print_cmd",                 DT_SYNONYM, NULL, IP "print_command",              },
+  { "quote_regexp",              DT_SYNONYM, NULL, IP "quote_regex",                },
+  { "realname",                  DT_SYNONYM, NULL, IP "real_name",                  },
+  { "reply_regexp",              DT_SYNONYM, NULL, IP "reply_regex",                },
+  { "spoolfile",                 DT_SYNONYM, NULL, IP "spool_file",                 },
+  { "xterm_icon",                DT_SYNONYM, NULL, IP "ts_icon_format",             },
+  { "xterm_set_titles",          DT_SYNONYM, NULL, IP "ts_enabled",                 },
+  { "xterm_title",               DT_SYNONYM, NULL, IP "ts_status_format",           },
 
   { NULL, 0, NULL, 0, 0, NULL, NULL },
   // clang-format on
