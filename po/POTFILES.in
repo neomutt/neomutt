@@ -132,6 +132,7 @@ imap/search.c
 imap/utf7.c
 imap/util.c
 index/config.c
+index/functions.c
 index/index.c
 index/observer.c
 index/private_data.c
