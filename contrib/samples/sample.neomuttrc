@@ -19,14 +19,14 @@ set alias_file=~/.mail_aliases	# where I keep my aliases
 #set allow_8bit			# never do Q-P encoding on legal 8-bit chars
 set arrow_cursor		# use -> instead of hiliting the whole line
 #set ascii_chars		# use ASCII instead of ACS chars for threads
-#set askbcc
-#set askcc
+#set ask_bcc
+#set ask_cc
 #set attribution="On %d, %n wrote:"	# how to attribute replies
-set autoedit			# go to the editor right away when composing
+set auto_edit			# go to the editor right away when composing
 #set auto_tag			# always operate on tagged messages
 #set charset="iso-8859-1"	# character set for your terminal
-set noconfirmappend		# don't ask me if i want to append to mailboxes
-#set confirmcreate		# prompt when creating new files
+set noconfirm_append		# don't ask me if i want to append to mailboxes
+#set confirm_create		# prompt when creating new files
 set copy=yes			# always save a copy of outgoing messages
 set delete=yes			# purge deleted messages without asking
 set edit_headers		# let me edit the message header when composing
@@ -53,7 +53,7 @@ set nomark_old			# i don't care about whether a message is old
 set mail_check=10		# how often to poll for new mail
 set mbox=+mbox			# where to store read messages
 #set menu_scroll		# no implicit next-page/prev-page
-#set metoo			# remove my address when replying
+#set me_too			# remove my address when replying
 set mime_forward		# use message/rfc822 type to forward messages
 set move=yes			# don't ask about moving messages, just do it
 #set pager=less			# some people prefer an external pager
@@ -91,7 +91,7 @@ set sort=threads		# primary sorting method
 #set sort_aux=reverse-date-received	# how to sort subthreads
 #set sort_aux=last-date		# date of the last message in thread
 set sort_browser=reverse-date	# how to sort files in the dir browser
-set spoolfile='~/mailbox'	# where my new mail is located
+set spool_file='~/mailbox'	# where my new mail is located
 #set status_format="-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?  %l]---(%s)-%>-(%P)---"
 #set status_on_top		# some people prefer the status bar on top
 #set strict_threads		# don't thread by subject
@@ -99,7 +99,7 @@ set tilde			# virtual lines to pad blank lines in the pager
 #set timeout=0			# timeout for prompt in the index menu
 #set tmpdir=~/tmp		# where to store temp files
 #set to_chars=" +TCF"
-#set use_8bitmime		# enable the -B8BITMIME sendmail flag
+#set use_8bit_mime		# enable the -B8BITMIME sendmail flag
 set nouse_domain		# don't qualify local addresses with $domain
 #set use_from			# always generate the `From:' header field
 set implicit_autoview=yes	# pager shows parts having a mailcap viewer
@@ -181,7 +181,7 @@ macro index S "<save-message>+spam<Enter>"
 macro pager S "<save-message>+spam<Enter>"
 
 #macro index \#	"<search>bug<Enter>"	# search for bugs
-#macro index "\""	"<enter-command> set realname=\"real hairy macro\" ?realname<Enter>" # and a comment to boot!
+#macro index "\""	"<enter-command> set real_name=\"real hairy macro\" ?real_name<Enter>" # and a comment to boot!
 #macro index f1	"<enter-command>woohoo!"
 
 bind pager G bottom	# just like vi and less

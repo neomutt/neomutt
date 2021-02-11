@@ -259,7 +259,7 @@ static int sb_config_observer(struct NotifyCallback *nc)
   struct EventConfig *ec = nc->event_data;
 
   if (!mutt_strn_equal(ec->name, "sidebar_", 8) && !mutt_str_equal(ec->name, "ascii_chars") &&
-      !mutt_str_equal(ec->name, "folder") && !mutt_str_equal(ec->name, "spoolfile"))
+      !mutt_str_equal(ec->name, "folder") && !mutt_str_equal(ec->name, "spool_file"))
   {
     return 0;
   }
@@ -285,7 +285,7 @@ static int sb_config_observer(struct NotifyCallback *nc)
     return 0;
   }
 
-  if (mutt_str_equal(ec->name, "spoolfile"))
+  if (mutt_str_equal(ec->name, "spool_file"))
   {
     win->actions |= WA_REPAINT;
     return 0;

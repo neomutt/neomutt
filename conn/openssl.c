@@ -1223,7 +1223,7 @@ static int ssl_setup(struct Connection *conn)
   if (!C_SslUseSslv2)
     SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_SSLv2);
 
-  if (C_SslUsesystemcerts)
+  if (C_SslUseSystemCerts)
   {
     if (!SSL_CTX_set_default_verify_paths(sockdata(conn)->sctx))
     {

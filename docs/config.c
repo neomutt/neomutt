@@ -177,14 +177,14 @@
 */
 #endif
 
-{ "askbcc", DT_BOOL, false },
+{ "ask_bcc", DT_BOOL, false },
 /*
 ** .pp
 ** If \fIset\fP, NeoMutt will prompt you for blind-carbon-copy (Bcc) recipients
 ** before editing an outgoing message.
 */
 
-{ "askcc", DT_BOOL, false },
+{ "ask_cc", DT_BOOL, false },
 /*
 ** .pp
 ** If \fIset\fP, NeoMutt will prompt you for carbon-copy (Cc) recipients before
@@ -376,7 +376,7 @@
 */
 #endif
 
-{ "autoedit", DT_BOOL, false },
+{ "auto_edit", DT_BOOL, false },
 /*
 ** .pp
 ** When \fIset\fP along with $$edit_headers, NeoMutt will skip the initial
@@ -589,14 +589,14 @@
 ** side effects (for example in regular expressions).
 */
 
-{ "confirmappend", DT_BOOL, true },
+{ "confirm_append", DT_BOOL, true },
 /*
 ** .pp
 ** When \fIset\fP, NeoMutt will prompt for confirmation when appending messages to
 ** an existing mailbox.
 */
 
-{ "confirmcreate", DT_BOOL, true },
+{ "confirm_create", DT_BOOL, true },
 /*
 ** .pp
 ** When \fIset\fP, NeoMutt will prompt for confirmation when saving messages to a
@@ -646,7 +646,7 @@
 ** in the index via %X or through ~X pattern matching.
 */
 
-{ "crypt_autoencrypt", DT_BOOL, false },
+{ "crypt_auto_encrypt", DT_BOOL, false },
 /*
 ** .pp
 ** Setting this variable will cause NeoMutt to always attempt to PGP
@@ -659,16 +659,16 @@
 ** (Crypto only)
 */
 
-{ "crypt_autopgp", DT_BOOL, true },
+{ "crypt_auto_pgp", DT_BOOL, true },
 /*
 ** .pp
 ** This variable controls whether or not NeoMutt may automatically enable
-** PGP encryption/signing for messages.  See also $$crypt_autoencrypt,
-** $$crypt_replyencrypt,
-** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
+** PGP encryption/signing for messages.  See also $$crypt_auto_encrypt,
+** $$crypt_reply_encrypt,
+** $$crypt_auto_sign, $$crypt_reply_sign and $$smime_is_default.
 */
 
-{ "crypt_autosign", DT_BOOL, false },
+{ "crypt_auto_sign", DT_BOOL, false },
 /*
 ** .pp
 ** Setting this variable will cause NeoMutt to always attempt to
@@ -680,13 +680,13 @@
 ** (Crypto only)
 */
 
-{ "crypt_autosmime", DT_BOOL, true },
+{ "crypt_auto_smime", DT_BOOL, true },
 /*
 ** .pp
 ** This variable controls whether or not NeoMutt may automatically enable
-** S/MIME encryption/signing for messages. See also $$crypt_autoencrypt,
-** $$crypt_replyencrypt,
-** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
+** S/MIME encryption/signing for messages. See also $$crypt_auto_encrypt,
+** $$crypt_reply_encrypt,
+** $$crypt_auto_sign, $$crypt_reply_sign and $$smime_is_default.
 */
 
 { "crypt_chars", DT_MBTABLE, "SPsK " },
@@ -703,7 +703,7 @@
 ** .de
 */
 
-{ "crypt_confirmhook", DT_BOOL, true },
+{ "crypt_confirm_hook", DT_BOOL, true },
 /*
 ** .pp
 ** If set, then you will be prompted for confirmation of keys when using
@@ -728,7 +728,7 @@
 ** The pgp or smime menus provide a selection to temporarily disable
 ** this option for the current message.
 ** .pp
-** If $$crypt_autoencrypt or $$crypt_replyencrypt enable encryption for
+** If $$crypt_auto_encrypt or $$crypt_reply_encrypt enable encryption for
 ** a message, this option will be disabled for that message.  It can
 ** be manually re-enabled in the pgp or smime menus.
 ** (Crypto only)
@@ -821,7 +821,7 @@
 ** (Crypto only)
 */
 
-{ "crypt_replyencrypt", DT_BOOL, true },
+{ "crypt_reply_encrypt", DT_BOOL, true },
 /*
 ** .pp
 ** If \fIset\fP, automatically PGP or OpenSSL encrypt replies to messages which are
@@ -829,7 +829,7 @@
 ** (Crypto only)
 */
 
-{ "crypt_replysign", DT_BOOL, false },
+{ "crypt_reply_sign", DT_BOOL, false },
 /*
 ** .pp
 ** If \fIset\fP, automatically PGP or OpenSSL sign replies to messages which are
@@ -840,14 +840,14 @@
 ** (Crypto only)
 */
 
-{ "crypt_replysignencrypted", DT_BOOL, false },
+{ "crypt_reply_sign_encrypted", DT_BOOL, false },
 /*
 ** .pp
 ** If \fIset\fP, automatically PGP or OpenSSL sign replies to messages
 ** which are encrypted. This makes sense in combination with
-** $$crypt_replyencrypt, because it allows you to sign all
+** $$crypt_reply_encrypt, because it allows you to sign all
 ** messages which are automatically encrypted.  This works around
-** the problem noted in $$crypt_replysign, that NeoMutt is not able
+** the problem noted in $$crypt_reply_sign, that NeoMutt is not able
 ** to find out whether an encrypted message is also signed.
 ** (Crypto only)
 */
@@ -873,7 +873,7 @@
 ** used interactively.
 ** .pp
 ** Note that the GPGME backend does not support creating old-style inline
-** (traditional) PGP encrypted or signed messages (see $$pgp_autoinline).
+** (traditional) PGP encrypted or signed messages (see $$pgp_auto_inline).
 */
 
 { "crypt_use_pka", DT_BOOL, false },
@@ -1159,7 +1159,7 @@
 ** when replying to messages, and the initial prompt for subject is
 ** skipped when forwarding messages.
 ** .pp
-** \fBNote:\fP this variable has no effect when the $$autoedit
+** \fBNote:\fP this variable has no effect when the $$auto_edit
 ** variable is \fIset\fP.
 */
 
@@ -1898,7 +1898,7 @@
 ** https://github.com/neomutt/neomutt/issues/1689
 */
 
-{ "imap_servernoise", DT_BOOL, true },
+{ "imap_server_noise", DT_BOOL, true },
 /*
 ** .pp
 ** When \fIset\fP, NeoMutt will display warning messages from the IMAP
@@ -1947,7 +1947,7 @@
 ** decrypting and including the message in their reply.
 */
 
-{ "include_onlyfirst", DT_BOOL, false },
+{ "include_only_first", DT_BOOL, false },
 /*
 ** .pp
 ** Controls whether or not NeoMutt includes only the first attachment
@@ -2247,7 +2247,7 @@
 { "mbox", DT_MAILBOX, "~/mbox" },
 /*
 ** .pp
-** This specifies the folder into which read mail in your $$spoolfile
+** This specifies the folder into which read mail in your $$spool_file
 ** folder will be appended.
 ** .pp
 ** Also see the $$move variable.
@@ -2331,7 +2331,7 @@
 ** "x".
 */
 
-{ "metoo", DT_BOOL, false },
+{ "me_too", DT_BOOL, false },
 /*
 ** .pp
 ** If \fIunset\fP, NeoMutt will remove your address (see the "$alternates"
@@ -2792,7 +2792,7 @@
 ** check the message for traditional pgp.
 */
 
-{ "pgp_autoinline", DT_BOOL, false },
+{ "pgp_auto_inline", DT_BOOL, false },
 /*
 ** .pp
 ** This option controls whether NeoMutt generates old-style inline
@@ -2838,7 +2838,7 @@
 ** (PGP only)
 */
 
-{ "pgp_clearsign_command", DT_COMMAND, 0 },
+{ "pgp_clear_sign_command", DT_COMMAND, 0 },
 /*
 ** .pp
 ** This format is used to create an old-style "clearsigned" PGP
@@ -2984,7 +2984,7 @@
 ** (PGP only)
 */
 
-{ "pgp_getkeys_command", DT_COMMAND, 0 },
+{ "pgp_get_keys_command", DT_COMMAND, 0 },
 /*
 ** .pp
 ** This command is invoked whenever NeoMutt needs to fetch the public key associated with
@@ -3086,7 +3086,7 @@
 ** (PGP only)
 */
 
-{ "pgp_replyinline", DT_BOOL, false },
+{ "pgp_reply_inline", DT_BOOL, false },
 /*
 ** .pp
 ** Setting this variable will cause NeoMutt to always attempt to
@@ -3303,7 +3303,7 @@
 ** .te
 */
 
-{ "pop_checkinterval", DT_NUMBER, 60 },
+{ "pop_check_interval", DT_NUMBER, 60 },
 /*
 ** .pp
 ** This variable configures how often (in seconds) NeoMutt should look for
@@ -3600,7 +3600,7 @@
 ** If \fIset\fP, all folders are opened in read-only mode.
 */
 
-{ "realname", DT_STRING, 0 },
+{ "real_name", DT_STRING, 0 },
 /*
 ** .pp
 ** This variable specifies what "real" or "personal" name should be used
@@ -3705,7 +3705,7 @@
 ** .pp
 ** This variable provides a toggle. When active, the From: header will be
 ** extracted from the current mail's 'X-Original-To:' header. This setting
-** does not have precedence over "$reverse_realname".
+** does not have precedence over "$reverse_real_name".
 ** .pp
 ** Assuming 'fast_reply' is disabled, this option will prompt the user with a
 ** prefilled From: header.
@@ -3779,10 +3779,10 @@
 ** used doesn't match your "$alternates", the \fIFrom:\fP line will use
 ** your address on the current machine.
 ** .pp
-** Also see the "$alternates" command and $$reverse_realname.
+** Also see the "$alternates" command and $$reverse_real_name.
 */
 
-{ "reverse_realname", DT_BOOL, true },
+{ "reverse_real_name", DT_BOOL, true },
 /*
 ** .pp
 ** This variable fine-tunes the behavior of the $$reverse_name feature.
@@ -3795,7 +3795,7 @@
 ** When it is \fIset\fP, NeoMutt will use the matching address as-is.
 ** .pp
 ** In either case, a missing real name will be filled in afterwards
-** using the value of $$realname.
+** using the value of $$real_name.
 */
 
 { "rfc2047_parameters", DT_BOOL, false },
@@ -3833,7 +3833,7 @@
 /*
 ** .pp
 ** When \fIunset\fP, mailboxes which contain no saved messages will be removed
-** when closed (the exception is $$spoolfile which is never removed).
+** when closed (the exception is $$spool_file which is never removed).
 ** If \fIset\fP, mailboxes are never removed.
 ** .pp
 ** \fBNote:\fP This only applies to mbox and MMDF folders, NeoMutt does not
@@ -3932,7 +3932,7 @@
 ** NeoMutt expects that the specified program interprets additional
 ** arguments as recipient addresses.  NeoMutt appends all recipients after
 ** adding a \fC--\fP delimiter (if not already present).  Additional
-** flags, such as for $$use_8bitmime, $$use_envelope_from,
+** flags, such as for $$use_8bit_mime, $$use_envelope_from,
 ** $$dsn_notify, or $$dsn_return will be added before the delimiter.
 ** .pp
 ** \fBSee also:\fP $$write_bcc.
@@ -4442,7 +4442,7 @@
 ** operations. To override and to use OpenSSL instead this must be \fIset\fP.
 ** However, this has no effect while replying, since NeoMutt will automatically
 ** select the same application that was used to sign/encrypt the original
-** message.  (Note that this variable can be overridden by unsetting $$crypt_autosmime.)
+** message.  (Note that this variable can be overridden by unsetting $$crypt_auto_smime.)
 ** (S/MIME only)
 */
 
@@ -4719,12 +4719,12 @@
 ** separator.
 */
 
-{ "spoolfile", DT_MAILBOX, 0 },
+{ "spool_file", DT_MAILBOX, 0 },
 /*
 ** .pp
 ** If your spool mailbox is in a non-default place where NeoMutt can't find
 ** it, you can specify its location with this variable. The description from
-** "named-mailboxes" or "virtual-mailboxes" may be used for the spoolfile.
+** "named-mailboxes" or "virtual-mailboxes" may be used for the spool_file.
 ** .pp
 ** If not specified, then the environment variables \fC$$$MAIL\fP and
 ** \fC$$$MAILDIR\fP will be checked.
@@ -4848,7 +4848,7 @@
 */
 
 #ifdef USE_SSL_OPENSSL
-{ "ssl_usesystemcerts", DT_BOOL, true },
+{ "ssl_use_system_certs", DT_BOOL, true },
 /*
 ** .pp
 ** If set to \fIyes\fP, NeoMutt will use CA certificates in the
@@ -5210,7 +5210,7 @@
 ** index sorting, though.
 */
 
-{ "use_8bitmime", DT_BOOL, false },
+{ "use_8bit_mime", DT_BOOL, false },
 /*
 ** .pp
 ** \fBWarning:\fP do not set this variable unless you are using a version
@@ -5279,13 +5279,13 @@
 ** expandos as $$folder_format.
 */
 
-{ "virtual_spoolfile", DT_BOOL, false },
+{ "virtual_spool_file", DT_BOOL, false },
 /*
 ** .pp
 ** When \fIset\fP, NeoMutt will use the first defined virtual mailbox (see
 ** virtual-mailboxes) as a spool file.
 ** .pp
-** This command is now unnecessary. $$spoolfile has been extended to support
+** This command is now unnecessary. $$spool_file has been extended to support
 ** mailbox descriptions as a value.
 */
 #endif

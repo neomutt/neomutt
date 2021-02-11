@@ -219,7 +219,7 @@ static enum ColorId calc_color(const struct Mailbox *m, bool current, bool highl
     return MT_COLOR_SIDEBAR_FLAGGED;
 
   if ((Colors->defs[MT_COLOR_SIDEBAR_SPOOLFILE] != 0) &&
-      mutt_str_equal(mailbox_path(m), C_Spoolfile))
+      mutt_str_equal(mailbox_path(m), C_SpoolFile))
   {
     return MT_COLOR_SIDEBAR_SPOOLFILE;
   }

@@ -3825,7 +3825,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
       {
         keyid = crypt_hook->data;
         enum QuadOption ans = MUTT_YES;
-        if (!oppenc_mode && C_CryptConfirmhook)
+        if (!oppenc_mode && C_CryptConfirmHook)
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid, p->mailbox);
           ans = mutt_yesorno(buf, MUTT_YES);

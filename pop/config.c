@@ -36,7 +36,7 @@
 // clang-format off
 bool          C_PopAuthTryAll;          ///< Config: (pop) Try all available authentication methods
 struct Slist *C_PopAuthenticators;      ///< Config: (pop) List of allowed authentication methods
-short         C_PopCheckinterval;       ///< Config: (pop) Interval between checks for new mail
+short         C_PopCheckInterval;       ///< Config: (pop) Interval between checks for new mail
 unsigned char C_PopDelete;              ///< Config: (pop) After downloading POP messages, delete them on the server
 char *        C_PopHost;                ///< Config: (pop) Url of the POP server
 bool          C_PopLast;                ///< Config: (pop) Use the 'LAST' command to fetch new mail
@@ -81,7 +81,7 @@ struct ConfigDef PopVars[] = {
   { "pop_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_PopAuthenticators, 0, 0, pop_auth_validator,
     "(pop) List of allowed authentication methods"
   },
-  { "pop_checkinterval", DT_NUMBER|DT_NOT_NEGATIVE, &C_PopCheckinterval, 60, 0, NULL,
+  { "pop_check_interval", DT_NUMBER|DT_NOT_NEGATIVE, &C_PopCheckInterval, 60, 0, NULL,
     "(pop) Interval between checks for new mail"
   },
   { "pop_delete", DT_QUAD, &C_PopDelete, MUTT_ASKNO, 0, NULL,
@@ -105,6 +105,9 @@ struct ConfigDef PopVars[] = {
   { "pop_user", DT_STRING|DT_SENSITIVE, &C_PopUser, 0, 0, NULL,
     "(pop) Username of the POP server"
   },
+
+  { "pop_checkinterval",         DT_SYNONYM, NULL, IP "pop_check_interval",         },
+
   { NULL, 0, NULL, 0, 0, NULL, NULL },
   // clang-format on
 };

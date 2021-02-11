@@ -286,7 +286,7 @@ If the sidebar is enabled the following \fIobject\fPs are also valid:
 .BR sidebar_\:indicator ", "
 .BR sidebar_\:new ", "
 .BR sidebar_\:ordinary ", "
-.BR sidebar_\:spoolfile "."
+.BR sidebar_\:spool_file "."
 .IP
 The \fBbody\fP and \fBheader\fP objects allow you to restrict the colorization
 to a regular expression. The \fBindex-object\fP permits you to select colored

@@ -8,7 +8,7 @@
 ###############
 # Identity
 #
-set realname = "Example User"
+set real_name = "Example User"
 set from = "user@example.com"
 
 # If you have another address:
@@ -24,7 +24,7 @@ set reverse_name
 # Some people use mbsync or getmail to retrieve their mail locally.
 #
 set folder = ~/Mail           # This has the shortcut '+' or '='
-set spoolfile = "+inbox"      # This has the shortcut '!'
+set spool_file = "+inbox"      # This has the shortcut '!'
 set record = "+sent"
 set trash = "+trash"
 set postponed = "+drafts"
@@ -44,7 +44,7 @@ set imap_user = ".....@gmail.com"
 set imap_pass = "`gpg --batch -q --decrypt ~/.neomutt/account.gpg`"
 
 set folder = imaps://imap.gmail.com/
-set spoolfile = "+INBOX"
+set spool_file = "+INBOX"
 unset record                # Gmail auto-stores in "+[Gmail].Sent Mail"
 unset trash                 # Unset, deletion will remove labels
 set postponed = "+[Gmail].Drafts"

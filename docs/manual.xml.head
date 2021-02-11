@@ -1084,7 +1084,7 @@ sidebar_whitelist +fruit +fruit/apple   <emphasis role="comment"># Always displa
 <screen>
 color sidebar_indicator default color17     <emphasis role="comment"># Dark blue background</emphasis>
 color sidebar_highlight white   color238    <emphasis role="comment"># Grey background</emphasis>
-color sidebar_spoolfile yellow  default     <emphasis role="comment"># Yellow</emphasis>
+color sidebar_spool_file yellow  default     <emphasis role="comment"># Yellow</emphasis>
 color sidebar_unread    cyan    default     <emphasis role="comment"># Light blue</emphasis>
 color sidebar_new       green   default     <emphasis role="comment"># Green</emphasis>
 color sidebar_ordinary  default default     <emphasis role="comment"># Default colors</emphasis>
@@ -1137,8 +1137,8 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 </row>
                 <row>
                   <entry></entry>
-                  <entry><literal>sidebar_spoolfile</literal></entry>
-                  <entry>Mailbox is the spoolfile (receives incoming mail)</entry>
+                  <entry><literal>sidebar_spool_file</literal></entry>
+                  <entry>Mailbox is the spool_file (receives incoming mail)</entry>
                 </row>
                 <row>
                   <entry>Lowest</entry>
@@ -2673,9 +2673,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           forwarding a message. You again have the chance to adjust recipients,
           subject, and security settings right before actually sending the
           message. See also
-          <link linkend="askcc">$askcc</link>,
-          <link linkend="askbcc">$askbcc</link>,
-          <link linkend="autoedit">$autoedit</link>,
+          <link linkend="ask_cc">$ask_cc</link>,
+          <link linkend="ask_bcc">$ask_bcc</link>,
+          <link linkend="auto_edit">$auto_edit</link>,
           <link linkend="bounce">$bounce</link>,
           <link linkend="fast-reply">$fast_reply</link>, and
           <link linkend="include">$include</link> for changing how and if
@@ -3636,7 +3636,7 @@ set crypt_use_gpgme
           <link linkend="mailcap-path">$mailcap_path</link>,
           <link linkend="news-server">$news_server</link>,
           <link linkend="shell">shell</link>,
-          <link linkend="spoolfile">$spoolfile</link>,
+          <link linkend="spool_file">$spool_file</link>,
           <link linkend="tmpdir">$tmpdir</link>,
           <link linkend="visual">$visual</link>.
         </para>
@@ -3713,7 +3713,7 @@ set crypt_use_gpgme
       </para>
       <example id="ex-rc-multiple-cmds">
         <title>Multiple configuration commands per line</title>
-        <screen>set realname='John Smith' ; ignore x-</screen>
+        <screen>set real_name='John Smith' ; ignore x-</screen>
       </example>
       <para>
         The hash mark, or pound sign (<quote>#</quote>), is used as
@@ -3748,7 +3748,7 @@ my_hdr X-Disclaimer: Why are you listening to me?   <emphasis role="comment"># T
       </para>
       <example id="ex-rc-quote">
         <title>Escaping quotes in configuration files</title>
-        <screen>set realname="Michael \"MuttDude\" Elkins"</screen>
+        <screen>set real_name="Michael \"MuttDude\" Elkins"</screen>
       </example>
       <para>
         <quote>\\</quote> means to insert a literal <quote>\</quote> into the
@@ -4585,7 +4585,7 @@ bind index gg first-entry
       <note>
         <para>
           If you use the <quote>!</quote> shortcut for
-          <link linkend="spoolfile">$spoolfile</link> at the beginning of the
+          <link linkend="spool_file">$spool_file</link> at the beginning of the
           pattern, you must place it inside of double or single quotes in order
           to distinguish it from the logical <emphasis>not</emphasis> operator
           for the expression.
@@ -5180,7 +5180,7 @@ uncolor index_date
                 <entry>Mailboxes that have no new/flagged mails, etc</entry>
               </row>
               <row>
-                <entry>sidebar_spoolfile</entry>
+                <entry>sidebar_spool_file</entry>
                 <entry>Mailbox that receives incoming mail</entry>
               </row>
               <row>
@@ -5954,7 +5954,7 @@ unignore posted-to:
           <link linkend="shortcuts">shortcut characters</link> (such as
           <quote>=</quote> and <quote>!</quote>), any variable definition that
           affects these characters (like <link linkend="folder">$folder</link>
-          and <link linkend="spoolfile">$spoolfile</link>) should be set before
+          and <link linkend="spool_file">$spool_file</link>) should be set before
           the <command>mailboxes</command> command. If none of these shortcuts
           are used, a local path should be absolute as otherwise NeoMutt tries
           to find it relative to the directory from where NeoMutt was started
@@ -6203,7 +6203,7 @@ save-hook aol\\.com$ +spam
           postponed draft. Adding a recipient after replying or editing the
           message will not cause any
           <command>send-hook</command> to be executed, similarly if
-          <link linkend="autoedit">$autoedit</link> is set (as then the initial
+          <link linkend="auto_edit">$auto_edit</link> is set (as then the initial
           list of recipients is empty). Also note that
           <link linkend="my-hdr"><command>my_hdr</command></link> commands
           which modify recipient headers, or the message's subject, don't have
@@ -6276,7 +6276,7 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
         crypt-hooks result in the use of multiple keyids for a recipient.
         During key selection, NeoMutt will confirm whether each crypt-hook is
         to be used (unless the
-        <link linkend="crypt-confirmhook">$crypt_confirmhook</link> option is
+        <link linkend="crypt-confirmhook">$crypt_confirm_hook</link> option is
         unset). If all crypt-hooks for a recipient are declined, NeoMutt will
         use the original recipient address for key selection instead.
       </para>
@@ -6738,7 +6738,7 @@ set spam_separator=", "
             <term>e-mail address</term>
             <listitem>
               <para>
-                An email address either with or without realname. The older
+                An email address either with or without real_name. The older
                 <quote><literal>user@example.org (Joe User)</literal></quote>
                 form is supported but strongly deprecated.
               </para>
@@ -6851,7 +6851,7 @@ set spam_separator=", "
         </para>
         <para>
           Prefixing a variable with <quote>no</quote> will unset it. Example:
-          <literal><command>set</command> noaskbcc</literal>.
+          <literal><command>set</command> noask_bcc</literal>.
         </para>
         <para>
           For <emphasis>boolean</emphasis> variables, you may optionally prefix
@@ -9215,7 +9215,7 @@ send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
       <para>
         In <xref linkend="ex-default-hook" />, by default the value of
         <link linkend="from">$from</link> and
-        <link linkend="realname">$realname</link> is not overridden. When
+        <link linkend="real_name">$real_name</link> is not overridden. When
         sending messages either To: or Cc: to <literal>&lt;b@b.b&gt;</literal>,
         the From: header is changed to <literal>&lt;c@c.c&gt;</literal>.
       </para>
@@ -9470,7 +9470,7 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
             <row>
               <entry><literal>!</literal></entry>
               <entry>
-                your <link linkend="spoolfile">$spoolfile</link> (incoming)
+                your <link linkend="spool_file">$spool_file</link> (incoming)
                 mailbox
               </entry>
             </row>
@@ -9779,7 +9779,7 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
           <command>mailboxes</command> command. The interval depends on the
           folder type: for local/IMAP folders it consults
           <link linkend="mail-check">$mail_check</link> and
-          <link linkend="pop-checkinterval">$pop_checkinterval</link> for POP
+          <link linkend="pop-checkinterval">$pop_check_interval</link> for POP
           folders.
         </para>
         <para>
@@ -9969,7 +9969,7 @@ macro pager \cb |urlview\n
 
 <screen>
 echo "Sourcing muttrc file"
-unset confirmappend
+unset confirm_append
 macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;echo 'Saved to archive'&lt;enter&gt;"
 </screen>
 
@@ -9996,8 +9996,8 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
         </listitem>
         <listitem>
           <para>Prompts for To, Cc, Bcc, Subject headers. See
-          <link linkend="askcc">$askcc</link>,
-          <link linkend="askbcc">$askbcc</link>,
+          <link linkend="ask_cc">$ask_cc</link>,
+          <link linkend="ask_bcc">$ask_bcc</link>,
           <link linkend="fast-reply">$fast_reply</link>.</para>
         </listitem>
         <listitem>
@@ -10037,7 +10037,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
         </listitem>
         <listitem>
           <para>
-            <link linkend="realname">$realname</link>part of From header setting.
+            <link linkend="real_name">$real_name</link>part of From header setting.
           </para>
         </listitem>
         <listitem>
@@ -10099,7 +10099,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
           <listitem>
             <para>
               NeoMutt normalizes all e-mail addresses to the simplest form
-              possible. If an address contains a realname, the form
+              possible. If an address contains a real_name, the form
               <emphasis>Joe User &lt;joe@example.com&gt;</emphasis> is used and
               the pure e-mail address without angle brackets otherwise, i.e.
               just <emphasis>joe@example.com</emphasis>.
@@ -10120,7 +10120,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
               <literal>$MAILDIR</literal> is taken into account. If that isn't
               present either, NeoMutt takes the user's mailbox in the mailspool
               as determined at compile-time (which may also reside in the home
-              directory). The <link linkend="spoolfile">$spoolfile</link>
+              directory). The <link linkend="spool_file">$spool_file</link>
               setting overrides this selection. Highest priority has the
               mailbox given with the <literal>-f</literal> command line option.
             </para>
@@ -11800,7 +11800,7 @@ smtp://user@host:587/
         Polling for new mail is more expensive over POP3 than locally. For this
         reason the frequency at which NeoMutt will check for mail remotely can
         be controlled by the
-        <link linkend="pop-checkinterval">$pop_checkinterval</link> variable,
+        <link linkend="pop-checkinterval">$pop_check_interval</link> variable,
         which defaults to every 60 seconds.
       </para>
       <para>
@@ -11819,7 +11819,7 @@ smtp://user@host:587/
         <literal>&lt;fetch-mail&gt;</literal> function (default: G). It allows
         to connect to <link linkend="pop-host">$pop_host</link>, fetch all your
         new mail and place it in the local
-        <link linkend="spoolfile">$spoolfile</link>. After this point, NeoMutt
+        <link linkend="spool_file">$spool_file</link>. After this point, NeoMutt
         runs exactly as if the mail had always been local.
       </para>
       <note>
@@ -15886,11 +15886,11 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry></entry>
               </row>
               <row>
-                <entry><literal>virtual_spoolfile</literal></entry>
+                <entry><literal>virtual_spool_file</literal></entry>
                 <entry>boolean</entry>
                 <entry><literal>no</literal></entry>
                 <entry>
-                  Unnecessary since <link linkend="spoolfile">$spoolfile</link>
+                  Unnecessary since <link linkend="spool_file">$spool_file</link>
                   supports mailbox descriptions.
                 </entry>
               </row>
@@ -16083,8 +16083,8 @@ set nm_unread_tag = unread
 <emphasis role="comment"># %*X  soft-fill with character ``X'' as pad</emphasis>
 set vfolder_format = "%6n(%6N) %f"
 <emphasis role="comment"># When set, NeoMutt will use the first virtual mailbox (see virtual-mailboxes)</emphasis>
-<emphasis role="comment"># as a spoolfile.</emphasis>
-set virtual_spoolfile = no
+<emphasis role="comment"># as a spool_file.</emphasis>
+set virtual_spool_file = no
 <emphasis role="comment"># setup time window preferences</emphasis>
 <emphasis role="comment"># first setup the duration, and then the time unit of that duration</emphasis>
 <emphasis role="comment"># when set to 0 (the default) the search window feature is disabled</emphasis>
@@ -16797,7 +16797,7 @@ set sort_browser="reverse-size"
                 </entry>
               </row>
               <row>
-                <entry><literal>sidebar_spoolfile</literal></entry>
+                <entry><literal>sidebar_spool_file</literal></entry>
                 <entry>default</entry>
                 <entry>
                   Mailbox that receives incoming mail
@@ -16972,8 +16972,8 @@ color sidebar_flagged red black
 color sidebar_new green black
 <emphasis role="comment"># Color to give mailboxes containing no new/flagged mail, etc.</emphasis>
 color sidebar_ordinary color245 default
-<emphasis role="comment"># Color to give the spoolfile mailbox</emphasis>
-color sidebar_spoolfile color207 default
+<emphasis role="comment"># Color to give the spool_file mailbox</emphasis>
+color sidebar_spool_file color207 default
 <emphasis role="comment"># Color to give mailboxes containing no unread mail</emphasis>
 color sidebar_unread color136 default
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
@@ -17737,11 +17737,11 @@ bind index D purge-message
           if <link linkend="autocrypt-reply">$autocrypt_reply</link> is
           <emphasis>set</emphasis>, autocrypt mode will be forced on,
           overriding the settings
-          <link linkend="crypt-autosign">$crypt_autosign</link>,
-          <link linkend="crypt-autoencrypt">$crypt_autoencrypt</link>,
-          <link linkend="crypt-replyencrypt">$crypt_replyencrypt</link>,
-          <link linkend="crypt-replysign">$crypt_replysign</link>,
-          <link linkend="crypt-replysignencrypted">$crypt_replysignencrypted</link>, and
+          <link linkend="crypt-autosign">$crypt_auto_sign</link>,
+          <link linkend="crypt-autoencrypt">$crypt_auto_encrypt</link>,
+          <link linkend="crypt-replyencrypt">$crypt_reply_encrypt</link>,
+          <link linkend="crypt-replysign">$crypt_reply_sign</link>,
+          <link linkend="crypt-replysignencrypted">$crypt_reply_sign_encrypted</link>, and
           <link linkend="crypt-opportunistic-encrypt">$crypt_opportunistic_encrypt</link>.
         </para>
         <para>

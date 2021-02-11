@@ -250,12 +250,12 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     if ((mutt_edit_address(&en->to, _("To: "), true) == -1) || TAILQ_EMPTY(&en->to))
       return -1;
 
-    const bool c_askcc = cs_subset_bool(sub, "askcc");
-    if (c_askcc && (mutt_edit_address(&en->cc, _("Cc: "), true) == -1))
+    const bool c_ask_cc = cs_subset_bool(sub, "ask_cc");
+    if (c_ask_cc && (mutt_edit_address(&en->cc, _("Cc: "), true) == -1))
       return -1;
 
-    const bool c_askbcc = cs_subset_bool(sub, "askbcc");
-    if (c_askbcc && (mutt_edit_address(&en->bcc, _("Bcc: "), true) == -1))
+    const bool c_ask_bcc = cs_subset_bool(sub, "ask_bcc");
+    if (c_ask_bcc && (mutt_edit_address(&en->bcc, _("Bcc: "), true) == -1))
       return -1;
 
     const bool c_reply_with_xorig = cs_subset_bool(sub, "reply_with_xorig");
@@ -876,8 +876,8 @@ static void add_message_id(struct ListHead *head, struct Envelope *env)
  */
 void mutt_fix_reply_recipients(struct Envelope *env, struct ConfigSubset *sub)
 {
-  const bool c_metoo = cs_subset_bool(sub, "metoo");
-  if (!c_metoo)
+  const bool c_me_too = cs_subset_bool(sub, "me_too");
+  if (!c_me_too)
   {
     const bool c_reply_self = cs_subset_bool(sub, "reply_self");
 
@@ -1312,11 +1312,11 @@ static void set_reverse_name(struct AddressList *al, struct Envelope *env,
 
   if (!TAILQ_EMPTY(al))
   {
-    /* when $reverse_realname is not set, clear the personal name so that it
+    /* when $reverse_real_name is not set, clear the personal name so that it
      * may be set via a reply- or send-hook.  */
 
-    const bool c_reverse_realname = cs_subset_bool(sub, "reverse_realname");
-    if (!c_reverse_realname)
+    const bool c_reverse_real_name = cs_subset_bool(sub, "reverse_real_name");
+    if (!c_reverse_real_name)
       FREE(&TAILQ_FIRST(al)->personal);
   }
 }
@@ -1327,7 +1327,7 @@ static void set_reverse_name(struct AddressList *al, struct Envelope *env,
  */
 struct Address *mutt_default_from(struct ConfigSubset *sub)
 {
-  /* Note: We let $from override $realname here.
+  /* Note: We let $from override $real_name here.
    *       Is this the right thing to do?
    */
 
@@ -2233,10 +2233,10 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
 #endif
 
-    const bool c_autoedit = cs_subset_bool(sub, "autoedit");
+    const bool c_auto_edit = cs_subset_bool(sub, "auto_edit");
     const bool c_edit_headers = cs_subset_bool(sub, "edit_headers");
     const bool c_fast_reply = cs_subset_bool(sub, "fast_reply");
-    if (!(flags & SEND_BATCH) && !(c_autoedit && c_edit_headers) &&
+    if (!(flags & SEND_BATCH) && !(c_auto_edit && c_edit_headers) &&
         !((flags & SEND_REPLY) && c_fast_reply))
     {
       if (edit_envelope(e_templ->env, flags, sub) == -1)
@@ -2336,13 +2336,13 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   mutt_message_hook(NULL, e_templ, MUTT_SEND2_HOOK);
 
   /* wait until now to set the real name portion of our return address so
-   * that $realname can be set in a send-hook */
+   * that $real_name can be set in a send-hook */
   {
     struct Address *from = TAILQ_FIRST(&e_templ->env->from);
     if (from && !from->personal && !(flags & (SEND_RESEND | SEND_POSTPONED)))
     {
-      const char *c_realname = cs_subset_string(sub, "realname");
-      from->personal = mutt_str_dup(c_realname);
+      const char *c_real_name = cs_subset_string(sub, "real_name");
+      from->personal = mutt_str_dup(c_real_name);
     }
   }
 
@@ -2362,7 +2362,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     mutt_update_encoding(e_templ->body, sub);
 
     const bool c_edit_headers = cs_subset_bool(sub, "edit_headers");
-    const bool c_autoedit = cs_subset_bool(sub, "autoedit");
+    const bool c_auto_edit = cs_subset_bool(sub, "auto_edit");
     const enum QuadOption c_forward_edit = cs_subset_quad(sub, "forward_edit");
 
     /* Select whether or not the user's editor should be called now.  We
@@ -2370,11 +2370,11 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
      * 1) we are sending a key/cert
      * 2) we are forwarding a message and the user doesn't want to edit it.
      *    This is controlled by the quadoption $forward_edit.  However, if
-     *    both $edit_headers and $autoedit are set, we want to ignore the
+     *    both $edit_headers and $auto_edit are set, we want to ignore the
      *    setting of $forward_edit because the user probably needs to add the
      *    recipients.  */
     if (!(flags & SEND_KEY) &&
-        (((flags & SEND_FORWARD) == 0) || (c_edit_headers && c_autoedit) ||
+        (((flags & SEND_FORWARD) == 0) || (c_edit_headers && c_auto_edit) ||
          (query_quadoption(c_forward_edit, _("Edit forwarded message?")) == MUTT_YES)))
     {
       /* If the this isn't a text message, look for a mailcap edit command */
@@ -2452,23 +2452,24 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
     else
     {
-      const bool c_crypt_autosign = cs_subset_bool(sub, "crypt_autosign");
-      const bool c_crypt_autoencrypt = cs_subset_bool(sub, "crypt_autoencrypt");
-      const bool c_crypt_replyencrypt =
-          cs_subset_bool(sub, "crypt_replyencrypt");
-      const bool c_crypt_replysign = cs_subset_bool(sub, "crypt_replysign");
-      const bool c_crypt_replysignencrypted =
-          cs_subset_bool(sub, "crypt_replysignencrypted");
+      const bool c_crypt_auto_sign = cs_subset_bool(sub, "crypt_auto_sign");
+      const bool c_crypt_auto_encrypt =
+          cs_subset_bool(sub, "crypt_auto_encrypt");
+      const bool c_crypt_reply_encrypt =
+          cs_subset_bool(sub, "crypt_reply_encrypt");
+      const bool c_crypt_reply_sign = cs_subset_bool(sub, "crypt_reply_sign");
+      const bool c_crypt_reply_sign_encrypted =
+          cs_subset_bool(sub, "crypt_reply_sign_encrypted");
 
-      if (c_crypt_autosign)
+      if (c_crypt_auto_sign)
         e_templ->security |= SEC_SIGN;
-      if (c_crypt_autoencrypt)
+      if (c_crypt_auto_encrypt)
         e_templ->security |= SEC_ENCRYPT;
-      if (c_crypt_replyencrypt && e_cur && (e_cur->security & SEC_ENCRYPT))
+      if (c_crypt_reply_encrypt && e_cur && (e_cur->security & SEC_ENCRYPT))
         e_templ->security |= SEC_ENCRYPT;
-      if (c_crypt_replysign && e_cur && (e_cur->security & SEC_SIGN))
+      if (c_crypt_reply_sign && e_cur && (e_cur->security & SEC_SIGN))
         e_templ->security |= SEC_SIGN;
-      if (c_crypt_replysignencrypted && e_cur && (e_cur->security & SEC_ENCRYPT))
+      if (c_crypt_reply_sign_encrypted && e_cur && (e_cur->security & SEC_ENCRYPT))
         e_templ->security |= SEC_SIGN;
 
       const bool c_crypt_opportunistic_encrypt =
@@ -2477,12 +2478,12 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       if (((WithCrypto & APPLICATION_PGP) != 0) &&
           ((e_templ->security & (SEC_ENCRYPT | SEC_SIGN)) || c_crypt_opportunistic_encrypt))
       {
-        const bool c_pgp_autoinline = cs_subset_bool(sub, "pgp_autoinline");
-        const bool c_pgp_replyinline = cs_subset_bool(sub, "pgp_replyinline");
+        const bool c_pgp_auto_inline = cs_subset_bool(sub, "pgp_auto_inline");
+        const bool c_pgp_reply_inline = cs_subset_bool(sub, "pgp_reply_inline");
 
-        if (c_pgp_autoinline)
+        if (c_pgp_auto_inline)
           e_templ->security |= SEC_INLINE;
-        if (c_pgp_replyinline && e_cur && (e_cur->security & SEC_INLINE))
+        if (c_pgp_reply_inline && e_cur && (e_cur->security & SEC_INLINE))
           e_templ->security |= SEC_INLINE;
       }
     }
@@ -2492,8 +2493,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     if (e_templ->security || c_crypt_opportunistic_encrypt)
     {
-      const bool c_crypt_autopgp = cs_subset_bool(sub, "crypt_autopgp");
-      const bool c_crypt_autosmime = cs_subset_bool(sub, "crypt_autosmime");
+      const bool c_crypt_auto_pgp = cs_subset_bool(sub, "crypt_auto_pgp");
+      const bool c_crypt_auto_smime = cs_subset_bool(sub, "crypt_auto_smime");
 
       /* When replying / forwarding, use the original message's
        * crypto system.  According to the documentation,
@@ -2504,13 +2505,13 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
        * disable individual mechanisms at run-time?  */
       if (e_cur)
       {
-        if (((WithCrypto & APPLICATION_PGP) != 0) && c_crypt_autopgp &&
+        if (((WithCrypto & APPLICATION_PGP) != 0) && c_crypt_auto_pgp &&
             (e_cur->security & APPLICATION_PGP))
         {
           e_templ->security |= APPLICATION_PGP;
         }
-        else if (((WithCrypto & APPLICATION_SMIME) != 0) && c_crypt_autosmime &&
-                 (e_cur->security & APPLICATION_SMIME))
+        else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
+                 c_crypt_auto_smime && (e_cur->security & APPLICATION_SMIME))
         {
           e_templ->security |= APPLICATION_SMIME;
         }
@@ -2522,15 +2523,15 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
        * for the decision.  */
       if (!(e_templ->security & (APPLICATION_SMIME | APPLICATION_PGP)))
       {
-        if (((WithCrypto & APPLICATION_SMIME) != 0) && c_crypt_autosmime && c_smime_is_default)
+        if (((WithCrypto & APPLICATION_SMIME) != 0) && c_crypt_auto_smime && c_smime_is_default)
         {
           e_templ->security |= APPLICATION_SMIME;
         }
-        else if (((WithCrypto & APPLICATION_PGP) != 0) && c_crypt_autopgp)
+        else if (((WithCrypto & APPLICATION_PGP) != 0) && c_crypt_auto_pgp)
         {
           e_templ->security |= APPLICATION_PGP;
         }
-        else if (((WithCrypto & APPLICATION_SMIME) != 0) && c_crypt_autosmime)
+        else if (((WithCrypto & APPLICATION_SMIME) != 0) && c_crypt_auto_smime)
         {
           e_templ->security |= APPLICATION_SMIME;
         }
@@ -2540,8 +2541,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     /* opportunistic encrypt relies on SMIME or PGP already being selected */
     if (c_crypt_opportunistic_encrypt)
     {
-      /* If something has already enabled encryption, e.g. `$crypt_autoencrypt`
-       * or `$crypt_replyencrypt`, then don't enable opportunistic encrypt for
+      /* If something has already enabled encryption, e.g. `$crypt_auto_encrypt`
+       * or `$crypt_reply_encrypt`, then don't enable opportunistic encrypt for
        * the message.  */
       if (!(e_templ->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)))
       {

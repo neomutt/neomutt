@@ -65,7 +65,7 @@
 bool C_HonorDisposition; ///< Config: Don't display MIME parts inline if they have a disposition of 'attachment'
 bool C_ImplicitAutoview; ///< Config: Display MIME attachments inline if a 'copiousoutput' mailcap entry exists
 bool C_IncludeEncrypted; ///< Config: Whether to include encrypted content when replying
-bool C_IncludeOnlyfirst; ///< Config: Only include the first attachment when replying
+bool C_IncludeOnlyFirst; ///< Config: Only include the first attachment when replying
 struct Slist *C_PreferredLanguages; ///< Config: Preferred languages for multilingual MIME
 bool C_ReflowText; ///< Config: Reformat paragraphs of 'format=flowed' text
 char *C_ShowMultipartAlternative; ///< Config: How to display 'multipart/alternative' MIME parts
@@ -1265,7 +1265,7 @@ static int multipart_handler(struct Body *a, struct State *s)
                  TYPE(p), NONULL(p->subtype));
     }
 
-    if ((s->flags & MUTT_REPLYING) && C_IncludeOnlyfirst && (s->flags & MUTT_FIRSTDONE))
+    if ((s->flags & MUTT_REPLYING) && C_IncludeOnlyFirst && (s->flags & MUTT_FIRSTDONE))
     {
       break;
     }

@@ -87,7 +87,7 @@ enum ColorId
   MT_COLOR_SIDEBAR_INDICATOR,        ///< Current open mailbox
   MT_COLOR_SIDEBAR_NEW,              ///< Mailbox with new mail
   MT_COLOR_SIDEBAR_ORDINARY,         ///< Mailbox with no new or flagged messages
-  MT_COLOR_SIDEBAR_SPOOLFILE,        ///< $spoolfile (Spool mailbox)
+  MT_COLOR_SIDEBAR_SPOOLFILE,        ///< $spool_file (Spool mailbox)
   MT_COLOR_SIDEBAR_UNREAD,           ///< Mailbox with unread mail
 #endif
   MT_COLOR_SIGNATURE,                ///< Pager: signature lines

@@ -1781,7 +1781,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
-      if (C_Confirmcreate && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
+      if (C_ConfirmCreate && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
       {
         mutt_clear_error();
         goto out;

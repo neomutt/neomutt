@@ -274,7 +274,7 @@ extern short         C_ImapPipelineDepth;
 extern short         C_ImapPollTimeout;
 extern bool          C_ImapQresync;
 extern bool          C_ImapRfc5161;
-extern bool          C_ImapServernoise;
+extern bool          C_ImapServerNoise;
 extern char *        C_ImapUser;
 
 /* -- private IMAP functions -- */

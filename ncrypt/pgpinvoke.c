@@ -382,7 +382,7 @@ pid_t pgp_invoke_traditional(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_
   else
   {
     return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
-                      fd_pgp_err, true, fname, NULL, NULL, C_PgpClearsignCommand);
+                      fd_pgp_err, true, fname, NULL, NULL, C_PgpClearSignCommand);
   }
 }
 
@@ -422,7 +422,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 
   struct PgpCommandContext cctx = { 0 };
 
-  if (!C_PgpGetkeysCommand)
+  if (!C_PgpGetKeysCommand)
     return;
 
   struct Buffer *buf = mutt_buffer_pool_get();
@@ -438,7 +438,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 
   cctx.ids = mutt_buffer_string(buf);
 
-  mutt_pgp_command(cmd, sizeof(cmd), &cctx, C_PgpGetkeysCommand);
+  mutt_pgp_command(cmd, sizeof(cmd), &cctx, C_PgpGetKeysCommand);
 
   int fd_null = open("/dev/null", O_RDWR);
 

@@ -556,7 +556,7 @@ static void pop_clear_cache(struct PopAccountData *adata)
 }
 
 /**
- * pop_fetch_mail - Fetch messages and save them in $spoolfile
+ * pop_fetch_mail - Fetch messages and save them in $spool_file
  */
 void pop_fetch_mail(void)
 {
@@ -634,7 +634,7 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  struct Mailbox *m_spool = mx_path_resolve(C_Spoolfile);
+  struct Mailbox *m_spool = mx_path_resolve(C_SpoolFile);
   struct Context *ctx = mx_mbox_open(m_spool, MUTT_OPEN_NO_FLAGS);
   if (!ctx)
   {
@@ -868,7 +868,7 @@ static enum MxStatus pop_mbox_check(struct Mailbox *m)
 {
   struct PopAccountData *adata = pop_adata_get(m);
 
-  if ((adata->check_time + C_PopCheckinterval) > mutt_date_epoch())
+  if ((adata->check_time + C_PopCheckInterval) > mutt_date_epoch())
     return MX_STATUS_OK;
 
   pop_logout(m);

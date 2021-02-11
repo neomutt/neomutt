@@ -102,10 +102,10 @@ WHERE char *C_Postponed;                     ///< Config: Folder to store postpo
 WHERE char *C_IndentString;                  ///< Config: String used to indent 'reply' text
 WHERE char *C_PrintCommand;                  ///< Config: External command to print a message
 WHERE char *C_NewMailCommand;                ///< Config: External command to run when new mail arrives
-WHERE char *C_Realname;                      ///< Config: Real name of the user
+WHERE char *C_RealName;                      ///< Config: Real name of the user
 WHERE char *C_Shell;                         ///< Config: External command to run subshells in
 WHERE char *C_SimpleSearch;                  ///< Config: Pattern to search for when search doesn't contain ~'s
-WHERE char *C_Spoolfile;                     ///< Config: Inbox
+WHERE char *C_SpoolFile;                     ///< Config: Inbox
 WHERE char *C_StatusFormat;                  ///< Config: printf-like format string for the index's status line
 WHERE char *C_TsStatusFormat;                ///< Config: printf-like format string for the terminal's status (window title)
 WHERE char *C_TsIconFormat;                  ///< Config: printf-like format string for the terminal's icon title
@@ -131,15 +131,15 @@ WHERE unsigned char C_Quit;                  ///< Config: Prompt before exiting 
 WHERE bool C_ArrowCursor;                    ///< Config: Use an arrow '->' instead of highlighting in the index
 WHERE char *C_ArrowString;                   ///< Config: Use an custom string for arrow_cursor
 WHERE bool C_AsciiChars;                     ///< Config: Use plain ASCII characters, when drawing email threads
-WHERE bool C_Askbcc;                         ///< Config: Ask the user for the blind-carbon-copy recipients
-WHERE bool C_Askcc;                          ///< Config: Ask the user for the carbon-copy recipients
-WHERE bool C_Autoedit;                       ///< Config: Skip the initial compose menu and edit the email
+WHERE bool C_AskBcc;                         ///< Config: Ask the user for the blind-carbon-copy recipients
+WHERE bool C_AskCc;                          ///< Config: Ask the user for the carbon-copy recipients
+WHERE bool C_AutoEdit;                       ///< Config: Skip the initial compose menu and edit the email
 WHERE bool C_AutoTag;                        ///< Config: Automatically apply actions to all tagged messages
 WHERE bool C_Beep;                           ///< Config: Make a noise when an error occurs
 WHERE bool C_BeepNew;                        ///< Config: Make a noise when new mail arrives
 WHERE bool C_BrailleFriendly;                ///< Config: Move the cursor to the beginning of the line
-WHERE bool C_Confirmappend;                  ///< Config: Confirm before appending emails to a mailbox
-WHERE bool C_Confirmcreate;                  ///< Config: Confirm before creating a new mailbox
+WHERE bool C_ConfirmAppend;                  ///< Config: Confirm before appending emails to a mailbox
+WHERE bool C_ConfirmCreate;                  ///< Config: Confirm before creating a new mailbox
 WHERE bool C_CopyDecodeWeed;                 ///< Config: Controls whether to weed headers when copying or saving emails
 WHERE bool C_CountAlternatives;              ///< Config: Recurse inside multipart/alternatives while counting attachments
 WHERE bool C_DeleteUntag;                    ///< Config: Untag messages when they are marked for deletion

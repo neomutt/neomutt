@@ -167,8 +167,8 @@ int mutt_autocrypt_account_init(bool prompt)
   if (C_From)
   {
     addr = mutt_addr_copy(C_From);
-    if (!addr->personal && C_Realname)
-      addr->personal = mutt_str_dup(C_Realname);
+    if (!addr->personal && C_RealName)
+      addr->personal = mutt_str_dup(C_RealName);
   }
 
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);

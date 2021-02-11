@@ -77,9 +77,9 @@ set pgp_sign_command="gpg %?p?--pinentry-mode loopback --passphrase-fd 0? --no-v
 
 # Create a application/pgp inline signed message.  This style is obsolete but still needed for Hushmail recipients and some MUAs.
 #
-# set pgp_clearsign_command="gpg-2comp --comment '' --no-verbose --batch --output - %?p?--passphrase-fd 0? --armor --textmode --clearsign %?a?-u %a? %f"
+# set pgp_clear_sign_command="gpg-2comp --comment '' --no-verbose --batch --output - %?p?--passphrase-fd 0? --armor --textmode --clearsign %?a?-u %a? %f"
 #
-set pgp_clearsign_command="gpg %?p?--pinentry-mode loopback --passphrase-fd 0? --no-verbose --batch --quiet --output - --armor --textmode %?a?--local-user %a? --clearsign %f"
+set pgp_clear_sign_command="gpg %?p?--pinentry-mode loopback --passphrase-fd 0? --no-verbose --batch --quiet --output - --armor --textmode %?a?--local-user %a? --clearsign %f"
 
 # Create an encrypted attachment (note that some users include the --always-trust option here)
 #
@@ -116,7 +116,7 @@ set pgp_list_pubring_command="gpg --no-verbose --batch --quiet --with-colons --w
 set pgp_list_secring_command="gpg --no-verbose --batch --quiet --with-colons --with-fingerprint --with-fingerprint --list-secret-keys %r"
 
 # Fetch keys
-# set pgp_getkeys_command="pkspxycwrap %r"
+# set pgp_get_keys_command="pkspxycwrap %r"
 
 # pattern for good signature - may need to be adapted to locale!
 # OK, here's a version which uses gnupg's message catalog:

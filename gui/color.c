@@ -131,7 +131,7 @@ const struct Mapping Fields[] = {
   { "sidebar_indicator", MT_COLOR_SIDEBAR_INDICATOR },
   { "sidebar_new",       MT_COLOR_SIDEBAR_NEW },
   { "sidebar_ordinary",  MT_COLOR_SIDEBAR_ORDINARY },
-  { "sidebar_spoolfile", MT_COLOR_SIDEBAR_SPOOLFILE },
+  { "sidebar_spool_file", MT_COLOR_SIDEBAR_SPOOLFILE },
   { "sidebar_unread",    MT_COLOR_SIDEBAR_UNREAD },
 #endif
   { "signature",         MT_COLOR_SIGNATURE },

@@ -1034,7 +1034,7 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
 
     return -1;
   }
-  else if (C_ImapServernoise && mutt_istr_startswith(s, "NO"))
+  else if (C_ImapServerNoise && mutt_istr_startswith(s, "NO"))
   {
     mutt_debug(LL_DEBUG2, "Handling untagged NO\n");
 

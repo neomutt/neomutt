@@ -34,7 +34,7 @@ struct State;
 extern bool  C_HonorDisposition;
 extern bool  C_ImplicitAutoview;
 extern bool  C_IncludeEncrypted;
-extern bool  C_IncludeOnlyfirst;
+extern bool  C_IncludeOnlyFirst;
 extern struct Slist *C_PreferredLanguages;
 extern bool  C_ReflowText;
 extern char *C_ShowMultipartAlternative;

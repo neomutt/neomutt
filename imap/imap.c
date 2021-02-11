@@ -1473,7 +1473,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), dest_mdata->name);
-      if (C_Confirmcreate && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
+      if (C_ConfirmCreate && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
       {
         mutt_clear_error();
         goto out;
@@ -2118,7 +2118,7 @@ static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
   char buf[PATH_MAX + 64];
   snprintf(buf, sizeof(buf), _("Create %s?"), mdata->name);
-  if (C_Confirmcreate && (mutt_yesorno(buf, MUTT_YES) != MUTT_YES))
+  if (C_ConfirmCreate && (mutt_yesorno(buf, MUTT_YES) != MUTT_YES))
     return false;
 
   if (imap_create_mailbox(adata, mdata->name) < 0)
