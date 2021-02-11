@@ -27,6 +27,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+struct Mailbox;
+
 /* These Config Variables are only used in pager.c */
 extern bool          C_AllowAnsi;
 extern bool          C_HeaderColorPartial;
@@ -76,7 +78,7 @@ struct Pager
   struct MuttWindow *win_pager;
 };
 
-int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra);
+int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra, struct Mailbox *m);
 void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
 
 void mutt_clear_pager_position(void);

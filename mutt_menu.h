@@ -118,7 +118,7 @@ struct Menu
    * custom_redraw - Redraw the menu
    * @param menu Menu to redraw
    */
-  void (*custom_redraw)(struct Menu *menu);
+  void (*custom_redraw)(struct Menu *menu, struct Mailbox *m, int msg_in_pager);
 
   void *redraw_data;
 };
