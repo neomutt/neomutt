@@ -1439,7 +1439,7 @@ retry:
   if (read_headers_fetch_new(m, msn_begin, msn_end, evalhc, &maxuid, initial_download) < 0)
     goto bail;
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
   if (eval_qresync && initial_download)
   {
     if (imap_verify_qresync(m) != 0)
