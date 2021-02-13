@@ -287,6 +287,34 @@ struct NmEmailData *nm_edata_get(struct Email *e)
 }
 
 /**
+ * nm_get_default_url - Get a default Notmuch URL
+ * @retval Notmuch URL
+ * @retval NULL Error, unable to create default URL.
+ *
+ * @note Caller must free the returned string
+ */
+static char *nm_get_default_url(void)
+{
+  // path to DB + query + url "decoration"
+  size_t len = PATH_MAX + 1024 + 32;
+  char *url = mutt_mem_malloc(len);
+
+  // Try to use `$nm_default_url` or `$folder`.
+  // If neither are set, it is impossible to create a Notmuch URL.
+  if (C_NmDefaultUrl)
+    snprintf(url, len, "%s", C_NmDefaultUrl);
+  else if (C_Folder)
+    snprintf(url, len, "notmuch://%s", C_Folder);
+  else
+  {
+    FREE(url);
+    return NULL;
+  }
+
+  return url;
+}
+
+/**
  * nm_get_default_data - Create a Mailbox with default Notmuch settings
  * @retval ptr  Mailbox with default Notmuch settings
  * @retval NULL Error, it's impossible to create an NmMboxData
@@ -294,18 +322,14 @@ struct NmEmailData *nm_edata_get(struct Email *e)
 static struct NmMboxData *nm_get_default_data(void)
 {
   // path to DB + query + url "decoration"
-  char url[PATH_MAX + 1024 + 32];
-
-  // Try to use `$nm_default_url` or `$folder`.
-  // If neither are set, it is impossible to create a Notmuch URL.
-  if (C_NmDefaultUrl)
-    snprintf(url, sizeof(url), "%s", C_NmDefaultUrl);
-  else if (C_Folder)
-    snprintf(url, sizeof(url), "notmuch://%s", C_Folder);
-  else
+  char *url = nm_get_default_url();
+  if (!url)
     return NULL;
 
-  return nm_mdata_new(url);
+  struct NmMboxData *default_data = nm_mdata_new(url);
+  FREE(&url);
+
+  return default_data;
 }
 
 /**
@@ -2066,6 +2090,25 @@ done:
 }
 
 /**
+ * get_default_mailbox - Get Mailbox for notmuch without any parameters.
+ * @retval ptr Mailbox pointer.
+ */
+static struct Mailbox *get_default_mailbox(void)
+{
+  // Create a new notmuch mailbox from scratch and add plumbing for DB access.
+  char *default_url = nm_get_default_url();
+  struct Mailbox *m = mx_path_resolve(default_url);
+
+  FREE(&default_url);
+
+  // These are no-ops for an initialized mailbox.
+  init_mailbox(m);
+  mx_mbox_ac_link(m);
+
+  return m;
+}
+
+/**
  * nm_record_message - Add a message to the Notmuch database
  * @param m    Mailbox
  * @param path Path of the email
@@ -2079,7 +2122,22 @@ int nm_record_message(struct Mailbox *m, char *path, struct Email *e)
   notmuch_status_t st;
   notmuch_message_t *msg = NULL;
   int rc = -1;
+
   struct NmMboxData *mdata = nm_mdata_get(m);
+
+  // If no notmuch data, fall back to the default mailbox.
+  //
+  // IMPORTANT: DO NOT FREE THIS MAILBOX. Two reasons:
+  // 1) If user has default mailbox in config, we'll be removing it. That's not
+  //    good program behavior!
+  // 2) If not in user's config, keep mailbox around for future nm_record calls.
+  //    It saves NeoMutt from allocating/deallocating repeatedly.
+  if (!mdata)
+  {
+    mutt_debug(LL_DEBUG1, "nm: non-nm mailbox. trying the default nm mailbox.");
+    m = get_default_mailbox();
+    mdata = nm_mdata_get(m);
+  }
 
   if (!path || !mdata || (access(path, F_OK) != 0))
     return 0;
@@ -2125,6 +2183,7 @@ done:
     nm_db_trans_end(m);
 
   nm_db_release(m);
+
   return rc;
 }
 
