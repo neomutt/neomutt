@@ -1146,7 +1146,6 @@ static void index_custom_redraw(struct Menu *menu)
  */
 int mutt_index_menu(struct MuttWindow *dlg)
 {
-  char buf[PATH_MAX];
   int op = OP_NULL;
   bool done = false; /* controls when to exit the "event" loop */
   bool tag = false;  /* has the tag-prefix command been pressed? */
@@ -1499,13 +1498,14 @@ int mutt_index_menu(struct MuttWindow *dlg)
         /* fallthrough */
 
       case OP_GET_MESSAGE:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_READONLY | CHECK_ATTACH))
           break;
+        char buf[PATH_MAX] = { 0 };
         if (Context->mailbox->type == MUTT_NNTP)
         {
           if (op == OP_GET_MESSAGE)
           {
-            buf[0] = '\0';
             if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf),
                                 MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
                 (buf[0] == '\0'))
@@ -1559,6 +1559,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           }
         }
         break;
+      }
 
       case OP_GET_CHILDREN:
       case OP_RECONSTRUCT_THREAD:
@@ -1574,6 +1575,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!cur.e)
           break;
 
+        char buf[PATH_MAX] = { 0 };
         int oldmsgcount = Context->mailbox->msg_count;
         int oldindex = cur.e->index;
         int rc = 0;
@@ -1675,12 +1677,12 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
       case OP_JUMP:
       {
-        int msg_num = 0;
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
+        char buf[PATH_MAX] = { 0 };
+        int msg_num = 0;
         if (isdigit(LastKey))
           mutt_unget_event(LastKey, 0);
-        buf[0] = '\0';
         if ((mutt_get_field(_("Jump to message: "), buf, sizeof(buf),
                             MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
             (buf[0] == '\0'))
@@ -2141,6 +2143,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
+        char buf[PATH_MAX] = { 0 };
         if (Context->mailbox->type != MUTT_NOTMUCH)
         {
           if (((Context->mailbox->type != MUTT_MH) && (Context->mailbox->type != MUTT_MAILDIR)) ||
@@ -2217,6 +2220,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         char *tags = NULL;
         if (!tag)
           tags = driver_tags_get_with_hidden(&cur.e->tags);
+        char buf[PATH_MAX] = { 0 };
         int rc = mx_tags_edit(m, tags, buf, sizeof(buf));
         FREE(&tags);
         if (rc < 0)
@@ -2317,7 +2321,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_MAIN_VFOLDER_FROM_QUERY:
       case OP_MAIN_VFOLDER_FROM_QUERY_READONLY:
       {
-        buf[0] = '\0';
+        char buf[PATH_MAX] = { 0 };
         if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_NM_QUERY, false, NULL, NULL) != 0) ||
             (buf[0] == '\0'))
         {
@@ -2359,6 +2363,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         }
         nm_query_window_backward();
+        char buf[PATH_MAX] = { 0 };
         mutt_str_copy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
         change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &cur, false);
         break;
@@ -2379,6 +2384,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         }
         nm_query_window_forward();
+        char buf[PATH_MAX] = { 0 };
         mutt_str_copy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
         change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &cur, false);
         break;
