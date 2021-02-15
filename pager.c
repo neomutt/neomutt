@@ -2850,7 +2850,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         }
 
         InHelp = true;
-        mutt_help(MENU_PAGER, pager_menu->win_index->state.cols);
+        mutt_help(MENU_PAGER);
         pager_menu->redraw = REDRAW_FULL;
         InHelp = false;
         break;

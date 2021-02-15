@@ -1770,7 +1770,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       }
 
       case OP_HELP:
-        mutt_help(MENU_MAIN, dlg->state.cols);
+        mutt_help(MENU_MAIN);
         menu->redraw = REDRAW_FULL;
         break;
 
