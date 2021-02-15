@@ -381,10 +381,10 @@ static void dump_unbound(FILE *fp, const struct Binding *funcs,
 /**
  * mutt_help - Display the help menu
  * @param menu    Current Menu
- * @param wraplen Width to wrap to
  */
-void mutt_help(enum MenuType menu, int wraplen)
+void mutt_help(enum MenuType menu)
 {
+  const int wraplen = AllDialogsWindow->state.cols;
   char buf[128];
   FILE *fp = NULL;
 
