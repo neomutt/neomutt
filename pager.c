@@ -3584,7 +3584,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_CHECK_STATS:
-        mutt_check_stats();
+        mutt_check_stats(ctx_mailbox(Context));
         break;
 
 #ifdef USE_SIDEBAR

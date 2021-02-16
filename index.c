@@ -2314,7 +2314,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       }
 
       case OP_CHECK_STATS:
-        mutt_check_stats();
+        mutt_check_stats(ctx_mailbox(Context));
         break;
 
 #ifdef USE_NOTMUCH

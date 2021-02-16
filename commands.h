@@ -63,7 +63,7 @@ enum MessageSaveOpt
 };
 
 void ci_bounce_message(struct Mailbox *m, struct EmailList *el);
-void mutt_check_stats(void);
+void mutt_check_stats(struct Mailbox *m);
 bool mutt_check_traditional_pgp(struct EmailList *el, MuttRedrawFlags *redraw);
 void mutt_commands_cleanup(void);
 void mutt_display_address(struct Envelope *env);
