@@ -1535,7 +1535,7 @@ int mutt_menu_loop(struct Menu *menu)
         break;
 
       case OP_CHECK_STATS:
-        mutt_check_stats();
+        mutt_check_stats(ctx_mailbox(Context));
         break;
 
       case OP_REDRAW:
