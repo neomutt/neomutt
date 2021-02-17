@@ -1168,6 +1168,8 @@
 ** .pp
 ** This variable controls whether or not attachments on outgoing messages
 ** are saved along with the main body of your message.
+** .pp
+** Note: $$fcc_before_send forces the default (set) behavior of this option.
 */
 
 { "fcc_before_send", DT_BOOL, false },
@@ -1191,7 +1193,11 @@
 ** When this variable is \fIset\fP, FCCs will be stored unencrypted and
 ** unsigned, even when the actual message is encrypted and/or
 ** signed.
+** .pp
+** Note: $$fcc_before_send forces the default (unset) behavior of this option.
 ** (PGP only)
+** .pp
+** See also $$pgp_self_encrypt, $$smime_self_encrypt
 */
 
 { "flag_chars", DT_MBTABLE, "*!DdrONon- " },
