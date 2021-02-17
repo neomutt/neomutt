@@ -2590,7 +2590,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, Context, cur.e, tag);
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
           emaillist_clear(&el);
         }
         set_current_email(&cur, mutt_get_virt_email(Context->mailbox, menu->current));
@@ -3428,7 +3428,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, Context, cur.e, tag);
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
           emaillist_clear(&el);
         }
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3450,7 +3450,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         el_add_tagged(&el, Context, cur.e, tag);
         if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
         }
         mutt_send_message(SEND_FORWARD, NULL, NULL, Context, &el, NeoMutt->sub);
         emaillist_clear(&el);
@@ -3478,7 +3478,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         el_add_tagged(&el, Context, cur.e, tag);
         if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
         }
         mutt_send_message(replyflags, NULL, NULL, Context, &el, NeoMutt->sub);
         emaillist_clear(&el);
@@ -3525,7 +3525,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         el_add_tagged(&el, Context, cur.e, tag);
         if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
         }
         mutt_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, Context,
                           &el, NeoMutt->sub);
@@ -3576,7 +3576,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, Context, cur.e, tag);
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
           emaillist_clear(&el);
         }
 
@@ -3786,7 +3786,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         el_add_tagged(&el, Context, cur.e, tag);
         if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
         }
         mutt_send_message(SEND_REPLY, NULL, NULL, Context, &el, NeoMutt->sub);
         emaillist_clear(&el);
