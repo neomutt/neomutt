@@ -1291,6 +1291,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
 /**
  * bounce_message - Bounce an email message
  * @param fp          Handle of message
+ * @param m           Mailbox
  * @param e           Email
  * @param to          Address to bounce to
  * @param resent_from Address of new sender
@@ -1299,9 +1300,9 @@ void mutt_unprepare_envelope(struct Envelope *env)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
-                          const char *resent_from, struct AddressList *env_from,
-                          struct ConfigSubset *sub)
+static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
+                          struct AddressList *to, const char *resent_from,
+                          struct AddressList *env_from, struct ConfigSubset *sub)
 {
   if (!e)
     return -1;
@@ -1351,7 +1352,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
     else
 #endif
     {
-      rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, mutt_buffer_string(tempfile),
+      rc = mutt_invoke_sendmail(m, env_from, to, NULL, NULL, mutt_buffer_string(tempfile),
                                 (e->body->encoding == ENC_8BIT), sub);
     }
   }
@@ -1363,14 +1364,15 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
 /**
  * mutt_bounce_message - Bounce an email message
  * @param fp  Handle of message
+ * @param m   Mailbox
  * @param e   Email
  * @param to  AddressList to bounce to
  * @param sub Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
-                        struct ConfigSubset *sub)
+int mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
+                        struct AddressList *to, struct ConfigSubset *sub)
 {
   if (!fp || !e || !to || TAILQ_EMPTY(to))
     return -1;
@@ -1417,7 +1419,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
   struct AddressList resent_to = TAILQ_HEAD_INITIALIZER(resent_to);
   mutt_addrlist_copy(&resent_to, to, false);
   rfc2047_encode_addrlist(&resent_to, "Resent-To");
-  int rc = bounce_message(fp, e, &resent_to, resent_from, &from_list, sub);
+  int rc = bounce_message(fp, m, e, &resent_to, resent_from, &from_list, sub);
   mutt_addrlist_clear(&resent_to);
   mutt_addrlist_clear(&from_list);
 

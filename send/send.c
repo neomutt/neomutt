@@ -1361,12 +1361,13 @@ struct Address *mutt_default_from(struct ConfigSubset *sub)
 
 /**
  * invoke_mta - Send an email
+ * @param m   Mailbox
  * @param e   Email
  * @param sub Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int invoke_mta(struct Email *e, struct ConfigSubset *sub)
+static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *sub)
 {
   struct Buffer *tempfile = NULL;
   int rc = -1;
@@ -1438,7 +1439,7 @@ static int invoke_mta(struct Email *e, struct ConfigSubset *sub)
 #endif
 
 sendmail:
-  rc = mutt_invoke_sendmail(&e->env->from, &e->env->to, &e->env->cc,
+  rc = mutt_invoke_sendmail(m, &e->env->from, &e->env->to, &e->env->cc,
                             &e->env->bcc, mutt_buffer_string(tempfile),
                             (e->body->encoding == ENC_8BIT), sub);
 cleanup:
@@ -2745,7 +2746,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (c_fcc_before_send)
     save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
 
-  i = invoke_mta(e_templ, sub);
+  i = invoke_mta(mailbox, e_templ, sub);
   if (i < 0)
   {
     if (!(flags & SEND_BATCH))
