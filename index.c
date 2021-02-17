@@ -637,7 +637,7 @@ static void update_index(struct Menu *menu, struct Context *ctx, enum MxStatus c
   if (menu->current < 0)
     menu->current = (old_current < ctx->mailbox->vcount) ?
                         old_current :
-                        ci_first_message(Context->mailbox);
+                        ci_first_message(ctx->mailbox);
 }
 
 /**
