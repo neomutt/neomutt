@@ -264,14 +264,14 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   mutt_window_clearline(MessageWindow, 0);
 
   if (cur)
-    ret = mutt_bounce_message(fp, cur->email, &al, NeoMutt->sub);
+    ret = mutt_bounce_message(fp, m, cur->email, &al, NeoMutt->sub);
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->body->tagged)
       {
-        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->body->email,
+        if (mutt_bounce_message(actx->idx[i]->fp, m, actx->idx[i]->body->email,
                                 &al, NeoMutt->sub))
         {
           ret = 1;

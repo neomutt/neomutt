@@ -273,6 +273,7 @@ static void add_args(struct SendmailArgs *args, struct AddressList *al)
 
 /**
  * mutt_invoke_sendmail - Run sendmail
+ * @param m        Mailbox
  * @param from     The sender
  * @param to       Recipients
  * @param cc       Recipients
@@ -283,9 +284,10 @@ static void add_args(struct SendmailArgs *args, struct AddressList *al)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
-                         struct AddressList *cc, struct AddressList *bcc,
-                         const char *msg, bool eightbit, struct ConfigSubset *sub)
+int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
+                         struct AddressList *to, struct AddressList *cc,
+                         struct AddressList *bcc, const char *msg,
+                         bool eightbit, struct ConfigSubset *sub)
 {
   char *ps = NULL, *path = NULL, *s = NULL, *childout = NULL;
   struct SendmailArgs args = ARRAY_HEAD_INITIALIZER;
@@ -302,7 +304,7 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
                         nntp_format_str, 0, MUTT_FORMAT_NO_FLAGS);
     if (*cmd == '\0')
     {
-      i = nntp_post(Context->mailbox, msg);
+      i = nntp_post(m, msg);
       unlink(msg);
       return i;
     }
