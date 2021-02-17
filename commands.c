@@ -1425,11 +1425,12 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 
 /**
  * check_traditional_pgp - Check for an inline PGP content
+ * @param[in]  m      Mailbox
  * @param[in]  e      Email to check
  * @param[out] redraw Flags if the screen needs redrawing, see #MuttRedrawFlags
  * @retval true If message contains inline PGP content
  */
-static bool check_traditional_pgp(struct Email *e, MuttRedrawFlags *redraw)
+static bool check_traditional_pgp(struct Mailbox *m, struct Email *e, MuttRedrawFlags *redraw)
 {
   bool rc = false;
 
@@ -1453,18 +1454,19 @@ static bool check_traditional_pgp(struct Email *e, MuttRedrawFlags *redraw)
 
 /**
  * mutt_check_traditional_pgp - Check if a message has inline PGP content
+ * @param[in]  m      Mailbox
  * @param[in]  el     List of Emails to check
  * @param[out] redraw Flags if the screen needs redrawing, see #MuttRedrawFlags
  * @retval true If message contains inline PGP content
  */
-bool mutt_check_traditional_pgp(struct EmailList *el, MuttRedrawFlags *redraw)
+bool mutt_check_traditional_pgp(struct Mailbox *m, struct EmailList *el, MuttRedrawFlags *redraw)
 {
   bool rc = false;
   struct EmailNode *en = NULL;
   STAILQ_FOREACH(en, el, entries)
   {
     if (!(en->email->security & PGP_TRADITIONAL_CHECKED))
-      rc = check_traditional_pgp(en->email, redraw) || rc;
+      rc = check_traditional_pgp(m, en->email, redraw) || rc;
   }
 
   return rc;
