@@ -156,7 +156,7 @@ int mutt_enter_string(char *buf, size_t buflen, int col, CompletionFlags flags)
       mutt_resize_screen();
       clearok(stdscr, true);
     }
-    rc = mutt_enter_string_full(buf, buflen, col, flags, false, NULL, NULL, es);
+    rc = mutt_enter_string_full(buf, buflen, col, flags, false, NULL, NULL, NULL, es);
   } while (rc == 1);
   mutt_enter_state_free(&es);
   return rc;
@@ -169,6 +169,7 @@ int mutt_enter_string(char *buf, size_t buflen, int col, CompletionFlags flags)
  * @param[in]  col      Initial cursor position
  * @param[in]  flags    Flags, see #CompletionFlags
  * @param[in]  multiple Allow multiple matches
+ * @param[in]  m        Mailbox
  * @param[out] files    List of files selected
  * @param[out] numfiles Number of files selected
  * @param[out] state    Current state (if function is called repeatedly)
@@ -176,8 +177,8 @@ int mutt_enter_string(char *buf, size_t buflen, int col, CompletionFlags flags)
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_enter_string_full(char *buf, size_t buflen, int col,
-                           CompletionFlags flags, bool multiple, char ***files,
+int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags flags,
+                           bool multiple, struct Mailbox *m, char ***files,
                            int *numfiles, struct EnterState *state)
 {
   int width = MessageWindow->state.cols - col - 1;
@@ -508,7 +509,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
 
             struct Buffer *pool = mutt_buffer_pool_get();
             mutt_buffer_addstr(pool, buf);
-            mutt_mailbox_next(Context ? Context->mailbox : NULL, pool);
+            mutt_mailbox_next(m, pool);
             mutt_str_copy(buf, mutt_buffer_string(pool), buflen);
             mutt_buffer_pool_release(&pool);
 

@@ -245,7 +245,8 @@ int mutt_pattern_alias_func(int op, char *prompt, char *menu_name,
   mutt_buffer_strcpy(buf, mdata->str);
   if (prompt)
   {
-    if ((mutt_buffer_get_field(prompt, buf, MUTT_PATTERN | MUTT_CLEAR, false, NULL, NULL) != 0) ||
+    if ((mutt_buffer_get_field(prompt, buf, MUTT_PATTERN | MUTT_CLEAR, false,
+                               NULL, NULL, NULL) != 0) ||
         mutt_buffer_is_empty(buf))
     {
       mutt_buffer_pool_release(&buf);
@@ -349,7 +350,8 @@ int mutt_pattern_func(int op, char *prompt)
   mutt_buffer_strcpy(buf, NONULL(Context->pattern));
   if (prompt || (op != MUTT_LIMIT))
   {
-    if ((mutt_buffer_get_field(prompt, buf, MUTT_PATTERN | MUTT_CLEAR, false, NULL, NULL) != 0) ||
+    if ((mutt_buffer_get_field(prompt, buf, MUTT_PATTERN | MUTT_CLEAR, false,
+                               NULL, NULL, NULL) != 0) ||
         mutt_buffer_is_empty(buf))
     {
       mutt_buffer_pool_release(&buf);
