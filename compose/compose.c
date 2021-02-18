@@ -1043,7 +1043,7 @@ static bool edit_address_list(int field, struct AddressList *al)
   mutt_addrlist_to_local(al);
   mutt_addrlist_write(al, buf, sizeof(buf), false);
   mutt_str_copy(old_list, buf, sizeof(buf));
-  if (mutt_get_field(_(Prompts[field]), buf, sizeof(buf), MUTT_ALIAS) == 0)
+  if (mutt_get_field(_(Prompts[field]), buf, sizeof(buf), MUTT_ALIAS, false, NULL, NULL) == 0)
   {
     mutt_addrlist_clear(al);
     mutt_addrlist_parse2(al, buf);
@@ -1646,7 +1646,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         if (!news)
           break;
         mutt_str_copy(buf, e->env->newsgroups, sizeof(buf));
-        if (mutt_get_field(Prompts[HDR_NEWSGROUPS], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+        if (mutt_get_field(Prompts[HDR_NEWSGROUPS], buf, sizeof(buf),
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           mutt_str_replace(&e->env->newsgroups, buf);
           redraw_env = true;
@@ -1657,7 +1658,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         if (!news)
           break;
         mutt_str_copy(buf, e->env->followup_to, sizeof(buf));
-        if (mutt_get_field(Prompts[HDR_FOLLOWUPTO], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+        if (mutt_get_field(Prompts[HDR_FOLLOWUPTO], buf, sizeof(buf),
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           mutt_str_replace(&e->env->followup_to, buf);
           redraw_env = true;
@@ -1670,7 +1672,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         if (!(news && c_x_comment_to))
           break;
         mutt_str_copy(buf, e->env->x_comment_to, sizeof(buf));
-        if (mutt_get_field(Prompts[HDR_XCOMMENTTO], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+        if (mutt_get_field(Prompts[HDR_XCOMMENTTO], buf, sizeof(buf),
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           mutt_str_replace(&e->env->x_comment_to, buf);
           redraw_env = true;
@@ -1681,7 +1684,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
       case OP_COMPOSE_EDIT_SUBJECT:
         mutt_str_copy(buf, e->env->subject, sizeof(buf));
-        if (mutt_get_field(Prompts[HDR_SUBJECT], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+        if (mutt_get_field(Prompts[HDR_SUBJECT], buf, sizeof(buf),
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           if (!mutt_str_equal(e->env->subject, buf))
           {
@@ -2236,7 +2240,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         CHECK_COUNT;
         mutt_str_copy(buf, CUR_ATTACH->body->description, sizeof(buf));
         /* header names should not be translated */
-        if (mutt_get_field("Description: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+        if (mutt_get_field("Description: ", buf, sizeof(buf),
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           if (!mutt_str_equal(CUR_ATTACH->body->description, buf))
           {
@@ -2298,7 +2303,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
       case OP_COMPOSE_EDIT_LANGUAGE:
         CHECK_COUNT;
         mutt_str_copy(buf, CUR_ATTACH->body->language, sizeof(buf));
-        if (mutt_get_field("Content-Language: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+        if (mutt_get_field("Content-Language: ", buf, sizeof(buf),
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           if (!mutt_str_equal(CUR_ATTACH->body->language, buf))
           {
@@ -2316,7 +2322,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         CHECK_COUNT;
         mutt_str_copy(buf, ENCODING(CUR_ATTACH->body->encoding), sizeof(buf));
         if ((mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf),
-                            MUTT_COMP_NO_FLAGS) == 0) &&
+                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0) &&
             (buf[0] != '\0'))
         {
           int enc = mutt_check_encoding(buf);
@@ -2461,7 +2467,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
         /* Call to lookup_mime_type () ?  maybe later */
         char type[256] = { 0 };
-        if ((mutt_get_field("Content-Type: ", type, sizeof(type), MUTT_COMP_NO_FLAGS) != 0) ||
+        if ((mutt_get_field("Content-Type: ", type, sizeof(type),
+                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
             (type[0] == '\0'))
         {
           continue;

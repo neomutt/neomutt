@@ -1765,8 +1765,11 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       case OP_ENTER_MASK:
       {
         mutt_buffer_strcpy(buf, C_Mask ? C_Mask->pattern : NULL);
-        if (mutt_get_field(_("File Mask: "), buf->data, buf->dsize, MUTT_COMP_NO_FLAGS) != 0)
+        if (mutt_get_field(_("File Mask: "), buf->data, buf->dsize,
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
+        {
           break;
+        }
 
         mutt_buffer_fix_dptr(buf);
 

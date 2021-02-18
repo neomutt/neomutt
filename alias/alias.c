@@ -388,7 +388,8 @@ void alias_create(struct AddressList *al, const struct ConfigSubset *sub)
 
 retry_name:
   /* L10N: prompt to add a new alias */
-  if ((mutt_get_field(_("Alias as: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
+  if ((mutt_get_field(_("Alias as: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
+                      false, NULL, NULL) != 0) ||
       (buf[0] == '\0'))
   {
     return;
@@ -428,7 +429,8 @@ retry_name:
 
   do
   {
-    if ((mutt_get_field(_("Address: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
+    if ((mutt_get_field(_("Address: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
+                        false, NULL, NULL) != 0) ||
         (buf[0] == '\0'))
     {
       alias_free(&alias);
@@ -451,7 +453,8 @@ retry_name:
   else
     buf[0] = '\0';
 
-  if (mutt_get_field(_("Personal name: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0)
+  if (mutt_get_field(_("Personal name: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
+                     false, NULL, NULL) != 0)
   {
     alias_free(&alias);
     return;
@@ -459,8 +462,11 @@ retry_name:
   mutt_str_replace(&TAILQ_FIRST(&alias->addr)->personal, buf);
 
   buf[0] = '\0';
-  if (mutt_get_field(_("Comment: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+  if (mutt_get_field(_("Comment: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
+                     false, NULL, NULL) == 0)
+  {
     mutt_str_replace(&alias->comment, buf);
+  }
 
   buf[0] = '\0';
   mutt_addrlist_write(&alias->addr, buf, sizeof(buf), true);
@@ -485,8 +491,11 @@ retry_name:
   const char *alias_file = cs_subset_path(sub, "alias_file");
   mutt_str_copy(buf, NONULL(alias_file), sizeof(buf));
 
-  if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) != 0)
+  if (mutt_get_field(_("Save to file: "), buf, sizeof(buf),
+                     MUTT_FILE | MUTT_CLEAR, false, NULL, NULL) != 0)
+  {
     return;
+  }
   mutt_expand_path(buf, sizeof(buf));
   FILE *fp_alias = fopen(buf, "a+");
   if (!fp_alias)

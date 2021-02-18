@@ -489,10 +489,9 @@ int mutt_search_command(struct Mailbox *m, int cur, int op)
   {
     char buf[256];
     mutt_str_copy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
-    if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
-                            _("Search for: ") :
-                            _("Reverse search for: "),
-                        buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN) != 0) ||
+    if ((mutt_get_field(
+             ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
+             buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN, false, NULL, NULL) != 0) ||
         (buf[0] == '\0'))
     {
       return -1;
@@ -640,10 +639,9 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
   {
     char buf[256];
     mutt_str_copy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
-    if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
-                            _("Search for: ") :
-                            _("Reverse search for: "),
-                        buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN) != 0) ||
+    if ((mutt_get_field(
+             ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
+             buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN, false, NULL, NULL) != 0) ||
         (buf[0] == '\0'))
     {
       return -1;

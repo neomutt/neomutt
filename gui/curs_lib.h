@@ -63,7 +63,7 @@ void         mutt_format_s_tree(char *buf, size_t buflen, const char *prec, cons
 void         mutt_format_s_x(char *buf, size_t buflen, const char *prec, const char *s, bool arboreal);
 void         mutt_getch_timeout(int delay);
 struct KeyEvent mutt_getch(void);
-int          mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionFlags complete, bool multiple, char ***files, int *numfiles);
+int          mutt_get_field(const char *field, char *buf, size_t buflen, CompletionFlags complete, bool multiple, char ***files, int *numfiles);
 int          mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, CompletionFlags flags);
 int          mutt_multi_choice(const char *prompt, const char *letters);
 void         mutt_need_hard_redraw(void);
@@ -88,7 +88,6 @@ int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, Completion
 #define mutt_buffer_enter_fname(prompt, fname, mailbox) mutt_buffer_enter_fname_full(prompt, fname, mailbox, false, NULL, NULL, MUTT_SEL_NO_FLAGS)
 int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname, bool mailbox, bool multiple, char ***files, int *numfiles, SelectFileFlags flags);
 
-#define mutt_get_field(field, buf, buflen, complete)   mutt_get_field_full(field, buf, buflen, complete, false, NULL, NULL)
 #define mutt_get_password(msg, buf, buflen)            mutt_get_field_unbuffered(msg, buf, buflen, MUTT_PASS)
 
 #endif /* MUTT_CURS_LIB_H */

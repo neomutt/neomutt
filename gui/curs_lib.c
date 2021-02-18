@@ -295,7 +295,7 @@ int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, Completion
 }
 
 /**
- * mutt_get_field_full - Ask the user for a string
+ * mutt_get_field - Ask the user for a string
  * @param[in]  field    Prompt
  * @param[in]  buf      Buffer for the result
  * @param[in]  buflen   Length of buffer
@@ -307,8 +307,8 @@ int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, Completion
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionFlags complete,
-                        bool multiple, char ***files, int *numfiles)
+int mutt_get_field(const char *field, char *buf, size_t buflen,
+                   CompletionFlags complete, bool multiple, char ***files, int *numfiles)
 {
   if (!buf)
     return -1;
@@ -340,7 +340,7 @@ int mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, Complet
     OptIgnoreMacroEvents = true;
     reset_ignoremacro = true;
   }
-  int rc = mutt_get_field(msg, buf, buflen, flags);
+  int rc = mutt_get_field(msg, buf, buflen, flags, false, NULL, NULL);
   if (reset_ignoremacro)
     OptIgnoreMacroEvents = false;
 

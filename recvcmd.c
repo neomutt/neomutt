@@ -214,8 +214,11 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     mutt_str_copy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
 
   buf[0] = '\0';
-  if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || (buf[0] == '\0'))
+  if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS, false, NULL, NULL) ||
+      (buf[0] == '\0'))
+  {
     return;
+  }
 
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
   mutt_addrlist_parse(&al, buf);

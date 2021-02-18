@@ -352,7 +352,8 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
       case OP_QUERY_APPEND:
       case OP_QUERY:
       {
-        if ((mutt_get_field(_("Query: "), buf, buflen, MUTT_COMP_NO_FLAGS) != 0) ||
+        if ((mutt_get_field(_("Query: "), buf, buflen, MUTT_COMP_NO_FLAGS,
+                            false, NULL, NULL) != 0) ||
             (buf[0] == '\0'))
         {
           break;
@@ -652,7 +653,8 @@ void query_index(struct ConfigSubset *sub)
   }
 
   char buf[256] = { 0 };
-  if ((mutt_get_field(_("Query: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
+  if ((mutt_get_field(_("Query: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS, false,
+                      NULL, NULL) != 0) ||
       (buf[0] == '\0'))
   {
     return;
