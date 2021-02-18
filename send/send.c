@@ -1764,7 +1764,8 @@ full_fcc:
         case 2: /* alternate (m)ailbox */
           /* L10N: This is the prompt to enter an "alternate (m)ailbox" when the
              initial Fcc fails.  */
-          rc = mutt_buffer_enter_fname(_("Fcc mailbox"), fcc, true);
+          rc = mutt_buffer_enter_fname(_("Fcc mailbox"), fcc, true, false, NULL,
+                                       NULL, MUTT_SEL_NO_FLAGS);
           if ((rc == -1) || mutt_buffer_is_empty(fcc))
           {
             rc = 0;
