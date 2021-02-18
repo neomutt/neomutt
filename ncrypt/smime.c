@@ -175,7 +175,8 @@ bool smime_class_valid_passphrase(void)
 
   smime_class_void_passphrase();
 
-  if (mutt_get_password(_("Enter S/MIME passphrase:"), SmimePass, sizeof(SmimePass)) == 0)
+  if (mutt_get_field_unbuffered(_("Enter S/MIME passphrase:"), SmimePass,
+                                sizeof(SmimePass), MUTT_PASS) == 0)
   {
     SmimeExpTime = mutt_date_add_timeout(now, C_SmimeTimeout);
     return true;

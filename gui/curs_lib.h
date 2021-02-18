@@ -84,6 +84,4 @@ size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size
 enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def);
 enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt);
 
-#define mutt_get_password(msg, buf, buflen)            mutt_get_field_unbuffered(msg, buf, buflen, MUTT_PASS)
-
 #endif /* MUTT_CURS_LIB_H */

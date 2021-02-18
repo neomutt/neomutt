@@ -97,7 +97,8 @@ bool pgp_class_valid_passphrase(void)
 
   pgp_class_void_passphrase();
 
-  if (mutt_get_password(_("Enter PGP passphrase:"), PgpPass, sizeof(PgpPass)) == 0)
+  if (mutt_get_field_unbuffered(_("Enter PGP passphrase:"), PgpPass,
+                                sizeof(PgpPass), MUTT_PASS) == 0)
   {
     PgpExptime = mutt_date_add_timeout(mutt_date_epoch(), C_PgpTimeout);
     return true;
