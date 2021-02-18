@@ -245,7 +245,7 @@ struct KeyEvent mutt_getch(void)
 }
 
 /**
- * mutt_buffer_get_field_full - Ask the user for a string
+ * mutt_buffer_get_field - Ask the user for a string
  * @param[in]  field    Prompt
  * @param[in]  buf      Buffer for the result
  * @param[in]  complete Flags, see #CompletionFlags
@@ -256,8 +256,8 @@ struct KeyEvent mutt_getch(void)
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, CompletionFlags complete,
-                               bool multiple, char ***files, int *numfiles)
+int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags complete,
+                          bool multiple, char ***files, int *numfiles)
 {
   int ret;
   int col;
@@ -318,7 +318,7 @@ int mutt_get_field(const char *field, char *buf, size_t buflen,
     .dptr = buf + mutt_str_len(buf),
     .dsize = buflen,
   };
-  return mutt_buffer_get_field_full(field, &tmp, complete, multiple, files, numfiles);
+  return mutt_buffer_get_field(field, &tmp, complete, multiple, files, numfiles);
 }
 
 /**
@@ -813,8 +813,8 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
       mutt_unget_event(0, ch.op);
 
     mutt_buffer_alloc(fname, 1024);
-    if (mutt_buffer_get_field_full(pc, fname, (mailbox ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
-                                   multiple, files, numfiles) != 0)
+    if (mutt_buffer_get_field(pc, fname, (mailbox ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
+                              multiple, files, numfiles) != 0)
     {
       mutt_buffer_reset(fname);
     }
