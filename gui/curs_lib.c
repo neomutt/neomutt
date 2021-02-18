@@ -754,7 +754,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
 }
 
 /**
- * mutt_buffer_enter_fname_full - Ask the user to select a file
+ * mutt_buffer_enter_fname - Ask the user to select a file
  * @param[in]  prompt   Prompt
  * @param[in]  fname    Buffer for the result
  * @param[in]  mailbox  If true, select mailboxes
@@ -765,9 +765,9 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
-                                 bool mailbox, bool multiple, char ***files,
-                                 int *numfiles, SelectFileFlags flags)
+int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
+                            bool mailbox, bool multiple, char ***files,
+                            int *numfiles, SelectFileFlags flags)
 {
   struct KeyEvent ch;
 

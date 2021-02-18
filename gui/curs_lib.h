@@ -52,6 +52,7 @@ enum FormatJustify
 int          mutt_addwch(wchar_t wc);
 int          mutt_any_key_to_continue(const char *s);
 void         mutt_beep(bool force);
+int          mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox, bool multiple, char ***files, int *numfiles, SelectFileFlags flags);
 int          mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags complete, bool multiple, char ***files, int *numfiles);
 int          mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color, struct Pager *info);
 void         mutt_edit_file(const char *editor, const char *file);
@@ -82,10 +83,6 @@ void         mutt_unget_string(const char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
 enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def);
 enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt);
-
-
-#define mutt_buffer_enter_fname(prompt, fname, mailbox) mutt_buffer_enter_fname_full(prompt, fname, mailbox, false, NULL, NULL, MUTT_SEL_NO_FLAGS)
-int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname, bool mailbox, bool multiple, char ***files, int *numfiles, SelectFileFlags flags);
 
 #define mutt_get_password(msg, buf, buflen)            mutt_get_field_unbuffered(msg, buf, buflen, MUTT_PASS)
 

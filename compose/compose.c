@@ -2006,8 +2006,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         char **files = NULL;
 
         mutt_buffer_reset(&fname);
-        if ((mutt_buffer_enter_fname_full(prompt, &fname, false, true, &files,
-                                          &numfiles, MUTT_SEL_MULTI) == -1) ||
+        if ((mutt_buffer_enter_fname(prompt, &fname, false, true, &files,
+                                     &numfiles, MUTT_SEL_MULTI) == -1) ||
             mutt_buffer_is_empty(&fname))
         {
           for (int i = 0; i < numfiles; i++)
@@ -2087,7 +2087,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           }
         }
 
-        if ((mutt_buffer_enter_fname(prompt, &fname, true) == -1) ||
+        if ((mutt_buffer_enter_fname(prompt, &fname, true, false, NULL, NULL,
+                                     MUTT_SEL_NO_FLAGS) == -1) ||
             mutt_buffer_is_empty(&fname))
         {
           break;
@@ -2631,7 +2632,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
         if (actx->idxlen)
           e->body = actx->idx[0]->body;
-        if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname, true) != -1) &&
+        if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname, true,
+                                     false, NULL, NULL, MUTT_SEL_NO_FLAGS) != -1) &&
             !mutt_buffer_is_empty(&fname))
         {
           mutt_message(_("Writing message to %s ..."), mutt_buffer_string(&fname));
