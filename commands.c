@@ -705,8 +705,11 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
 
   struct Buffer *buf = mutt_buffer_pool_get();
 
-  if (mutt_buffer_get_field(_("Pipe to command: "), buf, MUTT_CMD, false, NULL, NULL) != 0)
+  if (mutt_buffer_get_field(_("Pipe to command: "), buf, MUTT_CMD, false, NULL,
+                            NULL, NULL) != 0)
+  {
     goto cleanup;
+  }
 
   if (mutt_buffer_len(buf) == 0)
     goto cleanup;
@@ -1104,8 +1107,11 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   mutt_buffer_fix_dptr(buf);
   mutt_buffer_pretty_mailbox(buf);
 
-  if (mutt_buffer_enter_fname(prompt, buf, false, false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1)
+  if (mutt_buffer_enter_fname(prompt, buf, false, NULL, false, NULL, NULL,
+                              MUTT_SEL_NO_FLAGS) == -1)
+  {
     goto cleanup;
+  }
 
   size_t pathlen = mutt_buffer_len(buf);
   if (pathlen == 0)

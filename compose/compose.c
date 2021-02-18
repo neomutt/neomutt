@@ -1706,8 +1706,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
       case OP_COMPOSE_EDIT_FCC:
         mutt_buffer_copy(&fname, fcc);
-        if (mutt_buffer_get_field(Prompts[HDR_FCC], &fname,
-                                  MUTT_FILE | MUTT_CLEAR, false, NULL, NULL) == 0)
+        if (mutt_buffer_get_field(Prompts[HDR_FCC], &fname, MUTT_FILE | MUTT_CLEAR,
+                                  false, NULL, NULL, NULL) == 0)
         {
           if (!mutt_str_equal(fcc->data, fname.data))
           {
@@ -2006,7 +2006,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         char **files = NULL;
 
         mutt_buffer_reset(&fname);
-        if ((mutt_buffer_enter_fname(prompt, &fname, false, true, &files,
+        if ((mutt_buffer_enter_fname(prompt, &fname, false, NULL, true, &files,
                                      &numfiles, MUTT_SEL_MULTI) == -1) ||
             mutt_buffer_is_empty(&fname))
         {
@@ -2087,8 +2087,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           }
         }
 
-        if ((mutt_buffer_enter_fname(prompt, &fname, true, false, NULL, NULL,
-                                     MUTT_SEL_NO_FLAGS) == -1) ||
+        if ((mutt_buffer_enter_fname(prompt, &fname, true, ctx_mailbox(Context),
+                                     false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1) ||
             mutt_buffer_is_empty(&fname))
         {
           break;
@@ -2418,8 +2418,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         else
           src = CUR_ATTACH->body->filename;
         mutt_buffer_strcpy(&fname, mutt_path_basename(NONULL(src)));
-        int ret = mutt_buffer_get_field(_("Send attachment with name: "),
-                                        &fname, MUTT_FILE, false, NULL, NULL);
+        int ret = mutt_buffer_get_field(_("Send attachment with name: "), &fname,
+                                        MUTT_FILE, false, NULL, NULL, NULL);
         if (ret == 0)
         {
           /* As opposed to RENAME_FILE, we don't check buf[0] because it's
@@ -2434,7 +2434,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         CHECK_COUNT;
         mutt_buffer_strcpy(&fname, CUR_ATTACH->body->filename);
         mutt_buffer_pretty_mailbox(&fname);
-        if ((mutt_buffer_get_field(_("Rename to: "), &fname, MUTT_FILE, false, NULL, NULL) == 0) &&
+        if ((mutt_buffer_get_field(_("Rename to: "), &fname, MUTT_FILE, false,
+                                   NULL, NULL, NULL) == 0) &&
             !mutt_buffer_is_empty(&fname))
         {
           struct stat st;
@@ -2461,7 +2462,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
       case OP_COMPOSE_NEW_MIME:
       {
         mutt_buffer_reset(&fname);
-        if ((mutt_buffer_get_field(_("New file: "), &fname, MUTT_FILE, false, NULL, NULL) != 0) ||
+        if ((mutt_buffer_get_field(_("New file: "), &fname, MUTT_FILE, false,
+                                   NULL, NULL, NULL) != 0) ||
             mutt_buffer_is_empty(&fname))
         {
           continue;
@@ -2632,8 +2634,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
         if (actx->idxlen)
           e->body = actx->idx[0]->body;
-        if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname, true,
-                                     false, NULL, NULL, MUTT_SEL_NO_FLAGS) != -1) &&
+        if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname,
+                                     true, ctx_mailbox(Context), false, NULL,
+                                     NULL, MUTT_SEL_NO_FLAGS) != -1) &&
             !mutt_buffer_is_empty(&fname))
         {
           mutt_message(_("Writing message to %s ..."), mutt_buffer_string(&fname));

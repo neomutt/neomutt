@@ -2454,8 +2454,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         /* By default, fill buf with the next mailbox that contains unread mail */
         mutt_mailbox_next(Context ? Context->mailbox : NULL, folderbuf);
 
-        if (mutt_buffer_enter_fname(cp, folderbuf, true, false, NULL, NULL,
-                                    MUTT_SEL_NO_FLAGS) == -1)
+        if (mutt_buffer_enter_fname(cp, folderbuf, true, ctx_mailbox(Context),
+                                    false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1)
           goto changefoldercleanup;
 
         /* Selected directory is okay, let's save it. */
@@ -2527,8 +2527,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         nntp_mailbox(Context ? Context->mailbox : NULL, folderbuf->data,
                      folderbuf->dsize);
 
-        if (mutt_buffer_enter_fname(cp, folderbuf, true, false, NULL, NULL,
-                                    MUTT_SEL_NO_FLAGS) == -1)
+        if (mutt_buffer_enter_fname(cp, folderbuf, true, ctx_mailbox(Context),
+                                    false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1)
           goto changefoldercleanup2;
 
         /* Selected directory is okay, let's save it. */
