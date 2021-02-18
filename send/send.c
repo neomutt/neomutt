@@ -175,7 +175,7 @@ int mutt_edit_address(struct AddressList *al, const char *field, bool expand_ali
     buf[0] = '\0';
     mutt_addrlist_to_local(al);
     mutt_addrlist_write(al, buf, sizeof(buf), false);
-    if (mutt_get_field(field, buf, sizeof(buf), MUTT_ALIAS) != 0)
+    if (mutt_get_field(field, buf, sizeof(buf), MUTT_ALIAS, false, NULL, NULL) != 0)
       return -1;
     mutt_addrlist_clear(al);
     mutt_addrlist_parse2(al, buf);
@@ -210,8 +210,11 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
       mutt_str_copy(buf, en->newsgroups, sizeof(buf));
     else
       buf[0] = '\0';
-    if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0)
+    if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
+                       false, NULL, NULL) != 0)
+    {
       return -1;
+    }
     FREE(&en->newsgroups);
     en->newsgroups = mutt_str_dup(buf);
 
@@ -221,8 +224,8 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
       buf[0] = '\0';
 
     const bool c_ask_follow_up = cs_subset_bool(sub, "ask_follow_up");
-    if (c_ask_follow_up &&
-        (mutt_get_field("Followup-To: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0))
+    if (c_ask_follow_up && (mutt_get_field("Followup-To: ", buf, sizeof(buf),
+                                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0))
     {
       return -1;
     }
@@ -237,7 +240,8 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     const bool c_x_comment_to = cs_subset_bool(sub, "x_comment_to");
     const bool c_ask_x_comment_to = cs_subset_bool(sub, "ask_x_comment_to");
     if (c_x_comment_to && c_ask_x_comment_to &&
-        (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0))
+        (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
+                        false, NULL, NULL) != 0))
     {
       return -1;
     }
@@ -292,7 +296,8 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
 
   const enum QuadOption c_abort_nosubject =
       cs_subset_quad(sub, "abort_nosubject");
-  if ((mutt_get_field(_("Subject: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
+  if ((mutt_get_field(_("Subject: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
+                      false, NULL, NULL) != 0) ||
       ((buf[0] == '\0') &&
        (query_quadoption(c_abort_nosubject, _("No subject, abort?")) != MUTT_NO)))
   {
