@@ -1750,7 +1750,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_SHOW_LOG_MESSAGES:
       {
 #ifdef USE_DEBUG_GRAPHVIZ
-        dump_graphviz("index");
+        dump_graphviz("index", Context);
 #endif
         char tempfile[PATH_MAX];
         mutt_mktemp(tempfile, sizeof(tempfile));
