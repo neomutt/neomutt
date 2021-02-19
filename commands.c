@@ -105,9 +105,10 @@ void mutt_commands_cleanup(void)
 
 /**
  * process_protected_headers - Get the protected header and update the index
+ * @param m Mailbox
  * @param e Email to update
  */
-static void process_protected_headers(struct Email *e)
+static void process_protected_headers(struct Mailbox *m, struct Email *e)
 {
   struct Envelope *prot_headers = NULL;
   regmatch_t pmatch[1];
@@ -159,8 +160,8 @@ static void process_protected_headers(struct Email *e)
   if (C_CryptProtectedHeadersRead && prot_headers && prot_headers->subject &&
       !mutt_str_equal(e->env->subject, prot_headers->subject))
   {
-    if (Context->mailbox->subj_hash && e->env->real_subj)
-      mutt_hash_delete(Context->mailbox->subj_hash, e->env->real_subj, e);
+    if (m->subj_hash && e->env->real_subj)
+      mutt_hash_delete(m->subj_hash, e->env->real_subj, e);
 
     mutt_str_replace(&e->env->subject, prot_headers->subject);
     FREE(&e->env->disp_subj);
@@ -169,17 +170,17 @@ static void process_protected_headers(struct Email *e)
     else
       e->env->real_subj = e->env->subject;
 
-    if (Context->mailbox->subj_hash)
-      mutt_hash_insert(Context->mailbox->subj_hash, e->env->real_subj, e);
+    if (m->subj_hash)
+      mutt_hash_insert(m->subj_hash, e->env->real_subj, e);
 
-    mx_save_hcache(Context->mailbox, e);
+    mx_save_hcache(m, e);
 
     /* Also persist back to the message headers if this is set */
     if (C_CryptProtectedHeadersSave)
     {
       e->env->changed |= MUTT_ENV_CHANGED_SUBJECT;
       e->changed = true;
-      Context->mailbox->changed = true;
+      m->changed = true;
     }
   }
 
@@ -331,7 +332,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     e->pair = 0;
 
     /* Process protected headers and autocrypt gossip headers */
-    process_protected_headers(e);
+    process_protected_headers(m, e);
   }
 
   if (builtin)
@@ -1109,9 +1110,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 
   if (mutt_buffer_enter_fname(prompt, buf, false, NULL, false, NULL, NULL,
                               MUTT_SEL_NO_FLAGS) == -1)
-  {
     goto cleanup;
-  }
 
   size_t pathlen = mutt_buffer_len(buf);
   if (pathlen == 0)
@@ -1442,8 +1441,8 @@ static bool check_traditional_pgp(struct Mailbox *m, struct Email *e, MuttRedraw
 
   e->security |= PGP_TRADITIONAL_CHECKED;
 
-  mutt_parse_mime_message(Context->mailbox, e);
-  struct Message *msg = mx_msg_open(Context->mailbox, e->msgno);
+  mutt_parse_mime_message(m, e);
+  struct Message *msg = mx_msg_open(m, e->msgno);
   if (!msg)
     return 0;
   if (crypt_pgp_check_traditional(msg->fp, e->body, false))
@@ -1454,7 +1453,7 @@ static bool check_traditional_pgp(struct Mailbox *m, struct Email *e, MuttRedraw
   }
 
   e->security |= PGP_TRADITIONAL_CHECKED;
-  mx_msg_close(Context->mailbox, &msg);
+  mx_msg_close(m, &msg);
   return rc;
 }
 
