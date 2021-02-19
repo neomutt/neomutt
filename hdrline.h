@@ -49,13 +49,10 @@ struct HdrFormatInfo
   const char *pager_progress;
 };
 
-void mutt_make_string_flags(char *buf, size_t buflen, int cols, const char *s,
+void mutt_make_string(char *buf, size_t buflen, int cols, const char *s,
                             struct Mailbox *m, int inpgr,
                             struct Email *e, MuttFormatFlags flags);
 void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s,
                            struct HdrFormatInfo *hfi, MuttFormatFlags flags);
-
-#define mutt_make_string(BUF, BUFLEN, COLS, S, M, INPGR, E)                    \
-  mutt_make_string_flags(BUF, BUFLEN, COLS, S, M, INPGR, E, MUTT_FORMAT_NO_FLAGS)
 
 #endif /* MUTT_HDRLINE_H */

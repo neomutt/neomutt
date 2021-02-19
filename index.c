@@ -929,8 +929,8 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
     }
   }
 
-  mutt_make_string_flags(buf, buflen, menu->win_index->state.cols,
-                         NONULL(C_IndexFormat), m, Context->msg_in_pager, e, flags);
+  mutt_make_string(buf, buflen, menu->win_index->state.cols,
+                   NONULL(C_IndexFormat), m, Context->msg_in_pager, e, flags);
 }
 
 /**
