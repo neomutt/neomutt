@@ -3021,7 +3021,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra))
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_resend(extra->fp, extra->actx, extra->body);
+          mutt_attach_resend(extra->fp, extra->ctx, extra->actx, extra->body);
         else
           mutt_resend_message(NULL, extra->ctx, extra->email, NeoMutt->sub);
         pager_menu->redraw = REDRAW_FULL;
@@ -3248,7 +3248,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           break;
         }
         if (IsMsgAttach(extra))
-          mutt_attach_forward(extra->fp, extra->email, extra->actx, extra->body, SEND_NEWS);
+          mutt_attach_forward(extra->fp, m, extra->email, extra->actx, extra->body, SEND_NEWS);
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3280,8 +3280,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           }
           if (IsMsgAttach(extra))
           {
-            mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->body,
-                              SEND_NEWS | SEND_REPLY);
+            mutt_attach_reply(extra->fp, m, extra->email, extra->actx,
+                              extra->body, SEND_NEWS | SEND_REPLY);
           }
           else
           {
@@ -3313,7 +3313,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           replyflags |= SEND_LIST_REPLY;
 
         if (IsMsgAttach(extra))
-          mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->body, replyflags);
+          mutt_attach_reply(extra->fp, m, extra->email, extra->actx, extra->body, replyflags);
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3341,7 +3341,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_forward(extra->fp, extra->email, extra->actx, extra->body, SEND_NO_FLAGS);
+          mutt_attach_forward(extra->fp, m, extra->email, extra->actx,
+                              extra->body, SEND_NO_FLAGS);
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
