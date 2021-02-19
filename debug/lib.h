@@ -45,6 +45,7 @@
 
 struct AddressList;
 struct Buffer;
+struct Context;
 struct ListHead;
 struct MuttWindow;
 struct NotifyCallback;
@@ -70,7 +71,7 @@ const char *get_content_type       (enum ContentType type);
 
 // Graphviz
 void        add_flag               (struct Buffer *buf, bool is_set, const char *name);
-void        dump_graphviz          (const char *title);
+void        dump_graphviz          (const char *title, struct Context *ctx);
 void        dump_graphviz_attach_ctx(struct AttachCtx *actx);
 void        dump_graphviz_email    (struct Email *e);
 const char *get_content_disposition(enum ContentDisposition disp);
