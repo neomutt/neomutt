@@ -1760,7 +1760,7 @@ void dlg_select_attachment(struct Email *e)
 
       case OP_RESEND:
         CHECK_ATTACH;
-        mutt_attach_resend(CUR_ATTACH->fp, actx,
+        mutt_attach_resend(CUR_ATTACH->fp, Context, actx,
                            menu->tagprefix ? NULL : CUR_ATTACH->body);
         menu->redraw = REDRAW_FULL;
         break;
@@ -1774,7 +1774,7 @@ void dlg_select_attachment(struct Email *e)
 
       case OP_FORWARD_MESSAGE:
         CHECK_ATTACH;
-        mutt_attach_forward(CUR_ATTACH->fp, e, actx,
+        mutt_attach_forward(CUR_ATTACH->fp, m, e, actx,
                             menu->tagprefix ? NULL : CUR_ATTACH->body, SEND_NO_FLAGS);
         menu->redraw = REDRAW_FULL;
         break;
@@ -1782,7 +1782,7 @@ void dlg_select_attachment(struct Email *e)
 #ifdef USE_NNTP
       case OP_FORWARD_TO_GROUP:
         CHECK_ATTACH;
-        mutt_attach_forward(CUR_ATTACH->fp, e, actx,
+        mutt_attach_forward(CUR_ATTACH->fp, m, e, actx,
                             menu->tagprefix ? NULL : CUR_ATTACH->body, SEND_NEWS);
         menu->redraw = REDRAW_FULL;
         break;
@@ -1796,7 +1796,7 @@ void dlg_select_attachment(struct Email *e)
             (query_quadoption(C_FollowupToPoster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
-          mutt_attach_reply(CUR_ATTACH->fp, e, actx,
+          mutt_attach_reply(CUR_ATTACH->fp, m, e, actx,
                             menu->tagprefix ? NULL : CUR_ATTACH->body,
                             SEND_NEWS | SEND_REPLY);
           menu->redraw = REDRAW_FULL;
@@ -1819,7 +1819,7 @@ void dlg_select_attachment(struct Email *e)
         else if (op == OP_LIST_REPLY)
           flags |= SEND_LIST_REPLY;
 
-        mutt_attach_reply(CUR_ATTACH->fp, e, actx,
+        mutt_attach_reply(CUR_ATTACH->fp, m, e, actx,
                           menu->tagprefix ? NULL : CUR_ATTACH->body, flags);
         menu->redraw = REDRAW_FULL;
         break;
