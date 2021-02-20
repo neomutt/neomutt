@@ -1734,7 +1734,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!check_acl(Context->mailbox, MUTT_ACL_DELETE, _("Can't delete messages")))
           break;
 
-        mutt_pattern_func(MUTT_DELETE, _("Delete messages matching: "));
+        mutt_pattern_func(Context, MUTT_DELETE, _("Delete messages matching: "));
         menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         break;
 
@@ -1811,14 +1811,13 @@ int mutt_index_menu(struct MuttWindow *dlg)
               snprintf(buf2, sizeof(buf2), "~A");
           }
           mutt_str_replace(&Context->pattern, buf2);
-          mutt_pattern_func(MUTT_LIMIT, NULL);
+          mutt_pattern_func(Context, MUTT_LIMIT, NULL);
         }
 
-        if (((op == OP_LIMIT_CURRENT_THREAD) && mutt_limit_current_thread(cur.e)) ||
+        if (((op == OP_LIMIT_CURRENT_THREAD) && mutt_limit_current_thread(Context, cur.e)) ||
             (op == OP_TOGGLE_READ) ||
             ((op == OP_MAIN_LIMIT) &&
-             (mutt_pattern_func(MUTT_LIMIT,
-                                _("Limit to messages matching: ")) == 0)))
+             (mutt_pattern_func(Context, MUTT_LIMIT, _("Limit to messages matching: ")) == 0)))
         {
           if (menu->oldcurrent >= 0)
           {
@@ -1904,7 +1903,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_SEARCH:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
-        menu->current = mutt_search_command(Context->mailbox, menu->current, op);
+        menu->current = mutt_search_command(Context, Context->mailbox, menu->current, op);
         if (menu->current == -1)
           menu->current = menu->oldcurrent;
         else
@@ -1967,7 +1966,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_MAIN_TAG_PATTERN:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
-        mutt_pattern_func(MUTT_TAG, _("Tag messages matching: "));
+        mutt_pattern_func(Context, MUTT_TAG, _("Tag messages matching: "));
         menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         break;
 
@@ -1981,8 +1980,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!check_acl(Context->mailbox, MUTT_ACL_DELETE, _("Can't undelete messages")))
           break;
 
-        if (mutt_pattern_func(MUTT_UNDELETE,
-                              _("Undelete messages matching: ")) == 0)
+        if (mutt_pattern_func(Context, MUTT_UNDELETE, _("Undelete messages matching: ")) == 0)
         {
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         }
@@ -1991,7 +1989,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_MAIN_UNTAG_PATTERN:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
-        if (mutt_pattern_func(MUTT_UNTAG, _("Untag messages matching: ")) == 0)
+        if (mutt_pattern_func(Context, MUTT_UNTAG, _("Untag messages matching: ")) == 0)
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         break;
 

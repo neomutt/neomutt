@@ -182,23 +182,25 @@ static struct MuttThread *top_of_thread(struct Email *e)
 
 /**
  * mutt_limit_current_thread - Limit the email view to the current thread
- * @param e Current Email
+ * @param ctx Current Mailbox
+ * @param e   Current Email
  * @retval true Success
  * @retval false Failure
  */
-bool mutt_limit_current_thread(struct Email *e)
+bool mutt_limit_current_thread(struct Context *ctx, struct Email *e)
 {
-  struct Mailbox *m = ctx_mailbox(Context);
-  if (!e || !m)
+  if (!ctx || !ctx->mailbox || !e)
     return false;
+
+  struct Mailbox *m = ctx->mailbox;
 
   struct MuttThread *me = top_of_thread(e);
   if (!me)
     return false;
 
   m->vcount = 0;
-  Context->vsize = 0;
-  Context->collapsed = false;
+  ctx->vsize = 0;
+  ctx->collapsed = false;
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -219,7 +221,7 @@ bool mutt_limit_current_thread(struct Email *e)
       e->visible = true;
       m->v2r[m->vcount] = i;
       m->vcount++;
-      Context->vsize += (body->length + body->offset - body->hdr_offset);
+      ctx->vsize += (body->length + body->offset - body->hdr_offset);
     }
   }
   return true;
@@ -231,12 +233,14 @@ bool mutt_limit_current_thread(struct Email *e)
  * @param prompt    Prompt to show the user
  * @param menu_name Name of the current menu, e.g. Aliases, Query
  * @param mdata     Menu data holding Aliases
+ * @param ctx       Current Mailbox
  * @param menu      Current menu
  * @retval  0 Success
  * @retval -1 Failure
  */
 int mutt_pattern_alias_func(int op, char *prompt, char *menu_name,
-                            struct AliasMenuData *mdata, struct Menu *menu)
+                            struct AliasMenuData *mdata, struct Context *ctx,
+                            struct Menu *menu)
 {
   int rc = -1;
   struct Progress progress;
@@ -268,7 +272,7 @@ int mutt_pattern_alias_func(int op, char *prompt, char *menu_name,
     match_all = mutt_str_equal(pbuf, "~A");
 
     struct Buffer err = mutt_buffer_make(0);
-    pat = mutt_pattern_comp(buf->data, MUTT_PC_FULL_MSG, &err);
+    pat = mutt_pattern_comp(ctx, buf->data, MUTT_PC_FULL_MSG, &err);
     if (!pat)
     {
       mutt_error("%s", mutt_buffer_string(&err));
@@ -331,23 +335,25 @@ bail:
 
 /**
  * mutt_pattern_func - Perform some Pattern matching
+ * @param ctx    Current Mailbox
  * @param op     Operation to perform, e.g. #MUTT_LIMIT
  * @param prompt Prompt to show the user
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_pattern_func(int op, char *prompt)
+int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
 {
-  struct Mailbox *m = ctx_mailbox(Context);
-  if (!m)
+  if (!ctx || !ctx->mailbox)
     return -1;
+
+  struct Mailbox *m = ctx->mailbox;
 
   struct Buffer err;
   int rc = -1;
   struct Progress progress;
   struct Buffer *buf = mutt_buffer_pool_get();
 
-  mutt_buffer_strcpy(buf, NONULL(Context->pattern));
+  mutt_buffer_strcpy(buf, NONULL(ctx->pattern));
   if (prompt || (op != MUTT_LIMIT))
   {
     if ((mutt_buffer_get_field(prompt, buf, MUTT_PATTERN | MUTT_CLEAR, false,
@@ -371,7 +377,7 @@ int mutt_pattern_func(int op, char *prompt)
   mutt_buffer_init(&err);
   err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
-  struct PatternList *pat = mutt_pattern_comp(buf->data, MUTT_PC_FULL_MSG, &err);
+  struct PatternList *pat = mutt_pattern_comp(ctx, buf->data, MUTT_PC_FULL_MSG, &err);
   if (!pat)
   {
     mutt_error("%s", err.data);
@@ -389,8 +395,8 @@ int mutt_pattern_func(int op, char *prompt)
   if (op == MUTT_LIMIT)
   {
     m->vcount = 0;
-    Context->vsize = 0;
-    Context->collapsed = false;
+    ctx->vsize = 0;
+    ctx->collapsed = false;
     int padding = mx_msg_padding_size(m);
 
     for (int i = 0; i < m->msg_count; i++)
@@ -413,7 +419,7 @@ int mutt_pattern_func(int op, char *prompt)
         m->v2r[m->vcount] = i;
         m->vcount++;
         struct Body *b = e->body;
-        Context->vsize += b->length + b->offset - b->hdr_offset + padding;
+        ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
     }
   }
@@ -449,8 +455,8 @@ int mutt_pattern_func(int op, char *prompt)
   if (op == MUTT_LIMIT)
   {
     /* drop previous limit pattern */
-    FREE(&Context->pattern);
-    mutt_pattern_free(&Context->limit_pattern);
+    FREE(&ctx->pattern);
+    mutt_pattern_free(&ctx->limit_pattern);
 
     if (m->msg_count && !m->vcount)
       mutt_error(_("No messages matched criteria"));
@@ -458,9 +464,9 @@ int mutt_pattern_func(int op, char *prompt)
     /* record new limit pattern, unless match all */
     if (!match_all)
     {
-      Context->pattern = simple;
+      ctx->pattern = simple;
       simple = NULL; /* don't clobber it */
-      Context->limit_pattern = mutt_pattern_comp(buf->data, MUTT_PC_FULL_MSG, &err);
+      ctx->limit_pattern = mutt_pattern_comp(ctx, buf->data, MUTT_PC_FULL_MSG, &err);
     }
   }
 
@@ -477,13 +483,14 @@ bail:
 
 /**
  * mutt_search_command - Perform a search
+ * @param ctx Current Mailbox
  * @param m   Mailbox to search through
  * @param cur Index number of current email
  * @param op  Operation to perform, e.g. OP_SEARCH_NEXT
  * @retval >= 0 Index of matching email
  * @retval -1 No match, or error
  */
-int mutt_search_command(struct Mailbox *m, int cur, int op)
+int mutt_search_command(struct Context *ctx, struct Mailbox *m, int cur, int op)
 {
   struct Progress progress;
 
@@ -521,7 +528,7 @@ int mutt_search_command(struct Mailbox *m, int cur, int op)
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;
       err.data = mutt_mem_malloc(err.dsize);
-      SearchPattern = mutt_pattern_comp(tmp->data, MUTT_PC_FULL_MSG, &err);
+      SearchPattern = mutt_pattern_comp(ctx, tmp->data, MUTT_PC_FULL_MSG, &err);
       if (!SearchPattern)
       {
         mutt_buffer_pool_release(&tmp);
@@ -625,13 +632,14 @@ int mutt_search_command(struct Mailbox *m, int cur, int op)
 
 /**
  * mutt_search_alias_command - Perform a search
+ * @param ctx  Current Mailbox
  * @param menu Menu to search through
  * @param cur  Index number of current alias
  * @param op   Operation to perform, e.g. OP_SEARCH_NEXT
  * @retval >=0 Index of matching alias
  * @retval -1 No match, or error
  */
-int mutt_search_alias_command(struct Menu *menu, int cur, int op)
+int mutt_search_alias_command(struct Context *ctx, struct Menu *menu, int cur, int op)
 {
   struct Progress progress;
 
@@ -671,7 +679,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;
       err.data = mutt_mem_malloc(err.dsize);
-      SearchPattern = mutt_pattern_comp(tmp->data, MUTT_PC_FULL_MSG, &err);
+      SearchPattern = mutt_pattern_comp(ctx, tmp->data, MUTT_PC_FULL_MSG, &err);
       if (!SearchPattern)
       {
         mutt_buffer_pool_release(&tmp);
