@@ -3347,18 +3347,19 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
 
         int subthread = (op == OP_DELETE_SUBTHREAD);
-        int rc = mutt_thread_set_flag(cur.e, MUTT_DELETE, true, subthread);
+        int rc = mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_DELETE,
+                                      true, subthread);
         if (rc == -1)
           break;
         if (op == OP_PURGE_THREAD)
         {
-          rc = mutt_thread_set_flag(cur.e, MUTT_PURGE, true, subthread);
+          rc = mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_PURGE, true, subthread);
           if (rc == -1)
             break;
         }
 
         if (C_DeleteUntag)
-          mutt_thread_set_flag(cur.e, MUTT_TAG, false, subthread);
+          mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_TAG, false, subthread);
         if (C_Resolve)
         {
           menu->current = ci_next_undeleted(Context->mailbox, menu->current);
@@ -3640,7 +3641,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!check_acl(Context->mailbox, MUTT_ACL_SEEN, _("Can't mark messages as read")))
           break;
 
-        int rc = mutt_thread_set_flag(cur.e, MUTT_READ, true, (op != OP_MAIN_READ_THREAD));
+        int rc = mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_READ,
+                                      true, (op != OP_MAIN_READ_THREAD));
         if (rc != -1)
         {
           if (C_Resolve)
@@ -3809,7 +3811,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!cur.e)
           break;
 
-        int rc = mutt_thread_set_flag(cur.e, MUTT_TAG, !cur.e->tagged, (op != OP_TAG_THREAD));
+        int rc = mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_TAG,
+                                      !cur.e->tagged, (op != OP_TAG_THREAD));
         if (rc != -1)
         {
           if (C_Resolve)
@@ -3873,10 +3876,12 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!check_acl(Context->mailbox, MUTT_ACL_DELETE, _("Can't undelete messages")))
           break;
 
-        int rc = mutt_thread_set_flag(cur.e, MUTT_DELETE, false, (op != OP_UNDELETE_THREAD));
+        int rc = mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_DELETE,
+                                      false, (op != OP_UNDELETE_THREAD));
         if (rc != -1)
         {
-          rc = mutt_thread_set_flag(cur.e, MUTT_PURGE, false, (op != OP_UNDELETE_THREAD));
+          rc = mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_PURGE,
+                                    false, (op != OP_UNDELETE_THREAD));
         }
         if (rc != -1)
         {

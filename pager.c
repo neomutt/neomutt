@@ -3115,18 +3115,18 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_ACL(MUTT_ACL_DELETE, _("Can't delete messages"));
 
         int subthread = (ch == OP_DELETE_SUBTHREAD);
-        int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, 1, subthread);
+        int r = mutt_thread_set_flag(m, extra->email, MUTT_DELETE, 1, subthread);
         if (r == -1)
           break;
         if (ch == OP_PURGE_THREAD)
         {
-          r = mutt_thread_set_flag(extra->email, MUTT_PURGE, true, subthread);
+          r = mutt_thread_set_flag(m, extra->email, MUTT_PURGE, true, subthread);
           if (r == -1)
             break;
         }
 
         if (C_DeleteUntag)
-          mutt_thread_set_flag(extra->email, MUTT_TAG, 0, subthread);
+          mutt_thread_set_flag(m, extra->email, MUTT_TAG, 0, subthread);
         if (C_Resolve)
         {
           rc = OP_MAIN_NEXT_UNDELETED;
@@ -3476,11 +3476,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
            "messages". Your language might have other means to express this. */
         CHECK_ACL(MUTT_ACL_DELETE, _("Can't undelete messages"));
 
-        int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, false,
+        int r = mutt_thread_set_flag(m, extra->email, MUTT_DELETE, false,
                                      (ch != OP_UNDELETE_THREAD));
         if (r != -1)
         {
-          r = mutt_thread_set_flag(extra->email, MUTT_PURGE, false,
+          r = mutt_thread_set_flag(m, extra->email, MUTT_PURGE, false,
                                    (ch != OP_UNDELETE_THREAD));
         }
         if (r != -1)
