@@ -247,7 +247,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     else
       comp_flags = MUTT_PC_FULL_MSG;
 
-    pat = mutt_pattern_comp(mutt_buffer_string(pattern), comp_flags, err);
+    pat = mutt_pattern_comp(Context, mutt_buffer_string(pattern), comp_flags, err);
     if (!pat)
       goto cleanup;
   }
@@ -416,8 +416,9 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
    * matching.  This of course is slower, but index-format-hook is commonly
    * used for date ranges, and they need to be evaluated relative to "now", not
    * the hook compilation time.  */
-  struct PatternList *pat = mutt_pattern_comp(
-      mutt_buffer_string(pattern), MUTT_PC_FULL_MSG | MUTT_PC_PATTERN_DYNAMIC, err);
+  struct PatternList *pat =
+      mutt_pattern_comp(Context, mutt_buffer_string(pattern),
+                        MUTT_PC_FULL_MSG | MUTT_PC_PATTERN_DYNAMIC, err);
   if (!pat)
     goto out;
 

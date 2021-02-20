@@ -166,7 +166,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
     alias_array_alias_add(&mdata->ava, alias);
 
     if (alias_array_count_visible(&mdata->ava) != ARRAY_SIZE(&mdata->ava))
-      mutt_pattern_alias_func(MUTT_LIMIT, NULL, _("Aliases"), mdata, menu);
+      mutt_pattern_alias_func(MUTT_LIMIT, NULL, _("Aliases"), mdata, Context, menu);
   }
   else if (nc->event_subtype == NT_ALIAS_DELETED)
   {
@@ -302,7 +302,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
       case OP_SEARCH:
-        menu->current = mutt_search_alias_command(menu, menu->current, op);
+        menu->current = mutt_search_alias_command(Context, menu, menu->current, op);
         if (menu->current == -1)
           menu->current = menu->oldcurrent;
         else
@@ -312,7 +312,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
       case OP_MAIN_LIMIT:
       {
         int result = mutt_pattern_alias_func(MUTT_LIMIT, _("Limit to messages matching: "),
-                                             _("Aliases"), mdata, menu);
+                                             _("Aliases"), mdata, Context, menu);
         if (result == 0)
         {
           alias_array_sort(&mdata->ava, mdata->sub);
@@ -440,7 +440,7 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
       alias_array_alias_add(&mdata.ava, np);
     }
 
-    mutt_pattern_alias_func(MUTT_LIMIT, NULL, _("Aliases"), &mdata, NULL);
+    mutt_pattern_alias_func(MUTT_LIMIT, NULL, _("Aliases"), &mdata, Context, NULL);
   }
 
   alias_array_sort(&mdata.ava, mdata.sub);
