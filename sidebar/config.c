@@ -51,65 +51,48 @@ const struct Mapping SortSidebarMethods[] = {
   // clang-format on
 };
 
-// clang-format off
-short C_SidebarComponentDepth;      ///< Config: (sidebar) Strip leading path components from sidebar folders
-char *C_SidebarDelimChars;          ///< Config: (sidebar) Characters that separate nested folders
-char *C_SidebarDividerChar;         ///< Config: (sidebar) Character to draw between the sidebar and index
-bool  C_SidebarFolderIndent;        ///< Config: (sidebar) Indent nested folders
-char *C_SidebarFormat;              ///< Config: (sidebar) printf-like format string for the sidebar panel
-char *C_SidebarIndentString;        ///< Config: (sidebar) Indent nested folders using this string
-bool  C_SidebarNewMailOnly;         ///< Config: (sidebar) Only show folders with new/flagged mail
-bool  C_SidebarNextNewWrap;         ///< Config: (sidebar) Wrap around when searching for the next mailbox with new mail
-bool  C_SidebarNonEmptyMailboxOnly; ///< Config: (sidebar) Only show folders with a non-zero number of mail
-bool  C_SidebarOnRight;             ///< Config: (sidebar) Display the sidebar on the right
-bool  C_SidebarShortPath;           ///< Config: (sidebar) Abbreviate the paths using the `$folder` variable
-short C_SidebarSortMethod;          ///< Config: (sidebar) Method to sort the sidebar
-bool  C_SidebarVisible;             ///< Config: (sidebar) Show the sidebar
-short C_SidebarWidth;               ///< Config: (sidebar) Width of the sidebar
-// clang-format on
-
 struct ConfigDef SidebarVars[] = {
   // clang-format off
-  { "sidebar_component_depth", DT_NUMBER, &C_SidebarComponentDepth, 0, 0, NULL,
+  { "sidebar_component_depth", DT_NUMBER, NULL, 0, 0, NULL,
     "(sidebar) Strip leading path components from sidebar folders"
   },
-  { "sidebar_delim_chars", DT_STRING, &C_SidebarDelimChars, IP "/.", 0, NULL,
+  { "sidebar_delim_chars", DT_STRING, NULL, IP "/.", 0, NULL,
     "(sidebar) Characters that separate nested folders"
   },
-  { "sidebar_divider_char", DT_STRING, &C_SidebarDividerChar, 0, 0, NULL,
+  { "sidebar_divider_char", DT_STRING, NULL, 0, 0, NULL,
     "(sidebar) Character to draw between the sidebar and index"
   },
-  { "sidebar_folder_indent", DT_BOOL, &C_SidebarFolderIndent, false, 0, NULL,
+  { "sidebar_folder_indent", DT_BOOL, NULL, false, 0, NULL,
     "(sidebar) Indent nested folders"
   },
-  { "sidebar_format", DT_STRING|DT_NOT_EMPTY, &C_SidebarFormat, IP "%D%*  %n", 0, NULL,
+  { "sidebar_format", DT_STRING|DT_NOT_EMPTY, NULL, IP "%D%*  %n", 0, NULL,
     "(sidebar) printf-like format string for the sidebar panel"
   },
-  { "sidebar_indent_string", DT_STRING, &C_SidebarIndentString, IP "  ", 0, NULL,
+  { "sidebar_indent_string", DT_STRING, NULL, IP "  ", 0, NULL,
     "(sidebar) Indent nested folders using this string"
   },
-  { "sidebar_new_mail_only", DT_BOOL, &C_SidebarNewMailOnly, false, 0, NULL,
+  { "sidebar_new_mail_only", DT_BOOL, NULL, false, 0, NULL,
     "(sidebar) Only show folders with new/flagged mail"
   },
-  { "sidebar_next_new_wrap", DT_BOOL, &C_SidebarNextNewWrap, false, 0, NULL,
+  { "sidebar_next_new_wrap", DT_BOOL, NULL, false, 0, NULL,
     "(sidebar) Wrap around when searching for the next mailbox with new mail"
   },
-  { "sidebar_non_empty_mailbox_only", DT_BOOL, &C_SidebarNonEmptyMailboxOnly, false, 0, NULL,
+  { "sidebar_non_empty_mailbox_only", DT_BOOL, NULL, false, 0, NULL,
     "(sidebar) Only show folders with a non-zero number of mail"
   },
-  { "sidebar_on_right", DT_BOOL, &C_SidebarOnRight, false, 0, NULL,
+  { "sidebar_on_right", DT_BOOL, NULL, false, 0, NULL,
     "(sidebar) Display the sidebar on the right"
   },
-  { "sidebar_short_path", DT_BOOL, &C_SidebarShortPath, false, 0, NULL,
+  { "sidebar_short_path", DT_BOOL, NULL, false, 0, NULL,
     "(sidebar) Abbreviate the paths using the `$folder` variable"
   },
-  { "sidebar_sort_method", DT_SORT, &C_SidebarSortMethod, SORT_ORDER, IP SortSidebarMethods, NULL,
+  { "sidebar_sort_method", DT_SORT, NULL, SORT_ORDER, IP SortSidebarMethods, NULL,
     "(sidebar) Method to sort the sidebar"
   },
-  { "sidebar_visible", DT_BOOL, &C_SidebarVisible, false, 0, NULL,
+  { "sidebar_visible", DT_BOOL, NULL, false, 0, NULL,
     "(sidebar) Show the sidebar"
   },
-  { "sidebar_width", DT_NUMBER|DT_NOT_NEGATIVE, &C_SidebarWidth, 30, 0, NULL,
+  { "sidebar_width", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 30, 0, NULL,
     "(sidebar) Width of the sidebar"
   },
   { NULL, 0, NULL, 0, 0, NULL, NULL },
@@ -121,5 +104,5 @@ struct ConfigDef SidebarVars[] = {
  */
 bool config_init_sidebar(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, SidebarVars, 0);
+  return cs_register_variables(cs, SidebarVars, DT_NO_VARIABLE);
 }
