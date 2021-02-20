@@ -366,6 +366,7 @@ void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el,
 
 /**
  * mutt_thread_set_flag - Set a flag on an entire thread
+ * @param m         Mailbox
  * @param e         Email
  * @param flag      Flag to set, e.g. #MUTT_DELETE
  * @param bf        true: set the flag; false: clear the flag
@@ -373,7 +374,8 @@ void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el,
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_thread_set_flag(struct Email *e, enum MessageType flag, bool bf, bool subthread)
+int mutt_thread_set_flag(struct Mailbox *m, struct Email *e,
+                         enum MessageType flag, bool bf, bool subthread)
 {
   struct MuttThread *start = NULL;
   struct MuttThread *cur = e->thread;
@@ -390,7 +392,7 @@ int mutt_thread_set_flag(struct Email *e, enum MessageType flag, bool bf, bool s
   start = cur;
 
   if (cur->message && (cur != e->thread))
-    mutt_set_flag(Context->mailbox, cur->message, flag, bf);
+    mutt_set_flag(m, cur->message, flag, bf);
 
   cur = cur->child;
   if (!cur)
@@ -399,7 +401,7 @@ int mutt_thread_set_flag(struct Email *e, enum MessageType flag, bool bf, bool s
   while (true)
   {
     if (cur->message && (cur != e->thread))
-      mutt_set_flag(Context->mailbox, cur->message, flag, bf);
+      mutt_set_flag(m, cur->message, flag, bf);
 
     if (cur->child)
       cur = cur->child;
@@ -419,7 +421,7 @@ int mutt_thread_set_flag(struct Email *e, enum MessageType flag, bool bf, bool s
 done:
   cur = e->thread;
   if (cur->message)
-    mutt_set_flag(Context->mailbox, cur->message, flag, bf);
+    mutt_set_flag(m, cur->message, flag, bf);
   return 0;
 }
 
