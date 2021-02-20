@@ -275,6 +275,8 @@ void sb_change_mailbox(struct MuttWindow *win, int op)
     return;
 
   bool changed = false;
+  const bool c_sidebar_next_new_wrap =
+      cs_subset_bool(NeoMutt->sub, "sidebar_next_new_wrap");
   switch (op)
   {
     case OP_SIDEBAR_FIRST:
@@ -287,7 +289,7 @@ void sb_change_mailbox(struct MuttWindow *win, int op)
       changed = select_next(wdata);
       break;
     case OP_SIDEBAR_NEXT_NEW:
-      changed = select_next_new(wdata, C_SidebarNextNewWrap);
+      changed = select_next_new(wdata, c_sidebar_next_new_wrap);
       break;
     case OP_SIDEBAR_PAGE_DOWN:
       changed = select_page_down(wdata);
@@ -299,7 +301,7 @@ void sb_change_mailbox(struct MuttWindow *win, int op)
       changed = select_prev(wdata);
       break;
     case OP_SIDEBAR_PREV_NEW:
-      changed = select_prev_new(wdata, C_SidebarNextNewWrap);
+      changed = select_prev_new(wdata, c_sidebar_next_new_wrap);
       break;
     default:
       return;

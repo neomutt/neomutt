@@ -72,21 +72,6 @@ struct SidebarWindowData
   short divider_width;       ///< Width of the divider in screen columns
 };
 
-extern short C_SidebarComponentDepth;
-extern char *C_SidebarDelimChars;
-extern char *C_SidebarDividerChar;
-extern bool  C_SidebarFolderIndent;
-extern char *C_SidebarFormat;
-extern char *C_SidebarIndentString;
-extern bool  C_SidebarNewMailOnly;
-extern bool  C_SidebarNextNewWrap;
-extern bool  C_SidebarNonEmptyMailboxOnly;
-extern bool  C_SidebarOnRight;
-extern bool  C_SidebarShortPath;
-extern short C_SidebarSortMethod;
-extern bool  C_SidebarVisible;
-extern short C_SidebarWidth;
-
 // sidebar.c
 void sb_add_mailbox        (struct SidebarWindowData *wdata, struct Mailbox *m);
 void sb_remove_mailbox     (struct SidebarWindowData *wdata, struct Mailbox *m);

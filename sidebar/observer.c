@@ -50,11 +50,14 @@ void sb_win_remove_observers(struct MuttWindow *win);
 static bool calc_divider(struct SidebarWindowData *wdata)
 {
   enum DivType type = SB_DIV_USER;
+  const char *c_sidebar_divider_char =
+      cs_subset_string(NeoMutt->sub, "sidebar_divider_char");
 
   // Calculate the width of the delimiter in screen cells
-  int width = mutt_strwidth(C_SidebarDividerChar);
+  int width = mutt_strwidth(c_sidebar_divider_char);
 
-  if (C_AsciiChars)
+  const bool c_ascii_chars = cs_subset_bool(NeoMutt->sub, "ascii_chars");
+  if (c_ascii_chars)
   {
     if (width < 1) // empty or bad
     {
@@ -65,7 +68,7 @@ static bool calc_divider(struct SidebarWindowData *wdata)
     {
       for (size_t i = 0; i < width; i++)
       {
-        if (C_SidebarDividerChar[i] & ~0x7F) // high-bit is set
+        if (c_sidebar_divider_char[i] & ~0x7F) // high-bit is set
         {
           type = SB_DIV_ASCII;
           width = 1;
@@ -115,10 +118,13 @@ static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
   mutt_window_add_child(cont_right, pager_panel);
   cont_right->focus = index_panel;
 
+  const short c_sidebar_width = cs_subset_number(NeoMutt->sub, "sidebar_width");
   struct MuttWindow *win_sidebar =
       mutt_window_new(WT_SIDEBAR, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                      C_SidebarWidth, MUTT_WIN_SIZE_UNLIMITED);
-  win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
+                      c_sidebar_width, MUTT_WIN_SIZE_UNLIMITED);
+  const bool c_sidebar_visible =
+      cs_subset_bool(NeoMutt->sub, "sidebar_visible");
+  win_sidebar->state.visible = c_sidebar_visible && (c_sidebar_width > 0);
   win_sidebar->wdata = sb_wdata_new();
   win_sidebar->wdata_free = sb_wdata_free;
 
@@ -127,7 +133,9 @@ static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
   win_sidebar->recalc = sb_recalc;
   win_sidebar->repaint = sb_repaint;
 
-  if (C_SidebarOnRight)
+  const bool c_sidebar_on_right =
+      cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
+  if (c_sidebar_on_right)
   {
     mutt_window_add_child(dlg, cont_right);
     mutt_window_add_child(dlg, win_sidebar);
@@ -270,17 +278,20 @@ static int sb_config_observer(struct NotifyCallback *nc)
     return 0; // Affects the behaviour, but not the display
 
   struct MuttWindow *win = nc->global_data;
+  const bool c_sidebar_visible =
+      cs_subset_bool(NeoMutt->sub, "sidebar_visible");
 
   if (mutt_str_equal(ec->name, "sidebar_visible"))
   {
-    window_set_visible(win, C_SidebarVisible);
+    window_set_visible(win, c_sidebar_visible);
     win->parent->actions |= WA_REFLOW;
     return 0;
   }
 
+  const short c_sidebar_width = cs_subset_number(NeoMutt->sub, "sidebar_width");
   if (mutt_str_equal(ec->name, "sidebar_width"))
   {
-    win->req_cols = C_SidebarWidth;
+    win->req_cols = c_sidebar_width;
     win->parent->actions |= WA_REFLOW;
     return 0;
   }
@@ -295,8 +306,10 @@ static int sb_config_observer(struct NotifyCallback *nc)
   {
     struct MuttWindow *parent = win->parent;
     struct MuttWindow *first = TAILQ_FIRST(&parent->children);
+    const bool c_sidebar_on_right =
+        cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
 
-    if ((C_SidebarOnRight && (first == win)) || (!C_SidebarOnRight && (first != win)))
+    if ((c_sidebar_on_right && (first == win)) || (!c_sidebar_on_right && (first != win)))
     {
       // Swap the Sidebar and the Container of the Index/Pager
       TAILQ_REMOVE(&parent->children, first, entries);
