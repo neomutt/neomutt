@@ -187,7 +187,7 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
 #ifdef USE_AUTOCRYPT
   if (C_Autocrypt && (e->security & SEC_ENCRYPT) && prot_headers && prot_headers->autocrypt_gossip)
   {
-    mutt_autocrypt_process_gossip_header(e, prot_headers);
+    mutt_autocrypt_process_gossip_header(m, e, prot_headers);
   }
 #endif
 }

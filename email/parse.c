@@ -36,6 +36,7 @@
 #include "mutt.h"
 #include "parse.h"
 #include "body.h"
+#include "context.h"
 #include "email.h"
 #include "envelope.h"
 #include "from.h"
@@ -1248,7 +1249,8 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
 #ifdef USE_AUTOCRYPT
     if (C_Autocrypt)
     {
-      mutt_autocrypt_process_autocrypt_header(e, env);
+      struct Mailbox *m = ctx_mailbox(Context);
+      mutt_autocrypt_process_autocrypt_header(m, e, env);
       /* No sense in taking up memory after the header is processed */
       mutt_autocrypthdr_free(&env->autocrypt);
     }

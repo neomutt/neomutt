@@ -3949,7 +3949,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
 #ifdef USE_AUTOCRYPT
       case OP_AUTOCRYPT_ACCT_MENU:
-        dlg_select_autocrypt_account();
+        dlg_select_autocrypt_account(ctx_mailbox(Context));
         break;
 #endif
 

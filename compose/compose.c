@@ -689,7 +689,8 @@ static void update_crypt_info(struct ComposeRedrawData *rd)
   const bool c_autocrypt = cs_subset_bool(rd->sub, "autocrypt");
   if (c_autocrypt)
   {
-    rd->autocrypt_rec = mutt_autocrypt_ui_recommendation(e, NULL);
+    struct Mailbox *m = ctx_mailbox(Context);
+    rd->autocrypt_rec = mutt_autocrypt_ui_recommendation(m, e, NULL);
 
     /* Anything that enables SEC_ENCRYPT or SEC_SIGN, or turns on SMIME
      * overrides autocrypt, be it oppenc or the user having turned on

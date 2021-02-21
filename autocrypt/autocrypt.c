@@ -87,11 +87,12 @@ static int autocrypt_dir_init(bool can_create)
 
 /**
  * mutt_autocrypt_init - Initialise Autocrypt
+ * @param m          Mailbox
  * @param can_create If true, directories may be created
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_init(bool can_create)
+int mutt_autocrypt_init(struct Mailbox *m, bool can_create)
 {
   if (AutocryptDB)
     return 0;
@@ -112,7 +113,7 @@ int mutt_autocrypt_init(bool can_create)
   if (mutt_autocrypt_gpgme_init())
     goto bail;
 
-  if (mutt_autocrypt_db_init(can_create))
+  if (mutt_autocrypt_db_init(m, can_create))
     goto bail;
 
   OptIgnoreMacroEvents = false;
@@ -246,12 +247,14 @@ cleanup:
 
 /**
  * mutt_autocrypt_process_autocrypt_header - Parse an Autocrypt email header
+ * @param m   Mailbox
  * @param e   Email
  * @param env Envelope
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env)
+int mutt_autocrypt_process_autocrypt_header(struct Mailbox *m, struct Email *e,
+                                            struct Envelope *env)
 {
   struct AutocryptHeader *valid_ac_hdr = NULL;
   struct AutocryptPeer *peer = NULL;
@@ -263,7 +266,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
   if (!C_Autocrypt)
     return 0;
 
-  if (mutt_autocrypt_init(false))
+  if (mutt_autocrypt_init(m, false))
     return -1;
 
   if (!e || !e->body || !env)
@@ -394,12 +397,14 @@ cleanup:
 
 /**
  * mutt_autocrypt_process_gossip_header - Parse an Autocrypt email gossip header
+ * @param m            Mailbox
  * @param e            Email
  * @param prot_headers Envelope with protected headers
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_headers)
+int mutt_autocrypt_process_gossip_header(struct Mailbox *m, struct Email *e,
+                                         struct Envelope *prot_headers)
 {
   struct AutocryptPeer *peer = NULL;
   struct AutocryptGossipHistory *gossip_hist = NULL;
@@ -411,7 +416,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
   if (!C_Autocrypt)
     return 0;
 
-  if (mutt_autocrypt_init(false))
+  if (mutt_autocrypt_init(m, false))
     return -1;
 
   if (!e || !e->env || !prot_headers)
@@ -545,6 +550,7 @@ cleanup:
 
 /**
  * mutt_autocrypt_ui_recommendation - Get the recommended action for an Email
+ * @param[in]  m       Mailbox
  * @param[in]  e       Email
  * @param[out] keylist List of Autocrypt key ids
  * @retval num Recommendation, e.g. #AUTOCRYPT_REC_AVAILABLE
@@ -552,7 +558,8 @@ cleanup:
  * If the recommendataion is > NO and keylist is not NULL, keylist will be
  * populated with the autocrypt keyids.
  */
-enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keylist)
+enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Mailbox *m,
+                                                   struct Email *e, char **keylist)
 {
   enum AutocryptRec rc = AUTOCRYPT_REC_OFF;
   struct AutocryptAccount *account = NULL;
@@ -563,7 +570,7 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
   struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
   struct Buffer *keylist_buf = NULL;
 
-  if (!C_Autocrypt || mutt_autocrypt_init(false) || !e)
+  if (!C_Autocrypt || mutt_autocrypt_init(m, false) || !e)
   {
     if (keylist)
     {
@@ -682,16 +689,17 @@ cleanup:
 
 /**
  * mutt_autocrypt_set_sign_as_default_key - Set the Autocrypt default key for signing
+ * @param m Mailbox
  * @param e Email
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_set_sign_as_default_key(struct Email *e)
+int mutt_autocrypt_set_sign_as_default_key(struct Mailbox *m, struct Email *e)
 {
   int rc = -1;
   struct AutocryptAccount *account = NULL;
 
-  if (!C_Autocrypt || mutt_autocrypt_init(false) || !e)
+  if (!C_Autocrypt || mutt_autocrypt_init(m, false) || !e)
     return -1;
 
   struct Address *from = TAILQ_FIRST(&e->env->from);
@@ -746,17 +754,18 @@ static void write_autocrypt_header_line(FILE *fp, const char *addr,
 
 /**
  * mutt_autocrypt_write_autocrypt_header - Write the Autocrypt header to a file
+ * @param m   Mailbox
  * @param env Envelope
  * @param fp  File to write to
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_write_autocrypt_header(struct Envelope *env, FILE *fp)
+int mutt_autocrypt_write_autocrypt_header(struct Mailbox *m, struct Envelope *env, FILE *fp)
 {
   int rc = -1;
   struct AutocryptAccount *account = NULL;
 
-  if (!C_Autocrypt || mutt_autocrypt_init(false) || !env)
+  if (!C_Autocrypt || mutt_autocrypt_init(m, false) || !env)
     return -1;
 
   struct Address *from = TAILQ_FIRST(&env->from);
@@ -783,14 +792,15 @@ cleanup:
 
 /**
  * mutt_autocrypt_write_gossip_headers - Write the Autocrypt gossip headers to a file
+ * @param m   Mailbox
  * @param env Envelope
  * @param fp  File to write to
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_write_gossip_headers(struct Envelope *env, FILE *fp)
+int mutt_autocrypt_write_gossip_headers(struct Mailbox *m, struct Envelope *env, FILE *fp)
 {
-  if (!C_Autocrypt || mutt_autocrypt_init(false) || !env)
+  if (!C_Autocrypt || mutt_autocrypt_init(m, false) || !env)
     return -1;
 
   for (struct AutocryptHeader *gossip = env->autocrypt_gossip; gossip;
@@ -805,18 +815,19 @@ int mutt_autocrypt_write_gossip_headers(struct Envelope *env, FILE *fp)
 
 /**
  * mutt_autocrypt_generate_gossip_list - Create the gossip list headers
+ * @param m Mailbox
  * @param e Email
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_generate_gossip_list(struct Email *e)
+int mutt_autocrypt_generate_gossip_list(struct Mailbox *m, struct Email *e)
 {
   int rc = -1;
   struct AutocryptPeer *peer = NULL;
   struct AutocryptAccount *account = NULL;
   struct Address *recip = NULL;
 
-  if (!C_Autocrypt || mutt_autocrypt_init(false) || !e)
+  if (!C_Autocrypt || mutt_autocrypt_init(m, false) || !e)
     return -1;
 
   struct Envelope *mime_headers = e->body->mime_headers;
@@ -891,6 +902,7 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
 
 /**
  * mutt_autocrypt_scan_mailboxes - Scan mailboxes for Autocrypt headers
+ * @param m Mailbox
  *
  * This is invoked during the first autocrypt initialization,
  * to scan one or more mailboxes for autocrypt headers.
@@ -899,7 +911,7 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
  * so this routine just opens up the mailboxes with $header_cache
  * temporarily disabled.
  */
-void mutt_autocrypt_scan_mailboxes(void)
+void mutt_autocrypt_scan_mailboxes(struct Mailbox *m)
 {
 #ifdef USE_HCACHE
   char *old_hdrcache = C_HeaderCache;
@@ -917,16 +929,16 @@ void mutt_autocrypt_scan_mailboxes(void)
   while (scan == MUTT_YES)
   {
     // L10N: The prompt for a mailbox to scan for Autocrypt: headers
-    if ((!mutt_buffer_enter_fname(_("Scan mailbox"), folderbuf, true, ctx_mailbox(Context),
-                                  false, NULL, NULL, MUTT_SEL_NO_FLAGS)) &&
+    if ((!mutt_buffer_enter_fname(_("Scan mailbox"), folderbuf, true, m, false,
+                                  NULL, NULL, MUTT_SEL_NO_FLAGS)) &&
         (!mutt_buffer_is_empty(folderbuf)))
     {
       mutt_buffer_expand_path_regex(folderbuf, false);
-      struct Mailbox *m = mx_path_resolve(mutt_buffer_string(folderbuf));
+      struct Mailbox *m_ac = mx_path_resolve(mutt_buffer_string(folderbuf));
       /* NOTE: I am purposely *not* executing folder hooks here,
        * as they can do all sorts of things like push into the getch() buffer.
        * Authentication should be in account-hooks. */
-      struct Context *ctx = mx_mbox_open(m, MUTT_READONLY);
+      struct Context *ctx = mx_mbox_open(m_ac, MUTT_READONLY);
       mx_mbox_close(&ctx);
       mutt_buffer_reset(folderbuf);
     }
