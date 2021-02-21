@@ -30,6 +30,7 @@
 #include <time.h>
 
 struct Buffer;
+struct Mailbox;
 
 /* These Config Variables are only used in browser.c */
 extern bool  C_BrowserAbbreviateMailboxes;
@@ -101,8 +102,8 @@ struct BrowserState
 #endif
 };
 
-void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags, char ***files, int *numfiles);
-void mutt_buffer_select_file(struct Buffer *f, SelectFileFlags flags, char ***files, int *numfiles);
+void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles);
+void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles);
 void mutt_browser_select_dir(const char *f);
 void mutt_browser_cleanup(void);
 
