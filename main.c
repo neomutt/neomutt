@@ -775,7 +775,7 @@ int main(int argc, char *argv[], char *envp[])
   /* Initialize autocrypt after curses messages are working,
    * because of the initial account setup screens. */
   if (C_Autocrypt)
-    mutt_autocrypt_init(!(sendflags & SEND_BATCH));
+    mutt_autocrypt_init(NULL, !(sendflags & SEND_BATCH));
 #endif
 
   /* Create the `$folder` directory if it doesn't exist. */

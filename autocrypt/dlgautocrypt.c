@@ -252,13 +252,14 @@ static void toggle_prefer_encrypt(struct AccountEntry *entry)
 
 /**
  * dlg_select_autocrypt_account - Display the Autocrypt account Menu
+ * @param m Mailbox
  */
-void dlg_select_autocrypt_account(void)
+void dlg_select_autocrypt_account(struct Mailbox *m)
 {
   if (!C_Autocrypt)
     return;
 
-  if (mutt_autocrypt_init(false))
+  if (mutt_autocrypt_init(m, false))
     return;
 
   struct Menu *menu = create_menu();

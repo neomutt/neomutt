@@ -42,7 +42,9 @@
 #include "mutt/lib.h"
 #include "cryptglue.h"
 #include "ncrypt/lib.h"
+#include "context.h"
 #include "crypt_mod.h"
+#include "mutt_globals.h"
 #ifndef CRYPT_BACKEND_GPGME
 #include "gui/lib.h"
 #endif
@@ -339,7 +341,8 @@ struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *ke
 #ifdef USE_AUTOCRYPT
   if (e->security & SEC_AUTOCRYPT)
   {
-    if (mutt_autocrypt_set_sign_as_default_key(e))
+    struct Mailbox *m = ctx_mailbox(Context);
+    if (mutt_autocrypt_set_sign_as_default_key(m, e))
       return NULL;
 
     OptAutocryptGpgme = true;

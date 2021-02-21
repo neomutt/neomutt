@@ -49,6 +49,7 @@
 #include "crypt.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
+#include "context.h"
 #include "copy.h"
 #include "cryptglue.h"
 #include "handler.h"
@@ -305,7 +306,8 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
    */
   if (C_Autocrypt && !postpone && (security & SEC_AUTOCRYPT))
   {
-    mutt_autocrypt_generate_gossip_list(e);
+    struct Mailbox *m = ctx_mailbox(Context);
+    mutt_autocrypt_generate_gossip_list(m, e);
   }
 #endif
 
@@ -957,7 +959,8 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
 #ifdef USE_AUTOCRYPT
   if (!oppenc_mode && (e->security & SEC_AUTOCRYPT))
   {
-    if (mutt_autocrypt_ui_recommendation(e, keylist) <= AUTOCRYPT_REC_NO)
+    struct Mailbox *m = ctx_mailbox(Context);
+    if (mutt_autocrypt_ui_recommendation(m, e, keylist) <= AUTOCRYPT_REC_NO)
       return -1;
     return 0;
   }

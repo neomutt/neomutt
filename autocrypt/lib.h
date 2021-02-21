@@ -96,6 +96,7 @@
 struct ConfigSet;
 struct Email;
 struct Envelope;
+struct Mailbox;
 
 /**
  * struct AutocryptAccount - Autocrypt account
@@ -167,15 +168,15 @@ extern bool  C_AutocryptReply;
 extern char *C_AutocryptAcctFormat;
 extern char *C_AutocryptDir;
 
-void              dlg_select_autocrypt_account            (void);
+void              dlg_select_autocrypt_account           (struct Mailbox *m);
 void              mutt_autocrypt_cleanup                 (void);
-int               mutt_autocrypt_generate_gossip_list    (struct Email *e);
-int               mutt_autocrypt_init                    (bool can_create);
-int               mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env);
-int               mutt_autocrypt_process_gossip_header   (struct Email *e, struct Envelope *prot_headers);
-int               mutt_autocrypt_set_sign_as_default_key (struct Email *e);
-enum AutocryptRec mutt_autocrypt_ui_recommendation       (struct Email *e, char **keylist);
-int               mutt_autocrypt_write_autocrypt_header  (struct Envelope *env, FILE *fp);
-int               mutt_autocrypt_write_gossip_headers    (struct Envelope *env, FILE *fp);
+int               mutt_autocrypt_generate_gossip_list    (struct Mailbox *m, struct Email *e);
+int               mutt_autocrypt_init                    (struct Mailbox *m, bool can_create);
+int               mutt_autocrypt_process_autocrypt_header(struct Mailbox *m, struct Email *e, struct Envelope *env);
+int               mutt_autocrypt_process_gossip_header   (struct Mailbox *m, struct Email *e, struct Envelope *prot_headers);
+int               mutt_autocrypt_set_sign_as_default_key (struct Mailbox *m, struct Email *e);
+enum AutocryptRec mutt_autocrypt_ui_recommendation       (struct Mailbox *m, struct Email *e, char **keylist);
+int               mutt_autocrypt_write_autocrypt_header  (struct Mailbox *m, struct Envelope *env, FILE *fp);
+int               mutt_autocrypt_write_gossip_headers    (struct Mailbox *m, struct Envelope *env, FILE *fp);
 
 #endif /* MUTT_AUTOCRYPT_LIB_H */

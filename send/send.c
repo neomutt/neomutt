@@ -1873,7 +1873,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
 #ifdef USE_AUTOCRYPT
     if (e_post->security & SEC_AUTOCRYPT)
     {
-      if (mutt_autocrypt_set_sign_as_default_key(e_post))
+      struct Mailbox *m = ctx_mailbox(Context);
+      if (mutt_autocrypt_set_sign_as_default_key(m, e_post))
       {
         e_post->body = mutt_remove_multipart(e_post->body);
         decode_descriptions(e_post->body);

@@ -33,11 +33,12 @@ struct AutocryptGossipHistory;
 struct AutocryptPeer;
 struct AutocryptPeerHistory;
 struct Buffer;
+struct Mailbox;
 
 extern sqlite3 *AutocryptDB;
 
 int                            mutt_autocrypt_account_init(bool prompt);
-void                           mutt_autocrypt_scan_mailboxes(void);
+void                           mutt_autocrypt_scan_mailboxes(struct Mailbox *m);
 
 int                            mutt_autocrypt_db_account_delete(struct AutocryptAccount *acct);
 void                           mutt_autocrypt_db_account_free(struct AutocryptAccount **ptr);
@@ -50,7 +51,7 @@ void                           mutt_autocrypt_db_close(void);
 void                           mutt_autocrypt_db_gossip_history_free(struct AutocryptGossipHistory **ptr);
 int                            mutt_autocrypt_db_gossip_history_insert(struct Address *addr, struct AutocryptGossipHistory *gossip_hist);
 struct AutocryptGossipHistory *mutt_autocrypt_db_gossip_history_new(void);
-int                            mutt_autocrypt_db_init(bool can_create);
+int                            mutt_autocrypt_db_init(struct Mailbox *m, bool can_create);
 void                           mutt_autocrypt_db_normalize_addr(struct Address *a);
 void                           mutt_autocrypt_db_normalize_addrlist(struct AddressList *al);
 void                           mutt_autocrypt_db_peer_free(struct AutocryptPeer **ptr);
