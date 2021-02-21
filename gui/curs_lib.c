@@ -802,7 +802,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
       flags |= MUTT_SEL_MULTI;
     if (mailbox)
       flags |= MUTT_SEL_MAILBOX;
-    mutt_buffer_select_file(fname, flags, files, numfiles);
+    mutt_buffer_select_file(fname, flags, m, files, numfiles);
   }
   else
   {

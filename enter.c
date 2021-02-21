@@ -538,7 +538,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
                 (memcmp(tempbuf, state->wbuf + i, (state->lastchar - i) * sizeof(wchar_t)) == 0))
             {
               mutt_select_file(buf, buflen, (flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : MUTT_SEL_NO_FLAGS,
-                               NULL, NULL);
+                               m, NULL, NULL);
               if (buf[0] != '\0')
                 replace_part(state, i, buf);
               rc = 1;
@@ -669,7 +669,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
               mutt_select_file(buf, buflen,
                                ((flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : MUTT_SEL_NO_FLAGS) |
                                    (multiple ? MUTT_SEL_MULTI : MUTT_SEL_NO_FLAGS),
-                               files, numfiles);
+                               m, files, numfiles);
               if (buf[0] != '\0')
               {
                 mutt_pretty_mailbox(buf, buflen);

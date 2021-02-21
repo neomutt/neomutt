@@ -675,6 +675,7 @@ static void init_state(struct BrowserState *state, struct Menu *menu)
 
 /**
  * examine_directory - Get list of all files/newsgroups with mask
+ * @param m      Mailbox
  * @param menu   Current Menu
  * @param state  State of browser
  * @param d      Directory
@@ -682,8 +683,8 @@ static void init_state(struct BrowserState *state, struct Menu *menu)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int examine_directory(struct Menu *menu, struct BrowserState *state,
-                             const char *d, const char *prefix)
+static int examine_directory(struct Mailbox *m, struct Menu *menu,
+                             struct BrowserState *state, const char *d, const char *prefix)
 {
   int rc = -1;
   struct Buffer *buf = mutt_buffer_pool_get();
@@ -738,7 +739,6 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       goto ed_out;
     }
 
-    struct Mailbox *m = ctx_mailbox(Context);
     if (m)
       mutt_mailbox_check(m, 0);
 
@@ -803,12 +803,13 @@ ed_out:
 
 /**
  * examine_mailboxes - Get list of mailboxes/subscribed newsgroups
+ * @param m     Mailbox
  * @param menu  Current menu
  * @param state State of browser
  * @retval  0 Success
  * @retval -1 Error
  */
-static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
+static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState *state)
 {
   struct stat s;
   struct Buffer *md = NULL;
@@ -840,8 +841,6 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       return -1;
     mailbox = mutt_buffer_pool_get();
     md = mutt_buffer_pool_get();
-
-    struct Mailbox *m = ctx_mailbox(Context);
 
     mutt_mailbox_check(m, 0);
 
@@ -988,9 +987,10 @@ static void browser_highlight_default(struct BrowserState *state, struct Menu *m
  * @param title    Buffer for the title
  * @param titlelen Length of buffer
  * @param mailbox  If true, select mailboxes
+ * @param m        Mailbox
  */
-static void init_menu(struct BrowserState *state, struct Menu *menu,
-                      char *title, size_t titlelen, bool mailbox)
+static void init_menu(struct BrowserState *state, struct Menu *menu, char *title,
+                      size_t titlelen, bool mailbox, struct Mailbox *m)
 {
   menu->max = ARRAY_SIZE(&state->entry);
 
@@ -1020,8 +1020,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     if (mailbox)
     {
       menu->is_mailbox_list = true;
-      snprintf(title, titlelen, _("Mailboxes [%d]"),
-               mutt_mailbox_check(ctx_mailbox(Context), 0));
+      snprintf(title, titlelen, _("Mailboxes [%d]"), mutt_mailbox_check(m, 0));
     }
     else
     {
@@ -1134,11 +1133,12 @@ void mutt_browser_select_dir(const char *f)
  * mutt_buffer_select_file - Let the user select a file
  * @param[in]  file     Buffer for the result
  * @param[in]  flags    Flags, see #SelectFileFlags
+ * @param[in]  m        Mailbox
  * @param[out] files    Array of selected files
  * @param[out] numfiles Number of selected files
  */
 void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
-                             char ***files, int *numfiles)
+                             struct Mailbox *m, char ***files, int *numfiles)
 {
   char title[256];
   struct BrowserState state = { { 0 } };
@@ -1350,7 +1350,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
   if (mailbox)
   {
-    examine_mailboxes(NULL, &state);
+    examine_mailboxes(m, NULL, &state);
   }
   else
 #ifdef USE_IMAP
@@ -1358,14 +1358,14 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #endif
   {
     // examine_directory() calls add_folder() which needs the menu
-    if (examine_directory(menu, &state, mutt_buffer_string(&LastDir),
+    if (examine_directory(m, menu, &state, mutt_buffer_string(&LastDir),
                           mutt_buffer_string(prefix)) == -1)
     {
       goto bail;
     }
   }
 
-  init_menu(&state, menu, title, sizeof(title), mailbox);
+  init_menu(&state, menu, title, sizeof(title), mailbox, m);
   // only now do we have a valid state to attach
   menu->mdata = &state.entry;
 
@@ -1494,12 +1494,12 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             else
 #endif
             {
-              if (examine_directory(menu, &state, mutt_buffer_string(&LastDir),
+              if (examine_directory(m, menu, &state, mutt_buffer_string(&LastDir),
                                     mutt_buffer_string(prefix)) == -1)
               {
                 /* try to restore the old values */
                 mutt_buffer_copy(&LastDir, OldLastDir);
-                if (examine_directory(menu, &state, mutt_buffer_string(&LastDir),
+                if (examine_directory(m, menu, &state, mutt_buffer_string(&LastDir),
                                       mutt_buffer_string(prefix)) == -1)
                 {
                   mutt_buffer_strcpy(&LastDir, NONULL(HomeDir));
@@ -1512,7 +1512,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             }
 
             browser_highlight_default(&state, menu);
-            init_menu(&state, menu, title, sizeof(title), mailbox);
+            init_menu(&state, menu, title, sizeof(title), mailbox, m);
             goto_swapper[0] = '\0';
             break;
           }
@@ -1605,7 +1605,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           browser_sort(&state);
           menu->mdata = &state.entry;
           browser_highlight_default(&state, menu);
-          init_menu(&state, menu, title, sizeof(title), mailbox);
+          init_menu(&state, menu, title, sizeof(title), mailbox, m);
         }
         /* else leave error on screen */
         break;
@@ -1624,7 +1624,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             browser_sort(&state);
             menu->mdata = &state.entry;
             browser_highlight_default(&state, menu);
-            init_menu(&state, menu, title, sizeof(title), mailbox);
+            init_menu(&state, menu, title, sizeof(title), mailbox, m);
           }
         }
         break;
@@ -1639,7 +1639,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           // TODO(sileht): It could be better to select INBOX instead. But I
           // don't want to manipulate Context/Mailboxes/mailbox->account here for now.
           // Let's just protect neomutt against crash for now. #1417
-          if (mutt_str_equal(mailbox_path(Context->mailbox), ff->name))
+          if (mutt_str_equal(mailbox_path(m), ff->name))
           {
             mutt_error(_("Can't delete currently selected mailbox"));
             break;
@@ -1648,7 +1648,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), ff->name);
           if (mutt_yesorno(msg, MUTT_NO) == MUTT_YES)
           {
-            if (imap_delete_mailbox(Context->mailbox, ff->name) == 0)
+            if (imap_delete_mailbox(m, ff->name) == 0)
             {
               /* free the mailbox from the browser */
               FREE(&ff->name);
@@ -1656,7 +1656,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               /* and move all other entries up */
               ARRAY_REMOVE(&state.entry, ff);
               mutt_message(_("Mailbox deleted"));
-              init_menu(&state, menu, title, sizeof(title), mailbox);
+              init_menu(&state, menu, title, sizeof(title), mailbox, m);
             }
             else
               mutt_error(_("Mailbox deletion failed"));
@@ -1712,7 +1712,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             browser_sort(&state);
             menu->mdata = &state.entry;
             browser_highlight_default(&state, menu);
-            init_menu(&state, menu, title, sizeof(title), mailbox);
+            init_menu(&state, menu, title, sizeof(title), mailbox, m);
           }
           else
 #endif
@@ -1737,7 +1737,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               if (S_ISDIR(st.st_mode))
               {
                 destroy_state(&state);
-                if (examine_directory(menu, &state, mutt_buffer_string(buf),
+                if (examine_directory(m, menu, &state, mutt_buffer_string(buf),
                                       mutt_buffer_string(prefix)) == 0)
                 {
                   mutt_buffer_copy(&LastDir, buf);
@@ -1745,14 +1745,14 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                 else
                 {
                   mutt_error(_("Error scanning directory"));
-                  if (examine_directory(menu, &state, mutt_buffer_string(&LastDir),
+                  if (examine_directory(m, menu, &state, mutt_buffer_string(&LastDir),
                                         mutt_buffer_string(prefix)) == -1)
                   {
                     goto bail;
                   }
                 }
                 browser_highlight_default(&state, menu);
-                init_menu(&state, menu, title, sizeof(title), mailbox);
+                init_menu(&state, menu, title, sizeof(title), mailbox, m);
               }
               else
                 mutt_error(_("%s is not a directory"), mutt_buffer_string(buf));
@@ -1802,12 +1802,12 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           imap_browse(mutt_buffer_string(&LastDir), &state);
           browser_sort(&state);
           menu->mdata = &state.entry;
-          init_menu(&state, menu, title, sizeof(title), mailbox);
+          init_menu(&state, menu, title, sizeof(title), mailbox, m);
         }
         else
 #endif
-            if (examine_directory(menu, &state, mutt_buffer_string(&LastDir), NULL) == 0)
-          init_menu(&state, menu, title, sizeof(title), mailbox);
+            if (examine_directory(m, menu, &state, mutt_buffer_string(&LastDir), NULL) == 0)
+          init_menu(&state, menu, title, sizeof(title), mailbox, m);
         else
         {
           mutt_error(_("Error scanning directory"));
@@ -1929,7 +1929,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
         if (mailbox)
         {
-          examine_mailboxes(menu, &state);
+          examine_mailboxes(m, menu, &state);
         }
 #ifdef USE_IMAP
         else if (imap_path_probe(mutt_buffer_string(&LastDir), NULL) == MUTT_IMAP)
@@ -1941,12 +1941,12 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           menu->mdata = &state.entry;
         }
 #endif
-        else if (examine_directory(menu, &state, mutt_buffer_string(&LastDir),
+        else if (examine_directory(m, menu, &state, mutt_buffer_string(&LastDir),
                                    mutt_buffer_string(prefix)) == -1)
         {
           goto bail;
         }
-        init_menu(&state, menu, title, sizeof(title), mailbox);
+        init_menu(&state, menu, title, sizeof(title), mailbox, m);
         break;
 
       case OP_MAILBOX_LIST:
@@ -2018,9 +2018,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           break;
 
         if (op == OP_CATCHUP)
-          mdata = mutt_newsgroup_catchup(Context->mailbox, CurrentNewsSrv, ff->name);
+          mdata = mutt_newsgroup_catchup(m, CurrentNewsSrv, ff->name);
         else
-          mdata = mutt_newsgroup_uncatchup(Context->mailbox, CurrentNewsSrv, ff->name);
+          mdata = mutt_newsgroup_uncatchup(m, CurrentNewsSrv, ff->name);
 
         if (mdata)
         {
@@ -2057,13 +2057,13 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
         destroy_state(&state);
         if (mailbox)
-          examine_mailboxes(menu, &state);
+          examine_mailboxes(m, menu, &state);
         else
         {
-          if (examine_directory(menu, &state, NULL, NULL) == -1)
+          if (examine_directory(m, menu, &state, NULL, NULL) == -1)
             break;
         }
-        init_menu(&state, menu, title, sizeof(title), mailbox);
+        init_menu(&state, menu, title, sizeof(title), mailbox, m);
         break;
       }
 #endif /* USE_NNTP */
@@ -2153,7 +2153,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                 }
               }
             }
-            init_menu(&state, menu, title, sizeof(title), mailbox);
+            init_menu(&state, menu, title, sizeof(title), mailbox, m);
           }
           if (rc > 0)
             menu->redraw = REDRAW_FULL;
@@ -2199,16 +2199,17 @@ bail:
  * @param[in]  file     Buffer for the result
  * @param[in]  filelen  Length of buffer
  * @param[in]  flags    Flags, see #SelectFileFlags
+ * @param[in]  m        Mailbox
  * @param[out] files    Array of selected files
  * @param[out] numfiles Number of selected files
  */
 void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
-                      char ***files, int *numfiles)
+                      struct Mailbox *m, char ***files, int *numfiles)
 {
   struct Buffer *f_buf = mutt_buffer_pool_get();
 
   mutt_buffer_strcpy(f_buf, NONULL(file));
-  mutt_buffer_select_file(f_buf, flags, files, numfiles);
+  mutt_buffer_select_file(f_buf, flags, m, files, numfiles);
   mutt_str_copy(file, mutt_buffer_string(f_buf), filelen);
 
   mutt_buffer_pool_release(&f_buf);
