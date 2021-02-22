@@ -267,7 +267,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
           char s[128];
           mutt_make_string(s, sizeof(s), cols, C_MessageFormat, NULL, -1,
                            aptr->body->email,
-                           MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_ARROWCURSOR);
+                           MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_ARROWCURSOR, NULL);
           if (*s)
           {
             mutt_format_s(buf, buflen, prec, s);

@@ -628,7 +628,8 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     else
     {
       mutt_make_string(prefix, sizeof(prefix), wraplen, NONULL(C_IndentString),
-                       Context->mailbox, Context->msg_in_pager, e, MUTT_FORMAT_NO_FLAGS);
+                       Context->mailbox, Context->msg_in_pager, e,
+                       MUTT_FORMAT_NO_FLAGS, NULL);
     }
   }
 

@@ -423,7 +423,8 @@ static void include_header(bool quote, FILE *fp_in, struct Email *e, FILE *fp_ou
     else if (!C_TextFlowed)
     {
       mutt_make_string(prefix2, sizeof(prefix2), 0, NONULL(C_IndentString),
-                       Context->mailbox, Context->msg_in_pager, e, MUTT_FORMAT_NO_FLAGS);
+                       Context->mailbox, Context->msg_in_pager, e,
+                       MUTT_FORMAT_NO_FLAGS, NULL);
     }
     else
       mutt_str_copy(prefix2, ">", sizeof(prefix2));
@@ -520,7 +521,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
     {
       mutt_make_string(prefix, sizeof(prefix), 0, NONULL(C_IndentString),
                        Context->mailbox, Context->msg_in_pager, e_parent,
-                       MUTT_FORMAT_NO_FLAGS);
+                       MUTT_FORMAT_NO_FLAGS, NULL);
     }
   }
 
@@ -1019,7 +1020,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     {
       mutt_make_string(prefix, sizeof(prefix), 0, NONULL(C_IndentString),
                        Context->mailbox, Context->msg_in_pager, e_parent,
-                       MUTT_FORMAT_NO_FLAGS);
+                       MUTT_FORMAT_NO_FLAGS, NULL);
     }
 
     st.prefix = prefix;
