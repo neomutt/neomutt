@@ -38,19 +38,19 @@
 
 struct ConfigDef IndexVars[] = {
   // clang-format off
-  { "change_folder_next", DT_BOOL, &C_ChangeFolderNext, false, 0, NULL,
+  { "change_folder_next", DT_BOOL, NULL, false, 0, NULL,
     "Suggest the next folder, rather than the first when using '<change-folder>'"
   },
-  { "collapse_all", DT_BOOL, &C_CollapseAll, false, 0, NULL,
+  { "collapse_all", DT_BOOL, NULL, false, 0, NULL,
     "Collapse all threads when entering a folder"
   },
-  { "mark_macro_prefix", DT_STRING, &C_MarkMacroPrefix, IP "'", 0, NULL,
+  { "mark_macro_prefix", DT_STRING, NULL, IP "'", 0, NULL,
     "Prefix for macros using '<mark-message>'"
   },
-  { "uncollapse_jump", DT_BOOL, &C_UncollapseJump, false, 0, NULL,
+  { "uncollapse_jump", DT_BOOL, NULL, false, 0, NULL,
     "When opening a thread, jump to the next unread message"
   },
-  { "uncollapse_new", DT_BOOL, &C_UncollapseNew, true, 0, NULL,
+  { "uncollapse_new", DT_BOOL, NULL, true, 0, NULL,
     "Open collapsed threads when new mail arrives"
   },
 
@@ -63,5 +63,5 @@ struct ConfigDef IndexVars[] = {
  */
 bool config_init_index(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, IndexVars, 0);
+  return cs_register_variables(cs, IndexVars, DT_NO_VARIABLE);
 }
