@@ -214,7 +214,7 @@ static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int lin
 
   mutt_make_string(buf, buflen, menu->win_index->state.cols,
                    NONULL(C_IndexFormat), ctx->mailbox, ctx->msg_in_pager,
-                   ctx->mailbox->emails[line], MUTT_FORMAT_ARROWCURSOR);
+                   ctx->mailbox->emails[line], MUTT_FORMAT_ARROWCURSOR, NULL);
 }
 
 /**

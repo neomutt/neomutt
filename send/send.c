@@ -420,7 +420,7 @@ void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp, struct Con
   char buf[1024];
   setlocale(LC_TIME, NONULL(c_attribution_locale));
   mutt_make_string(buf, sizeof(buf), 0, c_forward_attribution_intro, m, -1, e,
-                   MUTT_FORMAT_NO_FLAGS);
+                   MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputs(buf, fp);
   fputs("\n\n", fp);
@@ -447,7 +447,7 @@ void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp,
   char buf[1024];
   setlocale(LC_TIME, NONULL(c_attribution_locale));
   mutt_make_string(buf, sizeof(buf), 0, c_forward_attribution_trailer, m, -1, e,
-                   MUTT_FORMAT_NO_FLAGS);
+                   MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputc('\n', fp);
   fputs(buf, fp);
@@ -601,7 +601,7 @@ void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *fp_out,
 
   char buf[1024];
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_attribution, m, -1, e, MUTT_FORMAT_NO_FLAGS);
+  mutt_make_string(buf, sizeof(buf), 0, c_attribution, m, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputs(buf, fp_out);
   fputc('\n', fp_out);
@@ -623,7 +623,8 @@ void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out,
     return;
 
   char buf[256];
-  mutt_make_string(buf, sizeof(buf), 0, c_post_indent_string, m, -1, e, MUTT_FORMAT_NO_FLAGS);
+  mutt_make_string(buf, sizeof(buf), 0, c_post_indent_string, m, -1, e,
+                   MUTT_FORMAT_NO_FLAGS, NULL);
   fputs(buf, fp_out);
   fputc('\n', fp_out);
 }
@@ -922,7 +923,8 @@ void mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m,
 
   char buf[256];
   /* set the default subject for the message. */
-  mutt_make_string(buf, sizeof(buf), 0, NONULL(c_forward_format), m, -1, e, MUTT_FORMAT_NO_FLAGS);
+  mutt_make_string(buf, sizeof(buf), 0, NONULL(c_forward_format), m, -1, e,
+                   MUTT_FORMAT_NO_FLAGS, NULL);
   mutt_str_replace(&env->subject, buf);
 }
 

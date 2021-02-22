@@ -288,15 +288,10 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     builtin = true;
   else
   {
-    char buf[1024];
-    struct HdrFormatInfo hfi;
-
-    hfi.mailbox = m;
-    hfi.msg_in_pager = Context ? Context->msg_in_pager : -1;
-    hfi.pager_progress = ExtPagerProgress;
-    hfi.email = e;
-    mutt_make_string_info(buf, sizeof(buf), win_index->state.cols,
-                          NONULL(C_PagerFormat), &hfi, MUTT_FORMAT_NO_FLAGS);
+    char buf[1024] = { 0 };
+    mutt_make_string(buf, sizeof(buf), win_index->state.cols, NONULL(C_PagerFormat),
+                     m, Context ? Context->msg_in_pager : -1, e,
+                     MUTT_FORMAT_NO_FLAGS, ExtPagerProgress);
     fputs(buf, fp_out);
     fputs("\n\n", fp_out);
   }

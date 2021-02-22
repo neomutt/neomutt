@@ -28,7 +28,6 @@
 #include <stdio.h>
 #include "format_flags.h"
 
-struct Address;
 struct Email;
 struct Mailbox;
 
@@ -38,21 +37,8 @@ extern struct MbTable *C_FlagChars;
 extern struct MbTable *C_FromChars;
 extern struct MbTable *C_ToChars;
 
-/**
- * struct HdrFormatInfo - Data passed to index_format_str()
- */
-struct HdrFormatInfo
-{
-  struct Mailbox *mailbox;
-  int msg_in_pager;
-  struct Email *email;
-  const char *pager_progress;
-};
-
 void mutt_make_string(char *buf, size_t buflen, int cols, const char *s,
-                            struct Mailbox *m, int inpgr,
-                            struct Email *e, MuttFormatFlags flags);
-void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s,
-                           struct HdrFormatInfo *hfi, MuttFormatFlags flags);
+                      struct Mailbox *m, int inpgr, struct Email *e,
+                      MuttFormatFlags flags, const char *progress);
 
 #endif /* MUTT_HDRLINE_H */
