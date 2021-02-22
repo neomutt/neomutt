@@ -27,6 +27,7 @@
  *
  * | File               | Description              |
  * | :----------------- | :----------------------- |
+ * | index/config.c     | @subpage index_config    |
  * | index/index.c      | @subpage index_index     |
  */
 
@@ -59,5 +60,7 @@ void mutt_update_index(struct Menu *menu, struct Context *ctx, int check, int ol
 struct MuttWindow *index_pager_init(void);
 void index_pager_shutdown(struct MuttWindow *dlg);
 int mutt_dlgindex_observer(struct NotifyCallback *nc);
+
+bool config_init_index(struct ConfigSet *cs);
 
 #endif /* MUTT_INDEX_H */
