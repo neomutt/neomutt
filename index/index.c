@@ -100,13 +100,6 @@
 #include "autocrypt/lib.h"
 #endif
 
-/* These Config Variables are only used in index.c */
-bool C_ChangeFolderNext; ///< Config: Suggest the next folder, rather than the first when using '<change-folder>'
-bool C_CollapseAll; ///< Config: Collapse all threads when entering a folder
-char *C_MarkMacroPrefix; ///< Config: Prefix for macros using '<mark-message>'
-bool C_UncollapseJump; ///< Config: When opening a thread, jump to the next unread message
-bool C_UncollapseNew; ///< Config: Open collapsed threads when new mail arrives
-
 /// Help Bar for the Index dialog
 static const struct Mapping IndexHelp[] = {
   // clang-format off
@@ -459,9 +452,10 @@ static void update_index_threaded(struct Context *ctx, enum MxStatus check, int 
 
   int num_new = MAX(0, ctx->mailbox->msg_count - oldcount);
 
+  const bool c_uncollapse_new = cs_subset_bool(NeoMutt->sub, "uncollapse_new");
   /* save the list of new messages */
   if ((check != MX_STATUS_REOPENED) && (oldcount > 0) &&
-      (lmt || C_UncollapseNew) && (num_new > 0))
+      (lmt || c_uncollapse_new) && (num_new > 0))
   {
     save_new = mutt_mem_malloc(num_new * sizeof(struct Email *));
     for (int i = oldcount; i < ctx->mailbox->msg_count; i++)
@@ -502,7 +496,7 @@ static void update_index_threaded(struct Context *ctx, enum MxStatus check, int 
   }
 
   /* uncollapse threads with new mail */
-  if (C_UncollapseNew)
+  if (c_uncollapse_new)
   {
     if (check == MX_STATUS_REOPENED)
     {
@@ -770,7 +764,8 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
     menu->current = 0;
   }
 
-  if (((C_Sort & SORT_MASK) == SORT_THREADS) && C_CollapseAll)
+  const bool c_collapse_all = cs_subset_bool(NeoMutt->sub, "collapse_all");
+  if (((C_Sort & SORT_MASK) == SORT_THREADS) && c_collapse_all)
     collapse_all(Context, menu, 0);
 
   struct MuttWindow *dlg = dialog_find(menu->win_index);
@@ -1193,7 +1188,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
   mutt_monitor_add(NULL);
 #endif
 
-  if (((C_Sort & SORT_MASK) == SORT_THREADS) && C_CollapseAll)
+  bool c_collapse_all = cs_subset_bool(NeoMutt->sub, "collapse_all");
+  if (((C_Sort & SORT_MASK) == SORT_THREADS) && c_collapse_all)
   {
     collapse_all(Context, menu, 0);
     menu->redraw = REDRAW_FULL;
@@ -1843,7 +1839,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
             menu->current = 0;
           if ((Context->mailbox->msg_count != 0) && ((C_Sort & SORT_MASK) == SORT_THREADS))
           {
-            if (C_CollapseAll)
+            c_collapse_all = cs_subset_bool(NeoMutt->sub, "collapse_all");
+            if (c_collapse_all)
               collapse_all(Context, menu, 0);
             mutt_draw_tree(Context->threads);
           }
@@ -2445,7 +2442,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
           read_only = false;
         }
 
-        if (C_ChangeFolderNext && ctx_mailbox(Context) &&
+        const bool c_change_folder_next =
+            cs_subset_bool(NeoMutt->sub, "change_folder_next");
+        if (c_change_folder_next && ctx_mailbox(Context) &&
             !mutt_buffer_is_empty(&Context->mailbox->pathbuf))
         {
           mutt_buffer_strcpy(folderbuf, mailbox_path(Context->mailbox));
@@ -2511,7 +2510,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
           read_only = false;
         }
 
-        if (C_ChangeFolderNext && ctx_mailbox(Context) &&
+        const bool c_change_folder_next =
+            cs_subset_bool(NeoMutt->sub, "change_folder_next");
+        if (c_change_folder_next && ctx_mailbox(Context) &&
             !mutt_buffer_is_empty(&Context->mailbox->pathbuf))
         {
           mutt_buffer_strcpy(folderbuf, mailbox_path(Context->mailbox));
@@ -2582,7 +2583,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           mutt_uncollapse_thread(cur.e);
           mutt_set_vnum(Context->mailbox);
-          if (C_UncollapseJump)
+          const bool c_uncollapse_jump =
+              cs_subset_bool(NeoMutt->sub, "uncollapse_jump");
+          if (c_uncollapse_jump)
             menu->current = mutt_thread_next_unread(cur.e);
         }
 
@@ -3222,7 +3225,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           menu->current = mutt_uncollapse_thread(cur.e);
           mutt_set_vnum(Context->mailbox);
-          if (C_UncollapseJump)
+          const bool c_uncollapse_jump =
+              cs_subset_bool(NeoMutt->sub, "uncollapse_jump");
+          if (c_uncollapse_jump)
             menu->current = mutt_thread_next_unread(cur.e);
         }
         else if (mutt_thread_can_collapse(cur.e))
@@ -3683,7 +3688,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
               buf2[0])
           {
             char str[256], macro[256];
-            snprintf(str, sizeof(str), "%s%s", C_MarkMacroPrefix, buf2);
+            const char *c_mark_macro_prefix =
+                cs_subset_string(NeoMutt->sub, "mark_macro_prefix");
+            snprintf(str, sizeof(str), "%s%s", c_mark_macro_prefix, buf2);
             snprintf(macro, sizeof(macro), "<search>~i \"%s\"\n", cur.e->env->message_id);
             /* L10N: "message hotkey" is the key bindings menu description of a
                macro created by <mark-message>. */

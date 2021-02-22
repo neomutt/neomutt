@@ -44,13 +44,6 @@ struct Menu;
 struct MuttWindow;
 struct NotifyCallback;
 
-/* These Config Variables are only used in index.c */
-extern bool  C_ChangeFolderNext;
-extern bool  C_CollapseAll;
-extern char *C_MarkMacroPrefix;
-extern bool  C_UncollapseJump;
-extern bool  C_UncollapseNew;
-
 int  index_color(int line);
 void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line);
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen);
