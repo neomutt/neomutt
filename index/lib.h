@@ -20,6 +20,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page lib_index INDEX: GUI manage the main index (list of emails)
+ *
+ * GUI manage the main index (list of emails)
+ *
+ * | File               | Description              |
+ * | :----------------- | :----------------------- |
+ * | index/index.c      | @subpage index_index     |
+ */
+
 #ifndef MUTT_INDEX_H
 #define MUTT_INDEX_H
 
