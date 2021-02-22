@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_index GUI manage the main index (list of emails)
+ * @page index_index GUI manage the main index (list of emails)
  *
  * GUI manage the main index (list of emails)
  */
@@ -45,7 +45,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "debug/lib.h"
-#include "index.h"
+#include "lib.h"
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
 #include "send/lib.h"
