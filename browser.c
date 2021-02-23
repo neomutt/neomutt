@@ -64,6 +64,8 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
+#include "nntp/adata.h"
+#include "nntp/mdata.h"
 #endif
 
 /* These Config Variables are only used in browser.c */

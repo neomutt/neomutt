@@ -50,8 +50,11 @@
 #include "bcache/lib.h"
 #include "hcache/lib.h"
 #include "ncrypt/lib.h"
+#include "adata.h"
+#include "edata.h"
 #include "hook.h"
 #include "init.h"
+#include "mdata.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_parse.h"
@@ -110,115 +113,11 @@ struct ChildCtx
 };
 
 /**
- * nntp_adata_free - Free the private Account data - Implements Account::adata_free()
- *
- * The NntpAccountData struct stores global NNTP data, such as the connection to
- * the database.  This function will close the database, free the resources and
- * the struct itself.
- */
-static void nntp_adata_free(void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct NntpAccountData *adata = *ptr;
-
-  mutt_file_fclose(&adata->fp_newsrc);
-  FREE(&adata->newsrc_file);
-  FREE(&adata->authenticators);
-  FREE(&adata->overview_fmt);
-  FREE(&adata->conn);
-  FREE(&adata->groups_list);
-  mutt_hash_free(&adata->groups_hash);
-  FREE(ptr);
-}
-
-/**
  * nntp_hashelem_free - Free our hash table data - Implements ::hash_hdata_free_t
  */
-static void nntp_hashelem_free(int type, void *obj, intptr_t data)
+void nntp_hashelem_free(int type, void *obj, intptr_t data)
 {
   nntp_mdata_free(&obj);
-}
-
-/**
- * nntp_adata_new - Allocate and initialise a new NntpAccountData structure
- * @param conn Network connection
- * @retval ptr New NntpAccountData
- */
-struct NntpAccountData *nntp_adata_new(struct Connection *conn)
-{
-  struct NntpAccountData *adata = mutt_mem_calloc(1, sizeof(struct NntpAccountData));
-  adata->conn = conn;
-  adata->groups_hash = mutt_hash_new(1009, MUTT_HASH_NO_FLAGS);
-  mutt_hash_set_destructor(adata->groups_hash, nntp_hashelem_free, 0);
-  adata->groups_max = 16;
-  adata->groups_list =
-      mutt_mem_malloc(adata->groups_max * sizeof(struct NntpMboxData *));
-  return adata;
-}
-
-#if 0
-/**
- * nntp_adata_get - Get the Account data for this mailbox
- * @retval ptr Private Account data
- */
-struct NntpAccountData *nntp_adata_get(struct Mailbox *m)
-{
-  if (!m || (m->type != MUTT_NNTP))
-    return NULL;
-  struct Account *a = m->account;
-  if (!a)
-    return NULL;
-  return a->adata;
-}
-#endif
-
-/**
- * nntp_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
- */
-void nntp_mdata_free(void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct NntpMboxData *mdata = *ptr;
-
-  nntp_acache_free(mdata);
-  mutt_bcache_close(&mdata->bcache);
-  FREE(&mdata->newsrc_ent);
-  FREE(&mdata->desc);
-  FREE(ptr);
-}
-
-/**
- * nntp_edata_free - Free the private Email data - Implements Email::edata_free()
- */
-static void nntp_edata_free(void **ptr)
-{
-  // struct NntpEmailData *edata = *ptr;
-  FREE(ptr);
-}
-
-/**
- * nntp_edata_new - Create a new NntpEmailData for an Email
- * @retval ptr New NntpEmailData struct
- */
-static struct NntpEmailData *nntp_edata_new(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct NntpEmailData));
-}
-
-/**
- * nntp_edata_get - Get the private data for this Email
- * @param e Email
- * @retval ptr Private Email data
- */
-struct NntpEmailData *nntp_edata_get(struct Email *e)
-{
-  if (!e)
-    return NULL;
-  return e->edata;
 }
 
 /**

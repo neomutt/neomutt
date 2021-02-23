@@ -78,6 +78,7 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
+#include "nntp/adata.h"
 #endif
 #ifdef USE_POP
 #include "pop/lib.h"

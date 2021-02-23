@@ -29,9 +29,12 @@
  *
  * | File            | Description            |
  * | :-------------- | :--------------------- |
+ * | nntp/adata.c    | @subpage nntp_adata    |
  * | nntp/browse.c   | @subpage nntp_browse   |
  * | nntp/complete.c | @subpage nntp_complete |
  * | nntp/config.c   | @subpage nntp_config   |
+ * | nntp/edata.c    | @subpage nntp_edata    |
+ * | nntp/mdata.c    | @subpage nntp_mdata    |
  * | nntp/newsrc.c   | @subpage nntp_newsrc   |
  * | nntp/nntp.c     | @subpage nntp_nntp     |
  */
@@ -70,48 +73,6 @@ extern struct MxOps MxNntpOps;
 #define ANUM "%u"
 
 /**
- * struct NntpAccountData - NNTP-specific Account data - @extends Account
- */
-struct NntpAccountData
-{
-  bool hasCAPABILITIES    : 1;
-  bool hasSTARTTLS        : 1;
-  bool hasDATE            : 1;
-  bool hasLIST_NEWSGROUPS : 1;
-  bool hasXGTITLE         : 1;
-  bool hasLISTGROUP       : 1;
-  bool hasLISTGROUPrange  : 1;
-  bool hasOVER            : 1;
-  bool hasXOVER           : 1;
-  unsigned int use_tls    : 3;
-  unsigned int status     : 3;
-  bool cacheable          : 1;
-  bool newsrc_modified    : 1;
-  FILE *fp_newsrc;
-  char *newsrc_file;
-  char *authenticators;
-  char *overview_fmt;
-  off_t size;
-  time_t mtime;
-  time_t newgroups_time;
-  time_t check_time;
-  unsigned int groups_num;
-  unsigned int groups_max;
-  void **groups_list;
-  struct HashTable *groups_hash;
-  struct Connection *conn;
-};
-
-/**
- * struct NntpEmailData - NNTP-specific Email data - @extends Email
- */
-struct NntpEmailData
-{
-  anum_t article_num;
-  bool parsed : 1;
-};
-
-/**
  * struct NntpAcache - NNTP article cache
  */
 struct NntpAcache
@@ -131,29 +92,6 @@ struct NewsrcEntry
 
 /* number of entries in article cache */
 #define NNTP_ACACHE_LEN 10
-
-/**
- * struct NntpMboxData - NNTP-specific Mailbox data - @extends Mailbox
- */
-struct NntpMboxData
-{
-  char *group;
-  char *desc;
-  anum_t first_message;
-  anum_t last_message;
-  anum_t last_loaded;
-  anum_t last_cached;
-  anum_t unread;
-  bool subscribed   : 1;
-  bool has_new_mail : 1;
-  bool allowed      : 1;
-  bool deleted      : 1;
-  unsigned int newsrc_len;
-  struct NewsrcEntry *newsrc_ent;
-  struct NntpAccountData *adata;
-  struct NntpAcache acache[NNTP_ACACHE_LEN];
-  struct BodyCache *bcache;
-};
 
 struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server, bool leave_lock);
 struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpAccountData *adata, char *group);

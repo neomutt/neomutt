@@ -72,6 +72,8 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
+#include "nntp/adata.h"
+#include "nntp/mdata.h"
 #endif
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
