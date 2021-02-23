@@ -32,8 +32,10 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "lib.h"
+#include "adata.h"
 #include "browser.h"
 #include "format_flags.h"
+#include "mdata.h"
 #include "muttlib.h"
 
 /**

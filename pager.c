@@ -76,6 +76,7 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
+#include "nntp/mdata.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
