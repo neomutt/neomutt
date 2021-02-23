@@ -508,7 +508,8 @@ $(PWD)/pattern:
 ###############################################################################
 # libpop
 LIBPOP=		libpop.a
-LIBPOPOBJS=	pop/auth.o pop/config.o pop/lib.o pop/pop.o
+LIBPOPOBJS=	pop/auth.o pop/config.o pop/lib.o pop/pop.o \
+		pop/adata.o pop/edata.o
 CLEANFILES+=	$(LIBPOP) $(LIBPOPOBJS)
 ALLOBJS+=	$(LIBPOPOBJS)
 

@@ -27,8 +27,10 @@
  *
  * | File          | Description         |
  * | :------------ | :------------------ |
+ * | pop/adata.c   | @subpage pop_adata  |
  * | pop/auth.c    | @subpage pop_auth   |
  * | pop/config.c  | @subpage pop_config |
+ * | pop/edata.c   | @subpage pop_edata  |
  * | pop/lib.c     | @subpage pop_lib    |
  * | pop/pop.c     | @subpage pop_pop    |
  */
