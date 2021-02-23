@@ -47,6 +47,9 @@
 #include "message.h"
 #include "bcache/lib.h"
 #include "imap/lib.h"
+#include "adata.h"
+#include "edata.h"
+#include "mdata.h"
 #include "msn.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
@@ -66,42 +69,6 @@
 #endif
 
 struct BodyCache;
-
-/**
- * imap_edata_free - Free the private Email data - Implements Email::edata_free()
- */
-void imap_edata_free(void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct ImapEmailData *edata = *ptr;
-  /* this should be safe even if the list wasn't used */
-  FREE(&edata->flags_system);
-  FREE(&edata->flags_remote);
-  FREE(ptr);
-}
-
-/**
- * imap_edata_new - Create a new ImapEmailData
- * @retval ptr New ImapEmailData
- */
-static struct ImapEmailData *imap_edata_new(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct ImapEmailData));
-}
-
-/**
- * imap_edata_get - Get the private data for this Email
- * @param e Email
- * @retval ptr Private Email data
- */
-struct ImapEmailData *imap_edata_get(struct Email *e)
-{
-  if (!e)
-    return NULL;
-  return e->edata;
-}
 
 /**
  * msg_cache_open - Open a message cache
