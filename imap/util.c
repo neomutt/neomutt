@@ -51,6 +51,9 @@
 #include "gui/lib.h"
 #include "bcache/lib.h"
 #include "imap/lib.h"
+#include "adata.h"
+#include "edata.h"
+#include "mdata.h"
 #include "msn.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
@@ -59,64 +62,6 @@
 #include "hcache/lib.h"
 #include "message.h"
 #endif
-
-/**
- * imap_adata_free - Free the private Account data - Implements Account::adata_free()
- */
-void imap_adata_free(void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct ImapAccountData *adata = *ptr;
-
-  FREE(&adata->capstr);
-  mutt_buffer_dealloc(&adata->cmdbuf);
-  FREE(&adata->buf);
-  FREE(&adata->cmds);
-
-  if (adata->conn)
-  {
-    if (adata->conn->close)
-      adata->conn->close(adata->conn);
-    FREE(&adata->conn);
-  }
-
-  FREE(ptr);
-}
-
-/**
- * imap_adata_new - Allocate and initialise a new ImapAccountData structure
- * @retval ptr New ImapAccountData
- */
-struct ImapAccountData *imap_adata_new(struct Account *a)
-{
-  struct ImapAccountData *adata = mutt_mem_calloc(1, sizeof(struct ImapAccountData));
-  adata->account = a;
-
-  static unsigned char new_seqid = 'a';
-
-  adata->seqid = new_seqid;
-  adata->cmdslots = C_ImapPipelineDepth + 2;
-  adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
-
-  if (++new_seqid > 'z')
-    new_seqid = 'a';
-
-  return adata;
-}
-
-/**
- * imap_adata_get - Get the Account data for this mailbox
- * @param m Mailbox
- * @retval ptr Private data
- */
-struct ImapAccountData *imap_adata_get(struct Mailbox *m)
-{
-  if (!m || (m->type != MUTT_IMAP) || !m->account)
-    return NULL;
-  return m->account->adata;
-}
 
 /**
  * imap_adata_find - Find the Account data for this path
@@ -157,58 +102,6 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
 }
 
 /**
- * imap_mdata_new - Allocate and initialise a new ImapMboxData structure
- * @param adata Imap Account data
- * @param name  Name for Mailbox
- * @retval ptr New ImapMboxData
- */
-struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *name)
-{
-  char buf[1024];
-  struct ImapMboxData *mdata = mutt_mem_calloc(1, sizeof(struct ImapMboxData));
-
-  mdata->real_name = mutt_str_dup(name);
-
-  imap_fix_path(adata->delim, name, buf, sizeof(buf));
-  if (buf[0] == '\0')
-    mutt_str_copy(buf, "INBOX", sizeof(buf));
-  mdata->name = mutt_str_dup(buf);
-
-  imap_munge_mbox_name(adata->unicode, buf, sizeof(buf), mdata->name);
-  mdata->munge_name = mutt_str_dup(buf);
-
-  mdata->reopen &= IMAP_REOPEN_ALLOW;
-
-  STAILQ_INIT(&mdata->flags);
-
-#ifdef USE_HCACHE
-  imap_hcache_open(adata, mdata);
-  if (mdata->hcache)
-  {
-    size_t dlen = 0;
-    void *uidvalidity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12, &dlen);
-    void *uidnext = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8, &dlen);
-    unsigned long long *modseq =
-        mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7, &dlen);
-    if (uidvalidity)
-    {
-      mdata->uidvalidity = *(uint32_t *) uidvalidity;
-      mdata->uid_next = uidnext ? *(unsigned int *) uidnext : 0;
-      mdata->modseq = modseq ? *modseq : 0;
-      mutt_debug(LL_DEBUG3, "hcache uidvalidity %u, uidnext %u, modseq %llu\n",
-                 mdata->uidvalidity, mdata->uid_next, mdata->modseq);
-    }
-    mutt_hcache_free_raw(mdata->hcache, &uidvalidity);
-    mutt_hcache_free_raw(mdata->hcache, &uidnext);
-    mutt_hcache_free_raw(mdata->hcache, (void **) &modseq);
-    imap_hcache_close(mdata);
-  }
-#endif
-
-  return mdata;
-}
-
-/**
  * imap_mdata_cache_reset - Release and clear cache data of ImapMboxData structure
  * @param mdata Imap Mailbox data
  */
@@ -217,35 +110,6 @@ void imap_mdata_cache_reset(struct ImapMboxData *mdata)
   mutt_hash_free(&mdata->uid_hash);
   imap_msn_free(&mdata->msn);
   mutt_bcache_close(&mdata->bcache);
-}
-
-/**
- * imap_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
- */
-void imap_mdata_free(void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct ImapMboxData *mdata = *ptr;
-
-  imap_mdata_cache_reset(mdata);
-  mutt_list_free(&mdata->flags);
-  FREE(&mdata->name);
-  FREE(&mdata->real_name);
-  FREE(&mdata->munge_name);
-  FREE(ptr);
-}
-
-/**
- * imap_mdata_get - Get the Mailbox data for this mailbox
- * @param m Mailbox
- */
-struct ImapMboxData *imap_mdata_get(struct Mailbox *m)
-{
-  if (!m || (m->type != MUTT_IMAP) || !m->mdata)
-    return NULL;
-  return m->mdata;
 }
 
 /**

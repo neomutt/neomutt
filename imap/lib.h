@@ -29,6 +29,7 @@
  *
  * | File              | Description              |
  * | :---------------- | :----------------------- |
+ * | imap/adata.c      | @subpage imap_adata      |
  * | imap/auth.c       | @subpage imap_auth       |
  * | imap/auth_anon.c  | @subpage imap_auth_anon  |
  * | imap/auth_cram.c  | @subpage imap_auth_cram  |
@@ -40,7 +41,9 @@
  * | imap/browse.c     | @subpage imap_browse     |
  * | imap/command.c    | @subpage imap_command    |
  * | imap/config.c     | @subpage imap_config     |
+ * | imap/edata.c      | @subpage imap_edata      |
  * | imap/imap.c       | @subpage imap_imap       |
+ * | imap/mdata.c      | @subpage imap_mdata      |
  * | imap/message.c    | @subpage imap_message    |
  * | imap/msn.c        | @subpage imap_msn        |
  * | imap/search.c     | @subpage imap_search     |
