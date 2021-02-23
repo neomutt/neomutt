@@ -42,6 +42,8 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
+#include "adata.h"
+#include "edata.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
@@ -259,18 +261,6 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
   }
 
   return 0;
-}
-
-/**
- * pop_edata_get - Get the private data for this Email
- * @param e Email
- * @retval ptr Private Email data
- */
-struct PopEmailData *pop_edata_get(struct Email *e)
-{
-  if (!e)
-    return NULL;
-  return e->edata;
 }
 
 /**
@@ -649,19 +639,4 @@ int pop_reconnect(struct Mailbox *m)
       return -1;
     }
   }
-}
-
-/**
- * pop_adata_get - Get the Account data for this mailbox
- * @param m Mailbox
- * @retval ptr PopAccountData
- */
-struct PopAccountData *pop_adata_get(struct Mailbox *m)
-{
-  if (!m || (m->type != MUTT_POP))
-    return NULL;
-  struct Account *a = m->account;
-  if (!a)
-    return NULL;
-  return a->adata;
 }
