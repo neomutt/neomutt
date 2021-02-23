@@ -309,7 +309,7 @@ struct ConfigDef SendVars[] = {
   { "crypt_autosmime",        DT_SYNONYM, NULL, IP "crypt_auto_smime",         },
   { "crypt_replyencrypt",     DT_SYNONYM, NULL, IP "crypt_reply_encrypt",      },
   { "crypt_replysign",        DT_SYNONYM, NULL, IP "crypt_reply_sign",         },
-  { "crypt_replysignencrypted",  DT_SYNONYM, NULL, IP "crypt_reply_sign_encrypted", },
+  { "crypt_replysignencrypted", DT_SYNONYM, NULL, IP "crypt_reply_sign_encrypted", },
   { "envelope_from",          DT_SYNONYM, NULL, IP "use_envelope_from",        },
   { "forw_decrypt",           DT_SYNONYM, NULL, IP "forward_decrypt",          },
   { "forw_format",            DT_SYNONYM, NULL, IP "forward_format",           },
@@ -322,6 +322,7 @@ struct ConfigDef SendVars[] = {
   { "pgp_replysign",          DT_SYNONYM, NULL, IP "crypt_reply_sign",         },
   { "pgp_replysignencrypted", DT_SYNONYM, NULL, IP "crypt_reply_sign_encrypted", },
   { "post_indent_str",        DT_SYNONYM, NULL, IP "post_indent_string",       },
+  { "reverse_realname",       DT_SYNONYM, NULL, IP "reverse_real_name",        },
   { "use_8bitmime",           DT_SYNONYM, NULL, IP "use_8bit_mime",            },
   { NULL, 0, NULL, 0, 0, NULL, NULL },
   // clang-format on
