@@ -38,6 +38,8 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "adata.h"
+#include "mdata.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 

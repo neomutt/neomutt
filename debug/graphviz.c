@@ -46,6 +46,8 @@
 #include "maildir/mdata.h"
 #include "maildir/private.h"
 #include "mutt_globals.h"
+#include "notmuch/mdata.h"
+#include "notmuch/adata.h"
 #include "notmuch/private.h"
 #include "pop/private.h"
 

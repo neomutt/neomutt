@@ -43,16 +43,6 @@
 extern const int NmUrlProtocolLen;
 
 /**
- * struct NmAccountData - Notmuch-specific Account data - @extends Account
- */
-struct NmAccountData
-{
-  notmuch_database_t *db;
-  bool longrun : 1;    ///< A long-lived action is in progress
-  bool trans : 1;      ///< Atomic transaction in progress
-};
-
-/**
  * enum NmQueryType - Notmuch Query Types
  *
  * Read whole-thread or matching messages only?
@@ -61,35 +51,6 @@ enum NmQueryType
 {
   NM_QUERY_TYPE_MESGS = 1, ///< Default: Messages only
   NM_QUERY_TYPE_THREADS,   ///< Whole threads
-};
-
-/**
- * struct NmMboxData - Notmuch-specific Mailbox data - @extends Mailbox
- */
-struct NmMboxData
-{
-  struct Url *db_url;  ///< Parsed view url of the Notmuch database
-  char *db_query;      ///< Previous query
-  int db_limit;        ///< Maximum number of results to return
-  enum NmQueryType query_type; ///< Messages or Threads
-
-  struct Progress progress; ///< A progress bar
-  int oldmsgcount;
-  int ignmsgcount; ///< Ignored messages
-
-  bool noprogress : 1;     ///< Don't show the progress bar
-  bool progress_ready : 1; ///< A progress bar has been initialised
-};
-
-/**
- * struct NmEmailData - Notmuch-specific Email data - @extends Email
- */
-struct NmEmailData
-{
-  char *folder; ///< Location of the Email
-  char *oldpath;
-  char *virtual_id;       ///< Unique Notmuch Id
-  enum MailboxType type;  ///< Type of Mailbox the Email is in
 };
 
 extern int   C_NmDbLimit;
@@ -114,14 +75,6 @@ int                 nm_db_release     (struct Mailbox *m);
 int                 nm_db_trans_begin (struct Mailbox *m);
 int                 nm_db_trans_end   (struct Mailbox *m);
 
-void                  nm_adata_free(void **ptr);
-struct NmAccountData *nm_adata_get (struct Mailbox *m);
-struct NmAccountData *nm_adata_new (void);
-void                  nm_edata_free(void **ptr);
-struct NmEmailData *  nm_edata_get (struct Email *e);
-struct NmEmailData *  nm_edata_new (void);
-void                  nm_mdata_free(void **ptr);
-struct NmMboxData *   nm_mdata_get (struct Mailbox *m);
-struct NmMboxData *   nm_mdata_new (const char *url);
+enum NmQueryType string_to_query_type(const char *str);
 
 #endif /* MUTT_NOTMUCH_PRIVATE_H */
