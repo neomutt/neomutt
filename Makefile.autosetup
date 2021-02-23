@@ -479,7 +479,8 @@ $(PWD)/nntp:
 # libnotmuch
 @if USE_NOTMUCH
 LIBNOTMUCH=	libnotmuch.a
-LIBNOTMUCHOBJS=	notmuch/config.o notmuch/db.o notmuch/notmuch.o
+LIBNOTMUCHOBJS=	notmuch/config.o notmuch/db.o notmuch/notmuch.o \
+		notmuch/adata.o notmuch/edata.o notmuch/mdata.o
 CLEANFILES+=	$(LIBNOTMUCH) $(LIBNOTMUCHOBJS)
 ALLOBJS+=	$(LIBNOTMUCHOBJS)
 

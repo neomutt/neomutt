@@ -61,8 +61,11 @@
 #include "lib.h"
 #include "hcache/lib.h"
 #include "maildir/lib.h"
+#include "adata.h"
 #include "command_parse.h"
+#include "edata.h"
 #include "index.h"
+#include "mdata.h"
 #include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "mutt_thread.h"
@@ -120,7 +123,7 @@ static void nm_hcache_close(struct HeaderCache *h)
  * @param str String to lookup
  * @retval num Query type, e.g. #NM_QUERY_TYPE_MESGS
  */
-static enum NmQueryType string_to_query_type(const char *str)
+enum NmQueryType string_to_query_type(const char *str)
 {
   if (mutt_str_equal(str, "threads"))
     return NM_QUERY_TYPE_THREADS;
@@ -129,161 +132,6 @@ static enum NmQueryType string_to_query_type(const char *str)
 
   mutt_error(_("failed to parse notmuch query type: %s"), NONULL(str));
   return NM_QUERY_TYPE_MESGS;
-}
-
-/**
- * nm_adata_free - Free the private Account data - Implements Account::adata_free()
- */
-void nm_adata_free(void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct NmAccountData *adata = *ptr;
-  if (adata->db)
-  {
-    nm_db_free(adata->db);
-    adata->db = NULL;
-  }
-
-  FREE(ptr);
-}
-
-/**
- * nm_adata_new - Allocate and initialise a new NmAccountData structure
- * @retval ptr New NmAccountData
- */
-struct NmAccountData *nm_adata_new(void)
-{
-  struct NmAccountData *adata = mutt_mem_calloc(1, sizeof(struct NmAccountData));
-
-  return adata;
-}
-
-/**
- * nm_adata_get - Get the Notmuch Account data
- * @param m Mailbox
- * @retval ptr  Success
- * @retval NULL Failure, not a Notmuch mailbox
- */
-struct NmAccountData *nm_adata_get(struct Mailbox *m)
-{
-  if (!m || (m->type != MUTT_NOTMUCH))
-    return NULL;
-
-  struct Account *a = m->account;
-  if (!a)
-    return NULL;
-
-  return a->adata;
-}
-
-/**
- * nm_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
- *
- * The NmMboxData struct stores global Notmuch data, such as the connection to
- * the database.  This function will close the database, free the resources and
- * the struct itself.
- */
-void nm_mdata_free(void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct NmMboxData *mdata = *ptr;
-
-  mutt_debug(LL_DEBUG1, "nm: freeing context data %p\n", mdata);
-
-  url_free(&mdata->db_url);
-  FREE(&mdata->db_query);
-  FREE(ptr);
-}
-
-/**
- * nm_mdata_new - Create a new NmMboxData object from a query
- * @param url Notmuch query string
- * @retval ptr New NmMboxData struct
- *
- * A new NmMboxData struct is created, then the query is parsed and saved
- * within it.  This should be freed using nm_mdata_free().
- */
-struct NmMboxData *nm_mdata_new(const char *url)
-{
-  if (!url)
-    return NULL;
-
-  struct NmMboxData *mdata = mutt_mem_calloc(1, sizeof(struct NmMboxData));
-  mutt_debug(LL_DEBUG1, "nm: initialize mailbox mdata %p\n", (void *) mdata);
-
-  mdata->db_limit = C_NmDbLimit;
-  mdata->query_type = string_to_query_type(C_NmQueryType);
-  mdata->db_url = url_parse(url);
-  if (!mdata->db_url)
-  {
-    mutt_error(_("failed to parse notmuch url: %s"), url);
-    FREE(&mdata);
-    return NULL;
-  }
-  return mdata;
-}
-
-/**
- * nm_mdata_get - Get the Notmuch Mailbox data
- * @param m Mailbox
- * @retval ptr  Success
- * @retval NULL Failure, not a Notmuch mailbox
- */
-struct NmMboxData *nm_mdata_get(struct Mailbox *m)
-{
-  if (!m || (m->type != MUTT_NOTMUCH))
-    return NULL;
-
-  return m->mdata;
-}
-
-/**
- * nm_edata_free - Free data attached to an Email
- * @param[out] ptr Email data
- *
- * Each email has an attached NmEmailData, which contains things like the tags
- * (labels).
- */
-void nm_edata_free(void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct NmEmailData *edata = *ptr;
-
-  mutt_debug(LL_DEBUG2, "nm: freeing email %p\n", (void *) edata);
-  FREE(&edata->folder);
-  FREE(&edata->oldpath);
-  FREE(&edata->virtual_id);
-
-  FREE(ptr);
-}
-
-/**
- * nm_edata_new - Create a new NmEmailData for an email
- * @retval ptr New NmEmailData struct
- */
-struct NmEmailData *nm_edata_new(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct NmEmailData));
-}
-
-/**
- * nm_edata_get - Get the Notmuch Email data
- * @param e Email
- * @retval ptr  Success
- * @retval NULL Error
- */
-struct NmEmailData *nm_edata_get(struct Email *e)
-{
-  if (!e)
-    return NULL;
-
-  return e->nm_edata;
 }
 
 /**

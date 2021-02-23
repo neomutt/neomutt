@@ -25,15 +25,16 @@
  *
  * Maildir local mailbox type
  *
- * | File              | Description              |
- * | :---------------- | :----------------------- |
- * | maildir/config.c  | @subpage maildir_config  |
- * | maildir/edata.c   | @subpage maildir_edata   |
- * | maildir/maildir.c | @subpage maildir_maildir |
- * | maildir/mdata.c   | @subpage maildir_mdata   |
- * | maildir/mdemail.c | @subpage maildir_mdemail |
- * | maildir/mh.c      | @subpage maildir_mh      |
- * | maildir/shared.c  | @subpage maildir_shared  |
+ * | File               | Description               |
+ * | :----------------- | :------------------------ |
+ * | maildir/config.c   | @subpage maildir_config   |
+ * | maildir/edata.c    | @subpage maildir_edata    |
+ * | maildir/maildir.c  | @subpage maildir_maildir  |
+ * | maildir/mdata.c    | @subpage maildir_mdata    |
+ * | maildir/mdemail.c  | @subpage maildir_mdemail  |
+ * | maildir/mh.c       | @subpage maildir_mh       |
+ * | maildir/sequence.c | @subpage maildir_sequence |
+ * | maildir/shared.c   | @subpage maildir_shared   |
  */
 
 #ifndef MUTT_MAILDIR_LIB_H
