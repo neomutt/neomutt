@@ -9584,6 +9584,18 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
         be used to set <link linkend="record">$record</link>:
       </para>
       <screen>folder-hook . 'set record=^'</screen>
+      <para>
+        Note: the current mailbox shortcut,
+        <quote><literal>^</literal></quote>, has no value in some cases.  No
+        mailbox is opened when NeoMutt is invoked to send an email from the
+        command-line.  In interactive mode, NeoMutt reads the muttrc before
+        opening the mailbox, so immediate expansion won't work as expected
+        either.  This can be an issue when trying to directly assign to <link
+        linkend="record">$record</link>, but also affects the <link
+        linkend="fcc-hook">fcc-hook</link> mailbox, which is expanded
+        immediately too.  The folder-hook example above works because the
+        command is executed later, when the folder-hook fires.
+      </para>
     </sect1>
 
     <sect1 id="using-lists">
