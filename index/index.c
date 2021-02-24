@@ -67,10 +67,12 @@
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
+#include "private_data.h"
 #include "progress.h"
 #include "protos.h"
 #include "recvattach.h"
 #include "score.h"
+#include "shared_data.h"
 #include "sort.h"
 #include "status.h"
 #ifdef USE_SIDEBAR
@@ -635,9 +637,11 @@ static void update_index(struct Menu *menu, struct Context *ctx, enum MxStatus c
   }
 
   if (menu->current < 0)
+  {
     menu->current = (old_current < ctx->mailbox->vcount) ?
                         old_current :
                         ci_first_message(ctx->mailbox);
+  }
 }
 
 /**
@@ -4180,6 +4184,11 @@ static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool sta
     mutt_window_add_child(panel_index, win_ibar);
   }
 
+  struct IndexPrivateData *private = index_private_data_new();
+
+  panel_index->wdata = private;
+  panel_index->wdata_free = index_private_data_free;
+
   return panel_index;
 }
 
@@ -4230,8 +4239,20 @@ struct MuttWindow *index_pager_init(void)
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-  mutt_window_add_child(dlg, create_panel_index(dlg, c_status_on_top));
-  mutt_window_add_child(dlg, create_panel_pager(dlg, c_status_on_top));
+
+  struct MuttWindow *win_index = create_panel_index(dlg, c_status_on_top);
+  notify_set_parent(win_index->notify, dlg->notify);
+  mutt_window_add_child(dlg, win_index);
+
+  struct MuttWindow *win_pager = create_panel_pager(dlg, c_status_on_top);
+  notify_set_parent(win_pager->notify, dlg->notify);
+  mutt_window_add_child(dlg, win_pager);
+
+  struct IndexSharedData *shared = index_shared_data_new();
+  notify_set_parent(shared->notify, dlg->notify);
+
+  dlg->wdata = shared;
+  dlg->wdata_free = index_shared_data_free;
 
   index_add_observers(dlg);
   return dlg;

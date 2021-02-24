@@ -43,6 +43,7 @@ enum NotifyType
   NT_EMAIL,   ///< Email has changed,           #NotifyEmail,   #EventEmail
   NT_GLOBAL,  ///< Not object-related,          #NotifyGlobal
   NT_HEADER,  ///< A header has changed,        #NotifyHeader   #EventHeader
+  NT_INDEX,   ///< Index data has changed,      #NotifyIndex,   #IndexSharedData
   NT_MAILBOX, ///< Mailbox has changed,         #NotifyMailbox, #EventMailbox
   NT_SUBJRX,  ///< Subject Regex has changed,   #NotifySubjRx
   NT_WINDOW,  ///< MuttWindow has changed,      #NotifyWindow,  #EventWindow
