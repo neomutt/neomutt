@@ -1016,10 +1016,9 @@ enum CommandResult mutt_parse_rc_buffer(struct Buffer *line,
       {
         mutt_debug(LL_NOTIFY, "NT_COMMAND: %s\n", cmd[i].name);
         rc = cmd[i].parse(token, line, cmd[i].data, err);
-        if (rc != MUTT_CMD_SUCCESS)
-        {              /* -1 Error, +1 Finish */
+        if ((rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
           goto finish; /* Propagate return code */
-        }
+
         notify_send(NeoMutt->notify, NT_COMMAND, i, (void *) cmd);
         break; /* Continue with next command */
       }

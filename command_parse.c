@@ -1119,9 +1119,12 @@ enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
   if (unset)
   {
-    if (mutt_envlist_unset(buf->data))
-      return MUTT_CMD_SUCCESS;
-    return MUTT_CMD_ERROR;
+    if (!mutt_envlist_unset(buf->data))
+    {
+      mutt_buffer_printf(err, _("%s is unset"), buf->data);
+      return MUTT_CMD_WARNING;
+    }
+    return MUTT_CMD_SUCCESS;
   }
 
   /* set variable */
