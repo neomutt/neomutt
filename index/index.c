@@ -56,6 +56,7 @@
 #include "format_flags.h"
 #include "hdrline.h"
 #include "hook.h"
+#include "ibar.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_header.h"
@@ -1182,7 +1183,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   dlg->help_menu = MENU_MAIN;
 
   priv->menu = priv->win_index->wdata;
-  priv->menu->win_ibar = priv->win_ibar;
   priv->menu->mdata = shared;
   priv->menu->make_entry = index_make_entry;
   priv->menu->color = index_color;
@@ -4288,10 +4288,7 @@ static struct MuttWindow *create_panel_index(bool status_on_top, struct IndexSha
   panel_index->wdata = priv;
   panel_index->wdata_free = index_private_data_free;
 
-  struct MuttWindow *win_ibar =
-      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-
+  struct MuttWindow *win_ibar = ibar_create(panel_index, shared, priv);
   if (status_on_top)
   {
     mutt_window_add_child(panel_index, win_ibar);

@@ -40,6 +40,9 @@
 #include "opcodes.h"
 #include "options.h"
 #include "reflow.h"
+#ifdef USE_DEBUG_WINDOW
+#include "debug/lib.h"
+#endif
 
 struct MuttWindow *RootWindow = NULL;       ///< Parent of all Windows
 struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs

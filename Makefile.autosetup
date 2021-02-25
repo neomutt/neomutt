@@ -389,7 +389,7 @@ $(PWD)/imap:
 ###############################################################################
 # libindex
 LIBINDEX=	libindex.a
-LIBINDEXOBJS=	index/config.o index/index.o index/private_data.o index/shared_data.o index/observer.o
+LIBINDEXOBJS=	index/ibar.o index/config.o index/index.o index/private_data.o index/shared_data.o index/observer.o
 CLEANFILES+=	$(LIBINDEX) $(LIBINDEXOBJS)
 ALLOBJS+=	$(LIBINDEXOBJS)
 
