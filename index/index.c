@@ -56,6 +56,7 @@
 #include "format_flags.h"
 #include "hdrline.h"
 #include "hook.h"
+#include "ibar.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_header.h"
@@ -4179,44 +4180,39 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * create_panel_index - Create the Windows for the Index panel
+ * add_panel_index - Add the Windows for the Index panel
  * @param parent        Parent Window
  * @param status_on_top true, if the Index bar should be on top
- * @retval ptr Nested Windows
+ * @param shared        Shared Index data
  */
-static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool status_on_top)
+static void add_panel_index(struct MuttWindow *parent, bool status_on_top,
+                            struct IndexSharedData *shared)
 {
   struct MuttWindow *panel_index =
       mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   parent->focus = panel_index;
+  mutt_window_add_child(parent, panel_index);
 
   struct MuttWindow *win_index =
       mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   panel_index->focus = win_index;
 
-  struct MuttWindow *win_ibar =
-      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  struct IndexPrivateData *priv = index_private_data_new();
+  panel_index->wdata = priv;
+  panel_index->wdata_free = index_private_data_free;
 
   if (status_on_top)
   {
-    mutt_window_add_child(panel_index, win_ibar);
+    ibar_add(panel_index, shared, priv);
     mutt_window_add_child(panel_index, win_index);
   }
   else
   {
     mutt_window_add_child(panel_index, win_index);
-    mutt_window_add_child(panel_index, win_ibar);
+    ibar_add(panel_index, shared, priv);
   }
-
-  struct IndexPrivateData *priv = index_private_data_new();
-
-  panel_index->wdata = priv;
-  panel_index->wdata_free = index_private_data_free;
-
-  return panel_index;
 }
 
 /**
@@ -4229,21 +4225,16 @@ struct MuttWindow *index_pager_init(void)
       mutt_window_new(WT_DLG_INDEX, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
-  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-
-  struct MuttWindow *win_index = create_panel_index(dlg, c_status_on_top);
-  notify_set_parent(win_index->notify, dlg->notify);
-  mutt_window_add_child(dlg, win_index);
-
-  struct MuttWindow *win_pager = add_panel_pager(dlg, c_status_on_top);
-  notify_set_parent(win_pager->notify, dlg->notify);
-  mutt_window_add_child(dlg, win_pager);
-
   struct IndexSharedData *shared = index_shared_data_new();
   notify_set_parent(shared->notify, dlg->notify);
 
   dlg->wdata = shared;
   dlg->wdata_free = index_shared_data_free;
+
+  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+
+  add_panel_index(dlg, c_status_on_top, shared);
+  add_panel_pager(dlg, c_status_on_top);
 
   index_add_observers(dlg);
   return dlg;
