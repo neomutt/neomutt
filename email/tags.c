@@ -72,17 +72,19 @@ static char *driver_tags_getter(struct TagList *head, bool show_hidden,
 
 /**
  * driver_tags_add - Add a tag to header
- * @param[in] list List of tags
- * @param[in] new_tag string representing the new tag
+ * @param[in] list    List of tags
+ * @param[in] new_tag String representing the new tag
  *
  * Add a tag to the header tags
+ *
+ * @note The ownership of the string is passed to the TagList structure
  */
-static void driver_tags_add(struct TagList *list, char *new_tag)
+void driver_tags_add(struct TagList *list, char *new_tag)
 {
   char *new_tag_transformed = mutt_hash_find(TagTransforms, new_tag);
 
   struct Tag *tn = mutt_mem_calloc(1, sizeof(struct Tag));
-  tn->name = mutt_str_dup(new_tag);
+  tn->name = new_tag;
   tn->hidden = false;
   if (new_tag_transformed)
     tn->transformed = mutt_str_dup(new_tag_transformed);
@@ -196,7 +198,7 @@ bool driver_tags_replace(struct TagList *head, char *tags)
     {
       driver_tags_add(head, np->data);
     }
-    mutt_list_free(&hsplit);
+    mutt_list_clear(&hsplit);
   }
   return true;
 }
