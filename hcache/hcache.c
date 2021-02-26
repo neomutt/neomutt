@@ -130,6 +130,7 @@ static void *dump(struct HeaderCache *hc, const struct Email *e, int *off, uint3
 
   d = serial_dump_envelope(e_dump.env, d, off, convert);
   d = serial_dump_body(e_dump.body, d, off, convert);
+  d = serial_dump_tags(&e->tags, d, off);
 
   return d;
 }
@@ -169,6 +170,7 @@ static struct Email *restore(const unsigned char *d)
 
   e->body = mutt_body_new();
   serial_restore_body(e->body, d, &off, convert);
+  serial_restore_tags(&e->tags, d, &off);
 
   return e;
 }

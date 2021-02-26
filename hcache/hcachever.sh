@@ -1,6 +1,6 @@
 #!/bin/sh
 
-BASEVERSION=6
+BASEVERSION=7
 STRUCTURES="Address Body Buffer Email Envelope ListNode Parameter"
 
 cleanstruct () {
