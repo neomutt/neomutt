@@ -2011,13 +2011,18 @@ void mutt_clear_pager_position(void)
 /**
  * pager_custom_redraw - Redraw the pager window - Implements Menu::custom_redraw()
  */
-static void pager_custom_redraw(struct Menu *pager_menu, struct Mailbox *m, int msg_in_pager)
+static void pager_custom_redraw(struct Menu *pager_menu)
 {
+  assert(pager_menu);
+
   struct PagerRedrawData *rd = pager_menu->redraw_data;
   char buf[1024];
 
   if (!rd)
     return;
+
+  struct Mailbox *m = rd->extra->ctx->mailbox;
+  int msg_in_pager = rd->extra->ctx->msg_in_pager;
 
   if (pager_menu->redraw & REDRAW_FULL)
   {
@@ -2091,6 +2096,7 @@ static void pager_custom_redraw(struct Menu *pager_menu, struct Mailbox *m, int 
     mutt_show_error();
   }
 
+  // Redraw FLOW
   if (pager_menu->redraw & REDRAW_FLOW)
   {
     if (!(rd->flags & MUTT_PAGER_RETWINCH))
@@ -2253,7 +2259,6 @@ static void pager_custom_redraw(struct Menu *pager_menu, struct Mailbox *m, int 
  * @param fname  Name of file to read
  * @param flags  Flags, e.g. #MUTT_SHOWCOLOR
  * @param extra  Info about email to display
- * @param m      Mailbox
  * @retval  0 Success
  * @retval -1 Error
  *
@@ -2263,9 +2268,9 @@ static void pager_custom_redraw(struct Menu *pager_menu, struct Mailbox *m, int 
  * there so that we can do operations on the current message without the need
  * to pop back out to the main-menu.
  */
-int mutt_pager(const char *banner, const char *fname, PagerFlags flags,
-               struct Pager *extra, struct Mailbox *m)
+int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra)
 {
+  struct Mailbox *m;
   static char searchbuf[256] = { 0 };
   char buf[1024];
   int ch = 0, rc = -1;
@@ -2283,8 +2288,16 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags,
     flags |= MUTT_SHOWFLAT;
 
   int index_space = C_PagerIndexLines;
+
+  // Do we even consire an option when pager is invoked without mailbox?
+  assert(extra);
+  assert(extra->ctx);
+  assert(extra->ctx->mailbox);
   if (extra->ctx && extra->ctx->mailbox)
+  {
     index_space = MIN(index_space, extra->ctx->mailbox->vcount);
+    m = extra->ctx->mailbox;
+  }
 
   struct PagerRedrawData rd = { 0 };
   rd.banner = banner;
@@ -2374,7 +2387,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags,
   {
     mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
-    pager_custom_redraw(pager_menu, m, msg_in_pager);
+    pager_custom_redraw(pager_menu);
     window_redraw(RootWindow, true);
 
     if (C_BrailleFriendly)

@@ -731,7 +731,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
 
   if (!C_Pager || mutt_str_equal(C_Pager, "builtin"))
   {
-    rc = mutt_pager(banner, tempfile, do_color, info, NULL);
+    rc = mutt_pager(banner, tempfile, do_color, info);
   }
   else
   {

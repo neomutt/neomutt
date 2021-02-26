@@ -370,7 +370,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     info.win_index = win_index;
     info.win_pbar = win_pbar;
     info.win_pager = win_pager;
-    rc = mutt_pager(NULL, mutt_buffer_string(tempfile), MUTT_PAGER_MESSAGE, &info, m);
+    rc = mutt_pager(NULL, mutt_buffer_string(tempfile), MUTT_PAGER_MESSAGE, &info);
   }
   else
   {

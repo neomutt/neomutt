@@ -1271,9 +1271,7 @@ int menu_redraw(struct Menu *menu)
 {
   if (menu->custom_redraw)
   {
-    int msg_in_pager = Contex2 ? Contex2->msg_in_pager : -1;
-    struct Mailbox *m = ctx_mailbox(Contex2);
-    menu->custom_redraw(menu, m, msg_in_pager);
+    menu->custom_redraw(menu);
     return OP_NULL;
   }
 
