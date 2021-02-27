@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-02-06 14:52+0000\n"
+"POT-Creation-Date: 2021-02-27 13:38+0000\n"
 "PO-Revision-Date: 2006-01-11 04:13+0200\n"
 "Last-Translator: Recai Oktaş <roktas@debian.org>\n"
 "Language-Team: Debian L10n Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -26,56 +26,56 @@ msgstr ""
 msgid "Alias as: "
 msgstr "Farklı arma oluştur: "
 
-#: alias/alias.c:400
+#: alias/alias.c:401
 msgid "You already have an alias defined with that name"
 msgstr "Bu isimde bir lâkap zaten tanımlanmış"
 
-#: alias/alias.c:406
+#: alias/alias.c:407
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Uyarı: Bu arma kullanılamayabilir. Düzeltinsin mi?"
 
-#: alias/alias.c:431
+#: alias/alias.c:432
 msgid "Address: "
 msgstr "Adres:"
 
-#: alias/alias.c:443 commands.c:459 compose/compose.c:1056 conn/raw.c:146
-#: conn/raw.c:203 recvcmd.c:232 send/send.c:187
+#: alias/alias.c:445 commands.c:455 compose/compose.c:1058 conn/raw.c:146
+#: conn/raw.c:203 recvcmd.c:235 send/send.c:188
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Hatalı IDN: '%s'"
 
-#: alias/alias.c:454
+#: alias/alias.c:456
 msgid "Personal name: "
 msgstr "Kişisel ad: "
 
-#: alias/alias.c:462
+#: alias/alias.c:465
 #, fuzzy
 msgid "Comment: "
 msgstr "Komut: "
 
-#: alias/alias.c:470 alias/alias.c:474
+#: alias/alias.c:476 alias/alias.c:480
 msgid "Accept?"
 msgstr "Kabul?"
 
-#: alias/alias.c:488 recvattach.c:602 recvattach.c:624 recvattach.c:639
-#: recvattach.c:654 recvattach.c:753
+#: alias/alias.c:494 recvattach.c:602 recvattach.c:625 recvattach.c:640
+#: recvattach.c:655 recvattach.c:754
 msgid "Save to file: "
 msgstr "Dosyaya kaydet: "
 
-#: alias/alias.c:507
+#: alias/alias.c:516
 msgid "Error reading alias file"
 msgstr "Arma dosyası okunurken hata"
 
-#: alias/alias.c:531
+#: alias/alias.c:540
 #, fuzzy
 msgid "Trouble adding alias"
 msgstr "Lâkap dosyasını görüntülenirken hata oluştu"
 
-#: alias/alias.c:533
+#: alias/alias.c:542
 msgid "Alias added"
 msgstr "Arma eklendi"
 
-#: alias/alias.c:538
+#: alias/alias.c:547
 msgid "Error seeking in alias file"
 msgstr "Arma dosyasında aranırken hata"
 
@@ -94,19 +94,19 @@ msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Uyarı: '%2$s' adresindeki '%1$s' IDN'si hatalı"
 
 #: alias/dlgalias.c:57 alias/dlgquery.c:58 autocrypt/dlgautocrypt.c:61
-#: browser.c:77 browser.c:90 conn/dlgverifycert.c:47 history/dlghistory.c:46
-#: ncrypt/dlggpgme.c:64 ncrypt/dlgpgp.c:53 ncrypt/dlgsmime.c:48 pager.c:222
-#: pager.c:233 pager.c:243 pager.c:259 pattern/dlgpattern.c:63 postpone.c:70
+#: browser.c:79 browser.c:92 conn/dlgverifycert.c:47 history/dlghistory.c:46
+#: ncrypt/dlggpgme.c:64 ncrypt/dlgpgp.c:53 ncrypt/dlgsmime.c:48 pager.c:224
+#: pager.c:235 pager.c:245 pager.c:261 pattern/dlgpattern.c:63 postpone.c:70
 #: recvattach.c:96
 msgid "Exit"
 msgstr "Çık"
 
-#: alias/dlgalias.c:58 index.c:112 index.c:128 pager.c:247 pager.c:264
-#: postpone.c:71
+#: alias/dlgalias.c:58 index/index.c:107 index/index.c:123 pager.c:249
+#: pager.c:266 postpone.c:71
 msgid "Del"
 msgstr "Sil"
 
-#: alias/dlgalias.c:59 index.c:113 index.c:129 postpone.c:72
+#: alias/dlgalias.c:59 index/index.c:108 index/index.c:124 postpone.c:72
 msgid "Undel"
 msgstr "Kurtar"
 
@@ -124,11 +124,11 @@ msgid "Select"
 msgstr "Seç"
 
 #: alias/dlgalias.c:63 alias/dlgquery.c:65 autocrypt/dlgautocrypt.c:80
-#: browser.c:81 browser.c:96 compose/compose.c:230 compose/compose.c:245
-#: conn/dlgverifycert.c:48 history/dlghistory.c:49 index.c:118 index.c:134
-#: ncrypt/dlggpgme.c:67 ncrypt/dlgpgp.c:56 ncrypt/dlgsmime.c:50 pager.c:225
-#: pager.c:250 pager.c:266 pattern/dlgpattern.c:65 postpone.c:73
-#: recvattach.c:100
+#: browser.c:83 browser.c:98 compose/compose.c:231 compose/compose.c:246
+#: conn/dlgverifycert.c:48 history/dlghistory.c:49 index/index.c:113
+#: index/index.c:129 ncrypt/dlggpgme.c:67 ncrypt/dlgpgp.c:56
+#: ncrypt/dlgsmime.c:50 pager.c:227 pager.c:252 pager.c:268
+#: pattern/dlgpattern.c:65 postpone.c:73 recvattach.c:100
 msgid "Help"
 msgstr "Yardım"
 
@@ -142,25 +142,25 @@ msgid "You have no aliases"
 msgstr "Hiç bir lâkabınız yok"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: alias/dlgalias.c:268 alias/dlgquery.c:471
+#: alias/dlgalias.c:268 alias/dlgquery.c:472
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr ""
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: alias/dlgalias.c:270 alias/dlgquery.c:473
+#: alias/dlgalias.c:270 alias/dlgquery.c:474
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: alias/dlgalias.c:272 alias/dlgquery.c:475
+#: alias/dlgalias.c:272 alias/dlgquery.c:476
 msgid "adu"
 msgstr ""
 
-#: alias/dlgalias.c:314 alias/dlgquery.c:519 index.c:1818
+#: alias/dlgalias.c:314 alias/dlgquery.c:519 index/index.c:1845
 msgid "Limit to messages matching: "
 msgstr "Yalnızca eşleşen iletiler: "
 
-#: alias/dlgquery.c:59 index.c:115
+#: alias/dlgquery.c:59 index/index.c:110
 msgid "Mail"
 msgstr "Gönder"
 
@@ -180,22 +180,22 @@ msgstr "Ara"
 msgid "Waiting for response..."
 msgstr "Yanıt bekleniyor..."
 
-#: alias/dlgquery.c:325 alias/dlgquery.c:355 alias/dlgquery.c:373
-#: alias/dlgquery.c:655
+#: alias/dlgquery.c:325 alias/dlgquery.c:355 alias/dlgquery.c:374
+#: alias/dlgquery.c:656
 msgid "Query: "
 msgstr "Sorgulama: "
 
-#: alias/dlgquery.c:519
+#: alias/dlgquery.c:520
 #, fuzzy
 msgid "Query"
 msgstr "Sorgulama: "
 
-#: alias/dlgquery.c:610 alias/dlgquery.c:650
+#: alias/dlgquery.c:611 alias/dlgquery.c:651
 msgid "Query command not defined"
 msgstr "Sorgulama komutu tanımlanmadı"
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:91 index.c:1783
+#: alias/gui.c:91 index/index.c:1811
 #, c-format
 msgid "Limit: %s"
 msgstr "Sınır: %s"
@@ -203,15 +203,15 @@ msgstr "Sınır: %s"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:71 main.c:803
+#: autocrypt/autocrypt.c:72 main.c:805
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s yok. Oluşturulsun mu?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:78 bcache/bcache.c:229 hcache/hcache.c:228 main.c:807
-#: nntp/newsrc.c:1094
+#: autocrypt/autocrypt.c:79 bcache/bcache.c:229 hcache/hcache.c:228 main.c:809
+#: nntp/newsrc.c:1097
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "%s oluşturulamıyor: %s"
@@ -219,28 +219,28 @@ msgstr "%s oluşturulamıyor: %s"
 #. L10N: The first time NeoMutt is started with $autocrypt set, it will
 #. create $autocrypt_dir and then prompt to create an autocrypt account
 #. with this message.
-#: autocrypt/autocrypt.c:160
+#: autocrypt/autocrypt.c:162
 msgid "Create an initial autocrypt account?"
 msgstr "Bir başlangıç autocrypt hesabı oluşturulsun mu?"
 
 #. L10N: Autocrypt is asking for the email address to use for the
 #. autocrypt account.  This will generate a key and add a record
 #. to the database for use in autocrypt operations.
-#: autocrypt/autocrypt.c:182
+#: autocrypt/autocrypt.c:184
 msgid "Autocrypt account address: "
 msgstr "Autocrypt hesap adresi: "
 
 #. L10N: Autocrypt prompts for an account email address, and requires
 #. a single address.  This is shown if they entered something invalid,
 #. nothing, or more than one address for some reason.
-#: autocrypt/autocrypt.c:191
+#: autocrypt/autocrypt.c:193
 msgid "Please enter a single email address"
 msgstr "Lütfen tek bir e-posta adresi girin"
 
 #. L10N: When creating an autocrypt account, this message will be displayed
 #. if there is already an account in the database with the email address
 #. they just entered.
-#: autocrypt/autocrypt.c:206
+#: autocrypt/autocrypt.c:208
 msgid "That email address already has an autocrypt account"
 msgstr "Bu e-posta adresi halihazırda bir autocrypt hesabıyla ilişkili"
 
@@ -250,25 +250,25 @@ msgstr "Bu e-posta adresi halihazırda bir autocrypt hesabıyla ilişkili"
 #. enabled.
 #. Otherwise the UI will show encryption is "available" but the user
 #. will be required to enable encryption manually.
-#: autocrypt/autocrypt.c:219
+#: autocrypt/autocrypt.c:221
 msgid "Prefer encryption?"
 msgstr "Şifreleme yeğler misiniz?"
 
 #. L10N: Message displayed after an autocrypt account is successfully created.
-#: autocrypt/autocrypt.c:233
+#: autocrypt/autocrypt.c:235
 msgid "Autocrypt account creation succeeded"
 msgstr "Autocrypt hesap oluşturması başarılı"
 
 #. L10N: Error message displayed if creating an autocrypt account failed
 #. or was aborted by the user.
-#: autocrypt/autocrypt.c:237
+#: autocrypt/autocrypt.c:239
 msgid "Autocrypt account creation aborted"
 msgstr "Autocrypt hesap oluşturma iptal edildi"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the engine is not available.
-#: autocrypt/autocrypt.c:571 autocrypt/autocrypt.c:580
-#: autocrypt/autocrypt.c:587
+#: autocrypt/autocrypt.c:579 autocrypt/autocrypt.c:588
+#: autocrypt/autocrypt.c:595
 msgid "Autocrypt is not available"
 msgstr "Autocrypt kullanılabilir değil"
 
@@ -276,7 +276,7 @@ msgstr "Autocrypt kullanılabilir değil"
 #. email when the account does not exist or is not enabled.
 #. %s is the From email address used to look up the Autocrypt account.
 #.
-#: autocrypt/autocrypt.c:599
+#: autocrypt/autocrypt.c:607
 #, c-format
 msgid "Autocrypt is not enabled for %s"
 msgstr "%s için Autocrypt etkinleştirilmemiş"
@@ -284,17 +284,17 @@ msgstr "%s için Autocrypt etkinleştirilmemiş"
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
 #. The message is printed and they are returned to the compose menu.
-#: autocrypt/autocrypt.c:624 autocrypt/autocrypt.c:653
+#: autocrypt/autocrypt.c:632 autocrypt/autocrypt.c:661
 #, c-format
 msgid "No (valid) autocrypt key found for %s"
 msgstr "%s için (geçerli) autocrypt anahtarı bulunamadı"
 
-#: autocrypt/autocrypt.c:915
+#: autocrypt/autocrypt.c:928
 msgid "Scan a mailbox for autocrypt headers?"
 msgstr "Bir posta kutusu autocrypt üstbilgileri için taransın mı?"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
-#: autocrypt/autocrypt.c:919
+#: autocrypt/autocrypt.c:932
 msgid "Scan mailbox"
 msgstr "Posta kutusu tara"
 
@@ -303,7 +303,7 @@ msgstr "Posta kutusu tara"
 #. I'm purposely being extra verbose; asking first then prompting
 #. for a mailbox.  This is because this is a one-time operation
 #. and I don't want them to accidentally ctrl-g and abort it.
-#: autocrypt/autocrypt.c:937
+#: autocrypt/autocrypt.c:951
 msgid "Scan another mailbox for autocrypt headers?"
 msgstr "Başka bir posta kutusu autocrypt üstbilgileri için taransın mı?"
 
@@ -311,7 +311,7 @@ msgstr "Başka bir posta kutusu autocrypt üstbilgileri için taransın mı?"
 #. For some reason sqlite3 failed to open that database file.
 #. L10N: Error message if autocrypt couldn't open the SQLite database
 #. for some reason.  The %s is the full path of the database file.
-#: autocrypt/db.c:65 autocrypt/db.c:98
+#: autocrypt/db.c:65 autocrypt/db.c:99
 #, c-format
 msgid "Unable to open autocrypt database %s"
 msgstr "%s autocrypt veritabanı açılamıyor"
@@ -383,7 +383,7 @@ msgid "Error updating account record"
 msgstr "Hesap kaydı güncellenirken hata"
 
 #. L10N: Confirmation message when deleting an autocrypt account
-#: autocrypt/dlgautocrypt.c:302
+#: autocrypt/dlgautocrypt.c:303
 #, c-format
 msgid "Really delete account \"%s\"?"
 msgstr "\"%s\" hesabı gerçekten silinsin mi?"
@@ -452,156 +452,156 @@ msgstr "Mesaj önbelleği bir dizin değil: %s"
 msgid "Message cache isn't a directory: %s"
 msgstr "Mesaj önbelleği bir dizin değil: %s"
 
-#: browser.c:78
+#: browser.c:80
 msgid "Chdir"
 msgstr "Dizine geç"
 
-#: browser.c:79
+#: browser.c:81
 msgid "Goto"
 msgstr "Git"
 
-#: browser.c:80 browser.c:95
+#: browser.c:82 browser.c:97
 msgid "Mask"
 msgstr "Maske"
 
-#: browser.c:91
+#: browser.c:93
 msgid "List"
 msgstr "Liste"
 
-#: browser.c:92
+#: browser.c:94
 msgid "Subscribe"
 msgstr "Abone ol"
 
-#: browser.c:93
+#: browser.c:95
 msgid "Unsubscribe"
 msgstr "Aboneliği iptal et"
 
-#: browser.c:94 index.c:133
+#: browser.c:96 index/index.c:128
 msgid "Catchup"
 msgstr ""
 
-#: browser.c:737 browser.c:1522 browser.c:1757
+#: browser.c:740 browser.c:1524 browser.c:1760
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s bir dizin değil"
 
-#: browser.c:1010
+#: browser.c:1012
 #, c-format
 msgid "Subscribed newsgroups"
 msgstr "Abone olunan haber grupları"
 
-#: browser.c:1013
+#: browser.c:1015
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr "[%s] sunucuda haber grupları"
 
-#: browser.c:1023
+#: browser.c:1025
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "[%d] posta kutusu "
 
-#: browser.c:1035
+#: browser.c:1036
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Abone [%s], Dosya maskesi: %s"
 
-#: browser.c:1041
+#: browser.c:1042
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Dizin [%s], Dosya maskesi: %s"
 
-#: browser.c:1101
+#: browser.c:1102
 msgid "Can't attach a directory"
 msgstr "Bir dizin eklenemez"
 
-#: browser.c:1385 browser.c:1815 browser.c:1966
+#: browser.c:1387 browser.c:1821 browser.c:1973
 msgid "No files match the file mask"
 msgstr "Dosya maskesine uyan dosya yok"
 
-#: browser.c:1593
+#: browser.c:1595
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Oluşturma yalnızca IMAP posta kutuları için destekleniyor"
 
-#: browser.c:1615
+#: browser.c:1617
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Yeniden adlandırma yalnızca IMAP posta kutuları için destekleniyor"
 
-#: browser.c:1634
+#: browser.c:1636
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Silme yalnızca IMAP posta kutuları için destekleniyor"
 
-#: browser.c:1644
+#: browser.c:1646
 #, fuzzy
 msgid "Can't delete currently selected mailbox"
 msgstr "seçili dosyanın ismini göster"
 
-#: browser.c:1648
+#: browser.c:1650
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "\"%s\" posta kutusu gerçekten silinsin mi?"
 
-#: browser.c:1658
+#: browser.c:1660
 msgid "Mailbox deleted"
 msgstr "Posta kutusu silindi"
 
-#: browser.c:1662
+#: browser.c:1664
 msgid "Mailbox deletion failed"
 msgstr "Posta kutusu silinemedi"
 
-#: browser.c:1665
+#: browser.c:1667
 msgid "Mailbox not deleted"
 msgstr "Posta kutusu silinmedi"
 
-#: browser.c:1692
+#: browser.c:1694
 msgid "Chdir to: "
 msgstr "Dizine geç: "
 
-#: browser.c:1746 browser.c:1809
+#: browser.c:1749 browser.c:1815
 msgid "Error scanning directory"
 msgstr "Dizin taranırken hata"
 
-#: browser.c:1768
+#: browser.c:1771
 msgid "File Mask: "
 msgstr "Dosya Maskesi: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1832
+#: browser.c:1838
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Tersine sıralama seçeneği: (t)arih, (a)lfabetik, (b)oyut, tarı(m), (s)ayı, (y)eni, (h)iç?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1835
+#: browser.c:1841
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Sıralama seçeneği: (t)arih, (a)lfabetik, (b)oyut, tarı(m), (s)ayı, (y)eni, (h)iç?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1838
+#: browser.c:1844
 msgid "dazecwn"
 msgstr "tabmsyh"
 
-#: browser.c:1955
+#: browser.c:1961
 msgid "New file name: "
 msgstr "Yeni dosya adı: "
 
-#: browser.c:1982
+#: browser.c:1989
 msgid "Can't view a directory"
 msgstr "Bir dizin görüntülenemez"
 
-#: browser.c:1998
+#: browser.c:2005
 msgid "Error trying to view file"
 msgstr "Dosyayı görüntülemeye çalışırken hata oluştu"
 
-#: browser.c:2087
+#: browser.c:2094
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "%s eposta kutusuna abone olunuyor..."
 
-#: browser.c:2089
+#: browser.c:2096
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "%s aboneliği iptal ediliyor..."
 
-#: browser.c:2110
+#: browser.c:2117
 msgid "No newsgroups match the mask"
 msgstr "Tabire uyan haber grubu bulunamaz"
 
@@ -763,7 +763,7 @@ msgstr "spam: eşleşen dizgi yok"
 msgid "nospam: no matching pattern"
 msgstr "nospam: eşleşen dizgi yok"
 
-#: command_parse.c:1707 imap/imap.c:1306
+#: command_parse.c:1707 imap/imap.c:1309
 #, c-format
 msgid "Subscribed to %s"
 msgstr "%s posta kutusuna abone olundu"
@@ -786,7 +786,7 @@ msgstr "ek olmayanlar: dispozisyon yok"
 msgid "unattachments: invalid disposition"
 msgstr "ek olmayanlar: geçersiz dispozisyon"
 
-#: command_parse.c:2129 imap/imap.c:1308
+#: command_parse.c:2129 imap/imap.c:1311
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s aboneliği iptal ediliyor..."
@@ -797,122 +797,122 @@ msgid "Could not unsubscribe from %s"
 msgstr "%s aboneliği iptal ediliyor..."
 
 #. L10N: Used for the $crypt_verify_sig prompt
-#: commands.c:241
+#: commands.c:242
 msgid "Verify signature?"
 msgstr "İmza doğrulansın mı?"
 
-#: commands.c:268 mbox/mbox.c:1209
+#: commands.c:269 mbox/mbox.c:1209
 msgid "Could not create temporary file"
 msgstr "Geçici dosya yaratılamadı"
 
-#: commands.c:280
+#: commands.c:281
 msgid "Can't create display filter"
 msgstr "Gösterim süzgeci oluşturulamadı"
 
-#: commands.c:313
+#: commands.c:309
 msgid "Could not copy message"
 msgstr "İleti kopyalanamadı"
 
-#: commands.c:349
+#: commands.c:345
 msgid "S/MIME signature successfully verified"
 msgstr "S/MIME imzası başarıyla doğrulandı"
 
-#: commands.c:351
+#: commands.c:347
 msgid "S/MIME certificate owner does not match sender"
 msgstr "S/MIME sertifikasının sahibiyle göndereni uyuşmuyor"
 
-#: commands.c:354 commands.c:364
+#: commands.c:350 commands.c:360
 msgid "Warning: Part of this message has not been signed"
 msgstr "Uyarı: Bu iletinin bir bölümü imzalanmamış"
 
-#: commands.c:356
+#: commands.c:352
 msgid "S/MIME signature could NOT be verified"
 msgstr "S/MIME imzası doğrulanamadı"
 
-#: commands.c:362
+#: commands.c:358
 msgid "PGP signature successfully verified"
 msgstr "PGP imzası başarıyla doğrulandı"
 
-#: commands.c:366
+#: commands.c:362
 msgid "PGP signature could NOT be verified"
 msgstr "PGP imzası doğrulanamadı"
 
-#: commands.c:387 compmbox/compress.c:337 compose/compose.c:2607
-#: gui/curs_lib.c:363 gui/curs_lib.c:741 index.c:1272 index.c:1321
-#: mutt_attach.c:163 mutt_attach.c:297 pager.c:2459 send/sendlib.c:1057
+#: commands.c:383 compmbox/compress.c:337 compose/compose.c:2621
+#: gui/curs_lib.c:364 gui/curs_lib.c:744 index/index.c:1289 index/index.c:1341
+#: mutt_attach.c:163 mutt_attach.c:297 pager.c:2486 send/sendlib.c:1057
 #, c-format
 msgid "Error running \"%s\""
 msgstr "\"%s\" çalıştırılırken bir hata oluştu"
 
-#: commands.c:397
+#: commands.c:393
 msgid "Command: "
 msgstr "Komut: "
 
-#: commands.c:434 recvcmd.c:191 recvcmd.c:203
+#: commands.c:430 recvcmd.c:191 recvcmd.c:203
 msgid "Warning: message contains no From: header"
 msgstr "Uyarı: İleti Kimden: üstbilgisi içermiyor"
 
-#: commands.c:440 recvcmd.c:212
+#: commands.c:436 recvcmd.c:212
 msgid "Bounce message to: "
 msgstr "İletinin geri gönderme adresi: "
 
-#: commands.c:442 recvcmd.c:214
+#: commands.c:438 recvcmd.c:214
 msgid "Bounce tagged messages to: "
 msgstr "İmli iletileri geri gönder:"
 
-#: commands.c:451 recvcmd.c:224
+#: commands.c:447 recvcmd.c:227
 msgid "Error parsing address"
 msgstr "Adres ayrıştırılırken hata"
 
-#: commands.c:470 recvcmd.c:243
+#: commands.c:466 recvcmd.c:246
 #, fuzzy, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
 msgstr[0] "İletiyi %s adresine geri gönder"
 msgstr[1] "İletilerin geri gönderme adresi: %s?"
 
-#: commands.c:485 recvcmd.c:257
+#: commands.c:481 recvcmd.c:260
 #, fuzzy
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "İleti geri gönderilmedi"
 msgstr[1] "İleti geri gönderilmedi"
 
-#: commands.c:511 recvcmd.c:281
+#: commands.c:507 recvcmd.c:284
 #, fuzzy
 msgid "Message bounced"
 msgid_plural "Messages bounced"
 msgstr[0] "İleti geri gönderildi"
 msgstr[1] "İleti geri gönderildi"
 
-#: commands.c:621 commands.c:657 commands.c:677
+#: commands.c:617 commands.c:653 commands.c:673
 msgid "Can't create filter process"
 msgstr "Süzgeç süreci oluşturulamadı"
 
-#: commands.c:713
+#: commands.c:709
 msgid "Pipe to command: "
 msgstr "Borulanacak komut: "
 
-#: commands.c:738
+#: commands.c:737
 msgid "No printing command has been defined"
 msgstr "Hiçbir yazdırma komutu tanımlanmadı"
 
-#: commands.c:750
+#: commands.c:749
 msgid "Print message?"
 msgstr "İleti yazdırılsın mı?"
 
-#: commands.c:751
+#: commands.c:750
 msgid "Print tagged messages?"
 msgstr "İmli iletiler yazdırılsın mı?"
 
-#: commands.c:757
+#: commands.c:756
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "İleti yazdırıldı"
 msgstr[1] "İleti yazdırıldı"
 
-#: commands.c:760
+#: commands.c:759
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
@@ -920,145 +920,145 @@ msgstr[0] "İleti yazdırılamadı"
 msgstr[1] "İleti yazdırılamadı"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: commands.c:777
+#: commands.c:776
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Ters-sıra: (t)arih/(k)imden/(a)lıcı/k(o)nu/ki(m)e/(i)lmek/sırası(z)/(b)oyut/(p)uan/(s)pam/(e)tiket?:"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: commands.c:781
+#: commands.c:780
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Sıra: (t)arih/(k)imden/(a)lıcı/k(o)nu/ki(m)e/(i)lmek/sırası(z)/(b)oyut/(p)uan/(s)pam/(e)tiket?:"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: commands.c:785
+#: commands.c:784
 msgid "dfrsotuzcpl"
 msgstr "hkaoeizbpst"
 
-#: commands.c:851
+#: commands.c:850
 msgid "Shell command: "
 msgstr "Kabuk komutu: "
 
 #. L10N: Progress meter message when copying tagged messages
-#: commands.c:1067
+#: commands.c:1069
 msgid "Copying tagged messages..."
 msgstr "İmli iletiler kopyalanıyor..."
 
-#: commands.c:1071
+#: commands.c:1073
 #, fuzzy
 msgid "Copy tagged to mailbox"
 msgstr "Eposta kutusuna kopyalanacak işaretliler"
 
-#: commands.c:1071
+#: commands.c:1073
 #, fuzzy
 msgid "Copy to mailbox"
 msgstr "Eposta kutusuna kopyalanacak"
 
-#: commands.c:1074
+#: commands.c:1076
 #, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "Eposta kutusuna şifre çözerek kopyalanacak işaretliler"
 
-#: commands.c:1075
+#: commands.c:1077
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgstr "Eposta kutusuna şifre çözerek kopyalanacak"
 
-#: commands.c:1078
+#: commands.c:1080
 #, fuzzy
 msgid "Decode-copy tagged to mailbox"
 msgstr "Eposta kutusuna çözerek kopyalanacak işaretliler"
 
-#: commands.c:1079
+#: commands.c:1081
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgstr "Eposta kutusuna çözerek kopyalanacak"
 
 #. L10N: Progress meter message when saving tagged messages
-#: commands.c:1086
+#: commands.c:1088
 msgid "Saving tagged messages..."
 msgstr "İmli iletiler kaydediliyor..."
 
-#: commands.c:1090
+#: commands.c:1092
 #, fuzzy
 msgid "Save tagged to mailbox"
 msgstr "Eposta kutusuna kaydedilecek işaretliler"
 
-#: commands.c:1090
+#: commands.c:1092
 #, fuzzy
 msgid "Save to mailbox"
 msgstr "Eposta kutusuna kaydedilecek"
 
-#: commands.c:1093
+#: commands.c:1095
 #, fuzzy
 msgid "Decrypt-save tagged to mailbox"
 msgstr "Eposta kutusuna şifre çözerek kaydedilecek işaretliler"
 
-#: commands.c:1094
+#: commands.c:1096
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgstr "Eposta kutusuna şifre çözerek kaydedilecek"
 
-#: commands.c:1097
+#: commands.c:1099
 #, fuzzy
 msgid "Decode-save tagged to mailbox"
 msgstr "Eposta kutusuna çözerek kaydedilecek işaretliler"
 
-#: commands.c:1098
+#: commands.c:1100
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgstr "Eposta kutusuna çözerek kaydedilecek"
 
-#: commands.c:1142
+#: commands.c:1145
 #, c-format
 msgid "Copying to %s..."
 msgstr "%s konumuna kopyalanıyor..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
-#: commands.c:1284
+#: commands.c:1287
 #, fuzzy
 msgid "Error saving tagged messages"
 msgstr "İmli iletiler kaydediliyor..."
 
 #. L10N: Message when an index/pager save operation fails for some reason
-#: commands.c:1289
+#: commands.c:1292
 #, fuzzy
 msgid "Error saving message"
 msgstr "İleti gönderilirken hata oluştu"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
-#: commands.c:1296
+#: commands.c:1299
 #, fuzzy
 msgid "Error copying tagged messages"
 msgstr "İmli iletiler kopyalanıyor..."
 
 #. L10N: Message when an index/pager copy operation fails for some reason
-#: commands.c:1301
+#: commands.c:1304
 #, fuzzy
 msgid "Error copying message"
 msgstr "İleti geri gönderilirken hata oluştu"
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
-#: commands.c:1348
+#: commands.c:1351
 #, fuzzy
 msgid "Content type is too long"
 msgstr "İçerik-Tipi %s olarak değiştirildi"
 
-#: commands.c:1375
+#: commands.c:1379
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Gönderilirken %s karakter kümesine dönüştürülsün mü?"
 
-#: commands.c:1386
+#: commands.c:1390
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "İçerik-Türü %s olarak değiştirildi"
 
-#: commands.c:1391
+#: commands.c:1395
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "Karakter kümesi %s olarak değiştirildi; dönüştürme yapılmıyor"
 
-#: commands.c:1392
+#: commands.c:1396
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting"
 msgstr "Karakter kümesi %s olarak değiştirildi; dönüştürme yapılıyor"
@@ -1115,52 +1115,52 @@ msgstr "%s konumuna sıkıştırılıp iliştiriliyor..."
 msgid "Error. Preserving temporary file: %s"
 msgstr "Hata. Geçici dosya %s korunmaya alındı"
 
-#: compose/compose.c:98
+#: compose/compose.c:99
 msgid "There are no attachments"
 msgstr "Posta eki yok"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:177
+#: compose/compose.c:178
 msgid "From: "
 msgstr "Kimden: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:179 send/send.c:250
+#: compose/compose.c:180 send/send.c:255
 msgid "To: "
 msgstr "Kime: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:181 send/send.c:254
+#: compose/compose.c:182 send/send.c:259
 msgid "Cc: "
 msgstr "Kopya: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:183 send/send.c:258
+#: compose/compose.c:184 send/send.c:263
 msgid "Bcc: "
 msgstr "Gizli kopya: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:185 send/send.c:295
+#: compose/compose.c:186 send/send.c:300
 msgid "Subject: "
 msgstr "Konu: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:187
+#: compose/compose.c:188
 msgid "Reply-To: "
 msgstr "Yanıtla: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:189
+#: compose/compose.c:190
 msgid "Fcc: "
 msgstr "Kopya: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
-#: compose/compose.c:192
+#: compose/compose.c:193
 msgid "Mix: "
 msgstr "Mix: "
 
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
-#: compose/compose.c:195
+#: compose/compose.c:196
 msgid "Security: "
 msgstr "Güvenlik: "
 
@@ -1169,79 +1169,79 @@ msgstr "Güvenlik: "
 #. other compose menu fields.  However, if possible, it should not be longer
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
-#: compose/compose.c:201 ncrypt/crypt_gpgme.c:4242 ncrypt/pgp.c:1967
-#: ncrypt/smime.c:2157
+#: compose/compose.c:202 ncrypt/crypt_gpgme.c:4244 ncrypt/pgp.c:1968
+#: ncrypt/smime.c:2161
 msgid "Sign as: "
 msgstr "Farklı imzala: "
 
 #. L10N: The compose menu autocrypt line
-#: compose/compose.c:204
+#: compose/compose.c:205
 msgid "Autocrypt: "
 msgstr "Autocrypt: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:208
+#: compose/compose.c:209
 msgid "Newsgroups: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:210
+#: compose/compose.c:211
 msgid "Followup-To: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:212
+#: compose/compose.c:213
 msgid "X-Comment-To: "
 msgstr ""
 
-#: compose/compose.c:214
+#: compose/compose.c:215
 msgid "Headers: "
 msgstr ""
 
-#: compose/compose.c:220 compose/compose.c:239
+#: compose/compose.c:221 compose/compose.c:240
 msgid "Send"
 msgstr "Gönder"
 
-#: compose/compose.c:221 compose/compose.c:240 remailer.c:80
+#: compose/compose.c:222 compose/compose.c:241 remailer.c:80
 msgid "Abort"
 msgstr "İptal"
 
 #. L10N: compose menu help line entry
-#: compose/compose.c:223
+#: compose/compose.c:224
 msgid "To"
 msgstr "Kime"
 
 #. L10N: compose menu help line entry
-#: compose/compose.c:225
+#: compose/compose.c:226
 msgid "CC"
 msgstr "Kopya"
 
 #. L10N: compose menu help line entry
-#: compose/compose.c:227 compose/compose.c:242
+#: compose/compose.c:228 compose/compose.c:243
 msgid "Subj"
 msgstr "Konu"
 
-#: compose/compose.c:228 compose/compose.c:243 compose/compose.c:1999
+#: compose/compose.c:229 compose/compose.c:244 compose/compose.c:2006
 msgid "Attach file"
 msgstr "Dosya ekle"
 
-#: compose/compose.c:229 compose/compose.c:244
+#: compose/compose.c:230 compose/compose.c:245
 msgid "Descrip"
 msgstr "Açıklama"
 
-#: compose/compose.c:241
+#: compose/compose.c:242
 msgid "Newsgroups"
 msgstr "Haber grupları"
 
 #. L10N: Autocrypt recommendation flag: off.
 #. * This is displayed when Autocrypt is turned off.
-#: compose/compose.c:255 compose/compose.c:660
+#: compose/compose.c:256 compose/compose.c:661
 msgid "Off"
 msgstr "Kapalı"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
-#: compose/compose.c:258
+#: compose/compose.c:259
 msgid "No"
 msgstr "Hayır"
 
@@ -1249,7 +1249,7 @@ msgstr "Hayır"
 #. * This is displayed when Autocrypt believes encryption should not be used.
 #. * This might occur if one of the recipient Autocrypt Keys has not been
 #. * used recently, or if the only key available is a Gossip Header key.
-#: compose/compose.c:263
+#: compose/compose.c:264
 msgid "Discouraged"
 msgstr "Önerilmez"
 
@@ -1257,14 +1257,14 @@ msgstr "Önerilmez"
 #. * This is displayed when Autocrypt believes encryption is possible, but
 #. * leaves enabling it up to the sender.  Probably because "prefer encrypt"
 #. * is not set in both the sender and recipient keys.
-#: compose/compose.c:268
+#: compose/compose.c:269
 msgid "Available"
 msgstr "Kullanılabilir"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
-#: compose/compose.c:272
+#: compose/compose.c:273
 msgid "Yes"
 msgstr "Evet"
 
@@ -1272,64 +1272,64 @@ msgstr "Evet"
 #. (e)ncrypt enables encryption via autocrypt.
 #. (c)lear sets cleartext.
 #. (a)utomatic defers to the recommendation.
-#: compose/compose.c:357
+#: compose/compose.c:358
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
 msgstr ""
 
 #. L10N: The letter corresponding to the compose menu autocrypt prompt
 #. (e)ncrypt, (c)lear, (a)utomatic
-#: compose/compose.c:363
+#: compose/compose.c:364
 msgid "eca"
 msgstr "rtk"
 
-#: compose/compose.c:581
+#: compose/compose.c:582
 msgid "Sign, Encrypt"
 msgstr "İmzala, Şifrele"
 
-#: compose/compose.c:586 compose/compose.c:655
+#: compose/compose.c:587 compose/compose.c:656
 msgid "Encrypt"
 msgstr "Şifrele"
 
-#: compose/compose.c:591
+#: compose/compose.c:592
 msgid "Sign"
 msgstr "İmzala"
 
-#: compose/compose.c:597
+#: compose/compose.c:598
 msgid "None"
 msgstr "Hiçbiri"
 
-#: compose/compose.c:607
+#: compose/compose.c:608
 msgid " (inline PGP)"
 msgstr " (satıriçi PGP)"
 
-#: compose/compose.c:609
+#: compose/compose.c:610
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: compose/compose.c:612
+#: compose/compose.c:613
 msgid " (S/MIME)"
 msgstr " (S/MIME)"
 
-#: compose/compose.c:618
+#: compose/compose.c:619
 msgid " (OppEnc mode)"
 msgstr " (OppEnc kipi)"
 
-#: compose/compose.c:627 compose/compose.c:635
+#: compose/compose.c:628 compose/compose.c:636
 msgid "<default>"
 msgstr "<öntanımlı>"
 
-#: compose/compose.c:643
+#: compose/compose.c:644
 msgid "Encrypt with: "
 msgstr "Şifreleme anahtarı: "
 
 #. L10N: The autocrypt compose menu Recommendation field.
 #. Displays the output of the recommendation engine
 #. (Off, No, Discouraged, Available, Yes)
-#: compose/compose.c:666
+#: compose/compose.c:667
 msgid "Recommendation: "
 msgstr "Öneri: "
 
-#: compose/compose.c:731
+#: compose/compose.c:733
 msgid "<no chain defined>"
 msgstr ""
 
@@ -1337,7 +1337,7 @@ msgstr ""
 #. doesn't stat.  %d is the attachment number and %s is the attachment
 #. filename.  The filename is located last to avoid a long path hiding
 #. the error message.
-#: compose/compose.c:783
+#: compose/compose.c:785
 #, c-format
 msgid "Attachment #%d no longer exists: %s"
 msgstr "#%d eki artık yok: %s"
@@ -1346,192 +1346,192 @@ msgstr "#%d eki artık yok: %s"
 #. is modified behind the scenes.  %d is the attachment number and %s is
 #. the attachment filename.  The filename is located last to avoid a long
 #. path hiding the prompt question.
-#: compose/compose.c:801
+#: compose/compose.c:803
 #, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "#%d eki değiştirildi. %s kodlaması güncellensin mi?"
 
-#: compose/compose.c:861
+#: compose/compose.c:863
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: compose/compose.c:1027
+#: compose/compose.c:1029
 msgid "-- Attachments"
 msgstr "-- Ekler"
 
-#: compose/compose.c:1078
+#: compose/compose.c:1080
 msgid "You may not delete the only attachment"
 msgstr "Tek kalmış bir eki silemezsiniz"
 
-#: compose/compose.c:1746 send/send.c:2641
+#: compose/compose.c:1753 send/send.c:2655
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "'%s' hatalı IDN'e sahip: '%s'"
 
-#: compose/compose.c:1790
+#: compose/compose.c:1797
 #, fuzzy
 msgid "Attachment is already at top"
 msgstr "Ek kaydedildi"
 
-#: compose/compose.c:1795 compose/compose.c:1811
+#: compose/compose.c:1802 compose/compose.c:1818
 #, fuzzy
 msgid "The fundamental part can't be moved"
 msgstr "Mevcut ek dönüştürülmeyecek"
 
-#: compose/compose.c:1806
+#: compose/compose.c:1813
 #, fuzzy
 msgid "Attachment is already at bottom"
 msgstr "Ek, süzgeçten geçirildi"
 
-#: compose/compose.c:1824
+#: compose/compose.c:1831
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr ""
 
-#: compose/compose.c:1905
+#: compose/compose.c:1912
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr ""
 
-#: compose/compose.c:1918
+#: compose/compose.c:1925
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr ""
 
-#: compose/compose.c:1920
+#: compose/compose.c:1927
 #, fuzzy
 msgid "Not sending this message"
 msgstr "İleti gönderilirken hata oluştu"
 
-#: compose/compose.c:2019
+#: compose/compose.c:2026
 #, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "Seçili dosyalar ekleniyor..."
 msgstr[1] "Seçili dosyalar ekleniyor..."
 
-#: compose/compose.c:2036
+#: compose/compose.c:2043
 #, c-format
 msgid "Unable to attach %s"
 msgstr "%s eklenemedi"
 
-#: compose/compose.c:2058
+#: compose/compose.c:2065
 msgid "Open mailbox to attach message from"
 msgstr "Eklenecek iletileri içeren posta kutusunu seçin"
 
-#: compose/compose.c:2069
+#: compose/compose.c:2076
 msgid "Open newsgroup to attach message from"
 msgstr "Eklenecek iletileri içeren eposta kutusunu seçin"
 
-#: compose/compose.c:2123 main.c:1227
+#: compose/compose.c:2131 main.c:1230
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "%s posta kutusu açılamıyor"
 
-#: compose/compose.c:2132
+#: compose/compose.c:2140
 msgid "No messages in that folder"
 msgstr "O klasörde ileti yok"
 
-#: compose/compose.c:2142
+#: compose/compose.c:2150
 msgid "Tag the messages you want to attach"
 msgstr "Eklemek istediğiniz iletileri işaretleyin"
 
-#: compose/compose.c:2182
+#: compose/compose.c:2190
 msgid "Unable to attach"
 msgstr "Eklenemedi"
 
-#: compose/compose.c:2222
+#: compose/compose.c:2230
 msgid "Recoding only affects text attachments"
 msgstr "Yeniden kodlama yalnızca metin ekleri üzerinde etkilidir"
 
-#: compose/compose.c:2227
+#: compose/compose.c:2235
 msgid "The current attachment won't be converted"
 msgstr "Mevcut ek dönüştürülmeyecek"
 
-#: compose/compose.c:2229
+#: compose/compose.c:2237
 msgid "The current attachment will be converted"
 msgstr "Mevcut ek dönüştürülecek"
 
-#: compose/compose.c:2312
+#: compose/compose.c:2322
 msgid "Empty 'Content-Language'"
 msgstr ""
 
-#: compose/compose.c:2334
+#: compose/compose.c:2344
 msgid "Invalid encoding"
 msgstr "Geçersiz kodlama"
 
-#: compose/compose.c:2356
+#: compose/compose.c:2366
 msgid "Save a copy of this message?"
 msgstr "Bu iletinin bir kopyası kaydedilsin mi?"
 
-#: compose/compose.c:2413
+#: compose/compose.c:2423
 msgid "Send attachment with name: "
 msgstr "Eki şu adla gönder: "
 
-#: compose/compose.c:2428
+#: compose/compose.c:2439
 msgid "Rename to: "
 msgstr "Yeniden adlandır: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/compose.c:2435 editmsg.c:101 editmsg.c:135 editmsg.c:153
+#: compose/compose.c:2447 editmsg.c:101 editmsg.c:135 editmsg.c:153
 #: send/sendlib.c:487
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "%s incelenemiyor: %s"
 
-#: compose/compose.c:2455
+#: compose/compose.c:2467
 msgid "New file: "
 msgstr "Yeni dosya: "
 
-#: compose/compose.c:2473
+#: compose/compose.c:2487
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type temel/alt-tür biçiminde girilmeli"
 
-#: compose/compose.c:2480
+#: compose/compose.c:2494
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Bilinmeyen Content-Type %s"
 
-#: compose/compose.c:2488
+#: compose/compose.c:2502
 #, c-format
 msgid "Can't create file %s"
 msgstr "%s dosyası oluşturulamadı"
 
-#: compose/compose.c:2497
+#: compose/compose.c:2511
 msgid "What we have here is a failure to make an attachment"
 msgstr "Durum şu ki, eklemeyi yapamadık"
 
-#: compose/compose.c:2562
+#: compose/compose.c:2576
 #, fuzzy
 msgid "Save (postpone) draft message?"
 msgstr "Ertelenen ileti açılsın mı?"
 
-#: compose/compose.c:2625
+#: compose/compose.c:2639
 msgid "Write message to mailbox"
 msgstr "İletiyi posta kutusuna kaydet"
 
-#: compose/compose.c:2628
+#: compose/compose.c:2644
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "İleti %s posta kutusuna kaydediliyor..."
 
-#: compose/compose.c:2635
+#: compose/compose.c:2651
 msgid "Message written"
 msgstr "İleti kaydedildi"
 
-#: compose/compose.c:2648
+#: compose/compose.c:2664
 msgid "No PGP backend configured"
 msgstr "Herhangi bir PGP arka ucu yapılandırılmamış"
 
-#: compose/compose.c:2655 compose/compose.c:2737
+#: compose/compose.c:2671 compose/compose.c:2753
 msgid "S/MIME already selected. Clear and continue?"
 msgstr "S/MIME zaten seçili durumda. Önceki iptâl edilerek devam edilsin mi?"
 
-#: compose/compose.c:2687
+#: compose/compose.c:2703
 msgid "No S/MIME backend configured"
 msgstr "Herhangi bir S/MIME arka ucu yapılandırılmamış"
 
-#: compose/compose.c:2695
+#: compose/compose.c:2711
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP zaten seçili durumda. Önceki iptâl edilerek devam edilsin mi?"
 
@@ -1550,7 +1550,7 @@ msgid "'charset' must contain exactly one character set name"
 msgstr ""
 
 #: config/charset.c:66 hcache/config.c:67 hcache/config.c:86
-#: hcache/config.c:106 mutt_config.c:155
+#: hcache/config.c:106 mutt_config.c:154
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Geçersiz ay günü: %s"
@@ -1883,7 +1883,7 @@ msgstr "Sertifika sahibi denetimi başarısız: %s"
 msgid "I/O error"
 msgstr "G/Ç hatası"
 
-#: conn/openssl.c:1155 conn/raw.c:252 gui/curs_lib.c:595 mutt_logging.c:147
+#: conn/openssl.c:1155 conn/raw.c:252 gui/curs_lib.c:596 mutt_logging.c:147
 msgid "unknown error"
 msgstr "bilinmeyen hata"
 
@@ -2026,20 +2026,20 @@ msgstr "İleti dosyası %s açılamıyor"
 msgid "Can't append to folder: %s"
 msgstr "%s dizinine eklenemiyor"
 
-#: email/parse.c:1457
+#: email/parse.c:1459
 msgid "multipart message has no boundary parameter"
 msgstr "çok parçalı (multipart) iletinin sınırlama (boundary) değişkeni yok"
 
-#: flags.c:383 index.c:2639 index.c:2679 index.c:3205 index.c:3241
-#: mutt_thread.c:1126 mutt_thread.c:1192 mutt_thread.c:1277
+#: flags.c:385 index/index.c:2699 index/index.c:2739 index/index.c:3269
+#: index/index.c:3307 mutt_thread.c:1126 mutt_thread.c:1192 mutt_thread.c:1277
 msgid "Threading is not enabled"
 msgstr "İlmek kullanımı etkin değil"
 
-#: flags.c:443
+#: flags.c:445
 msgid "Clear flag"
 msgstr "Bayrağı sil"
 
-#: flags.c:443
+#: flags.c:445
 msgid "Set flag"
 msgstr "Bayrağı ayarla"
 
@@ -2077,23 +2077,23 @@ msgstr ""
 msgid "%s: invalid number: %s"
 msgstr "%d: geçersiz ileti numarası.\n"
 
-#: gui/curs_lib.c:382
+#: gui/curs_lib.c:383
 msgid "yes"
 msgstr "evet"
 
-#: gui/curs_lib.c:383
+#: gui/curs_lib.c:384
 msgid "no"
 msgstr "hayır"
 
-#: gui/curs_lib.c:545
+#: gui/curs_lib.c:546
 msgid "Exit NeoMutt?"
 msgstr "NeoMutt'tan çıkılsın mı?"
 
-#: gui/curs_lib.c:624
+#: gui/curs_lib.c:625
 msgid "Press any key to continue..."
 msgstr "Sürdürmek için herhangi bir düğmeye basın..."
 
-#: gui/curs_lib.c:776
+#: gui/curs_lib.c:780
 msgid " ('?' for list): "
 msgstr " (liste için '?'e basın): "
 
@@ -2151,7 +2151,7 @@ msgid "Invoking autoview command: %s"
 msgstr "Kendiliğinden görüntüleme komutu çalıştırılıyor: %s"
 
 #: handler.c:592 mutt_attach.c:544 mutt_attach.c:741 mutt_attach.c:1154
-#: mutt_attach.c:1220 ncrypt/dlgpgp.c:589 ncrypt/pgpkey.c:285
+#: mutt_attach.c:1220 ncrypt/dlgpgp.c:589 ncrypt/pgpkey.c:287
 msgid "Can't create filter"
 msgstr "Süzgeç oluşturulamıyor"
 
@@ -2396,14 +2396,14 @@ msgstr "Hatalı geçmiş dosyası biçimi (satır %d)"
 #: ncrypt/crypt_gpgme.c:2331 ncrypt/crypt_gpgme.c:2363
 #: ncrypt/crypt_gpgme.c:2381 ncrypt/crypt_gpgme.c:2465
 #: ncrypt/crypt_gpgme.c:3054 ncrypt/crypt_gpgme.c:3154 ncrypt/dlggpgme.c:842
-#: ncrypt/dlgpgp.c:574 ncrypt/pgp.c:565 ncrypt/pgp.c:572 ncrypt/pgp.c:885
-#: ncrypt/pgp.c:1003 ncrypt/pgp.c:1150 ncrypt/pgp.c:1170 ncrypt/pgp.c:1204
-#: ncrypt/pgp.c:1560 ncrypt/pgpkey.c:267 ncrypt/pgpmicalg.c:192
-#: ncrypt/smime.c:857 ncrypt/smime.c:865 ncrypt/smime.c:956 ncrypt/smime.c:1064
-#: ncrypt/smime.c:1130 ncrypt/smime.c:1138 ncrypt/smime.c:1336
-#: ncrypt/smime.c:1730 ncrypt/smime.c:1808 ncrypt/smime.c:1815
-#: ncrypt/smime.c:1919 ncrypt/smime.c:2043 ncrypt/smime.c:2059 nntp/nntp.c:1393
-#: nntp/nntp.c:2230 pattern/exec.c:142 pop/pop.c:175
+#: ncrypt/dlgpgp.c:574 ncrypt/pgp.c:566 ncrypt/pgp.c:573 ncrypt/pgp.c:886
+#: ncrypt/pgp.c:1004 ncrypt/pgp.c:1151 ncrypt/pgp.c:1171 ncrypt/pgp.c:1205
+#: ncrypt/pgp.c:1561 ncrypt/pgpkey.c:269 ncrypt/pgpmicalg.c:192
+#: ncrypt/smime.c:860 ncrypt/smime.c:868 ncrypt/smime.c:959 ncrypt/smime.c:1067
+#: ncrypt/smime.c:1133 ncrypt/smime.c:1141 ncrypt/smime.c:1340
+#: ncrypt/smime.c:1734 ncrypt/smime.c:1812 ncrypt/smime.c:1819
+#: ncrypt/smime.c:1923 ncrypt/smime.c:2047 ncrypt/smime.c:2063 nntp/nntp.c:1292
+#: nntp/nntp.c:2129 pattern/exec.c:142 pop/pop.c:123
 msgid "Can't create temporary file"
 msgstr "Geçici dosya oluşturulamıyor"
 
@@ -2419,16 +2419,16 @@ msgstr ""
 msgid "badly formatted command string"
 msgstr "hatalı biçimlendirilmiş komut dizisi"
 
-#: hook.c:463
+#: hook.c:464
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: Bir kanca içindeyken unhook * komutu kullanılamaz"
 
-#: hook.c:476
+#: hook.c:477
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: bilinmeyen kanca: %s"
 
-#: hook.c:486
+#: hook.c:487
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: %s bir %s içindeyken silinemez"
@@ -2453,7 +2453,7 @@ msgstr "%s: böyle bir menü yok"
 
 #. L10N: '%s' is the file name of the temporary file
 #: icommands.c:284 icommands.c:296 icommands.c:322 icommands.c:350
-#: icommands.c:360 imap/message.c:1063
+#: icommands.c:360 imap/message.c:1099
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "Geçici dosya %s oluşturulamadı!"
@@ -2465,16 +2465,16 @@ msgstr "Doğrulamacılar erişilir durumda değil"
 
 #. L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:56 imap/auth_cram.c:105 imap/auth_gss.c:165
-#: imap/auth_oauth.c:62 imap/auth_sasl.c:124 nntp/nntp.c:603 nntp/nntp.c:669
-#: pop/auth.c:97 pop/auth.c:242 pop/auth.c:335 send/smtp.c:468 send/smtp.c:554
+#: imap/auth_oauth.c:62 imap/auth_sasl.c:124 nntp/nntp.c:502 nntp/nntp.c:568
+#: pop/auth.c:98 pop/auth.c:243 pop/auth.c:336 send/smtp.c:468 send/smtp.c:554
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Kimlik doğrulanıyor (%s)..."
 
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:89 imap/auth_cram.c:179 imap/auth_gss.c:344
-#: imap/auth_oauth.c:95 imap/auth_sasl.c:256 nntp/nntp.c:764 pop/auth.c:195
-#: pop/auth.c:263 send/smtp.c:619 send/smtp.c:693 send/smtp.c:782
+#: imap/auth_oauth.c:95 imap/auth_sasl.c:256 nntp/nntp.c:663 pop/auth.c:196
+#: pop/auth.c:264 send/smtp.c:619 send/smtp.c:693 send/smtp.c:782
 #, c-format
 msgid "%s authentication failed"
 msgstr "%s kimlik doğrulaması başarısız"
@@ -2483,11 +2483,11 @@ msgstr "%s kimlik doğrulaması başarısız"
 msgid "LOGIN disabled on this server"
 msgstr "Bu sunucuda LOGIN kapalı"
 
-#: imap/auth_login.c:57 imap/auth_plain.c:53 pop/auth.c:279
+#: imap/auth_login.c:57 imap/auth_plain.c:53 pop/auth.c:280
 msgid "Logging in..."
 msgstr "Giriş yapılıyor..."
 
-#: imap/auth_login.c:75 imap/auth_plain.c:93 pop/auth.c:320
+#: imap/auth_login.c:75 imap/auth_plain.c:93 pop/auth.c:321
 msgid "Login failed"
 msgstr "Giriş başarısız oldu"
 
@@ -2510,43 +2510,43 @@ msgstr "Böyle bir dizin yok: %s"
 msgid "Create mailbox: "
 msgstr "Posta kutusu oluştur: "
 
-#: imap/browse.c:405 imap/browse.c:457
+#: imap/browse.c:408 imap/browse.c:460
 msgid "Mailbox must have a name"
 msgstr "Posta kutusunun bir adı olmalı"
 
-#: imap/browse.c:413
+#: imap/browse.c:416
 msgid "Mailbox created"
 msgstr "Posta kutusu oluşturuldu"
 
-#: imap/browse.c:445
+#: imap/browse.c:448
 msgid "Can't rename root folder"
 msgstr "Kök dizin yeniden isimlendirilemedi"
 
-#: imap/browse.c:449
+#: imap/browse.c:452
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "%s posta kutusunu yeniden adlandır: "
 
-#: imap/browse.c:465
+#: imap/browse.c:468
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Yeniden adlandırma başarısız: %s"
 
-#: imap/browse.c:469
+#: imap/browse.c:472
 msgid "Mailbox renamed"
 msgstr "Posta kutusu yeniden adlandırıldı"
 
-#: imap/command.c:176
+#: imap/command.c:179
 #, c-format
 msgid "Mailbox %s@%s closed"
 msgstr "%s@%s posta kutusu kapatıldı"
 
-#: imap/command.c:1167
+#: imap/command.c:1170
 #, fuzzy, c-format
 msgid "IMAP command failed: %s"
 msgstr "Önceden bağlanma komutu (preconnect) başarısız oldu."
 
-#: imap/command.c:1266 imap/command.c:1385
+#: imap/command.c:1269 imap/command.c:1388
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "%s bağlantısı zaman aşımına uğradı"
@@ -2556,147 +2556,155 @@ msgstr "%s bağlantısı zaman aşımına uğradı"
 msgid "Option %s: %s is not a valid authenticator"
 msgstr ""
 
-#: imap/imap.c:101
+#: imap/imap.c:104
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "Bu IMAP sunucusu çok eski. NeoMutt bu sunucuyla çalışmaz."
 
-#: imap/imap.c:453
+#: imap/imap.c:456
 #, c-format
 msgid "CREATE failed: %s"
 msgstr "CREATE başarısız oldu: %s"
 
-#: imap/imap.c:573
+#: imap/imap.c:576
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "%s bağlantısı kapatılıyor..."
 
-#: imap/imap.c:765 nntp/nntp.c:1880 pop/lib.c:341 send/smtp.c:826
+#: imap/imap.c:768 nntp/nntp.c:1779 pop/lib.c:331 send/smtp.c:826
 msgid "Secure connection with TLS?"
 msgstr "TLS ile güvenli bağlanılsın mı?"
 
-#: imap/imap.c:781 nntp/nntp.c:1903 pop/lib.c:362 send/smtp.c:843
+#: imap/imap.c:784 nntp/nntp.c:1802 pop/lib.c:352 send/smtp.c:843
 msgid "Could not negotiate TLS connection"
 msgstr "TLS bağlantısında antlaşma yapılamadı "
 
-#: imap/imap.c:796 imap/imap.c:812 pop/lib.c:379
+#: imap/imap.c:799 imap/imap.c:815 pop/lib.c:369
 msgid "Encrypted connection unavailable"
 msgstr "Şifrelenmiş bağlantı mevcut değil"
 
-#: imap/imap.c:1280
+#: imap/imap.c:1283
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s posta kutusuna abone olunuyor..."
 
-#: imap/imap.c:1282
+#: imap/imap.c:1285
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "%s aboneliği iptal ediliyor..."
 
-#: imap/imap.c:1458 imap/message.c:1652
+#: imap/imap.c:1461 imap/message.c:1711
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d ileti %s eposta kutusuna kopyalanıyor..."
 msgstr[1] "%d ileti %s eposta kutusuna kopyalanıyor..."
 
-#: imap/imap.c:1475 imap/imap.c:2120 imap/message.c:1691 muttlib.c:1406
+#: imap/imap.c:1478 imap/imap.c:2123 imap/message.c:1750 muttlib.c:1407
 #, c-format
 msgid "Create %s?"
 msgstr "%s oluşturulsun mu?"
 
-#: imap/imap.c:1544
+#: imap/imap.c:1547
 msgid "Expunge failed"
 msgstr "Silme işlemi başarısız oldu"
 
-#: imap/imap.c:1562
+#: imap/imap.c:1565
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "%d ileti silinmek için işaretlendi..."
 msgstr[1] "%d ileti silinmek için işaretlendi..."
 
-#: imap/imap.c:1602
+#: imap/imap.c:1605
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "İleti durum bayrakları kaydediliyor... [%d/%d]"
 msgstr[1] "İleti durum bayrakları kaydediliyor... [%d/%d]"
 
-#: imap/imap.c:1659
+#: imap/imap.c:1662
 msgid "Error saving flags. Close anyway?"
 msgstr "Bayraklar kaydedilirken hata. Yine de kapatılsın mı?"
 
-#: imap/imap.c:1666
+#: imap/imap.c:1669
 msgid "Error saving flags"
 msgstr "Bayraklar kaydedilirken hata"
 
-#: imap/imap.c:1692
+#: imap/imap.c:1695
 msgid "Expunging messages from server..."
 msgstr "İletiler sunucudan siliniyor..."
 
-#: imap/imap.c:1698
+#: imap/imap.c:1701
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE başarısız oldu"
 
-#: imap/imap.c:1924 nntp/nntp.c:2455
+#: imap/imap.c:1927 nntp/nntp.c:2354
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s seçiliyor..."
 
-#: imap/imap.c:2087
+#: imap/imap.c:2090
 msgid "Error opening mailbox"
 msgstr "Posta kutusu açılırken hata oluştu!"
 
-#: imap/imap.c:2229
+#: imap/imap.c:2232
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2273
+#: imap/imap.c:2276
 msgid "Invalid IMAP flags"
 msgstr "Geçersiz IMAP eposta bayrakları"
 
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
-#: imap/message.c:523
+#: imap/message.c:491
 msgid "Abort download and close mailbox?"
 msgstr "İndirmeyi iptal et ve posta kutusunu kapat?"
 
 #. L10N: Comparing the cached data with the IMAP server's data
-#: imap/message.c:704
+#: imap/message.c:672
 msgid "Evaluating cache..."
 msgstr "Önbellek inceleniyor..."
 
 #. L10N: Fetching IMAP flag changes, using the CONDSTORE extension
-#: imap/message.c:915
+#: imap/message.c:883
 msgid "Fetching flag updates..."
 msgstr "Bayrak güncellemeleri getiriliyor..."
 
-#: imap/message.c:1050
+#. L10N: After opening an IMAP mailbox using QRESYNC, Mutt performs a quick
+#. * sanity check.  If that fails, Mutt reopens the mailbox using a normal
+#. * download.
+#: imap/message.c:1019
+#, fuzzy
+msgid "QRESYNC failed.  Reopening mailbox."
+msgstr "Eposta kutusu yeniden açılamadı"
+
+#: imap/message.c:1086
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Bu IMAP sunucu sürümünden başlıklar alınamıyor"
 
-#: imap/message.c:1071 index.c:1587 nntp/nntp.c:1325 pop/pop.c:419
+#: imap/message.c:1107 index/index.c:1614 nntp/nntp.c:1224 pop/pop.c:367
 msgid "Fetching message headers..."
 msgstr "İleti başlıkları alınıyor..."
 
-#: imap/message.c:1475
+#: imap/message.c:1534
 msgid "Uploading message..."
 msgstr "İleti yükleniyor..."
 
-#: imap/message.c:1658
+#: imap/message.c:1717
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "%d ileti %s posta kutusuna kopyalanıyor..."
 
-#: imap/message.c:1882 imap/message.c:1946 nntp/nntp.c:2689 pop/pop.c:1074
+#: imap/message.c:1941 imap/message.c:2005 nntp/nntp.c:2588 pop/pop.c:1022
 msgid "Fetching message..."
 msgstr "İleti alınıyor..."
 
-#: imap/message.c:1933 pop/pop.c:1070
+#: imap/message.c:1992 pop/pop.c:1018
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "İleti indeksi hatalı. Eposta kutusu yeniden açılıyor."
 
 #: imap/msn.c:48 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
-#: mutt/string.c:1079 mx.c:1231
+#: mutt/string.c:1079 mx.c:1236
 msgid "Out of memory"
 msgstr "Bellek tükendi"
 
@@ -2710,148 +2718,148 @@ msgstr "%s başlık adı verilmeden başlık araması"
 msgid "Server-side custom search not supported: %s"
 msgstr ""
 
-#: imap/util.c:791
+#: imap/util.c:655
 msgid "Continue?"
 msgstr "Sürdürülsün mü?"
 
-#: index.c:111 index.c:127
+#: index/index.c:106 index/index.c:122
 msgid "Quit"
 msgstr "Çık"
 
-#: index.c:114 index.c:130 recvattach.c:97
+#: index/index.c:109 index/index.c:125 recvattach.c:97
 msgid "Save"
 msgstr "Kaydet"
 
-#: index.c:116 pager.c:248
+#: index/index.c:111 pager.c:250
 msgid "Reply"
 msgstr "Yanıtla"
 
-#: index.c:117
+#: index/index.c:112
 msgid "Group"
 msgstr "Grubu Yanıtla"
 
-#: index.c:131 pager.c:262
+#: index/index.c:126 pager.c:264
 msgid "Post"
 msgstr ""
 
-#: index.c:132 pager.c:263
+#: index/index.c:127 pager.c:265
 #, fuzzy
 msgid "Followup"
 msgstr "Cevap adresi olarak %s%s kullanılsın mı? [Mail-Followup-To]"
 
-#: index.c:169 index.c:1409
+#: index/index.c:164 index/index.c:1433
 msgid "No mailbox is open"
 msgstr "Hiçbir posta kutusu açık değil"
 
-#: index.c:175
+#: index/index.c:170
 msgid "There are no messages"
 msgstr "İleti yok"
 
-#: index.c:181
+#: index/index.c:176
 msgid "No visible messages"
 msgstr "Görüntülenebilir bir ileti yok"
 
-#: index.c:187 mx.c:954 pager.c:215 recvattach.c:81
+#: index/index.c:182 mx.c:959 pager.c:217 recvattach.c:81
 msgid "Mailbox is read-only"
 msgstr "Posta kutusu saltokunur"
 
-#: index.c:193 pager.c:217 recvattach.c:106
+#: index/index.c:188 pager.c:219 recvattach.c:106
 msgid "Function not permitted in attach-message mode"
 msgstr "Bu işleve ileti ekle kipinde izin verilmiyor"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: index.c:218 pager.c:310
+#: index/index.c:213 pager.c:339
 #, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: İşleme ACL tarafından izin verilmiyor"
 
-#: index.c:392
+#: index/index.c:389
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Salt-okunur bir eposta kutusu yazılabilir yapılamaz"
 
-#: index.c:399
+#: index/index.c:396
 msgid "Changes to folder will be written on folder exit"
 msgstr "Klasördeki değişiklikler çıkışta kaydedilecek"
 
-#: index.c:404
+#: index/index.c:401
 msgid "Changes to folder will not be written"
 msgstr "Klasördeki değişiklikler kaydedilmeyecek"
 
-#: index.c:801
+#: index/index.c:803
 msgid "Failed to create query, aborting"
 msgstr ""
 
-#: index.c:848 muttlib.c:1391 mx.c:221 mx.c:372
+#: index/index.c:851 muttlib.c:1392 mx.c:226 mx.c:377
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s bir posta kutusu değil!"
 
-#: index.c:1254
+#: index/index.c:1268
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Eposta kutusu değiştirildi.  Bazı eposta bayrakları hatalı olabilir."
 
-#: index.c:1263 pager.c:2408
+#: index/index.c:1277 pager.c:2435
 msgid "New mail in this mailbox"
 msgstr "Bu kutuda yeni posta var!"
 
-#: index.c:1280
+#: index/index.c:1297
 msgid "Mailbox was externally modified"
 msgstr "Posta kutusu değiştirildi"
 
-#: index.c:1416
+#: index/index.c:1440
 msgid "No tagged messages"
 msgstr "İmli ileti yok"
 
-#: index.c:1420 index.c:1687 menu.c:1385
+#: index/index.c:1444 index/index.c:1715 menu.c:1386
 msgid "Nothing to do"
 msgstr "Yapılacak bir işlem yok"
 
-#: index.c:1509
+#: index/index.c:1534
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Message-Id'yi girin: "
 
-#: index.c:1520
+#: index/index.c:1545
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index.c:1543
+#: index/index.c:1568
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "Sınırlandırılmış görünümde ana ileti görünemez"
 
-#: index.c:1547
+#: index/index.c:1572
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Sunucudan %s aliniyor..."
 
-#: index.c:1558 nntp/nntp.c:2724
+#: index/index.c:1583 nntp/nntp.c:2623
 #, c-format
 msgid "Article %s not found on the server"
 msgstr ""
 
-#: index.c:1583
+#: index/index.c:1610
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: index.c:1663
+#: index/index.c:1690
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "İlmekteki silindiği iletiler bulunamadı"
 
-#: index.c:1684
+#: index/index.c:1711
 msgid "Jump to message: "
 msgstr "İletiye geç: "
 
-#: index.c:1690
+#: index/index.c:1718
 msgid "Argument must be a message number"
 msgstr "Değişken bir ileti numarası olmalı"
 
-#: index.c:1692
+#: index/index.c:1720
 msgid "Invalid message number"
 msgstr "Geçersiz ileti numarası"
 
-#: index.c:1694
+#: index/index.c:1722
 msgid "That message is not visible"
 msgstr "Bu ileti görünmez"
 
@@ -2859,28 +2867,28 @@ msgstr "Bu ileti görünmez"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1731 index.c:3335 pager.c:3116
+#: index/index.c:1759 index/index.c:3404 pager.c:3152
 #, fuzzy
 msgid "Can't delete messages"
 msgstr "İleti silinemedi"
 
-#: index.c:1734
+#: index/index.c:1762
 msgid "Delete messages matching: "
 msgstr "Eşleşen iletileri sil: "
 
-#: index.c:1778
+#: index/index.c:1806
 msgid "No limit pattern is in effect"
 msgstr "Herhangi bir sınırlandırma dizgisi etkin değil"
 
-#: index.c:1849
+#: index/index.c:1877
 msgid "To view all messages, limit to \"all\""
 msgstr "İletilerin hepsini görmek için \"all\" dizgisini kullanın"
 
-#: index.c:1861 pager.c:2522
+#: index/index.c:1891 pager.c:2549
 msgid "Quit NeoMutt?"
 msgstr "NeoMutt'tan çıkılsın mı?"
 
-#: index.c:1967
+#: index/index.c:2000
 msgid "Tag messages matching: "
 msgstr "Eşleşen iletileri imle: "
 
@@ -2888,196 +2896,196 @@ msgstr "Eşleşen iletileri imle: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:1978 index.c:3863 pager.c:3477
+#: index/index.c:2011 index/index.c:3960 pager.c:3528
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "İleti kurtarılamadı"
 
-#: index.c:1982
+#: index/index.c:2014
 msgid "Undelete messages matching: "
 msgstr "Eşleşen iletileri kurtar: "
 
-#: index.c:1991
+#: index/index.c:2023
 msgid "Untag messages matching: "
 msgstr "Eşleşen iletilerdeki imi sil: "
 
-#: index.c:2033
+#: index/index.c:2065
 msgid "Logged out of IMAP servers"
 msgstr "IMAP sunucularından çıkış yapıldı"
 
-#: index.c:2148
+#: index/index.c:2181
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Sanal dizin bulunamadı, iptal ediliyor"
 
-#: index.c:2168
+#: index/index.c:2201
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index.c:2177
+#: index/index.c:2210
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: index.c:2209 mx.c:1291 mx.c:1311
+#: index/index.c:2242 mx.c:1296 mx.c:1316
 msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
-#: index.c:2225
+#: index/index.c:2259
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "Konu girilmedi, iptal ediliyor"
 
-#: index.c:2235
+#: index/index.c:2269
 msgid "Update tags..."
 msgstr ""
 
-#: index.c:2275
+#: index/index.c:2309
 msgid "Failed to modify tags, aborting"
 msgstr ""
 
-#: index.c:2323
+#: index/index.c:2358
 #, fuzzy
 msgid "No query, aborting"
 msgstr "Konu girilmedi, iptal ediliyor"
 
-#: index.c:2352 index.c:2372
+#: index/index.c:2389 index/index.c:2414
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index.c:2357 index.c:2377
+#: index/index.c:2396 index/index.c:2421
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: index.c:2410
+#: index/index.c:2455
 msgid "No mailboxes have new mail"
 msgstr "Yeni posta içeren bir posta kutusu yok"
 
-#: index.c:2432
+#: index/index.c:2478
 msgid "Open mailbox in read-only mode"
 msgstr "Posta kutusunu saltokunur aç"
 
-#: index.c:2437
+#: index/index.c:2483
 msgid "Open mailbox"
 msgstr "Posta kutusunu aç"
 
-#: index.c:2497
+#: index/index.c:2547
 msgid "Open newsgroup in read-only mode"
 msgstr "Haber grubunu salt okunur aç"
 
-#: index.c:2502
+#: index/index.c:2552
 msgid "Open newsgroup"
 msgstr "Haber grubunu aç"
 
-#: index.c:2617
+#: index/index.c:2677
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "NeoMutt'tan kaydedilmeden çıkılsın mı?"
 
 #. L10N: CHECK_ACL
-#: index.c:2633
+#: index/index.c:2693
 #, fuzzy
 msgid "Can't break thread"
 msgstr "Süzgeç oluşturulamadı"
 
-#: index.c:2650
+#: index/index.c:2710
 msgid "Thread broken"
 msgstr "Kopuk ilmek"
 
-#: index.c:2663
+#: index/index.c:2723
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index.c:2673
+#: index/index.c:2733
 msgid "Can't link threads"
 msgstr ""
 
-#: index.c:2681
+#: index/index.c:2741
 msgid "No Message-ID: header available to link thread"
 msgstr "İlmeğe bağlamakta kullanılabilecek bir \"Message-ID:\" başlığı yok"
 
-#: index.c:2693
+#: index/index.c:2753
 msgid "Threads linked"
 msgstr "Bağlanan ilmekler"
 
-#: index.c:2696
+#: index/index.c:2756
 msgid "No thread linked"
 msgstr "Herhangi bir ilmeğe bağlanmadı"
 
-#: index.c:2736 index.c:2761
+#: index/index.c:2796 index/index.c:2821
 msgid "You are on the last message"
 msgstr "Son iletidesiniz"
 
-#: index.c:2744 index.c:2787
+#: index/index.c:2804 index/index.c:2847
 msgid "No undeleted messages"
 msgstr "Kurtarılan ileti yok"
 
-#: index.c:2779 index.c:2804
+#: index/index.c:2839 index/index.c:2864
 msgid "You are on the first message"
 msgstr "İlk iletidesiniz"
 
-#: index.c:2950
+#: index/index.c:3011
 msgid "No new messages in this limited view"
 msgstr "Sınırlandırılmış görünümde ana ileti görünemez"
 
-#: index.c:2952
+#: index/index.c:3013
 msgid "No new messages"
 msgstr "Yeni ileti yok"
 
-#: index.c:2957
+#: index/index.c:3018
 msgid "No unread messages in this limited view"
 msgstr "Bu sınırlı görünümde yeni okunmamış ileti yok"
 
-#: index.c:2959
+#: index/index.c:3020
 msgid "No unread messages"
 msgstr "Okunmamış ileti yok"
 
-#: index.c:2969 menu.c:1177 pager.c:2653 pattern/pattern.c:565
-#: pattern/pattern.c:716
+#: index/index.c:3030 menu.c:1178 pager.c:2680 pattern/pattern.c:573
+#: pattern/pattern.c:724
 msgid "Search wrapped to top"
 msgstr "Arama başa döndü"
 
-#: index.c:2974 pager.c:2678 pattern/pattern.c:576 pattern/pattern.c:727
+#: index/index.c:3035 pager.c:2705 pattern/pattern.c:584 pattern/pattern.c:735
 msgid "Search wrapped to bottom"
 msgstr "Arama sona ulaştı"
 
 #. L10N: CHECK_ACL
-#: index.c:2991
+#: index/index.c:3052
 #, fuzzy
 msgid "Can't flag message"
 msgstr "iletiyi göster"
 
 #. L10N: CHECK_ACL
-#: index.c:3036 pager.c:3436
+#: index/index.c:3098 pager.c:3479
 msgid "Can't toggle new"
 msgstr ""
 
-#: index.c:3130
+#: index/index.c:3193
 msgid "No more threads"
 msgstr "Daha başka ilmek yok"
 
-#: index.c:3132
+#: index/index.c:3195
 msgid "You are on the first thread"
 msgstr "İlk ilmektesiniz"
 
-#: index.c:3226
+#: index/index.c:3292
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "İlmek okunmamış iletiler içeriyor"
 
 #. L10N: CHECK_ACL
-#: index.c:3284 pager.c:3072
+#: index/index.c:3350 pager.c:3102
 msgid "Can't delete message"
 msgstr "İleti silinemedi"
 
 #. L10N: CHECK_ACL
-#: index.c:3407
+#: index/index.c:3480
 msgid "Can't edit message"
 msgstr "İleti düzenleyemedi"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index.c:3496 pager.c:3554
+#: index/index.c:3575 pager.c:3608
 #, fuzzy, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -3087,7 +3095,7 @@ msgstr[1] "Eposta kutusunda değişiklik yok"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index.c:3504 pager.c:3558
+#: index/index.c:3583 pager.c:3612
 msgid "No labels changed"
 msgstr "Hiçbir etiket değiştirilmedi"
 
@@ -3095,7 +3103,7 @@ msgstr "Hiçbir etiket değiştirilmedi"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index.c:3631
+#: index/index.c:3714
 #, fuzzy
 msgid "Can't mark messages as read"
 msgstr "ilmeği başlatan ana iletiye geç"
@@ -3103,40 +3111,40 @@ msgstr "ilmeği başlatan ana iletiye geç"
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index.c:3670
+#: index/index.c:3755
 msgid "Enter macro stroke: "
 msgstr "Makro vuruşu girin: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index.c:3678
+#: index/index.c:3766
 msgid "message hotkey"
 msgstr "ileti kısayol düğmesi"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index.c:3683
+#: index/index.c:3771
 #, c-format
 msgid "Message bound to %s"
 msgstr "İleti %s kısayoluna atandı"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index.c:3692
+#: index/index.c:3780
 msgid "No message ID to macro"
 msgstr "Makrolanacak ileti kimliği yok"
 
-#: index.c:3744 pager.c:3275 recvattach.c:1795
+#: index/index.c:3834 pager.c:3316 recvattach.c:1797
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: index.c:3747 pager.c:3235 pager.c:3247 pager.c:3278
+#: index/index.c:3839 pager.c:3276 pager.c:3288 pager.c:3319
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index.c:3825 pager.c:3456
+#: index/index.c:3921 pager.c:3502
 msgid "Can't undelete message"
 msgstr "İleti kurtarılamadı"
 
@@ -3266,278 +3274,278 @@ msgid "Scanning %s..."
 msgstr "%s taranıyor..."
 
 #: maildir/maildir.c:690 maildir/mh.c:709 mbox/mbox.c:215 mbox/mbox.c:378
-#: mx.c:385
+#: mx.c:390
 #, c-format
 msgid "Reading %s..."
 msgstr "%s okunuyor..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1367 maildir/mh.c:1028 mbox/mbox.c:1250 mx.c:491
-#: notmuch/notmuch.c:2409
+#: maildir/maildir.c:1367 maildir/mh.c:1028 mbox/mbox.c:1250 mx.c:496
+#: notmuch/notmuch.c:2314
 #, c-format
 msgid "Writing %s..."
 msgstr "%s yazılıyor..."
 
 #. L10N: Try to limit to 80 columns
-#: main.c:157
+#: main.c:159
 msgid "usage:"
 msgstr ""
 
-#: main.c:158
+#: main.c:160
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
 
-#: main.c:161
+#: main.c:163
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
 
-#: main.c:163
+#: main.c:165
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 msgstr ""
 
-#: main.c:164
+#: main.c:166
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 msgstr ""
 
-#: main.c:165
+#: main.c:167
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
 msgstr ""
 
-#: main.c:166
+#: main.c:168
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 msgstr ""
 
-#: main.c:167
+#: main.c:169
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr ""
 
-#: main.c:168
+#: main.c:170
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
 msgstr ""
 
-#: main.c:169
+#: main.c:171
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 msgstr ""
 
-#: main.c:170
+#: main.c:172
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
 msgstr ""
 
-#: main.c:171
+#: main.c:173
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 msgstr ""
 
-#: main.c:172
+#: main.c:174
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 msgstr ""
 
-#: main.c:173
+#: main.c:175
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 msgstr ""
 
-#: main.c:174
+#: main.c:176
 msgid "  neomutt -v[v]\n"
 msgstr ""
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:177
+#: main.c:179
 #, fuzzy
 msgid "options:"
 msgstr "Varsayılan seçenekler:"
 
-#: main.c:178
+#: main.c:180
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
 msgstr ""
 
-#: main.c:180
+#: main.c:182
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
 msgstr ""
 
-#: main.c:181
+#: main.c:183
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
 msgstr ""
 
-#: main.c:183
+#: main.c:185
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr ""
 
-#: main.c:184
+#: main.c:186
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr ""
 
-#: main.c:185
+#: main.c:187
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
 msgstr ""
 
-#: main.c:186
+#: main.c:188
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
 msgstr ""
 
-#: main.c:187
+#: main.c:189
 msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr ""
 
-#: main.c:188
+#: main.c:190
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 msgstr ""
 
-#: main.c:189
+#: main.c:191
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
 msgstr ""
 
-#: main.c:191
+#: main.c:193
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr ""
 
-#: main.c:192
+#: main.c:194
 msgid "  -e <command>  Specify a command to be run after reading the config files"
 msgstr ""
 
-#: main.c:193
+#: main.c:195
 msgid "  -F <config>   Specify an alternative initialization file to read"
 msgstr ""
 
-#: main.c:194
+#: main.c:196
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
 msgstr ""
 
-#: main.c:195
+#: main.c:197
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 msgstr ""
 
-#: main.c:196
+#: main.c:198
 msgid "  -g <server>   Like -G, but start at specified news server"
 msgstr ""
 
-#: main.c:197
+#: main.c:199
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 msgstr ""
 
-#: main.c:198
+#: main.c:200
 msgid "  -h            Print this help message and exit"
 msgstr ""
 
-#: main.c:199
+#: main.c:201
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
 msgstr ""
 
-#: main.c:200
+#: main.c:202
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
 msgstr ""
 
-#: main.c:201
+#: main.c:203
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
 msgstr ""
 
-#: main.c:203
+#: main.c:205
 msgid "  -n            Do not read the system-wide configuration file"
 msgstr ""
 
-#: main.c:204
+#: main.c:206
 msgid "  -p            Resume a prior postponed message, if any"
 msgstr ""
 
-#: main.c:205
+#: main.c:207
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
 "                Add -O for one-liner documentation"
 msgstr ""
 
-#: main.c:208
+#: main.c:210
 #, fuzzy
 msgid "  -R            Open mailbox in read-only mode"
 msgstr "Eposta kutusunu salt okunur aç"
 
-#: main.c:209
+#: main.c:211
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
 msgstr ""
 
-#: main.c:210
+#: main.c:212
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
 msgstr ""
 
-#: main.c:211
+#: main.c:213
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
 msgstr ""
 
-#: main.c:212
+#: main.c:214
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
 msgstr ""
 
-#: main.c:213
+#: main.c:215
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
 msgstr ""
 
-#: main.c:215
+#: main.c:217
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 
-#: main.c:243
+#: main.c:245
 msgid "Error initializing terminal"
 msgstr "Uçbirim ilklendirilirken hata oluştu"
 
-#: main.c:318
+#: main.c:320
 msgid "unable to determine username"
 msgstr "kullanıcı adı belirlenemiyor"
 
-#: main.c:324
+#: main.c:326
 msgid "unable to determine home directory"
 msgstr "ev dizini belirlenemiyor"
 
-#: main.c:606
+#: main.c:608
 #, fuzzy, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Hata: '%s' hatalı bir IDN"
 
-#: main.c:862
+#: main.c:864
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:874 send/send.c:2631 send/send.c:2635
+#: main.c:876 send/send.c:2645 send/send.c:2649
 msgid "No recipients specified"
 msgstr "Herhangi bir alıcı belirtilmemiş"
 
-#: main.c:901
+#: main.c:903
 msgid "Can't use -E flag with stdin"
 msgstr ""
 
-#: main.c:985
+#: main.c:987
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "İleti dosyası %s açılamıyor"
 
-#: main.c:1050 mutt_header.c:335
+#: main.c:1052 mutt_header.c:338
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: dosya eklenemiyor"
 
-#: main.c:1135
+#: main.c:1137
 msgid "No mailbox with new mail"
 msgstr "Yeni posta içeren bir posta kutusu yok"
 
-#: main.c:1159
+#: main.c:1161
 msgid "No incoming mailboxes defined"
 msgstr "Gelen iletileri alacak posta kutuları tanımlanmamış"
 
-#: main.c:1209
+#: main.c:1212
 msgid "Mailbox is empty"
 msgstr "Posta kutusu boş"
 
@@ -3579,8 +3587,8 @@ msgstr "Eposta kutusu yeniden açılamadı"
 msgid "Can't write message"
 msgstr "İleti yazılamadı"
 
-#: menu.c:600 menu.c:628 menu.c:681 menu.c:779 menu.c:797 menu.c:816 menu.c:832
-#: menu.c:848 menu.c:864 menu.c:882 menu.c:1519
+#: menu.c:600 menu.c:629 menu.c:682 menu.c:780 menu.c:798 menu.c:817 menu.c:833
+#: menu.c:849 menu.c:865 menu.c:883 menu.c:1520
 msgid "No entries"
 msgstr "Öge yok"
 
@@ -3588,60 +3596,60 @@ msgstr "Öge yok"
 msgid "Jump to: "
 msgstr "Şuraya atla: "
 
-#: menu.c:616
+#: menu.c:617
 msgid "Invalid index number"
 msgstr "Geçersiz indeks numarası"
 
-#: menu.c:644
+#: menu.c:645
 msgid "You can't scroll down farther"
 msgstr "Daha aşağıya inemezsiniz"
 
-#: menu.c:655
+#: menu.c:656
 msgid "You can't scroll up farther"
 msgstr "Daha yukarı çıkamazsınız"
 
-#: menu.c:715
+#: menu.c:716
 msgid "You are on the first page"
 msgstr "İlk sayfadasınız"
 
-#: menu.c:715
+#: menu.c:716
 msgid "You are on the last page"
 msgstr "Son sayfadasınız"
 
-#: menu.c:904
+#: menu.c:905
 msgid "You are on the last entry"
 msgstr "Son girdidesiniz"
 
-#: menu.c:919
+#: menu.c:920
 msgid "You are on the first entry"
 msgstr "İlk girdidesiniz"
 
-#: menu.c:1141 pager.c:2701 pattern/pattern.c:493 pattern/pattern.c:644
+#: menu.c:1142 pager.c:2728 pattern/pattern.c:502 pattern/pattern.c:653
 msgid "Search for: "
 msgstr "Ara: "
 
-#: menu.c:1142 pager.c:2702 pattern/pattern.c:494 pattern/pattern.c:645
+#: menu.c:1143 pager.c:2729 pattern/pattern.c:502 pattern/pattern.c:653
 msgid "Reverse search for: "
 msgstr "Ters ara: "
 
-#: menu.c:1195 pager.c:2650 pager.c:2675 pager.c:2809 pattern/pattern.c:621
-#: pattern/pattern.c:772
+#: menu.c:1196 pager.c:2677 pager.c:2702 pager.c:2837 pattern/pattern.c:629
+#: pattern/pattern.c:780
 msgid "Not found"
 msgstr "Bulunamadı"
 
-#: menu.c:1379
+#: menu.c:1380
 msgid "No tagged entries"
 msgstr "İmli öge yok"
 
-#: menu.c:1481
+#: menu.c:1482
 msgid "Search is not implemented for this menu"
 msgstr "Bu menüde arama özelliği şimdilik gerçeklenmemiş"
 
-#: menu.c:1486
+#: menu.c:1487
 msgid "Jumping is not implemented for dialogs"
 msgstr "Sorgu alanları arasında geçiş özelliği şimdilik gerçeklenmemiş"
 
-#: menu.c:1522
+#: menu.c:1523
 msgid "Tagging is not supported"
 msgstr "İşaretleme desteklenmiyor"
 
@@ -3789,12 +3797,12 @@ msgstr "Yazma hatası"
 msgid "I don't know how to print that"
 msgstr "Bu ekin nasıl yazdırılacağı bilinmiyor"
 
-#: mutt_config.c:167
+#: mutt_config.c:166
 #, c-format
 msgid "Option %s may not be set or reset from the pager"
 msgstr ""
 
-#: mutt_config.c:187
+#: mutt_config.c:186
 #, fuzzy, c-format
 msgid "Option %s may not be set when in attach-message mode"
 msgstr "Bu işleve ileti ekle kipinde izin verilmiyor."
@@ -3855,121 +3863,121 @@ msgstr "Dosya bir dizin; bu dizin altına kaydedilsin mi?"
 msgid "File under directory: "
 msgstr "Dosyayı dizin altına kaydet: "
 
-#: muttlib.c:676
+#: muttlib.c:677
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Dosya zaten var, ü(s)tüne yaz, (e)kle, i(p)tal?"
 
 #. L10N: Options for: File exists, (o)verwrite, (a)ppend, or (c)ancel?
-#: muttlib.c:678
+#: muttlib.c:679
 msgid "oac"
 msgstr "sep"
 
-#: muttlib.c:1359
+#: muttlib.c:1360
 msgid "Can't save message to POP mailbox"
 msgstr "İleti POP posta kutusuna kaydedilemiyor"
 
-#: muttlib.c:1369
+#: muttlib.c:1370
 #, c-format
 msgid "Append messages to %s?"
 msgstr "İletiler %s sonuna eklensin mi?"
 
-#: muttlib.c:1382
+#: muttlib.c:1383
 #, fuzzy
 msgid "Can't save message to news server"
 msgstr "POP sunucusundaki iletiler düzenlenemez"
 
-#: mx.c:419
+#: mx.c:424
 #, fuzzy, c-format
 msgid "Reading from %s interrupted..."
 msgstr "Arama iptal edildi."
 
 #. L10N: Displayed if a mailbox sync fails
-#: mx.c:501
+#: mx.c:506
 #, fuzzy, c-format
 msgid "Unable to write %s"
 msgstr "%s eklenemedi"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
-#: mx.c:557
+#: mx.c:562
 #, fuzzy
 msgid "message not deleted"
 msgid_plural "messages not deleted"
 msgstr[0] "%d ileti silinmek için işaretlendi..."
 msgstr[1] "%d ileti silinmek için işaretlendi..."
 
-#: mx.c:603
+#: mx.c:608
 msgid "Can't open trash folder"
 msgstr "Çöp dizini açılamıyor"
 
-#: mx.c:663
+#: mx.c:668
 msgid "Mark all articles read?"
 msgstr ""
 
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
-#: mx.c:712
+#: mx.c:717
 #, fuzzy, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
 msgstr[0] "Okunan iletiler %s eposta kutusuna taşınsın mı?"
 msgstr[1] "Okunan iletiler %s eposta kutusuna taşınsın mı?"
 
-#: mx.c:726 mx.c:970
+#: mx.c:731 mx.c:975
 #, fuzzy, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Silinmiş %d ileti tümüyle kaldırılsın mı?"
 msgstr[1] "Silinmiş %d ileti tümüyle kaldırılsın mı?"
 
-#: mx.c:749
+#: mx.c:754
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Okunan iletiler %s posta kutusuna taşınıyor..."
 
-#: mx.c:820 mx.c:961
+#: mx.c:825 mx.c:966
 msgid "Mailbox is unchanged"
 msgstr "Posta kutusunda değişiklik yok"
 
-#: mx.c:880
+#: mx.c:885
 #, c-format
 msgid "%d kept, %d moved, %d deleted"
 msgstr "%d kaldı, %d taşındı, %d silindi"
 
-#: mx.c:884 mx.c:1026
+#: mx.c:889 mx.c:1031
 #, c-format
 msgid "%d kept, %d deleted"
 msgstr "%d kaldı, %d silindi"
 
-#: mx.c:945
+#: mx.c:950
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Yazılabilir yapmak için '%s' düğmesine basınız"
 
-#: mx.c:947
+#: mx.c:952
 msgid "Use 'toggle-write' to re-enable write"
 msgstr "'toggle-write' komutunu kullanarak tekrar yazılabilir yapabilirsiniz"
 
-#: mx.c:949
+#: mx.c:954
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Posta kutusu yazılamaz yapıldı. %s"
 
-#: mx.c:1020
+#: mx.c:1025
 msgid "Mailbox checkpointed"
 msgstr "Posta kutusu denetlendi"
 
-#: mx.c:1356
+#: mx.c:1361
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "İleti dosyası %s açılamıyor"
 
-#: ncrypt/crypt.c:80
+#: ncrypt/crypt.c:81
 #, c-format
 msgid " (current time: %c)"
 msgstr " (geçerli tarih: %c)"
 
-#: ncrypt/crypt.c:85
+#: ncrypt/crypt.c:86
 #, c-format
 msgid "[-- %s output follows%s --]\n"
 msgstr "[-- %s çıktısı%s --]\n"
@@ -3978,53 +3986,53 @@ msgstr "[-- %s çıktısı%s --]\n"
 #. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
-#: ncrypt/crypt.c:106
+#: ncrypt/crypt.c:107
 #, fuzzy
 msgid "Passphrases forgotten"
 msgstr "PGP parolası/parolaları unutuldu"
 
-#: ncrypt/crypt.c:190
+#: ncrypt/crypt.c:191
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
 msgstr "Satıriçi PGP eklerle birlikte kullanılamaz. PGP/MIME'a geri dönülsün mü?"
 
-#: ncrypt/crypt.c:194
+#: ncrypt/crypt.c:195
 msgid "Mail not sent: inline PGP can't be used with attachments"
 msgstr "E-posta gönderilmedi: Satıriçi PGP eklerle birlikte kullanılamaz"
 
-#: ncrypt/crypt.c:202
+#: ncrypt/crypt.c:203
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr "Satıriçi PGP format=flowed ile kullanılamaz. PGP/MIME'a geri dönülsün mü?"
 
-#: ncrypt/crypt.c:206
+#: ncrypt/crypt.c:207
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "E-posta gönderilmedi: Satıriçi PGP format=flowed ile kullanılamaz"
 
-#: ncrypt/crypt.c:216 ncrypt/cryptglue.c:156 ncrypt/dlgpgp.c:580
-#: ncrypt/pgpkey.c:280
+#: ncrypt/crypt.c:217 ncrypt/cryptglue.c:158 ncrypt/dlgpgp.c:580
+#: ncrypt/pgpkey.c:282
 msgid "Invoking PGP..."
 msgstr "PGP çağırılıyor..."
 
-#: ncrypt/crypt.c:228
+#: ncrypt/crypt.c:229
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "İleti satıriçi olarak gönderilemez. PGP/MIME'a geri dönülsün mü?"
 
-#: ncrypt/crypt.c:230 send/send.c:2609
+#: ncrypt/crypt.c:231 send/send.c:2623
 msgid "Mail not sent"
 msgstr "E-posta gönderilmedi"
 
-#: ncrypt/crypt.c:653
+#: ncrypt/crypt.c:655
 msgid "S/MIME messages with no hints on content are unsupported"
 msgstr "İçeriği hakkında hiçbir bilginin bulunmadığı S/MIME iletilerinin gönderilmesi desteklenmiyor"
 
-#: ncrypt/crypt.c:879
+#: ncrypt/crypt.c:881
 msgid "Trying to extract PGP keys...\n"
 msgstr "PGP anahtarları belirlenmeye çalışılıyor...\n"
 
-#: ncrypt/crypt.c:908
+#: ncrypt/crypt.c:910
 msgid "Trying to extract S/MIME certificates..."
 msgstr "S/MIME sertifikaları belirlenmeye çalışılıyor..."
 
-#: ncrypt/crypt.c:1131
+#: ncrypt/crypt.c:1134
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s --]\n"
@@ -4033,7 +4041,7 @@ msgstr ""
 "[-- Hata: Bilinmeyen \"multipart/signed\" protokolü %s --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1170
+#: ncrypt/crypt.c:1173
 #, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
@@ -4042,7 +4050,7 @@ msgstr ""
 "[-- Hata: Tutarsız \"multipart/signed\" yapısı --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1210
+#: ncrypt/crypt.c:1213
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -4051,7 +4059,7 @@ msgstr ""
 "[-- Uyarı: %s/%s imzaları doğrulanamıyor. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1223
+#: ncrypt/crypt.c:1226
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -4059,7 +4067,7 @@ msgstr ""
 "[-- Aşağıdaki bilgi imzalanmıştır --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1232
+#: ncrypt/crypt.c:1235
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -4067,7 +4075,7 @@ msgstr ""
 "[-- Uyarı: Herhangi bir imza bulunamıyor. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1239
+#: ncrypt/crypt.c:1242
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -4290,8 +4298,8 @@ msgstr "Anahtar bilgisi alınırken hata: "
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "Hata: Şifre çözümü/doğrulaması başarısız: %s\n"
 
-#: ncrypt/crypt_gpgme.c:2921 ncrypt/crypt_gpgme.c:3119 ncrypt/pgp.c:715
-#: ncrypt/pgp.c:1263
+#: ncrypt/crypt_gpgme.c:2921 ncrypt/crypt_gpgme.c:3119 ncrypt/pgp.c:716
+#: ncrypt/pgp.c:1264
 msgid "PGP message successfully decrypted"
 msgstr "Şifrelenmiş PGP iletisi başarıyla çözüldü"
 
@@ -4299,7 +4307,7 @@ msgstr "Şifrelenmiş PGP iletisi başarıyla çözüldü"
 msgid "Error: copy data failed\n"
 msgstr "Hata: Veri kopyalaması başarısız\n"
 
-#: ncrypt/crypt_gpgme.c:2975 ncrypt/pgp.c:663
+#: ncrypt/crypt_gpgme.c:2975 ncrypt/pgp.c:664
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -4307,11 +4315,11 @@ msgstr ""
 "[-- PGP İLETİSİ BAŞLANGICI --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2977 ncrypt/pgp.c:665
+#: ncrypt/crypt_gpgme.c:2977 ncrypt/pgp.c:666
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP GENEL ANAHTAR BÖLÜMÜ BAŞLANGICI --]\n"
 
-#: ncrypt/crypt_gpgme.c:2979 ncrypt/pgp.c:667
+#: ncrypt/crypt_gpgme.c:2979 ncrypt/pgp.c:668
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -4319,19 +4327,19 @@ msgstr ""
 "[-- İMZALANMIŞ PGP İLETİSİ BAŞLANGICI --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3005 ncrypt/pgp.c:704
+#: ncrypt/crypt_gpgme.c:3005 ncrypt/pgp.c:705
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- PGP İLETİSİ SONU --]\n"
 
-#: ncrypt/crypt_gpgme.c:3007 ncrypt/pgp.c:718
+#: ncrypt/crypt_gpgme.c:3007 ncrypt/pgp.c:719
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP GENEL ANAHTAR BÖLÜMÜ SONU --]\n"
 
-#: ncrypt/crypt_gpgme.c:3009 ncrypt/pgp.c:720
+#: ncrypt/crypt_gpgme.c:3009 ncrypt/pgp.c:721
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- İMZALANMIŞ PGP İLETİSİ SONU --]\n"
 
-#: ncrypt/crypt_gpgme.c:3030 ncrypt/pgp.c:753
+#: ncrypt/crypt_gpgme.c:3030 ncrypt/pgp.c:754
 msgid ""
 "[-- Error: could not find beginning of PGP message --]\n"
 "\n"
@@ -4339,7 +4347,7 @@ msgstr ""
 "[-- Hata: PGP iletisinin başlangıcı bulunamadı --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3058 ncrypt/crypt_gpgme.c:3158 ncrypt/pgp.c:1208
+#: ncrypt/crypt_gpgme.c:3058 ncrypt/crypt_gpgme.c:3158 ncrypt/pgp.c:1209
 msgid "[-- Error: could not create temporary file --]\n"
 msgstr "[-- Hata: geçici dosya yaratılamadı --]\n"
 
@@ -4351,7 +4359,7 @@ msgstr ""
 "[-- Aşağıdaki bilgi PGP/MIME ile imzalanmış ve şifrelenmiştir --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3074 ncrypt/pgp.c:1222
+#: ncrypt/crypt_gpgme.c:3074 ncrypt/pgp.c:1223
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -4363,12 +4371,12 @@ msgstr ""
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- PGP/MIME ile imzalanmış ve şifrelenmiş bilginin sonu --]\n"
 
-#: ncrypt/crypt_gpgme.c:3115 ncrypt/pgp.c:1258
+#: ncrypt/crypt_gpgme.c:3115 ncrypt/pgp.c:1259
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- PGP/MIME ile şifrelenmiş bilginin sonu --]\n"
 
-#: ncrypt/crypt_gpgme.c:3127 ncrypt/pgp.c:654 ncrypt/pgp.c:706
-#: ncrypt/pgp.c:1267
+#: ncrypt/crypt_gpgme.c:3127 ncrypt/pgp.c:655 ncrypt/pgp.c:707
+#: ncrypt/pgp.c:1268
 msgid "Could not decrypt PGP message"
 msgstr "Şifrelenmiş PGP iletisi çözülemedi"
 
@@ -4402,44 +4410,44 @@ msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start başarısız: %s"
 
 #: ncrypt/crypt_gpgme.c:3443 ncrypt/crypt_gpgme.c:3485
-#: ncrypt/crypt_gpgme.c:3996
+#: ncrypt/crypt_gpgme.c:3998
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next başarısız: %s"
 
-#: ncrypt/crypt_gpgme.c:3552 ncrypt/crypt_gpgme.c:3665 ncrypt/pgpkey.c:384
-#: ncrypt/pgpkey.c:511
+#: ncrypt/crypt_gpgme.c:3552 ncrypt/crypt_gpgme.c:3665 ncrypt/pgpkey.c:386
+#: ncrypt/pgpkey.c:513
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "\"%s\" ile eşleşen anahtarlar aranıyor..."
 
-#: ncrypt/crypt_gpgme.c:3780 ncrypt/pgpkey.c:235 ncrypt/smime.c:721
+#: ncrypt/crypt_gpgme.c:3782 ncrypt/pgpkey.c:237 ncrypt/smime.c:724
 #, c-format
 msgid "No matching keys found for \"%s\""
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3830 ncrypt/pgp.c:1447
+#: ncrypt/crypt_gpgme.c:3832 ncrypt/pgp.c:1448
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "%2$s için anahtar NO = \"%1$s\" kullanılsın mı?"
 
-#: ncrypt/crypt_gpgme.c:3878 ncrypt/pgp.c:1496 ncrypt/smime.c:741
-#: ncrypt/smime.c:814
+#: ncrypt/crypt_gpgme.c:3880 ncrypt/pgp.c:1497 ncrypt/smime.c:744
+#: ncrypt/smime.c:817
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "%s için anahtar NO'yu girin: "
 
 #. L10N: mutt_gpgme_select_secret_key() tries to list all secret keys to choose
 #. from.  This error is displayed if no results were found.
-#: ncrypt/crypt_gpgme.c:4003
+#: ncrypt/crypt_gpgme.c:4005
 msgid "No secret keys found"
 msgstr "Hiçbir gizli anahtar bulunamadı"
 
-#: ncrypt/crypt_gpgme.c:4038 ncrypt/pgpkey.c:253
+#: ncrypt/crypt_gpgme.c:4040 ncrypt/pgpkey.c:255
 msgid "Please enter the key ID: "
 msgstr "Lütfen anahtar numarasını girin: "
 
-#: ncrypt/crypt_gpgme.c:4051
+#: ncrypt/crypt_gpgme.c:4053
 #, fuzzy, c-format
 msgid "Error exporting key: %s"
 msgstr "Anahtar bilgisi alınırken hata: "
@@ -4447,88 +4455,88 @@ msgstr "Anahtar bilgisi alınırken hata: "
 #. L10N: MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4069
+#: ncrypt/crypt_gpgme.c:4071
 #, c-format
 msgid "PGP Key 0x%s"
 msgstr "PGP anahtarı 0x%s"
 
-#: ncrypt/crypt_gpgme.c:4114
+#: ncrypt/crypt_gpgme.c:4116
 msgid "GPGME: OpenPGP protocol not available"
 msgstr "GPGME: OpenPGP protokolü kullanılamıyor"
 
-#: ncrypt/crypt_gpgme.c:4125
+#: ncrypt/crypt_gpgme.c:4127
 msgid "GPGME: CMS protocol not available"
 msgstr "CMS protokolü kullanılamıyor"
 
-#: ncrypt/crypt_gpgme.c:4176
+#: ncrypt/crypt_gpgme.c:4178
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME i(m)zala, (f)arklı imzala, p(g)p, i(p)tal, veya (o)ppenc modu kapalı?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4178
+#: ncrypt/crypt_gpgme.c:4180
 #, fuzzy
 msgid "sapco"
 msgstr "mfgpo"
 
-#: ncrypt/crypt_gpgme.c:4185
+#: ncrypt/crypt_gpgme.c:4187
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP i(m)zala, (f)arklı imzala, (s)/mime, i(p)tal, veya (o)ppenc modu kapalı?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4187
+#: ncrypt/crypt_gpgme.c:4189
 #, fuzzy
 msgid "samco"
 msgstr "mfspo"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4197
+#: ncrypt/crypt_gpgme.c:4199
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal, veya (o)ppenc modu?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4200
+#: ncrypt/crypt_gpgme.c:4202
 msgid "esabpco"
 msgstr "rmfkgpo"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4206
+#: ncrypt/crypt_gpgme.c:4208
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal, veya (o)ppenc modu?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4209
+#: ncrypt/crypt_gpgme.c:4211
 msgid "esabmco"
 msgstr "rmfkspo"
 
-#: ncrypt/crypt_gpgme.c:4220
+#: ncrypt/crypt_gpgme.c:4222
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4222
+#: ncrypt/crypt_gpgme.c:4224
 msgid "esabpc"
 msgstr "rmfkgp"
 
-#: ncrypt/crypt_gpgme.c:4229
+#: ncrypt/crypt_gpgme.c:4231
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4231
+#: ncrypt/crypt_gpgme.c:4233
 msgid "esabmc"
 msgstr "rmfksp"
 
-#: ncrypt/crypt_gpgme.c:4391
+#: ncrypt/crypt_gpgme.c:4393
 msgid "Failed to verify sender"
 msgstr "Gönderici doğrulanamadı"
 
-#: ncrypt/crypt_gpgme.c:4394
+#: ncrypt/crypt_gpgme.c:4396
 msgid "Failed to figure out sender"
 msgstr "Göndericinin kim olduğu belirlenemedi"
 
-#: ncrypt/cryptglue.c:158
+#: ncrypt/cryptglue.c:160
 msgid "Invoking S/MIME..."
 msgstr "S/MIME çağırılıyor..."
 
@@ -4722,7 +4730,7 @@ msgstr "<%s> ile eşleşen PGP anahtarları"
 msgid "PGP keys matching \"%s\""
 msgstr "\"%s\" ile eşleşen PGP anahtarları"
 
-#: ncrypt/dlgpgp.c:566 ncrypt/pgpkey.c:274
+#: ncrypt/dlgpgp.c:566 ncrypt/pgpkey.c:276
 msgid "Can't open /dev/null"
 msgstr "/dev/null açılamıyor"
 
@@ -4803,11 +4811,11 @@ msgstr "Kimlik (ID) geçerli değil. Gerçekten bu anahtarı kullanmak istiyor m
 msgid "Enter PGP passphrase:"
 msgstr "PGP parolasını girin: "
 
-#: ncrypt/pgp.c:585
+#: ncrypt/pgp.c:586
 msgid "[-- Error: unable to create PGP subprocess --]\n"
 msgstr "[-- Hata: PGP alt süreci yaratılamadı --]\n"
 
-#: ncrypt/pgp.c:632 ncrypt/pgp.c:915 ncrypt/pgp.c:1075
+#: ncrypt/pgp.c:633 ncrypt/pgp.c:916 ncrypt/pgp.c:1076
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -4818,15 +4826,15 @@ msgstr ""
 #. L10N: You will see this error message if (1) you are decrypting
 #. (not encrypting) something and (2) it is a plaintext. So the
 #. message does not mean "You failed to encrypt the message."
-#: ncrypt/pgp.c:712
+#: ncrypt/pgp.c:713
 msgid "PGP message is not encrypted"
 msgstr "PGP iletisi şifrelenmemiş"
 
-#: ncrypt/pgp.c:967
+#: ncrypt/pgp.c:968
 msgid "Internal error.  Please submit a bug report."
 msgstr ""
 
-#: ncrypt/pgp.c:1032
+#: ncrypt/pgp.c:1033
 msgid ""
 "[-- Error: could not create a PGP subprocess --]\n"
 "\n"
@@ -4834,102 +4842,102 @@ msgstr ""
 "[-- Hata: PGP alt süreci yaratılamadı --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087 ncrypt/smime.c:1906 postpone.c:822
+#: ncrypt/pgp.c:1063 ncrypt/pgp.c:1088 ncrypt/smime.c:1910 postpone.c:822
 #: postpone.c:850
 msgid "Decryption failed"
 msgstr "Şifre çözme işlemi başarısız oldu"
 
-#: ncrypt/pgp.c:1324
+#: ncrypt/pgp.c:1325
 msgid "Can't open PGP subprocess"
 msgstr "PGP alt süreci açılamıyor"
 
-#: ncrypt/pgp.c:1761
+#: ncrypt/pgp.c:1762
 msgid "Can't invoke PGP"
 msgstr "PGP çalıştırılamıyor"
 
 #. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1868
+#: ncrypt/pgp.c:1869
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
 #. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1874
+#: ncrypt/pgp.c:1875
 msgid "(i)nline"
 msgstr "satır(i)çi"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
-#: ncrypt/pgp.c:1886
+#: ncrypt/pgp.c:1887
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1892
+#: ncrypt/pgp.c:1893
 #, fuzzy
 msgid "saico"
 msgstr "rmfkp"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1898
+#: ncrypt/pgp.c:1899
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1900
+#: ncrypt/pgp.c:1901
 #, fuzzy
 msgid "saco"
 msgstr "rmfkp"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
-#: ncrypt/pgp.c:1914
+#: ncrypt/pgp.c:1915
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1920
+#: ncrypt/pgp.c:1921
 #, fuzzy
 msgid "esabico"
 msgstr "rmfkp"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1926
+#: ncrypt/pgp.c:1927
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1929
+#: ncrypt/pgp.c:1930
 #, fuzzy
 msgid "esabco"
 msgstr "rmfkp"
 
 #. L10N: PGP options (inline)
-#: ncrypt/pgp.c:1940
+#: ncrypt/pgp.c:1941
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1946
+#: ncrypt/pgp.c:1947
 #, fuzzy
 msgid "esabic"
 msgstr "rmfkp"
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:1952
+#: ncrypt/pgp.c:1953
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal?"
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:1954
+#: ncrypt/pgp.c:1955
 #, fuzzy
 msgid "esabc"
 msgstr "rmfkp"
@@ -4938,7 +4946,7 @@ msgstr "rmfkp"
 msgid "Fetching PGP key..."
 msgstr "PGP anahtarı getiriliyor..."
 
-#: ncrypt/pgpkey.c:303
+#: ncrypt/pgpkey.c:305
 #, c-format
 msgid "PGP Key %s"
 msgstr "PGP anahtarı %s"
@@ -4947,45 +4955,45 @@ msgstr "PGP anahtarı %s"
 msgid "Enter S/MIME passphrase:"
 msgstr "S/MIME parolasını girin: "
 
-#: ncrypt/smime.c:707
+#: ncrypt/smime.c:708
 msgid "Enter keyID: "
 msgstr "keyID girin: "
 
-#: ncrypt/smime.c:820
+#: ncrypt/smime.c:823
 #, c-format
 msgid "No (valid) certificate found for %s"
 msgstr "%s için (geçerli) sertifika bulunamadı"
 
-#: ncrypt/smime.c:873 ncrypt/smime.c:902 ncrypt/smime.c:974 ncrypt/smime.c:1008
-#: ncrypt/smime.c:1085 ncrypt/smime.c:1165
+#: ncrypt/smime.c:876 ncrypt/smime.c:905 ncrypt/smime.c:977 ncrypt/smime.c:1011
+#: ncrypt/smime.c:1088 ncrypt/smime.c:1169
 msgid "Error: unable to create OpenSSL subprocess"
 msgstr "[-- Hata: OpenSSL alt süreci yaratılamadı --]"
 
-#: ncrypt/smime.c:1145
+#: ncrypt/smime.c:1148
 msgid "Label for certificate: "
 msgstr "Sertifika etiketi: "
 
-#: ncrypt/smime.c:1246
+#: ncrypt/smime.c:1250
 msgid "no certfile"
 msgstr "sertifika dosyası yok"
 
-#: ncrypt/smime.c:1249
+#: ncrypt/smime.c:1253
 msgid "no mbox"
 msgstr "mbox yok"
 
-#: ncrypt/smime.c:1406 ncrypt/smime.c:1574
+#: ncrypt/smime.c:1410 ncrypt/smime.c:1578
 msgid "No output from OpenSSL..."
 msgstr "OpenSSL bir çıktı üretmedi..."
 
-#: ncrypt/smime.c:1493
+#: ncrypt/smime.c:1497
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "İmzalanmıyor: Anahtar belirtilmedi. \"farklı imzala\"yı seçin."
 
-#: ncrypt/smime.c:1541
+#: ncrypt/smime.c:1545
 msgid "Can't open OpenSSL subprocess"
 msgstr "OpenSSL alt süreci açılamıyor"
 
-#: ncrypt/smime.c:1766 ncrypt/smime.c:1886
+#: ncrypt/smime.c:1770 ncrypt/smime.c:1890
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -4993,19 +5001,19 @@ msgstr ""
 "[-- OpenSSL çıktısı sonu --]\n"
 "\n"
 
-#: ncrypt/smime.c:1843 ncrypt/smime.c:1856
+#: ncrypt/smime.c:1847 ncrypt/smime.c:1860
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- Hata: OpenSSL alt süreci yaratılamadı --]\n"
 
-#: ncrypt/smime.c:1892
+#: ncrypt/smime.c:1896
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Aşağıdaki bilgi S/MIME ile şifrelenmiştir --]\n"
 
-#: ncrypt/smime.c:1895
+#: ncrypt/smime.c:1899
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Aşağıdaki bilgi imzalanmıştır --]\n"
 
-#: ncrypt/smime.c:1988
+#: ncrypt/smime.c:1992
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -5013,7 +5021,7 @@ msgstr ""
 "\n"
 "[-- S/MIME ile şifrelenmiş bilginin sonu --]\n"
 
-#: ncrypt/smime.c:1990
+#: ncrypt/smime.c:1994
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -5022,225 +5030,225 @@ msgstr ""
 "[-- S/MIME ile imzalanmış bilginin sonu --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2123
+#: ncrypt/smime.c:2127
 #, fuzzy
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, i(p)tal?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2126
+#: ncrypt/smime.c:2130
 #, fuzzy
 msgid "swaco"
 msgstr "rmafkp"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2134
+#: ncrypt/smime.c:2138
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, i(p)tal?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2137
+#: ncrypt/smime.c:2141
 #, fuzzy
 msgid "eswabco"
 msgstr "rmafkp"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2144
+#: ncrypt/smime.c:2148
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, i(p)tal?"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2147
+#: ncrypt/smime.c:2151
 msgid "eswabc"
 msgstr "rmafkp"
 
-#: ncrypt/smime.c:2213
+#: ncrypt/smime.c:2217
 msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr "Algoritma ailesini seçin: (1) DES, (2) RC2, (3) AES, şifresi(z)?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
-#: ncrypt/smime.c:2216
+#: ncrypt/smime.c:2220
 msgid "123c"
 msgstr "123z"
 
-#: ncrypt/smime.c:2219
+#: ncrypt/smime.c:2223
 msgid "(1) DES, (2) Triple-DES?"
 msgstr "(1) DES, (2) Triple-DES?"
 
 #. L10N: Options for: (1) DES, (2) Triple-DES
-#: ncrypt/smime.c:2221
+#: ncrypt/smime.c:2225
 msgid "12"
 msgstr "12"
 
-#: ncrypt/smime.c:2236
+#: ncrypt/smime.c:2240
 msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 msgstr "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 
 #. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
 #. L10N: Options for: (1) AES128, (2) AES192, (3) AES256
-#: ncrypt/smime.c:2238 ncrypt/smime.c:2259
+#: ncrypt/smime.c:2242 ncrypt/smime.c:2263
 msgid "123"
 msgstr "123"
 
-#: ncrypt/smime.c:2257
+#: ncrypt/smime.c:2261
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
-#: nntp/newsrc.c:633
+#: nntp/newsrc.c:636
 msgid "Loading list of groups from cache..."
 msgstr ""
 
-#: nntp/newsrc.c:1019
+#: nntp/newsrc.c:1022
 msgid "No news server defined"
 msgstr ""
 
-#: nntp/newsrc.c:1037
+#: nntp/newsrc.c:1040
 #, fuzzy, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s geçerli bir POP dosyayolu değil"
 
-#: nntp/nntp.c:232 nntp/nntp.c:775 pop/lib.c:417 pop/pop.c:733
+#: nntp/nntp.c:131 nntp/nntp.c:674 pop/lib.c:407 pop/pop.c:681
 msgid "Server closed connection"
 msgstr "Sunucu bağlantıyı kesti"
 
-#: nntp/nntp.c:336
+#: nntp/nntp.c:235
 msgid "Server doesn't support reader mode"
 msgstr ""
 
-#: nntp/nntp.c:572 pop/auth.c:519 send/smtp.c:786
+#: nntp/nntp.c:471 pop/auth.c:520 send/smtp.c:786
 msgid "No authenticators available"
 msgstr "Kimlik doğrulayıcılar erişilir durumda değil"
 
-#: nntp/nntp.c:824
+#: nntp/nntp.c:723
 #, fuzzy, c-format
 msgid "Connection to %s lost. Reconnect?"
 msgstr "%s soketine yapılan bağlantı kapatıldı"
 
-#: nntp/nntp.c:1282
+#: nntp/nntp.c:1181
 #, fuzzy
 msgid "Fetching list of articles..."
 msgstr "İletilerin listesi alınıyor..."
 
-#: nntp/nntp.c:1542 nntp/nntp.c:2131 pop/pop.c:605 pop/pop.c:883
+#: nntp/nntp.c:1441 nntp/nntp.c:2030 pop/pop.c:553 pop/pop.c:831
 msgid "Checking for new messages..."
 msgstr "Yeni iletiler denetleniyor..."
 
-#: nntp/nntp.c:1854 nntp/nntp.c:1947
+#: nntp/nntp.c:1753 nntp/nntp.c:1846
 #, fuzzy
 msgid "Could not switch to reader mode"
 msgstr "geçici eposta dizini yaratılamadı: %s"
 
-#: nntp/nntp.c:1867
+#: nntp/nntp.c:1766
 #, fuzzy, c-format
 msgid "Connected to %s. %s"
 msgstr "%s sunucusuna bağlanılıyor..."
 
-#: nntp/nntp.c:1868
+#: nntp/nntp.c:1767
 msgid "Posting is NOT ok"
 msgstr ""
 
-#: nntp/nntp.c:1868
+#: nntp/nntp.c:1767
 #, fuzzy
 msgid "Posting is ok"
 msgstr "Yapılacak bir işlem yok"
 
-#: nntp/nntp.c:2001 nntp/nntp.c:2036
+#: nntp/nntp.c:1900 nntp/nntp.c:1935
 #, fuzzy, c-format
 msgid "Can't post article: %s"
 msgstr "%s incelenemiyor: %s"
 
-#: nntp/nntp.c:2057
+#: nntp/nntp.c:1956
 #, fuzzy, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "İletileri sunucudan sil..."
 
-#: nntp/nntp.c:2099 nntp/nntp.c:2191
+#: nntp/nntp.c:1998 nntp/nntp.c:2090
 #, fuzzy
 msgid "Loading descriptions..."
 msgstr "Giriş yapılıyor..."
 
-#: nntp/nntp.c:2121
+#: nntp/nntp.c:2020
 #, fuzzy
 msgid "Checking for new newsgroups..."
 msgstr "Yeni iletiler için bakılıyor..."
 
-#: nntp/nntp.c:2324
+#: nntp/nntp.c:2223
 msgid "Unable to find child articles because server does not support XPAT command"
 msgstr ""
 
-#: nntp/nntp.c:2406
+#: nntp/nntp.c:2305
 #, fuzzy, c-format
 msgid "%s is an invalid newsgroup specification"
 msgstr "%s geçerli bir POP dosyayolu değil"
 
-#: nntp/nntp.c:2445
+#: nntp/nntp.c:2344
 #, c-format
 msgid "Newsgroup %s not found on the server"
 msgstr ""
 
-#: nntp/nntp.c:2467
+#: nntp/nntp.c:2366
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
 msgstr ""
 
-#: notmuch/db.c:111
+#: notmuch/db.c:113
 #, fuzzy, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "\"fcntl\" kilidi için bekleniyor... %d"
 
-#: notmuch/db.c:129
+#: notmuch/db.c:131
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
 msgstr ""
 
-#: notmuch/db.c:130
+#: notmuch/db.c:132
 #, fuzzy
 msgid "unknown reason"
 msgstr "bilinmeyen hata"
 
-#: notmuch/notmuch.c:130
-#, c-format
-msgid "failed to parse notmuch query type: %s"
-msgstr ""
-
-#: notmuch/notmuch.c:223 notmuch/notmuch.c:1995
+#: notmuch/mdata.c:76 notmuch/notmuch.c:1865
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:473
+#: notmuch/notmuch.c:133
+#, c-format
+msgid "failed to parse notmuch query type: %s"
+msgstr ""
+
+#: notmuch/notmuch.c:343
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)"
 msgstr ""
 
-#: notmuch/notmuch.c:533
+#: notmuch/notmuch.c:403
 #, c-format
 msgid "failed to parse notmuch limit: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:879
+#: notmuch/notmuch.c:749
 #, fuzzy
 msgid "Reading messages..."
 msgstr "İleti gönderiliyor..."
 
-#: notmuch/notmuch.c:1758
+#: notmuch/notmuch.c:1628
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "Sınırlandırılmış görünümde ana ileti görünemez"
 
-#: notmuch/notmuch.c:2008
+#: notmuch/notmuch.c:1878
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "%s eklenemedi"
 
-#: notmuch/notmuch.c:2487
+#: notmuch/notmuch.c:2392
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 msgstr[1] ""
 
-#: notmuch/notmuch.c:2549
+#: notmuch/notmuch.c:2454
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "%s dizinine eklenemiyor"
@@ -6341,61 +6349,61 @@ msgstr "S/MIME seçeneklerini göster"
 msgid "null operation"
 msgstr "belirtilmemiş işlem"
 
-#: pager.c:214
+#: pager.c:216
 msgid "Not available in this menu"
 msgstr "Öge bu menüde mevcut değil"
 
-#: pager.c:223 pager.c:234 pager.c:244 pager.c:260
+#: pager.c:225 pager.c:236 pager.c:246 pager.c:262
 msgid "PrevPg"
 msgstr "ÖncekiSh"
 
-#: pager.c:224 pager.c:235 pager.c:245 pager.c:261
+#: pager.c:226 pager.c:237 pager.c:247 pager.c:263
 msgid "NextPg"
 msgstr "SonrakiSh"
 
-#: pager.c:246
+#: pager.c:248
 msgid "View Attachm."
 msgstr "EkiGörüntüle"
 
-#: pager.c:249 pager.c:265
+#: pager.c:251 pager.c:267
 msgid "Next"
 msgstr "Sonraki"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager.c:2170 status.c:292
+#: pager.c:2194 status.c:292
 msgid "all"
 msgstr ""
 
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager.c:2172 status.c:290
+#: pager.c:2196 status.c:290
 msgid "end"
 msgstr ""
 
-#: pager.c:2538 pager.c:2574 pager.c:2611 pager.c:2988
+#: pager.c:2565 pager.c:2601 pager.c:2638 pager.c:3016
 msgid "Bottom of message is shown"
 msgstr "İletinin sonu"
 
-#: pager.c:2551 pager.c:2581 pager.c:2588 pager.c:2599
+#: pager.c:2578 pager.c:2608 pager.c:2615 pager.c:2626
 msgid "Top of message is shown"
 msgstr "İletinin başı"
 
-#: pager.c:2849
+#: pager.c:2877
 msgid "Help is currently being shown"
 msgstr "Şu an yardım gösteriliyor"
 
-#: pager.c:2908
+#: pager.c:2936
 msgid "No more quoted text"
 msgstr "Alıntı metni sonu"
 
-#: pager.c:2925
+#: pager.c:2953
 msgid "No more unquoted text after quoted text"
 msgstr "Alıntı metnini takip eden normal metnin sonu"
 
 #. L10N: Displayed if <skip-headers> is invoked in the pager, but we
 #. are already past the headers
-#: pager.c:2944
+#: pager.c:2972
 msgid "Already skipped past headers"
 msgstr ""
 
@@ -6403,83 +6411,83 @@ msgstr ""
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager.c:2965
+#: pager.c:2993
 msgid "No text past headers"
 msgstr ""
 
-#: pattern/compile.c:89 pattern/compile.c:167 pattern/compile.c:958
+#: pattern/compile.c:89 pattern/compile.c:173 pattern/compile.c:976
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Tabirde hata var: %s"
 
-#: pattern/compile.c:95 pattern/compile.c:172 pattern/compile.c:964
+#: pattern/compile.c:95 pattern/compile.c:178 pattern/compile.c:982
 msgid "Empty expression"
 msgstr "Boş tabir"
 
-#: pattern/compile.c:158
+#: pattern/compile.c:164
 #, fuzzy
 msgid "No search command defined"
 msgstr "Sorgulama komutu tanımlanmadı"
 
-#: pattern/compile.c:198
+#: pattern/compile.c:204
 #, fuzzy, c-format
 msgid "Running search command: %s ..."
 msgstr "Otomatik görüntüleme komutu çalıştırılıyor: %s"
 
-#: pattern/compile.c:312 pattern/compile.c:327
+#: pattern/compile.c:318 pattern/compile.c:333
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Geçersiz ay günü: %s"
 
-#: pattern/compile.c:317 pattern/compile.c:341
+#: pattern/compile.c:323 pattern/compile.c:347
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Geçersiz ay: %s"
 
-#: pattern/compile.c:444
+#: pattern/compile.c:450
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "Geçersiz göreceli tarih: %s"
 
-#: pattern/compile.c:753 pattern/compile.c:886
+#: pattern/compile.c:760 pattern/compile.c:898
 #, fuzzy
 msgid "No current message"
 msgstr "Okunmamış ileti yok"
 
-#: pattern/compile.c:913
+#: pattern/compile.c:929
 msgid "No Context"
 msgstr ""
 
-#: pattern/compile.c:1083 pattern/compile.c:1320
+#: pattern/compile.c:1103 pattern/compile.c:1340
 msgid "empty pattern"
 msgstr "boş tabir"
 
-#: pattern/compile.c:1113 pattern/compile.c:1314
+#: pattern/compile.c:1133 pattern/compile.c:1334
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "tabirdeki hata konumu: %s"
 
-#: pattern/compile.c:1146
+#: pattern/compile.c:1166
 #, fuzzy, c-format
 msgid "missing pattern: %s"
 msgstr "eksik argüman"
 
-#: pattern/compile.c:1164 pattern/compile.c:1287
+#: pattern/compile.c:1184 pattern/compile.c:1307
 #, c-format
 msgid "mismatched parentheses: %s"
 msgstr "eşleşmeyen parantezler: %s"
 
-#: pattern/compile.c:1229
+#: pattern/compile.c:1249
 #, fuzzy, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: geçersiz komut"
 
-#: pattern/compile.c:1234
+#: pattern/compile.c:1254
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c : bu kipte desteklenmiyor"
 
-#: pattern/compile.c:1249
+#: pattern/compile.c:1269
 msgid "missing parameter"
 msgstr "eksik argüman"
 
@@ -6833,138 +6841,138 @@ msgstr "Daha başka ilmek yok"
 msgid "IMAP custom server-side search for STRING"
 msgstr ""
 
-#: pattern/pattern.c:256 pattern/pattern.c:360 pattern/pattern.c:519
-#: pattern/pattern.c:670
+#: pattern/pattern.c:261 pattern/pattern.c:368 pattern/pattern.c:527
+#: pattern/pattern.c:678
 msgid "Compiling search pattern..."
 msgstr "Arama tabiri derleniyor..."
 
-#: pattern/pattern.c:283 pattern/pattern.c:384
+#: pattern/pattern.c:288 pattern/pattern.c:392
 msgid "Executing command on matching messages..."
 msgstr "Komut, eşleşen bütün iletilerde çalıştırılıyor..."
 
-#: pattern/pattern.c:454
+#: pattern/pattern.c:462
 msgid "No messages matched criteria"
 msgstr "Tabire uygun ileti bulunamadı"
 
-#: pattern/pattern.c:555 pattern/pattern.c:706
+#: pattern/pattern.c:563 pattern/pattern.c:714
 msgid "Searching..."
 msgstr "Aranıyor..."
 
-#: pattern/pattern.c:568 pattern/pattern.c:719
+#: pattern/pattern.c:576 pattern/pattern.c:727
 msgid "Search hit bottom without finding match"
 msgstr "Arama hiç bir şey bulunamadan sona erişti"
 
-#: pattern/pattern.c:579 pattern/pattern.c:730
+#: pattern/pattern.c:587 pattern/pattern.c:738
 msgid "Search hit top without finding match"
 msgstr "Arama hiçbir şey bulunamadan başa erişti"
 
-#: pattern/pattern.c:613 pattern/pattern.c:764
+#: pattern/pattern.c:621 pattern/pattern.c:772
 msgid "Search interrupted"
 msgstr "Arama iptal edildi"
 
-#: pop/auth.c:237
+#: pop/auth.c:238
 msgid "POP timestamp is invalid"
 msgstr ""
 
-#: pop/auth.c:300
+#: pop/auth.c:301
 msgid "Command USER is not supported by server"
 msgstr "Sunucu USER komutunu desteklemiyor"
 
-#: pop/auth.c:375
+#: pop/auth.c:376
 msgid "Authentication failed"
 msgstr "Kimlik doğrulaması başarısız"
 
-#: pop/lib.c:94
+#: pop/lib.c:96
 #, c-format
 msgid "Invalid POP URL: %s"
 msgstr "Geçersiz POP URL: %s"
 
-#: pop/lib.c:248
+#: pop/lib.c:250
 msgid "Unable to leave messages on server"
 msgstr "İletiler sunucuda bırakılamıyor"
 
-#: pop/lib.c:250 pop/pop.c:209
+#: pop/lib.c:252 pop/pop.c:157
 msgid "Command TOP is not supported by server"
 msgstr "TOP komutu sunucu tarafından desteklenmiyor"
 
-#: pop/lib.c:252 pop/pop.c:413
+#: pop/lib.c:254 pop/pop.c:361
 msgid "Command UIDL is not supported by server"
 msgstr "UIDL komutu sunucu tarafından desteklenmiyor"
 
-#: pop/lib.c:291
+#: pop/lib.c:281
 #, c-format
 msgid "Error connecting to server: %s"
 msgstr "Sunucuya bağlanırken hata oluştu: %s"
 
-#: pop/lib.c:433
+#: pop/lib.c:423
 msgid "Closing connection to POP server..."
 msgstr "POP sunucuya yapılan bağlantı kesiliyor..."
 
-#: pop/lib.c:624
+#: pop/lib.c:614
 msgid "Verifying message indexes..."
 msgstr "İleti indeksleri doğrulanıyor..."
 
-#: pop/lib.c:647
+#: pop/lib.c:637
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "Bağlantı kaybedildi. POP sunucusuna yeniden bağlanılsın mı?"
 
-#: pop/pop.c:236
+#: pop/pop.c:184
 msgid "Can't write header to temporary file"
 msgstr "Başlık, geçici bir dosyaya yazılamıyor"
 
-#: pop/pop.c:438
+#: pop/pop.c:386
 #, fuzzy, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
 msgstr[0] "İleti indeksi hatalı. Eposta kutusu yeniden açılıyor."
 msgstr[1] "İleti indeksi hatalı. Eposta kutusu yeniden açılıyor."
 
-#: pop/pop.c:565
+#: pop/pop.c:513
 msgid "POP host is not defined"
 msgstr "POP sunucusu tanımlanmamış"
 
-#: pop/pop.c:587 pop/pop.c:771 pop/pop.c:801
+#: pop/pop.c:535 pop/pop.c:719 pop/pop.c:749
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s geçerli bir POP yolu değil"
 
-#: pop/pop.c:633
+#: pop/pop.c:581
 msgid "No new mail in POP mailbox"
 msgstr "POP posta kutusunda yeni posta yok"
 
-#: pop/pop.c:649
+#: pop/pop.c:597
 msgid "Delete messages from server?"
 msgstr "İletiler sunucudan silinsin mi?"
 
-#: pop/pop.c:652
+#: pop/pop.c:600
 #, fuzzy, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
 msgstr[0] "Yeni iletiler okunuyor (%d bayt)..."
 msgstr[1] "Yeni iletiler okunuyor (%d bayt)..."
 
-#: pop/pop.c:700
+#: pop/pop.c:648
 msgid "Error while writing mailbox"
 msgstr "Eposta kutusuna yazarken hata oluştu"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. the %d right before 'messages', i.e. the total number of messages.
-#: pop/pop.c:706
+#: pop/pop.c:654
 #, fuzzy, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
 msgstr[0] "%1$s [ %3$d iletiden %2$d ileti okundu]"
 msgstr[1] "%1$s [ %3$d iletiden %2$d ileti okundu]"
 
-#: pop/pop.c:852
+#: pop/pop.c:800
 msgid "Fetching list of messages..."
 msgstr "İletiler listesi getiriliyor..."
 
-#: pop/pop.c:929
+#: pop/pop.c:877
 msgid "Marking messages deleted..."
 msgstr "İletiler silindi olarak imleniyor..."
 
-#: pop/pop.c:1114
+#: pop/pop.c:1062
 msgid "Can't write message to temporary file"
 msgstr "İleti geçici bir dosyaya yazılamıyor"
 
@@ -6996,37 +7004,37 @@ msgstr "Boru"
 msgid "Print"
 msgstr "Yazdır"
 
-#: recvattach.c:644
+#: recvattach.c:645
 msgid "Saving..."
 msgstr "Kaydediliyor..."
 
-#: recvattach.c:648 recvattach.c:820 recvattach.c:824
+#: recvattach.c:649 recvattach.c:822 recvattach.c:826
 #, fuzzy, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "Ek kaydedildi"
 msgstr[1] "Ek kaydedildi"
 
-#: recvattach.c:848
+#: recvattach.c:850
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "UYARI! %s dosyasının üzerine yazılacak, sürdürülsün mü?"
 
-#: recvattach.c:866
+#: recvattach.c:868
 msgid "Attachment filtered"
 msgstr "Ek, süzgeçten geçirildi"
 
-#: recvattach.c:1022
+#: recvattach.c:1024
 msgid "Filter through: "
 msgstr "Süzgeç: "
 
-#: recvattach.c:1022
+#: recvattach.c:1024
 msgid "Pipe to: "
 msgstr "Borula: "
 
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
-#: recvattach.c:1076
+#: recvattach.c:1078
 #, fuzzy, c-format
 msgid "I don't know how to print %s attachments"
 msgstr "%s eklerinin nasıl yazdırılacağı bilinmiyor"
@@ -7034,52 +7042,52 @@ msgstr "%s eklerinin nasıl yazdırılacağı bilinmiyor"
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
 #. plural" as plural translation if your language has one.
-#: recvattach.c:1179
+#: recvattach.c:1181
 #, fuzzy, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
 msgstr[0] "İşaretli ileti(ler) yazdırılsın mı?"
 msgstr[1] "İşaretli ileti(ler) yazdırılsın mı?"
 
-#: recvattach.c:1180
+#: recvattach.c:1182
 #, c-format
 msgid "Print attachment?"
 msgstr "Ek yazdırılsın mı?"
 
-#: recvattach.c:1264
+#: recvattach.c:1266
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr "Çözülen eklere yapılacak yapısal değişiklikler desteklenmiyor"
 
-#: recvattach.c:1431
+#: recvattach.c:1433
 msgid "Can't decrypt encrypted message"
 msgstr "Şifrelenmiş ileti çözülemiyor"
 
-#: recvattach.c:1567
+#: recvattach.c:1569
 msgid "Attachments"
 msgstr "Ekler"
 
-#: recvattach.c:1613
+#: recvattach.c:1615
 msgid "There are no subparts to show"
 msgstr "Gösterilecek bir alt bölüm yok"
 
-#: recvattach.c:1668
+#: recvattach.c:1670
 msgid "Can't delete attachment from POP server"
 msgstr "Ek, POP sunucusundan silinemiyor"
 
-#: recvattach.c:1677
+#: recvattach.c:1679
 #, fuzzy
 msgid "Can't delete attachment from news server"
 msgstr "Ek, POP sunucusundan silinemiyor"
 
-#: recvattach.c:1684
+#: recvattach.c:1686
 msgid "Deletion of attachments from encrypted messages is unsupported"
 msgstr "Şifrelenmiş bir iletiye ait eklerin silinmesi desteklenmiyor"
 
-#: recvattach.c:1690
+#: recvattach.c:1692
 msgid "Deletion of attachments from signed messages may invalidate the signature"
 msgstr "İmzalanmış iletilerdeki eklerin silinmesi imzayı geçersiz kılabilir"
 
-#: recvattach.c:1709 recvattach.c:1726
+#: recvattach.c:1711 recvattach.c:1728
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Yalnızca çok parçalı eklerin silinmesi destekleniyor"
 
@@ -7087,50 +7095,50 @@ msgstr "Yalnızca çok parçalı eklerin silinmesi destekleniyor"
 msgid "You may only bounce message/rfc822 parts"
 msgstr "Yalnızca ileti veya rfc822 kısımları geri gönderilebilir"
 
-#: recvcmd.c:283
+#: recvcmd.c:286
 #, fuzzy
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
 msgstr[0] "İleti geri gönderilirken hata oluştu"
 msgstr[1] "İleti geri gönderilirken hata oluştu"
 
-#: recvcmd.c:503
+#: recvcmd.c:511
 #, c-format
 msgid "Can't open temporary file %s"
 msgstr "Geçici dosya %s açılamıyor"
 
-#: recvcmd.c:531
+#: recvcmd.c:539
 msgid "Forward as attachments?"
 msgstr "Ekler halinde iletilsin mi?"
 
-#: recvcmd.c:546
+#: recvcmd.c:554
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr "İmli eklerin hepsi çözülemiyor. Kalanlar MIME olarak iletilsin mi?"
 
-#: recvcmd.c:674
+#: recvcmd.c:683
 msgid "Forward MIME encapsulated?"
 msgstr "MIME ile sarmalanmış hâlde iletilsin mi?"
 
-#: recvcmd.c:683 recvcmd.c:985
+#: recvcmd.c:692 recvcmd.c:995
 #, c-format
 msgid "Can't create %s"
 msgstr "%s oluşturulamadı"
 
-#: recvcmd.c:825
+#: recvcmd.c:833
 msgid "Can't find any tagged messages"
 msgstr "İmli hiçbir ileti yok"
 
-#: recvcmd.c:861 send/send.c:1053
+#: recvcmd.c:869 send/send.c:1063
 msgid "No mailing lists found"
 msgstr "Herhangi bir eposta listesi bulunamadı"
 
-#: recvcmd.c:961
+#: recvcmd.c:971
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "İmli eklerin tümü çözülemiyor. Kalanlar MIME ile sarmalanmış olarak iletilsin mi?"
 
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
-#: recvcmd.c:1096
+#: recvcmd.c:1106
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Yalnızca message/rfc822 bölümleriyle göndericiye yazabilirsiniz"
 
@@ -7211,11 +7219,11 @@ msgstr "Sınırlandırma değişkeni bulunamadı [bu hatayı bildirin]"
 msgid "%s no longer exists"
 msgstr "%s artık mevcut değil"
 
-#: send/send.c:297
+#: send/send.c:303
 msgid "No subject, abort?"
 msgstr "Konu girilmedi, iptal edilsin mi?"
 
-#: send/send.c:299
+#: send/send.c:305
 msgid "No subject, aborting"
 msgstr "Konu girilmedi, iptal ediliyor"
 
@@ -7225,43 +7233,43 @@ msgstr "Konu girilmedi, iptal ediliyor"
 #. Text/plain parts and the like will already be included in the
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
-#: send/send.c:554
+#: send/send.c:562
 msgid "Forward attachments?"
 msgstr "Ekler de iletilsin mi?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:752
+#: send/send.c:761
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Yanıt adresi olarak %s%s kullanılsın mı? [Reply-To]"
 
-#: send/send.c:799
+#: send/send.c:808
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Yanıt adresi olarak %s%s kullanılsın mı? [Mail-Followup-To]"
 
-#: send/send.c:1097
+#: send/send.c:1107
 msgid "Include message in reply?"
 msgstr "İleti, yanıta dahil edilsin mi?"
 
-#: send/send.c:1103
+#: send/send.c:1113
 msgid "Including quoted message..."
 msgstr "Alıntı metni dahil ediliyor..."
 
-#: send/send.c:1109
+#: send/send.c:1119
 msgid "Could not include all requested messages"
 msgstr "Bildirilen iletilerin hepsi dahil edilemedi"
 
-#: send/send.c:1123
+#: send/send.c:1133
 msgid "Forward as attachment?"
 msgstr "Ek olarak iletilsin mi?"
 
-#: send/send.c:1128
+#: send/send.c:1138
 msgid "Preparing forwarded message..."
 msgstr "İletilecek posta hazırlanıyor..."
 
-#: send/send.c:1647
+#: send/send.c:1658
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "Uyarı: Toplu iş kipinde bir IMAP posta kutusuna Fcc desteklenmiyor"
 
@@ -7270,12 +7278,12 @@ msgstr "Uyarı: Toplu iş kipinde bir IMAP posta kutusuna Fcc desteklenmiyor"
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1653
+#: send/send.c:1664
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr "Fcc %s konumuna atlanıyor"
 
-#: send/send.c:1693 send/send.c:1703 send/send.c:1729
+#: send/send.c:1704 send/send.c:1714 send/send.c:1740
 msgid "Save attachments in Fcc?"
 msgstr "Ekleri Fcc içine kaydet?"
 
@@ -7283,107 +7291,107 @@ msgstr "Ekleri Fcc içine kaydet?"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1752
+#: send/send.c:1763
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1756
+#: send/send.c:1767
 msgid "rms"
 msgstr "ypa"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1762
+#: send/send.c:1773
 msgid "Fcc mailbox"
 msgstr "Posta kutusunu kopyala (Fcc)"
 
-#: send/send.c:1831
+#: send/send.c:1843
 msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
-#: send/send.c:1869 send/send.c:1885
+#: send/send.c:1882 send/send.c:1898
 msgid "Error encrypting message. Check your crypt settings."
 msgstr ""
 
-#: send/send.c:1978
+#: send/send.c:1991
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send/send.c:1984
+#: send/send.c:1997
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "ek iletim kodlamasını (transfer-encoding) düzenle"
 
-#: send/send.c:2043
+#: send/send.c:2056
 msgid "Recall postponed message?"
 msgstr "Ertelenen ileti açılsın mı?"
 
-#: send/send.c:2295
+#: send/send.c:2308
 msgid "Refusing to send an empty email"
 msgstr ""
 
-#: send/send.c:2296
+#: send/send.c:2309
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
 msgstr ""
 
-#: send/send.c:2378
+#: send/send.c:2391
 msgid "Edit forwarded message?"
 msgstr "İletilen posta düzenlensin mi?"
 
-#: send/send.c:2418
+#: send/send.c:2431
 msgid "Abort unmodified message?"
 msgstr "Değiştirilmemiş ileti iptal edilsin mi?"
 
-#: send/send.c:2420
+#: send/send.c:2433
 msgid "Aborted unmodified message"
 msgstr "Değiştirilmemiş ileti iptal edildi"
 
-#: send/send.c:2564
+#: send/send.c:2578
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send/send.c:2606
+#: send/send.c:2620
 #, fuzzy
 msgid "Article not posted"
 msgstr "Eposta gönderilmedi"
 
-#: send/send.c:2616
+#: send/send.c:2630
 msgid "Message postponed"
 msgstr "İleti ertelendi"
 
-#: send/send.c:2652
+#: send/send.c:2666
 msgid "No subject, abort sending?"
 msgstr "Konu girilmedi, gönderme iptal edilsin mi?"
 
-#: send/send.c:2656 send/send.c:2662
+#: send/send.c:2670 send/send.c:2676
 msgid "No subject specified"
 msgstr "Konu girilmedi"
 
-#: send/send.c:2668
+#: send/send.c:2682
 #, fuzzy
 msgid "No newsgroup specified"
 msgstr "Konu girilmedi"
 
-#: send/send.c:2729 send/smtp.c:250
+#: send/send.c:2743 send/smtp.c:250
 msgid "Sending message..."
 msgstr "İleti gönderiliyor..."
 
-#: send/send.c:2769
+#: send/send.c:2783
 msgid "Could not send the message"
 msgstr "İleti gönderilemedi"
 
-#: send/send.c:2779
+#: send/send.c:2793
 msgid "Sending in background"
 msgstr "Ardalanda gönderiliyor"
 
-#: send/send.c:2780
+#: send/send.c:2794
 msgid "Article posted"
 msgstr ""
 
-#: send/send.c:2781
+#: send/send.c:2795
 msgid "Mail sent"
 msgstr "E-posta gönderildi"
 
@@ -7402,21 +7410,21 @@ msgstr "İleti gönderilemedi"
 msgid "Could not open %s"
 msgstr "%s açılamadı"
 
-#: send/sendlib.c:1403
+#: send/sendlib.c:1405
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "\"resent-from\" hazırlanırken hatalı IDN %s"
 
-#: send/sendmail.c:322
+#: send/sendmail.c:324
 msgid "$sendmail must be set in order to send mail"
 msgstr "e-posta gönderebilmek için $sendmail ayarlanmış olmalıdır"
 
-#: send/sendmail.c:428
+#: send/sendmail.c:430
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "İleti gönderilirken hata oluştu, alt süreç %d ile sonlandı (%s)"
 
-#: send/sendmail.c:435
+#: send/sendmail.c:437
 msgid "Output of the delivery process"
 msgstr "Gönderme işleminin ürettiği çıktı"
 
