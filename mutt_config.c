@@ -44,7 +44,6 @@
 #include "handler.h"
 #include "hdrline.h"
 #include "hook.h"
-#include "index.h"
 #include "init.h"
 #include "mailcap.h"
 #include "main.h"
@@ -263,14 +262,8 @@ struct ConfigDef MainVars[] = {
   { "browser_abbreviate_mailboxes", DT_BOOL, &C_BrowserAbbreviateMailboxes, true, 0, NULL,
     "Abbreviate mailboxes using '~' and '=' in the browser"
   },
-  { "change_folder_next", DT_BOOL, &C_ChangeFolderNext, false, 0, NULL,
-    "Suggest the next folder, rather than the first when using '<change-folder>'"
-  },
   { "charset", DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, &C_Charset, 0, 0, charset_validator,
     "Default character set for displaying text on screen"
-  },
-  { "collapse_all", DT_BOOL, &C_CollapseAll, false, 0, NULL,
-    "Collapse all threads when entering a folder"
   },
   { "collapse_flagged", DT_BOOL, &C_CollapseFlagged, true, 0, NULL,
     "Prevent the collapse of threads with flagged emails"
@@ -432,9 +425,6 @@ struct ConfigDef MainVars[] = {
   },
   { "mailcap_sanitize", DT_BOOL, &C_MailcapSanitize, true, 0, NULL,
     "Restrict the possible characters in mailcap expandos"
-  },
-  { "mark_macro_prefix", DT_STRING, &C_MarkMacroPrefix, IP "'", 0, NULL,
-    "Prefix for macros using '<mark-message>'"
   },
   { "mark_old", DT_BOOL|R_INDEX|R_PAGER, &C_MarkOld, true, 0, NULL,
     "Mark new emails as old when leaving the mailbox"
@@ -723,12 +713,6 @@ struct ConfigDef MainVars[] = {
   { "ts_status_format", DT_STRING|R_INDEX|R_PAGER, &C_TsStatusFormat, IP "NeoMutt with %?m?%m messages&no messages?%?n? [%n NEW]?", 0, NULL,
     "printf-like format string for the terminal's status (window title)"
   },
-  { "uncollapse_jump", DT_BOOL, &C_UncollapseJump, false, 0, NULL,
-    "When opening a thread, jump to the next unread message"
-  },
-  { "uncollapse_new", DT_BOOL, &C_UncollapseNew, true, 0, NULL,
-    "Open collapsed threads when new mail arrives"
-  },
   { "use_domain", DT_BOOL, &C_UseDomain, true, 0, NULL,
     "Qualify local addresses using this domain"
   },
@@ -832,6 +816,7 @@ static void init_variables(struct ConfigSet *cs)
 #endif
   CONFIG_INIT_VARS(cs, helpbar);
   CONFIG_INIT_VARS(cs, history);
+  CONFIG_INIT_VARS(cs, index);
 #ifdef USE_IMAP
   CONFIG_INIT_VARS(cs, imap);
 #endif

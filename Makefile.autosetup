@@ -66,7 +66,7 @@ NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	browser.o commands.o command_parse.o \
 		complete.o conststrings.o context.o copy.o \
 		editmsg.o enriched.o enter.o flags.o functions.o git_ver.o \
-		handler.o hdrline.o help.o hook.o icommands.o index.o init.o \
+		handler.o hdrline.o help.o hook.o icommands.o init.o \
 		keymap.o mailcap.o maillist.o main.o menu.o muttlib.o mutt_account.o \
 		mutt_attach.o mutt_body.o mutt_commands.o mutt_config.o \
 		mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
@@ -390,6 +390,19 @@ $(PWD)/imap:
 	$(MKDIR_P) $(PWD)/imap
 
 ###############################################################################
+# libindex
+LIBINDEX=	libindex.a
+LIBINDEXOBJS=	index/config.o index/index.o
+CLEANFILES+=	$(LIBINDEX) $(LIBINDEXOBJS)
+ALLOBJS+=	$(LIBINDEXOBJS)
+
+$(LIBINDEX): $(PWD)/index $(LIBINDEXOBJS)
+	$(AR) cr $@ $(LIBINDEXOBJS)
+	$(RANLIB) $@
+$(PWD)/index:
+	$(MKDIR_P) $(PWD)/index
+
+###############################################################################
 # libmaildir
 LIBMAILDIR=	libmaildir.a
 LIBMAILDIROBJS=	maildir/config.o maildir/edata.o maildir/maildir.o \
@@ -611,7 +624,7 @@ $(ALLOBJS):
 
 # The order of these libraries depends on their dependencies.
 # The libraries with the most dependencies will come first.
-MUTTLIBS+=	$(LIBAUTOCRYPT) $(LIBPOP) $(LIBNNTP) $(LIBCOMPMBOX) \
+MUTTLIBS+=	$(LIBINDEX) $(LIBAUTOCRYPT) $(LIBPOP) $(LIBNNTP) $(LIBCOMPMBOX) \
 		$(LIBSTORE) $(LIBPATTERN) $(LIBGUI) $(LIBHELPBAR) $(LIBMBOX) \
 		$(LIBNOTMUCH) $(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) \
 		$(LIBHCACHE)  $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) \

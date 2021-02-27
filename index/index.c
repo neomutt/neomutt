@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_index GUI manage the main index (list of emails)
+ * @page index_index GUI manage the main index (list of emails)
  *
  * GUI manage the main index (list of emails)
  */
@@ -45,7 +45,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "debug/lib.h"
-#include "index.h"
+#include "lib.h"
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
 #include "send/lib.h"
@@ -99,13 +99,6 @@
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
-
-/* These Config Variables are only used in index.c */
-bool C_ChangeFolderNext; ///< Config: Suggest the next folder, rather than the first when using '<change-folder>'
-bool C_CollapseAll; ///< Config: Collapse all threads when entering a folder
-char *C_MarkMacroPrefix; ///< Config: Prefix for macros using '<mark-message>'
-bool C_UncollapseJump; ///< Config: When opening a thread, jump to the next unread message
-bool C_UncollapseNew; ///< Config: Open collapsed threads when new mail arrives
 
 /// Help Bar for the Index dialog
 static const struct Mapping IndexHelp[] = {
@@ -363,8 +356,10 @@ static int ci_first_message(struct Mailbox *m)
   /* If `$sort` is reverse and not threaded, the latest message is first.
    * If `$sort` is threaded, the latest message is first if exactly one
    * of `$sort` and `$sort_aux` are reverse.  */
-  if (((C_Sort & SORT_REVERSE) && ((C_Sort & SORT_MASK) != SORT_THREADS)) ||
-      (((C_Sort & SORT_MASK) == SORT_THREADS) && ((C_Sort ^ C_SortAux) & SORT_REVERSE)))
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+  if (((c_sort & SORT_REVERSE) && ((c_sort & SORT_MASK) != SORT_THREADS)) ||
+      (((c_sort & SORT_MASK) == SORT_THREADS) && ((c_sort ^ c_sort_aux) & SORT_REVERSE)))
   {
     return 0;
   }
@@ -437,7 +432,8 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
     }
   }
 
-  if (((C_Sort & SORT_MASK) == SORT_THREADS) && (menu->current < 0))
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (((c_sort & SORT_MASK) == SORT_THREADS) && (menu->current < 0))
     menu->current = mutt_parent_message(e_cur, false);
 
   if (menu->current < 0)
@@ -459,9 +455,10 @@ static void update_index_threaded(struct Context *ctx, enum MxStatus check, int 
 
   int num_new = MAX(0, ctx->mailbox->msg_count - oldcount);
 
+  const bool c_uncollapse_new = cs_subset_bool(NeoMutt->sub, "uncollapse_new");
   /* save the list of new messages */
   if ((check != MX_STATUS_REOPENED) && (oldcount > 0) &&
-      (lmt || C_UncollapseNew) && (num_new > 0))
+      (lmt || c_uncollapse_new) && (num_new > 0))
   {
     save_new = mutt_mem_malloc(num_new * sizeof(struct Email *));
     for (int i = oldcount; i < ctx->mailbox->msg_count; i++)
@@ -502,7 +499,7 @@ static void update_index_threaded(struct Context *ctx, enum MxStatus check, int 
   }
 
   /* uncollapse threads with new mail */
-  if (C_UncollapseNew)
+  if (c_uncollapse_new)
   {
     if (check == MX_STATUS_REOPENED)
     {
@@ -613,7 +610,8 @@ static void update_index(struct Menu *menu, struct Context *ctx, enum MxStatus c
   if (!menu || !ctx)
     return;
 
-  if ((C_Sort & SORT_MASK) == SORT_THREADS)
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if ((c_sort & SORT_MASK) == SORT_THREADS)
     update_index_threaded(ctx, check, oldcount);
   else
     update_index_unthreaded(ctx, check);
@@ -770,7 +768,9 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
     menu->current = 0;
   }
 
-  if (((C_Sort & SORT_MASK) == SORT_THREADS) && C_CollapseAll)
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const bool c_collapse_all = cs_subset_bool(NeoMutt->sub, "collapse_all");
+  if (((c_sort & SORT_MASK) == SORT_THREADS) && c_collapse_all)
     collapse_all(Context, menu, 0);
 
   struct MuttWindow *dlg = dialog_find(menu->win_index);
@@ -833,7 +833,8 @@ static void change_folder_string(struct Menu *menu, char *buf, size_t buflen,
   else
 #endif
   {
-    mx_path_canon(buf, buflen, C_Folder, NULL);
+    const char *c_folder = cs_subset_string(NeoMutt->sub, "folder");
+    mx_path_canon(buf, buflen, c_folder, NULL);
   }
 
   enum MailboxType type = mx_path_probe(buf);
@@ -877,14 +878,15 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
   MuttFormatFlags flags = MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   struct MuttThread *tmp = NULL;
 
-  if (((C_Sort & SORT_MASK) == SORT_THREADS) && e->tree)
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (((c_sort & SORT_MASK) == SORT_THREADS) && e->tree)
   {
     flags |= MUTT_FORMAT_TREE; /* display the thread tree */
     if (e->display_subject)
       flags |= MUTT_FORMAT_FORCESUBJ;
     else
     {
-      const int reverse = C_Sort & SORT_REVERSE;
+      const int reverse = c_sort & SORT_REVERSE;
       int edgemsgno;
       if (reverse)
       {
@@ -931,7 +933,8 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
     }
   }
 
-  mutt_make_string(buf, buflen, menu->win_index->state.cols, NONULL(C_IndexFormat),
+  const char *c_index_format = cs_subset_string(NeoMutt->sub, "index_format");
+  mutt_make_string(buf, buflen, menu->win_index->state.cols, NONULL(c_index_format),
                    m, Context->msg_in_pager, e, flags, NULL);
 }
 
@@ -1120,17 +1123,24 @@ static void index_custom_redraw(struct Menu *menu)
   if (menu->redraw & REDRAW_STATUS)
   {
     char buf[1024];
-    menu_status_line(buf, sizeof(buf), menu, m, NONULL(C_StatusFormat));
+    const char *c_status_format =
+        cs_subset_string(NeoMutt->sub, "status_format");
+    menu_status_line(buf, sizeof(buf), menu, m, NONULL(c_status_format));
     mutt_window_move(menu->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_NORMAL);
     menu->redraw &= ~REDRAW_STATUS;
-    if (C_TsEnabled && TsSupported)
+    const bool c_ts_enabled = cs_subset_bool(NeoMutt->sub, "ts_enabled");
+    if (c_ts_enabled && TsSupported)
     {
-      menu_status_line(buf, sizeof(buf), menu, m, NONULL(C_TsStatusFormat));
+      const char *c_ts_status_format =
+          cs_subset_string(NeoMutt->sub, "ts_status_format");
+      menu_status_line(buf, sizeof(buf), menu, m, NONULL(c_ts_status_format));
       mutt_ts_status(buf);
-      menu_status_line(buf, sizeof(buf), menu, m, NONULL(C_TsIconFormat));
+      const char *c_ts_icon_format =
+          cs_subset_string(NeoMutt->sub, "ts_icon_format");
+      menu_status_line(buf, sizeof(buf), menu, m, NONULL(c_ts_icon_format));
       mutt_ts_icon(buf);
     }
   }
@@ -1193,7 +1203,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
   mutt_monitor_add(NULL);
 #endif
 
-  if (((C_Sort & SORT_MASK) == SORT_THREADS) && C_CollapseAll)
+  short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  bool c_collapse_all = cs_subset_bool(NeoMutt->sub, "collapse_all");
+  if (((c_sort & SORT_MASK) == SORT_THREADS) && c_collapse_all)
   {
     collapse_all(Context, menu, 0);
     menu->redraw = REDRAW_FULL;
@@ -1218,8 +1230,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
     menu->max = ctx_mailbox(Context) ? Context->mailbox->vcount : 0;
     oldcount = ctx_mailbox(Context) ? Context->mailbox->msg_count : 0;
 
+    c_sort = cs_subset_sort(NeoMutt->sub, "sort");
     if (OptRedrawTree && ctx_mailbox(Context) && (Context->mailbox->msg_count != 0) &&
-        ((C_Sort & SORT_MASK) == SORT_THREADS))
+        ((c_sort & SORT_MASK) == SORT_THREADS))
     {
       mutt_draw_tree(Context->threads);
       menu->redraw |= REDRAW_STATUS;
@@ -1262,13 +1275,16 @@ int mutt_index_menu(struct MuttWindow *dlg)
             if (e && !e->read && !e->old)
             {
               mutt_message(_("New mail in this mailbox"));
-              if (C_BeepNew)
+              const bool c_beep_new = cs_subset_bool(NeoMutt->sub, "beep_new");
+              if (c_beep_new)
                 mutt_beep(true);
-              if (C_NewMailCommand)
+              const char *c_new_mail_command =
+                  cs_subset_string(NeoMutt->sub, "new_mail_command");
+              if (c_new_mail_command)
               {
                 char cmd[1024];
                 menu_status_line(cmd, sizeof(cmd), menu, Context->mailbox,
-                                 NONULL(C_NewMailCommand));
+                                 NONULL(c_new_mail_command));
                 if (mutt_system(cmd) != 0)
                   mutt_error(_("Error running \"%s\""), cmd);
               }
@@ -1312,12 +1328,15 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (mutt_mailbox_notify(m))
         {
           menu->redraw |= REDRAW_STATUS;
-          if (C_BeepNew)
+          const bool c_beep_new = cs_subset_bool(NeoMutt->sub, "beep_new");
+          if (c_beep_new)
             mutt_beep(true);
-          if (C_NewMailCommand)
+          const char *c_new_mail_command =
+              cs_subset_string(NeoMutt->sub, "new_mail_command");
+          if (c_new_mail_command)
           {
             char cmd[1024];
-            menu_status_line(cmd, sizeof(cmd), menu, m, NONULL(C_NewMailCommand));
+            menu_status_line(cmd, sizeof(cmd), menu, m, NONULL(c_new_mail_command));
             if (mutt_system(cmd) != 0)
               mutt_error(_("Error running \"%s\""), cmd);
           }
@@ -1356,9 +1375,12 @@ int mutt_index_menu(struct MuttWindow *dlg)
       else
         menu->oldcurrent = -1;
 
-      if (C_ArrowCursor)
+      const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
+      const bool c_braille_friendly =
+          cs_subset_bool(NeoMutt->sub, "braille_friendly");
+      if (c_arrow_cursor)
         mutt_window_move(menu->win_index, 2, menu->current - menu->top);
-      else if (C_BrailleFriendly)
+      else if (c_braille_friendly)
         mutt_window_move(menu->win_index, 0, menu->current - menu->top);
       else
       {
@@ -1395,6 +1417,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
       /* special handling for the tag-prefix function */
+      const bool c_auto_tag = cs_subset_bool(NeoMutt->sub, "auto_tag");
       if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
       {
         /* A second tag-prefix command aborts */
@@ -1427,7 +1450,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         tag = true;
         continue;
       }
-      else if (C_AutoTag && ctx_mailbox(Context) && (Context->mailbox->msg_tagged != 0))
+      else if (c_auto_tag && ctx_mailbox(Context) && (Context->mailbox->msg_tagged != 0))
       {
         tag = true;
       }
@@ -1843,7 +1866,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
             menu->current = 0;
           if ((Context->mailbox->msg_count != 0) && ((C_Sort & SORT_MASK) == SORT_THREADS))
           {
-            if (C_CollapseAll)
+            c_collapse_all = cs_subset_bool(NeoMutt->sub, "collapse_all");
+            if (c_collapse_all)
               collapse_all(Context, menu, 0);
             mutt_draw_tree(Context->threads);
           }
@@ -1855,6 +1879,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       }
 
       case OP_QUIT:
+      {
         close = op;
         if (attach_msg)
         {
@@ -1862,7 +1887,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         }
 
-        if (query_quadoption(C_Quit, _("Quit NeoMutt?")) == MUTT_YES)
+        const enum QuadOption c_quit = cs_subset_quad(NeoMutt->sub, "quit");
+        if (query_quadoption(c_quit, _("Quit NeoMutt?")) == MUTT_YES)
         {
           oldcount = (Context && Context->mailbox) ? Context->mailbox->msg_count : 0;
 
@@ -1886,6 +1912,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           }
         }
         break;
+      }
 
       case OP_REDRAW:
         mutt_window_reflow(NULL);
@@ -1934,7 +1961,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
       {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        if (tag && !C_AutoTag)
+        const bool c_auto_tag = cs_subset_bool(NeoMutt->sub, "auto_tag");
+        if (tag && !c_auto_tag)
         {
           struct Mailbox *m = Context->mailbox;
           for (size_t i = 0; i < m->msg_count; i++)
@@ -1954,7 +1982,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
           mutt_set_flag(Context->mailbox, cur.e, MUTT_TAG, !cur.e->tagged);
 
           menu->redraw |= REDRAW_STATUS;
-          if (C_Resolve && (menu->current < Context->mailbox->vcount - 1))
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          if (c_resolve && (menu->current < Context->mailbox->vcount - 1))
           {
             menu->current++;
             menu->redraw |= REDRAW_MOTION_RESYNC;
@@ -2295,7 +2324,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
             op = OP_DISPLAY_MESSAGE;
             continue;
           }
-          if (C_Resolve)
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          if (c_resolve)
           {
             menu->current = ci_next_undeleted(Context->mailbox, menu->current);
             if (menu->current == -1)
@@ -2352,19 +2382,23 @@ int mutt_index_menu(struct MuttWindow *dlg)
       {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
-        if (C_NmQueryWindowDuration <= 0)
+        const short c_nm_query_window_duration =
+            cs_subset_number(NeoMutt->sub, "nm_query_window_duration");
+        if (c_nm_query_window_duration <= 0)
         {
           mutt_message(_("Windowed queries disabled"));
           break;
         }
-        if (!C_NmQueryWindowCurrentSearch)
+        const char *c_nm_query_window_current_search =
+            cs_subset_string(NeoMutt->sub, "nm_query_window_current_search");
+        if (!c_nm_query_window_current_search)
         {
           mutt_message(_("No notmuch vfolder currently loaded"));
           break;
         }
         nm_query_window_backward();
         char buf[PATH_MAX] = { 0 };
-        mutt_str_copy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
+        mutt_str_copy(buf, c_nm_query_window_current_search, sizeof(buf));
         change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &cur, false);
         break;
       }
@@ -2373,19 +2407,23 @@ int mutt_index_menu(struct MuttWindow *dlg)
       {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
-        if (C_NmQueryWindowDuration <= 0)
+        const short c_nm_query_window_duration =
+            cs_subset_number(NeoMutt->sub, "nm_query_window_duration");
+        if (c_nm_query_window_duration <= 0)
         {
           mutt_message(_("Windowed queries disabled"));
           break;
         }
-        if (!C_NmQueryWindowCurrentSearch)
+        const char *c_nm_query_window_current_search =
+            cs_subset_string(NeoMutt->sub, "nm_query_window_current_search");
+        if (!c_nm_query_window_current_search)
         {
           mutt_message(_("No notmuch vfolder currently loaded"));
           break;
         }
         nm_query_window_forward();
         char buf[PATH_MAX] = { 0 };
-        mutt_str_copy(buf, C_NmQueryWindowCurrentSearch, sizeof(buf));
+        mutt_str_copy(buf, c_nm_query_window_current_search, sizeof(buf));
         change_folder_notmuch(menu, buf, sizeof(buf), &oldcount, &cur, false);
         break;
       }
@@ -2434,7 +2472,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
         char *cp = NULL;
         bool read_only;
-        if (attach_msg || C_ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY))
+        const bool c_read_only = cs_subset_bool(NeoMutt->sub, "read_only");
+        if (attach_msg || c_read_only || (op == OP_MAIN_CHANGE_FOLDER_READONLY))
         {
           cp = _("Open mailbox in read-only mode");
           read_only = true;
@@ -2445,7 +2484,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
           read_only = false;
         }
 
-        if (C_ChangeFolderNext && ctx_mailbox(Context) &&
+        const bool c_change_folder_next =
+            cs_subset_bool(NeoMutt->sub, "change_folder_next");
+        if (c_change_folder_next && ctx_mailbox(Context) &&
             !mutt_buffer_is_empty(&Context->mailbox->pathbuf))
         {
           mutt_buffer_strcpy(folderbuf, mailbox_path(Context->mailbox));
@@ -2500,7 +2541,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         OptNews = false;
         bool read_only;
         char *cp = NULL;
-        if (attach_msg || C_ReadOnly || (op == OP_MAIN_CHANGE_GROUP_READONLY))
+        const bool c_read_only = cs_subset_bool(NeoMutt->sub, "read_only");
+        if (attach_msg || c_read_only || (op == OP_MAIN_CHANGE_GROUP_READONLY))
         {
           cp = _("Open newsgroup in read-only mode");
           read_only = true;
@@ -2511,7 +2553,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
           read_only = false;
         }
 
-        if (C_ChangeFolderNext && ctx_mailbox(Context) &&
+        const bool c_change_folder_next =
+            cs_subset_bool(NeoMutt->sub, "change_folder_next");
+        if (c_change_folder_next && ctx_mailbox(Context) &&
             !mutt_buffer_is_empty(&Context->mailbox->pathbuf))
         {
           mutt_buffer_strcpy(folderbuf, mailbox_path(Context->mailbox));
@@ -2519,8 +2563,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
         }
 
         OptNews = true;
-        CurrentNewsSrv =
-            nntp_select_server(Context ? Context->mailbox : NULL, C_NewsServer, false);
+        const char *c_news_server =
+            cs_subset_string(NeoMutt->sub, "news_server");
+        CurrentNewsSrv = nntp_select_server(Context ? Context->mailbox : NULL,
+                                            c_news_server, false);
         if (!CurrentNewsSrv)
           goto changefoldercleanup2;
 
@@ -2582,11 +2628,15 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           mutt_uncollapse_thread(cur.e);
           mutt_set_vnum(Context->mailbox);
-          if (C_UncollapseJump)
+          const bool c_uncollapse_jump =
+              cs_subset_bool(NeoMutt->sub, "uncollapse_jump");
+          if (c_uncollapse_jump)
             menu->current = mutt_thread_next_unread(cur.e);
         }
 
-        if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
+        const bool c_pgp_auto_decode =
+            cs_subset_bool(NeoMutt->sub, "pgp_auto_decode");
+        if (c_pgp_auto_decode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, Context, cur.e, tag);
@@ -2622,8 +2672,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         }
 
+        const enum QuadOption c_quit = cs_subset_quad(NeoMutt->sub, "quit");
         if ((!in_pager) &&
-            (query_quadoption(C_Quit, _("Exit NeoMutt without saving?")) == MUTT_YES))
+            (query_quadoption(c_quit, _("Exit NeoMutt without saving?")) == MUTT_YES))
         {
           if (Context)
           {
@@ -2852,9 +2903,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if ((rc == 0) && (save_opt == SAVE_MOVE))
         {
           menu->redraw |= REDRAW_STATUS;
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
           if (tag)
             menu->redraw |= REDRAW_INDEX;
-          else if (C_Resolve)
+          else if (c_resolve)
           {
             menu->current = ci_next_undeleted(Context->mailbox, menu->current);
             if (menu->current == -1)
@@ -3019,7 +3071,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
           if (!cur.e)
             break;
           mutt_set_flag(m, cur.e, MUTT_FLAG, !cur.e->flagged);
-          if (C_Resolve)
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          if (c_resolve)
           {
             menu->current = ci_next_undeleted(Context->mailbox, menu->current);
             if (menu->current == -1)
@@ -3072,7 +3125,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
           else
             mutt_set_flag(m, cur.e, MUTT_READ, true);
 
-          if (C_Resolve)
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          if (c_resolve)
           {
             menu->current = ci_next_undeleted(Context->mailbox, menu->current);
             if (menu->current == -1)
@@ -3184,9 +3238,10 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (mutt_change_flag(Context->mailbox, &el, (op == OP_MAIN_SET_FLAG)) == 0)
         {
           menu->redraw |= REDRAW_STATUS;
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
           if (tag)
             menu->redraw |= REDRAW_INDEX;
-          else if (C_Resolve)
+          else if (c_resolve)
           {
             menu->current = ci_next_undeleted(Context->mailbox, menu->current);
             if (menu->current == -1)
@@ -3222,7 +3277,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           menu->current = mutt_uncollapse_thread(cur.e);
           mutt_set_vnum(Context->mailbox);
-          if (C_UncollapseJump)
+          const bool c_uncollapse_jump =
+              cs_subset_bool(NeoMutt->sub, "uncollapse_jump");
+          if (c_uncollapse_jump)
             menu->current = mutt_thread_next_unread(cur.e);
         }
         else if (mutt_thread_can_collapse(cur.e))
@@ -3298,7 +3355,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
         mutt_emails_set_flag(Context->mailbox, &el, MUTT_DELETE, 1);
         mutt_emails_set_flag(Context->mailbox, &el, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
-        if (C_DeleteUntag)
+        const bool c_delete_untag =
+            cs_subset_bool(NeoMutt->sub, "delete_untag");
+        if (c_delete_untag)
           mutt_emails_set_flag(Context->mailbox, &el, MUTT_TAG, 0);
         emaillist_clear(&el);
 
@@ -3308,7 +3367,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         }
         else
         {
-          if (C_Resolve)
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          if (c_resolve)
           {
             menu->current = ci_next_undeleted(Context->mailbox, menu->current);
             if (menu->current == -1)
@@ -3358,9 +3418,12 @@ int mutt_index_menu(struct MuttWindow *dlg)
             break;
         }
 
-        if (C_DeleteUntag)
+        const bool c_delete_untag =
+            cs_subset_bool(NeoMutt->sub, "delete_untag");
+        if (c_delete_untag)
           mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_TAG, false, subthread);
-        if (C_Resolve)
+        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+        if (c_resolve)
         {
           menu->current = ci_next_undeleted(Context->mailbox, menu->current);
           if (menu->current == -1)
@@ -3425,7 +3488,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
         if (!cur.e)
           break;
-        if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
+        const bool c_pgp_auto_decode =
+            cs_subset_bool(NeoMutt->sub, "pgp_auto_decode");
+        if (c_pgp_auto_decode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, Context, cur.e, tag);
@@ -3449,7 +3514,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, cur.e, tag);
-        if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
+        const bool c_pgp_auto_decode =
+            cs_subset_bool(NeoMutt->sub, "pgp_auto_decode");
+        if (c_pgp_auto_decode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
           mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
         }
@@ -3477,7 +3544,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, cur.e, tag);
-        if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
+        const bool c_pgp_auto_decode =
+            cs_subset_bool(NeoMutt->sub, "pgp_auto_decode");
+        if (c_pgp_auto_decode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
           mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
         }
@@ -3524,7 +3593,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, cur.e, tag);
-        if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
+        const bool c_pgp_auto_decode =
+            cs_subset_bool(NeoMutt->sub, "pgp_auto_decode");
+        if (c_pgp_auto_decode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
           mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
         }
@@ -3601,7 +3672,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, piping could change
          * new or old messages status to read. Redraw what's needed.  */
-        if ((Context->mailbox->type == MUTT_IMAP) && !C_ImapPeek)
+        const bool c_imap_peek = cs_subset_bool(NeoMutt->sub, "imap_peek");
+        if ((Context->mailbox->type == MUTT_IMAP) && !c_imap_peek)
         {
           menu->redraw |= (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
         }
@@ -3621,7 +3693,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, printing could change
          * new or old messages status to read. Redraw what's needed.  */
-        if ((Context->mailbox->type == MUTT_IMAP) && !C_ImapPeek)
+        const bool c_imap_peek = cs_subset_bool(NeoMutt->sub, "imap_peek");
+        if ((Context->mailbox->type == MUTT_IMAP) && !c_imap_peek)
         {
           menu->redraw |= (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
         }
@@ -3645,7 +3718,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
                                       true, (op != OP_MAIN_READ_THREAD));
         if (rc != -1)
         {
-          if (C_Resolve)
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          if (c_resolve)
           {
             menu->current = ((op == OP_MAIN_READ_THREAD) ? mutt_next_thread(cur.e) :
                                                            mutt_next_subthread(cur.e));
@@ -3683,7 +3757,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
               buf2[0])
           {
             char str[256], macro[256];
-            snprintf(str, sizeof(str), "%s%s", C_MarkMacroPrefix, buf2);
+            const char *c_mark_macro_prefix =
+                cs_subset_string(NeoMutt->sub, "mark_macro_prefix");
+            snprintf(str, sizeof(str), "%s%s", c_mark_macro_prefix, buf2);
             snprintf(macro, sizeof(macro), "<search>~i \"%s\"\n", cur.e->env->message_id);
             /* L10N: "message hotkey" is the key bindings menu description of a
                macro created by <mark-message>. */
@@ -3750,13 +3826,17 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         if (!cur.e)
           break;
+        const enum QuadOption c_followup_to_poster =
+            cs_subset_quad(NeoMutt->sub, "followup_to_poster");
         if ((op != OP_FOLLOWUP) || !cur.e->env->followup_to ||
             !mutt_istr_equal(cur.e->env->followup_to, "poster") ||
-            (query_quadoption(C_FollowupToPoster,
+            (query_quadoption(c_followup_to_poster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
+          const enum QuadOption c_post_moderated =
+              cs_subset_quad(NeoMutt->sub, "post_moderated");
           if (Context && (Context->mailbox->type == MUTT_NNTP) &&
-              !((struct NntpMboxData *) Context->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
+              !((struct NntpMboxData *) Context->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
           {
             break;
           }
@@ -3786,7 +3866,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, cur.e, tag);
-        if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
+        const bool c_pgp_auto_decode =
+            cs_subset_bool(NeoMutt->sub, "pgp_auto_decode");
+        if (c_pgp_auto_decode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
           mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
         }
@@ -3815,7 +3897,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
                                       !cur.e->tagged, (op != OP_TAG_THREAD));
         if (rc != -1)
         {
-          if (C_Resolve)
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          if (c_resolve)
           {
             if (op == OP_TAG_THREAD)
               menu->current = mutt_next_thread(cur.e);
@@ -3851,7 +3934,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         }
         else
         {
-          if (C_Resolve && (menu->current < (Context->mailbox->vcount - 1)))
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          if (c_resolve && (menu->current < (Context->mailbox->vcount - 1)))
           {
             menu->current++;
             menu->redraw |= REDRAW_MOTION_RESYNC;
@@ -3885,7 +3969,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         }
         if (rc != -1)
         {
-          if (C_Resolve)
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          if (c_resolve)
           {
             if (op == OP_UNDELETE_THREAD)
               menu->current = mutt_next_thread(cur.e);
@@ -4036,7 +4121,9 @@ int mutt_reply_observer(struct NotifyCallback *nc)
     if (!env || !env->subject)
       continue;
 
-    if (mutt_regex_capture(C_ReplyRegex, env->subject, 1, pmatch))
+    const struct Regex *c_reply_regex =
+        cs_subset_regex(NeoMutt->sub, "reply_regex");
+    if (mutt_regex_capture(c_reply_regex, env->subject, 1, pmatch))
     {
       env->real_subj = env->subject + pmatch[0].rm_eo;
       continue;
@@ -4132,8 +4219,9 @@ struct MuttWindow *index_pager_init(void)
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlgindex_observer, dlg);
 
-  mutt_window_add_child(dlg, create_panel_index(dlg, C_StatusOnTop));
-  mutt_window_add_child(dlg, create_panel_pager(dlg, C_StatusOnTop));
+  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  mutt_window_add_child(dlg, create_panel_index(dlg, c_status_on_top));
+  mutt_window_add_child(dlg, create_panel_pager(dlg, c_status_on_top));
 
   return dlg;
 }
@@ -4174,7 +4262,9 @@ int mutt_dlgindex_observer(struct NotifyCallback *nc)
     if (!first)
       return -1;
 
-    if ((C_StatusOnTop && (first == win_index)) || (!C_StatusOnTop && (first != win_index)))
+    const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+    if ((c_status_on_top && (first == win_index)) ||
+        (!c_status_on_top && (first != win_index)))
     {
       // Swap the Index and the Index Bar Windows
       TAILQ_REMOVE(&parent->children, first, entries);
@@ -4184,7 +4274,8 @@ int mutt_dlgindex_observer(struct NotifyCallback *nc)
     parent = win_pager->parent;
     first = TAILQ_FIRST(&parent->children);
 
-    if ((C_StatusOnTop && (first == win_pager)) || (!C_StatusOnTop && (first != win_pager)))
+    if ((c_status_on_top && (first == win_pager)) ||
+        (!c_status_on_top && (first != win_pager)))
     {
       // Swap the Pager and Pager Bar Windows
       TAILQ_REMOVE(&parent->children, first, entries);
@@ -4198,12 +4289,14 @@ int mutt_dlgindex_observer(struct NotifyCallback *nc)
     struct MuttWindow *parent = win_pager->parent;
     if (parent->state.visible)
     {
+      const short c_pager_index_lines =
+          cs_subset_number(NeoMutt->sub, "pager_index_lines");
       int vcount = ctx_mailbox(Context) ? Context->mailbox->vcount : 0;
-      win_index->req_rows = MIN(C_PagerIndexLines, vcount);
+      win_index->req_rows = MIN(c_pager_index_lines, vcount);
       win_index->size = MUTT_WIN_SIZE_FIXED;
 
       win_index->parent->size = MUTT_WIN_SIZE_MINIMISE;
-      win_index->parent->state.visible = (C_PagerIndexLines != 0);
+      win_index->parent->state.visible = (c_pager_index_lines != 0);
     }
     else
     {

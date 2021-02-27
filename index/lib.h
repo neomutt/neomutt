@@ -20,6 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page lib_index INDEX: GUI manage the main index (list of emails)
+ *
+ * GUI manage the main index (list of emails)
+ *
+ * | File               | Description              |
+ * | :----------------- | :----------------------- |
+ * | index/config.c     | @subpage index_config    |
+ * | index/index.c      | @subpage index_index     |
+ */
+
 #ifndef MUTT_INDEX_H
 #define MUTT_INDEX_H
 
@@ -33,13 +44,6 @@ struct Menu;
 struct MuttWindow;
 struct NotifyCallback;
 
-/* These Config Variables are only used in index.c */
-extern bool  C_ChangeFolderNext;
-extern bool  C_CollapseAll;
-extern char *C_MarkMacroPrefix;
-extern bool  C_UncollapseJump;
-extern bool  C_UncollapseNew;
-
 int  index_color(int line);
 void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line);
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen);
@@ -49,5 +53,7 @@ void mutt_update_index(struct Menu *menu, struct Context *ctx, int check, int ol
 struct MuttWindow *index_pager_init(void);
 void index_pager_shutdown(struct MuttWindow *dlg);
 int mutt_dlgindex_observer(struct NotifyCallback *nc);
+
+bool config_init_index(struct ConfigSet *cs);
 
 #endif /* MUTT_INDEX_H */
