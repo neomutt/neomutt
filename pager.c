@@ -355,13 +355,24 @@ static inline bool assert_mailbox_writable(struct Mailbox *mailbox)
   return true;
 }
 
-#define CHECK_ATTACH                                                           \
-  if (OptAttachMsg)                                                            \
-  {                                                                            \
-    mutt_flushinp();                                                           \
-    mutt_error(_(Function_not_permitted_in_attach_message_mode));              \
-    break;                                                                     \
+/**
+ * assert_attach_msg_mode - Check that attach message mode is on
+ * @param attach_msg Globally-named boolean pseudo-option
+ * @retval true  Attach message mode in on
+ * @retval false Attach message mode is off
+ *
+ * @note On true, the input will be flushed and an error message displayed
+ */
+static inline bool assert_attach_msg_mode(bool attach_msg)
+{
+  if (attach_msg)
+  {
+    mutt_flushinp();
+    mutt_error(_(Function_not_permitted_in_attach_message_mode));
+    return true;
   }
+  return false;
+}
 
 /**
  * assert_mailbox_permissions - checks that mailbox is has requested acl flags set
@@ -3080,7 +3091,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_BOUNCE_MESSAGE:
       {
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra))
-        CHECK_ATTACH;
+        if (assert_attach_msg_mode(OptAttachMsg))
+          break;
         if (IsMsgAttach(extra))
           mutt_attach_bounce(m, extra->fp, extra->actx, extra->body);
         else
@@ -3095,7 +3107,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_RESEND:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra))
-        CHECK_ATTACH;
+        if (assert_attach_msg_mode(OptAttachMsg))
+          break;
         if (IsMsgAttach(extra))
           mutt_attach_resend(extra->fp, extra->ctx, extra->actx, extra->body);
         else
@@ -3105,7 +3118,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_COMPOSE_TO_SENDER:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
-        CHECK_ATTACH;
+        if (assert_attach_msg_mode(OptAttachMsg))
+          break;
         if (IsMsgAttach(extra))
           mutt_attach_mail_sender(extra->fp, extra->email, extra->actx, extra->body);
         else
@@ -3310,7 +3324,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_MAIL:
         CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
-        CHECK_ATTACH;
+        if (assert_attach_msg_mode(OptAttachMsg))
+          break;
         mutt_send_message(SEND_NO_FLAGS, NULL, NULL, extra->ctx, NULL, NeoMutt->sub);
         pager_menu->redraw = REDRAW_FULL;
         break;
@@ -3318,7 +3333,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 #ifdef USE_NNTP
       case OP_POST:
         CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
-        CHECK_ATTACH;
+        if (assert_attach_msg_mode(OptAttachMsg))
+          break;
         if (extra->ctx && (extra->ctx->mailbox->type == MUTT_NNTP) &&
             !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
         {
@@ -3330,7 +3346,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_FORWARD_TO_GROUP:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
-        CHECK_ATTACH;
+        if (assert_attach_msg_mode(OptAttachMsg))
+          break;
         if (extra->ctx && (extra->ctx->mailbox->type == MUTT_NNTP) &&
             !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
         {
@@ -3351,7 +3368,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_FOLLOWUP:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
-        CHECK_ATTACH;
+        if (assert_attach_msg_mode(OptAttachMsg))
+          break;
 
         if (IsMsgAttach(extra))
           followup_to = extra->body->email->env->followup_to;
@@ -3391,7 +3409,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_LIST_REPLY:
       {
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
-        CHECK_ATTACH;
+        if (assert_attach_msg_mode(OptAttachMsg))
+          break;
 
         SendFlags replyflags = SEND_REPLY;
         if (ch == OP_GROUP_REPLY)
@@ -3417,7 +3436,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_RECALL_MESSAGE:
       {
         CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
-        CHECK_ATTACH;
+        if (assert_attach_msg_mode(OptAttachMsg))
+          break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
         mutt_send_message(SEND_POSTPONED, NULL, NULL, extra->ctx, &el, NeoMutt->sub);
@@ -3428,7 +3448,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_FORWARD_MESSAGE:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
-        CHECK_ATTACH;
+        if (assert_attach_msg_mode(OptAttachMsg))
+          break;
         if (IsMsgAttach(extra))
           mutt_attach_forward(extra->fp, m, extra->email, extra->actx,
                               extra->body, SEND_NO_FLAGS);
@@ -3630,7 +3651,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           break;
         }
         CHECK_MODE(IsEmail(extra));
-        CHECK_ATTACH;
+        if (assert_attach_msg_mode(OptAttachMsg))
+          break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
         mutt_send_message(SEND_KEY, NULL, NULL, extra->ctx, &el, NeoMutt->sub);
