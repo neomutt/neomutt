@@ -2081,12 +2081,20 @@ void mutt_clear_pager_position(void)
  */
 static void pager_custom_redraw(struct Menu *pager_menu)
 {
+  assert(pager_menu);
   struct PagerRedrawData *rd = pager_menu->redraw_data;
-  struct Mailbox *m = ctx_mailbox(Context);
+  struct Mailbox *m = NULL;
   char buf[1024];
+  int msg_in_pager = -1;
 
   if (!rd)
     return;
+
+  if (rd->extra && rd->extra->ctx)
+  {
+    m = rd->extra->ctx->mailbox;
+    msg_in_pager = rd->extra->ctx->msg_in_pager;
+  }
 
   if (pager_menu->redraw & REDRAW_FULL)
   {
@@ -2136,7 +2144,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
         rd->menu = mutt_menu_new(MENU_MAIN);
         rd->menu->make_entry = index_make_entry;
         rd->menu->color = index_color;
-        rd->menu->max = Context ? m->vcount : 0;
+        rd->menu->max = m ? m->vcount : 0;
         rd->menu->current = rd->extra->email->vnum;
         rd->menu->win_index = rd->extra->win_index;
         rd->menu->win_ibar = rd->extra->win_ibar;
@@ -2277,8 +2285,8 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       struct Email *e =
           (IsEmail(rd->extra)) ? rd->extra->email : rd->extra->body->email;
       mutt_make_string(buf, buflen, rd->extra->win_pbar->state.cols,
-                       NONULL(C_PagerFormat), m, Context ? Context->msg_in_pager : -1,
-                       e, MUTT_FORMAT_NO_FLAGS, pager_progress_str);
+                       NONULL(C_PagerFormat), m, msg_in_pager, e,
+                       MUTT_FORMAT_NO_FLAGS, pager_progress_str);
       mutt_draw_statusline(rd->extra->win_pbar->state.cols, buf, l2);
     }
     else
@@ -2333,6 +2341,8 @@ static void pager_custom_redraw(struct Menu *pager_menu)
  */
 int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra)
 {
+  assert(extra);
+  struct Mailbox *m = NULL;
   static char searchbuf[256] = { 0 };
   char buf[1024];
   int ch = 0, rc = -1;
@@ -2346,14 +2356,15 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   char *followup_to = NULL;
 #endif
 
-  struct Mailbox *m = ctx_mailbox(Context);
-
   if (!(flags & MUTT_SHOWCOLOR))
     flags |= MUTT_SHOWFLAT;
 
   int index_space = C_PagerIndexLines;
   if (extra->ctx && extra->ctx->mailbox)
+  {
     index_space = MIN(index_space, extra->ctx->mailbox->vcount);
+    m = extra->ctx->mailbox;
+  }
 
   struct PagerRedrawData rd = { 0 };
   rd.banner = banner;
@@ -2392,9 +2403,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
   /* Initialize variables */
 
-  if (Context && IsEmail(extra) && !extra->email->read)
+  if (IsEmail(extra) && !extra->email->read && extra->ctx)
   {
-    Context->msg_in_pager = extra->email->msgno;
+    extra->ctx->msg_in_pager = extra->email->msgno;
     mutt_set_flag(m, extra->email, MUTT_READ, true);
   }
 
@@ -2483,7 +2494,6 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (!m || mutt_buffer_is_empty(&m->pathbuf))
         {
           /* fatal error occurred */
-          ctx_free(&Context);
           pager_menu->redraw = REDRAW_FULL;
           break;
         }
@@ -2520,7 +2530,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
             bool verbose = m->verbose;
             m->verbose = false;
-            mutt_update_index(rd.menu, Context, check, oldcount, e);
+            mutt_update_index(rd.menu, extra->ctx, check, oldcount, e);
             m->verbose = verbose;
 
             rd.menu->max = m->vcount;
@@ -3173,19 +3183,18 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_DELETE:
         if (!assert_pager_mode(IsEmail(extra)))
           break;
-        if (!assert_mailbox_writable(Context->mailbox))
+        if (!assert_mailbox_writable(m))
           break;
         /* L10N: CHECK_ACL */
-        if (!assert_mailbox_permissions(Context->mailbox, MUTT_ACL_DELETE,
-                                        _("Can't delete message")))
+        if (!assert_mailbox_permissions(m, MUTT_ACL_DELETE, _("Can't delete message")))
         {
           break;
         }
 
-        mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, true);
-        mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
+        mutt_set_flag(m, extra->email, MUTT_DELETE, true);
+        mutt_set_flag(m, extra->email, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
         if (C_DeleteUntag)
-          mutt_set_flag(Context->mailbox, extra->email, MUTT_TAG, false);
+          mutt_set_flag(m, extra->email, MUTT_TAG, false);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (C_Resolve)
         {
@@ -3199,13 +3208,13 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       {
         if (!assert_pager_mode(IsEmail(extra)))
           break;
-        if (!assert_mailbox_writable(Context->mailbox))
+        if (!assert_mailbox_writable(m))
           break;
 
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
 
-        if (mutt_change_flag(Context->mailbox, &el, (ch == OP_MAIN_SET_FLAG)) == 0)
+        if (mutt_change_flag(m, &el, (ch == OP_MAIN_SET_FLAG)) == 0)
           pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (extra->email->deleted && C_Resolve)
         {
@@ -3222,14 +3231,13 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       {
         if (!assert_pager_mode(IsEmail(extra)))
           break;
-        if (!assert_mailbox_writable(Context->mailbox))
+        if (!assert_mailbox_writable(m))
           break;
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            delete zero, 1, 12, ... messages. So in English we use
            "messages". Your language might have other means to express this.  */
-        if (!assert_mailbox_permissions(Context->mailbox, MUTT_ACL_DELETE,
-                                        _("Can't delete messages")))
+        if (!assert_mailbox_permissions(m, MUTT_ACL_DELETE, _("Can't delete messages")))
         {
           break;
         }
@@ -3303,13 +3311,13 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_FLAG_MESSAGE:
         if (!assert_pager_mode(IsEmail(extra)))
           break;
-        if (!assert_mailbox_writable(Context->mailbox))
+        if (!assert_mailbox_writable(m))
           break;
         /* L10N: CHECK_ACL */
-        if (!assert_mailbox_permissions(Context->mailbox, MUTT_ACL_WRITE, "Can't flag message"))
+        if (!assert_mailbox_permissions(m, MUTT_ACL_WRITE, "Can't flag message"))
           break;
 
-        mutt_set_flag(Context->mailbox, extra->email, MUTT_FLAG, !extra->email->flagged);
+        mutt_set_flag(m, extra->email, MUTT_FLAG, !extra->email->flagged);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (C_Resolve)
         {
@@ -3534,7 +3542,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             ((ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY)) ? TRANSFORM_DECRYPT :
                                                                    TRANSFORM_NONE;
 
-        const int rc2 = mutt_save_message(Context->mailbox, &el, save_opt, transform_opt);
+        const int rc2 = mutt_save_message(m, &el, save_opt, transform_opt);
         if ((rc2 == 0) && (save_opt == SAVE_MOVE))
         {
           if (C_Resolve)
@@ -3552,17 +3560,14 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_SHELL_ESCAPE:
         if (mutt_shell_escape())
         {
-          mutt_mailbox_check(ctx_mailbox(Context), MUTT_MAILBOX_CHECK_FORCE);
+          mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_FORCE);
         }
         break;
 
       case OP_TAG:
         if (!assert_pager_mode(IsEmail(extra)))
           break;
-        if (Context)
-        {
-          mutt_set_flag(Context->mailbox, extra->email, MUTT_TAG, !extra->email->tagged);
-        }
+        mutt_set_flag(m, extra->email, MUTT_TAG, !extra->email->tagged);
 
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (C_Resolve)
@@ -3575,18 +3580,19 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_TOGGLE_NEW:
         if (!assert_pager_mode(IsEmail(extra)))
           break;
-        if (!assert_mailbox_writable(Context->mailbox))
+        if (!assert_mailbox_writable(m))
           break;
         /* L10N: CHECK_ACL */
-        if (!assert_mailbox_permissions(Context->mailbox, MUTT_ACL_SEEN, _("Can't toggle new")))
+        if (!assert_mailbox_permissions(m, MUTT_ACL_SEEN, _("Can't toggle new")))
           break;
 
         if (extra->email->read || extra->email->old)
-          mutt_set_flag(Context->mailbox, extra->email, MUTT_NEW, true);
+          mutt_set_flag(m, extra->email, MUTT_NEW, true);
         else if (!first)
-          mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, true);
+          mutt_set_flag(m, extra->email, MUTT_READ, true);
         first = false;
-        Context->msg_in_pager = -1;
+        if (extra->ctx)
+          extra->ctx->msg_in_pager = -1;
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (C_Resolve)
         {
@@ -3598,17 +3604,16 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_UNDELETE:
         if (!assert_pager_mode(IsEmail(extra)))
           break;
-        if (!assert_mailbox_writable(Context->mailbox))
+        if (!assert_mailbox_writable(m))
           break;
         /* L10N: CHECK_ACL */
-        if (!assert_mailbox_permissions(Context->mailbox, MUTT_ACL_DELETE,
-                                        _("Can't undelete message")))
+        if (!assert_mailbox_permissions(m, MUTT_ACL_DELETE, _("Can't undelete message")))
         {
           break;
         }
 
-        mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, false);
-        mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, false);
+        mutt_set_flag(m, extra->email, MUTT_DELETE, false);
+        mutt_set_flag(m, extra->email, MUTT_PURGE, false);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (C_Resolve)
         {
@@ -3622,14 +3627,13 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       {
         if (!assert_pager_mode(IsEmail(extra)))
           break;
-        if (!assert_mailbox_writable(Context->mailbox))
+        if (!assert_mailbox_writable(m))
           break;
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            undelete zero, 1, 12, ... messages. So in English we use
            "messages". Your language might have other means to express this. */
-        if (!assert_mailbox_permissions(Context->mailbox, MUTT_ACL_DELETE,
-                                        _("Can't undelete messages")))
+        if (!assert_mailbox_permissions(m, MUTT_ACL_DELETE, _("Can't undelete messages")))
         {
           break;
         }
@@ -3675,8 +3679,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (!assert_pager_mode(IsEmail(extra)))
           break;
         dlg_select_attachment(extra->email);
-        if (Context && extra->email->attach_del)
-          Context->mailbox->changed = true;
+        if (extra->email->attach_del)
+          m->changed = true;
         pager_menu->redraw = REDRAW_FULL;
         break;
 
@@ -3706,12 +3710,12 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
-        rc = mutt_label_message(Context->mailbox, &el);
+        rc = mutt_label_message(m, &el);
         emaillist_clear(&el);
 
         if (rc > 0)
         {
-          Context->mailbox->changed = true;
+          m->changed = true;
           pager_menu->redraw = REDRAW_FULL;
           mutt_message(ngettext("%d label changed", "%d labels changed", rc), rc);
         }
@@ -3737,7 +3741,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
-        crypt_extract_keys_from_messages(Context->mailbox, &el);
+        crypt_extract_keys_from_messages(m, &el);
         emaillist_clear(&el);
         pager_menu->redraw = REDRAW_FULL;
         break;
@@ -3748,7 +3752,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_CHECK_STATS:
-        mutt_check_stats(ctx_mailbox(Context));
+        mutt_check_stats(m);
         break;
 
 #ifdef USE_SIDEBAR
@@ -3784,8 +3788,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   mutt_file_fclose(&rd.fp);
   if (IsEmail(extra))
   {
-    if (Context)
-      Context->msg_in_pager = -1;
+    if (extra->ctx)
+      extra->ctx->msg_in_pager = -1;
     switch (rc)
     {
       case -1:
