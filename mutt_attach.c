@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
@@ -414,6 +415,7 @@ static int wait_interactive_filter(pid_t pid)
 int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
                          struct Email *e, struct AttachCtx *actx, struct MuttWindow *win)
 {
+  assert(a);
   bool use_mailcap = false;
   bool use_pipe = false;
   bool use_pager = true;
