@@ -1,10 +1,9 @@
 /**
  * @file
- * Manage IMAP messages
+ * Pop-specific Email data
  *
  * @authors
- * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2000,2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,21 +20,22 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_IMAP_MESSAGE_H
-#define MUTT_IMAP_MESSAGE_H
+#ifndef MUTT_POP_EDATA_H
+#define MUTT_POP_EDATA_H
 
-#include <stdbool.h>
-#include <time.h>
+struct Email;
 
 /**
- * struct ImapHeader - IMAP-specific header
+ * struct PopEmailData - POP-specific Email data - @extends Email
  */
-struct ImapHeader
+struct PopEmailData
 {
-  struct ImapEmailData *edata;
-
-  time_t received;
-  long content_length;
+  const char *uid;
+  int refno;                   ///< Message number on server
 };
 
-#endif /* MUTT_IMAP_MESSAGE_H */
+void                 pop_edata_free(void **ptr);
+struct PopEmailData *pop_edata_get (struct Email *e);
+struct PopEmailData *pop_edata_new (const char *uid);
+
+#endif /* MUTT_POP_EDATA_H */

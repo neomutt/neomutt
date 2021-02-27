@@ -1,10 +1,9 @@
 /**
  * @file
- * Manage IMAP messages
+ * Notmuch-specific Email data
  *
  * @authors
- * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2000,2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,21 +20,26 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_IMAP_MESSAGE_H
-#define MUTT_IMAP_MESSAGE_H
+#ifndef MUTT_NOTMUCH_EDATA_H
+#define MUTT_NOTMUCH_EDATA_H
 
-#include <stdbool.h>
-#include <time.h>
+#include "core/lib.h"
+
+struct Email;
 
 /**
- * struct ImapHeader - IMAP-specific header
+ * struct NmEmailData - Notmuch-specific Email data - @extends Email
  */
-struct ImapHeader
+struct NmEmailData
 {
-  struct ImapEmailData *edata;
-
-  time_t received;
-  long content_length;
+  char *folder;           ///< Location of the Email
+  char *oldpath;
+  char *virtual_id;       ///< Unique Notmuch Id
+  enum MailboxType type;  ///< Type of Mailbox the Email is in
 };
 
-#endif /* MUTT_IMAP_MESSAGE_H */
+void                  nm_edata_free(void **ptr);
+struct NmEmailData *  nm_edata_get (struct Email *e);
+struct NmEmailData *  nm_edata_new (void);
+
+#endif /* MUTT_NOTMUCH_EDATA_H */

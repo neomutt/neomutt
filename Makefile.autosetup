@@ -371,7 +371,7 @@ LIBIMAP=	libimap.a
 LIBIMAPOBJS=	imap/auth.o imap/auth_login.o imap/auth_oauth.o \
 		imap/auth_plain.o imap/browse.o imap/command.o imap/config.o \
 		imap/imap.o imap/message.o imap/msn.o imap/search.o \
-		imap/utf7.o imap/util.o
+		imap/adata.o imap/edata.o imap/mdata.o imap/utf7.o imap/util.o
 @if USE_GSS
 LIBIMAPOBJS+=	imap/auth_gss.o
 @endif
@@ -465,7 +465,7 @@ $(PWD)/ncrypt:
 # libnntp
 LIBNNTP=	libnntp.a
 LIBNNTPOBJS=	nntp/browse.o nntp/config.o nntp/complete.o nntp/newsrc.o \
-		nntp/nntp.o
+		nntp/nntp.o nntp/adata.o nntp/edata.o nntp/mdata.o
 CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
 ALLOBJS+=	$(LIBNNTPOBJS)
 
@@ -479,7 +479,8 @@ $(PWD)/nntp:
 # libnotmuch
 @if USE_NOTMUCH
 LIBNOTMUCH=	libnotmuch.a
-LIBNOTMUCHOBJS=	notmuch/config.o notmuch/db.o notmuch/notmuch.o
+LIBNOTMUCHOBJS=	notmuch/config.o notmuch/db.o notmuch/notmuch.o \
+		notmuch/adata.o notmuch/edata.o notmuch/mdata.o
 CLEANFILES+=	$(LIBNOTMUCH) $(LIBNOTMUCHOBJS)
 ALLOBJS+=	$(LIBNOTMUCHOBJS)
 
@@ -507,7 +508,8 @@ $(PWD)/pattern:
 ###############################################################################
 # libpop
 LIBPOP=		libpop.a
-LIBPOPOBJS=	pop/auth.o pop/config.o pop/lib.o pop/pop.o
+LIBPOPOBJS=	pop/auth.o pop/config.o pop/lib.o pop/pop.o \
+		pop/adata.o pop/edata.o
 CLEANFILES+=	$(LIBPOP) $(LIBPOPOBJS)
 ALLOBJS+=	$(LIBPOPOBJS)
 

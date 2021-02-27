@@ -46,7 +46,9 @@
 #include "lib.h"
 #include "bcache/lib.h"
 #include "ncrypt/lib.h"
+#include "adata.h"
 #include "context.h"
+#include "edata.h"
 #include "hook.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
@@ -84,60 +86,6 @@ static const char *cache_id(const char *id)
   mutt_str_copy(clean, id, sizeof(clean));
   mutt_file_sanitize_filename(clean, true);
   return clean;
-}
-
-/**
- * pop_adata_free - Free the private Account data - Implements Account::adata_free()
- *
- * The PopAccountData struct stores global POP data, such as the connection to
- * the database.  This function will close the database, free the resources and
- * the struct itself.
- */
-static void pop_adata_free(void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct PopAccountData *adata = *ptr;
-  FREE(&adata->auth_list.data);
-  FREE(ptr);
-}
-
-/**
- * pop_adata_new - Create a new PopAccountData object
- * @retval ptr New PopAccountData struct
- */
-static struct PopAccountData *pop_adata_new(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct PopAccountData));
-}
-
-/**
- * pop_edata_free - Free the private Email data - Implements Email::edata_free()
- *
- * Each email has an attached PopEmailData, which contains things like the tags
- * (labels).
- */
-static void pop_edata_free(void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct PopEmailData *edata = *ptr;
-  FREE(&edata->uid);
-  FREE(ptr);
-}
-
-/**
- * pop_edata_new - Create a new PopEmailData for an email
- * @param uid Email UID
- * @retval ptr New PopEmailData struct
- */
-static struct PopEmailData *pop_edata_new(const char *uid)
-{
-  struct PopEmailData *edata = mutt_mem_calloc(1, sizeof(struct PopEmailData));
-  edata->uid = mutt_str_dup(uid);
-  return edata;
 }
 
 /**

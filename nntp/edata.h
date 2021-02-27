@@ -1,10 +1,9 @@
 /**
  * @file
- * Manage IMAP messages
+ * Nntp-specific Email data
  *
  * @authors
- * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2000,2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,21 +20,22 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_IMAP_MESSAGE_H
-#define MUTT_IMAP_MESSAGE_H
+#ifndef MUTT_NNTP_EDATA_H
+#define MUTT_NNTP_EDATA_H
 
-#include <stdbool.h>
-#include <time.h>
+#include "lib.h"
 
 /**
- * struct ImapHeader - IMAP-specific header
+ * struct NntpEmailData - NNTP-specific Email data - @extends Email
  */
-struct ImapHeader
+struct NntpEmailData
 {
-  struct ImapEmailData *edata;
-
-  time_t received;
-  long content_length;
+  anum_t article_num;
+  bool parsed : 1;
 };
 
-#endif /* MUTT_IMAP_MESSAGE_H */
+void                  nntp_edata_free(void **ptr);
+struct NntpEmailData *nntp_edata_new (void);
+struct NntpEmailData *nntp_edata_get (struct Email *e);
+
+#endif /* MUTT_NNTP_EDATA_H */

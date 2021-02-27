@@ -1,10 +1,9 @@
 /**
  * @file
- * Manage IMAP messages
+ * Nntp-specific Mailbox data
  *
  * @authors
- * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2000,2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,21 +20,30 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_IMAP_MESSAGE_H
-#define MUTT_IMAP_MESSAGE_H
+/**
+ * @page nntp_mdata Nntp-specific Mailbox data
+ *
+ * Nntp-specific Mailbox data
+ */
 
-#include <stdbool.h>
-#include <time.h>
+#include "config.h"
+#include "private.h"
+#include "mdata.h"
+#include "bcache/lib.h"
 
 /**
- * struct ImapHeader - IMAP-specific header
+ * nntp_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
  */
-struct ImapHeader
+void nntp_mdata_free(void **ptr)
 {
-  struct ImapEmailData *edata;
+  if (!ptr || !*ptr)
+    return;
 
-  time_t received;
-  long content_length;
-};
+  struct NntpMboxData *mdata = *ptr;
 
-#endif /* MUTT_IMAP_MESSAGE_H */
+  nntp_acache_free(mdata);
+  mutt_bcache_close(&mdata->bcache);
+  FREE(&mdata->newsrc_ent);
+  FREE(&mdata->desc);
+  FREE(ptr);
+}

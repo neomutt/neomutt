@@ -38,6 +38,7 @@
 struct Account;
 struct ConnAccount;
 struct Email;
+struct ImapMboxData;
 struct Mailbox;
 struct Message;
 struct MSN;
@@ -164,85 +165,6 @@ struct ImapCommand
 };
 
 /**
- * struct ImapAccountData - IMAP-specific Account data - @extends Account
- *
- * This data is specific to a Connection to an IMAP server
- */
-struct ImapAccountData
-{
-  struct Connection *conn;
-  bool recovering;
-  bool closing; ///< If true, we are waiting for CLOSE completion
-  unsigned char state;  ///< ImapState, e.g. #IMAP_AUTHENTICATED
-  unsigned char status; ///< ImapFlags, e.g. #IMAP_FATAL
-  /* let me explain capstr: SASL needs the capability string (not bits).
-   * we have 3 options:
-   *   1. rerun CAPABILITY inside SASL function.
-   *   2. build appropriate CAPABILITY string by reverse-engineering from bits.
-   *   3. keep a copy until after authentication.
-   * I've chosen (3) for now. (2) might not be too bad, but it involves
-   * tracking all possible capabilities. bah. (1) I don't like because
-   * it's just no fun to get the same information twice */
-  char *capstr;
-  ImapCapFlags capabilities;
-  unsigned char seqid; ///< tag sequence prefix
-  unsigned int seqno; ///< tag sequence number, e.g. '{seqid}0001'
-  time_t lastread; ///< last time we read a command for the server
-  char *buf;
-  size_t blen;
-
-  bool unicode; ///< If true, we can send UTF-8, and the server will use UTF8 rather than mUTF7
-  bool qresync; ///< true, if QRESYNC is successfully ENABLE'd
-
-  // if set, the response parser will store results for complicated commands here
-  struct ImapList *cmdresult;
-
-  /* command queue */
-  struct ImapCommand *cmds;
-  int cmdslots;
-  int nextcmd;
-  int lastcmd;
-  struct Buffer cmdbuf;
-
-  char delim;
-  struct Mailbox *mailbox;      ///< Current selected mailbox
-  struct Mailbox *prev_mailbox; ///< Previously selected mailbox
-  struct Account *account;      ///< Parent Account
-};
-
-/**
- * struct ImapMboxData - IMAP-specific Mailbox data - @extends Mailbox
- *
- * This data is specific to a Mailbox of an IMAP server
- */
-struct ImapMboxData
-{
-  char *name;        ///< Mailbox name
-  char *munge_name;  ///< Munged version of the mailbox name
-  char *real_name;   ///< Original Mailbox name, e.g.: INBOX can be just \0
-
-  ImapOpenFlags reopen;        ///< Flags, e.g. #IMAP_REOPEN_ALLOW
-  ImapOpenFlags check_status;  ///< Flags, e.g. #IMAP_NEWMAIL_PENDING
-  unsigned int new_mail_count; ///< Set when EXISTS notifies of new mail
-
-  // IMAP STATUS information
-  struct ListHead flags;
-  uint32_t uidvalidity;
-  unsigned int uid_next;
-  unsigned long long modseq;
-  unsigned int messages;
-  unsigned int recent;
-  unsigned int unseen;
-
-  // Cached data used only when the mailbox is opened
-  struct HashTable *uid_hash;
-  ARRAY_HEAD(MSN, struct Email *) msn; ///< look up headers by (MSN-1)
-  struct BodyCache *bcache;
-
-  struct HeaderCache *hcache;
-};
-
-/**
  * struct SeqsetIterator - UID Sequence Set Iterator
  */
 struct SeqsetIterator
@@ -277,6 +199,9 @@ extern bool          C_ImapRfc5161;
 extern bool          C_ImapServerNoise;
 extern char *        C_ImapUser;
 
+#include "adata.h"
+#include "mdata.h"
+
 /* -- private IMAP functions -- */
 /* imap.c */
 int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox);
@@ -305,8 +230,6 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
 int imap_cmd_idle(struct ImapAccountData *adata);
 
 /* message.c */
-void imap_edata_free(void **ptr);
-struct ImapEmailData *imap_edata_get(struct Email *e);
 int imap_read_headers(struct Mailbox *m, unsigned int msn_begin, unsigned int msn_end, bool initial_download);
 char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_changes);
 int imap_cache_del(struct Mailbox *m, struct Email *e);
@@ -319,8 +242,6 @@ int imap_msg_commit(struct Mailbox *m, struct Message *msg);
 int imap_msg_save_hcache(struct Mailbox *m, struct Email *e);
 
 /* util.c */
-struct ImapAccountData *imap_adata_get(struct Mailbox *m);
-struct ImapMboxData *imap_mdata_get(struct Mailbox *m);
 #ifdef USE_HCACHE
 void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata);
 void imap_hcache_close(struct ImapMboxData *mdata);
@@ -334,10 +255,6 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata);
 
 enum QuadOption imap_continue(const char *msg, const char *resp);
 void imap_error(const char *where, const char *msg);
-struct ImapAccountData *imap_adata_new(struct Account *a);
-void imap_adata_free(void **ptr);
-struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char* name);
-void imap_mdata_free(void **ptr);
 void imap_mdata_cache_reset(struct ImapMboxData *mdata);
 char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen);
 void imap_cachepath(char delim, const char *mailbox, struct Buffer *dest);

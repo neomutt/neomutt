@@ -1,10 +1,9 @@
 /**
  * @file
- * Manage IMAP messages
+ * Imap-specific Email data
  *
  * @authors
- * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2000,2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,21 +20,36 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_IMAP_MESSAGE_H
-#define MUTT_IMAP_MESSAGE_H
+#ifndef MUTT_IMAP_EDATA_H
+#define MUTT_IMAP_EDATA_H
 
 #include <stdbool.h>
-#include <time.h>
+
+struct Email;
 
 /**
- * struct ImapHeader - IMAP-specific header
+ * struct ImapEmailData - IMAP-specific Email data - @extends Email
  */
-struct ImapHeader
+struct ImapEmailData
 {
-  struct ImapEmailData *edata;
+  /* server-side flags */
+  bool read    : 1;
+  bool old     : 1;
+  bool deleted : 1;
+  bool flagged : 1;
+  bool replied : 1;
 
-  time_t received;
-  long content_length;
+  bool parsed : 1;
+
+  unsigned int uid; ///< 32-bit Message UID
+  unsigned int msn; ///< Message Sequence Number
+
+  char *flags_system;
+  char *flags_remote;
 };
 
-#endif /* MUTT_IMAP_MESSAGE_H */
+void                  imap_edata_free(void **ptr);
+struct ImapEmailData *imap_edata_get (struct Email *e);
+struct ImapEmailData *imap_edata_new (void);
+
+#endif /* MUTT_IMAP_EDATA_H */

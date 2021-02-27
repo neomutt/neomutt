@@ -27,8 +27,11 @@
  *
  * | File               | Description         |
  * | :----------------- | :------------------ |
+ * | notmuch/adata.c    | @subpage nm_adata   |
  * | notmuch/config.c   | @subpage nm_config  |
  * | notmuch/db.c       | @subpage nm_db      |
+ * | notmuch/edata.c    | @subpage nm_edata   |
+ * | notmuch/mdata.c    | @subpage nm_mdata   |
  * | notmuch/notmuch.c  | @subpage nm_notmuch |
  */
 

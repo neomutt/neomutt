@@ -32,6 +32,8 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "lib.h"
+#include "adata.h"
+#include "mdata.h"
 
 /**
  * nntp_complete - Auto-complete NNTP newsgroups

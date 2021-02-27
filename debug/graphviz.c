@@ -46,7 +46,12 @@
 #include "maildir/mdata.h"
 #include "maildir/private.h"
 #include "mutt_globals.h"
+#include "nntp/adata.h"
+#include "nntp/mdata.h"
+#include "notmuch/adata.h"
+#include "notmuch/mdata.h"
 #include "notmuch/private.h"
+#include "pop/adata.h"
 #include "pop/private.h"
 
 // #define GV_HIDE_CONTEXT
@@ -577,10 +582,10 @@ static void dot_mailbox_notmuch(FILE *fp, struct NmMboxData *mdata, struct ListH
   dot_object_footer(fp);
 }
 
-static void dot_mailbox_pop(FILE *fp, struct PopAccountData *mdata, struct ListHead *links)
+static void dot_mailbox_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *links)
 {
-  dot_object_header(fp, mdata, "PopAccountData", "#60c060");
-  dot_ptr(fp, "conn", mdata->conn, "#ff8080");
+  dot_object_header(fp, adata, "PopAccountData", "#60c060");
+  dot_ptr(fp, "conn", adata->conn, "#ff8080");
   dot_object_footer(fp);
 }
 
