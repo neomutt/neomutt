@@ -288,15 +288,10 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     builtin = true;
   else
   {
-    char buf[1024];
-    struct HdrFormatInfo hfi;
-
-    hfi.mailbox = m;
-    hfi.msg_in_pager = Context ? Context->msg_in_pager : -1;
-    hfi.pager_progress = ExtPagerProgress;
-    hfi.email = e;
-    mutt_make_string_info(buf, sizeof(buf), win_index->state.cols,
-                          NONULL(C_PagerFormat), &hfi, MUTT_FORMAT_NO_FLAGS);
+    char buf[1024] = { 0 };
+    mutt_make_string(buf, sizeof(buf), win_index->state.cols, NONULL(C_PagerFormat),
+                     m, Context ? Context->msg_in_pager : -1, e,
+                     MUTT_FORMAT_NO_FLAGS, ExtPagerProgress);
     fputs(buf, fp_out);
     fputs("\n\n", fp_out);
   }
@@ -441,7 +436,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   else
     mutt_str_copy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
 
-  rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS);
+  rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS, false, NULL, NULL);
   if (rc || (buf[0] == '\0'))
     return;
 
@@ -710,7 +705,7 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
 
   struct Buffer *buf = mutt_buffer_pool_get();
 
-  if (mutt_buffer_get_field(_("Pipe to command: "), buf, MUTT_CMD) != 0)
+  if (mutt_buffer_get_field(_("Pipe to command: "), buf, MUTT_CMD, false, NULL, NULL) != 0)
     goto cleanup;
 
   if (mutt_buffer_len(buf) == 0)
@@ -848,7 +843,7 @@ bool mutt_shell_escape(void)
   char buf[1024];
 
   buf[0] = '\0';
-  if (mutt_get_field(_("Shell command: "), buf, sizeof(buf), MUTT_CMD) != 0)
+  if (mutt_get_field(_("Shell command: "), buf, sizeof(buf), MUTT_CMD, false, NULL, NULL) != 0)
   {
     return false;
   }
@@ -883,8 +878,11 @@ void mutt_enter_command(void)
   window_set_focus(MessageWindow);
   window_redraw(RootWindow, true);
   /* if enter is pressed after : with no command, just return */
-  if ((mutt_get_field(":", buf, sizeof(buf), MUTT_COMMAND) != 0) || (buf[0] == '\0'))
+  if ((mutt_get_field(":", buf, sizeof(buf), MUTT_COMMAND, false, NULL, NULL) != 0) ||
+      (buf[0] == '\0'))
+  {
     return;
+  }
 
   struct Buffer err = mutt_buffer_make(256);
 
@@ -1106,7 +1104,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   mutt_buffer_fix_dptr(buf);
   mutt_buffer_pretty_mailbox(buf);
 
-  if (mutt_buffer_enter_fname(prompt, buf, false) == -1)
+  if (mutt_buffer_enter_fname(prompt, buf, false, false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1)
     goto cleanup;
 
   size_t pathlen = mutt_buffer_len(buf);
@@ -1351,7 +1349,8 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
     }
   }
 
-  if ((mutt_get_field("Content-Type: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
+  if ((mutt_get_field("Content-Type: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
+                      false, NULL, NULL) != 0) ||
       (buf[0] == '\0'))
   {
     return false;

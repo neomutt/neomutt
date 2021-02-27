@@ -175,7 +175,8 @@ bool smime_class_valid_passphrase(void)
 
   smime_class_void_passphrase();
 
-  if (mutt_get_password(_("Enter S/MIME passphrase:"), SmimePass, sizeof(SmimePass)) == 0)
+  if (mutt_get_field_unbuffered(_("Enter S/MIME passphrase:"), SmimePass,
+                                sizeof(SmimePass), MUTT_PASS) == 0)
   {
     SmimeExpTime = mutt_date_add_timeout(now, C_SmimeTimeout);
     return true;
@@ -711,8 +712,10 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool
   while (true)
   {
     resp[0] = '\0';
-    if (mutt_get_field(prompt, resp, sizeof(resp), MUTT_COMP_NO_FLAGS) != 0)
+    if (mutt_get_field(prompt, resp, sizeof(resp), MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
+    {
       return NULL;
+    }
 
     key = smime_get_key_by_str(resp, abilities, only_public_key);
     if (key)
@@ -1142,7 +1145,8 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   buf[0] = '\0';
   if (C_SmimeAskCertLabel)
   {
-    if ((mutt_get_field(_("Label for certificate: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
+    if ((mutt_get_field(_("Label for certificate: "), buf, sizeof(buf),
+                        MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
         (buf[0] == '\0'))
     {
       mutt_file_fclose(&fp_out);

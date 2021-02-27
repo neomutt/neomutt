@@ -929,8 +929,8 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
     }
   }
 
-  mutt_make_string_flags(buf, buflen, menu->win_index->state.cols,
-                         NONULL(C_IndexFormat), m, Context->msg_in_pager, e, flags);
+  mutt_make_string(buf, buflen, menu->win_index->state.cols, NONULL(C_IndexFormat),
+                   m, Context->msg_in_pager, e, flags, NULL);
 }
 
 /**
@@ -1507,7 +1507,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           {
             buf[0] = '\0';
             if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf),
-                                MUTT_COMP_NO_FLAGS) != 0) ||
+                                MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
                 (buf[0] == '\0'))
             {
               break;
@@ -1681,7 +1681,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (isdigit(LastKey))
           mutt_unget_event(LastKey, 0);
         buf[0] = '\0';
-        if ((mutt_get_field(_("Jump to message: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS) != 0) ||
+        if ((mutt_get_field(_("Jump to message: "), buf, sizeof(buf),
+                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
             (buf[0] == '\0'))
         {
           mutt_error(_("Nothing to do"));
@@ -2317,7 +2318,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_MAIN_VFOLDER_FROM_QUERY_READONLY:
       {
         buf[0] = '\0';
-        if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_NM_QUERY) != 0) ||
+        if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_NM_QUERY, false, NULL, NULL) != 0) ||
             (buf[0] == '\0'))
         {
           mutt_message(_("No query, aborting"));
@@ -2447,7 +2448,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         /* By default, fill buf with the next mailbox that contains unread mail */
         mutt_mailbox_next(Context ? Context->mailbox : NULL, folderbuf);
 
-        if (mutt_buffer_enter_fname(cp, folderbuf, true) == -1)
+        if (mutt_buffer_enter_fname(cp, folderbuf, true, false, NULL, NULL,
+                                    MUTT_SEL_NO_FLAGS) == -1)
           goto changefoldercleanup;
 
         /* Selected directory is okay, let's save it. */
@@ -2519,7 +2521,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         nntp_mailbox(Context ? Context->mailbox : NULL, folderbuf->data,
                      folderbuf->dsize);
 
-        if (mutt_buffer_enter_fname(cp, folderbuf, true) == -1)
+        if (mutt_buffer_enter_fname(cp, folderbuf, true, false, NULL, NULL,
+                                    MUTT_SEL_NO_FLAGS) == -1)
           goto changefoldercleanup2;
 
         /* Selected directory is okay, let's save it. */
@@ -3667,7 +3670,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
           /* L10N: This is the prompt for <mark-message>.  Whatever they
              enter will be prefixed by $mark_macro_prefix and will become
              a macro hotkey to jump to the currently selected message. */
-          if (!mutt_get_field(_("Enter macro stroke: "), buf2, sizeof(buf2), MUTT_COMP_NO_FLAGS) &&
+          if (!mutt_get_field(_("Enter macro stroke: "), buf2, sizeof(buf2),
+                              MUTT_COMP_NO_FLAGS, false, NULL, NULL) &&
               buf2[0])
           {
             char str[256], macro[256];

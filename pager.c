@@ -2151,12 +2151,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
   if (pager_menu->redraw & REDRAW_STATUS)
   {
-    struct HdrFormatInfo hfi;
     char pager_progress_str[65]; /* Lots of space for translations */
-
-    hfi.mailbox = m;
-    hfi.msg_in_pager = Context ? Context->msg_in_pager : -1;
-    hfi.pager_progress = pager_progress_str;
 
     if (rd->last_pos < rd->sb.st_size - 1)
     {
@@ -2179,11 +2174,14 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     if (IsEmail(rd->extra) || IsMsgAttach(rd->extra))
     {
-      size_t l1 = rd->extra->win_pbar->state.cols * MB_LEN_MAX;
-      size_t l2 = sizeof(buf);
-      hfi.email = (IsEmail(rd->extra)) ? rd->extra->email : rd->extra->body->email;
-      mutt_make_string_info(buf, (l1 < l2) ? l1 : l2, rd->extra->win_pbar->state.cols,
-                            NONULL(C_PagerFormat), &hfi, MUTT_FORMAT_NO_FLAGS);
+      const size_t l1 = rd->extra->win_pbar->state.cols * MB_LEN_MAX;
+      const size_t l2 = sizeof(buf);
+      const int buflen = (l1 < l2) ? l1 : l2;
+      struct Email *e =
+          (IsEmail(rd->extra)) ? rd->extra->email : rd->extra->body->email;
+      mutt_make_string(buf, buflen, rd->extra->win_pbar->state.cols,
+                       NONULL(C_PagerFormat), m, Context ? Context->msg_in_pager : -1,
+                       e, MUTT_FORMAT_NO_FLAGS, pager_progress_str);
       mutt_draw_statusline(rd->extra->win_pbar->state.cols, buf, l2);
     }
     else
@@ -2700,7 +2698,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (mutt_get_field(((ch == OP_SEARCH) || (ch == OP_SEARCH_NEXT)) ?
                                _("Search for: ") :
                                _("Reverse search for: "),
-                           buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN) != 0)
+                           buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN, false,
+                           NULL, NULL) != 0)
         {
           break;
         }

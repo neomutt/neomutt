@@ -1043,7 +1043,7 @@ static bool edit_address_list(int field, struct AddressList *al)
   mutt_addrlist_to_local(al);
   mutt_addrlist_write(al, buf, sizeof(buf), false);
   mutt_str_copy(old_list, buf, sizeof(buf));
-  if (mutt_get_field(_(Prompts[field]), buf, sizeof(buf), MUTT_ALIAS) == 0)
+  if (mutt_get_field(_(Prompts[field]), buf, sizeof(buf), MUTT_ALIAS, false, NULL, NULL) == 0)
   {
     mutt_addrlist_clear(al);
     mutt_addrlist_parse2(al, buf);
@@ -1646,7 +1646,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         if (!news)
           break;
         mutt_str_copy(buf, e->env->newsgroups, sizeof(buf));
-        if (mutt_get_field(Prompts[HDR_NEWSGROUPS], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+        if (mutt_get_field(Prompts[HDR_NEWSGROUPS], buf, sizeof(buf),
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           mutt_str_replace(&e->env->newsgroups, buf);
           redraw_env = true;
@@ -1657,7 +1658,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         if (!news)
           break;
         mutt_str_copy(buf, e->env->followup_to, sizeof(buf));
-        if (mutt_get_field(Prompts[HDR_FOLLOWUPTO], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+        if (mutt_get_field(Prompts[HDR_FOLLOWUPTO], buf, sizeof(buf),
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           mutt_str_replace(&e->env->followup_to, buf);
           redraw_env = true;
@@ -1670,7 +1672,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         if (!(news && c_x_comment_to))
           break;
         mutt_str_copy(buf, e->env->x_comment_to, sizeof(buf));
-        if (mutt_get_field(Prompts[HDR_XCOMMENTTO], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+        if (mutt_get_field(Prompts[HDR_XCOMMENTTO], buf, sizeof(buf),
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           mutt_str_replace(&e->env->x_comment_to, buf);
           redraw_env = true;
@@ -1681,7 +1684,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
       case OP_COMPOSE_EDIT_SUBJECT:
         mutt_str_copy(buf, e->env->subject, sizeof(buf));
-        if (mutt_get_field(Prompts[HDR_SUBJECT], buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+        if (mutt_get_field(Prompts[HDR_SUBJECT], buf, sizeof(buf),
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           if (!mutt_str_equal(e->env->subject, buf))
           {
@@ -1702,7 +1706,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
       case OP_COMPOSE_EDIT_FCC:
         mutt_buffer_copy(&fname, fcc);
-        if (mutt_buffer_get_field(Prompts[HDR_FCC], &fname, MUTT_FILE | MUTT_CLEAR) == 0)
+        if (mutt_buffer_get_field(Prompts[HDR_FCC], &fname,
+                                  MUTT_FILE | MUTT_CLEAR, false, NULL, NULL) == 0)
         {
           if (!mutt_str_equal(fcc->data, fname.data))
           {
@@ -2001,8 +2006,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         char **files = NULL;
 
         mutt_buffer_reset(&fname);
-        if ((mutt_buffer_enter_fname_full(prompt, &fname, false, true, &files,
-                                          &numfiles, MUTT_SEL_MULTI) == -1) ||
+        if ((mutt_buffer_enter_fname(prompt, &fname, false, true, &files,
+                                     &numfiles, MUTT_SEL_MULTI) == -1) ||
             mutt_buffer_is_empty(&fname))
         {
           for (int i = 0; i < numfiles; i++)
@@ -2082,7 +2087,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           }
         }
 
-        if ((mutt_buffer_enter_fname(prompt, &fname, true) == -1) ||
+        if ((mutt_buffer_enter_fname(prompt, &fname, true, false, NULL, NULL,
+                                     MUTT_SEL_NO_FLAGS) == -1) ||
             mutt_buffer_is_empty(&fname))
         {
           break;
@@ -2236,7 +2242,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         CHECK_COUNT;
         mutt_str_copy(buf, CUR_ATTACH->body->description, sizeof(buf));
         /* header names should not be translated */
-        if (mutt_get_field("Description: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+        if (mutt_get_field("Description: ", buf, sizeof(buf),
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           if (!mutt_str_equal(CUR_ATTACH->body->description, buf))
           {
@@ -2298,7 +2305,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
       case OP_COMPOSE_EDIT_LANGUAGE:
         CHECK_COUNT;
         mutt_str_copy(buf, CUR_ATTACH->body->language, sizeof(buf));
-        if (mutt_get_field("Content-Language: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS) == 0)
+        if (mutt_get_field("Content-Language: ", buf, sizeof(buf),
+                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           if (!mutt_str_equal(CUR_ATTACH->body->language, buf))
           {
@@ -2316,7 +2324,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         CHECK_COUNT;
         mutt_str_copy(buf, ENCODING(CUR_ATTACH->body->encoding), sizeof(buf));
         if ((mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf),
-                            MUTT_COMP_NO_FLAGS) == 0) &&
+                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0) &&
             (buf[0] != '\0'))
         {
           int enc = mutt_check_encoding(buf);
@@ -2410,7 +2418,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         else
           src = CUR_ATTACH->body->filename;
         mutt_buffer_strcpy(&fname, mutt_path_basename(NONULL(src)));
-        int ret = mutt_buffer_get_field(_("Send attachment with name: "), &fname, MUTT_FILE);
+        int ret = mutt_buffer_get_field(_("Send attachment with name: "),
+                                        &fname, MUTT_FILE, false, NULL, NULL);
         if (ret == 0)
         {
           /* As opposed to RENAME_FILE, we don't check buf[0] because it's
@@ -2425,7 +2434,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         CHECK_COUNT;
         mutt_buffer_strcpy(&fname, CUR_ATTACH->body->filename);
         mutt_buffer_pretty_mailbox(&fname);
-        if ((mutt_buffer_get_field(_("Rename to: "), &fname, MUTT_FILE) == 0) &&
+        if ((mutt_buffer_get_field(_("Rename to: "), &fname, MUTT_FILE, false, NULL, NULL) == 0) &&
             !mutt_buffer_is_empty(&fname))
         {
           struct stat st;
@@ -2452,7 +2461,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
       case OP_COMPOSE_NEW_MIME:
       {
         mutt_buffer_reset(&fname);
-        if ((mutt_buffer_get_field(_("New file: "), &fname, MUTT_FILE) != 0) ||
+        if ((mutt_buffer_get_field(_("New file: "), &fname, MUTT_FILE, false, NULL, NULL) != 0) ||
             mutt_buffer_is_empty(&fname))
         {
           continue;
@@ -2461,7 +2470,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
         /* Call to lookup_mime_type () ?  maybe later */
         char type[256] = { 0 };
-        if ((mutt_get_field("Content-Type: ", type, sizeof(type), MUTT_COMP_NO_FLAGS) != 0) ||
+        if ((mutt_get_field("Content-Type: ", type, sizeof(type),
+                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
             (type[0] == '\0'))
         {
           continue;
@@ -2622,7 +2632,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
         if (actx->idxlen)
           e->body = actx->idx[0]->body;
-        if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname, true) != -1) &&
+        if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname, true,
+                                     false, NULL, NULL, MUTT_SEL_NO_FLAGS) != -1) &&
             !mutt_buffer_is_empty(&fname))
         {
           mutt_message(_("Writing message to %s ..."), mutt_buffer_string(&fname));

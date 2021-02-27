@@ -245,7 +245,7 @@ int mutt_pattern_alias_func(int op, char *prompt, char *menu_name,
   mutt_buffer_strcpy(buf, mdata->str);
   if (prompt)
   {
-    if ((mutt_buffer_get_field(prompt, buf, MUTT_PATTERN | MUTT_CLEAR) != 0) ||
+    if ((mutt_buffer_get_field(prompt, buf, MUTT_PATTERN | MUTT_CLEAR, false, NULL, NULL) != 0) ||
         mutt_buffer_is_empty(buf))
     {
       mutt_buffer_pool_release(&buf);
@@ -349,7 +349,7 @@ int mutt_pattern_func(int op, char *prompt)
   mutt_buffer_strcpy(buf, NONULL(Context->pattern));
   if (prompt || (op != MUTT_LIMIT))
   {
-    if ((mutt_buffer_get_field(prompt, buf, MUTT_PATTERN | MUTT_CLEAR) != 0) ||
+    if ((mutt_buffer_get_field(prompt, buf, MUTT_PATTERN | MUTT_CLEAR, false, NULL, NULL) != 0) ||
         mutt_buffer_is_empty(buf))
     {
       mutt_buffer_pool_release(&buf);
@@ -489,10 +489,9 @@ int mutt_search_command(struct Mailbox *m, int cur, int op)
   {
     char buf[256];
     mutt_str_copy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
-    if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
-                            _("Search for: ") :
-                            _("Reverse search for: "),
-                        buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN) != 0) ||
+    if ((mutt_get_field(
+             ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
+             buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN, false, NULL, NULL) != 0) ||
         (buf[0] == '\0'))
     {
       return -1;
@@ -640,10 +639,9 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
   {
     char buf[256];
     mutt_str_copy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
-    if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
-                            _("Search for: ") :
-                            _("Reverse search for: "),
-                        buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN) != 0) ||
+    if ((mutt_get_field(
+             ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
+             buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN, false, NULL, NULL) != 0) ||
         (buf[0] == '\0'))
     {
       return -1;

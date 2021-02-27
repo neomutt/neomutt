@@ -67,6 +67,17 @@ struct MbTable *C_FromChars; ///< Config: User-configurable index flags: to addr
 struct MbTable *C_ToChars; ///< Config: Indicator characters for the 'To' field in the index
 
 /**
+ * struct HdrFormatInfo - Data passed to index_format_str()
+ */
+struct HdrFormatInfo
+{
+  struct Mailbox *mailbox;
+  int msg_in_pager;
+  struct Email *email;
+  const char *pager_progress;
+};
+
+/**
  * enum FlagChars - Index into the `$flag_chars` variable ($flag_chars)
  */
 enum FlagChars
@@ -1402,41 +1413,27 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * mutt_make_string_flags - Create formatted strings using mailbox expandos
- * @param buf    Buffer for the result
- * @param buflen Buffer length
- * @param cols   Number of screen columns (OPTIONAL)
- * @param s      printf-line format string
- * @param m      Mailbox
- * @param inpgr  Message shown in the pager
- * @param e      Email
- * @param flags  Flags, see #MuttFormatFlags
+ * mutt_make_string - Create formatted strings using mailbox expandos
+ * @param buf      Buffer for the result
+ * @param buflen   Buffer length
+ * @param cols     Number of screen columns (OPTIONAL)
+ * @param s        printf-line format string
+ * @param m        Mailbox
+ * @param inpgr    Message shown in the pager
+ * @param e        Email
+ * @param flags    Flags, see #MuttFormatFlags
+ * @param progress Pager progress string
  */
-void mutt_make_string_flags(char *buf, size_t buflen, int cols, const char *s,
-                            struct Mailbox *m, int inpgr, struct Email *e,
-                            MuttFormatFlags flags)
+void mutt_make_string(char *buf, size_t buflen, int cols, const char *s,
+                      struct Mailbox *m, int inpgr, struct Email *e,
+                      MuttFormatFlags flags, const char *progress)
 {
-  struct HdrFormatInfo hfi;
+  struct HdrFormatInfo hfi = { 0 };
 
   hfi.email = e;
   hfi.mailbox = m;
   hfi.msg_in_pager = inpgr;
-  hfi.pager_progress = 0;
+  hfi.pager_progress = progress;
 
   mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (intptr_t) &hfi, flags);
-}
-
-/**
- * mutt_make_string_info - Create pager status bar string
- * @param buf    Buffer for the result
- * @param buflen Buffer length
- * @param cols   Number of screen columns
- * @param s      printf-line format string
- * @param hfi    Mailbox data to pass to the formatter
- * @param flags  Flags, see #MuttFormatFlags
- */
-void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s,
-                           struct HdrFormatInfo *hfi, MuttFormatFlags flags)
-{
-  mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (intptr_t) hfi, flags);
 }

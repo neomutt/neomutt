@@ -245,7 +245,7 @@ struct KeyEvent mutt_getch(void)
 }
 
 /**
- * mutt_buffer_get_field_full - Ask the user for a string
+ * mutt_buffer_get_field - Ask the user for a string
  * @param[in]  field    Prompt
  * @param[in]  buf      Buffer for the result
  * @param[in]  complete Flags, see #CompletionFlags
@@ -256,8 +256,8 @@ struct KeyEvent mutt_getch(void)
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, CompletionFlags complete,
-                               bool multiple, char ***files, int *numfiles)
+int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags complete,
+                          bool multiple, char ***files, int *numfiles)
 {
   int ret;
   int col;
@@ -295,7 +295,7 @@ int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, Completion
 }
 
 /**
- * mutt_get_field_full - Ask the user for a string
+ * mutt_get_field - Ask the user for a string
  * @param[in]  field    Prompt
  * @param[in]  buf      Buffer for the result
  * @param[in]  buflen   Length of buffer
@@ -307,8 +307,8 @@ int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, Completion
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionFlags complete,
-                        bool multiple, char ***files, int *numfiles)
+int mutt_get_field(const char *field, char *buf, size_t buflen,
+                   CompletionFlags complete, bool multiple, char ***files, int *numfiles)
 {
   if (!buf)
     return -1;
@@ -318,7 +318,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionF
     .dptr = buf + mutt_str_len(buf),
     .dsize = buflen,
   };
-  return mutt_buffer_get_field_full(field, &tmp, complete, multiple, files, numfiles);
+  return mutt_buffer_get_field(field, &tmp, complete, multiple, files, numfiles);
 }
 
 /**
@@ -340,7 +340,7 @@ int mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, Complet
     OptIgnoreMacroEvents = true;
     reset_ignoremacro = true;
   }
-  int rc = mutt_get_field(msg, buf, buflen, flags);
+  int rc = mutt_get_field(msg, buf, buflen, flags, false, NULL, NULL);
   if (reset_ignoremacro)
     OptIgnoreMacroEvents = false;
 
@@ -754,7 +754,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
 }
 
 /**
- * mutt_buffer_enter_fname_full - Ask the user to select a file
+ * mutt_buffer_enter_fname - Ask the user to select a file
  * @param[in]  prompt   Prompt
  * @param[in]  fname    Buffer for the result
  * @param[in]  mailbox  If true, select mailboxes
@@ -765,9 +765,9 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
-                                 bool mailbox, bool multiple, char ***files,
-                                 int *numfiles, SelectFileFlags flags)
+int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
+                            bool mailbox, bool multiple, char ***files,
+                            int *numfiles, SelectFileFlags flags)
 {
   struct KeyEvent ch;
 
@@ -813,8 +813,8 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
       mutt_unget_event(0, ch.op);
 
     mutt_buffer_alloc(fname, 1024);
-    if (mutt_buffer_get_field_full(pc, fname, (mailbox ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
-                                   multiple, files, numfiles) != 0)
+    if (mutt_buffer_get_field(pc, fname, (mailbox ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
+                              multiple, files, numfiles) != 0)
     {
       mutt_buffer_reset(fname);
     }

@@ -706,8 +706,11 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
 
     snprintf(prompt, sizeof(prompt), "%s: ", interaction->prompt);
     resp[0] = '\0';
-    if (OptNoCurses || mutt_get_field(prompt, resp, sizeof(resp), MUTT_COMP_NO_FLAGS))
+    if (OptNoCurses || mutt_get_field(prompt, resp, sizeof(resp),
+                                      MUTT_COMP_NO_FLAGS, false, NULL, NULL))
+    {
       return SASL_FAIL;
+    }
 
     interaction->len = mutt_str_len(resp) + 1;
     char *result = mutt_mem_malloc(interaction->len);
