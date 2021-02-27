@@ -2023,7 +2023,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
   struct Mailbox *m = NULL;
   int msg_in_pager = -1;
-  if (rd->extra && rd->extra->ctx) 
+  if (rd->extra && rd->extra->ctx)
   {
     m = rd->extra->ctx->mailbox;
     msg_in_pager = rd->extra->ctx->msg_in_pager;
@@ -2293,8 +2293,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     flags |= MUTT_SHOWFLAT;
 
   int index_space = C_PagerIndexLines;
- 
-  if (extra->ctx && extra->ctx->mailbox) 
+
+  if (extra->ctx && extra->ctx->mailbox)
   {
     index_space = MIN(index_space, extra->ctx->mailbox->vcount);
     m = extra->ctx->mailbox;
@@ -3268,7 +3268,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_MAIL:
-        CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
+        CHECK_MODE(IsEmail(extra));
         CHECK_ATTACH;
         mutt_send_message(SEND_NO_FLAGS, NULL, NULL, extra->ctx, NULL, NeoMutt->sub);
         pager_menu->redraw = REDRAW_FULL;
@@ -3276,7 +3276,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
 #ifdef USE_NNTP
       case OP_POST:
-        CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
+        CHECK_MODE(IsEmail(extra));
         CHECK_ATTACH;
         if (extra->ctx && (extra->ctx->mailbox->type == MUTT_NNTP) &&
             !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
@@ -3375,7 +3375,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_RECALL_MESSAGE:
       {
-        CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
+        CHECK_MODE(IsEmail(extra));
         CHECK_ATTACH;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
