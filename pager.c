@@ -2021,8 +2021,13 @@ static void pager_custom_redraw(struct Menu *pager_menu)
   if (!rd)
     return;
 
-  struct Mailbox *m = rd->extra->ctx->mailbox;
-  int msg_in_pager = rd->extra->ctx->msg_in_pager;
+  struct Mailbox *m = NULL;
+  int msg_in_pager = -1;
+  if (rd->extra && rd->extra->ctx) 
+  {
+    m = rd->extra->ctx->mailbox;
+    msg_in_pager = rd->extra->ctx->msg_in_pager;
+  }
 
   if (pager_menu->redraw & REDRAW_FULL)
   {
@@ -2270,7 +2275,8 @@ static void pager_custom_redraw(struct Menu *pager_menu)
  */
 int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra)
 {
-  struct Mailbox *m;
+  assert(extra);
+  struct Mailbox *m = NULL;
   static char searchbuf[256] = { 0 };
   char buf[1024];
   int ch = 0, rc = -1;
@@ -2278,7 +2284,6 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   int searchctx = 0;
   bool wrapped = false;
   struct Menu *pager_menu = NULL;
-  int msg_in_pager = 0;
   int old_PagerIndexLines; /* some people want to resize it while inside the pager */
 #ifdef USE_NNTP
   char *followup_to = NULL;
@@ -2288,12 +2293,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     flags |= MUTT_SHOWFLAT;
 
   int index_space = C_PagerIndexLines;
-
-  // Do we even consire an option when pager is invoked without mailbox?
-  assert(extra);
-  assert(extra->ctx);
-  assert(extra->ctx->mailbox);
-  if (extra->ctx && extra->ctx->mailbox)
+ 
+  if (extra->ctx && extra->ctx->mailbox) 
   {
     index_space = MIN(index_space, extra->ctx->mailbox->vcount);
     m = extra->ctx->mailbox;
@@ -2336,9 +2337,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
   /* Initialize variables */
 
-  if (IsEmail(extra) && !extra->email->read)
+  if (IsEmail(extra) && !extra->email->read && extra->ctx)
   {
-    msg_in_pager = extra->email->msgno;
+    extra->ctx->msg_in_pager = extra->email->msgno;
     mutt_set_flag(m, extra->email, MUTT_READ, true);
   }
 
@@ -3488,7 +3489,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         else if (!first)
           mutt_set_flag(m, extra->email, MUTT_READ, true);
         first = false;
-        msg_in_pager = -1;
+        extra->ctx->msg_in_pager = -1;
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (C_Resolve)
         {
@@ -3673,7 +3674,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   mutt_file_fclose(&rd.fp);
   if (IsEmail(extra))
   {
-    msg_in_pager = -1;
+    extra->ctx->msg_in_pager = -1;
     switch (rc)
     {
       case -1:
