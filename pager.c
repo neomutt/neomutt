@@ -3021,7 +3021,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra))
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_resend(extra->fp, extra->actx, extra->body);
+          mutt_attach_resend(extra->fp, extra->ctx, extra->actx, extra->body);
         else
           mutt_resend_message(NULL, extra->ctx, extra->email, NeoMutt->sub);
         pager_menu->redraw = REDRAW_FULL;
@@ -3115,18 +3115,18 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_ACL(MUTT_ACL_DELETE, _("Can't delete messages"));
 
         int subthread = (ch == OP_DELETE_SUBTHREAD);
-        int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, 1, subthread);
+        int r = mutt_thread_set_flag(m, extra->email, MUTT_DELETE, 1, subthread);
         if (r == -1)
           break;
         if (ch == OP_PURGE_THREAD)
         {
-          r = mutt_thread_set_flag(extra->email, MUTT_PURGE, true, subthread);
+          r = mutt_thread_set_flag(m, extra->email, MUTT_PURGE, true, subthread);
           if (r == -1)
             break;
         }
 
         if (C_DeleteUntag)
-          mutt_thread_set_flag(extra->email, MUTT_TAG, 0, subthread);
+          mutt_thread_set_flag(m, extra->email, MUTT_TAG, 0, subthread);
         if (C_Resolve)
         {
           rc = OP_MAIN_NEXT_UNDELETED;
@@ -3248,7 +3248,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           break;
         }
         if (IsMsgAttach(extra))
-          mutt_attach_forward(extra->fp, extra->email, extra->actx, extra->body, SEND_NEWS);
+          mutt_attach_forward(extra->fp, m, extra->email, extra->actx, extra->body, SEND_NEWS);
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3280,8 +3280,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           }
           if (IsMsgAttach(extra))
           {
-            mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->body,
-                              SEND_NEWS | SEND_REPLY);
+            mutt_attach_reply(extra->fp, m, extra->email, extra->actx,
+                              extra->body, SEND_NEWS | SEND_REPLY);
           }
           else
           {
@@ -3313,7 +3313,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           replyflags |= SEND_LIST_REPLY;
 
         if (IsMsgAttach(extra))
-          mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->body, replyflags);
+          mutt_attach_reply(extra->fp, m, extra->email, extra->actx, extra->body, replyflags);
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3341,7 +3341,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_forward(extra->fp, extra->email, extra->actx, extra->body, SEND_NO_FLAGS);
+          mutt_attach_forward(extra->fp, m, extra->email, extra->actx,
+                              extra->body, SEND_NO_FLAGS);
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3475,11 +3476,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
            "messages". Your language might have other means to express this. */
         CHECK_ACL(MUTT_ACL_DELETE, _("Can't undelete messages"));
 
-        int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, false,
+        int r = mutt_thread_set_flag(m, extra->email, MUTT_DELETE, false,
                                      (ch != OP_UNDELETE_THREAD));
         if (r != -1)
         {
-          r = mutt_thread_set_flag(extra->email, MUTT_PURGE, false,
+          r = mutt_thread_set_flag(m, extra->email, MUTT_PURGE, false,
                                    (ch != OP_UNDELETE_THREAD));
         }
         if (r != -1)
@@ -3584,7 +3585,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_CHECK_STATS:
-        mutt_check_stats();
+        mutt_check_stats(ctx_mailbox(Context));
         break;
 
 #ifdef USE_SIDEBAR

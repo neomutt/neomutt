@@ -103,7 +103,7 @@ static void curses_segv_handler(int sig)
   show_backtrace();
 #endif
 #ifdef USE_DEBUG_GRAPHVIZ
-  dump_graphviz("segfault");
+  dump_graphviz("segfault", NULL);
 #endif
 
   struct sigaction act;

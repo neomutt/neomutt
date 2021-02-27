@@ -929,7 +929,7 @@ static void dot_context(FILE *fp, struct Context *ctx, struct ListHead *links)
   dot_object_footer(fp);
 }
 
-void dump_graphviz(const char *title)
+void dump_graphviz(const char *title, struct Context *ctx)
 {
   char name[256] = { 0 };
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
@@ -974,15 +974,15 @@ void dump_graphviz(const char *title)
   dot_account_list(fp, &NeoMutt->accounts, &links);
 
 #ifndef GV_HIDE_CONTEXT
-  if (Context)
-    dot_context(fp, Context, &links);
+  if (ctx)
+    dot_context(fp, ctx, &links);
 
 #ifndef GV_HIDE_NEOMUTT
   /* Globals */
   fprintf(fp, "\t{ rank=same ");
-  if (Context)
+  if (ctx)
   {
-    dot_ptr_name(name, sizeof(name), Context);
+    dot_ptr_name(name, sizeof(name), ctx);
     fprintf(fp, "%s ", name);
   }
   dot_ptr_name(name, sizeof(name), NeoMutt);

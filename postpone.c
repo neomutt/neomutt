@@ -277,7 +277,7 @@ static struct Email *dlg_select_postponed_email(struct Context *ctx)
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
       case OP_SEARCH:
-        menu->current = mutt_search_command(ctx->mailbox, menu->current, op);
+        menu->current = mutt_search_command(ctx, ctx->mailbox, menu->current, op);
         if (menu->current == -1)
           menu->current = menu->oldcurrent;
         else

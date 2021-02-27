@@ -775,7 +775,7 @@ int main(int argc, char *argv[], char *envp[])
   /* Initialize autocrypt after curses messages are working,
    * because of the initial account setup screens. */
   if (C_Autocrypt)
-    mutt_autocrypt_init(!(sendflags & SEND_BATCH));
+    mutt_autocrypt_init(NULL, !(sendflags & SEND_BATCH));
 #endif
 
   /* Create the `$folder` directory if it doesn't exist. */
@@ -1160,7 +1160,8 @@ int main(int argc, char *argv[], char *envp[])
         goto main_curses; // TEST39: neomutt -n -F /dev/null -y
       }
       mutt_buffer_reset(&folder);
-      mutt_buffer_select_file(&folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, NULL, NULL);
+      mutt_buffer_select_file(&folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX,
+                              ctx_mailbox(Context), NULL, NULL);
       if (mutt_buffer_is_empty(&folder))
       {
         goto main_ok; // TEST40: neomutt -y (quit selection)

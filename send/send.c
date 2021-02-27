@@ -1361,12 +1361,13 @@ struct Address *mutt_default_from(struct ConfigSubset *sub)
 
 /**
  * invoke_mta - Send an email
+ * @param m   Mailbox
  * @param e   Email
  * @param sub Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int invoke_mta(struct Email *e, struct ConfigSubset *sub)
+static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *sub)
 {
   struct Buffer *tempfile = NULL;
   int rc = -1;
@@ -1438,7 +1439,7 @@ static int invoke_mta(struct Email *e, struct ConfigSubset *sub)
 #endif
 
 sendmail:
-  rc = mutt_invoke_sendmail(&e->env->from, &e->env->to, &e->env->cc,
+  rc = mutt_invoke_sendmail(m, &e->env->from, &e->env->to, &e->env->cc,
                             &e->env->bcc, mutt_buffer_string(tempfile),
                             (e->body->encoding == ENC_8BIT), sub);
 cleanup:
@@ -1768,8 +1769,8 @@ full_fcc:
         case 2: /* alternate (m)ailbox */
           /* L10N: This is the prompt to enter an "alternate (m)ailbox" when the
              initial Fcc fails.  */
-          rc = mutt_buffer_enter_fname(_("Fcc mailbox"), fcc, true, false, NULL,
-                                       NULL, MUTT_SEL_NO_FLAGS);
+          rc = mutt_buffer_enter_fname(_("Fcc mailbox"), fcc, true, ctx_mailbox(Context),
+                                       false, NULL, NULL, MUTT_SEL_NO_FLAGS);
           if ((rc == -1) || mutt_buffer_is_empty(fcc))
           {
             rc = 0;
@@ -1872,7 +1873,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
 #ifdef USE_AUTOCRYPT
     if (e_post->security & SEC_AUTOCRYPT)
     {
-      if (mutt_autocrypt_set_sign_as_default_key(e_post))
+      struct Mailbox *m = ctx_mailbox(Context);
+      if (mutt_autocrypt_set_sign_as_default_key(m, e_post))
       {
         e_post->body = mutt_remove_multipart(e_post->body);
         decode_descriptions(e_post->body);
@@ -2745,7 +2747,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (c_fcc_before_send)
     save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
 
-  i = invoke_mta(e_templ, sub);
+  i = invoke_mta(mailbox, e_templ, sub);
   if (i < 0)
   {
     if (!(flags & SEND_BATCH))

@@ -264,14 +264,14 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   mutt_window_clearline(MessageWindow, 0);
 
   if (cur)
-    ret = mutt_bounce_message(fp, cur->email, &al, NeoMutt->sub);
+    ret = mutt_bounce_message(fp, m, cur->email, &al, NeoMutt->sub);
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->body->tagged)
       {
-        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->body->email,
+        if (mutt_bounce_message(actx->idx[i]->fp, m, actx->idx[i]->body->email,
                                 &al, NeoMutt->sub))
         {
           ret = 1;
@@ -292,24 +292,26 @@ end:
 /**
  * mutt_attach_resend - resend-message, from the attachment menu
  * @param fp   File containing email
+ * @param ctx  Current mailbox
  * @param actx Attachment context
  * @param cur  Attachment
  */
-void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur)
+void mutt_attach_resend(FILE *fp, struct Context *ctx, struct AttachCtx *actx,
+                        struct Body *cur)
 {
   if (!check_all_msg(actx, cur, true))
     return;
 
   if (cur)
-    mutt_resend_message(fp, Context, cur->email, NeoMutt->sub);
+    mutt_resend_message(fp, ctx, cur->email, NeoMutt->sub);
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->body->tagged)
       {
-        mutt_resend_message(actx->idx[i]->fp, Context,
-                            actx->idx[i]->body->email, NeoMutt->sub);
+        mutt_resend_message(actx->idx[i]->fp, ctx, actx->idx[i]->body->email,
+                            NeoMutt->sub);
       }
     }
   }
@@ -404,11 +406,13 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, s
  * include_header - Write an email header to a file, optionally quoting it
  * @param quote  If true, prefix the lines
  * @param fp_in  File to read from
+ * @param m      Mailbox
  * @param e      Email
  * @param fp_out File to write to
  * @param prefix Prefix for each line (OPTIONAL)
  */
-static void include_header(bool quote, FILE *fp_in, struct Email *e, FILE *fp_out, char *prefix)
+static void include_header(bool quote, FILE *fp_in, struct Mailbox *m,
+                           struct Email *e, FILE *fp_out, char *prefix)
 {
   CopyHeaderFlags chflags = CH_DECODE;
   char prefix2[128];
@@ -422,9 +426,8 @@ static void include_header(bool quote, FILE *fp_in, struct Email *e, FILE *fp_ou
       mutt_str_copy(prefix2, prefix, sizeof(prefix2));
     else if (!C_TextFlowed)
     {
-      mutt_make_string(prefix2, sizeof(prefix2), 0, NONULL(C_IndentString),
-                       Context->mailbox, Context->msg_in_pager, e,
-                       MUTT_FORMAT_NO_FLAGS, NULL);
+      mutt_make_string(prefix2, sizeof(prefix2), 0, NONULL(C_IndentString), m,
+                       -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
     }
     else
       mutt_str_copy(prefix2, ">", sizeof(prefix2));
@@ -462,15 +465,16 @@ static struct Body **copy_problematic_attachments(struct Body **last,
 /**
  * attach_forward_bodies - forward one or several MIME bodies
  * @param fp      File to read from
- * @param e     Email
+ * @param m       Mailbox
+ * @param e       Email
  * @param actx    Attachment Context
  * @param cur     Body of email
  * @param nattach Number of tagged attachments
  *
  * (non-message types)
  */
-static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *actx,
-                                  struct Body *cur, short nattach)
+static void attach_forward_bodies(FILE *fp, struct Mailbox *m, struct Email *e,
+                                  struct AttachCtx *actx, struct Body *cur, short nattach)
 {
   bool mime_fwd_all = false;
   bool mime_fwd_any = true;
@@ -497,7 +501,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
   struct Email *e_tmp = email_new();
   e_tmp->env = mutt_env_new();
-  mutt_make_forward_subject(e_tmp->env, Context->mailbox, e_parent, NeoMutt->sub);
+  mutt_make_forward_subject(e_tmp->env, m, e_parent, NeoMutt->sub);
 
   tmpbody = mutt_buffer_pool_get();
   mutt_buffer_mktemp(tmpbody);
@@ -509,7 +513,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
     goto bail;
   }
 
-  mutt_forward_intro(Context->mailbox, e_parent, fp_tmp, NeoMutt->sub);
+  mutt_forward_intro(m, e_parent, fp_tmp, NeoMutt->sub);
 
   /* prepare the prefix here since we'll need it later. */
 
@@ -519,13 +523,12 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
       mutt_str_copy(prefix, ">", sizeof(prefix));
     else
     {
-      mutt_make_string(prefix, sizeof(prefix), 0, NONULL(C_IndentString),
-                       Context->mailbox, Context->msg_in_pager, e_parent,
-                       MUTT_FORMAT_NO_FLAGS, NULL);
+      mutt_make_string(prefix, sizeof(prefix), 0, NONULL(C_IndentString), m, -1,
+                       e_parent, MUTT_FORMAT_NO_FLAGS, NULL);
     }
   }
 
-  include_header(C_ForwardQuote, fp_parent, e_parent, fp_tmp, prefix);
+  include_header(C_ForwardQuote, fp_parent, m, e_parent, fp_tmp, prefix);
 
   /* Now, we have prepared the first part of the message body: The
    * original message's header.
@@ -605,7 +608,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
       goto bail;
   }
 
-  mutt_forward_trailer(Context->mailbox, e_parent, fp_tmp, NeoMutt->sub);
+  mutt_forward_trailer(m, e_parent, fp_tmp, NeoMutt->sub);
 
   mutt_file_fclose(&fp_tmp);
   fp_tmp = NULL;
@@ -633,6 +636,7 @@ bail:
 /**
  * attach_forward_msgs - Forward one or several message-type attachments
  * @param fp    File handle to attachment
+ * @param m     Mailbox
  * @param actx  Attachment Context
  * @param cur   Attachment to forward (OPTIONAL)
  * @param flags Send mode, see #SendFlags
@@ -644,7 +648,7 @@ bail:
  * context structure to find messages, while, on the attachment menu, messages
  * are referenced through the attachment index.
  */
-static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
+static void attach_forward_msgs(FILE *fp, struct Mailbox *m, struct AttachCtx *actx,
                                 struct Body *cur, SendFlags flags)
 {
   struct Email *e_cur = NULL;
@@ -672,7 +676,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 
   e_tmp = email_new();
   e_tmp->env = mutt_env_new();
-  mutt_make_forward_subject(e_tmp->env, Context->mailbox, e_cur, NeoMutt->sub);
+  mutt_make_forward_subject(e_tmp->env, m, e_cur, NeoMutt->sub);
 
   tmpbody = mutt_buffer_pool_get();
 
@@ -708,9 +712,9 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 
     if (cur)
     {
-      mutt_forward_intro(Context->mailbox, cur->email, fp_tmp, NeoMutt->sub);
+      mutt_forward_intro(m, cur->email, fp_tmp, NeoMutt->sub);
       mutt_copy_message_fp(fp_tmp, fp, cur->email, cmflags, chflags, 0);
-      mutt_forward_trailer(Context->mailbox, cur->email, fp_tmp, NeoMutt->sub);
+      mutt_forward_trailer(m, cur->email, fp_tmp, NeoMutt->sub);
     }
     else
     {
@@ -718,12 +722,10 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
       {
         if (actx->idx[i]->body->tagged)
         {
-          mutt_forward_intro(Context->mailbox, actx->idx[i]->body->email,
-                             fp_tmp, NeoMutt->sub);
+          mutt_forward_intro(m, actx->idx[i]->body->email, fp_tmp, NeoMutt->sub);
           mutt_copy_message_fp(fp_tmp, actx->idx[i]->fp,
                                actx->idx[i]->body->email, cmflags, chflags, 0);
-          mutt_forward_trailer(Context->mailbox, actx->idx[i]->body->email,
-                               fp_tmp, NeoMutt->sub);
+          mutt_forward_trailer(m, actx->idx[i]->body->email, fp_tmp, NeoMutt->sub);
         }
       }
     }
@@ -765,20 +767,21 @@ cleanup:
 /**
  * mutt_attach_forward - Forward an Attachment
  * @param fp    Handle to the attachment
+ * @param m     Mailbox
  * @param e     Email
  * @param actx  Attachment Context
  * @param cur   Current message
  * @param flags Send mode, see #SendFlags
  */
-void mutt_attach_forward(FILE *fp, struct Email *e, struct AttachCtx *actx,
-                         struct Body *cur, SendFlags flags)
+void mutt_attach_forward(FILE *fp, struct Mailbox *m, struct Email *e,
+                         struct AttachCtx *actx, struct Body *cur, SendFlags flags)
 {
   if (check_all_msg(actx, cur, false))
-    attach_forward_msgs(fp, actx, cur, flags);
+    attach_forward_msgs(fp, m, actx, cur, flags);
   else
   {
     const short nattach = count_tagged(actx);
-    attach_forward_bodies(fp, e, actx, cur, nattach);
+    attach_forward_bodies(fp, m, e, actx, cur, nattach);
   }
 }
 
@@ -892,14 +895,15 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
  * attach_include_reply - This is _very_ similar to send.c's include_reply()
  * @param fp     File handle to attachment
  * @param fp_tmp File handle to temporary file
- * @param e   Email
+ * @param m      Mailbox
+ * @param e      Email
  */
-static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Email *e)
+static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Mailbox *m, struct Email *e)
 {
   CopyMessageFlags cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
   CopyHeaderFlags chflags = CH_DECODE;
 
-  mutt_make_attribution(Context->mailbox, e, fp_tmp, NeoMutt->sub);
+  mutt_make_attribution(m, e, fp_tmp, NeoMutt->sub);
 
   if (!C_Header)
     cmflags |= MUTT_CM_NOHEADER;
@@ -910,19 +914,20 @@ static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Email *e)
   }
 
   mutt_copy_message_fp(fp_tmp, fp, e, cmflags, chflags, 0);
-  mutt_make_post_indent(Context->mailbox, e, fp_tmp, NeoMutt->sub);
+  mutt_make_post_indent(m, e, fp_tmp, NeoMutt->sub);
 }
 
 /**
  * mutt_attach_reply - Attach a reply
  * @param fp    File handle to reply
+ * @param m     Mailbox
  * @param e     Email
  * @param actx  Attachment Context
  * @param e_cur   Current message
  * @param flags Send mode, see #SendFlags
  */
-void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
-                       struct Body *e_cur, SendFlags flags)
+void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
+                       struct AttachCtx *actx, struct Body *e_cur, SendFlags flags)
 {
   bool mime_reply_any = false;
 
@@ -994,19 +999,19 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   if (!e_parent)
   {
     if (e_cur)
-      attach_include_reply(fp, fp_tmp, e_cur->email);
+      attach_include_reply(fp, fp_tmp, m, e_cur->email);
     else
     {
       for (short i = 0; i < actx->idxlen; i++)
       {
         if (actx->idx[i]->body->tagged)
-          attach_include_reply(actx->idx[i]->fp, fp_tmp, actx->idx[i]->body->email);
+          attach_include_reply(actx->idx[i]->fp, fp_tmp, m, actx->idx[i]->body->email);
       }
     }
   }
   else
   {
-    mutt_make_attribution(Context->mailbox, e_parent, fp_tmp, NeoMutt->sub);
+    mutt_make_attribution(m, e_parent, fp_tmp, NeoMutt->sub);
 
     struct State st;
     memset(&st, 0, sizeof(struct State));
@@ -1018,9 +1023,8 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     }
     else
     {
-      mutt_make_string(prefix, sizeof(prefix), 0, NONULL(C_IndentString),
-                       Context->mailbox, Context->msg_in_pager, e_parent,
-                       MUTT_FORMAT_NO_FLAGS, NULL);
+      mutt_make_string(prefix, sizeof(prefix), 0, NONULL(C_IndentString), m, -1,
+                       e_parent, MUTT_FORMAT_NO_FLAGS, NULL);
     }
 
     st.prefix = prefix;
@@ -1030,7 +1034,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
       st.flags |= MUTT_WEED;
 
     if (C_Header)
-      include_header(true, fp_parent, e_parent, fp_tmp, prefix);
+      include_header(true, fp_parent, m, e_parent, fp_tmp, prefix);
 
     if (e_cur)
     {
@@ -1056,7 +1060,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
       }
     }
 
-    mutt_make_post_indent(Context->mailbox, e_parent, fp_tmp, NeoMutt->sub);
+    mutt_make_post_indent(m, e_parent, fp_tmp, NeoMutt->sub);
 
     if (mime_reply_any && !e_cur && !copy_problematic_attachments(&e_tmp->body, actx, false))
     {
@@ -1070,7 +1074,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   if (mutt_send_message(flags, e_tmp, mutt_buffer_string(tmpbody), NULL, &el,
                         NeoMutt->sub) == 0)
   {
-    mutt_set_flag(Context->mailbox, e, MUTT_REPLIED, true);
+    mutt_set_flag(m, e, MUTT_REPLIED, true);
   }
   e_tmp = NULL; /* mutt_send_message frees this */
 

@@ -602,7 +602,8 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
   prompt = _("Save to file: ");
   while (prompt)
   {
-    if ((mutt_buffer_get_field(prompt, buf, MUTT_FILE | MUTT_CLEAR, false, NULL, NULL) != 0) ||
+    if ((mutt_buffer_get_field(prompt, buf, MUTT_FILE | MUTT_CLEAR, false, NULL,
+                               NULL, NULL) != 0) ||
         mutt_buffer_is_empty(buf))
     {
       goto cleanup;
@@ -751,7 +752,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           prepend_savedir(buf);
 
           if ((mutt_buffer_get_field(_("Save to file: "), buf, MUTT_FILE | MUTT_CLEAR,
-                                     false, NULL, NULL) != 0) ||
+                                     false, NULL, NULL, NULL) != 0) ||
               mutt_buffer_is_empty(buf))
           {
             goto cleanup;
@@ -1021,7 +1022,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   state.flags = MUTT_CHARCONV;
 
   if (mutt_buffer_get_field((filter ? _("Filter through: ") : _("Pipe to: ")),
-                            buf, MUTT_CMD, false, NULL, NULL) != 0)
+                            buf, MUTT_CMD, false, NULL, NULL, NULL) != 0)
   {
     goto cleanup;
   }
@@ -1759,7 +1760,7 @@ void dlg_select_attachment(struct Email *e)
 
       case OP_RESEND:
         CHECK_ATTACH;
-        mutt_attach_resend(CUR_ATTACH->fp, actx,
+        mutt_attach_resend(CUR_ATTACH->fp, Context, actx,
                            menu->tagprefix ? NULL : CUR_ATTACH->body);
         menu->redraw = REDRAW_FULL;
         break;
@@ -1773,7 +1774,7 @@ void dlg_select_attachment(struct Email *e)
 
       case OP_FORWARD_MESSAGE:
         CHECK_ATTACH;
-        mutt_attach_forward(CUR_ATTACH->fp, e, actx,
+        mutt_attach_forward(CUR_ATTACH->fp, m, e, actx,
                             menu->tagprefix ? NULL : CUR_ATTACH->body, SEND_NO_FLAGS);
         menu->redraw = REDRAW_FULL;
         break;
@@ -1781,7 +1782,7 @@ void dlg_select_attachment(struct Email *e)
 #ifdef USE_NNTP
       case OP_FORWARD_TO_GROUP:
         CHECK_ATTACH;
-        mutt_attach_forward(CUR_ATTACH->fp, e, actx,
+        mutt_attach_forward(CUR_ATTACH->fp, m, e, actx,
                             menu->tagprefix ? NULL : CUR_ATTACH->body, SEND_NEWS);
         menu->redraw = REDRAW_FULL;
         break;
@@ -1795,7 +1796,7 @@ void dlg_select_attachment(struct Email *e)
             (query_quadoption(C_FollowupToPoster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
-          mutt_attach_reply(CUR_ATTACH->fp, e, actx,
+          mutt_attach_reply(CUR_ATTACH->fp, m, e, actx,
                             menu->tagprefix ? NULL : CUR_ATTACH->body,
                             SEND_NEWS | SEND_REPLY);
           menu->redraw = REDRAW_FULL;
@@ -1818,7 +1819,7 @@ void dlg_select_attachment(struct Email *e)
         else if (op == OP_LIST_REPLY)
           flags |= SEND_LIST_REPLY;
 
-        mutt_attach_reply(CUR_ATTACH->fp, e, actx,
+        mutt_attach_reply(CUR_ATTACH->fp, m, e, actx,
                           menu->tagprefix ? NULL : CUR_ATTACH->body, flags);
         menu->redraw = REDRAW_FULL;
         break;

@@ -33,6 +33,7 @@
 #include "pager.h"
 
 struct Buffer;
+struct Mailbox;
 
 /* These Config Variables are only used in curs_lib.c */
 extern bool C_MetaKey; ///< interpret ALT-x as ESC-x
@@ -52,8 +53,8 @@ enum FormatJustify
 int          mutt_addwch(wchar_t wc);
 int          mutt_any_key_to_continue(const char *s);
 void         mutt_beep(bool force);
-int          mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox, bool multiple, char ***files, int *numfiles, SelectFileFlags flags);
-int          mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags complete, bool multiple, char ***files, int *numfiles);
+int          mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox, struct Mailbox *m, bool multiple, char ***files, int *numfiles, SelectFileFlags flags);
+int          mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags complete, bool multiple, struct Mailbox *m, char ***files, int *numfiles);
 int          mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color, struct Pager *info);
 void         mutt_edit_file(const char *editor, const char *file);
 void         mutt_endwin(void);

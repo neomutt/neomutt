@@ -637,7 +637,7 @@ static void update_index(struct Menu *menu, struct Context *ctx, enum MxStatus c
   if (menu->current < 0)
     menu->current = (old_current < ctx->mailbox->vcount) ?
                         old_current :
-                        ci_first_message(Context->mailbox);
+                        ci_first_message(ctx->mailbox);
 }
 
 /**
@@ -1734,7 +1734,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!check_acl(Context->mailbox, MUTT_ACL_DELETE, _("Can't delete messages")))
           break;
 
-        mutt_pattern_func(MUTT_DELETE, _("Delete messages matching: "));
+        mutt_pattern_func(Context, MUTT_DELETE, _("Delete messages matching: "));
         menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         break;
 
@@ -1750,7 +1750,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_SHOW_LOG_MESSAGES:
       {
 #ifdef USE_DEBUG_GRAPHVIZ
-        dump_graphviz("index");
+        dump_graphviz("index", Context);
 #endif
         char tempfile[PATH_MAX];
         mutt_mktemp(tempfile, sizeof(tempfile));
@@ -1811,14 +1811,13 @@ int mutt_index_menu(struct MuttWindow *dlg)
               snprintf(buf2, sizeof(buf2), "~A");
           }
           mutt_str_replace(&Context->pattern, buf2);
-          mutt_pattern_func(MUTT_LIMIT, NULL);
+          mutt_pattern_func(Context, MUTT_LIMIT, NULL);
         }
 
-        if (((op == OP_LIMIT_CURRENT_THREAD) && mutt_limit_current_thread(cur.e)) ||
+        if (((op == OP_LIMIT_CURRENT_THREAD) && mutt_limit_current_thread(Context, cur.e)) ||
             (op == OP_TOGGLE_READ) ||
             ((op == OP_MAIN_LIMIT) &&
-             (mutt_pattern_func(MUTT_LIMIT,
-                                _("Limit to messages matching: ")) == 0)))
+             (mutt_pattern_func(Context, MUTT_LIMIT, _("Limit to messages matching: ")) == 0)))
         {
           if (menu->oldcurrent >= 0)
           {
@@ -1904,7 +1903,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_SEARCH:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
-        menu->current = mutt_search_command(Context->mailbox, menu->current, op);
+        menu->current = mutt_search_command(Context, Context->mailbox, menu->current, op);
         if (menu->current == -1)
           menu->current = menu->oldcurrent;
         else
@@ -1967,7 +1966,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_MAIN_TAG_PATTERN:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
-        mutt_pattern_func(MUTT_TAG, _("Tag messages matching: "));
+        mutt_pattern_func(Context, MUTT_TAG, _("Tag messages matching: "));
         menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         break;
 
@@ -1981,8 +1980,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!check_acl(Context->mailbox, MUTT_ACL_DELETE, _("Can't undelete messages")))
           break;
 
-        if (mutt_pattern_func(MUTT_UNDELETE,
-                              _("Undelete messages matching: ")) == 0)
+        if (mutt_pattern_func(Context, MUTT_UNDELETE, _("Undelete messages matching: ")) == 0)
         {
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         }
@@ -1991,7 +1989,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_MAIN_UNTAG_PATTERN:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
-        if (mutt_pattern_func(MUTT_UNTAG, _("Untag messages matching: ")) == 0)
+        if (mutt_pattern_func(Context, MUTT_UNTAG, _("Untag messages matching: ")) == 0)
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         break;
 
@@ -2314,7 +2312,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
       }
 
       case OP_CHECK_STATS:
-        mutt_check_stats();
+        mutt_check_stats(ctx_mailbox(Context));
         break;
 
 #ifdef USE_NOTMUCH
@@ -2454,8 +2452,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         /* By default, fill buf with the next mailbox that contains unread mail */
         mutt_mailbox_next(Context ? Context->mailbox : NULL, folderbuf);
 
-        if (mutt_buffer_enter_fname(cp, folderbuf, true, false, NULL, NULL,
-                                    MUTT_SEL_NO_FLAGS) == -1)
+        if (mutt_buffer_enter_fname(cp, folderbuf, true, ctx_mailbox(Context),
+                                    false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1)
           goto changefoldercleanup;
 
         /* Selected directory is okay, let's save it. */
@@ -2527,8 +2525,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         nntp_mailbox(Context ? Context->mailbox : NULL, folderbuf->data,
                      folderbuf->dsize);
 
-        if (mutt_buffer_enter_fname(cp, folderbuf, true, false, NULL, NULL,
-                                    MUTT_SEL_NO_FLAGS) == -1)
+        if (mutt_buffer_enter_fname(cp, folderbuf, true, ctx_mailbox(Context),
+                                    false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1)
           goto changefoldercleanup2;
 
         /* Selected directory is okay, let's save it. */
@@ -2590,7 +2588,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, Context, cur.e, tag);
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
           emaillist_clear(&el);
         }
         set_current_email(&cur, mutt_get_virt_email(Context->mailbox, menu->current));
@@ -3347,18 +3345,19 @@ int mutt_index_menu(struct MuttWindow *dlg)
           break;
 
         int subthread = (op == OP_DELETE_SUBTHREAD);
-        int rc = mutt_thread_set_flag(cur.e, MUTT_DELETE, true, subthread);
+        int rc = mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_DELETE,
+                                      true, subthread);
         if (rc == -1)
           break;
         if (op == OP_PURGE_THREAD)
         {
-          rc = mutt_thread_set_flag(cur.e, MUTT_PURGE, true, subthread);
+          rc = mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_PURGE, true, subthread);
           if (rc == -1)
             break;
         }
 
         if (C_DeleteUntag)
-          mutt_thread_set_flag(cur.e, MUTT_TAG, false, subthread);
+          mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_TAG, false, subthread);
         if (C_Resolve)
         {
           menu->current = ci_next_undeleted(Context->mailbox, menu->current);
@@ -3428,7 +3427,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, Context, cur.e, tag);
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
           emaillist_clear(&el);
         }
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3450,7 +3449,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         el_add_tagged(&el, Context, cur.e, tag);
         if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
         }
         mutt_send_message(SEND_FORWARD, NULL, NULL, Context, &el, NeoMutt->sub);
         emaillist_clear(&el);
@@ -3478,7 +3477,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         el_add_tagged(&el, Context, cur.e, tag);
         if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
         }
         mutt_send_message(replyflags, NULL, NULL, Context, &el, NeoMutt->sub);
         emaillist_clear(&el);
@@ -3525,7 +3524,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         el_add_tagged(&el, Context, cur.e, tag);
         if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
         }
         mutt_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, Context,
                           &el, NeoMutt->sub);
@@ -3576,7 +3575,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, Context, cur.e, tag);
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
           emaillist_clear(&el);
         }
 
@@ -3640,7 +3639,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!check_acl(Context->mailbox, MUTT_ACL_SEEN, _("Can't mark messages as read")))
           break;
 
-        int rc = mutt_thread_set_flag(cur.e, MUTT_READ, true, (op != OP_MAIN_READ_THREAD));
+        int rc = mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_READ,
+                                      true, (op != OP_MAIN_READ_THREAD));
         if (rc != -1)
         {
           if (C_Resolve)
@@ -3786,7 +3786,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         el_add_tagged(&el, Context, cur.e, tag);
         if (C_PgpAutoDecode && (tag || !(cur.e->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(&el, &menu->redraw);
+          mutt_check_traditional_pgp(ctx_mailbox(Context), &el, &menu->redraw);
         }
         mutt_send_message(SEND_REPLY, NULL, NULL, Context, &el, NeoMutt->sub);
         emaillist_clear(&el);
@@ -3809,7 +3809,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!cur.e)
           break;
 
-        int rc = mutt_thread_set_flag(cur.e, MUTT_TAG, !cur.e->tagged, (op != OP_TAG_THREAD));
+        int rc = mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_TAG,
+                                      !cur.e->tagged, (op != OP_TAG_THREAD));
         if (rc != -1)
         {
           if (C_Resolve)
@@ -3873,10 +3874,12 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!check_acl(Context->mailbox, MUTT_ACL_DELETE, _("Can't undelete messages")))
           break;
 
-        int rc = mutt_thread_set_flag(cur.e, MUTT_DELETE, false, (op != OP_UNDELETE_THREAD));
+        int rc = mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_DELETE,
+                                      false, (op != OP_UNDELETE_THREAD));
         if (rc != -1)
         {
-          rc = mutt_thread_set_flag(cur.e, MUTT_PURGE, false, (op != OP_UNDELETE_THREAD));
+          rc = mutt_thread_set_flag(ctx_mailbox(Context), cur.e, MUTT_PURGE,
+                                    false, (op != OP_UNDELETE_THREAD));
         }
         if (rc != -1)
         {
@@ -3946,7 +3949,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
 #ifdef USE_AUTOCRYPT
       case OP_AUTOCRYPT_ACCT_MENU:
-        dlg_select_autocrypt_account();
+        dlg_select_autocrypt_account(ctx_mailbox(Context));
         break;
 #endif
 

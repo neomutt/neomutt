@@ -992,7 +992,7 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
       struct Buffer *buf = mutt_buffer_pool_get();
       mutt_buffer_strcpy(buf, s);
       mutt_check_simple(buf, NONULL(C_SimpleSearch));
-      tmp->color_pattern = mutt_pattern_comp(buf->data, MUTT_PC_FULL_MSG, err);
+      tmp->color_pattern = mutt_pattern_comp(Context, buf->data, MUTT_PC_FULL_MSG, err);
       mutt_buffer_pool_release(&buf);
       if (!tmp->color_pattern)
       {

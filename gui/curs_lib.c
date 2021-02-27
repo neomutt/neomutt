@@ -250,6 +250,7 @@ struct KeyEvent mutt_getch(void)
  * @param[in]  buf      Buffer for the result
  * @param[in]  complete Flags, see #CompletionFlags
  * @param[in]  multiple Allow multiple selections
+ * @param[in]  m        Mailbox
  * @param[out] files    List of files selected
  * @param[out] numfiles Number of files selected
  * @retval 1  Redraw the screen and call the function again
@@ -257,7 +258,7 @@ struct KeyEvent mutt_getch(void)
  * @retval -1 Aborted
  */
 int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags complete,
-                          bool multiple, char ***files, int *numfiles)
+                          bool multiple, struct Mailbox *m, char ***files, int *numfiles)
 {
   int ret;
   int col;
@@ -280,7 +281,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     mutt_refresh();
     mutt_window_get_coords(MessageWindow, &col, NULL);
     ret = mutt_enter_string_full(buf->data, buf->dsize, col, complete, multiple,
-                                 files, numfiles, es);
+                                 m, files, numfiles, es);
   } while (ret == 1);
 
   if (ret == 0)
@@ -318,7 +319,7 @@ int mutt_get_field(const char *field, char *buf, size_t buflen,
     .dptr = buf + mutt_str_len(buf),
     .dsize = buflen,
   };
-  return mutt_buffer_get_field(field, &tmp, complete, multiple, files, numfiles);
+  return mutt_buffer_get_field(field, &tmp, complete, multiple, NULL, files, numfiles);
 }
 
 /**
@@ -759,6 +760,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
  * @param[in]  fname    Buffer for the result
  * @param[in]  mailbox  If true, select mailboxes
  * @param[in]  multiple Allow multiple selections
+ * @param[in]  m        Mailbox
  * @param[out] files    List of files selected
  * @param[out] numfiles Number of files selected
  * @param[in]  flags    Flags, see #SelectFileFlags
@@ -766,8 +768,8 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
  * @retval -1 Error
  */
 int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
-                            bool mailbox, bool multiple, char ***files,
-                            int *numfiles, SelectFileFlags flags)
+                            bool mailbox, struct Mailbox *m, bool multiple,
+                            char ***files, int *numfiles, SelectFileFlags flags)
 {
   struct KeyEvent ch;
 
@@ -800,7 +802,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
       flags |= MUTT_SEL_MULTI;
     if (mailbox)
       flags |= MUTT_SEL_MAILBOX;
-    mutt_buffer_select_file(fname, flags, files, numfiles);
+    mutt_buffer_select_file(fname, flags, m, files, numfiles);
   }
   else
   {
@@ -814,7 +816,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
 
     mutt_buffer_alloc(fname, 1024);
     if (mutt_buffer_get_field(pc, fname, (mailbox ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
-                              multiple, files, numfiles) != 0)
+                              multiple, m, files, numfiles) != 0)
     {
       mutt_buffer_reset(fname);
     }

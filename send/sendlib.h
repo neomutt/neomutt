@@ -34,7 +34,7 @@ struct Mailbox;
 
 #define MUTT_RANDTAG_LEN 16
 
-int              mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to, struct ConfigSubset *sub);
+int              mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e, struct AddressList *to, struct ConfigSubset *sub);
 const char *     mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub);
 struct Content * mutt_get_content_info(const char *fname, struct Body *b, struct ConfigSubset *sub);
 enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path);
