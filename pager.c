@@ -327,13 +327,23 @@ static const struct Mapping PagerNewsHelp[] = {
 
 #define NUM_SIG_LINES 4
 
-#define CHECK_MODE(test)                                                       \
-  if (!(test))                                                                 \
-  {                                                                            \
-    mutt_flushinp();                                                           \
-    mutt_error(_(Not_available_in_this_menu));                                 \
-    break;                                                                     \
-  }
+/**
+ * assert_pager_mode - Check that pager is in correct mode
+ * @param test   Test condition
+ * @retval true  Expected mode is set
+ * @retval false Pager is is some other mode
+ *
+ * @note On failure, the input will be flushed and an error message displayed
+ */
+static inline bool assert_pager_mode(bool test)
+{
+  if (test)
+    return true;
+
+  mutt_flushinp();
+  mutt_error(_(Not_available_in_this_menu));
+  return false;
+}
 
 /**
  * assert_mailbox_writable - checks that mailbox is writable
@@ -2919,7 +2929,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_SORT:
       case OP_SORT_REVERSE:
-        CHECK_MODE(IsEmail(extra))
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (mutt_select_sort((ch == OP_SORT_REVERSE)) == 0)
         {
           OptNeedResort = true;
@@ -3090,7 +3101,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_BOUNCE_MESSAGE:
       {
-        CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra))
+        if (!assert_pager_mode(IsEmail(extra) || IsMsgAttach(extra)))
+          break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
         if (IsMsgAttach(extra))
@@ -3106,7 +3118,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       }
 
       case OP_RESEND:
-        CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra))
+        if (!assert_pager_mode(IsEmail(extra) || IsMsgAttach(extra)))
+          break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
         if (IsMsgAttach(extra))
@@ -3117,7 +3130,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_COMPOSE_TO_SENDER:
-        CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
+        if (!assert_pager_mode(IsEmail(extra) || IsMsgAttach(extra)))
+          break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
         if (IsMsgAttach(extra))
@@ -3133,7 +3147,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_CHECK_TRADITIONAL:
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (!(WithCrypto & APPLICATION_PGP))
           break;
         if (!(extra->email->security & PGP_TRADITIONAL_CHECKED))
@@ -3144,7 +3159,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_CREATE_ALIAS:
-        CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
+        if (!assert_pager_mode(IsEmail(extra) || IsMsgAttach(extra)))
+          break;
         struct AddressList *al = NULL;
         if (IsMsgAttach(extra))
           al = mutt_get_address(extra->body->email->env, NULL);
@@ -3155,7 +3171,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_PURGE_MESSAGE:
       case OP_DELETE:
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (!assert_mailbox_writable(Contex2->mailbox))
           break;
         /* L10N: CHECK_ACL */
@@ -3180,7 +3197,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_MAIN_SET_FLAG:
       case OP_MAIN_CLEAR_FLAG:
       {
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (!assert_mailbox_writable(Contex2->mailbox))
           break;
 
@@ -3202,7 +3220,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_DELETE_SUBTHREAD:
       case OP_PURGE_THREAD:
       {
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (!assert_mailbox_writable(Contex2->mailbox))
           break;
         /* L10N: CHECK_ACL */
@@ -3243,7 +3262,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       }
 
       case OP_DISPLAY_ADDRESS:
-        CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
+        if (!assert_pager_mode(IsEmail(extra) || IsMsgAttach(extra)))
+          break;
         if (IsMsgAttach(extra))
           mutt_display_address(extra->body->email->env);
         else
@@ -3260,7 +3280,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (OptNeedResort)
         {
           OptNeedResort = false;
-          CHECK_MODE(IsEmail(extra));
+          if (!assert_pager_mode(IsEmail(extra)))
+            break;
           OptNeedResort = true;
         }
 
@@ -3280,7 +3301,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_FLAG_MESSAGE:
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (!assert_mailbox_writable(Contex2->mailbox))
           break;
         /* L10N: CHECK_ACL */
@@ -3297,7 +3319,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_PIPE:
-        CHECK_MODE(IsEmail(extra) || IsAttach(extra));
+        if (!assert_pager_mode(IsEmail(extra) || IsAttach(extra)))
+          break;
         if (IsAttach(extra))
           mutt_pipe_attachment_list(extra->actx, extra->fp, false, extra->body, false);
         else
@@ -3310,7 +3333,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_PRINT:
-        CHECK_MODE(IsEmail(extra) || IsAttach(extra));
+        if (!assert_pager_mode(IsEmail(extra) || IsAttach(extra)))
+          break;
         if (IsAttach(extra))
           mutt_print_attachment_list(extra->actx, extra->fp, false, extra->body);
         else
@@ -3323,7 +3347,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_MAIL:
-        CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
         mutt_send_message(SEND_NO_FLAGS, NULL, NULL, extra->ctx, NULL, NeoMutt->sub);
@@ -3332,7 +3357,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
 #ifdef USE_NNTP
       case OP_POST:
-        CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
         if (extra->ctx && (extra->ctx->mailbox->type == MUTT_NNTP) &&
@@ -3345,7 +3371,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_FORWARD_TO_GROUP:
-        CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
+        if (!assert_pager_mode(IsEmail(extra) || IsMsgAttach(extra)))
+          break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
         if (extra->ctx && (extra->ctx->mailbox->type == MUTT_NNTP) &&
@@ -3367,7 +3394,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_FOLLOWUP:
-        CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
+        if (!assert_pager_mode(IsEmail(extra) || IsMsgAttach(extra)))
+          break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
 
@@ -3408,7 +3436,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_GROUP_CHAT_REPLY:
       case OP_LIST_REPLY:
       {
-        CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
+        if (!assert_pager_mode(IsEmail(extra) || IsMsgAttach(extra)))
+          break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
 
@@ -3435,7 +3464,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_RECALL_MESSAGE:
       {
-        CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3447,7 +3477,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       }
 
       case OP_FORWARD_MESSAGE:
-        CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
+        if (!assert_pager_mode(IsEmail(extra) || IsMsgAttach(extra)))
+          break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
         if (IsMsgAttach(extra))
@@ -3488,7 +3519,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           ch = -1;
           break;
         }
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
 
@@ -3525,7 +3557,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_TAG:
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (Contex2)
         {
           mutt_set_flag(Contex2->mailbox, extra->email, MUTT_TAG, !extra->email->tagged);
@@ -3540,7 +3573,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_TOGGLE_NEW:
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (!assert_mailbox_writable(Contex2->mailbox))
           break;
         /* L10N: CHECK_ACL */
@@ -3562,7 +3596,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_UNDELETE:
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (!assert_mailbox_writable(Contex2->mailbox))
           break;
         /* L10N: CHECK_ACL */
@@ -3585,7 +3620,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_UNDELETE_THREAD:
       case OP_UNDELETE_SUBTHREAD:
       {
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (!assert_mailbox_writable(Contex2->mailbox))
           break;
         /* L10N: CHECK_ACL */
@@ -3636,7 +3672,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           rc = OP_ATTACH_COLLAPSE;
           break;
         }
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         dlg_select_attachment(extra->email);
         if (Contex2 && extra->email->attach_del)
           Contex2->mailbox->changed = true;
@@ -3650,7 +3687,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           ch = -1;
           break;
         }
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3663,7 +3701,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_EDIT_LABEL:
       {
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
 
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
@@ -3694,7 +3733,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           ch = -1;
           break;
         }
-        CHECK_MODE(IsEmail(extra));
+        if (!assert_pager_mode(IsEmail(extra)))
+          break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, extra->email);
         crypt_extract_keys_from_messages(Contex2->mailbox, &el);
