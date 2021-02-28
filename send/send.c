@@ -1990,7 +1990,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
     {
       if (mutt_autocrypt_set_sign_as_default_key(m, e_post))
       {
-        e_post->body = mutt_remove_multipart(e_post->body);
+        if (mutt_istr_equal(e_post->body->subtype, "mixed"))
+          e_post->body = mutt_remove_multipart(e_post->body);
         decode_descriptions(e_post->body);
         mutt_error(_("Error encrypting message. Check your crypt settings."));
         return -1;
@@ -2006,7 +2007,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
       if (mutt_protect(m, e_post, pgpkeylist, true) == -1)
       {
         FREE(&pgpkeylist);
-        e_post->body = mutt_remove_multipart(e_post->body);
+        if (mutt_istr_equal(e_post->body->subtype, "mixed"))
+          e_post->body = mutt_remove_multipart(e_post->body);
         decode_descriptions(e_post->body);
         mutt_error(_("Error encrypting message. Check your crypt settings."));
         return -1;
@@ -2036,7 +2038,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
       e_post->body = clear_content;
     }
     mutt_env_free(&e_post->body->mime_headers); /* protected headers */
-    e_post->body = mutt_remove_multipart(e_post->body);
+    if (mutt_istr_equal(e_post->body->subtype, "mixed"))
+      e_post->body = mutt_remove_multipart(e_post->body);
     decode_descriptions(e_post->body);
     mutt_unprepare_envelope(e_post->env);
     return -1;
@@ -2830,7 +2833,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       if ((crypt_get_keys(m, e_templ, &pgpkeylist, 0) == -1) ||
           (mutt_protect(m, e_templ, pgpkeylist, false) == -1))
       {
-        e_templ->body = mutt_remove_multipart(e_templ->body);
+        if (mutt_istr_equal(e_templ->body->subtype, "mixed"))
+          e_templ->body = mutt_remove_multipart(e_templ->body);
 
         FREE(&pgpkeylist);
 
@@ -2881,12 +2885,14 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       else if ((e_templ->security & SEC_SIGN) && (e_templ->body->type == TYPE_MULTIPART))
       {
         mutt_body_free(&e_templ->body->parts->next); /* destroy sig */
-        e_templ->body = mutt_remove_multipart(e_templ->body);
+        if (mutt_istr_equal(e_templ->body->subtype, "mixed"))
+          e_templ->body = mutt_remove_multipart(e_templ->body);
       }
 
       FREE(&pgpkeylist);
       mutt_env_free(&e_templ->body->mime_headers); /* protected headers */
-      e_templ->body = mutt_remove_multipart(e_templ->body);
+      if (mutt_istr_equal(e_templ->body->subtype, "mixed"))
+        e_templ->body = mutt_remove_multipart(e_templ->body);
       decode_descriptions(e_templ->body);
       mutt_unprepare_envelope(e_templ->env);
       FREE(&finalpath);
