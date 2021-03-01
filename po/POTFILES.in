@@ -131,6 +131,7 @@ imap/utf7.c
 imap/util.c
 index/config.c
 index/index.c
+index/observer.c
 init.c
 keymap.c
 mailcap.c

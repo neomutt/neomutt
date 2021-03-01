@@ -29,6 +29,7 @@
  * | :----------------- | :----------------------- |
  * | index/config.c     | @subpage index_config    |
  * | index/index.c      | @subpage index_index     |
+ * | index/observer.c   | @subpage index_observer  |
  */
 
 #ifndef MUTT_INDEX_H
@@ -52,7 +53,6 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e);
 void mutt_update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, const struct Email *curr_email);
 struct MuttWindow *index_pager_init(void);
 void index_pager_shutdown(struct MuttWindow *dlg);
-int mutt_dlgindex_observer(struct NotifyCallback *nc);
 
 bool config_init_index(struct ConfigSet *cs);
 

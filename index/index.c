@@ -36,6 +36,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -4108,51 +4109,6 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * mutt_reply_observer - Listen for config changes to "reply_regex" - Implements ::observer_t
- */
-int mutt_reply_observer(struct NotifyCallback *nc)
-{
-  if (!nc->event_data)
-    return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
-
-  struct EventConfig *ec = nc->event_data;
-
-  if (!mutt_str_equal(ec->name, "reply_regex"))
-    return 0;
-
-  struct Mailbox *m = ctx_mailbox(Context);
-  if (!m)
-    return 0;
-
-  regmatch_t pmatch[1];
-
-  for (int i = 0; i < m->msg_count; i++)
-  {
-    struct Email *e = m->emails[i];
-    if (!e)
-      break;
-    struct Envelope *env = e->env;
-    if (!env || !env->subject)
-      continue;
-
-    const struct Regex *c_reply_regex =
-        cs_subset_regex(NeoMutt->sub, "reply_regex");
-    if (mutt_regex_capture(c_reply_regex, env->subject, 1, pmatch))
-    {
-      env->real_subj = env->subject + pmatch[0].rm_eo;
-      continue;
-    }
-
-    env->real_subj = env->subject;
-  }
-
-  OptResortInit = true; /* trigger a redraw of the index */
-  return 0;
-}
-
-/**
  * create_panel_index - Create the Windows for the Index panel
  * @param parent        Parent Window
  * @param status_on_top true, if the Index bar should be on top
@@ -4233,12 +4189,12 @@ struct MuttWindow *index_pager_init(void)
   struct MuttWindow *dlg =
       mutt_window_new(WT_DLG_INDEX, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlgindex_observer, dlg);
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   mutt_window_add_child(dlg, create_panel_index(dlg, c_status_on_top));
   mutt_window_add_child(dlg, create_panel_pager(dlg, c_status_on_top));
 
+  index_add_observers(dlg);
   return dlg;
 }
 
@@ -4248,83 +4204,5 @@ struct MuttWindow *index_pager_init(void)
  */
 void index_pager_shutdown(struct MuttWindow *dlg)
 {
-  notify_observer_remove(NeoMutt->notify, mutt_dlgindex_observer, dlg);
-}
-
-/**
- * mutt_dlgindex_observer - Listen for config changes affecting the Index/Pager - Implements ::observer_t
- */
-int mutt_dlgindex_observer(struct NotifyCallback *nc)
-{
-  if (!nc->event_data || !nc->global_data)
-    return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
-
-  struct EventConfig *ec = nc->event_data;
-  struct MuttWindow *dlg = nc->global_data;
-
-  struct MuttWindow *win_index = mutt_window_find(dlg, WT_INDEX);
-  struct MuttWindow *win_pager = mutt_window_find(dlg, WT_PAGER);
-  if (!win_index || !win_pager)
-    return -1;
-
-  if (mutt_str_equal(ec->name, "status_on_top"))
-  {
-    struct MuttWindow *parent = win_index->parent;
-    if (!parent)
-      return -1;
-    struct MuttWindow *first = TAILQ_FIRST(&parent->children);
-    if (!first)
-      return -1;
-
-    const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-    if ((c_status_on_top && (first == win_index)) ||
-        (!c_status_on_top && (first != win_index)))
-    {
-      // Swap the Index and the Index Bar Windows
-      TAILQ_REMOVE(&parent->children, first, entries);
-      TAILQ_INSERT_TAIL(&parent->children, first, entries);
-    }
-
-    parent = win_pager->parent;
-    first = TAILQ_FIRST(&parent->children);
-
-    if ((c_status_on_top && (first == win_pager)) ||
-        (!c_status_on_top && (first != win_pager)))
-    {
-      // Swap the Pager and Pager Bar Windows
-      TAILQ_REMOVE(&parent->children, first, entries);
-      TAILQ_INSERT_TAIL(&parent->children, first, entries);
-    }
-    goto reflow;
-  }
-
-  if (mutt_str_equal(ec->name, "pager_index_lines"))
-  {
-    struct MuttWindow *parent = win_pager->parent;
-    if (parent->state.visible)
-    {
-      const short c_pager_index_lines =
-          cs_subset_number(NeoMutt->sub, "pager_index_lines");
-      int vcount = ctx_mailbox(Context) ? Context->mailbox->vcount : 0;
-      win_index->req_rows = MIN(c_pager_index_lines, vcount);
-      win_index->size = MUTT_WIN_SIZE_FIXED;
-
-      win_index->parent->size = MUTT_WIN_SIZE_MINIMISE;
-      win_index->parent->state.visible = (c_pager_index_lines != 0);
-    }
-    else
-    {
-      win_index->req_rows = MUTT_WIN_SIZE_UNLIMITED;
-      win_index->size = MUTT_WIN_SIZE_MAXIMISE;
-
-      win_index->parent->size = MUTT_WIN_SIZE_MAXIMISE;
-      win_index->parent->state.visible = true;
-    }
-  }
-
-reflow:
-  mutt_window_reflow(dlg);
-  return 0;
+  index_remove_observers(dlg);
 }
