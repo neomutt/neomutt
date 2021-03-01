@@ -325,7 +325,6 @@ static const struct Mapping PagerNewsHelp[] = {
   (pager && (pager)->fp && (pager)->body && (pager)->body->email)
 #define IsEmail(pager) (pager && (pager)->email && !(pager)->body)
 
-#define NUM_SIG_LINES 4
 
 /**
  * assert_pager_mode - Check that pager is in correct mode
@@ -410,22 +409,23 @@ static inline bool assert_mailbox_permissions(struct Mailbox *m, AclFlags acl, c
 
 /**
  * check_sig - Check for an email signature
- * @param s    Text to examine
- * @param info Line info array to update
- * @param n    First line to check
+ * @param s      Text to examine
+ * @param info   Line info array to update
+ * @param offset An offset line to start the check from
  * @retval  0 Success
  * @retval -1 Error
  */
-static int check_sig(const char *s, struct Line *info, int n)
+static int check_sig(const char *s, struct Line *info, int offset)
 {
-  int count = 0;
+  const unsigned int NUM_SIG_LINES = 4; // The amount of lines a signature takes
+  unsigned int count = 0;
 
-  while ((n > 0) && (count <= NUM_SIG_LINES))
+  while ((offset > 0) && (count <= NUM_SIG_LINES))
   {
-    if (info[n].type != MT_COLOR_SIGNATURE)
+    if (info[offset].type != MT_COLOR_SIGNATURE)
       break;
     count++;
-    n--;
+    offset--;
   }
 
   if (count == 0)
