@@ -285,7 +285,8 @@ static void update_tables(struct Context *ctx)
         imap_notify_delete_email(m, m->emails[i]);
 #endif
 
-      email_free(&m->emails[i]);
+      mailbox_gc_add(m->emails[i]);
+      m->emails[i] = NULL;
     }
   }
   m->msg_count = j;
