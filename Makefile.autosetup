@@ -43,7 +43,6 @@ bindir=		@BINDIR@
 datadir=	@PKGDATADIR@
 docdir=		@PKGDOCDIR@
 mandir=		@mandir@
-libdir=		@libdir@
 libexecdir=	@libexecdir@
 sysconfdir=	@SYSCONFDIR@
 textdomaindir=	@MUTTLOCALEDIR@
