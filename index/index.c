@@ -1203,12 +1203,14 @@ int mutt_index_menu(struct MuttWindow *dlg)
   mutt_monitor_add(NULL);
 #endif
 
-  short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  bool c_collapse_all = cs_subset_bool(NeoMutt->sub, "collapse_all");
-  if (((c_sort & SORT_MASK) == SORT_THREADS) && c_collapse_all)
   {
-    collapse_all(Context, menu, 0);
-    menu->redraw = REDRAW_FULL;
+    const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+    const bool c_collapse_all = cs_subset_bool(NeoMutt->sub, "collapse_all");
+    if (((c_sort & SORT_MASK) == SORT_THREADS) && c_collapse_all)
+    {
+      collapse_all(Context, menu, 0);
+      menu->redraw = REDRAW_FULL;
+    }
   }
 
   while (true)
@@ -1230,13 +1232,15 @@ int mutt_index_menu(struct MuttWindow *dlg)
     menu->max = ctx_mailbox(Context) ? Context->mailbox->vcount : 0;
     oldcount = ctx_mailbox(Context) ? Context->mailbox->msg_count : 0;
 
-    c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-    if (OptRedrawTree && ctx_mailbox(Context) && (Context->mailbox->msg_count != 0) &&
-        ((c_sort & SORT_MASK) == SORT_THREADS))
     {
-      mutt_draw_tree(Context->threads);
-      menu->redraw |= REDRAW_STATUS;
-      OptRedrawTree = false;
+      const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+      if (OptRedrawTree && ctx_mailbox(Context) &&
+          (Context->mailbox->msg_count != 0) && ((c_sort & SORT_MASK) == SORT_THREADS))
+      {
+        mutt_draw_tree(Context->threads);
+        menu->redraw |= REDRAW_STATUS;
+        OptRedrawTree = false;
+      }
     }
 
     if (ctx_mailbox(Context))
@@ -1866,9 +1870,11 @@ int mutt_index_menu(struct MuttWindow *dlg)
           }
           else
             menu->current = 0;
-          if ((Context->mailbox->msg_count != 0) && ((C_Sort & SORT_MASK) == SORT_THREADS))
+          const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+          if ((Context->mailbox->msg_count != 0) && ((c_sort & SORT_MASK) == SORT_THREADS))
           {
-            c_collapse_all = cs_subset_bool(NeoMutt->sub, "collapse_all");
+            const bool c_collapse_all =
+                cs_subset_bool(NeoMutt->sub, "collapse_all");
             if (c_collapse_all)
               collapse_all(Context, menu, 0);
             mutt_draw_tree(Context->threads);
@@ -2626,7 +2632,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
         OptNeedResort = false;
 
-        if (((C_Sort & SORT_MASK) == SORT_THREADS) && cur.e->collapsed)
+        const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+        if (((c_sort & SORT_MASK) == SORT_THREADS) && cur.e->collapsed)
         {
           mutt_uncollapse_thread(cur.e);
           mutt_set_vnum(Context->mailbox);
@@ -2697,7 +2704,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!cur.e)
           break;
 
-        if ((C_Sort & SORT_MASK) != SORT_THREADS)
+        const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+        if ((c_sort & SORT_MASK) != SORT_THREADS)
           mutt_error(_("Threading is not enabled"));
         else if (!STAILQ_EMPTY(&cur.e->env->in_reply_to) ||
                  !STAILQ_EMPTY(&cur.e->env->references))
@@ -2737,7 +2745,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!cur.e)
           break;
 
-        if ((C_Sort & SORT_MASK) != SORT_THREADS)
+        const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+        if ((c_sort & SORT_MASK) != SORT_THREADS)
           mutt_error(_("Threading is not enabled"));
         else if (!cur.e->env->message_id)
           mutt_error(_("No Message-ID: header available to link thread"));
@@ -2965,7 +2974,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
           struct Email *e = mutt_get_virt_email(Context->mailbox, mcur);
           if (!e)
             break;
-          if (e->collapsed && ((C_Sort & SORT_MASK) == SORT_THREADS))
+          const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+          if (e->collapsed && ((c_sort & SORT_MASK) == SORT_THREADS))
           {
             int unread = mutt_thread_contains_unread(e);
             if ((unread != 0) && (first_unread == -1))
@@ -3266,7 +3276,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
 
-        if ((C_Sort & SORT_MASK) != SORT_THREADS)
+        const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+        if ((c_sort & SORT_MASK) != SORT_THREADS)
         {
           mutt_error(_("Threading is not enabled"));
           break;
@@ -3301,16 +3312,19 @@ int mutt_index_menu(struct MuttWindow *dlg)
       }
 
       case OP_MAIN_COLLAPSE_ALL:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
 
-        if ((C_Sort & SORT_MASK) != SORT_THREADS)
+        const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+        if ((c_sort & SORT_MASK) != SORT_THREADS)
         {
           mutt_error(_("Threading is not enabled"));
           break;
         }
         collapse_all(Context, menu, 1);
         break;
+      }
 
         /* --------------------------------------------------------------------
          * These functions are invoked directly from the internal-pager
