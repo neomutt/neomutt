@@ -1241,6 +1241,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
     if (ctx_mailbox(Context))
     {
+      mailbox_gc_run();
+
       Context->menu = menu;
       /* check for new mail in the mailbox.  If nonzero, then something has
        * changed about the file (either we got new mail or the file was

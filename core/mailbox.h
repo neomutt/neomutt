@@ -195,6 +195,8 @@ bool            mailbox_set_subset(struct Mailbox *m, struct ConfigSubset *sub);
 void            mailbox_size_add  (struct Mailbox *m, const struct Email *e);
 void            mailbox_size_sub  (struct Mailbox *m, const struct Email *e);
 void            mailbox_update    (struct Mailbox *m);
+void            mailbox_gc_add    (struct Email *e);
+void            mailbox_gc_run    (void);
 
 /**
  * mailbox_path - Get the Mailbox's path string

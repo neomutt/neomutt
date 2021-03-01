@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <sys/stat.h>
 #include "config/lib.h"
 #include "email/lib.h"
@@ -89,6 +90,7 @@ void mailbox_free(struct Mailbox **ptr)
   FREE(&m->emails);
   FREE(&m->v2r);
   notify_free(&m->notify);
+  mailbox_gc_run();
 
   FREE(ptr);
 }
@@ -224,4 +226,37 @@ bool mailbox_set_subset(struct Mailbox *m, struct ConfigSubset *sub)
   m->sub = cs_subset_new(m->name, sub, m->notify);
   m->sub->scope = SET_SCOPE_MAILBOX;
   return true;
+}
+
+static struct
+{
+  struct Email *arr[10];
+  size_t        idx;
+} gc = { 0 };
+
+/**
+ * mailbox_gc_add - Add an Email to the garbage-collection set
+ * @param e Email
+ * @pre e != NULL
+ */
+void mailbox_gc_add(struct Email *e)
+{
+  assert(e);
+  if (gc.idx == mutt_array_size(gc.arr))
+  {
+    mailbox_gc_run();
+  }
+  gc.arr[gc.idx++] = e;
+}
+
+/*
+ * mailbox_gc_run - Run the garbage-collection
+ */
+void mailbox_gc_run(void)
+{
+  for (size_t i = 0; i < gc.idx; i++)
+  {
+    email_free(&gc.arr[i]);
+  }
+  gc.idx = 0;
 }
