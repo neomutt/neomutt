@@ -150,7 +150,7 @@ static const char *account_format_str(char *buf, size_t buflen, size_t col, int 
 /**
  * account_make_entry - Create a line for the Autocrypt account menu - Implements Menu::make_entry()
  */
-static void account_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void account_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {
   struct AccountEntry *entry = &((struct AccountEntry *) menu->mdata)[num];
 

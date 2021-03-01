@@ -208,7 +208,7 @@ void mutt_update_num_postponed(void)
 /**
  * post_make_entry - Format a menu item for the email list - Implements Menu::make_entry()
  */
-static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
+static void post_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   struct Context *ctx = menu->mdata;
 

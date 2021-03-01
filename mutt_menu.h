@@ -80,12 +80,12 @@ struct Menu
 
   /**
    * make_entry - Format a item for a menu
+   * @param[in]  menu   Menu containing items
    * @param[out] buf    Buffer in which to save string
    * @param[in]  buflen Buffer length
-   * @param[in]  menu   Menu containing items
    * @param[in]  line   Menu line number
    */
-  void (*make_entry)(char *buf, size_t buflen, struct Menu *menu, int line);
+  void (*make_entry)(struct Menu *menu, char *buf, size_t buflen, int line);
 
   /**
    * search - Search a menu for a item matching a regex
@@ -108,11 +108,12 @@ struct Menu
 
   /**
    * color - Calculate the colour for a line of the menu
+   * @param menu Menu containing items
    * @param line Menu line number
    * @retval >0 Colour pair in an integer
    * @retval  0 No colour
    */
-  int (*color)(int line);
+  int (*color)(struct Menu *menu, int line);
 
   /**
    * custom_redraw - Redraw the menu

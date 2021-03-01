@@ -44,8 +44,8 @@ struct Menu;
 struct MuttWindow;
 struct NotifyCallback;
 
-int  index_color(int line);
-void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line);
+int  index_color(struct Menu *menu, int line);
+void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line);
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen);
 int  mutt_index_menu(struct MuttWindow *dlg);
 void mutt_set_header_color(struct Mailbox *m, struct Email *e);

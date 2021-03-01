@@ -931,7 +931,7 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
 /**
  * folder_make_entry - Format a menu item for the folder browser - Implements Menu::make_entry()
  */
-static void folder_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
+static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   struct BrowserStateEntry *entry = menu->mdata;
   struct Folder folder = {

@@ -119,7 +119,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
 /**
  * alias_make_entry - Format a menu item for the alias list - Implements Menu::make_entry()
  */
-static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
+static void alias_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   const struct AliasMenuData *mdata = (struct AliasMenuData *) menu->mdata;
   const struct AliasViewArray *ava = &((struct AliasMenuData *) menu->mdata)->ava;

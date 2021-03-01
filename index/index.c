@@ -862,7 +862,7 @@ static void change_folder_string(struct Menu *menu, char *buf, size_t buflen,
 /**
  * index_make_entry - Format a menu item for the index list - Implements Menu::make_entry()
  */
-void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
+void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   buf[0] = '\0';
 
@@ -941,7 +941,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 /**
  * index_color - Calculate the colour for a line of the index - Implements Menu::color()
  */
-int index_color(int line)
+int index_color(struct Menu *menu, int line)
 {
   struct Mailbox *m = ctx_mailbox(Context);
   if (!m || (line < 0))

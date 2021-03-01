@@ -106,7 +106,7 @@ static const char *pattern_format_str(char *buf, size_t buflen, size_t col, int 
 /**
  * make_pattern_entry - Create a line for the Pattern Completion menu - Implements Menu::make_entry()
  */
-static void make_pattern_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void make_pattern_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {
   struct PatternEntry *entry = &((struct PatternEntry *) menu->mdata)[num];
 

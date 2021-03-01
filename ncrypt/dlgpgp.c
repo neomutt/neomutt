@@ -446,7 +446,7 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
 /**
  * pgp_make_entry - Format a menu item for the pgp key list - Implements Menu::make_entry()
  */
-static void pgp_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
+static void pgp_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   struct PgpUid **key_table = menu->mdata;
   struct PgpEntry entry;

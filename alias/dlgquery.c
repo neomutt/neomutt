@@ -198,7 +198,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
 /**
  * query_make_entry - Format a menu item for the query list - Implements Menu::make_entry()
  */
-static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
+static void query_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   const struct AliasMenuData *mdata = (struct AliasMenuData *) menu->mdata;
   const struct AliasViewArray *ava = &((struct AliasMenuData *) menu->mdata)->ava;

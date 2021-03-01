@@ -1169,7 +1169,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
 /**
  * crypt_make_entry - Format a menu item for the key selection list - Implements Menu::make_entry()
  */
-static void crypt_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
+static void crypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   struct CryptKeyInfo **key_table = menu->mdata;
   struct CryptEntry entry;

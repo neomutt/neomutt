@@ -310,7 +310,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
  * @param menu Current Menu
  * @param i    Selected item
  */
-static void make_entry(char *buf, size_t buflen, struct Menu *menu, int i)
+static void make_entry(struct Menu *menu, char *buf, size_t buflen, int i)
 {
   if (!ARRAY_EMPTY(&menu->dialog))
   {
@@ -318,7 +318,7 @@ static void make_entry(char *buf, size_t buflen, struct Menu *menu, int i)
     menu->current = -1; /* hide menubar */
   }
   else
-    menu->make_entry(buf, buflen, menu, i);
+    menu->make_entry(menu, buf, buflen, i);
 }
 
 /**
@@ -388,9 +388,9 @@ void menu_redraw_index(struct Menu *menu)
   {
     if (i < menu->max)
     {
-      attr = menu->color(i);
+      attr = menu->color(menu, i);
 
-      make_entry(buf, sizeof(buf), menu, i);
+      make_entry(menu, buf, sizeof(buf), i);
       menu_pad_string(menu, buf, sizeof(buf));
 
       mutt_curses_set_attr(attr);
@@ -445,7 +445,7 @@ void menu_redraw_motion(struct Menu *menu)
    * over imap (if matching against ~h for instance).  This can
    * generate status messages.  So we want to call it *before* we
    * position the cursor for drawing. */
-  const int old_color = menu->color(menu->oldcurrent);
+  const int old_color = menu->color(menu, menu->oldcurrent);
   mutt_window_move(menu->win_index, 0, menu->oldcurrent - menu->top);
   mutt_curses_set_attr(old_color);
 
@@ -457,7 +457,7 @@ void menu_redraw_motion(struct Menu *menu)
 
     if (menu->redraw & REDRAW_MOTION_RESYNC)
     {
-      make_entry(buf, sizeof(buf), menu, menu->oldcurrent);
+      make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
       menu_pad_string(menu, buf, sizeof(buf));
       mutt_window_move(menu->win_index, mutt_strwidth(C_ArrowString) + 1,
                        menu->oldcurrent - menu->top);
@@ -471,13 +471,13 @@ void menu_redraw_motion(struct Menu *menu)
   else
   {
     /* erase the current indicator */
-    make_entry(buf, sizeof(buf), menu, menu->oldcurrent);
+    make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
     menu_pad_string(menu, buf, sizeof(buf));
     print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
 
     /* now draw the new one to reflect the change */
-    const int cur_color = menu->color(menu->current);
-    make_entry(buf, sizeof(buf), menu, menu->current);
+    const int cur_color = menu->color(menu, menu->current);
+    make_entry(menu, buf, sizeof(buf), menu->current);
     menu_pad_string(menu, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_INDICATOR);
     mutt_window_move(menu->win_index, 0, menu->current - menu->top);
@@ -494,10 +494,10 @@ void menu_redraw_motion(struct Menu *menu)
 void menu_redraw_current(struct Menu *menu)
 {
   char buf[1024];
-  int attr = menu->color(menu->current);
+  int attr = menu->color(menu, menu->current);
 
   mutt_window_move(menu->win_index, 0, menu->current - menu->top);
-  make_entry(buf, sizeof(buf), menu, menu->current);
+  make_entry(menu, buf, sizeof(buf), menu->current);
   menu_pad_string(menu, buf, sizeof(buf));
 
   mutt_curses_set_color(MT_COLOR_INDICATOR);
@@ -923,7 +923,7 @@ static void menu_prev_entry(struct Menu *menu)
 /**
  * default_color - Get the default colour for a line of the menu - Implements Menu::color()
  */
-static int default_color(int line)
+static int default_color(struct Menu *menu, int line)
 {
   return Colors->defs[MT_COLOR_NORMAL];
 }
@@ -935,7 +935,7 @@ static int generic_search(struct Menu *menu, regex_t *rx, int line)
 {
   char buf[1024];
 
-  make_entry(buf, sizeof(buf), menu, line);
+  make_entry(menu, buf, sizeof(buf), line);
   return regexec(rx, buf, 0, NULL, 0);
 }
 

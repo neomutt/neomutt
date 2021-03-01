@@ -231,7 +231,7 @@ bool mailbox_set_subset(struct Mailbox *m, struct ConfigSubset *sub)
 static struct
 {
   struct Email *arr[10];
-  size_t        idx;
+  size_t idx;
 } gc = { 0 };
 
 /**

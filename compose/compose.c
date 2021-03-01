@@ -330,7 +330,7 @@ static void init_header_padding(void)
 /**
  * snd_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry()
  */
-static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
+static void snd_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   struct AttachCtx *actx = menu->mdata;
 

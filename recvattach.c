@@ -443,7 +443,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
 /**
  * attach_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry()
  */
-static void attach_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
+static void attach_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   struct AttachCtx *actx = menu->mdata;
 
