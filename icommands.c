@@ -38,12 +38,12 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "icommands.h"
+#include "pager/lib.h"
 #include "functions.h"
 #include "init.h"
 #include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "pager.h"
 #include "version.h"
 
 // clang-format off

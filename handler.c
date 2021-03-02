@@ -44,6 +44,7 @@
 #include "mutt.h"
 #include "handler.h"
 #include "ncrypt/lib.h"
+#include "pager/lib.h"
 #include "copy.h"
 #include "enriched.h"
 #include "keymap.h"
@@ -54,7 +55,6 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
-#include "pager.h"
 #include "rfc3676.h"
 #include "state.h"
 #ifdef ENABLE_NLS

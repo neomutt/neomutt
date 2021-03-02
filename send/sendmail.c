@@ -41,12 +41,12 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "pager/lib.h"
 #include "context.h"
 #include "format_flags.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "options.h"
-#include "pager.h"
 #ifdef USE_NNTP
 #include "nntp/lib.h"
 #endif

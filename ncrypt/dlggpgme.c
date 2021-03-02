@@ -44,6 +44,7 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "ncrypt/lib.h"
+#include "pager/lib.h"
 #include "crypt_gpgme.h"
 #include "format_flags.h"
 #include "keymap.h"
@@ -52,7 +53,6 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
-#include "pager.h"
 #include "protos.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
