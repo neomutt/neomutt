@@ -20,8 +20,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_PAGER_H
-#define MUTT_PAGER_H
+/**
+ * @page lib_pager PAGER: GUI display contents of an email or help
+ *
+ * GUI Display contents of an email or help
+ *
+ * | File               | Description              |
+ * | :----------------- | :----------------------- |
+ * | pager/pager.c      | @subpage pager_pager     |
+ */
+
+#ifndef MUTT_PAGER_LIB_H
+#define MUTT_PAGER_LIB_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -81,4 +91,4 @@ void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool str
 
 void mutt_clear_pager_position(void);
 
-#endif /* MUTT_PAGER_H */
+#endif /* MUTT_PAGER_LIB_H */
