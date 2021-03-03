@@ -83,20 +83,6 @@
 #endif
 
 // clang-format off
-/* These Config Variables are only used in pager.c */
-bool          C_AllowAnsi;          ///< Config: Allow ANSI colour codes in rich text messages
-bool          C_HeaderColorPartial; ///< Config: Only colour the part of the header matching the regex
-short         C_PagerContext;       ///< Config: Number of lines of overlap when changing pages in the pager
-short         C_PagerIndexLines;    ///< Config: Number of index lines to display above the pager
-bool          C_PagerStop;          ///< Config: Don't automatically open the next message when at the end of a message
-short         C_SearchContext;      ///< Config: Context to display around search matches
-short         C_SkipQuotedOffset;   ///< Config: Lines of context to show when skipping quoted text
-bool          C_SmartWrap;          ///< Config: Wrap text at word boundaries
-struct Regex *C_Smileys;            ///< Config: Regex to match smileys to prevent mistakes when quoting text
-bool          C_Tilde;              ///< Config: Character to pad blank lines in the pager
-// clang-format on
-
-// clang-format off
 typedef uint8_t AnsiFlags;      ///< Flags, e.g. #ANSI_OFF
 #define ANSI_NO_FLAGS        0  ///< No flags are set
 #define ANSI_OFF       (1 << 0) ///< Turn off colours and attributes
@@ -1061,6 +1047,7 @@ static int check_protected_header_marker(const char *p)
 int mutt_is_quote_line(char *line, regmatch_t *pmatch)
 {
   bool is_quote = false;
+  const struct Regex *c_smileys = cs_subset_regex(NeoMutt->sub, "smileys");
   regmatch_t pmatch_internal[1], smatch[1];
 
   if (!pmatch)
@@ -1068,7 +1055,7 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
 
   if (mutt_regex_capture(C_QuoteRegex, line, 1, pmatch))
   {
-    if (mutt_regex_capture(C_Smileys, line, 1, smatch))
+    if (mutt_regex_capture(c_smileys, line, 1, smatch))
     {
       if (smatch[0].rm_so > 0)
       {
@@ -1109,6 +1096,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   regmatch_t pmatch[1];
   bool found;
   bool null_rx;
+  const bool c_header_color_partial =
+      cs_subset_bool(NeoMutt->sub, "header_color_partial");
   int offset, i = 0;
 
   if ((n == 0) || IS_HEADER(line_info[n - 1].type) ||
@@ -1126,7 +1115,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       if ((n > 0) && ((buf[0] == ' ') || (buf[0] == '\t')))
       {
         line_info[n].type = line_info[n - 1].type; /* wrapped line */
-        if (!C_HeaderColorPartial)
+        if (!c_header_color_partial)
         {
           (line_info[n].syntax)[0].color = (line_info[n - 1].syntax)[0].color;
           line_info[n].is_cont_hdr = 1;
@@ -1140,7 +1129,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       /* When this option is unset, we color the entire header the
        * same color.  Otherwise, we handle the header patterns just
        * like body patterns (further below).  */
-      if (!C_HeaderColorPartial)
+      if (!c_header_color_partial)
       {
         STAILQ_FOREACH(color_line, &Colors->hdr_list, entries)
         {
@@ -1211,7 +1200,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
   /* body patterns */
   if ((line_info[n].type == MT_COLOR_NORMAL) || (line_info[n].type == MT_COLOR_QUOTED) ||
-      ((line_info[n].type == MT_COLOR_HDRDEFAULT) && C_HeaderColorPartial))
+      ((line_info[n].type == MT_COLOR_HDRDEFAULT) && c_header_color_partial))
   {
     size_t nl;
 
@@ -1388,7 +1377,8 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
     x++;
 
   /* Character Attributes */
-  if (C_AllowAnsi && a && (buf[x] == 'm'))
+  const bool c_allow_ansi = cs_subset_bool(NeoMutt->sub, "allow_ansi");
+  if (c_allow_ansi && a && (buf[x] == 'm'))
   {
     if (pos == x)
     {
@@ -1783,6 +1773,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   int ch, vch, col, cnt, b_read;
   int buf_ready = 0;
   bool change_last = false;
+  const bool c_smart_wrap = cs_subset_bool(NeoMutt->sub, "smart_wrap");
   int special;
   int offset;
   int def_color;
@@ -1952,7 +1943,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   buf_ptr = buf + cnt;
 
   /* move the break point only if smart_wrap is set */
-  if (C_SmartWrap)
+  if (c_smart_wrap)
   {
     if ((cnt < b_read) && (ch != -1) && !IS_HEADER(curr_line->type) && !IS_SPACE(buf[cnt]))
     {
@@ -2085,6 +2076,9 @@ static void pager_custom_redraw(struct Menu *pager_menu)
   struct Mailbox *m = NULL;
   char buf[1024];
   int msg_in_pager = -1;
+  const bool c_tilde = cs_subset_bool(NeoMutt->sub, "tilde");
+  const short c_pager_index_lines =
+      cs_subset_number(NeoMutt->sub, "pager_index_lines");
 
   if (!rd)
     return;
@@ -2100,12 +2094,12 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_window_clear(rd->extra->win_pager);
 
-    if (IsEmail(rd->extra) && m && ((m->vcount + 1) < C_PagerIndexLines))
+    if (IsEmail(rd->extra) && m && ((m->vcount + 1) < c_pager_index_lines))
     {
       rd->indexlen = m->vcount + 1;
     }
     else
-      rd->indexlen = C_PagerIndexLines;
+      rd->indexlen = c_pager_index_lines;
 
     rd->indicator = rd->indexlen / 3;
 
@@ -2134,7 +2128,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       FREE(&Resize);
     }
 
-    if (IsEmail(rd->extra) && (C_PagerIndexLines != 0))
+    if (IsEmail(rd->extra) && (c_pager_index_lines != 0))
     {
       if (!rd->menu)
       {
@@ -2240,7 +2234,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     while (rd->lines < rd->extra->win_pager->state.rows)
     {
       mutt_window_clrtoeol(rd->extra->win_pager);
-      if (C_Tilde)
+      if (c_tilde)
         mutt_window_addch('~');
       rd->lines++;
       mutt_window_move(rd->extra->win_pager, 0, rd->lines);
@@ -2348,6 +2342,14 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   bool first = true;
   int searchctx = 0;
   bool wrapped = false;
+  const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
+  const short c_pager_context = cs_subset_number(NeoMutt->sub, "pager_context");
+  const short c_pager_index_lines =
+      cs_subset_number(NeoMutt->sub, "pager_index_lines");
+  const short c_search_context =
+      cs_subset_number(NeoMutt->sub, "search_context");
+  const short c_skip_quoted_offset =
+      cs_subset_number(NeoMutt->sub, "skip_quoted_offset");
 
   struct Menu *pager_menu = NULL;
   int old_PagerIndexLines; /* some people want to resize it while inside the pager */
@@ -2358,7 +2360,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   if (!(flags & MUTT_SHOWCOLOR))
     flags |= MUTT_SHOWFLAT;
 
-  int index_space = C_PagerIndexLines;
+  int index_space = c_pager_index_lines;
   if (extra->ctx && extra->ctx->mailbox)
   {
     index_space = MIN(index_space, extra->ctx->mailbox->vcount);
@@ -2634,9 +2636,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_NEXT_PAGE:
         if (rd.line_info[rd.curline].offset < (rd.sb.st_size - 1))
         {
-          rd.topline = up_n_lines(C_PagerContext, rd.line_info, rd.curline, rd.hide_quoted);
+          rd.topline = up_n_lines(c_pager_context, rd.line_info, rd.curline, rd.hide_quoted);
         }
-        else if (C_PagerStop)
+        else if (c_pager_stop)
         {
           /* emulate "less -q" and don't go on to the next message. */
           mutt_error(_("Bottom of message is shown"));
@@ -2656,7 +2658,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         }
         else
         {
-          rd.topline = up_n_lines(rd.extra->win_pager->state.rows - C_PagerContext,
+          rd.topline = up_n_lines(rd.extra->win_pager->state.rows - c_pager_context,
                                   rd.line_info, rd.topline, rd.hide_quoted);
         }
         break;
@@ -2709,7 +2711,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           rd.topline = up_n_lines(rd.extra->win_pager->state.rows / 2,
                                   rd.line_info, rd.curline, rd.hide_quoted);
         }
-        else if (C_PagerStop)
+        else if (c_pager_stop)
         {
           /* emulate "less -q" and don't go on to the next message. */
           mutt_error(_("Bottom of message is shown"));
@@ -2728,8 +2730,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         {
           wrapped = false;
 
-          if (C_SearchContext < rd.extra->win_pager->state.rows)
-            searchctx = C_SearchContext;
+          if (c_search_context < rd.extra->win_pager->state.rows)
+            searchctx = c_search_context;
           else
             searchctx = 0;
 
@@ -2917,8 +2919,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           {
             rd.search_flag = MUTT_SEARCH;
             /* give some context for search results */
-            if (C_SearchContext < rd.extra->win_pager->state.rows)
-              searchctx = C_SearchContext;
+            if (c_search_context < rd.extra->win_pager->state.rows)
+              searchctx = c_search_context;
             else
               searchctx = 0;
             if (rd.topline - searchctx > 0)
@@ -2998,13 +3000,13 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           break;
         }
 
-        while ((((new_topline + C_SkipQuotedOffset) < rd.last_line) ||
+        while ((((new_topline + c_skip_quoted_offset) < rd.last_line) ||
                 (0 == (dretval = display_line(
                            rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
                            &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
                            &rd.quote_list, &rd.q_level, &rd.force_redraw,
                            &rd.search_re, rd.extra->win_pager)))) &&
-               (rd.line_info[new_topline + C_SkipQuotedOffset].type != MT_COLOR_QUOTED))
+               (rd.line_info[new_topline + c_skip_quoted_offset].type != MT_COLOR_QUOTED))
         {
           new_topline++;
         }
@@ -3015,13 +3017,13 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           break;
         }
 
-        while ((((new_topline + C_SkipQuotedOffset) < rd.last_line) ||
+        while ((((new_topline + c_skip_quoted_offset) < rd.last_line) ||
                 (0 == (dretval = display_line(
                            rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
                            &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
                            &rd.quote_list, &rd.q_level, &rd.force_redraw,
                            &rd.search_re, rd.extra->win_pager)))) &&
-               (rd.line_info[new_topline + C_SkipQuotedOffset].type == MT_COLOR_QUOTED))
+               (rd.line_info[new_topline + c_skip_quoted_offset].type == MT_COLOR_QUOTED))
         {
           new_topline++;
         }
@@ -3260,7 +3262,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           ch = -1;
         }
 
-        if (!C_Resolve && (C_PagerIndexLines != 0))
+        if (!C_Resolve && (c_pager_index_lines != 0))
           pager_menu->redraw = REDRAW_FULL;
         else
           pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
@@ -3278,7 +3280,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_ENTER_COMMAND:
-        old_PagerIndexLines = C_PagerIndexLines;
+        old_PagerIndexLines = c_pager_index_lines;
 
         mutt_enter_command();
         window_set_focus(rd.extra->win_pager);
@@ -3292,7 +3294,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           OptNeedResort = true;
         }
 
-        if (old_PagerIndexLines != C_PagerIndexLines)
+        if (old_PagerIndexLines != c_pager_index_lines)
         {
           mutt_menu_free(&rd.menu);
         }
@@ -3652,7 +3654,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             ch = -1;
           }
 
-          if (!C_Resolve && (C_PagerIndexLines != 0))
+          if (!C_Resolve && (c_pager_index_lines != 0))
             pager_menu->redraw = REDRAW_FULL;
           else
             pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
