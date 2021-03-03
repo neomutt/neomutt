@@ -2362,6 +2362,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
   driver_tags_replace(&e->tags, buf);
   FREE(&imap_edata_get(e)->flags_remote);
   imap_edata_get(e)->flags_remote = driver_tags_get_with_hidden(&e->tags);
+  imap_msg_save_hcache(m, e);
   return 0;
 }
 
