@@ -38,18 +38,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-/* These Config Variables are only used in pager.c */
-extern bool          C_AllowAnsi;
-extern bool          C_HeaderColorPartial;
-extern short         C_PagerContext;
-extern short         C_PagerIndexLines;
-extern bool          C_PagerStop;
-extern short         C_SearchContext;
-extern short         C_SkipQuotedOffset;
-extern bool          C_SmartWrap;
-extern struct Regex *C_Smileys;
-extern bool          C_Tilde;
-
 typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUTT_SHOWFLAT
 #define MUTT_PAGER_NO_FLAGS         0     ///< No flags are set
 #define MUTT_SHOWFLAT         (1 << 0)    ///< Show characters (used for displaying help)
