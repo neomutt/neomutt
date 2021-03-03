@@ -27,6 +27,7 @@
  *
  * | File               | Description              |
  * | :----------------- | :----------------------- |
+ * | pager/config.c     | @subpage pager_config    |
  * | pager/pager.c      | @subpage pager_pager     |
  */
 

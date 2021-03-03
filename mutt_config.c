@@ -196,9 +196,6 @@ struct ConfigDef MainVars[] = {
   { "abort_key", DT_STRING|DT_NOT_EMPTY, &C_AbortKey, IP "\007", 0, NULL,
     "String representation of key to abort prompts"
   },
-  { "allow_ansi", DT_BOOL, &C_AllowAnsi, false, 0, NULL,
-    "Allow ANSI colour codes in rich text messages"
-  },
   { "arrow_cursor", DT_BOOL|R_MENU, &C_ArrowCursor, false, 0, NULL,
     "Use an arrow '->' instead of highlighting in the index"
   },
@@ -355,9 +352,6 @@ struct ConfigDef MainVars[] = {
   { "header", DT_BOOL, &C_Header, false, 0, NULL,
     "Include the message headers in the reply email (Weed applies)"
   },
-  { "header_color_partial", DT_BOOL|R_PAGER_FLOW, &C_HeaderColorPartial, false, 0, NULL,
-    "Only colour the part of the header matching the regex"
-  },
   { "hidden_tags", DT_SLIST|SLIST_SEP_COMMA, &C_HiddenTags, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted", 0, NULL,
     "Tags that shouldn't be displayed on screen"
   },
@@ -491,17 +485,8 @@ struct ConfigDef MainVars[] = {
   { "pager", DT_STRING|DT_COMMAND, &C_Pager, IP "builtin", 0, NULL,
     "External command for viewing messages, or 'builtin' to use NeoMutt's"
   },
-  { "pager_context", DT_NUMBER|DT_NOT_NEGATIVE, &C_PagerContext, 0, 0, NULL,
-    "Number of lines of overlap when changing pages in the pager"
-  },
   { "pager_format", DT_STRING|R_PAGER, &C_PagerFormat, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)", 0, NULL,
     "printf-like format string for the pager's status bar"
-  },
-  { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER|R_REFLOW, &C_PagerIndexLines, 0, 0, NULL,
-    "Number of index lines to display above the pager"
-  },
-  { "pager_stop", DT_BOOL, &C_PagerStop, false, 0, NULL,
-    "Don't automatically open the next message when at the end of a message"
   },
   { "pipe_decode", DT_BOOL, &C_PipeDecode, false, 0, NULL,
     "Decode the message when piping it"
@@ -605,9 +590,6 @@ struct ConfigDef MainVars[] = {
   { "score_threshold_read", DT_NUMBER, &C_ScoreThresholdRead, -1, 0, NULL,
     "Messages with a lower score will be automatically marked read"
   },
-  { "search_context", DT_NUMBER|DT_NOT_NEGATIVE, &C_SearchContext, 0, 0, NULL,
-    "Context to display around search matches"
-  },
   { "send_charset", DT_STRING|DT_CHARSET_STRICT, &C_SendCharset, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
     "Character sets for outgoing mail"
   },
@@ -632,17 +614,8 @@ struct ConfigDef MainVars[] = {
   { "size_units_on_left", DT_BOOL|R_MENU, &C_SizeUnitsOnLeft, false, 0, NULL,
     "Show the units as a prefix to the size"
   },
-  { "skip_quoted_offset", DT_NUMBER|DT_NOT_NEGATIVE, &C_SkipQuotedOffset, 0, 0, NULL,
-    "Lines of context to show when skipping quoted text"
-  },
   { "sleep_time", DT_NUMBER|DT_NOT_NEGATIVE, &C_SleepTime, 1, 0, NULL,
     "Time to pause after certain info messages"
-  },
-  { "smart_wrap", DT_BOOL|R_PAGER_FLOW, &C_SmartWrap, true, 0, NULL,
-    "Wrap text at word boundaries"
-  },
-  { "smileys", DT_REGEX|R_PAGER, &C_Smileys, IP "(>From )|(:[-^]?[][)(><}{|/DP])", 0, NULL,
-    "Regex to match smileys to prevent mistakes when quoting text"
   },
   { "sort", DT_SORT|R_INDEX|R_RESORT|DT_SORT_REVERSE, &C_Sort, SORT_DATE, IP SortMethods, pager_validator,
     "Sort method for the index"
@@ -682,9 +655,6 @@ struct ConfigDef MainVars[] = {
   },
   { "thread_received", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, &C_ThreadReceived, false, 0, pager_validator,
     "Sort threaded messages by their received date"
-  },
-  { "tilde", DT_BOOL|R_PAGER, &C_Tilde, false, 0, NULL,
-    "Character to pad blank lines in the pager"
   },
   { "time_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_TimeInc, 0, 0, NULL,
     "Frequency of progress bar updates (milliseconds)"
@@ -829,6 +799,7 @@ static void init_variables(struct ConfigSet *cs)
 #ifdef USE_NOTMUCH
   CONFIG_INIT_VARS(cs, notmuch);
 #endif
+  CONFIG_INIT_VARS(cs, pager);
   CONFIG_INIT_VARS(cs, pattern);
 #ifdef USE_POP
   CONFIG_INIT_VARS(cs, pop);
