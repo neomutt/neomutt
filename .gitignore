@@ -42,3 +42,7 @@ hcache/hcversion.h
 *.tmp
 *~
 tags
+
+# Clangd
+.cache/clangd
+compile_commands.json
