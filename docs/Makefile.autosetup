@@ -38,7 +38,7 @@ docs/manual.html:	docs/manual.xml $(SRCDIR)/docs/html.xsl \
 
 docs/manual.txt: docs/manual.html
 	-LC_ALL=C w3m -dump -O UTF8 docs/manual.html > $@ || \
-	LC_ALL=C lynx -localhost -dump -nolist -with_backspaces \
+	LC_ALL=C lynx -localhost -dump -nolist -nonumbers -with_backspaces \
 		-display_charset=us-ascii docs/manual.html > $@ || \
 	LC_ALL=C elinks -dump -no-numbering -no-references \
 		docs/manual.html | sed -e 's,\\001, ,g' > $@
