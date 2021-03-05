@@ -30,7 +30,7 @@
 #include "mutt.h"
 #include "browser.h"
 #include "keymap.h"
-#include "pager.h"
+#include "pager/lib.h"
 
 struct Buffer;
 struct Mailbox;

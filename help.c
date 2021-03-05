@@ -35,12 +35,12 @@
 #include <wchar.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
+#include "pager/lib.h"
 #include "functions.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "pager.h"
 #include "protos.h" // IWYU pragma: keep
 
 /**

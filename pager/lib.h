@@ -20,24 +20,23 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_PAGER_H
-#define MUTT_PAGER_H
+/**
+ * @page lib_pager PAGER: GUI display contents of an email or help
+ *
+ * GUI Display contents of an email or help
+ *
+ * | File               | Description              |
+ * | :----------------- | :----------------------- |
+ * | pager/config.c     | @subpage pager_config    |
+ * | pager/pager.c      | @subpage pager_pager     |
+ */
+
+#ifndef MUTT_PAGER_LIB_H
+#define MUTT_PAGER_LIB_H
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-
-/* These Config Variables are only used in pager.c */
-extern bool          C_AllowAnsi;
-extern bool          C_HeaderColorPartial;
-extern short         C_PagerContext;
-extern short         C_PagerIndexLines;
-extern bool          C_PagerStop;
-extern short         C_SearchContext;
-extern short         C_SkipQuotedOffset;
-extern bool          C_SmartWrap;
-extern struct Regex *C_Smileys;
-extern bool          C_Tilde;
 
 typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUTT_SHOWFLAT
 #define MUTT_PAGER_NO_FLAGS         0     ///< No flags are set
@@ -81,4 +80,4 @@ void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool str
 
 void mutt_clear_pager_position(void);
 
-#endif /* MUTT_PAGER_H */
+#endif /* MUTT_PAGER_LIB_H */
