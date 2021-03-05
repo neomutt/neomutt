@@ -94,8 +94,6 @@ static int MatchesListsize = 512; // Enough space for all of the config items
 static char **nm_tags;
 #endif
 
-bool config_init_main(struct ConfigSet *cs);
-
 /**
  * matches_ensure_morespace - Allocate more space for auto-completion
  * @param current Current allocation

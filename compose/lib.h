@@ -44,6 +44,4 @@ struct Email;
 
 int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, uint8_t flags, struct ConfigSubset *sub);
 
-bool config_init_compose(struct ConfigSet *);
-
 #endif /* MUTT_COMPOSE_LIB_H */

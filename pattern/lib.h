@@ -193,6 +193,5 @@ int mutt_search_command(struct Context *ctx, struct Mailbox *m, int cur, int op)
 int mutt_search_alias_command(struct Context *ctx, struct Menu *menu, int cur, int op);
 
 bool mutt_limit_current_thread(struct Context *ctx, struct Email *e);
-bool config_init_pattern(struct ConfigSet *cs);
 
 #endif /* MUTT_PATTERN_LIB_H */

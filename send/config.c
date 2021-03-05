@@ -36,8 +36,6 @@
 #include "lib.h"
 #include "init.h"
 
-bool config_init_send(struct ConfigSet *cs);
-
 /**
  * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator()
  */

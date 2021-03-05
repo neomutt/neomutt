@@ -41,6 +41,5 @@
 struct ConfigSet;
 
 struct MuttWindow *helpbar_create(void);
-bool config_init_helpbar(struct ConfigSet *cs);
 
 #endif /* MUTT_HELPBAR_LIB_H */

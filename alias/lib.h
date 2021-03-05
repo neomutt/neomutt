@@ -76,8 +76,6 @@ void query_index   (struct ConfigSubset *sub);
 
 struct Address *alias_reverse_lookup(const struct Address *addr);
 
-bool config_init_alias(struct ConfigSet *cs);
-
 void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub);
 
 #endif /* MUTT_ALIAS_LIB_H */

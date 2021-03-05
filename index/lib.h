@@ -54,6 +54,4 @@ void mutt_update_index(struct Menu *menu, struct Context *ctx, int check, int ol
 struct MuttWindow *index_pager_init(void);
 void index_pager_shutdown(struct MuttWindow *dlg);
 
-bool config_init_index(struct ConfigSet *cs);
-
 #endif /* MUTT_INDEX_H */
