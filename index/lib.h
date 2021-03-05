@@ -32,8 +32,8 @@
  * | index/observer.c   | @subpage index_observer  |
  */
 
-#ifndef MUTT_INDEX_H
-#define MUTT_INDEX_H
+#ifndef MUTT_INDEX_LIB_H
+#define MUTT_INDEX_LIB_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -54,4 +54,4 @@ void mutt_update_index(struct Menu *menu, struct Context *ctx, int check, int ol
 struct MuttWindow *index_pager_init(void);
 void index_pager_shutdown(struct MuttWindow *dlg);
 
-#endif /* MUTT_INDEX_H */
+#endif /* MUTT_INDEX_LIB_H */
