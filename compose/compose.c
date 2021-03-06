@@ -2174,7 +2174,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         {
           if (!Context->mailbox->emails[i])
             break;
-          if (!message_is_tagged(Context, Context->mailbox->emails[i]))
+          if (!message_is_tagged(Context->mailbox->emails[i]))
             continue;
 
           struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));

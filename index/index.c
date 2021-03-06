@@ -2160,7 +2160,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             struct Email *e = m->emails[i];
             if (!e)
               break;
-            if (message_is_tagged(Context, e))
+            if (message_is_tagged(e))
             {
               e->quasi_deleted = true;
               m->changed = true;
@@ -2288,7 +2288,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             struct Email *e = m->emails[i];
             if (!e)
               break;
-            if (!message_is_tagged(Context, e))
+            if (!message_is_tagged(e))
               continue;
 
             if (m->verbose)
@@ -3073,7 +3073,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             struct Email *e = m->emails[i];
             if (!e)
               break;
-            if (message_is_tagged(Context, e))
+            if (message_is_tagged(e))
               mutt_set_flag(m, e, MUTT_FLAG, !e->flagged);
           }
 
@@ -3119,7 +3119,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             struct Email *e = m->emails[i];
             if (!e)
               break;
-            if (!message_is_tagged(Context, e))
+            if (!message_is_tagged(e))
               continue;
 
             if (e->read || e->old)
@@ -3818,7 +3818,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
             struct Email *e = m->emails[i];
             if (!e)
               break;
-            if (message_is_tagged(Context, e))
+            if (message_is_tagged(e))
               mutt_resend_message(NULL, Context, e, NeoMutt->sub);
           }
         }

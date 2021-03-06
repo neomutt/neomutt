@@ -77,7 +77,7 @@ void            ctx_update          (struct Context *ctx);
 bool            ctx_has_limit       (const struct Context *ctx);
 struct Mailbox* ctx_mailbox         (struct Context *ctx);
 
-bool message_is_tagged (struct Context *ctx, struct Email *e);
+bool message_is_tagged(struct Email *e);
 struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum);
 
 int  el_add_tagged  (struct EmailList *el, struct Context *ctx, struct Email *e, bool use_tagged);

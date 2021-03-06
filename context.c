@@ -326,13 +326,12 @@ int ctx_mailbox_observer(struct NotifyCallback *nc)
 
 /**
  * message_is_tagged - Is a message in the index tagged (and within limit)
- * @param ctx Open mailbox
  * @param e   Email
  * @retval true The message is both tagged and within limit
  *
  * If a limit is in effect, the message must be visible within it.
  */
-bool message_is_tagged(struct Context *ctx, struct Email *e)
+bool message_is_tagged(struct Email *e)
 {
   return e->visible && e->tagged;
 }
@@ -361,7 +360,7 @@ int el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bo
       e = m->emails[i];
       if (!e)
         break;
-      if (!message_is_tagged(ctx, e))
+      if (!message_is_tagged(e))
         continue;
 
       struct EmailNode *en = mutt_mem_calloc(1, sizeof(*en));
