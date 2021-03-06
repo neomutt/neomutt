@@ -1197,84 +1197,6 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
 }
 
 /**
- * compose_custom_redraw - Redraw the compose menu - Implements Menu::custom_redraw()
- */
-static void compose_custom_redraw(struct Menu *menu)
-{
-  struct ComposeRedrawData *rd = menu->redraw_data;
-  if (!rd)
-    return;
-
-  if (menu->redraw & REDRAW_FLOW)
-  {
-    rd->win_envelope->req_rows = calc_envelope(rd);
-    mutt_window_reflow(dialog_find(rd->win_envelope));
-  }
-
-  if (menu->redraw & REDRAW_FULL)
-  {
-    menu_redraw_full(menu);
-    draw_envelope(rd);
-    menu->pagelen = menu->win_index->state.rows;
-  }
-
-  menu_check_recenter(menu);
-
-  if (menu->redraw & REDRAW_STATUS)
-  {
-    char buf[1024];
-    const char *c_compose_format = cs_subset_string(rd->sub, "compose_format");
-    compose_status_line(buf, sizeof(buf), 0, menu->win_ibar->state.cols, menu,
-                        NONULL(c_compose_format));
-    mutt_window_move(menu->win_ibar, 0, 0);
-    mutt_curses_set_color(MT_COLOR_STATUS);
-    mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
-    mutt_curses_set_color(MT_COLOR_NORMAL);
-    menu->redraw &= ~REDRAW_STATUS;
-  }
-
-  if (menu->redraw & REDRAW_INDEX)
-    menu_redraw_index(menu);
-  else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNC))
-    menu_redraw_motion(menu);
-  else if (menu->redraw == REDRAW_CURRENT)
-    menu_redraw_current(menu);
-  menu->redraw = REDRAW_NO_FLAGS;
-}
-
-/**
- * compose_attach_swap - Swap two adjacent entries in the attachment list
- * @param[in]  msg   Body of email
- * @param[out] idx   Array of Attachments
- * @param[in]  first Index of first attachment to swap
- */
-static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short first)
-{
-  /* Reorder Body pointers.
-   * Must traverse msg from top since Body has no previous ptr.  */
-  for (struct Body *part = msg; part; part = part->next)
-  {
-    if (part->next == idx[first]->body)
-    {
-      idx[first]->body->next = idx[first + 1]->body->next;
-      idx[first + 1]->body->next = idx[first]->body;
-      part->next = idx[first + 1]->body;
-      break;
-    }
-  }
-
-  /* Reorder index */
-  struct AttachPtr *saved = idx[first];
-  idx[first] = idx[first + 1];
-  idx[first + 1] = saved;
-
-  /* Swap ptr->num */
-  int i = idx[first]->num;
-  idx[first]->num = idx[first + 1]->num;
-  idx[first + 1]->num = i;
-}
-
-/**
  * cum_attachs_size - Cumulative Attachments Size
  * @param menu Menu listing attachments
  * @retval num Bytes in attachments
@@ -1377,6 +1299,84 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
     compose_status_line(buf, buflen, col, cols, menu, else_str);
 
   return src;
+}
+
+/**
+ * compose_custom_redraw - Redraw the compose menu - Implements Menu::custom_redraw()
+ */
+static void compose_custom_redraw(struct Menu *menu)
+{
+  struct ComposeRedrawData *rd = menu->redraw_data;
+  if (!rd)
+    return;
+
+  if (menu->redraw & REDRAW_FLOW)
+  {
+    rd->win_envelope->req_rows = calc_envelope(rd);
+    mutt_window_reflow(dialog_find(rd->win_envelope));
+  }
+
+  if (menu->redraw & REDRAW_FULL)
+  {
+    menu_redraw_full(menu);
+    draw_envelope(rd);
+    menu->pagelen = menu->win_index->state.rows;
+  }
+
+  menu_check_recenter(menu);
+
+  if (menu->redraw & REDRAW_STATUS)
+  {
+    char buf[1024];
+    const char *c_compose_format = cs_subset_string(rd->sub, "compose_format");
+    compose_status_line(buf, sizeof(buf), 0, menu->win_ibar->state.cols, menu,
+                        NONULL(c_compose_format));
+    mutt_window_move(menu->win_ibar, 0, 0);
+    mutt_curses_set_color(MT_COLOR_STATUS);
+    mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
+    mutt_curses_set_color(MT_COLOR_NORMAL);
+    menu->redraw &= ~REDRAW_STATUS;
+  }
+
+  if (menu->redraw & REDRAW_INDEX)
+    menu_redraw_index(menu);
+  else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNC))
+    menu_redraw_motion(menu);
+  else if (menu->redraw == REDRAW_CURRENT)
+    menu_redraw_current(menu);
+  menu->redraw = REDRAW_NO_FLAGS;
+}
+
+/**
+ * compose_attach_swap - Swap two adjacent entries in the attachment list
+ * @param[in]  msg   Body of email
+ * @param[out] idx   Array of Attachments
+ * @param[in]  first Index of first attachment to swap
+ */
+static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short first)
+{
+  /* Reorder Body pointers.
+   * Must traverse msg from top since Body has no previous ptr.  */
+  for (struct Body *part = msg; part; part = part->next)
+  {
+    if (part->next == idx[first]->body)
+    {
+      idx[first]->body->next = idx[first + 1]->body->next;
+      idx[first + 1]->body->next = idx[first]->body;
+      part->next = idx[first + 1]->body;
+      break;
+    }
+  }
+
+  /* Reorder index */
+  struct AttachPtr *saved = idx[first];
+  idx[first] = idx[first + 1];
+  idx[first + 1] = saved;
+
+  /* Swap ptr->num */
+  int i = idx[first]->num;
+  idx[first]->num = idx[first + 1]->num;
+  idx[first + 1]->num = i;
 }
 
 /**
