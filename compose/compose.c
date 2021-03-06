@@ -98,9 +98,6 @@
 
 static const char *There_are_no_attachments = N_("There are no attachments");
 
-static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
-                                struct Menu *menu, const char *p);
-
 /**
  * struct ComposeRedrawData - Keep track when the compose screen needs redrawing
  */
@@ -1294,9 +1291,13 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
   }
 
   if (optional)
-    compose_status_line(buf, buflen, col, cols, menu, if_str);
+  {
+    mutt_expando_format(buf, buflen, col, cols, if_str, compose_format_str, data, flags);
+  }
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    compose_status_line(buf, buflen, col, cols, menu, else_str);
+  {
+    mutt_expando_format(buf, buflen, col, cols, else_str, compose_format_str, data, flags);
+  }
 
   return src;
 }
@@ -1329,8 +1330,10 @@ static void compose_custom_redraw(struct Menu *menu)
   {
     char buf[1024];
     const char *c_compose_format = cs_subset_string(rd->sub, "compose_format");
-    compose_status_line(buf, sizeof(buf), 0, menu->win_ibar->state.cols, menu,
-                        NONULL(c_compose_format));
+    mutt_expando_format(buf, sizeof(buf), 0, menu->win_ibar->state.cols,
+                        NONULL(c_compose_format), compose_format_str,
+                        (intptr_t) menu, MUTT_FORMAT_NO_FLAGS);
+
     mutt_window_move(menu->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
@@ -1377,22 +1380,6 @@ static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short 
   int i = idx[first]->num;
   idx[first]->num = idx[first + 1]->num;
   idx[first + 1]->num = i;
-}
-
-/**
- * compose_status_line - Compose the string for the status bar
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  col    Starting column
- * @param[in]  cols   Number of screen columns
- * @param[in]  menu   Current menu
- * @param[in]  src    Printf-like format string
- */
-static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
-                                struct Menu *menu, const char *src)
-{
-  mutt_expando_format(buf, buflen, col, cols, src, compose_format_str,
-                      (intptr_t) menu, MUTT_FORMAT_NO_FLAGS);
 }
 
 /**
