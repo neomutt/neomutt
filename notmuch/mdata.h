@@ -25,6 +25,7 @@
 
 #include "private.h"
 #include "progress.h"
+#include "query.h"
 
 struct Mailbox;
 struct Url;

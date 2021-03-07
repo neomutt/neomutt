@@ -350,6 +350,10 @@ NOTIFY_OBJS	= test/notify/notify_free.o \
 		  test/notify/notify_send.o \
 		  test/notify/notify_set_parent.o
 
+@if USE_NOTMUCH
+NOTMUCH_OBJS	= test/notmuch/query_type.o
+@endif
+
 PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
 		  test/parameter/mutt_param_delete.o \
 		  test/parameter/mutt_param_free.o \
@@ -592,6 +596,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(MEMORY_OBJS) \
 		  $(NEOMUTT_OBJS) \
 		  $(NOTIFY_OBJS) \
+		  $(NOTMUCH_OBJS) \
 		  $(PARAMETER_OBJS) \
 		  $(PARSE_OBJS) \
 		  $(PATH_OBJS) \

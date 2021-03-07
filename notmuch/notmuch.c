@@ -72,6 +72,7 @@
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
+#include "query.h"
 
 struct stat;
 
@@ -116,22 +117,6 @@ static void nm_hcache_close(struct HeaderCache *h)
 #ifdef USE_HCACHE
   mutt_hcache_close(h);
 #endif
-}
-
-/**
- * string_to_query_type - Lookup a query type
- * @param str String to lookup
- * @retval num Query type, e.g. #NM_QUERY_TYPE_MESGS
- */
-enum NmQueryType string_to_query_type(const char *str)
-{
-  if (mutt_str_equal(str, "threads"))
-    return NM_QUERY_TYPE_THREADS;
-  if (mutt_str_equal(str, "messages"))
-    return NM_QUERY_TYPE_MESGS;
-
-  mutt_error(_("failed to parse notmuch query type: %s"), NONULL(str));
-  return NM_QUERY_TYPE_MESGS;
 }
 
 /**
@@ -389,7 +374,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
   if (mdata->db_query && !window)
     return mdata->db_query;
 
-  mdata->query_type = string_to_query_type(C_NmQueryType); /* user's default */
+  mdata->query_type = nm_string_to_query_type(C_NmQueryType); /* user's default */
 
   struct UrlQuery *item = NULL;
   STAILQ_FOREACH(item, &mdata->db_url->query_strings, entries)
@@ -403,7 +388,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
         mutt_error(_("failed to parse notmuch limit: %s"), item->value);
     }
     else if (strcmp(item->name, "type") == 0)
-      mdata->query_type = string_to_query_type(item->value);
+      mdata->query_type = nm_string_to_query_type(item->value);
     else if (strcmp(item->name, "query") == 0)
       mdata->db_query = mutt_str_dup(item->value);
   }
