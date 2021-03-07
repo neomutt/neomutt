@@ -33,6 +33,7 @@
  * | notmuch/edata.c    | @subpage nm_edata   |
  * | notmuch/mdata.c    | @subpage nm_mdata   |
  * | notmuch/notmuch.c  | @subpage nm_notmuch |
+ * | notmuch/query.c    | @subpage nm_query   |
  */
 
 #ifndef MUTT_NOTMUCH_LIB_H

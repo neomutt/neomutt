@@ -30,6 +30,7 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "mdata.h"
+#include "query.h"
 
 /**
  * nm_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
@@ -69,7 +70,7 @@ struct NmMboxData *nm_mdata_new(const char *url)
   mutt_debug(LL_DEBUG1, "nm: initialize mailbox mdata %p\n", (void *) mdata);
 
   mdata->db_limit = C_NmDbLimit;
-  mdata->query_type = string_to_query_type(C_NmQueryType);
+  mdata->query_type = nm_string_to_query_type(C_NmQueryType);
   mdata->db_url = url_parse(url);
   if (!mdata->db_url)
   {

@@ -580,6 +580,9 @@ NEOMUTT_TEST_LIST
 #ifdef USE_LZ4
   NEOMUTT_TEST_ITEM(test_compress_lz4)
 #endif
+#ifdef USE_NOTMUCH
+  NEOMUTT_TEST_ITEM(test_nm_string_to_query_type)
+#endif
 #ifdef USE_ZLIB
   NEOMUTT_TEST_ITEM(test_compress_zlib)
 #endif
@@ -623,6 +626,9 @@ NEOMUTT_TEST_ITEM(test_compress_common)
 #endif
 #ifdef USE_LZ4
   NEOMUTT_TEST_ITEM(test_compress_lz4)
+#endif
+#ifdef USE_NOTMUCH
+  NEOMUTT_TEST_ITEM(test_nm_string_to_query_type)
 #endif
 #ifdef USE_ZLIB
   NEOMUTT_TEST_ITEM(test_compress_zlib)

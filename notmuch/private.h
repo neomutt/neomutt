@@ -42,17 +42,6 @@
 
 extern const int NmUrlProtocolLen;
 
-/**
- * enum NmQueryType - Notmuch Query Types
- *
- * Read whole-thread or matching messages only?
- */
-enum NmQueryType
-{
-  NM_QUERY_TYPE_MESGS = 1, ///< Default: Messages only
-  NM_QUERY_TYPE_THREADS,   ///< Whole threads
-};
-
 extern int   C_NmDbLimit;
 extern char *C_NmDefaultUrl;
 extern char *C_NmExcludeTags;
@@ -74,7 +63,5 @@ bool                nm_db_is_longrun  (struct Mailbox *m);
 int                 nm_db_release     (struct Mailbox *m);
 int                 nm_db_trans_begin (struct Mailbox *m);
 int                 nm_db_trans_end   (struct Mailbox *m);
-
-enum NmQueryType string_to_query_type(const char *str);
 
 #endif /* MUTT_NOTMUCH_PRIVATE_H */
