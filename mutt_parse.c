@@ -29,12 +29,12 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include "core/lib.h"
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "mutt_parse.h"
 #include "ncrypt/lib.h"
 #include "mutt_globals.h"
-#include "mx.h"
 
 struct ListHead AttachAllow = STAILQ_HEAD_INITIALIZER(AttachAllow); ///< List of attachment types to be counted
 struct ListHead AttachExclude = STAILQ_HEAD_INITIALIZER(AttachExclude); ///< List of attachment types to be ignored

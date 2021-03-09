@@ -39,7 +39,6 @@
 #include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "protos.h"
 
 static time_t MailboxTime = 0; ///< last time we started checking for mail

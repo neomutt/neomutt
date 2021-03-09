@@ -43,7 +43,6 @@
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
-#include "mx.h"
 #include "opcodes.h"
 #include "options.h"
 #include "progress.h"

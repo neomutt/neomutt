@@ -45,7 +45,6 @@
 #include "handler.h"
 #include "hdrline.h"
 #include "mutt_globals.h"
-#include "mx.h"
 #include "state.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"

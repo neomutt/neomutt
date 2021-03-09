@@ -63,7 +63,6 @@
 #include "mutt_menu.h"
 #include "mutt_parse.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "options.h"
 #include "progress.h"
 #include "protos.h"

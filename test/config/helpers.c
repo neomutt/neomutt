@@ -44,14 +44,6 @@ static char *VarNectarine;
 static char *VarOlive;
 
 // clang-format off
-static struct Mapping MboxTypeMap[] = {
-  { "mbox",    MUTT_MBOX,    },
-  { "MMDF",    MUTT_MMDF,    },
-  { "MH",      MUTT_MH,      },
-  { "Maildir", MUTT_MAILDIR, },
-  { NULL,      0,            },
-};
-
 /**
  * Test Lookup table
  */
@@ -72,12 +64,6 @@ static const struct Mapping SortMangoMethods[] = {
   { NULL,            0 },
 };
 // clang-format on
-
-static struct EnumDef MboxTypeDef = {
-  "mbox_type",
-  4,
-  (struct Mapping *) &MboxTypeMap,
-};
 
 // clang-format off
 static struct ConfigDef Vars[] = {

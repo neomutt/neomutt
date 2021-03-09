@@ -33,6 +33,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "private.h"
+#include "core/lib.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -45,7 +46,6 @@
 #include "context.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "options.h"
 
 /**

@@ -40,7 +40,6 @@
 
 #include <stdbool.h>
 #include "core/lib.h"
-#include "mx.h"
 
 struct ConfigSet;
 struct stat;

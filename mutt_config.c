@@ -54,7 +54,6 @@
 #include "mutt_menu.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "progress.h"
 #include "recvattach.h"
 #include "recvcmd.h"

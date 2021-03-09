@@ -54,7 +54,6 @@
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_socket.h"
-#include "mx.h"
 
 #define IMAP_CMD_BUFSIZE 512
 

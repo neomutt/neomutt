@@ -37,7 +37,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt_thread.h"
-#include "mx.h"
 #include "protos.h"
 #include "sort.h"
 

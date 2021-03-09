@@ -69,7 +69,6 @@
 #include "sort.h"
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "mx.h"
 #include "nntp/mdata.h"
 #endif
 #ifdef MIXMASTER

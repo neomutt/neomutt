@@ -53,7 +53,6 @@
 #include "mdemail.h"
 #include "monitor.h"
 #include "mutt_globals.h"
-#include "mx.h"
 #include "progress.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"

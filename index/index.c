@@ -65,7 +65,6 @@
 #include "mutt_menu.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "opcodes.h"
 #include "options.h"
 #include "progress.h"

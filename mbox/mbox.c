@@ -52,7 +52,6 @@
 #include "mutt_globals.h"
 #include "mutt_header.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"

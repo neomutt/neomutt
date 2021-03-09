@@ -54,7 +54,6 @@
 #include "mdemail.h"
 #include "monitor.h"
 #include "mutt_globals.h"
-#include "mx.h"
 #include "progress.h"
 #include "sequence.h"
 #include "sort.h"

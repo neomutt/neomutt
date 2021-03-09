@@ -29,6 +29,7 @@
  * | :------------------ | :------------------------- |
  * | core/account.c      | @subpage core_account      |
  * | core/mailbox.c      | @subpage core_mailbox      |
+ * | core/mx.c           | @subpage core_mx           |
  * | core/neomutt.c      | @subpage core_neomutt      |
  */
 
@@ -38,6 +39,7 @@
 // IWYU pragma: begin_exports
 #include "account.h"
 #include "mailbox.h"
+#include "mx.h"
 #include "neomutt.h"
 // IWYU pragma: end_exports
 

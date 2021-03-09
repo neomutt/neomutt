@@ -39,7 +39,6 @@
 #include "mutt_globals.h"
 #include "mutt_header.h"
 #include "mutt_thread.h"
-#include "mx.h"
 #include "score.h"
 #include "sort.h"
 

@@ -26,13 +26,13 @@
 #include "config.h"
 #include <signal.h> // IWYU pragma: keep
 #include <stdbool.h>
+#include "core/lib.h"
 #include "mutt/lib.h"
 #include "keymap.h"
 #include "where.h"
 
 #ifdef MAIN_C
 /* so that global vars get included */
-#include "mx.h"
 #include "sort.h"
 #include "ncrypt/lib.h"
 #endif /* MAIN_C */

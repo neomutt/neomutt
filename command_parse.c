@@ -55,7 +55,6 @@
 #include "mutt_menu.h"
 #include "mutt_parse.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "myvar.h"
 #include "options.h"
 #include "version.h"

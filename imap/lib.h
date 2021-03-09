@@ -59,7 +59,6 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include "core/lib.h"
-#include "mx.h"
 #include "commands.h"
 
 struct BrowserState;

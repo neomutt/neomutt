@@ -55,7 +55,6 @@
 #include "hook.h"
 #include "init.h"
 #include "mutt_globals.h"
-#include "mx.h"
 #include "protos.h"
 #if defined(HAVE_SYSCALL_H)
 #include <syscall.h>

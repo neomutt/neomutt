@@ -24,7 +24,7 @@
  */
 
 /**
- * @page neo_mx Mailbox multiplexor
+ * @page core_mx Mailbox multiplexor
  *
  * Mailbox multiplexor
  */
@@ -44,7 +44,6 @@
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "mx.h"
 #include "maildir/lib.h"
 #include "mbox/lib.h"
 #include "commands.h"

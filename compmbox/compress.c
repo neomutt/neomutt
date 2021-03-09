@@ -47,7 +47,6 @@
 #include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "protos.h"
 
 struct Email;

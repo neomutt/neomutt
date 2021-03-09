@@ -55,7 +55,6 @@
 #include "mutt_mailbox.h"
 #include "mutt_parse.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "options.h"
 #include "state.h"
 

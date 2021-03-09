@@ -69,7 +69,6 @@
 #include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "mutt_thread.h"
-#include "mx.h"
 #include "progress.h"
 #include "protos.h"
 

@@ -58,7 +58,6 @@
 #include "mutt_parse.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "opcodes.h"
 #include "options.h"
 #include "recvcmd.h"

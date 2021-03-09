@@ -60,7 +60,6 @@
 #include "mutt_parse.h"
 #include "mutt_socket.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "progress.h"
 #include "sort.h"
 #ifdef USE_HCACHE

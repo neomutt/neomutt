@@ -49,7 +49,6 @@
 #include <time.h>
 #include "core/lib.h"
 #include "format_flags.h"
-#include "mx.h"
 
 struct ConfigSet;
 struct ConnAccount;

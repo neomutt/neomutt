@@ -52,7 +52,6 @@
 #include "maillist.h"
 #include "mutt_parse.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "state.h"
 
 /**

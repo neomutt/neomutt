@@ -42,7 +42,6 @@
 #include "edata.h"
 #include "mdata.h"
 #include "mdemail.h"
-#include "mx.h"
 #include "protos.h"
 #include "sequence.h"
 

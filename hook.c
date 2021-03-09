@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "core/lib.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
@@ -49,7 +50,6 @@
 #include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
-#include "mx.h"
 #ifdef USE_COMP_MBOX
 #include "compmbox/lib.h"
 #endif

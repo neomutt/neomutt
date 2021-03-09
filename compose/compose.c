@@ -63,7 +63,6 @@
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
