@@ -82,6 +82,27 @@ bool cs_subset_bool(const struct ConfigSubset *sub, const char *name)
 }
 
 /**
+ * cs_subset_enum - Get a enumeration config item by name
+ * @param sub   Config Subset
+ * @param name  Name of config item
+ * @retval num  Enumeration
+ */
+unsigned char cs_subset_enum(const struct ConfigSubset *sub, const char *name)
+{
+  assert(sub && name);
+
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+  assert(he);
+
+  assert(DTYPE(he->type) == DT_ENUM);
+
+  intptr_t value = cs_subset_he_native_get(sub, he, NULL);
+  assert(value != INT_MIN);
+
+  return (unsigned char) value;
+}
+
+/**
  * cs_subset_long - Get a long config item by name
  * @param sub   Config Subset
  * @param name  Name of config item
@@ -100,6 +121,27 @@ long cs_subset_long(const struct ConfigSubset *sub, const char *name)
   assert(value != INT_MIN);
 
   return (long) value;
+}
+
+/**
+ * cs_subset_mbtable - Get a Multibyte table config item by name
+ * @param sub   Config Subset
+ * @param name  Name of config item
+ * @retval ptr Multibyte table
+ */
+struct MbTable *cs_subset_mbtable(const struct ConfigSubset *sub, const char *name)
+{
+  assert(sub && name);
+
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+  assert(he);
+
+  assert(DTYPE(he->type) == DT_MBTABLE);
+
+  intptr_t value = cs_subset_he_native_get(sub, he, NULL);
+  assert(value != INT_MIN);
+
+  return (struct MbTable *) value;
 }
 
 /**
