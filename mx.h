@@ -51,29 +51,6 @@ typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open_new(), e.g. #MUTT_
 #define MUTT_ADD_FROM     (1 << 0) ///< add a From_ line
 #define MUTT_SET_DRAFT    (1 << 1) ///< set the message draft flag
 
-/**
- * enum MxCheckReturns - Return values from mx_mbox_check(), mx_mbox_sync(), and mx_mbox_close()
- */
-enum MxStatus
-{
-  MX_STATUS_ERROR = -1, ///< An error occurred
-  MX_STATUS_OK,         ///< No changes
-  MX_STATUS_NEW_MAIL,   ///< New mail received in Mailbox
-  MX_STATUS_LOCKED,     ///< Couldn't lock the Mailbox
-  MX_STATUS_REOPENED,   ///< Mailbox was reopened
-  MX_STATUS_FLAGS,      ///< Nondestructive flags change (IMAP)
-};
-
-/**
- * enum MxOpenReturns - Return values for mbox_open()
- */
-enum MxOpenReturns
-{
-  MX_OPEN_OK,           ///< Open succeeded
-  MX_OPEN_ERROR,        ///< Open failed with an error
-  MX_OPEN_ABORT,        ///< Open was aborted
-};
-
 /* Wrappers for the Mailbox API, see MxOps */
 enum MxStatus   mx_mbox_check      (struct Mailbox *m);
 enum MxStatus   mx_mbox_check_stats(struct Mailbox *m, uint8_t flags);

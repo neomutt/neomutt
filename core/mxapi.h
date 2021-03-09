@@ -67,7 +67,29 @@ typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MU
 #define MUTT_PEEK          (1 << 5) ///< Revert atime back after taking a look (if applicable)
 #define MUTT_APPENDNEW     (1 << 6) ///< Set in mx_open_mailbox_append if the mailbox doesn't exist.
                                     ///< Used by maildir/mh to create the mailbox.
+/**
+ * enum MxStatus - Return values from mbox_check(), mbox_check_stats(),
+ * mbox_snc(), and mbox_close()
+ */
+enum MxStatus
+{
+  MX_STATUS_ERROR = -1, ///< An error occurred
+  MX_STATUS_OK,         ///< No changes
+  MX_STATUS_NEW_MAIL,   ///< New mail received in Mailbox
+  MX_STATUS_LOCKED,     ///< Couldn't lock the Mailbox
+  MX_STATUS_REOPENED,   ///< Mailbox was reopened
+  MX_STATUS_FLAGS,      ///< Nondestructive flags change (IMAP)
+};
 
+/**
+ * enum MxOpenReturns - Return values for mbox_open()
+ */
+enum MxOpenReturns
+{
+  MX_OPEN_OK,           ///< Open succeeded
+  MX_OPEN_ERROR,        ///< Open failed with an error
+  MX_OPEN_ABORT,        ///< Open was aborted
+};
 
 /**
  * struct MxOps - The Mailbox API
