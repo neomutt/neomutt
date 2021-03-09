@@ -197,7 +197,7 @@ if {1} {
   # Get the value of a macro by preprocessing a header file that defines it
   proc check-define-value {incfile macro} {
     set code "#include \"$incfile\"\n$macro"
-    if {[catch {exec [get-define CC] {*}[get-define CFLAGS] -xc - -E | tail -1 << $code} out]} {
+    if {[catch {exec {*}[get-define CC] {*}[get-define CFLAGS] -xc - -E | tail -1 << $code} out]} {
       user-notice $out
       set out ""
     }
@@ -267,7 +267,7 @@ if {1} {
   }
 
   # GCC-specifc CFLAGS
-  if {![catch {exec [get-define CC] --version} res]} {
+  if {![catch {exec {*}[get-define CC] --version} res]} {
     if {[regexp -nocase gcc $res]} {
       define-append CFLAGS "-fno-delete-null-pointer-checks"
     }
