@@ -178,7 +178,9 @@ bool smime_class_valid_passphrase(void)
   if (mutt_get_field_unbuffered(_("Enter S/MIME passphrase:"), SmimePass,
                                 sizeof(SmimePass), MUTT_PASS) == 0)
   {
-    SmimeExpTime = mutt_date_add_timeout(now, C_SmimeTimeout);
+    const short c_smime_timeout =
+        cs_subset_number(NeoMutt->sub, "smime_timeout");
+    SmimeExpTime = mutt_date_add_timeout(now, c_smime_timeout);
     return true;
   }
   else
@@ -219,6 +221,8 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
   {
     case 'C':
     {
+      const char *c_smime_ca_location =
+          cs_subset_path(NeoMutt->sub, "smime_ca_location");
       if (!optional)
       {
         struct Buffer *path = mutt_buffer_pool_get();
@@ -226,7 +230,7 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
         struct Buffer *buf2 = mutt_buffer_pool_get();
         struct stat sb;
 
-        mutt_buffer_strcpy(path, C_SmimeCaLocation);
+        mutt_buffer_strcpy(path, c_smime_ca_location);
         mutt_buffer_expand_path(path);
         mutt_buffer_quote_filename(buf1, mutt_buffer_string(path), true);
 
@@ -242,7 +246,7 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
         mutt_buffer_pool_release(&buf1);
         mutt_buffer_pool_release(&buf2);
       }
-      else if (!C_SmimeCaLocation)
+      else if (!c_smime_ca_location)
         optional = false;
       break;
     }
@@ -502,15 +506,18 @@ static struct SmimeKey *smime_parse_key(char *buf)
  * @param only_public_key  If true, only get the public keys
  * @retval ptr Matching key
  */
-static struct SmimeKey *smime_get_candidates(char *search, bool only_public_key)
+static struct SmimeKey *smime_get_candidates(const char *search, bool only_public_key)
 {
   char buf[1024];
   struct SmimeKey *key = NULL, *results = NULL;
   struct SmimeKey **results_end = &results;
 
   struct Buffer *index_file = mutt_buffer_pool_get();
+  const char *c_smime_certificates =
+      cs_subset_path(NeoMutt->sub, "smime_certificates");
+  const char *c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
   mutt_buffer_printf(index_file, "%s/.index",
-                     only_public_key ? NONULL(C_SmimeCertificates) : NONULL(C_SmimeKeys));
+                     only_public_key ? NONULL(c_smime_certificates) : NONULL(c_smime_keys));
 
   FILE *fp = mutt_file_fopen(mutt_buffer_string(index_file), "r");
   if (!fp)
@@ -548,7 +555,7 @@ static struct SmimeKey *smime_get_candidates(char *search, bool only_public_key)
  * Returns the first matching key record, without prompting or checking of
  * abilities or trust.
  */
-static struct SmimeKey *smime_get_key_by_hash(char *hash, bool only_public_key)
+static struct SmimeKey *smime_get_key_by_hash(const char *hash, bool only_public_key)
 {
   struct SmimeKey *match = NULL;
   struct SmimeKey *results = smime_get_candidates(hash, only_public_key);
@@ -624,9 +631,11 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
   {
     if (oppenc_mode)
     {
+      const bool c_crypt_opportunistic_encrypt_strong_keys = cs_subset_bool(
+          NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
       if (trusted_match)
         return_key = smime_copy_key(trusted_match);
-      else if (valid_match && !C_CryptOpportunisticEncryptStrongKeys)
+      else if (valid_match && !c_crypt_opportunistic_encrypt_strong_keys)
         return_key = smime_copy_key(valid_match);
       else
         return_key = NULL;
@@ -745,17 +754,22 @@ static void getkeys(char *mailbox)
     key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, false);
   }
 
-  size_t smime_keys_len = mutt_str_len(C_SmimeKeys);
+  const char *c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
+  size_t smime_keys_len = mutt_str_len(c_smime_keys);
 
-  k = key ? key->hash : NONULL(C_SmimeDefaultKey);
+  const char *c_smime_default_key =
+      cs_subset_string(NeoMutt->sub, "smime_default_key");
+  k = key ? key->hash : NONULL(c_smime_default_key);
 
   /* if the key is different from last time */
   if ((mutt_buffer_len(&SmimeKeyToUse) <= smime_keys_len) ||
       !mutt_istr_equal(k, SmimeKeyToUse.data + smime_keys_len + 1))
   {
     smime_class_void_passphrase();
-    mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(C_SmimeKeys), k);
-    mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(C_SmimeCertificates), k);
+    mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), k);
+    const char *c_smime_certificates =
+        cs_subset_path(NeoMutt->sub, "smime_certificates");
+    mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates), k);
   }
 
   smime_key_free(&key);
@@ -766,10 +780,18 @@ static void getkeys(char *mailbox)
  */
 void smime_class_getkeys(struct Envelope *env)
 {
-  if (C_SmimeDecryptUseDefaultKey && C_SmimeDefaultKey)
+  const bool c_smime_decrypt_use_default_key =
+      cs_subset_bool(NeoMutt->sub, "smime_decrypt_use_default_key");
+  const char *c_smime_default_key =
+      cs_subset_string(NeoMutt->sub, "smime_default_key");
+  if (c_smime_decrypt_use_default_key && c_smime_default_key)
   {
-    mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(C_SmimeKeys), C_SmimeDefaultKey);
-    mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(C_SmimeCertificates), C_SmimeDefaultKey);
+    const char *c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
+    mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), c_smime_default_key);
+    const char *c_smime_certificates =
+        cs_subset_path(NeoMutt->sub, "smime_certificates");
+    mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates),
+                       c_smime_default_key);
     return;
   }
 
@@ -869,8 +891,10 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
     return 1;
   }
 
+  const char *c_smime_get_cert_email_command =
+      cs_subset_string(NeoMutt->sub, "smime_get_cert_email_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_out), fileno(fp_err), certificate,
-                     NULL, NULL, NULL, NULL, NULL, NULL, C_SmimeGetCertEmailCommand);
+                     NULL, NULL, NULL, NULL, NULL, NULL, c_smime_get_cert_email_command);
   if (pid == -1)
   {
     mutt_message(_("Error: unable to create OpenSSL subprocess"));
@@ -970,8 +994,10 @@ static char *smime_extract_certificate(const char *infile)
 
   /* Step 1: Convert the signature to a PKCS#7 structure, as we can't
    * extract the full set of certificates directly. */
+  const char *c_smime_pk7out_command =
+      cs_subset_string(NeoMutt->sub, "smime_pk7out_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_out), fileno(fp_err), infile,
-                     NULL, NULL, NULL, NULL, NULL, NULL, C_SmimePk7outCommand);
+                     NULL, NULL, NULL, NULL, NULL, NULL, c_smime_pk7out_command);
   if (pid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
@@ -1003,9 +1029,11 @@ static char *smime_extract_certificate(const char *infile)
   }
 
   // Step 2: Extract the certificates from a PKCS#7 structure.
+  const char *c_smime_get_cert_command =
+      cs_subset_string(NeoMutt->sub, "smime_get_cert_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_cert), fileno(fp_err),
                      mutt_buffer_string(pk7out), NULL, NULL, NULL, NULL, NULL,
-                     NULL, C_SmimeGetCertCommand);
+                     NULL, c_smime_get_cert_command);
   if (pid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
@@ -1080,9 +1108,11 @@ static char *smime_extract_signer_certificate(const char *infile)
 
   /* Extract signer's certificate
    */
+  const char *c_smime_get_signer_cert_command =
+      cs_subset_string(NeoMutt->sub, "smime_get_signer_cert_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, -1, fileno(fp_err), infile, NULL,
                      NULL, NULL, NULL, mutt_buffer_string(certfile), NULL,
-                     C_SmimeGetSignerCertCommand);
+                     c_smime_get_signer_cert_command);
   if (pid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
@@ -1143,7 +1173,9 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   }
 
   buf[0] = '\0';
-  if (C_SmimeAskCertLabel)
+  const bool c_smime_ask_cert_label =
+      cs_subset_bool(NeoMutt->sub, "smime_ask_cert_label");
+  if (c_smime_ask_cert_label)
   {
     if ((mutt_get_field(_("Label for certificate: "), buf, sizeof(buf),
                         MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
@@ -1161,9 +1193,11 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   {
     mutt_endwin();
 
+    const char *c_smime_import_cert_command =
+        cs_subset_string(NeoMutt->sub, "smime_import_cert_command");
     pid_t pid = smime_invoke(&fp_smime_in, NULL, NULL, -1, fileno(fp_out),
                              fileno(fp_err), certfile, NULL, NULL, NULL, NULL,
-                             NULL, NULL, C_SmimeImportCertCommand);
+                             NULL, NULL, c_smime_import_cert_command);
     if (pid == -1)
     {
       mutt_message(_("Error: unable to create OpenSSL subprocess"));
@@ -1280,9 +1314,13 @@ static pid_t smime_invoke_encrypt(FILE **fp_smime_in, FILE **fp_smime_out,
                                   int fp_smime_outfd, int fp_smime_errfd,
                                   const char *fname, const char *uids)
 {
+  const char *c_smime_encrypt_with =
+      cs_subset_string(NeoMutt->sub, "smime_encrypt_with");
+  const char *c_smime_encrypt_command =
+      cs_subset_string(NeoMutt->sub, "smime_encrypt_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
-                      fp_smime_outfd, fp_smime_errfd, fname, NULL, C_SmimeEncryptWith,
-                      NULL, NULL, uids, NULL, C_SmimeEncryptCommand);
+                      fp_smime_outfd, fp_smime_errfd, fname, NULL, c_smime_encrypt_with,
+                      NULL, NULL, uids, NULL, c_smime_encrypt_command);
 }
 
 /**
@@ -1304,11 +1342,15 @@ static pid_t smime_invoke_sign(FILE **fp_smime_in, FILE **fp_smime_out,
                                FILE **fp_smime_err, int fp_smime_infd, int fp_smime_outfd,
                                int fp_smime_errfd, const char *fname)
 {
+  const char *c_smime_sign_digest_alg =
+      cs_subset_string(NeoMutt->sub, "smime_sign_digest_alg");
+  const char *c_smime_sign_command =
+      cs_subset_string(NeoMutt->sub, "smime_sign_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
                       fp_smime_outfd, fp_smime_errfd, fname, NULL, NULL,
-                      C_SmimeSignDigestAlg, mutt_buffer_string(&SmimeKeyToUse),
+                      c_smime_sign_digest_alg, mutt_buffer_string(&SmimeKeyToUse),
                       mutt_buffer_string(&SmimeCertToUse),
-                      mutt_buffer_string(&SmimeIntermediateToUse), C_SmimeSignCommand);
+                      mutt_buffer_string(&SmimeIntermediateToUse), c_smime_sign_command);
 }
 
 /**
@@ -1358,8 +1400,10 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
     if (*cert_start)
     {
       off = mutt_str_len(certfile);
+      const char *c_smime_certificates =
+          cs_subset_path(NeoMutt->sub, "smime_certificates");
       snprintf(certfile + off, sizeof(certfile) - off, "%s%s/%s",
-               (off != 0) ? " " : "", NONULL(C_SmimeCertificates), cert_start);
+               (off != 0) ? " " : "", NONULL(c_smime_certificates), cert_start);
     }
     if (cert_end)
       *cert_end++ = ' ';
@@ -1456,7 +1500,7 @@ cleanup:
  *
  * @note The caller should free the returned string
  */
-static char *openssl_md_to_smime_micalg(char *md)
+static char *openssl_md_to_smime_micalg(const char *md)
 {
   if (!md)
     return 0;
@@ -1489,9 +1533,12 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   int err = 0;
   int empty = 0;
   pid_t pid;
-  char *intermediates = NULL;
+  const char *intermediates = NULL;
 
-  char *signas = C_SmimeSignAs ? C_SmimeSignAs : C_SmimeDefaultKey;
+  const char *c_smime_sign_as = cs_subset_string(NeoMutt->sub, "smime_sign_as");
+  const char *c_smime_default_key =
+      cs_subset_string(NeoMutt->sub, "smime_default_key");
+  const char *signas = c_smime_sign_as ? c_smime_sign_as : c_smime_default_key;
   if (!signas || (*signas == '\0'))
   {
     mutt_error(_("Can't sign: No key specified. Use Sign As."));
@@ -1524,8 +1571,11 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   mutt_write_mime_body(a, fp_sign, NeoMutt->sub);
   mutt_file_fclose(&fp_sign);
 
-  mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(C_SmimeKeys), signas);
-  mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(C_SmimeCertificates), signas);
+  const char *c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
+  const char *c_smime_certificates =
+      cs_subset_path(NeoMutt->sub, "smime_certificates");
+  mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), signas);
+  mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates), signas);
 
   struct SmimeKey *signas_key = smime_get_key_by_hash(signas, 1);
   if (!signas_key || mutt_str_equal("?", signas_key->issuer))
@@ -1534,7 +1584,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
     intermediates = signas_key->issuer;
 
   mutt_buffer_printf(&SmimeIntermediateToUse, "%s/%s",
-                     NONULL(C_SmimeCertificates), intermediates);
+                     NONULL(c_smime_certificates), intermediates);
 
   smime_key_free(&signas_key);
 
@@ -1589,7 +1639,9 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
 
   mutt_generate_boundary(&t->parameter);
 
-  char *micalg = openssl_md_to_smime_micalg(C_SmimeSignDigestAlg);
+  const char *c_smime_sign_digest_alg =
+      cs_subset_string(NeoMutt->sub, "smime_sign_digest_alg");
+  char *micalg = openssl_md_to_smime_micalg(c_smime_sign_digest_alg);
   mutt_param_set(&t->parameter, "micalg", micalg);
   FREE(&micalg);
 
@@ -1647,9 +1699,13 @@ static pid_t smime_invoke_verify(FILE **fp_smime_in, FILE **fp_smime_out,
                                  int fp_smime_outfd, int fp_smime_errfd,
                                  const char *fname, const char *sig_fname, int opaque)
 {
+  const char *c_smime_verify_opaque_command =
+      cs_subset_string(NeoMutt->sub, "smime_verify_opaque_command");
+  const char *c_smime_verify_command =
+      cs_subset_string(NeoMutt->sub, "smime_verify_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd, fp_smime_outfd,
                       fp_smime_errfd, fname, sig_fname, NULL, NULL, NULL, NULL, NULL,
-                      (opaque ? C_SmimeVerifyOpaqueCommand : C_SmimeVerifyCommand));
+                      (opaque ? c_smime_verify_opaque_command : c_smime_verify_command));
 }
 
 /**
@@ -1671,10 +1727,12 @@ static pid_t smime_invoke_decrypt(FILE **fp_smime_in, FILE **fp_smime_out,
                                   FILE **fp_smime_err, int fp_smime_infd, int fp_smime_outfd,
                                   int fp_smime_errfd, const char *fname)
 {
+  const char *c_smime_decrypt_command =
+      cs_subset_string(NeoMutt->sub, "smime_decrypt_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
                       fp_smime_outfd, fp_smime_errfd, fname, NULL, NULL, NULL,
                       mutt_buffer_string(&SmimeKeyToUse),
-                      mutt_buffer_string(&SmimeCertToUse), NULL, C_SmimeDecryptCommand);
+                      mutt_buffer_string(&SmimeCertToUse), NULL, c_smime_decrypt_command);
 }
 
 /**
@@ -2121,7 +2179,9 @@ SecurityFlags smime_class_send_menu(struct Email *e)
   /* Opportunistic encrypt is controlling encryption.
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.  */
-  if (C_CryptOpportunisticEncrypt && (e->security & SEC_OPPENCRYPT))
+  const bool c_crypt_opportunistic_encrypt =
+      cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
+  if (c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT))
   {
     /* L10N: S/MIME options (opportunistic encryption is on) */
     prompt = _("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc "
@@ -2132,7 +2192,7 @@ SecurityFlags smime_class_send_menu(struct Email *e)
   }
   /* Opportunistic encryption option is set, but is toggled off
    * for this message.  */
-  else if (C_CryptOpportunisticEncrypt)
+  else if (c_crypt_opportunistic_encrypt)
   {
     /* L10N: S/MIME options (opportunistic encryption is off) */
     prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, "
@@ -2161,7 +2221,7 @@ SecurityFlags smime_class_send_menu(struct Email *e)
         key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, false);
         if (key)
         {
-          mutt_str_replace(&C_SmimeSignAs, key->hash);
+          cs_subset_str_string_set(NeoMutt->sub, "smime_sign_as", key->hash, NULL);
           smime_key_free(&key);
 
           e->security |= SEC_SIGN;

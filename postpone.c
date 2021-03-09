@@ -492,7 +492,9 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     FREE(&np);
   }
 
-  if (C_CryptOpportunisticEncrypt)
+  const bool c_crypt_opportunistic_encrypt =
+      cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
+  if (c_crypt_opportunistic_encrypt)
     crypt_opportunistic_encrypt(hdr);
 
   return rc;
@@ -637,13 +639,13 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
   if (((WithCrypto & APPLICATION_PGP) != 0) && (crypt_app == APPLICATION_PGP) &&
       (flags & SEC_SIGN) && (set_empty_signas || *sign_as))
   {
-    mutt_str_replace(&C_PgpSignAs, sign_as);
+    cs_subset_str_string_set(NeoMutt->sub, "pgp_sign_as", sign_as, NULL);
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (crypt_app == APPLICATION_SMIME) &&
       (flags & SEC_SIGN) && (set_empty_signas || *sign_as))
   {
-    mutt_str_replace(&C_SmimeSignAs, sign_as);
+    cs_subset_str_string_set(NeoMutt->sub, "smime_sign_as", sign_as, NULL);
   }
 
   return flags;
@@ -871,7 +873,9 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
       b->email->body = NULL; /* avoid dangling pointer */
   }
 
-  if (C_CryptProtectedHeadersRead && protected_headers && protected_headers->subject &&
+  const bool c_crypt_protected_headers_read =
+      cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
+  if (c_crypt_protected_headers_read && protected_headers && protected_headers->subject &&
       !mutt_str_equal(e_new->env->subject, protected_headers->subject))
   {
     mutt_str_replace(&e_new->env->subject, protected_headers->subject);
@@ -890,7 +894,9 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   /* Theoretically, both could be set. Take the one the user wants to set by default. */
   if ((e_new->security & APPLICATION_PGP) && (e_new->security & APPLICATION_SMIME))
   {
-    if (C_SmimeIsDefault)
+    const bool c_smime_is_default =
+        cs_subset_bool(NeoMutt->sub, "smime_is_default");
+    if (c_smime_is_default)
       e_new->security &= ~APPLICATION_PGP;
     else
       e_new->security &= ~APPLICATION_SMIME;

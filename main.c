@@ -1094,9 +1094,11 @@ int main(int argc, char *argv[], char *envp[])
           mutt_env_to_intl(e->env, NULL, NULL);
         }
 
+        const bool c_crypt_protected_headers_read =
+            cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
         mutt_rfc822_write_header(
             fp_out, e->env, e->body, MUTT_WRITE_HEADER_POSTPONE, false,
-            C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e),
+            c_crypt_protected_headers_read && mutt_should_hide_protected_subject(e),
             NeoMutt->sub);
         if (C_ResumeEditedDraftFiles)
           fprintf(fp_out, "X-Mutt-Resume-Draft: 1\n");

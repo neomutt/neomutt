@@ -441,12 +441,14 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
   {
     if (oppenc_mode)
     {
+      const bool c_crypt_opportunistic_encrypt_strong_keys = cs_subset_bool(
+          NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
       if (the_strong_valid_key)
       {
         pgp_remove_key(&matches, the_strong_valid_key);
         k = the_strong_valid_key;
       }
-      else if (a_valid_addrmatch_key && !C_CryptOpportunisticEncryptStrongKeys)
+      else if (a_valid_addrmatch_key && !c_crypt_opportunistic_encrypt_strong_keys)
       {
         pgp_remove_key(&matches, a_valid_addrmatch_key);
         k = a_valid_addrmatch_key;

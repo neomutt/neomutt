@@ -76,7 +76,9 @@ void crypt_current_time(struct State *s, const char *app_name)
   if (!WithCrypto)
     return;
 
-  if (C_CryptTimestamp)
+  const bool c_crypt_timestamp =
+      cs_subset_bool(NeoMutt->sub, "crypt_timestamp");
+  if (c_crypt_timestamp)
   {
     mutt_date_localtime_format(p, sizeof(p), _(" (current time: %c)"), MUTT_DATE_NOW);
   }
@@ -184,10 +186,12 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   if (((WithCrypto & APPLICATION_PGP) != 0) && !(security & SEC_AUTOCRYPT) &&
       ((security & PGP_INLINE) == PGP_INLINE))
   {
+    const enum QuadOption c_pgp_mime_auto =
+        cs_subset_quad(NeoMutt->sub, "pgp_mime_auto");
     if ((e->body->type != TYPE_TEXT) ||
         !mutt_istr_equal(e->body->subtype, "plain"))
     {
-      if (query_quadoption(C_PgpMimeAuto,
+      if (query_quadoption(c_pgp_mime_auto,
                            _("Inline PGP can't be used with attachments.  "
                              "Revert to PGP/MIME?")) != MUTT_YES)
       {
@@ -199,7 +203,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
     else if (mutt_istr_equal("flowed",
                              mutt_param_get(&e->body->parameter, "format")))
     {
-      if ((query_quadoption(C_PgpMimeAuto,
+      if ((query_quadoption(c_pgp_mime_auto,
                             _("Inline PGP can't be used with format=flowed.  "
                               "Revert to PGP/MIME?"))) != MUTT_YES)
       {
@@ -225,7 +229,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
 
       /* otherwise inline won't work...ask for revert */
       if (query_quadoption(
-              C_PgpMimeAuto,
+              c_pgp_mime_auto,
               _("Message can't be sent inline.  Revert to using PGP/MIME?")) != MUTT_YES)
       {
         mutt_error(_("Mail not sent"));
@@ -245,7 +249,8 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
     tmp_pgp_pbody = e->body;
 
 #ifdef CRYPT_BACKEND_GPGME
-  if (sign && C_CryptUsePka)
+  const bool c_crypt_use_pka = cs_subset_bool(NeoMutt->sub, "crypt_use_pka");
+  if (sign && c_crypt_use_pka)
 #else
   if (sign)
 #endif
@@ -262,8 +267,10 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
     }
 
     mailbox = from->mailbox;
-    if (!mailbox && C_EnvelopeFromAddress)
-      mailbox = C_EnvelopeFromAddress->mailbox;
+    const struct Address *c_envelope_from_address =
+        cs_subset_address(NeoMutt->sub, "envelope_from_address");
+    if (!mailbox && c_envelope_from_address)
+      mailbox = c_envelope_from_address->mailbox;
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (security & APPLICATION_SMIME))
       crypt_smime_set_sender(mailbox);
@@ -274,7 +281,9 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
       mutt_addr_free(&from);
   }
 
-  if (C_CryptProtectedHeadersWrite)
+  const bool c_crypt_protected_headers_write =
+      cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_write");
+  if (c_crypt_protected_headers_write)
   {
     struct Envelope *protected_headers = mutt_env_new();
     mutt_str_replace(&protected_headers->subject, e->env->subject);
@@ -304,7 +313,8 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
    * compose menu.  We don't want mutt_write_rfc822_header() to write
    * stale data from one option if the other is set.
    */
-  if (C_Autocrypt && !postpone && (security & SEC_AUTOCRYPT))
+  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  if (c_autocrypt && !postpone && (security & SEC_AUTOCRYPT))
   {
     struct Mailbox *m = ctx_mailbox(Context);
     mutt_autocrypt_generate_gossip_list(m, e);
@@ -322,8 +332,10 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
       tmp_smime_pbody = tmp_pbody;
     }
 
+    const bool c_pgp_retainable_sigs =
+        cs_subset_bool(NeoMutt->sub, "pgp_retainable_sigs");
     if (((WithCrypto & APPLICATION_PGP) != 0) && (security & APPLICATION_PGP) &&
-        (!(security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) || C_PgpRetainableSigs))
+        (!(security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) || c_pgp_retainable_sigs))
     {
       tmp_pbody = crypt_pgp_sign_message(e->body, &e->env->from);
       if (!tmp_pbody)
@@ -805,6 +817,7 @@ void crypt_convert_to_7bit(struct Body *a)
   if (!WithCrypto)
     return;
 
+  const bool c_pgp_strict_enc = cs_subset_bool(NeoMutt->sub, "pgp_strict_enc");
   while (a)
   {
     if (a->type == TYPE_MULTIPART)
@@ -814,7 +827,7 @@ void crypt_convert_to_7bit(struct Body *a)
         a->encoding = ENC_7BIT;
         crypt_convert_to_7bit(a->parts);
       }
-      else if (((WithCrypto & APPLICATION_PGP) != 0) && C_PgpStrictEnc)
+      else if (((WithCrypto & APPLICATION_PGP) != 0) && c_pgp_strict_enc)
         crypt_convert_to_7bit(a->parts);
     }
     else if ((a->type == TYPE_MESSAGE) &&
@@ -828,7 +841,7 @@ void crypt_convert_to_7bit(struct Body *a)
     else if (a->encoding == ENC_BINARY)
       a->encoding = ENC_BASE64;
     else if (a->content && (a->encoding != ENC_BASE64) &&
-             (a->content->from || (a->content->space && C_PgpStrictEnc)))
+             (a->content->from || (a->content->space && c_pgp_strict_enc)))
     {
       a->encoding = ENC_QUOTED_PRINTABLE;
     }
@@ -949,7 +962,7 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
 
   struct AddressList addrlist = TAILQ_HEAD_INITIALIZER(addrlist);
   const char *fqdn = mutt_fqdn(true, NeoMutt->sub);
-  char *self_encrypt = NULL;
+  const char *self_encrypt = NULL;
 
   /* Do a quick check to make sure that we can find all of the encryption
    * keys if the user has requested this service.  */
@@ -986,8 +999,14 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
         return -1;
       }
       OptPgpCheckTrust = false;
-      if (C_PgpSelfEncrypt || (C_PgpEncryptSelf == MUTT_YES))
-        self_encrypt = C_PgpDefaultKey;
+      const bool c_pgp_self_encrypt =
+          cs_subset_bool(NeoMutt->sub, "pgp_self_encrypt");
+      const char *c_pgp_default_key =
+          cs_subset_string(NeoMutt->sub, "pgp_default_key");
+      const enum QuadOption c_pgp_encrypt_self =
+          cs_subset_quad(NeoMutt->sub, "pgp_encrypt_self");
+      if (c_pgp_self_encrypt || (c_pgp_encrypt_self == MUTT_YES))
+        self_encrypt = c_pgp_default_key;
     }
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
     {
@@ -997,8 +1016,14 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
         mutt_addrlist_clear(&addrlist);
         return -1;
       }
-      if (C_SmimeSelfEncrypt || (C_SmimeEncryptSelf == MUTT_YES))
-        self_encrypt = C_SmimeDefaultKey;
+      const bool c_smime_self_encrypt =
+          cs_subset_bool(NeoMutt->sub, "smime_self_encrypt");
+      const char *c_smime_default_key =
+          cs_subset_string(NeoMutt->sub, "smime_default_key");
+      const enum QuadOption c_smime_encrypt_self =
+          cs_subset_quad(NeoMutt->sub, "smime_encrypt_self");
+      if (c_smime_self_encrypt || (c_smime_encrypt_self == MUTT_YES))
+        self_encrypt = c_smime_default_key;
     }
   }
 
@@ -1026,7 +1051,9 @@ void crypt_opportunistic_encrypt(struct Email *e)
   if (!WithCrypto)
     return;
 
-  if (!(C_CryptOpportunisticEncrypt && (e->security & SEC_OPPENCRYPT)))
+  const bool c_crypt_opportunistic_encrypt =
+      cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
+  if (!(c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT)))
     return;
 
   char *pgpkeylist = NULL;
@@ -1075,8 +1102,12 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
  */
 bool mutt_should_hide_protected_subject(struct Email *e)
 {
-  if (C_CryptProtectedHeadersWrite && (e->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) &&
-      !(e->security & SEC_INLINE) && C_CryptProtectedHeadersSubject)
+  const bool c_crypt_protected_headers_write =
+      cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_write");
+  const char *c_crypt_protected_headers_subject =
+      cs_subset_string(NeoMutt->sub, "crypt_protected_headers_subject");
+  if (c_crypt_protected_headers_write && (e->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) &&
+      !(e->security & SEC_INLINE) && c_crypt_protected_headers_subject)
   {
     return true;
   }
@@ -1089,17 +1120,21 @@ bool mutt_should_hide_protected_subject(struct Email *e)
  */
 int mutt_protected_headers_handler(struct Body *a, struct State *s)
 {
-  if (C_CryptProtectedHeadersRead && a->mime_headers)
+  const bool c_crypt_protected_headers_read =
+      cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
+  if (c_crypt_protected_headers_read && a->mime_headers)
   {
     if (a->mime_headers->subject)
     {
       const bool display = (s->flags & MUTT_DISPLAY);
 
-      if (display && C_Weed && mutt_matches_ignore("subject"))
+      const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+      if (display && c_weed && mutt_matches_ignore("subject"))
         return 0;
 
       state_mark_protected_header(s);
-      int wraplen = display ? mutt_window_wrap_cols(s->wraplen, C_Wrap) : 0;
+      const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
+      int wraplen = display ? mutt_window_wrap_cols(s->wraplen, c_wrap) : 0;
 
       mutt_write_one_header(s->fp_out, "Subject", a->mime_headers->subject, s->prefix,
                             wraplen, display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);

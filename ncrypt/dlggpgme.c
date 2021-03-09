@@ -42,6 +42,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "pager/lib.h"
@@ -113,7 +114,8 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
 
   /* fromcode "utf-8" is sure, so we don't want
    * charset-hook corrections: flags must be 0.  */
-  mutt_ch_convert_string(&tstr, "utf-8", C_Charset, MUTT_ICONV_NO_FLAGS);
+  const char *c_charset = cs_subset_string(NeoMutt->sub, "charset");
+  mutt_ch_convert_string(&tstr, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS);
   fputs(tstr, fp);
   FREE(&tstr);
 }
@@ -159,8 +161,9 @@ static int crypt_compare_key_address(const void *a, const void *b)
  */
 static int crypt_compare_address_qsort(const void *a, const void *b)
 {
-  return (C_PgpSortKeys & SORT_REVERSE) ? !crypt_compare_key_address(a, b) :
-                                          crypt_compare_key_address(a, b);
+  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  return (c_pgp_sort_keys & SORT_REVERSE) ? !crypt_compare_key_address(a, b) :
+                                            crypt_compare_key_address(a, b);
 }
 
 /**
@@ -192,8 +195,9 @@ static int crypt_compare_keyid(const void *a, const void *b)
  */
 static int crypt_crypt_compare_keyid_qsort(const void *a, const void *b)
 {
-  return (C_PgpSortKeys & SORT_REVERSE) ? !crypt_compare_keyid(a, b) :
-                                          crypt_compare_keyid(a, b);
+  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  return (c_pgp_sort_keys & SORT_REVERSE) ? !crypt_compare_keyid(a, b) :
+                                            crypt_compare_keyid(a, b);
 }
 
 /**
@@ -233,8 +237,9 @@ static int crypt_compare_key_date(const void *a, const void *b)
  */
 static int crypt_compare_date_qsort(const void *a, const void *b)
 {
-  return (C_PgpSortKeys & SORT_REVERSE) ? !crypt_compare_key_date(a, b) :
-                                          crypt_compare_key_date(a, b);
+  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  return (c_pgp_sort_keys & SORT_REVERSE) ? !crypt_compare_key_date(a, b) :
+                                            crypt_compare_key_date(a, b);
 }
 
 /**
@@ -296,8 +301,9 @@ static int crypt_compare_key_trust(const void *a, const void *b)
  */
 static int crypt_compare_trust_qsort(const void *a, const void *b)
 {
-  return (C_PgpSortKeys & SORT_REVERSE) ? !crypt_compare_key_trust(a, b) :
-                                          crypt_compare_key_trust(a, b);
+  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  return (c_pgp_sort_keys & SORT_REVERSE) ? !crypt_compare_key_trust(a, b) :
+                                            crypt_compare_key_trust(a, b);
 }
 
 /**
@@ -1176,8 +1182,10 @@ static void crypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
   entry.key = key_table[line];
   entry.num = line + 1;
 
+  const char *c_pgp_entry_format =
+      cs_subset_string(NeoMutt->sub, "pgp_entry_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                      NONULL(C_PgpEntryFormat), crypt_format_str,
+                      NONULL(c_pgp_entry_format), crypt_format_str,
                       (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -1213,7 +1221,9 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   struct CryptKeyInfo **key_table = NULL;
   for (k = keys; k; k = k->next)
   {
-    if (!C_PgpShowUnusable && (k->flags & KEYFLAG_CANTUSE))
+    const bool c_pgp_show_unusable =
+        cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
+    if (!c_pgp_show_unusable && (k->flags & KEYFLAG_CANTUSE))
     {
       unusable = true;
       continue;
@@ -1234,7 +1244,8 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
     return NULL;
   }
 
-  switch (C_PgpSortKeys & SORT_MASK)
+  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  switch (c_pgp_sort_keys & SORT_MASK)
   {
     case SORT_ADDRESS:
       f = crypt_compare_address_qsort;

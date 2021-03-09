@@ -37,6 +37,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "pager/lib.h"
@@ -104,8 +105,9 @@ static int pgp_compare_key_address(const void *a, const void *b)
  */
 static int pgp_compare_address_qsort(const void *a, const void *b)
 {
-  return (C_PgpSortKeys & SORT_REVERSE) ? !pgp_compare_key_address(a, b) :
-                                          pgp_compare_key_address(a, b);
+  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  return (c_pgp_sort_keys & SORT_REVERSE) ? !pgp_compare_key_address(a, b) :
+                                            pgp_compare_key_address(a, b);
 }
 
 /**
@@ -137,8 +139,9 @@ static int pgp_compare_key_date(const void *a, const void *b)
  */
 static int pgp_compare_date_qsort(const void *a, const void *b)
 {
-  return (C_PgpSortKeys & SORT_REVERSE) ? !pgp_compare_key_date(a, b) :
-                                          pgp_compare_key_date(a, b);
+  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  return (c_pgp_sort_keys & SORT_REVERSE) ? !pgp_compare_key_date(a, b) :
+                                            pgp_compare_key_date(a, b);
 }
 
 /**
@@ -170,8 +173,9 @@ static int pgp_compare_keyid(const void *a, const void *b)
  */
 static int pgp_compare_keyid_qsort(const void *a, const void *b)
 {
-  return (C_PgpSortKeys & SORT_REVERSE) ? !pgp_compare_keyid(a, b) :
-                                          pgp_compare_keyid(a, b);
+  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  return (c_pgp_sort_keys & SORT_REVERSE) ? !pgp_compare_keyid(a, b) :
+                                            pgp_compare_keyid(a, b);
 }
 
 /**
@@ -219,8 +223,9 @@ static int pgp_compare_key_trust(const void *a, const void *b)
  */
 static int pgp_compare_trust_qsort(const void *a, const void *b)
 {
-  return (C_PgpSortKeys & SORT_REVERSE) ? !pgp_compare_key_trust(a, b) :
-                                          pgp_compare_key_trust(a, b);
+  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  return (c_pgp_sort_keys & SORT_REVERSE) ? !pgp_compare_key_trust(a, b) :
+                                            pgp_compare_key_trust(a, b);
 }
 
 /**
@@ -459,8 +464,10 @@ static void pgp_make_entry(struct Menu *menu, char *buf, size_t buflen, int line
   entry.uid = key_table[line];
   entry.num = line + 1;
 
+  const char *c_pgp_entry_format =
+      cs_subset_string(NeoMutt->sub, "pgp_entry_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                      NONULL(C_PgpEntryFormat), pgp_entry_format_str,
+                      NONULL(c_pgp_entry_format), pgp_entry_format_str,
                       (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -487,9 +494,11 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
 
   int keymax = 0;
 
+  const bool c_pgp_show_unusable =
+      cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
   for (i = 0, kp = keys; kp; kp = kp->next)
   {
-    if (!C_PgpShowUnusable && (kp->flags & KEYFLAG_CANTUSE))
+    if (!c_pgp_show_unusable && (kp->flags & KEYFLAG_CANTUSE))
     {
       unusable = true;
       continue;
@@ -497,7 +506,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
 
     for (a = kp->address; a; a = a->next)
     {
-      if (!C_PgpShowUnusable && (a->flags & KEYFLAG_CANTUSE))
+      if (!c_pgp_show_unusable && (a->flags & KEYFLAG_CANTUSE))
       {
         unusable = true;
         continue;
@@ -520,7 +529,8 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   }
 
   int (*f)(const void *, const void *);
-  switch (C_PgpSortKeys & SORT_MASK)
+  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  switch (c_pgp_sort_keys & SORT_MASK)
   {
     case SORT_ADDRESS:
       f = pgp_compare_address_qsort;

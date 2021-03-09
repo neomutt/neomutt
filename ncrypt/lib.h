@@ -69,16 +69,6 @@ struct Envelope;
 struct Mailbox;
 struct State;
 
-extern bool            C_CryptOpportunisticEncrypt;
-extern bool            C_CryptProtectedHeadersRead;
-extern bool            C_CryptProtectedHeadersSave;
-extern unsigned char   C_CryptVerifySig;
-extern bool            C_PgpAutoDecode;
-extern char *          C_PgpSignAs;
-extern char *          C_SmimeEncryptWith;
-extern bool            C_SmimeIsDefault;
-extern char *          C_SmimeSignAs;
-
 typedef uint16_t SecurityFlags;           ///< Flags, e.g. #SEC_ENCRYPT
 #define SEC_NO_FLAGS                  0   ///< No flags are set
 #define SEC_ENCRYPT             (1 << 0)  ///< Email is encrypted

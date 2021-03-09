@@ -40,15 +40,19 @@
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "cryptglue.h"
 #include "lib.h"
 #include "context.h"
 #include "crypt_mod.h"
 #include "mutt_globals.h"
-#ifndef CRYPT_BACKEND_GPGME
+#ifdef CRYPT_BACKEND_GPGME
+#include "config/lib.h"
+#else
 #include "gui/lib.h"
 #endif
 #ifdef USE_AUTOCRYPT
+#include "config/lib.h"
 #include "email/lib.h"
 #include "autocrypt/lib.h"
 #include "crypt_gpgme.h"
@@ -94,10 +98,14 @@ extern struct CryptModuleSpecs CryptModSmimeGpgme;
  */
 void crypt_init(void)
 {
+#ifdef CRYPT_BACKEND_GPGME
+  const bool c_crypt_use_gpgme =
+      cs_subset_bool(NeoMutt->sub, "crypt_use_gpgme");
+#endif
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
   if (
 #ifdef CRYPT_BACKEND_GPGME
-      (!C_CryptUseGpgme)
+      (!c_crypt_use_gpgme)
 #else
       1
 #endif
@@ -108,7 +116,7 @@ void crypt_init(void)
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
   if (
 #ifdef CRYPT_BACKEND_GPGME
-      (!C_CryptUseGpgme)
+      (!c_crypt_use_gpgme)
 #else
       1
 #endif
@@ -117,7 +125,7 @@ void crypt_init(void)
 #endif
 
 #ifdef CRYPT_BACKEND_GPGME
-  if (C_CryptUseGpgme)
+  if (c_crypt_use_gpgme)
   {
     crypto_module_register(&CryptModPgpGpgme);
     crypto_module_register(&CryptModSmimeGpgme);
@@ -209,7 +217,8 @@ bool crypt_pgp_valid_passphrase(void)
 int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
 #ifdef USE_AUTOCRYPT
-  if (C_Autocrypt)
+  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  if (c_autocrypt)
   {
     OptAutocryptGpgme = true;
     int result = pgp_gpgme_decrypt_mime(fp_in, fp_out, b, cur);
@@ -249,7 +258,8 @@ int crypt_pgp_application_handler(struct Body *m, struct State *s)
 int crypt_pgp_encrypted_handler(struct Body *a, struct State *s)
 {
 #ifdef USE_AUTOCRYPT
-  if (C_Autocrypt)
+  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  if (c_autocrypt)
   {
     OptAutocryptGpgme = true;
     int result = pgp_gpgme_encrypted_handler(a, s);

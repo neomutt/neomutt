@@ -114,11 +114,14 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
   struct Envelope *prot_headers = NULL;
   regmatch_t pmatch[1];
 
+  const bool c_crypt_protected_headers_read =
+      cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
 #ifdef USE_AUTOCRYPT
-  if (!C_CryptProtectedHeadersRead && !C_Autocrypt)
+  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  if (!c_crypt_protected_headers_read && !c_autocrypt)
     return;
 #else
-  if (!C_CryptProtectedHeadersRead)
+  if (!c_crypt_protected_headers_read)
     return;
 #endif
 
@@ -158,7 +161,7 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
   }
 
   /* Update protected headers in the index and header cache. */
-  if (C_CryptProtectedHeadersRead && prot_headers && prot_headers->subject &&
+  if (c_crypt_protected_headers_read && prot_headers && prot_headers->subject &&
       !mutt_str_equal(e->env->subject, prot_headers->subject))
   {
     if (m->subj_hash && e->env->real_subj)
@@ -177,7 +180,9 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
     mx_save_hcache(m, e);
 
     /* Also persist back to the message headers if this is set */
-    if (C_CryptProtectedHeadersSave)
+    const bool c_crypt_protected_headers_save =
+        cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_save");
+    if (c_crypt_protected_headers_save)
     {
       e->env->changed |= MUTT_ENV_CHANGED_SUBJECT;
       e->changed = true;
@@ -186,7 +191,7 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
   }
 
 #ifdef USE_AUTOCRYPT
-  if (C_Autocrypt && (e->security & SEC_ENCRYPT) && prot_headers && prot_headers->autocrypt_gossip)
+  if (c_autocrypt && (e->security & SEC_ENCRYPT) && prot_headers && prot_headers->autocrypt_gossip)
   {
     mutt_autocrypt_process_gossip_header(m, e, prot_headers);
   }
@@ -240,7 +245,9 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     {
       /* find out whether or not the verify signature */
       /* L10N: Used for the $crypt_verify_sig prompt */
-      if (query_quadoption(C_CryptVerifySig, _("Verify signature?")) == MUTT_YES)
+      const enum QuadOption c_crypt_verify_sig =
+          cs_subset_quad(NeoMutt->sub, "crypt_verify_sig");
+      if (query_quadoption(c_crypt_verify_sig, _("Verify signature?")) == MUTT_YES)
       {
         cmflags |= MUTT_CM_VERIFY;
       }

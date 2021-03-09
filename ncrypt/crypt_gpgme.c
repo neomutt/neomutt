@@ -351,7 +351,8 @@ const char *crypt_keyid(struct CryptKeyInfo *k)
   if (k->kobj && k->kobj->subkeys)
   {
     s = k->kobj->subkeys->keyid;
-    if ((!C_PgpLongIds) && (strlen(s) == 16))
+    const bool c_pgp_long_ids = cs_subset_bool(NeoMutt->sub, "pgp_long_ids");
+    if ((!c_pgp_long_ids) && (strlen(s) == 16))
     {
       /* Return only the short keyID.  */
       s += 8;
@@ -574,8 +575,9 @@ gpgme_ctx_t create_gpgme_context(bool for_smime)
   gpgme_error_t err = gpgme_new(&ctx);
 
 #ifdef USE_AUTOCRYPT
+  const char *c_autocrypt_dir = cs_subset_string(NeoMutt->sub, "autocrypt_dir");
   if (!err && OptAutocryptGpgme)
-    err = gpgme_ctx_set_engine_info(ctx, GPGME_PROTOCOL_OpenPGP, NULL, C_AutocryptDir);
+    err = gpgme_ctx_set_engine_info(ctx, GPGME_PROTOCOL_OpenPGP, NULL, c_autocrypt_dir);
 #endif
 
   if (err != 0)
@@ -1042,16 +1044,22 @@ static bool set_signer_from_address(gpgme_ctx_t ctx, const char *address, bool f
  */
 static int set_signer(gpgme_ctx_t ctx, const struct AddressList *al, bool for_smime)
 {
-  char *signid = NULL;
+  const char *signid = NULL;
 
+  const char *c_smime_sign_as = cs_subset_string(NeoMutt->sub, "smime_sign_as");
+  const char *c_pgp_sign_as = cs_subset_string(NeoMutt->sub, "pgp_sign_as");
+  const char *c_pgp_default_key =
+      cs_subset_string(NeoMutt->sub, "pgp_default_key");
+  const char *c_smime_default_key =
+      cs_subset_string(NeoMutt->sub, "smime_default_key");
   if (for_smime)
-    signid = C_SmimeSignAs ? C_SmimeSignAs : C_SmimeDefaultKey;
+    signid = c_smime_sign_as ? c_smime_sign_as : c_smime_default_key;
 #ifdef USE_AUTOCRYPT
   else if (OptAutocryptGpgme)
     signid = AutocryptSignAs;
 #endif
   else
-    signid = C_PgpSignAs ? C_PgpSignAs : C_PgpDefaultKey;
+    signid = c_pgp_sign_as ? c_pgp_sign_as : c_pgp_default_key;
 
   /* Try getting the signing key from config entries */
   if (signid && set_signer_from_address(ctx, signid, for_smime))
@@ -1133,7 +1141,8 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
     if (set_signer(ctx, from, use_smime))
       goto cleanup;
 
-    if (C_CryptUsePka)
+    const bool c_crypt_use_pka = cs_subset_bool(NeoMutt->sub, "crypt_use_pka");
+    if (c_crypt_use_pka)
     {
       err = set_pka_sig_notation(ctx);
       if (err != 0)
@@ -1271,7 +1280,8 @@ static struct Body *sign_message(struct Body *a, const struct AddressList *from,
     return NULL;
   }
 
-  if (C_CryptUsePka)
+  const bool c_crypt_use_pka = cs_subset_bool(NeoMutt->sub, "crypt_use_pka");
+  if (c_crypt_use_pka)
   {
     err = set_pka_sig_notation(ctx);
     if (err != 0)
@@ -1569,7 +1579,8 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
     state_puts(s, "\n");
   }
 
-  if (C_CryptUsePka)
+  const bool c_crypt_use_pka = cs_subset_bool(NeoMutt->sub, "crypt_use_pka");
+  if (c_crypt_use_pka)
   {
     if ((sig->pka_trust == 1) && sig->pka_address)
     {
@@ -2423,7 +2434,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   int rc = -1;
   time_t tt;
 
-#if GPGME_VERSION_NUMBER >= 0x010900 /* GPGME >= 1.9.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010900) /* GPGME >= 1.9.0 */
   legacy_api = !have_gpg_version("2.1.14");
 #else /* GPGME < 1.9.0 */
   legacy_api = true;
@@ -2434,7 +2445,8 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   if (legacy_api)
   {
     tmpdir = mutt_buffer_pool_get();
-    mutt_buffer_printf(tmpdir, "%s/neomutt-gpgme-XXXXXX", NONULL(C_Tmpdir));
+    const char *c_tmpdir = cs_subset_string(NeoMutt->sub, "tmpdir");
+    mutt_buffer_printf(tmpdir, "%s/neomutt-gpgme-XXXXXX", NONULL(c_tmpdir));
     if (!mkdtemp(tmpdir->data))
     {
       mutt_debug(LL_DEBUG1, "Error creating temporary GPGME home\n");
@@ -2774,7 +2786,8 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
    * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.  */
-  struct FgetConv *fc = mutt_ch_fgetconv_open(fp, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
+  const char *c_charset = cs_subset_string(NeoMutt->sub, "charset");
+  struct FgetConv *fc = mutt_ch_fgetconv_open(fp, charset, c_charset, MUTT_ICONV_HOOK_FROM);
 
   for (complete = true, armor_header = true;
        mutt_ch_fgetconvs(buf, sizeof(buf), fc); complete = (strchr(buf, '\n')))
@@ -2987,8 +3000,9 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       {
         int c;
         rewind(fp_out);
+        const char *c_charset = cs_subset_string(NeoMutt->sub, "charset");
         struct FgetConv *fc =
-            mutt_ch_fgetconv_open(fp_out, "utf-8", C_Charset, MUTT_ICONV_NO_FLAGS);
+            mutt_ch_fgetconv_open(fp_out, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS);
         while ((c = mutt_ch_fgetconv(fc)) != EOF)
         {
           state_putc(s, c);
@@ -3618,9 +3632,11 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   {
     if (oppenc_mode)
     {
+      const bool c_crypt_opportunistic_encrypt_strong_keys = cs_subset_bool(
+          NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
       if (the_strong_valid_key)
         k = crypt_copy_key(the_strong_valid_key);
-      else if (a_valid_addrmatch_key && !C_CryptOpportunisticEncryptStrongKeys)
+      else if (a_valid_addrmatch_key && !c_crypt_opportunistic_encrypt_strong_keys)
         k = crypt_copy_key(a_valid_addrmatch_key);
       else
         k = NULL;
@@ -3827,7 +3843,9 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
       {
         keyid = crypt_hook->data;
         enum QuadOption ans = MUTT_YES;
-        if (!oppenc_mode && C_CryptConfirmHook)
+        const bool c_crypt_confirm_hook =
+            cs_subset_bool(NeoMutt->sub, "crypt_confirm_hook");
+        if (!oppenc_mode && c_crypt_confirm_hook)
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid, p->mailbox);
           ans = mutt_yesorno(buf, MUTT_YES);
@@ -4169,7 +4187,9 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  if (C_CryptOpportunisticEncrypt && (e->security & SEC_OPPENCRYPT))
+  const bool c_crypt_opportunistic_encrypt =
+      cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
+  if (c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT))
   {
     if (is_smime)
     {
@@ -4191,7 +4211,7 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
     }
   }
   /* Opportunistic encryption option is set, but is toggled off for this message.  */
-  else if (C_CryptOpportunisticEncrypt)
+  else if (c_crypt_opportunistic_encrypt)
   {
     if (is_smime)
     {
@@ -4247,7 +4267,12 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
         {
           char input_signas[128];
           snprintf(input_signas, sizeof(input_signas), "0x%s", crypt_fpr_or_lkeyid(p));
-          mutt_str_replace(is_smime ? &C_SmimeDefaultKey : &C_PgpSignAs, input_signas);
+
+          if (is_smime)
+            cs_subset_str_string_set(NeoMutt->sub, "smime_default_key", input_signas, NULL);
+          else
+            cs_subset_str_string_set(NeoMutt->sub, "pgp_sign_as", input_signas, NULL);
+
           crypt_key_free(&p);
 
           e->security |= SEC_SIGN;
