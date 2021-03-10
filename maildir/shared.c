@@ -38,7 +38,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
-#include "maildir/lib.h"
+#include "lib.h"
 #include "edata.h"
 #include "mdata.h"
 #include "mdemail.h"

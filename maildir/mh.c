@@ -46,7 +46,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "maildir/lib.h"
+#include "lib.h"
 #include "copy.h"
 #include "edata.h"
 #include "errno.h"

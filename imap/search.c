@@ -37,7 +37,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "lib.h"
-#include "imap/lib.h"
 #include "pattern/lib.h"
 
 // fwd decl, mutually recursive: check_pattern_list, check_pattern

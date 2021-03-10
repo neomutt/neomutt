@@ -41,7 +41,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "sequence.h"
-#include "maildir/lib.h"
+#include "lib.h"
 #include "mdata.h"
 #include "mutt_globals.h"
 

@@ -38,7 +38,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
-#include "autocrypt/lib.h"
+#include "lib.h"
 #include "hcache/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"

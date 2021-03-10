@@ -30,9 +30,9 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "core/neomutt.h"
 #include "account.h"
 #include "mailbox.h"
+#include "neomutt.h"
 
 /**
  * account_new - Create a new Account

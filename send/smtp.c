@@ -46,7 +46,7 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "smtp.h"
-#include "send/lib.h"
+#include "lib.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "mutt_socket.h"

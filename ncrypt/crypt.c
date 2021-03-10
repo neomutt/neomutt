@@ -47,7 +47,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "crypt.h"
-#include "ncrypt/lib.h"
+#include "lib.h"
 #include "send/lib.h"
 #include "context.h"
 #include "copy.h"

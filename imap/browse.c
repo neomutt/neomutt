@@ -39,7 +39,7 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "imap/lib.h"
+#include "lib.h"
 #include "browser.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"

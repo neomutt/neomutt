@@ -56,7 +56,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "crypt_gpgme.h"
-#include "ncrypt/lib.h"
+#include "lib.h"
 #include "send/lib.h"
 #include "crypt.h"
 #include "handler.h"

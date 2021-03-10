@@ -34,7 +34,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/lib.h"
-#include "conn/lib.h" // IWYU pragma: keep
+#include "lib.h" // IWYU pragma: keep
 
 #ifdef HAVE_GETADDRINFO_A
 /**

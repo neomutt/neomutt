@@ -41,7 +41,7 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "cryptglue.h"
-#include "ncrypt/lib.h"
+#include "lib.h"
 #include "context.h"
 #include "crypt_mod.h"
 #include "mutt_globals.h"
