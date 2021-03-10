@@ -39,7 +39,6 @@
 #include <stdio.h>
 #include <time.h>
 #include "core/lib.h"
-#include "mx.h"
 
 struct ConfigSet;
 struct stat;
