@@ -61,11 +61,6 @@
 #endif
 
 /* These Config Variables are only used in hdrline.c */
-struct MbTable *C_CryptChars; ///< Config: User-configurable crypto flags: signed, encrypted etc.
-struct MbTable *C_FlagChars; ///< Config: User-configurable index flags: tagged, new, etc
-struct MbTable *C_FromChars; ///< Config: User-configurable index flags: to address, cc address, etc
-struct MbTable *C_ToChars; ///< Config: Indicator characters for the 'To' field in the index
-
 struct ConfigDef HdrlineVars[] = {
   { "crypt_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_CryptChars, IP "SPsK ", 0, NULL,
     "User-configurable crypto flags: signed, encrypted etc."
