@@ -66,6 +66,27 @@ struct MbTable *C_FlagChars; ///< Config: User-configurable index flags: tagged,
 struct MbTable *C_FromChars; ///< Config: User-configurable index flags: to address, cc address, etc
 struct MbTable *C_ToChars; ///< Config: Indicator characters for the 'To' field in the index
 
+struct ConfigDef HdrlineVars[] = {
+  { "crypt_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_CryptChars, IP "SPsK ", 0, NULL,
+    "User-configurable crypto flags: signed, encrypted etc."
+  },
+  { "flag_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_FlagChars, IP "*!DdrONon- ", 0, NULL,
+    "User-configurable index flags: tagged, new, etc"
+  },
+  { "from_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_FromChars, 0, 0, NULL,
+    "User-configurable index flags: to address, cc address, etc"
+  },
+  { "to_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_ToChars, IP " +TCFLR", 0, NULL,
+    "Indicator characters for the 'To' field in the index"
+  },
+};
+
+bool config_init_hdrline(struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, HdrlineVars, DT_NO_VARIABLE);
+}
+
+
 /**
  * struct HdrFormatInfo - Data passed to index_format_str()
  */
