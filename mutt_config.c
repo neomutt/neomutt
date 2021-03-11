@@ -349,6 +349,9 @@ struct ConfigDef MainVars[] = {
   { "gecos_mask", DT_REGEX, &C_GecosMask, IP "^[^,]*", 0, NULL,
     "Regex for parsing GECOS field of /etc/passwd"
   },
+  { "greeting", DT_STRING, &C_Greeting, 0, 0, NULL,
+    "Greeting string added to the top of all messages"
+  },
   { "header", DT_BOOL, &C_Header, false, 0, NULL,
     "Include the message headers in the reply email (Weed applies)"
   },
