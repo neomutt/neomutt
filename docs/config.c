@@ -1440,6 +1440,23 @@
 ** "Franklin" to "Franklin, Steve".
 */
 
+{ "greeting", DT_STRING, 0 },
+/*
+** .pp
+** When set, this is the string that will precede every message as a
+** greeting phrase to the recipients.
+** .pp
+** "Format strings" are similar to the strings used in the "C"
+** function printf to format output (see the man page for more detail).
+** The following sequences are defined in NeoMutt:
+** .pp
+** .dl
+** .dt %n .dd Recipient's real name
+** .dt %u .dd User (login) name of recipient
+** .dt %v .dd First name of recipient
+** .de
+*/
+
 #ifdef USE_NNTP
 { "group_index_format", DT_STRING, "%4C %M%N %5s  %-45.45f %d" },
 /*

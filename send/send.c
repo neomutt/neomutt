@@ -86,6 +86,15 @@
 #endif
 
 /**
+ * struct GreetingInfo - Data passed to greeting_string()
+ */
+struct GreetingInfo
+{
+  struct Mailbox *mailbox;
+  struct Email *email;
+};
+
+/**
  * append_signature - Append a signature to an email
  * @param fp  File to write to
  * @param sub Config Subset
@@ -604,6 +613,93 @@ void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *fp_out,
   setlocale(LC_TIME, NONULL(c_attribution_locale));
   mutt_make_string(buf, sizeof(buf), 0, c_attribution, m, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
+  fputs(buf, fp_out);
+  fputc('\n', fp_out);
+}
+
+/**
+ * greeting_string - Format a greetings string
+ *
+ * | Expando | Description
+ * |:--------|:-----------------------------------------------------------------
+ * | \%n     | Recipient's real name (or address if missing)
+ * | \%u     | User (login) name of the recipient
+ * | \%v     | First name of the recipient
+ */
+static const char *greeting_string(char *buf, size_t buflen, size_t col, int cols,
+                                   char op, const char *src, const char *prec,
+                                   const char *if_str, const char *else_str,
+                                   intptr_t data, MuttFormatFlags flags)
+{
+  struct GreetingInfo *gi = (struct GreetingInfo *) data;
+  char *p = NULL;
+  char buf2[256];
+
+  const struct Address *to = TAILQ_FIRST(&gi->email->env->to);
+  const struct Address *cc = TAILQ_FIRST(&gi->email->env->cc);
+
+  buf[0] = '\0';
+  switch (op)
+  {
+    case 'n':
+      mutt_format_s(buf, buflen, prec, mutt_get_name(to));
+      break;
+
+    case 'u':
+      if (to)
+      {
+        mutt_str_copy(buf2, mutt_addr_for_display(to), sizeof(buf2));
+        if ((p = strpbrk(buf2, "%@")))
+          *p = '\0';
+      }
+      else
+        buf2[0] = '\0';
+      mutt_format_s(buf, buflen, prec, buf2);
+      break;
+
+    case 'v':
+      if (to)
+        mutt_format_s(buf2, sizeof(buf2), prec, mutt_get_name(to));
+      else if (cc)
+        mutt_format_s(buf2, sizeof(buf2), prec, mutt_get_name(cc));
+      else
+        *buf2 = '\0';
+      if ((p = strpbrk(buf2, " %@")))
+        *p = '\0';
+      mutt_format_s(buf, buflen, prec, buf2);
+      break;
+
+    default:
+      snprintf(buf, buflen, "%%%s%c", prec, op);
+      break;
+  }
+
+  if (flags & MUTT_FORMAT_OPTIONAL)
+    mutt_expando_format(buf, buflen, col, cols, else_str, greeting_string, data, flags);
+
+  return src;
+}
+
+/**
+ * mutt_make_greeting - Add greetings string
+ * @param m      Mailbox
+ * @param e      Email
+ * @param fp_out File to write to
+ * @param sub    Config Subset
+ */
+static void mutt_make_greeting(struct Mailbox *m, struct Email *e, FILE *fp_out,
+                               struct ConfigSubset *sub)
+{
+  const char *c_greeting = cs_subset_string(sub, "greeting");
+  if (!c_greeting || !fp_out)
+    return;
+
+  char buf[1024];
+  struct GreetingInfo gi = { m, e };
+
+  mutt_expando_format(buf, sizeof(buf), 0, 0, c_greeting, greeting_string,
+                      (intptr_t) &gi, MUTT_TOKEN_NO_FLAGS);
+
   fputs(buf, fp_out);
   fputc('\n', fp_out);
 }
@@ -2310,6 +2406,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         goto cleanup;
       }
     }
+
+    if (!(flags & SEND_BATCH))
+      mutt_make_greeting(mailbox, e_templ, fp_tmp, sub);
 
     const bool c_sig_on_top = cs_subset_bool(sub, "sig_on_top");
     const char *c_editor = cs_subset_string(sub, "editor");
