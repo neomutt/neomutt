@@ -30,12 +30,6 @@
 struct Email;
 struct Mailbox;
 
-/* These Config Variables are only used in hdrline.c */
-extern struct MbTable *C_CryptChars;
-extern struct MbTable *C_FlagChars;
-extern struct MbTable *C_FromChars;
-extern struct MbTable *C_ToChars;
-
 void mutt_make_string(char *buf, size_t buflen, int cols, const char *s,
                       struct Mailbox *m, int inpgr, struct Email *e,
                       MuttFormatFlags flags, const char *progress);

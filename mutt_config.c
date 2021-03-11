@@ -253,9 +253,6 @@ struct ConfigDef MainVars[] = {
   { "count_alternatives", DT_BOOL, &C_CountAlternatives, false, 0, NULL,
     "Recurse inside multipart/alternatives while counting attachments"
   },
-  { "crypt_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_CryptChars, IP "SPsK ", 0, NULL,
-    "User-configurable crypto flags: signed, encrypted etc."
-  },
   { "date_format", DT_STRING|DT_NOT_EMPTY|R_MENU, &C_DateFormat, IP "!%a, %b %d, %Y at %I:%M:%S%p %Z", 0, NULL,
     "strftime format string for the `%d` expando"
   },
@@ -270,9 +267,6 @@ struct ConfigDef MainVars[] = {
   },
   { "editor", DT_STRING|DT_NOT_EMPTY|DT_COMMAND, &C_Editor, 0, 0, NULL,
     "External command to use as an email editor"
-  },
-  { "flag_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_FlagChars, IP "*!DdrONon- ", 0, NULL,
-    "User-configurable index flags: tagged, new, etc"
   },
   { "flag_safe", DT_BOOL, &C_FlagSafe, false, 0, NULL,
     "Protect flagged messages from deletion"
@@ -294,9 +288,6 @@ struct ConfigDef MainVars[] = {
   },
   { "from", DT_ADDRESS, &C_From, 0, 0, NULL,
     "Default 'From' address to use, if isn't otherwise set"
-  },
-  { "from_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_FromChars, 0, 0, NULL,
-    "User-configurable index flags: to address, cc address, etc"
   },
   { "greeting", DT_STRING, &C_Greeting, 0, 0, NULL,
     "Greeting string added to the top of all messages"
@@ -486,9 +477,6 @@ struct ConfigDef MainVars[] = {
   { "toggle_quoted_show_levels", DT_NUMBER|DT_NOT_NEGATIVE, &C_ToggleQuotedShowLevels, 0, 0, NULL,
     "Number of quote levels to show with toggle-quoted"
   },
-  { "to_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_ToChars, IP " +TCFLR", 0, NULL,
-    "Indicator characters for the 'To' field in the index"
-  },
   { "ts_enabled", DT_BOOL|R_INDEX|R_PAGER, &C_TsEnabled, false, 0, NULL,
     "Allow NeoMutt to set the terminal status line and icon"
   },
@@ -579,6 +567,9 @@ struct ConfigDef MainNoVars[] = {
   { "collapse_unread", DT_BOOL, NULL, true, 0, NULL,
     "Prevent the collapse of threads with unread emails"
   },
+  { "crypt_chars", DT_MBTABLE|R_INDEX|R_PAGER, NULL, IP "SPsK ", 0, NULL,
+    "User-configurable crypto flags: signed, encrypted etc."
+  },
   { "debug_file", DT_PATH|DT_PATH_FILE, NULL, IP "~/.neomuttdebug", 0, NULL,
     "File to save debug logs"
   },
@@ -594,8 +585,14 @@ struct ConfigDef MainNoVars[] = {
   { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, NULL, true, 0, pager_validator,
     "Highlight messages with duplicated message IDs"
   },
+  { "flag_chars", DT_MBTABLE|R_INDEX|R_PAGER, NULL, IP "*!DdrONon- ", 0, NULL,
+    "User-configurable index flags: tagged, new, etc"
+  },
   { "folder_format", DT_STRING|DT_NOT_EMPTY|R_MENU, NULL, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %i", 0, NULL,
     "printf-like format string for the browser's display of folders"
+  },
+  { "from_chars", DT_MBTABLE|R_INDEX|R_PAGER, NULL, 0, 0, NULL,
+    "User-configurable index flags: to address, cc address, etc"
   },
   { "gecos_mask", DT_REGEX, NULL, IP "^[^,]*", 0, NULL,
     "Regex for parsing GECOS field of /etc/passwd"
@@ -733,6 +730,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "tmpdir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, NULL, IP TMPDIR, 0, NULL,
     "Directory for temporary files"
+  },
+  { "to_chars", DT_MBTABLE|R_INDEX|R_PAGER, NULL, IP " +TCFLR", 0, NULL,
+    "Indicator characters for the 'To' field in the index"
   },
   { "trash", DT_STRING|DT_MAILBOX, NULL, 0, 0, NULL,
     "Folder to put deleted emails"
