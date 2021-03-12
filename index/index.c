@@ -1806,7 +1806,16 @@ int mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         log_queue_save(fp);
         mutt_file_fclose(&fp);
 
-        mutt_do_pager("messages", tempfile, MUTT_PAGER_LOGS, NULL);
+        struct PagerData pdata = { 0 };
+        struct PagerView pview = { &pdata };
+
+        pdata.fname = tempfile;
+
+        pview.banner = "messages";
+        pview.flags = MUTT_PAGER_LOGS;
+        pview.mode = PAGER_MODE_OTHER;
+
+        mutt_do_pager(&pview);
         break;
       }
 

@@ -434,8 +434,16 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
 
         if ((stat(childout, &st) == 0) && (st.st_size > 0))
         {
-          mutt_do_pager(_("Output of the delivery process"), childout,
-                        MUTT_PAGER_NO_FLAGS, NULL);
+          struct PagerData pdata = { 0 };
+          struct PagerView pview = { &pdata };
+
+          pdata.fname = childout;
+
+          pview.banner = _("Output of the delivery process");
+          pview.flags = MUTT_PAGER_NO_FLAGS;
+          pview.mode = PAGER_MODE_OTHER;
+
+          mutt_do_pager(&pview);
         }
       }
     }

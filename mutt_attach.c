@@ -653,16 +653,23 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
 
   if (use_pager)
   {
-    struct Pager info = { 0 };
-    info.fp = fp;
-    info.body = a;
-    info.ctx = Context;
-    info.actx = actx;
-    info.email = e;
+    struct PagerData pdata = { 0 };
+    struct PagerView pview = { &pdata };
 
-    rc = mutt_do_pager(desc, mutt_buffer_string(pagerfile),
-                       MUTT_PAGER_ATTACHMENT | (is_message ? MUTT_PAGER_MESSAGE : MUTT_PAGER_NO_FLAGS),
-                       &info);
+    pdata.actx = actx;
+    pdata.body = a;
+    pdata.email = e;
+    pdata.fname = mutt_buffer_string(pagerfile);
+    pdata.fp = fp;
+    pdata.ctx = Context;
+
+    pview.banner = desc;
+    pview.flags = MUTT_PAGER_ATTACHMENT |
+                  (is_message ? MUTT_PAGER_MESSAGE : MUTT_PAGER_NO_FLAGS);
+    pview.mode = PAGER_MODE_ATTACH;
+
+    rc = mutt_do_pager(&pview);
+
     mutt_buffer_reset(pagerfile);
     unlink_pagerfile = false;
   }

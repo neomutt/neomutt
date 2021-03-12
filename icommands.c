@@ -291,7 +291,16 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
   mutt_file_fclose(&fp_out);
   mutt_buffer_dealloc(&filebuf);
 
-  if (mutt_do_pager((bind) ? "bind" : "macro", tempfile, MUTT_PAGER_NO_FLAGS, NULL) == -1)
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = tempfile;
+
+  pview.banner = (bind) ? "bind" : "macro";
+  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.mode = PAGER_MODE_OTHER;
+
+  if (mutt_do_pager(&pview) == -1)
   {
     // L10N: '%s' is the file name of the temporary file
     mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
@@ -330,7 +339,17 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
     dump_config(NeoMutt->sub->cs, CS_DUMP_ONLY_CHANGED, fp_out);
 
   mutt_file_fclose(&fp_out);
-  mutt_do_pager("set", tempfile, MUTT_PAGER_NO_FLAGS, NULL);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = tempfile;
+
+  pview.banner = "set";
+  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.mode = PAGER_MODE_OTHER;
+
+  mutt_do_pager(&pview);
 
   return MUTT_CMD_SUCCESS;
 }
@@ -355,7 +374,16 @@ static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
   print_version(fp_out);
   mutt_file_fclose(&fp_out);
 
-  if (mutt_do_pager("version", tempfile, MUTT_PAGER_NO_FLAGS, NULL) == -1)
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = tempfile;
+
+  pview.banner = "version";
+  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.mode = PAGER_MODE_OTHER;
+
+  if (mutt_do_pager(&pview) == -1)
   {
     // L10N: '%s' is the file name of the temporary file
     mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
