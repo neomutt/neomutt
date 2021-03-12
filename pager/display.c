@@ -363,12 +363,14 @@ bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
  */
 static void match_body_patterns(char *pat, struct Line *lines, int line_num)
 {
-  size_t nl;
-
   // don't consider line endings part of the buffer for regex matching
-  nl = mutt_str_len(pat);
-  if ((nl > 0) && (pat[nl - 1] == '\n'))
-    pat[nl - 1] = '\0';
+  bool has_nl = false;
+  size_t buflen = mutt_str_len(pat);
+  if ((buflen > 0) && (pat[buflen - 1] == '\n'))
+  {
+    has_nl = true;
+    pat[buflen - 1] = '\0';
+  }
 
   int i = 0;
   int offset = 0;
@@ -394,6 +396,10 @@ static void match_body_patterns(char *pat, struct Line *lines, int line_num)
 
   do
   {
+    /* if has_nl, we've stripped off a trailing newline */
+    if (offset >= (buflen - has_nl))
+      break;
+
     if (!pat[offset])
       break;
 
@@ -468,8 +474,9 @@ static void match_body_patterns(char *pat, struct Line *lines, int line_num)
     else
       offset = (lines[line_num].syntax)[i].last;
   } while (found || null_rx);
-  if (nl > 0)
-    pat[nl] = '\n';
+
+  if (has_nl)
+    pat[buflen - 1] = '\n';
 }
 
 /**
