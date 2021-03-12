@@ -1676,7 +1676,7 @@ static bool is_reply(struct Email *reply, struct Email *orig)
  * search_attach_keyword - Search an email for 'attachment' keywords
  * @param filename Filename
  * @param sub      Config Subset
- * @retval true If the regex matches in the email
+ * @retval true The regex matches in the email
  *
  * Search an email for the regex in $abort_noattach_regex.
  * A match might indicate that the user should have attached something.
@@ -2036,8 +2036,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
 /**
  * is_text_plain - is a Body a text/plain MIME part?
  * @param b Body to check
- * @retval true if it's text/plain
- * @retval false if it's not
+ * @retval true  Body is text/plain
+ * @retval false Body is not
  */
 static bool is_text_plain(const struct Body *b)
 {

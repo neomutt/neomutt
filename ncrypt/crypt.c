@@ -1071,7 +1071,7 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
 /**
  * mutt_should_hide_protected_subject - Should NeoMutt hide the protected subject?
  * @param e Email to test
- * @retval bool True if the subject should be protected
+ * @retval true The subject should be protected
  */
 bool mutt_should_hide_protected_subject(struct Email *e)
 {
@@ -1343,7 +1343,7 @@ const char *crypt_get_fingerprint_or_id(const char *p, const char **pphint,
 /**
  * crypt_is_numerical_keyid - Is this a numerical keyid
  * @param s Key to test
- * @retval true If keyid is numeric
+ * @retval true Keyid is numeric
  *
  * Check if a crypt-hook value is a key id.
  */

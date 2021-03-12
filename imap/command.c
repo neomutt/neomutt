@@ -102,7 +102,7 @@ static bool cmd_queue_full(struct ImapAccountData *adata)
 /**
  * cmd_new - Create and queue a new command control block
  * @param adata Imap Account data
- * @retval NULL if the pipeline is full
+ * @retval NULL The pipeline is full
  * @retval ptr New command
  */
 static struct ImapCommand *cmd_new(struct ImapAccountData *adata)
@@ -1192,7 +1192,7 @@ int imap_cmd_step(struct ImapAccountData *adata)
  * imap_code - Was the command successful
  * @param s IMAP command status
  * @retval 1 Command result was OK
- * @retval 0 If NO or BAD
+ * @retval 0 NO or BAD
  */
 bool imap_code(const char *s)
 {

@@ -122,7 +122,7 @@ static sasl_secret_t *secret_ptr = NULL;
 /**
  * sasl_auth_validator - Validate an auth method against Cyrus SASL methods
  * @param authenticator Name of the authenticator to validate
- * @retval bool True if argument matches an accepted auth method
+ * @retval true Argument matches an accepted auth method
  */
 bool sasl_auth_validator(const char *authenticator)
 {

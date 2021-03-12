@@ -184,7 +184,7 @@ static const struct Tz *find_tz(const char *s, size_t len)
 /**
  * is_leap_year_feb - Is a given February in a leap year
  * @param tm Date to be tested
- * @retval true if it's a leap year
+ * @retval true It's a leap year
  */
 static int is_leap_year_feb(struct tm *tm)
 {

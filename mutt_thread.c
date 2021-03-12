@@ -68,7 +68,7 @@ struct ThreadsContext
 /**
  * is_visible - Is the message visible?
  * @param e   Email
- * @retval true If the message is not hidden in some way
+ * @retval true The message is not hidden in some way
  */
 static bool is_visible(struct Email *e)
 {
@@ -78,7 +78,7 @@ static bool is_visible(struct Email *e)
 /**
  * need_display_subject - Determines whether to display a message's subject
  * @param e Email
- * @retval true If the subject should be displayed
+ * @retval true The subject should be displayed
  */
 static bool need_display_subject(struct Email *e)
 {

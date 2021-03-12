@@ -120,7 +120,7 @@ static void nm_hcache_close(struct HeaderCache *h)
 }
 
 /**
- * nm_get_default_data - Create a Mailbox with default Notmuch settings
+ * nm_get_default_url - Create a Mailbox with default Notmuch settings
  * @retval ptr  Mailbox with default Notmuch settings
  * @retval NULL Error, it's impossible to create an NmMboxData
  */
@@ -234,7 +234,7 @@ static const char *query_type_to_string(enum NmQueryType query_type)
 /**
  * query_window_check_timebase - Checks if a given timebase string is valid
  * @param[in] timebase: string containing a time base
- * @retval true if the given time base is valid
+ * @retval true The given time base is valid
  *
  * This function returns whether a given timebase string is valid or not,
  * which is used to validate the user settable configuration setting:
@@ -354,7 +354,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
  * @param mdata Notmuch Mailbox data
  * @param window If true enable application of the window on the search string
  * @retval ptr  String containing a notmuch search query
- * @retval NULL If none can be generated
+ * @retval NULL None can be generated
  *
  * This function parses the internal representation of a search, and returns
  * a search query string ready to be fed to the notmuch API, given the search

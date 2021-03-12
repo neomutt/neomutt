@@ -492,7 +492,7 @@ static void prepend_savedir(struct Buffer *buf)
 /**
  * has_a_message - Determine if the Body has a message (to save)
  * @param[in]  body Body of the message
- * @retval true if suitable for saving
+ * @retval true Suitable for saving
  */
 static bool has_a_message(struct Body *body)
 {
@@ -1053,7 +1053,7 @@ cleanup:
  * @param actx Attachment
  * @param top  Body of email
  * @param tag  Apply to all tagged Attachments
- * @retval true If (all) the Attachment(s) are printable
+ * @retval true (all) the Attachment(s) are printable
  */
 static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
 {
@@ -1226,7 +1226,7 @@ static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *men
  * recvattach_pgp_check_traditional - Is the Attachment inline PGP?
  * @param actx Attachment to check
  * @param menu Menu listing Attachments
- * @retval 1 If the (tagged) Attachment(s) are inline PGP
+ * @retval 1 The (tagged) Attachment(s) are inline PGP
  *
  * @note If the menu->tagprefix is set, all the tagged attachments will be checked.
  */

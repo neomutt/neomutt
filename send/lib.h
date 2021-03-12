@@ -22,7 +22,7 @@
 
 /**
  * @page lib_send SEND: Shared code for sending Emails
-
+ *
  * Shared code for sending Emails
  *
  * | File             | Description             |

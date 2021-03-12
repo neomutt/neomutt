@@ -45,7 +45,7 @@
  * @param txt    Text part, e.g. "delete"
  * @param menu   Current Menu, e.g. #MENU_PAGER
  * @param op     Operation, e.g. OP_DELETE
- * @retval true If the keybinding exists
+ * @retval true The keybinding exists
  *
  * This will return something like: "d:delete"
  */

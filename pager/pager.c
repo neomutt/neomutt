@@ -1353,7 +1353,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 /**
  * is_ansi - Is this an ANSI escape sequence?
  * @param str String to test
- * @retval bool true, if it's an ANSI escape sequence
+ * @retval true It's an ANSI escape sequence
  */
 static bool is_ansi(const char *str)
 {

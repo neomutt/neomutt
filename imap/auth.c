@@ -77,7 +77,7 @@ static const struct ImapAuth imap_authenticators[] = {
 /**
  * imap_auth_is_valid - Check if string is a valid imap authentication method
  * @param authenticator Authenticator string to check
- * @retval bool True if argument is a valid auth method
+ * @retval true Argument is a valid auth method
  *
  * Validate whether an input string is an accepted imap authentication method as
  * defined by #imap_authenticators.

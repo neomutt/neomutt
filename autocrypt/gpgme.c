@@ -350,7 +350,7 @@ cleanup:
 /**
  * mutt_autocrypt_gpgme_is_valid_key - Is a key id valid?
  * @param keyid Key id to check
- * @retval true If key id is valid
+ * @retval true Key id is valid
  */
 bool mutt_autocrypt_gpgme_is_valid_key(const char *keyid)
 {

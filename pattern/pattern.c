@@ -76,7 +76,7 @@ struct RangeRegex range_regexes[] = {
  * @param flags Flags, e.g. #MUTT_PC_PATTERN_DYNAMIC
  * @param s     String to parse
  * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
+ * @retval true The pattern was read successfully
  */
 bool (*eat_arg_t)(struct Pattern *pat, PatternCompFlags flags, struct Buffer *s,
                   struct Buffer *err);

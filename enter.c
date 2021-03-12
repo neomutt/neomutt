@@ -136,8 +136,8 @@ struct EnterState *mutt_enter_state_new(void)
  * @param buflen Buffer length
  * @param col    Initial cursor position
  * @param flags  Flags, see #CompletionFlags
- * @retval 0 if input was given
- * @retval -1 if abort
+ * @retval  0 Input was given
+ * @retval -1 Abort
  *
  * This function is for very basic input, currently used only by the
  * built-in editor.  It does not handle screen redrawing on resizes

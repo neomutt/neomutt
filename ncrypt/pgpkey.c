@@ -105,7 +105,7 @@ struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
 /**
  * pgp_key_is_valid - Is a PGP key valid?
  * @param k Key to examine
- * @retval true If key is valid
+ * @retval true Key is valid
  */
 bool pgp_key_is_valid(struct PgpKeyInfo *k)
 {
@@ -121,7 +121,7 @@ bool pgp_key_is_valid(struct PgpKeyInfo *k)
 /**
  * pgp_id_is_strong - Is a PGP key strong?
  * @param uid UID of a PGP key
- * @retval true If key is strong
+ * @retval true Key is strong
  */
 bool pgp_id_is_strong(struct PgpUid *uid)
 {
@@ -134,7 +134,7 @@ bool pgp_id_is_strong(struct PgpUid *uid)
 /**
  * pgp_id_is_valid - Is a PGP key valid
  * @param uid UID of a PGP key
- * @retval true If key is valid
+ * @retval true Key is valid
  */
 bool pgp_id_is_valid(struct PgpUid *uid)
 {

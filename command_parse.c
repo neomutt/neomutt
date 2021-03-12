@@ -421,7 +421,7 @@ int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s,
  * source_rc - Read an initialization file
  * @param rcfile_path Path to initialization file
  * @param err         Buffer for error messages
- * @retval <0 if neomutt should pause to let the user know
+ * @retval <0 NeoMutt should pause to let the user know
  */
 int source_rc(const char *rcfile_path, struct Buffer *err)
 {

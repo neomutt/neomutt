@@ -551,7 +551,7 @@ fseek_err:
 /**
  * mutt_addr_is_user - Does the address belong to the user
  * @param addr Address to check
- * @retval true if the given address belongs to the user
+ * @retval true The given address belongs to the user
  */
 bool mutt_addr_is_user(const struct Address *addr)
 {

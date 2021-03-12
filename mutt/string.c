@@ -126,7 +126,7 @@ const char *mutt_str_sysexit(int err_num)
  * @param prefix Prefix to match
  * @param match_case True if case needs to match
  * @retval num Length of prefix if str starts with prefix
- * @retval 0 if str does not start with prefix
+ * @retval 0   str does not start with prefix
  */
 static size_t startswith(const char *str, const char *prefix, bool match_case)
 {
@@ -155,7 +155,7 @@ static size_t startswith(const char *str, const char *prefix, bool match_case)
  * @param str String to check
  * @param prefix Prefix to match
  * @retval num Length of prefix if str starts with prefix
- * @retval 0 if str does not start with prefix
+ * @retval 0   str does not start with prefix
  */
 size_t mutt_str_startswith(const char *str, const char *prefix)
 {
@@ -167,7 +167,7 @@ size_t mutt_str_startswith(const char *str, const char *prefix)
  * @param str String to check
  * @param prefix Prefix to match
  * @retval num Length of prefix if str starts with prefix
- * @retval 0 if str does not start with prefix
+ * @retval 0   str does not start with prefix
  */
 size_t mutt_istr_startswith(const char *str, const char *prefix)
 {
@@ -365,7 +365,7 @@ int mutt_str_atoull(const char *str, unsigned long long *dst)
  * mutt_str_dup - Copy a string, safely
  * @param str String to copy
  * @retval ptr  Copy of the string
- * @retval NULL if str was NULL or empty
+ * @retval NULL str was NULL or empty
  */
 char *mutt_str_dup(const char *str)
 {

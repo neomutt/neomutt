@@ -40,7 +40,7 @@
 /**
  * mutt_is_mail_list - Is this the email address of a mailing list? - Implements ::addr_predicate_t
  * @param addr Address to test
- * @retval true If it's a mailing list
+ * @retval true It's a mailing list
  */
 bool mutt_is_mail_list(const struct Address *addr)
 {
@@ -52,7 +52,7 @@ bool mutt_is_mail_list(const struct Address *addr)
 /**
  * mutt_is_subscribed_list - Is this the email address of a user-subscribed mailing list? - Implements ::addr_predicate_t
  * @param addr Address to test
- * @retval true If it's a subscribed mailing list
+ * @retval true It's a subscribed mailing list
  */
 bool mutt_is_subscribed_list(const struct Address *addr)
 {
@@ -120,7 +120,7 @@ bool check_for_mailing_list_addr(struct AddressList *al, char *buf, int buflen)
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
  * @param al     AddressList
- * @retval true If a mailing list was found
+ * @retval true A mailing list was found
  */
 bool first_mailing_list(char *buf, size_t buflen, struct AddressList *al)
 {

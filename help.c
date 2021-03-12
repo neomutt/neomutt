@@ -48,7 +48,7 @@
  * @param op   Operation, e.g. OP_DELETE
  * @param menu Current Menu, e.g. #MENU_PAGER
  * @retval ptr  Key binding
- * @retval NULL If none
+ * @retval NULL No key binding found
  */
 static const struct Binding *help_lookup_function(int op, enum MenuType menu)
 {
@@ -347,7 +347,7 @@ static void dump_menu(FILE *fp, enum MenuType menu, int wraplen)
  * is_bound - Does a function have a keybinding?
  * @param km_list Keymap to examine
  * @param op      Operation, e.g. OP_DELETE
- * @retval true If a key is bound to that operation
+ * @retval true A key is bound to that operation
  */
 static bool is_bound(struct KeymapList *km_list, int op)
 {

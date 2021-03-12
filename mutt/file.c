@@ -731,7 +731,8 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, Rea
  * @param iter  State of iteration including ptr to line
  * @param fp    File pointer to read from
  * @param flags Same as mutt_file_read_line()
- * @retval      true if data read, false on eof
+ * @retval true Data read
+ * @retval false On eof
  *
  * This is a slightly cleaner interface for mutt_file_read_line() which avoids
  * the eternal C loop initialization ugliness.  Use like this:
@@ -762,7 +763,8 @@ bool mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, ReadLineFlags flag
  * @param user_data Arbitrary data passed to "func"
  * @param fp        File pointer to read from
  * @param flags     Same as mutt_file_read_line()
- * @retval          true if all data mapped, false if "func" returns false
+ * @retval true  All data mapped
+ * @retval false "func" returns false
  */
 bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, ReadLineFlags flags)
 {

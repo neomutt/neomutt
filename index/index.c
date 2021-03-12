@@ -151,7 +151,7 @@ typedef uint8_t CheckFlags;       ///< Flags, e.g. #CHECK_IN_MAILBOX
  * @param ctx    Mailbox
  * @param menu   Current Menu
  * @param checks Checks to perform, see #CheckFlags
- * @retval bool true if the checks pass successfully
+ * @retval true The checks pass successfully
  */
 static bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
 {
@@ -201,7 +201,7 @@ static bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
  * @param m   Mailbox
  * @param acl ACL, see #AclFlags
  * @param msg Error message for failure
- * @retval bool true if the function is permitted
+ * @retval true The function is permitted
  */
 static bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg)
 {

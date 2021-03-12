@@ -396,7 +396,7 @@ static const struct PopAuth pop_authenticators[] = {
 /**
  * pop_auth_is_valid - Check if string is a valid pop authentication method
  * @param authenticator Authenticator string to check
- * @retval bool True if argument is a valid auth method
+ * @retval true Argument is a valid auth method
  *
  * Validate whether an input string is an accepted pop authentication method as
  * defined by #pop_authenticators.

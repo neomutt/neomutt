@@ -165,7 +165,7 @@ int emaillist_add_email(struct EmailList *el, struct Email *e)
  * @param hdrlist List of headers to search
  * @param header  The header to search for
  * @retval node   The node in the list matching the header
- * @retval NULL   If no matching header is found
+ * @retval NULL   No matching header is found
  *
  * The header should either of the form "X-Header:" or "X-Header: value"
  */

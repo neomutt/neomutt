@@ -295,7 +295,7 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
 /**
  * write_as_text_part - Should the Body be written as a text MIME part
  * @param b Email to examine
- * @retval true If the Body should be written as text
+ * @retval true The Body should be written as text
  */
 static bool write_as_text_part(struct Body *b)
 {

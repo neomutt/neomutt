@@ -278,7 +278,7 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
 /**
  * getmailname - Try to retrieve the FQDN from mailname files
  * @retval ptr Heap allocated string with the FQDN
- * @retval NULL if no valid mailname file could be read
+ * @retval NULL No valid mailname file could be read
  */
 static char *getmailname(void)
 {

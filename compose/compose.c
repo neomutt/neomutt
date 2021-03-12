@@ -1032,7 +1032,7 @@ static void draw_envelope(struct ComposeRedrawData *rd)
  * edit_address_list - Let the user edit the address list
  * @param[in]     field Field to edit, e.g. #HDR_FROM
  * @param[in,out] al    AddressList to edit
- * @retval bool true if the address list was changed
+ * @retval true The address list was changed
  */
 static bool edit_address_list(int field, struct AddressList *al)
 {

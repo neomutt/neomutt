@@ -306,7 +306,7 @@ static void make_from_addr(struct Envelope *env, char *buf, size_t buflen, bool 
 /**
  * user_in_addr - Do any of the addresses refer to the user?
  * @param al AddressList
- * @retval true If any of the addresses match one of the user's addresses
+ * @retval true Any of the addresses match one of the user's addresses
  */
 static bool user_in_addr(struct AddressList *al)
 {
@@ -390,7 +390,7 @@ static char *apply_subject_mods(struct Envelope *env)
 /**
  * thread_is_new - Does the email thread contain any new emails?
  * @param e Email
- * @retval true If thread contains new mail
+ * @retval true Thread contains new mail
  */
 static bool thread_is_new(struct Email *e)
 {
@@ -400,7 +400,7 @@ static bool thread_is_new(struct Email *e)
 /**
  * thread_is_old - Does the email thread contain any unread emails?
  * @param e Email
- * @retval true If thread contains unread mail
+ * @retval true Thread contains unread mail
  */
 static bool thread_is_old(struct Email *e)
 {

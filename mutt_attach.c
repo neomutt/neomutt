@@ -113,8 +113,8 @@ int mutt_get_tmp_attachment(struct Body *a)
 /**
  * mutt_compose_attachment - Create an attachment
  * @param a Body of email
- * @retval 1 if require full screen redraw
- * @retval 0 otherwise
+ * @retval 1 Require full screen redraw
+ * @retval 0 Otherwise
  */
 int mutt_compose_attachment(struct Body *a)
 {
@@ -246,8 +246,8 @@ bailout:
 /**
  * mutt_edit_attachment - Edit an attachment
  * @param a Email containing attachment
- * @retval 1 if editor found
- * @retval 0 if not
+ * @retval 1 Editor found
+ * @retval 0 Editor not found
  *
  * Currently, this only works for send mode, as it assumes that the
  * Body->filename actually contains the information.  I'm not sure
@@ -401,7 +401,7 @@ static int wait_interactive_filter(pid_t pid)
  * @param e      Current Email. Can be NULL
  * @param actx   Attachment context
  * @param win    Window
- * @retval 0   If the viewer is run and exited successfully
+ * @retval 0   The viewer is run and exited successfully
  * @retval -1  Error
  * @retval num Return value of mutt_do_pager() when it is used
  *

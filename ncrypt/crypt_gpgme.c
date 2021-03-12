@@ -105,7 +105,7 @@ static char *current_sender = NULL;
 /**
  * is_pka_notation - Is this the standard pka email address
  * @param notation GPGME notation
- * @retval true If it is
+ * @retval true It is the standard pka email address
  */
 static bool is_pka_notation(gpgme_sig_notation_t notation)
 {
@@ -191,7 +191,7 @@ static const char *parse_version_number(const char *s, int *number)
  * @param minor Version x.MINOR.x
  * @param micro Version x.x.MICRO
  * @retval ptr  Patch level string
- * @retval NULL If there are fewer parts
+ * @retval NULL There are fewer parts
  *
  * Break up the complete string-representation of the version number S, which
  * is of the following structure: <major number>.<minor number>.<micro
@@ -622,7 +622,7 @@ static gpgme_data_t create_gpgme_data(void)
 /**
  * have_gpg_version - Do we have a sufficient GPG version
  * @param version Minimum version
- * @retval true If minimum version is available
+ * @retval true Minimum version is available
  *
  * Return true if the OpenPGP engine's version is at least VERSION.
  */
@@ -4329,7 +4329,7 @@ SecurityFlags smime_gpgme_send_menu(struct Email *e)
 /**
  * verify_sender - Verify the sender of a message
  * @param e Email
- * @retval true If sender is verified
+ * @retval true Sender is verified
  */
 static bool verify_sender(struct Email *e)
 {

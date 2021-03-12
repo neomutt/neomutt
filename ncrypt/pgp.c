@@ -111,7 +111,7 @@ bool pgp_class_valid_passphrase(void)
 
 /**
  * pgp_use_gpg_agent - Does the user want to use the gpg agent?
- * @retval true If they do
+ * @retval true The user wants to use the gpg agent
  *
  * @note This functions sets the environment variable `$GPG_TTY`
  */

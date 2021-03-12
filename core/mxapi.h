@@ -120,8 +120,8 @@ struct MxOps
    * ac_add - Add a Mailbox to an Account
    * @param a Account to add to
    * @param m Mailbox to add
-   * @retval  true  Success
-   * @retval  false Error
+   * @retval true  Success
+   * @retval false Error
    *
    * **Contract**
    * - @a a is not NULL

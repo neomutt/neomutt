@@ -273,7 +273,7 @@ int nm_db_get_mtime(struct Mailbox *m, time_t *mtime)
 /**
  * nm_db_is_longrun - Is Notmuch in the middle of a long-running transaction
  * @param m Mailbox
- * @retval true if it is
+ * @retval true Notmuch is in the middle of a long-running transaction
  */
 bool nm_db_is_longrun(struct Mailbox *m)
 {

@@ -39,7 +39,7 @@
  * is_descendant - Is one thread a descendant of another
  * @param a Parent thread
  * @param b Child thread
- * @retval true If b is a descendent of a (child, grandchild, etc)
+ * @retval true b is a descendent of a (child, grandchild, etc)
  */
 bool is_descendant(struct MuttThread *a, struct MuttThread *b)
 {

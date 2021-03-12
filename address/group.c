@@ -120,7 +120,7 @@ void mutt_grouplist_clear(struct GroupList *gl)
 /**
  * empty_group - Is a Group empty?
  * @param g Group to test
- * @retval true If the Group is empty
+ * @retval true The Group is empty
  */
 static bool empty_group(struct Group *g)
 {
@@ -320,7 +320,7 @@ int mutt_grouplist_remove_regex(struct GroupList *gl, const char *s)
  * mutt_group_match - Does a string match an entry in a Group?
  * @param g Group to match against
  * @param s String to match
- * @retval true If there's a match
+ * @retval true There's a match
  */
 bool mutt_group_match(struct Group *g, const char *s)
 {

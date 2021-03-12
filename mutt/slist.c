@@ -98,7 +98,7 @@ struct Slist *slist_add_string(struct Slist *list, const char *str)
  * slist_compare - Compare two string lists
  * @param a First list
  * @param b Second list
- * @retval true If they are identical
+ * @retval true They are identical
  */
 bool slist_compare(const struct Slist *a, const struct Slist *b)
 {

@@ -48,8 +48,8 @@
  * mutt_complete - Attempt to complete a partial pathname
  * @param buf    Buffer containing pathname
  * @param buflen Length of buffer
- * @retval 0 if ok
- * @retval -1 if no matches
+ * @retval  0 Ok
+ * @retval -1 No matches
  *
  * Given a partial pathname, fill in as much of the rest of the path as is
  * unique.

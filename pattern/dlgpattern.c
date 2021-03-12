@@ -257,7 +257,7 @@ static void free_pattern_menu(struct Menu **ptr)
  * dlg_select_pattern - Show menu to select a Pattern
  * @param buf    Buffer for the selected Pattern
  * @param buflen Length of buffer
- * @retval bool true, if a selection was made
+ * @retval true A selection was made
  */
 bool dlg_select_pattern(char *buf, size_t buflen)
 {

@@ -428,7 +428,7 @@ bool mutt_needs_mailcap(struct Body *m)
 /**
  * mutt_is_text_part - Is this part of an email in plain text?
  * @param b Part of an email
- * @retval true If part is in plain text
+ * @retval true Part is in plain text
  */
 bool mutt_is_text_part(struct Body *b)
 {
@@ -1344,7 +1344,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
  * mutt_save_confirm - Ask the user to save
  * @param s  Save location
  * @param st Timestamp
- * @retval  0 if OK to proceed
+ * @retval  0 OK to proceed
  * @retval -1 to abort
  * @retval  1 to retry
  */
@@ -1494,7 +1494,7 @@ void mutt_encode_path(struct Buffer *buf, const char *src)
  * mutt_set_xdg_path - Find an XDG path or its fallback
  * @param type    Type of XDG variable, e.g. #XDG_CONFIG_HOME
  * @param buf     Buffer to save path
- * @retval 1 if an entry was found that actually exists on disk and 0 otherwise
+ * @retval 1 An entry was found that actually exists on disk and 0 otherwise
  *
  * Process an XDG environment variable or its fallback.
  */
@@ -1574,9 +1574,9 @@ void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
  * mutt_inbox_cmp - do two folders share the same path and one is an inbox
  * @param a First path
  * @param b Second path
- * @retval -1 if a is INBOX of b
- * @retval 0 if none is INBOX
- * @retval 1 if b is INBOX for a
+ * @retval -1 a is INBOX of b
+ * @retval  0 None is INBOX
+ * @retval  1 b is INBOX for a
  *
  * This function compares two folder paths. It first looks for the position of
  * the last common '/' character. If a valid position is found and it's not the

@@ -1317,7 +1317,7 @@ cleanup:
  * @param e  Email
  * @param b  Attachment
  * @param fp File handle to the attachment
- * @retval bool true if a structural change is made
+ * @retval true A structural change is made
  *
  * recvattach requires the return code to know when to regenerate the actx.
  */
@@ -1433,7 +1433,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
  * @param[in]  m      Mailbox
  * @param[in]  e      Email to check
  * @param[out] redraw Flags if the screen needs redrawing, see #MuttRedrawFlags
- * @retval true If message contains inline PGP content
+ * @retval true Message contains inline PGP content
  */
 static bool check_traditional_pgp(struct Mailbox *m, struct Email *e, MuttRedrawFlags *redraw)
 {
@@ -1462,7 +1462,7 @@ static bool check_traditional_pgp(struct Mailbox *m, struct Email *e, MuttRedraw
  * @param[in]  m      Mailbox
  * @param[in]  el     List of Emails to check
  * @param[out] redraw Flags if the screen needs redrawing, see #MuttRedrawFlags
- * @retval true If message contains inline PGP content
+ * @retval true Message contains inline PGP content
  */
 bool mutt_check_traditional_pgp(struct Mailbox *m, struct EmailList *el, MuttRedrawFlags *redraw)
 {

@@ -71,7 +71,7 @@ static const struct Mapping QueryHelp[] = {
  * alias_to_addrlist - Turn an Alias into an AddressList
  * @param al    AddressList to fill (must be empty)
  * @param alias Alias to use
- * @retval bool True on success
+ * @retval true Success
  */
 static bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
 {

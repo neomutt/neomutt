@@ -87,7 +87,7 @@ static bool check_msg(struct Body *b, bool err)
  * @param actx Attachment context
  * @param cur  Current message
  * @param err  If true, report errors
- * @retval true If all parts are RFC822 messages
+ * @retval true All parts are RFC822 messages
  */
 static bool check_all_msg(struct AttachCtx *actx, struct Body *cur, bool err)
 {
