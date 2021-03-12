@@ -388,7 +388,7 @@ static void dump_unbound(FILE *fp, const struct Binding *funcs,
 void mutt_help(enum MenuType menu)
 {
   const int wraplen = AllDialogsWindow->state.cols;
-  char buf[128];
+  char banner[128];
   FILE *fp = NULL;
 
   /* We don't use the buffer pool because of the extended lifetime of t */
@@ -399,6 +399,12 @@ void mutt_help(enum MenuType menu)
   const char *desc = mutt_map_get_name(menu, Menus);
   if (!desc)
     desc = _("<UNKNOWN>");
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pview.mode = PAGER_MODE_OTHER;
+  pview.flags = MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER | MUTT_PAGER_NSKIP | MUTT_PAGER_NOWRAP;
 
   do
   {
@@ -424,10 +430,10 @@ void mutt_help(enum MenuType menu)
 
     mutt_file_fclose(&fp);
 
-    snprintf(buf, sizeof(buf), _("Help for %s"), desc);
-  } while (mutt_do_pager(buf, mutt_buffer_string(&t),
-                         MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER | MUTT_PAGER_NSKIP | MUTT_PAGER_NOWRAP,
-                         NULL) == OP_REFORMAT_WINCH);
+    snprintf(banner, sizeof(banner), _("Help for %s"), desc);
+    pdata.fname = mutt_buffer_string(&t);
+    pview.banner = banner;
+  } while (mutt_do_pager(&pview) == OP_REFORMAT_WINCH);
 
 cleanup:
   mutt_buffer_dealloc(&t);
