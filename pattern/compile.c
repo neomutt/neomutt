@@ -185,17 +185,17 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   mutt_buffer_addch(&cmd_buf, ' ');
 
   struct Mailbox *m = ctx_mailbox(ctx);
-  if (!m)
-  {
-    mutt_buffer_addch(&cmd_buf, '/');
-  }
-  else
+  if (m)
   {
     char *escaped_folder = mutt_path_escape(mailbox_path(m));
     mutt_debug(LL_DEBUG2, "escaped folder path: %s\n", escaped_folder);
     mutt_buffer_addch(&cmd_buf, '\'');
     mutt_buffer_addstr(&cmd_buf, escaped_folder);
     mutt_buffer_addch(&cmd_buf, '\'');
+  }
+  else
+  {
+    mutt_buffer_addch(&cmd_buf, '/');
   }
   mutt_buffer_addch(&cmd_buf, ' ');
   mutt_buffer_addstr(&cmd_buf, tok_buf.data);
