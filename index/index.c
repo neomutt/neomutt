@@ -35,7 +35,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -88,8 +87,8 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/adata.h"
-#include "nntp/mdata.h"
+#include "nntp/adata.h" // IWYU pragma: keep
+#include "nntp/mdata.h" // IWYU pragma: keep
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>

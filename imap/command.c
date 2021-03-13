@@ -47,12 +47,10 @@
 #include "edata.h"
 #include "init.h"
 #include "mdata.h"
-#include "message.h"
 #include "msn.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
-#include "mutt_menu.h"
 #include "mutt_socket.h"
 #include "mx.h"
 

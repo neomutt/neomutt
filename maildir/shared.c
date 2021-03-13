@@ -39,12 +39,10 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "lib.h"
-#include "edata.h"
 #include "mdata.h"
 #include "mdemail.h"
 #include "mx.h"
 #include "protos.h"
-#include "sequence.h"
 
 /**
  * mh_umask - Create a umask from the mailbox directory

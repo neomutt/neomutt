@@ -37,7 +37,6 @@
 #include <villa.h>
 #include "mutt/lib.h"
 #include "lib.h"
-#include "mutt_globals.h"
 
 /**
  * store_qdbm_open - Implements StoreOps::open()

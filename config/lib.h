@@ -49,6 +49,7 @@
 #ifndef MUTT_CONFIG_LIB_H
 #define MUTT_CONFIG_LIB_H
 
+#include <stdbool.h>
 // IWYU pragma: begin_exports
 #include "address.h"
 #include "bool.h"

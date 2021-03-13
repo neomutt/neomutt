@@ -30,8 +30,6 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
-#include "private.h"
-#include "mutt/lib.h"
 
 // clang-format off
 bool  C_Autocrypt;           ///< Config: Enables the Autocrypt feature

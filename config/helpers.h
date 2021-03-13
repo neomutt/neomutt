@@ -23,6 +23,7 @@
 #ifndef MUTT_CONFIG_HELPERS_H
 #define MUTT_CONFIG_HELPERS_H
 
+#include <stdbool.h>
 #include "quad.h"
 
 struct ConfigSubset;

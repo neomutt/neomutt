@@ -33,7 +33,6 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "lib.h"
-#include "hcache/lib.h"
 
 #define MIN_COMP_LEVEL 1  ///< Minimum compression level for zstd
 #define MAX_COMP_LEVEL 22 ///< Maximum compression level for zstd

@@ -27,7 +27,6 @@
 #define MUTT_NCRYPT_PGP_H
 
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "lib.h"
 

@@ -24,7 +24,10 @@
 #define MUTT_NNTP_ADATA_H
 
 #include <stdbool.h>
+#include <stdio.h>
+#include <sys/types.h>
 
+struct Connection;
 struct Mailbox;
 
 /**

@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <string.h>
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -40,11 +41,7 @@
 #include "hook.h"
 #include "keymap.h"
 #include "mutt_globals.h"
-#include "mutt_lua.h"
 #include "score.h"
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
 
 static const struct Command mutt_commands[] = {
   // clang-format off

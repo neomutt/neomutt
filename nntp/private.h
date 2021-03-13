@@ -23,13 +23,15 @@
 #ifndef MUTT_NNTP_PRIVATE_H
 #define MUTT_NNTP_PRIVATE_H
 
+#include <stdbool.h>
 #include <stdint.h>
 #include "lib.h"
-#include "hcache/lib.h"
 
-struct Connection;
 struct Email;
+struct HeaderCache;
 struct Mailbox;
+struct NntpAccountData;
+struct NntpMboxData;
 
 #define NNTP_PORT 119
 #define NNTP_SSL_PORT 563

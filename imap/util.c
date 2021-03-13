@@ -36,7 +36,6 @@
 #include <netinet/in.h>
 #include <signal.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/wait.h>
@@ -60,7 +59,6 @@
 #include "options.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
-#include "message.h"
 #endif
 
 /**

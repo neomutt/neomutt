@@ -49,8 +49,10 @@
 #include "compose/lib.h"
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
+#include "browser.h"
 #include "context.h"
 #include "copy.h"
+#include "format_flags.h"
 #include "handler.h"
 #include "hdrline.h"
 #include "hook.h"
@@ -68,7 +70,6 @@
 #include "rfc3676.h"
 #include "sort.h"
 #ifdef USE_NNTP
-#include "nntp/lib.h"
 #include "mx.h"
 #include "nntp/mdata.h"
 #endif

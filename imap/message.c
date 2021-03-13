@@ -31,6 +31,7 @@
 #include "config.h"
 #include <assert.h>
 #include <ctype.h>
+#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -48,6 +49,7 @@
 #include "lib.h"
 #include "bcache/lib.h"
 #include "adata.h"
+#include "commands.h"
 #include "edata.h"
 #include "mdata.h"
 #include "msn.h"

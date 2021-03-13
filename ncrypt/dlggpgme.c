@@ -53,7 +53,6 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
-#include "protos.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

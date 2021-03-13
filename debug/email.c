@@ -27,9 +27,13 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
+#include <stdio.h>
 #include "mutt/lib.h"
-#include "gui/lib.h"
+#include "address/lib.h"
+#include "email/lib.h"
 #include "lib.h"
+#include "ncrypt/lib.h"
 
 void dump_addr_list(char *buf, size_t buflen, const struct AddressList *al, const char *name)
 {

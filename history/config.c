@@ -30,8 +30,6 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
-#include "mutt/lib.h"
-#include "lib.h"
 
 // clang-format off
 short C_History;            ///< Config: Number of history entries to keep in memory per category

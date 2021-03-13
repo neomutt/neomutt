@@ -25,12 +25,8 @@
 #define MUTT_MUTT_H
 
 #include "config.h"
-#include <stddef.h>
 #include <limits.h>
 #include <stdint.h>
-#include "keymap.h"
-
-struct Mapping;
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
  * --without-wc-funcs compilation

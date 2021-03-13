@@ -31,8 +31,6 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "mdemail.h"
-#include "lib.h"
-#include "mdata.h"
 
 /**
  * maildir_entry_new - Create a new Maildir entry

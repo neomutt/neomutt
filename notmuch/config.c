@@ -30,8 +30,6 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
-#include "private.h"
-#include "lib.h"
 
 // clang-format off
 int   C_NmDbLimit;                    ///< Config: (notmuch) Default limit for Notmuch queries

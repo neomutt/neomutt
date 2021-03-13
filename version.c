@@ -35,7 +35,7 @@
 #include <sys/utsname.h>
 #include <unistd.h>
 #include "mutt/lib.h"
-#include "gui/lib.h"
+#include "gui/lib.h" // IWYU pragma: keep
 #include "version.h"
 #include "compress/lib.h"
 #ifdef HAVE_LIBIDN

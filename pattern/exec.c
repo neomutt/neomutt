@@ -32,16 +32,14 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "alias/alias.h"
-#include "alias/gui.h"
+#include "alias/alias.h" // IWYU pragma: keep
+#include "alias/gui.h"   // IWYU pragma: keep
 #include "alias/lib.h"
 #include "mutt.h"
 #include "lib.h"
@@ -54,6 +52,9 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "state.h"
+#ifndef USE_FMEMOPEN
+#include <sys/stat.h>
+#endif
 
 /**
  * patmatch - Compare a string to a Pattern

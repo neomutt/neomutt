@@ -47,6 +47,7 @@
 #include <limits.h>
 #include <notmuch.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -65,6 +66,7 @@
 #include "adata.h"
 #include "command_parse.h"
 #include "edata.h"
+#include "maildir/edata.h"
 #include "mdata.h"
 #include "mutt_commands.h"
 #include "mutt_globals.h"

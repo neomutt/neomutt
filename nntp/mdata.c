@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include "private.h"
+#include "mutt/lib.h"
 #include "mdata.h"
 #include "bcache/lib.h"
 

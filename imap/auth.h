@@ -27,6 +27,7 @@
 #define MUTT_IMAP_AUTH_H
 
 #include "config.h"
+#include <stdbool.h>
 
 struct ImapAccountData;
 

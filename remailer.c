@@ -35,21 +35,17 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "send/lib.h"
 #include "format_flags.h"
 #include "keymap.h"
-#include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "recvattach.h"
 #ifdef MIXMASTER
 #include "remailer.h"
 #endif

@@ -27,6 +27,7 @@
 
 struct AddressList;
 struct ConfigSubset;
+struct Mailbox;
 
 int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
                          struct AddressList *to, struct AddressList *cc,

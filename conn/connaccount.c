@@ -35,7 +35,6 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "connaccount.h"
-#include "lib.h"
 #include "mutt_globals.h"
 #include "options.h"
 

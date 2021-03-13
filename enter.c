@@ -34,14 +34,13 @@
 #include <wchar.h>
 #include <wctype.h>
 #include "mutt/lib.h"
-#include "core/neomutt.h"
+#include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "history/lib.h"
 #include "pattern/lib.h"
 #include "browser.h"
-#include "context.h"
 #include "enter_state.h"
 #include "init.h"
 #include "keymap.h"

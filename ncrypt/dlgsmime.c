@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -39,7 +38,6 @@
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "opcodes.h"
-#include "protos.h"
 #include "smime.h"
 
 /// Help Bar for the Smime key selection dialog

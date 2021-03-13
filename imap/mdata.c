@@ -27,8 +27,12 @@
  */
 
 #include "config.h"
+#include <stddef.h>
+#include "private.h"
 #include "core/lib.h"
 #include "mdata.h"
+#include "hcache/lib.h"
+#include "adata.h"
 
 /**
  * imap_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()

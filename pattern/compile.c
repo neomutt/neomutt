@@ -39,13 +39,12 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "email/lib.h"
+#include "email/lib.h" // IWYU pragma: keep
 #include "core/lib.h"
 #include "mutt.h"
 #include "lib.h"
 #include "context.h"
 #include "init.h"
-#include "mutt_globals.h"
 #include "mutt_menu.h"
 
 // clang-format off

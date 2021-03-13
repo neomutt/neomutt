@@ -30,8 +30,6 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
-#include "private.h"
-#include "lib.h"
 
 // clang-format off
 bool  C_CheckNew;                 ///< Config: (maildir,mh) Check for new mail while the mailbox is open

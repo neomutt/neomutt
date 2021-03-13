@@ -24,9 +24,7 @@
 #define MUTT_ALIAS_GUI_H
 
 #include <stdbool.h>
-#include "sort.h"
-#include "core/neomutt.h"
-#include "mutt/array.h"
+#include "mutt/lib.h"
 
 struct Alias;
 

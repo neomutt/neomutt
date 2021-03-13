@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -34,7 +35,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "context.h"
-#include "mutt_globals.h"
+#include "mutt_commands.h"
 
 extern const struct Mapping Fields[];
 extern const struct Mapping ComposeFields[];

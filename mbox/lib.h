@@ -40,7 +40,6 @@
 #include <time.h>
 #include "core/lib.h"
 
-struct ConfigSet;
 struct stat;
 
 /**

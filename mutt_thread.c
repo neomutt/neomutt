@@ -31,11 +31,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "mutt.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "protos.h"

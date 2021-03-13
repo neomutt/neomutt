@@ -28,9 +28,6 @@
 #include "mutt/lib.h"
 #include "lib.h"
 
-struct Buffer;
-struct Pattern;
-
 /**
  * enum PatternEat - Function to process pattern arguments
  *

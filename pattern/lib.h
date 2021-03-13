@@ -48,7 +48,6 @@
 
 struct AliasMenuData;
 struct AliasView;
-struct ConfigSet;
 struct Context;
 struct Email;
 struct Envelope;

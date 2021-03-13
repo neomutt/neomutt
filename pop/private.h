@@ -26,10 +26,8 @@
 
 #include <stdbool.h>
 #include <time.h>
-#include "mutt/lib.h"
 #include "conn/lib.h"
 
-struct Email;
 struct Mailbox;
 struct PopAccountData;
 struct Progress;

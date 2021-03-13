@@ -27,11 +27,10 @@
  */
 
 #include <limits.h>
-#include <stdbool.h>
 #include <stdlib.h>
-#include <string.h>
-#include "private.h"
+#include "mutt/lib.h"
 #include "msn.h"
+#include "mdata.h" // IWYU pragma: keep
 
 /**
  * imap_msn_reserve - Create / reallocate the cache

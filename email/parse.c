@@ -42,7 +42,6 @@
 #include "from.h"
 #include "globals.h"
 #include "mime.h"
-#include "mutt_globals.h"
 #include "parameter.h"
 #include "rfc2047.h"
 #include "rfc2231.h"

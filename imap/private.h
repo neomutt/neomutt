@@ -29,19 +29,17 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <time.h>
-#include "mutt/lib.h"
 #include "config/lib.h"
 #include "mutt.h"
-#include "hcache/lib.h"
 
-struct Account;
+struct Buffer;
 struct ConnAccount;
 struct Email;
+struct ImapAccountData;
 struct ImapMboxData;
+struct ListHead;
 struct Mailbox;
 struct Message;
-struct MSN;
 struct Progress;
 
 #define IMAP_PORT     143  ///< Default port for IMAP
@@ -198,9 +196,6 @@ extern bool          C_ImapQresync;
 extern bool          C_ImapRfc5161;
 extern bool          C_ImapServerNoise;
 extern char *        C_ImapUser;
-
-#include "adata.h"
-#include "mdata.h"
 
 /* -- private IMAP functions -- */
 /* imap.c */

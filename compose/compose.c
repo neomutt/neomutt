@@ -33,6 +33,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -55,7 +56,6 @@
 #include "context.h"
 #include "format_flags.h"
 #include "hook.h"
-#include "init.h"
 #include "keymap.h"
 #include "mutt_attach.h"
 #include "mutt_globals.h"
@@ -69,7 +69,6 @@
 #include "protos.h"
 #include "recvattach.h"
 #include "rfc3676.h"
-#include "sort.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -78,7 +77,7 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/adata.h"
+#include "nntp/adata.h" // IWYU pragma: keep
 #endif
 #ifdef USE_POP
 #include "pop/lib.h"

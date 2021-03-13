@@ -23,8 +23,6 @@
 #ifndef MUTT_CONFIG_MBTABLE_H
 #define MUTT_CONFIG_MBTABLE_H
 
-struct ConfigSet;
-
 /**
  * struct MbTable - multibyte character table
  *

@@ -38,6 +38,8 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "pattern/lib.h"
+#include "adata.h"
+#include "mdata.h"
 
 // fwd decl, mutually recursive: check_pattern_list, check_pattern
 static int check_pattern_list(const struct PatternList *patterns);

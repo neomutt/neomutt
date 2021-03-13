@@ -23,7 +23,6 @@
 #ifndef MUTT_IMAP_MSN_H
 #define MUTT_IMAP_MSN_H
 
-#include "config.h"
 #include <stdlib.h>
 
 struct MSN;

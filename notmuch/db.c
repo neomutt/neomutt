@@ -42,7 +42,6 @@
 #include "mdata.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
-#include "query.h"
 
 /**
  * nm_db_get_filename - Get the filename of the Notmuch database

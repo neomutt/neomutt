@@ -48,6 +48,7 @@
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "send/lib.h"
+#include "browser.h"
 #include "context.h"
 #include "copy.h"
 #include "format_flags.h"

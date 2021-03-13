@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "email.h"
 #include "body.h"

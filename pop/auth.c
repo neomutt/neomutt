@@ -35,7 +35,6 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "conn/lib.h"
-#include "lib.h"
 #include "adata.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"

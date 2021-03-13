@@ -32,6 +32,7 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "conn/lib.h"
+#include "adata.h"
 #include "auth.h"
 #include "mutt_socket.h"
 

@@ -28,8 +28,8 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include <time.h>
+#include "mutt/lib.h"
 
-struct Buffer;
 struct Mailbox;
 
 /* These Config Variables are only used in browser.c */

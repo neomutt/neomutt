@@ -36,7 +36,6 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "mutt_commands.h"
-#include "mutt_globals.h"
 
 void sb_win_remove_observers(struct MuttWindow *win);
 

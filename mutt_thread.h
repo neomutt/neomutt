@@ -24,12 +24,12 @@
 #define MUTT_MUTT_THREAD_H
 
 #include <stdbool.h>
+#include <sys/types.h>
 #include <stdint.h>
 
 struct Email;
 struct EmailList;
 struct Mailbox;
-struct MuttThread;
 struct ThreadsContext;
 
 /* These Config Variables are only used in mutt_thread.c */
@@ -113,6 +113,5 @@ int                    mutt_parent_message    (struct Email *e, bool find_root);
 off_t                  mutt_set_vnum          (struct Mailbox *m);
 void                   mutt_sort_subthreads   (struct ThreadsContext *tctx, bool init);
 void                   mutt_sort_threads      (struct ThreadsContext *tctx, bool init);
-
 
 #endif /* MUTT_MUTT_THREAD_H */

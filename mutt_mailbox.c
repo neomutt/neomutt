@@ -28,7 +28,6 @@
 #include "config.h"
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/time.h>
 #include <time.h>
 #include <utime.h>
 #include "mutt/lib.h"
@@ -37,7 +36,6 @@
 #include "mutt_mailbox.h"
 #include "mbox/lib.h"
 #include "mutt_globals.h"
-#include "mutt_menu.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"

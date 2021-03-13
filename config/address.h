@@ -24,7 +24,6 @@
 #define MUTT_CONFIG_ADDRESS_H
 
 struct Address;
-struct ConfigSet;
 
 void            address_free(struct Address **addr);
 struct Address *address_new (const char *addr);

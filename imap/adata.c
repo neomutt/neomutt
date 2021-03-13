@@ -27,10 +27,11 @@
  */
 
 #include "config.h"
+#include "private.h"
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "conn/lib.h"
 #include "adata.h"
-#include "mdata.h"
 
 /**
  * imap_adata_free - Free the private Account data - Implements Account::adata_free()

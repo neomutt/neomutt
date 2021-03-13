@@ -36,6 +36,8 @@
 #include "address/lib.h"
 #include "lib.h"
 
+struct Mailbox;
+
 /* Prepared statements */
 static sqlite3_stmt *AccountGetStmt;
 static sqlite3_stmt *AccountInsertStmt;

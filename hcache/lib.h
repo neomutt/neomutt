@@ -71,7 +71,6 @@
 #include <stdint.h>
 
 struct Buffer;
-struct ConfigSet;
 struct Email;
 
 /**

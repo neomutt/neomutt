@@ -35,7 +35,8 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "alias/gui.h"
+#include "alias/gui.h" // IWYU pragma: keep
+#include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"

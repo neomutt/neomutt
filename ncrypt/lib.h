@@ -63,7 +63,6 @@ struct Body;
 #ifdef USE_AUTOCRYPT
 struct Buffer;
 #endif
-struct ConfigSet;
 struct Email;
 struct EmailList;
 struct Envelope;

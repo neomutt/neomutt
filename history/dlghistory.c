@@ -32,7 +32,6 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "lib.h"
 #include "format_flags.h"
 #include "keymap.h"

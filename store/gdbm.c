@@ -35,7 +35,6 @@
 #include <gdbm.h>
 #include "mutt/lib.h"
 #include "lib.h"
-#include "mutt_globals.h"
 
 /**
  * store_gdbm_open - Implements StoreOps::open()

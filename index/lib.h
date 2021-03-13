@@ -43,7 +43,6 @@ struct Email;
 struct Mailbox;
 struct Menu;
 struct MuttWindow;
-struct NotifyCallback;
 
 int  index_color(struct Menu *menu, int line);
 void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line);

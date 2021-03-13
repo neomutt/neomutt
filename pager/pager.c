@@ -34,6 +34,8 @@
 #include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -55,7 +57,6 @@
 #include "format_flags.h"
 #include "hdrline.h"
 #include "hook.h"
-#include "init.h"
 #include "keymap.h"
 #include "mutt_attach.h"
 #include "mutt_globals.h"
@@ -76,7 +77,7 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/mdata.h"
+#include "nntp/mdata.h" // IWYU pragma: keep
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>

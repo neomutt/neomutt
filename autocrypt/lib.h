@@ -93,7 +93,6 @@
 #include <sqlite3.h>
 #include <stdio.h>
 
-struct ConfigSet;
 struct Email;
 struct Envelope;
 struct Mailbox;
