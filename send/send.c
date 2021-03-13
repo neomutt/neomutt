@@ -2126,7 +2126,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   char *finalpath = NULL;
   struct EmailNode *en = NULL;
   struct Email *e_cur = NULL;
-  struct Mailbox *mailbox = ctx ? ctx->mailbox : NULL;
+  struct Mailbox *m = ctx ? ctx->mailbox : NULL;
 
   if (el)
     en = STAILQ_FIRST(el);
@@ -2144,7 +2144,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   const enum QuadOption c_recall = cs_subset_quad(sub, "recall");
 
-  if (!flags && !e_templ && (c_recall != MUTT_NO) && mutt_num_postponed(mailbox, true))
+  if (!flags && !e_templ && (c_recall != MUTT_NO) && mutt_num_postponed(m, true))
   {
     /* If the user is composing a new message, check to see if there
      * are any postponed messages first.  */
@@ -2317,8 +2317,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!(flags & (SEND_POSTPONED | SEND_RESEND)) &&
       !((flags & SEND_DRAFT_FILE) && c_resume_draft_files))
   {
-    if ((flags & (SEND_REPLY | SEND_FORWARD | SEND_TO_SENDER)) && mailbox &&
-        (envelope_defaults(e_templ->env, mailbox, el, flags, sub) == -1))
+    if ((flags & (SEND_REPLY | SEND_FORWARD | SEND_TO_SENDER)) && m &&
+        (envelope_defaults(e_templ->env, m, el, flags, sub) == -1))
     {
       goto cleanup;
     }
@@ -2334,11 +2334,11 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       mutt_fix_reply_recipients(e_templ->env, sub);
 
 #ifdef USE_NNTP
-    if ((flags & SEND_NEWS) && (mailbox && mailbox->type == MUTT_NNTP) &&
+    if ((flags & SEND_NEWS) && (m && m->type == MUTT_NNTP) &&
         !e_templ->env->newsgroups)
     {
       e_templ->env->newsgroups =
-          mutt_str_dup(((struct NntpMboxData *) mailbox->mdata)->group);
+          mutt_str_dup(((struct NntpMboxData *) m->mdata)->group);
     }
 #endif
 
@@ -2366,7 +2366,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if ((flags & SEND_REPLY) && e_cur)
     {
       /* change setting based upon message we are replying to */
-      mutt_message_hook(mailbox, e_cur, MUTT_REPLY_HOOK);
+      mutt_message_hook(m, e_cur, MUTT_REPLY_HOOK);
 
       /* set the replied flag for the message we are generating so that the
        * user can use ~Q in a send-hook to know when reply-hook's are also
@@ -2408,7 +2408,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
 
     if (!(flags & SEND_BATCH))
-      mutt_make_greeting(mailbox, e_templ, fp_tmp, sub);
+      mutt_make_greeting(m, e_templ, fp_tmp, sub);
 
     const bool c_sig_on_top = cs_subset_bool(sub, "sig_on_top");
     const char *c_editor = cs_subset_string(sub, "editor");
@@ -2418,8 +2418,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
 
     /* include replies/forwarded messages, unless we are given a template */
-    if (!tempfile && (mailbox || !(flags & (SEND_REPLY | SEND_FORWARD))) &&
-        (generate_body(fp_tmp, e_templ, flags, mailbox, el, sub) == -1))
+    if (!tempfile && (m || !(flags & (SEND_REPLY | SEND_FORWARD))) &&
+        (generate_body(fp_tmp, e_templ, flags, m, el, sub) == -1))
     {
       goto cleanup;
     }
@@ -2847,7 +2847,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (c_fcc_before_send)
     save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
 
-  i = invoke_mta(mailbox, e_templ, sub);
+  i = invoke_mta(m, e_templ, sub);
   if (i < 0)
   {
     if (!(flags & SEND_BATCH))
@@ -2895,7 +2895,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 #ifdef USE_NOTMUCH
     const bool c_nm_record = cs_subset_bool(sub, "nm_record");
     if (c_nm_record)
-      nm_record_message(mailbox, finalpath, e_cur);
+      nm_record_message(m, finalpath, e_cur);
 #endif
     mutt_sleep(0);
   }
@@ -2910,11 +2910,11 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
    * In-Reply-To: and References: headers during edit */
   if (flags & SEND_REPLY)
   {
-    if (!(flags & SEND_POSTPONED) && mailbox)
+    if (!(flags & SEND_POSTPONED) && m)
     {
       STAILQ_FOREACH(en, el, entries)
       {
-        mutt_set_flag(mailbox, en->email, MUTT_REPLIED, is_reply(en->email, e_templ));
+        mutt_set_flag(m, en->email, MUTT_REPLIED, is_reply(en->email, e_templ));
       }
     }
   }
