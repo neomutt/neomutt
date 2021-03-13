@@ -280,12 +280,12 @@ void crypt_pgp_invoke_getkeys(struct Address *addr)
 /**
  * crypt_pgp_check_traditional - Wrapper for CryptModuleSpecs::pgp_check_traditional()
  */
-int crypt_pgp_check_traditional(FILE *fp, struct Body *b, bool just_one)
+bool crypt_pgp_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_check_traditional))
     return CRYPT_MOD_CALL(PGP, pgp_check_traditional)(fp, b, just_one);
 
-  return 0;
+  return false;
 }
 
 /**

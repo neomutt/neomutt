@@ -3370,12 +3370,12 @@ int mutt_index_menu(struct MuttWindow *dlg)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, cur.e, tag);
 
-        mutt_emails_set_flag(Context->mailbox, &el, MUTT_DELETE, 1);
+        mutt_emails_set_flag(Context->mailbox, &el, MUTT_DELETE, true);
         mutt_emails_set_flag(Context->mailbox, &el, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
         const bool c_delete_untag =
             cs_subset_bool(NeoMutt->sub, "delete_untag");
         if (c_delete_untag)
-          mutt_emails_set_flag(Context->mailbox, &el, MUTT_TAG, 0);
+          mutt_emails_set_flag(Context->mailbox, &el, MUTT_TAG, false);
         emaillist_clear(&el);
 
         if (tag)
@@ -3941,8 +3941,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, cur.e, tag);
 
-        mutt_emails_set_flag(Context->mailbox, &el, MUTT_DELETE, 0);
-        mutt_emails_set_flag(Context->mailbox, &el, MUTT_PURGE, 0);
+        mutt_emails_set_flag(Context->mailbox, &el, MUTT_DELETE, false);
+        mutt_emails_set_flag(Context->mailbox, &el, MUTT_PURGE, false);
         emaillist_clear(&el);
 
         if (tag)

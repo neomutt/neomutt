@@ -119,7 +119,7 @@ void thread_hash_destructor(int type, void *obj, intptr_t data)
  * @param reverse If true, reverse the direction of the search
  * @retval ptr Matching Email
  */
-struct Email *find_virtual(struct MuttThread *cur, int reverse)
+struct Email *find_virtual(struct MuttThread *cur, bool reverse)
 {
   if (!cur)
     return NULL;

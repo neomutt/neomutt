@@ -2554,13 +2554,13 @@ static int line_compare(const char *a, size_t n, const char *b)
  * pgp_check_traditional_one_body - Check one inline PGP body part
  * @param fp File to read from
  * @param b  Body of the email
- * @retval 1 Success
- * @retval 0 Error
+ * @retval true  Success
+ * @retval false Error
  */
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char buf[8192];
-  int rv = 0;
+  bool rc = false;
 
   bool sgn = false;
   bool enc = false;
@@ -2612,19 +2612,19 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   mutt_param_set(&b->parameter, "format", "fixed");
   mutt_param_set(&b->parameter, "x-action", enc ? "pgp-encrypted" : "pgp-signed");
 
-  rv = 1;
+  rc = true;
 
 cleanup:
   mutt_buffer_pool_release(&tempfile);
-  return rv;
+  return rc;
 }
 
 /**
  * pgp_gpgme_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional()
  */
-int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one)
+bool pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
-  int rc = 0;
+  bool rc = false;
   for (; b; b = b->next)
   {
     if (!just_one && is_multipart(b))

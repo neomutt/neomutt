@@ -39,7 +39,7 @@ struct State;
 
 bool pgp_use_gpg_agent(void);
 
-int pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one);
+bool pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one);
 
 char *pgp_this_keyid(struct PgpKeyInfo *k);
 char *pgp_keyid(struct PgpKeyInfo *k);

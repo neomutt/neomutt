@@ -1155,7 +1155,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
       cur = cur->next;
       if (!cur)
         return -1;
-      e_tmp = find_virtual(cur, 0);
+      e_tmp = find_virtual(cur, false);
     } while (!e_tmp);
   }
   else
@@ -1165,7 +1165,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
       cur = cur->prev;
       if (!cur)
         return -1;
-      e_tmp = find_virtual(cur, 1);
+      e_tmp = find_virtual(cur, true);
     } while (!e_tmp);
   }
 

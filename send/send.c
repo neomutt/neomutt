@@ -2334,11 +2334,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       mutt_fix_reply_recipients(e_templ->env, sub);
 
 #ifdef USE_NNTP
-    if ((flags & SEND_NEWS) && (m && m->type == MUTT_NNTP) &&
-        !e_templ->env->newsgroups)
+    if ((flags & SEND_NEWS) && (m && m->type == MUTT_NNTP) && !e_templ->env->newsgroups)
     {
-      e_templ->env->newsgroups =
-          mutt_str_dup(((struct NntpMboxData *) m->mdata)->group);
+      e_templ->env->newsgroups = mutt_str_dup(((struct NntpMboxData *) m->mdata)->group);
     }
 #endif
 
