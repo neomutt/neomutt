@@ -101,6 +101,18 @@ enum MxOpenReturns
 };
 
 /**
+ * enum MxCreateReturns - Return values for mbox_create()
+ */
+enum MxCreateReturns
+{
+  MX_CREATE_OK,           ///< Create succeeded
+  MX_CREATE_EXISTS,       ///< Create failed because a matching mailbox already exists
+  MX_CREATE_BAD_NAME,     ///< Create failed because the name was invalid, e.g. ''
+  MX_CREATE_SYS_ERROR,    ///< Create failed because of a system error, errno set
+  MX_CREATE_ERROR,        ///< Create failed because of a general error
+};
+
+/**
  * @defgroup mx_api Mailbox API
  *
  * The Mailbox API
@@ -412,6 +424,15 @@ struct MxOps
    * @pre path is not NULL and not empty
    */
   int (*path_is_empty)     (const char *path);
+
+  /**
+   * mbox_create - create a new mailbox
+   * @param[in] a Account to create the mailbox on
+   * @param[in] m_parent parent Mailbox to create under
+   * @param[in] name The name of the mailbox
+   * @param[out] new_ptr pointer to the mailbox to be created
+  */
+  enum MxCreateReturns (*mbox_create)       (struct Account *a, struct Mailbox *m_parent, const char *name, struct Mailbox **new_ptr);
 };
 
 #endif /* MUTT_CORE_MXAPI_H */

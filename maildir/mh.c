@@ -1265,6 +1265,7 @@ struct MxOps MxMhOps = {
   .mbox_open_append = mh_mbox_open_append,
   .mbox_check       = mh_mbox_check,
   .mbox_check_stats = mh_mbox_check_stats,
+  .mbox_create      = NULL,
   .mbox_sync        = mh_mbox_sync,
   .mbox_close       = mh_mbox_close,
   .msg_open         = mh_msg_open,

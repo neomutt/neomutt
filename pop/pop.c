@@ -1206,6 +1206,7 @@ struct MxOps MxPopOps = {
   .mbox_open_append = NULL,
   .mbox_check       = pop_mbox_check,
   .mbox_check_stats = NULL,
+  .mbox_create      = NULL,
   .mbox_sync        = pop_mbox_sync,
   .mbox_close       = pop_mbox_close,
   .msg_open         = pop_msg_open,

@@ -2521,6 +2521,7 @@ struct MxOps MxImapOps = {
   .mbox_check_stats = imap_mbox_check_stats,
   .mbox_sync        = NULL, /* imap syncing is handled by imap_sync_mailbox */
   .mbox_close       = imap_mbox_close,
+  .mbox_create      = NULL,
   .msg_open         = imap_msg_open,
   .msg_open_new     = imap_msg_open_new,
   .msg_commit       = imap_msg_commit,

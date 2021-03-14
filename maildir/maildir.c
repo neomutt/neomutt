@@ -74,6 +74,8 @@ struct Progress;
 #define MMC_NEW_DIR (1 << 0) ///< 'new' directory changed
 #define MMC_CUR_DIR (1 << 1) ///< 'cur' directory changed
 
+static const char *maildir_subdirs[] = { "cur", "tmp", "new" };
+
 /**
  * maildir_check_dir - Check for new mail / mail counts
  * @param m           Mailbox to check
@@ -1651,6 +1653,77 @@ static enum MailboxType maildir_path_probe(const char *path, const struct stat *
 }
 
 /**
+ * maildir_create_maildir - create a new maildir directory tree
+ * @param root_path Path to create the maildir under
+ * @retval -1 Creation failed, we attempt to cleanup anything we already created, errno set
+ * @retval  0 Creation success
+ *
+ */
+static int maildir_create_maildir(const char *root_path)
+{
+  char dir_path[PATH_MAX];
+
+  for (int i = 0; i < mutt_array_size(maildir_subdirs); i++)
+  {
+    if (strlen(root_path) + strlen(maildir_subdirs[i]) + 1 > PATH_MAX)
+    {
+      errno = ENAMETOOLONG;
+      return -1;
+    }
+
+    snprintf(dir_path, sizeof(dir_path), "%s/%s", root_path, maildir_subdirs[i]);
+
+    if (mutt_file_mkdir(dir_path, S_IRWXU) == -1)
+    {
+      const int mkdir_errno = errno;
+
+      /* Cleanup anything we've already made */
+      for (int j = i - 1; j >= 0; j--)
+      {
+        snprintf(dir_path, sizeof(dir_path), "%s/%s", root_path, maildir_subdirs[j]);
+        rmdir(dir_path);
+      }
+      rmdir(root_path);
+
+      errno = mkdir_errno;
+      return -1;
+    }
+  }
+  return 0;
+}
+
+/**
+ * maildir_create_mailbox - Create a maildir mailbox - Implements - MxOps::mbox_create()
+ */
+static enum MxCreateReturns maildir_create_mailbox(struct Account *a, struct Mailbox *m_parent,
+                                                   const char *name, struct Mailbox **new_ptr)
+{
+  if (!name || (*name == '\0'))
+    return MX_CREATE_BAD_NAME;
+
+  char path[PATH_MAX];
+  snprintf(path, sizeof(path), "%s/%s", mailbox_path(m_parent), name);
+
+  struct stat sb;
+  if (stat(path, &sb) == 0 && maildir_path_probe(path, &sb) == MUTT_MAILDIR)
+    return MX_CREATE_EXISTS;
+
+  if (maildir_create_maildir(path) == -1)
+    return MX_CREATE_SYS_ERROR;
+
+  *new_ptr = mailbox_new();
+  struct Mailbox *m_new = *new_ptr;
+
+  buf_strcpy(&m_new->pathbuf, path);
+  m_new->realpath = mutt_str_dup(path);
+  m_new->name = mutt_str_dup(name);
+  m_new->type = MUTT_MAILDIR;
+  mx_ac_add(a, m_new);
+
+  return MX_CREATE_OK;
+}
+
+/**
  * MxMaildirOps - Maildir Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 struct MxOps MxMaildirOps = {
@@ -1664,6 +1737,7 @@ struct MxOps MxMaildirOps = {
   .mbox_open_append = maildir_mbox_open_append,
   .mbox_check       = maildir_mbox_check,
   .mbox_check_stats = maildir_mbox_check_stats,
+  .mbox_create      = maildir_create_mailbox,
   .mbox_sync        = maildir_mbox_sync,
   .mbox_close       = maildir_mbox_close,
   .msg_open         = maildir_msg_open,

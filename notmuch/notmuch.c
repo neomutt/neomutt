@@ -2486,6 +2486,7 @@ struct MxOps MxNotmuchOps = {
   .mbox_open_append = NULL,
   .mbox_check       = nm_mbox_check,
   .mbox_check_stats = nm_mbox_check_stats,
+  .mbox_create      = NULL,
   .mbox_sync        = nm_mbox_sync,
   .mbox_close       = nm_mbox_close,
   .msg_open         = nm_msg_open,
