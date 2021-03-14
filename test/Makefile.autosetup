@@ -556,7 +556,7 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/gui $(PWD)/test/hash $(PWD)/test/history \
 		  $(PWD)/test/idna $(PWD)/test/list $(PWD)/test/logging \
 		  $(PWD)/test/mailbox $(PWD)/test/mapping $(PWD)/test/mbyte \
-		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neo \
+		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neo $(PWD)/test/notmuch \
 		  $(PWD)/test/notify $(PWD)/test/parameter $(PWD)/test/parse \
 		  $(PWD)/test/path $(PWD)/test/pattern $(PWD)/test/pool \
 		  $(PWD)/test/prex $(PWD)/test/regex $(PWD)/test/rfc2047 \
