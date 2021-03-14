@@ -42,7 +42,6 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "core/lib.h"
-#include "mx.h"
 
 struct ConfigSet;
 struct Email;
