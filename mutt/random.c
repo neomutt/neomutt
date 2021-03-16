@@ -32,15 +32,16 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
 #include "random.h"
 #include "exit.h"
 #include "logging.h"
 #include "message.h"
 #ifdef HAVE_SYS_RANDOM_H
-#include "sys/random.h"
+#include <sys/random.h>
 #endif
 
-static FILE *fp_random;
+static FILE *fp_random = NULL;
 
 static const unsigned char base32[] = "abcdefghijklmnopqrstuvwxyz234567";
 

@@ -180,7 +180,8 @@ static void dump_macro(struct Buffer *buf, struct Mapping *menu, struct Keymap *
  * @param buf   Output buffer
  * @param menu  Menu to dump
  * @param bind  If true it's :bind, else :macro
- * @retval bool true if menu is empty, false if not
+ * @retval true  Menu is empty
+ * @retval false Menu is not empty
  */
 static bool dump_menu(struct Buffer *buf, struct Mapping *menu, bool bind)
 {

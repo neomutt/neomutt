@@ -59,7 +59,7 @@ static int get_toplevel_encoding(struct Body *a)
  * check_boundary - check for duplicate boundary
  * @param boundary Boundary to look for
  * @param b        Body parts to check
- * @retval true if duplicate found
+ * @retval true Duplicate found
  */
 static bool check_boundary(const char *boundary, struct Body *b)
 {

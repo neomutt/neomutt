@@ -52,7 +52,6 @@
 #include "format_flags.h"
 #include "mdata.h"
 #include "mutt_account.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "muttlib.h"

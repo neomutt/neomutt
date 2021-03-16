@@ -111,7 +111,7 @@ bool pgp_class_valid_passphrase(void)
 
 /**
  * pgp_use_gpg_agent - Does the user want to use the gpg agent?
- * @retval true If they do
+ * @retval true The user wants to use the gpg agent
  *
  * @note This functions sets the environment variable `$GPG_TTY`
  */
@@ -762,14 +762,14 @@ out:
  * pgp_check_traditional_one_body - Check the body of an inline PGP message
  * @param fp File to read
  * @param b  Body to populate
- * @retval 1 Success
- * @retval 0 Error
+ * @retval true  Success
+ * @retval false Error
  */
-static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
+static bool pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   struct Buffer *tempfile = NULL;
   char buf[8192];
-  int rc = 0;
+  bool rc = false;
 
   bool sgn = false;
   bool enc = false;
@@ -823,7 +823,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   else if (key)
     mutt_param_set(&b->parameter, "x-action", "pgp-keys");
 
-  rc = 1;
+  rc = true;
 
 cleanup:
   mutt_buffer_pool_release(&tempfile);
@@ -833,9 +833,9 @@ cleanup:
 /**
  * pgp_class_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional()
  */
-int pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one)
+bool pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
-  int rc = 0;
+  bool rc = false;
   int r;
   for (; b; b = b->next)
   {

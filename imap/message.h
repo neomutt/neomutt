@@ -24,7 +24,6 @@
 #ifndef MUTT_IMAP_MESSAGE_H
 #define MUTT_IMAP_MESSAGE_H
 
-#include <stdbool.h>
 #include <time.h>
 
 /**

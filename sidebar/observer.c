@@ -36,14 +36,13 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "mutt_commands.h"
-#include "mutt_globals.h"
 
 void sb_win_remove_observers(struct MuttWindow *win);
 
 /**
  * calc_divider - Decide what actions are required for the divider
  * @param wdata   Sidebar data
- * @retval bool true, if the width has changed
+ * @retval true The width has changed
  *
  * If the divider changes width, then Window will need to be reflowed.
  */

@@ -29,39 +29,29 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <locale.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "pgpkey.h"
 #include "lib.h"
-#include "pager/lib.h"
 #include "send/lib.h"
 #include "crypt.h"
-#include "format_flags.h"
 #include "gnupgparse.h"
-#include "keymap.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
-#include "mutt_menu.h"
 #include "muttlib.h"
-#include "opcodes.h"
 #include "options.h"
 #include "pgpinvoke.h"
-#include "protos.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"
 #include "pgplib.h"
@@ -105,7 +95,7 @@ struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
 /**
  * pgp_key_is_valid - Is a PGP key valid?
  * @param k Key to examine
- * @retval true If key is valid
+ * @retval true Key is valid
  */
 bool pgp_key_is_valid(struct PgpKeyInfo *k)
 {
@@ -121,7 +111,7 @@ bool pgp_key_is_valid(struct PgpKeyInfo *k)
 /**
  * pgp_id_is_strong - Is a PGP key strong?
  * @param uid UID of a PGP key
- * @retval true If key is strong
+ * @retval true Key is strong
  */
 bool pgp_id_is_strong(struct PgpUid *uid)
 {
@@ -134,7 +124,7 @@ bool pgp_id_is_strong(struct PgpUid *uid)
 /**
  * pgp_id_is_valid - Is a PGP key valid
  * @param uid UID of a PGP key
- * @retval true If key is valid
+ * @retval true Key is valid
  */
 bool pgp_id_is_valid(struct PgpUid *uid)
 {

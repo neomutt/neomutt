@@ -43,9 +43,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "core/lib.h"
-#include "edata.h"
 
-struct ConfigSet;
 struct Email;
 struct HeaderCache;
 

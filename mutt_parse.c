@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "mutt_parse.h"
 #include "ncrypt/lib.h"
 #include "mutt_globals.h"

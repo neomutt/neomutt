@@ -46,7 +46,7 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "smtp.h"
-#include "send/lib.h"
+#include "lib.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "mutt_socket.h"
@@ -709,7 +709,7 @@ static const struct SmtpAuth smtp_authenticators[] = {
 /**
  * smtp_auth_is_valid - Check if string is a valid smtp authentication method
  * @param authenticator Authenticator string to check
- * @retval bool True if argument is a valid auth method
+ * @retval true Argument is a valid auth method
  *
  * Validate whether an input string is an accepted smtp authentication method as
  * defined by #smtp_authenticators.

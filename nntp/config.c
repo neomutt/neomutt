@@ -30,8 +30,6 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
-#include "private.h"
-#include "init.h"
 
 // clang-format off
 unsigned char C_CatchupNewsgroup;    ///< Config: (nntp) Mark all articles as read when leaving a newsgroup

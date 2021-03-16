@@ -36,6 +36,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -72,8 +73,8 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/adata.h"
-#include "nntp/mdata.h"
+#include "nntp/adata.h" // IWYU pragma: keep
+#include "nntp/mdata.h" // IWYU pragma: keep
 #endif
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"

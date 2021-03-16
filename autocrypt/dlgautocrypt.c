@@ -35,14 +35,14 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
-#include "autocrypt/lib.h"
+#include "lib.h"
 #include "format_flags.h"
 #include "keymap.h"
-#include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
+
+struct Mailbox;
 
 /**
  * struct AccountEntry - An entry in the Autocrypt account Menu

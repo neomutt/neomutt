@@ -36,8 +36,7 @@
 #define MUTT_HISTORY_LIB_H
 
 #include <stdbool.h>
-
-struct ConfigSet;
+#include <stdlib.h>
 
 extern short C_History;
 extern char *C_HistoryFile;

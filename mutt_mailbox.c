@@ -28,7 +28,6 @@
 #include "config.h"
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/time.h>
 #include <time.h>
 #include <utime.h>
 #include "mutt/lib.h"
@@ -37,7 +36,6 @@
 #include "mutt_mailbox.h"
 #include "mbox/lib.h"
 #include "mutt_globals.h"
-#include "mutt_menu.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
@@ -202,7 +200,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 /**
  * mutt_mailbox_notify - Notify the user if there's new mail
  * @param m_cur Current Mailbox
- * @retval true If there is new mail
+ * @retval true There is new mail
  */
 bool mutt_mailbox_notify(struct Mailbox *m_cur)
 {
@@ -215,7 +213,7 @@ bool mutt_mailbox_notify(struct Mailbox *m_cur)
 
 /**
  * mutt_mailbox_list - List the mailboxes with new mail
- * @retval true If there is new mail
+ * @retval true There is new mail
  */
 bool mutt_mailbox_list(void)
 {

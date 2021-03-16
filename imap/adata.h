@@ -24,9 +24,12 @@
 #define MUTT_IMAP_ADATA_H
 
 #include <stdbool.h>
-#include "private.h"
+#include <time.h>
+#include "private.h" // IWYU pragma: keep
 #include "mutt/lib.h"
-#include "conn/lib.h"
+
+struct Account;
+struct Mailbox;
 
 /**
  * struct ImapAccountData - IMAP-specific Account data - @extends Account

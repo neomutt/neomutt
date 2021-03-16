@@ -635,13 +635,13 @@
 { "count_alternatives", DT_BOOL, false },
 /*
 ** .pp
-** When \fIset\fP, Mutt will recurse inside multipart/alternatives while
+** When \fIset\fP, NeoMutt will recurse inside multipart/alternatives while
 ** performing attachment searching and counting(see $attachments).
 ** .pp
 ** Traditionally, multipart/alternative parts have simply represented
 ** different encodings of the main content of the email.  Unfortunately,
 ** some mail clients have started to place email attachments inside
-** one of alternatives.  Setting this will allow Mutt to find
+** one of alternatives.  Setting this will allow NeoMutt to find
 ** and count matching attachments hidden there, and include them
 ** in the index via %X or through ~X pattern matching.
 */

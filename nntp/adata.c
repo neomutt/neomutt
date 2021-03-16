@@ -31,6 +31,8 @@
 #include "mutt/lib.h"
 #include "adata.h"
 
+struct Connection;
+
 /**
  * nntp_adata_free - Free the private Account data - Implements Account::adata_free()
  *

@@ -36,10 +36,6 @@
 #ifndef MUTT_HELPBAR_LIB_H
 #define MUTT_HELPBAR_LIB_H
 
-#include <stdbool.h>
-
-struct ConfigSet;
-
 struct MuttWindow *helpbar_create(void);
 
 #endif /* MUTT_HELPBAR_LIB_H */

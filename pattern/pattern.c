@@ -35,7 +35,8 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "alias/gui.h"
+#include "alias/gui.h" // IWYU pragma: keep
+#include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
@@ -76,7 +77,7 @@ struct RangeRegex range_regexes[] = {
  * @param flags Flags, e.g. #MUTT_PC_PATTERN_DYNAMIC
  * @param s     String to parse
  * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
+ * @retval true The pattern was read successfully
  */
 bool (*eat_arg_t)(struct Pattern *pat, PatternCompFlags flags, struct Buffer *s,
                   struct Buffer *err);

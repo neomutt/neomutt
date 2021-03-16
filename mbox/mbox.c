@@ -35,6 +35,7 @@
 #include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -705,7 +706,7 @@ static int reopen_mailbox(struct Mailbox *m)
 /**
  * mbox_has_new - Does the mailbox have new mail
  * @param m Mailbox
- * @retval true if the mailbox has at least 1 new messages (not old)
+ * @retval true The mailbox has at least 1 new messages (not old)
  * @retval false otherwise
  */
 static bool mbox_has_new(struct Mailbox *m)
@@ -776,7 +777,7 @@ static int fseek_last_message(FILE *fp)
 /**
  * test_last_status_new - Is the last message new
  * @param fp File to check
- * @retval true if the last message is new
+ * @retval true The last message is new
  */
 static bool test_last_status_new(FILE *fp)
 {
@@ -801,7 +802,7 @@ static bool test_last_status_new(FILE *fp)
 /**
  * mbox_test_new_folder - Test if an mbox or mmdf mailbox has new mail
  * @param path Path to the mailbox
- * @retval bool true if the folder contains new mail
+ * @retval true The folder contains new mail
  */
 bool mbox_test_new_folder(const char *path)
 {

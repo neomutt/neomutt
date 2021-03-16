@@ -27,8 +27,10 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "adata.h"
 
 /**

@@ -23,10 +23,10 @@
 #ifndef MUTT_MUTT_COMMANDS_H
 #define MUTT_MUTT_COMMANDS_H
 
+#include "config.h"
 #include <stddef.h>
 #include <stdint.h>
-
-struct Buffer;
+#include "mutt/lib.h"
 
 /**
  * enum CommandResult - Error codes for command_t parse functions

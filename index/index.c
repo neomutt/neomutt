@@ -35,7 +35,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -88,8 +87,8 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/adata.h"
-#include "nntp/mdata.h"
+#include "nntp/adata.h" // IWYU pragma: keep
+#include "nntp/mdata.h" // IWYU pragma: keep
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -151,7 +150,7 @@ typedef uint8_t CheckFlags;       ///< Flags, e.g. #CHECK_IN_MAILBOX
  * @param ctx    Mailbox
  * @param menu   Current Menu
  * @param checks Checks to perform, see #CheckFlags
- * @retval bool true if the checks pass successfully
+ * @retval true The checks pass successfully
  */
 static bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
 {
@@ -201,7 +200,7 @@ static bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
  * @param m   Mailbox
  * @param acl ACL, see #AclFlags
  * @param msg Error message for failure
- * @retval bool true if the function is permitted
+ * @retval true The function is permitted
  */
 static bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg)
 {
@@ -3370,12 +3369,12 @@ int mutt_index_menu(struct MuttWindow *dlg)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, cur.e, tag);
 
-        mutt_emails_set_flag(Context->mailbox, &el, MUTT_DELETE, 1);
+        mutt_emails_set_flag(Context->mailbox, &el, MUTT_DELETE, true);
         mutt_emails_set_flag(Context->mailbox, &el, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
         const bool c_delete_untag =
             cs_subset_bool(NeoMutt->sub, "delete_untag");
         if (c_delete_untag)
-          mutt_emails_set_flag(Context->mailbox, &el, MUTT_TAG, 0);
+          mutt_emails_set_flag(Context->mailbox, &el, MUTT_TAG, false);
         emaillist_clear(&el);
 
         if (tag)
@@ -3941,8 +3940,8 @@ int mutt_index_menu(struct MuttWindow *dlg)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, cur.e, tag);
 
-        mutt_emails_set_flag(Context->mailbox, &el, MUTT_DELETE, 0);
-        mutt_emails_set_flag(Context->mailbox, &el, MUTT_PURGE, 0);
+        mutt_emails_set_flag(Context->mailbox, &el, MUTT_DELETE, false);
+        mutt_emails_set_flag(Context->mailbox, &el, MUTT_PURGE, false);
         emaillist_clear(&el);
 
         if (tag)

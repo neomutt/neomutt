@@ -29,10 +29,7 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <fcntl.h>
 #include <rocksdb/c.h>
-#include <rocksdb/version.h>
-#include <string.h>
 #include "mutt/lib.h"
 #include "lib.h"
 

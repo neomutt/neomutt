@@ -39,7 +39,7 @@
  * is_descendant - Is one thread a descendant of another
  * @param a Parent thread
  * @param b Child thread
- * @retval true If b is a descendent of a (child, grandchild, etc)
+ * @retval true b is a descendent of a (child, grandchild, etc)
  */
 bool is_descendant(struct MuttThread *a, struct MuttThread *b)
 {
@@ -119,7 +119,7 @@ void thread_hash_destructor(int type, void *obj, intptr_t data)
  * @param reverse If true, reverse the direction of the search
  * @retval ptr Matching Email
  */
-struct Email *find_virtual(struct MuttThread *cur, int reverse)
+struct Email *find_virtual(struct MuttThread *cur, bool reverse)
 {
   if (!cur)
     return NULL;

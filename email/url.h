@@ -24,6 +24,7 @@
 #define MUTT_EMAIL_URL_H
 
 #include <stddef.h>
+#include <stdint.h>
 #include "mutt/lib.h"
 
 /**

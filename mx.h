@@ -28,13 +28,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <time.h>
 #include "config/lib.h"
 #include "core/lib.h"
 
 struct Email;
 struct Context;
-struct stat;
 
 extern const struct MxOps *mx_ops[];
 

@@ -35,6 +35,7 @@
 #include "debug/lib.h"
 #include "mutt_window.h"
 #include "helpbar/lib.h"
+#include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_globals.h"
 #include "mutt_menu.h"
@@ -64,7 +65,7 @@ static const struct Mapping EditorHelp[] = {
 /**
  * window_was_visible - Was the Window visible?
  * @param win Window
- * @retval true If the Window was visible
+ * @retval true The Window was visible
  *
  * Using the `WindowState old`, check if a Window used to be visible.
  * For a Window to be visible, *it* must have been visible and it's parent and
@@ -649,7 +650,7 @@ void mutt_window_set_root(int cols, int rows)
 /**
  * mutt_window_is_visible - Is the Window visible?
  * @param win Window
- * @retval true If the Window is visible
+ * @retval true The Window is visible
  *
  * For a Window to be visible, *it* must be visible and it's parent and
  * grandparent, etc.

@@ -41,7 +41,7 @@
 
 /**
  * pcre2_has_unicode - Does pcre2 support Unicode?
- * @retval bool true, if it does
+ * @retval true pcre2 supports Unicode
  */
 static bool pcre2_has_unicode(void)
 {

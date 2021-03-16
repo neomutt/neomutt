@@ -64,7 +64,7 @@ const struct Address *cs_subset_address(const struct ConfigSubset *sub, const ch
  * cs_subset_bool - Get a boolean config item by name
  * @param sub   Config Subset
  * @param name  Name of config item
- * @retval bool  Boolean
+ * @retval bool  Boolean value
  */
 bool cs_subset_bool(const struct ConfigSubset *sub, const char *name)
 {

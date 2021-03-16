@@ -33,7 +33,6 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "lib.h"
-#include "hcache/lib.h"
 
 #define MIN_COMP_LEVEL 1  ///< Minimum compression level for lz4
 #define MAX_COMP_LEVEL 12 ///< Maximum compression level for lz4

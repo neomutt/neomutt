@@ -24,7 +24,6 @@
 #define MUTT_CONFIG_BOOL_H
 
 struct Buffer;
-struct ConfigSet;
 struct ConfigSubset;
 struct HashElem;
 

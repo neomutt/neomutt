@@ -23,8 +23,6 @@
 #ifndef MUTT_CONFIG_ENUM_H
 #define MUTT_CONFIG_ENUM_H
 
-struct ConfigSet;
-
 /**
  * struct EnumDef - An enumeration
  */

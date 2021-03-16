@@ -80,7 +80,7 @@ static int get_quote_level(const char *line)
 /**
  * space_quotes - Should we add spaces between quote levels
  * @param s State to use
- * @retval true If spaces should be added
+ * @retval true Spaces should be added
  *
  * Determines whether to add spacing between/after each quote level:
  * `   >>>foo`
@@ -101,7 +101,7 @@ static int space_quotes(struct State *s)
  * add_quote_suffix - Should we add a trailing space to quotes
  * @param s  State to use
  * @param ql Quote level
- * @retval true If spaces should be added
+ * @retval true Spaces should be added
  *
  * Determines whether to add a trailing space to quotes:
  * `   >>> foo`
@@ -382,7 +382,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 /**
  * mutt_rfc3676_is_format_flowed - Is the Email "format-flowed"?
  * @param b Email Body to examine
- * @retval bool true, if "format-flowed"
+ * @retval true Email is "format-flowed"
  */
 bool mutt_rfc3676_is_format_flowed(struct Body *b)
 {

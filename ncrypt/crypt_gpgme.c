@@ -56,7 +56,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "crypt_gpgme.h"
-#include "ncrypt/lib.h"
+#include "lib.h"
 #include "send/lib.h"
 #include "crypt.h"
 #include "handler.h"
@@ -105,7 +105,7 @@ static char *current_sender = NULL;
 /**
  * is_pka_notation - Is this the standard pka email address
  * @param notation GPGME notation
- * @retval true If it is
+ * @retval true It is the standard pka email address
  */
 static bool is_pka_notation(gpgme_sig_notation_t notation)
 {
@@ -191,7 +191,7 @@ static const char *parse_version_number(const char *s, int *number)
  * @param minor Version x.MINOR.x
  * @param micro Version x.x.MICRO
  * @retval ptr  Patch level string
- * @retval NULL If there are fewer parts
+ * @retval NULL There are fewer parts
  *
  * Break up the complete string-representation of the version number S, which
  * is of the following structure: <major number>.<minor number>.<micro
@@ -622,7 +622,7 @@ static gpgme_data_t create_gpgme_data(void)
 /**
  * have_gpg_version - Do we have a sufficient GPG version
  * @param version Minimum version
- * @retval true If minimum version is available
+ * @retval true Minimum version is available
  *
  * Return true if the OpenPGP engine's version is at least VERSION.
  */
@@ -2554,13 +2554,13 @@ static int line_compare(const char *a, size_t n, const char *b)
  * pgp_check_traditional_one_body - Check one inline PGP body part
  * @param fp File to read from
  * @param b  Body of the email
- * @retval 1 Success
- * @retval 0 Error
+ * @retval true  Success
+ * @retval false Error
  */
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char buf[8192];
-  int rv = 0;
+  bool rc = false;
 
   bool sgn = false;
   bool enc = false;
@@ -2612,19 +2612,19 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   mutt_param_set(&b->parameter, "format", "fixed");
   mutt_param_set(&b->parameter, "x-action", enc ? "pgp-encrypted" : "pgp-signed");
 
-  rv = 1;
+  rc = true;
 
 cleanup:
   mutt_buffer_pool_release(&tempfile);
-  return rv;
+  return rc;
 }
 
 /**
  * pgp_gpgme_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional()
  */
-int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one)
+bool pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
-  int rc = 0;
+  bool rc = false;
   for (; b; b = b->next)
   {
     if (!just_one && is_multipart(b))
@@ -4329,7 +4329,7 @@ SecurityFlags smime_gpgme_send_menu(struct Email *e)
 /**
  * verify_sender - Verify the sender of a message
  * @param e Email
- * @retval true If sender is verified
+ * @retval true Sender is verified
  */
 static bool verify_sender(struct Email *e)
 {

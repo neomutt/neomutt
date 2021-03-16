@@ -24,6 +24,9 @@
 #define MUTT_NNTP_EDATA_H
 
 #include "lib.h"
+#include <stdbool.h>
+
+struct Email;
 
 /**
  * struct NntpEmailData - NNTP-specific Email data - @extends Email

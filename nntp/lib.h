@@ -45,13 +45,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <sys/types.h>
-#include <time.h>
 #include "core/lib.h"
 #include "format_flags.h"
 
-struct ConfigSet;
 struct ConnAccount;
+struct NntpAccountData;
 struct stat;
 
 // These Config Variables are used outside of libnntp

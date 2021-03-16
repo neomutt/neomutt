@@ -37,6 +37,7 @@
 #include <stdint.h>
 
 struct Buffer;
+struct ConfigSubset;
 struct Email;
 
 /* flags for mutt_compose_menu() */

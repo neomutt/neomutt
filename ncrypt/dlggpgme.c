@@ -43,7 +43,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
-#include "ncrypt/lib.h"
+#include "lib.h"
 #include "pager/lib.h"
 #include "crypt_gpgme.h"
 #include "format_flags.h"
@@ -53,7 +53,6 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
-#include "protos.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -122,7 +121,7 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
 /**
  * crypt_key_is_valid - Is the key valid
  * @param k Key to test
- * @retval true If key is valid
+ * @retval true Key is valid
  */
 static bool crypt_key_is_valid(struct CryptKeyInfo *k)
 {
@@ -306,7 +305,7 @@ static int crypt_compare_trust_qsort(const void *a, const void *b)
  * @param fp  File to write to
  * @param dn  Distinguished Name
  * @param key Key string
- * @retval true  If any DN keys match the given key string
+ * @retval true  Any DN keys match the given key string
  * @retval false Otherwise
  *
  * Print the X.500 Distinguished Name part KEY from the array of parts DN to FP.

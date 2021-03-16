@@ -45,14 +45,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt_commands.h"
-#include "sort.h"
-#include "gui.h"
 
 struct Address;
 struct AddressList;
 struct AliasViewArray;
 struct Buffer;
-struct ConfigSet;
+struct ConfigSubset;
 struct Envelope;
 
 void alias_init    (void);

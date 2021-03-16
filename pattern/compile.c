@@ -39,13 +39,12 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "email/lib.h"
+#include "email/lib.h" // IWYU pragma: keep
 #include "core/lib.h"
 #include "mutt.h"
 #include "lib.h"
 #include "context.h"
 #include "init.h"
-#include "mutt_globals.h"
 #include "mutt_menu.h"
 
 // clang-format off
@@ -150,7 +149,7 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
  * @param s     String to parse
  * @param err   Buffer for error messages
  * @param ctx   Current Mailbox
- * @retval true If the pattern was read successfully
+ * @retval true The pattern was read successfully
  */
 static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
                       struct Buffer *s, struct Buffer *err, struct Context *ctx)
@@ -185,17 +184,17 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   mutt_buffer_addch(&cmd_buf, ' ');
 
   struct Mailbox *m = ctx_mailbox(ctx);
-  if (!m)
-  {
-    mutt_buffer_addch(&cmd_buf, '/');
-  }
-  else
+  if (m)
   {
     char *escaped_folder = mutt_path_escape(mailbox_path(m));
     mutt_debug(LL_DEBUG2, "escaped folder path: %s\n", escaped_folder);
     mutt_buffer_addch(&cmd_buf, '\'');
     mutt_buffer_addstr(&cmd_buf, escaped_folder);
     mutt_buffer_addch(&cmd_buf, '\'');
+  }
+  else
+  {
+    mutt_buffer_addch(&cmd_buf, '/');
   }
   mutt_buffer_addch(&cmd_buf, ' ');
   mutt_buffer_addstr(&cmd_buf, tok_buf.data);
@@ -731,7 +730,7 @@ static int report_regerror(int regerr, regex_t *preg, struct Buffer *err)
  * @param kind   Range type, e.g. #RANGE_K_REL
  * @param err    Buffer for error messages
  * @param ctx    Current Mailbox
- * @retval false If context is required, but not available
+ * @retval false Context is required, but not available
  * @retval true  Otherwise
  */
 static bool is_context_available(struct Buffer *s, regmatch_t pmatch[], int kind,
@@ -918,7 +917,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
  * @param s     String to parse
  * @param err   Buffer for error messages
  * @param ctx   Current Mailbox
- * @retval true If the pattern was read successfully
+ * @retval true The pattern was read successfully
  */
 static bool eat_message_range(struct Pattern *pat, PatternCompFlags flags,
                               struct Buffer *s, struct Buffer *err, struct Context *ctx)

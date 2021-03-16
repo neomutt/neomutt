@@ -25,14 +25,15 @@
 #define MUTT_CORE_MXAPI_H
 
 #include "config.h"
-#include "mailbox.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <sys/stat.h>
+#include <sys/types.h>
+#include "mailbox.h"
 
 struct Account;
 struct Email;
+struct stat;
 
 /**
  * struct Message - A local copy of an email
@@ -120,8 +121,8 @@ struct MxOps
    * ac_add - Add a Mailbox to an Account
    * @param a Account to add to
    * @param m Mailbox to add
-   * @retval  true  Success
-   * @retval  false Error
+   * @retval true  Success
+   * @retval false Error
    *
    * **Contract**
    * - @a a is not NULL

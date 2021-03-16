@@ -764,7 +764,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
  * @param s       Buffer containing the uncolor command
  * @param cl      List of existing colours
  * @param uncolor If true, 'uncolor', else 'unmono'
- * @retval bool True if a colour was freed
+ * @retval true A colour was freed
  */
 static bool do_uncolor(struct Colors *c, struct Buffer *buf, struct Buffer *s,
                        struct ColorLineList *cl, bool uncolor)

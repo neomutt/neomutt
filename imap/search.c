@@ -37,8 +37,9 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "lib.h"
-#include "imap/lib.h"
 #include "pattern/lib.h"
+#include "adata.h"
+#include "mdata.h"
 
 // fwd decl, mutually recursive: check_pattern_list, check_pattern
 static int check_pattern_list(const struct PatternList *patterns);
@@ -97,8 +98,8 @@ static int check_pattern_list(const struct PatternList *patterns)
  * @param adata Imap Account data
  * @param pat Parent pattern
  * @param buf Buffer for the resulting command
- * @retval True on success
- * @retval False on failure
+ * @retval true  Success
+ * @retval false Failure
  */
 static bool compile_search_children(const struct ImapAccountData *adata,
                                     const struct Pattern *pat, struct Buffer *buf)
@@ -136,8 +137,8 @@ static bool compile_search_children(const struct ImapAccountData *adata,
  * @param adata Imap Account data
  * @param pat Pattern
  * @param buf Buffer for the resulting command
- * @retval True on success
- * @retval False on failure
+ * @retval true  Success
+ * @retval false Failure
  */
 static bool compile_search_self(const struct ImapAccountData *adata,
                                 const struct Pattern *pat, struct Buffer *buf)
@@ -198,8 +199,8 @@ static bool compile_search_self(const struct ImapAccountData *adata,
  * @param adata Imap Account data
  * @param pat Pattern to convert
  * @param buf Buffer for result
- * @retval True on success
- * @retval False on failure
+ * @retval true  Success
+ * @retval false Failure
  *
  * Convert neomutt Pattern to IMAP SEARCH command containing only elements
  * that require full-text search (neomutt already has what it needs for most

@@ -38,6 +38,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+struct Buffer;
+
 typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUTT_SHOWFLAT
 #define MUTT_PAGER_NO_FLAGS         0     ///< No flags are set
 #define MUTT_SHOWFLAT         (1 << 0)    ///< Show characters (used for displaying help)

@@ -63,8 +63,8 @@
 
 struct BrowserState;
 struct Buffer;
-struct ConfigSet;
 struct ConnAccount;
+struct Email;
 struct EmailList;
 struct PatternList;
 struct stat;

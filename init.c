@@ -44,15 +44,12 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "conn/lib.h"
+#include "conn/lib.h" // IWYU pragma: keep
 #include "gui/lib.h"
 #include "mutt.h"
 #include "init.h"
-#include "compress/lib.h"
-#include "hcache/lib.h"
 #include "history/lib.h"
 #include "notmuch/lib.h"
-#include "store/lib.h"
 #include "command_parse.h"
 #include "context.h"
 #include "functions.h"
@@ -278,7 +275,7 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
 /**
  * getmailname - Try to retrieve the FQDN from mailname files
  * @retval ptr Heap allocated string with the FQDN
- * @retval NULL if no valid mailname file could be read
+ * @retval NULL No valid mailname file could be read
  */
 static char *getmailname(void)
 {

@@ -34,7 +34,6 @@
 #include "mutt/lib.h"
 #include "conn/lib.h"
 #include "lib.h"
-#include "init.h"
 
 /**
  * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator()

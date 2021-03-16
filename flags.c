@@ -36,10 +36,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "index/lib.h"
-#include "context.h"
 #include "keymap.h"
 #include "mutt_globals.h"
-#include "mutt_menu.h"
 #include "protos.h"
 #include "sort.h"
 

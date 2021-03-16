@@ -26,6 +26,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include "mutt/lib.h"
 
 /**
@@ -64,7 +65,7 @@ extern const char AddressSpecials[];
 /**
  * typedef addr_predicate_t - Test an Address for some condition
  * @param a Address to test
- * @retval bool True if Address matches the test
+ * @retval true Address matches the test
  */
 typedef bool (*addr_predicate_t)(const struct Address *a);
 

@@ -38,8 +38,6 @@
 #include <stdio.h>
 #include "core/lib.h"
 
-struct Mailbox;
-
 /**
  * struct CompressInfo - Private data for compress
  *

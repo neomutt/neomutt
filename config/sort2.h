@@ -25,8 +25,6 @@
 
 #include "mutt/lib.h"
 
-struct ConfigSet;
-
 extern const struct Mapping SortAliasMethods[];
 extern const struct Mapping SortBrowserMethods[];
 extern const struct Mapping SortKeyMethods[];

@@ -42,7 +42,6 @@
 #include "from.h"
 #include "globals.h"
 #include "mime.h"
-#include "mutt_globals.h"
 #include "parameter.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
@@ -308,7 +307,7 @@ static void parse_content_language(const char *s, struct Body *ct)
 /**
  * mutt_matches_ignore - Does the string match the ignore list
  * @param s String to check
- * @retval true If string matches
+ * @retval true String matches
  *
  * Checks Ignore and UnIgnore using mutt_list_match
  */
@@ -597,8 +596,8 @@ cleanup:
  * @param user_hdrs If true, save into the Envelope's userhdrs
  * @param weed      If true, perform header weeding (filtering)
  * @param do_2047   If true, perform RFC2047 decoding of the field
- * @retval 1 If the field is recognised
- * @retval 0 If not
+ * @retval 1 The field is recognised
+ * @retval 0 The field is not recognised
  *
  * Process a line from an email header.  Each line that is recognised is parsed
  * and the information put in the Envelope or Header.

@@ -42,9 +42,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "pager/lib.h"
-#include "context.h"
 #include "format_flags.h"
-#include "mutt_globals.h"
 #include "muttlib.h"
 #include "options.h"
 #ifdef USE_NNTP
@@ -55,6 +53,8 @@
 #else
 #define EX_OK 0
 #endif
+
+struct Mailbox;
 
 SIG_ATOMIC_VOLATILE_T SigAlrm; ///< true after SIGALRM is received
 

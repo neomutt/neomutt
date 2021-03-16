@@ -47,7 +47,6 @@
 #include "mutt_commands.h"
 
 struct Buffer;
-struct ConfigSet;
 struct MuttWindow;
 
 void sb_init    (void);

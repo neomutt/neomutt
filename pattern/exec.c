@@ -32,16 +32,14 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "alias/alias.h"
-#include "alias/gui.h"
+#include "alias/alias.h" // IWYU pragma: keep
+#include "alias/gui.h"   // IWYU pragma: keep
 #include "alias/lib.h"
 #include "mutt.h"
 #include "lib.h"
@@ -54,6 +52,9 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "state.h"
+#ifndef USE_FMEMOPEN
+#include <sys/stat.h>
+#endif
 
 /**
  * patmatch - Compare a string to a Pattern
@@ -259,7 +260,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
  * @param m   Mailbox
  * @param e   Email
  * @param cache Cached Patterns
- * @retval true If ALL of the Patterns evaluates to true
+ * @retval true ALL of the Patterns evaluates to true
  */
 static bool perform_and(struct PatternList *pat, PatternExecFlags flags,
                         struct Mailbox *m, struct Email *e, struct PatternCache *cache)
@@ -280,7 +281,7 @@ static bool perform_and(struct PatternList *pat, PatternExecFlags flags,
  * @param flags Optional flags, e.g. #MUTT_MATCH_FULL_ADDRESS
  * @param av    AliasView
  * @param cache Cached Patterns
- * @retval true If ALL of the Patterns evaluate to true
+ * @retval true ALL of the Patterns evaluate to true
  */
 static bool perform_alias_and(struct PatternList *pat, PatternExecFlags flags,
                               struct AliasView *av, struct PatternCache *cache)
@@ -302,7 +303,7 @@ static bool perform_alias_and(struct PatternList *pat, PatternExecFlags flags,
  * @param m   Mailbox
  * @param e   Email
  * @param cache Cached Patterns
- * @retval true If ONE (or more) of the Patterns evaluates to true
+ * @retval true ONE (or more) of the Patterns evaluates to true
  */
 static int perform_or(struct PatternList *pat, PatternExecFlags flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache)
@@ -323,7 +324,7 @@ static int perform_or(struct PatternList *pat, PatternExecFlags flags,
  * @param flags Optional flags, e.g. #MUTT_MATCH_FULL_ADDRESS
  * @param av    AliasView
  * @param cache Cached Patterns
- * @retval true If ONE (or more) of the Patterns evaluates to true
+ * @retval true ONE (or more) of the Patterns evaluates to true
  */
 static int perform_alias_or(struct PatternList *pat, PatternExecFlags flags,
                             struct AliasView *av, struct PatternCache *cache)
@@ -627,7 +628,7 @@ static void set_pattern_cache_value(int *cache_entry, int value)
 /**
  * get_pattern_cache_value - Get pattern cache value
  * @param cache_entry Cache entry to get
- * @retval 1 if the cache value is set and has a true value
+ * @retval 1 The cache value is set and has a true value
  * @retval 0 otherwise (even if unset!)
  */
 static int get_pattern_cache_value(int cache_entry)
@@ -638,7 +639,7 @@ static int get_pattern_cache_value(int cache_entry)
 /**
  * is_pattern_cache_set - Is a given Pattern cached?
  * @param cache_entry Cache entry to check
- * @retval true If it is cached
+ * @retval true Pattern is cached
  */
 static int is_pattern_cache_set(int cache_entry)
 {

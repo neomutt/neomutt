@@ -23,6 +23,7 @@
 #ifndef MUTT_NNTP_MDATA_H
 #define MUTT_NNTP_MDATA_H
 
+#include <stdbool.h>
 #include "lib.h"
 
 /**

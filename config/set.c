@@ -253,7 +253,7 @@ const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned
  * cs_register_type - Register a type of config item
  * @param cs   Config items
  * @param cst  Structure defining the type
- * @retval bool True, if type was registered successfully
+ * @retval true Type was registered successfully
  */
 bool cs_register_type(struct ConfigSet *cs, const struct ConfigSetType *cst)
 {
@@ -281,7 +281,7 @@ bool cs_register_type(struct ConfigSet *cs, const struct ConfigSetType *cst)
  * @param cs    Config items
  * @param vars  Variable definition
  * @param flags Flags, e.g. #DT_NO_VARIABLE
- * @retval bool True, if all variables were registered successfully
+ * @retval true All variables were registered successfully
  */
 bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], uint32_t flags)
 {

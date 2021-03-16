@@ -49,6 +49,7 @@
 #ifndef MUTT_CONFIG_LIB_H
 #define MUTT_CONFIG_LIB_H
 
+#include <stdbool.h>
 // IWYU pragma: begin_exports
 #include "address.h"
 #include "bool.h"
@@ -69,7 +70,7 @@
 /**
  * module_init_config_t - Prototype for a config definition function
  * @param cs Config items
- * @retval bool true if all the config variables were registered
+ * @retval true All the config variables were registered
  */
 typedef bool (*module_init_config_t)(struct ConfigSet *cs);
 

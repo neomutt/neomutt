@@ -45,6 +45,7 @@
 #define MUTT_CONN_LIB_H
 
 #include "config.h"
+#include <stdbool.h>
 // IWYU pragma: begin_exports
 #include "connaccount.h"
 #include "connection.h"
@@ -59,7 +60,6 @@
 // IWYU pragma: end_exports
 
 struct Buffer;
-struct ConfigSet;
 
 // These Config Variables are used outside of libconn
 extern bool          C_SslForceTls;

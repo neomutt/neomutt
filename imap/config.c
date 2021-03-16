@@ -30,10 +30,10 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include "mutt/lib.h"
 #include "conn/lib.h"
-#include "lib.h"
 #include "auth.h"
-#include "init.h"
 
 // clang-format off
 struct Slist *C_ImapAuthenticators;      ///< Config: (imap) List of allowed IMAP authentication methods

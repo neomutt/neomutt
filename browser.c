@@ -36,7 +36,6 @@
 #include <pwd.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
@@ -48,7 +47,6 @@
 #include "mutt.h"
 #include "browser.h"
 #include "send/lib.h"
-#include "context.h"
 #include "format_flags.h"
 #include "keymap.h"
 #include "mutt_attach.h"
@@ -64,8 +62,8 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/adata.h"
-#include "nntp/mdata.h"
+#include "nntp/adata.h" // IWYU pragma: keep
+#include "nntp/mdata.h" // IWYU pragma: keep
 #endif
 
 /* These Config Variables are only used in browser.c */

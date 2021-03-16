@@ -41,11 +41,10 @@
 #include "mutt.h"
 #include "recvcmd.h"
 #include "send/lib.h"
-#include "context.h"
 #include "copy.h"
+#include "format_flags.h"
 #include "handler.h"
 #include "hdrline.h"
-#include "init.h"
 #include "mutt_body.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
@@ -56,8 +55,6 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-
-struct Mailbox;
 
 /* These Config Variables are only used in recvcmd.c */
 unsigned char C_MimeForwardRest; ///< Config: Forward all attachments, even if they can't be decoded
@@ -87,7 +84,7 @@ static bool check_msg(struct Body *b, bool err)
  * @param actx Attachment context
  * @param cur  Current message
  * @param err  If true, report errors
- * @retval true If all parts are RFC822 messages
+ * @retval true All parts are RFC822 messages
  */
 static bool check_all_msg(struct AttachCtx *actx, struct Body *cur, bool err)
 {

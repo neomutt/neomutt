@@ -23,11 +23,11 @@
 #ifndef MUTT_IMAP_MDATA_H
 #define MUTT_IMAP_MDATA_H
 
-#include "private.h"
+#include <stdint.h>
+#include "private.h" // IWYU pragma: keep
 #include "mutt/lib.h"
-#include "bcache/lib.h"
-#include "hcache/lib.h"
 
+struct Mailbox;
 struct ImapAccountData;
 
 /**

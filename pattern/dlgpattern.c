@@ -34,14 +34,10 @@
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "lib.h"
 #include "format_flags.h"
 #include "keymap.h"
-#include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
@@ -257,7 +253,7 @@ static void free_pattern_menu(struct Menu **ptr)
  * dlg_select_pattern - Show menu to select a Pattern
  * @param buf    Buffer for the selected Pattern
  * @param buflen Length of buffer
- * @retval bool true, if a selection was made
+ * @retval true A selection was made
  */
 bool dlg_select_pattern(char *buf, size_t buflen)
 {

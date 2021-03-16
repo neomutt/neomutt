@@ -26,16 +26,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <sys/types.h>
-#include "sequence.h"
 
-struct Account;
-struct Buffer;
-struct Email;
 struct MdEmailArray;
 struct Mailbox;
-struct MdEmail;
-struct Message;
-struct Progress;
 
 extern bool  C_CheckNew;
 extern bool  C_MaildirCheckCur;

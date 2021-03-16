@@ -51,7 +51,7 @@ struct MuttThread
 };
 
 void          clean_references      (struct MuttThread *brk, struct MuttThread *cur);
-struct Email *find_virtual          (struct MuttThread *cur, int reverse);
+struct Email *find_virtual          (struct MuttThread *cur, bool reverse);
 void          insert_message        (struct MuttThread **add, struct MuttThread *parent, struct MuttThread *cur);
 bool          is_descendant         (struct MuttThread *a, struct MuttThread *b);
 void          mutt_break_thread     (struct Email *e);

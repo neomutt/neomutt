@@ -24,7 +24,6 @@
 #ifndef MUTT_HDRLINE_H
 #define MUTT_HDRLINE_H
 
-#include <stdbool.h>
 #include <stdio.h>
 #include "format_flags.h"
 

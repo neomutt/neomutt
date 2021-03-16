@@ -31,11 +31,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "mutt.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "protos.h"
@@ -68,7 +68,7 @@ struct ThreadsContext
 /**
  * is_visible - Is the message visible?
  * @param e   Email
- * @retval true If the message is not hidden in some way
+ * @retval true The message is not hidden in some way
  */
 static bool is_visible(struct Email *e)
 {
@@ -78,7 +78,7 @@ static bool is_visible(struct Email *e)
 /**
  * need_display_subject - Determines whether to display a message's subject
  * @param e Email
- * @retval true If the subject should be displayed
+ * @retval true The subject should be displayed
  */
 static bool need_display_subject(struct Email *e)
 {
@@ -1155,7 +1155,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
       cur = cur->next;
       if (!cur)
         return -1;
-      e_tmp = find_virtual(cur, 0);
+      e_tmp = find_virtual(cur, false);
     } while (!e_tmp);
   }
   else
@@ -1165,7 +1165,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
       cur = cur->prev;
       if (!cur)
         return -1;
-      e_tmp = find_virtual(cur, 1);
+      e_tmp = find_virtual(cur, true);
     } while (!e_tmp);
   }
 

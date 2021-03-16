@@ -94,7 +94,7 @@ void notify_set_parent(struct Notify *notify, struct Notify *parent)
  * @param event_type    Type of event, e.g. #NT_ACCOUNT
  * @param event_subtype Subtype, e.g. #NT_ACCOUNT_ADD
  * @param event_data    Private data associated with the event type
- * @retval true If successfully sent
+ * @retval true Successfully sent
  *
  * Notifications are sent to all observers of the object, then propagated up
  * the handler tree.  For example a "new email" notification would be sent to
@@ -145,7 +145,7 @@ static bool send(struct Notify *source, struct Notify *current,
  * @param event_type    Type of event, e.g. #NT_ACCOUNT
  * @param event_subtype Subtype, e.g. #NT_ACCOUNT_ADD
  * @param event_data    Private data associated with the event
- * @retval true If successfully sent
+ * @retval true Successfully sent
  *
  * See send() for more details.
  */
@@ -161,7 +161,7 @@ bool notify_send(struct Notify *notify, enum NotifyType event_type,
  * @param type        Notification type to observe, e.g. #NT_WINDOW
  * @param callback    Function to call on a matching event, see ::observer_t
  * @param global_data Private data associated with the observer
- * @retval true If successful
+ * @retval true Successful
  *
  * New observers are added to the front of the list, giving them higher
  * priority than existing observers.
@@ -198,7 +198,7 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type,
  * @param notify      Notification handler
  * @param callback    Function to call on a matching event, see ::observer_t
  * @param global_data Private data to match specific callback
- * @retval true If successful
+ * @retval true Successful
  *
  * @note This function frees the Observer, but doesn't free the ObserverNode.
  *       If `send()` is present higher up the call stack,

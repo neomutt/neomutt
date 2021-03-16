@@ -24,7 +24,7 @@
 #define MUTT_ENTER_STATE_H
 
 #include <stddef.h>
-#include <wchar.h>
+#include <wchar.h> // IWYU pragma: keep
 
 /**
  * struct EnterState - Keep our place when entering a string

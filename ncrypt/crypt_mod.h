@@ -168,10 +168,10 @@ struct CryptModuleSpecs
    * @param fp       File pointer to the current attachment
    * @param b        Body of email to check
    * @param just_one If true, just check one email part
-   * @retval 1 It's an inline PGP email
-   * @retval 0 It's not inline, or an error
+   * @retval true  It's an inline PGP email
+   * @retval false It's not inline, or an error
    */
-  int (*pgp_check_traditional)(FILE *fp, struct Body *b, bool just_one);
+  bool (*pgp_check_traditional)(FILE *fp, struct Body *b, bool just_one);
 
   /**
    * pgp_traditional_encryptsign - Create an inline PGP encrypted, signed email

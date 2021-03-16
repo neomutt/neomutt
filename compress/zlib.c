@@ -34,7 +34,6 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "lib.h"
-#include "hcache/lib.h"
 
 #define MIN_COMP_LEVEL 1 ///< Minimum compression level for zlib
 #define MAX_COMP_LEVEL 9 ///< Maximum compression level for zlib

@@ -27,23 +27,16 @@
  */
 
 #include "config.h"
-#include <errno.h>
-#include <fcntl.h>
-#include <inttypes.h>
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "sequence.h"
-#include "maildir/lib.h"
-#include "mdata.h"
-#include "mutt_globals.h"
 
 /**
  * mh_seq_alloc - Allocate more memory for sequences

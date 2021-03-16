@@ -27,15 +27,21 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "gui/lib.h"
+#include "lib.h"
+#include "pager/lib.h"
 #include "format_flags.h"
+#include "keymap.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
@@ -45,7 +51,6 @@
 #include "pgpinvoke.h"
 #include "pgpkey.h"
 #include "pgplib.h"
-#include "protos.h"
 
 /// Help Bar for the PGP key selection dialog
 static const struct Mapping PgpHelp[] = {

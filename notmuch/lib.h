@@ -43,7 +43,6 @@
 #include <stdbool.h>
 #include "core/lib.h"
 
-struct ConfigSet;
 struct Email;
 struct NmMboxData;
 struct stat;

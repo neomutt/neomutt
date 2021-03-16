@@ -30,7 +30,6 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "core/neomutt.h"
 #include "account.h"
 #include "mailbox.h"
 
@@ -61,7 +60,7 @@ struct Account *account_new(const char *name, struct ConfigSubset *sub)
  * account_mailbox_add - Add a Mailbox to an Account
  * @param a Account
  * @param m Mailbox to add
- * @retval true If Mailbox was added
+ * @retval true Mailbox was added
  */
 bool account_mailbox_add(struct Account *a, struct Mailbox *m)
 {

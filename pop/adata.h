@@ -23,10 +23,12 @@
 #ifndef MUTT_POP_ADATA_H
 #define MUTT_POP_ADATA_H
 
+#include <time.h>
 #include <stdbool.h>
 #include "private.h"
+#include "mutt/lib.h"
 
-struct Connection;
+struct Mailbox;
 
 /**
  * struct PopAccountData - POP-specific Account data - @extends Account

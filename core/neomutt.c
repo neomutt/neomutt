@@ -79,7 +79,7 @@ void neomutt_free(struct NeoMutt **ptr)
  * neomutt_account_add - Add an Account to the global list
  * @param n NeoMutt
  * @param a Account to add
- * @retval true If Account was added
+ * @retval true Account was added
  */
 bool neomutt_account_add(struct NeoMutt *n, struct Account *a)
 {
@@ -98,7 +98,7 @@ bool neomutt_account_add(struct NeoMutt *n, struct Account *a)
  * neomutt_account_remove - Remove an Account from the global list
  * @param n NeoMutt
  * @param a Account to remove
- * @retval true If Account was removed
+ * @retval true Account was removed
  *
  * @note If a is NULL, all the Accounts will be removed
  */

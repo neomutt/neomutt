@@ -24,10 +24,8 @@
 #define MUTT_CONFIG_REGEX_H
 
 #include <stdint.h>
-#include "mutt/regex3.h"
 
 struct Buffer;
-struct ConfigSet;
 struct Regex;
 
 void          regex_free(struct Regex **regex);

@@ -42,7 +42,6 @@
 #include "mdata.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
-#include "query.h"
 
 /**
  * nm_db_get_filename - Get the filename of the Notmuch database
@@ -273,7 +272,7 @@ int nm_db_get_mtime(struct Mailbox *m, time_t *mtime)
 /**
  * nm_db_is_longrun - Is Notmuch in the middle of a long-running transaction
  * @param m Mailbox
- * @retval true if it is
+ * @retval true Notmuch is in the middle of a long-running transaction
  */
 bool nm_db_is_longrun(struct Mailbox *m)
 {

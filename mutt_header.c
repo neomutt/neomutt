@@ -96,7 +96,7 @@ static void label_ref_inc(struct Mailbox *m, char *label)
  * @param[in]  m         Mailbox
  * @param[in]  e         Email
  * @param[out] new_label Set to true if this is a new label
- * @retval true If the label was added
+ * @retval true The label was added
  */
 static bool label_message(struct Mailbox *m, struct Email *e, char *new_label)
 {

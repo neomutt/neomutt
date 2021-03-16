@@ -31,6 +31,7 @@
 #include <stdbool.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
@@ -39,7 +40,7 @@
 /**
  * select_next - Selects the next unhidden mailbox
  * @param wdata Sidebar data
- * @retval bool true if the selection changed
+ * @retval true The selection changed
  */
 bool select_next(struct SidebarWindowData *wdata)
 {
@@ -82,7 +83,7 @@ static struct SbEntry **next_new(struct SidebarWindowData *wdata, size_t begin, 
  * select_next_new - Selects the next new mailbox
  * @param wdata         Sidebar data
  * @param next_new_wrap Wrap around when searching for the next mailbox with new mail
- * @retval bool true if the selection changed
+ * @retval true The selection changed
  *
  * Search down the list of mail folders for one containing new mail.
  */
@@ -107,7 +108,7 @@ static bool select_next_new(struct SidebarWindowData *wdata, bool next_new_wrap)
 /**
  * select_prev - Selects the previous unhidden mailbox
  * @param wdata Sidebar data
- * @retval bool true if the selection changed
+ * @retval true The selection changed
  */
 bool select_prev(struct SidebarWindowData *wdata)
 {
@@ -154,7 +155,7 @@ static struct SbEntry **prev_new(struct SidebarWindowData *wdata, size_t begin, 
  * select_prev_new - Selects the previous new mailbox
  * @param wdata         Sidebar data
  * @param next_new_wrap Wrap around when searching for the next mailbox with new mail
- * @retval bool true if the selection changed
+ * @retval true The selection changed
  *
  * Search up the list of mail folders for one containing new mail.
  */
@@ -179,7 +180,7 @@ static bool select_prev_new(struct SidebarWindowData *wdata, bool next_new_wrap)
 /**
  * select_page_down - Selects the first entry in the next page of mailboxes
  * @param wdata Sidebar data
- * @retval bool true if the selection changed
+ * @retval true The selection changed
  */
 static bool select_page_down(struct SidebarWindowData *wdata)
 {
@@ -200,7 +201,7 @@ static bool select_page_down(struct SidebarWindowData *wdata)
 /**
  * select_page_up - Selects the last entry in the previous page of mailboxes
  * @param wdata Sidebar data
- * @retval bool true if the selection changed
+ * @retval true The selection changed
  */
 static bool select_page_up(struct SidebarWindowData *wdata)
 {
@@ -221,7 +222,7 @@ static bool select_page_up(struct SidebarWindowData *wdata)
 /**
  * select_first - Selects the first unhidden mailbox
  * @param wdata Sidebar data
- * @retval bool true if the selection changed
+ * @retval true The selection changed
  */
 static bool select_first(struct SidebarWindowData *wdata)
 {
@@ -241,7 +242,7 @@ static bool select_first(struct SidebarWindowData *wdata)
 /**
  * select_last - Selects the last unhidden mailbox
  * @param wdata Sidebar data
- * @retval bool true if the selection changed
+ * @retval true The selection changed
  */
 static bool select_last(struct SidebarWindowData *wdata)
 {

@@ -23,9 +23,8 @@
 #ifndef MUTT_CURS_LIB_H
 #define MUTT_CURS_LIB_H
 
-#include <stddef.h>
 #include <stdbool.h>
-#include <wchar.h>
+#include <wchar.h> // IWYU pragma: keep
 #include "config/lib.h"
 #include "mutt.h"
 #include "browser.h"

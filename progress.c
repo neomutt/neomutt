@@ -123,7 +123,7 @@ static size_t progress_choose_increment(enum ProgressType type)
  * progress_pos_needs_update - Do we need to update, given the current pos?
  * @param progress Progress
  * @param pos      Current pos
- * @retval bool Progress needs an update.
+ * @retval true Progress needs an update
  */
 static bool progress_pos_needs_update(const struct Progress *progress, long pos)
 {
@@ -135,7 +135,7 @@ static bool progress_pos_needs_update(const struct Progress *progress, long pos)
  * progress_time_needs_update - Do we need to update, given the current time?
  * @param progress Progress
  * @param now      Current time
- * @retval bool Progress needs an update.
+ * @retval true Progress needs an update
  */
 static bool progress_time_needs_update(const struct Progress *progress, size_t now)
 {

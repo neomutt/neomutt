@@ -27,7 +27,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include "mutt.h"
 #include "hook.h"
 #include "mutt_commands.h"

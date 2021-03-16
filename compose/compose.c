@@ -33,6 +33,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -55,7 +56,6 @@
 #include "context.h"
 #include "format_flags.h"
 #include "hook.h"
-#include "init.h"
 #include "keymap.h"
 #include "mutt_attach.h"
 #include "mutt_globals.h"
@@ -69,7 +69,6 @@
 #include "protos.h"
 #include "recvattach.h"
 #include "rfc3676.h"
-#include "sort.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -78,7 +77,7 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/adata.h"
+#include "nntp/adata.h" // IWYU pragma: keep
 #endif
 #ifdef USE_POP
 #include "pop/lib.h"
@@ -1032,7 +1031,7 @@ static void draw_envelope(struct ComposeRedrawData *rd)
  * edit_address_list - Let the user edit the address list
  * @param[in]     field Field to edit, e.g. #HDR_FROM
  * @param[in,out] al    AddressList to edit
- * @retval bool true if the address list was changed
+ * @retval true The address list was changed
  */
 static bool edit_address_list(int field, struct AddressList *al)
 {
@@ -2148,10 +2147,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           /* go back to the folder we started from */
           Context = ctx_cur;
           /* Restore old $sort and $sort_aux */
-          if (old_sort != cs_subset_sort(sub, "sort"))
-            cs_subset_str_native_set(sub, "sort", old_sort, NULL);
-          if (old_sort_aux != cs_subset_sort(sub, "sort_aux"))
-            cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
+          cs_subset_str_native_set(sub, "sort", old_sort, NULL);
+          cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
           break;
         }

@@ -29,12 +29,11 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "lib.h"
 #include "compress/lib.h"
 #include "store/lib.h"
-#include "init.h"
 
 // clang-format off
 char *C_HeaderCache;               ///< Config: (hcache) Directory/file for the header cache database

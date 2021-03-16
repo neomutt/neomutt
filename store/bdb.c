@@ -35,13 +35,12 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "lib.h"
-#include "mutt_globals.h"
 
 /**
  * struct StoreDbCtx - Berkeley DB context

@@ -359,7 +359,7 @@ static const char *parse_addr_spec(const char *s, char *comment, size_t *comment
  * @param[out] comment    Buffer for any comments
  * @param[out] commentlen Length of any comments
  * @param[in]  commentmax Length of the comments buffer
- * @retval bool True if an address was successfully parsed and added
+ * @retval true An address was successfully parsed and added
  */
 static bool add_addrspec(struct AddressList *al, const char *phrase,
                          char *comment, size_t *commentlen, size_t commentmax)
@@ -859,7 +859,7 @@ int mutt_addrlist_count_recips(const struct AddressList *al)
  * mutt_addr_cmp - Compare two e-mail addresses
  * @param a Address 1
  * @param b Address 2
- * @retval true if they are equivalent
+ * @retval true They are equivalent
  */
 bool mutt_addr_cmp(const struct Address *a, const struct Address *b)
 {
@@ -876,7 +876,7 @@ bool mutt_addr_cmp(const struct Address *a, const struct Address *b)
  * mutt_addrlist_search - Search for an e-mail address in a list
  * @param haystack Address List
  * @param needle   Address containing the search email
- * @retval true If the Address is in the list
+ * @retval true The Address is in the list
  */
 bool mutt_addrlist_search(const struct AddressList *haystack, const struct Address *needle)
 {
@@ -1270,7 +1270,8 @@ void mutt_addrlist_write_file(const struct AddressList *al, FILE *fp, int start_
 /**
  * mutt_addr_to_intl - Convert an Address to Punycode
  * @param a Address to convert
- * @retval bool True on success, false otherwise
+ * @retval true  Success
+ * @retval false Otherwise
  */
 bool mutt_addr_to_intl(struct Address *a)
 {
@@ -1344,7 +1345,8 @@ int mutt_addrlist_to_intl(struct AddressList *al, char **err)
 /**
  * mutt_addr_to_local - Convert an Address from Punycode
  * @param a Address to convert
- * @retval bool True on success, false otherwise
+ * @retval true  Success
+ * @retval false Otherwise
  */
 bool mutt_addr_to_local(struct Address *a)
 {
@@ -1505,7 +1507,7 @@ void mutt_addrlist_prepend(struct AddressList *al, struct Address *a)
 /**
  * mutt_addr_uses_unicode - Does this address use Unicode character
  * @param str Address string to check
- * @retval true If the string uses 8-bit characters
+ * @retval true The string uses 8-bit characters
  */
 bool mutt_addr_uses_unicode(const char *str)
 {
@@ -1525,7 +1527,7 @@ bool mutt_addr_uses_unicode(const char *str)
 /**
  * mutt_addrlist_uses_unicode - Do any of a list of addresses use Unicode characters
  * @param al Address list to check
- * @retval true If any use 8-bit characters
+ * @retval true Any use 8-bit characters
  */
 bool mutt_addrlist_uses_unicode(const struct AddressList *al)
 {

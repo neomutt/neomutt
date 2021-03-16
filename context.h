@@ -30,7 +30,6 @@ struct Email;
 struct EmailList;
 struct Mailbox;
 struct NotifyCallback;
-struct ThreadsContext;
 
 /**
  * struct Context - The "current" mailbox

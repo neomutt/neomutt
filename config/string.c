@@ -32,7 +32,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <limits.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "set.h"

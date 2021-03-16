@@ -62,7 +62,7 @@ const char *pgp_pkalgbytype(unsigned char type)
 /**
  * pgp_canencrypt - Does this algorithm ID support encryption?
  * @param type Algorithm ID
- * @retval true If it does
+ * @retval true Algorithm does support encryption
  */
 bool pgp_canencrypt(unsigned char type)
 {
@@ -81,7 +81,7 @@ bool pgp_canencrypt(unsigned char type)
 /**
  * pgp_cansign - Does this algorithm ID support signing?
  * @param type Algorithm ID
- * @retval true If it does
+ * @retval true Algorithm does support signing
  */
 bool pgp_cansign(unsigned char type)
 {

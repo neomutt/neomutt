@@ -32,6 +32,7 @@
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -45,7 +46,6 @@
 #include "mutt.h"
 #include "lib.h"
 #include "bcache/lib.h"
-#include "pattern/lib.h"
 #include "adata.h"
 #include "auth.h"
 #include "command_parse.h"
@@ -54,8 +54,8 @@
 #include "hook.h"
 #include "init.h"
 #include "mdata.h"
-#include "message.h"
 #include "msn.h"
+#include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"

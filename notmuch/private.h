@@ -23,8 +23,8 @@
 #include <notmuch.h>
 #include <stdbool.h>
 #include <time.h>
-#include "core/lib.h"
-#include "progress.h"
+
+struct Mailbox;
 
 #ifndef MUTT_NOTMUCH_PRIVATE_H
 #define MUTT_NOTMUCH_PRIVATE_H

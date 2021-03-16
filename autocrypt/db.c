@@ -34,7 +34,9 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "autocrypt/lib.h"
+#include "lib.h"
+
+struct Mailbox;
 
 /* Prepared statements */
 static sqlite3_stmt *AccountGetStmt;

@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "idna2.h"

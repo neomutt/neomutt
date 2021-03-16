@@ -30,11 +30,13 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
@@ -71,7 +73,7 @@ static const struct Mapping QueryHelp[] = {
  * alias_to_addrlist - Turn an Alias into an AddressList
  * @param al    AddressList to fill (must be empty)
  * @param alias Alias to use
- * @retval bool True on success
+ * @retval true Success
  */
 static bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
 {

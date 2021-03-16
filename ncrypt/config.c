@@ -30,9 +30,7 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
-#include "private.h"
-#include "lib.h"
-#include "init.h"
+#include "mutt/lib.h"
 
 // clang-format off
 

@@ -38,10 +38,8 @@
 #ifndef MUTT_POP_LIB_H
 #define MUTT_POP_LIB_H
 
-#include <stdbool.h>
 #include "core/lib.h"
 
-struct ConfigSet;
 struct stat;
 
 extern struct MxOps MxPopOps;

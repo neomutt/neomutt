@@ -30,13 +30,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/lib.h"
-#include "address/lib.h"
 #include "config/lib.h"
 #include "gui.h"
 #include "lib.h"
-#include "alias.h"
 #include "mutt_menu.h"
-#include "sort.h"
 
 /**
  * alias_config_observer - Listen for `sort_alias` configuration changes and reorders menu items accordingly

@@ -36,6 +36,7 @@
 #include <inttypes.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -46,7 +47,7 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "maildir/lib.h"
+#include "lib.h"
 #include "copy.h"
 #include "edata.h"
 #include "mdata.h"
