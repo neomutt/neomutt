@@ -297,6 +297,7 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
   int rc = -1;
   struct Progress *progress = NULL;
   struct Buffer *buf = buf_pool_get();
+  bool interrupted = false;
 
   buf_strcpy(buf, mv->pattern);
   if (prompt || (op != MUTT_LIMIT))
@@ -346,6 +347,12 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
       if (!e)
         break;
 
+      if (SigInt)
+      {
+        interrupted = true;
+        SigInt = false;
+        break;
+      }
       progress_update(progress, i, -1);
       /* new limit pattern implicitly uncollapses all threads */
       e->vnum = -1;
@@ -373,6 +380,13 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
       struct Email *e = mutt_get_virt_email(m, i);
       if (!e)
         continue;
+
+      if (SigInt)
+      {
+        interrupted = true;
+        SigInt = false;
+        break;
+      }
       progress_update(progress, i, -1);
       if (mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
       {
@@ -414,6 +428,9 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
       mv->limit_pattern = mutt_pattern_comp(mv, mv->menu, buf->data, MUTT_PC_FULL_MSG, err);
     }
   }
+
+  if (interrupted)
+    mutt_error(_("Search interrupted"));
 
   rc = 0;
 
