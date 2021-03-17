@@ -1418,7 +1418,7 @@ int imap_complete(char *buf, size_t buflen, const char *path)
  * @retval  0 Success
  * @retval  1 Non-fatal error - try fetch/append
  */
-int imap_fast_trash(struct Mailbox *m, char *dest)
+int imap_fast_trash(struct Mailbox *m, const char *dest)
 {
   char prompt[1024];
   int rc = -1;

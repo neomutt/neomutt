@@ -66,13 +66,14 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   struct Buffer *fname = mutt_buffer_pool_get();
   mutt_buffer_mktemp(fname);
 
-  enum MailboxType otype = C_MboxType;
-  C_MboxType = MUTT_MBOX;
+  // Temporarily force $mbox_type to be MUTT_MBOX
+  const unsigned char c_mbox_type = cs_subset_enum(NeoMutt->sub, "mbox_type");
+  cs_subset_str_native_set(NeoMutt->sub, "mbox_type", MUTT_MBOX, NULL);
 
   struct Mailbox *m_fname = mx_path_resolve(mutt_buffer_string(fname));
   struct Context *ctx_tmp = mx_mbox_open(m_fname, MUTT_NEWFOLDER);
 
-  C_MboxType = otype;
+  cs_subset_str_native_set(NeoMutt->sub, "mbox_type", c_mbox_type, NULL);
 
   if (!ctx_tmp)
   {

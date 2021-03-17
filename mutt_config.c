@@ -341,9 +341,6 @@ struct ConfigDef MainVars[] = {
   { "index_format", DT_STRING|DT_NOT_EMPTY|R_INDEX|R_PAGER, &C_IndexFormat, IP "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s", 0, NULL,
     "printf-like format string for the index menu (emails)"
   },
-  { "keep_flagged", DT_BOOL, &C_KeepFlagged, false, 0, NULL,
-    "Don't move flagged messages from `$spool_file` to `$mbox`"
-  },
   { "mail_check", DT_NUMBER|DT_NOT_NEGATIVE, &C_MailCheck, 5, 0, NULL,
     "Number of seconds before NeoMutt checks for new mail"
   },
@@ -371,9 +368,6 @@ struct ConfigDef MainVars[] = {
   { "mbox", DT_STRING|DT_MAILBOX|R_INDEX|R_PAGER, &C_Mbox, IP "~/mbox", 0, NULL,
     "Folder that receives read emails (see Move)"
   },
-  { "mbox_type", DT_ENUM, &C_MboxType, MUTT_MBOX, IP &MboxTypeDef, NULL,
-    "Default type for creating new mailboxes"
-  },
   { "mime_forward", DT_QUAD, &C_MimeForward, MUTT_NO, 0, NULL,
     "Forward a message as a 'message/RFC822' MIME part"
   },
@@ -388,9 +382,6 @@ struct ConfigDef MainVars[] = {
     "(mixmaster) External command to route a mixmaster message"
   },
 #endif
-  { "move", DT_QUAD, &C_Move, MUTT_NO, 0, NULL,
-    "Move emails from `$spool_file` to `$mbox` when read"
-  },
   { "net_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_NetInc, 10, 0, NULL,
     "(socket) Update the progress bar after this many KB sent/received (0 to disable)"
   },
@@ -562,9 +553,6 @@ struct ConfigDef MainVars[] = {
   { "to_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_ToChars, IP " +TCFLR", 0, NULL,
     "Indicator characters for the 'To' field in the index"
   },
-  { "trash", DT_STRING|DT_MAILBOX, &C_Trash, 0, 0, NULL,
-    "Folder to put deleted emails"
-  },
   { "ts_enabled", DT_BOOL|R_INDEX|R_PAGER, &C_TsEnabled, false, 0, NULL,
     "Allow NeoMutt to set the terminal status line and icon"
   },
@@ -687,8 +675,14 @@ struct ConfigDef MainNoVars[] = {
     "(idn) Encode international domain names"
   },
 #endif
+  { "keep_flagged", DT_BOOL, NULL, false, 0, NULL,
+    "Don't move flagged messages from `$spool_file` to `$mbox`"
+  },
   { "mark_old", DT_BOOL|R_INDEX|R_PAGER, NULL, true, 0, NULL,
     "Mark new emails as old when leaving the mailbox"
+  },
+  { "mbox_type", DT_ENUM, NULL, MUTT_MBOX, IP &MboxTypeDef, NULL,
+    "Default type for creating new mailboxes"
   },
   { "menu_context", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 0, 0, NULL,
     "Number of lines of overlap when changing pages in the index"
@@ -710,6 +704,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "message_cachedir", DT_PATH|DT_PATH_DIR, NULL, 0, 0, NULL,
     "(imap/pop) Directory for the message cache"
+  },
+  { "move", DT_QUAD, NULL, MUTT_NO, 0, NULL,
+    "Move emails from `$spool_file` to `$mbox` when read"
   },
   { "narrow_tree", DT_BOOL|R_TREE|R_INDEX, NULL, false, 0, NULL,
     "Draw a narrower thread tree in the index"
@@ -737,6 +734,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "tmpdir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, NULL, IP TMPDIR, 0, NULL,
     "Directory for temporary files"
+  },
+  { "trash", DT_STRING|DT_MAILBOX, NULL, 0, 0, NULL,
+    "Folder to put deleted emails"
   },
   { "weed", DT_BOOL, NULL, true, 0, NULL,
     "Filter headers when displaying/forwarding/printing/replying"

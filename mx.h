@@ -36,12 +36,6 @@ struct Context;
 
 extern const struct MxOps *mx_ops[];
 
-/* These Config Variables are only used in mx.c */
-extern bool          C_KeepFlagged;
-extern unsigned char C_MboxType;
-extern unsigned char C_Move;
-extern char *        C_Trash;
-
 extern struct EnumDef MboxTypeDef;
 
 typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open_new(), e.g. #MUTT_ADD_FROM
