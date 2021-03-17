@@ -296,8 +296,10 @@ static void pop_hcache_namer(const char *path, struct Buffer *dest)
  */
 static struct HeaderCache *pop_hcache_open(struct PopAccountData *adata, const char *path)
 {
+  const char *const c_header_cache =
+      cs_subset_path(NeoMutt->sub, "header_cache");
   if (!adata || !adata->conn)
-    return mutt_hcache_open(C_HeaderCache, path, NULL);
+    return mutt_hcache_open(c_header_cache, path, NULL);
 
   struct Url url = { 0 };
   char p[1024];
@@ -305,7 +307,7 @@ static struct HeaderCache *pop_hcache_open(struct PopAccountData *adata, const c
   mutt_account_tourl(&adata->conn->account, &url);
   url.path = HC_FNAME;
   url_tostring(&url, p, sizeof(p), U_PATH);
-  return mutt_hcache_open(C_HeaderCache, p, pop_hcache_namer);
+  return mutt_hcache_open(c_header_cache, p, pop_hcache_namer);
 }
 #endif
 
@@ -446,9 +448,10 @@ static int pop_fetch_headers(struct Mailbox *m)
       m->emails[i]->read = false;
       if (hcached)
       {
+        const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
         if (bcached)
           m->emails[i]->read = true;
-        else if (C_MarkOld)
+        else if (c_mark_old)
           m->emails[i]->old = true;
       }
       else
@@ -475,7 +478,9 @@ static int pop_fetch_headers(struct Mailbox *m)
   /* after putting the result into our structures,
    * clean up cache, i.e. wipe messages deleted outside
    * the availability of our cache */
-  if (C_MessageCacheClean)
+  const bool c_message_cache_clean =
+      cs_subset_bool(NeoMutt->sub, "message_cache_clean");
+  if (c_message_cache_clean)
     mutt_bcache_list(adata->bcache, msg_cache_check, m);
 
   mutt_clear_error();
@@ -508,7 +513,8 @@ static void pop_clear_cache(struct PopAccountData *adata)
  */
 void pop_fetch_mail(void)
 {
-  if (!C_PopHost)
+  const char *const c_pop_host = cs_subset_string(NeoMutt->sub, "pop_host");
+  if (!c_pop_host)
   {
     mutt_error(_("POP host is not defined"));
     return;
@@ -519,20 +525,20 @@ void pop_fetch_mail(void)
   int last = 0, msgs, bytes, rset = 0, ret;
   struct ConnAccount cac = { { 0 } };
 
-  char *p = mutt_mem_calloc(strlen(C_PopHost) + 7, sizeof(char));
+  char *p = mutt_mem_calloc(strlen(c_pop_host) + 7, sizeof(char));
   char *url = p;
-  if (url_check_scheme(C_PopHost) == U_UNKNOWN)
+  if (url_check_scheme(c_pop_host) == U_UNKNOWN)
   {
     strcpy(url, "pop://");
     p = strchr(url, '\0');
   }
-  strcpy(p, C_PopHost);
+  strcpy(p, c_pop_host);
 
   ret = pop_parse_path(url, &cac);
   FREE(&url);
   if (ret)
   {
-    mutt_error(_("%s is an invalid POP path"), C_PopHost);
+    mutt_error(_("%s is an invalid POP path"), c_pop_host);
     return;
   }
 
@@ -566,7 +572,8 @@ void pop_fetch_mail(void)
   sscanf(buf, "+OK %d %d", &msgs, &bytes);
 
   /* only get unread messages */
-  if ((msgs > 0) && C_PopLast)
+  const bool c_pop_last = cs_subset_bool(NeoMutt->sub, "pop_last");
+  if ((msgs > 0) && c_pop_last)
   {
     mutt_str_copy(buf, "LAST\r\n", sizeof(buf));
     ret = pop_query(adata, buf, sizeof(buf));
@@ -582,7 +589,8 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  struct Mailbox *m_spool = mx_path_resolve(C_SpoolFile);
+  const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
+  struct Mailbox *m_spool = mx_path_resolve(c_spool_file);
   struct Context *ctx = mx_mbox_open(m_spool, MUTT_OPEN_NO_FLAGS);
   if (!ctx)
   {
@@ -593,8 +601,10 @@ void pop_fetch_mail(void)
   bool old_append = m_spool->append;
   m_spool->append = true;
 
+  const enum QuadOption c_pop_delete =
+      cs_subset_quad(NeoMutt->sub, "pop_delete");
   enum QuadOption delanswer =
-      query_quadoption(C_PopDelete, _("Delete messages from server?"));
+      query_quadoption(c_pop_delete, _("Delete messages from server?"));
 
   snprintf(msgbuf, sizeof(msgbuf),
            ngettext("Reading new messages (%d byte)...",
@@ -816,7 +826,9 @@ static enum MxStatus pop_mbox_check(struct Mailbox *m)
 {
   struct PopAccountData *adata = pop_adata_get(m);
 
-  if ((adata->check_time + C_PopCheckInterval) > mutt_date_epoch())
+  const short c_pop_check_interval =
+      cs_subset_number(NeoMutt->sub, "pop_check_interval");
+  if ((adata->check_time + c_pop_check_interval) > mutt_date_epoch())
     return MX_STATUS_OK;
 
   pop_logout(m);

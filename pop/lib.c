@@ -58,11 +58,11 @@ const char *pop_get_field(enum ConnAccountField field, void *gf_data)
   {
     case MUTT_CA_LOGIN:
     case MUTT_CA_USER:
-      return C_PopUser;
+      return cs_subset_string(NeoMutt->sub, "pop_user");
     case MUTT_CA_PASS:
-      return C_PopPass;
+      return cs_subset_string(NeoMutt->sub, "pop_pass");
     case MUTT_CA_OAUTH_CMD:
-      return C_PopOauthRefreshCommand;
+      return cs_subset_string(NeoMutt->sub, "pop_oauth_refresh_command");
     case MUTT_CA_HOST:
     default:
       return NULL;
@@ -636,7 +636,9 @@ int pop_reconnect(struct Mailbox *m)
     if (ret < -1)
       return -1;
 
-    if (query_quadoption(C_PopReconnect,
+    const enum QuadOption c_pop_reconnect =
+        cs_subset_quad(NeoMutt->sub, "pop_reconnect");
+    if (query_quadoption(c_pop_reconnect,
                          _("Connection lost. Reconnect to POP server?")) != MUTT_YES)
     {
       return -1;
