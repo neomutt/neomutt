@@ -69,12 +69,6 @@ struct EmailList;
 struct PatternList;
 struct stat;
 
-// These Config Variables are used outside of libimap
-extern short C_ImapKeepalive;
-extern bool  C_ImapListSubscribed;
-extern bool  C_ImapPassive;
-extern bool  C_ImapPeek;
-
 /* imap.c */
 void imap_init(void);
 int imap_access(const char *path);

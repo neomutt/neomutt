@@ -675,7 +675,9 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
     return;
   }
 
-  if (!C_ImapCheckSubscribed)
+  const bool c_imap_check_subscribed =
+      cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
+  if (!c_imap_check_subscribed)
     return;
 
   adata->cmdresult = &list;
@@ -693,7 +695,8 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   imap_quote_string(quoted_name, sizeof(quoted_name), list.name, true);
   url.path = quoted_name + 1;
   url.path[strlen(url.path) - 1] = '\0';
-  if (mutt_str_equal(url.user, C_ImapUser))
+  const char *const c_imap_user = cs_subset_string(NeoMutt->sub, "imap_user");
+  if (mutt_str_equal(url.user, c_imap_user))
     url.user = NULL;
   url_tostring(&url, buf + 11, sizeof(buf) - 11, U_NO_FLAGS);
   mutt_str_cat(buf, sizeof(buf), "\"");
@@ -889,7 +892,9 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
              mailbox, olduv, oldun, mdata->unseen);
 
   bool new_mail = false;
-  if (C_MailCheckRecent)
+  const bool c_mail_check_recent =
+      cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  if (c_mail_check_recent)
   {
     if ((olduv != 0) && (olduv == mdata->uidvalidity))
     {
@@ -984,6 +989,8 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
   char *s = imap_next_word(adata->buf);
   char *pn = imap_next_word(s);
 
+  const bool c_imap_server_noise =
+      cs_subset_bool(NeoMutt->sub, "imap_server_noise");
   if ((adata->state >= IMAP_SELECTED) && isdigit((unsigned char) *s))
   {
     /* pn vs. s: need initial seqno */
@@ -1035,7 +1042,7 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
 
     return -1;
   }
-  else if (C_ImapServerNoise && mutt_istr_startswith(s, "NO"))
+  else if (c_imap_server_noise && mutt_istr_startswith(s, "NO"))
   {
     mutt_debug(LL_DEBUG2, "Handling untagged NO\n");
 
@@ -1261,8 +1268,10 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
   if (flags & IMAP_CMD_QUEUE)
     return IMAP_EXEC_SUCCESS;
 
-  if ((flags & IMAP_CMD_POLL) && (C_ImapPollTimeout > 0) &&
-      ((mutt_socket_poll(adata->conn, C_ImapPollTimeout)) == 0))
+  const short c_imap_poll_timeout =
+      cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
+  if ((flags & IMAP_CMD_POLL) && (c_imap_poll_timeout > 0) &&
+      ((mutt_socket_poll(adata->conn, c_imap_poll_timeout)) == 0))
   {
     mutt_error(_("Connection to %s timed out"), adata->conn->account.host);
     cmd_handle_fatal(adata);
@@ -1381,7 +1390,10 @@ int imap_cmd_idle(struct ImapAccountData *adata)
     return -1;
   }
 
-  if ((C_ImapPollTimeout > 0) && ((mutt_socket_poll(adata->conn, C_ImapPollTimeout)) == 0))
+  const short c_imap_poll_timeout =
+      cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
+  if ((c_imap_poll_timeout > 0) &&
+      ((mutt_socket_poll(adata->conn, c_imap_poll_timeout)) == 0))
   {
     mutt_error(_("Connection to %s timed out"), adata->conn->account.host);
     cmd_handle_fatal(adata);

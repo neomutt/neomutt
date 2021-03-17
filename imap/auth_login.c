@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "conn/lib.h"
 #include "adata.h"
 #include "auth.h"
@@ -63,7 +64,8 @@ enum ImapAuthRes imap_auth_login(struct ImapAccountData *adata, const char *meth
   /* don't print the password unless we're at the ungodly debugging level
    * of 5 or higher */
 
-  if (C_DebugLevel < IMAP_LOG_PASS)
+  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
+  if (c_debug_level < IMAP_LOG_PASS)
     mutt_debug(LL_DEBUG2, "Sending LOGIN command for %s\n", adata->conn->account.user);
 
   snprintf(buf, sizeof(buf), "LOGIN %s %s", q_user, q_pass);

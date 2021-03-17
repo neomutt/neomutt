@@ -1029,7 +1029,9 @@ static void init_menu(struct BrowserState *state, struct Menu *menu, char *title
       mutt_buffer_copy(path, &LastDir);
       mutt_buffer_pretty_mailbox(path);
 #ifdef USE_IMAP
-      if (state->imap_browse && C_ImapListSubscribed)
+      const bool c_imap_list_subscribed =
+          cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
+      if (state->imap_browse && c_imap_list_subscribed)
       {
         snprintf(title, titlelen, _("Subscribed [%s], File mask: %s"),
                  mutt_buffer_string(path), NONULL(C_Mask ? C_Mask->pattern : NULL));

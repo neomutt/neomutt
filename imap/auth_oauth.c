@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "conn/lib.h"
 #include "auth.h"
 #include "adata.h"
@@ -55,7 +56,9 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
   }
 
   /* If they did not explicitly request or configure oauth then fail quietly */
-  if (!method && !C_ImapOauthRefreshCommand)
+  const char *const c_imap_oauth_refresh_command =
+      cs_subset_string(NeoMutt->sub, "imap_oauth_refresh_command");
+  if (!method && !c_imap_oauth_refresh_command)
     return IMAP_AUTH_UNAVAIL;
 
   // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL

@@ -667,20 +667,25 @@ int km_dokey(enum MenuType menu)
   if (!map && (menu != MENU_EDITOR))
     return retry_generic(menu, NULL, 0, 0);
 
+#ifdef USE_IMAP
+  const short c_imap_keepalive =
+      cs_subset_number(NeoMutt->sub, "imap_keepalive");
+#endif
+
   while (true)
   {
     int i = (C_Timeout > 0) ? C_Timeout : 60;
 #ifdef USE_IMAP
     /* keepalive may need to run more frequently than `$timeout` allows */
-    if (C_ImapKeepalive)
+    if (c_imap_keepalive)
     {
-      if (C_ImapKeepalive >= i)
+      if (c_imap_keepalive >= i)
         imap_keepalive();
       else
       {
-        while (C_ImapKeepalive && (C_ImapKeepalive < i))
+        while (c_imap_keepalive && (c_imap_keepalive < i))
         {
-          mutt_getch_timeout(C_ImapKeepalive * 1000);
+          mutt_getch_timeout(c_imap_keepalive * 1000);
           tmp = mutt_getch();
           mutt_getch_timeout(-1);
           /* If a timeout was not received, or the window was resized, exit the
@@ -692,7 +697,7 @@ int km_dokey(enum MenuType menu)
           if (MonitorFilesChanged)
             goto gotkey;
 #endif
-          i -= C_ImapKeepalive;
+          i -= c_imap_keepalive;
           imap_keepalive();
         }
       }

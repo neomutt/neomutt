@@ -543,7 +543,10 @@ static void imap_logout(struct ImapAccountData *adata)
 
   adata->status = IMAP_BYE;
   imap_cmd_start(adata, "LOGOUT");
-  if ((C_ImapPollTimeout <= 0) || (mutt_socket_poll(adata->conn, C_ImapPollTimeout) != 0))
+  const short c_imap_poll_timeout =
+      cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
+  if ((c_imap_poll_timeout <= 0) ||
+      (mutt_socket_poll(adata->conn, c_imap_poll_timeout) != 0))
   {
     while (imap_cmd_step(adata) == IMAP_RES_CONTINUE)
       ; // do nothing
@@ -600,7 +603,8 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
   bool r = false;
   struct Buffer buf = { 0 }; // Do not allocate, maybe it won't be used
 
-  if (C_DebugLevel >= IMAP_LOG_LTRL)
+  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
+  if (c_debug_level >= IMAP_LOG_LTRL)
     mutt_buffer_alloc(&buf, bytes + 10);
 
   mutt_debug(LL_DEBUG2, "reading %ld bytes\n", bytes);
@@ -631,11 +635,11 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 
     if (pbar && !(pos % 1024))
       mutt_progress_update(pbar, pos, -1);
-    if (C_DebugLevel >= IMAP_LOG_LTRL)
+    if (c_debug_level >= IMAP_LOG_LTRL)
       mutt_buffer_addch(&buf, c);
   }
 
-  if (C_DebugLevel >= IMAP_LOG_LTRL)
+  if (c_debug_level >= IMAP_LOG_LTRL)
   {
     mutt_debug(IMAP_LOG_LTRL, "\n%s", buf.data);
     mutt_buffer_dealloc(&buf);
@@ -758,13 +762,17 @@ int imap_open_connection(struct ImapAccountData *adata)
     }
 #ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
-    if ((adata->conn->ssf == 0) && (C_SslForceTls || (adata->capabilities & IMAP_CAP_STARTTLS)))
+    const bool c_ssl_force_tls = cs_subset_bool(NeoMutt->sub, "ssl_force_tls");
+    if ((adata->conn->ssf == 0) &&
+        (c_ssl_force_tls || (adata->capabilities & IMAP_CAP_STARTTLS)))
     {
       enum QuadOption ans;
 
-      if (C_SslForceTls)
+      const enum QuadOption c_ssl_starttls =
+          cs_subset_quad(NeoMutt->sub, "ssl_starttls");
+      if (c_ssl_force_tls)
         ans = MUTT_YES;
-      else if ((ans = query_quadoption(C_SslStarttls,
+      else if ((ans = query_quadoption(c_ssl_starttls,
                                        _("Secure connection with TLS?"))) == MUTT_ABORT)
       {
         goto bail;
@@ -794,7 +802,7 @@ int imap_open_connection(struct ImapAccountData *adata)
       }
     }
 
-    if (C_SslForceTls && (adata->conn->ssf == 0))
+    if (c_ssl_force_tls && (adata->conn->ssf == 0))
     {
       mutt_error(_("Encrypted connection unavailable"));
       goto bail;
@@ -810,7 +818,8 @@ int imap_open_connection(struct ImapAccountData *adata)
      * STARTTLS capability.  So consult $ssl_force_tls, not $ssl_starttls, to
      * decide whether to abort. Note that if using $tunnel and
      * $tunnel_is_secure, adata->conn->ssf will be set to 1. */
-    if ((adata->conn->ssf == 0) && C_SslForceTls)
+    const bool c_ssl_force_tls = cs_subset_bool(NeoMutt->sub, "ssl_force_tls");
+    if ((adata->conn->ssf == 0) && c_ssl_force_tls)
     {
       mutt_error(_("Encrypted connection unavailable"));
       goto bail;
@@ -922,7 +931,6 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
     return -1;
 
   struct Email **emails = NULL;
-  short oldsort;
   int pos;
   int rc;
   int count = 0;
@@ -932,15 +940,15 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
   /* We make a copy of the headers just in case resorting doesn't give
    exactly the original order (duplicate messages?), because other parts of
    the ctx are tied to the header order. This may be overkill. */
-  oldsort = C_Sort;
-  if (C_Sort != SORT_ORDER)
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (c_sort != SORT_ORDER)
   {
     emails = m->emails;
     // We overcommit here, just in case new mail arrives whilst we're sync-ing
     m->emails = mutt_mem_malloc(m->email_max * sizeof(struct Email *));
     memcpy(m->emails, emails, m->email_max * sizeof(struct Email *));
 
-    C_Sort = SORT_ORDER;
+    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
     qsort(m->emails, m->msg_count, sizeof(struct Email *), compare_uid);
   }
 
@@ -967,9 +975,9 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
 
 out:
   mutt_buffer_dealloc(&cmd);
-  if (oldsort != C_Sort)
+  if (c_sort != SORT_ORDER)
   {
-    C_Sort = oldsort;
+    cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
     FREE(&m->emails);
     m->emails = emails;
   }
@@ -1104,8 +1112,11 @@ enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
   int rc = 0;
 
   /* try IDLE first, unless force is set */
-  if (!force && C_ImapIdle && (adata->capabilities & IMAP_CAP_IDLE) &&
-      ((adata->state != IMAP_IDLE) || (mutt_date_epoch() >= adata->lastread + C_ImapKeepalive)))
+  const bool c_imap_idle = cs_subset_bool(NeoMutt->sub, "imap_idle");
+  const short c_imap_keepalive =
+      cs_subset_number(NeoMutt->sub, "imap_keepalive");
+  if (!force && c_imap_idle && (adata->capabilities & IMAP_CAP_IDLE) &&
+      ((adata->state != IMAP_IDLE) || (mutt_date_epoch() >= adata->lastread + c_imap_keepalive)))
   {
     if (imap_cmd_idle(adata) < 0)
       return MX_STATUS_ERROR;
@@ -1127,8 +1138,9 @@ enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
     }
   }
 
+  const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
   if ((force || ((adata->state != IMAP_IDLE) &&
-                 (mutt_date_epoch() >= adata->lastread + C_Timeout))) &&
+                 (mutt_date_epoch() >= adata->lastread + c_timeout))) &&
       (imap_exec(adata, "NOOP", IMAP_CMD_POLL) != IMAP_EXEC_SUCCESS))
   {
     return MX_STATUS_ERROR;
@@ -1292,7 +1304,9 @@ int imap_subscribe(char *path, bool subscribe)
     return -1;
   }
 
-  if (C_ImapCheckSubscribed)
+  const bool c_imap_check_subscribed =
+      cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
+  if (c_imap_check_subscribed)
   {
     char mbox[1024];
     mutt_buffer_init(&err);
@@ -1343,8 +1357,10 @@ int imap_complete(char *buf, size_t buflen, const char *path)
   }
 
   /* fire off command */
+  const bool c_imap_list_subscribed =
+      cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
   snprintf(tmp, sizeof(tmp), "%s \"\" \"%s%%\"",
-           C_ImapListSubscribed ? "LSUB" : "LIST", mdata->real_name);
+           c_imap_list_subscribed ? "LSUB" : "LIST", mdata->real_name);
 
   imap_cmd_start(adata, tmp);
 
@@ -1476,7 +1492,9 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), dest_mdata->name);
-      if (C_ConfirmCreate && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
+      const bool c_confirm_create =
+          cs_subset_bool(NeoMutt->sub, "confirm_create");
+      if (c_confirm_create && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
       {
         mutt_clear_error();
         goto out;
@@ -1517,7 +1535,6 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
     return -1;
 
   struct Email **emails = NULL;
-  int oldsort;
   int rc;
 
   struct ImapAccountData *adata = imap_adata_get(m);
@@ -1622,14 +1639,14 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 #endif
 
   /* presort here to avoid doing 10 resorts in imap_exec_msgset */
-  oldsort = C_Sort;
-  if (C_Sort != SORT_ORDER)
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (c_sort != SORT_ORDER)
   {
     emails = m->emails;
     m->emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
     memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
 
-    C_Sort = SORT_ORDER;
+    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
     qsort(m->emails, m->msg_count, sizeof(struct Email *), mutt_get_sort_func(SORT_ORDER));
   }
 
@@ -1643,9 +1660,9 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   if (rc >= 0)
     rc |= sync_helper(m, MUTT_ACL_WRITE, MUTT_REPLIED, "\\Answered");
 
-  if (oldsort != C_Sort)
+  if (c_sort != SORT_ORDER)
   {
-    C_Sort = oldsort;
+    cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
     FREE(&m->emails);
     m->emails = emails;
   }
@@ -1711,7 +1728,9 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
     adata->state = IMAP_AUTHENTICATED;
   }
 
-  if (C_MessageCacheClean)
+  const bool c_message_cache_clean =
+      cs_subset_bool(NeoMutt->sub, "message_cache_clean");
+  if (c_message_cache_clean)
     imap_cache_clean(m);
 
   return check;
@@ -1801,7 +1820,8 @@ static void imap_mbox_select(struct Mailbox *m)
 
   const char *condstore = NULL;
 #ifdef USE_HCACHE
-  if ((adata->capabilities & IMAP_CAP_CONDSTORE) && C_ImapCondstore)
+  const bool c_imap_condstore = cs_subset_bool(NeoMutt->sub, "imap_condstore");
+  if ((adata->capabilities & IMAP_CAP_CONDSTORE) && c_imap_condstore)
     condstore = " (CONDSTORE)";
   else
 #endif
@@ -1856,7 +1876,8 @@ int imap_login(struct ImapAccountData *adata)
 
 #ifdef USE_ZLIB
     /* RFC4978 */
-    if ((adata->capabilities & IMAP_CAP_COMPRESS) && C_ImapDeflate &&
+    const bool c_imap_deflate = cs_subset_bool(NeoMutt->sub, "imap_deflate");
+    if ((adata->capabilities & IMAP_CAP_COMPRESS) && c_imap_deflate &&
         (imap_exec(adata, "COMPRESS DEFLATE", IMAP_CMD_PASS) == IMAP_EXEC_SUCCESS))
     {
       mutt_debug(LL_DEBUG2, "IMAP compression is enabled on connection to %s\n",
@@ -1866,7 +1887,8 @@ int imap_login(struct ImapAccountData *adata)
 #endif
 
     /* enable RFC6855, if the server supports that */
-    if (C_ImapRfc5161 && (adata->capabilities & IMAP_CAP_ENABLE))
+    const bool c_imap_rfc5161 = cs_subset_bool(NeoMutt->sub, "imap_rfc5161");
+    if (c_imap_rfc5161 && (adata->capabilities & IMAP_CAP_ENABLE))
       imap_exec(adata, "ENABLE UTF8=ACCEPT", IMAP_CMD_QUEUE);
 
     /* enable QRESYNC.  Advertising QRESYNC also means CONDSTORE
@@ -1874,7 +1896,8 @@ int imap_login(struct ImapAccountData *adata)
     if (adata->capabilities & IMAP_CAP_QRESYNC)
     {
       adata->capabilities |= IMAP_CAP_CONDSTORE;
-      if (C_ImapRfc5161 && C_ImapQresync)
+      const bool c_imap_qresync = cs_subset_bool(NeoMutt->sub, "imap_qresync");
+      if (c_imap_rfc5161 && c_imap_qresync)
         imap_exec(adata, "ENABLE QRESYNC", IMAP_CMD_QUEUE);
     }
 
@@ -1940,7 +1963,8 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
   }
 
   /* pipeline the postponed count if possible */
-  struct Mailbox *m_postponed = mx_mbox_find2(C_Postponed);
+  const char *const c_postponed = cs_subset_string(NeoMutt->sub, "postponed");
+  struct Mailbox *m_postponed = mx_mbox_find2(c_postponed);
   struct ImapAccountData *postponed_adata = imap_adata_get(m_postponed);
   if (postponed_adata &&
       imap_account_match(&postponed_adata->conn->account, &adata->conn->account))
@@ -1948,7 +1972,9 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
     imap_mailbox_status(m_postponed, true);
   }
 
-  if (C_ImapCheckSubscribed)
+  const bool c_imap_check_subscribed =
+      cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
+  if (c_imap_check_subscribed)
     imap_exec(adata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
 
   imap_mbox_select(m);
@@ -2049,7 +2075,8 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
   }
 
   /* dump the mailbox flags we've found */
-  if (C_DebugLevel > LL_DEBUG2)
+  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
+  if (c_debug_level > LL_DEBUG2)
   {
     if (STAILQ_EMPTY(&mdata->flags))
       mutt_debug(LL_DEBUG3, "No folder flags found\n");
@@ -2121,7 +2148,8 @@ static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
   char buf[PATH_MAX + 64];
   snprintf(buf, sizeof(buf), _("Create %s?"), mdata->name);
-  if (C_ConfirmCreate && (mutt_yesorno(buf, MUTT_YES) != MUTT_YES))
+  const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
+  if (c_confirm_create && (mutt_yesorno(buf, MUTT_YES) != MUTT_YES))
     return false;
 
   if (imap_create_mailbox(adata, mdata->name) < 0)
