@@ -665,8 +665,10 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
 
     if (mdata && mdata->adata && mdata->group)
     {
+      const enum QuadOption c_catchup_newsgroup =
+          cs_subset_quad(NeoMutt->sub, "catchup_newsgroup");
       enum QuadOption ans =
-          query_quadoption(C_CatchupNewsgroup, _("Mark all articles read?"));
+          query_quadoption(c_catchup_newsgroup, _("Mark all articles read?"));
       if (ans == MUTT_ABORT)
         goto cleanup;
       if (ans == MUTT_YES)

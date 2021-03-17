@@ -1790,10 +1790,12 @@ void dlg_select_attachment(struct Email *e)
       case OP_FOLLOWUP:
         CHECK_ATTACH;
 
+        const enum QuadOption c_followup_to_poster =
+            cs_subset_quad(NeoMutt->sub, "followup_to_poster");
         if (!CUR_ATTACH->body->email->env->followup_to ||
             !mutt_istr_equal(CUR_ATTACH->body->email->env->followup_to,
                              "poster") ||
-            (query_quadoption(C_FollowupToPoster,
+            (query_quadoption(c_followup_to_poster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
           mutt_attach_reply(CUR_ATTACH->fp, m, e, actx,

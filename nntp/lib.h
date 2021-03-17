@@ -52,16 +52,6 @@ struct ConnAccount;
 struct NntpAccountData;
 struct stat;
 
-// These Config Variables are used outside of libnntp
-extern unsigned char C_CatchupNewsgroup;
-extern unsigned char C_FollowupToPoster;
-extern char *        C_GroupIndexFormat;
-extern char *        C_NewsServer;
-extern char *        C_NewsgroupsCharset;
-extern unsigned char C_PostModerated;
-extern bool          C_ShowOnlyUnread;
-extern bool          C_XCommentTo;
-
 extern struct NntpAccountData *CurrentNewsSrv; ///< Current NNTP news server
 extern struct MxOps MxNntpOps;
 

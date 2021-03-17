@@ -3359,26 +3359,33 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
 #ifdef USE_NNTP
       case OP_POST:
+      {
         if (!assert_pager_mode(IsEmail(extra)))
           break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
+        const enum QuadOption c_post_moderated =
+            cs_subset_quad(NeoMutt->sub, "post_moderated");
         if (extra->ctx && (extra->ctx->mailbox->type == MUTT_NNTP) &&
-            !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
+            !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
         {
           break;
         }
         mutt_send_message(SEND_NEWS, NULL, NULL, extra->ctx, NULL, NeoMutt->sub);
         pager_menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_FORWARD_TO_GROUP:
+      {
         if (!assert_pager_mode(IsEmail(extra) || IsMsgAttach(extra)))
           break;
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
+        const enum QuadOption c_post_moderated =
+            cs_subset_quad(NeoMutt->sub, "post_moderated");
         if (extra->ctx && (extra->ctx->mailbox->type == MUTT_NNTP) &&
-            !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
+            !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
         {
           break;
         }
@@ -3394,6 +3401,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         }
         pager_menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_FOLLOWUP:
         if (!assert_pager_mode(IsEmail(extra) || IsMsgAttach(extra)))
@@ -3406,12 +3414,16 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         else
           followup_to = extra->email->env->followup_to;
 
+        const enum QuadOption c_followup_to_poster =
+            cs_subset_quad(NeoMutt->sub, "followup_to_poster");
         if (!followup_to || !mutt_istr_equal(followup_to, "poster") ||
-            (query_quadoption(C_FollowupToPoster,
+            (query_quadoption(c_followup_to_poster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
+          const enum QuadOption c_post_moderated =
+              cs_subset_quad(NeoMutt->sub, "post_moderated");
           if (extra->ctx && (extra->ctx->mailbox->type == MUTT_NNTP) &&
-              !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
+              !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
           {
             break;
           }

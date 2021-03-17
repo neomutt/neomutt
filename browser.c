@@ -824,9 +824,11 @@ static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct Browse
 
     for (unsigned int i = 0; i < adata->groups_num; i++)
     {
+      const bool c_show_only_unread =
+          cs_subset_bool(NeoMutt->sub, "show_only_unread");
       struct NntpMboxData *mdata = adata->groups_list[i];
       if (mdata && (mdata->has_new_mail ||
-                    (mdata->subscribed && (mdata->unread || !C_ShowOnlyUnread))))
+                    (mdata->subscribed && (mdata->unread || !c_show_only_unread))))
       {
         add_folder(menu, state, mdata->group, NULL, NULL, NULL, mdata);
       }
@@ -940,8 +942,10 @@ static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
 #ifdef USE_NNTP
   if (OptNews)
   {
+    const char *c_group_index_format =
+        cs_subset_string(NeoMutt->sub, "group_index_format");
     mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                        NONULL(C_GroupIndexFormat), group_index_format_str,
+                        NONULL(c_group_index_format), group_index_format_str,
                         (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
   else
