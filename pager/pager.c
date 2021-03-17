@@ -477,7 +477,8 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
 
   if (line_info[n].continuation)
   {
-    if (!cnt && C_Markers)
+    const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
+    if (!cnt && c_markers)
     {
       mutt_curses_set_color(MT_COLOR_MARKERS);
       mutt_window_addch('+');
@@ -1054,7 +1055,9 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
   if (!pmatch)
     pmatch = pmatch_internal;
 
-  if (mutt_regex_capture(C_QuoteRegex, line, 1, pmatch))
+  const struct Regex *c_quote_regex =
+      cs_subset_regex(NeoMutt->sub, "quote_regex");
+  if (mutt_regex_capture(c_quote_regex, line, 1, pmatch))
   {
     if (mutt_regex_capture(c_smileys, line, 1, smatch))
     {
@@ -1063,7 +1066,7 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
         char c = line[smatch[0].rm_so];
         line[smatch[0].rm_so] = 0;
 
-        if (mutt_regex_capture(C_QuoteRegex, line, 1, pmatch))
+        if (mutt_regex_capture(c_quote_regex, line, 1, pmatch))
           is_quote = true;
 
         line[smatch[0].rm_so] = c;
@@ -1575,12 +1578,14 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
                        int *pspace, int *pvch, int *pcol, int *pspecial, int width)
 {
   int space = -1; /* index of the last space or TAB */
-  int col = C_Markers ? (*line_info)[n].continuation : 0;
+  const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
+  int col = c_markers ? (*line_info)[n].continuation : 0;
   size_t k;
   int ch, vch, last_special = -1, special = 0, t;
   wchar_t wc;
   mbstate_t mbstate;
-  int wrap_cols = mutt_window_wrap_cols(width, (flags & MUTT_PAGER_NOWRAP) ? 0 : C_Wrap);
+  const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
+  int wrap_cols = mutt_window_wrap_cols(width, (flags & MUTT_PAGER_NOWRAP) ? 0 : c_wrap);
 
   if (check_attachment_marker((char *) buf) == 0)
     wrap_cols = width;
@@ -1848,8 +1853,10 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     }
 
     /* this also prevents searching through the hidden lines */
+    const short c_toggle_quoted_show_levels =
+        cs_subset_number(NeoMutt->sub, "toggle_quoted_show_levels");
     if ((flags & MUTT_HIDE) && (curr_line->type == MT_COLOR_QUOTED) &&
-        ((curr_line->quote == NULL) || (curr_line->quote->index >= C_ToggleQuotedShowLevels)))
+        ((curr_line->quote == NULL) || (curr_line->quote->index >= c_toggle_quoted_show_levels)))
     {
       flags = 0; /* MUTT_NOSHOW */
     }
@@ -1870,7 +1877,9 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
       goto out;
     }
 
-    if (mutt_regex_capture(C_QuoteRegex, (char *) fmt, 1, pmatch))
+    const struct Regex *c_quote_regex =
+        cs_subset_regex(NeoMutt->sub, "quote_regex");
+    if (mutt_regex_capture(c_quote_regex, (char *) fmt, 1, pmatch))
     {
       curr_line->quote =
           classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,
@@ -2270,8 +2279,10 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       const int buflen = (l1 < l2) ? l1 : l2;
       struct Email *e =
           (IsEmail(rd->extra)) ? rd->extra->email : rd->extra->body->email;
+      const char *const c_pager_format =
+          cs_subset_string(NeoMutt->sub, "pager_format");
       mutt_make_string(buf, buflen, rd->extra->win_pbar->state.cols,
-                       NONULL(C_PagerFormat), m, Context ? Context->msg_in_pager : -1,
+                       NONULL(c_pager_format), m, Context ? Context->msg_in_pager : -1,
                        e, MUTT_FORMAT_NO_FLAGS, pager_progress_str);
       mutt_draw_statusline(rd->extra->win_pbar->state.cols, buf, l2);
     }
@@ -2282,11 +2293,16 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       mutt_draw_statusline(rd->extra->win_pbar->state.cols, bn, sizeof(bn));
     }
     mutt_curses_set_color(MT_COLOR_NORMAL);
-    if (C_TsEnabled && TsSupported && rd->menu)
+    const bool c_ts_enabled = cs_subset_bool(NeoMutt->sub, "ts_enabled");
+    if (c_ts_enabled && TsSupported && rd->menu)
     {
-      menu_status_line(buf, sizeof(buf), rd->menu, m, NONULL(C_TsStatusFormat));
+      const char *const c_ts_status_format =
+          cs_subset_string(NeoMutt->sub, "ts_status_format");
+      menu_status_line(buf, sizeof(buf), rd->menu, m, NONULL(c_ts_status_format));
       mutt_ts_status(buf);
-      menu_status_line(buf, sizeof(buf), rd->menu, m, NONULL(C_TsIconFormat));
+      const char *const c_ts_icon_format =
+          cs_subset_string(NeoMutt->sub, "ts_icon_format");
+      menu_status_line(buf, sizeof(buf), rd->menu, m, NONULL(c_ts_icon_format));
       mutt_ts_icon(buf);
     }
   }
@@ -2299,7 +2315,9 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       menu_redraw_current(rd->menu);
 
     /* print out the index status bar */
-    menu_status_line(buf, sizeof(buf), rd->menu, m, NONULL(C_StatusFormat));
+    const char *const c_status_format =
+        cs_subset_string(NeoMutt->sub, "status_format");
+    menu_status_line(buf, sizeof(buf), rd->menu, m, NONULL(c_status_format));
 
     mutt_window_move(rd->extra->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
@@ -2448,7 +2466,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     pager_custom_redraw(pager_menu);
     window_redraw(RootWindow, true);
 
-    if (C_BrailleFriendly)
+    const bool c_braille_friendly =
+        cs_subset_bool(NeoMutt->sub, "braille_friendly");
+    if (c_braille_friendly)
     {
       if (braille_line != -1)
       {
@@ -2546,12 +2566,15 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       if (mutt_mailbox_notify(m) || do_new_mail)
       {
-        if (C_BeepNew)
+        const bool c_beep_new = cs_subset_bool(NeoMutt->sub, "beep_new");
+        if (c_beep_new)
           mutt_beep(true);
-        if (C_NewMailCommand)
+        const char *const c_new_mail_command =
+            cs_subset_string(NeoMutt->sub, "new_mail_command");
+        if (c_new_mail_command)
         {
           char cmd[1024];
-          menu_status_line(cmd, sizeof(cmd), rd.menu, m, NONULL(C_NewMailCommand));
+          menu_status_line(cmd, sizeof(cmd), rd.menu, m, NONULL(c_new_mail_command));
           if (mutt_system(cmd) != 0)
             mutt_error(_("Error running \"%s\""), cmd);
         }
@@ -2616,13 +2639,16 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_QUIT:
-        if (query_quadoption(C_Quit, _("Quit NeoMutt?")) == MUTT_YES)
+      {
+        const enum QuadOption c_quit = cs_subset_quad(NeoMutt->sub, "quit");
+        if (query_quadoption(c_quit, _("Quit NeoMutt?")) == MUTT_YES)
         {
           /* avoid prompting again in the index menu */
           cs_subset_str_native_set(NeoMutt->sub, "quit", MUTT_YES, NULL);
           ch = -1;
         }
         break;
+      }
 
       case OP_NEXT_PAGE:
         if (rd.line_info[rd.curline].offset < (rd.sb.st_size - 1))
@@ -2741,9 +2767,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
               }
             }
 
+            const bool c_wrap_search =
+                cs_subset_bool(NeoMutt->sub, "wrap_search");
             if (i < rd.last_line)
               rd.topline = i;
-            else if (wrapped || !C_WrapSearch)
+            else if (wrapped || !c_wrap_search)
               mutt_error(_("Not found"));
             else
             {
@@ -2766,9 +2794,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
               }
             }
 
+            const bool c_wrap_search =
+                cs_subset_bool(NeoMutt->sub, "wrap_search");
             if (i >= 0)
               rd.topline = i;
-            else if (wrapped || !C_WrapSearch)
+            else if (wrapped || !c_wrap_search)
               mutt_error(_("Not found"));
             else
             {
@@ -3173,6 +3203,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_PURGE_MESSAGE:
       case OP_DELETE:
+      {
         if (!assert_pager_mode(IsEmail(extra)))
           break;
         if (!assert_mailbox_writable(Context->mailbox))
@@ -3186,15 +3217,19 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, true);
         mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
-        if (C_DeleteUntag)
+        const bool c_delete_untag =
+            cs_subset_bool(NeoMutt->sub, "delete_untag");
+        if (c_delete_untag)
           mutt_set_flag(Context->mailbox, extra->email, MUTT_TAG, false);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
-        if (C_Resolve)
+        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+        if (c_resolve)
         {
           ch = -1;
           rc = OP_MAIN_NEXT_UNDELETED;
         }
         break;
+      }
 
       case OP_MAIN_SET_FLAG:
       case OP_MAIN_CLEAR_FLAG:
@@ -3209,7 +3244,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         if (mutt_change_flag(Context->mailbox, &el, (ch == OP_MAIN_SET_FLAG)) == 0)
           pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
-        if (extra->email->deleted && C_Resolve)
+        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+        if (extra->email->deleted && c_resolve)
         {
           ch = -1;
           rc = OP_MAIN_NEXT_UNDELETED;
@@ -3247,15 +3283,18 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             break;
         }
 
-        if (C_DeleteUntag)
+        const bool c_delete_untag =
+            cs_subset_bool(NeoMutt->sub, "delete_untag");
+        if (c_delete_untag)
           mutt_thread_set_flag(m, extra->email, MUTT_TAG, 0, subthread);
-        if (C_Resolve)
+        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+        if (c_resolve)
         {
           rc = OP_MAIN_NEXT_UNDELETED;
           ch = -1;
         }
 
-        if (!C_Resolve && (c_pager_index_lines != 0))
+        if (!c_resolve && (c_pager_index_lines != 0))
           pager_menu->redraw = REDRAW_FULL;
         else
           pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
@@ -3303,6 +3342,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_FLAG_MESSAGE:
+      {
         if (!assert_pager_mode(IsEmail(extra)))
           break;
         if (!assert_mailbox_writable(Context->mailbox))
@@ -3313,12 +3353,14 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         mutt_set_flag(Context->mailbox, extra->email, MUTT_FLAG, !extra->email->flagged);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
-        if (C_Resolve)
+        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+        if (c_resolve)
         {
           ch = -1;
           rc = OP_MAIN_NEXT_UNDELETED;
         }
         break;
+      }
 
       case OP_PIPE:
         if (!assert_pager_mode(IsEmail(extra) || IsAttach(extra)))
@@ -3551,7 +3593,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         const int rc2 = mutt_save_message(Context->mailbox, &el, save_opt, transform_opt);
         if ((rc2 == 0) && (save_opt == SAVE_MOVE))
         {
-          if (C_Resolve)
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          if (c_resolve)
           {
             ch = -1;
             rc = OP_MAIN_NEXT_UNDELETED;
@@ -3571,6 +3614,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_TAG:
+      {
         if (!assert_pager_mode(IsEmail(extra)))
           break;
         if (Context)
@@ -3579,14 +3623,17 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         }
 
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
-        if (C_Resolve)
+        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+        if (c_resolve)
         {
           ch = -1;
           rc = OP_NEXT_ENTRY;
         }
         break;
+      }
 
       case OP_TOGGLE_NEW:
+      {
         if (!assert_pager_mode(IsEmail(extra)))
           break;
         if (!assert_mailbox_writable(Context->mailbox))
@@ -3602,14 +3649,17 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         first = false;
         Context->msg_in_pager = -1;
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
-        if (C_Resolve)
+        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+        if (c_resolve)
         {
           ch = -1;
           rc = OP_MAIN_NEXT_UNDELETED;
         }
         break;
+      }
 
       case OP_UNDELETE:
+      {
         if (!assert_pager_mode(IsEmail(extra)))
           break;
         if (!assert_mailbox_writable(Context->mailbox))
@@ -3624,12 +3674,14 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, false);
         mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, false);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
-        if (C_Resolve)
+        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+        if (c_resolve)
         {
           ch = -1;
           rc = OP_NEXT_ENTRY;
         }
         break;
+      }
 
       case OP_UNDELETE_THREAD:
       case OP_UNDELETE_SUBTHREAD:
@@ -3657,13 +3709,14 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         }
         if (r != -1)
         {
-          if (C_Resolve)
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          if (c_resolve)
           {
             rc = (ch == OP_DELETE_THREAD) ? OP_MAIN_NEXT_THREAD : OP_MAIN_NEXT_SUBTHREAD;
             ch = -1;
           }
 
-          if (!C_Resolve && (c_pager_index_lines != 0))
+          if (!c_resolve && (c_pager_index_lines != 0))
             pager_menu->redraw = REDRAW_FULL;
           else
             pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
