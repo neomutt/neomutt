@@ -31,9 +31,6 @@
 struct ConfigDef;
 struct ConfigSet;
 
-extern short C_DebugLevel;
-extern char *C_DebugFile;
-
 int log_disp_curses(time_t stamp, const char *file, int line, const char *function, enum LogLevel level, ...);
 
 void mutt_log_prep(void);

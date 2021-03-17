@@ -45,8 +45,6 @@
 
 uint64_t LastError = 0; ///< Time of the last error message (in milliseconds since the Unix epoch)
 
-short C_DebugLevel = 0;   ///< Config: Logging level for debug logs
-char *C_DebugFile = NULL; ///< Config: File to save debug logs
 char *CurrentFile = NULL; ///< The previous log file name
 const int NumOfLogs = 5;  ///< How many log files to rotate
 
@@ -59,8 +57,9 @@ const int NumOfLogs = 5;  ///< How many log files to rotate
  */
 static void error_pause(void)
 {
+  const short c_sleep_time = cs_subset_number(NeoMutt->sub, "sleep_time");
   const uint64_t elapsed = mutt_date_epoch_ms() - LastError;
-  const uint64_t sleep = C_SleepTime * S_TO_MS;
+  const uint64_t sleep = c_sleep_time * S_TO_MS;
   if ((LastError == 0) || (elapsed >= sleep))
     return;
 
@@ -127,7 +126,8 @@ void mutt_clear_error(void)
 int log_disp_curses(time_t stamp, const char *file, int line,
                     const char *function, enum LogLevel level, ...)
 {
-  if (level > C_DebugLevel)
+  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
+  if (level > c_debug_level)
     return 0;
 
   char buf[1024];
@@ -237,15 +237,16 @@ void mutt_log_stop(void)
  */
 int mutt_log_set_file(const char *file, bool verbose)
 {
-  if (!mutt_str_equal(CurrentFile, C_DebugFile))
+  const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
+  if (!mutt_str_equal(CurrentFile, c_debug_file))
   {
-    const char *name = rotate_logs(C_DebugFile, NumOfLogs);
+    const char *name = rotate_logs(c_debug_file, NumOfLogs);
     if (!name)
       return -1;
 
     log_file_set_filename(name, false);
     FREE(&name);
-    mutt_str_replace(&CurrentFile, C_DebugFile);
+    mutt_str_replace(&CurrentFile, c_debug_file);
   }
 
   cs_subset_str_string_set(NeoMutt->sub, "debug_file", file, NULL);
@@ -263,7 +264,10 @@ int mutt_log_set_file(const char *file, bool verbose)
 int mutt_log_set_level(enum LogLevel level, bool verbose)
 {
   if (!CurrentFile)
-    mutt_log_set_file(C_DebugFile, false);
+  {
+    const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
+    mutt_log_set_file(c_debug_file, false);
+  }
 
   if (log_file_set_level(level, verbose) != 0)
     return -1;
@@ -281,16 +285,18 @@ int mutt_log_set_level(enum LogLevel level, bool verbose)
  */
 int mutt_log_start(void)
 {
-  if (C_DebugLevel < 1)
+  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
+  if (c_debug_level < 1)
     return 0;
 
   if (log_file_running())
     return 0;
 
-  mutt_log_set_file(C_DebugFile, false);
+  const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
+  mutt_log_set_file(c_debug_file, false);
 
   /* This will trigger the file creation */
-  if (log_file_set_level(C_DebugLevel, true) < 0)
+  if (log_file_set_level(c_debug_level, true) < 0)
     return -1;
 
   return 0;
@@ -323,10 +329,12 @@ int mutt_log_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ec = nc->event_data;
 
+  const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
+  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
   if (mutt_str_equal(ec->name, "debug_file"))
-    mutt_log_set_file(C_DebugFile, true);
+    mutt_log_set_file(c_debug_file, true);
   else if (mutt_str_equal(ec->name, "debug_level"))
-    mutt_log_set_level(C_DebugLevel, true);
+    mutt_log_set_level(c_debug_level, true);
 
   return 0;
 }

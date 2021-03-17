@@ -259,12 +259,6 @@ struct ConfigDef MainVars[] = {
   { "date_format", DT_STRING|DT_NOT_EMPTY|R_MENU, &C_DateFormat, IP "!%a, %b %d, %Y at %I:%M:%S%p %Z", 0, NULL,
     "strftime format string for the `%d` expando"
   },
-  { "debug_file", DT_PATH|DT_PATH_FILE, &C_DebugFile, IP "~/.neomuttdebug", 0, NULL,
-    "File to save debug logs"
-  },
-  { "debug_level", DT_NUMBER, &C_DebugLevel, 0, 0, level_validator,
-    "Logging level for debug logs"
-  },
   { "default_hook", DT_STRING, &C_DefaultHook, IP "~f %s !~P | (~P ~C %s)", 0, NULL,
     "Pattern to use for hooks that only have a simple regex"
   },
@@ -584,6 +578,12 @@ struct ConfigDef MainNoVars[] = {
   },
   { "collapse_unread", DT_BOOL, NULL, true, 0, NULL,
     "Prevent the collapse of threads with unread emails"
+  },
+  { "debug_file", DT_PATH|DT_PATH_FILE, NULL, IP "~/.neomuttdebug", 0, NULL,
+    "File to save debug logs"
+  },
+  { "debug_level", DT_NUMBER, NULL, 0, 0, level_validator,
+    "Logging level for debug logs"
   },
   { "digest_collapse", DT_BOOL, NULL, true, 0, NULL,
     "Hide the subparts of a multipart/digest"
