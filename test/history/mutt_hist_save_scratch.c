@@ -24,14 +24,24 @@
 #include "config.h"
 #include "acutest.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "history/lib.h"
+#include "test_common.h"
+
+bool config_init_history(struct ConfigSet *cs);
 
 void test_mutt_hist_save_scratch(void)
 {
   // void mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
 
+  NeoMutt = test_neomutt_create();
+  config_init_history(NeoMutt->sub->cs);
+
   {
     mutt_hist_save_scratch(0, NULL);
     TEST_CHECK_(1, "mutt_hist_save_scratch(0, NULL)");
   }
+
+  test_neomutt_destroy(&NeoMutt);
 }

@@ -31,25 +31,18 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
-// clang-format off
-short C_History;            ///< Config: Number of history entries to keep in memory per category
-char *C_HistoryFile = NULL; ///< Config: File to save history in
-bool  C_HistoryRemoveDups;  ///< Config: Remove duplicate entries from the history
-short C_SaveHistory;        ///< Config: Number of history entries to save per category
-// clang-format on
-
 struct ConfigDef HistoryVars[] = {
   // clang-format off
-  { "history", DT_NUMBER|DT_NOT_NEGATIVE, &C_History, 10, 0, NULL,
+  { "history", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 10, 0, NULL,
     "Number of history entries to keep in memory per category"
   },
-  { "history_file", DT_PATH|DT_PATH_FILE, &C_HistoryFile, IP "~/.mutthistory", 0, NULL,
+  { "history_file", DT_PATH|DT_PATH_FILE, NULL, IP "~/.mutthistory", 0, NULL,
     "File to save history in"
   },
-  { "history_remove_dups", DT_BOOL, &C_HistoryRemoveDups, false, 0, NULL,
+  { "history_remove_dups", DT_BOOL, NULL, false, 0, NULL,
     "Remove duplicate entries from the history"
   },
-  { "save_history", DT_NUMBER|DT_NOT_NEGATIVE, &C_SaveHistory, 0, 0, NULL,
+  { "save_history", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 0, 0, NULL,
     "Number of history entries to save per category"
   },
   { NULL, 0, NULL, 0, 0, NULL, NULL },
@@ -61,5 +54,5 @@ struct ConfigDef HistoryVars[] = {
  */
 bool config_init_history(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, HistoryVars, 0);
+  return cs_register_variables(cs, HistoryVars, DT_NO_VARIABLE);
 }
