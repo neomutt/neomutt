@@ -34,15 +34,6 @@ struct Envelope;
 struct Mailbox;
 struct MuttWindow;
 
-/* These Config Variables are only used in commands.c */
-extern char *        C_DisplayFilter;
-extern bool          C_PipeDecode;
-extern char *        C_PipeSep;
-extern bool          C_PipeSplit;
-extern bool          C_PrintDecode;
-extern bool          C_PrintSplit;
-extern bool          C_PromptAfter;
-
 /**
  * enum MessageTransformOpt - Message transformation option
  */

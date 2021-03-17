@@ -275,9 +275,6 @@ struct ConfigDef MainVars[] = {
   { "delete_untag", DT_BOOL, &C_DeleteUntag, true, 0, NULL,
     "Untag messages when they are marked for deletion"
   },
-  { "display_filter", DT_STRING|DT_COMMAND|R_PAGER, &C_DisplayFilter, 0, 0, NULL,
-    "External command to pre-process an email before display"
-  },
   { "editor", DT_STRING|DT_NOT_EMPTY|DT_COMMAND, &C_Editor, 0, 0, NULL,
     "External command to use as an email editor"
   },
@@ -388,17 +385,8 @@ struct ConfigDef MainVars[] = {
   { "pager_format", DT_STRING|R_PAGER, &C_PagerFormat, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)", 0, NULL,
     "printf-like format string for the pager's status bar"
   },
-  { "pipe_decode", DT_BOOL, &C_PipeDecode, false, 0, NULL,
-    "Decode the message when piping it"
-  },
   { "pipe_decode_weed", DT_BOOL, &C_PipeDecodeWeed, true, 0, NULL,
     "Control whether to weed headers when piping an email"
-  },
-  { "pipe_sep", DT_STRING, &C_PipeSep, IP "\n", 0, NULL,
-    "Separator to add between multiple piped messages"
-  },
-  { "pipe_split", DT_BOOL, &C_PipeSplit, false, 0, NULL,
-    "Run the pipe command on each message separately"
   },
   { "postponed", DT_STRING|DT_MAILBOX|R_INDEX, &C_Postponed, IP "~/postponed", 0, NULL,
     "Folder to store postponed messages"
@@ -412,17 +400,8 @@ struct ConfigDef MainVars[] = {
   { "print_command", DT_STRING|DT_COMMAND, &C_PrintCommand, IP "lpr", 0, NULL,
     "External command to print a message"
   },
-  { "print_decode", DT_BOOL, &C_PrintDecode, true, 0, NULL,
-    "Decode message before printing it"
-  },
   { "print_decode_weed", DT_BOOL, &C_PrintDecodeWeed, true, 0, NULL,
     "Control whether to weed headers when printing an email "
-  },
-  { "print_split", DT_BOOL, &C_PrintSplit, false, 0, NULL,
-    "Print multiple messages separately"
-  },
-  { "prompt_after", DT_BOOL, &C_PromptAfter, true, 0, NULL,
-    "Pause after running an external pager"
   },
   { "quit", DT_QUAD, &C_Quit, MUTT_YES, 0, NULL,
     "Prompt before exiting NeoMutt"
@@ -637,6 +616,9 @@ struct ConfigDef MainNoVars[] = {
   { "digest_collapse", DT_BOOL, NULL, true, 0, NULL,
     "Hide the subparts of a multipart/digest"
   },
+  { "display_filter", DT_STRING|DT_COMMAND|R_PAGER, NULL, 0, 0, NULL,
+    "External command to pre-process an email before display"
+  },
   { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, NULL, true, 0, pager_validator,
     "Highlight messages with duplicated message IDs"
   },
@@ -707,6 +689,24 @@ struct ConfigDef MainNoVars[] = {
   },
   { "narrow_tree", DT_BOOL|R_TREE|R_INDEX, NULL, false, 0, NULL,
     "Draw a narrower thread tree in the index"
+  },
+  { "pipe_decode", DT_BOOL, NULL, false, 0, NULL,
+    "Decode the message when piping it"
+  },
+  { "pipe_sep", DT_STRING, NULL, IP "\n", 0, NULL,
+    "Separator to add between multiple piped messages"
+  },
+  { "pipe_split", DT_BOOL, NULL, false, 0, NULL,
+    "Run the pipe command on each message separately"
+  },
+  { "print_decode", DT_BOOL, NULL, true, 0, NULL,
+    "Decode message before printing it"
+  },
+  { "print_split", DT_BOOL, NULL, false, 0, NULL,
+    "Print multiple messages separately"
+  },
+  { "prompt_after", DT_BOOL, NULL, true, 0, NULL,
+    "Pause after running an external pager"
   },
   { "reply_regex", DT_REGEX|R_INDEX|R_RESORT, NULL, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, reply_validator,
     "Regex to match message reply subjects like 're: '"
