@@ -54,8 +54,6 @@ struct MboxAccountData
   bool append : 1; ///< mailbox is opened in append mode
 };
 
-extern bool C_CheckMboxSize;
-
 extern struct MxOps MxMboxOps;
 extern struct MxOps MxMmdfOps;
 
