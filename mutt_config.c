@@ -329,9 +329,6 @@ struct ConfigDef MainVars[] = {
   { "from_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_FromChars, 0, 0, NULL,
     "User-configurable index flags: to address, cc address, etc"
   },
-  { "gecos_mask", DT_REGEX, &C_GecosMask, IP "^[^,]*", 0, NULL,
-    "Regex for parsing GECOS field of /etc/passwd"
-  },
   { "greeting", DT_STRING, &C_Greeting, 0, 0, NULL,
     "Greeting string added to the top of all messages"
   },
@@ -672,6 +669,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, NULL, true, 0, pager_validator,
     "Highlight messages with duplicated message IDs"
+  },
+  { "gecos_mask", DT_REGEX, NULL, IP "^[^,]*", 0, NULL,
+    "Regex for parsing GECOS field of /etc/passwd"
   },
   { "hidden_tags", DT_SLIST|SLIST_SEP_COMMA, NULL, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted", 0, NULL,
     "Tags that shouldn't be displayed on screen"
