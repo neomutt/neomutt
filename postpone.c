@@ -99,19 +99,20 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     force = true;
   }
 
-  if (!mutt_str_equal(C_Postponed, OldPostponed))
+  const char *const c_postponed = cs_subset_string(NeoMutt->sub, "postponed");
+  if (!mutt_str_equal(c_postponed, OldPostponed))
   {
     FREE(&OldPostponed);
-    OldPostponed = mutt_str_dup(C_Postponed);
+    OldPostponed = mutt_str_dup(c_postponed);
     LastModify = 0;
     force = true;
   }
 
-  if (!C_Postponed)
+  if (!c_postponed)
     return 0;
 
   // We currently are in the `$postponed` mailbox so just pick the current status
-  if (m && mutt_str_equal(C_Postponed, m->realpath))
+  if (m && mutt_str_equal(c_postponed, m->realpath))
   {
     PostCount = m->msg_count - m->msg_deleted;
     return PostCount;
@@ -119,13 +120,13 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
 
 #ifdef USE_IMAP
   /* LastModify is useless for IMAP */
-  if (imap_path_probe(C_Postponed, NULL) == MUTT_IMAP)
+  if (imap_path_probe(c_postponed, NULL) == MUTT_IMAP)
   {
     if (force)
     {
       short newpc;
 
-      newpc = imap_path_status(C_Postponed, false);
+      newpc = imap_path_status(c_postponed, false);
       if (newpc >= 0)
       {
         PostCount = newpc;
@@ -138,7 +139,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
   }
 #endif
 
-  if (stat(C_Postponed, &st) == -1)
+  if (stat(c_postponed, &st) == -1)
   {
     PostCount = 0;
     LastModify = 0;
@@ -150,7 +151,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     /* if we have a maildir mailbox, we need to stat the "new" dir */
     struct Buffer *buf = mutt_buffer_pool_get();
 
-    mutt_buffer_printf(buf, "%s/new", C_Postponed);
+    mutt_buffer_printf(buf, "%s/new", c_postponed);
     if ((access(mutt_buffer_string(buf), F_OK) == 0) &&
         (stat(mutt_buffer_string(buf), &st) == -1))
     {
@@ -169,13 +170,13 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
 #endif
     LastModify = st.st_mtime;
 
-    if (access(C_Postponed, R_OK | F_OK) != 0)
+    if (access(c_postponed, R_OK | F_OK) != 0)
       return PostCount = 0;
 #ifdef USE_NNTP
     if (optnews)
       OptNews = false;
 #endif
-    struct Mailbox *m_post = mx_path_resolve(C_Postponed);
+    struct Mailbox *m_post = mx_path_resolve(c_postponed);
     struct Context *ctx = mx_mbox_open(m_post, MUTT_NOSORT | MUTT_QUIET);
     if (ctx)
     {
@@ -212,8 +213,10 @@ static void post_make_entry(struct Menu *menu, char *buf, size_t buflen, int lin
 {
   struct Context *ctx = menu->mdata;
 
+  const char *const c_index_format =
+      cs_subset_string(NeoMutt->sub, "index_format");
   mutt_make_string(buf, buflen, menu->win_index->state.cols,
-                   NONULL(C_IndexFormat), ctx->mailbox, ctx->msg_in_pager,
+                   NONULL(c_index_format), ctx->mailbox, ctx->msg_in_pager,
                    ctx->mailbox->emails[line], MUTT_FORMAT_ARROWCURSOR, NULL);
 }
 
@@ -242,8 +245,8 @@ static struct Email *dlg_select_postponed_email(struct Context *ctx)
   /* The postponed mailbox is setup to have sorting disabled, but the global
    * `$sort` variable may indicate something different.   Sorting has to be
    * disabled while the postpone menu is being displayed. */
-  const short orig_sort = C_Sort;
-  C_Sort = SORT_ORDER;
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
 
   while (!done)
   {
@@ -256,7 +259,8 @@ static struct Email *dlg_select_postponed_email(struct Context *ctx)
         mutt_set_flag(ctx->mailbox, ctx->mailbox->emails[menu->current],
                       MUTT_DELETE, (op == OP_DELETE));
         PostCount = ctx->mailbox->msg_count - ctx->mailbox->msg_deleted;
-        if (C_Resolve && (menu->current < menu->max - 1))
+        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+        if (c_resolve && (menu->current < menu->max - 1))
         {
           menu->oldcurrent = menu->current;
           menu->current++;
@@ -295,7 +299,7 @@ static struct Email *dlg_select_postponed_email(struct Context *ctx)
     }
   }
 
-  C_Sort = orig_sort;
+  cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
   dialog_destroy_simple_index(&dlg);
@@ -331,7 +335,8 @@ static void hardclose(struct Context **pctx)
 int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
                        struct Email **cur, struct Buffer *fcc)
 {
-  if (!C_Postponed)
+  const char *const c_postponed = cs_subset_string(NeoMutt->sub, "postponed");
+  if (!c_postponed)
     return -1;
 
   struct Email *e = NULL;
@@ -339,7 +344,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   const char *p = NULL;
   struct Context *ctx_post = NULL;
 
-  struct Mailbox *m = mx_path_resolve(C_Postponed);
+  struct Mailbox *m = mx_path_resolve(c_postponed);
   if (ctx && (ctx->mailbox == m))
     ctx_post = ctx;
   else
@@ -412,8 +417,8 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   PostCount = ctx_post->mailbox->msg_count - ctx_post->mailbox->msg_deleted;
 
   /* avoid the "purge deleted messages" prompt */
-  int opt_delete = C_Delete;
-  C_Delete = MUTT_YES;
+  const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
+  cs_subset_str_native_set(NeoMutt->sub, "delete", MUTT_YES, NULL);
   if (ctx_post == ctx)
   {
     ctx_post = NULL;
@@ -422,7 +427,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   {
     hardclose(&ctx_post);
   }
-  C_Delete = opt_delete;
+  cs_subset_str_native_set(NeoMutt->sub, "delete", c_delete, NULL);
 
   struct ListNode *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
