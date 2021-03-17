@@ -66,11 +66,6 @@
 #include "nntp/mdata.h" // IWYU pragma: keep
 #endif
 
-/* These Config Variables are only used in browser.c */
-bool C_BrowserAbbreviateMailboxes; ///< Config: Abbreviate mailboxes using '~' and '=' in the browser
-char *C_FolderFormat; ///< Config: printf-like format string for the browser's display of folders
-short C_SortBrowser; ///< Config: Sort method for the browser
-
 /// Help Bar for the File/Dir/Mailbox browser dialog
 static const struct Mapping FolderHelp[] = {
   // clang-format off
@@ -160,7 +155,8 @@ static int browser_compare_subject(const void *a, const void *b)
   int r = mutt_inbox_cmp(pa->name, pb->name);
   if (r == 0)
     r = mutt_str_coll(pa->name, pb->name);
-  return (C_SortBrowser & SORT_REVERSE) ? -r : r;
+  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  return (c_sort_browser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -173,7 +169,8 @@ static int browser_compare_order(const void *a, const void *b)
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
-  return ((C_SortBrowser & SORT_REVERSE) ? -1 : 1) * (pa->gen - pb->gen);
+  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  return ((c_sort_browser & SORT_REVERSE) ? -1 : 1) * (pa->gen - pb->gen);
 }
 
 /**
@@ -186,7 +183,8 @@ static int browser_compare_desc(const void *a, const void *b)
 
   int r = mutt_str_coll(pa->desc, pb->desc);
 
-  return (C_SortBrowser & SORT_REVERSE) ? -r : r;
+  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  return (c_sort_browser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -199,7 +197,8 @@ static int browser_compare_date(const void *a, const void *b)
 
   int r = pa->mtime - pb->mtime;
 
-  return (C_SortBrowser & SORT_REVERSE) ? -r : r;
+  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  return (c_sort_browser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -212,7 +211,8 @@ static int browser_compare_size(const void *a, const void *b)
 
   int r = pa->size - pb->size;
 
-  return (C_SortBrowser & SORT_REVERSE) ? -r : r;
+  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  return (c_sort_browser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -231,7 +231,8 @@ static int browser_compare_count(const void *a, const void *b)
   else
     r = 1;
 
-  return (C_SortBrowser & SORT_REVERSE) ? -r : r;
+  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  return (c_sort_browser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -250,7 +251,8 @@ static int browser_compare_count_new(const void *a, const void *b)
   else
     r = 1;
 
-  return (C_SortBrowser & SORT_REVERSE) ? -r : r;
+  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  return (c_sort_browser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -270,7 +272,8 @@ static int browser_compare(const void *a, const void *b)
   if ((mutt_str_coll(pb->desc, "../") == 0) || (mutt_str_coll(pb->desc, "..") == 0))
     return 1;
 
-  switch (C_SortBrowser & SORT_MASK)
+  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  switch (c_sort_browser & SORT_MASK)
   {
     case SORT_COUNT:
       return browser_compare_count(a, b);
@@ -299,7 +302,8 @@ static int browser_compare(const void *a, const void *b)
  */
 static void browser_sort(struct BrowserState *state)
 {
-  switch (C_SortBrowser & SORT_MASK)
+  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  switch (c_sort_browser & SORT_MASK)
   {
 #ifdef USE_NNTP
     case SORT_SIZE:
@@ -379,10 +383,12 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       {
         bool do_locales = true;
 
-        char *t_fmt = NULL;
+        const char *t_fmt = NULL;
         if (op == 'D')
         {
-          t_fmt = NONULL(C_DateFormat);
+          const char *const c_date_format =
+              cs_subset_string(NeoMutt->sub, "date_format");
+          t_fmt = NONULL(c_date_format);
           if (*t_fmt == '!')
           {
             t_fmt++;
@@ -702,7 +708,8 @@ static int examine_directory(struct Mailbox *m, struct Menu *menu,
         continue;
       if (prefix && *prefix && !mutt_str_startswith(mdata->group, prefix))
         continue;
-      if (!mutt_regex_match(C_Mask, mdata->group))
+      const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
+      if (!mutt_regex_match(c_mask, mdata->group))
       {
         continue;
       }
@@ -762,7 +769,8 @@ static int examine_directory(struct Mailbox *m, struct Menu *menu,
       {
         continue;
       }
-      if (!mutt_regex_match(C_Mask, de->d_name))
+      const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
+      if (!mutt_regex_match(c_mask, de->d_name))
       {
         continue;
       }
@@ -861,7 +869,9 @@ static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct Browse
       }
 
       mutt_buffer_strcpy(mailbox, mailbox_path(np->mailbox));
-      if (C_BrowserAbbreviateMailboxes)
+      const bool c_browser_abbreviate_mailboxes =
+          cs_subset_bool(NeoMutt->sub, "browser_abbreviate_mailboxes");
+      if (c_browser_abbreviate_mailboxes)
         mutt_buffer_pretty_mailbox(mailbox);
 
       switch (np->mailbox->type)
@@ -942,7 +952,7 @@ static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
 #ifdef USE_NNTP
   if (OptNews)
   {
-    const char *c_group_index_format =
+    const char *const c_group_index_format =
         cs_subset_string(NeoMutt->sub, "group_index_format");
     mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                         NONULL(c_group_index_format), group_index_format_str,
@@ -951,8 +961,10 @@ static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
   else
 #endif
   {
+    const char *const c_folder_format =
+        cs_subset_string(NeoMutt->sub, "folder_format");
     mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                        NONULL(C_FolderFormat), folder_format_str,
+                        NONULL(c_folder_format), folder_format_str,
                         (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
 }
@@ -1032,19 +1044,20 @@ static void init_menu(struct BrowserState *state, struct Menu *menu, char *title
       menu->is_mailbox_list = false;
       mutt_buffer_copy(path, &LastDir);
       mutt_buffer_pretty_mailbox(path);
+      const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
 #ifdef USE_IMAP
       const bool c_imap_list_subscribed =
           cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
       if (state->imap_browse && c_imap_list_subscribed)
       {
         snprintf(title, titlelen, _("Subscribed [%s], File mask: %s"),
-                 mutt_buffer_string(path), NONULL(C_Mask ? C_Mask->pattern : NULL));
+                 mutt_buffer_string(path), NONULL(c_mask ? c_mask->pattern : NULL));
       }
       else
 #endif
       {
         snprintf(title, titlelen, _("Directory [%s], File mask: %s"),
-                 mutt_buffer_string(path), NONULL(C_Mask ? C_Mask->pattern : NULL));
+                 mutt_buffer_string(path), NONULL(c_mask ? c_mask->pattern : NULL));
       }
       mutt_buffer_pool_release(&path);
     }
@@ -1256,7 +1269,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
        * only to help readability of the code.  */
       bool browser_track = false;
 
-      switch (C_SortBrowser & SORT_MASK)
+      const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+      switch (c_sort_browser & SORT_MASK)
       {
         case SORT_DESC:
         case SORT_SUBJECT:
@@ -1292,11 +1306,16 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             case MUTT_MBOX:
             case MUTT_MH:
             case MUTT_MMDF:
-              if (C_Folder)
-                mutt_buffer_strcpy(&LastDir, C_Folder);
-              else if (C_SpoolFile)
-                mutt_browser_select_dir(C_SpoolFile);
+            {
+              const char *const c_folder =
+                  cs_subset_string(NeoMutt->sub, "folder");
+              const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
+              if (c_folder)
+                mutt_buffer_strcpy(&LastDir, c_folder);
+              else if (c_spool_file)
+                mutt_browser_select_dir(c_spool_file);
               break;
+            }
             default:
               mutt_browser_select_dir(CurrentFolder);
               break;
@@ -1771,7 +1790,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
       case OP_ENTER_MASK:
       {
-        mutt_buffer_strcpy(buf, C_Mask ? C_Mask->pattern : NULL);
+        const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
+        mutt_buffer_strcpy(buf, c_mask ? c_mask->pattern : NULL);
         if (mutt_get_field(_("File Mask: "), buf->data, buf->dsize,
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
         {
@@ -1906,19 +1926,20 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (op == OP_BROWSER_GOTO_FOLDER)
         {
           /* When in mailboxes mode, disables this feature */
-          if (C_Folder)
+          const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+          if (c_folder)
           {
-            mutt_debug(LL_DEBUG3, "= hit! Folder: %s, LastDir: %s\n", C_Folder,
+            mutt_debug(LL_DEBUG3, "= hit! Folder: %s, LastDir: %s\n", c_folder,
                        mutt_buffer_string(&LastDir));
             if (goto_swapper[0] == '\0')
             {
-              if (!mutt_str_equal(mutt_buffer_string(&LastDir), C_Folder))
+              if (!mutt_str_equal(mutt_buffer_string(&LastDir), c_folder))
               {
                 /* Stores into goto_swapper LastDir, and swaps to `$folder` */
                 mutt_str_copy(goto_swapper, mutt_buffer_string(&LastDir),
                               sizeof(goto_swapper));
                 mutt_buffer_copy(&LastDirBackup, &LastDir);
-                mutt_buffer_strcpy(&LastDir, C_Folder);
+                mutt_buffer_strcpy(&LastDir, c_folder);
               }
             }
             else

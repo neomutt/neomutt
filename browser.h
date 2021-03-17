@@ -32,11 +32,6 @@
 
 struct Mailbox;
 
-/* These Config Variables are only used in browser.c */
-extern bool  C_BrowserAbbreviateMailboxes;
-extern char *C_FolderFormat;
-extern short C_SortBrowser;
-
 typedef uint8_t SelectFileFlags;  ///< Flags for mutt_select_file(), e.g. #MUTT_SEL_MAILBOX
 #define MUTT_SEL_NO_FLAGS      0  ///< No flags are set
 #define MUTT_SEL_MAILBOX (1 << 0) ///< Select a mailbox

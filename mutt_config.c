@@ -239,9 +239,6 @@ struct ConfigDef MainVars[] = {
   { "braille_friendly", DT_BOOL, &C_BrailleFriendly, false, 0, NULL,
     "Move the cursor to the beginning of the line"
   },
-  { "browser_abbreviate_mailboxes", DT_BOOL, &C_BrowserAbbreviateMailboxes, true, 0, NULL,
-    "Abbreviate mailboxes using '~' and '=' in the browser"
-  },
   { "config_charset", DT_STRING, &C_ConfigCharset, 0, 0, charset_validator,
     "Character set that the config files are in"
   },
@@ -292,9 +289,6 @@ struct ConfigDef MainVars[] = {
   },
   { "folder", DT_STRING|DT_MAILBOX, &C_Folder, IP "~/Mail", 0, NULL,
     "Base folder for a set of mailboxes"
-  },
-  { "folder_format", DT_STRING|DT_NOT_EMPTY|R_MENU, &C_FolderFormat, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %i", 0, NULL,
-    "printf-like format string for the browser's display of folders"
   },
   { "force_name", DT_BOOL, &C_ForceName, false, 0, NULL,
     "Save outgoing mail in a folder of their name"
@@ -520,9 +514,6 @@ struct ConfigDef MainVars[] = {
   { "sort_aux", DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST|R_INDEX|R_RESORT|R_RESORT_SUB, &C_SortAux, SORT_DATE, IP SortAuxMethods, NULL,
     "Secondary sort method for the index"
   },
-  { "sort_browser", DT_SORT|DT_SORT_REVERSE, &C_SortBrowser, SORT_ALPHA, IP SortBrowserMethods, NULL,
-    "Sort method for the browser"
-  },
   { "spool_file", DT_STRING|DT_MAILBOX, &C_SpoolFile, 0, 0, NULL,
     "Inbox"
   },
@@ -631,6 +622,9 @@ struct ConfigDef MainNoVars[] = {
   { "auto_subscribe", DT_BOOL, NULL, false, 0, NULL,
     "Automatically check if the user is subscribed to a mailing list"
   },
+  { "browser_abbreviate_mailboxes", DT_BOOL, NULL, true, 0, NULL,
+    "Abbreviate mailboxes using '~' and '=' in the browser"
+  },
   { "charset", DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, NULL, 0, 0, charset_validator,
     "Default character set for displaying text on screen"
   },
@@ -645,6 +639,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, NULL, true, 0, pager_validator,
     "Highlight messages with duplicated message IDs"
+  },
+  { "folder_format", DT_STRING|DT_NOT_EMPTY|R_MENU, NULL, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %i", 0, NULL,
+    "printf-like format string for the browser's display of folders"
   },
   { "gecos_mask", DT_REGEX, NULL, IP "^[^,]*", 0, NULL,
     "Regex for parsing GECOS field of /etc/passwd"
@@ -719,6 +716,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "send_charset", DT_STRING|DT_CHARSET_STRICT, NULL, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
     "Character sets for outgoing mail"
+  },
+  { "sort_browser", DT_SORT|DT_SORT_REVERSE, NULL, SORT_ALPHA, IP SortBrowserMethods, NULL,
+    "Sort method for the browser"
   },
   { "sort_re", DT_BOOL|R_INDEX|R_RESORT|R_RESORT_INIT, NULL, true, 0, pager_validator,
     "Sort method for the sidebar"
