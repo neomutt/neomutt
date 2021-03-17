@@ -106,11 +106,6 @@ struct HCacheEntry
  */
 typedef void (*hcache_namer_t)(const char *path, struct Buffer *dest);
 
-extern char *C_HeaderCache;
-extern char *C_HeaderCacheBackend;
-extern short C_HeaderCacheCompressLevel;
-extern char *C_HeaderCacheCompressMethod;
-
 /**
  * mutt_hcache_open - open the connection to the header cache
  * @param path   Location of the header cache (often as specified by the user)

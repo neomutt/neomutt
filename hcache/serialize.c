@@ -137,7 +137,8 @@ unsigned char *serial_dump_char_size(char *c, ssize_t size, unsigned char *d,
   if (convert && !mutt_str_is_ascii(c, size))
   {
     p = mutt_strn_dup(c, size);
-    if (mutt_ch_convert_string(&p, C_Charset, "utf-8", MUTT_ICONV_NO_FLAGS) == 0)
+    const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+    if (mutt_ch_convert_string(&p, c_charset, "utf-8", MUTT_ICONV_NO_FLAGS) == 0)
     {
       size = mutt_str_len(p) + 1;
     }
@@ -190,7 +191,8 @@ void serial_restore_char(char **c, const unsigned char *d, int *off, bool conver
   if (convert && !mutt_str_is_ascii(*c, size))
   {
     char *tmp = mutt_str_dup(*c);
-    if (mutt_ch_convert_string(&tmp, "utf-8", C_Charset, MUTT_ICONV_NO_FLAGS) == 0)
+    const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+    if (mutt_ch_convert_string(&tmp, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS) == 0)
     {
       FREE(c);
       *c = tmp;
