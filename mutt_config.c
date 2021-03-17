@@ -215,18 +215,6 @@ struct ConfigDef MainVars[] = {
   { "attach_format", DT_STRING|DT_NOT_EMPTY, &C_AttachFormat, IP "%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] ", 0, NULL,
     "printf-like format string for the attachment menu"
   },
-  { "attach_save_dir", DT_PATH|DT_PATH_DIR, &C_AttachSaveDir, IP "./", 0, NULL,
-    "Default directory where attachments are saved"
-  },
-  { "attach_save_without_prompting", DT_BOOL, &C_AttachSaveWithoutPrompting, false, 0, NULL,
-    "If true, then don't prompt to save"
-  },
-  { "attach_sep", DT_STRING, &C_AttachSep, IP "\n", 0, NULL,
-    "Separator to add between saved/printed/piped attachments"
-  },
-  { "attach_split", DT_BOOL, &C_AttachSplit, true, 0, NULL,
-    "Save/print/pipe tagged messages individually"
-  },
   { "attribution", DT_STRING, &C_Attribution, IP "On %d, %n wrote:", 0, NULL,
     "Message to start a reply, 'On DATE, PERSON wrote:'"
   },
@@ -289,9 +277,6 @@ struct ConfigDef MainVars[] = {
   },
   { "delete_untag", DT_BOOL, &C_DeleteUntag, true, 0, NULL,
     "Untag messages when they are marked for deletion"
-  },
-  { "digest_collapse", DT_BOOL, &C_DigestCollapse, true, 0, NULL,
-    "Hide the subparts of a multipart/digest"
   },
   { "display_filter", DT_STRING|DT_COMMAND|R_PAGER, &C_DisplayFilter, 0, 0, NULL,
     "External command to pre-process an email before display"
@@ -388,9 +373,6 @@ struct ConfigDef MainVars[] = {
   },
   { "mbox_type", DT_ENUM, &C_MboxType, MUTT_MBOX, IP &MboxTypeDef, NULL,
     "Default type for creating new mailboxes"
-  },
-  { "message_format", DT_STRING|DT_NOT_EMPTY, &C_MessageFormat, IP "%s", 0, NULL,
-    "printf-like format string for listing attached messages"
   },
   { "mime_forward", DT_QUAD, &C_MimeForward, MUTT_NO, 0, NULL,
     "Forward a message as a 'message/RFC822' MIME part"
@@ -646,6 +628,18 @@ struct ConfigDef MainNoVars[] = {
   { "assumed_charset", DT_STRING, NULL, 0, 0, charset_validator,
     "If a message is missing a character set, assume this character set"
   },
+  { "attach_save_dir", DT_PATH|DT_PATH_DIR, NULL, IP "./", 0, NULL,
+    "Default directory where attachments are saved"
+  },
+  { "attach_save_without_prompting", DT_BOOL, NULL, false, 0, NULL,
+    "If true, then don't prompt to save"
+  },
+  { "attach_sep", DT_STRING, NULL, IP "\n", 0, NULL,
+    "Separator to add between saved/printed/piped attachments"
+  },
+  { "attach_split", DT_BOOL, NULL, true, 0, NULL,
+    "Save/print/pipe tagged messages individually"
+  },
   { "auto_subscribe", DT_BOOL, NULL, false, 0, NULL,
     "Automatically check if the user is subscribed to a mailing list"
   },
@@ -657,6 +651,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "collapse_unread", DT_BOOL, NULL, true, 0, NULL,
     "Prevent the collapse of threads with unread emails"
+  },
+  { "digest_collapse", DT_BOOL, NULL, true, 0, NULL,
+    "Hide the subparts of a multipart/digest"
   },
   { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, NULL, true, 0, pager_validator,
     "Highlight messages with duplicated message IDs"
@@ -701,6 +698,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "menu_scroll", DT_BOOL, NULL, false, 0, NULL,
     "Scroll the menu/index by one line, rather than a page"
+  },
+  { "message_format", DT_STRING|DT_NOT_EMPTY, NULL, IP "%s", 0, NULL,
+    "printf-like format string for listing attached messages"
   },
   { "meta_key", DT_BOOL, NULL, false, 0, NULL,
     "Interpret 'ALT-x' as 'ESC-x'"
