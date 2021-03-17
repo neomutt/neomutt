@@ -311,20 +311,8 @@ struct ConfigDef MainVars[] = {
   { "header", DT_BOOL, &C_Header, false, 0, NULL,
     "Include the message headers in the reply email (Weed applies)"
   },
-  { "honor_disposition", DT_BOOL, &C_HonorDisposition, false, 0, NULL,
-    "Don't display MIME parts inline if they have a disposition of 'attachment'"
-  },
   { "hostname", DT_STRING, &C_Hostname, 0, 0, NULL,
     "Fully-qualified domain name of this machine"
-  },
-  { "implicit_autoview", DT_BOOL, &C_ImplicitAutoview, false, 0, NULL,
-    "Display MIME attachments inline if a 'copiousoutput' mailcap entry exists"
-  },
-  { "include_encrypted", DT_BOOL, &C_IncludeEncrypted, false, 0, NULL,
-    "Whether to include encrypted content when replying"
-  },
-  { "include_only_first", DT_BOOL, &C_IncludeOnlyFirst, false, 0, NULL,
-    "Only include the first attachment when replying"
   },
   { "indent_string", DT_STRING, &C_IndentString, IP "> ", 0, NULL,
     "String used to indent 'reply' text"
@@ -388,9 +376,6 @@ struct ConfigDef MainVars[] = {
   { "postponed", DT_STRING|DT_MAILBOX|R_INDEX, &C_Postponed, IP "~/postponed", 0, NULL,
     "Folder to store postponed messages"
   },
-  { "preferred_languages", DT_SLIST|SLIST_SEP_COMMA, &C_PreferredLanguages, 0, 0, NULL,
-    "Preferred languages for multilingual MIME"
-  },
   { "print", DT_QUAD, &C_Print, MUTT_ASKNO, 0, NULL,
     "Confirm before printing a message"
   },
@@ -420,9 +405,6 @@ struct ConfigDef MainVars[] = {
   },
   { "reflow_space_quotes", DT_BOOL, &C_ReflowSpaceQuotes, true, 0, NULL,
     "Insert spaces into reply quotes for 'format=flowed' messages"
-  },
-  { "reflow_text", DT_BOOL, &C_ReflowText, true, 0, NULL,
-    "Reformat paragraphs of 'format=flowed' text"
   },
   { "reflow_wrap", DT_NUMBER, &C_ReflowWrap, 78, 0, NULL,
     "Maximum paragraph width for reformatting 'format=flowed' text"
@@ -462,9 +444,6 @@ struct ConfigDef MainVars[] = {
   },
   { "shell", DT_STRING|DT_COMMAND, &C_Shell, IP "/bin/sh", 0, NULL,
     "External command to run subshells in"
-  },
-  { "show_multipart_alternative", DT_STRING, &C_ShowMultipartAlternative, 0, 0, multipart_validator,
-    "How to display 'multipart/alternative' MIME parts"
   },
   { "simple_search", DT_STRING, &C_SimpleSearch, IP "~f %s | ~s %s", 0, NULL,
     "Pattern to search for when search doesn't contain ~'s"
@@ -643,6 +622,9 @@ struct ConfigDef MainNoVars[] = {
   { "hide_top_missing", DT_BOOL|R_TREE|R_INDEX, NULL, true, 0, NULL,
     "Don't indicate missing top message, in the thread tree"
   },
+  { "honor_disposition", DT_BOOL, NULL, false, 0, NULL,
+    "Don't display MIME parts inline if they have a disposition of 'attachment'"
+  },
 #ifdef HAVE_LIBIDN
   { "idn_decode", DT_BOOL|R_MENU, NULL, true, 0, NULL,
     "(idn) Decode international domain names"
@@ -651,6 +633,15 @@ struct ConfigDef MainNoVars[] = {
     "(idn) Encode international domain names"
   },
 #endif
+  { "implicit_autoview", DT_BOOL, NULL, false, 0, NULL,
+    "Display MIME attachments inline if a 'copiousoutput' mailcap entry exists"
+  },
+  { "include_encrypted", DT_BOOL, NULL, false, 0, NULL,
+    "Whether to include encrypted content when replying"
+  },
+  { "include_only_first", DT_BOOL, NULL, false, 0, NULL,
+    "Only include the first attachment when replying"
+  },
   { "keep_flagged", DT_BOOL, NULL, false, 0, NULL,
     "Don't move flagged messages from `$spool_file` to `$mbox`"
   },
@@ -699,6 +690,9 @@ struct ConfigDef MainNoVars[] = {
   { "pipe_split", DT_BOOL, NULL, false, 0, NULL,
     "Run the pipe command on each message separately"
   },
+  { "preferred_languages", DT_SLIST|SLIST_SEP_COMMA, NULL, 0, 0, NULL,
+    "Preferred languages for multilingual MIME"
+  },
   { "print_decode", DT_BOOL, NULL, true, 0, NULL,
     "Decode message before printing it"
   },
@@ -708,6 +702,9 @@ struct ConfigDef MainNoVars[] = {
   { "prompt_after", DT_BOOL, NULL, true, 0, NULL,
     "Pause after running an external pager"
   },
+  { "reflow_text", DT_BOOL, NULL, true, 0, NULL,
+    "Reformat paragraphs of 'format=flowed' text"
+  },
   { "reply_regex", DT_REGEX|R_INDEX|R_RESORT, NULL, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, reply_validator,
     "Regex to match message reply subjects like 're: '"
   },
@@ -716,6 +713,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "send_charset", DT_STRING|DT_CHARSET_STRICT, NULL, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
     "Character sets for outgoing mail"
+  },
+  { "show_multipart_alternative", DT_STRING, NULL, 0, 0, multipart_validator,
+    "How to display 'multipart/alternative' MIME parts"
   },
   { "sort_browser", DT_SORT|DT_SORT_REVERSE, NULL, SORT_ALPHA, IP SortBrowserMethods, NULL,
     "Sort method for the browser"
