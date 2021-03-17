@@ -362,9 +362,6 @@ struct ConfigDef MainVars[] = {
   { "mime_forward", DT_QUAD, &C_MimeForward, MUTT_NO, 0, NULL,
     "Forward a message as a 'message/RFC822' MIME part"
   },
-  { "mime_forward_rest", DT_QUAD, &C_MimeForwardRest, MUTT_YES, 0, NULL,
-    "Forward all attachments, even if they can't be decoded"
-  },
 #ifdef MIXMASTER
   { "mix_entry_format", DT_STRING|DT_NOT_EMPTY, &C_MixEntryFormat, IP "%4n %c %-16s %a", 0, NULL,
     "(mixmaster) printf-like format string for the mixmaster chain"
@@ -683,6 +680,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "message_cachedir", DT_PATH|DT_PATH_DIR, NULL, 0, 0, NULL,
     "(imap/pop) Directory for the message cache"
+  },
+  { "mime_forward_rest", DT_QUAD, NULL, MUTT_YES, 0, NULL,
+    "Forward all attachments, even if they can't be decoded"
   },
   { "move", DT_QUAD, NULL, MUTT_NO, 0, NULL,
     "Move emails from `$spool_file` to `$mbox` when read"
