@@ -168,7 +168,9 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
           s++;
           for (; *s; s++)
           {
-            if (C_AssumedCharset)
+            const char *const c_assumed_charset =
+                cs_subset_string(NeoMutt->sub, "assumed_charset");
+            if (c_assumed_charset)
             {
               // As iso-2022-* has a character of '"' with non-ascii state, ignore it
               if (*s == 0x1b)
@@ -516,9 +518,11 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     }
     else
     {
+      const char *const c_assumed_charset =
+          cs_subset_string(NeoMutt->sub, "assumed_charset");
       mutt_param_set(&ct->parameter, "charset",
-                     (C_AssumedCharset) ? (const char *) mutt_ch_get_default_charset() :
-                                          "us-ascii");
+                     (c_assumed_charset) ? (const char *) mutt_ch_get_default_charset() :
+                                           "us-ascii");
     }
   }
 }
@@ -782,7 +786,9 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
             {
               FREE(&env->list_post);
               env->list_post = mlist;
-              if (C_AutoSubscribe)
+              const bool c_auto_subscribe =
+                  cs_subset_bool(NeoMutt->sub, "auto_subscribe");
+              if (c_auto_subscribe)
                 mutt_auto_subscribe(env->list_post);
 
               break;
@@ -902,8 +908,12 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
             switch (*p)
             {
               case 'O':
-                e->old = C_MarkOld;
+              {
+                const bool c_mark_old =
+                    cs_subset_bool(NeoMutt->sub, "mark_old");
+                e->old = c_mark_old;
                 break;
+              }
               case 'R':
                 e->read = true;
                 break;
@@ -1015,7 +1025,8 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
     /* restore the original line */
     line[strlen(line)] = ':';
 
-    if (!(weed && C_Weed && mutt_matches_ignore(line)))
+    const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+    if (!(weed && c_weed && mutt_matches_ignore(line)))
     {
       struct ListNode *np = mutt_list_insert_tail(&env->userhdrs, mutt_str_dup(line));
       if (do_2047)
@@ -1177,9 +1188,11 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
         if ((!mutt_buffer_is_empty(&env->spam)) && (*buf != '\0'))
         {
           /* If `$spam_separator` defined, append with separator */
-          if (C_SpamSeparator)
+          const char *const c_spam_separator =
+              cs_subset_string(NeoMutt->sub, "spam_separator");
+          if (c_spam_separator)
           {
-            mutt_buffer_addstr(&env->spam, C_SpamSeparator);
+            mutt_buffer_addstr(&env->spam, c_spam_separator);
             mutt_buffer_addstr(&env->spam, buf);
           }
           else /* overwrite */
@@ -1227,7 +1240,9 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     {
       regmatch_t pmatch[1];
 
-      if (mutt_regex_capture(C_ReplyRegex, env->subject, 1, pmatch))
+      const struct Regex *c_reply_regex =
+          cs_subset_regex(NeoMutt->sub, "reply_regex");
+      if (mutt_regex_capture(c_reply_regex, env->subject, 1, pmatch))
       {
         env->real_subj = env->subject + pmatch[0].rm_eo;
       }

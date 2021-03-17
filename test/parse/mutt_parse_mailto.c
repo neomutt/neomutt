@@ -26,7 +26,17 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
+#include "test_common.h"
+
+static struct ConfigDef Vars[] = {
+  // clang-format off
+  { "assumed_charset", DT_STRING, NULL, 0, 0, NULL, },
+  { NULL },
+  // clang-format on
+};
 
 static void check_addrlist(struct AddressList *list, const char *const exp[], size_t num)
 {
@@ -52,6 +62,9 @@ static void check_addrlist(struct AddressList *list, const char *const exp[], si
 void test_mutt_parse_mailto(void)
 {
   // int mutt_parse_mailto(struct Envelope *e, char **body, const char *src);
+
+  NeoMutt = test_neomutt_create();
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_VARIABLE));
 
   mutt_list_insert_head(&MailToAllow, "cc");
   mutt_list_insert_head(&MailToAllow, "body");
@@ -99,4 +112,6 @@ void test_mutt_parse_mailto(void)
     FREE(&parsed_body);
     mutt_env_free(&env);
   }
+
+  test_neomutt_destroy(&NeoMutt);
 }

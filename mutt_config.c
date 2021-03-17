@@ -236,9 +236,6 @@ struct ConfigDef MainVars[] = {
   { "attribution_locale", DT_STRING, &C_AttributionLocale, 0, 0, NULL,
     "Locale for dates in the attribution message"
   },
-  { "auto_subscribe", DT_BOOL, &C_AutoSubscribe, false, 0, NULL,
-    "Automatically check if the user is subscribed to a mailing list"
-  },
   { "auto_tag", DT_BOOL, &C_AutoTag, false, 0, NULL,
     "Automatically apply actions to all tagged messages"
   },
@@ -356,9 +353,6 @@ struct ConfigDef MainVars[] = {
   { "header", DT_BOOL, &C_Header, false, 0, NULL,
     "Include the message headers in the reply email (Weed applies)"
   },
-  { "hidden_tags", DT_SLIST|SLIST_SEP_COMMA, &C_HiddenTags, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted", 0, NULL,
-    "Tags that shouldn't be displayed on screen"
-  },
   { "hide_limited", DT_BOOL|R_TREE|R_INDEX, &C_HideLimited, false, 0, NULL,
     "Don't indicate hidden messages, in the thread tree"
   },
@@ -423,9 +417,6 @@ struct ConfigDef MainVars[] = {
   },
   { "mailcap_sanitize", DT_BOOL, &C_MailcapSanitize, true, 0, NULL,
     "Restrict the possible characters in mailcap expandos"
-  },
-  { "mark_old", DT_BOOL|R_INDEX|R_PAGER, &C_MarkOld, true, 0, NULL,
-    "Mark new emails as old when leaving the mailbox"
   },
   { "markers", DT_BOOL|R_PAGER_FLOW, &C_Markers, true, 0, NULL,
     "Display a '+' at the beginning of wrapped lines in the pager"
@@ -555,9 +546,6 @@ struct ConfigDef MainVars[] = {
   { "reflow_wrap", DT_NUMBER, &C_ReflowWrap, 78, 0, NULL,
     "Maximum paragraph width for reformatting 'format=flowed' text"
   },
-  { "reply_regex", DT_REGEX|R_INDEX|R_RESORT, &C_ReplyRegex, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, reply_validator,
-    "Regex to match message reply subjects like 're: '"
-  },
   { "resolve", DT_BOOL, &C_Resolve, true, 0, NULL,
     "Move to the next email whenever a command modifies an email"
   },
@@ -569,9 +557,6 @@ struct ConfigDef MainVars[] = {
   },
   { "reverse_alias", DT_BOOL|R_INDEX|R_PAGER, &C_ReverseAlias, false, 0, NULL,
     "Display the alias in the index, rather than the message's sender"
-  },
-  { "rfc2047_parameters", DT_BOOL, &C_Rfc2047Parameters, false, 0, NULL,
-    "Decode RFC2047-encoded MIME parameters"
   },
   { "save_address", DT_BOOL, &C_SaveAddress, false, 0, NULL,
     "Use sender's full address as a default save folder"
@@ -593,9 +578,6 @@ struct ConfigDef MainVars[] = {
   },
   { "score_threshold_read", DT_NUMBER, &C_ScoreThresholdRead, -1, 0, NULL,
     "Messages with a lower score will be automatically marked read"
-  },
-  { "send_charset", DT_STRING|DT_CHARSET_STRICT, &C_SendCharset, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
-    "Character sets for outgoing mail"
   },
   { "shell", DT_STRING|DT_COMMAND, &C_Shell, IP "/bin/sh", 0, NULL,
     "External command to run subshells in"
@@ -632,9 +614,6 @@ struct ConfigDef MainVars[] = {
   },
   { "sort_re", DT_BOOL|R_INDEX|R_RESORT|R_RESORT_INIT, &C_SortRe, true, 0, pager_validator,
     "Sort method for the sidebar"
-  },
-  { "spam_separator", DT_STRING, &C_SpamSeparator, IP ",", 0, NULL,
-    "Separator for multiple spam headers"
   },
   { "spool_file", DT_STRING|DT_MAILBOX, &C_SpoolFile, 0, 0, NULL,
     "Inbox"
@@ -693,9 +672,6 @@ struct ConfigDef MainVars[] = {
   { "wait_key", DT_BOOL, &C_WaitKey, true, 0, NULL,
     "Prompt to press a key after running external commands"
   },
-  { "weed", DT_BOOL, &C_Weed, true, 0, NULL,
-    "Filter headers when displaying/forwarding/printing/replying"
-  },
   { "wrap", DT_NUMBER|R_PAGER_FLOW, &C_Wrap, 0, 0, NULL,
     "Width to wrap text in the pager"
   },
@@ -739,12 +715,51 @@ struct ConfigDef MainVars[] = {
   // clang-format on
 };
 
+struct ConfigDef MainNoVars[] = {
+  // clang-format off
+  { "auto_subscribe", DT_BOOL, NULL, false, 0, NULL,
+    "Automatically check if the user is subscribed to a mailing list"
+  },
+  { "hidden_tags", DT_SLIST|SLIST_SEP_COMMA, NULL, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted", 0, NULL,
+    "Tags that shouldn't be displayed on screen"
+  },
+  { "mark_old", DT_BOOL|R_INDEX|R_PAGER, NULL, true, 0, NULL,
+    "Mark new emails as old when leaving the mailbox"
+  },
+  { "reply_regex", DT_REGEX|R_INDEX|R_RESORT, NULL, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, reply_validator,
+    "Regex to match message reply subjects like 're: '"
+  },
+  { "rfc2047_parameters", DT_BOOL, NULL, false, 0, NULL,
+    "Decode RFC2047-encoded MIME parameters"
+  },
+  { "send_charset", DT_STRING|DT_CHARSET_STRICT, NULL, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
+    "Character sets for outgoing mail"
+  },
+  { "spam_separator", DT_STRING, NULL, IP ",", 0, NULL,
+    "Separator for multiple spam headers"
+  },
+  { "weed", DT_BOOL, NULL, true, 0, NULL,
+    "Filter headers when displaying/forwarding/printing/replying"
+  },
+
+  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  // clang-format on
+};
+
 /**
  * config_init_main - Register main config variables - Implements ::module_init_config_t
  */
 static bool config_init_main(struct ConfigSet *cs)
 {
   return cs_register_variables(cs, MainVars, 0);
+}
+
+/**
+ * config_init_main_no_vars - Register config with no variables - Implements ::module_init_config_t
+ */
+static bool config_init_main_no_vars(struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, MainNoVars, DT_NO_VARIABLE);
 }
 
 /**
@@ -777,6 +792,7 @@ static void init_variables(struct ConfigSet *cs)
 {
   // Define the config variables
   config_init_main(cs);
+  config_init_main_no_vars(cs);
   CONFIG_INIT_VARS(cs, alias);
 #ifdef USE_AUTOCRYPT
   CONFIG_INIT_VARS(cs, autocrypt);

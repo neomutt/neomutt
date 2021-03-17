@@ -37,6 +37,8 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "rfc2047.h"
 #include "envelope.h"
 #include "globals.h"
@@ -336,7 +338,8 @@ static void finalize_chunk(struct Buffer *res, struct Buffer *buf, char *charset
     return;
   char end = charset[charsetlen];
   charset[charsetlen] = '\0';
-  mutt_ch_convert_string(&buf->data, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
+  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+  mutt_ch_convert_string(&buf->data, charset, c_charset, MUTT_ICONV_HOOK_FROM);
   charset[charsetlen] = end;
   mutt_mb_filter_unprintable(&buf->data);
   mutt_buffer_addstr(res, buf->data);
@@ -613,7 +616,8 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
  */
 void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets)
 {
-  if (!C_Charset || !pd || !*pd)
+  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+  if (!c_charset || !pd || !*pd)
     return;
 
   if (!charsets)
@@ -621,7 +625,7 @@ void rfc2047_encode(char **pd, const char *specials, int col, const char *charse
 
   char *e = NULL;
   size_t elen = 0;
-  encode(*pd, strlen(*pd), col, C_Charset, charsets, &e, &elen, specials);
+  encode(*pd, strlen(*pd), col, c_charset, charsets, &e, &elen, specials);
 
   FREE(pd);
   *pd = e;
@@ -679,7 +683,9 @@ void rfc2047_decode(char **pd)
 
       /* Add non-encoded part */
       {
-        if (C_AssumedCharset)
+        const char *const c_assumed_charset =
+            cs_subset_string(NeoMutt->sub, "assumed_charset");
+        if (c_assumed_charset)
         {
           char *conv = mutt_strn_dup(s, holelen);
           mutt_ch_convert_nonmime_string(&conv);
@@ -743,10 +749,12 @@ void rfc2047_encode_addrlist(struct AddressList *al, const char *tag)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
+    const char *const c_send_charset =
+        cs_subset_string(NeoMutt->sub, "send_charset");
     if (a->personal)
-      rfc2047_encode(&a->personal, AddressSpecials, col, C_SendCharset);
+      rfc2047_encode(&a->personal, AddressSpecials, col, c_send_charset);
     else if (a->group && a->mailbox)
-      rfc2047_encode(&a->mailbox, AddressSpecials, col, C_SendCharset);
+      rfc2047_encode(&a->mailbox, AddressSpecials, col, c_send_charset);
   }
 }
 
@@ -762,7 +770,9 @@ void rfc2047_decode_addrlist(struct AddressList *al)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (a->personal && ((strstr(a->personal, "=?")) || C_AssumedCharset))
+    const char *const c_assumed_charset =
+        cs_subset_string(NeoMutt->sub, "assumed_charset");
+    if (a->personal && ((strstr(a->personal, "=?")) || c_assumed_charset))
     {
       rfc2047_decode(&a->personal);
     }
@@ -806,6 +816,8 @@ void rfc2047_encode_envelope(struct Envelope *env)
   rfc2047_encode_addrlist(&env->reply_to, "Reply-To");
   rfc2047_encode_addrlist(&env->mail_followup_to, "Mail-Followup-To");
   rfc2047_encode_addrlist(&env->sender, "Sender");
-  rfc2047_encode(&env->x_label, NULL, sizeof("X-Label:"), C_SendCharset);
-  rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), C_SendCharset);
+  const char *const c_send_charset =
+      cs_subset_string(NeoMutt->sub, "send_charset");
+  rfc2047_encode(&env->x_label, NULL, sizeof("X-Label:"), c_send_charset);
+  rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), c_send_charset);
 }

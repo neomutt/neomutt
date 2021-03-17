@@ -26,9 +26,6 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 
-/* These Config Variables are only used in email/tags.c */
-extern struct Slist *C_HiddenTags;
-
 extern struct HashTable *TagTransforms;
 
 /**

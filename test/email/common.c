@@ -26,8 +26,6 @@
 #include <stdbool.h>
 #include "common.h"
 
-bool C_Autocrypt;
-
 int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env)
 {
   return -1;

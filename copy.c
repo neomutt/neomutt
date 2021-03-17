@@ -481,12 +481,13 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
       fprintf(fp_out, "Lines: %d\n", e->lines);
   }
 
+  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
 #ifdef USE_NOTMUCH
   if (chflags & CH_VIRTUAL)
   {
     /* Add some fake headers based on notmuch data */
     char *folder = nm_email_get_folder(e);
-    if (folder && !(C_Weed && mutt_matches_ignore("folder")))
+    if (folder && !(c_weed && mutt_matches_ignore("folder")))
     {
       char buf[1024];
       mutt_str_copy(buf, folder, sizeof(buf));
@@ -499,7 +500,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
   }
 #endif
   char *tags = driver_tags_get(&e->tags);
-  if (tags && !(C_Weed && mutt_matches_ignore("tags")))
+  if (tags && !(c_weed && mutt_matches_ignore("tags")))
   {
     fputs("Tags: ", fp_out);
     fputs(tags, fp_out);
@@ -507,6 +508,8 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
   }
   FREE(&tags);
 
+  const char *c_send_charset = cs_subset_string(NeoMutt->sub, "send_charset");
+  const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
   if ((chflags & CH_UPDATE_LABEL) && e->env->x_label)
   {
     temp_hdr = e->env->x_label;
@@ -515,11 +518,11 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     if (!(chflags & CH_DECODE))
     {
       temp_hdr = mutt_str_dup(temp_hdr);
-      rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), C_SendCharset);
+      rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), c_send_charset);
     }
     if (mutt_write_one_header(
             fp_out, "X-Label", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
-            mutt_window_wrap_cols(wraplen, C_Wrap), chflags, NeoMutt->sub) == -1)
+            mutt_window_wrap_cols(wraplen, c_wrap), chflags, NeoMutt->sub) == -1)
     {
       return -1;
     }
@@ -535,11 +538,11 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     if (!(chflags & CH_DECODE))
     {
       temp_hdr = mutt_str_dup(temp_hdr);
-      rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), C_SendCharset);
+      rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), c_send_charset);
     }
     if (mutt_write_one_header(
             fp_out, "Subject", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
-            mutt_window_wrap_cols(wraplen, C_Wrap), chflags, NeoMutt->sub) == -1)
+            mutt_window_wrap_cols(wraplen, c_wrap), chflags, NeoMutt->sub) == -1)
     {
       return -1;
     }

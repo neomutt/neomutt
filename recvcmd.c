@@ -414,7 +414,8 @@ static void include_header(bool quote, FILE *fp_in, struct Mailbox *m,
   CopyHeaderFlags chflags = CH_DECODE;
   char prefix2[128];
 
-  if (C_Weed)
+  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+  if (c_weed)
     chflags |= CH_WEED | CH_REORDER;
 
   if (quote)
@@ -561,7 +562,8 @@ static void attach_forward_bodies(FILE *fp, struct Mailbox *m, struct Email *e,
   if (C_ForwardQuote)
     st.prefix = prefix;
   st.flags = MUTT_CHARCONV;
-  if (C_Weed)
+  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+  if (c_weed)
     st.flags |= MUTT_WEED;
   st.fp_out = fp_tmp;
 
@@ -700,7 +702,8 @@ static void attach_forward_msgs(FILE *fp, struct Mailbox *m, struct AttachCtx *a
     if (C_ForwardDecode)
     {
       cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-      if (C_Weed)
+      const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+      if (c_weed)
       {
         chflags |= CH_WEED | CH_REORDER;
         cmflags |= MUTT_CM_WEED;
@@ -904,7 +907,8 @@ static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Mailbox *m, stru
 
   if (!C_Header)
     cmflags |= MUTT_CM_NOHEADER;
-  if (C_Weed)
+  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+  if (c_weed)
   {
     chflags |= CH_WEED;
     cmflags |= MUTT_CM_WEED;
@@ -1027,7 +1031,8 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     st.prefix = prefix;
     st.flags = MUTT_CHARCONV;
 
-    if (C_Weed)
+    const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+    if (c_weed)
       st.flags |= MUTT_WEED;
 
     if (C_Header)

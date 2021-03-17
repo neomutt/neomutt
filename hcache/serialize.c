@@ -35,7 +35,9 @@
 #include <sys/types.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "serialize.h"
 
 /**
@@ -547,7 +549,8 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
 
   serial_restore_char(&env->list_post, d, off, convert);
 
-  if (C_AutoSubscribe)
+  const bool c_auto_subscribe = cs_subset_bool(NeoMutt->sub, "auto_subscribe");
+  if (c_auto_subscribe)
     mutt_auto_subscribe(env->list_post);
 
   serial_restore_char(&env->subject, d, off, convert);

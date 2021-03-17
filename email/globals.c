@@ -31,14 +31,6 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 
-/* Config items */
-bool C_AutoSubscribe; ///< Config: Automatically check if the user is subscribed to a mailing list
-bool C_MarkOld = false; ///< Config: Mark new emails as old when leaving the mailbox
-struct Regex *C_ReplyRegex = NULL; ///< Config: Regex to match message reply subjects like "re: "
-char *C_SendCharset = NULL;   ///< Config: Character sets for outgoing mail
-char *C_SpamSeparator = NULL; ///< Config: Separator for multiple spam headers
-bool C_Weed = false; ///< Config: Filter headers when displaying/forwarding/printing/replying
-
 /* Global variables */
 struct RegexList NoSpamList = STAILQ_HEAD_INITIALIZER(NoSpamList);
 struct ReplaceList SpamList = STAILQ_HEAD_INITIALIZER(SpamList);

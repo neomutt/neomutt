@@ -730,7 +730,8 @@ static int message_handler(struct Body *a, struct State *s)
   if (b->parts)
   {
     CopyHeaderFlags chflags = CH_DECODE | CH_FROM;
-    if ((s->flags & MUTT_WEED) || ((s->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && C_Weed))
+    const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+    if ((s->flags & MUTT_WEED) || ((s->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && c_weed))
       chflags |= CH_WEED | CH_REORDER;
     if (s->prefix)
       chflags |= CH_PREFIX;
@@ -784,6 +785,7 @@ static int external_body_handler(struct Body *b, struct State *s)
   else
     expire = -1;
 
+  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
   if (mutt_istr_equal(access_type, "x-mutt-deleted"))
   {
     if (s->flags & (MUTT_DISPLAY | MUTT_PRINTING))
@@ -875,7 +877,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       }
 
       CopyHeaderFlags chflags = CH_DECODE;
-      if (C_Weed)
+      if (c_weed)
         chflags |= CH_WEED | CH_REORDER;
 
       mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
@@ -894,7 +896,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       state_attach_puts(s, strbuf);
 
       CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
-      if (C_Weed)
+      if (c_weed)
         chflags |= CH_WEED | CH_REORDER;
 
       mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
@@ -915,7 +917,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       state_attach_puts(s, strbuf);
 
       CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
-      if (C_Weed)
+      if (c_weed)
         chflags |= CH_WEED | CH_REORDER;
 
       mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
@@ -1058,7 +1060,8 @@ static int alternative_handler(struct Body *a, struct State *s)
 
   if (choice)
   {
-    if (s->flags & MUTT_DISPLAY && !C_Weed)
+    const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+    if (s->flags & MUTT_DISPLAY && !c_weed)
     {
       fseeko(s->fp_in, choice->hdr_offset, SEEK_SET);
       mutt_file_copy_bytes(s->fp_in, s->fp_out, choice->offset - choice->hdr_offset);
@@ -1244,7 +1247,8 @@ static int multipart_handler(struct Body *a, struct State *s)
       else
         state_printf(s, _("[-- Attachment #%d --]\n"), count);
       print_part_line(s, p, 0);
-      if (C_Weed)
+      const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+      if (c_weed)
       {
         state_putc(s, '\n');
       }

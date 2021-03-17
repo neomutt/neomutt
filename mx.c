@@ -741,7 +741,8 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
       goto cleanup;
   }
 
-  if (C_MarkOld && !m->peekonly)
+  const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
+  if (c_mark_old && !m->peekonly)
   {
     for (i = 0; i < m->msg_count; i++)
     {

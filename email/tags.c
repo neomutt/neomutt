@@ -30,10 +30,9 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "tags.h"
-
-/* These Config Variables are only used in email/tags.c */
-struct Slist *C_HiddenTags; ///< Config: Tags that shouldn't be displayed on screen
 
 struct HashTable *TagTransforms; ///< Lookup table of alternative tag names
 
@@ -90,8 +89,10 @@ void driver_tags_add(struct TagList *list, char *new_tag)
     tn->transformed = mutt_str_dup(new_tag_transformed);
 
   /* filter out hidden tags */
-  if (C_HiddenTags)
-    if (mutt_list_find(&C_HiddenTags->head, new_tag))
+  const struct Slist *c_hidden_tags =
+      cs_subset_slist(NeoMutt->sub, "hidden_tags");
+  if (c_hidden_tags)
+    if (mutt_list_find(&c_hidden_tags->head, new_tag))
       tn->hidden = true;
 
   STAILQ_INSERT_TAIL(list, tn, entries);
