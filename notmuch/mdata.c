@@ -30,6 +30,7 @@
 #include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mdata.h"
@@ -72,8 +73,11 @@ struct NmMboxData *nm_mdata_new(const char *url)
   struct NmMboxData *mdata = mutt_mem_calloc(1, sizeof(struct NmMboxData));
   mutt_debug(LL_DEBUG1, "nm: initialize mailbox mdata %p\n", (void *) mdata);
 
-  mdata->db_limit = C_NmDbLimit;
-  mdata->query_type = nm_string_to_query_type(C_NmQueryType);
+  const short c_nm_db_limit = cs_subset_number(NeoMutt->sub, "nm_db_limit");
+  const char *const c_nm_query_type =
+      cs_subset_string(NeoMutt->sub, "nm_query_type");
+  mdata->db_limit = c_nm_db_limit;
+  mdata->query_type = nm_string_to_query_type(c_nm_query_type);
   mdata->db_url = url_parse(url);
   if (!mdata->db_url)
   {

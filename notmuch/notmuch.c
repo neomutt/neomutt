@@ -104,7 +104,9 @@ void nm_init(void)
 static struct HeaderCache *nm_hcache_open(struct Mailbox *m)
 {
 #ifdef USE_HCACHE
-  return mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
+  const char *const c_header_cache =
+      cs_subset_path(NeoMutt->sub, "header_cache");
+  return mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
 #else
   return NULL;
 #endif
@@ -134,10 +136,13 @@ static char *nm_get_default_url(void)
 
   // Try to use `$nm_default_url` or `$folder`.
   // If neither are set, it is impossible to create a Notmuch URL.
-  if (C_NmDefaultUrl)
-    snprintf(url, len, "%s", C_NmDefaultUrl);
-  else if (C_Folder)
-    snprintf(url, len, "notmuch://%s", C_Folder);
+  const char *const c_nm_default_url =
+      cs_subset_string(NeoMutt->sub, "nm_default_url");
+  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  if (c_nm_default_url)
+    snprintf(url, len, "%s", c_nm_default_url);
+  else if (c_folder)
+    snprintf(url, len, "notmuch://%s", c_folder);
   else
   {
     FREE(url);
@@ -311,21 +316,30 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
 {
   mutt_debug(LL_DEBUG2, "nm: %s\n", query);
 
-  int beg = C_NmQueryWindowDuration * (C_NmQueryWindowCurrentPosition + 1);
-  int end = C_NmQueryWindowDuration * C_NmQueryWindowCurrentPosition;
+  const short c_nm_query_window_duration =
+      cs_subset_number(NeoMutt->sub, "nm_query_window_duration");
+  const short c_nm_query_window_current_position =
+      cs_subset_number(NeoMutt->sub, "nm_query_window_current_position");
+  int beg = c_nm_query_window_duration * (c_nm_query_window_current_position + 1);
+  int end = c_nm_query_window_duration * c_nm_query_window_current_position;
 
   /* if the duration is a non positive integer, disable the window */
-  if (C_NmQueryWindowDuration <= 0)
+  if (c_nm_query_window_duration <= 0)
   {
     query_window_reset();
     return false;
   }
 
   /* if the query has changed, reset the window position */
-  if (!C_NmQueryWindowCurrentSearch || (strcmp(query, C_NmQueryWindowCurrentSearch) != 0))
+  const char *const c_nm_query_window_current_search =
+      cs_subset_string(NeoMutt->sub, "nm_query_window_current_search");
+  if (!c_nm_query_window_current_search ||
+      (strcmp(query, c_nm_query_window_current_search) != 0))
     query_window_reset();
 
-  if (!query_window_check_timebase(C_NmQueryWindowTimebase))
+  const char *const c_nm_query_window_timebase =
+      cs_subset_string(NeoMutt->sub, "nm_query_window_timebase");
+  if (!query_window_check_timebase(c_nm_query_window_timebase))
   {
     mutt_message(_("Invalid nm_query_window_timebase value (valid values are: "
                    "hour, day, week, month or year)"));
@@ -337,13 +351,13 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
   {
     // Open-ended date allows mail from the future.
     // This may occur is the sender's time settings are off.
-    snprintf(buf, buflen, "date:%d%s.. and %s", beg, C_NmQueryWindowTimebase,
-             C_NmQueryWindowCurrentSearch);
+    snprintf(buf, buflen, "date:%d%s.. and %s", beg, c_nm_query_window_timebase,
+             c_nm_query_window_current_search);
   }
   else
   {
-    snprintf(buf, buflen, "date:%d%s..%d%s and %s", beg, C_NmQueryWindowTimebase,
-             end, C_NmQueryWindowTimebase, C_NmQueryWindowCurrentSearch);
+    snprintf(buf, buflen, "date:%d%s..%d%s and %s", beg, c_nm_query_window_timebase,
+             end, c_nm_query_window_timebase, c_nm_query_window_current_search);
   }
 
   mutt_debug(LL_DEBUG2, "nm: %s -> %s\n", query, buf);
@@ -376,7 +390,9 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
   if (mdata->db_query && !window)
     return mdata->db_query;
 
-  mdata->query_type = nm_string_to_query_type(C_NmQueryType); /* user's default */
+  const char *const c_nm_query_type =
+      cs_subset_string(NeoMutt->sub, "nm_query_type");
+  mdata->query_type = nm_string_to_query_type(c_nm_query_type); /* user's default */
 
   struct UrlQuery *item = NULL;
   STAILQ_FOREACH(item, &mdata->db_url->query_strings, entries)
@@ -401,7 +417,8 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
   if (window)
   {
     char buf[1024];
-    mutt_str_replace(&C_NmQueryWindowCurrentSearch, mdata->db_query);
+    cs_subset_str_string_set(NeoMutt->sub, "nm_query_window_current_search",
+                             mdata->db_query, NULL);
 
     /* if a date part is defined, do not apply windows (to avoid the risk of
      * having a non-intersected date frame). A good improvement would be to
@@ -436,12 +453,14 @@ static int get_limit(struct NmMboxData *mdata)
  */
 static void apply_exclude_tags(notmuch_query_t *query)
 {
-  if (!C_NmExcludeTags || !query)
+  const char *const c_nm_exclude_tags =
+      cs_subset_string(NeoMutt->sub, "nm_exclude_tags");
+  if (!c_nm_exclude_tags || !query)
     return;
 
   char *end = NULL, *tag = NULL;
 
-  char *buf = mutt_str_dup(C_NmExcludeTags);
+  char *buf = mutt_str_dup(c_nm_exclude_tags);
 
   for (char *p = buf; p && (p[0] != '\0'); p++)
   {
@@ -1231,24 +1250,30 @@ static int update_email_flags(struct Mailbox *m, struct Email *e, const char *ta
 
     end[0] = '\0';
 
+    const char *const c_nm_unread_tag =
+        cs_subset_string(NeoMutt->sub, "nm_unread_tag");
+    const char *const c_nm_replied_tag =
+        cs_subset_string(NeoMutt->sub, "nm_replied_tag");
+    const char *const c_nm_flagged_tag =
+        cs_subset_string(NeoMutt->sub, "nm_flagged_tag");
     if (tag[0] == '-')
     {
       tag++;
-      if (strcmp(tag, C_NmUnreadTag) == 0)
+      if (strcmp(tag, c_nm_unread_tag) == 0)
         mutt_set_flag(m, e, MUTT_READ, true);
-      else if (strcmp(tag, C_NmRepliedTag) == 0)
+      else if (strcmp(tag, c_nm_replied_tag) == 0)
         mutt_set_flag(m, e, MUTT_REPLIED, false);
-      else if (strcmp(tag, C_NmFlaggedTag) == 0)
+      else if (strcmp(tag, c_nm_flagged_tag) == 0)
         mutt_set_flag(m, e, MUTT_FLAG, false);
     }
     else
     {
       tag = (tag[0] == '+') ? tag + 1 : tag;
-      if (strcmp(tag, C_NmUnreadTag) == 0)
+      if (strcmp(tag, c_nm_unread_tag) == 0)
         mutt_set_flag(m, e, MUTT_READ, false);
-      else if (strcmp(tag, C_NmRepliedTag) == 0)
+      else if (strcmp(tag, c_nm_replied_tag) == 0)
         mutt_set_flag(m, e, MUTT_REPLIED, true);
-      else if (strcmp(tag, C_NmFlaggedTag) == 0)
+      else if (strcmp(tag, c_nm_flagged_tag) == 0)
         mutt_set_flag(m, e, MUTT_FLAG, true);
     }
     end = NULL;
@@ -1683,7 +1708,8 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
 
   nm_parse_type_from_query(mdata, buf);
 
-  if (get_limit(mdata) == C_NmDbLimit)
+  const short c_nm_db_limit = cs_subset_number(NeoMutt->sub, "nm_db_limit");
+  if (get_limit(mdata) == c_nm_db_limit)
   {
     added = snprintf(url, sizeof(url), "%s%s?type=%s&query=", NmUrlProtocol,
                      nm_db_get_filename(m), query_type_to_string(mdata->query_type));
@@ -1724,10 +1750,15 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
  */
 void nm_query_window_forward(void)
 {
-  if (C_NmQueryWindowCurrentPosition != 0)
-    C_NmQueryWindowCurrentPosition--;
+  const short c_nm_query_window_current_position =
+      cs_subset_number(NeoMutt->sub, "nm_query_window_current_position");
+  if (c_nm_query_window_current_position != 0)
+  {
+    cs_subset_str_native_set(NeoMutt->sub, "nm_query_window_current_position",
+                             c_nm_query_window_current_position - 1, NULL);
+  }
 
-  mutt_debug(LL_DEBUG2, "(%d)\n", C_NmQueryWindowCurrentPosition);
+  mutt_debug(LL_DEBUG2, "(%d)\n", c_nm_query_window_current_position - 1);
 }
 
 /**
@@ -1740,8 +1771,11 @@ void nm_query_window_forward(void)
  */
 void nm_query_window_backward(void)
 {
-  C_NmQueryWindowCurrentPosition++;
-  mutt_debug(LL_DEBUG2, "(%d)\n", C_NmQueryWindowCurrentPosition);
+  const short c_nm_query_window_current_position =
+      cs_subset_number(NeoMutt->sub, "nm_query_window_current_position");
+  cs_subset_str_native_set(NeoMutt->sub, "nm_query_window_current_position",
+                           c_nm_query_window_current_position + 1, NULL);
+  mutt_debug(LL_DEBUG2, "(%d)\n", c_nm_query_window_current_position + 1);
 }
 
 /**
@@ -1840,10 +1874,12 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   struct UrlQuery *item = NULL;
   struct Url *url = NULL;
-  char *db_filename = NULL, *db_query = NULL;
+  const char *db_filename = NULL;
+  char *db_query = NULL;
   notmuch_database_t *db = NULL;
   enum MxStatus rc = MX_STATUS_ERROR;
-  int limit = C_NmDbLimit;
+  const short c_nm_db_limit = cs_subset_number(NeoMutt->sub, "nm_db_limit");
+  int limit = c_nm_db_limit;
   mutt_debug(LL_DEBUG1, "nm: count\n");
 
   url = url_parse(mailbox_path(m));
@@ -1874,15 +1910,18 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   db_filename = url->path;
   if (!db_filename)
   {
-    if (C_NmDefaultUrl)
+    const char *const c_nm_default_url =
+        cs_subset_string(NeoMutt->sub, "nm_default_url");
+    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+    if (c_nm_default_url)
     {
-      if (nm_path_probe(C_NmDefaultUrl, NULL) == MUTT_NOTMUCH)
-        db_filename = C_NmDefaultUrl + NmUrlProtocolLen;
+      if (nm_path_probe(c_nm_default_url, NULL) == MUTT_NOTMUCH)
+        db_filename = c_nm_default_url + NmUrlProtocolLen;
       else
-        db_filename = C_NmDefaultUrl;
+        db_filename = c_nm_default_url;
     }
-    else if (C_Folder)
-      db_filename = C_Folder;
+    else if (c_folder)
+      db_filename = c_folder;
   }
 
   /* don't be verbose about connection, as we're called from
@@ -1900,12 +1939,16 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   char *qstr = NULL;
 
   // unread messages
-  mutt_str_asprintf(&qstr, "( %s ) tag:%s", db_query, C_NmUnreadTag);
+  const char *const c_nm_unread_tag =
+      cs_subset_string(NeoMutt->sub, "nm_unread_tag");
+  mutt_str_asprintf(&qstr, "( %s ) tag:%s", db_query, c_nm_unread_tag);
   m->msg_unread = count_query(db, qstr, limit);
   FREE(&qstr);
 
   // flagged messages
-  mutt_str_asprintf(&qstr, "( %s ) tag:%s", db_query, C_NmFlaggedTag);
+  const char *const c_nm_flagged_tag =
+      cs_subset_string(NeoMutt->sub, "nm_flagged_tag");
+  mutt_str_asprintf(&qstr, "( %s ) tag:%s", db_query, c_nm_flagged_tag);
   m->msg_flagged = count_query(db, qstr, limit);
   FREE(&qstr);
 
@@ -2004,8 +2047,10 @@ int nm_record_message(struct Mailbox *m, char *path, struct Email *e)
       update_tags(msg, tags);
       FREE(&tags);
     }
-    if (C_NmRecordTags)
-      update_tags(msg, C_NmRecordTags);
+    const char *const c_nm_record_tags =
+        cs_subset_string(NeoMutt->sub, "nm_record_tags");
+    if (c_nm_record_tags)
+      update_tags(msg, c_nm_record_tags);
   }
 
   rc = 0;
