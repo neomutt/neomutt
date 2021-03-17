@@ -47,8 +47,6 @@
 struct Email;
 struct HeaderCache;
 
-extern bool C_MaildirTrash;
-
 extern struct MxOps MxMaildirOps;
 extern struct MxOps MxMhOps;
 

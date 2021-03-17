@@ -525,7 +525,8 @@ static int trash_append(struct Mailbox *m)
   struct stat st, stc;
   int opt_confappend, rc;
 
-  if (!C_Trash || (m->msg_deleted == 0) || ((m->type == MUTT_MAILDIR) && C_MaildirTrash))
+  const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
+  if (!C_Trash || (m->msg_deleted == 0) || ((m->type == MUTT_MAILDIR) && c_maildir_trash))
   {
     return 0;
   }
@@ -728,7 +729,8 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
 
   /* There is no point in asking whether or not to purge if we are
    * just marking messages as "trash".  */
-  if ((m->msg_deleted != 0) && !((m->type == MUTT_MAILDIR) && C_MaildirTrash))
+  const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
+  if ((m->msg_deleted != 0) && !((m->type == MUTT_MAILDIR) && c_maildir_trash))
   {
     mutt_buffer_printf(buf,
                        ngettext("Purge %d deleted message?",

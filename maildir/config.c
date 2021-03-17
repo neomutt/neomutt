@@ -31,45 +31,32 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
-// clang-format off
-bool  C_CheckNew;                 ///< Config: (maildir,mh) Check for new mail while the mailbox is open
-bool  C_MaildirCheckCur;          ///< Config: Check both 'new' and 'cur' directories for new mail
-#ifdef USE_HCACHE
-bool  C_MaildirHeaderCacheVerify; ///< Config: (hcache) Check for maildir changes when opening mailbox
-#endif
-bool  C_MaildirTrash;             ///< Config: Use the maildir 'trashed' flag, rather than deleting
-bool  C_MhPurge;                  ///< Config: Really delete files in MH mailboxes
-char *C_MhSeqFlagged;             ///< Config: MH sequence for flagged message
-char *C_MhSeqReplied;             ///< Config: MH sequence to tag replied messages
-char *C_MhSeqUnseen;              ///< Config: MH sequence for unseen messages
-// clang-format on
-
 struct ConfigDef MaildirVars[] = {
   // clang-format off
-  { "check_new", DT_BOOL, &C_CheckNew, true, 0, NULL,
+  { "check_new", DT_BOOL, NULL, true, 0, NULL,
     "(maildir,mh) Check for new mail while the mailbox is open"
   },
-  { "maildir_check_cur", DT_BOOL, &C_MaildirCheckCur, false, 0, NULL,
+  { "maildir_check_cur", DT_BOOL, NULL, false, 0, NULL,
     "Check both 'new' and 'cur' directories for new mail"
   },
 #ifdef USE_HCACHE
-  { "maildir_header_cache_verify", DT_BOOL, &C_MaildirHeaderCacheVerify, true, 0, NULL,
+  { "maildir_header_cache_verify", DT_BOOL, NULL, true, 0, NULL,
     "Check for maildir changes when opening mailbox"
   },
 #endif
-  { "maildir_trash", DT_BOOL, &C_MaildirTrash, false, 0, NULL,
+  { "maildir_trash", DT_BOOL, NULL, false, 0, NULL,
     "Use the maildir 'trashed' flag, rather than deleting"
   },
-  { "mh_purge", DT_BOOL, &C_MhPurge, false, 0, NULL,
+  { "mh_purge", DT_BOOL, NULL, false, 0, NULL,
     "Really delete files in MH mailboxes"
   },
-  { "mh_seq_flagged", DT_STRING, &C_MhSeqFlagged, IP "flagged", 0, NULL,
+  { "mh_seq_flagged", DT_STRING, NULL, IP "flagged", 0, NULL,
     "MH sequence for flagged message"
   },
-  { "mh_seq_replied", DT_STRING, &C_MhSeqReplied, IP "replied", 0, NULL,
+  { "mh_seq_replied", DT_STRING, NULL, IP "replied", 0, NULL,
     "MH sequence to tag replied messages"
   },
-  { "mh_seq_unseen", DT_STRING, &C_MhSeqUnseen, IP "unseen", 0, NULL,
+  { "mh_seq_unseen", DT_STRING, NULL, IP "unseen", 0, NULL,
     "MH sequence for unseen messages"
   },
   { NULL, 0, NULL, 0, 0, NULL, NULL },
@@ -81,5 +68,5 @@ struct ConfigDef MaildirVars[] = {
  */
 bool config_init_maildir(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, MaildirVars, 0);
+  return cs_register_variables(cs, MaildirVars, DT_NO_VARIABLE);
 }

@@ -227,8 +227,9 @@ static void update_tables(struct Context *ctx)
   {
     if (!m->emails[i])
       break;
+    const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
     if (!m->emails[i]->quasi_deleted &&
-        (!m->emails[i]->deleted || ((m->type == MUTT_MAILDIR) && C_MaildirTrash)))
+        (!m->emails[i]->deleted || ((m->type == MUTT_MAILDIR) && c_maildir_trash)))
     {
       if (i != j)
       {
@@ -247,7 +248,7 @@ static void update_tables(struct Context *ctx)
       m->emails[j]->changed = false;
       m->emails[j]->env->changed = false;
 
-      if ((m->type == MUTT_MAILDIR) && C_MaildirTrash)
+      if ((m->type == MUTT_MAILDIR) && c_maildir_trash)
       {
         if (m->emails[j]->deleted)
           m->msg_deleted++;
