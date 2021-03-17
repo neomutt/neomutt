@@ -56,9 +56,6 @@ struct Menu;
 
 #define MUTT_ALIAS_SIMPLESEARCH "~f %s | ~t %s | ~c %s"
 
-/* These Config Variables are only used in pattern.c */
-extern bool C_ThoroughSearch;
-
 typedef uint8_t PatternCompFlags;       ///< Flags for mutt_pattern_comp(), e.g. #MUTT_PC_FULL_MSG
 #define MUTT_PC_NO_FLAGS            0   ///< No flags are set
 #define MUTT_PC_FULL_MSG        (1<<0)  ///< Enable body and header matching

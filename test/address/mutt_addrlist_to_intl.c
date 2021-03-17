@@ -26,7 +26,18 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "test_common.h"
+
+static struct ConfigDef Vars[] = {
+  // clang-format off
+  { "charset",    DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, NULL, IP "utf-8", 0, NULL, },
+  { "idn_decode", DT_BOOL,                                  NULL, true,       0, NULL, },
+  { "idn_encode", DT_BOOL,                                  NULL, true,       0, NULL, },
+  { NULL },
+  // clang-format on
+};
 
 void test_mutt_addrlist_to_intl(void)
 {
@@ -52,14 +63,15 @@ void test_mutt_addrlist_to_intl(void)
                          .intl = "test@xn--nixierhre-57a.nixieclock-tube.com" },
                        { .local = "test@வலைப்பூ.com", .intl = "test@xn--xlcawl2e7azb.com" } };
 
-    char *prev_charset = C_Charset;
-    C_Charset = "utf-8";
+    NeoMutt = test_neomutt_create();
+    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_VARIABLE));
+
+    cs_subset_str_string_set(NeoMutt->sub, "charset", "utf-8", NULL);
 #ifdef HAVE_LIBIDN
-    bool prev_idn_encode = C_IdnEncode;
-    bool prev_idn_decode = C_IdnDecode;
-    C_IdnEncode = true;
-    C_IdnDecode = true;
+    cs_subset_str_native_set(NeoMutt->sub, "idn_encode", true, NULL);
+    cs_subset_str_native_set(NeoMutt->sub, "idn_decode", true, NULL);
 #endif
+
     for (size_t i = 0; i < mutt_array_size(local2intl); ++i)
     {
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
@@ -75,10 +87,7 @@ void test_mutt_addrlist_to_intl(void)
       TEST_CHECK_STR_EQ(local2intl[i].local, a->mailbox);
       mutt_addrlist_clear(&al);
     }
-    C_Charset = prev_charset;
-#ifdef HAVE_LIBIDN
-    C_IdnEncode = prev_idn_encode;
-    C_IdnDecode = prev_idn_decode;
-#endif
+
+    test_neomutt_destroy(&NeoMutt);
   }
 }

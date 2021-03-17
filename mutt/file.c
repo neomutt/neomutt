@@ -41,6 +41,8 @@
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
+#include "config/lib.h"
+#include "core/lib.h"
 #include "file.h"
 #include "buffer.h"
 #include "date.h"
@@ -52,8 +54,6 @@
 #ifdef USE_FLOCK
 #include <sys/file.h>
 #endif
-
-char *C_Tmpdir; ///< Config: Directory for temporary files
 
 /* these characters must be escaped in regular expressions */
 static const char rx_special_chars[] = "^.[$()|*+?{\\";
@@ -933,7 +933,8 @@ FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
 {
   char name[PATH_MAX];
 
-  int n = snprintf(name, sizeof(name), "%s/neomutt-XXXXXX", NONULL(C_Tmpdir));
+  const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
+  int n = snprintf(name, sizeof(name), "%s/neomutt-XXXXXX", NONULL(c_tmpdir));
   if (n < 0)
     return NULL;
 

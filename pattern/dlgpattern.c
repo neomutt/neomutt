@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "format_flags.h"
@@ -106,8 +107,10 @@ static void make_pattern_entry(struct Menu *menu, char *buf, size_t buflen, int 
 {
   struct PatternEntry *entry = &((struct PatternEntry *) menu->mdata)[num];
 
+  const char *const c_pattern_format =
+      cs_subset_string(NeoMutt->sub, "pattern_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                      NONULL(C_PatternFormat), pattern_format_str,
+                      NONULL(c_pattern_format), pattern_format_str,
                       (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 

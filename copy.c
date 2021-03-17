@@ -426,7 +426,8 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     fputs("MIME-Version: 1.0\n", fp_out);
     fputs("Content-Transfer-Encoding: 8bit\n", fp_out);
     fputs("Content-Type: text/plain; charset=", fp_out);
-    mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), C_Charset ? C_Charset : "us-ascii");
+    const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+    mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), c_charset ? c_charset : "us-ascii");
     mutt_addr_cat(buf, sizeof(buf), chsbuf, MimeSpecials);
     fputs(buf, fp_out);
     fputc('\n', fp_out);
@@ -508,7 +509,8 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
   }
   FREE(&tags);
 
-  const char *c_send_charset = cs_subset_string(NeoMutt->sub, "send_charset");
+  const char *const c_send_charset =
+      cs_subset_string(NeoMutt->sub, "send_charset");
   const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
   if ((chflags & CH_UPDATE_LABEL) && e->env->x_label)
   {

@@ -369,7 +369,9 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
   mutt_message(_("Compiling search pattern..."));
 
   char *simple = mutt_buffer_strdup(buf);
-  mutt_check_simple(buf, NONULL(C_SimpleSearch));
+  const char *const c_simple_search =
+      cs_subset_string(NeoMutt->sub, "simple_search");
+  mutt_check_simple(buf, NONULL(c_simple_search));
   const char *pbuf = buf->data;
   while (*pbuf == ' ')
     pbuf++;
@@ -516,7 +518,9 @@ int mutt_search_command(struct Context *ctx, struct Mailbox *m, int cur, int op)
      * $simple_search has changed while we were searching */
     struct Buffer *tmp = mutt_buffer_pool_get();
     mutt_buffer_strcpy(tmp, buf);
-    mutt_check_simple(tmp, NONULL(C_SimpleSearch));
+    const char *const c_simple_search =
+        cs_subset_string(NeoMutt->sub, "simple_search");
+    mutt_check_simple(tmp, NONULL(c_simple_search));
 
     if (!SearchPattern || !mutt_str_equal(mutt_buffer_string(tmp), LastSearchExpn))
     {
@@ -567,10 +571,11 @@ int mutt_search_command(struct Context *ctx, struct Mailbox *m, int cur, int op)
   {
     const char *msg = NULL;
     mutt_progress_update(&progress, j, -1);
+    const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
     if (i > m->vcount - 1)
     {
       i = 0;
-      if (C_WrapSearch)
+      if (c_wrap_search)
         msg = _("Search wrapped to top");
       else
       {
@@ -581,7 +586,7 @@ int mutt_search_command(struct Context *ctx, struct Mailbox *m, int cur, int op)
     else if (i < 0)
     {
       i = m->vcount - 1;
-      if (C_WrapSearch)
+      if (c_wrap_search)
         msg = _("Search wrapped to bottom");
       else
       {
@@ -718,10 +723,11 @@ int mutt_search_alias_command(struct Context *ctx, struct Menu *menu, int cur, i
   {
     const char *msg = NULL;
     mutt_progress_update(&progress, j, -1);
+    const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
     if (i > ARRAY_SIZE(ava) - 1)
     {
       i = 0;
-      if (C_WrapSearch)
+      if (c_wrap_search)
         msg = _("Search wrapped to top");
       else
       {
@@ -732,7 +738,7 @@ int mutt_search_alias_command(struct Context *ctx, struct Menu *menu, int cur, i
     else if (i < 0)
     {
       i = ARRAY_SIZE(ava) - 1;
-      if (C_WrapSearch)
+      if (c_wrap_search)
         msg = _("Search wrapped to bottom");
       else
       {

@@ -333,7 +333,7 @@ static void snd_make_entry(struct Menu *menu, char *buf, size_t buflen, int line
   const struct ComposeRedrawData *rd = (const struct ComposeRedrawData *) menu->redraw_data;
   const struct ConfigSubset *sub = rd->sub;
 
-  const char *c_attach_format = cs_subset_string(sub, "attach_format");
+  const char *const c_attach_format = cs_subset_string(sub, "attach_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(c_attach_format),
                       attach_format_str, (intptr_t)(actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
@@ -620,7 +620,7 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
       (e->security & APPLICATION_PGP) && (e->security & SEC_SIGN))
   {
     draw_header(rd->win_envelope, row++, HDR_CRYPTINFO);
-    const char *c_pgp_sign_as = cs_subset_string(rd->sub, "pgp_sign_as");
+    const char *const c_pgp_sign_as = cs_subset_string(rd->sub, "pgp_sign_as");
     mutt_window_printf("%s", c_pgp_sign_as ? c_pgp_sign_as : _("<default>"));
   }
 
@@ -628,11 +628,12 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
       (e->security & APPLICATION_SMIME) && (e->security & SEC_SIGN))
   {
     draw_header(rd->win_envelope, row++, HDR_CRYPTINFO);
-    const char *c_smime_sign_as = cs_subset_string(rd->sub, "pgp_sign_as");
+    const char *const c_smime_sign_as =
+        cs_subset_string(rd->sub, "pgp_sign_as");
     mutt_window_printf("%s", c_smime_sign_as ? c_smime_sign_as : _("<default>"));
   }
 
-  const char *c_smime_encrypt_with =
+  const char *const c_smime_encrypt_with =
       cs_subset_string(rd->sub, "smime_encrypt_with");
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME) &&
       (e->security & SEC_ENCRYPT) && c_smime_encrypt_with)
@@ -1328,7 +1329,8 @@ static void compose_custom_redraw(struct Menu *menu)
   if (menu->redraw & REDRAW_STATUS)
   {
     char buf[1024];
-    const char *c_compose_format = cs_subset_string(rd->sub, "compose_format");
+    const char *const c_compose_format =
+        cs_subset_string(rd->sub, "compose_format");
     mutt_expando_format(buf, sizeof(buf), 0, menu->win_ibar->state.cols,
                         NONULL(c_compose_format), compose_format_str,
                         (intptr_t) menu, MUTT_FORMAT_NO_FLAGS);
@@ -1714,7 +1716,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         if (!c_edit_headers)
         {
           mutt_rfc3676_space_unstuff(e);
-          const char *c_editor = cs_subset_string(sub, "editor");
+          const char *const c_editor = cs_subset_string(sub, "editor");
           mutt_edit_file(c_editor, e->body->filename);
           mutt_rfc3676_space_stuff(e);
           mutt_update_encoding(e->body, sub);
@@ -1732,7 +1734,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         const char *tag = NULL;
         char *err = NULL;
         mutt_env_to_local(e->env);
-        const char *c_editor = cs_subset_string(sub, "editor");
+        const char *const c_editor = cs_subset_string(sub, "editor");
         mutt_edit_headers(NONULL(c_editor), e->body->filename, e, fcc);
         if (mutt_env_to_intl(e->env, &tag, &err))
         {
@@ -2054,7 +2056,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         OptNews = false;
         if (Context && (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE))
         {
-          const char *c_news_server = cs_subset_string(sub, "news_server");
+          const char *const c_news_server =
+              cs_subset_string(sub, "news_server");
           CurrentNewsSrv = nntp_select_server(Context->mailbox, c_news_server, false);
           if (!CurrentNewsSrv)
             break;
@@ -2184,10 +2187,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         /* go back to the folder we started from */
         Context = ctx_cur;
         /* Restore old $sort and $sort_aux */
-        if (old_sort != cs_subset_sort(sub, "sort"))
-          cs_subset_str_native_set(sub, "sort", old_sort, NULL);
-        if (old_sort_aux != cs_subset_sort(sub, "sort_aux"))
-          cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
+        cs_subset_str_native_set(sub, "sort", old_sort, NULL);
+        cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
         if (added_attachment)
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -2361,7 +2362,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
       case OP_COMPOSE_EDIT_FILE:
       {
         CHECK_COUNT;
-        const char *c_editor = cs_subset_string(sub, "editor");
+        const char *const c_editor = cs_subset_string(sub, "editor");
         mutt_edit_file(NONULL(c_editor), CUR_ATTACH->body->filename);
         mutt_update_encoding(CUR_ATTACH->body, sub);
         menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
@@ -2599,7 +2600,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
       case OP_COMPOSE_ISPELL:
       {
         endwin();
-        const char *c_ispell = cs_subset_string(sub, "ispell");
+        const char *const c_ispell = cs_subset_string(sub, "ispell");
         snprintf(buf, sizeof(buf), "%s -x %s", NONULL(c_ispell), e->body->filename);
         if (mutt_system(buf) == -1)
           mutt_error(_("Error running \"%s\""), buf);

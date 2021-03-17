@@ -26,10 +26,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-/* These Config Variables are only used in mutt/idna.c */
-extern bool C_IdnDecode;
-extern bool C_IdnEncode;
-
 #define MI_NO_FLAGS                  0
 #define MI_MAY_BE_IRREVERSIBLE (1 << 0)
 

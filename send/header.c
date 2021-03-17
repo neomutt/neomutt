@@ -667,7 +667,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
         ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC) ||
          (mode == MUTT_WRITE_HEADER_POSTPONE)))
     {
-      const char *c_crypt_protected_headers_subject =
+      const char *const c_crypt_protected_headers_subject =
           cs_subset_string(sub, "crypt_protected_headers_subject");
       mutt_write_one_header(fp, "Subject", c_crypt_protected_headers_subject,
                             NULL, 0, CH_NO_FLAGS, sub);

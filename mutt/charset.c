@@ -35,6 +35,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "config/lib.h"
+#include "core/lib.h"
 #include "charset.h"
 #include "buffer.h"
 #include "memory.h"
@@ -48,9 +50,6 @@
 #ifndef EILSEQ
 #define EILSEQ EINVAL
 #endif
-
-char *C_AssumedCharset; ///< Config: If a message is missing a character set, assume this character set
-char *C_Charset; ///< Config: Default character set for displaying text on screen
 
 /**
  * ReplacementChar - When a Unicode character can't be displayed, use this instead
@@ -318,7 +317,10 @@ int mutt_ch_convert_nonmime_string(char **ps)
 
   const char *c1 = NULL;
 
-  for (const char *c = C_AssumedCharset; c; c = c1 ? c1 + 1 : 0)
+  const char *const c_assumed_charset =
+      cs_subset_string(NeoMutt->sub, "assumed_charset");
+  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+  for (const char *c = c_assumed_charset; c; c = c1 ? c1 + 1 : 0)
   {
     c1 = strchr(c, ':');
     size_t n = c1 ? c1 - c : mutt_str_len(c);
@@ -327,7 +329,7 @@ int mutt_ch_convert_nonmime_string(char **ps)
     char *fromcode = mutt_mem_malloc(n + 1);
     mutt_str_copy(fromcode, c, n + 1);
     char *s = mutt_strn_dup(u, ulen);
-    int m = mutt_ch_convert_string(&s, fromcode, C_Charset, MUTT_ICONV_NO_FLAGS);
+    int m = mutt_ch_convert_string(&s, fromcode, c_charset, MUTT_ICONV_NO_FLAGS);
     FREE(&fromcode);
     FREE(&s);
     if (m == 0)
@@ -336,7 +338,7 @@ int mutt_ch_convert_nonmime_string(char **ps)
     }
   }
   mutt_ch_convert_string(ps, (const char *) mutt_ch_get_default_charset(),
-                         C_Charset, MUTT_ICONV_HOOK_FROM);
+                         c_charset, MUTT_ICONV_HOOK_FROM);
   return -1;
 }
 
@@ -440,7 +442,9 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
 char *mutt_ch_get_default_charset(void)
 {
   static char fcharset[128];
-  const char *c = C_AssumedCharset;
+  const char *const c_assumed_charset =
+      cs_subset_string(NeoMutt->sub, "assumed_charset");
+  const char *c = c_assumed_charset;
   const char *c1 = NULL;
 
   if (c)

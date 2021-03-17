@@ -102,7 +102,7 @@ struct GreetingInfo
  */
 static void append_signature(FILE *fp, struct ConfigSubset *sub)
 {
-  const char *c_signature = cs_subset_path(sub, "signature");
+  const char *const c_signature = cs_subset_path(sub, "signature");
   if (!c_signature)
     return;
 
@@ -428,12 +428,12 @@ static void process_user_header(struct Envelope *env)
  */
 void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp, struct ConfigSubset *sub)
 {
-  const char *c_forward_attribution_intro =
+  const char *const c_forward_attribution_intro =
       cs_subset_string(sub, "forward_attribution_intro");
   if (!c_forward_attribution_intro || !fp)
     return;
 
-  const char *c_attribution_locale =
+  const char *const c_attribution_locale =
       cs_subset_string(sub, "attribution_locale");
 
   char buf[1024];
@@ -455,12 +455,12 @@ void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp, struct Con
 void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp,
                           struct ConfigSubset *sub)
 {
-  const char *c_forward_attribution_trailer =
+  const char *const c_forward_attribution_trailer =
       cs_subset_string(sub, "forward_attribution_trailer");
   if (!c_forward_attribution_trailer || !fp)
     return;
 
-  const char *c_attribution_locale =
+  const char *const c_attribution_locale =
       cs_subset_string(sub, "attribution_locale");
 
   char buf[1024];
@@ -611,11 +611,11 @@ cleanup:
 void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *fp_out,
                            struct ConfigSubset *sub)
 {
-  const char *c_attribution = cs_subset_string(sub, "attribution");
+  const char *const c_attribution = cs_subset_string(sub, "attribution");
   if (!c_attribution || !fp_out)
     return;
 
-  const char *c_attribution_locale =
+  const char *const c_attribution_locale =
       cs_subset_string(sub, "attribution_locale");
 
   char buf[1024];
@@ -699,7 +699,7 @@ static const char *greeting_string(char *buf, size_t buflen, size_t col, int col
 static void mutt_make_greeting(struct Mailbox *m, struct Email *e, FILE *fp_out,
                                struct ConfigSubset *sub)
 {
-  const char *c_greeting = cs_subset_string(sub, "greeting");
+  const char *const c_greeting = cs_subset_string(sub, "greeting");
   if (!c_greeting || !fp_out)
     return;
 
@@ -723,7 +723,7 @@ static void mutt_make_greeting(struct Mailbox *m, struct Email *e, FILE *fp_out,
 void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out,
                            struct ConfigSubset *sub)
 {
-  const char *c_post_indent_string =
+  const char *const c_post_indent_string =
       cs_subset_string(sub, "post_indent_string");
   if (!c_post_indent_string || !fp_out)
     return;
@@ -1025,7 +1025,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m,
   if (!env)
     return;
 
-  const char *c_forward_format = cs_subset_string(sub, "forward_format");
+  const char *const c_forward_format = cs_subset_string(sub, "forward_format");
 
   char buf[256];
   /* set the default subject for the message. */
@@ -1056,7 +1056,7 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv,
   }
   else if (!env->subject)
   {
-    const char *c_empty_subject = cs_subset_string(sub, "empty_subject");
+    const char *const c_empty_subject = cs_subset_string(sub, "empty_subject");
     env->subject = mutt_str_dup(c_empty_subject);
   }
 }
@@ -1477,9 +1477,6 @@ static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *s
 {
   struct Buffer *tempfile = NULL;
   int rc = -1;
-#ifdef USE_SMTP
-  short old_write_bcc;
-#endif
 
   /* Write out the message in MIME form. */
   tempfile = mutt_buffer_pool_get();
@@ -1490,8 +1487,7 @@ static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *s
 
 #ifdef USE_SMTP
   const bool c_write_bcc = cs_subset_bool(sub, "write_bcc");
-  const char *c_smtp_url = cs_subset_string(sub, "smtp_url");
-  old_write_bcc = c_write_bcc;
+  const char *const c_smtp_url = cs_subset_string(sub, "smtp_url");
   if (c_smtp_url)
     cs_subset_str_native_set(sub, "write_bcc", false, NULL);
 #endif
@@ -1505,8 +1501,7 @@ static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *s
                            false, mutt_should_hide_protected_subject(e), sub);
 #endif
 #ifdef USE_SMTP
-  if (old_write_bcc)
-    cs_subset_str_native_set(sub, "write_bcc", true, NULL);
+  cs_subset_str_native_set(sub, "write_bcc", c_write_bcc, NULL);
 #endif
 
   fputc('\n', fp_tmp); /* tie off the header. */
@@ -1570,7 +1565,7 @@ void mutt_encode_descriptions(struct Body *b, bool recurse, struct ConfigSubset 
   {
     if (t->description)
     {
-      const char *c_send_charset = cs_subset_string(sub, "send_charset");
+      const char *const c_send_charset = cs_subset_string(sub, "send_charset");
       rfc2047_encode(&t->description, NULL, sizeof("Content-Description:"), c_send_charset);
     }
     if (recurse && t->parts)
@@ -1942,7 +1937,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
   const char *encrypt_as = NULL;
   struct Body *clear_content = NULL;
 
-  const char *c_postponed = cs_subset_string(sub, "postponed");
+  const char *const c_postponed = cs_subset_string(sub, "postponed");
   if (!c_postponed)
   {
     mutt_error(_("Can't postpone.  $postponed is unset"));
@@ -1960,18 +1955,19 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e_post->security & APPLICATION_PGP))
     {
-      const char *c_pgp_default_key = cs_subset_string(sub, "pgp_default_key");
+      const char *const c_pgp_default_key =
+          cs_subset_string(sub, "pgp_default_key");
       encrypt_as = c_pgp_default_key;
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) && (e_post->security & APPLICATION_SMIME))
     {
-      const char *c_smime_default_key =
+      const char *const c_smime_default_key =
           cs_subset_string(sub, "smime_default_key");
       encrypt_as = c_smime_default_key;
     }
     if (!encrypt_as)
     {
-      const char *c_postpone_encrypt_as =
+      const char *const c_postpone_encrypt_as =
           cs_subset_string(sub, "postpone_encrypt_as");
       encrypt_as = c_postpone_encrypt_as;
     }
@@ -2174,12 +2170,13 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   {
     if (WithCrypto & APPLICATION_PGP)
     {
-      const char *c_pgp_sign_as = cs_subset_string(sub, "pgp_sign_as");
+      const char *const c_pgp_sign_as = cs_subset_string(sub, "pgp_sign_as");
       pgp_sign_as = mutt_str_dup(c_pgp_sign_as);
     }
     if (WithCrypto & APPLICATION_SMIME)
     {
-      const char *c_smime_sign_as = cs_subset_string(sub, "smime_sign_as");
+      const char *const c_smime_sign_as =
+          cs_subset_string(sub, "smime_sign_as");
       smime_sign_as = mutt_str_dup(c_smime_sign_as);
     }
   }
@@ -2250,7 +2247,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       pbody->next = e_templ->body; /* don't kill command-line attachments */
       e_templ->body = pbody;
 
-      const char *c_content_type = cs_subset_string(sub, "content_type");
+      const char *const c_content_type = cs_subset_string(sub, "content_type");
       ctype = mutt_str_dup(c_content_type);
       if (!ctype)
         ctype = mutt_str_dup("text/plain");
@@ -2418,7 +2415,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       mutt_make_greeting(m, e_templ, fp_tmp, sub);
 
     const bool c_sig_on_top = cs_subset_bool(sub, "sig_on_top");
-    const char *c_editor = cs_subset_string(sub, "editor");
+    const char *const c_editor = cs_subset_string(sub, "editor");
     if (c_sig_on_top && !(flags & (SEND_KEY | SEND_BATCH)) && c_editor)
     {
       append_signature(fp_tmp, sub);
@@ -2460,7 +2457,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     struct Address *from = TAILQ_FIRST(&e_templ->env->from);
     if (from && !from->personal && !(flags & (SEND_RESEND | SEND_POSTPONED)))
     {
-      const char *c_real_name = cs_subset_string(sub, "real_name");
+      const char *const c_real_name = cs_subset_string(sub, "real_name");
       from->personal = mutt_str_dup(c_real_name);
     }
   }
@@ -2497,7 +2494,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
          (query_quadoption(c_forward_edit, _("Edit forwarded message?")) == MUTT_YES)))
     {
       /* If the this isn't a text message, look for a mailcap edit command */
-      const char *c_editor = cs_subset_string(sub, "editor");
+      const char *const c_editor = cs_subset_string(sub, "editor");
       if (mutt_needs_mailcap(e_templ->body))
       {
         if (!mutt_edit_attachment(e_templ->body))

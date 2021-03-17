@@ -123,7 +123,9 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
   struct stat st;
 #endif
 
-  if (C_ThoroughSearch)
+  const bool c_thorough_search =
+      cs_subset_bool(NeoMutt->sub, "thorough_search");
+  if (c_thorough_search)
   {
     /* decode the header / body */
     struct State s = { 0 };
@@ -244,7 +246,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
 
   mx_msg_close(m, &msg);
 
-  if (C_ThoroughSearch)
+  if (c_thorough_search)
     mutt_file_fclose(&fp);
 
 #ifdef USE_FMEMOPEN

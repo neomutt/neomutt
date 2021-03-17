@@ -49,7 +49,7 @@ void sb_win_remove_observers(struct MuttWindow *win);
 static bool calc_divider(struct SidebarWindowData *wdata)
 {
   enum DivType type = SB_DIV_USER;
-  const char *c_sidebar_divider_char =
+  const char *const c_sidebar_divider_char =
       cs_subset_string(NeoMutt->sub, "sidebar_divider_char");
 
   // Calculate the width of the delimiter in screen cells

@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
 #include "lib.h"
@@ -118,7 +119,8 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
 
   mutt_grouplist_add_addrlist(&gl, &tmp->addr);
 
-  if (C_DebugLevel > LL_DEBUG4)
+  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
+  if (c_debug_level > LL_DEBUG4)
   {
     /* A group is terminated with an empty address, so check a->mailbox */
     struct Address *a = NULL;

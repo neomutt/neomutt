@@ -30,6 +30,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "idna2.h"
 #ifdef HAVE_LIBIDN
 #include <stdbool.h>
@@ -55,12 +57,6 @@
 #define IDN_VERSION 2
 #elif defined(HAVE_IDNA_H) || defined(HAVE_IDN_IDNA_H)
 #define IDN_VERSION 1
-#endif
-
-/* These Config Variables are only used in mutt/idna.c */
-#ifdef HAVE_LIBIDN
-bool C_IdnDecode; ///< Config: (idn) Decode international domain names
-bool C_IdnEncode; ///< Config: (idn) Encode international domain names
 #endif
 
 #ifdef HAVE_LIBIDN
@@ -156,7 +152,8 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flag
 
 #ifdef HAVE_LIBIDN
   bool is_idn_encoded = check_idn(local_domain);
-  if (is_idn_encoded && C_IdnDecode)
+  const bool c_idn_decode = cs_subset_bool(NeoMutt->sub, "idn_decode");
+  if (is_idn_encoded && c_idn_decode)
   {
 #if (IDN_VERSION == 2)
     if (idn2_to_unicode_8z8z(local_domain, &tmp, IDN2_ALLOW_UNASSIGNED) != IDN2_OK)
@@ -172,10 +169,11 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flag
 #endif /* HAVE_LIBIDN */
 
   /* we don't want charset-hook effects, so we set flags to 0 */
-  if (mutt_ch_convert_string(&local_user, "utf-8", C_Charset, MUTT_ICONV_NO_FLAGS) != 0)
+  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+  if (mutt_ch_convert_string(&local_user, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS) != 0)
     goto cleanup;
 
-  if (mutt_ch_convert_string(&local_domain, "utf-8", C_Charset, MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(&local_domain, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS) != 0)
     goto cleanup;
 
   /* make sure that we can convert back and come out with the same
@@ -184,7 +182,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flag
   {
     reversed_user = mutt_str_dup(local_user);
 
-    if (mutt_ch_convert_string(&reversed_user, C_Charset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
+    if (mutt_ch_convert_string(&reversed_user, c_charset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
     {
       mutt_debug(LL_DEBUG1, "Not reversible. Charset conv to utf-8 failed for user = '%s'\n",
                  reversed_user);
@@ -200,7 +198,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flag
 
     reversed_domain = mutt_str_dup(local_domain);
 
-    if (mutt_ch_convert_string(&reversed_domain, C_Charset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
+    if (mutt_ch_convert_string(&reversed_domain, c_charset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
     {
       mutt_debug(LL_DEBUG1, "Not reversible. Charset conv to utf-8 failed for domain = '%s'\n",
                  reversed_domain);
@@ -211,7 +209,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flag
     /* If the original domain was UTF-8, idna encoding here could
      * produce a non-matching domain!  Thus we only want to do the
      * idna_to_ascii_8z() if the original domain was IDNA encoded.  */
-    if (is_idn_encoded && C_IdnDecode)
+    if (is_idn_encoded && c_idn_decode)
     {
 #if (IDN_VERSION == 2)
       if (idn2_to_ascii_8z(reversed_domain, &tmp,
@@ -272,14 +270,16 @@ char *mutt_idna_local_to_intl(const char *user, const char *domain)
   char *intl_domain = mutt_str_dup(domain);
 
   /* we don't want charset-hook effects, so we set flags to 0 */
-  if (mutt_ch_convert_string(&intl_user, C_Charset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
+  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+  if (mutt_ch_convert_string(&intl_user, c_charset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
     goto cleanup;
 
-  if (mutt_ch_convert_string(&intl_domain, C_Charset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(&intl_domain, c_charset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
     goto cleanup;
 
 #ifdef HAVE_LIBIDN
-  if (C_IdnEncode)
+  const bool c_idn_encode = cs_subset_bool(NeoMutt->sub, "idn_encode");
+  if (c_idn_encode)
   {
 #if (IDN_VERSION == 2)
     if (idn2_to_ascii_8z(intl_domain, &tmp,

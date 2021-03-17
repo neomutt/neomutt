@@ -530,7 +530,9 @@ static bool comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     m->type = mx_path_probe(mailbox_path(m));
   }
   else
-    m->type = C_MboxType;
+  {
+    m->type = cs_subset_enum(NeoMutt->sub, "mbox_type");
+  }
 
   /* We can only deal with mbox and mmdf mailboxes */
   if ((m->type != MUTT_MBOX) && (m->type != MUTT_MMDF))
@@ -707,7 +709,8 @@ static enum MxStatus comp_mbox_close(struct Mailbox *m)
   else
   {
     /* If the file was removed, remove the compressed folder too */
-    if ((access(mailbox_path(m), F_OK) != 0) && !C_SaveEmpty)
+    const bool c_save_empty = cs_subset_bool(NeoMutt->sub, "save_empty");
+    if ((access(mailbox_path(m), F_OK) != 0) && !c_save_empty)
     {
       remove(m->realpath);
     }

@@ -478,13 +478,16 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
 
   while ((line = mutt_file_read_line(line, &linelen, fp, &lineno, MUTT_RL_CONT)) != NULL)
   {
-    const bool conv = C_ConfigCharset && C_Charset;
+    const char *const c_config_charset =
+        cs_subset_string(NeoMutt->sub, "config_charset");
+    const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+    const bool conv = c_config_charset && c_charset;
     if (conv)
     {
       currentline = mutt_str_dup(line);
       if (!currentline)
         continue;
-      mutt_ch_convert_string(&currentline, C_ConfigCharset, C_Charset, MUTT_ICONV_NO_FLAGS);
+      mutt_ch_convert_string(&currentline, c_config_charset, c_charset, MUTT_ICONV_NO_FLAGS);
     }
     else
       currentline = line;

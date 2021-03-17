@@ -1856,12 +1856,15 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
     const char *charset = b->charset;
     if (!charset)
     {
+      const char *const c_assumed_charset =
+          cs_subset_string(NeoMutt->sub, "assumed_charset");
       charset = mutt_param_get(&b->parameter, "charset");
-      if (!charset && C_AssumedCharset)
+      if (!charset && c_assumed_charset)
         charset = mutt_ch_get_default_charset();
     }
-    if (charset && C_Charset)
-      cd = mutt_ch_iconv_open(C_Charset, charset, MUTT_ICONV_HOOK_FROM);
+    const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+    if (charset && c_charset)
+      cd = mutt_ch_iconv_open(c_charset, charset, MUTT_ICONV_HOOK_FROM);
   }
 
   fseeko(s->fp_in, b->offset, SEEK_SET);

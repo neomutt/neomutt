@@ -36,16 +36,14 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "lib.h"
 #include "mutt_account.h"
 #include "muttlib.h"
 
 struct ConnAccount;
-
-/* These Config Variables are only used in bcache.c */
-bool C_MessageCacheClean; ///< Config: (imap/pop) Clean out obsolete entries from the message cache
-char *C_MessageCachedir; ///< Config: (imap/pop) Directory for the message cache
 
 /**
  * struct BodyCache - Local cache of email bodies
@@ -68,13 +66,15 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
   char host[256];
   struct Url url = { 0 };
 
-  if (!account || !C_MessageCachedir || !bcache)
+  const char *const c_message_cachedir =
+      cs_subset_path(NeoMutt->sub, "message_cachedir");
+  if (!account || !c_message_cachedir || !bcache)
     return -1;
 
   struct stat sb;
-  if (!((stat(C_MessageCachedir, &sb) == 0) && S_ISDIR(sb.st_mode)))
+  if (!((stat(c_message_cachedir, &sb) == 0) && S_ISDIR(sb.st_mode)))
   {
-    mutt_error(_("Cache disabled, $message_cachedir isn't a directory: %s"), C_MessageCachedir);
+    mutt_error(_("Cache disabled, $message_cachedir isn't a directory: %s"), c_message_cachedir);
     return -1;
   }
 
@@ -93,7 +93,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
   struct Buffer *dst = mutt_buffer_pool_get();
   mutt_encode_path(path, NONULL(mailbox));
 
-  mutt_buffer_printf(dst, "%s/%s%s", C_MessageCachedir, host, mutt_buffer_string(path));
+  mutt_buffer_printf(dst, "%s/%s%s", c_message_cachedir, host, mutt_buffer_string(path));
   if (*(dst->dptr - 1) != '/')
     mutt_buffer_addch(dst, '/');
 

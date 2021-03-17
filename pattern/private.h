@@ -121,9 +121,6 @@ enum RangeSide
 extern struct RangeRegex range_regexes[];
 extern const struct PatternFlags Flags[];
 
-extern char *C_ExternalSearchCommand;
-extern char *C_PatternFormat;
-
 const struct PatternFlags *lookup_op(int op);
 const struct PatternFlags *lookup_tag(char tag);
 bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err);

@@ -212,9 +212,6 @@ struct ConfigDef MainVars[] = {
   { "ask_cc", DT_BOOL, &C_AskCc, false, 0, NULL,
     "Ask the user for the carbon-copy recipients"
   },
-  { "assumed_charset", DT_STRING, &C_AssumedCharset, 0, 0, charset_validator,
-    "If a message is missing a character set, assume this character set"
-  },
   { "attach_format", DT_STRING|DT_NOT_EMPTY, &C_AttachFormat, IP "%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] ", 0, NULL,
     "printf-like format string for the attachment menu"
   },
@@ -256,9 +253,6 @@ struct ConfigDef MainVars[] = {
   },
   { "browser_abbreviate_mailboxes", DT_BOOL, &C_BrowserAbbreviateMailboxes, true, 0, NULL,
     "Abbreviate mailboxes using '~' and '=' in the browser"
-  },
-  { "charset", DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, &C_Charset, 0, 0, charset_validator,
-    "Default character set for displaying text on screen"
   },
   { "collapse_flagged", DT_BOOL, &C_CollapseFlagged, true, 0, NULL,
     "Prevent the collapse of threads with flagged emails"
@@ -374,14 +368,6 @@ struct ConfigDef MainVars[] = {
   { "hostname", DT_STRING, &C_Hostname, 0, 0, NULL,
     "Fully-qualified domain name of this machine"
   },
-#ifdef HAVE_LIBIDN
-  { "idn_decode", DT_BOOL|R_MENU, &C_IdnDecode, true, 0, NULL,
-    "(idn) Decode international domain names"
-  },
-  { "idn_encode", DT_BOOL|R_MENU, &C_IdnEncode, true, 0, NULL,
-    "(idn) Encode international domain names"
-  },
-#endif
   { "implicit_autoview", DT_BOOL, &C_ImplicitAutoview, false, 0, NULL,
     "Display MIME attachments inline if a 'copiousoutput' mailcap entry exists"
   },
@@ -438,12 +424,6 @@ struct ConfigDef MainVars[] = {
   },
   { "menu_scroll", DT_BOOL, &C_MenuScroll, false, 0, NULL,
     "Scroll the menu/index by one line, rather than a page"
-  },
-  { "message_cache_clean", DT_BOOL, &C_MessageCacheClean, false, 0, NULL,
-    "(imap/pop) Clean out obsolete entries from the message cache"
-  },
-  { "message_cachedir", DT_PATH|DT_PATH_DIR, &C_MessageCachedir, 0, 0, NULL,
-    "(imap/pop) Directory for the message cache"
   },
   { "message_format", DT_STRING|DT_NOT_EMPTY, &C_MessageFormat, IP "%s", 0, NULL,
     "printf-like format string for listing attached messages"
@@ -642,9 +622,6 @@ struct ConfigDef MainVars[] = {
   { "timeout", DT_NUMBER|DT_NOT_NEGATIVE, &C_Timeout, 600, 0, NULL,
     "Time to wait for user input in menus"
   },
-  { "tmpdir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, &C_Tmpdir, IP TMPDIR, 0, NULL,
-    "Directory for temporary files"
-  },
   { "toggle_quoted_show_levels", DT_NUMBER|DT_NOT_NEGATIVE, &C_ToggleQuotedShowLevels, 0, 0, NULL,
     "Number of quote levels to show with toggle-quoted"
   },
@@ -714,17 +691,37 @@ struct ConfigDef MainVars[] = {
 
 struct ConfigDef MainNoVars[] = {
   // clang-format off
+  { "assumed_charset", DT_STRING, NULL, 0, 0, charset_validator,
+    "If a message is missing a character set, assume this character set"
+  },
   { "auto_subscribe", DT_BOOL, NULL, false, 0, NULL,
     "Automatically check if the user is subscribed to a mailing list"
+  },
+  { "charset", DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, NULL, 0, 0, charset_validator,
+    "Default character set for displaying text on screen"
   },
   { "hidden_tags", DT_SLIST|SLIST_SEP_COMMA, NULL, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted", 0, NULL,
     "Tags that shouldn't be displayed on screen"
   },
+#ifdef HAVE_LIBIDN
+  { "idn_decode", DT_BOOL|R_MENU, NULL, true, 0, NULL,
+    "(idn) Decode international domain names"
+  },
+  { "idn_encode", DT_BOOL|R_MENU, NULL, true, 0, NULL,
+    "(idn) Encode international domain names"
+  },
+#endif
   { "mark_old", DT_BOOL|R_INDEX|R_PAGER, NULL, true, 0, NULL,
     "Mark new emails as old when leaving the mailbox"
   },
   { "meta_key", DT_BOOL, NULL, false, 0, NULL,
     "Interpret 'ALT-x' as 'ESC-x'"
+  },
+  { "message_cache_clean", DT_BOOL, NULL, false, 0, NULL,
+    "(imap/pop) Clean out obsolete entries from the message cache"
+  },
+  { "message_cachedir", DT_PATH|DT_PATH_DIR, NULL, 0, 0, NULL,
+    "(imap/pop) Directory for the message cache"
   },
   { "reply_regex", DT_REGEX|R_INDEX|R_RESORT, NULL, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, reply_validator,
     "Regex to match message reply subjects like 're: '"
@@ -737,6 +734,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "spam_separator", DT_STRING, NULL, IP ",", 0, NULL,
     "Separator for multiple spam headers"
+  },
+  { "tmpdir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, NULL, IP TMPDIR, 0, NULL,
+    "Directory for temporary files"
   },
   { "weed", DT_BOOL, NULL, true, 0, NULL,
     "Filter headers when displaying/forwarding/printing/replying"

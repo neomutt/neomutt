@@ -104,7 +104,7 @@ static const char *abbrev_folder(const char *mbox, const char *folder, enum Mail
     return mbox + prefix;
   }
 
-  const char *c_sidebar_delim_chars =
+  const char *const c_sidebar_delim_chars =
       cs_subset_string(NeoMutt->sub, "sidebar_delim_chars");
   if (!c_sidebar_delim_chars)
     return NULL;
@@ -187,7 +187,7 @@ static const char *abbrev_url(const char *mbox, enum MailboxType type)
 static size_t add_indent(char *buf, size_t buflen, const struct SbEntry *sbe)
 {
   size_t res = 0;
-  const char *c_sidebar_indent_string =
+  const char *const c_sidebar_indent_string =
       cs_subset_string(NeoMutt->sub, "sidebar_indent_string");
   for (int i = 0; i < sbe->depth; i++)
   {
@@ -222,7 +222,7 @@ static enum ColorId calc_color(const struct Mailbox *m, bool current, bool highl
   if (m->msg_flagged > 0)
     return MT_COLOR_SIDEBAR_FLAGGED;
 
-  const char *c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
+  const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
   if ((Colors->defs[MT_COLOR_SIDEBAR_SPOOLFILE] != 0) &&
       mutt_str_equal(mailbox_path(m), c_spool_file))
   {
@@ -455,7 +455,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
  */
 static void make_sidebar_entry(char *buf, size_t buflen, int width, struct SbEntry *sbe)
 {
-  const char *c_sidebar_format =
+  const char *const c_sidebar_format =
       cs_subset_string(NeoMutt->sub, "sidebar_format");
   mutt_expando_format(buf, buflen, 0, width, NONULL(c_sidebar_format),
                       sidebar_format_str, IP sbe, MUTT_FORMAT_NO_FLAGS);
@@ -703,7 +703,7 @@ int sb_recalc(struct MuttWindow *win)
 
     const char *path = mailbox_path(m);
 
-    const char *c_folder = cs_subset_string(NeoMutt->sub, "folder");
+    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
     // Try to abbreviate the full path
     const char *abbr = abbrev_folder(path, c_folder, m->type);
     if (!abbr)
@@ -712,7 +712,7 @@ int sb_recalc(struct MuttWindow *win)
 
     /* Compute the depth */
     const char *last_part = abbr;
-    const char *c_sidebar_delim_chars =
+    const char *const c_sidebar_delim_chars =
         cs_subset_string(NeoMutt->sub, "sidebar_delim_chars");
     entry->depth = calc_path_depth(abbr, c_sidebar_delim_chars, &last_part);
 
@@ -770,7 +770,7 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
     return 0;
 
   const int width = wdata->divider_width;
-  const char *c_sidebar_divider_char =
+  const char *const c_sidebar_divider_char =
       cs_subset_string(NeoMutt->sub, "sidebar_divider_char");
 
   mutt_curses_set_color(MT_COLOR_SIDEBAR_DIVIDER);
