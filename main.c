@@ -94,9 +94,6 @@
 #include "autocrypt/lib.h"
 #endif
 
-/* These Config Variables are only used in main.c */
-bool C_ResumeEditedDraftFiles; ///< Config: Resume editing previously saved draft files
-
 // clang-format off
 typedef uint8_t CliFlags;         ///< Flags for command line options, e.g. #MUTT_CLI_IGNORE
 #define MUTT_CLI_NO_FLAGS      0  ///< No flags are set
@@ -786,7 +783,7 @@ int main(int argc, char *argv[], char *envp[])
 #endif
 
   /* Create the `$folder` directory if it doesn't exist. */
-  const char *c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   if (!OptNoCurses && c_folder)
   {
     struct stat sb;
@@ -1160,7 +1157,7 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef USE_NNTP
       if (flags & MUTT_CLI_NEWS)
       {
-        const char *c_news_server =
+        const char *const c_news_server =
             cs_subset_string(NeoMutt->sub, "news_server");
         OptNews = true;
         CurrentNewsSrv = nntp_select_server(Context ? Context->mailbox : NULL,
@@ -1186,7 +1183,8 @@ int main(int argc, char *argv[], char *envp[])
 
     if (mutt_buffer_is_empty(&folder))
     {
-      const char *c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
+      const char *const c_spool_file =
+          cs_subset_string(NeoMutt->sub, "spool_file");
       if (c_spool_file)
       {
         // Check if `$spool_file` corresponds a mailboxes' description.

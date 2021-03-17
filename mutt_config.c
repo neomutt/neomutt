@@ -46,7 +46,6 @@
 #include "init.h"
 #include "keymap.h"
 #include "mailcap.h"
-#include "main.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
@@ -415,9 +414,6 @@ struct ConfigDef MainVars[] = {
   { "resume_draft_files", DT_BOOL, &C_ResumeDraftFiles, false, 0, NULL,
     "Process draft files like postponed messages"
   },
-  { "resume_edited_draft_files", DT_BOOL, &C_ResumeEditedDraftFiles, true, 0, NULL,
-    "Resume editing previously saved draft files"
-  },
   { "reverse_alias", DT_BOOL|R_INDEX|R_PAGER, &C_ReverseAlias, false, 0, NULL,
     "Display the alias in the index, rather than the message's sender"
   },
@@ -707,6 +703,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "reply_regex", DT_REGEX|R_INDEX|R_RESORT, NULL, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, reply_validator,
     "Regex to match message reply subjects like 're: '"
+  },
+  { "resume_edited_draft_files", DT_BOOL, NULL, true, 0, NULL,
+    "Resume editing previously saved draft files"
   },
   { "rfc2047_parameters", DT_BOOL, NULL, false, 0, NULL,
     "Decode RFC2047-encoded MIME parameters"
