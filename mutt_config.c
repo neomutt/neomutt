@@ -448,9 +448,6 @@ struct ConfigDef MainVars[] = {
   { "message_format", DT_STRING|DT_NOT_EMPTY, &C_MessageFormat, IP "%s", 0, NULL,
     "printf-like format string for listing attached messages"
   },
-  { "meta_key", DT_BOOL, &C_MetaKey, false, 0, NULL,
-    "Interpret 'ALT-x' as 'ESC-x'"
-  },
   { "mime_forward", DT_QUAD, &C_MimeForward, MUTT_NO, 0, NULL,
     "Forward a message as a 'message/RFC822' MIME part"
   },
@@ -725,6 +722,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "mark_old", DT_BOOL|R_INDEX|R_PAGER, NULL, true, 0, NULL,
     "Mark new emails as old when leaving the mailbox"
+  },
+  { "meta_key", DT_BOOL, NULL, false, 0, NULL,
+    "Interpret 'ALT-x' as 'ESC-x'"
   },
   { "reply_regex", DT_REGEX|R_INDEX|R_RESORT, NULL, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, reply_validator,
     "Regex to match message reply subjects like 're: '"

@@ -33,6 +33,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
@@ -991,7 +992,9 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
     {
       struct Buffer *buf = mutt_buffer_pool_get();
       mutt_buffer_strcpy(buf, s);
-      mutt_check_simple(buf, NONULL(C_SimpleSearch));
+      const char *const c_simple_search =
+          cs_subset_string(NeoMutt->sub, "simple_search");
+      mutt_check_simple(buf, NONULL(c_simple_search));
       tmp->color_pattern = mutt_pattern_comp(Context, buf->data, MUTT_PC_FULL_MSG, err);
       mutt_buffer_pool_release(&buf);
       if (!tmp->color_pattern)
