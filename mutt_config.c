@@ -254,12 +254,6 @@ struct ConfigDef MainVars[] = {
   { "browser_abbreviate_mailboxes", DT_BOOL, &C_BrowserAbbreviateMailboxes, true, 0, NULL,
     "Abbreviate mailboxes using '~' and '=' in the browser"
   },
-  { "collapse_flagged", DT_BOOL, &C_CollapseFlagged, true, 0, NULL,
-    "Prevent the collapse of threads with flagged emails"
-  },
-  { "collapse_unread", DT_BOOL, &C_CollapseUnread, true, 0, NULL,
-    "Prevent the collapse of threads with unread emails"
-  },
   { "config_charset", DT_STRING, &C_ConfigCharset, 0, 0, charset_validator,
     "Character set that the config files are in"
   },
@@ -302,9 +296,6 @@ struct ConfigDef MainVars[] = {
   { "display_filter", DT_STRING|DT_COMMAND|R_PAGER, &C_DisplayFilter, 0, 0, NULL,
     "External command to pre-process an email before display"
   },
-  { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, &C_DuplicateThreads, true, 0, pager_validator,
-    "Highlight messages with duplicated message IDs"
-  },
   { "editor", DT_STRING|DT_NOT_EMPTY|DT_COMMAND, &C_Editor, 0, 0, NULL,
     "External command to use as an email editor"
   },
@@ -346,21 +337,6 @@ struct ConfigDef MainVars[] = {
   },
   { "header", DT_BOOL, &C_Header, false, 0, NULL,
     "Include the message headers in the reply email (Weed applies)"
-  },
-  { "hide_limited", DT_BOOL|R_TREE|R_INDEX, &C_HideLimited, false, 0, NULL,
-    "Don't indicate hidden messages, in the thread tree"
-  },
-  { "hide_missing", DT_BOOL|R_TREE|R_INDEX, &C_HideMissing, true, 0, NULL,
-    "Don't indicate missing messages, in the thread tree"
-  },
-  { "hide_thread_subject", DT_BOOL|R_TREE|R_INDEX, &C_HideThreadSubject, true, 0, NULL,
-    "Hide subjects that are similar to that of the parent message"
-  },
-  { "hide_top_limited", DT_BOOL|R_TREE|R_INDEX, &C_HideTopLimited, false, 0, NULL,
-    "Don't indicate hidden top message, in the thread tree"
-  },
-  { "hide_top_missing", DT_BOOL|R_TREE|R_INDEX, &C_HideTopMissing, true, 0, NULL,
-    "Don't indicate missing top message, in the thread tree"
   },
   { "honor_disposition", DT_BOOL, &C_HonorDisposition, false, 0, NULL,
     "Don't display MIME parts inline if they have a disposition of 'attachment'"
@@ -444,9 +420,6 @@ struct ConfigDef MainVars[] = {
 #endif
   { "move", DT_QUAD, &C_Move, MUTT_NO, 0, NULL,
     "Move emails from `$spool_file` to `$mbox` when read"
-  },
-  { "narrow_tree", DT_BOOL|R_TREE|R_INDEX, &C_NarrowTree, false, 0, NULL,
-    "Draw a narrower thread tree in the index"
   },
   { "net_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_NetInc, 10, 0, NULL,
     "(socket) Update the progress bar after this many KB sent/received (0 to disable)"
@@ -589,9 +562,6 @@ struct ConfigDef MainVars[] = {
   { "sort_browser", DT_SORT|DT_SORT_REVERSE, &C_SortBrowser, SORT_ALPHA, IP SortBrowserMethods, NULL,
     "Sort method for the browser"
   },
-  { "sort_re", DT_BOOL|R_INDEX|R_RESORT|R_RESORT_INIT, &C_SortRe, true, 0, pager_validator,
-    "Sort method for the sidebar"
-  },
   { "spool_file", DT_STRING|DT_MAILBOX, &C_SpoolFile, 0, 0, NULL,
     "Inbox"
   },
@@ -604,17 +574,11 @@ struct ConfigDef MainVars[] = {
   { "status_on_top", DT_BOOL|R_REFLOW, &C_StatusOnTop, false, 0, NULL,
     "Display the status bar at the top"
   },
-  { "strict_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, &C_StrictThreads, false, 0, pager_validator,
-    "Thread messages using 'In-Reply-To' and 'References' headers"
-  },
   { "suspend", DT_BOOL, &C_Suspend, true, 0, NULL,
     "Allow the user to suspend NeoMutt using '^Z'"
   },
   { "text_flowed", DT_BOOL, &C_TextFlowed, false, 0, NULL,
     "Generate 'format=flowed' messages"
-  },
-  { "thread_received", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, &C_ThreadReceived, false, 0, pager_validator,
-    "Sort threaded messages by their received date"
   },
   { "time_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_TimeInc, 0, 0, NULL,
     "Frequency of progress bar updates (milliseconds)"
@@ -700,8 +664,32 @@ struct ConfigDef MainNoVars[] = {
   { "charset", DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, NULL, 0, 0, charset_validator,
     "Default character set for displaying text on screen"
   },
+  { "collapse_flagged", DT_BOOL, NULL, true, 0, NULL,
+    "Prevent the collapse of threads with flagged emails"
+  },
+  { "collapse_unread", DT_BOOL, NULL, true, 0, NULL,
+    "Prevent the collapse of threads with unread emails"
+  },
+  { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, NULL, true, 0, pager_validator,
+    "Highlight messages with duplicated message IDs"
+  },
   { "hidden_tags", DT_SLIST|SLIST_SEP_COMMA, NULL, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted", 0, NULL,
     "Tags that shouldn't be displayed on screen"
+  },
+  { "hide_limited", DT_BOOL|R_TREE|R_INDEX, NULL, false, 0, NULL,
+    "Don't indicate hidden messages, in the thread tree"
+  },
+  { "hide_missing", DT_BOOL|R_TREE|R_INDEX, NULL, true, 0, NULL,
+    "Don't indicate missing messages, in the thread tree"
+  },
+  { "hide_thread_subject", DT_BOOL|R_TREE|R_INDEX, NULL, true, 0, NULL,
+    "Hide subjects that are similar to that of the parent message"
+  },
+  { "hide_top_limited", DT_BOOL|R_TREE|R_INDEX, NULL, false, 0, NULL,
+    "Don't indicate hidden top message, in the thread tree"
+  },
+  { "hide_top_missing", DT_BOOL|R_TREE|R_INDEX, NULL, true, 0, NULL,
+    "Don't indicate missing top message, in the thread tree"
   },
 #ifdef HAVE_LIBIDN
   { "idn_decode", DT_BOOL|R_MENU, NULL, true, 0, NULL,
@@ -723,6 +711,9 @@ struct ConfigDef MainNoVars[] = {
   { "message_cachedir", DT_PATH|DT_PATH_DIR, NULL, 0, 0, NULL,
     "(imap/pop) Directory for the message cache"
   },
+  { "narrow_tree", DT_BOOL|R_TREE|R_INDEX, NULL, false, 0, NULL,
+    "Draw a narrower thread tree in the index"
+  },
   { "reply_regex", DT_REGEX|R_INDEX|R_RESORT, NULL, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, reply_validator,
     "Regex to match message reply subjects like 're: '"
   },
@@ -732,8 +723,17 @@ struct ConfigDef MainNoVars[] = {
   { "send_charset", DT_STRING|DT_CHARSET_STRICT, NULL, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
     "Character sets for outgoing mail"
   },
+  { "sort_re", DT_BOOL|R_INDEX|R_RESORT|R_RESORT_INIT, NULL, true, 0, pager_validator,
+    "Sort method for the sidebar"
+  },
   { "spam_separator", DT_STRING, NULL, IP ",", 0, NULL,
     "Separator for multiple spam headers"
+  },
+  { "strict_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, NULL, false, 0, pager_validator,
+    "Thread messages using 'In-Reply-To' and 'References' headers"
+  },
+  { "thread_received", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, NULL, false, 0, pager_validator,
+    "Sort threaded messages by their received date"
   },
   { "tmpdir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, NULL, IP TMPDIR, 0, NULL,
     "Directory for temporary files"
