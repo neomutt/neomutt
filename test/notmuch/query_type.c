@@ -43,3 +43,15 @@ void test_nm_string_to_query_type(void)
     TEST_CHECK(nm_string_to_query_type("junk") == NM_QUERY_TYPE_MESGS);
   }
 }
+
+void test_nm_query_type_to_string(void)
+{
+  {
+    TEST_CHECK(mutt_str_equal(nm_query_type_to_string(NM_QUERY_TYPE_THREADS), "threads"));
+  }
+
+  {
+    TEST_CHECK(mutt_str_equal(nm_query_type_to_string(NM_QUERY_TYPE_MESGS),
+                              "messages"));
+  }
+}

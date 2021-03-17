@@ -225,20 +225,6 @@ static char *email_get_fullpath(struct Email *e, char *buf, size_t buflen)
 }
 
 /**
- * query_type_to_string - Turn a query type into a string
- * @param query_type Query type
- * @retval ptr String
- *
- * @note This is a static string and must not be freed.
- */
-static const char *query_type_to_string(enum NmQueryType query_type)
-{
-  if (query_type == NM_QUERY_TYPE_THREADS)
-    return "threads";
-  return "messages";
-}
-
-/**
  * query_window_check_timebase - Checks if a given timebase string is valid
  * @param[in] timebase: string containing a time base
  * @retval true The given time base is valid
@@ -1712,13 +1698,13 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
   if (get_limit(mdata) == c_nm_db_limit)
   {
     added = snprintf(url, sizeof(url), "%s%s?type=%s&query=", NmUrlProtocol,
-                     nm_db_get_filename(m), query_type_to_string(mdata->query_type));
+                     nm_db_get_filename(m), nm_query_type_to_string(mdata->query_type));
   }
   else
   {
     added = snprintf(url, sizeof(url), "%s%s?type=%s&limit=%d&query=", NmUrlProtocol,
                      nm_db_get_filename(m),
-                     query_type_to_string(mdata->query_type), get_limit(mdata));
+                     nm_query_type_to_string(mdata->query_type), get_limit(mdata));
   }
 
   if (added >= sizeof(url))

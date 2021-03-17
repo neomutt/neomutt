@@ -33,6 +33,20 @@
 #include "query.h"
 
 /**
+ * nm_query_type_to_string - Turn a query type into a string
+ * @param query_type Query type
+ * @retval ptr String
+ *
+ * @note This is a static string and must not be freed.
+ */
+const char *nm_query_type_to_string(enum NmQueryType query_type)
+{
+  if (query_type == NM_QUERY_TYPE_THREADS)
+    return "threads";
+  return "messages";
+}
+
+/**
  * nm_string_to_query_type - Lookup a query type
  *
  * If there's no query type, default to NM_QUERY_TYPE_MESGS.

@@ -35,5 +35,6 @@ enum NmQueryType
 };
 
 enum NmQueryType nm_string_to_query_type(const char *str);
+const char *nm_query_type_to_string(enum NmQueryType query_type);
 
 #endif /* MUTT_NOTMUCH_QUERY_H */
