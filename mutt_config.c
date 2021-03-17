@@ -389,15 +389,6 @@ struct ConfigDef MainVars[] = {
   { "mbox_type", DT_ENUM, &C_MboxType, MUTT_MBOX, IP &MboxTypeDef, NULL,
     "Default type for creating new mailboxes"
   },
-  { "menu_context", DT_NUMBER|DT_NOT_NEGATIVE, &C_MenuContext, 0, 0, NULL,
-    "Number of lines of overlap when changing pages in the index"
-  },
-  { "menu_move_off", DT_BOOL, &C_MenuMoveOff, true, 0, NULL,
-    "Allow the last menu item to move off the bottom of the screen"
-  },
-  { "menu_scroll", DT_BOOL, &C_MenuScroll, false, 0, NULL,
-    "Scroll the menu/index by one line, rather than a page"
-  },
   { "message_format", DT_STRING|DT_NOT_EMPTY, &C_MessageFormat, IP "%s", 0, NULL,
     "printf-like format string for listing attached messages"
   },
@@ -701,6 +692,15 @@ struct ConfigDef MainNoVars[] = {
 #endif
   { "mark_old", DT_BOOL|R_INDEX|R_PAGER, NULL, true, 0, NULL,
     "Mark new emails as old when leaving the mailbox"
+  },
+  { "menu_context", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 0, 0, NULL,
+    "Number of lines of overlap when changing pages in the index"
+  },
+  { "menu_move_off", DT_BOOL, NULL, true, 0, NULL,
+    "Allow the last menu item to move off the bottom of the screen"
+  },
+  { "menu_scroll", DT_BOOL, NULL, false, 0, NULL,
+    "Scroll the menu/index by one line, rather than a page"
   },
   { "meta_key", DT_BOOL, NULL, false, 0, NULL,
     "Interpret 'ALT-x' as 'ESC-x'"

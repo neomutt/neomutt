@@ -53,11 +53,6 @@
 #include "options.h"
 #include "protos.h"
 
-/* These Config Variables are only used in menu.c */
-short C_MenuContext; ///< Config: Number of lines of overlap when changing pages in the index
-bool C_MenuMoveOff; ///< Config: Allow the last menu item to move off the bottom of the screen
-bool C_MenuScroll; ///< Config: Scroll the menu/index by one line, rather than a page
-
 char *SearchBuffers[MENU_MAX];
 
 /* These are used to track the active menus, for redraw operations. */
@@ -149,12 +144,13 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
         mutt_curses_set_color(MT_COLOR_TREE);
 #endif
 
+      const bool c_ascii_chars = cs_subset_bool(NeoMutt->sub, "ascii_chars");
       while (*s && (*s < MUTT_TREE_MAX))
       {
         switch (*s)
         {
           case MUTT_TREE_LLCORNER:
-            if (C_AsciiChars)
+            if (c_ascii_chars)
               mutt_window_addch('`');
 #ifdef WACS_LLCORNER
             else
@@ -167,7 +163,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
 #endif
             break;
           case MUTT_TREE_ULCORNER:
-            if (C_AsciiChars)
+            if (c_ascii_chars)
               mutt_window_addch(',');
 #ifdef WACS_ULCORNER
             else
@@ -180,7 +176,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
 #endif
             break;
           case MUTT_TREE_LTEE:
-            if (C_AsciiChars)
+            if (c_ascii_chars)
               mutt_window_addch('|');
 #ifdef WACS_LTEE
             else
@@ -193,7 +189,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
 #endif
             break;
           case MUTT_TREE_HLINE:
-            if (C_AsciiChars)
+            if (c_ascii_chars)
               mutt_window_addch('-');
 #ifdef WACS_HLINE
             else
@@ -206,7 +202,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
 #endif
             break;
           case MUTT_TREE_VLINE:
-            if (C_AsciiChars)
+            if (c_ascii_chars)
               mutt_window_addch('|');
 #ifdef WACS_VLINE
             else
@@ -219,7 +215,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
 #endif
             break;
           case MUTT_TREE_TTEE:
-            if (C_AsciiChars)
+            if (c_ascii_chars)
               mutt_window_addch('-');
 #ifdef WACS_TTEE
             else
@@ -232,7 +228,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
 #endif
             break;
           case MUTT_TREE_BTEE:
-            if (C_AsciiChars)
+            if (c_ascii_chars)
               mutt_window_addch('-');
 #ifdef WACS_BTEE
             else
@@ -333,7 +329,10 @@ static void make_entry(struct Menu *menu, char *buf, size_t buflen, int i)
 static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
 {
   char *scratch = mutt_str_dup(buf);
-  int shift = C_ArrowCursor ? mutt_strwidth(C_ArrowString) + 1 : 0;
+  const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
+  const char *const c_arrow_string =
+      cs_subset_string(NeoMutt->sub, "arrow_string");
+  int shift = c_arrow_cursor ? mutt_strwidth(c_arrow_string) + 1 : 0;
   int cols = menu->win_index->state.cols - shift;
 
   mutt_simple_format(buf, buflen, cols, cols, JUSTIFY_LEFT, ' ', scratch,
@@ -398,22 +397,25 @@ void menu_redraw_index(struct Menu *menu)
       mutt_window_move(menu->win_index, 0, i - menu->top);
       do_color = true;
 
+      const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
+      const char *const c_arrow_string =
+          cs_subset_string(NeoMutt->sub, "arrow_string");
       if (i == menu->current)
       {
         mutt_curses_set_color(MT_COLOR_INDICATOR);
-        if (C_ArrowCursor)
+        if (c_arrow_cursor)
         {
-          mutt_window_addstr(C_ArrowString);
+          mutt_window_addstr(c_arrow_string);
           mutt_curses_set_attr(attr);
           mutt_window_addch(' ');
         }
         else
           do_color = false;
       }
-      else if (C_ArrowCursor)
+      else if (c_arrow_cursor)
       {
         /* Print space chars to match the screen width of `$arrow_string` */
-        mutt_window_printf("%*s", mutt_strwidth(C_ArrowString) + 1, "");
+        mutt_window_printf("%*s", mutt_strwidth(c_arrow_string) + 1, "");
       }
 
       print_enriched_string(i, attr, (unsigned char *) buf, do_color);
@@ -450,24 +452,27 @@ void menu_redraw_motion(struct Menu *menu)
   mutt_window_move(menu->win_index, 0, menu->oldcurrent - menu->top);
   mutt_curses_set_attr(old_color);
 
-  if (C_ArrowCursor)
+  const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
+  const char *const c_arrow_string =
+      cs_subset_string(NeoMutt->sub, "arrow_string");
+  if (c_arrow_cursor)
   {
     /* clear the arrow */
     /* Print space chars to match the screen width of `$arrow_string` */
-    mutt_window_printf("%*s", mutt_strwidth(C_ArrowString) + 1, "");
+    mutt_window_printf("%*s", mutt_strwidth(c_arrow_string) + 1, "");
 
     if (menu->redraw & REDRAW_MOTION_RESYNC)
     {
       make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
       menu_pad_string(menu, buf, sizeof(buf));
-      mutt_window_move(menu->win_index, mutt_strwidth(C_ArrowString) + 1,
+      mutt_window_move(menu->win_index, mutt_strwidth(c_arrow_string) + 1,
                        menu->oldcurrent - menu->top);
       print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
     }
 
     /* now draw it in the new location */
     mutt_curses_set_color(MT_COLOR_INDICATOR);
-    mutt_window_mvaddstr(menu->win_index, 0, menu->current - menu->top, C_ArrowString);
+    mutt_window_mvaddstr(menu->win_index, 0, menu->current - menu->top, c_arrow_string);
   }
   else
   {
@@ -502,9 +507,12 @@ void menu_redraw_current(struct Menu *menu)
   menu_pad_string(menu, buf, sizeof(buf));
 
   mutt_curses_set_color(MT_COLOR_INDICATOR);
-  if (C_ArrowCursor)
+  const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
+  const char *const c_arrow_string =
+      cs_subset_string(NeoMutt->sub, "arrow_string");
+  if (c_arrow_cursor)
   {
-    mutt_window_addstr(C_ArrowString);
+    mutt_window_addstr(c_arrow_string);
     mutt_curses_set_attr(attr);
     mutt_window_addch(' ');
     menu_pad_string(menu, buf, sizeof(buf));
@@ -544,10 +552,14 @@ static void menu_redraw_prompt(struct Menu *menu)
  */
 void menu_check_recenter(struct Menu *menu)
 {
-  int c = MIN(C_MenuContext, (menu->pagelen / 2));
+  const short c_menu_context = cs_subset_number(NeoMutt->sub, "menu_context");
+  const bool c_menu_move_off = cs_subset_bool(NeoMutt->sub, "menu_move_off");
+  const bool c_menu_scroll = cs_subset_bool(NeoMutt->sub, "menu_scroll");
+
+  int c = MIN(c_menu_context, (menu->pagelen / 2));
   int old_top = menu->top;
 
-  if (!C_MenuMoveOff && (menu->max <= menu->pagelen)) /* less entries than lines */
+  if (!c_menu_move_off && (menu->max <= menu->pagelen)) /* less entries than lines */
   {
     if (menu->top != 0)
     {
@@ -557,7 +569,7 @@ void menu_check_recenter(struct Menu *menu)
   }
   else
   {
-    if (C_MenuScroll || (menu->pagelen <= 0) || (c < C_MenuContext))
+    if (c_menu_scroll || (menu->pagelen <= 0) || (c < c_menu_context))
     {
       if (menu->current < (menu->top + c))
         menu->top = menu->current - c;
@@ -580,7 +592,7 @@ void menu_check_recenter(struct Menu *menu)
     }
   }
 
-  if (!C_MenuMoveOff) /* make entries stick to bottom */
+  if (!c_menu_move_off) /* make entries stick to bottom */
     menu->top = MIN(menu->top, menu->max - menu->pagelen);
   menu->top = MAX(menu->top, 0);
 
@@ -631,10 +643,12 @@ void menu_next_line(struct Menu *menu)
     return;
   }
 
-  int c = MIN(C_MenuContext, (menu->pagelen / 2));
+  const short c_menu_context = cs_subset_number(NeoMutt->sub, "menu_context");
+  const bool c_menu_move_off = cs_subset_bool(NeoMutt->sub, "menu_move_off");
+  int c = MIN(c_menu_context, (menu->pagelen / 2));
 
   if (((menu->top + 1) < (menu->max - c)) &&
-      (C_MenuMoveOff ||
+      (c_menu_move_off ||
        ((menu->max > menu->pagelen) && (menu->top < (menu->max - menu->pagelen)))))
   {
     menu->top++;
@@ -658,7 +672,8 @@ void menu_prev_line(struct Menu *menu)
     return;
   }
 
-  int c = MIN(C_MenuContext, (menu->pagelen / 2));
+  const short c_menu_context = cs_subset_number(NeoMutt->sub, "menu_context");
+  int c = MIN(c_menu_context, (menu->pagelen / 2));
 
   menu->top--;
   if ((menu->current >= (menu->top + menu->pagelen - c)) && (menu->current > 1))
@@ -684,8 +699,11 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
     return;
   }
 
+  const short c_menu_context = cs_subset_number(NeoMutt->sub, "menu_context");
+  const bool c_menu_move_off = cs_subset_bool(NeoMutt->sub, "menu_move_off");
+
   const int neg = (jumplen >= 0) ? 0 : -1;
-  const int c = MIN(C_MenuContext, (menu->pagelen / 2));
+  const int c = MIN(c_menu_context, (menu->pagelen / 2));
 
   /* possible to scroll? */
   int tmp;
@@ -695,7 +713,7 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
     menu->top += jumplen;
 
     /* jumped too long? */
-    if ((neg || !C_MenuMoveOff) && ((DIRECTION * menu->top) > tmp))
+    if ((neg || !c_menu_move_off) && ((DIRECTION * menu->top) > tmp))
       menu->top = tmp;
 
     /* need to move the cursor? */
@@ -1188,7 +1206,8 @@ search_next:
     rc += search_dir;
   }
 
-  if (C_WrapSearch && (wrap++ == 0))
+  const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
+  if (c_wrap_search && (wrap++ == 0))
   {
     rc = (search_dir == 1) ? 0 : menu->max - 1;
     goto search_next;
@@ -1344,10 +1363,14 @@ int mutt_menu_loop(struct Menu *menu)
 
     menu->oldcurrent = menu->current;
 
+    const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
+    const bool c_braille_friendly =
+        cs_subset_bool(NeoMutt->sub, "braille_friendly");
+
     /* move the cursor out of the way */
-    if (C_ArrowCursor)
+    if (c_arrow_cursor)
       mutt_window_move(menu->win_index, 2, menu->current - menu->top);
-    else if (C_BrailleFriendly)
+    else if (c_braille_friendly)
       mutt_window_move(menu->win_index, 0, menu->current - menu->top);
     else
     {
@@ -1361,6 +1384,7 @@ int mutt_menu_loop(struct Menu *menu)
     if (!ARRAY_EMPTY(&menu->dialog) && (menu_dialog_dokey(menu, &op) == 0))
       return op;
 
+    const bool c_auto_tag = cs_subset_bool(NeoMutt->sub, "auto_tag");
     op = km_dokey(menu->type);
     if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
     {
@@ -1388,7 +1412,7 @@ int mutt_menu_loop(struct Menu *menu)
         op = -1;
       }
     }
-    else if (menu->tagged && C_AutoTag)
+    else if (menu->tagged && c_auto_tag)
       menu->tagprefix = true;
 
     mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
@@ -1499,7 +1523,9 @@ int mutt_menu_loop(struct Menu *menu)
       case OP_TAG:
         if (menu->tag && ARRAY_EMPTY(&menu->dialog))
         {
-          if (menu->tagprefix && !C_AutoTag)
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+
+          if (menu->tagprefix && !c_auto_tag)
           {
             for (int i = 0; i < menu->max; i++)
               menu->tagged += menu->tag(menu, i, 0);
@@ -1509,7 +1535,7 @@ int mutt_menu_loop(struct Menu *menu)
           {
             int j = menu->tag(menu, menu->current, -1);
             menu->tagged += j;
-            if (j && C_Resolve && (menu->current < (menu->max - 1)))
+            if (j && c_resolve && (menu->current < (menu->max - 1)))
             {
               menu->current++;
               menu->redraw |= REDRAW_MOTION_RESYNC;
