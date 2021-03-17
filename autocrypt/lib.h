@@ -162,10 +162,6 @@ enum AutocryptRec
 
 extern char *AutocryptSignAs;
 extern char *AutocryptDefaultKey;
-extern bool  C_Autocrypt;
-extern bool  C_AutocryptReply;
-extern char *C_AutocryptAcctFormat;
-extern char *C_AutocryptDir;
 
 void              dlg_select_autocrypt_account           (struct Mailbox *m);
 void              mutt_autocrypt_cleanup                 (void);

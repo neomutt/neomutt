@@ -33,6 +33,8 @@
 #include <time.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "parse.h"
 #include "body.h"
@@ -931,7 +933,8 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
 #ifdef USE_AUTOCRYPT
       else if (mutt_istr_equal(line + 1, "utocrypt"))
       {
-        if (C_Autocrypt)
+        const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+        if (c_autocrypt)
         {
           env->autocrypt = parse_autocrypt(env->autocrypt, p);
           matched = true;
@@ -939,7 +942,8 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       }
       else if (mutt_istr_equal(line + 1, "utocrypt-gossip"))
       {
-        if (C_Autocrypt)
+        const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+        if (c_autocrypt)
         {
           env->autocrypt_gossip = parse_autocrypt(env->autocrypt_gossip, p);
           matched = true;
@@ -1246,7 +1250,8 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     }
 
 #ifdef USE_AUTOCRYPT
-    if (C_Autocrypt)
+    const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+    if (c_autocrypt)
     {
       struct Mailbox *m = ctx_mailbox(Context);
       mutt_autocrypt_process_autocrypt_header(m, e, env);
