@@ -29,27 +29,6 @@
 
 struct Connection;
 
-extern const char *  C_CertificateFile;
-extern short         C_ConnectTimeout;
-extern const char *  C_EntropyFile;
-extern const char *  C_Preconnect;
-extern const char *  C_SslCaCertificatesFile;
-extern const char *  C_SslCiphers;
-extern const char *  C_SslClientCert;
-extern short         C_SslMinDhPrimeBits;
-extern bool          C_SslUseSslv2;
-extern bool          C_SslUseSslv3;
-extern bool          C_SslUseTlsv11;
-extern bool          C_SslUseTlsv12;
-extern bool          C_SslUseTlsv13;
-extern bool          C_SslUseTlsv1;
-extern bool          C_SslUseSystemCerts;
-extern bool          C_SslVerifyDates;
-extern bool          C_SslVerifyHost;
-extern bool          C_SslVerifyPartialChains;
-extern bool          C_TunnelIsSecure;
-extern bool          C_UseIpv6;
-
 int raw_socket_close(struct Connection *conn);
 int raw_socket_open (struct Connection *conn);
 int raw_socket_poll (struct Connection *conn, time_t wait_secs);

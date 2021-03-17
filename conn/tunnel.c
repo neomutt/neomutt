@@ -37,6 +37,8 @@
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "lib.h"
 
 /**
@@ -59,7 +61,8 @@ static int tunnel_socket_open(struct Connection *conn)
   struct TunnelSockData *tunnel = mutt_mem_malloc(sizeof(struct TunnelSockData));
   conn->sockdata = tunnel;
 
-  mutt_message(_("Connecting with \"%s\"..."), C_Tunnel);
+  const char *const c_tunnel = cs_subset_string(NeoMutt->sub, "tunnel");
+  mutt_message(_("Connecting with \"%s\"..."), c_tunnel);
 
   int rc = pipe(pin);
   if (rc == -1)
@@ -98,7 +101,7 @@ static int tunnel_socket_open(struct Connection *conn)
     /* Don't let the subprocess think it can use the controlling tty */
     setsid();
 
-    execle(EXEC_SHELL, "sh", "-c", C_Tunnel, NULL, mutt_envlist_getlist());
+    execle(EXEC_SHELL, "sh", "-c", c_tunnel, NULL, mutt_envlist_getlist());
     _exit(127);
   }
   mutt_sig_unblock_system(true);
@@ -236,6 +239,8 @@ void mutt_tunnel_socket_setup(struct Connection *conn)
   conn->poll = tunnel_socket_poll;
   /* Note we are using ssf as a boolean in this case.  See the notes in
    * conn/connection.h */
-  if (C_TunnelIsSecure)
+  const bool c_tunnel_is_secure =
+      cs_subset_bool(NeoMutt->sub, "tunnel_is_secure");
+  if (c_tunnel_is_secure)
     conn->ssf = 1;
 }

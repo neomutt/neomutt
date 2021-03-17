@@ -45,6 +45,7 @@
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "mutt_globals.h"
@@ -82,8 +83,10 @@ static int socket_connect(int fd, struct sockaddr *sa)
     return -1;
   }
 
-  if (C_ConnectTimeout > 0)
-    alarm(C_ConnectTimeout);
+  const short c_connect_timeout =
+      cs_subset_number(NeoMutt->sub, "connect_timeout");
+  if (c_connect_timeout > 0)
+    alarm(c_connect_timeout);
 
   mutt_sig_allow_interrupt(true);
 
@@ -102,7 +105,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
     SigInt = 0; /* reset in case we caught SIGINTR while in connect() */
   }
 
-  if (C_ConnectTimeout > 0)
+  if (c_connect_timeout > 0)
     alarm(0);
   mutt_sig_allow_interrupt(false);
   sigprocmask(SIG_UNBLOCK, &set, NULL);
@@ -131,7 +134,8 @@ int raw_socket_open(struct Connection *conn)
   /* we accept v4 or v6 STREAM sockets */
   memset(&hints, 0, sizeof(hints));
 
-  if (C_UseIpv6)
+  const bool c_use_ipv6 = cs_subset_bool(NeoMutt->sub, "use_ipv6");
+  if (c_use_ipv6)
     hints.ai_family = AF_UNSPEC;
   else
     hints.ai_family = AF_INET;

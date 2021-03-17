@@ -1767,13 +1767,16 @@ int nntp_open_connection(struct NntpAccountData *adata)
 
 #ifdef USE_SSL
   /* Attempt STARTTLS if available and desired. */
-  if ((adata->use_tls != 1) && (adata->hasSTARTTLS || C_SslForceTls))
+  const bool c_ssl_force_tls = cs_subset_bool(NeoMutt->sub, "ssl_force_tls");
+  if ((adata->use_tls != 1) && (adata->hasSTARTTLS || c_ssl_force_tls))
   {
     if (adata->use_tls == 0)
     {
+      const enum QuadOption c_ssl_starttls =
+          cs_subset_quad(NeoMutt->sub, "ssl_starttls");
       adata->use_tls =
-          C_SslForceTls ||
-                  (query_quadoption(C_SslStarttls,
+          c_ssl_force_tls ||
+                  (query_quadoption(c_ssl_starttls,
                                     _("Secure connection with TLS?")) == MUTT_YES) ?
               2 :
               1;

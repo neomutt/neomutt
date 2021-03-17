@@ -321,14 +321,17 @@ int pop_open_connection(struct PopAccountData *adata)
 
 #ifdef USE_SSL
   /* Attempt STLS if available and desired. */
-  if ((adata->conn->ssf == 0) && (adata->cmd_stls || C_SslForceTls))
+  const bool c_ssl_force_tls = cs_subset_bool(NeoMutt->sub, "ssl_force_tls");
+  if ((adata->conn->ssf == 0) && (adata->cmd_stls || c_ssl_force_tls))
   {
-    if (C_SslForceTls)
+    if (c_ssl_force_tls)
       adata->use_stls = 2;
     if (adata->use_stls == 0)
     {
+      const enum QuadOption c_ssl_starttls =
+          cs_subset_quad(NeoMutt->sub, "ssl_starttls");
       enum QuadOption ans =
-          query_quadoption(C_SslStarttls, _("Secure connection with TLS?"));
+          query_quadoption(c_ssl_starttls, _("Secure connection with TLS?"));
       if (ans == MUTT_ABORT)
         return -2;
       adata->use_stls = 1;
@@ -364,7 +367,7 @@ int pop_open_connection(struct PopAccountData *adata)
     }
   }
 
-  if (C_SslForceTls && (adata->conn->ssf == 0))
+  if (c_ssl_force_tls && (adata->conn->ssf == 0))
   {
     mutt_error(_("Encrypted connection unavailable"));
     return -2;

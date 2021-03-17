@@ -52,6 +52,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "lib.h"
 #include "mutt_logging.h"
 #include "ssl.h"
@@ -121,7 +122,9 @@ static int ssl_load_certificates(SSL_CTX *ctx)
     SSL_CTX_set_cert_store(ctx, store);
   }
 
-  FILE *fp = mutt_file_fopen(C_CertificateFile, "rt");
+  const char *const c_certificate_file =
+      cs_subset_path(NeoMutt->sub, "certificate_file");
+  FILE *fp = mutt_file_fopen(c_certificate_file, "rt");
   if (!fp)
     return 0;
 
@@ -163,7 +166,9 @@ static int ssl_set_verify_partial(SSL_CTX *ctx)
 #ifdef HAVE_SSL_PARTIAL_CHAIN
   X509_VERIFY_PARAM *param = NULL;
 
-  if (C_SslVerifyPartialChains)
+  const bool c_ssl_verify_partial_chains =
+      cs_subset_bool(NeoMutt->sub, "ssl_verify_partial_chains");
+  if (c_ssl_verify_partial_chains)
   {
     param = X509_VERIFY_PARAM_new();
     if (param)
@@ -459,7 +464,9 @@ static bool compare_certificates(X509 *cert, X509 *peercert,
  */
 static bool check_certificate_expiration(X509 *peercert, bool silent)
 {
-  if (C_SslVerifyDates == MUTT_NO)
+  const bool c_ssl_verify_dates =
+      cs_subset_bool(NeoMutt->sub, "ssl_verify_dates");
+  if (c_ssl_verify_dates == MUTT_NO)
     return true;
 
   if (X509_cmp_current_time(X509_get0_notBefore(peercert)) >= 0)
@@ -548,7 +555,9 @@ static int ssl_init(void)
   {
     /* load entropy from files */
     struct Buffer *path = mutt_buffer_pool_get();
-    add_entropy(C_EntropyFile);
+    const char *const c_entropy_file =
+        cs_subset_path(NeoMutt->sub, "entropy_file");
+    add_entropy(c_entropy_file);
     add_entropy(RAND_file_name(path->data, path->dsize));
 
 /* load entropy from egd sockets */
@@ -591,14 +600,16 @@ static int ssl_init(void)
  */
 static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *conn)
 {
-  if (!C_SslClientCert)
+  const char *const c_ssl_client_cert =
+      cs_subset_path(NeoMutt->sub, "ssl_client_cert");
+  if (!c_ssl_client_cert)
     return;
 
-  mutt_debug(LL_DEBUG2, "Using client certificate %s\n", C_SslClientCert);
+  mutt_debug(LL_DEBUG2, "Using client certificate %s\n", c_ssl_client_cert);
   SSL_CTX_set_default_passwd_cb_userdata(ssldata->sctx, &conn->account);
   SSL_CTX_set_default_passwd_cb(ssldata->sctx, ssl_passwd_cb);
-  SSL_CTX_use_certificate_file(ssldata->sctx, C_SslClientCert, SSL_FILETYPE_PEM);
-  SSL_CTX_use_PrivateKey_file(ssldata->sctx, C_SslClientCert, SSL_FILETYPE_PEM);
+  SSL_CTX_use_certificate_file(ssldata->sctx, c_ssl_client_cert, SSL_FILETYPE_PEM);
+  SSL_CTX_use_PrivateKey_file(ssldata->sctx, c_ssl_client_cert, SSL_FILETYPE_PEM);
 
   /* if we are using a client cert, SASL may expect an external auth name */
   if (mutt_account_getuser(&conn->account) < 0)
@@ -661,7 +672,9 @@ static bool check_certificate_file(X509 *peercert)
   int pass = false;
   FILE *fp = NULL;
 
-  fp = mutt_file_fopen(C_CertificateFile, "rt");
+  const char *const c_certificate_file =
+      cs_subset_path(NeoMutt->sub, "certificate_file");
+  fp = mutt_file_fopen(c_certificate_file, "rt");
   if (!fp)
     return false;
 
@@ -912,7 +925,9 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   bool allow_skip = false;
 /* The leaf/host certificate can't be skipped. */
 #ifdef HAVE_SSL_PARTIAL_CHAIN
-  if ((idx != 0) && C_SslVerifyPartialChains)
+  const bool c_ssl_verify_partial_chains =
+      cs_subset_bool(NeoMutt->sub, "ssl_verify_partial_chains");
+  if ((idx != 0) && c_ssl_verify_partial_chains)
     allow_skip = true;
 #endif
 
@@ -924,7 +939,9 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
    * check_certificate_by_digest().  This means if check_certificate_expiration() is
    * true, then check_certificate_file() must be false.  Therefore we don't need
    * to also scan the certificate file here.  */
-  allow_always = allow_always && C_CertificateFile &&
+  const char *const c_certificate_file =
+      cs_subset_path(NeoMutt->sub, "certificate_file");
+  allow_always = allow_always && c_certificate_file &&
                  check_certificate_expiration(cert, true);
 
   int rc = dlg_verify_certificate(title, &list, allow_always, allow_skip);
@@ -942,7 +959,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
     case 3: // Always
     {
       bool saved = false;
-      FILE *fp = mutt_file_fopen(C_CertificateFile, "a");
+      FILE *fp = mutt_file_fopen(c_certificate_file, "a");
       if (fp)
       {
         if (PEM_write_X509(fp, cert))
@@ -1016,7 +1033,9 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   /* Sometimes, when a certificate is (s)kipped, OpenSSL will pass it
    * a second time with preverify_ok = 1.  Don't show it or the user
    * will think their "s" key is broken.  */
-  if (C_SslVerifyPartialChains)
+  const bool c_ssl_verify_partial_chains =
+      cs_subset_bool(NeoMutt->sub, "ssl_verify_partial_chains");
+  if (c_ssl_verify_partial_chains)
   {
     static int last_pos = 0;
     static X509 *last_cert = NULL;
@@ -1049,7 +1068,9 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 
   /* check hostname only for the leaf certificate */
   buf[0] = '\0';
-  if ((pos == 0) && (C_SslVerifyHost != MUTT_NO))
+  const bool c_ssl_verify_host =
+      cs_subset_bool(NeoMutt->sub, "ssl_verify_host");
+  if ((pos == 0) && (c_ssl_verify_host != MUTT_NO))
   {
     if (check_host(cert, host, buf, sizeof(buf)) == 0)
     {
@@ -1064,7 +1085,9 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   if (!preverify_ok || skip_mode)
   {
     /* automatic check from user's database */
-    if (C_CertificateFile && check_certificate_by_digest(cert))
+    const char *const c_certificate_file =
+        cs_subset_path(NeoMutt->sub, "certificate_file");
+    if (c_certificate_file && check_certificate_by_digest(cert))
     {
       mutt_debug(LL_DEBUG2, "digest check passed\n");
       SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
@@ -1197,32 +1220,43 @@ static int ssl_setup(struct Connection *conn)
 
   /* disable SSL protocols as needed */
 #ifdef SSL_OP_NO_TLSv1_3
-  if (!C_SslUseTlsv13)
+  const bool c_ssl_use_tlsv1_3 =
+      cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_3");
+  if (!c_ssl_use_tlsv1_3)
     SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_TLSv1_3);
 #endif
 
 #ifdef SSL_OP_NO_TLSv1_2
-  if (!C_SslUseTlsv12)
+  const bool c_ssl_use_tlsv1_2 =
+      cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_2");
+  if (!c_ssl_use_tlsv1_2)
     SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_TLSv1_2);
 #endif
 
 #ifdef SSL_OP_NO_TLSv1_1
-  if (!C_SslUseTlsv11)
+  const bool c_ssl_use_tlsv1_1 =
+      cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_1");
+  if (!c_ssl_use_tlsv1_1)
     SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_TLSv1_1);
 #endif
 
 #ifdef SSL_OP_NO_TLSv1
-  if (!C_SslUseTlsv1)
+  const bool c_ssl_use_tlsv1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1");
+  if (!c_ssl_use_tlsv1)
     SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_TLSv1);
 #endif
 
-  if (!C_SslUseSslv3)
+  const bool c_ssl_use_sslv3 = cs_subset_bool(NeoMutt->sub, "ssl_use_sslv3");
+  if (!c_ssl_use_sslv3)
     SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_SSLv3);
 
-  if (!C_SslUseSslv2)
+  const bool c_ssl_use_sslv2 = cs_subset_bool(NeoMutt->sub, "ssl_use_sslv2");
+  if (!c_ssl_use_sslv2)
     SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_SSLv2);
 
-  if (C_SslUseSystemCerts)
+  const bool c_ssl_use_system_certs =
+      cs_subset_bool(NeoMutt->sub, "ssl_use_system_certs");
+  if (c_ssl_use_system_certs)
   {
     if (!SSL_CTX_set_default_verify_paths(sockdata(conn)->sctx))
     {
@@ -1231,14 +1265,18 @@ static int ssl_setup(struct Connection *conn)
     }
   }
 
-  if (C_CertificateFile && !ssl_load_certificates(sockdata(conn)->sctx))
+  const char *const c_certificate_file =
+      cs_subset_path(NeoMutt->sub, "certificate_file");
+  if (c_certificate_file && !ssl_load_certificates(sockdata(conn)->sctx))
     mutt_debug(LL_DEBUG1, "Error loading trusted certificates\n");
 
   ssl_get_client_cert(sockdata(conn), conn);
 
-  if (C_SslCiphers)
+  const char *const c_ssl_ciphers =
+      cs_subset_string(NeoMutt->sub, "ssl_ciphers");
+  if (c_ssl_ciphers)
   {
-    SSL_CTX_set_cipher_list(sockdata(conn)->sctx, C_SslCiphers);
+    SSL_CTX_set_cipher_list(sockdata(conn)->sctx, c_ssl_ciphers);
   }
 
   if (ssl_set_verify_partial(sockdata(conn)->sctx))
