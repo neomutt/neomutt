@@ -665,7 +665,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
 
     pview.banner = desc;
     pview.flags = MUTT_PAGER_ATTACHMENT |
-                  (is_message ? MUTT_PAGER_MESSAGE : MUTT_PAGER_NO_FLAGS);
+                  (is_message ? MUTT_PAGER_MESSAGE : MUTT_PAGER_NO_FLAGS) |
+                  (use_mailcap ? MUTT_PAGER_NOWRAP : MUTT_PAGER_NO_FLAGS);
     pview.mode = PAGER_MODE_ATTACH;
 
     rc = mutt_do_pager(&pview);
