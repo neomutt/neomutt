@@ -33,6 +33,42 @@
 #include "query.h"
 
 /**
+ * nm_parse_type_from_query - Parse a query type out of a query
+ * @param buf   Buffer for URL
+ * @retval Notmuch query type.  Default: #NM_QUERY_TYPE_MESGS
+ *
+ * If a user writes a query for a vfolder and includes a type= statement, that
+ * type= will be encoded, which Notmuch will treat as part of the query=
+ * statement. This method will remove the type= and return its corresponding
+ * NmQueryType representation.
+ */
+enum NmQueryType nm_parse_type_from_query(char *buf)
+{
+  if (!buf)
+    return NM_QUERY_TYPE_MESGS;
+
+  // The six variations of how type= could appear.
+  const char *variants[6] = { "&type=threads", "&type=messages",
+                              "type=threads&", "type=messages&",
+                              "type=threads",  "type=messages" };
+
+  enum NmQueryType query_type = NM_QUERY_TYPE_MESGS;
+  int variants_size = mutt_array_size(variants);
+  for (int i = 0; i < variants_size; i++)
+  {
+    if (mutt_istr_find(buf, variants[i]) != NULL)
+    {
+      // variants[] is setup such that type can be determined via modulo 2.
+      query_type = ((i % 2) == 0) ? NM_QUERY_TYPE_THREADS : NM_QUERY_TYPE_MESGS;
+
+      mutt_istr_remall(buf, variants[i]);
+    }
+  }
+
+  return query_type;
+}
+
+/**
  * nm_query_type_to_string - Turn a query type into a string
  * @param query_type Query type
  * @retval ptr String
