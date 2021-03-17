@@ -367,7 +367,8 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       if (chflags & (CH_DECODE | CH_PREFIX))
       {
         const char *pre = (chflags & CH_PREFIX) ? prefix : NULL;
-        wraplen = mutt_window_wrap_cols(wraplen, C_Wrap);
+        const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
+        wraplen = mutt_window_wrap_cols(wraplen, c_wrap);
 
         if (mutt_write_one_header(fp_out, 0, *hp, pre, wraplen, chflags, NeoMutt->sub) == -1)
         {
@@ -629,11 +630,14 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
 
   if (cmflags & MUTT_CM_PREFIX)
   {
-    if (C_TextFlowed)
+    const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
+    if (c_text_flowed)
       mutt_str_copy(prefix, ">", sizeof(prefix));
     else
     {
-      mutt_make_string(prefix, sizeof(prefix), wraplen, NONULL(C_IndentString),
+      const char *const c_indent_string =
+          cs_subset_string(NeoMutt->sub, "indent_string");
+      mutt_make_string(prefix, sizeof(prefix), wraplen, NONULL(c_indent_string),
                        Context->mailbox, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
     }
   }

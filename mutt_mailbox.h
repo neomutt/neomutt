@@ -7,11 +7,6 @@ struct Buffer;
 struct Mailbox;
 struct stat;
 
-/* These Config Variables are only used in mutt_mailbox.c */
-extern short C_MailCheck;
-extern bool  C_MailCheckStats;
-extern short C_MailCheckStatsInterval;
-
 /* force flags passed to mutt_mailbox_check() */
 #define MUTT_MAILBOX_CHECK_FORCE       (1 << 0)
 #define MUTT_MAILBOX_CHECK_FORCE_STATS (1 << 1)

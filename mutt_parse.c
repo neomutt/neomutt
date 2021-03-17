@@ -148,7 +148,11 @@ static int count_body_parts(struct Body *body)
       /* Always recurse multiparts, except multipart/alternative. */
       shallrecurse = true;
       if (mutt_istr_equal(bp->subtype, "alternative"))
-        shallrecurse = C_CountAlternatives;
+      {
+        const bool c_count_alternatives =
+            cs_subset_bool(NeoMutt->sub, "count_alternatives");
+        shallrecurse = c_count_alternatives;
+      }
     }
 
     if ((bp->disposition == DISP_INLINE) && (bp->type != TYPE_MULTIPART) &&

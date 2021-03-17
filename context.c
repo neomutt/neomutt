@@ -154,6 +154,7 @@ void ctx_update(struct Context *ctx)
     }
     e->msgno = msgno;
 
+    const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
     if (e->env->supersedes)
     {
       struct Email *e2 = NULL;
@@ -165,7 +166,7 @@ void ctx_update(struct Context *ctx)
       if (e2)
       {
         e2->superseded = true;
-        if (C_Score)
+        if (c_score)
           mutt_score_message(ctx->mailbox, e2, true);
       }
     }
@@ -177,7 +178,7 @@ void ctx_update(struct Context *ctx)
       mutt_hash_insert(m->subj_hash, e->env->real_subj, e);
     mutt_label_hash_add(m, e);
 
-    if (C_Score)
+    if (c_score)
       mutt_score_message(ctx->mailbox, e, false);
 
     if (e->changed)

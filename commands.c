@@ -791,7 +791,6 @@ void mutt_print_message(struct Mailbox *m, struct EmailList *el)
 int mutt_select_sort(bool reverse)
 {
   const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  enum SortType method = c_sort; /* save the current method in case of abort */
   enum SortType new_sort = c_sort;
 
   switch (mutt_multi_choice(reverse ?
@@ -857,7 +856,7 @@ int mutt_select_sort(bool reverse)
     new_sort |= SORT_REVERSE;
 
   cs_subset_str_native_set(NeoMutt->sub, "sort", new_sort, NULL);
-  return (c_sort != method) ? 0 : -1; /* no need to resort if it's the same */
+  return (new_sort != c_sort) ? 0 : -1; /* no need to resort if it's the same */
 }
 
 /**
@@ -875,7 +874,7 @@ bool mutt_shell_escape(void)
     return false;
   }
 
-  const char *c_shell = cs_subset_string(NeoMutt->sub, "shell");
+  const char *const c_shell = cs_subset_string(NeoMutt->sub, "shell");
   if ((buf[0] == '\0') && c_shell)
     mutt_str_copy(buf, c_shell, sizeof(buf));
   if (buf[0] == '\0')

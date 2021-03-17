@@ -71,11 +71,6 @@
   bool config_init_##NAME(struct ConfigSet *cs);                               \
   config_init_##NAME(CS)
 
-/* These options are deprecated */
-char *C_Escape = NULL;
-bool C_IgnoreLinearWhiteSpace = false;
-char *C_Visual;
-
 /**
  * SortAuxMethods - Sort methods for '$sort_aux' for the index
  */
@@ -256,9 +251,6 @@ struct ConfigDef MainVars[] = {
   { "date_format", DT_STRING|DT_NOT_EMPTY|R_MENU, &C_DateFormat, IP "!%a, %b %d, %Y at %I:%M:%S%p %Z", 0, NULL,
     "strftime format string for the `%d` expando"
   },
-  { "default_hook", DT_STRING, &C_DefaultHook, IP "~f %s !~P | (~P ~C %s)", 0, NULL,
-    "Pattern to use for hooks that only have a simple regex"
-  },
   { "delete", DT_QUAD, &C_Delete, MUTT_ASKYES, 0, NULL,
     "Really delete messages, when the mailbox is closed"
   },
@@ -273,9 +265,6 @@ struct ConfigDef MainVars[] = {
   },
   { "folder", DT_STRING|DT_MAILBOX, &C_Folder, IP "~/Mail", 0, NULL,
     "Base folder for a set of mailboxes"
-  },
-  { "force_name", DT_BOOL, &C_ForceName, false, 0, NULL,
-    "Save outgoing mail in a folder of their name"
   },
   { "forward_attachments", DT_QUAD, &C_ForwardAttachments, MUTT_ASKYES, 0, NULL,
     "Forward attachments when forwarding a message"
@@ -304,23 +293,8 @@ struct ConfigDef MainVars[] = {
   { "index_format", DT_STRING|DT_NOT_EMPTY|R_INDEX|R_PAGER, &C_IndexFormat, IP "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s", 0, NULL,
     "printf-like format string for the index menu (emails)"
   },
-  { "mail_check", DT_NUMBER|DT_NOT_NEGATIVE, &C_MailCheck, 5, 0, NULL,
-    "Number of seconds before NeoMutt checks for new mail"
-  },
-  { "mail_check_recent", DT_BOOL, &C_MailCheckRecent, true, 0, NULL,
-    "Notify the user about new mail since the last time the mailbox was opened"
-  },
-  { "mail_check_stats", DT_BOOL, &C_MailCheckStats, false, 0, NULL,
-    "Periodically check for new mail"
-  },
-  { "mail_check_stats_interval", DT_NUMBER|DT_NOT_NEGATIVE, &C_MailCheckStatsInterval, 60, 0, NULL,
-    "How often to check for new mail"
-  },
   { "mailcap_path", DT_SLIST|SLIST_SEP_COLON, &C_MailcapPath, IP "~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap", 0, NULL,
     "Colon-separated list of mailcap files"
-  },
-  { "mailcap_sanitize", DT_BOOL, &C_MailcapSanitize, true, 0, NULL,
-    "Restrict the possible characters in mailcap expandos"
   },
   { "markers", DT_BOOL|R_PAGER_FLOW, &C_Markers, true, 0, NULL,
     "Display a '+' at the beginning of wrapped lines in the pager"
@@ -333,17 +307,6 @@ struct ConfigDef MainVars[] = {
   },
   { "mime_forward", DT_QUAD, &C_MimeForward, MUTT_NO, 0, NULL,
     "Forward a message as a 'message/RFC822' MIME part"
-  },
-#ifdef MIXMASTER
-  { "mix_entry_format", DT_STRING|DT_NOT_EMPTY, &C_MixEntryFormat, IP "%4n %c %-16s %a", 0, NULL,
-    "(mixmaster) printf-like format string for the mixmaster chain"
-  },
-  { "mixmaster", DT_STRING|DT_COMMAND, &C_Mixmaster, IP MIXMASTER, 0, NULL,
-    "(mixmaster) External command to route a mixmaster message"
-  },
-#endif
-  { "net_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_NetInc, 10, 0, NULL,
-    "(socket) Update the progress bar after this many KB sent/received (0 to disable)"
   },
   { "new_mail_command", DT_STRING|DT_COMMAND, &C_NewMailCommand, 0, 0, NULL,
     "External command to run when new mail arrives"
@@ -375,9 +338,6 @@ struct ConfigDef MainVars[] = {
   { "quote_regex", DT_REGEX|R_PAGER, &C_QuoteRegex, IP "^([ \t]*[|>:}#])+", 0, NULL,
     "Regex to match quoted text in a reply"
   },
-  { "read_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_ReadInc, 10, 0, NULL,
-    "Update the progress bar after this many records read (0 to disable)"
-  },
   { "read_only", DT_BOOL, &C_ReadOnly, false, 0, NULL,
     "Open folders in read-only mode"
   },
@@ -387,20 +347,11 @@ struct ConfigDef MainVars[] = {
   { "record", DT_STRING|DT_MAILBOX, &C_Record, IP "~/sent", 0, NULL,
     "Folder to save 'sent' messages"
   },
-  { "reflow_space_quotes", DT_BOOL, &C_ReflowSpaceQuotes, true, 0, NULL,
-    "Insert spaces into reply quotes for 'format=flowed' messages"
-  },
-  { "reflow_wrap", DT_NUMBER, &C_ReflowWrap, 78, 0, NULL,
-    "Maximum paragraph width for reformatting 'format=flowed' text"
-  },
   { "resolve", DT_BOOL, &C_Resolve, true, 0, NULL,
     "Move to the next email whenever a command modifies an email"
   },
   { "resume_draft_files", DT_BOOL, &C_ResumeDraftFiles, false, 0, NULL,
     "Process draft files like postponed messages"
-  },
-  { "reverse_alias", DT_BOOL|R_INDEX|R_PAGER, &C_ReverseAlias, false, 0, NULL,
-    "Display the alias in the index, rather than the message's sender"
   },
   { "save_address", DT_BOOL, &C_SaveAddress, false, 0, NULL,
     "Use sender's full address as a default save folder"
@@ -408,26 +359,11 @@ struct ConfigDef MainVars[] = {
   { "save_empty", DT_BOOL, &C_SaveEmpty, true, 0, NULL,
     "(mbox,mmdf) Preserve empty mailboxes"
   },
-  { "save_name", DT_BOOL, &C_SaveName, false, 0, NULL,
-    "Save outgoing message to mailbox of recipient's name if it exists"
-  },
   { "score", DT_BOOL, &C_Score, true, 0, NULL,
     "Use message scoring"
   },
-  { "score_threshold_delete", DT_NUMBER, &C_ScoreThresholdDelete, -1, 0, NULL,
-    "Messages with a lower score will be automatically deleted"
-  },
-  { "score_threshold_flag", DT_NUMBER, &C_ScoreThresholdFlag, 9999, 0, NULL,
-    "Messages with a greater score will be automatically flagged"
-  },
-  { "score_threshold_read", DT_NUMBER, &C_ScoreThresholdRead, -1, 0, NULL,
-    "Messages with a lower score will be automatically marked read"
-  },
   { "shell", DT_STRING|DT_COMMAND, &C_Shell, IP "/bin/sh", 0, NULL,
     "External command to run subshells in"
-  },
-  { "simple_search", DT_STRING, &C_SimpleSearch, IP "~f %s | ~s %s", 0, NULL,
-    "Pattern to search for when search doesn't contain ~'s"
   },
   { "size_show_bytes", DT_BOOL|R_MENU, &C_SizeShowBytes, false, 0, NULL,
     "Show smaller sizes in bytes"
@@ -444,17 +380,8 @@ struct ConfigDef MainVars[] = {
   { "sleep_time", DT_NUMBER|DT_NOT_NEGATIVE, &C_SleepTime, 1, 0, NULL,
     "Time to pause after certain info messages"
   },
-  { "sort", DT_SORT|R_INDEX|R_RESORT|DT_SORT_REVERSE, &C_Sort, SORT_DATE, IP SortMethods, pager_validator,
-    "Sort method for the index"
-  },
-  { "sort_aux", DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST|R_INDEX|R_RESORT|R_RESORT_SUB, &C_SortAux, SORT_DATE, IP SortAuxMethods, NULL,
-    "Secondary sort method for the index"
-  },
   { "spool_file", DT_STRING|DT_MAILBOX, &C_SpoolFile, 0, 0, NULL,
     "Inbox"
-  },
-  { "status_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_StatusChars, IP "-*%A", 0, NULL,
-    "Indicator characters for the status bar"
   },
   { "status_format", DT_STRING|R_INDEX|R_PAGER, &C_StatusFormat, IP "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---", 0, NULL,
     "printf-like format string for the index's status line"
@@ -467,9 +394,6 @@ struct ConfigDef MainVars[] = {
   },
   { "text_flowed", DT_BOOL, &C_TextFlowed, false, 0, NULL,
     "Generate 'format=flowed' messages"
-  },
-  { "time_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_TimeInc, 0, 0, NULL,
-    "Frequency of progress bar updates (milliseconds)"
   },
   { "timeout", DT_NUMBER|DT_NOT_NEGATIVE, &C_Timeout, 600, 0, NULL,
     "Time to wait for user input in menus"
@@ -501,13 +425,10 @@ struct ConfigDef MainVars[] = {
   { "write_bcc", DT_BOOL, &C_WriteBcc, false, 0, NULL,
     "Write out the 'Bcc' field when preparing to send a mail"
   },
-  { "write_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_WriteInc, 10, 0, NULL,
-    "Update the progress bar after this many records written (0 to disable)"
-  },
 
-  { "escape",                    DT_DEPRECATED|DT_STRING,            &C_Escape,                 IP "~" },
-  { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,              &C_IgnoreLinearWhiteSpace, false },
-  { "visual",                    DT_DEPRECATED|DT_STRING|DT_COMMAND, &C_Visual,                 0 },
+  { "escape",                    DT_DEPRECATED|DT_STRING,            NULL, IP "~" },
+  { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,              NULL, false },
+  { "visual",                    DT_DEPRECATED|DT_STRING|DT_COMMAND, NULL, 0 },
 
   { "askbcc",                    DT_SYNONYM, NULL, IP "ask_bcc",                    },
   { "askcc",                     DT_SYNONYM, NULL, IP "ask_cc",                     },
@@ -576,6 +497,9 @@ struct ConfigDef MainNoVars[] = {
   { "debug_level", DT_NUMBER, NULL, 0, 0, level_validator,
     "Logging level for debug logs"
   },
+  { "default_hook", DT_STRING, NULL, IP "~f %s !~P | (~P ~C %s)", 0, NULL,
+    "Pattern to use for hooks that only have a simple regex"
+  },
   { "digest_collapse", DT_BOOL, NULL, true, 0, NULL,
     "Hide the subparts of a multipart/digest"
   },
@@ -590,6 +514,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "folder_format", DT_STRING|DT_NOT_EMPTY|R_MENU, NULL, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %i", 0, NULL,
     "printf-like format string for the browser's display of folders"
+  },
+  { "force_name", DT_BOOL, NULL, false, 0, NULL,
+    "Save outgoing mail in a folder of their name"
   },
   { "from_chars", DT_MBTABLE|R_INDEX|R_PAGER, NULL, 0, 0, NULL,
     "User-configurable index flags: to address, cc address, etc"
@@ -638,6 +565,21 @@ struct ConfigDef MainNoVars[] = {
   { "keep_flagged", DT_BOOL, NULL, false, 0, NULL,
     "Don't move flagged messages from `$spool_file` to `$mbox`"
   },
+  { "mail_check", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 5, 0, NULL,
+    "Number of seconds before NeoMutt checks for new mail"
+  },
+  { "mail_check_recent", DT_BOOL, NULL, true, 0, NULL,
+    "Notify the user about new mail since the last time the mailbox was opened"
+  },
+  { "mail_check_stats", DT_BOOL, NULL, false, 0, NULL,
+    "Periodically check for new mail"
+  },
+  { "mail_check_stats_interval", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 60, 0, NULL,
+    "How often to check for new mail"
+  },
+  { "mailcap_sanitize", DT_BOOL, NULL, true, 0, NULL,
+    "Restrict the possible characters in mailcap expandos"
+  },
   { "mark_old", DT_BOOL|R_INDEX|R_PAGER, NULL, true, 0, NULL,
     "Mark new emails as old when leaving the mailbox"
   },
@@ -668,11 +610,22 @@ struct ConfigDef MainNoVars[] = {
   { "mime_forward_rest", DT_QUAD, NULL, MUTT_YES, 0, NULL,
     "Forward all attachments, even if they can't be decoded"
   },
+#ifdef MIXMASTER
+  { "mix_entry_format", DT_STRING|DT_NOT_EMPTY, NULL, IP "%4n %c %-16s %a", 0, NULL,
+    "(mixmaster) printf-like format string for the mixmaster chain"
+  },
+  { "mixmaster", DT_STRING|DT_COMMAND, NULL, IP MIXMASTER, 0, NULL,
+    "(mixmaster) External command to route a mixmaster message"
+  },
+#endif
   { "move", DT_QUAD, NULL, MUTT_NO, 0, NULL,
     "Move emails from `$spool_file` to `$mbox` when read"
   },
   { "narrow_tree", DT_BOOL|R_TREE|R_INDEX, NULL, false, 0, NULL,
     "Draw a narrower thread tree in the index"
+  },
+  { "net_inc", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 10, 0, NULL,
+    "(socket) Update the progress bar after this many KB sent/received (0 to disable)"
   },
   { "pipe_decode", DT_BOOL, NULL, false, 0, NULL,
     "Decode the message when piping it"
@@ -695,8 +648,17 @@ struct ConfigDef MainNoVars[] = {
   { "prompt_after", DT_BOOL, NULL, true, 0, NULL,
     "Pause after running an external pager"
   },
+  { "read_inc", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 10, 0, NULL,
+    "Update the progress bar after this many records read (0 to disable)"
+  },
+  { "reflow_space_quotes", DT_BOOL, NULL, true, 0, NULL,
+    "Insert spaces into reply quotes for 'format=flowed' messages"
+  },
   { "reflow_text", DT_BOOL, NULL, true, 0, NULL,
     "Reformat paragraphs of 'format=flowed' text"
+  },
+  { "reflow_wrap", DT_NUMBER, NULL, 78, 0, NULL,
+    "Maximum paragraph width for reformatting 'format=flowed' text"
   },
   { "reply_regex", DT_REGEX|R_INDEX|R_RESORT, NULL, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, reply_validator,
     "Regex to match message reply subjects like 're: '"
@@ -704,14 +666,38 @@ struct ConfigDef MainNoVars[] = {
   { "resume_edited_draft_files", DT_BOOL, NULL, true, 0, NULL,
     "Resume editing previously saved draft files"
   },
+  { "reverse_alias", DT_BOOL|R_INDEX|R_PAGER, NULL, false, 0, NULL,
+    "Display the alias in the index, rather than the message's sender"
+  },
   { "rfc2047_parameters", DT_BOOL, NULL, false, 0, NULL,
     "Decode RFC2047-encoded MIME parameters"
+  },
+  { "save_name", DT_BOOL, NULL, false, 0, NULL,
+    "Save outgoing message to mailbox of recipient's name if it exists"
+  },
+  { "score_threshold_delete", DT_NUMBER, NULL, -1, 0, NULL,
+    "Messages with a lower score will be automatically deleted"
+  },
+  { "score_threshold_flag", DT_NUMBER, NULL, 9999, 0, NULL,
+    "Messages with a greater score will be automatically flagged"
+  },
+  { "score_threshold_read", DT_NUMBER, NULL, -1, 0, NULL,
+    "Messages with a lower score will be automatically marked read"
   },
   { "send_charset", DT_STRING|DT_CHARSET_STRICT, NULL, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
     "Character sets for outgoing mail"
   },
   { "show_multipart_alternative", DT_STRING, NULL, 0, 0, multipart_validator,
     "How to display 'multipart/alternative' MIME parts"
+  },
+  { "simple_search", DT_STRING, NULL, IP "~f %s | ~s %s", 0, NULL,
+    "Pattern to search for when search doesn't contain ~'s"
+  },
+  { "sort", DT_SORT|R_INDEX|R_RESORT|DT_SORT_REVERSE, NULL, SORT_DATE, IP SortMethods, pager_validator,
+    "Sort method for the index"
+  },
+  { "sort_aux", DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST|R_INDEX|R_RESORT|R_RESORT_SUB, NULL, SORT_DATE, IP SortAuxMethods, NULL,
+    "Secondary sort method for the index"
   },
   { "sort_browser", DT_SORT|DT_SORT_REVERSE, NULL, SORT_ALPHA, IP SortBrowserMethods, NULL,
     "Sort method for the browser"
@@ -722,11 +708,17 @@ struct ConfigDef MainNoVars[] = {
   { "spam_separator", DT_STRING, NULL, IP ",", 0, NULL,
     "Separator for multiple spam headers"
   },
+  { "status_chars", DT_MBTABLE|R_INDEX|R_PAGER, NULL, IP "-*%A", 0, NULL,
+    "Indicator characters for the status bar"
+  },
   { "strict_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, NULL, false, 0, pager_validator,
     "Thread messages using 'In-Reply-To' and 'References' headers"
   },
   { "thread_received", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, NULL, false, 0, pager_validator,
     "Sort threaded messages by their received date"
+  },
+  { "time_inc", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 0, 0, NULL,
+    "Frequency of progress bar updates (milliseconds)"
   },
   { "tmpdir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, NULL, IP TMPDIR, 0, NULL,
     "Directory for temporary files"
@@ -739,6 +731,9 @@ struct ConfigDef MainNoVars[] = {
   },
   { "weed", DT_BOOL, NULL, true, 0, NULL,
     "Filter headers when displaying/forwarding/printing/replying"
+  },
+  { "write_inc", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 10, 0, NULL,
+    "Update the progress bar after this many records written (0 to disable)"
   },
 
   { NULL, 0, NULL, 0, 0, NULL, NULL },

@@ -34,11 +34,6 @@ struct Address;
 struct Mailbox;
 struct ThreadsContext;
 
-/* These Config Variables are only used in sort.c */
-extern bool C_ReverseAlias;
-
-#define SORT_CODE(x) ((OptAuxSort ? C_SortAux : C_Sort) & SORT_REVERSE) ? -(x) : x
-
 /**
  * typedef sort_t - Prototype for a function to compare two emails
  * @param a First email
@@ -56,8 +51,6 @@ int perform_auxsort(int retval, const void *a, const void *b);
 
 const char *mutt_get_name(const struct Address *a);
 
-/* These variables are backing for config items */
-WHERE short C_Sort;    ///< Config: Sort method for the index
-WHERE short C_SortAux; ///< Config: Secondary sort method for the index
+int sort_code(int rc);
 
 #endif /* MUTT_SORT_H */

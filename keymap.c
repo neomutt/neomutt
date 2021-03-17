@@ -674,7 +674,8 @@ int km_dokey(enum MenuType menu)
 
   while (true)
   {
-    int i = (C_Timeout > 0) ? C_Timeout : 60;
+    const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
+    int i = (c_timeout > 0) ? c_timeout : 60;
 #ifdef USE_IMAP
     /* keepalive may need to run more frequently than `$timeout` allows */
     if (c_imap_keepalive)
@@ -873,7 +874,8 @@ static const char *km_keyname(int c)
 void mutt_init_abort_key(void)
 {
   keycode_t buf[2];
-  size_t len = parsekeys(C_AbortKey, buf, mutt_array_size(buf));
+  const char *const c_abort_key = cs_subset_string(NeoMutt->sub, "abort_key");
+  size_t len = parsekeys(c_abort_key, buf, mutt_array_size(buf));
   if (len == 0)
   {
     mutt_error(_("Abort key is not set, defaulting to Ctrl-G"));
@@ -883,7 +885,7 @@ void mutt_init_abort_key(void)
   if (len > 1)
   {
     mutt_warning(
-        _("Specified abort key sequence (%s) will be truncated to first key"), C_AbortKey);
+        _("Specified abort key sequence (%s) will be truncated to first key"), c_abort_key);
   }
   AbortKey = buf[0];
 }

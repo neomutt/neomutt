@@ -146,7 +146,8 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  mutt_edit_file(NONULL(C_Editor), mutt_buffer_string(fname));
+  const char *const c_editor = cs_subset_string(NeoMutt->sub, "editor");
+  mutt_edit_file(NONULL(c_editor), mutt_buffer_string(fname));
 
   rc = stat(mutt_buffer_string(fname), &sb);
   if (rc == -1)
@@ -257,7 +258,8 @@ bail:
     mutt_set_flag(m, e, MUTT_PURGE, true);
     mutt_set_flag(m, e, MUTT_READ, true);
 
-    if (C_DeleteUntag)
+    const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
+    if (c_delete_untag)
       mutt_set_flag(m, e, MUTT_TAG, false);
   }
   else if (rc == -1)

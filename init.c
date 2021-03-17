@@ -314,7 +314,7 @@ static bool get_hostname(struct ConfigSet *cs)
   const char *short_host = NULL;
   struct utsname utsname;
 
-  const char *c_hostname = cs_subset_string(NeoMutt->sub, "hostname");
+  const char *const c_hostname = cs_subset_string(NeoMutt->sub, "hostname");
   if (c_hostname)
   {
     short_host = c_hostname;
@@ -810,7 +810,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
     env_ed = "vi";
   cs_str_initial_set(cs, "editor", env_ed, NULL);
 
-  const char *c_editor = cs_subset_string(NeoMutt->sub, "editor");
+  const char *const c_editor = cs_subset_string(NeoMutt->sub, "editor");
   if (!c_editor)
     cs_str_reset(cs, "editor", NULL);
 
@@ -956,7 +956,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
       goto done; // TEST14: neomutt -e broken (press 'q')
   }
 
-  const char *c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
+  const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
   mutt_file_mkdir(c_tmpdir, S_IRWXU);
 
   mutt_hist_init();

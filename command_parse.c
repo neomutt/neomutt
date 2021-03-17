@@ -933,7 +933,8 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     }
 
     mutt_buffer_strcpy(&m->pathbuf, buf->data);
-    /* int rc = */ mx_path_canon2(m, C_Folder);
+    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+    /* int rc = */ mx_path_canon2(m, c_folder);
 
     if (m->type <= MUTT_UNKNOWN)
     {

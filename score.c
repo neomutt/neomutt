@@ -45,11 +45,6 @@
 #include "protos.h"
 #include "sort.h"
 
-/* These Config Variables are only used in score.c */
-short C_ScoreThresholdDelete; ///< Config: Messages with a lower score will be automatically deleted
-short C_ScoreThresholdFlag; ///< Config: Messages with a greater score will be automatically flagged
-short C_ScoreThresholdRead; ///< Config: Messages with a lower score will be automatically marked read
-
 /**
  * struct Score - Scoring rule for email
  */
@@ -70,12 +65,15 @@ static struct Score *ScoreList = NULL;
  */
 void mutt_check_rescore(struct Mailbox *m)
 {
-  if (OptNeedRescore && C_Score)
+  const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
+  if (OptNeedRescore && c_score)
   {
-    if (((C_Sort & SORT_MASK) == SORT_SCORE) || ((C_SortAux & SORT_MASK) == SORT_SCORE))
+    const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+    const short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+    if (((c_sort & SORT_MASK) == SORT_SCORE) || ((c_sort_aux & SORT_MASK) == SORT_SCORE))
     {
       OptNeedResort = true;
-      if ((C_Sort & SORT_MASK) == SORT_THREADS)
+      if ((c_sort & SORT_MASK) == SORT_THREADS)
         OptSortSubthreads = true;
     }
 
@@ -191,11 +189,18 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
   if (e->score < 0)
     e->score = 0;
 
-  if (e->score <= C_ScoreThresholdDelete)
+  const short c_score_threshold_delete =
+      cs_subset_number(NeoMutt->sub, "score_threshold_delete");
+  const short c_score_threshold_flag =
+      cs_subset_number(NeoMutt->sub, "score_threshold_flag");
+  const short c_score_threshold_read =
+      cs_subset_number(NeoMutt->sub, "score_threshold_read");
+
+  if (e->score <= c_score_threshold_delete)
     mutt_set_flag_update(m, e, MUTT_DELETE, true, upd_mbox);
-  if (e->score <= C_ScoreThresholdRead)
+  if (e->score <= c_score_threshold_read)
     mutt_set_flag_update(m, e, MUTT_READ, true, upd_mbox);
-  if (e->score >= C_ScoreThresholdFlag)
+  if (e->score >= c_score_threshold_flag)
     mutt_set_flag_update(m, e, MUTT_FLAG, true, upd_mbox);
 }
 

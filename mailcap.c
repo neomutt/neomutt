@@ -37,15 +37,14 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "mailcap.h"
 #include "mutt_attach.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "protos.h"
-
-/* These Config Variables are only used in rfc1524.c */
-bool C_MailcapSanitize; ///< Config: Restrict the possible characters in mailcap expandos
 
 /**
  * mailcap_expand_command - Expand expandos in a command
@@ -75,6 +74,8 @@ int mailcap_expand_command(struct Body *a, const char *filename,
   struct Buffer *param = NULL;
   struct Buffer *type2 = NULL;
 
+  const bool c_mailcap_sanitize =
+      cs_subset_bool(NeoMutt->sub, "mailcap_sanitize");
   const char *cptr = mutt_buffer_string(command);
   while (*cptr)
   {
@@ -110,7 +111,7 @@ int mailcap_expand_command(struct Body *a, const char *filename,
           pvalue2 = mutt_param_get(&a->parameter, mutt_buffer_string(param));
 
         /* Now copy the parameter value into param buffer */
-        if (C_MailcapSanitize)
+        if (c_mailcap_sanitize)
           mutt_buffer_sanitize_filename(param, NONULL(pvalue2), false);
         else
           mutt_buffer_strcpy(param, NONULL(pvalue2));
@@ -129,7 +130,7 @@ int mailcap_expand_command(struct Body *a, const char *filename,
         if (!type2)
         {
           type2 = mutt_buffer_pool_get();
-          if (C_MailcapSanitize)
+          if (c_mailcap_sanitize)
             mutt_buffer_sanitize_filename(type2, type, false);
           else
             mutt_buffer_strcpy(type2, type);
@@ -353,7 +354,9 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
             struct Buffer *command = mutt_buffer_pool_get();
             struct Buffer *afilename = mutt_buffer_pool_get();
             mutt_buffer_strcpy(command, test_command);
-            if (C_MailcapSanitize)
+            const bool c_mailcap_sanitize =
+                cs_subset_bool(NeoMutt->sub, "mailcap_sanitize");
+            if (c_mailcap_sanitize)
               mutt_buffer_sanitize_filename(afilename, NONULL(a->filename), true);
             else
               mutt_buffer_strcpy(afilename, NONULL(a->filename));
@@ -470,7 +473,9 @@ bool mailcap_lookup(struct Body *a, char *type, size_t typelen,
    * $HOME/.mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap, etc
    * and overridden by the MAILCAPS environment variable, and, just to be nice,
    * we'll make it specifiable in .neomuttrc */
-  if (!C_MailcapPath || (C_MailcapPath->count == 0))
+  const struct Slist *c_mailcap_path =
+      cs_subset_slist(NeoMutt->sub, "mailcap_path");
+  if (!c_mailcap_path || (c_mailcap_path->count == 0))
   {
     /* L10N:
        Mutt is trying to look up a mailcap value, but $mailcap_path is empty.
@@ -495,7 +500,7 @@ bool mailcap_lookup(struct Body *a, char *type, size_t typelen,
   bool found = false;
 
   struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &C_MailcapPath->head, entries)
+  STAILQ_FOREACH(np, &c_mailcap_path->head, entries)
   {
     mutt_buffer_strcpy(path, np->data);
     mutt_buffer_expand_path(path);

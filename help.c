@@ -34,6 +34,7 @@
 #include <string.h>
 #include <wchar.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "pager/lib.h"
 #include "functions.h"
@@ -247,9 +248,10 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
     col = pad(fp, mutt_strwidth(t1), col_a);
   }
 
+  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
   if (ismacro > 0)
   {
-    if (!C_Pager || mutt_str_equal(C_Pager, "builtin"))
+    if (!c_pager || mutt_str_equal(c_pager, "builtin"))
       fputs("_\010", fp); // Ctrl-H (backspace)
     fputs("M ", fp);
     col += 2;
@@ -289,10 +291,11 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
 
       if (*t3)
       {
-        if (mutt_str_equal(C_Pager, "builtin"))
+        if (mutt_str_equal(c_pager, "builtin"))
         {
           n += col - wraplen;
-          if (C_Markers)
+          const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
+          if (c_markers)
             n++;
         }
         else

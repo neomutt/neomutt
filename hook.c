@@ -54,11 +54,6 @@
 #include "compmbox/lib.h"
 #endif
 
-/* These Config Variables are only used in hook.c */
-char *C_DefaultHook; ///< Config: Pattern to use for hooks that only have a simple regex
-bool C_ForceName; ///< Config: Save outgoing mail in a folder of their name
-bool C_SaveName; ///< Config: Save outgoing message to mailbox of recipient's name if it exists
-
 /**
  * struct Hook - A list of user hooks
  */
@@ -133,6 +128,8 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     goto cleanup;
   }
 
+  const char *const c_default_hook =
+      cs_subset_string(NeoMutt->sub, "default_hook");
   if (data & (MUTT_FOLDER_HOOK | MUTT_MBOX_HOOK))
   {
     /* Accidentally using the ^ mailbox shortcut in the .neomuttrc is a
@@ -169,14 +166,14 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
   }
 #endif
-  else if (C_DefaultHook && (~data & MUTT_GLOBAL_HOOK) &&
+  else if (c_default_hook && (~data & MUTT_GLOBAL_HOOK) &&
            !(data & (MUTT_CHARSET_HOOK | MUTT_ICONV_HOOK | MUTT_ACCOUNT_HOOK)) &&
            (!WithCrypto || !(data & MUTT_CRYPT_HOOK)))
   {
     /* At this stage remain only message-hooks, reply-hooks, send-hooks,
      * send2-hooks, save-hooks, and fcc-hooks: All those allowing full
      * patterns. If given a simple regex, we expand $default_hook.  */
-    mutt_check_simple(pattern, C_DefaultHook);
+    mutt_check_simple(pattern, c_default_hook);
   }
 
   if (data & (MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
@@ -393,8 +390,10 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
     goto out;
   }
 
-  if (C_DefaultHook)
-    mutt_check_simple(pattern, C_DefaultHook);
+  const char *const c_default_hook =
+      cs_subset_string(NeoMutt->sub, "default_hook");
+  if (c_default_hook)
+    mutt_check_simple(pattern, c_default_hook);
 
   /* check to make sure that a matching hook doesn't already exist */
   struct Hook *hook = NULL;
@@ -699,18 +698,22 @@ void mutt_select_fcc(struct Buffer *path, struct Email *e)
     const struct Address *to = TAILQ_FIRST(&e->env->to);
     const struct Address *cc = TAILQ_FIRST(&e->env->cc);
     const struct Address *bcc = TAILQ_FIRST(&e->env->bcc);
-    if ((C_SaveName || C_ForceName) && (to || cc || bcc))
+    const bool c_save_name = cs_subset_bool(NeoMutt->sub, "save_name");
+    const bool c_force_name = cs_subset_bool(NeoMutt->sub, "force_name");
+    const char *const c_record = cs_subset_string(NeoMutt->sub, "record");
+    if ((c_save_name || c_force_name) && (to || cc || bcc))
     {
       const struct Address *addr = to ? to : (cc ? cc : bcc);
       struct Buffer *buf = mutt_buffer_pool_get();
       mutt_safe_path(buf, addr);
-      mutt_buffer_concat_path(path, NONULL(C_Folder), mutt_buffer_string(buf));
+      const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+      mutt_buffer_concat_path(path, NONULL(c_folder), mutt_buffer_string(buf));
       mutt_buffer_pool_release(&buf);
-      if (!C_ForceName && (mx_access(mutt_buffer_string(path), W_OK) != 0))
-        mutt_buffer_strcpy(path, C_Record);
+      if (!c_force_name && (mx_access(mutt_buffer_string(path), W_OK) != 0))
+        mutt_buffer_strcpy(path, c_record);
     }
     else
-      mutt_buffer_strcpy(path, C_Record);
+      mutt_buffer_strcpy(path, c_record);
   }
   else
     mutt_buffer_fix_dptr(path);

@@ -29,9 +29,6 @@
 struct Body;
 struct Buffer;
 
-/* These Config Variables are only used in rfc1524.c */
-extern bool C_MailcapSanitize;
-
 /**
  * struct MailcapEntry - A mailcap entry
  */

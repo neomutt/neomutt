@@ -50,10 +50,6 @@
 #include "remailer.h"
 #endif
 
-/* These Config Variables are only used in remailer.c */
-char *C_MixEntryFormat; ///< Config: (mixmaster) printf-like format string for the mixmaster chain
-char *C_Mixmaster; ///< Config: (mixmaster) External command to route a mixmaster message
-
 #define MIX_HOFFSET 2
 #define MIX_VOFFSET (win->state.rows - 4)
 #define MIX_MAXROW (win->state.rows - 1)
@@ -192,7 +188,8 @@ static struct Remailer **mix_type2_list(size_t *l)
     return NULL;
 
   struct Buffer *cmd = mutt_buffer_pool_get();
-  mutt_buffer_printf(cmd, "%s -T", C_Mixmaster);
+  const char *const c_mixmaster = cs_subset_string(NeoMutt->sub, "mixmaster");
+  mutt_buffer_printf(cmd, "%s -T", c_mixmaster);
 
   pid_t mm_pid =
       filter_create_fd(mutt_buffer_string(cmd), NULL, &fp, NULL, fd_null, -1, fd_null);
@@ -516,8 +513,10 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
 static void mix_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {
   struct Remailer **type2_list = menu->mdata;
+  const char *const c_mix_entry_format =
+      cs_subset_string(NeoMutt->sub, "mix_entry_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                      NONULL(C_MixEntryFormat), mix_format_str,
+                      NONULL(c_mix_entry_format), mix_format_str,
                       (intptr_t) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -845,7 +844,8 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   struct Buffer *cmd = mutt_buffer_pool_get();
   struct Buffer *cd_quoted = mutt_buffer_pool_get();
 
-  mutt_buffer_printf(cmd, "cat %s | %s -m ", tempfile, C_Mixmaster);
+  const char *const c_mixmaster = cs_subset_string(NeoMutt->sub, "mixmaster");
+  mutt_buffer_printf(cmd, "cat %s | %s -m ", tempfile, c_mixmaster);
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, chain, entries)

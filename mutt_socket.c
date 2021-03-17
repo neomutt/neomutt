@@ -49,7 +49,7 @@ struct Connection *mutt_conn_new(const struct ConnAccount *cac)
 {
   enum ConnectionType conn_type;
 
-  const char *c_tunnel = cs_subset_string(NeoMutt->sub, "tunnel");
+  const char *const c_tunnel = cs_subset_string(NeoMutt->sub, "tunnel");
   if (c_tunnel)
     conn_type = MUTT_CONNECTION_TUNNEL;
   else if (cac->flags & MUTT_ACCT_SSL)

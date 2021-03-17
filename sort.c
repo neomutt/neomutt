@@ -48,11 +48,21 @@
 #include "nntp/lib.h"
 #endif
 
-/* These Config Variables are only used in sort.c */
-bool C_ReverseAlias; ///< Config: Display the alias in the index, rather than the message's sender
-
 /* function to use as discriminator when normal sort method is equal */
 static sort_t AuxSort = NULL;
+
+/**
+ * sort_code - Modify the results of sorting
+ * @param rc Return code from sort
+ * @retval num Modified return code
+ */
+int sort_code(int rc)
+{
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+
+  return ((OptAuxSort ? c_sort_aux : c_sort) & SORT_REVERSE) ? -rc : rc;
+}
 
 /**
  * perform_auxsort - Compare two emails using the auxiliary sort method
@@ -94,7 +104,7 @@ static int compare_score(const void *a, const void *b)
   struct Email const *const *pb = (struct Email const *const *) b;
   int result = (*pb)->score - (*pa)->score; /* note that this is reverse */
   result = perform_auxsort(result, a, b);
-  return SORT_CODE(result);
+  return sort_code(result);
 }
 
 /**
@@ -106,7 +116,7 @@ static int compare_size(const void *a, const void *b)
   struct Email const *const *pb = (struct Email const *const *) b;
   int result = (*pa)->body->length - (*pb)->body->length;
   result = perform_auxsort(result, a, b);
-  return SORT_CODE(result);
+  return sort_code(result);
 }
 
 /**
@@ -118,7 +128,7 @@ static int compare_date_sent(const void *a, const void *b)
   struct Email const *const *pb = (struct Email const *const *) b;
   int result = (*pa)->date_sent - (*pb)->date_sent;
   result = perform_auxsort(result, a, b);
-  return SORT_CODE(result);
+  return sort_code(result);
 }
 
 /**
@@ -142,7 +152,7 @@ static int compare_subject(const void *a, const void *b)
   else
     rc = mutt_istr_cmp((*pa)->env->real_subj, (*pb)->env->real_subj);
   rc = perform_auxsort(rc, a, b);
-  return SORT_CODE(rc);
+  return sort_code(rc);
 }
 
 /**
@@ -161,7 +171,8 @@ const char *mutt_get_name(const struct Address *a)
 
   if (a)
   {
-    if (C_ReverseAlias && (ali = alias_reverse_lookup(a)) && ali->personal)
+    const bool c_reverse_alias = cs_subset_bool(NeoMutt->sub, "reverse_alias");
+    if (c_reverse_alias && (ali = alias_reverse_lookup(a)) && ali->personal)
       return ali->personal;
     if (a->personal)
       return a->personal;
@@ -185,7 +196,7 @@ static int compare_to(const void *a, const void *b)
   const char *fb = mutt_get_name(TAILQ_FIRST(&(*ppb)->env->to));
   int result = mutt_istrn_cmp(fa, fb, sizeof(fa));
   result = perform_auxsort(result, a, b);
-  return SORT_CODE(result);
+  return sort_code(result);
 }
 
 /**
@@ -201,7 +212,7 @@ static int compare_from(const void *a, const void *b)
   const char *fb = mutt_get_name(TAILQ_FIRST(&(*ppb)->env->from));
   int result = mutt_istrn_cmp(fa, fb, sizeof(fa));
   result = perform_auxsort(result, a, b);
-  return SORT_CODE(result);
+  return sort_code(result);
 }
 
 /**
@@ -213,7 +224,7 @@ static int compare_date_received(const void *a, const void *b)
   struct Email const *const *pb = (struct Email const *const *) b;
   int result = (*pa)->received - (*pb)->received;
   result = perform_auxsort(result, a, b);
-  return SORT_CODE(result);
+  return sort_code(result);
 }
 
 /**
@@ -225,7 +236,7 @@ static int compare_order(const void *a, const void *b)
   struct Email const *const *eb = (struct Email const *const *) b;
 
   /* no need to auxsort because you will never have equality here */
-  return SORT_CODE((*ea)->index - (*eb)->index);
+  return sort_code((*ea)->index - (*eb)->index);
 }
 
 /**
@@ -247,15 +258,15 @@ static int compare_spam(const void *a, const void *b)
 
   /* If one msg has spam attr but other does not, sort the one with first. */
   if (ahas && !bhas)
-    return SORT_CODE(1);
+    return sort_code(1);
   if (!ahas && bhas)
-    return SORT_CODE(-1);
+    return sort_code(-1);
 
   /* Else, if neither has a spam attr, presume equality. Fall back on aux. */
   if (!ahas && !bhas)
   {
     result = perform_auxsort(result, a, b);
-    return SORT_CODE(result);
+    return sort_code(result);
   }
 
   /* Both have spam attrs. */
@@ -270,7 +281,7 @@ static int compare_spam(const void *a, const void *b)
   /* If either aptr or bptr is equal to data, there is no numeric    */
   /* value for that spam attribute. In this case, compare lexically. */
   if ((aptr == (*ppa)->env->spam.data) || (bptr == (*ppb)->env->spam.data))
-    return SORT_CODE(strcmp(aptr, bptr));
+    return sort_code(strcmp(aptr, bptr));
 
   /* Otherwise, we have numeric value for both attrs. If these values */
   /* are equal, then we first fall back upon string comparison, then  */
@@ -281,7 +292,7 @@ static int compare_spam(const void *a, const void *b)
     result = perform_auxsort(result, a, b);
   }
 
-  return SORT_CODE(result);
+  return sort_code(result);
 }
 
 /**
@@ -301,20 +312,20 @@ static int compare_label(const void *a, const void *b)
 
   /* First we bias toward a message with a label, if the other does not. */
   if (ahas && !bhas)
-    return SORT_CODE(-1);
+    return sort_code(-1);
   if (!ahas && bhas)
-    return SORT_CODE(1);
+    return sort_code(1);
 
   /* If neither has a label, use aux sort. */
   if (!ahas && !bhas)
   {
     result = perform_auxsort(result, a, b);
-    return SORT_CODE(result);
+    return sort_code(result);
   }
 
   /* If both have a label, we just do a lexical compare. */
   result = mutt_istr_cmp((*ppa)->env->x_label, (*ppb)->env->x_label);
-  return SORT_CODE(result);
+  return sort_code(result);
 }
 
 /**
@@ -388,7 +399,8 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
   if (m->verbose)
     mutt_message(_("Sorting mailbox..."));
 
-  if (OptNeedRescore && C_Score)
+  const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
+  if (OptNeedRescore && c_score)
   {
     for (int i = 0; i < m->msg_count; i++)
     {
@@ -409,23 +421,24 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
   if (init)
     mutt_clear_threads(threads);
 
-  if ((C_Sort & SORT_MASK) == SORT_THREADS)
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+  if ((c_sort & SORT_MASK) == SORT_THREADS)
   {
     AuxSort = NULL;
     /* if $sort_aux changed after the mailbox is sorted, then all the
      * subthreads need to be resorted */
     if (OptSortSubthreads)
     {
-      int i = C_Sort;
-      C_Sort = C_SortAux;
+      cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort_aux, NULL);
       mutt_sort_subthreads(threads, true);
-      C_Sort = i;
+      cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
       OptSortSubthreads = false;
     }
     mutt_sort_threads(threads, init);
   }
-  else if (!(sortfunc = mutt_get_sort_func(C_Sort & SORT_MASK)) ||
-           !(AuxSort = mutt_get_sort_func(C_SortAux & SORT_MASK)))
+  else if (!(sortfunc = mutt_get_sort_func(c_sort & SORT_MASK)) ||
+           !(AuxSort = mutt_get_sort_func(c_sort_aux & SORT_MASK)))
   {
     mutt_error(_("Could not find sorting function [report this bug]"));
     return;
@@ -453,7 +466,7 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
   }
 
   /* re-collapse threads marked as collapsed */
-  if ((C_Sort & SORT_MASK) == SORT_THREADS)
+  if ((c_sort & SORT_MASK) == SORT_THREADS)
   {
     mutt_thread_collapse_collapsed(threads);
     *vsize = mutt_set_vnum(m);

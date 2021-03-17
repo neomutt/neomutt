@@ -30,10 +30,6 @@ struct Email;
 struct ListHead;
 struct MuttWindow;
 
-/* These Config Variables are only used in remailer.c */
-extern char *C_MixEntryFormat;
-extern char *C_Mixmaster;
-
 /* Mixmaster's maximum chain length.  Don't change this. */
 #define MAX_MIXES 19
 
