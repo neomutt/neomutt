@@ -110,7 +110,6 @@ WHERE char *C_SpoolFile;                     ///< Config: Inbox
 WHERE char *C_StatusFormat;                  ///< Config: printf-like format string for the index's status line
 WHERE char *C_TsStatusFormat;                ///< Config: printf-like format string for the terminal's status (window title)
 WHERE char *C_TsIconFormat;                  ///< Config: printf-like format string for the terminal's icon title
-WHERE char *C_Visual;                        ///< Config: Editor to use when '~v' is given in the built-in editor
 
 WHERE short C_SleepTime;                     ///< Config: Time to pause after certain info messages
 WHERE short C_Timeout;                       ///< Config: Time to wait for user input in menus

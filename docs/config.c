@@ -5307,15 +5307,6 @@
 */
 #endif
 
-{ "visual", DT_COMMAND, "vi" },
-/*
-** .pp
-** Specifies the visual editor to invoke when the "\fC~v\fP" command is
-** given in the built-in editor.
-** .pp
-** $$visual is overridden by the environment variable \fC$$$VISUAL\fP or \fC$$$EDITOR\fP.
-*/
-
 { "wait_key", DT_BOOL, true },
 /*
 ** .pp

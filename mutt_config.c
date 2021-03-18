@@ -75,6 +75,7 @@
 /* These options are deprecated */
 char *C_Escape = NULL;
 bool C_IgnoreLinearWhiteSpace = false;
+char *C_Visual;
 
 /**
  * SortAuxMethods - Sort methods for '$sort_aux' for the index
@@ -689,9 +690,6 @@ struct ConfigDef MainVars[] = {
   { "use_domain", DT_BOOL, &C_UseDomain, true, 0, NULL,
     "Qualify local addresses using this domain"
   },
-  { "visual", DT_STRING|DT_COMMAND, &C_Visual, IP "vi", 0, NULL,
-    "Editor to use when '~v' is given in the built-in editor"
-  },
   { "wait_key", DT_BOOL, &C_WaitKey, true, 0, NULL,
     "Prompt to press a key after running external commands"
   },
@@ -711,8 +709,9 @@ struct ConfigDef MainVars[] = {
     "Update the progress bar after this many records written (0 to disable)"
   },
 
-  { "escape", DT_DEPRECATED|DT_STRING, &C_Escape, IP "~" },
-  { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL, &C_IgnoreLinearWhiteSpace, false },
+  { "escape",                    DT_DEPRECATED|DT_STRING,            &C_Escape,                 IP "~" },
+  { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,              &C_IgnoreLinearWhiteSpace, false },
+  { "visual",                    DT_DEPRECATED|DT_STRING|DT_COMMAND, &C_Visual,                 0 },
 
   { "askbcc",                    DT_SYNONYM, NULL, IP "ask_bcc",                    },
   { "askcc",                     DT_SYNONYM, NULL, IP "ask_cc",                     },
