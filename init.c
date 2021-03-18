@@ -800,11 +800,13 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   const char *env_ed = mutt_str_getenv("VISUAL");
   if (!env_ed)
     env_ed = mutt_str_getenv("EDITOR");
-  if (env_ed)
-  {
-    cs_str_string_set(cs, "editor", env_ed, NULL);
-    cs_str_string_set(cs, "visual", env_ed, NULL);
-  }
+  if (!env_ed)
+    env_ed = "vi";
+  cs_str_initial_set(cs, "editor", env_ed, NULL);
+
+  const char *c_editor = cs_subset_string(NeoMutt->sub, "editor");
+  if (!c_editor)
+    cs_str_reset(cs, "editor", NULL);
 
   C_Charset = mutt_ch_get_langinfo_charset();
   cs_str_initial_set(cs, "charset", C_Charset, NULL);

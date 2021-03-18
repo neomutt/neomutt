@@ -314,7 +314,7 @@ struct ConfigDef MainVars[] = {
   { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, &C_DuplicateThreads, true, 0, pager_validator,
     "Highlight messages with duplicated message IDs"
   },
-  { "editor", DT_STRING|DT_NOT_EMPTY|DT_COMMAND, &C_Editor, IP "vi", 0, NULL,
+  { "editor", DT_STRING|DT_NOT_EMPTY|DT_COMMAND, &C_Editor, 0, 0, NULL,
     "External command to use as an email editor"
   },
   { "flag_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_FlagChars, IP "*!DdrONon- ", 0, NULL,

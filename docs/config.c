@@ -1066,7 +1066,7 @@
 ** ignored for interoperability reasons.
 */
 
-{ "editor", DT_COMMAND, "vi" },
+{ "editor", DT_COMMAND, 0 },
 /*
 ** .pp
 ** This variable specifies which editor is used by NeoMutt.
