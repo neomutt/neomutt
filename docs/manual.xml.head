@@ -10895,6 +10895,18 @@ text/html; lynx %s
                 <screen>text/html; firefox %s &amp; x-neomutt-keep</screen>
               </listitem>
             </varlistentry>
+            <varlistentry>
+              <term>x-neomutt-nowrap</term>
+              <listitem>
+                <para>
+                  <literal>x-neomutt-nowrap</literal> tells the NeoMutt pager
+                  to ignore the <link linked="wrap">$wrap</link> parameter and
+                  to assume the output from the mailcap command to already be
+                  correctly wrapped.
+                </para>
+                <screen>text/html; /usr/local/bin/w3m -s -T text/html -o display_link_number=1 %s; nametemplate=%s.html; copiousoutput; x-neomutt-nowrap;</screen>
+              </listitem>
+            </varlistentry>
           </variablelist>
         </sect3>
 
