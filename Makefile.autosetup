@@ -680,7 +680,7 @@ distclean: clean
 		contrib/Makefile docs/Makefile docs/neomutt.1 html Makefile po/Makefile \
 		test/Makefile .clang_complete
 	$(RM) *.gc?? */*.gc?? test/*/*.gc??
-	$(RM) lcov.info lcov
+	$(RM) coverage.info coverage
 
 ###############################################################################
 # generated
@@ -713,18 +713,19 @@ hcache/hcversion.h:	$(SRCDIR)/address/address.h $(SRCDIR)/email/body.h \
 # coverage
 @if ENABLE_COVERAGE
 coverage: all test
-	$(RM) lcov
+	$(RM) coverage
 	$(RM) mutt/exit.gc??
-	lcov --test-name "test" --output-file lcov.info --capture \
+	lcov --test-name "test" --output-file coverage.info --capture \
 	  --directory address \
 	  --directory compress \
 	  --directory config \
 	  --directory core \
 	  --directory email \
 	  --directory mutt \
+	  --directory notmuch \
 	  --directory store
-	-genhtml --output-directory lcov --frames lcov.info
-	lcov --list lcov.info
+	-genhtml --output-directory coverage --frames coverage.info
+	lcov --list coverage.info
 @endif
 
 ##############################################################################

@@ -17,9 +17,9 @@ test/neomutt-test
 *.gc??
 *.Po
 *.Tpo
+coverage
+coverage.info
 html
-lcov
-lcov.info
 lib*.a
 po/*.mo
 po/neomutt.pot
