@@ -474,6 +474,11 @@ void mx_fastclose_mailbox(struct Mailbox *m)
       email_free(&m->emails[i]);
     }
   }
+
+  if (m->flags & MB_HIDDEN)
+  {
+    mx_ac_remove(m);
+  }
 }
 
 /**
@@ -1793,6 +1798,7 @@ bool mx_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * mx_ac_remove - Remove a Mailbox from an Account and delete Account if empty
  * @param m Mailbox to remove
+ * @note The mailbox is NOT free'd
  */
 int mx_ac_remove(struct Mailbox *m)
 {
@@ -1801,7 +1807,6 @@ int mx_ac_remove(struct Mailbox *m)
 
   struct Account *a = m->account;
   account_mailbox_remove(m->account, m);
-  mailbox_free(&m);
   if (STAILQ_EMPTY(&a->mailboxes))
   {
     neomutt_account_remove(NeoMutt, a);
