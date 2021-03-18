@@ -1757,6 +1757,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
 
   switch (mdata->query_type)
   {
+    case NM_QUERY_TYPE_UNKNOWN: // UNKNOWN should never occur, but MESGS is default
     case NM_QUERY_TYPE_MESGS:
     {
       notmuch_messages_t *messages = get_messages(q);
@@ -2116,6 +2117,7 @@ static enum MxOpenReturns nm_mbox_open(struct Mailbox *m)
     rc = MX_OPEN_OK;
     switch (mdata->query_type)
     {
+      case NM_QUERY_TYPE_UNKNOWN: // UNKNOWN should never occur, but MESGS is default
       case NM_QUERY_TYPE_MESGS:
         if (!read_mesgs_query(m, q, false))
           rc = MX_OPEN_ABORT;

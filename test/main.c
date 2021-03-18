@@ -585,6 +585,7 @@ NEOMUTT_TEST_LIST
   NEOMUTT_TEST_ITEM(test_nm_parse_type_from_query)
   NEOMUTT_TEST_ITEM(test_nm_query_type_to_string)
   NEOMUTT_TEST_ITEM(test_nm_string_to_query_type)
+  NEOMUTT_TEST_ITEM(test_nm_string_to_query_type_mapper)
 #endif
 #ifdef USE_ZLIB
   NEOMUTT_TEST_ITEM(test_compress_zlib)
@@ -634,6 +635,7 @@ NEOMUTT_TEST_ITEM(test_compress_common)
   NEOMUTT_TEST_ITEM(test_nm_parse_type_from_query)
   NEOMUTT_TEST_ITEM(test_nm_query_type_to_string)
   NEOMUTT_TEST_ITEM(test_nm_string_to_query_type)
+  NEOMUTT_TEST_ITEM(test_nm_string_to_query_type_mapper)
 #endif
 #ifdef USE_ZLIB
   NEOMUTT_TEST_ITEM(test_compress_zlib)

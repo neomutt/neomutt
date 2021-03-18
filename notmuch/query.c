@@ -85,18 +85,37 @@ const char *nm_query_type_to_string(enum NmQueryType query_type)
 /**
  * nm_string_to_query_type - Lookup a query type
  *
- * If there's no query type, default to NM_QUERY_TYPE_MESGS.
+ * If there's an unknown query type, default to NM_QUERY_TYPE_MESGS.
  *
  * @param str String to lookup
  * @retval num Query type, e.g. #NM_QUERY_TYPE_MESGS
  */
 enum NmQueryType nm_string_to_query_type(const char *str)
 {
+  enum NmQueryType query_type = nm_string_to_query_type_mapper(str);
+
+  if (query_type == NM_QUERY_TYPE_UNKNOWN)
+  {
+    mutt_error(_("failed to parse notmuch query type: %s"), NONULL(str));
+    return NM_QUERY_TYPE_MESGS;
+  }
+
+  return query_type;
+}
+
+/**
+ * nm_string_to_query_type_mapper - Lookup a query type
+ *
+ * @param str String to lookup
+ * @retval num Query type
+ * @retval #NM_QUERY_TYPE_UNKNOWN on error
+ */
+enum NmQueryType nm_string_to_query_type_mapper(const char *str)
+{
   if (mutt_str_equal(str, "threads"))
     return NM_QUERY_TYPE_THREADS;
   if (mutt_str_equal(str, "messages"))
     return NM_QUERY_TYPE_MESGS;
 
-  mutt_error(_("failed to parse notmuch query type: %s"), NONULL(str));
-  return NM_QUERY_TYPE_MESGS;
+  return NM_QUERY_TYPE_UNKNOWN;
 }
