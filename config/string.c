@@ -28,6 +28,7 @@
  * - Backed by `char *`
  * - Empty string is stored as `NULL`
  * - Validator is passed `char *`, which may be `NULL`
+ * - Data is freed when `ConfigSet` is freed
  */
 
 #include "config.h"
@@ -97,9 +98,18 @@ static int string_string_set(const struct ConfigSet *cs, void *var, struct Confi
   }
   else
   {
-    /* we're already using the initial value */
-    if (*(char **) cdef->var == (char *) cdef->initial)
-      *(char **) cdef->var = mutt_str_dup((char *) cdef->initial);
+    // If we're already using the initial value, take a copy
+    // before setting the new initial value.
+    if (cdef->type & DT_NO_VARIABLE)
+    {
+      if ((char *) cdef->var == (char *) cdef->initial)
+        cdef->var = mutt_str_dup((char *) cdef->initial);
+    }
+    else
+    {
+      if (*(char **) cdef->var == (char *) cdef->initial)
+        *(char **) cdef->var = mutt_str_dup((char *) cdef->initial);
+    }
 
     if (cdef->type & DT_INITIAL_SET)
       FREE(&cdef->initial);
