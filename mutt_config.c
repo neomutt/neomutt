@@ -814,15 +814,10 @@ static void init_variables(struct ConfigSet *cs)
 
 /**
  * init_config - Initialise the config system
- * @param size Size for Config Hash Table
- * @retval ptr New Config Set
+ * @param cs Config items
  */
-struct ConfigSet *init_config(size_t size)
+void init_config(struct ConfigSet *cs)
 {
-  struct ConfigSet *cs = cs_new(size);
-
   init_types(cs);
   init_variables(cs);
-
-  return cs;
 }

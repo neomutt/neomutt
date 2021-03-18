@@ -569,10 +569,12 @@ int main(int argc, char *argv[], char *envp[])
   mutt_str_replace(&Username, mutt_str_getenv("USER"));
   mutt_str_replace(&HomeDir, mutt_str_getenv("HOME"));
 
-  cs = init_config(500);
+  cs = cs_new(500);
   if (!cs)
     goto main_curses;
+
   NeoMutt = neomutt_new(cs);
+  init_config(cs);
 
 #ifdef USE_DEBUG_NOTIFY
   notify_observer_add(NeoMutt->notify, NT_ALL, debug_notify_observer, NULL);
