@@ -60,6 +60,56 @@ typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUT
 
 #define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER | MUTT_PAGER_LOGS)
 
+// Pager mode.
+// There are 10 code paths that lead to mutt_pager() invocation:
+//
+// 1. mutt_index_menu -> mutt_display_message -> mutt_pager
+//
+//    This path always results in mailbox and email set,
+//    the rest is unset - Body, fp.
+//    This invocation can be identified by IsEmail macro.
+//    The intent is to display an email message
+//
+// 2. mutt_view_attachment -> mutt_do_pager -> mutt_pager
+//
+//    this path always results in email, body, ctx set
+//    this invocation can be identified by one of the two macros
+//    - IsAttach (viewing a regular attachment)
+//    - IsMsgAttach (viewing nested email)
+//
+//    IsMsgAttach has extra->body->email set
+//    extra->email != extra->body->email
+//    the former is the message that contains the latter message as attachment
+//
+//    NB. extra->email->body->email seems to be always NULL
+//
+// 3. The following 8 invocations are similar, because they all call
+//    mutt_do_page with info = NULL
+//
+//    And so it results in mailbox, body, fp set to NULL.
+//    The intent is to show user some text that is not
+//    directly related to viewing emails,
+//    e.g. help, log messages,gpg key selection etc.
+//
+//    No macro identifies these invocations
+//
+//    mutt_index_menu       -> mutt_do_pager -> mutt_pager
+//    mutt_help             -> mutt_do_pager -> mutt_pager
+//    icmd_bind             -> mutt_do_pager -> mutt_pager
+//    icmd_set              -> mutt_do_pager -> mutt_pager
+//    icmd_version          -> mutt_do_pager -> mutt_pager
+//    dlg_select_pgp_key    -> mutt_do_pager -> mutt_pager
+//    verify_key            -> mutt_do_pager -> mutt_pager
+//    mutt_invoke_sendmail  -> mutt_do_pager -> mutt_pager
+//
+//
+// - IsAttach(pager) (pager && (pager)->body)
+// - IsMsgAttach(pager)
+//   (pager && (pager)->fp && (pager)->body && (pager)->body->email)
+// - IsEmail(pager) (pager && (pager)->email && !(pager)->body)
+// See nice infographic here:
+// https://gist.github.com/flatcap/044ecbd2498c65ea9a85099ef317509a
+
 /**
  * struct Pager - An email being displayed
  */
