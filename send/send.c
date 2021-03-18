@@ -106,11 +106,19 @@ static void append_signature(FILE *fp, struct ConfigSubset *sub)
   if (!c_signature)
     return;
 
+  // If the user hasn't set $signature, don't warn them if it doesn't exist
+  struct Buffer *def_sig = mutt_buffer_pool_get();
+  cs_str_initial_get(sub->cs, "signature", def_sig);
+  mutt_path_canon(def_sig->data, def_sig->dsize, HomeDir, false);
+  bool notify_missing = !mutt_str_equal(c_signature, mutt_buffer_string(def_sig));
+  mutt_buffer_pool_release(&def_sig);
+
   pid_t pid = 0;
   FILE *fp_tmp = mutt_open_read(c_signature, &pid);
   if (!fp_tmp)
   {
-    mutt_perror(c_signature);
+    if (notify_missing)
+      mutt_perror(c_signature);
     return;
   }
 
