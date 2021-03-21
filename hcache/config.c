@@ -111,28 +111,29 @@ int compress_level_validator(const struct ConfigSet *cs, const struct ConfigDef 
 
 struct ConfigDef HcacheVars[] = {
   // clang-format off
-  { "header_cache", DT_PATH, NULL, 0, 0, NULL,
+  { "header_cache", DT_PATH, 0, 0, NULL,
     "(hcache) Directory/file for the header cache database"
   },
-  { "header_cache_backend", DT_STRING, NULL, 0, 0, hcache_validator,
+  { "header_cache_backend", DT_STRING, 0, 0, hcache_validator,
     "(hcache) Header cache backend to use"
   },
 #if defined(USE_HCACHE_COMPRESSION)
   // These two are not in alphabetical order because `level`s validator depends on `method`
-  { "header_cache_compress_method", DT_STRING, NULL, 0, 0, compress_method_validator,
+  { "header_cache_compress_method", DT_STRING, 0, 0, compress_method_validator,
     "(hcache) Enable generic hcache database compression"
   },
-  { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 1, 0, compress_level_validator,
+  { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, 1, 0, compress_level_validator,
     "(hcache) Level of compression for method"
   },
 #endif
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-  { "header_cache_compress", DT_DEPRECATED|DT_BOOL, NULL, false, 0, NULL, NULL },
+  { "header_cache_compress", DT_DEPRECATED|DT_BOOL, false, 0, NULL, NULL },
 #endif
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
-  { "header_cache_pagesize", DT_DEPRECATED|DT_LONG, NULL, 0, 0, NULL, NULL },
+  { "header_cache_pagesize", DT_DEPRECATED|DT_LONG, 0, 0, NULL, NULL },
 #endif
-  { NULL, 0, NULL, 0, 0, NULL, NULL },
+
+  { NULL },
   // clang-format on
 };
 

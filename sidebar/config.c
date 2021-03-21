@@ -53,49 +53,49 @@ const struct Mapping SortSidebarMethods[] = {
 
 struct ConfigDef SidebarVars[] = {
   // clang-format off
-  { "sidebar_component_depth", DT_NUMBER, NULL, 0, 0, NULL,
+  { "sidebar_component_depth", DT_NUMBER, 0, 0, NULL,
     "(sidebar) Strip leading path components from sidebar folders"
   },
-  { "sidebar_delim_chars", DT_STRING, NULL, IP "/.", 0, NULL,
+  { "sidebar_delim_chars", DT_STRING, IP "/.", 0, NULL,
     "(sidebar) Characters that separate nested folders"
   },
-  { "sidebar_divider_char", DT_STRING, NULL, 0, 0, NULL,
+  { "sidebar_divider_char", DT_STRING, 0, 0, NULL,
     "(sidebar) Character to draw between the sidebar and index"
   },
-  { "sidebar_folder_indent", DT_BOOL, NULL, false, 0, NULL,
+  { "sidebar_folder_indent", DT_BOOL, false, 0, NULL,
     "(sidebar) Indent nested folders"
   },
-  { "sidebar_format", DT_STRING|DT_NOT_EMPTY, NULL, IP "%D%*  %n", 0, NULL,
+  { "sidebar_format", DT_STRING|DT_NOT_EMPTY, IP "%D%*  %n", 0, NULL,
     "(sidebar) printf-like format string for the sidebar panel"
   },
-  { "sidebar_indent_string", DT_STRING, NULL, IP "  ", 0, NULL,
+  { "sidebar_indent_string", DT_STRING, IP "  ", 0, NULL,
     "(sidebar) Indent nested folders using this string"
   },
-  { "sidebar_new_mail_only", DT_BOOL, NULL, false, 0, NULL,
+  { "sidebar_new_mail_only", DT_BOOL, false, 0, NULL,
     "(sidebar) Only show folders with new/flagged mail"
   },
-  { "sidebar_next_new_wrap", DT_BOOL, NULL, false, 0, NULL,
+  { "sidebar_next_new_wrap", DT_BOOL, false, 0, NULL,
     "(sidebar) Wrap around when searching for the next mailbox with new mail"
   },
-  { "sidebar_non_empty_mailbox_only", DT_BOOL, NULL, false, 0, NULL,
+  { "sidebar_non_empty_mailbox_only", DT_BOOL, false, 0, NULL,
     "(sidebar) Only show folders with a non-zero number of mail"
   },
-  { "sidebar_on_right", DT_BOOL, NULL, false, 0, NULL,
+  { "sidebar_on_right", DT_BOOL, false, 0, NULL,
     "(sidebar) Display the sidebar on the right"
   },
-  { "sidebar_short_path", DT_BOOL, NULL, false, 0, NULL,
+  { "sidebar_short_path", DT_BOOL, false, 0, NULL,
     "(sidebar) Abbreviate the paths using the `$folder` variable"
   },
-  { "sidebar_sort_method", DT_SORT, NULL, SORT_ORDER, IP SortSidebarMethods, NULL,
+  { "sidebar_sort_method", DT_SORT, SORT_ORDER, IP SortSidebarMethods, NULL,
     "(sidebar) Method to sort the sidebar"
   },
-  { "sidebar_visible", DT_BOOL, NULL, false, 0, NULL,
+  { "sidebar_visible", DT_BOOL, false, 0, NULL,
     "(sidebar) Show the sidebar"
   },
-  { "sidebar_width", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 30, 0, NULL,
+  { "sidebar_width", DT_NUMBER|DT_NOT_NEGATIVE, 30, 0, NULL,
     "(sidebar) Width of the sidebar"
   },
-  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  { NULL },
   // clang-format on
 };
 

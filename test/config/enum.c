@@ -81,21 +81,21 @@ struct EnumDef AnimalDef = {
 };
 
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_ENUM, &VarApple,      ANIMAL_DINGO,    IP &AnimalDef, NULL              }, /* test_initial_values */
-  { "Banana",     DT_ENUM, &VarBanana,     ANIMAL_BADGER,   IP &AnimalDef, NULL              },
-  { "Cherry",     DT_ENUM, &VarCherry,     ANIMAL_FROG,     IP &AnimalDef, NULL              },
-  { "Damson",     DT_ENUM, &VarDamson,     ANIMAL_ANTELOPE, IP &AnimalDef, NULL              }, /* test_string_set */
-  { "Elderberry", DT_ENUM, &VarElderberry, ANIMAL_ANTELOPE, 0,             NULL              }, /* broken */
-  { "Fig",        DT_ENUM, &VarFig,        ANIMAL_ANTELOPE, IP &AnimalDef, NULL              }, /* test_string_get */
-  { "Guava",      DT_ENUM, &VarGuava,      ANIMAL_ANTELOPE, IP &AnimalDef, NULL              }, /* test_native_set */
-  { "Hawthorn",   DT_ENUM, &VarHawthorn,   ANIMAL_ANTELOPE, IP &AnimalDef, NULL              },
-  { "Ilama",      DT_ENUM, &VarIlama,      ANIMAL_ANTELOPE, IP &AnimalDef, NULL              }, /* test_native_get */
-  { "Jackfruit",  DT_ENUM, &VarJackfruit,  ANIMAL_ANTELOPE, IP &AnimalDef, NULL              }, /* test_reset */
-  { "Kumquat",    DT_ENUM, &VarKumquat,    ANIMAL_ANTELOPE, IP &AnimalDef, validator_fail    },
-  { "Lemon",      DT_ENUM, &VarLemon,      ANIMAL_ANTELOPE, IP &AnimalDef, validator_succeed }, /* test_validator */
-  { "Mango",      DT_ENUM, &VarMango,      ANIMAL_ANTELOPE, IP &AnimalDef, validator_warn    },
-  { "Nectarine",  DT_ENUM, &VarNectarine,  ANIMAL_ANTELOPE, IP &AnimalDef, validator_fail    },
-  { "Olive",      DT_ENUM, &VarOlive,      ANIMAL_ANTELOPE, IP &AnimalDef, NULL              }, /* test_inherit */
+  { "Apple",      DT_ENUM, ANIMAL_DINGO,    IP &AnimalDef, NULL,              NULL, &VarApple,      }, /* test_initial_values */
+  { "Banana",     DT_ENUM, ANIMAL_BADGER,   IP &AnimalDef, NULL,              NULL, &VarBanana,     },
+  { "Cherry",     DT_ENUM, ANIMAL_FROG,     IP &AnimalDef, NULL,              NULL, &VarCherry,     },
+  { "Damson",     DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, NULL,              NULL, &VarDamson,     }, /* test_string_set */
+  { "Elderberry", DT_ENUM, ANIMAL_ANTELOPE, 0,             NULL,              NULL, &VarElderberry, }, /* broken */
+  { "Fig",        DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, NULL,              NULL, &VarFig,        }, /* test_string_get */
+  { "Guava",      DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, NULL,              NULL, &VarGuava,      }, /* test_native_set */
+  { "Hawthorn",   DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, NULL,              NULL, &VarHawthorn,   },
+  { "Ilama",      DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, NULL,              NULL, &VarIlama,      }, /* test_native_get */
+  { "Jackfruit",  DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, NULL,              NULL, &VarJackfruit,  }, /* test_reset */
+  { "Kumquat",    DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, validator_fail,    NULL, &VarKumquat,    },
+  { "Lemon",      DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, validator_succeed, NULL, &VarLemon,      }, /* test_validator */
+  { "Mango",      DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, validator_warn,    NULL, &VarMango,      },
+  { "Nectarine",  DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, validator_fail,    NULL, &VarNectarine,  },
+  { "Olive",      DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, NULL,              NULL, &VarOlive,      }, /* test_inherit */
   { NULL },
 };
 // clang-format on

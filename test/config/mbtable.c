@@ -51,23 +51,23 @@ static struct MbTable *VarQuince;
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_MBTABLE, &VarApple,      IP "apple",      0, NULL              }, /* test_initial_values */
-  { "Banana",     DT_MBTABLE, &VarBanana,     IP "banana",     0, NULL              },
-  { "Cherry",     DT_MBTABLE, &VarCherry,     IP "cherry",     0, NULL              },
-  { "Damson",     DT_MBTABLE, &VarDamson,     0,               0, NULL              }, /* test_mbtable_set */
-  { "Elderberry", DT_MBTABLE, &VarElderberry, IP "elderberry", 0, NULL              },
-  { "Fig",        DT_MBTABLE, &VarFig,        0,               0, NULL              }, /* test_mbtable_get */
-  { "Guava",      DT_MBTABLE, &VarGuava,      IP "guava",      0, NULL              },
-  { "Hawthorn",   DT_MBTABLE, &VarHawthorn,   0,               0, NULL              },
-  { "Ilama",      DT_MBTABLE, &VarIlama,      0,               0, NULL              }, /* test_native_set */
-  { "Jackfruit",  DT_MBTABLE, &VarJackfruit,  IP "jackfruit",  0, NULL              },
-  { "Kumquat",    DT_MBTABLE, &VarKumquat,    0,               0, NULL              }, /* test_native_get */
-  { "Lemon",      DT_MBTABLE, &VarLemon,      IP "lemon",      0, NULL              }, /* test_reset */
-  { "Mango",      DT_MBTABLE, &VarMango,      IP "mango",      0, validator_fail    },
-  { "Nectarine",  DT_MBTABLE, &VarNectarine,  IP "nectarine",  0, validator_succeed }, /* test_validator */
-  { "Olive",      DT_MBTABLE, &VarOlive,      IP "olive",      0, validator_warn    },
-  { "Papaya",     DT_MBTABLE, &VarPapaya,     IP "papaya",     0, validator_fail    },
-  { "Quince",     DT_MBTABLE, &VarQuince,     0,               0, NULL              }, /* test_inherit */
+  { "Apple",      DT_MBTABLE, IP "apple",      0, NULL,              NULL, &VarApple,      }, /* test_initial_values */
+  { "Banana",     DT_MBTABLE, IP "banana",     0, NULL,              NULL, &VarBanana,     },
+  { "Cherry",     DT_MBTABLE, IP "cherry",     0, NULL,              NULL, &VarCherry,     },
+  { "Damson",     DT_MBTABLE, 0,               0, NULL,              NULL, &VarDamson,     }, /* test_mbtable_set */
+  { "Elderberry", DT_MBTABLE, IP "elderberry", 0, NULL,              NULL, &VarElderberry, },
+  { "Fig",        DT_MBTABLE, 0,               0, NULL,              NULL, &VarFig,        }, /* test_mbtable_get */
+  { "Guava",      DT_MBTABLE, IP "guava",      0, NULL,              NULL, &VarGuava,      },
+  { "Hawthorn",   DT_MBTABLE, 0,               0, NULL,              NULL, &VarHawthorn,   },
+  { "Ilama",      DT_MBTABLE, 0,               0, NULL,              NULL, &VarIlama,      }, /* test_native_set */
+  { "Jackfruit",  DT_MBTABLE, IP "jackfruit",  0, NULL,              NULL, &VarJackfruit,  },
+  { "Kumquat",    DT_MBTABLE, 0,               0, NULL,              NULL, &VarKumquat,    }, /* test_native_get */
+  { "Lemon",      DT_MBTABLE, IP "lemon",      0, NULL,              NULL, &VarLemon,      }, /* test_reset */
+  { "Mango",      DT_MBTABLE, IP "mango",      0, validator_fail,    NULL, &VarMango,      },
+  { "Nectarine",  DT_MBTABLE, IP "nectarine",  0, validator_succeed, NULL, &VarNectarine,  }, /* test_validator */
+  { "Olive",      DT_MBTABLE, IP "olive",      0, validator_warn,    NULL, &VarOlive,      },
+  { "Papaya",     DT_MBTABLE, IP "papaya",     0, validator_fail,    NULL, &VarPapaya,     },
+  { "Quince",     DT_MBTABLE, 0,               0, NULL,              NULL, &VarQuince,     }, /* test_inherit */
   { NULL },
 };
 // clang-format on

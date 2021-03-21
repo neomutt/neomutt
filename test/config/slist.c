@@ -55,52 +55,52 @@ static struct Slist *VarStrawberry;
 
 // clang-format off
 static struct ConfigDef VarsColon[] = {
-  { "Apple",      DT_SLIST|SLIST_SEP_COLON, &VarApple,      IP "apple",               0, NULL }, /* test_initial_values */
-  { "Banana",     DT_SLIST|SLIST_SEP_COLON, &VarBanana,     IP "apple:banana",        0, NULL },
-  { "Cherry",     DT_SLIST|SLIST_SEP_COLON, &VarCherry,     IP "apple:banana:cherry", 0, NULL },
-  { "Damson",     DT_SLIST|SLIST_SEP_COLON, &VarDamson,     IP "apple:banana",        0, NULL }, /* test_string_set */
-  { "Elderberry", DT_SLIST|SLIST_SEP_COLON, &VarElderberry, 0,                        0, NULL },
-  { "Fig",        DT_SLIST|SLIST_SEP_COLON, &VarFig,        IP ":apple",              0, NULL }, /* test_string_get */
-  { "Guava",      DT_SLIST|SLIST_SEP_COLON, &VarGuava,      IP "apple::cherry",       0, NULL },
-  { "Hawthorn",   DT_SLIST|SLIST_SEP_COLON, &VarHawthorn,   IP "apple:",              0, NULL },
+  { "Apple",      DT_SLIST|SLIST_SEP_COLON, IP "apple",               0, NULL, NULL, &VarApple,      }, /* test_initial_values */
+  { "Banana",     DT_SLIST|SLIST_SEP_COLON, IP "apple:banana",        0, NULL, NULL, &VarBanana,     },
+  { "Cherry",     DT_SLIST|SLIST_SEP_COLON, IP "apple:banana:cherry", 0, NULL, NULL, &VarCherry,     },
+  { "Damson",     DT_SLIST|SLIST_SEP_COLON, IP "apple:banana",        0, NULL, NULL, &VarDamson,     }, /* test_string_set */
+  { "Elderberry", DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL, NULL, &VarElderberry, },
+  { "Fig",        DT_SLIST|SLIST_SEP_COLON, IP ":apple",              0, NULL, NULL, &VarFig,        }, /* test_string_get */
+  { "Guava",      DT_SLIST|SLIST_SEP_COLON, IP "apple::cherry",       0, NULL, NULL, &VarGuava,      },
+  { "Hawthorn",   DT_SLIST|SLIST_SEP_COLON, IP "apple:",              0, NULL, NULL, &VarHawthorn,   },
   { NULL },
 };
 
 static struct ConfigDef VarsComma[] = {
-  { "Apple",      DT_SLIST|SLIST_SEP_COMMA, &VarApple,      IP "apple",               0, NULL }, /* test_initial_values */
-  { "Banana",     DT_SLIST|SLIST_SEP_COMMA, &VarBanana,     IP "apple,banana",        0, NULL },
-  { "Cherry",     DT_SLIST|SLIST_SEP_COMMA, &VarCherry,     IP "apple,banana,cherry", 0, NULL },
-  { "Damson",     DT_SLIST|SLIST_SEP_COLON, &VarDamson,     IP "apple,banana",        0, NULL }, /* test_string_set */
-  { "Elderberry", DT_SLIST|SLIST_SEP_COLON, &VarElderberry, 0,                        0, NULL },
-  { "Fig",        DT_SLIST|SLIST_SEP_COLON, &VarFig,        IP ",apple",              0, NULL }, /* test_string_get */
-  { "Guava",      DT_SLIST|SLIST_SEP_COLON, &VarGuava,      IP "apple,,cherry",       0, NULL },
-  { "Hawthorn",   DT_SLIST|SLIST_SEP_COLON, &VarHawthorn,   IP "apple,",              0, NULL },
+  { "Apple",      DT_SLIST|SLIST_SEP_COMMA, IP "apple",               0, NULL, NULL, &VarApple,      }, /* test_initial_values */
+  { "Banana",     DT_SLIST|SLIST_SEP_COMMA, IP "apple,banana",        0, NULL, NULL, &VarBanana,     },
+  { "Cherry",     DT_SLIST|SLIST_SEP_COMMA, IP "apple,banana,cherry", 0, NULL, NULL, &VarCherry,     },
+  { "Damson",     DT_SLIST|SLIST_SEP_COLON, IP "apple,banana",        0, NULL, NULL, &VarDamson,     }, /* test_string_set */
+  { "Elderberry", DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL, NULL, &VarElderberry, },
+  { "Fig",        DT_SLIST|SLIST_SEP_COLON, IP ",apple",              0, NULL, NULL, &VarFig,        }, /* test_string_get */
+  { "Guava",      DT_SLIST|SLIST_SEP_COLON, IP "apple,,cherry",       0, NULL, NULL, &VarGuava,      },
+  { "Hawthorn",   DT_SLIST|SLIST_SEP_COLON, IP "apple,",              0, NULL, NULL, &VarHawthorn,   },
   { NULL },
 };
 
 static struct ConfigDef VarsSpace[] = {
-  { "Apple",      DT_SLIST|SLIST_SEP_SPACE, &VarApple,      IP "apple",               0, NULL }, /* test_initial_values */
-  { "Banana",     DT_SLIST|SLIST_SEP_SPACE, &VarBanana,     IP "apple banana",        0, NULL },
-  { "Cherry",     DT_SLIST|SLIST_SEP_SPACE, &VarCherry,     IP "apple banana cherry", 0, NULL },
-  { "Damson",     DT_SLIST|SLIST_SEP_COLON, &VarDamson,     IP "apple banana",        0, NULL }, /* test_string_set */
-  { "Elderberry", DT_SLIST|SLIST_SEP_COLON, &VarElderberry, 0,                        0, NULL },
-  { "Fig",        DT_SLIST|SLIST_SEP_COLON, &VarFig,        IP " apple",              0, NULL }, /* test_string_get */
-  { "Guava",      DT_SLIST|SLIST_SEP_COLON, &VarGuava,      IP "apple  cherry",       0, NULL },
-  { "Hawthorn",   DT_SLIST|SLIST_SEP_COLON, &VarHawthorn,   IP "apple ",              0, NULL },
+  { "Apple",      DT_SLIST|SLIST_SEP_SPACE, IP "apple",               0, NULL, NULL, &VarApple,      }, /* test_initial_values */
+  { "Banana",     DT_SLIST|SLIST_SEP_SPACE, IP "apple banana",        0, NULL, NULL, &VarBanana,     },
+  { "Cherry",     DT_SLIST|SLIST_SEP_SPACE, IP "apple banana cherry", 0, NULL, NULL, &VarCherry,     },
+  { "Damson",     DT_SLIST|SLIST_SEP_COLON, IP "apple banana",        0, NULL, NULL, &VarDamson,     }, /* test_string_set */
+  { "Elderberry", DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL, NULL, &VarElderberry, },
+  { "Fig",        DT_SLIST|SLIST_SEP_COLON, IP " apple",              0, NULL, NULL, &VarFig,        }, /* test_string_get */
+  { "Guava",      DT_SLIST|SLIST_SEP_COLON, IP "apple  cherry",       0, NULL, NULL, &VarGuava,      },
+  { "Hawthorn",   DT_SLIST|SLIST_SEP_COLON, IP "apple ",              0, NULL, NULL, &VarHawthorn,   },
   { NULL },
 };
 
 static struct ConfigDef VarsOther[] = {
-  { "Ilama",      DT_SLIST|SLIST_SEP_COLON, &VarIlama,      0,                        0, NULL              }, /* test_native_set */
-  { "Jackfruit",  DT_SLIST|SLIST_SEP_COLON, &VarJackfruit,  IP "apple:banana:cherry", 0, NULL              }, /* test_native_get */
-  { "Lemon",      DT_SLIST|SLIST_SEP_COLON, &VarLemon,      IP "lemon",               0, NULL              }, /* test_reset */
-  { "Mango",      DT_SLIST|SLIST_SEP_COLON, &VarMango,      IP "mango",               0, validator_fail    },
-  { "Nectarine",  DT_SLIST|SLIST_SEP_COLON, &VarNectarine,  IP "nectarine",           0, validator_succeed }, /* test_validator */
-  { "Olive",      DT_SLIST|SLIST_SEP_COLON, &VarOlive,      IP "olive",               0, validator_warn    },
-  { "Papaya",     DT_SLIST|SLIST_SEP_COLON, &VarPapaya,     IP "papaya",              0, validator_fail    },
-  { "Quince",     DT_SLIST|SLIST_SEP_COLON, &VarQuince,     0,                        0, NULL              }, /* test_inherit */
-  { "Raspberry",  DT_SLIST|SLIST_SEP_COLON, &VarRaspberry,  0,                        0, NULL              }, /* test_plus_equals */
-  { "Strawberry", DT_SLIST|SLIST_SEP_COLON, &VarStrawberry, 0,                        0, NULL              }, /* test_minus_equals */
+  { "Ilama",      DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,              NULL, &VarIlama,      }, /* test_native_set */
+  { "Jackfruit",  DT_SLIST|SLIST_SEP_COLON, IP "apple:banana:cherry", 0, NULL,              NULL, &VarJackfruit,  }, /* test_native_get */
+  { "Lemon",      DT_SLIST|SLIST_SEP_COLON, IP "lemon",               0, NULL,              NULL, &VarLemon,      }, /* test_reset */
+  { "Mango",      DT_SLIST|SLIST_SEP_COLON, IP "mango",               0, validator_fail,    NULL, &VarMango,      },
+  { "Nectarine",  DT_SLIST|SLIST_SEP_COLON, IP "nectarine",           0, validator_succeed, NULL, &VarNectarine,  }, /* test_validator */
+  { "Olive",      DT_SLIST|SLIST_SEP_COLON, IP "olive",               0, validator_warn,    NULL, &VarOlive,      },
+  { "Papaya",     DT_SLIST|SLIST_SEP_COLON, IP "papaya",              0, validator_fail,    NULL, &VarPapaya,     },
+  { "Quince",     DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,              NULL, &VarQuince,     }, /* test_inherit */
+  { "Raspberry",  DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,              NULL, &VarRaspberry,  }, /* test_plus_equals */
+  { "Strawberry", DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,              NULL, &VarStrawberry, }, /* test_minus_equals */
   { NULL },
 };
 // clang-format on

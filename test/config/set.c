@@ -37,8 +37,8 @@ static bool VarBanana;
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",  DT_NUMBER,  &VarApple,  0, 0, NULL },
-  { "Banana", DT_BOOL,    &VarBanana, 1, 0, NULL },
+  { "Apple",  DT_NUMBER,  0, 0, NULL, NULL, &VarApple,  },
+  { "Banana", DT_BOOL,    1, 0, NULL, NULL, &VarBanana, },
   { NULL },
 };
 // clang-format on

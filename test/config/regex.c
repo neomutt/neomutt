@@ -53,25 +53,25 @@ static struct Regex *VarStrawberry;
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_REGEX,                    &VarApple,      IP "apple.*",      0, NULL              }, /* test_initial_values */
-  { "Banana",     DT_REGEX,                    &VarBanana,     IP "banana.*",     0, NULL              },
-  { "Cherry",     DT_REGEX,                    &VarCherry,     IP "cherry.*",     0, NULL              },
-  { "Damson",     DT_REGEX,                    &VarDamson,     0,                 0, NULL              }, /* test_regex_set */
-  { "Elderberry", DT_REGEX|DT_REGEX_NOSUB,     &VarElderberry, IP "elderberry.*", 0, NULL              },
-  { "Fig",        DT_REGEX,                    &VarFig,        0,                 0, NULL              }, /* test_regex_get */
-  { "Guava",      DT_REGEX,                    &VarGuava,      IP "guava.*",      0, NULL              },
-  { "Hawthorn",   DT_REGEX,                    &VarHawthorn,   0,                 0, NULL              },
-  { "Ilama",      DT_REGEX|DT_REGEX_ALLOW_NOT, &VarIlama,      0,                 0, NULL              }, /* test_native_set */
-  { "Jackfruit",  DT_REGEX,                    &VarJackfruit,  IP "jackfruit.*",  0, NULL              },
-  { "Kumquat",    DT_REGEX,                    &VarKumquat,    IP "kumquat.*",    0, NULL              },
-  { "Lemon",      DT_REGEX,                    &VarLemon,      0,                 0, NULL              }, /* test_native_get */
-  { "Mango",      DT_REGEX,                    &VarMango,      IP "mango.*",      0, NULL              }, /* test_reset */
-  { "Nectarine",  DT_REGEX,                    &VarNectarine,  IP "[a-b",         0, NULL              },
-  { "Olive",      DT_REGEX,                    &VarOlive,      IP "olive.*",      0, validator_fail    },
-  { "Papaya",     DT_REGEX,                    &VarPapaya,     IP "papaya.*",     0, validator_succeed }, /* test_validator */
-  { "Quince",     DT_REGEX,                    &VarQuince,     IP "quince.*",     0, validator_warn    },
-  { "Raspberry",  DT_REGEX,                    &VarRaspberry,  IP "raspberry.*",  0, validator_fail    },
-  { "Strawberry", DT_REGEX,                    &VarStrawberry, 0,                 0, NULL              }, /* test_inherit */
+  { "Apple",      DT_REGEX,                    IP "apple.*",      0, NULL,              NULL, &VarApple,      }, /* test_initial_values */
+  { "Banana",     DT_REGEX,                    IP "banana.*",     0, NULL,              NULL, &VarBanana,     },
+  { "Cherry",     DT_REGEX,                    IP "cherry.*",     0, NULL,              NULL, &VarCherry,     },
+  { "Damson",     DT_REGEX,                    0,                 0, NULL,              NULL, &VarDamson,     }, /* test_regex_set */
+  { "Elderberry", DT_REGEX|DT_REGEX_NOSUB,     IP "elderberry.*", 0, NULL,              NULL, &VarElderberry, },
+  { "Fig",        DT_REGEX,                    0,                 0, NULL,              NULL, &VarFig,        }, /* test_regex_get */
+  { "Guava",      DT_REGEX,                    IP "guava.*",      0, NULL,              NULL, &VarGuava,      },
+  { "Hawthorn",   DT_REGEX,                    0,                 0, NULL,              NULL, &VarHawthorn,   },
+  { "Ilama",      DT_REGEX|DT_REGEX_ALLOW_NOT, 0,                 0, NULL,              NULL, &VarIlama,      }, /* test_native_set */
+  { "Jackfruit",  DT_REGEX,                    IP "jackfruit.*",  0, NULL,              NULL, &VarJackfruit,  },
+  { "Kumquat",    DT_REGEX,                    IP "kumquat.*",    0, NULL,              NULL, &VarKumquat,    },
+  { "Lemon",      DT_REGEX,                    0,                 0, NULL,              NULL, &VarLemon,      }, /* test_native_get */
+  { "Mango",      DT_REGEX,                    IP "mango.*",      0, NULL,              NULL, &VarMango,      }, /* test_reset */
+  { "Nectarine",  DT_REGEX,                    IP "[a-b",         0, NULL,              NULL, &VarNectarine,  },
+  { "Olive",      DT_REGEX,                    IP "olive.*",      0, validator_fail,    NULL, &VarOlive,      },
+  { "Papaya",     DT_REGEX,                    IP "papaya.*",     0, validator_succeed, NULL, &VarPapaya,     }, /* test_validator */
+  { "Quince",     DT_REGEX,                    IP "quince.*",     0, validator_warn,    NULL, &VarQuince,     },
+  { "Raspberry",  DT_REGEX,                    IP "raspberry.*",  0, validator_fail,    NULL, &VarRaspberry,  },
+  { "Strawberry", DT_REGEX,                    0,                 0, NULL,              NULL, &VarStrawberry, }, /* test_inherit */
   { NULL },
 };
 // clang-format on

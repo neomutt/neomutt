@@ -36,25 +36,25 @@
 
 static struct ConfigDef ComposeVars[] = {
   // clang-format off
-  { "compose_show_user_headers", DT_BOOL, NULL, true, 0, NULL,
+  { "compose_show_user_headers", DT_BOOL, true, 0, NULL,
     "Controls whether or not custom headers are shown in the compose envelope"
   },
-  { "edit_headers", DT_BOOL, NULL, false, 0, NULL,
+  { "edit_headers", DT_BOOL, false, 0, NULL,
     "Let the user edit the email headers whilst editing an email"
   },
-  { "compose_format", DT_STRING|R_MENU, NULL, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-", 0, NULL,
+  { "compose_format", DT_STRING|R_MENU, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-", 0, NULL,
     "printf-like format string for the Compose panel's status bar"
   },
-  { "ispell", DT_STRING|DT_COMMAND, NULL, IP ISPELL, 0, NULL,
+  { "ispell", DT_STRING|DT_COMMAND, IP ISPELL, 0, NULL,
     "External command to perform spell-checking"
   },
-  { "copy", DT_QUAD, NULL, MUTT_YES, 0, NULL,
+  { "copy", DT_QUAD, MUTT_YES, 0, NULL,
     "Save outgoing emails to $record"
   },
-  { "postpone", DT_QUAD, NULL, MUTT_ASKYES, 0, NULL,
+  { "postpone", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "Save messages to the `$postponed` folder"
   },
-  { NULL, 0, NULL, 0, 0, NULL, NULL }
+  { NULL }
   // clang-format on
 };
 

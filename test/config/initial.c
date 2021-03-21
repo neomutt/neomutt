@@ -36,9 +36,9 @@ static char *VarCherry;
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",  DT_STRING, &VarApple,  IP "apple", 0, NULL },
-  { "Banana", DT_STRING, &VarBanana, 0,          0, NULL },
-  { "Cherry", DT_STRING, &VarCherry, 0,          0, NULL },
+  { "Apple",  DT_STRING, IP "apple", 0, NULL, NULL, &VarApple,  },
+  { "Banana", DT_STRING, 0,          0, NULL, NULL, &VarBanana, },
+  { "Cherry", DT_STRING, 0,          0, NULL, NULL, &VarCherry, },
   { NULL },
 };
 // clang-format on

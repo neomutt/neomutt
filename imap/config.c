@@ -64,74 +64,75 @@ static int imap_auth_validator(const struct ConfigSet *cs, const struct ConfigDe
 
 struct ConfigDef ImapVars[] = {
   // clang-format off
-  { "imap_check_subscribed", DT_BOOL, NULL, false, 0, NULL,
+  { "imap_check_subscribed", DT_BOOL, false, 0, NULL,
     "(imap) When opening a mailbox, ask the server for a list of subscribed folders"
   },
-  { "imap_condstore", DT_BOOL, NULL, false, 0, NULL,
+  { "imap_condstore", DT_BOOL, false, 0, NULL,
     "(imap) Enable the CONDSTORE extension"
   },
 #ifdef USE_ZLIB
-  { "imap_deflate", DT_BOOL, NULL, true, 0, NULL,
+  { "imap_deflate", DT_BOOL, true, 0, NULL,
     "(imap) Compress network traffic"
   },
 #endif
-  { "imap_authenticators", DT_SLIST|SLIST_SEP_COLON, NULL, 0, 0, imap_auth_validator,
+  { "imap_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, imap_auth_validator,
     "(imap) List of allowed IMAP authentication methods"
   },
-  { "imap_delim_chars", DT_STRING, NULL, IP "/.", 0, NULL,
+  { "imap_delim_chars", DT_STRING, IP "/.", 0, NULL,
     "(imap) Characters that denote separators in IMAP folders"
   },
-  { "imap_fetch_chunk_size", DT_LONG|DT_NOT_NEGATIVE, NULL, 0, 0, NULL,
+  { "imap_fetch_chunk_size", DT_LONG|DT_NOT_NEGATIVE, 0, 0, NULL,
     "(imap) Download headers in blocks of this size"
   },
-  { "imap_headers", DT_STRING|R_INDEX, NULL, 0, 0, NULL,
+  { "imap_headers", DT_STRING|R_INDEX, 0, 0, NULL,
     "(imap) Additional email headers to download when getting index"
   },
-  { "imap_idle", DT_BOOL, NULL, false, 0, NULL,
+  { "imap_idle", DT_BOOL, false, 0, NULL,
     "(imap) Use the IMAP IDLE extension to check for new mail"
   },
-  { "imap_login", DT_STRING|DT_SENSITIVE, NULL, 0, 0, NULL,
+  { "imap_login", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
     "(imap) Login name for the IMAP server (defaults to `$imap_user`)"
   },
-  { "imap_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, NULL, 0, 0, NULL,
+  { "imap_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, 0, 0, NULL,
     "(imap) External command to generate OAUTH refresh token"
   },
-  { "imap_pass", DT_STRING|DT_SENSITIVE, NULL, 0, 0, NULL,
+  { "imap_pass", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
     "(imap) Password for the IMAP server"
   },
-  { "imap_pipeline_depth", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 15, 0, NULL,
+  { "imap_pipeline_depth", DT_NUMBER|DT_NOT_NEGATIVE, 15, 0, NULL,
     "(imap) Number of IMAP commands that may be queued up"
   },
-  { "imap_rfc5161", DT_BOOL, NULL, true, 0, NULL,
+  { "imap_rfc5161", DT_BOOL, true, 0, NULL,
     "(imap) Use the IMAP ENABLE extension to select capabilities"
   },
-  { "imap_server_noise", DT_BOOL, NULL, true, 0, NULL,
+  { "imap_server_noise", DT_BOOL, true, 0, NULL,
     "(imap) Display server warnings as error messages"
   },
-  { "imap_keepalive", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 300, 0, NULL,
+  { "imap_keepalive", DT_NUMBER|DT_NOT_NEGATIVE, 300, 0, NULL,
     "(imap) Time to wait before polling an open IMAP connection"
   },
-  { "imap_list_subscribed", DT_BOOL, NULL, false, 0, NULL,
+  { "imap_list_subscribed", DT_BOOL, false, 0, NULL,
     "(imap) When browsing a mailbox, only display subscribed folders"
   },
-  { "imap_passive", DT_BOOL, NULL, true, 0, NULL,
+  { "imap_passive", DT_BOOL, true, 0, NULL,
     "(imap) Reuse an existing IMAP connection to check for new mail"
   },
-  { "imap_peek", DT_BOOL, NULL, true, 0, NULL,
+  { "imap_peek", DT_BOOL, true, 0, NULL,
     "(imap) Don't mark messages as read when fetching them from the server"
   },
-  { "imap_poll_timeout", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 15, 0, NULL,
+  { "imap_poll_timeout", DT_NUMBER|DT_NOT_NEGATIVE, 15, 0, NULL,
     "(imap) Maximum time to wait for a server response"
   },
-  { "imap_qresync", DT_BOOL, NULL, false, 0, NULL,
+  { "imap_qresync", DT_BOOL, false, 0, NULL,
     "(imap) Enable the QRESYNC extension"
   },
-  { "imap_user", DT_STRING|DT_SENSITIVE, NULL, 0, 0, NULL,
+  { "imap_user", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
     "(imap) Username for the IMAP server"
   },
 
-  { "imap_servernoise",          DT_SYNONYM, NULL, IP "imap_server_noise",          },
-  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  { "imap_servernoise", DT_SYNONYM, IP "imap_server_noise", },
+
+  { NULL },
   // clang-format on
 };
 

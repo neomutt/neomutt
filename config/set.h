@@ -62,7 +62,6 @@ struct ConfigDef
 {
   const char   *name;      ///< User-visible name
   uint32_t      type;      ///< Variable type, e.g. #DT_STRING
-  void         *var;       ///< Pointer to the global variable
   intptr_t      initial;   ///< Initial value
   intptr_t      data;      ///< Extra variable data
 
@@ -78,6 +77,7 @@ struct ConfigDef
   int (*validator)(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 
   const char *docs; ///< One-liner description
+  void         *var;       ///< Pointer to the global variable
 };
 
 /**

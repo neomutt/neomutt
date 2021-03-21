@@ -30,7 +30,7 @@
 
 static struct ConfigDef Vars[] = {
   // clang-format off
-  { "assumed_charset", DT_STRING, NULL, 0, 0, NULL, },
+  { "assumed_charset", DT_STRING, 0, 0, NULL, },
   { NULL },
   // clang-format on
 };

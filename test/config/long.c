@@ -50,21 +50,21 @@ static long VarOlive;
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_LONG,                 &VarApple,      -42, 0, NULL              }, /* test_initial_values */
-  { "Banana",     DT_LONG,                 &VarBanana,     99,  0, NULL              },
-  { "Cherry",     DT_LONG,                 &VarCherry,     33,  0, NULL              },
-  { "Damson",     DT_LONG,                 &VarDamson,     0,   0, NULL              }, /* test_string_set */
-  { "Elderberry", DT_LONG|DT_NOT_NEGATIVE, &VarElderberry, 0,   0, NULL              },
-  { "Fig",        DT_LONG,                 &VarFig,        0,   0, NULL              }, /* test_string_get */
-  { "Guava",      DT_LONG,                 &VarGuava,      0,   0, NULL              }, /* test_native_set */
-  { "Hawthorn",   DT_LONG|DT_NOT_NEGATIVE, &VarHawthorn,   0,   0, NULL              },
-  { "Ilama",      DT_LONG,                 &VarIlama,      0,   0, NULL              }, /* test_native_get */
-  { "Jackfruit",  DT_LONG,                 &VarJackfruit,  99,  0, NULL              }, /* test_reset */
-  { "Kumquat",    DT_LONG,                 &VarKumquat,    33,  0, validator_fail    },
-  { "Lemon",      DT_LONG,                 &VarLemon,      0,   0, validator_succeed }, /* test_validator */
-  { "Mango",      DT_LONG,                 &VarMango,      0,   0, validator_warn    },
-  { "Nectarine",  DT_LONG,                 &VarNectarine,  0,   0, validator_fail    },
-  { "Olive",      DT_LONG,                 &VarOlive,      0,   0, NULL              }, /* test_inherit */
+  { "Apple",      DT_LONG,                 -42, 0, NULL,              NULL, &VarApple,      }, /* test_initial_values */
+  { "Banana",     DT_LONG,                 99,  0, NULL,              NULL, &VarBanana,     },
+  { "Cherry",     DT_LONG,                 33,  0, NULL,              NULL, &VarCherry,     },
+  { "Damson",     DT_LONG,                 0,   0, NULL,              NULL, &VarDamson,     }, /* test_string_set */
+  { "Elderberry", DT_LONG|DT_NOT_NEGATIVE, 0,   0, NULL,              NULL, &VarElderberry, },
+  { "Fig",        DT_LONG,                 0,   0, NULL,              NULL, &VarFig,        }, /* test_string_get */
+  { "Guava",      DT_LONG,                 0,   0, NULL,              NULL, &VarGuava,      }, /* test_native_set */
+  { "Hawthorn",   DT_LONG|DT_NOT_NEGATIVE, 0,   0, NULL,              NULL, &VarHawthorn,   },
+  { "Ilama",      DT_LONG,                 0,   0, NULL,              NULL, &VarIlama,      }, /* test_native_get */
+  { "Jackfruit",  DT_LONG,                 99,  0, NULL,              NULL, &VarJackfruit,  }, /* test_reset */
+  { "Kumquat",    DT_LONG,                 33,  0, validator_fail,    NULL, &VarKumquat,    },
+  { "Lemon",      DT_LONG,                 0,   0, validator_succeed, NULL, &VarLemon,      }, /* test_validator */
+  { "Mango",      DT_LONG,                 0,   0, validator_warn,    NULL, &VarMango,      },
+  { "Nectarine",  DT_LONG,                 0,   0, validator_fail,    NULL, &VarNectarine,  },
+  { "Olive",      DT_LONG,                 0,   0, NULL,              NULL, &VarOlive,      }, /* test_inherit */
   { NULL },
 };
 // clang-format on

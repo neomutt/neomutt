@@ -33,55 +33,56 @@
 
 struct ConfigDef NotmuchVars[] = {
   // clang-format off
-  { "nm_db_limit", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 0, 0, NULL,
+  { "nm_db_limit", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "(notmuch) Default limit for Notmuch queries"
   },
-  { "nm_default_url", DT_STRING, NULL, 0, 0, NULL,
+  { "nm_default_url", DT_STRING, 0, 0, NULL,
     "(notmuch) Path to the Notmuch database"
   },
-  { "nm_exclude_tags", DT_STRING, NULL, 0, 0, NULL,
+  { "nm_exclude_tags", DT_STRING, 0, 0, NULL,
     "(notmuch) Exclude messages with these tags"
   },
-  { "nm_flagged_tag", DT_STRING, NULL, IP "flagged", 0, NULL,
+  { "nm_flagged_tag", DT_STRING, IP "flagged", 0, NULL,
     "(notmuch) Tag to use for flagged messages"
   },
-  { "nm_open_timeout", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 5, 0, NULL,
+  { "nm_open_timeout", DT_NUMBER|DT_NOT_NEGATIVE, 5, 0, NULL,
     "(notmuch) Database timeout"
   },
-  { "nm_query_type", DT_STRING, NULL, IP "messages", 0, NULL,
+  { "nm_query_type", DT_STRING, IP "messages", 0, NULL,
     "(notmuch) Default query type: 'threads' or 'messages'"
   },
-  { "nm_query_window_current_position", DT_NUMBER, NULL, 0, 0, NULL,
+  { "nm_query_window_current_position", DT_NUMBER, 0, 0, NULL,
     "(notmuch) Position of current search window"
   },
-  { "nm_query_window_current_search", DT_STRING, NULL, 0, 0, NULL,
+  { "nm_query_window_current_search", DT_STRING, 0, 0, NULL,
     "(notmuch) Current search parameters"
   },
-  { "nm_query_window_duration", DT_NUMBER|DT_NOT_NEGATIVE, NULL, 0, 0, NULL,
+  { "nm_query_window_duration", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "(notmuch) Time duration of the current search window"
   },
-  { "nm_query_window_timebase", DT_STRING, NULL, IP "week", 0, NULL,
+  { "nm_query_window_timebase", DT_STRING, IP "week", 0, NULL,
     "(notmuch) Units for the time duration"
   },
-  { "nm_record_tags", DT_STRING, NULL, 0, 0, NULL,
+  { "nm_record_tags", DT_STRING, 0, 0, NULL,
     "(notmuch) Tags to apply to the 'record' mailbox (sent mail)"
   },
-  { "nm_replied_tag", DT_STRING, NULL, IP "replied", 0, NULL,
+  { "nm_replied_tag", DT_STRING, IP "replied", 0, NULL,
     "(notmuch) Tag to use for replied messages"
   },
-  { "nm_unread_tag", DT_STRING, NULL, IP "unread", 0, NULL,
+  { "nm_unread_tag", DT_STRING, IP "unread", 0, NULL,
     "(notmuch) Tag to use for unread messages"
   },
-  { "vfolder_format", DT_STRING|DT_NOT_EMPTY|R_INDEX, NULL, IP "%2C %?n?%4n/&     ?%4m %f", 0, NULL,
+  { "vfolder_format", DT_STRING|DT_NOT_EMPTY|R_INDEX, IP "%2C %?n?%4n/&     ?%4m %f", 0, NULL,
     "(notmuch) printf-like format string for the browser's display of virtual folders"
   },
-  { "virtual_spool_file", DT_BOOL, NULL, false, 0, NULL,
+  { "virtual_spool_file", DT_BOOL, false, 0, NULL,
     "(notmuch) Use the first virtual mailbox as a spool file"
   },
 
-  { "nm_default_uri",    DT_SYNONYM, NULL, IP "nm_default_url",     },
-  { "virtual_spoolfile", DT_SYNONYM, NULL, IP "virtual_spool_file", },
-  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  { "nm_default_uri",    DT_SYNONYM, IP "nm_default_url",     },
+  { "virtual_spoolfile", DT_SYNONYM, IP "virtual_spool_file", },
+
+  { NULL },
   // clang-format on
 };
 

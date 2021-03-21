@@ -32,9 +32,9 @@
 
 static struct ConfigDef Vars[] = {
   // clang-format off
-  { "charset",    DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, NULL, IP "utf-8", 0, NULL, },
-  { "idn_decode", DT_BOOL,                                  NULL, true,       0, NULL, },
-  { "idn_encode", DT_BOOL,                                  NULL, true,       0, NULL, },
+  { "charset",    DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, IP "utf-8", 0, NULL, },
+  { "idn_decode", DT_BOOL,                                  true,       0, NULL, },
+  { "idn_encode", DT_BOOL,                                  true,       0, NULL, },
   { NULL },
   // clang-format on
 };

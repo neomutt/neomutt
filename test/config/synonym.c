@@ -39,21 +39,21 @@ static char *VarIlama;
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_STRING,  &VarApple,      0,               0, NULL },
-  { "Banana",     DT_SYNONYM, NULL,           IP "Apple",      0, NULL },
-  { "Cherry",     DT_STRING,  &VarCherry,     IP "cherry",     0, NULL },
-  { "Damson",     DT_SYNONYM, NULL,           IP "Cherry",     0, NULL },
-  { "Elderberry", DT_STRING,  &VarElderberry, 0,               0, NULL },
-  { "Fig",        DT_SYNONYM, NULL,           IP "Elderberry", 0, NULL },
-  { "Guava",      DT_STRING,  &VarGuava,      0,               0, NULL },
-  { "Hawthorn",   DT_SYNONYM, NULL,           IP "Guava",      0, NULL },
-  { "Ilama",      DT_STRING,  &VarIlama,      IP "iguana",     0, NULL },
-  { "Jackfruit",  DT_SYNONYM, NULL,           IP "Ilama",      0, NULL },
+  { "Apple",      DT_STRING,  0,               0, NULL, NULL, &VarApple,      },
+  { "Banana",     DT_SYNONYM, IP "Apple",      0, NULL, NULL, NULL,           },
+  { "Cherry",     DT_STRING,  IP "cherry",     0, NULL, NULL, &VarCherry,     },
+  { "Damson",     DT_SYNONYM, IP "Cherry",     0, NULL, NULL, NULL,           },
+  { "Elderberry", DT_STRING,  0,               0, NULL, NULL, &VarElderberry, },
+  { "Fig",        DT_SYNONYM, IP "Elderberry", 0, NULL, NULL, NULL,           },
+  { "Guava",      DT_STRING,  0,               0, NULL, NULL, &VarGuava,      },
+  { "Hawthorn",   DT_SYNONYM, IP "Guava",      0, NULL, NULL, NULL,           },
+  { "Ilama",      DT_STRING,  IP "iguana",     0, NULL, NULL, &VarIlama,      },
+  { "Jackfruit",  DT_SYNONYM, IP "Ilama",      0, NULL, NULL, NULL,           },
   { NULL },
 };
 
 static struct ConfigDef Vars2[] = {
-  { "Jackfruit",  DT_SYNONYM, NULL,           IP "Broken",     0, NULL },
+  { "Jackfruit",  DT_SYNONYM, IP "Broken",     0, NULL },
   { NULL },
 };
 // clang-format on

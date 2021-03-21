@@ -33,10 +33,10 @@
 
 struct ConfigDef MboxVars[] = {
   // clang-format off
-  { "check_mbox_size", DT_BOOL, NULL, false, 0, NULL,
+  { "check_mbox_size", DT_BOOL, false, 0, NULL,
     "(mbox,mmdf) Use mailbox size as an indicator of new mail"
   },
-  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  { NULL },
   // clang-format on
 };
 
