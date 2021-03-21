@@ -1114,6 +1114,9 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
         }
       }
 
+      // Use the correct name if a synonym is used
+      mutt_buffer_strcpy(buf, he->key.strkey);
+
       bq = ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD));
     }
 
