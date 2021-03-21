@@ -370,10 +370,15 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
         struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
         query_run(buf, true, &al, sub);
         menu->redraw = REDRAW_FULL;
-        if (TAILQ_EMPTY(&al))
-          break;
-
         snprintf(title, sizeof(title), "%s%s", _("Query: "), buf);
+        FREE(&menu->title);
+        menu->title = mutt_str_dup(title);
+
+        if (TAILQ_EMPTY(&al))
+        {
+          menu->max = 0;
+          break;
+        }
 
         struct Alias *tmp = NULL;
         TAILQ_FOREACH_SAFE(np, &al, entries, tmp)
