@@ -111,11 +111,11 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 
     path_destroy(cs, var, cdef);
 
-    char *str = path_tidy(value, cdef->type & DT_PATH_DIR);
+    const char *str = path_tidy(value, cdef->type & DT_PATH_DIR);
     if (!str)
       rc |= CSR_SUC_EMPTY;
 
-    *(char **) var = str;
+    *(const char **) var = str;
   }
   else
   {
@@ -123,7 +123,7 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
       FREE(&cdef->initial);
 
     cdef->type |= DT_INITIAL_SET;
-    cdef->initial = IP mutt_str_dup(value);
+    cdef->initial = (intptr_t) mutt_str_dup(value);
   }
 
   return rc;
@@ -155,7 +155,7 @@ static int path_string_get(const struct ConfigSet *cs, void *var,
 static int path_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
-  char *str = (char *) value;
+  const char *str = (const char *) value;
 
   /* Store empty paths as NULL */
   if (str && (str[0] == '\0'))

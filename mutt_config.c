@@ -738,7 +738,7 @@ struct ConfigDef MainVars[] = {
  */
 static bool config_init_main(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, MainVars, DT_NO_VARIABLE);
+  return cs_register_variables(cs, MainVars, 0);
 }
 
 /**

@@ -77,7 +77,7 @@ struct ConfigDef
   int (*validator)(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 
   const char *docs; ///< One-liner description
-  void         *var;       ///< Pointer to the global variable
+  intptr_t    var;  ///< Storage for the variable
 };
 
 /**

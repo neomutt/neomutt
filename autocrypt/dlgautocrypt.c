@@ -159,7 +159,7 @@ static void account_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
       cs_subset_string(NeoMutt->sub, "autocrypt_acct_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                       NONULL(c_autocrypt_acct_format), account_format_str,
-                      IP entry, MUTT_FORMAT_ARROWCURSOR);
+                      (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

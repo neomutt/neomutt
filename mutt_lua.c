@@ -284,13 +284,13 @@ static int lua_mutt_get(lua_State *l)
       return 1;
     }
     case DT_QUAD:
-      lua_pushinteger(l, *(unsigned char *) cdef->var);
+      lua_pushinteger(l, (unsigned char) cdef->var);
       return 1;
     case DT_NUMBER:
-      lua_pushinteger(l, (signed short) *((unsigned long *) cdef->var));
+      lua_pushinteger(l, (signed short) cdef->var);
       return 1;
     case DT_BOOL:
-      lua_pushboolean(l, *((bool *) cdef->var));
+      lua_pushboolean(l, (bool) cdef->var);
       return 1;
     default:
       luaL_error(l, "NeoMutt parameter type %d unknown for %s", cdef->type, param);

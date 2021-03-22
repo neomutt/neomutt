@@ -134,5 +134,5 @@ struct ConfigDef ConnVars[] = {
  */
 bool config_init_conn(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, ConnVars, DT_NO_VARIABLE);
+  return cs_register_variables(cs, ConnVars, 0);
 }

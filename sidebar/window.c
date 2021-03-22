@@ -458,7 +458,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width, struct SbEnt
   const char *const c_sidebar_format =
       cs_subset_string(NeoMutt->sub, "sidebar_format");
   mutt_expando_format(buf, buflen, 0, width, NONULL(c_sidebar_format),
-                      sidebar_format_str, IP sbe, MUTT_FORMAT_NO_FLAGS);
+                      sidebar_format_str, (intptr_t) sbe, MUTT_FORMAT_NO_FLAGS);
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);

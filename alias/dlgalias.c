@@ -127,7 +127,7 @@ static void alias_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
   const char *const alias_format = cs_subset_string(mdata->sub, "alias_format");
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(alias_format),
-                      alias_format_str, IP av, MUTT_FORMAT_ARROWCURSOR);
+                      alias_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

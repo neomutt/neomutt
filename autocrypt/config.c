@@ -59,5 +59,5 @@ struct ConfigDef AutocryptVars[] = {
  */
 bool config_init_autocrypt(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, AutocryptVars, DT_NO_VARIABLE);
+  return cs_register_variables(cs, AutocryptVars, 0);
 }

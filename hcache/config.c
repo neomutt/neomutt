@@ -142,5 +142,5 @@ struct ConfigDef HcacheVars[] = {
  */
 bool config_init_hcache(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, HcacheVars, DT_NO_VARIABLE);
+  return cs_register_variables(cs, HcacheVars, 0);
 }

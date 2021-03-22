@@ -73,5 +73,5 @@ struct ConfigDef PagerVars[] = {
  */
 bool config_init_pager(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, PagerVars, DT_NO_VARIABLE);
+  return cs_register_variables(cs, PagerVars, 0);
 }

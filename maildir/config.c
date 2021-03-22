@@ -68,5 +68,5 @@ struct ConfigDef MaildirVars[] = {
  */
 bool config_init_maildir(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, MaildirVars, DT_NO_VARIABLE);
+  return cs_register_variables(cs, MaildirVars, 0);
 }

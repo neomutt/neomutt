@@ -45,5 +45,5 @@ struct ConfigDef HelpbarVars[] = {
  */
 bool config_init_helpbar(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, HelpbarVars, DT_NO_VARIABLE);
+  return cs_register_variables(cs, HelpbarVars, 0);
 }

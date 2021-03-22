@@ -112,8 +112,8 @@ static int quad_string_get(const struct ConfigSet *cs, void *var,
 
   if (value >= (mutt_array_size(QuadValues) - 1))
   {
-    mutt_debug(LL_DEBUG1, "Variable has an invalid value: %d\n", value);
-    return CSR_ERR_INVALID | CSR_INV_TYPE;
+    mutt_debug(LL_DEBUG1, "Variable has an invalid value: %d\n", value); /* LCOV_EXCL_LINE */
+    return CSR_ERR_INVALID | CSR_INV_TYPE; /* LCOV_EXCL_LINE */
   }
 
   mutt_buffer_addstr(result, QuadValues[value]);

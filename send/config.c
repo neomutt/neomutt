@@ -331,5 +331,5 @@ struct ConfigDef SendVars[] = {
  */
 bool config_init_send(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, SendVars, DT_NO_VARIABLE);
+  return cs_register_variables(cs, SendVars, 0);
 }

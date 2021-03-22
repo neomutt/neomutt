@@ -295,5 +295,5 @@ struct ConfigDef NcryptVars[] = {
  */
 bool config_init_ncrypt(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, NcryptVars, DT_NO_VARIABLE);
+  return cs_register_variables(cs, NcryptVars, 0);
 }

@@ -47,13 +47,6 @@ static void string_destroy(const struct ConfigSet *cs, void *var, const struct C
   if (!*str)
     return;
 
-  /* Don't free strings from the var definition */
-  if (*(char **) var == (char *) cdef->initial)
-  {
-    *(char **) var = NULL;
-    return;
-  }
-
   FREE(var);
 }
 
@@ -98,24 +91,11 @@ static int string_string_set(const struct ConfigSet *cs, void *var, struct Confi
   }
   else
   {
-    // If we're already using the initial value, take a copy
-    // before setting the new initial value.
-    if (cdef->type & DT_NO_VARIABLE)
-    {
-      if ((char *) cdef->var == (char *) cdef->initial)
-        cdef->var = mutt_str_dup((char *) cdef->initial);
-    }
-    else
-    {
-      if (*(char **) cdef->var == (char *) cdef->initial)
-        *(char **) cdef->var = mutt_str_dup((char *) cdef->initial);
-    }
-
     if (cdef->type & DT_INITIAL_SET)
       FREE(&cdef->initial);
 
     cdef->type |= DT_INITIAL_SET;
-    cdef->initial = IP mutt_str_dup(value);
+    cdef->initial = (intptr_t) mutt_str_dup(value);
   }
 
   return rc;
@@ -241,19 +221,25 @@ static int string_reset(const struct ConfigSet *cs, void *var,
 {
   int rc = CSR_SUCCESS;
 
-  const char *str = (const char *) cdef->initial;
+  const char *str = mutt_str_dup((const char *) cdef->initial);
   if (!str)
     rc |= CSR_SUC_EMPTY;
 
   if (mutt_str_equal(str, (*(char **) var)))
+  {
+    FREE(&str);
     return rc | CSR_SUC_NO_CHANGE;
+  }
 
   if (cdef->validator)
   {
     rc = cdef->validator(cs, cdef, cdef->initial, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
+    {
+      FREE(&str);
       return rc | CSR_INV_VALIDATOR;
+    }
   }
 
   string_destroy(cs, var, cdef);

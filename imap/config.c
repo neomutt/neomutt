@@ -141,5 +141,5 @@ struct ConfigDef ImapVars[] = {
  */
 bool config_init_imap(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, ImapVars, DT_NO_VARIABLE);
+  return cs_register_variables(cs, ImapVars, 0);
 }

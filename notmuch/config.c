@@ -91,5 +91,5 @@ struct ConfigDef NotmuchVars[] = {
  */
 bool config_init_notmuch(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, NotmuchVars, DT_NO_VARIABLE);
+  return cs_register_variables(cs, NotmuchVars, 0);
 }
