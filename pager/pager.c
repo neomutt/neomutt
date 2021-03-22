@@ -180,7 +180,7 @@ struct PagerRedrawData
   bool search_compiled;
   PagerFlags search_flag;
   bool search_back;
-  char *searchbuf;
+  char searchbuf[256];
   struct Line *line_info;
   FILE *fp;
   struct stat sb;
@@ -2392,8 +2392,6 @@ int mutt_pager(struct PagerView *pview)
 
   struct Menu *pager_menu = NULL;
   struct PagerRedrawData rd = { 0 };
-  static char searchbuf[256] = { 0 };
-
   char buf[1024] = { 0 };
   int ch = 0;
   int rc = -1;
@@ -2456,7 +2454,6 @@ int mutt_pager(struct PagerView *pview)
   rd.pview = pview;
   rd.indexlen = c_pager_index_lines;
   rd.indicator = rd.indexlen / 3;
-  rd.searchbuf = searchbuf;
   rd.max_line = LINES; // number of lines on screen, from curses
   rd.line_info = mutt_mem_calloc(rd.max_line, sizeof(struct Line));
   rd.fp = fopen(pview->pdata->fname, "r");
@@ -2916,7 +2913,7 @@ int mutt_pager(struct PagerView *pview)
 
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
-        mutt_str_copy(buf, searchbuf, sizeof(buf));
+        mutt_str_copy(buf, rd.searchbuf, sizeof(buf));
         if (mutt_get_field(((ch == OP_SEARCH) || (ch == OP_SEARCH_NEXT)) ?
                                _("Search for: ") :
                                _("Reverse search for: "),
@@ -2926,7 +2923,7 @@ int mutt_pager(struct PagerView *pview)
           break;
         }
 
-        if (strcmp(buf, searchbuf) == 0)
+        if (strcmp(buf, rd.searchbuf) == 0)
         {
           if (rd.search_compiled)
           {
@@ -2944,7 +2941,7 @@ int mutt_pager(struct PagerView *pview)
         if (buf[0] == '\0')
           break;
 
-        mutt_str_copy(searchbuf, buf, sizeof(searchbuf));
+        mutt_str_copy(rd.searchbuf, buf, sizeof(rd.searchbuf));
 
         /* leave search_back alone if ch == OP_SEARCH_NEXT */
         if (ch == OP_SEARCH)
@@ -2962,8 +2959,8 @@ int mutt_pager(struct PagerView *pview)
           }
         }
 
-        uint16_t rflags = mutt_mb_is_lower(searchbuf) ? REG_ICASE : 0;
-        int err = REG_COMP(&rd.search_re, searchbuf, REG_NEWLINE | rflags);
+        uint16_t rflags = mutt_mb_is_lower(rd.searchbuf) ? REG_ICASE : 0;
+        int err = REG_COMP(&rd.search_re, rd.searchbuf, REG_NEWLINE | rflags);
         if (err != 0)
         {
           regerror(err, &rd.search_re, buf, sizeof(buf));
