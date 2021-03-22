@@ -120,6 +120,7 @@ enum PagerMode
   PAGER_MODE_EMAIL,       ///< Pager is invoked via 1st path. The mime part is selected automatically
   PAGER_MODE_ATTACH,      ///< Pager is invoked via 2nd path. A user-selected attachment (mime part or a nested email) will be shown
   PAGER_MODE_ATTACH_E,    ///< A special case of PAGER_MODE_ATTACH - attachment is a full-blown email message
+  PAGER_MODE_HELP,        ///< Pager is invoked via 3rd path to show help.
   PAGER_MODE_OTHER,       ///< Pager is invoked via 3rd path. Non-email content is likely to be shown
 
   PAGER_MODE_MAX,         ///< Another invalid mode, should never be used
