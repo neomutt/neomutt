@@ -403,7 +403,7 @@ void mutt_help(enum MenuType menu)
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
-  pview.mode = PAGER_MODE_OTHER;
+  pview.mode = PAGER_MODE_HELP;
   pview.flags = MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER | MUTT_PAGER_NSKIP | MUTT_PAGER_NOWRAP;
 
   do
