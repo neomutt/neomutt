@@ -705,7 +705,9 @@ void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
    * in reverse order so they're forwards */
   short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   c_sort ^= SORT_REVERSE;
+  bool oldresort = OptNeedResort;
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
+  OptNeedResort = oldresort;
   if (compare_threads(NULL, NULL) == 0)
     return;
 
@@ -817,8 +819,10 @@ void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
       }
       else
       {
+        oldresort = OptNeedResort;
         c_sort ^= SORT_REVERSE;
         cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
+        OptNeedResort = oldresort;
         FREE(&array);
         tctx->tree = top;
         return;
@@ -894,7 +898,9 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
   oldsort = c_sort;
   c_sort = c_sort_aux;
+  bool oldresort = OptNeedResort;
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
+  OptNeedResort = oldresort;
 
   if (!tctx->hash)
     init = true;
@@ -1113,7 +1119,9 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
     mutt_sort_subthreads(tctx, init);
 
     /* restore the oldsort order. */
+    oldresort = OptNeedResort;
     cs_subset_str_native_set(NeoMutt->sub, "sort", oldsort, NULL);
+    OptNeedResort = oldresort;
 
     /* Put the list into an array. */
     linearize_tree(tctx);
