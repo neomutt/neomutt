@@ -2295,6 +2295,42 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 }
 
 /**
+ * pager_resolve_help_mapping - determine help mapping based on pager mode and
+ * mailbox type
+ * @param mode pager mode
+ * @param type mailbox type
+ */
+static const struct Mapping *pager_resolve_help_mapping(enum PagerMode mode, enum MailboxType type)
+{
+  const struct Mapping *result;
+  switch (mode)
+  {
+    case PAGER_MODE_EMAIL:
+    case PAGER_MODE_ATTACH:
+    case PAGER_MODE_ATTACH_E:
+      if (type == MUTT_NNTP)
+        result = PagerNewsHelp;
+      else
+        result = PagerNormalHelp;
+      break;
+
+    case PAGER_MODE_OTHER:
+      if (InHelp)
+        result = PagerHelpHelp;
+      else
+        result = PagerHelp;
+      break;
+
+    case PAGER_MODE_UNKNOWN:
+    case PAGER_MODE_MAX:
+    default:
+      assert(false); // something went really wrong
+  }
+  assert(result);
+  return result;
+}
+
+/**
  * mutt_pager - Display a an email, attachment, or help, in a window
  * @param data  Data to display
  * @param view  Pager view settings
@@ -2401,7 +2437,7 @@ int mutt_pager(struct PagerView *pview)
   int old_PagerIndexLines = index_space; // some people want to resize it while inside the pager
   bool first = true;
   bool wrapped = false;
-
+  enum MailboxType mailbox_type = m ? m->type : MUTT_UNKNOWN;
 #ifdef USE_NNTP
   char *followup_to = NULL;
 #endif
@@ -2416,38 +2452,7 @@ int mutt_pager(struct PagerView *pview)
     mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
   }
   //---------- setup help menu ------------------------------------------------
-
-  switch (pview->mode)
-  {
-    case PAGER_MODE_EMAIL:
-    case PAGER_MODE_ATTACH:
-    case PAGER_MODE_ATTACH_E:
-#ifdef USE_NNTP
-      if (m && (m->type == MUTT_NNTP))
-      {
-        pview->win_pager->help_data = PagerNewsHelp;
-      }
-      else
-#endif
-      {
-        pview->win_pager->help_data = PagerNormalHelp;
-      }
-      break;
-
-    case PAGER_MODE_OTHER:
-      if (InHelp)
-        pview->win_pager->help_data = PagerHelpHelp;
-      else
-        pview->win_pager->help_data = PagerHelp;
-      break;
-
-    case PAGER_MODE_UNKNOWN:
-    case PAGER_MODE_MAX:
-    default:
-      // should be impossible
-      assert(false);
-  }
-
+  pview->win_pager->help_data = pager_resolve_help_mapping(pview->mode, mailbox_type);
   pview->win_pager->help_menu = MENU_PAGER;
 
   //---------- initialize redraw pdata  -----------------------------------------
