@@ -28,21 +28,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 
-static bool VarApple;
-static bool VarBanana;
-static short VarCherry;
-static struct Address *VarElderberry;
-static char *VarFig;
-static long VarGuava;
-static short VarHawthorn;
-static struct MbTable *VarIlama;
-static char *VarJackfruit;
-static char VarKumquat;
-static struct Regex *VarLemon;
-static short VarMango;
-static char *VarNectarine;
-static char *VarOlive;
-
 // clang-format off
 static struct Mapping MboxTypeMap[] = {
   { "mbox",    MUTT_MBOX,    },
@@ -81,21 +66,21 @@ static struct EnumDef MboxTypeDef = {
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_BOOL,                           false,                       0,                   NULL, NULL, &VarApple,      },
-  { "Banana",     DT_BOOL,                           true,                        0,                   NULL, NULL, &VarBanana,     },
-  { "Cherry",     DT_NUMBER,                         0,                           0,                   NULL, NULL, &VarCherry,     },
-  { "Damson",     DT_SYNONYM,                        IP "Cherry",                 0,                   NULL, NULL, NULL,           },
-  { "Elderberry", DT_ADDRESS,                        IP "elderberry@example.com", 0,                   NULL, NULL, &VarElderberry, },
-  { "Fig",        DT_STRING|DT_COMMAND|DT_NOT_EMPTY, IP "fig",                    0,                   NULL, NULL, &VarFig,        },
-  { "Guava",      DT_LONG,                           0,                           0,                   NULL, NULL, &VarGuava,      },
-  { "Hawthorn",   DT_ENUM,                           2,                           IP &MboxTypeDef,     NULL, NULL, &VarHawthorn,   },
-  { "Ilama",      DT_MBTABLE,                        0,                           0,                   NULL, NULL, &VarIlama,      },
-  { "Jackfruit",  DT_PATH|DT_PATH_FILE,              IP "/etc/passwd",            0,                   NULL, NULL, &VarJackfruit,  },
-  { "Kumquat",    DT_QUAD,                           0,                           0,                   NULL, NULL, &VarKumquat,    },
-  { "Lemon",      DT_REGEX,                          0,                           0,                   NULL, NULL, &VarLemon,      },
-  { "Mango",      DT_SORT,                           1,                           IP SortMangoMethods, NULL, NULL, &VarMango,      },
-  { "Nectarine",  DT_STRING|DT_SENSITIVE,            IP "nectarine",              0,                   NULL, NULL, &VarNectarine,  },
-  { "Olive",      DT_SLIST,                          IP "olive",                  IP "olive",          NULL, NULL, &VarOlive,      },
+  { "Apple",      DT_BOOL,                           false,                       0,                   NULL, },
+  { "Banana",     DT_BOOL,                           true,                        0,                   NULL, },
+  { "Cherry",     DT_NUMBER,                         0,                           0,                   NULL, },
+  { "Damson",     DT_SYNONYM,                        IP "Cherry",                 0,                   NULL, },
+  { "Elderberry", DT_ADDRESS,                        IP "elderberry@example.com", 0,                   NULL, },
+  { "Fig",        DT_STRING|DT_COMMAND|DT_NOT_EMPTY, IP "fig",                    0,                   NULL, },
+  { "Guava",      DT_LONG,                           0,                           0,                   NULL, },
+  { "Hawthorn",   DT_ENUM,                           2,                           IP &MboxTypeDef,     NULL, },
+  { "Ilama",      DT_MBTABLE,                        IP "abcdef",                 0,                   NULL, },
+  { "Jackfruit",  DT_PATH|DT_PATH_FILE,              IP "/etc/passwd",            0,                   NULL, },
+  { "Kumquat",    DT_QUAD,                           0,                           0,                   NULL, },
+  { "Lemon",      DT_REGEX,                          0,                           0,                   NULL, },
+  { "Mango",      DT_SORT,                           1,                           IP SortMangoMethods, NULL, },
+  { "Nectarine",  DT_STRING|DT_SENSITIVE,            IP "nectarine",              0,                   NULL, },
+  { "Olive",      DT_SLIST,                          IP "olive",                  IP "olive",          NULL, },
   { NULL },
 };
 // clang-format on
@@ -143,7 +128,10 @@ void test_config_helpers(void)
 
   TEST_CHECK(cs_subset_address(sub, "Elderberry") != NULL);
   TEST_CHECK(cs_subset_bool(sub, "Apple") == false);
+  TEST_CHECK(cs_subset_enum(sub, "Hawthorn") == 2);
   TEST_CHECK(cs_subset_long(sub, "Guava") == 0);
+  TEST_CHECK(
+      mutt_str_equal(cs_subset_mbtable(sub, "Ilama")->orig_str, "abcdef"));
   TEST_CHECK(cs_subset_number(sub, "Cherry") == 0);
   TEST_CHECK(mutt_str_equal(cs_subset_path(sub, "Jackfruit"), "/etc/passwd"));
   TEST_CHECK(cs_subset_quad(sub, "Kumquat") == 0);

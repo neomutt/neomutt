@@ -29,24 +29,22 @@
 #include "config/common.h"
 #include "config/lib.h"
 #include "core/lib.h"
-
-static char *VarApple;
-static char *VarBanana;
-static char *VarCherry;
+#include "test_common.h"
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",  DT_STRING, IP "apple", 0, NULL, NULL, &VarApple,  },
-  { "Banana", DT_STRING, 0,          0, NULL, NULL, &VarBanana, },
-  { "Cherry", DT_STRING, 0,          0, NULL, NULL, &VarCherry, },
+  { "Apple",  DT_STRING, IP "apple", 0, NULL, },
+  { "Banana", DT_STRING, 0,          0, NULL, },
+  { "Cherry", DT_STRING, 0,          0, NULL, },
   { NULL },
 };
 // clang-format on
 
-static bool test_set_initial(struct ConfigSet *cs, struct Buffer *err)
+static bool test_set_initial(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
   const char *name = NULL;
+  struct ConfigSet *cs = sub->cs;
 
   name = "Apple";
   struct HashElem *he_a = cs_get_elem(cs, name);
@@ -56,7 +54,7 @@ static bool test_set_initial(struct ConfigSet *cs, struct Buffer *err)
   const char *aval = "pie";
   int rc = cs_he_initial_set(cs, he_a, aval, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
-    TEST_MSG("Expected error: %s\n", err->data);
+    TEST_MSG("Expected error: %s\n", mutt_buffer_string(err));
 
   name = "Banana";
   struct HashElem *he_b = cs_get_elem(cs, name);
@@ -78,6 +76,10 @@ static bool test_set_initial(struct ConfigSet *cs, struct Buffer *err)
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
 
+  const char *VarApple = cs_subset_string(sub, "Apple");
+  const char *VarBanana = cs_subset_string(sub, "Banana");
+  const char *VarCherry = cs_subset_string(sub, "Cherry");
+
   TEST_MSG("Apple = %s\n", VarApple);
   TEST_MSG("Banana = %s\n", VarBanana);
   TEST_MSG("Cherry = %s\n", VarCherry);
@@ -91,32 +93,25 @@ void test_config_initial(void)
 {
   log_line(__func__);
 
-  struct Buffer err;
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = mutt_mem_calloc(1, err.dsize);
-  mutt_buffer_reset(&err);
+  NeoMutt = test_neomutt_create();
+  struct ConfigSubset *sub = NeoMutt->sub;
+  struct ConfigSet *cs = sub->cs;
 
-  struct ConfigSet *cs = cs_new(30);
-  NeoMutt = neomutt_new(cs);
-
-  cs_register_type(cs, &cst_string);
-  if (!cs_register_variables(cs, Vars, 0))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars, 0)))
     return;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 
   set_list(cs);
 
-  if (!TEST_CHECK(test_set_initial(cs, &err)))
+  struct Buffer *err = mutt_buffer_pool_get();
+  if (!TEST_CHECK(test_set_initial(sub, err)))
   {
-    neomutt_free(&NeoMutt);
-    cs_free(&cs);
-    FREE(&err.data);
+    test_neomutt_destroy(&NeoMutt);
+    mutt_buffer_pool_release(&err);
     return;
   }
 
-  neomutt_free(&NeoMutt);
-  cs_free(&cs);
-  FREE(&err.data);
+  test_neomutt_destroy(&NeoMutt);
+  mutt_buffer_pool_release(&err);
 }

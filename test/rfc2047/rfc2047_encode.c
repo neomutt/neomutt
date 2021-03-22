@@ -44,7 +44,7 @@ void test_rfc2047_encode(void)
   // void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
 
   NeoMutt = test_neomutt_create();
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_VARIABLE));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
   {
     rfc2047_encode(NULL, AddressSpecials, 0, "apple");

@@ -46,7 +46,7 @@ void test_account_mailbox_remove(void)
 
   {
     NeoMutt = test_neomutt_create();
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_VARIABLE));
+    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
     struct ConfigSubset *sub = cs_subset_new("account", NULL, NULL);
     struct Account *a = account_new("dummy", sub);

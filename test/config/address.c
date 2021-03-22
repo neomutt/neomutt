@@ -32,51 +32,39 @@
 #include "config/common.h"
 #include "config/lib.h"
 #include "core/lib.h"
-
-static struct Address *VarApple;
-static struct Address *VarBanana;
-static struct Address *VarCherry;
-static struct Address *VarDamson;
-static struct Address *VarElderberry;
-static struct Address *VarFig;
-static struct Address *VarGuava;
-static struct Address *VarHawthorn;
-static struct Address *VarIlama;
-static struct Address *VarJackfruit;
-static struct Address *VarKumquat;
-static struct Address *VarLemon;
-static struct Address *VarMango;
-static struct Address *VarNectarine;
-static struct Address *VarOlive;
-static struct Address *VarPapaya;
-static struct Address *VarQuince;
+#include "test_common.h"
 
 // clang-format off
-static struct ConfigDef Vars[] = {
-  { "Apple",      DT_ADDRESS, IP "apple@example.com",      0, NULL,              NULL, &VarApple,      }, /* test_initial_values */
-  { "Banana",     DT_ADDRESS, IP "banana@example.com",     0, NULL,              NULL, &VarBanana,     },
-  { "Cherry",     DT_ADDRESS, IP "cherry@example.com",     0, NULL,              NULL, &VarCherry,     },
-  { "Damson",     DT_ADDRESS, 0,                           0, NULL,              NULL, &VarDamson,     }, /* test_address_set */
-  { "Elderberry", DT_ADDRESS, IP "elderberry@example.com", 0, NULL,              NULL, &VarElderberry, },
-  { "Fig",        DT_ADDRESS, 0,                           0, NULL,              NULL, &VarFig,        }, /* test_address_get */
-  { "Guava",      DT_ADDRESS, IP "guava@example.com",      0, NULL,              NULL, &VarGuava,      },
-  { "Hawthorn",   DT_ADDRESS, 0,                           0, NULL,              NULL, &VarHawthorn,   },
-  { "Ilama",      DT_ADDRESS, 0,                           0, NULL,              NULL, &VarIlama,      }, /* test_native_set */
-  { "Jackfruit",  DT_ADDRESS, IP "jackfruit@example.com",  0, NULL,              NULL, &VarJackfruit,  },
-  { "Kumquat",    DT_ADDRESS, 0,                           0, NULL,              NULL, &VarKumquat,    }, /* test_native_get */
-  { "Lemon",      DT_ADDRESS, IP "lemon@example.com",      0, NULL,              NULL, &VarLemon,      }, /* test_reset */
-  { "Mango",      DT_ADDRESS, IP "mango@example.com",      0, validator_fail,    NULL, &VarMango,      },
-  { "Nectarine",  DT_ADDRESS, IP "nectarine@example.com",  0, validator_succeed, NULL, &VarNectarine,  }, /* test_validator */
-  { "Olive",      DT_ADDRESS, IP "olive@example.com",      0, validator_warn,    NULL, &VarOlive,      },
-  { "Papaya",     DT_ADDRESS, IP "papaya@example.com",     0, validator_fail,    NULL, &VarPapaya,     },
-  { "Quince",     DT_ADDRESS, 0,                           0, NULL,              NULL, &VarQuince,     }, /* test_inherit */
+struct ConfigDef Vars[] = {
+  { "Apple",      DT_ADDRESS, IP "apple@example.com",      0, NULL,              }, /* test_initial_values */
+  { "Banana",     DT_ADDRESS, IP "banana@example.com",     0, NULL,              },
+  { "Cherry",     DT_ADDRESS, IP "cherry@example.com",     0, NULL,              },
+  { "Damson",     DT_ADDRESS, 0,                           0, NULL,              }, /* test_address_set */
+  { "Elderberry", DT_ADDRESS, IP "elderberry@example.com", 0, NULL,              },
+  { "Fig",        DT_ADDRESS, 0,                           0, NULL,              }, /* test_address_get */
+  { "Guava",      DT_ADDRESS, IP "guava@example.com",      0, NULL,              },
+  { "Hawthorn",   DT_ADDRESS, 0,                           0, NULL,              },
+  { "Ilama",      DT_ADDRESS, 0,                           0, NULL,              }, /* test_native_set */
+  { "Jackfruit",  DT_ADDRESS, IP "jackfruit@example.com",  0, NULL,              },
+  { "Kumquat",    DT_ADDRESS, 0,                           0, NULL,              }, /* test_native_get */
+  { "Lemon",      DT_ADDRESS, IP "lemon@example.com",      0, NULL,              }, /* test_reset */
+  { "Mango",      DT_ADDRESS, IP "mango@example.com",      0, validator_fail,    },
+  { "Nectarine",  DT_ADDRESS, IP "nectarine@example.com",  0, validator_succeed, }, /* test_validator */
+  { "Olive",      DT_ADDRESS, IP "olive@example.com",      0, validator_warn,    },
+  { "Papaya",     DT_ADDRESS, IP "papaya@example.com",     0, validator_fail,    },
+  { "Quince",     DT_ADDRESS, 0,                           0, NULL,              }, /* test_inherit */
   { NULL },
 };
 // clang-format on
 
-static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
+static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
+  struct ConfigSet *cs = sub->cs;
+
+  const struct Address *VarApple = cs_subset_address(sub, "Apple");
+  const struct Address *VarBanana = cs_subset_address(sub, "Banana");
+
   TEST_MSG("Apple = '%s'\n", VarApple->mailbox);
   TEST_MSG("Banana = '%s'\n", VarBanana->mailbox);
 
@@ -98,104 +86,100 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
   cs_str_string_set(cs, "Apple", "granny@smith.com", err);
   cs_str_string_set(cs, "Banana", NULL, err);
 
-  struct Buffer value;
-  mutt_buffer_init(&value);
-  value.dsize = 256;
-  value.data = mutt_mem_calloc(1, value.dsize);
-  mutt_buffer_reset(&value);
+  VarApple = cs_subset_address(sub, "Apple");
+  VarBanana = cs_subset_address(sub, "Banana");
+
+  struct Buffer *value = mutt_buffer_pool_get();
 
   int rc;
 
-  mutt_buffer_reset(&value);
-  rc = cs_str_initial_get(cs, "Apple", &value);
+  mutt_buffer_reset(value);
+  rc = cs_str_initial_get(cs, "Apple", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", value.data);
-    FREE(&value.data);
+    TEST_MSG("%s\n", mutt_buffer_string(value));
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(value.data, apple_orig)))
+  if (!TEST_CHECK(mutt_str_equal(mutt_buffer_string(value), apple_orig)))
   {
-    TEST_MSG("Apple's initial value is wrong: '%s'\n", value.data);
-    FREE(&value.data);
+    TEST_MSG("Apple's initial value is wrong: '%s'\n", mutt_buffer_string(value));
     return false;
   }
   TEST_MSG("Apple = '%s'\n", VarApple->mailbox);
-  TEST_MSG("Apple's initial value is '%s'\n", value.data);
+  TEST_MSG("Apple's initial value is '%s'\n", mutt_buffer_string(value));
 
-  mutt_buffer_reset(&value);
-  rc = cs_str_initial_get(cs, "Banana", &value);
+  mutt_buffer_reset(value);
+  rc = cs_str_initial_get(cs, "Banana", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", value.data);
-    FREE(&value.data);
+    TEST_MSG("%s\n", mutt_buffer_string(value));
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(value.data, banana_orig)))
+  if (!TEST_CHECK(mutt_str_equal(mutt_buffer_string(value), banana_orig)))
   {
-    TEST_MSG("Banana's initial value is wrong: '%s'\n", value.data);
-    FREE(&value.data);
+    TEST_MSG("Banana's initial value is wrong: '%s'\n", mutt_buffer_string(value));
     return false;
   }
   TEST_MSG("Banana = '%s'\n", VarBanana ? VarBanana->mailbox : "");
-  TEST_MSG("Banana's initial value is '%s'\n", NONULL(value.data));
+  TEST_MSG("Banana's initial value is '%s'\n", NONULL(mutt_buffer_string(value)));
 
-  mutt_buffer_reset(&value);
-  rc = cs_str_initial_set(cs, "Cherry", "john@doe.com", &value);
+  mutt_buffer_reset(value);
+  rc = cs_str_initial_set(cs, "Cherry", "john@doe.com", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", value.data);
-    FREE(&value.data);
+    TEST_MSG("%s\n", mutt_buffer_string(value));
     return false;
   }
 
-  mutt_buffer_reset(&value);
-  rc = cs_str_initial_set(cs, "Cherry", "jane@doe.com", &value);
+  mutt_buffer_reset(value);
+  rc = cs_str_initial_set(cs, "Cherry", "jane@doe.com", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", value.data);
-    FREE(&value.data);
+    TEST_MSG("%s\n", mutt_buffer_string(value));
     return false;
   }
 
-  mutt_buffer_reset(&value);
-  rc = cs_str_initial_get(cs, "Cherry", &value);
+  mutt_buffer_reset(value);
+  rc = cs_str_initial_get(cs, "Cherry", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", value.data);
-    FREE(&value.data);
+    TEST_MSG("%s\n", mutt_buffer_string(value));
     return false;
   }
 
+  const struct Address *VarCherry = cs_subset_address(sub, "Cherry");
   TEST_MSG("Cherry = '%s'\n", VarCherry ? VarCherry->mailbox : "");
-  TEST_MSG("Cherry's initial value is '%s'\n", NONULL(value.data));
+  TEST_MSG("Cherry's initial value is '%s'\n", NONULL(mutt_buffer_string(value)));
 
-  FREE(&value.data);
+  mutt_buffer_pool_release(&value);
   log_line(__func__);
   return true;
 }
 
-static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
+static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
+  struct ConfigSet *cs = sub->cs;
 
   const char *valid[] = { "hello@example.com", "world@example.com", NULL };
   const char *name = "Damson";
   char *addr = NULL;
 
   int rc;
+  const struct Address *VarDamson = NULL;
   for (unsigned int i = 0; i < mutt_array_size(valid); i++)
   {
     mutt_buffer_reset(err);
     rc = cs_str_string_set(cs, name, valid[i], err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
-      TEST_MSG("%s\n", err->data);
+      TEST_MSG("%s\n", mutt_buffer_string(err));
       return false;
     }
 
+    VarDamson = cs_subset_address(sub, "Damson");
     addr = VarDamson ? VarDamson->mailbox : NULL;
     if (!TEST_CHECK(mutt_str_equal(addr, valid[i])))
     {
@@ -212,10 +196,11 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     rc = cs_str_string_set(cs, name, valid[i], err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
-      TEST_MSG("%s\n", err->data);
+      TEST_MSG("%s\n", mutt_buffer_string(err));
       return false;
     }
 
+    const struct Address *VarElderberry = cs_subset_address(sub, "Elderberry");
     addr = VarElderberry ? VarElderberry->mailbox : NULL;
     if (!TEST_CHECK(mutt_str_equal(addr, valid[i])))
     {
@@ -229,9 +214,10 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
-static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
+static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
+  struct ConfigSet *cs = sub->cs;
   const char *name = "Fig";
   char *addr = NULL;
 
@@ -239,22 +225,24 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
   int rc = cs_str_string_get(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Get failed: %s\n", err->data);
+    TEST_MSG("Get failed: %s\n", mutt_buffer_string(err));
     return false;
   }
+  const struct Address *VarFig = cs_subset_address(sub, "Fig");
   addr = VarFig ? VarFig->mailbox : NULL;
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(addr), err->data);
+  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(addr), mutt_buffer_string(err));
 
   name = "Guava";
   mutt_buffer_reset(err);
   rc = cs_str_string_get(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Get failed: %s\n", err->data);
+    TEST_MSG("Get failed: %s\n", mutt_buffer_string(err));
     return false;
   }
+  const struct Address *VarGuava = cs_subset_address(sub, "Guava");
   addr = VarGuava ? VarGuava->mailbox : NULL;
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(addr), err->data);
+  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(addr), mutt_buffer_string(err));
 
   name = "Hawthorn";
   rc = cs_str_string_set(cs, name, "hawthorn", err);
@@ -265,19 +253,21 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_string_get(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Get failed: %s\n", err->data);
+    TEST_MSG("Get failed: %s\n", mutt_buffer_string(err));
     return false;
   }
+  const struct Address *VarHawthorn = cs_subset_address(sub, "Hawthorn");
   addr = VarHawthorn ? VarHawthorn->mailbox : NULL;
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(addr), err->data);
+  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(addr), mutt_buffer_string(err));
 
   log_line(__func__);
   return true;
 }
 
-static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
+static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
+  struct ConfigSet *cs = sub->cs;
 
   struct Address *a = address_new("hello@example.com");
   const char *name = "Ilama";
@@ -288,10 +278,11 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   int rc = cs_str_native_set(cs, name, (intptr_t) a, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     goto tbns_out;
   }
 
+  const struct Address *VarIlama = cs_subset_address(sub, "Ilama");
   addr = VarIlama ? VarIlama->mailbox : NULL;
   if (!TEST_CHECK(mutt_str_equal(addr, a->mailbox)))
   {
@@ -305,10 +296,11 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_native_set(cs, name, 0, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     goto tbns_out;
   }
 
+  const struct Address *VarJackfruit = cs_subset_address(sub, "Jackfruit");
   if (!TEST_CHECK(VarJackfruit == NULL))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
@@ -324,9 +316,10 @@ tbns_out:
   return result;
 }
 
-static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
+static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
+  struct ConfigSet *cs = sub->cs;
   const char *name = "Kumquat";
 
   if (!TEST_CHECK(cs_str_string_set(cs, name, "kumquat@example.com", err) != INT_MIN))
@@ -336,9 +329,10 @@ static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
   intptr_t value = cs_str_native_get(cs, name, err);
   struct Address *a = (struct Address *) value;
 
+  const struct Address *VarKumquat = cs_subset_address(sub, "Kumquat");
   if (!TEST_CHECK(VarKumquat == a))
   {
-    TEST_MSG("Get failed: %s\n", err->data);
+    TEST_MSG("Get failed: %s\n", mutt_buffer_string(err));
     return false;
   }
   char *addr1 = VarKumquat ? VarKumquat->mailbox : NULL;
@@ -349,29 +343,33 @@ static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
-static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
+static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
+  struct ConfigSet *cs = sub->cs;
 
   const char *name = "Lemon";
 
   mutt_buffer_reset(err);
 
+  const struct Address *VarLemon = cs_subset_address(sub, "Lemon");
   char *addr = VarLemon ? VarLemon->mailbox : NULL;
   TEST_MSG("Initial: %s = '%s'\n", name, NONULL(addr));
   int rc = cs_str_string_set(cs, name, "hello@example.com", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
+  VarLemon = cs_subset_address(sub, "Lemon");
   addr = VarLemon ? VarLemon->mailbox : NULL;
   TEST_MSG("Set: %s = '%s'\n", name, NONULL(addr));
 
   rc = cs_str_reset(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     return false;
   }
 
+  VarLemon = cs_subset_address(sub, "Lemon");
   addr = VarLemon ? VarLemon->mailbox : NULL;
   if (!TEST_CHECK(mutt_str_equal(addr, "lemon@example.com")))
   {
@@ -384,25 +382,28 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   name = "Mango";
   mutt_buffer_reset(err);
 
+  const struct Address *VarMango = cs_subset_address(sub, "Mango");
   TEST_MSG("Initial: %s = '%s'\n", name, VarMango->mailbox);
   dont_fail = true;
   rc = cs_str_string_set(cs, name, "john@example.com", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
+  VarMango = cs_subset_address(sub, "Mango");
   TEST_MSG("Set: %s = '%s'\n", name, VarMango->mailbox);
   dont_fail = false;
 
   rc = cs_str_reset(cs, name, err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", err->data);
+    TEST_MSG("Expected error: %s\n", mutt_buffer_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     return false;
   }
 
+  VarMango = cs_subset_address(sub, "Mango");
   if (!TEST_CHECK(mutt_str_equal(VarMango->mailbox, "john@example.com")))
   {
     TEST_MSG("Value of %s changed\n", name);
@@ -415,9 +416,10 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
-static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
+static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
+  struct ConfigSet *cs = sub->cs;
 
   char *addr = NULL;
   struct Address *a = address_new("world@example.com");
@@ -428,13 +430,14 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   int rc = cs_str_string_set(cs, name, "hello@example.com", err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     goto tv_out;
   }
+  const struct Address *VarNectarine = cs_subset_address(sub, "Nectarine");
   addr = VarNectarine ? VarNectarine->mailbox : NULL;
   TEST_MSG("Address: %s = %s\n", name, NONULL(addr));
 
@@ -442,13 +445,14 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_native_set(cs, name, IP a, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     goto tv_out;
   }
+  VarNectarine = cs_subset_address(sub, "Nectarine");
   addr = VarNectarine ? VarNectarine->mailbox : NULL;
   TEST_MSG("Native: %s = %s\n", name, NONULL(addr));
 
@@ -457,13 +461,14 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_string_set(cs, name, "hello@example.com", err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     goto tv_out;
   }
+  const struct Address *VarOlive = cs_subset_address(sub, "Olive");
   addr = VarOlive ? VarOlive->mailbox : NULL;
   TEST_MSG("Address: %s = %s\n", name, NONULL(addr));
 
@@ -471,13 +476,14 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_native_set(cs, name, IP a, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     goto tv_out;
   }
+  VarOlive = cs_subset_address(sub, "Olive");
   addr = VarOlive ? VarOlive->mailbox : NULL;
   TEST_MSG("Native: %s = %s\n", name, NONULL(addr));
 
@@ -486,13 +492,14 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_string_set(cs, name, "hello@example.com", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", err->data);
+    TEST_MSG("Expected error: %s\n", mutt_buffer_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     goto tv_out;
   }
+  const struct Address *VarPapaya = cs_subset_address(sub, "Papaya");
   addr = VarPapaya ? VarPapaya->mailbox : NULL;
   TEST_MSG("Address: %s = %s\n", name, NONULL(addr));
 
@@ -500,13 +507,14 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_native_set(cs, name, IP a, err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", err->data);
+    TEST_MSG("Expected error: %s\n", mutt_buffer_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     goto tv_out;
   }
+  VarPapaya = cs_subset_address(sub, "Papaya");
   addr = VarPapaya ? VarPapaya->mailbox : NULL;
   TEST_MSG("Native: %s = %s\n", name, NONULL(addr));
 
@@ -549,7 +557,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   struct HashElem *he = cs_subset_create_inheritance(a->sub, parent);
   if (!he)
   {
-    TEST_MSG("Error: %s\n", err->data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     goto ti_out;
   }
 
@@ -558,7 +566,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   int rc = cs_str_string_set(cs, parent, "hello@example.com", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", err->data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     goto ti_out;
   }
   dump_native(cs, parent, child);
@@ -568,7 +576,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_string_set(cs, child, "world@example.com", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", err->data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     goto ti_out;
   }
   dump_native(cs, parent, child);
@@ -578,7 +586,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_reset(cs, child, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", err->data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     goto ti_out;
   }
   dump_native(cs, parent, child);
@@ -588,7 +596,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_reset(cs, parent, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", err->data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     goto ti_out;
   }
   dump_native(cs, parent, child);
@@ -603,18 +611,12 @@ ti_out:
 
 void test_config_address(void)
 {
-  struct Buffer err;
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = mutt_mem_calloc(1, err.dsize);
-  mutt_buffer_reset(&err);
+  NeoMutt = test_neomutt_create();
+  struct ConfigSubset *sub = NeoMutt->sub;
+  struct ConfigSet *cs = sub->cs;
 
-  struct ConfigSet *cs = cs_new(30);
-  NeoMutt = neomutt_new(cs);
-
-  cs_register_type(cs, &cst_address);
   dont_fail = true;
-  if (!cs_register_variables(cs, Vars, 0))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars, 0)))
     return;
   dont_fail = false;
 
@@ -622,16 +624,16 @@ void test_config_address(void)
 
   set_list(cs);
 
-  TEST_CHECK(test_initial_values(cs, &err));
-  TEST_CHECK(test_string_set(cs, &err));
-  TEST_CHECK(test_string_get(cs, &err));
-  TEST_CHECK(test_native_set(cs, &err));
-  TEST_CHECK(test_native_get(cs, &err));
-  TEST_CHECK(test_reset(cs, &err));
-  TEST_CHECK(test_validator(cs, &err));
-  TEST_CHECK(test_inherit(cs, &err));
+  struct Buffer *err = mutt_buffer_pool_get();
+  TEST_CHECK(test_initial_values(sub, err));
+  TEST_CHECK(test_string_set(sub, err));
+  TEST_CHECK(test_string_get(sub, err));
+  TEST_CHECK(test_native_set(sub, err));
+  TEST_CHECK(test_native_get(sub, err));
+  TEST_CHECK(test_reset(sub, err));
+  TEST_CHECK(test_validator(sub, err));
+  TEST_CHECK(test_inherit(cs, err));
+  mutt_buffer_pool_release(&err);
 
-  neomutt_free(&NeoMutt);
-  cs_free(&cs);
-  FREE(&err.data);
+  test_neomutt_destroy(&NeoMutt);
 }

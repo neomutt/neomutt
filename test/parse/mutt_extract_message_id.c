@@ -59,7 +59,7 @@ static struct ConfigDef Vars[] = {
 void test_mutt_extract_message_id(void)
 {
   NeoMutt = test_neomutt_create();
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_VARIABLE));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
   for (size_t i = 0; i < mutt_array_size(test); i++)
   {

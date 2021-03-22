@@ -46,7 +46,7 @@ void test_mutt_idna_local_to_intl(void)
 
 #ifdef HAVE_LIBIDN
   NeoMutt = test_neomutt_create();
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_VARIABLE));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
   {
     TEST_CHECK(!mutt_idna_local_to_intl(NULL, "banana"));

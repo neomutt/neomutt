@@ -44,7 +44,7 @@ void test_rfc2047_decode(void)
   // void rfc2047_decode(char **pd);
 
   NeoMutt = test_neomutt_create();
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_VARIABLE));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
   {
     rfc2047_decode(NULL);

@@ -40,7 +40,7 @@ void test_mutt_file_mkstemp_full(void)
   // FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func);
 
   NeoMutt = test_neomutt_create();
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_VARIABLE));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
   {
     FILE *fp = NULL;

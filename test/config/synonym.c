@@ -30,25 +30,20 @@
 #include "config/common.h"
 #include "config/lib.h"
 #include "core/lib.h"
-
-static char *VarApple;
-static char *VarCherry;
-static char *VarElderberry;
-static char *VarGuava;
-static char *VarIlama;
+#include "test_common.h"
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_STRING,  0,               0, NULL, NULL, &VarApple,      },
-  { "Banana",     DT_SYNONYM, IP "Apple",      0, NULL, NULL, NULL,           },
-  { "Cherry",     DT_STRING,  IP "cherry",     0, NULL, NULL, &VarCherry,     },
-  { "Damson",     DT_SYNONYM, IP "Cherry",     0, NULL, NULL, NULL,           },
-  { "Elderberry", DT_STRING,  0,               0, NULL, NULL, &VarElderberry, },
-  { "Fig",        DT_SYNONYM, IP "Elderberry", 0, NULL, NULL, NULL,           },
-  { "Guava",      DT_STRING,  0,               0, NULL, NULL, &VarGuava,      },
-  { "Hawthorn",   DT_SYNONYM, IP "Guava",      0, NULL, NULL, NULL,           },
-  { "Ilama",      DT_STRING,  IP "iguana",     0, NULL, NULL, &VarIlama,      },
-  { "Jackfruit",  DT_SYNONYM, IP "Ilama",      0, NULL, NULL, NULL,           },
+  { "Apple",      DT_STRING,  0,               0, NULL, },
+  { "Banana",     DT_SYNONYM, IP "Apple",      0, NULL, },
+  { "Cherry",     DT_STRING,  IP "cherry",     0, NULL, },
+  { "Damson",     DT_SYNONYM, IP "Cherry",     0, NULL, },
+  { "Elderberry", DT_STRING,  0,               0, NULL, },
+  { "Fig",        DT_SYNONYM, IP "Elderberry", 0, NULL, },
+  { "Guava",      DT_STRING,  0,               0, NULL, },
+  { "Hawthorn",   DT_SYNONYM, IP "Guava",      0, NULL, },
+  { "Ilama",      DT_STRING,  IP "iguana",     0, NULL, },
+  { "Jackfruit",  DT_SYNONYM, IP "Ilama",      0, NULL, },
   { NULL },
 };
 
@@ -58,10 +53,11 @@ static struct ConfigDef Vars2[] = {
 };
 // clang-format on
 
-static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
+static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
 
+  struct ConfigSet *cs = sub->cs;
   const char *name = "Banana";
   const char *value = "pudding";
 
@@ -69,10 +65,11 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   int rc = cs_str_string_set(cs, name, value, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     return false;
   }
 
+  const char *VarApple = cs_subset_string(sub, "Apple");
   if (!TEST_CHECK(mutt_str_equal(VarApple, value)))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
@@ -83,38 +80,42 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
-static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
+static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
   const char *name = "Damson";
+  struct ConfigSet *cs = sub->cs;
 
   mutt_buffer_reset(err);
   int rc = cs_str_string_get(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Get failed: %s\n", err->data);
+    TEST_MSG("Get failed: %s\n", mutt_buffer_string(err));
     return false;
   }
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(VarCherry), err->data);
+  const char *VarCherry = cs_subset_string(sub, "Cherry");
+  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(VarCherry), mutt_buffer_string(err));
 
   return true;
 }
 
-static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
+static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
 
   const char *name = "Fig";
   const char *value = "tree";
+  struct ConfigSet *cs = sub->cs;
 
   mutt_buffer_reset(err);
   int rc = cs_str_native_set(cs, name, (intptr_t) value, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     return false;
   }
 
+  const char *VarElderberry = cs_subset_string(sub, "Elderberry");
   if (!TEST_CHECK(mutt_str_equal(VarElderberry, value)))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
@@ -125,10 +126,11 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
-static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
+static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
   const char *name = "Hawthorn";
+  struct ConfigSet *cs = sub->cs;
 
   int rc = cs_str_string_set(cs, name, "tree", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
@@ -136,9 +138,10 @@ static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   intptr_t value = cs_str_native_get(cs, name, err);
+  const char *VarGuava = cs_subset_string(sub, "Guava");
   if (!TEST_CHECK(mutt_str_equal(VarGuava, (const char *) value)))
   {
-    TEST_MSG("Get failed: %s\n", err->data);
+    TEST_MSG("Get failed: %s\n", mutt_buffer_string(err));
     return false;
   }
   TEST_MSG("%s = '%s', '%s'\n", name, VarGuava, (const char *) value);
@@ -146,13 +149,15 @@ static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
-static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
+static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
 
+  struct ConfigSet *cs = sub->cs;
   const char *name = "Jackfruit";
   mutt_buffer_reset(err);
 
+  const char *VarIlama = cs_subset_string(sub, "Ilama");
   TEST_MSG("Initial: %s = '%s'\n", name, NONULL(VarIlama));
   int rc = cs_str_string_set(cs, name, "hello", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
@@ -163,10 +168,11 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_reset(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err->data);
+    TEST_MSG("%s\n", mutt_buffer_string(err));
     return false;
   }
 
+  VarIlama = cs_subset_string(sub, "Ilama");
   if (!TEST_CHECK(mutt_str_equal(VarIlama, "iguana")))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
@@ -182,17 +188,11 @@ void test_config_synonym(void)
 {
   log_line(__func__);
 
-  struct Buffer err;
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = mutt_mem_calloc(1, err.dsize);
-  mutt_buffer_reset(&err);
+  NeoMutt = test_neomutt_create();
+  struct ConfigSubset *sub = NeoMutt->sub;
+  struct ConfigSet *cs = sub->cs;
 
-  struct ConfigSet *cs = cs_new(30);
-  NeoMutt = neomutt_new(cs);
-
-  cs_register_type(cs, &cst_string);
-  if (!cs_register_variables(cs, Vars, 0))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars, 0)))
     return;
 
   if (cs_register_variables(cs, Vars2, 0))
@@ -207,13 +207,13 @@ void test_config_synonym(void)
 
   set_list(cs);
 
-  TEST_CHECK(test_string_set(cs, &err));
-  TEST_CHECK(test_string_get(cs, &err));
-  TEST_CHECK(test_native_set(cs, &err));
-  TEST_CHECK(test_native_get(cs, &err));
-  TEST_CHECK(test_reset(cs, &err));
+  struct Buffer *err = mutt_buffer_pool_get();
+  TEST_CHECK(test_string_set(sub, err));
+  TEST_CHECK(test_string_get(sub, err));
+  TEST_CHECK(test_native_set(sub, err));
+  TEST_CHECK(test_native_get(sub, err));
+  TEST_CHECK(test_reset(sub, err));
+  mutt_buffer_pool_release(&err);
 
-  neomutt_free(&NeoMutt);
-  cs_free(&cs);
-  FREE(&err.data);
+  test_neomutt_destroy(&NeoMutt);
 }

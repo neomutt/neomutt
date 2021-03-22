@@ -59,7 +59,7 @@ void test_mutt_addr_for_display(void)
     };
 
     NeoMutt = test_neomutt_create();
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_VARIABLE));
+    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
     const char *expected = "bob@bobsdomain";
     const char *actual = mutt_addr_for_display(&addr);
