@@ -383,12 +383,13 @@ NeoMutt manual for information on the exact format of \fIpattern\fP.
 .
 .PP
 .nf
-\fBfolder-hook\fP \fIregex\fP \fIcommand\fP
+\fBfolder-hook\fP [\fI-noregex\fP] \fIpattern\fP \fIcommand\fP
 .fi
 .IP
-When NeoMutt enters a folder which matches \fIregex\fP (or, when \fIregex\fP is
-preceded by an exclamation mark, does not match \fIregex\fP), the given
-\fIcommand\fP is executed.
+When NeoMutt enters a folder which matches \fIpattern\fP (or, when \fIpattern\fP is
+preceded by an exclamation mark, does not match \fIpattern\fP), the given
+\fIcommand\fP is executed. The \fI-noregex\fP switch controls whether \fIpattern\fP
+is matches as simple string equality or full regex match.
 .IP
 When several \fBfolder-hook\fPs match a given mail folder, they are executed in
 the order given in the configuration file.
@@ -549,12 +550,14 @@ Changes the current working directory.
 .
 .PP
 .nf
-\fBmbox-hook\fP \fIregex\fP \fImailbox\fP
+\fBmbox-hook\fP [\fI-noregex\fP] \fIpattern\fP \fImailbox\fP
 .fi
 .IP
-When NeoMutt changes to a mail folder which matches \fIregex\fP, \fImailbox\fP
+When NeoMutt changes to a mail folder which matches \fIpattern\fP, \fImailbox\fP
 will be used as the \(lqmbox\(rq folder, i.e. read messages will be moved to
-that folder when the mail folder is left.
+that folder when the mail folder is left. The \fI-noregex\fP switch controls
+whether \fIpattern\fP is matches as simple string equality or full regex match.
+
 .IP
 Note that execution of \fBmbox-hook\fPs is dependent on the $move configuration
 variable. If set to \(lqno\(rq (the default), \fBmbox-hook\fPs will not be

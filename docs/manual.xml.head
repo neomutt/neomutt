@@ -4559,8 +4559,11 @@ bind index gg first-entry
       </para>
       <cmdsynopsis>
         <command>folder-hook</command>
+        <arg choice="opt">
+          <replaceable class="parameter">-noregex</replaceable>
+        </arg>
         <arg choice="plain">
-          <replaceable class="parameter">regex</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
@@ -4570,9 +4573,11 @@ bind index gg first-entry
         It is often desirable to change settings based on which mailbox you are
         reading. The <command>folder-hook</command> command provides a method
         by which you can execute any configuration command.
-        <emphasis>regex</emphasis> is a regular expression specifying in which
-        mailboxes to execute <emphasis>command</emphasis> before loading. If
-        a mailbox matches multiple <command>folder-hook</command>s, they are
+        The <emphasis>command</emphasis> is executed before loading any mailboxes
+        matching <emphasis>pattern</emphasis>. The <emphasis>-noregex</emphasis>
+        switch controls whether <emphasis>pattern</emphasis> is matched using
+        a simple string comparison or a full regex match.
+        If a mailbox matches multiple <command>folder-hook</command>s, they are
         executed in the order given in the <literal>.neomuttrc</literal>.
       </para>
       <para>
@@ -5848,8 +5853,11 @@ unignore posted-to:
       </para>
       <cmdsynopsis>
         <command>mbox-hook</command>
+        <arg choice="opt">
+          <replaceable class="parameter">-noregex</replaceable>
+        </arg>
         <arg choice="plain">
-          <replaceable class="parameter">regex</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">mailbox</replaceable>
@@ -5858,10 +5866,12 @@ unignore posted-to:
       <para>
         This command is used to move read messages from a specified mailbox to
         a different mailbox automatically when you quit or change folders.
-        <emphasis>regex</emphasis> is a regular expression specifying the
-        mailbox to treat as a <quote>spool</quote> mailbox and
-        <emphasis>mailbox</emphasis> specifies where mail should be saved when
-        read.
+        <emphasis>pattern</emphasis> is used to specifying the mailbox to
+        treat as a <quote>spool</quote> mailbox and <emphasis>mailbox</emphasis>
+        specifies where mail should be saved when read.
+        The <emphasis>-noregex</emphasis> switch controls whether
+        <emphasis>pattern</emphasis> is matched using a simple string
+        comparison or a full regex match.
       </para>
       <para>
         The regex parameter has
