@@ -1,6 +1,6 @@
 /**
  * @file
- * API for mx backends 
+ * API for mx backends
  *
  * @authors
  * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>

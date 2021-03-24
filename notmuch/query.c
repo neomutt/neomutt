@@ -25,7 +25,7 @@
  *
  * Notmuch query functions
  *
- * @note All functions within this file MUST be unit testable. 
+ * @note All functions within this file MUST be unit testable.
  */
 
 #include "config.h"
