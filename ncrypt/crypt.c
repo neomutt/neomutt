@@ -1001,7 +1001,7 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
       OptPgpCheckTrust = false;
       const bool c_pgp_self_encrypt =
           cs_subset_bool(NeoMutt->sub, "pgp_self_encrypt");
-      const char *c_pgp_default_key =
+      const char *const c_pgp_default_key =
           cs_subset_string(NeoMutt->sub, "pgp_default_key");
       const enum QuadOption c_pgp_encrypt_self =
           cs_subset_quad(NeoMutt->sub, "pgp_encrypt_self");
@@ -1018,7 +1018,7 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
       }
       const bool c_smime_self_encrypt =
           cs_subset_bool(NeoMutt->sub, "smime_self_encrypt");
-      const char *c_smime_default_key =
+      const char *const c_smime_default_key =
           cs_subset_string(NeoMutt->sub, "smime_default_key");
       const enum QuadOption c_smime_encrypt_self =
           cs_subset_quad(NeoMutt->sub, "smime_encrypt_self");
@@ -1104,7 +1104,7 @@ bool mutt_should_hide_protected_subject(struct Email *e)
 {
   const bool c_crypt_protected_headers_write =
       cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_write");
-  const char *c_crypt_protected_headers_subject =
+  const char *const c_crypt_protected_headers_subject =
       cs_subset_string(NeoMutt->sub, "crypt_protected_headers_subject");
   if (c_crypt_protected_headers_write && (e->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) &&
       !(e->security & SEC_INLINE) && c_crypt_protected_headers_subject)

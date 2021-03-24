@@ -575,7 +575,8 @@ gpgme_ctx_t create_gpgme_context(bool for_smime)
   gpgme_error_t err = gpgme_new(&ctx);
 
 #ifdef USE_AUTOCRYPT
-  const char *c_autocrypt_dir = cs_subset_string(NeoMutt->sub, "autocrypt_dir");
+  const char *const c_autocrypt_dir =
+      cs_subset_path(NeoMutt->sub, "autocrypt_dir");
   if (!err && OptAutocryptGpgme)
     err = gpgme_ctx_set_engine_info(ctx, GPGME_PROTOCOL_OpenPGP, NULL, c_autocrypt_dir);
 #endif
@@ -1046,11 +1047,13 @@ static int set_signer(gpgme_ctx_t ctx, const struct AddressList *al, bool for_sm
 {
   const char *signid = NULL;
 
-  const char *c_smime_sign_as = cs_subset_string(NeoMutt->sub, "smime_sign_as");
-  const char *c_pgp_sign_as = cs_subset_string(NeoMutt->sub, "pgp_sign_as");
-  const char *c_pgp_default_key =
+  const char *const c_smime_sign_as =
+      cs_subset_string(NeoMutt->sub, "smime_sign_as");
+  const char *const c_pgp_sign_as =
+      cs_subset_string(NeoMutt->sub, "pgp_sign_as");
+  const char *const c_pgp_default_key =
       cs_subset_string(NeoMutt->sub, "pgp_default_key");
-  const char *c_smime_default_key =
+  const char *const c_smime_default_key =
       cs_subset_string(NeoMutt->sub, "smime_default_key");
   if (for_smime)
     signid = c_smime_sign_as ? c_smime_sign_as : c_smime_default_key;
@@ -2445,7 +2448,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   if (legacy_api)
   {
     tmpdir = mutt_buffer_pool_get();
-    const char *c_tmpdir = cs_subset_string(NeoMutt->sub, "tmpdir");
+    const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
     mutt_buffer_printf(tmpdir, "%s/neomutt-gpgme-XXXXXX", NONULL(c_tmpdir));
     if (!mkdtemp(tmpdir->data))
     {
@@ -2786,7 +2789,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
    * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.  */
-  const char *c_charset = cs_subset_string(NeoMutt->sub, "charset");
+  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
   struct FgetConv *fc = mutt_ch_fgetconv_open(fp, charset, c_charset, MUTT_ICONV_HOOK_FROM);
 
   for (complete = true, armor_header = true;
@@ -3000,7 +3003,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       {
         int c;
         rewind(fp_out);
-        const char *c_charset = cs_subset_string(NeoMutt->sub, "charset");
+        const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
         struct FgetConv *fc =
             mutt_ch_fgetconv_open(fp_out, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS);
         while ((c = mutt_ch_fgetconv(fc)) != EOF)

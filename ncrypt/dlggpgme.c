@@ -114,7 +114,7 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
 
   /* fromcode "utf-8" is sure, so we don't want
    * charset-hook corrections: flags must be 0.  */
-  const char *c_charset = cs_subset_string(NeoMutt->sub, "charset");
+  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
   mutt_ch_convert_string(&tstr, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS);
   fputs(tstr, fp);
   FREE(&tstr);
@@ -1182,7 +1182,7 @@ static void crypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
   entry.key = key_table[line];
   entry.num = line + 1;
 
-  const char *c_pgp_entry_format =
+  const char *const c_pgp_entry_format =
       cs_subset_string(NeoMutt->sub, "pgp_entry_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                       NONULL(c_pgp_entry_format), crypt_format_str,

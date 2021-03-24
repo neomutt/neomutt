@@ -221,7 +221,7 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
   {
     case 'C':
     {
-      const char *c_smime_ca_location =
+      const char *const c_smime_ca_location =
           cs_subset_path(NeoMutt->sub, "smime_ca_location");
       if (!optional)
       {
@@ -513,9 +513,9 @@ static struct SmimeKey *smime_get_candidates(const char *search, bool only_publi
   struct SmimeKey **results_end = &results;
 
   struct Buffer *index_file = mutt_buffer_pool_get();
-  const char *c_smime_certificates =
+  const char *const c_smime_certificates =
       cs_subset_path(NeoMutt->sub, "smime_certificates");
-  const char *c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
+  const char *const c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
   mutt_buffer_printf(index_file, "%s/.index",
                      only_public_key ? NONULL(c_smime_certificates) : NONULL(c_smime_keys));
 
@@ -754,10 +754,10 @@ static void getkeys(char *mailbox)
     key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, false);
   }
 
-  const char *c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
+  const char *const c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
   size_t smime_keys_len = mutt_str_len(c_smime_keys);
 
-  const char *c_smime_default_key =
+  const char *const c_smime_default_key =
       cs_subset_string(NeoMutt->sub, "smime_default_key");
   k = key ? key->hash : NONULL(c_smime_default_key);
 
@@ -767,7 +767,7 @@ static void getkeys(char *mailbox)
   {
     smime_class_void_passphrase();
     mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), k);
-    const char *c_smime_certificates =
+    const char *const c_smime_certificates =
         cs_subset_path(NeoMutt->sub, "smime_certificates");
     mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates), k);
   }
@@ -782,13 +782,13 @@ void smime_class_getkeys(struct Envelope *env)
 {
   const bool c_smime_decrypt_use_default_key =
       cs_subset_bool(NeoMutt->sub, "smime_decrypt_use_default_key");
-  const char *c_smime_default_key =
+  const char *const c_smime_default_key =
       cs_subset_string(NeoMutt->sub, "smime_default_key");
   if (c_smime_decrypt_use_default_key && c_smime_default_key)
   {
-    const char *c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
+    const char *const c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
     mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), c_smime_default_key);
-    const char *c_smime_certificates =
+    const char *const c_smime_certificates =
         cs_subset_path(NeoMutt->sub, "smime_certificates");
     mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates),
                        c_smime_default_key);
@@ -891,7 +891,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
     return 1;
   }
 
-  const char *c_smime_get_cert_email_command =
+  const char *const c_smime_get_cert_email_command =
       cs_subset_string(NeoMutt->sub, "smime_get_cert_email_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_out), fileno(fp_err), certificate,
                      NULL, NULL, NULL, NULL, NULL, NULL, c_smime_get_cert_email_command);
@@ -994,7 +994,7 @@ static char *smime_extract_certificate(const char *infile)
 
   /* Step 1: Convert the signature to a PKCS#7 structure, as we can't
    * extract the full set of certificates directly. */
-  const char *c_smime_pk7out_command =
+  const char *const c_smime_pk7out_command =
       cs_subset_string(NeoMutt->sub, "smime_pk7out_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_out), fileno(fp_err), infile,
                      NULL, NULL, NULL, NULL, NULL, NULL, c_smime_pk7out_command);
@@ -1029,7 +1029,7 @@ static char *smime_extract_certificate(const char *infile)
   }
 
   // Step 2: Extract the certificates from a PKCS#7 structure.
-  const char *c_smime_get_cert_command =
+  const char *const c_smime_get_cert_command =
       cs_subset_string(NeoMutt->sub, "smime_get_cert_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_cert), fileno(fp_err),
                      mutt_buffer_string(pk7out), NULL, NULL, NULL, NULL, NULL,
@@ -1108,7 +1108,7 @@ static char *smime_extract_signer_certificate(const char *infile)
 
   /* Extract signer's certificate
    */
-  const char *c_smime_get_signer_cert_command =
+  const char *const c_smime_get_signer_cert_command =
       cs_subset_string(NeoMutt->sub, "smime_get_signer_cert_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, -1, fileno(fp_err), infile, NULL,
                      NULL, NULL, NULL, mutt_buffer_string(certfile), NULL,
@@ -1193,7 +1193,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   {
     mutt_endwin();
 
-    const char *c_smime_import_cert_command =
+    const char *const c_smime_import_cert_command =
         cs_subset_string(NeoMutt->sub, "smime_import_cert_command");
     pid_t pid = smime_invoke(&fp_smime_in, NULL, NULL, -1, fileno(fp_out),
                              fileno(fp_err), certfile, NULL, NULL, NULL, NULL,
@@ -1314,9 +1314,9 @@ static pid_t smime_invoke_encrypt(FILE **fp_smime_in, FILE **fp_smime_out,
                                   int fp_smime_outfd, int fp_smime_errfd,
                                   const char *fname, const char *uids)
 {
-  const char *c_smime_encrypt_with =
+  const char *const c_smime_encrypt_with =
       cs_subset_string(NeoMutt->sub, "smime_encrypt_with");
-  const char *c_smime_encrypt_command =
+  const char *const c_smime_encrypt_command =
       cs_subset_string(NeoMutt->sub, "smime_encrypt_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
                       fp_smime_outfd, fp_smime_errfd, fname, NULL, c_smime_encrypt_with,
@@ -1342,9 +1342,9 @@ static pid_t smime_invoke_sign(FILE **fp_smime_in, FILE **fp_smime_out,
                                FILE **fp_smime_err, int fp_smime_infd, int fp_smime_outfd,
                                int fp_smime_errfd, const char *fname)
 {
-  const char *c_smime_sign_digest_alg =
+  const char *const c_smime_sign_digest_alg =
       cs_subset_string(NeoMutt->sub, "smime_sign_digest_alg");
-  const char *c_smime_sign_command =
+  const char *const c_smime_sign_command =
       cs_subset_string(NeoMutt->sub, "smime_sign_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
                       fp_smime_outfd, fp_smime_errfd, fname, NULL, NULL,
@@ -1400,7 +1400,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
     if (*cert_start)
     {
       off = mutt_str_len(certfile);
-      const char *c_smime_certificates =
+      const char *const c_smime_certificates =
           cs_subset_path(NeoMutt->sub, "smime_certificates");
       snprintf(certfile + off, sizeof(certfile) - off, "%s%s/%s",
                (off != 0) ? " " : "", NONULL(c_smime_certificates), cert_start);
@@ -1535,8 +1535,9 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   pid_t pid;
   const char *intermediates = NULL;
 
-  const char *c_smime_sign_as = cs_subset_string(NeoMutt->sub, "smime_sign_as");
-  const char *c_smime_default_key =
+  const char *const c_smime_sign_as =
+      cs_subset_string(NeoMutt->sub, "smime_sign_as");
+  const char *const c_smime_default_key =
       cs_subset_string(NeoMutt->sub, "smime_default_key");
   const char *signas = c_smime_sign_as ? c_smime_sign_as : c_smime_default_key;
   if (!signas || (*signas == '\0'))
@@ -1571,8 +1572,8 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   mutt_write_mime_body(a, fp_sign, NeoMutt->sub);
   mutt_file_fclose(&fp_sign);
 
-  const char *c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
-  const char *c_smime_certificates =
+  const char *const c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
+  const char *const c_smime_certificates =
       cs_subset_path(NeoMutt->sub, "smime_certificates");
   mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), signas);
   mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates), signas);
@@ -1639,7 +1640,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
 
   mutt_generate_boundary(&t->parameter);
 
-  const char *c_smime_sign_digest_alg =
+  const char *const c_smime_sign_digest_alg =
       cs_subset_string(NeoMutt->sub, "smime_sign_digest_alg");
   char *micalg = openssl_md_to_smime_micalg(c_smime_sign_digest_alg);
   mutt_param_set(&t->parameter, "micalg", micalg);
@@ -1699,9 +1700,9 @@ static pid_t smime_invoke_verify(FILE **fp_smime_in, FILE **fp_smime_out,
                                  int fp_smime_outfd, int fp_smime_errfd,
                                  const char *fname, const char *sig_fname, int opaque)
 {
-  const char *c_smime_verify_opaque_command =
+  const char *const c_smime_verify_opaque_command =
       cs_subset_string(NeoMutt->sub, "smime_verify_opaque_command");
-  const char *c_smime_verify_command =
+  const char *const c_smime_verify_command =
       cs_subset_string(NeoMutt->sub, "smime_verify_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd, fp_smime_outfd,
                       fp_smime_errfd, fname, sig_fname, NULL, NULL, NULL, NULL, NULL,
@@ -1727,7 +1728,7 @@ static pid_t smime_invoke_decrypt(FILE **fp_smime_in, FILE **fp_smime_out,
                                   FILE **fp_smime_err, int fp_smime_infd, int fp_smime_outfd,
                                   int fp_smime_errfd, const char *fname)
 {
-  const char *c_smime_decrypt_command =
+  const char *const c_smime_decrypt_command =
       cs_subset_string(NeoMutt->sub, "smime_decrypt_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
                       fp_smime_outfd, fp_smime_errfd, fname, NULL, NULL, NULL,

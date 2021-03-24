@@ -464,7 +464,7 @@ static void pgp_make_entry(struct Menu *menu, char *buf, size_t buflen, int line
   entry.uid = key_table[line];
   entry.num = line + 1;
 
-  const char *c_pgp_entry_format =
+  const char *const c_pgp_entry_format =
       cs_subset_string(NeoMutt->sub, "pgp_entry_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                       NONULL(c_pgp_entry_format), pgp_entry_format_str,
