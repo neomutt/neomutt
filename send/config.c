@@ -206,11 +206,6 @@ struct ConfigDef SendVars[] = {
   { "mime_forward_decode", DT_BOOL, false, 0, NULL,
     "Decode the forwarded message before attaching it"
   },
-#ifdef USE_NNTP
-  { "mime_subject", DT_BOOL, true, 0, NULL,
-    "(nntp) Encode the article subject in base64"
-  },
-#endif
   { "mime_type_query_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
     "External command to determine the MIME type of an attachment"
   },
@@ -321,6 +316,10 @@ struct ConfigDef SendVars[] = {
   { "post_indent_str",          DT_SYNONYM, IP "post_indent_string", },
   { "reverse_realname",         DT_SYNONYM, IP "reverse_real_name", },
   { "use_8bitmime",             DT_SYNONYM, IP "use_8bit_mime", },
+
+#ifdef USE_NNTP
+  { "mime_subject",             DT_DEPRECATED|DT_BOOL, true },
+#endif
 
   { NULL },
   // clang-format on

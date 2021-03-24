@@ -15050,11 +15050,6 @@ set new_mail_command = ""
                 <entry>(empty)</entry>
               </row>
               <row>
-                <entry><literal>mime_subject</literal></entry>
-                <entry>boolean</entry>
-                <entry><literal>yes</literal></entry>
-              </row>
-              <row>
                 <entry><literal>newsgroups_charset</literal></entry>
                 <entry>string</entry>
                 <entry><literal>utf-8</literal></entry>
@@ -15272,7 +15267,6 @@ set catchup_newsgroup = ask-yes
 set followup_to_poster = ask-yes
 set group_index_format = '%4C %M%N %5s  %-45.45f %d'
 set inews = ''
-set mime_subject = yes
 set newsgroups_charset = utf-8
 set newsrc = '~/.newsrc'
 set news_cache_dir = '~/.neomutt'

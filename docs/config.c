@@ -2414,16 +2414,6 @@
 ** be attached to the newly composed message if this option is \fIset\fP.
 */
 
-#ifdef USE_NNTP
-{ "mime_subject", DT_BOOL, true },
-/*
-** .pp
-** If \fIunset\fP, 8-bit "subject:" line in article header will not be
-** encoded according to RFC2047 to base64.  This is useful when message
-** is Usenet article, because MIME for news is nonstandard feature.
-*/
-#endif
-
 { "mime_type_query_command", DT_COMMAND, 0 },
 /*
 ** .pp
