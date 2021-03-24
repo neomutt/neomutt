@@ -30,11 +30,6 @@
 #include "mutt/lib.h"
 #include "keymap.h"
 
-/* These Config Variables are only used in menu.c */
-extern short C_MenuContext;
-extern bool  C_MenuMoveOff;
-extern bool  C_MenuScroll;
-
 typedef uint16_t MuttRedrawFlags;      ///< Flags, e.g. #REDRAW_INDEX
 #define REDRAW_NO_FLAGS             0  ///< No flags are set
 #define REDRAW_INDEX          (1 << 0) ///< Redraw the index

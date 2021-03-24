@@ -367,7 +367,8 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       if (chflags & (CH_DECODE | CH_PREFIX))
       {
         const char *pre = (chflags & CH_PREFIX) ? prefix : NULL;
-        wraplen = mutt_window_wrap_cols(wraplen, C_Wrap);
+        const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
+        wraplen = mutt_window_wrap_cols(wraplen, c_wrap);
 
         if (mutt_write_one_header(fp_out, 0, *hp, pre, wraplen, chflags, NeoMutt->sub) == -1)
         {
@@ -426,7 +427,8 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     fputs("MIME-Version: 1.0\n", fp_out);
     fputs("Content-Transfer-Encoding: 8bit\n", fp_out);
     fputs("Content-Type: text/plain; charset=", fp_out);
-    mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), C_Charset ? C_Charset : "us-ascii");
+    const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+    mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), c_charset ? c_charset : "us-ascii");
     mutt_addr_cat(buf, sizeof(buf), chsbuf, MimeSpecials);
     fputs(buf, fp_out);
     fputc('\n', fp_out);
@@ -481,12 +483,13 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
       fprintf(fp_out, "Lines: %d\n", e->lines);
   }
 
+  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
 #ifdef USE_NOTMUCH
   if (chflags & CH_VIRTUAL)
   {
     /* Add some fake headers based on notmuch data */
     char *folder = nm_email_get_folder(e);
-    if (folder && !(C_Weed && mutt_matches_ignore("folder")))
+    if (folder && !(c_weed && mutt_matches_ignore("folder")))
     {
       char buf[1024];
       mutt_str_copy(buf, folder, sizeof(buf));
@@ -499,7 +502,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
   }
 #endif
   char *tags = driver_tags_get(&e->tags);
-  if (tags && !(C_Weed && mutt_matches_ignore("tags")))
+  if (tags && !(c_weed && mutt_matches_ignore("tags")))
   {
     fputs("Tags: ", fp_out);
     fputs(tags, fp_out);
@@ -507,6 +510,9 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
   }
   FREE(&tags);
 
+  const char *const c_send_charset =
+      cs_subset_string(NeoMutt->sub, "send_charset");
+  const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
   if ((chflags & CH_UPDATE_LABEL) && e->env->x_label)
   {
     temp_hdr = e->env->x_label;
@@ -515,11 +521,11 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     if (!(chflags & CH_DECODE))
     {
       temp_hdr = mutt_str_dup(temp_hdr);
-      rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), C_SendCharset);
+      rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), c_send_charset);
     }
     if (mutt_write_one_header(
             fp_out, "X-Label", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
-            mutt_window_wrap_cols(wraplen, C_Wrap), chflags, NeoMutt->sub) == -1)
+            mutt_window_wrap_cols(wraplen, c_wrap), chflags, NeoMutt->sub) == -1)
     {
       return -1;
     }
@@ -535,11 +541,11 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     if (!(chflags & CH_DECODE))
     {
       temp_hdr = mutt_str_dup(temp_hdr);
-      rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), C_SendCharset);
+      rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), c_send_charset);
     }
     if (mutt_write_one_header(
             fp_out, "Subject", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
-            mutt_window_wrap_cols(wraplen, C_Wrap), chflags, NeoMutt->sub) == -1)
+            mutt_window_wrap_cols(wraplen, c_wrap), chflags, NeoMutt->sub) == -1)
     {
       return -1;
     }
@@ -624,11 +630,14 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
 
   if (cmflags & MUTT_CM_PREFIX)
   {
-    if (C_TextFlowed)
+    const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
+    if (c_text_flowed)
       mutt_str_copy(prefix, ">", sizeof(prefix));
     else
     {
-      mutt_make_string(prefix, sizeof(prefix), wraplen, NONULL(C_IndentString),
+      const char *const c_indent_string =
+          cs_subset_string(NeoMutt->sub, "indent_string");
+      mutt_make_string(prefix, sizeof(prefix), wraplen, NONULL(c_indent_string),
                        Context->mailbox, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
     }
   }

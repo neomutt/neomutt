@@ -35,6 +35,7 @@
 #include <time.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "lib.h"
@@ -55,18 +56,21 @@
 const char *nm_db_get_filename(struct Mailbox *m)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
-  char *db_filename = NULL;
+  const char *db_filename = NULL;
 
+  const char *const c_nm_default_url =
+      cs_subset_string(NeoMutt->sub, "nm_default_url");
   if (mdata && mdata->db_url && mdata->db_url->path)
     db_filename = mdata->db_url->path;
   else
-    db_filename = C_NmDefaultUrl;
+    db_filename = c_nm_default_url;
 
-  if (!db_filename && !C_Folder)
+  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  if (!db_filename && !c_folder)
     return NULL;
 
   if (!db_filename)
-    db_filename = C_Folder;
+    db_filename = c_folder;
 
   if (nm_path_probe(db_filename, NULL) == MUTT_NOTMUCH)
     db_filename += NmUrlProtocolLen;
@@ -91,8 +95,10 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
   char *msg = NULL;
 #endif
 
+  const short c_nm_open_timeout =
+      cs_subset_number(NeoMutt->sub, "nm_open_timeout");
   mutt_debug(LL_DEBUG1, "nm: db open '%s' %s (timeout %d)\n", filename,
-             writable ? "[WRITE]" : "[READ]", C_NmOpenTimeout);
+             writable ? "[WRITE]" : "[READ]", c_nm_open_timeout);
 
   const notmuch_database_mode_t mode =
       writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY;
@@ -106,8 +112,11 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
 #else
     db = notmuch_database_open(filename, mode);
 #endif
-    if ((st == NOTMUCH_STATUS_FILE_ERROR) || db || !C_NmOpenTimeout || ((ct / 2) > C_NmOpenTimeout))
+    if ((st == NOTMUCH_STATUS_FILE_ERROR) || db || !c_nm_open_timeout ||
+        ((ct / 2) > c_nm_open_timeout))
+    {
       break;
+    }
 
     if (verbose && ct && ((ct % 2) == 0))
       mutt_error(_("Waiting for notmuch DB... (%d sec)"), ct / 2);

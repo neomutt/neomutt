@@ -76,12 +76,7 @@ static void destroy(int type, void *obj, intptr_t data)
 
     cst = cs_get_type_def(cs, type);
     if (cst && cst->destroy)
-    {
-      if (cdef->type & DT_NO_VARIABLE)
-        cst->destroy(cs, &cdef->var, cdef);
-      else if (cdef->var)
-        cst->destroy(cs, cdef->var, cdef);
-    }
+      cst->destroy(cs, &cdef->var, cdef);
 
     /* If we allocated the initial value, clean it up */
     if (cdef->type & DT_INITIAL_SET)
@@ -115,7 +110,7 @@ static struct HashElem *create_synonym(const struct ConfigSet *cs,
   if (!child)
     return NULL; /* LCOV_EXCL_LINE */
 
-  cdef->var = parent;
+  cdef->var = (intptr_t) parent;
   return child;
 }
 
@@ -148,12 +143,7 @@ static struct HashElem *reg_one_var(const struct ConfigSet *cs,
     return NULL; /* LCOV_EXCL_LINE */
 
   if (cst && cst->reset)
-  {
-    if (cdef->type & DT_NO_VARIABLE)
-      cst->reset(cs, &cdef->var, cdef, err);
-    else if (cdef->var)
-      cst->reset(cs, cdef->var, cdef, err);
-  }
+    cst->reset(cs, &cdef->var, cdef, err);
 
   return he;
 }
@@ -225,7 +215,7 @@ struct HashElem *cs_get_elem(const struct ConfigSet *cs, const char *name)
 
   const struct ConfigDef *cdef = he->data;
 
-  return cdef->var;
+  return (struct HashElem *) cdef->var;
 }
 
 /**
@@ -280,7 +270,7 @@ bool cs_register_type(struct ConfigSet *cs, const struct ConfigSetType *cst)
  * cs_register_variables - Register a set of config items
  * @param cs    Config items
  * @param vars  Variable definition
- * @param flags Flags, e.g. #DT_NO_VARIABLE
+ * @param flags Flags, e.g. #DT_DEPRECATED
  * @retval true All variables were registered successfully
  */
 bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], uint32_t flags)
@@ -387,12 +377,7 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
 
     const struct ConfigSetType *cst = cs_get_type_def(cs, he->type);
     if (cst)
-    {
-      if (cdef->type & DT_NO_VARIABLE)
-        rc = cst->reset(cs, &cdef->var, cdef, err);
-      else if (cdef->var)
-        rc = cst->reset(cs, cdef->var, cdef, err);
-    }
+      rc = cst->reset(cs, &cdef->var, cdef, err);
   }
 
   return rc;
@@ -577,10 +562,7 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
   {
     cdef = he->data;
     cst = cs_get_type_def(cs, he->type);
-    if (cdef->type & DT_NO_VARIABLE)
-      var = &cdef->var;
-    else
-      var = cdef->var;
+    var = &cdef->var;
   }
 
   if (!cdef)
@@ -661,10 +643,7 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
     // not inherited
     cdef = he->data;
     cst = cs_get_type_def(cs, he->type);
-    if (cdef->type & DT_NO_VARIABLE)
-      var = &cdef->var;
-    else
-      var = cdef->var;
+    var = &cdef->var;
   }
 
   if (!cdef || !cst)
@@ -725,10 +704,7 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
   {
     cdef = he->data;
     cst = cs_get_type_def(cs, he->type);
-    if (cdef->type & DT_NO_VARIABLE)
-      var = &cdef->var;
-    else
-      var = cdef->var;
+    var = &cdef->var;
   }
 
   if (!cst)
@@ -787,10 +763,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
   {
     cdef = he->data;
     cst = cs_get_type_def(cs, he->type);
-    if (cdef->type & DT_NO_VARIABLE)
-      var = &cdef->var;
-    else
-      var = cdef->var;
+    var = &cdef->var;
   }
 
   if (!cst || !var || !cdef)
@@ -842,10 +815,7 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
     // not inherited
     cdef = he->data;
     cst = cs_get_type_def(cs, he->type);
-    if (cdef->type & DT_NO_VARIABLE)
-      var = &cdef->var;
-    else
-      var = cdef->var;
+    var = &cdef->var;
   }
 
   if (!var || !cdef)
@@ -907,10 +877,7 @@ int cs_he_string_plus_equals(const struct ConfigSet *cs, struct HashElem *he,
   {
     cdef = he->data;
     cst = cs_get_type_def(cs, he->type);
-    if (cdef->type & DT_NO_VARIABLE)
-      var = &cdef->var;
-    else
-      var = cdef->var;
+    var = &cdef->var;
   }
 
   if (!var || !cdef)
@@ -993,10 +960,7 @@ int cs_he_string_minus_equals(const struct ConfigSet *cs, struct HashElem *he,
   {
     cdef = he->data;
     cst = cs_get_type_def(cs, he->type);
-    if (cdef->type & DT_NO_VARIABLE)
-      var = &cdef->var;
-    else
-      var = cdef->var;
+    var = &cdef->var;
   }
 
   if (!var || !cdef)

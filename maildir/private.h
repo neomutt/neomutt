@@ -30,14 +30,6 @@
 struct MdEmailArray;
 struct Mailbox;
 
-extern bool  C_CheckNew;
-extern bool  C_MaildirCheckCur;
-extern bool  C_MaildirHeaderCacheVerify;
-extern bool  C_MhPurge;
-extern char *C_MhSeqFlagged;
-extern char *C_MhSeqReplied;
-extern char *C_MhSeqUnseen;
-
 int    maildir_move_to_mailbox(struct Mailbox *m, struct MdEmailArray *mda);
 bool   mh_mkstemp             (struct Mailbox *m, FILE **fp, char **tgt);
 mode_t mh_umask               (struct Mailbox *m);

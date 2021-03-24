@@ -26,7 +26,9 @@
 #include <search.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "test_common.h"
 
 int cmp(const void *a, const void *b)
@@ -47,8 +49,18 @@ struct TestData
   { "foo bar <foo.bar> boo bar", "<foo.bar>", 17 },
 };
 
+static struct ConfigDef Vars[] = {
+  // clang-format off
+  { "assumed_charset", DT_STRING, 0, 0, NULL, },
+  { NULL },
+  // clang-format on
+};
+
 void test_mutt_extract_message_id(void)
 {
+  NeoMutt = test_neomutt_create();
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
+
   for (size_t i = 0; i < mutt_array_size(test); i++)
   {
     size_t len = 0;
@@ -82,4 +94,5 @@ void test_mutt_extract_message_id(void)
       FREE(&tmp);
     }
   }
+  test_neomutt_destroy(&NeoMutt);
 }

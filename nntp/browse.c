@@ -30,6 +30,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "lib.h"
 #include "browser.h"
@@ -69,8 +70,11 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
       if (folder->ff->nd->desc)
       {
         char *desc = mutt_str_dup(folder->ff->nd->desc);
-        if (C_NewsgroupsCharset)
-          mutt_ch_convert_string(&desc, C_NewsgroupsCharset, C_Charset, MUTT_ICONV_HOOK_FROM);
+        const char *const c_newsgroups_charset =
+            cs_subset_string(NeoMutt->sub, "newsgroups_charset");
+        const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+        if (c_newsgroups_charset)
+          mutt_ch_convert_string(&desc, c_newsgroups_charset, c_charset, MUTT_ICONV_HOOK_FROM);
         mutt_mb_filter_unprintable(&desc);
 
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
@@ -107,7 +111,9 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
       break;
 
     case 'n':
-      if (C_MarkOld && (folder->ff->nd->last_cached >= folder->ff->nd->first_message) &&
+    {
+      const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
+      if (c_mark_old && (folder->ff->nd->last_cached >= folder->ff->nd->first_message) &&
           (folder->ff->nd->last_cached <= folder->ff->nd->last_message))
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -119,6 +125,7 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
         snprintf(buf, buflen, fmt, folder->ff->nd->unread);
       }
       break;
+    }
 
     case 's':
       if (flags & MUTT_FORMAT_OPTIONAL)

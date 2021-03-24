@@ -478,13 +478,16 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
 
   while ((line = mutt_file_read_line(line, &linelen, fp, &lineno, MUTT_RL_CONT)) != NULL)
   {
-    const bool conv = C_ConfigCharset && C_Charset;
+    const char *const c_config_charset =
+        cs_subset_string(NeoMutt->sub, "config_charset");
+    const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+    const bool conv = c_config_charset && c_charset;
     if (conv)
     {
       currentline = mutt_str_dup(line);
       if (!currentline)
         continue;
-      mutt_ch_convert_string(&currentline, C_ConfigCharset, C_Charset, MUTT_ICONV_NO_FLAGS);
+      mutt_ch_convert_string(&currentline, c_config_charset, c_charset, MUTT_ICONV_NO_FLAGS);
     }
     else
       currentline = line;
@@ -930,7 +933,8 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     }
 
     mutt_buffer_strcpy(&m->pathbuf, buf->data);
-    /* int rc = */ mx_path_canon2(m, C_Folder);
+    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+    /* int rc = */ mx_path_canon2(m, c_folder);
 
     if (m->type <= MUTT_UNKNOWN)
     {
@@ -1113,6 +1117,9 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
           return MUTT_CMD_ERROR;
         }
       }
+
+      // Use the correct name if a synonym is used
+      mutt_buffer_strcpy(buf, he->key.strkey);
 
       bq = ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD));
     }

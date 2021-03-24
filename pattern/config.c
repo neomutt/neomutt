@@ -31,24 +31,18 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
-// clang-format off
-char *C_ExternalSearchCommand = NULL; ///< Config: External search command
-char *C_PatternFormat = NULL;         ///< Config: printf-like format string for the pattern completion menu
-bool  C_ThoroughSearch;               ///< Config: Decode headers and messages before searching them
-// clang-format on
-
 struct ConfigDef PatternVars[] = {
   // clang-format off
-  { "external_search_command", DT_STRING|DT_COMMAND, &C_ExternalSearchCommand, 0, 0, NULL,
+  { "external_search_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
     "External search command"
   },
-  { "pattern_format", DT_STRING, &C_PatternFormat, IP "%2n %-15e  %d", 0, NULL,
+  { "pattern_format", DT_STRING, IP "%2n %-15e  %d", 0, NULL,
     "printf-like format string for the pattern completion menu"
   },
-  { "thorough_search", DT_BOOL, &C_ThoroughSearch, true, 0, NULL,
+  { "thorough_search", DT_BOOL, true, 0, NULL,
     "Decode headers and messages before searching them"
   },
-  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  { NULL },
   // clang-format on
 };
 

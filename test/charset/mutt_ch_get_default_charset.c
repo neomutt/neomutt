@@ -24,13 +24,28 @@
 #include "config.h"
 #include "acutest.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
+#include "test_common.h"
+
+static struct ConfigDef Vars[] = {
+  // clang-format off
+  { "assumed_charset", DT_STRING, 0, 0, NULL, },
+  { NULL },
+  // clang-format on
+};
 
 void test_mutt_ch_get_default_charset(void)
 {
   // char *mutt_ch_get_default_charset(void);
 
   {
+    NeoMutt = test_neomutt_create();
+    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
+
     char *cs = mutt_ch_get_default_charset();
     TEST_CHECK(strlen(cs) != 0);
+
+    test_neomutt_destroy(&NeoMutt);
   }
 }

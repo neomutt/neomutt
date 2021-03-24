@@ -299,7 +299,7 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
   {
     char cmd[1024];
 
-    const char *c_inews = cs_subset_string(sub, "inews");
+    const char *const c_inews = cs_subset_string(sub, "inews");
     mutt_expando_format(cmd, sizeof(cmd), 0, sizeof(cmd), NONULL(c_inews),
                         nntp_format_str, 0, MUTT_FORMAT_NO_FLAGS);
     if (*cmd == '\0')
@@ -314,7 +314,7 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
   else
 #endif
   {
-    const char *c_sendmail = cs_subset_string(sub, "sendmail");
+    const char *const c_sendmail = cs_subset_string(sub, "sendmail");
     s = mutt_str_dup(c_sendmail);
   }
 
@@ -385,14 +385,14 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
       }
     }
 
-    const char *c_dsn_notify = cs_subset_string(sub, "dsn_notify");
+    const char *const c_dsn_notify = cs_subset_string(sub, "dsn_notify");
     if (c_dsn_notify)
     {
       ARRAY_ADD(&args, "-N");
       ARRAY_ADD(&args, c_dsn_notify);
     }
 
-    const char *c_dsn_return = cs_subset_string(sub, "dsn_return");
+    const char *const c_dsn_return = cs_subset_string(sub, "dsn_return");
     if (c_dsn_return)
     {
       ARRAY_ADD(&args, "-R");

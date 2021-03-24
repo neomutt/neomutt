@@ -167,7 +167,8 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
   }
 
   const char *fqdn = NULL;
-  if (C_UseDomain && (fqdn = mutt_fqdn(true, NeoMutt->sub)))
+  const bool c_use_domain = cs_subset_bool(NeoMutt->sub, "use_domain");
+  if (c_use_domain && (fqdn = mutt_fqdn(true, NeoMutt->sub)))
   {
     /* now qualify all local addresses */
     mutt_addrlist_qualify(al, fqdn);
@@ -184,13 +185,16 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
  */
 static void recode_buf(char *buf, size_t buflen)
 {
-  if (!C_ConfigCharset || !C_Charset)
+  const char *const c_config_charset =
+      cs_subset_string(NeoMutt->sub, "config_charset");
+  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+  if (!c_config_charset || !c_charset)
     return;
 
   char *s = mutt_str_dup(buf);
   if (!s)
     return;
-  if (mutt_ch_convert_string(&s, C_Charset, C_ConfigCharset, MUTT_ICONV_NO_FLAGS) == 0)
+  if (mutt_ch_convert_string(&s, c_charset, c_config_charset, MUTT_ICONV_NO_FLAGS) == 0)
     mutt_str_copy(buf, s, buflen);
   FREE(&s);
 }
@@ -488,7 +492,7 @@ retry_name:
   alias_reverse_add(alias);
   TAILQ_INSERT_TAIL(&Aliases, alias, entries);
 
-  const char *alias_file = cs_subset_path(sub, "alias_file");
+  const char *const alias_file = cs_subset_path(sub, "alias_file");
   mutt_str_copy(buf, NONULL(alias_file), sizeof(buf));
 
   if (mutt_get_field(_("Save to file: "), buf, sizeof(buf),
@@ -589,9 +593,10 @@ bool mutt_addr_is_user(const struct Address *addr)
     return true;
   }
 
-  if (C_From && mutt_istr_equal(C_From->mailbox, addr->mailbox))
+  const struct Address *c_from = cs_subset_address(NeoMutt->sub, "from");
+  if (c_from && mutt_istr_equal(c_from->mailbox, addr->mailbox))
   {
-    mutt_debug(LL_DEBUG5, "#5 yes, %s = %s\n", addr->mailbox, C_From->mailbox);
+    mutt_debug(LL_DEBUG5, "#5 yes, %s = %s\n", addr->mailbox, c_from->mailbox);
     return true;
   }
 

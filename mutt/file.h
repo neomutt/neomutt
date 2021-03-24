@@ -31,7 +31,6 @@
 
 struct Buffer;
 struct stat;
-extern char *C_Tmpdir;
 extern const char filename_safe_chars[];
 
 /* Flags for mutt_file_read_line() */

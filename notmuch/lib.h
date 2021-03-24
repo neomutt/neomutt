@@ -49,12 +49,6 @@ struct stat;
 
 extern struct MxOps MxNotmuchOps;
 
-// These Config Variables are used outside of libnotmuch
-extern char *C_NmQueryWindowCurrentSearch;
-extern int   C_NmQueryWindowDuration;
-extern char *C_VfolderFormat;
-extern bool  C_VirtualSpoolFile;
-
 void  nm_init                    (void);
 void  nm_db_debug_check          (struct Mailbox *m);
 void  nm_db_longrun_done         (struct Mailbox *m);

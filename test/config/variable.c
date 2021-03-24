@@ -31,11 +31,12 @@
 #include "config/common.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "test_common.h"
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",  DT_STRING, NULL, IP "hello", 0, NULL },
-  { "Banana", DT_NUMBER, NULL, 42,         0, NULL },
+  { "Apple",  DT_STRING, IP "hello", 0, NULL },
+  { "Banana", DT_NUMBER, 42,         0, NULL },
   { NULL },
 };
 // clang-format on
@@ -44,35 +45,27 @@ void test_config_variable(void)
 {
   log_line(__func__);
 
-  struct Buffer err;
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = mutt_mem_calloc(1, err.dsize);
-  mutt_buffer_reset(&err);
+  NeoMutt = test_neomutt_create();
+  struct ConfigSubset *sub = NeoMutt->sub;
+  struct ConfigSet *cs = sub->cs;
 
-  struct ConfigSet *cs = cs_new(30);
-  if (!TEST_CHECK(cs != NULL))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars, 0)))
     return;
 
-  cs_register_type(cs, &cst_number);
-  cs_register_type(cs, &cst_string);
-
-  if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_VARIABLE)))
-    return;
-
+  struct Buffer *err = mutt_buffer_pool_get();
   const char *name = "Apple";
-  int result = cs_str_string_set(cs, name, "world", &err);
+  int result = cs_str_string_set(cs, name, "world", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", err.data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     return;
   }
 
-  mutt_buffer_reset(&err);
-  result = cs_str_reset(cs, name, &err);
+  mutt_buffer_reset(err);
+  result = cs_str_reset(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", err.data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     return;
   }
 
@@ -80,35 +73,35 @@ void test_config_variable(void)
   if (!TEST_CHECK(he != NULL))
     return;
 
-  mutt_buffer_reset(&err);
-  result = cs_he_string_get(cs, he, &err);
+  mutt_buffer_reset(err);
+  result = cs_he_string_get(cs, he, err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", err.data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     return;
   }
 
-  mutt_buffer_reset(&err);
-  result = cs_he_native_set(cs, he, IP "foo", &err);
+  mutt_buffer_reset(err);
+  result = cs_he_native_set(cs, he, IP "foo", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", err.data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     return;
   }
 
-  mutt_buffer_reset(&err);
-  result = cs_str_native_set(cs, name, IP "bar", &err);
+  mutt_buffer_reset(err);
+  result = cs_str_native_set(cs, name, IP "bar", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", err.data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     return;
   }
 
-  mutt_buffer_reset(&err);
-  intptr_t value = cs_he_native_get(cs, he, &err);
+  mutt_buffer_reset(err);
+  intptr_t value = cs_he_native_get(cs, he, err);
   if (!TEST_CHECK(mutt_str_equal((const char *) value, "bar")))
   {
-    TEST_MSG("Error: %s\n", err.data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     return;
   }
 
@@ -117,21 +110,21 @@ void test_config_variable(void)
   if (!TEST_CHECK(he != NULL))
     return;
 
-  result = cs_he_string_plus_equals(cs, he, "23", &err);
+  result = cs_he_string_plus_equals(cs, he, "23", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", err.data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     return;
   }
 
-  result = cs_he_string_minus_equals(cs, he, "56", &err);
+  result = cs_he_string_minus_equals(cs, he, "56", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", err.data);
+    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
     return;
   }
 
-  cs_free(&cs);
-  FREE(&err.data);
+  mutt_buffer_pool_release(&err);
+  test_neomutt_destroy(&NeoMutt);
   log_line(__func__);
 }

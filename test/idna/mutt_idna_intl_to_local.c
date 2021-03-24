@@ -25,12 +25,29 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
+#include "test_common.h"
+
+#ifdef HAVE_LIBIDN
+static struct ConfigDef Vars[] = {
+  // clang-format off
+  { "charset",    DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, 0,    0, NULL, },
+  { "idn_decode", DT_BOOL,                                  true, 0, NULL, },
+  { "idn_encode", DT_BOOL,                                  true, 0, NULL, },
+  { NULL },
+  // clang-format on
+};
+#endif
 
 void test_mutt_idna_intl_to_local(void)
 {
   // char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flags);
 
 #ifdef HAVE_LIBIDN
+  NeoMutt = test_neomutt_create();
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
+
   {
     TEST_CHECK(!mutt_idna_intl_to_local(NULL, "banana", MI_NO_FLAGS));
   }
@@ -38,5 +55,7 @@ void test_mutt_idna_intl_to_local(void)
   {
     TEST_CHECK(!mutt_idna_intl_to_local("apple", NULL, MI_NO_FLAGS));
   }
+
+  test_neomutt_destroy(&NeoMutt);
 #endif
 }

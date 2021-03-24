@@ -32,6 +32,7 @@
 #include <string.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "auth.h"
 
 /**
@@ -106,13 +107,15 @@ int imap_authenticate(struct ImapAccountData *adata)
 {
   int rc = IMAP_AUTH_FAILURE;
 
-  if (C_ImapAuthenticators && (C_ImapAuthenticators->count > 0))
+  const struct Slist *c_imap_authenticators =
+      cs_subset_slist(NeoMutt->sub, "imap_authenticators");
+  if (c_imap_authenticators && (c_imap_authenticators->count > 0))
   {
     mutt_debug(LL_DEBUG2, "Trying user-defined imap_authenticators\n");
 
     /* Try user-specified list of authentication methods */
     struct ListNode *np = NULL;
-    STAILQ_FOREACH(np, &C_ImapAuthenticators->head, entries)
+    STAILQ_FOREACH(np, &c_imap_authenticators->head, entries)
     {
       mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
 

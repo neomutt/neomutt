@@ -32,22 +32,9 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "compress/lib.h"
 #include "store/lib.h"
-
-// clang-format off
-char *C_HeaderCache;               ///< Config: (hcache) Directory/file for the header cache database
-char *C_HeaderCacheBackend;        ///< Config: (hcache) Header cache backend to use
-#ifdef USE_HCACHE_COMPRESSION
-short C_HeaderCacheCompressLevel;  ///< Config: (hcache) Level of compression for method
-char *C_HeaderCacheCompressMethod; ///< Config: (hcache) Enable generic hcache database compression
-#endif
-// clang-format on
-
-bool C_HeaderCacheCompress = false;
-#if defined(HAVE_GDBM) || defined(HAVE_BDB)
-long C_HeaderCachePagesize = 0;
-#endif
 
 /**
  * hcache_validator - Validate the "header_cache_backend" config variable - Implements ConfigDef::validator()
@@ -92,18 +79,20 @@ int compress_method_validator(const struct ConfigSet *cs, const struct ConfigDef
 int compress_level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                              intptr_t value, struct Buffer *err)
 {
-  if (!C_HeaderCacheCompressMethod)
+  const char *const c_header_cache_compress_method =
+      cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
+  if (!c_header_cache_compress_method)
   {
     mutt_buffer_printf(err, _("Set option %s before setting %s"),
                        "header_cache_compress_method", cdef->name);
     return CSR_ERR_INVALID;
   }
 
-  const struct ComprOps *cops = compress_get_ops(C_HeaderCacheCompressMethod);
+  const struct ComprOps *cops = compress_get_ops(c_header_cache_compress_method);
   if (!cops)
   {
     mutt_buffer_printf(err, _("Invalid value for option %s: %s"),
-                       "header_cache_compress_method", C_HeaderCacheCompressMethod);
+                       "header_cache_compress_method", c_header_cache_compress_method);
     return CSR_ERR_INVALID;
   }
 
@@ -122,27 +111,29 @@ int compress_level_validator(const struct ConfigSet *cs, const struct ConfigDef 
 
 struct ConfigDef HcacheVars[] = {
   // clang-format off
-  { "header_cache", DT_PATH, &C_HeaderCache, 0, 0, NULL,
+  { "header_cache", DT_PATH, 0, 0, NULL,
     "(hcache) Directory/file for the header cache database"
   },
-  { "header_cache_backend", DT_STRING, &C_HeaderCacheBackend, 0, 0, hcache_validator,
+  { "header_cache_backend", DT_STRING, 0, 0, hcache_validator,
     "(hcache) Header cache backend to use"
   },
 #if defined(USE_HCACHE_COMPRESSION)
-  { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, &C_HeaderCacheCompressLevel, 1, 0, compress_level_validator,
-    "(hcache) Level of compression for method"
-  },
-  { "header_cache_compress_method", DT_STRING, &C_HeaderCacheCompressMethod, 0, 0, compress_method_validator,
+  // These two are not in alphabetical order because `level`s validator depends on `method`
+  { "header_cache_compress_method", DT_STRING, 0, 0, compress_method_validator,
     "(hcache) Enable generic hcache database compression"
+  },
+  { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, 1, 0, compress_level_validator,
+    "(hcache) Level of compression for method"
   },
 #endif
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-  { "header_cache_compress", DT_DEPRECATED|DT_BOOL, &C_HeaderCacheCompress, false, 0, NULL, NULL },
+  { "header_cache_compress", DT_DEPRECATED|DT_BOOL, false, 0, NULL, NULL },
 #endif
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
-  { "header_cache_pagesize", DT_DEPRECATED|DT_LONG, &C_HeaderCachePagesize, 0, 0, NULL, NULL },
+  { "header_cache_pagesize", DT_DEPRECATED|DT_LONG, 0, 0, NULL, NULL },
 #endif
-  { NULL, 0, NULL, 0, 0, NULL, NULL },
+
+  { NULL },
   // clang-format on
 };
 

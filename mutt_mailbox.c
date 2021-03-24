@@ -45,11 +45,6 @@ static time_t MailboxStatsTime = 0; ///< last time we check performed mail_check
 static short MailboxCount = 0;  ///< how many boxes with new mail
 static short MailboxNotify = 0; ///< # of unnotified new boxes
 
-/* These Config Variables are only used in mutt_mailbox.c */
-short C_MailCheck; ///< Config: Number of seconds before NeoMutt checks for new mail
-bool C_MailCheckStats;          ///< Config: Periodically check for new mail
-short C_MailCheckStatsInterval; ///< Config: How often to check for new mail
-
 /**
  * mailbox_check - Check a mailbox for new mail
  * @param m_cur       Current Mailbox
@@ -64,7 +59,9 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
 
   enum MailboxType mb_type = mx_path_probe(mailbox_path(m_check));
 
-  if ((m_cur == m_check) && C_MailCheckRecent)
+  const bool c_mail_check_recent =
+      cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  if ((m_cur == m_check) && c_mail_check_recent)
     m_check->has_new = false;
 
   switch (mb_type)
@@ -91,6 +88,8 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       break; // kept for consistency.
   }
 
+  const bool c_check_mbox_size =
+      cs_subset_bool(NeoMutt->sub, "check_mbox_size");
   /* check to see if the folder is the currently selected folder before polling */
   if (!m_cur || mutt_buffer_is_empty(&m_cur->pathbuf) ||
       (((m_check->type == MUTT_IMAP) || (m_check->type == MUTT_NNTP) ||
@@ -115,7 +114,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       default:; /* do nothing */
     }
   }
-  else if (C_CheckMboxSize && m_cur && mutt_buffer_is_empty(&m_cur->pathbuf))
+  else if (c_check_mbox_size && m_cur && mutt_buffer_is_empty(&m_cur->pathbuf))
     m_check->size = (off_t) sb.st_size; /* update the size of current folder */
 
   if (!m_check->has_new)
@@ -154,12 +153,18 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
   if (TAILQ_EMPTY(&NeoMutt->accounts))
     return 0;
 
+  const short c_mail_check = cs_subset_number(NeoMutt->sub, "mail_check");
+  const bool c_mail_check_stats =
+      cs_subset_bool(NeoMutt->sub, "mail_check_stats");
+  const short c_mail_check_stats_interval =
+      cs_subset_number(NeoMutt->sub, "mail_check_stats_interval");
+
   t = mutt_date_epoch();
-  if (!force && (t - MailboxTime < C_MailCheck))
+  if (!force && (t - MailboxTime < c_mail_check))
     return MailboxCount;
 
   if ((force & MUTT_MAILBOX_CHECK_FORCE_STATS) ||
-      (C_MailCheckStats && ((t - MailboxStatsTime) >= C_MailCheckStatsInterval)))
+      (c_mail_check_stats && ((t - MailboxStatsTime) >= c_mail_check_stats_interval)))
   {
     check_stats = true;
     MailboxStatsTime = t;
@@ -189,7 +194,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
       continue;
 
     mailbox_check(m_cur, np->mailbox, &contex_sb,
-                  check_stats || (!np->mailbox->first_check_stats_done && C_MailCheckStats));
+                  check_stats || (!np->mailbox->first_check_stats_done && c_mail_check_stats));
     np->mailbox->first_check_stats_done = true;
   }
   neomutt_mailboxlist_clear(&ml);
@@ -361,7 +366,9 @@ void mutt_mailbox_cleanup(const char *path, struct stat *st)
   struct utimbuf ut;
 #endif
 
-  if (C_CheckMboxSize)
+  const bool c_check_mbox_size =
+      cs_subset_bool(NeoMutt->sub, "check_mbox_size");
+  if (c_check_mbox_size)
   {
     struct Mailbox *m = mailbox_find(path);
     if (m && !m->has_new)

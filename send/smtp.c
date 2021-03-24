@@ -199,7 +199,7 @@ static int smtp_rcpt_to(struct SmtpAccountData *adata, const struct AddressList 
   if (!al)
     return 0;
 
-  const char *c_dsn_notify = cs_subset_string(adata->sub, "dsn_notify");
+  const char *const c_dsn_notify = cs_subset_string(adata->sub, "dsn_notify");
 
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
@@ -316,17 +316,17 @@ static const char *smtp_get_field(enum ConnAccountField field, void *gf_data)
     case MUTT_CA_LOGIN:
     case MUTT_CA_USER:
     {
-      const char *c_smtp_user = cs_subset_string(adata->sub, "smtp_user");
+      const char *const c_smtp_user = cs_subset_string(adata->sub, "smtp_user");
       return c_smtp_user;
     }
     case MUTT_CA_PASS:
     {
-      const char *c_smtp_pass = cs_subset_string(adata->sub, "smtp_pass");
+      const char *const c_smtp_pass = cs_subset_string(adata->sub, "smtp_pass");
       return c_smtp_pass;
     }
     case MUTT_CA_OAUTH_CMD:
     {
-      const char *c_smtp_oauth_refresh_command =
+      const char *const c_smtp_oauth_refresh_command =
           cs_subset_string(adata->sub, "smtp_oauth_refresh_command");
       return c_smtp_oauth_refresh_command;
     }
@@ -352,7 +352,7 @@ static int smtp_fill_account(struct SmtpAccountData *adata, struct ConnAccount *
   cac->get_field = smtp_get_field;
   cac->gf_data = adata;
 
-  const char *c_smtp_url = cs_subset_string(adata->sub, "smtp_url");
+  const char *const c_smtp_url = cs_subset_string(adata->sub, "smtp_url");
 
   struct Url *url = url_parse(c_smtp_url);
   if (!url || ((url->scheme != U_SMTP) && (url->scheme != U_SMTPS)) ||
@@ -914,7 +914,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
   if (!adata.conn)
     return -1;
 
-  const char *c_dsn_return = cs_subset_string(adata.sub, "dsn_return");
+  const char *const c_dsn_return = cs_subset_string(adata.sub, "dsn_return");
 
   do
   {

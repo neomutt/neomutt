@@ -31,6 +31,8 @@
 #include <stdarg.h>
 #include <wchar.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "state.h"
 #include "mutt_globals.h"
 
@@ -42,8 +44,9 @@ void state_mark_attach(struct State *s)
 {
   if (!s || !s->fp_out)
     return;
+  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
   if ((s->flags & MUTT_DISPLAY) &&
-      (!C_Pager || mutt_str_equal(C_Pager, "builtin")))
+      (!c_pager || mutt_str_equal(c_pager, "builtin")))
   {
     state_puts(s, AttachmentMarker);
   }
@@ -55,8 +58,9 @@ void state_mark_attach(struct State *s)
  */
 void state_mark_protected_header(struct State *s)
 {
+  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
   if ((s->flags & MUTT_DISPLAY) &&
-      (!C_Pager || mutt_str_equal(C_Pager, "builtin")))
+      (!c_pager || mutt_str_equal(c_pager, "builtin")))
   {
     state_puts(s, ProtectedHeaderMarker);
   }

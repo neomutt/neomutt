@@ -69,12 +69,6 @@ struct EmailList;
 struct PatternList;
 struct stat;
 
-// These Config Variables are used outside of libimap
-extern short C_ImapKeepalive;
-extern bool  C_ImapListSubscribed;
-extern bool  C_ImapPassive;
-extern bool  C_ImapPeek;
-
 /* imap.c */
 void imap_init(void);
 int imap_access(const char *path);
@@ -85,7 +79,7 @@ int imap_path_status(const char *path, bool queue);
 int imap_mailbox_status(struct Mailbox *m, bool queue);
 int imap_subscribe(char *path, bool subscribe);
 int imap_complete(char *buf, size_t buflen, const char *path);
-int imap_fast_trash(struct Mailbox *m, char *dest);
+int imap_fast_trash(struct Mailbox *m, const char *dest);
 enum MailboxType imap_path_probe(const char *path, const struct stat *st);
 int imap_path_canon(char *buf, size_t buflen);
 void imap_notify_delete_email(struct Mailbox *m, struct Email *e);

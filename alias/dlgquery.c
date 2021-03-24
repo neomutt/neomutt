@@ -206,10 +206,10 @@ static void query_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
   const struct AliasViewArray *ava = &((struct AliasMenuData *) menu->mdata)->ava;
   struct AliasView *av = ARRAY_GET(ava, line);
 
-  const char *query_format = cs_subset_string(mdata->sub, "query_format");
+  const char *const query_format = cs_subset_string(mdata->sub, "query_format");
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(query_format),
-                      query_format_str, IP av, MUTT_FORMAT_ARROWCURSOR);
+                      query_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
@@ -246,7 +246,7 @@ static int query_run(char *s, bool verbose, struct AliasList *al,
   char *p = NULL;
   struct Buffer *cmd = mutt_buffer_pool_get();
 
-  const char *query_command = cs_subset_string(sub, "query_command");
+  const char *const query_command = cs_subset_string(sub, "query_command");
   mutt_buffer_file_expand_fmt_quote(cmd, query_command, s);
 
   pid_t pid = filter_create(mutt_buffer_string(cmd), NULL, &fp, NULL);
@@ -612,7 +612,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
  */
 int query_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
 {
-  const char *query_command = cs_subset_string(sub, "query_command");
+  const char *const query_command = cs_subset_string(sub, "query_command");
   if (!query_command)
   {
     mutt_warning(_("Query command not defined"));
@@ -652,7 +652,7 @@ int query_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
  */
 void query_index(struct ConfigSubset *sub)
 {
-  const char *query_command = cs_subset_string(sub, "query_command");
+  const char *const query_command = cs_subset_string(sub, "query_command");
   if (!query_command)
   {
     mutt_warning(_("Query command not defined"));

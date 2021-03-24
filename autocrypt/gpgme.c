@@ -34,6 +34,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "ncrypt/lib.h"
@@ -47,9 +48,11 @@
  */
 static int create_gpgme_context(gpgme_ctx_t *ctx)
 {
+  const char *const c_autocrypt_dir =
+      cs_subset_path(NeoMutt->sub, "autocrypt_dir");
   gpgme_error_t err = gpgme_new(ctx);
   if (!err)
-    err = gpgme_ctx_set_engine_info(*ctx, GPGME_PROTOCOL_OpenPGP, NULL, C_AutocryptDir);
+    err = gpgme_ctx_set_engine_info(*ctx, GPGME_PROTOCOL_OpenPGP, NULL, c_autocrypt_dir);
   if (err)
   {
     mutt_error(_("error creating GPGME context: %s"), gpgme_strerror(err));

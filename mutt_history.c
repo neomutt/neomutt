@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "mutt_history.h"
 #include "history/lib.h"
 
@@ -41,7 +42,8 @@
  */
 void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 {
-  char **matches = mutt_mem_calloc(C_History, sizeof(char *));
+  const short c_history = cs_subset_number(NeoMutt->sub, "history");
+  char **matches = mutt_mem_calloc(c_history, sizeof(char *));
   int match_count = mutt_hist_search(buf, hclass, matches);
   if (match_count)
   {

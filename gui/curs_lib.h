@@ -34,9 +34,6 @@
 struct Buffer;
 struct Mailbox;
 
-/* These Config Variables are only used in curs_lib.c */
-extern bool C_MetaKey; ///< interpret ALT-x as ESC-x
-
 extern int MuttGetchTimeout; ///< Timeout in ms for mutt_getch()
 
 /**

@@ -32,13 +32,10 @@
 #include "config/lib.h"
 #include "core/lib.h"
 
-static short VarApple;
-static bool VarBanana;
-
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",  DT_NUMBER,  &VarApple,  0, 0, NULL },
-  { "Banana", DT_BOOL,    &VarBanana, 1, 0, NULL },
+  { "Apple",  DT_NUMBER,  0, 0, NULL, },
+  { "Banana", DT_BOOL,    1, 0, NULL, },
   { NULL },
 };
 // clang-format on
@@ -250,11 +247,7 @@ void test_config_set(void)
 {
   log_line(__func__);
 
-  struct Buffer err;
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = mutt_mem_calloc(1, err.dsize);
-  mutt_buffer_reset(&err);
+  struct Buffer *err = mutt_buffer_pool_get();
 
   struct ConfigSet *cs = cs_new(30);
   if (!TEST_CHECK(cs != NULL))
@@ -319,7 +312,7 @@ void test_config_set(void)
     return;
 
   const char *name = "Unknown";
-  int result = cs_str_string_set(cs, name, "hello", &err);
+  int result = cs_str_string_set(cs, name, "hello", err);
   if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'\n", name);
@@ -330,7 +323,7 @@ void test_config_set(void)
     return;
   }
 
-  result = cs_str_string_plus_equals(cs, name, "42", &err);
+  result = cs_str_string_plus_equals(cs, name, "42", err);
   if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'\n", name);
@@ -341,7 +334,7 @@ void test_config_set(void)
     return;
   }
 
-  result = cs_str_string_minus_equals(cs, name, "42", &err);
+  result = cs_str_string_minus_equals(cs, name, "42", err);
   if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'\n", name);
@@ -352,7 +345,7 @@ void test_config_set(void)
     return;
   }
 
-  result = cs_str_string_get(cs, name, &err);
+  result = cs_str_string_get(cs, name, err);
   if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'\n", name);
@@ -363,7 +356,7 @@ void test_config_set(void)
     return;
   }
 
-  result = cs_str_native_set(cs, name, IP "hello", &err);
+  result = cs_str_native_set(cs, name, IP "hello", err);
   if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'\n", name);
@@ -374,7 +367,7 @@ void test_config_set(void)
     return;
   }
 
-  intptr_t native = cs_str_native_get(cs, name, &err);
+  intptr_t native = cs_str_native_get(cs, name, err);
   if (TEST_CHECK(native == INT_MIN))
   {
     TEST_MSG("Expected error: Unknown var '%s'\n", name);
@@ -397,6 +390,6 @@ void test_config_set(void)
 
   neomutt_free(&NeoMutt);
   cs_free(&cs);
-  FREE(&err.data);
+  mutt_buffer_pool_release(&err);
   log_line(__func__);
 }

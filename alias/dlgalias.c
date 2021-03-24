@@ -124,10 +124,10 @@ static void alias_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
   const struct AliasViewArray *ava = &((struct AliasMenuData *) menu->mdata)->ava;
   const struct AliasView *av = ARRAY_GET(ava, line);
 
-  const char *alias_format = cs_subset_string(mdata->sub, "alias_format");
+  const char *const alias_format = cs_subset_string(mdata->sub, "alias_format");
 
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(alias_format),
-                      alias_format_str, IP av, MUTT_FORMAT_ARROWCURSOR);
+                      alias_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
@@ -247,7 +247,8 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
         {
           ARRAY_GET(&mdata->ava, menu->current)->is_deleted = (op == OP_DELETE);
           menu->redraw |= REDRAW_CURRENT;
-          if (C_Resolve && (menu->current < menu->max - 1))
+          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          if (c_resolve && (menu->current < menu->max - 1))
           {
             menu->current++;
             menu->redraw |= REDRAW_INDEX;

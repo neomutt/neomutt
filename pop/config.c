@@ -35,19 +35,6 @@
 #include "mutt/lib.h"
 #include "conn/lib.h"
 
-// clang-format off
-bool          C_PopAuthTryAll;          ///< Config: (pop) Try all available authentication methods
-struct Slist *C_PopAuthenticators;      ///< Config: (pop) List of allowed authentication methods
-short         C_PopCheckInterval;       ///< Config: (pop) Interval between checks for new mail
-unsigned char C_PopDelete;              ///< Config: (pop) After downloading POP messages, delete them on the server
-char *        C_PopHost;                ///< Config: (pop) Url of the POP server
-bool          C_PopLast;                ///< Config: (pop) Use the 'LAST' command to fetch new mail
-char *        C_PopOauthRefreshCommand; ///< Config: (pop) External command to generate OAUTH refresh token
-char *        C_PopPass;                ///< Config: (pop) Password of the POP server
-unsigned char C_PopReconnect;           ///< Config: (pop) Reconnect to the server is the connection is lost
-char *        C_PopUser;                ///< Config: (pop) Username of the POP server
-// clang-format on
-
 /**
  * pop_auth_validator - Validate the "pop_authenticators" config variable - Implements ConfigDef::validator()
  */
@@ -77,40 +64,40 @@ static int pop_auth_validator(const struct ConfigSet *cs, const struct ConfigDef
 
 struct ConfigDef PopVars[] = {
   // clang-format off
-  { "pop_auth_try_all", DT_BOOL, &C_PopAuthTryAll, true, 0, NULL,
+  { "pop_auth_try_all", DT_BOOL, true, 0, NULL,
     "(pop) Try all available authentication methods"
   },
-  { "pop_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_PopAuthenticators, 0, 0, pop_auth_validator,
+  { "pop_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, pop_auth_validator,
     "(pop) List of allowed authentication methods"
   },
-  { "pop_check_interval", DT_NUMBER|DT_NOT_NEGATIVE, &C_PopCheckInterval, 60, 0, NULL,
+  { "pop_check_interval", DT_NUMBER|DT_NOT_NEGATIVE, 60, 0, NULL,
     "(pop) Interval between checks for new mail"
   },
-  { "pop_delete", DT_QUAD, &C_PopDelete, MUTT_ASKNO, 0, NULL,
+  { "pop_delete", DT_QUAD, MUTT_ASKNO, 0, NULL,
     "(pop) After downloading POP messages, delete them on the server"
   },
-  { "pop_host", DT_STRING, &C_PopHost, 0, 0, NULL,
+  { "pop_host", DT_STRING, 0, 0, NULL,
     "(pop) Url of the POP server"
   },
-  { "pop_last", DT_BOOL, &C_PopLast, false, 0, NULL,
+  { "pop_last", DT_BOOL, false, 0, NULL,
     "(pop) Use the 'LAST' command to fetch new mail"
   },
-  { "pop_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, &C_PopOauthRefreshCommand, 0, 0, NULL,
+  { "pop_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, 0, 0, NULL,
     "(pop) External command to generate OAUTH refresh token"
   },
-  { "pop_pass", DT_STRING|DT_SENSITIVE, &C_PopPass, 0, 0, NULL,
+  { "pop_pass", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
     "(pop) Password of the POP server"
   },
-  { "pop_reconnect", DT_QUAD, &C_PopReconnect, MUTT_ASKYES, 0, NULL,
+  { "pop_reconnect", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "(pop) Reconnect to the server is the connection is lost"
   },
-  { "pop_user", DT_STRING|DT_SENSITIVE, &C_PopUser, 0, 0, NULL,
+  { "pop_user", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
     "(pop) Username of the POP server"
   },
 
-  { "pop_checkinterval",         DT_SYNONYM, NULL, IP "pop_check_interval",         },
+  { "pop_checkinterval",         DT_SYNONYM, IP "pop_check_interval",         },
 
-  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  { NULL },
   // clang-format on
 };
 

@@ -311,12 +311,13 @@ static char *getmailname(void)
  */
 static bool get_hostname(struct ConfigSet *cs)
 {
-  char *str = NULL;
+  const char *short_host = NULL;
   struct utsname utsname;
 
-  if (C_Hostname)
+  const char *const c_hostname = cs_subset_string(NeoMutt->sub, "hostname");
+  if (c_hostname)
   {
-    str = C_Hostname;
+    short_host = c_hostname;
   }
   else
   {
@@ -329,34 +330,34 @@ static bool get_hostname(struct ConfigSet *cs)
       return false; // TEST09: can't test
     }
 
-    str = utsname.nodename;
+    short_host = utsname.nodename;
   }
 
   /* some systems report the FQDN instead of just the hostname */
-  char *dot = strchr(str, '.');
+  char *dot = strchr(short_host, '.');
   if (dot)
-    ShortHostname = mutt_strn_dup(str, dot - str);
+    ShortHostname = mutt_strn_dup(short_host, dot - short_host);
   else
-    ShortHostname = mutt_str_dup(str);
+    ShortHostname = mutt_str_dup(short_host);
 
-  if (!C_Hostname)
+  // All the code paths from here alloc memory for the fqdn
+  char *fqdn = mutt_str_dup(c_hostname);
+  if (!fqdn)
   {
     /* now get FQDN.  Use configured domain first, DNS next, then uname */
 #ifdef DOMAIN
     /* we have a compile-time domain name, use that for `$hostname` */
-    C_Hostname = mutt_mem_malloc(mutt_str_len(DOMAIN) + mutt_str_len(ShortHostname) + 2);
-    sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), DOMAIN);
+    fqdn = mutt_mem_malloc(mutt_str_len(DOMAIN) + mutt_str_len(ShortHostname) + 2);
+    sprintf((char *) fqdn, "%s.%s", NONULL(ShortHostname), DOMAIN);
 #else
-    C_Hostname = getmailname();
-    if (!C_Hostname)
+    fqdn = getmailname();
+    if (!fqdn)
     {
       struct Buffer *domain = mutt_buffer_pool_get();
       if (getdnsdomainname(domain) == 0)
       {
-        C_Hostname =
-            mutt_mem_malloc(mutt_buffer_len(domain) + mutt_str_len(ShortHostname) + 2);
-        sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname),
-                mutt_buffer_string(domain));
+        fqdn = mutt_mem_malloc(mutt_buffer_len(domain) + mutt_str_len(ShortHostname) + 2);
+        sprintf((char *) fqdn, "%s.%s", NONULL(ShortHostname), mutt_buffer_string(domain));
       }
       else
       {
@@ -367,14 +368,19 @@ static bool get_hostname(struct ConfigSet *cs)
          * It could be wrong, but we've done the best we can, at this point the
          * onus is on the user to provide the correct hostname if the nodename
          * won't work in their network.  */
-        C_Hostname = mutt_str_dup(utsname.nodename);
+        fqdn = mutt_str_dup(utsname.nodename);
       }
       mutt_buffer_pool_release(&domain);
     }
 #endif
   }
-  if (C_Hostname)
-    cs_str_initial_set(cs, "hostname", C_Hostname, NULL);
+
+  if (fqdn)
+  {
+    cs_str_initial_set(cs, "hostname", fqdn, NULL);
+    cs_str_reset(cs, "hostname", NULL);
+    FREE(&fqdn);
+  }
 
   return true;
 }
@@ -800,15 +806,19 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   const char *env_ed = mutt_str_getenv("VISUAL");
   if (!env_ed)
     env_ed = mutt_str_getenv("EDITOR");
-  if (env_ed)
-  {
-    cs_str_string_set(cs, "editor", env_ed, NULL);
-    cs_str_string_set(cs, "visual", env_ed, NULL);
-  }
+  if (!env_ed)
+    env_ed = "vi";
+  cs_str_initial_set(cs, "editor", env_ed, NULL);
 
-  C_Charset = mutt_ch_get_langinfo_charset();
-  cs_str_initial_set(cs, "charset", C_Charset, NULL);
-  mutt_ch_set_charset(C_Charset);
+  const char *const c_editor = cs_subset_string(NeoMutt->sub, "editor");
+  if (!c_editor)
+    cs_str_reset(cs, "editor", NULL);
+
+  const char *charset = mutt_ch_get_langinfo_charset();
+  cs_str_initial_set(cs, "charset", charset, NULL);
+  cs_str_reset(cs, "charset", NULL);
+  mutt_ch_set_charset(charset);
+  FREE(&charset);
 
   Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));
 
@@ -817,7 +827,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
-    C_Suspend = false;
+    cs_subset_str_native_set(NeoMutt->sub, "suspend", false, NULL);
 #endif
 
   /* RFC2368, "4. Unsafe headers"
@@ -926,16 +936,18 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   if (!get_hostname(cs))
     goto done;
 
-  if (!C_RealName)
   {
-    struct passwd *pw = getpwuid(getuid());
-    if (pw)
+    char name[256] = { 0 };
+    const char *c_real_name = cs_subset_string(NeoMutt->sub, "real_name");
+    if (!c_real_name)
     {
-      char name[256];
-      C_RealName = mutt_str_dup(mutt_gecos_name(name, sizeof(name), pw));
+      struct passwd *pw = getpwuid(getuid());
+      if (pw)
+        c_real_name = mutt_gecos_name(name, sizeof(name), pw);
     }
+    cs_str_initial_set(cs, "real_name", c_real_name, NULL);
+    cs_str_reset(cs, "real_name", NULL);
   }
-  cs_str_initial_set(cs, "real_name", C_RealName, NULL);
 
   if (need_pause && !OptNoCurses)
   {
@@ -944,13 +956,16 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
       goto done; // TEST14: neomutt -e broken (press 'q')
   }
 
-  mutt_file_mkdir(C_Tmpdir, S_IRWXU);
+  const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
+  mutt_file_mkdir(c_tmpdir, S_IRWXU);
 
   mutt_hist_init();
   mutt_hist_read_file();
 
 #ifdef USE_NOTMUCH
-  if (C_VirtualSpoolFile)
+  const bool c_virtual_spool_file =
+      cs_subset_bool(NeoMutt->sub, "virtual_spool_file");
+  if (c_virtual_spool_file)
   {
     /* Find the first virtual folder and open it */
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);

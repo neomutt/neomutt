@@ -86,12 +86,6 @@
 #include <xlocale.h>
 #endif
 
-/* These Config Variables are only used in mx.c */
-bool C_KeepFlagged; ///< Config: Don't move flagged messages from `$spool_file` to `$mbox`
-unsigned char C_MboxType; ///< Config: Default type for creating new mailboxes
-unsigned char C_Move; ///< Config: Move emails from `$spool_file` to `$mbox` when read
-char *C_Trash;        ///< Config: Folder to put deleted emails
-
 // clang-format off
 static struct Mapping MboxTypeMap[] = {
   { "mbox",    MUTT_MBOX,    },
@@ -161,11 +155,12 @@ const struct MxOps *mx_get_ops(enum MailboxType type)
  */
 static bool mutt_is_spool(const char *str)
 {
-  if (mutt_str_equal(str, C_SpoolFile))
+  const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
+  if (mutt_str_equal(str, c_spool_file))
     return true;
 
   struct Url *ua = url_parse(str);
-  struct Url *ub = url_parse(C_SpoolFile);
+  struct Url *ub = url_parse(c_spool_file);
 
   const bool is_spool =
       ua && ub && (ua->scheme == ub->scheme) &&
@@ -240,7 +235,7 @@ static bool mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
             m->type = MUTT_COMPRESSED;
           else
 #endif
-            m->type = C_MboxType;
+            m->type = cs_subset_enum(NeoMutt->sub, "mbox_type");
           flags |= MUTT_APPENDNEW;
         }
         else
@@ -322,7 +317,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
 
   if ((m->type == MUTT_UNKNOWN) && (flags & (MUTT_NEWFOLDER | MUTT_APPEND)))
   {
-    m->type = C_MboxType;
+    m->type = cs_subset_enum(NeoMutt->sub, "mbox_type");
     m->mx_ops = mx_get_ops(m->type);
   }
 
@@ -523,9 +518,11 @@ static int trash_append(struct Mailbox *m)
     return -1;
 
   struct stat st, stc;
-  int opt_confappend, rc;
+  int rc;
 
-  if (!C_Trash || (m->msg_deleted == 0) || ((m->type == MUTT_MAILDIR) && C_MaildirTrash))
+  const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
+  const char *const c_trash = cs_subset_string(NeoMutt->sub, "trash");
+  if (!c_trash || (m->msg_deleted == 0) || ((m->type == MUTT_MAILDIR) && c_maildir_trash))
   {
     return 0;
   }
@@ -550,12 +547,10 @@ static int trash_append(struct Mailbox *m)
     return 0; /* nothing to be done */
 
   /* avoid the "append messages" prompt */
-  opt_confappend = C_ConfirmAppend;
-  if (opt_confappend)
-    C_ConfirmAppend = false;
-  rc = mutt_save_confirm(C_Trash, &st);
-  if (opt_confappend)
-    C_ConfirmAppend = true;
+  const bool c_confirm_append = cs_subset_bool(NeoMutt->sub, "confirm_append");
+  cs_subset_str_native_set(NeoMutt->sub, "confirm_append", false, NULL);
+  rc = mutt_save_confirm(c_trash, &st);
+  cs_subset_str_native_set(NeoMutt->sub, "confirm_append", c_confirm_append, NULL);
   if (rc != 0)
   {
     /* L10N: Although we know the precise number of messages, we do not show it to the user.
@@ -571,14 +566,14 @@ static int trash_append(struct Mailbox *m)
   }
 
 #ifdef USE_IMAP
-  if ((m->type == MUTT_IMAP) && (imap_path_probe(C_Trash, NULL) == MUTT_IMAP))
+  if ((m->type == MUTT_IMAP) && (imap_path_probe(c_trash, NULL) == MUTT_IMAP))
   {
-    if (imap_fast_trash(m, C_Trash) == 0)
+    if (imap_fast_trash(m, c_trash) == 0)
       return 0;
   }
 #endif
 
-  struct Mailbox *m_trash = mx_path_resolve(C_Trash);
+  struct Mailbox *m_trash = mx_path_resolve(c_trash);
   const bool old_append = m_trash->append;
   struct Context *ctx_trash = mx_mbox_open(m_trash, MUTT_APPEND);
   if (ctx_trash)
@@ -641,7 +636,9 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
 
   struct Mailbox *m = ctx->mailbox;
 
-  if (C_MailCheckRecent && !m->peekonly)
+  const bool c_mail_check_recent =
+      cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  if (c_mail_check_recent && !m->peekonly)
     m->has_new = false;
 
   if (m->readonly || m->dontwrite || m->append || m->peekonly)
@@ -665,8 +662,10 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
 
     if (mdata && mdata->adata && mdata->group)
     {
+      const enum QuadOption c_catchup_newsgroup =
+          cs_subset_quad(NeoMutt->sub, "catchup_newsgroup");
       enum QuadOption ans =
-          query_quadoption(C_CatchupNewsgroup, _("Mark all articles read?"));
+          query_quadoption(c_catchup_newsgroup, _("Mark all articles read?"));
       if (ans == MUTT_ABORT)
         goto cleanup;
       if (ans == MUTT_YES)
@@ -675,13 +674,14 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
   }
 #endif
 
+  const bool c_keep_flagged = cs_subset_bool(NeoMutt->sub, "keep_flagged");
   for (i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
     if (!e)
       break;
 
-    if (!e->deleted && e->read && !(e->flagged && C_KeepFlagged))
+    if (!e->deleted && e->read && !(e->flagged && c_keep_flagged))
       read_msgs++;
   }
 
@@ -691,7 +691,8 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
     read_msgs = 0;
 #endif
 
-  if ((read_msgs != 0) && (C_Move != MUTT_NO))
+  const enum QuadOption c_move = cs_subset_quad(NeoMutt->sub, "move");
+  if ((read_msgs != 0) && (c_move != MUTT_NO))
   {
     bool is_spool;
     mbox = mutt_buffer_pool_get();
@@ -704,7 +705,8 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
     }
     else
     {
-      mutt_buffer_strcpy(mbox, C_Mbox);
+      const char *const c_mbox = cs_subset_string(NeoMutt->sub, "mbox");
+      mutt_buffer_strcpy(mbox, c_mbox);
       is_spool = mutt_is_spool(mailbox_path(m)) &&
                  !mutt_is_spool(mutt_buffer_string(mbox));
     }
@@ -718,7 +720,7 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
                          ngettext("Move %d read message to %s?",
                                   "Move %d read messages to %s?", read_msgs),
                          read_msgs, mutt_buffer_string(mbox));
-      move_messages = query_quadoption(C_Move, mutt_buffer_string(buf));
+      move_messages = query_quadoption(c_move, mutt_buffer_string(buf));
       if (move_messages == MUTT_ABORT)
         goto cleanup;
     }
@@ -726,18 +728,21 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
 
   /* There is no point in asking whether or not to purge if we are
    * just marking messages as "trash".  */
-  if ((m->msg_deleted != 0) && !((m->type == MUTT_MAILDIR) && C_MaildirTrash))
+  const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
+  if ((m->msg_deleted != 0) && !((m->type == MUTT_MAILDIR) && c_maildir_trash))
   {
     mutt_buffer_printf(buf,
                        ngettext("Purge %d deleted message?",
                                 "Purge %d deleted messages?", m->msg_deleted),
                        m->msg_deleted);
-    purge = query_quadoption(C_Delete, mutt_buffer_string(buf));
+    const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
+    purge = query_quadoption(c_delete, mutt_buffer_string(buf));
     if (purge == MUTT_ABORT)
       goto cleanup;
   }
 
-  if (C_MarkOld && !m->peekonly)
+  const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
+  if (c_mark_old && !m->peekonly)
   {
     for (i = 0; i < m->msg_count; i++)
     {
@@ -768,7 +773,7 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
         if (!e)
           break;
 
-        if (e->read && !e->deleted && !(e->flagged && C_KeepFlagged))
+        if (e->read && !e->deleted && !(e->flagged && c_keep_flagged))
         {
           e->tagged = true;
           emaillist_add_email(&el, e);
@@ -801,7 +806,7 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
         struct Email *e = m->emails[i];
         if (!e)
           break;
-        if (e->read && !e->deleted && !(e->flagged && C_KeepFlagged))
+        if (e->read && !e->deleted && !(e->flagged && c_keep_flagged))
         {
           if (mutt_append_message(ctx_read->mailbox, ctx->mailbox, e,
                                   MUTT_CM_NO_FLAGS, CH_UPDATE_LEN) == 0)
@@ -833,7 +838,8 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
   }
 
   /* copy mails to the trash before expunging */
-  const struct Mailbox *m_trash = mx_mbox_find(m->account, C_Trash);
+  const char *const c_trash = cs_subset_string(NeoMutt->sub, "trash");
+  const struct Mailbox *m_trash = mx_mbox_find(m->account, c_trash);
   if (purge && (m->msg_deleted != 0) && (m != m_trash))
   {
     if (trash_append(ctx->mailbox) != 0)
@@ -890,9 +896,10 @@ enum MxStatus mx_mbox_close(struct Context **ptr)
       mutt_message(_("%d kept, %d deleted"), m->msg_count - m->msg_deleted, m->msg_deleted);
   }
 
+  const bool c_save_empty = cs_subset_bool(NeoMutt->sub, "save_empty");
   if ((m->msg_count == m->msg_deleted) &&
       ((m->type == MUTT_MMDF) || (m->type == MUTT_MBOX)) &&
-      !mutt_is_spool(mailbox_path(m)) && !C_SaveEmpty)
+      !mutt_is_spool(mailbox_path(m)) && !c_save_empty)
   {
     mutt_file_unlink_empty(mailbox_path(m));
   }
@@ -975,7 +982,8 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
     snprintf(buf, sizeof(buf),
              ngettext("Purge %d deleted message?", "Purge %d deleted messages?", m->msg_deleted),
              m->msg_deleted);
-    purge = query_quadoption(C_Delete, buf);
+    const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
+    purge = query_quadoption(c_delete, buf);
     if (purge == MUTT_ABORT)
       return MX_STATUS_ERROR;
     if (purge == MUTT_NO)
@@ -1004,7 +1012,8 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
   msgcount = m->msg_count;
   deleted = m->msg_deleted;
 
-  const struct Mailbox *m_trash = mx_mbox_find(m->account, C_Trash);
+  const char *const c_trash = cs_subset_string(NeoMutt->sub, "trash");
+  const struct Mailbox *m_trash = mx_mbox_find(m->account, c_trash);
   if (purge && (m->msg_deleted != 0) && (m != m_trash))
   {
     if (trash_append(m) != 0)
@@ -1034,9 +1043,10 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
 
     mutt_sleep(0);
 
+    const bool c_save_empty = cs_subset_bool(NeoMutt->sub, "save_empty");
     if ((m->msg_count == m->msg_deleted) &&
         ((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF)) &&
-        !mutt_is_spool(mailbox_path(m)) && !C_SaveEmpty)
+        !mutt_is_spool(mailbox_path(m)) && !c_save_empty)
     {
       unlink(mailbox_path(m));
       mx_fastclose_mailbox(m);
@@ -1411,7 +1421,9 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
     {
       if (buf[0] == '!')
       {
-        mutt_str_inline_replace(buf, buflen, 1, C_SpoolFile);
+        const char *const c_spool_file =
+            cs_subset_string(NeoMutt->sub, "spool_file");
+        mutt_str_inline_replace(buf, buflen, 1, c_spool_file);
       }
       else if (buf[0] == '-')
       {
@@ -1419,11 +1431,13 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
       }
       else if (buf[0] == '<')
       {
-        mutt_str_inline_replace(buf, buflen, 1, C_Record);
+        const char *const c_record = cs_subset_string(NeoMutt->sub, "record");
+        mutt_str_inline_replace(buf, buflen, 1, c_record);
       }
       else if (buf[0] == '>')
       {
-        mutt_str_inline_replace(buf, buflen, 1, C_Mbox);
+        const char *const c_mbox = cs_subset_string(NeoMutt->sub, "mbox");
+        mutt_str_inline_replace(buf, buflen, 1, c_mbox);
       }
       else if (buf[0] == '^')
       {
@@ -1659,7 +1673,8 @@ struct Mailbox *mx_mbox_find2(const char *path)
 
   char buf[PATH_MAX];
   mutt_str_copy(buf, path, sizeof(buf));
-  mx_path_canon(buf, sizeof(buf), C_Folder, NULL);
+  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  mx_path_canon(buf, sizeof(buf), c_folder, NULL);
 
   struct Account *np = NULL;
   TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
@@ -1691,7 +1706,8 @@ struct Mailbox *mx_path_resolve(const char *path)
   m = mailbox_new();
   m->flags = MB_HIDDEN;
   mutt_buffer_strcpy(&m->pathbuf, path);
-  mx_path_canon2(m, C_Folder);
+  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  mx_path_canon2(m, c_folder);
 
   return m;
 }

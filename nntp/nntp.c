@@ -406,7 +406,8 @@ static void nntp_log_binbuf(const char *buf, size_t len, const char *pfx, int db
   char *p = tmp;
   char *sentinel = tmp + len;
 
-  if (C_DebugLevel < dbg)
+  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
+  if (c_debug_level < dbg)
     return;
   memcpy(tmp, buf, len);
   tmp[len] = '\0';
@@ -440,8 +441,10 @@ static int nntp_auth(struct NntpAccountData *adata)
     }
 
     /* get list of authenticators */
-    if (C_NntpAuthenticators)
-      mutt_str_copy(authenticators, C_NntpAuthenticators, sizeof(authenticators));
+    const char *const c_nntp_authenticators =
+        cs_subset_string(NeoMutt->sub, "nntp_authenticators");
+    if (c_nntp_authenticators)
+      mutt_str_copy(authenticators, c_nntp_authenticators, sizeof(authenticators));
     else if (adata->hasCAPABILITIES)
     {
       mutt_str_copy(authenticators, adata->authenticators, sizeof(authenticators));
@@ -1173,7 +1176,8 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   fc.hc = hc;
 
   /* fetch list of articles */
-  if (C_NntpListgroup && mdata->adata->hasLISTGROUP && !mdata->deleted)
+  const bool c_nntp_listgroup = cs_subset_bool(NeoMutt->sub, "nntp_listgroup");
+  if (c_nntp_listgroup && mdata->adata->hasLISTGROUP && !mdata->deleted)
   {
     if (m->verbose)
       mutt_message(_("Fetching list of articles..."));
@@ -1275,7 +1279,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     /* fallback to fetch overview */
     else if (mdata->adata->hasOVER || mdata->adata->hasXOVER)
     {
-      if (C_NntpListgroup && mdata->adata->hasLISTGROUP)
+      if (c_nntp_listgroup && mdata->adata->hasLISTGROUP)
         break;
       else
         continue;
@@ -1347,7 +1351,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     first_over = current + 1;
   }
 
-  if (!C_NntpListgroup || !mdata->adata->hasLISTGROUP)
+  if (!c_nntp_listgroup || !mdata->adata->hasLISTGROUP)
     current = first_over;
 
   /* fetch overview information */
@@ -1433,7 +1437,8 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
   enum MxStatus rc = MX_STATUS_OK;
   void *hc = NULL;
 
-  if (adata->check_time + C_NntpPoll > now)
+  const short c_nntp_poll = cs_subset_number(NeoMutt->sub, "nntp_poll");
+  if (adata->check_time + c_nntp_poll > now)
     return MX_STATUS_OK;
 
   mutt_message(_("Checking for new messages..."));
@@ -1461,8 +1466,10 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
     if (mdata->last_message < mdata->last_loaded)
     {
       mdata->last_loaded = mdata->first_message - 1;
-      if (C_NntpContext && (mdata->last_message - mdata->last_loaded > C_NntpContext))
-        mdata->last_loaded = mdata->last_message - C_NntpContext;
+      const short c_nntp_context =
+          cs_subset_number(NeoMutt->sub, "nntp_context");
+      if (c_nntp_context && (mdata->last_message - mdata->last_loaded > c_nntp_context))
+        mdata->last_loaded = mdata->last_message - c_nntp_context;
     }
     rc = MX_STATUS_REOPENED;
   }
@@ -1476,8 +1483,9 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
     struct Email *e = NULL;
     anum_t first = mdata->first_message;
 
-    if (C_NntpContext && (mdata->last_message - first + 1 > C_NntpContext))
-      first = mdata->last_message - C_NntpContext + 1;
+    const short c_nntp_context = cs_subset_number(NeoMutt->sub, "nntp_context");
+    if (c_nntp_context && (mdata->last_message - first + 1 > c_nntp_context))
+      first = mdata->last_message - c_nntp_context + 1;
     messages = mutt_mem_calloc(mdata->last_loaded - first + 1, sizeof(unsigned char));
     hc = nntp_hcache_open(mdata);
     nntp_hcache_update(mdata, hc);
@@ -1767,13 +1775,16 @@ int nntp_open_connection(struct NntpAccountData *adata)
 
 #ifdef USE_SSL
   /* Attempt STARTTLS if available and desired. */
-  if ((adata->use_tls != 1) && (adata->hasSTARTTLS || C_SslForceTls))
+  const bool c_ssl_force_tls = cs_subset_bool(NeoMutt->sub, "ssl_force_tls");
+  if ((adata->use_tls != 1) && (adata->hasSTARTTLS || c_ssl_force_tls))
   {
     if (adata->use_tls == 0)
     {
+      const enum QuadOption c_ssl_starttls =
+          cs_subset_quad(NeoMutt->sub, "ssl_starttls");
       adata->use_tls =
-          C_SslForceTls ||
-                  (query_quadoption(C_SslStarttls,
+          c_ssl_force_tls ||
+                  (query_quadoption(c_ssl_starttls,
                                     _("Secure connection with TLS?")) == MUTT_YES) ?
               2 :
               1;
@@ -1871,7 +1882,9 @@ int nntp_post(struct Mailbox *m, const char *msg)
     mdata = m->mdata;
   else
   {
-    CurrentNewsSrv = nntp_select_server(m, C_NewsServer, false);
+    const char *const c_news_server =
+        cs_subset_string(NeoMutt->sub, "news_server");
+    CurrentNewsSrv = nntp_select_server(m, c_news_server, false);
     if (!CurrentNewsSrv)
       return -1;
 
@@ -1992,7 +2005,9 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new)
     }
   }
 
-  if (C_NntpLoadDescription)
+  const bool c_nntp_load_description =
+      cs_subset_bool(NeoMutt->sub, "nntp_load_description");
+  if (c_nntp_load_description)
     rc = get_description(&tmp_mdata, "*", _("Loading descriptions..."));
 
   nntp_active_save_cache(adata);
@@ -2023,7 +2038,8 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
     return -1;
 
   /* check subscribed newsgroups for new articles */
-  if (C_ShowNewNews)
+  const bool c_show_new_news = cs_subset_bool(NeoMutt->sub, "show_new_news");
+  if (c_show_new_news)
   {
     mutt_message(_("Checking for new messages..."));
     for (i = 0; i < adata->groups_num; i++)
@@ -2080,7 +2096,9 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
     }
 
     /* loading descriptions */
-    if (C_NntpLoadDescription)
+    const bool c_nntp_load_description =
+        cs_subset_bool(NeoMutt->sub, "nntp_load_description");
+    if (c_nntp_load_description)
     {
       unsigned int count = 0;
       struct Progress progress;
@@ -2261,7 +2279,7 @@ int nntp_compare_order(const void *a, const void *b)
   anum_t nb = nntp_edata_get((struct Email *) eb)->article_num;
   int result = (na == nb) ? 0 : (na > nb) ? 1 : -1;
   result = perform_auxsort(result, a, b);
-  return SORT_CODE(result);
+  return sort_code(result);
 }
 
 /**
@@ -2345,7 +2363,9 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   }
 
   m->rights &= ~MUTT_ACL_INSERT; // Clear the flag
-  if (!mdata->newsrc_ent && !mdata->subscribed && !C_SaveUnsubscribed)
+  const bool c_save_unsubscribed =
+      cs_subset_bool(NeoMutt->sub, "save_unsubscribed");
+  if (!mdata->newsrc_ent && !mdata->subscribed && !c_save_unsubscribed)
     m->readonly = true;
 
   /* select newsgroup */
@@ -2367,7 +2387,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
       mdata->deleted = true;
       nntp_active_save_cache(adata);
     }
-    if (mdata->newsrc_ent && !mdata->subscribed && !C_SaveUnsubscribed)
+    if (mdata->newsrc_ent && !mdata->subscribed && !c_save_unsubscribed)
     {
       FREE(&mdata->newsrc_ent);
       mdata->newsrc_len = 0;
@@ -2390,7 +2410,9 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
     mdata->deleted = false;
 
     /* get description if empty */
-    if (C_NntpLoadDescription && !mdata->desc)
+    const bool c_nntp_load_description =
+        cs_subset_bool(NeoMutt->sub, "nntp_load_description");
+    if (c_nntp_load_description && !mdata->desc)
     {
       if (get_description(mdata, NULL, NULL) < 0)
       {
@@ -2407,13 +2429,14 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   // Every known newsgroup has an mdata which is stored in adata->groups_list.
   // Currently we don't let the Mailbox free the mdata.
   // m->mdata_free = nntp_mdata_free;
-  if (!mdata->bcache && (mdata->newsrc_ent || mdata->subscribed || C_SaveUnsubscribed))
+  if (!mdata->bcache && (mdata->newsrc_ent || mdata->subscribed || c_save_unsubscribed))
     mdata->bcache = mutt_bcache_open(&adata->conn->account, mdata->group);
 
   /* strip off extra articles if adding context is greater than $nntp_context */
   first = mdata->first_message;
-  if (C_NntpContext && (mdata->last_message - first + 1 > C_NntpContext))
-    first = mdata->last_message - C_NntpContext + 1;
+  const short c_nntp_context = cs_subset_number(NeoMutt->sub, "nntp_context");
+  if (c_nntp_context && (mdata->last_message - first + 1 > c_nntp_context))
+    first = mdata->last_message - c_nntp_context + 1;
   mdata->last_loaded = first ? first - 1 : 0;
   count = mdata->first_message;
   mdata->first_message = first;

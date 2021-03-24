@@ -32,18 +32,13 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "progress.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "options.h"
-
-/* These Config Variables are only used in progress.c */
-short C_TimeInc; ///< Config: Frequency of progress bar updates (milliseconds)
-short C_ReadInc; ///< Config: Update the progress bar after this many records read (0 to disable)
-short C_WriteInc; ///< Config: Update the progress bar after this many records written (0 to disable)
-short C_NetInc; ///< Config: (socket) Update the progress bar after this many KB sent/received (0 to disable)
 
 /**
  * message_bar - Draw a colourful progress bar
@@ -115,7 +110,10 @@ static void message_bar(int percent, const char *fmt, ...)
  */
 static size_t progress_choose_increment(enum ProgressType type)
 {
-  static short *incs[] = { &C_ReadInc, &C_WriteInc, &C_NetInc };
+  const short c_read_inc = cs_subset_number(NeoMutt->sub, "read_inc");
+  const short c_write_inc = cs_subset_number(NeoMutt->sub, "write_inc");
+  const short c_net_inc = cs_subset_number(NeoMutt->sub, "net_inc");
+  const short *incs[] = { &c_read_inc, &c_write_inc, &c_net_inc };
   return (type >= mutt_array_size(incs)) ? 0 : *incs[type];
 }
 
@@ -140,7 +138,8 @@ static bool progress_pos_needs_update(const struct Progress *progress, long pos)
 static bool progress_time_needs_update(const struct Progress *progress, size_t now)
 {
   const size_t elapsed = (now - progress->timestamp);
-  return (C_TimeInc == 0) || (now < progress->timestamp) || (C_TimeInc < elapsed);
+  const short c_time_inc = cs_subset_number(NeoMutt->sub, "time_inc");
+  return (c_time_inc == 0) || (now < progress->timestamp) || (c_time_inc < elapsed);
 }
 
 /**

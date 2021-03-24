@@ -102,7 +102,7 @@ static int address_string_set(const struct ConfigSet *cs, void *var, struct Conf
       FREE(&cdef->initial);
 
     cdef->type |= DT_INITIAL_SET;
-    cdef->initial = IP mutt_str_dup(value);
+    cdef->initial = (intptr_t) mutt_str_dup(value);
   }
 
   return rc;

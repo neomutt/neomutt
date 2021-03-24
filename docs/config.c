@@ -1066,7 +1066,7 @@
 ** ignored for interoperability reasons.
 */
 
-{ "editor", DT_COMMAND, "vi" },
+{ "editor", DT_COMMAND, 0 },
 /*
 ** .pp
 ** This variable specifies which editor is used by NeoMutt.
@@ -5306,15 +5306,6 @@
 ** mailbox descriptions as a value.
 */
 #endif
-
-{ "visual", DT_COMMAND, "vi" },
-/*
-** .pp
-** Specifies the visual editor to invoke when the "\fC~v\fP" command is
-** given in the built-in editor.
-** .pp
-** $$visual is overridden by the environment variable \fC$$$VISUAL\fP or \fC$$$EDITOR\fP.
-*/
 
 { "wait_key", DT_BOOL, true },
 /*

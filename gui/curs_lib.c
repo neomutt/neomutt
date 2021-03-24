@@ -67,9 +67,6 @@
 #include "monitor.h"
 #endif
 
-/* These Config Variables are only used in curs_lib.c */
-bool C_MetaKey; ///< Config: Interpret 'ALT-x' as 'ESC-x'
-
 /* not possible to unget more than one char under some curses libs, and it
  * is impossible to unget function keys in SLang, so roll our own input
  * buffering routines.
@@ -97,7 +94,8 @@ int MuttGetchTimeout = -1;
  */
 void mutt_beep(bool force)
 {
-  if (force || C_Beep)
+  const bool c_beep = cs_subset_bool(NeoMutt->sub, "beep");
+  if (force || c_beep)
     beep();
 }
 
@@ -228,7 +226,8 @@ struct KeyEvent mutt_getch(void)
     return timeout;
   }
 
-  if ((ch & 0x80) && C_MetaKey)
+  const bool c_meta_key = cs_subset_bool(NeoMutt->sub, "meta_key");
+  if ((ch & 0x80) && c_meta_key)
   {
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
@@ -540,7 +539,8 @@ void mutt_query_exit(void)
 {
   mutt_flushinp();
   mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-  if (C_Timeout)
+  const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
+  if (c_timeout)
     mutt_getch_timeout(-1); /* restore blocking operation */
   if (mutt_yesorno(_("Exit NeoMutt?"), MUTT_YES) == MUTT_YES)
   {
@@ -666,8 +666,9 @@ static int mutt_dlg_dopager_observer(struct NotifyCallback *nc)
   if (!win_first)
     return -1;
 
-  if ((C_StatusOnTop && (win_first->type == WT_PAGER)) ||
-      (!C_StatusOnTop && (win_first->type != WT_PAGER)))
+  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  if ((c_status_on_top && (win_first->type == WT_PAGER)) ||
+      (!c_status_on_top && (win_first->type != WT_PAGER)))
   {
     // Swap the Index and the IndexBar Windows
     TAILQ_REMOVE(&dlg->children, win_first, entries);
@@ -707,7 +708,8 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
       mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
-  if (C_StatusOnTop)
+  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  if (c_status_on_top)
   {
     mutt_window_add_child(dlg, pbar);
     mutt_window_add_child(dlg, pager);
@@ -728,7 +730,8 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
 
   int rc;
 
-  if (!C_Pager || mutt_str_equal(C_Pager, "builtin"))
+  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
+  if (!c_pager || mutt_str_equal(c_pager, "builtin"))
   {
     rc = mutt_pager(banner, tempfile, do_color, info);
   }
@@ -737,7 +740,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
     struct Buffer *cmd = mutt_buffer_pool_get();
 
     mutt_endwin();
-    mutt_buffer_file_expand_fmt_quote(cmd, C_Pager, tempfile);
+    mutt_buffer_file_expand_fmt_quote(cmd, c_pager, tempfile);
     if (mutt_system(mutt_buffer_string(cmd)) == -1)
     {
       mutt_error(_("Error running \"%s\""), mutt_buffer_string(cmd));

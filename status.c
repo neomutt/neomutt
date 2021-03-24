@@ -46,9 +46,6 @@
 #include "protos.h"
 #include "sort.h"
 
-/* These Config Variables are only used in status.c */
-struct MbTable *C_StatusChars; ///< Config: Indicator characters for the status bar
-
 /**
  * get_sort_str - Get the sort method as a string
  * @param buf    Buffer for the sort string
@@ -318,12 +315,14 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                                                             0);
       }
 
-      if (!C_StatusChars || !C_StatusChars->len)
+      const struct MbTable *c_status_chars =
+          cs_subset_mbtable(NeoMutt->sub, "status_chars");
+      if (!c_status_chars || !c_status_chars->len)
         buf[0] = '\0';
-      else if (i >= C_StatusChars->len)
-        snprintf(buf, buflen, "%s", C_StatusChars->chars[0]);
+      else if (i >= c_status_chars->len)
+        snprintf(buf, buflen, "%s", c_status_chars->chars[0]);
       else
-        snprintf(buf, buflen, "%s", C_StatusChars->chars[i]);
+        snprintf(buf, buflen, "%s", c_status_chars->chars[i]);
       break;
     }
 
@@ -341,14 +340,20 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     }
 
     case 's':
+    {
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), C_Sort));
+      const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+      snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), c_sort));
       break;
+    }
 
     case 'S':
+    {
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), C_SortAux));
+      const short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+      snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), c_sort_aux));
       break;
+    }
 
     case 't':
     {

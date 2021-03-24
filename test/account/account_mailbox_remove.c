@@ -27,15 +27,14 @@
 #include "config/common.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "test_common.h"
 
-static short VarApple;
-
-// clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",  DT_NUMBER,  &VarApple,  42, 0, NULL },
+  // clang-format off
+  { "Apple", DT_NUMBER, 42, 0, NULL },
   { NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_account_mailbox_remove(void)
 {
@@ -46,12 +45,8 @@ void test_account_mailbox_remove(void)
   }
 
   {
-    struct ConfigSet *cs = cs_new(30);
-    cs_register_type(cs, &cst_number);
-    TEST_CHECK(cs_register_variables(cs, Vars, 0));
-
-    NeoMutt = neomutt_new(cs);
-    TEST_CHECK(NeoMutt != NULL);
+    NeoMutt = test_neomutt_create();
+    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
     struct ConfigSubset *sub = cs_subset_new("account", NULL, NULL);
     struct Account *a = account_new("dummy", sub);
@@ -66,7 +61,6 @@ void test_account_mailbox_remove(void)
     mailbox_free(&m);
     account_free(&a);
     cs_subset_free(&sub);
-    neomutt_free(&NeoMutt);
-    cs_free(&cs);
+    test_neomutt_destroy(&NeoMutt);
   }
 }

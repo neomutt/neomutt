@@ -503,12 +503,13 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
 
   info = mutt_mem_calloc(1, sizeof(struct Content));
 
-  const char *c_charset = cs_subset_string(sub, "charset");
+  const char *const c_charset = cs_subset_string(sub, "charset");
 
   if (b && (b->type == TYPE_TEXT) && (!b->noconv && !b->force_charset))
   {
-    const char *c_attach_charset = cs_subset_string(sub, "attach_charset");
-    const char *c_send_charset = cs_subset_string(sub, "send_charset");
+    const char *const c_attach_charset =
+        cs_subset_string(sub, "attach_charset");
+    const char *const c_send_charset = cs_subset_string(sub, "send_charset");
 
     char *chs = mutt_param_get(&b->parameter, "charset");
     const char *fchs =
@@ -1046,7 +1047,7 @@ static void run_mime_type_query(struct Body *att, struct ConfigSubset *sub)
   pid_t pid;
   struct Buffer *cmd = mutt_buffer_pool_get();
 
-  const char *c_mime_type_query_command =
+  const char *const c_mime_type_query_command =
       cs_subset_string(sub, "mime_type_query_command");
 
   mutt_buffer_file_expand_fmt_quote(cmd, c_mime_type_query_command, att->filename);
@@ -1085,7 +1086,7 @@ struct Body *mutt_make_file_attach(const char *path, struct ConfigSubset *sub)
   struct Body *att = mutt_body_new();
   att->filename = mutt_str_dup(path);
 
-  const char *c_mime_type_query_command =
+  const char *const c_mime_type_query_command =
       cs_subset_string(sub, "mime_type_query_command");
   const bool c_mime_type_query_first =
       cs_subset_bool(sub, "mime_type_query_first");
@@ -1145,7 +1146,7 @@ static void encode_headers(struct ListHead *h, struct ConfigSubset *sub)
   char *p = NULL;
   int i;
 
-  const char *c_send_charset = cs_subset_string(sub, "send_charset");
+  const char *const c_send_charset = cs_subset_string(sub, "send_charset");
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
@@ -1181,7 +1182,7 @@ static void encode_headers(struct ListHead *h, struct ConfigSubset *sub)
  */
 const char *mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub)
 {
-  const char *c_hostname = cs_subset_string(sub, "hostname");
+  const char *const c_hostname = cs_subset_string(sub, "hostname");
   if (!c_hostname || (c_hostname[0] == '@'))
     return NULL;
 
@@ -1343,7 +1344,7 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
       return -1;
     }
 #ifdef USE_SMTP
-    const char *c_smtp_url = cs_subset_string(sub, "smtp_url");
+    const char *const c_smtp_url = cs_subset_string(sub, "smtp_url");
     if (c_smtp_url)
     {
       rc = mutt_smtp_send(env_from, to, NULL, NULL, mutt_buffer_string(tempfile),
@@ -1393,7 +1394,7 @@ int mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
    * upon message criteria.  */
   if (!from->personal)
   {
-    const char *c_real_name = cs_subset_string(sub, "real_name");
+    const char *const c_real_name = cs_subset_string(sub, "real_name");
     from->personal = mutt_str_dup(c_real_name);
   }
 
@@ -1602,7 +1603,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     {
       fputc('S', msg->fp);
 
-      const char *c_pgp_sign_as = cs_subset_string(sub, "pgp_sign_as");
+      const char *const c_pgp_sign_as = cs_subset_string(sub, "pgp_sign_as");
       if (c_pgp_sign_as)
         fprintf(msg->fp, "<%s>", c_pgp_sign_as);
     }
@@ -1625,7 +1626,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     {
       fputc('E', msg->fp);
 
-      const char *c_smime_encrypt_with =
+      const char *const c_smime_encrypt_with =
           cs_subset_string(sub, "smime_encrypt_with");
       if (c_smime_encrypt_with)
         fprintf(msg->fp, "C<%s>", c_smime_encrypt_with);
@@ -1636,7 +1637,8 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     {
       fputc('S', msg->fp);
 
-      const char *c_smime_sign_as = cs_subset_string(sub, "smime_sign_as");
+      const char *const c_smime_sign_as =
+          cs_subset_string(sub, "smime_sign_as");
       if (c_smime_sign_as)
         fprintf(msg->fp, "<%s>", c_smime_sign_as);
     }

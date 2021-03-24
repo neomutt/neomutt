@@ -38,11 +38,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-extern short C_History;
-extern char *C_HistoryFile;
-extern bool  C_HistoryRemoveDups;
-extern short C_SaveHistory;
-
 /**
  * enum HistoryClass - Type to differentiate different histories
  *

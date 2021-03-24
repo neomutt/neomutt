@@ -31,6 +31,7 @@
 #include <errno.h>
 #include <signal.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "debug/lib.h"
 #include "mutt_attach.h"
@@ -50,13 +51,16 @@ static void curses_signal_handler(int sig)
   switch (sig)
   {
     case SIGTSTP: /* user requested a suspend */
-      if (!C_Suspend)
+    {
+      const bool c_suspend = cs_subset_bool(NeoMutt->sub, "suspend");
+      if (!c_suspend)
         break;
       IsEndwin = isendwin();
       mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
       if (!IsEndwin)
         endwin();
       kill(0, SIGSTOP);
+    }
       /* fallthrough */
 
     case SIGCONT:

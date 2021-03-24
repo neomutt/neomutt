@@ -24,6 +24,7 @@
 #include "config.h"
 #include "test_common.h"
 #define TEST_INIT test_init()
+#define TEST_FINI test_fini()
 #include "acutest.h"
 
 /******************************************************************************

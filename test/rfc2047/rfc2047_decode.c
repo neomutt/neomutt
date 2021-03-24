@@ -25,15 +25,26 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "common.h"
+#include "test_common.h"
+
+static struct ConfigDef Vars[] = {
+  // clang-format off
+  { "assumed_charset", DT_STRING,                                0,          0, NULL, },
+  { "charset",         DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, IP "utf-8", 0, NULL, },
+  { NULL },
+  // clang-format on
+};
 
 void test_rfc2047_decode(void)
 {
   // void rfc2047_decode(char **pd);
 
-  char *previous_charset = C_Charset;
-  C_Charset = "utf-8";
+  NeoMutt = test_neomutt_create();
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
   {
     rfc2047_decode(NULL);
@@ -73,5 +84,5 @@ void test_rfc2047_decode(void)
     }
   }
 
-  C_Charset = previous_charset;
+  test_neomutt_destroy(&NeoMutt);
 }

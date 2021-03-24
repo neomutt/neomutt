@@ -88,17 +88,6 @@ struct PopAuth
                       ///< If this is not null, authenticate may ignore the second parameter.
 };
 
-extern bool          C_PopAuthTryAll;
-extern struct Slist *C_PopAuthenticators;
-extern short         C_PopCheckInterval;
-extern unsigned char C_PopDelete;
-extern char *        C_PopHost;
-extern bool          C_PopLast;
-extern char *        C_PopOauthRefreshCommand;
-extern char *        C_PopPass;
-extern unsigned char C_PopReconnect;
-extern char *        C_PopUser;
-
 /* pop_auth.c */
 bool pop_auth_is_valid(const char *authenticator);
 int pop_authenticate(struct PopAccountData *adata);

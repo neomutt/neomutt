@@ -39,6 +39,7 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h" // IWYU pragma: keep
 #include "core/lib.h"
 #include "mutt.h"
@@ -158,7 +159,9 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   struct Buffer tok_buf;
   FILE *fp = NULL;
 
-  if (!C_ExternalSearchCommand)
+  const char *const c_external_search_command =
+      cs_subset_string(NeoMutt->sub, "external_search_command");
+  if (!c_external_search_command)
   {
     mutt_buffer_printf(err, "%s", _("No search command defined"));
     return false;
@@ -180,7 +183,7 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   }
 
   mutt_buffer_init(&cmd_buf);
-  mutt_buffer_addstr(&cmd_buf, C_ExternalSearchCommand);
+  mutt_buffer_addstr(&cmd_buf, c_external_search_command);
   mutt_buffer_addch(&cmd_buf, ' ');
 
   struct Mailbox *m = ctx_mailbox(ctx);

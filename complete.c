@@ -32,6 +32,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
@@ -56,7 +57,7 @@
  */
 int mutt_complete(char *buf, size_t buflen)
 {
-  char *p = NULL;
+  const char *p = NULL;
   DIR *dirp = NULL;
   struct dirent *de = NULL;
   int init = 0;
@@ -77,15 +78,17 @@ int mutt_complete(char *buf, size_t buflen)
     return nntp_complete(buf, buflen);
 #endif
 
+  const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
+  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
 #ifdef USE_IMAP
   imap_path = mutt_buffer_pool_get();
   /* we can use '/' as a delimiter, imap_complete rewrites it */
   if ((*buf == '=') || (*buf == '+') || (*buf == '!'))
   {
     if (*buf == '!')
-      p = NONULL(C_SpoolFile);
+      p = NONULL(c_spool_file);
     else
-      p = NONULL(C_Folder);
+      p = NONULL(c_folder);
 
     mutt_buffer_concat_path(imap_path, p, buf + 1);
   }
@@ -111,9 +114,9 @@ int mutt_complete(char *buf, size_t buflen)
   {
     mutt_buffer_addch(dirpart, *buf);
     if (*buf == '!')
-      mutt_buffer_strcpy(exp_dirpart, NONULL(C_SpoolFile));
+      mutt_buffer_strcpy(exp_dirpart, NONULL(c_spool_file));
     else
-      mutt_buffer_strcpy(exp_dirpart, NONULL(C_Folder));
+      mutt_buffer_strcpy(exp_dirpart, NONULL(c_folder));
     p = strrchr(buf, '/');
     if (p)
     {

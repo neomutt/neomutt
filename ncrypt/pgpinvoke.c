@@ -210,8 +210,9 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
   cctx.need_passphrase = need_passphrase;
   cctx.fname = fname;
   cctx.sig_fname = sig_fname;
-  const char *c_pgp_sign_as = cs_subset_string(NeoMutt->sub, "pgp_sign_as");
-  const char *c_pgp_default_key =
+  const char *const c_pgp_sign_as =
+      cs_subset_string(NeoMutt->sub, "pgp_sign_as");
+  const char *const c_pgp_default_key =
       cs_subset_string(NeoMutt->sub, "pgp_default_key");
   if (c_pgp_sign_as)
     cctx.signas = c_pgp_sign_as;
@@ -251,7 +252,7 @@ pid_t pgp_invoke_decode(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                         int fd_pgp_in, int fd_pgp_out, int fd_pgp_err,
                         const char *fname, bool need_passphrase)
 {
-  const char *c_pgp_decode_command =
+  const char *const c_pgp_decode_command =
       cs_subset_string(NeoMutt->sub, "pgp_decode_command");
   return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out, fd_pgp_err,
                     need_passphrase, fname, NULL, NULL, c_pgp_decode_command);
@@ -277,7 +278,7 @@ pid_t pgp_invoke_verify(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                         int fd_pgp_in, int fd_pgp_out, int fd_pgp_err,
                         const char *fname, const char *sig_fname)
 {
-  const char *c_pgp_verify_command =
+  const char *const c_pgp_verify_command =
       cs_subset_string(NeoMutt->sub, "pgp_verify_command");
   return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                     fd_pgp_err, false, fname, sig_fname, NULL, c_pgp_verify_command);
@@ -301,7 +302,7 @@ pid_t pgp_invoke_verify(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
 pid_t pgp_invoke_decrypt(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                          int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *fname)
 {
-  const char *c_pgp_decrypt_command =
+  const char *const c_pgp_decrypt_command =
       cs_subset_string(NeoMutt->sub, "pgp_decrypt_command");
   return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                     fd_pgp_err, true, fname, NULL, NULL, c_pgp_decrypt_command);
@@ -325,7 +326,7 @@ pid_t pgp_invoke_decrypt(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
 pid_t pgp_invoke_sign(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                       int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *fname)
 {
-  const char *c_pgp_sign_command =
+  const char *const c_pgp_sign_command =
       cs_subset_string(NeoMutt->sub, "pgp_sign_command");
   return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                     fd_pgp_err, true, fname, NULL, NULL, c_pgp_sign_command);
@@ -354,14 +355,14 @@ pid_t pgp_invoke_encrypt(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
 {
   if (sign)
   {
-    const char *c_pgp_encrypt_sign_command =
+    const char *const c_pgp_encrypt_sign_command =
         cs_subset_string(NeoMutt->sub, "pgp_encrypt_sign_command");
     return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                       fd_pgp_err, true, fname, NULL, uids, c_pgp_encrypt_sign_command);
   }
   else
   {
-    const char *c_pgp_encrypt_only_command =
+    const char *const c_pgp_encrypt_only_command =
         cs_subset_string(NeoMutt->sub, "pgp_encrypt_only_command");
     return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                       fd_pgp_err, false, fname, NULL, uids, c_pgp_encrypt_only_command);
@@ -391,9 +392,9 @@ pid_t pgp_invoke_traditional(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_
 {
   if (flags & SEC_ENCRYPT)
   {
-    const char *c_pgp_encrypt_only_command =
+    const char *const c_pgp_encrypt_only_command =
         cs_subset_string(NeoMutt->sub, "pgp_encrypt_only_command");
-    const char *c_pgp_encrypt_sign_command =
+    const char *const c_pgp_encrypt_sign_command =
         cs_subset_string(NeoMutt->sub, "pgp_encrypt_sign_command");
     return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                       fd_pgp_err, (flags & SEC_SIGN), fname, NULL, uids,
@@ -401,7 +402,7 @@ pid_t pgp_invoke_traditional(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_
   }
   else
   {
-    const char *c_pgp_clear_sign_command =
+    const char *const c_pgp_clear_sign_command =
         cs_subset_string(NeoMutt->sub, "pgp_clear_sign_command");
     return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                       fd_pgp_err, true, fname, NULL, NULL, c_pgp_clear_sign_command);
@@ -420,15 +421,16 @@ void pgp_class_invoke_import(const char *fname)
 
   mutt_buffer_quote_filename(buf_fname, fname, true);
   cctx.fname = mutt_buffer_string(buf_fname);
-  const char *c_pgp_sign_as = cs_subset_string(NeoMutt->sub, "pgp_sign_as");
-  const char *c_pgp_default_key =
+  const char *const c_pgp_sign_as =
+      cs_subset_string(NeoMutt->sub, "pgp_sign_as");
+  const char *const c_pgp_default_key =
       cs_subset_string(NeoMutt->sub, "pgp_default_key");
   if (c_pgp_sign_as)
     cctx.signas = c_pgp_sign_as;
   else
     cctx.signas = c_pgp_default_key;
 
-  const char *c_pgp_import_command =
+  const char *const c_pgp_import_command =
       cs_subset_string(NeoMutt->sub, "pgp_import_command");
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, c_pgp_import_command);
   if (mutt_system(cmd) != 0)
@@ -449,7 +451,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 
   struct PgpCommandContext cctx = { 0 };
 
-  const char *c_pgp_get_keys_command =
+  const char *const c_pgp_get_keys_command =
       cs_subset_string(NeoMutt->sub, "pgp_get_keys_command");
   if (!c_pgp_get_keys_command)
     return;
@@ -504,7 +506,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 pid_t pgp_invoke_export(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                         int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *uids)
 {
-  const char *c_pgp_export_command =
+  const char *const c_pgp_export_command =
       cs_subset_string(NeoMutt->sub, "pgp_export_command");
   return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                     fd_pgp_err, false, NULL, NULL, uids, c_pgp_export_command);
@@ -528,7 +530,7 @@ pid_t pgp_invoke_export(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
 pid_t pgp_invoke_verify_key(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                             int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *uids)
 {
-  const char *c_pgp_verify_key_command =
+  const char *const c_pgp_verify_key_command =
       cs_subset_string(NeoMutt->sub, "pgp_verify_key_command");
   return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                     fd_pgp_err, false, NULL, NULL, uids, c_pgp_verify_key_command);
@@ -566,9 +568,9 @@ pid_t pgp_invoke_list_keys(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_er
       mutt_buffer_addch(uids, ' ');
   }
 
-  const char *c_pgp_list_pubring_command =
+  const char *const c_pgp_list_pubring_command =
       cs_subset_string(NeoMutt->sub, "pgp_list_pubring_command");
-  const char *c_pgp_list_secring_command =
+  const char *const c_pgp_list_secring_command =
       cs_subset_string(NeoMutt->sub, "pgp_list_secring_command");
   pid_t rc = pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                         fd_pgp_err, 0, NULL, NULL, mutt_buffer_string(uids),

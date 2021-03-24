@@ -58,11 +58,11 @@ const char *pop_get_field(enum ConnAccountField field, void *gf_data)
   {
     case MUTT_CA_LOGIN:
     case MUTT_CA_USER:
-      return C_PopUser;
+      return cs_subset_string(NeoMutt->sub, "pop_user");
     case MUTT_CA_PASS:
-      return C_PopPass;
+      return cs_subset_string(NeoMutt->sub, "pop_pass");
     case MUTT_CA_OAUTH_CMD:
-      return C_PopOauthRefreshCommand;
+      return cs_subset_string(NeoMutt->sub, "pop_oauth_refresh_command");
     case MUTT_CA_HOST:
     default:
       return NULL;
@@ -321,14 +321,17 @@ int pop_open_connection(struct PopAccountData *adata)
 
 #ifdef USE_SSL
   /* Attempt STLS if available and desired. */
-  if ((adata->conn->ssf == 0) && (adata->cmd_stls || C_SslForceTls))
+  const bool c_ssl_force_tls = cs_subset_bool(NeoMutt->sub, "ssl_force_tls");
+  if ((adata->conn->ssf == 0) && (adata->cmd_stls || c_ssl_force_tls))
   {
-    if (C_SslForceTls)
+    if (c_ssl_force_tls)
       adata->use_stls = 2;
     if (adata->use_stls == 0)
     {
+      const enum QuadOption c_ssl_starttls =
+          cs_subset_quad(NeoMutt->sub, "ssl_starttls");
       enum QuadOption ans =
-          query_quadoption(C_SslStarttls, _("Secure connection with TLS?"));
+          query_quadoption(c_ssl_starttls, _("Secure connection with TLS?"));
       if (ans == MUTT_ABORT)
         return -2;
       adata->use_stls = 1;
@@ -364,7 +367,7 @@ int pop_open_connection(struct PopAccountData *adata)
     }
   }
 
-  if (C_SslForceTls && (adata->conn->ssf == 0))
+  if (c_ssl_force_tls && (adata->conn->ssf == 0))
   {
     mutt_error(_("Encrypted connection unavailable"));
     return -2;
@@ -633,7 +636,9 @@ int pop_reconnect(struct Mailbox *m)
     if (ret < -1)
       return -1;
 
-    if (query_quadoption(C_PopReconnect,
+    const enum QuadOption c_pop_reconnect =
+        cs_subset_quad(NeoMutt->sub, "pop_reconnect");
+    if (query_quadoption(c_pop_reconnect,
                          _("Connection lost. Reconnect to POP server?")) != MUTT_YES)
     {
       return -1;

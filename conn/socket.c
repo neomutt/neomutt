@@ -34,6 +34,8 @@
 #include <time.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "socket.h"
 #include "connaccount.h"
 #include "connection.h"
@@ -47,11 +49,12 @@
  */
 static int socket_preconnect(void)
 {
-  if (!C_Preconnect)
+  const char *const c_preconnect = cs_subset_string(NeoMutt->sub, "preconnect");
+  if (!c_preconnect)
     return 0;
 
-  mutt_debug(LL_DEBUG2, "Executing preconnect: %s\n", C_Preconnect);
-  const int rc = mutt_system(C_Preconnect);
+  mutt_debug(LL_DEBUG2, "Executing preconnect: %s\n", c_preconnect);
+  const int rc = mutt_system(c_preconnect);
   mutt_debug(LL_DEBUG2, "Preconnect result: %d\n", rc);
   if (rc != 0)
   {

@@ -28,8 +28,14 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 
 #define TEST_DIR "NEOMUTT_TEST_DIR"
+
+#define CONFIG_INIT_TYPE(CS, NAME)                                             \
+  extern const struct ConfigSetType cst_##NAME;                                \
+  cs_register_type(CS, &cst_##NAME)
 
 static const char *get_test_dir(void)
 {
@@ -85,4 +91,39 @@ void test_init(void)
 done:
   if (!success)
     TEST_MSG("See: https://github.com/neomutt/neomutt-test-files#test-files\n");
+}
+
+void test_fini(void)
+{
+  mutt_buffer_pool_free();
+}
+
+struct NeoMutt *test_neomutt_create(void)
+{
+  struct ConfigSet *cs = cs_new(50);
+  CONFIG_INIT_TYPE(cs, address);
+  CONFIG_INIT_TYPE(cs, bool);
+  CONFIG_INIT_TYPE(cs, enum);
+  CONFIG_INIT_TYPE(cs, long);
+  CONFIG_INIT_TYPE(cs, mbtable);
+  CONFIG_INIT_TYPE(cs, number);
+  CONFIG_INIT_TYPE(cs, path);
+  CONFIG_INIT_TYPE(cs, quad);
+  CONFIG_INIT_TYPE(cs, regex);
+  CONFIG_INIT_TYPE(cs, slist);
+  CONFIG_INIT_TYPE(cs, sort);
+  CONFIG_INIT_TYPE(cs, string);
+
+  struct NeoMutt *n = neomutt_new(cs);
+
+  return n;
+}
+
+void test_neomutt_destroy(struct NeoMutt **ptr)
+{
+  struct NeoMutt *n = *ptr;
+
+  struct ConfigSet *cs = n->sub->cs;
+  neomutt_free(ptr);
+  cs_free(&cs);
 }

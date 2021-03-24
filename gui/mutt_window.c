@@ -283,8 +283,9 @@ static int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
     if (!first)
       return -1;
 
-    if ((C_StatusOnTop && (first->type == WT_HELP_BAR)) ||
-        (!C_StatusOnTop && (first->type != WT_HELP_BAR)))
+    const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+    if ((c_status_on_top && (first->type == WT_HELP_BAR)) ||
+        (!c_status_on_top && (first->type != WT_HELP_BAR)))
     {
       // Swap the HelpLine and the Dialogs Container
       struct MuttWindow *next = TAILQ_NEXT(first, entries);
@@ -357,7 +358,8 @@ void mutt_window_init(void)
   MessageWindow->help_data = EditorHelp;
   MessageWindow->help_menu = MENU_EDITOR;
 
-  if (C_StatusOnTop)
+  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  if (c_status_on_top)
   {
     mutt_window_add_child(RootWindow, AllDialogsWindow);
     mutt_window_add_child(RootWindow, win_helpbar);

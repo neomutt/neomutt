@@ -833,7 +833,7 @@ static void change_folder_string(struct Menu *menu, char *buf, size_t buflen,
   else
 #endif
   {
-    const char *c_folder = cs_subset_string(NeoMutt->sub, "folder");
+    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
     mx_path_canon(buf, buflen, c_folder, NULL);
   }
 
@@ -933,7 +933,8 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
     }
   }
 
-  const char *c_index_format = cs_subset_string(NeoMutt->sub, "index_format");
+  const char *const c_index_format =
+      cs_subset_string(NeoMutt->sub, "index_format");
   mutt_make_string(buf, buflen, menu->win_index->state.cols, NONULL(c_index_format),
                    m, Context->msg_in_pager, e, flags, NULL);
 }
@@ -1123,7 +1124,7 @@ static void index_custom_redraw(struct Menu *menu)
   if (menu->redraw & REDRAW_STATUS)
   {
     char buf[1024];
-    const char *c_status_format =
+    const char *const c_status_format =
         cs_subset_string(NeoMutt->sub, "status_format");
     menu_status_line(buf, sizeof(buf), menu, m, NONULL(c_status_format));
     mutt_window_move(menu->win_ibar, 0, 0);
@@ -1134,11 +1135,11 @@ static void index_custom_redraw(struct Menu *menu)
     const bool c_ts_enabled = cs_subset_bool(NeoMutt->sub, "ts_enabled");
     if (c_ts_enabled && TsSupported)
     {
-      const char *c_ts_status_format =
+      const char *const c_ts_status_format =
           cs_subset_string(NeoMutt->sub, "ts_status_format");
       menu_status_line(buf, sizeof(buf), menu, m, NONULL(c_ts_status_format));
       mutt_ts_status(buf);
-      const char *c_ts_icon_format =
+      const char *const c_ts_icon_format =
           cs_subset_string(NeoMutt->sub, "ts_icon_format");
       menu_status_line(buf, sizeof(buf), menu, m, NONULL(c_ts_icon_format));
       mutt_ts_icon(buf);
@@ -1284,7 +1285,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
               const bool c_beep_new = cs_subset_bool(NeoMutt->sub, "beep_new");
               if (c_beep_new)
                 mutt_beep(true);
-              const char *c_new_mail_command =
+              const char *const c_new_mail_command =
                   cs_subset_string(NeoMutt->sub, "new_mail_command");
               if (c_new_mail_command)
               {
@@ -1337,7 +1338,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           const bool c_beep_new = cs_subset_bool(NeoMutt->sub, "beep_new");
           if (c_beep_new)
             mutt_beep(true);
-          const char *c_new_mail_command =
+          const char *const c_new_mail_command =
               cs_subset_string(NeoMutt->sub, "new_mail_command");
           if (c_new_mail_command)
           {
@@ -2397,7 +2398,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           mutt_message(_("Windowed queries disabled"));
           break;
         }
-        const char *c_nm_query_window_current_search =
+        const char *const c_nm_query_window_current_search =
             cs_subset_string(NeoMutt->sub, "nm_query_window_current_search");
         if (!c_nm_query_window_current_search)
         {
@@ -2422,7 +2423,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
           mutt_message(_("Windowed queries disabled"));
           break;
         }
-        const char *c_nm_query_window_current_search =
+        const char *const c_nm_query_window_current_search =
             cs_subset_string(NeoMutt->sub, "nm_query_window_current_search");
         if (!c_nm_query_window_current_search)
         {
@@ -2571,7 +2572,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
         }
 
         OptNews = true;
-        const char *c_news_server =
+        const char *const c_news_server =
             cs_subset_string(NeoMutt->sub, "news_server");
         CurrentNewsSrv = nntp_select_server(Context ? Context->mailbox : NULL,
                                             c_news_server, false);
@@ -3773,7 +3774,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
               buf2[0])
           {
             char str[256], macro[256];
-            const char *c_mark_macro_prefix =
+            const char *const c_mark_macro_prefix =
                 cs_subset_string(NeoMutt->sub, "mark_macro_prefix");
             snprintf(str, sizeof(str), "%s%s", c_mark_macro_prefix, buf2);
             snprintf(macro, sizeof(macro), "<search>~i \"%s\"\n", cur.e->env->message_id);

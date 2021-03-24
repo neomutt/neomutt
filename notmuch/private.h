@@ -42,18 +42,6 @@ struct Mailbox;
 
 extern const int NmUrlProtocolLen;
 
-extern int   C_NmDbLimit;
-extern char *C_NmDefaultUrl;
-extern char *C_NmExcludeTags;
-extern char *C_NmFlaggedTag;
-extern int   C_NmOpenTimeout;
-extern char *C_NmQueryType;
-extern int   C_NmQueryWindowCurrentPosition;
-extern char *C_NmQueryWindowTimebase;
-extern char *C_NmRecordTags;
-extern char *C_NmRepliedTag;
-extern char *C_NmUnreadTag;
-
 notmuch_database_t *nm_db_do_open     (const char *filename, bool writable, bool verbose);
 void                nm_db_free        (notmuch_database_t *db);
 const char *        nm_db_get_filename(struct Mailbox *m);

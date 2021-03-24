@@ -24,11 +24,19 @@
 #include "config.h"
 #include "acutest.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "history/lib.h"
+#include "test_common.h"
+
+bool config_init_history(struct ConfigSet *cs);
 
 void test_mutt_hist_search(void)
 {
   // int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **matches);
+
+  NeoMutt = test_neomutt_create();
+  config_init_history(NeoMutt->sub->cs);
 
   {
     char *matches = NULL;
@@ -39,4 +47,6 @@ void test_mutt_hist_search(void)
     char buf[32] = { 0 };
     TEST_CHECK(mutt_hist_search(buf, 0, NULL) == 0);
   }
+
+  test_neomutt_destroy(&NeoMutt);
 }

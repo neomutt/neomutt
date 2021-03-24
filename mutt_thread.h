@@ -32,20 +32,6 @@ struct EmailList;
 struct Mailbox;
 struct ThreadsContext;
 
-/* These Config Variables are only used in mutt_thread.c */
-extern bool C_CollapseFlagged;
-extern bool C_CollapseUnread;
-extern bool C_DuplicateThreads;
-extern bool C_HideLimited;
-extern bool C_HideMissing;
-extern bool C_HideThreadSubject;
-extern bool C_HideTopLimited;
-extern bool C_HideTopMissing;
-extern bool C_NarrowTree;
-extern bool C_SortRe;
-extern bool C_StrictThreads;
-extern bool C_ThreadReceived;
-
 /**
  * enum TreeChar - Tree characters for menus
  *

@@ -28,11 +28,9 @@
 #include "config/lib.h"
 #include "core/lib.h"
 
-static short VarApple;
-
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",  DT_NUMBER,  &VarApple,  42, 0, NULL },
+  { "Apple", DT_NUMBER, 42, 0, NULL },
   { NULL },
 };
 // clang-format on

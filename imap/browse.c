@@ -83,7 +83,8 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   /* apply filemask filter. This should really be done at menu setup rather
    * than at scan, since it's so expensive to scan. But that's big changes
    * to browser.c */
-  if (!mutt_regex_match(C_Mask, relpath))
+  const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
+  if (!mutt_regex_match(c_mask, relpath))
   {
     return;
   }
@@ -191,7 +192,6 @@ int imap_browse(const char *path, struct BrowserState *state)
   int n;
   char ctmp;
   bool showparents = false;
-  bool save_lsub;
 
   if (imap_parse_path(path, &cac, buf, sizeof(buf)))
   {
@@ -199,8 +199,9 @@ int imap_browse(const char *path, struct BrowserState *state)
     return -1;
   }
 
-  save_lsub = C_ImapCheckSubscribed;
-  C_ImapCheckSubscribed = false;
+  const bool c_imap_check_subscribed =
+      cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
+  cs_subset_str_native_set(NeoMutt->sub, "imap_check_subscribed", false, NULL);
 
   // Pick first mailbox connected to the same server
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
@@ -218,7 +219,9 @@ int imap_browse(const char *path, struct BrowserState *state)
   if (!adata)
     goto fail;
 
-  if (C_ImapListSubscribed)
+  const bool c_imap_list_subscribed =
+      cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
+  if (c_imap_list_subscribed)
   {
     /* RFC3348 section 3 states LSUB is unreliable for hierarchy information.
      * The newer LIST extensions are designed for this.  */
@@ -360,14 +363,13 @@ int imap_browse(const char *path, struct BrowserState *state)
 
   mutt_clear_error();
 
-  if (save_lsub)
-    C_ImapCheckSubscribed = true;
-
+  cs_subset_str_native_set(NeoMutt->sub, "imap_check_subscribed",
+                           c_imap_check_subscribed, NULL);
   return 0;
 
 fail:
-  if (save_lsub)
-    C_ImapCheckSubscribed = true;
+  cs_subset_str_native_set(NeoMutt->sub, "imap_check_subscribed",
+                           c_imap_check_subscribed, NULL);
   return -1;
 }
 

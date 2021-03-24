@@ -34,6 +34,8 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "conn/lib.h"
 #include "adata.h"
 #include "mutt_logging.h"
@@ -304,9 +306,10 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
   if (ret == 0)
   {
     snprintf(buf, sizeof(buf), "PASS %s\r\n", adata->conn->account.pass);
+    const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
     ret = pop_query_d(adata, buf, sizeof(buf),
                       /* don't print the password unless we're at the ungodly debugging level */
-                      (C_DebugLevel < MUTT_SOCK_LOG_FULL) ? "PASS *\r\n" : NULL);
+                      (c_debug_level < MUTT_SOCK_LOG_FULL) ? "PASS *\r\n" : NULL);
   }
 
   switch (ret)
@@ -328,7 +331,9 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
 static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *method)
 {
   /* If they did not explicitly request or configure oauth then fail quietly */
-  if (!method && !C_PopOauthRefreshCommand)
+  const char *const c_pop_oauth_refresh_command =
+      cs_subset_string(NeoMutt->sub, "pop_oauth_refresh_command");
+  if (!method && !c_pop_oauth_refresh_command)
     return POP_A_UNAVAIL;
 
   // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
@@ -346,7 +351,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
   int ret = pop_query_d(adata, auth_cmd, strlen(auth_cmd),
 #ifdef DEBUG
                         /* don't print the bearer token unless we're at the ungodly debugging level */
-                        (C_DebugLevel < MUTT_SOCK_LOG_FULL) ?
+                        (cs_subset_number(NeoMutt->sub, "debug_level") < MUTT_SOCK_LOG_FULL) ?
                             "AUTH OAUTHBEARER *\r\n" :
 #endif
                             NULL);
@@ -433,11 +438,15 @@ int pop_authenticate(struct PopAccountData *adata)
     return -3;
   }
 
-  if (C_PopAuthenticators && (C_PopAuthenticators->count > 0))
+  const struct Slist *c_pop_authenticators =
+      cs_subset_slist(NeoMutt->sub, "pop_authenticators");
+  const bool c_pop_auth_try_all =
+      cs_subset_bool(NeoMutt->sub, "pop_auth_try_all");
+  if (c_pop_authenticators && (c_pop_authenticators->count > 0))
   {
     /* Try user-specified list of authentication methods */
     struct ListNode *np = NULL;
-    STAILQ_FOREACH(np, &C_PopAuthenticators->head, entries)
+    STAILQ_FOREACH(np, &c_pop_authenticators->head, entries)
     {
       mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
       authenticator = pop_authenticators;
@@ -464,7 +473,7 @@ int pop_authenticate(struct PopAccountData *adata)
           if (ret != POP_A_UNAVAIL)
             attempts++;
           if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
-              ((ret == POP_A_FAILURE) && !C_PopAuthTryAll))
+              ((ret == POP_A_FAILURE) && !c_pop_auth_try_all))
           {
             break;
           }
@@ -499,7 +508,7 @@ int pop_authenticate(struct PopAccountData *adata)
       if (ret != POP_A_UNAVAIL)
         attempts++;
       if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
-          ((ret == POP_A_FAILURE) && !C_PopAuthTryAll))
+          ((ret == POP_A_FAILURE) && !c_pop_auth_try_all))
       {
         break;
       }

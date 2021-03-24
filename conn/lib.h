@@ -61,11 +61,6 @@
 
 struct Buffer;
 
-// These Config Variables are used outside of libconn
-extern bool          C_SslForceTls;
-extern unsigned char C_SslStarttls;
-extern const char *  C_Tunnel;
-
 #ifdef USE_SSL
 int mutt_ssl_starttls(struct Connection *conn);
 #endif

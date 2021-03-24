@@ -421,7 +421,7 @@ static void pgp_copy_clearsigned(FILE *fp_in, struct State *s, char *charset)
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
    * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.  */
-  const char *c_charset = cs_subset_string(NeoMutt->sub, "charset");
+  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
   struct FgetConv *fc =
       mutt_ch_fgetconv_open(fp_in, charset, c_charset, MUTT_ICONV_HOOK_FROM);
 
@@ -692,7 +692,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         int ch;
         char *expected_charset = (gpgcharset && *gpgcharset) ? gpgcharset : "utf-8";
 
-        const char *c_charset = cs_subset_string(NeoMutt->sub, "charset");
+        const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
         mutt_debug(LL_DEBUG3, "pgp: recoding inline from [%s] to [%s]\n",
                    expected_charset, c_charset);
 
@@ -1726,7 +1726,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
    * we have to convert from $charset to utf-8.  */
 
   mutt_body_get_charset(a, body_charset, sizeof(body_charset));
-  const char *c_charset = cs_subset_string(NeoMutt->sub, "charset");
+  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
   if (a->noconv)
     from_charset = body_charset;
   else

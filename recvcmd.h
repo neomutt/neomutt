@@ -32,9 +32,6 @@ struct Context;
 struct Email;
 struct Mailbox;
 
-/* These Config Variables are only used in recvcmd.c */
-extern unsigned char C_MimeForwardRest;
-
 void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, struct Body *cur);
 void mutt_attach_resend(FILE *fp, struct Context *ctx, struct AttachCtx *actx, struct Body *cur);
 void mutt_attach_forward(FILE *fp, struct Mailbox *m, struct Email *e, struct AttachCtx *actx, struct Body *cur, SendFlags flags);

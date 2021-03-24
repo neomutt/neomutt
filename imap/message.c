@@ -248,8 +248,9 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
     }
     else if ((plen = mutt_istr_startswith(s, "old")))
     {
+      const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
       s += plen;
-      edata->old = C_MarkOld ? true : false;
+      edata->old = c_mark_old ? true : false;
     }
     else
     {
@@ -544,8 +545,10 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccount
   if (msn_end < msn_begin)
     return 0;
 
-  if (C_ImapFetchChunkSize > 0)
-    max_headers_per_fetch = C_ImapFetchChunkSize;
+  const long c_imap_fetch_chunk_size =
+      cs_subset_long(NeoMutt->sub, "imap_fetch_chunk_size");
+  if (c_imap_fetch_chunk_size > 0)
+    max_headers_per_fetch = c_imap_fetch_chunk_size;
 
   if (!evalhc)
   {
@@ -1062,13 +1065,16 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
   struct Buffer *hdr_list = mutt_buffer_pool_get();
   mutt_buffer_strcpy(hdr_list, want_headers);
-  if (C_ImapHeaders)
+  const char *const c_imap_headers =
+      cs_subset_string(NeoMutt->sub, "imap_headers");
+  if (c_imap_headers)
   {
     mutt_buffer_addch(hdr_list, ' ');
-    mutt_buffer_addstr(hdr_list, C_ImapHeaders);
+    mutt_buffer_addstr(hdr_list, c_imap_headers);
   }
 #ifdef USE_AUTOCRYPT
-  if (C_Autocrypt)
+  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  if (c_autocrypt)
   {
     mutt_buffer_addch(hdr_list, ' ');
     mutt_buffer_addstr(hdr_list, "AUTOCRYPT");
@@ -1338,7 +1344,9 @@ retry:
 
     if (mdata->modseq)
     {
-      if ((adata->capabilities & IMAP_CAP_CONDSTORE) && C_ImapCondstore)
+      const bool c_imap_condstore =
+          cs_subset_bool(NeoMutt->sub, "imap_condstore");
+      if ((adata->capabilities & IMAP_CAP_CONDSTORE) && c_imap_condstore)
         has_condstore = true;
 
       /* If IMAP_CAP_QRESYNC and ImapQResync then NeoMutt sends ENABLE QRESYNC.
@@ -1750,7 +1758,9 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
-      if (C_ConfirmCreate && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
+      const bool c_confirm_create =
+          cs_subset_bool(NeoMutt->sub, "confirm_create");
+      if (c_confirm_create && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
       {
         mutt_clear_error();
         goto out;
@@ -1770,11 +1780,12 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
   /* cleanup */
   if (save_opt == SAVE_MOVE)
   {
+    const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
     STAILQ_FOREACH(en, el, entries)
     {
       mutt_set_flag(m, en->email, MUTT_DELETE, true);
       mutt_set_flag(m, en->email, MUTT_PURGE, true);
-      if (C_DeleteUntag)
+      if (c_delete_untag)
         mutt_set_flag(m, en->email, MUTT_TAG, false);
     }
   }
@@ -1960,9 +1971,10 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
    * command handler */
   e->active = false;
 
+  const bool c_imap_peek = cs_subset_bool(NeoMutt->sub, "imap_peek");
   snprintf(buf, sizeof(buf), "UID FETCH %u %s", imap_edata_get(e)->uid,
            ((adata->capabilities & IMAP_CAP_IMAP4REV1) ?
-                (C_ImapPeek ? "BODY.PEEK[]" : "BODY[]") :
+                (c_imap_peek ? "BODY.PEEK[]" : "BODY[]") :
                 "RFC822"));
 
   imap_cmd_start(adata, buf);

@@ -550,12 +550,12 @@ static int reopen_mailbox(struct Mailbox *m)
   m->verbose = false;
 
   /* our heuristics require the old mailbox to be unsorted */
-  if (C_Sort != SORT_ORDER)
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (c_sort != SORT_ORDER)
   {
-    short old_sort = C_Sort;
-    C_Sort = SORT_ORDER;
+    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
     mailbox_changed(m, NT_MAILBOX_RESORT);
-    C_Sort = old_sort;
+    cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
   }
 
   e_old = NULL;
@@ -848,7 +848,9 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
 
   /* When $mbox_check_recent is set, existing new mail is ignored, so do not
    * reset the atime to mtime-1 to signal new mail.  */
-  if (!C_MailCheckRecent && (utimebuf.actime >= utimebuf.modtime) && mbox_has_new(m))
+  const bool c_mail_check_recent =
+      cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  if (!c_mail_check_recent && (utimebuf.actime >= utimebuf.modtime) && mbox_has_new(m))
   {
     utimebuf.actime = utimebuf.modtime - 1;
   }
@@ -1142,7 +1144,6 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   struct Buffer *tempfile = NULL;
   char buf[32];
   int j;
-  enum SortType save_sort = SORT_ORDER;
   bool unlink_tempfile = false;
   int need_sort = 0; /* flag to resort mailbox if new mail arrives */
   int first = -1;    /* first message to be written */
@@ -1155,12 +1156,12 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   enum MxStatus rc = MX_STATUS_ERROR;
 
   /* sort message by their position in the mailbox on disk */
-  if (C_Sort != SORT_ORDER)
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (c_sort != SORT_ORDER)
   {
-    save_sort = C_Sort;
-    C_Sort = SORT_ORDER;
+    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
     mailbox_changed(m, NT_MAILBOX_RESORT);
-    C_Sort = save_sort;
+    cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
     need_sort = 1;
   }
 
@@ -1394,7 +1395,8 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 
     struct Buffer *savefile = mutt_buffer_pool_get();
 
-    mutt_buffer_printf(savefile, "%s/neomutt.%s-%s-%u", NONULL(C_Tmpdir), NONULL(Username),
+    const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
+    mutt_buffer_printf(savefile, "%s/neomutt.%s-%s-%u", NONULL(c_tmpdir), NONULL(Username),
                        NONULL(ShortHostname), (unsigned int) getpid());
     rename(mutt_buffer_string(tempfile), mutt_buffer_string(savefile));
     mutt_sig_unblock();
@@ -1444,7 +1446,9 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   mutt_buffer_pool_release(&tempfile);
   mutt_sig_unblock();
 
-  if (C_CheckMboxSize)
+  const bool c_check_mbox_size =
+      cs_subset_bool(NeoMutt->sub, "check_mbox_size");
+  if (c_check_mbox_size)
   {
     struct Mailbox *m_tmp = mailbox_find(mailbox_path(m));
     if (m_tmp && !m_tmp->has_new)
@@ -1652,7 +1656,9 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
   }
   mutt_file_fclose(&fp);
 
-  if (!C_CheckMboxSize)
+  const bool c_check_mbox_size =
+      cs_subset_bool(NeoMutt->sub, "check_mbox_size");
+  if (!c_check_mbox_size)
   {
     /* need to restore the times here, the file was not really accessed,
      * only the type was accessed.  This is important, because detection
@@ -1759,7 +1765,9 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   bool new_or_changed;
 
-  if (C_CheckMboxSize)
+  const bool c_check_mbox_size =
+      cs_subset_bool(NeoMutt->sub, "check_mbox_size");
+  if (c_check_mbox_size)
     new_or_changed = (sb.st_size > m->size);
   else
   {
@@ -1772,13 +1780,15 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   if (new_or_changed)
   {
-    if (!C_MailCheckRecent ||
+    const bool c_mail_check_recent =
+        cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+    if (!c_mail_check_recent ||
         (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) > 0))
     {
       m->has_new = true;
     }
   }
-  else if (C_CheckMboxSize)
+  else if (c_check_mbox_size)
   {
     /* some other program has deleted mail from the folder */
     m->size = (off_t) sb.st_size;

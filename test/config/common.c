@@ -89,24 +89,21 @@ int log_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ec = nc->event_data;
 
-  struct Buffer result;
-  mutt_buffer_init(&result);
-  result.dsize = 256;
-  result.data = mutt_mem_calloc(1, result.dsize);
+  struct Buffer *result = mutt_buffer_pool_get();
 
   const char *events[] = { "set", "reset", "initial-set" };
 
-  mutt_buffer_reset(&result);
+  mutt_buffer_reset(result);
 
   if (nc->event_subtype != NT_CONFIG_INITIAL_SET)
-    cs_he_string_get(ec->sub->cs, ec->he, &result);
+    cs_he_string_get(ec->sub->cs, ec->he, result);
   else
-    cs_he_initial_get(ec->sub->cs, ec->he, &result);
+    cs_he_initial_get(ec->sub->cs, ec->he, result);
 
   TEST_MSG("Event: %s has been %s to '%s'\n", ec->name,
-           events[nc->event_subtype - 1], result.data);
+           events[nc->event_subtype - 1], mutt_buffer_string(result));
 
-  FREE(&result.data);
+  mutt_buffer_pool_release(&result);
   return true;
 }
 
@@ -133,10 +130,7 @@ void cs_dump_set(const struct ConfigSet *cs)
   struct HashWalkState state;
   memset(&state, 0, sizeof(state));
 
-  struct Buffer result;
-  mutt_buffer_init(&result);
-  result.dsize = 256;
-  result.data = mutt_mem_calloc(1, result.dsize);
+  struct Buffer *result = mutt_buffer_pool_get();
 
   char tmp[128];
   char *list[26] = { 0 };
@@ -170,14 +164,15 @@ void cs_dump_set(const struct ConfigSet *cs)
       continue;
     }
 
-    mutt_buffer_reset(&result);
-    const struct ConfigDef *cdef = he->data;
+    mutt_buffer_reset(result);
+    struct ConfigDef *cdef = he->data;
 
-    int rc = cst->string_get(cs, cdef->var, cdef, &result);
+    int rc = cst->string_get(cs, &cdef->var, cdef, result);
     if (CSR_RESULT(rc) == CSR_SUCCESS)
-      snprintf(tmp, sizeof(tmp), "%s %s = %s", cst->name, name, result.data);
+      snprintf(tmp, sizeof(tmp), "%s %s = %s", cst->name, name, mutt_buffer_string(result));
     else
-      snprintf(tmp, sizeof(tmp), "%s %s: ERROR: %s", cst->name, name, result.data);
+      snprintf(tmp, sizeof(tmp), "%s %s: ERROR: %s", cst->name, name,
+               mutt_buffer_string(result));
     list[index] = mutt_str_dup(tmp);
     index++;
   }
@@ -189,5 +184,5 @@ void cs_dump_set(const struct ConfigSet *cs)
     FREE(&list[i]);
   }
 
-  FREE(&result.data);
+  mutt_buffer_pool_release(&result);
 }

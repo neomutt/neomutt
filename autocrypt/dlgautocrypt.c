@@ -34,6 +34,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "format_flags.h"
@@ -154,9 +155,11 @@ static void account_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
 {
   struct AccountEntry *entry = &((struct AccountEntry *) menu->mdata)[num];
 
+  const char *const c_autocrypt_acct_format =
+      cs_subset_string(NeoMutt->sub, "autocrypt_acct_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                      NONULL(C_AutocryptAcctFormat), account_format_str,
-                      IP entry, MUTT_FORMAT_ARROWCURSOR);
+                      NONULL(c_autocrypt_acct_format), account_format_str,
+                      (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
@@ -256,7 +259,8 @@ static void toggle_prefer_encrypt(struct AccountEntry *entry)
  */
 void dlg_select_autocrypt_account(struct Mailbox *m)
 {
-  if (!C_Autocrypt)
+  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  if (!c_autocrypt)
     return;
 
   if (mutt_autocrypt_init(m, false))

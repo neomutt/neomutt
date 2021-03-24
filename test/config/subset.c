@@ -32,11 +32,9 @@
 #include "config/lib.h"
 #include "core/lib.h"
 
-static short VarApple;
-
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",  DT_NUMBER,  &VarApple,  42, 0, NULL },
+  { "Apple",  DT_NUMBER,  42, 0, NULL, },
   { NULL },
 };
 // clang-format on
@@ -44,8 +42,6 @@ static struct ConfigDef Vars[] = {
 void test_config_subset(void)
 {
   log_line(__func__);
-
-  struct Buffer err = mutt_buffer_make(256);
 
   const char *name = "Apple";
   const char *expected = NULL;
@@ -87,185 +83,186 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(&err);
-  rc = cs_subset_he_native_get(NULL, NULL, &err);
+  struct Buffer *err = mutt_buffer_pool_get();
+  mutt_buffer_reset(err);
+  rc = cs_subset_he_native_get(NULL, NULL, err);
   if (!TEST_CHECK(rc == INT_MIN))
   {
     TEST_MSG("This test should have failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
-  value = cs_subset_he_native_get(NeoMutt->sub, he, &err);
+  mutt_buffer_reset(err);
+  value = cs_subset_he_native_get(NeoMutt->sub, he, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
     TEST_MSG("cs_subset_he_native_get failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
-  value = cs_subset_str_native_get(NeoMutt->sub, name, &err);
+  mutt_buffer_reset(err);
+  value = cs_subset_str_native_get(NeoMutt->sub, name, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
     TEST_MSG("cs_subset_str_native_get failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
-  rc = cs_subset_he_native_set(NULL, NULL, value + 100, &err);
+  mutt_buffer_reset(err);
+  rc = cs_subset_he_native_set(NULL, NULL, value + 100, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_native_set failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
-  rc = cs_subset_he_native_set(NeoMutt->sub, he, value + 100, &err);
+  mutt_buffer_reset(err);
+  rc = cs_subset_he_native_set(NeoMutt->sub, he, value + 100, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
     TEST_MSG("cs_subset_he_native_set failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
-  rc = cs_subset_str_native_set(NeoMutt->sub, name, value + 100, &err);
+  mutt_buffer_reset(err);
+  rc = cs_subset_str_native_set(NeoMutt->sub, name, value + 100, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
     TEST_MSG("cs_subset_str_native_set failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
+  mutt_buffer_reset(err);
   expected = "142";
-  rc = cs_subset_he_string_get(NeoMutt->sub, he, &err);
+  rc = cs_subset_he_string_get(NeoMutt->sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS) ||
-      !TEST_CHECK(strcmp(mutt_buffer_string(&err), expected) == 0))
+      !TEST_CHECK(strcmp(mutt_buffer_string(err), expected) == 0))
   {
     TEST_MSG("cs_subset_he_string_get failed\n");
     TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual  : %s", mutt_buffer_string(&err));
+    TEST_MSG("Actual  : %s", mutt_buffer_string(err));
     return;
   }
 
-  mutt_buffer_reset(&err);
-  rc = cs_subset_str_string_get(NULL, NULL, &err);
+  mutt_buffer_reset(err);
+  rc = cs_subset_str_string_get(NULL, NULL, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("This test should have failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
+  mutt_buffer_reset(err);
   expected = "142";
-  rc = cs_subset_str_string_get(NeoMutt->sub, name, &err);
+  rc = cs_subset_str_string_get(NeoMutt->sub, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS) ||
-      !TEST_CHECK(strcmp(mutt_buffer_string(&err), expected) == 0))
+      !TEST_CHECK(strcmp(mutt_buffer_string(err), expected) == 0))
   {
     TEST_MSG("cs_subset_str_string_get failed\n");
     TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual  : %s", mutt_buffer_string(&err));
+    TEST_MSG("Actual  : %s", mutt_buffer_string(err));
     return;
   }
 
-  mutt_buffer_reset(&err);
+  mutt_buffer_reset(err);
   expected = "142";
-  rc = cs_subset_he_string_set(NULL, NULL, expected, &err);
+  rc = cs_subset_he_string_set(NULL, NULL, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("This test should have failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
+  mutt_buffer_reset(err);
   expected = "678";
-  rc = cs_subset_he_string_set(NeoMutt->sub, he, expected, &err);
+  rc = cs_subset_he_string_set(NeoMutt->sub, he, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_string_set failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
+  mutt_buffer_reset(err);
   expected = "678";
-  rc = cs_subset_str_string_set(NeoMutt->sub, name, expected, &err);
+  rc = cs_subset_str_string_set(NeoMutt->sub, name, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_str_string_set failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
+  mutt_buffer_reset(err);
   expected = "142";
-  rc = cs_subset_he_string_plus_equals(NULL, NULL, expected, &err);
+  rc = cs_subset_he_string_plus_equals(NULL, NULL, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("This test should have failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
+  mutt_buffer_reset(err);
   expected = "678";
-  rc = cs_subset_he_string_plus_equals(NeoMutt->sub, he, expected, &err);
+  rc = cs_subset_he_string_plus_equals(NeoMutt->sub, he, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_string_plus_equals failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
+  mutt_buffer_reset(err);
   expected = "678";
-  rc = cs_subset_str_string_plus_equals(NeoMutt->sub, name, expected, &err);
+  rc = cs_subset_str_string_plus_equals(NeoMutt->sub, name, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_str_string_plus_equals failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
+  mutt_buffer_reset(err);
   expected = "142";
-  rc = cs_subset_he_string_minus_equals(NULL, NULL, expected, &err);
+  rc = cs_subset_he_string_minus_equals(NULL, NULL, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("This test should have failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
+  mutt_buffer_reset(err);
   expected = "678";
-  rc = cs_subset_he_string_minus_equals(NeoMutt->sub, he, expected, &err);
+  rc = cs_subset_he_string_minus_equals(NeoMutt->sub, he, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_string_minus_equals failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
+  mutt_buffer_reset(err);
   expected = "678";
-  rc = cs_subset_str_string_minus_equals(NeoMutt->sub, name, expected, &err);
+  rc = cs_subset_str_string_minus_equals(NeoMutt->sub, name, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_str_string_minus_equals failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
-  rc = cs_subset_he_reset(NULL, NULL, &err);
+  mutt_buffer_reset(err);
+  rc = cs_subset_he_reset(NULL, NULL, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("This test should have failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
-  rc = cs_subset_he_reset(NeoMutt->sub, he, &err);
+  mutt_buffer_reset(err);
+  rc = cs_subset_he_reset(NeoMutt->sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_reset failed\n");
     return;
   }
 
-  mutt_buffer_reset(&err);
-  rc = cs_subset_str_reset(NeoMutt->sub, name, &err);
+  mutt_buffer_reset(err);
+  rc = cs_subset_str_reset(NeoMutt->sub, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_str_reset failed\n");
@@ -291,6 +288,6 @@ void test_config_subset(void)
 
   neomutt_free(&NeoMutt);
   cs_free(&cs);
-  mutt_buffer_dealloc(&err);
+  mutt_buffer_pool_release(&err);
   log_line(__func__);
 }

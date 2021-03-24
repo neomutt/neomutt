@@ -82,15 +82,6 @@
 #include "autocrypt/lib.h"
 #endif
 
-/* These Config Variables are only used in commands.c */
-char *C_DisplayFilter; ///< Config: External command to pre-process an email before display
-bool C_PipeDecode; ///< Config: Decode the message when piping it
-char *C_PipeSep;   ///< Config: Separator to add between multiple piped messages
-bool C_PipeSplit;  ///< Config: Run the pipe command on each message separately
-bool C_PrintDecode; ///< Config: Decode message before printing it
-bool C_PrintSplit;  ///< Config: Print multiple messages separately
-bool C_PromptAfter; ///< Config: Pause after running an external pager
-
 static const char *ExtPagerProgress = "all";
 
 /** The folder the user last saved to.  Used by ci_save_message() */
@@ -169,7 +160,9 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
 
     mutt_str_replace(&e->env->subject, prot_headers->subject);
     FREE(&e->env->disp_subj);
-    if (mutt_regex_capture(C_ReplyRegex, e->env->subject, 1, pmatch))
+    const struct Regex *c_reply_regex =
+        cs_subset_regex(NeoMutt->sub, "reply_regex");
+    if (mutt_regex_capture(c_reply_regex, e->env->subject, 1, pmatch))
       e->env->real_subj = e->env->subject + pmatch[0].rm_eo;
     else
       e->env->real_subj = e->env->subject;
@@ -278,11 +271,13 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     goto cleanup;
   }
 
-  if (C_DisplayFilter)
+  const char *const c_display_filter =
+      cs_subset_string(NeoMutt->sub, "display_filter");
+  if (c_display_filter)
   {
     fp_filter_out = fp_out;
     fp_out = NULL;
-    filterpid = filter_create_fd(C_DisplayFilter, &fp_out, NULL, NULL, -1,
+    filterpid = filter_create_fd(c_display_filter, &fp_out, NULL, NULL, -1,
                                  fileno(fp_filter_out), -1);
     if (filterpid < 0)
     {
@@ -293,19 +288,23 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     }
   }
 
-  if (!C_Pager || mutt_str_equal(C_Pager, "builtin"))
+  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
+  if (!c_pager || mutt_str_equal(c_pager, "builtin"))
     builtin = true;
   else
   {
     char buf[1024] = { 0 };
-    mutt_make_string(buf, sizeof(buf), win_index->state.cols, NONULL(C_PagerFormat),
+    const char *const c_pager_format =
+        cs_subset_string(NeoMutt->sub, "pager_format");
+    mutt_make_string(buf, sizeof(buf), win_index->state.cols, NONULL(c_pager_format),
                      m, Context ? Context->msg_in_pager : -1, e,
                      MUTT_FORMAT_NO_FLAGS, ExtPagerProgress);
     fputs(buf, fp_out);
     fputs("\n\n", fp_out);
   }
 
-  chflags = (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_FROM | CH_DISPLAY;
+  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+  chflags = (c_weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_FROM | CH_DISPLAY;
 #ifdef USE_NOTMUCH
   if (m->type == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
@@ -385,7 +384,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     mutt_endwin();
 
     struct Buffer *cmd = mutt_buffer_pool_get();
-    mutt_buffer_printf(cmd, "%s %s", NONULL(C_Pager), mutt_buffer_string(tempfile));
+    mutt_buffer_printf(cmd, "%s %s", NONULL(c_pager), mutt_buffer_string(tempfile));
     int r = mutt_system(mutt_buffer_string(cmd));
     if (r == -1)
       mutt_error(_("Error running \"%s\""), mutt_buffer_string(cmd));
@@ -396,7 +395,8 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
       keypad(stdscr, true);
     if (r != -1)
       mutt_set_flag(m, e, MUTT_READ, true);
-    if ((r != -1) && C_PromptAfter)
+    const bool c_prompt_after = cs_subset_bool(NeoMutt->sub, "prompt_after");
+    if ((r != -1) && c_prompt_after)
     {
       mutt_unget_event(mutt_any_key_to_continue(_("Command: ")), 0);
       rc = km_dokey(MENU_PAGER);
@@ -482,7 +482,8 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   else
     mutt_str_copy(prompt, scratch, sizeof(prompt));
 
-  if (query_quadoption(C_Bounce, prompt) != MUTT_YES)
+  const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
+  if (query_quadoption(c_bounce, prompt) != MUTT_YES)
   {
     mutt_addrlist_clear(&al);
     mutt_window_clearline(MessageWindow, 0);
@@ -530,7 +531,11 @@ static void pipe_set_flags(bool decode, bool print, CopyMessageFlags *cmflags,
     *chflags |= CH_DECODE | CH_REORDER;
     *cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
 
-    if (print ? C_PrintDecodeWeed : C_PipeDecodeWeed)
+    const bool c_print_decode_weed =
+        cs_subset_bool(NeoMutt->sub, "print_decode_weed");
+    const bool c_pipe_decode_weed =
+        cs_subset_bool(NeoMutt->sub, "pipe_decode_weed");
+    if (print ? c_print_decode_weed : c_pipe_decode_weed)
     {
       *chflags |= CH_WEED;
       *cmflags |= MUTT_CM_WEED;
@@ -697,7 +702,8 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd
     }
   }
 
-  if ((rc != 0) || C_WaitKey)
+  const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
+  if ((rc != 0) || c_wait_key)
     mutt_any_key_to_continue(NULL);
   return rc;
 }
@@ -724,7 +730,10 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
     goto cleanup;
 
   mutt_buffer_expand_path(buf);
-  pipe_message(m, el, mutt_buffer_string(buf), C_PipeDecode, false, C_PipeSplit, C_PipeSep);
+  const bool c_pipe_decode = cs_subset_bool(NeoMutt->sub, "pipe_decode");
+  const bool c_pipe_split = cs_subset_bool(NeoMutt->sub, "pipe_split");
+  const char *const c_pipe_sep = cs_subset_string(NeoMutt->sub, "pipe_sep");
+  pipe_message(m, el, mutt_buffer_string(buf), c_pipe_decode, false, c_pipe_split, c_pipe_sep);
 
 cleanup:
   mutt_buffer_pool_release(&buf);
@@ -740,7 +749,10 @@ void mutt_print_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el)
     return;
 
-  if (C_Print && !C_PrintCommand)
+  const enum QuadOption c_print = cs_subset_quad(NeoMutt->sub, "print");
+  const char *const c_print_command =
+      cs_subset_string(NeoMutt->sub, "print_command");
+  if (c_print && !c_print_command)
   {
     mutt_message(_("No printing command has been defined"));
     return;
@@ -753,14 +765,16 @@ void mutt_print_message(struct Mailbox *m, struct EmailList *el)
     msg_count++;
   }
 
-  if (query_quadoption(C_Print, (msg_count == 1) ?
+  if (query_quadoption(c_print, (msg_count == 1) ?
                                     _("Print message?") :
                                     _("Print tagged messages?")) != MUTT_YES)
   {
     return;
   }
 
-  if (pipe_message(m, el, C_PrintCommand, C_PrintDecode, true, C_PrintSplit, "\f") == 0)
+  const bool c_print_decode = cs_subset_bool(NeoMutt->sub, "print_decode");
+  const bool c_print_split = cs_subset_bool(NeoMutt->sub, "print_split");
+  if (pipe_message(m, el, c_print_command, c_print_decode, true, c_print_split, "\f") == 0)
     mutt_message(ngettext("Message printed", "Messages printed", msg_count));
   else
   {
@@ -776,8 +790,8 @@ void mutt_print_message(struct Mailbox *m, struct EmailList *el)
  */
 int mutt_select_sort(bool reverse)
 {
-  enum SortType method = C_Sort; /* save the current method in case of abort */
-  enum SortType new_sort = C_Sort;
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  enum SortType new_sort = c_sort;
 
   switch (mutt_multi_choice(reverse ?
                                 /* L10N: The highlighted letters must match the "Sort" options */
@@ -842,7 +856,7 @@ int mutt_select_sort(bool reverse)
     new_sort |= SORT_REVERSE;
 
   cs_subset_str_native_set(NeoMutt->sub, "sort", new_sort, NULL);
-  return (C_Sort != method) ? 0 : -1; /* no need to resort if it's the same */
+  return (new_sort != c_sort) ? 0 : -1; /* no need to resort if it's the same */
 }
 
 /**
@@ -860,8 +874,9 @@ bool mutt_shell_escape(void)
     return false;
   }
 
-  if ((buf[0] == '\0') && C_Shell)
-    mutt_str_copy(buf, C_Shell, sizeof(buf));
+  const char *const c_shell = cs_subset_string(NeoMutt->sub, "shell");
+  if ((buf[0] == '\0') && c_shell)
+    mutt_str_copy(buf, c_shell, sizeof(buf));
   if (buf[0] == '\0')
   {
     return false;
@@ -874,7 +889,8 @@ bool mutt_shell_escape(void)
   if (rc == -1)
     mutt_debug(LL_DEBUG1, "Error running \"%s\"", buf);
 
-  if ((rc != 0) || C_WaitKey)
+  const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
+  if ((rc != 0) || c_wait_key)
     mutt_any_key_to_continue(NULL);
 
   return true;
@@ -989,7 +1005,9 @@ static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_o
   {
     *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN | CH_DECODE; // then decode RFC2047
     *cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-    if (C_CopyDecodeWeed)
+    const bool c_copy_decode_weed =
+        cs_subset_bool(NeoMutt->sub, "copy_decode_weed");
+    if (c_copy_decode_weed)
     {
       *chflags |= CH_WEED; // and respect $weed
       *cmflags |= MUTT_CM_WEED;
@@ -1026,7 +1044,8 @@ int mutt_save_message_ctx(struct Email *e, enum MessageSaveOpt save_opt,
   {
     mutt_set_flag(Context->mailbox, e, MUTT_DELETE, true);
     mutt_set_flag(Context->mailbox, e, MUTT_PURGE, true);
-    if (C_DeleteUntag)
+    const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
+    if (c_delete_untag)
       mutt_set_flag(Context->mailbox, e, MUTT_TAG, false);
   }
 

@@ -94,9 +94,6 @@
 #include "autocrypt/lib.h"
 #endif
 
-/* These Config Variables are only used in main.c */
-bool C_ResumeEditedDraftFiles; ///< Config: Resume editing previously saved draft files
-
 // clang-format off
 typedef uint8_t CliFlags;         ///< Flags for command line options, e.g. #MUTT_CLI_IGNORE
 #define MUTT_CLI_NO_FLAGS      0  ///< No flags are set
@@ -377,7 +374,7 @@ int main(int argc, char *argv[], char *envp[])
   char *dlevel = NULL;
   char *dfile = NULL;
 #ifdef USE_NNTP
-  char *cli_nntp = NULL;
+  const char *cli_nntp = NULL;
 #endif
   struct Email *e = NULL;
   struct ListHead attach = STAILQ_HEAD_INITIALIZER(attach);
@@ -569,10 +566,12 @@ int main(int argc, char *argv[], char *envp[])
   mutt_str_replace(&Username, mutt_str_getenv("USER"));
   mutt_str_replace(&HomeDir, mutt_str_getenv("HOME"));
 
-  cs = init_config(500);
+  cs = cs_new(500);
   if (!cs)
     goto main_curses;
+
   NeoMutt = neomutt_new(cs);
+  init_config(cs);
 
 #ifdef USE_DEBUG_NOTIFY
   notify_observer_add(NeoMutt->notify, NT_ALL, debug_notify_observer, NULL);
@@ -688,22 +687,24 @@ int main(int argc, char *argv[], char *envp[])
   }
 
 #ifdef USE_NNTP
-  /* "$news_server" precedence: command line, config file, environment, system file */
-  if (cli_nntp)
-    cs_str_string_set(cs, "news_server", cli_nntp, NULL);
-  if (!C_NewsServer)
   {
-    const char *env_nntp = mutt_str_getenv("NNTPSERVER");
-    cs_str_string_set(cs, "news_server", env_nntp, NULL);
+    /* "$news_server" precedence: command line, config file, environment, system file */
+    if (!cli_nntp)
+      cli_nntp = cs_subset_string(NeoMutt->sub, "news_server");
+
+    if (!cli_nntp)
+      cli_nntp = mutt_str_getenv("NNTPSERVER");
+
+    char buf[1024] = { 0 };
+    if (!cli_nntp)
+      cli_nntp = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buf, sizeof(buf));
+
+    if (cli_nntp)
+    {
+      cs_str_initial_set(cs, "news_server", cli_nntp, NULL);
+      cs_str_reset(cs, "news_server", NULL);
+    }
   }
-  if (!C_NewsServer)
-  {
-    char buf[1024];
-    char *server = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buf, sizeof(buf));
-    cs_str_string_set(cs, "news_server", server, NULL);
-  }
-  if (C_NewsServer)
-    cs_str_initial_set(cs, "news_server", C_NewsServer, NULL);
 #endif
 
   /* Initialize crypto backends.  */
@@ -776,17 +777,19 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef USE_AUTOCRYPT
   /* Initialize autocrypt after curses messages are working,
    * because of the initial account setup screens. */
-  if (C_Autocrypt)
+  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  if (c_autocrypt)
     mutt_autocrypt_init(NULL, !(sendflags & SEND_BATCH));
 #endif
 
   /* Create the `$folder` directory if it doesn't exist. */
-  if (!OptNoCurses && C_Folder)
+  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  if (!OptNoCurses && c_folder)
   {
     struct stat sb;
     struct Buffer *fpath = mutt_buffer_pool_get();
 
-    mutt_buffer_strcpy(fpath, C_Folder);
+    mutt_buffer_strcpy(fpath, c_folder);
     mutt_buffer_expand_path(fpath);
     bool skip = false;
 #ifdef USE_IMAP
@@ -802,11 +805,11 @@ int main(int argc, char *argv[], char *envp[])
     if (!skip && (stat(mutt_buffer_string(fpath), &sb) == -1) && (errno == ENOENT))
     {
       char msg2[256];
-      snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), C_Folder);
+      snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), c_folder);
       if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
         if ((mkdir(mutt_buffer_string(fpath), 0700) == -1) && (errno != EEXIST))
-          mutt_error(_("Can't create %s: %s"), C_Folder, strerror(errno)); // TEST21: neomutt -n -F /dev/null (and ~/Mail doesn't exist)
+          mutt_error(_("Can't create %s: %s"), c_folder, strerror(errno)); // TEST21: neomutt -n -F /dev/null (and ~/Mail doesn't exist)
       }
     }
     mutt_buffer_pool_release(&fpath);
@@ -869,7 +872,8 @@ int main(int argc, char *argv[], char *envp[])
         mutt_addrlist_parse(&e->env->to, argv[i]);
     }
 
-    if (!draft_file && C_AutoEdit && TAILQ_EMPTY(&e->env->to) &&
+    const bool c_auto_edit = cs_subset_bool(NeoMutt->sub, "auto_edit");
+    if (!draft_file && c_auto_edit && TAILQ_EMPTY(&e->env->to) &&
         TAILQ_EMPTY(&e->env->cc))
     {
       mutt_error(_("No recipients specified"));
@@ -995,7 +999,9 @@ int main(int argc, char *argv[], char *envp[])
         {
           if (mutt_istr_startswith(np->data, "X-Mutt-Resume-Draft:"))
           {
-            if (C_ResumeEditedDraftFiles)
+            const bool c_resume_edited_draft_files =
+                cs_subset_bool(NeoMutt->sub, "resume_edited_draft_files");
+            if (c_resume_edited_draft_files)
               cs_str_native_set(cs, "resume_draft_files", true, NULL);
 
             STAILQ_REMOVE(&e->env->userhdrs, np, ListNode, entries);
@@ -1100,7 +1106,9 @@ int main(int argc, char *argv[], char *envp[])
             fp_out, e->env, e->body, MUTT_WRITE_HEADER_POSTPONE, false,
             c_crypt_protected_headers_read && mutt_should_hide_protected_subject(e),
             NeoMutt->sub);
-        if (C_ResumeEditedDraftFiles)
+        const bool c_resume_edited_draft_files =
+            cs_subset_bool(NeoMutt->sub, "resume_edited_draft_files");
+        if (c_resume_edited_draft_files)
           fprintf(fp_out, "X-Mutt-Resume-Draft: 1\n");
         fputc('\n', fp_out);
         if ((mutt_write_mime_body(e->body, fp_out, NeoMutt->sub) == -1))
@@ -1130,8 +1138,8 @@ int main(int argc, char *argv[], char *envp[])
     {
       struct Mailbox *m = ctx_mailbox(Context);
 #ifdef USE_IMAP
-      bool passive = C_ImapPassive;
-      C_ImapPassive = false;
+      const bool c_imap_passive = cs_subset_bool(NeoMutt->sub, "imap_passive");
+      cs_subset_str_native_set(NeoMutt->sub, "imap_passive", false, NULL);
 #endif
       if (mutt_mailbox_check(m, 0) == 0)
       {
@@ -1141,7 +1149,7 @@ int main(int argc, char *argv[], char *envp[])
       mutt_buffer_reset(&folder);
       mutt_mailbox_next(m, &folder);
 #ifdef USE_IMAP
-      C_ImapPassive = passive;
+      cs_subset_str_native_set(NeoMutt->sub, "imap_passive", c_imap_passive, NULL);
 #endif
     }
     else if (flags & MUTT_CLI_SELECT)
@@ -1149,9 +1157,11 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef USE_NNTP
       if (flags & MUTT_CLI_NEWS)
       {
+        const char *const c_news_server =
+            cs_subset_string(NeoMutt->sub, "news_server");
         OptNews = true;
-        CurrentNewsSrv =
-            nntp_select_server(Context ? Context->mailbox : NULL, C_NewsServer, false);
+        CurrentNewsSrv = nntp_select_server(Context ? Context->mailbox : NULL,
+                                            c_news_server, false);
         if (!CurrentNewsSrv)
           goto main_curses; // TEST38: neomutt -G (unset news_server)
       }
@@ -1173,17 +1183,19 @@ int main(int argc, char *argv[], char *envp[])
 
     if (mutt_buffer_is_empty(&folder))
     {
-      if (C_SpoolFile)
+      const char *const c_spool_file =
+          cs_subset_string(NeoMutt->sub, "spool_file");
+      if (c_spool_file)
       {
         // Check if `$spool_file` corresponds a mailboxes' description.
-        struct Mailbox *m_desc = mailbox_find_name(C_SpoolFile);
+        struct Mailbox *m_desc = mailbox_find_name(c_spool_file);
         if (m_desc)
           mutt_buffer_strcpy(&folder, m_desc->realpath);
         else
-          mutt_buffer_strcpy(&folder, C_SpoolFile);
+          mutt_buffer_strcpy(&folder, c_spool_file);
       }
-      else if (C_Folder)
-        mutt_buffer_strcpy(&folder, C_Folder);
+      else if (c_folder)
+        mutt_buffer_strcpy(&folder, c_folder);
       /* else no folder */
     }
 
@@ -1221,7 +1233,8 @@ int main(int argc, char *argv[], char *envp[])
 
     repeat_error = true;
     struct Mailbox *m = mx_resolve(mutt_buffer_string(&folder));
-    Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || C_ReadOnly) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS);
+    const bool c_read_only = cs_subset_bool(NeoMutt->sub, "read_only");
+    Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || c_read_only) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS);
     if (!Context)
     {
       if (m->account)

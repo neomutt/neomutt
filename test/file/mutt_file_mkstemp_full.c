@@ -24,12 +24,23 @@
 #include "config.h"
 #include "acutest.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
+#include "test_common.h"
+
+static struct ConfigDef Vars[] = {
+  // clang-format off
+  { "tmpdir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, IP TMPDIR, 0, NULL, },
+  { NULL },
+  // clang-format on
+};
 
 void test_mutt_file_mkstemp_full(void)
 {
   // FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func);
 
-  C_Tmpdir = TMPDIR;
+  NeoMutt = test_neomutt_create();
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
   {
     FILE *fp = NULL;
@@ -42,4 +53,6 @@ void test_mutt_file_mkstemp_full(void)
     TEST_CHECK((fp = mutt_file_mkstemp_full("apple", 0, NULL)) != NULL);
     fclose(fp);
   }
+
+  test_neomutt_destroy(&NeoMutt);
 }

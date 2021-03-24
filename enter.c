@@ -307,7 +307,9 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
           if (state->curpos == 0)
           {
             // Pressing backspace when no text is in the command prompt should exit the prompt
-            if (C_AbortBackspace && (state->lastchar == 0))
+            const bool c_abort_backspace =
+                cs_subset_bool(NeoMutt->sub, "abort_backspace");
+            if (c_abort_backspace && (state->lastchar == 0))
               goto bye;
             // Pressing backspace with text in the command prompt should just beep
             mutt_beep(false);

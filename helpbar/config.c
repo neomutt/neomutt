@@ -33,10 +33,10 @@
 
 struct ConfigDef HelpbarVars[] = {
   // clang-format off
-  { "help", DT_BOOL|R_REFLOW, NULL, true, 0, NULL,
+  { "help", DT_BOOL|R_REFLOW, true, 0, NULL,
     "Display a help line with common key bindings"
   },
-  { NULL, 0, NULL, 0, 0, NULL, NULL },
+  { NULL },
   // clang-format on
 };
 
@@ -45,5 +45,5 @@ struct ConfigDef HelpbarVars[] = {
  */
 bool config_init_helpbar(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, HelpbarVars, DT_NO_VARIABLE);
+  return cs_register_variables(cs, HelpbarVars, 0);
 }
