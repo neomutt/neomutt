@@ -2673,9 +2673,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           forwarding a message. You again have the chance to adjust recipients,
           subject, and security settings right before actually sending the
           message. See also
-          <link linkend="ask_cc">$ask_cc</link>,
-          <link linkend="ask_bcc">$ask_bcc</link>,
-          <link linkend="auto_edit">$auto_edit</link>,
+          <link linkend="ask-cc">$ask_cc</link>,
+          <link linkend="ask-bcc">$ask_bcc</link>,
+          <link linkend="auto-edit">$auto_edit</link>,
           <link linkend="bounce">$bounce</link>,
           <link linkend="fast-reply">$fast_reply</link>, and
           <link linkend="include">$include</link> for changing how and if
@@ -3636,9 +3636,8 @@ set crypt_use_gpgme
           <link linkend="mailcap-path">$mailcap_path</link>,
           <link linkend="news-server">$news_server</link>,
           <link linkend="shell">shell</link>,
-          <link linkend="spool_file">$spool_file</link>,
+          <link linkend="spool-file">$spool_file</link>,
           <link linkend="tmpdir">$tmpdir</link>,
-          <link linkend="visual">$visual</link>.
         </para>
         <para>
           Finally, it's possible to
@@ -4585,7 +4584,7 @@ bind index gg first-entry
       <note>
         <para>
           If you use the <quote>!</quote> shortcut for
-          <link linkend="spool_file">$spool_file</link> at the beginning of the
+          <link linkend="spool-file">$spool_file</link> at the beginning of the
           pattern, you must place it inside of double or single quotes in order
           to distinguish it from the logical <emphasis>not</emphasis> operator
           for the expression.
@@ -5954,7 +5953,7 @@ unignore posted-to:
           <link linkend="shortcuts">shortcut characters</link> (such as
           <quote>=</quote> and <quote>!</quote>), any variable definition that
           affects these characters (like <link linkend="folder">$folder</link>
-          and <link linkend="spool_file">$spool_file</link>) should be set before
+          and <link linkend="spool-file">$spool_file</link>) should be set before
           the <command>mailboxes</command> command. If none of these shortcuts
           are used, a local path should be absolute as otherwise NeoMutt tries
           to find it relative to the directory from where NeoMutt was started
@@ -6203,7 +6202,7 @@ save-hook aol\\.com$ +spam
           postponed draft. Adding a recipient after replying or editing the
           message will not cause any
           <command>send-hook</command> to be executed, similarly if
-          <link linkend="auto_edit">$auto_edit</link> is set (as then the initial
+          <link linkend="auto-edit">$auto_edit</link> is set (as then the initial
           list of recipients is empty). Also note that
           <link linkend="my-hdr"><command>my_hdr</command></link> commands
           which modify recipient headers, or the message's subject, don't have
@@ -6276,7 +6275,7 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
         crypt-hooks result in the use of multiple keyids for a recipient.
         During key selection, NeoMutt will confirm whether each crypt-hook is
         to be used (unless the
-        <link linkend="crypt-confirmhook">$crypt_confirm_hook</link> option is
+        <link linkend="crypt-confirm-hook">$crypt_confirm_hook</link> option is
         unset). If all crypt-hooks for a recipient are declined, NeoMutt will
         use the original recipient address for key selection instead.
       </para>
@@ -9215,7 +9214,7 @@ send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
       <para>
         In <xref linkend="ex-default-hook" />, by default the value of
         <link linkend="from">$from</link> and
-        <link linkend="real_name">$real_name</link> is not overridden. When
+        <link linkend="real-name">$real_name</link> is not overridden. When
         sending messages either To: or Cc: to <literal>&lt;b@b.b&gt;</literal>,
         the From: header is changed to <literal>&lt;c@c.c&gt;</literal>.
       </para>
@@ -9470,7 +9469,7 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
             <row>
               <entry><literal>!</literal></entry>
               <entry>
-                your <link linkend="spool_file">$spool_file</link> (incoming)
+                your <link linkend="spool-file">$spool_file</link> (incoming)
                 mailbox
               </entry>
             </row>
@@ -9779,7 +9778,7 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
           <command>mailboxes</command> command. The interval depends on the
           folder type: for local/IMAP folders it consults
           <link linkend="mail-check">$mail_check</link> and
-          <link linkend="pop-checkinterval">$pop_check_interval</link> for POP
+          <link linkend="pop-check-interval">$pop_check_interval</link> for POP
           folders.
         </para>
         <para>
@@ -9996,8 +9995,8 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
         </listitem>
         <listitem>
           <para>Prompts for To, Cc, Bcc, Subject headers. See
-          <link linkend="ask_cc">$ask_cc</link>,
-          <link linkend="ask_bcc">$ask_bcc</link>,
+          <link linkend="ask-cc">$ask_cc</link>,
+          <link linkend="ask-bcc">$ask_bcc</link>,
           <link linkend="fast-reply">$fast_reply</link>.</para>
         </listitem>
         <listitem>
@@ -10037,7 +10036,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
         </listitem>
         <listitem>
           <para>
-            <link linkend="real_name">$real_name</link>part of From header setting.
+            <link linkend="real-name">$real_name</link>part of From header setting.
           </para>
         </listitem>
         <listitem>
@@ -10120,7 +10119,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
               <literal>$MAILDIR</literal> is taken into account. If that isn't
               present either, NeoMutt takes the user's mailbox in the mailspool
               as determined at compile-time (which may also reside in the home
-              directory). The <link linkend="spool_file">$spool_file</link>
+              directory). The <link linkend="spool-file">$spool_file</link>
               setting overrides this selection. Highest priority has the
               mailbox given with the <literal>-f</literal> command line option.
             </para>
@@ -11800,7 +11799,7 @@ smtp://user@host:587/
         Polling for new mail is more expensive over POP3 than locally. For this
         reason the frequency at which NeoMutt will check for mail remotely can
         be controlled by the
-        <link linkend="pop-checkinterval">$pop_check_interval</link> variable,
+        <link linkend="pop-check-interval">$pop_check_interval</link> variable,
         which defaults to every 60 seconds.
       </para>
       <para>
@@ -11819,7 +11818,7 @@ smtp://user@host:587/
         <literal>&lt;fetch-mail&gt;</literal> function (default: G). It allows
         to connect to <link linkend="pop-host">$pop_host</link>, fetch all your
         new mail and place it in the local
-        <link linkend="spool_file">$spool_file</link>. After this point, NeoMutt
+        <link linkend="spool-file">$spool_file</link>. After this point, NeoMutt
         runs exactly as if the mail had always been local.
       </para>
       <note>
@@ -15890,7 +15889,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry>boolean</entry>
                 <entry><literal>no</literal></entry>
                 <entry>
-                  Unnecessary since <link linkend="spool_file">$spool_file</link>
+                  Unnecessary since <link linkend="spool-file">$spool_file</link>
                   supports mailbox descriptions.
                 </entry>
               </row>
@@ -17737,11 +17736,11 @@ bind index D purge-message
           if <link linkend="autocrypt-reply">$autocrypt_reply</link> is
           <emphasis>set</emphasis>, autocrypt mode will be forced on,
           overriding the settings
-          <link linkend="crypt-autosign">$crypt_auto_sign</link>,
-          <link linkend="crypt-autoencrypt">$crypt_auto_encrypt</link>,
-          <link linkend="crypt-replyencrypt">$crypt_reply_encrypt</link>,
-          <link linkend="crypt-replysign">$crypt_reply_sign</link>,
-          <link linkend="crypt-replysignencrypted">$crypt_reply_sign_encrypted</link>, and
+          <link linkend="crypt-auto-sign">$crypt_auto_sign</link>,
+          <link linkend="crypt-auto-encrypt">$crypt_auto_encrypt</link>,
+          <link linkend="crypt-reply-encrypt">$crypt_reply_encrypt</link>,
+          <link linkend="crypt-reply-sign">$crypt_reply_sign</link>,
+          <link linkend="crypt-reply-sign-encrypted">$crypt_reply_sign_encrypted</link>, and
           <link linkend="crypt-opportunistic-encrypt">$crypt_opportunistic_encrypt</link>.
         </para>
         <para>
