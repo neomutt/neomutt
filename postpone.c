@@ -673,6 +673,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   struct State s = { 0 };
   SecurityFlags sec_type;
   struct Envelope *protected_headers = NULL;
+  struct Buffer *file = NULL;
 
   if (!fp && !(msg = mx_msg_open(m, e->msgno)))
     return -1;
@@ -712,6 +713,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
     mutt_message(_("Decrypting message..."));
     if ((crypt_pgp_decrypt_mime(fp, &fp_body, e_new->body, &b) == -1) || !b)
     {
+      mutt_error(_("Could not decrypt PGP message"));
       goto bail;
     }
 
@@ -764,7 +766,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
 
   s.fp_in = fp_body;
 
-  struct Buffer *file = mutt_buffer_pool_get();
+  file = mutt_buffer_pool_get();
 
   /* create temporary files for all attachments */
   for (b = e_new->body; b; b = b->next)
