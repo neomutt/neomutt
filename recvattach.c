@@ -433,6 +433,8 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
     mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str,
                         data, MUTT_FORMAT_NO_FLAGS);
   }
+
+  /* We return the format string, unchanged */
   return src;
 }
 

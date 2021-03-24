@@ -1168,6 +1168,8 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
     mutt_expando_format(buf, buflen, col, cols, else_str, crypt_format_str,
                         data, MUTT_FORMAT_NO_FLAGS);
   }
+
+  /* We return the format string, unchanged */
   return src;
 }
 

@@ -159,6 +159,7 @@ static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, 
                         pgp_command_format_str, data, MUTT_FORMAT_NO_FLAGS);
   }
 
+  /* We return the format string, unchanged */
   return src;
 }
 

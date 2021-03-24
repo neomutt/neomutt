@@ -1294,10 +1294,8 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
   {
     mutt_expando_format(buf, buflen, col, cols, if_str, compose_format_str, data, flags);
   }
-  else if (flags & MUTT_FORMAT_OPTIONAL)
-  {
-    mutt_expando_format(buf, buflen, col, cols, else_str, compose_format_str, data, flags);
-  }
+  // This format function doesn't have any optional expandos,
+  // so there's no `else if (flags & MUTT_FORMAT_OPTIONAL)` clause
 
   return src;
 }

@@ -1407,15 +1407,14 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
   if (optional)
   {
-    mutt_expando_format(buf, buflen, col, cols, if_str, index_format_str,
-                        (intptr_t) hfi, flags);
+    mutt_expando_format(buf, buflen, col, cols, if_str, index_format_str, data, flags);
   }
   else if (flags & MUTT_FORMAT_OPTIONAL)
   {
-    mutt_expando_format(buf, buflen, col, cols, else_str, index_format_str,
-                        (intptr_t) hfi, flags);
+    mutt_expando_format(buf, buflen, col, cols, else_str, index_format_str, data, flags);
   }
 
+  /* We return the format string, unchanged */
   return src;
 }
 
