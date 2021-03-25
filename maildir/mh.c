@@ -58,7 +58,6 @@
 #include "mx.h"
 #include "progress.h"
 #include "sequence.h"
-#include "sort.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif

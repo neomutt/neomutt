@@ -29,6 +29,7 @@
 #include "config.h"
 #include <errno.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -37,19 +38,15 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
-#include "core/mxapi.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
-#include "hcache/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 #include "browser.h"
-#include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "options.h"
-
-struct Mailbox;
 
 /**
  * autocrypt_dir_init - Initialise an Autocrypt directory

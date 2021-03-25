@@ -24,7 +24,6 @@
 #define MUTT_NCRYPT_PRIVATE_H
 
 #include "config.h"
-#include <stdbool.h>
 
 struct Address;
 struct CryptKeyInfo;

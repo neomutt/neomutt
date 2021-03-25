@@ -30,7 +30,9 @@
 #include <stddef.h>
 #include <errno.h>
 #include <signal.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "debug/lib.h"

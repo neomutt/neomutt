@@ -37,7 +37,6 @@
 #include "helpbar/lib.h"
 #include "keymap.h"
 #include "mutt_curses.h"
-#include "mutt_globals.h"
 #include "mutt_menu.h"
 #include "opcodes.h"
 #include "options.h"

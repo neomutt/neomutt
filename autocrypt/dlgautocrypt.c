@@ -43,8 +43,6 @@
 #include "muttlib.h"
 #include "opcodes.h"
 
-struct Mailbox;
-
 /**
  * struct AccountEntry - An entry in the Autocrypt account Menu
  */

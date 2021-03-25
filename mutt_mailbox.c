@@ -31,11 +31,10 @@
 #include <time.h>
 #include <utime.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt_mailbox.h"
-#include "mbox/lib.h"
-#include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"

@@ -34,6 +34,7 @@
 #include <wchar.h>
 #include <wctype.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"

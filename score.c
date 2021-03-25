@@ -43,7 +43,6 @@
 #include "mutt_menu.h"
 #include "options.h"
 #include "protos.h"
-#include "sort.h"
 
 /**
  * struct Score - Scoring rule for email

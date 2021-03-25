@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "auth.h"

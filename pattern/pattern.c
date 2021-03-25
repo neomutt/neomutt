@@ -33,6 +33,7 @@
 #include <stdbool.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/gui.h" // IWYU pragma: keep

@@ -38,6 +38,7 @@
 #include "mutt.h"
 #include "mutt_thread.h"
 #include "mx.h"
+#include "options.h"
 #include "protos.h"
 #include "sort.h"
 

@@ -37,9 +37,7 @@
 #include "mutt.h"
 #include "index/lib.h"
 #include "keymap.h"
-#include "mutt_globals.h"
 #include "protos.h"
-#include "sort.h"
 
 /**
  * mutt_set_flag_update - Set a flag on an email

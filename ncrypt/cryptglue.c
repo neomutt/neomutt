@@ -38,7 +38,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include "private.h"
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "cryptglue.h"
@@ -46,13 +45,13 @@
 #include "context.h"
 #include "crypt_mod.h"
 #include "mutt_globals.h"
-#ifdef CRYPT_BACKEND_GPGME
-#include "config/lib.h"
-#else
+#ifndef CRYPT_BACKEND_GPGME
 #include "gui/lib.h"
 #endif
-#ifdef USE_AUTOCRYPT
+#if defined(CRYPT_BACKEND_GPGME) || defined(USE_AUTOCRYPT)
 #include "config/lib.h"
+#endif
+#ifdef USE_AUTOCRYPT
 #include "email/lib.h"
 #include "autocrypt/lib.h"
 #include "crypt_gpgme.h"
@@ -63,7 +62,6 @@ struct Envelope;
 
 struct Address;
 struct AddressList;
-struct Mailbox;
 struct State;
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP

@@ -42,7 +42,6 @@
 #include "mutt.h"
 #include "recvattach.h"
 #include "ncrypt/lib.h"
-#include "nntp/lib.h"
 #include "send/lib.h"
 #include "commands.h"
 #include "context.h"

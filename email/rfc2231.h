@@ -24,7 +24,6 @@
 #define MUTT_EMAIL_RFC2231_H
 
 #include <stddef.h>
-#include <stdbool.h>
 
 struct ParameterList;
 

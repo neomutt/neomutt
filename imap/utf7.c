@@ -31,6 +31,7 @@
 #include <string.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 
 // clang-format off

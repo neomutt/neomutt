@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"

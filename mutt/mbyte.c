@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>

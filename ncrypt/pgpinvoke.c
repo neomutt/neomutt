@@ -34,11 +34,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
+#include "gui/lib.h" // IWYU pragma: keep
 #include "pgpinvoke.h"
 #include "lib.h"
 #include "format_flags.h"

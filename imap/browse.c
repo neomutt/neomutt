@@ -34,6 +34,7 @@
 #include <string.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "conn/lib.h"
@@ -43,7 +44,6 @@
 #include "adata.h"
 #include "browser.h"
 #include "mdata.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 

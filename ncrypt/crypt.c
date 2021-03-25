@@ -37,7 +37,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"

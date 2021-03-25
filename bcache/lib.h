@@ -35,7 +35,6 @@
 #define MUTT_BCACHE_LIB_H
 
 #include <stdio.h>
-#include <stdbool.h>
 
 struct ConnAccount;
 struct BodyCache;

@@ -24,10 +24,9 @@
 #define MUTT_LIB_MBYTE_H
 
 #include "config.h"
-#include <stddef.h>
 #include <ctype.h>
 #include <stdbool.h>
-#include <wchar.h>
+#include <wchar.h> // IWYU pragma: keep
 #include <wctype.h> // IWYU pragma: keep
 
 extern bool OptLocales;

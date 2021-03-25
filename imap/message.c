@@ -66,9 +66,6 @@
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif
-#ifdef USE_AUTOCRYPT
-#include "autocrypt/lib.h"
-#endif
 
 struct BodyCache;
 

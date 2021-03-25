@@ -39,6 +39,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"

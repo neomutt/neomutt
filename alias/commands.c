@@ -39,7 +39,6 @@
 #include "command_parse.h"
 #include "init.h"
 #include "mutt_commands.h"
-#include "mutt_logging.h"
 #include "reverse.h"
 
 /**

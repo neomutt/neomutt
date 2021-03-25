@@ -68,7 +68,6 @@
 #include "options.h"
 #include "progress.h"
 #include "protos.h"
-#include "sort.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif

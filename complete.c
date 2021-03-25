@@ -34,7 +34,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "mutt_globals.h"
 #include "muttlib.h"
 #include "options.h"
 #include "protos.h" // IWYU pragma: keep

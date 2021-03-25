@@ -28,7 +28,6 @@
 #include <sys/types.h>
 #include "config/lib.h"
 #include "options.h" // IWYU pragma: keep
-#include "where.h"
 
 struct Address;
 struct Mailbox;

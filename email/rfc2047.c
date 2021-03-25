@@ -41,7 +41,6 @@
 #include "core/lib.h"
 #include "rfc2047.h"
 #include "envelope.h"
-#include "globals.h"
 #include "mime.h"
 
 #define ENCWORD_LEN_MAX 75

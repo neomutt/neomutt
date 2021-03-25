@@ -44,7 +44,6 @@
 #include "muttlib.h"
 #include "options.h"
 #include "protos.h"
-#include "sort.h"
 
 /**
  * get_sort_str - Get the sort method as a string

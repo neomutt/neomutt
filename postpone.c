@@ -48,7 +48,6 @@
 #include "handler.h"
 #include "hdrline.h"
 #include "keymap.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_thread.h"
@@ -58,7 +57,6 @@
 #include "options.h"
 #include "protos.h"
 #include "rfc3676.h"
-#include "sort.h"
 #include "state.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"

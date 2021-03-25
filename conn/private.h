@@ -24,7 +24,6 @@
 #define MUTT_CONN_PRIVATE_H
 
 #include <stddef.h>
-#include <stdbool.h>
 #include <time.h>
 
 struct Connection;

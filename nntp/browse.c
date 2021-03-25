@@ -27,11 +27,12 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
+#include "core/lib.h"
 #include "lib.h"
 #include "browser.h"
 #include "format_flags.h"

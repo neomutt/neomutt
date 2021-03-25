@@ -56,7 +56,6 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "protos.h"
-#include "sort.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif

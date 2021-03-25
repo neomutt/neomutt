@@ -24,7 +24,6 @@
 #define MUTT_HOOK_H
 
 #include "config.h"
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt_commands.h"

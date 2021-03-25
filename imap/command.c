@@ -40,6 +40,7 @@
 #include <string.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "conn/lib.h"
@@ -49,7 +50,6 @@
 #include "mdata.h"
 #include "msn.h"
 #include "mutt_account.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "mx.h"

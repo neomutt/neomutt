@@ -41,7 +41,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "rfc2231.h"
-#include "globals.h"
 #include "mime.h"
 #include "parameter.h"
 #include "rfc2047.h"
