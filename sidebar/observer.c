@@ -102,20 +102,10 @@ static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
 {
   dlg->orient = MUTT_WIN_ORIENT_HORIZONTAL;
 
-  struct MuttWindow *index_panel = TAILQ_FIRST(&dlg->children);
-  mutt_window_remove_child(dlg, index_panel);
+  struct MuttWindow *cont_right = TAILQ_FIRST(&dlg->children);
+  mutt_window_remove_child(dlg, cont_right);
 
-  struct MuttWindow *pager_panel = TAILQ_FIRST(&dlg->children);
-  mutt_window_remove_child(dlg, pager_panel);
-
-  struct MuttWindow *cont_right =
-      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   dlg->focus = cont_right;
-
-  mutt_window_add_child(cont_right, index_panel);
-  mutt_window_add_child(cont_right, pager_panel);
-  cont_right->focus = index_panel;
 
   const short c_sidebar_width = cs_subset_number(NeoMutt->sub, "sidebar_width");
   struct MuttWindow *win_sidebar =

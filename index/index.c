@@ -4189,10 +4189,16 @@ struct MuttWindow *index_pager_init(void)
   struct MuttWindow *dlg =
       mutt_window_new(WT_DLG_INDEX, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *container =
+      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-  mutt_window_add_child(dlg, create_panel_index(dlg, c_status_on_top));
-  mutt_window_add_child(dlg, create_panel_pager(dlg, c_status_on_top));
+  mutt_window_add_child(container, create_panel_index(container, c_status_on_top));
+  mutt_window_add_child(container, create_panel_pager(container, c_status_on_top));
+
+  mutt_window_add_child(dlg, container);
+  dlg->focus = container;
 
   index_add_observers(dlg);
   return dlg;
