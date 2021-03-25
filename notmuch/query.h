@@ -32,8 +32,12 @@ enum NmQueryType
 {
   NM_QUERY_TYPE_MESGS = 1, ///< Default: Messages only
   NM_QUERY_TYPE_THREADS,   ///< Whole threads
+  NM_QUERY_TYPE_UNKNOWN,   ///< Unknown query type. Error in notmuch query.
 };
 
+enum NmQueryType nm_parse_type_from_query(char *buf);
 enum NmQueryType nm_string_to_query_type(const char *str);
+enum NmQueryType nm_string_to_query_type_mapper(const char *str);
+const char *nm_query_type_to_string(enum NmQueryType query_type);
 
 #endif /* MUTT_NOTMUCH_QUERY_H */

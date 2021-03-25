@@ -26,6 +26,42 @@
 #include "mutt/lib.h"
 #include "notmuch/query.h"
 
+struct NmParseTypeTest
+{
+  char *input;
+  enum NmQueryType expected;
+};
+
+void test_nm_parse_type_from_query(void)
+{
+  static const struct NmParseTypeTest tests[] = {
+    { "&type=threads", NM_QUERY_TYPE_THREADS },
+    { "&type=messages", NM_QUERY_TYPE_MESGS },
+    { "type=threads&", NM_QUERY_TYPE_THREADS },
+    { "type=messages&", NM_QUERY_TYPE_MESGS },
+    { "type=threads", NM_QUERY_TYPE_THREADS },
+    { "type=messages", NM_QUERY_TYPE_MESGS },
+    { "", NM_QUERY_TYPE_MESGS },
+    { NULL, NM_QUERY_TYPE_MESGS },
+    { "type=non-existent", NM_QUERY_TYPE_MESGS },
+    { "type=threads&type=non-existent", NM_QUERY_TYPE_THREADS },
+    { "type=messages&type=non-existent", NM_QUERY_TYPE_MESGS },
+  };
+
+  // Degenerate test
+  TEST_CHECK(nm_parse_type_from_query(NULL) == NM_QUERY_TYPE_MESGS);
+
+  char buf[1024];
+  for (int i = 0; i < mutt_array_size(tests); i++)
+  {
+    const struct NmParseTypeTest *t = &tests[i];
+    memset(buf, 0, sizeof(buf));
+    mutt_str_copy(buf, t->input, sizeof(buf));
+    TEST_CASE(buf);
+    TEST_CHECK(nm_parse_type_from_query(buf) == t->expected);
+  }
+}
+
 void test_nm_string_to_query_type(void)
 {
   // enum NmQueryType nm_string_to_query_type(const char *str);
@@ -39,7 +75,35 @@ void test_nm_string_to_query_type(void)
     TEST_CHECK(nm_string_to_query_type("messages") == NM_QUERY_TYPE_MESGS);
   }
 
+  // Test that we're handling the error condition.
   {
     TEST_CHECK(nm_string_to_query_type("junk") == NM_QUERY_TYPE_MESGS);
+  }
+}
+
+void test_nm_string_to_query_type_mapper(void)
+{
+  {
+    TEST_CHECK(nm_string_to_query_type_mapper("threads") == NM_QUERY_TYPE_THREADS);
+  }
+
+  {
+    TEST_CHECK(nm_string_to_query_type_mapper("messages") == NM_QUERY_TYPE_MESGS);
+  }
+
+  {
+    TEST_CHECK(nm_string_to_query_type_mapper("junk") == NM_QUERY_TYPE_UNKNOWN);
+  }
+}
+
+void test_nm_query_type_to_string(void)
+{
+  {
+    TEST_CHECK(mutt_str_equal(nm_query_type_to_string(NM_QUERY_TYPE_THREADS), "threads"));
+  }
+
+  {
+    TEST_CHECK(mutt_str_equal(nm_query_type_to_string(NM_QUERY_TYPE_MESGS),
+                              "messages"));
   }
 }

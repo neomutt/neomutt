@@ -225,20 +225,6 @@ static char *email_get_fullpath(struct Email *e, char *buf, size_t buflen)
 }
 
 /**
- * query_type_to_string - Turn a query type into a string
- * @param query_type Query type
- * @retval ptr String
- *
- * @note This is a static string and must not be freed.
- */
-static const char *query_type_to_string(enum NmQueryType query_type)
-{
-  if (query_type == NM_QUERY_TYPE_THREADS)
-    return "threads";
-  return "messages";
-}
-
-/**
  * query_window_check_timebase - Checks if a given timebase string is valid
  * @param[in] timebase: string containing a time base
  * @retval true The given time base is valid
@@ -1646,39 +1632,6 @@ done:
 }
 
 /**
- * nm_parse_type_from_query - Parse a query type out of a query
- * @param mdata Mailbox, used for the query_type
- * @param buf   Buffer for URL
- *
- * If a user writes a query for a vfolder and includes a type= statement, that
- * type= will be encoded, which Notmuch will treat as part of the query=
- * statement. This method will remove the type= and set it within the Mailbox
- * struct.
- */
-void nm_parse_type_from_query(struct NmMboxData *mdata, char *buf)
-{
-  if (!buf)
-    return;
-
-  // The six variations of how type= could appear.
-  const char *variants[6] = { "&type=threads", "&type=messages",
-                              "type=threads&", "type=messages&",
-                              "type=threads",  "type=messages" };
-
-  int variants_size = mutt_array_size(variants);
-  for (int i = 0; i < variants_size; i++)
-  {
-    if (strcasestr(buf, variants[i]) != NULL)
-    {
-      // variants[] is setup such that type can be determined via modulo 2.
-      mdata->query_type = ((i % 2) == 0) ? NM_QUERY_TYPE_THREADS : NM_QUERY_TYPE_MESGS;
-
-      mutt_istr_remall(buf, variants[i]);
-    }
-  }
-}
-
-/**
  * nm_url_from_query - Turn a query into a URL
  * @param m      Mailbox
  * @param buf    Buffer for URL
@@ -1706,19 +1659,19 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
     using_default_data = true;
   }
 
-  nm_parse_type_from_query(mdata, buf);
+  mdata->query_type = nm_parse_type_from_query(buf);
 
   const short c_nm_db_limit = cs_subset_number(NeoMutt->sub, "nm_db_limit");
   if (get_limit(mdata) == c_nm_db_limit)
   {
     added = snprintf(url, sizeof(url), "%s%s?type=%s&query=", NmUrlProtocol,
-                     nm_db_get_filename(m), query_type_to_string(mdata->query_type));
+                     nm_db_get_filename(m), nm_query_type_to_string(mdata->query_type));
   }
   else
   {
     added = snprintf(url, sizeof(url), "%s%s?type=%s&limit=%d&query=", NmUrlProtocol,
                      nm_db_get_filename(m),
-                     query_type_to_string(mdata->query_type), get_limit(mdata));
+                     nm_query_type_to_string(mdata->query_type), get_limit(mdata));
   }
 
   if (added >= sizeof(url))
@@ -1804,6 +1757,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
 
   switch (mdata->query_type)
   {
+    case NM_QUERY_TYPE_UNKNOWN: // UNKNOWN should never occur, but MESGS is default
     case NM_QUERY_TYPE_MESGS:
     {
       notmuch_messages_t *messages = get_messages(q);
@@ -2163,6 +2117,7 @@ static enum MxOpenReturns nm_mbox_open(struct Mailbox *m)
     rc = MX_OPEN_OK;
     switch (mdata->query_type)
     {
+      case NM_QUERY_TYPE_UNKNOWN: // UNKNOWN should never occur, but MESGS is default
       case NM_QUERY_TYPE_MESGS:
         if (!read_mesgs_query(m, q, false))
           rc = MX_OPEN_ABORT;
