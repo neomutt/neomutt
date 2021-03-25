@@ -45,6 +45,9 @@ struct ConfigDef PagerVars[] = {
   { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER|R_REFLOW, 0, 0, NULL,
     "Number of index lines to display above the pager"
   },
+  { "pager_columns", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER|R_REFLOW, NULL, 0, 0, NULL,
+    "Number of pager columns to display on the right side of the index"
+  },
   { "pager_stop", DT_BOOL, false, 0, NULL,
     "Don't automatically open the next message when at the end of a message"
   },

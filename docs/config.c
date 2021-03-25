@@ -2767,6 +2767,13 @@
 ** $$pager_index_lines, then the index will only use as many lines as it needs.
 */
 
+{ "pager_columns", DT_NUMBER, 0 },
+/*
+** .pp
+** Determines the number of columns used by the the pager. This turns on
+** widescreen mode.
+*/
+
 { "pager_stop", DT_BOOL, false },
 /*
 ** .pp

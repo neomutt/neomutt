@@ -4109,6 +4109,31 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 }
 
 /**
+ * index_draw_divider - Draw a line between the sidebar and the rest of neomutt
+ * @param win      Window to draw on
+ * @retval 0   Empty string
+ */
+static int index_draw_divider(struct MuttWindow *win)
+{
+  mutt_curses_set_color(MT_COLOR_SIDEBAR_DIVIDER);
+
+  for (int i = 0; i < win->state.rows; i++)
+  {
+    mutt_window_move(win, 0, i);
+    mutt_window_addch(' ');
+
+    mutt_window_move(win, 1, i);
+    mutt_window_addch(ACS_VLINE);
+
+    mutt_window_move(win, 2, i);
+    mutt_window_addch(' ');
+  }
+
+  mutt_curses_set_color(MT_COLOR_NORMAL);
+  return 0;
+}
+
+/**
  * create_panel_index - Create the Windows for the Index panel
  * @param parent        Parent Window
  * @param status_on_top true, if the Index bar should be on top
@@ -4194,8 +4219,42 @@ struct MuttWindow *index_pager_init(void)
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-  mutt_window_add_child(container, create_panel_index(container, c_status_on_top));
-  mutt_window_add_child(container, create_panel_pager(container, c_status_on_top));
+  struct MuttWindow *panel_index = create_panel_index(container, c_status_on_top);
+  struct MuttWindow *panel_pager = create_panel_pager(container, c_status_on_top);
+
+  const short c_pager_columns = cs_subset_number(NeoMutt->sub, "pager_columns");
+  if (!c_pager_columns)
+  {
+    mutt_window_add_child(container, panel_index);
+    mutt_window_add_child(container, panel_pager);
+  }
+  else
+  {
+    struct MuttWindow *container_index =
+        mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
+                        MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+
+    mutt_window_add_child(container_index, panel_index);
+    container_index->focus = panel_index;
+
+    struct MuttWindow *container_vbar =
+        mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_HORIZONTAL,
+                        MUTT_WIN_SIZE_FIXED, 3, MUTT_WIN_SIZE_UNLIMITED);
+    container_vbar->repaint = index_draw_divider;
+
+    struct MuttWindow *container_pager =
+        mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
+                        c_pager_columns, MUTT_WIN_SIZE_UNLIMITED);
+
+    mutt_window_add_child(container_pager, panel_pager);
+    container_pager->focus = panel_pager;
+
+    container->orient = MUTT_WIN_ORIENT_HORIZONTAL;
+
+    mutt_window_add_child(container, container_index);
+    mutt_window_add_child(container, container_vbar);
+    mutt_window_add_child(container, container_pager);
+  }
 
   mutt_window_add_child(dlg, container);
   dlg->focus = container;

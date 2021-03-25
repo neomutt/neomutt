@@ -2087,6 +2087,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
   const bool c_tilde = cs_subset_bool(NeoMutt->sub, "tilde");
   const short c_pager_index_lines =
       cs_subset_number(NeoMutt->sub, "pager_index_lines");
+  const short c_pager_columns = cs_subset_number(NeoMutt->sub, "pager_columns");
 
   if (!rd)
     return;
@@ -2102,6 +2103,9 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     }
     else
       rd->indexlen = c_pager_index_lines;
+
+    if (c_pager_columns)
+      rd->indexlen = LINES; /* number of lines on screen, from curses */
 
     rd->indicator = rd->indexlen / 3;
 
@@ -2359,6 +2363,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       cs_subset_number(NeoMutt->sub, "search_context");
   const short c_skip_quoted_offset =
       cs_subset_number(NeoMutt->sub, "skip_quoted_offset");
+  const short c_pager_columns = cs_subset_number(NeoMutt->sub, "pager_columns");
 
   struct Menu *pager_menu = NULL;
   int old_PagerIndexLines; /* some people want to resize it while inside the pager */
@@ -2374,6 +2379,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   int index_space = c_pager_index_lines;
   if (extra->ctx && extra->ctx->mailbox)
     index_space = MIN(index_space, extra->ctx->mailbox->vcount);
+
+  if (c_pager_columns)
+    index_space = LINES; /* number of lines on screen, from curses */
 
   struct PagerRedrawData rd = { 0 };
   rd.banner = banner;
