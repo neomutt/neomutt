@@ -1,16 +1,19 @@
+#include "config.h"
 #include "private.h"
-
 #include "mutt/buffer.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "gui/mutt_window.h"
 
 struct PreviewWindowData *preview_wdata_new(void)
 {
+  const short c_preview_lines = cs_subset_number(NeoMutt->sub, PREVIEW_CONFIG_PREFIX "lines");
   struct PreviewWindowData *data = calloc(1, sizeof(struct PreviewWindowData));
   // could probably be better;
   *data = (struct PreviewWindowData){
     .current_email = NULL,
     .mailbox = NULL,
-    .buffer = mutt_buffer_make(C_PreviewLines * 1024),
+    .buffer = mutt_buffer_make(c_preview_lines * 1024),
   };
 
   return data;

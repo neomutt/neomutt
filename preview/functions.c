@@ -121,7 +121,8 @@ void compute_mail_preview(struct PreviewWindowData *data)
 
   size_t sz_line = 1024;
   line = mutt_mem_malloc(sz_line);
-  for (int i = 0; i < C_PreviewLines; ++i)
+  const short c_preview_lines = cs_subset_number(NeoMutt->sub, PREVIEW_CONFIG_PREFIX "lines");
+  for (int i = 0; i < c_preview_lines; ++i)
   {
     line = mutt_file_read_line(line, &sz_line, s.fp_out, NULL, 0);
     if (!line)

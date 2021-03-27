@@ -27,12 +27,6 @@ void preview_win_shutdown(struct MuttWindow *dlg);
 /* draw.c */
 void preview_draw(struct MuttWindow *win);
 
-/*  config.c */
-extern bool *C_PreviewEnabled;
-extern short C_PreviewHeight;
-extern short C_PreviewLines;
-extern char *C_PreviewDividerCharH;
-
 /* wdata.c */
 struct PreviewWindowData
 {

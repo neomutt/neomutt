@@ -1,15 +1,9 @@
 #include "config.h"
 #include "private.h"
-
-#include "mutt/buffer.h"
-#include "mutt/logging.h"
-#include "mutt/queue.h"
-#include "mutt/string2.h"
+#include "mutt/lib.h"
 #include "email/lib.h"
-#include "gui/color.h"
-#include "gui/curs_lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
-#include "gui/mutt_window.h"
 #include "mutt_globals.h"
 
 static bool valid_sep(const char *wanted)
@@ -32,9 +26,11 @@ static void draw_divider(struct PreviewWindowData *data, struct MuttWindow *win,
 
   mutt_window_move(win, *col_offset, *row_offset);
 
-  const chtype ch_default_separator = C_AsciiChars ? '-' : ACS_HLINE;
-  bool use_default_separator = !valid_sep(C_PreviewDividerCharH);
-  int sep_size = use_default_separator ? 1 : mutt_strwidth(C_PreviewDividerCharH);
+  const bool c_ascii_chars = cs_subset_bool(NeoMutt->sub, "ascii_chars");
+  const chtype ch_default_separator = c_ascii_chars ? '-' : ACS_HLINE;
+  const char *const c_preview_divider_char_h = cs_subset_string(NeoMutt->sub, PREVIEW_CONFIG_PREFIX "divider_horizontal");
+  bool use_default_separator = !valid_sep(c_preview_divider_char_h);
+  int sep_size = use_default_separator ? 1 : mutt_strwidth(c_preview_divider_char_h);
 
   if (sep_size > *max_cols)
   {
@@ -51,7 +47,7 @@ static void draw_divider(struct PreviewWindowData *data, struct MuttWindow *win,
     }
     else
     {
-      mutt_window_addstr(C_PreviewDividerCharH);
+      mutt_window_addstr(c_preview_divider_char_h);
     }
   }
   mutt_curses_set_color(MT_COLOR_NORMAL);
@@ -67,7 +63,8 @@ static void draw_divider(struct PreviewWindowData *data, struct MuttWindow *win,
 
 void preview_draw(struct MuttWindow *win)
 {
-  if (!C_PreviewEnabled || !win)
+  const bool c_preview_enabled = cs_subset_bool(NeoMutt->sub, PREVIEW_CONFIG_PREFIX "enabled");
+  if (!c_preview_enabled || !win)
     return;
 
   if (!mutt_window_is_visible(win))

@@ -4,7 +4,8 @@
 #include "mutt/logging.h"
 #include "mutt/notify_type.h"
 #include "mutt/queue.h"
-#include "core/neomutt.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "gui/mutt_window.h"
 #include "lib.h"
 #include "mutt_globals.h"
@@ -60,11 +61,13 @@ void preview_win_init(struct MuttWindow *dlg)
   struct MuttWindow *bar = TAILQ_LAST(&index_container->children, MuttWindowList);
   mutt_window_remove_child(index_container, bar);
 
+  const short c_preview_height = cs_subset_number(NeoMutt->sub, PREVIEW_CONFIG_PREFIX "height");
+  const bool c_preview_enabled = cs_subset_bool(NeoMutt->sub, PREVIEW_CONFIG_PREFIX "enabled");
   struct MuttWindow *preview_window =
       mutt_window_new(WT_PREVIEW, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                      MUTT_WIN_SIZE_UNLIMITED, C_PreviewHeight);
+                      MUTT_WIN_SIZE_UNLIMITED, c_preview_height);
   {
-    preview_window->state.visible = C_PreviewEnabled && C_PreviewHeight > 0;
+    preview_window->state.visible = c_preview_enabled && c_preview_height > 0;
     preview_window->wdata = preview_wdata_new();
     preview_window->wdata_free = preview_wdata_free;
     preview_window->recalc = preview_recalc;

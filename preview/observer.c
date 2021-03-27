@@ -1,14 +1,11 @@
+#include "config.h"
 #include "private.h"
-
-#include "mutt/notify_type.h"
-#include "mutt/observer.h"
-#include "mutt/string2.h"
-#include "config/subset.h"
-#include "gui/color.h"
-#include "gui/mutt_window.h"
-#include "gui/reflow.h"
-#include "index.h"
-#include "pager.h"
+#include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
+#include "gui/lib.h"
+#include "index/lib.h"
+#include "pager/lib.h"
 
 static void handle_selection_change(struct NotifyCallback *nc)
 {
@@ -147,11 +144,13 @@ int preview_config_observer(struct NotifyCallback *nc)
 
   if (mutt_str_equal(ec->name, PREVIEW_CONFIG_PREFIX "visible"))
   {
-    window_set_visible(win, C_PreviewEnabled);
+    const bool c_preview_enabled = cs_subset_bool(NeoMutt->sub, PREVIEW_CONFIG_PREFIX "enabled");
+    window_set_visible(win, c_preview_enabled);
   }
   else if (mutt_str_equal(ec->name, PREVIEW_CONFIG_PREFIX "height"))
   {
-    win->req_rows = C_PreviewHeight;
+    const short c_preview_height = cs_subset_number(NeoMutt->sub, PREVIEW_CONFIG_PREFIX "height");
+    win->req_rows = c_preview_height;
   }
 
   win->parent->actions |= WA_REFLOW;
