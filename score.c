@@ -36,6 +36,7 @@
 #include "mutt.h"
 #include "score.h"
 #include "pattern/lib.h"
+#include "context.h"
 #include "init.h"
 #include "keymap.h"
 #include "mutt_commands.h"
@@ -124,7 +125,9 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
       break;
   if (!ptr)
   {
-    struct PatternList *pat = mutt_pattern_comp(Context, pattern, MUTT_PC_NO_FLAGS, err);
+    struct PatternList *pat =
+        mutt_pattern_comp(ctx_mailbox(Context), Context ? Context->menu : NULL,
+                          pattern, MUTT_PC_NO_FLAGS, err);
     if (!pat)
     {
       FREE(&pattern);

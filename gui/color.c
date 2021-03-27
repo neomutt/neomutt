@@ -995,7 +995,7 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
       const char *const c_simple_search =
           cs_subset_string(NeoMutt->sub, "simple_search");
       mutt_check_simple(buf, NONULL(c_simple_search));
-      tmp->color_pattern = mutt_pattern_comp(Context, buf->data, MUTT_PC_FULL_MSG, err);
+      tmp->color_pattern = mutt_pattern_comp(ctx_mailbox(Context), Context ? Context->menu : NULL, buf->data, MUTT_PC_FULL_MSG, err);
       mutt_buffer_pool_release(&buf);
       if (!tmp->color_pattern)
       {
