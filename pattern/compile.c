@@ -897,12 +897,15 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   /* Special case for a bare 0. */
   if ((kind == RANGE_K_BARE) && (pat->min == 0) && (pat->max == 0))
   {
-    if (!menu)
+    if (!m || !menu)
     {
       mutt_buffer_strcpy(err, _("No current message"));
       return RANGE_E_CTX;
     }
     struct Email *e = mutt_get_virt_email(m, menu->current);
+    if (!e)
+      return RANGE_E_CTX;
+
     pat->max = EMSG(e);
     pat->min = pat->max;
   }
@@ -929,9 +932,9 @@ static bool eat_message_range(struct Pattern *pat, PatternCompFlags flags,
                               struct Buffer *s, struct Buffer *err,
                               struct Mailbox *m, struct Menu *menu)
 {
-  if (!menu)
+  if (!m || !menu)
   {
-    // We need a Context for pretty much anything
+    // We need these for pretty much anything
     mutt_buffer_strcpy(err, _("No Context"));
     return false;
   }

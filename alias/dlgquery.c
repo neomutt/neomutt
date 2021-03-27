@@ -516,8 +516,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
       case OP_SEARCH:
-        menu->current =
-            mutt_search_alias_command(ctx_mailbox(Context), menu, menu->current, op);
+        menu->current = mutt_search_alias_command(menu, menu->current, op);
         if (menu->current == -1)
           menu->current = menu->oldcurrent;
         else
@@ -526,9 +525,8 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
 
       case OP_MAIN_LIMIT:
       {
-        int result =
-            mutt_pattern_alias_func(MUTT_LIMIT, _("Limit to messages matching: "),
-                                    _("Query"), &mdata, ctx_mailbox(Context), menu);
+        int result = mutt_pattern_alias_func(
+            MUTT_LIMIT, _("Limit to messages matching: "), _("Query"), &mdata, menu);
 
         if (result == 0)
         {
