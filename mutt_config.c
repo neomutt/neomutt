@@ -52,7 +52,7 @@
 /**
  * SortAuxMethods - Sort methods for '$sort_aux' for the index
  */
-const struct Mapping SortAuxMethods[] = {
+static const struct Mapping SortAuxMethods[] = {
   // clang-format off
   { "date",          SORT_DATE },
   { "date-sent",     SORT_DATE },
@@ -161,7 +161,7 @@ int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   return CSR_ERR_INVALID;
 }
 
-struct ConfigDef MainVars[] = {
+static struct ConfigDef MainVars[] = {
   // clang-format off
   { "abort_backspace", DT_BOOL, true, 0, NULL,
     "Hitting backspace against an empty prompt aborts the prompt"

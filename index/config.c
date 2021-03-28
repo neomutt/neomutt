@@ -31,7 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
-struct ConfigDef IndexVars[] = {
+static struct ConfigDef IndexVars[] = {
   // clang-format off
   { "change_folder_next", DT_BOOL, false, 0, NULL,
     "Suggest the next folder, rather than the first when using '<change-folder>'"

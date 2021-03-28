@@ -80,7 +80,7 @@ static int smtp_auth_validator(const struct ConfigSet *cs, const struct ConfigDe
   return CSR_SUCCESS;
 }
 
-struct ConfigDef SendVars[] = {
+static struct ConfigDef SendVars[] = {
   // clang-format off
   { "abort_noattach", DT_QUAD, MUTT_NO, 0, NULL,
     "Abort sending the email if attachments are missing"

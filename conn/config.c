@@ -31,7 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
-struct ConfigDef ConnVars[] = {
+static struct ConfigDef ConnVars[] = {
 // clang-format off
 #ifdef USE_SSL
   { "certificate_file", DT_PATH|DT_PATH_FILE, IP "~/.mutt_certificates", 0, NULL,

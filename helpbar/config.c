@@ -31,7 +31,7 @@
 #include <stdbool.h>
 #include "config/lib.h"
 
-struct ConfigDef HelpbarVars[] = {
+static struct ConfigDef HelpbarVars[] = {
   // clang-format off
   { "help", DT_BOOL|R_REFLOW, true, 0, NULL,
     "Display a help line with common key bindings"

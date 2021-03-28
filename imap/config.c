@@ -62,7 +62,7 @@ static int imap_auth_validator(const struct ConfigSet *cs, const struct ConfigDe
   return CSR_SUCCESS;
 }
 
-struct ConfigDef ImapVars[] = {
+static struct ConfigDef ImapVars[] = {
   // clang-format off
   { "imap_check_subscribed", DT_BOOL, false, 0, NULL,
     "(imap) When opening a mailbox, ask the server for a list of subscribed folders"

@@ -31,7 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
-struct ConfigDef NntpVars[] = {
+static struct ConfigDef NntpVars[] = {
   // clang-format off
   { "catchup_newsgroup", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "(nntp) Mark all articles as read when leaving a newsgroup"

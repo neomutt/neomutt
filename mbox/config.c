@@ -31,7 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
-struct ConfigDef MboxVars[] = {
+static struct ConfigDef MboxVars[] = {
   // clang-format off
   { "check_mbox_size", DT_BOOL, false, 0, NULL,
     "(mbox,mmdf) Use mailbox size as an indicator of new mail"

@@ -246,7 +246,7 @@ static const struct Mapping ComposeNewsHelp[] = {
 #endif
 
 #ifdef USE_AUTOCRYPT
-static const char *AutocryptRecUiFlags[] = {
+static const char *const AutocryptRecUiFlags[] = {
   /* L10N: Autocrypt recommendation flag: off.
    * This is displayed when Autocrypt is turned off. */
   N_("Off"),

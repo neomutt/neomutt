@@ -44,7 +44,7 @@ const struct Mapping SortAliasMethods[] = {
   // clang-format on
 };
 
-struct ConfigDef AliasVars[] = {
+static struct ConfigDef AliasVars[] = {
   // clang-format off
   { "alias_file", DT_PATH|DT_PATH_FILE, IP "~/.neomuttrc", 0, NULL,
     "Save new aliases to this file"
