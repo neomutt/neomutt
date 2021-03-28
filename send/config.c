@@ -262,7 +262,7 @@ static struct ConfigDef SendVars[] = {
   },
 #ifdef USE_SMTP
   { "smtp_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, smtp_auth_validator,
-    "(smtp) List of allowed authentication methods"
+    "(smtp) List of allowed authentication methods (colon-separated)"
   },
   { "smtp_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, 0, 0, NULL,
     "(smtp) External command to generate OAUTH refresh token"

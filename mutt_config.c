@@ -329,7 +329,7 @@ static struct ConfigDef MainVars[] = {
     "Include the message headers in the reply email (Weed applies)"
   },
   { "hidden_tags", DT_SLIST|SLIST_SEP_COMMA, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted", 0, NULL,
-    "Tags that shouldn't be displayed on screen"
+    "List of tags that shouldn't be displayed on screen (comma-separated)"
   },
   { "hide_limited", DT_BOOL|R_TREE|R_INDEX, false, 0, NULL,
     "Don't indicate hidden messages, in the thread tree"
@@ -391,7 +391,7 @@ static struct ConfigDef MainVars[] = {
     "How often to check for new mail"
   },
   { "mailcap_path", DT_SLIST|SLIST_SEP_COLON, IP "~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap", 0, NULL,
-    "Colon-separated list of mailcap files"
+    "List of mailcap files (colon-separated)"
   },
   { "mailcap_sanitize", DT_BOOL, true, 0, NULL,
     "Restrict the possible characters in mailcap expandos"
@@ -480,7 +480,7 @@ static struct ConfigDef MainVars[] = {
     "Folder to store postponed messages"
   },
   { "preferred_languages", DT_SLIST|SLIST_SEP_COMMA, 0, 0, NULL,
-    "Preferred languages for multilingual MIME"
+    "List of Preferred Languages for multilingual MIME (comma-separated)"
   },
   { "print", DT_QUAD, MUTT_ASKNO, 0, NULL,
     "Confirm before printing a message"

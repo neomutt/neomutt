@@ -1572,8 +1572,8 @@
 { "hidden_tags", DT_SLIST, "unread,draft,flagged,passed,replied,attachment,signed,encrypted" },
 /*
 ** .pp
-** This variable specifies private notmuch/imap tags which should not be printed
-** on screen.
+** This variable specifies a list of comma-separated private notmuch/imap tags
+** which should not be printed on screen.
 */
 
 { "hide_limited", DT_BOOL, false },
@@ -1708,7 +1708,7 @@
 { "imap_authenticators", DT_SLIST, 0 },
 /*
 ** .pp
-** This is a colon-delimited list of authentication methods NeoMutt may
+** This is a colon-separated list of authentication methods NeoMutt may
 ** attempt to use to log in to an IMAP server, in the order NeoMutt should
 ** try them.  Authentication methods are either "login" or the right
 ** side of an IMAP "AUTH=xxx" capability string, e.g. "digest-md5", "gssapi"
@@ -2175,9 +2175,10 @@
 { "mailcap_path", DT_SLIST, "~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap" },
 /*
 ** .pp
-** This variable specifies which files to consult when attempting to
-** display MIME bodies not directly supported by NeoMutt.  The default value
-** is generated during startup: see the "$mailcap" section of the manual.
+** This variable specifies a list of colon-separated files to consult when
+** attempting to display MIME bodies not directly supported by NeoMutt.  The
+** default value is generated during startup: see the "$mailcap" section of the
+** manual.
 ** .pp
 ** $$mailcap_path is overridden by the environment variable \fC$$$MAILCAPS\fP.
 ** .pp
@@ -3296,7 +3297,7 @@
 { "pop_authenticators", DT_SLIST, 0 },
 /*
 ** .pp
-** This is a colon-delimited list of authentication methods NeoMutt may
+** This is a colon-separated list of authentication methods NeoMutt may
 ** attempt to use to log in to an POP server, in the order NeoMutt should
 ** try them.  Authentication methods are either "user", "apop" or any
 ** SASL mechanism, e.g. "digest-md5", "gssapi" or "cram-md5".
@@ -3463,8 +3464,12 @@
 { "preferred_languages", DT_SLIST, 0 },
 /*
 ** .pp
-** RFC8255 : user preferred languages to be search in parts and display
-** Ex. : set preferred_languages="en,fr,de"
+** This variable specifies a list of comma-separated languages.
+** RFC8255 : user preferred languages to be searched in parts and display.
+** Example:
+** .ts
+** set preferred_languages="en,fr,de"
+** .te
 */
 
 { "print", DT_QUAD, MUTT_ASKNO },
@@ -4548,7 +4553,7 @@
 { "smtp_authenticators", DT_SLIST, 0 },
 /*
 ** .pp
-** This is a colon-delimited list of authentication methods NeoMutt may
+** This is a colon-separated list of authentication methods NeoMutt may
 ** attempt to use to log in to an SMTP server, in the order NeoMutt should
 ** try them.  Authentication methods are any SASL mechanism, e.g. "plain",
 ** "digest-md5", "gssapi" or "cram-md5".

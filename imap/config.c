@@ -76,7 +76,7 @@ static struct ConfigDef ImapVars[] = {
   },
 #endif
   { "imap_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, imap_auth_validator,
-    "(imap) List of allowed IMAP authentication methods"
+    "(imap) List of allowed IMAP authentication methods (colon-separated)"
   },
   { "imap_delim_chars", DT_STRING, IP "/.", 0, NULL,
     "(imap) Characters that denote separators in IMAP folders"
