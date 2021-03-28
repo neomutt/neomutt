@@ -37,6 +37,5 @@ extern struct RegexList UnSubscribedLists;  ///< List of regexes to blacklist fa
 extern struct RegexList MailLists;          ///< List of regexes to match mailing lists
 extern struct RegexList UnMailLists;        ///< List of regexes to blacklist false matches in MailLists
 extern struct RegexList SubscribedLists;    ///< List of regexes to match subscribed mailing lists
-extern struct ReplaceList SubjectRegexList; ///< List of regexes to tidy the view of the email's subject
 
 #endif /* MUTT_EMAIL_GLOBALS_H */

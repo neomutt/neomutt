@@ -55,6 +55,7 @@
 #include "mx.h"
 #include "myvar.h"
 #include "options.h"
+#include "subjectrx.h"
 #include "version.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -75,32 +76,6 @@ enum GroupState
   GS_RX,   ///< Entry is a regular expression
   GS_ADDR, ///< Entry is an address
 };
-
-/**
- * parse_unreplace_list - Remove a string replacement rule - Implements Command::parse()
- */
-static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
-                                               struct ReplaceList *list, struct Buffer *err)
-{
-  /* First token is a regex. */
-  if (!MoreArgs(s))
-  {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "unsubjectrx");
-    return MUTT_CMD_WARNING;
-  }
-
-  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-
-  /* "*" is a special case. */
-  if (mutt_str_equal(buf->data, "*"))
-  {
-    mutt_replacelist_free(list);
-    return MUTT_CMD_SUCCESS;
-  }
-
-  mutt_replacelist_remove(list, buf->data);
-  return MUTT_CMD_SUCCESS;
-}
 
 /**
  * attachments_clean - always wise to do what someone else did before
@@ -180,58 +155,6 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
 
   FREE(&tmp);
   attachments_clean();
-  return MUTT_CMD_SUCCESS;
-}
-
-/**
- * clear_subject_mods - Clear out all modified email subjects
- */
-static void clear_subject_mods(void)
-{
-  struct Mailbox *m = ctx_mailbox(Context);
-  if (!m)
-    return;
-
-  for (int i = 0; i < m->msg_count; i++)
-  {
-    struct Email *e = m->emails[i];
-    if (!e || !e->env)
-      continue;
-    FREE(&e->env->disp_subj);
-  }
-}
-
-/**
- * parse_replace_list - Parse a string replacement rule - Implements Command::parse()
- */
-static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *s,
-                                             struct ReplaceList *list, struct Buffer *err)
-{
-  struct Buffer templ = mutt_buffer_make(0);
-
-  /* First token is a regex. */
-  if (!MoreArgs(s))
-  {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
-    return MUTT_CMD_WARNING;
-  }
-  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-
-  /* Second token is a replacement template */
-  if (!MoreArgs(s))
-  {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
-    return MUTT_CMD_WARNING;
-  }
-  mutt_extract_token(&templ, s, MUTT_TOKEN_NO_FLAGS);
-
-  if (mutt_replacelist_add(list, buf->data, templ.data, err) != 0)
-  {
-    FREE(&templ.data);
-    return MUTT_CMD_ERROR;
-  }
-  FREE(&templ.data);
-
   return MUTT_CMD_SUCCESS;
 }
 
@@ -1630,20 +1553,6 @@ enum CommandResult parse_stailq(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_subjectrx_list - Parse the 'subjectrx' command - Implements Command::parse()
- */
-enum CommandResult parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
-                                        intptr_t data, struct Buffer *err)
-{
-  enum CommandResult rc;
-
-  rc = parse_replace_list(buf, s, &SubjectRegexList, err);
-  if (rc == MUTT_CMD_SUCCESS)
-    clear_subject_mods();
-  return rc;
-}
-
-/**
  * parse_subscribe - Parse the 'subscribe' command - Implements Command::parse()
  */
 enum CommandResult parse_subscribe(struct Buffer *buf, struct Buffer *s,
@@ -2063,20 +1972,6 @@ enum CommandResult parse_unstailq(struct Buffer *buf, struct Buffer *s,
   } while (MoreArgs(s));
 
   return MUTT_CMD_SUCCESS;
-}
-
-/**
- * parse_unsubjectrx_list - Parse the 'unsubjectrx' command - Implements Command::parse()
- */
-enum CommandResult parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
-                                          intptr_t data, struct Buffer *err)
-{
-  enum CommandResult rc;
-
-  rc = parse_unreplace_list(buf, s, &SubjectRegexList, err);
-  if (rc == MUTT_CMD_SUCCESS)
-    clear_subject_mods();
-  return rc;
 }
 
 /**

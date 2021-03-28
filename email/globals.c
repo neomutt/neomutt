@@ -40,4 +40,3 @@ struct RegexList UnSubscribedLists = STAILQ_HEAD_INITIALIZER(UnSubscribedLists);
 struct RegexList MailLists = STAILQ_HEAD_INITIALIZER(MailLists);
 struct RegexList UnMailLists = STAILQ_HEAD_INITIALIZER(UnMailLists);
 struct RegexList SubscribedLists = STAILQ_HEAD_INITIALIZER(SubscribedLists);
-struct ReplaceList SubjectRegexList = STAILQ_HEAD_INITIALIZER(SubjectRegexList);

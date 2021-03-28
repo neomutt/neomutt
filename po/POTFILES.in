@@ -278,6 +278,7 @@ store/rocksdb.c
 store/store.c
 store/tc.c
 store/tdb.c
+subjectrx.c
 system.c
 version.c
 wcscasecmp.c

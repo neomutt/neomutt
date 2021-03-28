@@ -75,6 +75,7 @@
 #include "myvar.h"
 #include "options.h"
 #include "protos.h"
+#include "subjectrx.h"
 #include "version.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -572,6 +573,7 @@ int main(int argc, char *argv[], char *envp[])
 
   NeoMutt = neomutt_new(cs);
   init_config(cs);
+  subjrx_init();
 
 #ifdef USE_DEBUG_NOTIFY
   notify_observer_add(NeoMutt->notify, NT_ALL, debug_notify_observer, NULL);
@@ -1295,6 +1297,7 @@ main_exit:
   mutt_commands_cleanup();
   crypt_cleanup();
   mutt_opts_free();
+  subjrx_free();
   mutt_keys_free();
   myvarlist_free(&MyVars);
   mutt_prex_free();

@@ -684,7 +684,6 @@ void mutt_opts_free(void)
   FREE(&Username);
 
   mutt_replacelist_free(&SpamList);
-  mutt_replacelist_free(&SubjectRegexList);
 
   mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
 
