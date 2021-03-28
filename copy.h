@@ -78,6 +78,6 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out, CopyHeaderFlags
 int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in,       struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags, int wraplen);
 int mutt_copy_message   (FILE *fp_out, struct Mailbox *m, struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags, int wraplen);
 
-int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
+int mutt_append_message(struct Mailbox *m_dst, struct Mailbox *m_src, struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
 
 #endif /* MUTT_COPY_H */

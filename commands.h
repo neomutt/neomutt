@@ -64,7 +64,7 @@ void mutt_enter_command(void);
 void mutt_pipe_message(struct Mailbox *m, struct EmailList *el);
 void mutt_print_message(struct Mailbox *m, struct EmailList *el);
 int  mutt_save_message(struct Mailbox *m, struct EmailList *el, enum MessageSaveOpt, enum MessageTransformOpt transform_opt);
-int  mutt_save_message_ctx(struct Email *e, enum MessageSaveOpt, enum MessageTransformOpt transform_opt, struct Mailbox *m);
+int mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSaveOpt save_opt, enum MessageTransformOpt transform_opt, struct Mailbox *m_dst);
 bool mutt_select_sort(bool reverse);
 bool mutt_shell_escape(void);
 

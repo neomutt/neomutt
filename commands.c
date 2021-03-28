@@ -1016,15 +1016,16 @@ static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_o
 
 /**
  * mutt_save_message_ctx - Save a message to a given mailbox
+ * @param m_src            Mailbox to copy from
  * @param e                Email
  * @param save_opt         Copy or move, e.g. #SAVE_MOVE
  * @param transform_opt    Transformation, e.g. #TRANSFORM_DECRYPT
- * @param m                Mailbox to save to
+ * @param m_dst            Mailbox to save to
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_message_ctx(struct Email *e, enum MessageSaveOpt save_opt,
-                          enum MessageTransformOpt transform_opt, struct Mailbox *m)
+int mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSaveOpt save_opt,
+                          enum MessageTransformOpt transform_opt, struct Mailbox *m_dst)
 {
   CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
   CopyHeaderFlags chflags = CH_NO_FLAGS;
@@ -1033,19 +1034,19 @@ int mutt_save_message_ctx(struct Email *e, enum MessageSaveOpt save_opt,
   set_copy_flags(e, transform_opt, &cmflags, &chflags);
 
   if (transform_opt != TRANSFORM_NONE)
-    mutt_parse_mime_message(Context->mailbox, e);
+    mutt_parse_mime_message(m_src, e);
 
-  rc = mutt_append_message(m, Context->mailbox, e, cmflags, chflags);
+  rc = mutt_append_message(m_dst, m_src, e, cmflags, chflags);
   if (rc != 0)
     return rc;
 
   if (save_opt == SAVE_MOVE)
   {
-    mutt_set_flag(Context->mailbox, e, MUTT_DELETE, true);
-    mutt_set_flag(Context->mailbox, e, MUTT_PURGE, true);
+    mutt_set_flag(m_src, e, MUTT_DELETE, true);
+    mutt_set_flag(m_src, e, MUTT_PURGE, true);
     const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
     if (c_delete_untag)
-      mutt_set_flag(Context->mailbox, e, MUTT_TAG, false);
+      mutt_set_flag(m_src, e, MUTT_TAG, false);
   }
 
   return 0;
@@ -1223,7 +1224,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
   if (msg_count == 1)
   {
-    rc = mutt_save_message_ctx(en->email, save_opt, transform_opt, ctx_save->mailbox);
+    rc = mutt_save_message_ctx(m, en->email, save_opt, transform_opt, ctx_save->mailbox);
     if (rc != 0)
     {
       mx_mbox_close(&ctx_save);
@@ -1258,7 +1259,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     {
       mutt_progress_update(&progress, ++tagged_progress_count, -1);
       mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-      rc = mutt_save_message_ctx(en->email, save_opt, transform_opt, ctx_save->mailbox);
+      rc = mutt_save_message_ctx(m, en->email, save_opt, transform_opt, ctx_save->mailbox);
       if (rc != 0)
         break;
 #ifdef USE_COMP_MBOX
