@@ -2963,7 +2963,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_SORT_REVERSE:
         if (!assert_pager_mode(IsEmail(extra)))
           break;
-        if (mutt_select_sort((ch == OP_SORT_REVERSE)) == 0)
+        if (mutt_select_sort(ch == OP_SORT_REVERSE))
         {
           OptNeedResort = true;
           ch = -1;

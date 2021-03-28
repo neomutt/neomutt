@@ -787,10 +787,9 @@ void mutt_print_message(struct Mailbox *m, struct EmailList *el)
  * @param reverse If true make it a reverse sort
  * @retval num Sort type, see #SortType
  */
-int mutt_select_sort(bool reverse)
+bool mutt_select_sort(bool reverse)
 {
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  enum SortType new_sort = c_sort;
+  enum SortType sort = SORT_DATE;
 
   switch (mutt_multi_choice(reverse ?
                                 /* L10N: The highlighted letters must match the "Sort" options */
@@ -808,54 +807,55 @@ int mutt_select_sort(bool reverse)
       return -1;
 
     case 1: /* (d)ate */
-      new_sort = SORT_DATE;
+      sort = SORT_DATE;
       break;
 
     case 2: /* (f)rm */
-      new_sort = SORT_FROM;
+      sort = SORT_FROM;
       break;
 
     case 3: /* (r)ecv */
-      new_sort = SORT_RECEIVED;
+      sort = SORT_RECEIVED;
       break;
 
     case 4: /* (s)ubj */
-      new_sort = SORT_SUBJECT;
+      sort = SORT_SUBJECT;
       break;
 
     case 5: /* t(o) */
-      new_sort = SORT_TO;
+      sort = SORT_TO;
       break;
 
     case 6: /* (t)hread */
-      new_sort = SORT_THREADS;
+      sort = SORT_THREADS;
       break;
 
     case 7: /* (u)nsort */
-      new_sort = SORT_ORDER;
+      sort = SORT_ORDER;
       break;
 
     case 8: /* si(z)e */
-      new_sort = SORT_SIZE;
+      sort = SORT_SIZE;
       break;
 
     case 9: /* s(c)ore */
-      new_sort = SORT_SCORE;
+      sort = SORT_SCORE;
       break;
 
     case 10: /* s(p)am */
-      new_sort = SORT_SPAM;
+      sort = SORT_SPAM;
       break;
 
     case 11: /* (l)abel */
-      new_sort = SORT_LABEL;
+      sort = SORT_LABEL;
       break;
   }
   if (reverse)
-    new_sort |= SORT_REVERSE;
+    sort |= SORT_REVERSE;
 
-  cs_subset_str_native_set(NeoMutt->sub, "sort", new_sort, NULL);
-  return (new_sort != c_sort) ? 0 : -1; /* no need to resort if it's the same */
+  int rc = cs_subset_str_native_set(NeoMutt->sub, "sort", sort, NULL);
+
+  return ((CSR_RESULT(rc) == CSR_SUCCESS) && !(rc & CSR_SUC_NO_CHANGE));
 }
 
 /**
