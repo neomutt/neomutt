@@ -97,24 +97,6 @@ static bool is_function(const char *name)
 }
 
 /**
- * alternates_clean - Clear the recipient valid flag of all emails
- */
-static void alternates_clean(void)
-{
-  struct Mailbox *m = ctx_mailbox(Context);
-  if (!m)
-    return;
-
-  for (int i = 0; i < m->msg_count; i++)
-  {
-    struct Email *e = m->emails[i];
-    if (!e)
-      break;
-    e->recip_valid = false;
-  }
-}
-
-/**
  * parse_grouplist - Parse a group context
  * @param gl   GroupList to add to
  * @param buf  Temporary Buffer space
@@ -296,40 +278,6 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   mutt_buffer_pool_release(&token);
   mutt_buffer_pool_release(&linebuf);
   return rc;
-}
-
-/**
- * parse_alternates - Parse the 'alternates' command - Implements Command::parse()
- */
-enum CommandResult parse_alternates(struct Buffer *buf, struct Buffer *s,
-                                    intptr_t data, struct Buffer *err)
-{
-  struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
-
-  alternates_clean();
-
-  do
-  {
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-
-    if (parse_grouplist(&gl, buf, s, err) == -1)
-      goto bail;
-
-    mutt_regexlist_remove(&UnAlternates, buf->data);
-
-    if (mutt_regexlist_add(&Alternates, buf->data, REG_ICASE, err) != 0)
-      goto bail;
-
-    if (mutt_grouplist_add_regex(&gl, buf->data, REG_ICASE, err) != 0)
-      goto bail;
-  } while (MoreArgs(s));
-
-  mutt_grouplist_destroy(&gl);
-  return MUTT_CMD_SUCCESS;
-
-bail:
-  mutt_grouplist_destroy(&gl);
-  return MUTT_CMD_ERROR;
 }
 
 /**
@@ -1461,29 +1409,6 @@ enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
 
     mutt_hash_insert(TagTransforms, tag, transform);
   }
-  return MUTT_CMD_SUCCESS;
-}
-
-/**
- * parse_unalternates - Parse the 'unalternates' command - Implements Command::parse()
- */
-enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
-                                      intptr_t data, struct Buffer *err)
-{
-  alternates_clean();
-  do
-  {
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-    mutt_regexlist_remove(&Alternates, buf->data);
-
-    if (!mutt_str_equal(buf->data, "*") &&
-        (mutt_regexlist_add(&UnAlternates, buf->data, REG_ICASE, err) != 0))
-    {
-      return MUTT_CMD_ERROR;
-    }
-
-  } while (MoreArgs(s));
-
   return MUTT_CMD_SUCCESS;
 }
 

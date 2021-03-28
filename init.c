@@ -646,11 +646,9 @@ void mutt_opts_free(void)
   sb_shutdown();
 #endif
 
-  mutt_regexlist_free(&Alternates);
   mutt_regexlist_free(&MailLists);
   mutt_regexlist_free(&NoSpamList);
   mutt_regexlist_free(&SubscribedLists);
-  mutt_regexlist_free(&UnAlternates);
   mutt_regexlist_free(&UnMailLists);
   mutt_regexlist_free(&UnSubscribedLists);
 

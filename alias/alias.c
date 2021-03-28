@@ -47,6 +47,7 @@
 #include "alias.h"
 #include "lib.h"
 #include "send/lib.h"
+#include "alternates.h"
 #include "maillist.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
@@ -600,14 +601,8 @@ bool mutt_addr_is_user(const struct Address *addr)
     return true;
   }
 
-  if (mutt_regexlist_match(&Alternates, addr->mailbox))
-  {
-    mutt_debug(LL_DEBUG5, "yes, %s matched by alternates\n", addr->mailbox);
-    if (mutt_regexlist_match(&UnAlternates, addr->mailbox))
-      mutt_debug(LL_DEBUG5, "but, %s matched by unalternates\n", addr->mailbox);
-    else
-      return true;
-  }
+  if (mutt_alternates_match(addr->mailbox))
+    return true;
 
   mutt_debug(LL_DEBUG5, "no, all failed\n");
   return false;

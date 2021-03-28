@@ -67,9 +67,6 @@ WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));          
 WHERE struct ListHead TempAttachmentsList INITVAL(STAILQ_HEAD_INITIALIZER(TempAttachmentsList));   ///< List of temporary files for displaying attachments
 WHERE struct ListHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));                     ///< List of custom headers to add to outgoing emails
 
-WHERE struct RegexList Alternates INITVAL(STAILQ_HEAD_INITIALIZER(Alternates));               ///< List of regexes to match the user's alternate email addresses
-WHERE struct RegexList UnAlternates INITVAL(STAILQ_HEAD_INITIALIZER(UnAlternates));           ///< List of regexes to blacklist false matches in Alternates
-
 /* flags for received signals */
 WHERE SIG_ATOMIC_VOLATILE_T SigInt;   ///< true after SIGINT is received
 WHERE SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received

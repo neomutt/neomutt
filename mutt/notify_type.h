@@ -33,6 +33,7 @@ enum NotifyType
   NT_ALL = 0, ///< Register for all notifications
   NT_ACCOUNT, ///< Account has changed,         #NotifyAccount, #EventAccount
   NT_ALIAS,   ///< Alias has changed,           #NotifyAlias,   #EventAlias
+  NT_ALTERN,  ///< Alternates command changed,  #NotifyAlternates
   NT_ATTACH,  ///< Attachment command changed,  #NotifyAttach
   NT_BINDING, ///< Key binding has changed,     #NotifyBinding, #EventBinding
   NT_COLOR,   ///< Colour has changed,          #ColorId,       #EventColor
