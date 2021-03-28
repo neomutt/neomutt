@@ -84,11 +84,10 @@ const char *nm_query_type_to_string(enum NmQueryType query_type)
 
 /**
  * nm_string_to_query_type - Lookup a query type
- *
- * If there's an unknown query type, default to NM_QUERY_TYPE_MESGS.
- *
  * @param str String to lookup
  * @retval num Query type, e.g. #NM_QUERY_TYPE_MESGS
+ *
+ * If there's an unknown query type, default to NM_QUERY_TYPE_MESGS.
  */
 enum NmQueryType nm_string_to_query_type(const char *str)
 {
