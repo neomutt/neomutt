@@ -50,12 +50,10 @@
 #include "monitor.h"
 #include "mutt_commands.h"
 #include "mutt_globals.h"
-#include "mutt_parse.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "myvar.h"
 #include "options.h"
-#include "subjectrx.h"
 #include "version.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -78,87 +76,6 @@ enum GroupState
 };
 
 /**
- * attachments_clean - always wise to do what someone else did before
- */
-static void attachments_clean(void)
-{
-  struct Mailbox *m = ctx_mailbox(Context);
-  if (!m)
-    return;
-
-  for (int i = 0; i < m->msg_count; i++)
-  {
-    struct Email *e = m->emails[i];
-    if (!e)
-      break;
-    e->attach_valid = false;
-  }
-}
-
-/**
- * parse_unattach_list - Parse the "unattachments" command
- * @param buf  Buffer for temporary storage
- * @param s    Buffer containing the unattachments command
- * @param head List of AttachMatch to remove from
- * @param err  Buffer for error messages
- * @retval #MUTT_CMD_SUCCESS Always
- */
-static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer *s,
-                                              struct ListHead *head, struct Buffer *err)
-{
-  struct AttachMatch *a = NULL;
-  char *tmp = NULL;
-  char *minor = NULL;
-
-  do
-  {
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-    FREE(&tmp);
-
-    if (mutt_istr_equal(buf->data, "any"))
-      tmp = mutt_str_dup("*/.*");
-    else if (mutt_istr_equal(buf->data, "none"))
-      tmp = mutt_str_dup("cheap_hack/this_should_never_match");
-    else
-      tmp = mutt_str_dup(buf->data);
-
-    minor = strchr(tmp, '/');
-    if (minor)
-    {
-      *minor = '\0';
-      minor++;
-    }
-    else
-    {
-      minor = "unknown";
-    }
-    const enum ContentType major = mutt_check_mime_type(tmp);
-
-    struct ListNode *np = NULL, *tmp2 = NULL;
-    STAILQ_FOREACH_SAFE(np, head, entries, tmp2)
-    {
-      a = (struct AttachMatch *) np->data;
-      mutt_debug(LL_DEBUG3, "check %s/%s [%d] : %s/%s [%d]\n", a->major,
-                 a->minor, a->major_int, tmp, minor, major);
-      if ((a->major_int == major) && mutt_istr_equal(minor, a->minor))
-      {
-        mutt_debug(LL_DEBUG3, "removed %s/%s [%d]\n", a->major, a->minor, a->major_int);
-        regfree(&a->minor_regex);
-        FREE(&a->major);
-        STAILQ_REMOVE(head, np, ListNode, entries);
-        FREE(&np->data);
-        FREE(&np);
-      }
-    }
-
-  } while (MoreArgs(s));
-
-  FREE(&tmp);
-  attachments_clean();
-  return MUTT_CMD_SUCCESS;
-}
-
-/**
  * is_function - Is the argument a neomutt function?
  * @param name  Command name to be searched for
  * @retval true  Function found
@@ -177,110 +94,6 @@ static bool is_function(const char *name)
         return true;
   }
   return false;
-}
-
-/**
- * mutt_attachmatch_new - Create a new AttachMatch
- * @retval ptr New AttachMatch
- */
-static struct AttachMatch *mutt_attachmatch_new(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct AttachMatch));
-}
-
-/**
- * parse_attach_list - Parse the "attachments" command
- * @param buf  Buffer for temporary storage
- * @param s    Buffer containing the attachments command
- * @param head List of AttachMatch to add to
- * @param err  Buffer for error messages
- * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
- */
-static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s,
-                                            struct ListHead *head, struct Buffer *err)
-{
-  struct AttachMatch *a = NULL;
-  char *p = NULL;
-  char *tmpminor = NULL;
-  size_t len;
-  int ret;
-
-  do
-  {
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-
-    if (!buf->data || (*buf->data == '\0'))
-      continue;
-
-    a = mutt_attachmatch_new();
-
-    /* some cheap hacks that I expect to remove */
-    if (mutt_istr_equal(buf->data, "any"))
-      a->major = mutt_str_dup("*/.*");
-    else if (mutt_istr_equal(buf->data, "none"))
-      a->major = mutt_str_dup("cheap_hack/this_should_never_match");
-    else
-      a->major = mutt_str_dup(buf->data);
-
-    p = strchr(a->major, '/');
-    if (p)
-    {
-      *p = '\0';
-      p++;
-      a->minor = p;
-    }
-    else
-    {
-      a->minor = "unknown";
-    }
-
-    len = strlen(a->minor);
-    tmpminor = mutt_mem_malloc(len + 3);
-    strcpy(&tmpminor[1], a->minor);
-    tmpminor[0] = '^';
-    tmpminor[len + 1] = '$';
-    tmpminor[len + 2] = '\0';
-
-    a->major_int = mutt_check_mime_type(a->major);
-    ret = REG_COMP(&a->minor_regex, tmpminor, REG_ICASE);
-
-    FREE(&tmpminor);
-
-    if (ret != 0)
-    {
-      regerror(ret, &a->minor_regex, err->data, err->dsize);
-      FREE(&a->major);
-      FREE(&a);
-      return MUTT_CMD_ERROR;
-    }
-
-    mutt_debug(LL_DEBUG3, "added %s/%s [%d]\n", a->major, a->minor, a->major_int);
-
-    mutt_list_insert_tail(head, (char *) a);
-  } while (MoreArgs(s));
-
-  attachments_clean();
-  return MUTT_CMD_SUCCESS;
-}
-
-/**
- * print_attach_list - Print a list of attachments
- * @param h    List of attachments
- * @param op   Operation, e.g. '+', '-'
- * @param name Attached/Inline, 'A', 'I'
- * @retval 0 Always
- */
-static int print_attach_list(struct ListHead *h, const char op, const char *name)
-{
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, h, entries)
-  {
-    printf("attachments %c%s %s/%s\n", op, name,
-           ((struct AttachMatch *) np->data)->major,
-           ((struct AttachMatch *) np->data)->minor);
-  }
-
-  return 0;
 }
 
 /**
@@ -517,67 +330,6 @@ enum CommandResult parse_alternates(struct Buffer *buf, struct Buffer *s,
 bail:
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
-}
-
-/**
- * parse_attachments - Parse the 'attachments' command - Implements Command::parse()
- */
-enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s,
-                                     intptr_t data, struct Buffer *err)
-{
-  char op;
-  char *category = NULL;
-  struct ListHead *head = NULL;
-
-  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-  if (!buf->data || (*buf->data == '\0'))
-  {
-    mutt_buffer_strcpy(err, _("attachments: no disposition"));
-    return MUTT_CMD_WARNING;
-  }
-
-  category = buf->data;
-  op = *category++;
-
-  if (op == '?')
-  {
-    mutt_endwin();
-    fflush(stdout);
-    printf("\n%s\n\n", _("Current attachments settings:"));
-    print_attach_list(&AttachAllow, '+', "A");
-    print_attach_list(&AttachExclude, '-', "A");
-    print_attach_list(&InlineAllow, '+', "I");
-    print_attach_list(&InlineExclude, '-', "I");
-    mutt_any_key_to_continue(NULL);
-    return MUTT_CMD_SUCCESS;
-  }
-
-  if ((op != '+') && (op != '-'))
-  {
-    op = '+';
-    category--;
-  }
-  if (mutt_istr_startswith("attachment", category))
-  {
-    if (op == '+')
-      head = &AttachAllow;
-    else
-      head = &AttachExclude;
-  }
-  else if (mutt_istr_startswith("inline", category))
-  {
-    if (op == '+')
-      head = &InlineAllow;
-    else
-      head = &InlineExclude;
-  }
-  else
-  {
-    mutt_buffer_strcpy(err, _("attachments: invalid disposition"));
-    return MUTT_CMD_ERROR;
-  }
-
-  return parse_attach_list(buf, s, head, err);
 }
 
 /**
@@ -1733,64 +1485,6 @@ enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
   } while (MoreArgs(s));
 
   return MUTT_CMD_SUCCESS;
-}
-
-/**
- * parse_unattachments - Parse the 'unattachments' command - Implements Command::parse()
- */
-enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
-                                       intptr_t data, struct Buffer *err)
-{
-  char op;
-  char *p = NULL;
-  struct ListHead *head = NULL;
-
-  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-  if (!buf->data || (*buf->data == '\0'))
-  {
-    mutt_buffer_strcpy(err, _("unattachments: no disposition"));
-    return MUTT_CMD_WARNING;
-  }
-
-  p = buf->data;
-  op = *p++;
-
-  if (op == '*')
-  {
-    mutt_list_free_type(&AttachAllow, (list_free_t) mutt_attachmatch_free);
-    mutt_list_free_type(&AttachExclude, (list_free_t) mutt_attachmatch_free);
-    mutt_list_free_type(&InlineAllow, (list_free_t) mutt_attachmatch_free);
-    mutt_list_free_type(&InlineExclude, (list_free_t) mutt_attachmatch_free);
-    attachments_clean();
-    return 0;
-  }
-
-  if ((op != '+') && (op != '-'))
-  {
-    op = '+';
-    p--;
-  }
-  if (mutt_istr_startswith("attachment", p))
-  {
-    if (op == '+')
-      head = &AttachAllow;
-    else
-      head = &AttachExclude;
-  }
-  else if (mutt_istr_startswith("inline", p))
-  {
-    if (op == '+')
-      head = &InlineAllow;
-    else
-      head = &InlineExclude;
-  }
-  else
-  {
-    mutt_buffer_strcpy(err, _("unattachments: invalid disposition"));
-    return MUTT_CMD_ERROR;
-  }
-
-  return parse_unattach_list(buf, s, head, err);
 }
 
 /**

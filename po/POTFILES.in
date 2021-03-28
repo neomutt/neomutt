@@ -10,6 +10,7 @@ alias/dlgquery.c
 alias/gui.c
 alias/reverse.c
 alias/sort.c
+attachments.c
 autocrypt/autocrypt.c
 autocrypt/config.c
 autocrypt/db.c
@@ -184,7 +185,6 @@ mutt_history.c
 mutt_logging.c
 mutt_lua.c
 mutt_mailbox.c
-mutt_parse.c
 mutt_signal.c
 mutt_socket.c
 mutt_thread.c

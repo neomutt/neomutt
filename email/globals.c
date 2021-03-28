@@ -36,6 +36,7 @@ struct ListHead Ignore = STAILQ_HEAD_INITIALIZER(Ignore);
 struct ListHead UnIgnore = STAILQ_HEAD_INITIALIZER(UnIgnore);
 struct ListHead MailToAllow = STAILQ_HEAD_INITIALIZER(MailToAllow);
 struct HashTable *AutoSubscribeCache;
+
 struct RegexList UnSubscribedLists = STAILQ_HEAD_INITIALIZER(UnSubscribedLists);
 struct RegexList MailLists = STAILQ_HEAD_INITIALIZER(MailLists);
 struct RegexList UnMailLists = STAILQ_HEAD_INITIALIZER(UnMailLists);

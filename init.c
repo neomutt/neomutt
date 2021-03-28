@@ -59,8 +59,8 @@
 #ifdef USE_LUA
 #include "mutt_lua.h"
 #endif
+#include "attachments.h"
 #include "mutt_menu.h"
-#include "mutt_parse.h"
 #include "muttlib.h"
 #include "myvar.h"
 #include "options.h"
@@ -668,12 +668,6 @@ void mutt_opts_free(void)
   mutt_list_free(&Muttrc);
   mutt_list_free(&UnIgnore);
   mutt_list_free(&UserHeader);
-
-  /* Lists of AttachMatch */
-  mutt_list_free_type(&AttachAllow, (list_free_t) mutt_attachmatch_free);
-  mutt_list_free_type(&AttachExclude, (list_free_t) mutt_attachmatch_free);
-  mutt_list_free_type(&InlineAllow, (list_free_t) mutt_attachmatch_free);
-  mutt_list_free_type(&InlineExclude, (list_free_t) mutt_attachmatch_free);
 
   mutt_colors_free(&Colors);
 

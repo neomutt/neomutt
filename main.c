@@ -58,6 +58,7 @@
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
+#include "attachments.h"
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
@@ -574,6 +575,7 @@ int main(int argc, char *argv[], char *envp[])
   NeoMutt = neomutt_new(cs);
   init_config(cs);
   subjrx_init();
+  attach_init();
 
 #ifdef USE_DEBUG_NOTIFY
   notify_observer_add(NeoMutt->notify, NT_ALL, debug_notify_observer, NULL);
@@ -1298,6 +1300,7 @@ main_exit:
   crypt_cleanup();
   mutt_opts_free();
   subjrx_free();
+  attach_free();
   mutt_keys_free();
   myvarlist_free(&MyVars);
   mutt_prex_free();
