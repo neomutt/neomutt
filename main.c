@@ -261,8 +261,9 @@ void mutt_exit(int code)
 
 /**
  * usage - Display NeoMutt command line
+ * @retval true Text displayed
  */
-static void usage(void)
+static bool usage(void)
 {
   puts(mutt_make_version());
 
@@ -329,6 +330,9 @@ static void usage(void)
   puts(_("  -z            Open the first or specified (-f) mailbox if it holds any message\n"
          "                or exit immediately with exit code 1 otherwise"));
   // clang-format on
+
+  fflush(stdout);
+  return !ferror(stdout);
 }
 
 /**
@@ -641,9 +645,11 @@ int main(int argc, char *argv[], char *envp[])
           flags |= MUTT_CLI_IGNORE;
           break;
         default:
-          usage();
           OptNoCurses = true;
-          goto main_ok; // TEST03: neomutt -9
+          if (usage())
+            goto main_ok; // TEST03: neomutt -9
+          else
+            goto main_curses;
       }
     }
   }
@@ -657,12 +663,16 @@ int main(int argc, char *argv[], char *envp[])
   if (version > 0)
   {
     log_queue_flush(log_disp_terminal);
+    bool done;
     if (version == 1)
-      print_version(stdout);
+      done = print_version(stdout);
     else
-      print_copyright();
+      done = print_copyright();
     OptNoCurses = true;
-    goto main_ok; // TEST04: neomutt -v
+    if (done)
+      goto main_ok; // TEST04: neomutt -v
+    else
+      goto main_curses;
   }
 
   mutt_str_replace(&Username, mutt_str_getenv("USER"));
@@ -753,6 +763,10 @@ int main(int argc, char *argv[], char *envp[])
     MuttLogger = log_disp_terminal;
     log_queue_flush(log_disp_terminal);
   }
+
+  /* Check to make sure stdout is available in curses mode. */
+  if (!OptNoCurses && !isatty(1))
+    goto main_curses;
 
   /* Always create the mutt_windows because batch mode has some shared code
    * paths that end up referencing them. */
@@ -941,7 +955,7 @@ int main(int argc, char *argv[], char *envp[])
     repeat_error = true;
     goto main_curses;
   }
-  else if (subject || e || sendflags || draft_file || include_file ||
+  else if (subject || e || draft_file || include_file ||
            !STAILQ_EMPTY(&attach) || (optind < argc))
   {
     FILE *fp_in = NULL;
@@ -1233,6 +1247,13 @@ int main(int argc, char *argv[], char *envp[])
 
     if (rv != 0)
       goto main_curses; // TEST36: neomutt -H existing -s test john@example.com -E (cancel sending)
+  }
+  else if (sendflags & SEND_BATCH)
+  {
+    /* This guards against invoking `neomutt < /dev/null` and accidentally
+     * sending an email due to a my_hdr or other setting.  */
+    mutt_error(_("No recipients specified"));
+    goto main_curses;
   }
   else
   {

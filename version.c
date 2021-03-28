@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -394,14 +395,15 @@ static char *rstrip_in_place(char *s)
 /**
  * print_version - Print system and compile info to a file
  * @param fp - file to print to
+ * @retval true Text displayed
  *
  * Print information about the current system NeoMutt is running on.
  * Also print a list of all the compile-time information.
  */
-void print_version(FILE *fp)
+bool print_version(FILE *fp)
 {
   if (!fp)
-    return;
+    return false;
 
   struct utsname uts;
   bool tty = isatty(fileno(fp));
@@ -510,21 +512,28 @@ void print_version(FILE *fp)
 
   fprintf(fp, "\n");
   fputs(_(ReachingUs), fp);
+
+  fflush(fp);
+  return !ferror(fp);
 }
 
 /**
  * print_copyright - Print copyright message
+ * @retval true Text displayed
  *
  * Print the authors' copyright messages, the GPL license and some contact
  * information for the NeoMutt project.
  */
-void print_copyright(void)
+bool print_copyright(void)
 {
   puts(mutt_make_version());
   puts(Copyright);
   puts(_(Thanks));
   puts(_(License));
   puts(_(ReachingUs));
+
+  fflush(stdout);
+  return !ferror(stdout);
 }
 
 /**

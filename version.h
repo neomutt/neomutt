@@ -26,8 +26,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-void print_version(FILE *fp);
-void print_copyright(void);
+bool print_version(FILE *fp);
+bool print_copyright(void);
 bool feature_enabled(const char *name);
 
 #endif /* MUTT_VERSION_H */
