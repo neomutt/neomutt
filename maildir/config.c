@@ -31,7 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
-struct ConfigDef MaildirVars[] = {
+static struct ConfigDef MaildirVars[] = {
   // clang-format off
   { "check_new", DT_BOOL, true, 0, NULL,
     "(maildir,mh) Check for new mail while the mailbox is open"

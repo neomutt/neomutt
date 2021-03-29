@@ -51,7 +51,7 @@ const struct Mapping SortSidebarMethods[] = {
   // clang-format on
 };
 
-struct ConfigDef SidebarVars[] = {
+static struct ConfigDef SidebarVars[] = {
   // clang-format off
   { "sidebar_component_depth", DT_NUMBER, 0, 0, NULL,
     "(sidebar) Strip leading path components from sidebar folders"

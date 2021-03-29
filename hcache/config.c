@@ -109,7 +109,7 @@ int compress_level_validator(const struct ConfigSet *cs, const struct ConfigDef 
 }
 #endif /* USE_HCACHE_COMPRESSION */
 
-struct ConfigDef HcacheVars[] = {
+static struct ConfigDef HcacheVars[] = {
   // clang-format off
   { "header_cache", DT_PATH, 0, 0, NULL,
     "(hcache) Directory/file for the header cache database"

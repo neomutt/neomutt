@@ -31,7 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
-struct ConfigDef HistoryVars[] = {
+static struct ConfigDef HistoryVars[] = {
   // clang-format off
   { "history", DT_NUMBER|DT_NOT_NEGATIVE, 10, 0, NULL,
     "Number of history entries to keep in memory per category"

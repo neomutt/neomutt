@@ -31,7 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
-struct ConfigDef NotmuchVars[] = {
+static struct ConfigDef NotmuchVars[] = {
   // clang-format off
   { "nm_db_limit", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "(notmuch) Default limit for Notmuch queries"

@@ -56,7 +56,7 @@ static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s, int
  *
  * @note These commands take precedence over conventional NeoMutt rc-lines
  */
-const struct ICommand ICommandList[] = {
+static const struct ICommand ICommandList[] = {
   { "bind",     icmd_bind,     0 },
   { "macro",    icmd_bind,     1 },
   { "set",      icmd_set,      0 },

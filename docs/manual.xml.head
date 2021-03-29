@@ -7946,7 +7946,6 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                   <emphasis>STRING</emphasis> on the server, rather than
                   downloading each message and searching it locally.
                 </entry>
-                <entry></entry>
               </row>
               <row>
                 <entry>~B <emphasis>EXPR</emphasis></entry>
@@ -10399,7 +10398,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
         To get most out of MIME, it's important that a MIME part's content type
         matches the content as closely as possible so that the recipient's
         client can automatically select the right viewer for the content.
-        However, there's no reliable for NeoMutt to know how to detect every
+        However, there's no reliable way for NeoMutt to know how to detect every
         possible file type. Instead, it uses a simple plain text mapping file
         that specifies what file extension corresponds to what MIME type. This
         file is called <literal>mime.types</literal>.

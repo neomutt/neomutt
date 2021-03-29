@@ -45,7 +45,7 @@ const struct Mapping SortKeyMethods[] = {
   // clang-format on
 };
 
-struct ConfigDef NcryptVars[] = {
+static struct ConfigDef NcryptVars[] = {
   // clang-format off
   { "crypt_confirm_hook", DT_BOOL, true, 0, NULL,
     "Prompt the user to confirm keys before use"

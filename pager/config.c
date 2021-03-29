@@ -31,7 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
-struct ConfigDef PagerVars[] = {
+static struct ConfigDef PagerVars[] = {
   // clang-format off
   { "allow_ansi", DT_BOOL, false, 0, NULL,
     "Allow ANSI colour codes in rich text messages"

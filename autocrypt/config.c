@@ -36,7 +36,7 @@ char *AutocryptSignAs;     ///< Autocrypt Key id to sign as
 char *AutocryptDefaultKey; ///< Autocrypt default key id (used for postponing messages)
 // clang-format on
 
-struct ConfigDef AutocryptVars[] = {
+static struct ConfigDef AutocryptVars[] = {
   // clang-format off
   { "autocrypt", DT_BOOL, false, 0, NULL,
     "Enables the Autocrypt feature"

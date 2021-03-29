@@ -62,7 +62,7 @@ static int imap_auth_validator(const struct ConfigSet *cs, const struct ConfigDe
   return CSR_SUCCESS;
 }
 
-struct ConfigDef ImapVars[] = {
+static struct ConfigDef ImapVars[] = {
   // clang-format off
   { "imap_check_subscribed", DT_BOOL, false, 0, NULL,
     "(imap) When opening a mailbox, ask the server for a list of subscribed folders"
@@ -76,7 +76,7 @@ struct ConfigDef ImapVars[] = {
   },
 #endif
   { "imap_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, imap_auth_validator,
-    "(imap) List of allowed IMAP authentication methods"
+    "(imap) List of allowed IMAP authentication methods (colon-separated)"
   },
   { "imap_delim_chars", DT_STRING, IP "/.", 0, NULL,
     "(imap) Characters that denote separators in IMAP folders"

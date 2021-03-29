@@ -31,7 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
-struct ConfigDef PatternVars[] = {
+static struct ConfigDef PatternVars[] = {
   // clang-format off
   { "external_search_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
     "External search command"

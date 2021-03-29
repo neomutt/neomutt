@@ -47,7 +47,7 @@ STORE_BACKEND(tokyocabinet)
 /**
  * store_ops - Backend implementations
  */
-const struct StoreOps *store_ops[] = {
+static const struct StoreOps *store_ops[] = {
 #ifdef HAVE_TC
   &store_tokyocabinet_ops,
 #endif

@@ -1950,7 +1950,7 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
       case OP_SORT:
       case OP_SORT_REVERSE:
-        if (mutt_select_sort((op == OP_SORT_REVERSE)) != 0)
+        if (!mutt_select_sort(op == OP_SORT_REVERSE))
           break;
 
         if (ctx_mailbox(Context) && (Context->mailbox->msg_count != 0))

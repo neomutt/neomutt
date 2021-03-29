@@ -35,7 +35,7 @@
 /**
  * compr_ops - Backend implementations
  */
-const struct ComprOps *compr_ops[] = {
+static const struct ComprOps *compr_ops[] = {
 #ifdef HAVE_LZ4
   &compr_lz4_ops,
 #endif

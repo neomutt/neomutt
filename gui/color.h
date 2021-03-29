@@ -126,6 +126,9 @@ struct ColorList
   struct ColorList *next;
 };
 
+/**
+ * struct Colors - Wrapper for all the colours
+ */
 struct Colors
 {
   int *defs;                               ///< Array of all fixed colours, see enum ColorId

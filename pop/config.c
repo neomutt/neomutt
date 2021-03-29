@@ -62,13 +62,13 @@ static int pop_auth_validator(const struct ConfigSet *cs, const struct ConfigDef
   return CSR_SUCCESS;
 }
 
-struct ConfigDef PopVars[] = {
+static struct ConfigDef PopVars[] = {
   // clang-format off
   { "pop_auth_try_all", DT_BOOL, true, 0, NULL,
     "(pop) Try all available authentication methods"
   },
   { "pop_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, pop_auth_validator,
-    "(pop) List of allowed authentication methods"
+    "(pop) List of allowed authentication methods (colon-separated)"
   },
   { "pop_check_interval", DT_NUMBER|DT_NOT_NEGATIVE, 60, 0, NULL,
     "(pop) Interval between checks for new mail"
