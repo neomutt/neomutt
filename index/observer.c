@@ -33,9 +33,12 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "alternates.h"
+#include "attachments.h"
 #include "context.h"
 #include "mutt_globals.h"
 #include "options.h"
+#include "subjectrx.h"
 
 /**
  * config_pager_index_lines - React to changes to $pager_index_lines
@@ -181,6 +184,54 @@ static int index_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * index_subjrx_observer - Listen for subject regex changes affecting the Index/Pager - Implements ::observer_t
+ */
+static int index_subjrx_observer(struct NotifyCallback *nc)
+{
+  if (!nc->global_data)
+    return -1;
+  if (nc->event_type != NT_SUBJRX)
+    return 0;
+
+  // struct MuttWindow *dlg = nc->global_data;
+
+  subjrx_clear_mods(ctx_mailbox(Context));
+  return 0;
+}
+
+/**
+ * index_attach_observer - Listen for attachment command changes affecting the Index/Pager - Implements ::observer_t
+ */
+static int index_attach_observer(struct NotifyCallback *nc)
+{
+  if (!nc->global_data)
+    return -1;
+  if (nc->event_type != NT_ATTACH)
+    return 0;
+
+  // struct MuttWindow *dlg = nc->global_data;
+
+  mutt_attachments_reset(ctx_mailbox(Context));
+  return 0;
+}
+
+/**
+ * index_altern_observer - Listen for alternates command changes affecting the Index/Pager - Implements ::observer_t
+ */
+static int index_altern_observer(struct NotifyCallback *nc)
+{
+  if (!nc->global_data)
+    return -1;
+  if (nc->event_type != NT_ALTERN)
+    return 0;
+
+  // struct MuttWindow *dlg = nc->global_data;
+
+  mutt_alternates_reset(ctx_mailbox(Context));
+  return 0;
+}
+
+/**
  * index_add_observers - Add Observers to the Index Dialog
  * @param dlg Index Dialog
  */
@@ -190,6 +241,9 @@ void index_add_observers(struct MuttWindow *dlg)
     return;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, index_config_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_SUBJRX, index_subjrx_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_ATTACH, index_attach_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_ALTERN, index_altern_observer, dlg);
 }
 
 /**
@@ -202,4 +256,7 @@ void index_remove_observers(struct MuttWindow *dlg)
     return;
 
   notify_observer_remove(NeoMutt->notify, index_config_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, index_subjrx_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, index_attach_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, index_altern_observer, dlg);
 }

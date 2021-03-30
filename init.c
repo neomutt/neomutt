@@ -59,8 +59,8 @@
 #ifdef USE_LUA
 #include "mutt_lua.h"
 #endif
+#include "attachments.h"
 #include "mutt_menu.h"
-#include "mutt_parse.h"
 #include "muttlib.h"
 #include "myvar.h"
 #include "options.h"
@@ -646,11 +646,9 @@ void mutt_opts_free(void)
   sb_shutdown();
 #endif
 
-  mutt_regexlist_free(&Alternates);
   mutt_regexlist_free(&MailLists);
   mutt_regexlist_free(&NoSpamList);
   mutt_regexlist_free(&SubscribedLists);
-  mutt_regexlist_free(&UnAlternates);
   mutt_regexlist_free(&UnMailLists);
   mutt_regexlist_free(&UnSubscribedLists);
 
@@ -669,12 +667,6 @@ void mutt_opts_free(void)
   mutt_list_free(&UnIgnore);
   mutt_list_free(&UserHeader);
 
-  /* Lists of AttachMatch */
-  mutt_list_free_type(&AttachAllow, (list_free_t) mutt_attachmatch_free);
-  mutt_list_free_type(&AttachExclude, (list_free_t) mutt_attachmatch_free);
-  mutt_list_free_type(&InlineAllow, (list_free_t) mutt_attachmatch_free);
-  mutt_list_free_type(&InlineExclude, (list_free_t) mutt_attachmatch_free);
-
   mutt_colors_free(&Colors);
 
   FREE(&CurrentFolder);
@@ -684,7 +676,6 @@ void mutt_opts_free(void)
   FREE(&Username);
 
   mutt_replacelist_free(&SpamList);
-  mutt_replacelist_free(&SubjectRegexList);
 
   mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
 

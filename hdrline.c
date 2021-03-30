@@ -46,14 +46,15 @@
 #include "gui/lib.h"
 #include "hdrline.h"
 #include "ncrypt/lib.h"
+#include "attachments.h"
 #include "format_flags.h"
 #include "hook.h"
 #include "maillist.h"
 #include "mutt_globals.h"
-#include "mutt_parse.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "sort.h"
+#include "subjectrx.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif
@@ -356,30 +357,6 @@ static int user_is_recipient(struct Email *e)
   }
 
   return e->recipient;
-}
-
-/**
- * apply_subject_mods - Apply regex modifications to the subject
- * @param env Envelope of email
- * @retval ptr  Modified subject
- * @retval NULL No modification made
- */
-static char *apply_subject_mods(struct Envelope *env)
-{
-  if (!env)
-    return NULL;
-
-  if (STAILQ_EMPTY(&SubjectRegexList))
-    return env->subject;
-
-  if (!env->subject || (*env->subject == '\0'))
-  {
-    env->disp_subj = NULL;
-    return NULL;
-  }
-
-  env->disp_subj = mutt_replacelist_apply(&SubjectRegexList, NULL, 0, env->subject);
-  return env->disp_subj;
 }
 
 /**
@@ -1062,11 +1039,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 's':
     {
+      subjrx_apply_mods(e->env);
       char *subj = NULL;
       if (e->env->disp_subj)
         subj = e->env->disp_subj;
-      else if (!STAILQ_EMPTY(&SubjectRegexList))
-        subj = apply_subject_mods(e->env);
       else
         subj = e->env->subject;
       if (flags & MUTT_FORMAT_TREE && !e->collapsed)

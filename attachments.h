@@ -20,32 +20,27 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_PARSE_H
-#define MUTT_MUTT_PARSE_H
+#ifndef MUTT_ATTACHMENTS_H
+#define MUTT_ATTACHMENTS_H
 
-#include "mutt/lib.h"
-#include "email/lib.h"
-
+struct Email;
 struct Mailbox;
 
 /**
- * struct AttachMatch - An attachment matching a regex for attachment counter
+ * enum NotifyAttach - Attachments notification types
  */
-struct AttachMatch
+enum NotifyAttach
 {
-  const char *major;
-  enum ContentType major_int;
-  const char *minor;
-  regex_t minor_regex;
+  NT_ATTACH_ADD = 1,    ///< Attachment regex has been added
+  NT_ATTACH_DELETE,     ///< Attachment regex has been deleted
+  NT_ATTACH_DELETE_ALL, ///< All Attachment regexes have been deleted
 };
 
-extern struct ListHead AttachAllow;
-extern struct ListHead AttachExclude;
-extern struct ListHead InlineAllow;
-extern struct ListHead InlineExclude;
+void attach_init(void);
+void attach_free(void);
 
-int  mutt_count_body_parts(struct Mailbox *m, struct Email *e);
+void mutt_attachments_reset (struct Mailbox *m);
+int  mutt_count_body_parts  (struct Mailbox *m, struct Email *e);
 void mutt_parse_mime_message(struct Mailbox *m, struct Email *e);
-void mutt_attachmatch_free(struct AttachMatch **ptr);
 
-#endif /* MUTT_MUTT_PARSE_H */
+#endif /* MUTT_ATTACHMENTS_H */
