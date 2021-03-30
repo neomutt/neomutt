@@ -115,8 +115,6 @@ struct Menu
    * @param menu Menu to redraw
    */
   void (*custom_redraw)(struct Menu *menu);
-
-  void *redraw_data;
 };
 
 void         menu_bottom_page(struct Menu *menu);
