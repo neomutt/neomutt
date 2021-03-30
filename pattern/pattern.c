@@ -235,14 +235,12 @@ bool mutt_limit_current_thread(struct Context *ctx, struct Email *e)
  * @param prompt    Prompt to show the user
  * @param menu_name Name of the current menu, e.g. Aliases, Query
  * @param mdata     Menu data holding Aliases
- * @param ctx       Current Mailbox
  * @param menu      Current menu
  * @retval  0 Success
  * @retval -1 Failure
  */
 int mutt_pattern_alias_func(int op, char *prompt, char *menu_name,
-                            struct AliasMenuData *mdata, struct Context *ctx,
-                            struct Menu *menu)
+                            struct AliasMenuData *mdata, struct Menu *menu)
 {
   int rc = -1;
   struct Progress progress;
@@ -274,7 +272,7 @@ int mutt_pattern_alias_func(int op, char *prompt, char *menu_name,
     match_all = mutt_str_equal(pbuf, "~A");
 
     struct Buffer err = mutt_buffer_make(0);
-    pat = mutt_pattern_comp(ctx, buf->data, MUTT_PC_FULL_MSG, &err);
+    pat = mutt_pattern_comp(NULL, menu, buf->data, MUTT_PC_FULL_MSG, &err);
     if (!pat)
     {
       mutt_error("%s", mutt_buffer_string(&err));
@@ -381,7 +379,8 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
   mutt_buffer_init(&err);
   err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
-  struct PatternList *pat = mutt_pattern_comp(ctx, buf->data, MUTT_PC_FULL_MSG, &err);
+  struct PatternList *pat =
+      mutt_pattern_comp(m, ctx->menu, buf->data, MUTT_PC_FULL_MSG, &err);
   if (!pat)
   {
     mutt_error("%s", err.data);
@@ -470,7 +469,8 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
     {
       ctx->pattern = simple;
       simple = NULL; /* don't clobber it */
-      ctx->limit_pattern = mutt_pattern_comp(ctx, buf->data, MUTT_PC_FULL_MSG, &err);
+      ctx->limit_pattern =
+          mutt_pattern_comp(m, ctx->menu, buf->data, MUTT_PC_FULL_MSG, &err);
     }
   }
 
@@ -487,14 +487,14 @@ bail:
 
 /**
  * mutt_search_command - Perform a search
- * @param ctx Current Mailbox
- * @param m   Mailbox to search through
- * @param cur Index number of current email
- * @param op  Operation to perform, e.g. OP_SEARCH_NEXT
- * @retval >= 0 Index of matching email
- * @retval -1 No match, or error
+ * @param m    Mailbox to search through
+ * @param menu Current Menu
+ * @param cur  Index number of current email
+ * @param op   Operation to perform, e.g. OP_SEARCH_NEXT
+ * @retval >=0 Index of matching email
+ * @retval -1  No match, or error
  */
-int mutt_search_command(struct Context *ctx, struct Mailbox *m, int cur, int op)
+int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
 {
   struct Progress progress;
 
@@ -534,7 +534,7 @@ int mutt_search_command(struct Context *ctx, struct Mailbox *m, int cur, int op)
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;
       err.data = mutt_mem_malloc(err.dsize);
-      SearchPattern = mutt_pattern_comp(ctx, tmp->data, MUTT_PC_FULL_MSG, &err);
+      SearchPattern = mutt_pattern_comp(m, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
       if (!SearchPattern)
       {
         mutt_buffer_pool_release(&tmp);
@@ -639,14 +639,13 @@ int mutt_search_command(struct Context *ctx, struct Mailbox *m, int cur, int op)
 
 /**
  * mutt_search_alias_command - Perform a search
- * @param ctx  Current Mailbox
  * @param menu Menu to search through
  * @param cur  Index number of current alias
  * @param op   Operation to perform, e.g. OP_SEARCH_NEXT
  * @retval >=0 Index of matching alias
  * @retval -1 No match, or error
  */
-int mutt_search_alias_command(struct Context *ctx, struct Menu *menu, int cur, int op)
+int mutt_search_alias_command(struct Menu *menu, int cur, int op)
 {
   struct Progress progress;
 
@@ -686,7 +685,7 @@ int mutt_search_alias_command(struct Context *ctx, struct Menu *menu, int cur, i
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;
       err.data = mutt_mem_malloc(err.dsize);
-      SearchPattern = mutt_pattern_comp(ctx, tmp->data, MUTT_PC_FULL_MSG, &err);
+      SearchPattern = mutt_pattern_comp(NULL, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
       if (!SearchPattern)
       {
         mutt_buffer_pool_release(&tmp);

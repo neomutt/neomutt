@@ -149,6 +149,7 @@ static void candidate(char *user, const char *src, char *dest, size_t dlen)
  */
 static int complete_all_nm_tags(const char *pt)
 {
+  struct Mailbox *m = ctx_mailbox(Context);
   int tag_count_1 = 0;
   int tag_count_2 = 0;
 
@@ -157,10 +158,10 @@ static int complete_all_nm_tags(const char *pt)
   memset(Matches, 0, MatchesListsize);
   memset(Completed, 0, sizeof(Completed));
 
-  nm_db_longrun_init(Context->mailbox, false);
+  nm_db_longrun_init(m, false);
 
   /* Work out how many tags there are. */
-  if (nm_get_all_tags(Context->mailbox, NULL, &tag_count_1) || (tag_count_1 == 0))
+  if (nm_get_all_tags(m, NULL, &tag_count_1) || (tag_count_1 == 0))
     goto done;
 
   /* Free the old list, if any. */
@@ -175,11 +176,11 @@ static int complete_all_nm_tags(const char *pt)
   nm_tags[tag_count_1] = NULL;
 
   /* Get all the tags. */
-  if (nm_get_all_tags(Context->mailbox, nm_tags, &tag_count_2) || (tag_count_1 != tag_count_2))
+  if (nm_get_all_tags(m, nm_tags, &tag_count_2) || (tag_count_1 != tag_count_2))
   {
     FREE(&nm_tags);
     nm_tags = NULL;
-    nm_db_longrun_done(Context->mailbox);
+    nm_db_longrun_done(m);
     return -1;
   }
 
@@ -193,7 +194,7 @@ static int complete_all_nm_tags(const char *pt)
   Matches[NumMatched++] = UserTyped;
 
 done:
-  nm_db_longrun_done(Context->mailbox);
+  nm_db_longrun_done(m);
   return 0;
 }
 #endif
