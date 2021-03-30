@@ -342,13 +342,13 @@ struct Body *crypt_pgp_sign_message(struct Body *a, const struct AddressList *fr
 /**
  * crypt_pgp_encrypt_message - Wrapper for CryptModuleSpecs::pgp_encrypt_message()
  */
-struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *keylist,
-                                       int sign, const struct AddressList *from)
+struct Body *crypt_pgp_encrypt_message(struct Mailbox *m, struct Email *e,
+                                       struct Body *a, char *keylist, int sign,
+                                       const struct AddressList *from)
 {
 #ifdef USE_AUTOCRYPT
   if (e->security & SEC_AUTOCRYPT)
   {
-    struct Mailbox *m = ctx_mailbox(Context);
     if (mutt_autocrypt_set_sign_as_default_key(m, e))
       return NULL;
 
