@@ -89,7 +89,7 @@ static STACK_OF(X509) *SslSessionCerts = NULL;
 static int ssl_socket_close(struct Connection *conn);
 
 /**
- * struct SslSockData - SSL socket data
+ * struct SslSockData - SSL socket data - @extends Connection
  */
 struct SslSockData
 {

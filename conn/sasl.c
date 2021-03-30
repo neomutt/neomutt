@@ -55,7 +55,7 @@
 #include "options.h"
 
 /**
- * struct SaslSockData - SASL authentication API
+ * struct SaslSockData - SASL authentication API - @extends Connection
  */
 struct SaslSockData
 {

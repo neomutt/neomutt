@@ -103,7 +103,8 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
 
     mutt_extract_token(pattern, s, MUTT_TOKEN_NO_FLAGS);
-    if (folder_or_mbox && mutt_str_equal(mutt_buffer_string(pattern), "-noregex"))
+    if (folder_or_mbox &&
+        mutt_str_equal(mutt_buffer_string(pattern), "-noregex"))
     {
       use_regex = false;
       if (!MoreArgs(s))

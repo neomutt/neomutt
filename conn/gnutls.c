@@ -74,7 +74,7 @@ static const int protocol_priority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1,
 #endif
 
 /**
- * struct TlsSockData - TLS socket data
+ * struct TlsSockData - TLS socket data - @extends Connection
  */
 struct TlsSockData
 {

@@ -10,6 +10,7 @@ alias/dlgquery.c
 alias/gui.c
 alias/reverse.c
 alias/sort.c
+alternates.c
 attachments.c
 autocrypt/autocrypt.c
 autocrypt/config.c

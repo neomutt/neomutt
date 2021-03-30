@@ -26,7 +26,7 @@
 struct MuttWindow;
 
 /**
- * struct HelpbarWindowData - Help Bar Window data
+ * struct HelpbarWindowData - Help Bar Window data - @extends MuttWindow
  *
  * This is used to cache the data to generate the Help Bar text.
  */

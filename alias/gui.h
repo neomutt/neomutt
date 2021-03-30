@@ -46,7 +46,7 @@ struct AliasView
 ARRAY_HEAD(AliasViewArray, struct AliasView);
 
 /**
- *  AliasMenuData - AliasView array wrapper with Pattern information
+ * AliasMenuData - AliasView array wrapper with Pattern information - @extends Menu
  */
 struct AliasMenuData
 {
