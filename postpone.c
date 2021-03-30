@@ -175,10 +175,9 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
       OptNews = false;
 #endif
     struct Mailbox *m_post = mx_path_resolve(c_postponed);
-    struct Context *ctx = mx_mbox_open(m_post, MUTT_NOSORT | MUTT_QUIET);
-    if (ctx)
+    if (mx_mbox_open(m_post, MUTT_NOSORT | MUTT_QUIET))
     {
-      PostCount = ctx->mailbox->msg_count;
+      PostCount = m_post->msg_count;
     }
     else
     {
@@ -186,7 +185,6 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
       PostCount = 0;
     }
     mx_fastclose_mailbox(m_post);
-    ctx_free(&ctx);
 #ifdef USE_NNTP
     if (optnews)
       OptNews = true;
@@ -307,17 +305,38 @@ static struct Email *dlg_select_postponed_email(struct Context *ctx)
 
 /**
  * hardclose - try hard to close a mailbox
- * @param pctx Context to close
+ * @param m Mailbox to close
  */
-static void hardclose(struct Context **pctx)
+static void hardclose(struct Mailbox *m)
 {
   /* messages might have been marked for deletion.
    * try once more on reopen before giving up. */
-  enum MxStatus rc = mx_mbox_close(pctx);
+  enum MxStatus rc = mx_mbox_close(m);
   if (rc != MX_STATUS_ERROR && rc != MX_STATUS_OK)
-    rc = mx_mbox_close(pctx);
+    rc = mx_mbox_close(m);
   if (rc != MX_STATUS_OK)
-    mx_fastclose_mailbox((*pctx)->mailbox);
+    mx_fastclose_mailbox(m);
+}
+
+/**
+ * get_postponed - Get a postponed Email
+ * @param m   Mailbox
+ * @param hdr Envelope/attachment info for recalled message
+ * @retval ptr Email
+ */
+static struct Email *get_postponed(struct Mailbox *m, struct Email *hdr)
+{
+  struct Email *e = NULL;
+  struct Context *ctx_post = ctx_new(m);
+  if ((e = dlg_select_postponed_email(ctx_post)))
+  {
+    if (mutt_prepare_template(NULL, m, hdr, e, false) < 0)
+    {
+      e = NULL;
+    }
+  }
+  ctx_free(&ctx_post);
+  return e;
 }
 
 /**
@@ -340,20 +359,18 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   struct Email *e = NULL;
   int rc = SEND_POSTPONED;
   const char *p = NULL;
-  struct Context *ctx_post = NULL;
 
+  struct Mailbox *m_ctx = ctx ? ctx->mailbox : NULL;
   struct Mailbox *m = mx_path_resolve(c_postponed);
-  if (ctx && (ctx->mailbox == m))
-    ctx_post = ctx;
-  else
-    ctx_post = mx_mbox_open(m, MUTT_NOSORT);
-
-  if (!ctx_post)
+  if (m_ctx != m)
   {
-    PostCount = 0;
-    mutt_error(_("No postponed messages"));
-    mailbox_free(&m);
-    return -1;
+    if (!mx_mbox_open(m, MUTT_NOSORT))
+    {
+      PostCount = 0;
+      mutt_error(_("No postponed messages"));
+      mailbox_free(&m);
+      return -1;
+    }
   }
 
   /* TODO:
@@ -366,64 +383,44 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
    * segvs, but probably the flag needs to be reset after downloading
    * headers in imap_open_mailbox().
    */
-  mx_mbox_check(ctx_post->mailbox);
+  mx_mbox_check(m);
 
-  if (ctx_post->mailbox->msg_count == 0)
+  if (m->msg_count == 0)
   {
     PostCount = 0;
-    if (ctx_post == ctx)
-      ctx_post = NULL;
-    else
-      mx_fastclose_mailbox(ctx_post->mailbox);
+    if (m_ctx != m)
+      mx_fastclose_mailbox(m);
     mutt_error(_("No postponed messages"));
     return -1;
   }
 
-  if (ctx_post->mailbox->msg_count == 1)
+  if (m->msg_count == 1)
   {
     /* only one message, so just use that one. */
-    e = ctx_post->mailbox->emails[0];
+    e = m->emails[0];
   }
-  else if (!(e = dlg_select_postponed_email(ctx_post)))
+  else if (!(e = get_postponed(m, hdr)))
   {
-    if (ctx_post == ctx)
+    if (m_ctx != m)
     {
-      ctx_post = NULL;
-    }
-    else
-    {
-      hardclose(&ctx_post);
-    }
-    return -1;
-  }
-
-  if (mutt_prepare_template(NULL, ctx_post->mailbox, hdr, e, false) < 0)
-  {
-    if (ctx_post != ctx)
-    {
-      mx_fastclose_mailbox(ctx_post->mailbox);
-      FREE(&ctx_post);
+      hardclose(m);
     }
     return -1;
   }
 
   /* finished with this message, so delete it. */
-  mutt_set_flag(ctx_post->mailbox, e, MUTT_DELETE, true);
-  mutt_set_flag(ctx_post->mailbox, e, MUTT_PURGE, true);
+  mutt_set_flag(m, e, MUTT_DELETE, true);
+  mutt_set_flag(m, e, MUTT_PURGE, true);
 
   /* update the count for the status display */
-  PostCount = ctx_post->mailbox->msg_count - ctx_post->mailbox->msg_deleted;
+  PostCount = m->msg_count - m->msg_deleted;
 
   /* avoid the "purge deleted messages" prompt */
   const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
   cs_subset_str_native_set(NeoMutt->sub, "delete", MUTT_YES, NULL);
-  if (ctx_post == ctx)
+  if (m_ctx != m)
   {
-    ctx_post = NULL;
-  }
-  else
-  {
-    hardclose(&ctx_post);
+    hardclose(m);
   }
   cs_subset_str_native_set(NeoMutt->sub, "delete", c_delete, NULL);
 

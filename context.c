@@ -78,8 +78,16 @@ struct Context *ctx_new(struct Mailbox *m)
 
   ctx->notify = notify_new();
   notify_set_parent(ctx->notify, NeoMutt->notify);
+  struct EventContext ev_ctx = { ctx };
+  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_OPEN, &ev_ctx);
+  // If the Mailbox is closed, ctx->mailbox must be set to NULL
+  notify_observer_add(m->notify, NT_MAILBOX, ctx_mailbox_observer, ctx);
+
   ctx->mailbox = m;
   ctx->threads = mutt_thread_ctx_init(m);
+  ctx->msg_in_pager = -1;
+  ctx->collapsed = false;
+  ctx_update(ctx);
 
   return ctx;
 }

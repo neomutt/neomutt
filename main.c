@@ -1240,8 +1240,11 @@ int main(int argc, char *argv[], char *envp[])
     repeat_error = true;
     struct Mailbox *m = mx_resolve(mutt_buffer_string(&folder));
     const bool c_read_only = cs_subset_bool(NeoMutt->sub, "read_only");
-    Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || c_read_only) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS);
-    if (!Context)
+    if (mx_mbox_open(m, ((flags & MUTT_CLI_RO) || c_read_only) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS))
+    {
+      Context = ctx_new(m);
+    }
+    else
     {
       if (m->account)
         account_mailbox_remove(m->account, m);

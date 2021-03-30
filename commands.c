@@ -1201,8 +1201,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
    * IMAP) a per-message progress counter */
   if (msg_count > 1)
     mbox_flags |= MUTT_QUIET;
-  struct Context *ctx_save = mx_mbox_open(m_save, mbox_flags);
-  if (!ctx_save)
+  if (!mx_mbox_open(m_save, mbox_flags))
   {
     rc = -1;
     mailbox_free(&m_save);
@@ -1214,9 +1213,9 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   /* If we're saving to a compressed mailbox, the stats won't be updated
    * until the next open.  Until then, improvise. */
   struct Mailbox *m_comp = NULL;
-  if (ctx_save->mailbox->compress_info)
+  if (m_save->compress_info)
   {
-    m_comp = mailbox_find(ctx_save->mailbox->realpath);
+    m_comp = mailbox_find(m_save->realpath);
   }
   /* We probably haven't been opened yet */
   if (m_comp && (m_comp->msg_count == 0))
@@ -1224,10 +1223,10 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
   if (msg_count == 1)
   {
-    rc = mutt_save_message_ctx(m, en->email, save_opt, transform_opt, ctx_save->mailbox);
+    rc = mutt_save_message_ctx(m, en->email, save_opt, transform_opt, m_save);
     if (rc != 0)
     {
-      mx_mbox_close(&ctx_save);
+      mx_mbox_close(m_save);
       m_save->append = old_append;
       goto errcleanup;
     }
@@ -1259,7 +1258,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     {
       mutt_progress_update(&progress, ++tagged_progress_count, -1);
       mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-      rc = mutt_save_message_ctx(m, en->email, save_opt, transform_opt, ctx_save->mailbox);
+      rc = mutt_save_message_ctx(m, en->email, save_opt, transform_opt, m_save);
       if (rc != 0)
         break;
 #ifdef USE_COMP_MBOX
@@ -1284,16 +1283,16 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
     if (rc != 0)
     {
-      mx_mbox_close(&ctx_save);
+      mx_mbox_close(m_save);
       m_save->append = old_append;
       goto errcleanup;
     }
   }
 
-  const bool need_mailbox_cleanup = ((ctx_save->mailbox->type == MUTT_MBOX) ||
-                                     (ctx_save->mailbox->type == MUTT_MMDF));
+  const bool need_mailbox_cleanup =
+      ((m_save->type == MUTT_MBOX) || (m_save->type == MUTT_MMDF));
 
-  mx_mbox_close(&ctx_save);
+  mx_mbox_close(m_save);
   m_save->append = old_append;
 
   if (need_mailbox_cleanup)

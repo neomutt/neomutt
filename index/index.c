@@ -710,8 +710,12 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
       new_last_folder = mutt_str_dup(mailbox_path(m_ctx));
     *oldcount = m_ctx->msg_count;
 
-    const enum MxStatus check = mx_mbox_close(&Context);
-    if (check != MX_STATUS_OK)
+    const enum MxStatus check = mx_mbox_close(Context->mailbox);
+    if (check == MX_STATUS_OK)
+    {
+      ctx_free(&Context);
+    }
+    else
     {
 #ifdef USE_INOTIFY
       if (monitor_remove_rc == 0)
@@ -755,9 +759,9 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
     return;
 
   const OpenMailboxFlags flags = read_only ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS;
-  Context = mx_mbox_open(m, flags);
-  if (Context)
+  if (mx_mbox_open(m, flags))
   {
+    Context = ctx_new(m);
     menu->current = ci_first_message(Context->mailbox);
 #ifdef USE_INOTIFY
     mutt_monitor_add(NULL);
@@ -765,6 +769,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   }
   else
   {
+    Context = NULL;
     menu->current = 0;
   }
 
@@ -1905,8 +1910,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
           notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_SHUTDOWN, NULL);
 
           enum MxStatus check = MX_STATUS_OK;
-          if (!Context || ((check = mx_mbox_close(&Context)) == MX_STATUS_OK))
+          if (!Context || ((check = mx_mbox_close(Context->mailbox)) == MX_STATUS_OK))
           {
+            ctx_free(&Context);
             done = true;
           }
           else
@@ -2058,8 +2064,12 @@ int mutt_index_menu(struct MuttWindow *dlg)
       case OP_MAIN_IMAP_LOGOUT_ALL:
         if (ctx_mailbox(Context) && (Context->mailbox->type == MUTT_IMAP))
         {
-          const enum MxStatus check = mx_mbox_close(&Context);
-          if (check != MX_STATUS_OK)
+          const enum MxStatus check = mx_mbox_close(Context->mailbox);
+          if (check == MX_STATUS_OK)
+          {
+            ctx_free(&Context);
+          }
+          else
           {
             if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
             {

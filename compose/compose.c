@@ -2127,18 +2127,16 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
         struct Mailbox *m = mx_path_resolve(mutt_buffer_string(&fname));
         bool old_readonly = m->readonly;
-        struct Context *ctx = mx_mbox_open(m, MUTT_READONLY);
-        if (!ctx)
+        if (!mx_mbox_open(m, MUTT_READONLY))
         {
           mutt_error(_("Unable to open mailbox %s"), mutt_buffer_string(&fname));
           mx_fastclose_mailbox(m);
           m = NULL;
           break;
         }
-
-        if (ctx->mailbox->msg_count == 0)
+        if (m->msg_count == 0)
         {
-          mx_mbox_close(&ctx);
+          mx_mbox_close(m);
           mutt_error(_("No messages in that folder"));
           break;
         }
@@ -2147,7 +2145,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         const enum SortType old_sort = cs_subset_sort(sub, "sort"); /* `$sort`, `$sort_aux` could be changed in mutt_index_menu() */
         const enum SortType old_sort_aux = cs_subset_sort(sub, "sort_aux");
 
-        Context = ctx;
+        Context = ctx_new(m);
         OptAttachMsg = true;
         mutt_message(_("Tag the messages you want to attach"));
         struct MuttWindow *dlgindex = index_pager_init();
