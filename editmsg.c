@@ -71,11 +71,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   cs_subset_str_native_set(NeoMutt->sub, "mbox_type", MUTT_MBOX, NULL);
 
   struct Mailbox *m_fname = mx_path_resolve(mutt_buffer_string(fname));
-  struct Context *ctx_tmp = mx_mbox_open(m_fname, MUTT_NEWFOLDER);
-
-  cs_subset_str_native_set(NeoMutt->sub, "mbox_type", c_mbox_type, NULL);
-
-  if (!ctx_tmp)
+  if (!mx_mbox_open(m_fname, MUTT_NEWFOLDER))
   {
     mutt_error(_("could not create temporary folder: %s"), strerror(errno));
     mutt_buffer_pool_release(&fname);
@@ -83,12 +79,14 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     return -1;
   }
 
+  cs_subset_str_native_set(NeoMutt->sub, "mbox_type", c_mbox_type, NULL);
+
   const CopyHeaderFlags chflags =
       CH_NOLEN | (((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF)) ? CH_NO_FLAGS : CH_NOSTATUS);
-  rc = mutt_append_message(ctx_tmp->mailbox, m, e, MUTT_CM_NO_FLAGS, chflags);
+  rc = mutt_append_message(m_fname, m, e, MUTT_CM_NO_FLAGS, chflags);
   int oerrno = errno;
 
-  mx_mbox_close(&ctx_tmp);
+  mx_mbox_close(m_fname);
 
   if (rc == -1)
   {
@@ -192,24 +190,20 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  struct Context *ctx_app = mx_mbox_open(m, MUTT_APPEND | MUTT_QUIET);
-  if (!ctx_app)
+  if (!mx_mbox_open(m, MUTT_APPEND | MUTT_QUIET))
   {
     rc = -1;
     /* L10N: %s is from strerror(errno) */
     mutt_error(_("Can't append to folder: %s"), strerror(errno));
     goto bail;
   }
-
   MsgOpenFlags of = MUTT_MSG_NO_FLAGS;
   CopyHeaderFlags cf =
-      (((ctx_app->mailbox->type == MUTT_MBOX) || (ctx_app->mailbox->type == MUTT_MMDF)) ?
-           CH_NO_FLAGS :
-           CH_NOSTATUS);
+      (((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF)) ? CH_NO_FLAGS : CH_NOSTATUS);
 
   if (fgets(buf, sizeof(buf), fp) && is_from(buf, NULL, 0, NULL))
   {
-    if ((ctx_app->mailbox->type == MUTT_MBOX) || (ctx_app->mailbox->type == MUTT_MMDF))
+    if ((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF))
       cf = CH_FROM | CH_FORCE_FROM;
   }
   else
@@ -222,7 +216,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   bool o_old = e->old;
   e->read = false;
   e->old = false;
-  struct Message *msg = mx_msg_open_new(ctx_app->mailbox, e, of);
+  struct Message *msg = mx_msg_open_new(m, e, of);
   e->read = o_read;
   e->old = o_old;
 
@@ -230,7 +224,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   {
     rc = -1;
     mutt_error(_("Can't append to folder: %s"), strerror(errno));
-    mx_mbox_close(&ctx_app);
+    mx_mbox_close(m);
     goto bail;
   }
 
@@ -241,10 +235,10 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     mutt_file_copy_stream(fp, msg->fp);
   }
 
-  rc = mx_msg_commit(ctx_app->mailbox, msg);
-  mx_msg_close(ctx_app->mailbox, &msg);
+  rc = mx_msg_commit(m, msg);
+  mx_msg_close(m, &msg);
 
-  mx_mbox_close(&ctx_app);
+  mx_mbox_close(m);
 
 bail:
   mutt_file_fclose(&fp);

@@ -953,8 +953,8 @@ void mutt_autocrypt_scan_mailboxes(struct Mailbox *m)
       /* NOTE: I am purposely *not* executing folder hooks here,
        * as they can do all sorts of things like push into the getch() buffer.
        * Authentication should be in account-hooks. */
-      struct Context *ctx = mx_mbox_open(m_ac, MUTT_READONLY);
-      mx_mbox_close(&ctx);
+      mx_mbox_open(m_ac, MUTT_READONLY);
+      mx_mbox_close(m_ac);
       mutt_buffer_reset(folderbuf);
     }
 
