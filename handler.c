@@ -70,7 +70,7 @@
 
 /**
  * typedef handler_t - Manage a PGP or S/MIME encrypted MIME part
- * @param m Body of the email
+ * @param b Body of the email
  * @param s State of text being processed
  * @retval 0 Success
  * @retval -1 Error

@@ -240,10 +240,10 @@ int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
  *
  * Implements ::handler_t
  */
-int crypt_pgp_application_handler(struct Body *m, struct State *s)
+int crypt_pgp_application_handler(struct Body *b, struct State *s)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, application_handler))
-    return CRYPT_MOD_CALL(PGP, application_handler)(m, s);
+    return CRYPT_MOD_CALL(PGP, application_handler)(b, s);
 
   return -1;
 }
@@ -253,25 +253,25 @@ int crypt_pgp_application_handler(struct Body *m, struct State *s)
  *
  * Implements ::handler_t
  */
-int crypt_pgp_encrypted_handler(struct Body *a, struct State *s)
+int crypt_pgp_encrypted_handler(struct Body *b, struct State *s)
 {
 #ifdef USE_AUTOCRYPT
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (c_autocrypt)
   {
     OptAutocryptGpgme = true;
-    int result = pgp_gpgme_encrypted_handler(a, s);
+    int result = pgp_gpgme_encrypted_handler(b, s);
     OptAutocryptGpgme = false;
     if (result == 0)
     {
-      a->is_autocrypt = true;
+      b->is_autocrypt = true;
       return result;
     }
   }
 #endif
 
   if (CRYPT_MOD_CALL_CHECK(PGP, encrypted_handler))
-    return CRYPT_MOD_CALL(PGP, encrypted_handler)(a, s);
+    return CRYPT_MOD_CALL(PGP, encrypted_handler)(b, s);
 
   return -1;
 }
@@ -452,10 +452,10 @@ int crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
  *
  * Implements ::handler_t
  */
-int crypt_smime_application_handler(struct Body *m, struct State *s)
+int crypt_smime_application_handler(struct Body *b, struct State *s)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, application_handler))
-    return CRYPT_MOD_CALL(SMIME, application_handler)(m, s);
+    return CRYPT_MOD_CALL(SMIME, application_handler)(b, s);
 
   return -1;
 }

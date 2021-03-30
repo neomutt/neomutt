@@ -558,27 +558,27 @@ SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
 
 /**
  * mutt_is_application_pgp - Does the message use PGP?
- * @param m Body of email
+ * @param b Body of email
  * @retval >0 Message uses PGP, e.g. #PGP_ENCRYPT
  * @retval  0 Message doesn't use PGP, (#SEC_NO_FLAGS)
  */
-SecurityFlags mutt_is_application_pgp(struct Body *m)
+SecurityFlags mutt_is_application_pgp(struct Body *b)
 {
   SecurityFlags t = SEC_NO_FLAGS;
   char *p = NULL;
 
-  if (m->type == TYPE_APPLICATION)
+  if (b->type == TYPE_APPLICATION)
   {
-    if (mutt_istr_equal(m->subtype, "pgp") ||
-        mutt_istr_equal(m->subtype, "x-pgp-message"))
+    if (mutt_istr_equal(b->subtype, "pgp") ||
+        mutt_istr_equal(b->subtype, "x-pgp-message"))
     {
-      p = mutt_param_get(&m->parameter, "x-action");
+      p = mutt_param_get(&b->parameter, "x-action");
       if (p && (mutt_istr_equal(p, "sign") || mutt_istr_equal(p, "signclear")))
       {
         t |= PGP_SIGN;
       }
 
-      p = mutt_param_get(&m->parameter, "format");
+      p = mutt_param_get(&b->parameter, "format");
       if (p && mutt_istr_equal(p, "keys-only"))
       {
         t |= PGP_KEY;
@@ -588,17 +588,17 @@ SecurityFlags mutt_is_application_pgp(struct Body *m)
         t |= PGP_ENCRYPT; /* not necessarily correct, but... */
     }
 
-    if (mutt_istr_equal(m->subtype, "pgp-signed"))
+    if (mutt_istr_equal(b->subtype, "pgp-signed"))
       t |= PGP_SIGN;
 
-    if (mutt_istr_equal(m->subtype, "pgp-keys"))
+    if (mutt_istr_equal(b->subtype, "pgp-keys"))
       t |= PGP_KEY;
   }
-  else if ((m->type == TYPE_TEXT) && mutt_istr_equal("plain", m->subtype))
+  else if ((b->type == TYPE_TEXT) && mutt_istr_equal("plain", b->subtype))
   {
-    if (((p = mutt_param_get(&m->parameter, "x-mutt-action")) ||
-         (p = mutt_param_get(&m->parameter, "x-action")) ||
-         (p = mutt_param_get(&m->parameter, "action"))) &&
+    if (((p = mutt_param_get(&b->parameter, "x-mutt-action")) ||
+         (p = mutt_param_get(&b->parameter, "x-action")) ||
+         (p = mutt_param_get(&b->parameter, "action"))) &&
         mutt_istr_startswith(p, "pgp-sign"))
     {
       t |= PGP_SIGN;
@@ -616,24 +616,24 @@ SecurityFlags mutt_is_application_pgp(struct Body *m)
 
 /**
  * mutt_is_application_smime - Does the message use S/MIME?
- * @param m Body of email
+ * @param b Body of email
  * @retval >0 Message uses S/MIME, e.g. #SMIME_ENCRYPT
  * @retval  0 Message doesn't use S/MIME, (#SEC_NO_FLAGS)
  */
-SecurityFlags mutt_is_application_smime(struct Body *m)
+SecurityFlags mutt_is_application_smime(struct Body *b)
 {
-  if (!m)
+  if (!b)
     return SEC_NO_FLAGS;
 
-  if (((m->type & TYPE_APPLICATION) == 0) || !m->subtype)
+  if (((b->type & TYPE_APPLICATION) == 0) || !b->subtype)
     return SEC_NO_FLAGS;
 
   char *t = NULL;
   bool complain = false;
   /* S/MIME MIME types don't need x- anymore, see RFC2311 */
-  if (mutt_istr_equal(m->subtype, "x-pkcs7-mime") || mutt_istr_equal(m->subtype, "pkcs7-mime"))
+  if (mutt_istr_equal(b->subtype, "x-pkcs7-mime") || mutt_istr_equal(b->subtype, "pkcs7-mime"))
   {
-    t = mutt_param_get(&m->parameter, "smime-type");
+    t = mutt_param_get(&b->parameter, "smime-type");
     if (t)
     {
       if (mutt_istr_equal(t, "enveloped-data"))
@@ -645,19 +645,19 @@ SecurityFlags mutt_is_application_smime(struct Body *m)
     /* Netscape 4.7 uses
      * Content-Description: S/MIME Encrypted Message
      * instead of Content-Type parameter */
-    if (mutt_istr_equal(m->description, "S/MIME Encrypted Message"))
+    if (mutt_istr_equal(b->description, "S/MIME Encrypted Message"))
       return SMIME_ENCRYPT;
     complain = true;
   }
-  else if (!mutt_istr_equal(m->subtype, "octet-stream"))
+  else if (!mutt_istr_equal(b->subtype, "octet-stream"))
     return SEC_NO_FLAGS;
 
-  t = mutt_param_get(&m->parameter, "name");
+  t = mutt_param_get(&b->parameter, "name");
 
   if (!t)
-    t = m->d_filename;
+    t = b->d_filename;
   if (!t)
-    t = m->filename;
+    t = b->filename;
   if (!t)
   {
     if (complain)
@@ -689,60 +689,60 @@ SecurityFlags mutt_is_application_smime(struct Body *m)
 
 /**
  * crypt_query - Check out the type of encryption used
- * @param m Body of email
+ * @param b Body of email
  * @retval num Flags, see #SecurityFlags
  * @retval 0   Error (#SEC_NO_FLAGS)
  *
  * Set the cached status values if there are any.
  */
-SecurityFlags crypt_query(struct Body *m)
+SecurityFlags crypt_query(struct Body *b)
 {
-  if (!WithCrypto || !m)
+  if (!WithCrypto || !b)
     return SEC_NO_FLAGS;
 
   SecurityFlags rc = SEC_NO_FLAGS;
 
-  if (m->type == TYPE_APPLICATION)
+  if (b->type == TYPE_APPLICATION)
   {
     if (WithCrypto & APPLICATION_PGP)
-      rc |= mutt_is_application_pgp(m);
+      rc |= mutt_is_application_pgp(b);
 
     if (WithCrypto & APPLICATION_SMIME)
     {
-      rc |= mutt_is_application_smime(m);
-      if (rc && m->goodsig)
+      rc |= mutt_is_application_smime(b);
+      if (rc && b->goodsig)
         rc |= SEC_GOODSIGN;
-      if (rc && m->badsig)
+      if (rc && b->badsig)
         rc |= SEC_BADSIGN;
     }
   }
-  else if (((WithCrypto & APPLICATION_PGP) != 0) && (m->type == TYPE_TEXT))
+  else if (((WithCrypto & APPLICATION_PGP) != 0) && (b->type == TYPE_TEXT))
   {
-    rc |= mutt_is_application_pgp(m);
-    if (rc && m->goodsig)
+    rc |= mutt_is_application_pgp(b);
+    if (rc && b->goodsig)
       rc |= SEC_GOODSIGN;
   }
 
-  if (m->type == TYPE_MULTIPART)
+  if (b->type == TYPE_MULTIPART)
   {
-    rc |= mutt_is_multipart_encrypted(m);
-    rc |= mutt_is_multipart_signed(m);
-    rc |= mutt_is_malformed_multipart_pgp_encrypted(m);
+    rc |= mutt_is_multipart_encrypted(b);
+    rc |= mutt_is_multipart_signed(b);
+    rc |= mutt_is_malformed_multipart_pgp_encrypted(b);
 
-    if (rc && m->goodsig)
+    if (rc && b->goodsig)
       rc |= SEC_GOODSIGN;
 #ifdef USE_AUTOCRYPT
-    if (rc && m->is_autocrypt)
+    if (rc && b->is_autocrypt)
       rc |= SEC_AUTOCRYPT;
 #endif
   }
 
-  if ((m->type == TYPE_MULTIPART) || (m->type == TYPE_MESSAGE))
+  if ((b->type == TYPE_MULTIPART) || (b->type == TYPE_MESSAGE))
   {
-    SecurityFlags u = m->parts ? SEC_ALL_FLAGS : SEC_NO_FLAGS; /* Bits set in all parts */
+    SecurityFlags u = b->parts ? SEC_ALL_FLAGS : SEC_NO_FLAGS; /* Bits set in all parts */
     SecurityFlags w = SEC_NO_FLAGS; /* Bits set in any part  */
 
-    for (struct Body *b = m->parts; b; b = b->next)
+    for (b = b->parts; b; b = b->next)
     {
       const SecurityFlags v = crypt_query(b);
       u &= v;
@@ -1117,13 +1117,13 @@ bool mutt_should_hide_protected_subject(struct Email *e)
 /**
  * mutt_protected_headers_handler - Process a protected header - Implements ::handler_t
  */
-int mutt_protected_headers_handler(struct Body *a, struct State *s)
+int mutt_protected_headers_handler(struct Body *b, struct State *s)
 {
   const bool c_crypt_protected_headers_read =
       cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
-  if (c_crypt_protected_headers_read && a->mime_headers)
+  if (c_crypt_protected_headers_read && b->mime_headers)
   {
-    if (a->mime_headers->subject)
+    if (b->mime_headers->subject)
     {
       const bool display = (s->flags & MUTT_DISPLAY);
 
@@ -1135,7 +1135,7 @@ int mutt_protected_headers_handler(struct Body *a, struct State *s)
       const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
       int wraplen = display ? mutt_window_wrap_cols(s->wraplen, c_wrap) : 0;
 
-      mutt_write_one_header(s->fp_out, "Subject", a->mime_headers->subject, s->prefix,
+      mutt_write_one_header(s->fp_out, "Subject", b->mime_headers->subject, s->prefix,
                             wraplen, display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
       state_puts(s, "\n");
     }
@@ -1147,53 +1147,53 @@ int mutt_protected_headers_handler(struct Body *a, struct State *s)
 /**
  * mutt_signed_handler - Verify a "multipart/signed" body - Implements ::handler_t
  */
-int mutt_signed_handler(struct Body *a, struct State *s)
+int mutt_signed_handler(struct Body *b, struct State *s)
 {
   if (!WithCrypto)
     return -1;
 
   bool inconsistent = false;
-  struct Body *b = a;
+  struct Body *top = b;
   struct Body **signatures = NULL;
   int sigcnt = 0;
   int rc = 0;
   struct Buffer *tempfile = NULL;
 
-  a = a->parts;
-  SecurityFlags signed_type = mutt_is_multipart_signed(b);
+  b = b->parts;
+  SecurityFlags signed_type = mutt_is_multipart_signed(top);
   if (signed_type == SEC_NO_FLAGS)
   {
     /* A null protocol value is already checked for in mutt_body_handler() */
     state_printf(s,
                  _("[-- Error: "
                    "Unknown multipart/signed protocol %s --]\n\n"),
-                 mutt_param_get(&b->parameter, "protocol"));
-    return mutt_body_handler(a, s);
+                 mutt_param_get(&top->parameter, "protocol"));
+    return mutt_body_handler(b, s);
   }
 
-  if (!(a && a->next))
+  if (!(b && b->next))
     inconsistent = true;
   else
   {
     switch (signed_type)
     {
       case SEC_SIGN:
-        if ((a->next->type != TYPE_MULTIPART) || !mutt_istr_equal(a->next->subtype, "mixed"))
+        if ((b->next->type != TYPE_MULTIPART) || !mutt_istr_equal(b->next->subtype, "mixed"))
         {
           inconsistent = true;
         }
         break;
       case PGP_SIGN:
-        if ((a->next->type != TYPE_APPLICATION) ||
-            !mutt_istr_equal(a->next->subtype, "pgp-signature"))
+        if ((b->next->type != TYPE_APPLICATION) ||
+            !mutt_istr_equal(b->next->subtype, "pgp-signature"))
         {
           inconsistent = true;
         }
         break;
       case SMIME_SIGN:
-        if ((a->next->type != TYPE_APPLICATION) ||
-            (!mutt_istr_equal(a->next->subtype, "x-pkcs7-signature") &&
-             !mutt_istr_equal(a->next->subtype, "pkcs7-signature")))
+        if ((b->next->type != TYPE_APPLICATION) ||
+            (!mutt_istr_equal(b->next->subtype, "x-pkcs7-signature") &&
+             !mutt_istr_equal(b->next->subtype, "pkcs7-signature")))
         {
           inconsistent = true;
         }
@@ -1206,19 +1206,19 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   {
     state_attach_puts(s, _("[-- Error: Missing or bad-format multipart/signed "
                            "signature --]\n\n"));
-    return mutt_body_handler(a, s);
+    return mutt_body_handler(b, s);
   }
 
   if (s->flags & MUTT_DISPLAY)
   {
-    crypt_fetch_signatures(&signatures, a->next, &sigcnt);
+    crypt_fetch_signatures(&signatures, b->next, &sigcnt);
 
     if (sigcnt != 0)
     {
       tempfile = mutt_buffer_pool_get();
       mutt_buffer_mktemp(tempfile);
       bool goodsig = true;
-      if (crypt_write_signed(a, s, mutt_buffer_string(tempfile)) == 0)
+      if (crypt_write_signed(b, s, mutt_buffer_string(tempfile)) == 0)
       {
         for (int i = 0; i < sigcnt; i++)
         {
@@ -1253,13 +1253,13 @@ int mutt_signed_handler(struct Body *a, struct State *s)
       mutt_file_unlink(mutt_buffer_string(tempfile));
       mutt_buffer_pool_release(&tempfile);
 
-      b->goodsig = goodsig;
-      b->badsig = !goodsig;
+      top->goodsig = goodsig;
+      top->badsig = !goodsig;
 
       /* Now display the signed body */
       state_attach_puts(s, _("[-- The following data is signed --]\n\n"));
 
-      mutt_protected_headers_handler(a, s);
+      mutt_protected_headers_handler(b, s);
 
       FREE(&signatures);
     }
@@ -1270,7 +1270,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
     }
   }
 
-  rc = mutt_body_handler(a, s);
+  rc = mutt_body_handler(b, s);
 
   if ((s->flags & MUTT_DISPLAY) && (sigcnt != 0))
     state_attach_puts(s, _("\n[-- End of signed data --]\n"));

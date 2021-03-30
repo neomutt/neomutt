@@ -142,18 +142,18 @@ void         crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailLis
 void         crypt_forget_passphrase(void);
 int          crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode);
 void         crypt_opportunistic_encrypt(struct Email *e);
-SecurityFlags crypt_query(struct Body *m);
+SecurityFlags crypt_query(struct Body *b);
 bool         crypt_valid_passphrase(SecurityFlags flags);
-SecurityFlags mutt_is_application_pgp(struct Body *m);
-SecurityFlags mutt_is_application_smime(struct Body *m);
+SecurityFlags mutt_is_application_pgp(struct Body *b);
+SecurityFlags mutt_is_application_smime(struct Body *b);
 SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
 SecurityFlags mutt_is_multipart_encrypted(struct Body *b);
 SecurityFlags mutt_is_multipart_signed(struct Body *b);
 int          mutt_is_valid_multipart_pgp_encrypted(struct Body *b);
 int          mutt_protect(struct Email *e, char *keylist, bool postpone);
-int          mutt_protected_headers_handler(struct Body *m, struct State *s);
+int          mutt_protected_headers_handler(struct Body *b, struct State *s);
 bool         mutt_should_hide_protected_subject(struct Email *e);
-int          mutt_signed_handler(struct Body *a, struct State *s);
+int          mutt_signed_handler(struct Body *b, struct State *s);
 
 /* cryptglue.c */
 void         crypt_cleanup(void);
