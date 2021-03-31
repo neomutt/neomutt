@@ -152,13 +152,14 @@ bool crypt_valid_passphrase(SecurityFlags flags)
 
 /**
  * mutt_protect - Encrypt and/or sign a message
+ * @param m        Current Mailbox
  * @param e        Email
  * @param keylist  List of keys to encrypt to (space-separated)
  * @param postpone When true, signing is automatically disabled
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_protect(struct Email *e, char *keylist, bool postpone)
+int mutt_protect(struct Mailbox *m, struct Email *e, char *keylist, bool postpone)
 {
   struct Body *pbody = NULL, *tmp_pbody = NULL;
   struct Body *tmp_smime_pbody = NULL;
@@ -315,7 +316,6 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (c_autocrypt && !postpone && (security & SEC_AUTOCRYPT))
   {
-    struct Mailbox *m = ctx_mailbox(Context);
     mutt_autocrypt_generate_gossip_list(m, e);
   }
 #endif
@@ -942,6 +942,7 @@ cleanup:
 
 /**
  * crypt_get_keys - Check we have all the keys we need
+ * @param[in]  m           Current Mailbox
  * @param[in]  e           Email with addresses to match
  * @param[out] keylist     Keys needed
  * @param[in]  oppenc_mode If true, use opportunistic encryption
@@ -954,7 +955,7 @@ cleanup:
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
+int crypt_get_keys(struct Mailbox *m, struct Email *e, char **keylist, bool oppenc_mode)
 {
   if (!WithCrypto)
     return 0;
@@ -971,7 +972,6 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
 #ifdef USE_AUTOCRYPT
   if (!oppenc_mode && (e->security & SEC_AUTOCRYPT))
   {
-    struct Mailbox *m = ctx_mailbox(Context);
     if (mutt_autocrypt_ui_recommendation(m, e, keylist) <= AUTOCRYPT_REC_NO)
       return -1;
     return 0;
@@ -1040,12 +1040,13 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
 
 /**
  * crypt_opportunistic_encrypt - Can all recipients be determined
+ * @param m Current Mailbox
  * @param e Email
  *
  * Check if all recipients keys can be automatically determined.
  * Enable encryption if they can, otherwise disable encryption.
  */
-void crypt_opportunistic_encrypt(struct Email *e)
+void crypt_opportunistic_encrypt(struct Mailbox *m, struct Email *e)
 {
   if (!WithCrypto)
     return;
@@ -1057,7 +1058,7 @@ void crypt_opportunistic_encrypt(struct Email *e)
 
   char *pgpkeylist = NULL;
 
-  crypt_get_keys(e, &pgpkeylist, 1);
+  crypt_get_keys(m, e, &pgpkeylist, 1);
   if (pgpkeylist)
   {
     e->security |= SEC_ENCRYPT;

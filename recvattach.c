@@ -45,7 +45,6 @@
 #include "send/lib.h"
 #include "attachments.h"
 #include "commands.h"
-#include "context.h"
 #include "format_flags.h"
 #include "handler.h"
 #include "hdrline.h"
@@ -71,8 +70,8 @@ static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *men
 
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
 
-#define CHECK_READONLY                                                         \
-  if (!Context || !Context->mailbox || Context->mailbox->readonly)             \
+#define CHECK_READONLY(m)                                                      \
+  if (!m || m->readonly)                                                       \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Mailbox_is_read_only));                                       \
@@ -1565,13 +1564,12 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 
 /**
  * dlg_select_attachment - Show the attachments in a Menu
+ * @param m Mailbox
  * @param e Email
  */
-void dlg_select_attachment(struct Email *e)
+void dlg_select_attachment(struct Mailbox *m, struct Email *e)
 {
   int op = OP_NULL;
-
-  struct Mailbox *m = Context ? Context->mailbox : NULL;
 
   /* make sure we have parsed this message */
   mutt_parse_mime_message(m, e);
@@ -1602,7 +1600,7 @@ void dlg_select_attachment(struct Email *e)
     if (op == OP_NULL)
       op = mutt_menu_loop(menu);
     window_redraw(dlg, true);
-    if (!Context)
+    if (!m)
       return;
     switch (op)
     {
@@ -1685,7 +1683,7 @@ void dlg_select_attachment(struct Email *e)
       }
 
       case OP_DELETE:
-        CHECK_READONLY;
+        CHECK_READONLY(m);
 
 #ifdef USE_POP
         if (m->type == MUTT_POP)
@@ -1758,7 +1756,7 @@ void dlg_select_attachment(struct Email *e)
         break;
 
       case OP_UNDELETE:
-        CHECK_READONLY;
+        CHECK_READONLY(m);
         if (!menu->tagprefix)
         {
           CUR_ATTACH->body->deleted = false;
@@ -1786,7 +1784,7 @@ void dlg_select_attachment(struct Email *e)
 
       case OP_RESEND:
         CHECK_ATTACH;
-        mutt_attach_resend(CUR_ATTACH->fp, Context, actx,
+        mutt_attach_resend(CUR_ATTACH->fp, m, actx,
                            menu->tagprefix ? NULL : CUR_ATTACH->body);
         menu->redraw = REDRAW_FULL;
         break;
