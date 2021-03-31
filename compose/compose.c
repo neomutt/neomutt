@@ -673,21 +673,21 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
 /**
  * update_crypt_info - Update the crypto info
  * @param rd Email and other compose data
+ * @param m  Current Mailbox
  */
-static void update_crypt_info(struct ComposeRedrawData *rd)
+static void update_crypt_info(struct ComposeRedrawData *rd, struct Mailbox *m)
 {
   struct Email *e = rd->email;
 
   const bool c_crypt_opportunistic_encrypt =
       cs_subset_bool(rd->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt)
-    crypt_opportunistic_encrypt(e);
+    crypt_opportunistic_encrypt(m, e);
 
 #ifdef USE_AUTOCRYPT
   const bool c_autocrypt = cs_subset_bool(rd->sub, "autocrypt");
   if (c_autocrypt)
   {
-    struct Mailbox *m = ctx_mailbox(Context);
     rd->autocrypt_rec = mutt_autocrypt_ui_recommendation(m, e, NULL);
 
     /* Anything that enables SEC_ENCRYPT or SEC_SIGN, or turns on SMIME
@@ -1480,6 +1480,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
   bool loop = true;
   bool fcc_set = false; /* has the user edited the Fcc: field ? */
   struct ComposeRedrawData redraw = { 0 };
+  struct Mailbox *m = ctx_mailbox(Context);
 
   STAILQ_INIT(&redraw.to_list);
   STAILQ_INIT(&redraw.cc_list);
@@ -1567,7 +1568,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
   actx->email = e;
   update_menu(actx, menu, true);
 
-  update_crypt_info(rd);
+  update_crypt_info(rd, m);
 
   /* Since this is rather long lived, we don't use the pool */
   struct Buffer fname = mutt_buffer_make(PATH_MAX);
@@ -1593,7 +1594,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
       case OP_COMPOSE_EDIT_FROM:
         if (edit_address_list(HDR_FROM, &e->env->from))
         {
-          update_crypt_info(rd);
+          update_crypt_info(rd, m);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           redraw_env = true;
         }
@@ -1607,7 +1608,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 #endif
         if (edit_address_list(HDR_TO, &e->env->to))
         {
-          update_crypt_info(rd);
+          update_crypt_info(rd, m);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           redraw_env = true;
         }
@@ -1622,7 +1623,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 #endif
         if (edit_address_list(HDR_BCC, &e->env->bcc))
         {
-          update_crypt_info(rd);
+          update_crypt_info(rd, m);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           redraw_env = true;
         }
@@ -1637,7 +1638,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 #endif
         if (edit_address_list(HDR_CC, &e->env->cc))
         {
-          update_crypt_info(rd);
+          update_crypt_info(rd, m);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           redraw_env = true;
         }
@@ -1754,7 +1755,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
           FREE(&err);
         }
-        update_crypt_info(rd);
+        update_crypt_info(rd, m);
         redraw_env = true;
 
         mutt_rfc3676_space_stuff(e);
@@ -2091,8 +2092,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           }
         }
 
-        if ((mutt_buffer_enter_fname(prompt, &fname, true, ctx_mailbox(Context),
-                                     false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1) ||
+        if ((mutt_buffer_enter_fname(prompt, &fname, true, m, false, NULL, NULL,
+                                     MUTT_SEL_NO_FLAGS) == -1) ||
             mutt_buffer_is_empty(&fname))
         {
           break;
@@ -2125,32 +2126,30 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
         menu->redraw = REDRAW_FULL;
 
-        struct Mailbox *m = mx_path_resolve(mutt_buffer_string(&fname));
-        bool old_readonly = m->readonly;
-        if (!mx_mbox_open(m, MUTT_READONLY))
+        struct Mailbox *m_attach = mx_path_resolve(mutt_buffer_string(&fname));
+        bool old_readonly = m_attach->readonly;
+        if (!mx_mbox_open(m_attach, MUTT_READONLY))
         {
           mutt_error(_("Unable to open mailbox %s"), mutt_buffer_string(&fname));
-          mx_fastclose_mailbox(m);
-          m = NULL;
+          mx_fastclose_mailbox(m_attach);
+          m_attach = NULL;
           break;
         }
-        if (m->msg_count == 0)
+        if (m_attach->msg_count == 0)
         {
-          mx_mbox_close(m);
+          mx_mbox_close(m_attach);
           mutt_error(_("No messages in that folder"));
           break;
         }
 
-        struct Context *ctx_cur = Context; /* remember current folder and sort methods */
         const enum SortType old_sort = cs_subset_sort(sub, "sort"); /* `$sort`, `$sort_aux` could be changed in mutt_index_menu() */
         const enum SortType old_sort_aux = cs_subset_sort(sub, "sort_aux");
 
-        Context = ctx_new(m);
         OptAttachMsg = true;
         mutt_message(_("Tag the messages you want to attach"));
         struct MuttWindow *dlgindex = index_pager_init();
         dialog_push(dlgindex);
-        mutt_index_menu(dlgindex);
+        mutt_index_menu(dlgindex, m_attach);
         dialog_pop();
         index_pager_shutdown(dlgindex);
         mutt_window_free(&dlgindex);
@@ -2158,8 +2157,6 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
         if (!Context)
         {
-          /* go back to the folder we started from */
-          Context = ctx_cur;
           /* Restore old $sort and $sort_aux */
           cs_subset_str_native_set(sub, "sort", old_sort, NULL);
           cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
@@ -2168,16 +2165,15 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
 
         bool added_attachment = false;
-        for (int i = 0; i < Context->mailbox->msg_count; i++)
+        for (int i = 0; i < m_attach->msg_count; i++)
         {
-          if (!Context->mailbox->emails[i])
+          if (!m_attach->emails[i])
             break;
-          if (!message_is_tagged(Context->mailbox->emails[i]))
+          if (!message_is_tagged(m_attach->emails[i]))
             continue;
 
           struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-          ap->body = mutt_make_message_attach(Context->mailbox,
-                                              Context->mailbox->emails[i], true, sub);
+          ap->body = mutt_make_message_attach(m_attach, m_attach->emails[i], true, sub);
           if (ap->body)
           {
             added_attachment = true;
@@ -2191,12 +2187,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
         menu->redraw |= REDRAW_FULL;
 
-        Context->mailbox->readonly = old_readonly;
-        mx_fastclose_mailbox(Context->mailbox);
-        ctx_free(&Context);
+        m_attach->readonly = old_readonly;
+        mx_fastclose_mailbox(m_attach);
 
-        /* go back to the folder we started from */
-        Context = ctx_cur;
         /* Restore old $sort and $sort_aux */
         cs_subset_str_native_set(sub, "sort", old_sort, NULL);
         cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
@@ -2632,9 +2625,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
         if (actx->idxlen)
           e->body = actx->idx[0]->body;
-        if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname,
-                                     true, ctx_mailbox(Context), false, NULL,
-                                     NULL, MUTT_SEL_NO_FLAGS) != -1) &&
+        if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname, true, m,
+                                     false, NULL, NULL, MUTT_SEL_NO_FLAGS) != -1) &&
             !mutt_buffer_is_empty(&fname))
         {
           mutt_message(_("Writing message to %s ..."), mutt_buffer_string(&fname));
@@ -2673,10 +2665,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           }
           e->security &= ~APPLICATION_SMIME;
           e->security |= APPLICATION_PGP;
-          update_crypt_info(rd);
+          update_crypt_info(rd, m);
         }
-        e->security = crypt_pgp_send_menu(e);
-        update_crypt_info(rd);
+        e->security = crypt_pgp_send_menu(m, e);
+        update_crypt_info(rd, m);
         if (old_flags != e->security)
         {
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2713,10 +2705,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           }
           e->security &= ~APPLICATION_PGP;
           e->security |= APPLICATION_SMIME;
-          update_crypt_info(rd);
+          update_crypt_info(rd, m);
         }
-        e->security = crypt_smime_send_menu(e);
-        update_crypt_info(rd);
+        e->security = crypt_smime_send_menu(m, e);
+        update_crypt_info(rd, m);
         if (old_flags != e->security)
         {
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2755,10 +2747,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           }
           e->security &= ~APPLICATION_SMIME;
           e->security |= APPLICATION_PGP;
-          update_crypt_info(rd);
+          update_crypt_info(rd, m);
         }
         autocrypt_compose_menu(e, sub);
-        update_crypt_info(rd);
+        update_crypt_info(rd, m);
         if (old_flags != e->security)
         {
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);

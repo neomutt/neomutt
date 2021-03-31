@@ -207,21 +207,20 @@ void mutt_update_num_postponed(void)
  */
 static void post_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
-  struct Context *ctx = menu->mdata;
+  struct Mailbox *m = menu->mdata;
 
   const char *const c_index_format =
       cs_subset_string(NeoMutt->sub, "index_format");
-  mutt_make_string(buf, buflen, menu->win_index->state.cols,
-                   NONULL(c_index_format), ctx->mailbox, ctx->msg_in_pager,
-                   ctx->mailbox->emails[line], MUTT_FORMAT_ARROWCURSOR, NULL);
+  mutt_make_string(buf, buflen, menu->win_index->state.cols, NONULL(c_index_format),
+                   m, -1, m->emails[line], MUTT_FORMAT_ARROWCURSOR, NULL);
 }
 
 /**
  * dlg_select_postponed_email - Create a Menu to select a postponed message
- * @param ctx Context
+ * @param m Mailbox
  * @retval ptr Email
  */
-static struct Email *dlg_select_postponed_email(struct Context *ctx)
+static struct Email *dlg_select_postponed_email(struct Mailbox *m)
 {
   int r = -1;
   bool done = false;
@@ -232,9 +231,9 @@ static struct Email *dlg_select_postponed_email(struct Context *ctx)
   dlg->help_menu = MENU_POSTPONE;
 
   menu->make_entry = post_make_entry;
-  menu->max = ctx->mailbox->msg_count;
+  menu->max = m->msg_count;
   menu->title = _("Postponed Messages");
-  menu->mdata = ctx;
+  menu->mdata = m;
   menu->custom_search = true;
   mutt_menu_push_current(menu);
 
@@ -252,9 +251,8 @@ static struct Email *dlg_select_postponed_email(struct Context *ctx)
       case OP_DELETE:
       case OP_UNDELETE:
         /* should deleted draft messages be saved in the trash folder? */
-        mutt_set_flag(ctx->mailbox, ctx->mailbox->emails[menu->current],
-                      MUTT_DELETE, (op == OP_DELETE));
-        PostCount = ctx->mailbox->msg_count - ctx->mailbox->msg_deleted;
+        mutt_set_flag(m, m->emails[menu->current], MUTT_DELETE, (op == OP_DELETE));
+        PostCount = m->msg_count - m->msg_deleted;
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve && (menu->current < menu->max - 1))
         {
@@ -277,7 +275,7 @@ static struct Email *dlg_select_postponed_email(struct Context *ctx)
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
       case OP_SEARCH:
-        menu->current = mutt_search_command(ctx->mailbox, menu, menu->current, op);
+        menu->current = mutt_search_command(m, menu, menu->current, op);
         if (menu->current == -1)
           menu->current = menu->oldcurrent;
         else
@@ -300,7 +298,7 @@ static struct Email *dlg_select_postponed_email(struct Context *ctx)
   mutt_menu_free(&menu);
   dialog_destroy_simple_index(&dlg);
 
-  return (r > -1) ? ctx->mailbox->emails[r] : NULL;
+  return (r > -1) ? m->emails[r] : NULL;
 }
 
 /**
@@ -319,29 +317,8 @@ static void hardclose(struct Mailbox *m)
 }
 
 /**
- * get_postponed - Get a postponed Email
- * @param m   Mailbox
- * @param hdr Envelope/attachment info for recalled message
- * @retval ptr Email
- */
-static struct Email *get_postponed(struct Mailbox *m, struct Email *hdr)
-{
-  struct Email *e = NULL;
-  struct Context *ctx_post = ctx_new(m);
-  if ((e = dlg_select_postponed_email(ctx_post)))
-  {
-    if (mutt_prepare_template(NULL, m, hdr, e, false) < 0)
-    {
-      e = NULL;
-    }
-  }
-  ctx_free(&ctx_post);
-  return e;
-}
-
-/**
  * mutt_get_postponed - Recall a postponed message
- * @param[in]  ctx     Context info, used when recalling a message to which we reply
+ * @param[in]  m_cur   Current mailbox
  * @param[in]  hdr     envelope/attachment info for recalled message
  * @param[out] cur     if message was a reply, 'cur' is set to the message which 'hdr' is in reply to
  * @param[in]  fcc     fcc for the recalled message
@@ -349,7 +326,7 @@ static struct Email *get_postponed(struct Mailbox *m, struct Email *hdr)
  * @retval 0          Normal exit
  * @retval #SEND_REPLY Recalled message is a reply
  */
-int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
+int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
                        struct Email **cur, struct Buffer *fcc)
 {
   const char *const c_postponed = cs_subset_string(NeoMutt->sub, "postponed");
@@ -360,9 +337,8 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   int rc = SEND_POSTPONED;
   const char *p = NULL;
 
-  struct Mailbox *m_ctx = ctx ? ctx->mailbox : NULL;
   struct Mailbox *m = mx_path_resolve(c_postponed);
-  if (m_ctx != m)
+  if (m_cur != m)
   {
     if (!mx_mbox_open(m, MUTT_NOSORT))
     {
@@ -388,7 +364,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   if (m->msg_count == 0)
   {
     PostCount = 0;
-    if (m_ctx != m)
+    if (m_cur != m)
       mx_fastclose_mailbox(m);
     mutt_error(_("No postponed messages"));
     return -1;
@@ -399,9 +375,18 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     /* only one message, so just use that one. */
     e = m->emails[0];
   }
-  else if (!(e = get_postponed(m, hdr)))
+  else if (!(e = dlg_select_postponed_email(m)))
   {
-    if (m_ctx != m)
+    if (m_cur != m)
+    {
+      hardclose(m);
+    }
+    return -1;
+  }
+
+  if (mutt_prepare_template(NULL, m, hdr, e, false) < 0)
+  {
+    if (m_cur != m)
     {
       hardclose(m);
     }
@@ -418,7 +403,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   /* avoid the "purge deleted messages" prompt */
   const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
   cs_subset_str_native_set(NeoMutt->sub, "delete", MUTT_YES, NULL);
-  if (m_ctx != m)
+  if (m_cur != m)
   {
     hardclose(m);
   }
@@ -433,9 +418,9 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
       /* if a mailbox is currently open, look to see if the original message
        * the user attempted to reply to is in this mailbox */
       p = mutt_str_skip_email_wsp(np->data + plen);
-      if (!ctx->mailbox->id_hash)
-        ctx->mailbox->id_hash = mutt_make_id_hash(ctx->mailbox);
-      *cur = mutt_hash_find(ctx->mailbox->id_hash, p);
+      if (!m_cur->id_hash)
+        m_cur->id_hash = mutt_make_id_hash(m_cur);
+      *cur = mutt_hash_find(m_cur->id_hash, p);
 
       if (*cur)
         rc |= SEND_REPLY;
@@ -495,7 +480,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   const bool c_crypt_opportunistic_encrypt =
       cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt)
-    crypt_opportunistic_encrypt(hdr);
+    crypt_opportunistic_encrypt(m_cur, hdr);
 
   return rc;
 }

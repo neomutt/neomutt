@@ -390,10 +390,10 @@ int crypt_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
 /**
  * crypt_pgp_send_menu - Wrapper for CryptModuleSpecs::send_menu()
  */
-SecurityFlags crypt_pgp_send_menu(struct Email *e)
+SecurityFlags crypt_pgp_send_menu(struct Mailbox *m, struct Email *e)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, send_menu))
-    return CRYPT_MOD_CALL(PGP, send_menu)(e);
+    return CRYPT_MOD_CALL(PGP, send_menu)(m, e);
 
   return 0;
 }
@@ -536,10 +536,10 @@ int crypt_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 /**
  * crypt_smime_send_menu - Wrapper for CryptModuleSpecs::send_menu()
  */
-SecurityFlags crypt_smime_send_menu(struct Email *e)
+SecurityFlags crypt_smime_send_menu(struct Mailbox *m, struct Email *e)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, send_menu))
-    return CRYPT_MOD_CALL(SMIME, send_menu)(e);
+    return CRYPT_MOD_CALL(SMIME, send_menu)(m, e);
 
   return 0;
 }

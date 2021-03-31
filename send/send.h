@@ -65,8 +65,8 @@ void            mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *
 void            mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m, struct Email *e, struct ConfigSubset *sub);
 void            mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv, struct ConfigSubset *sub);
 void            mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out, struct ConfigSubset *sub);
-int             mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *e_cur, struct ConfigSubset *sub);
-int             mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile, struct Context *ctx, struct EmailList *el, struct ConfigSubset *sub);
+int             mutt_resend_message(FILE *fp, struct Mailbox *m, struct Email *e_cur, struct ConfigSubset *sub);
+int             mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile, struct Mailbox *m, struct EmailList *el, struct ConfigSubset *sub);
 void            mutt_set_followup_to(struct Envelope *env, struct ConfigSubset *sub);
 
 #endif /* MUTT_SEND_H */
