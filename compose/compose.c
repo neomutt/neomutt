@@ -123,6 +123,7 @@ struct ComposeRedrawData
   struct MuttWindow *win_attach;   ///< List of Attachments
   struct MuttWindow *win_cbar;     ///< Compose bar
 
+  struct AttachCtx *actx;   ///< Attachments
   struct ConfigSubset *sub; ///< Inherited config items
 };
 
@@ -324,13 +325,12 @@ static void init_header_padding(void)
 }
 
 /**
- * snd_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry()
+ * compose_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry()
  */
-static void snd_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static void compose_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
-  struct AttachCtx *actx = menu->mdata;
-
-  const struct ComposeRedrawData *rd = (const struct ComposeRedrawData *) menu->redraw_data;
+  const struct ComposeRedrawData *rd = menu->mdata;
+  struct AttachCtx *actx = rd->actx;
   const struct ConfigSubset *sub = rd->sub;
 
   const char *const c_attach_format = cs_subset_string(sub, "attach_format");
@@ -1117,21 +1117,20 @@ static int delete_attachment(struct AttachCtx *actx, int x)
 }
 
 /**
- * mutt_gen_compose_attach_list - Generate the attachment list for the compose screen
+ * gen_attach_list - Generate the attachment list for the compose screen
  * @param actx        Attachment context
  * @param m           Attachment
  * @param parent_type Attachment type, e.g #TYPE_MULTIPART
  * @param level       Nesting depth of attachment
  */
-static void mutt_gen_compose_attach_list(struct AttachCtx *actx, struct Body *m,
-                                         int parent_type, int level)
+static void gen_attach_list(struct AttachCtx *actx, struct Body *m, int parent_type, int level)
 {
   for (; m; m = m->next)
   {
     if ((m->type == TYPE_MULTIPART) && m->parts &&
         (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(m)))
     {
-      mutt_gen_compose_attach_list(actx, m->parts, m->type, level);
+      gen_attach_list(actx, m->parts, m->type, level);
     }
     else
     {
@@ -1148,18 +1147,20 @@ static void mutt_gen_compose_attach_list(struct AttachCtx *actx, struct Body *m,
 }
 
 /**
- * mutt_update_compose_menu - Redraw the compose window
+ * update_menu - Redraw the compose window
  * @param actx Attachment context
  * @param menu Current menu
  * @param init If true, initialise the attachment list
  */
-static void mutt_update_compose_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
+static void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
 {
   if (init)
   {
-    mutt_gen_compose_attach_list(actx, actx->email->body, -1, 0);
+    gen_attach_list(actx, actx->email->body, -1, 0);
     mutt_attach_init(actx);
-    menu->mdata = actx;
+
+    struct ComposeRedrawData *rd = menu->mdata;
+    rd->actx = actx;
   }
 
   mutt_update_tree(actx);
@@ -1189,7 +1190,7 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
     actx->idx[actx->idxlen - 1]->body->next = ap->body;
   ap->body->aptr = ap;
   mutt_actx_add_attach(actx, ap);
-  mutt_update_compose_menu(actx, menu, false);
+  update_menu(actx, menu, false);
   menu->current = actx->vcount - 1;
 }
 
@@ -1204,11 +1205,11 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
 static unsigned long cum_attachs_size(struct Menu *menu)
 {
   size_t s = 0;
-  struct AttachCtx *actx = menu->mdata;
-  struct AttachPtr **idx = actx->idx;
   struct Content *info = NULL;
   struct Body *b = NULL;
-  struct ComposeRedrawData *rd = (struct ComposeRedrawData *) menu->redraw_data;
+  struct ComposeRedrawData *rd = menu->mdata;
+  struct AttachCtx *actx = rd->actx;
+  struct AttachPtr **idx = actx->idx;
   struct ConfigSubset *sub = rd->sub;
 
   for (unsigned short i = 0; i < actx->idxlen; i++)
@@ -1305,7 +1306,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
  */
 static void compose_custom_redraw(struct Menu *menu)
 {
-  struct ComposeRedrawData *rd = menu->redraw_data;
+  struct ComposeRedrawData *rd = menu->mdata;
   if (!rd)
     return;
 
@@ -1542,15 +1543,15 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
   menu->win_index = attach;
   menu->win_ibar = ebar;
 
-  menu->make_entry = snd_make_entry;
+  menu->make_entry = compose_make_entry;
   menu->tag = attach_tag;
   menu->custom_redraw = compose_custom_redraw;
-  menu->redraw_data = rd;
+  menu->mdata = rd;
   mutt_menu_push_current(menu);
 
   struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;
-  mutt_update_compose_menu(actx, menu, true);
+  update_menu(actx, menu, true);
 
   update_crypt_info(rd);
 
@@ -1749,7 +1750,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         if (actx->idxlen && actx->idx[actx->idxlen - 1]->body->next)
         {
           mutt_actx_entries_free(actx);
-          mutt_update_compose_menu(actx, menu, true);
+          update_menu(actx, menu, true);
         }
 
         menu->redraw = REDRAW_FULL;
@@ -2198,7 +2199,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
           CUR_ATTACH->body->unlink = false;
         if (delete_attachment(actx, menu->current) == -1)
           break;
-        mutt_update_compose_menu(actx, menu, false);
+        update_menu(actx, menu, false);
         if (menu->current == 0)
           e->body = actx->idx[0]->body;
 

@@ -2081,7 +2081,7 @@ void mutt_clear_pager_position(void)
  */
 static void pager_custom_redraw(struct Menu *pager_menu)
 {
-  struct PagerRedrawData *rd = pager_menu->redraw_data;
+  struct PagerRedrawData *rd = pager_menu->mdata;
   struct Mailbox *m = ctx_mailbox(Context);
   char buf[1024];
   const bool c_tilde = cs_subset_bool(NeoMutt->sub, "tilde");
@@ -2435,7 +2435,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   pager_menu->win_ibar = extra->win_pbar;
 
   pager_menu->custom_redraw = pager_custom_redraw;
-  pager_menu->redraw_data = &rd;
+  pager_menu->mdata = &rd;
   mutt_menu_push_current(pager_menu);
 
   if (IsEmail(extra))
