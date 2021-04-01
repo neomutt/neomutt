@@ -1344,7 +1344,7 @@ cleanup:
  * @param e  Email
  * @param b  Attachment
  * @param fp File handle to the attachment
- * @retval true A structural change is made
+ * @retval true A Any change is made
  *
  * recvattach requires the return code to know when to regenerate the actx.
  */
@@ -1452,7 +1452,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
     e->security |= crypt_query(b);
   }
 
-  return structure_changed;
+  return structure_changed | type_changed;
 }
 
 /**
