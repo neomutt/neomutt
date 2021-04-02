@@ -27,12 +27,14 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "shared_data.h"
 #include "lib.h"
 #include "context.h"
+#include "mutt_globals.h"
 
 /**
  * index_shared_data_free - Free Index Data
@@ -83,6 +85,8 @@ void index_shared_data_set_context(struct IndexSharedData *shared, struct Contex
   {
     shared->ctx = ctx;
     flags |= NT_INDEX_CONTEXT;
+
+    Context = ctx;
   }
 
   struct Mailbox *m = ctx_mailbox(ctx);

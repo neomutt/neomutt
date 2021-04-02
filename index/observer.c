@@ -35,9 +35,8 @@
 #include "gui/lib.h"
 #include "alternates.h"
 #include "attachments.h"
-#include "context.h"
-#include "mutt_globals.h"
 #include "options.h"
+#include "shared_data.h"
 #include "subjectrx.h"
 
 /**
@@ -56,9 +55,10 @@ static int config_pager_index_lines(struct MuttWindow *dlg)
   struct MuttWindow *parent = win_pager->parent;
   if (parent->state.visible)
   {
+    struct IndexSharedData *shared = dlg->wdata;
     const short c_pager_index_lines =
         cs_subset_number(NeoMutt->sub, "pager_index_lines");
-    int vcount = ctx_mailbox(Context) ? Context->mailbox->vcount : 0;
+    int vcount = shared->mailbox ? shared->mailbox->vcount : 0;
     win_index->req_rows = MIN(c_pager_index_lines, vcount);
     win_index->size = MUTT_WIN_SIZE_FIXED;
 
@@ -86,7 +86,8 @@ static int config_pager_index_lines(struct MuttWindow *dlg)
  */
 static int config_reply_regex(struct MuttWindow *dlg)
 {
-  struct Mailbox *m = ctx_mailbox(Context);
+  struct IndexSharedData *shared = dlg->wdata;
+  struct Mailbox *m = shared->mailbox;
   if (!m)
     return 0;
 
@@ -193,9 +194,10 @@ static int index_subjrx_observer(struct NotifyCallback *nc)
   if (nc->event_type != NT_SUBJRX)
     return 0;
 
-  // struct MuttWindow *dlg = nc->global_data;
+  struct MuttWindow *dlg = nc->global_data;
+  struct IndexSharedData *shared = dlg->wdata;
 
-  subjrx_clear_mods(ctx_mailbox(Context));
+  subjrx_clear_mods(shared->mailbox);
   return 0;
 }
 
@@ -209,9 +211,10 @@ static int index_attach_observer(struct NotifyCallback *nc)
   if (nc->event_type != NT_ATTACH)
     return 0;
 
-  // struct MuttWindow *dlg = nc->global_data;
+  struct MuttWindow *dlg = nc->global_data;
+  struct IndexSharedData *shared = dlg->wdata;
 
-  mutt_attachments_reset(ctx_mailbox(Context));
+  mutt_attachments_reset(shared->mailbox);
   return 0;
 }
 
@@ -225,9 +228,10 @@ static int index_altern_observer(struct NotifyCallback *nc)
   if (nc->event_type != NT_ALTERN)
     return 0;
 
-  // struct MuttWindow *dlg = nc->global_data;
+  struct MuttWindow *dlg = nc->global_data;
+  struct IndexSharedData *shared = dlg->wdata;
 
-  mutt_alternates_reset(ctx_mailbox(Context));
+  mutt_alternates_reset(shared->mailbox);
   return 0;
 }
 
