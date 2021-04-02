@@ -2425,6 +2425,7 @@ int mutt_pager(struct PagerView *pview)
 
   //---------- local variables ------------------------------------------------
   struct Mailbox *m = pview->pdata->ctx ? pview->pdata->ctx->mailbox : NULL;
+  struct IndexSharedData *shared = dialog_find(pview->win_index)->wdata;
 
   struct Menu *pager_menu = NULL;
   struct PagerRedrawData rd = { 0 };
@@ -2605,7 +2606,7 @@ int mutt_pager(struct PagerView *pview)
 
             bool verbose = m->verbose;
             m->verbose = false;
-            mutt_update_index(rd.menu, pview->pdata->ctx, check, oldcount, e);
+            mutt_update_index(rd.menu, pview->pdata->ctx, check, oldcount, shared);
             m->verbose = verbose;
 
             rd.menu->max = m->vcount;
