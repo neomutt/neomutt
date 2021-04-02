@@ -40,11 +40,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "core/lib.h"
 #include "shared_data.h" // IWYU pragma: keep
 
 struct Context;
 struct Email;
-struct Mailbox;
 struct Menu;
 struct MuttWindow;
 
@@ -63,7 +63,7 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line);
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen);
 struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m);
 void mutt_set_header_color(struct Mailbox *m, struct Email *e);
-void mutt_update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, const struct Email *curr_email);
+void mutt_update_index(struct Menu *menu, struct Context *ctx, enum MxStatus check, int oldcount, struct IndexSharedData *shared);
 struct MuttWindow *index_pager_init(void);
 void index_pager_shutdown(struct MuttWindow *dlg);
 
