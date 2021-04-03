@@ -130,9 +130,6 @@ static enum IndexRetval op_check_traditional(struct IndexSharedData *shared,
     emaillist_clear(&el);
   }
 
-  if (priv->in_pager)
-    return IR_CONTINUE;
-
   return IR_VOID;
 }
 
@@ -200,10 +197,6 @@ static enum IndexRetval op_delete(struct IndexSharedData *shared,
       {
         priv->menu->current = priv->menu->oldcurrent;
         priv->menu->redraw |= REDRAW_CURRENT;
-      }
-      else if (priv->in_pager)
-      {
-        return IR_CONTINUE;
       }
       else
         priv->menu->redraw |= REDRAW_MOTION_RESYNC;
@@ -315,10 +308,6 @@ static enum IndexRetval op_display_message(struct IndexSharedData *shared,
     return IR_ERROR;
   }
 
-  /* This is used to redirect a single operation back here afterwards.  If
-   * mutt_display_message() returns 0, then this flag and pager state will
-   * be cleaned up after this switch statement. */
-  priv->in_pager = true;
   priv->menu->oldcurrent = priv->menu->current;
   if (shared->mailbox)
   {
@@ -407,9 +396,6 @@ static enum IndexRetval op_edit_type(struct IndexSharedData *shared,
   if (!shared->email)
     return IR_NO_ACTION;
   mutt_edit_content_type(shared->email, shared->email->body, NULL);
-  /* if we were in the pager, redisplay the message */
-  if (priv->in_pager)
-    return IR_CONTINUE;
 
   priv->menu->redraw = REDRAW_CURRENT;
   return IR_VOID;
@@ -444,12 +430,11 @@ static enum IndexRetval op_enter_command(struct IndexSharedData *shared,
 static enum IndexRetval op_exit(struct IndexSharedData *shared,
                                 struct IndexPrivateData *priv, int op)
 {
-  if ((!priv->in_pager) && priv->attach_msg)
+  if (priv->attach_msg)
     return IR_CONTINUE;
 
   const enum QuadOption c_quit = cs_subset_quad(shared->sub, "quit");
-  if ((!priv->in_pager) &&
-      (query_quadoption(c_quit, _("Exit NeoMutt without saving?")) == MUTT_YES))
+  if ((query_quadoption(c_quit, _("Exit NeoMutt without saving?")) == MUTT_YES))
   {
     if (shared->ctx)
     {
@@ -636,9 +621,6 @@ static enum IndexRetval op_jump(struct IndexSharedData *shared,
     priv->menu->current = e->vnum;
   }
 
-  if (priv->in_pager)
-    return IR_CONTINUE;
-
   priv->menu->redraw = REDRAW_FULL;
   //QWQ
   return 0;
@@ -731,9 +713,6 @@ static enum IndexRetval op_main_break_thread(struct IndexSharedData *shared,
     shared->mailbox->changed = true;
     mutt_message(_("Thread broken"));
 
-    if (priv->in_pager)
-      return IR_CONTINUE;
-
     priv->menu->redraw |= REDRAW_INDEX;
   }
   else
@@ -808,8 +787,6 @@ static enum IndexRetval op_main_change_folder(struct IndexSharedData *shared,
 
 changefoldercleanup:
   mutt_buffer_pool_release(&folderbuf);
-  if (priv->in_pager && pager_return)
-    return IR_CONTINUE;
 
   //QWQ
   return 0;
@@ -997,9 +974,6 @@ static enum IndexRetval op_main_link_threads(struct IndexSharedData *shared,
     emaillist_clear(&el);
   }
 
-  if (priv->in_pager)
-    return IR_CONTINUE;
-
   priv->menu->redraw |= REDRAW_INDEX;
   return IR_VOID;
 }
@@ -1092,8 +1066,6 @@ static enum IndexRetval op_main_modify_tags(struct IndexSharedData *shared,
       shared->email->quasi_deleted = !still_queried;
       m->changed = true;
     }
-    if (priv->in_pager)
-      return IR_CONTINUE;
 
     const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
     if (c_resolve)
@@ -1221,9 +1193,6 @@ static enum IndexRetval op_main_next_new(struct IndexSharedData *shared,
     mutt_message(_("Search wrapped to bottom"));
   }
 
-  if (priv->in_pager)
-    return IR_CONTINUE;
-
   priv->menu->redraw = REDRAW_MOTION;
   return IR_VOID;
 }
@@ -1261,10 +1230,6 @@ static enum IndexRetval op_main_next_thread(struct IndexSharedData *shared,
     else
       mutt_error(_("You are on the first thread"));
   }
-  else if (priv->in_pager)
-  {
-    return IR_CONTINUE;
-  }
   else
     priv->menu->redraw = REDRAW_MOTION;
 
@@ -1279,20 +1244,14 @@ static enum IndexRetval op_main_next_undeleted(struct IndexSharedData *shared,
 {
   if (priv->menu->current >= (shared->mailbox->vcount - 1))
   {
-    if (!priv->in_pager)
-      mutt_message(_("You are on the last message"));
+    mutt_message(_("You are on the last message"));
     return IR_ERROR;
   }
   priv->menu->current = ci_next_undeleted(shared->mailbox, priv->menu->current);
   if (priv->menu->current == -1)
   {
     priv->menu->current = priv->menu->oldcurrent;
-    if (!priv->in_pager)
-      mutt_error(_("No undeleted messages"));
-  }
-  else if (priv->in_pager)
-  {
-    return IR_CONTINUE;
+    mutt_error(_("No undeleted messages"));
   }
   else
     priv->menu->redraw = REDRAW_MOTION;
@@ -1338,12 +1297,7 @@ static enum IndexRetval op_main_prev_undeleted(struct IndexSharedData *shared,
   if (priv->menu->current == -1)
   {
     priv->menu->current = priv->menu->oldcurrent;
-    if (!priv->in_pager)
-      mutt_error(_("No undeleted messages"));
-  }
-  else if (priv->in_pager)
-  {
-    return IR_CONTINUE;
+    mutt_error(_("No undeleted messages"));
   }
   else
     priv->menu->redraw = REDRAW_MOTION;
@@ -1410,10 +1364,6 @@ static enum IndexRetval op_main_read_thread(struct IndexSharedData *shared,
       {
         priv->menu->current = priv->menu->oldcurrent;
       }
-      else if (priv->in_pager)
-      {
-        return IR_CONTINUE;
-      }
     }
     priv->menu->redraw |= REDRAW_INDEX;
   }
@@ -1431,10 +1381,6 @@ static enum IndexRetval op_main_root_message(struct IndexSharedData *shared,
   if (priv->menu->current < 0)
   {
     priv->menu->current = priv->menu->oldcurrent;
-  }
-  else if (priv->in_pager)
-  {
-    return IR_CONTINUE;
   }
   else
     priv->menu->redraw = REDRAW_MOTION;
@@ -1562,13 +1508,7 @@ static enum IndexRetval op_main_sync_folder(struct IndexSharedData *shared,
     ctx_free(&ctx);
   }
 
-  /* if we were in the pager, redisplay the message */
-  if (priv->in_pager)
-  {
-    return IR_CONTINUE;
-  }
-  else
-    priv->menu->redraw = REDRAW_FULL;
+  priv->menu->redraw = REDRAW_FULL;
 
   return IR_VOID;
 }
@@ -1728,13 +1668,10 @@ static enum IndexRetval op_next_entry(struct IndexSharedData *shared,
 {
   if (priv->menu->current >= (shared->mailbox->vcount - 1))
   {
-    if (!priv->in_pager)
-      mutt_message(_("You are on the last message"));
+    mutt_message(_("You are on the last message"));
     return IR_ERROR;
   }
   priv->menu->current++;
-  if (priv->in_pager)
-    return IR_CONTINUE;
 
   priv->menu->redraw = REDRAW_MOTION;
   return IR_VOID;
@@ -1772,13 +1709,10 @@ static enum IndexRetval op_prev_entry(struct IndexSharedData *shared,
 {
   if (priv->menu->current < 1)
   {
-    if (!priv->in_pager)
-      mutt_message(_("You are on the first message"));
+    mutt_message(_("You are on the first message"));
     return IR_ERROR;
   }
   priv->menu->current--;
-  if (priv->in_pager)
-    return IR_CONTINUE;
 
   priv->menu->redraw = REDRAW_MOTION;
   return IR_VOID;
@@ -2036,8 +1970,6 @@ static enum IndexRetval op_sort(struct IndexSharedData *shared,
     resort_index(shared->ctx, priv->menu);
     OptSearchInvalid = true;
   }
-  if (priv->in_pager)
-    return IR_CONTINUE;
 
   return IR_VOID;
 }
@@ -2175,8 +2107,6 @@ static enum IndexRetval op_toggle_write(struct IndexSharedData *shared,
 {
   if (mx_toggle_write(shared->mailbox) == 0)
   {
-    if (priv->in_pager)
-      return IR_CONTINUE;
   }
 
   return IR_VOID;
@@ -2430,7 +2360,6 @@ static enum IndexRetval op_get_children(struct IndexSharedData *shared,
   /* at least one message has been loaded */
   if (shared->mailbox->msg_count > oldmsgcount)
   {
-    struct Email *e_oldcur = mutt_get_virt_email(shared->mailbox, priv->menu->current);
     bool verbose = shared->mailbox->verbose;
 
     if (rc < 0)
@@ -2438,15 +2367,6 @@ static enum IndexRetval op_get_children(struct IndexSharedData *shared,
     mutt_sort_headers(shared->mailbox, shared->ctx->threads,
                       (op == OP_RECONSTRUCT_THREAD), &shared->ctx->vsize);
     shared->mailbox->verbose = verbose;
-
-    /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
-     * update the index */
-    if (priv->in_pager)
-    {
-      priv->menu->current = e_oldcur->vnum;
-      priv->menu->redraw = REDRAW_INDEX;
-      return IR_CONTINUE;
-    }
 
     /* if the root message was retrieved, move to it */
     struct Email *e = mutt_hash_find(shared->mailbox->id_hash, buf);
@@ -2475,12 +2395,6 @@ static enum IndexRetval op_get_children(struct IndexSharedData *shared,
   else if (rc >= 0)
   {
     mutt_error(_("No deleted messages found in the thread"));
-    /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
-     * update the index */
-    if (priv->in_pager)
-    {
-      return IR_CONTINUE;
-    }
   }
 
   return IR_VOID;
@@ -2627,8 +2541,6 @@ static enum IndexRetval op_main_change_group(struct IndexSharedData *shared,
 
 changefoldercleanup2:
   mutt_buffer_pool_release(&folderbuf);
-  if (priv->in_pager && pager_return)
-    return IR_CONTINUE;
 
   return IR_VOID;
 }
@@ -2753,8 +2665,6 @@ static enum IndexRetval op_main_entire_thread(struct IndexSharedData *shared,
       mutt_set_vnum(shared->mailbox);
     }
   }
-  if (priv->in_pager)
-    return IR_CONTINUE;
 
   return IR_VOID;
 }
