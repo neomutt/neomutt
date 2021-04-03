@@ -40,6 +40,7 @@ struct IndexPrivateData
   int  close;
   int  attach_msg;
   bool in_pager;
+  struct Menu *menu;
 };
 
 void                     index_private_data_free(struct MuttWindow *win, void **ptr);
