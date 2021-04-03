@@ -40,6 +40,10 @@ struct IndexPrivateData
   int  attach_msg;               ///< Are we in "attach message" mode?
   bool in_pager;                 ///< Is the Pager active?
   struct Menu *menu;             ///< Menu controlling the index
+  struct MuttWindow *win_index;  ///< Window for the Index
+  struct MuttWindow *win_ibar;   ///< Window for the Index Bar (status)
+  struct MuttWindow *win_pager;  ///< Window for the Pager
+  struct MuttWindow *win_pbar;   ///< Window for the Pager Bar
 };
 
 void                     index_private_data_free(struct MuttWindow *win, void **ptr);

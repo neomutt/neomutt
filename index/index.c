@@ -1149,13 +1149,13 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   struct IndexSharedData *shared = dlg->wdata;
   index_shared_data_set_context(shared, ctx_new(m_init));
 
-  struct MuttWindow *win_index = mutt_window_find(dlg, WT_INDEX);
-  struct MuttWindow *win_ibar = mutt_window_find(dlg, WT_INDEX_BAR);
-  struct MuttWindow *win_pager = mutt_window_find(dlg, WT_PAGER);
-  struct MuttWindow *win_pbar = mutt_window_find(dlg, WT_PAGER_BAR);
-
-  struct IndexPrivateData *priv = win_index->wdata;
+  struct MuttWindow *win_index2 = mutt_window_find(dlg, WT_INDEX);
+  struct IndexPrivateData *priv = win_index2->wdata;
   priv->attach_msg = OptAttachMsg;
+  priv->win_index = win_index2;
+  priv->win_ibar = mutt_window_find(dlg, WT_INDEX_BAR);
+  priv->win_pager = mutt_window_find(dlg, WT_PAGER);
+  priv->win_pbar = mutt_window_find(dlg, WT_PAGER_BAR);
 
   int op = OP_NULL;
 
@@ -1168,9 +1168,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   dlg->help_menu = MENU_MAIN;
 
   priv->menu = mutt_menu_new(MENU_MAIN);
-  priv->menu->pagelen = win_index->state.rows;
-  priv->menu->win_index = win_index;
-  priv->menu->win_ibar = win_ibar;
+  priv->menu->pagelen = priv->win_index->state.rows;
+  priv->menu->win_index = priv->win_index;
+  priv->menu->win_ibar = priv->win_ibar;
   priv->menu->mdata = shared;
 
   priv->menu->make_entry = index_make_entry;
@@ -2675,9 +2675,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         index_shared_data_set_email(
             shared, mutt_get_virt_email(shared->mailbox, priv->menu->current));
 
-        op = mutt_display_message(win_index, win_ibar, win_pager, win_pbar,
-                                  shared->mailbox, shared->email);
-        window_set_focus(win_index);
+        op = mutt_display_message(priv->win_index, priv->win_ibar, priv->win_pager,
+                                  priv->win_pbar, shared->mailbox, shared->email);
+        window_set_focus(priv->win_index);
         if (op < 0)
         {
           OptNeedResort = false;
@@ -3510,7 +3510,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
       case OP_ENTER_COMMAND:
         mutt_enter_command();
-        window_set_focus(win_index);
+        window_set_focus(priv->win_index);
         mutt_check_rescore(shared->mailbox);
         priv->menu->redraw = REDRAW_FULL;
         break;
