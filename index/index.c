@@ -1254,116 +1254,104 @@ int mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     if (op >= 0)
       mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
-    if (priv->in_pager)
-    {
-      if (priv->menu->current < priv->menu->max)
-        priv->menu->oldcurrent = priv->menu->current;
-      else
-        priv->menu->oldcurrent = -1;
+    index_custom_redraw(priv->menu);
+    window_redraw(RootWindow, false);
 
-      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE); /* fallback from the pager */
+    /* give visual indication that the next command is a tag- command */
+    if (priv->tag)
+    {
+      mutt_window_mvaddstr(MessageWindow, 0, 0, "tag-");
+      mutt_window_clrtoeol(MessageWindow);
     }
+
+    if (priv->menu->current < priv->menu->max)
+      priv->menu->oldcurrent = priv->menu->current;
+    else
+      priv->menu->oldcurrent = -1;
+
+    const bool c_arrow_cursor = cs_subset_bool(shared->sub, "arrow_cursor");
+    const bool c_braille_friendly =
+        cs_subset_bool(shared->sub, "braille_friendly");
+    if (c_arrow_cursor)
+      mutt_window_move(priv->menu->win_index, 2,
+                       priv->menu->current - priv->menu->top);
+    else if (c_braille_friendly)
+      mutt_window_move(priv->menu->win_index, 0,
+                       priv->menu->current - priv->menu->top);
     else
     {
-      index_custom_redraw(priv->menu);
-      window_redraw(RootWindow, false);
+      mutt_window_move(priv->menu->win_index, priv->menu->win_index->state.cols - 1,
+                       priv->menu->current - priv->menu->top);
+    }
+    mutt_refresh();
 
-      /* give visual indication that the next command is a tag- command */
+    if (SigWinch)
+    {
+      SigWinch = 0;
+      mutt_resize_screen();
+      priv->menu->top = 0; /* so we scroll the right amount */
+      /* force a real complete redraw.  clrtobot() doesn't seem to be able
+       * to handle every case without this.  */
+      clearok(stdscr, true);
+      mutt_window_clearline(MessageWindow, 0);
+      continue;
+    }
+
+    op = km_dokey(MENU_MAIN);
+
+    /* either user abort or timeout */
+    if (op < 0)
+    {
+      mutt_timeout_hook();
+      if (priv->tag)
+        mutt_window_clearline(MessageWindow, 0);
+      continue;
+    }
+
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
+
+    mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+
+    /* special handling for the priv->tag-prefix function */
+    const bool c_auto_tag = cs_subset_bool(shared->sub, "auto_tag");
+    if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
+    {
+      /* A second priv->tag-prefix command aborts */
       if (priv->tag)
       {
-        mutt_window_mvaddstr(MessageWindow, 0, 0, "tag-");
-        mutt_window_clrtoeol(MessageWindow);
-      }
-
-      if (priv->menu->current < priv->menu->max)
-        priv->menu->oldcurrent = priv->menu->current;
-      else
-        priv->menu->oldcurrent = -1;
-
-      const bool c_arrow_cursor = cs_subset_bool(shared->sub, "arrow_cursor");
-      const bool c_braille_friendly =
-          cs_subset_bool(shared->sub, "braille_friendly");
-      if (c_arrow_cursor)
-        mutt_window_move(priv->menu->win_index, 2,
-                         priv->menu->current - priv->menu->top);
-      else if (c_braille_friendly)
-        mutt_window_move(priv->menu->win_index, 0,
-                         priv->menu->current - priv->menu->top);
-      else
-      {
-        mutt_window_move(priv->menu->win_index, priv->menu->win_index->state.cols - 1,
-                         priv->menu->current - priv->menu->top);
-      }
-      mutt_refresh();
-
-      if (SigWinch)
-      {
-        SigWinch = 0;
-        mutt_resize_screen();
-        priv->menu->top = 0; /* so we scroll the right amount */
-        /* force a real complete redraw.  clrtobot() doesn't seem to be able
-         * to handle every case without this.  */
-        clearok(stdscr, true);
+        priv->tag = false;
         mutt_window_clearline(MessageWindow, 0);
         continue;
       }
 
-      op = km_dokey(MENU_MAIN);
-
-      /* either user abort or timeout */
-      if (op < 0)
+      if (!shared->mailbox)
       {
-        mutt_timeout_hook();
-        if (priv->tag)
-          mutt_window_clearline(MessageWindow, 0);
+        mutt_error(_("No mailbox is open"));
         continue;
       }
 
-      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
-
-      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-
-      /* special handling for the priv->tag-prefix function */
-      const bool c_auto_tag = cs_subset_bool(shared->sub, "auto_tag");
-      if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
+      if (shared->mailbox->msg_tagged == 0)
       {
-        /* A second priv->tag-prefix command aborts */
-        if (priv->tag)
+        if (op == OP_TAG_PREFIX)
+          mutt_error(_("No tagged messages"));
+        else if (op == OP_TAG_PREFIX_COND)
         {
-          priv->tag = false;
-          mutt_window_clearline(MessageWindow, 0);
-          continue;
+          mutt_flush_macro_to_endcond();
+          mutt_message(_("Nothing to do"));
         }
-
-        if (!shared->mailbox)
-        {
-          mutt_error(_("No mailbox is open"));
-          continue;
-        }
-
-        if (shared->mailbox->msg_tagged == 0)
-        {
-          if (op == OP_TAG_PREFIX)
-            mutt_error(_("No tagged messages"));
-          else if (op == OP_TAG_PREFIX_COND)
-          {
-            mutt_flush_macro_to_endcond();
-            mutt_message(_("Nothing to do"));
-          }
-          continue;
-        }
-
-        /* get the real command */
-        priv->tag = true;
         continue;
       }
-      else if (c_auto_tag && shared->mailbox && (shared->mailbox->msg_tagged != 0))
-      {
-        priv->tag = true;
-      }
 
-      mutt_clear_error();
+      /* get the real command */
+      priv->tag = true;
+      continue;
     }
+    else if (c_auto_tag && shared->mailbox && (shared->mailbox->msg_tagged != 0))
+    {
+      priv->tag = true;
+    }
+
+    mutt_clear_error();
 
 #ifdef USE_NNTP
     OptNews = false; /* for any case */
@@ -1387,19 +1375,12 @@ int mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     // switch (op)
     // {
     //   default:
-    //     if (!idata->in_pager)
-    //       km_error_key(MENU_MAIN);
+    //     km_error_key(MENU_MAIN);
     // }
 
 #ifdef USE_NOTMUCH
     nm_db_debug_check(shared->mailbox);
 #endif
-
-    if (priv->in_pager)
-    {
-      priv->in_pager = false;
-      priv->menu->redraw = REDRAW_FULL;
-    }
 
     if (priv->done)
       break;

@@ -4045,18 +4045,18 @@ int mutt_pager(struct PagerView *pview)
 
         //=======================================================================
 
-
-
-
-      // Missing generic functions. Not sure if they should be be here.
-      // Maybe it should be covered by default case.
+      // Generic functions that were delegated to index 
       case OP_JUMP:
+        mutt_message(_("OP_JUMP is not currently available in pager. Please continue refactoring to re-enable it"));
+        break;
       case OP_NEXT_ENTRY:
+        mutt_message(_("OP_NEXT_ENTRY is not currently available in pager. Please continue refactoring to re-enable it"));
+        break;
       case OP_PREV_ENTRY:
-        mutt_message(_("Operation is not available in pager"));
+        mutt_message(_("OP_PREV_ENTRY is not currently available in pager. Please continue refactoring to re-enable it"));
         break;
 
-      // Operations that pager delegates to index
+      // Index-specific operations that pager used to delegate to index
       case OP_DISPLAY_HEADERS:
       case OP_EDIT_OR_VIEW_RAW_MESSAGE:
       case OP_EDIT_RAW_MESSAGE:
@@ -4099,14 +4099,14 @@ int mutt_pager(struct PagerView *pview)
       case OP_RECONSTRUCT_THREAD:
       case OP_TOGGLE_WRITE:
       case OP_VIEW_RAW_MESSAGE:
-        mutt_message(_("Operation is not available in pager"));
+        mutt_message(_("Index operations are not currently available in pager. Please continue refactoring to re-enable it"));
         break;
 
 
 #ifdef USE_SIDEBAR
 
       case OP_SIDEBAR_OPEN:
-        mutt_message(_("Operation is not available in pager"));
+        mutt_message(_("OP_SIDEBAR_OPEN not currently available in pager. Please continue refactoring to re-enable it"));
         break;
 
       case OP_SIDEBAR_FIRST:

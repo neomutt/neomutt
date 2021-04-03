@@ -39,7 +39,6 @@ struct IndexPrivateData
   bool do_mailbox_notify;
   int  close;
   int  attach_msg;
-  bool in_pager;
   struct Menu *menu;
   struct MuttWindow *win_index;
   struct MuttWindow *win_ibar;
