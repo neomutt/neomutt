@@ -178,7 +178,7 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type,
     if (!np->observer)
       continue;
 
-    if (np->observer->callback == callback)
+    if ((np->observer->callback == callback) && (np->observer->global_data == global_data))
       return true;
   }
 
