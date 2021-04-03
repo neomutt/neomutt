@@ -44,7 +44,6 @@
 #include "mutt.h"
 #include "command_parse.h"
 #include "imap/lib.h"
-#include "context.h"
 #include "init.h"
 #include "keymap.h"
 #include "monitor.h"
@@ -1466,7 +1465,7 @@ static void do_unmailboxes(struct Mailbox *m)
 #endif
   m->flags = MB_HIDDEN;
   m->gen = -1;
-  if (Context && (Context->mailbox == m))
+  if (m->opened)
   {
     struct EventMailbox em = { NULL };
     notify_send(NeoMutt->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
