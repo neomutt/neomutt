@@ -41,6 +41,10 @@ struct IndexPrivateData
   int  attach_msg;
   bool in_pager;
   struct Menu *menu;
+  struct MuttWindow *win_index;
+  struct MuttWindow *win_ibar;
+  struct MuttWindow *win_pager;
+  struct MuttWindow *win_pbar;
 };
 
 void                     index_private_data_free(struct MuttWindow *win, void **ptr);
