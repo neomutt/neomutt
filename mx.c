@@ -335,8 +335,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   ctx->collapsed = false;
 
   m->verbose = !(flags & MUTT_QUIET);
-  if (flags & MUTT_READONLY)
-    m->readonly = true;
+  m->readonly = (flags & MUTT_READONLY);
   m->peekonly = (flags & MUTT_PEEK);
 
   if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
