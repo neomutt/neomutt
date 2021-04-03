@@ -47,7 +47,7 @@ struct MuttWindow;
 int  index_color(struct Menu *menu, int line);
 void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line);
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen);
-int  mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m);
+struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m);
 void mutt_set_header_color(struct Mailbox *m, struct Email *e);
 void mutt_update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, const struct Email *curr_email);
 struct MuttWindow *index_pager_init(void);

@@ -1158,12 +1158,12 @@ static void index_custom_redraw(struct Menu *menu)
  * mutt_index_menu - Display a list of emails
  * @param dlg Dialog containing Windows to draw on
  * @param m_init Initial mailbox
- * @retval num How the menu was finished, e.g. OP_QUIT, OP_EXIT
+ * @retval Mailbox open in the index
  *
  * This function handles the message index window as well as commands returned
  * from the pager (MENU_PAGER).
  */
-int mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
+struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 {
   struct Context *ctx_old = Context;
   Context = ctx_new(m_init);
@@ -1175,7 +1175,6 @@ int mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   int oldcount = -1;
   struct CurrentEmail cur = { 0 };
   bool do_mailbox_notify = true;
-  int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = OptAttachMsg;
   bool in_pager = false; /* set when pager redirects a function through the index */
 
@@ -1898,7 +1897,6 @@ int mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
       case OP_QUIT:
       {
-        close = op;
         if (attach_msg)
         {
           done = true;
@@ -2691,7 +2689,6 @@ int mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       }
 
       case OP_EXIT:
-        close = op;
         if ((!in_pager) && attach_msg)
         {
           done = true;
@@ -4107,12 +4104,13 @@ int mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
 
+  struct Mailbox *m = ctx_mailbox(Context);
   ctx_free(&Context);
   if (ctx_old)
   {
     Context = ctx_old;
   }
-  return close;
+  return m;
 }
 
 /**

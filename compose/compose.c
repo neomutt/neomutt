@@ -2127,7 +2127,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         menu->redraw = REDRAW_FULL;
 
         struct Mailbox *m_attach = mx_path_resolve(mutt_buffer_string(&fname));
-        bool old_readonly = m_attach->readonly;
+        const bool old_readonly = m_attach->readonly;
         if (!mx_mbox_open(m_attach, MUTT_READONLY))
         {
           mutt_error(_("Unable to open mailbox %s"), mutt_buffer_string(&fname));
@@ -2149,7 +2149,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         mutt_message(_("Tag the messages you want to attach"));
         struct MuttWindow *dlgindex = index_pager_init();
         dialog_push(dlgindex);
-        mutt_index_menu(dlgindex, m_attach);
+        struct Mailbox *m_attach_new = mutt_index_menu(dlgindex, m_attach);
         dialog_pop();
         index_pager_shutdown(dlgindex);
         mutt_window_free(&dlgindex);
@@ -2165,15 +2165,16 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
 
         bool added_attachment = false;
-        for (int i = 0; i < m_attach->msg_count; i++)
+        for (int i = 0; i < m_attach_new->msg_count; i++)
         {
-          if (!m_attach->emails[i])
+          if (!m_attach_new->emails[i])
             break;
-          if (!message_is_tagged(m_attach->emails[i]))
+          if (!message_is_tagged(m_attach_new->emails[i]))
             continue;
 
           struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-          ap->body = mutt_make_message_attach(m_attach, m_attach->emails[i], true, sub);
+          ap->body = mutt_make_message_attach(m_attach_new,
+                                              m_attach_new->emails[i], true, sub);
           if (ap->body)
           {
             added_attachment = true;
@@ -2187,8 +2188,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         }
         menu->redraw |= REDRAW_FULL;
 
-        m_attach->readonly = old_readonly;
-        mx_fastclose_mailbox(m_attach);
+        if (m_attach_new == m_attach)
+        {
+          m_attach->readonly = old_readonly;
+        }
+        mx_fastclose_mailbox(m_attach_new);
 
         /* Restore old $sort and $sort_aux */
         cs_subset_str_native_set(sub, "sort", old_sort, NULL);
