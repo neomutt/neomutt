@@ -39,6 +39,7 @@ struct IndexPrivateData
   bool do_mailbox_notify;        ///< Do we need to notify the user of new mail?
   int  attach_msg;               ///< Are we in "attach message" mode?
   bool in_pager;                 ///< Is the Pager active?
+  struct Menu *menu;             ///< Menu controlling the index
 };
 
 void                     index_private_data_free(struct MuttWindow *win, void **ptr);
