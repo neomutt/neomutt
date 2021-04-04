@@ -25,6 +25,7 @@
 
 struct IndexPrivateData;
 struct IndexSharedData;
+struct MuttWindow;
 
 /**
  * enum IndexRetval - Possible return values for Index functions
@@ -58,6 +59,8 @@ struct IndexFunction
   index_function_t function; ///< Function to call
   int flags;                 ///< Prerequisites for the function, e.g. #CHECK_IN_MAILBOX
 };
+
+int index_function_dispatcher(struct MuttWindow *win_index, int op);
 
 extern struct IndexFunction IndexFunctions[];
 
