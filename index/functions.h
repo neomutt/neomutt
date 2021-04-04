@@ -23,9 +23,11 @@
 #ifndef MUTT_INDEX_FUNCTIONS_H
 #define MUTT_INDEX_FUNCTIONS_H
 
-#include "shared_data.h"
+#include <stdbool.h>
 
 struct IndexPrivateData;
+struct IndexSharedData;
+struct MuttWindow;
 
 /**
  * enum IndexRetval - Possible return values for Index functions
@@ -60,6 +62,8 @@ struct IndexFunction
   index_function_t function; ///< Function to call
   int flags;                 ///< Prerequisites for the function, e.g. #CHECK_IN_MAILBOX
 };
+
+bool index_function_dispatcher(struct MuttWindow *win_index, int op);
 
 extern struct IndexFunction IndexFunctions[];
 
