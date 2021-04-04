@@ -27,26 +27,34 @@
  */
 
 #include "config.h"
+#include <ctype.h>
+#include <limits.h>
 #include <stdio.h>
+#include <string.h>
 #include "mutt/lib.h"
-#include "address/lib.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "functions.h"
 #include "lib.h"
+#include "ncrypt/lib.h"
+#include "pager/lib.h"
 #include "pattern/lib.h"
 #include "send/lib.h"
+#include "browser.h"
 #include "commands.h"
 #include "context.h"
 #include "hook.h"
-#include "mutt_globals.h"
+#include "keymap.h"
 #include "mutt_header.h"
 #include "mutt_mailbox.h"
 #include "mutt_menu.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
+#include "mx.h"
 #include "opcodes.h"
 #include "options.h"
 #include "private_data.h"
@@ -70,7 +78,7 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/mdata.h"
+#include "nntp/mdata.h" // IWYU pragma: keep
 #endif
 #ifdef USE_POP
 #include "pop/lib.h"
@@ -2898,6 +2906,97 @@ static enum IndexRetval op_sidebar_toggle_visible(struct IndexSharedData *shared
 #endif
 
 // -----------------------------------------------------------------------------
+
+/**
+ * prereq - Check the pre-requisites for a function
+ * @param ctx    Mailbox
+ * @param menu   Current Menu
+ * @param checks Checks to perform, see #CheckFlags
+ * @retval true The checks pass successfully
+ */
+bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
+{
+  bool result = true;
+
+  if (checks & (CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+    checks |= CHECK_IN_MAILBOX;
+
+  if ((checks & CHECK_IN_MAILBOX) && (!ctx || !ctx->mailbox))
+  {
+    mutt_error(_("No mailbox is open"));
+    result = false;
+  }
+
+  if (result && (checks & CHECK_MSGCOUNT) && (ctx->mailbox->msg_count == 0))
+  {
+    mutt_error(_("There are no messages"));
+    result = false;
+  }
+
+  if (result && (checks & CHECK_VISIBLE) && (menu->current >= ctx->mailbox->vcount))
+  {
+    mutt_error(_("No visible messages"));
+    result = false;
+  }
+
+  if (result && (checks & CHECK_READONLY) && ctx->mailbox->readonly)
+  {
+    mutt_error(_("Mailbox is read-only"));
+    result = false;
+  }
+
+  if (result && (checks & CHECK_ATTACH) && OptAttachMsg)
+  {
+    mutt_error(_("Function not permitted in attach-message mode"));
+    result = false;
+  }
+
+  if (!result)
+    mutt_flushinp();
+
+  return result;
+}
+
+/**
+ * index_function_dispatcher - XXX
+ * @param win_index XXX
+ * @param op        XXX
+ * @retval true XXX
+ */
+bool index_function_dispatcher(struct MuttWindow *win_index, int op)
+{
+  if (!win_index)
+    return false;
+
+  struct IndexPrivateData *priv = win_index->wdata;
+  if (!priv)
+    return false;
+
+  struct MuttWindow *dlg = dialog_find(win_index);
+  if (!dlg || !dlg->wdata)
+    return false;
+
+  struct IndexSharedData *shared = dlg->wdata;
+
+  // int rc;
+  for (size_t i = 0; IndexFunctions[i].op != OP_NULL; i++)
+  {
+    const struct IndexFunction *fn = &IndexFunctions[i];
+    if (fn->op == op)
+    {
+      if (!prereq(shared->ctx, priv->menu, fn->flags))
+      {
+        // rc = -3;
+        break;
+      }
+      // rc =
+      IndexFunctions[i].function(shared, priv, op);
+      break;
+    }
+  }
+
+  return true;
+}
 
 /**
  * IndexFunctions - XXX

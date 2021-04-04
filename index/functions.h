@@ -23,7 +23,10 @@
 #ifndef MUTT_INDEX_FUNCTIONS_H
 #define MUTT_INDEX_FUNCTIONS_H
 
-#include "shared_data.h"
+#include <stdbool.h>
+
+struct IndexSharedData;
+struct MuttWindow;
 
 struct IndexPrivateData;
 
@@ -60,6 +63,8 @@ struct IndexFunction
   index_function_t function;
   int flags;
 };
+
+bool index_function_dispatcher(struct MuttWindow *win_index, int op);
 
 extern struct IndexFunction IndexFunctions[];
 
