@@ -29,29 +29,18 @@
 
 #include "config.h"
 #include <assert.h>
-#include <ctype.h>
-#include <limits.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "alias/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
-#include "debug/lib.h"
 #include "lib.h"
-#include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "pattern/lib.h"
-#include "send/lib.h"
-#include "browser.h"
-#include "commands.h"
 #include "context.h"
 #include "format_flags.h"
 #include "functions.h"
@@ -60,31 +49,19 @@
 #include "ibar.h"
 #include "keymap.h"
 #include "mutt_globals.h"
-#include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mutt_menu.h"
 #include "mutt_thread.h"
-#include "muttlib.h"
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
 #include "private_data.h"
-#include "progress.h"
 #include "protos.h"
-#include "recvattach.h"
-#include "score.h"
 #include "shared_data.h"
 #include "sort.h"
 #include "status.h"
 #ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
-#ifdef USE_POP
-#include "pop/lib.h"
-#endif
-#ifdef USE_IMAP
-#include "imap/lib.h"
 #endif
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
@@ -99,9 +76,6 @@
 #endif
 #ifdef USE_INOTIFY
 #include "monitor.h"
-#endif
-#ifdef USE_AUTOCRYPT
-#include "autocrypt/lib.h"
 #endif
 
 /// Help Bar for the Index dialog
@@ -135,56 +109,6 @@ const struct Mapping IndexNewsHelp[] = {
   // clang-format on
 };
 #endif
-
-/**
- * prereq - Check the pre-requisites for a function
- * @param ctx    Mailbox
- * @param menu   Current Menu
- * @param checks Checks to perform, see #CheckFlags
- * @retval true The checks pass successfully
- */
-bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
-{
-  bool result = true;
-
-  if (checks & (CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
-    checks |= CHECK_IN_MAILBOX;
-
-  if ((checks & CHECK_IN_MAILBOX) && (!ctx || !ctx->mailbox))
-  {
-    mutt_error(_("No mailbox is open"));
-    result = false;
-  }
-
-  if (result && (checks & CHECK_MSGCOUNT) && (ctx->mailbox->msg_count == 0))
-  {
-    mutt_error(_("There are no messages"));
-    result = false;
-  }
-
-  if (result && (checks & CHECK_VISIBLE) && (menu->current >= ctx->mailbox->vcount))
-  {
-    mutt_error(_("No visible messages"));
-    result = false;
-  }
-
-  if (result && (checks & CHECK_READONLY) && ctx->mailbox->readonly)
-  {
-    mutt_error(_("Mailbox is read-only"));
-    result = false;
-  }
-
-  if (result && (checks & CHECK_ATTACH) && OptAttachMsg)
-  {
-    mutt_error(_("Function not permitted in attach-message mode"));
-    result = false;
-  }
-
-  if (!result)
-    mutt_flushinp();
-
-  return result;
-}
 
 /**
  * check_acl - Check the ACLs for a function
@@ -1420,31 +1344,17 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     nm_db_debug_check(shared->mailbox);
 #endif
 
-    int rc = -2;
-    for (size_t i = 0; IndexFunctions[i].op != OP_NULL; i++)
-    {
-      const struct IndexFunction *fn = &IndexFunctions[i];
-      if (fn->op == op)
-      {
-        if (!prereq(shared->ctx, priv->menu, fn->flags))
-        {
-          // rc = -3;
-          break;
-        }
-        rc = IndexFunctions[i].function(shared, priv, op);
-        break;
-      }
-    }
+    index_function_dispatcher(priv->win_index, op);
 
-    if (rc == IR_CONTINUE)
-    {
-      op = OP_DISPLAY_MESSAGE;
-      continue;
-    }
+    // if (rc == IR_CONTINUE)
+    // {
+    //   op = OP_DISPLAY_MESSAGE;
+    //   continue;
+    // }
 
-    if (rc == -2)
-    {
-    }
+    // if (rc == -2)
+    // {
+    // }
     // switch (op)
     // {
     //   default:
