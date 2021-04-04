@@ -1448,6 +1448,20 @@ static int compose_header_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * compose_attach_tag - Tag an attachment - Implements Menu::tag()
+ */
+static int compose_attach_tag(struct Menu *menu, int sel, int act)
+{
+  struct ComposeRedrawData *rd = menu->mdata;
+  struct AttachCtx *actx = rd->actx;
+  struct Body *cur = actx->idx[actx->v2r[sel]]->body;
+  bool ot = cur->tagged;
+
+  cur->tagged = ((act >= 0) ? act : !cur->tagged);
+  return cur->tagged - ot;
+}
+
+/**
  * mutt_compose_menu - Allow the user to edit the message envelope
  * @param e      Email to fill
  * @param fcc    Buffer to save FCC
@@ -1544,7 +1558,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
   menu->win_ibar = ebar;
 
   menu->make_entry = compose_make_entry;
-  menu->tag = attach_tag;
+  menu->tag = compose_attach_tag;
   menu->custom_redraw = compose_custom_redraw;
   menu->mdata = rd;
   mutt_menu_push_current(menu);
