@@ -923,6 +923,19 @@ if {[get-define want-pcre2]} {
     }
   }
   define-feature pcre2
+} else {
+  if {[get-define want-pkgconf]} {
+    if {[pkg-config libpcre2-posix]} {
+      user-error "Found libpcre2-posix which requires you to compile with \
+                  '--pcre2' as it may shadow libc functions"
+    }
+  } else {
+    if {[check-inc-and-lib pcre2posix {} \
+                           pcre2posix.h pcre2_regcomp pcre2-posix]} {
+      user-error "Found libpcre2-posix which requires you to compile with \
+                  '--pcre2' as it may shadow libc functions"
+    }
+  }
 }
 
 ###############################################################################
