@@ -968,6 +968,95 @@ void mutt_menu_init(void)
 }
 
 /**
+ * menu_color_observer - Listen for colour changes affecting the menu - Implements ::observer_t
+ */
+int menu_color_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data)
+    return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+
+  struct EventColor *ev_c = nc->event_data;
+
+  int c = ev_c->color;
+
+  bool simple = (c == MT_COLOR_INDEX_COLLAPSED) || (c == MT_COLOR_INDEX_DATE) ||
+                (c == MT_COLOR_INDEX_LABEL) || (c == MT_COLOR_INDEX_NUMBER) ||
+                (c == MT_COLOR_INDEX_SIZE) || (c == MT_COLOR_INDEX_TAGS);
+  bool lists = (c == MT_COLOR_ATTACH_HEADERS) || (c == MT_COLOR_BODY) ||
+               (c == MT_COLOR_HEADER) || (c == MT_COLOR_INDEX) ||
+               (c == MT_COLOR_INDEX_AUTHOR) || (c == MT_COLOR_INDEX_FLAGS) ||
+               (c == MT_COLOR_INDEX_SUBJECT) || (c == MT_COLOR_INDEX_TAG);
+
+  // The changes aren't relevant to the index menu
+  if (!simple && !lists)
+    return 0;
+
+  // Colour deleted from a list
+  struct Mailbox *m = ctx_mailbox(Context);
+  if ((nc->event_subtype == NT_COLOR_RESET) && lists && m)
+  {
+    // Force re-caching of index colors
+    for (int i = 0; i < m->msg_count; i++)
+    {
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+      e->pair = 0;
+    }
+  }
+
+  mutt_menu_set_redraw_full(MENU_MAIN);
+  return 0;
+}
+
+/**
+ * menu_config_observer - Listen for config changes affecting the menu - Implements ::observer_t
+ */
+int menu_config_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data)
+    return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+
+  struct EventConfig *ec = nc->event_data;
+
+  const struct ConfigDef *cdef = ec->he->data;
+  ConfigRedrawFlags flags = cdef->type & R_REDRAW_MASK;
+
+  if (flags == R_REDRAW_NO_FLAGS)
+    return 0;
+
+  if (flags & R_INDEX)
+    mutt_menu_set_redraw_full(MENU_MAIN);
+  if (flags & R_PAGER)
+    mutt_menu_set_redraw_full(MENU_PAGER);
+  if (flags & R_PAGER_FLOW)
+  {
+    mutt_menu_set_redraw_full(MENU_PAGER);
+    mutt_menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
+  }
+
+  if (flags & R_RESORT_SUB)
+    OptSortSubthreads = true;
+  if (flags & R_RESORT)
+    OptNeedResort = true;
+  if (flags & R_RESORT_INIT)
+    OptResortInit = true;
+  if (flags & R_TREE)
+    OptRedrawTree = true;
+
+  if (flags & R_REFLOW)
+    mutt_window_reflow(NULL);
+  if (flags & R_MENU)
+    mutt_menu_set_current_redraw_full();
+
+  return 0;
+}
+
+/**
  * mutt_menu_new - Create a new Menu
  * @param type Menu type, e.g. #MENU_PAGER
  * @retval ptr New Menu
@@ -980,6 +1069,9 @@ struct Menu *mutt_menu_new(enum MenuType type)
   menu->redraw = REDRAW_FULL;
   menu->color = default_color;
   menu->search = generic_search;
+
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
+  notify_observer_add(Colors->notify, NT_CONFIG, menu_color_observer, menu);
 
   return menu;
 }
@@ -994,6 +1086,10 @@ void mutt_menu_free(struct Menu **ptr)
     return;
 
   struct Menu *menu = *ptr;
+
+  notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
+  notify_observer_remove(Colors->notify, menu_color_observer, menu);
+
   char **line = NULL;
   ARRAY_FOREACH(line, &menu->dialog)
   {
@@ -1589,93 +1685,4 @@ int mutt_menu_loop(struct Menu *menu)
     }
   }
   /* not reached */
-}
-
-/**
- * mutt_menu_color_observer - Listen for colour changes affecting the menu - Implements ::observer_t
- */
-int mutt_menu_color_observer(struct NotifyCallback *nc)
-{
-  if (!nc->event_data)
-    return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
-
-  struct EventColor *ev_c = nc->event_data;
-
-  int c = ev_c->color;
-
-  bool simple = (c == MT_COLOR_INDEX_COLLAPSED) || (c == MT_COLOR_INDEX_DATE) ||
-                (c == MT_COLOR_INDEX_LABEL) || (c == MT_COLOR_INDEX_NUMBER) ||
-                (c == MT_COLOR_INDEX_SIZE) || (c == MT_COLOR_INDEX_TAGS);
-  bool lists = (c == MT_COLOR_ATTACH_HEADERS) || (c == MT_COLOR_BODY) ||
-               (c == MT_COLOR_HEADER) || (c == MT_COLOR_INDEX) ||
-               (c == MT_COLOR_INDEX_AUTHOR) || (c == MT_COLOR_INDEX_FLAGS) ||
-               (c == MT_COLOR_INDEX_SUBJECT) || (c == MT_COLOR_INDEX_TAG);
-
-  // The changes aren't relevant to the index menu
-  if (!simple && !lists)
-    return 0;
-
-  // Colour deleted from a list
-  struct Mailbox *m = ctx_mailbox(Context);
-  if ((nc->event_subtype == NT_COLOR_RESET) && lists && m)
-  {
-    // Force re-caching of index colors
-    for (int i = 0; i < m->msg_count; i++)
-    {
-      struct Email *e = m->emails[i];
-      if (!e)
-        break;
-      e->pair = 0;
-    }
-  }
-
-  mutt_menu_set_redraw_full(MENU_MAIN);
-  return 0;
-}
-
-/**
- * mutt_menu_config_observer - Listen for config changes affecting the menu - Implements ::observer_t
- */
-int mutt_menu_config_observer(struct NotifyCallback *nc)
-{
-  if (!nc->event_data)
-    return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
-
-  struct EventConfig *ec = nc->event_data;
-
-  const struct ConfigDef *cdef = ec->he->data;
-  ConfigRedrawFlags flags = cdef->type & R_REDRAW_MASK;
-
-  if (flags == R_REDRAW_NO_FLAGS)
-    return 0;
-
-  if (flags & R_INDEX)
-    mutt_menu_set_redraw_full(MENU_MAIN);
-  if (flags & R_PAGER)
-    mutt_menu_set_redraw_full(MENU_PAGER);
-  if (flags & R_PAGER_FLOW)
-  {
-    mutt_menu_set_redraw_full(MENU_PAGER);
-    mutt_menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
-  }
-
-  if (flags & R_RESORT_SUB)
-    OptSortSubthreads = true;
-  if (flags & R_RESORT)
-    OptNeedResort = true;
-  if (flags & R_RESORT_INIT)
-    OptResortInit = true;
-  if (flags & R_TREE)
-    OptRedrawTree = true;
-
-  if (flags & R_REFLOW)
-    mutt_window_reflow(NULL);
-  if (flags & R_MENU)
-    mutt_menu_set_current_redraw_full();
-
-  return 0;
 }

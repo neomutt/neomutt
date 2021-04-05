@@ -828,10 +828,7 @@ int main(int argc, char *argv[], char *envp[])
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_hist_observer, NULL);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_log_observer, NULL);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_menu_config_observer, NULL);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_abort_key_config_observer, NULL);
-  if (Colors)
-    notify_observer_add(Colors->notify, NT_CONFIG, mutt_menu_color_observer, NULL);
 
   if (sendflags & SEND_POSTPONED)
   {
