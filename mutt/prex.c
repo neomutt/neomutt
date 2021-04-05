@@ -288,7 +288,7 @@ static struct PrexStorage *prex(enum Prex which)
     h->re = mutt_mem_calloc(1, sizeof(*h->re));
     if (regcomp(h->re, h->str, REG_EXTENDED) != 0)
     {
-      assert("Fix your RE");
+      assert(false && "Fix your RE");
     }
     h->matches = mutt_mem_calloc(h->nmatches, sizeof(*h->matches));
 #endif
