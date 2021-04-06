@@ -275,10 +275,7 @@ static struct PrexStorage *prex(enum Prex which)
     PCRE2_SIZE eoff;
     h->re = pcre2_compile((PCRE2_SPTR8) h->str, PCRE2_ZERO_TERMINATED, opt,
                           &eno, &eoff, NULL);
-    if (!h->re)
-    {
-      assert("Fix your RE");
-    }
+    assert(h->re && "Fix your RE");
     h->mdata = pcre2_match_data_create_from_pattern(h->re, NULL);
     uint32_t ccount;
     pcre2_pattern_info(h->re, PCRE2_INFO_CAPTURECOUNT, &ccount);
@@ -286,10 +283,8 @@ static struct PrexStorage *prex(enum Prex which)
     h->matches = mutt_mem_calloc(h->nmatches, sizeof(*h->matches));
 #else
     h->re = mutt_mem_calloc(1, sizeof(*h->re));
-    if (regcomp(h->re, h->str, REG_EXTENDED) != 0)
-    {
-      assert("Fix your RE");
-    }
+    const int rc = regcomp(h->re, h->str, REG_EXTENDED);
+    assert(rc == 0 && "Fix your RE");
     h->matches = mutt_mem_calloc(h->nmatches, sizeof(*h->matches));
 #endif
   }
