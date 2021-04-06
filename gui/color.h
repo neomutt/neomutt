@@ -135,6 +135,7 @@ enum NotifyColor
   NT_COLOR_RESET,   ///< Color has been reset/removed
 };
 
+bool mutt_color_is_header(enum ColorId color_id);
 int mutt_color_alloc  (uint32_t fg, uint32_t bg);
 int mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr);
 void mutt_color_free  (uint32_t fg, uint32_t bg);
