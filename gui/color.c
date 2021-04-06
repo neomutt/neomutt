@@ -1376,3 +1376,13 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
 
   return parse_color(Colors, buf, s, err, parse_attr_spec, dry_run, false);
 }
+
+/**
+ * mutt_color_is_header - Colour is for an Email header
+ * @param color_id Colour, e.g. #MT_COLOR_HEADER
+ * @retval true Colour is for an Email header
+ */
+bool mutt_color_is_header(enum ColorId color_id)
+{
+    return (color_id == MT_COLOR_HEADER) || (color_id == MT_COLOR_HDRDEFAULT);
+}
