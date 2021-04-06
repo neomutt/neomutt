@@ -47,7 +47,6 @@
 #include "bcache/lib.h"
 #include "ncrypt/lib.h"
 #include "adata.h"
-#include "context.h"
 #include "edata.h"
 #include "hook.h"
 #include "mutt_account.h"

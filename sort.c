@@ -38,10 +38,10 @@
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "sort.h"
-#include "context.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
+#include "mx.h"
 #include "options.h"
 #include "score.h"
 #ifdef USE_NNTP
@@ -331,9 +331,10 @@ static int compare_label(const void *a, const void *b)
 /**
  * mutt_get_sort_func - Get the sort function for a given sort id
  * @param method Sort type, see #SortType
+ * @param type   The Mailbox type
  * @retval ptr sort function - Implements ::sort_t
  */
-sort_t mutt_get_sort_func(enum SortType method)
+sort_t mutt_get_sort_func(enum SortType method, enum MailboxType type)
 {
   switch (method)
   {
@@ -345,7 +346,7 @@ sort_t mutt_get_sort_func(enum SortType method)
       return compare_label;
     case SORT_ORDER:
 #ifdef USE_NNTP
-      if (ctx_mailbox(Context) && (Context->mailbox->type == MUTT_NNTP))
+      if (type == MUTT_NNTP)
         return nntp_compare_order;
       else
 #endif
@@ -437,8 +438,8 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
     }
     mutt_sort_threads(threads, init);
   }
-  else if (!(sortfunc = mutt_get_sort_func(c_sort & SORT_MASK)) ||
-           !(AuxSort = mutt_get_sort_func(c_sort_aux & SORT_MASK)))
+  else if (!(sortfunc = mutt_get_sort_func(c_sort & SORT_MASK, mx_type(m))) ||
+           !(AuxSort = mutt_get_sort_func(c_sort_aux & SORT_MASK, mx_type(m))))
   {
     mutt_error(_("Could not find sorting function [report this bug]"));
     return;

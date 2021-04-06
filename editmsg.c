@@ -40,7 +40,6 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "context.h"
 #include "copy.h"
 #include "muttlib.h"
 #include "mx.h"

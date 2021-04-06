@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include "config/lib.h"
+#include "core/lib.h"
 #include "options.h" // IWYU pragma: keep
 
 struct Address;
@@ -43,7 +44,7 @@ struct ThreadsContext;
  */
 typedef int (*sort_t)(const void *a, const void *b);
 
-sort_t mutt_get_sort_func(enum SortType method);
+sort_t mutt_get_sort_func(enum SortType method, enum MailboxType type);
 
 void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads, bool init, off_t *vsize);
 int perform_auxsort(int retval, const void *a, const void *b);

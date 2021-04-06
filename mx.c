@@ -1807,3 +1807,13 @@ int mx_save_hcache(struct Mailbox *m, struct Email *e)
 
   return m->mx_ops->msg_save_hcache(m, e);
 }
+
+/**
+ * mx_type - Return the type of the Mailbox
+ * @param m Mailbox
+ * @retval enum #MailboxType
+ */
+enum MailboxType mx_type(struct Mailbox *m)
+{
+  return m ? m->type : MUTT_MAILBOX_ERROR;
+}
