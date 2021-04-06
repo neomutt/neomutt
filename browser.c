@@ -1355,24 +1355,23 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
   mutt_buffer_reset(file);
 
-  menu = mutt_menu_new(MENU_FOLDER);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_BROWSER);
-
+  const struct Mapping *help_data = NULL;
 #ifdef USE_NNTP
   if (OptNews)
-    dlg->help_data = FolderNewsHelp;
+    help_data = FolderNewsHelp;
   else
 #endif
-    dlg->help_data = FolderHelp;
-  dlg->help_menu = MENU_FOLDER;
+    help_data = FolderHelp;
 
+  struct MuttWindow *dlg =
+      dialog_create_simple_index(MENU_FOLDER, WT_DLG_BROWSER, help_data);
+
+  menu = dlg->wdata;
   menu->make_entry = folder_make_entry;
   menu->search = select_file_search;
   menu->title = title;
   if (multiple)
     menu->tag = file_tag;
-
-  mutt_menu_push_current(menu);
 
   if (mailbox)
   {
@@ -2213,11 +2212,7 @@ bail:
   mutt_buffer_pool_release(&prefix);
 
   if (menu)
-  {
-    mutt_menu_pop_current(menu);
-    mutt_menu_free(&menu);
     dialog_destroy_simple_index(&dlg);
-  }
 
   goto_swapper[0] = '\0';
 }

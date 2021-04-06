@@ -99,15 +99,12 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
 
   snprintf(title, sizeof(title), _("History '%s'"), buf);
 
-  struct Menu *menu = mutt_menu_new(MENU_GENERIC);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_HISTORY);
-  dlg->help_data = HistoryHelp;
-  dlg->help_menu = MENU_GENERIC;
+  struct MuttWindow *dlg =
+      dialog_create_simple_index(MENU_GENERIC, WT_DLG_HISTORY, HistoryHelp);
 
+  struct Menu *menu = dlg->wdata;
   menu->make_entry = history_make_entry;
   menu->title = title;
-  mutt_menu_push_current(menu);
-
   menu->max = match_count;
   menu->mdata = matches;
 
@@ -125,7 +122,5 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
     }
   }
 
-  mutt_menu_pop_current(menu);
-  mutt_menu_free(&menu);
   dialog_destroy_simple_index(&dlg);
 }

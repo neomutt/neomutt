@@ -607,18 +607,16 @@ void dlg_select_mixmaster_chain(struct MuttWindow *win, struct ListHead *chainhe
 
   mix_screen_coordinates(win, type2_list, &coords, chain, 0);
 
-  menu = mutt_menu_new(MENU_MIX);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_REMAILER);
-  dlg->help_data = RemailerHelp;
-  dlg->help_menu = MENU_MIX;
+  struct MuttWindow *dlg =
+      dialog_create_simple_index(MENU_MIX, WT_DLG_REMAILER, RemailerHelp);
 
+  menu = dlg->wdata;
   menu->max = ttll;
   menu->make_entry = mix_make_entry;
   menu->tag = NULL;
   menu->title = _("Select a remailer chain");
   menu->mdata = type2_list;
   menu->pagelen = MIX_VOFFSET - 1;
-  mutt_menu_push_current(menu);
 
   while (loop)
   {
@@ -758,8 +756,6 @@ void dlg_select_mixmaster_chain(struct MuttWindow *win, struct ListHead *chainhe
     }
   }
 
-  mutt_menu_pop_current(menu);
-  mutt_menu_free(&menu);
   dialog_destroy_simple_index(&dlg);
 
   /* construct the remailer list */

@@ -117,9 +117,10 @@ static void make_pattern_entry(struct Menu *menu, char *buf, size_t buflen, int 
 
 /**
  * create_pattern_menu - Create the Pattern Completion menu
+ * @param dlg Dialog holding the Menu
  * @retval ptr New Menu
  */
-static struct Menu *create_pattern_menu(void)
+static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
 {
   struct PatternEntry *entries = NULL;
   int num_entries = 0, i = 0;
@@ -130,10 +131,8 @@ static struct Menu *create_pattern_menu(void)
   /* Add three more hard-coded entries */
   num_entries += 3;
 
-  struct Menu *menu = mutt_menu_new(MENU_GENERIC);
-
+  struct Menu *menu = dlg->wdata;
   menu->make_entry = make_pattern_entry;
-
   // L10N: Pattern completion menu title
   menu->title = _("Patterns");
   menu->mdata = entries = mutt_mem_calloc(num_entries, sizeof(struct PatternEntry));
@@ -221,8 +220,6 @@ static struct Menu *create_pattern_menu(void)
   entries[i].descr =
       mutt_str_dup(_("messages having an immediate child matching PATTERN"));
 
-  mutt_menu_push_current(menu);
-
   mutt_buffer_pool_release(&entrybuf);
 
   return menu;
@@ -232,15 +229,9 @@ static struct Menu *create_pattern_menu(void)
  * free_pattern_menu - Free the Pattern Completion menu
  * @param ptr Menu to free
  */
-static void free_pattern_menu(struct Menu **ptr)
+static void free_pattern_menu(struct Menu *menu)
 {
-  if (!ptr || !*ptr)
-    return;
-
-  struct Menu *menu = *ptr;
-  mutt_menu_pop_current(menu);
-
-  struct PatternEntry *entries = (struct PatternEntry *) menu->mdata;
+  struct PatternEntry *entries = menu->mdata;
   while (menu->max)
   {
     menu->max--;
@@ -249,8 +240,6 @@ static void free_pattern_menu(struct Menu **ptr)
     FREE(&entries[menu->max].descr);
   }
   FREE(&menu->mdata);
-
-  mutt_menu_free(ptr);
 }
 
 /**
@@ -261,10 +250,9 @@ static void free_pattern_menu(struct Menu **ptr)
  */
 bool dlg_select_pattern(char *buf, size_t buflen)
 {
-  struct Menu *menu = create_pattern_menu();
-  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_PATTERN);
-  dlg->help_data = PatternHelp;
-  dlg->help_menu = MENU_GENERIC;
+  struct MuttWindow *dlg =
+      dialog_create_simple_index(MENU_GENERIC, WT_DLG_PATTERN, PatternHelp);
+  struct Menu *menu = create_pattern_menu(dlg);
 
   bool rc = false;
   bool done = false;
@@ -287,7 +275,7 @@ bool dlg_select_pattern(char *buf, size_t buflen)
     }
   }
 
-  free_pattern_menu(&menu);
+  free_pattern_menu(menu);
   dialog_destroy_simple_index(&dlg);
   return rc;
 }

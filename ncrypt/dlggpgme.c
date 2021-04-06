@@ -1280,15 +1280,13 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   else if (app & APPLICATION_SMIME)
     menu_to_use = MENU_KEY_SELECT_SMIME;
 
-  struct Menu *menu = mutt_menu_new(menu_to_use);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_CRYPT_GPGME);
-  dlg->help_data = GpgmeHelp;
-  dlg->help_menu = menu_to_use;
+  struct MuttWindow *dlg =
+      dialog_create_simple_index(menu_to_use, WT_DLG_CRYPT_GPGME, GpgmeHelp);
 
+  struct Menu *menu = dlg->wdata;
   menu->max = i;
   menu->make_entry = crypt_make_entry;
   menu->mdata = key_table;
-  mutt_menu_push_current(menu);
 
   {
     const char *ts = NULL;
@@ -1414,8 +1412,6 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
     }
   }
 
-  mutt_menu_pop_current(menu);
-  mutt_menu_free(&menu);
   dialog_destroy_simple_index(&dlg);
   FREE(&key_table);
 

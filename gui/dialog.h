@@ -24,10 +24,11 @@
 #define MUTT_GUI_DIALOG_H
 
 #include "mutt_window.h"
+#include "keymap.h"
 
-struct Menu;
+struct Mapping;
 
-struct MuttWindow *dialog_create_simple_index(struct Menu *menu, enum WindowType type);
+struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowType wtype, const struct Mapping *help_data);
 void               dialog_destroy_simple_index(struct MuttWindow **ptr);
 struct MuttWindow *dialog_find(struct MuttWindow *win);
 void               dialog_pop(void);

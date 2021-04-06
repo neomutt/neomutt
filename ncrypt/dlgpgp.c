@@ -550,15 +550,12 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   }
   qsort(key_table, i, sizeof(struct PgpUid *), f);
 
-  menu = mutt_menu_new(MENU_PGP);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_PGP);
-  dlg->help_data = PgpHelp;
-  dlg->help_menu = MENU_PGP;
+  struct MuttWindow *dlg = dialog_create_simple_index(MENU_PGP, WT_DLG_PGP, PgpHelp);
 
+  menu = dlg->wdata;
   menu->max = i;
   menu->make_entry = pgp_make_entry;
   menu->mdata = key_table;
-  mutt_menu_push_current(menu);
 
   if (p)
     snprintf(buf, sizeof(buf), _("PGP keys matching <%s>"), p->mailbox);
@@ -700,8 +697,6 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
     }
   }
 
-  mutt_menu_pop_current(menu);
-  mutt_menu_free(&menu);
   dialog_destroy_simple_index(&dlg);
   FREE(&key_table);
 

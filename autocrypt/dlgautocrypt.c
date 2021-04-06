@@ -162,9 +162,10 @@ static void account_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
 
 /**
  * create_menu - Create the Autocrypt account Menu
+ * @param dlg Dialog holding the Menu
  * @retval ptr New Menu
  */
-static struct Menu *create_menu(void)
+static struct Menu *create_menu(struct MuttWindow *dlg)
 {
   struct AutocryptAccount **accounts = NULL;
   int num_accounts = 0;
@@ -172,7 +173,7 @@ static struct Menu *create_menu(void)
   if (mutt_autocrypt_db_account_get_all(&accounts, &num_accounts) < 0)
     return NULL;
 
-  struct Menu *menu = mutt_menu_new(MENU_AUTOCRYPT_ACCT);
+  struct Menu *menu = dlg->wdata;
   menu->make_entry = account_make_entry;
   /* menu->tag = account_tag; */
   // L10N: Autocrypt Account Management Menu title
@@ -197,8 +198,6 @@ static struct Menu *create_menu(void)
   }
   FREE(&accounts);
 
-  mutt_menu_push_current(menu);
-
   return menu;
 }
 
@@ -216,9 +215,6 @@ static void menu_free(struct Menu **menu)
     mutt_addr_free(&entries[i].addr);
   }
   FREE(&(*menu)->mdata);
-
-  mutt_menu_pop_current(*menu);
-  mutt_menu_free(menu);
 }
 
 /**
@@ -264,13 +260,9 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
   if (mutt_autocrypt_init(m, false))
     return;
 
-  struct Menu *menu = create_menu();
-  if (!menu)
-    return;
-
-  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_AUTOCRYPT);
-  dlg->help_data = AutocryptAcctHelp;
-  dlg->help_menu = MENU_AUTOCRYPT_ACCT;
+  struct MuttWindow *dlg =
+      dialog_create_simple_index(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
+  struct Menu *menu = create_menu(dlg);
 
   bool done = false;
   while (!done)
@@ -287,10 +279,8 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
 
         menu_free(&menu);
         dialog_destroy_simple_index(&dlg);
-        menu = create_menu();
-        dlg = dialog_create_simple_index(menu, WT_DLG_AUTOCRYPT);
-        dlg->help_data = AutocryptAcctHelp;
-        dlg->help_menu = MENU_AUTOCRYPT_ACCT;
+        dlg = dialog_create_simple_index(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
+        menu = create_menu(dlg);
         break;
 
       case OP_AUTOCRYPT_DELETE_ACCT:
@@ -310,10 +300,9 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         {
           menu_free(&menu);
           dialog_destroy_simple_index(&dlg);
-          menu = create_menu();
-          dlg = dialog_create_simple_index(menu, WT_DLG_AUTOCRYPT);
-          dlg->help_data = AutocryptAcctHelp;
-          dlg->help_menu = MENU_AUTOCRYPT_ACCT;
+          dlg = dialog_create_simple_index(MENU_AUTOCRYPT_ACCT,
+                                           WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
+          menu = create_menu(dlg);
         }
         break;
       }

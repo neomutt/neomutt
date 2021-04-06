@@ -223,17 +223,15 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
   int r = -1;
   bool done = false;
 
-  struct Menu *menu = mutt_menu_new(MENU_POSTPONE);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_POSTPONE);
-  dlg->help_data = PostponeHelp;
-  dlg->help_menu = MENU_POSTPONE;
+  struct MuttWindow *dlg =
+      dialog_create_simple_index(MENU_POSTPONE, WT_DLG_POSTPONE, PostponeHelp);
 
+  struct Menu *menu = dlg->wdata;
   menu->make_entry = post_make_entry;
   menu->max = m->msg_count;
   menu->title = _("Postponed Messages");
   menu->mdata = m;
   menu->custom_search = true;
-  mutt_menu_push_current(menu);
 
   /* The postponed mailbox is setup to have sorting disabled, but the global
    * `$sort` variable may indicate something different.   Sorting has to be
@@ -292,8 +290,6 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
   }
 
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-  mutt_menu_pop_current(menu);
-  mutt_menu_free(&menu);
   dialog_destroy_simple_index(&dlg);
 
   return (r > -1) ? m->emails[r] : NULL;

@@ -158,23 +158,27 @@ static int dialog_config_observer(struct NotifyCallback *nc)
 
 /**
  * dialog_create_simple_index - Create a simple index Dialog
- * @param menu Menu to use
- * @param type Dialog type, e.g. #WT_DLG_ALIAS
+ * @param mtype Menu type, e.g. #MENU_ALIAS
+ * @param wtype Dialog type, e.g. #WT_DLG_ALIAS
  * @retval ptr New Dialog Window
  */
-struct MuttWindow *dialog_create_simple_index(struct Menu *menu, enum WindowType type)
+struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowType wtype,
+                                              const struct Mapping *help_data)
 {
-  if (!menu)
-    return NULL;
+  struct Menu *menu = mutt_menu_new(mtype);
 
   struct MuttWindow *dlg =
-      mutt_window_new(type, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(wtype, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->help_menu = mtype;
+  dlg->help_data = help_data;
+  dlg->wdata = menu;
 
   struct MuttWindow *index =
       mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   dlg->focus = index;
+  index->wdata = menu;
 
   struct MuttWindow *ibar =
       mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
@@ -196,6 +200,8 @@ struct MuttWindow *dialog_create_simple_index(struct Menu *menu, enum WindowType
   menu->win_index = index;
   menu->win_ibar = ibar;
 
+  mutt_menu_push_current(menu);
+
   notify_observer_add(NeoMutt->notify, NT_CONFIG, dialog_config_observer, dlg);
   dialog_push(dlg);
 
@@ -212,6 +218,10 @@ void dialog_destroy_simple_index(struct MuttWindow **ptr)
     return;
 
   struct MuttWindow *dlg = *ptr;
+
+  struct Menu *menu = dlg->wdata;
+  mutt_menu_pop_current(menu);
+  mutt_menu_free(&menu);
 
   dialog_pop();
   notify_observer_remove(NeoMutt->notify, dialog_config_observer, dlg);

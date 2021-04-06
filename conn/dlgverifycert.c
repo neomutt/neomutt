@@ -67,20 +67,17 @@ static const struct Mapping VerifyHelp[] = {
 int dlg_verify_certificate(const char *title, struct ListHead *list,
                            bool allow_always, bool allow_skip)
 {
-  struct Menu *menu = mutt_menu_new(MENU_GENERIC);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_CERTIFICATE);
-  dlg->help_data = VerifyHelp;
-  dlg->help_menu = MENU_GENERIC;
+  struct MuttWindow *dlg =
+      dialog_create_simple_index(MENU_GENERIC, WT_DLG_CERTIFICATE, VerifyHelp);
 
-  mutt_menu_push_current(menu);
+  struct Menu *menu = dlg->wdata;
+  menu->title = title;
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, list, entries)
   {
     mutt_menu_add_dialog_row(menu, NONULL(np->data));
   }
-
-  menu->title = title;
 
   if (allow_always)
   {
@@ -147,8 +144,6 @@ int dlg_verify_certificate(const char *title, struct ListHead *list,
   }
   OptIgnoreMacroEvents = old_ime;
 
-  mutt_menu_pop_current(menu);
-  mutt_menu_free(&menu);
   dialog_destroy_simple_index(&dlg);
 
   return rc;

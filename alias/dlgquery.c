@@ -323,16 +323,12 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   }
   alias_array_sort(&mdata.ava, mdata.sub);
 
-  struct Menu *menu = NULL;
   char title[256];
-
   snprintf(title, sizeof(title), "%s%s", _("Query: "), buf);
 
-  menu = mutt_menu_new(MENU_QUERY);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_QUERY);
-  dlg->help_data = QueryHelp;
-  dlg->help_menu = MENU_QUERY;
+  struct MuttWindow *dlg = dialog_create_simple_index(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
 
+  struct Menu *menu = dlg->wdata;
   menu->make_entry = query_make_entry;
   menu->search = query_search;
   menu->custom_search = true;
@@ -340,7 +336,6 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   menu->title = strdup(title);
   menu->max = ARRAY_SIZE(&mdata.ava);
   menu->mdata = &mdata;
-  mutt_menu_push_current(menu);
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, &mdata);
   notify_observer_add(NeoMutt->notify, NT_COLOR, alias_color_observer, menu);
@@ -600,8 +595,6 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   notify_observer_remove(NeoMutt->notify, alias_config_observer, &mdata);
   notify_observer_remove(NeoMutt->notify, alias_color_observer, menu);
 
-  mutt_menu_pop_current(menu);
-  mutt_menu_free(&menu);
   dialog_destroy_simple_index(&dlg);
   ARRAY_FREE(&mdata.ava);
 }
