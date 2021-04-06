@@ -923,6 +923,10 @@ if {[get-define want-pcre2]} {
     }
   }
   define-feature pcre2
+} elseif {[check-inc-and-lib pcre2_unwarranted {} {} pcre2_regcomp {}]} {
+  # See https://bugs.exim.org/show_bug.cgi?id=2707 and
+  # https://github.com/neomutt/neomutt/issues/2865
+  user-error "Found libpcre2-posix: please reconfigure with --pcre2"
 }
 
 ###############################################################################
