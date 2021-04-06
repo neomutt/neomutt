@@ -47,7 +47,6 @@ typedef uint16_t MuttRedrawFlags;      ///< Flags, e.g. #REDRAW_INDEX
 struct Menu
 {
   const char *title;      ///< Title of this menu
-  void *mdata;            ///< Extra data for the current menu
   int current;            ///< Current entry
   int max;                ///< Number of entries in the menu
   MuttRedrawFlags redraw; ///< When to redraw the screen
@@ -115,6 +114,15 @@ struct Menu
    * @param menu Menu to redraw
    */
   void (*custom_redraw)(struct Menu *menu);
+
+  void *mdata;            ///< Private data
+
+  /**
+   * mdata_free - Free the private data attached to the Menu
+   * @param menu Menu
+   * @param ptr Menu data to free
+   */
+  void (*mdata_free)(struct Menu *menu, void **ptr);
 };
 
 void         menu_bottom_page(struct Menu *menu);

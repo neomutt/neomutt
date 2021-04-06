@@ -1090,6 +1090,9 @@ void mutt_menu_free(struct Menu **ptr)
   notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
   notify_observer_remove(Colors->notify, menu_color_observer, menu);
 
+  if (menu->mdata && menu->mdata_free)
+    menu->mdata_free(menu, &menu->mdata); // Custom function to free private data
+
   char **line = NULL;
   ARRAY_FOREACH(line, &menu->dialog)
   {
