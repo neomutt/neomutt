@@ -134,6 +134,8 @@ imap/util.c
 index/config.c
 index/index.c
 index/observer.c
+index/private_data.c
+index/shared_data.c
 init.c
 keymap.c
 mailcap.c

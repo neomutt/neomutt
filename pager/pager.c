@@ -2105,6 +2105,9 @@ static void pager_custom_redraw(struct Menu *pager_menu)
         rd->menu->current = rd->pview->pdata->email->vnum;
         rd->menu->win_index = rd->pview->win_index;
         rd->menu->win_ibar = rd->pview->win_ibar;
+
+        struct IndexSharedData *shared = dialog_find(rd->pview->win_pager)->wdata;
+        rd->menu->mdata = shared;
       }
 
       mutt_curses_set_color(MT_COLOR_NORMAL);
@@ -2425,6 +2428,7 @@ int mutt_pager(struct PagerView *pview)
 
   //---------- local variables ------------------------------------------------
   struct Mailbox *m = pview->pdata->ctx ? pview->pdata->ctx->mailbox : NULL;
+  struct IndexSharedData *shared = dialog_find(pview->win_pager)->wdata;
 
   struct Menu *pager_menu = NULL;
   struct PagerRedrawData rd = { 0 };
@@ -2605,7 +2609,7 @@ int mutt_pager(struct PagerView *pview)
 
             bool verbose = m->verbose;
             m->verbose = false;
-            mutt_update_index(rd.menu, pview->pdata->ctx, check, oldcount, e);
+            mutt_update_index(rd.menu, pview->pdata->ctx, check, oldcount, shared);
             m->verbose = verbose;
 
             rd.menu->max = m->vcount;
