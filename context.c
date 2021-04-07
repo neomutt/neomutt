@@ -74,6 +74,9 @@ void ctx_free(struct Context **ptr)
  */
 struct Context *ctx_new(struct Mailbox *m)
 {
+  if (!m)
+    return NULL;
+
   struct Context *ctx = mutt_mem_calloc(1, sizeof(struct Context));
 
   ctx->notify = notify_new();
