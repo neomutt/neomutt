@@ -47,7 +47,6 @@
 #include "bcache/lib.h"
 #include "ncrypt/lib.h"
 #include "adata.h"
-#include "context.h"
 #include "edata.h"
 #include "hook.h"
 #include "mutt_account.h"
@@ -590,13 +589,12 @@ void pop_fetch_mail(void)
 
   const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
   struct Mailbox *m_spool = mx_path_resolve(c_spool_file);
-  struct Context *ctx = mx_mbox_open(m_spool, MUTT_OPEN_NO_FLAGS);
-  if (!ctx)
+
+  if (!mx_mbox_open(m_spool, MUTT_OPEN_NO_FLAGS))
   {
     mailbox_free(&m_spool);
     goto finish;
   }
-
   bool old_append = m_spool->append;
   m_spool->append = true;
 
@@ -613,7 +611,7 @@ void pop_fetch_mail(void)
 
   for (int i = last + 1; i <= msgs; i++)
   {
-    struct Message *msg = mx_msg_open_new(ctx->mailbox, NULL, MUTT_ADD_FROM);
+    struct Message *msg = mx_msg_open_new(m_spool, NULL, MUTT_ADD_FROM);
     if (msg)
     {
       snprintf(buf, sizeof(buf), "RETR %d\r\n", i);
@@ -621,13 +619,13 @@ void pop_fetch_mail(void)
       if (ret == -3)
         rset = 1;
 
-      if ((ret == 0) && (mx_msg_commit(ctx->mailbox, msg) != 0))
+      if ((ret == 0) && (mx_msg_commit(m_spool, msg) != 0))
       {
         rset = 1;
         ret = -3;
       }
 
-      mx_msg_close(ctx->mailbox, &msg);
+      mx_msg_close(m_spool, &msg);
     }
     else
     {
@@ -644,7 +642,7 @@ void pop_fetch_mail(void)
     if (ret == -1)
     {
       m_spool->append = old_append;
-      mx_mbox_close(&ctx);
+      mx_mbox_close(m_spool);
       goto fail;
     }
     if (ret == -2)
@@ -666,7 +664,7 @@ void pop_fetch_mail(void)
   }
 
   m_spool->append = old_append;
-  mx_mbox_close(&ctx);
+  mx_mbox_close(m_spool);
 
   if (rset)
   {

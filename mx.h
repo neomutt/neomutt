@@ -32,7 +32,6 @@
 #include "core/lib.h"
 
 struct Email;
-struct Context;
 
 extern const struct MxOps *mx_ops[];
 
@@ -46,8 +45,8 @@ typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open_new(), e.g. #MUTT_
 /* Wrappers for the Mailbox API, see MxOps */
 enum MxStatus   mx_mbox_check      (struct Mailbox *m);
 enum MxStatus   mx_mbox_check_stats(struct Mailbox *m, uint8_t flags);
-enum MxStatus   mx_mbox_close      (struct Context **ptr);
-struct Context *mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
+enum MxStatus   mx_mbox_close      (struct Mailbox *m);
+bool            mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
 enum MxStatus   mx_mbox_sync       (struct Mailbox *m);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
 int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
@@ -64,6 +63,7 @@ struct Mailbox *mx_path_resolve    (const char *path);
 struct Mailbox *mx_resolve         (const char *path_or_name);
 int             mx_tags_commit     (struct Mailbox *m, struct Email *e, char *tags);
 int             mx_tags_edit       (struct Mailbox *m, const char *tags, char *buf, size_t buflen);
+enum MailboxType mx_type           (struct Mailbox *m);
 
 struct Account *mx_ac_find     (struct Mailbox *m);
 struct Mailbox *mx_mbox_find   (struct Account *a, const char *path);

@@ -32,7 +32,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "subjectrx.h"
-#include "context.h"
 #include "init.h"
 #include "mutt_commands.h"
 

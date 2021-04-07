@@ -286,25 +286,24 @@ end:
 /**
  * mutt_attach_resend - resend-message, from the attachment menu
  * @param fp   File containing email
- * @param ctx  Current mailbox
+ * @param m    Current mailbox
  * @param actx Attachment context
  * @param cur  Attachment
  */
-void mutt_attach_resend(FILE *fp, struct Context *ctx, struct AttachCtx *actx,
-                        struct Body *cur)
+void mutt_attach_resend(FILE *fp, struct Mailbox *m, struct AttachCtx *actx, struct Body *cur)
 {
   if (!check_all_msg(actx, cur, true))
     return;
 
   if (cur)
-    mutt_resend_message(fp, ctx, cur->email, NeoMutt->sub);
+    mutt_resend_message(fp, m, cur->email, NeoMutt->sub);
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->body->tagged)
       {
-        mutt_resend_message(actx->idx[i]->fp, ctx, actx->idx[i]->body->email,
+        mutt_resend_message(actx->idx[i]->fp, m, actx->idx[i]->body->email,
                             NeoMutt->sub);
       }
     }

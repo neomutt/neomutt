@@ -41,7 +41,6 @@
 #include "ncrypt/lib.h"
 #include "attachments.h"
 #include "command_parse.h"
-#include "context.h"
 #include "init.h"
 #include "mutt_commands.h"
 #include "mutt_globals.h"

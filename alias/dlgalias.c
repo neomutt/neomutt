@@ -42,7 +42,6 @@
 #include "lib.h"
 #include "pattern/lib.h"
 #include "alias.h"
-#include "context.h"
 #include "format_flags.h"
 #include "gui.h"
 #include "keymap.h"

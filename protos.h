@@ -75,7 +75,7 @@ int mutt_enter_string(char *buf, size_t buflen, int col, CompletionFlags flags);
 int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags flags,
                            bool multiple, struct Mailbox *m, char ***files,
                            int *numfiles, struct EnterState *state);
-int mutt_get_postponed(struct Context *ctx, struct Email *hdr, struct Email **cur, struct Buffer *fcc);
+int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr, struct Email **cur, struct Buffer *fcc);
 SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, SecurityFlags crypt_app);
 int mutt_num_postponed(struct Mailbox *m, bool force);
 int mutt_thread_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag, bool bf, bool subthread);

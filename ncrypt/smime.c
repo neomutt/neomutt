@@ -2165,7 +2165,7 @@ int smime_class_application_handler(struct Body *m, struct State *s)
 /**
  * smime_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-SecurityFlags smime_class_send_menu(struct Email *e)
+SecurityFlags smime_class_send_menu(struct Mailbox *m, struct Email *e)
 {
   struct SmimeKey *key = NULL;
   const char *prompt = NULL;
@@ -2253,7 +2253,7 @@ SecurityFlags smime_class_send_menu(struct Email *e)
 
       case 'O': /* oppenc mode on */
         e->security |= SEC_OPPENCRYPT;
-        crypt_opportunistic_encrypt(e);
+        crypt_opportunistic_encrypt(m, e);
         break;
 
       case 'o': /* oppenc mode off */

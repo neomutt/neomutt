@@ -1611,19 +1611,19 @@ static void fix_end_of_file(const char *data)
 /**
  * mutt_resend_message - Resend an email
  * @param fp    File containing email
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param e_cur Email to resend
  * @param sub   Config Subset
  * @retval  0 Message was successfully sent
  * @retval -1 Message was aborted or an error occurred
  * @retval  1 Message was postponed
  */
-int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *e_cur,
+int mutt_resend_message(FILE *fp, struct Mailbox *m, struct Email *e_cur,
                         struct ConfigSubset *sub)
 {
   struct Email *e_new = email_new();
 
-  if (mutt_prepare_template(fp, ctx->mailbox, e_new, e_cur, true) < 0)
+  if (mutt_prepare_template(fp, m, e_new, e_cur, true) < 0)
   {
     email_free(&e_new);
     return -1;
@@ -1649,13 +1649,13 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *e_cur,
     if (c_crypt_opportunistic_encrypt)
     {
       e_new->security |= SEC_OPPENCRYPT;
-      crypt_opportunistic_encrypt(e_new);
+      crypt_opportunistic_encrypt(m, e_new);
     }
   }
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, e_cur);
-  int rc = mutt_send_message(SEND_RESEND, e_new, NULL, ctx, &el, sub);
+  int rc = mutt_send_message(SEND_RESEND, e_new, NULL, m, &el, sub);
   emaillist_clear(&el);
 
   return rc;
@@ -1723,6 +1723,7 @@ static bool search_attach_keyword(char *filename, struct ConfigSubset *sub)
 
 /**
  * save_fcc - Save an Email to a 'sent mail' folder
+ * @param[in]  m             Current Mailbox
  * @param[in]  e             Email to save
  * @param[in]  fcc           Folder to save to (can be comma-separated list)
  * @param[in]  clear_content Cleartext content of Email
@@ -1733,7 +1734,7 @@ static bool search_attach_keyword(char *filename, struct ConfigSubset *sub)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int save_fcc(struct Email *e, struct Buffer *fcc,
+static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
                     struct Body *clear_content, char *pgpkeylist,
                     SendFlags flags, char **finalpath, struct ConfigSubset *sub)
 {
@@ -1823,7 +1824,7 @@ static int save_fcc(struct Email *e, struct Buffer *fcc,
           /* this means writing only the main part */
           e->body = clear_content->parts;
 
-          if (mutt_protect(e, pgpkeylist, false) == -1)
+          if (mutt_protect(m, e, pgpkeylist, false) == -1)
           {
             /* we can't do much about it at this point, so
            * fallback to saving the whole thing to fcc */
@@ -1870,8 +1871,8 @@ full_fcc:
         case 2: /* alternate (m)ailbox */
           /* L10N: This is the prompt to enter an "alternate (m)ailbox" when the
              initial Fcc fails.  */
-          rc = mutt_buffer_enter_fname(_("Fcc mailbox"), fcc, true, ctx_mailbox(Context),
-                                       false, NULL, NULL, MUTT_SEL_NO_FLAGS);
+          rc = mutt_buffer_enter_fname(_("Fcc mailbox"), fcc, true, m, false,
+                                       NULL, NULL, MUTT_SEL_NO_FLAGS);
           if ((rc == -1) || mutt_buffer_is_empty(fcc))
           {
             rc = 0;
@@ -1936,6 +1937,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
   char *pgpkeylist = NULL;
   const char *encrypt_as = NULL;
   struct Body *clear_content = NULL;
+  struct Mailbox *m = ctx_mailbox(Context);
 
   const char *const c_postponed = cs_subset_string(sub, "postponed");
   if (!c_postponed)
@@ -1975,7 +1977,6 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
 #ifdef USE_AUTOCRYPT
     if (e_post->security & SEC_AUTOCRYPT)
     {
-      struct Mailbox *m = ctx_mailbox(Context);
       if (mutt_autocrypt_set_sign_as_default_key(m, e_post))
       {
         e_post->body = mutt_remove_multipart(e_post->body);
@@ -1991,7 +1992,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
     {
       pgpkeylist = mutt_str_dup(encrypt_as);
       clear_content = e_post->body;
-      if (mutt_protect(e_post, pgpkeylist, true) == -1)
+      if (mutt_protect(m, e_post, pgpkeylist, true) == -1)
       {
         FREE(&pgpkeylist);
         e_post->body = mutt_remove_multipart(e_post->body);
@@ -2103,7 +2104,7 @@ static bool abort_for_missing_attachments(const struct Body *b, struct ConfigSub
  * @param flags    Send mode, see #SendFlags
  * @param e_templ  Template to use for new message
  * @param tempfile File specified by -i or -H
- * @param ctx      Current mailbox
+ * @param m        Current mailbox
  * @param el       List of Emails to send
  * @param sub      Config Subset
  * @retval  0 Message was successfully sent
@@ -2111,7 +2112,7 @@ static bool abort_for_missing_attachments(const struct Body *b, struct ConfigSub
  * @retval  1 Message was postponed
  */
 int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile,
-                      struct Context *ctx, struct EmailList *el, struct ConfigSubset *sub)
+                      struct Mailbox *m, struct EmailList *el, struct ConfigSubset *sub)
 {
   char buf[1024];
   struct Buffer fcc = mutt_buffer_make(0); /* where to copy this message */
@@ -2131,7 +2132,6 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   char *finalpath = NULL;
   struct EmailNode *en = NULL;
   struct Email *e_cur = NULL;
-  struct Mailbox *m = ctx ? ctx->mailbox : NULL;
 
   if (el)
     en = STAILQ_FIRST(el);
@@ -2191,7 +2191,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     if (flags == SEND_POSTPONED)
     {
-      rc = mutt_get_postponed(ctx, e_templ, &e_cur, &fcc);
+      rc = mutt_get_postponed(m, e_templ, &e_cur, &fcc);
       if (rc < 0)
       {
         flags = SEND_POSTPONED;
@@ -2663,7 +2663,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       if (!(e_templ->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)))
       {
         e_templ->security |= SEC_OPPENCRYPT;
-        crypt_opportunistic_encrypt(e_templ);
+        crypt_opportunistic_encrypt(m, e_templ);
       }
     }
 
@@ -2816,8 +2816,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       /* save the decrypted attachments */
       clear_content = e_templ->body;
 
-      if ((crypt_get_keys(e_templ, &pgpkeylist, 0) == -1) ||
-          (mutt_protect(e_templ, pgpkeylist, false) == -1))
+      if ((crypt_get_keys(m, e_templ, &pgpkeylist, 0) == -1) ||
+          (mutt_protect(m, e_templ, pgpkeylist, false) == -1))
       {
         e_templ->body = mutt_remove_multipart(e_templ->body);
 
@@ -2849,7 +2849,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   const bool c_fcc_before_send = cs_subset_bool(sub, "fcc_before_send");
   if (c_fcc_before_send)
-    save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
+    save_fcc(m, e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
 
   i = invoke_mta(m, e_templ, sub);
   if (i < 0)
@@ -2889,7 +2889,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   }
 
   if (!c_fcc_before_send)
-    save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
+    save_fcc(m, e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
 
   if (!OptNoCurses)
   {

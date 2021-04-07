@@ -1142,18 +1142,17 @@ int main(int argc, char *argv[], char *envp[])
   {
     if (flags & MUTT_CLI_MAILBOX)
     {
-      struct Mailbox *m = ctx_mailbox(Context);
 #ifdef USE_IMAP
       const bool c_imap_passive = cs_subset_bool(NeoMutt->sub, "imap_passive");
       cs_subset_str_native_set(NeoMutt->sub, "imap_passive", false, NULL);
 #endif
-      if (mutt_mailbox_check(m, 0) == 0)
+      if (mutt_mailbox_check(NULL, 0) == 0)
       {
         mutt_message(_("No mailbox with new mail"));
         goto main_curses; // TEST37: neomutt -Z (no new mail)
       }
       mutt_buffer_reset(&folder);
-      mutt_mailbox_next(m, &folder);
+      mutt_mailbox_next(NULL, &folder);
 #ifdef USE_IMAP
       cs_subset_str_native_set(NeoMutt->sub, "imap_passive", c_imap_passive, NULL);
 #endif
@@ -1240,8 +1239,7 @@ int main(int argc, char *argv[], char *envp[])
     repeat_error = true;
     struct Mailbox *m = mx_resolve(mutt_buffer_string(&folder));
     const bool c_read_only = cs_subset_bool(NeoMutt->sub, "read_only");
-    Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || c_read_only) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS);
-    if (!Context)
+    if (!mx_mbox_open(m, ((flags & MUTT_CLI_RO) || c_read_only) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS))
     {
       if (m->account)
         account_mailbox_remove(m->account, m);
@@ -1250,19 +1248,18 @@ int main(int argc, char *argv[], char *envp[])
       mutt_error(_("Unable to open mailbox %s"), mutt_buffer_string(&folder));
       repeat_error = false;
     }
-    if (Context || !explicit_folder)
+    if (m || !explicit_folder)
     {
       struct MuttWindow *dlg = index_pager_init();
       dialog_push(dlg);
 
-      struct EventMailbox em = { Context ? Context->mailbox : NULL };
+      struct EventMailbox em = { m };
       notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
 
-      mutt_index_menu(dlg);
+      mutt_index_menu(dlg, m);
       dialog_pop();
       index_pager_shutdown(dlg);
       mutt_window_free(&dlg);
-      ctx_free(&Context);
       log_queue_empty();
       repeat_error = false;
     }
