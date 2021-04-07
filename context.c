@@ -105,14 +105,14 @@ static void ctx_cleanup(struct Context *ctx)
 {
   FREE(&ctx->pattern);
   mutt_pattern_free(&ctx->limit_pattern);
+  mutt_clear_threads(ctx->mailbox, ctx->threads);
+  mutt_thread_ctx_free(&ctx->threads);
   if (ctx->mailbox)
     notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, ctx);
 
   struct Notify *notify = ctx->notify;
-  struct Mailbox *m = ctx->mailbox;
   memset(ctx, 0, sizeof(struct Context));
   ctx->notify = notify;
-  ctx->mailbox = m;
 }
 
 /**
@@ -319,7 +319,6 @@ int ctx_mailbox_observer(struct NotifyCallback *nc)
   switch (nc->event_subtype)
   {
     case NT_MAILBOX_CLOSED:
-      mutt_clear_threads(ctx->mailbox, ctx->threads);
       ctx_cleanup(ctx);
       break;
     case NT_MAILBOX_INVALID:

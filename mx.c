@@ -461,6 +461,7 @@ void mx_fastclose_mailbox(struct Mailbox **ptr)
   if (m->flags & MB_HIDDEN)
   {
     mx_ac_remove(m);
+    mailbox_free(ptr);
   }
 }
 

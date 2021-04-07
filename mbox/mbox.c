@@ -1807,19 +1807,19 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   if (m->newly_created && ((sb.st_ctime != sb.st_mtime) || (sb.st_ctime != sb.st_atime)))
     m->newly_created = false;
 
+  int rc = (m->has_new || m->msg_new) ? MX_STATUS_NEW_MAIL : MX_STATUS_OK;
   if ((flags != 0) && mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME,
                                                       &m->stats_last_checked) > 0)
   {
     bool old_peek = m->peekonly;
     mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
+    rc = (m->has_new || m->msg_new) ? MX_STATUS_NEW_MAIL : MX_STATUS_OK;
     mx_mbox_close(&m);
     if (m)
       m->peekonly = old_peek;
   }
 
-  if (m && (m->has_new || m->msg_new))
-    return MX_STATUS_NEW_MAIL;
-  return MX_STATUS_OK;
+  return rc;
 }
 
 // clang-format off
