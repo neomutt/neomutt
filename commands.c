@@ -378,7 +378,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
 
     pview.mode = PAGER_MODE_EMAIL;
     pview.banner = NULL;
-    pview.flags = MUTT_PAGER_MESSAGE;
+    pview.flags = MUTT_PAGER_MESSAGE | (e->body->nowrap ? MUTT_PAGER_NOWRAP : 0);
     pview.win_ibar = win_ibar;
     pview.win_index = win_index;
     pview.win_pbar = win_pbar;

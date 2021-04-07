@@ -379,6 +379,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
         {
           if (entry)
             entry->xneomuttnowrap = true;
+          a->nowrap = true;
         }
       } /* while (ch) */
 
