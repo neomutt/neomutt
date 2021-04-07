@@ -886,7 +886,17 @@ leave:
   mutt_clear_error();
   char title[1024];
   snprintf(title, sizeof(title), _("Key ID: 0x%s"), crypt_keyid(key));
-  mutt_do_pager(title, mutt_buffer_string(&tempfile), MUTT_PAGER_NO_FLAGS, NULL);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = mutt_buffer_string(&tempfile);
+
+  pview.banner = title;
+  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.mode = PAGER_MODE_OTHER;
+
+  mutt_do_pager(&pview);
 
 cleanup:
   mutt_buffer_dealloc(&tempfile);

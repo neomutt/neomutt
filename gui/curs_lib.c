@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -680,20 +681,18 @@ static int mutt_dlg_dopager_observer(struct NotifyCallback *nc)
 }
 
 /**
- * mutt_do_pager - Display some page-able text to the user
- * @param banner   Message for status bar
- * @param tempfile File to display
- * @param do_color Flags, see #PagerFlags
- * @param info     Info about current mailbox (OPTIONAL)
+ * mutt_do_pager - Display some page-able text to the user (help or attachment)
+ * @param pview PagerView to construct Pager object
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
-                  struct Pager *info)
+int mutt_do_pager(struct PagerView *pview)
 {
-  struct Pager info2 = { 0 };
-  if (!info)
-    info = &info2;
+  assert(pview);
+  assert(pview->pdata);
+  assert(pview->pdata->fname);
+  assert((pview->mode == PAGER_MODE_ATTACH) ||
+         (pview->mode == PAGER_MODE_HELP) || (pview->mode == PAGER_MODE_OTHER));
 
   struct MuttWindow *dlg =
       mutt_window_new(WT_DLG_DO_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
@@ -723,24 +722,24 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
   notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlg_dopager_observer, dlg);
   dialog_push(dlg);
 
-  info->win_ibar = NULL;
-  info->win_index = NULL;
-  info->win_pbar = pbar;
-  info->win_pager = pager;
+  pview->win_ibar = NULL;
+  pview->win_index = NULL;
+  pview->win_pbar = pbar;
+  pview->win_pager = pager;
 
   int rc;
 
   const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
   if (!c_pager || mutt_str_equal(c_pager, "builtin"))
   {
-    rc = mutt_pager(banner, tempfile, do_color, info);
+    rc = mutt_pager(pview);
   }
   else
   {
     struct Buffer *cmd = mutt_buffer_pool_get();
 
     mutt_endwin();
-    mutt_buffer_file_expand_fmt_quote(cmd, c_pager, tempfile);
+    mutt_buffer_file_expand_fmt_quote(cmd, c_pager, pview->pdata->fname);
     if (mutt_system(mutt_buffer_string(cmd)) == -1)
     {
       mutt_error(_("Error running \"%s\""), mutt_buffer_string(cmd));
@@ -748,7 +747,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
     }
     else
       rc = 0;
-    mutt_file_unlink(tempfile);
+    mutt_file_unlink(pview->pdata->fname);
     mutt_buffer_pool_release(&cmd);
   }
 
