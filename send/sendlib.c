@@ -1548,7 +1548,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     if (!fp_tmp)
     {
       mutt_perror(mutt_buffer_string(tempfile));
-      mx_mbox_close(m_fcc);
+      mx_mbox_close(&m_fcc);
       goto done;
     }
     /* remember new mail status before appending message */
@@ -1564,7 +1564,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
   if (!msg)
   {
     mutt_file_fclose(&fp_tmp);
-    mx_mbox_close(m_fcc);
+    mx_mbox_close(&m_fcc);
     goto done;
   }
 
@@ -1688,7 +1688,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
       unlink(mutt_buffer_string(tempfile));
       mx_msg_commit(m_fcc, msg); /* XXX really? */
       mx_msg_close(m_fcc, &msg);
-      mx_mbox_close(m_fcc);
+      mx_mbox_close(&m_fcc);
       goto done;
     }
 
@@ -1724,7 +1724,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
   else if (finalpath)
     *finalpath = mutt_str_dup(msg->committed_path);
   mx_msg_close(m_fcc, &msg);
-  mx_mbox_close(m_fcc);
+  mx_mbox_close(&m_fcc);
 
   if (!post && need_mailbox_cleanup)
     mutt_mailbox_cleanup(path, &st);

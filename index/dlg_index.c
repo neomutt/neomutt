@@ -692,7 +692,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
       new_last_folder = mutt_str_dup(mailbox_path(shared->mailbox));
     *oldcount = shared->mailbox->msg_count;
 
-    const enum MxStatus check = mx_mbox_close(shared->mailbox);
+    const enum MxStatus check = mx_mbox_close(&shared->mailbox);
     if (check == MX_STATUS_OK)
     {
       struct Context *ctx = shared->ctx;
@@ -1876,7 +1876,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_SHUTDOWN, NULL);
 
           enum MxStatus check = MX_STATUS_OK;
-          if (!shared->ctx || ((check = mx_mbox_close(shared->mailbox)) == MX_STATUS_OK))
+          if (!shared->ctx || ((check = mx_mbox_close(&shared->mailbox)) == MX_STATUS_OK))
           {
             struct Context *ctx = shared->ctx;
             index_shared_data_set_context(shared, NULL);
@@ -2040,7 +2040,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_MAIN_IMAP_LOGOUT_ALL:
         if (shared->mailbox && (shared->mailbox->type == MUTT_IMAP))
         {
-          const enum MxStatus check = mx_mbox_close(shared->mailbox);
+          const enum MxStatus check = mx_mbox_close(&shared->mailbox);
           if (check == MX_STATUS_OK)
           {
             struct Context *ctx = shared->ctx;
@@ -2697,7 +2697,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           {
             struct Context *ctx = shared->ctx;
             index_shared_data_set_context(shared, NULL);
-            mx_fastclose_mailbox(shared->mailbox);
+            mx_fastclose_mailbox(&shared->mailbox);
             ctx_free(&ctx);
           }
           priv->done = true;

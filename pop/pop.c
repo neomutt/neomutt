@@ -642,8 +642,9 @@ void pop_fetch_mail(void)
 
     if (ret == -1)
     {
-      m_spool->append = old_append;
-      mx_mbox_close(m_spool);
+      mx_mbox_close(&m_spool);
+      if (m_spool)
+        m_spool->append = old_append;
       goto fail;
     }
     if (ret == -2)
@@ -664,8 +665,9 @@ void pop_fetch_mail(void)
                  msgbuf, i - last, msgs - last);
   }
 
-  m_spool->append = old_append;
-  mx_mbox_close(m_spool);
+  mx_mbox_close(&m_spool);
+  if (m_spool)
+    m_spool->append = old_append;
 
   if (rset)
   {

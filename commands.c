@@ -1275,8 +1275,9 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     rc = mutt_save_message_ctx(m, en->email, save_opt, transform_opt, m_save);
     if (rc != 0)
     {
-      mx_mbox_close(m_save);
-      m_save->append = old_append;
+      mx_mbox_close(&m_save);
+      if (m_save)
+        m_save->append = old_append;
       goto errcleanup;
     }
 #ifdef USE_COMP_MBOX
@@ -1334,8 +1335,9 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
     if (rc != 0)
     {
-      mx_mbox_close(m_save);
-      m_save->append = old_append;
+      mx_mbox_close(&m_save);
+      if (m_save)
+        m_save->append = old_append;
       goto errcleanup;
     }
   }
@@ -1343,8 +1345,9 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   const bool need_mailbox_cleanup =
       ((m_save->type == MUTT_MBOX) || (m_save->type == MUTT_MMDF));
 
-  mx_mbox_close(m_save);
-  m_save->append = old_append;
+  mx_mbox_close(&m_save);
+  if (m_save)
+    m_save->append = old_append;
 
   if (need_mailbox_cleanup)
     mutt_mailbox_cleanup(mutt_buffer_string(buf), &st);
