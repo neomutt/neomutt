@@ -21,20 +21,50 @@
  */
 
 /**
- * @page neo_state Keep track when processing files
+ * @page mutt_state Keep track when processing files
  *
  * Keep track when processing files
  */
 
 #include "config.h"
+#include <inttypes.h>
 #include <limits.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <wchar.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "state.h"
-#include "mutt_globals.h"
+
+/**
+ * state_attachment_marker - Get a unique (per-run) ANSI string to mark PGP
+ * messages in an email
+ * @retval s Marker
+ */
+const char *state_attachment_marker(void)
+{
+  static char marker[256] = { 0 };
+  if (!marker[0])
+  {
+    snprintf(marker, sizeof(marker), "\033]9;%" PRIu64 "\a", mutt_rand64());
+  }
+  return marker;
+}
+
+/**
+ * state_protected_header_marker - Get a unique (per-run) ANSI string to mark
+ * protected headers in an email
+ * @retval s Marker
+ */
+const char *state_protected_header_marker(void)
+{
+  static char marker[256] = { 0 };
+  if (!marker[0])
+  {
+    snprintf(marker, sizeof(marker), "\033]8;%lld\a", (long long) mutt_date_epoch());
+  }
+  return marker;
+}
 
 /**
  * state_mark_attach - Write a unique marker around content
@@ -48,7 +78,7 @@ void state_mark_attach(struct State *s)
   if ((s->flags & MUTT_DISPLAY) &&
       (!c_pager || mutt_str_equal(c_pager, "builtin")))
   {
-    state_puts(s, AttachmentMarker);
+    state_puts(s, state_attachment_marker());
   }
 }
 
@@ -62,7 +92,7 @@ void state_mark_protected_header(struct State *s)
   if ((s->flags & MUTT_DISPLAY) &&
       (!c_pager || mutt_str_equal(c_pager, "builtin")))
   {
-    state_puts(s, ProtectedHeaderMarker);
+    state_puts(s, state_protected_header_marker());
   }
 }
 

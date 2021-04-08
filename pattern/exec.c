@@ -52,7 +52,6 @@
 #include "maillist.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "state.h"
 #ifndef USE_FMEMOPEN
 #include <sys/stat.h>
 #endif

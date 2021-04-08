@@ -55,7 +55,6 @@
 #include "options.h"
 #include "protos.h"
 #include "rfc3676.h"
-#include "state.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif

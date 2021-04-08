@@ -65,7 +65,6 @@
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "options.h"
-#include "state.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif

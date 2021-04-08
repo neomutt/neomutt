@@ -43,8 +43,6 @@ WHERE struct Context *Context;
 
 WHERE bool ErrorBufMessage;            ///< true if the last message was an error
 WHERE char ErrorBuf[256];              ///< Copy of the last error message
-WHERE char AttachmentMarker[256];      ///< Unique ANSI string to mark PGP messages in an email
-WHERE char ProtectedHeaderMarker[256]; ///< Unique ANSI string to mark protected headers in an email
 
 WHERE char *HomeDir;       ///< User's home directory
 WHERE char *ShortHostname; ///< Short version of the hostname

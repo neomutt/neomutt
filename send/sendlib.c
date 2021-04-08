@@ -57,7 +57,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "options.h"
-#include "state.h"
 
 /**
  * struct ContentState - Info about the body of an email
