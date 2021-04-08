@@ -50,7 +50,6 @@
 #include "muttlib.h"
 #include "options.h"
 #include "protos.h"
-#include "state.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

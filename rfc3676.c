@@ -41,7 +41,6 @@
 #include "gui/lib.h"
 #include "rfc3676.h"
 #include "muttlib.h"
-#include "state.h"
 
 #define FLOWED_MAX 72
 

@@ -61,7 +61,6 @@
 #include "options.h"
 #include "recvcmd.h"
 #include "rfc3676.h"
-#include "state.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

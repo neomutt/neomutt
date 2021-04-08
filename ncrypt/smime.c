@@ -55,7 +55,6 @@
 #include "handler.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "state.h"
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 #include "smime.h"
 #endif

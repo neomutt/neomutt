@@ -63,4 +63,7 @@ void state_prefix_putc          (struct State *s, char c);
 int  state_printf               (struct State *s, const char *fmt, ...);
 int  state_putws                (struct State *s, const wchar_t *ws);
 
+const char *state_attachment_marker(void);
+const char *state_protected_header_marker(void);
+
 #endif /* MUTT_STATE_H */

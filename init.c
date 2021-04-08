@@ -744,12 +744,6 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   nm_init();
 #endif
 
-  snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a", // Escape
-           mutt_rand64());
-
-  snprintf(ProtectedHeaderMarker, sizeof(ProtectedHeaderMarker), "\033]8;%lld\a", // Escape
-           (long long) mutt_date_epoch());
-
   /* "$spool_file" precedence: config file, environment */
   const char *p = mutt_str_getenv("MAIL");
   if (!p)

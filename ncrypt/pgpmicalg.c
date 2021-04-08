@@ -35,7 +35,6 @@
 #include "pgpmicalg.h"
 #include "handler.h"
 #include "pgppacket.h"
-#include "state.h"
 
 /**
  * struct HashAlgorithm - PGP Hashing algorithm

@@ -39,7 +39,6 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "enriched.h"
-#include "state.h"
 
 #define INDENT_SIZE 4
 

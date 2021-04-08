@@ -968,7 +968,7 @@ static int check_marker(const char *q, const char *p)
  */
 static int check_attachment_marker(const char *p)
 {
-  return check_marker(AttachmentMarker, p);
+  return check_marker(state_attachment_marker(), p);
 }
 
 /**
@@ -978,7 +978,7 @@ static int check_attachment_marker(const char *p)
  */
 static int check_protected_header_marker(const char *p)
 {
-  return check_marker(ProtectedHeaderMarker, p);
+  return check_marker(state_protected_header_marker(), p);
 }
 
 /**
