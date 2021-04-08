@@ -3484,6 +3484,13 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags
       if (key_check_cap(key, KEY_CAP_CAN_SIGN))
         flags |= KEYFLAG_CANSIGN;
 
+      if (key->revoked)
+        flags |= KEYFLAG_REVOKED;
+      if (key->expired)
+        flags |= KEYFLAG_EXPIRED;
+      if (key->disabled)
+        flags |= KEYFLAG_DISABLED;
+
       for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
       {
         k = mutt_mem_calloc(1, sizeof(*k));
@@ -3492,6 +3499,8 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags
         k->idx = idx;
         k->uid = uid->uid;
         k->flags = flags;
+        if (uid->revoked)
+          k->flags |= KEYFLAG_REVOKED;
         k->validity = uid->validity;
         *kend = k;
         kend = &k->next;
