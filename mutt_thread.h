@@ -84,20 +84,20 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads);
 #define mutt_next_subthread(e)     mutt_aside_thread(e, true,  true)
 #define mutt_previous_subthread(e) mutt_aside_thread(e, false, true)
 
-struct ThreadsContext *mutt_thread_ctx_init          (struct Mailbox *m);
+struct ThreadsContext *mutt_thread_ctx_init          (void);
 void                   mutt_thread_ctx_free          (struct ThreadsContext **tctx);
 void                   mutt_thread_collapse_collapsed(struct ThreadsContext *tctx);
 void                   mutt_thread_collapse          (struct ThreadsContext *tctx, bool collapse);
 bool                   mutt_thread_can_collapse      (struct Email *e);
 
-void                   mutt_clear_threads     (struct ThreadsContext *tctx);
+void                   mutt_clear_threads     (struct Mailbox *m, struct ThreadsContext *tctx);
 void                   mutt_draw_tree         (struct ThreadsContext *tctx);
 bool                   mutt_link_threads      (struct Email *parent, struct EmailList *children, struct Mailbox *m);
 struct HashTable *     mutt_make_id_hash      (struct Mailbox *m);
 int                    mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInThread mit);
 int                    mutt_parent_message    (struct Email *e, bool find_root);
 off_t                  mutt_set_vnum          (struct Mailbox *m);
-void                   mutt_sort_subthreads   (struct ThreadsContext *tctx, bool init);
-void                   mutt_sort_threads      (struct ThreadsContext *tctx, bool init);
+void                   mutt_sort_subthreads   (struct Mailbox *m, struct ThreadsContext *tctx, bool init);
+void                   mutt_sort_threads      (struct Mailbox *m, struct ThreadsContext *tctx, bool init);
 
 #endif /* MUTT_MUTT_THREAD_H */

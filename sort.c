@@ -391,7 +391,7 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
      * deleted all the messages.  the virtual message numbers are not updated
      * in that routine, so we must make sure to zero the vcount member.  */
     m->vcount = 0;
-    mutt_clear_threads(threads);
+    mutt_clear_threads(m, threads);
     *vsize = 0;
     return; /* nothing to do! */
   }
@@ -419,7 +419,7 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
   }
 
   if (init)
-    mutt_clear_threads(threads);
+    mutt_clear_threads(m, threads);
 
   const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   const short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
@@ -431,11 +431,11 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
     if (OptSortSubthreads)
     {
       cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort_aux, NULL);
-      mutt_sort_subthreads(threads, true);
+      mutt_sort_subthreads(m, threads, true);
       cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
       OptSortSubthreads = false;
     }
-    mutt_sort_threads(threads, init);
+    mutt_sort_threads(m, threads, init);
   }
   else if (!(sortfunc = mutt_get_sort_func(c_sort & SORT_MASK, mx_type(m))) ||
            !(AuxSort = mutt_get_sort_func(c_sort_aux & SORT_MASK, mx_type(m))))
