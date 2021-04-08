@@ -927,6 +927,7 @@ static int external_body_handler(struct Body *b, struct State *s)
  */
 static int alternative_handler(struct Body *a, struct State *s)
 {
+  struct Body *const head = a;
   struct Body *choice = NULL;
   struct Body *b = NULL;
   bool mustfree = false;
@@ -1068,6 +1069,10 @@ static int alternative_handler(struct Body *a, struct State *s)
       print_part_line(s, choice, 0);
     }
     mutt_body_handler(choice, s);
+
+    /* Let it flow back to the main part */
+    head->nowrap = choice->nowrap;
+    choice->nowrap = false;
 
     if (mutt_str_equal("info", c_show_multipart_alternative))
     {

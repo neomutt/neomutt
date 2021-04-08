@@ -71,6 +71,7 @@ struct Body
   bool deleted : 1;               ///< Attachment marked for deletion
 
   bool noconv : 1;                ///< Don't do character set conversion
+  bool nowrap : 1;                ///< Do not wrap the output in the pager
   bool force_charset : 1;         ///< Send mode: don't adjust the character set when in send-mode.
   bool goodsig : 1;               ///< Good cryptographic signature
   bool warnsig : 1;               ///< Maybe good signature
