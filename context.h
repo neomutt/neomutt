@@ -66,7 +66,7 @@ enum NotifyContext
  */
 struct EventContext
 {
-  struct Context *context; ///< The Context this Event relates to
+  struct Context *ctx; ///< The Context this Event relates to
 };
 
 void            ctx_free            (struct Context **ptr);

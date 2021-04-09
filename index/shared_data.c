@@ -37,39 +37,6 @@
 #include "mutt_globals.h"
 
 /**
- * index_shared_data_free - Free Index Data
- * @param win Window
- * @param ptr Index Data to free
- *
- * Only `notify` is owned by IndexSharedData and should be freed.
- */
-void index_shared_data_free(struct MuttWindow *win, void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct IndexSharedData *shared = *ptr;
-
-  notify_send(shared->notify, NT_INDEX, NT_INDEX_CLOSING, shared);
-  notify_free(&shared->notify);
-
-  FREE(ptr);
-}
-
-/**
- * index_shared_data_new - Create new Index Data
- * @retval ptr New IndexSharedData
- */
-struct IndexSharedData *index_shared_data_new(void)
-{
-  struct IndexSharedData *shared = mutt_mem_calloc(1, sizeof(struct IndexSharedData));
-
-  shared->notify = notify_new();
-
-  return shared;
-}
-
-/**
  * index_shared_data_set_context - Set the Context for the Index and friends
  * @param shared Shared Index data
  * @param ctx    New Context, may be NULL
@@ -152,4 +119,152 @@ bool index_shared_data_is_cur_email(const struct IndexSharedData *shared,
     return false;
 
   return shared->email_seq == e->sequence;
+}
+
+/**
+ * index_shared_context_observer - Context has changed - Implements ::observer_t
+ */
+static int index_shared_context_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_CONTEXT) || !nc->event_data || !nc->global_data)
+    return -1;
+
+  struct EventContext *ev_c = nc->event_data;
+  struct IndexSharedData *shared = nc->global_data;
+
+  if (nc->event_subtype != NT_CONTEXT_CLOSE)
+    return 0;
+
+  if (ev_c->ctx != shared->ctx)
+    return 0;
+
+  shared->ctx = NULL;
+
+  // Relay the message
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_CONTEXT, shared);
+  return 0;
+}
+
+/**
+ * index_shared_account_observer - Account has changed - Implements ::observer_t
+ */
+static int index_shared_account_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_ACCOUNT) || !nc->event_data || !nc->global_data)
+    return -1;
+
+  struct EventAccount *ev_a = nc->event_data;
+  struct IndexSharedData *shared = nc->global_data;
+
+  if (nc->event_subtype != NT_ACCOUNT_REMOVE)
+    return 0;
+
+  if (ev_a->account != shared->account)
+    return 0;
+
+  shared->account = NULL;
+  shared->mailbox = NULL;
+  shared->email = NULL;
+
+  // Relay the message
+  notify_send(shared->notify, NT_INDEX,
+              NT_INDEX_ACCOUNT | NT_INDEX_MAILBOX | NT_INDEX_EMAIL, shared);
+  return 0;
+}
+
+/**
+ * index_shared_mailbox_observer - Mailbox has changed - Implements ::observer_t
+ */
+static int index_shared_mailbox_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_MAILBOX) || !nc->event_data || !nc->global_data)
+    return -1;
+
+  struct EventMailbox *ev_m = nc->event_data;
+  struct IndexSharedData *shared = nc->global_data;
+
+  if (nc->event_subtype != NT_MAILBOX_CLOSED)
+    return 0;
+
+  if (ev_m->mailbox != shared->mailbox)
+    return 0;
+
+  shared->mailbox = NULL;
+  shared->email = NULL;
+
+  // Relay the message
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_MAILBOX | NT_INDEX_EMAIL, shared);
+  return 0;
+}
+
+/**
+ * index_shared_email_observer - Email has changed - Implements ::observer_t
+ */
+static int index_shared_email_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_EMAIL) || !nc->event_data || !nc->global_data)
+    return -1;
+
+  struct EventEmail *ev_e = nc->event_data;
+  struct IndexSharedData *shared = nc->global_data;
+
+  if (nc->event_subtype != NT_EMAIL_REMOVE)
+    return 0;
+
+  for (int i = 0; i < ev_e->num_emails; i++)
+  {
+    if (ev_e->emails[i] == shared->email)
+    {
+      shared->email = NULL;
+
+      // Relay the message
+      notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, shared);
+      return 0;
+    }
+  }
+
+  return 0;
+}
+
+/**
+ * index_shared_data_free - Free Index Data
+ * @param win Window
+ * @param ptr Index Data to free
+ *
+ * Only `notify` is owned by IndexSharedData and should be freed.
+ */
+void index_shared_data_free(struct MuttWindow *win, void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct IndexSharedData *shared = *ptr;
+
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_CLOSING, shared);
+  notify_free(&shared->notify);
+
+  notify_observer_remove(NeoMutt->notify, index_shared_context_observer, shared);
+  notify_observer_remove(NeoMutt->notify, index_shared_account_observer, shared);
+  notify_observer_remove(NeoMutt->notify, index_shared_mailbox_observer, shared);
+  notify_observer_remove(NeoMutt->notify, index_shared_email_observer, shared);
+
+  FREE(ptr);
+}
+
+/**
+ * index_shared_data_new - Create new Index Data
+ * @retval ptr New IndexSharedData
+ */
+struct IndexSharedData *index_shared_data_new(void)
+{
+  struct IndexSharedData *shared = mutt_mem_calloc(1, sizeof(struct IndexSharedData));
+
+  shared->notify = notify_new();
+
+  notify_observer_add(NeoMutt->notify, NT_CONTEXT, index_shared_context_observer, shared);
+  notify_observer_add(NeoMutt->notify, NT_ACCOUNT, index_shared_account_observer, shared);
+  notify_observer_add(NeoMutt->notify, NT_MAILBOX, index_shared_mailbox_observer, shared);
+  notify_observer_add(NeoMutt->notify, NT_EMAIL, index_shared_email_observer, shared);
+
+  return shared;
 }
