@@ -579,6 +579,7 @@ static int update_message_path(struct Email *e, const char *path)
     FREE(&edata->folder);
 
     p -= 3; /* skip subfolder (e.g. "new") */
+    e->old = mutt_str_startswith(p, "cur");
     e->path = mutt_str_dup(p);
 
     for (; (p > path) && (*(p - 1) == '/'); p--)
@@ -830,7 +831,11 @@ static void append_message(struct HeaderCache *h, struct Mailbox *m,
 #endif
   {
     if (access(path, F_OK) == 0)
+    {
+      /* We pass is_old=false as argument here, but e->old will be updated later
+       * by update_message_path() (called by init_email() below).  */
       e = maildir_parse_message(MUTT_MAILDIR, path, false, NULL);
+    }
     else
     {
       /* maybe moved try find it... */
