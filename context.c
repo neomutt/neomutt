@@ -60,6 +60,7 @@ void ctx_free(struct Context **ptr)
   if (ctx->mailbox)
     notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, ctx);
 
+  mutt_clear_threads(ctx->mailbox, ctx->threads);
   mutt_thread_ctx_free(&ctx->threads);
   notify_free(&ctx->notify);
   FREE(&ctx->pattern);

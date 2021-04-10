@@ -848,7 +848,9 @@ static void change_folder_string(struct Menu *menu, char *buf, size_t buflen,
   *pager_return = false;
 
   struct Mailbox *m = mx_path_resolve(buf);
+  m->opened++;
   change_folder_mailbox(menu, m, oldcount, shared, read_only);
+  mx_fastclose_mailbox(&m);
 }
 
 /**
