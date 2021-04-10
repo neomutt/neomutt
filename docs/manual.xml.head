@@ -19940,12 +19940,14 @@ neomutt -s "data set for run #2" professor@bigschool.edu &lt; ~/run2.dat
       </para>
       <para>
         A draft file passed with <literal>-H</literal> will be used as the
-        initial header and body for the message. Multipart messages can be used
-        as a draft file. When combined with <literal>-E</literal>, the draft
-        file will be updated to the final state of the message after
-        composition, regardless of whether the message is sent, aborted, or
-        even postponed. Note that if the message is sent encrypted or signed,
-        the draft file will be saved that way too.
+        initial header and body for the message. Multipart messages can be
+        used as a draft file, and are processed the same in interactive and
+        batch mode; they are not passed through untouched.  For example,
+        encrypted draft files will be decrypted.  When combined with
+        <literal>-E</literal>, the draft file will be updated to the final
+        state of the message after composition, regardless of whether the
+        message is sent, aborted, or even postponed.  Note that if the message
+        is sent encrypted or signed, the draft file will be saved that way too.
       </para>
       <para>
         All files passed with <literal>-a</literal> <emphasis>file</emphasis>
