@@ -118,8 +118,12 @@ static bool send(struct Notify *source, struct Notify *current,
     if (!o)
       continue;
 
-    struct NotifyCallback nc = { current, event_type, event_subtype, event_data, o->global_data };
-    o->callback(&nc);
+    if ((o->type == NT_ALL) || (event_type == o->type))
+    {
+      struct NotifyCallback nc = { current, event_type, event_subtype,
+                                   event_data, o->global_data };
+      o->callback(&nc);
+    }
   }
 
   if (current->parent)
@@ -183,6 +187,7 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type,
   }
 
   struct Observer *o = mutt_mem_calloc(1, sizeof(*o));
+  o->type = type;
   o->callback = callback;
   o->global_data = global_data;
 
