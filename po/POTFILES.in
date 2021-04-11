@@ -176,6 +176,7 @@ mutt/random.c
 mutt/regex.c
 mutt/signal.c
 mutt/slist.c
+mutt/state.c
 mutt/string.c
 muttlib.c
 mutt_account.c
@@ -270,7 +271,6 @@ sidebar/sort.c
 sidebar/wdata.c
 sidebar/window.c
 sort.c
-state.c
 status.c
 store/bdb.c
 store/gdbm.c
