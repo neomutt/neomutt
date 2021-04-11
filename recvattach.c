@@ -645,7 +645,8 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     if (save_attachment_flowed_helper(fp, body, mutt_buffer_string(tfile), opt,
                                       (e || !is_message) ? e : body->email) == 0)
     {
-      mutt_message(_("Attachment saved"));
+      // This uses ngettext to avoid duplication of messages
+      mutt_message(ngettext("Attachment saved", "%d attachments saved", 1), 1);
       rc = 0;
       goto cleanup;
     }
@@ -822,13 +823,16 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     menu->redraw |= REDRAW_MOTION;
   }
 
-  if (!c_attach_split && (rc == 0))
-    mutt_message(_("Attachment saved"));
-
-  if (c_attach_save_without_prompting && (rc == 0))
+  if (rc == 0)
   {
-    mutt_message(ngettext("Attachment saved", "%d attachments saved", saved_attachments),
-                 saved_attachments);
+    if (!c_attach_split)
+      saved_attachments = 1;
+
+    if (!c_attach_split || c_attach_save_without_prompting)
+    {
+      mutt_message(ngettext("Attachment saved", "%d attachments saved", saved_attachments),
+                   saved_attachments);
+    }
   }
 
 cleanup:
