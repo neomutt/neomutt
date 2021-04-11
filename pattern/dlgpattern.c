@@ -227,7 +227,7 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
 
 /**
  * free_pattern_menu - Free the Pattern Completion menu
- * @param ptr Menu to free
+ * @param menu Menu to free
  */
 static void free_pattern_menu(struct Menu *menu)
 {

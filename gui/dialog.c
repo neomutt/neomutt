@@ -158,8 +158,9 @@ static int dialog_config_observer(struct NotifyCallback *nc)
 
 /**
  * dialog_create_simple_index - Create a simple index Dialog
- * @param mtype Menu type, e.g. #MENU_ALIAS
- * @param wtype Dialog type, e.g. #WT_DLG_ALIAS
+ * @param mtype     Menu type, e.g. #MENU_ALIAS
+ * @param wtype     Dialog type, e.g. #WT_DLG_ALIAS
+ * @param help_data Data for the Help Bar
  * @retval ptr New Dialog Window
  */
 struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowType wtype,

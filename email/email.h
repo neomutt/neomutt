@@ -116,7 +116,7 @@ struct Email
    */
   void (*edata_free)(void **ptr);
 
-  struct Notify *notify;       ///< Notifications handler
+  struct Notify *notify;       ///< Notifications: #NotifyEmail, #EventEmail
 };
 
 /**

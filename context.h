@@ -47,7 +47,7 @@ struct Context
   bool collapsed : 1;                ///< Are all threads collapsed?
 
   struct Mailbox *mailbox;
-  struct Notify *notify;             ///< Notifications handler
+  struct Notify *notify;             ///< Notifications: #NotifyContext, #EventContext
 };
 
 /**

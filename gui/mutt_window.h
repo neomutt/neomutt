@@ -129,7 +129,7 @@ struct MuttWindow
   struct MuttWindow *parent;         ///< Parent Window
   struct MuttWindowList children;    ///< Children Windows
 
-  struct Notify *notify;             ///< Notifications system
+  struct Notify *notify;             ///< Notifications: #NotifyWindow, #EventWindow
 
   struct MuttWindow *focus;          ///< Focussed Window
   int help_menu;                     ///< Menu for key bindings, e.g. #MENU_PAGER

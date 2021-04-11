@@ -149,7 +149,7 @@ struct Colors
   struct ColorList *user_colors;
   int num_user_colors;
 
-  struct Notify *notify;                   ///< Notifications system
+  struct Notify *notify;                   ///< Notifications: #ColorId, #EventColor
 };
 
 /**

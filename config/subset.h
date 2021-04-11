@@ -49,7 +49,7 @@ struct ConfigSubset
   enum ConfigScope scope;      ///< Scope of Subset, e.g. #SET_SCOPE_ACCOUNT
   struct ConfigSubset *parent; ///< Parent Subset
   struct ConfigSet *cs;        ///< Parent ConfigSet
-  struct Notify *notify;       ///< Notifications system
+  struct Notify *notify;       ///< Notifications: #NotifyConfig, #EventConfig
 };
 
 /**

@@ -41,7 +41,7 @@ struct IndexSharedData
   struct Mailbox *mailbox;  ///< Current Mailbox
   struct Email *email;      ///< Currently selected Email
   size_t email_seq;         ///< Sequence number of the current email
-  struct Notify *notify;    ///< Notifications handler
+  struct Notify *notify;    ///< Notifications: #NotifyIndex, #IndexSharedData
 };
 
 void                    index_shared_data_free(struct MuttWindow *win, void **ptr);

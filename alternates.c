@@ -150,7 +150,9 @@ enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * mutt_alternates_match - XXX
+ * mutt_alternates_match - Compare an Address to the Un/Alternates lists
+ * @param addr Address to check
+ * @retval true Address matches
  */
 bool mutt_alternates_match(const char *addr)
 {
