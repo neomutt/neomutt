@@ -145,7 +145,7 @@ static char *nm_get_default_url(void)
     snprintf(url, len, "notmuch://%s", c_folder);
   else
   {
-    FREE(url);
+    FREE(&url);
     return NULL;
   }
 

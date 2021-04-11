@@ -2933,10 +2933,12 @@ cleanup:
     if (WithCrypto & APPLICATION_PGP)
     {
       cs_subset_str_string_set(sub, "pgp_sign_as", pgp_sign_as, NULL);
+      FREE(&pgp_sign_as);
     }
     if (WithCrypto & APPLICATION_SMIME)
     {
       cs_subset_str_string_set(sub, "smime_sign_as", smime_sign_as, NULL);
+      FREE(&smime_sign_as);
     }
   }
 
