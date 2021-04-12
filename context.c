@@ -140,6 +140,7 @@ void ctx_update(struct Context *ctx)
 
   mutt_clear_threads(ctx->threads);
 
+  const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
   struct Email *e = NULL;
   for (int msgno = 0; msgno < m->msg_count; msgno++)
   {
@@ -164,7 +165,6 @@ void ctx_update(struct Context *ctx)
     }
     e->msgno = msgno;
 
-    const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
     if (e->env->supersedes)
     {
       struct Email *e2 = NULL;

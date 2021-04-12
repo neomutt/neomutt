@@ -49,10 +49,8 @@
 #include "rfc2231.h"
 #include "url.h"
 #ifdef USE_AUTOCRYPT
-#include "mutt_globals.h"
-#endif
-#ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
+#include "mutt_globals.h"
 #endif
 
 /* If the 'Content-Length' is bigger than 1GiB, then it's clearly wrong.

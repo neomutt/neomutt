@@ -119,8 +119,8 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
  */
 static void alias_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
-  const struct AliasMenuData *mdata = (struct AliasMenuData *) menu->mdata;
-  const struct AliasViewArray *ava = &((struct AliasMenuData *) menu->mdata)->ava;
+  const struct AliasMenuData *mdata = menu->mdata;
+  const struct AliasViewArray *ava = &mdata->ava;
   const struct AliasView *av = ARRAY_GET(ava, line);
 
   const char *const alias_format = cs_subset_string(mdata->sub, "alias_format");
@@ -134,7 +134,8 @@ static void alias_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
  */
 static int alias_tag(struct Menu *menu, int sel, int act)
 {
-  const struct AliasViewArray *ava = &((struct AliasMenuData *) menu->mdata)->ava;
+  const struct AliasMenuData *mdata = menu->mdata;
+  const struct AliasViewArray *ava = &mdata->ava;
   struct AliasView *av = ARRAY_GET(ava, sel);
 
   bool ot = av->is_tagged;
