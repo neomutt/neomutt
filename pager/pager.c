@@ -2098,7 +2098,10 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       {
         /* only allocate the space if/when we need the index.
          * Initialise the menu as per the main index */
-        rd->menu = mutt_menu_new(MENU_MAIN);
+        struct Menu *menu = mutt_menu_new(MENU_MAIN);
+        notify_set_parent(menu->notify, rd->pview->win_index->notify);
+
+        rd->menu = menu;
         rd->menu->make_entry = index_make_entry;
         rd->menu->color = index_color;
         rd->menu->max = m ? m->vcount : 0;
@@ -2495,7 +2498,10 @@ int mutt_pager(struct PagerView *pview)
   unlink(pview->pdata->fname);
 
   //---------- setup pager menu------------------------------------------------
-  pager_menu = mutt_menu_new(MENU_PAGER);
+  struct Menu *menu = mutt_menu_new(MENU_MAIN);
+  notify_set_parent(menu->notify, pview->win_pager->notify);
+
+  pager_menu = menu;
   pager_menu->pagelen = pview->win_pager->state.rows;
   pager_menu->win_index = pview->win_pager;
   pager_menu->win_ibar = pview->win_pbar;

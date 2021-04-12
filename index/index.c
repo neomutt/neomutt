@@ -1167,7 +1167,10 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     dlg->help_data = IndexHelp;
   dlg->help_menu = MENU_MAIN;
 
-  priv->menu = mutt_menu_new(MENU_MAIN);
+  struct Menu *menu = mutt_menu_new(MENU_MAIN);
+  notify_set_parent(menu->notify, priv->win_index->notify);
+
+  priv->menu = menu;
   priv->menu->pagelen = priv->win_index->state.rows;
   priv->menu->win_index = priv->win_index;
   priv->menu->win_ibar = priv->win_ibar;

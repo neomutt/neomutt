@@ -1553,6 +1553,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
   mutt_window_reflow(dlg);
 
   struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
+  notify_set_parent(menu->notify, attach->notify);
 
   menu->pagelen = attach->state.rows;
   menu->win_index = attach;

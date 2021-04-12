@@ -427,7 +427,9 @@ void menu_redraw_index(struct Menu *menu)
     }
   }
   mutt_curses_set_color(MT_COLOR_NORMAL);
-  menu->redraw = 0;
+  menu->redraw = REDRAW_NO_FLAGS;
+
+  notify_send(menu->notify, NT_MENU, 0, NULL);
 }
 
 /**
@@ -491,6 +493,8 @@ void menu_redraw_motion(struct Menu *menu)
   }
   menu->redraw &= REDRAW_STATUS;
   mutt_curses_set_color(MT_COLOR_NORMAL);
+
+  notify_send(menu->notify, NT_MENU, 0, NULL);
 }
 
 /**
@@ -522,6 +526,8 @@ void menu_redraw_current(struct Menu *menu)
     print_enriched_string(menu->current, attr, (unsigned char *) buf, false);
   menu->redraw &= REDRAW_STATUS;
   mutt_curses_set_color(MT_COLOR_NORMAL);
+
+  notify_send(menu->notify, NT_MENU, 0, NULL);
 }
 
 /**
@@ -544,6 +550,8 @@ static void menu_redraw_prompt(struct Menu *menu)
 
   mutt_window_mvaddstr(MessageWindow, 0, 0, menu->prompt);
   mutt_window_clrtoeol(MessageWindow);
+
+  notify_send(menu->notify, NT_MENU, 0, NULL);
 }
 
 /**
@@ -1069,6 +1077,7 @@ struct Menu *mutt_menu_new(enum MenuType type)
   menu->redraw = REDRAW_FULL;
   menu->color = default_color;
   menu->search = generic_search;
+  menu->notify = notify_new();
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
   notify_observer_add(Colors->notify, NT_CONFIG, menu_color_observer, menu);
@@ -1089,6 +1098,7 @@ void mutt_menu_free(struct Menu **ptr)
 
   notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
   notify_observer_remove(Colors->notify, menu_color_observer, menu);
+  notify_free(&menu->notify);
 
   if (menu->mdata && menu->mdata_free)
     menu->mdata_free(menu, &menu->mdata); // Custom function to free private data

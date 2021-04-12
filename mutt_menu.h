@@ -115,6 +115,8 @@ struct Menu
    */
   void (*custom_redraw)(struct Menu *menu);
 
+  struct Notify *notify;  ///< Notifications
+
   void *mdata;            ///< Private data
 
   /**

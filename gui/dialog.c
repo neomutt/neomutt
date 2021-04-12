@@ -182,6 +182,8 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
   dlg->focus = index;
   index->wdata = menu;
 
+  notify_set_parent(menu->notify, index->notify);
+
   struct MuttWindow *ibar =
       mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
