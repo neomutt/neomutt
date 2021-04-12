@@ -44,7 +44,6 @@
 #include "core/lib.h"
 
 struct Email;
-struct NmMboxData;
 struct stat;
 
 extern struct MxOps MxNotmuchOps;
