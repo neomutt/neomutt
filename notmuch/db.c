@@ -119,7 +119,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
 
     if (verbose && ct && ((ct % 2) == 0))
       mutt_error(_("Waiting for notmuch DB... (%d sec)"), ct / 2);
-    mutt_date_sleep_ms(500000); /* Half a second */
+    mutt_date_sleep_ms(500); /* Half a second */
     ct++;
   } while (true);
 
