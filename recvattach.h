@@ -33,6 +33,7 @@
 struct AttachCtx;
 struct Body;
 struct Email;
+struct Mailbox;
 
 void mutt_attach_init(struct AttachCtx *actx);
 void mutt_update_tree(struct AttachCtx *actx);

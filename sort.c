@@ -38,7 +38,6 @@
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "sort.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mx.h"

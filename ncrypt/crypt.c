@@ -49,11 +49,9 @@
 #include "lib.h"
 #include "send/lib.h"
 #include "attachments.h"
-#include "context.h"
 #include "copy.h"
 #include "cryptglue.h"
 #include "handler.h"
-#include "mutt_globals.h"
 #include "muttlib.h"
 #include "options.h"
 #ifdef USE_AUTOCRYPT

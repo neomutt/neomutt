@@ -41,7 +41,6 @@
 #include "ncrypt/lib.h"
 #include "init.h"
 #include "mutt_commands.h"
-#include "mutt_globals.h"
 #include "mx.h"
 
 /**

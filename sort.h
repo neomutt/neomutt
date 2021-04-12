@@ -31,7 +31,6 @@
 #include "options.h" // IWYU pragma: keep
 
 struct Address;
-struct Mailbox;
 struct ThreadsContext;
 
 /**

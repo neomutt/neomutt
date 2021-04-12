@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <inttypes.h>
 #include <pwd.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -59,7 +58,6 @@
 #ifdef USE_LUA
 #include "mutt_lua.h"
 #endif
-#include "attachments.h"
 #include "mutt_menu.h"
 #include "muttlib.h"
 #include "myvar.h"

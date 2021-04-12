@@ -27,6 +27,9 @@
 #include <stdint.h>
 #include "mutt_commands.h"
 
+struct Buffer;
+struct Mailbox;
+
 /**
  * enum NotifyAlternates - Alternates command notification types
  */

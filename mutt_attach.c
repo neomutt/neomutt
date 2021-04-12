@@ -45,7 +45,6 @@
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "send/lib.h"
-#include "context.h"
 #include "copy.h"
 #include "handler.h"
 #include "mailcap.h"

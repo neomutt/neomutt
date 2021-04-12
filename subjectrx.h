@@ -28,6 +28,7 @@
 #include "mutt_commands.h"
 
 struct Buffer;
+struct Envelope;
 struct Mailbox;
 
 /**

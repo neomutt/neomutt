@@ -62,7 +62,6 @@
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
-#include "mutt_menu.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "options.h"

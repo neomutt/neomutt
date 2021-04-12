@@ -25,7 +25,6 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include "mutt_menu.h"
 
 struct Body;
 struct Email;

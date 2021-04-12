@@ -30,21 +30,16 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
+#include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
 #include "mutt.h"
 #include "alternates.h"
-#include "ncrypt/lib.h"
 #include "attachments.h"
 #include "command_parse.h"
 #include "init.h"
 #include "mutt_commands.h"
-#include "mutt_globals.h"
-#include "mx.h"
 
 struct RegexList Alternates = STAILQ_HEAD_INITIALIZER(Alternates); ///< List of regexes to match the user's alternate email addresses
 struct RegexList UnAlternates = STAILQ_HEAD_INITIALIZER(UnAlternates); ///< List of regexes to blacklist false matches in Alternates

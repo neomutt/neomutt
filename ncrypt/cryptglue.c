@@ -62,7 +62,6 @@ struct Envelope;
 
 struct Address;
 struct AddressList;
-struct State;
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 extern struct CryptModuleSpecs CryptModPgpClassic;

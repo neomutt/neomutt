@@ -60,7 +60,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "sort.h"
 #ifdef USE_COMP_MBOX
 #include "compmbox/lib.h"
 #endif

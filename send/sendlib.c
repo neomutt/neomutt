@@ -49,7 +49,6 @@
 #include "lib.h"
 #include "ncrypt/lib.h"
 #include "attachments.h"
-#include "context.h"
 #include "copy.h"
 #include "handler.h"
 #include "mutt_globals.h"

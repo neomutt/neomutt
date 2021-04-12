@@ -33,6 +33,7 @@
 struct AddressList;
 struct Body;
 struct Email;
+struct Mailbox;
 struct PgpKeyInfo;
 struct State;
 

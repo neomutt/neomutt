@@ -34,6 +34,7 @@
 #include "core/lib.h"
 #include "debug/lib.h"
 #include "lib.h"
+#include "keymap.h"
 #include "mutt_menu.h"
 
 /**

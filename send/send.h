@@ -30,7 +30,6 @@
 struct AddressList;
 struct Body;
 struct ConfigSubset;
-struct Context;
 struct Email;
 struct EmailList;
 struct Envelope;

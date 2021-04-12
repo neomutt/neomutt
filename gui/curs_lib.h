@@ -29,10 +29,10 @@
 #include "mutt.h"
 #include "browser.h"
 #include "keymap.h"
-#include "pager/lib.h"
 
 struct Buffer;
 struct Mailbox;
+struct PagerView;
 
 extern int MuttGetchTimeout; ///< Timeout in ms for mutt_getch()
 
