@@ -40,6 +40,7 @@ struct Mailbox;
    (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                        \
     LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
 
+extern const char NmUrlProtocol[];
 extern const int NmUrlProtocolLen;
 
 notmuch_database_t *nm_db_do_open     (const char *filename, bool writable, bool verbose);

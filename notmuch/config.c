@@ -30,13 +30,39 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
+#include "notmuch/private.h"
+
+/**
+ * is_valid_notmuch_url - Checks that a URL is in required form.
+ * @retval true url in form notmuch://<absolute path>
+ * @retval false url is not in required form.
+ */
+static bool is_valid_notmuch_url(const char *url)
+{
+  return mutt_istr_startswith(url, NmUrlProtocol) && (url[NmUrlProtocolLen] == '/');
+}
+
+/**
+ * nm_default_url_validator - Ensure nm_default_url is of the form notmuch://<absolute path> - Implements ConfigDef::validator()
+ */
+static int nm_default_url_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
+{
+  const char *url = (const char *) value;
+  if (!is_valid_notmuch_url(url))
+  {
+    mutt_buffer_printf(err, _("nm_default_url must be: notmuch://<absolute path> . Current: %s"), url);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}
 
 static struct ConfigDef NotmuchVars[] = {
   // clang-format off
   { "nm_db_limit", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "(notmuch) Default limit for Notmuch queries"
   },
-  { "nm_default_url", DT_STRING, 0, 0, NULL,
+  { "nm_default_url", DT_STRING, 0, 0, nm_default_url_validator,
     "(notmuch) Path to the Notmuch database"
   },
   { "nm_exclude_tags", DT_STRING, 0, 0, NULL,
