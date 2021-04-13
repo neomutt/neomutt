@@ -166,7 +166,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 
     if (alias_array_count_visible(&mdata->ava) != ARRAY_SIZE(&mdata->ava))
     {
-      mutt_pattern_alias_func(MUTT_LIMIT, NULL, _("Aliases"), mdata, menu);
+      mutt_pattern_alias_func(MUTT_LIMIT, NULL, mdata, menu);
     }
   }
   else if (nc->event_subtype == NT_ALIAS_DELETED)
@@ -211,7 +211,12 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
   menu->tag = alias_tag;
   menu->max = alias_array_count_visible(&mdata->ava);
   menu->mdata = mdata;
-  menu->title = menu_create_alias_title(_("Aliases"), mdata->str);
+
+  struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
+
+  char *title = menu_create_alias_title(_("Aliases"), mdata->str);
+  sbar_set_title(sbar, title);
+  FREE(&title);
 
   notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, mdata);
@@ -309,11 +314,14 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
 
       case OP_MAIN_LIMIT:
       {
-        int result = mutt_pattern_alias_func(MUTT_LIMIT, _("Limit to messages matching: "),
-                                             _("Aliases"), mdata, menu);
-        if (result == 0)
+        int rc = mutt_pattern_alias_func(MUTT_LIMIT, _("Limit to messages matching: "),
+                                         mdata, menu);
+        if (rc == 0)
         {
           alias_array_sort(&mdata->ava, mdata->sub);
+          char *title2 = menu_create_alias_title(_("Aliases"), mdata->str);
+          sbar_set_title(sbar, title2);
+          FREE(&title2);
           menu->redraw = REDRAW_FULL;
         }
 
@@ -349,8 +357,6 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
   notify_observer_remove(NeoMutt->notify, alias_alias_observer, menu);
   notify_observer_remove(NeoMutt->notify, alias_config_observer, mdata);
   notify_observer_remove(NeoMutt->notify, alias_color_observer, menu);
-
-  FREE(&menu->title);
 
   dialog_destroy_simple_index(&dlg);
 }
@@ -435,7 +441,7 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
       alias_array_alias_add(&mdata.ava, np);
     }
 
-    mutt_pattern_alias_func(MUTT_LIMIT, NULL, _("Aliases"), &mdata, NULL);
+    mutt_pattern_alias_func(MUTT_LIMIT, NULL, &mdata, NULL);
   }
 
   alias_array_sort(&mdata.ava, mdata.sub);

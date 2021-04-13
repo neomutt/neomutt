@@ -328,13 +328,13 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   snprintf(title, sizeof(title), "%s%s", _("Query: "), buf);
 
   struct MuttWindow *dlg = dialog_create_simple_index(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
+  struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = query_make_entry;
   menu->search = query_search;
   menu->custom_search = true;
   menu->tag = query_tag;
-  menu->title = strdup(title);
   menu->max = ARRAY_SIZE(&mdata.ava);
   menu->mdata = &mdata;
 
@@ -369,8 +369,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
         query_run(buf, true, &al, sub);
         menu->redraw = REDRAW_FULL;
         snprintf(title, sizeof(title), "%s%s", _("Query: "), buf);
-        FREE(&menu->title);
-        menu->title = mutt_str_dup(title);
+        sbar_set_title(sbar, title);
 
         if (TAILQ_EMPTY(&al))
         {
@@ -522,12 +521,14 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
 
       case OP_MAIN_LIMIT:
       {
-        int result = mutt_pattern_alias_func(
-            MUTT_LIMIT, _("Limit to messages matching: "), _("Query"), &mdata, menu);
-
-        if (result == 0)
+        int rc = mutt_pattern_alias_func(MUTT_LIMIT, _("Limit to messages matching: "),
+                                         &mdata, menu);
+        if (rc == 0)
         {
           alias_array_sort(&mdata.ava, mdata.sub);
+          char *title2 = menu_create_alias_title(_("Query"), mdata.str);
+          sbar_set_title(sbar, title2);
+          FREE(&title2);
           menu->redraw = REDRAW_FULL;
         }
 
