@@ -34,6 +34,7 @@
 #include "lib.h"
 #include "keymap.h"
 #include "mutt_menu.h"
+#include "sbar.h"
 
 /**
  * dialog_config_observer - Listen for config changes affecting a Dialog - Implements ::observer_t
@@ -93,25 +94,20 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
 
   notify_set_parent(menu->notify, index->notify);
 
-  struct MuttWindow *ibar =
-      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
   {
-    mutt_window_add_child(dlg, ibar);
+    sbar_add(dlg);
     mutt_window_add_child(dlg, index);
   }
   else
   {
     mutt_window_add_child(dlg, index);
-    mutt_window_add_child(dlg, ibar);
+    sbar_add(dlg);
   }
 
   menu->pagelen = index->state.rows;
   menu->win_index = index;
-  menu->win_ibar = ibar;
 
   mutt_menu_push_current(menu);
 
