@@ -131,38 +131,6 @@ struct EnterState *mutt_enter_state_new(void)
 }
 
 /**
- * mutt_enter_string - Ask the user for a string
- * @param buf    Buffer to store the string
- * @param buflen Buffer length
- * @param col    Initial cursor position
- * @param flags  Flags, see #CompletionFlags
- * @retval  0 Input was given
- * @retval -1 Abort
- *
- * This function is for very basic input, currently used only by the
- * built-in editor.  It does not handle screen redrawing on resizes
- * well, because there is no active menu for the built-in editor.
- * Most callers should prefer mutt_get_field() instead.
- */
-int mutt_enter_string(char *buf, size_t buflen, int col, CompletionFlags flags)
-{
-  int rc;
-  struct EnterState *es = mutt_enter_state_new();
-  do
-  {
-    if (SigWinch)
-    {
-      SigWinch = 0;
-      mutt_resize_screen();
-      clearok(stdscr, true);
-    }
-    rc = mutt_enter_string_full(buf, buflen, col, flags, false, NULL, NULL, NULL, es);
-  } while (rc == 1);
-  mutt_enter_state_free(&es);
-  return rc;
-}
-
-/**
  * mutt_enter_string_full - Ask the user for a string
  * @param[in]  buf      Buffer to store the string
  * @param[in]  buflen   Buffer length
