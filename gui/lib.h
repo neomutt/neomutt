@@ -33,6 +33,7 @@
  * | gui/mutt_curses.c   | @subpage gui_curses        |
  * | gui/mutt_window.c   | @subpage gui_window        |
  * | gui/reflow.c        | @subpage gui_reflow        |
+ * | gui/simple.c        | @subpage gui_simple        |
  * | gui/terminal.c      | @subpage gui_terminal      |
  */
 
@@ -46,6 +47,7 @@
 #include "mutt_curses.h"
 #include "mutt_window.h"
 #include "reflow.h"
+#include "simple.h"
 #include "terminal.h"
 // IWYU pragma: end_exports
 
