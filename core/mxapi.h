@@ -105,7 +105,7 @@ enum MxOpenReturns
  */
 enum MxCreateReturns
 {
-  MX_CREATE_OK,           ///< Create succeeded
+  MX_CREATE_OK = 0,       ///< Create succeeded
   MX_CREATE_EXISTS,       ///< Create failed because a matching mailbox already exists
   MX_CREATE_BAD_NAME,     ///< Create failed because the name was invalid, e.g. ''
   MX_CREATE_SYS_ERROR,    ///< Create failed because of a system error, errno set

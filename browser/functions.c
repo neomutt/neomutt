@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -65,6 +66,83 @@ static const char *Not_available_in_this_menu = N_("Not available in this menu")
 static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op);
 
 /**
+ * create_mailbox - Create a new mailbox
+ * @param state State used for handling IMAP case
+ * @param m_current The current mailbox to create the new mailbox under
+ * @retval 0 Successful creation
+ * @retval 1 Creation failed
+ * @retval 2 Creation aborted by user
+ */
+static int create_mailbox(struct BrowserState *state, struct Mailbox *m_current)
+{
+  int create_rc;
+
+#ifdef USE_IMAP /* leaving this until mbox_create implemented for IMAP */
+  if (state->imap_browse)
+  {
+    if (imap_mailbox_create(buf_string(&LastDir)) == 0)
+    {
+      mutt_message(_("Mailbox created"));
+      return 0;
+    }
+    else
+    {
+      mutt_error(_("Mailbox creation failed"));
+      return 1;
+    }
+  }
+#endif /* USE_IMAP */
+
+  if (!m_current)
+    return 1;
+
+  if (m_current->mx_ops->mbox_create == NULL)
+  {
+    mutt_error(_("Create is not supported for %s mailboxes"), m_current->mx_ops->name);
+    return 1;
+  }
+
+  struct Buffer *path = buf_pool_get();
+  if (buf_get_field(_("Create mailbox: "), path, MUTT_COMP_NO_FLAGS, false,
+                    NULL, NULL, NULL) == -1)
+  {
+    buf_pool_release(&path);
+    return 2;
+  }
+  struct Mailbox *new_mailbox = mutt_mem_malloc(sizeof(struct Mailbox));
+
+  create_rc = m_current->mx_ops->mbox_create(m_current->account, m_current,
+                                             buf_string(path), &new_mailbox);
+
+  switch (create_rc)
+  {
+    case MX_CREATE_OK: /* = 0 (for imap_mailbox_create) */
+      mutt_message(_("Mailbox created"));
+      buf_pool_release(&path);
+      return 0;
+    case MX_CREATE_EXISTS:
+      mutt_error(_("A %s mailbox already exists under %s"),
+                 m_current->mx_ops->name, buf_string(path));
+      break;
+    case MX_CREATE_BAD_NAME:
+      mutt_error(_("Bad name '%s' (is it empty?)"), buf_string(path));
+      break;
+    case MX_CREATE_SYS_ERROR:
+      mutt_error(_("Mailbox creation failed: %s"), strerror(errno));
+      break;
+    case MX_CREATE_ERROR:
+    case -1: /* imap_mailbox_create */
+      mutt_error(_("Mailbox creation failed"));
+      break;
+  }
+
+  /* Creation failed, cleanup */
+  buf_pool_release(&path);
+  mutt_mem_free(&new_mailbox);
+  return 1;
+}
+
+/**
  * destroy_state - Free the BrowserState
  * @param state State to free
  *
@@ -83,6 +161,68 @@ void destroy_state(struct BrowserState *state)
 #ifdef USE_IMAP
   FREE(&state->folder);
 #endif
+}
+
+/**
+ * expand_mailbox_directory - expand a directory in the browser as a mailbox
+ * @param[in] ff The browser folder to expand
+ * @param[in] state The current browser state
+ * @param[in] last_dir The last directory from the browser
+ * @param[out] buf Buffer to store the expanded mailbox in
+ * @retval 0 The directory was successfully expanded
+ * @reval -1 Otherwise
+ */
+static int expand_mailbox_directory(const struct FolderFile *ff,
+                                    const struct BrowserState *state,
+                                    const struct Buffer *last_dir, struct Buffer *buf)
+{
+  if (S_ISDIR(ff->mode) ||
+      (S_ISLNK(ff->mode) && link_is_dir(buf_string(last_dir), ff->name))
+#ifdef USE_IMAP
+      || ff->inferiors
+#endif
+  )
+  {
+    /* make sure this isn't a MH or maildir mailbox */
+    if (state->is_mailbox_list)
+    {
+      buf_strcpy(buf, ff->name);
+      buf_expand_path(buf);
+    }
+#ifdef USE_IMAP
+    else if (state->imap_browse)
+    {
+      buf_strcpy(buf, ff->name);
+    }
+#endif
+    else
+    {
+      buf_concat_path(buf, buf_string(last_dir), ff->name);
+    }
+    return 0;
+  }
+  return -1;
+}
+
+/**
+ * get_create_mailbox_target - Get the directory to create a mailbox under.
+ *
+ * Either the current folder (for IMAP) or the currently selected folder.
+ */
+static const char *get_create_mailbox_target(const struct FolderFile *ff,
+                                             const struct BrowserState *state,
+                                             const struct Buffer *last_dir,
+                                             struct Buffer *buf)
+{
+#ifdef USE_IMAP
+  // preserving existing behaviour for IMAP
+  if (state->imap_browse)
+    return CurrentFolder;
+#endif
+  if (expand_mailbox_directory(ff, state, last_dir, buf) == 0)
+    return buf_string(buf);
+
+  return NULL;
 }
 
 // -----------------------------------------------------------------------------
@@ -405,27 +545,40 @@ static int op_change_directory(struct BrowserPrivateData *priv, int op)
  */
 static int op_create_mailbox(struct BrowserPrivateData *priv, int op)
 {
-  if (!priv->state.imap_browse)
+  struct Menu *menu = priv->menu;
+  struct BrowserState *state = &priv->state;
+
+  int index = menu_get_index(menu);
+  struct FolderFile *ff = ARRAY_GET(&state->entry, index);
+  struct Buffer *buf = buf_pool_get();
+  const char *target = get_create_mailbox_target(ff, state, &LastDir, buf);
+  if (target && create_mailbox(state, mailbox_find(target)))
   {
-    mutt_error(_("Create is only supported for IMAP mailboxes"));
-    return FR_ERROR;
+    /* TODO: find a way to detect if the new folder would appear in
+     *   this window, and insert it without starting over. */
+#ifdef USE_IMAP
+    /* IMAP creation */
+    if (state->imap_browse)
+    {
+      destroy_state(state);
+      init_state(state, NULL);
+      state->imap_browse = true;
+      imap_browse(buf_string(&LastDir), state);
+      browser_sort(state);
+      menu->mdata = &state->entry;
+      menu->mdata_free = NULL; // Menu doesn't own the data
+      browser_highlight_default(state, menu);
+      init_menu(state, menu, priv->mailbox, priv->sbar);
+      return FR_SUCCESS;
+    }
+#endif /* USE_IMAP */
+    examine_directory(priv->mailbox, menu, state, CurrentFolder, buf_string(priv->prefix));
+    examine_mailboxes(priv->mailbox, NULL, state);
+    browser_highlight_default(state, menu);
+    state->is_mailbox_list = true;
+    init_menu(state, menu, priv->mailbox, priv->sbar);
   }
-
-  if (imap_mailbox_create(buf_string(&LastDir)) != 0)
-    return FR_ERROR;
-
-  /* TODO: find a way to detect if the new folder would appear in
-   *   this window, and insert it without starting over. */
-  destroy_state(&priv->state);
-  init_state(&priv->state, NULL);
-  priv->state.imap_browse = true;
-  imap_browse(buf_string(&LastDir), &priv->state);
-  browser_sort(&priv->state);
-  priv->menu->mdata = &priv->state.entry;
-  priv->menu->mdata_free = NULL; // Menu doesn't own the data
-  browser_highlight_default(&priv->state, priv->menu);
-  init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
-
+  buf_pool_release(&buf);
   return FR_SUCCESS;
 }
 #endif
@@ -608,31 +761,10 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
 
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-  if (S_ISDIR(ff->mode) ||
-      (S_ISLNK(ff->mode) && link_is_dir(buf_string(&LastDir), ff->name))
-#ifdef USE_IMAP
-      || ff->inferiors
-#endif
-  )
+  struct Buffer *buf;
+  if ((buf = buf_pool_get()) &&
+      expand_mailbox_directory(ff, &priv->state, &LastDir, buf) == 0)
   {
-    /* make sure this isn't a MH or maildir mailbox */
-    struct Buffer *buf = buf_pool_get();
-    if (priv->state.is_mailbox_list)
-    {
-      buf_strcpy(buf, ff->name);
-      buf_expand_path(buf);
-    }
-#ifdef USE_IMAP
-    else if (priv->state.imap_browse)
-    {
-      buf_strcpy(buf, ff->name);
-    }
-#endif
-    else
-    {
-      buf_concat_path(buf, buf_string(&LastDir), ff->name);
-    }
-
     enum MailboxType type = mx_path_probe(buf_string(buf));
     buf_pool_release(&buf);
 
@@ -748,6 +880,10 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
   {
     mutt_error(_("%s is not a directory"), ARRAY_GET(&priv->state.entry, index)->name);
     return FR_ERROR;
+  }
+  else
+  {
+    buf_pool_release(&buf);
   }
 
   if (priv->state.is_mailbox_list || OptNews) /* USE_NNTP */
