@@ -220,7 +220,6 @@ static int op_delete(struct IndexSharedData *shared, struct IndexPrivateData *pr
     else
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
   }
-  menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
 
   return IR_SUCCESS;
 }
@@ -262,7 +261,7 @@ static int op_delete_thread(struct IndexSharedData *shared,
     if (index != -1)
       menu_set_index(priv->menu, index);
   }
-  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   return IR_SUCCESS;
 }
 
@@ -537,7 +536,6 @@ static int op_flag_message(struct IndexSharedData *shared,
     else
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
   }
-  menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
 
   return IR_SUCCESS;
 }
@@ -876,7 +874,7 @@ static int op_main_collapse_thread(struct IndexSharedData *shared,
     return IR_ERROR;
   }
 
-  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   return IR_SUCCESS;
 }
@@ -895,7 +893,7 @@ static int op_main_delete_pattern(struct IndexSharedData *shared,
     return IR_ERROR;
 
   mutt_pattern_func(shared->ctx, MUTT_DELETE, _("Delete messages matching: "));
-  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   return IR_SUCCESS;
 }
@@ -1009,7 +1007,7 @@ static int op_main_link_threads(struct IndexSharedData *shared,
   if (priv->in_pager)
     return IR_CONTINUE;
 
-  menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   return rc;
 }
 
@@ -1083,7 +1081,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
     if (m->type == MUTT_NOTMUCH)
       nm_db_longrun_done(m);
 #endif
-    menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
   else
   {
@@ -1123,7 +1121,6 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
   }
 
-  menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
   return IR_SUCCESS;
 }
 
@@ -1442,7 +1439,7 @@ static int op_main_read_thread(struct IndexSharedData *shared,
         return IR_CONTINUE;
       }
     }
-    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
 
   return IR_SUCCESS;
@@ -1480,7 +1477,6 @@ static int op_main_set_flag(struct IndexSharedData *shared,
 
   if (mutt_change_flag(shared->mailbox, &el, (op == OP_MAIN_SET_FLAG)) == 0)
   {
-    menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
     const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
     if (priv->tag)
       menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
@@ -1607,7 +1603,7 @@ static int op_main_tag_pattern(struct IndexSharedData *shared,
                                struct IndexPrivateData *priv, int op)
 {
   mutt_pattern_func(shared->ctx, MUTT_TAG, _("Tag messages matching: "));
-  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   return IR_SUCCESS;
 }
@@ -1627,7 +1623,7 @@ static int op_main_undelete_pattern(struct IndexSharedData *shared,
 
   if (mutt_pattern_func(shared->ctx, MUTT_UNDELETE, _("Undelete messages matching: ")) == 0)
   {
-    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
 
   return IR_SUCCESS;
@@ -1640,7 +1636,7 @@ static int op_main_untag_pattern(struct IndexSharedData *shared,
                                  struct IndexPrivateData *priv, int op)
 {
   if (mutt_pattern_func(shared->ctx, MUTT_UNTAG, _("Untag messages matching: ")) == 0)
-    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   return IR_SUCCESS;
 }
@@ -1787,8 +1783,7 @@ static int op_pipe(struct IndexSharedData *shared, struct IndexPrivateData *priv
   const bool c_imap_peek = cs_subset_bool(shared->sub, "imap_peek");
   if ((shared->mailbox->type == MUTT_IMAP) && !c_imap_peek)
   {
-    menu_queue_redraw(priv->menu, (priv->tag ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT) |
-                                      MENU_REDRAW_STATUS);
+    menu_queue_redraw(priv->menu, (priv->tag ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT));
   }
 #endif
 
@@ -1831,8 +1826,7 @@ static int op_print(struct IndexSharedData *shared, struct IndexPrivateData *pri
   const bool c_imap_peek = cs_subset_bool(shared->sub, "imap_peek");
   if ((shared->mailbox->type == MUTT_IMAP) && !c_imap_peek)
   {
-    menu_queue_redraw(priv->menu, (priv->tag ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT) |
-                                      MENU_REDRAW_STATUS);
+    menu_queue_redraw(priv->menu, (priv->tag ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT));
   }
 #endif
 
@@ -1979,7 +1973,6 @@ static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv
   const int rc = mutt_save_message(shared->mailbox, &el, save_opt, transform_opt);
   if ((rc == 0) && (save_opt == SAVE_MOVE))
   {
-    menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
     const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
     if (priv->tag)
       menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
@@ -2085,7 +2078,6 @@ static int op_sort(struct IndexSharedData *shared, struct IndexPrivateData *priv
   if (priv->in_pager)
     return IR_CONTINUE;
 
-  menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
   return IR_SUCCESS;
 }
 
@@ -2106,7 +2098,7 @@ static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv,
       if (e->visible)
         mutt_set_flag(m, e, MUTT_TAG, false);
     }
-    menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
     return IR_SUCCESS;
   }
 
@@ -2115,7 +2107,6 @@ static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv,
 
   mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, !shared->email->tagged);
 
-  menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
   const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
   const int index = menu_get_index(priv->menu) + 1;
   if (c_resolve && (index < shared->mailbox->vcount))
@@ -2154,7 +2145,7 @@ static int op_tag_thread(struct IndexSharedData *shared, struct IndexPrivateData
       if (index != -1)
         menu_set_index(priv->menu, index);
     }
-    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
 
   return IR_SUCCESS;
@@ -2185,7 +2176,7 @@ static int op_toggle_new(struct IndexSharedData *shared, struct IndexPrivateData
       else
         mutt_set_flag(m, e, MUTT_READ, true);
     }
-    menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
   else
   {
@@ -2212,7 +2203,6 @@ static int op_toggle_new(struct IndexSharedData *shared, struct IndexPrivateData
     }
     else
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-    menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
   }
 
   return IR_SUCCESS;
@@ -2228,7 +2218,6 @@ static int op_toggle_write(struct IndexSharedData *shared,
   {
     if (priv->in_pager)
       return IR_CONTINUE;
-    menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
   }
 
   return IR_SUCCESS;
@@ -2266,7 +2255,6 @@ static int op_undelete(struct IndexSharedData *shared, struct IndexPrivateData *
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
   }
 
-  menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
   return IR_SUCCESS;
 }
 
@@ -2304,7 +2292,7 @@ static int op_undelete_thread(struct IndexSharedData *shared,
       if (index != -1)
         menu_set_index(priv->menu, index);
     }
-    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
 
   return IR_SUCCESS;
@@ -2425,7 +2413,7 @@ static int op_catchup(struct IndexSharedData *shared, struct IndexPrivateData *p
 
   struct NntpMboxData *mdata = shared->mailbox->mdata;
   if (mutt_newsgroup_catchup(shared->mailbox, mdata->adata, mdata->group))
-    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   return IR_SUCCESS;
 }
@@ -2498,7 +2486,7 @@ static int op_get_children(struct IndexSharedData *shared,
     if (priv->in_pager)
     {
       menu_set_index(priv->menu, e_oldcur->vnum);
-      menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
+      menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
       return IR_CONTINUE;
     }
 
@@ -2781,7 +2769,7 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
       mutt_set_vnum(shared->mailbox);
     }
     menu_set_index(priv->menu, index);
-    menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
   if (priv->in_pager)
     return IR_CONTINUE;

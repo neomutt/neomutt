@@ -213,7 +213,7 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
           if (index >= (menu->top + menu->pagelen))
           {
             menu->top = index;
-            menu_queue_redraw(menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+            menu_queue_redraw(menu, MENU_REDRAW_INDEX);
           }
         }
         else

@@ -52,10 +52,9 @@ typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
 #define MENU_REDRAW_INDEX     (1 << 0) ///< Redraw the index
 #define MENU_REDRAW_MOTION    (1 << 1) ///< Redraw after moving the menu list
 #define MENU_REDRAW_CURRENT   (1 << 2) ///< Redraw the current line of the menu
-#define MENU_REDRAW_STATUS    (1 << 3) ///< Redraw the status bar
-#define MENU_REDRAW_FULL      (1 << 4) ///< Redraw everything
-#define MENU_REDRAW_BODY      (1 << 5) ///< Redraw the pager
-#define MENU_REDRAW_FLOW      (1 << 6) ///< Used by pager to reflow text
+#define MENU_REDRAW_FULL      (1 << 3) ///< Redraw everything
+#define MENU_REDRAW_BODY      (1 << 4) ///< Redraw the pager
+#define MENU_REDRAW_FLOW      (1 << 5) ///< Used by pager to reflow text
 
 /**
  * @defgroup menu_api Menu API
@@ -66,7 +65,6 @@ typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
  */
 struct Menu
 {
-  const char *title;        ///< Title of this menu
   int current;              ///< Current entry
   int max;                  ///< Number of entries in the menu
   MenuRedrawFlags redraw;   ///< When to redraw the screen

@@ -212,7 +212,7 @@ void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
     }
   }
 
-  menu_queue_redraw(menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+  menu_queue_redraw(menu, MENU_REDRAW_INDEX);
 }
 
 /**
@@ -357,7 +357,7 @@ void resort_index(struct Context *ctx, struct Menu *menu)
     new_index = ci_first_message(m);
 
   menu_set_index(menu, new_index);
-  menu_queue_redraw(menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+  menu_queue_redraw(menu, MENU_REDRAW_INDEX);
 }
 
 /**
@@ -614,7 +614,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
 
       FREE(&new_last_folder);
       OptSearchInvalid = true;
-      menu_queue_redraw(menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
+      menu_queue_redraw(menu, MENU_REDRAW_INDEX);
       return;
     }
     FREE(&LastFolder);
@@ -1106,7 +1106,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           (shared->mailbox->msg_count != 0) && mutt_using_threads())
       {
         mutt_draw_tree(shared->ctx->threads);
-        menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
         OptRedrawTree = false;
       }
     }
@@ -1195,13 +1194,10 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       /* check for new mail in the incoming folders */
       priv->oldcount = priv->newcount;
       priv->newcount = mutt_mailbox_check(shared->mailbox, 0);
-      if (priv->newcount != priv->oldcount)
-        menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
       if (priv->do_mailbox_notify)
       {
         if (mutt_mailbox_notify(shared->mailbox))
         {
-          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
           const bool c_beep_new = cs_subset_bool(shared->sub, "beep_new");
           if (c_beep_new)
             mutt_beep(true);
