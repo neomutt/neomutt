@@ -36,6 +36,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "status.h"
+#include "index/lib.h"
 #include "context.h"
 #include "format_flags.h"
 #include "mutt_globals.h"
@@ -65,8 +66,8 @@ static char *get_sort_str(char *buf, size_t buflen, enum SortType method)
  */
 struct MenuStatusLineData
 {
-  struct Menu *menu;
-  struct Mailbox *m;
+  struct IndexSharedData *shared; ///< Data shared between Index, Pager and Sidebar
+  struct Menu *menu;              ///< Current Menu
 };
 
 /**
@@ -104,8 +105,11 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 {
   char fmt[128], tmp[128];
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
-  struct Menu *menu = ((struct MenuStatusLineData *) data)->menu;
-  struct Mailbox *m = ((struct MenuStatusLineData *) data)->m;
+  struct MenuStatusLineData *msld = (struct MenuStatusLineData *) data;
+  struct IndexSharedData *shared = msld->shared;
+  struct Context *ctx = shared->ctx;
+  struct Mailbox *m = shared->mailbox;
+  struct Menu *menu = msld->menu;
 
   *buf = '\0';
   switch (op)
@@ -206,10 +210,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        mutt_str_pretty_size(tmp, sizeof(tmp), Context ? Context->vsize : 0);
+        mutt_str_pretty_size(tmp, sizeof(tmp), ctx ? ctx->vsize : 0);
         snprintf(buf, buflen, fmt, tmp);
       }
-      else if (!ctx_has_limit(Context))
+      else if (!ctx_has_limit(ctx))
         optional = false;
       break;
 
@@ -232,7 +236,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, m ? m->vcount : 0);
       }
-      else if (!ctx_has_limit(Context))
+      else if (!ctx_has_limit(ctx))
         optional = false;
       break;
 
@@ -385,9 +389,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, ctx_has_limit(Context) ? Context->pattern : "");
+        snprintf(buf, buflen, fmt, ctx_has_limit(ctx) ? ctx->pattern : "");
       }
-      else if (!ctx_has_limit(Context))
+      else if (!ctx_has_limit(ctx))
         optional = false;
       break;
 
@@ -419,14 +423,16 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
  * menu_status_line - Create the status line
  * @param[out] buf      Buffer in which to save string
  * @param[in]  buflen   Buffer length
+ * @param[in]  shared   Shared Index data
  * @param[in]  menu     Current menu
- * @param[in]  m        Current Mailbox
- * @param[in]  p        Format string
+ * @param[in]  cols     Maximum number of columns to use
+ * @param[in]  fmt      Format string
  */
-void menu_status_line(char *buf, size_t buflen, struct Menu *menu,
-                      struct Mailbox *m, const char *p)
+void menu_status_line(char *buf, size_t buflen, struct IndexSharedData *shared,
+                      struct Menu *menu, int cols, const char *fmt)
 {
-  struct MenuStatusLineData data = { .menu = menu, .m = m };
-  mutt_expando_format(buf, buflen, 0, menu ? menu->win_ibar->state.cols : buflen, p,
-                      status_format_str, (intptr_t) &data, MUTT_FORMAT_NO_FLAGS);
+  struct MenuStatusLineData data = { shared, menu };
+
+  mutt_expando_format(buf, buflen, 0, cols, fmt, status_format_str,
+                      (intptr_t) &data, MUTT_FORMAT_NO_FLAGS);
 }

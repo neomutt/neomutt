@@ -2045,6 +2045,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
   //---------------------------------------------------------------------------
 
   char buf[1024] = { 0 };
+  struct IndexSharedData *shared = dialog_find(rd->pview->win_pager)->wdata;
   struct Mailbox *m = rd->pview->pdata->ctx ? rd->pview->pdata->ctx->mailbox : NULL;
 
   const bool c_tilde = cs_subset_bool(NeoMutt->sub, "tilde");
@@ -2108,8 +2109,6 @@ static void pager_custom_redraw(struct Menu *pager_menu)
         rd->menu->current = rd->pview->pdata->email->vnum;
         rd->menu->win_index = rd->pview->win_index;
         rd->menu->win_ibar = rd->pview->win_ibar;
-
-        struct IndexSharedData *shared = dialog_find(rd->pview->win_pager)->wdata;
         rd->menu->mdata = shared;
       }
 
@@ -2268,11 +2267,13 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     {
       const char *const c_ts_status_format =
           cs_subset_string(NeoMutt->sub, "ts_status_format");
-      menu_status_line(buf, sizeof(buf), rd->menu, m, NONULL(c_ts_status_format));
+      menu_status_line(buf, sizeof(buf), shared, rd->menu, sizeof(buf),
+                       NONULL(c_ts_status_format));
       mutt_ts_status(buf);
       const char *const c_ts_icon_format =
           cs_subset_string(NeoMutt->sub, "ts_icon_format");
-      menu_status_line(buf, sizeof(buf), rd->menu, m, NONULL(c_ts_icon_format));
+      menu_status_line(buf, sizeof(buf), shared, rd->menu, sizeof(buf),
+                       NONULL(c_ts_icon_format));
       mutt_ts_icon(buf);
     }
   }
@@ -2287,7 +2288,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     /* print out the index status bar */
     const char *const c_status_format =
         cs_subset_string(NeoMutt->sub, "status_format");
-    menu_status_line(buf, sizeof(buf), rd->menu, m, NONULL(c_status_format));
+    menu_status_line(buf, sizeof(buf), shared, rd->menu, sizeof(buf), NONULL(c_status_format));
 
     mutt_window_move(rd->pview->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
@@ -2644,7 +2645,8 @@ int mutt_pager(struct PagerView *pview)
         if (c_new_mail_command)
         {
           char cmd[1024];
-          menu_status_line(cmd, sizeof(cmd), rd.menu, m, NONULL(c_new_mail_command));
+          menu_status_line(cmd, sizeof(cmd), shared, rd.menu, sizeof(cmd),
+                           NONULL(c_new_mail_command));
           if (mutt_system(cmd) != 0)
             mutt_error(_("Error running \"%s\""), cmd);
         }

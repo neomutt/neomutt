@@ -1111,7 +1111,8 @@ static void index_custom_redraw(struct Menu *menu)
     char buf[1024];
     const char *const c_status_format =
         cs_subset_string(shared->sub, "status_format");
-    menu_status_line(buf, sizeof(buf), menu, m, NONULL(c_status_format));
+    menu_status_line(buf, sizeof(buf), shared, menu, menu->win_ibar->state.cols,
+                     NONULL(c_status_format));
     mutt_window_move(menu->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
@@ -1122,11 +1123,12 @@ static void index_custom_redraw(struct Menu *menu)
     {
       const char *const c_ts_status_format =
           cs_subset_string(shared->sub, "ts_status_format");
-      menu_status_line(buf, sizeof(buf), menu, m, NONULL(c_ts_status_format));
+      menu_status_line(buf, sizeof(buf), shared, menu, sizeof(buf),
+                       NONULL(c_ts_status_format));
       mutt_ts_status(buf);
       const char *const c_ts_icon_format =
           cs_subset_string(shared->sub, "ts_icon_format");
-      menu_status_line(buf, sizeof(buf), menu, m, NONULL(c_ts_icon_format));
+      menu_status_line(buf, sizeof(buf), shared, menu, sizeof(buf), NONULL(c_ts_icon_format));
       mutt_ts_icon(buf);
     }
   }
@@ -1280,8 +1282,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               if (c_new_mail_command)
               {
                 char cmd[1024];
-                menu_status_line(cmd, sizeof(cmd), priv->menu, shared->mailbox,
-                                 NONULL(c_new_mail_command));
+                menu_status_line(cmd, sizeof(cmd), shared, priv->menu,
+                                 sizeof(cmd), NONULL(c_new_mail_command));
                 if (mutt_system(cmd) != 0)
                   mutt_error(_("Error running \"%s\""), cmd);
               }
@@ -1333,7 +1335,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           if (c_new_mail_command)
           {
             char cmd[1024];
-            menu_status_line(cmd, sizeof(cmd), priv->menu, shared->mailbox,
+            menu_status_line(cmd, sizeof(cmd), shared, priv->menu, sizeof(cmd),
                              NONULL(c_new_mail_command));
             if (mutt_system(cmd) != 0)
               mutt_error(_("Error running \"%s\""), cmd);
