@@ -315,7 +315,7 @@ static int query_run(char *s, bool verbose, struct AliasList *al,
 static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
                              bool retbuf, struct ConfigSubset *sub)
 {
-  struct AliasMenuData mdata = { NULL, NULL, ARRAY_HEAD_INITIALIZER, sub };
+  struct AliasMenuData mdata = { NULL, ARRAY_HEAD_INITIALIZER, sub };
 
   struct Alias *np = NULL;
   TAILQ_FOREACH(np, all, entries)

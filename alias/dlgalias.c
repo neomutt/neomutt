@@ -372,7 +372,7 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
   struct Alias *np = NULL;
   char bestname[8192] = { 0 };
 
-  struct AliasMenuData mdata = { NULL, NULL, ARRAY_HEAD_INITIALIZER, sub };
+  struct AliasMenuData mdata = { NULL, ARRAY_HEAD_INITIALIZER, sub };
   mdata.str = mutt_str_dup(buf);
 
   if (buf[0] != '\0')

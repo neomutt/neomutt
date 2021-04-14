@@ -51,7 +51,6 @@ ARRAY_HEAD(AliasViewArray, struct AliasView);
 struct AliasMenuData
 {
   char *str;                 ///< String representing the limit being used
-  struct Pattern *pat;       ///< Pattern object
   struct AliasViewArray ava; ///< Array of AliasView
   struct ConfigSubset *sub;  ///< Config items
 };
