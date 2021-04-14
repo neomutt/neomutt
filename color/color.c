@@ -451,6 +451,11 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
     i++;
   }
 
+  /* Check for pair overflow too.
+   * We are currently using init_pair(), which only accepts size short. */
+  if (i > SHRT_MAX)
+    return (0);
+
   p = mutt_mem_malloc(sizeof(struct ColorList));
   p->next = Colors.user_colors;
   Colors.user_colors = p;
