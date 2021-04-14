@@ -355,26 +355,7 @@ void menu_redraw_full(struct Menu *menu)
 
   mutt_show_error();
 
-  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
-}
-
-/**
- * menu_redraw_status - Force the redraw of the status bar
- * @param menu Current Menu
- */
-void menu_redraw_status(struct Menu *menu)
-{
-  if (!menu || !menu->win_ibar)
-    return;
-
-  char buf[256];
-
-  snprintf(buf, sizeof(buf), "-- NeoMutt: %s", menu->title);
-  mutt_curses_set_color(MT_COLOR_STATUS);
-  mutt_window_move(menu->win_ibar, 0, 0);
-  mutt_paddstr(menu->win_ibar->state.cols, buf);
-  mutt_curses_set_color(MT_COLOR_NORMAL);
-  menu->redraw &= ~REDRAW_STATUS;
+  menu->redraw = REDRAW_INDEX;
 }
 
 /**
@@ -494,7 +475,6 @@ void menu_redraw_motion(struct Menu *menu)
     mutt_window_move(menu->win_index, 0, menu->current - menu->top);
     print_enriched_string(menu->current, cur_color, (unsigned char *) buf, false);
   }
-  menu->redraw &= REDRAW_STATUS;
   mutt_curses_set_color(MT_COLOR_NORMAL);
 
   notify_send(menu->notify, NT_MENU, 0, NULL);
@@ -527,7 +507,6 @@ void menu_redraw_current(struct Menu *menu)
   }
   else
     print_enriched_string(menu->current, attr, (unsigned char *) buf, false);
-  menu->redraw &= REDRAW_STATUS;
   mutt_curses_set_color(MT_COLOR_NORMAL);
 
   notify_send(menu->notify, NT_MENU, 0, NULL);
@@ -1421,8 +1400,6 @@ int menu_redraw(struct Menu *menu)
   if (ARRAY_EMPTY(&menu->dialog))
     menu_check_recenter(menu);
 
-  if (menu->redraw & REDRAW_STATUS)
-    menu_redraw_status(menu);
   if (menu->redraw & REDRAW_INDEX)
     menu_redraw_index(menu);
   else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNC))
