@@ -36,17 +36,15 @@ typedef uint16_t MuttRedrawFlags;      ///< Flags, e.g. #REDRAW_INDEX
 #define REDRAW_MOTION         (1 << 1) ///< Redraw after moving the menu list
 #define REDRAW_MOTION_RESYNC  (1 << 2) ///< Redraw any changing the menu selection
 #define REDRAW_CURRENT        (1 << 3) ///< Redraw the current line of the menu
-#define REDRAW_STATUS         (1 << 4) ///< Redraw the status bar
-#define REDRAW_FULL           (1 << 5) ///< Redraw everything
-#define REDRAW_BODY           (1 << 6) ///< Redraw the pager
-#define REDRAW_FLOW           (1 << 7) ///< Used by pager to reflow text
+#define REDRAW_FULL           (1 << 4) ///< Redraw everything
+#define REDRAW_BODY           (1 << 5) ///< Redraw the pager
+#define REDRAW_FLOW           (1 << 6) ///< Used by pager to reflow text
 
 /**
  * struct Menu - GUI selectable list of items
  */
 struct Menu
 {
-  const char *title;      ///< Title of this menu
   int current;            ///< Current entry
   int max;                ///< Number of entries in the menu
   MuttRedrawFlags redraw; ///< When to redraw the screen
@@ -55,7 +53,6 @@ struct Menu
   bool tagprefix : 1;
   bool is_mailbox_list : 1;
   struct MuttWindow *win_index;
-  struct MuttWindow *win_ibar;
 
   /* Setting a non-empty dialog overrides normal menu behavior.
    * In dialog mode menubar is hidden and prompt keys are checked before
@@ -145,7 +142,6 @@ void         menu_redraw_current(struct Menu *menu);
 void         menu_redraw_full(struct Menu *menu);
 void         menu_redraw_index(struct Menu *menu);
 void         menu_redraw_motion(struct Menu *menu);
-void         menu_redraw_status(struct Menu *menu);
 int          menu_redraw(struct Menu *menu);
 void         menu_top_page(struct Menu *menu);
 void         mutt_menu_add_dialog_row(struct Menu *menu, const char *row);

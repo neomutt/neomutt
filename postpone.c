@@ -259,7 +259,7 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
           if (menu->current >= menu->top + menu->pagelen)
           {
             menu->top = menu->current;
-            menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
+            menu->redraw |= REDRAW_INDEX;
           }
           else
             menu->redraw |= REDRAW_MOTION_RESYNC;
