@@ -25,9 +25,9 @@
 
 #include <stdio.h>
 
-struct Mailbox;
+struct IndexSharedData;
 struct Menu;
 
-void menu_status_line(char *buf, size_t buflen, struct Menu *menu, struct Mailbox *m, const char *p);
+void menu_status_line(char *buf, size_t buflen, struct IndexSharedData *shared, struct Menu *menu, int cols, const char *fmt);
 
 #endif /* MUTT_STATUS_H */
