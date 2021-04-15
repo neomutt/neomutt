@@ -164,7 +164,7 @@ $(PWD)/compmbox:
 ###############################################################################
 # libcompose
 LIBCOMPOSE=	libcompose.a
-LIBCOMPOSEOBJS=	compose/config.o compose/compose.o
+LIBCOMPOSEOBJS=	compose/cbar.o compose/config.o compose/compose.o
 CLEANFILES+=	$(LIBCOMPOSE) $(LIBCOMPOSEOBJS)
 ALLOBJS+=	$(LIBCOMPOSEOBJS)
 
