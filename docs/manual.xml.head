@@ -15855,7 +15855,9 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry><literal>nm_default_url</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
-                <entry></entry>
+                <entry>
+                  Must use format: <literal>notmuch://&lt;absolute path&gt;</literal>
+                </entry>
               </row>
               <row>
                 <entry><literal>nm_exclude_tags</literal></entry>
