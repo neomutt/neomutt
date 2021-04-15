@@ -222,8 +222,8 @@ static void notify_dump_context(struct NotifyCallback *nc)
   struct EventContext *ev_c = nc->event_data;
 
   const char *path = "NONE";
-  if (ev_c->context && ev_c->context->mailbox)
-    path = mailbox_path(ev_c->context->mailbox);
+  if (ev_c->ctx && ev_c->ctx->mailbox)
+    path = mailbox_path(ev_c->ctx->mailbox);
 
   mutt_debug(LL_DEBUG1, "    Context: %s %s\n", get_context(nc->event_subtype), path);
 }

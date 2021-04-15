@@ -364,7 +364,7 @@ void log_queue_flush(log_dispatcher_t disp)
  * The queue is written to a temporary file.  The format is:
  * * `[HH:MM:SS]<LEVEL> FORMATTED-MESSAGE`
  *
- * @note The caller should free the returned string and delete the file.
+ * @note The caller should delete the file
  */
 int log_queue_save(FILE *fp)
 {

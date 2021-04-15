@@ -431,6 +431,7 @@ static bool thread_is_old(struct Email *e)
  * | \%zs    | Message status flags
  * | \%zt    | Message tag flags
  * | \%Z     | Combined message flags
+ * | \%\@name\@ | Insert and evaluate format-string from the matching "$index-format-hook" command
  * | \%(fmt) | Date/time when the message was received
  * | \%[fmt] | Message date/time converted to the local time zone
  * | \%{fmt} | Message date/time converted to sender's time zone

@@ -10900,7 +10900,7 @@ text/html; lynx %s
               <listitem>
                 <para>
                   <literal>x-neomutt-nowrap</literal> tells the NeoMutt pager
-                  to ignore the <link linked="wrap">$wrap</link> parameter and
+                  to ignore the <link linkend="wrap">$wrap</link> parameter and
                   to assume the output from the mailcap command to already be
                   correctly wrapped.
                 </para>
