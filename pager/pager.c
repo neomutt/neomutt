@@ -644,7 +644,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
   struct QClass *q_list = *quote_list;
   struct QClass *qc = NULL, *tmp = NULL, *ptr = NULL, *save = NULL;
   const char *tail_qptr = NULL;
-  int offset, tail_lng;
+  size_t offset, tail_lng;
   int index = -1;
 
   if (Colors->quotes_used <= 1)
@@ -1317,7 +1317,7 @@ static bool is_ansi(const char *str)
  * @param a   AnsiAttr for the result
  * @retval num Index of first character after the escape sequence
  */
-static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
+static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *a)
 {
   int x = pos;
 
@@ -1523,13 +1523,13 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
 {
   int space = -1; /* index of the last space or TAB */
   const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
-  int col = c_markers ? (*line_info)[n].continuation : 0;
+  size_t col = c_markers ? (*line_info)[n].continuation : 0;
   size_t k;
   int ch, vch, last_special = -1, special = 0, t;
   wchar_t wc;
   mbstate_t mbstate;
-  const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
-  int wrap_cols = mutt_window_wrap_cols(width, (flags & MUTT_PAGER_NOWRAP) ? 0 : c_wrap);
+  const size_t c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
+  size_t wrap_cols = mutt_window_wrap_cols(width, (flags & MUTT_PAGER_NOWRAP) ? 0 : c_wrap);
 
   if (check_attachment_marker((char *) buf) == 0)
     wrap_cols = width;
@@ -2244,7 +2244,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     {
       const size_t l1 = rd->pview->win_pbar->state.cols * MB_LEN_MAX;
       const size_t l2 = sizeof(buf);
-      const int buflen = (l1 < l2) ? l1 : l2;
+      const size_t buflen = (l1 < l2) ? l1 : l2;
       struct Email *e = (rd->pview->mode == PAGER_MODE_EMAIL) ?
                             rd->pview->pdata->email :      // PAGER_MODE_EMAIL
                             rd->pview->pdata->body->email; // PAGER_MODE_ATTACH_E

@@ -1373,9 +1373,9 @@ static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
   dot_type_number(fp, "score", e->score);
   dot_type_number(fp, "attach_total", e->attach_total);
 
-  struct MaildirEmailData *edata = maildir_edata_get(e);
-  if (edata)
-    dot_type_string(fp, "maildir_flags", edata->maildir_flags, false);
+  // struct MaildirEmailData *edata = maildir_edata_get(e);
+  // if (edata)
+  //   dot_type_string(fp, "maildir_flags", edata->maildir_flags, false);
 
   if (e->date_sent != 0)
   {

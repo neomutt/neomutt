@@ -36,7 +36,7 @@ enum NotifyType
   NT_ALTERN,  ///< Alternates command changed,  #NotifyAlternates
   NT_ATTACH,  ///< Attachment command changed,  #NotifyAttach
   NT_BINDING, ///< Key binding has changed,     #NotifyBinding, #EventBinding
-  NT_COLOR,   ///< Colour has changed,          #ColorId,       #EventColor
+  NT_COLOR,   ///< Colour has changed,          #NotifyColor,   #EventColor
   NT_COMMAND, ///< A Command has been executed, #Command
   NT_CONFIG,  ///< Config has changed,          #NotifyConfig,  #EventConfig
   NT_CONTEXT, ///< Context has changed,         #NotifyContext, #EventContext

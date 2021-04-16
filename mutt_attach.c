@@ -392,6 +392,7 @@ static int wait_interactive_filter(pid_t pid)
 
   return rc;
 }
+
 /**
  * mutt_view_attachment - View an attachment
  * @param fp     Source file stream. Can be NULL

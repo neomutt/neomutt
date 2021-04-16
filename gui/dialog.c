@@ -36,6 +36,9 @@
 #include "lib.h"
 #include "keymap.h"
 #include "mutt_menu.h"
+#ifdef USE_DEBUG_WINDOW
+#include "debug/lib.h"
+#endif
 
 /**
  * dialog_find - Find the parent Dialog of a Window
