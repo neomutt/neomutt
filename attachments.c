@@ -252,6 +252,9 @@ static int count_body_parts(struct Body *body)
  */
 int mutt_count_body_parts(struct Mailbox *m, struct Email *e)
 {
+  if (!m || !e)
+    return 0;
+
   bool keep_parts = false;
 
   if (e->attach_valid)

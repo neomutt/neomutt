@@ -3628,7 +3628,7 @@ int mutt_pager(struct PagerView *pview)
         }
         if (pview->mode == PAGER_MODE_ATTACH_E)
         {
-          mutt_attach_forward(pview->pdata->fp, m, pview->pdata->email,
+          mutt_attach_forward(pview->pdata->fp, pview->pdata->email,
                               pview->pdata->actx, pview->pdata->body, SEND_NEWS);
         }
         else
@@ -3762,7 +3762,7 @@ int mutt_pager(struct PagerView *pview)
           break;
         if (pview->mode == PAGER_MODE_ATTACH_E)
         {
-          mutt_attach_forward(pview->pdata->fp, m, pview->pdata->email,
+          mutt_attach_forward(pview->pdata->fp, pview->pdata->email,
                               pview->pdata->actx, pview->pdata->body, SEND_NO_FLAGS);
         }
         else
