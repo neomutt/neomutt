@@ -2444,9 +2444,6 @@ int mutt_pager(struct PagerView *pview)
   bool first = true;
   bool wrapped = false;
   enum MailboxType mailbox_type = m ? m->type : MUTT_UNKNOWN;
-#ifdef USE_NNTP
-  char *followup_to = NULL;
-#endif
 
   //---------- setup flags ----------------------------------------------------
   if (!(pview->flags & MUTT_SHOWCOLOR))
@@ -3655,6 +3652,7 @@ int mutt_pager(struct PagerView *pview)
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
 
+        char *followup_to = NULL;
         if (pview->mode == PAGER_MODE_ATTACH_E)
           followup_to = pview->pdata->body->email->env->followup_to;
         else
