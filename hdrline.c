@@ -1355,6 +1355,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case '@':
     {
+      if (!m)
+        break;
+
       const char *end = src;
       static unsigned char recurse = 0;
 

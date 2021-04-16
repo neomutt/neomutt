@@ -33,7 +33,7 @@ struct Mailbox;
 
 void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, struct Body *cur);
 void mutt_attach_resend(FILE *fp, struct Mailbox *m, struct AttachCtx *actx, struct Body *cur);
-void mutt_attach_forward(FILE *fp, struct Mailbox *m, struct Email *e, struct AttachCtx *actx, struct Body *cur, SendFlags flags);
+void mutt_attach_forward(FILE *fp, struct Email *e, struct AttachCtx *actx, struct Body *cur, SendFlags flags);
 void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e, struct AttachCtx *actx, struct Body *e_cur, SendFlags flags);
 void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx, struct Body *cur);
 

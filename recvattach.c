@@ -1798,7 +1798,7 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e)
 
       case OP_FORWARD_MESSAGE:
         CHECK_ATTACH;
-        mutt_attach_forward(CUR_ATTACH->fp, m, e, actx,
+        mutt_attach_forward(CUR_ATTACH->fp, e, actx,
                             menu->tagprefix ? NULL : CUR_ATTACH->body, SEND_NO_FLAGS);
         menu->redraw = REDRAW_FULL;
         break;
@@ -1806,7 +1806,7 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e)
 #ifdef USE_NNTP
       case OP_FORWARD_TO_GROUP:
         CHECK_ATTACH;
-        mutt_attach_forward(CUR_ATTACH->fp, m, e, actx,
+        mutt_attach_forward(CUR_ATTACH->fp, e, actx,
                             menu->tagprefix ? NULL : CUR_ATTACH->body, SEND_NEWS);
         menu->redraw = REDRAW_FULL;
         break;

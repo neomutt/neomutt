@@ -58,12 +58,12 @@ int             mutt_edit_address(struct AddressList *al, const char *field, boo
 void            mutt_encode_descriptions(struct Body *b, bool recurse, struct ConfigSubset *sub);
 int             mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags, struct ConfigSubset *sub);
 void            mutt_fix_reply_recipients(struct Envelope *env, struct ConfigSubset *sub);
-void            mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp, struct ConfigSubset *sub);
-void            mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp, struct ConfigSubset *sub);
-void            mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *fp_out, struct ConfigSubset *sub);
-void            mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m, struct Email *e, struct ConfigSubset *sub);
+void            mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub);
+void            mutt_forward_trailer(struct Email *e, FILE *fp, struct ConfigSubset *sub);
+void            mutt_make_attribution(struct Email *e, FILE *fp_out, struct ConfigSubset *sub);
+void            mutt_make_forward_subject(struct Envelope *env, struct Email *e, struct ConfigSubset *sub);
 void            mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv, struct ConfigSubset *sub);
-void            mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out, struct ConfigSubset *sub);
+void            mutt_make_post_indent(struct Email *e, FILE *fp_out, struct ConfigSubset *sub);
 int             mutt_resend_message(FILE *fp, struct Mailbox *m, struct Email *e_cur, struct ConfigSubset *sub);
 int             mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile, struct Mailbox *m, struct EmailList *el, struct ConfigSubset *sub);
 void            mutt_set_followup_to(struct Envelope *env, struct ConfigSubset *sub);

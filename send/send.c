@@ -421,12 +421,11 @@ static void process_user_header(struct Envelope *env)
 
 /**
  * mutt_forward_intro - Add the "start of forwarded message" text
- * @param m   Mailbox
  * @param e   Email
  * @param sub Config Subset
  * @param fp  File to write to
  */
-void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp, struct ConfigSubset *sub)
+void mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 {
   const char *const c_forward_attribution_intro =
       cs_subset_string(sub, "forward_attribution_intro");
@@ -438,8 +437,8 @@ void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp, struct Con
 
   char buf[1024];
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_forward_attribution_intro, m, -1, e,
-                   MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, sizeof(buf), 0, c_forward_attribution_intro, NULL, -1,
+                   e, MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputs(buf, fp);
   fputs("\n\n", fp);
@@ -447,13 +446,11 @@ void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp, struct Con
 
 /**
  * mutt_forward_trailer - Add a "end of forwarded message" text
- * @param m   Mailbox
  * @param e   Email
  * @param sub Config Subset
  * @param fp  File to write to
  */
-void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp,
-                          struct ConfigSubset *sub)
+void mutt_forward_trailer(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 {
   const char *const c_forward_attribution_trailer =
       cs_subset_string(sub, "forward_attribution_trailer");
@@ -465,8 +462,8 @@ void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp,
 
   char buf[1024];
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_forward_attribution_trailer, m, -1, e,
-                   MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, sizeof(buf), 0, c_forward_attribution_trailer, NULL, -1,
+                   e, MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputc('\n', fp);
   fputs(buf, fp);
@@ -499,7 +496,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out,
       return -1;
   }
 
-  mutt_forward_intro(m, e, fp_out, sub);
+  mutt_forward_intro(e, fp_out, sub);
 
   if (c_forward_decode)
   {
@@ -518,7 +515,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out,
     cmflags |= MUTT_CM_PREFIX;
 
   mutt_copy_message(fp_out, m, e, cmflags, chflags, 0);
-  mutt_forward_trailer(m, e, fp_out, sub);
+  mutt_forward_trailer(e, fp_out, sub);
   return 0;
 }
 
@@ -603,13 +600,11 @@ cleanup:
 
 /**
  * mutt_make_attribution - Add "on DATE, PERSON wrote" header
- * @param m      Mailbox
  * @param e      Email
  * @param fp_out File to write to
  * @param sub    Config Subset
  */
-void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *fp_out,
-                           struct ConfigSubset *sub)
+void mutt_make_attribution(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
   const char *const c_attribution = cs_subset_string(sub, "attribution");
   if (!c_attribution || !fp_out)
@@ -620,7 +615,8 @@ void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *fp_out,
 
   char buf[1024];
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_attribution, m, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, sizeof(buf), 0, c_attribution, NULL, -1, e,
+                   MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputs(buf, fp_out);
   fputc('\n', fp_out);
@@ -715,13 +711,11 @@ static void mutt_make_greeting(struct Mailbox *m, struct Email *e, FILE *fp_out,
 
 /**
  * mutt_make_post_indent - Add suffix to replied email text
- * @param m      Mailbox
  * @param e      Email
  * @param fp_out File to write to
  * @param sub    Config Subset
  */
-void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out,
-                           struct ConfigSubset *sub)
+void mutt_make_post_indent(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
   const char *const c_post_indent_string =
       cs_subset_string(sub, "post_indent_string");
@@ -729,7 +723,7 @@ void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out,
     return;
 
   char buf[256];
-  mutt_make_string(buf, sizeof(buf), 0, c_post_indent_string, m, -1, e,
+  mutt_make_string(buf, sizeof(buf), 0, c_post_indent_string, NULL, -1, e,
                    MUTT_FORMAT_NO_FLAGS, NULL);
   fputs(buf, fp_out);
   fputc('\n', fp_out);
@@ -761,7 +755,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
   mutt_parse_mime_message(m, e);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  mutt_make_attribution(m, e, fp_out, sub);
+  mutt_make_attribution(e, fp_out, sub);
 
   const bool c_header = cs_subset_bool(sub, "header");
   if (!c_header)
@@ -776,7 +770,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
 
   mutt_copy_message(fp_out, m, e, cmflags, chflags, 0);
 
-  mutt_make_post_indent(m, e, fp_out, sub);
+  mutt_make_post_indent(e, fp_out, sub);
 
   return 0;
 }
@@ -1015,12 +1009,10 @@ void mutt_fix_reply_recipients(struct Envelope *env, struct ConfigSubset *sub)
 /**
  * mutt_make_forward_subject - Create a subject for a forwarded email
  * @param env Envelope for result
- * @param m   Mailbox
  * @param e   Email
  * @param sub Config Subset
  */
-void mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m,
-                               struct Email *e, struct ConfigSubset *sub)
+void mutt_make_forward_subject(struct Envelope *env, struct Email *e, struct ConfigSubset *sub)
 {
   if (!env)
     return;
@@ -1029,7 +1021,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m,
 
   char buf[256];
   /* set the default subject for the message. */
-  mutt_make_string(buf, sizeof(buf), 0, NONULL(c_forward_format), m, -1, e,
+  mutt_make_string(buf, sizeof(buf), 0, NONULL(c_forward_format), NULL, -1, e,
                    MUTT_FORMAT_NO_FLAGS, NULL);
   mutt_str_replace(&env->subject, buf);
 }
@@ -1177,7 +1169,7 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m, struct Ema
   }
   else if (flags & SEND_FORWARD)
   {
-    mutt_make_forward_subject(env, m, en->email, sub);
+    mutt_make_forward_subject(env, en->email, sub);
 
     const bool c_forward_references = cs_subset_bool(sub, "forward_references");
     if (c_forward_references)
