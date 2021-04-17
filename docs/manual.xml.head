@@ -19435,7 +19435,9 @@ set use_threads=threads sort=last-date sort_aux=date
         </para>
         <para>
           To prevent these issues, NeoMutt by default only accepts the
-          <literal>Subject</literal> and <literal>Body</literal> headers.
+          <literal>Subject</literal>, <literal>Body</literal>,
+          <literal>Cc</literal>, <literal>In-Reply-To</literal>, and
+          <literal>References</literal> headers.
           Allowed headers can be adjusted with the
           <link linkend="mailto-allow"><command>mailto_allow</command></link>
           and
