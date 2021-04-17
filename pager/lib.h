@@ -157,6 +157,7 @@ struct PagerView
 
 int mutt_pager(struct PagerView *pview);
 void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
+struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top);
 
 void mutt_clear_pager_position(void);
 

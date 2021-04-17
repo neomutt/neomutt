@@ -4163,3 +4163,39 @@ int mutt_pager(struct PagerView *pview)
 
   return (rc != -1) ? rc : 0;
 }
+
+/**
+ * add_panel_pager - Add the Windows for the Pager panel
+ * @param parent        Parent Window
+ * @param status_on_top true, if the Pager bar should be on top
+ */
+struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top)
+{
+  struct MuttWindow *panel_pager =
+      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
+  mutt_window_add_child(parent, panel_pager);
+
+  struct MuttWindow *win_pager =
+      mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  panel_pager->focus = win_pager;
+
+  struct MuttWindow *win_pbar =
+      mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+
+  if (status_on_top)
+  {
+    mutt_window_add_child(panel_pager, win_pbar);
+    mutt_window_add_child(panel_pager, win_pager);
+  }
+  else
+  {
+    mutt_window_add_child(panel_pager, win_pager);
+    mutt_window_add_child(panel_pager, win_pbar);
+  }
+
+  return panel_pager;
+}
