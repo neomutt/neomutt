@@ -242,6 +242,8 @@ opcodes.h
 pager/config.c
 pager/do_pager.c
 pager/pager.c
+pager/pbar.c
+pager/private_data.c
 pattern/compile.c
 pattern/config.c
 pattern/dlgpattern.c

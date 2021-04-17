@@ -36,7 +36,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
-#include "menu/lib.h"
+#include "index/lib.h"
 #include "protos.h"
 
 /**
@@ -91,32 +91,24 @@ int mutt_do_pager(struct PagerView *pview)
       mutt_window_new(WT_DLG_DO_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
-  struct MuttWindow *win_pager = menu_new_window(MENU_PAGER, NeoMutt->sub);
-  dlg->focus = win_pager;
+  struct IndexSharedData *shared = index_shared_data_new();
+  notify_set_parent(shared->notify, dlg->notify);
 
-  struct MuttWindow *win_pbar =
-      mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  dlg->wdata = shared;
+  dlg->wdata_free = index_shared_data_free;
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-  if (c_status_on_top)
-  {
-    mutt_window_add_child(dlg, win_pbar);
-    mutt_window_add_child(dlg, win_pager);
-  }
-  else
-  {
-    mutt_window_add_child(dlg, win_pager);
-    mutt_window_add_child(dlg, win_pbar);
-  }
+  struct MuttWindow *panel_pager = create_panel_pager(c_status_on_top, shared);
+  dlg->focus = panel_pager;
+  mutt_window_add_child(dlg, panel_pager);
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, dopager_config_observer, dlg);
   dialog_push(dlg);
 
   pview->win_ibar = NULL;
   pview->win_index = NULL;
-  pview->win_pbar = win_pbar;
-  pview->win_pager = win_pager;
+  pview->win_pbar = mutt_window_find(panel_pager, WT_PAGER_BAR);
+  pview->win_pager = mutt_window_find(panel_pager, WT_MENU);
 
   int rc;
 

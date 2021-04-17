@@ -127,3 +127,13 @@ void test_neomutt_destroy(struct NeoMutt **ptr)
   neomutt_free(ptr);
   cs_free(&cs);
 }
+
+struct IndexSharedData *index_shared_data_new(void)
+{
+  return NULL;
+}
+
+struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top)
+{
+  return NULL;
+}
