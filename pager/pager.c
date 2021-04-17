@@ -68,6 +68,8 @@
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
+#include "pbar.h"
+#include "private_data.h"
 #include "protos.h"
 #include "recvattach.h"
 #include "recvcmd.h"
@@ -152,38 +154,6 @@ struct Resize
   int line;
   bool search_compiled;
   bool search_back;
-};
-
-/**
- * struct PagerRedrawData - Keep track when the pager needs redrawing
- */
-struct PagerRedrawData
-{
-  struct PagerView *pview;
-  int indexlen;
-  int indicator; ///< the indicator line of the PI
-  int oldtopline;
-  int lines;
-  int max_line;
-  int last_line;
-  int curline;
-  int topline;
-  bool force_redraw;
-  int has_types;
-  PagerFlags hide_quoted;
-  int q_level;
-  struct QClass *quote_list;
-  LOFF_T last_pos;
-  LOFF_T last_offset;
-  struct Menu *menu; ///< the Pager Index (PI)
-  regex_t search_re;
-  bool search_compiled;
-  PagerFlags search_flag;
-  bool search_back;
-  char searchbuf[256];
-  struct Line *line_info;
-  FILE *fp;
-  struct stat sb;
 };
 
 /* hack to return to position when returning from index to same message */
@@ -2445,6 +2415,11 @@ int mutt_pager(struct PagerView *pview)
   bool wrapped = false;
   enum MailboxType mailbox_type = m ? m->type : MUTT_UNKNOWN;
 
+  struct PagerPrivateData *priv = pview->win_pager->parent->wdata;
+
+  priv->rd = &rd;
+  priv->win_pbar = pview->win_pbar;
+
   //---------- setup flags ----------------------------------------------------
   if (!(pview->flags & MUTT_SHOWCOLOR))
     pview->flags |= MUTT_SHOWFLAT;
@@ -2452,6 +2427,7 @@ int mutt_pager(struct PagerView *pview)
   if (pview->mode == PAGER_MODE_EMAIL && !pview->pdata->email->read)
   {
     pview->pdata->ctx->msg_in_pager = pview->pdata->email->msgno;
+    priv->win_pbar->actions |= WA_RECALC;
     mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
   }
   //---------- setup help menu ------------------------------------------------
@@ -2505,6 +2481,7 @@ int mutt_pager(struct PagerView *pview)
   pager_menu->custom_redraw = pager_custom_redraw;
   pager_menu->mdata = &rd;
   mutt_menu_push_current(pager_menu);
+  priv->menu = menu;
 
   //---------- restore global state if needed ---------------------------------
   while (pview->mode == PAGER_MODE_EMAIL && (OldEmail == pview->pdata->email) // are we "resuming" to the same Email?
@@ -3883,6 +3860,7 @@ int mutt_pager(struct PagerView *pview)
           mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
         first = false;
         pview->pdata->ctx->msg_in_pager = -1;
+        priv->win_pbar->actions |= WA_RECALC;
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve)
@@ -4119,6 +4097,7 @@ int mutt_pager(struct PagerView *pview)
   if (pview->mode == PAGER_MODE_EMAIL)
   {
     pview->pdata->ctx->msg_in_pager = -1;
+    priv->win_pbar->actions |= WA_RECALC;
     switch (rc)
     {
       case -1:
@@ -4182,19 +4161,21 @@ struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   panel_pager->focus = win_pager;
 
-  struct MuttWindow *win_pbar =
-      mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  struct PagerPrivateData *priv = pager_private_data_new();
+  panel_pager->wdata = priv;
+  panel_pager->wdata_free = pager_private_data_free;
+
+  struct IndexSharedData *shared = parent->wdata;
 
   if (status_on_top)
   {
-    mutt_window_add_child(panel_pager, win_pbar);
+    pbar_add(panel_pager, shared, priv);
     mutt_window_add_child(panel_pager, win_pager);
   }
   else
   {
     mutt_window_add_child(panel_pager, win_pager);
-    mutt_window_add_child(panel_pager, win_pbar);
+    pbar_add(panel_pager, shared, priv);
   }
 
   return panel_pager;

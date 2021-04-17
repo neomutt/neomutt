@@ -37,6 +37,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <sys/stat.h>
+#include "pbar.h"
 
 struct Buffer;
 
@@ -154,6 +156,48 @@ struct PagerView
   struct MuttWindow *win_pbar;
   struct MuttWindow *win_pager;
 };
+
+/**
+ * struct PagerRedrawData - Keep track when the pager needs redrawing
+ */
+struct PagerRedrawData
+{
+  struct PagerView *pview;
+  int indexlen;
+  int indicator; ///< the indicator line of the PI
+  int oldtopline;
+  int lines;
+  int max_line;
+  int last_line;
+  int curline;
+  int topline;
+  bool force_redraw;
+  int has_types;
+  PagerFlags hide_quoted;
+  int q_level;
+  struct QClass *quote_list;
+  LOFF_T last_pos;
+  LOFF_T last_offset;
+  struct Menu *menu; ///< the Pager Index (PI)
+  regex_t search_re;
+  bool search_compiled;
+  PagerFlags search_flag;
+  bool search_back;
+  char searchbuf[256];
+  struct Line *line_info;
+  FILE *fp;
+  struct stat sb;
+};
+
+typedef uint8_t NotifyPager;         ///< Flags, e.g. #NT_PAGER_ACCOUNT
+#define NT_PAGER_NO_FLAGS        0   ///< No flags are set
+#define NT_PAGER_CONFIG    (1 << 0)  ///< Config subset has changed
+#define NT_PAGER_CONTEXT   (1 << 1)  ///< Context has changed
+#define NT_PAGER_ACCOUNT   (1 << 2)  ///< Account has changed
+#define NT_PAGER_MAILBOX   (1 << 3)  ///< Mailbox has changed
+#define NT_PAGER_EMAIL     (1 << 4)  ///< Email has changed
+#define NT_PAGER_CLOSING   (1 << 5)  ///< The Pager is about to close
+#define NT_PAGER_SUBSET    (1 << 6)  ///< Config Subset has changed
 
 int mutt_pager(struct PagerView *pview);
 void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
