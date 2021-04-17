@@ -4220,42 +4220,6 @@ static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool sta
 }
 
 /**
- * create_panel_pager - Create the Windows for the Pager panel
- * @param parent        Parent Window
- * @param status_on_top true, if the Pager bar should be on top
- * @retval ptr Nested Windows
- */
-static struct MuttWindow *create_panel_pager(struct MuttWindow *parent, bool status_on_top)
-{
-  struct MuttWindow *panel_pager =
-      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
-
-  struct MuttWindow *win_pager =
-      mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  panel_pager->focus = win_pager;
-
-  struct MuttWindow *win_pbar =
-      mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-
-  if (status_on_top)
-  {
-    mutt_window_add_child(panel_pager, win_pbar);
-    mutt_window_add_child(panel_pager, win_pager);
-  }
-  else
-  {
-    mutt_window_add_child(panel_pager, win_pager);
-    mutt_window_add_child(panel_pager, win_pbar);
-  }
-
-  return panel_pager;
-}
-
-/**
  * index_pager_init - Allocate the Windows for the Index/Pager
  * @retval ptr Dialog containing nested Windows
  */
@@ -4271,7 +4235,7 @@ struct MuttWindow *index_pager_init(void)
   notify_set_parent(win_index->notify, dlg->notify);
   mutt_window_add_child(dlg, win_index);
 
-  struct MuttWindow *win_pager = create_panel_pager(dlg, c_status_on_top);
+  struct MuttWindow *win_pager = add_panel_pager(dlg, c_status_on_top);
   notify_set_parent(win_pager->notify, dlg->notify);
   mutt_window_add_child(dlg, win_pager);
 
