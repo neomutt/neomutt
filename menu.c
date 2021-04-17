@@ -364,6 +364,12 @@ void menu_redraw_full(struct Menu *menu)
  */
 void menu_redraw_status(struct Menu *menu)
 {
+  if (!menu->win_ibar)
+  {
+    mutt_error("menu_redraw_status");
+    return;
+  }
+
   char buf[256];
 
   snprintf(buf, sizeof(buf), "-- NeoMutt: %s", menu->title);

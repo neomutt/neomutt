@@ -1097,41 +1097,11 @@ static void index_custom_redraw(struct Menu *menu)
     menu_check_recenter(menu);
 
     if (menu->redraw & REDRAW_INDEX)
-    {
       menu_redraw_index(menu);
-      menu->redraw |= REDRAW_STATUS;
-    }
     else if (menu->redraw & (REDRAW_MOTION_RESYNC | REDRAW_MOTION))
       menu_redraw_motion(menu);
     else if (menu->redraw & REDRAW_CURRENT)
       menu_redraw_current(menu);
-  }
-
-  if (menu->redraw & REDRAW_STATUS)
-  {
-    char buf[1024];
-    const char *const c_status_format =
-        cs_subset_string(shared->sub, "status_format");
-    menu_status_line(buf, sizeof(buf), shared, menu, menu->win_ibar->state.cols,
-                     NONULL(c_status_format));
-    mutt_window_move(menu->win_ibar, 0, 0);
-    mutt_curses_set_color(MT_COLOR_STATUS);
-    mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
-    mutt_curses_set_color(MT_COLOR_NORMAL);
-    menu->redraw &= ~REDRAW_STATUS;
-    const bool c_ts_enabled = cs_subset_bool(shared->sub, "ts_enabled");
-    if (c_ts_enabled && TsSupported)
-    {
-      const char *const c_ts_status_format =
-          cs_subset_string(shared->sub, "ts_status_format");
-      menu_status_line(buf, sizeof(buf), shared, menu, sizeof(buf),
-                       NONULL(c_ts_status_format));
-      mutt_ts_status(buf);
-      const char *const c_ts_icon_format =
-          cs_subset_string(shared->sub, "ts_icon_format");
-      menu_status_line(buf, sizeof(buf), shared, menu, sizeof(buf), NONULL(c_ts_icon_format));
-      mutt_ts_icon(buf);
-    }
   }
 
   menu->redraw = REDRAW_NO_FLAGS;
@@ -1176,7 +1146,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   priv->menu = menu;
   priv->menu->pagelen = priv->win_index->state.rows;
   priv->menu->win_index = priv->win_index;
-  priv->menu->win_ibar = priv->win_ibar;
   priv->menu->mdata = shared;
 
   priv->menu->make_entry = index_make_entry;
