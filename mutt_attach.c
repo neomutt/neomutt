@@ -657,10 +657,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
 
     pdata.actx = actx;
     pdata.body = a;
-    pdata.email = e;
     pdata.fname = mutt_buffer_string(pagerfile);
     pdata.fp = fp;
-    pdata.ctx = Context;
 
     pview.banner = desc;
     pview.flags = MUTT_PAGER_ATTACHMENT |
