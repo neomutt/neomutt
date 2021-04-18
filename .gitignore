@@ -46,3 +46,9 @@ tags
 # Clangd
 .cache/clangd
 compile_commands.json
+
+# Intellij IDEs
+.idea
+
+# gcc -fdump-rtl-expand
+*.expand
