@@ -1591,9 +1591,11 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m, struct E
       dialog_create_simple_index(MENU_ATTACH, WT_DLG_ATTACH, AttachHelp);
 
   struct Menu *menu = dlg->wdata;
-  menu->title = _("Attachments");
   menu->make_entry = attach_make_entry;
   menu->tag = attach_tag;
+
+  struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
+  sbar_set_title(sbar, _("Attachments"));
 
   struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;

@@ -133,10 +133,12 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = make_pattern_entry;
-  // L10N: Pattern completion menu title
-  menu->title = _("Patterns");
   menu->mdata = entries = mutt_mem_calloc(num_entries, sizeof(struct PatternEntry));
   menu->max = num_entries;
+
+  struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
+  // L10N: Pattern completion menu title
+  sbar_set_title(sbar, _("Patterns"));
 
   entrybuf = mutt_buffer_pool_get();
   while (Flags[i].tag)

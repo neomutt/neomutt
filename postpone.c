@@ -229,9 +229,11 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
   struct Menu *menu = dlg->wdata;
   menu->make_entry = post_make_entry;
   menu->max = m->msg_count;
-  menu->title = _("Postponed Messages");
   menu->mdata = m;
   menu->custom_search = true;
+
+  struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
+  sbar_set_title(sbar, _("Postponed Messages"));
 
   /* The postponed mailbox is setup to have sorting disabled, but the global
    * `$sort` variable may indicate something different.   Sorting has to be
