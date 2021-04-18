@@ -2449,7 +2449,7 @@ int mutt_pager(struct PagerView *pview)
     //-------------------------------------------------------------------------
     // Check if information in the status bar needs an update
     // This is done because pager is a single-threaded application, which
-    // tries to emulate cuncurency.
+    // tries to emulate concurrency.
     //-------------------------------------------------------------------------
     bool do_new_mail = false;
     if (shared->mailbox && !OptAttachMsg)
@@ -3986,49 +3986,165 @@ int mutt_pager(struct PagerView *pview)
 
       // Index-specific operations that pager used to delegate to index
       case OP_DISPLAY_HEADERS:
+        index_function_dispatcher(pview->win_index, OP_DISPLAY_HEADERS);
+        break;
+
       case OP_EDIT_OR_VIEW_RAW_MESSAGE:
+        index_function_dispatcher(pview->win_index, OP_EDIT_OR_VIEW_RAW_MESSAGE);
+        break;
+
       case OP_EDIT_RAW_MESSAGE:
+        index_function_dispatcher(pview->win_index, OP_EDIT_RAW_MESSAGE);
+        break;
+
       case OP_EDIT_TYPE:
+        index_function_dispatcher(pview->win_index, OP_EDIT_TYPE);
+        break;
+
       case OP_MAIN_BREAK_THREAD:
+        index_function_dispatcher(pview->win_index, OP_MAIN_BREAK_THREAD);
+        break;
+
       case OP_MAIN_CHANGE_FOLDER:
+        index_function_dispatcher(pview->win_index, OP_MAIN_CHANGE_FOLDER);
+        break;
+
       case OP_MAIN_CHANGE_FOLDER_READONLY:
+        index_function_dispatcher(pview->win_index, OP_MAIN_CHANGE_FOLDER_READONLY);
+        break;
+
       case OP_MAIN_CHANGE_GROUP:
+        index_function_dispatcher(pview->win_index, OP_MAIN_CHANGE_GROUP);
+        break;
+
       case OP_MAIN_CHANGE_GROUP_READONLY:
+        index_function_dispatcher(pview->win_index, OP_MAIN_CHANGE_GROUP_READONLY);
+        break;
+
 #ifdef USE_NOTMUCH
       case OP_MAIN_CHANGE_VFOLDER:
+        index_function_dispatcher(pview->win_index, OP_MAIN_CHANGE_VFOLDER);
+        break;
+
       case OP_MAIN_ENTIRE_THREAD:
+        index_function_dispatcher(pview->win_index, OP_MAIN_ENTIRE_THREAD);
+        break;
+
       case OP_MAIN_VFOLDER_FROM_QUERY:
+        index_function_dispatcher(pview->win_index, OP_MAIN_VFOLDER_FROM_QUERY);
+        break;
+
       case OP_MAIN_VFOLDER_FROM_QUERY_READONLY:
+        index_function_dispatcher(pview->win_index, OP_MAIN_VFOLDER_FROM_QUERY_READONLY);
+        break;
+
 #endif
       case OP_MAIN_IMAP_FETCH:
+        index_function_dispatcher(pview->win_index, OP_MAIN_IMAP_FETCH);
+        break;
+
       case OP_MAIN_IMAP_LOGOUT_ALL:
+        index_function_dispatcher(pview->win_index, OP_MAIN_IMAP_LOGOUT_ALL);
+        break;
+
       case OP_MAIN_LINK_THREADS:
+        index_function_dispatcher(pview->win_index, OP_MAIN_LINK_THREADS);
+        break;
+
       case OP_MAIN_MODIFY_TAGS:
+        index_function_dispatcher(pview->win_index, OP_MAIN_MODIFY_TAGS);
+        break;
+
       case OP_MAIN_MODIFY_TAGS_THEN_HIDE:
+        index_function_dispatcher(pview->win_index, OP_MAIN_MODIFY_TAGS_THEN_HIDE);
+        break;
+
       case OP_MAIN_NEXT_NEW:
+        index_function_dispatcher(pview->win_index, OP_MAIN_NEXT_NEW);
+        break;
+
       case OP_MAIN_NEXT_NEW_THEN_UNREAD:
+        index_function_dispatcher(pview->win_index, OP_MAIN_NEXT_NEW_THEN_UNREAD);
+        break;
+
       case OP_MAIN_NEXT_SUBTHREAD:
+        index_function_dispatcher(pview->win_index, OP_MAIN_NEXT_SUBTHREAD);
+        break;
+
       case OP_MAIN_NEXT_THREAD:
+        index_function_dispatcher(pview->win_index, OP_MAIN_NEXT_THREAD);
+        break;
+
       case OP_MAIN_NEXT_UNDELETED:
+        index_function_dispatcher(pview->win_index, OP_MAIN_NEXT_UNDELETED);
+        break;
+
       case OP_MAIN_NEXT_UNREAD:
+        index_function_dispatcher(pview->win_index, OP_MAIN_NEXT_UNREAD);
+        break;
+
       case OP_MAIN_NEXT_UNREAD_MAILBOX:
+        index_function_dispatcher(pview->win_index, OP_MAIN_NEXT_UNREAD_MAILBOX);
+        break;
+
       case OP_MAIN_PARENT_MESSAGE:
+        index_function_dispatcher(pview->win_index, OP_MAIN_PARENT_MESSAGE);
+        break;
+
       case OP_MAIN_PREV_NEW:
+        index_function_dispatcher(pview->win_index, OP_MAIN_PREV_NEW);
+        break;
+
       case OP_MAIN_PREV_NEW_THEN_UNREAD:
+        index_function_dispatcher(pview->win_index, OP_MAIN_PREV_NEW_THEN_UNREAD);
+        break;
+
       case OP_MAIN_PREV_SUBTHREAD:
+        index_function_dispatcher(pview->win_index, OP_MAIN_PREV_SUBTHREAD);
+        break;
+
       case OP_MAIN_PREV_THREAD:
+        index_function_dispatcher(pview->win_index, OP_MAIN_PREV_THREAD);
+        break;
+
       case OP_MAIN_PREV_UNDELETED:
+        index_function_dispatcher(pview->win_index, OP_MAIN_PREV_UNDELETED);
+        break;
+
       case OP_MAIN_PREV_UNREAD:
+        index_function_dispatcher(pview->win_index, OP_MAIN_PREV_UNREAD);
+        break;
+
       case OP_MAIN_QUASI_DELETE:
+        index_function_dispatcher(pview->win_index, OP_MAIN_QUASI_DELETE);
+        break;
+
       case OP_MAIN_READ_SUBTHREAD:
+        index_function_dispatcher(pview->win_index, OP_MAIN_READ_SUBTHREAD);
+        break;
+
       case OP_MAIN_READ_THREAD:
+        index_function_dispatcher(pview->win_index, OP_MAIN_READ_THREAD);
+        break;
+
       case OP_MAIN_ROOT_MESSAGE:
+        index_function_dispatcher(pview->win_index, OP_MAIN_ROOT_MESSAGE);
+        break;
+
       case OP_MAIN_SYNC_FOLDER:
+        index_function_dispatcher(pview->win_index, OP_MAIN_SYNC_FOLDER);
+        break;
+
       case OP_RECONSTRUCT_THREAD:
+        index_function_dispatcher(pview->win_index, OP_RECONSTRUCT_THREAD);
+        break;
+
       case OP_TOGGLE_WRITE:
+        index_function_dispatcher(pview->win_index, OP_TOGGLE_WRITE);
+        break;
+
       case OP_VIEW_RAW_MESSAGE:
-        mutt_message(_("Index operations are not currently available in pager. "
-                       "Please continue refactoring to re-enable it"));
+        index_function_dispatcher(pview->win_index, OP_VIEW_RAW_MESSAGE);
         break;
 
 #ifdef USE_SIDEBAR
