@@ -55,6 +55,7 @@
 #include "commands.h"
 #include "context.h"
 #include "format_flags.h"
+#include "functions.h"
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"

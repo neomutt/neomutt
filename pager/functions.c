@@ -1,6 +1,6 @@
 /**
  * @file
- * Private state data for the Pager
+ * Pager functions
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -21,39 +21,35 @@
  */
 
 /**
- * @page pager_private_data Private state data for the Pager
+ * @page pager_functions Pager functions
  *
- * Private state data for the Pager
+ * Pager functions
  */
 
-#include "config.h"
-#include "mutt/lib.h"
-#include "private_data.h"
+#include <stddef.h>
+#include <assert.h>
+#include <stdbool.h>
+#include "functions.h"
 
 /**
- * pager_private_data_free - Free Pager Data
- * @param win Window
- * @param ptr Pager Data to free
+ * pager_function_dispatcher - Perform a Pager function
+ * @param win_pager Window for the Index
+ * @param op        Operation to perform, e.g. OP_MAIN_LIMIT
+ * @retval true Value function
  */
-void pager_private_data_free(struct MuttWindow *win, void **ptr)
+bool pager_function_dispatcher(struct MuttWindow *win_pager, int op)
 {
-  if (!ptr || !*ptr)
-    return;
-
-  // struct PagerPrivateData *priv = *ptr;
-
-  FREE(ptr);
+  // TODO: write pager_function_dispatcher
+  assert(false);
+  return true;
 }
 
 /**
- * pager_private_data_new - Create new Pager Data
- * @retval ptr New PagerPrivateData
+ * PagerFunctions - All the NeoMutt functions that the Pager supports
  */
-struct PagerPrivateData *pager_private_data_new(void)
-{
-  struct PagerPrivateData *priv = mutt_mem_calloc(1, sizeof(struct PagerPrivateData));
+struct PagerFunction PagerFunctions[] = {
+  // clang-format off
 
-  // TODO initialize fields
-
-  return priv;
-}
+  // clang-format on
+  { 0, NULL },
+};
