@@ -1219,7 +1219,6 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   int keymax;
   int i;
   bool done = false;
-  char buf[1024];
   struct CryptKeyInfo *k = NULL;
   int (*f)(const void *, const void *);
   enum MenuType menu_to_use = MENU_GENERIC;
@@ -1300,6 +1299,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
     else
       ts = _("keys matching");
 
+    char buf[1024] = { 0 };
     if (p)
     {
       /* L10N: 1$s is one of the previous four entries.
@@ -1312,7 +1312,9 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
       /* L10N: e.g. 'S/MIME keys matching "Michael Elkins".' */
       snprintf(buf, sizeof(buf), _("%s \"%s\""), ts, s);
     }
-    menu->title = buf;
+
+    struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
+    sbar_set_title(sbar, buf);
   }
 
   mutt_clear_error();

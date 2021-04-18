@@ -613,9 +613,11 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
   menu->max = ttll;
   menu->make_entry = mix_make_entry;
   menu->tag = NULL;
-  menu->title = _("Select a remailer chain");
   menu->mdata = type2_list;
   menu->pagelen = MIX_VOFFSET - 1;
+
+  struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
+  sbar_set_title(sbar, _("Select a remailer chain"));
 
   while (loop)
   {
@@ -644,7 +646,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
     {
       case OP_REDRAW:
       {
-        menu_redraw_status(menu);
+        sbar->actions |= WA_REPAINT;
         mix_redraw_head(menu->win_index, chain);
         mix_screen_coordinates(menu->win_index, type2_list, &coords, chain, 0);
         mix_redraw_chain(menu->win_index, type2_list, coords, chain, c_cur);
