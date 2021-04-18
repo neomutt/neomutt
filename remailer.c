@@ -569,7 +569,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
  *
  * Ask the user to select Mixmaster hosts to create a chain.
  */
-void dlg_select_mixmaster_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols)
+void dlg_select_mixmaster_chain(struct ListHead *chainhead)
 {
   int c_cur = 0, c_old = 0;
   bool c_redraw = true;
@@ -605,10 +605,11 @@ void dlg_select_mixmaster_chain(struct MuttWindow *win, struct ListHead *chainhe
       chain->ch[i] = 0;
   }
 
-  mix_screen_coordinates(win, type2_list, &coords, chain, 0);
-
   struct MuttWindow *dlg =
       dialog_create_simple_index(MENU_MIX, WT_DLG_REMAILER, RemailerHelp);
+  struct MuttWindow *win = dlg;
+
+  mix_screen_coordinates(dlg, type2_list, &coords, chain, 0);
 
   menu = dlg->wdata;
   menu->max = ttll;

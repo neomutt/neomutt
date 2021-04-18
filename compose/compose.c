@@ -116,7 +116,6 @@ struct ComposeRedrawData
 
 #ifdef USE_AUTOCRYPT
   enum AutocryptRec autocrypt_rec;
-  int autocrypt_rec_override;
 #endif
   struct MuttWindow *win_envelope; ///< Envelope: From, To, etc
   struct MuttWindow *win_abar;     ///< Attachments label
@@ -2724,8 +2723,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:
-        dlg_select_mixmaster_chain(rd->win_envelope, &e->chain,
-                                   rd->win_envelope->state.cols);
+        dlg_select_mixmaster_chain(&e->chain);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         redraw_env = true;
         break;

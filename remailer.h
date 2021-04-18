@@ -63,6 +63,6 @@ struct MixChain
 
 int mix_send_message(struct ListHead *chain, const char *tempfile);
 int mix_check_message(struct Email *e);
-void dlg_select_mixmaster_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols);
+void dlg_select_mixmaster_chain(struct ListHead *chainhead);
 
 #endif /* MUTT_REMAILER_H */
