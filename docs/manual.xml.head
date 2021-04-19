@@ -15904,6 +15904,15 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 </entry>
               </row>
               <row>
+                <entry><literal>nm_query_window_enable</literal></entry>
+                <entry>boolean</entry>
+                <entry><literal>no</literal></entry>
+                <entry>
+                  Enables windowed notmuch queries for
+                  <literal>nm_query_window_duration = 0</literal>
+                </entry>
+              </row>
+              <row>
                 <entry><literal>nm_query_window_duration</literal></entry>
                 <entry>number</entry>
                 <entry><literal>0</literal></entry>
@@ -16122,6 +16131,8 @@ set virtual_spool_file = no
 <emphasis role="comment"># setup time window preferences</emphasis>
 <emphasis role="comment"># first setup the duration, and then the time unit of that duration</emphasis>
 <emphasis role="comment"># when set to 0 (the default) the search window feature is disabled</emphasis>
+<emphasis role="comment"># unless explicitly enabled with nm_query_window_enable.</emphasis>
+set nm_query_window_enable=yes
 set nm_query_window_duration=2
 set nm_query_window_timebase="week" # or "hour", "day", "week", "month", "year"
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>

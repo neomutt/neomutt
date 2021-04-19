@@ -28,19 +28,19 @@
 
 void test_nm_windowed_query_from_query(void)
 {
-  // Ensure existing behavior functions as expected with duration = 0
+  // Ensure legacy-behavior functions as expected with duration = 0
   {
     char buf[1024] = "\0";
     enum NmWindowQueryRc rc =
-        nm_windowed_query_from_query(buf, 1024, 0, 0, "tag:inbox", "month");
+        nm_windowed_query_from_query(buf, 1024, false, 0, 0, "tag:inbox", "month");
     TEST_CHECK(rc == NM_WINDOW_QUERY_INVALID_DURATION);
   }
 
-  // Check existing behavior with duration > 0
+  // Check legacy behavior with duration > 0
   {
     char buf[1024] = "\0";
     enum NmWindowQueryRc rc =
-        nm_windowed_query_from_query(buf, 1024, 1, 0, "tag:inbox", "month");
+        nm_windowed_query_from_query(buf, 1024, false, 1, 0, "tag:inbox", "month");
     TEST_CHECK(rc == NM_WINDOW_QUERY_SUCCESS);
     TEST_CHECK(mutt_str_equal(buf, "date:1month.. and tag:inbox"));
   }
@@ -49,7 +49,7 @@ void test_nm_windowed_query_from_query(void)
   {
     char buf[1024] = "\0";
     enum NmWindowQueryRc rc =
-        nm_windowed_query_from_query(buf, 1024, 1, 1, "tag:inbox", "month");
+        nm_windowed_query_from_query(buf, 1024, false, 1, 1, "tag:inbox", "month");
     TEST_CHECK(rc == NM_WINDOW_QUERY_SUCCESS);
     TEST_CHECK(mutt_str_equal(buf, "date:2month..1month and tag:inbox"));
   }
@@ -58,7 +58,7 @@ void test_nm_windowed_query_from_query(void)
   {
     char buf[1024] = "\0";
     enum NmWindowQueryRc rc =
-        nm_windowed_query_from_query(buf, 1024, 1, 3, "tag:inbox", "month");
+        nm_windowed_query_from_query(buf, 1024, false, 1, 3, "tag:inbox", "month");
     TEST_CHECK(rc == NM_WINDOW_QUERY_SUCCESS);
     TEST_CHECK(mutt_str_equal(buf, "date:4month..3month and tag:inbox"));
   }
@@ -67,7 +67,7 @@ void test_nm_windowed_query_from_query(void)
   {
     char buf[1024] = "\0";
     enum NmWindowQueryRc rc =
-        nm_windowed_query_from_query(buf, 1024, 3, 3, "tag:inbox", "month");
+        nm_windowed_query_from_query(buf, 1024, false, 3, 3, "tag:inbox", "month");
     TEST_CHECK(rc == NM_WINDOW_QUERY_SUCCESS);
     TEST_CHECK(mutt_str_equal(buf, "date:12month..9month and tag:inbox"));
   }
@@ -76,7 +76,34 @@ void test_nm_windowed_query_from_query(void)
   {
     char buf[1024] = "\0";
     enum NmWindowQueryRc rc =
-        nm_windowed_query_from_query(buf, 1024, 3, 3, "tag:inbox", "months");
+        nm_windowed_query_from_query(buf, 1024, false, 3, 3, "tag:inbox", "months");
     TEST_CHECK(rc == NM_WINDOW_QUERY_INVALID_TIMEBASE);
+  }
+
+  // Check zero-duration support with force_enable
+  {
+    char buf[1024] = "\0";
+    enum NmWindowQueryRc rc =
+        nm_windowed_query_from_query(buf, 1024, true, 0, 0, "tag:inbox", "month");
+    TEST_CHECK(rc == NM_WINDOW_QUERY_SUCCESS);
+    TEST_CHECK(mutt_str_equal(buf, "date:0month.. and tag:inbox"));
+  }
+
+  // Check zero duration span 1 position back
+  {
+    char buf[1024] = "\0";
+    enum NmWindowQueryRc rc =
+        nm_windowed_query_from_query(buf, 1024, true, 0, 1, "tag:inbox", "month");
+    TEST_CHECK(rc == NM_WINDOW_QUERY_SUCCESS);
+    TEST_CHECK(mutt_str_equal(buf, "date:1month..1month and tag:inbox"));
+  }
+
+  // Check zero duration span 3 position backs
+  {
+    char buf[1024] = "\0";
+    enum NmWindowQueryRc rc =
+        nm_windowed_query_from_query(buf, 1024, true, 0, 3, "tag:inbox", "month");
+    TEST_CHECK(rc == NM_WINDOW_QUERY_SUCCESS);
+    TEST_CHECK(mutt_str_equal(buf, "date:3month..3month and tag:inbox"));
   }
 }

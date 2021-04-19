@@ -145,6 +145,7 @@ bool nm_query_window_check_timebase(const char *timebase)
  * nm_windowed_query_from_query - Windows `buf` with notmuch `date:` search term
  * @param[out] buf    allocated string buffer to receive the modified search query
  * @param[in]  buflen allocated maximum size of the buf string buffer
+ * @param[in]  force_enable Enables windowing for duration=0
  * @param[in]  duration Duration of time between beginning and end for notmuch `date` search term
  * @param[in]  cur_pos  Current position of vfolder window
  * @param[in]  cur_search Current notmuch search
@@ -178,24 +179,34 @@ bool nm_query_window_check_timebase(const char *timebase)
  *
  * The window won't be applied:
  *
- * - If the duration of the search query is set to `0` this function will be disabled
- *   and return NM_WINDOW_QUERY_INVALID_DURATION
+ * - If the duration of the search query is set to `0` this function will be
+ *   disabled unless a user explicitly enables windowed queries. This returns
+ *   NM_WINDOW_QUERY_INVALID_DURATION
  *
  * - If the timebase is invalid, it will return NM_WINDOW_QUERY_INVALID_TIMEBASE
  */
-enum NmWindowQueryRc nm_windowed_query_from_query(char *buf, size_t buflen,
-                                                  const short duration, const short cur_pos,
-                                                  const char *cur_search, const char *timebase)
+enum NmWindowQueryRc
+nm_windowed_query_from_query(char *buf, size_t buflen, const bool force_enable,
+                             const short duration, const short cur_pos,
+                             const char *cur_search, const char *timebase)
 {
   // if the duration is a non positive integer, disable the window unless the
   // user explicitly enables windowed queries.
-  if (duration <= 0)
+  if (!force_enable && (duration <= 0))
   {
     return NM_WINDOW_QUERY_INVALID_DURATION;
   }
 
   int beg = duration * (cur_pos + 1);
   int end = duration * cur_pos;
+
+  // If the duration is 0, we want to generate a query spanning a single timebase.
+  // For example, `date:1month..1month` spans the previous month.
+  if ((duration == 0) && (cur_pos != 0))
+  {
+    end = cur_pos;
+    beg = end;
+  }
 
   if (!nm_query_window_check_timebase(timebase))
   {
