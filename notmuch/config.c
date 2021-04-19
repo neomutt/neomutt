@@ -108,6 +108,10 @@ static struct ConfigDef NotmuchVars[] = {
   { "nm_query_type", DT_STRING, IP "messages", 0, NULL,
     "(notmuch) Default query type: 'threads' or 'messages'"
   },
+  {
+    "nm_query_window_enable", DT_BOOL, false, 0, NULL,
+    "(notmuch) Enable query windows"
+  },
   { "nm_query_window_current_position", DT_NUMBER, 0, 0, NULL,
     "(notmuch) Position of current search window"
   },

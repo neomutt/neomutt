@@ -249,13 +249,15 @@ static void query_window_reset(void)
  *
  * Creates a `date:` search term window from the following user settings:
  *
+ * - `nm_query_window_enable` (only required for `nm_query_window_duration = 0`)
  * - `nm_query_window_duration`
  * - `nm_query_window_timebase`
  * - `nm_query_window_current_position`
  *
  * The window won't be applied:
  *
- * - If the duration of the search query is set to `0` this function will be disabled.
+ * - If the duration of the search query is set to `0` this function will be
+ *   disabled unless a user explictly enables windowed queries.
  * - If the timebase is invalid, it will show an error message and do nothing.
  *
  * If there's no search registered in `nm_query_window_current_search` or this is
@@ -265,6 +267,8 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
 {
   mutt_debug(LL_DEBUG2, "nm: %s\n", query);
 
+  const bool c_nm_query_window_enable =
+      cs_subset_bool(NeoMutt->sub, "nm_query_window_enable");
   const short c_nm_query_window_duration =
       cs_subset_number(NeoMutt->sub, "nm_query_window_duration");
   const short c_nm_query_window_current_position =
@@ -280,8 +284,9 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
     query_window_reset();
 
   enum NmWindowQueryRc rc = nm_windowed_query_from_query(
-      buf, buflen, c_nm_query_window_duration, c_nm_query_window_current_position,
-      c_nm_query_window_current_search, c_nm_query_window_timebase);
+      buf, buflen, c_nm_query_window_enable, c_nm_query_window_duration,
+      c_nm_query_window_current_position, c_nm_query_window_current_search,
+      c_nm_query_window_timebase);
 
   switch (rc)
   {

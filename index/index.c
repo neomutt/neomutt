@@ -2419,7 +2419,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           break;
         const short c_nm_query_window_duration =
             cs_subset_number(shared->sub, "nm_query_window_duration");
-        if (c_nm_query_window_duration <= 0)
+        const bool c_nm_query_window_enable =
+            cs_subset_bool(shared->sub, "nm_query_window_enable");
+        if (!c_nm_query_window_enable && (c_nm_query_window_duration <= 0))
         {
           mutt_message(_("Windowed queries disabled"));
           break;
@@ -2444,7 +2446,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           break;
         const short c_nm_query_window_duration =
             cs_subset_number(shared->sub, "nm_query_window_duration");
-        if (c_nm_query_window_duration <= 0)
+        const bool c_nm_query_window_enable =
+            cs_subset_bool(shared->sub, "nm_query_window_enable");
+        if (!c_nm_query_window_enable && (c_nm_query_window_duration <= 0))
         {
           mutt_message(_("Windowed queries disabled"));
           break;
