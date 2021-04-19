@@ -3399,6 +3399,12 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
       <title>Encryption and Signing</title>
 
       <para>
+      NeoMutt supports encrypting and signing emails when used interactively.
+      In batch mode, cryptographic operations are disabled, so these options
+      can't be used to sign an email sent via a cron job, for instance.
+      </para>
+
+      <para>
         OpenPGP and S/MIME are enabled in one of two ways: <quote>classic
         mode</quote> or GPGME.  The former invokes external programs to perform
         the various operations; it is better tested and more flexible, but
