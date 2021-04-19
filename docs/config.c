@@ -1999,7 +1999,7 @@
 ** .dt %a .dd Address of the author
 ** .dt %A .dd Reply-to address (if present; otherwise: address of author)
 ** .dt %b .dd Filename of the original message folder (think mailbox)
-** .dt %B .dd The list to which the letter was sent, or else the folder name (%b).
+** .dt %B .dd Same as %K
 ** .dt %C .dd Current message number
 ** .dt %c .dd Number of characters (bytes) in the body of the message (see $formatstrings-size)
 ** .dt %cr .dd Number of characters (bytes) in the raw message, including the header (see $formatstrings-size)

@@ -512,26 +512,17 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'B':
     case 'K':
-      if (!first_mailing_list(buf, buflen, &e->env->to) &&
-          !first_mailing_list(buf, buflen, &e->env->cc))
-      {
-        buf[0] = '\0';
-      }
-      if (buf[0] != '\0')
+      if (first_mailing_list(buf, buflen, &e->env->to) ||
+          first_mailing_list(buf, buflen, &e->env->cc))
       {
         mutt_str_copy(tmp, buf, sizeof(tmp));
         mutt_format_s(buf, buflen, prec, tmp);
-        break;
       }
-      if (op == 'K')
+      else if (optional)
       {
-        if (optional)
-          optional = false;
-        /* break if 'K' returns nothing */
-        break;
+        optional = false;
       }
-      /* if 'B' returns nothing */
-      /* fallthrough */
+      break;
 
     case 'b':
       if (m)
