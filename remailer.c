@@ -563,9 +563,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 
 /**
  * dlg_select_mixmaster_chain - Create a Mixmaster chain
- * @param win       Window
  * @param chainhead List of chain links
- * @param cols      Number of screen columns
  *
  * Ask the user to select Mixmaster hosts to create a chain.
  */
