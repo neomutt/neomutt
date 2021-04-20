@@ -1242,7 +1242,7 @@ int smime_class_verify_sender(struct Mailbox *m, struct Email *e)
     goto cleanup;
   }
 
-  const double encrypt = e->security & SEC_ENCRYPT;
+  const bool encrypt = e->security & SEC_ENCRYPT;
   mutt_copy_message(fp_out, m, e, NULL,
                     encrypt ? (MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME) : MUTT_CM_NO_FLAGS,
                     encrypt ? (CH_MIME | CH_WEED | CH_NONEWLINE) : CH_NO_FLAGS, 0);
