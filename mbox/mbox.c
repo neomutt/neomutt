@@ -1283,7 +1283,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
        * 'offset' in the real mailbox */
       new_offset[i - first].hdr = ftello(fp) + offset;
 
-      if (mutt_copy_message(fp, m, m->emails[i], MUTT_CM_UPDATE,
+      if (mutt_copy_message(fp, m, m->emails[i], NULL, MUTT_CM_UPDATE,
                             CH_FROM | CH_UPDATE | CH_UPDATE_LEN, 0) != 0)
       {
         mutt_perror(mutt_buffer_string(tempfile));

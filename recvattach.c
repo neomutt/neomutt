@@ -1568,19 +1568,25 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
  * dlg_select_attachment - Show the attachments in a Menu
  * @param m Mailbox
  * @param e Email
+ * @param fp File with the content of the email, or NULL
  */
-void dlg_select_attachment(struct Mailbox *m, struct Email *e)
+void dlg_select_attachment(struct Mailbox *m, struct Email *e, FILE *fp)
 {
+  struct Message *msg = fp ? NULL : mx_msg_open(m, e->msgno);
+  if (!m || !e || (!fp && !msg))
+  {
+    return;
+  }
+  if (msg)
+  {
+    fp = msg->fp;
+  }
+
   int op = OP_NULL;
 
   /* make sure we have parsed this message */
-  mutt_parse_mime_message(m, e);
-
+  mutt_parse_mime_message(m, e, fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
-
-  struct Message *msg = mx_msg_open(m, e->msgno);
-  if (!msg)
-    return;
 
   struct MuttWindow *dlg =
       dialog_create_simple_index(MENU_ATTACH, WT_DLG_ATTACH, AttachHelp);
@@ -1592,7 +1598,7 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e)
 
   struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;
-  actx->fp_root = msg->fp;
+  actx->fp_root = fp;
   mutt_update_recvattach_menu(actx, menu, true);
 
   while (true)
@@ -1864,8 +1870,10 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e)
         break;
 
       case OP_EXIT:
-        mx_msg_close(m, &msg);
-
+        if (msg)
+        {
+          mx_msg_close(m, &msg);
+        }
         e->attach_del = false;
         for (int i = 0; i < actx->idxlen; i++)
         {

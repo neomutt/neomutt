@@ -107,7 +107,7 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char
   return -1;
 }
 
-int mutt_count_body_parts(struct Mailbox *m, struct Email *e)
+int mutt_count_body_parts(struct Mailbox *m, struct Email *e, struct Message *msg)
 {
   return g_body_parts;
 }
@@ -122,13 +122,14 @@ bool mutt_is_subscribed_list(struct Address *addr)
   return g_is_subscribed_list;
 }
 
-void mutt_parse_mime_message(struct Mailbox *m, struct Email *e)
+void mutt_parse_mime_message(struct Mailbox *m, struct Email *e, FILE *msg)
 {
 }
 
 void mutt_progress_init(struct Progress *progress, const char *msg, int type, size_t size)
 {
 }
+
 void mutt_progress_update(struct Progress *progress, long pos, int percent)
 {
 }

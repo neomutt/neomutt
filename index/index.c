@@ -4078,7 +4078,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           break;
         if (!shared->email)
           break;
-        dlg_select_attachment(shared->mailbox, shared->email);
+        dlg_select_attachment(shared->mailbox, shared->email, NULL);
         if (shared->email->attach_del)
           shared->mailbox->changed = true;
         priv->menu->redraw = REDRAW_FULL;

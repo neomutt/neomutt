@@ -212,7 +212,13 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
   struct Buffer *tempfile = NULL;
   int res;
 
-  mutt_parse_mime_message(m, e);
+  struct Message *msg = mx_msg_open(m, e->msgno);
+  if (!msg)
+  {
+    return -1;
+  }
+
+  mutt_parse_mime_message(m, e, msg->fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   char columns[16];
@@ -307,7 +313,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
   if (m->type == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message(fp_out, m, e, cmflags, chflags, win_index->state.cols);
+  res = mutt_copy_message(fp_out, m, e, msg, cmflags, chflags, win_index->state.cols);
 
   if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
   {
@@ -372,6 +378,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     struct PagerView pview = { &pdata };
 
     pdata.email = e;
+    pdata.fp = msg->fp;
     pdata.ctx = Context;
     pdata.fname = mutt_buffer_string(tempfile);
 
@@ -411,6 +418,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
   }
 
 cleanup:
+  mx_msg_close(m, &msg);
   mutt_envlist_unset("COLUMNS");
   mutt_buffer_pool_release(&tempfile);
   return rc;
@@ -561,11 +569,13 @@ static void pipe_set_flags(bool decode, bool print, CopyMessageFlags *cmflags,
  * pipe_msg - Pipe a message
  * @param m      Mailbox
  * @param e      Email to pipe
+ * @param msg    Message
  * @param fp     File to write to
  * @param decode If true, decode the message
  * @param print  If true, message is for printing
  */
-static void pipe_msg(struct Mailbox *m, struct Email *e, FILE *fp, bool decode, bool print)
+static void pipe_msg(struct Mailbox *m, struct Email *e, struct Message *msg,
+                     FILE *fp, bool decode, bool print)
 {
   CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
   CopyHeaderFlags chflags = CH_FROM;
@@ -579,10 +589,27 @@ static void pipe_msg(struct Mailbox *m, struct Email *e, FILE *fp, bool decode, 
     endwin();
   }
 
-  if (decode)
-    mutt_parse_mime_message(m, e);
+  const bool own_msg = !msg;
+  if (own_msg)
+  {
+    msg = mx_msg_open(m, e->msgno);
+    if (!msg)
+    {
+      return;
+    }
+  }
 
-  mutt_copy_message(fp, m, e, cmflags, chflags, 0);
+  if (decode)
+  {
+    mutt_parse_mime_message(m, e, msg->fp);
+  }
+
+  mutt_copy_message(fp, m, e, msg, cmflags, chflags, 0);
+
+  if (own_msg)
+  {
+    mx_msg_close(m, &msg);
+  }
 }
 
 /**
@@ -618,12 +645,14 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd
     /* handle a single message */
     mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
 
-    if ((WithCrypto != 0) && decode)
+    struct Message *msg = mx_msg_open(m, en->email->msgno);
+    if (msg && WithCrypto && decode)
     {
-      mutt_parse_mime_message(m, en->email);
+      mutt_parse_mime_message(m, en->email, msg->fp);
       if ((en->email->security & SEC_ENCRYPT) &&
           !crypt_valid_passphrase(en->email->security))
       {
+        mx_msg_close(m, &msg);
         return 1;
       }
     }
@@ -633,11 +662,13 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd
     if (pid < 0)
     {
       mutt_perror(_("Can't create filter process"));
+      mx_msg_close(m, &msg);
       return 1;
     }
 
     OptKeepQuiet = true;
-    pipe_msg(m, en->email, fp_out, decode, print);
+    pipe_msg(m, en->email, msg, fp_out, decode, print);
+    mx_msg_close(m, &msg);
     mutt_file_fclose(&fp_out);
     rc = filter_wait(pid);
     OptKeepQuiet = false;
@@ -649,8 +680,13 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd
     {
       STAILQ_FOREACH(en, el, entries)
       {
-        mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-        mutt_parse_mime_message(m, en->email);
+        struct Message *msg = mx_msg_open(m, en->email->msgno);
+        if (msg)
+        {
+          mutt_parse_mime_message(m, en->email, msg->fp);
+          mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
+          mx_msg_close(m, &msg);
+        }
         if ((en->email->security & SEC_ENCRYPT) &&
             !crypt_valid_passphrase(en->email->security))
         {
@@ -672,7 +708,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd
           return 1;
         }
         OptKeepQuiet = true;
-        pipe_msg(m, en->email, fp_out, decode, print);
+        pipe_msg(m, en->email, NULL, fp_out, decode, print);
         /* add the message separator */
         if (sep)
           fputs(sep, fp_out);
@@ -695,7 +731,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd
       STAILQ_FOREACH(en, el, entries)
       {
         mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-        pipe_msg(m, en->email, fp_out, decode, print);
+        pipe_msg(m, en->email, NULL, fp_out, decode, print);
         /* add the message separator */
         if (sep)
           fputs(sep, fp_out);
@@ -1039,10 +1075,14 @@ int mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSa
 
   set_copy_flags(e, transform_opt, &cmflags, &chflags);
 
-  if (transform_opt != TRANSFORM_NONE)
-    mutt_parse_mime_message(m_src, e);
+  struct Message *msg = mx_msg_open(m_src, e->msgno);
+  if (msg && transform_opt != TRANSFORM_NONE)
+  {
+    mutt_parse_mime_message(m_src, e, msg->fp);
+  }
 
-  rc = mutt_append_message(m_dst, m_src, e, cmflags, chflags);
+  rc = mutt_append_message(m_dst, m_src, e, msg, cmflags, chflags);
+  mx_msg_close(m_src, &msg);
   if (rc != 0)
     return rc;
 
@@ -1472,18 +1512,19 @@ static bool check_traditional_pgp(struct Mailbox *m, struct Email *e)
 
   e->security |= PGP_TRADITIONAL_CHECKED;
 
-  mutt_parse_mime_message(m, e);
   struct Message *msg = mx_msg_open(m, e->msgno);
-  if (!msg)
-    return 0;
-  if (crypt_pgp_check_traditional(msg->fp, e->body, false))
+  if (msg)
   {
-    e->security = crypt_query(e->body);
-    rc = true;
-  }
+    mutt_parse_mime_message(m, e, msg->fp);
+    if (crypt_pgp_check_traditional(msg->fp, e->body, false))
+    {
+      e->security = crypt_query(e->body);
+      rc = true;
+    }
 
-  e->security |= PGP_TRADITIONAL_CHECKED;
-  mx_msg_close(m, &msg);
+    e->security |= PGP_TRADITIONAL_CHECKED;
+    mx_msg_close(m, &msg);
+  }
   return rc;
 }
 

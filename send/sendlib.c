@@ -972,7 +972,12 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
 
   mutt_buffer_pool_release(&buf);
 
-  mutt_parse_mime_message(m, e);
+  struct Message *msg = mx_msg_open(m, e->msgno);
+  if (!msg)
+  {
+    return NULL;
+  }
+  mutt_parse_mime_message(m, e, msg->fp);
 
   CopyHeaderFlags chflags = CH_XMIT;
   cmflags = MUTT_CM_NO_FLAGS;
@@ -1011,7 +1016,8 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
     }
   }
 
-  mutt_copy_message(fp, m, e, cmflags, chflags, 0);
+  mutt_copy_message(fp, m, e, msg, cmflags, chflags, 0);
+  mx_msg_close(m, &msg);
 
   fflush(fp);
   rewind(fp);
