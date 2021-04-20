@@ -15910,6 +15910,31 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                   supports mailbox descriptions.
                 </entry>
               </row>
+              <row>
+                <entry><literal>nm_query_window_duration</literal></entry>
+                <entry>number</entry>
+                <entry><literal>0</literal></entry>
+                <entry>
+                  Duration between start and end dates for windowed notmuch query.
+                  This corresponds to a bounded notmuch <literal>date:</literal> query.
+                  See <literal>notmuch-search-terms</literal> manual page for more info.
+
+                  Value of <literal>0</literal> disables windowed queries unless
+                  <literal>nm_query_window_enable=yes</literal>
+                </entry>
+              </row>
+              <row>
+                <entry><literal>nm_query_window_timebase</literal></entry>
+                <entry>string</entry>
+                <entry><literal>week</literal></entry>
+                <entry>
+                  Time base for windowed notmuch queries.
+
+                  Must be one of: <literal>hour</literal>, <literal>day</literal>,
+                  <literal>week</literal>, <literal>month</literal>, or
+                  <literal>year</literal>
+                </entry>
+              </row>
             </tbody>
           </tgroup>
         </table>
