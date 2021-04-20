@@ -126,10 +126,8 @@ static bool msg_search(struct Pattern *pat, struct Mailbox *m, struct Email *e,
   struct stat st;
 #endif
 
-  const bool needs_head = (pat->op == MUTT_PAT_HEADER) ||
-                          (pat->op == MUTT_PAT_WHOLE_MSG);
-  const bool needs_body = (pat->op == MUTT_PAT_BODY) ||
-                          (pat->op == MUTT_PAT_WHOLE_MSG);
+  const bool needs_head = (pat->op == MUTT_PAT_HEADER) || (pat->op == MUTT_PAT_WHOLE_MSG);
+  const bool needs_body = (pat->op == MUTT_PAT_BODY) || (pat->op == MUTT_PAT_WHOLE_MSG);
   const bool c_thorough_search =
       cs_subset_bool(NeoMutt->sub, "thorough_search");
   if (c_thorough_search)

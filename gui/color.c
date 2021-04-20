@@ -246,9 +246,8 @@ static void quotes_init(void)
 
 /**
  * quotes_clear - Reset the quoted-email colours
- * @param c Colours
  */
-static void quotes_clear()
+static void quotes_clear(void)
 {
   memset(Colors.quotes, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
   Colors.quotes_used = 0;

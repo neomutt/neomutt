@@ -1015,8 +1015,8 @@ fail:
   if (m->verbose)
   {
     /* L10N: After opening an IMAP mailbox using QRESYNC, Mutt performs a quick
-     * sanity check.  If that fails, Mutt reopens the mailbox using a normal
-     * download.  */
+       sanity check.  If that fails, Mutt reopens the mailbox using a normal
+       download.  */
     mutt_error(_("QRESYNC failed.  Reopening mailbox."));
   }
   return -1;

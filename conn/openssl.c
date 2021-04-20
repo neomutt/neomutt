@@ -1155,8 +1155,8 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
   if (!SSL_set_tlsext_host_name(ssldata->ssl, conn->account.host))
   {
     /* L10N: This is a warning when trying to set the host name for
-     * TLS Server Name Indication (SNI).  This allows the server to present
-     * the correct certificate if it supports multiple hosts. */
+       TLS Server Name Indication (SNI).  This allows the server to present
+       the correct certificate if it supports multiple hosts. */
     mutt_error(_("Warning: unable to set TLS SNI host name"));
   }
 

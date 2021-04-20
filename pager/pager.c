@@ -2523,7 +2523,7 @@ int mutt_pager(struct PagerView *pview)
   unlink(pview->pdata->fname);
 
   //---------- setup pager menu------------------------------------------------
-  struct Menu *menu = mutt_menu_new(MENU_MAIN);
+  struct Menu *menu = mutt_menu_new(MENU_PAGER);
   notify_set_parent(menu->notify, pview->win_pager->notify);
 
   pager_menu = menu;

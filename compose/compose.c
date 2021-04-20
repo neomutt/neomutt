@@ -248,24 +248,24 @@ static const struct Mapping ComposeNewsHelp[] = {
 #ifdef USE_AUTOCRYPT
 static const char *const AutocryptRecUiFlags[] = {
   /* L10N: Autocrypt recommendation flag: off.
-   * This is displayed when Autocrypt is turned off. */
+     This is displayed when Autocrypt is turned off. */
   N_("Off"),
   /* L10N: Autocrypt recommendation flag: no.
-   * This is displayed when Autocrypt cannot encrypt to the recipients. */
+     This is displayed when Autocrypt cannot encrypt to the recipients. */
   N_("No"),
   /* L10N: Autocrypt recommendation flag: discouraged.
-   * This is displayed when Autocrypt believes encryption should not be used.
-   * This might occur if one of the recipient Autocrypt Keys has not been
-   * used recently, or if the only key available is a Gossip Header key. */
+     This is displayed when Autocrypt believes encryption should not be used.
+     This might occur if one of the recipient Autocrypt Keys has not been
+     used recently, or if the only key available is a Gossip Header key. */
   N_("Discouraged"),
   /* L10N: Autocrypt recommendation flag: available.
-   * This is displayed when Autocrypt believes encryption is possible, but
-   * leaves enabling it up to the sender.  Probably because "prefer encrypt"
-   * is not set in both the sender and recipient keys. */
+     This is displayed when Autocrypt believes encryption is possible, but
+     leaves enabling it up to the sender.  Probably because "prefer encrypt"
+     is not set in both the sender and recipient keys. */
   N_("Available"),
   /* L10N: Autocrypt recommendation flag: yes.
-   * This is displayed when Autocrypt would normally enable encryption
-   * automatically. */
+     This is displayed when Autocrypt would normally enable encryption
+     automatically. */
   N_("Yes"),
 };
 #endif
