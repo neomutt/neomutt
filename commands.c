@@ -373,6 +373,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     struct PagerView pview = { &pdata };
 
     pdata.email = e;
+    pdata.msg = msg;
     pdata.ctx = Context;
     pdata.fname = mutt_buffer_string(tempfile);
 

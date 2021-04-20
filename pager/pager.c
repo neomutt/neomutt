@@ -3985,7 +3985,7 @@ int mutt_pager(struct PagerView *pview)
         }
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
-        dlg_select_attachment(ctx_mailbox(Context), pview->pdata->email);
+        dlg_select_attachment(ctx_mailbox(Context), pview->pdata->email, pview->pdata->msg);
         if (pview->pdata->email->attach_del)
           m->changed = true;
         pager_menu->redraw = REDRAW_FULL;

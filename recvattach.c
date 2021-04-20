@@ -1568,19 +1568,23 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
  * dlg_select_attachment - Show the attachments in a Menu
  * @param m Mailbox
  * @param e Email
+ * @param msg Message
  */
-void dlg_select_attachment(struct Mailbox *m, struct Email *e)
+void dlg_select_attachment(struct Mailbox *m, struct Email *e, struct Message *msg)
 {
   int op = OP_NULL;
+  const bool own_msg = !msg;
 
   /* make sure we have parsed this message */
-  struct Message *msg = mx_msg_open(m, e->msgno);
-  mutt_parse_mime_message(m, e, msg);
-
-  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
-
+  if (own_msg)
+  {
+    msg = mx_msg_open(m, e->msgno);
+  }
   if (!msg)
     return;
+
+  mutt_parse_mime_message(m, e, msg);
+  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   struct MuttWindow *dlg =
       dialog_create_simple_index(MENU_ATTACH, WT_DLG_ATTACH, AttachHelp);
@@ -1864,7 +1868,10 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e)
         break;
 
       case OP_EXIT:
-        mx_msg_close(m, &msg);
+        if (own_msg)
+        {
+          mx_msg_close(m, &msg);
+        }
 
         e->attach_del = false;
         for (int i = 0; i < actx->idxlen; i++)
