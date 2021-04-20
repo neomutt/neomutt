@@ -485,7 +485,8 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out,
   CopyHeaderFlags chflags = CH_DECODE;
   CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
 
-  mutt_parse_mime_message(m, e);
+  struct Message *msg = mx_msg_open(m, e->msgno);
+  mutt_parse_mime_message(m, e, msg);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   const bool c_forward_decode = cs_subset_bool(sub, "forward_decode");
@@ -493,7 +494,10 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out,
   {
     /* make sure we have the user's passphrase before proceeding... */
     if (!crypt_valid_passphrase(e->security))
+    {
+      mx_msg_close(m, &msg);
       return -1;
+    }
   }
 
   mutt_forward_intro(e, fp_out, sub);
@@ -514,7 +518,8 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out,
   if (c_forward_quote)
     cmflags |= MUTT_CM_PREFIX;
 
-  mutt_copy_message(fp_out, m, e, cmflags, chflags, 0);
+  mutt_copy_message(fp_out, m, e, msg, cmflags, chflags, 0);
+  mx_msg_close(m, &msg);
   mutt_forward_trailer(e, fp_out, sub);
   return 0;
 }
@@ -535,16 +540,17 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
 {
   struct Body **last = *plast;
   struct Body *body = NULL;
-  struct Message *msg = NULL;
   struct AttachCtx *actx = NULL;
   int rc = 0, i;
 
-  mutt_parse_mime_message(m, e);
-  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
-
-  msg = mx_msg_open(m, e->msgno);
+  struct Message *msg = mx_msg_open(m, e->msgno);
   if (!msg)
+  {
     return -1;
+  }
+
+  mutt_parse_mime_message(m, e, msg);
+  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   actx = mutt_mem_calloc(1, sizeof(*actx));
   actx->email = e;
@@ -752,7 +758,8 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
       return -1;
   }
 
-  mutt_parse_mime_message(m, e);
+  struct Message *msg = mx_msg_open(m, e->msgno);
+  mutt_parse_mime_message(m, e, msg);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   mutt_make_attribution(e, fp_out, sub);
@@ -768,7 +775,8 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message(fp_out, m, e, cmflags, chflags, 0);
+  mutt_copy_message(fp_out, m, e, msg, cmflags, chflags, 0);
+  mx_msg_close(m, &msg);
 
   mutt_make_post_indent(e, fp_out, sub);
 

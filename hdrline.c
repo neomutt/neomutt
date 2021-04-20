@@ -53,6 +53,7 @@
 #include "mutt_globals.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
+#include "mx.h"
 #include "sort.h"
 #include "subjectrx.h"
 #ifdef USE_NOTMUCH
@@ -1163,7 +1164,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'X':
     {
-      int count = mutt_count_body_parts(m, e);
+      struct Message *msg = mx_msg_open(m, e->msgno);
+      int count = mutt_count_body_parts(m, e, msg);
+      mx_msg_close(m, &msg);
 
       /* The recursion allows messages without depth to return 0. */
       if (optional)

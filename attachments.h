@@ -40,7 +40,7 @@ void attach_init(void);
 void attach_free(void);
 
 void mutt_attachments_reset (struct Mailbox *m);
-int  mutt_count_body_parts  (struct Mailbox *m, struct Email *e);
-void mutt_parse_mime_message(struct Mailbox *m, struct Email *e);
+int  mutt_count_body_parts  (struct Mailbox *m, struct Email *e, struct Message *msg);
+void mutt_parse_mime_message(struct Mailbox *m, struct Email *e, struct Message *msg);
 
 #endif /* MUTT_ATTACHMENTS_H */

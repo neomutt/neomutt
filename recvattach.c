@@ -1574,11 +1574,11 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e)
   int op = OP_NULL;
 
   /* make sure we have parsed this message */
-  mutt_parse_mime_message(m, e);
+  struct Message *msg = mx_msg_open(m, e->msgno);
+  mutt_parse_mime_message(m, e, msg);
 
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  struct Message *msg = mx_msg_open(m, e->msgno);
   if (!msg)
     return;
 

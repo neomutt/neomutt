@@ -54,6 +54,7 @@
 #include "handler.h"
 #include "muttlib.h"
 #include "options.h"
+#include "mx.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
@@ -874,8 +875,9 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
   STAILQ_FOREACH(en, el, entries)
   {
     struct Email *e = en->email;
-
-    mutt_parse_mime_message(m, e);
+    struct Message *msg = mx_msg_open(m, e->msgno);
+    mutt_parse_mime_message(m, e, msg);
+    mx_msg_close(m, &msg);
     if (e->security & SEC_ENCRYPT && !crypt_valid_passphrase(e->security))
     {
       mutt_file_fclose(&fp_out);
@@ -884,7 +886,8 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
     {
-      mutt_copy_message(fp_out, m, e, MUTT_CM_DECODE | MUTT_CM_CHARCONV, CH_NO_FLAGS, 0);
+      mutt_copy_message(fp_out, m, e, NULL, MUTT_CM_DECODE | MUTT_CM_CHARCONV,
+                        CH_NO_FLAGS, 0);
       fflush(fp_out);
 
       mutt_endwin();
@@ -894,13 +897,11 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
     {
-      if (e->security & SEC_ENCRYPT)
-      {
-        mutt_copy_message(fp_out, m, e, MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
-                          CH_NO_FLAGS, 0);
-      }
-      else
-        mutt_copy_message(fp_out, m, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS, 0);
+      const bool encrypt = e->security & SEC_ENCRYPT;
+      mutt_copy_message(fp_out, m, e, NULL,
+                        encrypt ? MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME :
+                                  MUTT_CM_NO_FLAGS,
+                        CH_NO_FLAGS, 0);
       fflush(fp_out);
 
       char *mbox = NULL;

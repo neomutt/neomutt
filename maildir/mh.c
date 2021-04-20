@@ -385,7 +385,7 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
   if (!dest)
     return -1;
 
-  int rc = mutt_copy_message(dest->fp, m, e, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN, 0);
+  int rc = mutt_copy_message(dest->fp, m, e, dest, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN, 0);
   if (rc == 0)
   {
     char oldpath[PATH_MAX];
@@ -394,7 +394,6 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
     mutt_str_copy(partpath, e->path, sizeof(partpath));
 
     rc = mh_commit_msg(m, dest, e, false);
-    mx_msg_close(m, &dest);
 
     if (rc == 0)
     {
@@ -423,8 +422,7 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
         mutt_str_replace(&e->path, partpath);
     }
   }
-  else
-    mx_msg_close(m, &dest);
+  mx_msg_close(m, &dest);
 
   if ((rc == -1) && restore)
   {
