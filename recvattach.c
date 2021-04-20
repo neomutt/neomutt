@@ -1575,7 +1575,6 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e, struct Message *m
   int op = OP_NULL;
   const bool own_msg = !msg;
 
-  /* make sure we have parsed this message */
   if (own_msg)
   {
     msg = mx_msg_open(m, e->msgno);
@@ -1583,6 +1582,7 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e, struct Message *m
   if (!msg)
     return;
 
+  /* make sure we have parsed this message */
   mutt_parse_mime_message(m, e, msg);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
