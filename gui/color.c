@@ -49,6 +49,66 @@
 #include <assert.h>
 #endif
 
+#define COLOR_UNSET UINT32_MAX
+#define COLOR_QUOTES_MAX                                                       \
+  10 ///< Ten colours, quoted0..quoted9 (quoted and quoted0 are equivalent)
+
+/**
+ * struct ColorList - A set of colors
+ */
+struct ColorList
+{
+  /* TrueColor uses 24bit. Use fixed-width integer type to make sure it fits.
+   * Use the upper 8 bits to store flags.  */
+  uint32_t fg;
+  uint32_t bg;
+  short index;
+  short count;
+  struct ColorList *next;
+};
+
+/**
+ * Wrapper for all the colours
+ */
+static struct
+{
+  int defs[MT_COLOR_MAX]; ///< Array of all fixed colours, see enum ColorId
+
+  /* These are lazily initialized, so make sure to always refer to them using
+   * the mutt_color_<object>() wrappers. */
+  struct ColorLineList attach_list; ///< List of colours applied to the attachment headers
+  struct ColorLineList body_list; ///< List of colours applied to the email body
+  struct ColorLineList hdr_list; ///< List of colours applied to the email headers
+  struct ColorLineList index_author_list; ///< List of colours applied to the author in the index
+  struct ColorLineList index_flags_list; ///< List of colours applied to the flags in the index
+  struct ColorLineList index_list; ///< List of default colours applied to the index
+  struct ColorLineList index_subject_list; ///< List of colours applied to the subject in the index
+  struct ColorLineList index_tag_list; ///< List of colours applied to tags in the index
+  struct ColorLineList status_list; ///< List of colours applied to the status bar
+
+  int quotes[COLOR_QUOTES_MAX]; ///< Array of colours for quoted email text
+  int quotes_used;              ///< Number of colours for quoted email text
+
+  struct ColorList *user_colors;
+  int num_user_colors;
+
+  struct Notify *notify; ///< Notifications: #ColorId, #EventColor
+} Colors;
+
+/**
+ * get_color_line_list - Sanitize and return a ColorLineList
+ * @param cll A ColorLineList
+ * @retval cll The ColorLineList
+ */
+static struct ColorLineList *get_color_line_list(struct ColorLineList *cll)
+{
+  if (cll->stqh_last == NULL)
+  {
+    STAILQ_INIT(cll);
+  }
+  return cll;
+}
+
 /**
  * typedef parser_callback_t - Prototype for a function to parse color config
  * @param[in]  buf Temporary Buffer space
@@ -62,10 +122,6 @@
  */
 typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
                                  uint32_t *bg, int *attr, struct Buffer *err);
-
-#define COLOR_UNSET UINT32_MAX
-#define COLOR_QUOTES_MAX                                                       \
-  10 ///< Ten colours, quoted0..quoted9 (quoted and quoted0 are equivalent)
 
 #ifdef HAVE_COLOR
 
@@ -155,70 +211,47 @@ const struct Mapping ComposeFields[] = {
 // clang-format off
 
 /**
- * defs_free - Free the simple colour definitions
- * @param c Colours
- */
-static void defs_free(struct Colors *c)
-{
-  FREE(&c->defs);
-}
-
-/**
  * defs_init - Initialise the simple colour definitions
- * @param c Colours
  */
-static void defs_init(struct Colors *c)
+static void defs_init(void)
 {
-  c->defs = mutt_mem_malloc(MT_COLOR_MAX * sizeof(int));
-  memset(c->defs, A_NORMAL, MT_COLOR_MAX * sizeof(int));
+  memset(Colors.defs, A_NORMAL, MT_COLOR_MAX * sizeof(int));
 
   // Set some defaults
-  c->defs[MT_COLOR_INDICATOR] = A_REVERSE;
-  c->defs[MT_COLOR_MARKERS] = A_REVERSE;
-  c->defs[MT_COLOR_SEARCH] = A_REVERSE;
+  Colors.defs[MT_COLOR_INDICATOR] = A_REVERSE;
+  Colors.defs[MT_COLOR_MARKERS] = A_REVERSE;
+  Colors.defs[MT_COLOR_SEARCH] = A_REVERSE;
 #ifdef USE_SIDEBAR
-  c->defs[MT_COLOR_SIDEBAR_HIGHLIGHT] = A_UNDERLINE;
+  Colors.defs[MT_COLOR_SIDEBAR_HIGHLIGHT] = A_UNDERLINE;
 #endif
-  c->defs[MT_COLOR_STATUS] = A_REVERSE;
+  Colors.defs[MT_COLOR_STATUS] = A_REVERSE;
 }
 
 /**
  * defs_clear - Reset the simple colour definitions
- * @param c Colours
  */
-static void defs_clear(struct Colors *c)
+static void defs_clear(void)
 {
-  memset(c->defs, A_NORMAL, MT_COLOR_MAX * sizeof(int));
+  memset(Colors.defs, A_NORMAL, MT_COLOR_MAX * sizeof(int));
 }
 
 /**
- * quotes_free - Free the quoted-email colours
- * @param c Colours
+ * Colorsquotes_init - Initialise the quoted-email colours
  */
-static void quotes_free(struct Colors *c)
+static void quotes_init(void)
 {
-  FREE(&c->quotes);
-}
-
-/**
- * quotes_init - Initialise the quoted-email colours
- * @param c Colours
- */
-static void quotes_init(struct Colors *c)
-{
-  c->quotes = mutt_mem_malloc(COLOR_QUOTES_MAX * sizeof(int));
-  memset(c->quotes, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
-  c->quotes_used = 0;
+  memset(Colors.quotes, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
+  Colors.quotes_used = 0;
 }
 
 /**
  * quotes_clear - Reset the quoted-email colours
  * @param c Colours
  */
-static void quotes_clear(struct Colors *c)
+static void quotes_clear()
 {
-  memset(c->quotes, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
-  c->quotes_used = 0;
+  memset(Colors.quotes, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
+  Colors.quotes_used = 0;
 }
 
 /**
@@ -244,17 +277,16 @@ static void color_list_free(struct ColorList **ptr)
 
 /**
  * mutt_color_free - Free a colour
- * @param c  Colours
  * @param fg Foreground colour ID
  * @param bg Background colour ID
  *
  * If there are no more users, the resource will be freed.
  */
-void mutt_color_free(struct Colors *c, uint32_t fg, uint32_t bg)
+void mutt_color_free(uint32_t fg, uint32_t bg)
 {
   struct ColorList *q = NULL;
 
-  struct ColorList *p = c->user_colors;
+  struct ColorList *p = Colors.user_colors;
   while (p)
   {
     if ((p->fg == fg) && (p->bg == bg))
@@ -263,16 +295,16 @@ void mutt_color_free(struct Colors *c, uint32_t fg, uint32_t bg)
       if (p->count > 0)
         return;
 
-      c->num_user_colors--;
-      mutt_debug(LL_DEBUG1, "Color pairs used so far: %d\n", c->num_user_colors);
+      Colors.num_user_colors--;
+      mutt_debug(LL_DEBUG1, "Color pairs used so far: %d\n", Colors.num_user_colors);
 
-      if (p == c->user_colors)
+      if (p == Colors.user_colors)
       {
-        c->user_colors = c->user_colors->next;
+        Colors.user_colors = Colors.user_colors->next;
         FREE(&p);
         return;
       }
-      q = c->user_colors;
+      q = Colors.user_colors;
       while (q)
       {
         if (q->next == p)
@@ -291,11 +323,10 @@ void mutt_color_free(struct Colors *c, uint32_t fg, uint32_t bg)
 
 /**
  * color_line_free - Free a ColorLine
- * @param c           Colours
  * @param ptr         ColorLine to free
  * @param free_colors If true, free its colours too
  */
-static void color_line_free(struct Colors *c, struct ColorLine **ptr, bool free_colors)
+static void color_line_free(struct ColorLine **ptr, bool free_colors)
 {
   if (!ptr || !*ptr)
     return;
@@ -304,7 +335,7 @@ static void color_line_free(struct Colors *c, struct ColorLine **ptr, bool free_
 
 #ifdef HAVE_COLOR
   if (free_colors && (cl->fg != COLOR_UNSET) && (cl->bg != COLOR_UNSET))
-    mutt_color_free(c, cl->fg, cl->bg);
+    mutt_color_free(cl->fg, cl->bg);
 #endif
 
   regfree(&cl->regex);
@@ -315,87 +346,63 @@ static void color_line_free(struct Colors *c, struct ColorLine **ptr, bool free_
 
 /**
  * color_line_list_clear - Clear a list of colours
- * @param c    Colours
  * @param list ColorLine List
  */
-static void color_line_list_clear(struct Colors *c, struct ColorLineList *list)
+static void color_line_list_clear(struct ColorLineList *list)
 {
   struct ColorLine *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, list, entries, tmp)
   {
     STAILQ_REMOVE(list, np, ColorLine, entries);
-    color_line_free(c, &np, true);
+    color_line_free(&np, true);
   }
 }
 
 /**
  * colors_clear - Reset all the colours
- * @param c Colours
  */
-static void colors_clear(struct Colors *c)
+static void colors_clear(void)
 {
-  color_line_list_clear(c, &c->attach_list);
-  color_line_list_clear(c, &c->body_list);
-  color_line_list_clear(c, &c->hdr_list);
-  color_line_list_clear(c, &c->index_author_list);
-  color_line_list_clear(c, &c->index_flags_list);
-  color_line_list_clear(c, &c->index_list);
-  color_line_list_clear(c, &c->index_subject_list);
-  color_line_list_clear(c, &c->index_tag_list);
-  color_line_list_clear(c, &c->status_list);
+  color_line_list_clear(mutt_color_attachments());
+  color_line_list_clear(mutt_color_body());
+  color_line_list_clear(mutt_color_headers());
+  color_line_list_clear(mutt_color_index_author());
+  color_line_list_clear(mutt_color_index_flags());
+  color_line_list_clear(mutt_color_index());
+  color_line_list_clear(mutt_color_index_subject());
+  color_line_list_clear(mutt_color_index_tags());
+  color_line_list_clear(mutt_color_status_line());
 
-  defs_clear(c);
-  quotes_clear(c);
+  defs_clear();
+  quotes_clear();
 
-  color_list_free(&c->user_colors);
+  color_list_free(&Colors.user_colors);
 }
 
 /**
- * mutt_colors_free - Free all the colours
- * @param ptr Colours
+ * mutt_colors_clenaup - Cleanup all the colours
  */
-void mutt_colors_free(struct Colors **ptr)
+void mutt_colors_cleanup(void)
 {
-  if (!ptr || !*ptr)
-    return;
-
-  struct Colors *c = *ptr;
-
-  colors_clear(c);
-  defs_free(c);
-  quotes_free(c);
-  notify_free(&c->notify);
-  FREE(ptr);
+  colors_clear();
+  notify_free(&Colors.notify);
 }
 
 /**
- * mutt_colors_new - Create new colours
- * @retval ptr New Colors
+ * mutt_colors_init - Initialize colours
  */
-struct Colors *mutt_colors_new(void)
+void mutt_colors_init(void)
 {
-  struct Colors *c = mutt_mem_calloc(1, sizeof(*c));
-  c->notify = notify_new();
+  Colors.notify = notify_new();
 
-  quotes_init(c);
-  defs_init(c);
-
-  STAILQ_INIT(&c->attach_list);
-  STAILQ_INIT(&c->body_list);
-  STAILQ_INIT(&c->hdr_list);
-  STAILQ_INIT(&c->index_author_list);
-  STAILQ_INIT(&c->index_flags_list);
-  STAILQ_INIT(&c->index_list);
-  STAILQ_INIT(&c->index_subject_list);
-  STAILQ_INIT(&c->index_tag_list);
-  STAILQ_INIT(&c->status_list);
+  quotes_init();
+  defs_init();
 
 #ifdef HAVE_COLOR
   start_color();
 #endif
 
-  notify_set_parent(c->notify, NeoMutt->notify);
-  return c;
+  notify_set_parent(Colors.notify, NeoMutt->notify);
 }
 
 /**
@@ -465,17 +472,16 @@ static char *get_color_name(char *dest, size_t destlen, uint32_t val)
 
 /**
  * mutt_color_alloc - Allocate a colour pair
- * @param c  Colours
  * @param fg Foreground colour ID
  * @param bg Background colour ID
  * @retval num Combined colour pair
  */
-int mutt_color_alloc(struct Colors *c, uint32_t fg, uint32_t bg)
+int mutt_color_alloc(uint32_t fg, uint32_t bg)
 {
 #ifdef USE_SLANG_CURSES
   char fgc[128], bgc[128];
 #endif
-  struct ColorList *p = c->user_colors;
+  struct ColorList *p = Colors.user_colors;
 
   /* check to see if this color is already allocated to save space */
   while (p)
@@ -489,14 +495,14 @@ int mutt_color_alloc(struct Colors *c, uint32_t fg, uint32_t bg)
   }
 
   /* check to see if there are colors left */
-  if (++c->num_user_colors > COLOR_PAIRS)
+  if (++Colors.num_user_colors > COLOR_PAIRS)
     return A_NORMAL;
 
   /* find the smallest available index (object) */
   int i = 1;
   while (true)
   {
-    p = c->user_colors;
+    p = Colors.user_colors;
     while (p)
     {
       if (p->index == i)
@@ -509,8 +515,8 @@ int mutt_color_alloc(struct Colors *c, uint32_t fg, uint32_t bg)
   }
 
   p = mutt_mem_malloc(sizeof(struct ColorList));
-  p->next = c->user_colors;
-  c->user_colors = p;
+  p->next = Colors.user_colors;
+  Colors.user_colors = p;
 
   p->index = i;
   p->count = 1;
@@ -535,23 +541,22 @@ int mutt_color_alloc(struct Colors *c, uint32_t fg, uint32_t bg)
   init_pair(i, fg, bg);
 #endif
 
-  mutt_debug(LL_DEBUG3, "Color pairs used so far: %d\n", c->num_user_colors);
+  mutt_debug(LL_DEBUG3, "Color pairs used so far: %d\n", Colors.num_user_colors);
 
   return COLOR_PAIR(p->index);
 }
 
 /**
  * mutt_lookup_color - Get the colours from a colour pair
- * @param[in]  c    Colours
  * @param[in]  pair Colour pair
  * @param[out] fg   Foreground colour (OPTIONAL)
  * @param[out] bg   Background colour (OPTIONAL)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int mutt_lookup_color(struct Colors *c, short pair, uint32_t *fg, uint32_t *bg)
+static int mutt_lookup_color(short pair, uint32_t *fg, uint32_t *bg)
 {
-  struct ColorList *p = c->user_colors;
+  struct ColorList *p = Colors.user_colors;
 
   while (p)
   {
@@ -570,22 +575,21 @@ static int mutt_lookup_color(struct Colors *c, short pair, uint32_t *fg, uint32_
 
 /**
  * mutt_color_combine - Combine two colours
- * @param c       Colours
  * @param fg_attr Colour pair of foreground to use
  * @param bg_attr Colour pair of background to use
  * @retval num Colour pair of combined colour
  */
-int mutt_color_combine(struct Colors *c, uint32_t fg_attr, uint32_t bg_attr)
+int mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr)
 {
   uint32_t fg = COLOR_DEFAULT;
   uint32_t bg = COLOR_DEFAULT;
 
-  mutt_lookup_color(c, fg_attr, &fg, NULL);
-  mutt_lookup_color(c, bg_attr, NULL, &bg);
+  mutt_lookup_color(fg_attr, &fg, NULL);
+  mutt_lookup_color(bg_attr, NULL, &bg);
 
   if ((fg == COLOR_DEFAULT) && (bg == COLOR_DEFAULT))
     return A_NORMAL;
-  return mutt_color_alloc(c, fg, bg);
+  return mutt_color_alloc(fg, bg);
 }
 #endif /* HAVE_COLOR */
 
@@ -760,14 +764,13 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
 
 /**
  * do_uncolor - Parse the 'uncolor' or 'unmono' command
- * @param c       Colours
  * @param buf     Buffer for temporary storage
  * @param s       Buffer containing the uncolor command
  * @param cl      List of existing colours
  * @param uncolor If true, 'uncolor', else 'unmono'
  * @retval true A colour was freed
  */
-static bool do_uncolor(struct Colors *c, struct Buffer *buf, struct Buffer *s,
+static bool do_uncolor(struct Buffer *buf, struct Buffer *s,
                        struct ColorLineList *cl, bool uncolor)
 {
   struct ColorLine *np = NULL, *prev = NULL;
@@ -779,7 +782,7 @@ static bool do_uncolor(struct Colors *c, struct Buffer *buf, struct Buffer *s,
     if (mutt_str_equal("*", buf->data))
     {
       rc = STAILQ_FIRST(cl);
-      color_line_list_clear(c, cl);
+      color_line_list_clear(cl);
       return rc;
     }
 
@@ -795,7 +798,7 @@ static bool do_uncolor(struct Colors *c, struct Buffer *buf, struct Buffer *s,
           STAILQ_REMOVE_AFTER(cl, prev, entries);
         else
           STAILQ_REMOVE_HEAD(cl, entries);
-        color_line_free(c, &np, uncolor);
+        color_line_free(&np, uncolor);
         break;
       }
       prev = np;
@@ -809,7 +812,6 @@ static bool do_uncolor(struct Colors *c, struct Buffer *buf, struct Buffer *s,
  * parse_uncolor - Parse an 'uncolor' command
  * @param buf     Temporary Buffer space
  * @param s       Buffer containing string to be parsed
- * @param c       Global colours to update
  * @param err     Buffer for error messages
  * @param uncolor If true, 'uncolor', else 'unmono'
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
@@ -819,15 +821,15 @@ static bool do_uncolor(struct Colors *c, struct Buffer *buf, struct Buffer *s,
  * * unmono  index pattern [pattern...]
  */
 static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
-                                        struct Colors *c, struct Buffer *err, bool uncolor)
+                                        struct Buffer *err, bool uncolor)
 {
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   if (mutt_str_equal(buf->data, "*"))
   {
-    colors_clear(c);
+    colors_clear();
     struct EventColor ec = { MT_COLOR_MAX };
-    notify_send(c->notify, NT_COLOR, NT_COLOR_RESET, &ec);
+    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ec);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -845,7 +847,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   if (object == MT_COLOR_QUOTED)
   {
-    c->quotes[ql] = A_NORMAL;
+    Colors.quotes[ql] = A_NORMAL;
     /* fallthrough to simple case */
   }
 
@@ -856,10 +858,10 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
       (object != MT_COLOR_STATUS))
   {
     // Simple colours
-    c->defs[object] = A_NORMAL;
+    Colors.defs[object] = A_NORMAL;
 
     struct EventColor ec = { object };
-    notify_send(c->notify, NT_COLOR, NT_COLOR_RESET, &ec);
+    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ec);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -888,28 +890,28 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   bool changed = false;
   if (object == MT_COLOR_ATTACH_HEADERS)
-    changed |= do_uncolor(c, buf, s, &c->attach_list, uncolor);
+    changed |= do_uncolor(buf, s, mutt_color_attachments(), uncolor);
   else if (object == MT_COLOR_BODY)
-    changed |= do_uncolor(c, buf, s, &c->body_list, uncolor);
+    changed |= do_uncolor(buf, s, mutt_color_body(), uncolor);
   else if (object == MT_COLOR_HEADER)
-    changed |= do_uncolor(c, buf, s, &c->hdr_list, uncolor);
+    changed |= do_uncolor(buf, s, mutt_color_headers(), uncolor);
   else if (object == MT_COLOR_INDEX)
-    changed |= do_uncolor(c, buf, s, &c->index_list, uncolor);
+    changed |= do_uncolor(buf, s, mutt_color_index(), uncolor);
   else if (object == MT_COLOR_INDEX_AUTHOR)
-    changed |= do_uncolor(c, buf, s, &c->index_author_list, uncolor);
+    changed |= do_uncolor(buf, s, mutt_color_index_author(), uncolor);
   else if (object == MT_COLOR_INDEX_FLAGS)
-    changed |= do_uncolor(c, buf, s, &c->index_flags_list, uncolor);
+    changed |= do_uncolor(buf, s, mutt_color_index_flags(), uncolor);
   else if (object == MT_COLOR_INDEX_SUBJECT)
-    changed |= do_uncolor(c, buf, s, &c->index_subject_list, uncolor);
+    changed |= do_uncolor(buf, s, mutt_color_index_subject(), uncolor);
   else if (object == MT_COLOR_INDEX_TAG)
-    changed |= do_uncolor(c, buf, s, &c->index_tag_list, uncolor);
+    changed |= do_uncolor(buf, s, mutt_color_index_tags(), uncolor);
   else if (object == MT_COLOR_STATUS)
-    changed |= do_uncolor(c, buf, s, &c->status_list, uncolor);
+    changed |= do_uncolor(buf, s, mutt_color_status_line(), uncolor);
 
   if (changed)
   {
     struct EventColor ec = { object };
-    notify_send(c->notify, NT_COLOR, NT_COLOR_RESET, &ec);
+    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ec);
   }
 
   return MUTT_CMD_SUCCESS;
@@ -922,7 +924,12 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
                                       intptr_t data, struct Buffer *err)
 {
-  return parse_uncolor(buf, s, Colors, err, true);
+  if (OptNoCurses || !has_colors())
+  {
+    *s->dptr = '\0'; /* fake that we're done parsing */
+    return MUTT_CMD_SUCCESS;
+  }
+  return parse_uncolor(buf, s, err, true);
 }
 #endif
 
@@ -932,12 +939,16 @@ enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
 enum CommandResult mutt_parse_unmono(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
 {
-  return parse_uncolor(buf, s, Colors, err, false);
+  if (OptNoCurses || !has_colors())
+  {
+    *s->dptr = '\0'; /* fake that we're done parsing */
+    return MUTT_CMD_SUCCESS;
+  }
+  return parse_uncolor(buf, s, err, false);
 }
 
 /**
  * add_pattern - Associate a colour to a pattern
- * @param c         Colours
  * @param top       List of existing colours
  * @param s         String to match
  * @param sensitive true if the pattern case-sensitive
@@ -952,7 +963,7 @@ enum CommandResult mutt_parse_unmono(struct Buffer *buf, struct Buffer *s,
  * is_index used to store compiled pattern only for 'index' color object when
  * called from mutt_parse_color()
  */
-static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *top, const char *s,
+static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
                                       bool sensitive, uint32_t fg, uint32_t bg, int attr,
                                       struct Buffer *err, bool is_index, int match)
 {
@@ -974,10 +985,10 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
     {
       if ((tmp->fg != fg) || (tmp->bg != bg))
       {
-        mutt_color_free(c, tmp->fg, tmp->bg);
+        mutt_color_free(tmp->fg, tmp->bg);
         tmp->fg = fg;
         tmp->bg = bg;
-        attr |= mutt_color_alloc(c, fg, bg);
+        attr |= mutt_color_alloc(fg, bg);
       }
       else
         attr |= (tmp->pair & ~A_BOLD);
@@ -999,7 +1010,7 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
       mutt_buffer_pool_release(&buf);
       if (!tmp->color_pattern)
       {
-        color_line_free(c, &tmp, true);
+        color_line_free(&tmp, true);
         return MUTT_CMD_ERROR;
       }
     }
@@ -1015,7 +1026,7 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
       if (r != 0)
       {
         regerror(r, &tmp->regex, err->data, err->dsize);
-        color_line_free(c, &tmp, true);
+        color_line_free(&tmp, true);
         return MUTT_CMD_ERROR;
       }
     }
@@ -1026,7 +1037,7 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
     {
       tmp->fg = fg;
       tmp->bg = bg;
-      attr |= mutt_color_alloc(c, fg, bg);
+      attr |= mutt_color_alloc(fg, bg);
     }
 #endif
     tmp->pair = attr;
@@ -1143,24 +1154,22 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
 
 /**
  * fgbgattr_to_color - Convert a foreground, background, attribute triplet into a colour
- * @param c    Colours
  * @param fg   Foreground colour ID
  * @param bg   Background colour ID
  * @param attr Attribute flags, e.g. A_BOLD
  * @retval num Combined colour pair
  */
-static int fgbgattr_to_color(struct Colors *c, int fg, int bg, int attr)
+static int fgbgattr_to_color(int fg, int bg, int attr)
 {
 #ifdef HAVE_COLOR
   if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
-    return attr | mutt_color_alloc(c, fg, bg);
+    return attr | mutt_color_alloc(fg, bg);
 #endif
   return attr;
 }
 
 /**
  * parse_color - Parse a 'color' command
- * @param c        Colours
  * @param buf      Temporary Buffer space
  * @param s        Buffer containing string to be parsed
  * @param err      Buffer for error messages
@@ -1172,7 +1181,7 @@ static int fgbgattr_to_color(struct Colors *c, int fg, int bg, int attr)
  * usage: color OBJECT FG BG [ REGEX ]
  *        mono  OBJECT ATTR [ REGEX ]
  */
-static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, struct Buffer *s,
+static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
                                       struct Buffer *err, parser_callback_t callback,
                                       bool dry_run, bool color)
 {
@@ -1243,32 +1252,32 @@ static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, stru
 #endif
 
   if (object == MT_COLOR_ATTACH_HEADERS)
-    rc = add_pattern(c, &c->attach_list, buf->data, true, fg, bg, attr, err, false, match);
+    rc = add_pattern(mutt_color_attachments(), buf->data, true, fg, bg, attr, err, false, match);
   else if (object == MT_COLOR_BODY)
-    rc = add_pattern(c, &c->body_list, buf->data, true, fg, bg, attr, err, false, match);
+    rc = add_pattern(mutt_color_body(), buf->data, true, fg, bg, attr, err, false, match);
   else if (object == MT_COLOR_HEADER)
-    rc = add_pattern(c, &c->hdr_list, buf->data, false, fg, bg, attr, err, false, match);
+    rc = add_pattern(mutt_color_headers(), buf->data, false, fg, bg, attr, err, false, match);
   else if (object == MT_COLOR_INDEX)
   {
-    rc = add_pattern(c, &c->index_list, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(mutt_color_index(), buf->data, true, fg, bg, attr, err, true, match);
   }
   else if (object == MT_COLOR_INDEX_AUTHOR)
   {
-    rc = add_pattern(c, &c->index_author_list, buf->data, true, fg, bg, attr,
+    rc = add_pattern(mutt_color_index_author(), buf->data, true, fg, bg, attr,
                      err, true, match);
   }
   else if (object == MT_COLOR_INDEX_FLAGS)
   {
-    rc = add_pattern(c, &c->index_flags_list, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(mutt_color_index_flags(), buf->data, true, fg, bg, attr, err, true, match);
   }
   else if (object == MT_COLOR_INDEX_SUBJECT)
   {
-    rc = add_pattern(c, &c->index_subject_list, buf->data, true, fg, bg, attr,
+    rc = add_pattern(mutt_color_index_subject(), buf->data, true, fg, bg, attr,
                      err, true, match);
   }
   else if (object == MT_COLOR_INDEX_TAG)
   {
-    rc = add_pattern(c, &c->index_tag_list, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(mutt_color_index_tags(), buf->data, true, fg, bg, attr, err, true, match);
   }
   else if (object == MT_COLOR_QUOTED)
   {
@@ -1278,22 +1287,22 @@ static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, stru
       return MUTT_CMD_WARNING;
     }
 
-    if (q_level >= c->quotes_used)
-      c->quotes_used = q_level + 1;
+    if (q_level >= Colors.quotes_used)
+      Colors.quotes_used = q_level + 1;
     if (q_level == 0)
     {
-      c->defs[MT_COLOR_QUOTED] = fgbgattr_to_color(c, fg, bg, attr);
+      Colors.defs[MT_COLOR_QUOTED] = fgbgattr_to_color(fg, bg, attr);
 
-      c->quotes[0] = c->defs[MT_COLOR_QUOTED];
-      for (q_level = 1; q_level < c->quotes_used; q_level++)
+      Colors.quotes[0] = Colors.defs[MT_COLOR_QUOTED];
+      for (q_level = 1; q_level < Colors.quotes_used; q_level++)
       {
-        if (c->quotes[q_level] == A_NORMAL)
-          c->quotes[q_level] = c->defs[MT_COLOR_QUOTED];
+        if (Colors.quotes[q_level] == A_NORMAL)
+          Colors.quotes[q_level] = Colors.defs[MT_COLOR_QUOTED];
       }
     }
     else
     {
-      c->quotes[q_level] = fgbgattr_to_color(c, fg, bg, attr);
+      Colors.quotes[q_level] = fgbgattr_to_color(fg, bg, attr);
     }
     rc = MUTT_CMD_SUCCESS;
   }
@@ -1325,18 +1334,18 @@ static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, stru
       return MUTT_CMD_WARNING;
     }
 
-    rc = add_pattern(c, &c->status_list, buf->data, true, fg, bg, attr, err, false, match);
+    rc = add_pattern(mutt_color_status_line(), buf->data, true, fg, bg, attr, err, false, match);
   }
   else // Remaining simple colours
   {
-    c->defs[object] = fgbgattr_to_color(c, fg, bg, attr);
+    Colors.defs[object] = fgbgattr_to_color(fg, bg, attr);
     rc = MUTT_CMD_SUCCESS;
   }
 
   if (rc == MUTT_CMD_SUCCESS)
   {
     struct EventColor ec = { object };
-    notify_send(c->notify, NT_COLOR, NT_COLOR_SET, &ec);
+    notify_send(Colors.notify, NT_COLOR, NT_COLOR_SET, &ec);
   }
 
   return rc;
@@ -1354,7 +1363,7 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
   if (OptNoCurses || !has_colors())
     dry_run = true;
 
-  return parse_color(Colors, buf, s, err, parse_color_pair, dry_run, true);
+  return parse_color(buf, s, err, parse_color_pair, dry_run, true);
 }
 #endif
 
@@ -1374,5 +1383,135 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
     dry_run = true;
 #endif
 
-  return parse_color(Colors, buf, s, err, parse_attr_spec, dry_run, false);
+  return parse_color(buf, s, err, parse_attr_spec, dry_run, false);
+}
+
+/**
+ * mutt_color - Return the color of an object
+ * @param id Object id
+ * @retval num Color ID, e.g. #MT_COLOR_HEADER
+ */
+int mutt_color(enum ColorId id)
+{
+  return Colors.defs[id];
+}
+
+/**
+ * mutt_color_status_line - Return the ColorLineList for the status_line
+ * @retval ptr ColorLineList
+ */
+struct ColorLineList *mutt_color_status_line(void)
+{
+  return get_color_line_list(&Colors.status_list);
+}
+
+/**
+ * mutt_color_index - Return the ColorLineList for the index
+ * @retval ptr ColorLineList
+ */
+struct ColorLineList *mutt_color_index(void)
+{
+  return get_color_line_list(&Colors.index_list);
+}
+
+/**
+ * mutt_color_headers - Return the ColorLineList for headers
+ * @retval ptr ColorLineList
+ */
+struct ColorLineList *mutt_color_headers(void)
+{
+  return get_color_line_list(&Colors.hdr_list);
+}
+
+/**
+ * mutt_color_body - Return the ColorLineList for the body
+ * @retval ptr ColorLineList
+ */
+struct ColorLineList *mutt_color_body(void)
+{
+  return get_color_line_list(&Colors.body_list);
+}
+
+/**
+ * mutt_color_attachments - Return the ColorLineList for the attachments
+ * @retval ptr ColorLineList
+ */
+struct ColorLineList *mutt_color_attachments(void)
+{
+  return get_color_line_list(&Colors.attach_list);
+}
+
+/**
+ * mutt_color_index_author - Return the ColorLineList for author in the index
+ * @retval ptr ColorLineList
+ */
+struct ColorLineList *mutt_color_index_author(void)
+{
+  return get_color_line_list(&Colors.index_author_list);
+}
+
+/**
+ * mutt_color_index_flags - Return the ColorLineList for flags in the index
+ * @retval ptr ColorLineList
+ */
+struct ColorLineList *mutt_color_index_flags(void)
+{
+  return get_color_line_list(&Colors.index_flags_list);
+}
+
+/**
+ * mutt_color_index_subject - Return the ColorLineList for subject in the index
+ * @retval ptr ColorLineList
+ */
+struct ColorLineList *mutt_color_index_subject(void)
+{
+  return get_color_line_list(&Colors.index_subject_list);
+}
+
+/**
+ * mutt_color_index_tags - Return the ColorLineList for tags in the index
+ * @retval ptr ColorLineList
+ */
+struct ColorLineList *mutt_color_index_tags(void)
+{
+  return get_color_line_list(&Colors.index_tag_list);
+}
+
+/**
+ * mutt_color_quote - Return the color of a quote, cycling through the used quotes
+ * @param q Quote number
+ * @retval num Color ID, e.g. MT_COLOR_QUOTED
+ */
+int mutt_color_quote(int q)
+{
+  return Colors.quotes[q % Colors.quotes_used];
+}
+
+/**
+ * mutt_color_quotes_used - Return the number of used quotes
+ * @retval num Number of used quotes
+ */
+int mutt_color_quotes_used(void)
+{
+  return Colors.quotes_used;
+}
+
+/**
+ * mutt_color_observer_add - Add an observer
+ * @param callback The callback
+ * @param global_data The data
+ */
+void mutt_color_observer_add(observer_t callback, void *global_data)
+{
+  notify_observer_add(Colors.notify, NT_COLOR, callback, global_data);
+}
+
+/**
+ * mutt_color_observer_remove - Remove an observer
+ * @param callback The callback
+ * @param global_data The data
+ */
+void mutt_color_observer_remove(observer_t callback, void *global_data)
+{
+  notify_observer_remove(Colors.notify, callback, global_data);
 }

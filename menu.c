@@ -82,16 +82,16 @@ static int get_color(int index, unsigned char *s)
   switch (type)
   {
     case MT_COLOR_INDEX_AUTHOR:
-      color = &Colors->index_author_list;
+      color = mutt_color_index_author();
       break;
     case MT_COLOR_INDEX_FLAGS:
-      color = &Colors->index_flags_list;
+      color = mutt_color_index_flags();
       break;
     case MT_COLOR_INDEX_SUBJECT:
-      color = &Colors->index_subject_list;
+      color = mutt_color_index_subject();
       break;
     case MT_COLOR_INDEX_TAG:
-      STAILQ_FOREACH(np, &Colors->index_tag_list, entries)
+      STAILQ_FOREACH(np, mutt_color_index_tags(), entries)
       {
         if (mutt_strn_equal((const char *) (s + 1), np->pattern, strlen(np->pattern)))
           return np->pair;
@@ -103,7 +103,7 @@ static int get_color(int index, unsigned char *s)
       }
       return 0;
     default:
-      return Colors->defs[type];
+      return mutt_color(type);
   }
 
   STAILQ_FOREACH(np, color, entries)
@@ -139,7 +139,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
 #if defined(HAVE_COLOR) && defined(HAVE_USE_DEFAULT_COLORS)
         /* Combining tree fg color and another bg color requires having
          * use_default_colors, because the other bg color may be undefined. */
-        mutt_curses_set_attr(mutt_color_combine(Colors, Colors->defs[MT_COLOR_TREE], attr));
+        mutt_curses_set_attr(mutt_color_combine(mutt_color(MT_COLOR_TREE), attr));
 #else
         mutt_curses_set_color(MT_COLOR_TREE);
 #endif
@@ -952,7 +952,7 @@ static void menu_prev_entry(struct Menu *menu)
  */
 static int default_color(struct Menu *menu, int line)
 {
-  return Colors->defs[MT_COLOR_NORMAL];
+  return mutt_color(MT_COLOR_NORMAL);
 }
 
 /**
@@ -982,20 +982,23 @@ int menu_color_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
+  if (nc->event_type != NT_COLOR)
     return 0;
 
   struct EventColor *ev_c = nc->event_data;
 
   int c = ev_c->color;
 
+  // MT_COLOR_MAX is sent on `uncolor *`
   bool simple = (c == MT_COLOR_INDEX_COLLAPSED) || (c == MT_COLOR_INDEX_DATE) ||
                 (c == MT_COLOR_INDEX_LABEL) || (c == MT_COLOR_INDEX_NUMBER) ||
-                (c == MT_COLOR_INDEX_SIZE) || (c == MT_COLOR_INDEX_TAGS);
+                (c == MT_COLOR_INDEX_SIZE) || (c == MT_COLOR_INDEX_TAGS) ||
+                (c == MT_COLOR_MAX);
   bool lists = (c == MT_COLOR_ATTACH_HEADERS) || (c == MT_COLOR_BODY) ||
                (c == MT_COLOR_HEADER) || (c == MT_COLOR_INDEX) ||
                (c == MT_COLOR_INDEX_AUTHOR) || (c == MT_COLOR_INDEX_FLAGS) ||
-               (c == MT_COLOR_INDEX_SUBJECT) || (c == MT_COLOR_INDEX_TAG);
+               (c == MT_COLOR_INDEX_SUBJECT) || (c == MT_COLOR_INDEX_TAG) ||
+               (c == MT_COLOR_MAX);
 
   // The changes aren't relevant to the index menu
   if (!simple && !lists)
@@ -1080,7 +1083,7 @@ struct Menu *mutt_menu_new(enum MenuType type)
   menu->notify = notify_new();
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
-  notify_observer_add(Colors->notify, NT_CONFIG, menu_color_observer, menu);
+  mutt_color_observer_add(menu_color_observer, menu);
 
   return menu;
 }
@@ -1097,7 +1100,7 @@ void mutt_menu_free(struct Menu **ptr)
   struct Menu *menu = *ptr;
 
   notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
-  notify_observer_remove(Colors->notify, menu_color_observer, menu);
+  mutt_color_observer_remove(menu_color_observer, menu);
   notify_free(&menu->notify);
 
   if (menu->mdata && menu->mdata_free)

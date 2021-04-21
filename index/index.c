@@ -982,7 +982,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
       break;
 
     /* loop through each "color status regex" */
-    STAILQ_FOREACH(cl, &Colors->status_list, entries)
+    STAILQ_FOREACH(cl, mutt_color_status_line(), entries)
     {
       regmatch_t pmatch[cl->match + 1];
 
@@ -1027,7 +1027,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
   {
     /* Text before the first highlight */
     mutt_window_addnstr(buf, MIN(len, syntax[0].first));
-    attrset(Colors->defs[MT_COLOR_STATUS]);
+    attrset(mutt_color(MT_COLOR_STATUS));
     if (len <= syntax[0].first)
       goto dsl_finish; /* no more room */
 
@@ -1052,7 +1052,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
       next = MIN(len, syntax[i + 1].first);
     }
 
-    attrset(Colors->defs[MT_COLOR_STATUS]);
+    attrset(mutt_color(MT_COLOR_STATUS));
     offset = syntax[i].last;
     mutt_window_addnstr(buf + offset, next - offset);
 
@@ -1061,7 +1061,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
       goto dsl_finish; /* no more room */
   }
 
-  attrset(Colors->defs[MT_COLOR_STATUS]);
+  attrset(mutt_color(MT_COLOR_STATUS));
   if (offset < len)
   {
     /* Text after the last highlight */
@@ -4173,7 +4173,7 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
   struct ColorLine *color = NULL;
   struct PatternCache cache = { 0 };
 
-  STAILQ_FOREACH(color, &Colors->index_list, entries)
+  STAILQ_FOREACH(color, mutt_color_index(), entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(color->color_pattern),
                           MUTT_MATCH_FULL_ADDRESS, m, e, &cache))
@@ -4182,7 +4182,7 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
       return;
     }
   }
-  e->pair = Colors->defs[MT_COLOR_NORMAL];
+  e->pair = mutt_color(MT_COLOR_NORMAL);
 }
 
 /**

@@ -30,25 +30,6 @@
 #include "mutt_commands.h"
 
 /**
- * struct ColorLine - A regular expression and a color to highlight a line
- */
-struct ColorLine
-{
-  regex_t regex;                     ///< Compiled regex
-  int match;                         ///< Substring to match, 0 for old behaviour
-  char *pattern;                     ///< Pattern to match
-  struct PatternList *color_pattern; ///< Compiled pattern to speed up index color calculation
-  uint32_t fg;                       ///< Foreground colour
-  uint32_t bg;                       ///< Background colour
-  int pair;                          ///< Colour pair index
-
-  bool stop_matching : 1;            ///< Used by the pager for body patterns, to prevent the color from being retried once it fails
-
-  STAILQ_ENTRY(ColorLine) entries;   ///< Linked list
-};
-STAILQ_HEAD(ColorLineList, ColorLine);
-
-/**
  * enum ColorId - List of all colored objects
  *
  * This enumeration starts at 50 to avoid any of the values being 37 (ASCII %).
@@ -113,44 +94,23 @@ enum ColorId
 };
 
 /**
- * struct ColorList - A set of colors
+ * struct ColorLine - A regular expression and a color to highlight a line
  */
-struct ColorList
+struct ColorLine
 {
-  /* TrueColor uses 24bit. Use fixed-width integer type to make sure it fits.
-   * Use the upper 8 bits to store flags.  */
-  uint32_t fg;
-  uint32_t bg;
-  short index;
-  short count;
-  struct ColorList *next;
+  regex_t regex;                     ///< Compiled regex
+  int match;                         ///< Substring to match, 0 for old behaviour
+  char *pattern;                     ///< Pattern to match
+  struct PatternList *color_pattern; ///< Compiled pattern to speed up index color calculation
+  uint32_t fg;                       ///< Foreground colour
+  uint32_t bg;                       ///< Background colour
+  int pair;                          ///< Colour pair index
+
+  bool stop_matching : 1;            ///< Used by the pager for body patterns, to prevent the color from being retried once it fails
+
+  STAILQ_ENTRY(ColorLine) entries;   ///< Linked list
 };
-
-/**
- * struct Colors - Wrapper for all the colours
- */
-struct Colors
-{
-  int *defs;                               ///< Array of all fixed colours, see enum ColorId
-
-  struct ColorLineList attach_list;        ///< List of colours applied to the attachment headers
-  struct ColorLineList body_list;          ///< List of colours applied to the email body
-  struct ColorLineList hdr_list;           ///< List of colours applied to the email headers
-  struct ColorLineList index_author_list;  ///< List of colours applied to the author in the index
-  struct ColorLineList index_flags_list;   ///< List of colours applied to the flags in the index
-  struct ColorLineList index_list;         ///< List of default colours applied to the index
-  struct ColorLineList index_subject_list; ///< List of colours applied to the subject in the index
-  struct ColorLineList index_tag_list;     ///< List of colours applied to tags in the index
-  struct ColorLineList status_list;        ///< List of colours applied to the status bar
-
-  int *quotes;                             ///< Array of colours for quoted email text
-  int quotes_used;                         ///< Number of colours for quoted email text
-
-  struct ColorList *user_colors;
-  int num_user_colors;
-
-  struct Notify *notify;                   ///< Notifications: #ColorId, #EventColor
-};
+STAILQ_HEAD(ColorLineList, ColorLine);
 
 /**
  * struct EventColor - An Event that happened to a Colour
@@ -175,16 +135,32 @@ enum NotifyColor
   NT_COLOR_RESET,   ///< Color has been reset/removed
 };
 
-int  mutt_color_alloc  (struct Colors *c, uint32_t fg,      uint32_t bg);
-int  mutt_color_combine(struct Colors *c, uint32_t fg_attr, uint32_t bg_attr);
-void mutt_color_free   (struct Colors *c, uint32_t fg,      uint32_t bg);
+int mutt_color_alloc  (uint32_t fg, uint32_t bg);
+int mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr);
+void mutt_color_free  (uint32_t fg, uint32_t bg);
 
-struct Colors *mutt_colors_new(void);
-void           mutt_colors_free(struct Colors **ptr);
+void mutt_colors_init(void);
+void mutt_colors_cleanup(void);
 
 enum CommandResult mutt_parse_color  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_mono   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_unmono (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+
+int mutt_color(enum ColorId id);
+struct ColorLineList *mutt_color_status_line(void);
+struct ColorLineList *mutt_color_index(void);
+struct ColorLineList *mutt_color_headers(void);
+struct ColorLineList *mutt_color_body(void);
+struct ColorLineList *mutt_color_attachments(void);
+struct ColorLineList *mutt_color_index_author(void);
+struct ColorLineList *mutt_color_index_flags(void);
+struct ColorLineList *mutt_color_index_subject(void);
+struct ColorLineList *mutt_color_index_tags(void);
+int mutt_color_quote(int quote);
+int mutt_color_quotes_used(void);
+
+void mutt_color_observer_add(observer_t callback, void *global_data);
+void mutt_color_observer_remove(observer_t callback, void *global_data);
 
 #endif /* MUTT_COLOR_H */

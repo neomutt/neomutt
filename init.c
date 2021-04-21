@@ -665,7 +665,7 @@ void mutt_opts_free(void)
   mutt_list_free(&UnIgnore);
   mutt_list_free(&UserHeader);
 
-  mutt_colors_free(&Colors);
+  mutt_colors_cleanup();
 
   FREE(&CurrentFolder);
   FREE(&HomeDir);

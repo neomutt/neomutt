@@ -37,8 +37,6 @@
 #include "ncrypt/lib.h"
 #endif /* MAIN_C */
 
-WHERE struct Colors    *Colors; ///< Wrapper around the user's colour settings
-
 WHERE struct Context *Context;
 
 WHERE bool ErrorBufMessage;            ///< true if the last message was an error

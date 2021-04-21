@@ -67,7 +67,7 @@ static void message_bar(int percent, const char *fmt, ...)
 
   mutt_window_move(MessageWindow, 0, 0);
 
-  if (Colors->defs[MT_COLOR_PROGRESS] == 0)
+  if (mutt_color(MT_COLOR_PROGRESS) == 0)
   {
     mutt_window_addstr(buf2);
   }
