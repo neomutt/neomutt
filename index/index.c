@@ -4074,15 +4074,24 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         break;
 
       case OP_VIEW_ATTACHMENTS:
+      {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         if (!shared->email)
           break;
-        dlg_select_attachment(shared->mailbox, shared->email, NULL);
-        if (shared->email->attach_del)
-          shared->mailbox->changed = true;
+        struct Message *msg = mx_msg_open(shared->mailbox, shared->email->msgno);
+        if (msg)
+        {
+          dlg_select_attachment(shared->mailbox, shared->email, msg->fp);
+          if (shared->email->attach_del)
+          {
+            shared->mailbox->changed = true;
+          }
+          mx_msg_close(shared->mailbox, &msg);
+        }
         priv->menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_END_COND:
         break;

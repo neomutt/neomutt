@@ -1572,14 +1572,9 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
  */
 void dlg_select_attachment(struct Mailbox *m, struct Email *e, FILE *fp)
 {
-  struct Message *msg = fp ? NULL : mx_msg_open(m, e->msgno);
-  if (!m || !e || (!fp && !msg))
+  if (!m || !e || !fp)
   {
     return;
-  }
-  if (msg)
-  {
-    fp = msg->fp;
   }
 
   int op = OP_NULL;
@@ -1870,10 +1865,6 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e, FILE *fp)
         break;
 
       case OP_EXIT:
-        if (msg)
-        {
-          mx_msg_close(m, &msg);
-        }
         e->attach_del = false;
         for (int i = 0; i < actx->idxlen; i++)
         {
