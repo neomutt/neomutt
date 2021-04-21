@@ -248,10 +248,10 @@ static int count_body_parts(struct Body *body)
  * mutt_count_body_parts - Count the MIME Body parts
  * @param m Mailbox
  * @param e Email
- * @param msg Message
+ * @param fp File to parse
  * @retval num Number of MIME Body parts
  */
-int mutt_count_body_parts(struct Mailbox *m, struct Email *e, struct Message *msg)
+int mutt_count_body_parts(struct Mailbox *m, struct Email *e, FILE *fp)
 {
   if (!m || !e)
     return 0;
@@ -264,7 +264,7 @@ int mutt_count_body_parts(struct Mailbox *m, struct Email *e, struct Message *ms
   if (e->body->parts)
     keep_parts = true;
   else
-    mutt_parse_mime_message(m, e, msg);
+    mutt_parse_mime_message(m, e, fp);
 
   if (!STAILQ_EMPTY(&AttachAllow) || !STAILQ_EMPTY(&AttachExclude) ||
       !STAILQ_EMPTY(&InlineAllow) || !STAILQ_EMPTY(&InlineExclude))
@@ -583,17 +583,16 @@ enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
  * mutt_parse_mime_message - Parse a MIME email
  * @param m Mailbox
  * @param e Email
- * @param msg Message
+ * @param fp File to parse
  */
-void mutt_parse_mime_message(struct Mailbox *m, struct Email *e, struct Message *msg)
+void mutt_parse_mime_message(struct Mailbox *m, struct Email *e, FILE *fp)
 {
   const bool right_type = (e->body->type == TYPE_MESSAGE) || (e->body->type == TYPE_MULTIPART);
   const bool not_parsed = (e->body->parts == NULL);
-  const bool could_open = (msg != NULL);
 
-  if (right_type && could_open && not_parsed)
+  if (right_type && fp && not_parsed)
   {
-      mutt_parse_part(msg->fp, e->body);
+      mutt_parse_part(fp, e->body);
       if (WithCrypto)
       {
         e->security = crypt_query(e->body);

@@ -152,7 +152,7 @@ static bool msg_search(struct Pattern *pat, struct Mailbox *m, struct Email *e,
 
     if (pat->op != MUTT_PAT_HEADER)
     {
-      mutt_parse_mime_message(m, e, msg);
+      mutt_parse_mime_message(m, e, msg->fp);
 
       if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT) &&
           !crypt_valid_passphrase(e->security))
@@ -597,9 +597,9 @@ static bool match_content_type(const struct Pattern *pat, struct Body *b)
  */
 static bool match_mime_content_type(const struct Pattern *pat,
                                     struct Mailbox *m, struct Email *e,
-                                    struct Message *msg)
+                                    FILE *fp)
 {
-  mutt_parse_mime_message(m, e, msg);
+  mutt_parse_mime_message(m, e, fp);
   return match_content_type(pat, e->body);
 }
 
@@ -1024,14 +1024,14 @@ static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!m)
         return 0;
       {
-        int count = mutt_count_body_parts(m, e, msg);
+        int count = mutt_count_body_parts(m, e, msg->fp);
         return pat->pat_not ^ (count >= pat->min &&
                                (pat->max == MUTT_MAXRANGE || count <= pat->max));
       }
     case MUTT_PAT_MIMETYPE:
       if (!m)
         return 0;
-      return pat->pat_not ^ match_mime_content_type(pat, m, e, msg);
+      return pat->pat_not ^ match_mime_content_type(pat, m, e, msg->fp);
     case MUTT_PAT_UNREFERENCED:
       return pat->pat_not ^ (e->thread && !e->thread->child);
     case MUTT_PAT_BROKEN:

@@ -486,7 +486,11 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out,
   CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
 
   struct Message *msg = mx_msg_open(m, e->msgno);
-  mutt_parse_mime_message(m, e, msg);
+  if (!msg)
+  {
+    return -1;
+  }
+  mutt_parse_mime_message(m, e, msg->fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   const bool c_forward_decode = cs_subset_bool(sub, "forward_decode");
@@ -549,7 +553,7 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
     return -1;
   }
 
-  mutt_parse_mime_message(m, e, msg);
+  mutt_parse_mime_message(m, e, msg->fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   actx = mutt_mem_calloc(1, sizeof(*actx));
@@ -759,7 +763,11 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
   }
 
   struct Message *msg = mx_msg_open(m, e->msgno);
-  mutt_parse_mime_message(m, e, msg);
+  if (!msg)
+  {
+    return -1;
+  }
+  mutt_parse_mime_message(m, e, msg->fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   mutt_make_attribution(e, fp_out, sub);

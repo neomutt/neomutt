@@ -876,8 +876,11 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
   {
     struct Email *e = en->email;
     struct Message *msg = mx_msg_open(m, e->msgno);
-    mutt_parse_mime_message(m, e, msg);
-    mx_msg_close(m, &msg);
+    if (msg)
+    {
+      mutt_parse_mime_message(m, e, msg->fp);
+      mx_msg_close(m, &msg);
+    }
     if (e->security & SEC_ENCRYPT && !crypt_valid_passphrase(e->security))
     {
       mutt_file_fclose(&fp_out);

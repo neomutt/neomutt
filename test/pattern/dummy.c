@@ -122,7 +122,7 @@ bool mutt_is_subscribed_list(struct Address *addr)
   return g_is_subscribed_list;
 }
 
-void mutt_parse_mime_message(struct Mailbox *m, struct Email *e, struct Message *msg)
+void mutt_parse_mime_message(struct Mailbox *m, struct Email *e, FILE *msg)
 {
 }
 

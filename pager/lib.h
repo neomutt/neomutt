@@ -132,8 +132,7 @@ enum PagerMode
 struct PagerData
 {
   struct Context   *ctx;    ///< Current Mailbox context
-  struct Email     *email;  ///< Current email
-  struct Message   *msg;    ///< Current message
+  struct Email     *email;  ///< Current message
   struct Body      *body;   ///< Current attachment
   FILE             *fp;     ///< Source stream
   struct AttachCtx *actx;   ///< Attachment information
