@@ -381,6 +381,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     pdata.fp = msg->fp;
     pdata.ctx = Context;
     pdata.fname = mutt_buffer_string(tempfile);
+    pdata.email = e;
 
     pview.mode = PAGER_MODE_EMAIL;
     pview.banner = NULL;

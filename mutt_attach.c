@@ -42,6 +42,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt_attach.h"
+#include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "send/lib.h"
@@ -668,7 +669,12 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
                   ((use_mailcap && entry->xneomuttnowrap) ? MUTT_PAGER_NOWRAP :
                                                             MUTT_PAGER_NO_FLAGS);
     pview.mode = PAGER_MODE_ATTACH;
-
+    if (win->type == WT_INDEX)
+    {
+      struct IndexSharedData *index_shared = dialog_find(win)->wdata;
+      index_shared->email = e;
+      // TODO: notify something?
+    }
     rc = mutt_do_pager(&pview);
 
     mutt_buffer_reset(pagerfile);
