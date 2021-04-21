@@ -4082,7 +4082,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         struct Message *msg = mx_msg_open(shared->mailbox, shared->email->msgno);
         if (msg)
         {
-          dlg_select_attachment(shared->mailbox, shared->email, msg->fp);
+          dlg_select_attachment(NeoMutt->sub, shared->mailbox, shared->email, msg->fp);
           if (shared->email->attach_del)
           {
             shared->mailbox->changed = true;

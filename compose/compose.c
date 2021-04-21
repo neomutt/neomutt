@@ -2534,7 +2534,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
       case OP_VIEW_ATTACH:
       case OP_DISPLAY_HEADERS:
         CHECK_COUNT;
-        mutt_attach_display_loop(menu, op, e, actx, false);
+        mutt_attach_display_loop(sub, menu, op, e, actx, false);
         menu->redraw = REDRAW_FULL;
         /* no send2hook, since this doesn't modify the message */
         break;

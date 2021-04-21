@@ -30,6 +30,7 @@
 
 struct AttachCtx;
 struct Body;
+struct ConfigSubset;
 struct Email;
 struct Menu;
 struct MuttWindow;
@@ -59,8 +60,8 @@ enum SaveAttach
 };
 
 int attach_tag(struct Menu *menu, int sel, int act);
-int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
-                             struct AttachCtx *actx, bool recv);
+int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op,
+                             struct Email *e, struct AttachCtx *actx, bool recv);
 
 void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                struct Body *top, struct Email *e, struct Menu *menu);

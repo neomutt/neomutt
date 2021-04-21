@@ -64,7 +64,7 @@
 #include <libintl.h>
 #endif
 
-static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init);
+static void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx, struct Menu *menu, bool init);
 
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
 
@@ -1266,11 +1266,12 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
 
 /**
  * recvattach_edit_content_type - Edit the content type of an attachment
+ * @param sub  Config Subset
  * @param actx Attachment context
  * @param menu Menu listing Attachments
  * @param e  Email
  */
-static void recvattach_edit_content_type(struct AttachCtx *actx,
+static void recvattach_edit_content_type(struct ConfigSubset *sub, struct AttachCtx *actx,
                                          struct Menu *menu, struct Email *e)
 {
   if (!mutt_edit_content_type(e, CUR_ATTACH->body, CUR_ATTACH->fp))
@@ -1288,11 +1289,12 @@ static void recvattach_edit_content_type(struct AttachCtx *actx,
   for (int i = 0; i < actx->idxlen; i++)
     actx->idx[i]->body = NULL;
   mutt_actx_entries_free(actx);
-  mutt_update_recvattach_menu(actx, menu, true);
+  mutt_update_recvattach_menu(sub, actx, menu, true);
 }
 
 /**
  * mutt_attach_display_loop - Event loop for the Attachment menu
+ * @param sub  Config Subset
  * @param menu Menu listing Attachments
  * @param op   Operation, e.g. OP_VIEW_ATTACH
  * @param e  Email
@@ -1300,7 +1302,7 @@ static void recvattach_edit_content_type(struct AttachCtx *actx,
  * @param recv true if these are received attachments (rather than in compose)
  * @retval num Operation performed
  */
-int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
+int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op, struct Email *e,
                              struct AttachCtx *actx, bool recv)
 {
   do
@@ -1341,7 +1343,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
          * immediately */
         mutt_edit_content_type(e, CUR_ATTACH->body, CUR_ATTACH->fp);
         if (recv)
-          recvattach_edit_content_type(actx, menu, e);
+          recvattach_edit_content_type(sub, actx, menu, e);
         else
           mutt_edit_content_type(e, CUR_ATTACH->body, CUR_ATTACH->fp);
 
@@ -1506,11 +1508,12 @@ void mutt_attach_init(struct AttachCtx *actx)
 
 /**
  * mutt_update_recvattach_menu - Update the Attachment Menu
+ * @param sub  Config Subset
  * @param actx Attachment context
  * @param menu Menu listing Attachments
  * @param init If true, create a new Attachments context
  */
-static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
+static void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx, struct Menu *menu, bool init)
 {
   if (init)
   {
@@ -1566,11 +1569,12 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 
 /**
  * dlg_select_attachment - Show the attachments in a Menu
- * @param m Mailbox
- * @param e Email
+ * @param sub Config Subset
+ * @param m   Mailbox
+ * @param e   Email
  * @param fp File with the content of the email, or NULL
  */
-void dlg_select_attachment(struct Mailbox *m, struct Email *e, FILE *fp)
+void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m, struct Email *e, FILE *fp)
 {
   if (!m || !e || !fp)
   {
@@ -1594,7 +1598,7 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e, FILE *fp)
   struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;
   actx->fp_root = fp;
-  mutt_update_recvattach_menu(actx, menu, true);
+  mutt_update_recvattach_menu(sub, actx, menu, true);
 
   while (true)
   {
@@ -1625,7 +1629,7 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e, FILE *fp)
 
       case OP_DISPLAY_HEADERS:
       case OP_VIEW_ATTACH:
-        op = mutt_attach_display_loop(menu, op, e, actx, true);
+        op = mutt_attach_display_loop(sub, menu, op, e, actx, true);
         menu->redraw = REDRAW_FULL;
         continue;
 
@@ -1636,7 +1640,7 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e, FILE *fp)
           break;
         }
         attach_collapse(actx, menu);
-        mutt_update_recvattach_menu(actx, menu, false);
+        mutt_update_recvattach_menu(sub, actx, menu, false);
         break;
 
       case OP_FORGET_PASSPHRASE:
@@ -1860,7 +1864,7 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e, FILE *fp)
         break;
 
       case OP_EDIT_TYPE:
-        recvattach_edit_content_type(actx, menu, e);
+        recvattach_edit_content_type(sub, actx, menu, e);
         menu->redraw |= REDRAW_INDEX;
         break;
 
