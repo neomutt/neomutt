@@ -426,7 +426,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
     {
       mutt_curses_set_color(MT_COLOR_MARKERS);
       mutt_window_addch('+');
-      last_color = Colors->defs[MT_COLOR_MARKERS];
+      last_color = mutt_color(MT_COLOR_MARKERS);
     }
     m = (line_info[n].syntax)[0].first;
     cnt += (line_info[n].syntax)[0].last;
@@ -435,14 +435,14 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
     m = n;
   if (flags & MUTT_PAGER_LOGS)
   {
-    def_color = Colors->defs[(line_info[n].syntax)[0].color];
+    def_color = mutt_color(line_info[n].syntax[0].color);
   }
   else if (!(flags & MUTT_SHOWCOLOR))
-    def_color = Colors->defs[MT_COLOR_NORMAL];
+    def_color = mutt_color(MT_COLOR_NORMAL);
   else if (line_info[m].type == MT_COLOR_HEADER)
-    def_color = (line_info[m].syntax)[0].color;
+    def_color = line_info[m].syntax[0].color;
   else
-    def_color = Colors->defs[line_info[m].type];
+    def_color = mutt_color(line_info[m].type);
 
   if ((flags & MUTT_SHOWCOLOR) && (line_info[m].type == MT_COLOR_QUOTED))
   {
@@ -479,7 +479,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
     if (matching_chunk && (cnt >= matching_chunk->first) &&
         (cnt < matching_chunk->last))
     {
-      color = Colors->defs[MT_COLOR_SEARCH];
+      color = mutt_color(MT_COLOR_SEARCH);
       search = 1;
     }
   }
@@ -491,7 +491,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
     if ((a->attr & ANSI_COLOR))
     {
       if (a->pair == -1)
-        a->pair = mutt_color_alloc(Colors, a->fg, a->bg);
+        a->pair = mutt_color_alloc(a->fg, a->bg);
       color = a->pair;
       if (a->attr & ANSI_BOLD)
         color |= A_BOLD;
@@ -500,15 +500,15 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
 #endif
         if ((special & A_BOLD) || (a->attr & ANSI_BOLD))
     {
-      if (Colors->defs[MT_COLOR_BOLD] && !search)
-        color = Colors->defs[MT_COLOR_BOLD];
+      if (mutt_color(MT_COLOR_BOLD) && !search)
+        color = mutt_color(MT_COLOR_BOLD);
       else
         color ^= A_BOLD;
     }
     if ((special & A_UNDERLINE) || (a->attr & ANSI_UNDERLINE))
     {
-      if (Colors->defs[MT_COLOR_UNDERLINE] && !search)
-        color = Colors->defs[MT_COLOR_UNDERLINE];
+      if (mutt_color(MT_COLOR_UNDERLINE) && !search)
+        color = mutt_color(MT_COLOR_UNDERLINE);
       else
         color ^= A_UNDERLINE;
     }
@@ -565,7 +565,7 @@ static void append_line(struct Line *line_info, int n, int cnt)
 static void class_color_new(struct QClass *qc, int *q_level)
 {
   qc->index = (*q_level)++;
-  qc->color = Colors->quotes[qc->index % Colors->quotes_used];
+  qc->color = mutt_color_quote(qc->index);
 }
 
 /**
@@ -586,7 +586,7 @@ static void shift_class_colors(struct QClass *quote_list,
     if (q_list->index >= index)
     {
       q_list->index++;
-      q_list->color = Colors->quotes[q_list->index % Colors->quotes_used];
+      q_list->color = mutt_color_quote(q_list->index);
     }
     if (q_list->down)
       q_list = q_list->down;
@@ -606,7 +606,7 @@ static void shift_class_colors(struct QClass *quote_list,
   }
 
   new_class->index = index;
-  new_class->color = Colors->quotes[index % Colors->quotes_used];
+  new_class->color = mutt_color_quote(index);
   (*q_level)++;
 }
 
@@ -647,14 +647,14 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
   size_t offset, tail_lng;
   int index = -1;
 
-  if (Colors->quotes_used <= 1)
+  if (mutt_color_quotes_used() <= 1)
   {
     /* not much point in classifying quotes... */
 
     if (!*quote_list)
     {
       qc = mutt_mem_calloc(1, sizeof(struct QClass));
-      qc->color = Colors->quotes[0];
+      qc->color = mutt_color_quote(0);
       *quote_list = qc;
     }
     return *quote_list;
@@ -1079,7 +1079,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
        * like body patterns (further below).  */
       if (!c_header_color_partial)
       {
-        STAILQ_FOREACH(color_line, &Colors->hdr_list, entries)
+        STAILQ_FOREACH(color_line, mutt_color_headers(), entries)
         {
           if (regexec(&color_line->regex, buf, 0, NULL, 0) == 0)
           {
@@ -1162,9 +1162,9 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     offset = 0;
     line_info[n].chunks = 0;
     if (line_info[n].type == MT_COLOR_HDRDEFAULT)
-      head = &Colors->hdr_list;
+      head = mutt_color_headers();
     else
-      head = &Colors->body_list;
+      head = mutt_color_body();
     STAILQ_FOREACH(color_line, head, entries)
     {
       color_line->stop_matching = false;
@@ -1254,7 +1254,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
       found = false;
       null_rx = false;
-      STAILQ_FOREACH(color_line, &Colors->attach_list, entries)
+      STAILQ_FOREACH(color_line, mutt_color_attachments(), entries)
       {
         if (regexec(&color_line->regex, buf + offset, 1, pmatch,
                     ((offset != 0) ? REG_NOTBOL : 0)) == 0)
@@ -1332,7 +1332,7 @@ static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *a)
     {
 #ifdef HAVE_COLOR
       if (a->pair != -1)
-        mutt_color_free(Colors, a->fg, a->bg);
+        mutt_color_free(a->fg, a->bg);
 #endif
       a->attr = ANSI_OFF;
       a->pair = -1;
@@ -1363,7 +1363,7 @@ static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *a)
       {
 #ifdef HAVE_COLOR
         if (a->pair != -1)
-          mutt_color_free(Colors, a->fg, a->bg);
+          mutt_color_free(a->fg, a->bg);
 #endif
         a->attr = ANSI_OFF;
         a->pair = -1;
@@ -1373,7 +1373,7 @@ static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *a)
       {
 #ifdef HAVE_COLOR
         if (a->pair != -1)
-          mutt_color_free(Colors, a->fg, a->bg);
+          mutt_color_free(a->fg, a->bg);
 #endif
         a->pair = -1;
         a->attr |= ANSI_COLOR;
@@ -1384,7 +1384,7 @@ static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *a)
       {
 #ifdef HAVE_COLOR
         if (a->pair != -1)
-          mutt_color_free(Colors, a->fg, a->bg);
+          mutt_color_free(a->fg, a->bg);
 #endif
         a->pair = -1;
         a->attr |= ANSI_COLOR;
@@ -1965,7 +1965,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     if ((*line_info)[m].type == MT_COLOR_HEADER)
       def_color = ((*line_info)[m].syntax)[0].color;
     else
-      def_color = Colors->defs[(*line_info)[m].type];
+      def_color = mutt_color((*line_info)[m].type);
 
     mutt_curses_set_attr(def_color);
   }

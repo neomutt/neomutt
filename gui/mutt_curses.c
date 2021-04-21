@@ -56,18 +56,12 @@ void mutt_curses_set_attr(int attr)
  */
 void mutt_curses_set_color(enum ColorId color)
 {
-  if (!Colors)
-    return;
+  const int chosen = mutt_color(color);
+  const int normal = mutt_color(MT_COLOR_NORMAL);
 #ifdef HAVE_BKGDSET
-  if (Colors->defs[color] != 0)
-    bkgdset(Colors->defs[color] | ' ');
-  else
-    bkgdset(Colors->defs[MT_COLOR_NORMAL] | ' ');
+  bkgdset((chosen ? chosen : normal) | ' ');
 #else
-  if (Colors->defs[color] != 0)
-    attrset(Colors->defs[color]);
-  else
-    attrset(Colors->defs[MT_COLOR_NORMAL]);
+  attrset(chosen ? chosen : normal);
 #endif
 }
 
