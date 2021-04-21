@@ -67,6 +67,7 @@ struct Email;
 struct EmailList;
 struct Envelope;
 struct Mailbox;
+struct Message;
 struct State;
 
 typedef uint16_t SecurityFlags;           ///< Flags, e.g. #SEC_ENCRYPT
@@ -172,7 +173,7 @@ int          crypt_smime_application_handler(struct Body *m, struct State *s);
 int          crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
 void         crypt_smime_getkeys(struct Envelope *env);
 SecurityFlags crypt_smime_send_menu(struct Mailbox *m, struct Email *e);
-int          crypt_smime_verify_sender(struct Mailbox *m, struct Email *e);
+int          crypt_smime_verify_sender(struct Mailbox *m, struct Email *e, struct Message *msg);
 
 /* crypt_mod.c */
 void crypto_module_free(void);

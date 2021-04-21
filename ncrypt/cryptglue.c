@@ -471,10 +471,10 @@ void crypt_smime_getkeys(struct Envelope *env)
 /**
  * crypt_smime_verify_sender - Wrapper for CryptModuleSpecs::smime_verify_sender()
  */
-int crypt_smime_verify_sender(struct Mailbox *m, struct Email *e)
+int crypt_smime_verify_sender(struct Mailbox *m, struct Email *e, struct Message *msg)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_verify_sender))
-    return CRYPT_MOD_CALL(SMIME, smime_verify_sender)(m, e);
+    return CRYPT_MOD_CALL(SMIME, smime_verify_sender)(m, e, msg);
 
   return 1;
 }

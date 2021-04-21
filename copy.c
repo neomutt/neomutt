@@ -833,6 +833,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
  * @param fp_out  FILE pointer to write to
  * @param m       Source mailbox
  * @param e       Email
+ * @param msg     Message
  * @param cmflags Flags, see #CopyMessageFlags
  * @param chflags Flags, see #CopyHeaderFlags
  * @param wraplen Width to wrap at (when chflags & CH_DISPLAY)
@@ -843,20 +844,19 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
  * like partial decode, where it is worth displaying as much as possible
  */
 int mutt_copy_message(FILE *fp_out, struct Mailbox *m, struct Email *e,
-                      CopyMessageFlags cmflags, CopyHeaderFlags chflags, int wraplen)
+                      struct Message *msg, CopyMessageFlags cmflags,
+                      CopyHeaderFlags chflags, int wraplen)
 {
-  struct Message *msg = mx_msg_open(m, e->msgno);
-  if (!msg)
+  if (!msg || !e->body)
+  {
     return -1;
-  if (!e->body)
-    return -1;
+  }
   int rc = mutt_copy_message_fp(fp_out, msg->fp, e, cmflags, chflags, wraplen);
   if ((rc == 0) && (ferror(fp_out) || feof(fp_out)))
   {
     mutt_debug(LL_DEBUG1, "failed to detect EOF!\n");
     rc = -1;
   }
-  mx_msg_close(m, &msg);
   return rc;
 }
 
@@ -907,19 +907,27 @@ static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src
  * @param m_dst   Destination Mailbox
  * @param m_src   Source Mailbox
  * @param e       Email
+ * @param msg     Message
  * @param cmflags Flags, see #CopyMessageFlags
  * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_append_message(struct Mailbox *m_dst, struct Mailbox *m_src, struct Email *e,
+int mutt_append_message(struct Mailbox *m_dst, struct Mailbox *m_src,
+                        struct Email *e, struct Message *msg,
                         CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
-  struct Message *msg = mx_msg_open(m_src, e->msgno);
-  if (!msg)
+  const bool own_msg = !msg;
+  if (own_msg && !(msg = mx_msg_open(m_src, e->msgno)))
+  {
     return -1;
+  }
+
   int rc = append_message(m_dst, msg->fp, m_src, e, cmflags, chflags);
-  mx_msg_close(m_src, &msg);
+  if (own_msg)
+  {
+    mx_msg_close(m_src, &msg);
+  }
   return rc;
 }
 

@@ -577,7 +577,7 @@ static int trash_append(struct Mailbox *m)
 
     if (e->deleted && !e->purge)
     {
-      if (mutt_append_message(m_trash, m, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS) == -1)
+      if (mutt_append_message(m_trash, m, e, NULL, MUTT_CM_NO_FLAGS, CH_NO_FLAGS) == -1)
       {
         mx_mbox_close(m_trash);
         m_trash->append = old_append;
@@ -781,7 +781,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
           break;
         if (e->read && !e->deleted && !(e->flagged && c_keep_flagged))
         {
-          if (mutt_append_message(m_read, m, e, MUTT_CM_NO_FLAGS, CH_UPDATE_LEN) == 0)
+          if (mutt_append_message(m_read, m, e, NULL, MUTT_CM_NO_FLAGS, CH_UPDATE_LEN) == 0)
           {
             mutt_set_flag(m, e, MUTT_DELETE, true);
             mutt_set_flag(m, e, MUTT_PURGE, true);

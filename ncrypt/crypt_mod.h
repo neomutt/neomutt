@@ -34,6 +34,7 @@ struct Body;
 struct Email;
 struct Envelope;
 struct Mailbox;
+struct Message;
 struct State;
 
 /**
@@ -213,10 +214,11 @@ struct CryptModuleSpecs
    * smime_verify_sender - Does the sender match the certificate?
    * @param m Mailbox
    * @param e Email
+   * @param msg Message
    * @retval 0 Success
    * @retval 1 Failure
    */
-  int (*smime_verify_sender)(struct Mailbox *m, struct Email *e);
+  int (*smime_verify_sender)(struct Mailbox *m, struct Email *e, struct Message *msg);
 
   /**
    * smime_build_smime_entity - Encrypt the email body to all recipients

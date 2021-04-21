@@ -33,6 +33,7 @@ struct AddressList;
 struct Body;
 struct Email;
 struct Mailbox;
+struct Message;
 struct State;
 
 /* We work based on user IDs, getting from a user ID to the key is
@@ -100,7 +101,7 @@ void         smime_gpgme_init(void);
 SecurityFlags smime_gpgme_send_menu(struct Mailbox *m, struct Email *e);
 struct Body *smime_gpgme_sign_message(struct Body *a, const struct AddressList *from);
 int          smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
-int          smime_gpgme_verify_sender(struct Mailbox *m, struct Email *e);
+int          smime_gpgme_verify_sender(struct Mailbox *m, struct Email *e, struct Message *msg);
 
 bool crypt_id_is_strong(struct CryptKeyInfo *key);
 int digit(const char *s);
