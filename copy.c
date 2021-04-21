@@ -847,23 +847,15 @@ int mutt_copy_message(FILE *fp_out, struct Mailbox *m, struct Email *e,
                       struct Message *msg, CopyMessageFlags cmflags,
                       CopyHeaderFlags chflags, int wraplen)
 {
-  const bool own_msg = !msg;
-  if (own_msg && !(msg = mx_msg_open(m, e->msgno)))
+  if (!msg || !e->body)
   {
     return -1;
   }
-
-  if (!e->body)
-    return -1;
   int rc = mutt_copy_message_fp(fp_out, msg->fp, e, cmflags, chflags, wraplen);
   if ((rc == 0) && (ferror(fp_out) || feof(fp_out)))
   {
     mutt_debug(LL_DEBUG1, "failed to detect EOF!\n");
     rc = -1;
-  }
-  if (own_msg)
-  {
-    mx_msg_close(m, &msg);
   }
   return rc;
 }

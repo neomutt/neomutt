@@ -1228,7 +1228,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
 /**
  * smime_class_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
  */
-int smime_class_verify_sender(struct Mailbox *m, struct Email *e)
+int smime_class_verify_sender(struct Mailbox *m, struct Email *e, struct Message *msg)
 {
   char *mbox = NULL, *certfile = NULL;
   int rc = 1;
@@ -1243,7 +1243,7 @@ int smime_class_verify_sender(struct Mailbox *m, struct Email *e)
   }
 
   const bool encrypt = e->security & SEC_ENCRYPT;
-  mutt_copy_message(fp_out, m, e, NULL,
+  mutt_copy_message(fp_out, m, e, msg,
                     encrypt ? (MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME) : MUTT_CM_NO_FLAGS,
                     encrypt ? (CH_MIME | CH_WEED | CH_NONEWLINE) : CH_NO_FLAGS, 0);
 
