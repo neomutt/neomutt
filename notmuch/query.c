@@ -119,3 +119,99 @@ enum NmQueryType nm_string_to_query_type_mapper(const char *str)
 
   return NM_QUERY_TYPE_UNKNOWN;
 }
+
+/**
+ * query_window_check_timebase - Checks if a given timebase string is valid
+ * @param[in] timebase: string containing a time base
+ * @retval true The given time base is valid
+ *
+ * This function returns whether a given timebase string is valid or not,
+ * which is used to validate the user settable configuration setting:
+ *
+ *     nm_query_window_timebase
+ */
+static bool query_window_check_timebase(const char *timebase)
+{
+  if ((strcmp(timebase, "hour") == 0) || (strcmp(timebase, "day") == 0) ||
+      (strcmp(timebase, "week") == 0) || (strcmp(timebase, "month") == 0) ||
+      (strcmp(timebase, "year") == 0))
+  {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * nm_windowed_query_from_query - Windows `buf` with notmuch `date:` search term
+ * @param[out] buf    allocated string buffer to receive the modified search query
+ * @param[in]  buflen allocated maximum size of the buf string buffer
+ * @param[in]  duration Duration of time between beginning and end for notmuch `date` search term
+ * @param[in]  cur_pos  Current position of vfolder window
+ * @param[in]  cur_search Current notmuch search
+ * @param[in]  timebase Timebase for `date:` search term. Must be: `hour`,
+ *                      `day`, `week`, `month`, or `year`
+ * @retval NM_WINDOW_QUERY_SUCCESS  Prepended `buf` with `date:` search term
+ * @retval NM_WINDOW_QUERY_INVALID_DURATION Duration out-of-range for search term. `buf` *not* prepended with `date:`
+ * @retval NM_WINDOW_QUERY_INVALID_TIMEBASE Timebase isn't one of `hour`, `day`, `week`, `month`, or `year`
+ *
+ * This is where the magic of windowed queries happens. Taking a vfolder search
+ * query string as parameter, it will use the following two user settings:
+ *
+ * - `duration` and
+ * - `timebase`
+ *
+ * to amend given vfolder search window. Then using a third parameter:
+ *
+ * - `cur_pos`
+ *
+ * it will generate a proper notmuch `date:` parameter. For example, given a
+ * duration of `2`, a timebase set to `week` and a position defaulting to `0`,
+ * it will prepend to the 'tag:inbox' notmuch search query the following string:
+ *
+ * - `query`: `tag:inbox`
+ * - `buf`:   `date:2week..now and tag:inbox`
+ *
+ * If the position is set to `4`, with `duration=3` and `timebase=month`:
+ *
+ * - `query`: `tag:archived`
+ * - `buf`:   `date:12month..9month and tag:archived`
+ *
+ * The window won't be applied:
+ *
+ * - If the duration of the search query is set to `0` this function will be disabled
+ *   and return NM_WINDOW_QUERY_INVALID_DURATION
+ *
+ * - If the timebase is invalid, it will return NM_WINDOW_QUERY_INVALID_TIMEBASE
+ */
+enum NmWindowQueryRc nm_windowed_query_from_query(char *buf, size_t buflen,
+                                                  const short duration, const short cur_pos,
+                                                  const char *cur_search, const char *timebase)
+{
+  // if the duration is a non positive integer, disable the window unless the
+  // user explicitly enables windowed queries.
+  if (duration <= 0)
+  {
+    return NM_WINDOW_QUERY_INVALID_DURATION;
+  }
+
+  int beg = duration * (cur_pos + 1);
+  int end = duration * cur_pos;
+
+  if (!query_window_check_timebase(timebase))
+  {
+    return NM_WINDOW_QUERY_INVALID_TIMEBASE;
+  }
+
+  if (end == 0)
+  {
+    // Open-ended date allows mail from the future.
+    // This may occur is the sender's time settings are off.
+    snprintf(buf, buflen, "date:%d%s.. and %s", beg, timebase, cur_search);
+  }
+  else
+  {
+    snprintf(buf, buflen, "date:%d%s..%d%s and %s", beg, timebase, end, timebase, cur_search);
+  }
+
+  return NM_WINDOW_QUERY_SUCCESS;
+}

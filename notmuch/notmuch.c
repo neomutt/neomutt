@@ -225,27 +225,6 @@ static char *email_get_fullpath(struct Email *e, char *buf, size_t buflen)
 }
 
 /**
- * query_window_check_timebase - Checks if a given timebase string is valid
- * @param[in] timebase: string containing a time base
- * @retval true The given time base is valid
- *
- * This function returns whether a given timebase string is valid or not,
- * which is used to validate the user settable configuration setting:
- *
- *     nm_query_window_timebase
- */
-static bool query_window_check_timebase(const char *timebase)
-{
-  if ((strcmp(timebase, "hour") == 0) || (strcmp(timebase, "day") == 0) ||
-      (strcmp(timebase, "week") == 0) || (strcmp(timebase, "month") == 0) ||
-      (strcmp(timebase, "year") == 0))
-  {
-    return true;
-  }
-  return false;
-}
-
-/**
  * query_window_reset - Restore vfolder's search window to its original position
  *
  * After moving a vfolder search window backward and forward, calling this function
@@ -268,27 +247,11 @@ static void query_window_reset(void)
  * @retval true  Transformed search query is available as a string in buf
  * @retval false Search query shall not be transformed
  *
- * This is where the magic of windowed queries happens. Taking a vfolder search
- * query string as parameter, it will use the following two user settings:
+ * Creates a `date:` search term window from the following user settings:
  *
- * - `nm_query_window_duration` and
+ * - `nm_query_window_duration`
  * - `nm_query_window_timebase`
- *
- * to amend given vfolder search window. Then using a third parameter:
- *
  * - `nm_query_window_current_position`
- *
- * it will generate a proper notmuch `date:` parameter. For example, given a
- * duration of `2`, a timebase set to `week` and a position defaulting to `0`,
- * it will prepend to the 'tag:inbox' notmuch search query the following string:
- *
- * - `query`: `tag:inbox`
- * - `buf`:   `date:2week..now and tag:inbox`
- *
- * If the position is set to `4`, with `duration=3` and `timebase=month`:
- *
- * - `query`: `tag:archived`
- * - `buf`:   `date:12month..9month and tag:archived`
  *
  * The window won't be applied:
  *
@@ -306,49 +269,45 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
       cs_subset_number(NeoMutt->sub, "nm_query_window_duration");
   const short c_nm_query_window_current_position =
       cs_subset_number(NeoMutt->sub, "nm_query_window_current_position");
-  int beg = c_nm_query_window_duration * (c_nm_query_window_current_position + 1);
-  int end = c_nm_query_window_duration * c_nm_query_window_current_position;
-
-  /* if the duration is a non positive integer, disable the window */
-  if (c_nm_query_window_duration <= 0)
-  {
-    query_window_reset();
-    return false;
-  }
-
-  /* if the query has changed, reset the window position */
   const char *const c_nm_query_window_current_search =
       cs_subset_string(NeoMutt->sub, "nm_query_window_current_search");
+  const char *const c_nm_query_window_timebase =
+      cs_subset_string(NeoMutt->sub, "nm_query_window_timebase");
+
+  /* if the query has changed, reset the window position */
   if (!c_nm_query_window_current_search ||
       (strcmp(query, c_nm_query_window_current_search) != 0))
   {
     query_window_reset();
   }
 
-  const char *const c_nm_query_window_timebase =
-      cs_subset_string(NeoMutt->sub, "nm_query_window_timebase");
-  if (!query_window_check_timebase(c_nm_query_window_timebase))
-  {
-    mutt_message(_("Invalid nm_query_window_timebase value (valid values are: "
-                   "hour, day, week, month or year)"));
-    mutt_debug(LL_DEBUG2, "Invalid nm_query_window_timebase value\n");
-    return false;
-  }
+  enum NmWindowQueryRc rc = nm_windowed_query_from_query(
+      buf, buflen, c_nm_query_window_duration, c_nm_query_window_current_position,
+      c_nm_query_window_current_search, c_nm_query_window_timebase);
 
-  if (end == 0)
+  switch (rc)
   {
-    // Open-ended date allows mail from the future.
-    // This may occur is the sender's time settings are off.
-    snprintf(buf, buflen, "date:%d%s.. and %s", beg, c_nm_query_window_timebase,
-             c_nm_query_window_current_search);
+    case NM_WINDOW_QUERY_SUCCESS:
+    {
+      mutt_debug(LL_DEBUG2, "nm: %s -> %s\n", query, buf);
+      break;
+    }
+    case NM_WINDOW_QUERY_INVALID_DURATION:
+    {
+      query_window_reset();
+      return false;
+    }
+    case NM_WINDOW_QUERY_INVALID_TIMEBASE:
+    {
+      // L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
+      //       They should not be translated.
+      mutt_message(
+          _("Invalid nm_query_window_timebase value (valid values are: "
+            "hour, day, week, month, year)"));
+      mutt_debug(LL_DEBUG2, "Invalid nm_query_window_timebase value\n");
+      return false;
+    }
   }
-  else
-  {
-    snprintf(buf, buflen, "date:%d%s..%d%s and %s", beg, c_nm_query_window_timebase,
-             end, c_nm_query_window_timebase, c_nm_query_window_current_search);
-  }
-
-  mutt_debug(LL_DEBUG2, "nm: %s -> %s\n", query, buf);
 
   return true;
 }
