@@ -1464,15 +1464,14 @@ static int compose_attach_tag(struct Menu *menu, int sel, int act)
  * mutt_compose_menu - Allow the user to edit the message envelope
  * @param e      Email to fill
  * @param fcc    Buffer to save FCC
- * @param e_cur  Current message
  * @param flags  Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
  * @param sub    ConfigSubset
  * @retval  1 Message should be postponed
  * @retval  0 Normal exit
  * @retval -1 Abort message
  */
-int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
-                      uint8_t flags, struct ConfigSubset *sub)
+int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
+                      struct ConfigSubset *sub)
 {
   char buf[PATH_MAX];
   int rc = -1;

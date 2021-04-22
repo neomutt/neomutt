@@ -43,6 +43,6 @@ struct Email;
 /* flags for mutt_compose_menu() */
 #define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
 
-int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, uint8_t flags, struct ConfigSubset *sub);
+int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags, struct ConfigSubset *sub);
 
 #endif /* MUTT_COMPOSE_LIB_H */
