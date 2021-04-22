@@ -71,7 +71,9 @@ int dlg_verify_certificate(const char *title, struct ListHead *list,
       dialog_create_simple_index(MENU_GENERIC, WT_DLG_CERTIFICATE, VerifyHelp);
 
   struct Menu *menu = dlg->wdata;
-  menu->title = title;
+
+  struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
+  sbar_set_title(sbar, title);
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, list, entries)

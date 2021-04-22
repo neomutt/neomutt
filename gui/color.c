@@ -1515,3 +1515,13 @@ void mutt_color_observer_remove(observer_t callback, void *global_data)
 {
   notify_observer_remove(Colors.notify, callback, global_data);
 }
+
+/**
+ * mutt_color_is_header - Colour is for an Email header
+ * @param color_id Colour, e.g. #MT_COLOR_HEADER
+ * @retval true Colour is for an Email header
+ */
+bool mutt_color_is_header(enum ColorId color_id)
+{
+    return (color_id == MT_COLOR_HEADER) || (color_id == MT_COLOR_HDRDEFAULT);
+}

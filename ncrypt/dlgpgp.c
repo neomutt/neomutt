@@ -562,7 +562,8 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   else
     snprintf(buf, sizeof(buf), _("PGP keys matching \"%s\""), s);
 
-  menu->title = buf;
+  struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
+  sbar_set_title(sbar, buf);
 
   kp = NULL;
 

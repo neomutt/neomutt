@@ -1,6 +1,6 @@
 /**
  * @file
- * Dialog Windows
+ * Simple Dialog Windows
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -20,13 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_GUI_DIALOG_H
-#define MUTT_GUI_DIALOG_H
+#ifndef MUTT_GUI_SIMPLE_H
+#define MUTT_GUI_SIMPLE_H
 
-struct MuttWindow;
+#include "mutt_window.h"
+#include "keymap.h"
 
-struct MuttWindow *dialog_find(struct MuttWindow *win);
-void               dialog_pop(void);
-void               dialog_push(struct MuttWindow *dlg);
+struct Mapping;
 
-#endif /* MUTT_GUI_DIALOG_H */
+struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowType wtype, const struct Mapping *help_data);
+void               dialog_destroy_simple_index(struct MuttWindow **ptr);
+
+#endif /* MUTT_GUI_SIMPLE_H */

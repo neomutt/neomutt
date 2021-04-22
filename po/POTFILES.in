@@ -96,6 +96,8 @@ gui/dialog.c
 gui/mutt_curses.c
 gui/mutt_window.c
 gui/reflow.c
+gui/sbar.c
+gui/simple.c
 gui/terminal.c
 handler.c
 hcache/config.c

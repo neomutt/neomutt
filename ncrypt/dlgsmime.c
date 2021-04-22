@@ -160,7 +160,6 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, char *query)
   struct SmimeKey *key = NULL;
   struct SmimeKey *selected_key = NULL;
   char buf[1024];
-  char title[256];
   const char *s = "";
   bool done = false;
 
@@ -175,16 +174,18 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, char *query)
     table[table_index++] = key;
   }
 
-  snprintf(title, sizeof(title), _("S/MIME certificates matching \"%s\""), query);
-
   struct MuttWindow *dlg = dialog_create_simple_index(MENU_SMIME, WT_DLG_SMIME, SmimeHelp);
 
   struct Menu *menu = dlg->wdata;
   menu->max = table_index;
   menu->make_entry = smime_make_entry;
   menu->mdata = table;
-  menu->title = title;
   /* sorting keys might be done later - TODO */
+
+  char title[256];
+  struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
+  snprintf(title, sizeof(title), _("S/MIME certificates matching \"%s\""), query);
+  sbar_set_title(sbar, title);
 
   mutt_clear_error();
 

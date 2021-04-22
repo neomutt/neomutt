@@ -1,9 +1,9 @@
 /**
  * @file
- * Dialog Windows
+ * Simple Bar
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,13 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_GUI_DIALOG_H
-#define MUTT_GUI_DIALOG_H
+#ifndef MUTT_SIMPLE_IBAR_H
+#define MUTT_SIMPLE_IBAR_H
 
 struct MuttWindow;
 
-struct MuttWindow *dialog_find(struct MuttWindow *win);
-void               dialog_pop(void);
-void               dialog_push(struct MuttWindow *dlg);
+struct MuttWindow *sbar_add(struct MuttWindow *parent);
+void sbar_set_title(struct MuttWindow *win, const char *title);
 
-#endif /* MUTT_GUI_DIALOG_H */
+#endif /* MUTT_SIMPLE_IBAR_H */

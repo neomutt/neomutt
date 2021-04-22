@@ -176,8 +176,10 @@ static struct Menu *create_menu(struct MuttWindow *dlg)
   struct Menu *menu = dlg->wdata;
   menu->make_entry = account_make_entry;
   /* menu->tag = account_tag; */
+
+  struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
   // L10N: Autocrypt Account Management Menu title
-  menu->title = _("Autocrypt Accounts");
+  sbar_set_title(sbar, _("Autocrypt Accounts"));
 
   struct AccountEntry *entries =
       mutt_mem_calloc(num_accounts, sizeof(struct AccountEntry));

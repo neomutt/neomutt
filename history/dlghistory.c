@@ -102,9 +102,11 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
   struct MuttWindow *dlg =
       dialog_create_simple_index(MENU_GENERIC, WT_DLG_HISTORY, HistoryHelp);
 
+  struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
+  sbar_set_title(sbar, title);
+
   struct Menu *menu = dlg->wdata;
   menu->make_entry = history_make_entry;
-  menu->title = title;
   menu->max = match_count;
   menu->mdata = matches;
 

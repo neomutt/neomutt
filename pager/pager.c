@@ -254,8 +254,6 @@ static const struct Mapping PagerNewsHelp[] = {
 };
 #endif
 
-#define IS_HEADER(x) (((x) == MT_COLOR_HEADER) || ((x) == MT_COLOR_HDRDEFAULT))
-
 /**
  * assert_pager_mode - Check that pager is in correct mode
  * @param test   Test condition
@@ -1048,7 +1046,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       cs_subset_bool(NeoMutt->sub, "header_color_partial");
   int offset, i = 0;
 
-  if ((n == 0) || IS_HEADER(line_info[n - 1].type) ||
+  if ((n == 0) || mutt_color_is_header(line_info[n - 1].type) ||
       (check_protected_header_marker(raw) == 0))
   {
     if (buf[0] == '\n') /* end of header */
@@ -1899,7 +1897,8 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   /* move the break point only if smart_wrap is set */
   if (c_smart_wrap)
   {
-    if ((cnt < b_read) && (ch != -1) && !IS_HEADER(curr_line->type) && !IS_SPACE(buf[cnt]))
+    if ((cnt < b_read) && (ch != -1) &&
+        !mutt_color_is_header(curr_line->type) && !IS_SPACE(buf[cnt]))
     {
       buf_ptr = buf + ch;
       /* skip trailing blanks */
@@ -3117,7 +3116,7 @@ int mutt_pager(struct PagerView *pview)
         int new_topline = rd.topline;
 
         /* Skip all the email headers */
-        if (IS_HEADER(rd.line_info[new_topline].type))
+        if (mutt_color_is_header(rd.line_info[new_topline].type))
         {
           while (((new_topline < rd.last_line) ||
                   (0 == (dretval = display_line(
@@ -3125,7 +3124,7 @@ int mutt_pager(struct PagerView *pview)
                              &rd.max_line, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
                              &rd.quote_list, &rd.q_level, &rd.force_redraw,
                              &rd.search_re, rd.pview->win_pager)))) &&
-                 IS_HEADER(rd.line_info[new_topline].type))
+                 mutt_color_is_header(rd.line_info[new_topline].type))
           {
             new_topline++;
           }
@@ -3180,7 +3179,7 @@ int mutt_pager(struct PagerView *pview)
         int dretval = 0;
         int new_topline = rd.topline;
 
-        if (!IS_HEADER(rd.line_info[new_topline].type))
+        if (!mutt_color_is_header(rd.line_info[new_topline].type))
         {
           /* L10N: Displayed if <skip-headers> is invoked in the pager, but we
              are already past the headers */
@@ -3194,7 +3193,7 @@ int mutt_pager(struct PagerView *pview)
                            &rd.max_line, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
                            &rd.quote_list, &rd.q_level, &rd.force_redraw,
                            &rd.search_re, rd.pview->win_pager)))) &&
-               IS_HEADER(rd.line_info[new_topline].type))
+               mutt_color_is_header(rd.line_info[new_topline].type))
         {
           new_topline++;
         }
@@ -4163,4 +4162,40 @@ int mutt_pager(struct PagerView *pview)
   mutt_window_reflow(dialog_find(rd.pview->win_pager));
 
   return (rc != -1) ? rc : 0;
+}
+
+/**
+ * add_panel_pager - Add the Windows for the Pager panel
+ * @param parent        Parent Window
+ * @param status_on_top true, if the Pager bar should be on top
+ */
+struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top)
+{
+  struct MuttWindow *panel_pager =
+      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
+  mutt_window_add_child(parent, panel_pager);
+
+  struct MuttWindow *win_pager =
+      mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  panel_pager->focus = win_pager;
+
+  struct MuttWindow *win_pbar =
+      mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+
+  if (status_on_top)
+  {
+    mutt_window_add_child(panel_pager, win_pbar);
+    mutt_window_add_child(panel_pager, win_pager);
+  }
+  else
+  {
+    mutt_window_add_child(panel_pager, win_pager);
+    mutt_window_add_child(panel_pager, win_pbar);
+  }
+
+  return panel_pager;
 }

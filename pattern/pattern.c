@@ -233,14 +233,13 @@ bool mutt_limit_current_thread(struct Context *ctx, struct Email *e)
  * mutt_pattern_alias_func - Perform some Pattern matching for Alias
  * @param op        Operation to perform, e.g. #MUTT_LIMIT
  * @param prompt    Prompt to show the user
- * @param menu_name Name of the current menu, e.g. Aliases, Query
  * @param mdata     Menu data holding Aliases
  * @param menu      Current menu
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_pattern_alias_func(int op, char *prompt, char *menu_name,
-                            struct AliasMenuData *mdata, struct Menu *menu)
+int mutt_pattern_alias_func(int op, char *prompt, struct AliasMenuData *mdata,
+                            struct Menu *menu)
 {
   int rc = -1;
   struct Progress progress;
@@ -306,19 +305,17 @@ int mutt_pattern_alias_func(int op, char *prompt, char *menu_name,
     }
   }
 
-  mutt_str_replace(&mdata->str, simple);
+  FREE(&mdata->str);
+  if (!match_all)
+  {
+    mdata->str = simple;
+    simple = NULL;
+  }
 
   if (menu)
   {
     menu->max = vcounter;
     menu->current = 0;
-
-    FREE(&menu->title);
-
-    if (match_all)
-      menu->title = menu_create_alias_title(menu_name, NULL);
-    else
-      menu->title = menu_create_alias_title(menu_name, simple);
   }
 
   mutt_clear_error();
