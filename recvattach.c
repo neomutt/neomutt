@@ -64,7 +64,8 @@
 #include <libintl.h>
 #endif
 
-static void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx, struct Menu *menu, bool init);
+static void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx,
+                                        struct Menu *menu, bool init);
 
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
 
@@ -1302,8 +1303,8 @@ static void recvattach_edit_content_type(struct ConfigSubset *sub, struct Attach
  * @param recv true if these are received attachments (rather than in compose)
  * @retval num Operation performed
  */
-int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op, struct Email *e,
-                             struct AttachCtx *actx, bool recv)
+int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op,
+                             struct Email *e, struct AttachCtx *actx, bool recv)
 {
   do
   {
@@ -1513,7 +1514,8 @@ void mutt_attach_init(struct AttachCtx *actx)
  * @param menu Menu listing Attachments
  * @param init If true, create a new Attachments context
  */
-static void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx, struct Menu *menu, bool init)
+static void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx,
+                                        struct Menu *menu, bool init)
 {
   if (init)
   {
@@ -1574,7 +1576,8 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
  * @param e   Email
  * @param fp File with the content of the email, or NULL
  */
-void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m, struct Email *e, FILE *fp)
+void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
+                           struct Email *e, FILE *fp)
 {
   if (!m || !e || !fp)
   {

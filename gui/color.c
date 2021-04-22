@@ -236,7 +236,7 @@ static void defs_clear(void)
 }
 
 /**
- * Colorsquotes_init - Initialise the quoted-email colours
+ * quotes_init - Initialise the quoted-email colours
  */
 static void quotes_init(void)
 {
@@ -380,7 +380,7 @@ static void colors_clear(void)
 }
 
 /**
- * mutt_colors_clenaup - Cleanup all the colours
+ * mutt_colors_cleanup - Cleanup all the colours
  */
 void mutt_colors_cleanup(void)
 {
