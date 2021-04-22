@@ -50,6 +50,7 @@
 #include "pager/lib.h"
 #include "browser.h"
 #include "color.h"
+#include "context.h"
 #include "dialog.h"
 #include "enter_state.h"
 #include "keymap.h"
@@ -699,7 +700,12 @@ int mutt_do_pager(struct PagerView *pview)
       mutt_window_new(WT_DLG_DO_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
-  dlg->wdata = index_shared_data_new();
+  struct IndexSharedData *shared = index_shared_data_new();
+  shared->ctx = pview->pdata->ctx;
+  shared->mailbox = shared->ctx ? shared->ctx->mailbox : NULL;
+  shared->account = shared->mailbox ? shared->mailbox->account : NULL;
+  shared->email = pview->pdata->email;
+  dlg->wdata = shared;
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   struct MuttWindow *panel_pager = add_panel_pager(dlg, c_status_on_top);
