@@ -23,6 +23,9 @@
 #ifndef MUTT_NOTMUCH_QUERY_H
 #define MUTT_NOTMUCH_QUERY_H
 
+#include <stddef.h>
+#include <stdbool.h>
+
 /**
  * enum NmQueryType - Notmuch Query Types
  *
@@ -35,9 +38,23 @@ enum NmQueryType
   NM_QUERY_TYPE_UNKNOWN,   ///< Unknown query type. Error in notmuch query.
 };
 
+/**
+ * enum NmWindowQueryRc - Return codes for nm_windowed_query_from_query()
+ */
+enum NmWindowQueryRc
+{
+  NM_WINDOW_QUERY_SUCCESS = 1,
+  NM_WINDOW_QUERY_INVALID_TIMEBASE,
+  NM_WINDOW_QUERY_INVALID_DURATION
+};
+
 enum NmQueryType nm_parse_type_from_query(char *buf);
 enum NmQueryType nm_string_to_query_type(const char *str);
 enum NmQueryType nm_string_to_query_type_mapper(const char *str);
 const char *nm_query_type_to_string(enum NmQueryType query_type);
+enum NmWindowQueryRc nm_windowed_query_from_query(char *buf, size_t buflen,
+                                                  const short duration, const short current_pos,
+                                                  const char *current_search,
+                                                  const char *timebase);
 
 #endif /* MUTT_NOTMUCH_QUERY_H */
