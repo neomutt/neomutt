@@ -735,7 +735,8 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
 static bool pattern_needs_msg(const struct Pattern *pat)
 {
   if ((pat->op == MUTT_PAT_MIMETYPE) || (pat->op == MUTT_PAT_WHOLE_MSG) ||
-      (pat->op == MUTT_PAT_MIMEATTACH))
+      (pat->op == MUTT_PAT_MIMEATTACH) || (pat->op == MUTT_PAT_BODY) ||
+      (pat->op == MUTT_PAT_HEADER))
   {
     return true;
   }
