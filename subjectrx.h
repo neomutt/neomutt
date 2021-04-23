@@ -40,14 +40,6 @@ enum NotifySubjRx
   NT_SUBJRX_DELETE,     ///< Subject Regex has been deleted
 };
 
-/**
- * struct EventSubjectRx - A Subject Regex event
- */
-struct EventSubjectRx
-{
-  const char *rule;   // Subject regex added or removed
-};
-
 void subjrx_init(void);
 void subjrx_free(void);
 
