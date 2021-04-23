@@ -121,7 +121,7 @@ enum NmQueryType nm_string_to_query_type_mapper(const char *str)
 }
 
 /**
- * query_window_check_timebase - Checks if a given timebase string is valid
+ * nm_query_window_check_timebase - Checks if a given timebase string is vali_
  * @param[in] timebase: string containing a time base
  * @retval true The given time base is valid
  *
@@ -130,7 +130,7 @@ enum NmQueryType nm_string_to_query_type_mapper(const char *str)
  *
  *     nm_query_window_timebase
  */
-static bool query_window_check_timebase(const char *timebase)
+bool nm_query_window_check_timebase(const char *timebase)
 {
   if ((strcmp(timebase, "hour") == 0) || (strcmp(timebase, "day") == 0) ||
       (strcmp(timebase, "week") == 0) || (strcmp(timebase, "month") == 0) ||
@@ -197,7 +197,7 @@ enum NmWindowQueryRc nm_windowed_query_from_query(char *buf, size_t buflen,
   int beg = duration * (cur_pos + 1);
   int end = duration * cur_pos;
 
-  if (!query_window_check_timebase(timebase))
+  if (!nm_query_window_check_timebase(timebase))
   {
     return NM_WINDOW_QUERY_INVALID_TIMEBASE;
   }
