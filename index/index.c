@@ -1799,7 +1799,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         pdata.fname = tempfile;
 
         pview.banner = "messages";
-        pview.flags = MUTT_PAGER_LOGS;
+        pview.flags = MUTT_PAGER_LOGS | MUTT_PAGER_BOTTOM;
         pview.mode = PAGER_MODE_OTHER;
 
         mutt_do_pager(&pview);
