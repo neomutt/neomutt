@@ -276,7 +276,8 @@ static void pbar_data_free(struct MuttWindow *win, void **ptr)
   notify_observer_remove(NeoMutt->notify, pbar_color_observer, win);
   notify_observer_remove(NeoMutt->notify, pbar_config_observer, win);
   notify_observer_remove(shared->notify, pbar_pager_observer, win);
-  notify_observer_remove(priv->win_pbar->parent->notify, pbar_menu_observer, win);
+  if (priv->win_pbar)
+    notify_observer_remove(priv->win_pbar->parent->notify, pbar_menu_observer, win);
 
   if (shared->mailbox)
     notify_observer_remove(shared->mailbox->notify, pbar_mailbox_observer, win);

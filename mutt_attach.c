@@ -671,8 +671,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     pview.mode = PAGER_MODE_ATTACH;
     if (win->type == WT_INDEX)
     {
-      struct IndexSharedData *index_shared = dialog_find(win)->wdata;
-      index_shared->email = e;
+      // struct IndexSharedData *index_shared = dialog_find(win)->wdata;
+      // index_shared->email = e;
       // TODO: notify something?
     }
     rc = mutt_do_pager(&pview);
