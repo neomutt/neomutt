@@ -2336,6 +2336,34 @@ static const struct Mapping *pager_resolve_help_mapping(enum PagerMode mode, enu
 }
 
 /**
+ * jump_to_bottom - make sure the bottom line is displayed
+ * @param rd PagerRedrawData
+ * @param pview PagerView
+ * @retval true Something changed
+ * @retval false Bottom was already displayed
+ */
+static bool jump_to_bottom(struct PagerRedrawData *rd, struct PagerView *pview)
+{
+  if (!(rd->line_info[rd->curline].offset < (rd->sb.st_size - 1)))
+  {
+    return false;
+  }
+
+  int line_num = rd->curline;
+  /* make sure the types are defined to the end of file */
+  while (display_line(rd->fp, &rd->last_pos, &rd->line_info, line_num, &rd->last_line,
+                      &rd->max_line, rd->has_types | (pview->flags & MUTT_PAGER_NOWRAP),
+                      &rd->quote_list, &rd->q_level, &rd->force_redraw,
+                      &rd->search_re, rd->pview->win_pager) == 0)
+  {
+    line_num++;
+  }
+  rd->topline = up_n_lines(rd->pview->win_pager->state.rows, rd->line_info,
+                           rd->last_line, rd->hide_quoted);
+  return true;
+}
+
+/**
  * mutt_pager - Display a an email, attachment, or help, in a window
  * @param pview Pager view settings
  * @retval  0 Success
@@ -2532,6 +2560,12 @@ int mutt_pager(struct PagerView *pview)
   window_set_visible(rd.pview->win_pager->parent, true);
   mutt_window_reflow(dialog_find(rd.pview->win_pager));
   window_set_focus(pview->win_pager);
+
+  //---------- jump to the bottom if requested ------------------------------
+  if (pview->flags & MUTT_PAGER_BOTTOM)
+  {
+    jump_to_bottom(&rd, pview);
+  }
 
   //-------------------------------------------------------------------------
   // ACT 3: Read user input and decide what to do with it
@@ -3214,22 +3248,10 @@ int mutt_pager(struct PagerView *pview)
         //=======================================================================
 
       case OP_PAGER_BOTTOM: /* move to the end of the file */
-        if (rd.line_info[rd.curline].offset < (rd.sb.st_size - 1))
+        if (!jump_to_bottom(&rd, pview))
         {
-          int line_num = rd.curline;
-          /* make sure the types are defined to the end of file */
-          while (display_line(rd.fp, &rd.last_pos, &rd.line_info, line_num, &rd.last_line,
-                              &rd.max_line, rd.has_types | (pview->flags & MUTT_PAGER_NOWRAP),
-                              &rd.quote_list, &rd.q_level, &rd.force_redraw,
-                              &rd.search_re, rd.pview->win_pager) == 0)
-          {
-            line_num++;
-          }
-          rd.topline = up_n_lines(rd.pview->win_pager->state.rows, rd.line_info,
-                                  rd.last_line, rd.hide_quoted);
-        }
-        else
           mutt_error(_("Bottom of message is shown"));
+        }
         break;
 
         //=======================================================================
