@@ -33,6 +33,7 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "notmuch/private.h"
+#include "notmuch/query.h"
 
 /**
  * is_valid_notmuch_url - Checks that a URL is in required form.
@@ -55,6 +56,34 @@ static int nm_default_url_validator(const struct ConfigSet *cs, const struct Con
   {
     mutt_buffer_printf(
         err, _("nm_default_url must be: notmuch://<absolute path> . Current: %s"), url);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}
+
+/**
+ * nm_query_window_timebase_validator - Ensures nm_query_window_timebase matches allowed values - Implements ConfigDef::validator()
+ *
+ * Allowed values:
+ * - hour
+ * - day
+ * - week
+ * - month
+ * - year
+ */
+static int nm_query_window_timebase_validator(const struct ConfigSet *cs,
+                                              const struct ConfigDef *cdef,
+                                              intptr_t value, struct Buffer *err)
+{
+  const char *timebase = (const char *) value;
+  if (!nm_query_window_check_timebase(timebase))
+  {
+    // L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
+    //       They should not be translated.
+    mutt_buffer_printf(
+        err, _("Invalid nm_query_window_timebase value (valid values are: "
+               "hour, day, week, month, year)"));
     return CSR_ERR_INVALID;
   }
 
@@ -90,7 +119,7 @@ static struct ConfigDef NotmuchVars[] = {
   { "nm_query_window_duration", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "(notmuch) Time duration of the current search window"
   },
-  { "nm_query_window_timebase", DT_STRING, IP "week", 0, NULL,
+  { "nm_query_window_timebase", DT_STRING, IP "week", 0, nm_query_window_timebase_validator,
     "(notmuch) Units for the time duration"
   },
   { "nm_record_tags", DT_STRING, 0, 0, NULL,

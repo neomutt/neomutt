@@ -56,5 +56,6 @@ enum NmWindowQueryRc nm_windowed_query_from_query(char *buf, size_t buflen,
                                                   const short duration, const short current_pos,
                                                   const char *current_search,
                                                   const char *timebase);
+bool nm_query_window_check_timebase(const char *timebase);
 
 #endif /* MUTT_NOTMUCH_QUERY_H */
