@@ -37,95 +37,6 @@
 #include "mutt_globals.h"
 
 /**
- * index_shared_data_set_context - Set the Context for the Index and friends
- * @param shared Shared Index data
- * @param ctx    New Context, may be NULL
- */
-void index_shared_data_set_context(struct IndexSharedData *shared, struct Context *ctx)
-{
-  if (!shared)
-    return;
-
-  struct IndexSharedData old_shared = *shared;
-
-  NotifyIndex subtype = NT_INDEX_NO_FLAGS;
-
-  if (shared->ctx != ctx)
-  {
-    shared->ctx = ctx;
-    subtype |= NT_INDEX_CONTEXT;
-
-    Context = ctx;
-  }
-
-  struct Mailbox *m = ctx_mailbox(ctx);
-  if (shared->mailbox != m)
-  {
-    shared->mailbox = m;
-    subtype |= NT_INDEX_MAILBOX;
-  }
-
-  struct Account *a = m ? m->account : NULL;
-  if (shared->account != a)
-  {
-    shared->account = a;
-    subtype |= NT_INDEX_ACCOUNT;
-  }
-
-  struct ConfigSubset *sub = NeoMutt->sub;
-  if (m)
-    sub = m->sub;
-  else if (a)
-    sub = a->sub;
-  if (shared->sub != sub)
-  {
-    shared->sub = sub;
-    subtype |= NT_INDEX_SUBSET;
-  }
-
-  if (subtype != NT_INDEX_NO_FLAGS)
-    notify_send(shared->notify, NT_INDEX, subtype, &old_shared);
-}
-
-/**
- * index_shared_data_set_email - Set the current Email for the Index and friends
- * @param shared Shared Index data
- * @param e      Current Email, may be NULL
- */
-void index_shared_data_set_email(struct IndexSharedData *shared, struct Email *e)
-{
-  if (!shared)
-    return;
-
-  struct IndexSharedData old_shared = *shared;
-
-  size_t seq = e ? e->sequence : 0;
-  if ((shared->email != e) || (shared->email_seq != seq))
-  {
-    shared->email = e;
-    shared->email_seq = seq;
-
-    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, &old_shared);
-  }
-}
-
-/**
- * index_shared_data_is_cur_email - Check whether an email is the currently selected Email
- * @param shared Shared Index data
- * @param e      Email to check
- * @retval true  e is current
- * @retval false e is not current
- */
-bool index_shared_data_is_cur_email(const struct IndexSharedData *shared,
-                                    const struct Email *e)
-{
-  if (!shared)
-    return false;
-
-  return shared->email_seq == e->sequence;
-}
-
-/**
  * index_shared_context_observer - Context has changed - Implements ::observer_t
  */
 static int index_shared_context_observer(struct NotifyCallback *nc)
@@ -232,6 +143,95 @@ static int index_shared_email_observer(struct NotifyCallback *nc)
   }
 
   return 0;
+}
+
+/**
+ * index_shared_data_set_context - Set the Context for the Index and friends
+ * @param shared Shared Index data
+ * @param ctx    New Context, may be NULL
+ */
+void index_shared_data_set_context(struct IndexSharedData *shared, struct Context *ctx)
+{
+  if (!shared)
+    return;
+
+  struct IndexSharedData old_shared = *shared;
+
+  NotifyIndex subtype = NT_INDEX_NO_FLAGS;
+
+  if (shared->ctx != ctx)
+  {
+    shared->ctx = ctx;
+    subtype |= NT_INDEX_CONTEXT;
+
+    Context = ctx;
+  }
+
+  struct Mailbox *m = ctx_mailbox(ctx);
+  if (shared->mailbox != m)
+  {
+    shared->mailbox = m;
+    subtype |= NT_INDEX_MAILBOX;
+  }
+
+  struct Account *a = m ? m->account : NULL;
+  if (shared->account != a)
+  {
+    shared->account = a;
+    subtype |= NT_INDEX_ACCOUNT;
+  }
+
+  struct ConfigSubset *sub = NeoMutt->sub;
+  if (m)
+    sub = m->sub;
+  else if (a)
+    sub = a->sub;
+  if (shared->sub != sub)
+  {
+    shared->sub = sub;
+    subtype |= NT_INDEX_SUBSET;
+  }
+
+  if (subtype != NT_INDEX_NO_FLAGS)
+    notify_send(shared->notify, NT_INDEX, subtype, &old_shared);
+}
+
+/**
+ * index_shared_data_set_email - Set the current Email for the Index and friends
+ * @param shared Shared Index data
+ * @param e      Current Email, may be NULL
+ */
+void index_shared_data_set_email(struct IndexSharedData *shared, struct Email *e)
+{
+  if (!shared)
+    return;
+
+  struct IndexSharedData old_shared = *shared;
+
+  size_t seq = e ? e->sequence : 0;
+  if ((shared->email != e) || (shared->email_seq != seq))
+  {
+    shared->email = e;
+    shared->email_seq = seq;
+
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, &old_shared);
+  }
+}
+
+/**
+ * index_shared_data_is_cur_email - Check whether an email is the currently selected Email
+ * @param shared Shared Index data
+ * @param e      Email to check
+ * @retval true  e is current
+ * @retval false e is not current
+ */
+bool index_shared_data_is_cur_email(const struct IndexSharedData *shared,
+                                    const struct Email *e)
+{
+  if (!shared)
+    return false;
+
+  return shared->email_seq == e->sequence;
 }
 
 /**
