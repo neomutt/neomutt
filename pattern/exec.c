@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -112,6 +113,8 @@ static void print_crypt_pattern_op_error(int op)
 static bool msg_search(struct Pattern *pat, struct Mailbox *m, struct Email *e,
                        struct Message *msg)
 {
+  assert(msg);
+
   bool match = false;
 
   FILE *fp = NULL;
@@ -123,6 +126,10 @@ static bool msg_search(struct Pattern *pat, struct Mailbox *m, struct Email *e,
   struct stat st;
 #endif
 
+  const bool needs_head = (pat->op == MUTT_PAT_HEADER) ||
+                          (pat->op == MUTT_PAT_WHOLE_MSG);
+  const bool needs_body = (pat->op == MUTT_PAT_BODY) ||
+                          (pat->op == MUTT_PAT_WHOLE_MSG);
   const bool c_thorough_search =
       cs_subset_bool(NeoMutt->sub, "thorough_search");
   if (c_thorough_search)
@@ -147,10 +154,12 @@ static bool msg_search(struct Pattern *pat, struct Mailbox *m, struct Email *e,
     }
 #endif
 
-    if (pat->op != MUTT_PAT_BODY)
+    if (needs_head)
+    {
       mutt_copy_header(msg->fp, e, s.fp_out, CH_FROM | CH_DECODE, NULL, 0);
+    }
 
-    if (pat->op != MUTT_PAT_HEADER)
+    if (needs_body)
     {
       mutt_parse_mime_message(m, e, msg->fp);
 
@@ -206,15 +215,17 @@ static bool msg_search(struct Pattern *pat, struct Mailbox *m, struct Email *e,
   {
     /* raw header / body */
     fp = msg->fp;
-    if (pat->op != MUTT_PAT_BODY)
+    if (needs_head)
     {
       fseeko(fp, e->offset, SEEK_SET);
       len = e->body->offset - e->offset;
     }
-    if (pat->op != MUTT_PAT_HEADER)
+    if (needs_body)
     {
       if (pat->op == MUTT_PAT_BODY)
+      {
         fseeko(fp, e->body->offset, SEEK_SET);
+      }
       len += e->body->length;
     }
   }
