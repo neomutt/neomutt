@@ -77,7 +77,7 @@ static int dialog_config_observer(struct NotifyCallback *nc)
 struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowType wtype,
                                               const struct Mapping *help_data)
 {
-  struct Menu *menu = mutt_menu_new(mtype);
+  struct Menu *menu = menu_new(mtype);
 
   struct MuttWindow *dlg =
       mutt_window_new(wtype, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
@@ -109,7 +109,7 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
   menu->pagelen = index->state.rows;
   menu->win_index = index;
 
-  mutt_menu_push_current(menu);
+  menu_push_current(menu);
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, dialog_config_observer, dlg);
   dialog_push(dlg);
@@ -129,8 +129,8 @@ void dialog_destroy_simple_index(struct MuttWindow **ptr)
   struct MuttWindow *dlg = *ptr;
 
   struct Menu *menu = dlg->wdata;
-  mutt_menu_pop_current(menu);
-  mutt_menu_free(&menu);
+  menu_pop_current(menu);
+  menu_free(&menu);
 
   dialog_pop();
   notify_observer_remove(NeoMutt->notify, dialog_config_observer, dlg);

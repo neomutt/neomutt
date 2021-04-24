@@ -34,11 +34,11 @@ void debug_win_dump(void)
 {
 }
 
-void mutt_menu_set_current_redraw_full(void)
+void menu_set_current_redraw_full(void)
 {
 }
 
-void mutt_menu_set_current_redraw(MuttRedrawFlags redraw)
+void menu_set_current_redraw(MuttRedrawFlags redraw)
 {
 }
 

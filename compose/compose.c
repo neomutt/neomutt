@@ -1550,7 +1550,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   envelope->req_rows = calc_envelope(rd);
   mutt_window_reflow(dlg);
 
-  struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
+  struct Menu *menu = menu_new(MENU_COMPOSE);
   notify_set_parent(menu->notify, attach->notify);
 
   menu->pagelen = attach->state.rows;
@@ -1561,7 +1561,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   menu->tag = compose_attach_tag;
   menu->custom_redraw = compose_custom_redraw;
   menu->mdata = rd;
-  mutt_menu_push_current(menu);
+  menu_push_current(menu);
 
   struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;
@@ -1585,7 +1585,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 #ifdef USE_NNTP
     OptNews = false; /* for any case */
 #endif
-    const int op = mutt_menu_loop(menu);
+    const int op = menu_loop(menu);
     if (op >= 0)
       mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
     switch (op)
@@ -2775,8 +2775,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     e->security &= ~SEC_AUTOCRYPT;
 #endif
 
-  mutt_menu_pop_current(menu);
-  mutt_menu_free(&menu);
+  menu_pop_current(menu);
+  menu_free(&menu);
   dialog_pop();
   notify_observer_remove(NeoMutt->notify, compose_config_observer, dlg);
   notify_observer_remove(NeoMutt->notify, compose_header_observer, rd);

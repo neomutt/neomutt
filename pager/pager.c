@@ -2098,7 +2098,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       {
         /* only allocate the space if/when we need the index.
          * Initialise the menu as per the main index */
-        struct Menu *menu = mutt_menu_new(MENU_MAIN);
+        struct Menu *menu = menu_new(MENU_MAIN);
         notify_set_parent(menu->notify, rd->pview->win_index->notify);
 
         rd->menu = menu;
@@ -2523,7 +2523,7 @@ int mutt_pager(struct PagerView *pview)
   unlink(pview->pdata->fname);
 
   //---------- setup pager menu------------------------------------------------
-  struct Menu *menu = mutt_menu_new(MENU_PAGER);
+  struct Menu *menu = menu_new(MENU_PAGER);
   notify_set_parent(menu->notify, pview->win_pager->notify);
 
   pager_menu = menu;
@@ -2532,7 +2532,7 @@ int mutt_pager(struct PagerView *pview)
   pager_menu->win_ibar = pview->win_pbar;
   pager_menu->custom_redraw = pager_custom_redraw;
   pager_menu->mdata = &rd;
-  mutt_menu_push_current(pager_menu);
+  menu_push_current(pager_menu);
 
   //---------- restore global state if needed ---------------------------------
   while (pview->mode == PAGER_MODE_EMAIL && (OldEmail == pview->pdata->email) // are we "resuming" to the same Email?
@@ -3512,7 +3512,7 @@ int mutt_pager(struct PagerView *pview)
 
         if (old_PagerIndexLines != c_pager_index_lines)
         {
-          mutt_menu_free(&rd.menu);
+          menu_free(&rd.menu);
         }
 
         if ((pager_menu->redraw & REDRAW_FLOW) && (pview->flags & MUTT_PAGER_RETWINCH))
@@ -4168,9 +4168,9 @@ int mutt_pager(struct PagerView *pview)
     rd.search_compiled = false;
   }
   FREE(&rd.line_info);
-  mutt_menu_pop_current(pager_menu);
-  mutt_menu_free(&pager_menu);
-  mutt_menu_free(&rd.menu);
+  menu_pop_current(pager_menu);
+  menu_free(&pager_menu);
+  menu_free(&rd.menu);
 
   if (rd.pview->win_index)
   {

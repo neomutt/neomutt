@@ -734,7 +734,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   TagTransforms = mutt_hash_new(64, MUTT_HASH_STRCASECMP);
   TagFormats = mutt_hash_new(64, MUTT_HASH_NO_FLAGS);
 
-  mutt_menu_init();
+  menu_init();
 #ifdef USE_SIDEBAR
   sb_init();
 #endif

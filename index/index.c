@@ -1169,7 +1169,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     dlg->help_data = IndexHelp;
   dlg->help_menu = MENU_MAIN;
 
-  struct Menu *menu = mutt_menu_new(MENU_MAIN);
+  struct Menu *menu = menu_new(MENU_MAIN);
   notify_set_parent(menu->notify, priv->win_index->notify);
 
   priv->menu = menu;
@@ -1182,7 +1182,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   priv->menu->color = index_color;
   priv->menu->current = ci_first_message(shared->mailbox);
   priv->menu->custom_redraw = index_custom_redraw;
-  mutt_menu_push_current(priv->menu);
+  menu_push_current(priv->menu);
   mutt_window_reflow(NULL);
 
   if (!priv->attach_msg)
@@ -4151,8 +4151,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       break;
   }
 
-  mutt_menu_pop_current(priv->menu);
-  mutt_menu_free(&priv->menu);
+  menu_pop_current(priv->menu);
+  menu_free(&priv->menu);
 
   struct Context *ctx = shared->ctx;
   struct Mailbox *m = ctx_mailbox(ctx);

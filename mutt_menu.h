@@ -65,7 +65,7 @@ struct Menu
   char *prompt;           ///< Prompt for user, similar to mutt_multi_choice
   char *keys;             ///< Keys used in the prompt
 
-  /* the following are used only by mutt_menu_loop() */
+  /* the following are used only by menu_loop() */
   int top;                ///< Entry that is the top of the current page
   int oldcurrent;         ///< For driver use only
   int search_dir;         ///< Direction of search
@@ -148,20 +148,18 @@ void         menu_redraw_motion(struct Menu *menu);
 void         menu_redraw_status(struct Menu *menu);
 int          menu_redraw(struct Menu *menu);
 void         menu_top_page(struct Menu *menu);
-void         mutt_menu_add_dialog_row(struct Menu *menu, const char *row);
-void         mutt_menu_current_redraw(void);
-void         mutt_menu_free(struct Menu **ptr);
-void         mutt_menu_init(void);
-int          mutt_menu_loop(struct Menu *menu);
-struct Menu *mutt_menu_new(enum MenuType type);
-void         mutt_menu_pop_current(struct Menu *menu);
-void         mutt_menu_push_current(struct Menu *menu);
-void         mutt_menu_set_current_redraw_full(void);
-void         mutt_menu_set_current_redraw(MuttRedrawFlags redraw);
-void         mutt_menu_set_redraw_full(enum MenuType menu);
-void         mutt_menu_set_redraw(enum MenuType menu, MuttRedrawFlags redraw);
 
-int mutt_menu_color_observer (struct NotifyCallback *nc);
-int mutt_menu_config_observer(struct NotifyCallback *nc);
+void         menu_add_dialog_row(struct Menu *menu, const char *row);
+void         menu_current_redraw(void);
+void         menu_free(struct Menu **ptr);
+void         menu_init(void);
+int          menu_loop(struct Menu *menu);
+struct Menu *menu_new(enum MenuType type);
+void         menu_pop_current(struct Menu *menu);
+void         menu_push_current(struct Menu *menu);
+void         menu_set_current_redraw_full(void);
+void         menu_set_current_redraw(MuttRedrawFlags redraw);
+void         menu_set_redraw_full(enum MenuType menu);
+void         menu_set_redraw(enum MenuType menu, MuttRedrawFlags redraw);
 
 #endif /* MUTT_MENU_H */

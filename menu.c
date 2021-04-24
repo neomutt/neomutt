@@ -970,9 +970,9 @@ static int generic_search(struct Menu *menu, regex_t *rx, int line)
 }
 
 /**
- * mutt_menu_init - Initialise all the Menus
+ * menu_init - Initialise all the Menus
  */
-void mutt_menu_init(void)
+void menu_init(void)
 {
   for (int i = 0; i < MENU_MAX; i++)
     SearchBuffers[i] = NULL;
@@ -1021,7 +1021,7 @@ int menu_color_observer(struct NotifyCallback *nc)
     }
   }
 
-  mutt_menu_set_redraw_full(MENU_MAIN);
+  menu_set_redraw_full(MENU_MAIN);
   return 0;
 }
 
@@ -1044,13 +1044,13 @@ int menu_config_observer(struct NotifyCallback *nc)
     return 0;
 
   if (flags & R_INDEX)
-    mutt_menu_set_redraw_full(MENU_MAIN);
+    menu_set_redraw_full(MENU_MAIN);
   if (flags & R_PAGER)
-    mutt_menu_set_redraw_full(MENU_PAGER);
+    menu_set_redraw_full(MENU_PAGER);
   if (flags & R_PAGER_FLOW)
   {
-    mutt_menu_set_redraw_full(MENU_PAGER);
-    mutt_menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
+    menu_set_redraw_full(MENU_PAGER);
+    menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
   }
 
   if (flags & R_RESORT_SUB)
@@ -1065,17 +1065,17 @@ int menu_config_observer(struct NotifyCallback *nc)
   if (flags & R_REFLOW)
     mutt_window_reflow(NULL);
   if (flags & R_MENU)
-    mutt_menu_set_current_redraw_full();
+    menu_set_current_redraw_full();
 
   return 0;
 }
 
 /**
- * mutt_menu_new - Create a new Menu
+ * menu_new - Create a new Menu
  * @param type Menu type, e.g. #MENU_PAGER
  * @retval ptr New Menu
  */
-struct Menu *mutt_menu_new(enum MenuType type)
+struct Menu *menu_new(enum MenuType type)
 {
   struct Menu *menu = mutt_mem_calloc(1, sizeof(struct Menu));
 
@@ -1092,10 +1092,10 @@ struct Menu *mutt_menu_new(enum MenuType type)
 }
 
 /**
- * mutt_menu_free - Destroy a menu
+ * menu_free - Destroy a menu
  * @param[out] ptr Menu to destroy
  */
-void mutt_menu_free(struct Menu **ptr)
+void menu_free(struct Menu **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -1120,11 +1120,11 @@ void mutt_menu_free(struct Menu **ptr)
 }
 
 /**
- * mutt_menu_add_dialog_row - Add a row to a Menu
+ * menu_add_dialog_row - Add a row to a Menu
  * @param menu Menu to add to
  * @param row  Row of text to add
  */
-void mutt_menu_add_dialog_row(struct Menu *menu, const char *row)
+void menu_add_dialog_row(struct Menu *menu, const char *row)
 {
   ARRAY_SET(&menu->dialog, menu->max, mutt_str_dup(row));
   menu->max++;
@@ -1141,24 +1141,24 @@ static struct Menu *get_current_menu(void)
 }
 
 /**
- * mutt_menu_push_current - Add a new Menu to the stack
+ * menu_push_current - Add a new Menu to the stack
  * @param menu Menu to add
  *
  * The menus are stored in a LIFO.  The top-most is shown to the user.
  */
-void mutt_menu_push_current(struct Menu *menu)
+void menu_push_current(struct Menu *menu)
 {
   ARRAY_ADD(&MenuStack, menu);
   CurrentMenu = menu->type;
 }
 
 /**
- * mutt_menu_pop_current - Remove a Menu from the stack
+ * menu_pop_current - Remove a Menu from the stack
  * @param menu Current Menu
  *
  * The menus are stored in a LIFO.  The top-most is shown to the user.
  */
-void mutt_menu_pop_current(struct Menu *menu)
+void menu_pop_current(struct Menu *menu)
 {
   struct Menu *prev_menu = NULL;
 
@@ -1190,10 +1190,10 @@ void mutt_menu_pop_current(struct Menu *menu)
 }
 
 /**
- * mutt_menu_set_current_redraw - Set redraw flags on the current menu
+ * menu_set_current_redraw - Set redraw flags on the current menu
  * @param redraw Flags to set, see #MuttRedrawFlags
  */
-void mutt_menu_set_current_redraw(MuttRedrawFlags redraw)
+void menu_set_current_redraw(MuttRedrawFlags redraw)
 {
   struct Menu *current_menu = get_current_menu();
   if (current_menu)
@@ -1201,9 +1201,9 @@ void mutt_menu_set_current_redraw(MuttRedrawFlags redraw)
 }
 
 /**
- * mutt_menu_set_current_redraw_full - Flag the current menu to be fully redrawn
+ * menu_set_current_redraw_full - Flag the current menu to be fully redrawn
  */
-void mutt_menu_set_current_redraw_full(void)
+void menu_set_current_redraw_full(void)
 {
   struct Menu *current_menu = get_current_menu();
   if (current_menu)
@@ -1211,34 +1211,34 @@ void mutt_menu_set_current_redraw_full(void)
 }
 
 /**
- * mutt_menu_set_redraw - Set redraw flags on a menu
+ * menu_set_redraw - Set redraw flags on a menu
  * @param menu   Menu type, e.g. #MENU_ALIAS
  * @param redraw Flags, e.g. #REDRAW_INDEX
  *
  * This is ignored if it's not the current menu.
  */
-void mutt_menu_set_redraw(enum MenuType menu, MuttRedrawFlags redraw)
+void menu_set_redraw(enum MenuType menu, MuttRedrawFlags redraw)
 {
   if (CurrentMenu == menu)
-    mutt_menu_set_current_redraw(redraw);
+    menu_set_current_redraw(redraw);
 }
 
 /**
- * mutt_menu_set_redraw_full - Flag a menu to be fully redrawn
+ * menu_set_redraw_full - Flag a menu to be fully redrawn
  * @param menu Menu type, e.g. #MENU_ALIAS
  *
  * This is ignored if it's not the current menu.
  */
-void mutt_menu_set_redraw_full(enum MenuType menu)
+void menu_set_redraw_full(enum MenuType menu)
 {
   if (CurrentMenu == menu)
-    mutt_menu_set_current_redraw_full();
+    menu_set_current_redraw_full();
 }
 
 /**
- * mutt_menu_current_redraw - Redraw the current menu
+ * menu_current_redraw - Redraw the current menu
  */
-void mutt_menu_current_redraw(void)
+void menu_current_redraw(void)
 {
   struct Menu *current_menu = get_current_menu();
   if (current_menu)
@@ -1437,11 +1437,11 @@ int menu_redraw(struct Menu *menu)
 }
 
 /**
- * mutt_menu_loop - Menu event loop
+ * menu_loop - Menu event loop
  * @param menu Current Menu
  * @retval num An event id that the menu can't process
  */
-int mutt_menu_loop(struct Menu *menu)
+int menu_loop(struct Menu *menu)
 {
   static int last_position = -1;
   int op = OP_NULL;

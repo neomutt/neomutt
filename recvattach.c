@@ -1608,7 +1608,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   while (true)
   {
     if (op == OP_NULL)
-      op = mutt_menu_loop(menu);
+      op = menu_loop(menu);
     window_redraw(dlg, true);
     if (!m)
       return;

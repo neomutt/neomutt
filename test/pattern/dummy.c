@@ -189,21 +189,21 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 {
 }
 
-struct Menu *mutt_menu_new(enum MenuType type)
+struct Menu *menu_new(enum MenuType type)
 {
   return NULL;
 }
 
-void mutt_menu_pop_current(struct Menu *menu)
+void menu_pop_current(struct Menu *menu)
 {
 }
 
-int mutt_menu_loop(struct Menu *menu)
+int menu_loop(struct Menu *menu)
 {
   return 0;
 }
 
-void mutt_menu_current_redraw(void)
+void menu_current_redraw(void)
 {
 }
 
@@ -218,7 +218,7 @@ void mutt_resize_screen(void)
 {
 }
 
-void mutt_menu_push_current(struct Menu *menu)
+void menu_push_current(struct Menu *menu)
 {
 }
 
@@ -241,7 +241,7 @@ void mutt_enter_state_free(struct EnterState **ptr)
 {
 }
 
-void mutt_menu_free(struct Menu **ptr)
+void menu_free(struct Menu **ptr)
 {
 }
 

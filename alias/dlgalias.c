@@ -232,7 +232,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
 
   while (!done)
   {
-    int op = mutt_menu_loop(menu);
+    int op = menu_loop(menu);
     switch (op)
     {
       case OP_DELETE:

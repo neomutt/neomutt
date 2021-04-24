@@ -346,7 +346,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   int done = 0;
   while (done == 0)
   {
-    const int op = mutt_menu_loop(menu);
+    const int op = menu_loop(menu);
     switch (op)
     {
       case OP_QUERY_APPEND:

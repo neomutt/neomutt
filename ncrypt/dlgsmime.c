@@ -192,7 +192,7 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, char *query)
   done = false;
   while (!done)
   {
-    switch (mutt_menu_loop(menu))
+    switch (menu_loop(menu))
     {
       case OP_GENERIC_SELECT_ENTRY:
         if (table[menu->current]->trust != 't')

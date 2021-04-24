@@ -260,7 +260,7 @@ bool dlg_select_pattern(char *buf, size_t buflen)
   bool done = false;
   while (!done)
   {
-    switch (mutt_menu_loop(menu))
+    switch (menu_loop(menu))
     {
       case OP_GENERIC_SELECT_ENTRY:
       {

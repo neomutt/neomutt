@@ -78,7 +78,7 @@ int dlg_verify_certificate(const char *title, struct ListHead *list,
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, list, entries)
   {
-    mutt_menu_add_dialog_row(menu, NONULL(np->data));
+    menu_add_dialog_row(menu, NONULL(np->data));
   }
 
   if (allow_always)
@@ -126,7 +126,7 @@ int dlg_verify_certificate(const char *title, struct ListHead *list,
   int rc = 0;
   while (rc == 0)
   {
-    switch (mutt_menu_loop(menu))
+    switch (menu_loop(menu))
     {
       case -1:         // Abort: Ctrl-G
       case OP_EXIT:    // Q)uit

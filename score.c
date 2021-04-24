@@ -78,8 +78,8 @@ void mutt_check_rescore(struct Mailbox *m)
     }
 
     /* must redraw the index since the user might have %N in it */
-    mutt_menu_set_redraw_full(MENU_MAIN);
-    mutt_menu_set_redraw_full(MENU_PAGER);
+    menu_set_redraw_full(MENU_MAIN);
+    menu_set_redraw_full(MENU_PAGER);
 
     for (int i = 0; m && i < m->msg_count; i++)
     {

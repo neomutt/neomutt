@@ -119,7 +119,7 @@ void dialog_pop(void)
     mutt_window_reflow(AllDialogsWindow);
   }
   window_set_focus(last);
-  mutt_menu_set_current_redraw(REDRAW_FULL);
+  menu_set_current_redraw(REDRAW_FULL);
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
 #endif

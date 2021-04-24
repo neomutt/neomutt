@@ -243,7 +243,7 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
 
   while (!done)
   {
-    const int op = mutt_menu_loop(menu);
+    const int op = menu_loop(menu);
     switch (op)
     {
       case OP_DELETE:

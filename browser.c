@@ -1398,7 +1398,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
   while (true)
   {
-    int op = mutt_menu_loop(menu);
+    int op = menu_loop(menu);
     if (op >= 0)
       mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
     struct FolderFile *ff = ARRAY_GET(&state.entry, menu->current);

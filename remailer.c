@@ -641,7 +641,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
 
     c_old = c_cur;
 
-    const int op = mutt_menu_loop(menu);
+    const int op = menu_loop(menu);
     switch (op)
     {
       case OP_REDRAW:

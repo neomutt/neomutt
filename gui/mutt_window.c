@@ -444,9 +444,9 @@ void mutt_window_reflow(struct MuttWindow *win)
   window_reflow(win);
   window_notify_all(win);
 
-  mutt_menu_set_current_redraw_full();
+  menu_set_current_redraw_full();
   /* the pager menu needs this flag set to recalc line_info */
-  mutt_menu_set_current_redraw(REDRAW_FLOW);
+  menu_set_current_redraw(REDRAW_FLOW);
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
 #endif
@@ -465,7 +465,7 @@ void mutt_window_reflow_message_rows(int mw_rows)
 
   /* We don't also set REDRAW_FLOW because this function only
    * changes rows and is a temporary adjustment. */
-  mutt_menu_set_current_redraw_full();
+  menu_set_current_redraw_full();
 }
 
 /**

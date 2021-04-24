@@ -112,7 +112,7 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
 
   while (!done)
   {
-    switch (mutt_menu_loop(menu))
+    switch (menu_loop(menu))
     {
       case OP_GENERIC_SELECT_ENTRY:
         mutt_str_copy(buf, matches[menu->current], buflen);

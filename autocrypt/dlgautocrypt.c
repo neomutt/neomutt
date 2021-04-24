@@ -191,7 +191,7 @@ static struct Menu *create_menu(struct MuttWindow *dlg)
     entries[i].num = i + 1;
     /* note: we are transferring the account pointer to the entries
      * array, and freeing the accounts array below.  the account
-     * will be freed in menu_free().  */
+     * will be freed in ac_menu_free().  */
     entries[i].account = accounts[i];
 
     entries[i].addr = mutt_addr_new();
@@ -204,10 +204,10 @@ static struct Menu *create_menu(struct MuttWindow *dlg)
 }
 
 /**
- * menu_free - Free the Autocrypt account Menu
+ * ac_menu_free - Free the Autocrypt account Menu
  * @param menu Menu to free
  */
-static void menu_free(struct Menu **menu)
+static void ac_menu_free(struct Menu **menu)
 {
   struct AccountEntry *entries = (struct AccountEntry *) (*menu)->mdata;
 
@@ -269,7 +269,7 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
   bool done = false;
   while (!done)
   {
-    switch (mutt_menu_loop(menu))
+    switch (menu_loop(menu))
     {
       case OP_EXIT:
         done = true;
@@ -279,7 +279,7 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         if (mutt_autocrypt_account_init(false))
           break;
 
-        menu_free(&menu);
+        ac_menu_free(&menu);
         dialog_destroy_simple_index(&dlg);
         dlg = dialog_create_simple_index(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
         menu = create_menu(dlg);
@@ -300,7 +300,7 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
 
         if (!mutt_autocrypt_db_account_delete(entry->account))
         {
-          menu_free(&menu);
+          ac_menu_free(&menu);
           dialog_destroy_simple_index(&dlg);
           dlg = dialog_create_simple_index(MENU_AUTOCRYPT_ACCT,
                                            WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
@@ -333,6 +333,6 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
     }
   }
 
-  menu_free(&menu);
+  ac_menu_free(&menu);
   dialog_destroy_simple_index(&dlg);
 }

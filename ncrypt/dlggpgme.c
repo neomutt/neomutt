@@ -1322,7 +1322,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   while (!done)
   {
     *forced_valid = 0;
-    switch (mutt_menu_loop(menu))
+    switch (menu_loop(menu))
     {
       case OP_VERIFY_KEY:
         verify_key(key_table[menu->current]);
