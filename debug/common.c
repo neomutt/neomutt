@@ -32,63 +32,142 @@
 
 const char *win_name(const struct MuttWindow *win)
 {
+  const bool symbol = true;
   if (!win)
     return "UNKNOWN";
 
   switch (win->type)
   {
     case WT_ALL_DIALOGS:
-      return "All Dialogs";
+      if (symbol)
+        return "WT_ALL_DIALOGS";
+      else
+        return "All Dialogs";
     case WT_CONTAINER:
-      return "Container";
+      if (symbol)
+        return "WT_CONTAINER";
+      else
+        return "Container";
     case WT_CUSTOM:
-      return "Custom";
+      if (symbol)
+        return "WT_CUSTOM";
+      else
+        return "Custom";
     case WT_DLG_ALIAS:
-      return "Alias Dialog";
+      if (symbol)
+        return "WT_DLG_ALIAS";
+      else
+        return "Alias Dialog";
     case WT_DLG_ATTACH:
-      return "Attach Dialog";
+      if (symbol)
+        return "WT_DLG_ATTACH";
+      else
+        return "Attach Dialog";
     case WT_DLG_AUTOCRYPT:
-      return "Autocrypt Dialog";
+      if (symbol)
+        return "WT_DLG_AUTOCRYPT";
+      else
+        return "Autocrypt Dialog";
     case WT_DLG_BROWSER:
-      return "Browser Dialog";
+      if (symbol)
+        return "WT_DLG_BROWSER";
+      else
+        return "Browser Dialog";
     case WT_DLG_CERTIFICATE:
-      return "Certificate Dialog";
+      if (symbol)
+        return "WT_DLG_CERTIFICATE";
+      else
+        return "Certificate Dialog";
     case WT_DLG_COMPOSE:
-      return "Compose Dialog";
+      if (symbol)
+        return "WT_DLG_COMPOSE";
+      else
+        return "Compose Dialog";
     case WT_DLG_CRYPT_GPGME:
-      return "Crypt-GPGME Dialog";
+      if (symbol)
+        return "WT_DLG_CRYPT_GPGME";
+      else
+        return "Crypt-GPGME Dialog";
     case WT_DLG_DO_PAGER:
-      return "Pager Dialog";
+      if (symbol)
+        return "WT_DLG_DO_PAGER";
+      else
+        return "Pager Dialog";
     case WT_DLG_HISTORY:
-      return "History Dialog";
+      if (symbol)
+        return "WT_DLG_HISTORY";
+      else
+        return "History Dialog";
     case WT_DLG_INDEX:
-      return "Index Dialog";
+      if (symbol)
+        return "WT_DLG_INDEX";
+      else
+        return "Index Dialog";
     case WT_DLG_PGP:
-      return "Pgp Dialog";
+      if (symbol)
+        return "WT_DLG_PGP";
+      else
+        return "Pgp Dialog";
     case WT_DLG_POSTPONE:
-      return "Postpone Dialog";
+      if (symbol)
+        return "WT_DLG_POSTPONE";
+      else
+        return "Postpone Dialog";
     case WT_DLG_QUERY:
-      return "Query Dialog";
+      if (symbol)
+        return "WT_DLG_QUERY";
+      else
+        return "Query Dialog";
     case WT_DLG_REMAILER:
-      return "Remailer Dialog";
+      if (symbol)
+        return "WT_DLG_REMAILER";
+      else
+        return "Remailer Dialog";
     case WT_DLG_SMIME:
-      return "Smime Dialog";
+      if (symbol)
+        return "WT_DLG_SMIME";
+      else
+        return "Smime Dialog";
     case WT_HELP_BAR:
-      return "Help Bar";
+      if (symbol)
+        return "WT_HELP_BAR";
+      else
+        return "Help Bar";
     case WT_INDEX:
-      return "Index";
+      if (symbol)
+        return "WT_INDEX";
+      else
+        return "Index";
     case WT_INDEX_BAR:
-      return "Index Bar";
+      if (symbol)
+        return "WT_INDEX_BAR";
+      else
+        return "Index Bar";
     case WT_MESSAGE:
-      return "Message";
+      if (symbol)
+        return "WT_MESSAGE";
+      else
+        return "Message";
     case WT_PAGER:
-      return "Pager";
+      if (symbol)
+        return "WT_PAGER";
+      else
+        return "Pager";
     case WT_PAGER_BAR:
-      return "Pager Bar";
+      if (symbol)
+        return "WT_PAGER_BAR";
+      else
+        return "Pager Bar";
     case WT_ROOT:
-      return "Root Dialog";
+      if (symbol)
+        return "WT_ROOT";
+      else
+        return "Root Dialog";
     case WT_SIDEBAR:
-      return "Sidebar";
+      if (symbol)
+        return "WT_SIDEBAR";
+      else
+        return "Sidebar";
     default:
       return "UNKNOWN";
   }
