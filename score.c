@@ -77,19 +77,7 @@ void mutt_check_rescore(struct Mailbox *m)
         OptSortSubthreads = true;
     }
 
-    /* must redraw the index since the user might have %N in it */
-    menu_set_redraw_full(MENU_MAIN);
-    menu_set_redraw_full(MENU_PAGER);
-
-    for (int i = 0; m && i < m->msg_count; i++)
-    {
-      struct Email *e = m->emails[i];
-      if (!e)
-        break;
-
-      mutt_score_message(m, e, true);
-      e->pair = 0;
-    }
+    notify_send(m->notify, NT_SCORE, 0, NULL);
   }
   OptNeedRescore = false;
 }

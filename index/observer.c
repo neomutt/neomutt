@@ -36,6 +36,7 @@
 #include "alternates.h"
 #include "attachments.h"
 #include "options.h"
+#include "score.h"
 #include "shared_data.h"
 #include "subjectrx.h"
 
@@ -233,6 +234,36 @@ static int index_altern_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * index_score_observer - Listen for Mailbox changes affecting the Index/Pager - Implements ::observer_t
+ */
+static int index_score_observer(struct NotifyCallback *nc)
+{
+  if (!nc->global_data)
+    return -1;
+  if (nc->event_type != NT_SCORE)
+    return 0;
+
+  struct MuttWindow *dlg = nc->global_data;
+  struct IndexSharedData *shared = dlg->wdata;
+
+  struct Mailbox *m = shared->mailbox;
+  if (!m)
+    return 0;
+
+  for (int i = 0; i < m->msg_count; i++)
+  {
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+
+    mutt_score_message(m, e, true);
+    e->pair = 0; // Force recalc of colour
+  }
+
+  return 0;
+}
+
+/**
  * index_add_observers - Add Observers to the Index Dialog
  * @param dlg Index Dialog
  */
@@ -245,6 +276,7 @@ void index_add_observers(struct MuttWindow *dlg)
   notify_observer_add(NeoMutt->notify, NT_SUBJRX, index_subjrx_observer, dlg);
   notify_observer_add(NeoMutt->notify, NT_ATTACH, index_attach_observer, dlg);
   notify_observer_add(NeoMutt->notify, NT_ALTERN, index_altern_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_SCORE, index_score_observer, dlg);
 }
 
 /**
@@ -260,4 +292,5 @@ void index_remove_observers(struct MuttWindow *dlg)
   notify_observer_remove(NeoMutt->notify, index_subjrx_observer, dlg);
   notify_observer_remove(NeoMutt->notify, index_attach_observer, dlg);
   notify_observer_remove(NeoMutt->notify, index_altern_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, index_score_observer, dlg);
 }
