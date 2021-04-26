@@ -675,7 +675,6 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
   menu->tag = NULL;
   menu->mdata = type2_list;
 
-  menu_push_current(menu);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, remailer_config_observer, dlg);
   dialog_push(dlg);
 
@@ -810,7 +809,6 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
     }
   }
 
-  menu_pop_current(menu);
   dialog_pop();
   notify_observer_remove(NeoMutt->notify, remailer_config_observer, dlg);
 

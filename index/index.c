@@ -1182,7 +1182,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   priv->menu->make_entry = index_make_entry;
   priv->menu->color = index_color;
   priv->menu->custom_redraw = index_custom_redraw;
-  menu_push_current(priv->menu);
   menu_set_index(priv->menu, ci_first_message(shared->mailbox));
   mutt_window_reflow(NULL);
 
@@ -4180,7 +4179,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       break;
   }
 
-  menu_pop_current(priv->menu);
   struct Context *ctx = shared->ctx;
   struct Mailbox *m = ctx_mailbox(ctx);
   index_shared_data_set_context(shared, ctx_old);

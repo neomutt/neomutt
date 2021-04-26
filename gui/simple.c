@@ -99,9 +99,6 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
     sbar_add(dlg);
   }
 
-  struct Menu *menu = win_index->wdata;
-  menu_push_current(menu);
-
   notify_observer_add(NeoMutt->notify, NT_CONFIG, dialog_config_observer, dlg);
   dialog_push(dlg);
 
@@ -119,8 +116,6 @@ void dialog_destroy_simple_index(struct MuttWindow **ptr)
 
   struct MuttWindow *dlg = *ptr;
 
-  struct Menu *menu = dlg->wdata;
-  menu_pop_current(menu);
   dialog_pop();
   notify_observer_remove(NeoMutt->notify, dialog_config_observer, dlg);
   mutt_window_free(ptr);

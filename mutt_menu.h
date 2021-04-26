@@ -149,16 +149,9 @@ int          menu_redraw(struct Menu *menu);
 void         menu_top_page(struct Menu *menu);
 
 void         menu_add_dialog_row(struct Menu *menu, const char *row);
-void         menu_current_redraw(void);
 enum MenuType menu_get_current_type(void);
 void         menu_init(void);
 int          menu_loop(struct Menu *menu);
-void         menu_pop_current(struct Menu *menu);
-void         menu_push_current(struct Menu *menu);
-void         menu_set_current_redraw_full(void);
-void         menu_set_current_redraw(MuttRedrawFlags redraw);
-void         menu_set_redraw_full(enum MenuType menu);
-void         menu_set_redraw(enum MenuType menu, MuttRedrawFlags redraw);
 
 struct MuttWindow *menu_new_window(enum MenuType type);
 
