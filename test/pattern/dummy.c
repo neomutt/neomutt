@@ -68,10 +68,10 @@ typedef uint16_t CompletionFlags;
 typedef uint16_t PagerFlags;
 typedef uint8_t SelectFileFlags;
 
-typedef const char *(format_t)(char *buf, size_t buflen, size_t col, int cols,
-                               char op, const char *src, const char *prec,
-                               const char *if_str, const char *else_str,
-                               intptr_t data, MuttFormatFlags flags);
+typedef const char *(format_t) (char *buf, size_t buflen, size_t col, int cols,
+                                char op, const char *src, const char *prec,
+                                const char *if_str, const char *else_str,
+                                intptr_t data, MuttFormatFlags flags);
 
 int crypt_valid_passphrase(int flags)
 {
