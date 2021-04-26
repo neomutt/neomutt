@@ -1559,7 +1559,6 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   menu->tag = compose_attach_tag;
   menu->custom_redraw = compose_custom_redraw;
   menu->mdata = rd;
-  menu_push_current(menu);
 
   struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;
@@ -2773,7 +2772,6 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     e->security &= ~SEC_AUTOCRYPT;
 #endif
 
-  menu_pop_current(menu);
   menu_free(&menu);
   dialog_pop();
   notify_observer_remove(NeoMutt->notify, compose_config_observer, dlg);

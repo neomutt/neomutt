@@ -1183,7 +1183,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   priv->menu->color = index_color;
   priv->menu->current = ci_first_message(shared->mailbox);
   priv->menu->custom_redraw = index_custom_redraw;
-  menu_push_current(priv->menu);
   mutt_window_reflow(NULL);
 
   if (!priv->attach_msg)
@@ -4156,7 +4155,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       break;
   }
 
-  menu_pop_current(priv->menu);
   menu_free(&priv->menu);
 
   struct Context *ctx = shared->ctx;

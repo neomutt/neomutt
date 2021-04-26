@@ -55,9 +55,6 @@
 
 char *SearchBuffers[MENU_MAX];
 
-/* These are used to track the active menus, for redraw operations. */
-ARRAY_HEAD(, struct Menu *) MenuStack = ARRAY_HEAD_INITIALIZER;
-
 #define DIRECTION ((neg * 2) + 1)
 
 #define MUTT_SEARCH_UP 1
@@ -1133,129 +1130,6 @@ void menu_add_dialog_row(struct Menu *menu, const char *row)
 {
   ARRAY_SET(&menu->dialog, menu->max, mutt_str_dup(row));
   menu->max++;
-}
-
-/**
- * get_current_menu - Get the current Menu
- * @retval ptr Current Menu
- */
-static struct Menu *get_current_menu(void)
-{
-  struct Menu **mp = ARRAY_LAST(&MenuStack);
-  return mp ? *mp : NULL;
-}
-
-/**
- * menu_push_current - Add a new Menu to the stack
- * @param menu Menu to add
- *
- * The menus are stored in a LIFO.  The top-most is shown to the user.
- */
-void menu_push_current(struct Menu *menu)
-{
-  ARRAY_ADD(&MenuStack, menu);
-  CurrentMenu = menu->type;
-}
-
-/**
- * menu_pop_current - Remove a Menu from the stack
- * @param menu Current Menu
- *
- * The menus are stored in a LIFO.  The top-most is shown to the user.
- */
-void menu_pop_current(struct Menu *menu)
-{
-  struct Menu *prev_menu = NULL;
-
-  if (ARRAY_EMPTY(&MenuStack) || (*ARRAY_LAST(&MenuStack) != menu))
-  {
-    mutt_debug(LL_DEBUG1, "called with inactive menu\n");
-    return;
-  }
-  ARRAY_SHRINK(&MenuStack, 1);
-
-  prev_menu = get_current_menu();
-  if (prev_menu)
-  {
-    CurrentMenu = prev_menu->type;
-    prev_menu->redraw = REDRAW_FULL;
-  }
-  else
-  {
-    CurrentMenu = MENU_MAIN;
-    /* Clearing when NeoMutt exits would be an annoying change in behavior for
-     * those who have disabled alternative screens.  The option is currently
-     * set by autocrypt initialization which mixes menus and prompts outside of
-     * the normal menu system state.  */
-    if (OptMenuPopClearScreen)
-    {
-      mutt_window_clear(RootWindow);
-    }
-  }
-}
-
-/**
- * menu_set_current_redraw - Set redraw flags on the current menu
- * @param redraw Flags to set, see #MuttRedrawFlags
- */
-void menu_set_current_redraw(MuttRedrawFlags redraw)
-{
-  struct Menu *current_menu = get_current_menu();
-  if (current_menu)
-    current_menu->redraw |= redraw;
-}
-
-/**
- * menu_set_current_redraw_full - Flag the current menu to be fully redrawn
- */
-void menu_set_current_redraw_full(void)
-{
-  struct Menu *current_menu = get_current_menu();
-  if (current_menu)
-    current_menu->redraw = REDRAW_FULL;
-}
-
-/**
- * menu_set_redraw - Set redraw flags on a menu
- * @param menu   Menu type, e.g. #MENU_ALIAS
- * @param redraw Flags, e.g. #REDRAW_INDEX
- *
- * This is ignored if it's not the current menu.
- */
-void menu_set_redraw(enum MenuType menu, MuttRedrawFlags redraw)
-{
-  if (CurrentMenu == menu)
-    menu_set_current_redraw(redraw);
-}
-
-/**
- * menu_set_redraw_full - Flag a menu to be fully redrawn
- * @param menu Menu type, e.g. #MENU_ALIAS
- *
- * This is ignored if it's not the current menu.
- */
-void menu_set_redraw_full(enum MenuType menu)
-{
-  if (CurrentMenu == menu)
-    menu_set_current_redraw_full();
-}
-
-/**
- * menu_current_redraw - Redraw the current menu
- */
-void menu_current_redraw(void)
-{
-  struct Menu *current_menu = get_current_menu();
-  if (current_menu)
-  {
-    if (menu_redraw(current_menu) == OP_REDRAW)
-    {
-      /* On a REDRAW_FULL with a non-customized redraw, menu_redraw()
-       * will return OP_REDRAW to give the calling menu-loop a chance to
-       * customize output.  */
-      menu_redraw(current_menu);
-    }
-  }
 }
 
 /**

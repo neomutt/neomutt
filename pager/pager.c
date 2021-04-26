@@ -2528,7 +2528,6 @@ int mutt_pager(struct PagerView *pview)
   pager_menu->win_ibar = pview->win_pbar;
   pager_menu->custom_redraw = pager_custom_redraw;
   pager_menu->mdata = &rd;
-  menu_push_current(pager_menu);
 
   //---------- restore global state if needed ---------------------------------
   while (pview->mode == PAGER_MODE_EMAIL && (OldEmail == pview->pdata->email) // are we "resuming" to the same Email?
@@ -4164,7 +4163,6 @@ int mutt_pager(struct PagerView *pview)
     rd.search_compiled = false;
   }
   FREE(&rd.line_info);
-  menu_pop_current(pager_menu);
   menu_free(&pager_menu);
   menu_free(&rd.menu);
 
