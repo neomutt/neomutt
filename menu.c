@@ -983,7 +983,7 @@ void menu_init(void)
  */
 int menu_color_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data)
+  if (!nc->event_data || !nc->global_data)
     return -1;
   if (nc->event_type != NT_COLOR)
     return 0;
@@ -1021,7 +1021,9 @@ int menu_color_observer(struct NotifyCallback *nc)
     }
   }
 
-  menu_set_redraw_full(MENU_MAIN);
+  struct Menu *menu = nc->global_data;
+  menu->redraw = REDRAW_FULL;
+
   return 0;
 }
 
@@ -1030,7 +1032,7 @@ int menu_color_observer(struct NotifyCallback *nc)
  */
 int menu_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data)
+  if (!nc->event_data || !nc->global_data)
     return -1;
   if (nc->event_type != NT_CONFIG)
     return 0;
@@ -1043,14 +1045,14 @@ int menu_config_observer(struct NotifyCallback *nc)
   if (flags == R_REDRAW_NO_FLAGS)
     return 0;
 
-  if (flags & R_INDEX)
-    menu_set_redraw_full(MENU_MAIN);
-  if (flags & R_PAGER)
-    menu_set_redraw_full(MENU_PAGER);
+  struct Menu *menu = nc->global_data;
+  if ((menu->type == MENU_MAIN) && (flags & R_INDEX))
+    menu->redraw |= REDRAW_FULL;
+  if ((menu->type == MENU_PAGER) && (flags & R_PAGER))
+    menu->redraw |= REDRAW_FULL;
   if (flags & R_PAGER_FLOW)
   {
-    menu_set_redraw_full(MENU_PAGER);
-    menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
+    menu->redraw |= REDRAW_FULL | REDRAW_FLOW;
   }
 
   if (flags & R_RESORT_SUB)
@@ -1065,7 +1067,7 @@ int menu_config_observer(struct NotifyCallback *nc)
   if (flags & R_REFLOW)
     mutt_window_reflow(NULL);
   if (flags & R_MENU)
-    menu_set_current_redraw_full();
+    menu->redraw |= REDRAW_FULL;
 
   return 0;
 }
