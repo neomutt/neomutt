@@ -152,6 +152,7 @@ void         menu_top_page(struct Menu *menu);
 void         menu_add_dialog_row(struct Menu *menu, const char *row);
 void         menu_current_redraw(void);
 void         menu_free(struct Menu **ptr);
+enum MenuType menu_get_current_type(void);
 void         menu_init(void);
 int          menu_loop(struct Menu *menu);
 struct Menu *menu_new(enum MenuType type);
