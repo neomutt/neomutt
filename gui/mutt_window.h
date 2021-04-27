@@ -92,10 +92,11 @@ enum WindowType
   // Common Windows
   WT_CUSTOM,          ///< Window with a custom drawing function
   WT_HELP_BAR,        ///< Help Bar containing list of useful key bindings
-  WT_INDEX,           ///< An Index Window containing a selection list
+  WT_INDEX,           ///< A panel containing the Index Window
   WT_INDEX_BAR,       ///< Index Bar containing status info about the Index
+  WT_MENU,            ///< An Window containing a Menu
   WT_MESSAGE,         ///< Window for messages/errors and command entry
-  WT_PAGER,           ///< Window containing paged free-form text
+  WT_PAGER,           ///< A panel containing the Pager Window
   WT_PAGER_BAR,       ///< Pager Bar containing status info about the Pager
   WT_SIDEBAR,         ///< Side panel containing Accounts or groups of data
 };

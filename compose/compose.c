@@ -1503,7 +1503,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
                       MUTT_WIN_SIZE_UNLIMITED, 1);
 
   struct MuttWindow *win_attach =
-      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   dlg->focus = win_attach;
 

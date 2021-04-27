@@ -47,8 +47,10 @@
  */
 static int config_pager_index_lines(struct MuttWindow *dlg)
 {
-  struct MuttWindow *win_index = mutt_window_find(dlg, WT_INDEX);
-  struct MuttWindow *win_pager = mutt_window_find(dlg, WT_PAGER);
+  struct MuttWindow *panel_index = mutt_window_find(dlg, WT_INDEX);
+  struct MuttWindow *panel_pager = mutt_window_find(dlg, WT_PAGER);
+  struct MuttWindow *win_index = mutt_window_find(panel_index, WT_MENU);
+  struct MuttWindow *win_pager = mutt_window_find(panel_pager, WT_MENU);
   if (!win_index || !win_pager)
     return -1;
 
@@ -62,16 +64,16 @@ static int config_pager_index_lines(struct MuttWindow *dlg)
     win_index->req_rows = MIN(c_pager_index_lines, vcount);
     win_index->size = MUTT_WIN_SIZE_FIXED;
 
-    win_index->parent->size = MUTT_WIN_SIZE_MINIMISE;
-    win_index->parent->state.visible = (c_pager_index_lines != 0);
+    panel_index->size = MUTT_WIN_SIZE_MINIMISE;
+    panel_index->state.visible = (c_pager_index_lines != 0);
   }
   else
   {
     win_index->req_rows = MUTT_WIN_SIZE_UNLIMITED;
     win_index->size = MUTT_WIN_SIZE_MAXIMISE;
 
-    win_index->parent->size = MUTT_WIN_SIZE_MAXIMISE;
-    win_index->parent->state.visible = true;
+    panel_index->size = MUTT_WIN_SIZE_MAXIMISE;
+    panel_index->state.visible = true;
   }
 
   mutt_window_reflow(dlg);
@@ -130,29 +132,24 @@ static int config_status_on_top(struct MuttWindow *dlg)
   if (!win_index || !win_pager)
     return -1;
 
-  struct MuttWindow *parent = win_index->parent;
-  if (!parent)
-    return -1;
-  struct MuttWindow *first = TAILQ_FIRST(&parent->children);
-  if (!first)
-    return -1;
-
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-  if ((c_status_on_top && (first == win_index)) || (!c_status_on_top && (first != win_index)))
+
+  struct MuttWindow *first = TAILQ_FIRST(&win_index->children);
+  if ((c_status_on_top && (first->type == WT_MENU)) ||
+      (!c_status_on_top && (first->type != WT_MENU)))
   {
     // Swap the Index and the Index Bar Windows
-    TAILQ_REMOVE(&parent->children, first, entries);
-    TAILQ_INSERT_TAIL(&parent->children, first, entries);
+    TAILQ_REMOVE(&win_index->children, first, entries);
+    TAILQ_INSERT_TAIL(&win_index->children, first, entries);
   }
 
-  parent = win_pager->parent;
-  first = TAILQ_FIRST(&parent->children);
-
-  if ((c_status_on_top && (first == win_pager)) || (!c_status_on_top && (first != win_pager)))
+  first = TAILQ_FIRST(&win_pager->children);
+  if ((c_status_on_top && (first->type == WT_MENU)) ||
+      (!c_status_on_top && (first->type != WT_MENU)))
   {
     // Swap the Pager and Pager Bar Windows
-    TAILQ_REMOVE(&parent->children, first, entries);
-    TAILQ_INSERT_TAIL(&parent->children, first, entries);
+    TAILQ_REMOVE(&win_pager->children, first, entries);
+    TAILQ_INSERT_TAIL(&win_pager->children, first, entries);
   }
 
   mutt_window_reflow(dlg);

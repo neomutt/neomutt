@@ -143,6 +143,11 @@ const char *win_name(const struct MuttWindow *win)
         return "WT_INDEX_BAR";
       else
         return "Index Bar";
+    case WT_MENU:
+      if (symbol)
+        return "WT_MENU";
+      else
+        return "Menu";
     case WT_MESSAGE:
       if (symbol)
         return "WT_MESSAGE";
