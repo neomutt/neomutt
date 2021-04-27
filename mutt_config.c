@@ -38,6 +38,7 @@
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
+#include "mutt_menu.h"
 #include "mx.h"
 #include "options.h"
 
@@ -134,7 +135,8 @@ int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef
 int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)
 {
-  if (CurrentMenu == MENU_PAGER)
+  const enum MenuType mtype = menu_get_current_type();
+  if (mtype == MENU_PAGER)
   {
     mutt_buffer_printf(err, _("Option %s may not be set or reset from the pager"),
                        cdef->name);

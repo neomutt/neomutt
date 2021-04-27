@@ -806,8 +806,6 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 
   Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));
 
-  CurrentMenu = MENU_MAIN;
-
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
@@ -1246,9 +1244,9 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
   }
   else if (mutt_str_startswith(buf, "exec"))
   {
-    const struct Binding *menu = km_get_table(CurrentMenu);
-
-    if (!menu && (CurrentMenu != MENU_PAGER))
+    const enum MenuType mtype = menu_get_current_type();
+    const struct Binding *menu = km_get_table(mtype);
+    if (!menu && (mtype != MENU_PAGER))
       menu = OpGeneric;
 
     pt++;
@@ -1262,7 +1260,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
       for (int num = 0; menu[num].name; num++)
         candidate(UserTyped, menu[num].name, Completed, sizeof(Completed));
       /* try the generic menu */
-      if ((Completed[0] == '\0') && (CurrentMenu != MENU_PAGER))
+      if ((Completed[0] == '\0') && (mtype != MENU_PAGER))
       {
         menu = OpGeneric;
         for (int num = 0; menu[num].name; num++)
