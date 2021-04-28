@@ -217,7 +217,10 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
 
     const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
     if (encoded)
+    {
       mutt_ch_convert_string(&value, charset, c_charset, MUTT_ICONV_HOOK_FROM);
+      mutt_mb_filter_unprintable(&value);
+    }
 
     struct Parameter *np = mutt_param_new();
     np->attribute = mutt_str_dup(attribute);
