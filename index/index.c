@@ -3830,11 +3830,21 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               buf2[0])
           {
             char str[256], macro[256];
+	    char *s = macro;
             const char *const c_mark_macro_prefix =
                 cs_subset_string(shared->sub, "mark_macro_prefix");
             snprintf(str, sizeof(str), "%s%s", c_mark_macro_prefix, buf2);
             snprintf(macro, sizeof(macro), "<search>~i \"%s\"\n",
                      shared->email->env->message_id);
+
+            /* Escape '+' to make the Message-Id string a valid regex. */
+            while (*s) {
+              if (*s == '+' && mutt_str_inline_replace(s, 256, 1, "\\\\+"))
+                s += 3;
+              else
+                s++;
+            }
+
             /* L10N: "message hotkey" is the key bindings priv->menu description of a
                macro created by <mark-message>. */
             km_bind(str, MENU_MAIN, OP_MACRO, macro, _("message hotkey"));
