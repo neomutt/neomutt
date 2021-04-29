@@ -1070,6 +1070,35 @@ int menu_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * menu_recalc - Recalculate the Window data - Implements MuttWindow::recalc()
+ */
+static int menu_recalc(struct MuttWindow *win)
+{
+  if (win->type != WT_MENU)
+    return 0;
+
+  // struct Menu *menu = win->wdata;
+
+  win->actions |= WA_REPAINT;
+  return 0;
+}
+
+/**
+ * menu_repaint - Repaint the Window - Implements MuttWindow::repaint()
+ */
+static int menu_repaint(struct MuttWindow *win)
+{
+  if (win->type != WT_MENU)
+    return 0;
+
+  // struct Menu *menu = win->wdata;
+  // menu_redraw(menu);
+  // menu->redraw = REDRAW_NO_FLAGS;
+
+  return 0;
+}
+
+/**
  * menu_new - Create a new Menu
  * @param type Menu type, e.g. #MENU_PAGER
  * @retval ptr New Menu
@@ -1084,6 +1113,8 @@ struct Menu *menu_new(struct MuttWindow *win, enum MenuType type)
   menu->search = generic_search;
   menu->notify = notify_new();
 
+  win->recalc = menu_recalc;
+  win->repaint = menu_repaint;
   win->wdata = menu;
   notify_set_parent(menu->notify, win->notify);
 
