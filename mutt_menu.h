@@ -162,4 +162,7 @@ void         menu_set_current_redraw(MuttRedrawFlags redraw);
 void         menu_set_redraw_full(enum MenuType menu);
 void         menu_set_redraw(enum MenuType menu, MuttRedrawFlags redraw);
 
+int  menu_get_index(struct Menu *menu);
+bool menu_set_index(struct Menu *menu, int index);
+
 #endif /* MUTT_MENU_H */

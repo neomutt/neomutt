@@ -1753,3 +1753,38 @@ struct Menu *menu_new(struct MuttWindow *win, enum MenuType type)
 
   return menu;
 }
+
+/**
+ * menu_get_index - Get the current selection in the Menu
+ * @param menu Menu
+ * @retval num Index of selection
+ */
+int menu_get_index(struct Menu *menu)
+{
+  if (!menu)
+    return -1;
+
+  return menu->current;
+}
+
+/**
+ * menu_set_index - Set the current selection in the Menu
+ * @param menu  Menu
+ * @param index Item to select
+ * @retval true Selection was changed
+ */
+bool menu_set_index(struct Menu *menu, int index)
+{
+  if (!menu)
+    return false;
+
+  if (index < -1)
+    return false;
+  if (index >= menu->max)
+    return false;
+
+  menu->oldcurrent = menu->current;
+  menu->current = index;
+  menu->redraw |= REDRAW_MOTION;
+  return true;
+}
