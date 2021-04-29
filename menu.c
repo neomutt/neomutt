@@ -1075,7 +1075,7 @@ int menu_config_observer(struct NotifyCallback *nc)
  * @param type Menu type, e.g. #MENU_PAGER
  * @retval ptr New Menu
  */
-struct Menu *menu_new(enum MenuType type)
+struct Menu *menu_new(struct MuttWindow *win, enum MenuType type)
 {
   struct Menu *menu = mutt_mem_calloc(1, sizeof(struct Menu));
 
@@ -1084,6 +1084,9 @@ struct Menu *menu_new(enum MenuType type)
   menu->color = default_color;
   menu->search = generic_search;
   menu->notify = notify_new();
+
+  win->wdata = menu;
+  notify_set_parent(menu->notify, win->notify);
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
   mutt_color_observer_add(menu_color_observer, menu);

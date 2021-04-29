@@ -1550,10 +1550,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   win_env->req_rows = calc_envelope(rd);
   mutt_window_reflow(dlg);
 
-  struct Menu *menu = menu_new(MENU_COMPOSE);
-  notify_set_parent(menu->notify, win_attach->notify);
-  win_attach->wdata = menu;
-
+  struct Menu *menu = menu_new(win_attach,MENU_COMPOSE);
   menu->pagelen = win_attach->state.rows;
   menu->win_index = win_attach;
   menu->win_ibar = win_cbar;

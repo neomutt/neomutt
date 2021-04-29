@@ -77,22 +77,19 @@ static int dialog_config_observer(struct NotifyCallback *nc)
 struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowType wtype,
                                               const struct Mapping *help_data)
 {
-  struct Menu *menu = menu_new(mtype);
-
   struct MuttWindow *dlg =
       mutt_window_new(wtype, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   dlg->help_menu = mtype;
   dlg->help_data = help_data;
-  dlg->wdata = menu;
 
   struct MuttWindow *index =
       mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   dlg->focus = index;
-  index->wdata = menu;
 
-  notify_set_parent(menu->notify, index->notify);
+  struct Menu *menu = menu_new(index, mtype);
+  dlg->wdata = menu;
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
