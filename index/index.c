@@ -1171,16 +1171,11 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     dlg->help_data = IndexHelp;
   dlg->help_menu = MENU_MAIN;
 
-  struct Menu *menu = menu_new(MENU_MAIN);
-  priv->win_index->wdata = menu;
-  notify_set_parent(menu->notify, priv->win_index->notify);
+  struct Menu *menu = menu_new(priv->win_index, MENU_MAIN);
 
   priv->menu = menu;
-  priv->menu->pagelen = priv->win_index->state.rows;
-  priv->menu->win_index = priv->win_index;
   priv->menu->win_ibar = priv->win_ibar;
   priv->menu->mdata = shared;
-
   priv->menu->make_entry = index_make_entry;
   priv->menu->color = index_color;
   priv->menu->current = ci_first_message(shared->mailbox);

@@ -155,7 +155,7 @@ void         menu_free(struct Menu **ptr);
 enum MenuType menu_get_current_type(void);
 void         menu_init(void);
 int          menu_loop(struct Menu *menu);
-struct Menu *menu_new(enum MenuType type);
+struct Menu *menu_new(struct MuttWindow *win, enum MenuType type);
 void         menu_pop_current(struct Menu *menu);
 void         menu_push_current(struct Menu *menu);
 void         menu_set_current_redraw_full(void);

@@ -1318,7 +1318,6 @@ static void compose_custom_redraw(struct Menu *menu)
   {
     menu_redraw_full(menu);
     draw_envelope(rd);
-    menu->pagelen = menu->win_index->state.rows;
   }
 
   menu_check_recenter(menu);
@@ -1550,14 +1549,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   win_env->req_rows = calc_envelope(rd);
   mutt_window_reflow(dlg);
 
-  struct Menu *menu = menu_new(MENU_COMPOSE);
-  notify_set_parent(menu->notify, win_attach->notify);
-  win_attach->wdata = menu;
-
-  menu->pagelen = win_attach->state.rows;
-  menu->win_index = win_attach;
+  struct Menu *menu = menu_new(win_attach, MENU_COMPOSE);
   menu->win_ibar = win_cbar;
-
   menu->make_entry = compose_make_entry;
   menu->tag = compose_attach_tag;
   menu->custom_redraw = compose_custom_redraw;

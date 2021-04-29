@@ -981,7 +981,7 @@ void menu_init(void)
 /**
  * menu_color_observer - Listen for colour changes affecting the menu - Implements ::observer_t
  */
-int menu_color_observer(struct NotifyCallback *nc)
+static int menu_color_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data)
     return -1;
@@ -1028,7 +1028,7 @@ int menu_color_observer(struct NotifyCallback *nc)
 /**
  * menu_config_observer - Listen for config changes affecting the menu - Implements ::observer_t
  */
-int menu_config_observer(struct NotifyCallback *nc)
+static int menu_config_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data)
     return -1;
@@ -1071,11 +1071,34 @@ int menu_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * menu_window_observer - Listen for Window changes affecting the menu - Implements ::observer_t
+ */
+static int menu_window_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+  if (nc->event_subtype != NT_WINDOW_STATE)
+    return 0;
+
+  struct Menu *menu = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  struct MuttWindow *win = ev_w->win;
+
+  menu->pagelen = win->state.rows;
+  menu->redraw = REDRAW_FULL;
+
+  return 0;
+}
+
+/**
  * menu_new - Create a new Menu
+ * @param win  Parent Window
  * @param type Menu type, e.g. #MENU_PAGER
  * @retval ptr New Menu
  */
-struct Menu *menu_new(enum MenuType type)
+struct Menu *menu_new(struct MuttWindow *win, enum MenuType type)
 {
   struct Menu *menu = mutt_mem_calloc(1, sizeof(struct Menu));
 
@@ -1084,8 +1107,14 @@ struct Menu *menu_new(enum MenuType type)
   menu->color = default_color;
   menu->search = generic_search;
   menu->notify = notify_new();
+  menu->win_index = win;
+  menu->pagelen = win->state.rows;
+
+  win->wdata = menu;
+  notify_set_parent(menu->notify, win->notify);
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
+  notify_observer_add(win->notify, NT_WINDOW, menu_window_observer, menu);
   mutt_color_observer_add(menu_color_observer, menu);
 
   return menu;
@@ -1103,6 +1132,7 @@ void menu_free(struct Menu **ptr)
   struct Menu *menu = *ptr;
 
   notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
+  notify_observer_remove(menu->win_index->notify, menu_window_observer, menu);
   mutt_color_observer_remove(menu_color_observer, menu);
   notify_free(&menu->notify);
 

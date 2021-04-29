@@ -2098,21 +2098,17 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       {
         /* only allocate the space if/when we need the index.
          * Initialise the menu as per the main index */
-        struct Menu *menu = menu_new(MENU_MAIN);
-        notify_set_parent(menu->notify, rd->pview->win_index->notify);
-
+        struct Menu *menu = menu_new(rd->pview->win_index, MENU_MAIN);
         rd->menu = menu;
         rd->menu->make_entry = index_make_entry;
         rd->menu->color = index_color;
         rd->menu->max = m ? m->vcount : 0;
         rd->menu->current = rd->pview->pdata->email->vnum;
-        rd->menu->win_index = rd->pview->win_index;
         rd->menu->win_ibar = rd->pview->win_ibar;
         rd->menu->mdata = shared;
       }
 
       mutt_curses_set_color(MT_COLOR_NORMAL);
-      rd->menu->pagelen = rd->pview->win_index->state.rows;
 
       /* some fudge to work out whereabouts the indicator should go */
       if (rd->menu->current - rd->indicator < 0)
@@ -2523,13 +2519,8 @@ int mutt_pager(struct PagerView *pview)
   unlink(pview->pdata->fname);
 
   //---------- setup pager menu------------------------------------------------
-  struct Menu *menu = menu_new(MENU_PAGER);
-  pview->win_pager->wdata = menu;
-  notify_set_parent(menu->notify, pview->win_pager->notify);
-
+  struct Menu *menu = menu_new(pview->win_pager, MENU_PAGER);
   pager_menu = menu;
-  pager_menu->pagelen = pview->win_pager->state.rows;
-  pager_menu->win_index = pview->win_pager;
   pager_menu->win_ibar = pview->win_pbar;
   pager_menu->custom_redraw = pager_custom_redraw;
   pager_menu->mdata = &rd;
