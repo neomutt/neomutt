@@ -61,6 +61,7 @@ enum ColorId
   MT_COLOR_QUOTED,                   ///< Pager: quoted text
   MT_COLOR_SEARCH,                   ///< Pager: search matches
 #ifdef USE_SIDEBAR
+  MT_COLOR_SIDEBAR_BACKGROUND,       ///< Background colour for the Sidebar
   MT_COLOR_SIDEBAR_DIVIDER,          ///< Line dividing sidebar from the index/pager
   MT_COLOR_SIDEBAR_FLAGGED,          ///< Mailbox with flagged messages
   MT_COLOR_SIDEBAR_HIGHLIGHT,        ///< Select cursor

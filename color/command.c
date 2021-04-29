@@ -73,6 +73,7 @@ const struct Mapping ColorFields[] = {
   { "quoted",            MT_COLOR_QUOTED },
   { "search",            MT_COLOR_SEARCH },
 #ifdef USE_SIDEBAR
+  { "sidebar_background", MT_COLOR_SIDEBAR_BACKGROUND },
   { "sidebar_divider",   MT_COLOR_SIDEBAR_DIVIDER },
   { "sidebar_flagged",   MT_COLOR_SIDEBAR_FLAGGED },
   { "sidebar_highlight", MT_COLOR_SIDEBAR_HIGHLIGHT },

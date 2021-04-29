@@ -49,10 +49,16 @@ void sb_win_remove_observers(struct MuttWindow *win);
 static bool calc_divider(struct SidebarWindowData *wdata)
 {
   enum DivType type = SB_DIV_USER;
+  bool changed = false;
   const char *const c_sidebar_divider_char = cs_subset_string(NeoMutt->sub, "sidebar_divider_char");
 
   // Calculate the width of the delimiter in screen cells
   int width = mutt_strwidth(c_sidebar_divider_char);
+  if ((width < 1) && simple_color_is_set(MT_COLOR_SIDEBAR_BACKGROUND))
+  {
+    type = SB_DIV_ASCII;
+    goto done;
+  }
 
   const bool c_ascii_chars = cs_subset_bool(NeoMutt->sub, "ascii_chars");
   if (c_ascii_chars)
@@ -84,7 +90,8 @@ static bool calc_divider(struct SidebarWindowData *wdata)
     }
   }
 
-  const bool changed = (width != wdata->divider_width);
+done:
+  changed = (width != wdata->divider_width);
 
   wdata->divider_type = type;
   wdata->divider_width = width;
@@ -227,9 +234,15 @@ static int sb_color_observer(struct NotifyCallback *nc)
     case MT_COLOR_SIDEBAR_ORDINARY:
     case MT_COLOR_SIDEBAR_SPOOLFILE:
     case MT_COLOR_SIDEBAR_UNREAD:
-    case MT_COLOR_MAX: // Sent on `uncolor *`
       win->actions |= WA_REPAINT;
       mutt_debug(LL_DEBUG5, "color done, request WA_REPAINT\n");
+      break;
+
+    case MT_COLOR_SIDEBAR_BACKGROUND:
+    case MT_COLOR_MAX: // Sent on `uncolor *`
+      calc_divider(win->wdata);
+      win->actions |= WA_RECALC;
+      mutt_debug(LL_DEBUG5, "color done, request WA_RECALC\n");
       break;
 
     default:

@@ -300,6 +300,7 @@ currently defined \fIobject\fPs are:
 .BR underline "."
 .IP
 If the sidebar is enabled the following \fIobject\fPs are also valid:
+.BR sidebar_\:background ", "
 .BR sidebar_\:divider ", "
 .BR sidebar_\:flagged ", "
 .BR sidebar_\:highlight ", "

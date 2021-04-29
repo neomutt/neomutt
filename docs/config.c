@@ -4199,6 +4199,9 @@
 ** This specifies the characters to be drawn between the sidebar (when
 ** visible) and the other NeoMutt panels. ASCII and Unicode line-drawing
 ** characters are supported.
+** .pp
+** If the sidebar_background color is set, then the divider char can be set to
+** an empty string for extra space.
 */
 
 { "sidebar_folder_indent", DT_BOOL, false },
