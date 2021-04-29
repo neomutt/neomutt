@@ -887,19 +887,19 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                 <tbody>
                   <row>
                     <entry><literal>%B%?F? [%F]?%* %?N?%N/?%S</literal></entry>
-                    <entry><screen>mailbox [F]            N/S</screen></entry>
+                    <entry><screen>mailbox [F]            N/S </screen></entry>
                   </row>
                   <row>
                     <entry><literal>%B%* %F:%N:%S</literal></entry>
-                    <entry><screen>mailbox              F:N:S</screen></entry>
+                    <entry><screen>mailbox              F:N:S </screen></entry>
                   </row>
                   <row>
                     <entry><literal>%B %?N?(%N)?%* %S</literal></entry>
-                    <entry><screen>mailbox (N)              S</screen></entry>
+                    <entry><screen>mailbox (N)              S </screen></entry>
                   </row>
                   <row>
                     <entry><literal>%B%* ?F?%F/?%N</literal></entry>
-                    <entry><screen>mailbox                F/S</screen></entry>
+                    <entry><screen>mailbox                F/S </screen></entry>
                   </row>
                 </tbody>
               </tgroup>
@@ -1075,14 +1075,15 @@ sidebar_pin +fruit +fruit/apple   <emphasis role="comment"># Always display thes
           </para>
 
 <screen>
-color sidebar_indicator default color17     <emphasis role="comment"># Dark blue background</emphasis>
-color sidebar_highlight white   color238    <emphasis role="comment"># Grey background</emphasis>
+color sidebar_background default black       <emphasis role="comment"># Black background</emphasis>
+color sidebar_indicator  default color17     <emphasis role="comment"># Dark blue background</emphasis>
+color sidebar_highlight  white   color238    <emphasis role="comment"># Grey background</emphasis>
 color sidebar_spool_file yellow  default     <emphasis role="comment"># Yellow</emphasis>
-color sidebar_unread    cyan    default     <emphasis role="comment"># Light blue</emphasis>
-color sidebar_new       green   default     <emphasis role="comment"># Green</emphasis>
-color sidebar_ordinary  default default     <emphasis role="comment"># Default colors</emphasis>
-color sidebar_flagged   red     default     <emphasis role="comment"># Red</emphasis>
-color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey</emphasis>
+color sidebar_unread     cyan    default     <emphasis role="comment"># Light blue</emphasis>
+color sidebar_new        green   default     <emphasis role="comment"># Green</emphasis>
+color sidebar_ordinary   default default     <emphasis role="comment"># Default colors</emphasis>
+color sidebar_flagged    red     default     <emphasis role="comment"># Red</emphasis>
+color sidebar_divider    color8  default     <emphasis role="comment"># Dark grey</emphasis>
 </screen>
 
           <para>
@@ -1137,64 +1138,6 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                   <entry>Lowest</entry>
                   <entry><literal>sidebar_ordinary</literal></entry>
                   <entry>Mailbox does not match above</entry>
-                </row>
-              </tbody>
-            </tgroup>
-          </table>
-        </sect3>
-
-        <sect3 id="intro-sidebar-config-changes">
-          <title>Config Changes</title>
-          <para>
-            If you haven't used Sidebar before, you can ignore this section.
-          </para>
-          <para>
-            Some of the Sidebar config has been changed to make its meaning
-            clearer. These changes have been made since the previous Sidebar
-            release: 2015-11-11.
-          </para>
-
-          <table id="table-intro-sidebar-config-changes">
-            <title>Config Changes</title>
-            <tgroup cols="2">
-              <thead>
-                <row>
-                  <entry>Old Name</entry>
-                  <entry>New Name</entry>
-                </row>
-              </thead>
-              <tbody>
-                <row>
-                  <entry><literal>$sidebar_delim</literal></entry>
-                  <entry><literal>$sidebar_divider_char</literal></entry>
-                </row>
-                <row>
-                  <entry><literal>$sidebar_folderindent</literal></entry>
-                  <entry><literal>$sidebar_folder_indent</literal></entry>
-                </row>
-                <row>
-                  <entry><literal>$sidebar_indentstr</literal></entry>
-                  <entry><literal>$sidebar_indent_string</literal></entry>
-                </row>
-                <row>
-                  <entry><literal>$sidebar_newmail_only</literal></entry>
-                  <entry><literal>$sidebar_new_mail_only</literal></entry>
-                </row>
-                <row>
-                  <entry><literal>$sidebar_shortpath</literal></entry>
-                  <entry><literal>$sidebar_short_path</literal></entry>
-                </row>
-                <row>
-                  <entry><literal>$sidebar_sort</literal></entry>
-                  <entry><literal>$sidebar_sort_method</literal></entry>
-                </row>
-                <row>
-                  <entry><literal>&lt;sidebar-scroll-down&gt;</literal></entry>
-                  <entry><literal>&lt;sidebar-page-down&gt;</literal></entry>
-                </row>
-                <row>
-                  <entry><literal>&lt;sidebar-scroll-up&gt;</literal></entry>
-                  <entry><literal>&lt;sidebar-page-up&gt;</literal></entry>
                 </row>
               </tbody>
             </tgroup>
@@ -5296,6 +5239,10 @@ uncolor prompt
               </row>
             </thead>
             <tbody>
+              <row>
+                <entry>sidebar_background</entry>
+                <entry>The entire sidebar panel</entry>
+              </row>
               <row>
                 <entry>sidebar_divider</entry>
                 <entry>The dividing line between the Sidebar and the Index/Pager panels</entry>
@@ -17501,6 +17448,13 @@ set sort_browser="reverse-size"
             </thead>
             <tbody>
               <row>
+                <entry><literal>sidebar_background</literal></entry>
+                <entry>default</entry>
+                <entry>
+                  The entire sidebar panel
+                </entry>
+              </row>
+              <row>
                 <entry><literal>sidebar_divider</literal></entry>
                 <entry>default</entry>
                 <entry>
@@ -17711,6 +17665,8 @@ color indicator cyan black
 color sidebar_indicator cyan black
 <emphasis role="comment"># Color of the highlighted, but not open, mailbox.</emphasis>
 color sidebar_highlight black color8
+<emphasis role="comment"># Color of the entire Sidebar panel</emphasis>
+color sidebar_background default black
 <emphasis role="comment"># Color of the divider separating the Sidebar from NeoMutt panels</emphasis>
 color sidebar_divider color8 black
 <emphasis role="comment"># Color to give mailboxes containing flagged mail</emphasis>
