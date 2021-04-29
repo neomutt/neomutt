@@ -2092,28 +2092,14 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       FREE(&Resize);
     }
 
-    if ((rd->pview->mode == PAGER_MODE_EMAIL) && (c_pager_index_lines != 0))
+    if ((rd->pview->mode == PAGER_MODE_EMAIL) && (c_pager_index_lines != 0) && rd->menu)
     {
-      if (!rd->menu)
-      {
-        /* only allocate the space if/when we need the index.
-         * Initialise the menu as per the main index */
-        struct Menu *menu = menu_new(rd->pview->win_index, MENU_MAIN);
-        rd->menu = menu;
-        rd->menu->make_entry = index_make_entry;
-        rd->menu->color = index_color;
-        rd->menu->max = m ? m->vcount : 0;
-        rd->menu->current = rd->pview->pdata->email->vnum;
-        rd->menu->win_ibar = rd->pview->win_ibar;
-        rd->menu->mdata = shared;
-      }
-
       mutt_curses_set_color(MT_COLOR_NORMAL);
 
       /* some fudge to work out whereabouts the indicator should go */
-      if (rd->menu->current - rd->indicator < 0)
+      if ((rd->menu->current - rd->indicator) < 0)
         rd->menu->top = 0;
-      else if (rd->menu->max - rd->menu->current < rd->menu->pagelen - rd->indicator)
+      else if ((rd->menu->max - rd->menu->current) < (rd->menu->pagelen - rd->indicator))
         rd->menu->top = rd->menu->max - rd->menu->pagelen;
       else
         rd->menu->top = rd->menu->current - rd->indicator;
@@ -2464,7 +2450,6 @@ int mutt_pager(struct PagerView *pview)
   int rc = -1;
   int searchctx = 0;
   int index_space = m ? MIN(c_pager_index_lines, m->vcount) : c_pager_index_lines;
-  int old_PagerIndexLines = index_space; // some people want to resize it while inside the pager
   bool first = true;
   bool wrapped = false;
   enum MailboxType mailbox_type = m ? m->type : MUTT_UNKNOWN;
@@ -2544,6 +2529,7 @@ int mutt_pager(struct PagerView *pview)
   //---------- show windows, set focus and visibility --------------------------
   if (rd.pview->win_index)
   {
+    rd.menu = rd.pview->win_index->wdata;
     rd.pview->win_index->size = MUTT_WIN_SIZE_FIXED;
     rd.pview->win_index->req_rows = index_space;
     rd.pview->win_index->parent->size = MUTT_WIN_SIZE_MINIMISE;
@@ -2567,8 +2553,8 @@ int mutt_pager(struct PagerView *pview)
   {
     mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
-    pager_custom_redraw(pager_menu);
     window_redraw(RootWindow, true);
+    pager_custom_redraw(pager_menu);
 
     const bool c_braille_friendly =
         cs_subset_bool(NeoMutt->sub, "braille_friendly");
@@ -3488,8 +3474,6 @@ int mutt_pager(struct PagerView *pview)
         //=======================================================================
 
       case OP_ENTER_COMMAND:
-        old_PagerIndexLines = c_pager_index_lines;
-
         mutt_enter_command();
         window_set_focus(rd.pview->win_pager);
         pager_menu->redraw = REDRAW_FULL;
@@ -3500,11 +3484,6 @@ int mutt_pager(struct PagerView *pview)
           if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
             break;
           OptNeedResort = true;
-        }
-
-        if (old_PagerIndexLines != c_pager_index_lines)
-        {
-          menu_free(&rd.menu);
         }
 
         if ((pager_menu->redraw & REDRAW_FLOW) && (pview->flags & MUTT_PAGER_RETWINCH))
@@ -4162,7 +4141,6 @@ int mutt_pager(struct PagerView *pview)
   FREE(&rd.line_info);
   menu_pop_current(pager_menu);
   menu_free(&pager_menu);
-  menu_free(&rd.menu);
 
   if (rd.pview->win_index)
   {
