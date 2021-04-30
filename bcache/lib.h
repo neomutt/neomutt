@@ -41,8 +41,8 @@ struct BodyCache;
 
 /**
  * typedef bcache_list_t - Prototype for mutt_bcache_list() callback
+ * @param id      Cache id
  * @param bcache  Body Cache from mutt_bcache_open()
- * @param want_id Callback function called for each match
  * @param data    Data to pass to the callback function
  * @retval -1  Failure
  * @retval >=0 count of matching items

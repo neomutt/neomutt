@@ -840,7 +840,7 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
   }
 
   iconv_t cd = mutt_ch_iconv_open(cs, cs, MUTT_ICONV_NO_FLAGS);
-  if (cd != (iconv_t)(-1))
+  if (cd != (iconv_t) (-1))
   {
     iconv_close(cd);
     return true;

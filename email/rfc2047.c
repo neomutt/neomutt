@@ -192,13 +192,13 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
   if (fromcode)
   {
     iconv_t cd = mutt_ch_iconv_open(tocode, fromcode, MUTT_ICONV_NO_FLAGS);
-    assert(cd != (iconv_t)(-1));
+    assert(cd != (iconv_t) (-1));
     ib = d;
     ibl = dlen;
     ob = buf;
     obl = sizeof(buf) - strlen(tocode);
-    if ((iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl) == (size_t)(-1)) ||
-        (iconv(cd, NULL, NULL, &ob, &obl) == (size_t)(-1)))
+    if ((iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl) == (size_t) (-1)) ||
+        (iconv(cd, NULL, NULL, &ob, &obl) == (size_t) (-1)))
     {
       assert(errno == E2BIG);
       iconv_close(cd);
@@ -272,7 +272,7 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
   }
 
   const iconv_t cd = mutt_ch_iconv_open(tocode, fromcode, MUTT_ICONV_NO_FLAGS);
-  assert(cd != (iconv_t)(-1));
+  assert(cd != (iconv_t) (-1));
   const char *ib = buf;
   size_t ibl = buflen;
   char tmp[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
@@ -280,7 +280,7 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
   size_t obl = sizeof(tmp) - strlen(tocode);
   const size_t n1 = iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
   const size_t n2 = iconv(cd, NULL, NULL, &ob, &obl);
-  assert(n1 != (size_t)(-1) && n2 != (size_t)(-1));
+  assert(n1 != (size_t) (-1) && n2 != (size_t) (-1));
   iconv_close(cd);
   return (*encoder)(str, tmp, ob - tmp, tocode);
 }

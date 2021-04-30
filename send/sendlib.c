@@ -230,7 +230,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
   size_t ret;
 
   const iconv_t cd1 = mutt_ch_iconv_open("utf-8", fromcode, MUTT_ICONV_NO_FLAGS);
-  if (cd1 == (iconv_t)(-1))
+  if (cd1 == (iconv_t) (-1))
     return -1;
 
   iconv_t *cd = mutt_mem_calloc(ncodes, sizeof(iconv_t));
@@ -245,8 +245,8 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
     else
     {
       /* Special case for conversion to UTF-8 */
-      cd[i] = (iconv_t)(-1);
-      score[i] = (size_t)(-1);
+      cd[i] = (iconv_t) (-1);
+      score[i] = (size_t) (-1);
     }
   }
 
@@ -264,10 +264,10 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
     size_t obl = sizeof(bufu);
     n = iconv(cd1, (ICONV_CONST char **) ((ibl != 0) ? &ib : 0), &ibl, &ob, &obl);
     /* assert(n == (size_t)(-1) || !n); */
-    if ((n == (size_t)(-1)) && (((errno != EINVAL) && (errno != E2BIG)) || (ib == bufi)))
+    if ((n == (size_t) (-1)) && (((errno != EINVAL) && (errno != E2BIG)) || (ib == bufi)))
     {
       /* assert(errno == EILSEQ || (errno == EINVAL && ib == bufi && ibl < sizeof(bufi))); */
-      ret = (size_t)(-1);
+      ret = (size_t) (-1);
       break;
     }
     const size_t ubl1 = ob - bufu;
@@ -275,17 +275,17 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
     /* Convert from UTF-8 */
     for (int i = 0; i < ncodes; i++)
     {
-      if ((cd[i] != (iconv_t)(-1)) && (score[i] != (size_t)(-1)))
+      if ((cd[i] != (iconv_t) (-1)) && (score[i] != (size_t) (-1)))
       {
         const char *ub = bufu;
         size_t ubl = ubl1;
         ob = bufo;
         obl = sizeof(bufo);
         n = iconv(cd[i], (ICONV_CONST char **) ((ibl || ubl) ? &ub : 0), &ubl, &ob, &obl);
-        if (n == (size_t)(-1))
+        if (n == (size_t) (-1))
         {
           /* assert(errno == E2BIG || (BUGGY_ICONV && (errno == EILSEQ || errno == ENOENT))); */
-          score[i] = (size_t)(-1);
+          score[i] = (size_t) (-1);
         }
         else
         {
@@ -293,7 +293,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
           update_content_info(&infos[i], &states[i], bufo, ob - bufo);
         }
       }
-      else if ((cd[i] == (iconv_t)(-1)) && (score[i] == (size_t)(-1)))
+      else if ((cd[i] == (iconv_t) (-1)) && (score[i] == (size_t) (-1)))
       {
         /* Special case for conversion to UTF-8 */
         update_content_info(&infos[i], &states[i], bufu, ubl1);
@@ -315,19 +315,19 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
   if (ret == 0)
   {
     /* Find best score */
-    ret = (size_t)(-1);
+    ret = (size_t) (-1);
     for (int i = 0; i < ncodes; i++)
     {
-      if ((cd[i] == (iconv_t)(-1)) && (score[i] == (size_t)(-1)))
+      if ((cd[i] == (iconv_t) (-1)) && (score[i] == (size_t) (-1)))
       {
         /* Special case for conversion to UTF-8 */
         *tocode = i;
         ret = 0;
         break;
       }
-      else if ((cd[i] == (iconv_t)(-1)) || (score[i] == (size_t)(-1)))
+      else if ((cd[i] == (iconv_t) (-1)) || (score[i] == (size_t) (-1)))
         continue;
-      else if ((ret == (size_t)(-1)) || (score[i] < ret))
+      else if ((ret == (size_t) (-1)) || (score[i] < ret))
       {
         *tocode = i;
         ret = score[i];
@@ -335,7 +335,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
           break;
       }
     }
-    if (ret != (size_t)(-1))
+    if (ret != (size_t) (-1))
     {
       memcpy(info, &infos[*tocode], sizeof(struct Content));
       update_content_info(info, &states[*tocode], 0, 0); /* EOF */
@@ -343,7 +343,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
   }
 
   for (int i = 0; i < ncodes; i++)
-    if (cd[i] != (iconv_t)(-1))
+    if (cd[i] != (iconv_t) (-1))
       iconv_close(cd[i]);
 
   iconv_close(cd1);
@@ -408,7 +408,7 @@ static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *
       tcode[i] = mutt_str_dup(c);
   }
 
-  ret = (size_t)(-1);
+  ret = (size_t) (-1);
   if (fromcode)
   {
     /* Try each fromcode in turn */
@@ -423,7 +423,7 @@ static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *
         fcode = mutt_str_dup(c);
 
       ret = convert_file_to(fp, fcode, ncodes, (char const *const *) tcode, &cn, info);
-      if (ret != (size_t)(-1))
+      if (ret != (size_t) (-1))
       {
         *fromcode = fcode;
         *tocode = tcode[cn];
@@ -437,7 +437,7 @@ static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *
   {
     /* There is only one fromcode */
     ret = convert_file_to(fp, fromcodes, ncodes, (char const *const *) tcode, &cn, info);
-    if (ret != (size_t)(-1))
+    if (ret != (size_t) (-1))
     {
       *tocode = tcode[cn];
       tcode[cn] = 0;
@@ -514,7 +514,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
         b->use_disp ? (c_attach_charset ? c_attach_charset : c_charset) : c_charset;
     if (c_charset && (chs || c_send_charset) &&
         (convert_file_from_to(fp, fchs, chs ? chs : c_send_charset, &fromcode,
-                              &tocode, info) != (size_t)(-1)))
+                              &tocode, info) != (size_t) (-1)))
     {
       if (!chs)
       {

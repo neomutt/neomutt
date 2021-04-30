@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page neo_opcode All user-callable functions
+ *
+ * All user-callable functions
+ */
+
 #include <stddef.h>
 #include "opcodes.h"
 

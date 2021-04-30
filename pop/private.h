@@ -95,7 +95,7 @@ void pop_apop_timestamp(struct PopAccountData *adata, char *buf);
 
 /**
  * typedef pop_fetch_t - Callback function to handle POP server responses
- * @param line String to parse
+ * @param str  String to parse
  * @param data Private data passed to pop_fetch_data()
  * @retval  0 Success
  * @retval -1 Failure

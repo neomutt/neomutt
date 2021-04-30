@@ -740,7 +740,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
       {
         char c = ch;
         size_t k = mbrtowc(&wc, &c, 1, &mbstate);
-        if (k == (size_t)(-2))
+        if (k == (size_t) (-2))
           continue;
         else if ((k != 0) && (k != 1))
         {

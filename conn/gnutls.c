@@ -941,7 +941,7 @@ static int tls_negotiate(struct Connection *conn)
   }
 
   /* set socket */
-  gnutls_transport_set_ptr(data->state, (gnutls_transport_ptr_t)(long) conn->fd);
+  gnutls_transport_set_ptr(data->state, (gnutls_transport_ptr_t) (long) conn->fd);
 
   if (gnutls_server_name_set(data->state, GNUTLS_NAME_DNS, conn->account.host,
                              mutt_str_len(conn->account.host)))

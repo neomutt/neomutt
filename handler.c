@@ -118,7 +118,7 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
 
   if (!bufi)
   {
-    if (cd != (iconv_t)(-1))
+    if (cd != (iconv_t) (-1))
     {
       ob = bufo;
       obl = sizeof(bufo);
@@ -129,7 +129,7 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
     return;
   }
 
-  if (cd == (iconv_t)(-1))
+  if (cd == (iconv_t) (-1))
   {
     state_prefix_put(s, bufi, *l);
     *l = 0;
@@ -1860,7 +1860,7 @@ bool mutt_can_decode(struct Body *a)
 void mutt_decode_attachment(struct Body *b, struct State *s)
 {
   int istext = mutt_is_text_part(b) && (b->disposition == DISP_INLINE);
-  iconv_t cd = (iconv_t)(-1);
+  iconv_t cd = (iconv_t) (-1);
 
   if (istext && (b->charset || (s->flags & MUTT_CHARCONV)))
   {
@@ -1907,6 +1907,6 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
       break;
   }
 
-  if (cd != (iconv_t)(-1))
+  if (cd != (iconv_t) (-1))
     iconv_close(cd);
 }

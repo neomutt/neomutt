@@ -334,7 +334,7 @@ static void compose_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
 
   const char *const c_attach_format = cs_subset_string(sub, "attach_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(c_attach_format),
-                      attach_format_str, (intptr_t)(actx->idx[actx->v2r[line]]),
+                      attach_format_str, (intptr_t) (actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
 

@@ -446,7 +446,7 @@ static void attach_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
       cs_subset_string(NeoMutt->sub, "attach_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                       NONULL(c_attach_format), attach_format_str,
-                      (intptr_t)(actx->idx[actx->v2r[line]]), MUTT_FORMAT_ARROWCURSOR);
+                      (intptr_t) (actx->idx[actx->v2r[line]]), MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

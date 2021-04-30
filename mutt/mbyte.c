@@ -65,7 +65,7 @@ int mutt_mb_charlen(const char *s, int *width)
   k = mbrtowc(&wc, s, n, &mbstate);
   if (width)
     *width = wcwidth(wc);
-  return ((k == (size_t)(-1)) || (k == (size_t)(-2))) ? -1 : k;
+  return ((k == (size_t) (-1)) || (k == (size_t) (-2))) ? -1 : k;
 }
 
 /**
@@ -246,7 +246,7 @@ void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
   for (; slen && dlen >= MB_LEN_MAX; dest += k, dlen -= k, src++, slen--)
   {
     k = wcrtomb(dest, *src, &st);
-    if (k == (size_t)(-1))
+    if (k == (size_t) (-1))
       break;
   }
 
@@ -265,7 +265,7 @@ void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
     for (; slen && p - buf < dlen; p += k, src++, slen--)
     {
       k = wcrtomb(p, *src, &st);
-      if (k == (size_t)(-1))
+      if (k == (size_t) (-1))
         break;
     }
     p += wcrtomb(p, 0, &st);
@@ -305,8 +305,8 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char 
   while (*buf != '\0')
   {
     memset(&st, 0, sizeof(st));
-    for (; (k = mbrtowc(&wc, buf, MB_LEN_MAX, &st)) && k != (size_t)(-1) &&
-           k != (size_t)(-2);
+    for (; (k = mbrtowc(&wc, buf, MB_LEN_MAX, &st)) && k != (size_t) (-1) &&
+           k != (size_t) (-2);
          buf += k)
     {
       if (i >= wbuflen)

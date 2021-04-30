@@ -226,7 +226,7 @@ static int check_alias_name(const char *s, char *dest, size_t destlen)
   for (; s && *s && (dry || destlen) && (l = mbrtowc(&wc, s, MB_CUR_MAX, &mb)) != 0;
        s += l, destlen -= l)
   {
-    bool bad = (l == (size_t)(-1)) || (l == (size_t)(-2)); /* conversion error */
+    bool bad = (l == (size_t) (-1)) || (l == (size_t) (-2)); /* conversion error */
     bad = bad || (!dry && l > destlen); /* too few room for mb char */
     if (l == 1)
       bad = bad || (!strchr("-_+=.", *s) && !iswalnum(wc));
@@ -236,7 +236,7 @@ static int check_alias_name(const char *s, char *dest, size_t destlen)
     {
       if (dry)
         return -1;
-      if (l == (size_t)(-1))
+      if (l == (size_t) (-1))
         memset(&mb, 0, sizeof(mbstate_t));
       *dest++ = '_';
       rc = -1;

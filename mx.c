@@ -1023,8 +1023,8 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
       return MX_STATUS_OK;
     }
 
-    /* if we haven't deleted any messages, we don't need to resort */
-    /* ... except for certain folder formats which need "unsorted"
+    /* if we haven't deleted any messages, we don't need to resort
+     * ... except for certain folder formats which need "unsorted"
      * sort order in order to synchronize folders.
      *
      * MH and maildir are safe.  mbox-style seems to need re-sorting,

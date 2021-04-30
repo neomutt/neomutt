@@ -121,7 +121,7 @@ int mutt_complete(char *buf, size_t buflen)
     {
       mutt_buffer_concatn_path(tmp, mutt_buffer_string(exp_dirpart),
                                mutt_buffer_len(exp_dirpart), buf + 1,
-                               (size_t)(p - buf - 1));
+                               (size_t) (p - buf - 1));
       mutt_buffer_copy(exp_dirpart, tmp);
       mutt_buffer_substrcpy(dirpart, buf, p + 1);
       mutt_buffer_strcpy(filepart, p + 1);

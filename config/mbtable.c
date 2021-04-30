@@ -68,14 +68,14 @@ struct MbTable *mbtable_parse(const char *s)
   memset(&mbstate, 0, sizeof(mbstate));
   while (slen && (k = mbrtowc(NULL, s, slen, &mbstate)))
   {
-    if ((k == (size_t)(-1)) || (k == (size_t)(-2)))
+    if ((k == (size_t) (-1)) || (k == (size_t) (-2)))
     {
       /* XXX put message in err buffer; fail? warning? */
       mutt_debug(LL_DEBUG1, "mbrtowc returned %d converting %s in %s\n",
-                 (k == (size_t)(-1)) ? -1 : -2, s, t->orig_str);
-      if (k == (size_t)(-1))
+                 (k == (size_t) (-1)) ? -1 : -2, s, t->orig_str);
+      if (k == (size_t) (-1))
         memset(&mbstate, 0, sizeof(mbstate));
-      k = (k == (size_t)(-1)) ? 1 : slen;
+      k = (k == (size_t) (-1)) ? 1 : slen;
     }
 
     slen -= k;

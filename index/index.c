@@ -3836,8 +3836,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             struct Buffer *msg_id = mutt_buffer_pool_get();
             mutt_file_sanitize_regex(msg_id, shared->email->env->message_id);
             char macro[256];
-            snprintf(macro, sizeof(macro), "<search>~i '%s'\n",
-                     mutt_buffer_string(msg_id));
+            snprintf(macro, sizeof(macro), "<search>~i '%s'\n", mutt_buffer_string(msg_id));
             mutt_buffer_pool_release(&msg_id);
 
             /* L10N: "message hotkey" is the key bindings priv->menu description of a

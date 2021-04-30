@@ -1067,8 +1067,8 @@ int mutt_addwch(wchar_t wc)
   size_t n1, n2;
 
   memset(&mbstate, 0, sizeof(mbstate));
-  if (((n1 = wcrtomb(buf, wc, &mbstate)) == (size_t)(-1)) ||
-      ((n2 = wcrtomb(buf + n1, 0, &mbstate)) == (size_t)(-1)))
+  if (((n1 = wcrtomb(buf, wc, &mbstate)) == (size_t) (-1)) ||
+      ((n2 = wcrtomb(buf + n1, 0, &mbstate)) == (size_t) (-1)))
   {
     return -1; /* ERR */
   }
@@ -1111,12 +1111,12 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
   char *p = buf;
   for (; n && (k = mbrtowc(&wc, s, n, &mbstate1)); s += k, n -= k)
   {
-    if ((k == (size_t)(-1)) || (k == (size_t)(-2)))
+    if ((k == (size_t) (-1)) || (k == (size_t) (-2)))
     {
-      if ((k == (size_t)(-1)) && (errno == EILSEQ))
+      if ((k == (size_t) (-1)) && (errno == EILSEQ))
         memset(&mbstate1, 0, sizeof(mbstate1));
 
-      k = (k == (size_t)(-1)) ? 1 : n;
+      k = (k == (size_t) (-1)) ? 1 : n;
       wc = ReplacementChar;
     }
     if (escaped)
@@ -1277,11 +1277,11 @@ void mutt_paddstr(int n, const char *s)
   memset(&mbstate, 0, sizeof(mbstate));
   for (; len && (k = mbrtowc(&wc, s, len, &mbstate)); s += k, len -= k)
   {
-    if ((k == (size_t)(-1)) || (k == (size_t)(-2)))
+    if ((k == (size_t) (-1)) || (k == (size_t) (-2)))
     {
-      if (k == (size_t)(-1))
+      if (k == (size_t) (-1))
         memset(&mbstate, 0, sizeof(mbstate));
-      k = (k == (size_t)(-1)) ? 1 : len;
+      k = (k == (size_t) (-1)) ? 1 : len;
       wc = ReplacementChar;
     }
     if (!IsWPrint(wc))
@@ -1325,11 +1325,11 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
   memset(&mbstate, 0, sizeof(mbstate));
   for (w = 0; n && (cl = mbrtowc(&wc, src, n, &mbstate)); src += cl, n -= cl)
   {
-    if ((cl == (size_t)(-1)) || (cl == (size_t)(-2)))
+    if ((cl == (size_t) (-1)) || (cl == (size_t) (-2)))
     {
-      if (cl == (size_t)(-1))
+      if (cl == (size_t) (-1))
         memset(&mbstate, 0, sizeof(mbstate));
-      cl = (cl == (size_t)(-1)) ? 1 : n;
+      cl = (cl == (size_t) (-1)) ? 1 : n;
       wc = ReplacementChar;
     }
     cw = wcwidth(wc);
@@ -1393,11 +1393,11 @@ int mutt_strnwidth(const char *s, size_t n)
       continue;
     }
 
-    if ((k == (size_t)(-1)) || (k == (size_t)(-2)))
+    if ((k == (size_t) (-1)) || (k == (size_t) (-2)))
     {
-      if (k == (size_t)(-1))
+      if (k == (size_t) (-1))
         memset(&mbstate, 0, sizeof(mbstate));
-      k = (k == (size_t)(-1)) ? 1 : n;
+      k = (k == (size_t) (-1)) ? 1 : n;
       wc = ReplacementChar;
     }
     if (!IsWPrint(wc))
