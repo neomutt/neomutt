@@ -3819,9 +3819,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           break;
         if (shared->email->env->message_id)
         {
-          char buf2[128];
+          char buf2[128] = { 0 };
 
-          buf2[0] = '\0';
           /* L10N: This is the prompt for <mark-message>.  Whatever they
              enter will be prefixed by $mark_macro_prefix and will become
              a macro hotkey to jump to the currently selected message. */
@@ -3829,12 +3828,18 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
                               MUTT_COMP_NO_FLAGS, false, NULL, NULL) &&
               buf2[0])
           {
-            char str[256], macro[256];
             const char *const c_mark_macro_prefix =
                 cs_subset_string(shared->sub, "mark_macro_prefix");
+            char str[256];
             snprintf(str, sizeof(str), "%s%s", c_mark_macro_prefix, buf2);
-            snprintf(macro, sizeof(macro), "<search>~i \"%s\"\n",
-                     shared->email->env->message_id);
+
+            struct Buffer *msg_id = mutt_buffer_pool_get();
+            mutt_file_sanitize_regex(msg_id, shared->email->env->message_id);
+            char macro[256];
+            snprintf(macro, sizeof(macro), "<search>~i '%s'\n",
+                     mutt_buffer_string(msg_id));
+            mutt_buffer_pool_release(&msg_id);
+
             /* L10N: "message hotkey" is the key bindings priv->menu description of a
                macro created by <mark-message>. */
             km_bind(str, MENU_MAIN, OP_MACRO, macro, _("message hotkey"));
