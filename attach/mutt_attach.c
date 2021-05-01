@@ -1125,13 +1125,17 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
   if (mailcap_lookup(a, type, sizeof(type), NULL, MUTT_MC_PRINT))
   {
-    int piped = false;
-
     mutt_debug(LL_DEBUG2, "Using mailcap\n");
 
     struct MailcapEntry *entry = mailcap_entry_new();
     mailcap_lookup(a, type, sizeof(type), entry, MUTT_MC_PRINT);
-    mailcap_expand_filename(entry->nametemplate, a->filename, newfile);
+
+    char *sanitized_fname = mutt_str_dup(a->filename);
+    /* In send mode (!fp), we allow slashes because those are part of
+     * the tempfile.  The path will be removed in expand_filename */
+    mutt_file_sanitize_filename(sanitized_fname, fp ? true : false);
+    mailcap_expand_filename(entry->nametemplate, sanitized_fname, newfile);
+    FREE(&sanitized_fname);
 
     if (mutt_save_attachment(fp, a, mutt_buffer_string(newfile),
                              MUTT_SAVE_NO_FLAGS, NULL) == -1)
@@ -1143,7 +1147,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     mutt_rfc3676_space_unstuff_attachment(a, mutt_buffer_string(newfile));
 
     mutt_buffer_strcpy(cmd, entry->printcommand);
-    piped = mailcap_expand_command(a, mutt_buffer_string(newfile), type, cmd);
+
+    bool piped = mailcap_expand_command(a, mutt_buffer_string(newfile), type, cmd);
 
     mutt_endwin();
 
