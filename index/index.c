@@ -1151,13 +1151,15 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   struct IndexSharedData *shared = dlg->wdata;
   index_shared_data_set_context(shared, ctx_new(m_init));
 
-  struct MuttWindow *win_index2 = mutt_window_find(dlg, WT_INDEX);
-  struct IndexPrivateData *priv = win_index2->wdata;
+  struct MuttWindow *panel_index = mutt_window_find(dlg, WT_INDEX);
+  struct MuttWindow *panel_pager = mutt_window_find(dlg, WT_PAGER);
+
+  struct IndexPrivateData *priv = panel_index->wdata;
   priv->attach_msg = OptAttachMsg;
-  priv->win_index = win_index2;
-  priv->win_ibar = mutt_window_find(dlg, WT_INDEX_BAR);
-  priv->win_pager = mutt_window_find(dlg, WT_PAGER);
-  priv->win_pbar = mutt_window_find(dlg, WT_PAGER_BAR);
+  priv->win_index = mutt_window_find(panel_index, WT_MENU);
+  priv->win_ibar = mutt_window_find(panel_index, WT_INDEX_BAR);
+  priv->win_pager = mutt_window_find(panel_pager, WT_MENU);
+  priv->win_pbar = mutt_window_find(panel_pager, WT_PAGER_BAR);
 
   int op = OP_NULL;
 
@@ -1170,6 +1172,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   dlg->help_menu = MENU_MAIN;
 
   struct Menu *menu = menu_new(MENU_MAIN);
+  priv->win_index->wdata = menu;
   notify_set_parent(menu->notify, priv->win_index->notify);
 
   priv->menu = menu;
@@ -4200,12 +4203,12 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool status_on_top)
 {
   struct MuttWindow *panel_index =
-      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   parent->focus = panel_index;
 
   struct MuttWindow *win_index =
-      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   panel_index->focus = win_index;
 
@@ -4224,10 +4227,10 @@ static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool sta
     mutt_window_add_child(panel_index, win_ibar);
   }
 
-  struct IndexPrivateData *private = index_private_data_new();
+  struct IndexPrivateData *priv = index_private_data_new();
 
-  win_index->wdata = private;
-  win_index->wdata_free = index_private_data_free;
+  panel_index->wdata = priv;
+  panel_index->wdata_free = index_private_data_free;
 
   return panel_index;
 }

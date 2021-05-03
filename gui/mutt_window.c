@@ -800,6 +800,25 @@ struct MuttWindow *window_get_focus(void)
 }
 
 /**
+ * window_get_dialog - Get the currently active Dialog
+ * @retval ptr Active Dialog
+ */
+struct MuttWindow *window_get_dialog(void)
+{
+  if (!AllDialogsWindow)
+    return NULL;
+
+  struct MuttWindow *np = NULL;
+  TAILQ_FOREACH(np, &AllDialogsWindow->children, entries)
+  {
+    if (mutt_window_is_visible(np))
+      return np;
+  }
+
+  return NULL;
+}
+
+/**
  * mutt_window_clear - Clear a Window
  * @param win Window
  *

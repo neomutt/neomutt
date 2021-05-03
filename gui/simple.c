@@ -55,8 +55,8 @@ static int dialog_config_observer(struct NotifyCallback *nc)
   struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-  if ((c_status_on_top && (win_first->type == WT_INDEX)) ||
-      (!c_status_on_top && (win_first->type != WT_INDEX)))
+  if ((c_status_on_top && (win_first->type == WT_MENU)) ||
+      (!c_status_on_top && (win_first->type != WT_MENU)))
   {
     // Swap the Index and the IndexBar Windows
     TAILQ_REMOVE(&dlg->children, win_first, entries);
@@ -87,7 +87,7 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
   dlg->wdata = menu;
 
   struct MuttWindow *index =
-      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   dlg->focus = index;
   index->wdata = menu;

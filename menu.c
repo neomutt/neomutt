@@ -1705,3 +1705,26 @@ int menu_loop(struct Menu *menu)
   }
   /* not reached */
 }
+
+/**
+ * menu_get_current_type - Get the type of the current Window
+ * @retval enum Menu Type, e.g. #MENU_PAGER
+ */
+enum MenuType menu_get_current_type(void)
+{
+  struct MuttWindow *win = window_get_dialog();
+  while (win && win->focus)
+    win = win->focus;
+
+  if (!win)
+    return MENU_GENERIC;
+
+  if (win->type != WT_MENU)
+    return MENU_GENERIC;
+
+  struct Menu *menu = win->wdata;
+  if (!menu)
+    return MENU_GENERIC;
+
+  return menu->type;
+}

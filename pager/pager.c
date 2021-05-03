@@ -2277,7 +2277,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     }
   }
 
-  if ((pager_menu->redraw & REDRAW_INDEX) && rd->menu)
+  if ((pager_menu->redraw & REDRAW_INDEX) && rd->menu && (c_pager_index_lines != 0))
   {
     /* redraw the pager_index indicator, because the
      * flags for this message might have changed. */
@@ -2524,6 +2524,7 @@ int mutt_pager(struct PagerView *pview)
 
   //---------- setup pager menu------------------------------------------------
   struct Menu *menu = menu_new(MENU_PAGER);
+  pview->win_pager->wdata = menu;
   notify_set_parent(menu->notify, pview->win_pager->notify);
 
   pager_menu = menu;
@@ -4194,13 +4195,13 @@ int mutt_pager(struct PagerView *pview)
 struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top)
 {
   struct MuttWindow *panel_pager =
-      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
   mutt_window_add_child(parent, panel_pager);
 
   struct MuttWindow *win_pager =
-      mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   panel_pager->focus = win_pager;
 
