@@ -328,7 +328,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   snprintf(title, sizeof(title), "%s%s", _("Query: "), buf);
 
   struct MuttWindow *dlg = dialog_create_simple_index(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
-  struct MuttWindow *sbar = TAILQ_LAST(&dlg->children, MuttWindowList);
+  struct MuttWindow *sbar = mutt_window_find(dlg, WT_INDEX_BAR);
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = query_make_entry;
