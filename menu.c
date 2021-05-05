@@ -1093,63 +1093,6 @@ static int menu_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * menu_new - Create a new Menu
- * @param win  Parent Window
- * @param type Menu type, e.g. #MENU_PAGER
- * @retval ptr New Menu
- */
-struct Menu *menu_new(struct MuttWindow *win, enum MenuType type)
-{
-  struct Menu *menu = mutt_mem_calloc(1, sizeof(struct Menu));
-
-  menu->type = type;
-  menu->redraw = REDRAW_FULL;
-  menu->color = default_color;
-  menu->search = generic_search;
-  menu->notify = notify_new();
-  menu->win_index = win;
-  menu->pagelen = win->state.rows;
-
-  win->wdata = menu;
-  notify_set_parent(menu->notify, win->notify);
-
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
-  notify_observer_add(win->notify, NT_WINDOW, menu_window_observer, menu);
-  mutt_color_observer_add(menu_color_observer, menu);
-
-  return menu;
-}
-
-/**
- * menu_free - Destroy a menu
- * @param[out] ptr Menu to destroy
- */
-void menu_free(struct Menu **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct Menu *menu = *ptr;
-
-  notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
-  notify_observer_remove(menu->win_index->notify, menu_window_observer, menu);
-  mutt_color_observer_remove(menu_color_observer, menu);
-  notify_free(&menu->notify);
-
-  if (menu->mdata && menu->mdata_free)
-    menu->mdata_free(menu, &menu->mdata); // Custom function to free private data
-
-  char **line = NULL;
-  ARRAY_FOREACH(line, &menu->dialog)
-  {
-    FREE(line);
-  }
-  ARRAY_FREE(&menu->dialog);
-
-  FREE(ptr);
-}
-
-/**
  * menu_add_dialog_row - Add a row to a Menu
  * @param menu Menu to add to
  * @param row  Row of text to add
@@ -1757,4 +1700,61 @@ enum MenuType menu_get_current_type(void)
     return MENU_GENERIC;
 
   return menu->type;
+}
+
+/**
+ * menu_free - Destroy a menu
+ * @param[out] ptr Menu to destroy
+ */
+void menu_free(struct Menu **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct Menu *menu = *ptr;
+
+  notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
+  notify_observer_remove(menu->win_index->notify, menu_window_observer, menu);
+  mutt_color_observer_remove(menu_color_observer, menu);
+  notify_free(&menu->notify);
+
+  if (menu->mdata && menu->mdata_free)
+    menu->mdata_free(menu, &menu->mdata); // Custom function to free private data
+
+  char **line = NULL;
+  ARRAY_FOREACH(line, &menu->dialog)
+  {
+    FREE(line);
+  }
+  ARRAY_FREE(&menu->dialog);
+
+  FREE(ptr);
+}
+
+/**
+ * menu_new - Create a new Menu
+ * @param win  Parent Window
+ * @param type Menu type, e.g. #MENU_PAGER
+ * @retval ptr New Menu
+ */
+struct Menu *menu_new(struct MuttWindow *win, enum MenuType type)
+{
+  struct Menu *menu = mutt_mem_calloc(1, sizeof(struct Menu));
+
+  menu->type = type;
+  menu->redraw = REDRAW_FULL;
+  menu->color = default_color;
+  menu->search = generic_search;
+  menu->notify = notify_new();
+  menu->win_index = win;
+  menu->pagelen = win->state.rows;
+
+  win->wdata = menu;
+  notify_set_parent(menu->notify, win->notify);
+
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
+  notify_observer_add(win->notify, NT_WINDOW, menu_window_observer, menu);
+  mutt_color_observer_add(menu_color_observer, menu);
+
+  return menu;
 }
