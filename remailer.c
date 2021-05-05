@@ -51,10 +51,6 @@
 #include "remailer.h"
 #endif
 
-#define MIX_HOFFSET 2
-#define MIX_VOFFSET (win->state.rows - 4)
-#define MIX_MAXROW (win->state.rows - 1)
-
 /**
  * struct Coord - Screen coordinates
  */
@@ -283,6 +279,8 @@ static void mix_type2_list_free(struct Remailer ***ttlp)
 static void mix_screen_coordinates(struct MuttWindow *win, struct Remailer **type2_list,
                                    struct Coord **coordsp, struct MixChain *chain, int i)
 {
+  const int wrap_indent = 2;
+
   if (!chain->cl)
     return;
 
@@ -292,15 +290,15 @@ static void mix_screen_coordinates(struct MuttWindow *win, struct Remailer **typ
 
   struct Coord *coords = *coordsp;
 
-  if (i)
+  if (i == 0)
   {
-    c = coords[i - 1].c + strlen(type2_list[chain->ch[i - 1]]->shortname) + 2;
-    r = coords[i - 1].r;
+    r = 0;
+    c = 0;
   }
   else
   {
-    r = MIX_VOFFSET;
-    c = MIX_HOFFSET;
+    c = coords[i - 1].c + strlen(type2_list[chain->ch[i - 1]]->shortname) + 2;
+    r = coords[i - 1].r;
   }
 
   for (; i < chain->cl; i++)
@@ -310,8 +308,8 @@ static void mix_screen_coordinates(struct MuttWindow *win, struct Remailer **typ
 
     if (c >= win->state.cols)
     {
-      oc = MIX_HOFFSET;
-      c = MIX_HOFFSET;
+      oc = wrap_indent;
+      c = wrap_indent;
       r++;
     }
 
@@ -335,7 +333,7 @@ static void mix_redraw_ce(struct MuttWindow *win, struct Remailer **type2_list,
   if (!coords || !chain)
     return;
 
-  if (coords[i].r < MIX_MAXROW)
+  if (coords[i].r < win->state.rows)
   {
     if (selected)
       mutt_curses_set_color(MT_COLOR_INDICATOR);
@@ -361,7 +359,7 @@ static void mix_redraw_ce(struct MuttWindow *win, struct Remailer **type2_list,
 static void mix_redraw_chain(struct MuttWindow *win, struct Remailer **type2_list,
                              struct Coord *coords, struct MixChain *chain, int cur)
 {
-  for (int i = MIX_VOFFSET; i < MIX_MAXROW; i++)
+  for (int i = 0; i < win->state.rows; i++)
   {
     mutt_window_move(win, 0, i);
     mutt_window_clrtoeol(win);
@@ -378,11 +376,9 @@ static void mix_redraw_chain(struct MuttWindow *win, struct Remailer **type2_lis
  */
 static void mix_redraw_head(struct MuttWindow *win, struct MixChain *chain)
 {
-  mutt_curses_set_color(MT_COLOR_STATUS);
-  mutt_window_mvprintw(win, 0, MIX_VOFFSET - 1,
-                       "-- Remailer chain [Length: %d]", chain ? chain->cl : 0);
-  mutt_window_clrtoeol(win);
-  mutt_curses_set_color(MT_COLOR_NORMAL);
+  char buf[1024];
+  snprintf(buf, sizeof(buf), "-- Remailer chain [Length: %ld]", chain ? chain->cl : 0);
+  sbar_set_title(win, buf);
 }
 
 /**
@@ -562,6 +558,41 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 }
 
 /**
+ * remailer_config_observer - Listen for config changes affecting the remailer - Implements ::observer_t
+ */
+static int remailer_config_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+
+  struct EventConfig *ec = nc->event_data;
+  struct MuttWindow *dlg = nc->global_data;
+
+  if (!mutt_str_equal(ec->name, "status_on_top"))
+    return 0;
+
+  const bool c_status_on_top = cs_subset_bool(ec->sub, "status_on_top");
+  struct MuttWindow *win_move = NULL;
+  if (c_status_on_top)
+  {
+    win_move = TAILQ_LAST(&dlg->children, MuttWindowList);
+    TAILQ_REMOVE(&dlg->children, win_move, entries);
+    TAILQ_INSERT_HEAD(&dlg->children, win_move, entries);
+  }
+  else
+  {
+    win_move = TAILQ_FIRST(&dlg->children);
+    TAILQ_REMOVE(&dlg->children, win_move, entries);
+    TAILQ_INSERT_TAIL(&dlg->children, win_move, entries);
+  }
+
+  mutt_window_reflow(dlg);
+  return 0;
+}
+
+/**
  * dlg_select_mixmaster_chain - Create a Mixmaster chain
  * @param chainhead List of chain links
  *
@@ -604,53 +635,76 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
   }
 
   struct MuttWindow *dlg =
-      dialog_create_simple_index(MENU_MIX, WT_DLG_REMAILER, RemailerHelp);
-  struct MuttWindow *win = dlg;
+      mutt_window_new(WT_DLG_REMAILER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->help_menu = MENU_MIX;
+  dlg->help_data = RemailerHelp;
+
+  struct MuttWindow *win_hosts =
+      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+
+  struct MuttWindow *win_chain =
+      mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+                      MUTT_WIN_SIZE_UNLIMITED, 4);
+
+  struct MuttWindow *win_cbar = NULL;
+  struct MuttWindow *win_rbar = NULL;
+
+  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  if (c_status_on_top)
+  {
+    win_rbar = sbar_add(dlg);
+    mutt_window_add_child(dlg, win_hosts);
+    win_cbar = sbar_add(dlg);
+    mutt_window_add_child(dlg, win_chain);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, win_hosts);
+    win_cbar = sbar_add(dlg);
+    mutt_window_add_child(dlg, win_chain);
+    win_rbar = sbar_add(dlg);
+  }
+  sbar_set_title(win_rbar, _("Select a remailer chain"));
 
   mix_screen_coordinates(dlg, type2_list, &coords, chain, 0);
 
-  menu = dlg->wdata;
+  menu = menu_new(win_hosts, MENU_MIX);
   menu->max = ttll;
   menu->make_entry = mix_make_entry;
   menu->tag = NULL;
   menu->mdata = type2_list;
-  menu->pagelen = MIX_VOFFSET - 1;
 
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_INDEX_BAR);
-  sbar_set_title(sbar, _("Select a remailer chain"));
+  menu_push_current(menu);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, remailer_config_observer, dlg);
+  dialog_push(dlg);
 
   while (loop)
   {
-    if (menu->pagelen != MIX_VOFFSET - 1)
-    {
-      menu->pagelen = MIX_VOFFSET - 1;
-      menu->redraw = REDRAW_FULL;
-    }
-
     if (c_redraw)
     {
-      mix_redraw_head(menu->win_index, chain);
-      mix_redraw_chain(menu->win_index, type2_list, coords, chain, c_cur);
+      mix_redraw_head(win_cbar, chain);
+      mix_redraw_chain(win_chain, type2_list, coords, chain, c_cur);
       c_redraw = false;
     }
     else if (c_cur != c_old)
     {
-      mix_redraw_ce(menu->win_index, type2_list, coords, chain, c_old, false);
-      mix_redraw_ce(menu->win_index, type2_list, coords, chain, c_cur, true);
+      mix_redraw_ce(win_chain, type2_list, coords, chain, c_old, false);
+      mix_redraw_ce(win_chain, type2_list, coords, chain, c_cur, true);
     }
 
     c_old = c_cur;
 
+    window_redraw(dlg, true);
     const int op = menu_loop(menu);
     switch (op)
     {
       case OP_REDRAW:
       {
-        sbar->actions |= WA_REPAINT;
-        mix_redraw_head(menu->win_index, chain);
+        mix_redraw_head(win_cbar, chain);
         mix_screen_coordinates(menu->win_index, type2_list, &coords, chain, 0);
-        mix_redraw_chain(menu->win_index, type2_list, coords, chain, c_cur);
-        menu->pagelen = MIX_VOFFSET - 1;
+        mix_redraw_chain(win_chain, type2_list, coords, chain, c_cur);
         break;
       }
 
@@ -757,7 +811,11 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
     }
   }
 
-  dialog_destroy_simple_index(&dlg);
+  menu_pop_current(menu);
+  menu_free(&menu);
+
+  dialog_pop();
+  notify_observer_remove(NeoMutt->notify, remailer_config_observer, dlg);
 
   /* construct the remailer list */
 
