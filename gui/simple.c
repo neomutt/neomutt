@@ -83,23 +83,23 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
   dlg->help_menu = mtype;
   dlg->help_data = help_data;
 
-  struct MuttWindow *index =
+  struct MuttWindow *win_index =
       mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  dlg->focus = index;
+  dlg->focus = win_index;
 
-  struct Menu *menu = menu_new(index, mtype);
+  struct Menu *menu = menu_new(win_index, mtype);
   dlg->wdata = menu;
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
   {
     sbar_add(dlg);
-    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, win_index);
   }
   else
   {
-    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, win_index);
     sbar_add(dlg);
   }
 

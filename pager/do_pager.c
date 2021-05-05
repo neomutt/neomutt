@@ -89,25 +89,25 @@ int mutt_do_pager(struct PagerView *pview)
       mutt_window_new(WT_DLG_DO_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
-  struct MuttWindow *pager =
+  struct MuttWindow *win_pager =
       mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  dlg->focus = pager;
+  dlg->focus = win_pager;
 
-  struct MuttWindow *pbar =
+  struct MuttWindow *win_pbar =
       mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
   {
-    mutt_window_add_child(dlg, pbar);
-    mutt_window_add_child(dlg, pager);
+    mutt_window_add_child(dlg, win_pbar);
+    mutt_window_add_child(dlg, win_pager);
   }
   else
   {
-    mutt_window_add_child(dlg, pager);
-    mutt_window_add_child(dlg, pbar);
+    mutt_window_add_child(dlg, win_pager);
+    mutt_window_add_child(dlg, win_pbar);
   }
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlg_dopager_observer, dlg);
@@ -115,8 +115,8 @@ int mutt_do_pager(struct PagerView *pview)
 
   pview->win_ibar = NULL;
   pview->win_index = NULL;
-  pview->win_pbar = pbar;
-  pview->win_pager = pager;
+  pview->win_pbar = win_pbar;
+  pview->win_pager = win_pager;
 
   int rc;
 

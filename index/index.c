@@ -4242,12 +4242,12 @@ struct MuttWindow *index_pager_init(void)
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
 
-  struct MuttWindow *win_index = create_panel_index(dlg, c_status_on_top);
-  notify_set_parent(win_index->notify, dlg->notify);
-  mutt_window_add_child(dlg, win_index);
+  struct MuttWindow *panel_index = create_panel_index(dlg, c_status_on_top);
+  notify_set_parent(panel_index->notify, dlg->notify);
+  mutt_window_add_child(dlg, panel_index);
 
-  struct MuttWindow *win_pager = add_panel_pager(dlg, c_status_on_top);
-  notify_set_parent(win_pager->notify, dlg->notify);
+  struct MuttWindow *panel_pager = add_panel_pager(dlg, c_status_on_top);
+  notify_set_parent(panel_pager->notify, dlg->notify);
 
   struct IndexSharedData *shared = index_shared_data_new();
   notify_set_parent(shared->notify, dlg->notify);
