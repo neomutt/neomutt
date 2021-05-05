@@ -2505,8 +2505,7 @@ int mutt_pager(struct PagerView *pview)
   unlink(pview->pdata->fname);
 
   //---------- setup pager menu------------------------------------------------
-  struct Menu *menu = menu_new(pview->win_pager, MENU_PAGER);
-  pager_menu = menu;
+  pager_menu = pview->win_pager->wdata;
   pager_menu->win_ibar = pview->win_pbar;
   pager_menu->custom_redraw = pager_custom_redraw;
   pager_menu->mdata = &rd;
@@ -4142,7 +4141,6 @@ int mutt_pager(struct PagerView *pview)
   }
   FREE(&rd.line_info);
   menu_pop_current(pager_menu);
-  menu_free(&pager_menu);
 
   if (rd.pview->win_index)
   {
@@ -4171,9 +4169,7 @@ struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top
   panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
   mutt_window_add_child(parent, panel_pager);
 
-  struct MuttWindow *win_pager =
-      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *win_pager = menu_new_window(MENU_PAGER);
   panel_pager->focus = win_pager;
 
   struct MuttWindow *win_pbar =

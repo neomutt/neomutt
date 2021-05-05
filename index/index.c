@@ -1176,9 +1176,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     dlg->help_data = IndexHelp;
   dlg->help_menu = MENU_MAIN;
 
-  struct Menu *menu = menu_new(priv->win_index, MENU_MAIN);
-
-  priv->menu = menu;
+  priv->menu = priv->win_index->wdata;
   priv->menu->win_ibar = priv->win_ibar;
   priv->menu->mdata = shared;
   priv->menu->make_entry = index_make_entry;
@@ -4183,8 +4181,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   }
 
   menu_pop_current(priv->menu);
-  menu_free(&priv->menu);
-
   struct Context *ctx = shared->ctx;
   struct Mailbox *m = ctx_mailbox(ctx);
   index_shared_data_set_context(shared, ctx_old);
@@ -4231,9 +4227,7 @@ static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool sta
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   parent->focus = panel_index;
 
-  struct MuttWindow *win_index =
-      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *win_index = menu_new_window(MENU_MAIN);
   panel_index->focus = win_index;
 
   struct MuttWindow *win_ibar =

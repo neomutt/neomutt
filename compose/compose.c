@@ -1521,9 +1521,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                       MUTT_WIN_SIZE_UNLIMITED, 1);
 
-  struct MuttWindow *win_attach =
-      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *win_attach = menu_new_window(MENU_COMPOSE);
   dlg->focus = win_attach;
 
   struct MuttWindow *win_cbar =
@@ -1569,7 +1567,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   win_env->req_rows = calc_envelope(rd);
   mutt_window_reflow(dlg);
 
-  struct Menu *menu = menu_new(win_attach, MENU_COMPOSE);
+  struct Menu *menu = win_attach->wdata;
   menu->win_ibar = win_cbar;
   menu->make_entry = compose_make_entry;
   menu->tag = compose_attach_tag;
@@ -2859,7 +2857,6 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 #endif
 
   menu_pop_current(menu);
-  menu_free(&menu);
   dialog_pop();
   notify_observer_remove(NeoMutt->notify, compose_config_observer, dlg);
   notify_observer_remove(NeoMutt->notify, compose_header_observer, rd);

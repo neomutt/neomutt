@@ -36,6 +36,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "mutt_menu.h"
 #include "protos.h"
 
 /**
@@ -89,9 +90,7 @@ int mutt_do_pager(struct PagerView *pview)
       mutt_window_new(WT_DLG_DO_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
-  struct MuttWindow *win_pager =
-      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *win_pager = menu_new_window(MENU_PAGER);
   dlg->focus = win_pager;
 
   struct MuttWindow *win_pbar =
