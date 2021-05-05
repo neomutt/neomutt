@@ -1483,7 +1483,10 @@ struct ColorLineList *mutt_color_index_tags(void)
  */
 int mutt_color_quote(int q)
 {
-  return Colors.quotes[q % Colors.quotes_used];
+  const int used = Colors.quotes_used;
+  if (used == 0)
+    return 0;
+  return Colors.quotes[q % used];
 }
 
 /**
