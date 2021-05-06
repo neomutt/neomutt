@@ -95,8 +95,6 @@
 /// Maximum number of rows to use for the Headers: field
 #define MAX_USER_HDR_ROWS 5
 
-static const char *There_are_no_attachments = N_("There are no attachments");
-
 /**
  * struct ComposeRedrawData - Keep track when the compose screen needs redrawing
  */
@@ -125,13 +123,6 @@ struct ComposeRedrawData
   struct AttachCtx *actx;   ///< Attachments
   struct ConfigSubset *sub; ///< Inherited config items
 };
-
-#define CHECK_COUNT                                                            \
-  if (actx->idxlen == 0)                                                       \
-  {                                                                            \
-    mutt_error(_(There_are_no_attachments));                                   \
-    break;                                                                     \
-  }
 
 #define CUR_ATTACH actx->idx[actx->v2r[menu->current]]
 
@@ -269,6 +260,22 @@ static const char *const AutocryptRecUiFlags[] = {
   N_("Yes"),
 };
 #endif
+
+/**
+ * check_count - Check if there are any attachments
+ * @param actx Attachment context
+ * @retval true There are attachments
+ */
+static bool check_count(struct AttachCtx *actx)
+{
+  if (actx->idxlen == 0)
+  {
+    mutt_error(_("There are no attachments"));
+    return false;
+  }
+
+  return true;
+}
 
 /**
  * calc_header_width_padding - Calculate the width needed for the compose labels
@@ -2196,7 +2203,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       }
 
       case OP_DELETE:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         if (CUR_ATTACH->unowned)
           CUR_ATTACH->body->unlink = false;
         if (delete_attachment(actx, menu->current) == -1)
@@ -2210,7 +2218,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
       case OP_COMPOSE_TOGGLE_RECODE:
       {
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         if (!mutt_is_text_part(CUR_ATTACH->body))
         {
           mutt_error(_("Recoding only affects text attachments"));
@@ -2227,7 +2236,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       }
 
       case OP_COMPOSE_EDIT_DESCRIPTION:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         mutt_str_copy(buf, CUR_ATTACH->body->description, sizeof(buf));
         /* header names should not be translated */
         if (mutt_get_field("Description: ", buf, sizeof(buf),
@@ -2244,7 +2254,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
       case OP_COMPOSE_UPDATE_ENCODING:
       {
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         bool encoding_updated = false;
         if (menu->tagprefix)
         {
@@ -2278,7 +2289,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         break;
 
       case OP_EDIT_TYPE:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         {
           if (mutt_edit_content_type(NULL, CUR_ATTACH->body, NULL))
           {
@@ -2291,7 +2303,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         break;
 
       case OP_COMPOSE_EDIT_LANGUAGE:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         mutt_str_copy(buf, CUR_ATTACH->body->language, sizeof(buf));
         if (mutt_get_field("Content-Language: ", buf, sizeof(buf),
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
@@ -2309,7 +2322,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         break;
 
       case OP_COMPOSE_EDIT_ENCODING:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         mutt_str_copy(buf, ENCODING(CUR_ATTACH->body->encoding), sizeof(buf));
         if ((mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf),
                             MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0) &&
@@ -2362,7 +2376,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
       case OP_COMPOSE_EDIT_FILE:
       {
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         const char *const c_editor = cs_subset_string(sub, "editor");
         mutt_edit_file(NONULL(c_editor), CUR_ATTACH->body->filename);
         mutt_update_encoding(CUR_ATTACH->body, sub);
@@ -2373,7 +2388,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       }
 
       case OP_COMPOSE_TOGGLE_UNLINK:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         CUR_ATTACH->body->unlink = !CUR_ATTACH->body->unlink;
 
         menu->redraw |= REDRAW_INDEX;
@@ -2381,7 +2397,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         break;
 
       case OP_COMPOSE_GET_ATTACHMENT:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         if (menu->tagprefix)
         {
           for (struct Body *top = e->body; top; top = top->next)
@@ -2399,7 +2416,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
       case OP_COMPOSE_RENAME_ATTACHMENT:
       {
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         char *src = NULL;
         if (CUR_ATTACH->body->d_filename)
           src = CUR_ATTACH->body->d_filename;
@@ -2419,7 +2437,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       }
 
       case OP_COMPOSE_RENAME_FILE:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         mutt_buffer_strcpy(&fname, CUR_ATTACH->body->filename);
         mutt_buffer_pretty_mailbox(&fname);
         if ((mutt_buffer_get_field(_("Rename to: "), &fname, MUTT_FILE, false,
@@ -2515,7 +2534,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       }
 
       case OP_COMPOSE_EDIT_MIME:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         if (mutt_edit_attachment(CUR_ATTACH->body))
         {
           mutt_update_encoding(CUR_ATTACH->body, sub);
@@ -2526,27 +2546,31 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
       case OP_VIEW_ATTACH:
       case OP_DISPLAY_HEADERS:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         mutt_attach_display_loop(sub, menu, op, e, actx, false);
         menu->redraw = REDRAW_FULL;
         /* no send2hook, since this doesn't modify the message */
         break;
 
       case OP_SAVE:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         mutt_save_attachment_list(actx, NULL, menu->tagprefix, CUR_ATTACH->body, NULL, menu);
         /* no send2hook, since this doesn't modify the message */
         break;
 
       case OP_PRINT:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         mutt_print_attachment_list(actx, NULL, menu->tagprefix, CUR_ATTACH->body);
         /* no send2hook, since this doesn't modify the message */
         break;
 
       case OP_PIPE:
       case OP_FILTER:
-        CHECK_COUNT;
+        if (!check_count(actx))
+          break;
         mutt_pipe_attachment_list(actx, NULL, menu->tagprefix, CUR_ATTACH->body,
                                   (op == OP_FILTER));
         if (op == OP_FILTER) /* cte might have changed */
