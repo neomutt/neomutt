@@ -124,8 +124,6 @@ struct ComposeRedrawData
   struct ConfigSubset *sub; ///< Inherited config items
 };
 
-#define CUR_ATTACH actx->idx[actx->v2r[menu->current]]
-
 /**
  * enum HeaderField - Ordered list of headers for the compose screen
  *
@@ -275,6 +273,20 @@ static bool check_count(struct AttachCtx *actx)
   }
 
   return true;
+}
+
+/**
+ * current_attachment - Get the current attachment
+ * @param actx Attachment context
+ * @param menu Menu
+ * @retval ptr Current Attachment
+ */
+struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu)
+{
+  const int virt = menu->current;
+  const int index = actx->v2r[virt];
+
+  return actx->idx[index];
 }
 
 /**
@@ -2203,10 +2215,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       }
 
       case OP_DELETE:
+      {
         if (!check_count(actx))
           break;
-        if (CUR_ATTACH->unowned)
-          CUR_ATTACH->body->unlink = false;
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        if (cur_att->unowned)
+          cur_att->body->unlink = false;
         if (delete_attachment(actx, menu->current) == -1)
           break;
         update_menu(actx, menu, false);
@@ -2215,18 +2229,20 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_TOGGLE_RECODE:
       {
         if (!check_count(actx))
           break;
-        if (!mutt_is_text_part(CUR_ATTACH->body))
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        if (!mutt_is_text_part(cur_att->body))
         {
           mutt_error(_("Recoding only affects text attachments"));
           break;
         }
-        CUR_ATTACH->body->noconv = !CUR_ATTACH->body->noconv;
-        if (CUR_ATTACH->body->noconv)
+        cur_att->body->noconv = !cur_att->body->noconv;
+        if (cur_att->body->noconv)
           mutt_message(_("The current attachment won't be converted"));
         else
           mutt_message(_("The current attachment will be converted"));
@@ -2236,21 +2252,24 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       }
 
       case OP_COMPOSE_EDIT_DESCRIPTION:
+      {
         if (!check_count(actx))
           break;
-        mutt_str_copy(buf, CUR_ATTACH->body->description, sizeof(buf));
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_str_copy(buf, cur_att->body->description, sizeof(buf));
         /* header names should not be translated */
         if (mutt_get_field("Description: ", buf, sizeof(buf),
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
-          if (!mutt_str_equal(CUR_ATTACH->body->description, buf))
+          if (!mutt_str_equal(cur_att->body->description, buf))
           {
-            mutt_str_replace(&CUR_ATTACH->body->description, buf);
+            mutt_str_replace(&cur_att->body->description, buf);
             menu->redraw |= REDRAW_CURRENT;
             mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           }
         }
         break;
+      }
 
       case OP_COMPOSE_UPDATE_ENCODING:
       {
@@ -2272,7 +2291,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         }
         else
         {
-          mutt_update_encoding(CUR_ATTACH->body, sub);
+          struct AttachPtr *cur_att = current_attachment(actx, menu);
+          mutt_update_encoding(cur_att->body, sub);
           encoding_updated = true;
           menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
         }
@@ -2282,36 +2302,44 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       }
 
       case OP_COMPOSE_TOGGLE_DISPOSITION:
+      {
         /* toggle the content-disposition between inline/attachment */
-        CUR_ATTACH->body->disposition =
-            (CUR_ATTACH->body->disposition == DISP_INLINE) ? DISP_ATTACH : DISP_INLINE;
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        cur_att->body->disposition =
+            (cur_att->body->disposition == DISP_INLINE) ? DISP_ATTACH : DISP_INLINE;
         menu->redraw |= REDRAW_CURRENT;
         break;
+      }
 
       case OP_EDIT_TYPE:
+      {
         if (!check_count(actx))
           break;
         {
-          if (mutt_edit_content_type(NULL, CUR_ATTACH->body, NULL))
+          struct AttachPtr *cur_att = current_attachment(actx, menu);
+          if (mutt_edit_content_type(NULL, cur_att->body, NULL))
           {
             /* this may have been a change to text/something */
-            mutt_update_encoding(CUR_ATTACH->body, sub);
+            mutt_update_encoding(cur_att->body, sub);
             menu->redraw |= REDRAW_CURRENT;
             mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           }
         }
         break;
+      }
 
       case OP_COMPOSE_EDIT_LANGUAGE:
+      {
         if (!check_count(actx))
           break;
-        mutt_str_copy(buf, CUR_ATTACH->body->language, sizeof(buf));
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_str_copy(buf, cur_att->body->language, sizeof(buf));
         if (mutt_get_field("Content-Language: ", buf, sizeof(buf),
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
-          if (!mutt_str_equal(CUR_ATTACH->body->language, buf))
+          if (!mutt_str_equal(cur_att->body->language, buf))
           {
-            CUR_ATTACH->body->language = mutt_str_dup(buf);
+            cur_att->body->language = mutt_str_dup(buf);
             menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
             mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           }
@@ -2320,11 +2348,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         else
           mutt_warning(_("Empty 'Content-Language'"));
         break;
+      }
 
       case OP_COMPOSE_EDIT_ENCODING:
+      {
         if (!check_count(actx))
           break;
-        mutt_str_copy(buf, ENCODING(CUR_ATTACH->body->encoding), sizeof(buf));
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_str_copy(buf, ENCODING(cur_att->body->encoding), sizeof(buf));
         if ((mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf),
                             MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0) &&
             (buf[0] != '\0'))
@@ -2332,9 +2363,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           int enc = mutt_check_encoding(buf);
           if ((enc != ENC_OTHER) && (enc != ENC_UUENCODED))
           {
-            if (enc != CUR_ATTACH->body->encoding)
+            if (enc != cur_att->body->encoding)
             {
-              CUR_ATTACH->body->encoding = enc;
+              cur_att->body->encoding = enc;
               menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
               mutt_clear_error();
               mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2344,6 +2375,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             mutt_error(_("Invalid encoding"));
         }
         break;
+      }
 
       case OP_COMPOSE_SEND_MESSAGE:
         /* Note: We don't invoke send2-hook here, since we want to leave
@@ -2378,9 +2410,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       {
         if (!check_count(actx))
           break;
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
         const char *const c_editor = cs_subset_string(sub, "editor");
-        mutt_edit_file(NONULL(c_editor), CUR_ATTACH->body->filename);
-        mutt_update_encoding(CUR_ATTACH->body, sub);
+        mutt_edit_file(NONULL(c_editor), cur_att->body->filename);
+        mutt_update_encoding(cur_att->body, sub);
         menu->redraw |= REDRAW_CURRENT | REDRAW_STATUS;
         /* Unconditional hook since editor was invoked */
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2388,17 +2421,22 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       }
 
       case OP_COMPOSE_TOGGLE_UNLINK:
+      {
         if (!check_count(actx))
           break;
-        CUR_ATTACH->body->unlink = !CUR_ATTACH->body->unlink;
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        cur_att->body->unlink = !cur_att->body->unlink;
 
         menu->redraw |= REDRAW_INDEX;
         /* No send2hook since this doesn't change the message. */
         break;
+      }
 
       case OP_COMPOSE_GET_ATTACHMENT:
+      {
         if (!check_count(actx))
           break;
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
         if (menu->tagprefix)
         {
           for (struct Body *top = e->body; top; top = top->next)
@@ -2408,21 +2446,23 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           }
           menu->redraw |= REDRAW_FULL;
         }
-        else if (mutt_get_tmp_attachment(CUR_ATTACH->body) == 0)
+        else if (mutt_get_tmp_attachment(cur_att->body) == 0)
           menu->redraw |= REDRAW_CURRENT;
 
         /* No send2hook since this doesn't change the message. */
         break;
+      }
 
       case OP_COMPOSE_RENAME_ATTACHMENT:
       {
         if (!check_count(actx))
           break;
         char *src = NULL;
-        if (CUR_ATTACH->body->d_filename)
-          src = CUR_ATTACH->body->d_filename;
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        if (cur_att->body->d_filename)
+          src = cur_att->body->d_filename;
         else
-          src = CUR_ATTACH->body->filename;
+          src = cur_att->body->filename;
         mutt_buffer_strcpy(&fname, mutt_path_basename(NONULL(src)));
         int ret = mutt_buffer_get_field(_("Send attachment with name: "), &fname,
                                         MUTT_FILE, false, NULL, NULL, NULL);
@@ -2430,23 +2470,25 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         {
           /* As opposed to RENAME_FILE, we don't check buf[0] because it's
            * valid to set an empty string here, to erase what was set */
-          mutt_str_replace(&CUR_ATTACH->body->d_filename, mutt_buffer_string(&fname));
+          mutt_str_replace(&cur_att->body->d_filename, mutt_buffer_string(&fname));
           menu->redraw |= REDRAW_CURRENT;
         }
         break;
       }
 
       case OP_COMPOSE_RENAME_FILE:
+      {
         if (!check_count(actx))
           break;
-        mutt_buffer_strcpy(&fname, CUR_ATTACH->body->filename);
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_buffer_strcpy(&fname, cur_att->body->filename);
         mutt_buffer_pretty_mailbox(&fname);
         if ((mutt_buffer_get_field(_("Rename to: "), &fname, MUTT_FILE, false,
                                    NULL, NULL, NULL) == 0) &&
             !mutt_buffer_is_empty(&fname))
         {
           struct stat st;
-          if (stat(CUR_ATTACH->body->filename, &st) == -1)
+          if (stat(cur_att->body->filename, &st) == -1)
           {
             /* L10N: "stat" is a system call. Do "man 2 stat" for more information. */
             mutt_error(_("Can't stat %s: %s"), mutt_buffer_string(&fname), strerror(errno));
@@ -2454,17 +2496,18 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           }
 
           mutt_buffer_expand_path(&fname);
-          if (mutt_file_rename(CUR_ATTACH->body->filename, mutt_buffer_string(&fname)))
+          if (mutt_file_rename(cur_att->body->filename, mutt_buffer_string(&fname)))
             break;
 
-          mutt_str_replace(&CUR_ATTACH->body->filename, mutt_buffer_string(&fname));
+          mutt_str_replace(&cur_att->body->filename, mutt_buffer_string(&fname));
           menu->redraw |= REDRAW_CURRENT;
 
-          if (CUR_ATTACH->body->stamp >= st.st_mtime)
-            mutt_stamp_attachment(CUR_ATTACH->body);
+          if (cur_att->body->stamp >= st.st_mtime)
+            mutt_stamp_attachment(cur_att->body);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         }
         break;
+      }
 
       case OP_COMPOSE_NEW_MIME:
       {
@@ -2519,14 +2562,15 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         }
         update_idx(menu, actx, ap);
 
-        CUR_ATTACH->body->type = itype;
-        mutt_str_replace(&CUR_ATTACH->body->subtype, p);
-        CUR_ATTACH->body->unlink = true;
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        cur_att->body->type = itype;
+        mutt_str_replace(&cur_att->body->subtype, p);
+        cur_att->body->unlink = true;
         menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 
-        if (mutt_compose_attachment(CUR_ATTACH->body))
+        if (mutt_compose_attachment(cur_att->body))
         {
-          mutt_update_encoding(CUR_ATTACH->body, sub);
+          mutt_update_encoding(cur_att->body, sub);
           menu->redraw = REDRAW_FULL;
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2534,15 +2578,18 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       }
 
       case OP_COMPOSE_EDIT_MIME:
+      {
         if (!check_count(actx))
           break;
-        if (mutt_edit_attachment(CUR_ATTACH->body))
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        if (mutt_edit_attachment(cur_att->body))
         {
-          mutt_update_encoding(CUR_ATTACH->body, sub);
+          mutt_update_encoding(cur_att->body, sub);
           menu->redraw = REDRAW_FULL;
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         }
         break;
+      }
 
       case OP_VIEW_ATTACH:
       case OP_DISPLAY_HEADERS:
@@ -2554,30 +2601,39 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         break;
 
       case OP_SAVE:
+      {
         if (!check_count(actx))
           break;
-        mutt_save_attachment_list(actx, NULL, menu->tagprefix, CUR_ATTACH->body, NULL, menu);
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_save_attachment_list(actx, NULL, menu->tagprefix, cur_att->body, NULL, menu);
         /* no send2hook, since this doesn't modify the message */
         break;
+      }
 
       case OP_PRINT:
+      {
         if (!check_count(actx))
           break;
-        mutt_print_attachment_list(actx, NULL, menu->tagprefix, CUR_ATTACH->body);
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_print_attachment_list(actx, NULL, menu->tagprefix, cur_att->body);
         /* no send2hook, since this doesn't modify the message */
         break;
+      }
 
       case OP_PIPE:
       case OP_FILTER:
+      {
         if (!check_count(actx))
           break;
-        mutt_pipe_attachment_list(actx, NULL, menu->tagprefix, CUR_ATTACH->body,
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_pipe_attachment_list(actx, NULL, menu->tagprefix, cur_att->body,
                                   (op == OP_FILTER));
         if (op == OP_FILTER) /* cte might have changed */
           menu->redraw |= menu->tagprefix ? REDRAW_FULL : REDRAW_CURRENT;
         menu->redraw |= REDRAW_STATUS;
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_EXIT:
       {
