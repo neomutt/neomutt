@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -46,10 +45,8 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "curs_lib.h"
-#include "pager/lib.h"
 #include "browser.h"
 #include "color.h"
-#include "dialog.h"
 #include "enter_state.h"
 #include "keymap.h"
 #include "mutt_curses.h"
@@ -645,116 +642,6 @@ int mutt_any_key_to_continue(const char *s)
   fputs("\r\n", stdout);
   mutt_clear_error();
   return (ch >= 0) ? ch : EOF;
-}
-
-/**
- * mutt_dlg_dopager_observer - Listen for config changes affecting the dopager menus - Implements ::observer_t
- */
-static int mutt_dlg_dopager_observer(struct NotifyCallback *nc)
-{
-  if (!nc->event_data || !nc->global_data)
-    return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
-
-  struct EventConfig *ec = nc->event_data;
-  struct MuttWindow *dlg = nc->global_data;
-
-  if (!mutt_str_equal(ec->name, "status_on_top"))
-    return 0;
-
-  struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
-  if (!win_first)
-    return -1;
-
-  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-  if ((c_status_on_top && (win_first->type == WT_PAGER)) ||
-      (!c_status_on_top && (win_first->type != WT_PAGER)))
-  {
-    // Swap the Index and the IndexBar Windows
-    TAILQ_REMOVE(&dlg->children, win_first, entries);
-    TAILQ_INSERT_TAIL(&dlg->children, win_first, entries);
-  }
-
-  mutt_window_reflow(dlg);
-  return 0;
-}
-
-/**
- * mutt_do_pager - Display some page-able text to the user (help or attachment)
- * @param pview PagerView to construct Pager object
- * @retval  0 Success
- * @retval -1 Error
- */
-int mutt_do_pager(struct PagerView *pview)
-{
-  assert(pview);
-  assert(pview->pdata);
-  assert(pview->pdata->fname);
-  assert((pview->mode == PAGER_MODE_ATTACH) ||
-         (pview->mode == PAGER_MODE_HELP) || (pview->mode == PAGER_MODE_OTHER));
-
-  struct MuttWindow *dlg =
-      mutt_window_new(WT_DLG_DO_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *pager =
-      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  dlg->focus = pager;
-
-  struct MuttWindow *pbar =
-      mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-
-  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-  if (c_status_on_top)
-  {
-    mutt_window_add_child(dlg, pbar);
-    mutt_window_add_child(dlg, pager);
-  }
-  else
-  {
-    mutt_window_add_child(dlg, pager);
-    mutt_window_add_child(dlg, pbar);
-  }
-
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlg_dopager_observer, dlg);
-  dialog_push(dlg);
-
-  pview->win_ibar = NULL;
-  pview->win_index = NULL;
-  pview->win_pbar = pbar;
-  pview->win_pager = pager;
-
-  int rc;
-
-  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
-  if (!c_pager || mutt_str_equal(c_pager, "builtin"))
-  {
-    rc = mutt_pager(pview);
-  }
-  else
-  {
-    struct Buffer *cmd = mutt_buffer_pool_get();
-
-    mutt_endwin();
-    mutt_buffer_file_expand_fmt_quote(cmd, c_pager, pview->pdata->fname);
-    if (mutt_system(mutt_buffer_string(cmd)) == -1)
-    {
-      mutt_error(_("Error running \"%s\""), mutt_buffer_string(cmd));
-      rc = -1;
-    }
-    else
-      rc = 0;
-    mutt_file_unlink(pview->pdata->fname);
-    mutt_buffer_pool_release(&cmd);
-  }
-
-  dialog_pop();
-  notify_observer_remove(NeoMutt->notify, mutt_dlg_dopager_observer, dlg);
-  mutt_window_free(&dlg);
-  return rc;
 }
 
 /**

@@ -28,6 +28,7 @@
  * | File               | Description              |
  * | :----------------- | :----------------------- |
  * | pager/config.c     | @subpage pager_config    |
+ * | pager/do_pager.c   | @subpage pager_dopager   |
  * | pager/pager.c      | @subpage pager_pager     |
  */
 
@@ -157,6 +158,7 @@ struct PagerView
 };
 
 int mutt_pager(struct PagerView *pview);
+int mutt_do_pager(struct PagerView *pview);
 void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
 struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top);
 

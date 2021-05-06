@@ -234,6 +234,7 @@ notmuch/query.c
 opcodes.c
 opcodes.h
 pager/config.c
+pager/do_pager.c
 pager/pager.c
 pattern/compile.c
 pattern/config.c
