@@ -81,16 +81,21 @@ static const struct Mapping AttachHelp[] = {
   // clang-format on
 };
 
-static const char *Function_not_permitted =
-    N_("Function not permitted in attach-message mode");
-
-#define CHECK_ATTACH                                                           \
-  if (OptAttachMsg)                                                            \
-  {                                                                            \
-    mutt_flushinp();                                                           \
-    mutt_error(_(Function_not_permitted));                                     \
-    break;                                                                     \
+/**
+ * check_attach - Check if in attach-message mode
+ * @retval true Mailbox is readonly
+ */
+static bool check_attach(void)
+{
+  if (OptAttachMsg)
+  {
+    mutt_flushinp();
+    mutt_error(_("Function not permitted in attach-message mode"));
+    return true;
   }
+
+  return false;
+}
 
 /**
  * check_readonly - Check if the Mailbox is readonly
@@ -1802,21 +1807,24 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         break;
 
       case OP_RESEND:
-        CHECK_ATTACH;
+        if (check_attach())
+          break;
         mutt_attach_resend(CUR_ATTACH->fp, m, actx,
                            menu->tagprefix ? NULL : CUR_ATTACH->body);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_BOUNCE_MESSAGE:
-        CHECK_ATTACH;
+        if (check_attach())
+          break;
         mutt_attach_bounce(m, CUR_ATTACH->fp, actx,
                            menu->tagprefix ? NULL : CUR_ATTACH->body);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_FORWARD_MESSAGE:
-        CHECK_ATTACH;
+        if (check_attach())
+          break;
         mutt_attach_forward(CUR_ATTACH->fp, e, actx,
                             menu->tagprefix ? NULL : CUR_ATTACH->body, SEND_NO_FLAGS);
         menu->redraw = REDRAW_FULL;
@@ -1824,14 +1832,16 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
 
 #ifdef USE_NNTP
       case OP_FORWARD_TO_GROUP:
-        CHECK_ATTACH;
+        if (check_attach())
+          break;
         mutt_attach_forward(CUR_ATTACH->fp, e, actx,
                             menu->tagprefix ? NULL : CUR_ATTACH->body, SEND_NEWS);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_FOLLOWUP:
-        CHECK_ATTACH;
+        if (check_attach())
+          break;
 
         const enum QuadOption c_followup_to_poster =
             cs_subset_quad(NeoMutt->sub, "followup_to_poster");
@@ -1854,7 +1864,8 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
       case OP_GROUP_CHAT_REPLY:
       case OP_LIST_REPLY:
       {
-        CHECK_ATTACH;
+        if (check_attach())
+          break;
 
         SendFlags flags = SEND_REPLY;
         if (op == OP_GROUP_REPLY)
@@ -1871,7 +1882,8 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
       }
 
       case OP_COMPOSE_TO_SENDER:
-        CHECK_ATTACH;
+        if (check_attach())
+          break;
         mutt_attach_mail_sender(CUR_ATTACH->fp, e, actx,
                                 menu->tagprefix ? NULL : CUR_ATTACH->body);
         menu->redraw = REDRAW_FULL;
