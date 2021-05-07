@@ -1945,6 +1945,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           break;
         /* fallthrough */
       case OP_SEARCH:
+      {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
           break;
         priv->menu->current =
@@ -1954,6 +1955,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         else
           priv->menu->redraw |= REDRAW_MOTION;
         break;
+      }
 
       case OP_SORT:
       case OP_SORT_REVERSE:
@@ -2364,7 +2366,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               priv->menu->redraw = REDRAW_CURRENT;
             }
             else
+            {
               priv->menu->redraw = REDRAW_MOTION;
+            }
           }
           else
             priv->menu->redraw = REDRAW_CURRENT;
@@ -2832,6 +2836,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       }
 
       case OP_MAIN_NEXT_UNDELETED:
+      {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         if (priv->menu->current >= (shared->mailbox->vcount - 1))
@@ -2855,6 +2860,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         else
           priv->menu->redraw = REDRAW_MOTION;
         break;
+      }
 
       case OP_NEXT_ENTRY:
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
@@ -2876,6 +2882,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         break;
 
       case OP_MAIN_PREV_UNDELETED:
+      {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         if (priv->menu->current < 1)
@@ -2898,6 +2905,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         else
           priv->menu->redraw = REDRAW_MOTION;
         break;
+      }
 
       case OP_PREV_ENTRY:
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
@@ -2959,7 +2967,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               priv->menu->redraw |= REDRAW_CURRENT;
             }
             else
+            {
               priv->menu->redraw |= REDRAW_MOTION;
+            }
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;
@@ -3127,7 +3137,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               priv->menu->redraw |= REDRAW_CURRENT;
             }
             else
+            {
               priv->menu->redraw |= REDRAW_MOTION;
+            }
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;
@@ -3182,7 +3194,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               priv->menu->redraw |= REDRAW_CURRENT;
             }
             else
+            {
               priv->menu->redraw |= REDRAW_MOTION;
+            }
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;
@@ -3298,7 +3312,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               priv->menu->redraw |= REDRAW_CURRENT;
             }
             else
+            {
               priv->menu->redraw |= REDRAW_MOTION;
+            }
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;

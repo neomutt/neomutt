@@ -251,7 +251,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
           ARRAY_GET(&mdata->ava, menu->current)->is_deleted = (op == OP_DELETE);
           menu->redraw |= REDRAW_CURRENT;
           const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-          if (c_resolve && (menu->current < menu->max - 1))
+          if (c_resolve && (menu->current < (menu->max - 1)))
           {
             menu->current++;
             menu->redraw |= REDRAW_INDEX;
@@ -305,12 +305,14 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
       case OP_SEARCH:
+      {
         menu->current = mutt_search_alias_command(menu, menu->current, op);
         if (menu->current == -1)
           menu->current = menu->oldcurrent;
         else
           menu->redraw |= REDRAW_MOTION;
         break;
+      }
 
       case OP_MAIN_LIMIT:
       {

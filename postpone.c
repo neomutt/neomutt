@@ -252,11 +252,11 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
         mutt_set_flag(m, m->emails[menu->current], MUTT_DELETE, (op == OP_DELETE));
         PostCount = m->msg_count - m->msg_deleted;
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-        if (c_resolve && (menu->current < menu->max - 1))
+        if (c_resolve && (menu->current < (menu->max - 1)))
         {
           menu->oldcurrent = menu->current;
           menu->current++;
-          if (menu->current >= menu->top + menu->pagelen)
+          if (menu->current >= (menu->top + menu->pagelen))
           {
             menu->top = menu->current;
             menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
@@ -273,12 +273,14 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
       case OP_SEARCH:
+      {
         menu->current = mutt_search_command(m, menu, menu->current, op);
         if (menu->current == -1)
           menu->current = menu->oldcurrent;
         else
           menu->redraw = REDRAW_MOTION;
         break;
+      }
 
       case OP_GENERIC_SELECT_ENTRY:
         r = menu->current;
