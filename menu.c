@@ -466,14 +466,11 @@ void menu_redraw_motion(struct Menu *menu)
     /* Print space chars to match the screen width of `$arrow_string` */
     mutt_window_printf("%*s", mutt_strwidth(c_arrow_string) + 1, "");
 
-    if (menu->redraw & REDRAW_MOTION_RESYNC)
-    {
-      make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
-      menu_pad_string(menu, buf, sizeof(buf));
-      mutt_window_move(menu->win_index, mutt_strwidth(c_arrow_string) + 1,
-                       menu->oldcurrent - menu->top);
-      print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
-    }
+    make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
+    menu_pad_string(menu, buf, sizeof(buf));
+    mutt_window_move(menu->win_index, mutt_strwidth(c_arrow_string) + 1,
+                     menu->oldcurrent - menu->top);
+    print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
 
     /* now draw it in the new location */
     mutt_curses_set_color(MT_COLOR_INDICATOR);
@@ -1398,7 +1395,7 @@ int menu_redraw(struct Menu *menu)
     menu_redraw_status(menu);
   if (menu->redraw & REDRAW_INDEX)
     menu_redraw_index(menu);
-  else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNC))
+  else if (menu->redraw & REDRAW_MOTION)
     menu_redraw_motion(menu);
   else if (menu->redraw == REDRAW_CURRENT)
     menu_redraw_current(menu);
@@ -1626,7 +1623,7 @@ int menu_loop(struct Menu *menu)
             if (j && c_resolve && (menu->current < (menu->max - 1)))
             {
               menu->current++;
-              menu->redraw |= REDRAW_MOTION_RESYNC;
+              menu->redraw |= REDRAW_MOTION;
             }
             else
               menu->redraw |= REDRAW_CURRENT;

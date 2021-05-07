@@ -1100,7 +1100,7 @@ static void index_custom_redraw(struct Menu *menu)
       menu_redraw_index(menu);
       menu->redraw |= REDRAW_STATUS;
     }
-    else if (menu->redraw & (REDRAW_MOTION_RESYNC | REDRAW_MOTION))
+    else if (menu->redraw & REDRAW_MOTION)
       menu_redraw_motion(menu);
     else if (menu->redraw & REDRAW_CURRENT)
       menu_redraw_current(menu);
@@ -1555,14 +1555,14 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             if (e->vnum != -1)
             {
               priv->menu->current = e->vnum;
-              priv->menu->redraw = REDRAW_MOTION_RESYNC;
+              priv->menu->redraw = REDRAW_MOTION;
             }
             else if (e->collapsed)
             {
               mutt_uncollapse_thread(e);
               mutt_set_vnum(shared->mailbox);
               priv->menu->current = e->vnum;
-              priv->menu->redraw = REDRAW_MOTION_RESYNC;
+              priv->menu->redraw = REDRAW_MOTION;
             }
             else
               mutt_error(_("Message is not visible in limited view"));
@@ -2002,7 +2002,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           if (c_resolve && (priv->menu->current < shared->mailbox->vcount - 1))
           {
             priv->menu->current++;
-            priv->menu->redraw |= REDRAW_MOTION_RESYNC;
+            priv->menu->redraw |= REDRAW_MOTION;
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;
@@ -2364,7 +2364,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               priv->menu->redraw = REDRAW_CURRENT;
             }
             else
-              priv->menu->redraw = REDRAW_MOTION_RESYNC;
+              priv->menu->redraw = REDRAW_MOTION;
           }
           else
             priv->menu->redraw = REDRAW_CURRENT;
@@ -2959,7 +2959,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               priv->menu->redraw |= REDRAW_CURRENT;
             }
             else
-              priv->menu->redraw |= REDRAW_MOTION_RESYNC;
+              priv->menu->redraw |= REDRAW_MOTION;
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;
@@ -3127,7 +3127,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               priv->menu->redraw |= REDRAW_CURRENT;
             }
             else
-              priv->menu->redraw |= REDRAW_MOTION_RESYNC;
+              priv->menu->redraw |= REDRAW_MOTION;
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;
@@ -3182,7 +3182,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               priv->menu->redraw |= REDRAW_CURRENT;
             }
             else
-              priv->menu->redraw |= REDRAW_MOTION_RESYNC;
+              priv->menu->redraw |= REDRAW_MOTION;
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;
@@ -3298,7 +3298,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               priv->menu->redraw |= REDRAW_CURRENT;
             }
             else
-              priv->menu->redraw |= REDRAW_MOTION_RESYNC;
+              priv->menu->redraw |= REDRAW_MOTION;
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;
@@ -3435,7 +3435,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               continue;
             }
             else
-              priv->menu->redraw |= REDRAW_MOTION_RESYNC;
+              priv->menu->redraw |= REDRAW_MOTION;
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;
@@ -4021,7 +4021,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           if (c_resolve && (priv->menu->current < (shared->mailbox->vcount - 1)))
           {
             priv->menu->current++;
-            priv->menu->redraw |= REDRAW_MOTION_RESYNC;
+            priv->menu->redraw |= REDRAW_MOTION;
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;

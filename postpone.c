@@ -262,7 +262,7 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
             menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
           }
           else
-            menu->redraw |= REDRAW_MOTION_RESYNC;
+            menu->redraw |= REDRAW_MOTION;
         }
         else
           menu->redraw |= REDRAW_CURRENT;

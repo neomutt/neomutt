@@ -1743,7 +1743,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         if (!menu->tagprefix && c_resolve && (menu->current < menu->max - 1))
           menu->current++;
 
-        menu->redraw = REDRAW_MOTION_RESYNC | REDRAW_FULL;
+        menu->redraw = REDRAW_MOTION| REDRAW_FULL;
         break;
       }
 
@@ -1790,7 +1790,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
             if (c_resolve && (menu->current < menu->max - 1))
             {
               menu->current++;
-              menu->redraw = REDRAW_MOTION_RESYNC;
+              menu->redraw = REDRAW_MOTION;
             }
             else
               menu->redraw = REDRAW_CURRENT;
@@ -1833,7 +1833,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
           if (c_resolve && (menu->current < menu->max - 1))
           {
             menu->current++;
-            menu->redraw = REDRAW_MOTION_RESYNC;
+            menu->redraw = REDRAW_MOTION;
           }
           else
             menu->redraw = REDRAW_CURRENT;
