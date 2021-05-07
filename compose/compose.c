@@ -281,7 +281,7 @@ static bool check_count(struct AttachCtx *actx)
  * @param menu Menu
  * @retval ptr Current Attachment
  */
-struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu)
+static struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu)
 {
   const int virt = menu->current;
   const int index = actx->v2r[virt];

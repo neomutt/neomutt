@@ -67,8 +67,6 @@
 static void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx,
                                         struct Menu *menu, bool init);
 
-#define CUR_ATTACH actx->idx[actx->v2r[menu->current]]
-
 /// Help Bar for the Attachment selection dialog
 static const struct Mapping AttachHelp[] = {
   // clang-format off
@@ -80,6 +78,20 @@ static const struct Mapping AttachHelp[] = {
   { NULL, 0 },
   // clang-format on
 };
+
+/**
+ * current_attachment - Get the current attachment
+ * @param actx Attachment context
+ * @param menu Menu
+ * @retval ptr Current Attachment
+ */
+static struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu)
+{
+  const int virt = menu->current;
+  const int index = actx->v2r[virt];
+
+  return actx->idx[index];
+}
 
 /**
  * check_attach - Check if in attach-message mode
@@ -1240,7 +1252,10 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
 static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *menu)
 {
   if (!menu->tagprefix)
-    crypt_pgp_extract_key_from_attachment(CUR_ATTACH->fp, CUR_ATTACH->body);
+  {
+    struct AttachPtr *cur_att = current_attachment(actx, menu);
+    crypt_pgp_extract_key_from_attachment(cur_att->fp, cur_att->body);
+  }
   else
   {
     for (int i = 0; i < actx->idxlen; i++)
@@ -1266,7 +1281,10 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
   int rc = 0;
 
   if (!menu->tagprefix)
-    rc = crypt_pgp_check_traditional(CUR_ATTACH->fp, CUR_ATTACH->body, true);
+  {
+    struct AttachPtr *cur_att = current_attachment(actx, menu);
+    rc = crypt_pgp_check_traditional(cur_att->fp, cur_att->body, true);
+  }
   else
   {
     for (int i = 0; i < actx->idxlen; i++)
@@ -1287,12 +1305,13 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
 static void recvattach_edit_content_type(struct ConfigSubset *sub, struct AttachCtx *actx,
                                          struct Menu *menu, struct Email *e)
 {
-  if (!mutt_edit_content_type(e, CUR_ATTACH->body, CUR_ATTACH->fp))
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
+  if (!mutt_edit_content_type(e, cur_att->body, cur_att->fp))
     return;
 
   /* The mutt_update_recvattach_menu() will overwrite any changes
-   * made to a decrypted CUR_ATTACH->body, so warn the user. */
-  if (CUR_ATTACH->decrypted)
+   * made to a decrypted cur_att->body, so warn the user. */
+  if (cur_att->decrypted)
   {
     mutt_message(
         _("Structural changes to decrypted attachments are not supported"));
@@ -1327,9 +1346,12 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         /* fallthrough */
 
       case OP_VIEW_ATTACH:
-        op = mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->body,
-                                  MUTT_VA_REGULAR, e, actx, menu->win_index);
+      {
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        op = mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_REGULAR,
+                                  e, actx, menu->win_index);
         break;
+      }
 
       case OP_NEXT_ENTRY:
       case OP_MAIN_NEXT_UNDELETED: /* hack */
@@ -1352,17 +1374,20 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
           op = OP_NULL;
         break;
       case OP_EDIT_TYPE:
+      {
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
         /* when we edit the content-type, we should redisplay the attachment
          * immediately */
-        mutt_edit_content_type(e, CUR_ATTACH->body, CUR_ATTACH->fp);
+        mutt_edit_content_type(e, cur_att->body, cur_att->fp);
         if (recv)
           recvattach_edit_content_type(sub, actx, menu, e);
         else
-          mutt_edit_content_type(e, CUR_ATTACH->body, CUR_ATTACH->fp);
+          mutt_edit_content_type(e, cur_att->body, cur_att->fp);
 
         menu->redraw |= REDRAW_INDEX;
         op = OP_VIEW_ATTACH;
         break;
+      }
       /* functions which are passed through from the pager */
       case OP_CHECK_TRADITIONAL:
         if (!(WithCrypto & APPLICATION_PGP) || (e && e->security & PGP_TRADITIONAL_CHECKED))
@@ -1556,12 +1581,13 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 {
   int rindex, curlevel;
 
-  CUR_ATTACH->body->collapsed = !CUR_ATTACH->body->collapsed;
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
+  cur_att->body->collapsed = !cur_att->body->collapsed;
   /* When expanding, expand all the children too */
-  if (CUR_ATTACH->body->collapsed)
+  if (cur_att->body->collapsed)
     return;
 
-  curlevel = CUR_ATTACH->level;
+  curlevel = cur_att->level;
   rindex = actx->v2r[menu->current] + 1;
 
   const bool c_digest_collapse =
@@ -1627,22 +1653,31 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
     switch (op)
     {
       case OP_ATTACH_VIEW_MAILCAP:
-        mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->body, MUTT_VA_MAILCAP,
-                             e, actx, menu->win_index);
-        menu->redraw = REDRAW_FULL;
-        break;
-
-      case OP_ATTACH_VIEW_TEXT:
-        mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->body, MUTT_VA_AS_TEXT,
-                             e, actx, menu->win_index);
-        menu->redraw = REDRAW_FULL;
-        break;
-
-      case OP_ATTACH_VIEW_PAGER:
-        mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->body, MUTT_VA_PAGER, e,
+      {
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_MAILCAP, e,
                              actx, menu->win_index);
         menu->redraw = REDRAW_FULL;
         break;
+      }
+
+      case OP_ATTACH_VIEW_TEXT:
+      {
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_AS_TEXT, e,
+                             actx, menu->win_index);
+        menu->redraw = REDRAW_FULL;
+        break;
+      }
+
+      case OP_ATTACH_VIEW_PAGER:
+      {
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_PAGER, e, actx,
+                             menu->win_index);
+        menu->redraw = REDRAW_FULL;
+        break;
+      }
 
       case OP_DISPLAY_HEADERS:
       case OP_VIEW_ATTACH:
@@ -1651,7 +1686,9 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         continue;
 
       case OP_ATTACH_COLLAPSE:
-        if (!CUR_ATTACH->body->parts)
+      {
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        if (!cur_att->body->parts)
         {
           mutt_error(_("There are no subparts to show"));
           break;
@@ -1659,6 +1696,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         attach_collapse(actx, menu);
         mutt_update_recvattach_menu(sub, actx, menu, false);
         break;
+      }
 
       case OP_FORGET_PASSPHRASE:
         crypt_forget_passphrase();
@@ -1682,19 +1720,24 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         break;
 
       case OP_PRINT:
-        mutt_print_attachment_list(actx, CUR_ATTACH->fp, menu->tagprefix,
-                                   CUR_ATTACH->body);
+      {
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_print_attachment_list(actx, cur_att->fp, menu->tagprefix, cur_att->body);
         break;
+      }
 
       case OP_PIPE:
-        mutt_pipe_attachment_list(actx, CUR_ATTACH->fp, menu->tagprefix,
-                                  CUR_ATTACH->body, false);
+      {
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_pipe_attachment_list(actx, cur_att->fp, menu->tagprefix, cur_att->body, false);
         break;
+      }
 
       case OP_SAVE:
       {
-        mutt_save_attachment_list(actx, CUR_ATTACH->fp, menu->tagprefix,
-                                  CUR_ATTACH->body, e, menu);
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_save_attachment_list(actx, cur_att->fp, menu->tagprefix,
+                                  cur_att->body, e, menu);
 
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (!menu->tagprefix && c_resolve && (menu->current < menu->max - 1))
@@ -1739,9 +1782,10 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         }
         if (!menu->tagprefix)
         {
-          if (CUR_ATTACH->parent_type == TYPE_MULTIPART)
+          struct AttachPtr *cur_att = current_attachment(actx, menu);
+          if (cur_att->parent_type == TYPE_MULTIPART)
           {
-            CUR_ATTACH->body->deleted = true;
+            cur_att->body->deleted = true;
             const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
             if (c_resolve && (menu->current < menu->max - 1))
             {
@@ -1783,7 +1827,8 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
           break;
         if (!menu->tagprefix)
         {
-          CUR_ATTACH->body->deleted = false;
+          struct AttachPtr *cur_att = current_attachment(actx, menu);
+          cur_att->body->deleted = false;
           const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
           if (c_resolve && (menu->current < menu->max - 1))
           {
@@ -1807,56 +1852,70 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         break;
 
       case OP_RESEND:
+      {
         if (check_attach())
           break;
-        mutt_attach_resend(CUR_ATTACH->fp, m, actx,
-                           menu->tagprefix ? NULL : CUR_ATTACH->body);
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_attach_resend(cur_att->fp, m, actx,
+                           menu->tagprefix ? NULL : cur_att->body);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_BOUNCE_MESSAGE:
+      {
         if (check_attach())
           break;
-        mutt_attach_bounce(m, CUR_ATTACH->fp, actx,
-                           menu->tagprefix ? NULL : CUR_ATTACH->body);
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_attach_bounce(m, cur_att->fp, actx,
+                           menu->tagprefix ? NULL : cur_att->body);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_FORWARD_MESSAGE:
+      {
         if (check_attach())
           break;
-        mutt_attach_forward(CUR_ATTACH->fp, e, actx,
-                            menu->tagprefix ? NULL : CUR_ATTACH->body, SEND_NO_FLAGS);
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_attach_forward(cur_att->fp, e, actx,
+                            menu->tagprefix ? NULL : cur_att->body, SEND_NO_FLAGS);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
 #ifdef USE_NNTP
       case OP_FORWARD_TO_GROUP:
+      {
         if (check_attach())
           break;
-        mutt_attach_forward(CUR_ATTACH->fp, e, actx,
-                            menu->tagprefix ? NULL : CUR_ATTACH->body, SEND_NEWS);
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_attach_forward(cur_att->fp, e, actx,
+                            menu->tagprefix ? NULL : cur_att->body, SEND_NEWS);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_FOLLOWUP:
+      {
         if (check_attach())
           break;
 
         const enum QuadOption c_followup_to_poster =
             cs_subset_quad(NeoMutt->sub, "followup_to_poster");
-        if (!CUR_ATTACH->body->email->env->followup_to ||
-            !mutt_istr_equal(CUR_ATTACH->body->email->env->followup_to,
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        if (!cur_att->body->email->env->followup_to ||
+            !mutt_istr_equal(cur_att->body->email->env->followup_to,
                              "poster") ||
             (query_quadoption(c_followup_to_poster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
-          mutt_attach_reply(CUR_ATTACH->fp, m, e, actx,
-                            menu->tagprefix ? NULL : CUR_ATTACH->body,
-                            SEND_NEWS | SEND_REPLY);
+          mutt_attach_reply(cur_att->fp, m, e, actx,
+                            menu->tagprefix ? NULL : cur_att->body, SEND_NEWS | SEND_REPLY);
           menu->redraw = REDRAW_FULL;
           break;
         }
+      }
 #endif
       /* fallthrough */
       case OP_REPLY:
@@ -1875,19 +1934,23 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         else if (op == OP_LIST_REPLY)
           flags |= SEND_LIST_REPLY;
 
-        mutt_attach_reply(CUR_ATTACH->fp, m, e, actx,
-                          menu->tagprefix ? NULL : CUR_ATTACH->body, flags);
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_attach_reply(cur_att->fp, m, e, actx,
+                          menu->tagprefix ? NULL : cur_att->body, flags);
         menu->redraw = REDRAW_FULL;
         break;
       }
 
       case OP_COMPOSE_TO_SENDER:
+      {
         if (check_attach())
           break;
-        mutt_attach_mail_sender(CUR_ATTACH->fp, e, actx,
-                                menu->tagprefix ? NULL : CUR_ATTACH->body);
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_attach_mail_sender(cur_att->fp, e, actx,
+                                menu->tagprefix ? NULL : cur_att->body);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_EDIT_TYPE:
         recvattach_edit_content_type(sub, actx, menu, e);
