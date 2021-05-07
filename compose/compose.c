@@ -1186,10 +1186,10 @@ static void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
   if (menu->max)
   {
     if (menu->current >= menu->max)
-      menu->current = menu->max - 1;
+      menu_set_index(menu, menu->max - 1);
   }
   else
-    menu->current = 0;
+    menu_set_index(menu, 0);
 
   menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 }
@@ -1208,7 +1208,7 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
   ap->body->aptr = ap;
   mutt_actx_add_attach(actx, ap);
   update_menu(actx, menu, false);
-  menu->current = actx->vcount - 1;
+  menu_set_index(menu, actx->vcount - 1);
 }
 
 /**
@@ -1818,7 +1818,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         }
         compose_attach_swap(e->body, actx->idx, menu->current - 1);
         menu->redraw |= REDRAW_INDEX;
-        menu->current--;
+        menu_set_index(menu, menu->current - 1);
         break;
 
       case OP_COMPOSE_MOVE_DOWN:
@@ -1834,7 +1834,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         }
         compose_attach_swap(e->body, actx->idx, menu->current);
         menu->redraw |= REDRAW_INDEX;
-        menu->current++;
+        menu_set_index(menu, menu->current + 1);
         break;
 
       case OP_COMPOSE_GROUP_ALTS:

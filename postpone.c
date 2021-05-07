@@ -254,14 +254,12 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve && (menu->current < (menu->max - 1)))
         {
-          menu->current++;
+          menu_set_index(menu, menu->current + 1);
           if (menu->current >= (menu->top + menu->pagelen))
           {
             menu->top = menu->current;
             menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
           }
-          else
-            menu->redraw |= REDRAW_MOTION;
         }
         else
           menu->redraw |= REDRAW_CURRENT;
@@ -275,10 +273,7 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
       {
         int index = mutt_search_command(m, menu, menu->current, op);
         if (index != -1)
-        {
-          menu->current = index;
-          menu->redraw = REDRAW_MOTION;
-        }
+          menu_set_index(menu, index);
         break;
       }
 

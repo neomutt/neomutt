@@ -1581,10 +1581,7 @@ int menu_loop(struct Menu *menu)
         {
           int index = search(menu, op);
           if (index != -1)
-          {
-            menu->current = index;
-            menu->redraw = REDRAW_MOTION;
-          }
+            menu_set_index(menu, index);
         }
         else
           mutt_error(_("Search is not implemented for this menu"));
@@ -1620,8 +1617,7 @@ int menu_loop(struct Menu *menu)
             menu->tagged += j;
             if (j && c_resolve && (menu->current < (menu->max - 1)))
             {
-              menu->current++;
-              menu->redraw |= REDRAW_MOTION;
+              menu_set_index(menu, menu->current + 1);
             }
             else
               menu->redraw |= REDRAW_CURRENT;

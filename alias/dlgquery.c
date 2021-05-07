@@ -517,8 +517,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
         if (index == -1)
           break;
 
-        menu->current = index;
-        menu->redraw |= REDRAW_MOTION;
+        menu_set_index(menu, index);
         break;
       }
 

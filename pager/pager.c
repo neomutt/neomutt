@@ -2617,7 +2617,7 @@ int mutt_pager(struct PagerView *pview)
           {
             /* After the mailbox has been updated,
              * rd.menu->current might be invalid */
-            rd.menu->current = MIN(rd.menu->current, MAX(m->msg_count - 1, 0));
+            menu_set_index(rd.menu, MIN(rd.menu->current, MAX(m->msg_count - 1, 0)));
             struct Email *e = mutt_get_virt_email(m, rd.menu->current);
             if (!e)
               continue;

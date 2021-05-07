@@ -811,7 +811,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
       {
         if (tag && menu && top->aptr)
         {
-          menu->current = top->aptr->num;
+          menu_set_index(menu, top->aptr->num);
           menu_check_recenter(menu);
           menu->redraw |= REDRAW_MOTION;
 
@@ -840,7 +840,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
   if (tag && menu)
   {
-    menu->current = last;
+    menu_set_index(menu, last);
     menu_check_recenter(menu);
     menu->redraw |= REDRAW_MOTION;
   }
@@ -1355,7 +1355,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
       case OP_MAIN_NEXT_UNDELETED: /* hack */
         if (menu->current < menu->max - 1)
         {
-          menu->current++;
+          menu_set_index(menu, menu->current + 1);
           op = OP_VIEW_ATTACH;
         }
         else
@@ -1365,7 +1365,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
       case OP_MAIN_PREV_UNDELETED: /* hack */
         if (menu->current > 0)
         {
-          menu->current--;
+          menu_set_index(menu, menu->current - 1);
           op = OP_VIEW_ATTACH;
         }
         else
@@ -1565,7 +1565,7 @@ static void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachC
   menu->max = actx->vcount;
 
   if (menu->current >= menu->max)
-    menu->current = menu->max - 1;
+    menu_set_index(menu, menu->max - 1);
   menu_check_recenter(menu);
   menu->redraw |= REDRAW_INDEX;
 }
@@ -1830,8 +1830,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
           const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
           if (c_resolve && (menu->current < menu->max - 1))
           {
-            menu->current++;
-            menu->redraw = REDRAW_MOTION;
+            menu_set_index(menu, menu->current + 1);
           }
           else
             menu->redraw = REDRAW_CURRENT;

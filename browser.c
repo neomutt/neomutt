@@ -989,11 +989,11 @@ static void browser_highlight_default(struct BrowserState *state, struct Menu *m
        mutt_str_equal(ARRAY_FIRST(&state->entry)->desc, "../")))
   {
     /* Skip the first entry, unless there's only one entry. */
-    menu->current = (menu->max > 1);
+    menu_set_index(menu, (menu->max > 1));
   }
   else
   {
-    menu->current = 0;
+    menu_set_index(menu, 0);
   }
 }
 
@@ -1012,9 +1012,9 @@ static void init_menu(struct BrowserState *state, struct Menu *menu, char *title
   menu->max = ARRAY_SIZE(&state->entry);
 
   if (menu->current >= menu->max)
-    menu->current = menu->max - 1;
+    menu_set_index(menu, menu->max - 1);
   if (menu->current < 0)
-    menu->current = 0;
+    menu_set_index(menu, 0);
   if (menu->top > menu->current)
     menu->top = 0;
 
@@ -1093,7 +1093,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu, char *title
     {
       if (mutt_str_equal(ff->name, target_dir))
       {
-        menu->current = ARRAY_FOREACH_IDX;
+        menu_set_index(menu, ARRAY_FOREACH_IDX);
         matched = true;
         break;
       }
@@ -2162,8 +2162,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             if ((op == OP_BROWSER_SUBSCRIBE) || (op == OP_BROWSER_UNSUBSCRIBE))
             {
               if ((menu->current + 1) < menu->max)
-                menu->current++;
-              menu->redraw = REDRAW_MOTION;
+                menu_set_index(menu, menu->current + 1);
               break;
             }
           }

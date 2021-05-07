@@ -175,7 +175,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 
     int vcount = alias_array_count_visible(&mdata->ava);
     if ((menu->current > (vcount - 1)) && (menu->current > 0))
-      menu->current--;
+      menu_set_index(menu, menu->current - 1);
   }
 
   alias_array_sort(&mdata->ava, mdata->sub);
@@ -253,7 +253,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
           const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
           if (c_resolve && (menu->current < (menu->max - 1)))
           {
-            menu->current++;
+            menu_set_index(menu, menu->current + 1);
             menu->redraw |= REDRAW_INDEX;
           }
         }
@@ -309,8 +309,8 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
         int index = mutt_search_alias_command(menu, menu->current, op);
         if (index == -1)
           break;
-        menu->current = index;
-        menu->redraw |= REDRAW_MOTION;
+
+        menu_set_index(menu, index);
         break;
       }
 
