@@ -254,7 +254,6 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve && (menu->current < (menu->max - 1)))
         {
-          menu->oldcurrent = menu->current;
           menu->current++;
           if (menu->current >= (menu->top + menu->pagelen))
           {
@@ -274,11 +273,12 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
       case OP_SEARCH_OPPOSITE:
       case OP_SEARCH:
       {
-        menu->current = mutt_search_command(m, menu, menu->current, op);
-        if (menu->current == -1)
-          menu->current = menu->oldcurrent;
-        else
+        int index = mutt_search_command(m, menu, menu->current, op);
+        if (index != -1)
+        {
+          menu->current = index;
           menu->redraw = REDRAW_MOTION;
+        }
         break;
       }
 

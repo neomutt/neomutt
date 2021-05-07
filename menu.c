@@ -1446,8 +1446,6 @@ int menu_loop(struct Menu *menu)
       mutt_window_clrtoeol(MessageWindow);
     }
 
-    menu->oldcurrent = menu->current;
-
     const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
     const bool c_braille_friendly =
         cs_subset_bool(NeoMutt->sub, "braille_friendly");
@@ -1581,12 +1579,12 @@ int menu_loop(struct Menu *menu)
           return op;
         else if (menu->search && ARRAY_EMPTY(&menu->dialog)) /* Searching dialogs won't work */
         {
-          menu->oldcurrent = menu->current;
-          menu->current = search(menu, op);
-          if (menu->current != -1)
+          int index = search(menu, op);
+          if (index != -1)
+          {
+            menu->current = index;
             menu->redraw = REDRAW_MOTION;
-          else
-            menu->current = menu->oldcurrent;
+          }
         }
         else
           mutt_error(_("Search is not implemented for this menu"));

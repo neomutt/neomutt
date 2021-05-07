@@ -811,7 +811,6 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
       {
         if (tag && menu && top->aptr)
         {
-          menu->oldcurrent = menu->current;
           menu->current = top->aptr->num;
           menu_check_recenter(menu);
           menu->redraw |= REDRAW_MOTION;
@@ -841,7 +840,6 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
   if (tag && menu)
   {
-    menu->oldcurrent = menu->current;
     menu->current = last;
     menu_check_recenter(menu);
     menu->redraw |= REDRAW_MOTION;
@@ -1743,7 +1741,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         if (!menu->tagprefix && c_resolve && (menu->current < menu->max - 1))
           menu->current++;
 
-        menu->redraw = REDRAW_MOTION| REDRAW_FULL;
+        menu->redraw = REDRAW_MOTION | REDRAW_FULL;
         break;
       }
 

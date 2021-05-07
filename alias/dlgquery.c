@@ -513,11 +513,12 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
       case OP_SEARCH_OPPOSITE:
       case OP_SEARCH:
       {
-        menu->current = mutt_search_alias_command(menu, menu->current, op);
-        if (menu->current == -1)
-          menu->current = menu->oldcurrent;
-        else
-          menu->redraw |= REDRAW_MOTION;
+        int index = mutt_search_alias_command(menu, menu->current, op);
+        if (index == -1)
+          break;
+
+        menu->current = index;
+        menu->redraw |= REDRAW_MOTION;
         break;
       }
 
