@@ -173,7 +173,8 @@ static bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
     result = false;
   }
 
-  if (result && (checks & CHECK_VISIBLE) && (menu->current >= ctx->mailbox->vcount))
+  int index = menu_get_index(menu);
+  if (result && (checks & CHECK_VISIBLE) && (index >= ctx->mailbox->vcount))
   {
     mutt_error(_("No visible messages"));
     result = false;
@@ -236,7 +237,7 @@ static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
   if (!ctx || !ctx->mailbox || (ctx->mailbox->msg_count == 0) || !menu)
     return;
 
-  struct Email *e_cur = mutt_get_virt_email(ctx->mailbox, menu->current);
+  struct Email *e_cur = mutt_get_virt_email(ctx->mailbox, menu_get_index(menu));
   if (!e_cur)
     return;
 
@@ -417,9 +418,10 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
     return;
 
   struct Mailbox *m = ctx->mailbox;
-  struct Email *e_cur = mutt_get_virt_email(m, menu->current);
+  const int old_index = menu_get_index(menu);
+  struct Email *e_cur = mutt_get_virt_email(m, old_index);
 
-  int index = -1;
+  int new_index = -1;
   mutt_sort_headers(m, ctx->threads, false, &ctx->vsize);
   /* Restore the current message */
 
@@ -430,19 +432,19 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
       continue;
     if (e == e_cur)
     {
-      index = i;
+      new_index = i;
       break;
     }
   }
 
   const short c_sort = cs_subset_sort(m->sub, "sort");
-  if (((c_sort & SORT_MASK) == SORT_THREADS) && (menu->current < 0))
-    index = mutt_parent_message(e_cur, false);
+  if (((c_sort & SORT_MASK) == SORT_THREADS) && (old_index < 0))
+    new_index = mutt_parent_message(e_cur, false);
 
-  if (menu->current < 0)
-    index = ci_first_message(m);
+  if (old_index < 0)
+    new_index = ci_first_message(m);
 
-  menu_set_index(menu, index);
+  menu_set_index(menu, new_index);
   menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 }
 
@@ -590,7 +592,7 @@ static void update_index(struct Menu *menu, struct Context *ctx, enum MxStatus c
   else
     update_index_unthreaded(ctx, check);
 
-  const int old_current = menu->current;
+  const int old_index = menu_get_index(menu);
   int index = -1;
   if (oldcount)
   {
@@ -610,7 +612,7 @@ static void update_index(struct Menu *menu, struct Context *ctx, enum MxStatus c
 
   if (index < 0)
   {
-    index = (old_current < m->vcount) ? old_current : ci_first_message(m);
+    index = (old_index < m->vcount) ? old_index : ci_first_message(m);
   }
   menu_set_index(menu, index);
 }
@@ -1093,7 +1095,8 @@ static void index_custom_redraw(struct Menu *menu)
 
   struct IndexSharedData *shared = menu->mdata;
   struct Mailbox *m = shared->mailbox;
-  if (m && m->emails && !(menu->current >= m->vcount))
+  const int index = menu_get_index(menu);
+  if (m && m->emails && (index < m->vcount))
   {
     menu_check_recenter(menu);
 
@@ -1215,7 +1218,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
      * any 'op' below could do mutt_enter_command(), either here or
      * from any new priv->menu launched, and change $sort/$sort_aux */
     if (OptNeedResort && shared->mailbox && (shared->mailbox->msg_count != 0) &&
-        (priv->menu->current >= 0))
+        (menu_get_index(priv->menu) >= 0))
     {
       resort_index(shared->ctx, priv->menu);
     }
@@ -1311,7 +1314,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       if (shared->mailbox)
       {
         index_shared_data_set_email(
-            shared, mutt_get_virt_email(shared->mailbox, priv->menu->current));
+            shared, mutt_get_virt_email(shared->mailbox, menu_get_index(priv->menu)));
       }
     }
 
@@ -1368,16 +1371,19 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       const bool c_arrow_cursor = cs_subset_bool(shared->sub, "arrow_cursor");
       const bool c_braille_friendly =
           cs_subset_bool(shared->sub, "braille_friendly");
+      const int index = menu_get_index(priv->menu);
       if (c_arrow_cursor)
-        mutt_window_move(priv->menu->win_index, 2,
-                         priv->menu->current - priv->menu->top);
+      {
+        mutt_window_move(priv->menu->win_index, 2, index - priv->menu->top);
+      }
       else if (c_braille_friendly)
-        mutt_window_move(priv->menu->win_index, 0,
-                         priv->menu->current - priv->menu->top);
+      {
+        mutt_window_move(priv->menu->win_index, 0, index - priv->menu->top);
+      }
       else
       {
         mutt_window_move(priv->menu->win_index, priv->menu->win_index->state.cols - 1,
-                         priv->menu->current - priv->menu->top);
+                         index - priv->menu->top);
       }
       mutt_refresh();
 
@@ -1632,8 +1638,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         /* at least one message has been loaded */
         if (shared->mailbox->msg_count > oldmsgcount)
         {
-          struct Email *e_oldcur =
-              mutt_get_virt_email(shared->mailbox, priv->menu->current);
+          const int index = menu_get_index(priv->menu);
+          struct Email *e_oldcur = mutt_get_virt_email(shared->mailbox, index);
           bool verbose = shared->mailbox->verbose;
 
           if (rc < 0)
@@ -1936,8 +1942,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
           break;
-        int index =
-            mutt_search_command(shared->mailbox, priv->menu, priv->menu->current, op);
+        int index = menu_get_index(priv->menu);
+        index = mutt_search_command(shared->mailbox, priv->menu, index, op);
         if (index != -1)
           menu_set_index(priv->menu, index);
         else
@@ -1989,9 +1995,10 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
           priv->menu->redraw |= REDRAW_STATUS;
           const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-          if (c_resolve && (priv->menu->current < shared->mailbox->vcount - 1))
+          const int index = menu_get_index(priv->menu) + 1;
+          if (c_resolve && (index < shared->mailbox->vcount))
           {
-            menu_set_index(priv->menu, priv->menu->current + 1);
+            menu_set_index(priv->menu, index);
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;
@@ -2094,17 +2101,18 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           struct Email *e = NULL;
 
           /* don't attempt to move the cursor if there are no visible messages in the current limit */
-          if (priv->menu->current < shared->mailbox->vcount)
+          int index = menu_get_index(priv->menu);
+          if (index < shared->mailbox->vcount)
           {
             /* threads may be reordered, so figure out what header the cursor
              * should be on. */
-            int newidx = priv->menu->current;
+            int newidx = index;
             if (!shared->email)
               break;
             if (shared->email->deleted)
-              newidx = ci_next_undeleted(shared->mailbox, priv->menu->current);
+              newidx = ci_next_undeleted(shared->mailbox, index);
             if (newidx < 0)
-              newidx = ci_previous_undeleted(shared->mailbox, priv->menu->current);
+              newidx = ci_previous_undeleted(shared->mailbox, index);
             if (newidx >= 0)
               e = mutt_get_virt_email(shared->mailbox, newidx);
           }
@@ -2133,8 +2141,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
           /* do a sanity check even if mx_mbox_sync failed.  */
 
-          if ((priv->menu->current < 0) ||
-              (shared->mailbox && (priv->menu->current >= shared->mailbox->vcount)))
+          index = menu_get_index(priv->menu);
+          if ((index < 0) || (shared->mailbox && (index >= shared->mailbox->vcount)))
           {
             menu_set_index(priv->menu, ci_first_message(shared->mailbox));
           }
@@ -2222,7 +2230,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           }
         }
         priv->oldcount = shared->mailbox->msg_count;
-        struct Email *e_oldcur = mutt_get_virt_email(shared->mailbox, priv->menu->current);
+        const int index = menu_get_index(priv->menu);
+        struct Email *e_oldcur = mutt_get_virt_email(shared->mailbox, index);
         if (nm_read_entire_thread(shared->mailbox, e_oldcur) < 0)
         {
           mutt_message(_("Failed to read thread, aborting"));
@@ -2346,7 +2355,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
           if (c_resolve)
           {
-            int index = ci_next_undeleted(shared->mailbox, priv->menu->current);
+            int index = menu_get_index(priv->menu);
+            index = ci_next_undeleted(shared->mailbox, index);
             if (index == -1)
             {
               priv->menu->redraw = REDRAW_CURRENT;
@@ -2665,8 +2675,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             priv->menu->redraw |= REDRAW_FULL;
           emaillist_clear(&el);
         }
-        index_shared_data_set_email(
-            shared, mutt_get_virt_email(shared->mailbox, priv->menu->current));
+        const int index = menu_get_index(priv->menu);
+        index_shared_data_set_email(shared, mutt_get_virt_email(shared->mailbox, index));
 
         op = mutt_display_message(priv->win_index, priv->win_ibar, priv->win_pager,
                                   priv->win_pbar, shared->mailbox, shared->email);
@@ -2824,13 +2834,14 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        if (priv->menu->current >= (shared->mailbox->vcount - 1))
+        int index = menu_get_index(priv->menu);
+        if (index >= (shared->mailbox->vcount - 1))
         {
           if (!priv->in_pager)
             mutt_message(_("You are on the last message"));
           break;
         }
-        int index = ci_next_undeleted(shared->mailbox, priv->menu->current);
+        index = ci_next_undeleted(shared->mailbox, index);
         if (index != -1)
           menu_set_index(priv->menu, index);
 
@@ -2850,15 +2861,17 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       }
 
       case OP_NEXT_ENTRY:
+      {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        if (priv->menu->current >= (shared->mailbox->vcount - 1))
+        const int index = menu_get_index(priv->menu) + 1;
+        if (index >= shared->mailbox->vcount)
         {
           if (!priv->in_pager)
             mutt_message(_("You are on the last message"));
           break;
         }
-        menu_set_index(priv->menu, priv->menu->current + 1);
+        menu_set_index(priv->menu, index);
         if (priv->in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
@@ -2867,17 +2880,19 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         else
           priv->menu->redraw = REDRAW_MOTION;
         break;
+      }
 
       case OP_MAIN_PREV_UNDELETED:
       {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        if (priv->menu->current < 1)
+        int index = menu_get_index(priv->menu);
+        if (index < 1)
         {
           mutt_message(_("You are on the first message"));
           break;
         }
-        int index = ci_previous_undeleted(shared->mailbox, priv->menu->current);
+        index = ci_previous_undeleted(shared->mailbox, index);
         if (index != -1)
           menu_set_index(priv->menu, index);
 
@@ -2897,15 +2912,17 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       }
 
       case OP_PREV_ENTRY:
+      {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        if (priv->menu->current < 1)
+        int index = menu_get_index(priv->menu);
+        if (index < 1)
         {
           if (!priv->in_pager)
             mutt_message(_("You are on the first message"));
           break;
         }
-        menu_set_index(priv->menu, priv->menu->current - 1);
+        menu_set_index(priv->menu, index - 1);
         if (priv->in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
@@ -2914,6 +2931,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         else
           priv->menu->redraw = REDRAW_MOTION;
         break;
+      }
 
       case OP_DECRYPT_COPY:
       case OP_DECRYPT_SAVE:
@@ -2949,7 +2967,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             priv->menu->redraw |= REDRAW_INDEX;
           else if (c_resolve)
           {
-            int index = ci_next_undeleted(shared->mailbox, priv->menu->current);
+            int index = menu_get_index(priv->menu);
+            index = ci_next_undeleted(shared->mailbox, index);
             if (index == -1)
             {
               priv->menu->redraw |= REDRAW_CURRENT;
@@ -2979,8 +2998,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         int first_unread = -1;
         int first_new = -1;
 
-        const int saved_current = priv->menu->current;
-        int mcur = priv->menu->current;
+        const int saved_current = menu_get_index(priv->menu);
+        int mcur = saved_current;
         menu_set_index(priv->menu, -1);
         for (size_t i = 0; i != shared->mailbox->vcount; i++)
         {
@@ -3045,7 +3064,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           menu_set_index(priv->menu, first_unread);
         }
 
-        if (priv->menu->current == -1)
+        if (menu_get_index(priv->menu) == -1)
         {
           menu_set_index(priv->menu, saved_current);
           if ((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_PREV_NEW))
@@ -3065,15 +3084,16 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           break;
         }
 
+        const int index = menu_get_index(priv->menu);
         if ((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_NEXT_UNREAD) ||
             (op == OP_MAIN_NEXT_NEW_THEN_UNREAD))
         {
-          if (saved_current > priv->menu->current)
+          if (saved_current > index)
           {
             mutt_message(_("Search wrapped to top"));
           }
         }
-        else if (saved_current < priv->menu->current)
+        else if (saved_current < index)
         {
           mutt_message(_("Search wrapped to bottom"));
         }
@@ -3118,7 +3138,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
           if (c_resolve)
           {
-            int index = ci_next_undeleted(shared->mailbox, priv->menu->current);
+            int index = menu_get_index(priv->menu);
+            index = ci_next_undeleted(shared->mailbox, index);
             if (index == -1)
             {
               priv->menu->redraw |= REDRAW_CURRENT;
@@ -3174,7 +3195,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
           if (c_resolve)
           {
-            int index = ci_next_undeleted(shared->mailbox, priv->menu->current);
+            int index = menu_get_index(priv->menu);
+            index = ci_next_undeleted(shared->mailbox, index);
             if (index == -1)
             {
               priv->menu->redraw |= REDRAW_CURRENT;
@@ -3293,7 +3315,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             priv->menu->redraw |= REDRAW_INDEX;
           else if (c_resolve)
           {
-            int index = ci_next_undeleted(shared->mailbox, priv->menu->current);
+            int index = menu_get_index(priv->menu);
+            index = ci_next_undeleted(shared->mailbox, index);
             if (index == -1)
             {
               priv->menu->redraw |= REDRAW_CURRENT;
@@ -3426,7 +3449,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
           if (c_resolve)
           {
-            int index = ci_next_undeleted(shared->mailbox, priv->menu->current);
+            int index = menu_get_index(priv->menu);
+            index = ci_next_undeleted(shared->mailbox, index);
             if (index != -1)
               menu_set_index(priv->menu, index);
 
@@ -3482,7 +3506,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
         if (c_resolve)
         {
-          int index = ci_next_undeleted(shared->mailbox, priv->menu->current);
+          int index = menu_get_index(priv->menu);
+          index = ci_next_undeleted(shared->mailbox, index);
           if (index != -1)
             menu_set_index(priv->menu, index);
         }
@@ -4021,9 +4046,10 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         else
         {
           const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-          if (c_resolve && (priv->menu->current < (shared->mailbox->vcount - 1)))
+          const int index = menu_get_index(priv->menu) + 1;
+          if (c_resolve && (index < shared->mailbox->vcount))
           {
-            menu_set_index(priv->menu, priv->menu->current + 1);
+            menu_set_index(priv->menu, index);
           }
           else
             priv->menu->redraw |= REDRAW_CURRENT;

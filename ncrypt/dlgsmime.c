@@ -195,9 +195,12 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, char *query)
     switch (menu_loop(menu))
     {
       case OP_GENERIC_SELECT_ENTRY:
-        if (table[menu->current]->trust != 't')
+      {
+        const int index = menu_get_index(menu);
+        struct SmimeKey *cur_key = table[index];
+        if (cur_key->trust != 't')
         {
-          switch (table[menu->current]->trust)
+          switch (cur_key->trust)
           {
             case 'e':
             case 'i':
@@ -223,9 +226,11 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, char *query)
           }
         }
 
-        selected_key = table[menu->current];
+        selected_key = cur_key;
         done = true;
         break;
+      }
+
       case OP_EXIT:
         done = true;
         break;

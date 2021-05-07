@@ -283,7 +283,7 @@ static bool check_count(struct AttachCtx *actx)
  */
 static struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu)
 {
-  const int virt = menu->current;
+  const int virt = menu_get_index(menu);
   const int index = actx->v2r[virt];
 
   return actx->idx[index];
@@ -1185,7 +1185,8 @@ static void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
   menu->max = actx->vcount;
   if (menu->max)
   {
-    if (menu->current >= menu->max)
+    int index = menu_get_index(menu);
+    if (index >= menu->max)
       menu_set_index(menu, menu->max - 1);
   }
   else
@@ -1806,36 +1807,42 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       }
 
       case OP_COMPOSE_MOVE_UP:
-        if (menu->current == 0)
+      {
+        int index = menu_get_index(menu);
+        if (index == 0)
         {
           mutt_error(_("Attachment is already at top"));
           break;
         }
-        if (menu->current == 1)
+        if (index == 1)
         {
           mutt_error(_("The fundamental part can't be moved"));
           break;
         }
-        compose_attach_swap(e->body, actx->idx, menu->current - 1);
+        compose_attach_swap(e->body, actx->idx, index - 1);
         menu->redraw |= REDRAW_INDEX;
-        menu_set_index(menu, menu->current - 1);
+        menu_set_index(menu, index - 1);
         break;
+      }
 
       case OP_COMPOSE_MOVE_DOWN:
-        if (menu->current == (actx->idxlen - 1))
+      {
+        int index = menu_get_index(menu);
+        if (index == (actx->idxlen - 1))
         {
           mutt_error(_("Attachment is already at bottom"));
           break;
         }
-        if (menu->current == 0)
+        if (index == 0)
         {
           mutt_error(_("The fundamental part can't be moved"));
           break;
         }
-        compose_attach_swap(e->body, actx->idx, menu->current);
+        compose_attach_swap(e->body, actx->idx, index);
         menu->redraw |= REDRAW_INDEX;
-        menu_set_index(menu, menu->current + 1);
+        menu_set_index(menu, index + 1);
         break;
+      }
 
       case OP_COMPOSE_GROUP_ALTS:
       {
@@ -2221,10 +2228,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         if (cur_att->unowned)
           cur_att->body->unlink = false;
-        if (delete_attachment(actx, menu->current) == -1)
+        int index = menu_get_index(menu);
+        if (delete_attachment(actx, index) == -1)
           break;
         update_menu(actx, menu, false);
-        if (menu->current == 0)
+        index = menu_get_index(menu);
+        if (index == 0)
           e->body = actx->idx[0]->body;
 
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);

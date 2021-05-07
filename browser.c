@@ -1011,11 +1011,12 @@ static void init_menu(struct BrowserState *state, struct Menu *menu, char *title
 {
   menu->max = ARRAY_SIZE(&state->entry);
 
-  if (menu->current >= menu->max)
+  int index = menu_get_index(menu);
+  if (index >= menu->max)
     menu_set_index(menu, menu->max - 1);
-  if (menu->current < 0)
+  if (index < 0)
     menu_set_index(menu, 0);
-  if (menu->top > menu->current)
+  if (menu->top > index)
     menu->top = 0;
 
   menu->tagged = 0;
@@ -1401,7 +1402,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
     int op = menu_loop(menu);
     if (op >= 0)
       mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
-    struct FolderFile *ff = ARRAY_GET(&state.entry, menu->current);
+    int index = menu_get_index(menu);
+    struct FolderFile *ff = ARRAY_GET(&state.entry, index);
     switch (op)
     {
       case OP_DESCEND_DIRECTORY:
@@ -1546,8 +1548,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         }
         else if (op == OP_DESCEND_DIRECTORY)
         {
-          mutt_error(_("%s is not a directory"),
-                     ARRAY_GET(&state.entry, menu->current)->name);
+          mutt_error(_("%s is not a directory"), ARRAY_GET(&state.entry, index)->name);
           break;
         }
 
@@ -1604,7 +1605,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
       case OP_BROWSER_TELL:
         if (!ARRAY_EMPTY(&state.entry))
-          mutt_message("%s", ARRAY_GET(&state.entry, menu->current)->name);
+          mutt_message("%s", ARRAY_GET(&state.entry, index)->name);
         break;
 
 #ifdef USE_IMAP
@@ -2054,9 +2055,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (mdata)
         {
           nntp_newsrc_update(CurrentNewsSrv);
-          if ((menu->current + 1) < menu->max)
-            menu->current++;
-          menu->redraw = REDRAW_MOTION;
+          index = menu_get_index(menu) + 1;
+          if (index < menu->max)
+            menu_set_index(menu, index);
         }
         if (rc)
           menu->redraw = REDRAW_INDEX;
@@ -2104,13 +2105,14 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #ifdef USE_NNTP
       case OP_SUBSCRIBE_PATTERN:
       case OP_UNSUBSCRIBE_PATTERN:
+      {
         if (OptNews)
         {
           struct NntpAccountData *adata = CurrentNewsSrv;
           regex_t rx;
           memset(&rx, 0, sizeof(rx));
           char *s = buf->data;
-          int i = menu->current;
+          index = menu_get_index(menu);
 
           if ((op == OP_SUBSCRIBE_PATTERN) || (op == OP_UNSUBSCRIBE_PATTERN))
           {
@@ -2137,7 +2139,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               break;
             }
             menu->redraw = REDRAW_FULL;
-            i = 0;
+            index = 0;
           }
           else if (ARRAY_EMPTY(&state.entry))
           {
@@ -2149,7 +2151,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           if (rc < 0)
             break;
 
-          ARRAY_FOREACH_FROM(ff, &state.entry, i)
+          ARRAY_FOREACH_FROM(ff, &state.entry, index)
           {
             if ((op == OP_BROWSER_SUBSCRIBE) || (op == OP_BROWSER_UNSUBSCRIBE) ||
                 (regexec(&rx, ff->name, 0, NULL, 0) == 0))
@@ -2161,8 +2163,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             }
             if ((op == OP_BROWSER_SUBSCRIBE) || (op == OP_BROWSER_UNSUBSCRIBE))
             {
-              if ((menu->current + 1) < menu->max)
-                menu_set_index(menu, menu->current + 1);
+              if ((index + 1) < menu->max)
+                menu_set_index(menu, index + 1);
               break;
             }
           }
@@ -2203,6 +2205,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           imap_subscribe(tmp2, (op == OP_BROWSER_SUBSCRIBE));
         }
 #endif /* USE_IMAP */
+      }
     }
   }
 

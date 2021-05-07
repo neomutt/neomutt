@@ -174,8 +174,9 @@ static int alias_alias_observer(struct NotifyCallback *nc)
     alias_array_alias_delete(&mdata->ava, alias);
 
     int vcount = alias_array_count_visible(&mdata->ava);
-    if ((menu->current > (vcount - 1)) && (menu->current > 0))
-      menu_set_index(menu, menu->current - 1);
+    int index = menu_get_index(menu);
+    if ((index > (vcount - 1)) && (index > 0))
+      menu_set_index(menu, index - 1);
   }
 
   alias_array_sort(&mdata->ava, mdata->sub);
@@ -248,12 +249,13 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
         }
         else
         {
-          ARRAY_GET(&mdata->ava, menu->current)->is_deleted = (op == OP_DELETE);
+          int index = menu_get_index(menu);
+          ARRAY_GET(&mdata->ava, index)->is_deleted = (op == OP_DELETE);
           menu->redraw |= REDRAW_CURRENT;
           const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-          if (c_resolve && (menu->current < (menu->max - 1)))
+          if (c_resolve && (index < (menu->max - 1)))
           {
-            menu_set_index(menu, menu->current + 1);
+            menu_set_index(menu, index + 1);
             menu->redraw |= REDRAW_INDEX;
           }
         }
@@ -306,7 +308,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
       case OP_SEARCH_OPPOSITE:
       case OP_SEARCH:
       {
-        int index = mutt_search_alias_command(menu, menu->current, op);
+        int index = mutt_search_alias_command(menu, menu_get_index(menu), op);
         if (index == -1)
           break;
 
@@ -331,7 +333,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
       }
 
       case OP_GENERIC_SELECT_ENTRY:
-        t = menu->current;
+        t = menu_get_index(menu);
         if (t >= ARRAY_SIZE(&mdata->ava))
           t = -1;
         done = true;
