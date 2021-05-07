@@ -67,16 +67,6 @@
 static void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx,
                                         struct Menu *menu, bool init);
 
-static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
-
-#define CHECK_READONLY(m)                                                      \
-  if (!m || m->readonly)                                                       \
-  {                                                                            \
-    mutt_flushinp();                                                           \
-    mutt_error(_(Mailbox_is_read_only));                                       \
-    break;                                                                     \
-  }
-
 #define CUR_ATTACH actx->idx[actx->v2r[menu->current]]
 
 /// Help Bar for the Attachment selection dialog
@@ -101,6 +91,23 @@ static const char *Function_not_permitted =
     mutt_error(_(Function_not_permitted));                                     \
     break;                                                                     \
   }
+
+/**
+ * check_readonly - Check if the Mailbox is readonly
+ * @param m Mailbox
+ * @retval true Mailbox is readonly
+ */
+static bool check_readonly(struct Mailbox *m)
+{
+  if (!m || m->readonly)
+  {
+    mutt_flushinp();
+    mutt_error(_("Mailbox is read-only"));
+    return true;
+  }
+
+  return false;
+}
 
 /**
  * mutt_update_v2r - Update the virtual list of attachments
@@ -1693,7 +1700,8 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
       }
 
       case OP_DELETE:
-        CHECK_READONLY(m);
+        if (check_readonly(m))
+          break;
 
 #ifdef USE_POP
         if (m->type == MUTT_POP)
@@ -1766,7 +1774,8 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         break;
 
       case OP_UNDELETE:
-        CHECK_READONLY(m);
+        if (check_readonly(m))
+          break;
         if (!menu->tagprefix)
         {
           CUR_ATTACH->body->deleted = false;
