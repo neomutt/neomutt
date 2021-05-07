@@ -414,7 +414,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
         else
         {
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu->current)->alias))
+          if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu_get_index(menu))->alias))
           {
             alias_create(&al, sub);
             mutt_addrlist_clear(&al);
@@ -452,7 +452,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
         else
         {
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu->current)->alias))
+          if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu_get_index(menu))->alias))
           {
             mutt_addrlist_copy(&e->env->to, &al, false);
             mutt_addrlist_clear(&al);
@@ -512,12 +512,14 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
       case OP_SEARCH:
-        menu->current = mutt_search_alias_command(menu, menu->current, op);
-        if (menu->current == -1)
-          menu->current = menu->oldcurrent;
-        else
-          menu->redraw |= REDRAW_MOTION;
+      {
+        int index = mutt_search_alias_command(menu, menu_get_index(menu), op);
+        if (index == -1)
+          break;
+
+        menu_set_index(menu, index);
         break;
+      }
 
       case OP_MAIN_LIMIT:
       {
@@ -585,7 +587,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
     if (!tagged)
     {
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-      if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu->current)->alias))
+      if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu_get_index(menu))->alias))
       {
         mutt_addrlist_to_local(&al);
         mutt_addrlist_write(&al, buf, buflen, false);

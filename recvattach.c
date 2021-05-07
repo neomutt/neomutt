@@ -87,7 +87,7 @@ static const struct Mapping AttachHelp[] = {
  */
 static struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu)
 {
-  const int virt = menu->current;
+  const int virt = menu_get_index(menu);
   const int index = actx->v2r[virt];
 
   return actx->idx[index];
@@ -750,7 +750,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 {
   char *directory = NULL;
   int rc = 1;
-  int last = menu ? menu->current : -1;
+  int last = menu_get_index(menu);
   FILE *fp_out = NULL;
   int saved_attachments = 0;
 
@@ -811,8 +811,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
       {
         if (tag && menu && top->aptr)
         {
-          menu->oldcurrent = menu->current;
-          menu->current = top->aptr->num;
+          menu_set_index(menu, top->aptr->num);
           menu_check_recenter(menu);
           menu->redraw |= REDRAW_MOTION;
 
@@ -841,8 +840,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
   if (tag && menu)
   {
-    menu->oldcurrent = menu->current;
-    menu->current = last;
+    menu_set_index(menu, last);
     menu_check_recenter(menu);
     menu->redraw |= REDRAW_MOTION;
   }
@@ -1355,24 +1353,32 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
 
       case OP_NEXT_ENTRY:
       case OP_MAIN_NEXT_UNDELETED: /* hack */
-        if (menu->current < menu->max - 1)
+      {
+        const int index = menu_get_index(menu) + 1;
+        if (index < menu->max)
         {
-          menu->current++;
+          menu_set_index(menu, index);
           op = OP_VIEW_ATTACH;
         }
         else
           op = OP_NULL;
         break;
+      }
+
       case OP_PREV_ENTRY:
       case OP_MAIN_PREV_UNDELETED: /* hack */
-        if (menu->current > 0)
+      {
+        const int index = menu_get_index(menu) - 1;
+        if (index >= 0)
         {
-          menu->current--;
+          menu_set_index(menu, index);
           op = OP_VIEW_ATTACH;
         }
         else
           op = OP_NULL;
         break;
+      }
+
       case OP_EDIT_TYPE:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
@@ -1566,8 +1572,9 @@ static void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachC
 
   menu->max = actx->vcount;
 
-  if (menu->current >= menu->max)
-    menu->current = menu->max - 1;
+  const int index = menu_get_index(menu);
+  if (index >= menu->max)
+    menu_set_index(menu, menu->max - 1);
   menu_check_recenter(menu);
   menu->redraw |= REDRAW_INDEX;
 }
@@ -1588,7 +1595,8 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
     return;
 
   curlevel = cur_att->level;
-  rindex = actx->v2r[menu->current] + 1;
+  const int index = menu_get_index(menu);
+  rindex = actx->v2r[index] + 1;
 
   const bool c_digest_collapse =
       cs_subset_bool(NeoMutt->sub, "digest_collapse");
@@ -1740,10 +1748,9 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
                                   cur_att->body, e, menu);
 
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-        if (!menu->tagprefix && c_resolve && (menu->current < menu->max - 1))
-          menu->current++;
-
-        menu->redraw = REDRAW_MOTION_RESYNC | REDRAW_FULL;
+        const int index = menu_get_index(menu) + 1;
+        if (!menu->tagprefix && c_resolve && (index < menu->max))
+          menu_set_index(menu, index);
         break;
       }
 
@@ -1787,10 +1794,10 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
           {
             cur_att->body->deleted = true;
             const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-            if (c_resolve && (menu->current < menu->max - 1))
+            const int index = menu_get_index(menu) + 1;
+            if (c_resolve && (index < menu->max))
             {
-              menu->current++;
-              menu->redraw = REDRAW_MOTION_RESYNC;
+              menu_set_index(menu, index);
             }
             else
               menu->redraw = REDRAW_CURRENT;
@@ -1830,10 +1837,10 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
           struct AttachPtr *cur_att = current_attachment(actx, menu);
           cur_att->body->deleted = false;
           const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-          if (c_resolve && (menu->current < menu->max - 1))
+          const int index = menu_get_index(menu) + 1;
+          if (c_resolve && (index < menu->max))
           {
-            menu->current++;
-            menu->redraw = REDRAW_MOTION_RESYNC;
+            menu_set_index(menu, index);
           }
           else
             menu->redraw = REDRAW_CURRENT;

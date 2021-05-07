@@ -275,3 +275,13 @@ struct Mailbox *ctx_mailbox(struct Context *ctx)
 {
   return Context ? Context->mailbox : NULL;
 }
+
+int menu_get_index(struct Menu *menu)
+{
+  return -1;
+}
+
+bool menu_set_index(struct Menu *menu, int index)
+{
+  return true;
+}

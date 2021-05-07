@@ -1325,20 +1325,31 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
     switch (menu_loop(menu))
     {
       case OP_VERIFY_KEY:
-        verify_key(key_table[menu->current]);
+      {
+        const int index = menu_get_index(menu);
+        struct CryptKeyInfo *cur_key = key_table[index];
+        verify_key(cur_key);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_VIEW_ID:
-        mutt_message("%s", key_table[menu->current]->uid);
+      {
+        const int index = menu_get_index(menu);
+        struct CryptKeyInfo *cur_key = key_table[index];
+        mutt_message("%s", cur_key->uid);
         break;
+      }
 
       case OP_GENERIC_SELECT_ENTRY:
+      {
+        const int index = menu_get_index(menu);
+        struct CryptKeyInfo *cur_key = key_table[index];
         /* FIXME make error reporting more verbose - this should be
          * easy because GPGME provides more information */
         if (OptPgpCheckTrust)
         {
-          if (!crypt_key_is_valid(key_table[menu->current]))
+          if (!crypt_key_is_valid(cur_key))
           {
             mutt_error(_("This key can't be used: "
                          "expired/disabled/revoked"));
@@ -1346,13 +1357,12 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
           }
         }
 
-        if (OptPgpCheckTrust && (!crypt_id_is_valid(key_table[menu->current]) ||
-                                 !crypt_id_is_strong(key_table[menu->current])))
+        if (OptPgpCheckTrust && (!crypt_id_is_valid(cur_key) || !crypt_id_is_strong(cur_key)))
         {
           const char *warn_s = NULL;
           char buf2[1024];
 
-          if (key_table[menu->current]->flags & KEYFLAG_CANTUSE)
+          if (cur_key->flags & KEYFLAG_CANTUSE)
           {
             warn_s = _("ID is expired/disabled/revoked. Do you really want to "
                        "use the key?");
@@ -1360,7 +1370,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
           else
           {
             warn_s = "??";
-            switch (key_table[menu->current]->validity)
+            switch (cur_key->validity)
             {
               case GPGME_VALIDITY_NEVER:
                 warn_s =
@@ -1403,9 +1413,10 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
 #endif
         }
 
-        k = crypt_copy_key(key_table[menu->current]);
+        k = crypt_copy_key(cur_key);
         done = true;
         break;
+      }
 
       case OP_EXIT:
         k = NULL;

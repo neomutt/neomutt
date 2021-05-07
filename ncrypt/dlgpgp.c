@@ -594,8 +594,10 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
 
         mutt_message(_("Invoking PGP..."));
 
+        const int index = menu_get_index(menu);
+        struct PgpUid *cur_key = key_table[index];
         snprintf(tmpbuf, sizeof(tmpbuf), "0x%s",
-                 pgp_fpr_or_lkeyid(pgp_principal_key(key_table[menu->current]->parent)));
+                 pgp_fpr_or_lkeyid(pgp_principal_key(cur_key->parent)));
 
         pid_t pid = pgp_invoke_verify_key(NULL, NULL, NULL, -1, fileno(fp_tmp),
                                           fileno(fp_null), tmpbuf);
@@ -613,7 +615,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
         mutt_clear_error();
         char title[1024];
         snprintf(title, sizeof(title), _("Key ID: 0x%s"),
-                 pgp_keyid(pgp_principal_key(key_table[menu->current]->parent)));
+                 pgp_keyid(pgp_principal_key(cur_key->parent)));
 
         struct PagerData pdata = { 0 };
         struct PagerView pview = { &pdata };
@@ -631,37 +633,41 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
       }
 
       case OP_VIEW_ID:
-
-        mutt_message("%s", NONULL(key_table[menu->current]->addr));
+      {
+        const int index = menu_get_index(menu);
+        struct PgpUid *cur_key = key_table[index];
+        mutt_message("%s", NONULL(cur_key->addr));
         break;
+      }
 
       case OP_GENERIC_SELECT_ENTRY:
-
+      {
         /* XXX make error reporting more verbose */
 
+        const int index = menu_get_index(menu);
+        struct PgpUid *cur_key = key_table[index];
         if (OptPgpCheckTrust)
         {
-          if (!pgp_key_is_valid(key_table[menu->current]->parent))
+          if (!pgp_key_is_valid(cur_key->parent))
           {
             mutt_error(_("This key can't be used: expired/disabled/revoked"));
             break;
           }
         }
 
-        if (OptPgpCheckTrust && (!pgp_id_is_valid(key_table[menu->current]) ||
-                                 !pgp_id_is_strong(key_table[menu->current])))
+        if (OptPgpCheckTrust && (!pgp_id_is_valid(cur_key) || !pgp_id_is_strong(cur_key)))
         {
           const char *str = "";
           char buf2[1024];
 
-          if (key_table[menu->current]->flags & KEYFLAG_CANTUSE)
+          if (cur_key->flags & KEYFLAG_CANTUSE)
           {
             str = _("ID is expired/disabled/revoked. Do you really want to use "
                     "the key?");
           }
           else
           {
-            switch (key_table[menu->current]->trust & 0x03)
+            switch (cur_key->trust & 0x03)
             {
               case 0:
                 str = _("ID has undefined validity. Do you really want to use "
@@ -686,9 +692,10 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
           }
         }
 
-        kp = key_table[menu->current]->parent;
+        kp = cur_key->parent;
         done = true;
         break;
+      }
 
       case OP_EXIT:
 

@@ -264,7 +264,8 @@ bool dlg_select_pattern(char *buf, size_t buflen)
     {
       case OP_GENERIC_SELECT_ENTRY:
       {
-        struct PatternEntry *entry = (struct PatternEntry *) menu->mdata + menu->current;
+        const int index = menu_get_index(menu);
+        struct PatternEntry *entry = ((struct PatternEntry *) menu->mdata) + index;
         mutt_str_copy(buf, entry->tag, buflen);
         rc = true;
         done = true;

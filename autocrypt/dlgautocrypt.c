@@ -290,7 +290,8 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         if (!menu->mdata)
           break;
 
-        struct AccountEntry *entry = (struct AccountEntry *) (menu->mdata) + menu->current;
+        const int index = menu_get_index(menu);
+        struct AccountEntry *entry = ((struct AccountEntry *) menu->mdata) + index;
         char msg[128];
         snprintf(msg, sizeof(msg),
                  // L10N: Confirmation message when deleting an autocrypt account
@@ -314,7 +315,8 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         if (!menu->mdata)
           break;
 
-        struct AccountEntry *entry = (struct AccountEntry *) (menu->mdata) + menu->current;
+        const int index = menu_get_index(menu);
+        struct AccountEntry *entry = ((struct AccountEntry *) menu->mdata) + index;
         toggle_active(entry);
         menu->redraw |= REDRAW_FULL;
         break;
@@ -325,7 +327,8 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         if (!menu->mdata)
           break;
 
-        struct AccountEntry *entry = (struct AccountEntry *) (menu->mdata) + menu->current;
+        const int index = menu_get_index(menu);
+        struct AccountEntry *entry = (struct AccountEntry *) (menu->mdata) + index;
         toggle_prefer_encrypt(entry);
         menu->redraw |= REDRAW_FULL;
         break;

@@ -315,7 +315,7 @@ int mutt_pattern_alias_func(int op, char *prompt, struct AliasMenuData *mdata,
   if (menu)
   {
     menu->max = vcounter;
-    menu->current = 0;
+    menu_set_index(menu, 0);
   }
 
   mutt_clear_error();

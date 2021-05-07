@@ -466,14 +466,11 @@ void menu_redraw_motion(struct Menu *menu)
     /* Print space chars to match the screen width of `$arrow_string` */
     mutt_window_printf("%*s", mutt_strwidth(c_arrow_string) + 1, "");
 
-    if (menu->redraw & REDRAW_MOTION_RESYNC)
-    {
-      make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
-      menu_pad_string(menu, buf, sizeof(buf));
-      mutt_window_move(menu->win_index, mutt_strwidth(c_arrow_string) + 1,
-                       menu->oldcurrent - menu->top);
-      print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
-    }
+    make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
+    menu_pad_string(menu, buf, sizeof(buf));
+    mutt_window_move(menu->win_index, mutt_strwidth(c_arrow_string) + 1,
+                     menu->oldcurrent - menu->top);
+    print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
 
     /* now draw it in the new location */
     mutt_curses_set_color(MT_COLOR_INDICATOR);
@@ -1398,7 +1395,7 @@ int menu_redraw(struct Menu *menu)
     menu_redraw_status(menu);
   if (menu->redraw & REDRAW_INDEX)
     menu_redraw_index(menu);
-  else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNC))
+  else if (menu->redraw & REDRAW_MOTION)
     menu_redraw_motion(menu);
   else if (menu->redraw == REDRAW_CURRENT)
     menu_redraw_current(menu);
@@ -1448,8 +1445,6 @@ int menu_loop(struct Menu *menu)
       mutt_window_mvaddstr(MessageWindow, 0, 0, "tag-");
       mutt_window_clrtoeol(MessageWindow);
     }
-
-    menu->oldcurrent = menu->current;
 
     const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
     const bool c_braille_friendly =
@@ -1584,12 +1579,9 @@ int menu_loop(struct Menu *menu)
           return op;
         else if (menu->search && ARRAY_EMPTY(&menu->dialog)) /* Searching dialogs won't work */
         {
-          menu->oldcurrent = menu->current;
-          menu->current = search(menu, op);
-          if (menu->current != -1)
-            menu->redraw = REDRAW_MOTION;
-          else
-            menu->current = menu->oldcurrent;
+          int index = search(menu, op);
+          if (index != -1)
+            menu_set_index(menu, index);
         }
         else
           mutt_error(_("Search is not implemented for this menu"));
@@ -1625,8 +1617,7 @@ int menu_loop(struct Menu *menu)
             menu->tagged += j;
             if (j && c_resolve && (menu->current < (menu->max - 1)))
             {
-              menu->current++;
-              menu->redraw |= REDRAW_MOTION_RESYNC;
+              menu_set_index(menu, menu->current + 1);
             }
             else
               menu->redraw |= REDRAW_CURRENT;
@@ -1757,4 +1748,39 @@ struct Menu *menu_new(struct MuttWindow *win, enum MenuType type)
   mutt_color_observer_add(menu_color_observer, menu);
 
   return menu;
+}
+
+/**
+ * menu_get_index - Get the current selection in the Menu
+ * @param menu Menu
+ * @retval num Index of selection
+ */
+int menu_get_index(struct Menu *menu)
+{
+  if (!menu)
+    return -1;
+
+  return menu->current;
+}
+
+/**
+ * menu_set_index - Set the current selection in the Menu
+ * @param menu  Menu
+ * @param index Item to select
+ * @retval true Selection was changed
+ */
+bool menu_set_index(struct Menu *menu, int index)
+{
+  if (!menu)
+    return false;
+
+  if (index < -1)
+    return false;
+  if (index >= menu->max)
+    return false;
+
+  menu->oldcurrent = menu->current;
+  menu->current = index;
+  menu->redraw |= REDRAW_MOTION;
+  return true;
 }

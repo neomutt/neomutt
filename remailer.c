@@ -720,7 +720,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
         if (!chain->cl)
         {
           chain->cl++;
-          chain->ch[0] = menu->current;
+          chain->ch[0] = menu_get_index(menu);
           mix_screen_coordinates(menu->win_index, type2_list, &coords, chain, c_cur);
           c_redraw = true;
         }
@@ -754,7 +754,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
           for (int i = chain->cl - 1; i > c_cur; i--)
             chain->ch[i] = chain->ch[i - 1];
 
-          chain->ch[c_cur] = menu->current;
+          chain->ch[c_cur] = menu_get_index(menu);
           mix_screen_coordinates(menu->win_index, type2_list, &coords, chain, c_cur);
           c_redraw = true;
         }

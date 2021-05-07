@@ -2097,12 +2097,13 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       mutt_curses_set_color(MT_COLOR_NORMAL);
 
       /* some fudge to work out whereabouts the indicator should go */
-      if ((rd->menu->current - rd->indicator) < 0)
+      const int index = menu_get_index(rd->menu);
+      if ((index - rd->indicator) < 0)
         rd->menu->top = 0;
-      else if ((rd->menu->max - rd->menu->current) < (rd->menu->pagelen - rd->indicator))
+      else if ((rd->menu->max - index) < (rd->menu->pagelen - rd->indicator))
         rd->menu->top = rd->menu->max - rd->menu->pagelen;
       else
-        rd->menu->top = rd->menu->current - rd->indicator;
+        rd->menu->top = index - rd->indicator;
 
       menu_redraw_index(rd->menu);
     }
@@ -2615,10 +2616,11 @@ int mutt_pager(struct PagerView *pview)
         {
           if (rd.menu && m)
           {
-            /* After the mailbox has been updated,
-             * rd.menu->current might be invalid */
-            rd.menu->current = MIN(rd.menu->current, MAX(m->msg_count - 1, 0));
-            struct Email *e = mutt_get_virt_email(m, rd.menu->current);
+            /* After the mailbox has been updated, selection might be invalid */
+            int index = menu_get_index(rd.menu);
+            menu_set_index(rd.menu, MIN(index, MAX(m->msg_count - 1, 0)));
+            index = menu_get_index(rd.menu);
+            struct Email *e = mutt_get_virt_email(m, index);
             if (!e)
               continue;
 
@@ -2633,7 +2635,7 @@ int mutt_pager(struct PagerView *pview)
              * been deleted.  Make the pointer safe, then leave the pager.
              * This have a unpleasant behaviour to close the pager even the
              * deleted message is not the opened one, but at least it's safe. */
-            e = mutt_get_virt_email(m, rd.menu->current);
+            e = mutt_get_virt_email(m, index);
             if (pview->pdata->email != e)
             {
               pview->pdata->email = e;
