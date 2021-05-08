@@ -33,7 +33,7 @@
 
 static struct ConfigDef HelpbarVars[] = {
   // clang-format off
-  { "help", DT_BOOL|R_REFLOW, true, 0, NULL,
+  { "help", DT_BOOL, true, 0, NULL,
     "Display a help line with common key bindings"
   },
   { NULL },

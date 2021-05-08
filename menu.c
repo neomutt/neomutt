@@ -1055,8 +1055,6 @@ static int menu_config_observer(struct NotifyCallback *nc)
   if (flags & R_TREE)
     OptRedrawTree = true;
 
-  if (flags & R_REFLOW)
-    mutt_window_reflow(NULL);
   if (flags & R_MENU)
     menu_set_current_redraw_full();
 
