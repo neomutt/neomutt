@@ -164,5 +164,6 @@ void         menu_set_redraw(enum MenuType menu, MuttRedrawFlags redraw);
 
 int  menu_get_index(struct Menu *menu);
 bool menu_set_index(struct Menu *menu, int index);
+void menu_queue_redraw(struct Menu *menu, MuttRedrawFlags redraw);
 
 #endif /* MUTT_MENU_H */

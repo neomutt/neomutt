@@ -66,7 +66,7 @@ int alias_color_observer(struct NotifyCallback *nc)
     return -1;
 
   struct Menu *menu = nc->global_data;
-  menu->redraw = REDRAW_FULL;
+  menu_queue_redraw(menu, REDRAW_FULL);
 
   return 0;
 }

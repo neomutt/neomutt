@@ -813,7 +813,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         {
           menu_set_index(menu, top->aptr->num);
           menu_check_recenter(menu);
-          menu->redraw |= REDRAW_MOTION;
+          menu_queue_redraw(menu, REDRAW_MOTION);
 
           menu_redraw(menu);
         }
@@ -842,7 +842,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   {
     menu_set_index(menu, last);
     menu_check_recenter(menu);
-    menu->redraw |= REDRAW_MOTION;
+    menu_queue_redraw(menu, REDRAW_MOTION);
   }
 
   if (rc == 0)
@@ -1390,7 +1390,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         else
           mutt_edit_content_type(e, cur_att->body, cur_att->fp);
 
-        menu->redraw |= REDRAW_INDEX;
+        menu_queue_redraw(menu, REDRAW_INDEX);
         op = OP_VIEW_ATTACH;
         break;
       }
@@ -1576,7 +1576,7 @@ static void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachC
   if (index >= menu->max)
     menu_set_index(menu, menu->max - 1);
   menu_check_recenter(menu);
-  menu->redraw |= REDRAW_INDEX;
+  menu_queue_redraw(menu, REDRAW_INDEX);
 }
 
 /**
@@ -1665,7 +1665,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_MAILCAP, e,
                              actx, menu->win_index);
-        menu->redraw = REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
 
@@ -1674,7 +1674,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_AS_TEXT, e,
                              actx, menu->win_index);
-        menu->redraw = REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
 
@@ -1683,14 +1683,14 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_PAGER, e, actx,
                              menu->win_index);
-        menu->redraw = REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
 
       case OP_DISPLAY_HEADERS:
       case OP_VIEW_ATTACH:
         op = mutt_attach_display_loop(sub, menu, op, e, actx, true);
-        menu->redraw = REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         continue;
 
       case OP_ATTACH_COLLAPSE:
@@ -1714,7 +1714,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         if (WithCrypto & APPLICATION_PGP)
         {
           recvattach_extract_pgp_keys(actx, menu);
-          menu->redraw = REDRAW_FULL;
+          menu_queue_redraw(menu, REDRAW_FULL);
         }
         break;
 
@@ -1723,7 +1723,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
             recvattach_pgp_check_traditional(actx, menu))
         {
           e->security = crypt_query(NULL);
-          menu->redraw = REDRAW_FULL;
+          menu_queue_redraw(menu, REDRAW_FULL);
         }
         break;
 
@@ -1800,7 +1800,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
               menu_set_index(menu, index);
             }
             else
-              menu->redraw = REDRAW_CURRENT;
+              menu_queue_redraw(menu, REDRAW_CURRENT);
           }
           else
           {
@@ -1817,7 +1817,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
               if (actx->idx[i]->parent_type == TYPE_MULTIPART)
               {
                 actx->idx[i]->body->deleted = true;
-                menu->redraw = REDRAW_INDEX;
+                menu_queue_redraw(menu, REDRAW_INDEX);
               }
               else
               {
@@ -1843,7 +1843,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
             menu_set_index(menu, index);
           }
           else
-            menu->redraw = REDRAW_CURRENT;
+            menu_queue_redraw(menu, REDRAW_CURRENT);
         }
         else
         {
@@ -1852,7 +1852,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
             if (actx->idx[i]->body->tagged)
             {
               actx->idx[i]->body->deleted = false;
-              menu->redraw = REDRAW_INDEX;
+              menu_queue_redraw(menu, REDRAW_INDEX);
             }
           }
         }
@@ -1865,7 +1865,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_attach_resend(cur_att->fp, m, actx,
                            menu->tagprefix ? NULL : cur_att->body);
-        menu->redraw = REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
 
@@ -1876,7 +1876,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_attach_bounce(m, cur_att->fp, actx,
                            menu->tagprefix ? NULL : cur_att->body);
-        menu->redraw = REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
 
@@ -1887,7 +1887,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_attach_forward(cur_att->fp, e, actx,
                             menu->tagprefix ? NULL : cur_att->body, SEND_NO_FLAGS);
-        menu->redraw = REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
 
@@ -1899,7 +1899,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_attach_forward(cur_att->fp, e, actx,
                             menu->tagprefix ? NULL : cur_att->body, SEND_NEWS);
-        menu->redraw = REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
 
@@ -1919,7 +1919,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         {
           mutt_attach_reply(cur_att->fp, m, e, actx,
                             menu->tagprefix ? NULL : cur_att->body, SEND_NEWS | SEND_REPLY);
-          menu->redraw = REDRAW_FULL;
+          menu_queue_redraw(menu, REDRAW_FULL);
           break;
         }
       }
@@ -1944,7 +1944,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_attach_reply(cur_att->fp, m, e, actx,
                           menu->tagprefix ? NULL : cur_att->body, flags);
-        menu->redraw = REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
 
@@ -1955,13 +1955,13 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_attach_mail_sender(cur_att->fp, e, actx,
                                 menu->tagprefix ? NULL : cur_att->body);
-        menu->redraw = REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
 
       case OP_EDIT_TYPE:
         recvattach_edit_content_type(sub, actx, menu, e);
-        menu->redraw |= REDRAW_INDEX;
+        menu_queue_redraw(menu, REDRAW_INDEX);
         break;
 
       case OP_EXIT:

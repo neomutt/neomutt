@@ -1780,3 +1780,16 @@ bool menu_set_index(struct Menu *menu, int index)
   menu->redraw |= REDRAW_MOTION;
   return true;
 }
+
+/**
+ * menu_queue_redraw - Queue a request for a redraw
+ * @param menu  Menu
+ * @param redraw Item to redraw, e.g. #REDRAW_CURRENT
+ */
+void menu_queue_redraw(struct Menu *menu, MuttRedrawFlags redraw)
+{
+  if (!menu)
+    return;
+
+  menu->redraw |= redraw;
+}

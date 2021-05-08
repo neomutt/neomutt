@@ -318,7 +318,7 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         const int index = menu_get_index(menu);
         struct AccountEntry *entry = ((struct AccountEntry *) menu->mdata) + index;
         toggle_active(entry);
-        menu->redraw |= REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
 
@@ -330,7 +330,7 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         const int index = menu_get_index(menu);
         struct AccountEntry *entry = (struct AccountEntry *) (menu->mdata) + index;
         toggle_prefer_encrypt(entry);
-        menu->redraw |= REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
     }
