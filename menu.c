@@ -714,6 +714,7 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
 
   /* possible to scroll? */
   int tmp;
+  int index = menu->current;
   if ((DIRECTION * menu->top) <
       (tmp = (neg ? 0 : (menu->max /* -1 */) - (menu->pagelen /* -1 */))))
   {
@@ -727,22 +728,22 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
     if ((DIRECTION *
          (tmp = (menu->current - (menu->top + (neg ? (menu->pagelen - 1) - c : c))))) < 0)
     {
-      menu->current -= tmp;
+      index -= tmp;
     }
 
     menu->redraw = REDRAW_INDEX;
   }
   else if ((menu->current != (neg ? 0 : menu->max - 1)) && ARRAY_EMPTY(&menu->dialog))
   {
-    menu->current += jumplen;
-    menu->redraw = REDRAW_MOTION;
+    index += jumplen;
   }
   else
   {
     mutt_message(neg ? _("You are on the first page") : _("You are on the last page"));
   }
 
-  int index = MIN(menu->current, menu->max - 1);
+  // Range check
+  index = MIN(index, menu->max - 1);
   index = MAX(index, 0);
   menu_set_index(menu, index);
 }
