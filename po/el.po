@@ -8,14 +8,15 @@
 # Simos Xenitellis <S.Xenitellis@rhbnc.ac.uk>, 2005
 # kromJx <kromJx@crosswinds.net>, 2005
 # ta_panta_rei <ta_panta_rei@flashmail.com>, 2005
+# Christos Margiolis <christos@christosmarg.xyz>, 2021
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-04-11 03:03+0100\n"
-"PO-Revision-Date: 2005-02-01 00:01GMT+2\n"
-"Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
+"PO-Revision-Date: 2021-05-09 00:47GMT+3\n"
+"Last-Translator: Christos Margiolis <christos@christosmarg.xyz>\n"
 "Language-Team: Greek <EL@li.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
@@ -26,15 +27,15 @@ msgstr ""
 #. L10N: prompt to add a new alias
 #: alias/alias.c:396
 msgid "Alias as: "
-msgstr "Ψευδώνυμο ως: "
+msgstr "Ψευδώνυμο: "
 
 #: alias/alias.c:406
 msgid "You already have an alias defined with that name"
-msgstr "Έχετε ήδη ένα ψευδώνυμο με αυτό το όνομα"
+msgstr "Έχετε ήδη ψευδώνυμο για αυτό το όνομα"
 
 #: alias/alias.c:412
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: αυτό το ψευδώνυμο ίσως να μην δουλεύει. Διόρθωση;"
+msgstr "Προειδοποίηση: Aυτό το ψευδώνυμο ίσως να μην δουλεύει. Διόρθωση;"
 
 #: alias/alias.c:437
 msgid "Address: "
@@ -48,16 +49,15 @@ msgstr "Λανθασμένη διεθνής διεύθυνση IDN: '%s'"
 
 #: alias/alias.c:461
 msgid "Personal name: "
-msgstr "Προσωπικό Όνομα: "
+msgstr "Προσωπικό όνομα: "
 
 #: alias/alias.c:470
-#, fuzzy
 msgid "Comment: "
-msgstr "επεξεργασία του πεδίου Reply-To"
+msgstr "Σχόλιο: "
 
 #: alias/alias.c:481 alias/alias.c:485
 msgid "Accept?"
-msgstr "Δέχεστε;"
+msgstr "Αποδοχή;"
 
 #: alias/alias.c:499 recvattach.c:601 recvattach.c:624 recvattach.c:639
 #: recvattach.c:654 recvattach.c:758
@@ -65,30 +65,27 @@ msgid "Save to file: "
 msgstr "Αποθήκευση στο αρχείο: "
 
 #: alias/alias.c:521
-#, fuzzy
 msgid "Error reading alias file"
-msgstr "Σφάλμα κατά την εμφάνιση αρχείου"
+msgstr "Σφάλμα κατά την εμφάνιση αρχείου ψευδωνύμων"
 
 #: alias/alias.c:545
-#, fuzzy
 msgid "Trouble adding alias"
-msgstr "Σφάλμα κατά την εμφάνιση αρχείου"
+msgstr "Σφάλμα κατά την εμφάνιση ψευδωνύμου"
 
 #: alias/alias.c:547
 msgid "Alias added"
 msgstr "Το ψευδώνυμο προστέθηκε"
 
 #: alias/alias.c:552
-#, fuzzy
 msgid "Error seeking in alias file"
-msgstr "Σφάλμα κατά την εμφάνιση αρχείου"
+msgstr "Σφάλμα κατά την αναζήτηση στο αρχείο ψευδωνύμων"
 
 #: alias/commands.c:58
 msgid "alias: no address"
-msgstr "ψευδώνυμο: καμμία διεύθυνση"
+msgstr "Ψευδώνυμο: καμία διεύθυνση"
 
 #: alias/commands.c:78
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: Bad address '%s' in alias '%s'"
 msgstr "Προειδοποίηση: Λανθασμένη διεθνής διεύθυνση IDN '%s' στο ψευδώνυμο '%s'"
 
@@ -116,11 +113,11 @@ msgstr "Επαναφορά"
 
 #: alias/dlgalias.c:59 alias/dlgquery.c:65
 msgid "Sort"
-msgstr ""
+msgstr "Ταξινόμηση"
 
 #: alias/dlgalias.c:60 alias/dlgquery.c:66
 msgid "Rev-Sort"
-msgstr ""
+msgstr "Αντίστροφη ταξινόμηση"
 
 #: alias/dlgalias.c:61 history/dlghistory.c:46 ncrypt/dlggpgme.c:65
 #: ncrypt/dlgpgp.c:60 ncrypt/dlgsmime.c:47 pattern/dlgpattern.c:62
@@ -148,17 +145,17 @@ msgstr "Δεν έχετε κανένα ψευδώνυμο"
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/dlgalias.c:270 alias/dlgquery.c:482
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "Αντίστροφη ταξινόμηση (a)ψευδόνυμου, (d)διεύθυνσης ή (u)μη-ταξινομημένου"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/dlgalias.c:272 alias/dlgquery.c:484
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "Ταξινόμηση (a)ψευδόνυμου, (d)διεύθυνσης ή (u)μη-ταξινομημένου"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/dlgalias.c:274 alias/dlgquery.c:486
 msgid "adu"
-msgstr ""
+msgstr "adu"
 
 #: alias/dlgalias.c:316 alias/dlgquery.c:530 index/index.c:1853
 msgid "Limit to messages matching: "
@@ -166,7 +163,7 @@ msgstr "Περιορισμός στα παρόμοια μηνύματα: "
 
 #: alias/dlgquery.c:62 index/index.c:112
 msgid "Mail"
-msgstr "Ταχυδρ"
+msgstr "Ταχυδρομείο"
 
 #: alias/dlgquery.c:63
 msgid "New Query"
@@ -190,13 +187,12 @@ msgid "Query: "
 msgstr "Ερώτηση: "
 
 #: alias/dlgquery.c:530
-#, fuzzy
 msgid "Query"
-msgstr "Ερώτηση: "
+msgstr "Ερώτηση"
 
 #: alias/dlgquery.c:621 alias/dlgquery.c:661
 msgid "Query command not defined"
-msgstr "Η εντολή ερωτήσεως δεν καθορίστηκε"
+msgstr "Η εντολή ερωτήσεως δεν ορίστηκε"
 
 #. L10N: ask for a limit to apply
 #: alias/gui.c:88 index/index.c:1818
@@ -210,9 +206,8 @@ msgid "attachments: no disposition"
 msgstr "επεξεργασία της περιγραφής της προσάρτησης"
 
 #: attachments.c:481
-#, fuzzy
 msgid "Current attachments settings:"
-msgstr "επεξεργασία της περιγραφής της προσάρτησης"
+msgstr "Τρέχουσες ρυθμίσεις συνημμένου: "
 
 #: attachments.c:513
 #, fuzzy
@@ -249,28 +244,28 @@ msgstr "Αδυναμία δημιουργίας του %s: %s"
 #. with this message.
 #: autocrypt/autocrypt.c:167
 msgid "Create an initial autocrypt account?"
-msgstr ""
+msgstr "Δημιουργία λογαριασμού autocrypt;"
 
 #. L10N: Autocrypt is asking for the email address to use for the
 #. autocrypt account.  This will generate a key and add a record
 #. to the database for use in autocrypt operations.
 #: autocrypt/autocrypt.c:191
 msgid "Autocrypt account address: "
-msgstr ""
+msgstr "Διεύθυνση λογαριασμού autocrypt: "
 
 #. L10N: Autocrypt prompts for an account email address, and requires
 #. a single address.  This is shown if they entered something invalid,
 #. nothing, or more than one address for some reason.
 #: autocrypt/autocrypt.c:200
 msgid "Please enter a single email address"
-msgstr ""
+msgstr "Παρακαλώ εισάγετε μόνο μία διεύθυνση email"
 
 #. L10N: When creating an autocrypt account, this message will be displayed
 #. if there is already an account in the database with the email address
 #. they just entered.
 #: autocrypt/autocrypt.c:215
 msgid "That email address already has an autocrypt account"
-msgstr ""
+msgstr "Αυτή η διεύθυνση email έχει ήδη έναν λογαριασμό autocrypt"
 
 #. L10N: Autocrypt has a setting "prefer-encrypt".
 #. When the recommendation algorithm returns "available" and BOTH sender and
@@ -279,28 +274,26 @@ msgstr ""
 #. Otherwise the UI will show encryption is "available" but the user
 #. will be required to enable encryption manually.
 #: autocrypt/autocrypt.c:228
-#, fuzzy
 msgid "Prefer encryption?"
-msgstr "Κρυπτογράφηση"
+msgstr "Προτίμηση κρυπτογράφησης"
 
 #. L10N: Message displayed after an autocrypt account is successfully created.
 #: autocrypt/autocrypt.c:242
 msgid "Autocrypt account creation succeeded"
-msgstr ""
+msgstr "Ο λογαριασμός autocrypt δημιουργήθηκε με επιτυχία"
 
 #. L10N: Error message displayed if creating an autocrypt account failed
 #. or was aborted by the user.
 #: autocrypt/autocrypt.c:246
 msgid "Autocrypt account creation aborted"
-msgstr ""
+msgstr "Η δημιουργία λογαριασμού autocrypt αναστάλθηκε"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the engine is not available.
 #: autocrypt/autocrypt.c:589 autocrypt/autocrypt.c:598
 #: autocrypt/autocrypt.c:605
-#, fuzzy
 msgid "Autocrypt is not available"
-msgstr "Το τρέχον μήνυμα δεν είναι διαθέσιμο"
+msgstr "Το autocrypt δεν είναι διαθέσιμο"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the account does not exist or is not enabled.
@@ -309,25 +302,24 @@ msgstr "Το τρέχον μήνυμα δεν είναι διαθέσιμο"
 #: autocrypt/autocrypt.c:617
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr ""
+msgstr "Το autocrypt δεν είναι ενεργοποιημένο για το %s"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
 #. The message is printed and they are returned to the compose menu.
 #: autocrypt/autocrypt.c:642 autocrypt/autocrypt.c:671
-#, fuzzy, c-format
+#, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr "Δεν βρέθηκαν (έγκυρα) πιστοποιητικά για το %s"
+msgstr "Δεν βρέθηκαν (έγκυρα) κλειδιά autocrypt για το %s"
 
 #: autocrypt/autocrypt.c:943
 msgid "Scan a mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Σάρωση ενός γραμματοκιβωτίου για κεφαλίδες autocrypt;"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:947
-#, fuzzy
 msgid "Scan mailbox"
-msgstr "Κανένα γραμματοκιβώτιο.\n"
+msgstr "Σάρωση γραμματοκιβωτίου"
 
 #. L10N: This is the second prompt to see if the user would like
 #. to scan more than one mailbox for Autocrypt headers.
@@ -336,23 +328,22 @@ msgstr "Κανένα γραμματοκιβώτιο.\n"
 #. and I don't want them to accidentally ctrl-g and abort it.
 #: autocrypt/autocrypt.c:966
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Σάρωση άλλου ενός γραμματοκιβωτίου για κεφαλίδες autocrypt;"
 
 #. L10N: s is the path to the database.
 #. For some reason sqlite3 failed to open that database file.
 #. L10N: Error message if autocrypt couldn't open the SQLite database
 #. for some reason.  The %s is the full path of the database file.
 #: autocrypt/db.c:67 autocrypt/db.c:104
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open autocrypt database %s"
-msgstr "Αδυναμία κλειδώματος του γραμματοκιβωτίου!"
+msgstr "Αδυναμία ανοίγματος της βάσης δεδομένων autocrypt %s"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
 #: autocrypt/dlgautocrypt.c:63
-#, fuzzy
 msgid "Create"
-msgstr "Δημιουργία του %s;"
+msgstr "Δημιουργία"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
@@ -406,38 +397,37 @@ msgstr ""
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/dlgautocrypt.c:179
 msgid "Autocrypt Accounts"
-msgstr ""
+msgstr "Λογιαριασμοί autocrypt"
 
 #. L10N: This error message is displayed if a database update of an
 #. account record fails for some odd reason.
 #: autocrypt/dlgautocrypt.c:236 autocrypt/dlgautocrypt.c:250
-#, fuzzy
 msgid "Error updating account record"
-msgstr "Σφάλμα κατά τη διερεύνηση του καταλόγου"
+msgstr "Σφάλμα κατά την ανανέωση του καταλόγου λογαριασμών"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/dlgautocrypt.c:305
-#, fuzzy, c-format
+#, c-format
 msgid "Really delete account \"%s\"?"
-msgstr "Διαγραφή του γραμματοκιβωτίου \"%s\";"
+msgstr "Διαγραφή του λογαριασμού \"%s\";"
 
 #: autocrypt/gpgme.c:57 ncrypt/crypt_gpgme.c:585
-#, fuzzy, c-format
+#, c-format
 msgid "error creating GPGME context: %s"
-msgstr "σφάλμα στο μοντέλο στο: %s"
+msgstr "σφάλμα κατά την δημιουργία περιεχομένου GPGME: %s"
 
 #. L10N: Message displayed just before a GPG key is generated for a created
 #. autocrypt account.
 #: autocrypt/gpgme.c:175
 msgid "Generating autocrypt key..."
-msgstr ""
+msgstr "Δημιουργία κλειδιού autocrypt..."
 
 #. L10N: GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #: autocrypt/gpgme.c:185 autocrypt/gpgme.c:204
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "σφάλμα στο μοντέλο στο: %s"
+msgstr "Σφάλμα κατά την δημιουργία κλειδιού autocrypt: %s"
 
 #. L10N: After selecting a key for an autocrypt account,
 #. this is displayed if the key was revoked/expired/disabled/invalid
@@ -446,14 +436,14 @@ msgstr "σφάλμα στο μοντέλο στο: %s"
 #: autocrypt/gpgme.c:251
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr ""
+msgstr "Το κλειδί %s δεν ταιριάζει στο autocrypt"
 
 #. L10N: During autocrypt account creation, this prompt asks the
 #. user whether they want to create a new GPG key for the account,
 #. or select an existing account from the keyring.
 #: autocrypt/gpgme.c:283
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr ""
+msgstr "(c)δημιουργία νέου, ή (s)επιλογή υπάρχοντος GPG κλειδιού;"
 
 #. L10N: The letters corresponding to the
 #. "(c)reate new, or (s)elect existing GPG key?" prompt.
@@ -465,7 +455,7 @@ msgstr ""
 #. for some reason, we prompt to see if they want to create a key instead.
 #: autocrypt/gpgme.c:298
 msgid "Create a new GPG key for this account, instead?"
-msgstr ""
+msgstr "Δημιουργία νέου GPG κλειδιού για αυτόν τον λογαριασμό;"
 
 #. L10N: The autocrypt database keeps track of schema version numbers.
 #. This error occurs if the version number is too high.
@@ -473,17 +463,17 @@ msgstr ""
 #. database was upgraded by a future version.
 #: autocrypt/schema.c:123
 msgid "Autocrypt database version is too new"
-msgstr ""
+msgstr "Η βάση δεδομένων autocrypt είναι πολύ νέα"
 
 #: bcache/bcache.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Το %s δεν είναι κατάλογος"
+msgstr "Η cache είναι απενεργοποιημένη, το $message_cachedir δεν είναι κατάλογος: %s"
 
 #: bcache/bcache.c:220
-#, fuzzy, c-format
+#, c-format
 msgid "Message cache isn't a directory: %s"
-msgstr "Το %s δεν είναι κατάλογος"
+msgstr "Το μήνυμα cache δεν είναι κατάλογος: %s"
 
 #: browser.c:73
 msgid "Chdir"
@@ -499,17 +489,15 @@ msgstr "Μάσκα"
 
 #: browser.c:86
 msgid "List"
-msgstr ""
+msgstr "Λίστα"
 
 #: browser.c:87
-#, fuzzy
 msgid "Subscribe"
-msgstr "Εγγραφή στο %s..."
+msgstr "Εγγραφή"
 
 #: browser.c:88
-#, fuzzy
 msgid "Unsubscribe"
-msgstr "Διαγραφή στο %s..."
+msgstr "Απεγγραφή"
 
 #: browser.c:89 index/index.c:130
 msgid "Catchup"
@@ -521,14 +509,14 @@ msgid "%s is not a directory"
 msgstr "Το %s δεν είναι κατάλογος"
 
 #: browser.c:1027
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed newsgroups"
-msgstr "Εγγραφή στο %s..."
+msgstr "Εγγεγραμένες ομάδεων ειδήσεων"
 
 #: browser.c:1030
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr ""
+msgstr "Ομάδες ειδήσεων στον server [%s]"
 
 #: browser.c:1040
 #, c-format
@@ -558,18 +546,16 @@ msgid "Create is only supported for IMAP mailboxes"
 msgstr "Η δημιουργία υποστηρίζεται μόνο για τα γραμματοκιβώτια IMAP"
 
 #: browser.c:1641
-#, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr "Η δημιουργία υποστηρίζεται μόνο για τα γραμματοκιβώτια IMAP"
+msgstr "Η μετονομασία υποστηρίζεται μόνο για τα γραμματοκιβώτια IMAP"
 
 #: browser.c:1660
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Η διαγραφή υποστηρίζεται μόνο για τα γραμματοκιβώτια IMAP"
 
 #: browser.c:1670
-#, fuzzy
 msgid "Can't delete currently selected mailbox"
-msgstr "απεικόνιση του ονόματος του τρέχοντος επιλεγμένου αρχείου"
+msgstr "Δεν είναι δυνατή η διαγραφή του επιλεγμένου γραμματοκιβωτίου"
 
 #: browser.c:1674
 #, c-format
@@ -581,9 +567,8 @@ msgid "Mailbox deleted"
 msgstr "Το γραμματοκιβώτιο διαγράφηκε"
 
 #: browser.c:1688
-#, fuzzy
 msgid "Mailbox deletion failed"
-msgstr "Το γραμματοκιβώτιο διαγράφηκε"
+msgstr "Η εύρεση γραμματοκιβωτίου απέτυχε"
 
 #: browser.c:1691
 msgid "Mailbox not deleted"
@@ -591,11 +576,11 @@ msgstr "Το γραμματοκιβώτιο δεν διαγράφηκε"
 
 #: browser.c:1718
 msgid "Chdir to: "
-msgstr "Αλλαγή καταλόγου σε:"
+msgstr "Αλλαγή καταλόγου σε: "
 
 #: browser.c:1773 browser.c:1840
 msgid "Error scanning directory"
-msgstr "Σφάλμα κατά τη διερεύνηση του καταλόγου"
+msgstr "Σφάλμα κατά τη σάρωση του καταλόγου"
 
 #: browser.c:1796
 msgid "File Mask: "
@@ -603,15 +588,13 @@ msgstr "Μάσκα αρχείου: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1863
-#, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
-msgstr "Ανάστροφη ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος ή (n)άκυρο;"
+msgstr "Αντίστροφη ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος, (e)περιγραφή, (c)αριθμό, (w)νέο, ή (n)άκυρο;"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1866
-#, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
-msgstr "Ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος ή (n)άκυρο;"
+msgstr "Ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος, (e)περιγραφή, (c)αριθμό, (w)νέο, ή (n)άκυρο;"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1869
@@ -631,38 +614,36 @@ msgid "Error trying to view file"
 msgstr "Σφάλμα κατά την εμφάνιση αρχείου"
 
 #: browser.c:2120
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribe pattern: "
-msgstr "Εγγραφή στο %s..."
+msgstr "Μοτίβο εγγραφής: "
 
 #: browser.c:2122
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribe pattern: "
-msgstr "Διαγραφή στο %s..."
+msgstr "Μοτίβο απεγγραφής: "
 
 #: browser.c:2143
-#, fuzzy
 msgid "No newsgroups match the mask"
-msgstr "Κανένα αρχείο δεν ταιριάζει με τη μάσκα αρχείου"
+msgstr "Καμία ομάδα ειδήσεων δεν ταιριάζει με τη μάσκα"
 
 #: command_parse.c:114
 msgid "-group: no group name"
 msgstr ""
 
 #: command_parse.c:124
-#, fuzzy
 msgid "out of arguments"
-msgstr "πολύ λίγα ορίσματα"
+msgstr "εκτός ορισμάτων"
 
 #: command_parse.c:164
 #, c-format
 msgid "Error: Can't build path of '%s'"
-msgstr ""
+msgstr "Σφάλμα: Δεν είναι δυνατή η δημιουργία διαδρομής στο '%s'"
 
 #: command_parse.c:177
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
-msgstr ""
+msgstr "Σφάλμα: Κυκλική αναφορά του αρχείου ρυθμίσεων '%s'"
 
 #: command_parse.c:218
 #, c-format
@@ -670,7 +651,7 @@ msgid "Error in %s, line %d: %s"
 msgstr "Σφάλμα στο %s, γραμμή %d: %s"
 
 #: command_parse.c:229
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Σφάλμα στο %s, γραμμή %d: %s"
 
@@ -680,16 +661,16 @@ msgid "source: errors in %s"
 msgstr "source: λάθη στο %s"
 
 #: command_parse.c:254
-#, fuzzy, c-format
+#, c-format
 msgid "source: reading aborted due to too many errors in %s"
-msgstr "πηγή: απόρριψη ανάγνωσης λόγω πολλών σφαλμάτων στο %s"
+msgstr "source: αναστολή ανάγνωσης λόγω πολλών σφαλμάτων στο %s"
 
 #: command_parse.c:263
-#, fuzzy, c-format
+#, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
-msgstr[0] "source: λάθη στο %s"
-msgstr[1] "source: λάθη στο %s"
+msgstr[0] "source: %d προειδοποίηση στο %s"
+msgstr[1] "source: %d προειδοποιήσεις στο %s"
 
 #: command_parse.c:296 command_parse.c:318 command_parse.c:463
 #: command_parse.c:1036 command_parse.c:1120 gui/color.c:733 gui/color.c:868
@@ -710,26 +691,26 @@ msgstr "%s: πάρα πολλά ορίσματα"
 #: command_parse.c:379
 #, c-format
 msgid "%sgroup: missing -rx or -addr"
-msgstr ""
+msgstr "%sgroup: λείπουν -rx ή -addr"
 
 #: command_parse.c:405
-#, fuzzy, c-format
+#, c-format
 msgid "%sgroup: warning: bad IDN '%s'"
-msgstr "Προειδοποίηση: Λανθασμένη διεθνής διεύθυνση IDN '%s' στο ψευδώνυμο '%s'"
+msgstr "%sgroup: λανθασμένη διεθνής διεύθυνση IDN '%s'"
 
 #: command_parse.c:474
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Σφάλμα: %s"
 
 #: command_parse.c:635
 msgid "invalid header field"
-msgstr "μη έγκυρο πεδίο επικεφαλίδας"
+msgstr "μη έγκυρο πεδίο κεφαλίδας"
 
 #: command_parse.c:704
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
-msgstr ""
+msgstr "Δεν επιτρέπεται η χρήση 'inv', 'no', '&' ή '?' με την εντολή '%s'"
 
 #: command_parse.c:738 command_parse.c:877 command_parse.c:979
 #, c-format
