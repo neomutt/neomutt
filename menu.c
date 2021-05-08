@@ -312,7 +312,7 @@ static void make_entry(struct Menu *menu, char *buf, size_t buflen, int i)
   if (!ARRAY_EMPTY(&menu->dialog))
   {
     mutt_str_copy(buf, NONULL(*ARRAY_GET(&menu->dialog, i)), buflen);
-    menu->current = -1; /* hide menubar */
+    menu_set_index(menu, -1); /* hide menubar */
   }
   else
     menu->make_entry(menu, buf, buflen, i);
@@ -631,8 +631,7 @@ static void menu_jump(struct Menu *menu)
     int n = 0;
     if ((mutt_str_atoi(buf, &n) == 0) && (n > 0) && (n < (menu->max + 1)))
     {
-      menu->current = n - 1; // msg numbers are 0-based
-      menu->redraw = REDRAW_MOTION;
+      menu_set_index(menu, n - 1); // msg numbers are 0-based
     }
     else
       mutt_error(_("Invalid index number"));
@@ -661,7 +660,7 @@ void menu_next_line(struct Menu *menu)
   {
     menu->top++;
     if ((menu->current < (menu->top + c)) && (menu->current < (menu->max - 1)))
-      menu->current++;
+      menu_set_index(menu, menu->current + 1);
     menu->redraw = REDRAW_INDEX;
   }
   else
@@ -685,7 +684,7 @@ void menu_prev_line(struct Menu *menu)
 
   menu->top--;
   if ((menu->current >= (menu->top + menu->pagelen - c)) && (menu->current > 1))
-    menu->current--;
+    menu_set_index(menu, menu->current - 1);
   menu->redraw = REDRAW_INDEX;
 }
 
@@ -743,8 +742,9 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
     mutt_message(neg ? _("You are on the first page") : _("You are on the last page"));
   }
 
-  menu->current = MIN(menu->current, menu->max - 1);
-  menu->current = MAX(menu->current, 0);
+  int index = MIN(menu->current, menu->max - 1);
+  index = MAX(index, 0);
+  menu_set_index(menu, index);
 }
 
 /**
@@ -792,8 +792,7 @@ void menu_top_page(struct Menu *menu)
   if (menu->current == menu->top)
     return;
 
-  menu->current = menu->top;
-  menu->redraw = REDRAW_MOTION;
+  menu_set_index(menu, menu->top);
 }
 
 /**
@@ -808,10 +807,10 @@ void menu_bottom_page(struct Menu *menu)
     return;
   }
 
-  menu->current = menu->top + menu->pagelen - 1;
-  if (menu->current > (menu->max - 1))
-    menu->current = menu->max - 1;
-  menu->redraw = REDRAW_MOTION;
+  int index = menu->top + menu->pagelen - 1;
+  if (index > (menu->max - 1))
+    index = menu->max - 1;
+  menu_set_index(menu, index);
 }
 
 /**
@@ -829,8 +828,8 @@ void menu_middle_page(struct Menu *menu)
   int i = menu->top + menu->pagelen;
   if (i > (menu->max - 1))
     i = menu->max - 1;
-  menu->current = menu->top + (i - menu->top) / 2;
-  menu->redraw = REDRAW_MOTION;
+
+  menu_set_index(menu, menu->top + (i - menu->top) / 2);
 }
 
 /**
@@ -845,8 +844,7 @@ void menu_first_entry(struct Menu *menu)
     return;
   }
 
-  menu->current = 0;
-  menu->redraw = REDRAW_MOTION;
+  menu_set_index(menu, 0);
 }
 
 /**
@@ -861,8 +859,7 @@ void menu_last_entry(struct Menu *menu)
     return;
   }
 
-  menu->current = menu->max - 1;
-  menu->redraw = REDRAW_MOTION;
+  menu_set_index(menu, menu->max - 1);
 }
 
 /**
@@ -925,8 +922,7 @@ static void menu_next_entry(struct Menu *menu)
 {
   if (menu->current < (menu->max - 1))
   {
-    menu->current++;
-    menu->redraw = REDRAW_MOTION;
+    menu_set_index(menu, menu->current + 1);
   }
   else
     mutt_message(_("You are on the last entry"));
@@ -940,8 +936,7 @@ static void menu_prev_entry(struct Menu *menu)
 {
   if (menu->current)
   {
-    menu->current--;
-    menu->redraw = REDRAW_MOTION;
+    menu_set_index(menu, menu->current - 1);
   }
   else
     mutt_message(_("You are on the first entry"));
@@ -1421,7 +1416,7 @@ int menu_loop(struct Menu *menu)
     if (last_position > (menu->max - 1))
       last_position = -1;
     else if (last_position >= 0)
-      menu->current = last_position;
+      menu_set_index(menu, last_position);
   }
 
   while (true)
