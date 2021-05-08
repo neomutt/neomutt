@@ -628,7 +628,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
 
         mutt_do_pager(&pview);
         mutt_buffer_pool_release(&tempfile);
-        menu->redraw = REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
 

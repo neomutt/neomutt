@@ -1105,7 +1105,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu, char *title
   else
     browser_highlight_default(state, menu);
 
-  menu->redraw = REDRAW_FULL;
+  menu_queue_redraw(menu, REDRAW_FULL);
 }
 
 /**
@@ -1908,7 +1908,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           cs_subset_str_native_set(NeoMutt->sub, "sort_browser", sort, NULL);
           browser_sort(&state);
           browser_highlight_default(&state, menu);
-          menu->redraw = REDRAW_FULL;
+          menu_queue_redraw(menu, REDRAW_FULL);
         }
         else
         {
@@ -2027,7 +2027,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           {
             mutt_view_attachment(NULL, b, MUTT_VA_REGULAR, NULL, NULL, menu->win_index);
             mutt_body_free(&b);
-            menu->redraw = REDRAW_FULL;
+            menu_queue_redraw(menu, REDRAW_FULL);
           }
           else
             mutt_error(_("Error trying to view file"));
@@ -2060,7 +2060,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             menu_set_index(menu, index);
         }
         if (rc)
-          menu->redraw = REDRAW_INDEX;
+          menu_queue_redraw(menu, REDRAW_INDEX);
         nntp_newsrc_close(CurrentNewsSrv);
         break;
       }
@@ -2138,7 +2138,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               mutt_error("%s", mutt_buffer_string(buf));
               break;
             }
-            menu->redraw = REDRAW_FULL;
+            menu_queue_redraw(menu, REDRAW_FULL);
             index = 0;
           }
           else if (ARRAY_EMPTY(&state.entry))
@@ -2186,7 +2186,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             init_menu(&state, menu, title, sizeof(title), mailbox, m);
           }
           if (rc > 0)
-            menu->redraw = REDRAW_FULL;
+            menu_queue_redraw(menu, REDRAW_FULL);
           nntp_newsrc_update(adata);
           nntp_clear_cache(adata);
           nntp_newsrc_close(adata);

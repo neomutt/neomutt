@@ -45,6 +45,7 @@
 #include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
+#include "mutt_menu.h"
 #include "opcodes.h"
 #include "options.h"
 #ifndef USE_SLANG_CURSES
@@ -1654,12 +1655,13 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     function = buf->data;
 
-    bindings = km_get_table(CurrentMenu);
-    if (!bindings && (CurrentMenu != MENU_PAGER))
+    const enum MenuType mtype = menu_get_current_type();
+    bindings = km_get_table(mtype);
+    if (!bindings && (mtype != MENU_PAGER))
       bindings = OpGeneric;
 
     ops[nops] = get_op(bindings, function, mutt_str_len(function));
-    if ((ops[nops] == OP_NULL) && (CurrentMenu != MENU_PAGER))
+    if ((ops[nops] == OP_NULL) && (mtype != MENU_PAGER))
       ops[nops] = get_op(OpGeneric, function, mutt_str_len(function));
 
     if (ops[nops] == OP_NULL)

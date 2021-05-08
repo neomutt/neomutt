@@ -55,9 +55,6 @@
 
 char *SearchBuffers[MENU_MAX];
 
-/* These are used to track the active menus, for redraw operations. */
-ARRAY_HEAD(, struct Menu *) MenuStack = ARRAY_HEAD_INITIALIZER;
-
 #define DIRECTION ((neg * 2) + 1)
 
 #define MUTT_SEARCH_UP 1
@@ -976,7 +973,7 @@ void menu_init(void)
  */
 static int menu_color_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data)
+  if (!nc->event_data || !nc->global_data)
     return -1;
   if (nc->event_type != NT_COLOR)
     return 0;
@@ -1014,7 +1011,9 @@ static int menu_color_observer(struct NotifyCallback *nc)
     }
   }
 
-  menu_set_redraw_full(MENU_MAIN);
+  struct Menu *menu = nc->global_data;
+  menu->redraw = REDRAW_FULL;
+
   return 0;
 }
 
@@ -1023,7 +1022,7 @@ static int menu_color_observer(struct NotifyCallback *nc)
  */
 static int menu_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data)
+  if (!nc->event_data || !nc->global_data)
     return -1;
   if (nc->event_type != NT_CONFIG)
     return 0;
@@ -1036,14 +1035,14 @@ static int menu_config_observer(struct NotifyCallback *nc)
   if (flags == R_REDRAW_NO_FLAGS)
     return 0;
 
-  if (flags & R_INDEX)
-    menu_set_redraw_full(MENU_MAIN);
-  if (flags & R_PAGER)
-    menu_set_redraw_full(MENU_PAGER);
+  struct Menu *menu = nc->global_data;
+  if ((menu->type == MENU_MAIN) && (flags & R_INDEX))
+    menu->redraw |= REDRAW_FULL;
+  if ((menu->type == MENU_PAGER) && (flags & R_PAGER))
+    menu->redraw |= REDRAW_FULL;
   if (flags & R_PAGER_FLOW)
   {
-    menu_set_redraw_full(MENU_PAGER);
-    menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
+    menu->redraw |= REDRAW_FULL | REDRAW_FLOW;
   }
 
   if (flags & R_RESORT_SUB)
@@ -1055,10 +1054,37 @@ static int menu_config_observer(struct NotifyCallback *nc)
   if (flags & R_TREE)
     OptRedrawTree = true;
 
-  if (flags & R_REFLOW)
-    mutt_window_reflow(NULL);
   if (flags & R_MENU)
-    menu_set_current_redraw_full();
+    menu->redraw |= REDRAW_FULL;
+
+  return 0;
+}
+
+/**
+ * menu_recalc - Recalculate the Window data - Implements MuttWindow::recalc()
+ */
+static int menu_recalc(struct MuttWindow *win)
+{
+  if (win->type != WT_MENU)
+    return 0;
+
+  // struct Menu *menu = win->wdata;
+
+  win->actions |= WA_REPAINT;
+  return 0;
+}
+
+/**
+ * menu_repaint - Repaint the Window - Implements MuttWindow::repaint()
+ */
+static int menu_repaint(struct MuttWindow *win)
+{
+  if (win->type != WT_MENU)
+    return 0;
+
+  // struct Menu *menu = win->wdata;
+  // menu_redraw(menu);
+  // menu->redraw = REDRAW_NO_FLAGS;
 
   return 0;
 }
@@ -1094,129 +1120,6 @@ void menu_add_dialog_row(struct Menu *menu, const char *row)
 {
   ARRAY_SET(&menu->dialog, menu->max, mutt_str_dup(row));
   menu->max++;
-}
-
-/**
- * get_current_menu - Get the current Menu
- * @retval ptr Current Menu
- */
-static struct Menu *get_current_menu(void)
-{
-  struct Menu **mp = ARRAY_LAST(&MenuStack);
-  return mp ? *mp : NULL;
-}
-
-/**
- * menu_push_current - Add a new Menu to the stack
- * @param menu Menu to add
- *
- * The menus are stored in a LIFO.  The top-most is shown to the user.
- */
-void menu_push_current(struct Menu *menu)
-{
-  ARRAY_ADD(&MenuStack, menu);
-  CurrentMenu = menu->type;
-}
-
-/**
- * menu_pop_current - Remove a Menu from the stack
- * @param menu Current Menu
- *
- * The menus are stored in a LIFO.  The top-most is shown to the user.
- */
-void menu_pop_current(struct Menu *menu)
-{
-  struct Menu *prev_menu = NULL;
-
-  if (ARRAY_EMPTY(&MenuStack) || (*ARRAY_LAST(&MenuStack) != menu))
-  {
-    mutt_debug(LL_DEBUG1, "called with inactive menu\n");
-    return;
-  }
-  ARRAY_SHRINK(&MenuStack, 1);
-
-  prev_menu = get_current_menu();
-  if (prev_menu)
-  {
-    CurrentMenu = prev_menu->type;
-    prev_menu->redraw = REDRAW_FULL;
-  }
-  else
-  {
-    CurrentMenu = MENU_MAIN;
-    /* Clearing when NeoMutt exits would be an annoying change in behavior for
-     * those who have disabled alternative screens.  The option is currently
-     * set by autocrypt initialization which mixes menus and prompts outside of
-     * the normal menu system state.  */
-    if (OptMenuPopClearScreen)
-    {
-      mutt_window_clear(RootWindow);
-    }
-  }
-}
-
-/**
- * menu_set_current_redraw - Set redraw flags on the current menu
- * @param redraw Flags to set, see #MuttRedrawFlags
- */
-void menu_set_current_redraw(MuttRedrawFlags redraw)
-{
-  struct Menu *current_menu = get_current_menu();
-  if (current_menu)
-    current_menu->redraw |= redraw;
-}
-
-/**
- * menu_set_current_redraw_full - Flag the current menu to be fully redrawn
- */
-void menu_set_current_redraw_full(void)
-{
-  struct Menu *current_menu = get_current_menu();
-  if (current_menu)
-    current_menu->redraw = REDRAW_FULL;
-}
-
-/**
- * menu_set_redraw - Set redraw flags on a menu
- * @param menu   Menu type, e.g. #MENU_ALIAS
- * @param redraw Flags, e.g. #REDRAW_INDEX
- *
- * This is ignored if it's not the current menu.
- */
-void menu_set_redraw(enum MenuType menu, MuttRedrawFlags redraw)
-{
-  if (CurrentMenu == menu)
-    menu_set_current_redraw(redraw);
-}
-
-/**
- * menu_set_redraw_full - Flag a menu to be fully redrawn
- * @param menu Menu type, e.g. #MENU_ALIAS
- *
- * This is ignored if it's not the current menu.
- */
-void menu_set_redraw_full(enum MenuType menu)
-{
-  if (CurrentMenu == menu)
-    menu_set_current_redraw_full();
-}
-
-/**
- * menu_current_redraw - Redraw the current menu
- */
-void menu_current_redraw(void)
-{
-  struct Menu *current_menu = get_current_menu();
-  if (current_menu)
-  {
-    if (menu_redraw(current_menu) == OP_REDRAW)
-    {
-      /* On a REDRAW_FULL with a non-customized redraw, menu_redraw()
-       * will return OP_REDRAW to give the calling menu-loop a chance to
-       * customize output.  */
-      menu_redraw(current_menu);
-    }
-  }
 }
 
 /**
@@ -1690,10 +1593,9 @@ enum MenuType menu_get_current_type(void)
 }
 
 /**
- * menu_free - Destroy a menu
- * @param[out] ptr Menu to destroy
+ * menu_free_window - Destroy a Menu Window - Implements MuttWindow::wdata_free()
  */
-void menu_free(struct Menu **ptr)
+static void menu_free_window(struct MuttWindow *win, void **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -1719,13 +1621,16 @@ void menu_free(struct Menu **ptr)
 }
 
 /**
- * menu_new - Create a new Menu
- * @param win  Parent Window
+ * menu_new_window - Create a new Menu Window
  * @param type Menu type, e.g. #MENU_PAGER
- * @retval ptr New Menu
+ * @retval ptr New MuttWindow wrapping a Menu
  */
-struct Menu *menu_new(struct MuttWindow *win, enum MenuType type)
+struct MuttWindow *menu_new_window(enum MenuType type)
 {
+  struct MuttWindow *win =
+      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+
   struct Menu *menu = mutt_mem_calloc(1, sizeof(struct Menu));
 
   menu->type = type;
@@ -1736,14 +1641,17 @@ struct Menu *menu_new(struct MuttWindow *win, enum MenuType type)
   menu->win_index = win;
   menu->pagelen = win->state.rows;
 
+  win->recalc = menu_recalc;
+  win->repaint = menu_repaint;
   win->wdata = menu;
+  win->wdata_free = menu_free_window;
   notify_set_parent(menu->notify, win->notify);
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
   notify_observer_add(win->notify, NT_WINDOW, menu_window_observer, menu);
   mutt_color_observer_add(menu_color_observer, menu);
 
-  return menu;
+  return win;
 }
 
 /**
@@ -1779,4 +1687,18 @@ bool menu_set_index(struct Menu *menu, int index)
   menu->current = index;
   menu->redraw |= REDRAW_MOTION;
   return true;
+}
+
+/**
+ * menu_queue_redraw - Queue a request for a redraw
+ * @param menu  Menu
+ * @param redraw Item to redraw, e.g. #REDRAW_CURRENT
+ */
+void menu_queue_redraw(struct Menu *menu, MuttRedrawFlags redraw)
+{
+  if (!menu)
+    return;
+
+  menu->redraw |= redraw;
+  menu->win_index->actions |= WA_RECALC;
 }

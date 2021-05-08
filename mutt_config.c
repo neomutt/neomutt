@@ -38,6 +38,7 @@
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
+#include "mutt_menu.h"
 #include "mx.h"
 #include "options.h"
 
@@ -134,7 +135,8 @@ int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef
 int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)
 {
-  if (CurrentMenu == MENU_PAGER)
+  const enum MenuType mtype = menu_get_current_type();
+  if (mtype == MENU_PAGER)
   {
     mutt_buffer_printf(err, _("Option %s may not be set or reset from the pager"),
                        cdef->name);
@@ -617,7 +619,7 @@ static struct ConfigDef MainVars[] = {
   { "status_format", DT_STRING|R_INDEX|R_PAGER, IP "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---", 0, NULL,
     "printf-like format string for the index's status line"
   },
-  { "status_on_top", DT_BOOL|R_REFLOW, false, 0, NULL,
+  { "status_on_top", DT_BOOL, false, 0, NULL,
     "Display the status bar at the top"
   },
   { "strict_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, false, 0, pager_validator,

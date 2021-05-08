@@ -83,13 +83,9 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
   dlg->help_menu = mtype;
   dlg->help_data = help_data;
 
-  struct MuttWindow *win_index =
-      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *win_index = menu_new_window(mtype);
   dlg->focus = win_index;
-
-  struct Menu *menu = menu_new(win_index, mtype);
-  dlg->wdata = menu;
+  dlg->wdata = win_index->wdata;
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
@@ -102,8 +98,6 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
     mutt_window_add_child(dlg, win_index);
     sbar_add(dlg);
   }
-
-  menu_push_current(menu);
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, dialog_config_observer, dlg);
   dialog_push(dlg);
@@ -121,10 +115,6 @@ void dialog_destroy_simple_index(struct MuttWindow **ptr)
     return;
 
   struct MuttWindow *dlg = *ptr;
-
-  struct Menu *menu = dlg->wdata;
-  menu_pop_current(menu);
-  menu_free(&menu);
 
   dialog_pop();
   notify_observer_remove(NeoMutt->notify, dialog_config_observer, dlg);

@@ -1329,7 +1329,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
         const int index = menu_get_index(menu);
         struct CryptKeyInfo *cur_key = key_table[index];
         verify_key(cur_key);
-        menu->redraw = REDRAW_FULL;
+        menu_queue_redraw(menu, REDRAW_FULL);
         break;
       }
 

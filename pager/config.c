@@ -42,7 +42,7 @@ static struct ConfigDef PagerVars[] = {
   { "pager_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "Number of lines of overlap when changing pages in the pager"
   },
-  { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER|R_REFLOW, 0, 0, NULL,
+  { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER, 0, 0, NULL,
     "Number of index lines to display above the pager"
   },
   { "pager_stop", DT_BOOL, false, 0, NULL,

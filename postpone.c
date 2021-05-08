@@ -260,11 +260,11 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
           if (index >= (menu->top + menu->pagelen))
           {
             menu->top = index;
-            menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
+            menu_queue_redraw(menu, REDRAW_INDEX | REDRAW_STATUS);
           }
         }
         else
-          menu->redraw |= REDRAW_CURRENT;
+          menu_queue_redraw(menu, REDRAW_CURRENT);
         break;
       }
 

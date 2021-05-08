@@ -640,9 +640,8 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
   dlg->help_menu = MENU_MIX;
   dlg->help_data = RemailerHelp;
 
-  struct MuttWindow *win_hosts =
-      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *win_hosts = menu_new_window(MENU_MIX);
+  win_hosts->focus = win_hosts;
 
   struct MuttWindow *win_chain =
       mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
@@ -670,13 +669,12 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
 
   mix_screen_coordinates(dlg, type2_list, &coords, chain, 0);
 
-  menu = menu_new(win_hosts, MENU_MIX);
+  menu = win_hosts->wdata;
   menu->max = ttll;
   menu->make_entry = mix_make_entry;
   menu->tag = NULL;
   menu->mdata = type2_list;
 
-  menu_push_current(menu);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, remailer_config_observer, dlg);
   dialog_push(dlg);
 
@@ -810,9 +808,6 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
       }
     }
   }
-
-  menu_pop_current(menu);
-  menu_free(&menu);
 
   dialog_pop();
   notify_observer_remove(NeoMutt->notify, remailer_config_observer, dlg);
