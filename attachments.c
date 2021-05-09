@@ -41,7 +41,6 @@
 #include "ncrypt/lib.h"
 #include "init.h"
 #include "mutt_commands.h"
-#include "mx.h"
 
 /**
  * struct AttachMatch - An attachment matching a regex for attachment counter

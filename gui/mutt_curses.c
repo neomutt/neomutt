@@ -31,7 +31,6 @@
 #include "config.h"
 #include "mutt_curses.h"
 #include "color.h"
-#include "mutt_globals.h"
 
 /**
  * mutt_curses_set_attr - Set the attributes for text

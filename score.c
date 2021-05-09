@@ -38,10 +38,8 @@
 #include "pattern/lib.h"
 #include "context.h"
 #include "init.h"
-#include "keymap.h"
 #include "mutt_commands.h"
 #include "mutt_globals.h"
-#include "mutt_menu.h"
 #include "options.h"
 #include "protos.h"
 

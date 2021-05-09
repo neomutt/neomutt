@@ -30,6 +30,7 @@
 struct AddressList;
 struct Body;
 struct Email;
+struct Mailbox;
 struct State;
 
 struct Body *crypt_pgp_encrypt_message(struct Mailbox *m, struct Email *e, struct Body *a, char *keylist, int sign, const struct AddressList *from);

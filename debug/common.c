@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include "gui/lib.h"
 #include "lib.h"
 

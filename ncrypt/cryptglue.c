@@ -42,9 +42,7 @@
 #include "core/lib.h"
 #include "cryptglue.h"
 #include "lib.h"
-#include "context.h"
 #include "crypt_mod.h"
-#include "mutt_globals.h"
 #ifndef CRYPT_BACKEND_GPGME
 #include "gui/lib.h"
 #endif

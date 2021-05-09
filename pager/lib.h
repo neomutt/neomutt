@@ -40,6 +40,7 @@
 #include <stdio.h>
 
 struct Buffer;
+struct MuttWindow;
 
 typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUTT_SHOWFLAT
 #define MUTT_PAGER_NO_FLAGS         0     ///< No flags are set

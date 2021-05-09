@@ -28,7 +28,6 @@
 
 struct Email;
 struct ListHead;
-struct MuttWindow;
 
 /* Mixmaster's maximum chain length.  Don't change this. */
 #define MAX_MIXES 19

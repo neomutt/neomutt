@@ -35,7 +35,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
 #include "mutt.h"
 #include "icommands.h"
 #include "pager/lib.h"

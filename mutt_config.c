@@ -36,7 +36,6 @@
 #include "core/lib.h"
 #include "init.h"
 #include "keymap.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mx.h"

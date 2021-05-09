@@ -54,7 +54,6 @@
 #include "alias/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
-#include "debug/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
@@ -94,6 +93,9 @@
 #endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
+#endif
+#ifdef HAVE_LIBUNWIND
+#include "debug/lib.h"
 #endif
 
 // clang-format off

@@ -49,10 +49,10 @@
  */
 struct PatternEntry
 {
-  int num;           ///< Index number
-  const char *tag;   ///< Copied to buffer if selected
-  const char *expr;  ///< Displayed in the menu
-  const char *desc;  ///< Description of pattern
+  int num;          ///< Index number
+  const char *tag;  ///< Copied to buffer if selected
+  const char *expr; ///< Displayed in the menu
+  const char *desc; ///< Description of pattern
 };
 
 /// Help Bar for the Pattern selection dialog

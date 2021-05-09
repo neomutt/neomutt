@@ -23,6 +23,8 @@
 #ifndef MUTT_ATTACHMENTS_H
 #define MUTT_ATTACHMENTS_H
 
+#include <stdio.h>
+
 struct Email;
 struct Mailbox;
 

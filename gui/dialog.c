@@ -31,7 +31,6 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "lib.h"
-#include "mutt_menu.h"
 #ifdef USE_DEBUG_WINDOW
 #include "debug/lib.h"
 #endif

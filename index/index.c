@@ -44,7 +44,6 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "debug/lib.h"
 #include "lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
@@ -100,6 +99,9 @@
 #endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
+#endif
+#ifdef USE_DEBUG_GRAPHVIZ
+#include "debug/lib.h"
 #endif
 
 /// Help Bar for the Index dialog

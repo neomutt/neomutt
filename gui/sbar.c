@@ -27,16 +27,10 @@
  */
 
 #include "config.h"
-#include <assert.h>
+#include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
 #include "lib.h"
-#include "context.h"
-#include "mutt_menu.h"
-#include "status.h"
-
-struct SimpleSharedData;
-struct SimplePrivateData;
 
 /**
  * struct SBarPrivateData - Private data for the Simple Bar
