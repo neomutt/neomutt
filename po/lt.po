@@ -997,27 +997,23 @@ msgstr "Kopijuoju į %s..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
 #: commands.c:1359
-#, fuzzy
 msgid "Error saving tagged messages"
-msgstr "Saugau pažymėtus laiškus..."
+msgstr "Klaida saugant pažymėtus laiškus"
 
 #. L10N: Message when an index/pager save operation fails for some reason
 #: commands.c:1364
-#, fuzzy
 msgid "Error saving message"
-msgstr "Klaida siunčiant laišką"
+msgstr "Klaida saugant laišką"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
 #: commands.c:1371
-#, fuzzy
 msgid "Error copying tagged messages"
-msgstr "Kopijuoju pažymėtus laiškus..."
+msgstr "Klaida kopijuojant pažymėtus laiškus"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
 #: commands.c:1376
-#, fuzzy
 msgid "Error copying message"
-msgstr "Klaida siunčiant laišką."
+msgstr "Klaida kopijuojant laišką"
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1423
@@ -2652,9 +2648,8 @@ msgstr "Paimu vėliavėlių pakeitimus..."
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
 #: imap/message.c:1020
-#, fuzzy
 msgid "QRESYNC failed.  Reopening mailbox."
-msgstr "Negaliu vėl atidaryti dėžutės"
+msgstr "QRESYNC nepavyko.  Atidarau dėžutę iš naujo."
 
 #: imap/message.c:1090
 msgid "Unable to fetch headers from this IMAP server version"
@@ -5155,7 +5150,7 @@ msgstr "Naujienų grupė %s buvo pašalinta iš serverio"
 #: notmuch/config.c:57
 #, c-format
 msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
-msgstr ""
+msgstr "nm_default_url turi būti notmuch://<absoliutus kelias> .  Dabar: %s"
 
 #: notmuch/db.c:136
 #, c-format
