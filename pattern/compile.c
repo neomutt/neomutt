@@ -44,9 +44,9 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "menu/lib.h"
 #include "context.h"
 #include "init.h"
-#include "mutt_menu.h"
 
 // clang-format off
 typedef uint16_t ParseDateRangeFlags; ///< Flags for parse_date_range(), e.g. #MUTT_PDR_MINUS

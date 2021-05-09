@@ -66,7 +66,7 @@ NEOMUTTOBJS=	alternates.o attachments.o browser.o commands.o command_parse.o \
 		complete.o conststrings.o context.o copy.o \
 		editmsg.o enriched.o enter.o flags.o functions.o git_ver.o \
 		handler.o hdrline.o help.o hook.o icommands.o init.o \
-		keymap.o mailcap.o maillist.o main.o menu.o muttlib.o mutt_account.o \
+		keymap.o mailcap.o maillist.o main.o muttlib.o mutt_account.o \
 		mutt_attach.o mutt_body.o mutt_commands.o mutt_config.o \
 		mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
 		mutt_signal.o mutt_socket.o mutt_thread.o mx.o \
@@ -431,6 +431,19 @@ $(PWD)/mbox:
 	$(MKDIR_P) $(PWD)/mbox
 
 ###############################################################################
+# libmenu
+LIBMENU=	libmenu.a
+LIBMENUOBJS=	menu/menu.o
+CLEANFILES+=	$(LIBMENU) $(LIBMENUOBJS)
+ALLOBJS+=	$(LIBMENUOBJS)
+
+$(LIBMENU): $(PWD)/menu $(LIBMENUOBJS)
+	$(AR) cr $@ $(LIBMENUOBJS)
+	$(RANLIB) $@
+$(PWD)/menu:
+	$(MKDIR_P) $(PWD)/menu
+
+###############################################################################
 # libmutt
 LIBMUTT=	libmutt.a
 LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
@@ -639,7 +652,7 @@ $(ALLOBJS):
 # The order of these libraries depends on their dependencies.
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) $(LIBNNTP) $(LIBCOMPMBOX) \
-		$(LIBSTORE) $(LIBPATTERN) $(LIBGUI) $(LIBHELPBAR) $(LIBMBOX) \
+		$(LIBSTORE) $(LIBPATTERN) $(LIBGUI) $(LIBHELPBAR) $(LIBMENU) $(LIBMBOX) \
 		$(LIBNOTMUCH) $(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) \
 		$(LIBHCACHE)  $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) \
 		$(LIBHISTORY) $(LIBALIAS) $(LIBSEND) $(LIBCOMPOSE) $(LIBCORE) $(LIBCONFIG) \

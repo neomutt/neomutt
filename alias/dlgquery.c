@@ -42,6 +42,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "menu/lib.h"
 #include "pattern/lib.h"
 #include "send/lib.h"
 #include "alias.h"
@@ -51,7 +52,6 @@
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
-#include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
 

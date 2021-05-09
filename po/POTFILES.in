@@ -153,7 +153,7 @@ maillist.c
 main.c
 mbox/config.c
 mbox/mbox.c
-menu.c
+menu/menu.c
 monitor.c
 mutt/base64.c
 mutt/buffer.c

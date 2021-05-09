@@ -20,8 +20,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MENU_H
-#define MUTT_MENU_H
+/**
+ * @page lib_menu MENU: GUI present the user with a selectable list
+ *
+ * GUI present the user with a selectable list
+ *
+ * | File             | Description             |
+ * | :--------------- | :---------------------- |
+ * | menu/menu.h      | @subpage menu_menu      |
+ */
+
+#ifndef MUTT_MENU_LIB_H
+#define MUTT_MENU_LIB_H
 
 #include "config.h"
 #include <stdbool.h>
@@ -159,4 +169,4 @@ int  menu_get_index(struct Menu *menu);
 bool menu_set_index(struct Menu *menu, int index);
 void menu_queue_redraw(struct Menu *menu, MuttRedrawFlags redraw);
 
-#endif /* MUTT_MENU_H */
+#endif /* MUTT_MENU_LIB_H */

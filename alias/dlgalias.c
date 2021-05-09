@@ -40,12 +40,12 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "menu/lib.h"
 #include "pattern/lib.h"
 #include "alias.h"
 #include "format_flags.h"
 #include "gui.h"
 #include "keymap.h"
-#include "mutt_menu.h"
 #include "muttlib.h"
 #include "opcodes.h"
 

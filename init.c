@@ -58,7 +58,7 @@
 #ifdef USE_LUA
 #include "mutt_lua.h"
 #endif
-#include "mutt_menu.h"
+#include "menu/lib.h"
 #include "muttlib.h"
 #include "myvar.h"
 #include "options.h"

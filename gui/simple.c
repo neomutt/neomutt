@@ -32,8 +32,8 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "menu/lib.h"
 #include "keymap.h"
-#include "mutt_menu.h"
 
 /**
  * dialog_config_observer - Listen for config changes affecting a Dialog - Implements ::observer_t

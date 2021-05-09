@@ -34,10 +34,10 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "menu/lib.h"
 #include "init.h"
 #include "keymap.h"
 #include "mutt_logging.h"
-#include "mutt_menu.h"
 #include "mx.h"
 #include "options.h"
 

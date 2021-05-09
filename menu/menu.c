@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_menu GUI present the user with a selectable list
+ * @page menu_menu GUI present the user with a selectable list
  *
  * GUI present the user with a selectable list
  */
@@ -39,6 +39,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "menu/lib.h"
 #include "pattern/lib.h"
 #include "commands.h"
 #include "context.h"
@@ -46,7 +47,6 @@
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
-#include "mutt_menu.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "opcodes.h"
