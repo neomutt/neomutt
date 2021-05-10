@@ -1235,13 +1235,11 @@ enum MenuType menu_get_current_type(void)
 }
 
 /**
- * menu_free_window - Destroy a Menu Window - Implements MuttWindow::wdata_free()
+ * menu_free - Free a Menu
+ * @param ptr Menu to free
  */
-static void menu_free_window(struct MuttWindow *win, void **ptr)
+void menu_free(struct Menu **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct Menu *menu = *ptr;
 
   notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
@@ -1263,16 +1261,13 @@ static void menu_free_window(struct MuttWindow *win, void **ptr)
 }
 
 /**
- * menu_new_window - Create a new Menu Window
- * @param type Menu type, e.g. #MENU_PAGER
- * @retval ptr New MuttWindow wrapping a Menu
+ * menu_new - Create a new Menu
+ * @param type Menu type, e.g. #MENU_ALIAS
+ * @param win  Parent Window
+ * @retval ptr New Menu
  */
-struct MuttWindow *menu_new_window(enum MenuType type)
+struct Menu *menu_new(enum MenuType type, struct MuttWindow *win)
 {
-  struct MuttWindow *win =
-      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
   struct Menu *menu = mutt_mem_calloc(1, sizeof(struct Menu));
 
   menu->type = type;
@@ -1283,10 +1278,38 @@ struct MuttWindow *menu_new_window(enum MenuType type)
   menu->win_index = win;
   menu->pagelen = win->state.rows;
 
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
+  notify_observer_add(win->notify, NT_WINDOW, menu_window_observer, menu);
+  mutt_color_observer_add(menu_color_observer, menu);
+
+  return menu;
+}
+
+/**
+ * menu_free_wdata - Destroy a Menu Window - Implements MuttWindow::wdata_free()
+ */
+static void menu_free_wdata(struct MuttWindow *win, void **ptr)
+{
+  menu_free((struct Menu **) ptr);
+}
+
+/**
+ * menu_new_window - Create a new Menu Window
+ * @param type Menu type, e.g. #MENU_PAGER
+ * @retval ptr New MuttWindow wrapping a Menu
+ */
+struct MuttWindow *menu_new_window(enum MenuType type)
+{
+  struct MuttWindow *win =
+      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+
+  struct Menu *menu = menu_new(type, win);
+
   win->recalc = menu_recalc;
   win->repaint = menu_repaint;
   win->wdata = menu;
-  win->wdata_free = menu_free_window;
+  win->wdata_free = menu_free_wdata;
   notify_set_parent(menu->notify, win->notify);
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
