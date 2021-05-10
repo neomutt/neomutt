@@ -31,4 +31,7 @@ struct MuttWindow;
 void         menu_free(struct Menu **ptr);
 struct Menu *menu_new (enum MenuType type, struct MuttWindow *win);
 
+void menu_add_observers   (struct Menu *menu);
+void menu_remove_observers(struct Menu *menu);
+
 #endif /* MUTT_MENU_PRIVATE_H */
