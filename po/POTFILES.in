@@ -153,6 +153,7 @@ maillist.c
 main.c
 mbox/config.c
 mbox/mbox.c
+menu/draw.c
 menu/menu.c
 menu/move.c
 menu/observer.c

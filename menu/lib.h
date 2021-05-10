@@ -27,6 +27,7 @@
  *
  * | File             | Description             |
  * | :--------------- | :---------------------- |
+ * | menu/draw.c      | @subpage menu_draw      |
  * | menu/menu.c      | @subpage menu_menu      |
  * | menu/move.c      | @subpage menu_move      |
  * | menu/observer.c  | @subpage menu_observer  |

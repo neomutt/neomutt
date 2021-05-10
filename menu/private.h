@@ -23,6 +23,7 @@
 #ifndef MUTT_MENU_PRIVATE_H
 #define MUTT_MENU_PRIVATE_H
 
+#include <stddef.h>
 #include "type.h"
 
 struct Menu;
@@ -33,5 +34,7 @@ struct Menu *menu_new (enum MenuType type, struct MuttWindow *win);
 
 void menu_add_observers   (struct Menu *menu);
 void menu_remove_observers(struct Menu *menu);
+
+void menu_make_entry(struct Menu *menu, char *buf, size_t buflen, int i);
 
 #endif /* MUTT_MENU_PRIVATE_H */
