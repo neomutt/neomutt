@@ -1613,7 +1613,7 @@ msgstr "Μη έγκυρο όνομα ταξινόμησης: %s"
 #: config/sort.c:160
 #, c-format
 msgid "Invalid sort type: %ld"
-msgstr "Μη έγκυρος τύπος ταξινόμησης: %s"
+msgstr "Μη έγκυρος τύπος ταξινόμησης: %ld"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:64
