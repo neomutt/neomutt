@@ -27,7 +27,8 @@
  *
  * | File             | Description             |
  * | :--------------- | :---------------------- |
- * | menu/menu.h      | @subpage menu_menu      |
+ * | menu/menu.c      | @subpage menu_menu      |
+ * | menu/move.c      | @subpage menu_move      |
  */
 
 #ifndef MUTT_MENU_LIB_H
@@ -136,27 +137,31 @@ struct Menu
   void (*mdata_free)(struct Menu *menu, void **ptr);
 };
 
-void         menu_bottom_page(struct Menu *menu);
-void         menu_check_recenter(struct Menu *menu);
-void         menu_current_bottom(struct Menu *menu);
-void         menu_current_middle(struct Menu *menu);
-void         menu_current_top(struct Menu *menu);
-void         menu_first_entry(struct Menu *menu);
-void         menu_half_down(struct Menu *menu);
-void         menu_half_up(struct Menu *menu);
-void         menu_last_entry(struct Menu *menu);
-void         menu_middle_page(struct Menu *menu);
-void         menu_next_line(struct Menu *menu);
-void         menu_next_page(struct Menu *menu);
-void         menu_prev_line(struct Menu *menu);
-void         menu_prev_page(struct Menu *menu);
+// Simple movement
+void menu_bottom_page   (struct Menu *menu);
+void menu_check_recenter(struct Menu *menu);
+void menu_current_bottom(struct Menu *menu);
+void menu_current_middle(struct Menu *menu);
+void menu_current_top   (struct Menu *menu);
+void menu_first_entry   (struct Menu *menu);
+void menu_half_down     (struct Menu *menu);
+void menu_half_up       (struct Menu *menu);
+void menu_last_entry    (struct Menu *menu);
+void menu_middle_page   (struct Menu *menu);
+void menu_next_entry    (struct Menu *menu);
+void menu_next_line     (struct Menu *menu);
+void menu_next_page     (struct Menu *menu);
+void menu_prev_entry    (struct Menu *menu);
+void menu_prev_line     (struct Menu *menu);
+void menu_prev_page     (struct Menu *menu);
+void menu_top_page      (struct Menu *menu);
+
 void         menu_redraw_current(struct Menu *menu);
 void         menu_redraw_full(struct Menu *menu);
 void         menu_redraw_index(struct Menu *menu);
 void         menu_redraw_motion(struct Menu *menu);
 void         menu_redraw_status(struct Menu *menu);
 int          menu_redraw(struct Menu *menu);
-void         menu_top_page(struct Menu *menu);
 
 void         menu_add_dialog_row(struct Menu *menu, const char *row);
 enum MenuType menu_get_current_type(void);
