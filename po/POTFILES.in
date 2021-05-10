@@ -156,6 +156,7 @@ mbox/mbox.c
 menu/menu.c
 menu/move.c
 menu/type.c
+menu/window.c
 monitor.c
 mutt/base64.c
 mutt/buffer.c

@@ -703,35 +703,6 @@ static int menu_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * menu_recalc - Recalculate the Window data - Implements MuttWindow::recalc()
- */
-static int menu_recalc(struct MuttWindow *win)
-{
-  if (win->type != WT_MENU)
-    return 0;
-
-  // struct Menu *menu = win->wdata;
-
-  win->actions |= WA_REPAINT;
-  return 0;
-}
-
-/**
- * menu_repaint - Repaint the Window - Implements MuttWindow::repaint()
- */
-static int menu_repaint(struct MuttWindow *win)
-{
-  if (win->type != WT_MENU)
-    return 0;
-
-  // struct Menu *menu = win->wdata;
-  // menu_redraw(menu);
-  // menu->redraw = REDRAW_NO_FLAGS;
-
-  return 0;
-}
-
-/**
  * menu_window_observer - Listen for Window changes affecting the menu - Implements ::observer_t
  */
 static int menu_window_observer(struct NotifyCallback *nc)
@@ -1278,45 +1249,12 @@ struct Menu *menu_new(enum MenuType type, struct MuttWindow *win)
   menu->win_index = win;
   menu->pagelen = win->state.rows;
 
+  notify_set_parent(menu->notify, win->notify);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
   notify_observer_add(win->notify, NT_WINDOW, menu_window_observer, menu);
   mutt_color_observer_add(menu_color_observer, menu);
 
   return menu;
-}
-
-/**
- * menu_free_wdata - Destroy a Menu Window - Implements MuttWindow::wdata_free()
- */
-static void menu_free_wdata(struct MuttWindow *win, void **ptr)
-{
-  menu_free((struct Menu **) ptr);
-}
-
-/**
- * menu_new_window - Create a new Menu Window
- * @param type Menu type, e.g. #MENU_PAGER
- * @retval ptr New MuttWindow wrapping a Menu
- */
-struct MuttWindow *menu_new_window(enum MenuType type)
-{
-  struct MuttWindow *win =
-      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct Menu *menu = menu_new(type, win);
-
-  win->recalc = menu_recalc;
-  win->repaint = menu_repaint;
-  win->wdata = menu;
-  win->wdata_free = menu_free_wdata;
-  notify_set_parent(menu->notify, win->notify);
-
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
-  notify_observer_add(win->notify, NT_WINDOW, menu_window_observer, menu);
-  mutt_color_observer_add(menu_color_observer, menu);
-
-  return win;
 }
 
 /**

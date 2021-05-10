@@ -29,6 +29,7 @@
  * | :--------------- | :---------------------- |
  * | menu/menu.c      | @subpage menu_menu      |
  * | menu/move.c      | @subpage menu_move      |
+ * | menu/window.c    | @subpage menu_window    |
  */
 
 #ifndef MUTT_MENU_LIB_H
