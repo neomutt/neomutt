@@ -30,12 +30,9 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "menu/lib.h"
-#include "context.h"
-#include "mutt_globals.h"
 #include "options.h"
 #include "type.h"
 
@@ -67,20 +64,6 @@ static int menu_color_observer(struct NotifyCallback *nc)
   // The changes aren't relevant to the index menu
   if (!simple && !lists)
     return 0;
-
-  // Colour deleted from a list
-  struct Mailbox *m = ctx_mailbox(Context);
-  if ((nc->event_subtype == NT_COLOR_RESET) && lists && m)
-  {
-    // Force re-caching of index colors
-    for (int i = 0; i < m->msg_count; i++)
-    {
-      struct Email *e = m->emails[i];
-      if (!e)
-        break;
-      e->pair = 0;
-    }
-  }
 
   struct Menu *menu = nc->global_data;
   menu->redraw = MENU_REDRAW_FULL;

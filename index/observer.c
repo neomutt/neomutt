@@ -33,9 +33,11 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "menu/lib.h"
 #include "alternates.h"
 #include "attachments.h"
 #include "options.h"
+#include "private_data.h"
 #include "score.h"
 #include "shared_data.h"
 #include "subjectrx.h"
@@ -160,6 +162,63 @@ static int config_status_on_top(struct MuttWindow *dlg)
 }
 
 /**
+ * index_color_observer - Listen for color changes affecting the Index - Implements ::observer_t
+ */
+static int index_color_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_COLOR)
+    return 0;
+
+  struct EventColor *ev_c = nc->event_data;
+
+  int c = ev_c->color;
+
+  // MT_COLOR_MAX is sent on `uncolor *`
+  bool simple = (c == MT_COLOR_INDEX_COLLAPSED) || (c == MT_COLOR_INDEX_DATE) ||
+                (c == MT_COLOR_INDEX_LABEL) || (c == MT_COLOR_INDEX_NUMBER) ||
+                (c == MT_COLOR_INDEX_SIZE) || (c == MT_COLOR_INDEX_TAGS) ||
+                (c == MT_COLOR_MAX);
+  bool lists = (c == MT_COLOR_ATTACH_HEADERS) || (c == MT_COLOR_BODY) ||
+               (c == MT_COLOR_HEADER) || (c == MT_COLOR_INDEX) ||
+               (c == MT_COLOR_INDEX_AUTHOR) || (c == MT_COLOR_INDEX_FLAGS) ||
+               (c == MT_COLOR_INDEX_SUBJECT) || (c == MT_COLOR_INDEX_TAG) ||
+               (c == MT_COLOR_MAX);
+
+  // The changes aren't relevant to the index menu
+  if (!simple && !lists)
+    return 0;
+
+  struct MuttWindow *dlg = nc->global_data;
+  struct IndexSharedData *shared = dlg->wdata;
+
+  struct Mailbox *m = shared->mailbox;
+  if (!m)
+    return 0;
+
+  // Colour deleted from a list
+  if ((nc->event_subtype == NT_COLOR_RESET) && lists)
+  {
+    // Force re-caching of index colors
+    for (int i = 0; i < m->msg_count; i++)
+    {
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+      e->pair = 0;
+    }
+  }
+
+  struct MuttWindow *panel_index = mutt_window_find(dlg, WT_INDEX);
+  struct IndexPrivateData *priv = panel_index->wdata;
+  struct Menu *menu = priv->menu;
+  menu->redraw = MENU_REDRAW_FULL;
+
+  return 0;
+}
+
+/**
  * index_config_observer - Listen for config changes affecting the Index/Pager - Implements ::observer_t
  */
 static int index_config_observer(struct NotifyCallback *nc)
@@ -279,11 +338,12 @@ void index_add_observers(struct MuttWindow *dlg)
   if (!dlg || !NeoMutt)
     return;
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, index_config_observer, dlg);
-  notify_observer_add(NeoMutt->notify, NT_SUBJRX, index_subjrx_observer, dlg);
-  notify_observer_add(NeoMutt->notify, NT_ATTACH, index_attach_observer, dlg);
   notify_observer_add(NeoMutt->notify, NT_ALTERN, index_altern_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_ATTACH, index_attach_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_COLOR, index_color_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, index_config_observer, dlg);
   notify_observer_add(NeoMutt->notify, NT_SCORE, index_score_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_SUBJRX, index_subjrx_observer, dlg);
 }
 
 /**
@@ -295,9 +355,10 @@ void index_remove_observers(struct MuttWindow *dlg)
   if (!dlg || !NeoMutt)
     return;
 
-  notify_observer_remove(NeoMutt->notify, index_config_observer, dlg);
-  notify_observer_remove(NeoMutt->notify, index_subjrx_observer, dlg);
-  notify_observer_remove(NeoMutt->notify, index_attach_observer, dlg);
   notify_observer_remove(NeoMutt->notify, index_altern_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, index_attach_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, index_color_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, index_config_observer, dlg);
   notify_observer_remove(NeoMutt->notify, index_score_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, index_subjrx_observer, dlg);
 }
