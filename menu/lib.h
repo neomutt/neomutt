@@ -44,15 +44,15 @@
 #include "mutt/lib.h"
 #include "type.h"
 
-typedef uint16_t MuttRedrawFlags;      ///< Flags, e.g. #REDRAW_INDEX
-#define REDRAW_NO_FLAGS             0  ///< No flags are set
-#define REDRAW_INDEX          (1 << 0) ///< Redraw the index
-#define REDRAW_MOTION         (1 << 1) ///< Redraw after moving the menu list
-#define REDRAW_CURRENT        (1 << 2) ///< Redraw the current line of the menu
-#define REDRAW_STATUS         (1 << 3) ///< Redraw the status bar
-#define REDRAW_FULL           (1 << 4) ///< Redraw everything
-#define REDRAW_BODY           (1 << 5) ///< Redraw the pager
-#define REDRAW_FLOW           (1 << 6) ///< Used by pager to reflow text
+typedef uint8_t MuttRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
+#define MENU_REDRAW_NO_FLAGS        0  ///< No flags are set
+#define MENU_REDRAW_INDEX     (1 << 0) ///< Redraw the index
+#define MENU_REDRAW_MOTION    (1 << 1) ///< Redraw after moving the menu list
+#define MENU_REDRAW_CURRENT   (1 << 2) ///< Redraw the current line of the menu
+#define MENU_REDRAW_STATUS    (1 << 3) ///< Redraw the status bar
+#define MENU_REDRAW_FULL      (1 << 4) ///< Redraw everything
+#define MENU_REDRAW_BODY      (1 << 5) ///< Redraw the pager
+#define MENU_REDRAW_FLOW      (1 << 6) ///< Used by pager to reflow text
 
 /**
  * struct Menu - GUI selectable list of items

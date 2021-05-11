@@ -181,7 +181,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
   alias_array_sort(&mdata->ava, mdata->sub);
 
   menu->max = alias_array_count_visible(&mdata->ava);
-  menu_queue_redraw(menu, REDRAW_FULL);
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
 
   return 0;
 }
@@ -244,18 +244,18 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
             if (avp->is_tagged)
               avp->is_deleted = (op == OP_DELETE);
           }
-          menu_queue_redraw(menu, REDRAW_INDEX);
+          menu_queue_redraw(menu, MENU_REDRAW_INDEX);
         }
         else
         {
           int index = menu_get_index(menu);
           ARRAY_GET(&mdata->ava, index)->is_deleted = (op == OP_DELETE);
-          menu_queue_redraw(menu, REDRAW_CURRENT);
+          menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
           const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
           if (c_resolve && (index < (menu->max - 1)))
           {
             menu_set_index(menu, index + 1);
-            menu_queue_redraw(menu, REDRAW_INDEX);
+            menu_queue_redraw(menu, MENU_REDRAW_INDEX);
           }
         }
         break;
@@ -297,7 +297,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
           sort |= reverse ? SORT_REVERSE : 0;
 
           cs_subset_str_native_set(mdata->sub, "sort_alias", sort, NULL);
-          menu_queue_redraw(menu, REDRAW_FULL);
+          menu_queue_redraw(menu, MENU_REDRAW_FULL);
         }
 
         break;
@@ -325,7 +325,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
           char *title2 = menu_create_alias_title(_("Aliases"), mdata->str);
           sbar_set_title(sbar, title2);
           FREE(&title2);
-          menu_queue_redraw(menu, REDRAW_FULL);
+          menu_queue_redraw(menu, MENU_REDRAW_FULL);
         }
 
         break;

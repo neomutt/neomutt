@@ -366,7 +366,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
 
         struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
         query_run(buf, true, &al, sub);
-        menu_queue_redraw(menu, REDRAW_FULL);
+        menu_queue_redraw(menu, MENU_REDRAW_FULL);
         snprintf(title, sizeof(title), "%s%s", _("Query: "), buf);
         sbar_set_title(sbar, title);
 
@@ -459,7 +459,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
         }
         mutt_send_message(SEND_NO_FLAGS, e, NULL, ctx_mailbox(Context), NULL,
                           NeoMutt->sub);
-        menu_queue_redraw(menu, REDRAW_FULL);
+        menu_queue_redraw(menu, MENU_REDRAW_FULL);
         break;
       }
 
@@ -501,7 +501,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
           sort |= reverse ? SORT_REVERSE : 0;
 
           cs_subset_str_native_set(sub, "sort_alias", sort, NULL);
-          menu_queue_redraw(menu, REDRAW_FULL);
+          menu_queue_redraw(menu, MENU_REDRAW_FULL);
         }
 
         break;
@@ -530,7 +530,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
           char *title2 = menu_create_alias_title(_("Query"), mdata.str);
           sbar_set_title(sbar, title2);
           FREE(&title2);
-          menu_queue_redraw(menu, REDRAW_FULL);
+          menu_queue_redraw(menu, MENU_REDRAW_FULL);
         }
 
         break;

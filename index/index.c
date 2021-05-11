@@ -279,7 +279,7 @@ static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
     }
   }
 
-  menu_queue_redraw(menu, REDRAW_INDEX | REDRAW_STATUS);
+  menu_queue_redraw(menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
 }
 
 /**
@@ -447,7 +447,7 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
     new_index = ci_first_message(m);
 
   menu_set_index(menu, new_index);
-  menu_queue_redraw(menu, REDRAW_INDEX | REDRAW_STATUS);
+  menu_queue_redraw(menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
 }
 
 /**
@@ -707,7 +707,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
 
       FREE(&new_last_folder);
       OptSearchInvalid = true;
-      menu_queue_redraw(menu, REDRAW_INDEX | REDRAW_STATUS);
+      menu_queue_redraw(menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
       return;
     }
     FREE(&LastFolder);
@@ -768,7 +768,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   mutt_clear_error();
   /* force the mailbox check after we have changed the folder */
   mutt_mailbox_check(em.mailbox, MUTT_MAILBOX_CHECK_FORCE);
-  menu_queue_redraw(menu, REDRAW_FULL);
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
   OptSearchInvalid = true;
 }
 
@@ -1089,7 +1089,7 @@ dsl_finish:
  */
 static void index_custom_redraw(struct Menu *menu)
 {
-  if (menu->redraw & REDRAW_FULL)
+  if (menu->redraw & MENU_REDRAW_FULL)
   {
     menu_redraw_full(menu);
     mutt_show_error();
@@ -1102,18 +1102,18 @@ static void index_custom_redraw(struct Menu *menu)
   {
     menu_check_recenter(menu);
 
-    if (menu->redraw & REDRAW_INDEX)
+    if (menu->redraw & MENU_REDRAW_INDEX)
     {
       menu_redraw_index(menu);
-      menu_queue_redraw(menu, REDRAW_STATUS);
+      menu_queue_redraw(menu, MENU_REDRAW_STATUS);
     }
-    else if (menu->redraw & REDRAW_MOTION)
+    else if (menu->redraw & MENU_REDRAW_MOTION)
       menu_redraw_motion(menu);
-    else if (menu->redraw & REDRAW_CURRENT)
+    else if (menu->redraw & MENU_REDRAW_CURRENT)
       menu_redraw_current(menu);
   }
 
-  if (menu->redraw & REDRAW_STATUS)
+  if (menu->redraw & MENU_REDRAW_STATUS)
   {
     char buf[1024];
     const char *const c_status_format =
@@ -1124,7 +1124,7 @@ static void index_custom_redraw(struct Menu *menu)
     mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_NORMAL);
-    menu->redraw &= ~REDRAW_STATUS;
+    menu->redraw &= ~MENU_REDRAW_STATUS;
     const bool c_ts_enabled = cs_subset_bool(shared->sub, "ts_enabled");
     if (c_ts_enabled && TsSupported)
     {
@@ -1140,7 +1140,7 @@ static void index_custom_redraw(struct Menu *menu)
     }
   }
 
-  menu->redraw = REDRAW_NO_FLAGS;
+  menu->redraw = MENU_REDRAW_NO_FLAGS;
 }
 
 /**
@@ -1202,7 +1202,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     if (((c_sort & SORT_MASK) == SORT_THREADS) && c_collapse_all)
     {
       collapse_all(shared->ctx, priv->menu, 0);
-      menu_queue_redraw(priv->menu, REDRAW_FULL);
+      menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
     }
   }
 
@@ -1231,7 +1231,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           ((c_sort & SORT_MASK) == SORT_THREADS))
       {
         mutt_draw_tree(shared->ctx->threads);
-        menu_queue_redraw(priv->menu, REDRAW_STATUS);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
         OptRedrawTree = false;
       }
     }
@@ -1254,7 +1254,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           struct Context *ctx = shared->ctx;
           index_shared_data_set_context(shared, NULL);
           ctx_free(&ctx);
-          menu_queue_redraw(priv->menu, REDRAW_FULL);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         }
 
         OptSearchInvalid = true;
@@ -1306,7 +1306,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         update_index(priv->menu, shared->ctx, check, priv->oldcount, shared);
         shared->mailbox->verbose = verbose;
         priv->menu->max = shared->mailbox->vcount;
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         OptSearchInvalid = true;
       }
 
@@ -1323,12 +1323,12 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       priv->oldcount = priv->newcount;
       priv->newcount = mutt_mailbox_check(shared->mailbox, 0);
       if (priv->newcount != priv->oldcount)
-        menu_queue_redraw(priv->menu, REDRAW_STATUS);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
       if (priv->do_mailbox_notify)
       {
         if (mutt_mailbox_notify(shared->mailbox))
         {
-          menu_queue_redraw(priv->menu, REDRAW_STATUS);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
           const bool c_beep_new = cs_subset_bool(shared->sub, "beep_new");
           if (c_beep_new)
             mutt_beep(true);
@@ -1572,7 +1572,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               mutt_sort_headers(shared->mailbox, shared->ctx->threads, false,
                                 &shared->ctx->vsize);
               menu_set_index(priv->menu, e->vnum);
-              menu_queue_redraw(priv->menu, REDRAW_FULL);
+              menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
             }
             else if (rc > 0)
               mutt_error(_("Article %s not found on the server"), buf);
@@ -1652,7 +1652,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           if (priv->in_pager)
           {
             menu_set_index(priv->menu, e_oldcur->vnum);
-            menu_queue_redraw(priv->menu, REDRAW_STATUS | REDRAW_INDEX);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
             op = OP_DISPLAY_MESSAGE;
             continue;
           }
@@ -1679,7 +1679,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               }
             }
           }
-          menu_queue_redraw(priv->menu, REDRAW_FULL);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         }
         else if (rc >= 0)
         {
@@ -1734,7 +1734,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           continue;
         }
         else
-          menu_queue_redraw(priv->menu, REDRAW_FULL);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
         break;
       }
@@ -1756,7 +1756,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           break;
 
         mutt_pattern_func(shared->ctx, MUTT_DELETE, _("Delete messages matching: "));
-        menu_queue_redraw(priv->menu, REDRAW_INDEX | REDRAW_STATUS);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
         break;
 
 #ifdef USE_POP
@@ -1764,7 +1764,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (!prereq(shared->ctx, priv->menu, CHECK_ATTACH))
           break;
         pop_fetch_mail();
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
 #endif /* USE_POP */
 
@@ -1801,7 +1801,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
       case OP_HELP:
         mutt_help(MENU_MAIN);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
 
       case OP_MAIN_SHOW_LIMIT:
@@ -1877,7 +1877,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               collapse_all(shared->ctx, priv->menu, 0);
             mutt_draw_tree(shared->ctx->threads);
           }
-          menu_queue_redraw(priv->menu, REDRAW_FULL);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         }
         if (lmt)
           mutt_message(_("To view all messages, limit to \"all\""));
@@ -1915,7 +1915,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               update_index(priv->menu, shared->ctx, check, priv->oldcount, shared);
             }
 
-            menu_queue_redraw(priv->menu, REDRAW_FULL); /* new mail arrived? */
+            menu_queue_redraw(priv->menu, MENU_REDRAW_FULL); /* new mail arrived? */
             OptSearchInvalid = true;
           }
         }
@@ -1925,7 +1925,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_REDRAW:
         mutt_window_reflow(NULL);
         clearok(stdscr, true);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
 
       // Initiating a search can happen on an empty mailbox, but
@@ -1946,7 +1946,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (index != -1)
           menu_set_index(priv->menu, index);
         else
-          menu_queue_redraw(priv->menu, REDRAW_MOTION);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
         break;
       }
 
@@ -1965,7 +1965,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           op = OP_DISPLAY_MESSAGE;
           continue;
         }
-        menu_queue_redraw(priv->menu, REDRAW_STATUS);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
         break;
 
       case OP_TAG:
@@ -1984,7 +1984,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             if (e->visible)
               mutt_set_flag(m, e, MUTT_TAG, false);
           }
-          menu_queue_redraw(priv->menu, REDRAW_STATUS | REDRAW_INDEX);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
         }
         else
         {
@@ -1992,7 +1992,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             break;
           mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, !shared->email->tagged);
 
-          menu_queue_redraw(priv->menu, REDRAW_STATUS);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
           const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
           const int index = menu_get_index(priv->menu) + 1;
           if (c_resolve && (index < shared->mailbox->vcount))
@@ -2000,7 +2000,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             menu_set_index(priv->menu, index);
           }
           else
-            menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
         }
         break;
       }
@@ -2009,7 +2009,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
           break;
         mutt_pattern_func(shared->ctx, MUTT_TAG, _("Tag messages matching: "));
-        menu_queue_redraw(priv->menu, REDRAW_INDEX | REDRAW_STATUS);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
         break;
 
       case OP_MAIN_UNDELETE_PATTERN:
@@ -2025,7 +2025,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (mutt_pattern_func(shared->ctx, MUTT_UNDELETE,
                               _("Undelete messages matching: ")) == 0)
         {
-          menu_queue_redraw(priv->menu, REDRAW_INDEX | REDRAW_STATUS);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
         }
         break;
 
@@ -2033,7 +2033,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
           break;
         if (mutt_pattern_func(shared->ctx, MUTT_UNTAG, _("Untag messages matching: ")) == 0)
-          menu_queue_redraw(priv->menu, REDRAW_INDEX | REDRAW_STATUS);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
         break;
 
       case OP_COMPOSE_TO_SENDER:
@@ -2046,7 +2046,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         mutt_send_message(SEND_TO_SENDER, NULL, NULL, shared->mailbox, &el,
                           shared->sub);
         emaillist_clear(&el);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
       }
 
@@ -2077,14 +2077,14 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               update_index(priv->menu, shared->ctx, check, priv->oldcount, shared);
             }
             OptSearchInvalid = true;
-            menu_queue_redraw(priv->menu, REDRAW_FULL);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
             break;
           }
         }
         imap_logout_all();
         mutt_message(_("Logged out of IMAP servers"));
         OptSearchInvalid = true;
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
 #endif
 
@@ -2162,7 +2162,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           continue;
         }
         else
-          menu_queue_redraw(priv->menu, REDRAW_FULL);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
 
       case OP_MAIN_QUASI_DELETE:
@@ -2246,7 +2246,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             mutt_set_vnum(shared->mailbox);
           }
           menu_set_index(priv->menu, index);
-          menu_queue_redraw(priv->menu, REDRAW_STATUS | REDRAW_INDEX);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
         }
         if (priv->in_pager)
         {
@@ -2327,7 +2327,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           if (m->type == MUTT_NOTMUCH)
             nm_db_longrun_done(m);
 #endif
-          menu_queue_redraw(priv->menu, REDRAW_STATUS | REDRAW_INDEX);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
         }
         else
         {
@@ -2358,7 +2358,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             index = ci_next_undeleted(shared->mailbox, index);
             if (index == -1)
             {
-              menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+              menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
             }
             else
             {
@@ -2366,9 +2366,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             }
           }
           else
-            menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
         }
-        menu_queue_redraw(priv->menu, REDRAW_STATUS);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
         break;
       }
 
@@ -2671,7 +2671,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
           if (mutt_check_traditional_pgp(shared->mailbox, &el))
-            menu_queue_redraw(priv->menu, REDRAW_FULL);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
           emaillist_clear(&el);
         }
         const int index = menu_get_index(priv->menu);
@@ -2753,7 +2753,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             continue;
           }
           else
-            menu_queue_redraw(priv->menu, REDRAW_INDEX);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
         }
         else
         {
@@ -2805,7 +2805,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           continue;
         }
         else
-          menu_queue_redraw(priv->menu, REDRAW_STATUS | REDRAW_INDEX);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
 
         break;
       }
@@ -2825,7 +2825,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           continue;
         }
         else
-          menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
         break;
       }
 
@@ -2855,7 +2855,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           continue;
         }
         else
-          menu_queue_redraw(priv->menu, REDRAW_MOTION);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
         break;
       }
 
@@ -2877,7 +2877,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           continue;
         }
         else
-          menu_queue_redraw(priv->menu, REDRAW_MOTION);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
         break;
       }
 
@@ -2906,7 +2906,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           continue;
         }
         else
-          menu_queue_redraw(priv->menu, REDRAW_MOTION);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
         break;
       }
 
@@ -2928,7 +2928,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           continue;
         }
         else
-          menu_queue_redraw(priv->menu, REDRAW_MOTION);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
         break;
       }
 
@@ -2960,17 +2960,17 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         const int rc = mutt_save_message(shared->mailbox, &el, save_opt, transform_opt);
         if ((rc == 0) && (save_opt == SAVE_MOVE))
         {
-          menu_queue_redraw(priv->menu, REDRAW_STATUS);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
           const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
           if (priv->tag)
-            menu_queue_redraw(priv->menu, REDRAW_INDEX);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
           else if (c_resolve)
           {
             int index = menu_get_index(priv->menu);
             index = ci_next_undeleted(shared->mailbox, index);
             if (index == -1)
             {
-              menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+              menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
             }
             else
             {
@@ -2978,7 +2978,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             }
           }
           else
-            menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
         }
         emaillist_clear(&el);
         break;
@@ -3107,7 +3107,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           continue;
         }
         else
-          menu_queue_redraw(priv->menu, REDRAW_MOTION);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
         break;
       }
       case OP_FLAG_MESSAGE:
@@ -3131,7 +3131,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               mutt_set_flag(m, e, MUTT_FLAG, !e->flagged);
           }
 
-          menu_queue_redraw(priv->menu, REDRAW_INDEX);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
         }
         else
         {
@@ -3145,7 +3145,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             index = ci_next_undeleted(shared->mailbox, index);
             if (index == -1)
             {
-              menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+              menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
             }
             else
             {
@@ -3153,9 +3153,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             }
           }
           else
-            menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
         }
-        menu_queue_redraw(priv->menu, REDRAW_STATUS);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
         break;
       }
 
@@ -3184,7 +3184,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             else
               mutt_set_flag(m, e, MUTT_READ, true);
           }
-          menu_queue_redraw(priv->menu, REDRAW_STATUS | REDRAW_INDEX);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
         }
         else
         {
@@ -3202,7 +3202,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             index = ci_next_undeleted(shared->mailbox, index);
             if (index == -1)
             {
-              menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+              menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
             }
             else
             {
@@ -3210,8 +3210,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             }
           }
           else
-            menu_queue_redraw(priv->menu, REDRAW_CURRENT);
-          menu_queue_redraw(priv->menu, REDRAW_STATUS);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
         }
         break;
       }
@@ -3227,7 +3227,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             continue;
           }
           else
-            menu_queue_redraw(priv->menu, REDRAW_STATUS);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
         }
         break;
 
@@ -3275,7 +3275,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           continue;
         }
         else
-          menu_queue_redraw(priv->menu, REDRAW_MOTION);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
         break;
       }
 
@@ -3295,7 +3295,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           continue;
         }
         else
-          menu_queue_redraw(priv->menu, REDRAW_MOTION);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
         break;
       }
 
@@ -3312,17 +3312,17 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
         if (mutt_change_flag(shared->mailbox, &el, (op == OP_MAIN_SET_FLAG)) == 0)
         {
-          menu_queue_redraw(priv->menu, REDRAW_STATUS);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
           const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
           if (priv->tag)
-            menu_queue_redraw(priv->menu, REDRAW_INDEX);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
           else if (c_resolve)
           {
             int index = menu_get_index(priv->menu);
             index = ci_next_undeleted(shared->mailbox, index);
             if (index == -1)
             {
-              menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+              menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
             }
             else
             {
@@ -3330,7 +3330,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             }
           }
           else
-            menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
         }
         emaillist_clear(&el);
         break;
@@ -3372,7 +3372,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           break;
         }
 
-        menu_queue_redraw(priv->menu, REDRAW_INDEX | REDRAW_STATUS);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
 
         break;
       }
@@ -3414,7 +3414,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (shared->email && shared->email->env)
           al = mutt_get_address(shared->email->env, NULL);
         alias_create(al, shared->sub);
-        menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
         break;
       }
 
@@ -3446,7 +3446,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
         if (priv->tag)
         {
-          menu_queue_redraw(priv->menu, REDRAW_INDEX);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
         }
         else
         {
@@ -3460,7 +3460,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
             if (index == -1)
             {
-              menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+              menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
             }
             else if (priv->in_pager)
             {
@@ -3469,9 +3469,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             }
           }
           else
-            menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
         }
-        menu_queue_redraw(priv->menu, REDRAW_STATUS);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
         break;
       }
 
@@ -3515,7 +3515,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           if (index != -1)
             menu_set_index(priv->menu, index);
         }
-        menu_queue_redraw(priv->menu, REDRAW_INDEX | REDRAW_STATUS);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
         break;
       }
 
@@ -3528,7 +3528,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         {
           struct NntpMboxData *mdata = shared->mailbox->mdata;
           if (mutt_newsgroup_catchup(shared->mailbox, mdata->adata, mdata->group))
-            menu_queue_redraw(priv->menu, REDRAW_INDEX | REDRAW_STATUS);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
         }
         break;
 #endif
@@ -3547,7 +3547,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         mutt_enter_command();
         window_set_focus(priv->win_index);
         mutt_check_rescore(shared->mailbox);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
 
       case OP_EDIT_OR_VIEW_RAW_MESSAGE:
@@ -3583,14 +3583,14 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
           if (mutt_check_traditional_pgp(shared->mailbox, &el))
-            menu_queue_redraw(priv->menu, REDRAW_FULL);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
           emaillist_clear(&el);
         }
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
         mutt_ev_message(shared->mailbox, &el, edit ? EVM_EDIT : EVM_VIEW);
         emaillist_clear(&el);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
         break;
       }
@@ -3610,11 +3610,11 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
         {
           if (mutt_check_traditional_pgp(shared->mailbox, &el))
-            menu_queue_redraw(priv->menu, REDRAW_FULL);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         }
         mutt_send_message(SEND_FORWARD, NULL, NULL, shared->mailbox, &el, shared->sub);
         emaillist_clear(&el);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
       }
 
@@ -3643,11 +3643,11 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
         {
           if (mutt_check_traditional_pgp(shared->mailbox, &el))
-            menu_queue_redraw(priv->menu, REDRAW_FULL);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         }
         mutt_send_message(replyflags, NULL, NULL, shared->mailbox, &el, shared->sub);
         emaillist_clear(&el);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
       }
 
@@ -3665,7 +3665,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (num_changed > 0)
         {
           shared->mailbox->changed = true;
-          menu_queue_redraw(priv->menu, REDRAW_FULL);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
           /* L10N: This is displayed when the x-label on one or more
              messages is edited. */
           mutt_message(ngettext("%d label changed", "%d labels changed", num_changed),
@@ -3696,12 +3696,12 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
         {
           if (mutt_check_traditional_pgp(shared->mailbox, &el))
-            menu_queue_redraw(priv->menu, REDRAW_FULL);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         }
         mutt_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL,
                           shared->mailbox, &el, shared->sub);
         emaillist_clear(&el);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
       }
 
@@ -3710,7 +3710,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           break;
         mutt_send_message(SEND_NO_FLAGS, NULL, NULL, shared->mailbox, NULL,
                           shared->sub);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
 
       case OP_MAIL_KEY:
@@ -3719,7 +3719,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (!prereq(shared->ctx, priv->menu, CHECK_ATTACH))
           break;
         mutt_send_message(SEND_KEY, NULL, NULL, NULL, NULL, shared->sub);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
 
       case OP_EXTRACT_KEYS:
@@ -3732,7 +3732,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
         crypt_extract_keys_from_messages(shared->mailbox, &el);
         emaillist_clear(&el);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
       }
 
@@ -3749,7 +3749,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
           if (mutt_check_traditional_pgp(shared->mailbox, &el))
-            menu_queue_redraw(priv->menu, REDRAW_FULL);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
           emaillist_clear(&el);
         }
 
@@ -3776,7 +3776,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         const bool c_imap_peek = cs_subset_bool(shared->sub, "imap_peek");
         if ((shared->mailbox->type == MUTT_IMAP) && !c_imap_peek)
         {
-          menu_queue_redraw(priv->menu, (priv->tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS);
+          menu_queue_redraw(priv->menu, (priv->tag ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT) |
+                                            MENU_REDRAW_STATUS);
         }
 #endif
         break;
@@ -3797,7 +3798,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         const bool c_imap_peek = cs_subset_bool(shared->sub, "imap_peek");
         if ((shared->mailbox->type == MUTT_IMAP) && !c_imap_peek)
         {
-          menu_queue_redraw(priv->menu, (priv->tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS);
+          menu_queue_redraw(priv->menu, (priv->tag ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT) |
+                                            MENU_REDRAW_STATUS);
         }
 #endif
         break;
@@ -3835,7 +3837,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               continue;
             }
           }
-          menu_queue_redraw(priv->menu, REDRAW_INDEX | REDRAW_STATUS);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
         }
         break;
       }
@@ -3894,7 +3896,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           break;
         mutt_send_message(SEND_POSTPONED, NULL, NULL, shared->mailbox, NULL,
                           shared->sub);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
 
       case OP_RESEND:
@@ -3919,7 +3921,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           mutt_resend_message(NULL, shared->mailbox, shared->email, shared->sub);
         }
 
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
 
 #ifdef USE_NNTP
@@ -3962,7 +3964,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
                               NULL, NULL, shared->mailbox, &el, shared->sub);
             emaillist_clear(&el);
           }
-          menu_queue_redraw(priv->menu, REDRAW_FULL);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
           break;
         }
       }
@@ -3983,11 +3985,11 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
         {
           if (mutt_check_traditional_pgp(shared->mailbox, &el))
-            menu_queue_redraw(priv->menu, REDRAW_FULL);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         }
         mutt_send_message(SEND_REPLY, NULL, NULL, shared->mailbox, &el, shared->sub);
         emaillist_clear(&el);
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
       }
 
@@ -4022,7 +4024,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             if (index != -1)
               menu_set_index(priv->menu, index);
           }
-          menu_queue_redraw(priv->menu, REDRAW_INDEX | REDRAW_STATUS);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
         }
         break;
       }
@@ -4045,7 +4047,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
         if (priv->tag)
         {
-          menu_queue_redraw(priv->menu, REDRAW_INDEX);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
         }
         else
         {
@@ -4056,10 +4058,10 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             menu_set_index(priv->menu, index);
           }
           else
-            menu_queue_redraw(priv->menu, REDRAW_CURRENT);
+            menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
         }
 
-        menu_queue_redraw(priv->menu, REDRAW_STATUS);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
         break;
       }
 
@@ -4097,7 +4099,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
             if (index != -1)
               menu_set_index(priv->menu, index);
           }
-          menu_queue_redraw(priv->menu, REDRAW_INDEX | REDRAW_STATUS);
+          menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
         }
         break;
       }
@@ -4126,7 +4128,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           }
           mx_msg_close(shared->mailbox, &msg);
         }
-        menu_queue_redraw(priv->menu, REDRAW_FULL);
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
       }
 
@@ -4179,7 +4181,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     {
       mutt_clear_pager_position();
       priv->in_pager = false;
-      menu_queue_redraw(priv->menu, REDRAW_FULL);
+      menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
     }
 
     if (priv->done)

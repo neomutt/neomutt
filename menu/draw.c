@@ -340,7 +340,7 @@ void menu_redraw_full(struct Menu *menu)
 
   mutt_show_error();
 
-  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+  menu->redraw = MENU_REDRAW_INDEX | MENU_REDRAW_STATUS;
 }
 
 /**
@@ -359,7 +359,7 @@ void menu_redraw_status(struct Menu *menu)
   mutt_window_move(menu->win_ibar, 0, 0);
   mutt_paddstr(menu->win_ibar->state.cols, buf);
   mutt_curses_set_color(MT_COLOR_NORMAL);
-  menu->redraw &= ~REDRAW_STATUS;
+  menu->redraw &= ~MENU_REDRAW_STATUS;
 }
 
 /**
@@ -415,7 +415,7 @@ void menu_redraw_index(struct Menu *menu)
     }
   }
   mutt_curses_set_color(MT_COLOR_NORMAL);
-  menu->redraw = REDRAW_NO_FLAGS;
+  menu->redraw = MENU_REDRAW_NO_FLAGS;
 
   notify_send(menu->notify, NT_MENU, 0, NULL);
 }
@@ -430,7 +430,7 @@ void menu_redraw_motion(struct Menu *menu)
 
   if (!ARRAY_EMPTY(&menu->dialog))
   {
-    menu->redraw &= ~REDRAW_MOTION;
+    menu->redraw &= ~MENU_REDRAW_MOTION;
     return;
   }
 
@@ -476,7 +476,7 @@ void menu_redraw_motion(struct Menu *menu)
     mutt_window_move(menu->win_index, 0, menu->current - menu->top);
     print_enriched_string(menu->current, cur_color, (unsigned char *) buf, false);
   }
-  menu->redraw &= REDRAW_STATUS;
+  menu->redraw &= MENU_REDRAW_STATUS;
   mutt_curses_set_color(MT_COLOR_NORMAL);
 
   notify_send(menu->notify, NT_MENU, 0, NULL);
@@ -509,7 +509,7 @@ void menu_redraw_current(struct Menu *menu)
   }
   else
     print_enriched_string(menu->current, attr, (unsigned char *) buf, false);
-  menu->redraw &= REDRAW_STATUS;
+  menu->redraw &= MENU_REDRAW_STATUS;
   mutt_curses_set_color(MT_COLOR_NORMAL);
 
   notify_send(menu->notify, NT_MENU, 0, NULL);
@@ -554,7 +554,7 @@ int menu_redraw(struct Menu *menu)
   }
 
   /* See if all or part of the screen needs to be updated.  */
-  if (menu->redraw & REDRAW_FULL)
+  if (menu->redraw & MENU_REDRAW_FULL)
   {
     menu_redraw_full(menu);
     /* allow the caller to do any local configuration */
@@ -564,13 +564,13 @@ int menu_redraw(struct Menu *menu)
   if (ARRAY_EMPTY(&menu->dialog))
     menu_check_recenter(menu);
 
-  if (menu->redraw & REDRAW_STATUS)
+  if (menu->redraw & MENU_REDRAW_STATUS)
     menu_redraw_status(menu);
-  if (menu->redraw & REDRAW_INDEX)
+  if (menu->redraw & MENU_REDRAW_INDEX)
     menu_redraw_index(menu);
-  else if (menu->redraw & REDRAW_MOTION)
+  else if (menu->redraw & MENU_REDRAW_MOTION)
     menu_redraw_motion(menu);
-  else if (menu->redraw == REDRAW_CURRENT)
+  else if (menu->redraw == MENU_REDRAW_CURRENT)
     menu_redraw_current(menu);
 
   if (!ARRAY_EMPTY(&menu->dialog))

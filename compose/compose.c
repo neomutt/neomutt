@@ -1191,7 +1191,7 @@ static void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
   else
     menu_set_index(menu, 0);
 
-  menu_queue_redraw(menu, REDRAW_INDEX | REDRAW_STATUS);
+  menu_queue_redraw(menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
 }
 
 /**
@@ -1327,13 +1327,13 @@ static void compose_custom_redraw(struct Menu *menu)
   if (!rd)
     return;
 
-  if (menu->redraw & REDRAW_FLOW)
+  if (menu->redraw & MENU_REDRAW_FLOW)
   {
     rd->win_env->req_rows = calc_envelope(rd);
     mutt_window_reflow(dialog_find(rd->win_env));
   }
 
-  if (menu->redraw & REDRAW_FULL)
+  if (menu->redraw & MENU_REDRAW_FULL)
   {
     menu_redraw_full(menu);
     draw_envelope(rd);
@@ -1341,7 +1341,7 @@ static void compose_custom_redraw(struct Menu *menu)
 
   menu_check_recenter(menu);
 
-  if (menu->redraw & REDRAW_STATUS)
+  if (menu->redraw & MENU_REDRAW_STATUS)
   {
     char buf[1024];
     const char *const c_compose_format =
@@ -1354,16 +1354,16 @@ static void compose_custom_redraw(struct Menu *menu)
     mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_NORMAL);
-    menu->redraw &= ~REDRAW_STATUS;
+    menu->redraw &= ~MENU_REDRAW_STATUS;
   }
 
-  if (menu->redraw & REDRAW_INDEX)
+  if (menu->redraw & MENU_REDRAW_INDEX)
     menu_redraw_index(menu);
-  else if (menu->redraw & REDRAW_MOTION)
+  else if (menu->redraw & MENU_REDRAW_MOTION)
     menu_redraw_motion(menu);
-  else if (menu->redraw == REDRAW_CURRENT)
+  else if (menu->redraw == MENU_REDRAW_CURRENT)
     menu_redraw_current(menu);
-  menu->redraw = REDRAW_NO_FLAGS;
+  menu->redraw = MENU_REDRAW_NO_FLAGS;
 }
 
 /**
@@ -1743,7 +1743,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           mutt_edit_file(c_editor, e->body->filename);
           mutt_rfc3676_space_stuff(e);
           mutt_update_encoding(e->body, sub);
-          menu_queue_redraw(menu, REDRAW_FULL);
+          menu_queue_redraw(menu, MENU_REDRAW_FULL);
           /* Unconditional hook since editor was invoked */
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           break;
@@ -1777,7 +1777,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           update_menu(actx, menu, true);
         }
 
-        menu_queue_redraw(menu, REDRAW_FULL);
+        menu_queue_redraw(menu, MENU_REDRAW_FULL);
         /* Unconditional hook since editor was invoked */
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -1792,13 +1792,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         if (ap->body)
         {
           update_idx(menu, actx, ap);
-          menu_queue_redraw(menu, REDRAW_INDEX);
+          menu_queue_redraw(menu, MENU_REDRAW_INDEX);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         }
         else
           FREE(&ap);
 
-        menu_queue_redraw(menu, REDRAW_STATUS);
+        menu_queue_redraw(menu, MENU_REDRAW_STATUS);
         break;
       }
 
@@ -1816,7 +1816,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           break;
         }
         compose_attach_swap(e->body, actx->idx, index - 1);
-        menu_queue_redraw(menu, REDRAW_INDEX);
+        menu_queue_redraw(menu, MENU_REDRAW_INDEX);
         menu_set_index(menu, index - 1);
         break;
       }
@@ -1835,7 +1835,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           break;
         }
         compose_attach_swap(e->body, actx->idx, index);
-        menu_queue_redraw(menu, REDRAW_INDEX);
+        menu_queue_redraw(menu, MENU_REDRAW_INDEX);
         menu_set_index(menu, index + 1);
         break;
       }
@@ -1917,7 +1917,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         gptr->body = group;
         update_idx(menu, actx, gptr);
-        menu_queue_redraw(menu, REDRAW_INDEX);
+        menu_queue_redraw(menu, MENU_REDRAW_INDEX);
         break;
       }
 
@@ -2014,7 +2014,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         gptr->body = group;
         update_idx(menu, actx, gptr);
-        menu_queue_redraw(menu, REDRAW_INDEX);
+        menu_queue_redraw(menu, MENU_REDRAW_INDEX);
         break;
       }
 
@@ -2067,7 +2067,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         if (!error)
           mutt_clear_error();
 
-        menu_queue_redraw(menu, REDRAW_INDEX | REDRAW_STATUS);
+        menu_queue_redraw(menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
         if (added_attachment)
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -2139,7 +2139,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
                 }
               }
 
-        menu_queue_redraw(menu, REDRAW_FULL);
+        menu_queue_redraw(menu, MENU_REDRAW_FULL);
 
         struct Mailbox *m_attach = mx_path_resolve(mutt_buffer_string(&fname));
         const bool old_readonly = m_attach->readonly;
@@ -2175,7 +2175,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           /* Restore old $sort and $sort_aux */
           cs_subset_str_native_set(sub, "sort", old_sort, NULL);
           cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
-          menu_queue_redraw(menu, REDRAW_INDEX | REDRAW_STATUS);
+          menu_queue_redraw(menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
           break;
         }
 
@@ -2201,7 +2201,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             FREE(&ap);
           }
         }
-        menu_queue_redraw(menu, REDRAW_FULL);
+        menu_queue_redraw(menu, MENU_REDRAW_FULL);
 
         if (m_attach_new == m_attach)
         {
@@ -2251,7 +2251,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           mutt_message(_("The current attachment won't be converted"));
         else
           mutt_message(_("The current attachment will be converted"));
-        menu_queue_redraw(menu, REDRAW_CURRENT);
+        menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
       }
@@ -2269,7 +2269,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           if (!mutt_str_equal(cur_att->body->description, buf))
           {
             mutt_str_replace(&cur_att->body->description, buf);
-            menu_queue_redraw(menu, REDRAW_CURRENT);
+            menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
             mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           }
         }
@@ -2292,14 +2292,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
               mutt_update_encoding(top, sub);
             }
           }
-          menu_queue_redraw(menu, REDRAW_FULL);
+          menu_queue_redraw(menu, MENU_REDRAW_FULL);
         }
         else
         {
           struct AttachPtr *cur_att = current_attachment(actx, menu);
           mutt_update_encoding(cur_att->body, sub);
           encoding_updated = true;
-          menu_queue_redraw(menu, REDRAW_CURRENT | REDRAW_STATUS);
+          menu_queue_redraw(menu, MENU_REDRAW_CURRENT | MENU_REDRAW_STATUS);
         }
         if (encoding_updated)
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2312,7 +2312,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         cur_att->body->disposition =
             (cur_att->body->disposition == DISP_INLINE) ? DISP_ATTACH : DISP_INLINE;
-        menu_queue_redraw(menu, REDRAW_CURRENT);
+        menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
         break;
       }
 
@@ -2326,7 +2326,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           {
             /* this may have been a change to text/something */
             mutt_update_encoding(cur_att->body, sub);
-            menu_queue_redraw(menu, REDRAW_CURRENT);
+            menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
             mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           }
         }
@@ -2345,7 +2345,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           if (!mutt_str_equal(cur_att->body->language, buf))
           {
             cur_att->body->language = mutt_str_dup(buf);
-            menu_queue_redraw(menu, REDRAW_CURRENT | REDRAW_STATUS);
+            menu_queue_redraw(menu, MENU_REDRAW_CURRENT | MENU_REDRAW_STATUS);
             mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           }
           mutt_clear_error();
@@ -2371,7 +2371,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             if (enc != cur_att->body->encoding)
             {
               cur_att->body->encoding = enc;
-              menu_queue_redraw(menu, REDRAW_CURRENT | REDRAW_STATUS);
+              menu_queue_redraw(menu, MENU_REDRAW_CURRENT | MENU_REDRAW_STATUS);
               mutt_clear_error();
               mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
             }
@@ -2387,7 +2387,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
          * users an opportunity to change settings from the ":" prompt.  */
         if (check_attachments(actx, sub) != 0)
         {
-          menu_queue_redraw(menu, REDRAW_FULL);
+          menu_queue_redraw(menu, MENU_REDRAW_FULL);
           break;
         }
 
@@ -2419,7 +2419,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         const char *const c_editor = cs_subset_string(sub, "editor");
         mutt_edit_file(NONULL(c_editor), cur_att->body->filename);
         mutt_update_encoding(cur_att->body, sub);
-        menu_queue_redraw(menu, REDRAW_CURRENT | REDRAW_STATUS);
+        menu_queue_redraw(menu, MENU_REDRAW_CURRENT | MENU_REDRAW_STATUS);
         /* Unconditional hook since editor was invoked */
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -2432,7 +2432,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         cur_att->body->unlink = !cur_att->body->unlink;
 
-        menu_queue_redraw(menu, REDRAW_INDEX);
+        menu_queue_redraw(menu, MENU_REDRAW_INDEX);
         /* No send2hook since this doesn't change the message. */
         break;
       }
@@ -2449,10 +2449,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             if (top->tagged)
               mutt_get_tmp_attachment(top);
           }
-          menu_queue_redraw(menu, REDRAW_FULL);
+          menu_queue_redraw(menu, MENU_REDRAW_FULL);
         }
         else if (mutt_get_tmp_attachment(cur_att->body) == 0)
-          menu_queue_redraw(menu, REDRAW_CURRENT);
+          menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
 
         /* No send2hook since this doesn't change the message. */
         break;
@@ -2476,7 +2476,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           /* As opposed to RENAME_FILE, we don't check buf[0] because it's
            * valid to set an empty string here, to erase what was set */
           mutt_str_replace(&cur_att->body->d_filename, mutt_buffer_string(&fname));
-          menu_queue_redraw(menu, REDRAW_CURRENT);
+          menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
         }
         break;
       }
@@ -2505,7 +2505,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             break;
 
           mutt_str_replace(&cur_att->body->filename, mutt_buffer_string(&fname));
-          menu_queue_redraw(menu, REDRAW_CURRENT);
+          menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
 
           if (cur_att->body->stamp >= st.st_mtime)
             mutt_stamp_attachment(cur_att->body);
@@ -2571,12 +2571,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         cur_att->body->type = itype;
         mutt_str_replace(&cur_att->body->subtype, p);
         cur_att->body->unlink = true;
-        menu_queue_redraw(menu, REDRAW_INDEX | REDRAW_STATUS);
+        menu_queue_redraw(menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
 
         if (mutt_compose_attachment(cur_att->body))
         {
           mutt_update_encoding(cur_att->body, sub);
-          menu_queue_redraw(menu, REDRAW_FULL);
+          menu_queue_redraw(menu, MENU_REDRAW_FULL);
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -2590,7 +2590,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         if (mutt_edit_attachment(cur_att->body))
         {
           mutt_update_encoding(cur_att->body, sub);
-          menu_queue_redraw(menu, REDRAW_FULL);
+          menu_queue_redraw(menu, MENU_REDRAW_FULL);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         }
         break;
@@ -2601,7 +2601,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         if (!check_count(actx))
           break;
         mutt_attach_display_loop(sub, menu, op, e, actx, false);
-        menu_queue_redraw(menu, REDRAW_FULL);
+        menu_queue_redraw(menu, MENU_REDRAW_FULL);
         /* no send2hook, since this doesn't modify the message */
         break;
 
@@ -2634,8 +2634,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         mutt_pipe_attachment_list(actx, NULL, menu->tagprefix, cur_att->body,
                                   (op == OP_FILTER));
         if (op == OP_FILTER) /* cte might have changed */
-          menu_queue_redraw(menu, menu->tagprefix ? REDRAW_FULL : REDRAW_CURRENT);
-        menu_queue_redraw(menu, REDRAW_STATUS);
+          menu_queue_redraw(menu, menu->tagprefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
+        menu_queue_redraw(menu, MENU_REDRAW_STATUS);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
       }
@@ -2675,7 +2675,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       case OP_COMPOSE_POSTPONE_MESSAGE:
         if (check_attachments(actx, sub) != 0)
         {
-          menu_queue_redraw(menu, REDRAW_FULL);
+          menu_queue_redraw(menu, MENU_REDRAW_FULL);
           break;
         }
 
@@ -2693,7 +2693,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         else
         {
           mutt_update_encoding(e->body, sub);
-          menu_queue_redraw(menu, REDRAW_STATUS);
+          menu_queue_redraw(menu, MENU_REDRAW_STATUS);
         }
         break;
       }

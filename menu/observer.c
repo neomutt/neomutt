@@ -83,7 +83,7 @@ static int menu_color_observer(struct NotifyCallback *nc)
   }
 
   struct Menu *menu = nc->global_data;
-  menu->redraw = REDRAW_FULL;
+  menu->redraw = MENU_REDRAW_FULL;
 
   return 0;
 }
@@ -108,12 +108,12 @@ static int menu_config_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = nc->global_data;
   if ((menu->type == MENU_MAIN) && (flags & R_INDEX))
-    menu->redraw |= REDRAW_FULL;
+    menu->redraw |= MENU_REDRAW_FULL;
   if ((menu->type == MENU_PAGER) && (flags & R_PAGER))
-    menu->redraw |= REDRAW_FULL;
+    menu->redraw |= MENU_REDRAW_FULL;
   if (flags & R_PAGER_FLOW)
   {
-    menu->redraw |= REDRAW_FULL | REDRAW_FLOW;
+    menu->redraw |= MENU_REDRAW_FULL | MENU_REDRAW_FLOW;
   }
 
   if (flags & R_RESORT_SUB)
@@ -126,7 +126,7 @@ static int menu_config_observer(struct NotifyCallback *nc)
     OptRedrawTree = true;
 
   if (flags & R_MENU)
-    menu->redraw |= REDRAW_FULL;
+    menu->redraw |= MENU_REDRAW_FULL;
 
   return 0;
 }
@@ -148,7 +148,7 @@ static int menu_window_observer(struct NotifyCallback *nc)
   struct MuttWindow *win = ev_w->win;
 
   menu->pagelen = win->state.rows;
-  menu->redraw = REDRAW_FULL;
+  menu->redraw = MENU_REDRAW_FULL;
 
   return 0;
 }

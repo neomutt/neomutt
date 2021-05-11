@@ -469,7 +469,7 @@ int menu_loop(struct Menu *menu)
           {
             for (int i = 0; i < menu->max; i++)
               menu->tagged += menu->tag(menu, i, 0);
-            menu->redraw |= REDRAW_INDEX;
+            menu->redraw |= MENU_REDRAW_INDEX;
           }
           else if (menu->max != 0)
           {
@@ -480,7 +480,7 @@ int menu_loop(struct Menu *menu)
               menu_set_index(menu, menu->current + 1);
             }
             else
-              menu->redraw |= REDRAW_CURRENT;
+              menu->redraw |= MENU_REDRAW_CURRENT;
           }
           else
             mutt_error(_("No entries"));
@@ -506,12 +506,12 @@ int menu_loop(struct Menu *menu)
 
       case OP_REDRAW:
         clearok(stdscr, true);
-        menu->redraw = REDRAW_FULL;
+        menu->redraw = MENU_REDRAW_FULL;
         break;
 
       case OP_HELP:
         mutt_help(menu->type);
-        menu->redraw = REDRAW_FULL;
+        menu->redraw = MENU_REDRAW_FULL;
         break;
 
       case OP_NULL:
@@ -588,7 +588,7 @@ struct Menu *menu_new(enum MenuType type, struct MuttWindow *win)
   struct Menu *menu = mutt_mem_calloc(1, sizeof(struct Menu));
 
   menu->type = type;
-  menu->redraw = REDRAW_FULL;
+  menu->redraw = MENU_REDRAW_FULL;
   menu->color = default_color;
   menu->search = generic_search;
   menu->notify = notify_new();
@@ -632,14 +632,14 @@ bool menu_set_index(struct Menu *menu, int index)
 
   menu->oldcurrent = menu->current;
   menu->current = index;
-  menu->redraw |= REDRAW_MOTION;
+  menu->redraw |= MENU_REDRAW_MOTION;
   return true;
 }
 
 /**
  * menu_queue_redraw - Queue a request for a redraw
  * @param menu  Menu
- * @param redraw Item to redraw, e.g. #REDRAW_CURRENT
+ * @param redraw Item to redraw, e.g. #MENU_REDRAW_CURRENT
  */
 void menu_queue_redraw(struct Menu *menu, MuttRedrawFlags redraw)
 {

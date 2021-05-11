@@ -56,7 +56,7 @@ static int menu_repaint(struct MuttWindow *win)
 
   // struct Menu *menu = win->wdata;
   // menu_redraw(menu);
-  // menu->redraw = REDRAW_NO_FLAGS;
+  // menu->redraw = MENU_REDRAW_NO_FLAGS;
 
   return 0;
 }

@@ -458,7 +458,7 @@ void mutt_window_reflow_message_rows(int mw_rows)
   MessageWindow->req_rows = mw_rows;
   mutt_window_reflow(MessageWindow->parent);
 
-  /* We don't also set REDRAW_FLOW because this function only
+  /* We don't also set MENU_REDRAW_FLOW because this function only
    * changes rows and is a temporary adjustment. */
   window_redraw(RootWindow, true);
 }

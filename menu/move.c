@@ -78,7 +78,7 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
       index -= tmp;
     }
 
-    menu->redraw = REDRAW_INDEX;
+    menu->redraw = MENU_REDRAW_INDEX;
   }
   else if ((menu->current != (neg ? 0 : menu->max - 1)) && ARRAY_EMPTY(&menu->dialog))
   {
@@ -131,7 +131,7 @@ void menu_check_recenter(struct Menu *menu)
     if (menu->top != 0)
     {
       menu->top = 0;
-      menu->redraw |= REDRAW_INDEX;
+      menu->redraw |= MENU_REDRAW_INDEX;
     }
   }
   else
@@ -164,7 +164,7 @@ void menu_check_recenter(struct Menu *menu)
   menu->top = MAX(menu->top, 0);
 
   if (menu->top != old_top)
-    menu->redraw |= REDRAW_INDEX;
+    menu->redraw |= MENU_REDRAW_INDEX;
 }
 
 /**
@@ -182,7 +182,7 @@ void menu_current_bottom(struct Menu *menu)
   menu->top = menu->current - menu->pagelen + 1;
   if (menu->top < 0)
     menu->top = 0;
-  menu->redraw = REDRAW_INDEX;
+  menu->redraw = MENU_REDRAW_INDEX;
 }
 
 /**
@@ -200,7 +200,7 @@ void menu_current_middle(struct Menu *menu)
   menu->top = menu->current - (menu->pagelen / 2);
   if (menu->top < 0)
     menu->top = 0;
-  menu->redraw = REDRAW_INDEX;
+  menu->redraw = MENU_REDRAW_INDEX;
 }
 
 /**
@@ -216,7 +216,7 @@ void menu_current_top(struct Menu *menu)
   }
 
   menu->top = menu->current;
-  menu->redraw = REDRAW_INDEX;
+  menu->redraw = MENU_REDRAW_INDEX;
 }
 
 /**
@@ -323,7 +323,7 @@ void menu_next_line(struct Menu *menu)
     menu->top++;
     if ((menu->current < (menu->top + c)) && (menu->current < (menu->max - 1)))
       menu_set_index(menu, menu->current + 1);
-    menu->redraw = REDRAW_INDEX;
+    menu->redraw = MENU_REDRAW_INDEX;
   }
   else
     mutt_message(_("You can't scroll down farther"));
@@ -370,7 +370,7 @@ void menu_prev_line(struct Menu *menu)
   menu->top--;
   if ((menu->current >= (menu->top + menu->pagelen - c)) && (menu->current > 1))
     menu_set_index(menu, menu->current - 1);
-  menu->redraw = REDRAW_INDEX;
+  menu->redraw = MENU_REDRAW_INDEX;
 }
 
 /**
