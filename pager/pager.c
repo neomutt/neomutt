@@ -4167,7 +4167,7 @@ struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top
   panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
   mutt_window_add_child(parent, panel_pager);
 
-  struct MuttWindow *win_pager = menu_new_window(MENU_PAGER);
+  struct MuttWindow *win_pager = menu_new_window(MENU_PAGER, NeoMutt->sub);
   panel_pager->focus = win_pager;
 
   struct MuttWindow *win_pbar =

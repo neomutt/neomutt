@@ -32,6 +32,8 @@
 #include "lib.h"
 #include "type.h"
 
+struct ConfigSubset;
+
 /**
  * menu_recalc - Recalculate the Window data - Implements MuttWindow::recalc()
  */
@@ -72,15 +74,16 @@ static void menu_free_wdata(struct MuttWindow *win, void **ptr)
 /**
  * menu_new_window - Create a new Menu Window
  * @param type Menu type, e.g. #MENU_PAGER
+ * @param sub  Config items
  * @retval ptr New MuttWindow wrapping a Menu
  */
-struct MuttWindow *menu_new_window(enum MenuType type)
+struct MuttWindow *menu_new_window(enum MenuType type, struct ConfigSubset *sub)
 {
   struct MuttWindow *win =
       mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
-  struct Menu *menu = menu_new(type, win);
+  struct Menu *menu = menu_new(type, win, sub);
 
   win->recalc = menu_recalc;
   win->repaint = menu_repaint;

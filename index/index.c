@@ -4234,7 +4234,7 @@ static struct MuttWindow *create_panel_index(struct MuttWindow *parent, bool sta
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   parent->focus = panel_index;
 
-  struct MuttWindow *win_index = menu_new_window(MENU_MAIN);
+  struct MuttWindow *win_index = menu_new_window(MENU_MAIN, NeoMutt->sub);
   panel_index->focus = win_index;
 
   struct MuttWindow *win_ibar =

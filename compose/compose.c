@@ -1520,7 +1520,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                       MUTT_WIN_SIZE_UNLIMITED, 1);
 
-  struct MuttWindow *win_attach = menu_new_window(MENU_COMPOSE);
+  struct MuttWindow *win_attach = menu_new_window(MENU_COMPOSE, NeoMutt->sub);
   dlg->focus = win_attach;
 
   struct MuttWindow *win_cbar =

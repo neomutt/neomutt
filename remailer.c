@@ -639,7 +639,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
   dlg->help_menu = MENU_MIX;
   dlg->help_data = RemailerHelp;
 
-  struct MuttWindow *win_hosts = menu_new_window(MENU_MIX);
+  struct MuttWindow *win_hosts = menu_new_window(MENU_MIX, NeoMutt->sub);
   win_hosts->focus = win_hosts;
 
   struct MuttWindow *win_chain =

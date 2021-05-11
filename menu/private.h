@@ -26,11 +26,12 @@
 #include <stddef.h>
 #include "type.h"
 
+struct ConfigSubset;
 struct Menu;
 struct MuttWindow;
 
 void         menu_free(struct Menu **ptr);
-struct Menu *menu_new (enum MenuType type, struct MuttWindow *win);
+struct Menu *menu_new(enum MenuType type, struct MuttWindow *win, struct ConfigSubset *sub);
 
 void menu_add_observers   (struct Menu *menu);
 void menu_remove_observers(struct Menu *menu);

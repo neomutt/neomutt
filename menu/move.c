@@ -30,7 +30,6 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "core/lib.h"
 #include "lib.h"
 
 #define DIRECTION ((neg * 2) + 1)
@@ -53,8 +52,8 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
     return;
   }
 
-  const short c_menu_context = cs_subset_number(NeoMutt->sub, "menu_context");
-  const bool c_menu_move_off = cs_subset_bool(NeoMutt->sub, "menu_move_off");
+  const short c_menu_context = cs_subset_number(menu->sub, "menu_context");
+  const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
 
   const int neg = (jumplen >= 0) ? 0 : -1;
   const int c = MIN(c_menu_context, (menu->pagelen / 2));
@@ -119,9 +118,9 @@ void menu_bottom_page(struct Menu *menu)
  */
 void menu_check_recenter(struct Menu *menu)
 {
-  const short c_menu_context = cs_subset_number(NeoMutt->sub, "menu_context");
-  const bool c_menu_move_off = cs_subset_bool(NeoMutt->sub, "menu_move_off");
-  const bool c_menu_scroll = cs_subset_bool(NeoMutt->sub, "menu_scroll");
+  const short c_menu_context = cs_subset_number(menu->sub, "menu_context");
+  const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
+  const bool c_menu_scroll = cs_subset_bool(menu->sub, "menu_scroll");
 
   int c = MIN(c_menu_context, (menu->pagelen / 2));
   int old_top = menu->top;
@@ -312,8 +311,8 @@ void menu_next_line(struct Menu *menu)
     return;
   }
 
-  const short c_menu_context = cs_subset_number(NeoMutt->sub, "menu_context");
-  const bool c_menu_move_off = cs_subset_bool(NeoMutt->sub, "menu_move_off");
+  const short c_menu_context = cs_subset_number(menu->sub, "menu_context");
+  const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
   int c = MIN(c_menu_context, (menu->pagelen / 2));
 
   if (((menu->top + 1) < (menu->max - c)) &&
@@ -364,7 +363,7 @@ void menu_prev_line(struct Menu *menu)
     return;
   }
 
-  const short c_menu_context = cs_subset_number(NeoMutt->sub, "menu_context");
+  const short c_menu_context = cs_subset_number(menu->sub, "menu_context");
   int c = MIN(c_menu_context, (menu->pagelen / 2));
 
   menu->top--;

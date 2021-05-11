@@ -81,7 +81,7 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
   dlg->help_menu = mtype;
   dlg->help_data = help_data;
 
-  struct MuttWindow *win_index = menu_new_window(mtype);
+  struct MuttWindow *win_index = menu_new_window(mtype, NeoMutt->sub);
   dlg->focus = win_index;
   dlg->wdata = win_index->wdata;
 

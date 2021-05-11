@@ -44,6 +44,8 @@
 #include "mutt/lib.h"
 #include "type.h"
 
+struct ConfigSubset;
+
 typedef uint8_t MuttRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
 #define MENU_REDRAW_NO_FLAGS        0  ///< No flags are set
 #define MENU_REDRAW_INDEX     (1 << 0) ///< Redraw the index
@@ -69,6 +71,7 @@ struct Menu
   bool is_mailbox_list : 1;
   struct MuttWindow *win_index;
   struct MuttWindow *win_ibar;
+  struct ConfigSubset *sub; ///< Inherited config items
 
   /* Setting a non-empty dialog overrides normal menu behavior.
    * In dialog mode menubar is hidden and prompt keys are checked before
@@ -171,7 +174,7 @@ enum MenuType menu_get_current_type(void);
 void         menu_init(void);
 int          menu_loop(struct Menu *menu);
 
-struct MuttWindow *menu_new_window(enum MenuType type);
+struct MuttWindow *menu_new_window(enum MenuType type, struct ConfigSubset *sub);
 
 int  menu_get_index(struct Menu *menu);
 bool menu_set_index(struct Menu *menu, int index);

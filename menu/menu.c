@@ -35,7 +35,6 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "menu/lib.h"
@@ -191,7 +190,7 @@ search_next:
     rc += search_dir;
   }
 
-  const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
+  const bool c_wrap_search = cs_subset_bool(menu->sub, "wrap_search");
   if (c_wrap_search && (wrap++ == 0))
   {
     rc = (search_dir == 1) ? 0 : menu->max - 1;
@@ -306,9 +305,9 @@ int menu_loop(struct Menu *menu)
       mutt_window_clrtoeol(MessageWindow);
     }
 
-    const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
+    const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
     const bool c_braille_friendly =
-        cs_subset_bool(NeoMutt->sub, "braille_friendly");
+        cs_subset_bool(menu->sub, "braille_friendly");
 
     /* move the cursor out of the way */
     if (c_arrow_cursor)
@@ -327,7 +326,7 @@ int menu_loop(struct Menu *menu)
     if (!ARRAY_EMPTY(&menu->dialog) && (menu_dialog_dokey(menu, &op) == 0))
       return op;
 
-    const bool c_auto_tag = cs_subset_bool(NeoMutt->sub, "auto_tag");
+    const bool c_auto_tag = cs_subset_bool(menu->sub, "auto_tag");
     op = km_dokey(menu->type);
     if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
     {
@@ -463,7 +462,7 @@ int menu_loop(struct Menu *menu)
       case OP_TAG:
         if (menu->tag && ARRAY_EMPTY(&menu->dialog))
         {
-          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+          const bool c_resolve = cs_subset_bool(menu->sub, "resolve");
 
           if (menu->tagprefix && !c_auto_tag)
           {
@@ -581,9 +580,10 @@ void menu_free(struct Menu **ptr)
  * menu_new - Create a new Menu
  * @param type Menu type, e.g. #MENU_ALIAS
  * @param win  Parent Window
+ * @param sub  Config items
  * @retval ptr New Menu
  */
-struct Menu *menu_new(enum MenuType type, struct MuttWindow *win)
+struct Menu *menu_new(enum MenuType type, struct MuttWindow *win, struct ConfigSubset *sub)
 {
   struct Menu *menu = mutt_mem_calloc(1, sizeof(struct Menu));
 
@@ -594,6 +594,7 @@ struct Menu *menu_new(enum MenuType type, struct MuttWindow *win)
   menu->notify = notify_new();
   menu->win_index = win;
   menu->pagelen = win->state.rows;
+  menu->sub = sub;
 
   notify_set_parent(menu->notify, win->notify);
   menu_add_observers(menu);

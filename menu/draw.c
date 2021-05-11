@@ -34,7 +34,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
-#include "core/lib.h"
 #include "gui/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
@@ -107,14 +106,17 @@ static int get_color(int index, unsigned char *s)
  * @param attr     Default colour for the line
  * @param s        String of embedded colour codes
  * @param do_color If true, apply colour
+ * @param sub      Config items
  */
-static void print_enriched_string(int index, int attr, unsigned char *s, bool do_color)
+static void print_enriched_string(int index, int attr, unsigned char *s,
+                                  bool do_color, struct ConfigSubset *sub)
 {
   wchar_t wc;
   size_t k;
   size_t n = mutt_str_len((char *) s);
   mbstate_t mbstate;
 
+  const bool c_ascii_chars = cs_subset_bool(sub, "ascii_chars");
   memset(&mbstate, 0, sizeof(mbstate));
   while (*s)
   {
@@ -129,7 +131,6 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
         mutt_curses_set_color(MT_COLOR_TREE);
 #endif
 
-      const bool c_ascii_chars = cs_subset_bool(NeoMutt->sub, "ascii_chars");
       while (*s && (*s < MUTT_TREE_MAX))
       {
         switch (*s)
@@ -314,9 +315,9 @@ void menu_make_entry(struct Menu *menu, char *buf, size_t buflen, int i)
 static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
 {
   char *scratch = mutt_str_dup(buf);
-  const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   const char *const c_arrow_string =
-      cs_subset_string(NeoMutt->sub, "arrow_string");
+      cs_subset_string(menu->sub, "arrow_string");
   int shift = c_arrow_cursor ? mutt_strwidth(c_arrow_string) + 1 : 0;
   int cols = menu->win_index->state.cols - shift;
 
@@ -385,9 +386,9 @@ void menu_redraw_index(struct Menu *menu)
       mutt_window_move(menu->win_index, 0, i - menu->top);
       do_color = true;
 
-      const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
+      const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
       const char *const c_arrow_string =
-          cs_subset_string(NeoMutt->sub, "arrow_string");
+          cs_subset_string(menu->sub, "arrow_string");
       if (i == menu->current)
       {
         mutt_curses_set_color(MT_COLOR_INDICATOR);
@@ -406,7 +407,7 @@ void menu_redraw_index(struct Menu *menu)
         mutt_window_printf("%*s", mutt_strwidth(c_arrow_string) + 1, "");
       }
 
-      print_enriched_string(i, attr, (unsigned char *) buf, do_color);
+      print_enriched_string(i, attr, (unsigned char *) buf, do_color, menu->sub);
     }
     else
     {
@@ -442,9 +443,9 @@ void menu_redraw_motion(struct Menu *menu)
   mutt_window_move(menu->win_index, 0, menu->oldcurrent - menu->top);
   mutt_curses_set_attr(old_color);
 
-  const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   const char *const c_arrow_string =
-      cs_subset_string(NeoMutt->sub, "arrow_string");
+      cs_subset_string(menu->sub, "arrow_string");
   if (c_arrow_cursor)
   {
     /* clear the arrow */
@@ -455,7 +456,8 @@ void menu_redraw_motion(struct Menu *menu)
     menu_pad_string(menu, buf, sizeof(buf));
     mutt_window_move(menu->win_index, mutt_strwidth(c_arrow_string) + 1,
                      menu->oldcurrent - menu->top);
-    print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
+    print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf,
+                          true, menu->sub);
 
     /* now draw it in the new location */
     mutt_curses_set_color(MT_COLOR_INDICATOR);
@@ -466,7 +468,8 @@ void menu_redraw_motion(struct Menu *menu)
     /* erase the current indicator */
     menu_make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
     menu_pad_string(menu, buf, sizeof(buf));
-    print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
+    print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf,
+                          true, menu->sub);
 
     /* now draw the new one to reflect the change */
     const int cur_color = menu->color(menu, menu->current);
@@ -474,7 +477,7 @@ void menu_redraw_motion(struct Menu *menu)
     menu_pad_string(menu, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_INDICATOR);
     mutt_window_move(menu->win_index, 0, menu->current - menu->top);
-    print_enriched_string(menu->current, cur_color, (unsigned char *) buf, false);
+    print_enriched_string(menu->current, cur_color, (unsigned char *) buf, false, menu->sub);
   }
   menu->redraw &= MENU_REDRAW_STATUS;
   mutt_curses_set_color(MT_COLOR_NORMAL);
@@ -496,19 +499,19 @@ void menu_redraw_current(struct Menu *menu)
   menu_pad_string(menu, buf, sizeof(buf));
 
   mutt_curses_set_color(MT_COLOR_INDICATOR);
-  const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   const char *const c_arrow_string =
-      cs_subset_string(NeoMutt->sub, "arrow_string");
+      cs_subset_string(menu->sub, "arrow_string");
   if (c_arrow_cursor)
   {
     mutt_window_addstr(c_arrow_string);
     mutt_curses_set_attr(attr);
     mutt_window_addch(' ');
     menu_pad_string(menu, buf, sizeof(buf));
-    print_enriched_string(menu->current, attr, (unsigned char *) buf, true);
+    print_enriched_string(menu->current, attr, (unsigned char *) buf, true, menu->sub);
   }
   else
-    print_enriched_string(menu->current, attr, (unsigned char *) buf, false);
+    print_enriched_string(menu->current, attr, (unsigned char *) buf, false, menu->sub);
   menu->redraw &= MENU_REDRAW_STATUS;
   mutt_curses_set_color(MT_COLOR_NORMAL);
 

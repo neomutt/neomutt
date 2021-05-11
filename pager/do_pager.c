@@ -90,7 +90,7 @@ int mutt_do_pager(struct PagerView *pview)
       mutt_window_new(WT_DLG_DO_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
-  struct MuttWindow *win_pager = menu_new_window(MENU_PAGER);
+  struct MuttWindow *win_pager = menu_new_window(MENU_PAGER, NeoMutt->sub);
   dlg->focus = win_pager;
 
   struct MuttWindow *win_pbar =
